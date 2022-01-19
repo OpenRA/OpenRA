@@ -48,16 +48,16 @@ namespace OpenRA.Mods.Common.Traits
 	class ThrowsParticle : ITick
 	{
 		WVec pos;
-		WVec initialPos;
-		WVec finalPos;
-		WAngle angle;
+		readonly WVec initialPos;
+		readonly WVec finalPos;
+		readonly WAngle angle;
 
 		int tick = 0;
-		int length;
+		readonly int length;
 
 		WAngle facing;
 		WAngle rotation;
-		int direction;
+		readonly int direction;
 
 		public ThrowsParticle(ActorInitializer init, ThrowsParticleInfo info)
 		{

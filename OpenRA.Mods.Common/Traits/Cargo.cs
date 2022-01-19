@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 		int reservedWeight = 0;
 		Aircraft aircraft;
 		int loadingToken = Actor.InvalidConditionToken;
-		Stack<int> loadedTokens = new Stack<int>();
+		readonly Stack<int> loadedTokens = new Stack<int>();
 		bool takeOffAfterLoad;
 		bool initialised;
 

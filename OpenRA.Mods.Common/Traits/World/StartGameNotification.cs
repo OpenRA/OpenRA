@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	class StartGameNotification : IWorldLoaded, INotifyGameLoaded, INotifyGameSaved
 	{
-		StartGameNotificationInfo info;
+		readonly StartGameNotificationInfo info;
 		public StartGameNotification(StartGameNotificationInfo info)
 		{
 			this.info = info;

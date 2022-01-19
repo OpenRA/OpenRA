@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		}
 
 		// Mapping from RA95 overlay index to type string
-		static string[] redAlertOverlayNames =
+		static readonly string[] redAlertOverlayNames =
 		{
 			"sbag", "cycl", "brik", "fenc", "wood",
 			"gold01", "gold02", "gold03", "gold04",
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			"fpls", "wcrate", "scrate", "barb", "sbag",
 		};
 
-		static Dictionary<string, (byte Type, byte Index)> overlayResourceMapping = new Dictionary<string, (byte, byte)>()
+		static readonly Dictionary<string, (byte Type, byte Index)> overlayResourceMapping = new Dictionary<string, (byte, byte)>()
 		{
 			// RA ore & crystals
 			{ "gold01", (1, 0) },
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					Map.Tiles[new CPos(i, j)] = new TerrainTile(types[i, j], ms.ReadUInt8());
 		}
 
-		static string[] overlayActors = new string[]
+		static readonly string[] overlayActors = new string[]
 		{
 			// Fences
 			"sbag", "cycl", "brik", "fenc", "wood",

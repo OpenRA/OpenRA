@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollPanelWidget scrollPanel;
 		readonly LabelWidget template;
 
-		bool showModTab;
-		bool showEngineTab;
+		readonly bool showModTab;
+		readonly bool showEngineTab;
 		bool isShowingModTab;
 		readonly IEnumerable<string> modLines;
 		readonly IEnumerable<string> engineLines;

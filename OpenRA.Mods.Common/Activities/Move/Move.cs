@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Activities
 		int waitTicksRemaining;
 
 		// To work around queued activity issues while minimizing changes to legacy behaviour
-		bool evaluateNearestMovableCell;
+		readonly bool evaluateNearestMovableCell;
 
 		// Scriptable move order
 		// Ignores lane bias and nearby units

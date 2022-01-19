@@ -17,8 +17,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ConnectionLogic : ChromeLogic
 	{
-		Action onConnect, onAbort;
-		Action<string> onRetry;
+		readonly Action onConnect;
+		readonly Action onAbort;
+		readonly Action<string> onRetry;
 
 		void ConnectionStateChanged(OrderManager om, string password, NetworkConnection connection)
 		{
@@ -81,7 +82,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	public class ConnectionFailedLogic : ChromeLogic
 	{
-		PasswordFieldWidget passwordField;
+		readonly PasswordFieldWidget passwordField;
 		bool passwordOffsetAdjusted;
 
 		[ObjectCreator.UseCtor]

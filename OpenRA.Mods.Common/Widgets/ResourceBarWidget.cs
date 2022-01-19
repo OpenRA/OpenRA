@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public readonly string TooltipTemplate;
 		public readonly string TooltipContainer;
-		Lazy<TooltipContainerWidget> tooltipContainer;
+		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 
 		public string TooltipFormat = "";
 		public ResourceBarOrientation Orientation = ResourceBarOrientation.Vertical;
@@ -31,8 +31,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<float> GetProvided = () => 0;
 		public Func<float> GetUsed = () => 0;
 		public Func<Color> GetBarColor = () => Color.White;
-		EWMA providedLerp = new EWMA(0.3f);
-		EWMA usedLerp = new EWMA(0.3f);
+		readonly EWMA providedLerp = new EWMA(0.3f);
+		readonly EWMA usedLerp = new EWMA(0.3f);
 		readonly World world;
 		Sprite indicator;
 

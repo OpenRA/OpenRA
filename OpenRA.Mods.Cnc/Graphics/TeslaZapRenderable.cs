@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 {
 	class TeslaZapRenderable : IPalettedRenderable, IFinalizedRenderable
 	{
-		static int[][] steps = new[]
+		static readonly int[][] steps = new[]
 		{
 			new int[] { 8, 8, 4, 4, 0 },
 			new int[] { -8, -8, -4, -4, 0 },
@@ -40,8 +40,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 		readonly string brightSequence;
 		readonly int brightZaps, dimZaps;
 
-		WPos cachedPos;
-		WVec cachedLength;
+		readonly WPos cachedPos;
+		readonly WVec cachedLength;
 		IEnumerable<IFinalizedRenderable> cache;
 
 		public TeslaZapRenderable(WPos pos, int zOffset, in WVec length, string image, string brightSequence, int brightZaps, string dimSequence, int dimZaps, string palette)

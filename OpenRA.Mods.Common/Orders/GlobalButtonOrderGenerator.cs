@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Orders
 {
 	public abstract class GlobalButtonOrderGenerator<T> : OrderGenerator
 	{
-		string order;
+		readonly string order;
 
 		public GlobalButtonOrderGenerator(string order)
 		{

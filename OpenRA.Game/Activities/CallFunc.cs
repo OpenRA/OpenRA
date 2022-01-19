@@ -22,7 +22,7 @@ namespace OpenRA.Activities
 			IsInterruptible = interruptible;
 		}
 
-		Action a;
+		readonly Action a;
 
 		public override bool Tick(Actor self)
 		{

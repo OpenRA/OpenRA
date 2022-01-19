@@ -34,12 +34,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly World world;
 		readonly ModData modData;
 
-		Widget panel;
+		readonly Widget panel;
 
-		TextFieldWidget filenameInput;
-		SliderWidget frameSlider;
-		ScrollPanelWidget assetList;
-		ScrollItemWidget template;
+		readonly TextFieldWidget filenameInput;
+		readonly SliderWidget frameSlider;
+		readonly ScrollPanelWidget assetList;
+		readonly ScrollItemWidget template;
 
 		IReadOnlyPackage assetSource = null;
 		bool animateFrames = false;
@@ -385,7 +385,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				currentFrame = currentSprites.Length - 1;
 		}
 
-		Dictionary<string, bool> assetVisByName = new Dictionary<string, bool>();
+		readonly Dictionary<string, bool> assetVisByName = new Dictionary<string, bool>();
 
 		bool FilterAsset(string filename)
 		{

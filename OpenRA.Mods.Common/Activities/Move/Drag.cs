@@ -21,10 +21,11 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly IPositionable positionable;
 		readonly IDisabledTrait disableable;
-		WPos start, end;
-		int length;
+		readonly WPos start;
+		readonly WPos end;
+		readonly int length;
 		int ticks = 0;
-		WAngle? desiredFacing;
+		readonly WAngle? desiredFacing;
 
 		public Drag(Actor self, WPos start, WPos end, int length, WAngle? facing = null)
 		{

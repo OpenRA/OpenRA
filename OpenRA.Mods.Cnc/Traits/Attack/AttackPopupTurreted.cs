@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		int idleTicks = 0;
 		PopupState state = PopupState.Open;
-		bool skippedMakeAnimation;
+		readonly bool skippedMakeAnimation;
 
 		public AttackPopupTurreted(ActorInitializer init, AttackPopupTurretedInfo info)
 			: base(init.Self, info)

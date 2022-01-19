@@ -31,7 +31,7 @@ namespace OpenRA.Support
 		List<PerfTimer> children;
 		long ticks;
 
-		static ThreadLocal<PerfTimer> parentThreadLocal = new ThreadLocal<PerfTimer>();
+		static readonly ThreadLocal<PerfTimer> parentThreadLocal = new ThreadLocal<PerfTimer>();
 
 		public PerfTimer(string name, float thresholdMs = 0)
 		{

@@ -19,7 +19,7 @@ namespace OpenRA.Test
 	[TestFixture]
 	public class VariableExpressionTest
 	{
-		IReadOnlyDictionary<string, int> testValues = new Dictionary<string, int>
+		readonly IReadOnlyDictionary<string, int> testValues = new Dictionary<string, int>
 		{
 			{ "t", 5 },
 			{ "t-1", 7 },

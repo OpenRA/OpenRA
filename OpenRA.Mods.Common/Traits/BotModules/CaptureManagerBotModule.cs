@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		int minCaptureDelayTicks;
 
 		// Units that the bot already knows about and has given a capture order. Any unit not on this list needs to be given a new order.
-		List<Actor> activeCapturers = new List<Actor>();
+		readonly List<Actor> activeCapturers = new List<Actor>();
 
 		public CaptureManagerBotModule(Actor self, CaptureManagerBotModuleInfo info)
 			: base(info)

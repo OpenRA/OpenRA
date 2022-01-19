@@ -25,9 +25,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		class SlotDropDownOption
 		{
-			public string Title;
-			public string Order;
-			public Func<bool> Selected;
+			public readonly string Title;
+			public readonly string Order;
+			public readonly Func<bool> Selected;
 
 			public SlotDropDownOption(string title, string order, Func<bool> selected)
 			{

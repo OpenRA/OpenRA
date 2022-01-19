@@ -18,8 +18,8 @@ namespace OpenRA.Mods.Common.Effects
 {
 	public class ContrailFader : IEffect
 	{
-		WPos pos;
-		ContrailRenderable trail;
+		readonly WPos pos;
+		readonly ContrailRenderable trail;
 		int ticks;
 
 		public ContrailFader(WPos pos, ContrailRenderable trail)

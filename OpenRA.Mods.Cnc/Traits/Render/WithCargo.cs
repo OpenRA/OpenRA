@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		readonly IFacing facing;
 		WAngle cachedFacing;
 
-		Dictionary<Actor, IActorPreview[]> previews = new Dictionary<Actor, IActorPreview[]>();
+		readonly Dictionary<Actor, IActorPreview[]> previews = new Dictionary<Actor, IActorPreview[]>();
 
 		public WithCargo(Actor self, WithCargoInfo info)
 		{

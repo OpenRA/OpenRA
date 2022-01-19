@@ -22,7 +22,7 @@ namespace OpenRA.Network
 	class SyncReport
 	{
 		const int NumSyncReports = 5;
-		static Cache<Type, TypeInfo> typeInfoCache = new Cache<Type, TypeInfo>(t => new TypeInfo(t));
+		static readonly Cache<Type, TypeInfo> typeInfoCache = new Cache<Type, TypeInfo>(t => new TypeInfo(t));
 
 		readonly OrderManager orderManager;
 
@@ -154,9 +154,9 @@ namespace OpenRA.Network
 			public int Frame;
 			public int SyncedRandom;
 			public int TotalCount;
-			public List<TraitReport> Traits = new List<TraitReport>();
-			public List<EffectReport> Effects = new List<EffectReport>();
-			public List<OrderManager.ClientOrder> Orders = new List<OrderManager.ClientOrder>();
+			public readonly List<TraitReport> Traits = new List<TraitReport>();
+			public readonly List<EffectReport> Effects = new List<EffectReport>();
+			public readonly List<OrderManager.ClientOrder> Orders = new List<OrderManager.ClientOrder>();
 		}
 
 		struct TraitReport

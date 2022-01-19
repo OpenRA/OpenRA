@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool activated;
 		bool dragStarted;
 		Arrow currentArrow;
-		MouseAttachmentWidget mouseAttachment;
+		readonly MouseAttachmentWidget mouseAttachment;
 
 		public SelectDirectionalTarget(World world, string order, SupportPowerManager manager, string cursor,
 			string directionArrowAnimation, string directionArrowPalette)

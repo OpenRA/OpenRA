@@ -331,7 +331,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		}
 
 		// TODO: fix this -- will have bitrotted pretty badly.
-		static Dictionary<string, Color> namedColorMapping = new Dictionary<string, Color>()
+		static readonly Dictionary<string, Color> namedColorMapping = new Dictionary<string, Color>()
 		{
 			{ "gold", Color.FromArgb(246, 214, 121) },
 			{ "blue", Color.FromArgb(226, 230, 246) },

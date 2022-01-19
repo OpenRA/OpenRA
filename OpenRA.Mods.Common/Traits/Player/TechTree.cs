@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 			readonly string[] prerequisites;
 			readonly ITechTreeElement watcher;
 			bool hasPrerequisites;
-			int limit;
+			readonly int limit;
 			bool hidden;
 			bool initialized = false;
 

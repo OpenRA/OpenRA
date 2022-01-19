@@ -21,8 +21,8 @@ namespace OpenRA.Primitives
 			this.onFinalize = onFinalize;
 		}
 
-		Action onDispose;
-		Action onFinalize;
+		readonly Action onDispose;
+		readonly Action onFinalize;
 		bool disposed;
 
 		public void Dispose()

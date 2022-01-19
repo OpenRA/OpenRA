@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("Combat")]
 	public class GuardProperties : ScriptActorProperties, Requires<GuardInfo>, Requires<IMoveInfo>
 	{
-		Guard guard;
+		readonly Guard guard;
 		public GuardProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{

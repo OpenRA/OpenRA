@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly float3 shadowColor;
 		readonly float shadowAlpha;
 
-		ContrailRenderable contrail;
+		readonly ContrailRenderable contrail;
 
 		[Sync]
 		WPos pos, lastPos, target, source;

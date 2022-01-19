@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public int IconHeight = 24;
 		public int IconSpacing = 1;
 
-		float2 iconSize;
+		readonly float2 iconSize;
 		public int MinWidth = 240;
 
 		public ArmyUnit TooltipUnit { get; private set; }

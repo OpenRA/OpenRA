@@ -24,13 +24,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		MapClassification currentTab;
 
-		Dictionary<MapClassification, ScrollPanelWidget> scrollpanels = new Dictionary<MapClassification, ScrollPanelWidget>();
+		readonly Dictionary<MapClassification, ScrollPanelWidget> scrollpanels = new Dictionary<MapClassification, ScrollPanelWidget>();
 
-		Dictionary<MapClassification, MapPreview[]> tabMaps = new Dictionary<MapClassification, MapPreview[]>();
+		readonly Dictionary<MapClassification, MapPreview[]> tabMaps = new Dictionary<MapClassification, MapPreview[]>();
 		string[] visibleMaps;
 
 		string selectedUid;
-		Action<string> onSelect;
+		readonly Action<string> onSelect;
 
 		string category;
 		string mapFilter;

@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly string initialPlug;
 		int conditionToken = Actor.InvalidConditionToken;
-		Dictionary<string, bool> plugTypesAvailability = null;
+		readonly Dictionary<string, bool> plugTypesAvailability = null;
 
 		string active;
 

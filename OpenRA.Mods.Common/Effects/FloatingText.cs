@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Effects
 
 		readonly SpriteFont font;
 		readonly string text;
-		Color color;
+		readonly Color color;
 		int remaining;
 		WPos pos;
 

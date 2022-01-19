@@ -370,7 +370,7 @@ namespace OpenRA
 
 		public int WorldTick { get; private set; }
 
-		Dictionary<int, MiniYaml> gameSaveTraitData = new Dictionary<int, MiniYaml>();
+		readonly Dictionary<int, MiniYaml> gameSaveTraitData = new Dictionary<int, MiniYaml>();
 		internal void AddGameSaveTraitData(int traitIndex, MiniYaml yaml)
 		{
 			gameSaveTraitData[traitIndex] = yaml;

@@ -189,16 +189,16 @@ namespace OpenRA.Mods.Common.Projectiles
 		int ticks;
 
 		int ticksToNextSmoke;
-		ContrailRenderable contrail;
-		string trailPalette;
+		readonly ContrailRenderable contrail;
+		readonly string trailPalette;
 
 		States state;
 		bool targetPassedBy;
-		bool lockOn;
+		readonly bool lockOn;
 		bool allowPassBy; // TODO: use this also with high minimum launch angle settings
 
 		WPos targetPosition;
-		WVec offset;
+		readonly WVec offset;
 
 		WVec tarVel;
 		WVec predVel;
@@ -210,7 +210,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		int speed;
 		int loopRadius;
 		WDist distanceCovered;
-		WDist rangeLimit;
+		readonly WDist rangeLimit;
 
 		WAngle renderFacing;
 

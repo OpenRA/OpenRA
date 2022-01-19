@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public int IconRowOffset = 0;
 		public int MaxIconRowOffset = int.MaxValue;
 
-		Lazy<TooltipContainerWidget> tooltipContainer;
+		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		ProductionQueue currentQueue;
 		HotkeyReference[] hotkeys;
 
@@ -111,7 +111,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override Rectangle EventBounds => eventBounds;
 		Dictionary<Rectangle, ProductionIcon> icons = new Dictionary<Rectangle, ProductionIcon>();
-		Animation cantBuild, clock;
+		readonly Animation cantBuild;
+		readonly Animation clock;
 		Rectangle eventBounds = Rectangle.Empty;
 
 		readonly WorldRenderer worldRenderer;

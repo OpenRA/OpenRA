@@ -87,11 +87,11 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			public uint FileOffset;
 			public Format Format;
 
-			public uint RefOffset;
-			public Format RefFormat;
+			public readonly uint RefOffset;
+			public readonly Format RefFormat;
 			public ImageHeader RefImage;
 
-			ShpTDSprite reader;
+			readonly ShpTDSprite reader;
 
 			// Used by ShpWriter
 			public ImageHeader() { }

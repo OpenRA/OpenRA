@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			}
 		}
 
-		static Dictionary<string, (byte Type, byte Index)> overlayResourceMapping = new Dictionary<string, (byte, byte)>()
+		static readonly Dictionary<string, (byte Type, byte Index)> overlayResourceMapping = new Dictionary<string, (byte, byte)>()
 		{
 			// Tiberium
 			{ "ti1", (1, 0) },
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			}
 		}
 
-		static string[] overlayActors = new string[]
+		static readonly string[] overlayActors = new string[]
 		{
 			// Fences
 			"sbag", "cycl", "brik", "fenc", "wood",

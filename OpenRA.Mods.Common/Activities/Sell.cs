@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IHealth health;
 		readonly SellableInfo sellableInfo;
 		readonly PlayerResources playerResources;
-		bool showTicks;
+		readonly bool showTicks;
 
 		public Sell(Actor self, bool showTicks)
 		{

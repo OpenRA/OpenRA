@@ -22,18 +22,18 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 		class PublicKey
 		{
-			public uint[] KeyOne = new uint[64];
-			public uint[] KeyTwo = new uint[64];
+			public readonly uint[] KeyOne = new uint[64];
+			public readonly uint[] KeyTwo = new uint[64];
 			public uint Len;
 		}
 
-		PublicKey pubkey = new PublicKey();
+		readonly PublicKey pubkey = new PublicKey();
 
-		uint[] globOne = new uint[64];
+		readonly uint[] globOne = new uint[64];
 		uint globOneBitLen, globOneLenXTwo;
-		uint[] globTwo = new uint[130];
-		uint[] globOneHigh = new uint[4];
-		uint[] globOneHighInv = new uint[4];
+		readonly uint[] globTwo = new uint[130];
+		readonly uint[] globOneHigh = new uint[4];
+		readonly uint[] globOneHighInv = new uint[4];
 		uint globOneHighBitLen;
 		uint globOneHighInvLow, globOneHighInvHigh;
 

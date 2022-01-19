@@ -53,12 +53,12 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly SupportPowerManager spm;
 
 		Animation icon;
-		Animation clock;
+		readonly Animation clock;
 		Dictionary<Rectangle, SupportPowerIcon> icons = new Dictionary<Rectangle, SupportPowerIcon>();
 
 		public SupportPowerIcon TooltipIcon { get; private set; }
 		public Func<SupportPowerIcon> GetTooltipIcon;
-		Lazy<TooltipContainerWidget> tooltipContainer;
+		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		HotkeyReference[] hotkeys;
 
 		Rectangle eventBounds;

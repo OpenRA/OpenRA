@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly INotifyIdle[] tickIdles;
 		readonly bool idleTurn;
 		int remainingTicks;
-		bool isIdleTurner;
+		readonly bool isIdleTurner;
 
 		public FlyIdle(Actor self, int ticks = -1, bool idleTurn = true)
 		{
