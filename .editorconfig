@@ -118,6 +118,9 @@ dotnet_style_require_accessibility_modifiers = omit_if_default:warning
 # Don't prefer braces (for one liners).
 dotnet_diagnostic.IDE0011.severity = silent
 
+# Object initialization can be simplified / Use object initializer.
+dotnet_diagnostic.IDE0017.severity = warning
+
 # Modifiers are not ordered.
 dotnet_diagnostic.IDE0036.severity = warning
 
