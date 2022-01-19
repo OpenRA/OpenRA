@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly Sprite sprite;
 		readonly VeteranProductionIconOverlayInfo info;
 
-		Dictionary<ActorInfo, bool> overlayActive = new Dictionary<ActorInfo, bool>();
+		readonly Dictionary<ActorInfo, bool> overlayActive = new Dictionary<ActorInfo, bool>();
 
 		public VeteranProductionIconOverlay(ActorInitializer init, VeteranProductionIconOverlayInfo info)
 		{

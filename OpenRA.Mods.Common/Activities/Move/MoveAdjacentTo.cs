@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Activities
 			return TickChild(self);
 		}
 
-		List<CPos> searchCells = new List<CPos>();
+		readonly List<CPos> searchCells = new List<CPos>();
 		int searchCellsTick = -1;
 
 		List<CPos> CalculatePathToTarget(Actor self, BlockedByActor check)

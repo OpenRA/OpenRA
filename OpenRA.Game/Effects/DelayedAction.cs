@@ -17,7 +17,7 @@ namespace OpenRA.Effects
 {
 	public class DelayedAction : IEffect
 	{
-		Action a;
+		readonly Action a;
 		int delay;
 
 		public DelayedAction(int delay, Action a)

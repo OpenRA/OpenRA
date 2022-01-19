@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("General")]
 	public class HealthProperties : ScriptActorProperties, Requires<IHealthInfo>
 	{
-		IHealth health;
+		readonly IHealth health;
 		public HealthProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{

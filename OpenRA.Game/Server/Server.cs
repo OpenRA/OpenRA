@@ -77,7 +77,7 @@ namespace OpenRA.Server
 		ReplayRecorder recorder;
 		GameInformation gameInfo;
 		readonly List<GameInformation.Player> worldPlayers = new List<GameInformation.Player>();
-		Stopwatch pingUpdated = Stopwatch.StartNew();
+		readonly Stopwatch pingUpdated = Stopwatch.StartNew();
 
 		public ServerState State
 		{

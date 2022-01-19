@@ -42,7 +42,7 @@ namespace OpenRA.Graphics
 
 		class ReadOnlyPalette : IPalette
 		{
-			IPalette palette;
+			readonly IPalette palette;
 			public ReadOnlyPalette(IPalette palette) { this.palette = palette; }
 			public uint this[int index] => palette[index];
 

@@ -39,12 +39,12 @@ namespace OpenRA.Mods.Common.Widgets
 		public ProductionIcon TooltipIcon { get; private set; }
 		public Func<ProductionIcon> GetTooltipIcon;
 
-		Dictionary<ProductionQueue, Animation> clocks;
+		readonly Dictionary<ProductionQueue, Animation> clocks;
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		readonly List<ProductionIcon> productionIcons = new List<ProductionIcon>();
 		readonly List<Rectangle> productionIconsBounds = new List<Rectangle>();
 
-		float2 iconSize;
+		readonly float2 iconSize;
 		int lastIconIdx;
 		public int MinWidth = 240;
 		int currentTooltipToken;

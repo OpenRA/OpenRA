@@ -17,8 +17,8 @@ namespace OpenRA.Effects
 {
 	public class AsyncAction : IEffect
 	{
-		Action a;
-		IAsyncResult ar;
+		readonly Action a;
+		readonly IAsyncResult ar;
 
 		public AsyncAction(IAsyncResult ar, Action a)
 		{

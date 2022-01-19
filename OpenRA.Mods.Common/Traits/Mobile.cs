@@ -649,7 +649,7 @@ namespace OpenRA.Mods.Common.Traits
 			CPos cell;
 			SubCell subCell;
 			WPos pos;
-			int delay;
+			readonly int delay;
 
 			public ReturnToCellActivity(Actor self, int delay = 0, bool recalculateSubCell = false)
 			{

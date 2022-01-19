@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	class SupportPowerCrateAction : CrateAction
 	{
-		SupportPowerCrateActionInfo info;
+		readonly SupportPowerCrateActionInfo info;
 		public SupportPowerCrateAction(Actor self, SupportPowerCrateActionInfo info)
 			: base(self, info)
 		{

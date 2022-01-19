@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly WDist width;
 		int next;
 		int length;
-		int skip;
+		readonly int skip;
 
 		public ContrailRenderable(World world, Color color, WDist width, int length, int skip, int zOffset)
 			: this(world, new WPos[length], width, 0, 0, skip, color, zOffset) { }

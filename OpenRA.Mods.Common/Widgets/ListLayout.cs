@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class ListLayout : ILayout
 	{
-		ScrollPanelWidget widget;
+		readonly ScrollPanelWidget widget;
 
 		public ListLayout(ScrollPanelWidget w) { widget = w; }
 

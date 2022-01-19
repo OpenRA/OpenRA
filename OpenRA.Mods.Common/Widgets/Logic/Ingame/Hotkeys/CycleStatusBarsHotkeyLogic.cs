@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 	[ChromeLogicArgsHotkeys("CycleStatusBarsKey")]
 	public class CycleStatusBarsHotkeyLogic : SingleHotkeyBaseLogic
 	{
-		StatusBarsType[] options = { StatusBarsType.Standard, StatusBarsType.DamageShow, StatusBarsType.AlwaysShow };
+		readonly StatusBarsType[] options = { StatusBarsType.Standard, StatusBarsType.DamageShow, StatusBarsType.AlwaysShow };
 
 		[ObjectCreator.UseCtor]
 		public CycleStatusBarsHotkeyLogic(Widget widget, ModData modData, Dictionary<string, MiniYaml> logicArgs)

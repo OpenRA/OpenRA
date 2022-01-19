@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.FileFormats
 		public static readonly int MAXBITS = 13; // maximum code length
 		public static readonly int MAXWIN = 4096; // maximum window size
 
-		static byte[] litlen =
+		static readonly byte[] litlen =
 		{
 			11, 124, 8, 7, 28, 7, 188, 13, 76, 4,
 			10, 8, 12, 10, 12, 10, 8, 23, 8, 9,
@@ -40,28 +40,28 @@ namespace OpenRA.Mods.Common.FileFormats
 		};
 
 		// bit lengths of length codes 0..15
-		static byte[] lenlen = { 2, 35, 36, 53, 38, 23 };
+		static readonly byte[] lenlen = { 2, 35, 36, 53, 38, 23 };
 
 		// bit lengths of distance codes 0..63
-		static byte[] distlen = { 2, 20, 53, 230, 247, 151, 248 };
+		static readonly byte[] distlen = { 2, 20, 53, 230, 247, 151, 248 };
 
 		// base for length codes
-		static short[] lengthbase =
+		static readonly short[] lengthbase =
 		{
 			3, 2, 4, 5, 6, 7, 8, 9, 10, 12,
 			16, 24, 40, 72, 136, 264
 		};
 
 		// extra bits for length codes
-		static byte[] extra =
+		static readonly byte[] extra =
 		{
 			0, 0, 0, 0, 0, 0, 0, 0, 1, 2,
 			3, 4, 5, 6, 7, 8
 		};
 
-		static Huffman litcode = new Huffman(litlen, litlen.Length, 256);
-		static Huffman lencode = new Huffman(lenlen, lenlen.Length, 16);
-		static Huffman distcode = new Huffman(distlen, distlen.Length, 64);
+		static readonly Huffman litcode = new Huffman(litlen, litlen.Length, 256);
+		static readonly Huffman lencode = new Huffman(lenlen, lenlen.Length, 16);
+		static readonly Huffman distcode = new Huffman(distlen, distlen.Length, 64);
 
 		/// <summary>PKWare Compression Library stream.</summary>
 		/// <param name="input">Compressed input stream.</param>

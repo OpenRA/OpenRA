@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		int conditionToken = Actor.InvalidConditionToken;
 
 		Actor chronosphere;
-		int duration;
+		readonly int duration;
 		bool returnOriginal;
 		bool selling;
 
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		int returnTicks = 0;
 
 		[Sync]
-		CPos origin;
+		readonly CPos origin;
 
 		[Sync]
 		bool triggered;

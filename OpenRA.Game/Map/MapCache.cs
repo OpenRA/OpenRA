@@ -34,8 +34,8 @@ namespace OpenRA
 		readonly SheetBuilder sheetBuilder;
 		Thread previewLoaderThread;
 		bool previewLoaderThreadShutDown = true;
-		object syncRoot = new object();
-		Queue<MapPreview> generateMinimap = new Queue<MapPreview>();
+		readonly object syncRoot = new object();
+		readonly Queue<MapPreview> generateMinimap = new Queue<MapPreview>();
 
 		public Dictionary<string, string> StringPool { get; } = new Dictionary<string, string>();
 

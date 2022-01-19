@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Traits
 		CPos initialBaseCenter;
 		CPos defenseCenter;
 
-		List<BaseBuilderQueueManager> builders = new List<BaseBuilderQueueManager>();
+		readonly List<BaseBuilderQueueManager> builders = new List<BaseBuilderQueueManager>();
 
 		public BaseBuilderBotModule(Actor self, BaseBuilderBotModuleInfo info)
 			: base(info)

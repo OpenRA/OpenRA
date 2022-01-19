@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Action<bool> hideMenu;
 		readonly IObjectivesPanel iop;
 		IngameInfoPanel activePanel;
-		bool hasError;
+		readonly bool hasError;
 
 		[ObjectCreator.UseCtor]
 		public GameInfoLogic(Widget widget, ModData modData, World world, IngameInfoPanel initialPanel, Action<bool> hideMenu)

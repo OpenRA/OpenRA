@@ -45,21 +45,21 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 		// Stores a list of subpixels, referenced by the VPTZ chunk
 		byte[] cbf;
-		byte[] cbp;
-		byte[] cbfBuffer;
+		readonly byte[] cbp;
+		readonly byte[] cbfBuffer;
 		bool cbpIsCompressed;
 
 		// Buffer for loading file subchunks, the maximum chunk size of a file is not defined
 		// and the header definition for the size of the biggest chunks (color data) isn't accurate.
 		// But 256k is large enough for all TS videos(< 200k).
-		byte[] fileBuffer = new byte[256000];
-		int maxCbfzSize = 256000;
+		readonly byte[] fileBuffer = new byte[256000];
+		readonly int maxCbfzSize = 256000;
 		int vtprSize = 0;
 		int currentChunkBuffer = 0;
 		int chunkBufferOffset = 0;
 
 		// Top half contains block info, bottom half contains references to cbf array
-		byte[] origData;
+		readonly byte[] origData;
 
 		public VqaVideo(Stream stream, bool useFramePadding)
 		{

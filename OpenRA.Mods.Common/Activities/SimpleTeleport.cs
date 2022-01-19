@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class SimpleTeleport : Activity
 	{
-		CPos destination;
+		readonly CPos destination;
 
 		public SimpleTeleport(CPos destination) { this.destination = destination; }
 

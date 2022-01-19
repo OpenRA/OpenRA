@@ -35,7 +35,7 @@ namespace OpenRA.Graphics
 		Cursor cursor;
 		bool isLocked = false;
 		int2 lockedPosition;
-		bool hardwareCursorsDisabled = false;
+		readonly bool hardwareCursorsDisabled = false;
 		bool hardwareCursorsDoubled = false;
 
 		public CursorManager(CursorProvider cursorProvider)

@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 
 	public class WaitFor : Activity
 	{
-		Func<bool> f;
+		readonly Func<bool> f;
 
 		public WaitFor(Func<bool> f) { this.f = f; }
 		public WaitFor(Func<bool> f, bool interruptible)

@@ -128,7 +128,7 @@ namespace OpenRA
 		}
 
 		// HACK: Only update the loading screen if we're in the main thread.
-		int initialThreadId;
+		readonly int initialThreadId;
 		internal void HandleLoadingProgress()
 		{
 			if (LoadScreen != null && IsOnMainThread)

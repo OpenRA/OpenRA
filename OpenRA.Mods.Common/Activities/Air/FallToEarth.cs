@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Aircraft aircraft;
 		readonly FallsToEarthInfo info;
 
-		int acceleration;
+		readonly int acceleration;
 		int spin;
 
 		public FallToEarth(Actor self, FallsToEarthInfo info)

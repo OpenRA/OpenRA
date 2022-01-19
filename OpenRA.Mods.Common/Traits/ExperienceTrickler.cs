@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ExperienceTrickler : PausableConditionalTrait<ExperienceTricklerInfo>, ITick, ISync
 	{
 		readonly ExperienceTricklerInfo info;
-		GainsExperience gainsExperience;
+		readonly GainsExperience gainsExperience;
 
 		[Sync]
 		int ticks;

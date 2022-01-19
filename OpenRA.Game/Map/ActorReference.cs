@@ -25,7 +25,7 @@ namespace OpenRA
 	public class ActorReference : IEnumerable
 	{
 		public string Type;
-		Lazy<TypeDictionary> initDict;
+		readonly Lazy<TypeDictionary> initDict;
 
 		internal TypeDictionary InitDict => initDict.Value;
 

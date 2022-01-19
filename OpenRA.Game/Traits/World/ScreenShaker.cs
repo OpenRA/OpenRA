@@ -29,7 +29,7 @@ namespace OpenRA.Traits
 	{
 		readonly ScreenShakerInfo info;
 		WorldRenderer worldRenderer;
-		List<ShakeEffect> shakeEffects = new List<ShakeEffect>();
+		readonly List<ShakeEffect> shakeEffects = new List<ShakeEffect>();
 		int ticks = 0;
 
 		public ScreenShaker(ScreenShakerInfo info)

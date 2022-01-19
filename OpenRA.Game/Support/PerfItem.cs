@@ -18,7 +18,7 @@ namespace OpenRA.Support
 	{
 		public readonly Color C;
 		public readonly string Name;
-		double[] samples = new double[100];
+		readonly double[] samples = new double[100];
 		public double Val = 0.0;
 		int head = 1, tail = 0;
 		public bool HasNormalTick = true;

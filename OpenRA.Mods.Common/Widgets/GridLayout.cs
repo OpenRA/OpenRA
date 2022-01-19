@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class GridLayout : ILayout
 	{
-		ScrollPanelWidget widget;
+		readonly ScrollPanelWidget widget;
 		int2 pos;
 
 		public GridLayout(ScrollPanelWidget w) { widget = w; }

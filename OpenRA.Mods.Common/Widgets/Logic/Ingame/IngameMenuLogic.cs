@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly WorldRenderer worldRenderer;
 		readonly MenuPaletteEffect mpe;
 		readonly bool isSinglePlayer;
-		bool hasError;
+		readonly bool hasError;
 		bool leaving;
 		bool hideMenu;
 

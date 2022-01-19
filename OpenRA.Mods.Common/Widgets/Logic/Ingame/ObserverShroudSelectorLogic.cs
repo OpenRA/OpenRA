@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly World world;
 
 		CameraOption selected;
-		LabelWidget shroudLabel;
+		readonly LabelWidget shroudLabel;
 
 		class CameraOption
 		{

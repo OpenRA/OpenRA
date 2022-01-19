@@ -51,7 +51,8 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		readonly ModelAnimation modelAnimation;
 		readonly RenderVoxels rv;
 
-		uint tick, frame, frames;
+		uint tick, frame;
+		readonly uint frames;
 
 		public WithVoxelWalkerBody(Actor self, WithVoxelWalkerBodyInfo info)
 		{

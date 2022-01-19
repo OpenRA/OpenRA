@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		public readonly uint LimbCount;
 		public VxlLimb[] Limbs;
 
-		uint bodySize;
+		readonly uint bodySize;
 
 		static void ReadVoxelData(Stream s, VxlLimb l)
 		{
