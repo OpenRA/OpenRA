@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var deleteMapButton = widget.Get<ButtonWidget>("DELETE_MAP_BUTTON");
-			deleteMapButton.IsDisabled = () => modData.MapCache[selectedUid].Class != MapClassification.User;
+			deleteMapButton.IsDisabled = () => currentTab != MapClassification.User;
 			deleteMapButton.IsVisible = () => currentTab == MapClassification.User;
 			deleteMapButton.OnClick = () =>
 			{
