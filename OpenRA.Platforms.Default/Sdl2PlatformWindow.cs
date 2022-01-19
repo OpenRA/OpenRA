@@ -193,9 +193,12 @@ namespace OpenRA.Platforms.Default
 						// Attempt to automatically detect DPI
 						try
 						{
-							var psi = new ProcessStartInfo("/usr/bin/xrdb", "-query");
-							psi.UseShellExecute = false;
-							psi.RedirectStandardOutput = true;
+							var psi = new ProcessStartInfo("/usr/bin/xrdb", "-query")
+							{
+								UseShellExecute = false,
+								RedirectStandardOutput = true
+							};
+
 							var p = Process.Start(psi);
 							var lines = p.StandardOutput.ReadToEnd().Split('\n');
 

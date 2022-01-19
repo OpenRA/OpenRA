@@ -43,9 +43,12 @@ namespace OpenRA
 
 			try
 			{
-				var psi = new ProcessStartInfo("uname", "-s");
-				psi.UseShellExecute = false;
-				psi.RedirectStandardOutput = true;
+				var psi = new ProcessStartInfo("uname", "-s")
+				{
+					UseShellExecute = false,
+					RedirectStandardOutput = true
+				};
+
 				var p = Process.Start(psi);
 				var kernelName = p.StandardOutput.ReadToEnd();
 				if (kernelName.Contains("Darwin"))
