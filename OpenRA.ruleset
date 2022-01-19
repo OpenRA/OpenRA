@@ -55,6 +55,7 @@
     <Rule Id="SA1132" Action="None" /><!-- DoNotCombineFields -->
     <Rule Id="SA1204" Action="None" /><!-- StaticElementsMustAppearBeforeInstanceElements -->
     <Rule Id="SA1214" Action="None" /><!-- ReadonlyElementsMustAppearBeforeNonReadonlyElements -->
+    <Rule Id="SA1311" Action="None" /><!-- StaticReadonlyFieldsMustBeginWithUpperCaseLetter - silenced to match IDE1006 in .editorconfig -->
     <Rule Id="SA1413" Action="None" /><!-- UseTrailingCommasInMultiLineInitializers -->
     <Rule Id="SA1516" Action="None" /><!-- ElementsMustBeSeparatedByBlankLine -->
     <Rule Id="SA1604" Action="None" /><!-- ElementDocumentationShouldHaveSummary -->
