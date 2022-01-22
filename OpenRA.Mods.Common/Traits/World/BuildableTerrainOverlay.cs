@@ -71,7 +71,8 @@ namespace OpenRA.Mods.Common.Traits
 			world.Map.CustomTerrain.CellEntryChanged += UpdateTerrainCell;
 
 			var cells = w.Map.AllCells.Where(c => w.Map.Contains(c) &&
-				!info.AllowedTerrainTypes.Contains(w.Map.GetTerrainInfo(c).Type)).ToHashSet();
+				(!info.AllowedTerrainTypes.Contains(w.Map.GetTerrainInfo(c).Type) ||
+				world.Map.Ramp[c] != 0)).ToHashSet();
 
 			palette = wr.Palette(info.Palette);
 
@@ -84,8 +85,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!world.Map.Contains(cell))
 				return;
 
-			if (!info.AllowedTerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type))
-				render.Update(cell, disabledSprite, palette, 1f, info.Alpha);
+			var buildableSprite = !info.AllowedTerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type) || world.Map.Ramp[cell] != 0 ? disabledSprite : null;
+			render.Update(cell, buildableSprite, palette, 1f, info.Alpha);
 		}
 
 		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
