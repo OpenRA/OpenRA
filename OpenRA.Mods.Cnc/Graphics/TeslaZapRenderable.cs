@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 {
 	class TeslaZapRenderable : IPalettedRenderable, IFinalizedRenderable
 	{
-		static readonly int[][] steps = new[]
+		static readonly int[][] Steps = new[]
 		{
 			new int[] { 8, 8, 4, 4, 0 },
 			new int[] { -8, -8, -4, -4, 0 },
@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 			while ((to - z).X > 5 || (to - z).X < -5 || (to - z).Y > 5 || (to - z).Y < -5)
 			{
-				var step = steps.Where(t => (to - (z + new float2(t[0], t[1]))).LengthSquared < (to - z).LengthSquared)
+				var step = Steps.Where(t => (to - (z + new float2(t[0], t[1]))).LengthSquared < (to - z).LengthSquared)
 					.MinBy(t => Math.Abs(float2.Dot(z + new float2(t[0], t[1]), q) + c));
 
 				var pos = wr.ProjectedPosition((z + new float2(step[2], step[3])).ToInt2());

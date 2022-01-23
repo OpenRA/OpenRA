@@ -28,64 +28,75 @@ csharp_space_around_binary_operators = before_and_after
 ## Naming styles:
 
 dotnet_naming_style.camel_case.capitalization = camel_case
+
 dotnet_naming_style.pascal_case.capitalization = pascal_case
+
+dotnet_naming_style.i_prefix_pascal_case.capitalization = pascal_case
+dotnet_naming_style.i_prefix_pascal_case.required_prefix = I
 
 ## Symbol specifications:
 
-dotnet_naming_symbols.interface.applicable_kinds = interface
-dotnet_naming_symbols.interface.applicable_accessibilities = public, internal, private, protected, protected_internal
+dotnet_naming_symbols.const_locals.applicable_kinds = local
+dotnet_naming_symbols.const_locals.applicable_accessibilities = *
+dotnet_naming_symbols.const_locals.required_modifiers = const
 
-dotnet_naming_symbols.const_private_field.applicable_kinds = field
-dotnet_naming_symbols.const_private_field.required_modifiers = const
-dotnet_naming_symbols.const_private_field.applicable_accessibilities = private
+dotnet_naming_symbols.const_fields.applicable_kinds = field
+dotnet_naming_symbols.const_fields.applicable_accessibilities = *
+dotnet_naming_symbols.const_fields.required_modifiers = const
 
-dotnet_naming_symbols.internal_field.applicable_kinds = field
-dotnet_naming_symbols.internal_field.applicable_accessibilities = internal
+dotnet_naming_symbols.static_readonly_fields.applicable_kinds = field
+dotnet_naming_symbols.static_readonly_fields.applicable_accessibilities = *
+dotnet_naming_symbols.static_readonly_fields.required_modifiers = static, readonly
 
-dotnet_naming_symbols.static_private_or_internal_field.required_modifiers = static
-dotnet_naming_symbols.static_private_or_internal_field.applicable_accessibilities = internal, private
+dotnet_naming_symbols.non_private_readonly_fields.applicable_kinds = field
+dotnet_naming_symbols.non_private_readonly_fields.applicable_accessibilities = public, internal, protected, protected_internal, private_protected
+dotnet_naming_symbols.non_private_readonly_fields.required_modifiers = readonly
 
-dotnet_naming_symbols.private_or_internal_field.applicable_kinds = field
-dotnet_naming_symbols.private_or_internal_field.applicable_accessibilities = internal, private
+dotnet_naming_symbols.private_or_protected_fields.applicable_kinds = field
+dotnet_naming_symbols.private_or_protected_fields.applicable_accessibilities = private, protected, private_protected
 
-dotnet_naming_symbols.types.applicable_kinds = class, struct, interface, enum
-dotnet_naming_symbols.types.applicable_accessibilities = public, internal, private, protected, protected_internal
+dotnet_naming_symbols.interfaces.applicable_kinds = interface
+dotnet_naming_symbols.interfaces.applicable_accessibilities = *
 
-dotnet_naming_symbols.non_field_members.applicable_kinds = property, event, method
-dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, internal, private, protected, protected_internal
+dotnet_naming_symbols.parameters_and_locals.applicable_kinds = parameter, local
+dotnet_naming_symbols.parameters_and_locals.applicable_accessibilities = *
 
-dotnet_naming_symbols.parameters.applicable_kinds = parameter
+dotnet_naming_symbols.most_symbols.applicable_kinds = namespace, class, struct, enum, field, property, method, local_function, event, delegate, type_parameter
+dotnet_naming_symbols.most_symbols.applicable_accessibilities = *
 
 ## Naming rules:
 
-# IDE1006, IDE-only counterpart of StyleCopAnalyzers - SA1300: ElementMustBeginWithUpperCaseLetter.
-dotnet_naming_rule.non_field_members_should_be_pascal_case.severity = warning
-dotnet_naming_rule.non_field_members_should_be_pascal_case.symbols = non_field_members
-dotnet_naming_rule.non_field_members_should_be_pascal_case.style = pascal_case
+dotnet_naming_rule.const_locals_should_be_pascal_case.symbols = const_locals
+dotnet_naming_rule.const_locals_should_be_pascal_case.style = pascal_case
+dotnet_naming_rule.const_locals_should_be_pascal_case.severity = warning
 
-# IDE1006, IDE-only counterpart of StyleCopAnalyzers - SA1311: StaticReadonlyFieldsMustBeginWithUpperCaseLetter (silenced in OpenRA.ruleset).
-dotnet_naming_rule.static_private_or_internal_field_should_be_pascal_case.severity = none
-dotnet_naming_rule.static_private_or_internal_field_should_be_pascal_case.symbols = static_private_or_internal_field
-dotnet_naming_rule.static_private_or_internal_field_should_be_pascal_case.style = pascal_case
+dotnet_naming_rule.const_fields_should_be_pascal_case.symbols = const_fields
+dotnet_naming_rule.const_fields_should_be_pascal_case.style = pascal_case
+dotnet_naming_rule.const_fields_should_be_pascal_case.severity = warning
 
-# IDE1006, IDE-only counterpart of StyleCopAnalyzers - SA1303: ConstFieldNamesMustBeginWithUpperCaseLetter.
-dotnet_naming_rule.const_private_field_should_be_pascal_case.severity = warning
-dotnet_naming_rule.const_private_field_should_be_pascal_case.symbols = const_private_field
-dotnet_naming_rule.const_private_field_should_be_pascal_case.style = pascal_case
+dotnet_naming_rule.static_readonly_fields_should_be_pascal_case.symbols = static_readonly_fields
+dotnet_naming_rule.static_readonly_fields_should_be_pascal_case.style = pascal_case
+dotnet_naming_rule.static_readonly_fields_should_be_pascal_case.severity = warning
 
-dotnet_naming_rule.const_private_or_internal_field_should_be_pascal_case.severity = warning
-dotnet_naming_rule.const_private_or_internal_field_should_be_pascal_case.symbols = internal_field
-dotnet_naming_rule.const_private_or_internal_field_should_be_pascal_case.style = pascal_case
+dotnet_naming_rule.non_private_readonly_fields_should_be_pascal_case.symbols = non_private_readonly_fields
+dotnet_naming_rule.non_private_readonly_fields_should_be_pascal_case.style = pascal_case
+dotnet_naming_rule.non_private_readonly_fields_should_be_pascal_case.severity = warning
 
-# IDE1006, IDE-only counterpart of StyleCopAnalyzers - SA1306: FieldNamesMustBeginWithLowerCaseLetter.
-dotnet_naming_rule.private_or_internal_field_should_be_camel_case.severity = warning
-dotnet_naming_rule.private_or_internal_field_should_be_camel_case.symbols = private_or_internal_field
-dotnet_naming_rule.private_or_internal_field_should_be_camel_case.style = camel_case
+dotnet_naming_rule.private_or_protected_fields_should_be_camel_case.symbols = private_or_protected_fields
+dotnet_naming_rule.private_or_protected_fields_should_be_camel_case.style = camel_case
+dotnet_naming_rule.private_or_protected_fields_should_be_camel_case.severity = warning
 
-# IDE1006, IDE-only counterpart of StyleCopAnalyzers - SA1313: ParameterNamesMustBeginWithLowerCaseLetter.
-dotnet_naming_rule.parameters.severity = warning
-dotnet_naming_rule.parameters.symbols = parameters
-dotnet_naming_rule.parameters.style = camel_case
+dotnet_naming_rule.interfaces_should_be_i_prefix_pascal_case.symbols = interfaces
+dotnet_naming_rule.interfaces_should_be_i_prefix_pascal_case.style = i_prefix_pascal_case
+dotnet_naming_rule.interfaces_should_be_i_prefix_pascal_case.severity = warning
+
+dotnet_naming_rule.parameters_and_locals_should_be_camel_case.symbols = parameters_and_locals
+dotnet_naming_rule.parameters_and_locals_should_be_camel_case.style = camel_case
+dotnet_naming_rule.parameters_and_locals_should_be_camel_case.severity = warning
+
+dotnet_naming_rule.most_symbols_should_be_pascal_case.symbols = most_symbols
+dotnet_naming_rule.most_symbols_should_be_pascal_case.style = pascal_case
+dotnet_naming_rule.most_symbols_should_be_pascal_case.severity = warning
 
 ## Formatting:
 
@@ -129,6 +140,9 @@ dotnet_diagnostic.IDE0040.severity = warning
 
 # Make field readonly.
 dotnet_diagnostic.IDE0044.severity = warning
+
+# Naming rule violation.
+dotnet_diagnostic.IDE1006.severity = warning
 
 # Avoid unnecessary zero-length array allocations.
 dotnet_diagnostic.CA1825.severity = warning

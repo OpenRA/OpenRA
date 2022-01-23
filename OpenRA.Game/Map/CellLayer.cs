@@ -75,11 +75,11 @@ namespace OpenRA
 		/// <summary>Gets or sets the <see cref="CellLayer"/> using cell coordinates</summary>
 		public T this[CPos cell]
 		{
-			get => entries[Index(cell)];
+			get => Entries[Index(cell)];
 
 			set
 			{
-				entries[Index(cell)] = value;
+				Entries[Index(cell)] = value;
 
 				CellEntryChanged?.Invoke(cell);
 			}
@@ -88,11 +88,11 @@ namespace OpenRA
 		/// <summary>Gets or sets the layer contents using raw map coordinates (not CPos!)</summary>
 		public T this[MPos uv]
 		{
-			get => entries[Index(uv)];
+			get => Entries[Index(uv)];
 
 			set
 			{
-				entries[Index(uv)] = value;
+				Entries[Index(uv)] = value;
 
 				CellEntryChanged?.Invoke(uv.ToCPos(GridType));
 			}
@@ -111,7 +111,7 @@ namespace OpenRA
 
 		public bool Contains(MPos uv)
 		{
-			return bounds.Contains(uv.U, uv.V);
+			return Bounds.Contains(uv.U, uv.V);
 		}
 
 		public CPos Clamp(CPos uv)

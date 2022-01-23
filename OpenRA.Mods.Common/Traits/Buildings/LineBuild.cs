@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 				return parents;
 
 			var sma = world.WorldActor.Trait<SpawnMapActors>();
-			return value.Select(n => sma.Actors[n]).ToArray();
+			return Value.Select(n => sma.Actors[n]).ToArray();
 		}
 	}
 

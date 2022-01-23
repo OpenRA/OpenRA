@@ -55,8 +55,8 @@ namespace OpenRA.Mods.Common.Traits
 			: base(wr, ai, info, init)
 		{
 			this.info = info;
-			var previewInit = new ActorPreviewInitializer(actorInfo, wr, init);
-			preview = actorInfo.TraitInfos<IRenderActorPreviewInfo>()
+			var previewInit = new ActorPreviewInitializer(ActorInfo, wr, init);
+			preview = ActorInfo.TraitInfos<IRenderActorPreviewInfo>()
 				.SelectMany(rpi => rpi.RenderPreview(previewInit))
 				.ToArray();
 		}
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override IEnumerable<IRenderable> RenderInner(WorldRenderer wr, CPos topLeft, Dictionary<CPos, PlaceBuildingCellType> footprint)
 		{
-			var centerPosition = wr.World.Map.CenterOfCell(topLeft) + centerOffset;
+			var centerPosition = wr.World.Map.CenterOfCell(topLeft) + CenterOffset;
 			var previewRenderables = preview
 				.SelectMany(p => p.Render(wr, centerPosition));
 

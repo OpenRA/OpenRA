@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		}
 
 		// Mapping from RA95 overlay index to type string
-		static readonly string[] redAlertOverlayNames =
+		static readonly string[] RedAlertOverlayNames =
 		{
 			"sbag", "cycl", "brik", "fenc", "wood",
 			"gold01", "gold02", "gold03", "gold04",
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			"fpls", "wcrate", "scrate", "barb", "sbag",
 		};
 
-		static readonly Dictionary<string, (byte Type, byte Index)> overlayResourceMapping = new Dictionary<string, (byte, byte)>()
+		static readonly Dictionary<string, (byte Type, byte Index)> OverlayResourceMapping = new Dictionary<string, (byte, byte)>()
 		{
 			// RA ore & crystals
 			{ "gold01", (1, 0) },
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					Map.Tiles[new CPos(i, j)] = new TerrainTile(types[i, j], ms.ReadUInt8());
 		}
 
-		static readonly string[] overlayActors = new string[]
+		static readonly string[] OverlayActors = new string[]
 		{
 			// Fences
 			"sbag", "cycl", "brik", "fenc", "wood",
@@ -102,15 +102,15 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					var o = ms.ReadUInt8();
 					var res = (Type: (byte)0, Index: (byte)0);
 
-					if (o != 255 && overlayResourceMapping.ContainsKey(redAlertOverlayNames[o]))
-						res = overlayResourceMapping[redAlertOverlayNames[o]];
+					if (o != 255 && OverlayResourceMapping.ContainsKey(RedAlertOverlayNames[o]))
+						res = OverlayResourceMapping[RedAlertOverlayNames[o]];
 
 					var cell = new CPos(i, j);
 					Map.Resources[cell] = new ResourceTile(res.Type, res.Index);
 
-					if (o != 255 && overlayActors.Contains(redAlertOverlayNames[o]))
+					if (o != 255 && OverlayActors.Contains(RedAlertOverlayNames[o]))
 					{
-						var ar = new ActorReference(redAlertOverlayNames[o])
+						var ar = new ActorReference(RedAlertOverlayNames[o])
 						{
 							new LocationInit(cell),
 							new OwnerInit("Neutral")

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.FileFormats
 		public static readonly int MAXBITS = 13; // maximum code length
 		public static readonly int MAXWIN = 4096; // maximum window size
 
-		static readonly byte[] litlen =
+		static readonly byte[] LitLen =
 		{
 			11, 124, 8, 7, 28, 7, 188, 13, 76, 4,
 			10, 8, 12, 10, 12, 10, 8, 23, 8, 9,
@@ -40,28 +40,28 @@ namespace OpenRA.Mods.Common.FileFormats
 		};
 
 		// bit lengths of length codes 0..15
-		static readonly byte[] lenlen = { 2, 35, 36, 53, 38, 23 };
+		static readonly byte[] LenLen = { 2, 35, 36, 53, 38, 23 };
 
 		// bit lengths of distance codes 0..63
-		static readonly byte[] distlen = { 2, 20, 53, 230, 247, 151, 248 };
+		static readonly byte[] DistLen = { 2, 20, 53, 230, 247, 151, 248 };
 
 		// base for length codes
-		static readonly short[] lengthbase =
+		static readonly short[] LengthBase =
 		{
 			3, 2, 4, 5, 6, 7, 8, 9, 10, 12,
 			16, 24, 40, 72, 136, 264
 		};
 
 		// extra bits for length codes
-		static readonly byte[] extra =
+		static readonly byte[] Extra =
 		{
 			0, 0, 0, 0, 0, 0, 0, 0, 1, 2,
 			3, 4, 5, 6, 7, 8
 		};
 
-		static readonly Huffman litcode = new Huffman(litlen, litlen.Length, 256);
-		static readonly Huffman lencode = new Huffman(lenlen, lenlen.Length, 16);
-		static readonly Huffman distcode = new Huffman(distlen, distlen.Length, 64);
+		static readonly Huffman LitCode = new Huffman(LitLen, LitLen.Length, 256);
+		static readonly Huffman LenCode = new Huffman(LenLen, LenLen.Length, 16);
+		static readonly Huffman DistCode = new Huffman(DistLen, DistLen.Length, 64);
 
 		/// <summary>PKWare Compression Library stream.</summary>
 		/// <param name="input">Compressed input stream.</param>
@@ -98,8 +98,8 @@ namespace OpenRA.Mods.Common.FileFormats
 				if (br.ReadBits(1) == 1)
 				{
 					// Length
-					var symbol = Decode(lencode, br);
-					var len = lengthbase[symbol] + br.ReadBits(extra[symbol]);
+					var symbol = Decode(LenCode, br);
+					var len = LengthBase[symbol] + br.ReadBits(Extra[symbol]);
 
 					// Magic number for "done"
 					if (len == 519)
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.FileFormats
 
 					// Distance
 					symbol = len == 2 ? 2 : dict;
-					var dist = Decode(distcode, br) << symbol;
+					var dist = Decode(DistCode, br) << symbol;
 					dist += br.ReadBits(symbol);
 					dist++;
 
@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Common.FileFormats
 				else
 				{
 					// literal value
-					var symbol = encodedLiterals ? Decode(litcode, br) : br.ReadBits(8);
+					var symbol = encodedLiterals ? Decode(LitCode, br) : br.ReadBits(8);
 					outBuffer[next++] = (byte)symbol;
 					if (next == MAXWIN)
 					{

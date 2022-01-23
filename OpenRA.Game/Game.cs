@@ -119,8 +119,8 @@ namespace OpenRA
 		}
 
 		// More accurate replacement for Environment.TickCount
-		static readonly Stopwatch stopwatch = Stopwatch.StartNew();
-		public static long RunTime => stopwatch.ElapsedMilliseconds;
+		static readonly Stopwatch Stopwatch = Stopwatch.StartNew();
+		public static long RunTime => Stopwatch.ElapsedMilliseconds;
 
 		public static int RenderFrame = 0;
 		public static int NetFrameNumber => OrderManager.NetFrameNumber;

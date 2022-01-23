@@ -345,7 +345,7 @@ namespace OpenRA.Traits
 
 	public interface ILobbyCustomRulesIgnore { }
 
-	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1302:InterfaceNamesMustBeginWithI", Justification = "Not a real interface, but more like a tag.")]
+	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Not a real interface, but more like a tag.")]
 	public interface Requires<T> where T : class, ITraitInfoInterface { }
 
 	public interface IActivityInterface { }

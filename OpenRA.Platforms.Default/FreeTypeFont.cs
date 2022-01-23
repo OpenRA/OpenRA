@@ -17,8 +17,6 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Platforms.Default
 {
-	[SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1307:AccessibleFieldsMustBeginWithUpperCaseLetter",
-		Justification = "C-style naming is kept for consistency with the underlying native API.")]
 	[SuppressMessage("Microsoft.StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore",
 		Justification = "C-style naming is kept for consistency with the underlying native API.")]
 	static class FreeType

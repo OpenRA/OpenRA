@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			}
 		}
 
-		static readonly Dictionary<string, (byte Type, byte Index)> overlayResourceMapping = new Dictionary<string, (byte, byte)>()
+		static readonly Dictionary<string, (byte Type, byte Index)> OverlayResourceMapping = new Dictionary<string, (byte, byte)>()
 		{
 			// Tiberium
 			{ "ti1", (1, 0) },
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			}
 		}
 
-		static readonly string[] overlayActors = new string[]
+		static readonly string[] OverlayActors = new string[]
 		{
 			// Fences
 			"sbag", "cycl", "brik", "fenc", "wood",
@@ -94,11 +94,11 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 				var res = (Type: (byte)0, Index: (byte)0);
 				var type = kv.Value.ToLowerInvariant();
-				if (overlayResourceMapping.ContainsKey(type))
-					res = overlayResourceMapping[type];
+				if (OverlayResourceMapping.ContainsKey(type))
+					res = OverlayResourceMapping[type];
 
 				Map.Resources[cell] = new ResourceTile(res.Type, res.Index);
-				if (overlayActors.Contains(type))
+				if (OverlayActors.Contains(type))
 				{
 					var ar = new ActorReference(type)
 					{
