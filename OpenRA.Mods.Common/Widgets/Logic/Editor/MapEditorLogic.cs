@@ -22,31 +22,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		MapCopyFilters copyFilters = MapCopyFilters.All;
 
+		enum MapOverlays
+		{
+			None = 0,
+			Grid = 1,
+			Buildable = 2,
+		}
+
+		MapOverlays overlays = MapOverlays.None;
+
 		[ObjectCreator.UseCtor]
 		public MapEditorLogic(Widget widget, World world, WorldRenderer worldRenderer)
 		{
 			var editorViewport = widget.Get<EditorViewportControllerWidget>("MAP_EDITOR");
-
-			var gridButton = widget.GetOrNull<ButtonWidget>("GRID_BUTTON");
-			if (gridButton != null)
-			{
-				var terrainGeometryTrait = world.WorldActor.Trait<TerrainGeometryOverlay>();
-				gridButton.OnClick = () => terrainGeometryTrait.Enabled ^= true;
-				gridButton.IsHighlighted = () => terrainGeometryTrait.Enabled;
-			}
-
-			var lockButton = widget.GetOrNull<ButtonWidget>("BUILDABLE_BUTTON");
-			if (lockButton != null)
-			{
-				var buildableTerrainTrait = world.WorldActor.TraitOrDefault<BuildableTerrainOverlay>();
-				if (buildableTerrainTrait != null)
-				{
-					lockButton.OnClick = () => buildableTerrainTrait.Enabled ^= true;
-					lockButton.IsHighlighted = () => buildableTerrainTrait.Enabled;
-				}
-				else
-					lockButton.Disabled = true;
-			}
 
 			var copypasteButton = widget.GetOrNull<ButtonWidget>("COPYPASTE_BUTTON");
 			if (copypasteButton != null)
@@ -83,6 +71,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 
+			var copyOverlayDropdown = widget.Get<DropDownButtonWidget>("OVERLAY_BUTTON");
+			copyOverlayDropdown.OnMouseDown = _ =>
+			{
+				copyOverlayDropdown.RemovePanel();
+				copyOverlayDropdown.AttachPanel(CreateOverlaysPanel(world));
+			};
+
 			var cashLabel = widget.GetOrNull<LabelWidget>("CASH_LABEL");
 			if (cashLabel != null)
 			{
@@ -116,6 +111,51 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				category.IsChecked = () => copyFilters.HasFlag(cat);
 				category.IsVisible = () => true;
 				category.OnClick = () => copyFilters ^= cat;
+
+				categoriesPanel.AddChild(category);
+			}
+
+			return categoriesPanel;
+		}
+
+		Widget CreateOverlaysPanel(World world)
+		{
+			var categoriesPanel = Ui.LoadWidget("OVERLAY_PANEL", null, new WidgetArgs());
+			var categoryTemplate = categoriesPanel.Get<CheckboxWidget>("CATEGORY_TEMPLATE");
+
+			MapOverlays[] allCategories = { MapOverlays.Grid, MapOverlays.Buildable };
+			foreach (var cat in allCategories)
+			{
+				var category = (CheckboxWidget)categoryTemplate.Clone();
+				category.GetText = () => cat.ToString();
+				category.IsChecked = () => overlays.HasFlag(cat);
+				category.IsVisible = () => true;
+				category.OnClick = () => overlays ^= cat;
+
+				if (cat.HasFlag(MapOverlays.Grid))
+				{
+					var terrainGeometryTrait = world.WorldActor.Trait<TerrainGeometryOverlay>();
+					category.OnClick = () =>
+					{
+						overlays ^= cat;
+						terrainGeometryTrait.Enabled = overlays.HasFlag(MapOverlays.Grid);
+					};
+				}
+
+				if (cat.HasFlag(MapOverlays.Buildable))
+				{
+					var buildableTerrainTrait = world.WorldActor.TraitOrDefault<BuildableTerrainOverlay>();
+					if (buildableTerrainTrait != null)
+					{
+						category.OnClick = () =>
+						{
+							overlays ^= cat;
+							buildableTerrainTrait.Enabled = overlays.HasFlag(MapOverlays.Buildable);
+						};
+					}
+					else
+						continue;
+				}
 
 				categoriesPanel.AddChild(category);
 			}

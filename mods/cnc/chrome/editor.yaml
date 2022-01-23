@@ -584,19 +584,8 @@ Container@EDITOR_WORLD_ROOT:
 					Height: 25
 					Text: History
 					Font: Bold
-		Button@BUILDABLE_BUTTON:
-			X: WINDOW_RIGHT - 1020
-			Y: 5
-			Width: 100
-			Height: 25
-			Text: Buildable
-			Font: Bold
-			Key: f2
-			TooltipTemplate: BUTTON_TOOLTIP
-			TooltipText: Toggle unbuildable cells
-			TooltipContainer: TOOLTIP_CONTAINER
 		Button@UNDO_BUTTON:
-			X: WINDOW_RIGHT - 910
+			X: WINDOW_RIGHT - 800
 			Y: 5
 			Height: 25
 			Width: 100
@@ -607,7 +596,7 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipText: Undo last step
 			TooltipContainer: TOOLTIP_CONTAINER
 		Button@REDO_BUTTON:
-			X: WINDOW_RIGHT - 800
+			X: WINDOW_RIGHT - 690
 			Y: 5
 			Height: 25
 			Width: 100
@@ -616,17 +605,6 @@ Container@EDITOR_WORLD_ROOT:
 			Key: y ctrl
 			TooltipTemplate: BUTTON_TOOLTIP
 			TooltipText: Redo last step
-			TooltipContainer: TOOLTIP_CONTAINER
-		Button@GRID_BUTTON:
-			X: WINDOW_RIGHT - 690
-			Y: 5
-			Width: 100
-			Height: 25
-			Text: Grid
-			Font: Bold
-			Key: f1
-			TooltipTemplate: BUTTON_TOOLTIP
-			TooltipText: Toggle the terrain grid
 			TooltipContainer: TOOLTIP_CONTAINER
 		Button@COPYPASTE_BUTTON:
 			X: WINDOW_RIGHT - 580
@@ -644,6 +622,13 @@ Container@EDITOR_WORLD_ROOT:
 			Width: 140
 			Height: 25
 			Text: Copy Filters
+			Font: Bold
+		DropDownButton@OVERLAY_BUTTON:
+			X: WINDOW_RIGHT - 950
+			Y: 5
+			Width: 140
+			Height: 25
+			Text: Overlays
 			Font: Bold
 		Label@COORDINATE_LABEL:
 			X: 10
@@ -690,6 +675,17 @@ ScrollPanel@CATEGORY_FILTER_PANEL:
 ScrollPanel@COPY_FILTER_PANEL:
 	Width: 140
 	Height: 65
+	Children:
+		Checkbox@CATEGORY_TEMPLATE:
+			X: 5
+			Y: 5
+			Width: PARENT_RIGHT - 29
+			Height: 20
+			Visible: false
+
+ScrollPanel@OVERLAY_PANEL:
+	Width: 140
+	Height: 45
 	Children:
 		Checkbox@CATEGORY_TEMPLATE:
 			X: 5
