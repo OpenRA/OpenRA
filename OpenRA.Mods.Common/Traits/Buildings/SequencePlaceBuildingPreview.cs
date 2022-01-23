@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var r in RenderFootprint(wr, topLeft, footprint, info.FootprintUnderPreview))
 					yield return r;
 
-			var centerPosition = wr.World.Map.CenterOfCell(topLeft) + centerOffset;
+			var centerPosition = wr.World.Map.CenterOfCell(topLeft) + CenterOffset;
 			foreach (var r in preview.Render(centerPosition, WVec.Zero, 0, palette))
 			{
 				if (info.SequenceAlpha < 1f && r is IModifyableRenderable mr)

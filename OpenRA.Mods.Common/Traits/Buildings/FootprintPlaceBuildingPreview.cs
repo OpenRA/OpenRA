@@ -46,8 +46,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class FootprintPlaceBuildingPreviewPreview : IPlaceBuildingPreview
 	{
-		protected readonly ActorInfo actorInfo;
-		protected readonly WVec centerOffset;
+		protected readonly ActorInfo ActorInfo;
+		protected readonly WVec CenterOffset;
 		readonly FootprintPlaceBuildingPreviewInfo info;
 		readonly IPlaceBuildingDecorationInfo[] decorations;
 		readonly int2 topLeftScreenOffset;
@@ -56,13 +56,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public FootprintPlaceBuildingPreviewPreview(WorldRenderer wr, ActorInfo ai, FootprintPlaceBuildingPreviewInfo info, TypeDictionary init)
 		{
-			actorInfo = ai;
+			ActorInfo = ai;
 			this.info = info;
-			decorations = actorInfo.TraitInfos<IPlaceBuildingDecorationInfo>().ToArray();
+			decorations = ActorInfo.TraitInfos<IPlaceBuildingDecorationInfo>().ToArray();
 
 			var world = wr.World;
-			centerOffset = actorInfo.TraitInfo<BuildingInfo>().CenterOffset(world);
-			topLeftScreenOffset = -wr.ScreenPxOffset(centerOffset);
+			CenterOffset = ActorInfo.TraitInfo<BuildingInfo>().CenterOffset(world);
+			topLeftScreenOffset = -wr.ScreenPxOffset(CenterOffset);
 
 			var tileset = world.Map.Tileset.ToLowerInvariant();
 			if (world.Map.Rules.Sequences.HasSequence("overlay", $"build-valid-{tileset}"))
@@ -106,9 +106,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, CPos topLeft)
 		{
-			var centerPosition = wr.World.Map.CenterOfCell(topLeft) + centerOffset;
+			var centerPosition = wr.World.Map.CenterOfCell(topLeft) + CenterOffset;
 			foreach (var d in decorations)
-				foreach (var r in d.RenderAnnotations(wr, wr.World, actorInfo, centerPosition))
+				foreach (var r in d.RenderAnnotations(wr, wr.World, ActorInfo, centerPosition))
 					yield return r;
 		}
 

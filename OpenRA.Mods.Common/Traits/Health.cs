@@ -252,6 +252,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
+				var value = base.Value;
 				if (value < 0 || (value == 0 && !allowZero))
 					return 1;
 

@@ -36,22 +36,22 @@ namespace OpenRA
 
 		public T this[int index]
 		{
-			get => entries[index];
+			get => Entries[index];
 
-			set => entries[index] = value;
+			set => Entries[index] = value;
 		}
 
 		/// <summary>Gets or sets the layer contents using projected map coordinates.</summary>
 		public T this[PPos uv]
 		{
-			get => entries[Index(uv)];
+			get => Entries[Index(uv)];
 
-			set => entries[Index(uv)] = value;
+			set => Entries[Index(uv)] = value;
 		}
 
 		public bool Contains(PPos uv)
 		{
-			return bounds.Contains(uv.U, uv.V);
+			return Bounds.Contains(uv.U, uv.V);
 		}
 	}
 }

@@ -331,7 +331,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		}
 
 		// TODO: fix this -- will have bitrotted pretty badly.
-		static readonly Dictionary<string, Color> namedColorMapping = new Dictionary<string, Color>()
+		static readonly Dictionary<string, Color> NamedColorMapping = new Dictionary<string, Color>()
 		{
 			{ "gold", Color.FromArgb(246, 214, 121) },
 			{ "blue", Color.FromArgb(226, 230, 246) },
@@ -353,7 +353,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				OwnsWorld = section == "Neutral",
 				NonCombatant = section == "Neutral",
 				Faction = faction,
-				Color = namedColorMapping[color]
+				Color = NamedColorMapping[color]
 			};
 
 			var neutral = new[] { "Neutral" };

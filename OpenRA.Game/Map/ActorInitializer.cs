@@ -140,7 +140,7 @@ namespace OpenRA
 
 	public abstract class ValueActorInit<T> : ActorInit
 	{
-		protected readonly T value;
+		readonly T value;
 
 		protected ValueActorInit(TraitInfo info, T value)
 			: base(info.InstanceName) { this.value = value; }
@@ -159,7 +159,7 @@ namespace OpenRA
 
 		public virtual void Initialize(T value)
 		{
-			var field = GetType().GetField(nameof(value), BindingFlags.NonPublic | BindingFlags.Instance);
+			var field = typeof(ValueActorInit<T>).GetField(nameof(value), BindingFlags.NonPublic | BindingFlags.Instance);
 			if (field != null)
 				field.SetValue(this, value);
 		}
@@ -226,7 +226,7 @@ namespace OpenRA
 	public class OwnerInit : ActorInit, ISingleInstanceInit
 	{
 		public readonly string InternalName;
-		protected readonly Player value;
+		readonly Player value;
 
 		public OwnerInit(Player value)
 		{
@@ -246,14 +246,14 @@ namespace OpenRA
 
 		public void Initialize(MiniYaml yaml)
 		{
-			var field = GetType().GetField(nameof(InternalName), BindingFlags.Public | BindingFlags.Instance);
+			var field = typeof(OwnerInit).GetField(nameof(InternalName), BindingFlags.Public | BindingFlags.Instance);
 			if (field != null)
 				field.SetValue(this, yaml.Value);
 		}
 
 		public void Initialize(Player player)
 		{
-			var field = GetType().GetField(nameof(value), BindingFlags.NonPublic | BindingFlags.Instance);
+			var field = typeof(OwnerInit).GetField(nameof(value), BindingFlags.NonPublic | BindingFlags.Instance);
 			if (field != null)
 				field.SetValue(this, player);
 		}

@@ -22,10 +22,10 @@ namespace OpenRA
 
 	public static class Platform
 	{
-		public static PlatformType CurrentPlatform => currentPlatform.Value;
+		public static PlatformType CurrentPlatform => LazyCurrentPlatform.Value;
 		public static readonly Guid SessionGUID = Guid.NewGuid();
 
-		static readonly Lazy<PlatformType> currentPlatform = Exts.Lazy(GetCurrentPlatform);
+		static readonly Lazy<PlatformType> LazyCurrentPlatform = Exts.Lazy(GetCurrentPlatform);
 
 		static bool engineDirAccessed;
 		static string engineDir;

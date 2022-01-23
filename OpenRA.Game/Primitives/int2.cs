@@ -15,7 +15,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA
 {
-	[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Mimic a built-in type alias.")]
+	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Mimic a built-in type alias.")]
 	public readonly struct int2 : IEquatable<int2>
 	{
 		public readonly int X, Y;

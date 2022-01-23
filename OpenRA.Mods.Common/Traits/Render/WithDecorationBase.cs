@@ -57,14 +57,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 	public abstract class WithDecorationBase<InfoType> : ConditionalTrait<InfoType>, IDecoration where InfoType : WithDecorationBaseInfo
 	{
-		protected readonly Actor self;
+		protected readonly Actor Self;
 		int2 conditionalOffset;
 		BlinkState[] blinkPattern;
 
 		public WithDecorationBase(Actor self, InfoType info)
 			: base(info)
 		{
-			this.self = self;
+			Self = self;
 			blinkPattern = info.BlinkPattern;
 		}
 

@@ -22,7 +22,7 @@ namespace OpenRA.Network
 	class SyncReport
 	{
 		const int NumSyncReports = 5;
-		static readonly Cache<Type, TypeInfo> typeInfoCache = new Cache<Type, TypeInfo>(t => new TypeInfo(t));
+		static readonly Cache<Type, TypeInfo> TypeInfoCache = new Cache<Type, TypeInfo>(t => new TypeInfo(t));
 
 		readonly OrderManager orderManager;
 
@@ -33,8 +33,8 @@ namespace OpenRA.Network
 		{
 			var type = sync.GetType();
 			TypeInfo typeInfo;
-			lock (typeInfoCache)
-				typeInfo = typeInfoCache[type];
+			lock (TypeInfoCache)
+				typeInfo = TypeInfoCache[type];
 			var values = new Values(typeInfo.Names.Length);
 			var index = 0;
 

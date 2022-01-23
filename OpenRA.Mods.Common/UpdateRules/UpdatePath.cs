@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using OpenRA.Mods.Common.UpdateRules.Rules;
 
@@ -30,8 +29,6 @@ namespace OpenRA.Mods.Common.UpdateRules
 		// can be merged back into bleed by replacing the forking-playtest-to-bleed path
 		// with the prep playtest-to-playtest-to-release paths and finally a new/modified
 		// release-to-bleed path.
-		[SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1118:ParameterMustNotSpanMultipleLines",
-			Justification = "Extracting update lists to temporary variables obfuscates the definitions.")]
 		static readonly UpdatePath[] Paths =
 		{
 			new UpdatePath("release-20200202", "release-20200503", new UpdateRule[]
