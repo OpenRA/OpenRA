@@ -44,11 +44,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 	class RenderDetectionCircle : ITick, IRenderAnnotationsWhenSelected
 	{
 		readonly RenderDetectionCircleInfo info;
+		readonly DetectCloaked[] detectCloaked;
 		WAngle lineAngle;
 
 		public RenderDetectionCircle(Actor self, RenderDetectionCircleInfo info)
 		{
 			this.info = info;
+			detectCloaked = self.TraitsImplementing<DetectCloaked>().ToArray();
 		}
 
 		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
@@ -56,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
 
-			var range = self.TraitsImplementing<DetectCloaked>()
+			var range = detectCloaked
 				.Select(a => a.Range)
 				.Append(WDist.Zero).Max();
 
