@@ -1,59 +1,74 @@
 ObserverCombinedView: MINUS
 	Description: All Players
-	Types: Observer, Spectator
+	Types: Observer
+	Contexts: Spectator
 
 ObserverWorldView: EQUALS
 	Description: Disable Shroud
-	Types: Observer, Spectator
+	Types: Observer
+	Contexts: Spectator
 
 ReplaySpeedSlow: F9
 	Description: Slow speed
-	Types: Replay, Spectator
+	Types: Replay
+	Contexts: Spectator
 
 ReplaySpeedRegular: F10
 	Description: Regular speed
-	Types: Replay, Spectator
+	Types: Replay
+	Contexts: Spectator
 
 ReplaySpeedFast: F11
 	Description: Fast speed
-	Types: Replay, Spectator
+	Types: Replay
+	Contexts: Spectator
 
 ReplaySpeedMax: F12
 	Description: Maximum speed
-	Types: Replay, Spectator
+	Types: Replay
+	Contexts: Spectator
 
 StatisticsNone: F1
 	Description: Disable statistics
-	Types: Observer, Replay
+	Types: Observer
+	Contexts: Spectator
 
 StatisticsBasic: F2
 	Description: Basic statistics
-	Types: Observer, Replay, Spectator
+	Types: Observer
+	Contexts: Spectator
 
 StatisticsEconomy: F3
 	Description: Economy statistics
-	Types: Observer, Replay, Spectator
+	Types: Observer
+	Contexts: Spectator
 
 StatisticsProduction: F4
 	Description: Production statistics
-	Types: Observer, Replay, Spectator
+	Types: Observer
+	Contexts: Spectator
 
 StatisticsSupportPowers: F5
 	Description: Support Power statistics
-	Types: Observer, Replay
+	Types: Observer
+	Contexts: Spectator
 
 StatisticsCombat: F6
 	Description: Combat statistics
-	Types: Observer, Replay, Spectator
+	Types: Observer
+	Contexts: Spectator
 
 StatisticsArmy: F7
 	Description: Army statistics
-	Types: Observer, Replay, Spectator
+	Types: Observer
+	Contexts: Spectator
 
 StatisticsGraph:
 	Description: Statistics graph
-	Types: Observer, Replay, Spectator
+	Types: Observer
+	Contexts: Spectator
 
 StatisticsArmyGraph:
 	Description: Army value graph
-	Types: Observer, Replay, Spectator
+	Types: Observer
+	Contexts: Spectator

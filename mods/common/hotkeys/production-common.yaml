@@ -1,103 +1,129 @@
 CycleProductionBuildings: TAB Ctrl
 	Description: Next facility
-	Types: Production, Player, Spectator
+	Types: Production
+	Contexts: Player, Spectator
 
 SelectProductionBuilding: TAB
 	Description: Current facility
-	Types: Production, Player
+	Types: Production
+	Contexts: Player
 
 Production01: F1
 	Description: Slot 01
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production02: F2
 	Description: Slot 02
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production03: F3
 	Description: Slot 03
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production04: F4
 	Description: Slot 04
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production05: F5
 	Description: Slot 05
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production06: F6
 	Description: Slot 06
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production07: F7
 	Description: Slot 07
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production08: F8
 	Description: Slot 08
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production09: F9
 	Description: Slot 09
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production10: F10
 	Description: Slot 10
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production11: F11
 	Description: Slot 11
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production12: F12
 	Description: Slot 12
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production13: F1 CTRL
 	Description: Slot 13
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production14: F2 CTRL
 	Description: Slot 14
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production15: F3 CTRL
 	Description: Slot 15
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production16: F4 CTRL
 	Description: Slot 16
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production17: F5 CTRL
 	Description: Slot 17
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production18: F6 CTRL
 	Description: Slot 18
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production19: F7 CTRL
 	Description: Slot 19
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production20: F8 CTRL
 	Description: Slot 20
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production21: F9 CTRL
 	Description: Slot 21
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production22: F10 CTRL
 	Description: Slot 22
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production23: F11 CTRL
 	Description: Slot 23
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player
 
 Production24: F12 CTRL
 	Description: Slot 24
-	Types: ProductionSlot, Player
+	Types: ProductionSlot
+	Contexts: Player

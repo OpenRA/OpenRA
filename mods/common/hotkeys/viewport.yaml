@@ -1,75 +1,94 @@
 MapScrollUp: UP
 	Description: Scroll up
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 MapScrollDown: DOWN
 	Description: Scroll down
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 MapScrollLeft: LEFT
 	Description: Scroll left
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 MapScrollRight: RIGHT
 	Description: Scroll right
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 MapJumpToTopEdge: UP Alt
 	Description: Jump to top edge
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 MapJumpToBottomEdge: DOWN Alt
 	Description: Jump to bottom edge
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 MapJumpToLeftEdge: LEFT Alt
 	Description: Jump to left edge
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 MapJumpToRightEdge: RIGHT Alt
 	Description: Jump to right edge
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 MapBookmarkSave01: Q Ctrl
 	Description: Record bookmark 1
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 MapBookmarkRestore01: Q Alt
 	Description: Jump to bookmark 1
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 MapBookmarkSave02: W Ctrl
 	Description: Record bookmark 2
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 MapBookmarkRestore02: W Alt
 	Description: Jump to bookmark 2
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 MapBookmarkSave03: E Ctrl
 	Description: Record bookmark 3
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 MapBookmarkRestore03: E Alt
 	Description: Jump to bookmark 3
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 MapBookmarkSave04: R Ctrl
 	Description: Record bookmark 4
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 MapBookmarkRestore04: R Alt
 	Description: Jump to bookmark 4
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 ZoomIn: RIGHTBRACKET
 	Description: Zoom in
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 ZoomOut: LEFTBRACKET
 	Description: Zoom out
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor
 
 ResetZoom: PERIOD
 	Description: Reset zoom
-	Types: Viewport, Player, Spectator
+	Types: Viewport
+	Contexts: Player, Spectator, Editor

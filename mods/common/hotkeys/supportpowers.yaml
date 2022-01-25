@@ -1,23 +1,29 @@
 SupportPower01:
 	Description: Slot 01
-	Types: SupportPower, Player
+	Types: SupportPower
+	Contexts: Player
 
 SupportPower02:
 	Description: Slot 02
-	Types: SupportPower, Player
+	Types: SupportPower
+	Contexts: Player
 
 SupportPower03:
 	Description: Slot 03
-	Types: SupportPower, Player
+	Types: SupportPower
+	Contexts: Player
 
 SupportPower04:
 	Description: Slot 04
-	Types: SupportPower, Player
+	Types: SupportPower
+	Contexts: Player
 
 SupportPower05:
 	Description: Slot 05
-	Types: SupportPower, Player
+	Types: SupportPower
+	Contexts: Player
 
 SupportPower06:
 	Description: Slot 06
-	Types: SupportPower, Player
+	Types: SupportPower
+	Contexts: Player

@@ -1,107 +1,134 @@
 CycleBase: H
 	Description: Jump to base
-	Types: World, Player, Spectator
+	Types: World
+	Contexts: Player, Spectator
 
 ToLastEvent: SPACE
 	Description: Jump to last radar event
-	Types: World, Player, Spectator
+	Types: World
+	Contexts: Player, Spectator
 
 ToSelection: HOME
 	Description: Jump to selection
-	Types: World, Player, Spectator
+	Types: World
+	Contexts: Player, Spectator
 
 SelectAllUnits: Q
 	Description: Select all combat units
-	Types: World, Player, Spectator
+	Types: World
+	Contexts: Player, Spectator
 
 SelectUnitsByType: W
 	Description: Select units by type
-	Types: World, Player, Spectator
+	Types: World
+	Contexts: Player, Spectator
 
 CycleHarvesters: N
 	Description: Cycle Harvesters
-	Types: World, Player, Spectator
+	Types: World
+	Contexts: Player, Spectator
 
 Pause: PAUSE
 	Description: Pause / Unpause
-	Types: World, Player, Spectator
+	Types: World
+	Contexts: Player, Spectator
 
 Sell: Z
 	Description: Sell mode
-	Types: OrderGenerator, Player
+	Types: OrderGenerator
+	Contexts: Player
 
 Repair: C
 	Description: Repair mode
-	Types: OrderGenerator, Player
+	Types: OrderGenerator
+	Contexts: Player
 
 PlaceBeacon: B
 	Description: Place beacon
-	Types: OrderGenerator, Player, Spectator
+	Types: OrderGenerator
+	Contexts: Player
 
 CycleStatusBars: COMMA
 	Description: Cycle status bars display
-	Types: World, Player, Spectator
+	Types: World
+	Contexts: Player, Spectator
 
 ToggleMute: M
 	Description: Toggle audio mute
-	Types: World, Menu, Player, Spectator
+	Types: World
+	Contexts: Menu, Player, Spectator
 
 TogglePlayerStanceColor: COMMA Ctrl
 	Description: Toggle player stance colors
-	Types: World, Player, Spectator
+	Types: World
+	Contexts: Player, Spectator
 
 TakeScreenshot: P Ctrl
 	Description: Take screenshot
-	Types: World, Menu, Player, Spectator
+	Types: World
+	Contexts: Menu, Player, Spectator
 
 AttackMove: A
 	Description: Attack Move
-	Types: Unit, Player
+	Types: Unit
+	Contexts: Player
 
 Stop: S
 	Description: Stop
-	Types: Unit, Player
+	Types: Unit
+	Contexts: Player
 
 Scatter: X Ctrl
 	Description: Scatter
-	Types: Unit, Player
+	Types: Unit
+	Contexts: Player
 
 Deploy: F
 	Description: Deploy
-	Types: Unit, Player
+	Types: Unit
+	Contexts: Player
 
 Guard: D
 	Description: Guard
-	Types: Unit, Player
+	Types: Unit
+	Contexts: Player
 
 StanceAttackAnything: A Alt
 	Description: Attack anything
-	Types: Stance, Player
+	Types: Stance
+	Contexts: Player
 
 StanceDefend: S Alt
 	Description: Defend
-	Types: Stance, Player
+	Types: Stance
+	Contexts: Player
 
 StanceReturnFire: D Alt
 	Description: Return fire
-	Types: Stance, Player
+	Types: Stance
+	Contexts: Player
 
 StanceHoldFire: F Alt
 	Description: Hold fire
-	Types: Stance, Player
+	Types: Stance
+	Contexts: Player
 
 StopMusic: AUDIOSTOP
 	Description: Stop
-	Types: Music, Player, Spectator
+	Types: Music
+	Contexts: Menu, Player, Spectator
 
 PauseMusic: AUDIOPLAY
 	Description: Pause or Resume
-	Types: Music, Player, Spectator
+	Types: Music
+	Contexts: Menu, Player, Spectator
 
 PrevMusic: AUDIOPREV
 	Description: Previous
-	Types: Music, Player, Spectator
+	Types: Music
+	Contexts: Menu, Player, Spectator
 
 NextMusic: AUDIONEXT
 	Description: Next
-	Types: Music, Player, Spectator
+	Types: Music
+	Contexts: Menu, Player, Spectator

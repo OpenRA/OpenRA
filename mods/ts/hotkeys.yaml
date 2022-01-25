@@ -1,43 +1,54 @@
 ProductionTypeBuilding: E
 	Description: Building Tab
-	Types: Production, Player
+	Types: Production
+	Contexts: Player
 
 ProductionTypeDefense: R
 	Description: Defense Tab
-	Types: Production, Player
+	Types: Production
+	Contexts: Player
 
 ProductionTypeInfantry: T
 	Description: Infantry Tab
-	Types: Production, Player
+	Types: Production
+	Contexts: Player
 
 ProductionTypeVehicle: Y
 	Description: Vehicle Tab
-	Types: Production, Player
+	Types: Production
+	Contexts: Player
 
 ProductionTypeAircraft: U
 	Description: Aircraft Tab
-	Types: Production, Player
+	Types: Production
+	Contexts: Player
 
 PowerDown: X
 	Description: Power-down mode
-	Types: OrderGenerator, Player
+	Types: OrderGenerator
+	Contexts: Player
 
 DecreaseDepthPreviewContrast: LEFTBRACKET SHIFT
 	Description: Decrease Contrast
 	Types: DepthDebug
+	Contexts: Player
 
 IncreaseDepthPreviewContrast: RIGHTBRACKET SHIFT
 	Description: Increase Contrast
 	Types: DepthDebug
+	Contexts: Player
 
 DecreaseDepthPreviewOffset: SEMICOLON SHIFT
 	Description: Decrease Offset
 	Types: DepthDebug
+	Contexts: Player
 
 IncreaseDepthPreviewOffset: QUOTE SHIFT
 	Description: Increase Offset
 	Types: DepthDebug
+	Contexts: Player
 
 ToggleDepthPreview: BACKSLASH SHIFT
 	Description: Toggle Preview
 	Types: DepthDebug
+	Contexts: Player

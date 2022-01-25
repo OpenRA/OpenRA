@@ -1,27 +1,34 @@
 ProductionTypeBuilding: E
 	Description: Building Tab
-	Types: Production, Player
+	Types: Production
+	Contexts: Player
 
 ProductionTypeDefense: R
 	Description: Defense Tab
-	Types: Production, Player
+	Types: Production
+	Contexts: Player
 
 ProductionTypeInfantry: T
 	Description: Infantry Tab
-	Types: Production, Player
+	Types: Production
+	Contexts: Player
 
 ProductionTypeVehicle: Y
 	Description: Vehicle Tab
-	Types: Production, Player
+	Types: Production
+	Contexts: Player
 
 ProductionTypeAircraft: U
 	Description: Aircraft Tab
-	Types: Production, Player
+	Types: Production
+	Contexts: Player
 
 ProductionTypeNaval: I
 	Description: Naval Tab
-	Types: Production, Player
+	Types: Production
+	Contexts: Player
 
 PowerDown: X
 	Description: Power-down mode
-	Types: OrderGenerator, Player
+	Types: OrderGenerator
+	Contexts: Player

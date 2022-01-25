@@ -20,6 +20,7 @@ namespace OpenRA
 		public readonly Hotkey Default = Hotkey.Invalid;
 		public readonly string Description = "";
 		public readonly HashSet<string> Types = new HashSet<string>();
+		public readonly HashSet<string> Contexts = new HashSet<string>();
 		public bool HasDuplicates { get; internal set; }
 
 		public HotkeyDefinition(string name, MiniYaml node)
@@ -36,6 +37,10 @@ namespace OpenRA
 			var typesNode = node.Nodes.FirstOrDefault(n => n.Key == "Types");
 			if (typesNode != null)
 				Types = FieldLoader.GetValue<HashSet<string>>("Types", typesNode.Value.Value);
+
+			var contextsNode = node.Nodes.FirstOrDefault(n => n.Key == "Contexts");
+			if (contextsNode != null)
+				Contexts = FieldLoader.GetValue<HashSet<string>>("Contexts", contextsNode.Value.Value);
 		}
 	}
 }
