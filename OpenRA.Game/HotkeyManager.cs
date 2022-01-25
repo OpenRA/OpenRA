@@ -89,7 +89,7 @@ namespace OpenRA
 				if (kv.Key == name)
 					continue;
 
-				if (kv.Value == value && definitions[kv.Key].Types.Overlaps(definition.Types))
+				if (kv.Value == value && definitions[kv.Key].Contexts.Overlaps(definition.Contexts))
 					return definitions[kv.Key];
 			}
 

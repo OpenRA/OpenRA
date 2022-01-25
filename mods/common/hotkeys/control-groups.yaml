@@ -1,203 +1,254 @@
 ControlGroupSelect01: NUMBER_1
 	Description: Select group 1
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupSelect02: NUMBER_2
 	Description: Select group 2
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupSelect03: NUMBER_3
 	Description: Select group 3
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupSelect04: NUMBER_4
 	Description: Select group 4
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupSelect05: NUMBER_5
 	Description: Select group 5
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupSelect06: NUMBER_6
 	Description: Select group 6
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupSelect07: NUMBER_7
 	Description: Select group 7
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupSelect08: NUMBER_8
 	Description: Select group 8
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupSelect09: NUMBER_9
 	Description: Select group 9
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupSelect10: NUMBER_0
 	Description: Select group 0
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCreate01: NUMBER_1 Ctrl
 	Description: Create group 1
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCreate02: NUMBER_2 Ctrl
 	Description: Create group 2
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCreate03: NUMBER_3 Ctrl
 	Description: Create group 3
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCreate04: NUMBER_4 Ctrl
 	Description: Create group 4
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCreate05: NUMBER_5 Ctrl
 	Description: Create group 5
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCreate06: NUMBER_6 Ctrl
 	Description: Create group 6
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCreate07: NUMBER_7 Ctrl
 	Description: Create group 7
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCreate08: NUMBER_8 Ctrl
 	Description: Create group 8
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCreate09: NUMBER_9 Ctrl
 	Description: Create group 9
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCreate10: NUMBER_0 Ctrl
 	Description: Create group 0
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupAddTo01: NUMBER_1 Ctrl, Shift
 	Description: Add to group 1
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupAddTo02: NUMBER_2 Ctrl, Shift
 	Description: Add to group 2
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupAddTo03: NUMBER_3 Ctrl, Shift
 	Description: Add to group 3
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupAddTo04: NUMBER_4 Ctrl, Shift
 	Description: Add to group 4
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupAddTo05: NUMBER_5 Ctrl, Shift
 	Description: Add to group 5
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupAddTo06: NUMBER_6 Ctrl, Shift
 	Description: Add to group 6
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupAddTo07: NUMBER_7 Ctrl, Shift
 	Description: Add to group 7
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupAddTo08: NUMBER_8 Ctrl, Shift
 	Description: Add to group 8
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupAddTo09: NUMBER_9 Ctrl, Shift
 	Description: Add to group 9
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupAddTo10: NUMBER_0 Ctrl, Shift
 	Description: Add to group 0
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCombineWith01: NUMBER_1 Shift
 	Description: Combine with group 1
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCombineWith02: NUMBER_2 Shift
 	Description: Combine with group 2
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCombineWith03: NUMBER_3 Shift
 	Description: Combine with group 3
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCombineWith04: NUMBER_4 Shift
 	Description: Combine with group 4
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCombineWith05: NUMBER_5 Shift
 	Description: Combine with group 5
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCombineWith06: NUMBER_6 Shift
 	Description: Combine with group 6
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCombineWith07: NUMBER_7 Shift
 	Description: Combine with group 7
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCombineWith08: NUMBER_8 Shift
 	Description: Combine with group 8
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCombineWith09: NUMBER_9 Shift
 	Description: Combine with group 9
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupCombineWith10: NUMBER_0 Shift
 	Description: Combine with group 0
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupJumpTo01: NUMBER_1 Alt
 	Description: Jump to group 1
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupJumpTo02: NUMBER_2 Alt
 	Description: Jump to group 2
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupJumpTo03: NUMBER_3 Alt
 	Description: Jump to group 3
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupJumpTo04: NUMBER_4 Alt
 	Description: Jump to group 4
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupJumpTo05: NUMBER_5 Alt
 	Description: Jump to group 5
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupJumpTo06: NUMBER_6 Alt
 	Description: Jump to group 6
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupJumpTo07: NUMBER_7 Alt
 	Description: Jump to group 7
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupJumpTo08: NUMBER_8 Alt
 	Description: Jump to group 8
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupJumpTo09: NUMBER_9 Alt
 	Description: Jump to group 9
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 ControlGroupJumpTo10: NUMBER_0 Alt
 	Description: Jump to group 0
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player
 
 RemoveFromControlGroup:
 	Description: Remove from control group
-	Types: ControlGroups, Player
+	Types: ControlGroups
+	Contexts: Player, Spectator
