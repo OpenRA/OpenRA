@@ -112,7 +112,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				if (map.Package != null)
+				{
 					selectedDirectory = writableDirectories.FirstOrDefault(k => k.Folder.Contains(map.Package.Name));
+					if (selectedDirectory == null)
+						selectedDirectory = writableDirectories.FirstOrDefault(k => Directory.GetDirectories(k.Folder.Name).Any(f => f.Contains(map.Package.Name)));
+				}
 
 				// Prioritize MapClassification.User directories over system directories
 				if (selectedDirectory == null)
