@@ -71,12 +71,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 
-			var copyOverlayDropdown = widget.Get<DropDownButtonWidget>("OVERLAY_BUTTON");
-			copyOverlayDropdown.OnMouseDown = _ =>
+			var overlayDropdown = widget.GetOrNull<DropDownButtonWidget>("OVERLAY_BUTTON");
+			if (overlayDropdown != null)
 			{
-				copyOverlayDropdown.RemovePanel();
-				copyOverlayDropdown.AttachPanel(CreateOverlaysPanel(world));
-			};
+				overlayDropdown.OnMouseDown = _ =>
+				{
+					overlayDropdown.RemovePanel();
+					overlayDropdown.AttachPanel(CreateOverlaysPanel(world));
+				};
+			}
 
 			var cashLabel = widget.GetOrNull<LabelWidget>("CASH_LABEL");
 			if (cashLabel != null)
