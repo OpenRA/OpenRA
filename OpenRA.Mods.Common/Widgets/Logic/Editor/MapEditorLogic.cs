@@ -144,17 +144,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (cat.HasFlag(MapOverlays.Buildable))
 				{
-					var buildableTerrainTrait = world.WorldActor.TraitOrDefault<BuildableTerrainOverlay>();
-					if (buildableTerrainTrait != null)
+					var buildableTerrainTrait = world.WorldActor.Trait<BuildableTerrainOverlay>();
+					category.OnClick = () =>
 					{
-						category.OnClick = () =>
-						{
-							overlays ^= cat;
-							buildableTerrainTrait.Enabled = overlays.HasFlag(MapOverlays.Buildable);
-						};
-					}
-					else
-						continue;
+						overlays ^= cat;
+						buildableTerrainTrait.Enabled = overlays.HasFlag(MapOverlays.Buildable);
+					};
 				}
 
 				categoriesPanel.AddChild(category);
