@@ -338,7 +338,7 @@ namespace OpenRA
 		static void MergeIntoResolved(MiniYamlNode overrideNode, List<MiniYamlNode> existingNodes,
 			Dictionary<string, MiniYaml> tree, Dictionary<string, MiniYamlNode.SourceLocation> inherited)
 		{
-			var existingNode = existingNodes.FirstOrDefault(n => n.Key == overrideNode.Key);
+			var existingNode = existingNodes.Find(n => n.Key == overrideNode.Key);
 			if (existingNode != null)
 			{
 				existingNode.Value = MergePartial(existingNode.Value, overrideNode.Value);
