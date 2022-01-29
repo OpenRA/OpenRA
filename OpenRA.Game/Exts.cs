@@ -407,7 +407,8 @@ namespace OpenRA
 
 			// Try to build a dictionary and log all duplicates found (if any):
 			var dupKeys = new Dictionary<TKey, List<string>>();
-			var d = new Dictionary<TKey, TElement>();
+			var capacity = source is ICollection<TSource> collection ? collection.Count : 0;
+			var d = new Dictionary<TKey, TElement>(capacity);
 			foreach (var item in source)
 			{
 				var key = keySelector(item);
@@ -418,7 +419,7 @@ namespace OpenRA
 					continue;
 
 				// Check for a key conflict:
-				if (d.ContainsKey(key))
+				if (!d.TryAdd(key, element))
 				{
 					if (!dupKeys.TryGetValue(key, out var dupKeyMessages))
 					{
@@ -430,10 +431,7 @@ namespace OpenRA
 
 					// Log this conflicting value:
 					dupKeyMessages.Add(logValue(element));
-					continue;
 				}
-
-				d.Add(key, element);
 			}
 
 			// If any duplicates were found, throw a descriptive error
