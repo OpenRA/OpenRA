@@ -478,9 +478,15 @@ namespace OpenRA
 				return set;
 
 			var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
-			var addMethod = fieldType.GetMethod("Add", fieldType.GetGenericArguments());
+			var arguments = fieldType.GetGenericArguments();
+			var addMethod = fieldType.GetMethod("Add", arguments);
+			var addArgs = new object[1];
 			for (var i = 0; i < parts.Length; i++)
-				addMethod.Invoke(set, new[] { GetValue(fieldName, fieldType.GetGenericArguments()[0], parts[i].Trim(), field) });
+			{
+				addArgs[0] = GetValue(fieldName, arguments[0], parts[i].Trim(), field);
+				addMethod.Invoke(set, addArgs);
+			}
+
 			return set;
 		}
 
@@ -489,12 +495,12 @@ namespace OpenRA
 			var dict = Activator.CreateInstance(fieldType);
 			var arguments = fieldType.GetGenericArguments();
 			var addMethod = fieldType.GetMethod("Add", arguments);
-
+			var addArgs = new object[2];
 			foreach (var node in yaml.Nodes)
 			{
-				var key = GetValue(fieldName, arguments[0], node.Key, field);
-				var val = GetValue(fieldName, arguments[1], node.Value, field);
-				addMethod.Invoke(dict, new[] { key, val });
+				addArgs[0] = GetValue(fieldName, arguments[0], node.Key, field);
+				addArgs[1] = GetValue(fieldName, arguments[1], node.Value, field);
+				addMethod.Invoke(dict, addArgs);
 			}
 
 			return dict;
