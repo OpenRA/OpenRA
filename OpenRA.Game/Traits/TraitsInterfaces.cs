@@ -36,13 +36,59 @@ namespace OpenRA.Traits
 		Dead = 32
 	}
 
-	// NOTE: Each subsequent category is a superset of the previous categories
-	// and categories are mutually exclusive.
+	/// <summary>
+	/// When performing locomotion or pathfinding related checks,
+	/// determines whether the blocking rules will be applied when encountering other actors.
+	/// </summary>
 	public enum BlockedByActor
 	{
+		/// <summary>
+		/// Actors on the map are ignored, as if they were not present.
+		/// An actor can only be blocked by impassable terrain.
+		/// An actor can never be blocked by other actors. The blocking rules will never be evaluated.
+		/// </summary>
 		None,
+
+		/// <summary>
+		/// Actors on the map that are moving, or moveable &amp; allied are ignored.
+		/// An actor is Immovable is any of the following applies:
+		/// <list type="bullet">
+		/// <item>Lacks the Mobile trait.</item>
+		/// <item>The Mobile trait is disabled or paused.</item>
+		/// <item>The Mobile trait property IsImmovable is true.</item>
+		/// </list>
+		/// Note the above definition means an actor can be Movable, but may not be Moving, i.e. it is Stationary.
+		/// Actors are allied if their owners have the <see cref="PlayerRelationship.Ally"/> relationship.
+		/// An actor can be blocked by impassable terrain.
+		/// An actor can be blocked by immovable actors *if* they are deemed as blocking by the blocking rules.
+		/// An actor can be blocked by an actor capable of moving, if it is not an ally and *if* they are deemed as
+		/// blocking by the blocking rules.
+		/// An actor can never be blocked by an allied actor capable of moving, even if the other actor is stationary.
+		/// An actor can never be blocked by a moving actor.
+		/// </summary>
 		Immovable,
+
+		/// <summary>
+		/// Actors on the map that are moving are ignored.
+		/// An actor is moving if both of the following apply:
+		/// <list type="bullet">
+		/// <item>It is a Moveable actor (see <see cref="Immovable"/>).</item>
+		/// <item>The Mobile trait property CurrentMovementTypes contains the flag Horizontal.</item>
+		/// </list>
+		/// Otherwise the actor is deemed to be Stationary.
+		/// An actor can be blocked by impassable terrain.
+		/// An actor can be blocked by immovable actors and stationary actors *if* they are deemed as blocking by the
+		/// blocking rules.
+		/// An actor can never be blocked by a moving actor.
+		/// </summary>
 		Stationary,
+
+		/// <summary>
+		/// Actors on the map are not ignored.
+		/// An actor can be blocked by impassable terrain.
+		/// An actor can be blocked by immovable actors, stationary actors and moving actors *if* they are deemed as
+		/// blocking by the blocking rules.
+		/// </summary>
 		All
 	}
 
