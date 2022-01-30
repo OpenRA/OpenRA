@@ -115,8 +115,7 @@ namespace OpenRA
 		readonly INotifyBecomingIdle[] becomingIdles;
 		readonly INotifyIdle[] tickIdles;
 		readonly IEnumerable<ITargetablePositions> enabledTargetablePositions;
-		readonly bool setStaticTargetablePositions;
-		WPos[] staticTargetablePositions;
+		readonly IEnumerable<WPos> enabledTargetableWorldPositions;
 		bool created;
 
 		internal Actor(World world, string name, TypeDictionary initDict)
@@ -146,7 +145,6 @@ namespace OpenRA
 
 				Info = world.Map.Rules.Actors[name];
 
-				IPositionable positionable = null;
 				var resolveOrdersList = new List<IResolveOrder>();
 				var renderModifiersList = new List<IRenderModifier>();
 				var rendersList = new List<IRender>();
@@ -168,7 +166,6 @@ namespace OpenRA
 					// performance-sensitive parts of the core game engine, such as pathfinding, visibility and rendering.
 					// Note: The blocks are required to limit the scope of the t's, so we make an exception to our normal style
 					// rules for spacing in order to keep these assignments compact and readable.
-					{ if (trait is IPositionable t) positionable = t; }
 					{ if (trait is IOccupySpace t) OccupiesSpace = t; }
 					{ if (trait is IEffectiveOwner t) EffectiveOwner = t; }
 					{ if (trait is IFacing t) facing = t; }
@@ -196,9 +193,8 @@ namespace OpenRA
 				Targetables = targetablesList.ToArray();
 				var targetablePositions = targetablePositionsList.ToArray();
 				enabledTargetablePositions = targetablePositions.Where(Exts.IsTraitEnabled);
+				enabledTargetableWorldPositions = enabledTargetablePositions.SelectMany(tp => tp.TargetablePositions(this));
 				SyncHashes = syncHashesList.ToArray();
-
-				setStaticTargetablePositions = positionable == null && targetablePositions.Any() && targetablePositions.All(tp => tp.AlwaysEnabled);
 			}
 		}
 
@@ -232,11 +228,6 @@ namespace OpenRA
 			// Update all traits with their initial condition state
 			foreach (var notify in allObserverNotifiers)
 				notify(this, readOnlyConditionCache);
-
-			// All actors that can move or teleport should have IPositionable, if not it's pretty safe to assume the actor is completely immobile and
-			// all targetable positions can be cached if all ITargetablePositions have no conditional requirements.
-			if (setStaticTargetablePositions)
-				staticTargetablePositions = enabledTargetablePositions.SelectMany(tp => tp.TargetablePositions(this)).ToArray();
 
 			// TODO: Other traits may need initialization after being notified of initial condition state.
 
@@ -539,11 +530,8 @@ namespace OpenRA
 
 		public IEnumerable<WPos> GetTargetablePositions()
 		{
-			if (staticTargetablePositions != null)
-				return staticTargetablePositions;
-
 			if (enabledTargetablePositions.Any())
-				return enabledTargetablePositions.SelectMany(tp => tp.TargetablePositions(this));
+				return enabledTargetableWorldPositions;
 
 			return new[] { CenterPosition };
 		}
