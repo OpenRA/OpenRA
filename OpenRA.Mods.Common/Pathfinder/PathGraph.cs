@@ -34,14 +34,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 		readonly BlockedByActor check;
 		readonly Func<CPos, int> customCost;
 		readonly Actor ignoreActor;
-		readonly bool inReverse;
 		readonly bool laneBias;
+		readonly bool inReverse;
 		readonly bool checkTerrainHeight;
 		readonly CellInfoLayerPool.PooledCellInfoLayer pooledLayer;
 		readonly CellLayer<CellInfo>[] cellInfoForLayer;
 
 		public PathGraph(CellInfoLayerPool layerPool, Locomotor locomotor, Actor actor, World world, BlockedByActor check,
-			Func<CPos, int> customCost, Actor ignoreActor, bool inReverse, bool laneBias)
+			Func<CPos, int> customCost, Actor ignoreActor, bool laneBias, bool inReverse)
 		{
 			customMovementLayers = world.GetCustomMovementLayers();
 			customMovementLayersEnabledForLocomotor = customMovementLayers.Count(cml => cml != null && cml.EnabledForLocomotor(locomotor.Info));
@@ -51,8 +51,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 			this.check = check;
 			this.customCost = customCost;
 			this.ignoreActor = ignoreActor;
-			this.inReverse = inReverse;
 			this.laneBias = laneBias;
+			this.inReverse = inReverse;
 			checkTerrainHeight = world.Map.Grid.MaximumTerrainHeight > 0;
 
 			// As we support a search over the whole map area,

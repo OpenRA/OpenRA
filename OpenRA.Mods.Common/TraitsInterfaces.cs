@@ -791,4 +791,29 @@ namespace OpenRA.Mods.Common.Traits
 		void SetPosition(Actor self, WPos pos);
 		void SetCenterPosition(Actor self, WPos pos);
 	}
+
+	public interface IPathFinder
+	{
+		/// <summary>
+		/// Calculates a path for the actor from multiple possible sources to target.
+		/// Returned path is *reversed* and given target to source.
+		/// The shortest path between a source and the target is returned.
+		/// </summary>
+		List<CPos> FindUnitPathToTargetCell(
+			Actor self, IEnumerable<CPos> sources, CPos target, BlockedByActor check,
+			Func<CPos, int> customCost = null,
+			Actor ignoreActor = null,
+			bool laneBias = true);
+
+		/// <summary>
+		/// Calculates a path for the actor from multiple possible sources, whilst searching for an acceptable target.
+		/// Returned path is *reversed* and given target to source.
+		/// The shortest path between a source and a discovered target is returned.
+		/// </summary>
+		List<CPos> FindUnitPathToTargetCellByPredicate(
+			Actor self, IEnumerable<CPos> sources, Func<CPos, bool> targetPredicate, BlockedByActor check,
+			Func<CPos, int> customCost = null,
+			Actor ignoreActor = null,
+			bool laneBias = true);
+	}
 }

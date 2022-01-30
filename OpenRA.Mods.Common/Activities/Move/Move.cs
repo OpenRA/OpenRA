@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
-using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -59,9 +58,8 @@ namespace OpenRA.Mods.Common.Activities
 
 			getPath = check =>
 			{
-				using (var search = PathSearch.ToTargetCell(
-					self.World, mobile.Locomotor, self, mobile.ToCell, destination, check, laneBias: false))
-					return mobile.Pathfinder.FindPath(search);
+				return mobile.PathFinder.FindUnitPathToTargetCell(
+					self, new[] { mobile.ToCell }, destination, check, laneBias: false);
 			};
 
 			this.destination = destination;
@@ -80,7 +78,8 @@ namespace OpenRA.Mods.Common.Activities
 				if (!this.destination.HasValue)
 					return PathFinder.NoPath;
 
-				return mobile.Pathfinder.FindUnitPath(mobile.ToCell, this.destination.Value, self, ignoreActor, check);
+				return mobile.PathFinder.FindUnitPathToTargetCell(
+					self, new[] { mobile.ToCell }, this.destination.Value, check, ignoreActor: ignoreActor);
 			};
 
 			// Note: Will be recalculated from OnFirstRun if evaluateNearestMovableCell is true

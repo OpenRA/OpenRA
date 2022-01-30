@@ -235,7 +235,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Locomotor Locomotor { get; private set; }
 
-		public IPathFinder Pathfinder { get; private set; }
+		public IPathFinder PathFinder { get; private set; }
 
 		#region IOccupySpace
 
@@ -302,7 +302,7 @@ namespace OpenRA.Mods.Common.Traits
 			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
 			notifyFinishedMoving = self.TraitsImplementing<INotifyFinishedMoving>().ToArray();
 			moveWrappers = self.TraitsImplementing<IWrapMove>().ToArray();
-			Pathfinder = self.World.WorldActor.Trait<IPathFinder>();
+			PathFinder = self.World.WorldActor.Trait<IPathFinder>();
 			Locomotor = self.World.WorldActor.TraitsImplementing<Locomotor>()
 				.Single(l => l.Info.Name == Info.Locomotor);
 
@@ -825,10 +825,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (CanEnterCell(above))
 				return above;
 
-			List<CPos> path;
-			using (var search = PathSearch.ToTargetCellByPredicate(
-				self.World, Locomotor, self, new[] { self.Location }, loc => loc.Layer == 0 && CanEnterCell(loc), BlockedByActor.All))
-				path = Pathfinder.FindPath(search);
+			var path = PathFinder.FindUnitPathToTargetCellByPredicate(
+				self, new[] { self.Location }, loc => loc.Layer == 0 && CanEnterCell(loc), BlockedByActor.All);
 
 			if (path.Count > 0)
 				return path[0];

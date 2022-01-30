@@ -12,7 +12,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
-using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -128,9 +127,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (!searchCells.Any())
 				return PathFinder.NoPath;
 
-			using (var fromSrc = PathSearch.ToTargetCell(self.World, Mobile.Locomotor, self, searchCells, loc, check))
-			using (var fromDest = PathSearch.ToTargetCell(self.World, Mobile.Locomotor, self, loc, lastVisibleTargetLocation, check, inReverse: true))
-				return Mobile.Pathfinder.FindBidiPath(fromSrc, fromDest);
+			var path = Mobile.PathFinder.FindUnitPathToTargetCell(self, searchCells, loc, check);
+			path.Reverse();
+			return path;
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)

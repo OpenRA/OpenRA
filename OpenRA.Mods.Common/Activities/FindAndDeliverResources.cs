@@ -182,9 +182,9 @@ namespace OpenRA.Mods.Common.Activities
 			var harvPos = self.CenterPosition;
 
 			// Find any harvestable resources:
-			List<CPos> path;
-			using (var search = PathSearch.ToTargetCellByPredicate(
-				self.World, mobile.Locomotor, self, new[] { searchFromLoc, self.Location },
+			var path = mobile.PathFinder.FindUnitPathToTargetCellByPredicate(
+				self,
+				new[] { searchFromLoc, self.Location },
 				loc =>
 					harv.CanHarvestCell(loc) &&
 					claimLayer.CanClaimCell(self, loc),
@@ -218,8 +218,7 @@ namespace OpenRA.Mods.Common.Activities
 					}
 
 					return 0;
-				}))
-				path = mobile.Pathfinder.FindPath(search);
+				});
 
 			if (path.Count > 0)
 				return path[0];
