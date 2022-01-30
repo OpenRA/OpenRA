@@ -26,13 +26,6 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </summary>
 		public const int DefaultHeuristicWeightPercentage = 125;
 
-		/// <summary>
-		/// When searching for paths, use a lane bias to guide units into
-		/// "lanes" whilst moving, to promote smooth unit flow when groups of
-		/// units are moving.
-		/// </summary>
-		public const bool DefaultLaneBias = true;
-
 		// PERF: Maintain a pool of layers used for paths searches for each world. These searches are performed often
 		// so we wish to avoid the high cost of initializing a new search space every time by reusing the old ones.
 		static readonly ConditionalWeakTable<World, CellInfoLayerPool> LayerPoolTable = new ConditionalWeakTable<World, CellInfoLayerPool>();
@@ -45,9 +38,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public static PathSearch ToTargetCellByPredicate(
 			World world, Locomotor locomotor, Actor self, IEnumerable<CPos> froms, Func<CPos, bool> targetPredicate, BlockedByActor check,
-			Func<CPos, int> customCost = null)
+			Func<CPos, int> customCost = null,
+			Actor ignoreActor = null,
+			bool laneBias = true)
 		{
-			var graph = new PathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, null, false, DefaultLaneBias);
+			var graph = new PathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, laneBias, false);
 			var search = new PathSearch(graph, loc => 0, DefaultHeuristicWeightPercentage, targetPredicate);
 
 			foreach (var sl in froms)
@@ -58,25 +53,15 @@ namespace OpenRA.Mods.Common.Pathfinder
 		}
 
 		public static PathSearch ToTargetCell(
-			World world, Locomotor locomotor, Actor self, CPos from, CPos target, BlockedByActor check,
-			Func<CPos, int> customCost = null,
-			Actor ignoreActor = null,
-			bool inReverse = false,
-			bool laneBias = DefaultLaneBias)
-		{
-			return ToTargetCell(world, locomotor, self, new[] { from }, target, check, customCost, ignoreActor, inReverse, laneBias);
-		}
-
-		public static PathSearch ToTargetCell(
 			World world, Locomotor locomotor, Actor self, IEnumerable<CPos> froms, CPos target, BlockedByActor check,
 			Func<CPos, int> customCost = null,
 			Actor ignoreActor = null,
+			bool laneBias = true,
 			bool inReverse = false,
-			bool laneBias = DefaultLaneBias,
 			Func<CPos, int> heuristic = null,
 			int heuristicWeightPercentage = DefaultHeuristicWeightPercentage)
 		{
-			var graph = new PathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, inReverse, laneBias);
+			var graph = new PathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, laneBias, inReverse);
 
 			heuristic = heuristic ?? DefaultCostEstimator(locomotor, target);
 			var search = new PathSearch(graph, heuristic, heuristicWeightPercentage, loc => loc == target);
@@ -168,14 +153,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// Determines if there are more reachable cells and the search can be continued.
 		/// If false, <see cref="Expand"/> can no longer be called.
 		/// </summary>
-		public bool CanExpand => !openQueue.Empty;
+		bool CanExpand => !openQueue.Empty;
 
 		/// <summary>
 		/// This function analyzes the neighbors of the most promising node in the pathfinding graph
 		/// using the A* algorithm (A-star) and returns that node
 		/// </summary>
 		/// <returns>The most promising node of the iteration</returns>
-		public CPos Expand()
+		CPos Expand()
 		{
 			var currentMinNode = openQueue.Pop().Destination;
 
@@ -215,11 +200,96 @@ namespace OpenRA.Mods.Common.Pathfinder
 		}
 
 		/// <summary>
-		/// Determines if <paramref name="location"/> is the target of the search.
+		/// Expands the path search until a path is found, and returns that path.
+		/// Returned path is *reversed* and given target to source.
 		/// </summary>
-		public bool IsTarget(CPos location)
+		public List<CPos> FindPath()
 		{
-			return TargetPredicate(location);
+			while (CanExpand)
+			{
+				var p = Expand();
+				if (TargetPredicate(p))
+					return MakePath(Graph, p);
+			}
+
+			return PathFinder.NoPath;
+		}
+
+		// Build the path from the destination.
+		// When we find a node that has the same previous position than itself, that node is the source node.
+		static List<CPos> MakePath(IPathGraph graph, CPos destination)
+		{
+			var ret = new List<CPos>();
+			var currentNode = destination;
+
+			while (graph[currentNode].PreviousNode != currentNode)
+			{
+				ret.Add(currentNode);
+				currentNode = graph[currentNode].PreviousNode;
+			}
+
+			ret.Add(currentNode);
+			return ret;
+		}
+
+		/// <summary>
+		/// Expands both path searches until they intersect, and returns the path.
+		/// Returned path is from the source of the first search to the source of the second search.
+		/// </summary>
+		public static List<CPos> FindBidiPath(PathSearch first, PathSearch second)
+		{
+			while (first.CanExpand && second.CanExpand)
+			{
+				// make some progress on the first search
+				var p = first.Expand();
+				var pInfo = second.Graph[p];
+				if (pInfo.Status == CellStatus.Closed &&
+					pInfo.CostSoFar != PathGraph.PathCostForInvalidPath)
+					return MakeBidiPath(first, second, p);
+
+				// make some progress on the second search
+				var q = second.Expand();
+				var qInfo = first.Graph[q];
+				if (qInfo.Status == CellStatus.Closed &&
+					qInfo.CostSoFar != PathGraph.PathCostForInvalidPath)
+					return MakeBidiPath(first, second, q);
+			}
+
+			return PathFinder.NoPath;
+		}
+
+		// Build the path from the destination of each search.
+		// When we find a node that has the same previous position than itself, that is the source of that search.
+		static List<CPos> MakeBidiPath(PathSearch first, PathSearch second, CPos confluenceNode)
+		{
+			var ca = first.Graph;
+			var cb = second.Graph;
+
+			var ret = new List<CPos>();
+
+			var q = confluenceNode;
+			var previous = ca[q].PreviousNode;
+			while (previous != q)
+			{
+				ret.Add(q);
+				q = previous;
+				previous = ca[q].PreviousNode;
+			}
+
+			ret.Add(q);
+
+			ret.Reverse();
+
+			q = confluenceNode;
+			previous = cb[q].PreviousNode;
+			while (previous != q)
+			{
+				q = previous;
+				previous = cb[q].PreviousNode;
+				ret.Add(q);
+			}
+
+			return ret;
 		}
 
 		public void Dispose()

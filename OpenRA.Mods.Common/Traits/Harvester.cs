@@ -193,10 +193,8 @@ namespace OpenRA.Mods.Common.Traits
 				}).ToLookup(r => r.Location);
 
 			// Start a search from each refinery's delivery location:
-			List<CPos> path;
-
-			using (var search = PathSearch.ToTargetCell(
-				self.World, mobile.Locomotor, self, refineries.Select(r => r.Key), self.Location, BlockedByActor.None,
+			var path = mobile.PathFinder.FindUnitPathToTargetCell(
+				self, refineries.Select(r => r.Key), self.Location, BlockedByActor.None,
 				location =>
 				{
 					if (!refineries.Contains(location))
@@ -210,8 +208,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					// Prefer refineries with less occupancy (multiplier is to offset distance cost):
 					return occupancy * Info.UnloadQueueCostModifier;
-				}))
-				path = mobile.Pathfinder.FindPath(search);
+				});
 
 			if (path.Count > 0)
 				return refineries[path.Last()].First().Actor;
