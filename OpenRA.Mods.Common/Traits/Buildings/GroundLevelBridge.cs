@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var cell in cells)
 				self.World.Map.CustomTerrain[cell] = terrainIndex;
 
-			self.World.WorldActor.TraitOrDefault<DomainIndex>()?.UpdateCells(self.World, cells);
+			self.World.WorldActor.Trait<DomainIndex>().UpdateCells(self.World, cells);
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
