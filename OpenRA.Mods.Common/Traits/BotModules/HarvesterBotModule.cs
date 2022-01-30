@@ -62,7 +62,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Dictionary<Actor, HarvesterTraitWrapper> harvesters = new Dictionary<Actor, HarvesterTraitWrapper>();
 
 		IPathFinder pathfinder;
-		DomainIndex domainIndex;
 		IResourceLayer resourceLayer;
 		ResourceClaimLayer claimLayer;
 		IBotRequestUnitProduction[] requestUnitProduction;
@@ -84,7 +83,6 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void TraitEnabled(Actor self)
 		{
 			pathfinder = world.WorldActor.Trait<IPathFinder>();
-			domainIndex = world.WorldActor.Trait<DomainIndex>();
 			resourceLayer = world.WorldActor.TraitOrDefault<IResourceLayer>();
 			claimLayer = world.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 
@@ -145,7 +143,6 @@ namespace OpenRA.Mods.Common.Traits
 		Target FindNextResource(Actor actor, HarvesterTraitWrapper harv)
 		{
 			Func<CPos, bool> isValidResource = cell =>
-				domainIndex.IsPassable(actor.Location, cell, harv.Locomotor) &&
 				harv.Harvester.CanHarvestCell(actor, cell) &&
 				claimLayer.CanClaimCell(actor, cell);
 

@@ -24,7 +24,6 @@ namespace OpenRA.Mods.Common.Activities
 		readonly HarvesterInfo harvInfo;
 		readonly Mobile mobile;
 		readonly ResourceClaimLayer claimLayer;
-		readonly DomainIndex domainIndex;
 
 		Actor deliverActor;
 		CPos? orderLocation;
@@ -41,7 +40,6 @@ namespace OpenRA.Mods.Common.Activities
 			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
 			mobile = self.Trait<Mobile>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
-			domainIndex = self.World.WorldActor.Trait<DomainIndex>();
 			this.deliverActor = deliverActor;
 		}
 
@@ -188,7 +186,6 @@ namespace OpenRA.Mods.Common.Activities
 			using (var search = PathSearch.ToTargetCellByPredicate(
 				self.World, mobile.Locomotor, self, new[] { searchFromLoc, self.Location },
 				loc =>
-					domainIndex.IsPassable(self.Location, loc, mobile.Locomotor) &&
 					harv.CanHarvestCell(self, loc) &&
 					claimLayer.CanClaimCell(self, loc),
 				BlockedByActor.Stationary,

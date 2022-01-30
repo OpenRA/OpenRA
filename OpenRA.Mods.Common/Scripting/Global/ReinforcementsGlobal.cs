@@ -25,12 +25,9 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptGlobal("Reinforcements")]
 	public class ReinforcementsGlobal : ScriptGlobal
 	{
-		readonly DomainIndex domainIndex;
-
 		public ReinforcementsGlobal(ScriptContext context)
 			: base(context)
 		{
-			domainIndex = context.World.WorldActor.Trait<DomainIndex>();
 		}
 
 		Actor CreateActor(Player owner, string actorType, bool addToWorld, CPos? entryLocation = null, CPos? nextLocation = null)
