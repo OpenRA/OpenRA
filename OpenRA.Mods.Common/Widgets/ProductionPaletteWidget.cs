@@ -513,9 +513,8 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				WidgetUtils.DrawSpriteCentered(icon.Sprite, icon.Palette, icon.Pos + iconOffset);
 
-				// Draw the ProductionIconOverlay's sprite
-				var pio = pios.FirstOrDefault(p => p.IsOverlayActive(icon.Actor));
-				if (pio != null)
+				// Draw the ProductionIconOverlay's sprites
+				foreach (var pio in pios.Where(p => p.IsOverlayActive(icon.Actor)))
 					WidgetUtils.DrawSpriteCentered(pio.Sprite, worldRenderer.Palette(pio.Palette), icon.Pos + iconOffset + pio.Offset(IconSize));
 
 				// Build progress
