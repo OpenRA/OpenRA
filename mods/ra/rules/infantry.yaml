@@ -103,6 +103,9 @@ E1:
 		IsPlayerPalette: true
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: barracks.upgraded
 
 E1R1:
 	Inherits: E1
@@ -114,6 +117,9 @@ E1R1:
 	UpdatesPlayerStatistics:
 		OverrideActor: e1
 	-Buildable:
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: techlevel.infonly
 
 E2:
 	Inherits: ^Soldier
@@ -157,6 +163,9 @@ E2:
 		EmptyWeapon: UnitExplodeSmall
 		DamageSource: Killer
 	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
 		Prerequisites: barracks.upgraded
 
 E3:
@@ -202,6 +211,9 @@ E3:
 		Prerequisites: barracks.upgraded
 	AutoTarget:
 		ScanRadius: 5
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: barracks.upgraded
 
 E3R1:
 	Inherits: E3
@@ -213,6 +225,9 @@ E3R1:
 	UpdatesPlayerStatistics:
 		OverrideActor: e3
 	-Buildable:
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: techlevel.infonly
 
 E4:
 	Inherits: ^Soldier
@@ -253,6 +268,9 @@ E4:
 		Palette: player-noshadow
 		IsPlayerPalette: true
 	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
 		Prerequisites: barracks.upgraded
 
 E6:
@@ -435,6 +453,9 @@ E7:
 	Voiced:
 		VoiceSet: TanyaVoice
 	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
 		Prerequisites: barracks.upgraded
 
 MEDI:
@@ -706,6 +727,9 @@ SHOK:
 		VoiceSet: ShokVoice
 	ProducibleWithLevel:
 		Prerequisites: barracks.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: barracks.upgraded
 
 SNIPER:
 	Inherits: ^Soldier
@@ -758,6 +782,9 @@ SNIPER:
 		ValidDamageStates: Critical
 	-MustBeDestroyed:
 	ProducibleWithLevel:
+		Prerequisites: barracks.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
 		Prerequisites: barracks.upgraded
 
 Zombie:

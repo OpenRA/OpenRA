@@ -95,6 +95,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new SplitNukePowerMissileImage(),
 				new ReplaceSequenceEmbeddedPalette(),
 				new UnhardcodeBaseBuilderBotModule(),
+				new UnhardcodeVeteranProductionIconOverlay(),
 			})
 		};
 

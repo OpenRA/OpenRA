@@ -47,6 +47,9 @@ V2RL:
 		Prerequisites: vehicles.upgraded
 	Selectable:
 		DecorationBounds: 1194, 1194
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 1TNK:
 	Inherits: ^TrackedVehicle
@@ -88,6 +91,9 @@ V2RL:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
 	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
 		Prerequisites: vehicles.upgraded
 
 2TNK:
@@ -135,6 +141,9 @@ V2RL:
 		Prerequisites: vehicles.upgraded
 	Selectable:
 		DecorationBounds: 1194, 1194
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 3TNK:
 	Inherits: ^TrackedVehicle
@@ -181,6 +190,9 @@ V2RL:
 		Prerequisites: vehicles.upgraded
 	Selectable:
 		DecorationBounds: 1194, 1194
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 4TNK:
 	Inherits: ^TrackedVehicle
@@ -240,6 +252,9 @@ V2RL:
 		Prerequisites: vehicles.upgraded
 	Selectable:
 		DecorationBounds: 1877, 1621, 0, -170
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 ARTY:
 	Inherits: ^TrackedVehicle
@@ -284,6 +299,9 @@ ARTY:
 		EmptyWeapon: UnitExplodeSmall
 		LoadedChance: 75
 	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
 		Prerequisites: vehicles.upgraded
 
 HARV:
@@ -432,6 +450,9 @@ JEEP:
 		LoadingCondition: notmobile
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 APC:
 	Inherits: ^TrackedVehicle
@@ -474,6 +495,9 @@ APC:
 		MaxWeight: 5
 		LoadingCondition: notmobile
 	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
 		Prerequisites: vehicles.upgraded
 
 MNLY:
@@ -663,6 +687,9 @@ TTNK:
 		Prerequisites: vehicles.upgraded
 	Selectable:
 		DecorationBounds: 1280, 1280
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 FTRK:
 	Inherits: ^Vehicle
@@ -712,6 +739,9 @@ FTRK:
 		Prerequisites: vehicles.upgraded
 	Selectable:
 		DecorationBounds: 1194, 1194
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 DTRK:
 	Inherits: ^Vehicle
@@ -797,6 +827,9 @@ CTNK:
 		Prerequisites: vehicles.upgraded
 	Selectable:
 		DecorationBounds: 1280, 1280
+	WithProductionIconOverlay:
+		Types: Veterancy
+		Prerequisites: vehicles.upgraded
 
 QTNK:
 	Inherits: ^TrackedVehicle
@@ -895,4 +928,7 @@ STNK:
 		ValidDamageStates: Critical
 	-MustBeDestroyed:
 	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+	WithProductionIconOverlay:
+		Types: Veterancy
 		Prerequisites: vehicles.upgraded
