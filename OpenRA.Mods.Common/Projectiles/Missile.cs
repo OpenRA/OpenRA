@@ -272,7 +272,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				trailPalette += args.SourceActor.Owner.InternalName;
 
 			shadowColor = new float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
-			shadowAlpha = info.ShadowColor.A;
+			shadowAlpha = info.ShadowColor.A / 255f;
 		}
 
 		static int LoopRadius(int speed, int rot)
