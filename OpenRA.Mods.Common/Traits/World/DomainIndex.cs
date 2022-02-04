@@ -62,11 +62,17 @@ namespace OpenRA.Mods.Common.Traits
 				index.Value.AddFixedConnection(cells);
 		}
 
+		public string GetDomain(CPos cell)
 		{
+			foreach (var d in domainIndexes)
 			{
+				if (!d.Value.GetDomain(cell).IsEmpty)
+					return d.Value.GetDomain(cell).ClusterId.ToString() + " " + d.Key.ToString();
 			}
 
+			return "EmptyClusterError";
 		}
+	}
 
 	class MovementClassDomainIndex : ClusterManager
 	{
@@ -87,6 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 			return (movementClass & (1 << world.Map.GetTerrainIndex(p))) > 0;
 		}
 
+		public ClusterContents GetDomain(CPos cell) { return clusterCellLayer[cell]; }
 
 		protected override ushort BuildDomain()
 		{

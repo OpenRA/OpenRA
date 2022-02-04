@@ -218,6 +218,8 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Draw();
 		}
 
+		public CPos Cell;
+
 		public void UpdateMouseover()
 		{
 			TooltipType = WorldTooltipType.None;
@@ -226,6 +228,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
 			if (!world.Map.Contains(cell))
 				return;
+
+			Cell = cell;
 
 			if (world.ShroudObscures(cell))
 			{
