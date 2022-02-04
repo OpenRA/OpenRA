@@ -251,4 +251,4 @@ ControlGroupJumpTo10: NUMBER_0 Alt
 RemoveFromControlGroup:
 	Description: Remove from control group
 	Types: ControlGroups
-	Contexts: Player, Spectator
+	Contexts: Player

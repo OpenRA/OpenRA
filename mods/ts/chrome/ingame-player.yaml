@@ -9,6 +9,9 @@ Container@PLAYER_WIDGETS:
 				DecreaseDepthPreviewContrastKey: DecreaseDepthPreviewContrast
 				IncreaseDepthPreviewOffsetKey: IncreaseDepthPreviewOffset
 				DecreaseDepthPreviewOffsetKey: DecreaseDepthPreviewOffset
+		LogicKeyListener@PLAYER_KEYHANDLER:
+			Logic: RemoveFromControlGroupHotkeyLogic
+				RemoveFromControlGroupKey: RemoveFromControlGroup
 		ControlGroups@CONTROLGROUPS:
 			SelectGroupKeyPrefix: ControlGroupSelect
 			CreateGroupKeyPrefix: ControlGroupCreate

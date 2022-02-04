@@ -10,8 +10,7 @@ Container@INGAME_ROOT:
 				TakeScreenshotKey: TakeScreenshot
 				MuteAudioKey: ToggleMute
 		LogicKeyListener@WORLD_KEYHANDLER:
-			Logic: CycleBasesHotkeyLogic, CycleProductionActorsHotkeyLogic, CycleHarvestersHotkeyLogic, JumpToLastEventHotkeyLogic, JumpToSelectedActorsHotkeyLogic, ResetZoomHotkeyLogic, TogglePlayerStanceColorHotkeyLogic, CycleStatusBarsHotkeyLogic, PauseHotkeyLogic, RemoveFromControlGroupHotkeyLogic, SelectUnitsByTypeHotkeyLogic, SelectAllUnitsHotkeyLogic
-				RemoveFromControlGroupKey: RemoveFromControlGroup
+			Logic: CycleBasesHotkeyLogic, CycleProductionActorsHotkeyLogic, CycleHarvestersHotkeyLogic, JumpToLastEventHotkeyLogic, JumpToSelectedActorsHotkeyLogic, ResetZoomHotkeyLogic, TogglePlayerStanceColorHotkeyLogic, CycleStatusBarsHotkeyLogic, PauseHotkeyLogic, SelectUnitsByTypeHotkeyLogic, SelectAllUnitsHotkeyLogic
 				CycleBasesKey: CycleBase
 				CycleProductionActorsKey: CycleProductionBuildings
 				CycleHarvestersKey: CycleHarvesters
