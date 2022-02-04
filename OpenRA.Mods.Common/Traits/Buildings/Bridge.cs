@@ -326,7 +326,7 @@ namespace OpenRA.Mods.Common.Traits
 			// If this bridge repair operation connects two pathfinding domains,
 			// update the domain index.
 			var domainIndex = self.World.WorldActor.Trait<DomainIndex>();
-			domainIndex.UpdateCells(self.World, footprint.Keys);
+			domainIndex.UpdateCells(footprint.Keys);
 
 			if (LongBridgeSegmentIsDead() && !killedUnits)
 			{
