@@ -110,10 +110,11 @@ namespace OpenRA
 			{
 				Trait = i,
 				Type = i.GetType(),
-				Dependencies = PrerequisitesOf(i).ToList()
+				Dependencies = PrerequisitesOf(i).ToList(),
+				OptionalDependencies = OptionalPrerequisitesOf(i).ToList()
 			}).ToList();
 
-			var resolved = source.Where(s => !s.Dependencies.Any()).ToList();
+			var resolved = source.Where(s => !s.Dependencies.Any() && !s.OptionalDependencies.Any()).ToList();
 			var unresolved = source.Except(resolved);
 
 			var testResolve = new Func<Type, Type, bool>((a, b) => a == b || a.IsAssignableFrom(b));
@@ -122,7 +123,9 @@ namespace OpenRA
 			var more = unresolved.Where(u =>
 				u.Dependencies.All(d => // To be resolvable, all dependencies must be satisfied according to the following conditions:
 					resolved.Exists(r => testResolve(d, r.Type)) && // There must exist a resolved trait that meets the dependency.
-					!unresolved.Any(u1 => testResolve(d, u1.Type)))); // All matching traits that meet this dependency must be resolved first.
+					!unresolved.Any(u1 => testResolve(d, u1.Type))) && // All matching traits that meet this dependency must be resolved first.
+				u.OptionalDependencies.All(d => // To be resolvable, all optional dependencies must be satisfied according to the following condition:
+					!unresolved.Any(u1 => testResolve(d, u1.Type)))); // All matching traits that meet this optional dependencies must be resolved first.
 
 			// Continue resolving traits as long as possible.
 			// Each time we resolve some traits, this means dependencies for other traits may then be possible to satisfy in the next pass.
@@ -142,7 +145,9 @@ namespace OpenRA
 				foreach (var u in unresolved)
 				{
 					var deps = u.Dependencies.Where(d => !resolved.Exists(r => r.Type == d));
-					exceptionString += u.Type + ": { " + string.Join(", ", deps) + " }\r\n";
+					var optDeps = u.OptionalDependencies.Where(d => !resolved.Exists(r => r.Type == d));
+					var allDeps = string.Join(", ", deps.Select(o => o.ToString()).Concat(optDeps.Select(o => $"[{o}]")));
+					exceptionString += $"{u.Type}: {{ {allDeps} }}\r\n";
 				}
 
 				throw new YamlException(exceptionString);
@@ -158,6 +163,15 @@ namespace OpenRA
 				.GetType()
 				.GetInterfaces()
 				.Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Requires<>))
+				.Select(t => t.GetGenericArguments()[0]);
+		}
+
+		public static IEnumerable<Type> OptionalPrerequisitesOf(TraitInfo info)
+		{
+			return info
+				.GetType()
+				.GetInterfaces()
+				.Where(t => t.IsGenericType && t.GetGenericTypeDefinition() == typeof(NotBefore<>))
 				.Select(t => t.GetGenericArguments()[0]);
 		}
 

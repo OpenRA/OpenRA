@@ -411,6 +411,8 @@ namespace OpenRA.Mods.Common.Traits
 		WPos CenterOfCell(CPos cell);
 	}
 
+	public interface ICustomMovementLayerInfo : ITraitInfoInterface { }
+
 	// For traits that want to be exposed to the "Deploy" UI button / hotkey
 	[RequireExplicitImplementation]
 	public interface IIssueDeployOrder

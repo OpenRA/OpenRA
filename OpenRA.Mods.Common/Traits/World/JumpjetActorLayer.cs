@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World)]
-	public class JumpjetActorLayerInfo : TraitInfo
+	public class JumpjetActorLayerInfo : TraitInfo, ICustomMovementLayerInfo
 	{
 		[Desc("Terrain type of the airborne layer.")]
 		public readonly string TerrainType = "Jumpjet";
