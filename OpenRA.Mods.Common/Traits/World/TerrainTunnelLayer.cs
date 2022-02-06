@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World)]
-	public class TerrainTunnelLayerInfo : TraitInfo, Requires<DomainIndexInfo>, ILobbyCustomRulesIgnore
+	public class TerrainTunnelLayerInfo : TraitInfo, Requires<DomainIndexInfo>, ILobbyCustomRulesIgnore, ICustomMovementLayerInfo
 	{
 		[Desc("Terrain type used by cells outside any tunnel footprint.")]
 		public readonly string ImpassableTerrainType = "Impassable";

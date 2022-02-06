@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Used by Mobile. Attach these to the world actor. You can have multiple variants by adding @suffixes.")]
-	public class LocomotorInfo : TraitInfo
+	public class LocomotorInfo : TraitInfo, NotBefore<ICustomMovementLayerInfo>
 	{
 		[Desc("Locomotor ID.")]
 		public readonly string Name = "default";
@@ -376,34 +376,31 @@ namespace OpenRA.Mods.Common.Traits
 			map.CustomTerrain.CellEntryChanged += UpdateCellCost;
 			map.Tiles.CellEntryChanged += UpdateCellCost;
 
-			// This section needs to run after WorldLoaded() because we need to be sure that all types of ICustomMovementLayer have been initialized.
-			w.AddFrameEndTask(_ =>
+			// NotBefore<> ensures all custom movement layers have been initialized.
+			var customMovementLayers = world.GetCustomMovementLayers();
+			Array.Resize(ref cellsCost, customMovementLayers.Length);
+			Array.Resize(ref blockingCache, customMovementLayers.Length);
+			foreach (var cml in customMovementLayers)
 			{
-				var customMovementLayers = world.GetCustomMovementLayers();
-				Array.Resize(ref cellsCost, customMovementLayers.Length);
-				Array.Resize(ref blockingCache, customMovementLayers.Length);
-				foreach (var cml in customMovementLayers)
+				if (cml == null)
+					continue;
+
+				var cellLayer = new CellLayer<short>(map);
+				cellsCost[cml.Index] = cellLayer;
+				blockingCache[cml.Index] = new CellLayer<CellCache>(map);
+
+				foreach (var cell in map.AllCells)
 				{
-					if (cml == null)
-						continue;
+					var index = cml.GetTerrainIndex(cell);
 
-					var cellLayer = new CellLayer<short>(map);
-					cellsCost[cml.Index] = cellLayer;
-					blockingCache[cml.Index] = new CellLayer<CellCache>(map);
+					var cost = PathGraph.MovementCostForUnreachableCell;
 
-					foreach (var cell in map.AllCells)
-					{
-						var index = cml.GetTerrainIndex(cell);
+					if (index != byte.MaxValue)
+						cost = terrainInfos[index].Cost;
 
-						var cost = PathGraph.MovementCostForUnreachableCell;
-
-						if (index != byte.MaxValue)
-							cost = terrainInfos[index].Cost;
-
-						cellLayer[cell] = cost;
-					}
+					cellLayer[cell] = cost;
 				}
-			});
+			}
 		}
 
 		CellCache GetCache(CPos cell)
