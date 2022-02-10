@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2022 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -39,6 +39,14 @@ namespace OpenRA
 
 		public Dictionary<string, string> StringPool { get; } = new Dictionary<string, string>();
 
+		readonly List<MapDirectoryTracker> mapDirectoryTrackers = new List<MapDirectoryTracker>();
+
+		/// <summary>
+		/// If a map was added oldUID will be null, if updated oldUId will point to the outdated map
+		/// Event is not called when map is deleted
+		/// </summary>
+		public event Action<string, string> MapUpdated = (oldUID, newUID) => { };
+
 		public MapCache(ModData modData)
 		{
 			this.modData = modData;
@@ -48,11 +56,19 @@ namespace OpenRA
 			sheetBuilder = new SheetBuilder(SheetType.BGRA);
 		}
 
+		public void UpdateMaps()
+		{
+			foreach (var tracker in mapDirectoryTrackers)
+				tracker.UpdateMaps(this);
+		}
+
 		public void LoadMaps()
 		{
 			// Utility mod that does not support maps
 			if (!modData.Manifest.Contains<MapGrid>())
 				return;
+
+			var mapGrid = modData.Manifest.Get<MapGrid>();
 
 			// Enumerate map directories
 			foreach (var kv in modData.Manifest.MapFolders)
@@ -85,35 +101,41 @@ namespace OpenRA
 				}
 
 				mapLocations.Add(package, classification);
+				mapDirectoryTrackers.Add(new MapDirectoryTracker(mapGrid, package, classification));
 			}
 
-			var mapGrid = modData.Manifest.Get<MapGrid>();
 			foreach (var kv in MapLocations)
 			{
 				foreach (var map in kv.Key.Contents)
-				{
-					IReadOnlyPackage mapPackage = null;
-					try
-					{
-						using (new Support.PerfTimer(map))
-						{
-							mapPackage = kv.Key.OpenPackage(map, modData.ModFiles);
-							if (mapPackage == null)
-								continue;
+					LoadMap(map, kv.Key, kv.Value, mapGrid, null);
+			}
+		}
 
-							var uid = Map.ComputeUID(mapPackage);
-							previews[uid].UpdateFromMap(mapPackage, kv.Key, kv.Value, modData.Manifest.MapCompatibility, mapGrid.Type);
-						}
-					}
-					catch (Exception e)
+		public void LoadMap(string map, IReadOnlyPackage package, MapClassification classification, MapGrid mapGrid, string oldMap)
+		{
+			IReadOnlyPackage mapPackage = null;
+			try
+			{
+				using (new Support.PerfTimer(map))
+				{
+					mapPackage = package.OpenPackage(map, modData.ModFiles);
+					if (mapPackage != null)
 					{
-						mapPackage?.Dispose();
-						Console.WriteLine("Failed to load map: {0}", map);
-						Console.WriteLine("Details: {0}", e);
-						Log.Write("debug", "Failed to load map: {0}", map);
-						Log.Write("debug", "Details: {0}", e);
+						var uid = Map.ComputeUID(mapPackage);
+						previews[uid].UpdateFromMap(mapPackage, package, classification, modData.Manifest.MapCompatibility, mapGrid.Type);
+
+						if (oldMap != uid)
+							MapUpdated(oldMap, uid);
 					}
 				}
+			}
+			catch (Exception e)
+			{
+				mapPackage?.Dispose();
+				Console.WriteLine("Failed to load map: {0}", map);
+				Console.WriteLine("Details: {0}", e);
+				Log.Write("debug", "Failed to load map: {0}", map);
+				Log.Write("debug", "Details: {0}", e);
 			}
 		}
 
@@ -345,10 +367,18 @@ namespace OpenRA
 			return initialUid;
 		}
 
-		public MapPreview this[string key] => previews[key];
+		public MapPreview this[string key]
+		{
+			get
+			{
+				UpdateMaps();
+				return previews[key];
+			}
+		}
 
 		public IEnumerator<MapPreview> GetEnumerator()
 		{
+			UpdateMaps();
 			return previews.Values.GetEnumerator();
 		}
 
@@ -367,6 +397,9 @@ namespace OpenRA
 
 			foreach (var p in previews.Values)
 				p.Dispose();
+
+			foreach (var t in mapDirectoryTrackers)
+				t.Dispose();
 
 			// We need to let the loader thread exit before we can dispose our sheet builder.
 			// Ideally we should dispose our resources before returning, but we don't to block waiting on the loader thread to exit.
