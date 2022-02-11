@@ -271,6 +271,7 @@ PVICE:
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	ActorLostNotification:
+		TextNotification: Unit lost.
 
 STEG:
 	Inherits: ^DINO

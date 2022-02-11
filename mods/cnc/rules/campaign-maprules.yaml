@@ -68,6 +68,10 @@ airstrike.proxy:
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSpeechNotification: InsufficientPower
 		IncomingSpeechNotification: EnemyPlanesApproaching
+		EndChargeTextNotification: Airstrike ready.
+		SelectTargetTextNotification: Select target.
+		InsufficientPowerTextNotification: Insufficient power.
+		IncomingTextNotification: Enemy planes approaching.
 		UnitType: a10
 		DisplayBeacon: True
 		BeaconPoster: airstrike

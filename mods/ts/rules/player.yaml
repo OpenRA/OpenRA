@@ -20,7 +20,9 @@ Player:
 		BuildDurationModifier: 120
 		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
+		ReadyTextNotification: Construction complete.
 		LimitedAudio: BuildingInProgress
+		LimitedTextNotification: Unable to comply. Building in progress.
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -31,7 +33,9 @@ Player:
 		BuildDurationModifier: 120
 		LowPowerModifier: 300
 		ReadyAudio: ConstructionComplete
+		ReadyTextNotification: Construction complete.
 		LimitedAudio: BuildingInProgress
+		LimitedTextNotification: Unable to comply. Building in progress.
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -42,7 +46,9 @@ Player:
 		BuildDurationModifier: 120
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
+		ReadyTextNotification: Unit ready.
 		LimitedAudio: BuildingInProgress
+		LimitedTextNotification: Unable to comply. Building in progress.
 		QueuedAudio: Training
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -53,7 +59,9 @@ Player:
 		BuildDurationModifier: 120
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
+		ReadyTextNotification: Unit ready.
 		LimitedAudio: BuildingInProgress
+		LimitedTextNotification: Unable to comply. Building in progress.
 		QueuedAudio: Training
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -64,7 +72,9 @@ Player:
 		BuildDurationModifier: 120
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
+		ReadyTextNotification: Unit ready.
 		LimitedAudio: BuildingInProgress
+		LimitedTextNotification: Unable to comply. Building in progress.
 		QueuedAudio: Training
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -72,6 +82,8 @@ Player:
 	PlaceBuilding:
 		NewOptionsNotification: NewOptions
 		CannotPlaceNotification: BuildingCannotPlaceAudio
+		NewOptionsTextNotification: New construction options.
+		CannotPlaceTextNotification: Cannot deploy here.
 	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:
@@ -81,9 +93,11 @@ Player:
 	ConquestVictoryConditions:
 	PowerManager:
 		SpeechNotification: LowPower
+		TextNotification: Low power.
 	AllyRepair:
 	PlayerResources:
 		InsufficientFundsNotification: InsufficientFunds
+		InsufficientFundsTextNotification: Insufficient funds.
 		CashTickUpNotification: CashTickUp
 		CashTickDownNotification: CashTickDown
 	DeveloperMode:
@@ -100,8 +114,11 @@ Player:
 		Prerequisites: global-factundeploy
 	FrozenActorLayer:
 	BaseAttackNotifier:
+		TextNotification: Base under attack.
+		AllyTextNotification: Our ally is under attack.
 		AllyNotification: OurAllyIsUnderAttack
 	HarvesterAttackNotifier:
+		TextNotification: Harvester under attack.
 	PlayerStatistics:
 	PlaceBeacon:
 		Palette: effect
@@ -126,6 +143,7 @@ Player:
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high, techlevel.superweapons
 		Id: unrestricted
 	ResourceStorageWarning:
+		TextNotification: Silos needed.
 	PlayerExperience:
 	GameSaveViewportManager:
 	PlayerRadarTerrain:

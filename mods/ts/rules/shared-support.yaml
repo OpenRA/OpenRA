@@ -51,3 +51,5 @@ NAPULS:
 		Description: Fires a pulse blast which disables\nall mechanical units in the area.
 		EndChargeSpeechNotification: EmPulseCannonReady
 		SelectTargetSpeechNotification: SelectTarget
+		EndChargeTextNotification: EMP cannon ready.
+		SelectTargetTextNotification: Select target.

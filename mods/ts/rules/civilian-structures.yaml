@@ -827,6 +827,7 @@ CAHOSP:
 	Capturable:
 		Types: building
 	CaptureNotification:
+		TextNotification: Building captured.
 	ProvidesPrerequisite@BuildingName:
 	ThrowsShrapnel@SMALL:
 		Pieces: 5, 9

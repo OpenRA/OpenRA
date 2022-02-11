@@ -47,6 +47,7 @@
 ^GainsExperience:
 	GainsExperience:
 		LevelUpNotification: LevelUp
+		LevelUpTextNotification: Unit promoted.
 		Conditions:
 			200: rank-veteran
 			400: rank-veteran
@@ -267,6 +268,7 @@
 	AttackMove:
 	HiddenUnderFog:
 	ActorLostNotification:
+		TextNotification: Unit lost.
 	ProximityCaptor:
 		Types: Vehicle
 	GpsDot:
@@ -283,7 +285,9 @@
 		CancelActivity: True
 	CaptureNotification:
 		Notification: UnitStolen
+		TextNotification: Unit stolen.
 		LoseNotification: UnitLost
+		LoseTextNotification: Unit lost.
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
@@ -367,6 +371,7 @@
 		RequiresCondition: disable-experience
 	HiddenUnderFog:
 	ActorLostNotification:
+		TextNotification: Unit lost.
 	GpsDot:
 		String: Infantry
 	Crushable:
@@ -513,6 +518,7 @@
 	AttackMove:
 	ActorLostNotification:
 		Notification: NavalUnitLost
+		TextNotification: Naval unit lost.
 	ProximityCaptor:
 		Types: Ship
 	Chronoshiftable:
@@ -573,6 +579,7 @@
 	Guardable:
 	ActorLostNotification:
 		Notification: AirUnitLost
+		TextNotification: Airborne unit lost.
 	ProximityCaptor:
 		Types: Plane
 	EjectOnDeath:
@@ -607,7 +614,9 @@
 		RequiresCondition: !airborne
 	CaptureNotification:
 		Notification: UnitStolen
+		TextNotification: Unit stolen.
 		LoseNotification: UnitLost
+		LoseTextNotification: Unit lost.
 
 ^Plane:
 	Inherits: ^NeutralPlane
@@ -666,6 +675,7 @@
 		Weapon: BuildingExplode
 		EmptyWeapon: BuildingExplode
 	CaptureNotification:
+		TextNotification: Structure captured.
 	ShakeOnDeath:
 	ProximityCaptor:
 		Types: Building
@@ -1306,6 +1316,7 @@
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
+		SelectionTextNotification: Primary building selected.
 	WithDecoration@primary:
 		RequiresCondition: primary
 		Position: Top

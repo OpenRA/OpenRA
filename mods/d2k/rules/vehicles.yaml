@@ -35,6 +35,7 @@ mcv:
 		Offset: -1,-1
 		TransformSounds: BUILD1.WAV
 		NoTransformNotification: CannotDeploy
+		NoTransformTextNotification: Cannot deploy here.
 	SpawnActorOnDeath:
 		Actor: mcv.husk
 		OwnerType: InternalName

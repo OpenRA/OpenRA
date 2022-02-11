@@ -312,6 +312,9 @@ GAHPAD:
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
 		StartRepairingNotification: Repairing
+		StartRepairingTextNotification: Repairing.
+		FinishRepairingNotification: UnitRepaired
+		FinishRepairingTextNotification: Unit repaired.
 	ProductionBar:
 		ProductionType: Air
 	WithIdleOverlay@PLATFORM:
@@ -359,6 +362,9 @@ GADEPT:
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
 		StartRepairingNotification: Repairing
+		StartRepairingTextNotification: Repairing.
+		FinishRepairingNotification: UnitRepaired
+		FinishRepairingTextNotification: Unit repaired.
 	RallyPoint:
 		Palette: mouse
 		IsPlayerPalette: false
@@ -544,6 +550,8 @@ GAPLUG:
 		Description: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
 		EndChargeSpeechNotification: IonCannonReady
 		SelectTargetSpeechNotification: SelectTarget
+		EndChargeTextNotification: Ion cannon ready.
+		SelectTargetTextNotification: Select target.
 		DisplayRadarPing: True
 		CameraActor: camera
 	DropPodsPower:
@@ -554,6 +562,7 @@ GAPLUG:
 		Name: Drop Pods
 		Description: Drop Pod reinforcements.\nSmall team of elite soldiers orbital drops\nto target location.
 		SelectTargetSpeechNotification: SelectTarget
+		SelectTargetTextNotification: Select target.
 		DisplayRadarPing: true
 		ChargeInterval: 10000
 		UnitTypes: DPOD2E1, DPOD2E2

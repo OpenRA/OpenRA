@@ -16,7 +16,9 @@ Player:
 		DisplayOrder: 0
 		LowPowerModifier: 300
 		ReadyAudio: BuildingReady
+		ReadyTextNotification: Construction complete.
 		BlockedAudio: NoRoom
+		BlockedTextNotification: No room for new unit.
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -27,7 +29,9 @@ Player:
 		DisplayOrder: 1
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
+		ReadyTextNotification: Unit ready.
 		BlockedAudio: NoRoom
+		BlockedTextNotification: No room for new unit.
 		QueuedAudio: Training
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -38,7 +42,9 @@ Player:
 		DisplayOrder: 2
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
+		ReadyTextNotification: Unit ready.
 		BlockedAudio: NoRoom
+		BlockedTextNotification: No room for new unit.
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -49,7 +55,9 @@ Player:
 		DisplayOrder: 3
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
+		ReadyTextNotification: Unit ready.
 		BlockedAudio: NoRoom
+		BlockedTextNotification: No room for new unit.
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -60,6 +68,7 @@ Player:
 		DisplayOrder: 4
 		BuildDurationModifier: 212
 		BlockedAudio: NoRoom
+		BlockedTextNotification: No room for new unit.
 		QueuedAudio: OrderPlaced
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -68,7 +77,9 @@ Player:
 		DisplayOrder: 5
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
+		ReadyTextNotification: Unit ready.
 		BlockedAudio: NoRoom
+		BlockedTextNotification: No room for new unit.
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -77,13 +88,17 @@ Player:
 	ClassicProductionQueue@Upgrade: # Upgrade is defined after others so it won't be automatically selected by ProductionQueueFromSelection.
 		Type: Upgrade
 		ReadyAudio: NewOptions
+		ReadyTextNotification: New construction options.
 		BlockedAudio: NoRoom
+		BlockedTextNotification: No room for new unit.
 		QueuedAudio: Upgrading
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 	PlaceBuilding:
 		NewOptionsNotification: NewOptions
 		CannotPlaceNotification: BuildingCannotPlaceAudio
+		NewOptionsTextNotification: New construction options.
+		CannotPlaceTextNotification: Cannot build here.
 	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:
@@ -94,15 +109,19 @@ Player:
 	PowerManager:
 		AdviceInterval: 26000
 		SpeechNotification: LowPower
+		TextNotification: Low power.
 	AllyRepair:
 	PlayerResources:
 		SelectableCash: 2500, 5000, 7000, 10000, 20000
 		InsufficientFundsNotification: InsufficientFunds
+		InsufficientFundsTextNotification: Insufficient funds.
 		CashTickUpNotification: CashTickUp
 		CashTickDownNotification: CashTickDown
 	DeveloperMode:
 		CheckboxDisplayOrder: 8
 	BaseAttackNotifier:
+		TextNotification: Base under attack.
+		AllyTextNotification: Our ally is under attack.
 	Shroud:
 		FogCheckboxDisplayOrder: 3
 	LobbyPrerequisiteCheckbox@AUTOCONCRETE:
@@ -114,6 +133,7 @@ Player:
 		Prerequisites: global-auto-concrete
 	FrozenActorLayer:
 	HarvesterAttackNotifier:
+		TextNotification: Harvester under attack.
 	PlayerStatistics:
 	PlaceBeacon:
 	ProvidesPrerequisite@atreides:
@@ -158,6 +178,7 @@ Player:
 	GrantConditionOnPrerequisiteManager:
 	ResourceStorageWarning:
 		AdviceInterval: 26000
+		TextNotification: Silos needed.
 	PlayerExperience:
 	GameSaveViewportManager:
 	PlayerRadarTerrain:

@@ -178,4 +178,5 @@ HQ:
 		MaxMoveDelay: 1000
 	ActorLostNotification:
 		Notification: CivilianKilled
+		TextNotification: Civilian killed.
 		NotifyAll: true
