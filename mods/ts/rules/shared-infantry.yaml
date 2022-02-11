@@ -73,6 +73,7 @@ ENGINEER:
 	EngineerRepair:
 	RepairsBridges:
 		RepairNotification: BridgeRepaired
+		RepairTextNotification: Bridge repaired.
 	CaptureManager:
 	Captures:
 		CaptureTypes: building

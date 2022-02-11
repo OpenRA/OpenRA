@@ -276,6 +276,9 @@ NAHPAD:
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
 		StartRepairingNotification: Repairing
+		StartRepairingTextNotification: Repairing.
+		FinishRepairingNotification: UnitRepaired
+		FinishRepairingTextNotification: Unit repaired.
 	ProductionBar:
 		ProductionType: Air
 	WithIdleOverlay@PLATFORM:
@@ -525,6 +528,9 @@ NAMISL:
 		EndChargeSpeechNotification: ClusterMissileReady
 		SelectTargetSpeechNotification: SelectTarget
 		IncomingSpeechNotification: MissileLaunchDetected
+		EndChargeTextNotification: Cluster missile ready.
+		SelectTargetTextNotification: Select target.
+		IncomingTextNotification: Missile launch detected.
 		LaunchSound: icbm1.aud
 		MissileWeapon: ClusterMissile
 		MissileImage: ClusterMissile

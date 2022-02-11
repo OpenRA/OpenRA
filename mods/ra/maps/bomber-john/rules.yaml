@@ -97,9 +97,14 @@ Player:
 		Name: Invulnerability
 		Description: Makes a unit invulnerable\nfor 3 seconds.
 		Duration: 75
-		SelectTargetSound: slcttgt1.aud
-		BeginChargeSound: ironchg1.aud
-		EndChargeSound: ironrdy1.aud
+		SelectTargetSpeechNotification: SelectTarget
+		InsufficientPowerSpeechNotification: InsufficientPower
+		BeginChargeSpeechNotification: IronCurtainCharging
+		EndChargeSpeechNotification: IronCurtainReady
+		SelectTargetTextNotification: Select target.
+		InsufficientPowerTextNotification: Insufficient power.
+		BeginChargeTextNotification: Iron curtain charging.
+		EndChargeTextNotification: Iron curtain ready.
 		Condition: invulnerability
 		Sequence: idle
 		OnFireSound: ironcur9.aud

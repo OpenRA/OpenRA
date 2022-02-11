@@ -17,6 +17,7 @@
 ^GainsExperience:
 	GainsExperience:
 		LevelUpNotification: LevelUp
+		LevelUpTextNotification: Unit promoted.
 		Conditions:
 			500: rank
 			1000: rank
@@ -387,6 +388,7 @@
 	OwnerLostAction:
 		Action: Kill
 	CaptureNotification:
+		TextNotification: Building captured.
 	Demolishable:
 		Condition: being-demolished
 	Sellable:
@@ -594,6 +596,7 @@
 		Voice: Move
 	HiddenUnderFog:
 	ActorLostNotification:
+		TextNotification: Unit lost.
 	DamagedByTerrain:
 		Terrain: Tiberium, BlueTiberium
 		Damage: 200
@@ -805,6 +808,7 @@
 		Voice: Move
 	HiddenUnderFog:
 	ActorLostNotification:
+		TextNotification: Unit lost.
 	CaptureManager:
 		BeingCapturedCondition: being-captured
 	Capturable:
@@ -921,6 +925,7 @@
 		Voice: Move
 		MoveIntoShroud: false
 	ActorLostNotification:
+		TextNotification: Unit lost.
 	BodyOrientation:
 		QuantizedFacings: 0
 		CameraPitch: 85
@@ -1427,6 +1432,7 @@
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
+		SelectionTextNotification: Primary building selected.
 	WithTextDecoration@primary:
 		RequiresCondition: primary
 		Position: Top

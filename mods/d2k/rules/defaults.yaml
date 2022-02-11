@@ -15,6 +15,7 @@
 ^GainsExperience:
 	GainsExperience:
 		LevelUpNotification: LevelUp
+		LevelUpTextNotification: Unit promoted.
 		Conditions:
 			200: rank-veteran
 			400: rank-veteran
@@ -212,6 +213,7 @@
 	AttackMove:
 	HiddenUnderFog:
 	ActorLostNotification:
+		TextNotification: Unit lost.
 	Repairable:
 		RepairActors: repair_pad
 	Guard:
@@ -352,6 +354,7 @@
 		CargoType: Infantry
 	HiddenUnderFog:
 	ActorLostNotification:
+		TextNotification: Unit lost.
 	Crushable:
 		CrushSound: CRUSH1.WAV
 	Guard:
@@ -393,6 +396,7 @@
 		Type: GroundPosition
 		AlwaysVisibleRelationships: None
 	ActorLostNotification:
+		TextNotification: Unit lost.
 	AttackMove:
 	WithFacingSpriteBody:
 	WithShadow:
@@ -455,8 +459,11 @@
 		RequiredForShortGame: true
 	FrozenUnderFog:
 	CaptureNotification:
+		TextNotification: Enemy building captured.
+		LoseTextNotification: One of our buildings has been captured.
 	ActorLostNotification:
 		Notification: BuildingLost
+		TextNotification: Building lost.
 	ShakeOnDeath:
 	Demolishable:
 		Condition: being-demolished
@@ -600,6 +607,7 @@
 		PrimaryCondition: primary
 		ProductionQueues: Building
 		SelectionNotification: PrimaryBuildingSelected
+		SelectionTextNotification: Primary building selected.
 	WithTextDecoration@primary:
 		RequiresCondition: primary
 		Position: Top

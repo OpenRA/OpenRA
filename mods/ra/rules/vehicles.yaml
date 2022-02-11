@@ -377,6 +377,7 @@ MCV:
 		Facing: 384
 		TransformSounds: placbldg.aud, build5.aud
 		NoTransformNotification: BuildingCannotPlaceAudio
+		NoTransformTextNotification: Cannot deploy here.
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	BaseBuilding:
