@@ -650,8 +650,7 @@ namespace OpenRA.Mods.Common.Server
 				server.SendOrderTo(kickConn, "ServerError", "You have been kicked from the server.");
 				server.DropClient(kickConn);
 
-				bool.TryParse(split[1], out var tempBan);
-				if (tempBan)
+				if (bool.TryParse(split[1], out var tempBan) && tempBan)
 				{
 					Log.Write("server", "Temporarily banning client {0} ({1}).", kickClientID, kickClient.IPAddress);
 					server.SendMessage($"{client.Name} temporarily banned {kickClient.Name} from the server.");

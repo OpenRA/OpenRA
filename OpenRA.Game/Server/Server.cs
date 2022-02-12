@@ -1076,7 +1076,7 @@ namespace OpenRA.Server
 			{
 				Conns.Remove(toDrop);
 
-				var dropClient = LobbyInfo.Clients.FirstOrDefault(c1 => c1.Index == toDrop.PlayerIndex);
+				var dropClient = LobbyInfo.Clients.FirstOrDefault(c => c.Index == toDrop.PlayerIndex);
 				if (dropClient == null)
 				{
 					toDrop.Dispose();
