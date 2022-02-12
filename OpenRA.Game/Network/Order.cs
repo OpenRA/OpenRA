@@ -73,7 +73,7 @@ namespace OpenRA
 		public bool SuppressVisualFeedback;
 		public ref readonly Target VisualFeedbackTarget => ref visualFeedbackTarget;
 
-		public Player Player => Subject != null ? Subject.Owner : null;
+		public Player Player => Subject?.Owner;
 
 		readonly Target target;
 		readonly Target visualFeedbackTarget;

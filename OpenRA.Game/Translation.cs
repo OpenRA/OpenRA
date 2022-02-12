@@ -110,7 +110,7 @@ namespace OpenRA
 
 				value = args[i + 1];
 				if (value == null)
-					throw new ArgumentNullException("args", $"Expected the argument at index {i + 1} to be a non-null value");
+					throw new ArgumentNullException(nameof(args), $"Expected the argument at index {i + 1} to be a non-null value");
 
 				argumentDictionary.Add(name, value);
 			}
