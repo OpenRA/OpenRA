@@ -47,11 +47,12 @@ Container@LOBBY_OPTIONS_BIN:
 							Height: 60
 							Width: PARENT_RIGHT
 							Children:
-								Label@A_DESC:
+								LabelForInput@A_DESC:
 									X: 10
 									Width: PARENT_RIGHT / 3 - 20
 									Height: 20
 									Visible: False
+									For: A
 								DropDownButton@A:
 									X: 10
 									Width: PARENT_RIGHT / 3 - 20
@@ -60,11 +61,12 @@ Container@LOBBY_OPTIONS_BIN:
 									Font: Regular
 									Visible: False
 									TooltipContainer: TOOLTIP_CONTAINER
-								Label@B_DESC:
+								LabelForInput@B_DESC:
 									X: PARENT_RIGHT / 3 + 10
 									Width: PARENT_RIGHT / 3 - 20
 									Height: 20
 									Visible: False
+									For: B
 								DropDownButton@B:
 									X: PARENT_RIGHT / 3 + 10
 									Width: PARENT_RIGHT / 3 - 20
@@ -73,11 +75,12 @@ Container@LOBBY_OPTIONS_BIN:
 									Font: Regular
 									Visible: False
 									TooltipContainer: TOOLTIP_CONTAINER
-								Label@C_DESC:
+								LabelForInput@C_DESC:
 									X: (PARENT_RIGHT / 3) * 2 + 10
 									Width: PARENT_RIGHT / 3 - 20
 									Height: 20
 									Visible: False
+									For: C
 								DropDownButton@C:
 									X: (PARENT_RIGHT / 3) * 2 + 10
 									Width: PARENT_RIGHT / 3 - 20

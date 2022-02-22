@@ -29,6 +29,10 @@ namespace OpenRA.Mods.Common.Widgets
 			: base(modData)
 		{
 			GetCheckType = () => CheckType;
+			TextColor = ChromeMetrics.Get<Color>("TextColor");
+			TextColorDisabled = ChromeMetrics.Get<Color>("TextDisabledColor");
+			GetColor = () => TextColor;
+			GetColorDisabled = () => TextColorDisabled;
 		}
 
 		protected CheckboxWidget(CheckboxWidget other)
@@ -39,6 +43,10 @@ namespace OpenRA.Mods.Common.Widgets
 			IsChecked = other.IsChecked;
 			CheckOffset = other.CheckOffset;
 			HasPressedState = other.HasPressedState;
+			TextColor = other.TextColor;
+			TextColorDisabled = other.TextColorDisabled;
+			GetColor = other.GetColor;
+			GetColorDisabled = other.GetColorDisabled;
 		}
 
 		public override void Draw()

@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public class ButtonWidget : Widget
+	public class ButtonWidget : InputWidget
 	{
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "BUTTON_TOOLTIP";
@@ -42,14 +42,12 @@ namespace OpenRA.Mods.Common.Widgets
 		public int ContrastRadius = ChromeMetrics.Get<int>("ButtonTextContrastRadius");
 		public string ClickSound = ChromeMetrics.Get<string>("ClickSound");
 		public string ClickDisabledSound = ChromeMetrics.Get<string>("ClickDisabledSound");
-		public bool Disabled = false;
 		public bool Highlighted = false;
 		public Func<string> GetText;
 		public Func<Color> GetColor;
 		public Func<Color> GetColorDisabled;
 		public Func<Color> GetContrastColorDark;
 		public Func<Color> GetContrastColorLight;
-		public Func<bool> IsDisabled;
 		public Func<bool> IsHighlighted;
 		public Action<MouseInput> OnMouseDown = _ => { };
 		public Action<MouseInput> OnMouseUp = _ => { };
@@ -83,7 +81,6 @@ namespace OpenRA.Mods.Common.Widgets
 			GetContrastColorLight = () => ContrastColorLight;
 			OnMouseUp = _ => OnClick();
 			OnKeyPress = _ => OnClick();
-			IsDisabled = () => Disabled;
 			IsHighlighted = () => Highlighted;
 			GetTooltipText = () => TooltipText;
 			GetTooltipDesc = () => TooltipDesc;
@@ -118,7 +115,6 @@ namespace OpenRA.Mods.Common.Widgets
 			GetContrastColorLight = other.GetContrastColorLight;
 			OnMouseDown = other.OnMouseDown;
 			Disabled = other.Disabled;
-			IsDisabled = other.IsDisabled;
 			Highlighted = other.Highlighted;
 			IsHighlighted = other.IsHighlighted;
 

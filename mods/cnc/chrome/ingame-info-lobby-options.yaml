@@ -35,11 +35,12 @@ Container@LOBBY_OPTIONS_PANEL:
 							Height: 60
 							Width: PARENT_RIGHT
 							Children:
-								Label@A_DESC:
+								LabelForInput@A_DESC:
 									X: 10
 									Width: PARENT_RIGHT / 2 - 20
 									Height: 20
 									Visible: False
+									For: A
 								DropDownButton@A:
 									X: 10
 									Y: 25
@@ -48,11 +49,12 @@ Container@LOBBY_OPTIONS_PANEL:
 									Font: Regular
 									Visible: False
 									TooltipContainer: TOOLTIP_CONTAINER
-								Label@B_DESC:
+								LabelForInput@B_DESC:
 									X: PARENT_RIGHT / 2 + 10
 									Width: PARENT_RIGHT / 2 - 20
 									Height: 20
 									Visible: False
+									For: B
 								DropDownButton@B:
 									X: PARENT_RIGHT / 2 + 10
 									Y: 25
