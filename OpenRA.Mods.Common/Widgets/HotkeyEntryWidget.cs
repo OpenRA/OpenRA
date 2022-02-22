@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public class HotkeyEntryWidget : Widget
+	public class HotkeyEntryWidget : InputWidget
 	{
 		public Hotkey Key;
 
@@ -27,7 +27,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public Action<KeyInput> OnEscKey = _ => { };
 		public Action OnLoseFocus = () => { };
 
-		public Func<bool> IsDisabled = () => false;
 		public Func<bool> IsValid = () => false;
 		public string Font = ChromeMetrics.Get<string>("HotkeyFont");
 		public Color TextColor = ChromeMetrics.Get<Color>("HotkeyColor");

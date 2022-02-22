@@ -18,7 +18,7 @@ using OpenRA.Widgets;
 namespace OpenRA.Mods.Common.Widgets
 {
 	public enum TextFieldType { General, Filename, Integer }
-	public class TextFieldWidget : Widget
+	public class TextFieldWidget : InputWidget
 	{
 		string text = "";
 		public string Text
@@ -38,8 +38,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public int LeftMargin = 5;
 		public int RightMargin = 5;
 		public string Background = "textfield";
-
-		public bool Disabled = false;
 
 		TextFieldType type = TextFieldType.General;
 		public TextFieldType Type
@@ -64,7 +62,6 @@ namespace OpenRA.Mods.Common.Widgets
 		public Action OnTextEdited = () => { };
 		public int CursorPosition { get; set; }
 
-		public Func<bool> IsDisabled;
 		public Func<bool> IsValid = () => true;
 		public string Font = ChromeMetrics.Get<string>("TextfieldFont");
 		public Color TextColor = ChromeMetrics.Get<Color>("TextfieldColor");
@@ -76,10 +73,7 @@ namespace OpenRA.Mods.Common.Widgets
 		protected int selectionEndIndex = -1;
 		protected bool mouseSelectionActive = false;
 
-		public TextFieldWidget()
-		{
-			IsDisabled = () => Disabled;
-		}
+		public TextFieldWidget() { }
 
 		protected TextFieldWidget(TextFieldWidget widget)
 			: base(widget)
@@ -95,7 +89,6 @@ namespace OpenRA.Mods.Common.Widgets
 			TextColorInvalid = widget.TextColorInvalid;
 			TextColorHighlight = widget.TextColorHighlight;
 			VisualHeight = widget.VisualHeight;
-			IsDisabled = widget.IsDisabled;
 		}
 
 		public override bool YieldKeyboardFocus()

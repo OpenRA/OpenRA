@@ -16,9 +16,8 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public class SliderWidget : Widget
+	public class SliderWidget : InputWidget
 	{
-		public Func<bool> IsDisabled = () => false;
 		public event Action<float> OnChange = _ => { };
 		public int Ticks = 0;
 		public int TrackHeight = 5;

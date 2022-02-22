@@ -30,6 +30,7 @@ Metrics:
 	SpawnLabelOffset: 0,1
 	TextColor: FFFFFF
 	TextHighlightColor: FFFF00
+	TextDisabledColor: 808080
 	TextContrast: false
 	TextContrastColorDark: 000000
 	TextContrastColorLight: 7F7F7F
