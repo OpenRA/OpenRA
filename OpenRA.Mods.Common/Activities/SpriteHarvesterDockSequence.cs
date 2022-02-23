@@ -24,17 +24,20 @@ namespace OpenRA.Mods.Common.Activities
 			: base(self, refinery, dockAngle, isDragRequired, dragOffset, dragLength)
 		{
 			wsb = self.Trait<WithSpriteBody>();
-			wda = self.Info.TraitInfo<WithDockingAnimationInfo>();
+			wda = self.Info.TraitInfoOrDefault<WithDockingAnimationInfo>();
 		}
 
 		public override void OnStateDock(Actor self)
 		{
 			foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
 				trait.Docked();
+
 			foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
 				nd.Docked(Refinery, self);
 
-			wsb.PlayCustomAnimation(self, wda.DockSequence, () => wsb.PlayCustomAnimationRepeating(self, wda.DockLoopSequence));
+			if (wda != null)
+				wsb.PlayCustomAnimation(self, wda.DockSequence, () => wsb.PlayCustomAnimationRepeating(self, wda.DockLoopSequence));
+
 			dockAnimPlayed = true;
 			dockingState = DockingState.Loop;
 		}
@@ -49,17 +52,22 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			dockingState = DockingState.Wait;
-			wsb.PlayCustomAnimationBackwards(self, wda.DockSequence,
-				() =>
-				{
-					dockingState = DockingState.Complete;
-					foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
-						trait.Undocked();
 
-					if (Refinery.IsInWorld && !Refinery.IsDead)
-						foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
-							nd.Undocked(Refinery, self);
-				});
+			if (wda == null)
+				NotifyUndock(self);
+			else
+				wsb.PlayCustomAnimationBackwards(self, wda.DockSequence, () => NotifyUndock(self));
+		}
+
+		void NotifyUndock(Actor self)
+		{
+			dockingState = DockingState.Complete;
+			foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
+				trait.Undocked();
+
+			if (Refinery.IsInWorld && !Refinery.IsDead)
+				foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
+					nd.Undocked(Refinery, self);
 		}
 	}
 }
