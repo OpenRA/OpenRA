@@ -40,9 +40,23 @@ Container@ASSETBROWSER_PANEL:
 					Height: 25
 					Font: Bold
 					Text: Asset types
+				Label@FILENAME_DESC:
+					X: 15
+					Y: 95
+					Width: 195
+					Height: 25
+					Font: TinyBold
+					Align: Center
+					Text: Filter by name
+				TextField@FILENAME_INPUT:
+					X: 15
+					Y: 120
+					Width: 195
+					Height: 25
+					Type: Filename
 				ScrollPanel@ASSET_LIST:
 					X: 15
-					Y: 100
+					Y: 155
 					Width: 195
 					Height: PARENT_BOTTOM - 205
 					CollapseHiddenChildren: True
@@ -60,20 +74,6 @@ Container@ASSETBROWSER_PANEL:
 									Height: 25
 									TooltipContainer: TOOLTIP_CONTAINER
 									TooltipTemplate: SIMPLE_TOOLTIP
-				Label@FILENAME_DESC:
-					X: 15
-					Y: PARENT_BOTTOM - HEIGHT - 74
-					Width: 195
-					Height: 25
-					Font: TinyBold
-					Align: Center
-					Text: Filter by name
-				TextField@FILENAME_INPUT:
-					X: 15
-					Y: PARENT_BOTTOM - HEIGHT - 50
-					Width: 195
-					Height: 25
-					Type: Filename
 				Label@SPRITE_SCALE:
 					X: PARENT_RIGHT - WIDTH - 440
 					Y: 31
