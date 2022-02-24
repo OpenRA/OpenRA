@@ -33,11 +33,18 @@ Container@ASSETBROWSER_PANEL:
 					Height: 25
 					Font: Bold
 					Text: Folders
-				ScrollPanel@ASSET_LIST:
+				DropDownButton@ASSET_TYPES_DROPDOWN:
 					X: 15
 					Y: 65
 					Width: 195
-					Height: PARENT_BOTTOM - 170
+					Height: 25
+					Font: Bold
+					Text: Asset types
+				ScrollPanel@ASSET_LIST:
+					X: 15
+					Y: 100
+					Width: 195
+					Height: PARENT_BOTTOM - 205
 					CollapseHiddenChildren: True
 					Children:
 						ScrollItem@ASSET_TEMPLATE:
@@ -217,3 +224,15 @@ Container@ASSETBROWSER_PANEL:
 			Height: 35
 			Text: Back
 		TooltipContainer@TOOLTIP_CONTAINER:
+
+ScrollPanel@ASSET_TYPES_PANEL:
+	Width: 195
+	Height: 130
+	ItemSpacing: 5
+	TopBottomSpacing: 0
+	Children:
+		Checkbox@ASSET_TYPE_TEMPLATE:
+			X: 5
+			Y: 5
+			Width: PARENT_RIGHT - 29
+			Height: 20
