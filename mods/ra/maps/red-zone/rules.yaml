@@ -486,7 +486,6 @@ OILB:
 	-TooltipDescription@ally:
 	-TooltipDescription@other:
 
-
 TRAN:
 	-Targetable:
 	-Selectable:

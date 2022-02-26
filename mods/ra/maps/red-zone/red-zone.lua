@@ -1,11 +1,12 @@
 ﻿--[[
-   Copyright 2007-2017 The OpenRA Developers (see AUTHORS)
+   Copyright 2007-2022 The OpenRA Developers (see AUTHORS)
    This file is part of OpenRA, which is free software. It is made
    available to you under the terms of the GNU General Public License
    as published by the Free Software Foundation, either version 3 of
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
+
 PlayerInfo = { }
 TankCamera =
 {
@@ -104,44 +105,43 @@ NukeTimer =
 DemoTruckInsertionPath = { TransportInsertionPoint.Location, TransportDropoffPoint.Location }
 
 APCDropoff = function()
-	Media.PlaySpeechNotification(ussr, "ReinforcementsArrived")
+	Media.PlaySpeechNotification(USSR, "ReinforcementsArrived")
 
-	local passengers = Reinforcements.ReinforceWithTransport(ussr, "apc.entryunit", { "thf" }, APCInsertionPath, { APCExitPoint.Location })[2]
+	local passengers = Reinforcements.ReinforceWithTransport(USSR, "apc.entryunit", { "thf" }, APCInsertionPath, { APCExitPoint.Location })[2]
 	local thief = passengers[1]
 
 	Trigger.OnKilled(thief, MissionFailed)
 	Trigger.AfterDelay(DateTime.Seconds(6), function()
-		desertPatrolCam = Actor.Create(TankCamera[Difficulty], true, { Owner = ussr, Location = DesertCam.Location })
+		desertPatrolCam = Actor.Create(TankCamera[Difficulty], true, { Owner = USSR, Location = DesertCam.Location })
 	end)
 
-	if ussr.HasNoRequiredUnits() then
+	if USSR.HasNoRequiredUnits() then
 		MissionFailed()
 	end
 end
 
 EnglandAirBaseReveal = function()
 	if not EnglandAirBaseRevealed then
-		Media.DisplayMessage("Hijack a Hind Helicopter.")
-		EnglandAirBaseCamera = Actor.Create(AirBaseCamera[Difficulty], true, { Owner = ussr, Location = AirBaseCam.Location })
+		Media.DisplayMessage("Hijack a UH60 Helicopter.")
+		EnglandAirBaseCamera = Actor.Create(AirBaseCamera[Difficulty], true, { Owner = USSR, Location = AirBaseCam.Location })
 
 		EnglandAirBaseRevealed = true
 	end
 end
 
 BackupHeli = function()
-	Media.PlaySpeechNotification(ussr, "ReinforcementsArrived")
+	Media.PlaySpeechNotification(USSR, "ReinforcementsArrived")
 
-	local passengers = Reinforcements.ReinforceWithTransport(ussr, "tran", { "thf" }, BackupHeliPath, { APCEntryPoint.Location })[2]
+	local passengers = Reinforcements.ReinforceWithTransport(USSR, "tran", { "thf" }, BackupHeliPath, { APCEntryPoint.Location })[2]
 	local thief = passengers[1]
 
 	Trigger.OnKilled(thief, MissionFailed)
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		local StrikeTeam = Reinforcements.ReinforceWithTransport(ussr, "tran", SovietReinforcements[Difficulty], BackupHeliPathStrike, { APCEntryPoint.Location })[2]
+		local StrikeTeam = Reinforcements.ReinforceWithTransport(USSR, "tran", SovietReinforcements[Difficulty], BackupHeliPathStrike, { APCEntryPoint.Location })[2]
 		local ThiefReinforcements = StrikeTeam[1]
 	end)
 end
-
 
 Hind1PassengerCheck = function()
 		Trigger.OnPassengerEntered(Hind1, function(transport, passenger)
@@ -156,7 +156,7 @@ Hind1PassengerCheck = function()
 		
 			-- Eject on death hack: Set the current health value when we need to eject anyone out.
 			pi.EjectOnDeathHealth = passenger.Health
-			-- actor.Owner = ussr
+			-- actor.Owner = USSR
 			-- Name tag hack: Setting the driver to display the proper pilot name.
 			if transport.PassengerCount == 1 then
 				pi.IsPilot = true
@@ -165,7 +165,7 @@ Hind1PassengerCheck = function()
 		Trigger.OnPassengerExited(Hind1, function(transport, passenger)
 			if not transport.IsDead and transport.PassengerCount == 0 then
 				-- NOTE: With EjectOnDeath being busted, this might not be working as intended.
-				transport.Owner = neutral
+				transport.Owner = Neutral
 			end
 	
 			local pi = PlayerInfo[passenger.Owner.InternalName]
@@ -176,29 +176,30 @@ Hind1PassengerCheck = function()
 			pi.IsPilot = false
 	end)
 end
+
 Hind2PassengerCheck = function()
-		Trigger.OnPassengerEntered(Hind2, function(transport, passenger)
-			if transport.PassengerCount == 1 then
-				transport.Owner = passenger.Owner
-			end
-			local pi = PlayerInfo[passenger.Owner.InternalName]
+	Trigger.OnPassengerEntered(Hind2, function(transport, passenger)
+		if transport.PassengerCount == 1 then
+			transport.Owner = passenger.Owner
+		end
+		local pi = PlayerInfo[passenger.Owner.InternalName]
 
-			pi.PassengerOfVehicle = transport
-			pi.EjectOnDeathHealth = passenger.Health
-			if transport.PassengerCount == 1 then
-				pi.IsPilot = true
-			end
-		end)
-		Trigger.OnPassengerExited(Hind2, function(transport, passenger)
-			if not transport.IsDead and transport.PassengerCount == 0 then
-				transport.Owner = neutral
-			end
+		pi.PassengerOfVehicle = transport
+		pi.EjectOnDeathHealth = passenger.Health
+		if transport.PassengerCount == 1 then
+			pi.IsPilot = true
+		end
+	end)
+	Trigger.OnPassengerExited(Hind2, function(transport, passenger)
+		if not transport.IsDead and transport.PassengerCount == 0 then
+			transport.Owner = Neutral
+		end
 
-			local pi = PlayerInfo[passenger.Owner.InternalName]
-			pi.PassengerOfVehicle = nil
-			pi.IsPilot = false
-		end)
-	end
+		local pi = PlayerInfo[passenger.Owner.InternalName]
+		pi.PassengerOfVehicle = nil
+		pi.IsPilot = false
+	end)
+end
 			
 
 Hind2PassengerCheck = function()
@@ -207,10 +208,10 @@ Hind2PassengerCheck = function()
 			return
 		end
 		if not actor2.HasPassengers then
-			actor2.Owner = neutral
+			actor2.Owner = Neutral
 		else
 		-- if actor.HasPassengers then
-			actor2.Owner = ussr
+			actor2.Owner = USSR
 		end	
 	end)
 
@@ -223,11 +224,11 @@ Hind3PassengerCheck = function()
 			return
 		end
 		if not actor3.HasPassengers then
-			actor3.Owner = neutral
+			actor3.Owner = Neutral
 		end
 		
 		if actor3.HasPassengers then
-			actor3.Owner = ussr
+			actor3.Owner = USSR
 		end	
 	end)
 
@@ -311,7 +312,7 @@ NuclearTimerStarted = function()
 	end
 
 	SendAlliedReinforcements()
-	Media.PlaySoundNotification(ussr, "AlertBuzzer")
+	Media.PlaySoundNotification(USSR, "AlertBuzzer")
 
 	HindCaptured = true
 
@@ -320,13 +321,13 @@ NuclearTimerStarted = function()
 		Trigger.AfterDelay(DateTime.Seconds(4), function()
 			NukeCountdown()
 
-			EnglandMainBaseCamera = Actor.Create(MainBaseCamera[Difficulty], true, { Owner = ussr, Location = EnglandMainBaseCamNukes.Location })
+			EnglandMainBaseCamera = Actor.Create(MainBaseCamera[Difficulty], true, { Owner = USSR, Location = EnglandMainBaseCamNukes.Location })
 
-			PrisonCamera = Actor.Create(PrisonBaseCamera[Difficulty], true, { Owner = ussr, Location = PrisonCam.Location })
+			PrisonCamera = Actor.Create(PrisonBaseCamera[Difficulty], true, { Owner = USSR, Location = PrisonCam.Location })
 
 			Trigger.AfterDelay(DateTime.Seconds(3), function()
-				FreePrisoners = ussr.AddPrimaryObjective("Destroy the Prison to free Volkov.", ussr.Color)
-				ussr.MarkCompletedObjective(SovietObjective)
+				FreePrisoners = USSR.AddObjective("Destroy the Prison to free Volkov.", Primary, true)
+				USSR.MarkCompletedObjective(SovietObjective)
 
 				Trigger.AfterDelay(DateTime.Seconds(20), function()
 					Media.DisplayMessage("Use Ammo Depots to repair and reload the Hind.")
@@ -337,7 +338,7 @@ NuclearTimerStarted = function()
 end
 
 NukeCountdown = function()
-	Media.PlaySpeechNotification(ussr, "AtomBombPrepping")
+	Media.PlaySpeechNotification(USSR, "AtomBombPrepping")
 
 	timerStarted = true
 	remainingTime = NukeTimer[Difficulty]
@@ -360,38 +361,38 @@ NukeCountdown = function()
 		end
 
 		if remainingTime > 0 and timerStarted then
-			UserInterface.SetMissionText("Nuclear Launch In: " .. Utils.FormatTime(remainingTime), ussr.Color)
+			UserInterface.SetMissionText("Nuclear Launch In: " .. Utils.FormatTime(remainingTime), USSR.Color)
 			remainingTime = remainingTime - 1
 		elseif remainingTime == 0 then
 --			NukeLaunch()
-			england_main.MarkCompletedObjective(AlliedObjective)
+			England_Main.MarkCompletedObjective(AlliedObjective)
 			UserInterface.SetMissionText("")
-			Media.PlaySpeechNotification(ussr, "AtomBombLaunchDetected")
+			Media.PlaySpeechNotification(USSR, "AtomBombLaunchDetected")
 		end
 	end
 end
 
 NukeLaunch = function()
-	Media.PlaySpeechNotification(ussr, "AtomBombLaunchDetected")
+	Media.PlaySpeechNotification(USSR, "AtomBombLaunchDetected")
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
 		Lighting.Flash("LightningStrike", 20)
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(ussr, "SovietEmpireFallen")
+			Media.PlaySpeechNotification(USSR, "SovietEmpireFallen")
 			Trigger.AfterDelay(DateTime.Seconds(1), function()
-				england_main.MarkCompletedObjective(AlliedObjective)
+				England_Main.MarkCompletedObjective(AlliedObjective)
 			end)
 		end)
 	end)
 end
 
 FreeVolkov = function()
-	if ussr.IsObjectiveCompleted(FreePrisoners) then
+	if USSR.IsObjectiveCompleted(FreePrisoners) then
 		return
 	end
 
-	DestroyCommunications = ussr.AddPrimaryObjective("Destroy the Communication Center.")
+	DestroyCommunications = USSR.AddObjective("Destroy the Communication Center.", Primary, true)
 
-	local Volkov = Actor.Create("gnrl", true, { Owner = ussr, Location = PrisonersFreed.Location})
+	local Volkov = Actor.Create("gnrl", true, { Owner = USSR, Location = PrisonersFreed.Location})
 
 	Volkov.Scatter()
 
@@ -399,53 +400,53 @@ FreeVolkov = function()
 		Volkov.GrantCondition(Difficulty)
 	end
 
-	Media.PlaySpeechNotification(ussr, "CommandoRescued")
-	ussr.MarkCompletedObjective(FreePrisoners)
+	Media.PlaySpeechNotification(USSR, "CommandoRescued")
+	USSR.MarkCompletedObjective(FreePrisoners)
 
 	Trigger.AfterDelay(DateTime.Seconds(5), function()
 		if CommunicationsCenter.IsDead then
 			return
 		end
-		CommsCamera = Actor.Create(CommunicationsCenterCamera[Difficulty], true, { Owner = ussr, Location = NorthBaseCam.Location })
+		CommsCamera = Actor.Create(CommunicationsCenterCamera[Difficulty], true, { Owner = USSR, Location = NorthBaseCam.Location })
 	end)
 end
 
 CommunicationsCenterDestroyed = function()
-	if not ussr.IsObjectiveCompleted(FreePrisoners) then
+	if not USSR.IsObjectiveCompleted(FreePrisoners) then
 		Media.DisplayMessage("Rescue Volkov.")
 		return
 	end
 
-	Media.PlaySpeechNotification(ussr, "ObjectiveMet")
+	Media.PlaySpeechNotification(USSR, "ObjectiveMet")
 
-	Explosions = Actor.Create("bio", true, { Location = Explosion1.Location, Owner = ussr })
+	Explosions = Actor.Create("bio", true, { Location = Explosion1.Location, Owner = USSR })
 	Explosions.Kill()
 
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
-		Explosions = Actor.Create("bio", true, { Location = Explosion3.Location, Owner = ussr })
+		Explosions = Actor.Create("bio", true, { Location = Explosion3.Location, Owner = USSR })
 		Explosions.Kill()
 
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Explosions = Actor.Create("bio", true, { Location = Explosion2.Location, Owner = ussr })
+			Explosions = Actor.Create("bio", true, { Location = Explosion2.Location, Owner = USSR })
 			Explosions.Kill()
 		end)
 	end)
 end
 
 DemoTruckOnApproach = function()
-	ussr.MarkCompletedObjective(DestroyCommunications)
+	USSR.MarkCompletedObjective(DestroyCommunications)
 
 	Trigger.AfterDelay(DateTime.Seconds(5), function()
-		Media.PlaySpeechNotification(ussr, "ReinforcementsArrived")
-		EscortObjective = ussr.AddPrimaryObjective("Escort the Demo Truck to Missile Silos.")
+		Media.PlaySpeechNotification(USSR, "ReinforcementsArrived")
+		EscortObjective = USSR.AddObjective("Escort the Demo Truck to Missile Silos.", Primary, true)
 
-		DemoTruckCargo = Reinforcements.ReinforceWithTransport(ussr, "lst.in", { "dtrk" }, DemoTruckInsertionPath, { TransportInsertionPoint.Location })[2]
+		DemoTruckCargo = Reinforcements.ReinforceWithTransport(USSR, "lst.in", { "dtrk" }, DemoTruckInsertionPath, { TransportInsertionPoint.Location })[2]
 		DemoTruck = DemoTruckCargo[1]
 
 		Trigger.OnKilled(DemoTruck, DemoDestroyed)
 
 		Trigger.AfterDelay(DateTime.Seconds(2), function()
-			EnglandNukesCam = Actor.Create(MainBaseCameraMedium[Difficulty], true, { Owner = ussr, Location = EnglandMainBaseCamNukes.Location })
+			EnglandNukesCam = Actor.Create(MainBaseCameraMedium[Difficulty], true, { Owner = USSR, Location = EnglandMainBaseCamNukes.Location })
 
 			Trigger.AfterDelay(DateTime.Seconds(12), function()
 				DemolitionTruckPath()
@@ -463,7 +464,7 @@ DemolitionTruckPath = function()
 end
 
 MissionFailed = function()
-	england_main.MarkCompletedObjective(AlliedObjective)
+	England_Main.MarkCompletedObjective(AlliedObjective)
 end
 
 DemoDestroyed = function()
@@ -472,28 +473,27 @@ DemoDestroyed = function()
 	end
 
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
-		Media.PlaySpeechNotification(ussr, "ConvoyUnitLost")
+		Media.PlaySpeechNotification(USSR, "ConvoyUnitLost")
 		Trigger.AfterDelay(DateTime.Seconds(3), function()
-			ussr.MarkFailedObjective(EscortObjective)
+			USSR.MarkFailedObjective(EscortObjective)
 		end)
 	end)
 end
 
 MissionAccomplished = function()
-	Explosions = Actor.Create("weap", true, { Location = DemoDropoffPoint.Location, Owner = ussr })
+	Explosions = Actor.Create("weap", true, { Location = DemoDropoffPoint.Location, Owner = USSR })
 	Explosions.Kill()
 
 	Lighting.Flash("LightningStrike", 20)
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
-		Media.PlaySpeechNotification(ussr, "AlliedForcesFallen")
-		ussr.MarkCompletedObjective(EscortObjective)
-		ussr.MarkCompletedObjective(NukeObjective)
-		england_main.MarkFailedObjective(AlliedObjective)
+		Media.PlaySpeechNotification(USSR, "AlliedForcesFallen")
+		USSR.MarkCompletedObjective(EscortObjective)
+		USSR.MarkCompletedObjective(NukeObjective)
+		England_Main.MarkFailedObjective(AlliedObjective)
 	end)
 end
 
 RunInitialActivities = function()
-	
 	APCDropoff()
 
 	Camera.Position = APCDropoffPoint.CenterPosition
@@ -541,21 +541,19 @@ PlayerIsHumanOrBot = function(player)
 	return player.IsNonCombatant == false and PlayerIsTeamAi(player) == false
 end
 
-
 WorldLoaded = function()
 	local teamPlayers = Player.GetPlayers(function(p)
 		return PlayerIsHumanOrBot(p)
 	end)
 
-	ussr = Player.GetPlayer("USSR")
-	bad_guy = Player.GetPlayer("BadGuy")
-	forEnglandJames = Player.GetPlayer("England Missile Silos")
-	neutral = Player.GetPlayer("Neutral")
-
-	england_air = Player.GetPlayer("England Air Base")
-	england_north = Player.GetPlayer("England Northern Base")
-	england_main = Player.GetPlayer("England Main Base")
-	england_prison = Player.GetPlayer("England Prison Base")
+	USSR = Player.GetPlayer("USSR")
+	Bad_Guy = Player.GetPlayer("BadGuy")
+	ForEnglandJames = Player.GetPlayer("England Missile Silos")
+	Neutral = Player.GetPlayer("Neutral")
+	England_Air = Player.GetPlayer("England Air Base")
+	England_North = Player.GetPlayer("England Northern Base")
+	England_Main = Player.GetPlayer("England Main Base")
+	England_Prison = Player.GetPlayer("England Prison Base")
 	england_nuke = Player.GetPlayer("England Missile Silos")
 
 	Utils.Do(teamPlayers, function(p)
@@ -573,33 +571,33 @@ WorldLoaded = function()
 	SetupFactories()
 	SetupMainFactories()
 
-	Trigger.OnObjectiveAdded(ussr, function(p, id)
+	Trigger.OnObjectiveAdded(USSR, function(p, id)
 		Trigger.AfterDelay(DateTime.Seconds(5), function()
 			Media.DisplayMessage(p.GetObjectiveDescription(id), "Primary Objective")
 		end)
 	end)
 
-	AlliedObjective = england_main.AddPrimaryObjective("Don't let soviets to destroy the Missile Silos.", england_main.Color)
-	SovietObjective = ussr.AddPrimaryObjective("Hijack a Hind Helicopter.", ussr.Color)
-	NukeObjective = ussr.AddPrimaryObjective("Destroy the Missile Silos.", ussr.Color)
+	AlliedObjective = England_Main.AddObjective("Don't let soviets to destroy the Missile Silos.", Primary, true)
+	SovietObjective = USSR.AddObjective("Hijack a Hind Helicopter.", Primary, true)
+	NukeObjective = USSR.AddObjective("Destroy the Missile Silos.", Primary, true)
 
-	Trigger.OnObjectiveCompleted(ussr, function(p, id)
+	Trigger.OnObjectiveCompleted(USSR, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective Completed")
 	end)
 
-	Trigger.OnObjectiveFailed(ussr, function(p, id)
+	Trigger.OnObjectiveFailed(USSR, function(p, id)
 		Media.DisplayMessage(p.GetObjectiveDescription(id), "Objective Failed")
 	end)
 
-	Trigger.OnPlayerLost(ussr, function()
+	Trigger.OnPlayerLost(USSR, function()
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(ussr, "MissionFailed")
+			Media.PlaySpeechNotification(USSR, "MissionFailed")
 		end)
 	end)
 
-	Trigger.OnPlayerWon(ussr, function()
+	Trigger.OnPlayerWon(USSR, function()
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(ussr, "MissionAccomplished")
+			Media.PlaySpeechNotification(USSR, "MissionAccomplished")
 		end)
 	end)
 end
