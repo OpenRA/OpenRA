@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Graphics
 				ShadowStart = LoadField(d, "ShadowStart", -1);
 				ShadowZOffset = LoadField(d, "ShadowZOffset", DefaultShadowSpriteZOffset).Length;
 				ZOffset = LoadField(d, "ZOffset", WDist.Zero).Length;
-				ZRamp = LoadField(d, "ZRamp", 0);
+				ZRamp = LoadField(d, "ZRamp", 0f);
 				Tick = LoadField(d, "Tick", 40);
 				transpose = LoadField(d, "Transpose", false);
 				Frames = LoadField<int[]>(d, "Frames", null);
