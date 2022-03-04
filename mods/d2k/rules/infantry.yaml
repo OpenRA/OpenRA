@@ -106,10 +106,11 @@ thumper:
 		Range: 2c768
 	Mobile:
 		Speed: 43
-		RequiresCondition: undeployed
+		RequireForceMoveCondition: !undeployed
 	GrantConditionOnDeploy:
 		DeployedCondition: deployed
 		UndeployedCondition: undeployed
+		UndeployOnMove: true
 		Facing: 512
 		AllowedTerrainTypes: Sand, Spice, Dune, SpiceSand
 	WithInfantryBody:
