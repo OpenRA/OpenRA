@@ -74,6 +74,12 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string LimitedAudio = null;
 
 		[NotificationReference("Speech")]
+		[Desc("Notification played when you can't place a building.",
+			"Overrides PlaceBuilding.CannotPlaceNotification for this queue.",
+			"The filename of the audio is defined per faction in notifications.yaml.")]
+		public readonly string CannotPlaceAudio = null;
+
+		[NotificationReference("Speech")]
 		[Desc("Notification played when user clicks on the build palette icon.",
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string QueuedAudio = null;
