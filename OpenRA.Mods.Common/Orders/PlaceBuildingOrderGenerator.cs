@@ -263,10 +263,18 @@ namespace OpenRA.Mods.Common.Orders
 
 				if (!Game.GetModifierKeys().HasModifier(Modifiers.Shift))
 				{
+					var segmentInfo = actorInfo;
+					var segmentBuildingInfo = buildingInfo;
+					if (!string.IsNullOrEmpty(lineBuildInfo.SegmentType))
+					{
+						segmentInfo = world.Map.Rules.Actors[lineBuildInfo.SegmentType];
+						segmentBuildingInfo = segmentInfo.TraitInfo<BuildingInfo>();
+					}
+
 					foreach (var t in BuildingUtils.GetLineBuildCells(world, topLeft, actorInfo, buildingInfo, owner))
 					{
-						var lineBuildable = world.IsCellBuildable(t.Cell, actorInfo, buildingInfo);
-						var lineCloseEnough = buildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, actorInfo, t.Cell);
+						var lineBuildable = world.IsCellBuildable(t.Cell, segmentInfo, segmentBuildingInfo);
+						var lineCloseEnough = segmentBuildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, segmentInfo, t.Cell);
 						footprint.Add(t.Cell, MakeCellType(lineBuildable && lineCloseEnough, true));
 					}
 				}

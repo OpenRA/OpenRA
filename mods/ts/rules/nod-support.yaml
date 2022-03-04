@@ -106,6 +106,9 @@ NAFNCE:
 	EnergyWall:
 		ActiveCondition: active-posts == 2
 		Weapon: LaserFence
+		TerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
+	RequiresBuildableArea:
+		Adjacent: 4
 	GrantConditionOnLineBuildDirection@X:
 		Direction: X
 		Condition: laserfence-direction-x
