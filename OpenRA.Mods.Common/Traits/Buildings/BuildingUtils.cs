@@ -112,9 +112,17 @@ namespace OpenRA.Mods.Common.Traits
 					if (dirs[d] != 0)
 						continue;
 
+					var segmentInfo = ai;
+					var segmentBuildingInfo = bi;
+					if (!string.IsNullOrEmpty(lbi.SegmentType))
+					{
+						segmentInfo = world.Map.Rules.Actors[lbi.SegmentType];
+						segmentBuildingInfo = segmentInfo.TraitInfo<BuildingInfo>();
+					}
+
 					// Continue the search if the cell is empty or not visible
 					var c = topLeft + i * vecs[d];
-					if (world.IsCellBuildable(c, ai, bi) || !owner.Shroud.IsExplored(c))
+					if (world.IsCellBuildable(c, segmentInfo, segmentBuildingInfo) || !owner.Shroud.IsExplored(c))
 						continue;
 
 					// Cell contains an actor. Is it the type we want?
