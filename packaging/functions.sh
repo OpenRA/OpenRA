@@ -31,6 +31,7 @@ install_assemblies() {
 	COPY_GENERIC_LAUNCHER="${5}"
 	COPY_CNC_DLL="${6}"
 	COPY_D2K_DLL="${7}"
+	MSBUILD="${MSBUILD:-msbuild}"
 
 	ORIG_PWD=$(pwd)
 	cd "${SRC_PATH}" || exit 1
@@ -40,7 +41,7 @@ install_assemblies() {
 		rm -rf "${SRC_PATH}/OpenRA."*/obj
 		rm -rf "${SRC_PATH:?}/bin"
 
-		msbuild -verbosity:m -nologo -t:Build -restore -p:Configuration=Release -p:TargetPlatform="${TARGETPLATFORM}" -p:Mono=true
+		$MSBUILD -verbosity:m -nologo -t:Build -restore -p:Configuration=Release -p:TargetPlatform="${TARGETPLATFORM}" -p:Mono=true
 		if [ "${TARGETPLATFORM}" = "unix-generic" ]; then
 			./configure-system-libraries.sh
 		fi
