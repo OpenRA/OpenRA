@@ -36,23 +36,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			if (args.Length > 1)
 				version = args[1];
 
-			Console.WriteLine(
+			var doc = new StringBuilder();
+
+			doc.AppendLine(
 				"This documentation is aimed at modders. It displays a template for weapon definitions " +
 				"as well as its contained types (warheads and projectiles) with default values and developer commentary. " +
 				"Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been " +
 				$"automatically generated for version {version} of OpenRA.");
-			Console.WriteLine();
-
-			var doc = new StringBuilder();
+			doc.AppendLine();
 
 			var currentNamespace = "";
 
 			var objectCreator = utility.ModData.ObjectCreator;
-			var weaponInfo = objectCreator.GetTypesImplementing<WeaponInfo>();
+			var weaponInfo = new[] { typeof(WeaponInfo) };
 			var warheads = objectCreator.GetTypesImplementing<IWarhead>().OrderBy(t => t.Namespace);
 			var projectiles = objectCreator.GetTypesImplementing<IProjectileInfo>().OrderBy(t => t.Namespace);
 
-			var weaponTypes = weaponInfo.Concat(projectiles.Concat(warheads));
+			var weaponTypes = weaponInfo.Concat(projectiles).Concat(warheads);
 			foreach (var t in weaponTypes)
 			{
 				// skip helpers like TraitInfo<T>
@@ -80,18 +80,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				doc.AppendLine();
 				doc.AppendLine("| Property | Default Value | Type | Description |");
-				doc.AppendLine("| -------- | --------------| ---- | ----------- |");
+				doc.AppendLine("| -------- | ------------- | ---- | ----------- |");
 
-				var liveTraitInfo = t == typeof(WeaponInfo) ? null : objectCreator.CreateBasic(t);
+				var liveTraitInfo = objectCreator.CreateBasic(t);
 				foreach (var info in infos)
 				{
-					var fieldDescLines = info.Field.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines);
+					var defaultValue = FieldSaver.SaveField(liveTraitInfo, info.Field.Name).Value.Value;
 					var fieldType = Util.FriendlyTypeName(info.Field.FieldType);
-					var defaultValue = liveTraitInfo == null ? "" : FieldSaver.SaveField(liveTraitInfo, info.Field.Name).Value.Value;
-					doc.Append($"| {info.YamlName} | {defaultValue} | {fieldType} | ");
-					foreach (var line in fieldDescLines)
-						doc.Append(line + " ");
-					doc.AppendLine("|");
+					var fieldDescLines = info.Field.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines);
+
+					doc.AppendLine($"| {info.YamlName} | {defaultValue} | {fieldType} | {string.Join(" ", fieldDescLines)} |");
 				}
 			}
 
