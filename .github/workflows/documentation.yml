@@ -92,7 +92,7 @@ jobs:
           GIT_TAG: ${{ github.event.inputs.tag }}
         run: |
           ./utility.sh all --docs "${GIT_TAG}" > "docs/api/playtest/traits.md"
-          ./utility.sh all --weapon-docs "${GIT_TAG}" > "docs/api/playtest/weapons.md"
+          ./utility.sh all --weapon-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/playtest/weapons.md"
           ./utility.sh all --lua-docs "${GIT_TAG}" > "docs/api/playtest/lua.md"
 
       - name: Update docs.openra.net (Release)
@@ -101,7 +101,7 @@ jobs:
           GIT_TAG: ${{ github.event.inputs.tag }}
         run: |
           ./utility.sh all --docs "${GIT_TAG}" > "docs/api/release/traits.md"
-          ./utility.sh all --weapon-docs "${GIT_TAG}" > "docs/api/release/weapons.md"
+          ./utility.sh all --weapon-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/release/weapons.md"
           ./utility.sh all --lua-docs "${GIT_TAG}" > "docs/api/release/lua.md"
 
       - name: Push docs.openra.net
@@ -111,7 +111,7 @@ jobs:
           cd docs
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          git add --all
+          git add *.md
           git commit -m "Update auto-generated documentation for ${GIT_TAG}"
           git push origin master
 

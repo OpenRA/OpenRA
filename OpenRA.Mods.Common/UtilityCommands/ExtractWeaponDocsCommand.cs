@@ -10,9 +10,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
 using OpenRA.GameRules;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -26,7 +28,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return true;
 		}
 
-		[Desc("[VERSION]", "Generate weaponry documentation in MarkDown format.")]
+		[Desc("[VERSION]", "Generate weaponry documentation in JSON format.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
@@ -36,64 +38,65 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			if (args.Length > 1)
 				version = args[1];
 
-			var doc = new StringBuilder();
-
-			doc.AppendLine(
-				"This documentation is aimed at modders. It displays a template for weapon definitions " +
-				"as well as its contained types (warheads and projectiles) with default values and developer commentary. " +
-				"Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been " +
-				$"automatically generated for version {version} of OpenRA.");
-			doc.AppendLine();
-
-			var currentNamespace = "";
-
 			var objectCreator = utility.ModData.ObjectCreator;
 			var weaponInfo = new[] { typeof(WeaponInfo) };
 			var warheads = objectCreator.GetTypesImplementing<IWarhead>().OrderBy(t => t.Namespace);
 			var projectiles = objectCreator.GetTypesImplementing<IProjectileInfo>().OrderBy(t => t.Namespace);
 
 			var weaponTypes = weaponInfo.Concat(projectiles).Concat(warheads);
-			foreach (var t in weaponTypes)
+
+			var json = GenerateJson(version, weaponTypes, objectCreator);
+			Console.WriteLine(json);
+		}
+
+		static string GenerateJson(string version, IEnumerable<Type> weaponTypes, ObjectCreator objectCreator)
+		{
+			var weaponTypesInfo = weaponTypes.Where(x => !x.ContainsGenericParameters && !x.IsAbstract)
+				.Select(type => new
+				{
+					type.Namespace,
+					Name = type.Name.EndsWith("Info") ? type.Name.Substring(0, type.Name.Length - 4) : type.Name,
+					Description = string.Join(" ", type.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines)),
+					InheritedTypes = type.BaseTypes()
+						.Select(y => y.Name)
+						.Where(y => y != type.Name && y != $"{type.Name}Info" && y != "Object"),
+					Properties = FieldLoader.GetTypeLoadInfo(type)
+						.Where(fi => fi.Field.IsPublic && fi.Field.IsInitOnly && !fi.Field.IsStatic)
+						.Select(fi => new
+						{
+							PropertyName = fi.YamlName,
+							DefaultValue = FieldSaver.SaveField(objectCreator.CreateBasic(type), fi.Field.Name).Value.Value,
+							InternalType = Util.InternalTypeName(fi.Field.FieldType),
+							UserFriendlyType = Util.FriendlyTypeName(fi.Field.FieldType),
+							Description = string.Join(" ", fi.Field.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines)),
+							OtherAttributes = fi.Field.CustomAttributes
+								.Where(a => a.AttributeType.Name != nameof(DescAttribute) && a.AttributeType.Name != nameof(FieldLoader.LoadUsingAttribute))
+								.Select(a =>
+								{
+									var name = a.AttributeType.Name;
+									name = name.EndsWith("Attribute") ? name.Substring(0, name.Length - 9) : name;
+
+									return new
+									{
+										Name = name,
+										Parameters = a.Constructor.GetParameters()
+											.Select(pi => new
+											{
+												pi.Name,
+												Value = Util.GetAttributeParameterValue(a.ConstructorArguments[pi.Position])
+											})
+									};
+								})
+						})
+				});
+
+			var result = new
 			{
-				// skip helpers like TraitInfo<T>
-				if (t.ContainsGenericParameters || t.IsAbstract)
-					continue;
+				Version = version,
+				WeaponTypes = weaponTypesInfo
+			};
 
-				if (currentNamespace != t.Namespace)
-				{
-					currentNamespace = t.Namespace;
-					doc.AppendLine();
-					doc.AppendLine($"## {currentNamespace}");
-				}
-
-				var traitName = t.Name.EndsWith("Info") ? t.Name.Substring(0, t.Name.Length - 4) : t.Name;
-				doc.AppendLine();
-				doc.AppendLine($"### {traitName}");
-
-				var traitDescLines = t.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines);
-				foreach (var line in traitDescLines)
-					doc.AppendLine(line);
-
-				var infos = FieldLoader.GetTypeLoadInfo(t);
-				if (!infos.Any())
-					continue;
-
-				doc.AppendLine();
-				doc.AppendLine("| Property | Default Value | Type | Description |");
-				doc.AppendLine("| -------- | ------------- | ---- | ----------- |");
-
-				var liveTraitInfo = objectCreator.CreateBasic(t);
-				foreach (var info in infos)
-				{
-					var defaultValue = FieldSaver.SaveField(liveTraitInfo, info.Field.Name).Value.Value;
-					var fieldType = Util.FriendlyTypeName(info.Field.FieldType);
-					var fieldDescLines = info.Field.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines);
-
-					doc.AppendLine($"| {info.YamlName} | {defaultValue} | {fieldType} | {string.Join(" ", fieldDescLines)} |");
-				}
-			}
-
-			Console.Write(doc.ToString());
+			return JsonConvert.SerializeObject(result);
 		}
 	}
 }
