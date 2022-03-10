@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -296,6 +297,23 @@ namespace OpenRA.Mods.Common
 				return "Warhead";
 
 			return t.Name;
+		}
+
+		public static string GetAttributeParameterValue(CustomAttributeTypedArgument value)
+		{
+			if (value.ArgumentType.IsEnum)
+				return Enum.Parse(value.ArgumentType, value.Value.ToString()).ToString();
+
+			if (value.ArgumentType == typeof(Type) && value.Value != null)
+				return (value.Value as Type).Name;
+
+			if (value.ArgumentType.IsArray)
+			{
+				var names = (value.Value as IReadOnlyCollection<CustomAttributeTypedArgument>).Select(x => (x.Value as Type).Name);
+				return string.Join(", ", names);
+			}
+
+			return value.Value?.ToString();
 		}
 
 		public static int GetProjectileInaccuracy(int baseInaccuracy, InaccuracyType inaccuracyType, ProjectileArgs args)
