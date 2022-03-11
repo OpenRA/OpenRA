@@ -41,14 +41,31 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 	}
 
+	[Desc("A sprite sequence that can have tileset-specific variants.")]
 	public class TilesetSpecificSpriteSequence : DefaultSpriteSequence
 	{
+		// These need to be public properties for the documentation generation to work.
+		[Desc("Dictionary of <string: string> with tileset name to override -> tileset name to use instead.")]
+		public static Dictionary<string, string> TilesetOverrides => null;
+
+		[Desc("Use `TilesetCodes` as defined in `mod.yaml` to add a letter as a second character " +
+		      "into the sprite filename like the Westwood 2.5D titles did for tileset-specific variants.")]
+		public static bool UseTilesetCode => false;
+
+		[Desc("Append a tileset-specific extension to the file name " +
+			  "- either as defined in `mod.yaml`'s `TilesetExtensions` (if `UseTilesetExtension` is used) " +
+		      "or the default hardcoded one for this sequence type (.shp).")]
+		public static bool AddExtension => true;
+
+		[Desc("Whether `mod.yaml`'s `TilesetExtensions` should be used with the sequence's file name.")]
+		public static bool UseTilesetExtension { get; private set; }
+
 		public TilesetSpecificSpriteSequence(ModData modData, string tileSet, SpriteCache cache, ISpriteSequenceLoader loader, string sequence, string animation, MiniYaml info)
 			: base(modData, tileSet, cache, loader, sequence, animation, info) { }
 
-		string ResolveTilesetId(string tileSet, Dictionary<string, MiniYaml> d)
+		static string ResolveTilesetId(string tileSet, Dictionary<string, MiniYaml> d)
 		{
-			if (d.TryGetValue("TilesetOverrides", out var yaml))
+			if (d.TryGetValue(nameof(TilesetOverrides), out var yaml))
 			{
 				var tsNode = yaml.Nodes.FirstOrDefault(n => n.Key == tileSet);
 				if (tsNode != null)
@@ -64,17 +81,16 @@ namespace OpenRA.Mods.Common.Graphics
 
 			var spriteName = sprite ?? sequence;
 
-			if (LoadField(d, "UseTilesetCode", false))
+			if (LoadField(d, nameof(UseTilesetCode), UseTilesetCode))
 			{
 				if (loader.TilesetCodes.TryGetValue(ResolveTilesetId(tileSet, d), out var code))
 					spriteName = spriteName.Substring(0, 1) + code + spriteName.Substring(2, spriteName.Length - 2);
 			}
 
-			if (LoadField(d, "AddExtension", true))
+			if (LoadField(d, nameof(AddExtension), AddExtension))
 			{
-				var useTilesetExtension = LoadField(d, "UseTilesetExtension", false);
-
-				if (useTilesetExtension && loader.TilesetExtensions.TryGetValue(ResolveTilesetId(tileSet, d), out var tilesetExtension))
+				UseTilesetExtension = LoadField(d, nameof(UseTilesetExtension), UseTilesetExtension);
+				if (UseTilesetExtension && loader.TilesetExtensions.TryGetValue(ResolveTilesetId(tileSet, d), out var tilesetExtension))
 					return spriteName + tilesetExtension;
 
 				return spriteName + loader.DefaultSpriteExtension;

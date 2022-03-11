@@ -122,32 +122,100 @@ namespace OpenRA.Mods.Common.Graphics
 		float ISpriteSequence.GetAlpha(int frame) { throw exception; }
 	}
 
+	[Desc("Generic sprite sequence implementation, mostly unencumbered with game- or artwork-specific logic.")]
 	public class DefaultSpriteSequence : ISpriteSequence
 	{
 		static readonly WDist DefaultShadowSpriteZOffset = new WDist(-5);
 		protected Sprite[] sprites;
 		readonly bool reverseFacings, transpose;
 		readonly string sequence;
-		readonly float[] alpha;
 
 		protected readonly ISpriteSequenceLoader Loader;
 
 		public string Name { get; }
-		public int Start { get; private set; }
-		public int Length { get; private set; }
-		public int Stride { get; private set; }
-		public int Facings { get; }
-		public int Tick { get; }
-		public int ZOffset { get; }
-		public float ZRamp { get; }
-		public int ShadowStart { get; }
-		public int ShadowZOffset { get; }
-		public int[] Frames { get; private set; }
-		public Rectangle Bounds { get; private set; }
-		public bool IgnoreWorldTint { get; }
-		public float Scale { get; }
 
-		public readonly uint[] EmbeddedPalette;
+		[Desc("Frame index to start from.")]
+		public int Start { get; private set; }
+
+		[Desc("Number of frames to use. Does not have to be the total amount the sprite sheet has.")]
+		public int Length { get; private set; } = 1;
+
+		[Desc("Multiplier for the number of facings.")]
+		public int Stride { get; private set; }
+
+		[Desc("The amount of directions the unit faces. Use negative values to rotate counter-clockwise.")]
+		public int Facings { get; } = 1;
+
+		[Desc("Time (in milliseconds) to wait until playing the next frame in the animation.")]
+		public int Tick { get; } = 40;
+
+		[Desc("Value controlling the Z-order. A higher values means rendering on top of other sprites at the same position. " +
+		      "Use power of 2 values to avoid glitches.")]
+		public int ZOffset { get; }
+
+		[Desc("")]
+		public float ZRamp { get; }
+
+		[Desc("If the shadow is not part of the sprite, but baked into the same sprite sheet at a fixed offset, " +
+		      "set this to the frame index where it starts.")]
+		public int ShadowStart { get; } = -1;
+
+		[Desc("Set Z-Offset for the separate shadow. Used by the later Westwood 2.5D titles. Defined in WDist units!")]
+		public int ShadowZOffset { get; }
+
+		[Desc("The individual frames to play instead of going through them sequentially from the `Start`.")]
+		public int[] Frames { get; private set; }
+
+		public Rectangle Bounds { get; }
+
+		[Desc("Don't apply terrain lighting or colored overlays.")]
+		public bool IgnoreWorldTint { get; }
+
+		[Desc("")]
+		public float Scale { get; } = 1f;
+
+		// These need to be public properties for the documentation generation to work.
+		[Desc("Play the sprite sequence back and forth.")]
+		public static bool Reverses => false;
+
+		[Desc("Support a frame order where each animation step is split per each direction.")]
+		public static bool Transpose => false;
+
+		[Desc("Mirror on the X axis.")]
+		public bool FlipX { get; }
+
+		[Desc("Mirror on the Y axis.")]
+		public bool FlipY { get; }
+
+		[Desc("Change the position in-game on X, Y, Z.")]
+		public float3 Offset { get; } = float3.Zero;
+
+		[Desc("Apply an OpenGL/Photoshop inspired blend mode.")]
+		public BlendMode BlendMode { get; } = BlendMode.Alpha;
+
+		[Desc("Allows to append multiple sequence definitions which are indented below this node " +
+		      "like when offsets differ per frame or a sequence is spread across individual files.")]
+		public static object Combine => null;
+
+		[Desc("Sets transparency - use one value to set for all frames or provide a value for each frame.")]
+		public float[] Alpha { get; }
+
+		[Desc("Plays a fade out effect.")]
+		public static bool AlphaFade => false;
+
+		[Desc("Name of the file containing the depth data sprite.")]
+		public string DepthSprite { get; }
+
+		[Desc("Frame index containing the depth data.")]
+		public static int DepthSpriteFrame => 0;
+
+		[Desc("")]
+		public static float2 DepthSpriteOffset => float2.Zero;
+
+		[Desc("Use the palette embedded in the defined sprite. (Note: The name given here is actually irrelevant)")]
+		public static string EmbeddedPalette => null;
+
+		public readonly uint[] EmbeddedPaletteData;
 
 		protected virtual string GetSpriteSrc(ModData modData, string tileSet, string sequence, string animation, string sprite, Dictionary<string, MiniYaml> d)
 		{
@@ -181,39 +249,39 @@ namespace OpenRA.Mods.Common.Graphics
 
 			try
 			{
-				Start = LoadField(d, "Start", 0);
-				ShadowStart = LoadField(d, "ShadowStart", -1);
-				ShadowZOffset = LoadField(d, "ShadowZOffset", DefaultShadowSpriteZOffset).Length;
-				ZOffset = LoadField(d, "ZOffset", WDist.Zero).Length;
-				ZRamp = LoadField(d, "ZRamp", 0f);
-				Tick = LoadField(d, "Tick", 40);
-				transpose = LoadField(d, "Transpose", false);
-				Frames = LoadField<int[]>(d, "Frames", null);
-				IgnoreWorldTint = LoadField(d, "IgnoreWorldTint", false);
-				Scale = LoadField(d, "Scale", 1f);
+				Start = LoadField(d, nameof(Start), 0);
+				ShadowStart = LoadField(d, nameof(ShadowStart), ShadowStart);
+				ShadowZOffset = LoadField(d, nameof(ShadowZOffset), DefaultShadowSpriteZOffset).Length;
+				ZOffset = LoadField(d, nameof(ZOffset), WDist.Zero).Length;
+				ZRamp = LoadField(d, nameof(ZRamp), 0f);
+				Tick = LoadField(d, nameof(Tick), Tick);
+				transpose = LoadField(d, nameof(Transpose), false);
+				Frames = LoadField<int[]>(d, nameof(Frames), null);
+				IgnoreWorldTint = LoadField(d, nameof(IgnoreWorldTint), false);
+				Scale = LoadField(d, nameof(Scale), Scale);
 
-				var flipX = LoadField(d, "FlipX", false);
-				var flipY = LoadField(d, "FlipY", false);
+				FlipX = LoadField(d, nameof(FlipX), false);
+				FlipY = LoadField(d, nameof(FlipY), false);
 
-				Facings = LoadField(d, "Facings", 1);
+				Facings = LoadField(d, nameof(Facings), Facings);
 				if (Facings < 0)
 				{
 					reverseFacings = true;
 					Facings = -Facings;
 				}
 
-				var offset = LoadField(d, "Offset", float3.Zero);
-				var blendMode = LoadField(d, "BlendMode", BlendMode.Alpha);
+				Offset = LoadField(d, nameof(Offset), Offset);
+				BlendMode = LoadField(d, nameof(BlendMode), BlendMode);
 
 				Func<int, IEnumerable<int>> getUsedFrames = frameCount =>
 				{
-					if (d.TryGetValue("Length", out var length) && length.Value == "*")
-						Length = Frames != null ? Frames.Length : frameCount - Start;
+					if (d.TryGetValue(nameof(Length), out var length) && length.Value == "*")
+						Length = Frames?.Length ?? frameCount - Start;
 					else
-						Length = LoadField(d, "Length", 1);
+						Length = LoadField(d, nameof(Length), Length);
 
 					// Plays the animation forwards, and then in reverse
-					if (LoadField(d, "Reverses", false))
+					if (LoadField(d, nameof(Reverses), false))
 					{
 						var frames = Frames != null ? Frames.Skip(Start).Take(Length).ToArray() : Exts.MakeArray(Length, i => Start + i);
 						Frames = frames.Concat(frames.Skip(1).Take(Length - 2).Reverse()).ToArray();
@@ -221,7 +289,7 @@ namespace OpenRA.Mods.Common.Graphics
 						Start = 0;
 					}
 
-					Stride = LoadField(d, "Stride", Length);
+					Stride = LoadField(d, nameof(Stride), Length);
 
 					if (Length > Stride)
 						throw new YamlException($"Sequence {sequence}.{animation}: Length must be <= stride");
@@ -263,7 +331,7 @@ namespace OpenRA.Mods.Common.Graphics
 					return usedFrames;
 				};
 
-				if (d.TryGetValue("Combine", out var combine))
+				if (d.TryGetValue(nameof(Combine), out var combine))
 				{
 					var combined = Enumerable.Empty<Sprite>();
 					foreach (var sub in combine.Nodes)
@@ -271,19 +339,19 @@ namespace OpenRA.Mods.Common.Graphics
 						var sd = sub.Value.ToDictionary();
 
 						// Allow per-sprite offset, flipping, start, and length
-						var subStart = LoadField(sd, "Start", 0);
-						var subOffset = LoadField(sd, "Offset", float3.Zero);
-						var subFlipX = LoadField(sd, "FlipX", false);
-						var subFlipY = LoadField(sd, "FlipY", false);
-						var subFrames = LoadField<int[]>(sd, "Frames", null);
+						var subStart = LoadField(sd, nameof(Start), 0);
+						var subOffset = LoadField(sd, nameof(Offset), Offset);
+						var subFlipX = LoadField(sd, nameof(FlipX), false);
+						var subFlipY = LoadField(sd, nameof(FlipY), false);
+						var subFrames = LoadField<int[]>(sd, nameof(Frames), null);
 						var subLength = 0;
 
 						Func<int, IEnumerable<int>> subGetUsedFrames = subFrameCount =>
 						{
-							if (sd.TryGetValue("Length", out var subLengthYaml) && subLengthYaml.Value == "*")
+							if (sd.TryGetValue(nameof(Length), out var subLengthYaml) && subLengthYaml.Value == "*")
 								subLength = subFrames != null ? subFrames.Length : subFrameCount - subStart;
 							else
-								subLength = LoadField(sd, "Length", 1);
+								subLength = LoadField(sd, nameof(Length), Length);
 
 							return subFrames != null ? subFrames.Skip(subStart).Take(subLength) : Enumerable.Range(subStart, subLength);
 						};
@@ -295,11 +363,11 @@ namespace OpenRA.Mods.Common.Graphics
 								return null;
 
 							var bounds = FlipRectangle(s.Bounds, subFlipX, subFlipY);
-							var dx = subOffset.X + offset.X + (subFlipX ? -s.Offset.X : s.Offset.X);
-							var dy = subOffset.Y + offset.Y + (subFlipY ? -s.Offset.Y : s.Offset.Y);
-							var dz = subOffset.Z + offset.Z + s.Offset.Z + ZRamp * dy;
+							var dx = subOffset.X + Offset.X + (subFlipX ? -s.Offset.X : s.Offset.X);
+							var dy = subOffset.Y + Offset.Y + (subFlipY ? -s.Offset.Y : s.Offset.Y);
+							var dz = subOffset.Z + Offset.Z + s.Offset.Z + ZRamp * dy;
 
-							return new Sprite(s.Sheet, bounds, ZRamp, new float3(dx, dy, dz), s.Channel, blendMode);
+							return new Sprite(s.Sheet, bounds, ZRamp, new float3(dx, dy, dz), s.Channel, BlendMode);
 						}).ToList();
 
 						var frames = subFrames != null ? subFrames.Skip(subStart).Take(subLength).ToArray() : Exts.MakeArray(subLength, i => subStart + i);
@@ -319,39 +387,39 @@ namespace OpenRA.Mods.Common.Graphics
 						if (s == null)
 							return null;
 
-						var bounds = FlipRectangle(s.Bounds, flipX, flipY);
-						var dx = offset.X + (flipX ? -s.Offset.X : s.Offset.X);
-						var dy = offset.Y + (flipY ? -s.Offset.Y : s.Offset.Y);
-						var dz = offset.Z + s.Offset.Z + ZRamp * dy;
+						var bounds = FlipRectangle(s.Bounds, FlipX, FlipY);
+						var dx = Offset.X + (FlipX ? -s.Offset.X : s.Offset.X);
+						var dy = Offset.Y + (FlipY ? -s.Offset.Y : s.Offset.Y);
+						var dz = Offset.Z + s.Offset.Z + ZRamp * dy;
 
-						return new Sprite(s.Sheet, bounds, ZRamp, new float3(dx, dy, dz), s.Channel, blendMode);
+						return new Sprite(s.Sheet, bounds, ZRamp, new float3(dx, dy, dz), s.Channel, BlendMode);
 					}).ToArray();
 				}
 
-				alpha = LoadField(d, "Alpha", (float[])null);
-				if (alpha != null)
+				Alpha = LoadField(d, nameof(Alpha), (float[])null);
+				if (Alpha != null)
 				{
-					if (alpha.Length == 1)
-						alpha = Exts.MakeArray(Length, _ => alpha[0]);
-					else if (alpha.Length != Length)
+					if (Alpha.Length == 1)
+						Alpha = Exts.MakeArray(Length, _ => Alpha[0]);
+					else if (Alpha.Length != Length)
 						throw new YamlException($"Sequence {sequence}.{animation} must define either 1 or {Length} Alpha values.");
 				}
 
-				if (LoadField(d, "AlphaFade", false))
+				if (LoadField(d, nameof(AlphaFade), false))
 				{
-					if (alpha != null)
+					if (Alpha != null)
 						throw new YamlException($"Sequence {sequence}.{animation} cannot define both AlphaFade and Alpha.");
 
-					alpha = Exts.MakeArray(Length, i => float2.Lerp(1f, 0f, i / (Length - 1f)));
+					Alpha = Exts.MakeArray(Length, i => float2.Lerp(1f, 0f, i / (Length - 1f)));
 				}
 
-				var depthSprite = LoadField<string>(d, "DepthSprite", null);
-				if (!string.IsNullOrEmpty(depthSprite))
+				DepthSprite = LoadField<string>(d, nameof(DepthSprite), null);
+				if (!string.IsNullOrEmpty(DepthSprite))
 				{
-					var depthSpriteFrame = LoadField(d, "DepthSpriteFrame", 0);
-					var depthOffset = LoadField(d, "DepthSpriteOffset", float2.Zero);
-					Func<int, IEnumerable<int>> getDepthFrame = _ => new int[] { depthSpriteFrame };
-					var ds = cache[depthSprite, getDepthFrame][depthSpriteFrame];
+					var depthSpriteFrame = LoadField(d, nameof(DepthSpriteFrame), 0);
+					var depthOffset = LoadField(d, nameof(DepthSpriteOffset), DepthSpriteOffset);
+					IEnumerable<int> GetDepthFrame(int _) => new[] { depthSpriteFrame };
+					var ds = cache[DepthSprite, GetDepthFrame][depthSpriteFrame];
 
 					sprites = sprites.Select(s =>
 					{
@@ -368,15 +436,15 @@ namespace OpenRA.Mods.Common.Graphics
 					}).ToArray();
 				}
 
-				var exportPalette = LoadField<string>(d, "EmbeddedPalette", null);
+				var exportPalette = LoadField<string>(d, nameof(EmbeddedPalette), null);
 				if (exportPalette != null)
 				{
 					var src = GetSpriteSrc(modData, tileSet, sequence, animation, info.Value, d);
 
 					var metadata = cache.FrameMetadata(src);
 					var i = Frames != null ? Frames[0] : Start;
-					var palettes = metadata != null ? metadata.GetOrDefault<EmbeddedSpritePalette>() : null;
-					if (palettes == null || !palettes.TryGetPaletteForFrame(i, out EmbeddedPalette))
+					var palettes = metadata?.GetOrDefault<EmbeddedSpritePalette>();
+					if (palettes == null || !palettes.TryGetPaletteForFrame(i, out EmbeddedPaletteData))
 						throw new YamlException($"Cannot export palettes from {src}: frame {i} does not define an embedded palette");
 				}
 
@@ -449,7 +517,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public virtual float GetAlpha(int frame)
 		{
-			return alpha?[frame] ?? 1f;
+			return Alpha?[frame] ?? 1f;
 		}
 	}
 }
