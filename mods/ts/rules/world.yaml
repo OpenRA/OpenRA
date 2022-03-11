@@ -7,7 +7,7 @@
 	ControlGroups:
 	MusicPlaylist:
 		VictoryMusic: score
-		DefeatMusic: maps
+		DefeatMusic: fsmap
 	TerrainRenderer:
 	TerrainLighting:
 	ShroudRenderer:
