@@ -8,6 +8,24 @@ Player:
 	ModularBot@HAL9001:
 		Name: HAL 9001
 		Type: hal9001
+    ModularBot@Brutalis:
+		Name: Brutalis
+		Type: brutalis
+    ModularBot@VIKI:
+		Name: VIKI
+		Type: viki
+    ModularBot@SkyNet:
+		Name: SkyNet
+		Type: skynet
+    ModularBot@BaseMaker:
+		Name: BaseMaker
+		Type: basemaker
+    ModularBot@WaveMaker:
+		Name: WaveMaker
+		Type: wavemaker
+    ModularBot@CampaignBot:
+		Name: CampaignBot
+		Type: campaignbot
 	GrantConditionOnBotOwner@cabal:
 		Condition: enable-cabal-ai
 		Bots: cabal
@@ -17,7 +35,25 @@ Player:
 	GrantConditionOnBotOwner@hal9001:
 		Condition: enable-hal9001-ai
 		Bots: hal9001
-	SupportPowerBotModule:
+    GrantConditionOnBotOwner@brutalis:
+		Condition: enable-brutalis-ai
+		Bots: brutalis
+    GrantConditionOnBotOwner@viki:
+		Condition: enable-viki-ai
+		Bots: viki
+    GrantConditionOnBotOwner@skynet:
+		Condition: enable-skynet-ai
+		Bots: skynet
+    GrantConditionOnBotOwner@basemaker:
+		Condition: enable-basemaker-ai
+		Bots: basemaker
+    GrantConditionOnBotOwner@wavemaker:
+		Condition: enable-wavemaker-ai
+		Bots: wavemaker
+    GrantConditionOnBotOwner@campaignbot:
+		Condition: enable-campaignbot-ai
+		Bots: campaignbot
+	SupportPowerBotModule@a:
 		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
 		Decisions:
 			Airstrike:
@@ -78,10 +114,84 @@ Player:
 					Attractiveness: -10
 					TargetMetric: Value
 					CheckRadius: 7c0
+    SupportPowerBotModule@b:
+		RequiresCondition: enable-brutalis-ai || enable-viki-ai || enable-skynet-ai || enable-basemaker-ai || enable-wavemaker-ai || enable-campaignbot-ai
+		Decisions:
+			Airstrike:
+				OrderName: AirstrikePowerInfoOrder
+				MinimumAttractiveness: 2500
+				Consideration@1:
+					Against: Enemy
+					Types: Vehicle, Infantry
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 1c0
+				Consideration@2:
+					Against: Ally
+					Types: Ground, Water
+					Attractiveness: -20
+					TargetMetric: Value
+					CheckRadius: 3c0
+				Consideration@3:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 1c0
+			IonCannonPower:
+				OrderName: IonCannonPowerInfoOrder
+				MinimumAttractiveness: 2800
+				FineScanRadius: 2
+				Consideration@1:
+					Against: Enemy
+					Types: Air, Tank, Vehicle, Infantry, Water
+					Attractiveness: 2
+					TargetMetric: Value
+					CheckRadius: 2c0
+				Consideration@2:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 2c0
+				Consideration@3:
+					Against: Ally
+					Types: Ground, Water
+					Attractiveness: -10
+					TargetMetric: Value
+					CheckRadius: 2c0
+			NukePower:
+				OrderName: NukePowerInfoOrder
+				MinimumAttractiveness: 3500
+                Consideration@1:
+					Against: Enemy
+					Types: Vehicle, Infantry
+					Attractiveness: 1
+					TargetMetric: Value
+					CheckRadius: 2c0
+				Consideration@2:
+					Against: Enemy
+					Types: Structure
+					Attractiveness: 2
+					TargetMetric: Value
+					CheckRadius: 2c0
+				Consideration@3:
+					Against: Ally
+					Types: Air, Ground, Water
+					Attractiveness: -10
+					TargetMetric: Value
+					CheckRadius: 7c0
 	HarvesterBotModule:
-		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
+		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai || enable-brutalis-ai || enable-viki-ai || enable-skynet-ai || enable-basemaker-ai || enable-wavemaker-ai || enable-campaignbot-ai
 		HarvesterTypes: harv
-		RefineryTypes: proc
+		RefineryTypes: proc  
+	BuildingRepairBotModule:
+		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai || enable-brutalis-ai || enable-viki-ai || enable-skynet-ai || enable-basemaker-ai || enable-wavemaker-ai || enable-campaignbot-ai
+	McvManagerBotModule:
+		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai || enable-brutalis-ai || enable-viki-ai || enable-skynet-ai || enable-basemaker-ai || enable-wavemaker-ai || enable-campaignbot-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap,afld
 	BaseBuilderBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		BuildingQueues: Building.Nod, Building.GDI
@@ -125,6 +235,37 @@ Player:
 			tmpl: 1
 			fix: 1
 			hpad: 2
+	SquadManagerBotModule@cabal:
+		RequiresCondition: enable-cabal-ai
+		SquadSize: 15
+		ExcludeFromSquadsTypes: harv, mcv, a10
+		ConstructionYardTypes: fact
+        AirUnitsTypes: heli, orca
+		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
+	UnitBuilderBotModule@cabal:
+		RequiresCondition: enable-cabal-ai
+		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
+		UnitsToBuild:
+			e1: 65
+			e2: 25
+			e3: 40
+			e4: 15
+			e5: 15
+			harv: 10
+			bggy: 5
+			bike: 40
+			ltnk: 25
+			ftnk: 10
+			arty: 60
+			stnk: 40
+			jeep: 5
+			mtnk: 20
+			msam: 40
+			htnk: 50
+			heli: 5
+			orca: 5
+		UnitLimits:
+			harv: 8
 	BaseBuilderBotModule@watson:
 		RequiresCondition: enable-watson-ai
 		BuildingQueues: Building.Nod, Building.GDI
@@ -168,7 +309,38 @@ Player:
 			tmpl: 1
 			sam: 7
 			fix: 1
-	BaseBuilderBotModule@hal9001:
+    SquadManagerBotModule@watson:
+		RequiresCondition: enable-watson-ai
+		SquadSize: 15
+		ExcludeFromSquadsTypes: harv, mcv, a10
+		ConstructionYardTypes: fact
+        AirUnitsTypes: heli, orca
+		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
+	UnitBuilderBotModule@watson:
+		RequiresCondition: enable-watson-ai
+		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
+		UnitsToBuild:
+			e1: 65
+			e2: 30
+			e3: 40
+			e4: 30
+			e5: 30
+			harv: 10
+			bggy: 10
+			ftnk: 10
+			arty: 40
+			bike: 10
+			heli: 10
+			ltnk: 40
+			stnk: 40
+			orca: 10
+			msam: 50
+			htnk: 50
+			jeep: 20
+			mtnk: 50
+		UnitLimits:
+			harv: 8
+    BaseBuilderBotModule@hal9001:
 		RequiresCondition: enable-hal9001-ai
 		BuildingQueues: Building.Nod, Building.GDI
 		DefenseQueues: Defence.Nod, Defence.GDI
@@ -211,81 +383,12 @@ Player:
 			tmpl: 1
 			sam: 7
 			fix: 1
-	BuildingRepairBotModule:
-		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
-	SquadManagerBotModule@cabal:
-		RequiresCondition: enable-cabal-ai
-		SquadSize: 15
-		ExcludeFromSquadsTypes: harv, mcv, a10
-		ConstructionYardTypes: fact
-		AirUnitsTypes: heli, orca
-		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
-	UnitBuilderBotModule@cabal:
-		RequiresCondition: enable-cabal-ai
-		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
-		UnitsToBuild:
-			e1: 65
-			e2: 25
-			e3: 40
-			e4: 15
-			e5: 15
-			harv: 10
-			bggy: 5
-			bike: 40
-			ltnk: 25
-			ftnk: 10
-			arty: 60
-			stnk: 40
-			jeep: 5
-			mtnk: 20
-			msam: 40
-			htnk: 50
-			heli: 5
-			orca: 5
-		UnitLimits:
-			harv: 8
-	McvManagerBotModule:
-		RequiresCondition: enable-cabal-ai || enable-watson-ai || enable-hal9001-ai
-		McvTypes: mcv
-		ConstructionYardTypes: fact
-		McvFactoryTypes: weap,afld
-	SquadManagerBotModule@watson:
-		RequiresCondition: enable-watson-ai
-		SquadSize: 15
-		ExcludeFromSquadsTypes: harv, mcv, a10
-		ConstructionYardTypes: fact
-		AirUnitsTypes: heli, orca
-		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
-	UnitBuilderBotModule@watson:
-		RequiresCondition: enable-watson-ai
-		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
-		UnitsToBuild:
-			e1: 65
-			e2: 30
-			e3: 40
-			e4: 30
-			e5: 30
-			harv: 10
-			bggy: 10
-			ftnk: 10
-			arty: 40
-			bike: 10
-			heli: 10
-			ltnk: 40
-			stnk: 40
-			orca: 10
-			msam: 50
-			htnk: 50
-			jeep: 20
-			mtnk: 50
-		UnitLimits:
-			harv: 8
 	SquadManagerBotModule@hal9001:
 		RequiresCondition: enable-hal9001-ai
 		SquadSize: 8
 		ExcludeFromSquadsTypes: harv, mcv, a10
 		ConstructionYardTypes: fact
-		AirUnitsTypes: heli, orca
+        AirUnitsTypes: heli, orca
 		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
 	UnitBuilderBotModule@hal9001:
 		RequiresCondition: enable-hal9001-ai
@@ -313,3 +416,408 @@ Player:
 			orca: 10
 		UnitLimits:
 			harv: 8
+    BaseBuilderBotModule@brutalis:
+		RequiresCondition: enable-brutalis-ai || enable-wavemaker-ai
+		BuildingQueues: Building.Nod, Building.GDI
+		DefenseQueues: Defence.Nod, Defence.GDI
+		MinimumExcessPower: 1
+		MaximumExcessPower: 150
+		ExcessPowerIncrement: 1
+		ExcessPowerIncreaseThreshold: 1
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		PowerTypes: nuke,nuk2
+		BarracksTypes: pyle,hand
+		VehiclesFactoryTypes: weap,afld
+		ProductionTypes: pyle,hand,weap,afld,hpad
+		SiloTypes: silo
+		BuildingLimits:
+			proc: 3
+			pyle: 2
+			hand: 2
+			hq: 1
+			weap: 4
+			afld: 4
+			hpad: 0
+			eye: 1
+			tmpl: 1
+			fix: 1
+			silo: 1
+			gtwr: 2
+            gun: 1
+			atwr: 1
+			obli: 2
+			sam: 1
+		BuildingFractions:
+			proc: 27
+			pyle: 1
+			hand: 1
+			hq: 1
+			weap: 66
+			afld: 66
+			gtwr: 1
+			gun: 0
+			atwr: 2
+			obli: 1
+			sam: 1
+			eye: 1
+			tmpl: 1
+			fix: 1
+			hpad: 0
+    SquadManagerBotModule@brutalis:
+		RequiresCondition: enable-brutalis-ai
+		SquadSize: 20
+		ExcludeFromSquadsTypes: harv, mcv, a10
+		ConstructionYardTypes: fact
+        AirUnitsTypes: heli, orca
+		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
+	UnitBuilderBotModule@brutalis:
+		RequiresCondition: enable-brutalis-ai || enable-wavemaker-ai
+		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
+		UnitsToBuild:
+			e1: 73
+			e2: 0
+			e3: 25
+			e4: 0
+			e5: 0
+            rmbo: 2
+			harv: 50
+			ltnk: 6
+			ftnk: 6
+			arty: 38
+			mtnk: 1
+			msam: 40
+			htnk: 9
+			heli: 0
+			orca: 0
+		UnitLimits:
+			harv: 7
+			stnk: 0
+			mlrs: 0
+			apc: 0
+			heli: 0
+			orca: 0
+    BaseBuilderBotModule@viki:
+		RequiresCondition: enable-viki-ai
+		BuildingQueues: Building.Nod, Building.GDI
+		DefenseQueues: Defence.Nod, Defence.GDI
+		MinimumExcessPower: 1
+		MaximumExcessPower: 150
+		ExcessPowerIncrement: 1
+		ExcessPowerIncreaseThreshold: 1
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		PowerTypes: nuke,nuk2
+		BarracksTypes: pyle,hand
+		VehiclesFactoryTypes: weap,afld
+		ProductionTypes: pyle,hand,weap,afld,hpad
+		SiloTypes: silo
+		BuildingLimits:
+			proc: 3
+			pyle: 4
+			hand: 4
+			hq: 1
+			weap: 2
+			afld: 2
+			hpad: 0
+			eye: 1
+			tmpl: 1
+			fix: 1
+			silo: 1
+			gtwr: 2
+            gun: 1
+			atwr: 1
+			obli: 2
+			sam: 1
+		BuildingFractions:
+			proc: 27
+			pyle: 31
+			hand: 31
+			hq: 1
+			weap: 36
+			afld: 36
+			gtwr: 1
+			gun: 0
+			atwr: 2
+			obli: 1
+			sam: 1
+			eye: 1
+			tmpl: 1
+			fix: 1
+			hpad: 0
+    SquadManagerBotModule@viki:
+		RequiresCondition: enable-viki-ai
+		SquadSize: 25
+		ExcludeFromSquadsTypes: harv, mcv, a10
+		ConstructionYardTypes: fact
+        AirUnitsTypes: heli, orca
+		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
+	UnitBuilderBotModule@viki:
+		RequiresCondition: enable-viki-ai
+		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
+		UnitsToBuild:
+			e1: 73
+			e2: 0
+			e3: 25
+			e4: 0
+			e5: 0
+            rmbo: 2
+			harv: 60
+			arty: 40
+			msam: 40
+			heli: 0
+			orca: 0
+		UnitLimits:
+			harv: 8
+			stnk: 0
+			mlrs: 0
+			apc: 0
+			heli: 0
+			orca: 0
+    BaseBuilderBotModule@skynet:
+		RequiresCondition: enable-skynet-ai
+		BuildingQueues: Building.Nod, Building.GDI
+		DefenseQueues: Defence.Nod, Defence.GDI
+		MinimumExcessPower: 1
+		MaximumExcessPower: 150
+		ExcessPowerIncrement: 1
+		ExcessPowerIncreaseThreshold: 1
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		PowerTypes: nuke,nuk2
+		BarracksTypes: pyle,hand
+		VehiclesFactoryTypes: weap,afld
+		ProductionTypes: pyle,hand,weap,afld,hpad
+		SiloTypes: silo
+		BuildingLimits:
+			proc: 3
+			pyle: 1
+			hand: 1
+			hq: 1
+			weap: 3
+			afld: 3
+			hpad: 1
+			eye: 1
+			tmpl: 1
+			fix: 1
+			silo: 1
+			gtwr: 2
+            gun: 1
+			atwr: 1
+			obli: 2
+			sam: 1
+		BuildingFractions:
+			proc: 27
+			pyle: 1
+			hand: 1
+			hq: 1
+			weap: 56
+			afld: 56
+			gtwr: 1
+			gun: 0
+			atwr: 2
+			obli: 1
+			sam: 1
+			eye: 1
+			tmpl: 1
+			fix: 1
+			hpad: 10
+    SquadManagerBotModule@skynet:
+		RequiresCondition: enable-skynet-ai
+		SquadSize: 10
+		ExcludeFromSquadsTypes: harv, mcv, a10
+		ConstructionYardTypes: fact
+        AirUnitsTypes: heli, orca
+		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
+	UnitBuilderBotModule@skynet:
+		RequiresCondition: enable-skynet-ai
+		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
+		UnitsToBuild:
+			e1: 73
+			e2: 0
+			e3: 25
+			e4: 0
+			e5: 0
+            rmbo: 2
+			harv: 50
+			ltnk: 6
+			ftnk: 6
+			arty: 28
+			mtnk: 1
+			msam: 30
+			htnk: 9
+			heli: 10
+			orca: 10
+		UnitLimits:
+			harv: 7
+			stnk: 0
+			mlrs: 0
+			apc: 0
+			heli: 3
+			orca: 3
+    BaseBuilderBotModule@basemaker:
+		RequiresCondition: enable-basemaker-ai
+		BuildingQueues: Building.Nod, Building.GDI
+		DefenseQueues: Defence.Nod, Defence.GDI
+		MinimumExcessPower: 1
+		MaximumExcessPower: 150
+		ExcessPowerIncrement: 1
+		ExcessPowerIncreaseThreshold: 1
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		PowerTypes: nuke,nuk2
+		BarracksTypes: pyle,hand
+		VehiclesFactoryTypes: weap,afld
+		ProductionTypes: pyle,hand,weap,afld,hpad
+		SiloTypes: silo
+		BuildingLimits:
+			pyle: 4
+			hand: 4
+			hq: 2
+			hpad: 0
+			eye: 1
+			tmpl: 1
+			fix: 2
+			silo: 0
+		BuildingFractions:
+			proc: 20
+			pyle: 2
+			hand: 2
+			hq: 2
+			weap: 60
+			afld: 60
+			gtwr: 2
+			gun: 0
+			atwr: 11
+			obli: 10
+			sam: 1
+			eye: 1
+			tmpl: 1
+			fix: 2
+			hpad: 0
+    SquadManagerBotModule@basemaker:
+		RequiresCondition: enable-basemaker-ai
+		SquadSize: 20
+		ExcludeFromSquadsTypes: harv, mcv, a10
+		ConstructionYardTypes: fact
+        AirUnitsTypes: heli, orca
+		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
+	UnitBuilderBotModule@basemaker:
+		RequiresCondition: enable-basemaker-ai
+		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
+		UnitsToBuild:
+			e1: 73
+			e2: 0
+			e3: 25
+			e4: 0
+			e5: 0
+            rmbo: 2
+			harv: 20
+			ltnk: 11
+			ftnk: 11
+			arty: 58
+			mtnk: 1
+			msam: 60
+			htnk: 19
+			heli: 0
+			orca: 0
+		UnitLimits:
+			stnk: 0
+			mlrs: 0
+            jeep: 0
+			apc: 0
+			heli: 0
+			orca: 0
+    SquadManagerBotModule@wavemaker:
+		RequiresCondition: enable-wavemaker-ai
+		SquadSize: 50
+		ExcludeFromSquadsTypes: harv, mcv, a10
+		ConstructionYardTypes: fact
+        AirUnitsTypes: heli, orca
+		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
+    BaseBuilderBotModule@campaignbot:
+		RequiresCondition: enable-campaignbot-ai
+		BuildingQueues: Building.Nod, Building.GDI
+		DefenseQueues: Defence.Nod, Defence.GDI
+		MinimumExcessPower: 1
+		MaximumExcessPower: 150
+		ExcessPowerIncrement: 1
+		ExcessPowerIncreaseThreshold: 1
+		ConstructionYardTypes: fact
+		RefineryTypes: proc
+		PowerTypes: nuke,nuk2
+		BarracksTypes: pyle,hand
+		VehiclesFactoryTypes: weap,afld
+		ProductionTypes: pyle,hand,weap,afld,hpad
+		SiloTypes: silo
+		BuildingLimits:
+			proc: 2
+			pyle: 2
+			hand: 2
+			hq: 1
+			weap: 2
+			afld: 2
+			hpad: 1
+			eye: 1
+			tmpl: 1
+			fix: 1
+			silo: 1
+			gtwr: 5
+            gun: 3
+			atwr: 4
+			obli: 4
+			sam: 3
+		BuildingFractions:
+			proc: 27
+			pyle: 1
+			hand: 1
+			hq: 1
+			weap: 55
+			afld: 55
+			gtwr: 6
+			gun: 0
+			atwr: 7
+			obli: 6
+			sam: 1
+			eye: 1
+			tmpl: 1
+			fix: 1
+			hpad: 1
+    SquadManagerBotModule@campaignbot:
+		RequiresCondition: enable-campaignbot-ai
+		SquadSize: 4
+		ExcludeFromSquadsTypes: harv, mcv, a10
+		ConstructionYardTypes: fact
+        AirUnitsTypes: heli, orca
+		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
+	UnitBuilderBotModule@campaignbot:
+		RequiresCondition: enable-campaignbot-ai
+		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
+		UnitsToBuild:
+			e1: 70
+			e2: 1
+			e3: 25
+			e4: 1
+			e5: 1
+            rmbo: 2
+			bggy: 1
+			bike: 1
+			stnk: 1
+			jeep: 5
+            apc: 1
+			harv: 50
+			ltnk: 24
+			ftnk: 10
+			arty: 10
+			mtnk: 5
+			msam: 10
+            mlrs: 1
+			htnk: 28
+			heli: 1
+			orca: 1
+		UnitLimits:
+			harv: 2
+			stnk: 1
+			mlrs: 1
+			heli: 1
+			orca: 1
