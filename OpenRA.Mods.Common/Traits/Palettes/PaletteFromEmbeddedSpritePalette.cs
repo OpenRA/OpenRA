@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		ImmutablePalette IProvidesCursorPaletteInfo.ReadPalette(IReadOnlyFileSystem fileSystem)
 		{
 			var sequence = (DefaultSpriteSequence)Game.ModData.DefaultSequences.Values.First().GetSequence(Image, Sequence);
-			return new ImmutablePalette(sequence.EmbeddedPalette);
+			return new ImmutablePalette(sequence.EmbeddedPaletteData);
 		}
 	}
 
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void LoadPalettes(WorldRenderer wr)
 		{
 			var sequence = (DefaultSpriteSequence)wr.World.Map.Rules.Sequences.GetSequence(info.Image, info.Sequence);
-			wr.AddPalette(info.Name, new ImmutablePalette(sequence.EmbeddedPalette), info.AllowModifiers);
+			wr.AddPalette(info.Name, new ImmutablePalette(sequence.EmbeddedPaletteData), info.AllowModifiers);
 		}
 
 		public IEnumerable<string> PaletteNames { get { yield return info.Name; } }
