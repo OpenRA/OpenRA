@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 			return () => armaments;
 		}
 
-		public bool TargetInFiringArc(Actor self, in Target target, WAngle facingTolerance)
+		public virtual bool TargetInFiringArc(Actor self, in Target target, WAngle facingTolerance)
 		{
 			if (facing == null)
 				return true;
