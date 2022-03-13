@@ -21,7 +21,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class PortableChronoInfo : TraitInfo, Requires<IMoveInfo>
+	class PortableChronoInfo : PausableConditionalTraitInfo, Requires<IMoveInfo>
 	{
 		[Desc("Cooldown in ticks until the unit can teleport.")]
 		public readonly int ChargeDelay = 500;
@@ -78,21 +78,23 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new PortableChrono(init.Self, this); }
 	}
 
-	class PortableChrono : IIssueOrder, IResolveOrder, ITick, ISelectionBar, IOrderVoice, ISync
+	class PortableChrono : PausableConditionalTrait<PortableChronoInfo>, IIssueOrder, IResolveOrder, ITick, ISelectionBar, IOrderVoice, ISync
 	{
-		public readonly PortableChronoInfo Info;
 		readonly IMove move;
 		[Sync]
 		int chargeTick = 0;
 
 		public PortableChrono(Actor self, PortableChronoInfo info)
+			: base(info)
 		{
-			Info = info;
 			move = self.Trait<IMove>();
 		}
 
 		void ITick.Tick(Actor self)
 		{
+			if (IsTraitDisabled || IsTraitPaused)
+				return;
+
 			if (chargeTick > 0)
 				chargeTick--;
 		}
@@ -101,6 +103,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			get
 			{
+				if (IsTraitDisabled)
+					yield break;
+
 				yield return new PortableChronoOrderTargeter(Info.TargetCursor);
 				yield return new DeployOrderTargeter("PortableChronoDeploy", 5,
 					() => CanTeleport ? Info.DeployCursor : Info.DeployBlockedCursor);
@@ -153,15 +158,23 @@ namespace OpenRA.Mods.Cnc.Traits
 			chargeTick = Info.ChargeDelay;
 		}
 
-		public bool CanTeleport => chargeTick <= 0;
+		public bool CanTeleport => !IsTraitDisabled && !IsTraitPaused && chargeTick <= 0;
 
 		float ISelectionBar.GetValue()
 		{
+			if (IsTraitDisabled)
+				return 0f;
+
 			return (float)(Info.ChargeDelay - chargeTick) / Info.ChargeDelay;
 		}
 
 		Color ISelectionBar.GetColor() { return Color.Magenta; }
 		bool ISelectionBar.DisplayWhenEmpty => false;
+
+		protected override void TraitDisabled(Actor self)
+		{
+			chargeTick = 0;
+		}
 	}
 
 	class PortableChronoOrderTargeter : IOrderTargeter
@@ -232,6 +245,15 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			if (!selected.Contains(self))
 				world.CancelInputMode();
+		}
+
+		protected override void Tick(World world)
+		{
+			if (portableChrono.IsTraitDisabled || portableChrono.IsTraitPaused)
+			{
+				world.CancelInputMode();
+				return;
+			}
 		}
 
 		protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
