@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				// HACK: Switch the global order generator instead of actually issuing an order
 				if (CanTeleport)
-					self.World.OrderGenerator = new PortableChronoOrderGenerator(self, Info);
+					self.World.OrderGenerator = new PortableChronoOrderGenerator(self, this);
 
 				// HACK: We need to issue a fake order to stop the game complaining about the bodge above
 				return new Order(order.OrderID, self, Target.Invalid, queued);
@@ -202,12 +202,14 @@ namespace OpenRA.Mods.Cnc.Traits
 	class PortableChronoOrderGenerator : OrderGenerator
 	{
 		readonly Actor self;
+		readonly PortableChrono portableChrono;
 		readonly PortableChronoInfo info;
 
-		public PortableChronoOrderGenerator(Actor self, PortableChronoInfo info)
+		public PortableChronoOrderGenerator(Actor self, PortableChrono portableChrono)
 		{
 			this.self = self;
-			this.info = info;
+			this.portableChrono = portableChrono;
+			info = portableChrono.Info;
 		}
 
 		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
@@ -241,12 +243,12 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!self.IsInWorld || self.Owner != self.World.LocalPlayer)
 				yield break;
 
-			if (!self.Trait<PortableChrono>().Info.HasDistanceLimit)
+			if (!info.HasDistanceLimit)
 				yield break;
 
 			yield return new RangeCircleAnnotationRenderable(
 				self.CenterPosition,
-				WDist.FromCells(self.Trait<PortableChrono>().Info.MaxDistance),
+				WDist.FromCells(info.MaxDistance),
 				0,
 				info.CircleColor,
 				info.CircleWidth,
@@ -257,7 +259,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			if (self.IsInWorld && self.Location != cell
-				&& self.Trait<PortableChrono>().CanTeleport && self.Owner.Shroud.IsExplored(cell))
+				&& portableChrono.CanTeleport && self.Owner.Shroud.IsExplored(cell))
 				return info.TargetCursor;
 			else
 				return info.TargetBlockedCursor;
