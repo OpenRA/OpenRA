@@ -1,0 +1,85 @@
+Background@ENCYCLOPEDIA_PANEL:
+	Logic: EncyclopediaLogic
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	Width: 900
+	Height: 600
+	Children:
+		Container@ENCYCLOPEDIA_CONTENT:
+			Width: PARENT_RIGHT - 40
+			Height: PARENT_BOTTOM - 80
+			X: 20
+			Y: 20
+			Children:
+				Label@ENCYCLOPEDIA_TITLE:
+					Width: PARENT_RIGHT
+					Height: 25
+					Text: Mentat
+					Align: Center
+					Font: Bold
+				ScrollPanel@ACTOR_LIST:
+					Y: 30
+					Width: 190
+					Height: PARENT_BOTTOM - 25
+					Children:
+						ScrollItem@HEADER:
+							BaseName: scrollheader
+							Width: PARENT_RIGHT - 27
+							Height: 13
+							X: 2
+							Visible: false
+							Children:
+								Label@LABEL:
+									Font: TinyBold
+									Width: PARENT_RIGHT
+									Height: 13
+									Align: Center
+						ScrollItem@TEMPLATE:
+							Width: PARENT_RIGHT - 27
+							Height: 25
+							X: 2
+							EnableChildMouseOver: True
+							Children:
+								LabelWithTooltip@TITLE:
+									X: 10
+									Width: PARENT_RIGHT - 20
+									Height: 25
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: SIMPLE_TOOLTIP
+				Container@ACTOR_INFO:
+					X: PARENT_RIGHT - WIDTH
+					Y: 30
+					Width: PARENT_RIGHT - 190 - 10
+					Height: PARENT_BOTTOM - 25
+					Children:
+						Background@ACTOR_BG:
+							Width: 150
+							Height: 150
+							Background: dialog3
+							Children:
+								ActorPreview@ACTOR_PREVIEW:
+									X: 1
+									Y: 1
+									Width: PARENT_RIGHT - 2
+									Height: PARENT_BOTTOM - 2
+						ScrollPanel@ACTOR_DESCRIPTION_PANEL:
+							X: 150 + 10
+							Width: PARENT_RIGHT - 150 - 10
+							Height: 150
+							TopBottomSpacing: 8
+							Children:
+								Label@ACTOR_DESCRIPTION:
+									X: 8
+									Y: 8
+									Width: PARENT_RIGHT - 32
+									VAlign: Top
+									Font: Regular
+		Button@BACK_BUTTON:
+			X: PARENT_RIGHT - 180
+			Y: PARENT_BOTTOM - 45
+			Width: 160
+			Height: 25
+			Text: Back
+			Font: Bold
+			Key: escape
+		TooltipContainer@TOOLTIP_CONTAINER:

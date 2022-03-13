@@ -2,6 +2,8 @@ concretea:
 	icon: DATA.R8
 		Start: 4314
 		Offset: -30,-24
+	preview: BLOXBASE.R8
+		Start: 657
 
 concreteb:
 	icon: DATA.R8

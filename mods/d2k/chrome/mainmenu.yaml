@@ -108,6 +108,13 @@ Container@MAINMENU:
 							Height: 30
 							Text: Load
 							Font: Bold
+						Button@ENCYCLOPEDIA_BUTTON:
+							X: PARENT_RIGHT / 2 - WIDTH / 2
+							Y: 180
+							Width: 140
+							Height: 30
+							Text: Mentat
+							Font: Bold
 						Button@BACK_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Key: escape

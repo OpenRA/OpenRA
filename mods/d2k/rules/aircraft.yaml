@@ -57,6 +57,10 @@ carryall:
 		BeforeLoadDelay: 10
 		BeforeUnloadDelay: 15
 		LocalOffset: 0, 0, -128
+	Encyclopedia:
+		Description: Carryalls will automatically transport Harvesters back and forth from the Spice Fields to the Refineries. They will also pick up units and deliver them to the Repair Pad, when ordered to.\n\nThe Carryall is a lightly armored transport aircraft. They are vulnerable to missiles and can only be hit by anti-aircraft weapons.
+		Order: 230
+		Category: Units
 	Aircraft:
 		MinAirborneAltitude: 400
 	RevealsShroud@lifting_low:
@@ -95,6 +99,8 @@ frigate:
 
 ornithopter:
 	Inherits: ^Plane
+	Buildable:
+		Prerequisites: upgrade.hightech
 	AttackBomber:
 		FacingTolerance: 8
 	Armament:
@@ -103,6 +109,10 @@ ornithopter:
 		HP: 9000
 	Armor:
 		Type: light
+	Encyclopedia:
+		Description: The fastest aircraft on Dune, the Ornithopther is lightly armored and capable of dropping 500lb bombs. This unit is most effective against infantry and lightly armored targets, but also damages armored targets.
+		Order: 240
+		Category: Units
 	Aircraft:
 		Speed: 224
 		TurnSpeed: 8

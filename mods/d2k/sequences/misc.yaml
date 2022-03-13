@@ -270,6 +270,9 @@ deathhand:
 		Start: 2148
 		ZOffset: 1023
 		Offset: -1,0
+	icon: DATA.R8
+		Start: 4296
+		Offset: -30,-24
 
 fire:
 	1: DATA.R8
