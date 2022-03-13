@@ -27,6 +27,10 @@ concretea:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Concrete Slab
+	Encyclopedia:
+		Description: If buildings are not placed on concrete, they will be damaged. Buildings can be repaired, but unless the building sits completely on concrete, the building will suffer continual weathering damage from the erosive desert environment.\n\nConcrete is vulnerable to most weapon types. Concrete cannot be repaired if damaged.
+		Category: Buildings
+		Order: 10
 	Valued:
 		Cost: 20
 	Buildable:
@@ -34,6 +38,8 @@ concretea:
 		Prerequisites: ~!global-auto-concrete
 		BuildDuration: 62
 		BuildDurationModifier: 100
+	WithSpriteBody:
+		Sequence: preview
 
 concreteb:
 	Inherits: ^concrete
@@ -61,6 +67,10 @@ construction_yard:
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 		-ConcretePrerequisites:
+	Encyclopedia:
+		Description: The Construction Yard is the foundation of any base built on Arrakis. Construction Yards produce a small amount of power and are required for the building of any new structures. Protect this structure! It is critical to the success of your base.\n\nConstruction yards are fairly strong, but vulnerable in varying degrees to all types of weapons.
+		Category: Buildings
+		Order: 0
 	WithBuildingBib:
 	Selectable:
 		Bounds: 3072, 2048
@@ -125,6 +135,10 @@ wind_trap:
 		Footprint: xx xx ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: Wind Traps provide power and water to an installation. Large, above-ground ducts funnel wind currents underground into massive turbines which power generators and humidity extractors.\n\nWind Traps are vulnerable to most types of weapons.
+		Category: Buildings
+		Order: 20
 	Health:
 		HP: 30000
 	HitShape:
@@ -174,6 +188,10 @@ barracks:
 		Footprint: xx xx ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: Barracks are required to produce and train light infantry units. Barracks can be upgraded for the production of more advanced infantry in later missions.\n\nBarracks are vulnerable to most types of weapons.
+		Category: Buildings
+		Order: 30
 	Health:
 		HP: 32000
 	HitShape:
@@ -242,6 +260,10 @@ refinery:
 		Footprint: =xx xx= ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: The Refinery is the basis of all Spice production on Dune. Harvesters transport mined Spice to the Refinery where it is converted into credits. Refined Spice is automatically distributed among the Silos and Refineries for storage. A refinery can store 2000 spice. A Spice Harvester is delivered via Carryall once a Refinery is built.\n\nRefineries are vulnerable to most types of weapons.
+		Category: Buildings
+		Order: 40
 	Health:
 		HP: 30000
 	HitShape:
@@ -303,6 +325,10 @@ silo:
 		Description: Stores excess harvested Spice.
 	Selectable:
 		Bounds: 1024, 1024
+	Encyclopedia:
+		Description: The Spice Silo allows the player to store 1500 harvested Spice. When a Refinery completes processing, excess Spice is automatically distributed evenly among the Silos and Refineries. When harvested Spice exceeds Silo capacity, the excess will be lost. When Spice Silos are destroyed or captured, the amount stored will be dispersed among other Silos and Refineries unless there is insufficient storage capacity.\n\nThe Spice Silo is vulnerable to most types of weapons.
+		Category: Buildings
+		Order: 50
 	Valued:
 		Cost: 120
 	Tooltip:
@@ -366,6 +392,10 @@ light_factory:
 		Footprint: xxx xx= ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: The Light Factory is required for the production of small, lightly armored, combat vehicles. The Light Factory can be upgraded to produce more advanced light vehicles in later missions.\n\nA Light Factory is vulnerable to most types of weapons.
+		Category: Buildings
+		Order: 60
 	Health:
 		HP: 33000
 	HitShape:
@@ -445,6 +475,10 @@ heavy_factory:
 		Footprint: _x_ xxx =xX ===
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: The Heavy Factory allows the player to build heavy vehicles such as Harvesters and Combat Tanks. When upgraded, this facility allows the construction of advanced vehicles, though some vehicles also require other buildings.\n\nThe Heavy Factory is vulnerable to most types of weapons.
+		Category: Buildings
+		Order: 70
 	Health:
 		HP: 35000
 	HitShape:
@@ -534,6 +568,10 @@ outpost:
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: If the player has sufficient power, the Radar Outpost will generate a radar map. Radar is automatically activated when construction of the Outpost is complete.\n\nThe Radar Outpost is vulnerable to most types of weapons.
+		Category: Buildings
+		Order: 80
 	Health:
 		HP: 35000
 	HitShape:
@@ -581,6 +619,10 @@ starport:
 	D2kBuilding:
 		Footprint: xxx x=x =x=
 		Dimensions: 3,3
+	Encyclopedia:
+		Description: The Starport allows you to engage in intergalactic trading with the C.H.O.A.M. Merchants' Guild. The Starport provides a trading market for vehicles and airborne units at varying rates. You cannot purchase units from the Guild without this facility.\n\nArmor is heavy, but the Starport is vulnerable to most types of weapons.
+		Category: Buildings
+		Order: 90
 	Selectable:
 		Bounds: 3072, 3072
 	Health:
@@ -672,6 +714,10 @@ wall:
 	D2kBuilding:
 		BuildSounds: CHUNG.WAV
 		TerrainTypes: Rock, Concrete
+	Encyclopedia:
+		Description: Base defense. Concrete walls are the most effective barriers on Dune. Concrete walls will block tank bullets and impede unit movement.\n\nWalls can only be damaged by explosive weapons, missiles and shells. Like concrete slabs, walls cannot be repaired if damaged.
+		Category: Buildings
+		Order: 15
 	FootprintPlaceBuildingPreview:
 		LineBuildFootprintAlpha: 0.65
 	RequiresBuildableArea:
@@ -736,6 +782,10 @@ medium_gun_turret:
 		DecorationBounds: 1024, 1280, 0, -256
 	Health:
 		HP: 27000
+	Encyclopedia:
+		Description: The Gun Turret has a medium range gun which is effective against vehicles, especially heavily armored vehicles. The Gun Turret will fire on any enemy unit within range.\n\nThe Gun Turret is resistant to bullet and explosive weapons, but vulnerable to missiles and high-caliber guns.
+		Category: Buildings
+		Order: 100
 	Armor:
 		Type: heavy
 	RevealsShroud:
@@ -773,6 +823,10 @@ large_gun_turret:
 		Cost: 750
 	Tooltip:
 		Name: Rocket Turret
+	Encyclopedia:
+		Description: The substantially improved Rocket Turret has a longer range and a higher rate of fire than the Gun Turret. The Rocket Turret's advanced targeting equipment requires power to operate.\n\nThe Rocket Turret is resistant to bullet and explosive weapons, but vulnerable to missiles and high caliber guns.
+		Category: Buildings
+		Order: 110
 	RequiresBuildableArea:
 		Adjacent: 4
 	Selectable:
@@ -816,6 +870,10 @@ repair_pad:
 	D2kBuilding:
 		Footprint: +++ +++ +++
 		Dimensions: 3,3
+	Encyclopedia:
+		Description: With a Repair Pad, vehicles can be repaired for a varying price.\n\nThe Repair Pad is vulnerable to most types of weapons.
+		Category: Buildings
+		Order: 120
 	Health:
 		HP: 30000
 	HitShape:
@@ -886,6 +944,10 @@ high_tech_factory:
 		Footprint: _X_ xxx XXX ===
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: The High Tech Factory produces airborne units, and is required for the production of Carryalls. House Atreides can upgrade the High Tech Factory to build Ornithopters for an air strike in later missions.\n\nThe High Tech Factory is vulnerable to most types of weapons.
+		Category: Buildings
+		Order: 130
 	Health:
 		HP: 35000
 	HitShape:
@@ -960,6 +1022,10 @@ research_centre:
 		Footprint: _X_ xxx XXX ===
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: The IX Research Center provides technology upgrades for structures and vehicles. This facility is required for production of a number of advanced special weapons and prototypes.\n\nThe IX Research Center is vulnerable to most types of weapons.
+		Category: Buildings
+		Order: 140
 	Health:
 		HP: 25000
 	HitShape:
@@ -1011,6 +1077,10 @@ palace:
 	D2kBuilding:
 		Footprint: xx= xxx =xx
 		Dimensions: 3,3
+	Encyclopedia:
+		Description: The Palace serves as the command center once it is constructed. Palaces feature unique additional options, making available advanced special weapons.\n\nArmor is heavy, but the Palace is vulnerable to most types of weapons.
+		Category: Buildings
+		Order: 150
 	Health:
 		HP: 40000
 	HitShape:
@@ -1164,6 +1234,8 @@ conyard.atreides:
 	RenderSprites:
 		Image: conyard.atreides
 		-FactionImages:
+	UpdatesPlayerStatistics:
+		OverrideActor: construction_yard
 
 conyard.harkonnen:
 	Inherits: construction_yard
@@ -1175,6 +1247,8 @@ conyard.harkonnen:
 	RenderSprites:
 		Image: conyard.harkonnen
 		-FactionImages:
+	UpdatesPlayerStatistics:
+		OverrideActor: construction_yard
 
 conyard.ordos:
 	Inherits: construction_yard
@@ -1186,3 +1260,5 @@ conyard.ordos:
 	RenderSprites:
 		Image: conyard.ordos
 		-FactionImages:
+	UpdatesPlayerStatistics:
+		OverrideActor: construction_yard

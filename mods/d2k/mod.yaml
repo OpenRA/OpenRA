@@ -120,6 +120,7 @@ ChromeLayout:
 	common|chrome/gamesave-browser.yaml
 	common|chrome/gamesave-loading.yaml
 	common|chrome/text-notifications.yaml
+	d2k|chrome/encyclopedia.yaml
 
 Translations:
 	common|languages/en.ftl

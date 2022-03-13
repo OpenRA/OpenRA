@@ -19,6 +19,10 @@ mcv:
 		HP: 45000
 	Armor:
 		Type: light
+	Encyclopedia:
+		Description: The Mobile Construction Vehicle must be driven to a suitable deployment area. After locating an appropriate area of rock, the MCV can be transformed into a Construction Yard.\n\nMCVs are resistant to bullets and some high explosives. They are vulnerable to missiles and high caliber guns.
+		Order: 180
+		Category: Units
 	Mobile:
 		Speed: 31
 	RevealsShroud:
@@ -77,6 +81,10 @@ harvester:
 		HP: 45000
 	Armor:
 		Type: harvester
+	Encyclopedia:
+		Description: Harvesters are resistant to bullets, and to some degree, high explosives. These units are vulnerable to missiles and high caliber guns.\n\nA Harvester is included with a Refinery.
+		Order: 130
+		Category: Units
 	Mobile:
 		Speed: 43
 	RevealsShroud:
@@ -129,6 +137,10 @@ trike:
 		HP: 9000
 	Armor:
 		Type: wood
+	Encyclopedia:
+		Description: Trikes are lightly armored, three-wheeled vehicles equipped with heavy machine guns, effective against infantry and lightly armored vehicles.\n\nTrikes are vulnerable to most weapons, though high caliber guns are slightly less effective against them.
+		Order: 90
+		Category: Units
 	Mobile:
 		TurnSpeed: 40
 		Speed: 128
@@ -179,6 +191,10 @@ quad:
 	Armament:
 		Weapon: Rocket
 		LocalOffset: 128,64,64, 128,-64,64
+	Encyclopedia:
+		Description: Stronger than the Trike in both armor and firepower, the Quad is a four-wheeled vehicle firing armor-piercing rockets. The Quad is effective against most vehicles.\n\nQuads are resistant to bullets and high explosives, to a lesser degree. However, Quads are vulnerable to missiles and high caliber guns.
+		Order: 110
+		Category: Units
 	AttackFrontal:
 		FacingTolerance: 0
 	Explodes:
@@ -210,6 +226,10 @@ siege_tank:
 		HP: 12000
 	Armor:
 		Type: light
+	Encyclopedia:
+		Description: Siege Tanks are very effective against infantry and lightly armored vehicles - but very weak against heavily armored targets. They fire over a long range.\n\nSiege Tanks are resistant to bullets, and to some degree, high explosives. These units are vulnerable to missiles and high caliber guns.
+		Order: 170
+		Category: Units
 	Mobile:
 		Speed: 43
 		TurnSpeed: 12
@@ -266,6 +286,10 @@ missile_tank:
 		HP: 13000
 	Armor:
 		Type: wood
+	Encyclopedia:
+		Description: The Missile Tank is anti-aircraft capable and effective against most targets, except infantry units.\n\nMissile Tanks are vulnerable to most weapons, though high caliber guns are slightly less effective.
+		Order: 190
+		Category: Units
 	RevealsShroud:
 		Range: 6c768
 	Armament:
@@ -316,6 +340,10 @@ sonic_tank:
 	Armament:
 		Weapon: Sound
 		LocalOffset: 600,0,427
+	Encyclopedia:
+		Description: The Sonic Tank is most effective against infantry and lightly armored vehicles - but weaker against armored targets.\n\nThe Sonic Tank will damage all units in its firing path.\n\nThey are very resistant to bullets and high explosives, but vulnerable to missiles and high caliber guns.
+		Order: 200
+		Category: Units
 	AttackFrontal:
 		FacingTolerance: 0
 	Explodes:
@@ -363,6 +391,10 @@ devastator:
 		Weapon: DevBullet
 		LocalOffset: 640,0,32
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: The Devastator is the most powerful tank on Dune - powerfully effective against most units, but slow - and slow to fire. Nuclear powered, the Devastator fires dual plasma charges and may be ordered to self-destruct, damaging surrounding units and structures.\n\nThe Devastator is very resistant to bullet and high explosives, but vulnerable to missiles and high caliber guns.
+		Order: 220
+		Category: Units
 	AttackFrontal:
 		FacingTolerance: 0
 	WithMuzzleOverlay:
@@ -416,6 +448,10 @@ raider:
 		Cost: 350
 	Tooltip:
 		Name: Raider Trike
+	Encyclopedia:
+		Description: Raiders are similar to Trikes, but the Ordos have refined their fire power, speed and armor to create a powerful and maneuverable scout. With dual 20mm cannons, Raiders are most effective against infantry and lightly armored vehicles.\n\nRaiders are vulnerable to most types of weaponry, though high caliber guns are slightly less effective.
+		Order: 100
+		Category: Units
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -466,6 +502,10 @@ stealth_raider:
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
+	Encyclopedia:
+		Description: A cloaked version of the raider, good for stealth attacks. Will uncloak when firing its machine guns.
+		Order: 120
+		Category: Units
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
@@ -495,6 +535,10 @@ deviator:
 		HP: 11000
 	Armor:
 		Type: wood
+	Encyclopedia:
+		Description: The Deviator's missiles discharge a silicon cloud that interferes with vehicle controls - temporarily changing the allegiance of the targeted unit. Personnel are not seriously effected by the cloud.\n\nThe Deviator is vulnerable to most types of weapon, though high caliber guns are slightly less effective.
+		Order: 210
+		Category: Units
 	RevealsShroud:
 		Range: 4c768
 	Armament:
@@ -564,6 +608,12 @@ deviator:
 
 combat_tank_a:
 	Inherits: ^combat_tank
+	Tooltip:
+		Name: Atreides Combat Tank
+	Encyclopedia:
+		Description: The Combat Tank is effective against most vehicles, less so against lightly armored vehicles.\n\nAtreides Combat Tanks are very resistant to bullet and heavy explosives, but vulnerable to missiles and high caliber guns.
+		Order: 140
+		Category: Units
 	Buildable:
 		Prerequisites: ~heavy.atreides_combat
 	Armament:
@@ -573,6 +623,12 @@ combat_tank_a:
 
 combat_tank_h:
 	Inherits: ^combat_tank
+	Tooltip:
+		Name: Harkonnen Combat Tank
+	Encyclopedia:
+		Description: The Combat Tank is effective against most vehicles, less so against lightly armored vehicles.\n\nThe Harkonnen Combat Tank is stronger but slower.
+		Order: 160
+		Category: Units
 	Buildable:
 		Prerequisites: ~heavy.harkonnen_combat
 	Armament:
@@ -586,10 +642,16 @@ combat_tank_h:
 
 combat_tank_o:
 	Inherits: ^combat_tank
+	Tooltip:
+		Name: Ordos Combat Tank
 	Buildable:
 		Prerequisites: ~heavy.ordos_combat
 	Turreted:
 		TurnSpeed: 20
+	Encyclopedia:
+		Description: The Combat Tank is effective against most vehicles, less so against lightly armored vehicles.\n\nThe Ordos Combat Tank is faster but weaker.
+		Order: 150
+		Category: Units
 	Armament:
 		Weapon: 80mm_O
 	Mobile:
