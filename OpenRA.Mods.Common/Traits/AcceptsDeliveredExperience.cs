@@ -23,11 +23,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Player relationships the owner of the delivering actor needs.")]
 		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally;
 
-		public override object Create(ActorInitializer init) { return new AcceptsDeliveredExperience(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new AcceptsDeliveredExperience(); }
 	}
 
 	public class AcceptsDeliveredExperience
 	{
-		public AcceptsDeliveredExperience(Actor self, AcceptsDeliveredExperienceInfo info) { }
+		public AcceptsDeliveredExperience() { }
 	}
 }

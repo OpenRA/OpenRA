@@ -9,7 +9,6 @@
  */
 #endregion
 
-using OpenRA.Graphics;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -23,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget tabContainer;
 
 		[ObjectCreator.UseCtor]
-		public MapEditorTabsLogic(Widget widget, WorldRenderer worldRenderer)
+		public MapEditorTabsLogic(Widget widget)
 		{
 			this.widget = widget;
 			tabContainer = widget.Get("MAP_EDITOR_TAB_CONTAINER");

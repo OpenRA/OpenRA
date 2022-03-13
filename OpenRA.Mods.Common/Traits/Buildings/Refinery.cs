@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.Traits
 			return count;
 		}
 
-		void CancelDock(Actor self)
+		void CancelDock()
 		{
 			preventDock = true;
 		}
@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyActorDisposing.Disposing(Actor self)
 		{
-			CancelDock(self);
+			CancelDock();
 			foreach (var harv in GetLinkedHarvesters())
 				harv.Trait.UnlinkProc(harv.Actor, self);
 		}
@@ -193,11 +193,11 @@ namespace OpenRA.Mods.Common.Traits
 				dockedHarv.ChangeOwner(newOwner);
 
 				// Relink to this refinery
-				dockedHarv.Trait<Harvester>().LinkProc(dockedHarv, self);
+				dockedHarv.Trait<Harvester>().LinkProc(self);
 			}
 		}
 
-		void INotifySold.Selling(Actor self) { CancelDock(self); }
+		void INotifySold.Selling(Actor self) { CancelDock(); }
 		void INotifySold.Sold(Actor self)
 		{
 			foreach (var harv in GetLinkedHarvesters())

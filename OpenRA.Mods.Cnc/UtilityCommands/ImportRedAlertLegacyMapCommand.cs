@@ -239,7 +239,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		public override void ReadActors(IniFile file)
 		{
 			base.ReadActors(file);
-			LoadActors(file, "SHIPS", Players, MapSize, Map);
+			LoadActors(file, "SHIPS", Players, Map);
 		}
 
 		public override void SaveWaypoint(int waypointNumber, ActorReference waypointReference)

@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 		void ITick.Tick(Actor self)
 		{
-			context.Tick(self);
+			context.Tick();
 		}
 
 		void INotifyActorDisposing.Disposing(Actor self)

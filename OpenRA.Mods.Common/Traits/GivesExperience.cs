@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Percentage of the `Experience` value that is being granted to the player owning the killing actor.")]
 		public readonly int PlayerExperienceModifier = 0;
 
-		public override object Create(ActorInitializer init) { return new GivesExperience(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GivesExperience(this); }
 	}
 
 	class GivesExperience : INotifyKilled, INotifyCreated
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		int exp;
 		IEnumerable<int> experienceModifiers;
 
-		public GivesExperience(Actor self, GivesExperienceInfo info)
+		public GivesExperience(GivesExperienceInfo info)
 		{
 			this.info = info;
 		}

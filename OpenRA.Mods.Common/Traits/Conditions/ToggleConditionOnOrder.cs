@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		[NotificationReference("Speech")]
 		public readonly string DisabledSpeech = null;
 
-		public override object Create(ActorInitializer init) { return new ToggleConditionOnOrder(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ToggleConditionOnOrder(this); }
 	}
 
 	public class ToggleConditionOnOrder : PausableConditionalTrait<ToggleConditionOnOrderInfo>, IResolveOrder
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		bool enabled = false;
 
-		public ToggleConditionOnOrder(Actor self, ToggleConditionOnOrderInfo info)
+		public ToggleConditionOnOrder(ToggleConditionOnOrderInfo info)
 			: base(info) { }
 
 		void SetCondition(Actor self, bool granted)

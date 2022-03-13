@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var paletteDropDown = panel.GetOrNull<DropDownButtonWidget>("PALETTE_SELECTOR");
 			if (paletteDropDown != null)
 			{
-				paletteDropDown.OnMouseDown = _ => ShowPaletteDropdown(paletteDropDown, world);
+				paletteDropDown.OnMouseDown = _ => ShowPaletteDropdown(paletteDropDown);
 				paletteDropDown.GetText = () => currentPalette;
 				paletteDropDown.IsVisible = () => currentSprites != null || currentVoxel != null;
 				panel.GetOrNull<LabelWidget>("PALETTE_DESC").IsVisible = () => currentSprites != null || currentVoxel != null;
@@ -587,7 +587,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		bool ShowPaletteDropdown(DropDownButtonWidget dropdown, World world)
+		bool ShowPaletteDropdown(DropDownButtonWidget dropdown)
 		{
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (name, itemTemplate) =>
 			{

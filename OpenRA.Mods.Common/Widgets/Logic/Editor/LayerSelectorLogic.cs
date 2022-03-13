@@ -35,10 +35,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			layerTemplateList.Layout = new GridLayout(layerTemplateList);
 			layerPreviewTemplate = layerTemplateList.Get<ScrollItemWidget>("LAYERPREVIEW_TEMPLATE");
 
-			IntializeLayerPreview(widget);
+			IntializeLayerPreview();
 		}
 
-		void IntializeLayerPreview(Widget widget)
+		void IntializeLayerPreview()
 		{
 			layerTemplateList.RemoveChildren();
 			var rules = worldRenderer.World.Map.Rules;

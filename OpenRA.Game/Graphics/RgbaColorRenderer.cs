@@ -261,7 +261,7 @@ namespace OpenRA.Graphics
 			return new Vertex(xyz, cr, cg, cb, ca, 0, 0);
 		}
 
-		public void FillEllipse(in float3 tl, in float3 br, Color color, int vertices = 32, BlendMode blendMode = BlendMode.Alpha)
+		public void FillEllipse(in float3 tl, in float3 br, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
 			// TODO: Create an ellipse polygon instead
 			var a = (br.X - tl.X) / 2;

@@ -23,12 +23,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Duration of the condition (in ticks). Set to 0 for a permanent condition.")]
 		public readonly int Duration = 0;
 
-		public override object Create(ActorInitializer init) { return new GrantExternalConditionToProduced(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantExternalConditionToProduced(this); }
 	}
 
 	public class GrantExternalConditionToProduced : ConditionalTrait<GrantExternalConditionToProducedInfo>, INotifyProduction
 	{
-		public GrantExternalConditionToProduced(Actor self, GrantExternalConditionToProducedInfo info)
+		public GrantExternalConditionToProduced(GrantExternalConditionToProducedInfo info)
 			: base(info) { }
 
 		void INotifyProduction.UnitProduced(Actor self, Actor other, CPos exit)
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			other.TraitsImplementing<ExternalCondition>()
-				.FirstOrDefault(t => t.Info.Condition == Info.Condition && t.CanGrantCondition(other, self))
+				.FirstOrDefault(t => t.Info.Condition == Info.Condition && t.CanGrantCondition(other))
 				?.GrantCondition(other, self, Info.Duration);
 		}
 	}

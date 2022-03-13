@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected readonly byte ValidLayerType;
 		protected int conditionToken = Actor.InvalidConditionToken;
 
-		public GrantConditionOnLayer(Actor self, InfoType info, byte validLayer)
+		public GrantConditionOnLayer(InfoType info, byte validLayer)
 			: base(info)
 		{
 			ValidLayerType = validLayer;

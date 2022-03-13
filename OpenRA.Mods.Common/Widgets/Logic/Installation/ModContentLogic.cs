@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool discAvailable;
 
 		[ObjectCreator.UseCtor]
-		public ModContentLogic(Widget widget, ModData modData, Manifest mod, ModContent content, Action onCancel)
+		public ModContentLogic(Widget widget, Manifest mod, ModContent content, Action onCancel)
 		{
 			this.content = content;
 
@@ -77,7 +77,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			discButton.OnClick = () => Ui.OpenWindow("DISC_INSTALL_PANEL", new WidgetArgs
 			{
-				{ "afterInstall", () => { } },
 				{ "sources", sources },
 				{ "content", content }
 			});

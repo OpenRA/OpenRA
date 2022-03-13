@@ -299,7 +299,7 @@ namespace OpenRA.Traits
 			sources.Remove(key);
 		}
 
-		public void ExploreProjectedCells(World world, IEnumerable<PPos> cells)
+		public void ExploreProjectedCells(IEnumerable<PPos> cells)
 		{
 			foreach (var puv in cells)
 			{

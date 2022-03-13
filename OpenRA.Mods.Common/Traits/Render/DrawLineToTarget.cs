@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Width (in pixels) of the queued end node markers.")]
 		public readonly int QueuedMarkerWidth = 2;
 
-		public override object Create(ActorInitializer init) { return new DrawLineToTarget(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new DrawLineToTarget(this); }
 	}
 
 	public class DrawLineToTarget : IRenderAboveShroud, IRenderAnnotationsWhenSelected, INotifySelected
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly List<IRenderable> renderableCache = new List<IRenderable>();
 		long lifetime;
 
-		public DrawLineToTarget(Actor self, DrawLineToTargetInfo info)
+		public DrawLineToTarget(DrawLineToTargetInfo info)
 		{
 			this.info = info;
 		}

@@ -44,9 +44,8 @@ namespace OpenRA.Orders
 		public virtual IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			var target = TargetForInput(world, cell, worldPixel, mi);
-			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
 			var orders = world.Selection.Actors
-				.Select(a => OrderForUnit(a, target, actorsAt, cell, mi))
+				.Select(a => OrderForUnit(a, target, cell, mi))
 				.Where(o => o != null)
 				.ToList();
 
@@ -70,7 +69,6 @@ namespace OpenRA.Orders
 		public virtual string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			var target = TargetForInput(world, cell, worldPixel, mi);
-			var actorsAt = world.ActorMap.GetActorsAt(cell).ToList();
 
 			bool useSelect;
 			if (Game.Settings.Game.UseClassicMouseStyle && !InputOverridesSelection(world, worldPixel, mi))
@@ -78,7 +76,7 @@ namespace OpenRA.Orders
 			else
 			{
 				var ordersWithCursor = world.Selection.Actors
-					.Select(a => OrderForUnit(a, target, actorsAt, cell, mi))
+					.Select(a => OrderForUnit(a, target, cell, mi))
 					.Where(o => o != null && o.Cursor != null);
 
 				var cursorOrder = ordersWithCursor.MaxByOrDefault(o => o.Order.OrderPriority);
@@ -120,7 +118,7 @@ namespace OpenRA.Orders
 
 			foreach (var a in world.Selection.Actors)
 			{
-				var o = OrderForUnit(a, target, actorsAt, cell, mi);
+				var o = OrderForUnit(a, target, cell, mi);
 				if (o != null && o.Order.TargetOverridesSelection(a, target, actorsAt, cell, modifiers))
 					return true;
 			}
@@ -135,7 +133,7 @@ namespace OpenRA.Orders
 		/// First priority is given to orders that interact with the given actors.
 		/// Second priority is given to actors in the given cell.
 		/// </summary>
-		static UnitOrderResult OrderForUnit(Actor self, Target target, List<Actor> actorsAt, CPos xy, MouseInput mi)
+		static UnitOrderResult OrderForUnit(Actor self, Target target, CPos xy, MouseInput mi)
 		{
 			if (mi.Button != Game.Settings.Game.MouseButtonPreference.Action)
 				return null;
@@ -174,7 +172,7 @@ namespace OpenRA.Orders
 				{
 					var localModifiers = modifiers;
 					string cursor = null;
-					if (o.Order.CanTarget(self, target, actorsAt, ref localModifiers, ref cursor))
+					if (o.Order.CanTarget(self, target, ref localModifiers, ref cursor))
 						return new UnitOrderResult(self, o.Order, o.Trait, cursor, target);
 				}
 

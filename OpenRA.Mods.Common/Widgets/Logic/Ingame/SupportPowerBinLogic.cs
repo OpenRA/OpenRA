@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class SupportPowerBinLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public SupportPowerBinLogic(Widget widget, World world)
+		public SupportPowerBinLogic(Widget widget)
 		{
 			var palette = widget.Get<SupportPowersWidget>("SUPPORT_PALETTE");
 

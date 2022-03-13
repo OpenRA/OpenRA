@@ -200,7 +200,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				var localOffset = CarryableOffset.Rotate(body.QuantizeOrientation(self, self.Orientation));
+				var localOffset = CarryableOffset.Rotate(body.QuantizeOrientation(self.Orientation));
 				return body.LocalToWorld(localOffset);
 			}
 		}
@@ -285,7 +285,7 @@ namespace OpenRA.Mods.Common.Traits
 						.ToArray();
 				}
 
-				var offset = body.LocalToWorld(CarryableOffset.Rotate(body.QuantizeOrientation(self, self.Orientation)));
+				var offset = body.LocalToWorld(CarryableOffset.Rotate(body.QuantizeOrientation(self.Orientation)));
 				var previewRenderables = carryablePreview
 					.SelectMany(p => p.Render(wr, self.CenterPosition + offset))
 					.OrderBy(WorldRenderer.RenderableZPositionComparisonKey);
@@ -430,7 +430,7 @@ namespace OpenRA.Mods.Common.Traits
 				this.info = info;
 			}
 
-			public bool CanTarget(Actor self, in Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
 			{
 				if (!info.AllowDropOff || !modifiers.HasModifier(TargetModifiers.ForceMove))
 					return false;

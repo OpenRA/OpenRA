@@ -252,7 +252,7 @@ namespace OpenRA.Scripting
 				worldLoaded.Call().Dispose();
 		}
 
-		public void Tick(Actor self)
+		public void Tick()
 		{
 			if (FatalErrorOccurred || disposed)
 				return;

@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 180, options, setupItem);
 		}
 
-		public static void ShowPlayerActionDropDown(DropDownButtonWidget dropdown, Session.Slot slot,
+		public static void ShowPlayerActionDropDown(DropDownButtonWidget dropdown,
 			Session.Client c, OrderManager orderManager, Widget lobby, Action before, Action after)
 		{
 			Action<bool> okPressed = tempBan => { orderManager.IssueOrder(Order.Command($"kick {c.Index} {tempBan}")); after(); };
@@ -378,7 +378,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		public static void SetupEditableNameWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, WorldRenderer worldRenderer)
+		public static void SetupEditableNameWidget(Widget parent, Session.Client c, OrderManager orderManager, WorldRenderer worldRenderer)
 		{
 			var name = parent.Get<TextFieldWidget>("NAME");
 			name.IsVisible = () => true;
@@ -420,7 +420,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			HideChildWidget(parent, "SLOT_OPTIONS");
 		}
 
-		public static void SetupNameWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, WorldRenderer worldRenderer)
+		public static void SetupNameWidget(Widget parent, Session.Client c, OrderManager orderManager, WorldRenderer worldRenderer)
 		{
 			var name = parent.Get<LabelWidget>("NAME");
 			name.IsVisible = () => true;
@@ -432,7 +432,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		public static void SetupEditableSlotWidget(Widget parent, Session.Slot s, Session.Client c,
-			OrderManager orderManager, WorldRenderer worldRenderer, MapPreview map)
+			OrderManager orderManager, MapPreview map)
 		{
 			var slot = parent.Get<DropDownButtonWidget>("SLOT_OPTIONS");
 			slot.IsVisible = () => true;
@@ -459,7 +459,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			HideChildWidget(parent, "SLOT_OPTIONS");
 		}
 
-		public static void SetupPlayerActionWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager,
+		public static void SetupPlayerActionWidget(Widget parent, Session.Client c, OrderManager orderManager,
 			WorldRenderer worldRenderer, Widget lobby, Action before, Action after)
 		{
 			var slot = parent.Get<DropDownButtonWidget>("PLAYER_ACTION");
@@ -471,7 +471,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.Renderer.Fonts[slot.Font]));
 
 			slot.GetText = () => truncated.Update(c != null ? c.Name : string.Empty);
-			slot.OnMouseDown = _ => ShowPlayerActionDropDown(slot, s, c, orderManager, lobby, before, after);
+			slot.OnMouseDown = _ => ShowPlayerActionDropDown(slot, c, orderManager, lobby, before, after);
 
 			SetupProfileWidget(slot, c, orderManager, worldRenderer);
 
@@ -525,10 +525,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			color.IsDisabled = () => (s != null && s.LockColor) || orderManager.LocalClient.IsReady;
 			color.OnMouseDown = _ => ShowColorDropDown(color, c, orderManager, worldRenderer, colorManager);
 
-			SetupColorWidget(color, s, c);
+			SetupColorWidget(color, c);
 		}
 
-		public static void SetupColorWidget(Widget parent, Session.Slot s, Session.Client c)
+		public static void SetupColorWidget(Widget parent, Session.Client c)
 		{
 			var color = parent.Get<ColorBlockWidget>("COLORBLOCK");
 			color.GetColor = () => c.Color;
@@ -545,11 +545,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.GetTooltipText = () => tooltip.First;
 			dropdown.GetTooltipDesc = () => tooltip.Second;
 
-			SetupFactionWidget(dropdown, s, c, factions);
+			SetupFactionWidget(dropdown, c, factions);
 		}
 
-		public static void SetupFactionWidget(Widget parent, Session.Slot s, Session.Client c,
-			Dictionary<string, LobbyFaction> factions)
+		public static void SetupFactionWidget(Widget parent, Session.Client c, Dictionary<string, LobbyFaction> factions)
 		{
 			var factionName = parent.Get<LabelWidget>("FACTIONNAME");
 			factionName.GetText = () => factions[c.Faction].Name;
@@ -569,7 +568,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			HideChildWidget(parent, "TEAM");
 		}
 
-		public static void SetupTeamWidget(Widget parent, Session.Slot s, Session.Client c)
+		public static void SetupTeamWidget(Widget parent, Session.Client c)
 		{
 			var team = parent.Get<LabelWidget>("TEAM");
 			team.IsVisible = () => true;
@@ -577,7 +576,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			HideChildWidget(parent, "TEAM_DROPDOWN");
 		}
 
-		public static void SetupEditableHandicapWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
+		public static void SetupEditableHandicapWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager)
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("HANDICAP_DROPDOWN");
 			dropdown.IsVisible = () => true;
@@ -590,7 +589,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			HideChildWidget(parent, "HANDICAP");
 		}
 
-		public static void SetupHandicapWidget(Widget parent, Session.Slot s, Session.Client c)
+		public static void SetupHandicapWidget(Widget parent, Session.Client c)
 		{
 			var team = parent.Get<LabelWidget>("HANDICAP");
 			team.IsVisible = () => true;
@@ -618,7 +617,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			HideChildWidget(parent, "SPAWN");
 		}
 
-		public static void SetupSpawnWidget(Widget parent, Session.Slot s, Session.Client c)
+		public static void SetupSpawnWidget(Widget parent, Session.Client c)
 		{
 			var spawn = parent.Get<LabelWidget>("SPAWN");
 			spawn.IsVisible = () => true;
@@ -626,7 +625,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			HideChildWidget(parent, "SPAWN_DROPDOWN");
 		}
 
-		public static void SetupEditableReadyWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map, bool isEnabled)
+		public static void SetupEditableReadyWidget(Widget parent, Session.Client c, OrderManager orderManager, MapPreview map, bool isEnabled)
 		{
 			var status = parent.Get<CheckboxWidget>("STATUS_CHECKBOX");
 			status.IsChecked = () => orderManager.LocalClient.IsReady || c.Bot != null;
@@ -637,7 +636,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			status.OnClick = () => orderManager.IssueOrder(Order.Command($"state {state}"));
 		}
 
-		public static void SetupReadyWidget(Widget parent, Session.Slot s, Session.Client c)
+		public static void SetupReadyWidget(Widget parent, Session.Client c)
 		{
 			parent.Get<ImageWidget>("STATUS_IMAGE").IsVisible = () => c.IsReady || c.Bot != null;
 		}

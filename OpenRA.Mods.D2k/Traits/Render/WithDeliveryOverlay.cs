@@ -54,7 +54,7 @@ namespace OpenRA.Mods.D2k.Traits.Render
 			overlay.IsDecoration = true;
 
 			anim = new AnimationWithOffset(overlay,
-				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
+				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self.Orientation))),
 				() => IsTraitDisabled || !delivering);
 
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);

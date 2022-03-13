@@ -363,7 +363,8 @@ namespace OpenRA.Platforms.Default
 
 		void Dispose(bool disposing)
 		{
-			StopAllSounds();
+			if (disposing)
+				StopAllSounds();
 
 			if (context != IntPtr.Zero)
 			{

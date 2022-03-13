@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			detectCloaked = self.TraitsImplementing<DetectCloaked>().ToArray();
 		}
 
-		IEnumerable<IRenderable> RenderCircle(Actor self, WorldRenderer wr, DetectionCircleVisibility visibility)
+		IEnumerable<IRenderable> RenderCircle(Actor self, DetectionCircleVisibility visibility)
 		{
 			if (info.Visible != visibility || !self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
@@ -85,14 +85,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			return RenderCircle(self, wr, DetectionCircleVisibility.WhenSelected);
+			return RenderCircle(self, DetectionCircleVisibility.WhenSelected);
 		}
 
 		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => false;
 
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			return RenderCircle(self, wr, DetectionCircleVisibility.Always);
+			return RenderCircle(self, DetectionCircleVisibility.Always);
 		}
 
 		bool IRenderAnnotations.SpatiallyPartitionable => false;

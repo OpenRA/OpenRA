@@ -127,7 +127,7 @@ namespace OpenRA.GameRules
 		[FieldLoader.LoadUsing(nameof(LoadWarheads))]
 		public readonly List<IWarhead> Warheads = new List<IWarhead>();
 
-		public WeaponInfo(string name, MiniYaml content)
+		public WeaponInfo(MiniYaml content)
 		{
 			// Resolve any weapon-level yaml inheritance or removals
 			// HACK: The "Defaults" sequence syntax prevents us from doing this generally during yaml parsing

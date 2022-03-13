@@ -1032,7 +1032,7 @@ namespace OpenRA.Server
 			}
 		}
 
-		public void ReceivePing(Connection conn, int[] pingHistory, byte queueLength)
+		public void ReceivePing(Connection conn, int[] pingHistory)
 		{
 			// Levels set relative to the default order lag of 3 net ticks (360ms)
 			// TODO: Adjust this once dynamic lag is implemented
@@ -1389,7 +1389,7 @@ namespace OpenRA.Server
 
 			void IServerEvent.Invoke(Server server)
 			{
-				server.ReceivePing(connection, pingHistory, queueLength);
+				server.ReceivePing(connection, pingHistory);
 			}
 		}
 

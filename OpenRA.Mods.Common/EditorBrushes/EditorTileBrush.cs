@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (mi.Modifiers.HasModifier(Modifiers.Shift))
 			{
-				FloodFillWithBrush(cell, isMoving);
+				FloodFillWithBrush(cell);
 				painting = false;
 			}
 			else
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Widgets
 			editorActionManager.Add(new PaintTileEditorAction(Template, world.Map, cell));
 		}
 
-		void FloodFillWithBrush(CPos cell, bool isMoving)
+		void FloodFillWithBrush(CPos cell)
 		{
 			var map = world.Map;
 			var mapTiles = map.Tiles;

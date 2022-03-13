@@ -21,14 +21,14 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly Color Color = Color.Orange;
 
-		public override object Create(ActorInitializer init) { return new CapturableProgressBar(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new CapturableProgressBar(this); }
 	}
 
 	class CapturableProgressBar : ConditionalTrait<CapturableProgressBarInfo>, ISelectionBar, ICaptureProgressWatcher
 	{
 		readonly Dictionary<Actor, (int Current, int Total)> progress = new Dictionary<Actor, (int, int)>();
 
-		public CapturableProgressBar(Actor self, CapturableProgressBarInfo info)
+		public CapturableProgressBar(CapturableProgressBarInfo info)
 			: base(info) { }
 
 		void ICaptureProgressWatcher.Update(Actor self, Actor captor, Actor target, int current, int total)

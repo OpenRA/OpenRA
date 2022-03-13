@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Traits
 			base.Created(self);
 		}
 
-		public void LinkProc(Actor self, Actor proc)
+		public void LinkProc(Actor proc)
 		{
 			LinkedProc = proc;
 		}
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void ChooseNewProc(Actor self, Actor ignore)
 		{
 			LastLinkedProc = null;
-			LinkProc(self, ClosestProc(self, ignore));
+			LinkProc(ClosestProc(self, ignore));
 		}
 
 		bool IsAcceptableProcType(Actor proc)
@@ -277,7 +277,7 @@ namespace OpenRA.Mods.Common.Traits
 			return contents.Count == 0;
 		}
 
-		public bool CanHarvestCell(Actor self, CPos cell)
+		public bool CanHarvestCell(CPos cell)
 		{
 			// Resources only exist in the ground layer
 			if (cell.Layer != 0)
@@ -333,7 +333,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString == "Harvest")
 			{
 				// NOTE: An explicit harvest order allows the harvester to decide which refinery to deliver to.
-				LinkProc(self, null);
+				LinkProc(null);
 
 				CPos loc;
 				if (order.Target.Type != TargetType.Invalid)
@@ -391,7 +391,7 @@ namespace OpenRA.Mods.Common.Traits
 			public bool IsQueued { get; protected set; }
 			public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
-			public bool CanTarget(Actor self, in Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
 			{
 				if (target.Type != TargetType.Terrain)
 					return false;

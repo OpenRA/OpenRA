@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Common.Traits
 			return terrainInfo.GetTerrainInfo(new TerrainTile(template, (byte)index));
 		}
 
-		public void LinkNeighbouringBridges(World world, LegacyBridgeLayer bridges)
+		public void LinkNeighbouringBridges(LegacyBridgeLayer bridges)
 		{
 			for (var d = 0; d <= 1; d++)
 			{

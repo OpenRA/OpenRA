@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			overlay = new Animation(self.World, rs.GetImage(self));
 
 			var anim = new AnimationWithOffset(overlay,
-				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
+				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self.Orientation))),
 				() => !visible || IsTraitDisabled);
 
 			overlay.PlayThen(info.Sequence, () => visible = false);

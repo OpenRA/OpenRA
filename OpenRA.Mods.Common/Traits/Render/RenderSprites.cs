@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var sequenceProvider = init.World.Map.Rules.Sequences;
 			var faction = init.GetValue<FactionInit, string>(this);
 			var ownerName = init.Get<OwnerInit>().InternalName;
-			var image = GetImage(init.Actor, sequenceProvider, faction);
+			var image = GetImage(init.Actor, faction);
 			var palette = init.WorldRenderer.Palette(Palette ?? PlayerPalette + ownerName);
 
 			var facings = 0;
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					yield return preview;
 		}
 
-		public string GetImage(ActorInfo actor, SequenceProvider sequenceProvider, string faction)
+		public string GetImage(ActorInfo actor, string faction)
 		{
 			if (FactionImages != null && !string.IsNullOrEmpty(faction) && FactionImages.TryGetValue(faction, out var factionImage))
 				return factionImage.ToLowerInvariant();
@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (cachedImage != null)
 				return cachedImage;
 
-			return cachedImage = Info.GetImage(self.Info, self.World.Map.Rules.Sequences, faction);
+			return cachedImage = Info.GetImage(self.Info, faction);
 		}
 
 		public void UpdatePalette()
@@ -189,7 +189,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					a.CachePalette(wr, owner);
 				}
 
-				foreach (var r in a.Animation.Render(self, wr, a.PaletteReference))
+				foreach (var r in a.Animation.Render(self, a.PaletteReference))
 					yield return r;
 			}
 		}
@@ -261,13 +261,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		// Required by WithSpriteBody and WithInfantryBody
-		public int2 AutoSelectionSize(Actor self)
+		public int2 AutoSelectionSize()
 		{
-			return AutoRenderSize(self);
+			return AutoRenderSize();
 		}
 
 		// Required by WithSpriteBody and WithInfantryBody
-		public int2 AutoRenderSize(Actor self)
+		public int2 AutoRenderSize()
 		{
 			return anims.Where(b => b.IsVisible
 				&& b.Animation.Animation.CurrentSequence != null)

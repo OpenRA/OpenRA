@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		int penalty;
 
 		public ClassicParallelProductionQueue(ActorInitializer init, ClassicParallelProductionQueueInfo info)
-			: base(init, init.Self, info)
+			: base(init, info)
 		{
 			self = init.Self;
 			this.info = info;

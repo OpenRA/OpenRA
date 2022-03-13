@@ -30,14 +30,14 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Duration of the condition applied on a successful crush (in ticks). Set to 0 for a permanent condition.")]
 		public readonly int OnCrushDuration = 0;
 
-		public override object Create(ActorInitializer init) { return new GrantExternalConditionToCrusher(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantExternalConditionToCrusher(this); }
 	}
 
 	public class GrantExternalConditionToCrusher : INotifyCrushed
 	{
 		public readonly GrantExternalConditionToCrusherInfo Info;
 
-		public GrantExternalConditionToCrusher(Actor self, GrantExternalConditionToCrusherInfo info)
+		public GrantExternalConditionToCrusher(GrantExternalConditionToCrusherInfo info)
 		{
 			Info = info;
 		}
@@ -45,14 +45,14 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCrushed.OnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
 			crusher.TraitsImplementing<ExternalCondition>()
-				.FirstOrDefault(t => t.Info.Condition == Info.OnCrushCondition && t.CanGrantCondition(crusher, self))
+				.FirstOrDefault(t => t.Info.Condition == Info.OnCrushCondition && t.CanGrantCondition(self))
 				?.GrantCondition(crusher, self, Info.OnCrushDuration);
 		}
 
 		void INotifyCrushed.WarnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
 			crusher.TraitsImplementing<ExternalCondition>()
-				.FirstOrDefault(t => t.Info.Condition == Info.WarnCrushCondition && t.CanGrantCondition(crusher, self))
+				.FirstOrDefault(t => t.Info.Condition == Info.WarnCrushCondition && t.CanGrantCondition(self))
 				?.GrantCondition(crusher, self, Info.WarnCrushDuration);
 		}
 	}

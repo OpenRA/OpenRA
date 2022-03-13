@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool requiredContentInstalled;
 
 		[ObjectCreator.UseCtor]
-		public ModContentPromptLogic(Widget widget, ModData modData, Manifest mod, ModContent content, Action continueLoading)
+		public ModContentPromptLogic(Widget widget, Manifest mod, ModContent content, Action continueLoading)
 		{
 			this.content = content;
 			CheckRequiredContentInstalled();

@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Carryall attachment point relative to body.")]
 		public readonly WVec LocalOffset = WVec.Zero;
 
-		public override object Create(ActorInitializer init) { return new Carryable(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Carryable(this); }
 	}
 
 	public enum LockResponse { Success, Pending, Failed }
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected State state = State.Free;
 		protected bool attached;
 
-		public Carryable(Actor self, CarryableInfo info)
+		public Carryable(CarryableInfo info)
 			: base(info) { }
 
 		protected override void Created(Actor self)

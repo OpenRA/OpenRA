@@ -41,6 +41,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 	public class DefaultSpriteSequenceLoader : ISpriteSequenceLoader
 	{
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "IDE0060:Remove unused parameter", Justification = "Load game API")]
 		public DefaultSpriteSequenceLoader(ModData modData) { }
 
 		public virtual ISpriteSequence CreateSequence(ModData modData, string tileSet, SpriteCache cache, string sequence, string animation, MiniYaml info)

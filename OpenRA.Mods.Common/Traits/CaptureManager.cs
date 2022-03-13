@@ -99,11 +99,11 @@ namespace OpenRA.Mods.Common.Traits
 				.ToArray()
 				.Where(Exts.IsTraitEnabled);
 
-			RefreshCaptures(self);
-			RefreshCapturable(self);
+			RefreshCaptures();
+			RefreshCapturable();
 		}
 
-		public void RefreshCapturable(Actor self)
+		public void RefreshCapturable()
 		{
 			allyCapturableTypes = neutralCapturableTypes = enemyCapturableTypes = default(BitSet<CaptureType>);
 			foreach (var c in enabledCapturable)
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public void RefreshCaptures(Actor self)
+		public void RefreshCaptures()
 		{
 			capturesTypes = enabledCaptures.Aggregate(
 				default(BitSet<CaptureType>),

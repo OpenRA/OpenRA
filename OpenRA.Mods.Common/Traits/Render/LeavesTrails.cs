@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Should the trail spawn relative to last position or current position?")]
 		public readonly bool SpawnAtLastPosition = true;
 
-		public override object Create(ActorInitializer init) { return new LeavesTrails(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new LeavesTrails(this); }
 	}
 
 	public class LeavesTrails : ConditionalTrait<LeavesTrailsInfo>, ITick
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		WAngle cachedFacing;
 		int cachedInterval;
 
-		public LeavesTrails(Actor self, LeavesTrailsInfo info)
+		public LeavesTrails(LeavesTrailsInfo info)
 			: base(info)
 		{
 			cachedInterval = Info.StartDelay;
@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					if (previouslySpawned && previousSpawnCell == spawnCell)
 						spawnFacing = previousSpawnFacing;
 
-					var offsetRotation = Info.Offsets[offset].Rotate(body.QuantizeOrientation(self, self.Orientation));
+					var offsetRotation = Info.Offsets[offset].Rotate(body.QuantizeOrientation(self.Orientation));
 					var spawnPosition = Info.SpawnAtLastPosition ? cachedPosition : self.CenterPosition;
 					var pos = Info.Type == TrailType.CenterPosition ? spawnPosition + body.LocalToWorld(offsetRotation) :
 						self.World.Map.CenterOfCell(spawnCell);

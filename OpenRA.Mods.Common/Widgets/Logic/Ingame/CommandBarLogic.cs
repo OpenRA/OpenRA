@@ -317,7 +317,7 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var o in orders)
 				world.IssueOrder(o);
 
-			world.PlayVoiceForOrders(orders);
+			orders.PlayVoiceForOrders();
 		}
 
 		void PerformDeployOrderOnSelection(bool queued)
@@ -333,7 +333,7 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var o in orders)
 				world.IssueOrder(o);
 
-			world.PlayVoiceForOrders(orders);
+			orders.PlayVoiceForOrders();
 		}
 	}
 }

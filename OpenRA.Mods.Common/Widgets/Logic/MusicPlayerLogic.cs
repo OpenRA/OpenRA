@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		MusicInfo currentSong = null;
 
 		[ObjectCreator.UseCtor]
-		public MusicPlayerLogic(Widget widget, ModData modData, World world, Action onExit)
+		public MusicPlayerLogic(Widget widget, World world, Action onExit)
 		{
 			var panel = widget;
 

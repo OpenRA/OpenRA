@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			// Run all rule checks on the map if it defines custom rules.
 			if (map.RuleDefinitions != null || map.VoiceDefinitions != null || map.WeaponDefinitions != null)
-				CheckRules(modData, map.Rules, map);
+				CheckRules(modData, map.Rules);
 
 			// Run all map-level checks here.
 			foreach (var customMapPassType in modData.ObjectCreator.GetTypesImplementing<ILintMapPass>())
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 		}
 
-		void CheckRules(ModData modData, Ruleset rules, Map map = null)
+		void CheckRules(ModData modData, Ruleset rules)
 		{
 			foreach (var customRulesPassType in modData.ObjectCreator.GetTypesImplementing<ILintRulesPass>())
 			{

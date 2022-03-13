@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.Traits
 		WVec CalculateTargetableOffset(Actor self, in WVec offset)
 		{
 			var localOffset = offset;
-			var quantizedBodyOrientation = orientation.QuantizeOrientation(self, self.Orientation);
+			var quantizedBodyOrientation = orientation.QuantizeOrientation(self.Orientation);
 
 			if (turret != null)
 			{
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Traits
 			return Info.Type.DistanceFromEdge(pos, origin, orientation);
 		}
 
-		public IEnumerable<IRenderable> RenderDebugAnnotations(Actor self, WorldRenderer wr)
+		public IEnumerable<IRenderable> RenderDebugAnnotations(Actor self)
 		{
 			var targetPosHLine = new WVec(0, 128, 0);
 			var targetPosVLine = new WVec(128, 0, 0);

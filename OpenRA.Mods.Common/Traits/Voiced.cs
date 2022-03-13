@@ -24,14 +24,14 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Multiply volume with this factor.")]
 		public readonly float Volume = 1f;
 
-		public override object Create(ActorInitializer init) { return new Voiced(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new Voiced(this); }
 	}
 
 	public class Voiced : IVoiced
 	{
 		public readonly VoicedInfo Info;
 
-		public Voiced(Actor self, VoicedInfo info)
+		public Voiced(VoicedInfo info)
 		{
 			Info = info;
 		}

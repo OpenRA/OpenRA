@@ -50,12 +50,12 @@ namespace OpenRA.Mods.Common.Traits
 				BorderWidth);
 
 			var otherRangeRenderables = w.ActorsWithTrait<RenderShroudCircle>()
-				.SelectMany(a => a.Trait.RangeCircleRenderables(a.Actor, wr));
+				.SelectMany(a => a.Trait.RangeCircleRenderables(a.Actor));
 
 			return otherRangeRenderables.Append(localRangeRenderable);
 		}
 
-		public override object Create(ActorInitializer init) { return new RenderShroudCircle(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RenderShroudCircle(this); }
 	}
 
 	class RenderShroudCircle : INotifyCreated, IRenderAnnotationsWhenSelected
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly RenderShroudCircleInfo info;
 		WDist range;
 
-		public RenderShroudCircle(Actor self, RenderShroudCircleInfo info)
+		public RenderShroudCircle(RenderShroudCircleInfo info)
 		{
 			this.info = info;
 		}
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 				.Max();
 		}
 
-		public IEnumerable<IRenderable> RangeCircleRenderables(Actor self, WorldRenderer wr)
+		public IEnumerable<IRenderable> RangeCircleRenderables(Actor self)
 		{
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			return RangeCircleRenderables(self, wr);
+			return RangeCircleRenderables(self);
 		}
 
 		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => false;

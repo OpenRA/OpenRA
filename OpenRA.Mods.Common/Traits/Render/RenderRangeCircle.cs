@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var otherRanges = w.ActorsWithTrait<RenderRangeCircle>()
 				.Where(a => a.Trait.Info.RangeCircleType == RangeCircleType)
-				.SelectMany(a => a.Trait.RangeCircleRenderables(wr));
+				.SelectMany(a => a.Trait.RangeCircleRenderables());
 
 			return otherRanges.Append(localRange);
 		}
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			attack = self.Trait<AttackBase>();
 		}
 
-		public IEnumerable<IRenderable> RangeCircleRenderables(WorldRenderer wr)
+		public IEnumerable<IRenderable> RangeCircleRenderables()
 		{
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			return RangeCircleRenderables(wr);
+			return RangeCircleRenderables();
 		}
 
 		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => false;

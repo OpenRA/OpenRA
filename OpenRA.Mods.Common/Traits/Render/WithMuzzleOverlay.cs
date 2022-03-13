@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					if (anim.DisableFunc != null && anim.DisableFunc())
 						continue;
 
-					foreach (var r in anim.Render(self, wr, palette))
+					foreach (var r in anim.Render(self, palette))
 						yield return r;
 				}
 			}

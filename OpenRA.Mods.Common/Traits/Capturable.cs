@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.CancelActivity();
 		}
 
-		protected override void TraitEnabled(Actor self) { captureManager.RefreshCapturable(self); }
-		protected override void TraitDisabled(Actor self) { captureManager.RefreshCapturable(self); }
+		protected override void TraitEnabled(Actor self) { captureManager.RefreshCapturable(); }
+		protected override void TraitDisabled(Actor self) { captureManager.RefreshCapturable(); }
 	}
 }

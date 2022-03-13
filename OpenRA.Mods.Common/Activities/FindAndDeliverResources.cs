@@ -159,19 +159,19 @@ namespace OpenRA.Mods.Common.Activities
 			// Harvesters should respect an explicit harvest order instead of harvesting the current cell.
 			if (orderLocation == null)
 			{
-				if (harv.CanHarvestCell(self, self.Location) && claimLayer.CanClaimCell(self, self.Location))
+				if (harv.CanHarvestCell(self.Location) && claimLayer.CanClaimCell(self, self.Location))
 					return self.Location;
 			}
 			else
 			{
-				if (harv.CanHarvestCell(self, orderLocation.Value) && claimLayer.CanClaimCell(self, orderLocation.Value))
+				if (harv.CanHarvestCell(orderLocation.Value) && claimLayer.CanClaimCell(self, orderLocation.Value))
 					return orderLocation;
 
 				orderLocation = null;
 			}
 
 			// Determine where to search from and how far to search:
-			var procLoc = GetSearchFromProcLocation(self);
+			var procLoc = GetSearchFromProcLocation();
 			var searchFromLoc = lastHarvestedCell ?? procLoc ?? self.Location;
 			var searchRadius = lastHarvestedCell.HasValue ? harvInfo.SearchFromHarvesterRadius : harvInfo.SearchFromProcRadius;
 
@@ -186,7 +186,7 @@ namespace OpenRA.Mods.Common.Activities
 			using (var search = PathSearch.ToTargetCellByPredicate(
 				self.World, mobile.Locomotor, self, new[] { searchFromLoc, self.Location },
 				loc =>
-					harv.CanHarvestCell(self, loc) &&
+					harv.CanHarvestCell(loc) &&
 					claimLayer.CanClaimCell(self, loc),
 				BlockedByActor.Stationary,
 				loc =>
@@ -196,7 +196,7 @@ namespace OpenRA.Mods.Common.Activities
 
 					// Add a cost modifier to harvestable cells to prefer resources that are closer to the refinery.
 					// This reduces the tendency for harvesters to move in straight lines
-					if (procPos.HasValue && harvInfo.ResourceRefineryDirectionPenalty > 0 && harv.CanHarvestCell(self, loc))
+					if (procPos.HasValue && harvInfo.ResourceRefineryDirectionPenalty > 0 && harv.CanHarvestCell(loc))
 					{
 						var pos = map.CenterOfCell(loc);
 
@@ -244,7 +244,7 @@ namespace OpenRA.Mods.Common.Activities
 				yield return new TargetLineNode(Target.FromActor(deliverActor), harvInfo.DeliverLineColor);
 		}
 
-		CPos? GetSearchFromProcLocation(Actor self)
+		CPos? GetSearchFromProcLocation()
 		{
 			if (harv.LastLinkedProc != null && !harv.LastLinkedProc.IsDead && harv.LastLinkedProc.IsInWorld)
 				return harv.LastLinkedProc.Location + harv.LastLinkedProc.Trait<IAcceptResources>().DeliveryOffset;

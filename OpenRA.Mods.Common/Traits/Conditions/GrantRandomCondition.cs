@@ -22,14 +22,14 @@ namespace OpenRA.Mods.Common.Traits.Conditions
 		[Desc("List of conditions to grant from.")]
 		public readonly string[] Conditions = null;
 
-		public override object Create(ActorInitializer init) { return new GrantRandomCondition(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantRandomCondition(this); }
 	}
 
 	public class GrantRandomCondition : INotifyCreated
 	{
 		readonly GrantRandomConditionInfo info;
 
-		public GrantRandomCondition(Actor self, GrantRandomConditionInfo info)
+		public GrantRandomCondition(GrantRandomConditionInfo info)
 		{
 			this.info = info;
 		}

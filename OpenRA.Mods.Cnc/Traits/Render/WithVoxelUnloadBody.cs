@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 			var idleModel = self.World.ModelCache.GetModelSequence(rv.Image, info.IdleSequence);
 			modelAnimation = new ModelAnimation(idleModel, () => WVec.Zero,
-				() => body.QuantizeOrientation(self, self.Orientation),
+				() => body.QuantizeOrientation(self.Orientation),
 				() => Docked,
 				() => 0, info.ShowShadow);
 
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 			var unloadModel = self.World.ModelCache.GetModelSequence(rv.Image, info.UnloadSequence);
 			rv.Add(new ModelAnimation(unloadModel, () => WVec.Zero,
-				() => body.QuantizeOrientation(self, self.Orientation),
+				() => body.QuantizeOrientation(self.Orientation),
 				() => !Docked,
 				() => 0, info.ShowShadow));
 		}

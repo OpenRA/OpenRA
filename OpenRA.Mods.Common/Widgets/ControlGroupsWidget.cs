@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string JumpToGroupKeyPrefix = null;
 
 		[CustomLintableHotkeyNames]
-		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError, Action<string> emitWarning)
+		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError)
 		{
 			var count = Game.ModData.DefaultRules.Actors[SystemActors.World].TraitInfo<IControlGroupsInfo>().Groups.Length;
 			if (count == 0)

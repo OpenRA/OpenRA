@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Initial Z axis modifier relative to actual position.")]
 		public readonly WDist InitialHeight = new WDist(43);
 
-		public override object Create(ActorInitializer init) { return new Hovers(this, init.Self); }
+		public override object Create(ActorInitializer init) { return new Hovers(this); }
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		int ticks;
 		WVec worldVisualOffset;
 
-		public Hovers(HoversInfo info, Actor self)
+		public Hovers(HoversInfo info)
 			: base(info)
 		{
 			this.info = info;

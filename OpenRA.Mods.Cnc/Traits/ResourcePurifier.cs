@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("How often the cash ticks can appear.")]
 		public readonly int TickRate = 10;
 
-		public override object Create(ActorInitializer init) { return new ResourcePurifier(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new ResourcePurifier(this); }
 	}
 
 	public class ResourcePurifier : ConditionalTrait<ResourcePurifierInfo>, INotifyResourceAccepted, ITick, INotifyOwnerChanged
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		int currentDisplayTick;
 		int currentDisplayValue;
 
-		public ResourcePurifier(Actor self, ResourcePurifierInfo info)
+		public ResourcePurifier(ResourcePurifierInfo info)
 			: base(info)
 		{
 			modifier = new int[] { Info.Modifier };

@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
@@ -25,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Dictionary<EditorActionContainer, ScrollItemWidget> states = new Dictionary<EditorActionContainer, ScrollItemWidget>();
 
 		[ObjectCreator.UseCtor]
-		public HistoryLogLogic(Widget widget, World world, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
+		public HistoryLogLogic(Widget widget, World world)
 		{
 			panel = widget.Get<ScrollPanelWidget>("HISTORY_LIST");
 			template = panel.Get<ScrollItemWidget>("HISTORY_TEMPLATE");

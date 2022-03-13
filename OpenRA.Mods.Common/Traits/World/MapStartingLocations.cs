@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				foreach (var q in world.Players)
 					if (p.IsAlliedWith(q))
-						q.Shroud.ExploreProjectedCells(world, cells);
+						q.Shroud.ExploreProjectedCells(cells);
 			}
 		}
 	}

@@ -59,9 +59,9 @@ namespace OpenRA.Mods.Common.FileFormats
 			3, 4, 5, 6, 7, 8
 		};
 
-		static readonly Huffman LitCode = new Huffman(LitLen, LitLen.Length, 256);
-		static readonly Huffman LenCode = new Huffman(LenLen, LenLen.Length, 16);
-		static readonly Huffman DistCode = new Huffman(DistLen, DistLen.Length, 64);
+		static readonly Huffman LitCode = new Huffman(LitLen, 256);
+		static readonly Huffman LenCode = new Huffman(LenLen, 16);
+		static readonly Huffman DistCode = new Huffman(DistLen, 64);
 
 		/// <summary>PKWare Compression Library stream.</summary>
 		/// <param name="input">Compressed input stream.</param>
@@ -247,7 +247,7 @@ namespace OpenRA.Mods.Common.FileFormats
 		public short[] Count; // number of symbols of each length
 		public short[] Symbol; // canonically ordered symbols
 
-		public Huffman(byte[] rep, int n, short symbolCount)
+		public Huffman(byte[] rep, short symbolCount)
 		{
 			var length = new short[256]; // code lengths
 			var s = 0; // current symbol
@@ -262,7 +262,7 @@ namespace OpenRA.Mods.Common.FileFormats
 				while (--num > 0);
 			}
 
-			n = s;
+			var n = s;
 
 			// count number of codes of each length
 			Count = new short[Blast.MAXBITS + 1];

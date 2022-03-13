@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Can complete the move in this step
-			var speed = mobile.MovementSpeedForCell(self, self.Location);
+			var speed = mobile.MovementSpeedForCell(self.Location);
 			if (delta.LengthSquared <= speed * speed)
 			{
 				mobile.SetCenterPosition(self, targetPos);

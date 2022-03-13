@@ -30,14 +30,14 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Sound the perpetrator will hear after successful infiltration.")]
 		public readonly string InfiltrationNotification = null;
 
-		public override object Create(ActorInitializer init) { return new InfiltrateForExploration(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new InfiltrateForExploration(this); }
 	}
 
 	class InfiltrateForExploration : INotifyInfiltrated
 	{
 		readonly InfiltrateForExplorationInfo info;
 
-		public InfiltrateForExploration(Actor self, InfiltrateForExplorationInfo info)
+		public InfiltrateForExploration(InfiltrateForExplorationInfo info)
 		{
 			this.info = info;
 		}

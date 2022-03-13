@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly PaletteReference palette;
 
 		public SequencePlaceBuildingPreviewPreview(WorldRenderer wr, ActorInfo ai, SequencePlaceBuildingPreviewInfo info, TypeDictionary init)
-			: base(wr, ai, info, init)
+			: base(wr, ai, info)
 		{
 			this.info = info;
 			var ownerName = init.Get<OwnerInit>().InternalName;
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var rsi = ai.TraitInfo<RenderSpritesInfo>();
 			palette = wr.Palette(rsi.Palette ?? rsi.PlayerPalette + ownerName);
-			preview = new Animation(wr.World, rsi.GetImage(ai, wr.World.Map.Rules.Sequences, faction));
+			preview = new Animation(wr.World, rsi.GetImage(ai, faction));
 			preview.PlayRepeating(info.Sequence);
 		}
 

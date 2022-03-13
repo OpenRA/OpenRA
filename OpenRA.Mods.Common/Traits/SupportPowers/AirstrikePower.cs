@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Traits
 				aircraftInRange.Add(a, false);
 
 				var attack = a.Trait<AttackBomber>();
-				attack.SetTarget(self.World, target + targetOffset);
+				attack.SetTarget(target + targetOffset);
 				attack.OnEnteredAttackRange += onEnterRange;
 				attack.OnExitedAttackRange += onExitRange;
 				attack.OnRemovedFromWorld += onRemovedFromWorld;

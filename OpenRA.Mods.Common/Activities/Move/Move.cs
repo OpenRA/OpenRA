@@ -415,7 +415,7 @@ namespace OpenRA.Mods.Common.Activities
 				// Only move by a full speed step if we didn't already move this tick.
 				// If we did, we limit the move to any carried-over leftover progress.
 				if (Move.lastMovePartCompletedTick < self.World.WorldTick)
-					progress += mobile.MovementSpeedForCell(self, mobile.ToCell);
+					progress += mobile.MovementSpeedForCell(mobile.ToCell);
 
 				if (progress >= Distance)
 				{
@@ -448,13 +448,13 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					var currentCellOrientation = self.World.Map.TerrainOrientation(mobile.FromCell);
 					var orientation = WRot.SLerp(FromTerrainOrientation.Value, currentCellOrientation, progress, terrainOrientationMargin);
-					mobile.SetTerrainRampOrientation(self, orientation);
+					mobile.SetTerrainRampOrientation(orientation);
 				}
 				else if (ToTerrainOrientation.HasValue && Distance - progress < terrainOrientationMargin)
 				{
 					var currentCellOrientation = self.World.Map.TerrainOrientation(mobile.FromCell);
 					var orientation = WRot.SLerp(ToTerrainOrientation.Value, currentCellOrientation, Distance - progress, terrainOrientationMargin);
-					mobile.SetTerrainRampOrientation(self, orientation);
+					mobile.SetTerrainRampOrientation(orientation);
 				}
 
 				mobile.Facing = WAngle.Lerp(FromFacing, ToFacing, progress, Distance);

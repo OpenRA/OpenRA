@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public IRenderable OffsetBy(in WVec vec) { return new SelectionBarsAnnotationRenderable(pos + vec, actor, decorationBounds); }
 		public IRenderable AsDecoration() { return this; }
 
-		void DrawExtraBars(WorldRenderer wr, float2 start, float2 end)
+		void DrawExtraBars(float2 start, float2 end)
 		{
 			foreach (var extraBar in actor.TraitsImplementing<ISelectionBar>())
 			{
@@ -58,12 +58,12 @@ namespace OpenRA.Mods.Common.Graphics
 					var offset = new float2(0, 4);
 					start += offset;
 					end += offset;
-					DrawSelectionBar(wr, start, end, extraBar.GetValue(), extraBar.GetColor());
+					DrawSelectionBar(start, end, extraBar.GetValue(), extraBar.GetColor());
 				}
 			}
 		}
 
-		void DrawSelectionBar(WorldRenderer wr, float2 start, float2 end, float value, Color barColor)
+		void DrawSelectionBar(float2 start, float2 end, float value, Color barColor)
 		{
 			var c = Color.FromArgb(128, 30, 30, 30);
 			var c2 = Color.FromArgb(128, 10, 10, 10);
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Graphics
 				health.DamageState == DamageState.Heavy ? Color.Yellow : Color.LimeGreen;
 		}
 
-		void DrawHealthBar(WorldRenderer wr, IHealth health, float2 start, float2 end)
+		void DrawHealthBar(IHealth health, float2 start, float2 end)
 		{
 			if (health == null || health.IsDead)
 				return;
@@ -149,10 +149,10 @@ namespace OpenRA.Mods.Common.Graphics
 			var end = wr.Viewport.WorldToViewPx(new float2(decorationBounds.Right - 1, decorationBounds.Top));
 
 			if (DisplayHealth)
-				DrawHealthBar(wr, health, start, end);
+				DrawHealthBar(health, start, end);
 
 			if (DisplayExtra)
-				DrawExtraBars(wr, start, end);
+				DrawExtraBars(start, end);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr) { }

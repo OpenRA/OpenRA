@@ -257,7 +257,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			Aggressor = attacker;
 
-			Attack(self, Target.FromActor(Aggressor), allowMove);
+			Attack(Target.FromActor(Aggressor), allowMove);
 		}
 
 		void INotifyIdle.TickIdle(Actor self)
@@ -309,10 +309,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var target = ScanForTarget(self, allowMove, allowTurn);
 			if (target.Type != TargetType.Invalid)
-				Attack(self, target, allowMove);
+				Attack(target, allowMove);
 		}
 
-		void Attack(Actor self, in Target target, bool allowMove)
+		void Attack(in Target target, bool allowMove)
 		{
 			foreach (var ab in ActiveAttackBases)
 				ab.AttackTarget(target, AttackSource.AutoTarget, false, allowMove);

@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WeaponInfo WeaponInfo { get; private set; }
 
-		public override object Create(ActorInitializer init) { return new ExplosionOnDamageTransition(this, init.Self); }
+		public override object Create(ActorInitializer init) { return new ExplosionOnDamageTransition(this); }
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -51,10 +51,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		bool triggered;
 
-		public ExplosionOnDamageTransition(ExplosionOnDamageTransitionInfo info, Actor self)
-			: base(info)
-		{
-		}
+		public ExplosionOnDamageTransition(ExplosionOnDamageTransitionInfo info)
+			: base(info) { }
 
 		void INotifyDamageStateChanged.DamageStateChanged(Actor self, AttackInfo e)
 		{

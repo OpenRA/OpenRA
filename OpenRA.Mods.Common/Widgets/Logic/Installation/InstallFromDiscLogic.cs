@@ -54,14 +54,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Mode visible = Mode.Progress;
 
 		[ObjectCreator.UseCtor]
-		public InstallFromDiscLogic(Widget widget, ModContent content, Dictionary<string, ModContent.ModSource> sources, Action afterInstall)
+		public InstallFromDiscLogic(Widget widget, ModContent content, Dictionary<string, ModContent.ModSource> sources)
 		{
 			this.content = content;
 			this.sources = sources;
 
 			Log.AddChannel("install", "install.log");
 
-			// this.afterInstall = afterInstall;
 			panel = widget.Get("DISC_INSTALL_PANEL");
 
 			titleLabel = panel.Get<LabelWidget>("TITLE");
