@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var localOffset = Info.LocalOffset + new WVec(-armament.Recoil, WDist.Zero, WDist.Zero);
 
 			// Turret coordinates to body coordinates
-			var bodyOrientation = body.QuantizeOrientation(self, self.Orientation);
+			var bodyOrientation = body.QuantizeOrientation(self.Orientation);
 			localOffset = localOffset.Rotate(turreted.WorldOrientation) + turreted.Offset.Rotate(bodyOrientation);
 
 			// Body coordinates to world coordinates

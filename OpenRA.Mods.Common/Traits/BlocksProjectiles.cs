@@ -22,12 +22,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Determines what projectiles to block based on their allegiance to the wall owner.")]
 		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
-		public override object Create(ActorInitializer init) { return new BlocksProjectiles(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new BlocksProjectiles(this); }
 	}
 
 	public class BlocksProjectiles : ConditionalTrait<BlocksProjectilesInfo>, IBlocksProjectiles
 	{
-		public BlocksProjectiles(Actor self, BlocksProjectilesInfo info)
+		public BlocksProjectiles(BlocksProjectilesInfo info)
 			: base(info) { }
 
 		WDist IBlocksProjectiles.BlockingHeight => Info.Height;

@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Warheads
 					continue;
 
 				a.TraitsImplementing<ExternalCondition>()
-					.FirstOrDefault(t => t.Info.Condition == Condition && t.CanGrantCondition(a, firedBy))
+					.FirstOrDefault(t => t.Info.Condition == Condition && t.CanGrantCondition(firedBy))
 					?.GrantCondition(a, firedBy, Duration);
 			}
 		}

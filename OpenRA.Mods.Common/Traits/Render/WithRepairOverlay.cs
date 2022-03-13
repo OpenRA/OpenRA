@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			overlay.PlayThen(info.Sequence, () => visible = false);
 
 			var anim = new AnimationWithOffset(overlay,
-				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
+				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self.Orientation))),
 				() => IsTraitDisabled || !visible,
 				p => RenderUtils.ZOffsetFromCenter(self, p, 1));
 

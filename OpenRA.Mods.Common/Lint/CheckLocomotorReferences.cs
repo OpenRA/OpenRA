@@ -51,14 +51,14 @@ namespace OpenRA.Mods.Common.Lint
 							if (string.IsNullOrEmpty(locomotor))
 								continue;
 
-							CheckLocomotors(actorInfo.Value, emitError, rules, locomotorInfos, locomotor);
+							CheckLocomotors(actorInfo.Value, emitError, locomotorInfos, locomotor);
 						}
 					}
 				}
 			}
 		}
 
-		void CheckLocomotors(ActorInfo actorInfo, Action<string> emitError, Ruleset rules, LocomotorInfo[] locomotorInfos, string locomotor)
+		void CheckLocomotors(ActorInfo actorInfo, Action<string> emitError, LocomotorInfo[] locomotorInfos, string locomotor)
 		{
 			if (!locomotorInfos.Any(l => l.Name == locomotor))
 				emitError($"Actor {actorInfo.Name} defines Locomotor {locomotor} not found on World actor.");

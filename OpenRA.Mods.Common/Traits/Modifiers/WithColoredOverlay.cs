@@ -42,10 +42,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return r;
 
-			return ModifiedRender(self, wr, r);
+			return ModifiedRender(r);
 		}
 
-		IEnumerable<IRenderable> ModifiedRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
+		IEnumerable<IRenderable> ModifiedRender(IEnumerable<IRenderable> r)
 		{
 			foreach (var a in r)
 			{

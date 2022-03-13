@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 			}
 
-			if (!harv.CanHarvestCell(self, self.Location))
+			if (!harv.CanHarvestCell(self.Location))
 				return true;
 
 			// Turn to one of the harvestable facings

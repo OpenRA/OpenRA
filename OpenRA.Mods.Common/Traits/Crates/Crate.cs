@@ -191,7 +191,7 @@ namespace OpenRA.Mods.Common.Traits
 		// Sets the location (Location) and position (CenterPosition)
 		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
-			SetLocation(self, cell, subCell);
+			SetLocation(self, cell);
 			SetCenterPosition(self, self.World.Map.CenterOfCell(cell));
 		}
 
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		// Sets only the location (Location)
-		void SetLocation(Actor self, CPos cell, SubCell subCell = SubCell.Any)
+		void SetLocation(Actor self, CPos cell)
 		{
 			self.World.ActorMap.RemoveInfluence(self, this);
 			Location = cell;

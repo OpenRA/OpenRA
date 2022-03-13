@@ -37,7 +37,6 @@ namespace OpenRA.Mods.Common.Traits.Radar
 			c = info.GetColorFromTerrain(self.World);
 		}
 
-		public bool VisibleOnRadar(Actor self) { return true; }
 		public Color RadarColorOverride(Actor self, Color color) { return c; }
 	}
 }

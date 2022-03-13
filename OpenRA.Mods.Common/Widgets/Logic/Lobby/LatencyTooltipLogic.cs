@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class LatencyTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public LatencyTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, OrderManager orderManager, Session.Client client)
+		public LatencyTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, Session.Client client)
 		{
 			var latencyPrefix = widget.Get<LabelWidget>("LATENCY_PREFIX");
 			var latencyPrefixFont = Game.Renderer.Fonts[latencyPrefix.Font];

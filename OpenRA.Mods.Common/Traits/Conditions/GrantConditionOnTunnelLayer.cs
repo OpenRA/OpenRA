@@ -13,12 +13,12 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class GrantConditionOnTunnelLayerInfo : GrantConditionOnLayerInfo
 	{
-		public override object Create(ActorInitializer init) { return new GrantConditionOnTunnelLayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnTunnelLayer(this); }
 	}
 
 	public class GrantConditionOnTunnelLayer : GrantConditionOnLayer<GrantConditionOnTunnelLayerInfo>
 	{
-		public GrantConditionOnTunnelLayer(Actor self, GrantConditionOnTunnelLayerInfo info)
-			: base(self, info, CustomMovementLayerType.Tunnel) { }
+		public GrantConditionOnTunnelLayer(GrantConditionOnTunnelLayerInfo info)
+			: base(info, CustomMovementLayerType.Tunnel) { }
 	}
 }

@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Common.Traits
 					foreach (var a in self.World.ActorMap.GetActorsAt(targetLocation))
 					{
 						var pluggables = a.TraitsImplementing<Pluggable>()
-							.Where(p => p.AcceptsPlug(a, plugInfo.Type))
+							.Where(p => p.AcceptsPlug(plugInfo.Type))
 							.ToList();
 
 						var pluggable = pluggables.FirstOrDefault(p => a.Location + p.Info.Offset == targetLocation)

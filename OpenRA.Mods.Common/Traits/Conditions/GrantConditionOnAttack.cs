@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Should all instances be revoked instead of only one?")]
 		public readonly bool RevokeAll = false;
 
-		public override object Create(ActorInitializer init) { return new GrantConditionOnAttack(init, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnAttack(this); }
 	}
 
 	public class GrantConditionOnAttack : PausableConditionalTrait<GrantConditionOnAttackInfo>, INotifyCreated, ITick, INotifyAttack
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		// Only tracked when RevokeOnNewTarget is true.
 		Target lastTarget = Target.Invalid;
 
-		public GrantConditionOnAttack(ActorInitializer init, GrantConditionOnAttackInfo info)
+		public GrantConditionOnAttack(GrantConditionOnAttackInfo info)
 			: base(info) { }
 
 		void GrantInstance(Actor self, string cond)

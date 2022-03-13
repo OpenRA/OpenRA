@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// We want to update the trails' position even while the trait is disabled,
 			// otherwise we might get visual 'jumps' when the trait is re-enabled.
-			var local = info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
+			var local = info.Offset.Rotate(body.QuantizeOrientation(self.Orientation));
 			trail.Update(self.CenterPosition + body.LocalToWorld(local));
 		}
 

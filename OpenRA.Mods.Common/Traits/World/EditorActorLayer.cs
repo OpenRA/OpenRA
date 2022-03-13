@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 			throw new NotImplementedException("EditorActorLayer must not be defined on the world actor");
 		}
 
-		public override object Create(ActorInitializer init) { return new EditorActorLayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new EditorActorLayer(this); }
 	}
 
 	public class EditorActorLayer : IWorldLoaded, ITickRender, IRender, IRadarSignature, ICreatePlayers, IRenderAnnotations
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public MapPlayers Players { get; private set; }
 
-		public EditorActorLayer(Actor self, EditorActorLayerInfo info)
+		public EditorActorLayer(EditorActorLayerInfo info)
 		{
 			this.info = info;
 		}

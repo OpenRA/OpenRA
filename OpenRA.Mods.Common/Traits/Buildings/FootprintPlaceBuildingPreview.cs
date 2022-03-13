@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual IPlaceBuildingPreview CreatePreview(WorldRenderer wr, ActorInfo ai, TypeDictionary init)
 		{
-			return new FootprintPlaceBuildingPreviewPreview(wr, ai, this, init);
+			return new FootprintPlaceBuildingPreviewPreview(wr, ai, this);
 		}
 
 		IPlaceBuildingPreview IPlaceBuildingPreviewGeneratorInfo.CreatePreview(WorldRenderer wr, ActorInfo ai, TypeDictionary init)
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Sprite validTile, blockedTile;
 		readonly float validAlpha, blockedAlpha;
 
-		public FootprintPlaceBuildingPreviewPreview(WorldRenderer wr, ActorInfo ai, FootprintPlaceBuildingPreviewInfo info, TypeDictionary init)
+		public FootprintPlaceBuildingPreviewPreview(WorldRenderer wr, ActorInfo ai, FootprintPlaceBuildingPreviewInfo info)
 		{
 			ActorInfo = ai;
 			this.info = info;

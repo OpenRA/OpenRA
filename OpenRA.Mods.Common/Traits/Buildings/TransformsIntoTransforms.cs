@@ -20,12 +20,12 @@ namespace OpenRA.Mods.Common.Traits
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
-		public override object Create(ActorInitializer init) { return new TransformsIntoTransforms(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new TransformsIntoTransforms(this); }
 	}
 
 	public class TransformsIntoTransforms : ConditionalTrait<TransformsIntoTransformsInfo>, IResolveOrder, IOrderVoice, IIssueDeployOrder
 	{
-		public TransformsIntoTransforms(Actor self, TransformsIntoTransformsInfo info)
+		public TransformsIntoTransforms(TransformsIntoTransformsInfo info)
 			: base(info) { }
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)

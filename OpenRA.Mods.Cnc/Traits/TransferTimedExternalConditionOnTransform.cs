@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				return;
 
 			var external = toActor.TraitsImplementing<ExternalCondition>()
-				.FirstOrDefault(t => t.Info.Condition == info.Condition && t.CanGrantCondition(toActor, this));
+				.FirstOrDefault(t => t.Info.Condition == info.Condition && t.CanGrantCondition(this));
 
 			external?.GrantCondition(toActor, this, duration, remaining);
 		}

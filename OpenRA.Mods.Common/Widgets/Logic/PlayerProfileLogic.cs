@@ -310,7 +310,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class AnonymousProfileTooltipLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public AnonymousProfileTooltipLogic(Widget widget, OrderManager orderManager, Session.Client client)
+		public AnonymousProfileTooltipLogic(Widget widget, Session.Client client)
 		{
 			var nameLabel = widget.Get<LabelWidget>("NAME");
 			var nameFont = Game.Renderer.Fonts[nameLabel.Font];

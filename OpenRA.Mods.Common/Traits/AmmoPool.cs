@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The condition to grant to self for each ammo point in this pool.")]
 		public readonly string AmmoCondition = null;
 
-		public override object Create(ActorInitializer init) { return new AmmoPool(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new AmmoPool(this); }
 	}
 
 	public class AmmoPool : INotifyCreated, INotifyAttack, ISync
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool HasAmmo => CurrentAmmoCount > 0;
 		public bool HasFullAmmo => CurrentAmmoCount == Info.Ammo;
 
-		public AmmoPool(Actor self, AmmoPoolInfo info)
+		public AmmoPool(AmmoPoolInfo info)
 		{
 			Info = info;
 			CurrentAmmoCount = Info.InitialAmmo < Info.Ammo && Info.InitialAmmo >= 0 ? Info.InitialAmmo : Info.Ammo;

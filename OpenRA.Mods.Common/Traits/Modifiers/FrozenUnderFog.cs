@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		void UpdateFrozenActor(Actor self, FrozenActor frozenActor, int playerIndex)
+		void UpdateFrozenActor(FrozenActor frozenActor, int playerIndex)
 		{
 			VisibilityHash |= 1 << (playerIndex % 32);
 			frozenActor.RefreshState();
@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 			frozenStates[frozen.Viewer].IsVisible = !frozen.Visible;
 		}
 
-		bool IsVisibleInner(Actor self, Player byPlayer)
+		bool IsVisibleInner(Player byPlayer)
 		{
 			// If fog is disabled visibility is determined by shroud
 			if (!byPlayer.Shroud.FogEnabled)
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 
 			var relationship = self.Owner.RelationshipWith(byPlayer);
-			return info.AlwaysVisibleRelationships.HasRelationship(relationship) || IsVisibleInner(self, byPlayer);
+			return info.AlwaysVisibleRelationships.HasRelationship(relationship) || IsVisibleInner(byPlayer);
 		}
 
 		void ITick.Tick(Actor self)
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!created && startsRevealed)
 			{
 				for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
-					UpdateFrozenActor(self, frozenStates[playerIndex].FrozenActor, playerIndex);
+					UpdateFrozenActor(frozenStates[playerIndex].FrozenActor, playerIndex);
 
 				created = true;
 				return;
@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.Traits
 				state.IsVisible = isVisible;
 
 				if (isVisible)
-					UpdateFrozenActor(self, frozenActor, playerIndex);
+					UpdateFrozenActor(frozenActor, playerIndex);
 			}
 		}
 
@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Force a state update for the old owner so the tooltip etc doesn't show them as the owner
 			var oldOwnerIndex = self.World.Players.IndexOf(oldOwner);
-			UpdateFrozenActor(self, frozenStates[oldOwnerIndex].FrozenActor, oldOwnerIndex);
+			UpdateFrozenActor(frozenStates[oldOwnerIndex].FrozenActor, oldOwnerIndex);
 		}
 
 		void INotifyActorDisposing.Disposing(Actor self)

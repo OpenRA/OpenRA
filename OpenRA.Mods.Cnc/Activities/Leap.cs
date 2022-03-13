@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		int ticks = 0;
 		WPos targetPosition;
 
-		public Leap(Actor self, in Target target, Mobile mobile, Mobile targetMobile, int speed, AttackLeap attack, EdibleByLeap edible)
+		public Leap(in Target target, Mobile mobile, Mobile targetMobile, int speed, AttackLeap attack, EdibleByLeap edible)
 		{
 			this.mobile = mobile;
 			this.targetMobile = targetMobile;
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Cnc.Activities
 
 				// Update movement which results in movementType set to MovementType.None.
 				// This is needed to prevent the move animation from playing.
-				mobile.UpdateMovement(self);
+				mobile.UpdateMovement();
 
 				// Revoke the condition before attacking, as it is usually used to pause the attack trait
 				attack.RevokeLeapCondition(self);

@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected override void OnFirstRun(Actor self)
 		{
 			if (targetActor != null && targetActor.IsInWorld)
-				harv.LinkProc(self, targetActor);
+				harv.LinkProc(targetActor);
 		}
 
 		public override bool Tick(Actor self)

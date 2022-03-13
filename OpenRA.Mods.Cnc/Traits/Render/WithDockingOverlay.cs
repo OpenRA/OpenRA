@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			overlay.Play(info.Sequence);
 
 			WithOffset = new AnimationWithOffset(overlay,
-				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
+				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self.Orientation))),
 				() => !Visible || IsTraitDisabled);
 
 			rs.Add(WithOffset, info.Palette, info.IsPlayerPalette);

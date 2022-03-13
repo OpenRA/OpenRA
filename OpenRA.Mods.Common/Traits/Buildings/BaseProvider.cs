@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 			return buildRadiusEnabled && (self.Owner == self.World.RenderPlayer || (allyBuildEnabled && self.Owner.IsAlliedWith(self.World.RenderPlayer)));
 		}
 
-		public IEnumerable<IRenderable> RangeCircleRenderables(WorldRenderer wr)
+		public IEnumerable<IRenderable> RangeCircleRenderables()
 		{
 			if (IsTraitDisabled)
 				yield break;
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			return RangeCircleRenderables(wr);
+			return RangeCircleRenderables();
 		}
 
 		bool IRenderAnnotationsWhenSelected.SpatiallyPartitionable => false;

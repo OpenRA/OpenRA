@@ -259,7 +259,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!RequiresBaseProvider)
 				return SpriteRenderable.None;
 
-			return w.ActorsWithTrait<BaseProvider>().SelectMany(a => a.Trait.RangeCircleRenderables(wr));
+			return w.ActorsWithTrait<BaseProvider>().SelectMany(a => a.Trait.RangeCircleRenderables());
 		}
 	}
 

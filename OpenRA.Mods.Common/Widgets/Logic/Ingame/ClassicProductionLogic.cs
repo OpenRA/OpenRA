@@ -12,7 +12,6 @@
 using System;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -22,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ProductionPaletteWidget palette;
 		readonly World world;
 
-		void SetupProductionGroupButton(OrderManager orderManager, ProductionTypeButtonWidget button)
+		void SetupProductionGroupButton(ProductionTypeButtonWidget button)
 		{
 			if (button == null)
 				return;
@@ -56,7 +55,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public ClassicProductionLogic(Widget widget, OrderManager orderManager, World world)
+		public ClassicProductionLogic(Widget widget, World world)
 		{
 			this.world = world;
 			palette = widget.Get<ProductionPaletteWidget>("PRODUCTION_PALETTE");
@@ -124,7 +123,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var typesContainer = widget.Get("PRODUCTION_TYPES");
 			foreach (var i in typesContainer.Children)
-				SetupProductionGroupButton(orderManager, i as ProductionTypeButtonWidget);
+				SetupProductionGroupButton(i as ProductionTypeButtonWidget);
 
 			var ticker = widget.Get<LogicTickerWidget>("PRODUCTION_TICKER");
 			ticker.OnTick = () =>

@@ -108,7 +108,7 @@ namespace OpenRA.Scripting
 			throw new LuaException($"The property '{Member.Name}' is write-only");
 		}
 
-		public void Set(LuaRuntime runtime, LuaValue value)
+		public void Set(LuaValue value)
 		{
 			if (IsSetProperty)
 			{

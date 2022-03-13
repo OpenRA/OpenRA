@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly string Font = "TinyBold";
 
-		public override object Create(ActorInitializer init) { return new CustomTerrainDebugOverlay(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new CustomTerrainDebugOverlay(this); }
 	}
 
 	class CustomTerrainDebugOverlay : IWorldLoaded, IChatCommand, IRenderAnnotations
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly SpriteFont font;
 
-		public CustomTerrainDebugOverlay(Actor self, CustomTerrainDebugOverlayInfo info)
+		public CustomTerrainDebugOverlay(CustomTerrainDebugOverlayInfo info)
 		{
 			font = Game.Renderer.Fonts[info.Font];
 		}

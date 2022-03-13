@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Orders
 		public int OrderPriority { get; private set; }
 		public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
-		public bool CanTarget(Actor self, in Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+		public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
 		{
 			if (target.Type != TargetType.Actor)
 				return false;

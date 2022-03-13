@@ -30,7 +30,7 @@ namespace OpenRA.Platforms.Default
 			catch (InvalidOperationException e)
 			{
 				Log.Write("sound", "Failed to initialize OpenAL device. Error was {0}", e);
-				return new DummySoundEngine(device);
+				return new DummySoundEngine();
 			}
 		}
 

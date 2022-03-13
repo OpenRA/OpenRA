@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Widgets
 					continue;
 
 				var rsi = actor.TraitInfo<RenderSpritesInfo>();
-				var icon = new Animation(world, rsi.GetImage(actor, world.Map.Rules.Sequences, faction));
+				var icon = new Animation(world, rsi.GetImage(actor, faction));
 				var bi = actor.TraitInfo<BuildableInfo>();
 
 				icon.Play(bi.Icon);

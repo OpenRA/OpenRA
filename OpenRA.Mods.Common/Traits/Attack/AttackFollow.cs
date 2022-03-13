@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool opportunityForceAttack;
 		bool opportunityTargetIsPersistentTarget;
 
-		public void SetRequestedTarget(Actor self, in Target target, bool isForceAttack = false)
+		public void SetRequestedTarget(in Target target, bool isForceAttack = false)
 		{
 			RequestedTarget = target;
 			requestedForceAttack = isForceAttack;
@@ -274,7 +274,7 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				target = target.Recalculate(self.Owner, out var targetIsHiddenActor);
-				attack.SetRequestedTarget(self, target, forceAttack);
+				attack.SetRequestedTarget(target, forceAttack);
 				hasTicked = true;
 
 				if (!targetIsHiddenActor && target.Type == TargetType.Actor)

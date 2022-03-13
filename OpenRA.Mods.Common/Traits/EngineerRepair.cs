@@ -47,12 +47,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when target actor has full health so it can't be repaired.")]
 		public readonly string RepairBlockedCursor = "goldwrench-blocked";
 
-		public override object Create(ActorInitializer init) { return new EngineerRepair(init, this); }
+		public override object Create(ActorInitializer init) { return new EngineerRepair(this); }
 	}
 
 	class EngineerRepair : ConditionalTrait<EngineerRepairInfo>, IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		public EngineerRepair(ActorInitializer init, EngineerRepairInfo info)
+		public EngineerRepair(EngineerRepairInfo info)
 			: base(info) { }
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new Order(order.OrderID, self, target, queued);
 		}
 
-		static bool IsValidOrder(Actor self, Order order)
+		static bool IsValidOrder(Order order)
 		{
 			if (order.Target.Type == TargetType.FrozenActor)
 				return order.Target.FrozenActor.DamageState > DamageState.Undamaged;
@@ -87,13 +87,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "EngineerRepair" && IsValidOrder(self, order)
+			return order.OrderString == "EngineerRepair" && IsValidOrder(order)
 				? Info.Voice : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "EngineerRepair" || !IsValidOrder(self, order))
+			if (order.OrderString != "EngineerRepair" || !IsValidOrder(order))
 				return;
 
 			self.QueueActivity(order.Queued, new RepairBuilding(self, order.Target, Info));

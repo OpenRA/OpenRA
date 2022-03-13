@@ -34,14 +34,14 @@ namespace OpenRA.Mods.Common.Traits
 			"Use an empty list (the default) to allow all DeathTypes.")]
 		public readonly BitSet<DamageType> DeathTypes = default(BitSet<DamageType>);
 
-		public override object Create(ActorInitializer init) { return new RevealOnDeath(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RevealOnDeath(this); }
 	}
 
 	public class RevealOnDeath : ConditionalTrait<RevealOnDeathInfo>, INotifyKilled
 	{
 		readonly RevealOnDeathInfo info;
 
-		public RevealOnDeath(Actor self, RevealOnDeathInfo info)
+		public RevealOnDeath(RevealOnDeathInfo info)
 			: base(info)
 		{
 			this.info = info;

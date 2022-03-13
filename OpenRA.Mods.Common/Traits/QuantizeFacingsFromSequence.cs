@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 				throw new InvalidOperationException("Actor " + ai.Name + " is missing sequence to quantize facings from.");
 
 			var rsi = ai.TraitInfo<RenderSpritesInfo>();
-			return sequenceProvider.GetSequence(rsi.GetImage(ai, sequenceProvider, race), Sequence).Facings;
+			return sequenceProvider.GetSequence(rsi.GetImage(ai, race), Sequence).Facings;
 		}
 
 		public override object Create(ActorInitializer init) { return new QuantizeFacingsFromSequence(this); }

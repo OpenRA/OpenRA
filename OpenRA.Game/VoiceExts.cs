@@ -49,7 +49,7 @@ namespace OpenRA
 			return self.TraitsImplementing<IVoiced>().Any(x => x.HasVoice(self, voice));
 		}
 
-		public static void PlayVoiceForOrders(this World w, Order[] orders)
+		public static void PlayVoiceForOrders(this Order[] orders)
 		{
 			// Find the first actor with a phrase to say
 			foreach (var o in orders)

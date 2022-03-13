@@ -195,7 +195,7 @@ namespace OpenRA.Traits
 			flashAlpha = null;
 		}
 
-		public IEnumerable<IRenderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render()
 		{
 			if (Shrouded)
 				return NoRenderables;
@@ -323,7 +323,7 @@ namespace OpenRA.Traits
 		{
 			return world.ScreenMap.RenderableFrozenActorsInBox(owner, wr.Viewport.TopLeft, wr.Viewport.BottomRight)
 				.Where(f => f.Visible)
-				.SelectMany(ff => ff.Render(wr));
+				.SelectMany(ff => ff.Render());
 		}
 
 		public IEnumerable<Rectangle> ScreenBounds(Actor self, WorldRenderer wr)

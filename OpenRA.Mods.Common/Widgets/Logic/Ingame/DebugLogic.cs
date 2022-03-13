@@ -11,7 +11,6 @@
 
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
@@ -19,7 +18,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 	public class DebugLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public DebugLogic(Widget widget, OrderManager orderManager, World world, WorldRenderer worldRenderer)
+		public DebugLogic(Widget widget, World world, WorldRenderer worldRenderer)
 		{
 			var geometryOverlay = world.WorldActor.TraitOrDefault<TerrainGeometryOverlay>();
 			if (geometryOverlay != null)

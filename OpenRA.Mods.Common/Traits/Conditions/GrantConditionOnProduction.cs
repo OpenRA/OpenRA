@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool ShowSelectionBar = true;
 		public readonly Color SelectionBarColor = Color.Magenta;
 
-		public override object Create(ActorInitializer init) { return new GrantConditionOnProduction(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnProduction(this); }
 	}
 
 	public class GrantConditionOnProduction : INotifyProduction, ITick, ISync, ISelectionBar
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		int ticks;
 
-		public GrantConditionOnProduction(Actor self, GrantConditionOnProductionInfo info)
+		public GrantConditionOnProduction(GrantConditionOnProductionInfo info)
 		{
 			this.info = info;
 			ticks = info.Duration;

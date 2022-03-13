@@ -113,10 +113,10 @@ namespace OpenRA.Mods.Common.Effects
 			if (targetLineNodes.Count == 0)
 				return SpriteRenderable.None;
 
-			return RenderInner(wr);
+			return RenderInner();
 		}
 
-		IEnumerable<IRenderable> RenderInner(WorldRenderer wr)
+		IEnumerable<IRenderable> RenderInner()
 		{
 			var prev = targetLineNodes[0];
 			foreach (var pos in targetLineNodes.Skip(1))

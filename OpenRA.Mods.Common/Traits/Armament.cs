@@ -380,7 +380,7 @@ namespace OpenRA.Mods.Common.Traits
 			var localOffset = b.Offset + new WVec(-Recoil, WDist.Zero, WDist.Zero);
 
 			// Turret coordinates to body coordinates
-			var bodyOrientation = coords.QuantizeOrientation(self, self.Orientation);
+			var bodyOrientation = coords.QuantizeOrientation(self.Orientation);
 			if (turret != null)
 				localOffset = localOffset.Rotate(turret.WorldOrientation) + turret.Offset.Rotate(bodyOrientation);
 			else

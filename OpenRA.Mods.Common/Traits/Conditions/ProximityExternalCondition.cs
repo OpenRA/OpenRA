@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var external = a.TraitsImplementing<ExternalCondition>()
-				.FirstOrDefault(t => t.Info.Condition == Info.Condition && t.CanGrantCondition(a, self));
+				.FirstOrDefault(t => t.Info.Condition == Info.Condition && t.CanGrantCondition(self));
 
 			if (external != null)
 				tokens[a] = external.GrantCondition(a, self);
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				var external = produced.TraitsImplementing<ExternalCondition>()
-					.FirstOrDefault(t => t.Info.Condition == Info.Condition && t.CanGrantCondition(produced, self));
+					.FirstOrDefault(t => t.Info.Condition == Info.Condition && t.CanGrantCondition(self));
 
 				if (external != null)
 					tokens[produced] = external.GrantCondition(produced, self);

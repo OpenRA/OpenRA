@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 				OnExitedAttackRange(self);
 		}
 
-		public void SetTarget(World w, WPos pos) { target = Target.FromPos(pos); }
+		public void SetTarget(WPos pos) { target = Target.FromPos(pos); }
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
 		{

@@ -50,13 +50,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 		}
 
-		public void Forward(Actor self)
+		public void Forward()
 		{
 			visible = true;
 			anim.Animation.PlayThen(info.Sequence, () => visible = false);
 		}
 
-		public void Reverse(Actor self)
+		public void Reverse()
 		{
 			visible = true;
 			anim.Animation.PlayBackwardsThen(info.Sequence, () => visible = false);

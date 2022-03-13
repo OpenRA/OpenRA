@@ -224,9 +224,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		public virtual void ReadActors(IniFile file)
 		{
-			LoadActors(file, "STRUCTURES", Players, MapSize, Map);
-			LoadActors(file, "UNITS", Players, MapSize, Map);
-			LoadActors(file, "INFANTRY", Players, MapSize, Map);
+			LoadActors(file, "STRUCTURES", Players, Map);
+			LoadActors(file, "UNITS", Players, Map);
+			LoadActors(file, "INFANTRY", Players, Map);
 		}
 
 		public abstract void LoadPlayer(IniFile file, string section);
@@ -383,7 +383,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return new CPos(loc % MapSize, loc / MapSize);
 		}
 
-		public void LoadActors(IniFile file, string section, List<string> players, int mapSize, Map map)
+		public void LoadActors(IniFile file, string section, List<string> players, Map map)
 		{
 			foreach (var s in file.GetSection(section, true))
 			{

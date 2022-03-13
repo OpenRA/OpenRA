@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool AcceptsCondition(Actor a)
 		{
 			return a.TraitsImplementing<ExternalCondition>()
-				.Any(t => t.Info.Condition == info.Condition && t.CanGrantCondition(a, self));
+				.Any(t => t.Info.Condition == info.Condition && t.CanGrantCondition(self));
 		}
 
 		public override int GetSelectionShares(Actor collector)
@@ -79,9 +79,9 @@ namespace OpenRA.Mods.Common.Traits
 					ExternalCondition external = null;
 					for (var n = 0; n < info.Levels; n++)
 					{
-						if (external == null || !external.CanGrantCondition(a, self))
+						if (external == null || !external.CanGrantCondition(self))
 						{
-							external = externals.FirstOrDefault(t => t.CanGrantCondition(a, self));
+							external = externals.FirstOrDefault(t => t.CanGrantCondition(self));
 							if (external == null)
 								break;
 						}

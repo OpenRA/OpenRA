@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// IsValid check filters out Frozen Actors that have not initialized their Owner
 				foreach (var scrutinized in checkFrozen)
-					answer += consideration.GetAttractiveness(scrutinized, firedBy.RelationshipWith(scrutinized.Owner), firedBy);
+					answer += consideration.GetAttractiveness(scrutinized, firedBy.RelationshipWith(scrutinized.Owner));
 			}
 
 			return answer;
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var consideration in Considerations)
 				foreach (var scrutinized in frozenActors)
 					if (scrutinized.IsValid && scrutinized.Visible)
-						answer += consideration.GetAttractiveness(scrutinized, firedBy.RelationshipWith(scrutinized.Owner), firedBy);
+						answer += consideration.GetAttractiveness(scrutinized, firedBy.RelationshipWith(scrutinized.Owner));
 
 			return answer;
 		}
@@ -174,7 +174,7 @@ namespace OpenRA.Mods.Common.Traits
 				return 0;
 			}
 
-			public int GetAttractiveness(FrozenActor fa, PlayerRelationship stance, Player firedBy)
+			public int GetAttractiveness(FrozenActor fa, PlayerRelationship stance)
 			{
 				if (stance != Against)
 					return 0;

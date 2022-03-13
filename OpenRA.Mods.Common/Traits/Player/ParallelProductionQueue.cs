@@ -15,13 +15,13 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class ParallelProductionQueueInfo : ProductionQueueInfo
 	{
-		public override object Create(ActorInitializer init) { return new ParallelProductionQueue(init, init.Self.Owner.PlayerActor, this); }
+		public override object Create(ActorInitializer init) { return new ParallelProductionQueue(init, this); }
 	}
 
 	public class ParallelProductionQueue : ProductionQueue
 	{
-		public ParallelProductionQueue(ActorInitializer init, Actor playerActor, ParallelProductionQueueInfo info)
-			: base(init, playerActor, info) { }
+		public ParallelProductionQueue(ActorInitializer init, ParallelProductionQueueInfo info)
+			: base(init, info) { }
 
 		protected override void TickInner(Actor self, bool allProductionPaused)
 		{

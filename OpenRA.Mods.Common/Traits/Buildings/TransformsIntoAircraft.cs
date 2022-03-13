@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 						AircraftCanEnter,
 						target => Reservable.IsAvailableFor(target, self));
 
-					yield return new AircraftMoveOrderTargeter(self, this);
+					yield return new AircraftMoveOrderTargeter(this);
 				}
 			}
 		}
@@ -191,7 +191,7 @@ namespace OpenRA.Mods.Common.Traits
 				return modifiers.HasModifier(TargetModifiers.ForceMove);
 			}
 
-			public AircraftMoveOrderTargeter(Actor self, TransformsIntoAircraft aircraft)
+			public AircraftMoveOrderTargeter(TransformsIntoAircraft aircraft)
 			{
 				this.aircraft = aircraft;
 			}
@@ -200,7 +200,7 @@ namespace OpenRA.Mods.Common.Traits
 			public int OrderPriority => 4;
 			public bool IsQueued { get; protected set; }
 
-			public bool CanTarget(Actor self, in Target target, List<Actor> othersAtTarget, ref TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
 			{
 				if (target.Type != TargetType.Terrain || (aircraft.Info.RequiresForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove)))
 					return false;

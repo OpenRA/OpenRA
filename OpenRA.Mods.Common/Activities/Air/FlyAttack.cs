@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 
 			target = target.Recalculate(self.Owner, out var targetIsHiddenActor);
-			attackAircraft.SetRequestedTarget(self, target, forceAttack);
+			attackAircraft.SetRequestedTarget(target, forceAttack);
 			hasTicked = true;
 
 			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
@@ -171,9 +171,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			// The aircraft must keep moving forward even if it is already in an ideal position.
 			else if (attackAircraft.Info.AttackType == AirAttackType.Strafe)
-				QueueChild(new StrafeAttackRun(self, attackAircraft, aircraft, target, strafeDistance != WDist.Zero ? strafeDistance : lastVisibleMaximumRange));
+				QueueChild(new StrafeAttackRun(attackAircraft, aircraft, target, strafeDistance != WDist.Zero ? strafeDistance : lastVisibleMaximumRange));
 			else if (attackAircraft.Info.AttackType == AirAttackType.Default && !aircraft.Info.CanHover)
-				QueueChild(new FlyAttackRun(self, target, lastVisibleMaximumRange, attackAircraft));
+				QueueChild(new FlyAttackRun(target, lastVisibleMaximumRange, attackAircraft));
 
 			// Turn to face the target if required.
 			else if (!attackAircraft.TargetInFiringArc(self, target, attackAircraft.Info.FacingTolerance))
@@ -220,7 +220,7 @@ namespace OpenRA.Mods.Common.Activities
 		Target target;
 		bool targetIsVisibleActor;
 
-		public FlyAttackRun(Actor self, in Target t, WDist exitRange, AttackAircraft attack)
+		public FlyAttackRun(in Target t, WDist exitRange, AttackAircraft attack)
 		{
 			ChildHasPriority = false;
 
@@ -269,7 +269,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		Target target;
 
-		public StrafeAttackRun(Actor self, AttackAircraft attackAircraft, Aircraft aircraft, in Target t, WDist exitRange)
+		public StrafeAttackRun(AttackAircraft attackAircraft, Aircraft aircraft, in Target t, WDist exitRange)
 		{
 			ChildHasPriority = false;
 
@@ -304,7 +304,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Update the position if we seen the target move; keep the previous one if it dies or disappears
 			target = target.Recalculate(self.Owner, out var targetIsHiddenActor);
 			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
-				attackAircraft.SetRequestedTarget(self, Target.FromTargetPositions(target), true);
+				attackAircraft.SetRequestedTarget(Target.FromTargetPositions(target), true);
 
 			return false;
 		}

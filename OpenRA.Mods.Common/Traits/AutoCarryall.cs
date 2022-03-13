@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 			return false;
 		}
 
-		bool IsBestAutoCarryallForCargo(Actor self, Actor candidateCargo)
+		static bool IsBestAutoCarryallForCargo(Actor self, Actor candidateCargo)
 		{
 			// Find carriers
 			var carriers = self.World.ActorsHavingTrait<AutoCarryall>(c => !c.busy)

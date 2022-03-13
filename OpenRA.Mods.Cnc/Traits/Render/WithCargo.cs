@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		IEnumerable<IRenderable> IRender.Render(Actor self, WorldRenderer wr)
 		{
-			var bodyOrientation = body.QuantizeOrientation(self, self.Orientation);
+			var bodyOrientation = body.QuantizeOrientation(self.Orientation);
 			var pos = self.CenterPosition;
 			var i = 0;
 

@@ -47,12 +47,12 @@ namespace OpenRA.Mods.Common.Lint
 
 				var images = new HashSet<string>()
 				{
-					renderInfo.GetImage(actorInfo.Value, sequences, null).ToLowerInvariant()
+					renderInfo.GetImage(actorInfo.Value, null).ToLowerInvariant()
 				};
 
 				// Some actors define faction-specific artwork
 				foreach (var faction in factions)
-					images.Add(renderInfo.GetImage(actorInfo.Value, sequences, faction).ToLowerInvariant());
+					images.Add(renderInfo.GetImage(actorInfo.Value, faction).ToLowerInvariant());
 
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{

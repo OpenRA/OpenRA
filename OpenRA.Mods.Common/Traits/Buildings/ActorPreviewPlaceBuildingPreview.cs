@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly IActorPreview[] preview;
 
 		public ActorPreviewPlaceBuildingPreviewPreview(WorldRenderer wr, ActorInfo ai, ActorPreviewPlaceBuildingPreviewInfo info, TypeDictionary init)
-			: base(wr, ai, info, init)
+			: base(wr, ai, info)
 		{
 			this.info = info;
 			var previewInit = new ActorPreviewInitializer(ActorInfo, wr, init);

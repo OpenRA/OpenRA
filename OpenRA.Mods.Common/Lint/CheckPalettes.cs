@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			var palettes = new List<string>();
 			var playerPalettes = new List<string>();
-			GetPalettes(emitError, rules, palettes, playerPalettes);
+			GetPalettes(rules, palettes, playerPalettes);
 
 			foreach (var actorInfo in rules.Actors)
 			{
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		void GetPalettes(Action<string> emitError, Ruleset rules, List<string> palettes, List<string> playerPalettes)
+		void GetPalettes(Ruleset rules, List<string> palettes, List<string> playerPalettes)
 		{
 			foreach (var actorInfo in rules.Actors)
 			{

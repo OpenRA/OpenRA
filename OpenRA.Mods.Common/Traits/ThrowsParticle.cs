@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits
 			var throwRotation = WRot.FromYaw(new WAngle(Game.CosmeticRandom.Next(1024)));
 			var throwDistance = Game.CosmeticRandom.Next(info.MinThrowRange.Length, info.MaxThrowRange.Length);
 
-			initialPos = pos = info.Offset.Rotate(body.QuantizeOrientation(self, WRot.FromYaw(bodyFacing)));
+			initialPos = pos = info.Offset.Rotate(body.QuantizeOrientation(WRot.FromYaw(bodyFacing)));
 			finalPos = initialPos + new WVec(throwDistance, 0, 0).Rotate(throwRotation);
 			angle = new WAngle(Game.CosmeticRandom.Next(info.MinThrowAngle.Angle, info.MaxThrowAngle.Angle));
 			length = (finalPos - initialPos).Length / info.Velocity;

@@ -63,7 +63,7 @@ namespace OpenRA.Scripting
 				if (!members.TryGetValue(name, out var wrapper))
 					throw new LuaException(MemberNotFoundError(name));
 
-				wrapper.Set(runtime, value);
+				wrapper.Set(value);
 			}
 		}
 	}

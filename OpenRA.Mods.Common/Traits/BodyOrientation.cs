@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 			return info.LocalToWorld(vec);
 		}
 
-		public WRot QuantizeOrientation(Actor self, in WRot orientation)
+		public WRot QuantizeOrientation(in WRot orientation)
 		{
 			return info.QuantizeOrientation(orientation, quantizedFacings.Value);
 		}

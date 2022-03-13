@@ -13,7 +13,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class GrantConditionOnJumpjetLayerInfo : GrantConditionOnLayerInfo
 	{
-		public override object Create(ActorInitializer init) { return new GrantConditionOnJumpjetLayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnJumpjetLayer(this); }
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
@@ -29,8 +29,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		bool jumpjetInAir;
 
-		public GrantConditionOnJumpjetLayer(Actor self, GrantConditionOnJumpjetLayerInfo info)
-			: base(self, info, CustomMovementLayerType.Jumpjet) { }
+		public GrantConditionOnJumpjetLayer(GrantConditionOnJumpjetLayerInfo info)
+			: base(info, CustomMovementLayerType.Jumpjet) { }
 
 		void INotifyFinishedMoving.FinishedMoving(Actor self, byte oldLayer, byte newLayer)
 		{

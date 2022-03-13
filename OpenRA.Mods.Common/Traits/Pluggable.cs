@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 				EnablePlug(self, initialPlug);
 		}
 
-		public bool AcceptsPlug(Actor self, string type)
+		public bool AcceptsPlug(string type)
 		{
 			if (!Info.Conditions.ContainsKey(type))
 				return false;

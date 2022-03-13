@@ -31,12 +31,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The deathtypes used when 'Action' is 'Kill'.")]
 		public readonly BitSet<DamageType> DeathTypes = default(BitSet<DamageType>);
 
-		public override object Create(ActorInitializer init) { return new OwnerLostAction(init, this); }
+		public override object Create(ActorInitializer init) { return new OwnerLostAction(this); }
 	}
 
 	public class OwnerLostAction : ConditionalTrait<OwnerLostActionInfo>, INotifyOwnerLost
 	{
-		public OwnerLostAction(ActorInitializer init, OwnerLostActionInfo info)
+		public OwnerLostAction(OwnerLostActionInfo info)
 			: base(info) { }
 
 		void INotifyOwnerLost.OnOwnerLost(Actor self)

@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		[Desc("Voice to use when killing something.")]
 		public readonly string Voice = "Kill";
 
-		public override object Create(ActorInitializer init) { return new AnnounceOnKill(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new AnnounceOnKill(this); }
 	}
 
 	public class AnnounceOnKill : INotifyAppliedDamage
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 
 		long lastAnnounce;
 
-		public AnnounceOnKill(Actor self, AnnounceOnKillInfo info)
+		public AnnounceOnKill(AnnounceOnKillInfo info)
 		{
 			this.info = info;
 			lastAnnounce = -info.Interval;

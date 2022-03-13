@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var s in shapes)
 			{
-				foreach (var a in s.RenderDebugAnnotations(self, wr))
+				foreach (var a in s.RenderDebugAnnotations(self))
 					yield return a;
 
 				foreach (var r in s.RenderDebugOverlay(self, wr))
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Fire ports on garrisonable structures
 			if (attack is AttackGarrisoned garrison)
 			{
-				var bodyOrientation = coords.Value.QuantizeOrientation(self, self.Orientation);
+				var bodyOrientation = coords.Value.QuantizeOrientation(self.Orientation);
 				foreach (var p in garrison.Info.Ports)
 				{
 					var pos = self.CenterPosition + coords.Value.LocalToWorld(p.Offset.Rotate(bodyOrientation));

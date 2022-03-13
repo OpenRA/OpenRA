@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets
 		int2 location;
 
 		[ObjectCreator.UseCtor]
-		public MouseAttachmentWidget(ModData modData, WorldRenderer worldRenderer)
+		public MouseAttachmentWidget(WorldRenderer worldRenderer)
 		{
 			this.worldRenderer = worldRenderer;
 			graphicSettings = Game.Settings.Graphics;

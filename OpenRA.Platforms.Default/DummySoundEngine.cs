@@ -27,7 +27,7 @@ namespace OpenRA.Platforms.Default
 			return defaultDevices;
 		}
 
-		public DummySoundEngine(string deviceName) { }
+		public DummySoundEngine() { }
 
 		public ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate)
 		{

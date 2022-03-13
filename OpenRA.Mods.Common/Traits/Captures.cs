@@ -110,8 +110,8 @@ namespace OpenRA.Mods.Common.Traits
 			self.ShowTargetLines();
 		}
 
-		protected override void TraitEnabled(Actor self) { captureManager.RefreshCaptures(self); }
-		protected override void TraitDisabled(Actor self) { captureManager.RefreshCaptures(self); }
+		protected override void TraitEnabled(Actor self) { captureManager.RefreshCaptures(); }
+		protected override void TraitDisabled(Actor self) { captureManager.RefreshCaptures(); }
 
 		class CaptureOrderTargeter : UnitOrderTargeter
 		{

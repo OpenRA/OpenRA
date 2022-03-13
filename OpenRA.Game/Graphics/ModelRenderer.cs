@@ -65,7 +65,7 @@ namespace OpenRA.Graphics
 			shader.SetTexture("Palette", palette);
 		}
 
-		public void SetViewportParams(Size screen, int2 scroll)
+		public void SetViewportParams()
 		{
 			var a = 2f / renderer.SheetSize;
 			var view = new[]

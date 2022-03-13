@@ -26,14 +26,14 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Damage is divided by this number when converting damage to drain ticks.")]
 		public readonly int DamageDivisor = 600;
 
-		public override object Create(ActorInitializer init) { return new DrainPrerequisitePowerOnDamage(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new DrainPrerequisitePowerOnDamage(this); }
 	}
 
 	public class DrainPrerequisitePowerOnDamage : ConditionalTrait<DrainPrerequisitePowerOnDamageInfo>, INotifyOwnerChanged, IDamageModifier
 	{
 		SupportPowerManager spm;
 
-		public DrainPrerequisitePowerOnDamage(Actor self, DrainPrerequisitePowerOnDamageInfo info)
+		public DrainPrerequisitePowerOnDamage(DrainPrerequisitePowerOnDamageInfo info)
 			: base(info) { }
 
 		protected override void Created(Actor self)
