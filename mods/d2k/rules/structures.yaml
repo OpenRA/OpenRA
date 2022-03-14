@@ -1066,6 +1066,7 @@ palace:
 		EndChargeSpeechNotification: DeathHandMissileReady
 		IncomingSpeechNotification: MissileLaunchDetected
 		MissileWeapon: deathhand
+		MissileImage: deathhand
 		MissileDelay: 18
 		SpawnOffset: 32,816,0
 		DetonationAltitude: 3c0
