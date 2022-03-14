@@ -22,6 +22,20 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 	{
 		const int MapCordonWidth = 2;
 
+		// PlayerReference colors in D2k missions only affect chat text and minimap colors because actors use specific palette colors.
+		// So using the colors from the original game's minimap.
+		public static Dictionary<string, (string Faction, Color Color)> PlayerReferenceDataByPlayerName = new Dictionary<string, (string, Color)>
+		{
+			{ "Neutral", ("Random", Color.White) },
+			{ "Atreides", ("atreides", Color.FromArgb(90, 115, 148)) },
+			{ "Harkonnen", ("harkonnen", Color.FromArgb(214, 74, 66)) },
+			{ "Ordos", ("ordos", Color.FromArgb(90, 148, 115)) },
+			{ "Corrino", ("corrino", Color.FromArgb(115, 0, 123)) },
+			{ "Fremen", ("fremen", Color.FromArgb(132, 132, 132)) },
+			{ "Smugglers", ("smuggler", Color.FromArgb(123, 41, 16)) },
+			{ "Mercenaries", ("mercenary", Color.FromArgb(156, 132, 8)) }
+		};
+
 		public static Dictionary<int, (string Actor, string Owner)> ActorDataByActorCode = new Dictionary<int, (string, string)>
 		{
 			{ 20, ("wormspawner", "Creeps") },
@@ -366,6 +380,22 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 					};
 
 					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, a.Save()));
+
+					if (map.PlayerDefinitions.All(x => x.Value.Nodes.Single(y => y.Key == "Name").Value.Value != kvp.Owner))
+					{
+						var playerInfo = PlayerReferenceDataByPlayerName[kvp.Owner];
+						var playerReference = new PlayerReference
+						{
+							Name = kvp.Owner,
+							OwnsWorld = kvp.Owner == "Neutral",
+							NonCombatant = kvp.Owner == "Neutral",
+							Faction = playerInfo.Faction,
+							Color = playerInfo.Color
+						};
+
+						var node = new MiniYamlNode($"{nameof(PlayerReference)}@{kvp.Owner}", FieldSaver.SaveDifferences(playerReference, new PlayerReference()));
+						map.PlayerDefinitions.Add(node);
+					}
 
 					if (kvp.Actor == "mpspawn")
 						playerCount++;
