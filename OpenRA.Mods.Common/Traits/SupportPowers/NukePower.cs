@@ -25,18 +25,20 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[WeaponReference]
 		[FieldLoader.Require]
-		[Desc("Weapon to use for the impact.",
-			"Also image to use for the missile.")]
+		[Desc("Weapon to use for the impact.")]
 		public readonly string MissileWeapon = "";
 
 		[Desc("Delay (in ticks) after launch until the missile is spawned.")]
 		public readonly int MissileDelay = 0;
 
-		[SequenceReference(nameof(MissileWeapon))]
+		[Desc("Image to use for the missile.")]
+		public readonly string MissileImage = null;
+
+		[SequenceReference(nameof(MissileImage))]
 		[Desc("Sprite sequence for the ascending missile.")]
 		public readonly string MissileUp = "up";
 
-		[SequenceReference(nameof(MissileWeapon))]
+		[SequenceReference(nameof(MissileImage))]
 		[Desc("Sprite sequence for the descending missile.")]
 		public readonly string MissileDown = "down";
 
@@ -168,7 +170,7 @@ namespace OpenRA.Mods.Common.Traits
 			var skipAscent = info.SkipAscent || body == null;
 			var launchPos = skipAscent ? WPos.Zero : self.CenterPosition + body.LocalToWorld(info.SpawnOffset);
 
-			var missile = new NukeLaunch(self.Owner, info.MissileWeapon, info.WeaponInfo, palette, info.MissileUp, info.MissileDown,
+			var missile = new NukeLaunch(self.Owner, info.MissileImage, info.WeaponInfo, palette, info.MissileUp, info.MissileDown,
 				launchPos,
 				targetPosition, info.DetonationAltitude, info.RemoveMissileOnDetonation,
 				info.FlightVelocity, info.MissileDelay, info.FlightDelay, skipAscent,

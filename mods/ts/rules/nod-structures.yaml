@@ -527,6 +527,7 @@ NAMISL:
 		IncomingSpeechNotification: MissileLaunchDetected
 		LaunchSound: icbm1.aud
 		MissileWeapon: ClusterMissile
+		MissileImage: ClusterMissile
 		MissileDelay: 18
 		DetonationAltitude: 5c0
 		SpawnOffset: 0, 0c128, 0c512

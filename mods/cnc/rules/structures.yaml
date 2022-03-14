@@ -806,6 +806,7 @@ TMPL:
 		LaunchSpeechNotification: NuclearWeaponLaunched
 		IncomingSpeechNotification: NuclearWarheadApproaching
 		MissileWeapon: atomic
+		MissileImage: atomic
 		MissileDelay: 11
 		SpawnOffset: 3c0,0,-1c512
 		DisplayBeacon: True
