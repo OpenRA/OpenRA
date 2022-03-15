@@ -59,6 +59,7 @@ namespace OpenRA.Network
 		bool generateSyncReport = false;
 		int sentOrdersFrame = 0;
 		float tickScale = 1f;
+		bool outOfSync = false;
 
 		public struct ClientOrder
 		{
@@ -73,8 +74,14 @@ namespace OpenRA.Network
 
 		void OutOfSync(int frame)
 		{
+			if (outOfSync)
+				return;
+
 			syncReport.DumpSyncReport(frame);
-			throw new InvalidOperationException($"Out of sync in frame {frame}.\n Compare syncreport.log with other players.");
+			World.OutOfSync();
+			outOfSync = true;
+
+			TextNotificationsManager.AddSystemLine($"Out of sync in frame {frame}.\nCompare syncreport.log with other players.");
 		}
 
 		public void StartGame()
