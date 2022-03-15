@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (BuildableInfo != null && rsi != null)
 			{
-				var image = rsi.GetImage(actorInfo, owner.Faction.Name);
+				var image = rsi.GetImage(actorInfo, owner.Faction.InternalName);
 				Icon = new Animation(owner.World, image);
 				Icon.Play(BuildableInfo.Icon);
 				IconPalette = BuildableInfo.IconPalette;
