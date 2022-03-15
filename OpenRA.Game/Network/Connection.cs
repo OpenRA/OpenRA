@@ -100,9 +100,9 @@ namespace OpenRA.Network
 	{
 		public readonly ConnectionTarget Target;
 		internal ReplayRecorder Recorder { get; private set; }
-
-		readonly List<byte[]> queuedSyncPackets = new List<byte[]>();
 		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> sentSync = new Queue<(int, int, ulong)>();
+		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> queuedSyncPackets = new Queue<(int, int, ulong)>();
+
 		readonly Queue<(int Frame, OrderPacket Orders)> sentOrders = new Queue<(int, OrderPacket)>();
 		readonly Queue<OrderPacket> sentImmediateOrders = new Queue<OrderPacket>();
 		readonly ConcurrentQueue<(int FromClient, byte[] Data)> receivedPackets = new ConcurrentQueue<(int, byte[])>();
@@ -244,13 +244,12 @@ namespace OpenRA.Network
 
 		void IConnection.SendSync(int frame, int syncHash, ulong defeatState)
 		{
-			var sync = (frame, syncHash, defeatState);
-			sentSync.Enqueue(sync);
-
 			// Send sync packets together with the next set of orders.
 			// This was originally explained as reducing network bandwidth
 			// (TCP overhead?), but the original discussions have been lost to time.
-			queuedSyncPackets.Add(OrderIO.SerializeSync(sync));
+			// Add the sync packets to the send queue before adding them to the local sync queue in the Send() method.
+			// Otherwise the client will process the local sync queue before sending the packet.
+			queuedSyncPackets.Enqueue((frame, syncHash, defeatState));
 		}
 
 		void Send(byte[] packet)
@@ -261,10 +260,14 @@ namespace OpenRA.Network
 				ms.WriteArray(BitConverter.GetBytes(packet.Length));
 				ms.WriteArray(packet);
 
-				foreach (var q in queuedSyncPackets)
+				foreach (var s in queuedSyncPackets)
 				{
+					var q = OrderIO.SerializeSync(s);
+
 					ms.WriteArray(BitConverter.GetBytes(q.Length));
 					ms.WriteArray(q);
+
+					sentSync.Enqueue(s);
 				}
 
 				queuedSyncPackets.Clear();

@@ -598,6 +598,13 @@ namespace OpenRA
 
 			Game.FinishBenchmark();
 		}
+
+		public void OutOfSync()
+		{
+			EndGame();
+			SetPauseState(true);
+			PauseStateLocked = true;
+		}
 	}
 
 	public readonly struct TraitPair<T> : IEquatable<TraitPair<T>>
