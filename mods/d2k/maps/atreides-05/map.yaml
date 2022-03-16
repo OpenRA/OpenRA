@@ -35,14 +35,14 @@ Players:
 		LockFaction: True
 		Faction: atreides
 		LockColor: True
-		Color: 9191FF
+		Color: 5A7394
 		Enemies: Harkonnen, Smugglers, Mercenaries, Creeps
 	PlayerReference@Harkonnen:
 		Name: Harkonnen
 		LockFaction: True
 		Faction: harkonnen
 		LockColor: True
-		Color: FE0000
+		Color: D64A42
 		Enemies: Atreides, Creeps
 		Bot: campaign
 	PlayerReference@Smugglers:
@@ -50,7 +50,7 @@ Players:
 		LockFaction: True
 		Faction: smuggler
 		LockColor: True
-		Color: 542209
+		Color: 7B2910
 		Allies: Mercenaries
 		Enemies: Atreides, Creeps
 		Bot: campaign
@@ -59,7 +59,7 @@ Players:
 		LockFaction: True
 		Faction: mercenary
 		LockColor: True
-		Color: DDDD00
+		Color: 9C8408
 		Allies: Smugglers
 		Enemies: Atreides, Creeps
 		Bot: campaign

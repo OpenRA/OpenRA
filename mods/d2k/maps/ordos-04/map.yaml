@@ -35,14 +35,14 @@ Players:
 		LockFaction: True
 		Faction: ordos
 		LockColor: True
-		Color: B3EAA5
+		Color: 5A9473
 		Enemies: Harkonnen, Smugglers, Creeps
 	PlayerReference@Harkonnen:
 		Name: Harkonnen
 		LockFaction: True
 		Faction: harkonnen
 		LockColor: True
-		Color: FE0000
+		Color: D64A42
 		Allies: Smugglers
 		Enemies: Ordos, Creeps
 		Bot: campaign
@@ -51,7 +51,7 @@ Players:
 		LockFaction: True
 		Faction: smuggler
 		LockColor: True
-		Color: 542209
+		Color: 7B2910
 		Allies: Harkonnen
 		Enemies: Ordos, Creeps
 		Bot: campaign

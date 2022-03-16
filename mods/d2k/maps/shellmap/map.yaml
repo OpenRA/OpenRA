@@ -20,27 +20,27 @@ Players:
 	PlayerReference@Atreides:
 		Name: Atreides
 		Faction: atreides
-		Color: 9191FF
+		Color: 5A7394
 		Enemies: Corrino, Ordos, Harkonnen, Creeps
 	PlayerReference@Corrino:
 		Name: Corrino
 		Faction: corrino
-		Color: EF00FE
+		Color: 73007B
 		Enemies: Atreides, Ordos, Harkonnen, Creeps
 	PlayerReference@Ordos:
 		Name: Ordos
 		Faction: ordos
-		Color: B3EAA5
+		Color: 5A9473
 		Enemies: Atreides, Corrino, Harkonnen, Creeps
 	PlayerReference@Harkonnen:
 		Name: Harkonnen
 		Faction: harkonnen
-		Color: FE0000
+		Color: D64A42
 		Enemies: Atreides, Corrino, Ordos, Creeps
 	PlayerReference@Smugglers:
 		Name: Smugglers
 		Faction: smuggler
-		Color: 542209
+		Color: 7B2910
 		Enemies: Creeps
 	PlayerReference@Neutral:
 		Name: Neutral

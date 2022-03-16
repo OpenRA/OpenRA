@@ -33,14 +33,14 @@ Players:
 		LockFaction: True
 		Faction: harkonnen
 		LockColor: True
-		Color: FE0000
+		Color: D64A42
 		Enemies: Ordos Main Base, Ordos Small Base, Corrino, Creeps
 	PlayerReference@Ordos Main Base:
 		Name: Ordos Main Base
 		LockFaction: True
 		Faction: ordos
 		LockColor: True
-		Color: B3EAA5
+		Color: 5A9473
 		Allies: Ordos Small Base, Corrino
 		Enemies: Harkonnen, Creeps
 		Bot: campaign
@@ -49,7 +49,7 @@ Players:
 		LockFaction: True
 		Faction: ordos
 		LockColor: True
-		Color: B3EAA5
+		Color: 5A9473
 		Allies: Ordos Main Base, Corrino
 		Enemies: Harkonnen, Creeps
 		Bot: campaign
@@ -58,7 +58,7 @@ Players:
 		LockFaction: True
 		Faction: corrino
 		LockColor: True
-		Color: 7D00FE
+		Color: 73007B
 		Allies: Ordos Main Base, Ordos Small Base
 		Enemies: Harkonnen, Creeps
 		Bot: campaign

@@ -33,14 +33,14 @@ Players:
 		LockFaction: True
 		Faction: harkonnen
 		LockColor: True
-		Color: FE0000
+		Color: D64A42
 		Enemies: Atreides Main Base, Atreides Small Base, Corrino, Creeps
 	PlayerReference@Atreides Main Base:
 		Name: Atreides Main Base
 		LockFaction: True
 		Faction: atreides
 		LockColor: True
-		Color: 9191FF
+		Color: 5A7394
 		Allies: Atreides Small Base, Corrino
 		Enemies: Harkonnen, Creeps
 		Bot: campaign
@@ -49,7 +49,7 @@ Players:
 		LockFaction: True
 		Faction: atreides
 		LockColor: True
-		Color: 9191FF
+		Color: 5A7394
 		Allies: Atreides Main Base, Corrino
 		Enemies: Harkonnen, Creeps
 		Bot: campaign
@@ -58,7 +58,7 @@ Players:
 		LockFaction: True
 		Faction: corrino
 		LockColor: True
-		Color: 7D00FE
+		Color: 73007B
 		Allies: Atreides Main Base, Atreides Small Base
 		Enemies: Harkonnen, Creeps
 		Bot: campaign

@@ -34,14 +34,14 @@ Players:
 		LockFaction: True
 		Faction: harkonnen
 		LockColor: True
-		Color: FE0000
+		Color: D64A42
 		Enemies: Atreides, Creeps
 	PlayerReference@Atreides:
 		Name: Atreides
 		LockFaction: True
 		Faction: atreides
 		LockColor: True
-		Color: 9191FF
+		Color: 5A7394
 		Enemies: Harkonnen, Creeps
 		Bot: campaign
 
