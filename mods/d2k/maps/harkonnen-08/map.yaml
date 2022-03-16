@@ -33,7 +33,7 @@ Players:
 		LockFaction: True
 		Faction: harkonnen
 		LockColor: True
-		Color: FE0000
+		Color: D64A42
 		Allies: Harkonnen Aligned Mercenaries
 		Enemies: Ordos Aligned Atreides, Ordos, Ordos Aligned Mercenaries, Creeps
 	PlayerReference@Ordos Aligned Atreides:
@@ -41,7 +41,7 @@ Players:
 		LockFaction: True
 		Faction: atreides
 		LockColor: True
-		Color: 9191FF
+		Color: 5A7394
 		Allies: Ordos, Ordos Aligned Mercenaries
 		Enemies: Harkonnen, Harkonnen Aligned Mercenaries, Creeps
 		Bot: campaign
@@ -50,7 +50,7 @@ Players:
 		LockFaction: True
 		Faction: atreides
 		LockColor: True
-		Color: 9191FF
+		Color: 5A7394
 		Bot: campaign
 		Enemies: Creeps
 	PlayerReference@Ordos:
@@ -58,7 +58,7 @@ Players:
 		LockFaction: True
 		Faction: ordos
 		LockColor: True
-		Color: B3EAA5
+		Color: 5A9473
 		Allies: Ordos Aligned Atreides, Ordos Aligned Mercenaries
 		Enemies: Harkonnen, Harkonnen Aligned Mercenaries, Creeps
 		Bot: campaign
@@ -67,7 +67,7 @@ Players:
 		LockFaction: True
 		Faction: mercenary
 		LockColor: True
-		Color: DDDD00
+		Color: 9C8408
 		Allies: Ordos, Ordos Aligned Atreides
 		Enemies: Harkonnen, Creeps
 		Bot: campaign
@@ -76,7 +76,7 @@ Players:
 		LockFaction: True
 		Faction: mercenary
 		LockColor: True
-		Color: DDDD00
+		Color: 9C8408
 		Allies: Harkonnen
 		Enemies: Ordos, Ordos Aligned Atreides, Creeps
 		Bot: campaign

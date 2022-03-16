@@ -35,14 +35,14 @@ Players:
 		LockFaction: True
 		Faction: ordos
 		LockColor: True
-		Color: B3EAA5
+		Color: 5A9473
 		Enemies: AtreidesMainBase, AtreidesSmallBase1, AtreidesSmallBase2, AtreidesSmallBase3, Creeps
 	PlayerReference@AtreidesMainBase:
 		Name: AtreidesMainBase
 		LockFaction: True
 		Faction: atreides
 		LockColor: True
-		Color: 9191FF
+		Color: 5A7394
 		Allies: AtreidesSmallBase1, AtreidesSmallBase2
 		Enemies: Ordos, Creeps
 		Bot: campaign
@@ -51,7 +51,7 @@ Players:
 		LockFaction: True
 		Faction: atreides
 		LockColor: True
-		Color: 9191FF
+		Color: 5A7394
 		Allies: AtreidesMainBase, AtreidesSmallBase2, AtreidesSmallBase3
 		Enemies: Ordos, Creeps
 		Bot: campaign
@@ -60,7 +60,7 @@ Players:
 		LockFaction: True
 		Faction: atreides
 		LockColor: True
-		Color: 9191FF
+		Color: 5A7394
 		Allies: AtreidesMainBase, AtreidesSmallBase1, AtreidesSmallBase3
 		Enemies: Ordos, Creeps
 		Bot: campaign
@@ -69,7 +69,7 @@ Players:
 		LockFaction: True
 		Faction: atreides
 		LockColor: True
-		Color: 9191FF
+		Color: 5A7394
 		Allies: AtreidesMainBase, AtreidesSmallBase1, AtreidesSmallBase2
 		Enemies: Ordos, Creeps
 		Bot: campaign
