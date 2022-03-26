@@ -99,6 +99,9 @@ namespace OpenRA.Mods.Cnc.Traits
 			var resourceIsVeins = resourceType == info.VeinType;
 			foreach (var c in Common.Util.ExpandFootprint(cell, false))
 			{
+				if (!Map.Resources.Contains(c))
+					continue;
+
 				var resourceIndex = Map.Resources[c].Type;
 				if (resourceIndex == 0 || !ResourceTypesByIndex.TryGetValue(resourceIndex, out var neighourResourceType))
 					neighourResourceType = null;
