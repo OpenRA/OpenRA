@@ -309,9 +309,9 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface IDisableAutoTarget
+	public interface IOverrideAutoTarget
 	{
-		bool DisableAutoTarget(Actor self);
+		bool TryGetAutoTargetOverride(Actor self, out Target target);
 	}
 
 	[RequireExplicitImplementation]

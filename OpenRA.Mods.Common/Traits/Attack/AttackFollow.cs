@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackFollow(init.Self, this); }
 	}
 
-	public class AttackFollow : AttackBase, INotifyOwnerChanged, IDisableAutoTarget, INotifyStanceChanged
+	public class AttackFollow : AttackBase, INotifyOwnerChanged, IOverrideAutoTarget, INotifyStanceChanged
 	{
 		public new readonly AttackFollowInfo Info;
 		public Target RequestedTarget { get; private set; }
@@ -184,10 +184,22 @@ namespace OpenRA.Mods.Common.Traits
 			opportunityTargetIsPersistentTarget = false;
 		}
 
-		bool IDisableAutoTarget.DisableAutoTarget(Actor self)
+		bool IOverrideAutoTarget.TryGetAutoTargetOverride(Actor self, out Target target)
 		{
-			return RequestedTarget.Type != TargetType.Invalid ||
-				(opportunityTargetIsPersistentTarget && OpportunityTarget.Type != TargetType.Invalid);
+			if (RequestedTarget.Type != TargetType.Invalid)
+			{
+				target = RequestedTarget;
+				return true;
+			}
+
+			if (opportunityTargetIsPersistentTarget && OpportunityTarget.Type != TargetType.Invalid)
+			{
+				target = OpportunityTarget;
+				return true;
+			}
+
+			target = Target.Invalid;
+			return false;
 		}
 
 		void INotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)
