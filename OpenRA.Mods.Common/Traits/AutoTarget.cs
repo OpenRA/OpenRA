@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 		public UnitStance PredictedStance;
 
 		UnitStance stance;
-		IDisableAutoTarget[] disableAutoTarget;
+		IOverrideAutoTarget[] overrideAutoTarget;
 		INotifyStanceChanged[] notifyStanceChanged;
 		IEnumerable<AutoTargetPriorityInfo> activeTargetPriorities;
 		int conditionToken = Actor.InvalidConditionToken;
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Traits
 					.OrderByDescending(ati => ati.Info.Priority).ToArray()
 					.Where(Exts.IsTraitEnabled).Select(atp => atp.Info);
 
-			disableAutoTarget = self.TraitsImplementing<IDisableAutoTarget>().ToArray();
+			overrideAutoTarget = self.TraitsImplementing<IOverrideAutoTarget>().ToArray();
 			notifyStanceChanged = self.TraitsImplementing<INotifyStanceChanged>().ToArray();
 			ApplyStanceCondition(self);
 
@@ -229,8 +229,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (attacker.Disposed)
 				return;
 
-			foreach (var dat in disableAutoTarget)
-				if (dat.DisableAutoTarget(self))
+			// Don't change targets when there is a target overriding auto-targeting
+			foreach (var oat in overrideAutoTarget)
+				if (oat.TryGetAutoTargetOverride(self, out _))
 					return;
 
 			if (!attacker.IsInWorld)
@@ -283,9 +284,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if ((ignoreScanInterval || nextScanTime <= 0) && ActiveAttackBases.Any())
 			{
-				foreach (var dat in disableAutoTarget)
-					if (dat.DisableAutoTarget(self))
-						return Target.Invalid;
+				foreach (var oat in overrideAutoTarget)
+					if (oat.TryGetAutoTargetOverride(self, out var existingTarget))
+						return existingTarget;
 
 				if (!ignoreScanInterval)
 					nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
@@ -294,7 +295,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					// If we can't attack right now, there's no need to try and find a target.
 					var attackStances = ab.UnforcedAttackTargetStances();
-					if (attackStances != OpenRA.Traits.PlayerRelationship.None)
+					if (attackStances != PlayerRelationship.None)
 					{
 						var range = Info.ScanRadius > 0 ? WDist.FromCells(Info.ScanRadius) : ab.GetMaximumRange();
 						return ChooseTarget(self, ab, attackStances, range, allowMove, allowTurn);
