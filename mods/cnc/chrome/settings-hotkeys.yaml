@@ -25,9 +25,31 @@ Container@HOTKEYS_PANEL:
 	Width: PARENT_RIGHT
 	Height: PARENT_BOTTOM
 	Children:
+		Label@FILTER_INPUT_LABEL:
+			Width: 100
+			Height: 25
+			Font: Bold
+			Text: Filter by name:
+		TextField@FILTER_INPUT:
+			X: 108
+			Width: 180
+			Height: 25
+		Label@CONTEXT_DROPDOWN_LABEL:
+			X: PARENT_RIGHT - WIDTH - 195 - 5
+			Width: 100
+			Height: 25
+			Font: Bold
+			Text: Context:
+			Align: Right
+		DropDownButton@CONTEXT_DROPDOWN:
+			X: PARENT_RIGHT - WIDTH
+			Width: 195
+			Height: 25
+			Font: Bold
 		ScrollPanel@HOTKEY_LIST:
+			Y: 35
 			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM - 65
+			Height: PARENT_BOTTOM - 65 - 35
 			TopBottomSpacing: 5
 			ItemSpacing: 5
 			Children:
@@ -60,64 +82,78 @@ Container@HOTKEYS_PANEL:
 							Width: 90
 							Height: 25
 							TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
-		Background@HOTKEY_DIALOG_ROOT:
+		Container@HOTKEY_EMPTY_LIST:
+			Width: PARENT_RIGHT
+			Height: PARENT_BOTTOM
+			Visible: false
+			Children:
+				Label@HOTKEY_EMPTY_LIST_MESSAGE:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Align: Center
+					Text: No hotkeys match the filter criteria.
+		Background@HOTKEY_REMAP_BGND:
 			Y: PARENT_BOTTOM - HEIGHT - 1
 			Width: PARENT_RIGHT
 			Height: 65 + 1
 			Background: panel-gray
 			Children:
-				Label@HOTKEY_LABEL:
-					X: 15
-					Y: 19
-					Width: 200
-					Height: 25
-					Font: Bold
-					Align: Right
-				HotkeyEntry@HOTKEY_ENTRY:
-					X: 15 + 200 + 5
-					Y: 20
-					Width: 220
-					Height: 25
-				Container@NOTICES:
-					X: 15 + 200 + 5
-					Y: 42
-					Width: 220
-					Height: 25
+				Container@HOTKEY_REMAP_DIALOG:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 					Children:
-						Label@ORIGINAL_NOTICE:
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
-							Font: Tiny
-							Text: The default is "{0}"
-						Label@DUPLICATE_NOTICE:
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
-							Font: Tiny
-							Text: This is already used for "{0}"
-				Button@OVERRIDE_HOTKEY_BUTTON:
-					X: PARENT_RIGHT - 3 * WIDTH - 30
-					Y: 20
-					Width: 70
-					Height: 25
-					Text: Override
-					Font: Bold
-				Button@CLEAR_HOTKEY_BUTTON:
-					X: PARENT_RIGHT - 2 * WIDTH - 30
-					Y: 20
-					Width: 65
-					Height: 25
-					Text: Clear
-					Font: Bold
-					TooltipText: Unbind the hotkey
-					TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
-					TooltipTemplate: SIMPLE_TOOLTIP
-				Button@RESET_HOTKEY_BUTTON:
-					X: PARENT_RIGHT - WIDTH - 20
-					Y: 20
-					Width: 65
-					Height: 25
-					Text: Reset
-					Font: Bold
-					TooltipText: Reset to default
-					TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
-					TooltipTemplate: SIMPLE_TOOLTIP
+						Label@HOTKEY_LABEL:
+							X: 15
+							Y: 19
+							Width: 200
+							Height: 25
+							Font: Bold
+							Align: Right
+						HotkeyEntry@HOTKEY_ENTRY:
+							X: 15 + 200 + 5
+							Y: 20
+							Width: 220
+							Height: 25
+						Container@NOTICES:
+							X: 15 + 200 + 5
+							Y: 42
+							Width: 220
+							Height: 25
+							Children:
+								Label@ORIGINAL_NOTICE:
+									Width: PARENT_RIGHT
+									Height: PARENT_BOTTOM
+									Font: Tiny
+									Text: The default is "{0}"
+								Label@DUPLICATE_NOTICE:
+									Width: PARENT_RIGHT
+									Height: PARENT_BOTTOM
+									Font: Tiny
+									Text: This is already used for "{0}" in the {1} context
+						Button@OVERRIDE_HOTKEY_BUTTON:
+							X: PARENT_RIGHT - 3 * WIDTH - 30
+							Y: 20
+							Width: 70
+							Height: 25
+							Text: Override
+							Font: Bold
+						Button@CLEAR_HOTKEY_BUTTON:
+							X: PARENT_RIGHT - 2 * WIDTH - 30
+							Y: 20
+							Width: 65
+							Height: 25
+							Text: Clear
+							Font: Bold
+							TooltipText: Unbind the hotkey
+							TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+						Button@RESET_HOTKEY_BUTTON:
+							X: PARENT_RIGHT - WIDTH - 20
+							Y: 20
+							Width: 65
+							Height: 25
+							Text: Reset
+							Font: Bold
+							TooltipText: Reset to default
+							TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
