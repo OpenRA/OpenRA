@@ -40,7 +40,7 @@ namespace OpenRA
 			}
 
 			foreach (var hd in definitions)
-				hd.Value.HasDuplicates = GetFirstDuplicate(hd.Value.Name, this[hd.Value.Name].GetValue(), hd.Value) != null;
+				hd.Value.HasDuplicates = GetFirstDuplicate(hd.Value, this[hd.Value.Name].GetValue()) != null;
 		}
 
 		internal Func<Hotkey> GetHotkeyReference(string name)
@@ -68,7 +68,7 @@ namespace OpenRA
 				settings.Remove(name);
 
 			var hadDuplicates = definition.HasDuplicates;
-			definition.HasDuplicates = GetFirstDuplicate(definition.Name, this[definition.Name].GetValue(), definition) != null;
+			definition.HasDuplicates = GetFirstDuplicate(definition, this[definition.Name].GetValue()) != null;
 
 			if (hadDuplicates || definition.HasDuplicates)
 			{
@@ -77,16 +77,19 @@ namespace OpenRA
 					if (hd.Value == definition)
 						continue;
 
-					hd.Value.HasDuplicates = GetFirstDuplicate(hd.Value.Name, this[hd.Value.Name].GetValue(), hd.Value) != null;
+					hd.Value.HasDuplicates = GetFirstDuplicate(hd.Value, this[hd.Value.Name].GetValue()) != null;
 				}
 			}
 		}
 
-		public HotkeyDefinition GetFirstDuplicate(string name, Hotkey value, HotkeyDefinition definition)
+		public HotkeyDefinition GetFirstDuplicate(HotkeyDefinition definition, Hotkey value)
 		{
+			if (definition == null)
+				return null;
+
 			foreach (var kv in keys)
 			{
-				if (kv.Key == name)
+				if (kv.Key == definition.Name)
 					continue;
 
 				if (kv.Value == value && definitions[kv.Key].Contexts.Overlaps(definition.Contexts))
