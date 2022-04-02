@@ -557,7 +557,7 @@ Container@EDITOR_WORLD_ROOT:
 			MenuContainer: INGAME_MENU
 			HideIngameUI: true
 			Pause: true
-			Width: 160
+			Width: 60
 			Height: 25
 			Text: Menu
 			TooltipText: Menu
@@ -565,7 +565,7 @@ Container@EDITOR_WORLD_ROOT:
 			Font: Bold
 			Key: escape
 		Button@COPYPASTE_BUTTON:
-			X: 170
+			X: 70
 			Width: 90
 			Height: 25
 			Text: Copy/Paste
@@ -575,15 +575,15 @@ Container@EDITOR_WORLD_ROOT:
 			Font: Bold
 			Key: c ctrl
 		DropDownButton@COPYFILTER_BUTTON:
-			X: 270
+			X: 170
 			Width: 140
 			Height: 25
 			Text: Copy Filters
 			Font: Bold
 		Button@UNDO_BUTTON:
-			X: 420
+			X: 320
 			Height: 25
-			Width: 90
+			Width: 70
 			Text: Undo
 			Font: Bold
 			Key: z ctrl
@@ -591,9 +591,9 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipText: Undo last step
 			TooltipContainer: TOOLTIP_CONTAINER
 		Button@REDO_BUTTON:
-			X: 520
+			X: 400
 			Height: 25
-			Width: 90
+			Width: 70
 			Text: Redo
 			Font: Bold
 			Key: y ctrl
@@ -601,20 +601,20 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipText: Redo last step
 			TooltipContainer: TOOLTIP_CONTAINER
 		DropDownButton@OVERLAY_BUTTON:
-			X: 620
+			X: 480
 			Width: 140
 			Height: 25
 			Text: Overlays
 			Font: Bold
 		Label@COORDINATE_LABEL:
-			X: 770
+			X: 630
 			Width: 50
 			Height: 25
 			Align: Left
 			Font: Bold
 			Contrast: true
 		Label@CASH_LABEL:
-			X: 885
+			X: 745
 			Width: 50
 			Height: 25
 			Align: Left
