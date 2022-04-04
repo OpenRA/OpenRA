@@ -479,7 +479,7 @@ namespace OpenRA
 
 			var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
 			var arguments = fieldType.GetGenericArguments();
-			var addMethod = fieldType.GetMethod("Add", arguments);
+			var addMethod = fieldType.GetMethod(nameof(List<object>.Add), arguments);
 			var addArgs = new object[1];
 			for (var i = 0; i < parts.Length; i++)
 			{
@@ -494,7 +494,7 @@ namespace OpenRA
 		{
 			var dict = Activator.CreateInstance(fieldType);
 			var arguments = fieldType.GetGenericArguments();
-			var addMethod = fieldType.GetMethod("Add", arguments);
+			var addMethod = fieldType.GetMethod(nameof(Dictionary<object, object>.Add), arguments);
 			var addArgs = new object[2];
 			foreach (var node in yaml.Nodes)
 			{

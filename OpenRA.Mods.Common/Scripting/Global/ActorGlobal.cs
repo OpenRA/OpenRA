@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Scripting
 			// Construct the ActorInit.
 			var init = (ActorInit)FormatterServices.GetUninitializedObject(initType);
 			if (initInstance.Length > 1)
-				initType.GetField("InstanceName").SetValue(init, initInstance[1]);
+				initType.GetField(nameof(ActorInit.InstanceName)).SetValue(init, initInstance[1]);
 
 			if (value is LuaTable tableValue && init is CompositeActorInit compositeInit)
 			{

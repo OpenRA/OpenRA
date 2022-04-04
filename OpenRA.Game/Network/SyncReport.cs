@@ -238,7 +238,7 @@ namespace OpenRA.Network
 			{
 				// The lambda generated is shown below.
 				// TSync is actual type of the ISync object. Foo is a field or property with the Sync attribute applied.
-				var toString = memberType.GetMethod("ToString", Type.EmptyTypes);
+				var toString = memberType.GetMethod(nameof(object.ToString), Type.EmptyTypes);
 				Expression getString;
 				if (memberType.IsValueType)
 				{

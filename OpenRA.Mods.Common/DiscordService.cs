@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common
 
 			// HACK: We need to set HasRegisteredUriScheme to bypass the check that is done when calling SetPresence with a joinSecret.
 			// DiscordRpc lib expect us to register uri handlers with RegisterUriScheme(), we are doing it ourselves in our installers/launchers.
-			client.GetType().GetProperty("HasRegisteredUriScheme").SetValue(client, true);
+			client.GetType().GetProperty(nameof(DiscordRpcClient.HasRegisteredUriScheme)).SetValue(client, true);
 
 			client.SetSubscription(EventType.Join | EventType.JoinRequest);
 			client.Initialize();
