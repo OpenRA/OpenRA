@@ -4,5 +4,6 @@
 		"openra.oraide-vscode",
 		"openra.vscode-openra-lua",
 		"EditorConfig.EditorConfig",
+		"macabeus.vscode-fluent",
 	]
 }
