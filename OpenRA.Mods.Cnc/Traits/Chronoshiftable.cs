@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				// work around the cancellation bug.
 				// HACK: this is manipulating private internal actor state
 				if (self.CurrentActivity is Move)
-					typeof(Actor).GetProperty("CurrentActivity").SetValue(self, null);
+					typeof(Actor).GetProperty(nameof(Actor.CurrentActivity)).SetValue(self, null);
 
 				// The actor is killed using Info.DamageTypes if the teleport fails
 				self.QueueActivity(false, new Teleport(chronosphere ?? self, Origin, null, true, killCargo, Info.ChronoshiftSound,
