@@ -32,7 +32,7 @@ namespace OpenRA.Scripting
 				ret = t.Name;
 
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>))
-				ret = $"{t.GetGenericArguments().Select(p => p.Name).First()}?";
+				ret = $"{t.GetGenericArguments()[0].LuaDocString()}?";
 
 			return ret;
 		}
