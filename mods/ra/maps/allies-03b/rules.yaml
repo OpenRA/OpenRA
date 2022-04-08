@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: allies03b.lua, campaign.lua, utils.lua
+		Scripts: campaign.lua, utils.lua, allies03b.lua
 	MissionData:
 		Briefing: LANDCOM 16 HQS.\nTOP SECRET.\nTO: FIELD COMMANDER A9\n\nINTELLIGENCE RECON SHOWS HEAVY\nSOVIET MOVEMENT IN YOUR AREA.\nNEARBY BRIDGES ARE KEY TO SOVIET\nADVANCEMENT. DESTROY ALL BRIDGES\nASAP. TANYA WILL ASSIST. KEEP HER\nALIVE AT ALL COSTS.\n\nCONFIRMATION CODE 1612.\n\nTRANSMISSION ENDS.\n
 		StartVideo: brdgtilt.vqa

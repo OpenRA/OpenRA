@@ -4,7 +4,7 @@ Player:
 
 World:
 	LuaScript:
-		Scripts: allies02.lua, campaign.lua, utils.lua
+		Scripts: campaign.lua, utils.lua, allies02.lua
 	MissionData:
 		Briefing: A critical supply convoy is due through this area in 10 minutes, but Soviet forces have blocked the road in several places.\n\nUnless you can clear them out, those supplies will never make it to the front.\n\nThe convoy will come from the northwest, and time is short so work quickly.
 		BriefingVideo: ally2.vqa
