@@ -1,4 +1,9 @@
 ^Palettes:
+	PaletteFromFile@terrain-winter:
+		Name: terrain
+		Tileset: WINTER
+		Filename: winter.pal
+		ShadowIndex: 3, 4
 	PaletteFromFile@terrain-snow:
 		Name: terrain
 		Tileset: SNOW

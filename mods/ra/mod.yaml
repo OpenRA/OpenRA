@@ -31,9 +31,11 @@ Packages:
 	~expand2.mix
 	~hires1.mix
 	~desert.mix
+	~winter.mix
 	~general.mix
 	ra|bits
 	ra|bits/desert
+	ra|bits/winter
 	ra|scripts
 	common|scripts
 	ra|uibits
@@ -69,6 +71,7 @@ Sequences:
 	ra|sequences/decorations.yaml
 
 TileSets:
+	ra|tilesets/winter.yaml
 	ra|tilesets/snow.yaml
 	ra|tilesets/interior.yaml
 	ra|tilesets/temperat.yaml
@@ -237,6 +240,7 @@ TerrainFormat: DefaultTerrain
 
 SpriteSequenceFormat: ClassicTilesetSpecificSpriteSequence
 	TilesetExtensions:
+		WINTER: .win
 		TEMPERAT: .tem
 		SNOW: .sno
 		INTERIOR: .int
@@ -245,7 +249,7 @@ SpriteSequenceFormat: ClassicTilesetSpecificSpriteSequence
 ModelSequenceFormat: PlaceholderModelSequence
 
 AssetBrowser:
-	SpriteExtensions: .shp, .tmp, .tem, .des, .sno, .int
+	SpriteExtensions: .shp, .tmp, .tem, .des, .sno, .int, .win
 	AudioExtensions: .aud, .wav
 	VideoExtensions: .vqa, .wsa
 
