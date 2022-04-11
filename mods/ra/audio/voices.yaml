@@ -86,7 +86,7 @@ SpyVoice:
 ThiefVoice:
 	Voices:
 		Select: swhat1,syeah1
-		Action: saffirm1,smout1,sokay1
+		Action: saffirm1,smout1,sokay1,scandy,sclean1,ssteal1
 		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman7,dedman8
 		Burned: dedman10
 		Zapped: dedman6
