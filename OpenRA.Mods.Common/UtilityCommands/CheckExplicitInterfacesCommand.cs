@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		static bool IsExplicitInterfaceProperty(PropertyInfo pi)
 		{
-			return pi.Name.Contains(".");
+			return pi.Name.Contains('.');
 		}
 
 		void OnViolation(Type implementor, Type interfaceType, MemberInfo violator)

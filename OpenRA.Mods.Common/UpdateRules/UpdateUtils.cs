@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		static YamlFileSet LoadExternalMapYaml(ModData modData, MiniYaml yaml, HashSet<string> externalFilenames)
 		{
 			return FieldLoader.GetValue<string[]>("value", yaml.Value)
-				.Where(f => f.Contains("|"))
+				.Where(f => f.Contains('|'))
 				.SelectMany(f => LoadModYaml(modData, FilterExternalModFiles(modData, new[] { f }, externalFilenames)))
 				.ToList();
 		}
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			foreach (var filename in files)
 			{
 				// Ignore any files that aren't in the map bundle
-				if (!filename.Contains("|") && mapPackage.Contains(filename))
+				if (!filename.Contains('|') && mapPackage.Contains(filename))
 					fileSet.Add((mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename), filename, false)));
 				else if (modData.ModFiles.Exists(filename))
 					externalFilenames.Add(filename);
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		{
 			foreach (var f in files)
 			{
-				if (f.Contains("|") && modData.DefaultFileSystem.IsExternalModFile(f))
+				if (f.Contains('|') && modData.DefaultFileSystem.IsExternalModFile(f))
 				{
 					externalFilenames.Add(f);
 					continue;

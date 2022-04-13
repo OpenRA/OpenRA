@@ -1324,7 +1324,7 @@ namespace OpenRA
 		public Stream Open(string filename)
 		{
 			// Explicit package paths never refer to a map
-			if (!filename.Contains("|") && Package.Contains(filename))
+			if (!filename.Contains('|') && Package.Contains(filename))
 				return Package.GetStream(filename);
 
 			return modData.DefaultFileSystem.Open(filename);
@@ -1339,7 +1339,7 @@ namespace OpenRA
 		public bool TryOpen(string filename, out Stream s)
 		{
 			// Explicit package paths never refer to a map
-			if (!filename.Contains("|"))
+			if (!filename.Contains('|'))
 			{
 				s = Package.GetStream(filename);
 				if (s != null)
@@ -1352,7 +1352,7 @@ namespace OpenRA
 		public bool Exists(string filename)
 		{
 			// Explicit package paths never refer to a map
-			if (!filename.Contains("|") && Package.Contains(filename))
+			if (!filename.Contains('|') && Package.Contains(filename))
 				return true;
 
 			return modData.DefaultFileSystem.Exists(filename);
@@ -1361,7 +1361,7 @@ namespace OpenRA
 		public bool IsExternalModFile(string filename)
 		{
 			// Explicit package paths never refer to a map
-			if (filename.Contains("|"))
+			if (filename.Contains('|'))
 				return modData.DefaultFileSystem.IsExternalModFile(filename);
 
 			return false;
