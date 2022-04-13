@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			if (violationCount > 0)
 			{
-				Console.WriteLine("Explicit interface violations: {0}", violationCount);
+				Console.WriteLine($"Explicit interface violations: {violationCount}");
 				Environment.Exit(1);
 			}
 		}
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		void OnViolation(Type implementor, Type interfaceType, MemberInfo violator)
 		{
-			Console.WriteLine("{0} must explicitly implement the interface member {1}.{2}", implementor.Name, interfaceType.Name, violator.Name);
+			Console.WriteLine($"{implementor.Name} must explicitly implement the interface member {interfaceType.Name}.{violator.Name}");
 			violationCount++;
 		}
 	}
