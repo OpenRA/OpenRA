@@ -44,7 +44,7 @@ namespace OpenRA.Network
 						foreach (var node in yaml)
 						{
 							var localizedMessage = new LocalizedMessage(node.Value);
-							TextNotificationsManager.AddSystemLine(localizedMessage.Translate());
+							TextNotificationsManager.AddSystemLine(localizedMessage.Translate(Game.ModData));
 						}
 
 						break;

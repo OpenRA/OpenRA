@@ -36,6 +36,7 @@ namespace OpenRA
 		public readonly IModelSequenceLoader ModelSequenceLoader;
 		public readonly IVideoLoader[] VideoLoaders;
 		public readonly HotkeyManager Hotkeys;
+		public readonly Translation Translation;
 		public ILoadScreen LoadScreen { get; private set; }
 		public CursorProvider CursorProvider { get; private set; }
 		public FS ModFiles;
@@ -95,7 +96,7 @@ namespace OpenRA
 
 			var modelFormat = Manifest.Get<ModelSequenceFormat>();
 			var modelLoader = ObjectCreator.FindType(modelFormat.Type + "Loader");
-			var modelCtor = modelLoader != null ? modelLoader.GetConstructor(new[] { typeof(ModData) }) : null;
+			var modelCtor = modelLoader?.GetConstructor(new[] { typeof(ModData) });
 			if (modelLoader == null || !modelLoader.GetInterfaces().Contains(typeof(IModelSequenceLoader)) || modelCtor == null)
 				throw new InvalidOperationException($"Unable to find a model loader for type '{modelFormat.Type}'.");
 
@@ -103,6 +104,8 @@ namespace OpenRA
 			ModelSequenceLoader.OnMissingModelError = s => Log.Write("debug", s);
 
 			Hotkeys = new HotkeyManager(ModFiles, Game.Settings.Keys, Manifest);
+
+			Translation = new Translation(Game.Settings.Player.Language, Manifest.Translations, DefaultFileSystem);
 
 			defaultRules = Exts.Lazy(() => Ruleset.LoadDefaults(this));
 			defaultTerrainInfo = Exts.Lazy(() =>

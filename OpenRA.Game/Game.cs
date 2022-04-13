@@ -419,7 +419,6 @@ namespace OpenRA
 				Console.WriteLine($"\t{mod.Key}: {mod.Value.Title} ({mod.Value.Version})");
 
 			InitializeMod(modID, args);
-			Ui.InitializeTranslation();
 		}
 
 		public static void InitializeMod(string mod, Arguments args)

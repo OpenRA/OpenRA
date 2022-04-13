@@ -27,7 +27,6 @@ using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
-using OpenRA.Widgets;
 
 namespace OpenRA.Server
 {
@@ -936,7 +935,7 @@ namespace OpenRA.Server
 			DispatchServerOrdersToClients(Order.FromTargetString("LocalizedMessage", text, true));
 
 			if (Type == ServerType.Dedicated)
-				Console.WriteLine($"[{DateTime.Now.ToString(Settings.TimestampFormat)}] {Ui.Translate(key, arguments)}");
+				Console.WriteLine($"[{DateTime.Now.ToString(Settings.TimestampFormat)}] {ModData.Translation.GetFormattedMessage(key, arguments)}");
 		}
 
 		public void SendLocalizedMessageTo(Connection conn, string key, Dictionary<string, object> arguments = null)

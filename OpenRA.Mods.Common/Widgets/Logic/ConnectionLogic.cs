@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool passwordOffsetAdjusted;
 
 		[ObjectCreator.UseCtor]
-		public ConnectionFailedLogic(Widget widget, OrderManager orderManager, NetworkConnection connection, string password, Action onAbort, Action<string> onRetry)
+		public ConnectionFailedLogic(Widget widget, ModData modData, OrderManager orderManager, NetworkConnection connection, string password, Action onAbort, Action<string> onRetry)
 		{
 			var panel = widget;
 			var abortButton = panel.Get<ButtonWidget>("ABORT_BUTTON");
@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => $"Could not connect to {connection.Target}";
 
 			var connectionError = widget.Get<LabelWidget>("CONNECTION_ERROR");
-			connectionError.GetText = () => Ui.Translate(orderManager.ServerError) ?? connection.ErrorMessage ?? "Unknown error";
+			connectionError.GetText = () => modData.Translation.GetFormattedMessage(orderManager.ServerError) ?? connection.ErrorMessage ?? "Unknown error";
 
 			var panelTitle = widget.Get<LabelWidget>("TITLE");
 			panelTitle.GetText = () => orderManager.AuthenticationFailed ? "Password Required" : "Connection Failed";

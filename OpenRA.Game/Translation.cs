@@ -44,7 +44,7 @@ namespace OpenRA
 			messageContexts = GetMessageContext(language, translations, fileSystem).ToList();
 		}
 
-		IEnumerable<MessageContext> GetMessageContext(string language, string[] translations, IReadOnlyFileSystem fileSystem)
+		static IEnumerable<MessageContext> GetMessageContext(string language, string[] translations, IReadOnlyFileSystem fileSystem)
 		{
 			var backfall = translations.Where(t => t.EndsWith("en.ftl"));
 			var paths = translations.Where(t => t.EndsWith(language + ".ftl"));
