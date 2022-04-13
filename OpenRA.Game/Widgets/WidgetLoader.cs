@@ -52,7 +52,7 @@ namespace OpenRA
 
 			parent?.AddChild(widget);
 
-			if (node.Key.Contains("@"))
+			if (node.Key.Contains('@'))
 				FieldLoader.LoadField(widget, "Id", node.Key.Split('@')[1]);
 
 			foreach (var child in node.Value.Nodes)

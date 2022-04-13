@@ -63,7 +63,7 @@ namespace OpenRA.FileSystem
 		{
 			// Raw directories are the easiest and one of the most common cases, so try these first
 			var resolvedPath = Platform.ResolvePath(filename);
-			if (!resolvedPath.Contains("|") && Directory.Exists(resolvedPath))
+			if (!resolvedPath.Contains('|') && Directory.Exists(resolvedPath))
 				return new Folder(resolvedPath);
 
 			// Children of another package require special handling
