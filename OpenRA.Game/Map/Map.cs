@@ -21,7 +21,6 @@ using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
-using OpenRA.Widgets;
 
 namespace OpenRA
 {
@@ -1370,7 +1369,7 @@ namespace OpenRA
 		public string Translate(string key, IDictionary<string, object> args = null, string attribute = null)
 		{
 			if (Translation.GetFormattedMessage(key, args, attribute) == key)
-				return Ui.Translate(key, args, attribute);
+				return modData.Translation.GetFormattedMessage(key, args, attribute);
 
 			return Translation.GetFormattedMessage(key, args, attribute);
 		}

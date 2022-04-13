@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Fluent.Net;
-using OpenRA.Widgets;
 
 namespace OpenRA.Network
 {
@@ -119,7 +118,7 @@ namespace OpenRA.Network
 				.JoinWith("\n");
 		}
 
-		public string Translate()
+		public string Translate(ModData modData)
 		{
 			var argumentDictionary = new Dictionary<string, object>();
 			foreach (var argument in Arguments)
@@ -130,7 +129,7 @@ namespace OpenRA.Network
 					argumentDictionary.Add(argument.Key, new FluentString(argument.Value));
 			}
 
-			return Ui.Translate(Key, argumentDictionary);
+			return modData.Translation.GetFormattedMessage(Key, argumentDictionary);
 		}
 	}
 }
