@@ -304,7 +304,7 @@ namespace OpenRA
 			if (!string.IsNullOrEmpty(supportDirArg))
 				Platform.OverrideSupportDir(supportDirArg);
 
-			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
+			Console.WriteLine($"Platform is {Platform.CurrentPlatform}");
 
 			// Load the engine version as early as possible so it can be written to exception logs
 			try
@@ -316,8 +316,8 @@ namespace OpenRA
 			if (string.IsNullOrEmpty(EngineVersion))
 				EngineVersion = "Unknown";
 
-			Console.WriteLine("Engine version is {0}", EngineVersion);
-			Console.WriteLine("Runtime: {0}", Platform.RuntimeVersion);
+			Console.WriteLine($"Engine version is {EngineVersion}");
+			Console.WriteLine($"Runtime: {Platform.RuntimeVersion}");
 
 			// Special case handling of Game.Mod argument: if it matches a real filesystem path
 			// then we use this to override the mod search path, and replace it with the mod id
@@ -372,7 +372,7 @@ namespace OpenRA
 				}
 				catch (Exception e)
 				{
-					Log.Write("graphics", "{0}", e);
+					Log.Write("graphics", $"{e}");
 					Console.WriteLine("Renderer initialization failed. Check graphics.log for details.");
 
 					Renderer?.Dispose();
@@ -391,7 +391,7 @@ namespace OpenRA
 			Mods = new InstalledMods(modSearchPaths, explicitModPaths);
 			Console.WriteLine("Internal mods:");
 			foreach (var mod in Mods)
-				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Metadata.Title, mod.Value.Metadata.Version);
+				Console.WriteLine($"\t{mod.Key}: {mod.Value.Metadata.Title} ({mod.Value.Metadata.Version})");
 
 			modLaunchWrapper = args.GetValue("Engine.LaunchWrapper", null);
 
@@ -416,7 +416,7 @@ namespace OpenRA
 
 			Console.WriteLine("External mods:");
 			foreach (var mod in ExternalMods)
-				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
+				Console.WriteLine($"\t{mod.Key}: {mod.Value.Title} ({mod.Value.Version})");
 
 			InitializeMod(modID, args);
 			Ui.InitializeTranslation();
@@ -452,7 +452,7 @@ namespace OpenRA
 			if (!Mods.ContainsKey(mod))
 				throw new InvalidOperationException($"Unknown or invalid mod '{mod}'.");
 
-			Console.WriteLine("Loading mod: {0}", mod);
+			Console.WriteLine($"Loading mod: {mod}");
 
 			Sound.StopVideo();
 
