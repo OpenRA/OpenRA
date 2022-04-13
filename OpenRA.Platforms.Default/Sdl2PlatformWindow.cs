@@ -151,21 +151,28 @@ namespace OpenRA.Platforms.Default
 				if (enableLegacyGL)
 					testProfiles.Add(GLProfile.Legacy);
 
+				var errorLog = new List<string>();
 				supportedProfiles = testProfiles
-					.Where(CanCreateGLWindow)
+					.Where(profile => CanCreateGLWindow(profile, errorLog))
 					.ToArray();
 
 				if (!supportedProfiles.Any())
+				{
+					foreach (var error in errorLog)
+						Log.Write("graphics", error);
+
 					throw new InvalidOperationException("No supported OpenGL profiles were found.");
+				}
 
 				profile = supportedProfiles.Contains(requestProfile) ? requestProfile : supportedProfiles.First();
 
 				// Note: This must be called after the CanCreateGLWindow checks above,
 				// which needs to create and destroy its own SDL contexts as a workaround for specific buggy drivers
-				SDL.SDL_Init(SDL.SDL_INIT_VIDEO);
-				SetSDLAttributes(profile);
+				if (SDL.SDL_Init(SDL.SDL_INIT_VIDEO) != 0)
+					Log.Write("graphics", $"SDL initialisation failed: {SDL.SDL_GetError()}");
 
-				Console.WriteLine("Using SDL 2 with OpenGL ({0}) renderer", profile);
+				SetSDLAttributes(profile);
+				Console.WriteLine($"Using SDL 2 with OpenGL ({profile}) renderer");
 				if (videoDisplay < 0 || videoDisplay >= DisplayCount)
 					videoDisplay = 0;
 
@@ -210,7 +217,7 @@ namespace OpenRA.Platforms.Default
 					}
 				}
 
-				Console.WriteLine("Desktop resolution: {0}x{1}", display.w, display.h);
+				Console.WriteLine($"Desktop resolution: {display.w}x{display.h}");
 				if (requestEffectiveWindowSize.Width == 0 && requestEffectiveWindowSize.Height == 0)
 				{
 					Console.WriteLine("No custom resolution provided, using desktop resolution");
@@ -219,7 +226,7 @@ namespace OpenRA.Platforms.Default
 				else
 					surfaceSize = windowSize = new Size((int)(requestEffectiveWindowSize.Width * windowScale), (int)(requestEffectiveWindowSize.Height * windowScale));
 
-				Console.WriteLine("Using resolution: {0}x{1}", windowSize.Width, windowSize.Height);
+				Console.WriteLine($"Using resolution: {windowSize.Width}x{windowSize.Height}");
 
 				var windowFlags = SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL | SDL.SDL_WindowFlags.SDL_WINDOW_ALLOW_HIGHDPI;
 
@@ -510,18 +517,25 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		static bool CanCreateGLWindow(GLProfile profile)
+		static bool CanCreateGLWindow(GLProfile profile, List<string> errorLog)
 		{
 			// Implementation inspired by TestIndividualGLVersion from Veldrid
 
 			// Need to create and destroy its own SDL contexts as a workaround for specific buggy drivers
-			SDL.SDL_Init(SDL.SDL_INIT_VIDEO);
+			if (SDL.SDL_Init(SDL.SDL_INIT_VIDEO) != 0)
+			{
+				// Continue to harvest additional SDL errors below
+				errorLog.Add($"{profile}: SDL init failed: {SDL.SDL_GetError()}");
+				SDL.SDL_ClearError();
+			}
+
 			SetSDLAttributes(profile);
 
 			var flags = SDL.SDL_WindowFlags.SDL_WINDOW_HIDDEN | SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL;
 			var window = SDL.SDL_CreateWindow("", 0, 0, 1, 1, flags);
 			if (window == IntPtr.Zero || !string.IsNullOrEmpty(SDL.SDL_GetError()))
 			{
+				errorLog.Add($"{profile}: SDL window creation failed: {SDL.SDL_GetError()}");
 				SDL.SDL_ClearError();
 				SDL.SDL_Quit();
 				return false;
@@ -530,6 +544,7 @@ namespace OpenRA.Platforms.Default
 			var context = SDL.SDL_GL_CreateContext(window);
 			if (context == IntPtr.Zero || SDL.SDL_GL_MakeCurrent(window, context) < 0)
 			{
+				errorLog.Add($"{profile}: GL context creation failed: {SDL.SDL_GetError()}");
 				SDL.SDL_ClearError();
 				SDL.SDL_DestroyWindow(window);
 				SDL.SDL_Quit();
@@ -542,6 +557,8 @@ namespace OpenRA.Platforms.Default
 			{
 				var isAngle = SDL.SDL_GL_ExtensionSupported("GL_ANGLE_texture_usage") == SDL.SDL_bool.SDL_TRUE;
 				success = isAngle ^ (profile != GLProfile.ANGLE);
+				if (!success)
+					errorLog.Add(isAngle ? "GL profile is ANGLE" : "GL profile is Embedded");
 			}
 
 			SDL.SDL_GL_DeleteContext(context);
