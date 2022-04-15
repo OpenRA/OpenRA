@@ -46,6 +46,7 @@ Container@MAINMENU_INTRODUCTION_PROMPT:
 							Width: PARENT_RIGHT - 10
 							Height: 13
 							Background: separator
+							ClickThrough: True
 							Children:
 								Label@LABEL:
 									Width: PARENT_RIGHT
@@ -97,6 +98,7 @@ Container@MAINMENU_INTRODUCTION_PROMPT:
 							Width: PARENT_RIGHT - 10
 							Height: 13
 							Background: separator
+							ClickThrough: True
 							Children:
 								Label@LABEL:
 									Width: PARENT_RIGHT
@@ -240,6 +242,7 @@ Container@MAINMENU_INTRODUCTION_PROMPT:
 							Width: PARENT_RIGHT - 10
 							Height: 13
 							Background: separator
+							ClickThrough: True
 							Children:
 								Label@LABEL:
 									Width: PARENT_RIGHT

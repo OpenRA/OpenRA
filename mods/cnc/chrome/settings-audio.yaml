@@ -15,6 +15,7 @@ Container@AUDIO_PANEL:
 					Width: PARENT_RIGHT - 24 - 10
 					Height: 13
 					Background: separator
+					ClickThrough: True
 					Children:
 						Label@LABEL:
 							Width: PARENT_RIGHT

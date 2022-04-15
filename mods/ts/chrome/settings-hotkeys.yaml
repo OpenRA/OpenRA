@@ -41,6 +41,7 @@ Container@HOTKEYS_PANEL:
 							Width: PARENT_RIGHT
 							Height: 13
 							Background: separator
+							ClickThrough: True
 						Label@LABEL:
 							Width: PARENT_RIGHT
 							Height: 13
