@@ -2,7 +2,7 @@
   "profiles": {
     "Tiberian Dawn": {
       "commandName": "Project",
-      "commandLineArgs": "Engine.EngineDir=\"..\" Game.Mod=cnc"
+      "commandLineArgs": "Engine.EngineDir=\"..\" Game.Mod=cnc Game.Map=gdi03"
     },
     "Red Alert": {
       "commandName": "Project",
