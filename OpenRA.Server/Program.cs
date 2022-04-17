@@ -78,7 +78,7 @@ namespace OpenRA.Server
 
 			var mods = new InstalledMods(modSearchPaths, explicitModPaths);
 
-			Console.WriteLine("[{0}] Starting dedicated server for mod: {1}", DateTime.Now.ToString(settings.TimestampFormat), modID);
+			WriteLineWithTimeStamp($"Starting dedicated server for mod: {modID}");
 			while (true)
 			{
 				// HACK: The engine code *still* assumes that Game.ModData is set
@@ -96,15 +96,20 @@ namespace OpenRA.Server
 					Thread.Sleep(1000);
 					if (server.State == ServerState.GameStarted && server.Conns.Count < 1)
 					{
-						Console.WriteLine("[{0}] No one is playing, shutting down...", DateTime.Now.ToString(settings.TimestampFormat));
+						WriteLineWithTimeStamp("No one is playing, shutting down...");
 						server.Shutdown();
 						break;
 					}
 				}
 
 				modData.Dispose();
-				Console.WriteLine("[{0}] Starting a new server instance...", DateTime.Now.ToString(settings.TimestampFormat));
+				WriteLineWithTimeStamp("Starting a new server instance...");
 			}
+		}
+
+		static void WriteLineWithTimeStamp(string line)
+		{
+			Console.WriteLine($"[{DateTime.Now.ToString(Game.Settings.Server.TimestampFormat)}] {line}");
 		}
 	}
 }
