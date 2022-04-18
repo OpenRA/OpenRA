@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine(
 				"This documentation displays annotated settings with default values and description. " +
 				"Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been " +
-				"automatically generated for version {0} of OpenRA.", version);
+				$"automatically generated for version {version} of OpenRA.");
 			Console.WriteLine();
 			Console.WriteLine("All settings can be changed by starting the game via a command-line parameter like `Game.Mod=ra`.");
 			Console.WriteLine();
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var value = field.GetValue(section.Value);
 					if (value != null && !value.ToString().StartsWith("System."))
 					{
-						Console.WriteLine("**Default Value:** {0}", value);
+						Console.WriteLine($"**Default Value:** {value}");
 						Console.WriteLine();
 						Console.WriteLine("```miniyaml");
 						Console.WriteLine($"{section.Key}: ");
