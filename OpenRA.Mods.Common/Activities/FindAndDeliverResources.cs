@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Activities
 			var harvPos = self.CenterPosition;
 
 			// Find any harvestable resources:
-			var path = mobile.PathFinder.FindUnitPathToTargetCellByPredicate(
+			var path = mobile.PathFinder.FindPathToTargetCellByPredicate(
 				self,
 				new[] { searchFromLoc, self.Location },
 				loc =>

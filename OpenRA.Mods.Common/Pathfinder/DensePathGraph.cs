@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// allowable to be returned in a <see cref="GraphConnection"/>.
 		/// </summary>
 		/// <param name="neighbor">The candidate cell. This might not lie within map bounds.</param>
-		protected virtual bool NeighborAllowable(CPos neighbor)
+		protected virtual bool IsValidNeighbor(CPos neighbor)
 		{
 			return true;
 		}
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			{
 				var dir = directions[i];
 				var neighbor = position + dir;
-				if (!NeighborAllowable(neighbor))
+				if (!IsValidNeighbor(neighbor))
 					continue;
 
 				var pathCost = GetPathCostToNode(position, neighbor, dir);
@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 						continue;
 
 					var layerPosition = new CPos(position.X, position.Y, cml.Index);
-					if (!NeighborAllowable(layerPosition))
+					if (!IsValidNeighbor(layerPosition))
 						continue;
 
 					var entryCost = cml.EntryMovementCost(locomotor.Info, layerPosition);
@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			else
 			{
 				var groundPosition = new CPos(position.X, position.Y, 0);
-				if (NeighborAllowable(groundPosition))
+				if (IsValidNeighbor(groundPosition))
 				{
 					var exitCost = CustomMovementLayers[layer].ExitMovementCost(locomotor.Info, groundPosition);
 					if (exitCost != PathGraph.MovementCostForUnreachableCell &&

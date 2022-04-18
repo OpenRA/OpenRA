@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			getPath = check =>
 			{
-				return mobile.PathFinder.FindUnitPathToTargetCell(
+				return mobile.PathFinder.FindPathToTargetCell(
 					self, new[] { mobile.ToCell }, destination, check, laneBias: false);
 			};
 
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (!this.destination.HasValue)
 					return PathFinder.NoPath;
 
-				return mobile.PathFinder.FindUnitPathToTargetCell(
+				return mobile.PathFinder.FindPathToTargetCell(
 					self, new[] { mobile.ToCell }, this.destination.Value, check, ignoreActor: ignoreActor);
 			};
 

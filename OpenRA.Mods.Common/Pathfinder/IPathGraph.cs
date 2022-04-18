@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// <summary>
 		/// Given a source node, returns connections to all reachable destination nodes with their cost.
 		/// </summary>
+		/// <remarks>PERF: Returns a <see cref="List{T}"/> rather than an <see cref="IEnumerable{T}"/> as enumerating
+		/// this efficiently is important for pathfinding performance. Callers should interact with this as an
+		/// <see cref="IEnumerable{T}"/> and not mutate the result.</remarks>
 		List<GraphConnection> GetConnections(CPos source);
 
 		/// <summary>
@@ -36,6 +39,37 @@ namespace OpenRA.Mods.Common.Pathfinder
 	{
 		public const int PathCostForInvalidPath = int.MaxValue;
 		public const short MovementCostForUnreachableCell = short.MaxValue;
+	}
+
+	/// <summary>
+	/// Represents a full edge in a graph, giving the cost to traverse between two nodes.
+	/// </summary>
+	public readonly struct GraphEdge
+	{
+		public readonly CPos Source;
+		public readonly CPos Destination;
+		public readonly int Cost;
+
+		public GraphEdge(CPos source, CPos destination, int cost)
+		{
+			if (source == destination)
+				throw new ArgumentException($"{nameof(source)} and {nameof(destination)} must refer to different cells");
+			if (cost < 0)
+				throw new ArgumentOutOfRangeException(nameof(cost), $"{nameof(cost)} cannot be negative");
+			if (cost == PathGraph.PathCostForInvalidPath)
+				throw new ArgumentOutOfRangeException(nameof(cost), $"{nameof(cost)} cannot be used for an unreachable path");
+
+			Source = source;
+			Destination = destination;
+			Cost = cost;
+		}
+
+		public GraphConnection ToConnection()
+		{
+			return new GraphConnection(Destination, Cost);
+		}
+
+		public override string ToString() => $"{Source} -> {Destination} = {Cost}";
 	}
 
 	/// <summary>
@@ -67,6 +101,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 			Destination = destination;
 			Cost = cost;
+		}
+
+		public GraphEdge ToEdge(CPos source)
+		{
+			return new GraphEdge(source, Destination, Cost);
 		}
 
 		public override string ToString() => $"-> {Destination} = {Cost}";

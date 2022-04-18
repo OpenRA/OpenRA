@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Common.Traits
 				}).ToLookup(r => r.Location);
 
 			// Start a search from each refinery's delivery location:
-			var path = mobile.PathFinder.FindUnitPathToTargetCell(
+			var path = mobile.PathFinder.FindPathToTargetCell(
 				self, refineries.Select(r => r.Key), self.Location, BlockedByActor.None,
 				location =>
 				{

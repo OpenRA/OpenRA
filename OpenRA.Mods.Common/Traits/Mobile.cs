@@ -825,7 +825,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (CanEnterCell(above))
 				return above;
 
-			var path = PathFinder.FindUnitPathToTargetCellByPredicate(
+			var path = PathFinder.FindPathToTargetCellByPredicate(
 				self, new[] { self.Location }, loc => loc.Layer == 0 && CanEnterCell(loc), BlockedByActor.All);
 
 			if (path.Count > 0)

@@ -641,3 +641,15 @@ Container@PLAYER_WIDGETS:
 									Y: 5
 									ImageCollection: scrollpanel-decorations
 									ImageName: down
+		Container@HPF_OVERLAY:
+			Logic: HierarchicalPathFinderOverlayLogic
+			X: WINDOW_RIGHT - WIDTH - 231
+			Y: 40
+			Width: 150
+			Height: 25
+			Children:
+				DropDownButton@HPF_OVERLAY_LOCOMOTOR:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Text: Select Locomotor
+					Font: Regular
