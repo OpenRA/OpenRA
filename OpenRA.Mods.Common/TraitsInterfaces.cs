@@ -815,5 +815,12 @@ namespace OpenRA.Mods.Common.Traits
 			Func<CPos, int> customCost = null,
 			Actor ignoreActor = null,
 			bool laneBias = true);
+
+		/// <summary>
+		/// Determines if a path exists between source and target.
+		/// Only terrain is taken into account, i.e. as if <see cref="BlockedByActor.None"/> was given.
+		/// This would apply for any actor using the given <see cref="Locomotor"/>.
+		/// </summary>
+		bool PathExistsForLocomotor(Locomotor locomotor, CPos source, CPos target);
 	}
 }

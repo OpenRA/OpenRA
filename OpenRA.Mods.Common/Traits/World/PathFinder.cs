@@ -46,7 +46,9 @@ namespace OpenRA.Mods.Common.Traits
 			world = self.World;
 		}
 
-		public IReadOnlyDictionary<CPos, List<GraphConnection>> GetOverlayDataForLocomotor(Locomotor locomotor)
+		public (
+			IReadOnlyDictionary<CPos, List<GraphConnection>> AbstractGraph,
+			IReadOnlyDictionary<CPos, uint> AbstractDomains) GetOverlayDataForLocomotor(Locomotor locomotor)
 		{
 			return hierarchicalPathFindersByLocomotor[locomotor].GetOverlayData();
 		}
@@ -131,6 +133,16 @@ namespace OpenRA.Mods.Common.Traits
 			using (var search = PathSearch.ToTargetCellByPredicate(
 				world, GetActorLocomotor(self), self, sources, targetPredicate, check, customCost, ignoreActor, laneBias))
 				return search.FindPath();
+		}
+
+		/// <summary>
+		/// Determines if a path exists between source and target.
+		/// Only terrain is taken into account, i.e. as if <see cref="BlockedByActor.None"/> was given.
+		/// This would apply for any actor using the given <see cref="Locomotor"/>.
+		/// </summary>
+		public bool PathExistsForLocomotor(Locomotor locomotor, CPos source, CPos target)
+		{
+			return hierarchicalPathFindersByLocomotor[locomotor].PathExists(source, target);
 		}
 
 		static Locomotor GetActorLocomotor(Actor self)

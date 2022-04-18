@@ -184,7 +184,6 @@ World:
 		WaterChance: 20
 		InitialSpawnDelay: 1500
 		CheckboxDisplayOrder: 1
-	DomainIndex:
 	SmudgeLayer@SCORCH:
 		Type: Scorch
 		Sequence: scorches

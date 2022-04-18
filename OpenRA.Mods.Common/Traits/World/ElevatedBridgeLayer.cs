@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World)]
-	public class ElevatedBridgeLayerInfo : TraitInfo, Requires<DomainIndexInfo>, ILobbyCustomRulesIgnore, ICustomMovementLayerInfo
+	public class ElevatedBridgeLayerInfo : TraitInfo, ILobbyCustomRulesIgnore, ICustomMovementLayerInfo
 	{
 		[Desc("Terrain type used by cells outside any elevated bridge footprint.")]
 		public readonly string ImpassableTerrainType = "Impassable";
@@ -44,7 +44,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
-			var domainIndex = world.WorldActor.Trait<DomainIndex>();
 			var cellHeight = world.Map.CellHeightStep.Length;
 			foreach (var tti in world.WorldActor.Info.TraitInfos<ElevatedBridgePlaceholderInfo>())
 			{
@@ -61,7 +60,6 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				var end = tti.EndCells();
-				domainIndex.AddFixedConnection(end);
 				foreach (var c in end)
 				{
 					// Need to explicitly set both default and tunnel layers, otherwise the .Contains check will fail

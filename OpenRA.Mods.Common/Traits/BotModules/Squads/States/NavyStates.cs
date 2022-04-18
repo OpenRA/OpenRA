@@ -28,12 +28,11 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			// Navy squad AI can exploit enemy naval production to find path, if any.
 			// (Way better than finding a nearest target which is likely to be on Ground)
 			// You might be tempted to move these lookups into Activate() but that causes null reference exception.
-			var domainIndex = first.World.WorldActor.Trait<DomainIndex>();
-			var locomotor = first.Trait<Mobile>().Locomotor;
+			var mobile = first.Trait<Mobile>();
 
 			var navalProductions = owner.World.ActorsHavingTrait<Building>().Where(a
 				=> owner.SquadManager.Info.NavalProductionTypes.Contains(a.Info.Name)
-				&& domainIndex.IsPassable(first.Location, a.Location, locomotor)
+				&& mobile.PathFinder.PathExistsForLocomotor(mobile.Locomotor, first.Location, a.Location)
 				&& a.AppearsHostileTo(first));
 
 			if (navalProductions.Any())
