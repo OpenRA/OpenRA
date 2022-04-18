@@ -88,10 +88,10 @@ namespace OpenRA.Mods.Common.Traits
 				: new[] { Locomotor };
 			foreach (var locomotor in locomotors)
 			{
-				var abstractGraph = pathFinder.GetOverlayDataForLocomotor(locomotor);
+				var (abstractGraph, abstractDomains) = pathFinder.GetOverlayDataForLocomotor(locomotor);
 
 				// Locomotor doesn't allow movement, nothing to display.
-				if (abstractGraph == null)
+				if (abstractGraph == null || abstractDomains == null)
 					continue;
 
 				foreach (var connectionsFromOneNode in abstractGraph)
@@ -128,6 +128,19 @@ namespace OpenRA.Mods.Common.Traits
 						var centerPos = self.World.Map.CenterOfSubCell(centerCell, SubCell.FullCell);
 						yield return new TextAnnotationRenderable(font, centerPos, 0, lineColor, cost.Cost.ToString());
 					}
+				}
+
+				foreach (var domainForCell in abstractDomains)
+				{
+					var nodeCell = domainForCell.Key;
+					var srcUv = (PPos)nodeCell.ToMPos(self.World.Map);
+					if (!visibleRegion.Contains(srcUv))
+						continue;
+
+					// Show the abstract cell and its domain index.
+					var nodePos = self.World.Map.CenterOfSubCell(nodeCell, SubCell.FullCell);
+					yield return new TextAnnotationRenderable(
+						font, nodePos, 0, info.AbstractNodeColor, $"{domainForCell.Value}: {nodeCell}");
 				}
 			}
 		}

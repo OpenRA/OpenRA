@@ -162,7 +162,6 @@ World:
 		Bridges: bridge1, bridge2, bridge3, bridge4
 	ProductionQueueFromSelection:
 		ProductionTabsWidget: PRODUCTION_TABS
-	DomainIndex:
 	SmudgeLayer@SCORCH:
 		Type: Scorch
 		Sequence: scorches

@@ -25,13 +25,13 @@ namespace OpenRA.Mods.Common.Traits
 	class ProductionFromMapEdge : Production
 	{
 		readonly CPos? spawnLocation;
-		readonly DomainIndex domainIndex;
+		readonly IPathFinder pathFinder;
 		RallyPoint rp;
 
 		public ProductionFromMapEdge(ActorInitializer init, ProductionInfo info)
 			: base(init, info)
 		{
-			domainIndex = init.Self.World.WorldActor.Trait<DomainIndex>();
+			pathFinder = init.Self.World.WorldActor.Trait<IPathFinder>();
 
 			var spawnLocationInit = init.GetOrDefault<ProductionSpawnLocationInit>(info);
 			if (spawnLocationInit != null)
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var locomotor = self.World.WorldActor.TraitsImplementing<Locomotor>().First(l => l.Info.Name == mobileInfo.Locomotor);
 					location = self.World.Map.ChooseClosestMatchingEdgeCell(self.Location,
-						c => mobileInfo.CanEnterCell(self.World, null, c) && domainIndex.IsPassable(c, destinations[0], locomotor));
+						c => mobileInfo.CanEnterCell(self.World, null, c) && pathFinder.PathExistsForLocomotor(locomotor, c, destinations[0]));
 				}
 			}
 

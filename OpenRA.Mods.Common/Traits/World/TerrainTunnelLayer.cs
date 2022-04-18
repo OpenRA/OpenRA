@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World)]
-	public class TerrainTunnelLayerInfo : TraitInfo, Requires<DomainIndexInfo>, ILobbyCustomRulesIgnore, ICustomMovementLayerInfo
+	public class TerrainTunnelLayerInfo : TraitInfo, ILobbyCustomRulesIgnore, ICustomMovementLayerInfo
 	{
 		[Desc("Terrain type used by cells outside any tunnel footprint.")]
 		public readonly string ImpassableTerrainType = "Impassable";
@@ -43,7 +43,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World world, WorldRenderer wr)
 		{
-			var domainIndex = world.WorldActor.Trait<DomainIndex>();
 			var cellHeight = world.Map.CellHeightStep.Length;
 			foreach (var tti in world.WorldActor.Info.TraitInfos<TerrainTunnelInfo>())
 			{
@@ -60,7 +59,6 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				var portal = tti.PortalCells();
-				domainIndex.AddFixedConnection(portal);
 				foreach (var c in portal)
 				{
 					// Need to explicitly set both default and tunnel layers, otherwise the .Contains check will fail

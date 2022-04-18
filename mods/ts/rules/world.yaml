@@ -241,7 +241,6 @@ World:
 	BuildingInfluence:
 	ProductionQueueFromSelection:
 		ProductionPaletteWidget: PRODUCTION_PALETTE
-	DomainIndex:
 	SmudgeLayer@SMALLSCORCH:
 		Type: SmallScorch
 		Sequence: smallscorches

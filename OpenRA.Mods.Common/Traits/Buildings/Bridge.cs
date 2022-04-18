@@ -323,11 +323,6 @@ namespace OpenRA.Mods.Common.Traits
 				radarSignature[i++] = (c, tileInfo.GetColor(self.World.LocalRandom));
 			}
 
-			// If this bridge repair operation connects two pathfinding domains,
-			// update the domain index.
-			var domainIndex = self.World.WorldActor.Trait<DomainIndex>();
-			domainIndex.UpdateCells(self.World, footprint.Keys);
-
 			if (LongBridgeSegmentIsDead() && !killedUnits)
 			{
 				killedUnits = true;
