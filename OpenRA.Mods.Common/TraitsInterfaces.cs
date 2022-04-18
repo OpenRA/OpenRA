@@ -799,7 +799,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// Returned path is *reversed* and given target to source.
 		/// The shortest path between a source and the target is returned.
 		/// </summary>
-		List<CPos> FindUnitPathToTargetCell(
+		List<CPos> FindPathToTargetCell(
 			Actor self, IEnumerable<CPos> sources, CPos target, BlockedByActor check,
 			Func<CPos, int> customCost = null,
 			Actor ignoreActor = null,
@@ -810,7 +810,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// Returned path is *reversed* and given target to source.
 		/// The shortest path between a source and a discovered target is returned.
 		/// </summary>
-		List<CPos> FindUnitPathToTargetCellByPredicate(
+		List<CPos> FindPathToTargetCellByPredicate(
 			Actor self, IEnumerable<CPos> sources, Func<CPos, bool> targetPredicate, BlockedByActor check,
 			Func<CPos, int> customCost = null,
 			Actor ignoreActor = null,

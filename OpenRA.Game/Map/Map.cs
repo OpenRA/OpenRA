@@ -151,6 +151,7 @@ namespace OpenRA
 	public class Map : IReadOnlyFileSystem
 	{
 		public const int SupportedMapFormat = 11;
+		const short InvalidCachedTerrainIndex = -1;
 
 		/// <summary>Defines the order of the fields in map.yaml</summary>
 		static readonly MapField[] YamlFields =
@@ -448,6 +449,19 @@ namespace OpenRA
 			}
 
 			AllEdgeCells = UpdateEdgeCells();
+
+			// Invalidate the entry for a cell if anything could cause the terrain index to change.
+			Action<CPos> invalidateTerrainIndex = c =>
+			{
+				if (cachedTerrainIndexes != null)
+					cachedTerrainIndexes[c] = InvalidCachedTerrainIndex;
+			};
+
+			// Even though the cache is lazily initialized, we must attach these event handlers on init.
+			// This ensures our handler to invalidate the cache runs first,
+			// so other listeners to these same events will get correct data when calling GetTerrainIndex.
+			CustomTerrain.CellEntryChanged += invalidateTerrainIndex;
+			Tiles.CellEntryChanged += invalidateTerrainIndex;
 		}
 
 		void UpdateRamp(CPos cell)
@@ -1069,18 +1083,11 @@ namespace OpenRA
 
 		public byte GetTerrainIndex(CPos cell)
 		{
-			const short InvalidCachedTerrainIndex = -1;
-
 			// Lazily initialize a cache for terrain indexes.
 			if (cachedTerrainIndexes == null)
 			{
 				cachedTerrainIndexes = new CellLayer<short>(this);
 				cachedTerrainIndexes.Clear(InvalidCachedTerrainIndex);
-
-				// Invalidate the entry for a cell if anything could cause the terrain index to change.
-				Action<CPos> invalidateTerrainIndex = c => cachedTerrainIndexes[c] = InvalidCachedTerrainIndex;
-				CustomTerrain.CellEntryChanged += invalidateTerrainIndex;
-				Tiles.CellEntryChanged += invalidateTerrainIndex;
 			}
 
 			var uv = cell.ToMPos(this);

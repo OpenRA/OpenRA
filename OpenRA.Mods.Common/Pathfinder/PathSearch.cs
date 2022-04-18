@@ -20,12 +20,6 @@ namespace OpenRA.Mods.Common.Pathfinder
 {
 	public sealed class PathSearch : IDisposable
 	{
-		/// <summary>
-		/// When searching for paths, use a default weight of 125% to reduce
-		/// computation effort - even if this means paths may be sub-optimal.
-		/// </summary>
-		public const int DefaultHeuristicWeightPercentage = 125;
-
 		// PERF: Maintain a pool of layers used for paths searches for each world. These searches are performed often
 		// so we wish to avoid the high cost of initializing a new search space every time by reusing the old ones.
 		static readonly ConditionalWeakTable<World, CellInfoLayerPool> LayerPoolTable = new ConditionalWeakTable<World, CellInfoLayerPool>();
@@ -37,13 +31,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 		}
 
 		public static PathSearch ToTargetCellByPredicate(
-			World world, Locomotor locomotor, Actor self, IEnumerable<CPos> froms, Func<CPos, bool> targetPredicate, BlockedByActor check,
+			World world, Locomotor locomotor, Actor self,
+			IEnumerable<CPos> froms, Func<CPos, bool> targetPredicate, BlockedByActor check,
 			Func<CPos, int> customCost = null,
 			Actor ignoreActor = null,
 			bool laneBias = true)
 		{
 			var graph = new MapPathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, laneBias, false);
-			var search = new PathSearch(graph, loc => 0, DefaultHeuristicWeightPercentage, targetPredicate);
+			var search = new PathSearch(graph, loc => 0, 0, targetPredicate);
 
 			foreach (var sl in froms)
 				if (world.Map.Contains(sl))
@@ -53,15 +48,20 @@ namespace OpenRA.Mods.Common.Pathfinder
 		}
 
 		public static PathSearch ToTargetCell(
-			World world, Locomotor locomotor, Actor self, IEnumerable<CPos> froms, CPos target, BlockedByActor check,
+			World world, Locomotor locomotor, Actor self,
+			IEnumerable<CPos> froms, CPos target, BlockedByActor check, int heuristicWeightPercentage,
 			Func<CPos, int> customCost = null,
 			Actor ignoreActor = null,
 			bool laneBias = true,
 			bool inReverse = false,
 			Func<CPos, int> heuristic = null,
-			int heuristicWeightPercentage = DefaultHeuristicWeightPercentage)
+			Grid? grid = null)
 		{
-			var graph = new MapPathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, laneBias, inReverse);
+			IPathGraph graph;
+			if (grid != null)
+				graph = new GridPathGraph(locomotor, self, world, check, customCost, ignoreActor, laneBias, inReverse, grid.Value);
+			else
+				graph = new MapPathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, laneBias, inReverse);
 
 			heuristic = heuristic ?? DefaultCostEstimator(locomotor, target);
 			var search = new PathSearch(graph, heuristic, heuristicWeightPercentage, loc => loc == target);
@@ -69,6 +69,18 @@ namespace OpenRA.Mods.Common.Pathfinder
 			foreach (var sl in froms)
 				if (world.Map.Contains(sl))
 					search.AddInitialCell(sl);
+
+			return search;
+		}
+
+		public static PathSearch ToTargetCellOverGraph(
+			Func<CPos, List<GraphConnection>> edges, Locomotor locomotor, CPos from, CPos target,
+			int estimatedSearchSize = 0)
+		{
+			var graph = new SparsePathGraph(edges, estimatedSearchSize);
+			var search = new PathSearch(graph, DefaultCostEstimator(locomotor, target), 100, loc => loc == target);
+
+			search.AddInitialCell(from);
 
 			return search;
 		}
@@ -113,9 +125,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 		}
 
 		public IPathGraph Graph { get; }
+		public Func<CPos, bool> TargetPredicate { get; set; }
 		readonly Func<CPos, int> heuristic;
 		readonly int heuristicWeightPercentage;
-		readonly Func<CPos, bool> targetPredicate;
 		readonly IPriorityQueue<GraphConnection> openQueue;
 
 		/// <summary>
@@ -137,7 +149,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			Graph = graph;
 			this.heuristic = heuristic;
 			this.heuristicWeightPercentage = heuristicWeightPercentage;
-			this.targetPredicate = targetPredicate;
+			TargetPredicate = targetPredicate;
 			openQueue = new PriorityQueue<GraphConnection>(GraphConnection.ConnectionCostComparer);
 		}
 
@@ -216,6 +228,30 @@ namespace OpenRA.Mods.Common.Pathfinder
 		}
 
 		/// <summary>
+		/// Expands the path search until a path is found, and returns whether a path is found successfully.
+		/// </summary>
+		public bool ExpandToTarget()
+		{
+			while (CanExpand())
+				if (TargetPredicate(Expand()))
+					return true;
+
+			return false;
+		}
+
+		/// <summary>
+		/// Expands the path search over the whole search space.
+		/// Returns the cells that were visited during the search.
+		/// </summary>
+		public List<CPos> ExpandAll()
+		{
+			var consideredCells = new List<CPos>();
+			while (CanExpand())
+				consideredCells.Add(Expand());
+			return consideredCells;
+		}
+
+		/// <summary>
 		/// Expands the path search until a path is found, and returns that path.
 		/// Returned path is *reversed* and given target to source.
 		/// </summary>
@@ -224,7 +260,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			while (CanExpand())
 			{
 				var p = Expand();
-				if (targetPredicate(p))
+				if (TargetPredicate(p))
 					return MakePath(Graph, p);
 			}
 

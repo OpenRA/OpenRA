@@ -649,3 +649,16 @@ Container@PLAYER_WIDGETS:
 							Y: 4
 							ImageCollection: power-icons
 							ImageName: power-normal
+		Container@HPF_OVERLAY:
+			Logic: HierarchicalPathFinderOverlayLogic
+			X: WINDOW_RIGHT - WIDTH - 260
+			Y: 40
+			Width: 150
+			Height: 25
+			Children:
+				DropDownButton@HPF_OVERLAY_LOCOMOTOR:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Text: Select Locomotor
+					Font: Regular
+
