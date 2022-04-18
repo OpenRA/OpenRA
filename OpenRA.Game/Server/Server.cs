@@ -144,6 +144,9 @@ namespace OpenRA.Server
 		[TranslationReference]
 		static readonly string YouWereKicked = "you-were-kicked";
 
+		[TranslationReference]
+		public static readonly string GameStarted = "game-started";
+
 		public ServerState State
 		{
 			get => internalState;
@@ -1283,7 +1286,7 @@ namespace OpenRA.Server
 		{
 			lock (LobbyInfo)
 			{
-				WriteLineWithTimeStamp("Game started");
+				WriteLineWithTimeStamp(ModData.Translation.GetFormattedMessage(GameStarted));
 
 				// Drop any players who are not ready
 				foreach (var c in Conns.Where(c => !c.Validated || GetClient(c).IsInvalid).ToArray())

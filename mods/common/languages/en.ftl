@@ -84,3 +84,8 @@ blacklisted-title = Server name contains a blacklisted word.
 requires-forum-account = Server requires players to have an OpenRA forum account.
 no-permission = You do not have permission to join this server.
 slot-closed = Your slot was closed by the host.
+
+
+## Server
+
+game-started = Game started
