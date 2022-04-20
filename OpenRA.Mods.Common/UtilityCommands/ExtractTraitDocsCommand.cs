@@ -10,8 +10,10 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -25,7 +27,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return true;
 		}
 
-		[Desc("[VERSION]", "Generate trait documentation in MarkDown format.")]
+		[Desc("[VERSION]", "Generate trait documentation in JSON format.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
@@ -35,84 +37,72 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			if (args.Length > 1)
 				version = args[1];
 
-			Console.WriteLine(
-				"This documentation is aimed at modders. It displays all traits with default values and developer commentary. " +
-				"Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been " +
-				$"automatically generated for version {version} of OpenRA.");
-			Console.WriteLine();
+			var objectCreator = utility.ModData.ObjectCreator;
+			var traitInfos = objectCreator.GetTypesImplementing<TraitInfo>().OrderBy(t => t.Namespace);
 
-			var doc = new StringBuilder();
-			var currentNamespace = "";
-
-			foreach (var t in Game.ModData.ObjectCreator.GetTypesImplementing<TraitInfo>().OrderBy(t => t.Namespace))
-			{
-				if (t.ContainsGenericParameters || t.IsAbstract)
-					continue; // skip helpers like TraitInfo<T>
-
-				if (currentNamespace != t.Namespace)
-				{
-					currentNamespace = t.Namespace;
-					doc.AppendLine();
-					doc.AppendLine($"## {currentNamespace}");
-				}
-
-				var traitName = t.Name.EndsWith("Info") ? t.Name.Substring(0, t.Name.Length - 4) : t.Name;
-				var traitDescLines = t.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines);
-				doc.AppendLine();
-				doc.AppendLine($"### {traitName}");
-				foreach (var line in traitDescLines)
-					doc.AppendLine(line);
-
-				var requires = RequiredTraitTypes(t);
-				var reqCount = requires.Length;
-				if (reqCount > 0)
-				{
-					if (t.HasAttribute<DescAttribute>())
-						doc.AppendLine();
-
-					doc.Append($"Requires trait{(reqCount > 1 ? "s" : "")}: ");
-
-					var i = 0;
-					foreach (var require in requires)
-					{
-						var n = require.Name;
-						var name = n.EndsWith("Info") ? n.Remove(n.Length - 4, 4) : n;
-						doc.Append($"[`{name}`](#{name.ToLowerInvariant()}){(i + 1 == reqCount ? ".\n" : ", ")}");
-						i++;
-					}
-				}
-
-				var infos = FieldLoader.GetTypeLoadInfo(t);
-				if (!infos.Any())
-					continue;
-				doc.AppendLine();
-				doc.AppendLine("| Property | Default Value | Type | Description |");
-				doc.AppendLine("| -------- | --------------| ---- | ----------- |");
-				var liveTraitInfo = Game.ModData.ObjectCreator.CreateBasic(t);
-				foreach (var info in infos)
-				{
-					var fieldDescLines = info.Field.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines);
-					var fieldType = Util.FriendlyTypeName(info.Field.FieldType);
-					var loadInfo = info.Field.GetCustomAttributes<FieldLoader.SerializeAttribute>(true).FirstOrDefault();
-					var defaultValue = loadInfo != null && loadInfo.Required ? "*(required)*" : FieldSaver.SaveField(liveTraitInfo, info.Field.Name).Value.Value;
-					doc.Append($"| {info.YamlName} | {defaultValue} | {fieldType} | ");
-					foreach (var line in fieldDescLines)
-						doc.Append(line + " ");
-					doc.AppendLine("|");
-				}
-			}
-
-			Console.Write(doc.ToString());
+			var json = GenerateJson(version, traitInfos, objectCreator);
+			Console.WriteLine(json);
 		}
 
-		static Type[] RequiredTraitTypes(Type t)
+		static string GenerateJson(string version, IEnumerable<Type> traitTypes, ObjectCreator objectCreator)
+		{
+			var traitTypesInfo = traitTypes.Where(x => !x.ContainsGenericParameters && !x.IsAbstract)
+				.Select(type => new
+				{
+					type.Namespace,
+					Name = type.Name.EndsWith("Info") ? type.Name.Substring(0, type.Name.Length - 4) : type.Name,
+					Description = string.Join(" ", type.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines)),
+					RequiresTraits = RequiredTraitTypes(type)
+						.Select(y => y.Name),
+					InheritedTypes = type.BaseTypes()
+						.Select(y => y.Name)
+						.Where(y => y != type.Name && y != $"{type.Name}Info" && y != "Object" && y != "TraitInfo`1"), // HACK: This is the simplest way to exclude TraitInfo<T>, which doesn't serialize well.
+					Properties = FieldLoader.GetTypeLoadInfo(type)
+						.Where(fi => fi.Field.IsPublic && fi.Field.IsInitOnly && !fi.Field.IsStatic)
+						.Select(fi => new
+						{
+							PropertyName = fi.YamlName,
+							DefaultValue = FieldSaver.SaveField(objectCreator.CreateBasic(type), fi.Field.Name).Value.Value,
+							InternalType = Util.InternalTypeName(fi.Field.FieldType),
+							UserFriendlyType = Util.FriendlyTypeName(fi.Field.FieldType),
+							Description = string.Join(" ", fi.Field.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines)),
+							OtherAttributes = fi.Field.CustomAttributes
+								.Where(a => a.AttributeType.Name != nameof(DescAttribute) && a.AttributeType.Name != nameof(FieldLoader.LoadUsingAttribute))
+								.Select(a =>
+								{
+									var name = a.AttributeType.Name;
+									name = name.EndsWith("Attribute") ? name.Substring(0, name.Length - 9) : name;
+
+									return new
+									{
+										Name = name,
+										Parameters = a.Constructor.GetParameters()
+											.Select(pi => new
+											{
+												pi.Name,
+												Value = Util.GetAttributeParameterValue(a.ConstructorArguments[pi.Position])
+											})
+									};
+								})
+						})
+				});
+
+			var result = new
+			{
+				Version = version,
+				TraitInfos = traitTypesInfo
+			};
+
+			return JsonConvert.SerializeObject(result);
+		}
+
+		static IEnumerable<Type> RequiredTraitTypes(Type t)
 		{
 			return t.GetInterfaces()
 				.Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(Requires<>))
 				.SelectMany(i => i.GetGenericArguments())
 				.Where(i => !i.IsInterface && !t.IsSubclassOf(i))
-				.OrderBy(i => i.Name)
-				.ToArray();
+				.OrderBy(i => i.Name);
 		}
 	}
 }
