@@ -19,6 +19,13 @@ World:
 			normal: Normal
 			hard: Hard
 		Default: easy
+	D2kResourceRenderer:
+		-ResourceTypes:
+		ResourceTypes:
+			Unobtaineum:
+				Sequences: spicea, spiceb, spicec, spiced
+				Palette: chrome
+				Name: Unobtaineum
 
 upgrade.conyard:
 	Buildable:
