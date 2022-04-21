@@ -8,6 +8,13 @@ World:
 		StartVideo: landing.vqa
 		WinVideo: snowbomb.vqa
 		LossVideo: bmap.vqa
+	ResourceRenderer:
+		-ResourceTypes:
+		ResourceTypes:
+			Unobtaineum:
+				Sequences: gold01, gold02, gold03, gem04
+				Palette: player
+				Name: Unobtaineum
 
 TRAN.Extraction:
 	Inherits: TRAN
