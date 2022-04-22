@@ -124,7 +124,10 @@ namespace OpenRA.Network
 			foreach (var argument in Arguments)
 			{
 				if (argument.Type == FluentArgument.FluentArgumentType.Number)
-					argumentDictionary.Add(argument.Key, new FluentNumber(argument.Value));
+				{
+					if (Exts.TryParseIntegerInvariant(argument.Value, out var number))
+						argumentDictionary.Add(argument.Key, new FluentNumber(number.ToString()));
+				}
 				else
 					argumentDictionary.Add(argument.Key, new FluentString(argument.Value));
 			}
