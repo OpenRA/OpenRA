@@ -930,7 +930,7 @@ namespace OpenRA.Server
 			DispatchServerOrdersToClients(Order.FromTargetString("Message", text, true));
 
 			if (Type == ServerType.Dedicated)
-				WriteLineWithTimeStamp(ModData.Translation.GetFormattedMessage(text));
+				WriteLineWithTimeStamp(text);
 		}
 
 		public void SendLocalizedMessage(string key, Dictionary<string, object> arguments = null)
