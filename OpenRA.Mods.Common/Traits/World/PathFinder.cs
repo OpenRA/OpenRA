@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var sourcesList = sources.ToList();
 			if (sourcesList.Count == 0)
-				throw new ArgumentException($"{nameof(sources)} must not be empty.", nameof(sources));
+				return NoPath;
 
 			var locomotor = GetLocomotor(self);
 
