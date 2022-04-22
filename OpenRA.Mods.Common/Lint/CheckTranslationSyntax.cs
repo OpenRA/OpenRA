@@ -12,8 +12,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Fluent.Net;
-using Fluent.Net.Ast;
+using Linguini.Syntax.Ast;
+using Linguini.Syntax.Parser;
 
 namespace OpenRA.Mods.Common.Lint
 {
@@ -27,20 +27,19 @@ namespace OpenRA.Mods.Common.Lint
 				using (var reader = new StreamReader(stream))
 				{
 					var ids = new List<string>();
-					var parser = new Parser();
-					var resource = parser.Parse(reader);
-					foreach (var entry in resource.Body)
+					var parser = new LinguiniParser(reader);
+					var resource = parser.Parse();
+					foreach (var entry in resource.Entries)
 					{
 						if (entry is Junk junk)
-							foreach (var annotation in junk.Annotations)
-								emitError($"{annotation.Code}: {annotation.Message} in {file} line {annotation.Span.Start.Line}");
+							emitError($"{junk.GetId()}: {junk.AsStr()} in {file} {junk.Content}");
 
-						if (entry is MessageTermBase message)
+						if (entry is AstMessage message)
 						{
-							if (ids.Contains(message.Id.Name))
-								emitWarning($"Duplicate ID `{message.Id.Name}` in {file} line {message.Span.Start.Line}");
+							if (ids.Contains(message.Id.Name.ToString()))
+								emitWarning($"Duplicate ID `{message.Id.Name}` in {file}.");
 
-							ids.Add(message.Id.Name);
+							ids.Add(message.Id.Name.ToString());
 						}
 					}
 				}

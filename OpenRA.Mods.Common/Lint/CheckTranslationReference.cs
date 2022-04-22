@@ -14,8 +14,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Fluent.Net;
-using Fluent.Net.RuntimeAst;
+using Linguini.Syntax.Ast;
+using Linguini.Syntax.Parser;
 
 namespace OpenRA.Mods.Common.Lint
 {
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Lint
 						emitError($"Translation attribute on non string field {fieldInfo.Name}.");
 
 					var key = (string)fieldInfo.GetValue(string.Empty);
-					if (!translation.HasAttribute(key))
+					if (!translation.HasMessage(key))
 						emitError($"{key} not present in {language} translation.");
 
 					var translationReference = fieldInfo.GetCustomAttributes<TranslationReferenceAttribute>(true)[0];
@@ -56,43 +56,57 @@ namespace OpenRA.Mods.Common.Lint
 				var stream = modData.DefaultFileSystem.Open(file);
 				using (var reader = new StreamReader(stream))
 				{
-					var runtimeParser = new RuntimeParser();
-					var result = runtimeParser.GetResource(reader);
+					var parser = new LinguiniParser(reader);
+					var result = parser.Parse();
 
 					foreach (var entry in result.Entries)
 					{
-						if (!referencedKeys.Contains(entry.Key))
-							emitWarning($"Unused key `{entry.Key}` in {file}.");
+						if (!referencedKeys.Contains(entry.GetId()))
+							emitWarning($"Unused key `{entry.GetId()}` in {file}.");
 
-						var message = entry.Value;
-						var node = message.Value;
 						variableReferences.Clear();
-						if (node is Pattern pattern)
+						if (entry is AstMessage message)
 						{
-							foreach (var element in pattern.Elements)
+							var node = message.Value;
+							foreach (var element in node.Elements)
 							{
-								if (element is SelectExpression selectExpression)
+								if (element is Placeable placeable)
 								{
-									foreach (var variant in selectExpression.Variants)
+									var expression = placeable.Expression;
+									if (expression is IInlineExpression inlineExpression)
 									{
-										if (variant.Value is Pattern variantPattern)
+										if (inlineExpression is VariableReference variableReference)
+											CheckVariableReference(variableReference.Id.Name.ToString(), entry, emitWarning, file);
+									}
+
+									if (expression is SelectExpression selectExpression)
+									{
+										foreach (var variant in selectExpression.Variants)
 										{
-											foreach (var variantElement in variantPattern.Elements)
-												CheckVariableReference(variantElement, entry, emitWarning, file);
+											foreach (var variantElement in variant.Value.Elements)
+											{
+												if (variantElement is Placeable variantPlaceable)
+												{
+													var variantExpression = variantPlaceable.Expression;
+													if (variantExpression is IInlineExpression variantInlineExpression)
+													{
+														if (variantInlineExpression is VariableReference variantVariableReference)
+															CheckVariableReference(variantVariableReference.Id.Name.ToString(), entry, emitWarning, file);
+													}
+												}
+											}
 										}
 									}
 								}
-
-								CheckVariableReference(element, entry, emitWarning, file);
 							}
 
-							if (referencedVariablesPerKey.ContainsKey(entry.Key))
+							if (referencedVariablesPerKey.ContainsKey(entry.GetId()))
 							{
-								var referencedVariables = referencedVariablesPerKey[entry.Key];
+								var referencedVariables = referencedVariablesPerKey[entry.GetId()];
 								foreach (var referencedVariable in referencedVariables)
 								{
 									if (!variableReferences.Contains(referencedVariable))
-										emitError($"Missing variable `{referencedVariable}` for key `{entry.Key}` in {file}.");
+										emitError($"Missing variable `{referencedVariable}` for key `{entry.GetId()}` in {file}.");
 								}
 							}
 						}
@@ -101,21 +115,18 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		void CheckVariableReference(Node element, KeyValuePair<string, Message> entry, Action<string> emitWarning, string file)
+		void CheckVariableReference(string element, IEntry entry, Action<string> emitWarning, string file)
 		{
-			if (element is VariableReference variableReference)
-			{
-				variableReferences.Add(variableReference.Name);
+			variableReferences.Add(element);
 
-				if (referencedVariablesPerKey.ContainsKey(entry.Key))
-				{
-					var referencedVariables = referencedVariablesPerKey[entry.Key];
-					if (!referencedVariables.Contains(variableReference.Name))
-						emitWarning($"Unused variable `{variableReference.Name}` for key `{entry.Key}` in {file}.");
-				}
-				else
-					emitWarning($"Unused variable `{variableReference.Name}` for key `{entry.Key}` in {file}.");
+			if (referencedVariablesPerKey.ContainsKey(entry.GetId()))
+			{
+				var referencedVariables = referencedVariablesPerKey[entry.GetId()];
+				if (!referencedVariables.Contains(element))
+					emitWarning($"Unused variable `{element}` for key `{entry.GetId()}` in {file}.");
 			}
+			else
+				emitWarning($"Unused variable `{element}` for key `{entry.GetId()}` in {file}.");
 		}
 	}
 }
