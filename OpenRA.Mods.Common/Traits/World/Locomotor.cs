@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2022 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -145,6 +145,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly LocomotorInfo Info;
 		public readonly uint MovementClass;
 
+		/// <summary>
+		/// Raised when the movement cost for a cell changes, providing the old and new costs.
+		/// </summary>
+		public event Action<CPos, short, short> CellCostChanged;
+
 		readonly LocomotorInfo.TerrainInfo[] terrainInfos;
 		readonly World world;
 		readonly HashSet<CPos> dirtyCells = new HashSet<CPos>();
@@ -218,7 +223,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanMoveFreelyInto(Actor actor, CPos cell, SubCell subCell, BlockedByActor check, Actor ignoreActor)
 		{
-			// If the check allows: We are not blocked by transient actors.
+			// If the check allows: We are not blocked by other actors.
 			if (check == BlockedByActor.None)
 				return true;
 
@@ -432,8 +437,15 @@ namespace OpenRA.Mods.Common.Traits
 				cost = terrainInfos[index].Cost;
 
 			var cache = cellsCost[cell.Layer];
-
-			cache[cell] = cost;
+			if (CellCostChanged == null)
+				cache[cell] = cost;
+			else
+			{
+				var uv = cell.ToMPos(world.Map);
+				var oldCost = cache[uv];
+				cache[uv] = cost;
+				CellCostChanged(cell, oldCost, cost);
+			}
 		}
 
 		void UpdateCellBlocking(CPos cell)
