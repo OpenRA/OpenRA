@@ -13,13 +13,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Fluent.Net;
+using Linguini.Shared.Types.Bundle;
 
 namespace OpenRA.Network
 {
 	public class FluentArgument
 	{
-		[Flags]
 		public enum FluentArgumentType
 		{
 			String = 0,
@@ -41,18 +40,9 @@ namespace OpenRA.Network
 
 		static FluentArgumentType GetFluentArgumentType(object value)
 		{
-			switch (value)
+			switch (value.ToFluentType())
 			{
-				case byte _:
-				case sbyte _:
-				case short _:
-				case uint _:
-				case int _:
-				case long _:
-				case ulong _:
-				case float _:
-				case double _:
-				case decimal _:
+				case FluentNumber _:
 					return FluentArgumentType.Number;
 				default:
 					return FluentArgumentType.String;
@@ -64,10 +54,12 @@ namespace OpenRA.Network
 	{
 		public const int ProtocolVersion = 1;
 
-		public readonly string Key;
+		public readonly string Key = string.Empty;
 
 		[FieldLoader.LoadUsing(nameof(LoadArguments))]
-		public readonly FluentArgument[] Arguments;
+		public readonly FluentArgument[] Arguments = Array.Empty<FluentArgument>();
+
+		public string TranslatedText { get; }
 
 		static object LoadArguments(MiniYaml yaml)
 		{
@@ -84,30 +76,41 @@ namespace OpenRA.Network
 			return arguments.ToArray();
 		}
 
-		static readonly string[] SerializeFields = { "Key" };
-
-		public LocalizedMessage(MiniYaml yaml)
+		public LocalizedMessage(ModData modData, MiniYaml yaml)
 		{
+			// Let the FieldLoader do the dirty work of loading the public fields.
 			FieldLoader.Load(this, yaml);
+
+			var argumentDictionary = new Dictionary<string, object>();
+			foreach (var argument in Arguments)
+			{
+				if (argument.Type == FluentArgument.FluentArgumentType.Number)
+				{
+					if (!double.TryParse(argument.Value, out var number))
+						Log.Write("debug", $"Failed to parse {argument.Value}");
+
+					argumentDictionary.Add(argument.Key, number);
+				}
+				else
+					argumentDictionary.Add(argument.Key, argument.Value);
+			}
+
+			TranslatedText = modData.Translation.GetString(Key, argumentDictionary);
 		}
 
-		public LocalizedMessage(string key, Dictionary<string, object> arguments = null)
+		public static string Serialize(string key, Dictionary<string, object> arguments = null)
 		{
-			Key = key;
-			Arguments = arguments?.Select(a => new FluentArgument(a.Key, a.Value)).ToArray();
-		}
+			var root = new List<MiniYamlNode>
+			{
+				new MiniYamlNode("Protocol", ProtocolVersion.ToString()),
+				new MiniYamlNode("Key", key)
+			};
 
-		public string Serialize()
-		{
-			var root = new List<MiniYamlNode>() { new MiniYamlNode("Protocol", ProtocolVersion.ToString()) };
-			foreach (var field in SerializeFields)
-				root.Add(FieldSaver.SaveField(this, field));
-
-			if (Arguments != null)
+			if (arguments != null)
 			{
 				var argumentsNode = new MiniYaml("");
 				var i = 0;
-				foreach (var argument in Arguments)
+				foreach (var argument in arguments.Select(a => new FluentArgument(a.Key, a.Value)))
 					argumentsNode.Nodes.Add(new MiniYamlNode("Argument@" + i++, FieldSaver.Save(argument)));
 
 				root.Add(new MiniYamlNode("Arguments", argumentsNode));
@@ -116,20 +119,6 @@ namespace OpenRA.Network
 			return new MiniYaml("", root)
 				.ToLines("LocalizedMessage")
 				.JoinWith("\n");
-		}
-
-		public string Translate(ModData modData)
-		{
-			var argumentDictionary = new Dictionary<string, object>();
-			foreach (var argument in Arguments)
-			{
-				if (argument.Type == FluentArgument.FluentArgumentType.Number)
-					argumentDictionary.Add(argument.Key, new FluentNumber(argument.Value));
-				else
-					argumentDictionary.Add(argument.Key, new FluentString(argument.Value));
-			}
-
-			return modData.Translation.GetFormattedMessage(Key, argumentDictionary);
 		}
 	}
 }

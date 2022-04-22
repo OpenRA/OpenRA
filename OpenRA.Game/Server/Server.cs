@@ -935,16 +935,16 @@ namespace OpenRA.Server
 
 		public void SendLocalizedMessage(string key, Dictionary<string, object> arguments = null)
 		{
-			var text = new LocalizedMessage(key, arguments).Serialize();
+			var text = LocalizedMessage.Serialize(key, arguments);
 			DispatchServerOrdersToClients(Order.FromTargetString("LocalizedMessage", text, true));
 
 			if (Type == ServerType.Dedicated)
-				WriteLineWithTimeStamp(ModData.Translation.GetFormattedMessage(key, arguments));
+				WriteLineWithTimeStamp(ModData.Translation.GetString(key, arguments));
 		}
 
 		public void SendLocalizedMessageTo(Connection conn, string key, Dictionary<string, object> arguments = null)
 		{
-			var text = new LocalizedMessage(key, arguments).Serialize();
+			var text = LocalizedMessage.Serialize(key, arguments);
 			DispatchOrdersToClient(conn, 0, 0, Order.FromTargetString("LocalizedMessage", text, true).Serialize());
 		}
 
@@ -1287,7 +1287,7 @@ namespace OpenRA.Server
 		{
 			lock (LobbyInfo)
 			{
-				WriteLineWithTimeStamp(ModData.Translation.GetFormattedMessage(GameStarted));
+				WriteLineWithTimeStamp(ModData.Translation.GetString(GameStarted));
 
 				// Drop any players who are not ready
 				foreach (var c in Conns.Where(c => !c.Validated || GetClient(c).IsInvalid).ToArray())

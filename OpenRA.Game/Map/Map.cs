@@ -1366,12 +1366,12 @@ namespace OpenRA
 			return false;
 		}
 
-		public string Translate(string key, IDictionary<string, object> args = null, string attribute = null)
+		public string Translate(string key, IDictionary<string, object> args = null)
 		{
-			if (Translation.GetFormattedMessage(key, args, attribute) == key)
-				return modData.Translation.GetFormattedMessage(key, args, attribute);
+			if (Translation.TryGetString(key, out var message, args))
+				return message;
 
-			return Translation.GetFormattedMessage(key, args, attribute);
+			return modData.Translation.GetString(key, args);
 		}
 	}
 }
