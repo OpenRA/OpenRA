@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			Actor ignoreActor = null,
 			bool laneBias = true)
 		{
-			var graph = new PathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, laneBias, false);
+			var graph = new MapPathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, laneBias, false);
 			var search = new PathSearch(graph, loc => 0, DefaultHeuristicWeightPercentage, targetPredicate);
 
 			foreach (var sl in froms)
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			Func<CPos, int> heuristic = null,
 			int heuristicWeightPercentage = DefaultHeuristicWeightPercentage)
 		{
-			var graph = new PathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, laneBias, inReverse);
+			var graph = new MapPathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, laneBias, inReverse);
 
 			heuristic = heuristic ?? DefaultCostEstimator(locomotor, target);
 			var search = new PathSearch(graph, heuristic, heuristicWeightPercentage, loc => loc == target);

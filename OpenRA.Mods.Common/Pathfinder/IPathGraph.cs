@@ -32,6 +32,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 		CellInfo this[CPos node] { get; set; }
 	}
 
+	public static class PathGraph
+	{
+		public const int PathCostForInvalidPath = int.MaxValue;
+		public const short MovementCostForUnreachableCell = short.MaxValue;
+	}
+
 	/// <summary>
 	/// Represents part of an edge in a graph, giving the cost to traverse to a node.
 	/// </summary>
