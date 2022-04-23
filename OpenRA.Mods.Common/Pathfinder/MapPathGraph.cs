@@ -18,15 +18,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 	/// A dense pathfinding graph that supports a search over all cells within a map.
 	/// It implements the ability to cost and get connections for cells, and supports <see cref="ICustomMovementLayer"/>.
 	/// </summary>
-	sealed class PathGraph : DensePathGraph
+	sealed class MapPathGraph : DensePathGraph
 	{
-		public const int PathCostForInvalidPath = int.MaxValue;
-		public const short MovementCostForUnreachableCell = short.MaxValue;
-
 		readonly CellInfoLayerPool.PooledCellInfoLayer pooledLayer;
 		readonly CellLayer<CellInfo>[] cellInfoForLayer;
 
-		public PathGraph(CellInfoLayerPool layerPool, Locomotor locomotor, Actor actor, World world, BlockedByActor check,
+		public MapPathGraph(CellInfoLayerPool layerPool, Locomotor locomotor, Actor actor, World world, BlockedByActor check,
 			Func<CPos, int> customCost, Actor ignoreActor, bool laneBias, bool inReverse)
 			: base(locomotor, actor, world, check, customCost, ignoreActor, laneBias, inReverse)
 		{
