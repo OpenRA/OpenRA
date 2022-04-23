@@ -62,6 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If the target cell is inaccessible, bail early.
 			var inaccessible =
+				!world.Map.Contains(target) ||
 				!locomotor.CanMoveFreelyInto(self, target, check, ignoreActor) ||
 				(!(customCost is null) && customCost(target) == PathGraph.PathCostForInvalidPath);
 			if (inaccessible)
@@ -74,7 +75,11 @@ namespace OpenRA.Mods.Common.Traits
 
 				// For adjacent cells on the same layer, we can return the path without invoking a full search.
 				if (source.Layer == target.Layer && (source - target).LengthSquared < 3)
+				{
+					if (!world.Map.Contains(source))
+						return NoPath;
 					return new List<CPos>(2) { target, source };
+				}
 
 				// With one starting point, we can use a bidirectional search.
 				using (var fromTarget = PathSearch.ToTargetCell(
