@@ -235,12 +235,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				Task.Run(async () =>
 				{
-					var client = HttpClientFactory.Create();
-					var httpResponseMessage = await client.GetAsync(download.MirrorList);
-					var result = await httpResponseMessage.Content.ReadAsStringAsync();
-
 					try
 					{
+						var client = HttpClientFactory.Create();
+						var httpResponseMessage = await client.GetAsync(download.MirrorList);
+						var result = await httpResponseMessage.Content.ReadAsStringAsync();
+
 						var mirrorList = result.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
 						downloadUrl(mirrorList.Random(new MersenneTwister()));
 					}

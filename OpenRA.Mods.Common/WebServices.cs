@@ -40,20 +40,24 @@ namespace OpenRA.Mods.Common
 					{ "version", Game.ModData.Manifest.Metadata.Version }
 				}.ToString();
 
-				var client = HttpClientFactory.Create();
-
-				var httpResponseMessage = await client.GetAsync(queryURL);
-				var result = await httpResponseMessage.Content.ReadAsStringAsync();
-
-				var status = ModVersionStatus.Latest;
-				switch (result)
+				try
 				{
-					case "outdated": status = ModVersionStatus.Outdated; break;
-					case "unknown": status = ModVersionStatus.Unknown; break;
-					case "playtest": status = ModVersionStatus.PlaytestAvailable; break;
-				}
+					var client = HttpClientFactory.Create();
 
-				Game.RunAfterTick(() => ModVersionStatus = status);
+					var httpResponseMessage = await client.GetAsync(queryURL);
+					var result = await httpResponseMessage.Content.ReadAsStringAsync();
+
+					var status = ModVersionStatus.Latest;
+					switch (result)
+					{
+						case "outdated": status = ModVersionStatus.Outdated; break;
+						case "unknown": status = ModVersionStatus.Unknown; break;
+						case "playtest": status = ModVersionStatus.PlaytestAvailable; break;
+					}
+
+					Game.RunAfterTick(() => ModVersionStatus = status);
+				}
+				catch { }
 			});
 		}
 	}
