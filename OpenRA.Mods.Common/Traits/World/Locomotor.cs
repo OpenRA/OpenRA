@@ -365,16 +365,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var map = w.Map;
 			actorMap = w.ActorMap;
+			map.CustomTerrain.CellEntryChanged += UpdateCellCost;
+			map.Tiles.CellEntryChanged += UpdateCellCost;
 			actorMap.CellUpdated += CellUpdated;
 
 			cellsCost = new[] { new CellLayer<short>(map) };
 			blockingCache = new[] { new CellLayer<CellCache>(map) };
 
 			foreach (var cell in map.AllCells)
+			{
 				UpdateCellCost(cell);
-
-			map.CustomTerrain.CellEntryChanged += UpdateCellCost;
-			map.Tiles.CellEntryChanged += UpdateCellCost;
+				UpdateCellBlocking(cell);
+			}
 
 			// NotBefore<> ensures all custom movement layers have been initialized.
 			var customMovementLayers = world.GetCustomMovementLayers();
