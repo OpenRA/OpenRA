@@ -593,13 +593,14 @@ namespace OpenRA.Server
 				{
 					Task.Run(async () =>
 					{
-						var httpClient = HttpClientFactory.Create();
-						var httpResponseMessage = await httpClient.GetAsync(playerDatabase.Profile + handshake.Fingerprint);
-						var result = await httpResponseMessage.Content.ReadAsStreamAsync();
 						PlayerProfile profile = null;
 
 						try
 						{
+							var httpClient = HttpClientFactory.Create();
+							var httpResponseMessage = await httpClient.GetAsync(playerDatabase.Profile + handshake.Fingerprint);
+							var result = await httpResponseMessage.Content.ReadAsStreamAsync();
+
 							var yaml = MiniYaml.FromStream(result).First();
 							if (yaml.Key == "Player")
 							{

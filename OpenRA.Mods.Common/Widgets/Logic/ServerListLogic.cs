@@ -343,16 +343,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			Task.Run(async () =>
 			{
-				var games = new List<GameServer>();
-				var client = HttpClientFactory.Create();
-				var httpResponseMessage = await client.GetAsync(queryURL);
-				var result = await httpResponseMessage.Content.ReadAsStreamAsync();
-
+				List<GameServer> games = null;
 				activeQuery = true;
 
 				try
 				{
+					var client = HttpClientFactory.Create();
+					var httpResponseMessage = await client.GetAsync(queryURL);
+					var result = await httpResponseMessage.Content.ReadAsStreamAsync();
+
 					var yaml = MiniYaml.FromStream(result);
+					games = new List<GameServer>();
 					foreach (var node in yaml)
 					{
 						try
