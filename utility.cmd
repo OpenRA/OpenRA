@@ -1,6 +1,23 @@
 @echo off
 title OpenRA.Utility.exe
 set ENGINE_DIR=..
+
+set argC=0
+for %%x in (%*) do set /A argC+=1
+
+if %argC% == 0 goto choosemod
+
+if %argC% == 1 (
+    set mod=%1
+    goto help
+)
+
+if %argC% GEQ 2 (
+    @REM This option is for use by other scripts so we don't want any extra output here - before or after.
+    call bin\OpenRA.Utility.exe %*
+    EXIT /B 0
+)
+
 :choosemod
 echo ----------------------------------------
 echo.
@@ -20,7 +37,7 @@ goto choosemod
 echo.
 echo ----------------------------------------
 echo.
-echo OpenRA.Utility.exe %mod%
+echo Starting OpenRA.Utility.exe %mod%
 call bin\OpenRA.Utility.exe %mod%
 :start
 echo.
@@ -38,6 +55,6 @@ if /I "%command%" EQU "--mod" (goto choosemod)
 echo.
 echo ----------------------------------------
 echo.
-echo OpenRA.Utility.exe %mod% %command%
+echo Starting OpenRA.Utility.exe %mod% %command%
 call bin\OpenRA.Utility.exe %mod% %command%
 goto start
