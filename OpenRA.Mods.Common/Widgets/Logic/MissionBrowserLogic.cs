@@ -343,15 +343,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				playingVideo = pv;
 				player.Load(video);
 
-				// video playback runs asynchronously
-				player.PlayThen(() =>
+				if (player.Video == null)
 				{
 					StopVideo(player);
-					onComplete?.Invoke();
-				});
 
-				// Mute other distracting sounds
-				MuteSounds();
+					ConfirmationDialogs.ButtonPrompt(
+						title: "Unable to play video",
+						text: "Something went wrong during video playback.",
+						cancelText: "Back",
+						onCancel: () => { });
+				}
+				else
+				{
+					// video playback runs asynchronously
+					player.PlayThen(() =>
+					{
+						StopVideo(player);
+						onComplete?.Invoke();
+					});
+
+					// Mute other distracting sounds
+					MuteSounds();
+				}
 			}
 		}
 

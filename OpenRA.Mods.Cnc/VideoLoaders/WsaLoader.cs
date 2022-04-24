@@ -22,6 +22,9 @@ namespace OpenRA.Mods.Cnc.VideoLoaders
 		{
 			video = null;
 
+			if (s.Length == 0)
+				return false;
+
 			if (!IsWsa(s))
 				return false;
 
@@ -29,7 +32,7 @@ namespace OpenRA.Mods.Cnc.VideoLoaders
 			return true;
 		}
 
-		bool IsWsa(Stream s)
+		static bool IsWsa(Stream s)
 		{
 			var start = s.Position;
 

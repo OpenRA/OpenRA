@@ -21,6 +21,9 @@ namespace OpenRA.Mods.Cnc.VideoLoaders
 		{
 			video = null;
 
+			if (s.Length == 0)
+				return false;
+
 			if (!IsWestwoodVqa(s))
 				return false;
 
@@ -28,7 +31,7 @@ namespace OpenRA.Mods.Cnc.VideoLoaders
 			return true;
 		}
 
-		bool IsWestwoodVqa(Stream s)
+		static bool IsWestwoodVqa(Stream s)
 		{
 			var start = s.Position;
 
