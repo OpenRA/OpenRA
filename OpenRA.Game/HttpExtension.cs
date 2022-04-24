@@ -26,7 +26,7 @@ namespace OpenRA
 			var total = response.Content.Headers.ContentLength ?? -1;
 			var canReportProgress = total > 0;
 
-#if !MONO
+#if NET5_0_OR_GREATER
 			using (var contentStream = await response.Content.ReadAsStreamAsync(token))
 #else
 			using (var contentStream = await response.Content.ReadAsStreamAsync())

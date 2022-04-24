@@ -17,8 +17,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFramework Condition="'$(Mono)' == ''">net6.0</TargetFramework>
-    <TargetFramework Condition="'$(Mono)' != ''">netstandard2.1</TargetFramework>
+    <TargetFramework Condition="'$(MSBuildRuntimeType)'!='Mono'">net6.0</TargetFramework>
+    <TargetFramework Condition="'$(MSBuildRuntimeType)'=='Mono'">netstandard2.1</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>

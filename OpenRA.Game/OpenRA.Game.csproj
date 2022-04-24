@@ -2,10 +2,7 @@
   <PropertyGroup>
     <RootNamespace>OpenRA</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Mono)' != ''">
-    <DefineConstants>MONO</DefineConstants>
-  </PropertyGroup>
-  <ItemGroup Condition="'$(Mono)' == ''">
+  <ItemGroup Condition="'$(MSBuildRuntimeType)'!='Mono'">
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="6.0.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
