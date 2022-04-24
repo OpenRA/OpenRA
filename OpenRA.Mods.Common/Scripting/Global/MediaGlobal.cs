@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 			catch (FileNotFoundException e)
 			{
-				Log.Write("lua", "Couldn't play movie {0}! File doesn't exist.", e.FileName);
+				Log.Write("lua", $"Couldn't play movie {e.FileName}! File doesn't exist.");
 				onCompleteRadar();
 				return false;
 			}

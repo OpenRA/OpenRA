@@ -46,7 +46,8 @@ namespace OpenRA.Mods.Common.Widgets
 			if (filename == cachedVideoFileName)
 				return;
 
-			var video = VideoLoader.GetVideo(Game.ModData.DefaultFileSystem.Open(filename), true, Game.ModData.VideoLoaders);
+			var stream = Game.ModData.DefaultFileSystem.Open(filename);
+			var video = VideoLoader.GetVideo(stream, true, Game.ModData.VideoLoaders);
 			Open(video);
 
 			cachedVideoFileName = filename;
@@ -55,6 +56,9 @@ namespace OpenRA.Mods.Common.Widgets
 		public void Open(IVideo video)
 		{
 			this.video = video;
+
+			if (video == null)
+				return;
 
 			stopped = true;
 			paused = true;
