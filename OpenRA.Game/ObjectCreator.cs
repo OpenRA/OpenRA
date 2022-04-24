@@ -60,7 +60,11 @@ namespace OpenRA
 
 			if (!ResolvedAssemblies.TryGetValue(hash, out var assembly))
 			{
-#if MONO
+#if NET5_0_OR_GREATER
+				var loader = new AssemblyLoader(resolvedPath);
+				assembly = loader.LoadDefaultAssembly();
+				ResolvedAssemblies.Add(hash, assembly);
+#else
 				assembly = Assembly.LoadFile(resolvedPath);
 				ResolvedAssemblies.Add(hash, assembly);
 
@@ -75,10 +79,6 @@ namespace OpenRA
 							LoadAssembly(assemblyList, depedencyPath);
 					}
 				}
-#else
-				var loader = new AssemblyLoader(resolvedPath);
-				assembly = loader.LoadDefaultAssembly();
-				ResolvedAssemblies.Add(hash, assembly);
 #endif
 			}
 

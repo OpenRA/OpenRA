@@ -40,7 +40,7 @@ install_assemblies() {
 		rm -rf "${SRC_PATH}/OpenRA."*/obj
 		rm -rf "${SRC_PATH:?}/bin"
 
-		msbuild -verbosity:m -nologo -t:Build -restore -p:Configuration=Release -p:TargetPlatform="${TARGETPLATFORM}" -p:Mono=true
+		msbuild -verbosity:m -nologo -t:Build -restore -p:Configuration=Release -p:TargetPlatform="${TARGETPLATFORM}"
 		if [ "${TARGETPLATFORM}" = "unix-generic" ]; then
 			./configure-system-libraries.sh
 		fi

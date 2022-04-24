@@ -16,7 +16,7 @@ namespace OpenRA.Support
 {
 	public class HttpClientFactory
 	{
-#if !MONO
+#if NET5_0_OR_GREATER
 		const int MaxConnectionPerServer = 20;
 		static readonly TimeSpan ConnectionLifeTime = TimeSpan.FromMinutes(1);
 #endif
@@ -30,7 +30,7 @@ namespace OpenRA.Support
 
 		static HttpMessageHandler GetHandler()
 		{
-#if !MONO
+#if NET5_0_OR_GREATER
 			return new SocketsHttpHandler
 			{
 				// https://github.com/dotnet/corefx/issues/26895

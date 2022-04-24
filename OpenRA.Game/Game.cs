@@ -351,7 +351,7 @@ namespace OpenRA
 				{
 					var rendererPath = Path.Combine(Platform.BinDir, "OpenRA.Platforms." + p + ".dll");
 
-#if !MONO
+#if NET5_0_OR_GREATER
 					var loader = new AssemblyLoader(rendererPath);
 					var platformType = loader.LoadDefaultAssembly().GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
 
