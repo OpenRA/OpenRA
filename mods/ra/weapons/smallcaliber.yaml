@@ -56,7 +56,7 @@ FLAK-23-AG:
 		InvalidTargets: Bridge
 
 ^HeavyMG:
-	ReloadDelay: 30
+	ReloadDelay: 35
 	Range: 6c0
 	Report: gun13.aud
 	ValidTargets: Ground, Water, GroundActor, WaterActor

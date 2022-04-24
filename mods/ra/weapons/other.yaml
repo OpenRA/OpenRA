@@ -1,6 +1,6 @@
 ^FireWeapon:
 	ValidTargets: Ground, Water, GroundActor, WaterActor, Trees
-	ReloadDelay: 65
+	ReloadDelay: 70
 	Range: 5c0
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
