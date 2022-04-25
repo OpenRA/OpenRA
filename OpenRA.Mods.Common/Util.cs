@@ -226,6 +226,13 @@ namespace OpenRA.Mods.Common
 			return random.Next(range[0], range[1]);
 		}
 
+		public static string InternalTypeName(Type t)
+		{
+			return t.IsGenericType
+				? $"{t.Name.Substring(0, t.Name.IndexOf('`'))}<{string.Join(", ", t.GenericTypeArguments.Select(arg => arg.Name))}>"
+				: t.Name;
+		}
+
 		public static string FriendlyTypeName(Type t)
 		{
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(HashSet<>))
