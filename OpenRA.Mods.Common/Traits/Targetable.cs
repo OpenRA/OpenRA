@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BitSet<TargetableType> TargetTypes;
 		public BitSet<TargetableType> GetTargetTypes() { return TargetTypes; }
 
-		public bool RequiresForceFire = false;
+		public readonly bool RequiresForceFire = false;
 
 		public override object Create(ActorInitializer init) { return new Targetable(this); }
 	}

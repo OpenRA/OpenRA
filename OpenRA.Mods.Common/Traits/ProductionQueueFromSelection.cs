@@ -20,8 +20,8 @@ namespace OpenRA.Mods.Common.Traits
 	[TraitLocation(SystemActors.World)]
 	class ProductionQueueFromSelectionInfo : TraitInfo
 	{
-		public string ProductionTabsWidget = null;
-		public string ProductionPaletteWidget = null;
+		public readonly string ProductionTabsWidget = null;
+		public readonly string ProductionPaletteWidget = null;
 
 		public override object Create(ActorInitializer init) { return new ProductionQueueFromSelection(init.World, this); }
 	}

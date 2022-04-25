@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 		[WeaponReference]
 		[FieldLoader.Require]
 		[Desc("The weapon to fire upon collection.")]
-		public string Weapon = null;
+		public readonly string Weapon = null;
 
 		public override object Create(ActorInitializer init) { return new ExplodeCrateAction(init.Self, this); }
 	}

@@ -26,7 +26,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly WDist Spread = new WDist(3072);
 
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
-		public WDist[] Range = null;
+		public readonly WDist[] Range = null;
 
 		public override object Create(ActorInitializer init) { return new AttractsWorms(init, this); }
 	}
@@ -34,22 +34,22 @@ namespace OpenRA.Mods.D2k.Traits
 	public class AttractsWorms : ConditionalTrait<AttractsWormsInfo>
 	{
 		readonly Actor self;
+		readonly WDist[] effectiveRange;
 
 		public AttractsWorms(ActorInitializer init, AttractsWormsInfo info)
 			: base(info)
 		{
 			self = init.Self;
 
-			if (info.Range == null)
-				info.Range = Exts.MakeArray(info.Falloff.Length, i => i * info.Spread);
+			effectiveRange = info.Range ?? Exts.MakeArray(info.Falloff.Length, i => i * info.Spread);
 		}
 
 		int GetNoisePercentageAtDistance(int distance)
 		{
-			var inner = Info.Range[0].Length;
-			for (var i = 1; i < Info.Range.Length; i++)
+			var inner = effectiveRange[0].Length;
+			for (var i = 1; i < effectiveRange.Length; i++)
 			{
-				var outer = Info.Range[i].Length;
+				var outer = effectiveRange[i].Length;
 				if (outer > distance)
 					return int2.Lerp(Info.Falloff[i - 1], Info.Falloff[i], distance - inner, outer - inner);
 
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.D2k.Traits
 			var length = distance.Length;
 
 			// Actor is too far to hear anything.
-			if (length > Info.Range[Info.Range.Length - 1].Length)
+			if (length > effectiveRange[effectiveRange.Length - 1].Length)
 				return WVec.Zero;
 
 			var direction = 1024 * distance / length;

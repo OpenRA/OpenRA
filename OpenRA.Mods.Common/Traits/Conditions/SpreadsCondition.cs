@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string SpreadCondition = "spreading";
 
 		[Desc("Time in ticks to wait between spreading further.")]
-		public int Delay = 5;
+		public readonly int Delay = 5;
 
 		public override object Create(ActorInitializer init) { return new SpreadsCondition(this); }
 	}
