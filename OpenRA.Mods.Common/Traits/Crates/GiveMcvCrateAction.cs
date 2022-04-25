@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	class GiveMcvCrateActionInfo : GiveUnitCrateActionInfo
 	{
 		[Desc("The selection shares to use if the collector has no base.")]
-		public int NoBaseSelectionShares = 1000;
+		public readonly int NoBaseSelectionShares = 1000;
 
 		public override object Create(ActorInitializer init) { return new GiveMcvCrateAction(init.Self, this); }
 	}

@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[NotificationReference("Speech")]
 		[Desc("The audio notification type to play.")]
-		public string Notification = "HarvesterAttack";
+		public readonly string Notification = "HarvesterAttack";
 
 		public override object Create(ActorInitializer init) { return new HarvesterAttackNotifier(init.Self, this); }
 	}

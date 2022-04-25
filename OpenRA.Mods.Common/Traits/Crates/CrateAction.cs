@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[ActorReference]
 		[Desc("Actor types that this crate action will not occur for.")]
-		public string[] ExcludedActorTypes = Array.Empty<string>();
+		public readonly string[] ExcludedActorTypes = Array.Empty<string>();
 
 		public override object Create(ActorInitializer init) { return new CrateAction(init.Self, this); }
 	}

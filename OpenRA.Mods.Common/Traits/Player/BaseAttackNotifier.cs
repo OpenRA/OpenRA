@@ -29,12 +29,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		[NotificationReference("Speech")]
 		[Desc("The audio notification type to play.")]
-		public string Notification = "BaseAttack";
+		public readonly string Notification = "BaseAttack";
 
 		[NotificationReference("Speech")]
 		[Desc("The audio notification to play to allies when under attack.",
 			"Won't play a notification to allies if this is null.")]
-		public string AllyNotification = null;
+		public readonly string AllyNotification = null;
 
 		public override object Create(ActorInitializer init) { return new BaseAttackNotifier(init.Self, this); }
 	}

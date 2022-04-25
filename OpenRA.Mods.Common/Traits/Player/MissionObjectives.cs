@@ -265,10 +265,10 @@ namespace OpenRA.Mods.Common.Traits
 		"Current options for PanelName are 'SKIRMISH_STATS' and 'MISSION_OBJECTIVES'.")]
 	public class ObjectivesPanelInfo : TraitInfo
 	{
-		public string PanelName = null;
+		public readonly string PanelName = null;
 
 		[Desc("in ms")]
-		public int ExitDelay = 1400;
+		public readonly int ExitDelay = 1400;
 
 		public override object Create(ActorInitializer init) { return new ObjectivesPanel(this); }
 	}

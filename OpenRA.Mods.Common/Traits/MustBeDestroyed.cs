@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class MustBeDestroyedInfo : TraitInfo
 	{
 		[Desc("In a short game only actors that have this value set to true need to be destroyed.")]
-		public bool RequiredForShortGame = false;
+		public readonly bool RequiredForShortGame = false;
 
 		public override object Create(ActorInitializer init) { return new MustBeDestroyed(this); }
 	}
