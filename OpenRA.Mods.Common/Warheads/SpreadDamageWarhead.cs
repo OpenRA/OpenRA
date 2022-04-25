@@ -27,10 +27,12 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly int[] Falloff = { 100, 37, 14, 5, 0 };
 
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
-		public WDist[] Range = null;
+		public readonly WDist[] Range = null;
 
 		[Desc("Controls the way damage is calculated. Possible values are 'HitShape', 'ClosestTargetablePosition' and 'CenterPosition'.")]
 		public readonly DamageCalculationType DamageCalculationType = DamageCalculationType.HitShape;
+
+		WDist[] effectiveRange;
 
 		void IRulesetLoaded<WeaponInfo>.RulesetLoaded(Ruleset rules, WeaponInfo info)
 		{
@@ -42,18 +44,20 @@ namespace OpenRA.Mods.Common.Warheads
 				for (var i = 0; i < Range.Length - 1; i++)
 					if (Range[i] > Range[i + 1])
 						throw new YamlException("Range values must be specified in an increasing order.");
+
+				effectiveRange = Range;
 			}
 			else
-				Range = Exts.MakeArray(Falloff.Length, i => i * Spread);
+				effectiveRange = Exts.MakeArray(Falloff.Length, i => i * Spread);
 		}
 
 		protected override void DoImpact(WPos pos, Actor firedBy, WarheadArgs args)
 		{
 			var debugVis = firedBy.World.WorldActor.TraitOrDefault<DebugVisualizations>();
 			if (debugVis != null && debugVis.CombatGeometry)
-				firedBy.World.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(pos, Range, DebugOverlayColor);
+				firedBy.World.WorldActor.Trait<WarheadDebugOverlay>().AddImpact(pos, effectiveRange, DebugOverlayColor);
 
-			foreach (var victim in firedBy.World.FindActorsOnCircle(pos, Range[Range.Length - 1]))
+			foreach (var victim in firedBy.World.FindActorsOnCircle(pos, effectiveRange[effectiveRange.Length - 1]))
 			{
 				if (!IsValidAgainst(victim, firedBy))
 					continue;
@@ -82,7 +86,7 @@ namespace OpenRA.Mods.Common.Warheads
 				}
 
 				// The range to target is more than the range the warhead covers, so GetDamageFalloff() is going to give us 0 and we're going to do 0 damage anyway, so bail early.
-				if (falloffDistance > Range[Range.Length - 1].Length)
+				if (falloffDistance > effectiveRange[effectiveRange.Length - 1].Length)
 					continue;
 
 				var localModifiers = args.DamageModifiers.Append(GetDamageFalloff(falloffDistance));
@@ -109,10 +113,10 @@ namespace OpenRA.Mods.Common.Warheads
 
 		int GetDamageFalloff(int distance)
 		{
-			var inner = Range[0].Length;
-			for (var i = 1; i < Range.Length; i++)
+			var inner = effectiveRange[0].Length;
+			for (var i = 1; i < effectiveRange.Length; i++)
 			{
-				var outer = Range[i].Length;
+				var outer = effectiveRange[i].Length;
 				if (outer > distance)
 					return int2.Lerp(Falloff[i - 1], Falloff[i], distance - inner, outer - inner);
 
