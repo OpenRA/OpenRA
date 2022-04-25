@@ -234,7 +234,7 @@ namespace OpenRA.Mods.Common
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
 			{
 				var args = t.GetGenericArguments().Select(FriendlyTypeName).ToArray();
-				return $"Dictionary with Key: {args[0]}, Value {args[1]}";
+				return $"Dictionary with Key: {args[0]}, Value: {args[1]}";
 			}
 
 			if (t.IsSubclassOf(typeof(Array)))
