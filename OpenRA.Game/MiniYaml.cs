@@ -434,18 +434,39 @@ namespace OpenRA
 
 			var existingDict = existingNodes.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => $"{x.Key} (at {x.Location})");
 			var overrideDict = overrideNodes.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => $"{x.Key} (at {x.Location})");
-			var allKeys = existingDict.Keys.Union(overrideDict.Keys);
 
-			foreach (var key in allKeys)
+			foreach (var node in existingNodes.Concat(overrideNodes))
 			{
-				existingDict.TryGetValue(key, out var existingNode);
-				overrideDict.TryGetValue(key, out var overrideNode);
+				// Append Removal nodes to the result.
+				// Therefore: we know the remainder of the loop deals with plain nodes.
+				if (node.Key.StartsWith("-", StringComparison.Ordinal))
+				{
+					ret.Add(node);
+					continue;
+				}
 
-				var loc = overrideNode?.Location ?? default;
-				var comment = (overrideNode ?? existingNode).Comment;
-				var merged = (existingNode == null || overrideNode == null) ? overrideNode ?? existingNode :
-					new MiniYamlNode(key, MergePartial(existingNode.Value, overrideNode.Value), comment, loc);
-				ret.Add(merged);
+				// If no previous node with this key is present, it is new and can just be appended.
+				var previousNodeIndex = ret.FindLastIndex(n => n.Key == node.Key);
+				if (previousNodeIndex == -1)
+				{
+					ret.Add(node);
+					continue;
+				}
+
+				// A Removal node is closer than the previous node.
+				// We should not merge the new node, as the data being merged will jump before the Removal.
+				// Instead, append it so the previous node is applied, then removed, then the new node is applied.
+				var removalKey = $"-{node.Key}";
+				var previousRemovalNodeIndex = ret.FindLastIndex(n => n.Key == removalKey);
+				if (previousRemovalNodeIndex != -1 && previousRemovalNodeIndex > previousNodeIndex)
+				{
+					ret.Add(node);
+					continue;
+				}
+
+				// A previous node is present with no intervening Removal.
+				// We should merge the new one into it, in place.
+				ret[previousNodeIndex] = new MiniYamlNode(node.Key, MergePartial(ret[previousNodeIndex].Value, node.Value), node.Comment, node.Location);
 			}
 
 			ret.TrimExcess();
