@@ -135,11 +135,11 @@ sietch:
 	Inherits: ^Building
 	Tooltip:
 		Name: Fremen Sietch
-	D2kBuilding:
+	-D2kBuilding:
+	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
 		TerrainTypes: Cliff
-		DamageTerrainTypes:
 	Health:
 		HP: 60000
 	Armor:
