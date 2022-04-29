@@ -163,14 +163,23 @@ Container@DISPLAY_PANEL:
 					Height: 20
 					Children:
 						Container@UI_FEEDBACK_CHECKBOX_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
-							Width: PARENT_RIGHT / 2 - 20
+							X: 10
+							Width: PARENT_RIGHT / 2 - 10
 							Children:
 								Checkbox@UI_FEEDBACK_CHECKBOX:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: UI Feedback in Transients Panel
+									Text: Show UI Feedback Notifications
+						Container@TRANSIENTS_CHECKBOX_CONTAINER:
+							X: PARENT_RIGHT / 2 + 10
+							Width: PARENT_RIGHT / 2 - 20
+							Children:
+								Checkbox@TRANSIENTS_CHECKBOX:
+									Width: PARENT_RIGHT
+									Height: 20
+									Font: Regular
+									Text: Show Game Event Notifications
 				Container@SPACER:
 				Background@SECTION_HEADER:
 					X: 5

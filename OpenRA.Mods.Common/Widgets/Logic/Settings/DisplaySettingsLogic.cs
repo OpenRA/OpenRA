@@ -289,6 +289,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				feedbackCheckbox.IsChecked = () => gs.TextNotificationPoolFilters.HasFlag(TextNotificationPoolFilters.Feedback);
 				feedbackCheckbox.OnClick = () => toggleFilterFlag(TextNotificationPoolFilters.Feedback);
 			}
+
+			var transientsCheckbox = panel.GetOrNull<CheckboxWidget>("TRANSIENTS_CHECKBOX");
+			if (transientsCheckbox != null)
+			{
+				transientsCheckbox.IsChecked = () => gs.TextNotificationPoolFilters.HasFlag(TextNotificationPoolFilters.Transients);
+				transientsCheckbox.OnClick = () => toggleFilterFlag(TextNotificationPoolFilters.Transients);
+			}
 		}
 
 		static void ShowStatusBarsDropdown(DropDownButtonWidget dropdown, GameSettings s)
