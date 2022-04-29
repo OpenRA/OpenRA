@@ -652,6 +652,7 @@ THF:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
 	Mobile:
+		Voice: Move
 		Speed: 68
 	-AttackFrontal:
 
