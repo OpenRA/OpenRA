@@ -162,6 +162,28 @@ Container@DISPLAY_PANEL:
 					Width: PARENT_RIGHT - 24
 					Height: 20
 					Children:
+						Container@UI_FEEDBACK_CHECKBOX_CONTAINER:
+							X: 10
+							Width: PARENT_RIGHT / 2 - 10
+							Children:
+								Checkbox@UI_FEEDBACK_CHECKBOX:
+									Width: PARENT_RIGHT
+									Height: 20
+									Font: Regular
+									Text: Show UI Feedback Notifications
+						Container@TRANSIENTS_CHECKBOX_CONTAINER:
+							X: PARENT_RIGHT / 2 + 10
+							Width: PARENT_RIGHT / 2 - 20
+							Children:
+								Checkbox@TRANSIENTS_CHECKBOX:
+									Width: PARENT_RIGHT
+									Height: 20
+									Font: Regular
+									Text: Show Game Event Notifications
+				Container@ROW:
+					Width: PARENT_RIGHT - 24
+					Height: 20
+					Children:
 						Container@PAUSE_SHELLMAP_CHECKBOX_CONTAINER:
 							X: 10
 							Width: PARENT_RIGHT / 2 - 10
@@ -171,15 +193,6 @@ Container@DISPLAY_PANEL:
 									Height: 20
 									Font: Regular
 									Text: Pause Menu Background
-						Container@UI_FEEDBACK_CHECKBOX_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
-							Width: PARENT_RIGHT / 2 - 20
-							Children:
-								Checkbox@UI_FEEDBACK_CHECKBOX:
-									Width: PARENT_RIGHT
-									Height: 20
-									Font: Regular
-									Text: UI Feedback in Transients Panel
 				Container@SPACER:
 				Background@SECTION_HEADER:
 					X: 5
