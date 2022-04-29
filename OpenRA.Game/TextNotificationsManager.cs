@@ -26,6 +26,14 @@ namespace OpenRA
 				SystemMessageLabel = "Battlefield Control";
 		}
 
+		public static void AddTransientLine(string text)
+		{
+			if (string.IsNullOrEmpty(text))
+				return;
+
+			AddTextNotification(TextNotificationPool.Transients, SystemMessageLabel, text);
+		}
+
 		public static void AddFeedbackLine(string text)
 		{
 			AddTextNotification(TextNotificationPool.Feedback, SystemMessageLabel, text);
@@ -69,6 +77,7 @@ namespace OpenRA
 			return pool == TextNotificationPool.Chat ||
 				pool == TextNotificationPool.System ||
 				pool == TextNotificationPool.Mission ||
+				(pool == TextNotificationPool.Transients && filters.HasFlag(TextNotificationPoolFilters.Transients)) ||
 				(pool == TextNotificationPool.Feedback && filters.HasFlag(TextNotificationPoolFilters.Feedback));
 		}
 	}

@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static bool IsNotificationEligible(TextNotification notification)
 		{
-			return notification.Pool == TextNotificationPool.Feedback;
+			return notification.Pool == TextNotificationPool.Transients || notification.Pool == TextNotificationPool.Feedback;
 		}
 
 		bool disposed = false;

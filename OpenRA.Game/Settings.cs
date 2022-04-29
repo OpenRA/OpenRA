@@ -37,7 +37,8 @@ namespace OpenRA
 	public enum TextNotificationPoolFilters
 	{
 		None = 0,
-		Feedback = 1
+		Feedback = 1,
+		Transients = 2
 	}
 
 	public enum WorldViewport { Native, Close, Medium, Far }
@@ -273,7 +274,7 @@ namespace OpenRA
 		[Desc("Allow mods to enable the Discord service that can interact with a local Discord client.")]
 		public bool EnableDiscordService = true;
 
-		public TextNotificationPoolFilters TextNotificationPoolFilters = TextNotificationPoolFilters.Feedback;
+		public TextNotificationPoolFilters TextNotificationPoolFilters = TextNotificationPoolFilters.Feedback | TextNotificationPoolFilters.Transients;
 	}
 
 	public class Settings
