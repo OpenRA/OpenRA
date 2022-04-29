@@ -14,7 +14,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA
 {
-	public enum TextNotificationPool { System, Chat, Mission, Feedback }
+	public enum TextNotificationPool { System, Chat, Mission, Feedback, Transients }
 
 	public class TextNotification : IEquatable<TextNotification>
 	{
@@ -37,7 +37,7 @@ namespace OpenRA
 
 		public bool CanIncrementOnDuplicate()
 		{
-			return Pool == TextNotificationPool.Feedback || Pool == TextNotificationPool.System;
+			return Pool == TextNotificationPool.Feedback || Pool == TextNotificationPool.System || Pool == TextNotificationPool.Transients;
 		}
 
 		public static bool operator ==(TextNotification me, TextNotification other) { return me.GetHashCode() == other.GetHashCode(); }
