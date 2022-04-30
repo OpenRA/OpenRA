@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			var pos = self.CenterPosition;
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 
-			if (!checkTarget.IsInRange(pos, lastVisibleMaxRange) || checkTarget.IsInRange(pos, lastVisibleMinRange))
+			if (!checkTarget.IsInRange(pos, lastVisibleMaxRange) || (lastVisibleMinRange != WDist.Zero && checkTarget.IsInRange(pos, lastVisibleMinRange)))
 			{
 				if (!allowMovement || lastVisibleMaxRange == WDist.Zero || lastVisibleMaxRange < lastVisibleMinRange)
 					return true;
