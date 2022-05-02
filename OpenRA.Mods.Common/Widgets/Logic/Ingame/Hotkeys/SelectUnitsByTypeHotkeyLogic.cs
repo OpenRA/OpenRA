@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 				if (newSelection.Count > 1)
 					TextNotificationsManager.AddFeedbackLine($"Selected {newSelection.Count} units across screen.");
 				else
-					TextNotificationsManager.AddFeedbackLine($"Selected one unit across screen.");
+					TextNotificationsManager.AddFeedbackLine("Selected one unit across screen.");
 			}
 			else
 			{
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 				if (newSelection.Count > 1)
 					TextNotificationsManager.AddFeedbackLine($"Selected {newSelection.Count} units across map.");
 				else
-					TextNotificationsManager.AddFeedbackLine($"Selected one unit across map.");
+					TextNotificationsManager.AddFeedbackLine("Selected one unit across map.");
 			}
 
 			selection.Combine(world, newSelection, true, false);
