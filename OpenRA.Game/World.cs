@@ -176,7 +176,7 @@ namespace OpenRA
 			}
 		}
 
-		public bool RulesContainTemporaryBlocker { get; private set; }
+		public bool RulesContainTemporaryBlocker { get; }
 
 		bool wasLoadingGameSave;
 

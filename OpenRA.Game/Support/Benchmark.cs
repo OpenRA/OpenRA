@@ -31,8 +31,8 @@ namespace OpenRA.Support
 
 		class BenchmarkPoint
 		{
-			public int Tick { get; private set; }
-			public double Value { get; private set; }
+			public int Tick { get; }
+			public double Value { get; }
 
 			public BenchmarkPoint(int tick, double value)
 			{

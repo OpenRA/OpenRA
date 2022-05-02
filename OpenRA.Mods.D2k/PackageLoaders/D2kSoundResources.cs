@@ -33,7 +33,7 @@ namespace OpenRA.Mods.D2k.PackageLoaders
 				}
 			}
 
-			public string Name { get; private set; }
+			public string Name { get; }
 			public IEnumerable<string> Contents => index.Keys;
 
 			readonly Stream s;

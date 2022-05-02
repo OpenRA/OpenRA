@@ -38,9 +38,9 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 		class TmpTSFrame : ISpriteFrame
 		{
 			public SpriteFrameType Type => SpriteFrameType.Indexed8;
-			public Size Size { get; private set; }
+			public Size Size { get; }
 			public Size FrameSize => Size;
-			public float2 Offset { get; private set; }
+			public float2 Offset { get; }
 			public byte[] Data { get; set; }
 			public byte[] DepthData { get; set; }
 			public bool DisableExportPadding => false;

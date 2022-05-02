@@ -142,7 +142,7 @@ namespace OpenRA.FileSystem
 		sealed class ZipFolder : IReadOnlyPackage
 		{
 			public string Name => path;
-			public ReadOnlyZipFile Parent { get; private set; }
+			public ReadOnlyZipFile Parent { get; }
 			readonly string path;
 
 			public ZipFolder(ReadOnlyZipFile parent, string path)

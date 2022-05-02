@@ -65,9 +65,9 @@ namespace OpenRA
 		public int Generation;
 		public Actor ReplacedByActor;
 
-		public IEffectiveOwner EffectiveOwner { get; private set; }
-		public IOccupySpace OccupiesSpace { get; private set; }
-		public ITargetable[] Targetables { get; private set; }
+		public IEffectiveOwner EffectiveOwner { get; }
+		public IOccupySpace OccupiesSpace { get; }
+		public ITargetable[] Targetables { get; }
 
 		public bool IsIdle => CurrentActivity == null;
 		public bool IsDead => Disposed || (health != null && health.IsDead);
@@ -102,7 +102,7 @@ namespace OpenRA
 		/// <summary>Read-only version of conditionCache that is passed to IConditionConsumers.</summary>
 		readonly IReadOnlyDictionary<string, int> readOnlyConditionCache;
 
-		internal SyncHash[] SyncHashes { get; private set; }
+		internal SyncHash[] SyncHashes { get; }
 
 		readonly IFacing facing;
 		readonly IHealth health;

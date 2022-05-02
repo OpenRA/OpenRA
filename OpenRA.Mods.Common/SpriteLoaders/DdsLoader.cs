@@ -47,11 +47,11 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 	{
 		class DdsFrame : ISpriteFrame
 		{
-			public SpriteFrameType Type { get; private set; }
-			public Size Size { get; private set; }
+			public SpriteFrameType Type { get; }
+			public Size Size { get; }
 			public Size FrameSize => Size;
 			public float2 Offset => float2.Zero;
-			public byte[] Data { get; private set; }
+			public byte[] Data { get; }
 			public bool DisableExportPadding => false;
 
 			public DdsFrame(Stream stream)
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			}
 		}
 
-		public IReadOnlyList<ISpriteFrame> Frames { get; private set; }
+		public IReadOnlyList<ISpriteFrame> Frames { get; }
 
 		public DdsSprite(Stream stream)
 		{

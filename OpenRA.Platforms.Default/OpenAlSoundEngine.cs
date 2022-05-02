@@ -387,7 +387,7 @@ namespace OpenRA.Platforms.Default
 		bool disposed;
 
 		public uint Buffer => buffer;
-		public int SampleRate { get; private set; }
+		public int SampleRate { get; }
 
 		public OpenAlSoundSource(byte[] data, int byteCount, int channels, int sampleBits, int sampleRate)
 		{

@@ -426,7 +426,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			public string OrderID { get; private set; }
-			public int OrderPriority { get; private set; }
+			public int OrderPriority { get; }
 			public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
 			bool CanTargetActor(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)

@@ -29,8 +29,8 @@ namespace OpenRA.Mods.Common.Orders
 			this.targetAllyUnits = targetAllyUnits;
 		}
 
-		public string OrderID { get; private set; }
-		public int OrderPriority { get; private set; }
+		public string OrderID { get; }
+		public int OrderPriority { get; }
 		public bool? ForceAttack = null;
 		public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 

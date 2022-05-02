@@ -446,7 +446,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	class EditActorEditorAction : IEditorAction
 	{
-		public string Text { get; private set; }
+		public string Text { get; }
 
 		readonly IEnumerable<IEditActorHandle> handles;
 		readonly EditorActorLayer editorActorLayer;

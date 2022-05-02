@@ -46,7 +46,7 @@ namespace OpenRA
 		MusicInfo currentMusic;
 		Dictionary<uint, ISound> currentSounds = new Dictionary<uint, ISound>();
 		readonly Dictionary<string, ISound> currentNotifications = new Dictionary<string, ISound>();
-		public bool DummyEngine { get; private set; }
+		public bool DummyEngine { get; }
 
 		public Sound(IPlatform platform, SoundSettings soundSettings)
 		{

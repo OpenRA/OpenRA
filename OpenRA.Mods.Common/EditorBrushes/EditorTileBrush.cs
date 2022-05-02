@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	class PaintTileEditorAction : IEditorAction
 	{
-		public string Text { get; private set; }
+		public string Text { get; }
 
 		readonly ushort template;
 		readonly Map map;
@@ -222,7 +222,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	class FloodFillEditorAction : IEditorAction
 	{
-		public string Text { get; private set; }
+		public string Text { get; }
 
 		readonly ushort template;
 		readonly Map map;
@@ -357,9 +357,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 	class UndoTile
 	{
-		public CPos Cell { get; private set; }
-		public TerrainTile MapTile { get; private set; }
-		public byte Height { get; private set; }
+		public CPos Cell { get; }
+		public TerrainTile MapTile { get; }
+		public byte Height { get; }
 
 		public UndoTile(CPos cell, TerrainTile mapTile, byte height)
 		{

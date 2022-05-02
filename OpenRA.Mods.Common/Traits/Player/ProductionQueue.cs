@@ -651,7 +651,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool Started { get; private set; }
 		public int Slowdown { get; private set; }
 		public bool Infinite { get; set; }
-		public int BuildPaletteOrder { get; private set; }
+		public int BuildPaletteOrder { get; }
 
 		readonly ActorInfo ai;
 		readonly BuildableInfo bi;

@@ -161,15 +161,15 @@ namespace OpenRA.Mods.Common.Traits
 		{
 		}
 
-		public string Text { get; private set; }
+		public string Text { get; }
 
 		public EditorActionStatus Status { get; set; }
 	}
 
 	public class EditorActionContainer
 	{
-		public int Id { get; private set; }
-		public IEditorAction Action { get; private set; }
+		public int Id { get; }
+		public IEditorAction Action { get; }
 		public EditorActionStatus Status { get; set; }
 
 		public EditorActionContainer(int id, IEditorAction action)

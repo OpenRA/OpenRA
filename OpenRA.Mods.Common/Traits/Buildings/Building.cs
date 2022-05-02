@@ -279,7 +279,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly CPos[] transitOnlyCells;
 
 		public CPos TopLeft => topLeft;
-		public WPos CenterPosition { get; private set; }
+		public WPos CenterPosition { get; }
 
 		public Building(ActorInitializer init, BuildingInfo info)
 		{

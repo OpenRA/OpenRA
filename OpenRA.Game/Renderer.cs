@@ -24,24 +24,24 @@ namespace OpenRA
 	{
 		enum RenderType { None, World, UI }
 
-		public SpriteRenderer WorldSpriteRenderer { get; private set; }
-		public RgbaSpriteRenderer WorldRgbaSpriteRenderer { get; private set; }
-		public RgbaColorRenderer WorldRgbaColorRenderer { get; private set; }
-		public ModelRenderer WorldModelRenderer { get; private set; }
-		public RgbaColorRenderer RgbaColorRenderer { get; private set; }
-		public SpriteRenderer SpriteRenderer { get; private set; }
-		public RgbaSpriteRenderer RgbaSpriteRenderer { get; private set; }
+		public SpriteRenderer WorldSpriteRenderer { get; }
+		public RgbaSpriteRenderer WorldRgbaSpriteRenderer { get; }
+		public RgbaColorRenderer WorldRgbaColorRenderer { get; }
+		public ModelRenderer WorldModelRenderer { get; }
+		public RgbaColorRenderer RgbaColorRenderer { get; }
+		public SpriteRenderer SpriteRenderer { get; }
+		public RgbaSpriteRenderer RgbaSpriteRenderer { get; }
 
 		public bool WindowHasInputFocus => Window.HasInputFocus;
 		public bool WindowIsSuspended => Window.IsSuspended;
 
 		public IReadOnlyDictionary<string, SpriteFont> Fonts;
 
-		internal IPlatformWindow Window { get; private set; }
-		internal IGraphicsContext Context { get; private set; }
+		internal IPlatformWindow Window { get; }
+		internal IGraphicsContext Context { get; }
 
-		internal int SheetSize { get; private set; }
-		internal int TempBufferSize { get; private set; }
+		internal int SheetSize { get; }
+		internal int TempBufferSize { get; }
 
 		readonly IVertexBuffer<Vertex> tempBuffer;
 		readonly Stack<Rectangle> scissorState = new Stack<Rectangle>();

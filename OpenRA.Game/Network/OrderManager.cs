@@ -40,7 +40,7 @@ namespace OpenRA.Network
 		public TickTime LastTickTime;
 
 		public bool GameStarted => NetFrameNumber != 0;
-		public IConnection Connection { get; private set; }
+		public IConnection Connection { get; }
 
 		internal int GameSaveLastFrame = -1;
 		internal int GameSaveLastSyncFrame = -1;
