@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		protected virtual bool IsValidTrait(T t)
 		{
-			return Exts.IsTraitEnabled(t);
+			return t.IsTraitEnabled();
 		}
 
 		protected IEnumerable<Order> OrderInner(World world, MouseInput mi)

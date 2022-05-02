@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (blockers.Count == 0)
 					continue;
 
-				var hitPos = WorldExtensions.MinimumPointLineProjection(start, end, a.CenterPosition);
+				var hitPos = start.MinimumPointLineProjection(end, a.CenterPosition);
 				var dat = world.Map.DistanceAboveTerrain(hitPos);
 				if ((hitPos - start).Length < length && blockers.Any(t => t.BlockingHeight > dat))
 				{

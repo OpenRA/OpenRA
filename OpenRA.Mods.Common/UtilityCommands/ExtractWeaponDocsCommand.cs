@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var warheads = objectCreator.GetTypesImplementing<IWarhead>().OrderBy(t => t.Namespace);
 			var projectiles = objectCreator.GetTypesImplementing<IProjectileInfo>().OrderBy(t => t.Namespace);
 
-			var weaponTypes = Enumerable.Concat(weaponInfo, Enumerable.Concat(projectiles, warheads));
+			var weaponTypes = weaponInfo.Concat(projectiles.Concat(warheads));
 			foreach (var t in weaponTypes)
 			{
 				// skip helpers like TraitInfo<T>
