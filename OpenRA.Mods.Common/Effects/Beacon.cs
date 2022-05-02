@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Effects
 				if (clockFraction != null)
 				{
 					clock = new Animation(owner.World, posterCollection);
-					clock.PlayFetchIndex(clockSequence, () => Exts.Clamp((int)(clockFraction() * (clock.CurrentSequence.Length - 1)), 0, clock.CurrentSequence.Length - 1));
+					clock.PlayFetchIndex(clockSequence, () => ((int)(clockFraction() * (clock.CurrentSequence.Length - 1))).Clamp(0, clock.CurrentSequence.Length - 1));
 				}
 			}
 		}

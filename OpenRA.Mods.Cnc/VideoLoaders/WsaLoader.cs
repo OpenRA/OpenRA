@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Cnc.VideoLoaders
 
 			if (flags == 1)
 			{
-				var palette = StreamExts.ReadBytes(s, 768);
+				var palette = s.ReadBytes(768);
 				for (var i = 0; i < offsets.Length; i++)
 					offsets[i] += 768;
 			}

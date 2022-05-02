@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common
 				if (shapes.Any())
 					actorWidth = shapes.Max(h => h.Info.Type.OuterRadius.Length);
 
-				var projection = MinimumPointLineProjection(lineStart, lineEnd, currActor.CenterPosition);
+				var projection = lineStart.MinimumPointLineProjection(lineEnd, currActor.CenterPosition);
 				var distance = (currActor.CenterPosition - projection).HorizontalLength;
 				var maxReach = actorWidth + lineWidth.Length;
 
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common
 		/// <param name="lineEnd">The target point (head) of the line</param>
 		/// <param name="point">The target point that the minimum distance should be found to</param>
 		/// <returns>The WPos that is the point on the line that is closest to the target point</returns>
-		public static WPos MinimumPointLineProjection(WPos lineStart, WPos lineEnd, WPos point)
+		public static WPos MinimumPointLineProjection(this WPos lineStart, WPos lineEnd, WPos point)
 		{
 			var squaredLength = (lineEnd - lineStart).HorizontalLengthSquared;
 

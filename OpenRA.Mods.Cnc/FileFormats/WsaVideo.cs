@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 			var dataLength = frameOffsets[CurrentFrameIndex + 1] - frameOffsets[CurrentFrameIndex];
 
-			var rawData = StreamExts.ReadBytes(stream, (int)dataLength);
+			var rawData = stream.ReadBytes((int)dataLength);
 			var intermediateData = new byte[Width * Height];
 
 			// Format80 decompression
