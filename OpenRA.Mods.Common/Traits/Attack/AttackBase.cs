@@ -155,8 +155,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			// PERF: Mobile implements IPositionable, so we can use 'as' to save a trait look-up here.
-			var mobile = positionable as Mobile;
-			if (mobile != null && !mobile.CanInteractWithGroundLayer(self))
+			if (positionable is Mobile mobile && !mobile.CanInteractWithGroundLayer(self))
 				return false;
 
 			return true;

@@ -89,8 +89,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					row.Bounds.Y = optionsContainer.Bounds.Height;
 					optionsContainer.Bounds.Height += row.Bounds.Height;
 					foreach (var child in row.Children)
-						if (child is CheckboxWidget)
-							checkboxColumns.Enqueue((CheckboxWidget)child);
+						if (child is CheckboxWidget childCheckbox)
+							checkboxColumns.Enqueue(childCheckbox);
 
 					optionsContainer.AddChild(row);
 				}
@@ -118,8 +118,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					row.Bounds.Y = optionsContainer.Bounds.Height;
 					optionsContainer.Bounds.Height += row.Bounds.Height;
 					foreach (var child in row.Children)
-						if (child is DropDownButtonWidget)
-							dropdownColumns.Enqueue((DropDownButtonWidget)child);
+						if (child is DropDownButtonWidget dropDown)
+							dropdownColumns.Enqueue(dropDown);
 
 					optionsContainer.AddChild(row);
 				}

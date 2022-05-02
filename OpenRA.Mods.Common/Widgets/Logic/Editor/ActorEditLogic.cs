@@ -260,9 +260,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					foreach (var o in options)
 					{
-						if (o is EditorActorCheckbox)
+						if (o is EditorActorCheckbox co)
 						{
-							var co = (EditorActorCheckbox)o;
 							var checkboxContainer = checkboxOptionTemplate.Clone();
 							checkboxContainer.Bounds.Y = initContainer.Bounds.Height;
 							initContainer.Bounds.Height += checkboxContainer.Bounds.Height;
@@ -283,9 +282,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 							initContainer.AddChild(checkboxContainer);
 						}
-						else if (o is EditorActorSlider)
+						else if (o is EditorActorSlider so)
 						{
-							var so = (EditorActorSlider)o;
 							var sliderContainer = sliderOptionTemplate.Clone();
 							sliderContainer.Bounds.Y = initContainer.Bounds.Height;
 							initContainer.Bounds.Height += sliderContainer.Bounds.Height;
@@ -319,9 +317,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 							initContainer.AddChild(sliderContainer);
 						}
-						else if (o is EditorActorDropdown)
+						else if (o is EditorActorDropdown ddo)
 						{
-							var ddo = (EditorActorDropdown)o;
 							var dropdownContainer = dropdownOptionTemplate.Clone();
 							dropdownContainer.Bounds.Y = initContainer.Bounds.Height;
 							initContainer.Bounds.Height += dropdownContainer.Bounds.Height;
