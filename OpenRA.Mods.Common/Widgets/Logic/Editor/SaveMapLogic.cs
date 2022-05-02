@@ -92,8 +92,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				foreach (var kv in modData.MapCache.MapLocations)
 				{
-					var folder = kv.Key as Folder;
-					if (folder == null)
+					if (!(kv.Key is Folder folder))
 						continue;
 
 					try

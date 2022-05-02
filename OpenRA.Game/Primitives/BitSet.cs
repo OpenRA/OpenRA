@@ -98,7 +98,7 @@ namespace OpenRA.Primitives
 		public static bool operator !=(BitSet<T> me, BitSet<T> other) { return !(me == other); }
 
 		public bool Equals(BitSet<T> other) { return other == this; }
-		public override bool Equals(object obj) { return obj is BitSet<T> && Equals((BitSet<T>)obj); }
+		public override bool Equals(object obj) { return obj is BitSet<T> bitSet && Equals(bitSet); }
 		public override int GetHashCode() { return bits.GetHashCode(); }
 
 		public bool IsEmpty => bits == 0;

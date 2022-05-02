@@ -207,74 +207,74 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						switch (i.Key)
 						{
 							case "copy":
-							{
-								var sourceDir = Path.Combine(path, i.Value.Value);
-								foreach (var node in i.Value.Nodes)
 								{
-									var sourcePath = Path.Combine(sourceDir, node.Value.Value);
-									var targetPath = Platform.ResolvePath(node.Key);
-									if (File.Exists(targetPath))
+									var sourceDir = Path.Combine(path, i.Value.Value);
+									foreach (var node in i.Value.Nodes)
 									{
-										Log.Write("install", "Ignoring installed file " + targetPath);
-										continue;
+										var sourcePath = Path.Combine(sourceDir, node.Value.Value);
+										var targetPath = Platform.ResolvePath(node.Key);
+										if (File.Exists(targetPath))
+										{
+											Log.Write("install", "Ignoring installed file " + targetPath);
+											continue;
+										}
+
+										Log.Write("install", $"Copying {sourcePath} -> {targetPath}");
+										extracted.Add(targetPath);
+										Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
+
+										using (var source = File.OpenRead(sourcePath))
+										using (var target = File.OpenWrite(targetPath))
+										{
+											var displayFilename = Path.GetFileName(targetPath);
+											var length = source.Length;
+
+											Action<long> onProgress = null;
+											if (length < ShowPercentageThreshold)
+												message = "Copying " + displayFilename;
+											else
+												onProgress = b => message = $"Copying {displayFilename} ({100 * b / length}%)";
+
+											CopyStream(source, target, length, onProgress);
+										}
 									}
 
-									Log.Write("install", $"Copying {sourcePath} -> {targetPath}");
-									extracted.Add(targetPath);
-									Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
-
-									using (var source = File.OpenRead(sourcePath))
-									using (var target = File.OpenWrite(targetPath))
-									{
-										var displayFilename = Path.GetFileName(targetPath);
-										var length = source.Length;
-
-										Action<long> onProgress = null;
-										if (length < ShowPercentageThreshold)
-											message = "Copying " + displayFilename;
-										else
-											onProgress = b => message = $"Copying {displayFilename} ({100 * b / length}%)";
-
-										CopyStream(source, target, length, onProgress);
-									}
+									break;
 								}
 
-								break;
-							}
-
 							case "extract-raw":
-							{
-								ExtractFromPackage(ExtractionType.Raw, path, i.Value, extracted, m => message = m);
-								break;
-							}
+								{
+									ExtractFromPackage(ExtractionType.Raw, path, i.Value, extracted, m => message = m);
+									break;
+								}
 
 							case "extract-blast":
-							{
-								ExtractFromPackage(ExtractionType.Blast, path, i.Value, extracted, m => message = m);
-								break;
-							}
+								{
+									ExtractFromPackage(ExtractionType.Blast, path, i.Value, extracted, m => message = m);
+									break;
+								}
 
 							case "extract-mscab":
-							{
-								ExtractFromMSCab(path, i.Value, extracted, m => message = m);
-								break;
-							}
+								{
+									ExtractFromMSCab(path, i.Value, extracted, m => message = m);
+									break;
+								}
 
 							case "extract-iscab":
-							{
-								ExtractFromISCab(path, i.Value, extracted, m => message = m);
-								break;
-							}
+								{
+									ExtractFromISCab(path, i.Value, extracted, m => message = m);
+									break;
+								}
 
 							case "delete":
-							{
-								// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
-								var sourcePath = i.Value.Value.StartsWith("^") ? Platform.ResolvePath(i.Value.Value) : Path.Combine(path, i.Value.Value);
+								{
+									// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
+									var sourcePath = i.Value.Value.StartsWith("^") ? Platform.ResolvePath(i.Value.Value) : Path.Combine(path, i.Value.Value);
 
-								Log.Write("debug", "Deleting {0}", sourcePath);
-								File.Delete(sourcePath);
-								break;
-							}
+									Log.Write("debug", "Deleting {0}", sourcePath);
+									File.Delete(sourcePath);
+									break;
+								}
 
 							default:
 								Log.Write("debug", "Unknown installation command {0} - ignoring", i.Key);
@@ -479,8 +479,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				foreach (var prefix in source.RegistryPrefixes)
 				{
-					var path = Microsoft.Win32.Registry.GetValue(prefix + source.RegistryKey, source.RegistryValue, null) as string;
-					if (path == null)
+					if (!(Microsoft.Win32.Registry.GetValue(prefix + source.RegistryKey, source.RegistryValue, null) is string path))
 						continue;
 
 					if (source.Type == ModContent.SourceType.RegistryDirectoryFromFile)
@@ -530,7 +529,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								return false;
 						}
 						else if (CryptoUtil.SHA1Hash(fileStream) != kv.Value.Value)
-								return false;
+							return false;
 					}
 				}
 			}

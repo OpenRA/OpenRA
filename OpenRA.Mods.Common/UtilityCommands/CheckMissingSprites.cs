@@ -55,8 +55,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						{
 							foreach (var sequence in kv.Value.Sequences(image))
 							{
-								var s = kv.Value.GetSequence(image, sequence) as FileNotFoundSequence;
-								if (s == null)
+								if (!(kv.Value.GetSequence(image, sequence) is FileNotFoundSequence s))
 									continue;
 
 								Console.WriteLine("\tSequence `{0}.{1}` references sprite `{2}` that does not exist.", image, sequence, s.Filename);
