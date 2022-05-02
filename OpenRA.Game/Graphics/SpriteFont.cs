@@ -17,7 +17,7 @@ namespace OpenRA.Graphics
 {
 	public sealed class SpriteFont : IDisposable
 	{
-		public int TopOffset { get; private set; }
+		public int TopOffset { get; }
 		readonly int size;
 		readonly SheetBuilder builder;
 		readonly IFont font;

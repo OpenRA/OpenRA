@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public int HP => hp;
-		public int MaxHP { get; private set; }
+		public int MaxHP { get; }
 
 		public bool IsDead => hp <= 0;
 		public bool RemoveOnDeath = true;

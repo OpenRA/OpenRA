@@ -185,8 +185,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly HashSet<Actor> removeActorPosition = new HashSet<Actor>();
 		readonly Predicate<Actor> actorShouldBeRemoved;
 
-		public WDist LargestActorRadius { get; private set; }
-		public WDist LargestBlockingActorRadius { get; private set; }
+		public WDist LargestActorRadius { get; }
+		public WDist LargestBlockingActorRadius { get; }
 
 		public ActorMap(World world, ActorMapInfo info)
 		{

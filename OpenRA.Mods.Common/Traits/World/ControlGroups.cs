@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ControlGroups : IControlGroups, ITick, IGameSaveTraitData
 	{
 		readonly World world;
-		public string[] Groups { get; private set; }
+		public string[] Groups { get; }
 
 		readonly List<Actor>[] controlGroups;
 

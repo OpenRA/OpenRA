@@ -121,7 +121,7 @@ namespace OpenRA
 			new WVec(256, 256, 0),   // bottom right - index 5
 		};
 
-		public CellRamp[] Ramps { get; private set; }
+		public CellRamp[] Ramps { get; }
 
 		internal readonly CVec[][] TilesByDistance;
 

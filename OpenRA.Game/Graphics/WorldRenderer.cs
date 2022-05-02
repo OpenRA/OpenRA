@@ -26,7 +26,7 @@ namespace OpenRA.Graphics
 		public readonly Size TileSize;
 		public readonly int TileScale;
 		public readonly World World;
-		public Viewport Viewport { get; private set; }
+		public Viewport Viewport { get; }
 		public readonly ITerrainLighting TerrainLighting;
 
 		public event Action PaletteInvalidated = null;

@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	class RemoveActorAction : IEditorAction
 	{
-		public string Text { get; private set; }
+		public string Text { get; }
 
 		readonly EditorActorLayer editorActorLayer;
 		readonly EditorActorPreview actor;
@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	class RemoveResourceAction : IEditorAction
 	{
-		public string Text { get; private set; }
+		public string Text { get; }
 
 		readonly IResourceLayer resourceLayer;
 		readonly CPos cell;

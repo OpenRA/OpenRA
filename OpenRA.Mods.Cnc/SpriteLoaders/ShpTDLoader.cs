@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			}
 		}
 
-		public IReadOnlyList<ISpriteFrame> Frames { get; private set; }
+		public IReadOnlyList<ISpriteFrame> Frames { get; }
 		public readonly Size Size;
 
 		int recurseDepth = 0;

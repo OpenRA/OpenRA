@@ -17,8 +17,8 @@ namespace OpenRA.Graphics
 {
 	public sealed class HardwarePalette : IDisposable
 	{
-		public ITexture Texture { get; private set; }
-		public ITexture ColorShifts { get; private set; }
+		public ITexture Texture { get; }
+		public ITexture ColorShifts { get; }
 
 		public int Height { get; private set; }
 		readonly Dictionary<string, ImmutablePalette> palettes = new Dictionary<string, ImmutablePalette>();

@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			return int.Parse(match.Groups[group].Value);
 		}
 
-		public IReadOnlyList<ISpriteFrame> Frames { get; private set; }
+		public IReadOnlyList<ISpriteFrame> Frames { get; }
 
 		public ShpRemasteredSprite(Stream stream)
 		{

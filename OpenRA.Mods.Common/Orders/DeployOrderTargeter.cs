@@ -26,8 +26,8 @@ namespace OpenRA.Mods.Common.Orders
 			this.cursor = cursor;
 		}
 
-		public string OrderID { get; private set; }
-		public int OrderPriority { get; private set; }
+		public string OrderID { get; }
+		public int OrderPriority { get; }
 		public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
 		public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string ID { get; set; }
 		public PlayerReference Owner { get; set; }
-		public SubCell SubCell { get; private set; }
+		public SubCell SubCell { get; }
 		public bool Selected { get; set; }
 		public Color RadarColor { get; private set; }
 		readonly RadarColorFromTerrainInfo terrainRadarColorInfo;

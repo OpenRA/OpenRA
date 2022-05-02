@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.FileFormats
 
 	public class IniSection : IEnumerable<KeyValuePair<string, string>>
 	{
-		public string Name { get; private set; }
+		public string Name { get; }
 		readonly Dictionary<string, string> values = new Dictionary<string, string>();
 
 		public IniSection(string name)

@@ -177,9 +177,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		class Arrow
 		{
-			public Sprite Sprite { get; private set; }
-			public double EndAngle { get; private set; }
-			public WAngle Direction { get; private set; }
+			public Sprite Sprite { get; }
+			public double EndAngle { get; }
+			public WAngle Direction { get; }
 
 			public Arrow(Sprite sprite, double endAngle, WAngle direction)
 			{

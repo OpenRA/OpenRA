@@ -37,7 +37,7 @@ namespace OpenRA
 		public readonly IVideoLoader[] VideoLoaders;
 		public readonly HotkeyManager Hotkeys;
 		public readonly Translation Translation;
-		public ILoadScreen LoadScreen { get; private set; }
+		public ILoadScreen LoadScreen { get; }
 		public CursorProvider CursorProvider { get; private set; }
 		public FS ModFiles;
 		public IReadOnlyFileSystem DefaultFileSystem => ModFiles;
@@ -152,7 +152,7 @@ namespace OpenRA
 			CursorProvider = new CursorProvider(this);
 		}
 
-		public IEnumerable<string> Languages { get; private set; }
+		public IEnumerable<string> Languages { get; }
 
 		public Map PrepareMap(string uid)
 		{

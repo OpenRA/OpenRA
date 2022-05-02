@@ -26,11 +26,11 @@ namespace OpenRA.FileFormats
 	{
 		static readonly byte[] Signature = { 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a };
 
-		public int Width { get; private set; }
-		public int Height { get; private set; }
-		public Color[] Palette { get; private set; }
-		public byte[] Data { get; private set; }
-		public SpriteFrameType Type { get; private set; }
+		public int Width { get; }
+		public int Height { get; }
+		public Color[] Palette { get; }
+		public byte[] Data { get; }
+		public SpriteFrameType Type { get; }
 		public Dictionary<string, string> EmbeddedData = new Dictionary<string, string>();
 
 		public int PixelStride => Type == SpriteFrameType.Indexed8 ? 1 : Type == SpriteFrameType.Rgb24 ? 3 : 4;

@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		RallyPoint rp;
 
-		public string Faction { get; private set; }
+		public string Faction { get; }
 
 		public Production(ActorInitializer init, ProductionInfo info)
 			: base(info)

@@ -132,20 +132,20 @@ namespace OpenRA.Mods.Common.Graphics
 
 		protected readonly ISpriteSequenceLoader Loader;
 
-		public string Name { get; private set; }
+		public string Name { get; }
 		public int Start { get; private set; }
 		public int Length { get; private set; }
 		public int Stride { get; private set; }
-		public int Facings { get; private set; }
-		public int Tick { get; private set; }
-		public int ZOffset { get; private set; }
-		public float ZRamp { get; private set; }
-		public int ShadowStart { get; private set; }
-		public int ShadowZOffset { get; private set; }
+		public int Facings { get; }
+		public int Tick { get; }
+		public int ZOffset { get; }
+		public float ZRamp { get; }
+		public int ShadowStart { get; }
+		public int ShadowZOffset { get; }
 		public int[] Frames { get; private set; }
 		public Rectangle Bounds { get; private set; }
-		public bool IgnoreWorldTint { get; private set; }
-		public float Scale { get; private set; }
+		public bool IgnoreWorldTint { get; }
+		public float Scale { get; }
 
 		public readonly uint[] EmbeddedPalette;
 

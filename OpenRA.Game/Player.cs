@@ -77,7 +77,7 @@ namespace OpenRA
 		// Players in mission maps must not leave the player view
 		public bool Spectating => !inMissionMap && (spectating || WinState != WinState.Undefined);
 
-		public World World { get; private set; }
+		public World World { get; }
 
 		readonly bool inMissionMap;
 		readonly bool spectating;
