@@ -120,10 +120,10 @@ namespace OpenRA.Mods.Common.Traits
 		Actor GetRandomSpawnPoint(World world, Support.MersenneTwister random)
 		{
 			var spawnPointActors = world.ActorsWithTrait<ActorSpawner>()
-				.Where(x => !x.Trait.IsTraitDisabled && (info.Types.Overlaps(x.Trait.Types) || !x.Trait.Types.Any()))
+				.Where(x => !x.Trait.IsTraitDisabled && (info.Types.Overlaps(x.Trait.Types) || x.Trait.Types.Count == 0))
 				.ToArray();
 
-			return spawnPointActors.Any() ? spawnPointActors.Random(random).Actor : null;
+			return spawnPointActors.Length > 0 ? spawnPointActors.Random(random).Actor : null;
 		}
 
 		public void DecreaseActorCount()

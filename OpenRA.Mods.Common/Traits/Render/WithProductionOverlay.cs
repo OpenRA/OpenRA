@@ -77,15 +77,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 			// Per-actor production
 			queues = self.TraitsImplementing<ProductionQueue>()
 				.Where(q => productionInfos.Any(p => p.Produces.Contains(q.Info.Type)))
-				.Where(q => !Info.Queues.Any() || Info.Queues.Contains(q.Info.Type))
+				.Where(q => Info.Queues.Count == 0 || Info.Queues.Contains(q.Info.Type))
 				.ToArray();
 
-			if (!queues.Any())
+			if (queues.Length == 0)
 			{
 				// Player-wide production
 				queues = self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>()
 					.Where(q => productionInfos.Any(p => p.Produces.Contains(q.Info.Type)))
-					.Where(q => !Info.Queues.Any() || Info.Queues.Contains(q.Info.Type))
+					.Where(q => Info.Queues.Count == 0 || Info.Queues.Contains(q.Info.Type))
 					.ToArray();
 			}
 		}

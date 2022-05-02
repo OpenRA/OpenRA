@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -30,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		int IProductionCostModifierInfo.GetProductionCostModifier(TechTree techTree, string queue)
 		{
-			if ((!Queue.Any() || Queue.Contains(queue)) && (!Prerequisites.Any() || techTree.HasPrerequisites(Prerequisites)))
+			if ((Queue.Count == 0 || Queue.Contains(queue)) && (Prerequisites.Length == 0 || techTree.HasPrerequisites(Prerequisites)))
 				return Multiplier;
 
 			return 100;

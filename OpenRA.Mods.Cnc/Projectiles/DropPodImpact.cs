@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -42,7 +41,7 @@ namespace OpenRA.Mods.Cnc.Effects
 			entryAnimation = new Animation(world, entryEffect);
 			entryAnimation.PlayThen(entrySequence, () => Finish(world));
 
-			if (weapon.Report != null && weapon.Report.Any())
+			if (weapon.Report != null && weapon.Report.Length > 0)
 				Game.Sound.Play(SoundType.World, weapon.Report, world, launchPos);
 		}
 

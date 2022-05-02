@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Console.WriteLine("   Individual Rules:");
 				foreach (var kv in ruleGroups)
 				{
-					if (!kv.Value.Any())
+					if (kv.Value.Count == 0)
 						continue;
 
 					Console.WriteLine("      " + kv.Key + ":");
@@ -205,7 +205,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							var mapSteps = UpdateUtils.UpdateMap(modData, package, rule, out var mapFiles, mapExternalFilenames);
 							allFiles.AddRange(mapFiles);
 
-							if (mapSteps.Any())
+							if (mapSteps.Count > 0)
 								manualSteps.Add("Map: " + package.Name + ":\n" + UpdateUtils.FormatMessageList(mapSteps));
 						}
 						catch (Exception ex)
@@ -237,7 +237,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// Files are saved after each successful automated rule update
 				allFiles.Save();
 
-				if (manualSteps.Any())
+				if (manualSteps.Count > 0)
 				{
 					LogLine(logWriter, "   Manual changes are required to complete this update:");
 					LogLine(logWriter, UpdateUtils.FormatMessageList(manualSteps, 1));
@@ -246,7 +246,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				LogLine(logWriter);
 			}
 
-			if (externalFilenames.Any())
+			if (externalFilenames.Count > 0)
 			{
 				LogLine(logWriter, "The following external mod files have been ignored:");
 				LogLine(logWriter, UpdateUtils.FormatMessageList(externalFilenames));

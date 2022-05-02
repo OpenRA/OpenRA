@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var mi = property.Item2;
 					var required = property.Item3;
 					var hasDesc = mi.HasAttribute<DescAttribute>();
-					var hasRequires = required.Any();
+					var hasRequires = required.Length > 0;
 					var isActivity = mi.HasAttribute<ScriptActorPropertyActivityAttribute>();
 
 					Console.Write($"| **{mi.LuaDocString()}**");
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var mi = property.Item2;
 					var required = property.Item3;
 					var hasDesc = mi.HasAttribute<DescAttribute>();
-					var hasRequires = required.Any();
+					var hasRequires = required.Length > 0;
 					var isActivity = mi.HasAttribute<ScriptActorPropertyActivityAttribute>();
 
 					Console.Write($"| **{mi.LuaDocString()}**");

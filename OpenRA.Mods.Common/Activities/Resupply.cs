@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Activities
 			unitCost = valued != null ? valued.Cost : 0;
 
 			var cannotRepairAtHost = health == null || health.DamageState == DamageState.Undamaged
-				|| !allRepairsUnits.Any()
+				|| allRepairsUnits.Length == 0
 				|| ((repairable == null || !repairable.Info.RepairActors.Contains(host.Info.Name))
 					&& (repairableNear == null || !repairableNear.Info.RepairActors.Contains(host.Info.Name)));
 

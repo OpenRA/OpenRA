@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 				while (true)
 				{
 					var step = NextNeighbourStep(seed, processed).ToList();
-					if (!step.Any())
+					if (step.Count == 0)
 						break;
 
 					foreach (var s in step)
@@ -230,7 +230,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				if (!segments.Any())
+				if (segments.Count == 0)
 					return DamageState.Undamaged;
 
 				return segments.Values.Max(s => s.DamageState);

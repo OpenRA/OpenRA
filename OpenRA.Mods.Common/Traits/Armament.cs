@@ -330,10 +330,10 @@ namespace OpenRA.Mods.Common.Traits
 					if (projectile != null)
 						self.World.Add(projectile);
 
-					if (args.Weapon.Report != null && args.Weapon.Report.Any())
+					if (args.Weapon.Report != null && args.Weapon.Report.Length > 0)
 						Game.Sound.Play(SoundType.World, args.Weapon.Report, self.World, self.CenterPosition);
 
-					if (burst == args.Weapon.Burst && args.Weapon.StartBurstReport != null && args.Weapon.StartBurstReport.Any())
+					if (burst == args.Weapon.Burst && args.Weapon.StartBurstReport != null && args.Weapon.StartBurstReport.Length > 0)
 						Game.Sound.Play(SoundType.World, args.Weapon.StartBurstReport, self.World, self.CenterPosition);
 
 					foreach (var na in notifyAttacks)
@@ -359,7 +359,7 @@ namespace OpenRA.Mods.Common.Traits
 				FireDelay = Util.ApplyPercentageModifiers(Weapon.ReloadDelay, modifiers);
 				Burst = Weapon.Burst;
 
-				if (Weapon.AfterFireSound != null && Weapon.AfterFireSound.Any())
+				if (Weapon.AfterFireSound != null && Weapon.AfterFireSound.Length > 0)
 					ScheduleDelayedAction(Weapon.AfterFireSoundDelay, Burst, (burst) => Game.Sound.Play(SoundType.World, Weapon.AfterFireSound, self.World, self.CenterPosition));
 
 				foreach (var nbc in notifyBurstComplete)

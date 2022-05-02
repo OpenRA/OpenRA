@@ -80,7 +80,7 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 		{
 			base.AddedToWorld(self);
 
-			if (layer != null && (!info.ConcretePrerequisites.Any() || techTree == null || techTree.HasPrerequisites(info.ConcretePrerequisites)))
+			if (layer != null && (info.ConcretePrerequisites.Length == 0 || techTree == null || techTree.HasPrerequisites(info.ConcretePrerequisites)))
 			{
 				var map = self.World.Map;
 

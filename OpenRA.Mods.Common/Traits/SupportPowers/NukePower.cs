@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Effects;
@@ -126,7 +125,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new NukePower(init.Self, this); }
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			if (!string.IsNullOrEmpty(TrailImage) && !TrailSequences.Any())
+			if (!string.IsNullOrEmpty(TrailImage) && TrailSequences.Length == 0)
 				throw new YamlException("At least one entry in TrailSequences must be defined when TrailImage is defined.");
 
 			var weaponToLower = (MissileWeapon ?? string.Empty).ToLowerInvariant();

@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Scripting
 				try
 				{
 					group.Remove(m);
-					if (!group.Any())
+					if (group.Count == 0)
 						using (f)
 							f.Call();
 				}
@@ -218,7 +218,7 @@ namespace OpenRA.Mods.Common.Scripting
 					if (!group.Remove(m))
 						return;
 
-					if (!group.Any())
+					if (group.Count == 0)
 					{
 						// Functions can only be .Call()ed once, so operate on a copy so we can reuse it later
 						var temp = (LuaFunction)f.CopyReference();
@@ -304,7 +304,7 @@ namespace OpenRA.Mods.Common.Scripting
 					if (!group.Remove(m))
 						return;
 
-					if (!group.Any())
+					if (group.Count == 0)
 						using (f)
 							f.Call().Dispose();
 				}

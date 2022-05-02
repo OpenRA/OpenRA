@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
@@ -27,7 +26,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
-			if (locations.Any())
+			if (locations.Count > 0)
 				yield return "The WithPermanentInjury trait has been removed from the following actors.\n" +
 				             "You must manually define TakeCover with a negative ProneTime and use\n" +
 				             "GrantConditionOnDamageState/-Health with 'GrantPermanently: true'\n" +

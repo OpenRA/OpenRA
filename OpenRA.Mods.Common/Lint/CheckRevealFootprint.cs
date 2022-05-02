@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Server;
 using OpenRA.Traits;
@@ -41,7 +40,7 @@ namespace OpenRA.Mods.Common.Lint
 
 					if (ios == null)
 						emitError($"Actor type `{actorInfo.Key}` defines VisibilityType.Footprint in `{rsi.GetType()}` but has no IOccupySpace traits!");
-					else if (!ios.OccupiedCells(actorInfo.Value, CPos.Zero).Any())
+					else if (ios.OccupiedCells(actorInfo.Value, CPos.Zero).Count == 0)
 						emitError($"Actor type `{actorInfo.Key}` defines VisibilityType.Footprint in `{rsi.GetType()}`  but does not have any footprint cells!");
 				}
 			}

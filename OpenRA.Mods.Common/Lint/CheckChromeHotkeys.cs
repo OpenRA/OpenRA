@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Lint
 				}
 
 				// Logic classes can declare the data key names that specify hotkeys
-				if (node.Key == "Logic" && node.Value.Nodes.Any())
+				if (node.Key == "Logic" && node.Value.Nodes.Count > 0)
 				{
 					var typeNames = FieldLoader.GetValue<string[]>(node.Key, node.Value.Value);
 					var checkArgKeys = new List<string>();

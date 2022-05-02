@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Server;
 
@@ -53,7 +52,7 @@ namespace OpenRA.Mods.Common.Lint
 					// Removals can never define children or values
 					if (t.Key.StartsWith("-", StringComparison.Ordinal))
 					{
-						if (t.Value.Nodes.Any())
+						if (t.Value.Nodes.Count > 0)
 							emitError($"{t.Location} {t.Key} defines child nodes, which are not valid for removals.");
 
 						if (!string.IsNullOrEmpty(t.Value.Value))
@@ -65,7 +64,7 @@ namespace OpenRA.Mods.Common.Lint
 					var traitName = NormalizeName(t.Key);
 
 					// Inherits can never define children
-					if (traitName == "Inherits" && t.Value.Nodes.Any())
+					if (traitName == "Inherits" && t.Value.Nodes.Count > 0)
 					{
 						emitError($"{t.Location} defines child nodes, which are not valid for Inherits.");
 						continue;
@@ -91,7 +90,7 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var f in mapFiles)
 				CheckActors(MiniYaml.FromStream(fileSystem.Open(f), f), emitError, modData);
 
-			if (ruleDefinitions.Nodes.Any())
+			if (ruleDefinitions.Nodes.Count > 0)
 				CheckActors(ruleDefinitions.Nodes, emitError, modData);
 		}
 	}

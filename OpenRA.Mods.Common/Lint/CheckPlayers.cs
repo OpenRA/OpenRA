@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Lint
 				if (player.OwnsWorld)
 				{
 					worldOwnerFound = true;
-					if (player.Enemies.Any() || player.Allies.Any())
+					if (player.Enemies.Length > 0 || player.Allies.Length > 0)
 						emitWarning($"The player {player.Name} owning the world should not have any allies or enemies.");
 
 					if (player.Playable)

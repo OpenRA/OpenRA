@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 			for (var i = 0; i < controlGroups.Length; i++)
 			{
 				var cg = controlGroups[i];
-				if (cg.Any())
+				if (cg.Count > 0)
 				{
 					var actorIds = cg.Select(a => a.ActorID).ToArray();
 					groups.Add(new MiniYamlNode(i.ToString(), FieldSaver.FormatValue(actorIds)));

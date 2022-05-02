@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			foreach (var option in allOptions.Where(o => o is LobbyBooleanOption))
 			{
-				if (!checkboxColumns.Any())
+				if (checkboxColumns.Count == 0)
 				{
 					row = checkboxRowTemplate.Clone();
 					row.Bounds.Y = optionsContainer.Bounds.Height;
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			foreach (var option in allOptions.Where(o => !(o is LobbyBooleanOption)))
 			{
-				if (!dropdownColumns.Any())
+				if (dropdownColumns.Count == 0)
 				{
 					row = dropdownRowTemplate.Clone() as Widget;
 					row.Bounds.Y = optionsContainer.Bounds.Height;
@@ -155,7 +155,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						return item;
 					};
 
-					dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", option.Values.Count() * 30, option.Values, setupItem);
+					dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", option.Values.Count * 30, option.Values, setupItem);
 				};
 
 				var label = row.GetOrNull<LabelWidget>(dropdown.Id + "_DESC");

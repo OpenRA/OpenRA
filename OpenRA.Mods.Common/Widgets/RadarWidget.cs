@@ -189,10 +189,10 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var allTop = map.Unproject(new PPos(x, projectedTop));
 				var allBottom = map.Unproject(new PPos(x, projectedBottom));
-				if (allTop.Any())
+				if (allTop.Count > 0)
 					top = Math.Min(top, allTop.MinBy(uv => uv.V).V);
 
-				if (allBottom.Any())
+				if (allBottom.Count > 0)
 					bottom = Math.Max(bottom, allBottom.MaxBy(uv => uv.V).V);
 			}
 

@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 			var techLevels = map.PlayerActorInfo.TraitInfos<ProvidesTechPrerequisiteInfo>()
 				.ToDictionary(t => t.Id, t => t.Name);
 
-			if (techLevels.Any())
+			if (techLevels.Count > 0)
 				yield return new LobbyOption("techlevel", TechLevelDropdownLabel, TechLevelDropdownDescription,	TechLevelDropdownVisible, TechLevelDropdownDisplayOrder,
 					techLevels, TechLevel, TechLevelDropdownLocked);
 

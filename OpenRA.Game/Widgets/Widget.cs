@@ -270,7 +270,7 @@ namespace OpenRA.Widgets
 
 		public void PostInit(WidgetArgs args)
 		{
-			if (!Logic.Any())
+			if (Logic.Length == 0)
 				return;
 
 			args["widget"] = this;

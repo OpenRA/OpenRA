@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		public static bool AcceptsOrder(this Actor self, string orderString)
 		{
 			var rejectsOrdersTraits = self.TraitsImplementing<RejectsOrders>().Where(Exts.IsTraitEnabled).ToArray();
-			if (!rejectsOrdersTraits.Any())
+			if (rejectsOrdersTraits.Length == 0)
 				return true;
 
 			var reject = rejectsOrdersTraits.SelectMany(t => t.Reject);

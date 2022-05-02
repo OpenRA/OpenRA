@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				scrollPanel.AddChild(container);
 			}
 
-			discAvailable = content.Packages.Values.Any(p => p.Sources.Any() && !p.IsInstalled());
+			discAvailable = content.Packages.Values.Any(p => p.Sources.Length > 0 && !p.IsInstalled());
 		}
 	}
 }

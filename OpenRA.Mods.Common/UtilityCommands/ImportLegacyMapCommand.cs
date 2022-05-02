@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 			}
 
-			if (videos.Any())
+			if (videos.Count > 0)
 			{
 				var worldNode = Map.RuleDefinitions.Nodes.FirstOrDefault(n => n.Key == "World");
 				if (worldNode == null)
@@ -311,21 +311,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			if (worldNode == null)
 				worldNode = new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()));
 
-			if (scorches.Any())
+			if (scorches.Count > 0)
 			{
 				var initialScorches = new MiniYamlNode("InitialSmudges", new MiniYaml("", scorches));
 				var smudgeLayer = new MiniYamlNode("SmudgeLayer@SCORCH", new MiniYaml("", new List<MiniYamlNode>() { initialScorches }));
 				worldNode.Value.Nodes.Add(smudgeLayer);
 			}
 
-			if (craters.Any())
+			if (craters.Count > 0)
 			{
 				var initialCraters = new MiniYamlNode("InitialSmudges", new MiniYaml("", craters));
 				var smudgeLayer = new MiniYamlNode("SmudgeLayer@CRATER", new MiniYaml("", new List<MiniYamlNode>() { initialCraters }));
 				worldNode.Value.Nodes.Add(smudgeLayer);
 			}
 
-			if (worldNode.Value.Nodes.Any() && !Map.RuleDefinitions.Nodes.Contains(worldNode))
+			if (worldNode.Value.Nodes.Count > 0 && !Map.RuleDefinitions.Nodes.Contains(worldNode))
 				Map.RuleDefinitions.Nodes.Add(worldNode);
 		}
 

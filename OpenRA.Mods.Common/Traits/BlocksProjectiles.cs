@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 					.Where(Exts.IsTraitEnabled).Where(t => t.ValidRelationships.HasRelationship(a.Owner.RelationshipWith(owner)))
 					.ToList();
 
-				if (!blockers.Any())
+				if (blockers.Count == 0)
 					continue;
 
 				var hitPos = WorldExtensions.MinimumPointLineProjection(start, end, a.CenterPosition);

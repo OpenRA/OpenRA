@@ -156,7 +156,7 @@ namespace OpenRA.Platforms.Default
 					.Where(profile => CanCreateGLWindow(profile, errorLog))
 					.ToArray();
 
-				if (!supportedProfiles.Any())
+				if (supportedProfiles.Length == 0)
 				{
 					foreach (var error in errorLog)
 						Log.Write("graphics", error);

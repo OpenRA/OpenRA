@@ -92,11 +92,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 				var bRamp = bridgeInfo.BOffset != CVec.Zero && RampExists(self, bridgeInfo.BOffset);
 
 				var sequence = DefaultAnimation.CurrentSequence.Name;
-				if (aRamp && bRamp && bridgeInfo.ABRampSequences.Any())
+				if (aRamp && bRamp && bridgeInfo.ABRampSequences.Length > 0)
 					sequence = bridgeInfo.ABRampSequences.Random(Game.CosmeticRandom);
-				else if (aRamp && bridgeInfo.ARampSequences.Any())
+				else if (aRamp && bridgeInfo.ARampSequences.Length > 0)
 					sequence = bridgeInfo.ARampSequences.Random(Game.CosmeticRandom);
-				else if (bRamp && bridgeInfo.BRampSequences.Any())
+				else if (bRamp && bridgeInfo.BRampSequences.Length > 0)
 					sequence = bridgeInfo.BRampSequences.Random(Game.CosmeticRandom);
 
 				DefaultAnimation.PlayRepeating(NormalizeSequence(self, sequence));

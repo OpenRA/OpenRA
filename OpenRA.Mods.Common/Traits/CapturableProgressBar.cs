@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		float ISelectionBar.GetValue()
 		{
-			if (IsTraitDisabled || !progress.Any())
+			if (IsTraitDisabled || progress.Count == 0)
 				return 0f;
 
 			return progress.Values.Max(p => (float)p.Current / p.Total);

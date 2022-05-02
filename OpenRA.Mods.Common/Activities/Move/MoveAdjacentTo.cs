@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Activities
 						searchCells.Add(cell);
 			}
 
-			if (!searchCells.Any())
+			if (searchCells.Count == 0)
 				return PathFinder.NoPath;
 
 			var path = Mobile.PathFinder.FindUnitPathToTargetCell(self, searchCells, loc, check);

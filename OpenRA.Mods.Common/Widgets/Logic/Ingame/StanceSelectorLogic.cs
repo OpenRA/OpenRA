@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			WidgetUtils.BindButtonIcon(button);
 
-			button.IsDisabled = () => { UpdateStateIfNecessary(); return !actorStances.Any(); };
+			button.IsDisabled = () => { UpdateStateIfNecessary(); return actorStances.Length == 0; };
 			button.IsHighlighted = () => actorStances.Any(
 				at => !at.Trait.IsTraitDisabled && at.Trait.PredictedStance == stance);
 			button.OnClick = () => SetSelectionStance(stance);

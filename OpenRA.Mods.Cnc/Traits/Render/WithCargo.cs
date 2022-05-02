@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			// HACK: We don't have an efficient way to know when the preview
 			// bounds change, so assume that we need to update the screen map
 			// (only) when the facing changes
-			if (facing.Facing != cachedFacing && previews.Any())
+			if (facing.Facing != cachedFacing && previews.Count > 0)
 			{
 				self.World.ScreenMap.AddOrUpdate(self);
 				cachedFacing = facing.Facing;

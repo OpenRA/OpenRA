@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 				.ToList();
 
 			// If no BaseBuilding exist pick the first selectable Building.
-			if (!bases.Any())
+			if (bases.Count == 0)
 			{
 				var building = world.ActorsHavingTrait<Building>()
 					.FirstOrDefault(a => a.Owner == player && a.Info.HasTraitInfo<SelectableInfo>());

@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Linq;
 using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Traits;
 
@@ -79,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var terrainType = map.GetTerrainInfo(cell).Type;
 			var jli = (JumpjetLocomotorInfo)li;
-			if (!jli.JumpjetTransitionTerrainTypes.Contains(terrainType) && jli.JumpjetTransitionTerrainTypes.Any())
+			if (!jli.JumpjetTransitionTerrainTypes.Contains(terrainType) && jli.JumpjetTransitionTerrainTypes.Count > 0)
 				return false;
 
 			if (jli.JumpjetTransitionOnRamps)

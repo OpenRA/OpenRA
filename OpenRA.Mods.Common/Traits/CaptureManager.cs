@@ -221,7 +221,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (enterMobile != null && enterMobile.IsMovingBetweenCells)
 				return false;
 
-			if (progressWatchers.Any() || targetManager.progressWatchers.Any())
+			if (progressWatchers.Length > 0 || targetManager.progressWatchers.Length > 0)
 			{
 				currentTargetTotal = captures.Info.CaptureDelay;
 				if (move != null && captures.Info.ConsumedByCapture)

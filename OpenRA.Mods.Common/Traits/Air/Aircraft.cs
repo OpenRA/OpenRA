@@ -1012,13 +1012,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		Order IIssueDeployOrder.IssueDeployOrder(Actor self, bool queued)
 		{
-			if (IsTraitDisabled || rearmable == null || !rearmable.Info.RearmActors.Any())
+			if (IsTraitDisabled || rearmable == null || rearmable.Info.RearmActors.Count == 0)
 				return null;
 
 			return new Order("ReturnToBase", self, queued);
 		}
 
-		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued) { return rearmable != null && rearmable.Info.RearmActors.Any(); }
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued) { return rearmable != null && rearmable.Info.RearmActors.Count > 0; }
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
@@ -1043,7 +1043,7 @@ namespace OpenRA.Mods.Common.Traits
 				case "Scatter":
 					return Info.Voice;
 				case "ReturnToBase":
-					return rearmable != null && rearmable.Info.RearmActors.Any() ? Info.Voice : null;
+					return rearmable != null && rearmable.Info.RearmActors.Count > 0 ? Info.Voice : null;
 				default: return null;
 			}
 		}
@@ -1123,7 +1123,7 @@ namespace OpenRA.Mods.Common.Traits
 			else if (orderString == "ReturnToBase")
 			{
 				// Do nothing if not rearmable and don't restart activity every time deploy hotkey is triggered
-				if (rearmable == null || !rearmable.Info.RearmActors.Any() || self.CurrentActivity is ReturnToBase || GetActorBelow() != null)
+				if (rearmable == null || rearmable.Info.RearmActors.Count == 0 || self.CurrentActivity is ReturnToBase || GetActorBelow() != null)
 					return;
 
 				if (!order.Queued)

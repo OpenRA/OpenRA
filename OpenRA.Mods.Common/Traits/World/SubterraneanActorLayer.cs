@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Linq;
 using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Traits;
 
@@ -77,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool ValidTransitionCell(CPos cell, SubterraneanLocomotorInfo sli)
 		{
 			var terrainType = map.GetTerrainInfo(cell).Type;
-			if (!sli.SubterraneanTransitionTerrainTypes.Contains(terrainType) && sli.SubterraneanTransitionTerrainTypes.Any())
+			if (!sli.SubterraneanTransitionTerrainTypes.Contains(terrainType) && sli.SubterraneanTransitionTerrainTypes.Count > 0)
 				return false;
 
 			if (sli.SubterraneanTransitionOnRamps)

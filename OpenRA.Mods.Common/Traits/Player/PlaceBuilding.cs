@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 					.SelectMany(r => r.ReplaceableTypes)
 					.ToHashSet();
 
-				if (replaceableTypes.Any())
+				if (replaceableTypes.Count > 0)
 					foreach (var t in buildingInfo.Tiles(targetLocation))
 						foreach (var a in self.World.ActorMap.GetActorsAt(t))
 							if (a.TraitsImplementing<Replaceable>().Any(r => !r.IsTraitDisabled && r.Info.Types.Overlaps(replaceableTypes)))
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 							.SelectMany(r => r.ReplaceableTypes)
 							.ToHashSet();
 
-						if (replaceableSegments.Any())
+						if (replaceableSegments.Count > 0)
 							foreach (var a in self.World.ActorMap.GetActorsAt(t.Cell))
 								if (a.TraitsImplementing<Replaceable>().Any(r => !r.IsTraitDisabled && r.Info.Types.Overlaps(replaceableSegments)))
 									self.World.Remove(a);

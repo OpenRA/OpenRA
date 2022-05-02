@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyProduction.UnitProduced(Actor self, Actor other, CPos exit)
 		{
-			if (info.Actors.Any() && !info.Actors.Select(a => a.ToLowerInvariant()).Contains(other.Info.Name))
+			if (info.Actors.Count > 0 && !info.Actors.Select(a => a.ToLowerInvariant()).Contains(other.Info.Name))
 				return;
 
 			if (token == Actor.InvalidConditionToken)

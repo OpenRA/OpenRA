@@ -29,11 +29,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
-			if (overrideLocations.Any())
+			if (overrideLocations.Count > 0)
 				yield return "Region-specific image overrides are no longer supported. The following definitions must be replaced:\n" +
 				             UpdateUtils.FormatMessageList(overrideLocations);
 
-			if (panelLocations.Any())
+			if (panelLocations.Count > 0)
 				yield return "The following definitions appear to be panels, but could not be converted to the new PanelRegion format.\n" +
 					"You may wish to define PanelRegion/PanelSides manually to reduce duplication:\n" +
 				             UpdateUtils.FormatMessageList(panelLocations);
@@ -186,7 +186,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				// Reformat region as a list
 				regionsNode.AddNode(n.Key, n.NodeValue<int[]>());
 
-				if (n.Value.Nodes.Any())
+				if (n.Value.Nodes.Count > 0)
 					overrideLocations.Add($"{chromeProviderNode.Key}.{n.Key} ({chromeProviderNode.Location.Filename})");
 			}
 
@@ -199,7 +199,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			if (!ExtractPanelDefinition(chromeProviderNode, regionsNode))
 				panelLocations.Add($"{chromeProviderNode.Key} ({chromeProviderNode.Location.Filename})");
 
-			if (regionsNode.Value.Nodes.Any())
+			if (regionsNode.Value.Nodes.Count > 0)
 				chromeProviderNode.AddNode(regionsNode);
 
 			yield break;

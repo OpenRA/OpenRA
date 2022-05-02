@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var spectators = orderManager.LobbyInfo.Clients.Where(c => c.IsObserver).ToList();
-			if (spectators.Any())
+			if (spectators.Count > 0)
 			{
 				var spectatorHeader = ScrollItemWidget.Setup(teamTemplate, () => true, () => { });
 				spectatorHeader.Get<LabelWidget>("TEAM").GetText = () => "Spectators";

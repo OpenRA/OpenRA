@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
@@ -24,7 +23,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
-			if (locations.Any())
+			if (locations.Count > 0)
 				yield return "The Spins property has been refactored to MaximumSpinSpeed.\n" +
 				             "MaximumSpinSpeed defaults to 'unlimited', while disabling is done by setting it to 0.\n" +
 				             "You may want to set a custom MaximumSpinSpeed limiting value in the following places:\n" +
