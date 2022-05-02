@@ -182,21 +182,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					switch (s.Key)
 					{
-					case "Intro":
-						videos.Add(new MiniYamlNode("BackgroundVideo", s.Value.ToLowerInvariant() + ".vqa"));
-						break;
-					case "Brief":
-						videos.Add(new MiniYamlNode("BriefingVideo", s.Value.ToLowerInvariant() + ".vqa"));
-						break;
-					case "Action":
-						videos.Add(new MiniYamlNode("StartVideo", s.Value.ToLowerInvariant() + ".vqa"));
-						break;
-					case "Win":
-						videos.Add(new MiniYamlNode("WinVideo", s.Value.ToLowerInvariant() + ".vqa"));
-						break;
-					case "Lose":
-						videos.Add(new MiniYamlNode("LossVideo", s.Value.ToLowerInvariant() + ".vqa"));
-						break;
+						case "Intro":
+							videos.Add(new MiniYamlNode("BackgroundVideo", s.Value.ToLowerInvariant() + ".vqa"));
+							break;
+						case "Brief":
+							videos.Add(new MiniYamlNode("BriefingVideo", s.Value.ToLowerInvariant() + ".vqa"));
+							break;
+						case "Action":
+							videos.Add(new MiniYamlNode("StartVideo", s.Value.ToLowerInvariant() + ".vqa"));
+							break;
+						case "Win":
+							videos.Add(new MiniYamlNode("WinVideo", s.Value.ToLowerInvariant() + ".vqa"));
+							break;
+						case "Lose":
+							videos.Add(new MiniYamlNode("LossVideo", s.Value.ToLowerInvariant() + ".vqa"));
+							break;
 					}
 				}
 			}
@@ -360,21 +360,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				switch (s.Key)
 				{
-				case "Allies":
-					pr.Allies = s.Value.Split(',').Intersect(players).Except(neutral).ToArray();
-					pr.Enemies = s.Value.Split(',').SymmetricDifference(players).Except(neutral).ToArray();
-					break;
-				default:
-					Console.WriteLine("Ignoring unknown {0}={1} for player {2}", s.Key, s.Value, pr.Name);
-					break;
+					case "Allies":
+						pr.Allies = s.Value.Split(',').Intersect(players).Except(neutral).ToArray();
+						pr.Enemies = s.Value.Split(',').SymmetricDifference(players).Except(neutral).ToArray();
+						break;
+					default:
+						Console.WriteLine("Ignoring unknown {0}={1} for player {2}", s.Key, s.Value, pr.Name);
+						break;
 				}
 			}
 
 			// Overwrite default player definitions if needed
-			if (!mapPlayers.Players.ContainsKey(section))
-				mapPlayers.Players.Add(section, pr);
-			else
-				mapPlayers.Players[section] = pr;
+			mapPlayers.Players[section] = pr;
 		}
 
 		public virtual CPos ParseActorLocation(string input, int loc)
