@@ -35,9 +35,10 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!Context.World.Map.Rules.Actors.TryGetValue(actorType, out var ai))
 				throw new LuaException($"Unknown actor type '{actorType}'");
 
-			var initDict = new TypeDictionary();
-
-			initDict.Add(new OwnerInit(owner));
+			var initDict = new TypeDictionary
+			{
+				new OwnerInit(owner)
+			};
 
 			if (entryLocation.HasValue)
 			{

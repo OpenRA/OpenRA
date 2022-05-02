@@ -418,13 +418,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				? new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
 				: w.Parent.Bounds;
 
-			var substitutions = new Dictionary<string, int>();
-			substitutions.Add("WINDOW_RIGHT", Game.Renderer.Resolution.Width);
-			substitutions.Add("WINDOW_BOTTOM", Game.Renderer.Resolution.Height);
-			substitutions.Add("PARENT_RIGHT", parentBounds.Width);
-			substitutions.Add("PARENT_LEFT", parentBounds.Left);
-			substitutions.Add("PARENT_TOP", parentBounds.Top);
-			substitutions.Add("PARENT_BOTTOM", parentBounds.Height);
+			var substitutions = new Dictionary<string, int>
+			{
+				{ "WINDOW_RIGHT", Game.Renderer.Resolution.Width },
+				{ "WINDOW_BOTTOM", Game.Renderer.Resolution.Height },
+				{ "PARENT_RIGHT", parentBounds.Width },
+				{ "PARENT_LEFT", parentBounds.Left },
+				{ "PARENT_TOP", parentBounds.Top },
+				{ "PARENT_BOTTOM", parentBounds.Height }
+			};
 
 			var width = Evaluator.Evaluate(w.Width, substitutions);
 			var height = Evaluator.Evaluate(w.Height, substitutions);

@@ -503,9 +503,11 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var dy = rx + ry - fullSize.X - 1;
 				var cell = new MPos(dx / 2, dy).ToCPos(map);
 
-				var ar = new ActorReference((!int.TryParse(kv.Key, out var wpindex) || wpindex > 7) ? "waypoint" : "mpspawn");
-				ar.Add(new LocationInit(cell));
-				ar.Add(new OwnerInit("Neutral"));
+				var ar = new ActorReference((!int.TryParse(kv.Key, out var wpindex) || wpindex > 7) ? "waypoint" : "mpspawn")
+				{
+					new LocationInit(cell),
+					new OwnerInit("Neutral")
+				};
 
 				map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, ar.Save()));
 			}
@@ -524,9 +526,11 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var cell = new MPos(dx / 2, dy).ToCPos(map);
 				var name = kv.Value.ToLowerInvariant();
 
-				var ar = new ActorReference(name);
-				ar.Add(new LocationInit(cell));
-				ar.Add(new OwnerInit("Neutral"));
+				var ar = new ActorReference(name)
+				{
+					new LocationInit(cell),
+					new OwnerInit("Neutral")
+				};
 
 				if (!map.Rules.Actors.ContainsKey(name))
 					Console.WriteLine($"Ignoring unknown actor type: `{name}`");

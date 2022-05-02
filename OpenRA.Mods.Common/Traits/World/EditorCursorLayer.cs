@@ -161,9 +161,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (specificOwnerInfo != null && !specificOwnerInfo.ValidOwnerNames.Contains(ownerName))
 				ownerName = specificOwnerInfo.ValidOwnerNames.First();
 
-			var reference = new ActorReference(actor.Name);
-			reference.Add(new OwnerInit(ownerName));
-			reference.Add(new FactionInit(owner.Faction));
+			var reference = new ActorReference(actor.Name)
+			{
+				new OwnerInit(ownerName),
+				new FactionInit(owner.Faction)
+			};
 
 			var worldPx = wr.Viewport.ViewToWorldPx(Viewport.LastMousePos) - wr.ScreenPxOffset(actorCenterOffset);
 			var cell = wr.Viewport.ViewToWorld(wr.Viewport.WorldToViewPx(worldPx));
