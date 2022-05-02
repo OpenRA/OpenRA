@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			foreach (var tile in self.World.Map.FindTilesInCircle(destination, max))
 			{
 				if (teleporter.Owner.Shroud.IsExplored(tile)
-					&& (restrictTo == null || (restrictTo != null && restrictTo.Contains(tile)))
+					&& (restrictTo == null || restrictTo.Contains(tile))
 					&& pos.CanEnterCell(tile))
 					return tile;
 			}
