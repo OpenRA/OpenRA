@@ -100,9 +100,10 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 							data.AppendLine($"\t\tId: {templateIndex}");
 
-							var images = new List<string>();
-
-							images.Add($"{sectionFilename}{i:D2}.{extension}");
+							var images = new List<string>
+							{
+								$"{sectionFilename}{i:D2}.{extension}"
+							};
 							for (var v = 'a'; v <= 'z'; v++)
 							{
 								var variant = $"{sectionFilename}{i:D2}{v}.{extension}";

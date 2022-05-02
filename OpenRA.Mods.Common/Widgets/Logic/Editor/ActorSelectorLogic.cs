@@ -181,9 +181,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					continue;
 
 				var actor = a.Actor;
-				var td = new TypeDictionary();
-				td.Add(new OwnerInit(selectedOwner.Name));
-				td.Add(new FactionInit(selectedOwner.Faction));
+				var td = new TypeDictionary
+				{
+					new OwnerInit(selectedOwner.Name),
+					new FactionInit(selectedOwner.Faction)
+				};
 				foreach (var api in actor.TraitInfos<IActorPreviewInitInfo>())
 					foreach (var o in api.ActorPreviewInits(actor, ActorPreviewType.MapEditorSidebar))
 						td.Add(o);

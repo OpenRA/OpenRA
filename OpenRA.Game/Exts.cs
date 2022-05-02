@@ -424,8 +424,10 @@ namespace OpenRA
 					if (!dupKeys.TryGetValue(key, out var dupKeyMessages))
 					{
 						// Log the initial conflicting value already inserted:
-						dupKeyMessages = new List<string>();
-						dupKeyMessages.Add(logValue(d[key]));
+						dupKeyMessages = new List<string>
+						{
+							logValue(d[key])
+						};
 						dupKeys.Add(key, dupKeyMessages);
 					}
 
