@@ -231,7 +231,7 @@ namespace OpenRA
 			BeginFrame();
 
 			if (worldSheet == null)
-				throw new InvalidOperationException($"BeginWorld called before SetMaximumViewportSize has been set.");
+				throw new InvalidOperationException("BeginWorld called before SetMaximumViewportSize has been set.");
 
 			if (worldSprite == null || worldViewport.Size != lastWorldViewportSize)
 			{
