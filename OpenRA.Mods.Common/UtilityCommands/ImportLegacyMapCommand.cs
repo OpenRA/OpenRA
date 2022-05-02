@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	{
 		public readonly int MapSize;
 
-		public ImportLegacyMapCommand(int mapSize)
+		protected ImportLegacyMapCommand(int mapSize)
 		{
 			MapSize = mapSize;
 		}
