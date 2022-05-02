@@ -31,9 +31,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					if (value == null)
 						continue;
 
-					if (value.ToLowerInvariant() == "yes")
+					if (string.Equals(value, "yes", System.StringComparison.InvariantCultureIgnoreCase))
 						n.ReplaceValue("true");
-					else if (value.ToLowerInvariant() == "no")
+					else if (string.Equals(value, "no", System.StringComparison.InvariantCultureIgnoreCase))
 						n.ReplaceValue("false");
 				}
 			}

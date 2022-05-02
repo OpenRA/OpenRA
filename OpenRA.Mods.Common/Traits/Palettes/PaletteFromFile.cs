@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
-			if (info.Tileset == null || info.Tileset.ToLowerInvariant() == world.Map.Tileset.ToLowerInvariant())
+			if (info.Tileset == null || string.Equals(info.Tileset, world.Map.Tileset, StringComparison.InvariantCultureIgnoreCase))
 				wr.AddPalette(info.Name, ((IProvidesCursorPaletteInfo)info).ReadPalette(world.Map), info.AllowModifiers);
 		}
 

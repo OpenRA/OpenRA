@@ -341,7 +341,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			tileSetsFromYaml = terrainInfo.Templates.Where(t =>
 			{
 				var templateInfo = (DefaultTerrainTemplateInfo)t.Value;
-				return templateInfo.Frames != null && templateInfo.Images[0].ToLowerInvariant() == tilesetName.ToLowerInvariant();
+				return templateInfo.Frames != null && string.Equals(templateInfo.Images[0], tilesetName, StringComparison.InvariantCultureIgnoreCase);
 			}).Select(ts => ts.Value).ToList();
 
 			var players = new MapPlayers(map.Rules, playerCount);
@@ -416,7 +416,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 		TerrainTile GetTile(int tileIndex)
 		{
 			// Some tiles are duplicates of other tiles, just on a different tileset
-			if (tilesetName.ToLowerInvariant() == "bloxbgbs.r8")
+			if (string.Equals(tilesetName, "bloxbgbs.r8", StringComparison.InvariantCultureIgnoreCase))
 			{
 				if (tileIndex == 355)
 					return new TerrainTile(441, 0);
@@ -425,7 +425,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 					return new TerrainTile(442, 0);
 			}
 
-			if (tilesetName.ToLowerInvariant() == "bloxtree.r8")
+			if (string.Equals(tilesetName, "bloxtree.r8", StringComparison.InvariantCultureIgnoreCase))
 			{
 				var indices = new[] { 683, 684, 685, 706, 703, 704, 705, 726, 723, 724, 725, 746, 743, 744, 745, 747 };
 				for (var i = 0; i < 16; i++)
@@ -446,7 +446,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 					return new TerrainTile(215, 0);
 			}
 
-			if (tilesetName.ToLowerInvariant() == "bloxwast.r8")
+			if (string.Equals(tilesetName, "bloxwast.r8", StringComparison.InvariantCultureIgnoreCase))
 			{
 				if (tileIndex == 342)
 					return new TerrainTile(250, 0);
