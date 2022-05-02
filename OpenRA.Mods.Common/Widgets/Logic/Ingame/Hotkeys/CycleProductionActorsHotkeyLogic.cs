@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 				.OrderBy(f => f.TraitsImplementing<Production>().First(t => !t.IsTraitDisabled).Info.Produces.First())
 				.ToList();
 
-			if (!facilities.Any())
+			if (facilities.Count == 0)
 				return true;
 
 			var next = facilities

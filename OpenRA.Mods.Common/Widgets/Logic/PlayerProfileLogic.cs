@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (localProfile.State == LocalPlayerProfile.LinkState.Linked)
 				{
-					if (localProfile.ProfileData.Badges.Any())
+					if (localProfile.ProfileData.Badges.Count > 0)
 					{
 						Func<int, int> negotiateWidth = _ => widget.Get("PROFILE_HEADER").Bounds.Width;
 
@@ -207,7 +207,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								return profileWidth;
 							};
 
-							if (profile.Badges.Any())
+							if (profile.Badges.Count > 0)
 							{
 								var badges = Ui.LoadWidget("PLAYER_PROFILE_BADGES_INSERT", badgeContainer, new WidgetArgs()
 								{
@@ -262,7 +262,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public PlayerProfileBadgesLogic(Widget widget, PlayerProfile profile, Func<int, int> negotiateWidth)
 		{
-			var showBadges = profile.Badges.Any();
+			var showBadges = profile.Badges.Count > 0;
 			widget.IsVisible = () => showBadges;
 
 			var badgeTemplate = widget.Get("BADGE_TEMPLATE");
@@ -279,7 +279,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widget.Bounds.Width = negotiateWidth(2 * templateLabel.Bounds.Left - templateIcon.Bounds.Right + maxLabelWidth);
 
 			var badgeOffset = badgeTemplate.Bounds.Y;
-			if (profile.Badges.Any())
+			if (profile.Badges.Count > 0)
 				badgeOffset += 3;
 
 			foreach (var badge in profile.Badges)

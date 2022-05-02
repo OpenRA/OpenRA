@@ -193,7 +193,7 @@ namespace OpenRA.Network
 				var properties = type.GetProperties(Flags).Where(pi => pi.HasAttribute<SyncAttribute>());
 
 				foreach (var prop in properties)
-					if (!prop.CanRead || prop.GetIndexParameters().Any())
+					if (!prop.CanRead || prop.GetIndexParameters().Length > 0)
 						throw new InvalidOperationException(
 							"Properties using the Sync attribute must be readable and must not use index parameters.\n" +
 							"Invalid Property: " + prop.DeclaringType.FullName + "." + prop.Name);

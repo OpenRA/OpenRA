@@ -289,7 +289,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				minelayers.Clear();
 				minelayers.AddRange(selected.Where(s => !s.IsDead && s.Info.HasTraitInfo<MinelayerInfo>()));
-				if (!minelayers.Any())
+				if (minelayers.Count == 0)
 					world.CancelInputMode();
 			}
 

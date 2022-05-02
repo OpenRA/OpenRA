@@ -634,7 +634,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					lightingNodes.Add(new MiniYamlNode(node.Value, FieldSaver.FormatValue(val)));
 			}
 
-			if (lightingNodes.Any())
+			if (lightingNodes.Count > 0)
 			{
 				map.RuleDefinitions.Nodes.Add(new MiniYamlNode("^BaseWorld", new MiniYaml("", new List<MiniYamlNode>()
 				{
@@ -674,7 +674,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					}
 				}
 
-				if (lightingNodes.Any())
+				if (lightingNodes.Count > 0)
 				{
 					map.RuleDefinitions.Nodes.Add(new MiniYamlNode(lamp, new MiniYaml("", new List<MiniYamlNode>()
 					{

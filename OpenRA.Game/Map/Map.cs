@@ -130,13 +130,13 @@ namespace OpenRA
 			if (type == Type.NodeList)
 			{
 				var listValue = (List<MiniYamlNode>)value;
-				if (required || listValue.Any())
+				if (required || listValue.Count > 0)
 					nodes.Add(new MiniYamlNode(key, null, listValue));
 			}
 			else if (type == Type.MiniYaml)
 			{
 				var yamlValue = (MiniYaml)value;
-				if (required || (yamlValue != null && (yamlValue.Value != null || yamlValue.Nodes.Any())))
+				if (required || (yamlValue != null && (yamlValue.Value != null || yamlValue.Nodes.Count > 0)))
 					nodes.Add(new MiniYamlNode(key, yamlValue));
 			}
 			else
@@ -521,7 +521,7 @@ namespace OpenRA
 				while (true)
 				{
 					temp = new MPos(temp.U, temp.V - 1);
-					if (!inverseCellProjection.Contains(temp) || inverseCellProjection[temp].Any())
+					if (!inverseCellProjection.Contains(temp) || inverseCellProjection[temp].Count > 0)
 						break;
 
 					projectedHeight[temp] = height;
@@ -534,7 +534,7 @@ namespace OpenRA
 			while (inverseCellProjection.Contains((MPos)puv))
 			{
 				var inverse = inverseCellProjection[(MPos)puv];
-				if (inverse.Any())
+				if (inverse.Count > 0)
 				{
 					// The original games treat the top of cliffs the same way as the bottom
 					// This information isn't stored in the map data, so query the offset from the tileset
@@ -725,10 +725,10 @@ namespace OpenRA
 				{
 					var allTop = Unproject(new PPos(x, Bounds.Top));
 					var allBottom = Unproject(new PPos(x, Bounds.Bottom));
-					if (allTop.Any())
+					if (allTop.Count > 0)
 						top = Math.Min(top, allTop.MinBy(uv => uv.V).V);
 
-					if (allBottom.Any())
+					if (allBottom.Count > 0)
 						bottom = Math.Max(bottom, allBottom.MaxBy(uv => uv.V).V);
 				}
 			}
@@ -1135,7 +1135,7 @@ namespace OpenRA
 			// Project this guessed cell and take the first available cell
 			// If it is projected outside the layer, then make another guess.
 			var allProjected = ProjectedCellsCovering(uv);
-			var projected = allProjected.Any() ? allProjected.First()
+			var projected = allProjected.Length > 0 ? allProjected.First()
 				: new PPos(uv.U, uv.V.Clamp(Bounds.Top, Bounds.Bottom));
 
 			// Clamp the projected cell to the map area
@@ -1145,7 +1145,7 @@ namespace OpenRA
 			// This may fail if the projected cell covered a cliff or another feature
 			// where there is a large change in terrain height.
 			var unProjected = Unproject(projected);
-			if (!unProjected.Any())
+			if (unProjected.Count == 0)
 			{
 				// Adjust V until we find a cell that works
 				for (var x = 2; x <= 2 * Grid.MaximumTerrainHeight; x++)
@@ -1156,12 +1156,12 @@ namespace OpenRA
 						continue;
 
 					unProjected = Unproject(test);
-					if (unProjected.Any())
+					if (unProjected.Count > 0)
 						break;
 				}
 
 				// This shouldn't happen.  But if it does, return the original value and hope the caller doesn't explode.
-				if (!unProjected.Any())
+				if (unProjected.Count == 0)
 				{
 					Log.Write("debug", "Failed to clamp map cell {0} to map bounds", uv);
 					return uv;
@@ -1187,7 +1187,7 @@ namespace OpenRA
 
 				cells = Unproject(new PPos(u, v));
 			}
-			while (!cells.Any());
+			while (cells.Count == 0);
 
 			return cells.Random(rand).ToCPos(Grid.Type);
 		}
@@ -1202,7 +1202,7 @@ namespace OpenRA
 			var allProjected = ProjectedCellsCovering(uv);
 
 			PPos edge;
-			if (allProjected.Any())
+			if (allProjected.Length > 0)
 			{
 				var puv = allProjected.First();
 				var horizontalBound = ((puv.U - Bounds.Left) < Bounds.Width / 2) ? Bounds.Left : Bounds.Right;
@@ -1217,7 +1217,7 @@ namespace OpenRA
 				edge = new PPos(Bounds.Left, Bounds.Top);
 
 			var unProjected = Unproject(edge);
-			if (!unProjected.Any())
+			if (unProjected.Count == 0)
 			{
 				// Adjust V until we find a cell that works
 				for (var x = 2; x <= 2 * Grid.MaximumTerrainHeight; x++)
@@ -1228,12 +1228,12 @@ namespace OpenRA
 						continue;
 
 					unProjected = Unproject(test);
-					if (unProjected.Any())
+					if (unProjected.Count > 0)
 						break;
 				}
 
 				// This shouldn't happen.  But if it does, return the original value and hope the caller doesn't explode.
-				if (!unProjected.Any())
+				if (unProjected.Count == 0)
 				{
 					Log.Write("debug", "Failed to find closest edge for map cell {0}", uv);
 					return uv;
@@ -1256,22 +1256,22 @@ namespace OpenRA
 			for (var u = Bounds.Left; u < Bounds.Right; u++)
 			{
 				unProjected = Unproject(new PPos(u, Bounds.Top));
-				if (unProjected.Any())
+				if (unProjected.Count > 0)
 					edgeCells.Add(unProjected.MinBy(x => x.V).ToCPos(Grid.Type));
 
 				unProjected = Unproject(new PPos(u, bottom));
-				if (unProjected.Any())
+				if (unProjected.Count > 0)
 					edgeCells.Add(unProjected.MaxBy(x => x.V).ToCPos(Grid.Type));
 			}
 
 			for (var v = Bounds.Top; v < Bounds.Bottom; v++)
 			{
 				unProjected = Unproject(new PPos(Bounds.Left, v));
-				if (unProjected.Any())
+				if (unProjected.Count > 0)
 					edgeCells.Add((v == bottom ? unProjected.MaxBy(x => x.V) : unProjected.MinBy(x => x.V)).ToCPos(Grid.Type));
 
 				unProjected = Unproject(new PPos(Bounds.Right - 1, v));
-				if (unProjected.Any())
+				if (unProjected.Count > 0)
 					edgeCells.Add((v == bottom ? unProjected.MaxBy(x => x.V) : unProjected.MinBy(x => x.V)).ToCPos(Grid.Type));
 			}
 

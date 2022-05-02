@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -93,10 +92,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return;
 
-			if (Info.Factions.Any())
+			if (Info.Factions.Count > 0)
 				enabled = Info.Factions.Contains(faction);
 
-			if (Info.RequiresPrerequisites.Any() && enabled)
+			if (Info.RequiresPrerequisites.Length > 0 && enabled)
 				enabled = techTree.HasPrerequisites(Info.RequiresPrerequisites);
 		}
 

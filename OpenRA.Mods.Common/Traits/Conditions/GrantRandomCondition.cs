@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Conditions
@@ -36,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits.Conditions
 
 		void INotifyCreated.Created(Actor self)
 		{
-			if (!info.Conditions.Any())
+			if (info.Conditions.Length == 0)
 				return;
 
 			var condition = info.Conditions.Random(self.World.SharedRandom);

@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			Info = info;
 			world = self.World;
-			hasSmoke = !string.IsNullOrEmpty(info.SmokeImage) && info.SmokeSequences.Any();
+			hasSmoke = !string.IsNullOrEmpty(info.SmokeImage) && info.SmokeSequences.Length > 0;
 
 			var sequenceProvider = world.Map.Rules.Sequences;
 			var types = sequenceProvider.Sequences(Info.Sequence);

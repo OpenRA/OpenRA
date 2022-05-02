@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			aircraft = self.TraitOrDefault<Aircraft>();
 
-			if (cargo.Any())
+			if (cargo.Count > 0)
 			{
 				foreach (var c in cargo)
 					if (Info.PassengerConditions.TryGetValue(c.Info.Name, out var passengerCondition))
@@ -350,10 +350,10 @@ namespace OpenRA.Mods.Common.Traits
 			var p = passenger.Trait<Passenger>();
 			p.Transport = null;
 
-			if (passengerTokens.TryGetValue(passenger.Info.Name, out var passengerToken) && passengerToken.Any())
+			if (passengerTokens.TryGetValue(passenger.Info.Name, out var passengerToken) && passengerToken.Count > 0)
 				self.RevokeCondition(passengerToken.Pop());
 
-			if (loadedTokens.Any())
+			if (loadedTokens.Count > 0)
 				self.RevokeCondition(loadedTokens.Pop());
 
 			return passenger;

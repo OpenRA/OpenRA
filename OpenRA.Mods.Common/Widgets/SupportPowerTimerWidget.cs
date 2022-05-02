@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Widgets
 			powers = world.ActorsWithTrait<SupportPowerManager>()
 				.Where(p => !p.Actor.IsDead && !p.Actor.Owner.NonCombatant)
 				.SelectMany(s => s.Trait.Powers.Values)
-				.Where(p => p.Instances.Any() && p.Info.DisplayTimerRelationships != PlayerRelationship.None && !p.Disabled);
+				.Where(p => p.Instances.Count > 0 && p.Info.DisplayTimerRelationships != PlayerRelationship.None && !p.Disabled);
 
 			bgDark = ChromeMetrics.Get<Color>("TextContrastColorDark");
 			bgLight = ChromeMetrics.Get<Color>("TextContrastColorLight");

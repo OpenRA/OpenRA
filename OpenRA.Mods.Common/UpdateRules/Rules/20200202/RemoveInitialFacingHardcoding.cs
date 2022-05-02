@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				+ "You may have to set it manually now in the following places:\n"
 				+ UpdateUtils.FormatMessageList(nonVTOLs.Select(n => n.Item1 + " (" + n.Item2 + ")"));
 
-			if (nonVTOLs.Any())
+			if (nonVTOLs.Count > 0)
 				yield return message;
 
 			nonVTOLs.Clear();

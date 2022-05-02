@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 				.ToArray();
 
 			random = playlist.Shuffle(Game.CosmeticRandom).ToArray();
-			IsMusicAvailable = playlist.Any();
+			IsMusicAvailable = playlist.Length > 0;
 			AllowMuteBackgroundMusic = info.AllowMuteBackgroundMusic;
 
 			if (SongExists(info.BackgroundMusic))

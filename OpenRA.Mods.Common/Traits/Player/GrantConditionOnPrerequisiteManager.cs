@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 			var list = upgradables[key];
 
 			list.RemoveAll(x => x.Actor == actor && x.GrantConditionOnPrerequisite == u);
-			if (!list.Any())
+			if (list.Count == 0)
 			{
 				upgradables.Remove(key);
 				techTree.Remove(key);

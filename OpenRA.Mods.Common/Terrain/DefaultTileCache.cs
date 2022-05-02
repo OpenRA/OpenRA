@@ -134,10 +134,10 @@ namespace OpenRA.Mods.Common.Terrain
 				if (terrainInfo.IgnoreTileSpriteOffsets)
 					allSprites = allSprites.Select(s => new Sprite(s.Sheet, s.Bounds, s.ZRamp, new float3(float2.Zero, s.Offset.Z), s.Channel, s.BlendMode));
 
-				if (onMissingImage != null && !variants.Any())
+				if (onMissingImage != null && variants.Count == 0)
 					continue;
 
-				templates.Add(t.Value.Id, new TheaterTemplate(allSprites.ToArray(), variants.First().Count(), templateInfo.Images.Length));
+				templates.Add(t.Value.Id, new TheaterTemplate(allSprites.ToArray(), variants.First().Length, templateInfo.Images.Length));
 			}
 
 			// 1x1px transparent tile

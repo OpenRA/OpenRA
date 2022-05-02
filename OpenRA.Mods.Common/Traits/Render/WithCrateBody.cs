@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
@@ -59,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var rs = self.Trait<RenderSprites>();
 			var image = rs.GetImage(self);
-			var images = info.XmasImages.Any() && DateTime.Today.Month == 12 ? info.XmasImages : new[] { image };
+			var images = info.XmasImages.Length > 0 && DateTime.Today.Month == 12 ? info.XmasImages : new[] { image };
 
 			anim = new Animation(self.World, images.Random(Game.CosmeticRandom));
 			anim.Play(info.IdleSequence);

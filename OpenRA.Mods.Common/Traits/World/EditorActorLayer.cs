@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Fallback to the actor's CenterPosition for the ActorMap if it has no Footprint
 			var footprint = preview.Footprint.Select(kv => kv.Key).ToArray();
-			if (!footprint.Any())
+			if (footprint.Length == 0)
 				footprint = new[] { worldRenderer.World.Map.CellContaining(preview.CenterPosition) };
 
 			foreach (var cell in footprint)
@@ -166,7 +166,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Fallback to the actor's CenterPosition for the ActorMap if it has no Footprint
 			var footprint = preview.Footprint.Select(kv => kv.Key).ToArray();
-			if (!footprint.Any())
+			if (footprint.Length == 0)
 				footprint = new[] { worldRenderer.World.Map.CellContaining(preview.CenterPosition) };
 
 			foreach (var cell in footprint)
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				list.Remove(preview);
 
-				if (!list.Any())
+				if (list.Count == 0)
 					cellMap.Remove(cell);
 			}
 
@@ -272,7 +272,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var map = worldRenderer.World.Map;
 			var previews = PreviewsAt(cell).ToList();
-			if (!previews.Any())
+			if (previews.Count == 0)
 				return map.Grid.DefaultSubCell;
 
 			for (var i = (byte)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)

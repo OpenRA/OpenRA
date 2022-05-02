@@ -38,7 +38,7 @@ namespace OpenRA
 
 		public Translation(string language, string[] translations, IReadOnlyFileSystem fileSystem)
 		{
-			if (translations == null || !translations.Any())
+			if (translations == null || translations.Length == 0)
 				return;
 
 			messageContexts = GetMessageContext(language, translations, fileSystem).ToList();

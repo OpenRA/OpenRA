@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.ExcludedActorTypes.Contains(collector.Info.Name))
 				return 0;
 
-			if (Info.Prerequisites.Any() && !collector.Owner.PlayerActor.Trait<TechTree>().HasPrerequisites(Info.Prerequisites))
+			if (Info.Prerequisites.Length > 0 && !collector.Owner.PlayerActor.Trait<TechTree>().HasPrerequisites(Info.Prerequisites))
 				return 0;
 
 			return GetSelectionShares(collector);

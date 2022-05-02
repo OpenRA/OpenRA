@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
-			if (locations.Any())
+			if (locations.Count > 0)
 				yield return "Some actor(s) defined a MinDamage of neither 'Heavy' nor 'Undamaged' on SmokeTrailWhenDamaged before update.\n" +
 					"Review the following definitions and add custom GrandConditionOnDamageState configs as required:\n" +
 					UpdateUtils.FormatMessageList(locations.Select(

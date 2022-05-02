@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 			var toProcess = new Stack<ushort>();
 			toProcess.Push(d1);
 
-			while (toProcess.Any())
+			while (toProcess.Count > 0)
 			{
 				var current = toProcess.Pop();
 				if (!transientConnections.ContainsKey(current))

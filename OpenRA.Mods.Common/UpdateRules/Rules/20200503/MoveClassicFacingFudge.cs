@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
@@ -26,7 +25,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
-			if (locations.Any())
+			if (locations.Count > 0)
 				yield return "UseClassicFacingFudge property on BodyOrientation was replaced with ClassicFacingBodyOrientation trait.\n" +
 							 "UseClassicFacingFudge for sequences was renamed to UseClassicFacings and moved to\n" +
 							 "Classic(TileSetSpecific)SpriteSequence loaders in Mods.Cnc.\n" +

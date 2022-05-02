@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			missionList.RemoveChildren();
 
 			// Add a group for each campaign
-			if (modData.Manifest.Missions.Any())
+			if (modData.Manifest.Missions.Length > 0)
 			{
 				var yaml = MiniYaml.Merge(modData.Manifest.Missions.Select(
 					m => MiniYaml.FromStream(modData.DefaultFileSystem.Open(m), m)));
@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				allPreviews.AddRange(loosePreviews);
 			}
 
-			if (allPreviews.Any())
+			if (allPreviews.Count > 0)
 				SelectMap(allPreviews.First());
 
 			// Preload map preview to reduce jank

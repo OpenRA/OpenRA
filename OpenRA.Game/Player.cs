@@ -113,7 +113,7 @@ namespace OpenRA
 				?? selectableFactions.Random(playerRandom);
 
 			// Don't loop infinite
-			for (var i = 0; i <= 10 && selected.RandomFactionMembers.Any(); i++)
+			for (var i = 0; i <= 10 && selected.RandomFactionMembers.Count > 0; i++)
 			{
 				var faction = selected.RandomFactionMembers.Random(playerRandom);
 				selected = selectableFactions.FirstOrDefault(f => f.InternalName == faction);

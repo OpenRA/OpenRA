@@ -291,7 +291,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var players = widget.GetOrNull<LabelWidget>("SELECTED_PLAYERS");
 			if (players != null)
 			{
-				players.IsVisible = () => currentServer != null && (clientContainer == null || !currentServer.Clients.Any());
+				players.IsVisible = () => currentServer != null && (clientContainer == null || currentServer.Clients.Length == 0);
 				players.GetText = () => PlayersLabel(currentServer);
 			}
 
@@ -299,7 +299,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (clientContainer != null)
 			{
 				clientList = Ui.LoadWidget("MULTIPLAYER_CLIENT_LIST", clientContainer, new WidgetArgs()) as ScrollPanelWidget;
-				clientList.IsVisible = () => currentServer != null && currentServer.Clients.Any();
+				clientList.IsVisible = () => currentServer != null && currentServer.Clients.Length > 0;
 				clientHeader = clientList.Get<ScrollItemWidget>("HEADER");
 				clientTemplate = clientList.Get<ScrollItemWidget>("TEMPLATE");
 				clientList.RemoveChildren();
@@ -449,7 +449,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				mapPreview.DisabledSpawnPoints = () => server.DisabledSpawnPoints;
 			}
 
-			if (server == null || !server.Clients.Any())
+			if (server == null || server.Clients.Length == 0)
 			{
 				if (joinButton != null)
 					joinButton.Bounds.Y = joinButtonY;
@@ -546,7 +546,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return;
 				}
 
-				if (!rows.Any())
+				if (rows.Count == 0)
 				{
 					searchStatus = SearchStatus.NoGames;
 					return;
@@ -649,7 +649,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							players.GetText = () => label;
 							players.GetColor = () => color;
 
-							if (game.Clients.Any())
+							if (game.Clients.Length > 0)
 							{
 								var displayClients = game.Clients.Select(c => c.Name);
 								if (game.Clients.Length > 10)

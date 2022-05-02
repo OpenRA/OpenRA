@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 				.Where(a => a.IsInWorld && a.Owner == player)
 				.ToList();
 
-			if (!harvesters.Any())
+			if (harvesters.Count == 0)
 				return true;
 
 			var next = harvesters

@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 				.Where(x => !x.IsDead && eligiblePlayers.Contains(x.Owner))
 				.ToList();
 
-			if (!ownedActors.Any())
+			if (ownedActors.Count == 0)
 				return false;
 
 			// Get all the selected actors' selection classes

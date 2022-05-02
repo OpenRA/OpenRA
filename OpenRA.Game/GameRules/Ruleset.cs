@@ -235,7 +235,7 @@ namespace OpenRA
 
 		static bool AnyCustomYaml(MiniYaml yaml)
 		{
-			return yaml != null && (yaml.Value != null || yaml.Nodes.Any());
+			return yaml != null && (yaml.Value != null || yaml.Nodes.Count > 0);
 		}
 
 		static bool AnyFlaggedTraits(ModData modData, List<MiniYamlNode> actors)

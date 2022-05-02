@@ -49,18 +49,18 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
-			if (customPips && locations.Any())
+			if (customPips && locations.Count > 0)
 				yield return "Custom pip Images and Palettes are now defined on the individual With*PipsDecoration traits.\n" +
 					"You should review the following definitions and manually define the Image and Palette properties as required:\n" +
 					UpdateUtils.FormatMessageList(locations);
 
-			if (cargoCustomPips.Any() && cargoPipLocations.Any())
+			if (cargoCustomPips.Count > 0 && cargoPipLocations.Count > 0)
 				yield return "Some passenger types define custom cargo pips. Review the following definitions:\n" +
 					UpdateUtils.FormatMessageList(cargoPipLocations) +
 					"\nand, if required, add the following to the WithCargoPipsDecoration traits:\n" +
 					"CustomPipSequences:\n" + cargoCustomPips.Select(p => $"\t{p}: {PipReplacements[p]}").JoinWith("\n");
 
-			if (harvesterCustomPips.Any() && harvesterPipLocations.Any())
+			if (harvesterCustomPips.Count > 0 && harvesterPipLocations.Count > 0)
 				yield return "Review the following definitions:\n" +
 				             UpdateUtils.FormatMessageList(harvesterPipLocations) +
 				             "\nand, if required, add the following to the WithHarvesterPipsDecoration traits:\n" +

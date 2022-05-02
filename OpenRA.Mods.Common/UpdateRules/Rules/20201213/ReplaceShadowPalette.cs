@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
@@ -26,7 +25,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
-			if (locations.Any())
+			if (locations.Count > 0)
 				yield return "The shadow palette overrides have been removed from the following locations:\n" +
 					UpdateUtils.FormatMessageList(locations) + "\n\n" +
 					"You may wish to inspect and change these.";

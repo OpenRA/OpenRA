@@ -11,7 +11,6 @@
 
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Primitives;
@@ -121,7 +120,7 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 			s.Position = start;
 
 			frames = tmp.ToArray();
-			if (palettes.Any())
+			if (palettes.Count > 0)
 				metadata = new TypeDictionary { new EmbeddedSpritePalette(framePalettes: palettes) };
 
 			return true;

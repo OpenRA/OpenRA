@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 			var terrainLinear = terrainColors.Select(c => c.ToLinear()).ToList();
 			var playerLinear = playerColors.Select(c => c.ToLinear()).ToList();
 
-			if (PresetHues.Any())
+			if (PresetHues.Length > 0)
 			{
 				foreach (var i in Exts.MakeArray(PresetHues.Length, x => x).Shuffle(random))
 				{

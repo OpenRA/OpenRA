@@ -472,7 +472,7 @@ namespace OpenRA
 			}
 
 			var yaml = files.Select(s => FromStream(fileSystem.Open(s), s));
-			if (mapRules != null && mapRules.Nodes.Any())
+			if (mapRules != null && mapRules.Nodes.Count > 0)
 				yaml = yaml.Append(mapRules.Nodes);
 
 			return Merge(yaml);

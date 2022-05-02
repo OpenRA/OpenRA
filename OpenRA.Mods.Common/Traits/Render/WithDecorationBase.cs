@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (self.World.FogObscures(self))
 				return false;
 
-			if (blinkPattern != null && blinkPattern.Any())
+			if (blinkPattern != null && blinkPattern.Length > 0)
 			{
 				var i = (self.World.WorldTick / Info.BlinkInterval) % blinkPattern.Length;
 				if (blinkPattern[i] != BlinkState.On)

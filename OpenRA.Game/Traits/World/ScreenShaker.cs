@@ -41,7 +41,7 @@ namespace OpenRA.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (shakeEffects.Any())
+			if (shakeEffects.Count > 0)
 			{
 				worldRenderer.Viewport.Scroll(GetScrollOffset(), true);
 				shakeEffects.RemoveAll(t => t.ExpiryTime == ticks);

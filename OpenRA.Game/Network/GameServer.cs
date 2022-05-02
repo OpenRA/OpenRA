@@ -227,7 +227,7 @@ namespace OpenRA.Network
 			ModWebsite = manifest.Metadata.Website;
 			ModIcon32 = manifest.Metadata.WebIcon32;
 			Protected = !string.IsNullOrEmpty(server.Settings.Password);
-			Authentication = server.Settings.RequireAuthentication || server.Settings.ProfileIDWhitelist.Any();
+			Authentication = server.Settings.RequireAuthentication || server.Settings.ProfileIDWhitelist.Length > 0;
 			Clients = server.LobbyInfo.Clients.Select(c => new GameClient(c)).ToArray();
 			DisabledSpawnPoints = server.LobbyInfo.DisabledSpawnPoints?.ToArray() ?? Array.Empty<int>();
 		}

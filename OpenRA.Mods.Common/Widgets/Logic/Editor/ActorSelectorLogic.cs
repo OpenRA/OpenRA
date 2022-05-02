@@ -169,7 +169,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		protected override void InitializePreviews()
 		{
 			Panel.RemoveChildren();
-			if (!SelectedCategories.Any())
+			if (SelectedCategories.Count == 0)
 				return;
 
 			foreach (var a in allActors)

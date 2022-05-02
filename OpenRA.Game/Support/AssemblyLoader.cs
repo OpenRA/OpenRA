@@ -306,7 +306,7 @@ namespace OpenRA.Support
 
 		public static AssemblyLoadContextBuilder AddDependencyContext(this AssemblyLoadContextBuilder builder, DependencyContext dependencyContext)
 		{
-			var ridGraph = dependencyContext.RuntimeGraph.Any()
+			var ridGraph = dependencyContext.RuntimeGraph.Count > 0
 				? dependencyContext.RuntimeGraph
 				: DependencyContext.Default.RuntimeGraph;
 

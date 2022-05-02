@@ -564,7 +564,7 @@ namespace OpenRA
 				fli.Field.SetValue(self, val);
 			}
 
-			if (missing.Any())
+			if (missing.Count > 0)
 				throw new MissingFieldsException(missing.ToArray());
 		}
 

@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
-			if (weaponsToUpdate.Any())
+			if (weaponsToUpdate.Count > 0)
 				yield return "Add a FlashPaletteEffectWarhead to the following weapons:\n" +
 					UpdateUtils.FormatMessageList(weaponsToUpdate.Select(x => $"Weapon `{x.Item1}`, used by trait `{x.Item2}` on actor {x.Item3}"));
 

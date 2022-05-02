@@ -217,7 +217,7 @@ namespace OpenRA.Traits
 			return Renderables;
 		}
 
-		public bool HasRenderables => !Shrouded && Renderables.Any();
+		public bool HasRenderables => !Shrouded && Renderables.Length > 0;
 
 		public override string ToString()
 		{

@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Traits
 			Info = info;
 
 			Faction = init.GetValue<FactionInit, string>(self.Owner.Faction.InternalName);
-			IsValidFaction = !info.Factions.Any() || info.Factions.Contains(Faction);
+			IsValidFaction = info.Factions.Count == 0 || info.Factions.Contains(Faction);
 			Enabled = IsValidFaction;
 
 			allProducibles = Producible.Where(a => a.Value.Buildable || a.Value.Visible).Select(a => a.Key);
@@ -196,7 +196,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.Sticky)
 			{
 				Faction = self.Owner.Faction.InternalName;
-				IsValidFaction = !Info.Factions.Any() || Info.Factions.Contains(Faction);
+				IsValidFaction = Info.Factions.Count == 0 || Info.Factions.Contains(Faction);
 			}
 
 			// Regenerate the producibles and tech tree state
@@ -274,7 +274,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual IEnumerable<ActorInfo> AllItems()
 		{
-			if (productionTraits.Any() && productionTraits.All(p => p.IsTraitDisabled))
+			if (productionTraits.Length > 0 && productionTraits.All(p => p.IsTraitDisabled))
 				return Enumerable.Empty<ActorInfo>();
 			if (developerMode.AllTech)
 				return Producible.Keys;
@@ -284,7 +284,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual IEnumerable<ActorInfo> BuildableItems()
 		{
-			if (productionTraits.Any() && productionTraits.All(p => p.IsTraitDisabled))
+			if (productionTraits.Length > 0 && productionTraits.All(p => p.IsTraitDisabled))
 				return Enumerable.Empty<ActorInfo>();
 			if (!Enabled)
 				return Enumerable.Empty<ActorInfo>();

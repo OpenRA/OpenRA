@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.GameRules;
 using OpenRA.Server;
@@ -55,7 +54,7 @@ namespace OpenRA.Mods.Common.Lint
 					// Removals can never define children or values
 					if (field.Key.StartsWith("-", StringComparison.Ordinal))
 					{
-						if (field.Value.Nodes.Any())
+						if (field.Value.Nodes.Count > 0)
 							emitError($"{field.Location} {field.Key} defines child nodes, which is not valid for removals.");
 
 						if (!string.IsNullOrEmpty(field.Value.Value))
@@ -108,7 +107,7 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var f in mapFiles)
 				CheckWeapons(MiniYaml.FromStream(fileSystem.Open(f), f), emitError, emitWarning, modData);
 
-			if (weaponDefinitions.Nodes.Any())
+			if (weaponDefinitions.Nodes.Count > 0)
 				CheckWeapons(weaponDefinitions.Nodes, emitError, emitWarning, modData);
 		}
 	}

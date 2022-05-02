@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					Powers.Add(key, t.CreateInstance(key, this));
 
-					if (t.Info.Prerequisites.Any())
+					if (t.Info.Prerequisites.Length > 0)
 					{
 						TechTree.Add(key, t.Info.Prerequisites, 0, this);
 						TechTree.Update();

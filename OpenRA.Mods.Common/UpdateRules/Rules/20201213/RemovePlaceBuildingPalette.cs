@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
@@ -27,7 +26,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
-			if (locations.Any())
+			if (locations.Count > 0)
 				yield return "The *Palette fields have been removed from the *PlaceBuildingPreview traits.\n" +
 				             "You may wish to inspect the following definitions and define new Alpha or\n" +
 				             "LineBuildSegmentAlpha properties as appropriate to recreate transparency effects:\n" +

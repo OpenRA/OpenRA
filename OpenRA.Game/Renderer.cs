@@ -377,7 +377,7 @@ namespace OpenRA
 		public void EnableScissor(Rectangle rect)
 		{
 			// Must remain inside the current scissor rect
-			if (scissorState.Any())
+			if (scissorState.Count > 0)
 				rect = Rectangle.Intersect(rect, scissorState.Peek());
 
 			Flush();
@@ -405,7 +405,7 @@ namespace OpenRA
 			if (renderType == RenderType.World)
 			{
 				// Restore previous scissor rect
-				if (scissorState.Any())
+				if (scissorState.Count > 0)
 				{
 					var rect = scissorState.Peek();
 					var r = Rectangle.FromLTRB(
@@ -421,7 +421,7 @@ namespace OpenRA
 			else
 			{
 				// Restore previous scissor rect
-				if (scissorState.Any())
+				if (scissorState.Count > 0)
 				{
 					var rect = scissorState.Peek();
 					Context.EnableScissor(rect.X, rect.Y, rect.Width, rect.Height);

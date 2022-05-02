@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public WithAmmoPipsDecoration(Actor self, WithAmmoPipsDecorationInfo info)
 			: base(self, info)
 		{
-			if (info.AmmoPools.Any())
+			if (info.AmmoPools.Length > 0)
 				ammo = self.TraitsImplementing<AmmoPool>()
 					.Where(ap => info.AmmoPools.Contains(ap.Info.Name))
 					.ToArray();

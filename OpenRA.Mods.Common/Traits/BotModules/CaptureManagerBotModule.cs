@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void QueueCaptureOrders(IBot bot)
 		{
-			if (!Info.CapturingActorTypes.Any() || player.WinState != WinState.Undefined)
+			if (Info.CapturingActorTypes.Count == 0 || player.WinState != WinState.Undefined)
 				return;
 
 			activeCapturers.RemoveAll(unitCannotBeOrderedOrIsIdle);
@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 				.OrderByDescending(target => target.GetSellValue())
 				.Take(maximumCaptureTargetOptions);
 
-			if (Info.CapturableActorTypes.Any())
+			if (Info.CapturableActorTypes.Count > 0)
 				capturableTargetOptions = capturableTargetOptions.Where(target => Info.CapturableActorTypes.Contains(target.Info.Name.ToLowerInvariant()));
 
 			if (!capturableTargetOptions.Any())

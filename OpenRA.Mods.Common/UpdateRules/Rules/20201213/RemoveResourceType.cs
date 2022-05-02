@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
@@ -36,21 +35,21 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
-			if (resourceLayer.Nodes.Any())
+			if (resourceLayer.Nodes.Count > 0)
 				yield return "Add the following definitions to your ResourceLayer and EditorResourceLayer definitions:\n\t" +
 					"RecalculateResourceDensity: true\n\t" +
 					resourceLayer.ToLines("ResourceTypes").JoinWith("\n\t");
 
-			if (resourceLayer.Nodes.Any())
+			if (resourceLayer.Nodes.Count > 0)
 				yield return "Add the following definitions to your ResourceRenderer definition:\n\t" +
 					resourceRenderer.ToLines("ResourceTypes").JoinWith("\n\t");
 
-			if (values.Nodes.Any())
+			if (values.Nodes.Count > 0)
 				yield return "Add the following definition to your ^BasePlayer definition:\n\t" +
 					"PlayerResources:\n\t\t" +
 					values.ToLines("ResourceValues").JoinWith("\n\t\t");
 
-			if (resourceLayer.Nodes.Any())
+			if (resourceLayer.Nodes.Count > 0)
 				yield return "Support for AllowUnderActors, AllowUnderBuildings, and AllowOnRamps have been removed.\n" +
 					"You must define a custom ResourceLayer subclass if you want to customize the default behaviour.";
 		}

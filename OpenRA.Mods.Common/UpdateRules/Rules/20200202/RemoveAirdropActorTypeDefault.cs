@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				+ "You may have to define it manually now in the following places:\n"
 				+ UpdateUtils.FormatMessageList(missingActorTypes.Select(n => n.Item1 + " (" + n.Item2 + ")"));
 
-			if (missingActorTypes.Any())
+			if (missingActorTypes.Count > 0)
 				yield return message;
 
 			missingActorTypes.Clear();

@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					" you will need to define a 'Facing' parameter on the 'Exit' trait of the host building. This change" +
 					" does not affect the behaviour for landing on terrain which is governed by TurnToLand.";
 
-			if (turningAircraft.Any())
+			if (turningAircraft.Count > 0)
 				yield return message;
 
 			turningAircraft.Clear();

@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
 		{
-			if (!EditorOptions.Any())
+			if (EditorOptions.Count == 0)
 				yield break;
 
 			// Make sure the no-plug option is always available

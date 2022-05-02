@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
-			if (locations.Any())
+			if (locations.Count > 0)
 				yield return "The way that decorations are positioned relative to the selection box has changed.\n" +
 					"Review the following definitions and define Margin properties as required:\n" +
 					UpdateUtils.FormatMessageList(locations.Select(

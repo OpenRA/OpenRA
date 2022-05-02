@@ -106,11 +106,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 				var bDestroyed = bridgeInfo.BOffset != CVec.Zero && NeighbourIsDestroyed(bridgeInfo.BOffset);
 
 				var sequence = DefaultAnimation.CurrentSequence.Name;
-				if (aDestroyed && bDestroyed && bridgeInfo.ABDestroyedSequences.Any())
+				if (aDestroyed && bDestroyed && bridgeInfo.ABDestroyedSequences.Length > 0)
 					sequence = bridgeInfo.ABDestroyedSequences.Random(Game.CosmeticRandom);
-				else if (aDestroyed && bridgeInfo.ADestroyedSequences.Any())
+				else if (aDestroyed && bridgeInfo.ADestroyedSequences.Length > 0)
 					sequence = bridgeInfo.ADestroyedSequences.Random(Game.CosmeticRandom);
-				else if (bDestroyed && bridgeInfo.BDestroyedSequences.Any())
+				else if (bDestroyed && bridgeInfo.BDestroyedSequences.Length > 0)
 					sequence = bridgeInfo.BDestroyedSequences.Random(Game.CosmeticRandom);
 				else
 					sequence = bridgeInfo.Sequences.Random(Game.CosmeticRandom);

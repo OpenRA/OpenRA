@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var startingCash = SelectableCash.ToDictionary(c => c.ToString(), c => "$" + c.ToString());
 
-			if (startingCash.Any())
+			if (startingCash.Count > 0)
 				yield return new LobbyOption("startingcash", DefaultCashDropdownLabel, DefaultCashDropdownDescription, DefaultCashDropdownVisible, DefaultCashDropdownDisplayOrder,
 					startingCash, DefaultCash.ToString(), DefaultCashDropdownLocked);
 		}

@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var t in map.WorldActorInfo.TraitInfos<StartingUnitsInfo>())
 				startingUnits[t.Class] = t.ClassName;
 
-			if (startingUnits.Any())
+			if (startingUnits.Count > 0)
 				yield return new LobbyOption("startingunits", DropdownLabel, DropdownDescription, DropdownVisible, DropdownDisplayOrder,
 					startingUnits, StartingUnitsClass, DropdownLocked);
 		}
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Traits
 				});
 			}
 
-			if (!unitGroup.SupportActors.Any())
+			if (unitGroup.SupportActors.Length == 0)
 				return;
 
 			var supportSpawnCells = w.Map.FindTilesInAnnulus(p.HomeLocation, unitGroup.InnerSupportRadius + 1, unitGroup.OuterSupportRadius);
