@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Lint
 
 		void CheckInheritance(Action<string> emitError, string actor, Dictionary<string, List<string>> inheritsMap)
 		{
-			var toResolve = new Queue<string>(inheritsMap.Keys.Where(k => k.ToLowerInvariant() == actor.ToLowerInvariant()));
+			var toResolve = new Queue<string>(inheritsMap.Keys.Where(k => string.Equals(k, actor, StringComparison.InvariantCultureIgnoreCase)));
 			while (toResolve.TryDequeue(out var key))
 			{
 				// Missing keys are a fatal merge error, so will have already been reported by other lint checks

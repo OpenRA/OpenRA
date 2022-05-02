@@ -389,7 +389,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				try
 				{
 					var parts = s.Value.Split(',');
-					if (parts[0] == "")
+					if (string.IsNullOrEmpty(parts[0]))
 						parts[0] = "Neutral";
 
 					if (!players.Contains(parts[0]))

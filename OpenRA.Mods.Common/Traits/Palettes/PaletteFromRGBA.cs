@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void LoadPalettes(WorldRenderer wr)
 		{
 			// Enable palette only for a specific tileset
-			if (info.Tileset != null && info.Tileset.ToLowerInvariant() != world.Map.Tileset.ToLowerInvariant())
+			if (info.Tileset != null && !string.Equals(info.Tileset, world.Map.Tileset, System.StringComparison.InvariantCultureIgnoreCase))
 				return;
 
 			var a = info.A / 255f;
