@@ -20,7 +20,6 @@ Container@HOTKEYS_PANEL:
 			Chat Commands:
 				Types: Chat
 			Control Groups:
-				Template: TWO_COLUMN
 				Types: ControlGroups
 			Depth Preview Debug:
 				Types: DepthDebug
