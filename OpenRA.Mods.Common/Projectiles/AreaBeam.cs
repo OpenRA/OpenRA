@@ -85,6 +85,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly AttackBase actorAttackBase;
 		readonly Color color;
 		readonly WDist speed;
+		readonly WDist weaponRange;
 
 		[Sync]
 		WPos headPos;
@@ -137,6 +138,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			target += dir * info.BeyondTargetRange.Length / 1024;
 
 			length = Math.Max((target - headPos).Length / speed.Length, 1);
+			weaponRange = new WDist(Util.ApplyPercentageModifiers(args.Weapon.Range.Length, args.RangeModifiers));
 		}
 
 		void TrackTarget()
@@ -151,7 +153,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 				// Only continue tracking target if it's within weapon range +
 				// BeyondTargetRange to avoid edge case stuttering (start firing and immediately stop again).
-				if (targetDistance > args.Weapon.Range + info.BeyondTargetRange)
+				if (targetDistance > weaponRange + info.BeyondTargetRange)
 					StopTargeting();
 				else
 				{
@@ -192,7 +194,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			}
 
 			// Allow for leniency to avoid edge case stuttering (start firing and immediately stop again).
-			var outOfWeaponRange = args.Weapon.Range + info.BeyondTargetRange < new WDist((args.PassiveTarget - args.Source).Length);
+			var outOfWeaponRange = weaponRange + info.BeyondTargetRange < new WDist((args.PassiveTarget - args.Source).Length);
 
 			// While the head is travelling, the tail must start to follow Duration ticks later.
 			// Alternatively, also stop emitting the beam if source actor dies or is ordered to stop.
