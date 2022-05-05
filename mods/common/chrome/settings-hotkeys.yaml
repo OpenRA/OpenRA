@@ -21,6 +21,8 @@ Container@HOTKEYS_PANEL:
 				Types: Chat
 			Control Groups:
 				Types: ControlGroups
+			Editor Commands:
+				Types: Editor
 	Width: PARENT_RIGHT
 	Height: PARENT_BOTTOM
 	Children:

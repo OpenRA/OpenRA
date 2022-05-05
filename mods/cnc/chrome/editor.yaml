@@ -591,7 +591,7 @@ Container@EDITOR_WORLD_ROOT:
 			Width: 100
 			Text: Undo
 			Font: Bold
-			Key: z ctrl
+			Key: EditorUndo
 			TooltipTemplate: BUTTON_TOOLTIP
 			TooltipText: Undo last step
 			TooltipContainer: TOOLTIP_CONTAINER
@@ -602,7 +602,7 @@ Container@EDITOR_WORLD_ROOT:
 			Width: 100
 			Text: Redo
 			Font: Bold
-			Key: y ctrl
+			Key: EditorRedo
 			TooltipTemplate: BUTTON_TOOLTIP
 			TooltipText: Redo last step
 			TooltipContainer: TOOLTIP_CONTAINER
@@ -612,7 +612,7 @@ Container@EDITOR_WORLD_ROOT:
 			Width: 96
 			Height: 25
 			Text: Copy/Paste
-			Key: c ctrl
+			Key: EditorCopy
 			TooltipTemplate: BUTTON_TOOLTIP
 			TooltipText: Copy
 			TooltipContainer: TOOLTIP_CONTAINER

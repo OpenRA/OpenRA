@@ -573,7 +573,7 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipText: Copy
 			TooltipContainer: TOOLTIP_CONTAINER
 			Font: Bold
-			Key: c ctrl
+			Key: EditorCopy
 		DropDownButton@COPYFILTER_BUTTON:
 			X: 170
 			Width: 140
@@ -586,7 +586,7 @@ Container@EDITOR_WORLD_ROOT:
 			Width: 70
 			Text: Undo
 			Font: Bold
-			Key: z ctrl
+			Key: EditorUndo
 			TooltipTemplate: BUTTON_TOOLTIP
 			TooltipText: Undo last step
 			TooltipContainer: TOOLTIP_CONTAINER
@@ -596,7 +596,7 @@ Container@EDITOR_WORLD_ROOT:
 			Width: 70
 			Text: Redo
 			Font: Bold
-			Key: y ctrl
+			Key: EditorRedo
 			TooltipTemplate: BUTTON_TOOLTIP
 			TooltipText: Redo last step
 			TooltipContainer: TOOLTIP_CONTAINER
