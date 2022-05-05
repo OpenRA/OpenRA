@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("PowerStates at which the condition is granted. Options are Normal, Low and Critical.")]
 		public readonly PowerState ValidPowerStates = PowerState.Low | PowerState.Critical;
 
-		public override object Create(ActorInitializer init) { return new GrantConditionOnPowerState(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnPowerState(this); }
 	}
 
 	public class GrantConditionOnPowerState : ConditionalTrait<GrantConditionOnPowerStateInfo>, INotifyOwnerChanged, INotifyPowerLevelChanged
@@ -35,14 +35,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool validPowerState;
 
-		public GrantConditionOnPowerState(Actor self, GrantConditionOnPowerStateInfo info)
-			: base(info)
-		{
-			playerPower = self.Owner.PlayerActor.Trait<PowerManager>();
-		}
+		public GrantConditionOnPowerState(GrantConditionOnPowerStateInfo info)
+			: base(info) { }
 
 		protected override void Created(Actor self)
 		{
+			playerPower = self.Owner.PlayerActor.Trait<PowerManager>();
+
 			base.Created(self);
 
 			Update(self);
