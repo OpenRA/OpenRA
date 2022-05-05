@@ -1,0 +1,21 @@
+EditorUndo: Z Ctrl
+	Description: Undo
+	Types: Editor
+	Contexts: Editor
+	Platform:
+		OSX: Z Meta
+
+EditorRedo: Y Ctrl
+	Description: Redo
+	Types: Editor
+	Contexts: Editor
+	Platform:
+		OSX: Z Meta, Shift
+		Linux: Z Ctrl, Shift
+
+EditorCopy: C Ctrl
+	Description: Copy
+	Types: Editor
+	Contexts: Editor
+	Platform:
+		OSX: C Meta

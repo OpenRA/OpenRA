@@ -41,6 +41,14 @@ namespace OpenRA
 			var contextsNode = node.Nodes.FirstOrDefault(n => n.Key == "Contexts");
 			if (contextsNode != null)
 				Contexts = FieldLoader.GetValue<HashSet<string>>("Contexts", contextsNode.Value.Value);
+
+			var platformNode = node.Nodes.FirstOrDefault(n => n.Key == "Platform");
+			if (platformNode != null)
+			{
+				var platformOverride = platformNode.Value.Nodes.FirstOrDefault(n => n.Key == Platform.CurrentPlatform.ToString());
+				if (platformOverride != null)
+					Default = FieldLoader.GetValue<Hotkey>("value", platformOverride.Value.Value);
+			}
 		}
 	}
 }
