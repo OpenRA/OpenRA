@@ -39,3 +39,13 @@ EditorHistoryTab: Y
 	Description: History Tab
 	Types: Editor
 	Contexts: Editor
+
+EditorToggleGridOverlay: F1
+	Description: Grid Overlay
+	Types: Editor
+	Contexts: Editor
+
+EditorToggleBuildableOverlay: F2
+	Description: Buildable Terrain Overlay
+	Types: Editor
+	Contexts: Editor

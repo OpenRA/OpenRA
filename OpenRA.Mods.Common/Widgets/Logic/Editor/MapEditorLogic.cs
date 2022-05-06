@@ -11,25 +11,14 @@
 
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	[ChromeLogicArgsHotkeys("ChangeZoomKey")]
 	public class MapEditorLogic : ChromeLogic
 	{
 		MapCopyFilters copyFilters = MapCopyFilters.All;
-
-		enum MapOverlays
-		{
-			None = 0,
-			Grid = 1,
-			Buildable = 2,
-		}
-
-		MapOverlays overlays = MapOverlays.None;
 
 		[ObjectCreator.UseCtor]
 		public MapEditorLogic(Widget widget, World world, WorldRenderer worldRenderer)
@@ -60,16 +49,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
 					var map = worldRenderer.World.Map;
 					return map.Height.Contains(cell) ? $"{cell},{map.Height[cell]} ({map.Tiles[cell].Type})" : "";
-				};
-			}
-
-			var overlayDropdown = widget.GetOrNull<DropDownButtonWidget>("OVERLAY_BUTTON");
-			if (overlayDropdown != null)
-			{
-				overlayDropdown.OnMouseDown = _ =>
-				{
-					overlayDropdown.RemovePanel();
-					overlayDropdown.AttachPanel(CreateOverlaysPanel(world));
 				};
 			}
 
@@ -106,46 +85,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				category.IsChecked = () => copyFilters.HasFlag(cat);
 				category.IsVisible = () => true;
 				category.OnClick = () => copyFilters ^= cat;
-
-				categoriesPanel.AddChild(category);
-			}
-
-			return categoriesPanel;
-		}
-
-		Widget CreateOverlaysPanel(World world)
-		{
-			var categoriesPanel = Ui.LoadWidget("OVERLAY_PANEL", null, new WidgetArgs());
-			var categoryTemplate = categoriesPanel.Get<CheckboxWidget>("CATEGORY_TEMPLATE");
-
-			MapOverlays[] allCategories = { MapOverlays.Grid, MapOverlays.Buildable };
-			foreach (var cat in allCategories)
-			{
-				var category = (CheckboxWidget)categoryTemplate.Clone();
-				category.GetText = () => cat.ToString();
-				category.IsChecked = () => overlays.HasFlag(cat);
-				category.IsVisible = () => true;
-				category.OnClick = () => overlays ^= cat;
-
-				if (cat.HasFlag(MapOverlays.Grid))
-				{
-					var terrainGeometryTrait = world.WorldActor.Trait<TerrainGeometryOverlay>();
-					category.OnClick = () =>
-					{
-						overlays ^= cat;
-						terrainGeometryTrait.Enabled = overlays.HasFlag(MapOverlays.Grid);
-					};
-				}
-
-				if (cat.HasFlag(MapOverlays.Buildable))
-				{
-					var buildableTerrainTrait = world.WorldActor.Trait<BuildableTerrainOverlay>();
-					category.OnClick = () =>
-					{
-						overlays ^= cat;
-						buildableTerrainTrait.Enabled = overlays.HasFlag(MapOverlays.Buildable);
-					};
-				}
 
 				categoriesPanel.AddChild(category);
 			}
