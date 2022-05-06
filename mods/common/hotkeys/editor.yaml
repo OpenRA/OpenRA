@@ -19,3 +19,23 @@ EditorCopy: C Ctrl
 	Contexts: Editor
 	Platform:
 		OSX: C Meta
+
+EditorTilesTab: E
+	Description: Tiles Tab
+	Types: Editor
+	Contexts: Editor
+
+EditorOverlaysTab: R
+	Description: Overlays Tab
+	Types: Editor
+	Contexts: Editor
+
+EditorActorsTab: T
+	Description: Actors Tab
+	Types: Editor
+	Contexts: Editor
+
+EditorHistoryTab: Y
+	Description: History Tab
+	Types: Editor
+	Contexts: Editor
