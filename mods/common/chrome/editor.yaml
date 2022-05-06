@@ -203,8 +203,11 @@ Container@EDITOR_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 
 Container@EDITOR_WORLD_ROOT:
-	Logic: LoadIngamePerfLogic, MapEditorLogic, ActorEditLogic
+	Logic: LoadIngamePerfLogic, MapEditorLogic, ActorEditLogic, MapOverlaysLogic
+		ToggleGridOverlayKey: EditorToggleGridOverlay
+		ToggleBuildableOverlayKey: EditorToggleBuildableOverlay
 	Children:
+		LogicKeyListener@OVERLAY_KEYHANDLER:
 		Container@PERF_ROOT:
 		EditorViewportController@MAP_EDITOR:
 			Width: WINDOW_RIGHT
