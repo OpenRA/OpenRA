@@ -246,8 +246,8 @@ SpriteSequenceFormat: ClassicTilesetSpecificSpriteSequence
 ModelSequenceFormat: PlaceholderModelSequence
 
 AssetBrowser:
-	SpriteExtensions: .shp, .tem, .des, .sno, .jun
-	AudioExtensions: .aud, .wav
+	SpriteExtensions: .shp, .tem, .win, .sno, .des, .jun
+	AudioExtensions: .aud, .wav, .v00, .v01, .v02, .v03, .var
 	VideoExtensions: .vqa, .wsa
 
 GameSpeeds:
