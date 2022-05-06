@@ -204,7 +204,6 @@ Container@EDITOR_ROOT:
 
 Container@EDITOR_WORLD_ROOT:
 	Logic: LoadIngamePerfLogic, MapEditorLogic, ActorEditLogic
-		EditPanelPadding: 14
 	Children:
 		Container@PERF_ROOT:
 		EditorViewportController@MAP_EDITOR:
