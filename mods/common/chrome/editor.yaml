@@ -533,24 +533,40 @@ Container@EDITOR_WORLD_ROOT:
 					Height: 25
 					Text: Tiles
 					Font: Bold
+					Key: EditorTilesTab
+					TooltipTemplate: BUTTON_TOOLTIP
+					TooltipText: Tiles
+					TooltipContainer: TOOLTIP_CONTAINER
 				Button@OVERLAYS_TAB:
 					X: 70
 					Width: 90
 					Height: 25
 					Text: Overlays
 					Font: Bold
+					Key: EditorOverlaysTab
+					TooltipTemplate: BUTTON_TOOLTIP
+					TooltipText: Overlays
+					TooltipContainer: TOOLTIP_CONTAINER
 				Button@ACTORS_TAB:
 					X: 160
 					Width: 70
 					Height: 25
 					Text: Actors
 					Font: Bold
+					Key: EditorActorsTab
+					TooltipTemplate: BUTTON_TOOLTIP
+					TooltipText: Actors
+					TooltipContainer: TOOLTIP_CONTAINER
 				Button@HISTORY_TAB:
 					X: 230
 					Width: 70
 					Height: 25
 					Text: History
 					Font: Bold
+					Key: EditorHistoryTab
+					TooltipTemplate: BUTTON_TOOLTIP
+					TooltipText: History
+					TooltipContainer: TOOLTIP_CONTAINER
 		MenuButton@OPTIONS_BUTTON:
 			Logic: MenuButtonsChromeLogic
 			MenuContainer: INGAME_MENU
