@@ -52,101 +52,141 @@ ControlGroupCreate01: NUMBER_1 Ctrl
 	Description: Create group 1
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_1 Meta
 
 ControlGroupCreate02: NUMBER_2 Ctrl
 	Description: Create group 2
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_2 Meta
 
 ControlGroupCreate03: NUMBER_3 Ctrl
 	Description: Create group 3
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_3 Meta
 
 ControlGroupCreate04: NUMBER_4 Ctrl
 	Description: Create group 4
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_4 Meta
 
 ControlGroupCreate05: NUMBER_5 Ctrl
 	Description: Create group 5
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_5 Meta
 
 ControlGroupCreate06: NUMBER_6 Ctrl
 	Description: Create group 6
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_6 Meta
 
 ControlGroupCreate07: NUMBER_7 Ctrl
 	Description: Create group 7
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_7 Meta
 
 ControlGroupCreate08: NUMBER_8 Ctrl
 	Description: Create group 8
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_8 Meta
 
 ControlGroupCreate09: NUMBER_9 Ctrl
 	Description: Create group 9
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_9 Meta
 
 ControlGroupCreate10: NUMBER_0 Ctrl
 	Description: Create group 0
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_0 Meta
 
 ControlGroupAddTo01: NUMBER_1 Ctrl, Shift
 	Description: Add to group 1
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_1 Meta, Shift
 
 ControlGroupAddTo02: NUMBER_2 Ctrl, Shift
 	Description: Add to group 2
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_2 Meta, Shift
 
 ControlGroupAddTo03: NUMBER_3 Ctrl, Shift
 	Description: Add to group 3
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_3 Meta, Shift
 
 ControlGroupAddTo04: NUMBER_4 Ctrl, Shift
 	Description: Add to group 4
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_4 Meta, Shift
 
 ControlGroupAddTo05: NUMBER_5 Ctrl, Shift
 	Description: Add to group 5
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_5 Meta, Shift
 
 ControlGroupAddTo06: NUMBER_6 Ctrl, Shift
 	Description: Add to group 6
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_6 Meta, Shift
 
 ControlGroupAddTo07: NUMBER_7 Ctrl, Shift
 	Description: Add to group 7
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_7 Meta, Shift
 
 ControlGroupAddTo08: NUMBER_8 Ctrl, Shift
 	Description: Add to group 8
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_8 Meta, Shift
 
 ControlGroupAddTo09: NUMBER_9 Ctrl, Shift
 	Description: Add to group 9
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_9 Meta, Shift
 
 ControlGroupAddTo10: NUMBER_0 Ctrl, Shift
 	Description: Add to group 0
 	Types: ControlGroups
 	Contexts: Player
+	Platform:
+		OSX: NUMBER_0 Meta, Shift
 
 ControlGroupCombineWith01: NUMBER_1 Shift
 	Description: Combine with group 1
