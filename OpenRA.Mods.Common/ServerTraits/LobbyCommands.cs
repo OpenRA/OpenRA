@@ -259,6 +259,22 @@ namespace OpenRA.Mods.Common.Server
 				if (server.LobbyInfo.Slots.All(sl => server.LobbyInfo.ClientInSlot(sl.Key) == null))
 					return;
 
+				// Does the host have the map installed?
+				if (server.Type != ServerType.Dedicated && server.ModData.MapCache[server.Map.Uid].Status != MapStatus.Available)
+				{
+					// Client 0 will always be the Host
+					// In some cases client 0 doesn't exist, so we untick all players
+					var host = server.LobbyInfo.Clients.FirstOrDefault(c => c.Index == 0);
+					if (host != null)
+						host.State = Session.ClientState.NotReady;
+					else
+						foreach (var client in server.LobbyInfo.Clients)
+							client.State = Session.ClientState.NotReady;
+
+					server.SyncLobbyClients();
+					return;
+				}
+
 				if (LobbyUtils.InsufficientEnabledSpawnPoints(server.Map, server.LobbyInfo))
 					return;
 
