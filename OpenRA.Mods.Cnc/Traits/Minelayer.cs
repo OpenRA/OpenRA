@@ -145,8 +145,6 @@ namespace OpenRA.Mods.Cnc.Traits
 				// A different minelayer might have started laying the field without this minelayer knowing the start
 				minefieldStart = order.ExtraLocation;
 
-#pragma warning disable IDE0019 // Use pattern matching
-
 				var movement = self.Trait<IPositionable>();
 				var mobile = movement as Mobile;
 
@@ -154,8 +152,6 @@ namespace OpenRA.Mods.Cnc.Traits
 					.Where(c => IsCellAcceptable(self, c) && self.Owner.Shroud.IsExplored(c)
 						&& movement.CanEnterCell(c, null, BlockedByActor.Immovable) && (mobile != null && mobile.CanStayInCell(c)))
 					.OrderBy(c => (c - minefieldStart).LengthSquared).ToList();
-
-#pragma warning restore IDE0019 // Use pattern matching
 
 				self.QueueActivity(order.Queued, new LayMines(self, minefield));
 				self.ShowTargetLines();
@@ -309,8 +305,6 @@ namespace OpenRA.Mods.Cnc.Traits
 				var minefield = GetMinefieldCells(minefieldStart, lastMousePos,
 					minelayers.Max(m => m.Info.TraitInfo<MinelayerInfo>().MinefieldDepth));
 
-#pragma warning disable IDE0019 // Use pattern matching
-
 				var movement = minelayer.Trait<IPositionable>();
 				var mobile = movement as Mobile;
 				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
@@ -341,8 +335,6 @@ namespace OpenRA.Mods.Cnc.Traits
 					}
 
 					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c), WVec.Zero, -511, pal, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
-
-#pragma warning restore IDE0019 // Use pattern matching
 				}
 			}
 
