@@ -235,6 +235,17 @@ namespace OpenRA
 			// Reseed the RNG so this isn't an exact repeat of the last game
 			lobbyInfo.GlobalSettings.RandomSeed = CosmeticRandom.Next();
 
+			// Note: the map may have been changed on disk outside the game, changing its UID.
+			// Use the updated UID if we have tracked the update instead of failing.
+			lobbyInfo.GlobalSettings.Map = ModData.MapCache.GetUpdatedMap(lobbyInfo.GlobalSettings.Map);
+			if (lobbyInfo.GlobalSettings.Map == null)
+			{
+				Disconnect();
+				Ui.ResetAll();
+				LoadShellMap();
+				return;
+			}
+
 			var orders = new[]
 			{
 					Order.Command($"sync_lobby {lobbyInfo.Serialize()}"),

@@ -46,6 +46,7 @@ namespace OpenRA
 		/// Event is not called when map is deleted
 		/// </summary>
 		public event Action<string, string> MapUpdated = (oldUID, newUID) => { };
+		readonly Dictionary<string, string> mapUpdates = new Dictionary<string, string>();
 
 		public MapCache(ModData modData)
 		{
@@ -125,7 +126,10 @@ namespace OpenRA
 						previews[uid].UpdateFromMap(mapPackage, package, classification, modData.Manifest.MapCompatibility, mapGrid.Type);
 
 						if (oldMap != uid)
-							MapUpdated(oldMap, uid);
+						{
+							if (oldMap != null)
+								mapUpdates.Add(oldMap, uid);
+						}
 					}
 				}
 			}
@@ -308,6 +312,22 @@ namespace OpenRA
 			// Release the buffer by forcing changes to be written out to the texture, allowing the buffer to be reclaimed by GC.
 			Game.RunAfterTick(sheetBuilder.Current.ReleaseBuffer);
 			Log.Write("debug", "MapCache.LoadAsyncInternal ended");
+		}
+
+		public string GetUpdatedMap(string uid)
+		{
+			if (uid == null)
+				return null;
+
+			while (this[uid].Status != MapStatus.Available)
+			{
+				if (mapUpdates.ContainsKey(uid))
+					uid = mapUpdates[uid];
+				else
+					return null;
+			}
+
+			return uid;
 		}
 
 		public void CacheMinimap(MapPreview preview)
