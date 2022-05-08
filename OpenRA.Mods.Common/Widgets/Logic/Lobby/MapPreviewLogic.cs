@@ -173,6 +173,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					retry.OnClick = () =>
 					{
+						modData.MapCache.UpdateMaps();
 						var (map, _) = getMap();
 						if (map.Status == MapStatus.DownloadError)
 						{
