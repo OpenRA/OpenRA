@@ -132,6 +132,9 @@ dotnet_diagnostic.IDE0011.severity = silent
 # Object initialization can be simplified / Use object initializer.
 dotnet_diagnostic.IDE0017.severity = warning
 
+# Collection initialization can be simplified
+dotnet_diagnostic.IDE0028.severity = warning
+
 # Modifiers are not ordered.
 dotnet_diagnostic.IDE0036.severity = warning
 
@@ -157,3 +160,36 @@ dotnet_diagnostic.CA1847.severity = warning
 [*.yaml]
 indent_style = tab
 indent_size = 4
+
+# Use 'Count' property instead of 'Any' method.
+dotnet_diagnostic.RCS1080.severity = warning
+
+# Use the "Length" property instead of Enumerable.Count().
+dotnet_diagnostic.CA1829.severity = warning
+
+# Use read-only auto-implemented property.
+dotnet_diagnostic.RCS1170.severity = warning
+
+# Unnecessary interpolated string.
+dotnet_diagnostic.RCS1214.severity = warning
+
+# Unnecessary usage of verbatim string literal.
+dotnet_diagnostic.RCS1192.severity = warning
+
+# Use pattern matching instead of combination of 'as' operator and null check.
+dotnet_diagnostic.RCS1221.severity = warning
+
+# Expression is always equal to 'true'.
+dotnet_diagnostic.RCS1215.severity = warning
+
+# Use StringComparison when comparing strings.
+dotnet_diagnostic.RCS1155.severity = warning
+
+# Abstract type should not have public constructors.
+dotnet_diagnostic.RCS1160.severity = warning
+
+# Optimize 'Dictionary<TKey, TValue>.ContainsKey' call.
+dotnet_diagnostic.RCS1235.severity = warning
+
+# Call extension method as instance method.
+dotnet_diagnostic.RCS1196.severity = warning
