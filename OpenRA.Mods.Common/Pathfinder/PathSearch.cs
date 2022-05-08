@@ -153,7 +153,25 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// Determines if there are more reachable cells and the search can be continued.
 		/// If false, <see cref="Expand"/> can no longer be called.
 		/// </summary>
-		bool CanExpand => !openQueue.Empty;
+		bool CanExpand()
+		{
+			// Connections to a cell can appear more than once if a search discovers a lower cost route to the cell.
+			// The lower cost gets processed first and the cell will be Closed.
+			// When checking if we can expand, pop any Closed cells off the queue, so Expand will only see Open cells.
+			CellStatus status;
+			do
+			{
+				if (openQueue.Empty)
+					return false;
+
+				status = Graph[openQueue.Peek().Destination].Status;
+				if (status == CellStatus.Closed)
+					openQueue.Pop();
+			}
+			while (status == CellStatus.Closed);
+
+			return true;
+		}
 
 		/// <summary>
 		/// This function analyzes the neighbors of the most promising node in the pathfinding graph
@@ -191,9 +209,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 				var estimatedTotalCostToTarget = costSoFarToNeighbor + estimatedRemainingCostToTarget;
 				Graph[neighbor] = new CellInfo(CellStatus.Open, costSoFarToNeighbor, estimatedTotalCostToTarget, currentMinNode);
-
-				if (neighborInfo.Status != CellStatus.Open)
-					openQueue.Add(new GraphConnection(neighbor, estimatedTotalCostToTarget));
+				openQueue.Add(new GraphConnection(neighbor, estimatedTotalCostToTarget));
 			}
 
 			return currentMinNode;
@@ -205,7 +221,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </summary>
 		public List<CPos> FindPath()
 		{
-			while (CanExpand)
+			while (CanExpand())
 			{
 				var p = Expand();
 				if (TargetPredicate(p))
@@ -238,7 +254,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </summary>
 		public static List<CPos> FindBidiPath(PathSearch first, PathSearch second)
 		{
-			while (first.CanExpand && second.CanExpand)
+			while (first.CanExpand() && second.CanExpand())
 			{
 				// make some progress on the first search
 				var p = first.Expand();

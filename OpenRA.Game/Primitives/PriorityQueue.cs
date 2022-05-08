@@ -102,7 +102,7 @@ namespace OpenRA.Primitives
 				return;
 			}
 
-			if (downLevel <= level && downIndex < index - 1 &&
+			if ((downLevel < level || (downLevel == level && downIndex < index - 1)) &&
 				comparer.Compare(At(downLevel, downIndex), At(downLevel, downIndex + 1)) >= 0)
 				++downIndex;
 
