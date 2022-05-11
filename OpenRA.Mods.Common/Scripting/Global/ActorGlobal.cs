@@ -71,17 +71,6 @@ namespace OpenRA.Mods.Common.Scripting
 				return init;
 			}
 
-			// HACK: Backward compatibility for legacy int facings
-			if (init is FacingInit facingInit)
-			{
-				if (value.TryGetClrValue(out int facing))
-				{
-					facingInit.Initialize(WAngle.FromFacing(facing));
-					TextNotificationsManager.Debug("Initializing Facing with integers is deprecated. Use Angle instead.");
-					return facingInit;
-				}
-			}
-
 			var initializers = initType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
 				.Where(m => m.Name == "Initialize" && m.GetParameters().Length == 1);
 

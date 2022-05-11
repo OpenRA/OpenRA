@@ -224,12 +224,6 @@ namespace OpenRA
 			if (!left.TryGetClrValue(out WAngle a))
 				throw new LuaException($"Attempted to call WAngle.Add(WAngle, WAngle) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 
-			if (right.TryGetClrValue(out int c))
-			{
-				TextNotificationsManager.Debug("Support for facing calculations mixing Angle with integers is deprecated. Make sure all facing calculations use Angle");
-				return new LuaCustomClrObject(a + FromFacing(c));
-			}
-
 			if (right.TryGetClrValue(out WAngle b))
 				return new LuaCustomClrObject(a + b);
 
@@ -240,12 +234,6 @@ namespace OpenRA
 		{
 			if (!left.TryGetClrValue(out WAngle a))
 				throw new LuaException($"Attempted to call WAngle.Subtract(WAngle, WAngle) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
-
-			if (right.TryGetClrValue(out int c))
-			{
-				TextNotificationsManager.Debug("Support for facing calculations mixing Angle with integers is deprecated. Make sure all facing calculations use Angle");
-				return new LuaCustomClrObject(a - FromFacing(c));
-			}
 
 			if (right.TryGetClrValue(out WAngle b))
 				return new LuaCustomClrObject(a - b);
