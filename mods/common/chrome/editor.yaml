@@ -670,7 +670,9 @@ ScrollPanel@CATEGORY_FILTER_PANEL:
 
 ScrollPanel@COPY_FILTER_PANEL:
 	Width: 140
-	Height: 65
+	Height: 80
+	ItemSpacing: 5
+	TopBottomSpacing: 0
 	Children:
 		Checkbox@CATEGORY_TEMPLATE:
 			X: 5
@@ -681,7 +683,9 @@ ScrollPanel@COPY_FILTER_PANEL:
 
 ScrollPanel@OVERLAY_PANEL:
 	Width: 140
-	Height: 45
+	Height: 55
+	ItemSpacing: 5
+	TopBottomSpacing: 0
 	Children:
 		Checkbox@CATEGORY_TEMPLATE:
 			X: 5
