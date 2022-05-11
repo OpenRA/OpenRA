@@ -73,9 +73,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
 					Author = "Westwood Studios",
+					RequiresMod = ModData.Manifest.Id
 				};
-
-				Map.RequiresMod = ModData.Manifest.Id;
 
 				SetBounds(Map, mapSection);
 
