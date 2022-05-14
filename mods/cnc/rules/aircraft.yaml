@@ -213,15 +213,19 @@ C17:
 	Contrail@1:
 		Offset: -261,-650,0
 		TrailLength: 15
+		StartColorAlpha: 128
 	Contrail@2:
 		Offset: -85,-384,0
 		TrailLength: 16
+		StartColorAlpha: 128
 	Contrail@3:
 		Offset: -85,384,0
 		TrailLength: 16
+		StartColorAlpha: 128
 	Contrail@4:
 		Offset: -261,650,0
 		TrailLength: 15
+		StartColorAlpha: 128
 	-MapEditorData:
 
 A10:
@@ -252,9 +256,11 @@ A10:
 	Contrail@1:
 		Offset: -640,171,0
 		TrailLength: 15
+		StartColorAlpha: 128
 	Contrail@2:
 		Offset: -640,-171,0
 		TrailLength: 15
+		StartColorAlpha: 128
 	-MapEditorData:
 
 TRAN.Husk:
