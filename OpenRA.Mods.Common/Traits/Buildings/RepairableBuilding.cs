@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly IHealth health;
 		readonly Predicate<Player> isNotActiveAlly;
-		readonly Stack<int> repairTokens = new Stack<int>();
+		int repairToken = Actor.InvalidConditionToken;
 		int remainingTicks;
 
 		public readonly List<Player> Repairers = new List<Player>();
@@ -89,11 +89,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (string.IsNullOrEmpty(Info.RepairCondition))
 				return;
 
-			while (Repairers.Count > repairTokens.Count)
-				repairTokens.Push(self.GrantCondition(Info.RepairCondition));
-
-			while (Repairers.Count < repairTokens.Count && repairTokens.Count > 0)
-				self.RevokeCondition(repairTokens.Pop());
+			if (repairToken == Actor.InvalidConditionToken)
+				repairToken = self.GrantCondition(Info.RepairCondition, Repairers.Count);
+			else
+				self.UpdateCondition(repairToken, Repairers.Count);
 		}
 
 		public void RepairBuilding(Actor self, Player player)

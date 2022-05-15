@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -50,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class AmmoPool : INotifyCreated, INotifyAttack, ISync
 	{
 		public readonly AmmoPoolInfo Info;
-		readonly Stack<int> tokens = new Stack<int>();
+		int token = Actor.InvalidConditionToken;
 
 		// HACK: Temporarily needed until Rearm activity is gone for good
 		[Sync]
@@ -109,11 +108,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (string.IsNullOrEmpty(Info.AmmoCondition))
 				return;
 
-			while (CurrentAmmoCount > tokens.Count && tokens.Count < Info.Ammo)
-				tokens.Push(self.GrantCondition(Info.AmmoCondition));
-
-			while (CurrentAmmoCount < tokens.Count && tokens.Count > 0)
-				self.RevokeCondition(tokens.Pop());
+			if (token == Actor.InvalidConditionToken)
+				token = self.GrantCondition(Info.AmmoCondition, CurrentAmmoCount);
+			else
+				self.UpdateCondition(token, CurrentAmmoCount);
 		}
 	}
 }
