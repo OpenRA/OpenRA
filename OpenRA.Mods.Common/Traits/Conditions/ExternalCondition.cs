@@ -62,6 +62,8 @@ namespace OpenRA.Mods.Common.Traits
 		IConditionTimerWatcher[] watchers;
 		int duration;
 		int expires;
+		int conditionToken = Actor.InvalidConditionToken;
+		int lastToken = -1;
 
 		public ExternalCondition(ExternalConditionInfo info)
 		{
@@ -90,7 +92,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (!CanGrantCondition(source))
 				return Actor.InvalidConditionToken;
 
-			var token = self.GrantCondition(Info.Condition);
+			if (conditionToken == Actor.InvalidConditionToken)
+				conditionToken = self.GrantCondition(Info.Condition);
+			else
+				self.AddConditionWeight(conditionToken);
+			var token = ++lastToken;
 			permanentTokens.TryGetValue(source, out var permanent);
 
 			// Callers can override the amount of time remaining by passing a value
@@ -110,10 +116,8 @@ namespace OpenRA.Mods.Common.Traits
 						var expireIndex = timedTokens.FindIndex(t => t.Source == source);
 						if (expireIndex >= 0)
 						{
-							var expireToken = timedTokens[expireIndex].Token;
+							self.AddConditionWeight(conditionToken, -1);
 							timedTokens.RemoveAt(expireIndex);
-							if (self.TokenValid(expireToken))
-								self.RevokeCondition(expireToken);
 						}
 					}
 				}
@@ -123,10 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 					var totalCount = permanentTokens.Values.Sum(t => t.Count) + timedTokens.Count;
 					if (totalCount >= Info.TotalCap && timedTokens.Count > 0)
 					{
-						var expire = timedTokens[0].Token;
-						if (self.TokenValid(expire))
-							self.RevokeCondition(expire);
-
+						self.AddConditionWeight(conditionToken, -1);
 						timedTokens.RemoveAt(0);
 					}
 				}
@@ -173,9 +174,8 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 			}
 
-			if (self.TokenValid(token))
-				self.RevokeCondition(token);
-
+			if (conditionToken != Actor.InvalidConditionToken)
+				self.AddConditionWeight(conditionToken, -1);
 			return true;
 		}
 
@@ -188,16 +188,11 @@ namespace OpenRA.Mods.Common.Traits
 			var worldTick = self.World.WorldTick;
 			var count = 0;
 			while (count < timedTokens.Count && timedTokens[count].Expires < worldTick)
-			{
-				var token = timedTokens[count].Token;
-				if (self.TokenValid(token))
-					self.RevokeCondition(token);
-
 				count++;
-			}
 
 			if (count > 0)
 			{
+				self.AddConditionWeight(conditionToken, -count);
 				timedTokens.RemoveRange(0, count);
 				if (timedTokens.Count == 0)
 				{
