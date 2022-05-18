@@ -97,6 +97,7 @@ namespace OpenRA
 				soundFormat.GetPCMInputStream().ReadAllBytes(), soundFormat.Channels, soundFormat.SampleBits, soundFormat.SampleRate);
 			sounds = new Cache<string, ISoundSource>(filename => LoadSound(filename, loadIntoMemory));
 			currentSounds.Clear();
+			currentNotifications.Clear();
 			video = null;
 		}
 
