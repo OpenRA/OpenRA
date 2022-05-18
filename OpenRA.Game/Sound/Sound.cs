@@ -44,7 +44,7 @@ namespace OpenRA
 		ISound music;
 		ISound video;
 		MusicInfo currentMusic;
-		Dictionary<uint, ISound> currentSounds = new Dictionary<uint, ISound>();
+		readonly Dictionary<uint, ISound> currentSounds = new Dictionary<uint, ISound>();
 		readonly Dictionary<string, ISound> currentNotifications = new Dictionary<string, ISound>();
 		public bool DummyEngine { get; }
 
@@ -96,7 +96,7 @@ namespace OpenRA
 			Func<ISoundFormat, ISoundSource> loadIntoMemory = soundFormat => soundEngine.AddSoundSourceFromMemory(
 				soundFormat.GetPCMInputStream().ReadAllBytes(), soundFormat.Channels, soundFormat.SampleBits, soundFormat.SampleRate);
 			sounds = new Cache<string, ISoundSource>(filename => LoadSound(filename, loadIntoMemory));
-			currentSounds = new Dictionary<uint, ISound>();
+			currentSounds.Clear();
 			video = null;
 		}
 
