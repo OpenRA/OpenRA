@@ -401,9 +401,8 @@ namespace OpenRA
 
 			if (!string.IsNullOrEmpty(name) && (p == null || p == p.World.LocalPlayer))
 			{
-				if (currentNotifications.ContainsKey(name))
+				if (currentNotifications.TryGetValue(name, out var currentNotification))
 				{
-					var currentNotification = currentNotifications[name];
 					if (!currentNotification.Complete)
 					{
 						if (pool.AllowInterrupt)
@@ -412,9 +411,8 @@ namespace OpenRA
 							return false;
 					}
 				}
-				else if (currentSounds.ContainsKey(actorId))
+				else if (currentSounds.TryGetValue(actorId, out var currentSound))
 				{
-					var currentSound = currentSounds[actorId];
 					if (!currentSound.Complete)
 					{
 						if (pool.AllowInterrupt)
