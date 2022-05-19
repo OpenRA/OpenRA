@@ -28,6 +28,9 @@
 # to install FreeDesktop AppStream metadata
 #   make install-linux-appdata
 #
+# to install the Unix man page
+#   make install-man
+#
 # for help, run:
 #   make help
 #
@@ -155,6 +158,10 @@ install-linux-shortcuts:
 install-linux-appdata:
 	@sh -c '. ./packaging/functions.sh; install_linux_appdata $(CWD) "$(DESTDIR)" "$(datadir)" cnc d2k ra'
 
+install-man: all
+	@mkdir -p $(DESTDIR)$(mandir)/man6/
+	@./utility.sh all --man-page > $(DESTDIR)$(mandir)/man6/openra.6
+
 help:
 	@echo 'to compile, run:'
 	@echo '  make'
@@ -183,6 +190,9 @@ help:
 	@echo
 	@echo 'to install FreeDesktop AppStream metadata'
 	@echo '  make install-linux-appdata'
+	@echo
+	@echo 'to install a Unix man page'
+	@echo '  make install-man'
 
 ########################### MAKEFILE SETTINGS ##########################
 #
@@ -190,4 +200,4 @@ help:
 
 .SUFFIXES:
 
-.PHONY: all clean check check-scripts test version install install-linux-shortcuts install-linux-appdata help
+.PHONY: all clean check check-scripts test version install install-linux-shortcuts install-linux-appdata install-man help
