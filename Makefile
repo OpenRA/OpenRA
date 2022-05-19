@@ -22,10 +22,10 @@
 # using system libraries for native dependencies, run:
 #   make [prefix=/foo] [bindir=/bar/bin] TARGETPLATFORM=unix-generic install
 #
-# to install Linux startup scripts, desktop files, icons, and MIME metadata
+# to install FreeDesktop startup scripts, desktop files, icons, and MIME metadata
 #   make install-linux-shortcuts
 #
-# to install Linux AppStream metadata
+# to install FreeDesktop AppStream metadata
 #   make install-linux-appdata
 #
 # for help, run:
@@ -176,10 +176,10 @@ help:
 	@echo 'using system libraries for native dependencies, run:'
 	@echo '   make [RUNTIME=net6] [prefix=/foo] [bindir=/bar/bin] TARGETPLATFORM=unix-generic install'
 	@echo
-	@echo 'to install Linux startup scripts, desktop files, icons, and MIME metadata'
+	@echo 'to install FreeDesktop startup scripts, desktop files, icons, and MIME metadata'
 	@echo '  make install-linux-shortcuts'
 	@echo
-	@echo 'to install Linux AppStream metadata'
+	@echo 'to install FreeDesktop AppStream metadata'
 	@echo '  make install-linux-appdata'
 
 ########################### MAKEFILE SETTINGS ##########################
