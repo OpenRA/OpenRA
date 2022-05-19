@@ -60,8 +60,8 @@ namespace OpenRA.Mods.Common.Widgets
 		PlayerRadarTerrain playerRadarTerrain;
 		Player currentPlayer;
 
-		public string SoundUp { get; }
-		public string SoundDown { get; }
+		public string SoundUp { get; private set; }
+		public string SoundDown { get; private set; }
 
 		[ObjectCreator.UseCtor]
 		public RadarWidget(World world, WorldRenderer worldRenderer)
