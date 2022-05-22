@@ -586,10 +586,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </summary>
 		public List<CPos> FindPath(Actor self, IReadOnlyCollection<CPos> sources, CPos target,
 			BlockedByActor check, int heuristicWeightPercentage, Func<CPos, int> customCost,
-			Actor ignoreActor, bool laneBias)
+			Actor ignoreActor, bool laneBias, PathFinderOverlay pathFinderOverlay)
 		{
 			if (costEstimator == null)
 				return PathFinder.NoPath;
+
+			pathFinderOverlay?.NewRecording(self, sources, target);
 
 			RebuildDirtyGrids();
 
@@ -622,7 +624,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			// Determine an abstract path to all sources, for use in a unidirectional search.
 			var estimatedSearchSize = (abstractGraph.Count + 2) / 8;
 			using (var reverseAbstractSearch = PathSearch.ToTargetCellOverGraph(
-				fullGraph.GetConnections, locomotor, target, target, estimatedSearchSize))
+				fullGraph.GetConnections, locomotor, target, target, estimatedSearchSize, pathFinderOverlay?.RecordAbstractEdges(self)))
 			{
 				var sourcesWithPathableNodes = new List<CPos>(sourcesWithReachableNodes.Count);
 				foreach (var source in sourcesWithReachableNodes)
@@ -637,7 +639,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 				using (var fromSrc = GetLocalPathSearch(
 					self, sourcesWithPathableNodes, target, customCost, ignoreActor, check, laneBias, null, heuristicWeightPercentage,
-					heuristic: Heuristic(reverseAbstractSearch, estimatedSearchSize)))
+					heuristic: Heuristic(reverseAbstractSearch, estimatedSearchSize),
+					recorder: pathFinderOverlay?.RecordLocalEdges(self)))
 					return fromSrc.FindPath();
 			}
 		}
@@ -649,7 +652,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </summary>
 		public List<CPos> FindPath(Actor self, CPos source, CPos target,
 			BlockedByActor check, int heuristicWeightPercentage, Func<CPos, int> customCost,
-			Actor ignoreActor, bool laneBias)
+			Actor ignoreActor, bool laneBias, PathFinderOverlay pathFinderOverlay)
 		{
 			if (costEstimator == null)
 				return PathFinder.NoPath;
@@ -670,14 +673,19 @@ namespace OpenRA.Mods.Common.Pathfinder
 						source.Layer),
 					false);
 
+				pathFinderOverlay?.NewRecording(self, new[] { source }, target);
+
 				List<CPos> localPath;
 				using (var search = GetLocalPathSearch(
-					self, new[] { source }, target, customCost, ignoreActor, check, laneBias, gridToSearch, heuristicWeightPercentage))
+					self, new[] { source }, target, customCost, ignoreActor, check, laneBias, gridToSearch, heuristicWeightPercentage,
+					recorder: pathFinderOverlay?.RecordLocalEdges(self)))
 					localPath = search.FindPath();
 
 				if (localPath.Count > 0)
 					return localPath;
 			}
+
+			pathFinderOverlay?.NewRecording(self, new[] { source }, target);
 
 			RebuildDirtyGrids();
 
@@ -697,22 +705,24 @@ namespace OpenRA.Mods.Common.Pathfinder
 			// Determine an abstract path in both directions, for use in a bidirectional search.
 			var estimatedSearchSize = (abstractGraph.Count + 2) / 8;
 			using (var forwardAbstractSearch = PathSearch.ToTargetCellOverGraph(
-				fullGraph.GetConnections, locomotor, source, target, estimatedSearchSize))
+				fullGraph.GetConnections, locomotor, source, target, estimatedSearchSize, pathFinderOverlay?.RecordAbstractEdges(self)))
 			{
 				if (!forwardAbstractSearch.ExpandToTarget())
 					return PathFinder.NoPath;
 
 				using (var reverseAbstractSearch = PathSearch.ToTargetCellOverGraph(
-					fullGraph.GetConnections, locomotor, target, source, estimatedSearchSize))
+					fullGraph.GetConnections, locomotor, target, source, estimatedSearchSize, pathFinderOverlay?.RecordAbstractEdges(self)))
 				{
 					reverseAbstractSearch.ExpandToTarget();
 
 					using (var fromSrc = GetLocalPathSearch(
 						self, new[] { source }, target, customCost, ignoreActor, check, laneBias, null, heuristicWeightPercentage,
-						heuristic: Heuristic(reverseAbstractSearch, estimatedSearchSize)))
+						heuristic: Heuristic(reverseAbstractSearch, estimatedSearchSize),
+						recorder: pathFinderOverlay?.RecordLocalEdges(self)))
 					using (var fromDest = GetLocalPathSearch(
 						self, new[] { target }, source, customCost, ignoreActor, check, laneBias, null, heuristicWeightPercentage,
 						heuristic: Heuristic(forwardAbstractSearch, estimatedSearchSize),
+						recorder: pathFinderOverlay?.RecordLocalEdges(self),
 						inReverse: true))
 						return PathSearch.FindBidiPath(fromDest, fromSrc);
 				}
@@ -979,11 +989,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 			Actor self, IEnumerable<CPos> srcs, CPos dst, Func<CPos, int> customCost,
 			Actor ignoreActor, BlockedByActor check, bool laneBias, Grid? grid, int heuristicWeightPercentage,
 			Func<CPos, int> heuristic = null,
-			bool inReverse = false)
+			bool inReverse = false,
+			PathSearch.IRecorder recorder = null)
 		{
 			return PathSearch.ToTargetCell(
 				world, locomotor, self, srcs, dst, check, heuristicWeightPercentage,
-				customCost, ignoreActor, laneBias, inReverse, heuristic, grid);
+				customCost, ignoreActor, laneBias, inReverse, heuristic, grid, recorder);
 		}
 	}
 }

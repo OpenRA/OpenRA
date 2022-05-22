@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		const int DefaultHeuristicWeightPercentage = 125;
 
 		readonly World world;
+		PathFinderOverlay pathFinderOverlay;
 		Dictionary<Locomotor, HierarchicalPathFinder> hierarchicalPathFindersByLocomotor;
 
 		public PathFinder(Actor self)
@@ -55,6 +56,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
+			pathFinderOverlay = world.WorldActor.TraitOrDefault<PathFinderOverlay>();
+
 			// Requires<LocomotorInfo> ensures all Locomotors have been initialized.
 			hierarchicalPathFindersByLocomotor = w.WorldActor.TraitsImplementing<Locomotor>().ToDictionary(
 				locomotor => locomotor,
@@ -106,12 +109,12 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Use a hierarchical path search, which performs a guided bidirectional search.
 				return hierarchicalPathFindersByLocomotor[locomotor].FindPath(
-					self, source, target, check, DefaultHeuristicWeightPercentage, customCost, ignoreActor, laneBias);
+					self, source, target, check, DefaultHeuristicWeightPercentage, customCost, ignoreActor, laneBias, pathFinderOverlay);
 			}
 
 			// Use a hierarchical path search, which performs a guided unidirectional search.
 			return hierarchicalPathFindersByLocomotor[locomotor].FindPath(
-				self, sourcesList, target, check, DefaultHeuristicWeightPercentage, customCost, ignoreActor, laneBias);
+				self, sourcesList, target, check, DefaultHeuristicWeightPercentage, customCost, ignoreActor, laneBias, pathFinderOverlay);
 		}
 
 		/// <summary>
@@ -129,9 +132,11 @@ namespace OpenRA.Mods.Common.Traits
 			Actor ignoreActor = null,
 			bool laneBias = true)
 		{
+			pathFinderOverlay?.NewRecording(self, sources, null);
+
 			// With no pre-specified target location, we can only use a unidirectional search.
 			using (var search = PathSearch.ToTargetCellByPredicate(
-				world, GetActorLocomotor(self), self, sources, targetPredicate, check, customCost, ignoreActor, laneBias))
+				world, GetActorLocomotor(self), self, sources, targetPredicate, check, customCost, ignoreActor, laneBias, pathFinderOverlay?.RecordLocalEdges(self)))
 				return search.FindPath();
 		}
 
