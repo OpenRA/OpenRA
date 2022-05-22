@@ -20,6 +20,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 {
 	public sealed class PathSearch : IDisposable
 	{
+		public interface IRecorder
+		{
+			void Add(CPos source, CPos destination, int costSoFar, int estimatedRemainingCost);
+		}
+
 		// PERF: Maintain a pool of layers used for paths searches for each world. These searches are performed often
 		// so we wish to avoid the high cost of initializing a new search space every time by reusing the old ones.
 		static readonly ConditionalWeakTable<World, CellInfoLayerPool> LayerPoolTable = new ConditionalWeakTable<World, CellInfoLayerPool>();
@@ -35,10 +40,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 			IEnumerable<CPos> froms, Func<CPos, bool> targetPredicate, BlockedByActor check,
 			Func<CPos, int> customCost = null,
 			Actor ignoreActor = null,
-			bool laneBias = true)
+			bool laneBias = true,
+			IRecorder recorder = null)
 		{
 			var graph = new MapPathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, laneBias, false);
-			var search = new PathSearch(graph, loc => 0, 0, targetPredicate);
+			var search = new PathSearch(graph, loc => 0, 0, targetPredicate, recorder);
 
 			foreach (var sl in froms)
 				if (world.Map.Contains(sl))
@@ -55,7 +61,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 			bool laneBias = true,
 			bool inReverse = false,
 			Func<CPos, int> heuristic = null,
-			Grid? grid = null)
+			Grid? grid = null,
+			IRecorder recorder = null)
 		{
 			IPathGraph graph;
 			if (grid != null)
@@ -64,7 +71,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				graph = new MapPathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, laneBias, inReverse);
 
 			heuristic = heuristic ?? DefaultCostEstimator(locomotor, target);
-			var search = new PathSearch(graph, heuristic, heuristicWeightPercentage, loc => loc == target);
+			var search = new PathSearch(graph, heuristic, heuristicWeightPercentage, loc => loc == target, recorder);
 
 			foreach (var sl in froms)
 				if (world.Map.Contains(sl))
@@ -75,10 +82,10 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public static PathSearch ToTargetCellOverGraph(
 			Func<CPos, List<GraphConnection>> edges, Locomotor locomotor, CPos from, CPos target,
-			int estimatedSearchSize = 0)
+			int estimatedSearchSize = 0, IRecorder recorder = null)
 		{
 			var graph = new SparsePathGraph(edges, estimatedSearchSize);
-			var search = new PathSearch(graph, DefaultCostEstimator(locomotor, target), 100, loc => loc == target);
+			var search = new PathSearch(graph, DefaultCostEstimator(locomotor, target), 100, loc => loc == target, recorder);
 
 			search.AddInitialCell(from);
 
@@ -128,6 +135,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		public Func<CPos, bool> TargetPredicate { get; set; }
 		readonly Func<CPos, int> heuristic;
 		readonly int heuristicWeightPercentage;
+		readonly IRecorder recorder;
 		readonly IPriorityQueue<GraphConnection> openQueue;
 
 		/// <summary>
@@ -144,12 +152,13 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// The search can skip some areas of the search space, meaning it has less work to do.
 		/// </param>
 		/// <param name="targetPredicate">Determines if the given cell is the target.</param>
-		PathSearch(IPathGraph graph, Func<CPos, int> heuristic, int heuristicWeightPercentage, Func<CPos, bool> targetPredicate)
+		PathSearch(IPathGraph graph, Func<CPos, int> heuristic, int heuristicWeightPercentage, Func<CPos, bool> targetPredicate, IRecorder recorder)
 		{
 			Graph = graph;
 			this.heuristic = heuristic;
 			this.heuristicWeightPercentage = heuristicWeightPercentage;
 			TargetPredicate = targetPredicate;
+			this.recorder = recorder;
 			openQueue = new PriorityQueue<GraphConnection>(GraphConnection.ConnectionCostComparer);
 		}
 
@@ -218,6 +227,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 					estimatedRemainingCostToTarget = neighborInfo.EstimatedTotalCost - neighborInfo.CostSoFar;
 				else
 					estimatedRemainingCostToTarget = heuristic(neighbor) * heuristicWeightPercentage / 100;
+
+				recorder?.Add(currentMinNode, neighbor, costSoFarToNeighbor, estimatedRemainingCostToTarget);
 
 				var estimatedTotalCostToTarget = costSoFarToNeighbor + estimatedRemainingCostToTarget;
 				Graph[neighbor] = new CellInfo(CellStatus.Open, costSoFarToNeighbor, estimatedTotalCostToTarget, currentMinNode);
