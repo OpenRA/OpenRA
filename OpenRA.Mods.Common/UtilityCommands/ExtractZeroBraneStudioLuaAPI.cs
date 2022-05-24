@@ -29,9 +29,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		[Desc("Generate ZeroBrane Studio Lua API and auto-complete descriptions.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
-			// HACK: The engine code assumes that Game.modData is set.
-			Game.ModData = utility.ModData;
-
 			Console.WriteLine("local interpreter = {");
 			Console.WriteLine("  name = \"OpenRA\",");
 			Console.WriteLine("  description = \"OpenRA map scripting Lua API\",");
@@ -41,13 +38,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine("}");
 			Console.WriteLine();
 
-			Console.WriteLine("-- This is an automatically generated Lua API definition generated for {0} of OpenRA.", Game.ModData.Manifest.Metadata.Version);
+			Console.WriteLine("-- This is an automatically generated Lua API definition generated for {0} of OpenRA.", utility.ModData.Manifest.Metadata.Version);
 			Console.WriteLine("-- https://github.com/OpenRA/OpenRA/wiki/Utility was used with the --zbstudio-lua-api parameter.");
 			Console.WriteLine("-- See https://github.com/OpenRA/OpenRA/wiki/Lua-API for human readable documentation.");
 			Console.WriteLine();
 			Console.WriteLine("local api = {");
 
-			var tables = Game.ModData.ObjectCreator.GetTypesImplementing<ScriptGlobal>().OrderBy(t => t.Name);
+			var tables = utility.ModData.ObjectCreator.GetTypesImplementing<ScriptGlobal>().OrderBy(t => t.Name);
 			foreach (var t in tables)
 			{
 				var name = t.GetCustomAttributes<ScriptGlobalAttribute>(true).First().Name;
@@ -89,12 +86,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Console.WriteLine("  },");
 			}
 
-			var actorProperties = Game.ModData.ObjectCreator.GetTypesImplementing<ScriptActorProperties>().SelectMany(cg =>
+			var actorProperties = utility.ModData.ObjectCreator.GetTypesImplementing<ScriptActorProperties>().SelectMany(cg =>
 			{
 				return ScriptMemberWrapper.WrappableMembers(cg);
 			});
 
-			var scriptProperties = Game.ModData.ObjectCreator.GetTypesImplementing<ScriptPlayerProperties>().SelectMany(cg =>
+			var scriptProperties = utility.ModData.ObjectCreator.GetTypesImplementing<ScriptPlayerProperties>().SelectMany(cg =>
 			{
 				return ScriptMemberWrapper.WrappableMembers(cg);
 			});
@@ -136,7 +133,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine("  name = \"OpenRA\",");
 			Console.WriteLine("  description = \"Adds API description for auto-complete and tooltip support for OpenRA.\",");
 			Console.WriteLine("  author = \"Matthias Mailänder\",");
-			Console.WriteLine($"  version = \"{Game.ModData.Manifest.Metadata.Version.Split('-').LastOrDefault()}\",");
+			Console.WriteLine($"  version = \"{utility.ModData.Manifest.Metadata.Version.Split('-').LastOrDefault()}\",");
 			Console.WriteLine();
 			Console.WriteLine("  onRegister = function(self)");
 			Console.WriteLine("    ide:AddAPI(\"lua\", \"openra\", api)");
