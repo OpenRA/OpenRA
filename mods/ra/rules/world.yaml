@@ -264,6 +264,8 @@ World:
 		OuterSupportRadius: 5
 	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
+	TeamTogether:
+		CommandAlliedUnitsCheckboxDisplayOrder: 7
 	SpawnStartingUnits:
 		DropdownDisplayOrder: 1
 	PathFinder:

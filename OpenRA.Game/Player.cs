@@ -103,6 +103,8 @@ namespace OpenRA
 
 		readonly StanceColors stanceColors;
 
+		readonly bool commandAlliedUnits;
+
 		public static FactionInfo ResolveFaction(string factionName, IEnumerable<FactionInfo> factionInfos, MersenneTwister playerRandom, bool requireSelectable = true)
 		{
 			var selectableFactions = factionInfos
@@ -228,6 +230,8 @@ namespace OpenRA
 
 			unlockRenderPlayer = PlayerActor.TraitsImplementing<IUnlocksRenderPlayer>().ToArray();
 			notifyDisconnected = PlayerActor.TraitsImplementing<INotifyPlayerDisconnected>().ToArray();
+
+			commandAlliedUnits = world.OrderManager.LobbyInfo.GlobalSettings.OptionOrDefault("commandalliedunits", false);
 		}
 
 		public override string ToString()
@@ -257,6 +261,11 @@ namespace OpenRA
 		public bool IsAlliedWith(Player p)
 		{
 			return RelationshipWith(p) == PlayerRelationship.Ally;
+		}
+
+		public bool CanControlUnitsOf(Player p)
+		{
+			return this == p || (commandAlliedUnits && IsAlliedWith(p));
 		}
 
 		public Color PlayerRelationshipColor(Actor a)

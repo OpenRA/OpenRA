@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			RemoveActorsFromAllControlGroups(world.Selection.Actors);
 
-			controlGroups[group].AddRange(world.Selection.Actors.Where(a => a.Owner == world.LocalPlayer));
+			controlGroups[group].AddRange(world.Selection.Actors.Where(a => world.LocalPlayer.CanControlUnitsOf(a.Owner)));
 		}
 
 		public void AddSelectionToControlGroup(int group)
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			RemoveActorsFromAllControlGroups(world.Selection.Actors);
 
-			controlGroups[group].AddRange(world.Selection.Actors.Where(a => a.Owner == world.LocalPlayer));
+			controlGroups[group].AddRange(world.Selection.Actors.Where(a => world.LocalPlayer.CanControlUnitsOf(a.Owner)));
 		}
 
 		public void CombineSelectionWithControlGroup(int group)
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var cg in controlGroups)
 			{
 				// note: NOT `!a.IsInWorld`, since that would remove things that are in transports.
-				cg.RemoveAll(a => a.Disposed || a.Owner != world.LocalPlayer);
+				cg.RemoveAll(a => a.Disposed || !world.LocalPlayer.CanControlUnitsOf(a.Owner));
 			}
 		}
 

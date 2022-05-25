@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Target lines are only automatically shown for the owning player
 			// Spectators and allies must use the force-display modifier
-			if (self.Owner != self.World.LocalPlayer)
+			if (self.World.LocalPlayer == null || !self.World.LocalPlayer.CanControlUnitsOf(self.Owner))
 				return;
 
 			// Draw after frame end so that all the queueing of activities are done before drawing.

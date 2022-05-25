@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Network;
 using OpenRA.Traits;
 
@@ -27,6 +28,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			var subjectClientId = order.Subject.Owner.ClientIndex;
 			var subjectClient = orderManager.LobbyInfo.ClientWithIndex(subjectClientId);
+			var playerClient = orderManager.LobbyInfo.ClientWithIndex(clientId);
+			var player = world.Players.FirstOrDefault(p => p.ClientIndex == playerClient.Index && p.PlayerReference.Playable);
 
 			if (subjectClient == null)
 			{
@@ -34,12 +37,15 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 			}
 
+			if (player == null)
+				return false;
+
 			var isBotOrder = subjectClient.Bot != null && clientId == subjectClient.BotControllerClientIndex;
 
 			// Drop orders from players who shouldn't be able to control this actor
 			// This may be because the owner changed within the last net tick,
 			// or, less likely, the client may be trying to do something malicious.
-			if (subjectClientId != clientId && !isBotOrder)
+			if (!player.CanControlUnitsOf(order.Subject.Owner) && !isBotOrder)
 				return false;
 
 			return order.Subject.AcceptsOrder(order.OrderString);
