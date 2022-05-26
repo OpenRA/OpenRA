@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -31,7 +32,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The name of the palette to base off.")]
 		public readonly string BasePalette = null;
 
-		[FieldLoader.Require]
 		[Desc("Remap these indices to player colors.")]
 		public readonly int[] RemapIndex = Array.Empty<int>();
 
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			color = colorManager.Color;
 			var (_, h, s, _) = color.ToAhsv();
-			var remap = new PlayerColorRemap(info.RemapIndex, h, s);
+			var remap = new PlayerColorRemap(info.RemapIndex.Length == 0 ? Enumerable.Range(0, 256).ToArray() : info.RemapIndex, h, s);
 			wr.AddPalette(info.Name, new ImmutablePalette(wr.Palette(info.BasePalette).Palette, remap), info.AllowModifiers);
 		}
 
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			color = colorManager.Color;
 			var (_, h, s, _) = color.ToAhsv();
-			var remap = new PlayerColorRemap(info.RemapIndex, h, s);
+			var remap = new PlayerColorRemap(info.RemapIndex.Length == 0 ? Enumerable.Range(0, 256).ToArray() : info.RemapIndex, h, s);
 			wr.ReplacePalette(info.Name, new ImmutablePalette(wr.Palette(info.BasePalette).Palette, remap));
 		}
 	}
