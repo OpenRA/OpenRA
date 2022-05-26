@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
-		[Desc("internal palette name")]
+		[Desc("Internal palette name")]
 		public readonly string Name = null;
 
 		[Desc("If defined, load the palette only for this tileset.")]
@@ -61,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void LoadPalettes(WorldRenderer wr)
 		{
 			// Enable palette only for a specific tileset
-			if (info.Tileset != null && !string.Equals(info.Tileset, world.Map.Tileset, System.StringComparison.InvariantCultureIgnoreCase))
+			if (info.Tileset != null && !string.Equals(info.Tileset, world.Map.Tileset, StringComparison.InvariantCultureIgnoreCase))
 				return;
 
 			var a = info.A / 255f;

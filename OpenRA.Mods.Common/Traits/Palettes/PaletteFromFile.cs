@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
-		[Desc("internal palette name")]
+		[Desc("Internal palette name")]
 		public readonly string Name = null;
 
 		[Desc("If defined, load the palette only for this tileset.")]

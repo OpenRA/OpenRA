@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2021 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2022 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
-		[Desc("internal palette name")]
+		[Desc("Internal palette name")]
 		public readonly string Name = null;
 
 		[Desc("If defined, load the palette only for this tileset.")]
@@ -49,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void LoadPalettes(WorldRenderer wr)
 		{
 			// Enable palette only for a specific tileset
-			if (info.Tileset != null && !string.Equals(info.Tileset, world.Map.Tileset, System.StringComparison.InvariantCultureIgnoreCase))
+			if (info.Tileset != null && !string.Equals(info.Tileset, world.Map.Tileset, StringComparison.InvariantCultureIgnoreCase))
 				return;
 
 			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => (i == info.TransparentIndex) ? 0 : (uint)Color.FromArgb(255, i, i, i).ToArgb())), info.AllowModifiers);

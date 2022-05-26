@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var (_, h, s, _) = info.Color.ToAhsv();
 
-			var remap = new PlayerColorRemap(info.RemapIndex, h, s);
+			var remap = new PlayerColorRemap(info.RemapIndex.Length == 0 ? Enumerable.Range(0, 256).ToArray() : info.RemapIndex, h, s);
 			wr.AddPalette(info.Name, new ImmutablePalette(wr.Palette(info.Base).Palette, remap), info.AllowModifiers);
 		}
 	}
