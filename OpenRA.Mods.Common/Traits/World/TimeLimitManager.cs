@@ -160,7 +160,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					TextNotificationsManager.AddSystemLine(Notification.F(m, m > 1 ? "s" : null));
 
-					var faction = self.World.LocalPlayer == null ? null : self.World.LocalPlayer.Faction.InternalName;
+					var faction = self.World.LocalPlayer?.Faction.InternalName;
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.World.LocalPlayer, "Speech", info.TimeLimitWarnings[m], faction);
 				}
 			}

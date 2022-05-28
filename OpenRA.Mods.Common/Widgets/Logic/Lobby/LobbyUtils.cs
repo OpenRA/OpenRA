@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					"Slot", new List<SlotDropDownOption>
 					{
-						new SlotDropDownOption("Open", "slot_open " + slot.PlayerReference, () => (!slot.Closed && client == null)),
+						new SlotDropDownOption("Open", "slot_open " + slot.PlayerReference, () => !slot.Closed && client == null),
 						new SlotDropDownOption("Closed", "slot_close " + slot.PlayerReference, () => slot.Closed)
 					}
 				}

@@ -190,15 +190,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					map.Save(package);
 
-					Console.WriteLine("Saved current map at {0}", combinedPath);
+					Console.WriteLine($"Saved current map at {combinedPath}");
 					Ui.CloseWindow();
 
 					onSave(map.Uid);
 				}
 				catch (Exception e)
 				{
-					Log.Write("debug", "Failed to save map at {0}: {1}", combinedPath, e.Message);
-					Log.Write("debug", "{0}", e.StackTrace);
+					Log.Write("debug", $"Failed to save map at {combinedPath}");
+					Log.Write("debug", e);
 
 					ConfirmationDialogs.ButtonPrompt(
 						title: "Failed to save map",

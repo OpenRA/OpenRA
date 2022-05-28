@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SetupMapTab(MapClassification.User, filter, "USER_MAPS_TAB_BUTTON", "USER_MAPS_TAB", itemTemplate);
 			SetupMapTab(MapClassification.System, filter, "SYSTEM_MAPS_TAB_BUTTON", "SYSTEM_MAPS_TAB", itemTemplate);
 
-			if (initialMap == null && tabMaps.Keys.Contains(initialTab) && tabMaps[initialTab].Length > 0)
+			if (initialMap == null && tabMaps.ContainsKey(initialTab) && tabMaps[initialTab].Length > 0)
 			{
 				selectedUid = Game.ModData.MapCache.ChooseInitialMap(tabMaps[initialTab].Select(mp => mp.Uid).First(),
 					Game.CosmeticRandom);
@@ -178,8 +178,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					foreach (var category in map.Categories)
 					{
-						var count = 0;
-						categoryDict.TryGetValue(category, out count);
+						categoryDict.TryGetValue(category, out var count);
 						categoryDict[category] = count + 1;
 					}
 				}

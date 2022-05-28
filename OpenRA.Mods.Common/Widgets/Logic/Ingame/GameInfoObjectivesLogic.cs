@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mo.ObjectiveAdded += redrawObjectives;
 		}
 
-		void PopulateObjectivesList(MissionObjectives mo, ScrollPanelWidget parent, ContainerWidget template)
+		static void PopulateObjectivesList(MissionObjectives mo, ScrollPanelWidget parent, ContainerWidget template)
 		{
 			parent.RemoveChildren();
 

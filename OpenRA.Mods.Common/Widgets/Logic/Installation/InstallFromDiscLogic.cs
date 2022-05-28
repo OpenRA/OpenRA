@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var path = FindSourcePath(kv.Value, volumes);
 					if (path != null)
 					{
-						Log.Write("install", "Using installer `{0}: {1}` of type `{2}`:", kv.Key, kv.Value.Title, kv.Value.Type);
+						Log.Write("install", $"Using installer `{kv.Key}: {kv.Value.Title}` of type `{kv.Value.Type}`:");
 
 						var packages = content.Packages.Values
 							.Where(p => p.Sources.Contains(kv.Key) && !p.IsInstalled())
@@ -271,13 +271,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 									// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
 									var sourcePath = i.Value.Value.StartsWith("^") ? Platform.ResolvePath(i.Value.Value) : Path.Combine(path, i.Value.Value);
 
-									Log.Write("debug", "Deleting {0}", sourcePath);
+									Log.Write("debug", $"Deleting {sourcePath}");
 									File.Delete(sourcePath);
 									break;
 								}
 
 							default:
-								Log.Write("debug", "Unknown installation command {0} - ignoring", i.Key);
+								Log.Write("debug", $"Unknown installation command {i.Key} - ignoring");
 								break;
 						}
 					}
@@ -499,7 +499,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return null;
 		}
 
-		bool IsValidSourcePath(string path, ModContent.ModSource source)
+		static bool IsValidSourcePath(string path, ModContent.ModSource source)
 		{
 			try
 			{
