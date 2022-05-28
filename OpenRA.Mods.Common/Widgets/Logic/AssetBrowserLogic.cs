@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var spriteWidget = panel.GetOrNull<SpriteWidget>("SPRITE");
 			if (spriteWidget != null)
 			{
-				spriteWidget.GetSprite = () => currentSprites != null ? currentSprites[currentFrame] : null;
+				spriteWidget.GetSprite = () => currentSprites?[currentFrame];
 				currentPalette = spriteWidget.Palette;
 				spriteScale = spriteWidget.Scale;
 				spriteWidget.GetPalette = () => currentPalette;
@@ -394,7 +394,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (string.IsNullOrWhiteSpace(filter))
 				return true;
 
-			if (filename.IndexOf(filter, StringComparison.OrdinalIgnoreCase) >= 0)
+			if (filename.Contains(filter, StringComparison.OrdinalIgnoreCase))
 				return true;
 
 			return false;
@@ -524,11 +524,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				else
 					return false;
 			}
-			catch (Exception ex)
+			catch (Exception exception)
 			{
 				isLoadError = true;
 				Log.AddChannel("assetbrowser", "assetbrowser.log");
-				Log.Write("assetbrowser", "Error reading {0}:{3} {1}{3}{2}", filename, ex.Message, ex.StackTrace, Environment.NewLine);
+				Log.Write("assetbrowser", $"Error reading {filename}");
+				Log.Write("assetbrowser", exception);
 
 				return false;
 			}

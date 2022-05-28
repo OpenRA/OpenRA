@@ -469,7 +469,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return template;
 		}
 
-		void SetupPlayerColor(Player player, ScrollItemWidget template, ColorBlockWidget colorBlockWidget, GradientColorBlockWidget gradientColorBlockWidget)
+		static void SetupPlayerColor(Player player, ScrollItemWidget template, ColorBlockWidget colorBlockWidget, GradientColorBlockWidget gradientColorBlockWidget)
 		{
 			var color = Color.FromArgb(128, player.Color.R, player.Color.G, player.Color.B);
 			var hoverColor = Color.FromArgb(192, player.Color.R, player.Color.G, player.Color.B);

@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		public void Order(World world, string order)
+		public static void Order(World world, string order)
 		{
 			world.IssueOrder(new Order(order, world.LocalPlayer.PlayerActor, false));
 		}

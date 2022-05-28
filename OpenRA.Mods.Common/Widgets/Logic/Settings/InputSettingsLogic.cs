@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
 		}
 
-		void MakeMouseFocusSettingsLive()
+		static void MakeMouseFocusSettingsLive()
 		{
 			var gameSettings = Game.Settings.Game;
 

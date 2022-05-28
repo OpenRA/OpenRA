@@ -212,7 +212,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				slotsButton.IsVisible = () => panel != PanelType.Servers;
 				slotsButton.IsDisabled = () => configurationDisabled() || panel != PanelType.Players ||
 					(orderManager.LobbyInfo.Slots.Values.All(s => !s.AllowBots) &&
-					orderManager.LobbyInfo.Slots.Count(s => !s.Value.LockTeam && orderManager.LobbyInfo.ClientInSlot(s.Key) != null) == 0);
+					!orderManager.LobbyInfo.Slots.Any(s => !s.Value.LockTeam && orderManager.LobbyInfo.ClientInSlot(s.Key) != null));
 
 				slotsButton.OnMouseDown = _ =>
 				{
@@ -269,7 +269,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							Title = $"{d} Teams",
 							IsSelected = () => false,
-							OnClick = () => orderManager.IssueOrder(Order.Command($"assignteams {d.ToString()}"))
+							OnClick = () => orderManager.IssueOrder(Order.Command($"assignteams {d}"))
 						}).ToList();
 
 						if (orderManager.LobbyInfo.Slots.Any(s => s.Value.AllowBots))
