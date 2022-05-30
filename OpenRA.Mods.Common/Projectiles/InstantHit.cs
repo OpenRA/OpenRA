@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			if (args.Weapon.TargetActorCenter)
 				target = args.GuidedTarget;
-			else if (info.Inaccuracy.Length > 0)
+			else if (info.Inaccuracy.Length > 0 || args.FlatInaccuracyModifiers.Length > 0)
 			{
 				var maxInaccuracyOffset = Util.GetProjectileInaccuracy(info.Inaccuracy.Length, info.InaccuracyType, args);
 				var inaccuracyOffset = WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxInaccuracyOffset / 1024;

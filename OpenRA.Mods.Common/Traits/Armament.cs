@@ -98,6 +98,8 @@ namespace OpenRA.Mods.Common.Traits
 				WeaponInfo.Range.Length,
 				ai.TraitInfos<IRangeModifierInfo>().Select(m => m.GetRangeModifierDefault())));
 
+			ModifiedRange = Util.ApplyFlatDistanceModifiers(ModifiedRange, ai.TraitInfos<IFlatRangeModifierInfo>().Select(m => m.GetRangeModifierDefault()));
+
 			if (WeaponInfo.Burst > 1 && WeaponInfo.BurstDelays.Length > 1 && (WeaponInfo.BurstDelays.Length != WeaponInfo.Burst - 1))
 				throw new YamlException($"Weapon '{weaponToLower}' has an invalid number of BurstDelays, must be single entry or Burst - 1.");
 
@@ -118,10 +120,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		int conditionToken = Actor.InvalidConditionToken;
 
-		IEnumerable<int> rangeModifiers;
-		IEnumerable<int> reloadModifiers;
 		IEnumerable<int> damageModifiers;
-		IEnumerable<int> inaccuracyModifiers;
+		IEnumerable<int> reloadModifiers;
+		IEnumerable<int> percentInaccuracyModifiers;
+		IEnumerable<int> percentRangeModifiers;
+		IEnumerable<WDist> flatRangeModifiers;
+		IEnumerable<WDist> flatInaccuracyModifiers;
 
 		int ticksSinceLastShot;
 		int currentBarrel;
@@ -161,7 +165,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual WDist MaxRange()
 		{
-			return new WDist(Util.ApplyPercentageModifiers(Weapon.Range.Length, rangeModifiers.ToArray()));
+			var maxRange = new WDist(Util.ApplyPercentageModifiers(Weapon.Range.Length, percentRangeModifiers.ToArray()));
+			return Util.ApplyFlatDistanceModifiers(maxRange, flatRangeModifiers);
 		}
 
 		protected override void Created(Actor self)
@@ -171,10 +176,14 @@ namespace OpenRA.Mods.Common.Traits
 			notifyBurstComplete = self.TraitsImplementing<INotifyBurstComplete>().ToArray();
 			notifyAttacks = self.TraitsImplementing<INotifyAttack>().ToArray();
 
-			rangeModifiers = self.TraitsImplementing<IRangeModifier>().ToArray().Select(m => m.GetRangeModifier());
-			reloadModifiers = self.TraitsImplementing<IReloadModifier>().ToArray().Select(m => m.GetReloadModifier());
 			damageModifiers = self.TraitsImplementing<IFirepowerModifier>().ToArray().Select(m => m.GetFirepowerModifier());
-			inaccuracyModifiers = self.TraitsImplementing<IInaccuracyModifier>().ToArray().Select(m => m.GetInaccuracyModifier());
+			reloadModifiers = self.TraitsImplementing<IReloadModifier>().ToArray().Select(m => m.GetReloadModifier());
+
+			percentInaccuracyModifiers = self.TraitsImplementing<IPercentInaccuracyModifier>().ToArray().Select(m => m.GetInaccuracyModifier());
+			percentRangeModifiers = self.TraitsImplementing<IPercentRangeModifier>().ToArray().Select(m => m.GetRangeModifier());
+
+			flatInaccuracyModifiers = self.TraitsImplementing<IFlatInaccuracyModifier>().ToArray().Select(m => m.GetInaccuracyModifier());
+			flatRangeModifiers = self.TraitsImplementing<IFlatRangeModifier>().ToArray().Select(m => m.GetRangeModifier());
 
 			base.Created(self);
 		}
@@ -309,9 +318,11 @@ namespace OpenRA.Mods.Common.Traits
 
 				DamageModifiers = damageModifiers.ToArray(),
 
-				InaccuracyModifiers = inaccuracyModifiers.ToArray(),
+				FlatInaccuracyModifiers = flatInaccuracyModifiers.ToArray(),
+				PercentInaccuracyModifiers = percentInaccuracyModifiers.ToArray(),
 
-				RangeModifiers = rangeModifiers.ToArray(),
+				FlatRangeModifiers = flatRangeModifiers.ToArray(),
+				PercentRangeModifiers = percentRangeModifiers.ToArray(),
 
 				Source = muzzlePosition(),
 				CurrentSource = muzzlePosition,

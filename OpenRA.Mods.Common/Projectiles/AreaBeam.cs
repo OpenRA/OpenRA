@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			tailPos = headPos;
 
 			target = args.PassiveTarget;
-			if (info.Inaccuracy.Length > 0)
+			if (info.Inaccuracy.Length > 0 || args.FlatInaccuracyModifiers.Length > 0)
 			{
 				var maxInaccuracyOffset = Util.GetProjectileInaccuracy(info.Inaccuracy.Length, info.InaccuracyType, args);
 				target += WVec.FromPDF(world.SharedRandom, 2) * maxInaccuracyOffset / 1024;
@@ -138,7 +138,8 @@ namespace OpenRA.Mods.Common.Projectiles
 			target += dir * info.BeyondTargetRange.Length / 1024;
 
 			length = Math.Max((target - headPos).Length / speed.Length, 1);
-			weaponRange = new WDist(Util.ApplyPercentageModifiers(args.Weapon.Range.Length, args.RangeModifiers));
+			weaponRange = new WDist(Util.ApplyPercentageModifiers(args.Weapon.Range.Length, args.PercentRangeModifiers));
+			weaponRange = Util.ApplyFlatDistanceModifiers(weaponRange, args.FlatRangeModifiers);
 		}
 
 		void TrackTarget()

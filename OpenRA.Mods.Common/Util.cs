@@ -200,6 +200,15 @@ namespace OpenRA.Mods.Common
 			return (int)a;
 		}
 
+		public static WDist ApplyFlatDistanceModifiers(WDist distance, IEnumerable<WDist> modifiers)
+		{
+			if (!modifiers.Any())
+				return distance;
+
+			distance += new WDist(modifiers.Sum(m => m.Length));
+			return distance.Clamp(WDist.Zero, distance);
+		}
+
 		public static IEnumerable<CPos> RandomWalk(CPos p, MersenneTwister r)
 		{
 			while (true)
@@ -293,11 +302,14 @@ namespace OpenRA.Mods.Common
 
 		public static int GetProjectileInaccuracy(int baseInaccuracy, InaccuracyType inaccuracyType, ProjectileArgs args)
 		{
-			var inaccuracy = ApplyPercentageModifiers(baseInaccuracy, args.InaccuracyModifiers);
+			var inaccuracy = ApplyPercentageModifiers(baseInaccuracy, args.PercentInaccuracyModifiers);
+			inaccuracy = ApplyFlatDistanceModifiers(new WDist(inaccuracy), args.FlatInaccuracyModifiers).Length;
+
 			switch (inaccuracyType)
 			{
 				case InaccuracyType.Maximum:
-					var weaponMaxRange = ApplyPercentageModifiers(args.Weapon.Range.Length, args.RangeModifiers);
+					var weaponMaxRange = ApplyPercentageModifiers(args.Weapon.Range.Length, args.PercentRangeModifiers);
+					weaponMaxRange = ApplyFlatDistanceModifiers(new WDist(weaponMaxRange), args.FlatRangeModifiers).Length;
 					return inaccuracy * (args.PassiveTarget - args.Source).Length / weaponMaxRange;
 				case InaccuracyType.PerCellIncrement:
 					return inaccuracy * (args.PassiveTarget - args.Source).Length / 1024;

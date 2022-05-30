@@ -23,11 +23,11 @@ namespace OpenRA.Mods.Common.Traits
 		int IRangeModifierInfo.GetRangeModifierDefault() { return EnabledByDefault ? Modifier : 100; }
 	}
 
-	public class RangeMultiplier : ConditionalTrait<RangeMultiplierInfo>, IRangeModifier
+	public class RangeMultiplier : ConditionalTrait<RangeMultiplierInfo>, IPercentRangeModifier
 	{
 		public RangeMultiplier(RangeMultiplierInfo info)
 			: base(info) { }
 
-		int IRangeModifier.GetRangeModifier() { return IsTraitDisabled ? 100 : Info.Modifier; }
+		int IPercentRangeModifier.GetRangeModifier() { return IsTraitDisabled ? 100 : Info.Modifier; }
 	}
 }

@@ -21,11 +21,11 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new InaccuracyMultiplier(this); }
 	}
 
-	public class InaccuracyMultiplier : ConditionalTrait<InaccuracyMultiplierInfo>, IInaccuracyModifier
+	public class InaccuracyMultiplier : ConditionalTrait<InaccuracyMultiplierInfo>, IPercentInaccuracyModifier
 	{
 		public InaccuracyMultiplier(InaccuracyMultiplierInfo info)
 			: base(info) { }
 
-		int IInaccuracyModifier.GetInaccuracyModifier() { return IsTraitDisabled ? 100 : Info.Modifier; }
+		int IPercentInaccuracyModifier.GetInaccuracyModifier() { return IsTraitDisabled ? 100 : Info.Modifier; }
 	}
 }

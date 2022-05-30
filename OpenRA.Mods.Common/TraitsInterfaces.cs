@@ -367,10 +367,19 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IReloadAmmoModifier { int GetReloadAmmoModifier(); }
 
 	[RequireExplicitImplementation]
-	public interface IInaccuracyModifier { int GetInaccuracyModifier(); }
+	public interface IFlatInaccuracyModifier { WDist GetInaccuracyModifier(); }
 
 	[RequireExplicitImplementation]
-	public interface IRangeModifier { int GetRangeModifier(); }
+	public interface IPercentInaccuracyModifier { int GetInaccuracyModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface IFlatRangeModifier { WDist GetRangeModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface IFlatRangeModifierInfo : ITraitInfoInterface { WDist GetRangeModifierDefault(); }
+
+	[RequireExplicitImplementation]
+	public interface IPercentRangeModifier { int GetRangeModifier(); }
 
 	[RequireExplicitImplementation]
 	public interface IRangeModifierInfo : ITraitInfoInterface { int GetRangeModifierDefault(); }
