@@ -122,6 +122,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			ContentHeight = 0;
 			base.RemoveChildren();
+			Scroll(0);
 		}
 
 		public override void AddChild(Widget child)
