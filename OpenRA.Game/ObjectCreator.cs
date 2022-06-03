@@ -15,7 +15,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Primitives;
-using OpenRA.Support;
 
 namespace OpenRA
 {
@@ -61,7 +60,7 @@ namespace OpenRA
 			if (!ResolvedAssemblies.TryGetValue(hash, out var assembly))
 			{
 #if NET5_0_OR_GREATER
-				var loader = new AssemblyLoader(resolvedPath);
+				var loader = new Support.AssemblyLoader(resolvedPath);
 				assembly = loader.LoadDefaultAssembly();
 				ResolvedAssemblies.Add(hash, assembly);
 #else
