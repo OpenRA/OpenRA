@@ -200,13 +200,28 @@ namespace OpenRA.Mods.Common
 			return (int)a;
 		}
 
-		public static WDist ApplyFlatDistanceModifiers(WDist distance, IEnumerable<WDist> modifiers)
+		public static int ApplyModifiers(int baseValue, IEnumerable<IModifier> modifiers, int? minimumValue = null, int? maximumValue = null)
 		{
-			if (!modifiers.Any())
-				return distance;
+			var modifiedValue = baseValue;
+			var modifiersByPriority = modifiers.GroupBy(m => m.Priority);
 
-			distance += new WDist(modifiers.Sum(m => m.Length));
-			return distance.Clamp(WDist.Zero, distance);
+			foreach (var priorityGroup in modifiersByPriority)
+			{
+				var priorityBaseValue = modifiedValue;
+				modifiedValue = ApplyPercentageModifiers(modifiedValue, priorityGroup.Where(m => m.Type == ModifierType.Relative).Select(m => m.Value));
+
+				foreach (var m in priorityGroup)
+					if (m.Type == ModifierType.Absolute)
+						modifiedValue += m.Value;
+			}
+
+			if (minimumValue != null && modifiedValue < minimumValue.Value)
+				modifiedValue = minimumValue.Value;
+
+			if (maximumValue != null && modifiedValue > maximumValue.Value)
+				modifiedValue = maximumValue.Value;
+
+			return modifiedValue;
 		}
 
 		public static IEnumerable<CPos> RandomWalk(CPos p, MersenneTwister r)
@@ -302,14 +317,12 @@ namespace OpenRA.Mods.Common
 
 		public static int GetProjectileInaccuracy(int baseInaccuracy, InaccuracyType inaccuracyType, ProjectileArgs args)
 		{
-			var inaccuracy = ApplyPercentageModifiers(baseInaccuracy, args.PercentInaccuracyModifiers);
-			inaccuracy = ApplyFlatDistanceModifiers(new WDist(inaccuracy), args.FlatInaccuracyModifiers).Length;
+			var inaccuracy = ApplyModifiers(baseInaccuracy, args.InaccuracyModifiers, 0);
 
 			switch (inaccuracyType)
 			{
 				case InaccuracyType.Maximum:
-					var weaponMaxRange = ApplyPercentageModifiers(args.Weapon.Range.Length, args.PercentRangeModifiers);
-					weaponMaxRange = ApplyFlatDistanceModifiers(new WDist(weaponMaxRange), args.FlatRangeModifiers).Length;
+					var weaponMaxRange = ApplyModifiers(args.Weapon.Range.Length, args.RangeModifiers, 0);
 					return inaccuracy * (args.PassiveTarget - args.Source).Length / weaponMaxRange;
 				case InaccuracyType.PerCellIncrement:
 					return inaccuracy * (args.PassiveTarget - args.Source).Length / 1024;

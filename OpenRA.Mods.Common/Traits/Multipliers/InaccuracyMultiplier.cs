@@ -9,6 +9,8 @@
  */
 #endregion
 
+using OpenRA.Traits;
+
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Modifies the inaccuracy of weapons fired by this actor.")]
@@ -18,14 +20,27 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Percentage modifier to apply.")]
 		public readonly int Modifier = 100;
 
+		[Desc("Higher priority modifiers are applied first.")]
+		public readonly int Priority = 0;
+
 		public override object Create(ActorInitializer init) { return new InaccuracyMultiplier(this); }
 	}
 
-	public class InaccuracyMultiplier : ConditionalTrait<InaccuracyMultiplierInfo>, IPercentInaccuracyModifier
+	public class InaccuracyMultiplier : ConditionalTrait<InaccuracyMultiplierInfo>, IInaccuracyModifier
 	{
 		public InaccuracyMultiplier(InaccuracyMultiplierInfo info)
 			: base(info) { }
 
-		int IPercentInaccuracyModifier.GetInaccuracyModifier() { return IsTraitDisabled ? 100 : Info.Modifier; }
+		IModifier IInaccuracyModifier.GetInaccuracyModifier()
+		{
+			var modifier = new Modifier
+			{
+				Type = ModifierType.Relative,
+				Priority = Info.Priority,
+				Value = IsTraitDisabled ? 100 : Info.Modifier
+			};
+
+			return modifier;
+		}
 	}
 }

@@ -81,10 +81,8 @@ namespace OpenRA.Mods.Common.Warheads
 				CurrentMuzzleFacing = () => (map.CenterOfCell(targetCell) - target.CenterPosition).Yaw,
 
 				DamageModifiers = args.DamageModifiers,
-				PercentInaccuracyModifiers = Array.Empty<int>(),
-				PercentRangeModifiers = Array.Empty<int>(),
-				FlatInaccuracyModifiers = Array.Empty<WDist>(),
-				FlatRangeModifiers = Array.Empty<WDist>(),
+				InaccuracyModifiers = Array.Empty<IModifier>(),
+				RangeModifiers = Array.Empty<IModifier>(),
 
 				Source = target.CenterPosition,
 				CurrentSource = () => target.CenterPosition,

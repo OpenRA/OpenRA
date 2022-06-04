@@ -141,17 +141,8 @@ namespace OpenRA.Mods.D2k.Traits
 					DamageModifiers = self.TraitsImplementing<IFirepowerModifier>()
 						.Select(a => a.GetFirepowerModifier()).ToArray(),
 
-					PercentInaccuracyModifiers = self.TraitsImplementing<IPercentInaccuracyModifier>()
-						.Select(a => a.GetInaccuracyModifier()).ToArray(),
-
-					PercentRangeModifiers = self.TraitsImplementing<IPercentRangeModifier>()
-						.Select(a => a.GetRangeModifier()).ToArray(),
-
-					FlatInaccuracyModifiers = self.TraitsImplementing<IFlatInaccuracyModifier>()
-						.Select(a => a.GetInaccuracyModifier()).ToArray(),
-
-					FlatRangeModifiers = self.TraitsImplementing<IFlatRangeModifier>()
-						.Select(a => a.GetRangeModifier()).ToArray(),
+					InaccuracyModifiers = self.TraitsImplementing<IModifier>().ToArray(),
+					RangeModifiers = self.TraitsImplementing<IModifier>().ToArray(),
 
 					Source = self.CenterPosition,
 					CurrentSource = () => self.CenterPosition,

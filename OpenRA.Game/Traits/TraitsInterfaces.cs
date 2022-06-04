@@ -602,4 +602,29 @@ namespace OpenRA.Traits
 	{
 		void PlayerDisconnected(Actor self, Player p);
 	}
+
+	public enum ModifierType { Absolute, Relative }
+
+	public interface IModifier
+	{
+		ModifierType Type { get; set; }
+		int Priority { get; set; }
+		int Value { get; set; }
+	}
+
+	public class Modifier : IModifier
+	{
+		public ModifierType Type { get; set; }
+		public int Priority { get; set; }
+		public int Value { get; set; }
+	}
+
+	[RequireExplicitImplementation]
+	public interface IRangeModifier { IModifier GetRangeModifier(); }
+
+	[RequireExplicitImplementation]
+	public interface IRangeModifierInfo : ITraitInfoInterface { int GetRangeModifierDefault(); }
+
+	[RequireExplicitImplementation]
+	public interface IInaccuracyModifier { IModifier GetInaccuracyModifier(); }
 }

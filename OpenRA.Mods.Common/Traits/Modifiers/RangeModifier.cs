@@ -9,25 +9,40 @@
  */
 #endregion
 
+using OpenRA.Traits;
+
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Modifies the range of weapons fired by this actor by a flat amount.")]
-	public class RangeModifierInfo : ConditionalTraitInfo, IFlatRangeModifierInfo
+	public class RangeModifierInfo : ConditionalTraitInfo, IRangeModifierInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Amount to increase to range (negative to decrease).")]
 		public readonly WDist Modifier = WDist.Zero;
 
+		[Desc("Higher priority modifiers are applied first.")]
+		public readonly int Priority = 0;
+
 		public override object Create(ActorInitializer init) { return new RangeModifier(this); }
 
-		WDist IFlatRangeModifierInfo.GetRangeModifierDefault() { return EnabledByDefault ? Modifier : WDist.Zero; }
+		int IRangeModifierInfo.GetRangeModifierDefault() { return EnabledByDefault ? Modifier.Length : 0; }
 	}
 
-	public class RangeModifier : ConditionalTrait<RangeModifierInfo>, IFlatRangeModifier
+	public class RangeModifier : ConditionalTrait<RangeModifierInfo>, IRangeModifier
 	{
 		public RangeModifier(RangeModifierInfo info)
 			: base(info) { }
 
-		WDist IFlatRangeModifier.GetRangeModifier() { return IsTraitDisabled ? WDist.Zero : Info.Modifier; }
+		IModifier IRangeModifier.GetRangeModifier()
+		{
+			var modifier = new Modifier
+			{
+				Type = ModifierType.Absolute,
+				Priority = Info.Priority,
+				Value = IsTraitDisabled ? 0 : Info.Modifier.Length
+			};
+
+			return modifier;
+		}
 	}
 }

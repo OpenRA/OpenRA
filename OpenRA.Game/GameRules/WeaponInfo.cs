@@ -22,12 +22,8 @@ namespace OpenRA.GameRules
 	{
 		public WeaponInfo Weapon;
 		public int[] DamageModifiers;
-
-		public WDist[] FlatInaccuracyModifiers;
-		public WDist[] FlatRangeModifiers;
-		public int[] PercentInaccuracyModifiers;
-		public int[] PercentRangeModifiers;
-
+		public IEnumerable<IModifier> RangeModifiers;
+		public IEnumerable<IModifier> InaccuracyModifiers;
 		public WAngle Facing;
 		public Func<WAngle> CurrentMuzzleFacing;
 		public WPos Source;

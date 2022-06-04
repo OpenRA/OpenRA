@@ -230,8 +230,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			gravity = new WVec(0, 0, -info.Gravity);
 			targetPosition = args.PassiveTarget;
 			var limit = info.RangeLimit != WDist.Zero ? info.RangeLimit : args.Weapon.Range;
-			rangeLimit = new WDist(Util.ApplyPercentageModifiers(limit.Length, args.PercentRangeModifiers));
-			rangeLimit = Util.ApplyFlatDistanceModifiers(rangeLimit, args.FlatRangeModifiers);
+			rangeLimit = new WDist(Util.ApplyModifiers(limit.Length, args.RangeModifiers, 0));
 			minLaunchSpeed = info.MinimumLaunchSpeed.Length > -1 ? info.MinimumLaunchSpeed.Length : info.Speed.Length;
 			maxLaunchSpeed = info.MaximumLaunchSpeed.Length > -1 ? info.MaximumLaunchSpeed.Length : info.Speed.Length;
 			maxSpeed = info.Speed.Length;
@@ -244,7 +243,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				lockOn = true;
 
 			var inaccuracy = lockOn && info.LockOnInaccuracy.Length > -1 ? info.LockOnInaccuracy.Length : info.Inaccuracy.Length;
-			if (inaccuracy > 0 || args.FlatInaccuracyModifiers.Length > 0)
+			if (inaccuracy > 0 || args.InaccuracyModifiers.Any(m => m.Type == ModifierType.Absolute))
 			{
 				var maxInaccuracyOffset = Util.GetProjectileInaccuracy(inaccuracy, info.InaccuracyType, args);
 				offset = WVec.FromPDF(world.SharedRandom, 2) * maxInaccuracyOffset / 1024;

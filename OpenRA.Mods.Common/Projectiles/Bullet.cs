@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			target = args.PassiveTarget;
 
-			if (info.Inaccuracy.Length > 0 || args.FlatInaccuracyModifiers.Length > 0)
+			if (info.Inaccuracy.Length > 0 || args.InaccuracyModifiers.Any(m => m.Type == ModifierType.Absolute))
 			{
 				var maxInaccuracyOffset = Util.GetProjectileInaccuracy(info.Inaccuracy.Length, info.InaccuracyType, args);
 				target += WVec.FromPDF(world.SharedRandom, 2) * maxInaccuracyOffset / 1024;

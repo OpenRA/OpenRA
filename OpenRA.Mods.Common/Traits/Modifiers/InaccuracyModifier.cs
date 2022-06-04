@@ -9,6 +9,8 @@
  */
 #endregion
 
+using OpenRA.Traits;
+
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Modifies the inaccuracy of weapons fired by this actor by a flat amount.")]
@@ -18,14 +20,27 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Amount to increase to inaccuracy (negative to decrease).")]
 		public readonly WDist Modifier = WDist.Zero;
 
+		[Desc("Higher priority modifiers are applied first.")]
+		public readonly int Priority = 0;
+
 		public override object Create(ActorInitializer init) { return new InaccuracyModifier(this); }
 	}
 
-	public class InaccuracyModifier : ConditionalTrait<InaccuracyModifierInfo>, IFlatInaccuracyModifier
+	public class InaccuracyModifier : ConditionalTrait<InaccuracyModifierInfo>, IInaccuracyModifier
 	{
 		public InaccuracyModifier(InaccuracyModifierInfo info)
 			: base(info) { }
 
-		WDist IFlatInaccuracyModifier.GetInaccuracyModifier() { return IsTraitDisabled ? WDist.Zero : Info.Modifier; }
+		IModifier IInaccuracyModifier.GetInaccuracyModifier()
+		{
+			var modifier = new Modifier
+			{
+				Type = ModifierType.Absolute,
+				Priority = Info.Priority,
+				Value = IsTraitDisabled ? 0 : Info.Modifier.Length
+			};
+
+			return modifier;
+		}
 	}
 }

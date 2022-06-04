@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -133,7 +134,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			BeamColor = beamColor;
 			HelixColor = helixColor;
 
-			if (info.Inaccuracy.Length > 0 || args.FlatInaccuracyModifiers.Length > 0)
+			if (info.Inaccuracy.Length > 0 || args.InaccuracyModifiers.Any(m => m.Type == ModifierType.Absolute))
 			{
 				var maxInaccuracyOffset = Util.GetProjectileInaccuracy(info.Inaccuracy.Length, info.InaccuracyType, args);
 				target += WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxInaccuracyOffset / 1024;

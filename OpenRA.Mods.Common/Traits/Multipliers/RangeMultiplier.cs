@@ -9,6 +9,8 @@
  */
 #endregion
 
+using OpenRA.Traits;
+
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Modifies the range of weapons fired by this actor.")]
@@ -18,16 +20,29 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Percentage modifier to apply.")]
 		public readonly int Modifier = 100;
 
+		[Desc("Higher priority modifiers are applied first.")]
+		public readonly int Priority = 0;
+
 		public override object Create(ActorInitializer init) { return new RangeMultiplier(this); }
 
 		int IRangeModifierInfo.GetRangeModifierDefault() { return EnabledByDefault ? Modifier : 100; }
 	}
 
-	public class RangeMultiplier : ConditionalTrait<RangeMultiplierInfo>, IPercentRangeModifier
+	public class RangeMultiplier : ConditionalTrait<RangeMultiplierInfo>, IRangeModifier
 	{
 		public RangeMultiplier(RangeMultiplierInfo info)
 			: base(info) { }
 
-		int IPercentRangeModifier.GetRangeModifier() { return IsTraitDisabled ? 100 : Info.Modifier; }
+		IModifier IRangeModifier.GetRangeModifier()
+		{
+			var modifier = new Modifier
+			{
+				Type = ModifierType.Relative,
+				Priority = Info.Priority,
+				Value = IsTraitDisabled ? 100 : Info.Modifier
+			};
+
+			return modifier;
+		}
 	}
 }
