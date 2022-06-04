@@ -154,10 +154,8 @@ namespace OpenRA.Server
 
 					// Regularly check player ping
 					if (lastPingSent.ElapsedMilliseconds > 1000)
-					{
-						sendQueue.Add(CreatePingFrame());
-						lastPingSent.Restart();
-					}
+						if (TrySendData(CreatePingFrame()))
+							lastPingSent.Restart();
 
 					// Send all data immediately, we will block again on read
 					while (sendQueue.TryTake(out var data, 0))
@@ -195,9 +193,21 @@ namespace OpenRA.Server
 			}
 		}
 
-		public void SendData(byte[] data)
+		public bool TrySendData(byte[] data)
 		{
-			sendQueue.Add(data);
+			if (sendQueue.IsAddingCompleted)
+				return false;
+
+			try
+			{
+				sendQueue.Add(data);
+				return true;
+			}
+			catch (InvalidOperationException)
+			{
+				// Occurs if the collection is marked completed for adding by another thread.
+				return false;
+			}
 		}
 
 		public void Dispose()

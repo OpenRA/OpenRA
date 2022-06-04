@@ -434,7 +434,7 @@ namespace OpenRA.Server
 				var ms = new MemoryStream(8);
 				ms.WriteArray(BitConverter.GetBytes(ProtocolVersion.Handshake));
 				ms.WriteArray(BitConverter.GetBytes(newConn.PlayerIndex));
-				newConn.SendData(ms.ToArray());
+				newConn.TrySendData(ms.ToArray());
 
 				// Dispatch a handshake order
 				var request = new HandshakeRequest
@@ -737,14 +737,10 @@ namespace OpenRA.Server
 
 		void DispatchFrameToClient(Connection c, int client, byte[] frameData)
 		{
-			try
-			{
-				c.SendData(frameData);
-			}
-			catch (Exception e)
+			if (!c.TrySendData(frameData))
 			{
 				DropClient(c);
-				Log.Write("server", $"Dropping client {client.ToString(CultureInfo.InvariantCulture)} because dispatching orders failed: {e}");
+				Log.Write("server", $"Dropping client {client.ToString(CultureInfo.InvariantCulture)} because dispatching orders failed!");
 			}
 		}
 
