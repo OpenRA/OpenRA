@@ -14,7 +14,7 @@
 #   MACOS_DEVELOPER_PASSWORD: App-specific password for the developer account
 #
 
-set -o errexit || exit $?
+set -o errexit -o pipefail || exit $?
 
 MONO_TAG="osx-launcher-20201222"
 
@@ -189,8 +189,8 @@ build_platform() {
 		for MOD in "Red Alert" "Tiberian Dawn"; do
 			for f in $(find /Volumes/OpenRA/OpenRA\ -\ ${MOD}.app/Contents/MacOS/*); do
 				g="/Volumes/OpenRA/OpenRA - Dune 2000.app/Contents/MacOS/"$(basename "${f}")
-				hashf=$(shasum "${f}" | awk '{ print $1 }')
-				hashg=$(shasum "${g}" | awk '{ print $1 }')
+				hashf=$(shasum "${f}" | awk '{ print $1 }') || :
+				hashg=$(shasum "${g}" | awk '{ print $1 }') || :
 				if [ "${hashf}" = "${hashg}" ]; then
 					echo "Deduplicating ${f}"
 					rm "${f}"

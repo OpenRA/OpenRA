@@ -1,7 +1,7 @@
 #!/bin/bash
 # OpenRA packaging script for versioned source tarball
 
-set -o errexit || exit $?
+set -o errexit -o pipefail || exit $?
 
 if [ $# -ne "2" ]; then
 	echo "Usage: $(basename "$0") tag outputdir"

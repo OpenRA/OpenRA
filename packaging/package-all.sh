@@ -1,7 +1,7 @@
 #!/bin/bash
 # OpenRA master packaging script
 
-set -o errexit || exit $?
+set -o errexit -o pipefail || exit $?
 
 if [ $# -ne "2" ]; then
 	echo "Usage: ${0##*/} version outputdir."

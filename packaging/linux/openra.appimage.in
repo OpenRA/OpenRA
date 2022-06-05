@@ -11,6 +11,7 @@ if [ -n "${APPIMAGE}" ]; then
 	LAUNCHER=${APPIMAGE}
 
 	APPIMAGEID=$(printf "file://%s" "${APPIMAGE}" | md5sum | cut -d' ' -f1)
+	test -n "${APPIMAGEID}"
 	LAUNCHER_NAME="appimagekit_${APPIMAGEID}-openra-{MODID}.desktop"
 	LAUNCHER_PATH="${HOME}/.local/share/applications/${LAUNCHER_NAME}"
 	export SDL_VIDEO_X11_WMCLASS="openra-{MODID}-{TAG}"

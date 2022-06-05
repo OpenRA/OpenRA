@@ -249,15 +249,15 @@ install_linux_shortcuts() (
 
 			# wrapper scripts
 			install -d "${BUILD_PATH}/${BIN_PATH}"
-			sed 's/{DEBUG}/--debug/' "${SRC_PATH}/packaging/linux/openra.in" | sed "s|{GAME_INSTALL_DIR}|${OPENRA_PATH}|" | sed "s|{BIN_DIR}|${BIN_PATH}|" | sed "s/{MODID}/${MOD_ID}/g" | sed "s/{TAG}/${VERSION}/g" | sed "s/{MODNAME}/${MOD_NAME}/g" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}"
-			sed 's/{DEBUG}/--debug/' "${SRC_PATH}/packaging/linux/openra-server.in" | sed "s|{GAME_INSTALL_DIR}|${OPENRA_PATH}|" | sed "s/{MODID}/${MOD_ID}/g" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}-server"
+			sed -e 's/{DEBUG}/--debug/' -e "s|{GAME_INSTALL_DIR}|${OPENRA_PATH}|" -e "s|{BIN_DIR}|${BIN_PATH}|" -e "s/{MODID}/${MOD_ID}/g" -e "s/{TAG}/${VERSION}/g" -e "s/{MODNAME}/${MOD_NAME}/g" "${SRC_PATH}/packaging/linux/openra.in" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}"
+			sed -e 's/{DEBUG}/--debug/' -e "s|{GAME_INSTALL_DIR}|${OPENRA_PATH}|" -e "s/{MODID}/${MOD_ID}/g" "${SRC_PATH}/packaging/linux/openra-server.in" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}-server"
 			install -m755 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}" "${BUILD_PATH}/${BIN_PATH}"
 			install -m755 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}-server" "${BUILD_PATH}/${BIN_PATH}"
 			rm "${SRC_PATH}/packaging/linux/openra-${MOD_ID}" "${SRC_PATH}/packaging/linux/openra-${MOD_ID}-server"
 
 			# desktop files
 			install -d "${BUILD_PATH}${SHARE_PATH}/applications"
-			sed "s/{MODID}/${MOD_ID}/g" "${SRC_PATH}/packaging/linux/openra.desktop.in" | sed "s/{MODNAME}/${MOD_NAME}/g" | sed "s/{TAG}/${VERSION}/g" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.desktop"
+			sed -e "s/{MODID}/${MOD_ID}/g" -e "s/{MODNAME}/${MOD_NAME}/g" -e "s/{TAG}/${VERSION}/g" "${SRC_PATH}/packaging/linux/openra.desktop.in" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.desktop"
 			install -m644 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.desktop" "${BUILD_PATH}${SHARE_PATH}/applications"
 			rm "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.desktop"
 
@@ -274,7 +274,7 @@ install_linux_shortcuts() (
 
 			# MIME info
 			install -d "${BUILD_PATH}${SHARE_PATH}/mime/packages"
-			sed "s/{MODID}/${MOD_ID}/g" "${SRC_PATH}/packaging/linux/openra-mimeinfo.xml.in" | sed "s/{TAG}/${VERSION}/g" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.xml"
+			sed -e "s/{MODID}/${MOD_ID}/g" -e "s/{TAG}/${VERSION}/g" "${SRC_PATH}/packaging/linux/openra-mimeinfo.xml.in" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.xml"
 			install -m644 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.xml" "${BUILD_PATH}${SHARE_PATH}/mime/packages/openra-${MOD_ID}.xml"
 			rm "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.xml"
 		fi
@@ -322,7 +322,7 @@ install_linux_appdata() (
 
 		install -d "${BUILD_PATH}${SHARE_PATH}/metainfo"
 
-		sed "s/{MODID}/${MOD_ID}/g" "${SRC_PATH}/packaging/linux/openra.metainfo.xml.in" | sed "s/{MOD_NAME}/${MOD_NAME}/g" | sed "s/{SCREENSHOT_RA}/${SCREENSHOT_RA}/g" | sed "s/{SCREENSHOT_CNC}/${SCREENSHOT_CNC}/g" | sed "s/{SCREENSHOT_D2K}/${SCREENSHOT_D2K}/g"> "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.metainfo.xml"
+		sed -e "s/{MODID}/${MOD_ID}/g" -e "s/{MOD_NAME}/${MOD_NAME}/g" -e "s/{SCREENSHOT_RA}/${SCREENSHOT_RA}/g" -e "s/{SCREENSHOT_CNC}/${SCREENSHOT_CNC}/g" -e "s/{SCREENSHOT_D2K}/${SCREENSHOT_D2K}/g" "${SRC_PATH}/packaging/linux/openra.metainfo.xml.in" > "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.metainfo.xml"
 		install -m644 "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.metainfo.xml" "${BUILD_PATH}${SHARE_PATH}/metainfo"
 		rm "${SRC_PATH}/packaging/linux/openra-${MOD_ID}.metainfo.xml"
 
