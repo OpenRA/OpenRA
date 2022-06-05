@@ -1,7 +1,7 @@
 #!/bin/bash
 # OpenRA packaging script for Windows
 
-set -o errexit || exit $?
+set -o errexit -o pipefail || exit $?
 
 command -v curl >/dev/null 2>&1 || command -v wget > /dev/null 2>&1 || { echo >&2 "Windows packaging requires curl or wget."; exit 1; }
 command -v makensis >/dev/null 2>&1 || { echo >&2 "Windows packaging requires makensis."; exit 1; }
