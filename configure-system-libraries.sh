@@ -6,6 +6,8 @@
 # Copy-paste the entire script into http://shellcheck.net to check.
 ####
 
+set -o errexit || exit $?
+
 patch_config()
 {
 	LABEL=$1

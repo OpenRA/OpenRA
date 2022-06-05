@@ -1,6 +1,8 @@
 #!/bin/bash
 # OpenRA master packaging script
 
+set -o errexit || exit $?
+
 if [ $# -ne "2" ]; then
 	echo "Usage: ${0##*/} version outputdir."
 	exit 1
@@ -19,14 +21,12 @@ function build_package() (
 	}
 	#trap function executes on any error in the following commands
 	trap "on_build $1" ERR
-	set -e
 	echo "Building $1 package(s)."
 	cd "$1"
 	./buildpackage.sh "${GIT_TAG}" "${BUILD_OUTPUT_DIR}"
 )
 
 #exit on any non-zero exited (failed) command
-set -e
 if [[ "$OSTYPE" == "darwin"* ]]; then
   build_package macos
 else

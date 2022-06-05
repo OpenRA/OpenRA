@@ -1,4 +1,5 @@
 #!/bin/sh
+set -o errexit || exit $?
 
 # OpenRA.Utility relies on keeping the original working directory, so don't change directory
 HERE="$(dirname "$(readlink -f "${0}")")"
