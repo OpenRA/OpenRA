@@ -10,7 +10,7 @@ set -o errexit || exit $?
 
 # Set the working directory to the location of this script
 HERE=$(dirname "$0")
-cd "${HERE}" || exit 1
+cd "${HERE}"
 
 # Database does not exist or is older than 30 days.
 if [ -z "$(find . -path ./IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP -mtime -30 -print)" ]; then

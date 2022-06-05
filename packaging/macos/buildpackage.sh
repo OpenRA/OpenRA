@@ -30,7 +30,7 @@ fi
 
 # Set the working dir to the location of this script
 HERE=$(dirname "${0}")
-cd "${HERE}" || exit 1
+cd "${HERE}"
 . ../functions.sh
 
 # Import code signing certificate

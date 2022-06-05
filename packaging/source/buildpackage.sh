@@ -10,13 +10,13 @@ fi
 
 # Set the working dir to the location of this script
 HERE=$(dirname "$0")
-cd "${HERE}" || exit 1
+cd "${HERE}"
 
 TAG="$1"
 OUTPUTDIR="$2"
 SRCDIR="$(pwd)/../.."
 
-pushd "${SRCDIR}" > /dev/null || exit 1
+pushd "${SRCDIR}" > /dev/null
 make version VERSION="${TAG}"
 
 # The output from `git ls-tree` is too long to fit in a single command (overflows MAX_ARG_STRLEN)
@@ -26,4 +26,4 @@ rm "${OUTPUTDIR}/OpenRA-${TAG}-source.tar" || :
 git ls-tree HEAD --name-only -r -z | xargs -0 tar vrf "${OUTPUTDIR}/OpenRA-${TAG}-source.tar"
 bzip2 "${OUTPUTDIR}/OpenRA-${TAG}-source.tar"
 
-popd > /dev/null || exit 1
+popd > /dev/null
