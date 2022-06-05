@@ -29,7 +29,8 @@ if [[ "${OSTYPE}" != "darwin"* ]]; then
 fi
 
 # Set the working dir to the location of this script
-cd "$(dirname "${0}")" || exit 1
+HERE=$(dirname "${0}")
+cd "${HERE}" || exit 1
 . ../functions.sh
 
 # Import code signing certificate
