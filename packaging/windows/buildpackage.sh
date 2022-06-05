@@ -78,7 +78,7 @@ function build_platform()
 
 	echo "Packaging zip archive ($1)"
 	pushd "${BUILTDIR}" > /dev/null
-	zip "OpenRA-${TAG}-${PLATFORM}-winportable.zip" -r -9 * --quiet
+	zip "OpenRA-${TAG}-${PLATFORM}-winportable.zip" -r -9 ./* --quiet
 	mv "OpenRA-${TAG}-${PLATFORM}-winportable.zip" "${OUTPUTDIR}"
 	popd > /dev/null
 
