@@ -3,6 +3,6 @@ set -o errexit || exit $?
 
 LAUNCHER=$(readlink -f "${0}")
 HERE=$(dirname "${LAUNCHER}")
-cd "${HERE}/../lib/openra" || exit 1
+cd "${HERE}/../lib/openra"
 
 ./OpenRA.Server Game.Mod="{MODID}" "$@"

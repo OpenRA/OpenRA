@@ -3,7 +3,7 @@ set -o errexit || exit $?
 
 LAUNCHER=$(readlink -f "${0}")
 HERE="$(dirname "${LAUNCHER}")"
-cd "${HERE}/../lib/openra" || exit 1
+cd "${HERE}/../lib/openra"
 
 # APPIMAGE is an environment variable set by the runtime
 # defining the absolute path to the .AppImage file

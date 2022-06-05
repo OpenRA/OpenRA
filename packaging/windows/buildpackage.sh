@@ -16,7 +16,7 @@ fi
 
 # Set the working dir to the location of this script
 HERE=$(dirname "$0")
-cd "${HERE}" || exit 1
+cd "${HERE}"
 . ../functions.sh
 
 TAG="$1"
@@ -35,9 +35,9 @@ elif [[ ${TAG} == playtest* ]]; then
 fi
 
 if command -v curl >/dev/null 2>&1; then
-	curl -s -L -O https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x64.exe || exit 3
+	curl -s -L -O https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x64.exe
 else
-	wget -cq https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x64.exe || exit 3
+	wget -cq https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x64.exe
 fi
 
 function makelauncher()
@@ -75,7 +75,7 @@ function build_platform()
 	makelauncher "Dune2000" "Dune 2000" "d2k" "${PLATFORM}"
 
 	echo "Building Windows setup.exe ($1)"
-	makensis -V2 -DSRCDIR="${BUILTDIR}" -DTAG="${TAG}" -DSUFFIX="${SUFFIX}" -DOUTFILE="${OUTPUTDIR}/OpenRA-${TAG}-${PLATFORM}.exe" ${USE_PROGRAMFILES32} OpenRA.nsi || exit 1
+	makensis -V2 -DSRCDIR="${BUILTDIR}" -DTAG="${TAG}" -DSUFFIX="${SUFFIX}" -DOUTFILE="${OUTPUTDIR}/OpenRA-${TAG}-${PLATFORM}.exe" ${USE_PROGRAMFILES32} OpenRA.nsi
 
 	echo "Packaging zip archive ($1)"
 	pushd "${BUILTDIR}" > /dev/null

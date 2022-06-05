@@ -35,7 +35,7 @@ install_assemblies() (
 	COPY_D2K_DLL="${7}"
 
 	ORIG_PWD=$(pwd)
-	cd "${SRC_PATH}" || exit 1
+	cd "${SRC_PATH}"
 
 	if [ "${RUNTIME}" = "mono" ]; then
 		echo "Building assemblies"
@@ -59,7 +59,7 @@ install_assemblies() (
 			rm "${SRC_PATH}/bin/OpenRA.Mods.D2k.dll"
 		fi
 
-		cd "${ORIG_PWD}" || exit 1
+		cd "${ORIG_PWD}"
 
 		echo "Installing engine to ${DEST_PATH}"
 		install -d "${DEST_PATH}"
@@ -82,7 +82,7 @@ install_assemblies() (
 	else
 		dotnet publish -c Release -p:TargetPlatform="${TARGETPLATFORM}" -p:CopyGenericLauncher="${COPY_GENERIC_LAUNCHER}" -p:CopyCncDll="${COPY_CNC_DLL}" -p:CopyD2kDll="${COPY_D2K_DLL}" -r "${TARGETPLATFORM}" -o "${DEST_PATH}" --self-contained true
 	fi
-	cd "${ORIG_PWD}" || exit 1
+	cd "${ORIG_PWD}"
 )
 
 # Copy the core engine and specified mod data to the target directory

@@ -12,7 +12,7 @@ export GIT_TAG="$1"
 export BUILD_OUTPUT_DIR="$2"
 
 # Set the working dir to the location of this script using bash parameter expansion
-cd "${0%/*}" || exit 1
+cd "${0%/*}"
 
 #build packages using a subshell so directory changes do not persist beyond the function
 function build_package() (
