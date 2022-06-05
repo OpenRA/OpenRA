@@ -1,4 +1,6 @@
 #!/bin/sh
+set -o errexit || exit $?
+
 LAUNCHER=$(readlink -f "${0}")
 HERE="$(dirname "${LAUNCHER}")"
 cd "${HERE}/../lib/openra" || exit 1
@@ -43,21 +45,23 @@ fi
 
 # Run the game
 export SDL_VIDEO_X11_WMCLASS="openra-{MODID}-{TAG}"
-./OpenRA Game.Mod={MODID} Engine.LaunchPath="${LAUNCHER}" "${JOIN_SERVER}" "$@"
+./OpenRA Game.Mod={MODID} Engine.LaunchPath="${LAUNCHER}" "${JOIN_SERVER}" "$@" && rc=0 || rc=$?
 
 # Show a crash dialog if something went wrong
-if [ $? != 0 ] && [ $? != 1 ]; then
+if [ "${rc}" != 0 ] && [ "${rc}" != 1 ]; then
 	LOGS="${XDG_CONFIG_HOME:-${HOME}/.config}/openra/Logs"
 	if [ ! -d "${LOGS}" ] && [ -d "${HOME}/.openra/Logs" ]; then
 		LOGS="${HOME}/.openra/Logs"
 	fi
 
-	test -d Support/Logs && LOGS="${PWD}/Support/Logs"
+	if [ -d Support/Logs ]; then
+		LOGS="${PWD}/Support/Logs"
+	fi
 	ERROR_MESSAGE=$(printf "%s has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in %s\nThe FAQ is available at http://wiki.openra.net/FAQ" "{MODNAME}" "${LOGS}")
 	if command -v zenity > /dev/null; then
-		zenity --no-wrap --error --title "{MODNAME}" --no-markup --text "${ERROR_MESSAGE}" 2> /dev/null
+		zenity --no-wrap --error --title "{MODNAME}" --no-markup --text "${ERROR_MESSAGE}" 2> /dev/null || :
 	elif command -v kdialog > /dev/null; then
-		kdialog --title "{MODNAME}" --error "${ERROR_MESSAGE}"
+		kdialog --title "{MODNAME}" --error "${ERROR_MESSAGE}" || :
 	elif "${HERE}/gtk-dialog.py" test > /dev/null; then
 		"${HERE}/gtk-dialog.py" error --title "{MODNAME}" --text "${ERROR_MESSAGE}" 2> /dev/null
 	else

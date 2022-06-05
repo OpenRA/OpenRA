@@ -23,7 +23,9 @@
 #   Mod SDK Windows packaging
 #   Mod SDK macOS packaging
 #   Mod SDK Linux AppImage packaging
-install_assemblies() {
+install_assemblies() (
+	set -o errexit || exit $?
+
 	SRC_PATH="${1}"
 	DEST_PATH="${2}"
 	TARGETPLATFORM="${3}"
@@ -37,8 +39,8 @@ install_assemblies() {
 
 	if [ "${RUNTIME}" = "mono" ]; then
 		echo "Building assemblies"
-		rm -rf "${SRC_PATH}/OpenRA."*/obj
-		rm -rf "${SRC_PATH:?}/bin"
+		rm -rf "${SRC_PATH}/OpenRA."*/obj || :
+		rm -rf "${SRC_PATH:?}/bin" || :
 
 		msbuild -verbosity:m -nologo -t:Build -restore -p:Configuration=Release -p:TargetPlatform="${TARGETPLATFORM}"
 		if [ "${TARGETPLATFORM}" = "unix-generic" ]; then
@@ -81,7 +83,7 @@ install_assemblies() {
 		dotnet publish -c Release -p:TargetPlatform="${TARGETPLATFORM}" -p:CopyGenericLauncher="${COPY_GENERIC_LAUNCHER}" -p:CopyCncDll="${COPY_CNC_DLL}" -p:CopyD2kDll="${COPY_D2K_DLL}" -r "${TARGETPLATFORM}" -o "${DEST_PATH}" --self-contained true
 	fi
 	cd "${ORIG_PWD}" || exit 1
-}
+)
 
 # Copy the core engine and specified mod data to the target directory
 # Arguments:
@@ -96,7 +98,9 @@ install_assemblies() {
 #   Mod SDK Linux AppImage packaging
 #   Mod SDK macOS packaging
 #   Mod SDK Windows packaging
-install_data() {
+install_data() (
+	set -o errexit || exit $?
+
 	SRC_PATH="${1}"
 	DEST_PATH="${2}"
 	shift 2
@@ -125,7 +129,7 @@ install_data() {
 
 		shift
 	done
-}
+)
 
 # Compile and publish (using Mono) a windows launcher with the specified mod details to the target directory
 # Arguments:
@@ -140,8 +144,9 @@ install_data() {
 # Used by:
 #   Windows packaging
 #   Mod SDK Windows packaging
-install_windows_launcher()
-{
+install_windows_launcher() (
+	set -o errexit || exit $?
+
 	SRC_PATH="${1}"
 	DEST_PATH="${2}"
 	TARGETPLATFORM="${3}"
@@ -150,14 +155,14 @@ install_windows_launcher()
 	MOD_NAME="${6}"
 	FAQ_URL="${7}"
 
-	rm -rf "${SRC_PATH}/OpenRA.WindowsLauncher/obj"
+	rm -rf "${SRC_PATH}/OpenRA.WindowsLauncher/obj" || :
 	dotnet publish "${SRC_PATH}/OpenRA.WindowsLauncher/OpenRA.WindowsLauncher.csproj" -c Release -r "${TARGETPLATFORM}" -p:LauncherName="${LAUNCHER_NAME}" -p:TargetPlatform="${TARGETPLATFORM}" -p:ModID="${MOD_ID}" -p:DisplayName="${MOD_NAME}" -p:FaqUrl="${FAQ_URL}" -o "${DEST_PATH}" --self-contained true
 
 	# NET 6 is unable to customize the application host for windows when compiling from Linux,
 	# so we must patch the properties we need in the PE header.
 	# Setting the application icon requires an external tool, so is left to the calling code
 	python3 "${SRC_PATH}/packaging/windows/fixlauncher.py" "${DEST_PATH}/${LAUNCHER_NAME}.exe"
-}
+)
 
 # Write a version string to the engine VERSION file
 # Arguments:
@@ -171,11 +176,13 @@ install_windows_launcher()
 #   Mod SDK Linux AppImage packaging
 #   Mod SDK macOS packaging
 #   Mod SDK Windows packaging
-set_engine_version() {
+set_engine_version() (
+	set -o errexit || exit $?
+
 	VERSION="${1}"
 	DEST_PATH="${2}"
 	echo "${VERSION}" > "${DEST_PATH}/VERSION"
-}
+)
 
 # Write a version string to a list of specified mod.yamls
 # Arguments:
@@ -189,7 +196,9 @@ set_engine_version() {
 #   Mod SDK Linux AppImage packaging
 #   Mod SDK macOS packaging
 #   Mod SDK Windows packaging
-set_mod_version() {
+set_mod_version() (
+	set -o errexit || exit $?
+
 	VERSION="${1}"
 	shift
 	while [ -n "${1}" ]; do
@@ -199,7 +208,7 @@ set_mod_version() {
 		rm "${MOD_YAML_PATH}.tmp"
 		shift
 	done
-}
+)
 
 # Copy launch wrappers, application icons, desktop, and MIME files to the target directory
 # Arguments:
@@ -212,7 +221,9 @@ set_mod_version() {
 #   MOD [MOD...]: One or more mod ids to copy (cnc, d2k, ra)
 # Used by:
 #   Makefile (install-linux-shortcuts target for local installs and downstream packaging)
-install_linux_shortcuts() {
+install_linux_shortcuts() (
+	set -o errexit || exit $?
+
 	SRC_PATH="${1}"
 	BUILD_PATH="${2}"
 	OPENRA_PATH="${3}"
@@ -270,7 +281,7 @@ install_linux_shortcuts() {
 
 		shift
 	done
-}
+)
 
 # Copy AppStream metadata to the target directory
 # Arguments:
@@ -280,7 +291,9 @@ install_linux_shortcuts() {
 #   MOD [MOD...]: One or more mod ids to copy (cnc, d2k, ra)
 # Used by:
 #   Makefile (install-linux-appdata target for local installs and downstream packaging)
-install_linux_appdata() {
+install_linux_appdata() (
+	set -o errexit || exit $?
+
 	SRC_PATH="${1}"
 	BUILD_PATH="${2}"
 	SHARE_PATH="${3}"
@@ -315,4 +328,4 @@ install_linux_appdata() {
 
 		shift
 	done
-}
+)

@@ -13,7 +13,8 @@
 #   MACOS_DEVELOPER_USERNAME: Email address for the developer account
 #   MACOS_DEVELOPER_PASSWORD: App-specific password for the developer account
 #
-set -e
+
+set -o errexit || exit $?
 
 MONO_TAG="osx-launcher-20201222"
 
