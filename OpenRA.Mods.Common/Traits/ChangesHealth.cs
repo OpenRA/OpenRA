@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ChangesHealth(init.Self, this); }
 	}
 
-	class ChangesHealth : ConditionalTrait<ChangesHealthInfo>, ITick, INotifyDamage
+	class ChangesHealth : ConditionalTrait<ChangesHealthInfo>, ITick, INotifyDamage, ISync
 	{
 		readonly IHealth health;
 
