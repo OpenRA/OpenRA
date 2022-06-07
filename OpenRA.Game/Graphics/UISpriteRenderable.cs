@@ -22,8 +22,9 @@ namespace OpenRA.Graphics
 		readonly PaletteReference palette;
 		readonly float scale;
 		readonly float alpha;
+		readonly float rotation = 0f;
 
-		public UISpriteRenderable(Sprite sprite, WPos effectiveWorldPos, int2 screenPos, int zOffset, PaletteReference palette, float scale = 1f, float alpha = 1f)
+		public UISpriteRenderable(Sprite sprite, WPos effectiveWorldPos, int2 screenPos, int zOffset, PaletteReference palette, float scale = 1f, float alpha = 1f, float rotation = 0f)
 		{
 			this.sprite = sprite;
 			this.effectiveWorldPos = effectiveWorldPos;
@@ -32,6 +33,7 @@ namespace OpenRA.Graphics
 			this.palette = palette;
 			this.scale = scale;
 			this.alpha = alpha;
+			this.rotation = rotation;
 
 			// PERF: Remove useless palette assignments for RGBA sprites
 			// HACK: This is working around the fact that palettes are defined on traits rather than sequences
@@ -48,7 +50,7 @@ namespace OpenRA.Graphics
 		public PaletteReference Palette => palette;
 		public int ZOffset => zOffset;
 
-		public IPalettedRenderable WithPalette(PaletteReference newPalette) { return new UISpriteRenderable(sprite, effectiveWorldPos, screenPos, zOffset, newPalette, scale, alpha); }
+		public IPalettedRenderable WithPalette(PaletteReference newPalette) { return new UISpriteRenderable(sprite, effectiveWorldPos, screenPos, zOffset, newPalette, scale, alpha, rotation); }
 		public IRenderable WithZOffset(int newOffset) { return this; }
 		public IRenderable OffsetBy(in WVec vec) { return this; }
 		public IRenderable AsDecoration() { return this; }
@@ -56,19 +58,22 @@ namespace OpenRA.Graphics
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			Game.Renderer.SpriteRenderer.DrawSprite(sprite, palette, screenPos, scale, float3.Ones, alpha);
+			Game.Renderer.SpriteRenderer.DrawSprite(sprite, palette, screenPos, scale, float3.Ones, alpha, rotation);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)
 		{
 			var offset = screenPos + sprite.Offset.XY;
-			Game.Renderer.RgbaColorRenderer.DrawRect(offset, offset + sprite.Size.XY, 1, Color.Red);
+			if (rotation == 0f)
+				Game.Renderer.RgbaColorRenderer.DrawRect(offset, offset + sprite.Size.XY, 1, Color.Red);
+			else
+				Game.Renderer.RgbaColorRenderer.DrawPolygon(Util.RotateQuad(offset, sprite.Size, rotation), 1, Color.Red);
 		}
 
 		public Rectangle ScreenBounds(WorldRenderer wr)
 		{
 			var offset = screenPos + sprite.Offset;
-			return new Rectangle((int)offset.X, (int)offset.Y, (int)sprite.Size.X, (int)sprite.Size.Y);
+			return Util.BoundingRectangle(offset, sprite.Size, rotation);
 		}
 	}
 }

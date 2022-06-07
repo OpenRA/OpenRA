@@ -108,6 +108,7 @@ namespace OpenRA.Mods.Common.Graphics
 		int ISpriteSequence.Length => throw exception;
 		int ISpriteSequence.Stride => throw exception;
 		int ISpriteSequence.Facings => throw exception;
+		int ISpriteSequence.InterpolatedFacings => throw exception;
 		int ISpriteSequence.Tick => throw exception;
 		int ISpriteSequence.ZOffset => throw exception;
 		int ISpriteSequence.ShadowStart => throw exception;
@@ -118,6 +119,7 @@ namespace OpenRA.Mods.Common.Graphics
 		float ISpriteSequence.Scale => throw exception;
 		Sprite ISpriteSequence.GetSprite(int frame) { throw exception; }
 		Sprite ISpriteSequence.GetSprite(int frame, WAngle facing) { throw exception; }
+		(Sprite, WAngle) ISpriteSequence.GetSpriteWithRotation(int frame, WAngle facing) { throw exception; }
 		Sprite ISpriteSequence.GetShadow(int frame, WAngle facing) { throw exception; }
 		float ISpriteSequence.GetAlpha(int frame) { throw exception; }
 	}
@@ -166,6 +168,11 @@ namespace OpenRA.Mods.Common.Graphics
 		static readonly SpriteSequenceField<int> Facings = new SpriteSequenceField<int>(nameof(Facings), 1);
 		int ISpriteSequence.Facings => facings;
 		protected int facings;
+
+		[Desc("The amount of directions the unit faces. Use negative values to rotate counter-clockwise.")]
+		static readonly SpriteSequenceField<int> InterpolatedFacings = new SpriteSequenceField<int>(nameof(InterpolatedFacings), 1);
+		int ISpriteSequence.InterpolatedFacings => interpolatedFacings;
+		protected int interpolatedFacings;
 
 		[Desc("Time (in milliseconds at default game speed) to wait until playing the next frame in the animation.")]
 		static readonly SpriteSequenceField<int> Tick = new SpriteSequenceField<int>(nameof(Tick), 40);
@@ -305,6 +312,11 @@ namespace OpenRA.Mods.Common.Graphics
 				var zRamp = LoadField(d, ZRamp);
 
 				facings = LoadField(d, Facings);
+				interpolatedFacings = LoadField(d, nameof(InterpolatedFacings), -1);
+				if (interpolatedFacings != -1 && (interpolatedFacings <= 1 || interpolatedFacings <= Math.Abs(facings) || interpolatedFacings > 1024
+					|| !Exts.IsPowerOf2(interpolatedFacings)))
+					throw new YamlException($"InterpolatedFacings must be greater than Facings, within the range of 2 to 1024, and a power of 2.");
+
 				if (facings < 0)
 				{
 					reverseFacings = true;
@@ -529,6 +541,17 @@ namespace OpenRA.Mods.Common.Graphics
 		public Sprite GetSprite(int frame, WAngle facing)
 		{
 			return GetSprite(start, frame, facing);
+		}
+
+		public (Sprite, WAngle) GetSpriteWithRotation(int frame, WAngle facing)
+		{
+			var rotation = WAngle.Zero;
+
+			// Note: Error checking is not done here as it is done on load
+			if (interpolatedFacings != -1)
+				rotation = Util.GetInterpolatedFacing(facing, Math.Abs(facings), interpolatedFacings);
+
+			return (GetSprite(start, frame, facing), rotation);
 		}
 
 		public Sprite GetShadow(int frame, WAngle facing)

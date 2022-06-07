@@ -20,12 +20,44 @@ namespace OpenRA.Graphics
 		// yes, our channel order is nuts.
 		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
 
-		public static void FastCreateQuad(Vertex[] vertices, in float3 o, Sprite r, int2 samplers, float paletteTextureIndex, int nv, in float3 size, in float3 tint, float alpha)
+		public static void FastCreateQuad(Vertex[] vertices, in float3 o, Sprite r, int2 samplers, float paletteTextureIndex, int nv,
+			in float3 size, in float3 tint, float alpha, float rotation = 0f)
 		{
-			var b = new float3(o.X + size.X, o.Y, o.Z);
-			var c = new float3(o.X + size.X, o.Y + size.Y, o.Z + size.Z);
-			var d = new float3(o.X, o.Y + size.Y, o.Z + size.Z);
-			FastCreateQuad(vertices, o, b, c, d, r, samplers, paletteTextureIndex, tint, alpha, nv);
+			float3 a, b, c, d;
+
+			// Rotate sprite if rotation angle is not equal to 0
+			if (rotation != 0f)
+			{
+				var center = o + 0.5f * size;
+				var angleSin = (float)Math.Sin(-rotation);
+				var angleCos = (float)Math.Cos(-rotation);
+
+				// Rotated offset for +/- x with +/- y
+				var ra = 0.5f * new float3(
+					size.X * angleCos - size.Y * angleSin,
+					size.X * angleSin + size.Y * angleCos,
+					(size.X * angleSin + size.Y * angleCos) * size.Z / size.Y);
+
+				// Rotated offset for +/- x with -/+ y
+				var rb = 0.5f * new float3(
+					size.X * angleCos + size.Y * angleSin,
+					size.X * angleSin - size.Y * angleCos,
+					(size.X * angleSin - size.Y * angleCos) * size.Z / size.Y);
+
+				a = center - ra;
+				b = center + rb;
+				c = center + ra;
+				d = center - rb;
+			}
+			else
+			{
+				a = o;
+				b = new float3(o.X + size.X, o.Y, o.Z);
+				c = new float3(o.X + size.X, o.Y + size.Y, o.Z + size.Z);
+				d = new float3(o.X, o.Y + size.Y, o.Z + size.Z);
+			}
+
+			FastCreateQuad(vertices, a, b, c, d, r, samplers, paletteTextureIndex, tint, alpha, nv);
 		}
 
 		public static void FastCreateQuad(Vertex[] vertices,
@@ -189,6 +221,69 @@ namespace OpenRA.Graphics
 					}
 				}
 			}
+		}
+
+		/// <summary>Rotates a quad about its center in the x-y plane.</summary>
+		/// <param name="tl">The top left vertex of the quad</param>
+		/// <param name="size">A float3 containing the X, Y, and Z lengths of the quad</param>
+		/// <param name="rotation">The number of radians to rotate by</param>
+		/// <returns>An array of four vertices representing the rotated quad (top-left, top-right, bottom-right, bottom-left)</returns>
+		public static float3[] RotateQuad(float3 tl, float3 size, float rotation)
+		{
+			var center = tl + 0.5f * size;
+			var angleSin = (float)Math.Sin(-rotation);
+			var angleCos = (float)Math.Cos(-rotation);
+
+			// Rotated offset for +/- x with +/- y
+			var ra = 0.5f * new float3(
+				size.X * angleCos - size.Y * angleSin,
+				size.X * angleSin + size.Y * angleCos,
+				(size.X * angleSin + size.Y * angleCos) * size.Z / size.Y);
+
+			// Rotated offset for +/- x with -/+ y
+			var rb = 0.5f * new float3(
+				size.X * angleCos + size.Y * angleSin,
+				size.X * angleSin - size.Y * angleCos,
+				(size.X * angleSin - size.Y * angleCos) * size.Z / size.Y);
+
+			return new float3[]
+			{
+				center - ra,
+				center + rb,
+				center + ra,
+				center - rb
+			};
+		}
+
+		/// <summary>
+		/// Returns the bounds of an object. Used for determining which objects need to be rendered on screen, and which do not.
+		/// </summary>
+		/// <param name="offset">The top left vertex of the object</param>
+		/// <param name="size">A float 3 containing the X, Y, and Z lengths of the object</param>
+		/// <param name="rotation">The angle to rotate the object by (use 0f if there is no rotation)</param>
+		public static Rectangle BoundingRectangle(float3 offset, float3 size, float rotation)
+		{
+			if (rotation == 0f)
+				return new Rectangle((int)offset.X, (int)offset.Y, (int)size.X, (int)size.Y);
+
+			var rotatedQuad = Util.RotateQuad(offset, size, rotation);
+			var minX = rotatedQuad[0].X;
+			var maxX = rotatedQuad[0].X;
+			var minY = rotatedQuad[0].Y;
+			var maxY = rotatedQuad[0].Y;
+			for (var i = 1; i < rotatedQuad.Length; i++)
+			{
+				minX = Math.Min(rotatedQuad[i].X, minX);
+				maxX = Math.Max(rotatedQuad[i].X, maxX);
+				minY = Math.Min(rotatedQuad[i].Y, minY);
+				maxY = Math.Max(rotatedQuad[i].Y, maxY);
+			}
+
+			return new Rectangle(
+				(int)minX,
+				(int)minY,
+				(int)Math.Ceiling(maxX) - (int)minX,
+				(int)Math.Ceiling(maxY) - (int)minY);
 		}
 
 		public static Color PremultiplyAlpha(Color c)
