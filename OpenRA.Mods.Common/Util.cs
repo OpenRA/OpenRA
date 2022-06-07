@@ -67,9 +67,26 @@ namespace OpenRA.Mods.Common
 		/// </summary>
 		public static int IndexFacing(WAngle facing, int numFrames)
 		{
+			// 1024 here is the max angle, so we divide the max angle by the total number of facings (numFrames)
 			var step = 1024 / numFrames;
 			var a = (facing.Angle + step / 2) & 1023;
 			return a / step;
+		}
+
+		/// <summary>
+		/// Returns the remainder angle after rounding to the nearest whole step / facing
+		/// </summary>
+		public static WAngle AngleDiffToStep(WAngle facing, int numFrames)
+		{
+			var step = 1024 / numFrames;
+			var a = (facing.Angle + step / 2) & 1023;
+			return new WAngle(a % step - step / 2);
+		}
+
+		public static WAngle GetInterpolatedFacing(WAngle facing, int facings, int interpolatedFacings)
+		{
+			var step = 1024 / interpolatedFacings;
+			return new WAngle(AngleDiffToStep(facing, facings).Angle / step * step);
 		}
 
 		/// <summary>Rounds the given facing value to the nearest quantized step.</summary>
