@@ -144,13 +144,12 @@ namespace OpenRA.Mods.Common.Traits
 
 				var ra = Math.Abs(range.Length);
 				var rs = range.LengthSquared;
-				var vrs = ra == 0 ? 0 : vRange.LengthSquared;
+				var vrs = vRange.LengthSquared;
 
 				// PERF: Avoid LINQ.
-				foreach (var a in am.ActorsInBox(position.X - ra, position.Y - ra, position.X + ra, position.Y + ra))
+				foreach (var a in am.ActorsInCircle(position, new WDist(ra)))
 				{
-					var c = a.CenterPosition;
-					if ((c - position).HorizontalLengthSquared < rs && (vrs == 0 || a.World.Map.DistanceAboveTerrain(c).LengthSquared <= vrs))
+					if (vrs == 0 || a.World.Map.DistanceAboveTerrain(a.CenterPosition).LengthSquared <= vrs)
 						currentActors.Add(a);
 				}
 
