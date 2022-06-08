@@ -41,26 +41,35 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 	public class WithTurretAimAnimation : ConditionalTrait<WithTurretAimAnimationInfo>, INotifyAiming
 	{
-		readonly AttackBase attack;
+		readonly AttackBase[] attackBases;
 		readonly WithSpriteTurret wst;
 
 		public WithTurretAimAnimation(ActorInitializer init, WithTurretAimAnimationInfo info)
 			: base(info)
 		{
-			attack = init.Self.Trait<AttackBase>();
-			wst = init.Self.TraitsImplementing<WithSpriteTurret>()
-				.Single(st => st.Info.Turret == info.Turret);
+			attackBases = init.Self.TraitsImplementing<AttackBase>().ToArray();
+			wst = init.Self.TraitsImplementing<WithSpriteTurret>().Single(st => st.Info.Turret == info.Turret);
 		}
 
-		protected void UpdateSequence()
+		void UpdateSequence(bool isAiming)
 		{
-			var seq = !IsTraitDisabled && attack.IsAiming ? Info.Sequence : wst.Info.Sequence;
+			var seq = !IsTraitDisabled && isAiming ? Info.Sequence : wst.Info.Sequence;
 			wst.DefaultAnimation.ReplaceAnim(seq);
 		}
 
-		void INotifyAiming.StartedAiming(Actor self, AttackBase ab) { UpdateSequence(); }
-		void INotifyAiming.StoppedAiming(Actor self, AttackBase ab) { UpdateSequence(); }
-		protected override void TraitEnabled(Actor self) { UpdateSequence(); }
-		protected override void TraitDisabled(Actor self) { UpdateSequence(); }
+		void INotifyAiming.StartedAiming(Actor self, AttackBase ab)
+		{
+			// We know that at least one AttackBase is aiming
+			UpdateSequence(true);
+		}
+
+		void INotifyAiming.StoppedAiming(Actor self, AttackBase ab) { UpdateSequence(attackBases.Any(a => a.IsAiming)); }
+		protected override void TraitEnabled(Actor self) { UpdateSequence(attackBases.Any(a => a.IsAiming)); }
+
+		protected override void TraitDisabled(Actor self)
+		{
+			// Stop regardless of any aiming AttackBases
+			UpdateSequence(false);
+		}
 	}
 }
