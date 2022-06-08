@@ -59,11 +59,25 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyAiming.StartedAiming(Actor self, AttackBase ab)
 		{
+			// Ignore any notifications from INotifyAiming while this trait is disabled
+			// otherwise we replace the current animation without being active
+			if (IsTraitDisabled)
+				return;
+
 			// We know that at least one AttackBase is aiming
 			UpdateSequence(true);
 		}
 
-		void INotifyAiming.StoppedAiming(Actor self, AttackBase ab) { UpdateSequence(attackBases.Any(a => a.IsAiming)); }
+		void INotifyAiming.StoppedAiming(Actor self, AttackBase ab)
+		{
+			// Ignore any notifications from INotifyAiming while this trait is disabled
+			// otherwise we replace the current animation without being active
+			if (IsTraitDisabled)
+				return;
+
+			UpdateSequence(attackBases.Any(a => a.IsAiming));
+		}
+
 		protected override void TraitEnabled(Actor self) { UpdateSequence(attackBases.Any(a => a.IsAiming)); }
 
 		protected override void TraitDisabled(Actor self)
