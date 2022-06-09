@@ -156,6 +156,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
+			// HACK: Manually set force attacking if we persisted an opportunity target that required force attacking
+			if (opportunityTargetIsPersistentTarget && opportunityForceAttack && newTarget == OpportunityTarget)
+				forceAttack = true;
+
 			return new AttackActivity(self, newTarget, allowMove, forceAttack, targetLineColor);
 		}
 
