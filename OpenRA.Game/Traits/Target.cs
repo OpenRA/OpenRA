@@ -224,6 +224,71 @@ namespace OpenRA.Traits
 			}
 		}
 
+		public static bool operator ==(in Target me, in Target other)
+		{
+			if (me.type != other.type)
+				return false;
+
+			switch (me.type)
+			{
+				case TargetType.Terrain:
+					return me.terrainCenterPosition == other.terrainCenterPosition
+						&& me.terrainPositions == other.terrainPositions
+						&& me.cell == other.cell && me.subCell == other.subCell;
+
+				case TargetType.Actor:
+					return me.Actor == other.Actor && me.generation == other.generation;
+
+				case TargetType.FrozenActor:
+					return me.FrozenActor == other.FrozenActor;
+
+				default:
+				case TargetType.Invalid:
+					return false;
+			}
+		}
+
+		public static bool operator !=(in Target me, in Target other)
+		{
+			return !(me == other);
+		}
+
+		public override int GetHashCode()
+		{
+			switch (type)
+			{
+				case TargetType.Terrain:
+					var hash = terrainCenterPosition.GetHashCode() ^ terrainPositions.GetHashCode();
+					if (cell != null)
+						hash ^= cell.GetHashCode();
+
+					if (subCell != null)
+						hash ^= subCell.GetHashCode();
+
+					return hash;
+
+				case TargetType.Actor:
+					return Actor.GetHashCode() ^ generation.GetHashCode();
+
+				case TargetType.FrozenActor:
+					return FrozenActor.GetHashCode();
+
+				default:
+				case TargetType.Invalid:
+					return 0;
+			}
+		}
+
+		public bool Equals(Target other)
+		{
+			return other == this;
+		}
+
+		public override bool Equals(object other)
+		{
+			return other is Target t && t == this;
+		}
+
 		// Expose internal state for serialization by the orders code *only*
 		internal static Target FromSerializedActor(Actor a, int generation) { return a != null ? new Target(a, generation) : Invalid; }
 		internal TargetType SerializableType => type;
