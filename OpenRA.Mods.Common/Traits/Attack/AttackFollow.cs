@@ -46,11 +46,11 @@ namespace OpenRA.Mods.Common.Traits
 		bool opportunityForceAttack;
 		bool opportunityTargetIsPersistentTarget;
 
-		public void SetRequestedTarget(in Target target, bool isForceAttack = false)
+		public void SetRequestedTarget(in Target target, bool isForceAttack = false, Activity requestedTargetPreset = null)
 		{
 			RequestedTarget = target;
 			requestedForceAttack = isForceAttack;
-			requestedTargetPresetForActivity = null;
+			requestedTargetPresetForActivity = requestedTargetPreset;
 		}
 
 		public void ClearRequestedTarget()
@@ -164,11 +164,7 @@ namespace OpenRA.Mods.Common.Traits
 			// We can improve responsiveness for turreted actors by preempting
 			// the last order (usually a move) and setting the target immediately
 			if (!queued)
-			{
-				RequestedTarget = target;
-				requestedForceAttack = forceAttack;
-				requestedTargetPresetForActivity = activity;
-			}
+				SetRequestedTarget(target, forceAttack, activity);
 		}
 
 		public override void OnStopOrder(Actor self)
