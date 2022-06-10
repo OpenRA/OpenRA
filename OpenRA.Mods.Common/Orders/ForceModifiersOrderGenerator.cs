@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Orders;
 
 namespace OpenRA.Mods.Common.Orders
 {
