@@ -26,13 +26,17 @@ def is_known_type(typeName, types):
     result = [t for t in types if name == t["Name"]]
     return len(result) > 0
 
-def format_docs(version, collectionName, types):
+def format_docs(version, collectionName, types, relatedEnums):
+
     typesByNamespace = OrderedDict()
     for currentType in types:
         if currentType["Namespace"] in typesByNamespace:
             typesByNamespace[currentType["Namespace"]].append(currentType)
         else:
             typesByNamespace[currentType["Namespace"]] = [currentType]
+
+    # Map the `relatedEnums` collection to a list of strings.
+    enumNames = [enum['Name'] for enum in relatedEnums]
 
     explanation = ""
     if collectionName == "TraitInfos":
@@ -46,6 +50,7 @@ def format_docs(version, collectionName, types):
 				"Please do not edit it directly, but instead add new `[Desc(\"String\")]` tags to the source code.\n")
 
     print(f"Listed below are {explanation}.")
+    print(f"Related types with their possible values are listed [at the bottom](#related-value-types-enums).")
 
     for namespace in typesByNamespace:
         print(f'\n## {namespace}')
@@ -70,6 +75,13 @@ def format_docs(version, collectionName, types):
                 print(f'| -------- | ------------- | ---- | ----------- |')
 
                 for prop in currentType["Properties"]:
+
+                    # Use the user-friendly type name unless we're certain this is a known enum,
+                    # in which case get a link to the enum's definition.
+                    typeName = prop["UserFriendlyType"]
+                    if prop["InternalType"] in enumNames:
+                        typeName = format_type_name(prop["InternalType"], True)
+
                     if "OtherAttributes" in prop:
                         attributes = []
                         for attribute in prop["OtherAttributes"]:
@@ -81,14 +93,21 @@ def format_docs(version, collectionName, types):
                         elif 'Require' in attributes:
                             defaultValue = '*(required)*'
 
-                        print(f'| {prop["PropertyName"]} | {defaultValue} | {prop["UserFriendlyType"]} | {prop["Description"]} |')
+                        print(f'| {prop["PropertyName"]} | {defaultValue} | {typeName} | {prop["Description"]} |')
                     else:
-                        print(f'| {prop["PropertyName"]} | {prop["DefaultValue"] or ""} | {prop["UserFriendlyType"]} | {prop["Description"]} |')
+                        print(f'| {prop["PropertyName"]} | {prop["DefaultValue"] or ""} | {typeName} | {prop["Description"]} |')
+
+    if len(relatedEnums) > 0:
+        print('\n# Related value types (enums):\n')
+        for relatedEnum in relatedEnums:
+            values = [f"`{value['Value']}`" for value in relatedEnum["Values"]]
+            print(f"### {relatedEnum['Name']}")
+            print(f"Possible values: {', '.join(values)}\n")
 
 if __name__ == "__main__":
     input_stream = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8-sig')
     jsonInfo = json.load(input_stream)
 
     keys = list(jsonInfo)
-    if len(keys) == 2 and keys[0] == 'Version':
-        format_docs(jsonInfo[keys[0]], keys[1], jsonInfo[keys[1]])
+    if len(keys) == 3 and keys[0] == 'Version':
+        format_docs(jsonInfo[keys[0]], keys[1], jsonInfo[keys[1]], jsonInfo[keys[2]])

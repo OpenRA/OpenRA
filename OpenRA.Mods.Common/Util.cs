@@ -236,6 +236,9 @@ namespace OpenRA.Mods.Common
 
 		public static string FriendlyTypeName(Type t)
 		{
+			if (t.IsEnum)
+				return $"{t.Name} (enum)";
+
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(HashSet<>))
 				return $"Set of {t.GetGenericArguments().Select(FriendlyTypeName).First()}";
 
