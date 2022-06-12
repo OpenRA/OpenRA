@@ -46,7 +46,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		static string GenerateJson(string version, IEnumerable<Type> traitTypes, ObjectCreator objectCreator)
 		{
-			var traitTypesInfo = traitTypes.Where(x => !x.ContainsGenericParameters && !x.IsAbstract)
+			var relatedEnumTypes = new HashSet<Type>();
+
+			var traitTypesInfo = traitTypes
+				.Where(x => !x.ContainsGenericParameters && !x.IsAbstract)
 				.Select(type => new
 				{
 					type.Namespace,
@@ -59,38 +62,56 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						.Where(y => y != type.Name && y != $"{type.Name}Info" && y != "Object" && y != "TraitInfo`1"), // HACK: This is the simplest way to exclude TraitInfo<T>, which doesn't serialize well.
 					Properties = FieldLoader.GetTypeLoadInfo(type)
 						.Where(fi => fi.Field.IsPublic && fi.Field.IsInitOnly && !fi.Field.IsStatic)
-						.Select(fi => new
+						.Select(fi =>
 						{
-							PropertyName = fi.YamlName,
-							DefaultValue = FieldSaver.SaveField(objectCreator.CreateBasic(type), fi.Field.Name).Value.Value,
-							InternalType = Util.InternalTypeName(fi.Field.FieldType),
-							UserFriendlyType = Util.FriendlyTypeName(fi.Field.FieldType),
-							Description = string.Join(" ", fi.Field.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines)),
-							OtherAttributes = fi.Field.CustomAttributes
-								.Where(a => a.AttributeType.Name != nameof(DescAttribute) && a.AttributeType.Name != nameof(FieldLoader.LoadUsingAttribute))
-								.Select(a =>
-								{
-									var name = a.AttributeType.Name;
-									name = name.EndsWith("Attribute") ? name.Substring(0, name.Length - 9) : name;
+							if (fi.Field.FieldType.IsEnum)
+								relatedEnumTypes.Add(fi.Field.FieldType);
 
-									return new
+							return new
+							{
+								PropertyName = fi.YamlName,
+								DefaultValue = FieldSaver.SaveField(objectCreator.CreateBasic(type), fi.Field.Name).Value.Value,
+								InternalType = Util.InternalTypeName(fi.Field.FieldType),
+								UserFriendlyType = Util.FriendlyTypeName(fi.Field.FieldType),
+								Description = string.Join(" ", fi.Field.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines)),
+								OtherAttributes = fi.Field.CustomAttributes
+									.Where(a => a.AttributeType.Name != nameof(DescAttribute) && a.AttributeType.Name != nameof(FieldLoader.LoadUsingAttribute))
+									.Select(a =>
 									{
-										Name = name,
-										Parameters = a.Constructor.GetParameters()
-											.Select(pi => new
-											{
-												pi.Name,
-												Value = Util.GetAttributeParameterValue(a.ConstructorArguments[pi.Position])
-											})
-									};
-								})
+										var name = a.AttributeType.Name;
+										name = name.EndsWith("Attribute") ? name.Substring(0, name.Length - 9) : name;
+
+										return new
+										{
+											Name = name,
+											Parameters = a.Constructor.GetParameters()
+												.Select(pi => new
+												{
+													pi.Name,
+													Value = Util.GetAttributeParameterValue(a.ConstructorArguments[pi.Position])
+												})
+										};
+									})
+							};
 						})
 				});
+
+			var relatedEnums = relatedEnumTypes.Select(type => new
+			{
+				type.Namespace,
+				type.Name,
+				Values = Enum.GetNames(type).Select(x => new
+				{
+					Key = Convert.ToInt32(Enum.Parse(type, x)),
+					Value = x
+				})
+			});
 
 			var result = new
 			{
 				Version = version,
-				TraitInfos = traitTypesInfo
+				TraitInfos = traitTypesInfo,
+				RelatedEnums = relatedEnums
 			};
 
 			return JsonConvert.SerializeObject(result);
