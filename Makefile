@@ -118,9 +118,7 @@ endif
 check-scripts:
 	@echo
 	@echo "Checking for Lua syntax errors..."
-	@luac -p $(shell find mods/*/maps/* -iname '*.lua')
-	@luac -p $(shell find lua/* -iname '*.lua')
-	@luac -p $(shell find mods/*/scripts/* -iname '*.lua')
+	@find lua/ mods/*/{maps,scripts}/ -iname "*.lua" -print0 | xargs -0n1 luac -p
 
 test: all
 	@echo
