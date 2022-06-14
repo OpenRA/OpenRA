@@ -596,10 +596,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.AppearsHostileTo(a))
 				return false;
 
-			var canRearmAtActor = rearmable != null && rearmable.Info.RearmActors.Contains(a.Info.Name);
-			var canRepairAtActor = repairable != null && repairable.Info.RepairActors.Contains(a.Info.Name);
-
-			return canRearmAtActor || canRepairAtActor;
+			return (rearmable != null && rearmable.CanRearmAt(a)) ||
+				(repairable != null && repairable.CanRepairAt(a));
 		}
 
 		bool AircraftCanResupplyAt(Actor a, bool allowedToForceEnter = false)
@@ -607,13 +605,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.AppearsHostileTo(a))
 				return false;
 
-			var canRearmAtActor = rearmable != null && rearmable.Info.RearmActors.Contains(a.Info.Name);
-			var canRepairAtActor = repairable != null && repairable.Info.RepairActors.Contains(a.Info.Name);
-
+			var canRearmAtActor = rearmable != null && rearmable.CanRearmAt(a);
 			var allowedToEnterRearmer = canRearmAtActor && (allowedToForceEnter || rearmable.RearmableAmmoPools.Any(p => !p.HasFullAmmo));
-			var allowedToEnterRepairer = canRepairAtActor && (allowedToForceEnter || self.GetDamageState() != DamageState.Undamaged);
+			if (allowedToEnterRearmer)
+				return true;
 
-			return allowedToEnterRearmer || allowedToEnterRepairer;
+			var canRepairAtActor = repairable != null && repairable.CanRepairAt(a);
+			var allowedToEnterRepairer = canRepairAtActor && (allowedToForceEnter || self.GetDamageState() != DamageState.Undamaged);
+			return allowedToEnterRepairer;
 		}
 
 		public int MovementSpeed => !IsTraitDisabled && !IsTraitPaused ? Util.ApplyPercentageModifiers(Info.Speed, speedModifiers) : 0;
@@ -723,12 +722,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanRearmAt(Actor host)
 		{
-			return rearmable != null && rearmable.Info.RearmActors.Contains(host.Info.Name) && rearmable.RearmableAmmoPools.Any(p => !p.HasFullAmmo);
+			return rearmable != null && rearmable.CanRearmAt(host) && rearmable.RearmableAmmoPools.Any(p => !p.HasFullAmmo);
 		}
 
 		public bool CanRepairAt(Actor host)
 		{
-			return repairable != null && repairable.Info.RepairActors.Contains(host.Info.Name) && self.GetDamageState() != DamageState.Undamaged;
+			return repairable != null && repairable.CanRepairAt(host) && self.GetDamageState() != DamageState.Undamaged;
 		}
 
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)

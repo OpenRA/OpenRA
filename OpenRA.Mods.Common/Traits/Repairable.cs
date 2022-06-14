@@ -76,8 +76,8 @@ namespace OpenRA.Mods.Common.Traits
 						5,
 						Info.EnterCursor,
 						Info.EnterBlockedCursor,
-						CanRepairAt,
-						_ => CanRepair() || CanRearm());
+						(target, modifiers) => CanRepairAt(target, modifiers) || (rearmable != null && rearmable.CanRearmAt(target, modifiers)),
+						(target) => (CanRepairAt(target) && CanRepair()) || (rearmable != null && rearmable.CanRearmAt(target) && rearmable.CanRearm()));
 			}
 		}
 
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		bool CanRepairAt(Actor target)
+		public bool CanRepairAt(Actor target)
 		{
 			return Info.RepairActors.Contains(target.Info.Name);
 		}
@@ -99,22 +99,20 @@ namespace OpenRA.Mods.Common.Traits
 			if (requireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove))
 				return false;
 
-			return Info.RepairActors.Contains(target.Info.Name);
+			return CanRepairAt(target);
 		}
 
-		bool CanRepair()
+		public bool CanRepair()
 		{
 			return health.DamageState > DamageState.Undamaged;
 		}
 
-		bool CanRearm()
-		{
-			return rearmable != null && rearmable.RearmableAmmoPools.Any(p => !p.HasFullAmmo);
-		}
-
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "Repair" && (CanRepair() || CanRearm()) ? Info.Voice : null;
+			if (order.OrderString != "Repair")
+				return null;
+
+			return CanRepair() ? Info.Voice : (rearmable != null && rearmable.CanRearm() ? rearmable.Info.Voice : null);
 		}
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
@@ -132,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (isAircraft)
 				return;
 
-			if (!CanRepairAt(order.Target.Actor) || (!CanRepair() && !CanRearm()))
+			if ((!CanRepairAt(order.Target.Actor) || !CanRepair()) && (rearmable == null || !rearmable.CanRearmAt(order.Target.Actor) || !rearmable.CanRearm()))
 				return;
 
 			self.QueueActivity(order.Queued, new Resupply(self, order.Target.Actor, new WDist(512)));
@@ -155,7 +153,7 @@ namespace OpenRA.Mods.Common.Traits
 			var repairBuilding = self.World.ActorsWithTrait<RepairsUnits>()
 				.Where(a => !a.Actor.IsDead && a.Actor.IsInWorld
 					&& a.Actor.Owner.IsAlliedWith(self.Owner) &&
-					Info.RepairActors.Contains(a.Actor.Info.Name))
+					CanRepairAt(a.Actor))
 				.OrderBy(a => a.Actor.Owner == self.Owner ? 0 : 1)
 				.ThenBy(p => (self.Location - p.Actor.Location).LengthSquared);
 

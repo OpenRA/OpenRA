@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			var cannotRepairAtHost = health == null || health.DamageState == DamageState.Undamaged
 				|| allRepairsUnits.Length == 0
-				|| ((repairable == null || !repairable.Info.RepairActors.Contains(host.Info.Name))
+				|| ((repairable == null || !repairable.CanRepairAt(host))
 					&& (repairableNear == null || !repairableNear.Info.RepairActors.Contains(host.Info.Name)));
 
 			if (!cannotRepairAtHost)
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Activities
 				wasRepaired = true;
 			}
 
-			var cannotRearmAtHost = rearmable == null || !rearmable.Info.RearmActors.Contains(host.Info.Name) || rearmable.RearmableAmmoPools.All(p => p.HasFullAmmo);
+			var cannotRearmAtHost = rearmable == null || !rearmable.CanRearmAt(host) || !rearmable.CanRearm();
 			if (!cannotRearmAtHost)
 				activeResupplyTypes |= ResupplyType.Rearm;
 		}

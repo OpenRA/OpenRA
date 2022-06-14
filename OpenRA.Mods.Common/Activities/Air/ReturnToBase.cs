@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (repairableInfo != null && repairableInfo.RepairActors.Contains(dest.Info.Name) && self.GetDamageState() != DamageState.Undamaged)
 				return true;
 
-			return rearmable != null && rearmable.Info.RearmActors.Contains(dest.Info.Name)
+			return rearmable != null && rearmable.CanRearmAt(dest)
 					&& rearmable.RearmableAmmoPools.Any(p => !p.HasFullAmmo);
 		}
 

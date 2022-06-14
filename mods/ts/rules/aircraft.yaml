@@ -173,6 +173,7 @@ ORCA:
 		RequiresCondition: empdisable
 	Rearmable:
 		RearmActors: gahpad, nahpad
+		Voice: Move
 	WithAmmoPipsDecoration:
 		Position: BottomLeft
 		RequiresSelection: true
@@ -240,6 +241,7 @@ ORCAB:
 		RequiresCondition: empdisable
 	Rearmable:
 		RearmActors: gahpad, nahpad
+		Voice: Move
 	WithAmmoPipsDecoration:
 		Position: BottomLeft
 		RequiresSelection: true
@@ -391,6 +393,7 @@ SCRIN:
 		RequiresCondition: empdisable
 	Rearmable:
 		RearmActors: gahpad, nahpad
+		Voice: Move
 	WithAmmoPipsDecoration:
 		Position: BottomLeft
 		RequiresSelection: true
@@ -462,6 +465,7 @@ APACHE:
 		RequiresCondition: empdisable
 	Rearmable:
 		RearmActors: gahpad, nahpad
+		Voice: Move
 	WithAmmoPipsDecoration:
 		Position: BottomLeft
 		RequiresSelection: true
