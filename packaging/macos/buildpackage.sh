@@ -185,21 +185,18 @@ build_platform() {
 
 	# Replace duplicate .NET runtime files with hard links to improve compression
 	if [ "${PLATFORM}" != "mono" ]; then
-		OIFS="$IFS"
-		IFS=$'\n'
 		for MOD in "Red Alert" "Tiberian Dawn"; do
-			for f in $(find /Volumes/OpenRA/OpenRA\ -\ ${MOD}.app/Contents/MacOS/*); do
+			for f in "/Volumes/OpenRA/OpenRA - ${MOD}.app/Contents/MacOS"/*; do
 				g="/Volumes/OpenRA/OpenRA - Dune 2000.app/Contents/MacOS/"$(basename "${f}")
 				hashf=$(shasum "${f}" | awk '{ print $1 }') || :
 				hashg=$(shasum "${g}" | awk '{ print $1 }') || :
-				if [ "${hashf}" = "${hashg}" ]; then
+				if [ -n "${hashf}" ] && [ "${hashf}" = "${hashg}" ]; then
 					echo "Deduplicating ${f}"
 					rm "${f}"
 					ln "${g}" "${f}"
 				fi
 			done
 		done
-		IFS="$OIFS"
 	fi
 
 	chmod -Rf go-w /Volumes/OpenRA
