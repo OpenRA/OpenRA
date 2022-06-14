@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			if (aircraft != null)
 			{
 				var turnToDock = aircraft.LastChildMatching("TurnToDock");
-				if (turnToDock != null || turnToDock.NodeValue<bool>())
+				if (turnToDock == null || !turnToDock.NodeValue<bool>())
 					yield break;
 
 				turningAircraft.Add(Tuple.Create(actorNode.Key, actorNode.Location.Filename));
