@@ -46,9 +46,9 @@ if [ $? != 0 ] && [ $? != 1 ]; then
 	fi
 
 	test -d Support/Logs && LOGS="${PWD}/Support/Logs"
-	ERROR_MESSAGE="OpenRA has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in ${LOGS}\nThe FAQ is available at http://wiki.openra.net/FAQ"
+	ERROR_MESSAGE=$(printf "%s has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in %s\nThe FAQ is available at http://wiki.openra.net/FAQ" "OpenRA" "${LOGS}")
 	if command -v zenity > /dev/null; then
-		zenity --no-wrap --error --title "OpenRA" --text "${ERROR_MESSAGE}" 2> /dev/null
+		zenity --no-wrap --error --title "OpenRA" --no-markup --text "${ERROR_MESSAGE}" 2> /dev/null
 	elif command -v kdialog > /dev/null; then
 		kdialog --title "OpenRA" --error "${ERROR_MESSAGE}"
 	else

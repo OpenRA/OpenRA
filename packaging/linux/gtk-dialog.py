@@ -43,6 +43,6 @@ if __name__ == "__main__":
     parser.add_argument('--text', type=str, required=False, default='')
     args = parser.parse_args()
     if args.type == 'question':
-        Question(args.title, args.text.replace('\\n', '\n'))
+        Question(args.title, args.text)
     elif args.type == 'error':
-        Error(args.title, args.text.replace('\\n', '\n'))
+        Error(args.title, args.text)
