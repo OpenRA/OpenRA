@@ -16,6 +16,7 @@ namespace OpenRA
 {
 	public static class TextNotificationsManager
 	{
+		public static readonly int SystemClientId = -1;
 		static readonly string SystemMessageLabel;
 
 		public static long ChatDisabledUntil { get; internal set; }
@@ -32,17 +33,17 @@ namespace OpenRA
 				return;
 
 			if (player == null || player == player.World.LocalPlayer)
-				AddTextNotification(TextNotificationPool.Transients, SystemMessageLabel, text);
+				AddTextNotification(TextNotificationPool.Transients, SystemClientId, SystemMessageLabel, text);
 		}
 
 		public static void AddFeedbackLine(string text)
 		{
-			AddTextNotification(TextNotificationPool.Feedback, SystemMessageLabel, text);
+			AddTextNotification(TextNotificationPool.Feedback, SystemClientId, SystemMessageLabel, text);
 		}
 
 		public static void AddMissionLine(string prefix, string text, Color? prefixColor = null)
 		{
-			AddTextNotification(TextNotificationPool.Mission, prefix, text, prefixColor);
+			AddTextNotification(TextNotificationPool.Mission, SystemClientId, prefix, text, prefixColor);
 		}
 
 		public static void AddSystemLine(string text)
@@ -52,12 +53,12 @@ namespace OpenRA
 
 		public static void AddSystemLine(string prefix, string text)
 		{
-			AddTextNotification(TextNotificationPool.System, prefix, text);
+			AddTextNotification(TextNotificationPool.System, SystemClientId, prefix, text);
 		}
 
-		public static void AddChatLine(string prefix, string text, Color? prefixColor = null, Color? textColor = null)
+		public static void AddChatLine(int clientId, string prefix, string text, Color? prefixColor = null, Color? textColor = null)
 		{
-			AddTextNotification(TextNotificationPool.Chat, prefix, text, prefixColor, textColor);
+			AddTextNotification(TextNotificationPool.Chat, clientId, prefix, text, prefixColor, textColor);
 		}
 
 		public static void Debug(string s, params object[] args)
@@ -65,10 +66,10 @@ namespace OpenRA
 			AddSystemLine("Debug", string.Format(s, args));
 		}
 
-		static void AddTextNotification(TextNotificationPool pool, string prefix, string text, Color? prefixColor = null, Color? textColor = null)
+		static void AddTextNotification(TextNotificationPool pool, int clientId, string prefix, string text, Color? prefixColor = null, Color? textColor = null)
 		{
 			if (IsPoolEnabled(pool))
-				Game.OrderManager.AddTextNotification(new TextNotification(pool, prefix, text, prefixColor, textColor));
+				Game.OrderManager.AddTextNotification(new TextNotification(pool, clientId, prefix, text, prefixColor, textColor));
 		}
 
 		static bool IsPoolEnabled(TextNotificationPool pool)

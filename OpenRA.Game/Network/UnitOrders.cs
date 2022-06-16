@@ -86,7 +86,7 @@ namespace OpenRA.Network
 							if (orderManager.LocalClient != null && client != orderManager.LocalClient && client.Team > 0 && client.Team == orderManager.LocalClient.Team)
 								suffix += " (Ally)";
 
-							TextNotificationsManager.AddChatLine(client.Name + suffix, message, client.Color);
+							TextNotificationsManager.AddChatLine(clientId, client.Name + suffix, message, client.Color);
 							break;
 						}
 
@@ -95,7 +95,7 @@ namespace OpenRA.Network
 						{
 							var prefix = order.ExtraData == uint.MaxValue ? "[Spectators] " : "[Team] ";
 							if (orderManager.LocalClient != null && client.Team == orderManager.LocalClient.Team)
-								TextNotificationsManager.AddChatLine(prefix + client.Name, message, client.Color);
+								TextNotificationsManager.AddChatLine(clientId, prefix + client.Name, message, client.Color);
 
 							break;
 						}
@@ -109,7 +109,7 @@ namespace OpenRA.Network
 						{
 							// Validate before adding the line
 							if (client.IsObserver || (player != null && player.WinState != WinState.Undefined))
-								TextNotificationsManager.AddChatLine("[Spectators] " + client.Name, message, client.Color);
+								TextNotificationsManager.AddChatLine(clientId, "[Spectators] " + client.Name, message, client.Color);
 
 							break;
 						}
@@ -119,7 +119,7 @@ namespace OpenRA.Network
 							&& world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Undefined;
 
 						if (valid && (isSameTeam || world.IsReplay))
-							TextNotificationsManager.AddChatLine("[Team" + (world.IsReplay ? " " + order.ExtraData : "") + "] " + client.Name, message, client.Color);
+							TextNotificationsManager.AddChatLine(clientId, "[Team" + (world.IsReplay ? " " + order.ExtraData : "") + "] " + client.Name, message, client.Color);
 
 						break;
 					}

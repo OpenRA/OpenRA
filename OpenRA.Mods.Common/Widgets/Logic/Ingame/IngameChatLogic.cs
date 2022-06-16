@@ -265,7 +265,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (!IsNotificationEligible(notification))
 				return;
 
-			chatOverlayDisplay?.AddNotification(notification);
+			if (!IsNotificationMuted(notification))
+				chatOverlayDisplay?.AddNotification(notification);
 
 			// HACK: Force disable the chat notification sound for the in-menu chat dialog
 			// This works around our inability to disable the sounds for the in-game dialog when it is hidden
@@ -282,7 +283,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (scrolledToBottom)
 				chatScrollPanel.ScrollToBottom(smooth: true);
 
-			if (!suppressSound)
+			if (!suppressSound && !IsNotificationMuted(notification))
 				Game.Sound.PlayNotification(modRules, null, "Sounds", chatLineSound, null);
 		}
 
@@ -324,6 +325,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			base.Dispose(disposing);
+		}
+
+		bool IsNotificationMuted(TextNotification notification)
+		{
+			return Game.Settings.Game.HideReplayChat && world.IsReplay && notification.ClientId != TextNotificationsManager.SystemClientId;
 		}
 	}
 }

@@ -20,14 +20,16 @@ namespace OpenRA
 	{
 		public readonly TextNotificationPool Pool;
 		public readonly string Prefix;
+		public readonly int ClientId;
 		public readonly string Text;
 		public readonly Color? PrefixColor;
 		public readonly Color? TextColor;
 		public readonly DateTime Time;
 
-		public TextNotification(TextNotificationPool pool, string prefix, string text, Color? prefixColor, Color? textColor)
+		public TextNotification(TextNotificationPool pool, int clientId, string prefix, string text, Color? prefixColor, Color? textColor)
 		{
 			Pool = pool;
+			ClientId = clientId;
 			Prefix = prefix;
 			Text = text;
 			PrefixColor = prefixColor;
