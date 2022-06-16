@@ -182,6 +182,19 @@ Container@DISPLAY_PANEL:
 									Height: 20
 									Font: Regular
 									Text: Show Game Event Notifications
+				Container@ROW:
+					Width: PARENT_RIGHT - 24
+					Height: 20
+					Children:
+						Container@HIDE_REPLAY_CHAT_CHECKBOX_CONTAINER:
+							X: 10
+							Width: PARENT_RIGHT / 2 - 10
+							Children:
+								Checkbox@HIDE_REPLAY_CHAT_CHECKBOX:
+									Width: PARENT_RIGHT
+									Height: 20
+									Font: Regular
+									Text: Hide Chat in Replays
 				Container@SPACER:
 				Background@SECTION_HEADER:
 					X: 5

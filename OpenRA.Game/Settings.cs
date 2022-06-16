@@ -251,6 +251,8 @@ namespace OpenRA
 		public bool UseClassicMouseStyle = false;
 		public bool UseAlternateScrollButton = false;
 
+		public bool HideReplayChat = false;
+
 		public StatusBarsType StatusBars = StatusBarsType.Standard;
 		public TargetLinesType TargetLines = TargetLinesType.Manual;
 		public bool UsePlayerStanceColors = false;

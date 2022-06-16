@@ -55,6 +55,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				repetitions++;
 				lineToDisplay = new TextNotification(
 					notification.Pool,
+					notification.ClientId,
 					notification.Prefix,
 					$"{notification.Text} ({repetitions + 1})",
 					notification.PrefixColor,
