@@ -552,7 +552,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool ShowSourceDropdown(DropDownButtonWidget dropdown)
 		{
 			var sourceName = new CachedTransform<IReadOnlyPackage, string>(GetSourceDisplayName);
-			Func<IReadOnlyPackage, ScrollItemWidget, ScrollItemWidget> setupItem = (source, itemTemplate) =>
+			ScrollItemWidget SetupItem(IReadOnlyPackage source, ScrollItemWidget itemTemplate)
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => assetSource == source,
@@ -560,10 +560,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				item.Get<LabelWidget>("LABEL").GetText = () => sourceName.Update(source);
 				return item;
-			};
+			}
 
 			var sources = new[] { (IReadOnlyPackage)null }.Concat(acceptablePackages);
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, sources, setupItem);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, sources, SetupItem);
 			return true;
 		}
 
@@ -602,17 +602,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool ShowPaletteDropdown(DropDownButtonWidget dropdown)
 		{
-			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (name, itemTemplate) =>
+			ScrollItemWidget SetupItem(string name, ScrollItemWidget itemTemplate)
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => currentPalette == name,
 					() => currentPalette = name);
+
 				item.Get<LabelWidget>("LABEL").GetText = () => name;
-
 				return item;
-			};
+			}
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, palettes, setupItem);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, palettes, SetupItem);
 			return true;
 		}
 
