@@ -394,13 +394,29 @@ reload-icon:
 		disabled-10: 955, 34, 16, 16
 		disabled-11: 972, 34, 16, 16
 
-checkbox-bits:
+checkmark-tick:
 	Inherits: ^Chrome
 	Regions:
 		checked: 972, 17, 16, 16
+		checked-pressed: 989, 17, 16, 16
 		checked-disabled: 989, 17, 16, 16
-		crossed: 972, 0, 16, 16
-		crossed-disabled: 989, 0, 16, 16
+		unchecked: 0, 0, 0, 0
+		unchecked-pressed: 989, 17, 16, 16
+
+checkmark-highlighted-tick:
+	Inherits: checkmark-tick
+
+checkmark-cross:
+	Inherits: ^Chrome
+	Regions:
+		checked: 972, 0, 16, 16
+		checked-pressed: 989, 0, 16, 16
+		checked-disabled: 989, 0, 16, 16
+		unchecked: 0, 0, 0, 0
+		unchecked-pressed: 989, 0, 16, 16
+
+checkmark-highlighted-cross:
+	Inherits: checkmark-cross
 
 flags:
 	Inherits: ^Chrome

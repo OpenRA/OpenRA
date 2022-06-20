@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var checkbox = widget.Get<CheckboxWidget>("OBJECTIVE_STATUS");
 				checkbox.IsChecked = () => objective.State != ObjectiveState.Incomplete;
-				checkbox.GetCheckType = () => objective.State == ObjectiveState.Completed ? "checked" : "crossed";
+				checkbox.GetCheckmark = () => objective.State == ObjectiveState.Completed ? "tick" : "cross";
 				checkbox.GetText = () => objective.Description;
 
 				parent.AddChild(widget);
