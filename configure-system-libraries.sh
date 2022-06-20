@@ -56,7 +56,7 @@ patch_config()
 }
 
 if [ "$(uname -s)" = "Darwin" ]; then
-	if [ "$(arch)" = "arm64" ]; then
+	if [ "$(arch)" = "arm64" -o "$(sysctl -in sysctl.proc_translated)" = "1" ]; then
 		SEARCHDIRS="/opt/homebrew/lib /opt/homebrew/opt/openal-soft/lib"
 	else
 		SEARCHDIRS="/usr/local/lib /usr/local/opt/openal-soft/lib"
