@@ -373,17 +373,34 @@ slider-thumb-disabled:
 checkbox:
 	Inherits: button-pressed
 
-checkbox-bits:
+checkmark-tick:
 	Inherits: ^Glyphs
 	Regions:
 		checked: 187, 0, 16, 16
-		checked-disabled: 204, 0, 16, 16
-		crossed: 221, 0, 16, 16
-		crossed-disabled: 238, 0, 16, 16
+		checked-pressed: 204, 0, 16, 16
+		unchecked: 0, 0, 0, 0
+		unchecked-pressed: 204, 0, 16, 16
+
+checkmark-highlighted-tick:
+	Inherits: checkmark-tick
+
+checkmark-cross:
+	Inherits: ^Glyphs
+	Regions:
+		checked: 221, 0, 16, 16
+		checked-pressed: 238, 0, 16, 16
+		unchecked: 0, 0, 0, 0
+		unchecked-pressed: 238, 0, 16, 16
+
+checkmark-highlighted-cross:
+	Inherits: checkmark-cross
 
 checkbox-hover:
 	Inherits: ^Dialog
 	PanelRegion: 641, 129, 2, 2, 122, 122, 2, 2
+
+checkbox-pressed:
+	Inherits: checkbox-hover
 
 # Same as a button-disabled-pressed
 checkbox-disabled:
@@ -394,6 +411,9 @@ checkbox-highlighted:
 	Inherits: button-highlighted-pressed
 
 checkbox-highlighted-hover:
+	Inherits: checkbox-highlighted
+
+checkbox-highlighted-pressed:
 	Inherits: checkbox-highlighted
 
 checkbox-highlighted-disabled:

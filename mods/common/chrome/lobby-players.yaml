@@ -168,7 +168,7 @@ Container@LOBBY_PLAYER_BIN:
 							Y: 4
 							Width: 20
 							Height: 20
-							ImageCollection: checkbox-bits
+							ImageCollection: checkmark-tick
 							ImageName: checked
 							Visible: false
 				Container@TEMPLATE_NONEDITABLE_PLAYER:
@@ -288,7 +288,7 @@ Container@LOBBY_PLAYER_BIN:
 							Y: 4
 							Width: 20
 							Height: 20
-							ImageCollection: checkbox-bits
+							ImageCollection: checkmark-tick
 							ImageName: checked
 							Visible: false
 				Container@TEMPLATE_EMPTY:
@@ -373,7 +373,7 @@ Container@LOBBY_PLAYER_BIN:
 							Y: 4
 							Width: 20
 							Height: 20
-							ImageCollection: checkbox-bits
+							ImageCollection: checkmark-tick
 							ImageName: checked
 							Visible: false
 				Container@TEMPLATE_NONEDITABLE_SPECTATOR:
@@ -448,7 +448,7 @@ Container@LOBBY_PLAYER_BIN:
 							Y: 4
 							Width: 20
 							Height: 20
-							ImageCollection: checkbox-bits
+							ImageCollection: checkmark-tick
 							ImageName: checked
 							Visible: false
 				Container@TEMPLATE_NEW_SPECTATOR:

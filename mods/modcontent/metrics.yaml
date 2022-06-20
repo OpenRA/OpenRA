@@ -3,7 +3,6 @@
 Metrics:
 	ButtonDepth: 0
 	ButtonFont: Bold
-	CheckboxPressedState: true
 	ChatLineSound: ChatLine
 	ClickDisabledSound: ClickDisabledSound
 	ClickSound: ClickSound

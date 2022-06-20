@@ -8,7 +8,6 @@ Metrics:
 	ButtonTextContrastColorLight: 7F7F7F
 	ButtonTextContrastRadius: 1
 	ButtonTextShadow: false
-	CheckboxPressedState: false
 	GameStartedColor: FFA500
 	HotkeyColor: FFFFFF
 	HotkeyColorDisabled: 808080

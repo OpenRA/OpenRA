@@ -34,8 +34,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var statusLabel = widget.Get<LabelWidget>("STATS_STATUS");
 
 				checkbox.IsChecked = () => player.WinState != WinState.Undefined;
-				checkbox.GetCheckType = () => player.WinState == WinState.Won ?
-					"checked" : "crossed";
+				checkbox.GetCheckmark = () => player.WinState == WinState.Won ? "tick" : "cross";
 
 				if (player.HasObjectives)
 				{
