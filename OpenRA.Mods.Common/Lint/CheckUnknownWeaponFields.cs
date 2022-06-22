@@ -68,6 +68,12 @@ namespace OpenRA.Mods.Common.Lint
 					{
 						var projectileName = NormalizeName(field.Value.Value);
 						var projectileInfo = modData.ObjectCreator.FindType(projectileName + "Info");
+						if (projectileInfo == null)
+						{
+							emitError($"{field.Location} defines unknown projectile `{projectileName}`.");
+							continue;
+						}
+
 						foreach (var projectileField in field.Value.Nodes)
 						{
 							var projectileFieldName = NormalizeName(projectileField.Key);
@@ -85,6 +91,12 @@ namespace OpenRA.Mods.Common.Lint
 
 						var warheadName = NormalizeName(field.Value.Value);
 						var warheadInfo = modData.ObjectCreator.FindType(warheadName + "Warhead");
+						if (warheadInfo == null)
+						{
+							emitError($"{field.Location} defines unknown warhead `{warheadName}`.");
+							continue;
+						}
+
 						foreach (var warheadField in field.Value.Nodes)
 						{
 							var warheadFieldName = NormalizeName(warheadField.Key);
