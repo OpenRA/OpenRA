@@ -71,6 +71,12 @@ namespace OpenRA.Mods.Common.Lint
 					}
 
 					var traitInfo = modData.ObjectCreator.FindType(traitName + "Info");
+					if (traitInfo == null)
+					{
+						emitError($"{t.Location} defines unknown trait `{traitName}`.");
+						continue;
+					}
+
 					foreach (var field in t.Value.Nodes)
 					{
 						var fieldName = NormalizeName(field.Key);
