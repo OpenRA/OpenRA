@@ -64,9 +64,11 @@ namespace OpenRA.Mods.Common.Lint
 					var traitName = NormalizeName(t.Key);
 
 					// Inherits can never define children
-					if (traitName == "Inherits" && t.Value.Nodes.Count > 0)
+					if (traitName == "Inherits")
 					{
-						emitError($"{t.Location} defines child nodes, which are not valid for Inherits.");
+						if (t.Value.Nodes.Count > 0)
+							emitError($"{t.Location} defines child nodes, which are not valid for Inherits.");
+
 						continue;
 					}
 
