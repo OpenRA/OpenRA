@@ -371,34 +371,36 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 				{
 					var kvp = ActorDataByActorCode[tileSpecialInfo];
 					if (!rules.Actors.ContainsKey(kvp.Actor.ToLowerInvariant()))
-						throw new InvalidOperationException($"Actor with name {kvp.Actor} could not be found in the rules YAML file!");
-
-					var a = new ActorReference(kvp.Actor)
+						Console.WriteLine($"Ignoring unknown actor type: `{kvp.Actor.ToLowerInvariant()}`");
+					else
 					{
-						new LocationInit(locationOnMap),
-						new OwnerInit(kvp.Owner)
-					};
-
-					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, a.Save()));
-
-					if (map.PlayerDefinitions.All(x => x.Value.Nodes.Single(y => y.Key == "Name").Value.Value != kvp.Owner))
-					{
-						var playerInfo = PlayerReferenceDataByPlayerName[kvp.Owner];
-						var playerReference = new PlayerReference
+						var a = new ActorReference(kvp.Actor)
 						{
-							Name = kvp.Owner,
-							OwnsWorld = kvp.Owner == "Neutral",
-							NonCombatant = kvp.Owner == "Neutral",
-							Faction = playerInfo.Faction,
-							Color = playerInfo.Color
+							new LocationInit(locationOnMap),
+							new OwnerInit(kvp.Owner)
 						};
 
-						var node = new MiniYamlNode($"{nameof(PlayerReference)}@{kvp.Owner}", FieldSaver.SaveDifferences(playerReference, new PlayerReference()));
-						map.PlayerDefinitions.Add(node);
-					}
+						map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, a.Save()));
 
-					if (kvp.Actor == "mpspawn")
-						playerCount++;
+						if (map.PlayerDefinitions.All(x => x.Value.Nodes.Single(y => y.Key == "Name").Value.Value != kvp.Owner))
+						{
+							var playerInfo = PlayerReferenceDataByPlayerName[kvp.Owner];
+							var playerReference = new PlayerReference
+							{
+								Name = kvp.Owner,
+								OwnsWorld = kvp.Owner == "Neutral",
+								NonCombatant = kvp.Owner == "Neutral",
+								Faction = playerInfo.Faction,
+								Color = playerInfo.Color
+							};
+
+							var node = new MiniYamlNode($"{nameof(PlayerReference)}@{kvp.Owner}", FieldSaver.SaveDifferences(playerReference, new PlayerReference()));
+							map.PlayerDefinitions.Add(node);
+						}
+
+						if (kvp.Actor == "mpspawn")
+							playerCount++;
+					}
 				}
 			}
 		}
