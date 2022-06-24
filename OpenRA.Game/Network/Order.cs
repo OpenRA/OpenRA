@@ -118,8 +118,10 @@ namespace OpenRA
 							{
 								case TargetType.Actor:
 								{
-									if (world != null && TryGetActorFromUInt(world, r.ReadUInt32(), out var targetActor))
-										target = Target.FromActor(targetActor);
+									var actorID = r.ReadUInt32();
+									var actorGeneration = r.ReadInt32();
+									if (world != null && TryGetActorFromUInt(world, actorID, out var targetActor))
+										target = Target.FromSerializedActor(targetActor, actorGeneration);
 
 									break;
 								}
@@ -367,6 +369,7 @@ namespace OpenRA
 						{
 							case TargetType.Actor:
 								w.Write(UIntFromActor(Target.SerializableActor));
+								w.Write(Target.SerializableGeneration);
 								break;
 							case TargetType.FrozenActor:
 								w.Write(Target.FrozenActor.Viewer.PlayerActor.ActorID);
