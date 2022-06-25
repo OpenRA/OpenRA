@@ -26,7 +26,6 @@ function build_package() (
 	./buildpackage.sh "${GIT_TAG}" "${BUILD_OUTPUT_DIR}"
 )
 
-#exit on any non-zero exited (failed) command
 if [[ "$OSTYPE" == "darwin"* ]]; then
   build_package macos
 else
