@@ -284,9 +284,14 @@ fi
 
 if [ -n "${MACOS_DEVELOPER_USERNAME}" ] && [ -n "${MACOS_DEVELOPER_PASSWORD}" ]; then
 	# Parallelize processing
-	(notarize_package "build.dmg") &
-	(notarize_package "build-mono.dmg") &
-	wait
+	(notarize_package "build.dmg") || exit 1 &
+	(notarize_package "build-mono.dmg") || exit 1 &
+	while wait -n; rc=$?; [ "${rc}" != 127 ]; do
+		if [ "${rc}" != 0 ]; then
+			wait
+			exit "${rc}"
+		fi
+	done
 fi
 
 finalize_package "standard" "build.dmg" "${OUTPUTDIR}/OpenRA-${TAG}.dmg"
