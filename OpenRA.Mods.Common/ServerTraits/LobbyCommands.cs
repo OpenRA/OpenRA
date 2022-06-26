@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Server
 		static readonly string NoStartUntilRequiredSlotsFull = "no-start-until-required-slots-full";
 
 		[TranslationReference]
+		static readonly string NoStartWithoutPlayers = "no-start-without-players";
+
+		[TranslationReference]
 		static readonly string TwoHumansRequired = "two-humans-required";
 
 		[TranslationReference]
@@ -252,6 +255,10 @@ namespace OpenRA.Mods.Common.Server
 				if (server.LobbyInfo.Slots.Any(sl => sl.Value.Required && server.LobbyInfo.ClientInSlot(sl.Key) == null))
 					return;
 
+				// Don't start without any players
+				if (server.LobbyInfo.Slots.All(sl => server.LobbyInfo.ClientInSlot(sl.Key) == null))
+					return;
+
 				if (LobbyUtils.InsufficientEnabledSpawnPoints(server.Map, server.LobbyInfo))
 					return;
 
@@ -293,6 +300,12 @@ namespace OpenRA.Mods.Common.Server
 				if (server.LobbyInfo.Slots.Any(sl => sl.Value.Required && server.LobbyInfo.ClientInSlot(sl.Key) == null))
 				{
 					server.SendLocalizedMessageTo(conn, NoStartUntilRequiredSlotsFull);
+					return true;
+				}
+
+				if (server.LobbyInfo.Slots.All(sl => server.LobbyInfo.ClientInSlot(sl.Key) == null))
+				{
+					server.SendOrderTo(conn, "Message", NoStartWithoutPlayers);
 					return true;
 				}
 

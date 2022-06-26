@@ -383,6 +383,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				startGameButton.IsDisabled = () => configurationDisabled() || map.Status != MapStatus.Available ||
 					orderManager.LobbyInfo.Slots.Any(sl => sl.Value.Required && orderManager.LobbyInfo.ClientInSlot(sl.Key) == null) ||
+					orderManager.LobbyInfo.Slots.All(sl => orderManager.LobbyInfo.ClientInSlot(sl.Key) == null) ||
 					(!orderManager.LobbyInfo.GlobalSettings.EnableSingleplayer && orderManager.LobbyInfo.NonBotPlayers.Count() < 2) ||
 					insufficientPlayerSpawns;
 
