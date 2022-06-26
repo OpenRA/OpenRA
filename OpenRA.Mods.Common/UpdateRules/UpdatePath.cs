@@ -93,6 +93,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new AttackFrontalFacingTolerance(),
 				new RenameCloakTypes(),
 				new SplitNukePowerMissileImage(),
+				new ReplaceSequenceEmbeddedPalette(),
 			})
 		};
 
