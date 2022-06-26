@@ -212,10 +212,10 @@ namespace OpenRA.Mods.Common.Graphics
 		[Desc("")]
 		public static float2 DepthSpriteOffset => float2.Zero;
 
-		[Desc("Use the palette embedded in the defined sprite. (Note: The name given here is actually irrelevant)")]
-		public static string EmbeddedPalette => null;
+		[Desc("Make a custom palette embedded in the sprite available to the PaletteFromEmbeddedSpritePalette trait.")]
+		public static bool HasEmbeddedPalette => false;
 
-		public readonly uint[] EmbeddedPaletteData;
+		public readonly uint[] EmbeddedPalette;
 
 		protected virtual string GetSpriteSrc(ModData modData, string tileSet, string sequence, string animation, string sprite, Dictionary<string, MiniYaml> d)
 		{
@@ -436,16 +436,16 @@ namespace OpenRA.Mods.Common.Graphics
 					}).ToArray();
 				}
 
-				var exportPalette = LoadField<string>(d, nameof(EmbeddedPalette), null);
-				if (exportPalette != null)
+				var hasEmbeddedPalette = LoadField<bool>(d, nameof(HasEmbeddedPalette), HasEmbeddedPalette);
+				if (hasEmbeddedPalette)
 				{
 					var src = GetSpriteSrc(modData, tileSet, sequence, animation, info.Value, d);
 
 					var metadata = cache.FrameMetadata(src);
 					var i = Frames != null ? Frames[0] : Start;
 					var palettes = metadata?.GetOrDefault<EmbeddedSpritePalette>();
-					if (palettes == null || !palettes.TryGetPaletteForFrame(i, out EmbeddedPaletteData))
-						throw new YamlException($"Cannot export palettes from {src}: frame {i} does not define an embedded palette");
+					if (palettes == null || !palettes.TryGetPaletteForFrame(i, out EmbeddedPalette))
+						throw new YamlException($"Cannot export palette from {src}: frame {i} does not define an embedded palette");
 				}
 
 				var boundSprites = SpriteBounds(sprites, Frames, Start, Facings, Length, Stride, transpose);
