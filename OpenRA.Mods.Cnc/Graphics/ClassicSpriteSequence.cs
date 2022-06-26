@@ -29,25 +29,24 @@ namespace OpenRA.Mods.Cnc.Graphics
 	[Desc("A sprite sequence that has the oddities that come with first-generation Westwood titles.")]
 	public class ClassicSpriteSequence : DefaultSpriteSequence
 	{
-		// This needs to be a public property for the documentation generation to work.
-		[Desc("Incorporate a compensation factor due to the distortion caused by 3D-Studio " +
-		      "when it tried to render 45% angles which was used by Westwood Studios at that time.")]
-		public bool UseClassicFacings { get; }
+		[Desc("Incorporate a compensation factor for the rotational distortion present in the first-generation Westwood games.")]
+		static readonly SpriteSequenceField<bool> UseClassicFacings = new SpriteSequenceField<bool>(nameof(UseClassicFacings), false);
+		readonly bool useClassicFacings;
 
 		public ClassicSpriteSequence(ModData modData, string tileSet, SpriteCache cache, ISpriteSequenceLoader loader, string sequence, string animation, MiniYaml info)
 			: base(modData, tileSet, cache, loader, sequence, animation, info)
 		{
 			var d = info.ToDictionary();
-			UseClassicFacings = LoadField(d, nameof(UseClassicFacings), UseClassicFacings);
+			useClassicFacings = LoadField(d, UseClassicFacings);
 
-			if (UseClassicFacings && Facings != 32)
+			if (useClassicFacings && facings != 32)
 				throw new InvalidOperationException(
 					$"{info.Nodes[0].Location}: Sequence {sequence}.{animation}: UseClassicFacings is only valid for 32 facings");
 		}
 
 		protected override int GetFacingFrameOffset(WAngle facing)
 		{
-			return UseClassicFacings ? Util.ClassicIndexFacing(facing, Facings) : Common.Util.IndexFacing(facing, Facings);
+			return useClassicFacings ? Util.ClassicIndexFacing(facing, facings) : Common.Util.IndexFacing(facing, facings);
 		}
 	}
 }
