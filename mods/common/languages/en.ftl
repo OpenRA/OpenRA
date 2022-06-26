@@ -6,6 +6,7 @@ two-humans-required = This server requires at least two human players to start a
 unknown-server-command = Unknown server command: { $command }
 only-only-host-start-game = Only the host can start the game.
 no-start-until-required-slots-full = Unable to start the game until required slots are full.
+no-start-without-players = Unable to start the game with no players.
 insufficient-enabled-spawnPoints = Unable to start the game until more spawn points are enabled.
 malformed-command = Malformed { $command } command
 chat-disabled =
