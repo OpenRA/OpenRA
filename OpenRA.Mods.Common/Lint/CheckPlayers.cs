@@ -43,6 +43,7 @@ namespace OpenRA.Mods.Common.Lint
 			if (players.Players.Count > 64)
 				emitError("Defining more than 64 players is not allowed.");
 
+			var playablePlayerFound = false;
 			var worldOwnerFound = false;
 			var playerNames = players.Players.Values.Select(p => p.Name).ToHashSet();
 			foreach (var player in players.Players.Values)
@@ -54,6 +55,9 @@ namespace OpenRA.Mods.Common.Lint
 				foreach (var enemy in player.Enemies)
 					if (!playerNames.Contains(enemy))
 						emitError($"Enemies contains player {enemy} that is not in list.");
+
+				if (player.Playable)
+					playablePlayerFound = true;
 
 				if (player.OwnsWorld)
 				{
@@ -70,6 +74,9 @@ namespace OpenRA.Mods.Common.Lint
 					emitError($"The player {player.Name} must specify LockFaction: True.");
 				}
 			}
+
+			if (!playablePlayerFound && visibility != MapVisibility.Shellmap)
+				emitError("Found no playable player.");
 
 			if (!worldOwnerFound)
 				emitError("Found no player owning the world.");
