@@ -34,7 +34,7 @@ namespace OpenRA.Primitives
 
 		public static bool operator ==(Rectangle left, Rectangle right)
 		{
-			return left.Location == right.Location && left.Size == right.Size;
+			return left.X == right.X && left.Y == right.Y && left.Width == right.Width && left.Height == right.Height;
 		}
 
 		public static bool operator !=(Rectangle left, Rectangle right)
