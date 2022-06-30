@@ -55,6 +55,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Tolerance for attack angle. Range [0, 512], 512 covers 360 degrees.")]
 		public readonly WAngle FacingTolerance = new(512);
 
+		[Desc("When enabled, show the target cursor on terrain cells even without force-fire.")]
+		public readonly bool TargetTerrainWithoutForceFire = false;
+
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			base.RulesetLoaded(rules, ai);
@@ -361,7 +364,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// If force-fire is not used, and the target requires force-firing or the target is
 			// terrain or invalid, no armaments can be used
-			if (!forceAttack && (t.Type == TargetType.Terrain || t.Type == TargetType.Invalid || t.RequiresForceFire))
+			if (!forceAttack && ((t.Type == TargetType.Terrain && !Info.TargetTerrainWithoutForceFire) || t.Type == TargetType.Invalid || t.RequiresForceFire))
 				return Enumerable.Empty<Armament>();
 
 			// Get target's owner; in case of terrain or invalid target there will be no problems
@@ -477,8 +480,9 @@ namespace OpenRA.Mods.Common.Traits
 
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				// Targeting the terrain is only possible with force-attack modifier
-				if (modifiers.HasModifier(TargetModifiers.ForceMove) || !modifiers.HasModifier(TargetModifiers.ForceAttack))
+				// Targeting the terrain is only possible with force-attack modifier or when TargetTerrainWithoutForceFire is set
+				if (modifiers.HasModifier(TargetModifiers.ForceMove) ||
+					!(ab.Info.TargetTerrainWithoutForceFire || modifiers.HasModifier(TargetModifiers.ForceAttack)))
 					return false;
 
 				var target = Target.FromCell(self.World, location);
