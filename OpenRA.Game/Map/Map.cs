@@ -879,7 +879,7 @@ namespace OpenRA
 			// (c) u, v coordinates run diagonally to the cell axes, and we define
 			//     1024 as the length projected onto the primary cell axis
 			//  - 512 * sqrt(2) = 724
-			var z = Height.Contains(cell) ? 724 * Height[cell] + Grid.Ramps[Ramp[cell]].CenterHeightOffset : 0;
+			var z = Height.TryGetValue(cell, out var height) ? 724 * height + Grid.Ramps[Ramp[cell]].CenterHeightOffset : 0;
 			return new WPos(724 * (cell.X - cell.Y + 1), 724 * (cell.X + cell.Y + 1), z);
 		}
 
@@ -890,8 +890,7 @@ namespace OpenRA
 			{
 				var center = CenterOfCell(cell);
 				var offset = Grid.SubCellOffsets[index];
-				var ramp = Ramp.Contains(cell) ? Ramp[cell] : 0;
-				if (ramp != 0)
+				if (Ramp.TryGetValue(cell, out var ramp) && ramp != 0)
 				{
 					var r = Grid.Ramps[ramp];
 					offset += new WVec(0, 0, r.HeightOffset(offset.X, offset.Y) - r.CenterHeightOffset);
@@ -912,11 +911,7 @@ namespace OpenRA
 			var cell = CellContaining(pos);
 			var offset = pos - CenterOfCell(cell);
 
-			if (!Ramp.Contains(cell))
-				return new WDist(offset.Z);
-
-			var ramp = Ramp[cell];
-			if (ramp != 0)
+			if (Ramp.TryGetValue(cell, out var ramp) && ramp != 0)
 			{
 				var r = Grid.Ramps[ramp];
 				return new WDist(offset.Z + r.CenterHeightOffset - r.HeightOffset(offset.X, offset.Y));
@@ -927,10 +922,10 @@ namespace OpenRA
 
 		public WRot TerrainOrientation(CPos cell)
 		{
-			if (!Ramp.Contains(cell))
-				return WRot.None;
+			if (Ramp.TryGetValue(cell, out var ramp))
+				return Grid.Ramps[ramp].Orientation;
 
-			return Grid.Ramps[Ramp[cell]].Orientation;
+			return WRot.None;
 		}
 
 		public WVec Offset(CVec delta, int dz)

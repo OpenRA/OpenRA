@@ -98,6 +98,28 @@ namespace OpenRA
 			}
 		}
 
+		public bool TryGetValue(CPos cell, out T value)
+		{
+			// .ToMPos() returns the same result if the X and Y coordinates
+			// are switched. X < Y is invalid in the RectangularIsometric coordinate system,
+			// so we pre-filter these to avoid returning the wrong result
+			if (GridType == MapGridType.RectangularIsometric && cell.X < cell.Y)
+			{
+				value = default(T);
+				return false;
+			}
+
+			var uv = cell.ToMPos(GridType);
+			if (Bounds.Contains(uv.U, uv.V))
+			{
+				value = Entries[Index(uv)];
+				return true;
+			}
+
+			value = default(T);
+			return false;
+		}
+
 		public bool Contains(CPos cell)
 		{
 			// .ToMPos() returns the same result if the X and Y coordinates
