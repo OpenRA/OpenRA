@@ -139,8 +139,8 @@ Tick = function()
 end
 
 AddObjectives = function()
-	KillUSSR = player.AddObjective("Destroy all Soviet units and buildings in this region.")
-	DestroyConvoys = player.AddObjective("Eliminate all passing Soviet convoys.", "Secondary", false)
+	KillUSSR = AddPrimaryObjective(player, "destroy-soviet-units-buildings")
+	DestroyConvoys = AddSecondaryObjective(player, "destroy-convoys")
 end
 
 WorldLoaded = function()

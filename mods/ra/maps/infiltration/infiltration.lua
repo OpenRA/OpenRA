@@ -81,8 +81,8 @@ reinforcementsHaveArrived = false
 LabInfiltrated = function()
 	Utils.Do(humans, function(player)
 		if player then
-			secureLab = player.AddObjective("Secure the laboratory by eliminating its guards.")
-			destroyBase = player.AddObjective("Destroy the remaining Soviet presence.")
+			secureLab = AddPrimaryObjective(player, "secure-laboratory-guards")
+			destroyBase = AddPrimaryObjective(player, "destroy-remaining-soviet-presence")
 			player.MarkCompletedObjective(infiltrateLab)
 			Trigger.ClearAll(Lab)
 			Trigger.AfterDelay(0, function()
@@ -172,7 +172,7 @@ end
 InsertSpies = function()
 	Utils.Do(humans, function(player)
 		if player then
-			infiltrateLab = player.AddObjective("Get our spy into the laboratory undetected.")
+			infiltrateLab = AddPrimaryObjective(player, "infiltrate-laboratory")
 		end
 	end)
 
@@ -267,11 +267,14 @@ SecureLabTimer = function()
 	end
 
 	if ticked > 0 then
-		UserInterface.SetMissionText("Secure lab in: " .. Utils.FormatTime(ticked), TimerColor)
+		if (ticked % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("secure-lab-in", { ["time"] = Utils.FormatTime(ticked) })
+			UserInterface.SetMissionText(Timer, TimerColor)
+		end
 		ticked = ticked - 1
 	elseif ticked <= 0 then
 		TimerColor = soviets.Color
-		UserInterface.SetMissionText("The Soviet research laboratory was not secured in time.", TimerColor)
+		UserInterface.SetMissionText(UserInterface.Translate("soviet-research-lab-not-secured-in-time"), TimerColor)
 		SecureLabFailed()
 	end
 end

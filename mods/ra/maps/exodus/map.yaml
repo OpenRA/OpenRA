@@ -1383,3 +1383,5 @@ Actors:
 		Location: 130,45
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, ra|rules/coop-missions-rules.yaml, rules.yaml
+
+Translations: ra|languages/lua/en.ftl

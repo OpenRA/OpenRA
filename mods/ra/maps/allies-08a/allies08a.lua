@@ -82,7 +82,7 @@ DefendChronosphereCompleted = function()
 		units[unit] = cells[i]
 	end
 	Chronosphere.Chronoshift(units)
-	UserInterface.SetMissionText("The experiment is a success!", greece.Color)
+	UserInterface.SetMissionText(UserInterface.Translate("experiment-successful"), greece.Color)
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
 		greece.MarkCompletedObjective(DefendChronosphere)
@@ -104,7 +104,10 @@ Tick = function()
 	end
 
 	if ticked > 0 then
-		UserInterface.SetMissionText("Chronosphere experiment completes in " .. Utils.FormatTime(ticked), TimerColor)
+		if (ticked % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("chronosphere-experiments-completes-in", { ["time"] = Utils.FormatTime(ticked) })
+			UserInterface.SetMissionText(Timer, TimerColor)
+		end
 		ticked = ticked - 1
 	elseif ticked == 0 and (greece.PowerState ~= "Normal") then
 		greece.MarkFailedObjective(KeepBasePowered)
@@ -120,10 +123,10 @@ WorldLoaded = function()
 	germany = Player.GetPlayer("Germany")
 
 	InitObjectives(greece)
-	DefendChronosphere = greece.AddObjective("Defend the Chronosphere and the Tech Center\nat all costs.")
-	KeepBasePowered = greece.AddObjective("The Chronosphere must have power when the\ntimer runs out.")
-	EvacuateScientists = greece.AddObjective("Evacuate all scientists from the island to\nthe west.", "Secondary", false)
-	BeatAllies = ussr.AddObjective("Defeat the Allied forces.")
+	DefendChronosphere = AddPrimaryObjective(greece, "defend-chronosphere-tech-center")
+	KeepBasePowered = AddPrimaryObjective(greece, "chronosphere-needs-power")
+	EvacuateScientists = AddSecondaryObjective(greece, "evacuate-scientists-from-island")
+	BeatAllies = AddPrimaryObjective(ussr, "")
 
 	Trigger.AfterDelay(DateTime.Minutes(1), function()
 		Media.PlaySpeechNotification(greece, "TwentyMinutesRemaining")

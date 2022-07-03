@@ -52,8 +52,8 @@ WorldLoaded = function()
 
 	InitObjectives(player)
 
-	CommandCenterIntact = player.AddObjective("Protect the Command Center.")
-	DestroyAllAllied = player.AddObjective("Destroy all Allied units and structures.")
+	CommandCenterIntact = AddPrimaryObjective(player, "protect-command-center")
+	DestroyAllAllied = AddPrimaryObjective(player, "destroy-allied-units-structures")
 
 	Camera.Position	= CameraWaypoint.CenterPosition
 

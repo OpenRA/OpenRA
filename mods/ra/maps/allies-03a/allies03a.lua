@@ -51,7 +51,7 @@ SendAlliedUnits = function()
 
 	if TanyaType == "e7.noautotarget" then
 		Trigger.AfterDelay(DateTime.Seconds(2), function()
-			Media.DisplayMessage("According to the rules of engagement I need your explicit orders to fire, Commander!", "Tanya")
+			Media.DisplayMessage(UserInterface.Translate("tanya-rules-of-engagement"), UserInterface.Translate("tanya"))
 		end)
 	end
 	Artillery.Stance = "HoldFire"
@@ -107,11 +107,10 @@ InitPlayers = function()
 end
 
 AddObjectives = function()
-	KillBridges = player.AddObjective("Destroy all bridges.")
-	TanyaSurvive = player.AddObjective("Tanya must survive.")
-	KillUSSR = player.AddObjective("Destroy all Soviet oil pumps.", "Secondary", false)
-	FreePrisoners = player.AddObjective("Free all Allied soldiers and keep them alive.", "Secondary", false)
-	ussr.AddObjective("Bridges must not be destroyed.")
+	KillBridges = AddPrimaryObjective(player, "destroy-bridges")
+	TanyaSurvive = AddPrimaryObjective(player, "tanya-survive")
+	KillUSSR = AddSecondaryObjective(player, "destroy-oilpumps")
+	FreePrisoners = AddSecondaryObjective(player, "free-prisoners")
 end
 
 InitTriggers = function()

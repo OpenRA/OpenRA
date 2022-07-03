@@ -229,6 +229,12 @@ ManageSovietAircraft = function()
 	end
 end
 
+SetEvacuateMissionText = function()
+	local attributes = { ["evacuated"] = UnitsEvacuated, ["threshold"] = unitsEvacuatedThreshold }
+	local unitsEvacuated = UserInterface.Translate("units-evacuated", attributes)
+	UserInterface.SetMissionText(unitsEvacuated, TextColor)
+end
+
 UnitsEvacuated = 0
 EvacuateAlliedUnit = function(unit)
 	if (unit.Owner == allies1 or unit.Owner == allies2) and unit.HasProperty("Move") then
@@ -258,7 +264,7 @@ EvacuateAlliedUnit = function(unit)
 			a.Destroy()
 		end)
 
-		UserInterface.SetMissionText(UnitsEvacuated .. "/" .. unitsEvacuatedThreshold .. " units evacuated.", TextColor)
+		SetEvacuateMissionText()
 
 		if UnitsEvacuated >= unitsEvacuatedThreshold then
 			Utils.Do(humans, function(player)
@@ -301,12 +307,12 @@ WorldLoaded = function()
 	end)
 
 	unitsEvacuatedThreshold = UnitsEvacuatedThreshold[Difficulty]
-	UserInterface.SetMissionText(UnitsEvacuated .. "/" .. unitsEvacuatedThreshold .. " units evacuated.", TextColor)
+	SetEvacuateMissionText()
 	Utils.Do(humans, function(player)
 		if player then
-			evacuateUnits = player.AddObjective("Evacuate " .. unitsEvacuatedThreshold .. " units.")
-			destroyAirbases = player.AddObjective("Destroy the nearby Soviet airbases.", "Secondary", false)
-			evacuateMgg = player.AddObjective("Evacuate at least one mobile gap generator.", "Secondary", false)
+			evacuateUnits = AddPrimaryObjective(player, UserInterface.Translate("evacuate-units", { ["threshold"] = unitsEvacuatedThreshold }))
+			destroyAirbases = AddSecondaryObjective(player, "destroy-nearby-soviet-airbases")
+			evacuateMgg = AddSecondaryObjective(player, "evacuate-at-least-one-gap-generator")
 		end
 	end)
 
@@ -318,7 +324,7 @@ WorldLoaded = function()
 		end)
 	end)
 
-	sovietObjective = soviets.AddObjective("Eradicate all allied troops.")
+	sovietObjective = AddPrimaryObjective(soviets, "")
 
 	if not allies2 or allies1.IsLocalPlayer then
 		Camera.Position = Allies1EntryPoint.CenterPosition
@@ -328,7 +334,7 @@ WorldLoaded = function()
 
 	if not allies2 then
 		allies1.Cash = 10000
-		Media.DisplayMessage("Transferring funds.", "Co-Commander is missing")
+		Media.DisplayMessage(UserInterface.Translate("transferring-funds"), UserInterface.Translate("co-commander-missing"))
 	end
 
 	SpawnAlliedUnit(MobileConstructionVehicle)

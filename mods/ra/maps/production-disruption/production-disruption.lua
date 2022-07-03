@@ -94,7 +94,7 @@ end
 PowerDown = false
 PowerDownTeslas = function()
 	if not PowerDown then
-		CaptureDome = Greece.AddObjective("Capture the enemy radar dome.", "Secondary", false)
+		CaptureDome = AddSecondaryObjective(Greece, "capture-enemy-radar-dome")
 		Greece.MarkCompletedObjective(PowerDownTeslaCoils)
 		Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
 		PowerDown = true
@@ -167,7 +167,7 @@ end
 MissileSubEscape = function()
 	local missileSub = Actor.Create("msub", true, { Owner = USSR, Location = MissileSubSpawn.Location })
 	Actor.Create("camera", true, { Owner = Greece, Location = SubPath2.Location })
-	DestroySub = Greece.AddPrimaryObjective("Destroy the submarine before it escapes!.")
+	DestroySub = AddPrimaryObjective(Greece, "destroy-escaping-submarine")
 
 	Utils.Do(SubEscapePath, function(waypoint)
 		missileSub.Move(waypoint.Location)
@@ -185,6 +185,7 @@ MissileSubEscape = function()
 	end)
 end
 
+SubmarineEscapes = UserInterface.Translate("submarine-escapes")
 FinishTimer = function()
 	for i = 0, 5 do
 		local c = TimerColor
@@ -192,7 +193,7 @@ FinishTimer = function()
 			c = HSLColor.White
 		end
 
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("The sub is heading for open sea!", c) end)
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText(SubmarineEscapes, c) end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(6), function() UserInterface.SetMissionText("") end)
 end
@@ -210,7 +211,10 @@ Tick = function()
 	end
 
 	if ticked > 0 then
-		UserInterface.SetMissionText("Submarine completes in " .. Utils.FormatTime(ticked), TimerColor)
+		if (ticked % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("submarine-completes-in", { ["time"] = Utils.FormatTime(ticked) })
+			UserInterface.SetMissionText(Timer, TimerColor)
+		end
 		ticked = ticked - 1
 	elseif ticked == 0 and not TimerFinished then
 		MissileSubEscape()
@@ -223,9 +227,9 @@ WorldLoaded = function()
 	USSR = Player.GetPlayer("USSR")
 	BadGuy = Player.GetPlayer("BadGuy")
 
-	EscapeWithSub = USSR.AddObjective("Get a missile sub to open waters.")
-	StopProduction = Greece.AddObjective("Destroy the Soviet sub pen.")
-	PowerDownTeslaCoils = Greece.AddObjective("Take down power to the tesla coils.")
+	EscapeWithSub = AddPrimaryObjective(USSR, "")
+	StopProduction = AddPrimaryObjective(Greece, "destroy-soviet-sub-pen")
+	PowerDownTeslaCoils = AddPrimaryObjective(Greece, "power-down-tesla-coils")
 
 	InitObjectives(Greece)
 

@@ -72,7 +72,7 @@ SendSpy = function()
 	end
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage("Commander! You have to disguise me in order to get through the enemy patrols.", "Spy")
+		Media.DisplayMessage(UserInterface.Translate("disguise-spy"), UserInterface.Translate("spy"))
 	end)
 end
 
@@ -184,20 +184,20 @@ FreeTanya = function()
 
 	if TanyaType == "e7.noautotarget" then
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.DisplayMessage("According to the rules of engagement I need your explicit orders to fire, Commander!", "Tanya")
+			Media.DisplayMessage(UserInterface.Translate("tanya-rules-of-engagement"), "Tanya")
 		end)
 	end
 
 	Trigger.OnKilled(Tanya, function() USSR.MarkCompletedObjective(USSRObj) end)
 
 	if Difficulty == "tough" then
-		KillSams = Greece.AddObjective("Destroy all six SAM Sites that block\nour reinforcements' helicopter.")
+		KillSams = AddPrimaryObjective(Greece, "destroy-sam-sites-blocker")
 
 		Greece.MarkCompletedObjective(MainObj)
-		SurviveObj = Greece.AddObjective("Tanya must not die!")
+		SurviveObj = AddPrimaryObjective(Greece, "tanya-survive")
 		Media.PlaySpeechNotification(Greece, "TanyaRescued")
 	else
-		KillSams = Greece.AddObjective("Destroy all six SAM sites that block\nthe extraction helicopter.")
+		KillSams = AddPrimaryObjective(Greece, "destroy-sam-sites-blocker")
 
 		Media.PlaySpeechNotification(Greece, "TargetFreed")
 	end
@@ -238,7 +238,7 @@ InitTriggers = function()
 		end
 
 		if not Greece.IsObjectiveCompleted(InfWarfactory) then
-			Media.DisplayMessage("Good work! But next time skip the heroics!", "Battlefield Control")
+			Media.DisplayMessage(UserInterface.Translate("skip-heroics"), UserInterface.Translate("battlefield-control"))
 			Greece.MarkCompletedObjective(InfWarfactory)
 		end
 
@@ -346,10 +346,10 @@ WorldLoaded = function()
 
 	InitObjectives(Greece)
 
-	USSRObj = USSR.AddObjective("Deny the Allies.")
-	MainObj = Greece.AddObjective("Rescue Tanya.")
-	KillAll = Greece.AddObjective("Eliminate all Soviet units in this area.")
-	InfWarfactory = Greece.AddObjective("Infiltrate the Soviet warfactory.", "Secondary", false)
+	USSRObj = AddPrimaryObjective(USSR, "")
+	MainObj = AddPrimaryObjective(Greece, "rescue-tanya")
+	KillAll = AddPrimaryObjective(Greece, "elminate-soviet-units")
+	InfWarfactory = AddSecondaryObjective(Greece, "infiltrate-warfactory")
 
 	InitTriggers()
 	SendSpy()

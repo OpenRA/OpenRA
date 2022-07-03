@@ -168,7 +168,9 @@ FinishTimer = function()
 			c = HSLColor.White
 		end
 
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("The convoy arrived!", c) end)
+		Trigger.AfterDelay(DateTime.Seconds(i), function()
+			UserInterface.SetMissionText(UserInterface.Translate("convoy-arrived"), c)
+		end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(6), function() UserInterface.SetMissionText("") end)
 end
@@ -180,7 +182,7 @@ SendTrucks = function()
 
 		DateTime.TimeLimit = 0
 		UserInterface.SetMissionText("")
-		ConvoyObjective = player.AddObjective("Escort the convoy.")
+		ConvoyObjective = AddPrimaryObjective(player, "escort-convoy")
 
 		Media.PlaySpeechNotification(player, "ConvoyApproaching")
 		Trigger.AfterDelay(DateTime.Seconds(3), function()
@@ -220,10 +222,10 @@ WorldLoaded = function()
 
 	InitObjectives(player)
 
-	ussrObj = ussr.AddObjective("Deny the allies!")
+	ussrObj = AddPrimaryObjective(ussr, "")
 
-	SecureObjective = player.AddObjective("Secure the convoy's path.")
-	ConquestObjective = player.AddObjective("Eliminate the entire soviet presence in this area.")
+	SecureObjective = AddPrimaryObjective(player, "secure-convoy")
+	ConquestObjective = AddPrimaryObjective(player, "eliminate-soviets")
 
 	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(allies, "MissionTimerInitialised") end)
 

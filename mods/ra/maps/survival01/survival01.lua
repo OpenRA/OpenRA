@@ -160,7 +160,10 @@ Tick = function()
 			Media.PlaySpeechNotification(allies, "AlliedForcesApproaching")
 		end
 
-		UserInterface.SetMissionText("French reinforcements arrive in " .. Utils.FormatTime(ticked), TimerColor)
+		if (ticked % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("french-reinforcements-arrive-in", { ["time"] = Utils.FormatTime(ticked) })
+			UserInterface.SetMissionText(Timer, TimerColor)
+		end
 		ticked = ticked - 1
 	elseif ticked == 0 then
 		FinishTimer()
@@ -169,6 +172,7 @@ Tick = function()
 	end
 end
 
+FrenchAlliesArrived = UserInterface.Translate("french-allies-arrived")
 FinishTimer = function()
 	for i = 0, 9, 1 do
 		local c = TimerColor
@@ -176,7 +180,7 @@ FinishTimer = function()
 			c = HSLColor.White
 		end
 
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("Our french allies have arrived!", c) end)
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText(FrenchAlliesArrived, c) end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(10), function() UserInterface.SetMissionText("") end)
 end
@@ -268,9 +272,9 @@ TimerExpired = function()
 	Reinforcements.Reinforce(allies, FrenchReinforcements, { SovietEntryPoint7.Location, Alliesbase.Location })
 
 	if DestroyObj then
-		KillObj = allies.AddObjective("Take control of French reinforcements and\nkill all remaining Soviet forces.")
+		KillObj = AddPrimaryObjective(allies, "control-reinforcements-kill-remaining-soviet-forces")
 	else
-		DestroyObj = allies.AddObjective("Take control of French reinforcements and\ndismantle the nearby Soviet base.")
+		DestroyObj = AddPrimaryObjective(allies, "takeover-reinforcements-dismantle-soviet-base")
 	end
 
 	allies.MarkCompletedObjective(SurviveObj)
@@ -299,14 +303,14 @@ end
 AddObjectives = function()
 	InitObjectives(allies)
 
-	SurviveObj = allies.AddObjective("Enforce your position and hold-out the onslaught\nuntil reinforcements arrive.")
-	KillSams = allies.AddObjective("Destroy the two SAM sites before reinforcements\narrive.", "Secondary", false)
-	Media.DisplayMessage("The Soviets are blocking our GPS. We need to investigate their new technology.")
-	CaptureAirfields = allies.AddObjective("Capture and hold the Soviet airbase\nin the northeast.", "Secondary", false)
-	SovietObj = soviets.AddObjective("Eliminate all Allied forces.")
+	SurviveObj = AddPrimaryObjective(allies, "enforce-position-hold-until-reinforcements")
+	KillSams = AddSecondaryObjective(allies, "destroy-two-sames-before-reinforcements")
+	Media.DisplayMessage(UserInterface.Translate("soviets-blocking-gps"))
+	CaptureAirfields = AddSecondaryObjective(allies, "capture-hold-soviet-airbase-northeast")
+	SovietObj = AddPrimaryObjective(soviets, "")
 
 	Trigger.OnPlayerWon(allies, function()
-		Media.DisplayMessage("The French forces have survived and dismantled the Soviet presence in the area!")
+		Media.DisplayMessage(UserInterface.Translate("french-survived-dismantled-soviet-presence"))
 	end)
 end
 
@@ -345,11 +349,11 @@ InitMission = function()
 	Trigger.OnAllKilledOrCaptured(SovietBuildings, function()
 		if DestroyObj then
 			if not soviets.HasNoRequiredUnits() then
-				KillObj = allies.AddObjective("Kill all remaining Soviet forces.")
+				KillObj = AddPrimaryObjective(allies, "kill-remaining-soviet-forces")
 			end
 			allies.MarkCompletedObjective(DestroyObj)
 		else
-			DestroyObj = allies.AddObjective("Dismantle the nearby Soviet base.")
+			DestroyObj = AddPrimaryObjective(allies, "dismantle-nearby-soviet-base")
 			allies.MarkCompletedObjective(DestroyObj)
 		end
 	end)

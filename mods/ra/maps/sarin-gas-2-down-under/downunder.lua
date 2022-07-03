@@ -73,7 +73,7 @@ ConsoleTriggers = function()
 		if actor.Owner == greece then
 			Trigger.RemoveProximityTrigger(id)
 			if not FlameTower1.IsDead then
-				Media.DisplayMessage("Flame Turret deactivated", "Console")
+				Media.DisplayMessage(UserInterface.Translate("flame-turret-deactivated"), UserInterface.Translate("console"))
 				FlameTower1.Kill()
 			end
 		end
@@ -83,7 +83,7 @@ ConsoleTriggers = function()
 		if actor.Owner == greece then
 			Trigger.RemoveProximityTrigger(id)
 			if not FlameTower2.IsDead then
-				Media.DisplayMessage("Flame Turret deactivated", "Console")
+				Media.DisplayMessage(UserInterface.Translate("flame-turret-deactivated"), UserInterface.Translate("console"))
 				FlameTower2.Kill()
 			end
 		end
@@ -93,7 +93,7 @@ ConsoleTriggers = function()
 		if actor.Owner == greece then
 			Trigger.RemoveProximityTrigger(id)
 			if not FlameTower3.IsDead then
-				Media.DisplayMessage("Flame Turret deactivated", "Console")
+				Media.DisplayMessage(UserInterface.Translate("flame-turret-deactivated"), UserInterface.Translate("console"))
 				FlameTower3.Kill()
 			end
 		end
@@ -105,7 +105,7 @@ ConsoleTriggers = function()
 			Trigger.RemoveProximityTrigger(id)
 			gasActive = true
 
-			Media.DisplayMessage("Sarin Nerve Gas dispensers activated", "Console")
+			Media.DisplayMessage(UserInterface.Translate("sarin-dispenser-activated"), UserInterface.Translate("console"))
 			local KillCamera = Actor.Create("camera", true, { Owner = greece, Location = Sarin2.Location })
 			local flare1 = Actor.Create("flare", true, { Owner = england, Location = Sarin1.Location })
 			local flare2 = Actor.Create("flare", true, { Owner = england, Location = Sarin2.Location })
@@ -133,7 +133,7 @@ ConsoleTriggers = function()
 		if actor.Owner == greece then
 			Trigger.RemoveProximityTrigger(id)
 			if not BadCoil.IsDead then
-				Media.DisplayMessage("Tesla Coil deactivated", "Console")
+				Media.DisplayMessage(UserInterface.Translate("tesla-coil-deactivated"), UserInterface.Translate("console"))
 				BadCoil.Kill()
 			end
 		end
@@ -145,7 +145,7 @@ ConsoleTriggers = function()
 			Trigger.RemoveProximityTrigger(id)
 			teslaActive = true
 
-			Media.DisplayMessage("Initialising Tesla Coil defence", "Console")
+			Media.DisplayMessage(UserInterface.Translate("tesla-coil-activated"), UserInterface.Translate("console"))
 			local tesla1 = Actor.Create("tsla", true, { Owner = turkey, Location = TurkeyCoil1.Location })
 			local tesla2 = Actor.Create("tsla", true, { Owner = turkey, Location = TurkeyCoil2.Location })
 			Trigger.AfterDelay(DateTime.Seconds(10), function()
@@ -163,11 +163,11 @@ ConsoleTriggers = function()
 		if actor.Owner == greece then
 			Trigger.RemoveProximityTrigger(id)
 			if not FlameTowerTanya1.IsDead then
-				Media.DisplayMessage("Flame Turret deactivated", "Console")
+				Media.DisplayMessage(UserInterface.Translate("flame-turret-deactivated"), UserInterface.Translate("console"))
 				FlameTowerTanya1.Kill()
 			end
 			if not FlameTowerTanya2.IsDead then
-				Media.DisplayMessage("Flame Turret deactivated", "Console")
+				Media.DisplayMessage(UserInterface.Translate("flame-turret-deactivated"), UserInterface.Translate("console"))
 				FlameTowerTanya2.Kill()
 			end
 		end
@@ -177,11 +177,11 @@ ConsoleTriggers = function()
 		if actor.Owner == greece then
 			Trigger.RemoveProximityTrigger(id)
 			if not FlameTowerExit1.IsDead then
-				Media.DisplayMessage("Flame Turret deactivated", "Console")
+				Media.DisplayMessage(UserInterface.Translate("flame-turret-deactivated"), UserInterface.Translate("console"))
 				FlameTowerExit1.Kill()
 			end
 			if not FlameTowerExit3.IsDead then
-				Media.DisplayMessage("Flame Turret deactivated", "Console")
+				Media.DisplayMessage(UserInterface.Translate("flame-turret-deactivated"), UserInterface.Translate("console"))
 				FlameTowerExit3.Kill()
 			end
 		end
@@ -366,7 +366,7 @@ PrisonEscape = function()
 		alarmed = true
 		Trigger.RemoveFootprintTrigger(id)
 
-		Media.DisplayMessage("Warning, prisoners are attempting to escape!", "Intercom")
+		Media.DisplayMessage(UserInterface.Translate("prisoners-escaping"), UserInterface.Translate("intercom"))
 		Media.PlaySoundNotification(greece, "AlertBuzzer")
 		Utils.Do(GuardDogs, IdleHunt)
 	end)
@@ -374,7 +374,7 @@ end
 
 ScientistExecution = function()
 	Media.PlaySoundNotification(greece, "AlertBleep")
-	Media.DisplayMessage("The base is compromised. We have to hurry the execution!", "Soviet Officer")
+	Media.DisplayMessage(UserInterface.Translate("hurry-base-compromised"), UserInterface.Translate("soviet-officer"))
 	Utils.Do(DemoTeam, function(actor)
 		actor.AttackMove(DemoDrive2.Location)
 	end)
@@ -387,13 +387,13 @@ ScientistExecution = function()
 
 	Trigger.AfterDelay(DateTime.Seconds(7), function()
 		if not Officer2.IsDead then
-			Media.DisplayMessage("Prepare to Fire!", "Soviet Officer")
+			Media.DisplayMessage(UserInterface.Translate("prepare-to-fire"), UserInterface.Translate("soviet-officer"))
 		end
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(15), function()
 		if not Officer2.IsDead then
-			Media.DisplayMessage("Fire!", "Soviet Officer")
+			Media.DisplayMessage(UserInterface.Translate("fire"), UserInterface.Translate("soviet-officer"))
 		end
 
 		Utils.Do(FiringSquad, function(actor)
@@ -405,11 +405,11 @@ ScientistExecution = function()
 end
 
 ScientistRescued = function()
-	Media.DisplayMessage("Thanks for the rescue!", "Scientist")
+	Media.DisplayMessage(UserInterface.Translate("thanks-for-rescue"), UserInterface.Translate("scientist"))
 
 	Trigger.AfterDelay(DateTime.Seconds(5), function()
 		if not ScientistMan.IsDead and not DemoTruck.IsDead then
-			Media.DisplayMessage("The Soviets have an unstable nuclear device stored here. \n I need to move it out of the facility!", "Scientist")
+			Media.DisplayMessage(UserInterface.Translate("move-nuclear-outside"), UserInterface.Translate("scientist"))
 			DemoTruck.GrantCondition("mission")
 			ScientistMan.EnterTransport(DemoTruck)
 		end
@@ -423,7 +423,7 @@ DemoTruckExit = function()
 		return
 	end
 
-	Media.DisplayMessage("I hope the exit is clear!", "Scientist")
+	Media.DisplayMessage(UserInterface.Translate("exit-clear-hopefully"), UserInterface.Translate("scientist"))
 	Utils.Do(DemoTruckPath, function(waypoint)
 		DemoTruck.Move(waypoint.Location)
 	end)
@@ -459,13 +459,13 @@ WorldLoaded = function()
 
 	InitObjectives(greece)
 
-	ussrObj = ussr.AddObjective("Defeat the Allies.")
-	ExitBase = greece.AddObjective("Reach the eastern exit of the facility.")
-	FreeTanya = greece.AddObjective("Free Tanya and keep her alive.")
-	KillVIPs = greece.AddObjective("Kill all Soviet officers and scientists.", "Secondary", false)
-	StealTank = greece.AddObjective("Steal a Soviet mammoth tank.", "Secondary", false)
+	ussrObj = ussr.AddObjective("")
+	ExitBase = AddPrimaryObjective(greece, "reach-eastern-exit")
+	FreeTanya = AddPrimaryObjective(greece, "free-tanya-keep-alive")
+	KillVIPs = AddSecondaryObjective(greece, "kill-soviet-officers-scientists")
+	StealTank = AddSecondaryObjective(greece, "steal-soviet-mammoth-tank")
 	if Difficulty == "hard" then
-		NoCasualties = greece.AddPrimaryObjective("Do not lose a single soldier or civilian\nunder your command.")
+		NoCasualties = AddPrimaryObjective(greece, "no-casualties")
 	end
 
 	StartSpy.DisguiseAsType("e1", ussr)

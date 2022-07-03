@@ -34,8 +34,8 @@ WorldLoaded = function()
 
 	InitObjectives(USSR)
 
-	DestroyNavalBase = USSR.AddPrimaryObjective("Destroy all Allied units and structures.")
-	BeatSoviets = Greece.AddPrimaryObjective("Destroy all Soviet troops.")
+	DestroyNavalBase = AddPrimaryObjective(USSR, "destroy-allied-units-structures")
+	BeatSoviets = AddPrimaryObjective(Greece, "")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 	InitialSovietReinforcements()

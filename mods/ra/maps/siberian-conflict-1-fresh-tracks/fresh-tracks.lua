@@ -204,6 +204,7 @@ BridgeTriggers = function()
 	end)
 end
 
+FirstTrucksEntering = UserInterface.Translate("first-trucks-entering")
 FinishTimer = function()
 	for i = 0, 5 do
 		local c = TimerColor
@@ -211,7 +212,7 @@ FinishTimer = function()
 			c = HSLColor.White
 		end
 
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("The first trucks are entering your AO.", c) end)
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText(FirstTrucksEntering, c) end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(6), function() UserInterface.SetMissionText("") end)
 end
@@ -220,7 +221,10 @@ ticked = TimerTicks
 ConvoysSent = false
 Tick = function()
 	if ticked > 0 then
-		UserInterface.SetMissionText("First trucks arrive in " .. Utils.FormatTime(ticked), TimerColor)
+		if (ticked % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("first-trucks-arrive-in", { ["time"] = Utils.FormatTime(ticked) })
+			UserInterface.SetMissionText(Timer, TimerColor)
+		end
 		ticked = ticked - 1
 	elseif ticked == 0 and not ConvoysSent then
 		SendConvoys()
@@ -236,9 +240,9 @@ WorldLoaded = function()
 	Allies = Player.GetPlayer("Allies")
 	USSR = Player.GetPlayer("USSR")
 
-	SovietObj = USSR.AddObjective("Defeat the Allies.")
-	StopTrucks = Allies.AddObjective("Destroy all Soviet convoy trucks.")
-	DestroyBridges = Allies.AddObjective("Destroy the nearby bridges to slow the\nconvoys down.", "Secondary", false)
+	SovietObj = AddPrimaryObjective(USSR, "")
+	StopTrucks = AddPrimaryObjective(Allies, "destroy-soviet-convoy")
+	DestroyBridges = AddSecondaryObjective(Allies, "destroy-bridges-slow-convoy")
 
 	InitObjectives(Allies)
 

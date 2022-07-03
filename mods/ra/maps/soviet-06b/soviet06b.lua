@@ -101,10 +101,10 @@ WorldLoaded = function()
 	end)
 
 	InitObjectives(player)
-	alliedObjective = enemy.AddObjective("Destroy all Soviet troops.")
-	sovietObjective = player.AddObjective("Escort the Convoy.")
-	sovietObjective2 = player.AddObjective("Destroy or capture the Allied radar dome to stop\nenemy reinforcements.", "Secondary", false)
-	SaveAllTrucks = player.AddObjective("Keep all trucks alive.", "Secondary", false)
+	alliedObjective = AddPrimaryObjective(enemy, "")
+	sovietObjective = AddPrimaryObjective(player, "escort-convoy")
+	sovietObjective2 = AddSecondaryObjective(player, "destroy-capture-radar-dome-reinforcements")
+	SaveAllTrucks = AddSecondaryObjective(player, "Keep all trucks alive.")
 end
 
 Tick = function()

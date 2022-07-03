@@ -1053,3 +1053,5 @@ Actors:
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
 Notifications: notifications.yaml
+
+Translations: ra|languages/lua/en.ftl

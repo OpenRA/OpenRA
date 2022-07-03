@@ -60,7 +60,7 @@ MissionTriggers = function()
 
 	Trigger.OnTimerExpired(function()
 		DateTime.TimeLimit = 0
-		Trigger.AfterDelay(1, function() UserInterface.SetMissionText("We're too late!", USSR.Color) end)
+		Trigger.AfterDelay(1, function() UserInterface.SetMissionText(UserInterface.Translate("we-are-too-late"), USSR.Color) end)
 		USSR.MarkCompletedObjective(HoldOut)
 	end)
 
@@ -99,7 +99,7 @@ LaunchMissiles = function()
 	MissileSilo1.ActivateNukePower(CPos.New(127, 127))
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage("INCOMING TRANSMISSION", "LANDCOM 16")
+		Media.DisplayMessage(UserInterface.Translate("incoming-transmission-capitalized"), UserInterface.Translate("landcom-16-capitalized"))
 		Media.PlaySpeechNotification(Greece, "AbombLaunchDetected")
 		MissileSilo2.ActivateNukePower(CPos.New(127, 127))
 	end)
@@ -120,13 +120,13 @@ LaunchMissiles = function()
 			-- Completing immediately indicates that the FMV is not available
 			-- Fall back to a text message
 			if fmvStart == DateTime.GameTime then
-				Media.DisplayMessage("Commander, we're tracking four missiles. They must be deactivated! We are scrambling a team to assult the missile control bunker. Clear the way and capture the enemy command center. Hurry!", "LANDCOM 16")
+				Media.DisplayMessage(UserInterface.Translate("deactivate-four-missiles"), UserInterface.Translate("landcom-16-capitalized"))
 			end
 		end)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(9), function()
-		CaptureFCom = Greece.AddObjective("Capture the enemy Command Center. Hurry!")
+		CaptureFCom = AddPrimaryObjective(Greece, "capture-enemy-command-center")
 		DateTime.TimeLimit = TimerTicks
 		Media.PlaySpeechNotification(Greece, "TimerStarted")
 		Greece.MarkCompletedObjective(ApproachBase)
@@ -162,8 +162,8 @@ WorldLoaded = function()
 
 	InitObjectives(Greece)
 
-	HoldOut = USSR.AddObjective("Hold out until missiles reach their destination")
-	ApproachBase = Greece.AddObjective("Find a way to take the atomic weapons off-line.")
+	HoldOut = AddPrimaryObjective(USSR, "")
+	ApproachBase = AddPrimaryObjective(Greece, "disable-atomic-weapons")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 	StandardDrop = Actor.Create("paradrop", false, { Owner = USSR })

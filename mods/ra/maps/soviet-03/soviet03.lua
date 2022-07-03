@@ -340,10 +340,10 @@ WorldLoaded = function()
 	IntroSequence()
 
 	InitObjectives(player)
-	alliedObjective = enemy.AddObjective("Destroy all Soviet troops.")
-	sovietObjective1 = player.AddObjective("Kill the enemy spy.")
-	sovietObjective2 = player.AddObjective("Clear the nearby farm for reinforcements.", "Secondary", false)
-	sovietObjective3 = player.AddObjective("Scavenge the civilian buildings for supplies.", "Secondary", false)
+	alliedObjective = AddPrimaryObjective(enemy, "")
+	sovietObjective1 = AddPrimaryObjective(player, "kill-enemy-spy")
+	sovietObjective2 = AddSecondaryObjective(player, "clear-farm-reinforcements")
+	sovietObjective3 = AddSecondaryObjective(player, "scavenge-civilian-buildings")
 end
 
 Trigger.OnKilled(TheSpy, function()
@@ -371,7 +371,10 @@ Tick = function()
 		Media.PlaySpeechNotification(player, "WarningOneMinuteRemaining")
 	end
 	if remainingTime > 0 and timerstarted then
-		UserInterface.SetMissionText("Time Remaining: " .. Utils.FormatTime(remainingTime), player.Color)
+		if (remainingTime % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("time-remaining", { ["time"] = Utils.FormatTime(remainingTime) })
+			UserInterface.SetMissionText(Timer, player.Color)
+		end
 		remainingTime = remainingTime - 1
 	elseif remainingTime == 0 and not spyReachedHideout4 then
 		UserInterface.SetMissionText("")

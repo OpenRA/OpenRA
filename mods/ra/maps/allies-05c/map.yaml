@@ -1065,3 +1065,5 @@ Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/c
 Weapons: weapons.yaml
 
 Notifications: notifications.yaml
+
+Translations: ra|languages/lua/en.ftl

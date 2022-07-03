@@ -988,3 +988,5 @@ Actors:
 		Location: 58,86
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
+
+Translations: ra|languages/lua/en.ftl
