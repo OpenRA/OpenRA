@@ -102,7 +102,7 @@ MoveTruckEscapeRoute = function(truck, route)
 	if truck.IsDead then
 		return
 	else
-		Media.DisplayMessage("Convoy truck attempting to escape!")
+		Media.DisplayMessage(UserInterface.Translate("convoy-truck-escaping"))
 		Media.PlaySoundNotification(greece, "AlertBleep")
 		Utils.Do(route, function(waypoint)
 			truck.Move(waypoint.Location)
@@ -139,10 +139,10 @@ WorldLoaded = function()
 
 	InitObjectives(greece)
 
-	objDestroyAllTrucks = greece.AddObjective("Prevent Soviet convoy trucks from escaping.")
-	objKillAll = greece.AddObjective("Clear the sector of all Soviet presence.")
-	objRadarSpy = greece.AddObjective("Infiltrate the Soviet Radar Dome to reveal truck \necape routes.", "Secondary", false)
-	ussrObj = ussr.AddObjective("Deny the Allies.")
+	objDestroyAllTrucks = AddPrimaryObjective(greece, "prevent-soviet-trucks-escaping")
+	objKillAll = AddPrimaryObjective(greece, "clear-sector-soviet-presence")
+	objRadarSpy = AddSecondaryObjective(greece, "infiltrate-radar-reveal-escape-routes")
+	ussrObj = ussr.AddObjective("")
 
 	ActivateAI()
 	SetupTriggers()

@@ -88,7 +88,7 @@ AlliedReinforcements = function()
 				Trigger.OnAllKilled(houseSquad, function()
 					if not AlliesHouse.IsDead then
 						Media.PlaySoundNotification(Greece, "AlertBleep")
-						Media.DisplayMessage("Friendlies coming out!", "Medic")
+						Media.DisplayMessage(UserInterface.Translate("friendlies-coming-out"), UserInterface.Translate("medic"))
 						Reinforcements.Reinforce(Greece, AlliedHouseSquad, { VillageSpawnAllies.Location, VillageRally.Location }, 0)
 					end
 				end)
@@ -183,7 +183,7 @@ AlliedReinforcements = function()
 
 			Trigger.AfterDelay(DateTime.Seconds(5), function()
 				Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
-				Media.DisplayMessage("Commander, we're detecting Soviet transports headed your way. Get those scientists back to the extraction point in the southeast!", "LANDCOM 16")
+				Media.DisplayMessage(UserInterface.Translate("get-scientists-evacuation-point"), UserInterface.Translate("landcom-16-capitalized"))
 				local northTeam = Reinforcements.ReinforceWithTransport(Greece, "lst.reinforcement", NorthWaterTeam, NorthWaterPath1, { NorthWaterPath1[1] })
 			end)
 
@@ -323,7 +323,7 @@ LoseTriggers = function()
 	Trigger.OnKilled(ForwardCommand, function()
 		if not ScientistsFreed then
 			Greece.MarkFailedObjective(RescueScientists)
-			Media.DisplayMessage("The scientists were in the Command Center!", "LANDCOM 16")
+			Media.DisplayMessage(UserInterface.Translate("scientists-killed-in-command-center"), UserInterface.Translate("landcom-16-capitalized"))
 		end
 	end)
 
@@ -343,10 +343,13 @@ Tick = function()
 	end
 
 	if ticked > 0 then
-		UserInterface.SetMissionText("Chronosphere explodes in " .. Utils.FormatTime(ticked), TimerColor)
+		if (ticked % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("chronosphere-explodes-in", { ["time"] = Utils.FormatTime(ticked) })
+			UserInterface.SetMissionText(Timer, TimerColor)
+		end
 		ticked = ticked - 1
 	elseif ticked == 0 then
-		UserInterface.SetMissionText("We're too late!", USSR.Color)
+		UserInterface.SetMissionText(UserInterface.Translate("too-late"), USSR.Color)
 		USSR.MarkCompletedObjective(SovietObj)
 	end
 end
@@ -358,8 +361,8 @@ WorldLoaded = function()
 
 	InitObjectives(Greece)
 
-	SovietObj = USSR.AddObjective("Defeat Allies.")
-	RescueScientists = Greece.AddObjective("Rescue the scientists and escort them back to the\nextraction point.")
+	SovietObj = AddPrimaryObjective(USSR, "")
+	RescueScientists = AddPrimaryObjective(Greece, "rescue-scientists-extraction-point")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 	Paradrop1 = Actor.Create("paradrop1", false, { Owner = USSR })

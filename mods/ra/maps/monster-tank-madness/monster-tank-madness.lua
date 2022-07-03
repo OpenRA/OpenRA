@@ -67,9 +67,9 @@ SetupAlliedBase = function()
 	AlliedBaseHarv.Owner = player
 	AlliedBaseHarv.FindResources()
 
-	FindDemitri = player.AddObjective("Find Dr. Demitri. He is likely hiding in the village\n to the far south.")
-	InfiltrateRadarDome = player.AddObjective("Reprogram the super tanks by sending a spy into\n the Soviet radar dome.")
-	DefendOutpost = player.AddObjective("Defend and repair our outpost.", "Secondary", false)
+	FindDemitri = AddPrimaryObjective(player, "find-demitri")
+	InfiltrateRadarDome = AddPrimaryObjective(player, "reprogram-super-tanks")
+	DefendOutpost = AddSecondaryObjective(player, "defend-outpost")
 	player.MarkCompletedObjective(FindOutpost)
 
 	-- Don't fail the Objective instantly
@@ -177,7 +177,7 @@ SuperTankDomeInfiltrated = function()
 		Media.PlaySpeechNotification(player, "ControlCenterDeactivated")
 
 		Trigger.AfterDelay(DateTime.Seconds(4), function()
-			Media.DisplayMessage("In 3 minutes the super tanks will self-destruct.")
+			Media.DisplayMessage(UserInterface.Translate("super-tank-self-destruct-t-minus-3"))
 			Media.PlaySpeechNotification(player, "WarningThreeMinutesRemaining")
 		end)
 	end)
@@ -207,7 +207,7 @@ CreateDemitri = function()
 	demitri.Move(DemitriTriggerAreaCenter.Location)
 
 	Media.PlaySpeechNotification(player, "TargetFreed")
-	EvacuateDemitri = player.AddObjective("Evacuate Dr. Demitri with the helicopter waiting\n at our outpost.")
+	EvacuateDemitri = AddPrimaryObjective(player, "evacuate-demitri")
 	player.MarkCompletedObjective(FindDemitri)
 
 	local flarepos = CPos.New(DemitriLZ.Location.X, DemitriLZ.Location.Y - 1)
@@ -249,7 +249,10 @@ Tick = function()
 	end
 
 	if ticked > 0 then
-		UserInterface.SetMissionText("The super tanks self-destruct in " .. Utils.FormatTime(ticked), TimerColor)
+		if (ticked % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("super-tank-self-destruct-in", { ["time"] = Utils.FormatTime(ticked) })
+			UserInterface.SetMissionText(Timer, TimerColor)
+		end
 		ticked = ticked - 1
 	elseif ticked == 0 then
 		FinishTimer()
@@ -264,7 +267,7 @@ FinishTimer = function()
 			c = HSLColor.White
 		end
 
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("The super tanks are destroyed!", c) end)
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText(UserInterface.Translate("super-tanks-destroyed"), c) end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(10), function() UserInterface.SetMissionText("") end)
 end
@@ -297,15 +300,15 @@ end
 AddObjectives = function()
 	InitObjectives(player)
 
-	EliminateSuperTanks = player.AddObjective("Eliminate these super tanks.")
-	StealMoney = player.AddObjective("Steal money from the nearby outpost with the Thief.")
-	CrossRiver = player.AddObjective("Secure transport to the mainland.")
-	FindOutpost = player.AddObjective("Find our outpost and start repairs on it.")
-	RescueCivilians = player.AddObjective("Evacuate all civilians from the hospital.", "Secondary", false)
-	BadGuyObj = badguy.AddObjective("Deny the destruction of the super tanks.")
-	USSRObj = ussr.AddObjective("Deny the destruction of the super tanks.")
-	UkraineObj = ukraine.AddObjective("Survive.")
-	TurkeyObj = turkey.AddObjective("Destroy.")
+	EliminateSuperTanks = AddPrimaryObjective(player, "eliminate-super-tanks")
+	StealMoney = AddPrimaryObjective(player, "steal-money-outpost")
+	CrossRiver = AddPrimaryObjective(player, "cross-river")
+	FindOutpost = AddPrimaryObjective(player, "find-outpost")
+	RescueCivilians = AddSecondaryObjective(player, "evacuate-civilian-hospital")
+	BadGuyObj = AddPrimaryObjective(badguy, "")
+	USSRObj = AddPrimaryObjective(ussr, "")
+	UkraineObj = AddPrimaryObjective(ukraine, "")
+	TurkeyObj = AddPrimaryObjective(turkey, "")
 
 	Trigger.OnPlayerLost(player, function()
 		ussr.MarkCompletedObjective(USSRObj)
@@ -315,7 +318,7 @@ AddObjectives = function()
 	end)
 
 	Trigger.OnPlayerWon(player, function()
-		Media.DisplayMessage("Dr. Demitri has been extracted and the super tanks have been dealt with.")
+		Media.DisplayMessage(UserInterface.Translate("demitri-extracted-super-tanks-destroyed"))
 		ussr.MarkFailedObjective(USSRObj)
 		badguy.MarkFailedObjective(BadGuyObj)
 		ukraine.MarkFailedObjective(UkraineObj)

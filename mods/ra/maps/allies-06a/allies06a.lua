@@ -126,7 +126,7 @@ CaptureRadarDome = function()
 			end
 		end)
 
-		Media.DisplayMessage("Coordinates of the Soviet tech centers discovered.")
+		Media.DisplayMessage(UserInterface.Translate("soviet-tech-centers-discovered"))
 
 		if Difficulty == "easy" then
 			Actor.Create("Camera", true, { Owner = player, Location = Weapcam.Location })
@@ -141,7 +141,7 @@ InfiltrateTechCenter = function()
 				return
 			end
 			infiltrated = true
-			DestroySovietsObj = player.AddObjective("Destroy all Soviet buildings and units in the area.")
+			DestroySovietsObj = AddPrimaryObjective(player, "destroy-soviet-buildings-units")
 			player.MarkCompletedObjective(InfiltrateTechCenterObj)
 
 			local Proxy = Actor.Create("powerproxy.paratroopers", false, { Owner = ussr })
@@ -153,7 +153,7 @@ InfiltrateTechCenter = function()
 
 		Trigger.OnCapture(a, function()
 			if not infiltrated then
-				Media.DisplayMessage("Do not capture the tech centers! Infiltrate one with a spy.")
+				Media.DisplayMessage(UserInterface.Translate("dont-capture-tech-centers"))
 			end
 		end)
 	end)
@@ -181,8 +181,8 @@ WorldLoaded = function()
 
 	InitObjectives(player)
 
-	InfiltrateTechCenterObj = player.AddObjective("Infiltrate one of the Soviet tech centers with a spy.")
-	CaptureRadarDomeObj = player.AddObjective("Capture the Radar Dome at the shore.", "Secondary", false)
+	InfiltrateTechCenterObj = AddPrimaryObjective(player, "infiltrate-tech-center-spy")
+	CaptureRadarDomeObj = AddSecondaryObjective(player, "capture-radar-shore")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 

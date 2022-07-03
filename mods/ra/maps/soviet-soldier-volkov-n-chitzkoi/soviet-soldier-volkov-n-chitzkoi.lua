@@ -64,25 +64,25 @@ WorldLoaded = function()
 --Objectives Setup
 	InitObjectives(player)
 
-	DestroyControlCenter = player.AddObjective("Destroy the Control Center.")
-	KeepTanksAlive = player.AddObjective("Your tank division must not be destroyed before\n the alloy facility is dealt with.")
-	KeepVolkovAlive = player.AddObjective("Keep Volkov Alive.")
-	KeepChitzkoiAlive = player.AddObjective("Keep Chitzkoi Alive.", "Secondary", false)
+	DestroyControlCenter = AddPrimaryObjective(player, "destroy-control-center")
+	KeepTanksAlive = AddPrimaryObjective(player, "tank-division-must-not-be-destroyed")
+	KeepVolkovAlive = AddPrimaryObjective(player, "volkov-survive")
+	KeepChitzkoiAlive = AddSecondaryObjective(player, "keep-chitzkoi-alive")
 
 	Trigger.OnKilled(ControlCenter, function()
 		Utils.Do(HeavyTurrets, function(struc)
 			if not struc.IsDead then struc.Kill() end
 		end)
 		player.MarkCompletedObjective(DestroyControlCenter)
-		DestroyAlloyFacility = player.AddObjective("Destroy the Alloy Facility.")
+		DestroyAlloyFacility = AddPrimaryObjective(player, "destroy-alloy-facility")
 		Media.PlaySpeechNotification(player, "FirstObjectiveMet")
-		Media.DisplayMessage("Excellent! The heavy turret control center is destroyed\n and now we can deal with the alloy facility.")
+		Media.DisplayMessage(UserInterface.Translate("heavy-turret-control-destroyed"))
 	end)
 
 	Trigger.OnKilled(AlloyFacility, function()
 		if not player.IsObjectiveCompleted(DestroyControlCenter) then --Prevent a crash if the player somehow manage to cheese the mission and destroy
 			player.MarkCompletedObjective(DestroyControlCenter) --the Alloy Facility without destroying the Control Center.
-			DestroyAlloyFacility = player.AddObjective("Destroy the Alloy Facility.")
+			DestroyAlloyFacility = AddPrimaryObjective(player, "destroy-alloy-facility")
 		end
 		Trigger.AfterDelay(DateTime.Seconds(2), function()
 			player.MarkCompletedObjective(DestroyAlloyFacility)
@@ -349,7 +349,7 @@ end
 ChitzkoiIsDead = function(a)
 	Trigger.OnKilled(a, function()
 		player.MarkFailedObjective(KeepChitzkoiAlive)
-		Media.DisplayMessage("We can rebuild Chitzkoi. We have the technology.")
+		Media.DisplayMessage(UserInterface.Translate("rebuild-chitzkoy"))
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Media.PlaySpeechNotification(player, "ObjectiveNotMet")
 		end)

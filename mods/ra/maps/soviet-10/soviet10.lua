@@ -237,7 +237,7 @@ end
 RunForIt = function()
 	Running = true
 	Media.PlaySoundNotification(USSR, "AlertBleep")
-	Media.DisplayMessage("RUN FOR IT!", "Convoy commander")
+	Media.DisplayMessage(UserInterface.Translate("run-for-it"), UserInterface.Translate("convoy-commander"))
 	Utils.Do(Trucks, function(truck)
 		if not truck.IsDead then
 			truck.Stop()
@@ -274,6 +274,7 @@ StartTimerFunction = function()
 	end)
 end
 
+WeAreSurrounded = UserInterface.Translate("we-are-surrounded")
 FinishTimer = function()
 	for i = 0, 5, 1 do
 		local c = TimerColor
@@ -281,7 +282,7 @@ FinishTimer = function()
 			c = HSLColor.White
 		end
 
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("We're surrounded!", c) end)
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText(WeAreSurrounded, c) end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(6), function() UserInterface.SetMissionText("") end)
 end
@@ -289,7 +290,10 @@ end
 Tick = function()
 	if StartTimer then
 		if ticked > 0 then
-			UserInterface.SetMissionText("Corridor closes in " .. Utils.FormatTime(ticked), TimerColor)
+			if (ticked % DateTime.Seconds(1)) == 0 then
+				Timer = UserInterface.Translate("corridor-closes-in", { ["time"] = Utils.FormatTime(ticked) })
+				UserInterface.SetMissionText(Timer, TimerColor)
+			end
 			ticked = ticked - 1
 		elseif ticked == 0 then
 			FinishTimer()
@@ -310,10 +314,10 @@ WorldLoaded = function()
 
 	InitObjectives(USSR)
 
-	EscortTrucks = USSR.AddObjective("Escort the convoy through the mountain pass.")
-	ProtectEveryTruck = USSR.AddObjective("Do not lose a single truck.", "Secondary", false)
-	SaveMigs = USSR.AddObjective("Do not squander any of our new MiG aircraft.", "Secondary", false)
-	BeatUSSR = Greece.AddObjective("Defeat the Soviet forces.")
+	EscortTrucks = AddPrimaryObjective(USSR, "escort-convoy-mountain-pass")
+	ProtectEveryTruck = AddSecondaryObjective(USSR, "protect-every-truck")
+	SaveMigs = AddSecondaryObjective(USSR, "save-migs")
+	BeatUSSR = AddPrimaryObjective(Greece, "")
 
 	ConvoyEscort = ConvoyEscort[Difficulty]
 	StartTimerDelay = StartTimerDelay[Difficulty]

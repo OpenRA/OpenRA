@@ -119,9 +119,9 @@ WorldLoaded = function()
 
 	InitObjectives(player)
 
-	KillAll = player.AddObjective("Defeat the Allied forces.")
-	BeatUSSR = Greece.AddObjective("Defeat the Soviet forces.")
-	KillRadar = player.AddObjective("Destroy Allied Radar Dome to stop enemy\nreinforcements.", "Secondary", false)
+	KillAll = AddPrimaryObjective(player, "defeat-allied-forces")
+	BeatUSSR = AddPrimaryObjective(Greece, "")
+	KillRadar = AddSecondaryObjective(player, "destroy-radar-dome-reinforcements")
 
 	Trigger.OnKilled(RadarDome, function()
 		player.MarkCompletedObjective(KillRadar)

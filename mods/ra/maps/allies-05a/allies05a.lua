@@ -137,7 +137,7 @@ SendWaterExtraction = function()
 	Camera.Position = flare.CenterPosition
 
 	WaterExtractionTran = Reinforcements.ReinforceWithTransport(greece, ExtractionTransport, nil, SpyEntryPath)[1]
-	ExtractObj = greece.AddObjective("Get all your forces into the transport.")
+	ExtractObj = AddPrimaryObjective(greece, "extract-transport")
 
 	Trigger.OnKilled(WaterExtractionTran, function() ussr.MarkCompletedObjective(ussrObj) end)
 	Trigger.OnAllRemovedFromWorld(greece.GetGroundAttackers(), function()
@@ -185,20 +185,20 @@ FreeTanya = function()
 
 	if TanyaType == "e7.noautotarget" then
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.DisplayMessage("According to the rules of engagement I need your explicit orders to fire, Commander!", "Tanya")
+			Media.DisplayMessage(UserInterface.Translate("tanya-rules-of-engagement"), UserInterface.Translate("tanya"))
 		end)
 	end
 
 	Trigger.OnKilled(Tanya, function() ussr.MarkCompletedObjective(ussrObj) end)
 
 	if Difficulty == "tough" then
-		KillSams = greece.AddObjective("Destroy all four SAM Sites that block\nour reinforcements' helicopter.")
+		KillSams = AddPrimaryObjective(greece, "destroy-sam-sites-blocker")
 
 		greece.MarkCompletedObjective(mainObj)
-		surviveObj = greece.AddObjective("Tanya must not die!")
+		surviveObj = AddPrimaryObjective(greece, "tanya-survive")
 		Media.PlaySpeechNotification(greece, "TanyaRescued")
 	else
-		KillSams = greece.AddObjective("Destroy all four SAM sites that block\nthe extraction helicopter.")
+		KillSams = AddPrimaryObjective(greece, "destroy-sam-sites-blocker")
 
 		Media.PlaySpeechNotification(greece, "TargetFreed")
 	end
@@ -220,7 +220,7 @@ SendSpy = function()
 	end
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage("Commander! You have to disguise me in order to get through the enemy patrols.", "Spy")
+		Media.DisplayMessage(UserInterface.Translate("disguise-spy"), "Spy")
 	end)
 end
 
@@ -264,7 +264,7 @@ InitTriggers = function()
 		end
 
 		if not greece.IsObjectiveCompleted(infWarfactory) then
-			Media.DisplayMessage("Good work! But next time skip the heroics!", "Battlefield Control")
+			Media.DisplayMessage(UserInterface.Translate("skip-heroics"), UserInterface.Translate("battlefield-control"))
 			greece.MarkCompletedObjective(infWarfactory)
 		end
 
@@ -372,10 +372,10 @@ InitTriggers = function()
 end
 
 AddObjectives = function()
-	ussrObj = ussr.AddObjective("Deny the Allies.")
-	mainObj = greece.AddObjective("Rescue Tanya.")
-	KillAll = greece.AddObjective("Eliminate all Soviet units in this area.")
-	infWarfactory = greece.AddObjective("Infiltrate the Soviet warfactory.", "Secondary", false)
+	ussrObj = AddPrimaryObjective(ussr, "")
+	mainObj = AddPrimaryObjective(greece, "rescue-tanya")
+	KillAll = AddPrimaryObjective(greece, "elminate-soviet-units")
+	infWarfactory = AddSecondaryObjective(greece, "infiltrate-warfactory")
 end
 
 WorldLoaded = function()

@@ -74,7 +74,7 @@ Tick = function()
 		if DestroyObj then
 			allies.MarkCompletedObjective(DestroyObj)
 		else
-			DestroyObj = allies.AddObjective("Destroy all Soviet forces in the area.")
+			DestroyObj = AddPrimaryObjective(allies, "destroy-all-soviet-forces")
 			allies.MarkCompletedObjective(DestroyObj)
 		end
 	end
@@ -111,7 +111,10 @@ Tick = function()
 	end
 
 	if ticked > 0 then
-		UserInterface.SetMissionText("Soviet reinforcements arrive in " .. Utils.FormatTime(ticked), TimerColor)
+		if (ticked % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("soviet-reinforcements-arrive-in", { ["time"] = Utils.FormatTime(ticked) })
+			UserInterface.SetMissionText(Timer, TimerColor)
+		end
 		ticked = ticked - 1
 	elseif ticked == 0 then
 		FinishTimer()
@@ -211,13 +214,14 @@ FinalAttack = function()
 
 	Trigger.OnAllKilledOrCaptured(units, function()
 		if not DestroyObj then
-			Media.DisplayMessage("Excellent work Commander! We have reinforced our position enough to initiate a counter-attack.", "Incoming Report")
-			DestroyObj = allies.AddObjective("Destroy the remaining Soviet forces in the area.")
+			Media.DisplayMessage(UserInterface.Translate("reinforced-position-initiate-counter-attack"), UserInterface.Translate("incoming-report"))
+			DestroyObj = AddPrimaryObjective(allies, "destroy-remaining-soviet-forces-area")
 		end
 		allies.MarkCompletedObjective(SurviveObj)
 	end)
 end
 
+SovietReinforcementsArrived = UserInterface.Translate("soviet-reinforcements-arrived")
 FinishTimer = function()
 	for i = 0, 9, 1 do
 		local c = TimerColor
@@ -225,7 +229,7 @@ FinishTimer = function()
 			c = HSLColor.White
 		end
 
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("Soviet reinforcements have arrived!", c) end)
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText(SovietReinforcementsArrived, c) end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(10), function() UserInterface.SetMissionText("") end)
 end
@@ -251,8 +255,8 @@ SetupBridges = function()
 		end
 	end
 
-	Media.DisplayMessage("Commander! The Soviets destroyed the bridges to disable our reinforcements. Repair them for additional reinforcements.", "Incoming Report")
-	RepairBridges = allies.AddObjective("Repair the two southern bridges.", "Secondary", false)
+	Media.DisplayMessage(UserInterface.Translate("repair-bridges-for-reinforcement"), UserInterface.Translate("incoming-report"))
+	RepairBridges = AddSecondaryObjective(allies, "repair-two-southern-bridges")
 
 	local bridgeA = Map.ActorsInCircle(BrokenBridge1.CenterPosition, WDist.FromCells(1), function(self) return self.Type == "bridge1" end)
 	local bridgeB = Map.ActorsInCircle(BrokenBridge2.CenterPosition, WDist.FromCells(1), function(self) return self.Type == "bridge1" end)
@@ -285,15 +289,15 @@ end
 AddObjectives = function()
 	InitObjectives(allies)
 
-	SurviveObj = allies.AddObjective("Enforce your position and hold-out the onslaught.")
-	SovietObj = soviets.AddObjective("Eliminate all Allied forces.")
+	SurviveObj = AddPrimaryObjective(allies, "enforce-position-hold-out-onslaught")
+	SovietObj = AddPrimaryObjective(soviets, "")
 
 	Trigger.AfterDelay(DateTime.Seconds(15), function()
 		SetupBridges()
 	end)
 
 	Trigger.OnPlayerWon(allies, function()
-		Media.DisplayMessage("We have destroyed the remaining Soviet presence!", "Incoming Report")
+		Media.DisplayMessage(UserInterface.Translate("remaining-soviet-presence-destroyed"), UserInterface.Translate("incoming-report"))
 	end)
 end
 
@@ -304,7 +308,7 @@ InitMission = function()
 	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(allies, "MissionTimerInitialised") end)
 
 	Trigger.AfterDelay(TimerTicks, function()
-		Media.DisplayMessage("The Soviet reinforcements are approaching!", "Incoming Report")
+		Media.DisplayMessage(UserInterface.Translate("soviet-reinforcements-approaching"), UserInterface.Translate("incoming-report"))
 		Media.PlaySpeechNotification(allies, "SovietReinforcementsArrived")
 		SpawnSovietVehicle(NewSovietEntryPoints, NewSovietRallyPoints)
 		FinalAttack()

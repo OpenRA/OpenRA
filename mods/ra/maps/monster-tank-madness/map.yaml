@@ -2098,3 +2098,5 @@ Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/c
 Weapons: weapons.yaml
 
 Voices: voices.yaml
+
+Translations: ra|languages/lua/en.ftl

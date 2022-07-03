@@ -74,7 +74,7 @@ WorldLoaded = function()
 
 	InitObjectives(player)
 
-	VillageRaidObjective = player.AddObjective("Raze the village.")
+	VillageRaidObjective = AddPrimaryObjective(player, "raze-village")
 
 	Trigger.OnAllRemovedFromWorld(Airfields, function()
 		player.MarkFailedObjective(VillageRaidObjective)

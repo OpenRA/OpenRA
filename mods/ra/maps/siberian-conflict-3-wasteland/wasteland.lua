@@ -56,8 +56,8 @@ WorldLoaded = function()
 
 	InitObjectives(Allies)
 
-	SovietObj = USSR.AddObjective("Stop the Allies")
-	DestroyAll = Allies.AddObjective("Destroy all Soviet units and structures.")
+	SovietObj = AddPrimaryObjective(USSR, "")
+	DestroyAll = AddPrimaryObjective(Allies, "destroy-soviet-units-infrastructure")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 	PowerProxy = Actor.Create("paratroopers", false, { Owner = BadGuy })

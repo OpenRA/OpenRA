@@ -177,6 +177,12 @@ VillageSetup = function()
 	end)
 end
 
+SetCivilianEvacuatedText = function()
+	local attributes = { ["evacuated"] = CiviliansEvacuated, ["threshold"] = CiviliansEvacuatedThreshold }
+	local civiliansEvacuated = UserInterface.Translate("civilians-evacuated", attributes)
+	UserInterface.SetMissionText(civiliansEvacuated, TextColor)
+end
+
 CiviliansEvacuatedThreshold =
 {
 	hard = 20,
@@ -194,7 +200,7 @@ CiviliansKilled = 0
 EvacuateCivilians = function()
 	Trigger.OnInfiltrated(SafeHouse, function()
 		CiviliansEvacuated = CiviliansEvacuated + 1
-		UserInterface.SetMissionText(CiviliansEvacuated .. "/" .. CiviliansEvacuatedThreshold .. " civilians evacuated.", TextColor)
+		SetCivilianEvacuatedText()
 	end)
 
 	Trigger.OnKilled(SafeHouse, function()
@@ -209,7 +215,7 @@ EvacuateCivilians = function()
 
 	Trigger.OnAllKilled(enemyBase, function()
 		Media.PlaySoundNotification(Allies, "AlertBleep")
-		Media.DisplayMessage("Alfa Niner this is Pegasus. We are on site and ready to assist with the evacuation.", "Chinook pilot")
+		Media.DisplayMessage(UserInterface.Translate("chinook-assist-evacuation"), UserInterface.Translate("chinook-pilot"))
 		Reinforcements.Reinforce(Allies, { "tran" }, { ChinookEntry.Location, ChinookLZ.Location })
 	end)
 end
@@ -236,20 +242,20 @@ WorldLoaded = function()
 	InitObjectives(Allies)
 
 	if Difficulty == "easy" then
-		RescueCivilians = Allies.AddObjective("Evacuate at least half of the civilians to the island\nshelter.")
+		RescueCivilians = AddPrimaryObjective(Allies, "rescue-civlians-island-shelter-easy")
 	elseif Difficulty == "normal" then
-		RescueCivilians = Allies.AddObjective("Evacuate at least three quarters of the civilians to\nthe island shelter.")
+		RescueCivilians = AddPrimaryObjective(Allies, "rescue-civlians-island-shelter-normal")
 	else
-		RescueCivilians = Allies.AddObjective("Evacuate all civilians to the island shelter.")
+		RescueCivilians = AddPrimaryObjective(Allies, "rescue-civlians-island-shelter-hard")
 	end
 
-	ClearWaterway = Allies.AddObjective("Clear the area of enemy submarine activity.", "Secondary", false)
-	SovietObj = USSR.AddObjective("Defeat Allies.")
+	ClearWaterway = AddSecondaryObjective(Allies, "clear-enemy-submarines")
+	SovietObj = AddPrimaryObjective(USSR, "")
 
 	CiviliansEvacuatedThreshold = CiviliansEvacuatedThreshold[Difficulty]
 	CiviliansKilledThreshold = CiviliansKilledThreshold[Difficulty]
 	TextColor = Allies.Color
-	UserInterface.SetMissionText(CiviliansEvacuated .. "/" .. CiviliansEvacuatedThreshold .. " civilians evacuated.", TextColor)
+	SetCivilianEvacuatedText()
 	StandardDrop = Actor.Create("paradrop", false, { Owner = USSR })
 	FlamerDrop = Actor.Create("flamerdrop", false, { Owner = USSR })
 	Camera.Position = DefaultCameraPosition.CenterPosition

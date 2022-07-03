@@ -309,9 +309,9 @@ WorldLoaded = function()
 
 	InitObjectives(USSR)
 
-	BeatRussia = Greece.AddObjective("Stop Ivan.")
-	KillAll = USSR.AddObjective("Destroy all that oppose us.")
-	CaptureDome = USSR.AddObjective("Capture the enemy radar dome.", "Secondary", false)
+	BeatRussia = AddPrimaryObjective(Greece, "")
+	KillAll = AddPrimaryObjective(USSR, "destroy-opposition")
+	CaptureDome = AddSecondaryObjective(USSR, "capture-enemy-radar-dome")
 
 	Camera.Position = LZ.CenterPosition
 	ShockDrop = Actor.Create("shockdrop", false, { Owner = USSR })

@@ -114,6 +114,7 @@ StartTimerFunction = function()
 	end
 end
 
+EnemyApproaching = UserInterface.Translate("enemy-approaching")
 FinishTimer = function()
 	for i = 0, 5, 1 do
 		local c = TimerColor
@@ -121,7 +122,7 @@ FinishTimer = function()
 			c = HSLColor.White
 		end
 
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("Enemy approaching", c) end)
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText(EnemyApproaching, c) end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(6), function() UserInterface.SetMissionText("") end)
 end
@@ -164,7 +165,10 @@ Tick = function()
 
 	if StartTimer then
 		if ticked > 0 then
-			UserInterface.SetMissionText("Soviet armored battalion arrives in " .. Utils.FormatTime(ticked), TimerColor)
+			if (ticked % DateTime.Seconds(1)) == 0 then
+				Timer = UserInterface.Translate("soviet-armored-battalion-arrives-in", { ["time"] = Utils.FormatTime(ticked) })
+				UserInterface.SetMissionText(Timer, TimerColor)
+			end
 			ticked = ticked - 1
 		elseif ticked == 0 then
 			FinishTimer()
@@ -186,10 +190,10 @@ WorldLoaded = function()
 	Camera.Position = DefaultCameraPosition.CenterPosition
 
 	InitObjectives(greece)
-	CaptureRadarDomeObj = greece.AddObjective("Capture the Radar Dome.")
-	DestroySubPens = greece.AddObjective("Destroy all Soviet Sub Pens")
-	ClearSubActivity = greece.AddObjective("Clear the area of all sub activity", "Secondary", false)
-	BeatAllies = ussr.AddObjective("Defeat the Allied forces.")
+	CaptureRadarDomeObj = AddPrimaryObjective(greece, "capture-radar-dome")
+	DestroySubPens = AddPrimaryObjective(greece, "destroy-all-soviet-sub-pens")
+	ClearSubActivity = AddSecondaryObjective(greece, "clear-area-all-subs")
+	BeatAllies = AddPrimaryObjective(ussr, "")
 
 	PowerProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = ussr })
 

@@ -94,9 +94,9 @@ WorldLoaded = function()
 
 	InitObjectives(Spain)
 
-	EatSpain = BadGuy.AddObjective("For the Swarm!")
-	GasNests = Spain.AddObjective("Gas every ant nest.")
-	KillAll = Spain.AddObjective("Kill every ant lurking above ground.")
+	EatSpain = AddPrimaryObjective(BadGuy, "")
+	GasNests = AddPrimaryObjective(Spain, "gas-every-ant-nest")
+	KillAll = AddPrimaryObjective(Spain, "kill-every-ant-above-ground")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 	Start()

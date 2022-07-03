@@ -121,9 +121,9 @@ WorldLoaded = function()
 
 	InitObjectives(USSR)
 
-	KillAll = USSR.AddObjective("Destroy all Allied units and structures.")
-	DestroyVillageObjective = USSR.AddObjective("Destroy the village of Allied sympathizers.", "Secondary", false)
-	BeatUSSR = Greece.AddObjective("Defeat the Soviet forces.")
+	KillAll = AddPrimaryObjective(USSR, "destroy-allied-units-structures")
+	DestroyVillageObjective = AddSecondaryObjective(USSR, "destroy-allied-sympathizers-village")
+	BeatUSSR = AddPrimaryObjective(Greece, "")
 
 	AddEastReinforcementTrigger()
 	AddSouthReinforcementTrigger()

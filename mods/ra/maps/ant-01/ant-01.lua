@@ -34,13 +34,14 @@ SendInsertionHelicopter = function()
 	Reinforcements.ReinforceWithTransport(Allies, InsertionHelicopterType, ChopperTeam, InsertionPath, { waypoint4.Location })
 end
 
+AlliedForcesHaveArrived = UserInterface.Translate("allied-forces-have-arrived")
 FinishTimer = function()
 	for i = 0, 9, 1 do
 		local c = TimerColor
 		if i % 2 == 0 then
 			c = HSLColor.White
 		end
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("Allied forces have arrived!", c) end)
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText(AlliedForcesHaveArrived, c) end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(10), function() UserInterface.SetMissionText("") end)
 end
@@ -59,7 +60,7 @@ DiscoveredAlliedBase = function(actor, discoverer)
 
 		--Need to delay this so we don't fail mission before obj added
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			SurviveObjective = Allies.AddObjective("Defend outpost until reinforcements arrive.")
+			SurviveObjective = AddPrimaryObjective(Allies, "defend-outpost-until-reinforcements-arrive")
 			SetupTimeNotifications()
 			Trigger.OnAllRemovedFromWorld(AlliedBase, function()
 				Allies.MarkFailedObjective(SurviveObjective)
@@ -122,7 +123,10 @@ Tick = function()
 			end
 
 			ticks = ticks - 1;
-			UserInterface.SetMissionText("Reinforcements arrive in " .. Utils.FormatTime(ticks), TimerColor)
+			if (ticks % DateTime.Seconds(1)) == 0 then
+				Timer = UserInterface.Translate("reinforcements-arrive-in", { ["time"] = Utils.FormatTime(ticks) })
+				UserInterface.SetMissionText(Timer, TimerColor)
+			end
 		else
 			if not AtEndGame then
 				Media.PlaySpeechNotification(Allies, "SecondObjectiveMet")
@@ -140,7 +144,7 @@ end
 AddObjectives = function()
 	InitObjectives(Allies)
 
-	DiscoverObjective = Allies.AddObjective("Find the outpost.")
+	DiscoverObjective = AddPrimaryObjective(Allies, "find-outpost")
 
 	Utils.Do(AlliedBase, function(actor)
 		Trigger.OnEnteredProximityTrigger(actor.CenterPosition, WDist.FromCells(8), function(discoverer, id)
