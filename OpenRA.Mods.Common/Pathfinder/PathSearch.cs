@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		public IPathGraph Graph { get; }
 		readonly Func<CPos, int> heuristic;
 		readonly int heuristicWeightPercentage;
-		public Func<CPos, bool> TargetPredicate { get; set; }
+		readonly Func<CPos, bool> targetPredicate;
 		readonly IPriorityQueue<GraphConnection> openQueue;
 
 		/// <summary>
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			Graph = graph;
 			this.heuristic = heuristic;
 			this.heuristicWeightPercentage = heuristicWeightPercentage;
-			TargetPredicate = targetPredicate;
+			this.targetPredicate = targetPredicate;
 			openQueue = new PriorityQueue<GraphConnection>(GraphConnection.ConnectionCostComparer);
 		}
 
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			while (CanExpand())
 			{
 				var p = Expand();
-				if (TargetPredicate(p))
+				if (targetPredicate(p))
 					return MakePath(Graph, p);
 			}
 
