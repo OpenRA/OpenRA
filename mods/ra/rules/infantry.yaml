@@ -306,12 +306,12 @@ E6:
 	Captures:
 		RequiresCondition: !global-reusable-engineers
 		CaptureTypes: building
-		PlayerExperience: 10
+		PlayerExperiencePercentage: 2
 		CaptureDelay: 200
 	Captures@REUSABLE:
 		RequiresCondition: global-reusable-engineers
 		CaptureTypes: building
-		PlayerExperience: 10
+		PlayerExperiencePercentage: 2
 		CaptureDelay: 375
 		ConsumedByCapture: False
 		EnterCursor: ability
@@ -536,7 +536,7 @@ MECH:
 	CaptureManager:
 	Captures:
 		CaptureTypes: husk
-		PlayerExperience: 10
+		PlayerExperiencePercentage: 1
 	Infiltrates:
 		Types: Husk
 		ValidRelationships: Ally
@@ -641,7 +641,7 @@ THF:
 	CaptureManager:
 	Captures:
 		CaptureTypes: vehicle, aircraft
-		PlayerExperience: 10
+		PlayerExperiencePercentage: 2
 	Infiltrates:
 		Types: ThiefInfiltrate
 		Notification: BuildingInfiltrated

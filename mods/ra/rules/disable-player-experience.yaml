@@ -9,10 +9,20 @@
 E6:
 	Captures:
 		PlayerExperience: 0
+		PlayerExperiencePercentage: 0
+	Captures@REUSABLE:
+		PlayerExperience: 0
+		PlayerExperiencePercentage: 0
+
+MECH:
+	Captures:
+		PlayerExperience: 0
+		PlayerExperiencePercentage: 0
 
 THF:
 	Captures:
 		PlayerExperience: 0
+		PlayerExperiencePercentage: 0
 
 SPEN:
 	RepairsUnits:

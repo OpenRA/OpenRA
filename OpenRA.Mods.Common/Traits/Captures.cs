@@ -43,6 +43,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Experience granted to the capturing player.")]
 		public readonly int PlayerExperience = 0;
 
+		[Desc("Experience granted to the capturing player based on the cost of the captured structure.")]
+		public readonly int PlayerExperiencePercentage = 0;
+
 		[Desc("Relationships that the structure's previous owner needs to have for the capturing player to receive Experience.")]
 		public readonly PlayerRelationship PlayerExperienceRelationships = PlayerRelationship.Enemy;
 

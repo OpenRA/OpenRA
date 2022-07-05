@@ -138,6 +138,6 @@ MHIJACK:
 	CaptureManager:
 	Captures:
 		CaptureTypes: Vehicle
-		PlayerExperience: 10
+		PlayerExperiencePercentage: 2
 	RevealsShroud:
 		Range: 6c0
