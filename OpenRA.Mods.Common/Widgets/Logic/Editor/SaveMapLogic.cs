@@ -190,9 +190,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					map.Save(package);
 
-					Console.WriteLine($"Saved current map at {combinedPath}");
 					Ui.CloseWindow();
-
 					onSave(map.Uid);
 				}
 				catch (Exception e)
