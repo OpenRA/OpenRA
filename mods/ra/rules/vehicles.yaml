@@ -549,7 +549,7 @@ TRUK:
 		Range: 4c0
 	DeliversCash:
 		Payload: 500
-		PlayerExperience: 50
+		PlayerExperience: 5
 	SpawnActorOnDeath:
 		Actor: moneycrate
 

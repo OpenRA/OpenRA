@@ -781,7 +781,7 @@ TRUCK:
 		Range: 4c0
 	DeliversCash:
 		Payload: 1000
-		PlayerExperience: 100
+		PlayerExperience: 10
 	SpawnActorOnDeath:
 		Actor: TRUCK.Husk
 		OwnerType: InternalName
