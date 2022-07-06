@@ -232,7 +232,7 @@ ANYPOWER:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Power Plant
+		Name: Any Power Generation
 
 BARRACKS:
 	AlwaysVisible:
