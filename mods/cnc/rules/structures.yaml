@@ -1199,10 +1199,10 @@ ANYPOWER:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Power Plant
+		Name: Any Power Generation
 
 ANYHQ:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: a communications center
+		Name: A Communications Center
