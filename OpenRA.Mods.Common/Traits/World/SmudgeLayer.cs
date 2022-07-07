@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Smoke sprite image name")]
 		public readonly string SmokeImage = null;
 
-		[SequenceReference(nameof(SmokeImage))]
+		[SequenceReference(nameof(SmokeImage), allowNullImage: true)]
 		[Desc("Smoke sprite sequences randomly chosen from")]
 		public readonly string[] SmokeSequences = Array.Empty<string>();
 
