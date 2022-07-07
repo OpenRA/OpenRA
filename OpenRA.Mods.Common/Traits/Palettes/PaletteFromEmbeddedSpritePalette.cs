@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Image = null;
 
 		[FieldLoader.Require]
+		[SequenceReference(nameof(Image))]
 		[Desc("Sequence holding the palette definition")]
 		public readonly string Sequence = null;
 
