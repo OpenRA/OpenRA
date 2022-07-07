@@ -40,19 +40,18 @@ namespace OpenRA.Mods.Common.Lint
 			var factions = rules.Actors[SystemActors.World].TraitInfos<FactionInfo>().Select(f => f.InternalName).ToArray();
 			foreach (var actorInfo in rules.Actors)
 			{
+				var images = new HashSet<string>();
+
 				// Actors may have 0 or 1 RenderSprites traits
 				var renderInfo = actorInfo.Value.TraitInfoOrDefault<RenderSpritesInfo>();
-				if (renderInfo == null)
-					continue;
-
-				var images = new HashSet<string>()
+				if (renderInfo != null)
 				{
-					renderInfo.GetImage(actorInfo.Value, null).ToLowerInvariant()
-				};
+					images.Add(renderInfo.GetImage(actorInfo.Value, null).ToLowerInvariant());
 
-				// Some actors define faction-specific artwork
-				foreach (var faction in factions)
-					images.Add(renderInfo.GetImage(actorInfo.Value, faction).ToLowerInvariant());
+					// Some actors define faction-specific artwork
+					foreach (var faction in factions)
+						images.Add(renderInfo.GetImage(actorInfo.Value, faction).ToLowerInvariant());
+				}
 
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
@@ -77,6 +76,7 @@ namespace OpenRA.Mods.Common.Lint
 							{
 								if (!sequenceReference.AllowNullImage)
 									emitError($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` must define a value for `{sequenceReference.ImageReference}`");
+
 								continue;
 							}
 
