@@ -29,23 +29,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Func<bool> shouldShowStatus = () => (world.Paused || world.ReplayTimestep != world.Timestep)
 				&& (Ui.LastTickTime.Value - startTick) / 1000 % 2 == 0;
 
-			Func<string> statusText = () =>
-			{
-				if (world.Paused || world.ReplayTimestep == 0)
-					return "Paused";
-
-				if (world.ReplayTimestep == 1)
-					return "Max Speed";
-
-				return $"{world.Timestep * 100 / world.ReplayTimestep}% Speed";
-			};
+			Func<bool> paused = () => world.Paused || world.ReplayTimestep == 0;
 
 			if (timer != null)
 			{
 				timer.GetText = () =>
 				{
-					if (status == null && shouldShowStatus())
-						return statusText();
+					if (status == null && paused() && shouldShowStatus())
+						return "Paused";
 
 					var timeLimit = tlm?.TimeLimit ?? 0;
 					var displayTick = timeLimit > 0 ? timeLimit - world.WorldTick : world.WorldTick;
@@ -57,7 +48,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				// Blink the status line
 				status.IsVisible = shouldShowStatus;
-				status.GetText = statusText;
+				status.GetText = () =>
+				{
+					if (paused())
+						return "Paused";
+
+					if (world.ReplayTimestep == 1)
+						return "Max Speed";
+
+					return $"{world.Timestep * 100 / world.ReplayTimestep}% Speed";
+				};
 			}
 
 			if (timer is LabelWithTooltipWidget timerTooltip)
