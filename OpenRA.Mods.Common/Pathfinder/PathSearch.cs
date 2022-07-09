@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Pathfinder
 {
@@ -140,7 +139,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		readonly Func<CPos, int> heuristic;
 		readonly int heuristicWeightPercentage;
 		readonly IRecorder recorder;
-		readonly IPriorityQueue<GraphConnection> openQueue;
+		readonly GraphConnectionQueue openQueue;
 
 		/// <summary>
 		/// Initialize a new search.
@@ -163,7 +162,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			this.heuristicWeightPercentage = heuristicWeightPercentage;
 			TargetPredicate = targetPredicate;
 			this.recorder = recorder;
-			openQueue = new PriorityQueue<GraphConnection>(GraphConnection.ConnectionCostComparer);
+			openQueue = new GraphConnectionQueue();
 		}
 
 		void AddInitialCell(CPos location, Func<CPos, int> customCost)
