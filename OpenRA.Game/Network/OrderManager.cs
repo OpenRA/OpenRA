@@ -291,6 +291,8 @@ namespace OpenRA.Network
 			SendImmediateOrders();
 
 			ReceiveAllOrdersAndCheckSync();
+
+			Connection.Poll();
 		}
 
 		public bool TryTick()

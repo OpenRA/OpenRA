@@ -163,6 +163,11 @@ namespace OpenRA.Network
 			}
 		}
 
+		public void Poll()
+		{
+			
+		}
+
 		int IConnection.LocalClientId => -1;
 
 		void IDisposable.Dispose() { }

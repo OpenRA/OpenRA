@@ -10,14 +10,11 @@
 #endregion
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Sockets;
-using System.Threading;
+using LiteNetLib;
 
 namespace OpenRA.Server
 {
@@ -29,9 +26,12 @@ namespace OpenRA.Server
 		const int MaxPingSamples = 15;
 
 		public readonly int PlayerIndex;
+		private readonly NetPeer peer;
 		public readonly string AuthToken;
 		public readonly EndPoint EndPoint;
 		public readonly Stopwatch ConnectionTimer = Stopwatch.StartNew();
+
+		readonly Stopwatch lastPingSent = Stopwatch.StartNew();
 
 		public long TimeSinceLastResponse => Game.RunTime - lastReceivedTime;
 
@@ -41,20 +41,14 @@ namespace OpenRA.Server
 
 		long lastReceivedTime = 0;
 
-		readonly BlockingCollection<byte[]> sendQueue = new BlockingCollection<byte[]>();
 		readonly Queue<int> pingHistory = new Queue<int>();
 
-		public Connection(Server server, Socket socket, string authToken)
+		public Connection(Server server, NetPeer peer, string authToken)
 		{
 			PlayerIndex = server.ChooseFreePlayerIndex();
+			this.peer = peer;
 			AuthToken = authToken;
-			EndPoint = socket.RemoteEndPoint;
-
-			new Thread(SendReceiveLoop)
-			{
-				Name = $"Client communication ({EndPoint}",
-				IsBackground = true
-			}.Start((server, socket));
+			EndPoint = peer.EndPoint;
 		}
 
 		static byte[] CreatePingFrame()
@@ -68,144 +62,40 @@ namespace OpenRA.Server
 			return ms.GetBuffer();
 		}
 
-		void SendReceiveLoop(object s)
+		public int[] UpdatePing(int time)
 		{
-			var (server, socket) = (ValueTuple<Server, Socket>)s;
-			socket.Blocking = false;
-			socket.NoDelay = true;
+			if (pingHistory.Count == MaxPingSamples)
+				pingHistory.Dequeue();
 
-			var receiveBuffer = new byte[1024];
-			var readBuffer = new List<byte>();
-			var state = ReceiveState.Header;
-			var expectLength = 8;
-			var frame = 0;
-			var lastPingSent = Stopwatch.StartNew();
+			pingHistory.Enqueue(time);
 
-			try
-			{
-				while (true)
-				{
-					// Wait up to 100ms for data to arrive before checking for data to send
-					if (socket.Poll(100000, SelectMode.SelectRead))
-					{
-						var read = socket.Receive(receiveBuffer);
-						if (read == 0)
-						{
-							// Empty packet signals that the client has been dropped
-							return;
-						}
+			return pingHistory.ToArray();
+		}
 
-						if (read > 0)
-						{
-							readBuffer.AddRange(receiveBuffer.Take(read));
-							lastReceivedTime = Game.RunTime;
-							TimeoutMessageShown = false;
-						}
-
-						while (readBuffer.Count >= expectLength)
-						{
-							var bytes = readBuffer.GetRange(0, expectLength).ToArray();
-							readBuffer.RemoveRange(0, expectLength);
-
-							switch (state)
-							{
-								case ReceiveState.Header:
-								{
-									expectLength = BitConverter.ToInt32(bytes, 0) - 4;
-									frame = BitConverter.ToInt32(bytes, 4);
-									state = ReceiveState.Data;
-
-									if (expectLength < 0 || expectLength > MaxOrderLength)
-									{
-										Log.Write("server", $"Closing socket connection to {EndPoint} because of excessive order length: {expectLength}");
-										return;
-									}
-
-									break;
-								}
-
-								case ReceiveState.Data:
-								{
-									// Ping packets are sent and processed internally within this thread to reduce
-									// server-introduced latencies from polling loops
-									if (expectLength == 10 && bytes[0] == (byte)OrderType.Ping)
-									{
-										if (pingHistory.Count == MaxPingSamples)
-											pingHistory.Dequeue();
-
-										pingHistory.Enqueue((int)(Game.RunTime - BitConverter.ToInt64(bytes, 1)));
-										server.OnConnectionPing(this, pingHistory.ToArray(), bytes[9]);
-									}
-									else
-										server.OnConnectionPacket(this, frame, bytes);
-
-									expectLength = 8;
-									state = ReceiveState.Header;
-
-									break;
-								}
-							}
-						}
-					}
-
-					// Client has been dropped by the server
-					if (sendQueue.IsCompleted)
-						return;
-
-					// Regularly check player ping
-					if (lastPingSent.ElapsedMilliseconds > 1000)
-					{
-						sendQueue.Add(CreatePingFrame());
-						lastPingSent.Restart();
-					}
-
-					// Send all data immediately, we will block again on read
-					while (sendQueue.TryTake(out var data, 0))
-					{
-						var start = 0;
-						var length = data.Length;
-
-						// Non-blocking sends are free to send only part of the data
-						while (start < length)
-						{
-							var sent = socket.Send(data, start, length - start, SocketFlags.None, out var error);
-							if (error == SocketError.WouldBlock)
-							{
-								Log.Write("server", $"Non-blocking send of {length - start} bytes failed. Falling back to blocking send.");
-								socket.Blocking = true;
-								sent = socket.Send(data, start, length - start, SocketFlags.None);
-								socket.Blocking = false;
-							}
-							else if (error != SocketError.Success)
-								throw new SocketException((int)error);
-
-							start += sent;
-						}
-					}
-				}
-			}
-			catch (SocketException e)
-			{
-				Log.Write("server", $"Closing socket connection to {EndPoint} because of socket error: {e}");
-			}
-			finally
-			{
-				server.OnConnectionDisconnect(this);
-				socket.Dispose();
-			}
+		public void UpdateLastReceivedTime()
+		{
+			lastReceivedTime = Game.RunTime;
+			TimeoutMessageShown = false;
 		}
 
 		public void SendData(byte[] data)
 		{
-			sendQueue.Add(data);
+			peer.Send(data, DeliveryMethod.ReliableOrdered);
+		}
+
+		public void SendPing()
+		{
+			if (lastPingSent.ElapsedMilliseconds > 1000)
+			{
+				SendData(CreatePingFrame());
+				lastPingSent.Restart();
+			}
 		}
 
 		public void Dispose()
 		{
 			// Tell the sendReceiveThread that the socket should be closed
-			sendQueue.CompleteAdding();
+			peer.Disconnect();
 		}
 	}
-
-	public enum ReceiveState { Header, Data }
 }
