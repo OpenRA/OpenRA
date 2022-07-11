@@ -286,26 +286,25 @@ namespace OpenRA.Mods.Common.Server
 			{
 				if (!client.IsAdmin)
 				{
-					server.SendOrderTo(conn, "Message", OnlyHostStartGame);
+					server.SendLocalizedMessageTo(conn, OnlyHostStartGame);
 					return true;
 				}
 
-				if (server.LobbyInfo.Slots.Any(sl => sl.Value.Required &&
-													 server.LobbyInfo.ClientInSlot(sl.Key) == null))
+				if (server.LobbyInfo.Slots.Any(sl => sl.Value.Required && server.LobbyInfo.ClientInSlot(sl.Key) == null))
 				{
-					server.SendOrderTo(conn, "Message", NoStartUntilRequiredSlotsFull);
+					server.SendLocalizedMessageTo(conn, NoStartUntilRequiredSlotsFull);
 					return true;
 				}
 
 				if (!server.LobbyInfo.GlobalSettings.EnableSingleplayer && server.LobbyInfo.NonBotPlayers.Count() < 2)
 				{
-					server.SendOrderTo(conn, "Message", TwoHumansRequired);
+					server.SendLocalizedMessageTo(conn, TwoHumansRequired);
 					return true;
 				}
 
 				if (LobbyUtils.InsufficientEnabledSpawnPoints(server.Map, server.LobbyInfo))
 				{
-					server.SendOrderTo(conn, "Message", InsufficientEnabledSpawnPoints);
+					server.SendLocalizedMessageTo(conn, InsufficientEnabledSpawnPoints);
 					return true;
 				}
 
