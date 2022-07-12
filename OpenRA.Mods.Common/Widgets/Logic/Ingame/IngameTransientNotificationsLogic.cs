@@ -10,14 +10,12 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class IngameTransientNotificationsLogic : ChromeLogic
+	public class IngameTransientNotificationsLogic : ChromeLogic, INotificationHandler<TextNotification>
 	{
-		readonly OrderManager orderManager;
 		readonly Ruleset modRules;
 
 		readonly TextNotificationsDisplayWidget displayWidget;
@@ -28,14 +26,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		int repetitions;
 
 		[ObjectCreator.UseCtor]
-		public IngameTransientNotificationsLogic(Widget widget, OrderManager orderManager, ModData modData, Dictionary<string, MiniYaml> logicArgs)
+		public IngameTransientNotificationsLogic(Widget widget, ModData modData, Dictionary<string, MiniYaml> logicArgs)
 		{
-			this.orderManager = orderManager;
 			modRules = modData.DefaultRules;
 
 			displayWidget = widget.Get<TextNotificationsDisplayWidget>("TRANSIENTS_DISPLAY");
-
-			orderManager.AddTextNotification += AddNotificationWrapper;
 
 			if (logicArgs.TryGetValue("TransientLineSound", out var yaml))
 				transientLineSound = yaml.Value;
@@ -43,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ChromeMetrics.TryGet("TransientLineSound", out transientLineSound);
 		}
 
-		public void AddNotificationWrapper(TextNotification notification)
+		void INotificationHandler<TextNotification>.Handle(TextNotification notification)
 		{
 			if (!IsNotificationEligible(notification))
 				return;
@@ -82,18 +77,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static bool IsNotificationEligible(TextNotification notification)
 		{
 			return notification.Pool == TextNotificationPool.Transients || notification.Pool == TextNotificationPool.Feedback;
-		}
-
-		bool disposed = false;
-		protected override void Dispose(bool disposing)
-		{
-			if (!disposed)
-			{
-				orderManager.AddTextNotification -= AddNotificationWrapper;
-				disposed = true;
-			}
-
-			base.Dispose(disposing);
 		}
 	}
 }

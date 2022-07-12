@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
 
@@ -20,6 +21,8 @@ namespace OpenRA
 		static readonly string SystemMessageLabel;
 
 		public static long ChatDisabledUntil { get; internal set; }
+		static readonly List<TextNotification> NotificationsCache = new List<TextNotification>();
+		public static IReadOnlyList<TextNotification> Notifications => NotificationsCache;
 
 		static TextNotificationsManager()
 		{
@@ -69,7 +72,12 @@ namespace OpenRA
 		static void AddTextNotification(TextNotificationPool pool, int clientId, string prefix, string text, Color? prefixColor = null, Color? textColor = null)
 		{
 			if (IsPoolEnabled(pool))
-				Game.OrderManager.AddTextNotification(new TextNotification(pool, clientId, prefix, text, prefixColor, textColor));
+			{
+				var textNotification = new TextNotification(pool, clientId, prefix, text, prefixColor, textColor);
+
+				NotificationsCache.Add(textNotification);
+				Ui.Send(textNotification);
+			}
 		}
 
 		static bool IsPoolEnabled(TextNotificationPool pool)
@@ -81,6 +89,11 @@ namespace OpenRA
 				pool == TextNotificationPool.Mission ||
 				(pool == TextNotificationPool.Transients && filters.HasFlag(TextNotificationPoolFilters.Transients)) ||
 				(pool == TextNotificationPool.Feedback && filters.HasFlag(TextNotificationPoolFilters.Feedback));
+		}
+
+		public static void Clear()
+		{
+			NotificationsCache.Clear();
 		}
 	}
 }

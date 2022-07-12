@@ -21,9 +21,8 @@ using OpenRA.Widgets;
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	[ChromeLogicArgsHotkeys("OpenTeamChat", "OpenGeneralChat")]
-	public class IngameChatLogic : ChromeLogic
+	public class IngameChatLogic : ChromeLogic, INotificationHandler<TextNotification>
 	{
-		readonly OrderManager orderManager;
 		readonly Ruleset modRules;
 		readonly World world;
 
@@ -47,7 +46,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public IngameChatLogic(Widget widget, OrderManager orderManager, World world, ModData modData, bool isMenuChat, Dictionary<string, MiniYaml> logicArgs)
 		{
-			this.orderManager = orderManager;
 			modRules = modData.DefaultRules;
 			this.isMenuChat = isMenuChat;
 			this.world = world;
@@ -209,11 +207,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatScrollPanel.RemoveChildren();
 			chatScrollPanel.ScrollToBottom();
 
-			foreach (var notification in orderManager.NotificationsCache)
+			foreach (var notification in TextNotificationsManager.Notifications)
 				if (IsNotificationEligible(notification))
 					AddNotification(notification, true);
-
-			orderManager.AddTextNotification += AddNotificationWrapper;
 
 			chatText.IsDisabled = () => !chatEnabled || (world.IsReplay && !Game.Settings.Debug.EnableDebugCommandsInReplays);
 
@@ -260,7 +256,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Ui.ResetTooltips();
 		}
 
-		public void AddNotificationWrapper(TextNotification notification)
+		void INotificationHandler<TextNotification>.Handle(TextNotification notification)
 		{
 			if (!IsNotificationEligible(notification))
 				return;
@@ -313,18 +309,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return notification.Pool == TextNotificationPool.Chat ||
 				notification.Pool == TextNotificationPool.System ||
 				notification.Pool == TextNotificationPool.Mission;
-		}
-
-		bool disposed = false;
-		protected override void Dispose(bool disposing)
-		{
-			if (!disposed)
-			{
-				orderManager.AddTextNotification -= AddNotificationWrapper;
-				disposed = true;
-			}
-
-			base.Dispose(disposing);
 		}
 
 		bool IsNotificationMuted(TextNotification notification)
