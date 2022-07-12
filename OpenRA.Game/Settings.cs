@@ -103,7 +103,16 @@ namespace OpenRA
 		public bool EnableLintChecks = true;
 
 		[Desc("Delay in milliseconds before newly joined players can send chat messages.")]
-		public int JoinChatDelay = 5000;
+		public int FloodLimitJoinCooldown = 5000;
+
+		[Desc("Amount of miliseconds player chat messages are tracked for.")]
+		public int FloodLimitInterval = 5000;
+
+		[Desc("Amount of chat messages per FloodLimitInterval a players can send before flood is detected.")]
+		public int FloodLimitMessageCount = 5;
+
+		[Desc("Delay in milliseconds before players can send chat messages after flood was detected.")]
+		public int FloodLimitCooldown = 15000;
 
 		public ServerSettings Clone()
 		{

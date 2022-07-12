@@ -79,6 +79,7 @@ namespace OpenRA.Server
 		GameInformation gameInfo;
 		readonly List<GameInformation.Player> worldPlayers = new List<GameInformation.Player>();
 		readonly Stopwatch pingUpdated = Stopwatch.StartNew();
+		readonly PlayerMessageTracker playerMessageTracker;
 
 		[TranslationReference]
 		static readonly string CustomRules = "custom-rules";
@@ -127,9 +128,6 @@ namespace OpenRA.Server
 
 		[TranslationReference("command")]
 		static readonly string UnknownServerCommand = "unknown-server-command";
-
-		[TranslationReference("remaining")]
-		static readonly string ChatDisabled = "chat-disabled";
 
 		[TranslationReference("player")]
 		static readonly string LobbyDisconnected = "lobby-disconnected";
@@ -315,6 +313,8 @@ namespace OpenRA.Server
 
 			Map = ModData.MapCache[settings.Map];
 			MapStatusCache = new MapStatusCache(modData, MapStatusChanged, type == ServerType.Dedicated && settings.EnableLintChecks);
+
+			playerMessageTracker = new PlayerMessageTracker(this, DispatchOrdersToClient, SendLocalizedMessageTo);
 
 			LobbyInfo = new Session
 			{
@@ -558,8 +558,8 @@ namespace OpenRA.Server
 						newConn.Validated = true;
 
 						// Disable chat UI to stop the client sending messages that we know we will reject
-						if (!client.IsAdmin && Settings.JoinChatDelay > 0)
-							DispatchOrdersToClient(newConn, 0, 0, new Order("DisableChatEntry", null, false) { ExtraData = (uint)Settings.JoinChatDelay }.Serialize());
+						if (!client.IsAdmin && Settings.FloodLimitJoinCooldown > 0)
+							playerMessageTracker.DisableChatUI(newConn, Settings.FloodLimitJoinCooldown);
 
 						Log.Write("server", $"Client {newConn.PlayerIndex}: Accepted connection from {newConn.EndPoint}.");
 
@@ -1006,14 +1006,7 @@ namespace OpenRA.Server
 
 					case "Chat":
 						{
-							var isAdmin = GetClient(conn)?.IsAdmin ?? false;
-							var connected = conn.ConnectionTimer.ElapsedMilliseconds;
-							if (!isAdmin && connected < Settings.JoinChatDelay)
-							{
-								var remaining = (Settings.JoinChatDelay - connected + 999) / 1000;
-								SendLocalizedMessageTo(conn, ChatDisabled, Translation.Arguments("remaining", remaining));
-							}
-							else
+							if (Type == ServerType.Local || !playerMessageTracker.IsPlayerAtFloodLimit(conn))
 								DispatchOrdersToClients(conn, 0, o.Serialize());
 
 							break;
