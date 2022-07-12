@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Has to be defined in weapons.yaml as well.")]
 		public readonly string Weapon = null;
 
+		[Desc("The number of bursts fired per shot.")]
+		public readonly int BurstsPerFire = 1;
+
 		[Desc("Which turret (if present) should this armament be assigned to.")]
 		public readonly string Turret = "primary";
 
@@ -98,8 +101,13 @@ namespace OpenRA.Mods.Common.Traits
 				WeaponInfo.Range.Length,
 				ai.TraitInfos<IRangeModifierInfo>().Select(m => m.GetRangeModifierDefault())));
 
-			if (WeaponInfo.Burst > 1 && WeaponInfo.BurstDelays.Length > 1 && (WeaponInfo.BurstDelays.Length != WeaponInfo.Burst - 1))
-				throw new YamlException($"Weapon '{weaponToLower}' has an invalid number of BurstDelays, must be single entry or Burst - 1.");
+			if (BurstsPerFire <= 0)
+				throw new YamlException("BurstsPerFire in Armament has to be greater than 0");
+
+			var expectedLength = WeaponInfo.Burst % BurstsPerFire > 0 ? WeaponInfo.Burst / BurstsPerFire : WeaponInfo.Burst / BurstsPerFire - 1;
+
+			if (WeaponInfo.Burst > 1 && WeaponInfo.BurstDelays.Length > 1 && expectedLength != WeaponInfo.BurstDelays.Length)
+				throw new YamlException($"Weapon '{weaponToLower}' has an invalid number of BurstDelays, must be single entry or the ceil of \"Weapon.Burst / Armament.BurstsPerFire - 1\".");
 
 			base.RulesetLoaded(rules, ai);
 		}
@@ -253,24 +261,31 @@ namespace OpenRA.Mods.Common.Traits
 
 		// Note: facing is only used by the legacy positioning code
 		// The world coordinate model uses Actor.Orientation
+		Barrel barrel;
 		public virtual Barrel CheckFire(Actor self, IFacing facing, in Target target)
 		{
 			if (!CanFire(self, target))
 				return null;
-
 			if (ticksSinceLastShot >= Weapon.ReloadDelay)
 				Burst = Weapon.Burst;
 
 			ticksSinceLastShot = 0;
 
-			// If Weapon.Burst == 1, cycle through all LocalOffsets, otherwise use the offset corresponding to current Burst
-			currentBarrel %= barrelCount;
-			var barrel = Weapon.Burst == 1 ? Barrels[currentBarrel] : Barrels[Burst % Barrels.Length];
-			currentBarrel++;
+			for (var i = 0; i < Info.BurstsPerFire && Burst > 0; i++)
+			{
+				if (IsTraitDisabled || IsTraitPaused)
+					return barrel;
 
-			FireBarrel(self, facing, target, barrel);
+				// If Weapon.Burst == 1, cycle through all LocalOffsets, otherwise use the offset corresponding to current Burst
+				currentBarrel %= barrelCount;
+				barrel = Weapon.Burst == 1 ? Barrels[currentBarrel] : Barrels[Burst % Barrels.Length];
+				currentBarrel++;
 
-			UpdateBurst(self, target);
+				FireBarrel(self, facing, target, barrel);
+				Burst--;
+			}
+
+			AfterFire(self, target);
 
 			return barrel;
 		}
@@ -344,14 +359,14 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		protected virtual void UpdateBurst(Actor self, in Target target)
+		protected virtual void AfterFire(Actor self, in Target target)
 		{
-			if (--Burst > 0)
+			if (Burst > 0)
 			{
 				if (Weapon.BurstDelays.Length == 1)
 					FireDelay = Weapon.BurstDelays[0];
 				else
-					FireDelay = Weapon.BurstDelays[Weapon.Burst - (Burst + 1)];
+					FireDelay = Weapon.BurstDelays[(Weapon.Burst - Burst) / Info.BurstsPerFire - 1];
 			}
 			else
 			{
