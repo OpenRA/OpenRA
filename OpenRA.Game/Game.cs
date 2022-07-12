@@ -83,6 +83,9 @@ namespace OpenRA
 
 		static void JoinInner(OrderManager om)
 		{
+			// Refresh TextNotificationsManager before the game starts.
+			TextNotificationsManager.Clear();
+
 			// HACK: The shellmap World and OrderManager are owned by the main menu's WorldRenderer instead of Game.
 			// This allows us to switch Game.OrderManager from the shellmap to the new network connection when joining
 			// a lobby, while keeping the OrderManager that runs the shellmap intact.

@@ -20,7 +20,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class LobbyLogic : ChromeLogic
+	public class LobbyLogic : ChromeLogic, INotificationHandler<TextNotification>
 	{
 		static readonly Action DoNothing = () => { };
 
@@ -125,7 +125,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			services = modData.Manifest.Get<WebServices>();
 
-			orderManager.AddTextNotification += AddChatLine;
 			Game.LobbyInfoChanged += UpdateCurrentMap;
 			Game.LobbyInfoChanged += UpdatePlayerList;
 			Game.LobbyInfoChanged += UpdateDiscordStatus;
@@ -493,7 +492,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (disposing && !disposed)
 			{
 				disposed = true;
-				orderManager.AddTextNotification -= AddChatLine;
 				Game.LobbyInfoChanged -= UpdateCurrentMap;
 				Game.LobbyInfoChanged -= UpdatePlayerList;
 				Game.LobbyInfoChanged -= UpdateDiscordStatus;
@@ -535,7 +533,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		void AddChatLine(TextNotification notification)
+		void INotificationHandler<TextNotification>.Handle(TextNotification notification)
 		{
 			var chatLine = chatTemplates[notification.Pool].Clone();
 			WidgetUtils.SetupTextNotification(chatLine, notification, lobbyChatPanel.Bounds.Width - lobbyChatPanel.ScrollbarWidth, true);

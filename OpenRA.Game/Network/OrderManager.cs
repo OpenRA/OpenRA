@@ -51,10 +51,6 @@ namespace OpenRA.Network
 		readonly List<ClientOrder> processClientOrders = new List<ClientOrder>();
 		readonly List<int> processClientsToRemove = new List<int>();
 
-		readonly List<TextNotification> notificationsCache = new List<TextNotification>();
-
-		public IReadOnlyList<TextNotification> NotificationsCache => notificationsCache;
-
 		bool disposed;
 		bool generateSyncReport = false;
 		int sentOrdersFrame = 0;
@@ -108,7 +104,6 @@ namespace OpenRA.Network
 		{
 			Connection = conn;
 			syncReport = new SyncReport(this);
-			AddTextNotification += CacheTextNotification;
 
 			LastTickTime = new TickTime(() => SuggestedTimestep, Game.RunTime);
 		}
@@ -125,12 +120,6 @@ namespace OpenRA.Network
 				localImmediateOrders.Add(order);
 			else
 				localOrders.Add(order);
-		}
-
-		public Action<TextNotification> AddTextNotification = (notification) => { };
-		void CacheTextNotification(TextNotification notification)
-		{
-			notificationsCache.Add(notification);
 		}
 
 		void SendImmediateOrders()
