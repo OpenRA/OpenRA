@@ -33,6 +33,8 @@ namespace OpenRA.Widgets
 		public static Widget KeyboardFocusWidget;
 		public static Widget MouseOverWidget;
 
+		static readonly Mediator Mediator = new Mediator();
+
 		public static void CloseWindow()
 		{
 			if (WindowList.Count > 0)
@@ -156,6 +158,18 @@ namespace OpenRA.Widgets
 			HandleInput(new MouseInput(MouseInputEvent.Move, MouseButton.None,
 				Viewport.LastMousePos, int2.Zero, Modifiers.None, 0));
 		}
+
+		public static void Subscribe<T>(T instance)
+		{
+			Mediator.Subscribe(instance);
+		}
+
+		public static void Unsubscribe<T>(T instance)
+		{
+			Mediator.Unsubscribe(instance);
+		}
+
+		public static void Send<T>(T notification) => Mediator.Send(notification);
 	}
 
 	public class ChromeLogic : IDisposable
@@ -277,6 +291,9 @@ namespace OpenRA.Widgets
 
 			LogicObjects = Logic.Select(l => Game.ModData.ObjectCreator.CreateObject<ChromeLogic>(l, args))
 				.ToArray();
+
+			foreach (var logicObject in LogicObjects)
+				Ui.Subscribe(logicObject);
 
 			args.Remove("widget");
 		}
@@ -529,8 +546,13 @@ namespace OpenRA.Widgets
 				c.Removed();
 
 			if (LogicObjects != null)
+			{
 				foreach (var l in LogicObjects)
+				{
+					Ui.Unsubscribe(l);
 					l.Dispose();
+				}
+			}
 		}
 
 		public Widget GetOrNull(string id)
@@ -608,5 +630,33 @@ namespace OpenRA.Widgets
 		public WidgetArgs(Dictionary<string, object> args)
 			: base(args) { }
 		public void Add(string key, Action val) { base.Add(key, val); }
+	}
+
+	public sealed class Mediator
+	{
+		readonly TypeDictionary types = new TypeDictionary();
+
+		public void Subscribe<T>(T instance)
+		{
+			types.Add(instance);
+		}
+
+		public void Unsubscribe<T>(T instance)
+		{
+			types.Remove(instance);
+		}
+
+		public void Send<T>(T notification)
+		{
+			var handlers = types.WithInterface<INotificationHandler<T>>();
+
+			foreach (var handler in handlers)
+				handler.Handle(notification);
+		}
+	}
+
+	public interface INotificationHandler<T>
+	{
+		void Handle(T notification);
 	}
 }
