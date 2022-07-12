@@ -276,7 +276,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void AddNotification(TextNotification notification, bool suppressSound)
 		{
 			var chatLine = templates[notification.Pool].Clone();
-			WidgetUtils.SetupTextNotification(chatLine, notification, chatScrollPanel.Bounds.Width - chatScrollPanel.ScrollbarWidth, isMenuChat && !world.IsReplay);
+			WidgetUtils.SetupTextNotification(chatLine, notification, chatScrollPanel.Bounds.Width - chatScrollPanel.ScrollbarWidth, true);
 
 			var scrolledToBottom = chatScrollPanel.ScrolledToBottom;
 			chatScrollPanel.AddChild(chatLine);
