@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public int2 CursorOffset = new int2(0, 20);
 		public int BottomEdgeYOffset = -5;
 
+		public Action InitializeTooltipContent = Nothing;
 		public Action BeforeRender = Nothing;
 		public int TooltipDelayMilliseconds = 200;
 		Widget tooltip;
@@ -31,15 +32,22 @@ namespace OpenRA.Mods.Common.Widgets
 		string id;
 		WidgetArgs widgetArgs;
 
+		/// <summary>First time the current tooltip is to be rendered after the last mouse move/event.</summary>
+		bool initialRender;
+
 		public TooltipContainerWidget()
 		{
 			graphicSettings = Game.Settings.Graphics;
+			initialRender = true;
+
 			IsVisible = () =>
 			{
 				// PERF: Only load widget once visible.
 				var visible = Game.RunTime > Viewport.LastMoveRunTime + TooltipDelayMilliseconds;
 				if (visible)
 					LoadWidget();
+				else if (!initialRender)
+					initialRender = true;
 
 				return visible;
 			};
@@ -60,6 +68,7 @@ namespace OpenRA.Mods.Common.Widgets
 			tooltip = null;
 			this.id = id;
 			widgetArgs = args;
+			initialRender = true;
 			return currentToken;
 		}
 
@@ -73,6 +82,8 @@ namespace OpenRA.Mods.Common.Widgets
 			widgetArgs = null;
 
 			RemoveChildren();
+			initialRender = true;
+			InitializeTooltipContent = Nothing;
 			BeforeRender = Nothing;
 		}
 
@@ -83,6 +94,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
+			// This method is called only when IsVisible is true.
+			if (initialRender)
+			{
+				InitializeTooltipContent();
+				initialRender = false;
+			}
+
 			BeforeRender();
 		}
 

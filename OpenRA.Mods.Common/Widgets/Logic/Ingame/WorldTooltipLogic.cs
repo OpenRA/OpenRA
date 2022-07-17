@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var extraHeightOnDouble = extras.Bounds.Y;
 			var extraHeightOnSingle = extraHeightOnDouble - (doubleHeight - singleHeight);
 
-			tooltipContainer.BeforeRender = () =>
+			tooltipContainer.InitializeTooltipContent = () =>
 			{
 				if (viewport == null || viewport.TooltipType == WorldTooltipType.None)
 					return;
@@ -54,6 +54,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				showOwner = false;
 
 				Player o = null;
+
 				switch (viewport.TooltipType)
 				{
 					case WorldTooltipType.Unexplored:
