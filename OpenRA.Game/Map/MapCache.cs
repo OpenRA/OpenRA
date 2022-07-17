@@ -42,10 +42,9 @@ namespace OpenRA
 		readonly List<MapDirectoryTracker> mapDirectoryTrackers = new List<MapDirectoryTracker>();
 
 		/// <summary>
-		/// If a map was added oldUID will be null, if updated oldUId will point to the outdated map
-		/// Event is not called when map is deleted
+		/// The most recenly modified or loaded map at runtime
 		/// </summary>
-		public event Action<string, string> MapUpdated = (oldUID, newUID) => { };
+		public string LastModifiedMap { get; private set; } = null;
 		readonly Dictionary<string, string> mapUpdates = new Dictionary<string, string>();
 
 		public MapCache(ModData modData)
@@ -110,6 +109,9 @@ namespace OpenRA
 				foreach (var map in kv.Key.Contents)
 					LoadMap(map, kv.Key, kv.Value, mapGrid, null);
 			}
+
+			// We only want to track maps in runtime, not at loadtime
+			LastModifiedMap = null;
 		}
 
 		public void LoadMap(string map, IReadOnlyPackage package, MapClassification classification, MapGrid mapGrid, string oldMap)
@@ -127,6 +129,7 @@ namespace OpenRA
 
 						if (oldMap != uid)
 						{
+							LastModifiedMap = uid;
 							if (oldMap != null)
 								mapUpdates.Add(oldMap, uid);
 						}
