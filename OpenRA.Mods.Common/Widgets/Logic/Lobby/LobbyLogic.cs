@@ -59,9 +59,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		MapPreview map;
 		Session.MapStatus mapStatus;
-		string oldMapUid;
-		string newMapUid;
-		string lastUpdatedUid;
+
+		string lastUpdatedMap = null;
 
 		bool chatEnabled;
 		bool addBotOnMapLoad;
@@ -131,7 +130,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.LobbyInfoChanged += UpdateSpawnOccupants;
 			Game.BeforeGameStart += OnGameStart;
 			Game.ConnectionStateChanged += ConnectionStateChanged;
-			modData.MapCache.MapUpdated += TrackRelevantMapUpdates;
 
 			var name = lobby.GetOrNull<LabelWidget>("SERVER_NAME");
 			if (name != null)
@@ -192,9 +190,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						orderManager.IssueOrder(Order.Command("map " + uid));
 						Game.Settings.Server.Map = uid;
 						Game.Settings.Save();
-						newMapUid = null;
-						oldMapUid = null;
-						lastUpdatedUid = null;
 					});
 
 					// Check for updated maps, if the user has edited a map we'll preselect it for them
@@ -202,7 +197,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 					{
-						{ "initialMap", lastUpdatedUid ?? map.Uid },
+						{ "initialMap", SelectRecentMap(map.Uid) },
 						{ "initialTab", MapClassification.System },
 						{ "onExit", Game.IsHost ? (Action)UpdateSelectedMap : modData.MapCache.UpdateMaps },
 						{ "onSelect", Game.IsHost ? onSelect : null },
@@ -498,7 +493,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.LobbyInfoChanged -= UpdateSpawnOccupants;
 				Game.BeforeGameStart -= OnGameStart;
 				Game.ConnectionStateChanged -= ConnectionStateChanged;
-				modData.MapCache.MapUpdated -= TrackRelevantMapUpdates;
 			}
 
 			base.Dispose(disposing);
@@ -838,34 +832,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			onStart();
 		}
 
-		void TrackRelevantMapUpdates(string oldUid, string newUid)
-		{
-			// We need to handle map being updated multiple times without a refresh
-			if (map.Uid == oldUid || oldUid == newMapUid)
-			{
-				if (oldMapUid == null)
-					oldMapUid = oldUid;
-				newMapUid = newUid;
-			}
-
-			if (newUid != null)
-				lastUpdatedUid = newUid;
-		}
-
 		void UpdateSelectedMap()
 		{
 			if (modData.MapCache[map.Uid].Status == MapStatus.Available)
 				return;
 
-			if (oldMapUid == map.Uid && modData.MapCache[newMapUid].Status == MapStatus.Available)
+			var uid = modData.MapCache.GetUpdatedMap(map.Uid);
+			if (uid != null)
 			{
-				orderManager.IssueOrder(Order.Command("map " + newMapUid));
-				Game.Settings.Server.Map = newMapUid;
+				orderManager.IssueOrder(Order.Command("map " + uid));
+				Game.Settings.Server.Map = uid;
 				Game.Settings.Save();
-				newMapUid = null;
-				oldMapUid = null;
-				lastUpdatedUid = null;
 			}
+		}
+
+		string SelectRecentMap(string currentUid)
+		{
+			if (lastUpdatedMap != modData.MapCache.LastModifiedMap)
+			{
+				lastUpdatedMap = modData.MapCache.LastModifiedMap;
+				return lastUpdatedMap;
+			}
+
+			return currentUid;
 		}
 	}
 
