@@ -469,8 +469,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				Ui.OpenWindow("SAVE_MAP_PANEL", new WidgetArgs()
 				{
-					{ "onSave", (Action<string>)(_ => { hideMenu = false; actionManager.Modified = false; }) },
-					{ "onExit", () => hideMenu = false },
+					{ "onSave", (Action<string>)(_ => { ShowMenu(); actionManager.Modified = false; }) },
+					{ "onExit", ShowMenu },
 					{ "map", world.Map },
 					{ "playerDefinitions", playerDefinitions },
 					{ "actorDefinitions", editorActorLayer.Save() }
