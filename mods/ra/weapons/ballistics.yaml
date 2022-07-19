@@ -97,6 +97,7 @@ TurretGun:
 		Blockable: false
 		LaunchAngle: 62
 		Inaccuracy: 1c938
+		ContrailEndColorUsePlayerColor: true
 	Warhead@1Dam: SpreadDamage
 		Spread: 426
 		Damage: 23000

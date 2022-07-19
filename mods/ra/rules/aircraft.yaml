@@ -193,6 +193,8 @@ YAK:
 	Contrail:
 		Offset: -853,0,0
 		StartColorAlpha: 128
+		WidthFadeRate: 1
+		TrailWidth: 256
 	SpawnActorOnDeath:
 		Actor: YAK.Husk
 	LeavesTrails:

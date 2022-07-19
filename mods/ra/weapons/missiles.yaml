@@ -215,6 +215,9 @@ APTusk:
 		TrailImage: smokey
 		HorizontalRateOfTurn: 40
 		RangeLimit: 7c204
+		ContrailStartColor: FF0000
+		ContrailEndColor: 0000FF
+		ContrailWidthFadeRate: -11
 
 APTusk.stnk:
 	Inherits: APTusk
