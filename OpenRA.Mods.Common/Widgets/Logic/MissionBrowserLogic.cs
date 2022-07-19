@@ -181,7 +181,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CreateMissionGroup(string title, IEnumerable<MapPreview> previews, Action onExit)
 		{
-			var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => { });
+			var header = ScrollItemWidget.Setup(headerTemplate, () => false, () => { });
 			header.Get<LabelWidget>("LABEL").GetText = () => title;
 			missionList.AddChild(header);
 
