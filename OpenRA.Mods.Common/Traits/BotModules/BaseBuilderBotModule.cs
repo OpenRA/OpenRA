@@ -132,6 +132,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("When should the AI start building specific buildings.")]
 		public readonly Dictionary<string, int> BuildingDelays = null;
 
+		[Desc("Only queue construction of a new structure when above this requirement.")]
+		public readonly int ProductionMinCashRequirement = 500;
+
 		public override object Create(ActorInitializer init) { return new BaseBuilderBotModule(init.Self, this); }
 	}
 
@@ -149,6 +152,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public CPos DefenseCenter { get; private set; }
 
+		// Actor, ActorCount.
+		public Dictionary<string, int> BuildingsBeingProduced = new();
+
 		readonly World world;
 		readonly Player player;
 		PowerManager playerPower;
@@ -156,13 +162,16 @@ namespace OpenRA.Mods.Common.Traits
 		IResourceLayer resourceLayer;
 		IBotPositionsUpdated[] positionsUpdatedModules;
 		CPos initialBaseCenter;
-		readonly List<BaseBuilderQueueManager> builders = new();
+
+		readonly BaseBuilderQueueManager[] builders;
+		int currentBuilderIndex = 0;
 
 		public BaseBuilderBotModule(Actor self, BaseBuilderBotModuleInfo info)
 			: base(info)
 		{
 			world = self.World;
 			player = self.Owner;
+			builders = new BaseBuilderQueueManager[info.BuildingQueues.Count + info.DefenseQueues.Count];
 		}
 
 		protected override void Created(Actor self)
@@ -171,14 +180,14 @@ namespace OpenRA.Mods.Common.Traits
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			resourceLayer = self.World.WorldActor.TraitOrDefault<IResourceLayer>();
 			positionsUpdatedModules = self.Owner.PlayerActor.TraitsImplementing<IBotPositionsUpdated>().ToArray();
-		}
 
-		protected override void TraitEnabled(Actor self)
-		{
+			var i = 0;
+
 			foreach (var building in Info.BuildingQueues)
-				builders.Add(new BaseBuilderQueueManager(this, building, player, playerPower, playerResources, resourceLayer));
+				builders[i++] = new BaseBuilderQueueManager(this, building, player, playerPower, playerResources, resourceLayer);
+
 			foreach (var defense in Info.DefenseQueues)
-				builders.Add(new BaseBuilderQueueManager(this, defense, player, playerPower, playerResources, resourceLayer));
+				builders[i++] = new BaseBuilderQueueManager(this, defense, player, playerPower, playerResources, resourceLayer);
 		}
 
 		void IBotPositionsUpdated.UpdatedBaseCenter(CPos newLocation)
@@ -195,10 +204,49 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IBotTick.BotTick(IBot bot)
 		{
+			// TODO: this causes pathfinding lag when AI's gets blocked in
 			SetRallyPointsForNewProductionBuildings(bot);
 
-			foreach (var b in builders)
-				b.Tick(bot);
+			BuildingsBeingProduced.Clear();
+
+			// PERF: We tick only one type of valid queue at a time
+			// if AI gets enough cash, it can fill all of its queues with enough ticks
+			var findQueue = false;
+			for (int i = 0, builderIndex = currentBuilderIndex; i < builders.Length; i++)
+			{
+				if (++builderIndex >= builders.Length)
+					builderIndex = 0;
+
+				--builders[builderIndex].WaitTicks;
+
+				var queues = AIUtils.FindQueues(player, builders[builderIndex].Category).ToArray();
+				if (queues.Length != 0)
+				{
+					if (!findQueue)
+					{
+						currentBuilderIndex = builderIndex;
+						findQueue = true;
+					}
+
+					// Refresh "BuildingsBeingProduced" only when AI can produce
+					if (playerResources.GetCashAndResources() >= Info.ProductionMinCashRequirement)
+					{
+						foreach (var queue in queues)
+						{
+							var producing = queue.AllQueued().FirstOrDefault();
+							if (producing == null)
+								continue;
+
+							if (BuildingsBeingProduced.TryGetValue(producing.Item, out var number))
+								BuildingsBeingProduced[producing.Item] = number + 1;
+							else
+								BuildingsBeingProduced.Add(producing.Item, 1);
+						}
+					}
+				}
+			}
+
+			builders[currentBuilderIndex].Tick(bot);
 		}
 
 		void IBotRespondToAttack.RespondToAttack(IBot bot, Actor self, AttackInfo e)
