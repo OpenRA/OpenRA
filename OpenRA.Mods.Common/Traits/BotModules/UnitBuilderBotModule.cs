@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int IdleBaseUnitsMaximum = 12;
 
 		[Desc("Production queues AI uses for producing units.")]
-		public readonly HashSet<string> UnitQueues = new() { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
+		public readonly string[] UnitQueues = { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
 
 		[Desc("What units to the AI should build.", "What relative share of the total army must be this type of unit.")]
 		public readonly Dictionary<string, int> UnitsToBuild = null;
@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("When should the AI start train specific units.")]
 		public readonly Dictionary<string, int> UnitDelays = null;
+
+		[Desc("Only queue construction of a new unit when above this requirement.")]
+		public readonly int ProductionMinCashRequirement = 500;
 
 		public override object Create(ActorInitializer init) { return new UnitBuilderBotModule(init.Self, this); }
 	}
@@ -51,6 +54,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		IBotRequestPauseUnitProduction[] requestPause;
 		int idleUnitCount;
+		int currentQueueIndex = 0;
+		PlayerResources playerResources;
 
 		int ticks;
 
@@ -64,6 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			requestPause = self.Owner.PlayerActor.TraitsImplementing<IBotRequestPauseUnitProduction>().ToArray();
+			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 
 		void IBotNotifyIdleBaseUnits.UpdatedIdleBaseUnits(List<Actor> idleUnits)
@@ -73,7 +79,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IBotTick.BotTick(IBot bot)
 		{
-			if (requestPause.Any(rp => rp.PauseUnitProduction))
+			// PERF: We shouldn't be queueing new units when we're low on cash
+			if (playerResources.GetCashAndResources() < Info.ProductionMinCashRequirement || requestPause.Any(rp => rp.PauseUnitProduction))
 				return;
 
 			ticks++;
@@ -87,8 +94,19 @@ namespace OpenRA.Mods.Common.Traits
 					queuedBuildRequests.Remove(buildRequest);
 				}
 
-				foreach (var q in Info.UnitQueues)
-					BuildUnit(bot, q, idleUnitCount < Info.IdleBaseUnitsMaximum);
+				for (var i = 0; i < Info.UnitQueues.Length; i++)
+				{
+					if (++currentQueueIndex >= Info.UnitQueues.Length)
+						currentQueueIndex = 0;
+
+					if (AIUtils.FindQueues(player, Info.UnitQueues[currentQueueIndex]).Any())
+					{
+						// PERF: We tick only one type of valid queue at a time
+						// if AI gets enough cash, it can fill all of its queues with enough ticks
+						BuildUnit(bot, Info.UnitQueues[currentQueueIndex], idleUnitCount < Info.IdleBaseUnitsMaximum);
+						break;
+					}
+				}
 			}
 		}
 
