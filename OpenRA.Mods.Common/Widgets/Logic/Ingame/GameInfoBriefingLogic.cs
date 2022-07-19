@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var missionData = world.Map.Rules.Actors[SystemActors.World].TraitInfoOrDefault<MissionDataInfo>();
 			if (missionData != null)
 			{
-				var text = WidgetUtils.WrapText(missionData.Briefing.Replace("\\n", "\n"), mapDescription.Bounds.Width, mapFont);
+				var text = WidgetUtils.WrapText(missionData.Briefing?.Replace("\\n", "\n"), mapDescription.Bounds.Width, mapFont);
 				mapDescription.Text = text;
 				mapDescription.Bounds.Height = mapFont.Measure(text).Y;
 				mapDescriptionPanel.ScrollToTop();
