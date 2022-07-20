@@ -30,9 +30,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Distance the strafing aircraft makes to a target before turning for another pass. When set to WDist.Zero this defaults to the maximum armament range.")]
 		public readonly WDist StrafeRunLength = WDist.Zero;
 
-		[Desc("Does this actor cancel its attack activity when it needs to resupply? Setting this to 'false' will make the actor resume attack after reloading.")]
-		public readonly bool AbortOnResupply = true;
-
 		public override object Create(ActorInitializer init) { return new AttackAircraft(init.Self, this); }
 	}
 

@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -29,6 +30,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Range to stay away from min and max ranges to give some leeway if the target starts moving.")]
 		public readonly WDist RangeMargin = WDist.FromCells(1);
+
+		[Desc("Does this actor cancel its attack activity when it needs to resupply? Setting this to 'false' will make the actor resume attack after reloading.")]
+		public readonly bool AbortOnResupply = true;
 
 		public override object Create(ActorInitializer init) { return new AttackFollow(init.Self, this); }
 	}
@@ -160,7 +164,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (opportunityTargetIsPersistentTarget && opportunityForceAttack && newTarget == OpportunityTarget)
 				forceAttack = true;
 
-			return new AttackActivity(self, newTarget, allowMove, forceAttack, targetLineColor);
+			return new AttackActivity(self, source, newTarget, allowMove, forceAttack, targetLineColor);
 		}
 
 		public override void OnResolveAttackOrder(Actor self, Activity activity, in Target target, bool queued, bool forceAttack)
@@ -229,6 +233,9 @@ namespace OpenRA.Mods.Common.Traits
 			readonly IMove move;
 			readonly bool forceAttack;
 			readonly Color? targetLineColor;
+			readonly Rearmable rearmable;
+			readonly AttackSource source;
+			readonly bool isAircraft;
 
 			Target target;
 			Target lastVisibleTarget;
@@ -239,16 +246,20 @@ namespace OpenRA.Mods.Common.Traits
 			Player lastVisibleOwner;
 			bool wasMovingWithinRange;
 			bool hasTicked;
+			bool returnToBase = false;
 
-			public AttackActivity(Actor self, in Target target, bool allowMove, bool forceAttack, Color? targetLineColor = null)
+			public AttackActivity(Actor self, AttackSource source, in Target target, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 			{
 				attack = self.Trait<AttackFollow>();
 				move = allowMove ? self.TraitOrDefault<IMove>() : null;
 				revealsShroud = self.TraitsImplementing<RevealsShroud>().ToArray();
+				rearmable = self.TraitOrDefault<Rearmable>();
 
 				this.target = target;
 				this.forceAttack = forceAttack;
 				this.targetLineColor = targetLineColor;
+				this.source = source;
+				isAircraft = self.Info.HasTraitInfo<AircraftInfo>();
 
 				// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 				// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -274,6 +285,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool Tick(Actor self)
 			{
+				returnToBase = false;
+
 				if (IsCanceling)
 					return true;
 
@@ -343,6 +356,38 @@ namespace OpenRA.Mods.Common.Traits
 				if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
 					return true;
 
+				// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload
+				// and resume the activity after reloading if AbortOnResupply is set to 'false'
+				if (rearmable != null && !useLastVisibleTarget && attack.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
+				{
+					// Attack moves never resupply
+					if (source == AttackSource.AttackMove)
+						return true;
+
+					// AbortOnResupply cancels the current activity (after resupplying) plus any queued activities
+					if (attack.Info.AbortOnResupply)
+						NextActivity?.Cancel(self);
+
+					if (isAircraft)
+						QueueChild(new ReturnToBase(self));
+					else
+					{
+						var target = self.World.ActorsHavingTrait<Reservable>()
+							.Where(a => !a.IsDead && a.IsInWorld
+								&& a.Owner.IsAlliedWith(self.Owner) &&
+								rearmable.Info.RearmActors.Contains(a.Info.Name))
+							.OrderBy(a => a.Owner == self.Owner ? 0 : 1)
+							.ThenBy(p => (self.Location - p.Location).LengthSquared)
+							.FirstOrDefault();
+
+						if (target != null)
+							QueueChild(new Resupply(self, target, new WDist(512)));
+					}
+
+					returnToBase = true;
+					return attack.Info.AbortOnResupply;
+				}
+
 				var pos = self.CenterPosition;
 				var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 
@@ -385,7 +430,13 @@ namespace OpenRA.Mods.Common.Traits
 			public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 			{
 				if (targetLineColor != null)
-					yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
+				{
+					if (returnToBase)
+						foreach (var n in ChildActivity.TargetLineNodes(self))
+							yield return n;
+					if (!returnToBase || !attack.Info.AbortOnResupply)
+						yield return new TargetLineNode(useLastVisibleTarget ? lastVisibleTarget : target, targetLineColor.Value);
+				}
 			}
 		}
 	}
