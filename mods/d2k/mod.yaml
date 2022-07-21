@@ -18,7 +18,6 @@ Packages:
 
 	~SOUND.RS
 	d2k|bits
-	d2k|bits/tex
 	d2k|scripts
 	common|scripts
 	d2k|uibits
@@ -217,7 +216,7 @@ SupportsMapsFrom: d2k
 
 SoundFormats: Aud, Wav
 
-SpriteFormats: R8, ShpTD, TmpRA, PngSheet
+SpriteFormats: R8, ShpTD, PngSheet
 
 VideoFormats: Vqa
 
