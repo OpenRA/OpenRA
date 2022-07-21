@@ -4442,7 +4442,8 @@ Templates:
 			3: Sand
 	Template@600:
 		Id: 600
-		Images: t600.tmp
+		Images: customtiles.r16
+		Frames: 300, 301, 320, 321
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4452,7 +4453,8 @@ Templates:
 			3: Cliff
 	Template@601:
 		Id: 601
-		Images: t601.tmp
+		Images: customtiles.r16
+		Frames: 302, 303, 322, 323
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4462,7 +4464,8 @@ Templates:
 			3: Cliff
 	Template@602:
 		Id: 602
-		Images: t602.tmp
+		Images: customtiles.r16
+		Frames: 304, 305, 324, 325
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4472,7 +4475,8 @@ Templates:
 			3: Cliff
 	Template@603:
 		Id: 603
-		Images: t603.tmp
+		Images: customtiles.r16
+		Frames: 306, 307, 326, 327
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4482,7 +4486,8 @@ Templates:
 			3: Cliff
 	Template@604:
 		Id: 604
-		Images: t604.tmp
+		Images: customtiles.r16
+		Frames: 308, 309, 328, 329, 348, 349
 		Size: 2,3
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4494,7 +4499,8 @@ Templates:
 			5: Cliff
 	Template@605:
 		Id: 605
-		Images: t605.tmp
+		Images: customtiles.r16
+		Frames: 310, 311, 330, 331, 350, 351
 		Size: 2,3
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4506,7 +4512,8 @@ Templates:
 			5: Cliff
 	Template@606:
 		Id: 606
-		Images: t606.tmp
+		Images: customtiles.r16
+		Frames: 312, 313
 		Size: 2,1
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4514,7 +4521,8 @@ Templates:
 			1: Cliff
 	Template@607:
 		Id: 607
-		Images: t607.tmp
+		Images: customtiles.r16
+		Frames: 332, 333
 		Size: 2,1
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4522,7 +4530,8 @@ Templates:
 			1: Cliff
 	Template@608:
 		Id: 608
-		Images: t608.tmp
+		Images: customtiles.r16
+		Frames: 314, 334
 		Size: 1,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4530,7 +4539,8 @@ Templates:
 			1: Cliff
 	Template@609:
 		Id: 609
-		Images: t609.tmp
+		Images: customtiles.r16
+		Frames: 315, 335
 		Size: 1,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4538,7 +4548,8 @@ Templates:
 			1: Cliff
 	Template@610:
 		Id: 610
-		Images: t610.tmp
+		Images: customtiles.r16
+		Frames: 316, 317, 336, 337
 		Size: 2,2
 		Categories: Cliff-Ends
 		Tiles:
@@ -4548,7 +4559,8 @@ Templates:
 			3: Cliff
 	Template@611:
 		Id: 611
-		Images: t611.tmp
+		Images: customtiles.r16
+		Frames: 318, 319, 338, 339
 		Size: 2,1
 		Categories: Cliff-Ends
 		Tiles:
@@ -4556,7 +4568,8 @@ Templates:
 			1: Cliff
 	Template@612:
 		Id: 612
-		Images: t612.tmp
+		Images: customtiles.r16
+		Frames: 340, 341, 342, 360, 361, 362, 380, 381, 382
 		Size: 3,3
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4571,7 +4584,8 @@ Templates:
 			8: Cliff
 	Template@613:
 		Id: 613
-		Images: t613.tmp
+		Images: customtiles.r16
+		Frames: 363, 364, 383, 384
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4581,7 +4595,8 @@ Templates:
 			3: Cliff
 	Template@614:
 		Id: 614
-		Images: t614.tmp
+		Images: customtiles.r16
+		Frames: 365, 366, 385, 386
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4591,7 +4606,8 @@ Templates:
 			3: Cliff
 	Template@615:
 		Id: 615
-		Images: t615.tmp
+		Images: customtiles.r16
+		Frames: 367, 368, 387, 388
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4601,7 +4617,8 @@ Templates:
 			3: Cliff
 	Template@616:
 		Id: 616
-		Images: t616.tmp
+		Images: customtiles.r16
+		Frames: 369, 370, 389, 390
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4611,7 +4628,8 @@ Templates:
 			3: Cliff
 	Template@617:
 		Id: 617
-		Images: t617.tmp
+		Images: customtiles.r16
+		Frames:  371, 372, 391, 392
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4621,7 +4639,8 @@ Templates:
 			3: Cliff
 	Template@618:
 		Id: 618
-		Images: t618.tmp
+		Images: customtiles.r16
+		Frames: 373, 374, 393, 394
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4631,7 +4650,8 @@ Templates:
 			3: Cliff
 	Template@619:
 		Id: 619
-		Images: t619.tmp
+		Images: customtiles.r16
+		Frames: 375, 376, 395, 396
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4641,7 +4661,8 @@ Templates:
 			3: Cliff
 	Template@620:
 		Id: 620
-		Images: t620.tmp
+		Images: customtiles.r16
+		Frames: 377, 378, 397, 398
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4651,7 +4672,8 @@ Templates:
 			3: Cliff
 	Template@621:
 		Id: 621
-		Images: t621.tmp
+		Images: customtiles.r16
+		Frames: 400, 401, 420, 421
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4661,7 +4683,8 @@ Templates:
 			3: Cliff
 	Template@622:
 		Id: 622
-		Images: t622.tmp
+		Images: customtiles.r16
+		Frames: 402, 403, 422, 423
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4671,7 +4694,8 @@ Templates:
 			3: Cliff
 	Template@623:
 		Id: 623
-		Images: t623.tmp
+		Images: customtiles.r16
+		Frames: 404, 405, 424, 425
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4681,7 +4705,8 @@ Templates:
 			3: Cliff
 	Template@624:
 		Id: 624
-		Images: t624.tmp
+		Images: customtiles.r16
+		Frames: 406, 407, 426, 427
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4691,7 +4716,8 @@ Templates:
 			3: Cliff
 	Template@625:
 		Id: 625
-		Images: t625.tmp
+		Images: customtiles.r16
+		Frames: 408, 409, 428, 429
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4701,7 +4727,8 @@ Templates:
 			3: Cliff
 	Template@626:
 		Id: 626
-		Images: t626.tmp
+		Images: customtiles.r16
+		Frames: 410, 411, 430, 431
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4711,7 +4738,8 @@ Templates:
 			3: Cliff
 	Template@627:
 		Id: 627
-		Images: t627.tmp
+		Images: customtiles.r16
+		Frames: 412, 413, 432, 433
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4721,7 +4749,8 @@ Templates:
 			3: Cliff
 	Template@628:
 		Id: 628
-		Images: t628.tmp
+		Images: customtiles.r16
+		Frames: 414, 415, 434, 435
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4731,7 +4760,8 @@ Templates:
 			3: Cliff
 	Template@629:
 		Id: 629
-		Images: t629.tmp
+		Images: customtiles.r16
+		Frames: 416, 417, 436, 437, 456, 457
 		Size: 2,3
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4743,7 +4773,8 @@ Templates:
 			5: Cliff
 	Template@630:
 		Id: 630
-		Images: t630.tmp
+		Images: customtiles.r16
+		Frames: 418, 419, 438, 439, 458, 459
 		Size: 2,3
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4755,7 +4786,8 @@ Templates:
 			5: Cliff
 	Template@631:
 		Id: 631
-		Images: t631.tmp
+		Images: customtiles.r16
+		Frames: 440, 441, 442, 460, 461, 462
 		Size: 3,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4767,7 +4799,8 @@ Templates:
 			5: Cliff
 	Template@632:
 		Id: 632
-		Images: t632.tmp
+		Images: customtiles.r16
+		Frames: 443, 444, 445, 463, 464, 465
 		Size: 3,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4779,7 +4812,8 @@ Templates:
 			5: Cliff
 	Template@633:
 		Id: 633
-		Images: t633.tmp
+		Images: customtiles.r16
+		Frames: 446, 447, 448, 466, 467, 468
 		Size: 3,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4791,7 +4825,8 @@ Templates:
 			5: Cliff
 	Template@634:
 		Id: 634
-		Images: t634.tmp
+		Images: customtiles.r16
+		Frames: 449, 450, 451, 469, 470, 471
 		Size: 3,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4803,7 +4838,8 @@ Templates:
 			5: Cliff
 	Template@635:
 		Id: 635
-		Images: t635.tmp
+		Images: customtiles.r16
+		Frames: 452, 453, 472, 473
 		Size: 2,2
 		Categories: Cliff-Ends
 		Tiles:
@@ -4813,7 +4849,8 @@ Templates:
 			3: Cliff
 	Template@636:
 		Id: 636
-		Images: t636.tmp
+		Images: customtiles.r16
+		Frames: 454, 455, 474, 475
 		Size: 2,2
 		Categories: Cliff-Ends
 		Tiles:
@@ -4823,7 +4860,8 @@ Templates:
 			3: Cliff
 	Template@637:
 		Id: 637
-		Images: t637.tmp
+		Images: customtiles.r16
+		Frames: 480, 481, 500, 501
 		Size: 2,2
 		Categories: Cliff-Ends
 		Tiles:
@@ -4833,7 +4871,8 @@ Templates:
 			3: Cliff
 	Template@638:
 		Id: 638
-		Images: t638.tmp
+		Images: customtiles.r16
+		Frames: 482, 483, 502, 503
 		Size: 2,2
 		Categories: Cliff-Ends
 		Tiles:
@@ -4843,7 +4882,8 @@ Templates:
 			3: Cliff
 	Template@639:
 		Id: 639
-		Images: t639.tmp
+		Images: customtiles.r16
+		Frames: 484, 485, 504, 505
 		Size: 2,2
 		Categories: Cliff-Ends
 		Tiles:
@@ -4853,7 +4893,8 @@ Templates:
 			3: Cliff
 	Template@640:
 		Id: 640
-		Images: t640.tmp
+		Images: customtiles.r16
+		Frames: 486, 487, 506, 507
 		Size: 2,2
 		Categories: Cliff-Ends
 		Tiles:
@@ -4863,7 +4904,8 @@ Templates:
 			3: Cliff
 	Template@800:
 		Id: 800
-		Images: t800.tmp
+		Images: customtiles.r16
+		Frames: 60, 61, 80, 81
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -4873,7 +4915,8 @@ Templates:
 			3: Cliff
 	Template@801:
 		Id: 801
-		Images: t801.tmp
+		Images: customtiles.r16
+		Frames: 62, 63, 82, 83
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -4883,7 +4926,8 @@ Templates:
 			3: Cliff
 	Template@802:
 		Id: 802
-		Images: t802.tmp
+		Images: customtiles.r16
+		Frames: 64, 65, 84, 85
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -4893,7 +4937,8 @@ Templates:
 			3: Cliff
 	Template@803:
 		Id: 803
-		Images: t803.tmp
+		Images: customtiles.r16
+		Frames: 66,67, 86, 87
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -4903,7 +4948,8 @@ Templates:
 			3: Cliff
 	Template@804:
 		Id: 804
-		Images: t804.tmp
+		Images: customtiles.r16
+		Frames: 68, 69, 88, 89
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -4913,7 +4959,8 @@ Templates:
 			3: Cliff
 	Template@805:
 		Id: 805
-		Images: t805.tmp
+		Images: customtiles.r16
+		Frames: 70, 71, 90, 91
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -4923,7 +4970,8 @@ Templates:
 			3: Cliff
 	Template@806:
 		Id: 806
-		Images: t806.tmp
+		Images: customtiles.r16
+		Frames: 72, 73, 92, 93
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -4933,7 +4981,8 @@ Templates:
 			3: Cliff
 	Template@807:
 		Id: 807
-		Images: t807.tmp
+		Images: customtiles.r16
+		Frames: 74, 75, 94, 95
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -4943,7 +4992,8 @@ Templates:
 			3: Cliff
 	Template@808:
 		Id: 808
-		Images: t808.tmp
+		Images: customtiles.r16
+		Frames:  76, 77, 96, 97
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -4953,7 +5003,8 @@ Templates:
 			3: Cliff
 	Template@809:
 		Id: 809
-		Images: t809.tmp
+		Images: customtiles.r16
+		Frames: 78, 79, 98, 99
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -4963,7 +5014,8 @@ Templates:
 			3: Cliff
 	Template@810:
 		Id: 810
-		Images: t810.tmp
+		Images: customtiles.r16
+		Frames: 100, 101, 120, 121
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -4973,7 +5025,8 @@ Templates:
 			3: Cliff
 	Template@811:
 		Id: 811
-		Images: t811.tmp
+		Images: customtiles.r16
+		Frames: 102, 103, 122, 123
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -4983,7 +5036,8 @@ Templates:
 			3: Cliff
 	Template@812:
 		Id: 812
-		Images: t812.tmp
+		Images: customtiles.r16
+		Frames: 104, 105, 124, 125
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -4993,7 +5047,8 @@ Templates:
 			3: Cliff
 	Template@813:
 		Id: 813
-		Images: t813.tmp
+		Images: customtiles.r16
+		Frames: 106, 107, 126, 127
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5003,7 +5058,8 @@ Templates:
 			3: Cliff
 	Template@814:
 		Id: 814
-		Images: t814.tmp
+		Images: customtiles.r16
+		Frames: 108, 109, 128, 129
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5013,7 +5069,8 @@ Templates:
 			3: Cliff
 	Template@815:
 		Id: 815
-		Images: t815.tmp
+		Images: customtiles.r16
+		Frames:  110, 111, 130, 131
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5023,7 +5080,8 @@ Templates:
 			3: Cliff
 	Template@816:
 		Id: 816
-		Images: t816.tmp
+		Images: customtiles.r16
+		Frames: 112, 113, 132, 133
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5033,7 +5091,8 @@ Templates:
 			3: Cliff
 	Template@817:
 		Id: 817
-		Images: t817.tmp
+		Images: customtiles.r16
+		Frames: 114, 115, 134, 135
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5043,7 +5102,8 @@ Templates:
 			3: Cliff
 	Template@818:
 		Id: 818
-		Images: t818.tmp
+		Images: customtiles.r16
+		Frames: 116, 117
 		Size: 2,1
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5051,7 +5111,8 @@ Templates:
 			1: Cliff
 	Template@819:
 		Id: 819
-		Images: t819.tmp
+		Images: customtiles.r16
+		Frames: 136, 137
 		Size: 2,1
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5059,7 +5120,8 @@ Templates:
 			1: Cliff
 	Template@820:
 		Id: 820
-		Images: t820.tmp
+		Images: customtiles.r16
+		Frames: 118, 138
 		Size: 1,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5067,7 +5129,8 @@ Templates:
 			1: Cliff
 	Template@821:
 		Id: 821
-		Images: t821.tmp
+		Images: customtiles.r16
+		Frames: 119, 139
 		Size: 1,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5075,7 +5138,8 @@ Templates:
 			1: Cliff
 	Template@822:
 		Id: 822
-		Images: t822.tmp
+		Images: customtiles.r16
+		Frames: 140, 141, 160, 161
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5085,7 +5149,8 @@ Templates:
 			3: Cliff
 	Template@823:
 		Id: 823
-		Images: t823.tmp
+		Images: customtiles.r16
+		Frames: 142, 143, 162, 163
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5095,7 +5160,8 @@ Templates:
 			3: Cliff
 	Template@824:
 		Id: 824
-		Images: t824.tmp
+		Images: customtiles.r16
+		Frames: 144, 145, 164, 165
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5105,8 +5171,9 @@ Templates:
 			3: Cliff
 	Template@825:
 		Id: 825
-		Images: t825.tmp
+		Images: customtiles.r16
 		Size: 2,2
+		Frames: 146, 147, 166, 167
 		Categories: Rock-Sand-Cliff
 		Tiles:
 			0: Cliff
@@ -5115,7 +5182,8 @@ Templates:
 			3: Cliff
 	Template@826:
 		Id: 826
-		Images: t826.tmp
+		Images: customtiles.r16
+		Frames: 148, 149, 168, 169, 188, 189
 		Size: 2,3
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5127,7 +5195,8 @@ Templates:
 			5: Cliff
 	Template@827:
 		Id: 827
-		Images: t827.tmp
+		Images: customtiles.r16
+		Frames: 150, 151, 170, 171, 190, 191
 		Size: 2,3
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5138,7 +5207,8 @@ Templates:
 			5: Cliff
 	Template@828:
 		Id: 828
-		Images: t828.tmp
+		Images: customtiles.r16
+		Frames: 152, 153, 172, 173, 192, 193
 		Size: 2,3
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5150,7 +5220,8 @@ Templates:
 			5: Cliff
 	Template@829:
 		Id: 829
-		Images: t829.tmp
+		Images: customtiles.r16
+		Frames: 154, 155, 174, 175, 194, 195
 		Size: 2,3
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5162,7 +5233,8 @@ Templates:
 			5: Cliff
 	Template@830:
 		Id: 830
-		Images: t830.tmp
+		Images: customtiles.r16
+		Frames: 156, 157, 176, 177
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5172,7 +5244,8 @@ Templates:
 			3: Cliff
 	Template@831:
 		Id: 831
-		Images: t831.tmp
+		Images: customtiles.r16
+		Frames: 158, 159, 178, 179
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5182,8 +5255,9 @@ Templates:
 			3: Cliff
 	Template@832:
 		Id: 832
-		Images: t832.tmp
+		Images: customtiles.r16
 		Size: 2,2
+		Frames: 180, 181, 200, 201
 		Categories: Cliff-Type-Changer
 		Tiles:
 			0: Cliff
@@ -5192,7 +5266,8 @@ Templates:
 			3: Cliff
 	Template@833:
 		Id: 833
-		Images: t833.tmp
+		Images: customtiles.r16
+		Frames: 182, 183, 202, 203
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5202,7 +5277,8 @@ Templates:
 			3: Cliff
 	Template@834:
 		Id: 834
-		Images: t834.tmp
+		Images: customtiles.r16
+		Frames: 184, 185, 204, 205
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5212,7 +5288,8 @@ Templates:
 			3: Cliff
 	Template@835:
 		Id: 835
-		Images: t835.tmp
+		Images: customtiles.r16
+		Frames: 186, 187, 206, 207
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5222,7 +5299,8 @@ Templates:
 			3: Cliff
 	Template@836:
 		Id: 836
-		Images: t836.tmp
+		Images: customtiles.r16
+		Frames: 196, 197, 216, 217
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5232,7 +5310,8 @@ Templates:
 			3: Cliff
 	Template@837:
 		Id: 837
-		Images: t837.tmp
+		Images: customtiles.r16
+		Frames: 198, 199, 218, 219
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5242,7 +5321,8 @@ Templates:
 			3: Cliff
 	Template@838:
 		Id: 838
-		Images: t838.tmp
+		Images: customtiles.r16
+		Frames: 220, 221, 222, 240, 241, 242
 		Size: 3,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5254,7 +5334,8 @@ Templates:
 			5: Cliff
 	Template@839:
 		Id: 839
-		Images: t839.tmp
+		Images: customtiles.r16
+		Frames: 223, 224, 225, 243, 244, 245
 		Size: 3,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5266,7 +5347,8 @@ Templates:
 			5: Cliff
 	Template@840:
 		Id: 840
-		Images: t840.tmp
+		Images: customtiles.r16
+		Frames: 226, 227, 228, 246, 247, 248
 		Size: 3,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5278,7 +5360,8 @@ Templates:
 			5: Cliff
 	Template@841:
 		Id: 841
-		Images: t841.tmp
+		Images: customtiles.r16
+		Frames: 229, 230, 231, 249, 250, 251
 		Size: 3,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5290,7 +5373,8 @@ Templates:
 			5: Cliff
 	Template@842:
 		Id: 842
-		Images: t842.tmp
+		Images: customtiles.r16
+		Frames: 232, 233, 252, 253
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5300,7 +5384,8 @@ Templates:
 			3: Cliff
 	Template@843:
 		Id: 843
-		Images: t843.tmp
+		Images: customtiles.r16
+		Frames: 234, 235, 254, 255
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5310,7 +5395,8 @@ Templates:
 			3: Cliff
 	Template@844:
 		Id: 844
-		Images: t844.tmp
+		Images: customtiles.r16
+		Frames: 236, 237, 256, 257
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5320,7 +5406,8 @@ Templates:
 			3: Cliff
 	Template@845:
 		Id: 845
-		Images: t845.tmp
+		Images: customtiles.r16
+		Frames: 238, 239, 258, 259
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5330,7 +5417,8 @@ Templates:
 			3: Cliff
 	Template@846:
 		Id: 846
-		Images: t846.tmp
+		Images: customtiles.r16
+		Frames: 260, 261, 280, 281
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5340,7 +5428,8 @@ Templates:
 			3: Cliff
 	Template@847:
 		Id: 847
-		Images: t847.tmp
+		Images: customtiles.r16
+		Frames: 262, 263, 282, 283
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5350,7 +5439,8 @@ Templates:
 			3: Cliff
 	Template@848:
 		Id: 848
-		Images: t848.tmp
+		Images: customtiles.r16
+		Frames: 264, 265, 284, 285
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5360,7 +5450,8 @@ Templates:
 			3: Cliff
 	Template@849:
 		Id: 849
-		Images: t849.tmp
+		Images: customtiles.r16
+		Frames: 266, 267, 286, 287
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5370,7 +5461,8 @@ Templates:
 			3: Cliff
 	Template@850:
 		Id: 850
-		Images: t850.tmp
+		Images: customtiles.r16
+		Frames: 268, 269, 288, 289
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5380,7 +5472,8 @@ Templates:
 			3: Cliff
 	Template@851:
 		Id: 851
-		Images: t851.tmp
+		Images: customtiles.r16
+		Frames: 270, 271, 290, 291
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5390,7 +5483,8 @@ Templates:
 			3: Cliff
 	Template@852:
 		Id: 852
-		Images: t852.tmp
+		Images: customtiles.r16
+		Frames: 272, 273, 292, 293
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5400,7 +5494,8 @@ Templates:
 			3: Cliff
 	Template@853:
 		Id: 853
-		Images: t853.tmp
+		Images: customtiles.r16
+		Frames: 274, 275, 294, 295
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5410,7 +5505,8 @@ Templates:
 			3: Cliff
 	Template@854:
 		Id: 854
-		Images: t854.tmp
+		Images: customtiles.r16
+		Frames: 276, 277, 296, 297
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5420,7 +5516,8 @@ Templates:
 			3: Cliff
 	Template@855:
 		Id: 855
-		Images: t855.tmp
+		Images: customtiles.r16
+		Frames: 278, 279, 298, 299
 		Size: 2,2
 		Categories: Cliff-Type-Changer
 		Tiles:
@@ -5430,119 +5527,136 @@ Templates:
 			3: Cliff
 	Template@1000:
 		Id: 1000
-		Images: t1000.tmp
+		Images: customtiles.r16
+		Frames: 0
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1001:
 		Id: 1001
-		Images: t1001.tmp
+		Images: customtiles.r16
+		Frames: 1
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1002:
 		Id: 1002
-		Images: t1002.tmp
+		Frames: 2
+		Images: customtiles.r16
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1003:
 		Id: 1003
-		Images: t1003.tmp
+		Images: customtiles.r16
+		Frames: 3
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1004:
 		Id: 1004
-		Images: t1004.tmp
+		Images: customtiles.r16
+		Frames: 4
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1005:
 		Id: 1005
-		Images: t1005.tmp
+		Images: customtiles.r16
+		Frames: 5
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1006:
 		Id: 1006
-		Images: t1006.tmp
+		Images: customtiles.r16
+		Frames: 6
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1007:
 		Id: 1007
-		Images: t1007.tmp
+		Images: customtiles.r16
+		Frames: 7
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1008:
 		Id: 1008
-		Images: t1008.tmp
+		Images: customtiles.r16
+		Frames: 8
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1009:
 		Id: 1009
-		Images: t1009.tmp
+		Images: customtiles.r16
+		Frames: 9
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1010:
 		Id: 1010
-		Images: t1010.tmp
+		Images: customtiles.r16
+		Frames: 10
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1011:
 		Id: 1011
-		Images: t1011.tmp
+		Images: customtiles.r16
+		Frames: 11
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1012:
 		Id: 1012
-		Images: t1012.tmp
+		Images: customtiles.r16
+		Frames: 12
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1013:
 		Id: 1013
-		Images: t1013.tmp
+		Images: customtiles.r16
+		Frames: 13
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1014:
 		Id: 1014
-		Images: t1014.tmp
+		Images: customtiles.r16
+		Frames: 14
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1015:
 		Id: 1015
-		Images: t1015.tmp
+		Images: customtiles.r16
+		Frames: 15
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
 	Template@1016:
 		Id: 1016
-		Images: t1016.tmp
+		Images: customtiles.r16
+		Frames: 16, 17
 		Size: 2,1
 		Categories: Sand-Platform
 		Tiles:
@@ -5550,14 +5664,16 @@ Templates:
 			1: Rock
 	Template@1017:
 		Id: 1017
-		Images: t1017.tmp
+		Images: customtiles.r16
+		Frames: 18
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
 			0: Rock
 	Template@1018:
 		Id: 1018
-		Images: t1018.tmp
+		Images: customtiles.r16
+		Frames: 19
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
@@ -6315,3 +6431,302 @@ Templates:
 		Tiles:
 			0: Rough
 			1: Rough
+	Template@1113:
+		Id: 1113
+		Images: customtiles.r16
+		Frames: 29, 49
+		Size: 1,2
+		Categories: Sand-Sand-Cliff
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1114:
+		Id: 1114
+		Images: customtiles.r16
+		Frames: 30, 50
+		Size: 1,2
+		Categories: Sand-Sand-Cliff
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1115:
+		Id: 1115
+		Images: customtiles.r16
+		Frames: 31, 32
+		Size: 2,1
+		Categories: Sand-Sand-Cliff
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1116:
+		Id: 1116
+		Images: customtiles.r16
+		Frames: 51, 52
+		Size: 2,1
+		Categories: Sand-Sand-Cliff
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1117:
+		Id: 1117
+		Images: customtiles.r16
+		Frames: 33,34, 53, 54
+		Size: 2,2
+		Categories: Sand-Rock-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Rough
+			3: Rough
+	Template@1118:
+		Id: 1118
+		Images: customtiles.r16
+		Frames: 35, 36, 55, 56
+		Size: 2,2
+		Categories: Sand-Rock-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Rough
+			3: Rough
+	Template@1119:
+		Id: 1119
+		Images: customtiles.r16
+		Frames: 37, 38, 57, 58
+		Size: 2,2
+		Categories: Sand-Rock-Cliff
+		Tiles:
+			0: Cliff
+			1: Rough
+			2: Cliff
+			3: Rough
+	Template@1120:
+		Id: 1120
+		Images: customtiles.r16
+		Frames: 338, 339, 358, 359
+		Size: 2,2
+		Categories: Sand-Rock-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Rough
+			3: Rough
+	Template@1121:
+		Id: 1121
+		Images: customtiles.r16
+		Frames: 525, 526, 527, 545, 546, 547
+		Size: 3,2
+		Categories: Cliff-Type-Changer
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Sand
+			4: Cliff
+			5: Cliff
+	Template@1122:
+		Id: 1122
+		Images: customtiles.r16
+		Frames: 491, 492, 493, 511, 512, 513
+		Size: 3,2
+		Categories: Sand-Rock-Cliff
+		Tiles:
+			0: Sand
+			1: Rough
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Rough
+	Template@1123:
+		Id: 1123
+		Images: customtiles.r16
+		Frames: 494, 495, 514, 515
+		Size: 2,2
+		Categories: Cliff-Type-Changer
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1124:
+		Id: 1124
+		Images: customtiles.r16
+		Frames: 496, 497, 516, 517
+		Size: 2,2
+		Categories: Cliff-Type-Changer
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1125:
+		Id: 1125
+		Images: customtiles.r16
+		Frames: 498, 499, 518, 519
+		Size: 2,2
+		Categories: Cliff-Type-Changer
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1126:
+		Id: 1126
+		Images: customtiles.r16
+		Frames: 488, 489, 490, 508, 509, 510
+		Size: 3,2
+		Categories: Sand-Rock-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Rough
+			3: Rock
+			4: Rough
+			5: Cliff
+	Template@1127:
+		Id: 1127
+		Images: customtiles.r16
+		Frames: 528, 529, 530, 548, 549, 550
+		Size: 3,2
+		Categories: Cliff-Type-Changer
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Sand
+	Template@1128:
+		Id: 1128
+		Images: customtiles.r16
+		Frames: 531, 532, 533, 551, 552, 553
+		Size: 3,2
+		Categories: Cliff-Type-Changer
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Sand
+			3: Cliff
+			4: Cliff
+			5: Cliff
+	Template@1129:
+		Id: 1129
+		Images: customtiles.r16
+		Frames: 520, 521, 540, 541
+		Size: 2,2
+		Categories: Cliff-Type-Changer
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1130
+		Id: 1130
+		Images: customtiles.r16
+		Frames: 20, 21, 40, 41
+		Size: 2,2
+		Categories: Sand-Platform
+		Tiles:
+			0: Cliff
+			1: Rock
+			2: Cliff
+			3: Rock
+	Template@1131
+		Id: 1131
+		Images: customtiles.r16
+		Frames: 22, 23, 42, 43
+		Size: 2,2
+		Categories: Sand-Platform
+		Tiles:
+			0: Rock
+			1: Cliff
+			2: Rock
+			3: Cliff
+	Template@1132
+		Id: 1132
+		Images: customtiles.r16
+		Frames: 24
+		Size: 1,1
+		Categories: Sand-Platform
+		Tiles:
+			0: Rock
+	Template@1133
+		Id: 1133
+		Images: customtiles.r16
+		Frames: 25
+		Size: 1,1
+		Categories: Sand-Platform
+		Tiles:
+			0: Rock
+	Template@1134
+		Id: 1134
+		Images: customtiles.r16
+		Frames: 44
+		Size: 1,1
+		Categories: Sand-Platform
+		Tiles:
+			0: Rock
+	Template@1135
+		Id: 1135
+		Images: customtiles.r16
+		Frames: 45
+		Size: 1,1
+		Categories: Sand-Platform
+		Tiles:
+			0: Rock
+	Template@1136
+		Id: 1136
+		Images: customtiles.r16
+		Frames: 26
+		Size: 1,1
+		Categories: Sand-Platform
+		Tiles:
+			0: Cliff
+	Template@1137
+		Id: 1137
+		Images: customtiles.r16
+		Frames: 27
+		Size: 1,1
+		Categories: Sand-Platform
+		Tiles:
+			0: Cliff
+	Template@1138
+		Id: 1138
+		Images: customtiles.r16
+		Frames: 46
+		Size: 1,1
+		Categories: Sand-Platform
+		Tiles:
+			0: Cliff
+	Template@1139
+		Id: 1139
+		Images: customtiles.r16
+		Frames: 47
+		Size: 1,1
+		Categories: Sand-Platform
+		Tiles:
+			0: Cliff
+	Template@1140
+		Id: 1140
+		Images: customtiles.r16
+		Frames: 28
+		Size: 1,1
+		Categories: Sand-Platform
+		Tiles:
+			0: Cliff
+	Template@1141
+		Id: 1141
+		Images: customtiles.r16
+		Frames: 29
+		Size: 1,1
+		Categories: Sand-Platform
+		Tiles:
+			0: Cliff
+	Template@1142
+		Id: 1142
+		Images: customtiles.r16
+		Frames: 39
+		Size: 1,1
+		Categories: Bridge
+		Tiles:
+			0: Rock
