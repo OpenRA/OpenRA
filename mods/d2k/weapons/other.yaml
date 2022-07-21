@@ -8,10 +8,10 @@ Sound:
 		InaccuracyType: PerCellIncrement
 		Duration: 4 # Has a length of 0c512
 		DamageInterval: 3 # Travels 0c384 between impacts, will hit a target roughly three times
-		Width: 0c512
+		Width: 0c756 # orig d2k width is 2c0 but 100% dmg is only at center and fade out lineary to the edges
 		Shape: Flat
-		Falloff: 100, 100, 50
-		Range: 0, 6c0, 11c0
+		Falloff: 0, 0, 100, 0
+		Range: 0,0c450, 4c0, 8c0
 		BeyondTargetRange: 1c0
 		Color: 00FFFFC8
 	Warhead@1Dam: SpreadDamage
@@ -19,24 +19,7 @@ Sound:
 		Falloff: 100, 100
 		Damage: 860
 		AffectsParent: false
-		ValidRelationships: Neutral, Enemy
-		Versus:
-			none: 200
-			wall: 50
-			building: 60
-			wood: 110
-			light: 110
-			heavy: 60
-			invulnerable: 0
-			cy: 20
-			harvester: 50
-		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
-	Warhead@2Dam: SpreadDamage
-		Range: 0, 32
-		Falloff: 100, 100
-		Damage: 430 # Only does half damage to friendly units
-		AffectsParent: false
-		ValidRelationships: Ally
+		ValidRelationships: Neutral, Enemy, Ally
 		Versus:
 			none: 200
 			wall: 50
