@@ -108,6 +108,10 @@ ornithopter:
 		TurnSpeed: 8
 		Repulsable: False
 		CruiseAltitude: 1920
+		AirborneCondition: airborne
+	Targetable@AIRBORNE:
+		TargetTypes: Air
+		RequiresCondition: airborne
 	AmmoPool:
 		Ammo: 5
 	Tooltip:
