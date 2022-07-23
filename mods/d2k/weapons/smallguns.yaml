@@ -3,18 +3,19 @@
 	Range: 2c512
 	Report: MGUN2.WAV
 	Projectile: InstantHit
-		Inaccuracy: 128
+		Inaccuracy: 135
 		InaccuracyType: PerCellIncrement
 	Warhead@1Dam: SpreadDamage
 		Damage: 1250
 		Spread: 480
 		Falloff: 100, 0
 		Versus:
+			none: 110
 			wall: 10
 			building: 25
 			wood: 75
 			light: 40
-			heavy: 20
+			heavy: 18
 			invulnerable: 0
 			cy: 20
 			harvester: 25

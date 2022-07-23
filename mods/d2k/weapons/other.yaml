@@ -8,35 +8,18 @@ Sound:
 		InaccuracyType: PerCellIncrement
 		Duration: 4 # Has a length of 0c512
 		DamageInterval: 3 # Travels 0c384 between impacts, will hit a target roughly three times
-		Width: 0c512
-		Shape: Flat
-		Falloff: 100, 100, 50
-		Range: 0, 6c0, 11c0
+		Width: 0c756 # in original d2k width is 2c0, but damage is 100% only at the center and fades out linearly towards the edges
+		Shape: Cylindrical
+		Falloff: 0, 0, 100, 0
+		Range: 0, 0c450, 4c0, 8c0
 		BeyondTargetRange: 1c0
 		Color: 00FFFFC8
 	Warhead@1Dam: SpreadDamage
 		Range: 0, 32
 		Falloff: 100, 100
-		Damage: 860
+		Damage: 960
 		AffectsParent: false
-		ValidRelationships: Neutral, Enemy
-		Versus:
-			none: 200
-			wall: 50
-			building: 60
-			wood: 110
-			light: 110
-			heavy: 60
-			invulnerable: 0
-			cy: 20
-			harvester: 50
-		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
-	Warhead@2Dam: SpreadDamage
-		Range: 0, 32
-		Falloff: 100, 100
-		Damage: 430 # Only does half damage to friendly units
-		AffectsParent: false
-		ValidRelationships: Ally
+		ValidRelationships: Neutral, Enemy, Ally
 		Versus:
 			none: 200
 			wall: 50
@@ -70,7 +53,7 @@ OrniBomb:
 		Shadow: true
 	Warhead@1Dam: SpreadDamage
 		Damage: 7500 #400 in original, reduce when bombers can do multiple passes
-		Spread: 1c0
+		Spread: 2c0
 		Falloff: 100, 0
 		Versus:
 			none: 90
@@ -136,6 +119,7 @@ DeathHandCluster:
 		BounceCount: 0
 	Warhead@1Dam: SpreadDamage
 		Damage: 4500
+		Spread: 2c0
 		Versus:
 			none: 90
 			wall: 50
@@ -224,18 +208,22 @@ grenade:
 		Shadow: true
 	Warhead@1Dam: SpreadDamage
 		Damage: 1500
-		Spread: 1c0
+		Spread: 1c512
 		Falloff: 100, 0
 		Versus:
-			none: 125
+			none: 135
 			wood: 70
 			light: 30
 			heavy: 20
 			invulnerable: 0
 			cy: 20
 			harvester: 25
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageTypes: Prone50Percent, ExplosionDeath
 		DamageCalculationType: ClosestTargetablePosition
+	Warhead@proneeffect: TargetDamage
+		Damage: 1
+		Spread: 1c0
+		DamageTypes: TriggerProne
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: SandCrater
 		InvalidTargets: Vehicle, Structure

@@ -5,7 +5,7 @@
 	Projectile: Bullet
 		Blockable: false
 		Speed: 281
-		Inaccuracy: 128
+		Inaccuracy: 140
 		InaccuracyType: PerCellIncrement
 		Image: RPG
 		TrailImage: bazooka_trail2
@@ -13,10 +13,10 @@
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
 		Damage: 3000
-		Spread: 512
+		Spread: 700
 		Falloff: 100, 0
 		Versus:
-			none: 8
+			none: 15
 			wall: 75
 			building: 40
 			wood: 45
@@ -44,8 +44,10 @@
 	MinRange: 0c512
 	Projectile: Missile
 		Shadow: true
-		HorizontalRateOfTurn: 12
-		RangeLimit: 6c614
+		InaccuracyType: Maximum
+		Inaccuracy: 250
+		HorizontalRateOfTurn: 22
+		RangeLimit: 7c614
 		CruiseAltitude: 1c0
 		MinimumLaunchAngle: 64
 		VerticalRateOfTurn: 40
@@ -54,6 +56,7 @@
 		Speed: 288
 	Warhead@1Dam: SpreadDamage
 		Damage: 4800
+		Spread: 1c0
 		Versus:
 			none: 15
 			wall: 75
@@ -64,6 +67,11 @@
 			invulnerable: 0
 			cy: 30
 			harvester: 50
+		DamageTypes: Prone50Percent, SmallExplosionDeath
+	Warhead@proneeffect: TargetDamage
+		Damage: 1
+		Spread: 600
+		DamageTypes: TriggerProne
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 720
 	Warhead@3Eff: CreateEffect
@@ -103,8 +111,6 @@ TowerMissile:
 	Burst: 2
 	BurstDelays: 60
 	ValidTargets: Ground, Air
-	Projectile: Missile
-		HorizontalRateOfTurn: 4
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Ground, Air
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
