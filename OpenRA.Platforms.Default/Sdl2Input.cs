@@ -127,7 +127,7 @@ namespace OpenRA.Platforms.Default
 
 							inputHandler.OnMouseInput(new MouseInput(
 								MouseInputEvent.Down, button, pos, int2.Zero, mods,
-								MultiTapDetection.DetectFromMouse(e.button.button, pos)));
+								MultiMouseTapDetection.Detect(e.button.button, pos)));
 
 							break;
 						}
@@ -148,7 +148,7 @@ namespace OpenRA.Platforms.Default
 
 							inputHandler.OnMouseInput(new MouseInput(
 								MouseInputEvent.Up, button, pos, int2.Zero, mods,
-								MultiTapDetection.InfoFromMouse(e.button.button)));
+								MultiMouseTapDetection.Info(e.button.button)));
 
 							break;
 						}
@@ -195,8 +195,8 @@ namespace OpenRA.Platforms.Default
 								KeyInputEvent.Down : KeyInputEvent.Up;
 
 							var tapCount = e.type == SDL.SDL_EventType.SDL_KEYDOWN ?
-								MultiTapDetection.DetectFromKeyboard(keyCode, mods) :
-								MultiTapDetection.InfoFromKeyboard(keyCode, mods);
+								MultiKeyTapDetection.Detect(keyCode, mods) :
+								MultiKeyTapDetection.Info(keyCode, mods);
 
 							var keyEvent = new KeyInput
 							{
