@@ -29,13 +29,17 @@ namespace OpenRA.Mods.Common
 		public static int TickFacing(int facing, int desiredFacing, int rot)
 		{
 			var leftTurn = (facing - desiredFacing) & 0xFF;
-			var rightTurn = (desiredFacing - facing) & 0xFF;
-			if (Math.Min(leftTurn, rightTurn) < rot)
+			if (leftTurn < rot)
 				return desiredFacing & 0xFF;
-			else if (rightTurn < leftTurn)
+
+			var rightTurn = (desiredFacing - facing) & 0xFF;
+			if (rightTurn < rot)
+				return desiredFacing & 0xFF;
+
+			if (rightTurn < leftTurn)
 				return (facing + rot) & 0xFF;
-			else
-				return (facing - rot) & 0xFF;
+
+			return (facing - rot) & 0xFF;
 		}
 
 		/// <summary>
@@ -46,8 +50,11 @@ namespace OpenRA.Mods.Common
 		public static WAngle TickFacing(WAngle facing, WAngle desiredFacing, WAngle step)
 		{
 			var leftTurn = (facing - desiredFacing).Angle;
+			if (leftTurn < step.Angle)
+				return desiredFacing;
+
 			var rightTurn = (desiredFacing - facing).Angle;
-			if (leftTurn < step.Angle || rightTurn < step.Angle)
+			if (rightTurn < step.Angle)
 				return desiredFacing;
 
 			return rightTurn < leftTurn ? facing + step : facing - step;
