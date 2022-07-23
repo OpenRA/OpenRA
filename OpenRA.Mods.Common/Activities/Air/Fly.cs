@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -29,7 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 		Target target;
 		Target lastVisibleTarget;
 		bool useLastVisibleTarget;
-		readonly List<WPos> positionBuffer = new();
+		readonly RingBuffer<WPos> previousPositions = new(5);
 
 		public Fly(Actor self, in Target t, WDist nearEnough, WPos? initialTargetPosition = null, Color? targetLineColor = null)
 			: this(self, t, initialTargetPosition, targetLineColor)
@@ -63,13 +62,10 @@ namespace OpenRA.Mods.Common.Activities
 		public static void FlyTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, in WVec moveOverride, bool idleTurn = false)
 		{
 			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
-			var move = aircraft.Info.CanSlide ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing);
-			if (moveOverride != WVec.Zero)
-				move = moveOverride;
+			var move = moveOverride != WVec.Zero ? moveOverride : (aircraft.Info.CanSlide ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing));
 
 			var oldFacing = aircraft.Facing;
-			var turnSpeed = aircraft.GetTurnSpeed(idleTurn);
-			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, turnSpeed);
+			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.GetTurnSpeed(idleTurn));
 
 			var roll = idleTurn ? aircraft.Info.IdleRoll ?? aircraft.Info.Roll : aircraft.Info.Roll;
 			if (roll != WAngle.Zero)
@@ -104,22 +100,16 @@ namespace OpenRA.Mods.Common.Activities
 		// Should only be used for vertical-only movement, usually VTOL take-off or land. Terrain-induced altitude changes should always be handled by FlyTick.
 		public static bool VerticalTakeOffOrLandTick(Actor self, Aircraft aircraft, WAngle desiredFacing, WDist desiredAltitude, bool idleTurn = false)
 		{
-			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
-			var move = WVec.Zero;
-
 			var turnSpeed = idleTurn ? aircraft.IdleTurnSpeed ?? aircraft.TurnSpeed : aircraft.TurnSpeed;
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, turnSpeed);
 
-			if (dat != desiredAltitude)
-			{
-				var maxDelta = aircraft.Info.AltitudeVelocity.Length;
-				var deltaZ = (desiredAltitude.Length - dat.Length).Clamp(-maxDelta, maxDelta);
-				move += new WVec(0, 0, deltaZ);
-			}
-			else
+			var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
+			if (dat == desiredAltitude)
 				return false;
 
-			aircraft.SetPosition(self, aircraft.CenterPosition + move);
+			var maxDelta = aircraft.Info.AltitudeVelocity.Length;
+			var deltaZ = (desiredAltitude.Length - dat.Length).Clamp(-maxDelta, maxDelta);
+			aircraft.SetPosition(self, aircraft.CenterPosition + new WVec(0, 0, deltaZ));
 			return true;
 		}
 
@@ -203,8 +193,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// HACK: Consider ourselves blocked if we have moved by less than 64 WDist in the last five ticks
 			// Stop if we are blocked and close enough
-			if (positionBuffer.Count >= 5 && (positionBuffer.Last() - positionBuffer[0]).LengthSquared < 4096 &&
-				delta.HorizontalLengthSquared <= nearEnough.LengthSquared)
+			if (previousPositions.Count == previousPositions.Capacity && (previousPositions.First() - previousPositions.Last()).LengthSquared < 4096 && delta.HorizontalLengthSquared <= nearEnough.LengthSquared)
 				return true;
 
 			// The next move would overshoot, so consider it close enough or set final position if we CanSlide
@@ -253,11 +242,8 @@ namespace OpenRA.Mods.Common.Activities
 					desiredFacing = aircraft.Facing;
 			}
 
-			positionBuffer.Add(self.CenterPosition);
-			if (positionBuffer.Count > 5)
-				positionBuffer.RemoveAt(0);
-
-			FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude);
+			previousPositions.Add(self.CenterPosition);
+			FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, WVec.Zero);
 
 			return false;
 		}

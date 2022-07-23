@@ -39,7 +39,7 @@ namespace OpenRA
 		public static WAngle operator -(WAngle a) { return new WAngle(-a.Angle); }
 
 		public static bool operator ==(WAngle me, WAngle other) { return me.Angle == other.Angle; }
-		public static bool operator !=(WAngle me, WAngle other) { return !(me == other); }
+		public static bool operator !=(WAngle me, WAngle other) { return me.Angle != other.Angle; }
 
 		public override int GetHashCode() { return Angle.GetHashCode(); }
 
