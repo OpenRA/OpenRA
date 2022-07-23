@@ -4,15 +4,15 @@
 	Report: MEDTANK1.WAV
 	Projectile: Bullet
 		Speed: 562
-		Inaccuracy: 128
+		Inaccuracy: 135
 		InaccuracyType: PerCellIncrement
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
 		Damage: 2700
-		Spread: 512
+		Spread: 756
 		Falloff: 100, 0
 		Versus:
-			none: 20
+			none: 30
 			wall: 50
 			building: 50
 			wood: 60
@@ -65,7 +65,7 @@ DevBullet:
 	Warhead@1Dam: SpreadDamage
 		Damage: 6500
 		Versus:
-			none: 50
+			none: 65
 			wall: 100
 			building: 75
 			wood: 60
@@ -93,7 +93,7 @@ DevBullet:
 		Image: 155mm
 	Warhead@1Dam: SpreadDamage
 		Damage: 4500
-		Spread: 1c0
+		Spread: 2c0
 		Versus:
 			none: 125
 			wall: 100
@@ -104,7 +104,11 @@ DevBullet:
 			invulnerable: 0
 			cy: 20
 			harvester: 25
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageTypes: Prone50Percent, ExplosionDeath
+	Warhead@proneeffect: TargetDamage
+		DamageTypes: TriggerProne
+		Damage: 1
+		Spread: 1c512
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 5625
 	Warhead@3Eff: CreateEffect
