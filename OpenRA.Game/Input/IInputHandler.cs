@@ -42,23 +42,24 @@ namespace OpenRA
 		}
 	}
 
-	[Flags]
+	/// <summary>Values taken from SDL_mouse to allow direct mapping.</summary>
 	public enum MouseButton
 	{
 		None = 0,
 		Left = 1,
-		Right = 2,
-		Middle = 4
+		Middle = 2,
+		Right = 3
 	}
 
+	/// <summary>Mask values taken from SDL_keycode to allow direct mapping.</summary>
 	[Flags]
 	public enum Modifiers
 	{
 		None = 0,
-		Shift = 1,
-		Alt = 2,
-		Ctrl = 4,
-		Meta = 8,
+		Shift = 0x0001 | 0x0002,
+		Ctrl = 0x0040 | 0x0080,
+		Alt = 0x0100 | 0x0200,
+		Meta = 0x0400 | 0x0800,
 	}
 
 	public enum KeyInputEvent { Down, Up }

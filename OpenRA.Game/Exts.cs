@@ -114,7 +114,7 @@ namespace OpenRA
 		public static bool HasModifier(this Modifiers k, Modifiers mod)
 		{
 			// PERF: Enum.HasFlag is slower and requires allocations.
-			return (k & mod) == mod;
+			return (k & mod) != 0;
 		}
 
 		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k)

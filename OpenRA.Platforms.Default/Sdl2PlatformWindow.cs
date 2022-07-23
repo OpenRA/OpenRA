@@ -38,6 +38,8 @@ namespace OpenRA.Platforms.Default
 		float scaleModifier;
 		readonly GLProfile profile;
 		readonly GLProfile[] supportedProfiles;
+		public readonly bool HasCompatibleKeyModifiers;
+		public readonly bool HasCompatibleMouseButtons;
 
 		internal IntPtr Window
 		{
@@ -327,6 +329,35 @@ namespace OpenRA.Platforms.Default
 
 			SDL.SDL_SetModState(SDL.SDL_Keymod.KMOD_NONE);
 			input = new Sdl2Input();
+			HasCompatibleKeyModifiers = AreKeyModifiersCompatible();
+			HasCompatibleMouseButtons = AreMouseButtonsCompatible();
+		}
+
+		static bool AreKeyModifiersCompatible()
+		{
+			// Expected to be true. Unlikely for SDL values to change across versions.
+			var compatible = (((int)Modifiers.Alt == (int)SDL.SDL_Keymod.KMOD_ALT)
+				&& (int)Modifiers.Ctrl == (int)SDL.SDL_Keymod.KMOD_CTRL)
+				&& (int)Modifiers.Meta == ((int)SDL.SDL_Keymod.KMOD_LGUI | (int)SDL.SDL_Keymod.KMOD_RGUI)
+				&& (int)Modifiers.Shift == ((int)SDL.SDL_Keymod.KMOD_SHIFT);
+
+			if (!compatible)
+				Log.Write("graphics", $"OpenRA input key modifiers differ from those of SDL. Applying indirect mapping.");
+
+			return compatible;
+		}
+
+		static bool AreMouseButtonsCompatible()
+		{
+			// Expected to be true. Unlikely for SDL values to change across versions.
+			var compatible = ((int)MouseButton.Left == (int)SDL.SDL_BUTTON_LEFT
+				&& (int)MouseButton.Right == (int)SDL.SDL_BUTTON_RIGHT
+				&& (int)MouseButton.Middle == (int)SDL.SDL_BUTTON_MIDDLE);
+
+			if (!compatible)
+				 Log.Write("graphics", $"OpenRA input mouse button ID's differ from those of SDL. Applying indirect mapping.");
+
+			return compatible;
 		}
 
 		byte[] DoublePixelData(byte[] data, Size size)

@@ -130,7 +130,7 @@ namespace OpenRA.Traits
 		public static bool HasModifier(this TargetModifiers self, TargetModifiers m)
 		{
 			// PERF: Enum.HasFlag is slower and requires allocations.
-			return (self & m) == m;
+			return (self & m) != 0;
 		}
 	}
 

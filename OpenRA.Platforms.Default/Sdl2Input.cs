@@ -18,25 +18,33 @@ namespace OpenRA.Platforms.Default
 {
 	class Sdl2Input
 	{
+		const int ModifiersAll = (int)Modifiers.Alt | (int)Modifiers.Ctrl | (int)Modifiers.Meta | (int)Modifiers.Shift;
+		const byte MouseButtonMaxSupported = (byte)SDL.SDL_BUTTON_RIGHT;
+
 		MouseButton lastButtonBits = MouseButton.None;
 
 		public string GetClipboardText() { return SDL.SDL_GetClipboardText(); }
 		public bool SetClipboardText(string text) { return SDL.SDL_SetClipboardText(text) == 0; }
 
-		static MouseButton MakeButton(byte b)
+		static MouseButton MakeButton(byte b, bool directMap)
 		{
+			if (directMap)
+				return b <= MouseButtonMaxSupported ? (MouseButton)b : MouseButton.None;
+
 			return b == SDL.SDL_BUTTON_LEFT ? MouseButton.Left
 				: b == SDL.SDL_BUTTON_RIGHT ? MouseButton.Right
 				: b == SDL.SDL_BUTTON_MIDDLE ? MouseButton.Middle
 				: 0;
 		}
 
-		static Modifiers MakeModifiers(int raw)
+		static Modifiers MakeModifiers(int raw, bool directMap)
 		{
+			if (directMap)
+				return (Modifiers)(raw & ModifiersAll);
+
 			return ((raw & (int)SDL.SDL_Keymod.KMOD_ALT) != 0 ? Modifiers.Alt : 0)
 				 | ((raw & (int)SDL.SDL_Keymod.KMOD_CTRL) != 0 ? Modifiers.Ctrl : 0)
-				 | ((raw & (int)SDL.SDL_Keymod.KMOD_LGUI) != 0 ? Modifiers.Meta : 0)
-				 | ((raw & (int)SDL.SDL_Keymod.KMOD_RGUI) != 0 ? Modifiers.Meta : 0)
+				 | ((raw & ((int)SDL.SDL_Keymod.KMOD_LGUI | (int)SDL.SDL_Keymod.KMOD_RGUI)) != 0 ? Modifiers.Meta : 0)
 				 | ((raw & (int)SDL.SDL_Keymod.KMOD_SHIFT) != 0 ? Modifiers.Shift : 0);
 		}
 
@@ -63,7 +71,7 @@ namespace OpenRA.Platforms.Default
 
 		public void PumpInput(Sdl2PlatformWindow device, IInputHandler inputHandler, int2? lockedMousePosition)
 		{
-			var mods = MakeModifiers((int)SDL.SDL_GetModState());
+			var mods = MakeModifiers((int)SDL.SDL_GetModState(), device.HasCompatibleKeyModifiers);
 			inputHandler.ModifierKeys(mods);
 			MouseInput? pendingMotion = null;
 
@@ -119,7 +127,7 @@ namespace OpenRA.Platforms.Default
 								pendingMotion = null;
 							}
 
-							var button = MakeButton(e.button.button);
+							var button = MakeButton(e.button.button, device.HasCompatibleMouseButtons);
 							lastButtonBits |= button;
 
 							var input = lockedMousePosition ?? new int2(e.button.x, e.button.y);
@@ -140,7 +148,7 @@ namespace OpenRA.Platforms.Default
 								pendingMotion = null;
 							}
 
-							var button = MakeButton(e.button.button);
+							var button = MakeButton(e.button.button, device.HasCompatibleMouseButtons);
 							lastButtonBits &= ~button;
 
 							var input = lockedMousePosition ?? new int2(e.button.x, e.button.y);
