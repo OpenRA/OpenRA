@@ -56,13 +56,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine();
 
 			var sections = new Settings(null, new Arguments()).Sections;
+			sections.Add("Launch", new LaunchArguments(new Arguments(Array.Empty<string>())));
 			foreach (var section in sections.OrderBy(s => s.Key))
 			{
 				var fields = section.Value.GetType().GetFields();
 				if (fields.Any(field => field.GetCustomAttributes<DescAttribute>(false).Length > 0))
+				{
 					Console.WriteLine($"## {section.Key}");
-				else
-					Console.WriteLine();
+					if (section.Key == "Launch")
+					{
+						Console.WriteLine("These are runtime parameters which can't be defined in `settings.yaml`.");
+						Console.WriteLine();
+					}
+				}
 
 				foreach (var field in fields)
 				{
@@ -87,8 +93,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						Console.WriteLine($"\t{field.Name}: {value}");
 						Console.WriteLine("```");
 					}
-					else
-						Console.WriteLine();
 				}
 			}
 		}
