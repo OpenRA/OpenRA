@@ -298,6 +298,7 @@ FAPW:
 
 ATEF:
 	Inherits: ^FakeBuilding
+	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@shape: ^2x2Shape
 	Selectable:
@@ -329,6 +330,7 @@ ATEF:
 
 PDOF:
 	Inherits: ^FakeBuilding
+	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@shape: ^2x2Shape
 	Selectable:
@@ -363,6 +365,7 @@ PDOF:
 
 MSLF:
 	Inherits: ^FakeBuilding
+	Inherits@infiltrate: ^InfiltratableFake
 	Inherits@IDISABLE: ^DisableOnLowPower
 	Inherits@shape: ^2x1Shape
 	Selectable:
