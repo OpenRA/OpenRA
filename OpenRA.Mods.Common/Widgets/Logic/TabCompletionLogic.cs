@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string prefix;
 		string suffix;
 
-		public IList<string> Commands { get; set; }
+		public IEnumerable<string> Commands { get; set; }
 
 		public IList<string> Names { get; set; }
 
