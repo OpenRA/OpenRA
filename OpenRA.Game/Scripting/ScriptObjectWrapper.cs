@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using Eluant;
 using Eluant.ObjectBinding;
@@ -21,16 +22,32 @@ namespace OpenRA.Scripting
 		protected abstract string MemberNotFoundError(string memberName);
 
 		protected readonly ScriptContext Context;
-		Dictionary<string, ScriptMemberWrapper> members;
+		readonly Dictionary<string, ScriptMemberWrapper> members = new Dictionary<string, ScriptMemberWrapper>();
 
 		public ScriptObjectWrapper(ScriptContext context)
 		{
 			Context = context;
 		}
 
-		protected void Bind(IEnumerable<object> clrObjects)
+		protected static object[] CreateObjects(Type[] types, object[] constructorArgs)
 		{
-			members = new Dictionary<string, ScriptMemberWrapper>();
+			var i = 0;
+			var argTypes = new Type[constructorArgs.Length];
+			foreach (var ca in constructorArgs)
+				argTypes[i++] = ca.GetType();
+
+			var objects = new object[types.Length];
+			i = 0;
+			foreach (var type in types)
+				objects[i++] = type.GetConstructor(argTypes).Invoke(constructorArgs);
+
+			return objects;
+		}
+
+		protected void Bind(object[] clrObjects)
+		{
+			members.Clear();
+
 			foreach (var obj in clrObjects)
 			{
 				var wrappable = ScriptMemberWrapper.WrappableMembers(obj.GetType());
@@ -42,6 +59,13 @@ namespace OpenRA.Scripting
 					members.Add(m.Name, new ScriptMemberWrapper(Context, obj, m));
 				}
 			}
+		}
+
+		protected void Unbind(Type targetType)
+		{
+			foreach (var m in members)
+				if (targetType == m.Value.Target.GetType())
+					members.Remove(m.Key);
 		}
 
 		public bool ContainsKey(string key) { return members.ContainsKey(key); }

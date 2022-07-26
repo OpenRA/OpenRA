@@ -61,30 +61,33 @@ namespace OpenRA.Scripting
 				return true;
 			}
 
-			if (value is LuaNumber && t.IsAssignableFrom(typeof(double)))
+			if (value is LuaNumber)
 			{
-				clrObject = value.ToNumber().Value;
-				return true;
-			}
+				if (t.IsAssignableFrom(typeof(double)))
+				{
+					clrObject = value.ToNumber().Value;
+					return true;
+				}
 
-			// Need an explicit test for double -> int
-			// TODO: Lua 5.3 will introduce an integer type, so this will be able to go away
-			if (value is LuaNumber && t.IsAssignableFrom(typeof(int)))
-			{
-				clrObject = (int)value.ToNumber().Value;
-				return true;
-			}
+				// Need an explicit test for double -> int
+				// TODO: Lua 5.3 will introduce an integer type, so this will be able to go away
+				if (t.IsAssignableFrom(typeof(int)))
+				{
+					clrObject = (int)value.ToNumber().Value;
+					return true;
+				}
 
-			if (value is LuaNumber && t.IsAssignableFrom(typeof(short)))
-			{
-				clrObject = (short)value.ToNumber().Value;
-				return true;
-			}
+				if (t.IsAssignableFrom(typeof(short)))
+				{
+					clrObject = (short)value.ToNumber().Value;
+					return true;
+				}
 
-			if (value is LuaNumber && t.IsAssignableFrom(typeof(byte)))
-			{
-				clrObject = (byte)value.ToNumber().Value;
-				return true;
+				if (t.IsAssignableFrom(typeof(byte)))
+				{
+					clrObject = (byte)value.ToNumber().Value;
+					return true;
+				}
 			}
 
 			if (value is LuaString && t.IsAssignableFrom(typeof(string)))

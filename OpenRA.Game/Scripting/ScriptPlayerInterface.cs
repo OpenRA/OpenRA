@@ -9,9 +9,6 @@
  */
 #endregion
 
-using System;
-using System.Linq;
-
 namespace OpenRA.Scripting
 {
 	public class ScriptPlayerInterface : ScriptObjectWrapper
@@ -25,15 +22,7 @@ namespace OpenRA.Scripting
 			: base(context)
 		{
 			this.player = player;
-
-			var args = new object[] { context, player };
-			var objects = context.PlayerCommands.Select(cg =>
-			{
-				var groupCtor = cg.GetConstructor(new Type[] { typeof(ScriptContext), typeof(Player) });
-				return groupCtor.Invoke(args);
-			});
-
-			Bind(objects);
+			Bind(CreateObjects(context.PlayerCommands, new object[] { context, player }));
 		}
 	}
 }

@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 
 namespace OpenRA.Scripting
@@ -38,26 +37,21 @@ namespace OpenRA.Scripting
 
 		void InitializeBindings()
 		{
-			var commandClasses = Context.ActorCommands[actor.Info].AsEnumerable();
+			var commandClasses = Context.ActorCommands[actor.Info];
 
-			// Destroyed actors cannot have their traits queried
+			// Destroyed actors cannot have their traits queried. In rare cases the actor may have already been destroyed.
 			if (actor.Disposed)
-				commandClasses = commandClasses.Where(c => c.HasAttribute<ExposedForDestroyedActors>());
+				commandClasses = commandClasses.Where(c => c.HasAttribute<ExposedForDestroyedActors>()).ToArray();
 
-			var args = new object[] { Context, actor };
-			var objects = commandClasses.Select(cg =>
-			{
-				var groupCtor = cg.GetConstructor(new Type[] { typeof(ScriptContext), typeof(Actor) });
-				return groupCtor.Invoke(args);
-			});
-
-			Bind(objects);
+			Bind(CreateObjects(commandClasses, new object[] { Context, actor }));
 		}
 
 		public void OnActorDestroyed()
 		{
-			// Regenerate bindings to remove access to bogus trait state
-			InitializeBindings();
+			// Remove bindings not available to destroyed actors.
+			foreach (var commandClass in Context.ActorCommands[actor.Info])
+				if (!commandClass.HasAttribute<ExposedForDestroyedActors>())
+					Unbind(commandClass);
 		}
 	}
 }
