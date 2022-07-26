@@ -931,6 +931,8 @@ high_tech_factory:
 		CameraActor: camera
 		ArrowSequence: arrow
 		CircleSequence: circles
+		UseDirectionalTarget: True
+		DirectionArrowAnimation: ornidirection
 		SupportPowerPaletteOrder: 10
 		EndChargeTextNotification: Airstrike ready.
 		SelectTargetTextNotification: Select target.

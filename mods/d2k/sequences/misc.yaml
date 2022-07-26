@@ -517,6 +517,32 @@ sandcraters:
 		Length: 16
 		Offset: -16,-16
 
+ornidirection:
+	arrow-t: MOUSE.R8
+		Start: 112
+		Offset: -25, -53, 0
+	arrow-tr: MOUSE.R8
+		Start: 120
+		Offset: 6, -47, 0
+	arrow-r: MOUSE.R8
+		Start: 128
+		Offset: 17, -26, 0
+	arrow-br: MOUSE.R8
+		Start: 136
+		Offset: 6, -1, 0
+	arrow-b: MOUSE.R8
+		Start: 148
+		Offset: -25, 7, 0
+	arrow-bl: MOUSE.R8
+		Start: 156
+		Offset: -52, -3, 0
+	arrow-l: MOUSE.R8
+		Start: 164
+		Offset: -61, -26, 0
+	arrow-tl: MOUSE.R8
+		Start: 172
+		Offset: -52, -44, 0
+
 null:
 	idle: DATA.R8
 		Start: 3552
