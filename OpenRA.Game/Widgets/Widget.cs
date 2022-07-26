@@ -378,9 +378,10 @@ namespace OpenRA.Widgets
 				return null;
 
 			// Do any of our children specify a cursor?
-			foreach (var child in Children.OfType<Widget>().Reverse())
+			// PERF: Avoid LINQ.
+			for (var i = Children.Count - 1; i >= 0; --i)
 			{
-				var cc = child.GetCursorOuter(pos);
+				var cc = Children[i].GetCursorOuter(pos);
 				if (cc != null)
 					return cc;
 			}
@@ -405,8 +406,9 @@ namespace OpenRA.Widgets
 			var oldMouseOver = Ui.MouseOverWidget;
 
 			// Send the event to the deepest children first and bubble up if unhandled
-			foreach (var child in Children.OfType<Widget>().Reverse())
-				if (child.HandleMouseInputOuter(mi))
+			// PERF: Avoid LINQ.
+			for (var i = Children.Count - 1; i >= 0; --i)
+				if (Children[i].HandleMouseInputOuter(mi))
 					return true;
 
 			if (IgnoreChildMouseOver)
@@ -426,8 +428,9 @@ namespace OpenRA.Widgets
 				return false;
 
 			// Can any of our children handle this?
-			foreach (var child in Children.OfType<Widget>().Reverse())
-				if (child.HandleKeyPressOuter(e))
+			// PERF: Avoid LINQ.
+			for (var i = Children.Count - 1; i >= 0; --i)
+				if (Children[i].HandleKeyPressOuter(e))
 					return true;
 
 			// Do any widgety behavior
@@ -444,8 +447,9 @@ namespace OpenRA.Widgets
 				return false;
 
 			// Can any of our children handle this?
-			foreach (var child in Children.OfType<Widget>().Reverse())
-				if (child.HandleTextInputOuter(text))
+			// PERF: Avoid LINQ.
+			for (var i = Children.Count - 1; i >= 0; --i)
+				if (Children[i].HandleTextInputOuter(text))
 					return true;
 
 			// Do any widgety behavior (enter text etc)
@@ -531,8 +535,9 @@ namespace OpenRA.Widgets
 			ForceYieldKeyboardFocus();
 			ForceYieldMouseFocus();
 
-			foreach (var c in Children.OfType<Widget>().Reverse())
-				c.Hidden();
+			// PERF: Avoid LINQ.
+			for (var i = Children.Count - 1; i >= 0; --i)
+				Children[i].Hidden();
 		}
 
 		public virtual void Removed()
@@ -542,8 +547,9 @@ namespace OpenRA.Widgets
 			ForceYieldKeyboardFocus();
 			ForceYieldMouseFocus();
 
-			foreach (var c in Children.OfType<Widget>().Reverse())
-				c.Removed();
+			// PERF: Avoid LINQ.
+			for (var i = Children.Count - 1; i >= 0; --i)
+				Children[i].Removed();
 
 			if (LogicObjects != null)
 			{
