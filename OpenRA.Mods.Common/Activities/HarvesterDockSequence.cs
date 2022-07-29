@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		protected enum DockingState { Wait, Turn, Drag, Dock, Loop, Undock, Complete }
 
-		protected readonly Actor Refinery;
+		protected readonly IAcceptResources Proc;
 		protected readonly Harvester Harv;
 		protected readonly WAngle DockAngle;
 		protected readonly bool IsDragRequired;
@@ -33,17 +33,17 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected DockingState dockingState;
 
-		public HarvesterDockSequence(Actor self, Actor refinery, WAngle dockAngle, bool isDragRequired, in WVec dragOffset, int dragLength)
+		public HarvesterDockSequence(Harvester self, IAcceptResources refinery, WAngle dockAngle, bool isDragRequired, in WVec dragOffset, int dragLength)
 		{
 			dockingState = DockingState.Turn;
-			Refinery = refinery;
+			Proc = refinery;
 			DockAngle = dockAngle;
 			IsDragRequired = isDragRequired;
 			DragOffset = dragOffset;
 			DragLength = dragLength;
-			Harv = self.Trait<Harvester>();
-			StartDrag = self.CenterPosition;
-			EndDrag = refinery.CenterPosition + DragOffset;
+			Harv = self;
+			StartDrag = self.Self.CenterPosition;
+			EndDrag = refinery.Self.CenterPosition + DragOffset;
 		}
 
 		public override bool Tick(Actor self)
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Drag:
-					if (IsCanceling || !Refinery.IsInWorld || Refinery.IsDead || Harv.IsTraitDisabled)
+					if (IsCanceling || !Proc.IsAliveAndInWorld || Harv.IsTraitDisabled)
 						return true;
 
 					dockingState = DockingState.Dock;
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Dock:
-					if (!IsCanceling && Refinery.IsInWorld && !Refinery.IsDead && !Harv.IsTraitDisabled)
+					if (!IsCanceling && Proc.IsAliveAndInWorld && !Harv.IsTraitDisabled)
 						OnStateDock(self);
 					else
 						dockingState = DockingState.Undock;
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Loop:
-					if (IsCanceling || !Refinery.IsInWorld || Refinery.IsDead || Harv.IsTraitDisabled || Harv.TickUnload(self, Refinery))
+					if (IsCanceling || Harv.TickUnload(Proc))
 						dockingState = DockingState.Undock;
 
 					return false;
@@ -87,8 +87,7 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Complete:
-					Harv.LastLinkedProc = Harv.LinkedProc;
-					Harv.LinkProc(null);
+					Harv.UnlinkProc();
 					if (IsDragRequired)
 						QueueChild(new Drag(self, EndDrag, StartDrag, DragLength));
 
@@ -100,12 +99,12 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			yield return Target.FromActor(Refinery);
+			yield return Target.FromActor(Proc.Self);
 		}
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
-			yield return new TargetLineNode(Target.FromActor(Refinery), Color.Green);
+			yield return new TargetLineNode(Target.FromActor(Proc.Self), Color.Green);
 		}
 
 		public abstract void OnStateDock(Actor self);

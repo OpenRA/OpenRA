@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, CPos exit); }
 	public interface INotifyOtherProduction { void UnitProducedByOther(Actor self, Actor producer, Actor produced, string productionType, TypeDictionary init); }
 	public interface INotifyDelivery { void IncomingDelivery(Actor self); void Delivered(Actor self); }
-	public interface INotifyDocking { void Docked(Actor self, Actor harvester); void Undocked(Actor self, Actor harvester); }
+	public interface INotifyDocking { void Docked(IAcceptResources proc, Actor harvester); void Undocked(IAcceptResources proc, Actor harvester); }
 
 	[RequireExplicitImplementation]
 	public interface INotifyResourceAccepted { void OnResourceAccepted(Actor self, Actor refinery, string resourceType, int count, int value); }
@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyHarvesterAction
 	{
 		void MovingToResources(Actor self, CPos targetCell);
-		void MovingToRefinery(Actor self, Actor refineryActor);
+		void MovingToRefinery(Actor self, IAcceptResources refinery);
 		void MovementCancelled(Actor self);
 		void Harvested(Actor self, string resourceType);
 		void Docked();
@@ -267,10 +267,16 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IAcceptResourcesInfo : ITraitInfoInterface { }
 	public interface IAcceptResources
 	{
-		void OnDock(Actor harv, DeliverResources dockOrder);
+		void OnDock(Harvester harv, DeliverResources dockOrder);
 		int AcceptResources(string resourceType, int count = 1);
-		CVec DeliveryOffset { get; }
+		CPos Location { get; }
+		bool LinkHarvester(Harvester harvester);
+		void UnlinkHarvester(Harvester harvester);
+		void RefreshLinkedHarvesters();
 		bool AllowDocking { get; }
+		int Occupancy { get; }
+		Actor Self { get; }
+		bool IsAliveAndInWorld { get; }
 	}
 
 	public interface IProvidesAssetBrowserPalettes

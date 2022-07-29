@@ -63,18 +63,22 @@ namespace OpenRA.Mods.Common.Traits
 		int currentDisplayTick = 0;
 		int currentDisplayValue = 0;
 
-		[Sync]
-		Actor dockedHarv = null;
+		Harvester dockedHarv = null;
+		readonly List<Harvester> linkedHarvesters = new List<Harvester>();
 
 		[Sync]
 		bool preventDock = false;
 
 		public bool AllowDocking => !preventDock;
-		public CVec DeliveryOffset => info.DockOffset;
+		CPos IAcceptResources.Location => self.Location + info.DockOffset;
 		public WAngle DeliveryAngle => info.DockAngle;
 		public bool IsDragRequired => info.IsDragRequired;
 		public WVec DragOffset => info.DragOffset;
 		public int DragLength => info.DragLength;
+
+		bool IAcceptResources.IsAliveAndInWorld => !self.IsDead && self.IsInWorld && !self.Disposed;
+		int IAcceptResources.Occupancy { get { RefreshLinkedHarvesters(); return linkedHarvesters.Count; } }
+		Actor IAcceptResources.Self => self;
 
 		public Refinery(Actor self, RefineryInfo info)
 		{
@@ -89,15 +93,38 @@ namespace OpenRA.Mods.Common.Traits
 			resourceValueModifiers = self.TraitsImplementing<IResourceValueModifier>().ToArray().Select(m => m.GetResourceValueModifier());
 		}
 
-		public virtual Activity DockSequence(Actor harv, Actor self)
+		public virtual Activity DockSequence(Harvester harv, IAcceptResources self)
 		{
 			return new SpriteHarvesterDockSequence(harv, self, DeliveryAngle, IsDragRequired, DragOffset, DragLength);
 		}
 
-		public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()
+		bool IAcceptResources.LinkHarvester(Harvester harv)
 		{
-			return self.World.ActorsWithTrait<Harvester>()
-				.Where(a => a.Trait.LinkedProc == self);
+			RefreshLinkedHarvesters();
+			if (linkedHarvesters.Count < harv.Info.MaxUnloadQueue && !linkedHarvesters.Contains(harv))
+			{
+				linkedHarvesters.Add(harv);
+				return true;
+			}
+
+			return false;
+		}
+
+		public void UnlinkHarvester(Harvester harvester)
+		{
+			if (linkedHarvesters.Contains(harvester))
+			{
+				harvester.UnlinkProc(this);
+				linkedHarvesters.Remove(harvester);
+			}
+		}
+
+		public void RefreshLinkedHarvesters()
+		{
+			var unlink = linkedHarvesters
+				.Where(h => !h.Self.IsInWorld || h.Self.IsDead);
+
+			unlink.Do(h => UnlinkHarvester(h));
 		}
 
 		int IAcceptResources.AcceptResources(string resourceType, int count)
@@ -146,7 +173,7 @@ namespace OpenRA.Mods.Common.Traits
 		void ITick.Tick(Actor self)
 		{
 			// Harvester was killed while unloading
-			if (dockedHarv != null && dockedHarv.IsDead)
+			if (dockedHarv != null && dockedHarv.Self.IsDead)
 				dockedHarv = null;
 
 			if (info.ShowTicks && currentDisplayValue > 0 && --currentDisplayTick <= 0)
@@ -162,16 +189,16 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			CancelDock();
-			foreach (var harv in GetLinkedHarvesters())
-				harv.Trait.UnlinkProc(harv.Actor, self);
+			while (linkedHarvesters.Count > 0)
+				UnlinkHarvester(linkedHarvesters[0]);
 		}
 
-		public void OnDock(Actor harv, DeliverResources dockOrder)
+		void IAcceptResources.OnDock(Harvester harv, DeliverResources dockOrder)
 		{
 			if (!preventDock)
 			{
 				dockOrder.QueueChild(new CallFunc(() => dockedHarv = harv, false));
-				dockOrder.QueueChild(DockSequence(harv, self));
+				dockOrder.QueueChild(DockSequence(harv, this));
 				dockOrder.QueueChild(new CallFunc(() => dockedHarv = null, false));
 			}
 		}
@@ -179,8 +206,8 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			// Unlink any harvesters
-			foreach (var harv in GetLinkedHarvesters())
-				harv.Trait.UnlinkProc(harv.Actor, self);
+			while (linkedHarvesters.Count > 0)
+				UnlinkHarvester(linkedHarvesters[0]);
 
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
@@ -190,18 +217,18 @@ namespace OpenRA.Mods.Common.Traits
 			// Steal any docked harv too
 			if (dockedHarv != null)
 			{
-				dockedHarv.ChangeOwner(newOwner);
+				dockedHarv.Self.ChangeOwner(newOwner);
 
 				// Relink to this refinery
-				dockedHarv.Trait<Harvester>().LinkProc(self);
+				dockedHarv.LinkProc(this);
 			}
 		}
 
 		void INotifySold.Selling(Actor self) { CancelDock(); }
 		void INotifySold.Sold(Actor self)
 		{
-			foreach (var harv in GetLinkedHarvesters())
-				harv.Trait.UnlinkProc(harv.Actor, self);
+			while (linkedHarvesters.Count > 0)
+				UnlinkHarvester(linkedHarvesters[0]);
 		}
 	}
 }

@@ -15,7 +15,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
-using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -110,17 +109,14 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly IReadOnlyDictionary<string, int> Contents;
 
+		public readonly Actor Self;
 		readonly Mobile mobile;
 		readonly IResourceLayer resourceLayer;
 		readonly ResourceClaimLayer claimLayer;
 		readonly Dictionary<string, int> contents = new Dictionary<string, int>();
 		int conditionToken = Actor.InvalidConditionToken;
 
-		[Sync]
-		public Actor LastLinkedProc = null;
-
-		[Sync]
-		public Actor LinkedProc = null;
+		IAcceptResources linkedProc = null;
 
 		[Sync]
 		int currentUnloadTicks;
@@ -144,6 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 			mobile = self.Trait<Mobile>();
 			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
+			Self = self;
 		}
 
 		protected override void Created(Actor self)
@@ -152,26 +149,49 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Note: This is queued in a FrameEndTask because otherwise the activity is dropped/overridden while moving out of a factory.
 			if (Info.SearchOnCreation)
-				self.World.AddFrameEndTask(w => self.QueueActivity(new FindAndDeliverResources(self)));
+				self.World.AddFrameEndTask(w => self.QueueActivity(new FindAndDeliverResources(this)));
 
 			base.Created(self);
 		}
 
-		public void LinkProc(Actor proc)
+		public IAcceptResources LinkedProc
 		{
-			LinkedProc = proc;
+			get
+			{
+				if (linkedProc != null)
+				{
+					if (IsTraitDisabled || !linkedProc.IsAliveAndInWorld)
+						UnlinkProc();
+
+					linkedProc?.RefreshLinkedHarvesters();
+				}
+
+				return linkedProc;
+			}
 		}
 
-		public void UnlinkProc(Actor self, Actor proc)
+		/// <summary>
+		/// Should be called only from IAcceptResources, use IAcceptResources.UnlinkHarvester(Harvester) or UnlinkProc() instead
+		/// </summary>
+		public void UnlinkProc(IAcceptResources proc)
 		{
-			if (LinkedProc == proc)
-				ChooseNewProc(self, proc);
+			if (linkedProc == proc)
+				linkedProc = null;
 		}
 
-		public void ChooseNewProc(Actor self, Actor ignore)
+		public void UnlinkProc()
 		{
-			LastLinkedProc = null;
-			LinkProc(ClosestProc(self, ignore));
+			LinkedProc?.UnlinkHarvester(this);
+		}
+
+		public void LinkProc(IAcceptResources proc)
+		{
+			if (proc == null || LinkedProc == proc)
+				return;
+
+			UnlinkProc();
+			if (proc.IsAliveAndInWorld && !IsTraitDisabled && proc.LinkHarvester(this))
+				linkedProc = proc;
 		}
 
 		bool IsAcceptableProcType(Actor proc)
@@ -180,38 +200,34 @@ namespace OpenRA.Mods.Common.Traits
 				Info.DeliveryBuildings.Contains(proc.Info.Name);
 		}
 
-		public Actor ClosestProc(Actor self, Actor ignore)
+		public IAcceptResources ChooseNewProc(IAcceptResources ignore)
+		{
+			var proc = ClosestProc(ignore);
+			LinkProc(proc);
+			return proc;
+		}
+
+		public IAcceptResources ClosestProc(IAcceptResources ignore)
 		{
 			// Find all refineries and their occupancy count:
-			var refineries = self.World.ActorsWithTrait<IAcceptResources>()
-				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor))
-				.Select(r => new
-				{
-					Location = r.Actor.Location + r.Trait.DeliveryOffset,
-					Actor = r.Actor,
-					Occupancy = self.World.ActorsHavingTrait<Harvester>(h => h.LinkedProc == r.Actor).Count()
-				}).ToLookup(r => r.Location);
+			var refineries = Self.World.ActorsWithTrait<IAcceptResources>()
+				.Where(r => r.Trait != ignore && r.Actor.Owner == Self.Owner && IsAcceptableProcType(r.Actor) && r.Trait.Occupancy < Info.MaxUnloadQueue)
+				.ToLookup(r => r.Trait.Location);
 
 			// Start a search from each refinery's delivery location:
 			var path = mobile.PathFinder.FindUnitPathToTargetCell(
-				self, refineries.Select(r => r.Key), self.Location, BlockedByActor.None,
+				Self, refineries.Select(r => r.Key), Self.Location, BlockedByActor.None,
 				location =>
 				{
 					if (!refineries.Contains(location))
 						return 0;
 
-					var occupancy = refineries[location].First().Occupancy;
-
-					// Too many harvesters clogs up the refinery's delivery location:
-					if (occupancy >= Info.MaxUnloadQueue)
-						return PathGraph.PathCostForInvalidPath;
-
 					// Prefer refineries with less occupancy (multiplier is to offset distance cost):
-					return occupancy * Info.UnloadQueueCostModifier;
+					return refineries[location].First().Trait.Occupancy * Info.UnloadQueueCostModifier;
 				});
 
 			if (path.Count > 0)
-				return refineries[path.Last()].First().Actor;
+				return refineries[path.Last()].First().Trait;
 
 			return null;
 		}
@@ -244,20 +260,23 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		// Returns true when unloading is complete
-		public virtual bool TickUnload(Actor self, Actor proc)
+		public virtual bool TickUnload(IAcceptResources proc)
 		{
+			// Stop if proc becomes unavailable
+			if (LinkedProc == null)
+				return true;
+
 			// Wait until the next bale is ready
 			if (--currentUnloadTicks > 0)
 				return false;
 
 			if (contents.Keys.Count > 0)
 			{
-				var acceptResources = proc.Trait<IAcceptResources>();
 				foreach (var c in contents)
 				{
 					var resourceType = c.Key;
 					var count = Math.Min(c.Value, Info.BaleUnloadAmount);
-					var accepted = acceptResources.AcceptResources(resourceType, count);
+					var accepted = proc.AcceptResources(resourceType, count);
 					if (accepted == 0)
 						continue;
 
@@ -266,7 +285,7 @@ namespace OpenRA.Mods.Common.Traits
 						contents.Remove(resourceType);
 
 					currentUnloadTicks = Info.BaleUnloadDelay;
-					UpdateCondition(self);
+					UpdateCondition(Self);
 					return false;
 				}
 			}
@@ -330,7 +349,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString == "Harvest")
 			{
 				// NOTE: An explicit harvest order allows the harvester to decide which refinery to deliver to.
-				LinkProc(null);
+				UnlinkProc();
 
 				CPos loc;
 				if (order.Target.Type != TargetType.Invalid)
@@ -346,7 +365,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				// FindResources takes care of calling INotifyHarvesterAction
-				self.QueueActivity(order.Queued, new FindAndDeliverResources(self, loc));
+				self.QueueActivity(order.Queued, new FindAndDeliverResources(this, loc));
 				self.ShowTargetLines();
 			}
 			else if (order.OrderString == "Deliver")
@@ -356,12 +375,11 @@ namespace OpenRA.Mods.Common.Traits
 				if (order.Target.Type != TargetType.Actor)
 					return;
 
-				var targetActor = order.Target.Actor;
-				var iao = targetActor.TraitOrDefault<IAcceptResources>();
-				if (iao == null || !iao.AllowDocking || !IsAcceptableProcType(targetActor))
+				var proc = order.Target.Actor.TraitOrDefault<IAcceptResources>();
+				if (proc == null || !proc.AllowDocking || !IsAcceptableProcType(proc.Self))
 					return;
 
-				self.QueueActivity(order.Queued, new FindAndDeliverResources(self, targetActor));
+				self.QueueActivity(order.Queued, new FindAndDeliverResources(this, proc));
 				self.ShowTargetLines();
 			}
 		}
@@ -373,8 +391,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void TraitDisabled(Actor self)
 		{
-			LastLinkedProc = null;
-			LinkedProc = null;
+			UnlinkProc();
 			contents.Clear();
 
 			if (conditionToken != Actor.InvalidConditionToken)

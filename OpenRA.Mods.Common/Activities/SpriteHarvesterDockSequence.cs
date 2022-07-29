@@ -20,11 +20,11 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WithDockingAnimationInfo wda;
 		protected bool dockAnimPlayed;
 
-		public SpriteHarvesterDockSequence(Actor self, Actor refinery, WAngle dockAngle, bool isDragRequired, in WVec dragOffset, int dragLength)
+		public SpriteHarvesterDockSequence(Harvester self, IAcceptResources refinery, WAngle dockAngle, bool isDragRequired, in WVec dragOffset, int dragLength)
 			: base(self, refinery, dockAngle, isDragRequired, dragOffset, dragLength)
 		{
-			wsb = self.Trait<WithSpriteBody>();
-			wda = self.Info.TraitInfoOrDefault<WithDockingAnimationInfo>();
+			wsb = self.Self.Trait<WithSpriteBody>();
+			wda = self.Self.Info.TraitInfoOrDefault<WithDockingAnimationInfo>();
 		}
 
 		public override void OnStateDock(Actor self)
@@ -32,8 +32,8 @@ namespace OpenRA.Mods.Common.Activities
 			foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
 				trait.Docked();
 
-			foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
-				nd.Docked(Refinery, self);
+			foreach (var nd in Proc.Self.TraitsImplementing<INotifyDocking>())
+				nd.Docked(Proc, self);
 
 			if (wda != null)
 				wsb.PlayCustomAnimation(self, wda.DockSequence, () => wsb.PlayCustomAnimationRepeating(self, wda.DockLoopSequence));
@@ -65,9 +65,9 @@ namespace OpenRA.Mods.Common.Activities
 			foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
 				trait.Undocked();
 
-			if (Refinery.IsInWorld && !Refinery.IsDead)
-				foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
-					nd.Undocked(Refinery, self);
+			if (Proc.IsAliveAndInWorld)
+				foreach (var nd in Proc.Self.TraitsImplementing<INotifyDocking>())
+					nd.Undocked(Proc, self);
 		}
 	}
 }

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public TiberianSunRefinery(Actor self, RefineryInfo info)
 			: base(self, info) { }
 
-		public override Activity DockSequence(Actor harv, Actor self)
+		public override Activity DockSequence(Harvester harv, IAcceptResources self)
 		{
 			return new VoxelHarvesterDockSequence(harv, self, DeliveryAngle, IsDragRequired, DragOffset, DragLength);
 		}

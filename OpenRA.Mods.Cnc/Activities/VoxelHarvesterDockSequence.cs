@@ -20,11 +20,11 @@ namespace OpenRA.Mods.Cnc.Activities
 		readonly WithVoxelUnloadBody body;
 		readonly WithDockingOverlay spriteOverlay;
 
-		public VoxelHarvesterDockSequence(Actor self, Actor refinery, WAngle dockAngle, bool isDragRequired, in WVec dragOffset, int dragLength)
+		public VoxelHarvesterDockSequence(Harvester self, IAcceptResources refinery, WAngle dockAngle, bool isDragRequired, in WVec dragOffset, int dragLength)
 			: base(self, refinery, dockAngle, isDragRequired, dragOffset, dragLength)
 		{
-			body = self.Trait<WithVoxelUnloadBody>();
-			spriteOverlay = refinery.TraitOrDefault<WithDockingOverlay>();
+			body = self.Self.Trait<WithVoxelUnloadBody>();
+			spriteOverlay = refinery.Self.TraitOrDefault<WithDockingOverlay>();
 		}
 
 		public override void OnStateDock(Actor self)
@@ -32,8 +32,8 @@ namespace OpenRA.Mods.Cnc.Activities
 			body.Docked = true;
 			foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
 				trait.Docked();
-			foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
-				nd.Docked(Refinery, self);
+			foreach (var nd in Proc.Self.TraitsImplementing<INotifyDocking>())
+				nd.Docked(Proc, self);
 
 			if (spriteOverlay != null && !spriteOverlay.Visible)
 			{
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			// If body.Docked wasn't set, we didn't actually dock and have to skip the undock overlay
 			if (!body.Docked)
 				dockingState = DockingState.Complete;
-			else if (Refinery.IsInWorld && !Refinery.IsDead && spriteOverlay != null && !spriteOverlay.Visible)
+			else if (Proc.IsAliveAndInWorld && spriteOverlay != null && !spriteOverlay.Visible)
 			{
 				dockingState = DockingState.Wait;
 				spriteOverlay.Visible = true;
@@ -66,9 +66,9 @@ namespace OpenRA.Mods.Cnc.Activities
 					foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
 						trait.Undocked();
 
-					if (Refinery.IsInWorld && !Refinery.IsDead)
-						foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
-							nd.Undocked(Refinery, self);
+					if (Proc.IsAliveAndInWorld)
+						foreach (var nd in Proc.Self.TraitsImplementing<INotifyDocking>())
+							nd.Undocked(Proc, self);
 				});
 			}
 			else
@@ -79,9 +79,9 @@ namespace OpenRA.Mods.Cnc.Activities
 				foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
 					trait.Undocked();
 
-				if (Refinery.IsInWorld && !Refinery.IsDead)
-					foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
-						nd.Undocked(Refinery, self);
+				if (Proc.IsAliveAndInWorld)
+					foreach (var nd in Proc.Self.TraitsImplementing<INotifyDocking>())
+						nd.Undocked(Proc, self);
 			}
 		}
 	}

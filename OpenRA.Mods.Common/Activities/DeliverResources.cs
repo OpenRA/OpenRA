@@ -21,23 +21,21 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly IMove movement;
 		readonly Harvester harv;
-		readonly Actor targetActor;
 		readonly INotifyHarvesterAction[] notifyHarvesterActions;
+		IAcceptResources proc;
 
-		Actor proc;
-
-		public DeliverResources(Actor self, Actor targetActor = null)
+		public DeliverResources(Harvester harv, IAcceptResources proc = null)
 		{
-			movement = self.Trait<IMove>();
-			harv = self.Trait<Harvester>();
-			this.targetActor = targetActor;
-			notifyHarvesterActions = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
+			this.harv = harv;
+			this.proc = proc;
+			movement = harv.Self.Trait<IMove>();
+			notifyHarvesterActions = harv.Self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
 		}
 
 		protected override void OnFirstRun(Actor self)
 		{
-			if (targetActor != null && targetActor.IsInWorld)
-				harv.LinkProc(targetActor);
+			if (proc != null && proc.IsAliveAndInWorld)
+				harv.LinkProc(proc);
 		}
 
 		public override bool Tick(Actor self)
@@ -49,30 +47,27 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 
 			// Find the nearest best refinery if not explicitly ordered to a specific refinery:
-			if (harv.LinkedProc == null || !harv.LinkedProc.IsInWorld)
-				harv.ChooseNewProc(self, null);
+			if (proc == null || harv.LinkedProc == null)
+				proc = harv.ChooseNewProc(null);
 
 			// No refineries exist; check again after delay defined in Harvester.
-			if (harv.LinkedProc == null)
+			if (proc == null || harv.LinkedProc == null)
 			{
 				QueueChild(new Wait(harv.Info.SearchForDeliveryBuildingDelay));
 				return false;
 			}
 
-			proc = harv.LinkedProc;
-			var iao = proc.Trait<IAcceptResources>();
-
-			if (self.Location != proc.Location + iao.DeliveryOffset)
+			if (self.Location != proc.Location)
 			{
 				foreach (var n in notifyHarvesterActions)
 					n.MovingToRefinery(self, proc);
 
-				QueueChild(movement.MoveTo(proc.Location + iao.DeliveryOffset, 0));
+				QueueChild(movement.MoveTo(proc.Location, 0));
 				return false;
 			}
 
 			QueueChild(new Wait(10));
-			iao.OnDock(self, this);
+			proc.OnDock(harv, this);
 			return true;
 		}
 
@@ -87,9 +82,9 @@ namespace OpenRA.Mods.Common.Activities
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
 			if (proc != null)
-				yield return new TargetLineNode(Target.FromActor(proc), harv.Info.DeliverLineColor);
+				yield return new TargetLineNode(Target.FromActor(proc.Self), harv.Info.DeliverLineColor);
 			else
-				yield return new TargetLineNode(Target.FromActor(harv.LinkedProc), harv.Info.DeliverLineColor);
+				yield return new TargetLineNode(Target.FromActor(harv.LinkedProc?.Self), harv.Info.DeliverLineColor);
 		}
 	}
 }

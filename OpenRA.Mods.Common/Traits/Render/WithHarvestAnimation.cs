@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void INotifyHarvesterAction.Docked() { }
 		void INotifyHarvesterAction.Undocked() { }
 		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell) { }
-		void INotifyHarvesterAction.MovingToRefinery(Actor self, Actor refineryActor) { }
+		void INotifyHarvesterAction.MovingToRefinery(Actor self, IAcceptResources refineryActor) { }
 		void INotifyHarvesterAction.MovementCancelled(Actor self) { }
 	}
 }

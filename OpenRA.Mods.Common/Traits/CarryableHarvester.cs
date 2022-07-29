@@ -34,10 +34,9 @@ namespace OpenRA.Mods.Common.Traits
 				t.RequestTransport(self, targetCell);
 		}
 
-		void INotifyHarvesterAction.MovingToRefinery(Actor self, Actor refineryActor)
+		void INotifyHarvesterAction.MovingToRefinery(Actor self, IAcceptResources refinery)
 		{
-			var iao = refineryActor.Trait<IAcceptResources>();
-			var location = refineryActor.Location + iao.DeliveryOffset;
+			var location = refinery.Location;
 			foreach (var t in transports)
 				t.RequestTransport(self, location);
 		}
