@@ -78,6 +78,7 @@ Player:
 		VehiclesFactoryTypes: light_factory, heavy_factory, starport
 		ProductionTypes: light_factory, heavy_factory, barracks, starport
 		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
 		BuildingLimits:
 			barracks: 1
 			refinery: 4
@@ -128,6 +129,7 @@ Player:
 		VehiclesFactoryTypes: light_factory, heavy_factory, starport
 		ProductionTypes: light_factory, heavy_factory, barracks, starport
 		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
 		BuildingLimits:
 			barracks: 1
 			refinery: 4
@@ -178,6 +180,7 @@ Player:
 		VehiclesFactoryTypes: light_factory, heavy_factory, starport
 		ProductionTypes: light_factory, heavy_factory, barracks, starport
 		SiloTypes: silo
+		DefenseTypes: medium_gun_turret,large_gun_turret
 		BuildingLimits:
 			barracks: 1
 			refinery: 4

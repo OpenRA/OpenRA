@@ -22,6 +22,7 @@ Player:
 		VehiclesFactoryTypes: gaweap, naweap
 		ProductionTypes: gapile, nahand, gaweap, naweap, gahpad, nahpad
 		SiloTypes: gasilo
+		DefenseTypes: gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
 		BuildingLimits:
 			proc: 4
 			gasilo: 2

@@ -91,6 +91,7 @@ Player:
 		VehiclesFactoryTypes: weap
 		ProductionTypes: barr,tent,weap
 		SiloTypes: silo
+		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
 		BuildingLimits:
 			proc: 4
 			barr: 1
@@ -133,6 +134,7 @@ Player:
 		ProductionTypes: barr,tent,weap,afld,hpad
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
+		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
 		BuildingLimits:
 			proc: 4
 			barr: 1
@@ -184,6 +186,7 @@ Player:
 		ProductionTypes: barr,tent,weap,afld,hpad
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
+		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
 		BuildingLimits:
 			proc: 4
 			barr: 1
@@ -236,6 +239,7 @@ Player:
 		ProductionTypes: barr,tent,weap,afld,hpad
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
+		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
 		BuildingLimits:
 			proc: 4
 			dome: 1

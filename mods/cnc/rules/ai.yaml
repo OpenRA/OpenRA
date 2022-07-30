@@ -97,6 +97,7 @@ Player:
 		VehiclesFactoryTypes: weap, afld
 		ProductionTypes: pyle, hand, weap, afld, hpad
 		SiloTypes: silo
+		DefenseTypes: gtwr,gun,atwr,obli,sam
 		BuildingLimits:
 			proc: 4
 			pyle: 3
@@ -140,6 +141,7 @@ Player:
 		VehiclesFactoryTypes: weap,afld
 		ProductionTypes: pyle,hand,weap,afld,hpad
 		SiloTypes: silo
+		DefenseTypes: gtwr,gun,atwr,obli,sam
 		BuildingLimits:
 			proc: 4
 			pyle: 3
@@ -183,6 +185,7 @@ Player:
 		VehiclesFactoryTypes: weap,afld
 		ProductionTypes: pyle,hand,weap,afld,hpad
 		SiloTypes: silo
+		DefenseTypes: gtwr,gun,atwr,obli,sam
 		BuildingLimits:
 			proc: 4
 			pyle: 4
