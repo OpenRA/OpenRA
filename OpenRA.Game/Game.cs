@@ -774,27 +774,41 @@ namespace OpenRA
 			// Timestamps for when the next logic and rendering should run
 			var nextLogic = RunTime;
 			var nextRender = RunTime;
-			var forcedNextRender = RunTime;
 			var renderBeforeNextTick = false;
 
 			while (state == RunStatus.Running)
 			{
-				var logicInterval = Ui.Timestep;
-				var logicWorld = worldRenderer?.World;
-
-				// ReplayTimestep = 0 means the replay is paused: we need to keep logicInterval as UI.Timestep to avoid breakage
-				if (logicWorld != null && !(logicWorld.IsReplay && logicWorld.ReplayTimestep == 0))
-					logicInterval = logicWorld == OrderManager.World ? OrderManager.SuggestedTimestep : logicWorld.Timestep;
-
 				// Ideal time between screen updates
-				var maxFramerate = Settings.Graphics.CapFramerate ? Settings.Graphics.MaxFramerate.Clamp(1, 1000) : 1000;
+				var settings = Settings.Graphics;
+				var maxFramerate = settings.CapFramerate ? settings.MaxFramerate.Clamp(1, 1000) : 1000;
 				var renderInterval = 1000 / maxFramerate;
 
+				var world = OrderManager.World;
+				var logicInterval = Ui.Timestep;
+				var isReplayOrLoadingGameSave = false;
+
+				// Retrieve logic interval
+				if (worldRenderer != null)
+				{
+					var logicWorld = worldRenderer.World;
+					var isPaused = false;
+					if (logicWorld.IsReplay)
+					{
+						// We need to keep logicInterval as UI.Timestep to avoid breakage
+						isPaused = logicWorld.ReplayTimestep == 0;
+						isReplayOrLoadingGameSave = true;
+					}
+
+					if (!isPaused)
+						logicInterval = logicWorld == world ? OrderManager.SuggestedTimestep : logicWorld.Timestep;
+				}
+
 				// Tick as fast as possible while restoring game saves, capping rendering at 5 FPS
-				if (OrderManager.World != null && OrderManager.World.IsLoadingGameSave)
+				if (world != null && world.IsLoadingGameSave)
 				{
 					logicInterval = 1;
 					renderInterval = 200;
+					isReplayOrLoadingGameSave = true;
 				}
 
 				var now = RunTime;
@@ -803,55 +817,56 @@ namespace OpenRA
 				if (now - nextLogic > MaxLogicTicksBehind)
 					nextLogic = now;
 
-				// When's the next update (logic or render)
-				var nextUpdate = Math.Min(nextLogic, nextRender);
-				if (now >= nextUpdate)
+				// Logic
+				if (now >= nextLogic && !renderBeforeNextTick)
 				{
-					var forceRender = renderBeforeNextTick || now >= forcedNextRender;
+					nextLogic += logicInterval;
 
-					if (now >= nextLogic && !renderBeforeNextTick)
-					{
-						nextLogic += logicInterval;
+					LogicTick();
 
-						LogicTick();
-
-						// Force at least one render per tick during regular gameplay
-						if (OrderManager.World != null && !OrderManager.World.IsLoadingGameSave && !OrderManager.World.IsReplay)
-							renderBeforeNextTick = true;
-					}
-
-					var haveSomeTimeUntilNextLogic = now < nextLogic;
-					var isTimeToRender = now >= nextRender;
-					if (!Renderer.WindowIsSuspended && ((isTimeToRender && haveSomeTimeUntilNextLogic) || forceRender))
-					{
-						nextRender = now + renderInterval;
-
-						// Pick the minimum allowed FPS (the lower between 'minReplayFPS'
-						// and the user's max frame rate) and convert it to maximum time
-						// allowed between screen updates.
-						// We do this before rendering to include the time rendering takes
-						// in this interval.
-						var maxRenderInterval = Math.Max(1000 / MinReplayFps, renderInterval);
-						forcedNextRender = now + maxRenderInterval;
-
-						RenderTick();
-						renderBeforeNextTick = false;
-					}
-
-					// Simulate a render tick if it was time to render but we skip actually rendering
-					if (Renderer.WindowIsSuspended && isTimeToRender)
-					{
-						// Make sure that nextUpdate is set to a proper minimum interval
-						nextRender = now + renderInterval;
-
-						// Still process SDL events to allow a restore to come through
-						Renderer.Window.PumpInput(new NullInputHandler());
-
-						// Ensure that we still logic tick despite not rendering
-						renderBeforeNextTick = false;
-					}
+					// Force at least one render per tick during regular gameplay
+					if (!isReplayOrLoadingGameSave)
+						renderBeforeNextTick = true;
 				}
-				else
+
+				// Render
+				if (renderBeforeNextTick || now >= nextRender)
+				{
+					nextRender = now + renderInterval;
+
+					if (Renderer.WindowIsSuspended)
+					{
+						// Still process SDL events if suspended to allow a restore to come through
+						Renderer.Window.PumpInput(new NullInputHandler());
+					}
+					else
+						RenderTick();
+
+					// In the normal situation - on performant systems - 'nextRender' lies in the future.
+					// In an exceptional situation (logic plus) render time may exceed the next render time.
+					// I.e. due to a (temporary) slow system or this process being paused or interrupted.
+					// Avoid getting caught in contineous (forced) rendering resulting in full CPU utilisation.
+					if (RunTime > nextRender)
+					{
+						// Temporarily fall back to minimum allowed FPS. The maximum time allowed between screen updates.
+						var maxRenderInterval = 1000 / MinReplayFps;
+						if (maxRenderInterval > renderInterval)
+							nextRender = now + maxRenderInterval;
+
+						now = RunTime;
+
+						// Skip frames
+						if (now > nextRender)
+							nextRender = now + maxRenderInterval;
+					}
+
+					renderBeforeNextTick = false;
+				}
+
+				// Sleep until next update
+				var nextUpdate = Math.Min(nextRender, nextLogic);
+				now = RunTime;
+				if (nextUpdate - now > 0)
 					Thread.Sleep((int)(nextUpdate - now));
 			}
 		}
