@@ -66,14 +66,13 @@ namespace OpenRA
 		{
 			// PERF: This is a hot path and must run with minimal added overhead, so we enumerate manually
 			// to allow us to call PerfTickLogger only once per iteration in the normal case.
-			var perfLogger = new PerfTickLogger();
 			using (var enumerator = e.GetEnumerator())
 			{
-				perfLogger.Start();
+				var start = PerfTickLogger.GetTimestamp();
 				while (enumerator.MoveNext())
 				{
 					a(enumerator.Current);
-					perfLogger.LogTickAndRestartTimer(text, enumerator.Current);
+					start = PerfTickLogger.LogLongTick(start, text, enumerator.Current);
 				}
 			}
 		}

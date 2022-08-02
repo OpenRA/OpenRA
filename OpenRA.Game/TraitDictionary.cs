@@ -145,7 +145,6 @@ namespace OpenRA
 		{
 			readonly List<Actor> actors = new();
 			readonly List<T> traits = new();
-			readonly PerfTickLogger perfLogger = new();
 
 			public int Queries { get; private set; }
 
@@ -305,14 +304,14 @@ namespace OpenRA
 
 			public void ApplyToAllTimed(Action<Actor, T> action, string text)
 			{
-				perfLogger.Start();
+				var start = PerfTickLogger.GetTimestamp();
 				for (var i = 0; i < actors.Count; i++)
 				{
 					var actor = actors[i];
 					var trait = traits[i];
 					action(actor, trait);
 
-					perfLogger.LogTickAndRestartTimer(text, trait);
+					start = PerfTickLogger.LogLongTick(start, text, trait);
 				}
 			}
 		}

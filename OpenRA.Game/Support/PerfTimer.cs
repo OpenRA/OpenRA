@@ -24,8 +24,9 @@ namespace OpenRA.Support
 		const string IndentationString = "|   ";
 		const string FormatSeperation = " ms ";
 		static readonly string FormatString = "{0," + Digits + ":0}" + FormatSeperation + "{1}";
+		static readonly string FormatStringLongTick = "{0," + Digits + ":0}" + FormatSeperation + "[{1}] {2}: {3}";
 		readonly string name;
-		readonly float thresholdMs;
+		readonly long thresholdTicks;
 		readonly byte depth;
 		readonly PerfTimer parent;
 		List<PerfTimer> children;
@@ -36,7 +37,7 @@ namespace OpenRA.Support
 		public PerfTimer(string name, float thresholdMs = 0)
 		{
 			this.name = name;
-			this.thresholdMs = thresholdMs;
+			thresholdTicks = MillisToTicks(thresholdMs);
 
 			parent = ParentThreadLocal.Value;
 			depth = parent == null ? (byte)0 : (byte)(parent.depth + 1);
@@ -53,7 +54,7 @@ namespace OpenRA.Support
 
 			if (parent == null)
 				Write();
-			else if (ElapsedMs > thresholdMs)
+			else if (ticks > thresholdTicks)
 			{
 				parent.children ??= new List<PerfTimer>();
 				parent.children.Add(this);
@@ -69,8 +70,13 @@ namespace OpenRA.Support
 					child.Write();
 				Log.Write("perf", string.Format(FormatString, ElapsedMs, GetFooter(Indentation)));
 			}
-			else if (ElapsedMs >= thresholdMs)
+			else if (ticks >= thresholdTicks)
 				Log.Write("perf", string.Format(FormatString, ElapsedMs, Indentation + name));
+		}
+
+		public static long MillisToTicks(float millis)
+		{
+			return (long)(Stopwatch.Frequency * millis / 1000f);
 		}
 
 		float ElapsedMs => 1000f * ticks / Stopwatch.Frequency;
@@ -79,12 +85,12 @@ namespace OpenRA.Support
 		{
 			var type = item.GetType();
 			var label = type == typeof(string) || type.IsGenericType ? item.ToString() : type.Name;
-			Log.Write("perf", string.Format(FormatString,
+			Log.Write("perf", string.Format(FormatStringLongTick,
 				1000f * (endStopwatchTicks - startStopwatchTicks) / Stopwatch.Frequency,
-				"[" + Game.LocalTick + "] " + name + ": " + label));
+				Game.LocalTick,
+				name,
+				label));
 		}
-
-		public static long LongTickThresholdInStopwatchTicks => (long)(Stopwatch.Frequency * Game.Settings.Debug.LongTickThresholdMs / 1000f);
 
 		#region Formatting helpers
 		static string GetHeader(string indentation, string label)
