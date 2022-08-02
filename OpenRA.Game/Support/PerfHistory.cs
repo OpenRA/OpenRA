@@ -20,8 +20,10 @@ namespace OpenRA.Support
 			Color.Red, Color.Green,
 			Color.Orange, Color.Yellow,
 			Color.Fuchsia, Color.Lime,
-			Color.LightBlue, Color.Blue,
-			Color.White, Color.Teal
+			Color.Cyan, Color.Blue,
+			Color.White, Color.Teal,
+			Color.Pink, Color.MediumPurple,
+			Color.Olive, Color.CornflowerBlue
 		};
 
 		static int nextColor;
