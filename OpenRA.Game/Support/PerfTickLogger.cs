@@ -13,36 +13,43 @@ using System.Diagnostics;
 
 namespace OpenRA.Support
 {
-	public sealed class PerfTickLogger
+	public static class PerfTickLogger
 	{
-		readonly DebugSettings settings = Game.Settings.Debug;
-		readonly long threshold = PerfTimer.LongTickThresholdInStopwatchTicks;
-		long start;
-		long current;
-		bool enabled;
+		public const long TimestampDisabled = 0L;
 
-		long CurrentTimestamp => enabled ? Stopwatch.GetTimestamp() : 0L;
+		static float durationThresholdMs = Game.Settings.Debug.LongTickThresholdMs;
+		static long durationThresholdTicks = PerfTimer.MillisToTicks(Game.Settings.Debug.LongTickThresholdMs);
 
-		public void Start()
+		/// <summary>Retrieve the current timestamp.</summary>
+		/// <returns>TimestampDisabled if performance logging is disabled.</returns>
+		public static long GetTimestamp()
 		{
-			enabled = settings.EnableSimulationPerfLogging;
-			start = CurrentTimestamp;
-		}
+			var settings = Game.Settings.Debug;
+			if (!settings.EnableSimulationPerfLogging)
+				return TimestampDisabled;
 
-		public void LogTickAndRestartTimer(string name, object item)
-		{
-			if (!enabled)
-				return;
-
-			current = CurrentTimestamp;
-			if (current - start > threshold)
+			// TODO: Let settings notify listeners on changes
+			if (durationThresholdMs != settings.LongTickThresholdMs)
 			{
-				PerfTimer.LogLongTick(start, current, name, item);
-				start = CurrentTimestamp;
-				return;
+				durationThresholdMs = Game.Settings.Debug.LongTickThresholdMs;
+				durationThresholdTicks = PerfTimer.MillisToTicks(durationThresholdMs);
 			}
 
-			start = current;
+			return Stopwatch.GetTimestamp();
+		}
+
+		/// <summary>Logs an entry in the performance log when the current time since the start tick exceeds the game debug setting `LongTickThresholdMs`.</summary>
+		/// <returns>TimestampDisabled if performance logging is disabled.</returns>
+		public static long LogLongTick(long startTimestamp, string name, object item)
+		{
+			if (startTimestamp == TimestampDisabled)
+				return TimestampDisabled;
+
+			var currentTimetamp = Stopwatch.GetTimestamp();
+			if (currentTimetamp - startTimestamp > durationThresholdTicks)
+				PerfTimer.LogLongTick(startTimestamp, currentTimetamp, name, item);
+
+			return currentTimetamp;
 		}
 	}
 }
