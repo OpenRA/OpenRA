@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool IsTraitDisabled
 		{
-			get => stateFlags.HasFlag(TraitState.Enabled);
+			get => !stateFlags.HasFlag(TraitState.Enabled);
 			private set
 			{
 				if (value)

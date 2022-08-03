@@ -603,9 +603,9 @@ namespace OpenRA.Traits
 		void PlayerDisconnected(Actor self, Player p);
 	}
 
-	/// <summary>Conditional state of a trait. Synced.</summary>
+	/// <summary>State flags of a trait. Synced. Storage size explicitly set to be compatible with int.</summary>
 	[Flags]
-	public enum TraitState
+	public enum TraitState : int
 	{
 		None = 0,
 		Enabled = 0x1,
