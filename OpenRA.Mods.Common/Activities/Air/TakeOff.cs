@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (aircraft.Info.TakeoffSounds.Length > 0)
 				Game.Sound.Play(SoundType.World, aircraft.Info.TakeoffSounds, self.World, aircraft.CenterPosition);
+
+			foreach (var notify in self.TraitsImplementing<INotifyTakeOff>())
+				notify.TakeOff(self);
 		}
 
 		public override bool Tick(Actor self)
