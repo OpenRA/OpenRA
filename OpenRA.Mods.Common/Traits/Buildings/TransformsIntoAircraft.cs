@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var currentTransform = self.CurrentActivity as Transform;
-			var transform = transforms.FirstOrDefault(t => t.HasStateFlags(TraitState.EnabledAndResumed));
+			var transform = transforms.FirstOrDefault(t => t.IsTraitEnabledAndResumed);
 			if (transform == null && currentTransform == null)
 				return;
 
@@ -211,7 +211,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				if (!(self.CurrentActivity is Transform || aircraft.transforms.Any(t => t.HasStateFlags(TraitState.EnabledAndResumed)))
+				if (!(self.CurrentActivity is Transform || aircraft.transforms.Any(t => t.IsTraitEnabledAndResumed))
 					|| (!explored && !aircraft.Info.MoveIntoShroud))
 					cursor = aircraft.Info.BlockedCursor;
 

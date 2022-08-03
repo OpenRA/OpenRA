@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			if (!HasStateFlags(TraitState.EnabledAndResumed))
+			if (!IsTraitEnabledAndResumed)
 				return;
 
 			if (e.Damage.Value <= 0 || !e.Damage.DamageTypes.Overlaps(info.DamageTriggers))

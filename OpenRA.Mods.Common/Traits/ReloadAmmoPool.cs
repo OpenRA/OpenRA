@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (!HasStateFlags(TraitState.EnabledAndResumed))
+			if (!IsTraitEnabledAndResumed)
 				return;
 
 			Reload(self, Info.Delay, Info.Count, Info.Sound);

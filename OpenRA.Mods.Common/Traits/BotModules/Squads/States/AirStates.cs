@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 				foreach (var ab in unit.TraitsImplementing<AttackBase>())
 				{
-					if (!ab.HasStateFlags(TraitState.EnabledAndResumed))
+					if (!ab.IsTraitEnabledAndResumed)
 						continue;
 
 					foreach (var a in ab.Armaments)

@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				var currentTransform = self.CurrentActivity as Transform;
-				var transform = transforms.FirstOrDefault(t => t.HasStateFlags(TraitState.EnabledAndResumed));
+				var transform = transforms.FirstOrDefault(t => t.IsTraitEnabledAndResumed);
 				if (transform == null && currentTransform == null)
 					return;
 
@@ -199,7 +199,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var explored = self.Owner.Shroud.IsExplored(location);
 				if (!self.World.Map.Contains(location) ||
-				    !(self.CurrentActivity is Transform || mobile.transforms.Any(t => t.HasStateFlags(TraitState.EnabledAndResumed)))
+				    !(self.CurrentActivity is Transform || mobile.transforms.Any(t => t.IsTraitEnabledAndResumed))
 				    || (!explored && !mobile.locomotor.Info.MoveIntoShroud)
 				    || (explored && !CanEnterCell(self, location)))
 					cursor = mobile.Info.BlockedCursor;

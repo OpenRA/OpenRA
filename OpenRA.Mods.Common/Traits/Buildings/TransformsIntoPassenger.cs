@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanEnter(Actor target)
 		{
-			if (!(self.CurrentActivity is Transform || transforms.Any(t => t.HasStateFlags(TraitState.EnabledAndResumed))))
+			if (!(self.CurrentActivity is Transform || transforms.Any(t => t.IsTraitEnabledAndResumed)))
 				return false;
 
 			var cargo = target.TraitOrDefault<Cargo>();
@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var currentTransform = self.CurrentActivity as Transform;
-			var transform = transforms.FirstOrDefault(t => t.HasStateFlags(TraitState.EnabledAndResumed));
+			var transform = transforms.FirstOrDefault(t => t.IsTraitEnabledAndResumed);
 			if (transform == null && currentTransform == null)
 				return;
 

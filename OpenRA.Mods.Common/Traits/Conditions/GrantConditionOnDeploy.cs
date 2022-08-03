@@ -187,11 +187,11 @@ namespace OpenRA.Mods.Common.Traits
 			return new Order("GrantConditionOnDeploy", self, queued);
 		}
 
-		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued) { return HasStateFlags(TraitState.EnabledAndResumed); }
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued) { return IsTraitEnabledAndResumed; }
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (!HasStateFlags(TraitState.EnabledAndResumed))
+			if (!IsTraitEnabledAndResumed)
 				return;
 
 			if (order.OrderString != "GrantConditionOnDeploy")
@@ -207,7 +207,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanDeploy()
 		{
-			if (HasStateFlags(TraitState.EnabledAndResumed))
+			if (IsTraitEnabledAndResumed)
 				return false;
 
 			return IsValidTerrain(self.Location) || (deployState == DeployState.Deployed);

@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling)
 				return true;
 
-			if (mobile != null && !mobile.HasStateFlags(TraitState.EnabledAndResumed))
+			if (mobile != null && !mobile.IsTraitEnabledAndResumed)
 				return false;
 
 			if (desiredFacing == facing.Facing)

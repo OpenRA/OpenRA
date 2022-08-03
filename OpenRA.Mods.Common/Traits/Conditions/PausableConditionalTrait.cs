@@ -38,6 +38,8 @@ namespace OpenRA.Mods.Common.Traits
 	/// </summary>
 	public abstract class PausableConditionalTrait<InfoType> : ConditionalTrait<InfoType> where InfoType : PausableConditionalTraitInfo
 	{
+		public bool IsTraitEnabledAndResumed => stateFlags.HasFlag(TraitState.EnabledAndResumed);
+
 		public bool IsTraitPaused
 		{
 			get => !stateFlags.HasFlag(TraitState.Resumed);

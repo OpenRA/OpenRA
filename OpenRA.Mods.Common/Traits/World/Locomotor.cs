@@ -318,7 +318,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (check <= BlockedByActor.Immovable && cellFlag.HasCellFlag(CellFlag.HasMovableActor) &&
 				actor.Owner.RelationshipWith(otherActor.Owner) == PlayerRelationship.Ally)
 			{
-				if (otherActor.OccupiesSpace is Mobile mobile && mobile.HasStateFlags(TraitState.EnabledAndResumed) && !mobile.IsImmovable)
+				if (otherActor.OccupiesSpace is Mobile mobile && mobile.IsTraitEnabledAndResumed && !mobile.IsImmovable)
 					return false;
 			}
 
@@ -479,7 +479,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					var crushables = actor.TraitsImplementing<ICrushable>();
 					var mobile = actor.OccupiesSpace as Mobile;
-					var isMovable = mobile != null && mobile.HasStateFlags(TraitState.EnabledAndResumed) && !mobile.IsImmovable;
+					var isMovable = mobile != null && mobile.IsTraitEnabledAndResumed && !mobile.IsImmovable;
 					var isMoving = isMovable && mobile.CurrentMovementTypes.HasMovementType(MovementType.Horizontal);
 
 					var isTransitOnly = actor.OccupiesSpace is Building building && building.TransitOnlyCells().Contains(cell);

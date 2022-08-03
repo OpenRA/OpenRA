@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				Ticks = info.Interval;
 
-			if (!HasStateFlags(TraitState.EnabledAndResumed))
+			if (!IsTraitEnabledAndResumed)
 				return;
 
 			if (--Ticks < 0)

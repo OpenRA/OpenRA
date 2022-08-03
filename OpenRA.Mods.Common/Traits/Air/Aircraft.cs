@@ -262,8 +262,8 @@ namespace OpenRA.Mods.Common.Traits
 		public WPos CenterPosition { get; private set; }
 
 		public CPos TopLeft => self.World.Map.CellContaining(CenterPosition);
-		public WAngle TurnSpeed => !HasStateFlags(TraitState.EnabledAndResumed) ? WAngle.Zero : Info.TurnSpeed;
-		public WAngle? IdleTurnSpeed => !HasStateFlags(TraitState.EnabledAndResumed) ? null : Info.IdleTurnSpeed;
+		public WAngle TurnSpeed => !IsTraitEnabledAndResumed ? WAngle.Zero : Info.TurnSpeed;
+		public WAngle? IdleTurnSpeed => !IsTraitEnabledAndResumed ? null : Info.IdleTurnSpeed;
 
 		public WAngle GetTurnSpeed(bool isIdleTurn)
 		{
@@ -616,9 +616,9 @@ namespace OpenRA.Mods.Common.Traits
 			return allowedToEnterRearmer || allowedToEnterRepairer;
 		}
 
-		public int MovementSpeed => HasStateFlags(TraitState.EnabledAndResumed) ? Util.ApplyPercentageModifiers(Info.Speed, speedModifiers) : 0;
+		public int MovementSpeed => IsTraitEnabledAndResumed ? Util.ApplyPercentageModifiers(Info.Speed, speedModifiers) : 0;
 		public int IdleMovementSpeed => Info.IdleSpeed < 0 ? MovementSpeed :
-			HasStateFlags(TraitState.EnabledAndResumed) ? Util.ApplyPercentageModifiers(Info.IdleSpeed, speedModifiers) : 0;
+			IsTraitEnabledAndResumed ? Util.ApplyPercentageModifiers(Info.IdleSpeed, speedModifiers) : 0;
 
 		public (CPos Cell, SubCell SubCell)[] OccupiedCells()
 		{
@@ -1142,7 +1142,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void Nudge(Actor self)
 		{
-			if (!HasStateFlags(TraitState.EnabledAndResumed) || requireForceMove)
+			if (!IsTraitEnabledAndResumed || requireForceMove)
 				return;
 
 			// Disable nudging if the aircraft is outside the map
