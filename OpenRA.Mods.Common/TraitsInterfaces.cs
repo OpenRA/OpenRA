@@ -148,6 +148,11 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
+	public interface INotifyTakeOff { void TakeOff(Actor self); }
+	[RequireExplicitImplementation]
+	public interface INotifyLanding { void Landing(Actor self); }
+
+	[RequireExplicitImplementation]
 	public interface INotifyPowerLevelChanged { void PowerLevelChanged(Actor self); }
 	public interface INotifySupportPower { void Charged(Actor self); void Activated(Actor self); }
 
