@@ -23,6 +23,8 @@ Player:
 		ProductionTypes: gapile, nahand, gaweap, naweap, gahpad, nahpad
 		SiloTypes: gasilo
 		DefenseTypes: gavulc,garock,gacsam,gactwr,naobel,nalasr,nasam
+		WallTypes: gawall, nawall
+		WalledStructures: gacnst
 		BuildingLimits:
 			proc: 4
 			gasilo: 2
