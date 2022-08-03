@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanDeploy()
 		{
-			if (IsTraitPaused || IsTraitDisabled)
+			if (!StateFlags.HasFlag(TraitState.EnabledAndResumed))
 				return false;
 
 			return buildingInfo == null || self.World.CanPlaceBuilding(self.Location + Info.Offset, actorInfo, buildingInfo, self);

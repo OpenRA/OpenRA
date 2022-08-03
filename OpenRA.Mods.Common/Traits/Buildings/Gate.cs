@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (IsTraitDisabled || IsTraitPaused)
+			if (!StateFlags.HasFlag(TraitState.EnabledAndResumed))
 				return;
 
 			if (desiredPosition < Position)

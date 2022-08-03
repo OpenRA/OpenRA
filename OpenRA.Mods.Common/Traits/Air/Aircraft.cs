@@ -262,8 +262,8 @@ namespace OpenRA.Mods.Common.Traits
 		public WPos CenterPosition { get; private set; }
 
 		public CPos TopLeft => self.World.Map.CellContaining(CenterPosition);
-		public WAngle TurnSpeed => IsTraitDisabled || IsTraitPaused ? WAngle.Zero : Info.TurnSpeed;
-		public WAngle? IdleTurnSpeed => IsTraitDisabled || IsTraitPaused ? null : Info.IdleTurnSpeed;
+		public WAngle TurnSpeed => !StateFlags.HasFlag(TraitState.EnabledAndResumed) ? WAngle.Zero : Info.TurnSpeed;
+		public WAngle? IdleTurnSpeed => !StateFlags.HasFlag(TraitState.EnabledAndResumed) ? null : Info.IdleTurnSpeed;
 
 		public WAngle GetTurnSpeed(bool isIdleTurn)
 		{
@@ -1142,7 +1142,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void Nudge(Actor self)
 		{
-			if (IsTraitDisabled || IsTraitPaused || requireForceMove)
+			if (!StateFlags.HasFlag(TraitState.EnabledAndResumed) || requireForceMove)
 				return;
 
 			// Disable nudging if the aircraft is outside the map

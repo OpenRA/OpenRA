@@ -191,7 +191,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (IsTraitDisabled || IsTraitPaused)
+			if (!StateFlags.HasFlag(TraitState.EnabledAndResumed))
 				return;
 
 			if (order.OrderString != "GrantConditionOnDeploy")
@@ -207,7 +207,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanDeploy()
 		{
-			if (IsTraitPaused || IsTraitDisabled)
+			if (StateFlags.HasFlag(TraitState.EnabledAndResumed))
 				return false;
 
 			return IsValidTerrain(self.Location) || (deployState == DeployState.Deployed);

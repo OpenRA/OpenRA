@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 			}
 
-			if (mobile.IsTraitDisabled || mobile.IsTraitPaused)
+			if (!mobile.StateFlags.HasFlag(TraitState.EnabledAndResumed))
 				return false;
 
 			if (destination == mobile.ToCell)

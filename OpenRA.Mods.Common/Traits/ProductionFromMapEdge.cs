@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits, int refundableValue)
 		{
-			if (IsTraitDisabled || IsTraitPaused)
+			if (!StateFlags.HasFlag(TraitState.EnabledAndResumed))
 				return false;
 
 			var aircraftInfo = producee.TraitInfoOrDefault<AircraftInfo>();
