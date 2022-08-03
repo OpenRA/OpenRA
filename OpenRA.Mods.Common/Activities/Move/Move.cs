@@ -495,7 +495,7 @@ namespace OpenRA.Mods.Common.Activities
 				var nextCell = parent.PopPath(self);
 				if (nextCell != null)
 				{
-					if (!mobile.IsTraitPaused && !mobile.IsTraitDisabled && IsTurn(mobile, nextCell.Value.Cell, map))
+					if (mobile.StateFlags.HasFlag(TraitState.EnabledAndResumed) && IsTurn(mobile, nextCell.Value.Cell, map))
 					{
 						var nextSubcellOffset = map.Grid.OffsetOfSubCell(nextCell.Value.SubCell);
 						WRot? nextToTerrainOrientation = null;

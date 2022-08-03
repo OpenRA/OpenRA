@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRemoveBlockage(Actor self, Actor blocking)
 		{
-			return !IsTraitDisabled && !IsTraitPaused && blocking.AppearsFriendlyTo(self);
+			return StateFlags.HasFlag(TraitState.EnabledAndResumed) && blocking.AppearsFriendlyTo(self);
 		}
 
 		bool IsBlocked()

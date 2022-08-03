@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Traits
 				var type = bi.BuildAtProductionType ?? info.Type;
 
 				var selfsameProductionsCount = self.World.ActorsWithTrait<Production>()
-					.Count(p => !p.Trait.IsTraitDisabled && !p.Trait.IsTraitPaused && p.Actor.Owner == self.Owner && p.Trait.Info.Produces.Contains(type));
+					.Count(p => p.Trait.StateFlags.HasFlags(TraitState.EnabledAndResumed) && p.Actor.Owner == self.Owner && p.Trait.Info.Produces.Contains(type));
 
 				var speedModifier = selfsameProductionsCount.Clamp(1, info.BuildTimeSpeedReduction.Length) - 1;
 				time = (time * info.BuildTimeSpeedReduction[speedModifier]) / 100;

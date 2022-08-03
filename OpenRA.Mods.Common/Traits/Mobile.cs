@@ -366,7 +366,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Nudge(Actor nudger)
 		{
-			if (IsTraitDisabled || IsTraitPaused || IsImmovable)
+			if (!StateFlags.HasFlag(TraitState.EnabledAndResumed) || IsImmovable)
 				return;
 
 			var cell = GetAdjacentCell(nudger.Location);
@@ -409,7 +409,7 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			var mobile = otherActor.TraitOrDefault<Mobile>();
-			if (mobile == null || mobile.IsTraitDisabled || mobile.IsTraitPaused || mobile.IsImmovable)
+			if (mobile == null || !mobile.StateFlags.HasFlag(TraitState.Enabled | TraitState.Resumed) || mobile.IsImmovable)
 				return false;
 
 			return true;

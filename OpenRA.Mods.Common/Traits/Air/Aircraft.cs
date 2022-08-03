@@ -616,9 +616,9 @@ namespace OpenRA.Mods.Common.Traits
 			return allowedToEnterRearmer || allowedToEnterRepairer;
 		}
 
-		public int MovementSpeed => !IsTraitDisabled && !IsTraitPaused ? Util.ApplyPercentageModifiers(Info.Speed, speedModifiers) : 0;
+		public int MovementSpeed => StateFlags.HasFlag(TraitState.EnabledAndResumed) ? Util.ApplyPercentageModifiers(Info.Speed, speedModifiers) : 0;
 		public int IdleMovementSpeed => Info.IdleSpeed < 0 ? MovementSpeed :
-			!IsTraitDisabled && !IsTraitPaused ? Util.ApplyPercentageModifiers(Info.IdleSpeed, speedModifiers) : 0;
+			StateFlags.HasFlag(TraitState.Enabled | TraitState.Resumed) ? Util.ApplyPercentageModifiers(Info.IdleSpeed, speedModifiers) : 0;
 
 		public (CPos Cell, SubCell SubCell)[] OccupiedCells()
 		{

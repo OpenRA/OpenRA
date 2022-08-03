@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new Order("GrantConditionOnDeploy", self, queued);
 		}
 
-		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued) { return !IsTraitPaused && !IsTraitDisabled; }
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued) { return StateFlags.HasFlag(TraitState.EnabledAndResumed); }
 
 		public void ResolveOrder(Actor self, Order order)
 		{

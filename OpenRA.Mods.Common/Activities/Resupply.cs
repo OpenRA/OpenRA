@@ -247,7 +247,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		void RepairTick(Actor self)
 		{
-			var repairsUnits = allRepairsUnits.FirstOrDefault(r => !r.IsTraitDisabled && !r.IsTraitPaused);
+			var repairsUnits = allRepairsUnits.FirstOrDefault(r => r.StatsFlags.HasFlag(TraitState.EnabledAndResumed));
 			if (repairsUnits == null)
 			{
 				if (!allRepairsUnits.Any(r => r.IsTraitPaused))
