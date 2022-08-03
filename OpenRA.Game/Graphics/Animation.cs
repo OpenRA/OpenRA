@@ -116,7 +116,7 @@ namespace OpenRA.Graphics
 		int CurrentSequenceTickOrDefault()
 		{
 			const int DefaultTick = 40; // 25 fps == 40 ms
-			return CurrentSequence?.Tick ?? DefaultTick;
+			return CurrentSequence == null ? DefaultTick : WorldUtils.RandomInRange(Game.CosmeticRandom, CurrentSequence.Tick);
 		}
 
 		void PlaySequence(string sequenceName)

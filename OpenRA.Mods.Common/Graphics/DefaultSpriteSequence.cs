@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Graphics
 		int ISpriteSequence.Stride => throw exception;
 		int ISpriteSequence.Facings => throw exception;
 		int ISpriteSequence.InterpolatedFacings => throw exception;
-		int ISpriteSequence.Tick => throw exception;
+		int[] ISpriteSequence.Tick => throw exception;
 		int ISpriteSequence.ZOffset => throw exception;
 		int ISpriteSequence.ShadowStart => throw exception;
 		int ISpriteSequence.ShadowZOffset => throw exception;
@@ -174,10 +174,11 @@ namespace OpenRA.Mods.Common.Graphics
 		int ISpriteSequence.InterpolatedFacings => interpolatedFacings;
 		protected int interpolatedFacings;
 
-		[Desc("Time (in milliseconds at default game speed) to wait until playing the next frame in the animation.")]
-		static readonly SpriteSequenceField<int> Tick = new SpriteSequenceField<int>(nameof(Tick), 40);
-		int ISpriteSequence.Tick => tick;
-		readonly int tick;
+		[Desc("Time (in milliseconds at default game speed) to wait until playing the next frame in the animation." +
+			"Can be a single value or a range to randomly choose between.")]
+		static readonly SpriteSequenceField<int[]> Tick = new SpriteSequenceField<int[]>(nameof(Tick), new int[] { 40 });
+		int[] ISpriteSequence.Tick => tick;
+		readonly int[] tick;
 
 		[Desc("Value controlling the Z-order. A higher values means rendering on top of other sprites at the same position. " +
 			"Use power of 2 values to avoid glitches.")]

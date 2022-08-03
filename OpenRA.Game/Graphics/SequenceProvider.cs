@@ -27,7 +27,7 @@ namespace OpenRA.Graphics
 		int Stride { get; }
 		int Facings { get; }
 		int InterpolatedFacings { get; }
-		int Tick { get; }
+		int[] Tick { get; }
 		int ZOffset { get; }
 		int ShadowStart { get; }
 		int ShadowZOffset { get; }

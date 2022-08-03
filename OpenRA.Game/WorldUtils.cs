@@ -77,5 +77,16 @@ namespace OpenRA
 				}
 			}
 		}
+
+		public static int RandomInRange(MersenneTwister random, int[] range)
+		{
+			if (range.Length == 0)
+				return 0;
+
+			if (range.Length == 1)
+				return range[0];
+
+			return random.Next(range[0], range[1]);
+		}
 	}
 }

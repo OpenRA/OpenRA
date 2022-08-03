@@ -11,7 +11,7 @@ ornithopter:
 		Start: 1955
 		Facings: -32
 		Length: 3
-		Tick: 120
+		Tick: 80, 160
 		Transpose: true
 	icon: DATA.R8
 		Start: 4292
