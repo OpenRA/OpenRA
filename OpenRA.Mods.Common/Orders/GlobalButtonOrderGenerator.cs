@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Orders
 
 		protected override bool IsValidTrait(ToggleConditionOnOrder t)
 		{
-			return t.StateFlags.HasFlag(TraitState.EnabledAndResumed);
+			return t.HasStateFlags(TraitState.EnabledAndResumed);
 		}
 
 		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)

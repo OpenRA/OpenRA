@@ -252,7 +252,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool FaceTarget(Actor self, in Target target)
 		{
-			if (!StateFlags.HasFlag(TraitState.EnabledAndResumed) || attack == null || !attack.StateFlags.HasFlag(TraitState.EnabledAndResumed))
+			if (!HasStateFlags(TraitState.EnabledAndResumed) || attack == null || !attack.HasStateFlags(TraitState.EnabledAndResumed))
 				return false;
 
 			if (target.Type == TargetType.Invalid)

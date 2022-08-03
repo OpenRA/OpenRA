@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling || target.Type == TargetType.Invalid)
 				return true;
 
-			if (!mobile.StateFlags.HasFlag(TraitState.EnabledAndResumed))
+			if (!mobile.HasStateFlags(TraitState.EnabledAndResumed))
 				return false;
 
 			var currentPos = self.CenterPosition;

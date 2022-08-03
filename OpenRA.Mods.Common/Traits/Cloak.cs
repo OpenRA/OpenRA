@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 			base.Created(self);
 		}
 
-		public bool Cloaked => StateFlags.HasFlag(TraitFlags.EnabledAndResumed) && remainingTime <= 0;
+		public bool Cloaked => HasStateFlags(TraitState.EnabledAndResumed) && remainingTime <= 0;
 
 		public void Uncloak() { Uncloak(Info.CloakDelay); }
 
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
-			if (remainingTime > 0 || !StateFlags.HasFlag(TraitState.Enabled | TraitState.Resumed))
+			if (remainingTime > 0 || !HasStateFlags(TraitState.EnabledAndResumed))
 				return r;
 
 			if (Cloaked && IsVisible(self, self.World.RenderPlayer))
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (StateFlags.HasFlag(TraitState.Enabled | TraitState.Resumed))
+			if (HasStateFlags(TraitState.EnabledAndResumed))
 			{
 				if (remainingTime > 0 && !isDocking)
 					remainingTime--;

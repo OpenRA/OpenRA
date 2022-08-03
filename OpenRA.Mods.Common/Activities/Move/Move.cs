@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 			}
 
-			if (!mobile.StateFlags.HasFlag(TraitState.EnabledAndResumed))
+			if (!mobile.HasStateFlags(TraitState.EnabledAndResumed))
 				return false;
 
 			if (destination == mobile.ToCell)
@@ -495,7 +495,7 @@ namespace OpenRA.Mods.Common.Activities
 				var nextCell = parent.PopPath(self);
 				if (nextCell != null)
 				{
-					if (mobile.StateFlags.HasFlag(TraitState.EnabledAndResumed) && IsTurn(mobile, nextCell.Value.Cell, map))
+					if (mobile.HasStateFlags(TraitState.EnabledAndResumed) && IsTurn(mobile, nextCell.Value.Cell, map))
 					{
 						var nextSubcellOffset = map.Grid.OffsetOfSubCell(nextCell.Value.SubCell);
 						WRot? nextToTerrainOrientation = null;

@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
-			if (StateFlags.HasFlag(TraitState.EnabledAndResumed) && order.OrderString == Info.OrderName)
+			if (HasStateFlags(TraitState.EnabledAndResumed) && order.OrderString == Info.OrderName)
 			{
 				enabled = !enabled;
 				SetCondition(self, enabled);

@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled)
 				return;
 
-			if (!mobile.StateFlags.HasFlag(TraitState.EnabledAndResumed))
+			if (!mobile.HasStateFlags(TraitState.EnabledAndResumed))
 				return;
 
 			if (--currentDelay > 0)

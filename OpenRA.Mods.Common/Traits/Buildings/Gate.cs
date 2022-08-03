@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (!StateFlags.HasFlag(TraitState.EnabledAndResumed))
+			if (!HasStateFlags(TraitState.EnabledAndResumed))
 				return;
 
 			if (desiredPosition < Position)
@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRemoveBlockage(Actor self, Actor blocking)
 		{
-			return StateFlags.HasFlag(TraitState.EnabledAndResumed) && blocking.AppearsFriendlyTo(self);
+			return HasStateFlags(TraitState.EnabledAndResumed) && blocking.AppearsFriendlyTo(self);
 		}
 
 		bool IsBlocked()

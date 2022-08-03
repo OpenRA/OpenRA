@@ -67,6 +67,6 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Whether the actor can move (false if immobilized).")]
-		public bool IsMobile => mobile.StateFlags.HasFlag(TraitState.EnabledAndResumed);
+		public bool IsMobile => mobile.HasStateFlags(TraitState.EnabledAndResumed);
 	}
 }

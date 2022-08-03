@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -52,6 +53,11 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly InfoType Info;
 
+		[Sync]
+		public TraitState StateFlags => stateFlags;
+
+		protected TraitState stateFlags;
+
 		// Overrides must call `base.GetVariableObservers()` to avoid breaking RequiresCondition.
 		public virtual IEnumerable<VariableObserver> GetVariableObservers()
 		{
@@ -71,10 +77,11 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		[Sync]
-		public TraitState StateFlags => stateFlags;
-
-		protected TraitState stateFlags;
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public bool HasStateFlags(TraitState flags)
+		{
+			return stateFlags.HasFlag(flags);
+		}
 
 		public ConditionalTrait(InfoType info)
 		{

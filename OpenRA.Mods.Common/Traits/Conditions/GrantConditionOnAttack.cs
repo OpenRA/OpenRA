@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel)
 		{
-			if (!StateFlags.HasFlag(TraitState.EnabledAndResumed))
+			if (!HasStateFlags(TraitState.EnabledAndResumed))
 				return;
 
 			if (!Info.ArmamentNames.Contains(a.Info.Name))

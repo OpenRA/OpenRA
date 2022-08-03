@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanRepair()
 		{
-			if (!(self.CurrentActivity is Transform || transforms.Any(t => t.StateFlags.HasFlag(TraitState.EnabledAndResumed))))
+			if (!(self.CurrentActivity is Transform || transforms.Any(t => t.HasStateFlags(TraitState.EnabledAndResumed))))
 				return false;
 
 			return health.DamageState > DamageState.Undamaged;
@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var currentTransform = self.CurrentActivity as Transform;
-			var transform = transforms.FirstOrDefault(t => t.StateFlags.HasFlag(TraitState.EnabledAndResumed));
+			var transform = transforms.FirstOrDefault(t => t.HasStateFlags(TraitState.EnabledAndResumed));
 			if (transform == null && currentTransform == null)
 				return;
 

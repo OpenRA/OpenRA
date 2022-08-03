@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual bool CanAttack(Actor self, in Target target)
 		{
-			if (!self.IsInWorld || !StateFlags.HasFlag(TraitState.EnabledAndResumed))
+			if (!self.IsInWorld || !HasStateFlags(TraitState.EnabledAndResumed))
 				return false;
 
 			if (!target.IsValidFor(self))

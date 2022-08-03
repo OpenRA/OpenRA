@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void PlayAttackAnimation(Actor self)
 		{
-			if (StateFlags.HasFlag(TraitState.Enabled) && !wsb.IsTraitDisabled && !string.IsNullOrEmpty(Info.Sequence))
+			if (HasStateFlag(TraitState.Enabled) && !wsb.IsTraitDisabled && !string.IsNullOrEmpty(Info.Sequence))
 				wsb.PlayCustomAnimation(self, Info.Sequence);
 		}
 

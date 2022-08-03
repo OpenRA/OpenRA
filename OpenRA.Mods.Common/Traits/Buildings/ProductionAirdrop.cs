@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override bool Produce(Actor self, ActorInfo producee, string productionType, TypeDictionary inits, int refundableValue)
 		{
-			if (!StateFlags.HasFlag(TraitState.EnabledAndResumed))
+			if (!HasStateFlags(TraitState.EnabledAndResumed))
 				return false;
 
 			var info = (ProductionAirdropInfo)Info;

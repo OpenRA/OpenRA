@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanDeploy()
 		{
-			if (!StateFlags.HasFlag(TraitState.EnabledAndResumed))
+			if (!HasStateFlags(TraitState.EnabledAndResumed))
 				return false;
 
 			return buildingInfo == null || self.World.CanPlaceBuilding(self.Location + Info.Offset, actorInfo, buildingInfo, self);
@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new Order("DeployTransform", self, queued);
 		}
 
-		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued) { return StateFlags.HasFlag(TraitState.EnabledAndResumed); }
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued) { return HasStateFlags(TraitState.EnabledAndResumed); }
 
 		public void DeployTransform(bool queued)
 		{

@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool Ready()
 		{
-			if (!StateFlags.HasFlag(TraitState.EnabledAndResumed))
+			if (!HasStateFlags(TraitState.EnabledAndResumed))
 				return false;
 
 			return devMode.FastBuild || progress == 0;
