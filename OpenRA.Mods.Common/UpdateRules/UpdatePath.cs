@@ -94,6 +94,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RenameCloakTypes(),
 				new SplitNukePowerMissileImage(),
 				new ReplaceSequenceEmbeddedPalette(),
+				new UnhardcodeBaseBuilderBotModule(),
 			})
 		};
 
