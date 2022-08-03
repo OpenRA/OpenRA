@@ -68,7 +68,7 @@ namespace OpenRA
 				il.Emit(OpCodes.Ldc_I4, 0x555);
 				il.MarkLabel(l);
 			}
-			else if (type != typeof(int))
+			else if (type != typeof(TraitState) && type != typeof(int))
 				throw new NotImplementedException($"SyncAttribute on member of unhashable type: {type.FullName}");
 
 			il.Emit(OpCodes.Xor);

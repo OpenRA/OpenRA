@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using OpenRA.Support;
@@ -17,15 +16,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Flags]
-	public enum TraitState
-	{
-		None = 0,
-		Enabled = 0x1,
-		Resumed = 0x10,
-		EnabledAndResumed = 0x11
-	}
-
 	/// <summary>Use as base class for *Info to subclass of ConditionalTrait. (See ConditionalTrait.)</summary>
 	public abstract class ConditionalTraitInfo : TraitInfo, IObservesVariablesInfo, IRulesetLoaded
 	{
@@ -53,9 +43,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly InfoType Info;
 
-		[Sync]
 		public TraitState StateFlags => stateFlags;
 
+		[Sync]
 		protected TraitState stateFlags;
 
 		// Overrides must call `base.GetVariableObservers()` to avoid breaking RequiresCondition.

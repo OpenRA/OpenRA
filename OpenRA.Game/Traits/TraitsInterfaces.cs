@@ -602,4 +602,14 @@ namespace OpenRA.Traits
 	{
 		void PlayerDisconnected(Actor self, Player p);
 	}
+
+	/// <summary>Conditional state of a trait. Synced.</summary>
+	[Flags]
+	public enum TraitState
+	{
+		None = 0,
+		Enabled = 0x1,
+		Resumed = 0x10,
+		EnabledAndResumed = 0x11
+	}
 }
