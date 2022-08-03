@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "DeployTransform" && TraitFlags.HasFlags(TraitState.EnabledAndResumed))
+			if (order.OrderString == "DeployTransform" && HasStateFlags(TraitState.EnabledAndResumed))
 				DeployTransform(order.Queued);
 		}
 	}

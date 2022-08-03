@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool UseEnterCursor(Actor target)
 		{
-			return self.CurrentActivity is Transform || transforms.Any(t => t.HasStateFlags(TraitState.EnabledAndResumed);
+			return self.CurrentActivity is Transform || transforms.Any(t => t.HasStateFlags(TraitState.EnabledAndResumed));
 		}
 
 		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
