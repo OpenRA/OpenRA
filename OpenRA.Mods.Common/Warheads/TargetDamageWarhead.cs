@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -36,20 +35,32 @@ namespace OpenRA.Mods.Common.Warheads
 				if (!IsValidAgainst(victim, firedBy))
 					continue;
 
-				var closestActiveShape = victim.TraitsImplementing<HitShape>()
-					.Where(Exts.IsTraitEnabled)
-					.Select(s => (HitShape: s, Distance: s.DistanceFromEdge(victim, pos)))
-					.MinByOrDefault(s => s.Distance);
+				HitShape closestActiveShape = null;
+				var closestDistance = int.MaxValue;
+
+				// PERF: Avoid using TraitsImplementing<HitShape> that needs to find the actor in the trait dictionary.
+				foreach (var targetPos in victim.EnabledTargetablePositions)
+				{
+					if (targetPos is HitShape hitshape)
+					{
+						var distance = hitshape.DistanceFromEdge(victim, pos).Length;
+						if (distance < closestDistance)
+						{
+							closestDistance = distance;
+							closestActiveShape = hitshape;
+						}
+					}
+				}
 
 				// Cannot be damaged without an active HitShape.
-				if (closestActiveShape.HitShape == null)
+				if (closestActiveShape == null)
 					continue;
 
 				// Cannot be damaged if HitShape is outside Spread.
-				if (closestActiveShape.Distance > Spread)
+				if (closestDistance > Spread.Length)
 					continue;
 
-				InflictDamage(victim, firedBy, closestActiveShape.HitShape, args);
+				InflictDamage(victim, firedBy, closestActiveShape, args);
 			}
 		}
 	}

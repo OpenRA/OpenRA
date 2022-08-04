@@ -50,8 +50,14 @@ namespace OpenRA.Mods.Common.Warheads
 				if (!IsValidAgainst(victim, firedBy))
 					return;
 
-				var closestActiveShape = victim.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled)
-					.MinByOrDefault(t => t.DistanceFromEdge(victim, victim.CenterPosition));
+				// PERF: Avoid using TraitsImplementing<HitShape> that needs to find the actor in the trait dictionary.
+				var closestActiveShape = (HitShape)victim.EnabledTargetablePositions.MinByOrDefault(t =>
+				{
+					if (t is HitShape h)
+						return h.DistanceFromEdge(victim, victim.CenterPosition);
+					else
+						return WDist.MaxValue;
+				});
 
 				// Cannot be damaged without an active HitShape
 				if (closestActiveShape == null)
