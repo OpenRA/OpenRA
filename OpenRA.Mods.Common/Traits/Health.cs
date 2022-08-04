@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Health : IHealth, ISync, ITick, INotifyCreated, INotifyOwnerChanged
+	public class Health : IHealth, ISync, INotifyCreated, INotifyOwnerChanged
 	{
 		public readonly HealthInfo Info;
 		INotifyDamageStateChanged[] notifyDamageStateChanged;
@@ -60,6 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyKilled[] notifyKilled;
 		INotifyKilled[] notifyKilledPlayer;
 
+		// Use HP property to set.
 		[Sync]
 		int hp;
 
@@ -68,43 +69,63 @@ namespace OpenRA.Mods.Common.Traits
 		public Health(ActorInitializer init, HealthInfo info)
 		{
 			Info = info;
-			MaxHP = hp = info.HP > 0 ? info.HP : 1;
+			HP = MaxHP = info.HP > 0 ? info.HP : 1;
 
 			// Cast to long to avoid overflow when multiplying by the health
 			var healthInit = init.GetOrDefault<HealthInit>();
 			if (healthInit != null)
-				hp = (int)(healthInit.Value * (long)MaxHP / 100);
+				HP = (int)(healthInit.Value * (long)MaxHP / 100);
 
 			DisplayHP = hp;
 		}
 
-		public int HP => hp;
+		public int HP
+		{
+			get => hp;
+			private set
+			{
+				hp = value;
+
+				// PERF: DamageState is queried more often than that hp is modified.
+				DamageState = HitPointsToDamangeState(hp, MaxHP);
+				DisplayHP = HitPointsToDisplayHP(hp, DisplayHP);
+			}
+		}
+
 		public int MaxHP { get; }
 
 		public bool IsDead => hp <= 0;
 		public bool RemoveOnDeath = true;
 
-		public DamageState DamageState
+		public DamageState DamageState { get; private set; }
+
+		static DamageState HitPointsToDamangeState(int hp, int maxHP)
 		{
-			get
-			{
-				if (hp == MaxHP)
-					return DamageState.Undamaged;
+			if (hp == maxHP)
+				return DamageState.Undamaged;
 
-				if (hp <= 0)
-					return DamageState.Dead;
+			if (hp <= 0)
+				return DamageState.Dead;
 
-				if (hp * 100L < MaxHP * 25L)
-					return DamageState.Critical;
+			hp *= 100;
+			if (hp < maxHP * 25)
+				return DamageState.Critical;
 
-				if (hp * 100L < MaxHP * 50L)
-					return DamageState.Heavy;
+			if (hp < maxHP * 50)
+				return DamageState.Heavy;
 
-				if (hp * 100L < MaxHP * 75L)
-					return DamageState.Medium;
+			if (hp < maxHP * 75)
+				return DamageState.Medium;
 
-				return DamageState.Light;
-			}
+			return DamageState.Light;
+		}
+
+		static int HitPointsToDisplayHP(int hp, int displayHP)
+		{
+			if (hp >= displayHP)
+				return hp;
+
+			return (2 * displayHP + hp) / 3;
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -130,7 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!IsDead)
 				return;
 
-			hp = MaxHP;
+			HP = MaxHP;
 
 			var ai = new AttackInfo
 			{
@@ -170,25 +191,25 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// PERF: Util.ApplyPercentageModifiers has been manually inlined to
 				// avoid unnecessary loop enumerations and allocations
-				var appliedDamage = (decimal)damage.Value;
+				var appliedDamage = (float)damage.Value;
 				foreach (var dm in damageModifiers)
 				{
 					var modifier = dm.GetDamageModifier(attacker, damage);
 					if (modifier != 100)
-						appliedDamage *= modifier / 100m;
+						appliedDamage *= modifier / 100f;
 				}
 
 				foreach (var dm in damageModifiersPlayer)
 				{
 					var modifier = dm.GetDamageModifier(attacker, damage);
 					if (modifier != 100)
-						appliedDamage *= modifier / 100m;
+						appliedDamage *= modifier / 100f;
 				}
 
 				damage = new Damage((int)appliedDamage, damage.DamageTypes);
 			}
 
-			hp = (hp - damage.Value).Clamp(0, MaxHP);
+			HP = (hp - damage.Value).Clamp(0, MaxHP);
 
 			var ai = new AttackInfo
 			{
@@ -230,14 +251,6 @@ namespace OpenRA.Mods.Common.Traits
 		public void Kill(Actor self, Actor attacker, BitSet<DamageType> damageTypes)
 		{
 			InflictDamage(self, attacker, new Damage(MaxHP, damageTypes), true);
-		}
-
-		void ITick.Tick(Actor self)
-		{
-			if (hp >= DisplayHP)
-				DisplayHP = hp;
-			else
-				DisplayHP = (2 * DisplayHP + hp) / 3;
 		}
 	}
 

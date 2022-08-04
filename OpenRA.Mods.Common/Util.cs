@@ -193,9 +193,9 @@ namespace OpenRA.Mods.Common
 		public static int ApplyPercentageModifiers(int number, IEnumerable<int> percentages)
 		{
 			// See the comments of PR#6079 for a faster algorithm if this becomes a performance bottleneck
-			var a = (decimal)number;
+			var a = (float)number;
 			foreach (var p in percentages)
-				a *= p / 100m;
+				a *= p / 100f;
 
 			return (int)a;
 		}
