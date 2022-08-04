@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Activities
 		public override bool Tick(Actor self)
 		{
 			// Refuse to take off if it would land immediately again.
-			if (aircraft.ForceLanding)
+			if (aircraft.ForceLanding || aircraft.Info.IdleBehavior != IdleBehaviorType.LeaveMap)
 				Cancel(self);
 
 			if (IsCanceling)
