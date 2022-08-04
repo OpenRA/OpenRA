@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			paradrop.SetLZ(cell, true);
 			Self.QueueActivity(new Fly(Self, Target.FromCell(Self.World, cell)));
-			Aircraft a = (Self.Trait<Aircraft>();
+			Aircraft a = Self.Trait<Aircraft>();
 			if (a.Info.IdleBehavior == IdleBehaviorType.LeaveMap ||
 				a.Info.IdleBehavior == IdleBehaviorType.LeaveMapAtClosestEdge)
 			{
