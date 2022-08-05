@@ -35,12 +35,15 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly EditorViewportControllerWidget editorWidget;
 		readonly EditorSelectionLayer selectionLayer;
 		readonly EditorActorLayer editorLayer;
+		readonly EditorResourceLayer resourceLayer;
 		readonly Func<MapCopyFilters> getCopyFilters;
 		readonly EditorActionManager editorActionManager;
 
 		State state;
 		CPos start;
 		CPos end;
+		CellRegion sourceRegion;
+		int resourceValueInRegion;
 
 		public EditorCopyPasteBrush(EditorViewportControllerWidget editorWidget, WorldRenderer wr, Func<MapCopyFilters> getCopyFilters)
 		{
@@ -48,10 +51,47 @@ namespace OpenRA.Mods.Common.Widgets
 			worldRenderer = wr;
 
 			editorActionManager = wr.World.WorldActor.Trait<EditorActionManager>();
-
 			selectionLayer = wr.World.WorldActor.Trait<EditorSelectionLayer>();
 			editorLayer = wr.World.WorldActor.Trait<EditorActorLayer>();
+			resourceLayer = wr.World.WorldActor.Trait<EditorResourceLayer>();
 			this.getCopyFilters = getCopyFilters;
+		}
+
+		string PositionAsString(CPos cell)
+		{
+			return $"{cell.X},{cell.Y}";
+		}
+
+		CPos GetComplementPosition(CPos cell)
+		{
+			var farCorner = worldRenderer.World.Map.Bounds.BottomRight;
+			return new CPos(farCorner.X - cell.X, farCorner.Y - cell.Y);
+		}
+
+		void SetToolTip(CellRegion sourceRegion, CPos newCell, bool shouldRecalculateResourceValue)
+		{
+			var map = worldRenderer.World.Map;
+			var delta = newCell - end;
+			var selectionSize = sourceRegion.BottomRight - sourceRegion.TopLeft + new CPos(1, 1);
+			var diagonalLength = Math.Round(Math.Sqrt(Math.Pow(selectionSize.X, 2) + Math.Pow(selectionSize.Y, 2)), 3);
+			var targetStart = sourceRegion.TopLeft + delta;
+			var targetEnd = sourceRegion.BottomRight + delta;
+
+			// Everything else is fairly inexpensive, but this is a loop over deltaX*deltaY cells, so only calculate resources at the start of the copy action
+			if (shouldRecalculateResourceValue)
+			{
+				resourceValueInRegion = resourceLayer.CalculateRegionValue(sourceRegion);
+			}
+
+			editorWidget.SetTooltip(
+				$"Selected Region: {PositionAsString(sourceRegion.TopLeft)} to {PositionAsString(sourceRegion.BottomRight)}\n" +
+				$" - Dimensions: {PositionAsString(selectionSize)}\n" +
+				$" - Diagonal: {diagonalLength}\n" +
+				$" - Resources: $ {resourceValueInRegion}\n" +
+				$" - Complement: {PositionAsString(GetComplementPosition(sourceRegion.BottomRight))} {PositionAsString(GetComplementPosition(sourceRegion.TopLeft))}\n" +
+				$"Target Region: {PositionAsString(targetStart)} to {PositionAsString(targetEnd)}\n" +
+				$" - Complement: {PositionAsString(GetComplementPosition(targetEnd))} to {PositionAsString(GetComplementPosition(targetStart))}\n" +
+				$" - Delta: {delta.X},{delta.Y}");
 		}
 
 		public bool HandleMouseInput(MouseInput mi)
@@ -59,6 +99,8 @@ namespace OpenRA.Mods.Common.Widgets
 			// Exclusively uses left and right mouse buttons, but nothing else
 			if (mi.Button != MouseButton.Left && mi.Button != MouseButton.Right)
 				return false;
+
+			editorWidget.SetTooltip(null);
 
 			if (mi.Button == MouseButton.Right)
 			{
@@ -88,15 +130,18 @@ namespace OpenRA.Mods.Common.Widgets
 							break;
 						end = cell;
 						selectionLayer.SetCopyRegion(start, end);
+						var gridType = worldRenderer.World.Map.Grid.Type;
+						sourceRegion = CellRegion.BoundingRegion(gridType, new[] { start, end });
+						SetToolTip(sourceRegion, end, true);
 						state = State.Paste;
 						break;
 					case State.Paste:
 					{
 						if (mi.Event != MouseInputEvent.Down)
 							break;
-						var gridType = worldRenderer.World.Map.Grid.Type;
-						var source = CellRegion.BoundingRegion(gridType, new[] { start, end });
-						Copy(source, cell - end);
+						Copy(sourceRegion, cell - end);
+						editorWidget.ClearBrush();
+						sourceRegion = null;
 						break;
 					}
 				}
@@ -156,6 +201,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
 			if (state == State.Paste)
 			{
+				SetToolTip(sourceRegion, cell, false);
+
 				selectionLayer.SetPasteRegion(cell + (start - end), cell);
 				return;
 			}
@@ -171,6 +218,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public void Dispose()
 		{
 			selectionLayer.Clear();
+			editorWidget.SetTooltip(null);
 		}
 	}
 
