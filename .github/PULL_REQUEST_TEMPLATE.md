@@ -13,4 +13,4 @@ You can help speed up the review process by following a few steps:
 * Respond to review comments as soon as you reasonably can.  Reviewers will usually prioritize Pull Requests that are still fresh in their minds.  Make sure to leave a comment when you push new changes, otherwise GitHub does not automatically notify reviewers!
 * Leave a polite comment asking for reviews if a week or more has passed without feedback.
 
-If you need any help you can ask in the #openra IRC channel on freenode (most active during European evenings).
+If you need any help you can ask on Discord (https://discord.openra.net) or in the #openra IRC channel on Libera (not as active as Discord).
