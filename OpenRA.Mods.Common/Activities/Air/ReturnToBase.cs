@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				aircraft.MakeReservation(dest);
 				QueueChild(new Land(self, Target.FromActor(dest), offset, facing, Color.Green));
-				QueueChild(new Resupply(self, dest, WDist.Zero, alwaysLand));
+				QueueChild(new Resupply(self, dest, alwaysLand));
 				return true;
 			}
 

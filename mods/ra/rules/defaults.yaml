@@ -523,8 +523,9 @@
 	ProximityCaptor:
 		Types: Ship
 	Chronoshiftable:
-	RepairableNear:
+	Repairable:
 		RepairActors: spen, syrd
+		CloseEnough: 4c0
 	GpsDot:
 		String: Ship
 	WithDamageOverlay:
