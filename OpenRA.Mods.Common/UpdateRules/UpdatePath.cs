@@ -102,7 +102,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 			new UpdatePath("playtest-20221203", new UpdateRule[]
 			{
+				// Bleed only changes here
 				new TextNotificationsDisplayWidgetRemoveTime(),
+				new RemoveRepairableNear(),
 			})
 		};
 
