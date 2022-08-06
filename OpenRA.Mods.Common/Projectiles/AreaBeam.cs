@@ -71,6 +71,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Beam color is the player's color.")]
 		public readonly bool UsePlayerColor = false;
 
+		[Desc("Beam disappear after reaching MaxRange distance. Zero for defaulting to weapon range + BeyondTargetRange.")]
+		public readonly WDist MaxRange = WDist.Zero;
+
 		public IProjectile Create(ProjectileArgs args)
 		{
 			var c = UsePlayerColor ? args.SourceActor.Owner.Color : Color;
@@ -104,6 +107,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		bool isTailTravelling;
 		bool continueTracking = true;
 
+		readonly WDist rangeLimit = WDist.Zero;
+
 		bool IsBeamComplete => !isHeadTravelling && headTicks >= length && !isTailTravelling && tailTicks >= length;
 
 		public AreaBeam(AreaBeamInfo info, ProjectileArgs args, Color color)
@@ -136,6 +141,15 @@ namespace OpenRA.Mods.Common.Projectiles
 			// I.e. we can deliberately overshoot, so aim for that position
 			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(towardsTargetFacing));
 			target += dir * info.BeyondTargetRange.Length / 1024;
+
+			// limits maximmum range including BeyondTargetRange arg
+			var limit = info.MaxRange != WDist.Zero ? info.MaxRange : args.Weapon.Range + info.BeyondTargetRange;
+			rangeLimit = new WDist(Util.ApplyPercentageModifiers(limit.Length, args.RangeModifiers));
+			var tarDistVec = args.SourceActor.CenterPosition - target;
+			if (tarDistVec.Length > rangeLimit.Length)
+			{
+				target = args.SourceActor.CenterPosition + (dir * rangeLimit.Length / 1024);
+			}
 
 			length = Math.Max((target - headPos).Length / speed.Length, 1);
 			weaponRange = new WDist(Util.ApplyPercentageModifiers(args.Weapon.Range.Length, args.RangeModifiers));
