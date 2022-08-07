@@ -328,14 +328,6 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface INotifyRearm
-	{
-		void RearmingStarted(Actor host, Actor other);
-		void Rearming(Actor host, Actor other);
-		void RearmingFinished(Actor host, Actor other);
-	}
-
-	[RequireExplicitImplementation]
 	public interface IRenderInfantrySequenceModifier
 	{
 		bool IsModifyingSequence { get; }
