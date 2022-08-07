@@ -141,13 +141,6 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface INotifyBeingResupplied
-	{
-		void StartingResupply(Actor self, Actor host);
-		void StoppingResupply(Actor self, Actor host);
-	}
-
-	[RequireExplicitImplementation]
 	public interface INotifyTakeOff { void TakeOff(Actor self); }
 	[RequireExplicitImplementation]
 	public interface INotifyLanding { void Landing(Actor self); }
