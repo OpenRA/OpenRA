@@ -48,6 +48,11 @@ namespace OpenRA.Mods.Common.Traits
 		/// </summary>
 		public Locomotor Locomotor { get; set; }
 
+		/// <summary>
+		/// The blocking check selected in the UI which the overlay will display.
+		/// </summary>
+		public BlockedByActor Check { get; set; } = BlockedByActor.Immovable;
+
 		public HierarchicalPathFinderOverlay(HierarchicalPathFinderOverlayInfo info)
 		{
 			this.info = info;
@@ -88,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 				: new[] { Locomotor };
 			foreach (var locomotor in locomotors)
 			{
-				var (abstractGraph, abstractDomains) = pathFinder.GetOverlayDataForLocomotor(locomotor);
+				var (abstractGraph, abstractDomains) = pathFinder.GetOverlayDataForLocomotor(locomotor, Check);
 
 				// Locomotor doesn't allow movement, nothing to display.
 				if (abstractGraph == null || abstractDomains == null)

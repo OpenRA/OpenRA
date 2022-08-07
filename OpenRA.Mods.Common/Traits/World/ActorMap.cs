@@ -403,6 +403,18 @@ namespace OpenRA.Mods.Common.Traits
 			return AnyActorsAt(uv, layer, sub, withCondition);
 		}
 
+		public IEnumerable<Actor> AllActors()
+		{
+			foreach (var layer in influence)
+			{
+				if (layer == null)
+					continue;
+				foreach (var node in layer)
+					for (var i = node; i != null; i = i.Next)
+						yield return i.Actor;
+			}
+		}
+
 		public void AddInfluence(Actor self, IOccupySpace ios)
 		{
 			foreach (var c in ios.OccupiedCells())

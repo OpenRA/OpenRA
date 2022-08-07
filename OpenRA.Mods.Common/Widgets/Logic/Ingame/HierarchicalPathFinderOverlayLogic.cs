@@ -42,6 +42,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				locomotorSelector.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", locomotors.Length * 30, locomotors, setupItem);
 			};
+
+			var checks = new[] { BlockedByActor.None, BlockedByActor.Immovable };
+			var checkSelector = widget.Get<DropDownButtonWidget>("HPF_OVERLAY_CHECK");
+			checkSelector.OnMouseDown = _ =>
+			{
+				Func<BlockedByActor, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+				{
+					var item = ScrollItemWidget.Setup(
+						template,
+						() => hpfOverlay.Check == option,
+						() => hpfOverlay.Check = option);
+					item.Get<LabelWidget>("LABEL").GetText = () => option.ToString();
+					return item;
+				};
+
+				checkSelector.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", checks.Length * 30, checks, setupItem);
+			};
 		}
 	}
 }

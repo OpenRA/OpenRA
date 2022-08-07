@@ -213,6 +213,7 @@ namespace OpenRA.Traits
 		bool AnyActorsAt(CPos a);
 		bool AnyActorsAt(CPos a, SubCell sub, bool checkTransient = true);
 		bool AnyActorsAt(CPos a, SubCell sub, Func<Actor, bool> withCondition);
+		IEnumerable<Actor> AllActors();
 		void AddInfluence(Actor self, IOccupySpace ios);
 		void RemoveInfluence(Actor self, IOccupySpace ios);
 		int AddCellTrigger(CPos[] cells, Action<Actor> onEntry, Action<Actor> onExit);

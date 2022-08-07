@@ -311,6 +311,9 @@ namespace OpenRA.Mods.Common.Traits
 			return world.ActorMap.FreeSubCell(cell, preferredSubCell);
 		}
 
+		/// <remarks>This logic is replicated in <see cref="HierarchicalPathFinder.ActorIsBlocking"/> and
+		/// <see cref="HierarchicalPathFinder.ActorCellIsBlocking"/>. If this method is updated please update those as
+		/// well.</remarks>
 		bool IsBlockedBy(Actor actor, Actor otherActor, Actor ignoreActor, CPos cell, BlockedByActor check, CellFlag cellFlag)
 		{
 			if (otherActor == ignoreActor)
@@ -450,6 +453,9 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		/// <remarks>This logic is replicated in <see cref="HierarchicalPathFinder.ActorIsBlocking"/> and
+		/// <see cref="HierarchicalPathFinder.ActorCellIsBlocking"/>. If this method is updated please update those as
+		/// well.</remarks>
 		void UpdateCellBlocking(CPos cell)
 		{
 			using (new PerfSample("locomotor_cache"))
