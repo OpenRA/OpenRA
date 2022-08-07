@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithResupplyAnimation(init.Self, this); }
 	}
 
-	public class WithResupplyAnimation : ConditionalTrait<WithResupplyAnimationInfo>, INotifyResupply, ITick
+	public class WithResupplyAnimation : ConditionalTrait<WithResupplyAnimationInfo>, INotifyDockResupply, ITick
 	{
 		readonly WithSpriteBody wsb;
 		bool animPlaying;
@@ -70,13 +70,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 			rearming = false;
 		}
 
-		void INotifyResupply.BeforeResupply(Actor self, Actor target, ResupplyType types)
+		void INotifyDockResupply.BeforeResupply(Actor dockable, ResupplyType types)
 		{
 			repairing = types.HasFlag(ResupplyType.Repair);
 			rearming = types.HasFlag(ResupplyType.Rearm);
 		}
 
-		void INotifyResupply.ResupplyTick(Actor self, Actor target, ResupplyType types)
+		void INotifyDockResupply.ResupplyTick(ResupplyType types)
 		{
 			repairing = types.HasFlag(ResupplyType.Repair);
 			rearming = types.HasFlag(ResupplyType.Rearm);

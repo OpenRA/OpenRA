@@ -134,13 +134,6 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyAppliedDamage { void AppliedDamage(Actor self, Actor damaged, AttackInfo e); }
 
 	[RequireExplicitImplementation]
-	public interface INotifyResupply
-	{
-		void BeforeResupply(Actor host, Actor target, ResupplyType types);
-		void ResupplyTick(Actor host, Actor target, ResupplyType types);
-	}
-
-	[RequireExplicitImplementation]
 	public interface INotifyPowerLevelChanged { void PowerLevelChanged(Actor self); }
 	public interface INotifySupportPower { void Charged(Actor self); void Activated(Actor self); }
 
@@ -152,6 +145,9 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyDelivery { void IncomingDelivery(Actor self); void Delivered(Actor self); }
 	public interface INotifyDock { void Docked(); void Undocked(); }
 	public interface INotifyDockable { void Docked(); void Undocked(); }
+
+	[RequireExplicitImplementation]
+	public interface INotifyDockResupply { void BeforeResupply(Actor dockable, ResupplyType types); void ResupplyTick(ResupplyType types); }
 
 	[RequireExplicitImplementation]
 	public interface INotifyResourceAccepted { void OnResourceAccepted(Actor self, Actor refinery, string resourceType, int count, int value); }

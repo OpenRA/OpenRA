@@ -27,8 +27,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Repairable repairable;
 		readonly RepairableNear repairableNear;
 		readonly Rearmable rearmable;
-		readonly INotifyResupply[] notifyResupplies;
 		readonly INotifyDock[] notifyDocks;
+		readonly INotifyDockResupply[] notifyDockResupplies;
 		readonly INotifyDockable[] notifyDockables;
 		readonly ICallForTransport[] transportCallers;
 		readonly IMove move;
@@ -54,8 +54,8 @@ namespace OpenRA.Mods.Common.Activities
 			repairable = self.TraitOrDefault<Repairable>();
 			repairableNear = self.TraitOrDefault<RepairableNear>();
 			rearmable = self.TraitOrDefault<Rearmable>();
-			notifyResupplies = host.TraitsImplementing<INotifyResupply>().ToArray();
 			notifyDocks = host.TraitsImplementing<INotifyDock>().ToArray();
+			notifyDockResupplies = host.TraitsImplementing<INotifyDockResupply>().ToArray();
 			notifyDockables = self.TraitsImplementing<INotifyDockable>().ToArray();
 			transportCallers = self.TraitsImplementing<ICallForTransport>().ToArray();
 			move = self.Trait<IMove>();
@@ -118,8 +118,8 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				// Only tick host INotifyResupply traits one last time if host is still alive
 				if (!isHostInvalid)
-					foreach (var notifyResupply in notifyResupplies)
-						notifyResupply.ResupplyTick(host.Actor, self, ResupplyType.None);
+					foreach (var notifyResupply in notifyDockResupplies)
+						notifyResupply.ResupplyTick(ResupplyType.None);
 
 				// HACK: If the activity is cancelled while we're on the host resupplying (or about to start resupplying),
 				// move actor outside the resupplier footprint to prevent it from blocking other actors.
@@ -149,8 +149,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (!actualResupplyStarted && activeResupplyTypes > 0)
 			{
 				actualResupplyStarted = true;
-				foreach (var notifyResupply in notifyResupplies)
-					notifyResupply.BeforeResupply(host.Actor, self, activeResupplyTypes);
+				foreach (var notifyResupply in notifyDockResupplies)
+					notifyResupply.BeforeResupply(self, activeResupplyTypes);
 
 				foreach (var nd in notifyDockables)
 					nd.Docked();
@@ -165,8 +165,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (activeResupplyTypes.HasFlag(ResupplyType.Rearm))
 				RearmTick(self);
 
-			foreach (var notifyResupply in notifyResupplies)
-				notifyResupply.ResupplyTick(host.Actor, self, activeResupplyTypes);
+			foreach (var notifyResupply in notifyDockResupplies)
+				notifyResupply.ResupplyTick(activeResupplyTypes);
 
 			if (activeResupplyTypes == 0)
 			{
