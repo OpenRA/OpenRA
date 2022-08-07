@@ -176,10 +176,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Density + 1 as workaround for fixing ResourceLayer.Harvest as it would be very disruptive to balancing
 			if (oldResourceType != null && oldDensity > 0 && resourceValues.TryGetValue(oldResourceType, out var oldResourceValue))
-				NetWorth -= (oldDensity + 1) * oldResourceValue;
+				NetWorth -= oldDensity * oldResourceValue;
 
 			if (newResourceType != null && newDensity > 0 && resourceValues.TryGetValue(newResourceType, out var newResourceValue))
-				NetWorth += (newDensity + 1) * newResourceValue;
+				NetWorth += newDensity * newResourceValue;
 		}
 
 		public int CalculateRegionValue(CellRegion sourceRegion)
