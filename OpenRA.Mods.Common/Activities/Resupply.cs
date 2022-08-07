@@ -162,8 +162,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (activeResupplyTypes.HasFlag(ResupplyType.Repair))
 				RepairTick(self);
 
-			if (activeResupplyTypes.HasFlag(ResupplyType.Rearm))
-				RearmTick(self);
+			if (activeResupplyTypes.HasFlag(ResupplyType.Rearm) && rearmable.RearmTick(self))
+				activeResupplyTypes &= ~ResupplyType.Rearm;
 
 			foreach (var notifyResupply in notifyResupplies)
 				notifyResupply.ResupplyTick(host.Actor, self, activeResupplyTypes);
@@ -302,30 +302,6 @@ namespace OpenRA.Mods.Common.Activities
 			}
 			else
 				--remainingTicks;
-		}
-
-		void RearmTick(Actor self)
-		{
-			var rearmComplete = true;
-			foreach (var ammoPool in rearmable.RearmableAmmoPools)
-			{
-				if (!ammoPool.HasFullAmmo)
-				{
-					if (--ammoPool.RemainingTicks <= 0)
-					{
-						ammoPool.RemainingTicks = ammoPool.Info.ReloadDelay;
-						if (!string.IsNullOrEmpty(ammoPool.Info.RearmSound))
-							Game.Sound.PlayToPlayer(SoundType.World, self.Owner, ammoPool.Info.RearmSound, self.CenterPosition);
-
-						ammoPool.GiveAmmo(self, ammoPool.Info.ReloadCount);
-					}
-
-					rearmComplete = false;
-				}
-			}
-
-			if (rearmComplete)
-				activeResupplyTypes &= ~ResupplyType.Rearm;
 		}
 	}
 }

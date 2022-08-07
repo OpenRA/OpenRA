@@ -53,5 +53,27 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		void INotifyDockClient.Undocked(Actor self, Actor dock) { }
+
+		public bool RearmTick(Actor self)
+		{
+			foreach (var ammoPool in RearmableAmmoPools)
+			{
+				if (!ammoPool.HasFullAmmo)
+				{
+					if (--ammoPool.RemainingTicks <= 0)
+					{
+						ammoPool.RemainingTicks = ammoPool.Info.ReloadDelay;
+						if (!string.IsNullOrEmpty(ammoPool.Info.RearmSound))
+							Game.Sound.PlayToPlayer(SoundType.World, self.Owner, ammoPool.Info.RearmSound, self.CenterPosition);
+
+						ammoPool.GiveAmmo(self, ammoPool.Info.ReloadCount);
+					}
+
+					return false;
+				}
+			}
+
+			return true;
+		}
 	}
 }
