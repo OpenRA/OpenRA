@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Pathfinder
 {
@@ -74,17 +75,23 @@ namespace OpenRA.Mods.Common.Pathfinder
 	/// <para>This implementation is aware of movement costs over terrain given by
 	/// <see cref="Locomotor.MovementCostToEnterCell"/>. It is aware of changes to the costs in terrain and able to
 	/// update the abstract graph when this occurs. It is able to search the abstract graph as if
-	/// <see cref="BlockedByActor.None"/> had been specified. It is not aware of actors on the map. So blocking actors
-	/// will not be accounted for in the heuristic.</para>
+	/// <see cref="BlockedByActor.None"/> had been specified. If <see cref="BlockedByActor.Immovable"/> is given in the
+	/// constructor, the abstract graph will additionally account for a subset of immovable actors using the same rules
+	/// as <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, BlockedByActor, Actor)"/>. It will be aware of changes
+	/// to actors on the map and update the abstract graph when this occurs. Other types of blocking actors will not be
+	/// accounted for in the heuristic.</para>
 	///
 	/// <para>If the obstacle on the map is from terrain (e.g. a cliff or lake) the heuristic will work well. If the
-	/// obstacle is from a blocking actor (trees, walls, buildings, units) the heuristic is unaware of these. Therefore
-	/// the same problem where the search goes in the wrong direction is possible, e.g. through a choke-point that has
-	/// been walled off. In this scenario the performance benefit will be lost, as the search will have to explore more
-	/// nodes until it can get around the obstacle.</para>
+	/// obstacle is from the subset of immovable actors (e.g. trees, walls, buildings) and
+	/// <see cref="BlockedByActor.Immovable"/> was given, the heuristic will work well. If the obstacle is from other
+	/// actors (e.g. units) then the heuristic is unaware of these. Therefore the same problem where the search goes in
+	/// the wrong direction is possible, e.g. through a choke-point that has units blocking it. In this scenario the
+	/// performance benefit will be lost, as the search will have to explore more nodes until it can get around the
+	/// obstacle.</para>
 	///
 	/// <para>In summary, the <see cref="HierarchicalPathFinder"/> reduces the performance impact of path searches that
-	/// must go around terrain, but does not improve performance of searches that must go around actors.</para>
+	/// must go around terrain, and some types of actor, but does not improve performance of searches that must go
+	/// around the remaining types of actor.</para>
 	/// </remarks>
 	public sealed class HierarchicalPathFinder
 	{
@@ -93,8 +100,10 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		readonly World world;
 		readonly Locomotor locomotor;
+		readonly IActorMap actorMap;
 		readonly Func<CPos, CPos, int> costEstimator;
 		readonly HashSet<int> dirtyGridIndexes = new HashSet<int>();
+		readonly HashSet<CPos> cellsWithBlockingActor;
 		Grid mapBounds;
 		int gridXs;
 		int gridYs;
@@ -224,12 +233,33 @@ namespace OpenRA.Mods.Common.Pathfinder
 			}
 		}
 
-		public HierarchicalPathFinder(World world, Locomotor locomotor)
+		public HierarchicalPathFinder(World world, Locomotor locomotor, IActorMap actorMap, BlockedByActor check)
 		{
 			this.world = world;
 			this.locomotor = locomotor;
+			this.actorMap = actorMap;
 			if (locomotor.Info.TerrainSpeeds.Count == 0)
 				return;
+
+			if (check == BlockedByActor.Immovable)
+			{
+				// When we account for immovable actors, it depends on the actors on the map.
+				// When this changes, we must update the cost table.
+				actorMap.CellUpdated += RequireBlockingRefreshInCell;
+
+				// Determine immovable cells from actors already on the map.
+				cellsWithBlockingActor = actorMap.AllActors()
+					.Where(ActorIsBlocking)
+					.SelectMany(a =>
+						a.OccupiesSpace.OccupiedCells()
+						.Select(oc => oc.Cell)
+						.Where(c => ActorCellIsBlocking(a, c)))
+					.ToHashSet();
+			}
+			else if (check != BlockedByActor.None)
+				throw new System.ComponentModel.InvalidEnumArgumentException(
+					$"{nameof(HierarchicalPathFinder)} supports {nameof(BlockedByActor.None)} " +
+					$"and {nameof(BlockedByActor.Immovable)} only for {nameof(check)}");
 
 			costEstimator = PathSearch.DefaultCostEstimator(locomotor);
 
@@ -300,6 +330,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 		{
 			var singleAbstractCellForLayer = new CPos?[customMovementLayers.Length];
 			var localCellToAbstractCell = new Dictionary<CPos, CPos>();
+
+			// When accounting for immovable actors, use a custom cost so those cells become invalid paths.
+			var customCost = cellsWithBlockingActor == null
+				? (Func<CPos, int>)null
+				: c => cellsWithBlockingActor.Contains(c) ? PathGraph.PathCostForInvalidPath : 0;
+
 			for (byte gridLayer = 0; gridLayer < customMovementLayers.Length; gridLayer++)
 			{
 				if (gridLayer != 0 &&
@@ -314,7 +350,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 					for (var x = gridX; x < grid.BottomRight.X; x++)
 					{
 						var cell = new CPos(x, y, gridLayer);
-						if (locomotor.MovementCostForCell(cell) != PathGraph.MovementCostForUnreachableCell)
+						if (CellIsAccessible(cell))
 							accessibleCells.Add(cell);
 					}
 				}
@@ -364,7 +400,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				{
 					var src = accessibleCells.First();
 					using (var search = GetLocalPathSearch(
-						null, new[] { src }, src, null, null, BlockedByActor.None, false, grid, 100))
+						null, new[] { src }, src, customCost, null, BlockedByActor.None, false, grid, 100))
 					{
 						var localCellsInRegion = search.ExpandAll();
 						var abstractCell = AbstractCellForLocalCells(localCellsInRegion, gridLayer);
@@ -420,6 +456,24 @@ namespace OpenRA.Mods.Common.Pathfinder
 					!customMovementLayers[gridLayer].EnabledForLocomotor(locomotor.Info)))
 					continue;
 
+				void AddEdgesIfMovementAllowedBetweenCells(CPos cell, CPos candidateCell)
+				{
+					if (!MovementAllowedBetweenCells(cell, candidateCell))
+						return;
+
+					var gridInfo = gridInfos[GridIndex(cell)];
+					var abstractCell = gridInfo.AbstractCellForLocalCell(cell);
+					if (abstractCell == null)
+						return;
+
+					var gridInfoAdjacent = gridInfos[GridIndex(candidateCell)];
+					var abstractCellAdjacent = gridInfoAdjacent.AbstractCellForLocalCell(candidateCell);
+					if (abstractCellAdjacent == null)
+						return;
+
+					abstractEdges.Add((abstractCell.Value, abstractCellAdjacent.Value));
+				}
+
 				// Searches along edges of all grids within a layer.
 				// Checks for the local edge cell if we can traverse to any of the three adjacent cells in the next grid.
 				// Builds connections in the abstract graph when any local cells have connections.
@@ -432,28 +486,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 						for (var x = startX; x < startX + GridSize; x += xIncrement)
 						{
 							var cell = new CPos(x, y, gridLayer);
-							if (locomotor.MovementCostForCell(cell) == PathGraph.MovementCostForUnreachableCell)
+							if (!CellIsAccessible(cell))
 								continue;
 
 							var adjacentCell = cell + adjacentVec;
 							for (var i = -1; i <= 1; i++)
 							{
 								var candidateCell = adjacentCell + i * new CVec(adjacentVec.Y, adjacentVec.X);
-								if (locomotor.MovementCostToEnterCell(null, cell, candidateCell, BlockedByActor.None, null) !=
-									PathGraph.MovementCostForUnreachableCell)
-								{
-									var gridInfo = gridInfos[GridIndex(cell)];
-									var abstractCell = gridInfo.AbstractCellForLocalCell(cell);
-									if (abstractCell == null)
-										continue;
-
-									var gridInfoAdjacent = gridInfos[GridIndex(candidateCell)];
-									var abstractCellAdjacent = gridInfoAdjacent.AbstractCellForLocalCell(candidateCell);
-									if (abstractCellAdjacent == null)
-										continue;
-
-									abstractEdges.Add((abstractCell.Value, abstractCellAdjacent.Value));
-								}
+								AddEdgesIfMovementAllowedBetweenCells(cell, candidateCell);
 							}
 						}
 					}
@@ -479,7 +519,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 							for (var x = gridX; x < gridX + GridSize; x++)
 							{
 								var cell = new CPos(x, y, gridLayer);
-								if (locomotor.MovementCostForCell(cell) == PathGraph.MovementCostForUnreachableCell)
+								if (!CellIsAccessible(cell))
 									continue;
 
 								CPos candidateCell;
@@ -496,21 +536,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 										continue;
 								}
 
-								if (locomotor.MovementCostToEnterCell(null, cell, candidateCell, BlockedByActor.None, null) ==
-									PathGraph.MovementCostForUnreachableCell)
-									continue;
-
-								var gridInfo = gridInfos[GridIndex(cell)];
-								var abstractCell = gridInfo.AbstractCellForLocalCell(cell);
-								if (abstractCell == null)
-									continue;
-
-								var gridInfoAdjacent = gridInfos[GridIndex(candidateCell)];
-								var abstractCellAdjacent = gridInfoAdjacent.AbstractCellForLocalCell(candidateCell);
-								if (abstractCellAdjacent == null)
-									continue;
-
-								abstractEdges.Add((abstractCell.Value, abstractCellAdjacent.Value));
+								AddEdgesIfMovementAllowedBetweenCells(cell, candidateCell);
 							}
 						}
 					}
@@ -542,6 +568,98 @@ namespace OpenRA.Mods.Common.Pathfinder
 			// the reachability changes rather than for all costs changes saves us a lot of time.
 			if (oldCost == PathGraph.MovementCostForUnreachableCell ^ newCost == PathGraph.MovementCostForUnreachableCell)
 				dirtyGridIndexes.Add(GridIndex(cell));
+		}
+
+		bool CellIsAccessible(CPos cell)
+		{
+			return locomotor.MovementCostForCell(cell) != PathGraph.MovementCostForUnreachableCell &&
+				(cellsWithBlockingActor == null || !cellsWithBlockingActor.Contains(cell));
+		}
+
+		bool MovementAllowedBetweenCells(CPos accessibleSrcCell, CPos destCell)
+		{
+			return locomotor.MovementCostToEnterCell(
+				null, accessibleSrcCell, destCell, BlockedByActor.None, null) != PathGraph.MovementCostForUnreachableCell &&
+				(cellsWithBlockingActor == null || !cellsWithBlockingActor.Contains(destCell));
+		}
+
+		/// <summary>
+		/// When actors change for a cell, marks the grid it belongs to as out of date.
+		/// </summary>
+		void RequireBlockingRefreshInCell(CPos cell)
+		{
+			var cellHasBlockingActor = false;
+			var actors = actorMap.GetActorsAt(cell);
+			foreach (var actor in actors)
+			{
+				if (ActorIsBlocking(actor) && ActorCellIsBlocking(actor, cell))
+				{
+					cellHasBlockingActor = true;
+					break;
+				}
+			}
+
+			if (cellHasBlockingActor)
+			{
+				if (cellsWithBlockingActor.Add(cell))
+					dirtyGridIndexes.Add(GridIndex(cell));
+			}
+			else
+			{
+				if (cellsWithBlockingActor.Remove(cell))
+					dirtyGridIndexes.Add(GridIndex(cell));
+			}
+		}
+
+		/// <summary>
+		/// <see cref="BlockedByActor.Immovable"/> defines immovability based on the mobile trait. The blocking rules
+		/// in <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, BlockedByActor, Actor)"/> allow units to pass these
+		/// immovable actors if they are temporary blockers (e.g. gates) or crushable by the locomotor. Since our
+		/// abstract graph must work for any actor, we have to be conservative and can only consider a subset of the
+		/// immovable actors in the graph - ones we know cannot be passed by some actors due to these rules.
+		/// Both this and <see cref="ActorCellIsBlocking"/> must be true for a cell to be blocked.
+		///
+		/// This method is dependant on the logic in
+		/// <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, BlockedByActor, Actor)"/> and
+		/// <see cref="Locomotor.UpdateCellBlocking"/>. This method must be kept in sync with changes in the locomotor
+		/// rules.
+		/// </summary>
+		bool ActorIsBlocking(Actor actor)
+		{
+			var mobile = actor.OccupiesSpace as Mobile;
+			var isMovable = mobile != null && !mobile.IsTraitDisabled && !mobile.IsTraitPaused && !mobile.IsImmovable;
+			if (isMovable)
+				return false;
+
+			var isTemporaryBlocker = world.RulesContainTemporaryBlocker && actor.TraitOrDefault<ITemporaryBlocker>() != null;
+			if (isTemporaryBlocker)
+				return false;
+
+			var crushables = actor.TraitsImplementing<ICrushable>();
+			foreach (var crushable in crushables)
+				if (world.NoPlayersMask != crushable.CrushableBy(actor, locomotor.Info.Crushes))
+					return false;
+
+			return true;
+		}
+
+		/// <summary>
+		/// The blocking rules additionally allow some cells to be considered passable even if the actor is blocking.
+		/// A cell is passable if the locomotor can share the cell and a subcell is available. It is also passable if
+		/// it is a transit only cell of a <see cref="Building"/>. We cannot consider these cells to be blocked.
+		/// Both this and <see cref="ActorIsBlocking"/> must be true for a cell to be blocked.
+		/// </summary>
+		bool ActorCellIsBlocking(Actor actor, CPos cell)
+		{
+			var canShareCell = locomotor.Info.SharesCell && actorMap.HasFreeSubCell(cell);
+			if (canShareCell)
+				return false;
+
+			var isTransitOnly = actor.OccupiesSpace is Building building && building.TransitOnlyCells().Contains(cell);
+			if (isTransitOnly)
+				return false;
+
+			return true;
 		}
 
 		int GridIndex(CPos cellInGrid)
@@ -741,7 +859,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		/// <summary>
 		/// Determines if a path exists between source and target.
-		/// Only terrain is taken into account, i.e. as if <see cref="BlockedByActor.None"/> was given.
+		/// When <see cref="BlockedByActor.None"/> was given, only terrain is taken into account,
+		/// i.e. as if <see cref="BlockedByActor.None"/> was used when finding a path.
+		/// When <see cref="BlockedByActor.Immovable"/> was given, a subset of immovable actors are also taken into
+		/// account. If the method returns false, there is definitely no path. If it returns true there could be a
+		/// path, but it is possible that there is no path because of an immovable actor that does not belong to the
+		/// subset of actors that can be accounted for. So be careful.
 		/// This would apply for any actor using the same <see cref="Locomotor"/> as this <see cref="HierarchicalPathFinder"/>.
 		/// </summary>
 		public bool PathExists(CPos source, CPos target)
@@ -909,8 +1032,16 @@ namespace OpenRA.Mods.Common.Pathfinder
 				// So we don't need to handle an abstract cell lookup failing, or the search failing to expand.
 				// Cells added as initial starting points for the search are filtered out if they aren't reachable.
 				// The search only explores accessible cells from then on.
+				// If the exceptions here do fire, they indicate a bug. The abstract graph is considering a cell to be
+				// unreachable, but the local pathfinder thinks it is reachable. We must fix the abstract graph to also
+				// consider the cell to be reachable.
 				var gridInfo = gridInfos[GridIndex(cell)];
-				var abstractCell = gridInfo.AbstractCellForLocalCell(cell).Value;
+				var maybeAbstractCell = gridInfo.AbstractCellForLocalCell(cell);
+				if (maybeAbstractCell == null)
+					throw new Exception(
+						"The abstract path should never be searched for an unreachable point. " +
+						"This is a bug. Failed lookup for an abstract cell.");
+				var abstractCell = maybeAbstractCell.Value;
 				var info = graph[abstractCell];
 
 				// Expand the abstract search only if we have yet to get a route to the abstract cell.
@@ -918,7 +1049,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 				{
 					abstractSearch.TargetPredicate = c => c == abstractCell;
 					if (!abstractSearch.ExpandToTarget())
-						throw new Exception("The abstract path should never be searched for an unreachable point.");
+						throw new Exception(
+							"The abstract path should never be searched for an unreachable point. " +
+							"This is a bug. Failed to route to abstract cell.");
 					info = graph[abstractCell];
 				}
 
