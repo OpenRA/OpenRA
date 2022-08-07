@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Cloak : PausableConditionalTrait<CloakInfo>, IRenderModifier, INotifyDamage, INotifyUnload, INotifyDemolition, INotifyInfiltration,
-		INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated, INotifyDockClient, INotifyBeingResupplied
+		INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated, INotifyDockClient
 	{
 		[Sync]
 		int remainingTime;
@@ -281,7 +281,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDockClient.Undocked(Actor self, Actor host)
 		{
-			isDocking = false;
+			if (Info.UncloakOn.HasFlag(UncloakType.Dock))
+				isDocking = false;
 		}
 
 		void INotifyUnload.Unloading(Actor self)
@@ -300,21 +301,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (Info.UncloakOn.HasFlag(UncloakType.Infiltrate))
 				Uncloak();
-		}
-
-		void INotifyBeingResupplied.StartingResupply(Actor self, Actor host)
-		{
-			if (Info.UncloakOn.HasFlag(UncloakType.Dock))
-			{
-				isDocking = true;
-				Uncloak();
-			}
-		}
-
-		void INotifyBeingResupplied.StoppingResupply(Actor self, Actor host)
-		{
-			if (Info.UncloakOn.HasFlag(UncloakType.Dock))
-				isDocking = false;
 		}
 	}
 }
