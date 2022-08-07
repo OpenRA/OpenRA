@@ -44,8 +44,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 				wsb.PlayCustomAnimation(self, sequence);
 		}
 
-		void INotifyHarvesterAction.Docked() { }
-		void INotifyHarvesterAction.Undocked() { }
 		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell) { }
 		void INotifyHarvesterAction.MovingToRefinery(Actor self, Actor refineryActor) { }
 		void INotifyHarvesterAction.MovementCancelled(Actor self) { }

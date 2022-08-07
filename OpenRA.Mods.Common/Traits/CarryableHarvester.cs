@@ -49,7 +49,5 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		void INotifyHarvesterAction.Harvested(Actor self, string resourceType) { }
-		void INotifyHarvesterAction.Docked() { }
-		void INotifyHarvesterAction.Undocked() { }
 	}
 }
