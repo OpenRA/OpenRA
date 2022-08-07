@@ -270,11 +270,12 @@ NAHPAD:
 	Production:
 		Produces: Air
 		PauseOnCondition: empdisable
-	Reservable:
 	RepairsUnits:
 		HpPerStep: 1000
 		PauseOnCondition: empdisable
 		PlayerExperience: 15
+	Dock:
+		Type: repairAir, rearm
 		StartRepairingNotification: Repairing
 		StartRepairingTextNotification: Repairing.
 		FinishRepairingNotification: UnitRepaired
@@ -578,9 +579,10 @@ NAWAST:
 	RevealsShroud:
 		Range: 6c0
 		MaxHeightDelta: 3
-	TiberianSunRefinery:
-		DockAngle: 640
-		DockOffset: 2,1
+	Dock:
+		Type: unload
+		Facing: 640
+		Offset: 2,1
 	StoresResources:
 		Capacity: 56
 	Power:

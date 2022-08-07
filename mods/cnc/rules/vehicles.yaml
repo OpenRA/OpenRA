@@ -64,6 +64,7 @@ HARV:
 		SearchFromHarvesterRadius: 8
 		HarvestFacings: 8
 		EmptyCondition: no-tiberium
+		TickRate: 15
 	Mobile:
 		Speed: 72
 	Health:

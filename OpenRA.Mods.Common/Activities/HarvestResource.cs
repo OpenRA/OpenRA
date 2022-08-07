@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Activities
 		public HarvestResource(Actor self, CPos targetCell)
 		{
 			harv = self.Trait<Harvester>();
-			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
+			harvInfo = harv.Info;
 			facing = self.Trait<IFacing>();
 			body = self.Trait<BodyOrientation>();
 			move = self.Trait<IMove>();
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Activities
 		public override void Cancel(Actor self, bool keepQueue = false)
 		{
 			foreach (var n in notifyHarvesterActions)
-				n.MovementCancelled(self);
+				n.MovementCancelled(self.TraitOrDefault<DockManager>());
 
 			base.Cancel(self, keepQueue);
 		}

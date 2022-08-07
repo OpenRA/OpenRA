@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (attackAircraft.Info.AbortOnResupply)
 					NextActivity?.Cancel(self);
 
-				QueueChild(new ReturnToBase(self));
+				QueueChild(new DockActivity(rearmable.DockManager, rearmable));
 				returnToBase = true;
 				return attackAircraft.Info.AbortOnResupply;
 			}

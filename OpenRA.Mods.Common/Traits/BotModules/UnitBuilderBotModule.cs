@@ -202,7 +202,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 
 			var countOwnAir = AIUtils.CountActorsWithTrait<IPositionable>(actorInfo.Name, player);
-			var countBuildings = rearmableInfo.RearmActors.Sum(b => AIUtils.CountActorsWithTrait<Building>(b, player));
+			var countBuildings = AIUtils.CountActorsWithTrait<Building>(rearmableInfo.DockType, player);
 			if (countOwnAir >= countBuildings)
 				return false;
 

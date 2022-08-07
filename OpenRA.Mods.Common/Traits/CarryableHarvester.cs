@@ -34,18 +34,17 @@ namespace OpenRA.Mods.Common.Traits
 				t.RequestTransport(self, targetCell);
 		}
 
-		void INotifyHarvesterAction.MovingToRefinery(Actor self, Actor refineryActor)
+		void INotifyDockableAction.MovingToDock(DockManager dockable, Dock dock)
 		{
-			var iao = refineryActor.Trait<IAcceptResources>();
-			var location = refineryActor.Location + iao.DeliveryOffset;
+			var location = dock.Location;
 			foreach (var t in transports)
-				t.RequestTransport(self, location);
+				t.RequestTransport(dockable.Self, location);
 		}
 
-		void INotifyHarvesterAction.MovementCancelled(Actor self)
+		void INotifyDockableAction.MovementCancelled(DockManager dockable)
 		{
 			foreach (var t in transports)
-				t.MovementCancelled(self);
+				t.MovementCancelled(dockable.Self);
 		}
 
 		void INotifyHarvesterAction.Harvested(Actor self, string resourceType) { }

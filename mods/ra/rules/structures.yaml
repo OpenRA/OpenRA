@@ -210,11 +210,15 @@ SPEN:
 	-SpawnActorsOnSell:
 	RepairsUnits:
 		HpPerStep: 1000
+		PlayerExperience: 15
+	Dock:
+		Type: repairShip
+		Ofset: 1, 1
+		CloseEnough: 4c0
 		StartRepairingNotification: Repairing
 		StartRepairingTextNotification: Repairing.
 		FinishRepairingNotification: UnitRepaired
 		FinishRepairingTextNotification: Unit repaired.
-		PlayerExperience: 15
 	RallyPoint:
 		ForceSetType: Ship
 	ProductionBar:
@@ -327,11 +331,15 @@ SYRD:
 	-SpawnActorsOnSell:
 	RepairsUnits:
 		HpPerStep: 1000
+		PlayerExperience: 15
+	Dock:
+		Type: repairShip
+		Ofset: 1, 1
+		CloseEnough: 4c0
 		StartRepairingNotification: Repairing
 		StartRepairingTextNotification: Repairing.
 		FinishRepairingNotification: UnitRepaired
 		FinishRepairingTextNotification: Unit repaired.
-		PlayerExperience: 15
 	RallyPoint:
 		ForceSetType: Ship
 	ProductionBar:
@@ -1201,10 +1209,11 @@ FACT:
 		RequiresCondition: factundeploy
 		CargoType: Vehicle
 		RequiresForceMove: true
-	TransformsIntoRepairable:
+	DockManager:
+		TransformOnDock: true
+	Repairable:
 		RequiresCondition: factundeploy
-		RepairActors: fix
-		RequiresForceMove: true
+		RequireForceMoveCondition: factundeploy
 	TransformsIntoTransforms:
 		RequiresCondition: factundeploy && build-incomplete
 	Sellable:
@@ -1271,8 +1280,9 @@ PROC:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Refinery:
-		DockAngle: 256
+	Dock:
+		Type: unload
+		DockFacing: 256
 		DockOffset: 1,2
 	StoresResources:
 		Capacity: 2000
@@ -1414,7 +1424,9 @@ HPAD:
 		ForceSetType: Helicopter
 	Production:
 		Produces: Aircraft, Helicopter
-	Reservable:
+	Dock:
+		Type: rearmHeli
+		WaitDistanceFromResupplyBase: 4c0
 	ProductionBar:
 		ProductionType: Aircraft
 	Power:
@@ -1496,7 +1508,8 @@ AFLD:
 		ForceSetType: Plane
 	Production:
 		Produces: Aircraft, Plane
-	Reservable:
+	Dock:
+		Type: rearmPlane
 	ProvidesPrerequisite@soviet:
 		Factions: soviet, russia, ukraine
 		Prerequisite: aircraft.soviet
@@ -2012,15 +2025,17 @@ FIX:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Reservable:
+	Dock:
+		Type: repair, rearm
+		Offset: 1, 1
+		StartDockingNotification: Repairing
+		StartDockingTextNotification: Repairing.
+		FinishDockingNotification: UnitRepaired
+		FinishDockingTextNotification: Unit repaired.
 	RallyPoint:
 	RepairsUnits:
 		HpPerStep: 1000
 		Interval: 7
-		StartRepairingNotification: Repairing
-		StartRepairingTextNotification: Repairing.
-		FinishRepairingNotification: UnitRepaired
-		FinishRepairingTextNotification: Unit repaired.
 		PlayerExperience: 15
 	WithBuildingBib:
 		HasMinibib: true

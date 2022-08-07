@@ -256,10 +256,10 @@ refinery:
 		Type: heavy
 	RevealsShroud:
 		Range: 3c768
-	Refinery:
-		DockAngle: 640
-		DockOffset: 2,1
-		TickRate: 20
+	Dock:
+		Type: unload
+		Facing: 640
+		Offset: 2,1
 	StoresResources:
 		Capacity: 2000
 	CustomSellValue:
@@ -832,15 +832,17 @@ repair_pad:
 		Range: 3c768
 	Selectable:
 		Bounds: 3072, 3072
-	Reservable:
 	RepairsUnits:
 		Interval: 10
 		HpPerStep: 800
+		PlayerExperience: 15
+	Dock:
+		Type: repair
+		Offset: 1, 1
 		StartRepairingNotification: Repairing
 		StartRepairingTextNotification: Repairing.
 		FinishRepairingNotification: UnitRepaired
 		FinishRepairingTextNotification: Unit repaired.
-		PlayerExperience: 15
 	RallyPoint:
 	RenderSprites:
 		Image: repair_pad.ordos

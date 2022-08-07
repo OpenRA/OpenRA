@@ -72,6 +72,7 @@ harvester:
 		BaleUnloadDelay: 5
 		SearchFromProcRadius: 30
 		SearchFromHarvesterRadius: 15
+		TickRate: 20
 	CarryableHarvester:
 	Health:
 		HP: 45000

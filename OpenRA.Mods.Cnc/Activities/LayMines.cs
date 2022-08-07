@@ -26,20 +26,16 @@ namespace OpenRA.Mods.Cnc.Activities
 		readonly Minelayer minelayer;
 		readonly AmmoPool[] ammoPools;
 		readonly IMove movement;
-		readonly IMoveInfo moveInfo;
-		readonly RearmableInfo rearmableInfo;
+		readonly Rearmable rearmable;
 
 		List<CPos> minefield;
-		bool returnToBase;
-		Actor rearmTarget;
 
 		public LayMines(Actor self, List<CPos> minefield = null)
 		{
 			minelayer = self.Trait<Minelayer>();
 			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
 			movement = self.Trait<IMove>();
-			moveInfo = self.Info.TraitInfo<IMoveInfo>();
-			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
+			rearmable = self.TraitOrDefault<Rearmable>();
 			this.minefield = minefield;
 		}
 
@@ -61,27 +57,14 @@ namespace OpenRA.Mods.Cnc.Activities
 
 		public override bool Tick(Actor self)
 		{
-			returnToBase = false;
-
 			if (IsCanceling)
 				return true;
 
 			if ((minefield == null || minefield.Contains(self.Location)) && CanLayMine(self, self.Location))
 			{
-				if (rearmableInfo != null && ammoPools.Any(p => p.Info.Name == minelayer.Info.AmmoPoolName && !p.HasAmmo))
+				if (rearmable != null && ammoPools.Any(p => p.Info.Name == minelayer.Info.AmmoPoolName && !p.HasAmmo))
 				{
-					// Rearm (and possibly repair) at rearm building, then back out here to refill the minefield some more
-					rearmTarget = self.World.Actors.Where(a => self.Owner.RelationshipWith(a.Owner) == PlayerRelationship.Ally && rearmableInfo.RearmActors.Contains(a.Info.Name))
-						.ClosestTo(self);
-
-					if (rearmTarget == null)
-						return true;
-
-					// Add a CloseEnough range of 512 to the Rearm/Repair activities in order to ensure that we're at the host actor
-					QueueChild(new MoveAdjacentTo(self, Target.FromActor(rearmTarget)));
-					QueueChild(movement.MoveTo(self.World.Map.CellContaining(rearmTarget.CenterPosition), ignoreActor: rearmTarget));
-					QueueChild(new Resupply(self, rearmTarget));
-					returnToBase = true;
+					QueueChild(new DockActivity(self.Trait<DockManager>(), rearmable, null));
 					return false;
 				}
 
@@ -119,9 +102,6 @@ namespace OpenRA.Mods.Cnc.Activities
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
-			if (returnToBase)
-				yield return new TargetLineNode(Target.FromActor(rearmTarget), moveInfo.GetTargetLineColor());
-
 			if (minefield == null || minefield.Count == 0)
 				yield break;
 

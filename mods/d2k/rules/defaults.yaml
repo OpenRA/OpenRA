@@ -214,8 +214,8 @@
 	HiddenUnderFog:
 	ActorLostNotification:
 		TextNotification: Unit lost.
+	DockManager:
 	Repairable:
-		RepairActors: repair_pad
 	Guard:
 		Voice: Guard
 	Guardable:

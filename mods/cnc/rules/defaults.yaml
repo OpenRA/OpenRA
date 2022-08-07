@@ -241,8 +241,8 @@
 		Bounds: 1024, 1024
 	Targetable:
 		TargetTypes: Ground, Vehicle
+	DockManager:
 	Repairable:
-		RepairActors: fix
 	Passenger:
 		CargoType: Vehicle
 	ActorLostNotification:
@@ -291,8 +291,9 @@
 		RequiresCondition: airborne
 	Selectable:
 		Bounds: 1024, 1024
+	DockManager:
 	Repairable:
-		RepairActors: hpad
+		DockType: repairHeli
 	Aircraft:
 		AirborneCondition: airborne
 		CruisingCondition: cruising

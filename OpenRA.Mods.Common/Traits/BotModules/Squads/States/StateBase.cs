@@ -108,14 +108,14 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				return false;
 
 			var activity = a.CurrentActivity;
-			if (activity.GetType() == typeof(Resupply))
+			if (activity.GetType() == typeof(DockSequence))
 				return true;
 
 			var next = activity.NextActivity;
 			if (next == null)
 				return false;
 
-			if (next.GetType() == typeof(Resupply))
+			if (next.GetType() == typeof(DockSequence))
 				return true;
 
 			return false;

@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Orders;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -117,9 +116,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Does this VTOL actor need to turn before landing (on terrain)?")]
 		public readonly bool TurnToLand = false;
 
-		[Desc("Does this actor automatically take off after resupplying?")]
-		public readonly bool TakeOffOnResupply = false;
-
 		[Desc("Does this actor automatically take off after creation?")]
 		public readonly bool TakeOffOnCreation = true;
 
@@ -143,9 +139,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Sounds to play when the actor is landing.")]
 		public readonly string[] LandingSounds = Array.Empty<string>();
-
-		[Desc("The distance of the resupply base that the aircraft will wait for its turn.")]
-		public readonly WDist WaitDistanceFromResupplyBase = new WDist(3072);
 
 		[Desc("The number of ticks that a airplane will wait to make a new search for an available airport.")]
 		public readonly int NumberOfTicksToVerifyAvailableAirport = 150;
@@ -221,15 +214,13 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Aircraft : PausableConditionalTrait<AircraftInfo>, ITick, ISync, IFacing, IPositionable, IMove,
-		INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyActorDisposing, INotifyBecomingIdle, ICreationActivity,
-		IActorPreviewInitModifier, IDeathActorInitModifier, IIssueDeployOrder, IIssueOrder, IResolveOrder, IOrderVoice
+		INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBecomingIdle, ICreationActivity,
+		IActorPreviewInitModifier, IDeathActorInitModifier, IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		readonly Actor self;
-
-		Repairable repairable;
-		Rearmable rearmable;
+		readonly DockManager dockManager;
+		readonly Rearmable rearmable;
 		IAircraftCenterPositionOffset[] positionOffsets;
-		IDisposable reservation;
 		IEnumerable<int> speedModifiers;
 		INotifyMoving[] notifyMoving;
 		INotifyCenterPositionChanged[] notifyCenterPositionChanged;
@@ -277,8 +268,6 @@ namespace OpenRA.Mods.Common.Traits
 			return new WAngle(Util.ApplyPercentageModifiers(turnSpeed.Angle, speedModifiers).Clamp(1, 1024));
 		}
 
-		public Actor ReservedActor { get; private set; }
-		public bool MayYieldReservation { get; private set; }
 		public bool ForceLanding { get; private set; }
 
 		IEnumerable<CPos> landingCells = Enumerable.Empty<CPos>();
@@ -319,6 +308,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			Facing = init.GetValue<FacingInit, WAngle>(Info.InitialFacing);
 			creationActivityDelay = init.GetValue<CreationActivityDelayInit, int>(0);
+
+			dockManager = self.TraitOrDefault<DockManager>();
+			rearmable = self.TraitOrDefault<Rearmable>();
 		}
 
 		public WDist LandAltitude
@@ -358,8 +350,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Created(Actor self)
 		{
-			repairable = self.TraitOrDefault<Repairable>();
-			rearmable = self.TraitOrDefault<Rearmable>();
 			speedModifiers = self.TraitsImplementing<ISpeedModifier>().ToArray().Select(sm => sm.GetSpeedModifier());
 			cachedPosition = self.CenterPosition;
 			notifyMoving = self.TraitsImplementing<INotifyMoving>().ToArray();
@@ -392,7 +382,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void RemovedFromWorld(Actor self)
 		{
-			UnReserve();
 			self.World.RemoveFromMaps(self, this);
 
 			OnCruisingAltitudeLeft();
@@ -473,10 +462,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.Repulsable)
 				return WVec.Zero;
 
-			if (reservation != null)
+			if (dockManager != null && dockManager.LinkedDock != null)
 			{
-				var distanceFromReservationActor = (ReservedActor.CenterPosition - self.CenterPosition).HorizontalLength;
-				if (distanceFromReservationActor < Info.WaitDistanceFromResupplyBase.Length)
+				var distanceFromReservationActor = (dockManager.LinkedDock.Position - self.CenterPosition).HorizontalLength;
+				if (distanceFromReservationActor < dockManager.LinkedDock.Info.WaitDistanceFromResupplyBase.Length)
 					return WVec.Zero;
 			}
 
@@ -540,80 +529,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			return (d * 1024 * 8) / (int)distSq;
-		}
-
-		public Actor GetActorBelow()
-		{
-			// Map.DistanceAboveTerrain(WPos pos) is called directly because Aircraft is an IPositionable trait
-			// and all calls occur in Tick methods.
-			if (self.World.Map.DistanceAboveTerrain(CenterPosition) != LandAltitude)
-				return null; // Not on the resupplier.
-
-			return self.World.ActorMap.GetActorsAt(self.Location)
-				.FirstOrDefault(a => a.Info.HasTraitInfo<ReservableInfo>());
-		}
-
-		public void MakeReservation(Actor target)
-		{
-			UnReserve();
-			var reservable = target.TraitOrDefault<Reservable>();
-			if (reservable != null)
-			{
-				reservation = reservable.Reserve(target, self, this);
-				ReservedActor = target;
-			}
-		}
-
-		public void AllowYieldingReservation()
-		{
-			if (reservation == null)
-				return;
-
-			MayYieldReservation = true;
-		}
-
-		public void UnReserve()
-		{
-			if (reservation == null)
-				return;
-
-			reservation.Dispose();
-			reservation = null;
-			ReservedActor = null;
-			MayYieldReservation = false;
-		}
-
-		bool AircraftCanEnter(Actor a, TargetModifiers modifiers)
-		{
-			if (requireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove))
-				return false;
-
-			return AircraftCanEnter(a);
-		}
-
-		bool AircraftCanEnter(Actor a)
-		{
-			if (self.AppearsHostileTo(a))
-				return false;
-
-			var canRearmAtActor = rearmable != null && rearmable.Info.RearmActors.Contains(a.Info.Name);
-			var canRepairAtActor = repairable != null && repairable.Info.RepairActors.Contains(a.Info.Name);
-
-			return canRearmAtActor || canRepairAtActor;
-		}
-
-		bool AircraftCanResupplyAt(Actor a, bool allowedToForceEnter = false)
-		{
-			if (self.AppearsHostileTo(a))
-				return false;
-
-			var canRearmAtActor = rearmable != null && rearmable.Info.RearmActors.Contains(a.Info.Name);
-			var canRepairAtActor = repairable != null && repairable.Info.RepairActors.Contains(a.Info.Name);
-
-			var allowedToEnterRearmer = canRearmAtActor && (allowedToForceEnter || rearmable.RearmableAmmoPools.Any(p => !p.HasFullAmmo));
-			var allowedToEnterRepairer = canRepairAtActor && (allowedToForceEnter || self.GetDamageState() != DamageState.Undamaged);
-
-			return allowedToEnterRearmer || allowedToEnterRepairer;
 		}
 
 		public int MovementSpeed => !IsTraitDisabled && !IsTraitPaused ? Util.ApplyPercentageModifiers(Info.Speed, speedModifiers) : 0;
@@ -721,16 +636,6 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public bool CanRearmAt(Actor host)
-		{
-			return rearmable != null && rearmable.Info.RearmActors.Contains(host.Info.Name) && rearmable.RearmableAmmoPools.Any(p => !p.HasFullAmmo);
-		}
-
-		public bool CanRepairAt(Actor host)
-		{
-			return repairable != null && repairable.Info.RepairActors.Contains(host.Info.Name) && self.GetDamageState() != DamageState.Undamaged;
-		}
-
 		public void ModifyDeathActorInit(Actor self, TypeDictionary init)
 		{
 			init.Add(new FacingInit(Facing));
@@ -754,14 +659,14 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(new FlyOffMap(self, Target.FromCell(self.World, edgeCell)));
 				self.QueueActivity(new RemoveSelf());
 			}
-			else if (Info.IdleBehavior == IdleBehaviorType.ReturnToBase && GetActorBelow() == null)
-				self.QueueActivity(new ReturnToBase(self, null, !Info.TakeOffOnResupply));
+			else if (Info.IdleBehavior == IdleBehaviorType.ReturnToBase && dockManager?.LinkedDock == null) // error
+				self.QueueActivity(new DockActivity(dockManager, rearmable));
 			else
 			{
 				var dat = self.World.Map.DistanceAboveTerrain(CenterPosition);
 				if (dat == LandAltitude)
 				{
-					if (!CanLand(self.Location) && ReservedActor == null)
+					if (!CanLand(self.Location) && dockManager?.LinkedDock == null)
 						self.QueueActivity(new TakeOff(self));
 
 					// All remaining idle behaviors rely on not being at LandAltitude, so unconditionally return
@@ -969,7 +874,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (target.Positions.Any(p => self.World.ActorMap.GetActorsAt(self.World.Map.CellContaining(p)).Any(a => a != self && a != targetActor.Actor)))
 				return false;
 
-			MakeReservation(target.Actor);
 			return true;
 		}
 
@@ -977,26 +881,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		#region Implement order interfaces
 
-		public IEnumerable<IOrderTargeter> Orders
+		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<BuildingInfo>(
-					"ForceEnter",
-					6,
-					Info.EnterCursor,
-					Info.EnterBlockedCursor,
-					(target, modifiers) => Info.CanForceLand && modifiers.HasModifier(TargetModifiers.ForceMove) && AircraftCanEnter(target),
-					target => Reservable.IsAvailableFor(target, self) && AircraftCanResupplyAt(target, true));
-
-				yield return new EnterAlliedActorTargeter<BuildingInfo>(
-					"Enter",
-					5,
-					Info.EnterCursor,
-					Info.EnterBlockedCursor,
-					AircraftCanEnter,
-					target => Reservable.IsAvailableFor(target, self) && AircraftCanResupplyAt(target, !Info.TakeOffOnResupply));
-
 				yield return new AircraftMoveOrderTargeter(this);
 			}
 		}
@@ -1004,21 +892,11 @@ namespace OpenRA.Mods.Common.Traits
 		public Order IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
 		{
 			if (!IsTraitDisabled &&
-				(order.OrderID == "Enter" || order.OrderID == "Move" || order.OrderID == "Land" || order.OrderID == "ForceEnter"))
+				(order.OrderID == "Move" || order.OrderID == "Land"))
 				return new Order(order.OrderID, self, target, queued);
 
 			return null;
 		}
-
-		Order IIssueDeployOrder.IssueDeployOrder(Actor self, bool queued)
-		{
-			if (IsTraitDisabled || rearmable == null || rearmable.Info.RearmActors.Count == 0)
-				return null;
-
-			return new Order("ReturnToBase", self, queued);
-		}
-
-		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued) { return rearmable != null && rearmable.Info.RearmActors.Count > 0; }
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
@@ -1037,18 +915,14 @@ namespace OpenRA.Mods.Common.Traits
 					}
 
 					return Info.Voice;
-				case "Enter":
-				case "ForceEnter":
 				case "Stop":
 				case "Scatter":
 					return Info.Voice;
-				case "ReturnToBase":
-					return rearmable != null && rearmable.Info.RearmActors.Count > 0 ? Info.Voice : null;
 				default: return null;
 			}
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
 			if (IsTraitDisabled)
 				return;
@@ -1059,9 +933,6 @@ namespace OpenRA.Mods.Common.Traits
 				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
-
-				if (!order.Queued)
-					UnReserve();
 
 				var target = Target.FromCell(self.World, cell);
 
@@ -1075,64 +946,14 @@ namespace OpenRA.Mods.Common.Traits
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
-				if (!order.Queued)
-					UnReserve();
-
 				var target = Target.FromCell(self.World, cell);
 
 				self.QueueActivity(order.Queued, new Land(self, target, targetLineColor: Info.TargetLineColor));
 				self.ShowTargetLines();
 			}
-			else if (orderString == "Enter" || orderString == "ForceEnter" || orderString == "Repair")
-			{
-				// Enter, ForceEnter and Repair orders are only valid for own/allied actors,
-				// which are guaranteed to never be frozen.
-				if (order.Target.Type != TargetType.Actor)
-					return;
-
-				var targetActor = order.Target.Actor;
-				var isForceEnter = orderString == "ForceEnter";
-				var canResupplyAt = AircraftCanResupplyAt(targetActor, isForceEnter || !Info.TakeOffOnResupply);
-
-				// This is what the order targeter checks to display the correct cursor, so we need to make sure
-				// the behavior matches the cursor if the player clicks despite a "blocked" cursor.
-				if (!canResupplyAt || !Reservable.IsAvailableFor(targetActor, self))
-					return;
-
-				if (!order.Queued)
-					UnReserve();
-
-				// Aircraft with TakeOffOnResupply would immediately take off again, so there's no point in automatically forcing
-				// them to land on a resupplier. For aircraft without it, it makes more sense to land than to idle above a
-				// free resupplier.
-				var forceLand = isForceEnter || !Info.TakeOffOnResupply;
-				self.QueueActivity(order.Queued, new ReturnToBase(self, targetActor, forceLand));
-				self.ShowTargetLines();
-			}
 			else if (orderString == "Stop")
 			{
-				// We don't want the Stop order to cancel a running Resupply activity.
-				// Resupply is always either the main activity or a child of ReturnToBase.
-				if (self.CurrentActivity is Resupply ||
-					(self.CurrentActivity is ReturnToBase && GetActorBelow() != null))
-					return;
-
 				self.CancelActivity();
-				UnReserve();
-			}
-			else if (orderString == "ReturnToBase")
-			{
-				// Do nothing if not rearmable and don't restart activity every time deploy hotkey is triggered
-				if (rearmable == null || rearmable.Info.RearmActors.Count == 0 || self.CurrentActivity is ReturnToBase || GetActorBelow() != null)
-					return;
-
-				if (!order.Queued)
-					UnReserve();
-
-				// Aircraft with TakeOffOnResupply would immediately take off again, so there's no point in forcing them to land
-				// on a resupplier. For aircraft without it, it makes more sense to land than to idle above a free resupplier.
-				self.QueueActivity(order.Queued, new ReturnToBase(self, null, !Info.TakeOffOnResupply));
-				self.ShowTargetLines();
 			}
 			else if (orderString == "Scatter")
 				Nudge(self);
@@ -1155,7 +976,6 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.QueueActivity(false, new Fly(self, target));
 			self.ShowTargetLines();
-			UnReserve();
 		}
 
 		#region Airborne conditions
@@ -1206,11 +1026,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		#endregion
 
-		void INotifyActorDisposing.Disposing(Actor self)
-		{
-			UnReserve();
-		}
-
 		void IActorPreviewInitModifier.ModifyActorPreviewInit(Actor self, TypeDictionary inits)
 		{
 			if (!inits.Contains<DynamicFacingInit>() && !inits.Contains<FacingInit>())
@@ -1238,27 +1053,15 @@ namespace OpenRA.Mods.Common.Traits
 
 			protected override void OnFirstRun(Actor self)
 			{
-				var host = aircraft.GetActorBelow();
-				if (host != null)
-					aircraft.MakeReservation(host);
-
 				if (delay > 0)
 					QueueChild(new Wait(delay));
 			}
 
 			public override bool Tick(Actor self)
 			{
-				if (!aircraft.Info.TakeOffOnCreation)
-				{
-					// Freshly created aircraft shouldn't block the exit, so we allow them to yield their reservation
-					aircraft.AllowYieldingReservation();
-					return true;
-				}
-
 				if (self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length <= aircraft.LandAltitude.Length)
 					QueueChild(new TakeOff(self));
 
-				aircraft.UnReserve();
 				return true;
 			}
 		}

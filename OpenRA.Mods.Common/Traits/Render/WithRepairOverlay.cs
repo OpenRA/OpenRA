@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithRepairOverlay(init.Self, this); }
 	}
 
-	public class WithRepairOverlay : PausableConditionalTrait<WithRepairOverlayInfo>, INotifyDamageStateChanged, INotifyDockResupply
+	public class WithRepairOverlay : PausableConditionalTrait<WithRepairOverlayInfo>, INotifyDamageStateChanged, INotifyDock
 	{
 		readonly Animation overlay;
 		bool visible;
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			overlay.ReplaceAnim(RenderSprites.NormalizeSequence(overlay, e.DamageState, overlay.CurrentSequence.Name));
 		}
 
-		void INotifyDockResupply.BeforeResupply(Actor dockable, ResupplyType types)
+		void INotifyDock.Docked(DockManager dockable, Dock dock)
 		{
 			repairing = types.HasFlag(ResupplyType.Repair);
 			if (!repairing)
@@ -80,12 +80,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (Info.StartSequence != null)
 			{
 				visible = true;
-				overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, dockable.GetDamageState(), Info.StartSequence),
-					() => overlay.PlayRepeating(RenderSprites.NormalizeSequence(overlay, dockable.GetDamageState(), Info.Sequence)));
+				overlay.PlayThen(RenderSprites.NormalizeSequence(overlay, dockable.Self.GetDamageState(), Info.StartSequence),
+					() => overlay.PlayRepeating(RenderSprites.NormalizeSequence(overlay, dockable.Self.GetDamageState(), Info.Sequence)));
 			}
 		}
 
-		void INotifyDockResupply.ResupplyTick(ResupplyType types)
+		void INotifyDock.DockTick(DockManager dockable, Dock dock)
 		{
 			var wasRepairing = repairing;
 			repairing = types.HasFlag(ResupplyType.Repair);

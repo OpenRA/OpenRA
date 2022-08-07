@@ -33,9 +33,10 @@ FACT:
 		RequiresCondition: factundeploy
 		CargoType: Vehicle
 		RequiresForceMove: true
-	TransformsIntoRepairable:
+	DockManager:
+		TransformOnDock: true
+	Repairable:
 		RequiresCondition: factundeploy
-		RepairActors: fix
 		RequiresForceMove: true
 	TransformsIntoTransforms:
 		RequiresCondition: factundeploy && build-incomplete
@@ -238,13 +239,13 @@ PROC:
 		HP: 100000
 	RevealsShroud:
 		Range: 6c0
-	Refinery:
-		DockAngle: 448
-		DockOffset: 0,2
+	Dock:
+		Type: unload
+		Facing: 448
+		Offset: 0,2
 		IsDragRequired: True
 		DragOffset: -554,512,0
 		DragLength: 12
-		TickRate: 15
 	StoresResources:
 		Capacity: 1000
 	Selectable:
@@ -575,10 +576,12 @@ HPAD:
 		Facing: 896
 	Production:
 		Produces: Aircraft.GDI, Aircraft.Nod
-	Reservable:
 	RepairsUnits:
 		HpPerStep: 1000
 		PlayerExperience: 25
+	Dock:
+		Type: repairHeli
+		Ofset: 1, 1
 		StartRepairingNotification: Repairing
 		StartRepairingTextNotification: Repairing.
 	WithResupplyAnimation:
@@ -723,11 +726,13 @@ FIX:
 		HasMinibib: true
 	WithResupplyAnimation:
 		RequiresCondition: !build-incomplete
-	Reservable:
 	RepairsUnits:
 		HpPerStep: 1000
 		Interval: 15
 		PlayerExperience: 25
+	Dock:
+		Type: repair
+		Offset: 1, 1
 		StartRepairingNotification: Repairing
 		StartRepairingTextNotification: Repairing.
 	RallyPoint:

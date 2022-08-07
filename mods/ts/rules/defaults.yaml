@@ -798,9 +798,9 @@
 	GrantConditionOnDamageState@DAMAGED:
 		Condition: damaged
 		ValidDamageStates: Light, Medium, Heavy, Critical
-	Repairable:
-		RepairActors: gadept
+	DockManager:
 		Voice: Move
+	Repairable:
 	Passenger:
 		CargoType: Vehicle
 		Voice: Move
@@ -896,9 +896,10 @@
 	Targetable@AIRBORNE:
 		TargetTypes: Air
 		RequiresCondition: airborne
-	Repairable:
-		RepairActors: gadept
+	DockManager:
 		Voice: Move
+	Repairable:
+		DockType: repairAir
 	Aircraft:
 		AirborneCondition: airborne
 		CruisingCondition: cruising

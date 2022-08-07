@@ -9,161 +9,98 @@
  */
 #endregion
 
-using System.Collections.Generic;
+using System;
 using System.Linq;
-using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Orders;
-using OpenRA.Support;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor can be sent to a structure for repairs.")]
-	public class RepairableInfo : TraitInfo, Requires<IHealthInfo>, Requires<IMoveInfo>, IObservesVariablesInfo
+	public class RepairableInfo : DockableInfo, Requires<IHealthInfo>
 	{
-		[ActorReference]
-		[FieldLoader.Require]
-		public readonly HashSet<string> RepairActors = new HashSet<string> { };
-
-		[Desc("How close to the resupplier a unit need to be to repair. Negative means there's no distance limit")]
-		public readonly WDist CloseEnough = new WDist(512);
-
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
 		[Desc("The amount the unit will be repaired at each step. Use -1 for fallback behavior where HpPerStep from RepairsUnits trait will be used.")]
 		public readonly int HpPerStep = -1;
 
-		[ConsumedConditionReference]
-		[Desc("Boolean expression defining the condition under which the regular (non-force) enter cursor is disabled.")]
-		public readonly BooleanExpression RequireForceMoveCondition = null;
-
-		[CursorReference]
-		[Desc("Cursor to display when able to be repaired at target actor.")]
-		public readonly string EnterCursor = "enter";
-
-		[CursorReference]
-		[Desc("Cursor to display when unable to be repaired at target actor.")]
-		public readonly string EnterBlockedCursor = "enter-blocked";
+		[Desc("Repair dock types")]
+		public readonly BitSet<DockType> DockType = new BitSet<DockType>("repair");
 
 		public override object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
 	}
 
-	public class Repairable : IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, IObservesVariables
+	public class Repairable : Dockable<RepairableInfo>, INotifyOwnerChanged
 	{
-		public readonly RepairableInfo Info;
 		readonly IHealth health;
-		Rearmable rearmable;
-		bool requireForceMove;
-		bool isAircraft;
+		readonly int unitCost;
+		PlayerResources playerResources;
+
+		protected override BitSet<DockType> DockType() { return Info.DockType; }
 
 		public Repairable(Actor self, RepairableInfo info)
+			: base(self, info)
 		{
-			Info = info;
 			health = self.Trait<IHealth>();
+			unitCost = self.Info.TraitInfoOrDefault<ValuedInfo>()?.Cost ?? 0;
+			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 		}
 
-		void INotifyCreated.Created(Actor self)
-		{
-			rearmable = self.TraitOrDefault<Rearmable>();
-			isAircraft = self.Info.HasTraitInfo<AircraftInfo>();
-		}
-
-		IEnumerable<IOrderTargeter> IIssueOrder.Orders
-		{
-			get
-			{
-				if (!isAircraft)
-					yield return new EnterAlliedActorTargeter<BuildingInfo>(
-						"Repair",
-						5,
-						Info.EnterCursor,
-						Info.EnterBlockedCursor,
-						CanRepairAt,
-						_ => CanRepair() || CanRearm());
-			}
-		}
-
-		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
-		{
-			if (order.OrderID == "Repair")
-				return new Order(order.OrderID, self, target, queued);
-
-			return null;
-		}
-
-		bool CanRepairAt(Actor target)
-		{
-			return Info.RepairActors.Contains(target.Info.Name);
-		}
-
-		bool CanRepairAt(Actor target, TargetModifiers modifiers)
-		{
-			if (requireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove))
-				return false;
-
-			return Info.RepairActors.Contains(target.Info.Name);
-		}
-
-		bool CanRepair()
+		public override bool CanDock()
 		{
 			return health.DamageState > DamageState.Undamaged;
 		}
 
-		bool CanRearm()
+		RepairsUnits[] allRepairsUnits;
+		int remainingTicks;
+
+		public override void DockStarted(Dock dock)
 		{
-			return rearmable != null && rearmable.RearmableAmmoPools.Any(p => !p.HasFullAmmo);
+			allRepairsUnits = dock.Self.TraitsImplementing<RepairsUnits>().ToArray();
 		}
 
-		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
+		public override bool TickDock(Dock dock)
 		{
-			return order.OrderString == "Repair" && (CanRepair() || CanRearm()) ? Info.Voice : null;
+			var repairsUnits = allRepairsUnits.FirstOrDefault(r => !r.IsTraitDisabled && !r.IsTraitPaused);
+			if (repairsUnits == null)
+				return true;
+
+			if (health.DamageState == DamageState.Undamaged)
+			{
+				// Give experience to the allied dock owner
+				if (dock.Self.Owner != Self.Owner)
+					dock.Self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(repairsUnits.Info.PlayerExperience);
+
+				return true;
+			}
+
+			if (remainingTicks == 0)
+			{
+				var hpToRepair = Info.HpPerStep > 0 ? Info.HpPerStep : repairsUnits.Info.HpPerStep;
+
+				// Cast to long to avoid overflow when multiplying by the health
+				var value = (long)unitCost * repairsUnits.Info.ValuePercentage;
+				var cost = value == 0 ? 0 : Math.Max(1, (int)(hpToRepair * value / (health.MaxHP * 100L)));
+
+				if (!playerResources.TakeCash(cost, true))
+				{
+					remainingTicks = 1;
+					return false;
+				}
+
+				Self.InflictDamage(dock.Self, new Damage(-hpToRepair, repairsUnits.Info.RepairDamageTypes));
+				remainingTicks = repairsUnits.Info.Interval;
+			}
+			else
+				--remainingTicks;
+
+			return false;
 		}
 
-		void IResolveOrder.ResolveOrder(Actor self, Order order)
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			if (order.OrderString != "Repair")
-				return;
-
-			// Repair orders are only valid for own/allied actors,
-			// which are guaranteed to never be frozen.
-			if (order.Target.Type != TargetType.Actor)
-				return;
-
-			// Aircraft handle Repair orders directly in the Aircraft trait
-			// TODO: Move the order handling of both this trait and Aircraft to a generalistic DockManager
-			if (isAircraft)
-				return;
-
-			if (!CanRepairAt(order.Target.Actor) || (!CanRepair() && !CanRearm()))
-				return;
-
-			self.QueueActivity(order.Queued, new Resupply(self, order.Target.Actor));
-			self.ShowTargetLines();
-		}
-
-		IEnumerable<VariableObserver> IObservesVariables.GetVariableObservers()
-		{
-			if (Info.RequireForceMoveCondition != null)
-				yield return new VariableObserver(RequireForceMoveConditionChanged, Info.RequireForceMoveCondition.Variables);
-		}
-
-		void RequireForceMoveConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
-		{
-			requireForceMove = Info.RequireForceMoveCondition.Evaluate(conditions);
-		}
-
-		public Actor FindRepairBuilding(Actor self)
-		{
-			var repairBuilding = self.World.ActorsWithTrait<RepairsUnits>()
-				.Where(a => !a.Actor.IsDead && a.Actor.IsInWorld
-					&& a.Actor.Owner.IsAlliedWith(self.Owner) &&
-					Info.RepairActors.Contains(a.Actor.Info.Name))
-				.OrderBy(a => a.Actor.Owner == self.Owner ? 0 : 1)
-				.ThenBy(p => (self.Location - p.Actor.Location).LengthSquared);
-
-			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.
-			return repairBuilding.FirstOrDefault().Actor;
+			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
 	}
 }

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
@@ -19,12 +20,14 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("Movement")]
 	public class AircraftProperties : ScriptActorProperties, Requires<AircraftInfo>
 	{
-		readonly Aircraft aircraft;
+		readonly DockManager dockManager;
+		readonly Rearmable rearmable;
 
 		public AircraftProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			aircraft = self.Trait<Aircraft>();
+			dockManager = self.TraitOrDefault<DockManager>();
+			rearmable = self.TraitOrDefault<Rearmable>();
 		}
 
 		[ScriptActorPropertyActivity]
@@ -36,9 +39,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[ScriptActorPropertyActivity]
 		[Desc("Return to the base, which is either the destination given, or an auto-selected one otherwise.")]
-		public void ReturnToBase(Actor destination = null)
+		public void ReturnToBase(Dock destination = null)
 		{
-			Self.QueueActivity(new ReturnToBase(Self, destination, true));
+			Self.QueueActivity(new DockActivity(dockManager, rearmable, destination));
 		}
 
 		[ScriptActorPropertyActivity]
@@ -46,16 +49,6 @@ namespace OpenRA.Mods.Common.Scripting
 		public void Land(Actor landOn)
 		{
 			Self.QueueActivity(new Land(Self, Target.FromActor(landOn)));
-		}
-
-		[ScriptActorPropertyActivity]
-		[Desc("Starts the resupplying activity when being on a host building.")]
-		public void Resupply()
-		{
-			var atLandAltitude = Self.World.Map.DistanceAboveTerrain(Self.CenterPosition) == aircraft.Info.LandAltitude;
-			var host = aircraft.GetActorBelow();
-			if (atLandAltitude && host != null)
-				Self.QueueActivity(new Resupply(Self, host));
 		}
 	}
 }

@@ -12,6 +12,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common
@@ -49,6 +50,11 @@ namespace OpenRA.Mods.Common
 		public static int CountActorsWithTrait<T>(string actorName, Player owner)
 		{
 			return GetActorsWithTrait<T>(owner.World).Count(a => a.Owner == owner && a.Info.Name == actorName);
+		}
+
+		public static int CountActorsWithTrait<T>(BitSet<DockType> dockType, Player owner)
+		{
+			return GetActorsWithTrait<T>(owner.World).Count(a => a.Owner == owner && (a.TraitOrDefault<IDockable>()?.DockingPossible(dockType) ?? false));
 		}
 
 		public static int CountActorByCommonName(HashSet<string> commonNames, Player owner)

@@ -64,8 +64,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell) { }
-		void INotifyHarvesterAction.MovingToRefinery(Actor self, Actor targetRefinery) { }
-		void INotifyHarvesterAction.MovementCancelled(Actor self) { }
+		void INotifyDockableAction.MovingToDock(DockManager dockable, Dock dock) { }
+		void INotifyDockableAction.MovementCancelled(DockManager dockable) { }
 
 		public static int ZOffsetFromCenter(Actor self, WPos pos, int offset)
 		{

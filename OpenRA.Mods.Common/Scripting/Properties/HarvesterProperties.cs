@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Search for nearby resources and begin harvesting.")]
 		public void FindResources()
 		{
-			Self.QueueActivity(new FindAndDeliverResources(Self));
+			Self.QueueActivity(new FindAndDeliverResources(Self.Trait<Harvester>()));
 		}
 	}
 }

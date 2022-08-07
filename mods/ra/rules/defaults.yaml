@@ -260,8 +260,8 @@
 	GrantConditionOnDamageState@DAMAGED:
 		Condition: damaged
 		ValidDamageStates: Light, Medium, Heavy, Critical
+	DockManager:
 	Repairable:
-		RepairActors: fix
 	Chronoshiftable:
 	Passenger:
 		CargoType: Vehicle
@@ -523,9 +523,9 @@
 	ProximityCaptor:
 		Types: Ship
 	Chronoshiftable:
+	DockManager:
 	Repairable:
-		RepairActors: spen, syrd
-		CloseEnough: 4c0
+		DockType: repairShip
 	GpsDot:
 		String: Ship
 	WithDamageOverlay:
@@ -624,8 +624,8 @@
 	Inherits: ^NeutralPlane
 	Inherits@2: ^GainsExperience
 	Huntable:
+	DockManager:
 	Repairable:
-		RepairActors: fix
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -634,7 +634,6 @@
 	Aircraft:
 		CanHover: True
 		CruisingCondition: cruising
-		WaitDistanceFromResupplyBase: 4c0
 		TakeOffOnResupply: true
 		VTOL: true
 		LandableTerrainTypes: Clear, Rough, Road, Ore, Beach, Gems

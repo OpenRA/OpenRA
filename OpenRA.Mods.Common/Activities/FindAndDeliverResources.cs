@@ -22,10 +22,11 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Harvester harv;
 		readonly HarvesterInfo harvInfo;
+		readonly DockManager dockManager;
 		readonly Mobile mobile;
 		readonly ResourceClaimLayer claimLayer;
 
-		Actor deliverActor;
+		Dock proc;
 		CPos? orderLocation;
 		CPos? lastHarvestedCell;
 		bool hasDeliveredLoad;
@@ -34,17 +35,18 @@ namespace OpenRA.Mods.Common.Activities
 
 		public bool LastSearchFailed { get; private set; }
 
-		public FindAndDeliverResources(Actor self, Actor deliverActor = null)
+		public FindAndDeliverResources(Harvester harv, Dock proc = null)
 		{
-			harv = self.Trait<Harvester>();
-			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
-			mobile = self.Trait<Mobile>();
-			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
-			this.deliverActor = deliverActor;
+			this.harv = harv;
+			harvInfo = harv.Self.Info.TraitInfo<HarvesterInfo>();
+			mobile = harv.Self.Trait<Mobile>();
+			claimLayer = harv.Self.World.WorldActor.Trait<ResourceClaimLayer>();
+			dockManager = harv.Self.Trait<DockManager>();
+			this.proc = proc;
 		}
 
-		public FindAndDeliverResources(Actor self, CPos orderLocation)
-			: this(self, null)
+		public FindAndDeliverResources(Harvester harv, CPos orderLocation)
+			: this(harv, null)
 		{
 			this.orderLocation = orderLocation;
 		}
@@ -61,15 +63,15 @@ namespace OpenRA.Mods.Common.Activities
 				// We have to make sure the actual "harvest" order is not skipped if a third order is queued,
 				// so we keep deliveredLoad false.
 				if (harv.IsFull)
-					QueueChild(new DeliverResources(self));
+					QueueChild(new DockActivity(dockManager, harv));
 			}
 
 			// If an explicit "deliver" order is given, the harvester goes immediately to the refinery.
-			if (deliverActor != null)
+			if (proc != null)
 			{
-				QueueChild(new DeliverResources(self, deliverActor));
+				QueueChild(new DockActivity(dockManager, harv, proc));
 				hasDeliveredLoad = true;
-				deliverActor = null;
+				proc = null;
 			}
 		}
 
@@ -92,7 +94,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Are we full or have nothing more to gather? Deliver resources.
 			if (harv.IsFull || (!harv.IsEmpty && LastSearchFailed))
 			{
-				QueueChild(new DeliverResources(self));
+				QueueChild(new DockActivity(dockManager, harv));
 				hasDeliveredLoad = true;
 				return false;
 			}
@@ -128,13 +130,12 @@ namespace OpenRA.Mods.Common.Activities
 			// of the refinery entrance.
 			if (LastSearchFailed)
 			{
-				var lastproc = harv.LastLinkedProc ?? harv.LinkedProc;
-				if (lastproc != null && !lastproc.Disposed)
+				var lastproc = dockManager.LinkedDock;
+				if (lastproc != null)
 				{
-					var deliveryLoc = lastproc.Location + lastproc.Trait<IAcceptResources>().DeliveryOffset;
-					if (self.Location == deliveryLoc && harv.IsEmpty)
+					if (self.Location == lastproc.Location && harv.IsEmpty)
 					{
-						var unblockCell = deliveryLoc + harv.Info.UnblockCell;
+						var unblockCell = lastproc.Location + harv.Info.UnblockCell;
 						var moveTo = mobile.NearestMoveableCell(unblockCell, 1, 5);
 						QueueChild(mobile.MoveTo(moveTo, 1));
 					}
@@ -171,7 +172,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Determine where to search from and how far to search:
-			var procLoc = GetSearchFromProcLocation();
+			var procLoc = dockManager.LinkedDock?.Location;
 			var searchFromLoc = lastHarvestedCell ?? procLoc ?? self.Location;
 			var searchRadius = lastHarvestedCell.HasValue ? harvInfo.SearchFromHarvesterRadius : harvInfo.SearchFromProcRadius;
 
@@ -239,19 +240,8 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (orderLocation != null)
 				yield return new TargetLineNode(Target.FromCell(self.World, orderLocation.Value), harvInfo.HarvestLineColor);
-			else if (deliverActor != null)
-				yield return new TargetLineNode(Target.FromActor(deliverActor), harvInfo.DeliverLineColor);
-		}
-
-		CPos? GetSearchFromProcLocation()
-		{
-			if (harv.LastLinkedProc != null && !harv.LastLinkedProc.IsDead && harv.LastLinkedProc.IsInWorld)
-				return harv.LastLinkedProc.Location + harv.LastLinkedProc.Trait<IAcceptResources>().DeliveryOffset;
-
-			if (harv.LinkedProc != null && !harv.LinkedProc.IsDead && harv.LinkedProc.IsInWorld)
-				return harv.LinkedProc.Location + harv.LinkedProc.Trait<IAcceptResources>().DeliveryOffset;
-
-			return null;
+			else if (proc != null)
+				yield return new TargetLineNode(Target.FromActor(proc.Self), dockManager.DockLineColor);
 		}
 	}
 }

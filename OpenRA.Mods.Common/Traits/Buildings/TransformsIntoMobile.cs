@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.Traits
 				// We don't want Stop orders from traits other than Mobile or Aircraft to cancel Resupply activity.
 				// Resupply is always either the main activity or a child of ReturnToBase.
 				// TODO: This should generally only cancel activities queued by this trait.
-				if (self.CurrentActivity == null || self.CurrentActivity is Resupply || self.CurrentActivity is ReturnToBase)
+				if (self.CurrentActivity == null || self.CurrentActivity is DockSequence)
 					return;
 
 				self.CancelActivity();

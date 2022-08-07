@@ -37,7 +37,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (harvesters.Any())
 				return;
 
-			var refinery = self.World.ActorsHavingTrait<Refinery>().FirstOrDefault(x => x.Owner == self.Owner && x.Info.HasTraitInfo<FreeActorWithDeliveryInfo>());
+			var refinery = self.World.ActorsHavingTrait<Dock>().FirstOrDefault(x => x.Owner == self.Owner && x.Info.HasTraitInfo<FreeActorWithDeliveryInfo>());
 			if (refinery == null)
 				return;
 
