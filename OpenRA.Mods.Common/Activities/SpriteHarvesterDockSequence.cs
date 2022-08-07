@@ -29,10 +29,10 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override void OnStateDock(Actor self)
 		{
-			foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
-				trait.Docked();
+			foreach (var trait in self.TraitsImplementing<INotifyDockable>())
+				trait.Docked(self, Refinery);
 
-			foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
+			foreach (var nd in Refinery.TraitsImplementing<INotifyDock>())
 				nd.Docked(Refinery, self);
 
 			if (wda != null)
@@ -62,11 +62,11 @@ namespace OpenRA.Mods.Common.Activities
 		void NotifyUndock(Actor self)
 		{
 			dockingState = DockingState.Complete;
-			foreach (var trait in self.TraitsImplementing<INotifyHarvesterAction>())
-				trait.Undocked();
+			foreach (var trait in self.TraitsImplementing<INotifyDockable>())
+				trait.Undocked(self, Refinery);
 
 			if (Refinery.IsInWorld && !Refinery.IsDead)
-				foreach (var nd in Refinery.TraitsImplementing<INotifyDocking>())
+				foreach (var nd in Refinery.TraitsImplementing<INotifyDock>())
 					nd.Undocked(Refinery, self);
 		}
 	}
