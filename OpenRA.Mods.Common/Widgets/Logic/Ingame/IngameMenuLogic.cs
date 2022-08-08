@@ -389,12 +389,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Show dialog only if updated since last save
 			button.OnClick = () =>
 			{
-				if (actionManager.HasUnsavedItems())
+				var map = modData.MapCache.GetUpdatedMap(world.Map.Uid);
+				var deletedOrUnavailable = map == null || modData.MapCache[map].Status != MapStatus.Available;
+				if (actionManager.HasUnsavedItems() || deletedOrUnavailable)
 				{
 					hideMenu = true;
 					ConfirmationDialogs.ButtonPrompt(
-						title: "Exit Map Editor",
-						text: "Exit and lose all unsaved changes?",
+						title: "Warning",
+						text: deletedOrUnavailable ? "The map may have been deleted outside the editor" : "Exit and lose all unsaved changes?",
+						confirmText: deletedOrUnavailable ? "Exit anyway" : "Exit",
 						onConfirm: OnQuit,
 						onCancel: ShowMenu);
 				}
