@@ -97,17 +97,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					var flag = item.Get<ImageWidget>("FACTIONFLAG");
 					flag.GetImageCollection = () => "flags";
+
+					var factionName = pp.DisplayFaction.Name;
 					if (player == null || player.RelationshipWith(pp) == PlayerRelationship.Ally || player.WinState != WinState.Undefined)
 					{
 						flag.GetImageName = () => pp.Faction.InternalName;
-						var factionName = pp.Faction.Name != pp.DisplayFaction.Name ? $"{pp.DisplayFaction.Name} ({pp.Faction.Name})" : pp.Faction.Name;
-						item.Get<LabelWidget>("FACTION").GetText = () => factionName;
+						factionName = pp.Faction.Name != factionName ? $"{factionName} ({pp.Faction.Name})" : pp.Faction.Name;
 					}
 					else
-					{
 						flag.GetImageName = () => pp.DisplayFaction.InternalName;
-						item.Get<LabelWidget>("FACTION").GetText = () => pp.DisplayFaction.Name;
-					}
+
+					WidgetUtils.TruncateLabelToTooltip(item.Get<LabelWithTooltipWidget>("FACTION"), factionName);
 
 					var scoreCache = new CachedTransform<int, string>(s => s.ToString());
 					item.Get<LabelWidget>("SCORE").GetText = () => scoreCache.Update(p.PlayerStatistics?.Experience ?? 0);
