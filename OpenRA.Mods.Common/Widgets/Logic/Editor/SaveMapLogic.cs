@@ -158,12 +158,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var close = widget.Get<ButtonWidget>("BACK_BUTTON");
 			close.OnClick = () => { Ui.CloseWindow(); onExit(); };
 
-			var save = widget.Get<ButtonWidget>("SAVE_BUTTON");
-			save.OnClick = () =>
+			Action<string> saveMap = (string combinedPath) =>
 			{
-				if (string.IsNullOrEmpty(filename.Text))
-					return;
-
 				map.Title = title.Text;
 				map.Author = author.Text;
 
@@ -174,8 +170,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					map.PlayerDefinitions = playerDefinitions;
 
 				map.RequiresMod = modData.Manifest.Id;
-
-				var combinedPath = Platform.ResolvePath(Path.Combine(selectedDirectory.Folder.Name, filename.Text + fileTypes[fileType].Extension));
 
 				try
 				{
@@ -204,6 +198,49 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						onConfirm: () => { },
 						confirmText: "OK");
 				}
+			};
+
+			var save = widget.Get<ButtonWidget>("SAVE_BUTTON");
+			save.OnClick = () =>
+			{
+				if (string.IsNullOrEmpty(filename.Text))
+					return;
+
+				var combinedPath = Platform.ResolvePath(Path.Combine(selectedDirectory.Folder.Name, filename.Text + fileTypes[fileType].Extension));
+
+				if (map.Package?.Name != combinedPath)
+				{
+					// When creating a new map or when file paths don't match
+					if (modData.MapCache.Any(m => m.Status == MapStatus.Available && m.Package?.Name == combinedPath))
+					{
+						ConfirmationDialogs.ButtonPrompt(
+							title: "Warning",
+							text: "By saving you will overwrite\n an already existing map.",
+							confirmText: "Save",
+							onConfirm: () => saveMap(combinedPath),
+							onCancel: () => { });
+
+						return;
+					}
+				}
+				else
+				{
+					// When file paths match
+					var recentUid = modData.MapCache.GetUpdatedMap(map.Uid);
+					if (recentUid != null && map.Uid != recentUid && modData.MapCache[recentUid].Status == MapStatus.Available)
+					{
+						ConfirmationDialogs.ButtonPrompt(
+							title: "Warning",
+							text: "The map has been edited from outside the editor.\n By saving you may overwrite progress",
+							confirmText: "Save",
+							onConfirm: () => saveMap(combinedPath),
+							onCancel: () => { });
+
+						return;
+					}
+				}
+
+				saveMap(combinedPath);
 			};
 		}
 	}
