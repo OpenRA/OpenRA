@@ -109,11 +109,13 @@ Container@SKIRMISH_STATS:
 							Y: 4
 							Width: 32
 							Height: 16
-						Label@FACTION:
+						LabelWithTooltip@FACTION:
 							X: 264
 							Width: 86
 							Height: 25
 							Shadow: True
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@SCORE:
 							X: 360
 							Width: 75
