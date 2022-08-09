@@ -70,6 +70,7 @@ HARV:
 		HarvestVoice: Attack
 		DeliverVoice: Move
 		EmptyCondition: no-tiberium
+		DockedCondition: docked
 	Mobile:
 		Speed: 71
 	Health:
@@ -85,8 +86,11 @@ HARV:
 		RequiresCondition: !inside-tunnel
 		Range: 4c0
 		MaxHeightDelta: 3
-	-WithVoxelBody:
-	WithVoxelUnloadBody:
+	WithVoxelBody:
+		RequiresCondition: !docked
+	WithVoxelBody@Unload:
+		Sequence: unload
+		RequiresCondition: docked
 	Explodes:
 		RequiresCondition: !no-tiberium
 		Weapon: TiberiumExplosion

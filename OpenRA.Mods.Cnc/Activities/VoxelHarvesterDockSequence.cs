@@ -17,19 +17,18 @@ namespace OpenRA.Mods.Cnc.Activities
 {
 	public class VoxelHarvesterDockSequence : HarvesterDockSequence
 	{
-		readonly WithVoxelUnloadBody body;
 		readonly WithDockingOverlay spriteOverlay;
+		protected bool dockAnimPlayed;
 
 		public VoxelHarvesterDockSequence(Actor self, Actor refineryActor, Refinery refinery)
 			: base(self, refineryActor, refinery)
 		{
-			body = self.Trait<WithVoxelUnloadBody>();
 			spriteOverlay = RefineryActor.TraitOrDefault<WithDockingOverlay>();
 		}
 
 		public override void OnStateDock(Actor self)
 		{
-			body.Docked = true;
+			dockAnimPlayed = true;
 
 			if (spriteOverlay != null && !spriteOverlay.Visible)
 			{
@@ -47,7 +46,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		public override void OnStateUndock(Actor self)
 		{
 			// If body.Docked wasn't set, we didn't actually dock and have to skip the undock overlay
-			if (!body.Docked)
+			if (!dockAnimPlayed)
 				dockingState = DockingState.Complete;
 			else if (Refinery.IsEnabled && spriteOverlay != null && !spriteOverlay.Visible)
 			{
@@ -56,14 +55,12 @@ namespace OpenRA.Mods.Cnc.Activities
 				spriteOverlay.WithOffset.Animation.PlayBackwardsThen(spriteOverlay.Info.Sequence, () =>
 				{
 					dockingState = DockingState.Complete;
-					body.Docked = false;
 					spriteOverlay.Visible = false;
 				});
 			}
 			else
 			{
 				dockingState = DockingState.Complete;
-				body.Docked = false;
 			}
 		}
 	}
