@@ -77,6 +77,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Condition to grant while empty.")]
 		public readonly string EmptyCondition = null;
 
+		[GrantedConditionReference]
+		[Desc("Condition to grant while docked.")]
+		public readonly string DockedCondition = null;
+
 		[VoiceReference]
 		public readonly string HarvestVoice = "Action";
 
@@ -105,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Harvester : ConditionalTrait<HarvesterInfo>, IIssueOrder, IResolveOrder, IOrderVoice,
-		ISpeedModifier, ISync, INotifyCreated
+		ISpeedModifier, ISync, INotifyCreated, INotifyDockable
 	{
 		public readonly IReadOnlyDictionary<string, int> Contents;
 
@@ -113,7 +117,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly IResourceLayer resourceLayer;
 		readonly ResourceClaimLayer claimLayer;
 		readonly Dictionary<string, int> contents = new Dictionary<string, int>();
-		int conditionToken = Actor.InvalidConditionToken;
+		int emptyConditionToken = Actor.InvalidConditionToken;
+		int dockedConditionToken = Actor.InvalidConditionToken;
 
 		[Sync]
 		public Actor LastLinkedProc = null;
@@ -147,7 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Created(Actor self)
 		{
-			UpdateCondition(self);
+			UpdateEmptyCondition(self);
 
 			// Note: This is queued in a FrameEndTask because otherwise the activity is dropped/overridden while moving out of a factory.
 			if (Info.SearchOnCreation)
@@ -216,21 +221,50 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
+		void INotifyDockable.Docked(Actor self, Actor dock)
+		{
+			UpdateDockedCondition(self, true);
+		}
+
+		void INotifyDockable.Canceled(Actor self, Actor dock)
+		{
+			UpdateDockedCondition(self, false);
+		}
+
+		void INotifyDockable.Undocked(Actor self, Actor dock)
+		{
+			LastLinkedProc = LinkedProc;
+			UnlinkProc(self, LinkedProc);
+			LinkProc(null);
+			UpdateDockedCondition(self, false);
+		}
+
 		public bool IsFull => contents.Values.Sum() == Info.Capacity;
 		public bool IsEmpty => contents.Values.Sum() == 0;
 		public int Fullness => contents.Values.Sum() * 100 / Info.Capacity;
 
-		void UpdateCondition(Actor self)
+		void UpdateEmptyCondition(Actor self)
 		{
 			if (string.IsNullOrEmpty(Info.EmptyCondition))
 				return;
 
 			var enabled = IsEmpty;
 
-			if (enabled && conditionToken == Actor.InvalidConditionToken)
-				conditionToken = self.GrantCondition(Info.EmptyCondition);
-			else if (!enabled && conditionToken != Actor.InvalidConditionToken)
-				conditionToken = self.RevokeCondition(conditionToken);
+			if (enabled && emptyConditionToken == Actor.InvalidConditionToken)
+				emptyConditionToken = self.GrantCondition(Info.EmptyCondition);
+			else if (!enabled && emptyConditionToken != Actor.InvalidConditionToken)
+				emptyConditionToken = self.RevokeCondition(emptyConditionToken);
+		}
+
+		void UpdateDockedCondition(Actor self, bool enabled)
+		{
+			if (string.IsNullOrEmpty(Info.DockedCondition))
+				return;
+
+			if (enabled && dockedConditionToken == Actor.InvalidConditionToken)
+				dockedConditionToken = self.GrantCondition(Info.DockedCondition);
+			else if (!enabled && dockedConditionToken != Actor.InvalidConditionToken)
+				dockedConditionToken = self.RevokeCondition(dockedConditionToken);
 		}
 
 		public void AcceptResource(Actor self, string resourceType)
@@ -240,7 +274,7 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				contents[resourceType]++;
 
-			UpdateCondition(self);
+			UpdateEmptyCondition(self);
 		}
 
 		// Returns true when unloading is complete
@@ -266,7 +300,7 @@ namespace OpenRA.Mods.Common.Traits
 						contents.Remove(resourceType);
 
 					currentUnloadTicks = Info.BaleUnloadDelay;
-					UpdateCondition(self);
+					UpdateEmptyCondition(self);
 					return false;
 				}
 			}
@@ -377,8 +411,11 @@ namespace OpenRA.Mods.Common.Traits
 			LinkedProc = null;
 			contents.Clear();
 
-			if (conditionToken != Actor.InvalidConditionToken)
-				conditionToken = self.RevokeCondition(conditionToken);
+			if (emptyConditionToken != Actor.InvalidConditionToken)
+				emptyConditionToken = self.RevokeCondition(emptyConditionToken);
+
+			if (dockedConditionToken != Actor.InvalidConditionToken)
+				dockedConditionToken = self.RevokeCondition(dockedConditionToken);
 		}
 
 		class HarvestOrderTargeter : IOrderTargeter

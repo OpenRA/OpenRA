@@ -98,8 +98,6 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Complete:
-					Harv.LastLinkedProc = Harv.LinkedProc;
-					Harv.LinkProc(null);
 					NotifyUndocked(self);
 					if (IsDragRequired)
 						QueueChild(new Drag(self, EndDrag, StartDrag, DragLength));
