@@ -360,6 +360,7 @@ WEED:
 		SearchFromHarvesterRadius: 36
 		HarvestVoice: Attack
 		DeliverVoice: Move
+		DockedCondition: docked
 	Mobile:
 		Speed: 71
 		TurnSpeed: 20
@@ -376,8 +377,11 @@ WEED:
 		RequiresCondition: !inside-tunnel
 		Range: 4c0
 		MaxHeightDelta: 3
-	-WithVoxelBody:
-	WithVoxelUnloadBody:
+	WithVoxelBody:
+		RequiresCondition: !docked
+	WithVoxelBody@Unload:
+		Sequence: unload
+		RequiresCondition: docked
 	-DamagedByTerrain@VEINS:
 	-LeavesTrails@VEINS:
 	WithHarvesterPipsDecoration:
