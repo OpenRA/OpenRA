@@ -17,15 +17,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class IngameSiloBarLogic : ChromeLogic
 	{
+		[TranslationReference]
+		static readonly string SiloUsage = "silo-usage";
+
 		[ObjectCreator.UseCtor]
-		public IngameSiloBarLogic(Widget widget, World world)
+		public IngameSiloBarLogic(Widget widget, ModData modData, World world)
 		{
 			var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 			var siloBar = widget.Get<ResourceBarWidget>("SILOBAR");
 
 			siloBar.GetProvided = () => playerResources.ResourceCapacity;
 			siloBar.GetUsed = () => playerResources.Resources;
-			siloBar.TooltipFormat = "Silo Usage: {0}/{1}";
+			siloBar.TooltipFormat = modData.Translation.GetString(SiloUsage) + ": {0}/{1}";
 			siloBar.GetBarColor = () =>
 			{
 				if (playerResources.Resources == playerResources.ResourceCapacity)

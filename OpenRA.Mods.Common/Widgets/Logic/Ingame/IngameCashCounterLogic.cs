@@ -23,26 +23,32 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly World world;
 		readonly Player player;
 		readonly PlayerResources playerResources;
-		readonly string cashLabel;
+		readonly LabelWithTooltipWidget cashLabel;
+		readonly CachedTransform<(int Resources, int Capacity), string> siloUsageTooltipCache;
+		readonly string cashTemplate;
 
 		int nextCashTickTime = 0;
 		int displayResources;
-		string displayLabel;
+
+		string siloUsageTooltip = "";
+
+		[TranslationReference("resources", "capacity")]
+		static readonly string SiloUsage = "silo-usage";
 
 		[ObjectCreator.UseCtor]
-		public IngameCashCounterLogic(Widget widget, World world)
+		public IngameCashCounterLogic(Widget widget, ModData modData, World world)
 		{
-			var cash = widget.Get<LabelWithTooltipWidget>("CASH");
-
 			this.world = world;
 			player = world.LocalPlayer;
 			playerResources = player.PlayerActor.Trait<PlayerResources>();
 			displayResources = playerResources.Cash + playerResources.Resources;
-			cashLabel = cash.Text;
-			displayLabel = cashLabel.F(displayResources);
 
-			cash.GetText = () => displayLabel;
-			cash.GetTooltipText = () => $"Silo Usage: {playerResources.Resources}/{playerResources.ResourceCapacity}";
+			siloUsageTooltipCache = new CachedTransform<(int Resources, int Capacity), string>(x =>
+				modData.Translation.GetString(SiloUsage, Translation.Arguments("resources", x.Resources, "capacity", x.Capacity)));
+			cashLabel = widget.Get<LabelWithTooltipWidget>("CASH");
+			cashLabel.GetTooltipText = () => siloUsageTooltip;
+
+			cashTemplate = cashLabel.Text;
 		}
 
 		public override void Tick()
@@ -73,7 +79,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
-			displayLabel = cashLabel.F(displayResources);
+			siloUsageTooltip = siloUsageTooltipCache.Update((playerResources.Resources, playerResources.ResourceCapacity));
+			cashLabel.Text = cashTemplate.F(displayResources);
 		}
 	}
 }
