@@ -121,6 +121,13 @@ Container@SKIRMISH_STATS:
 							Width: 60
 							Height: 25
 							Shadow: True
+						Checkbox@MUTE:
+							X: 457
+							Width: 25
+							Height: 25
+							Checkmark: mute
+							Background: checkbox-toggle
+							TooltipContainer: TOOLTIP_CONTAINER
 				Container@SPECTATOR_TEMPLATE:
 					Width: PARENT_RIGHT - 26
 					Height: 25
@@ -144,6 +151,13 @@ Container@SKIRMISH_STATS:
 							Width: 191
 							Height: 25
 							Shadow: True
+						Checkbox@MUTE:
+							X: 457
+							Width: 25
+							Height: 25
+							Checkmark: mute
+							Background: checkbox-toggle
+							TooltipContainer: TOOLTIP_CONTAINER
 						Button@KICK:
 							X: 485
 							Width: 25

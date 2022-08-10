@@ -21,6 +21,8 @@ namespace OpenRA
 		static readonly string SystemMessageLabel;
 
 		public static long ChatDisabledUntil { get; internal set; }
+		public static readonly Dictionary<int, bool> MutedPlayers = new Dictionary<int, bool>();
+
 		static readonly List<TextNotification> NotificationsCache = new List<TextNotification>();
 		public static IReadOnlyList<TextNotification> Notifications => NotificationsCache;
 
@@ -94,6 +96,7 @@ namespace OpenRA
 		public static void Clear()
 		{
 			NotificationsCache.Clear();
+			MutedPlayers.Clear();
 		}
 	}
 }

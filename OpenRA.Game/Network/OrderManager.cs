@@ -27,6 +27,8 @@ namespace OpenRA.Network
 		readonly Dictionary<int, (int SyncHash, ulong DefeatState)> syncForFrame = new Dictionary<int, (int, ulong)>();
 
 		public Session LobbyInfo = new Session();
+
+		/// <summary> Null when watching a replay </summary>
 		public Session.Client LocalClient => LobbyInfo.ClientWithIndex(Connection.LocalClientId);
 		public World World;
 		public int OrderQueueLength => pendingOrders.Count > 0 ? pendingOrders.Min(q => q.Value.Count) : 0;

@@ -265,6 +265,22 @@ checkbox-highlighted-disabled:
 checkbox-highlighted-pressed:
 	Inherits: button-highlighted-pressed
 
+checkbox-toggle:
+
+checkbox-toggle-hover:
+	Inherits: checkbox
+
+checkbox-toggle-pressed:
+	Inherits: checkbox-pressed
+
+checkbox-toggle-highlighted:
+
+checkbox-toggle-highlighted-hover:
+	Inherits: checkbox-highlighted
+
+checkbox-toggle-highlighted-pressed:
+	Inherits: checkbox-highlighted-pressed
+
 #
 # Panels
 # ===
@@ -417,6 +433,17 @@ checkmark-cross:
 
 checkmark-highlighted-cross:
 	Inherits: checkmark-cross
+
+checkmark-mute:
+	Inherits: ^Chrome
+	Regions:
+		unchecked: 989, 34, 16, 16
+		unchecked-pressed: 1006, 34, 16, 16
+		checked: 1006, 34, 16, 16
+		checked-pressed: 989, 34, 16, 16
+
+checkmark-highlighted-mute:
+	Inherits: checkmark-mute
 
 flags:
 	Inherits: ^Chrome

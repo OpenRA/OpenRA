@@ -69,6 +69,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var teamMessage = modData.Translation.GetString(Team);
 			var allMessage = modData.Translation.GetString(All);
 
+			// Only execute this once, the first time this widget is loaded
+			if (TextNotificationsManager.MutedPlayers.Count == 0)
+				foreach (var c in orderManager.LobbyInfo.Clients)
+					TextNotificationsManager.MutedPlayers.Add(c.Index, false);
+
 			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().ToArray().SelectMany(x => x.Commands.Keys);
 			tabCompletion.Names = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();
 
@@ -271,6 +276,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void INotificationHandler<TextNotification>.Handle(TextNotification notification)
 		{
 			if (!IsNotificationEligible(notification))
+				return;
+
+			if (notification.ClientId != TextNotificationsManager.SystemClientId && TextNotificationsManager.MutedPlayers[notification.ClientId])
 				return;
 
 			if (!IsNotificationMuted(notification))
