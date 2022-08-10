@@ -31,7 +31,7 @@ Container@SKIRMISH_STATS:
 		Container@STATS_HEADERS:
 			X: 22
 			Y: 81
-			Width: 393
+			Width: PARENT_RIGHT - 44
 			Children:
 				Label@NAME:
 					X: 10
@@ -51,16 +51,22 @@ Container@SKIRMISH_STATS:
 					Height: 25
 					Text: Score
 					Font: Bold
+				Label@ACTIONS:
+					X: 457
+					Width: 20
+					Height: 25
+					Text: Actions
+					Font: Bold
 		ScrollPanel@PLAYER_LIST:
 			X: 20
 			Y: 105
-			Width: 482
+			Width: PARENT_RIGHT - 40
 			Height: 280
 			ItemSpacing: 5
 			Children:
 				ScrollItem@TEAM_TEMPLATE:
 					BaseName: scrollheader
-					Width: PARENT_RIGHT - 27
+					Width: PARENT_RIGHT - 26
 					Height: 20
 					X: 2
 					Visible: false
@@ -78,7 +84,7 @@ Container@SKIRMISH_STATS:
 							Height: 20
 							Font: Bold
 				Container@PLAYER_TEMPLATE:
-					Width: PARENT_RIGHT - 27
+					Width: PARENT_RIGHT - 26
 					Height: 25
 					X: 2
 					Children:
@@ -116,7 +122,7 @@ Container@SKIRMISH_STATS:
 							Height: 25
 							Shadow: True
 				Container@SPECTATOR_TEMPLATE:
-					Width: PARENT_RIGHT - 27
+					Width: PARENT_RIGHT - 26
 					Height: 25
 					X: 2
 					Children:
@@ -139,12 +145,15 @@ Container@SKIRMISH_STATS:
 							Height: 25
 							Shadow: True
 						Button@KICK:
-							X: 195
-							Width: 24
+							X: 485
+							Width: 25
 							Height: 25
+							Background: checkbox-toggle
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipText: Kick this player
 							Children:
 								Image:
 									ImageCollection: lobby-bits
 									ImageName: kick
-									X: 6
-									Y: 8
+									X: 7
+									Y: 7
