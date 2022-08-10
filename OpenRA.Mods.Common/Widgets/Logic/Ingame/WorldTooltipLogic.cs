@@ -18,8 +18,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class WorldTooltipLogic : ChromeLogic
 	{
+		[TranslationReference]
+		static readonly string UnrevealedTerrain = "unrevealed-terrain";
+
 		[ObjectCreator.UseCtor]
-		public WorldTooltipLogic(Widget widget, World world, TooltipContainerWidget tooltipContainer, ViewportControllerWidget viewport)
+		public WorldTooltipLogic(Widget widget, ModData modData, World world, TooltipContainerWidget tooltipContainer, ViewportControllerWidget viewport)
 		{
 			widget.IsVisible = () => viewport.TooltipType != WorldTooltipType.None;
 			var label = widget.Get<LabelWidget>("LABEL");
@@ -54,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				switch (viewport.TooltipType)
 				{
 					case WorldTooltipType.Unexplored:
-						labelText = "Unrevealed Terrain";
+						labelText = modData.Translation.GetString(UnrevealedTerrain);
 						break;
 					case WorldTooltipType.Resource:
 						labelText = viewport.ResourceTooltip;

@@ -43,6 +43,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly bool isMenuChat;
 
+		[TranslationReference]
+		static readonly string Team = "team";
+
+		[TranslationReference]
+		static readonly string All = "all";
+
+		[TranslationReference("seconds")]
+		static readonly string ChatAvailability = "chat-availability";
+
 		[ObjectCreator.UseCtor]
 		public IngameChatLogic(Widget widget, OrderManager orderManager, World world, ModData modData, bool isMenuChat, Dictionary<string, MiniYaml> logicArgs)
 		{
@@ -56,6 +65,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var alwaysDisabled = world.IsReplay || world.LobbyInfo.NonBotClients.Count() == 1;
 			var disableTeamChat = alwaysDisabled || (world.LocalPlayer != null && !players.Any(p => p.IsAlliedWith(world.LocalPlayer)));
 			var teamChat = !disableTeamChat;
+
+			var teamMessage = modData.Translation.GetString(Team);
+			var allMessage = modData.Translation.GetString(All);
 
 			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().ToArray().SelectMany(x => x.Commands.Keys);
 			tabCompletion.Names = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();
@@ -81,7 +93,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatChrome.Visible = true;
 
 			var chatMode = chatChrome.Get<ButtonWidget>("CHAT_MODE");
-			chatMode.GetText = () => teamChat && !disableTeamChat ? "Team" : "All";
+			chatMode.GetText = () => teamChat && !disableTeamChat ? teamMessage : allMessage;
 			chatMode.OnClick = () => teamChat ^= true;
 
 			// Enable teamchat if we are a player and die,
@@ -171,7 +183,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
-			chatDisabledLabel = new CachedTransform<int, string>(x => x > 0 ? $"Chat available in {x} seconds..." : "Chat Disabled");
+			chatDisabledLabel = new CachedTransform<int, string>(x => modData.Translation.GetString(ChatAvailability, Translation.Arguments("seconds", x)));
 
 			if (!isMenuChat)
 			{

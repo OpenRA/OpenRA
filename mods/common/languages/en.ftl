@@ -1,7 +1,6 @@
 ## Server Orders
-
 custom-rules = This map contains custom rules. Game experience may change.
-bots-disabled = Bots have been disabled on this map.
+map-bots-disabled = Bots have been disabled on this map.
 two-humans-required = This server requires at least two human players to start a match.
 unknown-server-command = Unknown server command: { $command }
 only-only-host-start-game = Only the host can start the game.
@@ -86,7 +85,92 @@ requires-forum-account = Server requires players to have an OpenRA forum account
 no-permission = You do not have permission to join this server.
 slot-closed = Your slot was closed by the host.
 
-
 ## Server
-
 game-started = Game started
+
+## Server also LobbyUtils
+bots-disabled = Bots Disabled
+
+## ActorEditLogic
+duplicate-actor-id = Duplicate Actor ID
+enter-actor-id = Enter an Actor ID
+owner = Owner
+
+## ActorSelectorLogic
+type = Type
+
+## CommonSelectorLogic
+search-results = Search Results
+multiple = Multiple
+
+## GameInfoLogic
+objectives = Objectives
+briefing = Briefing
+options = Options
+debug = Debug
+chat = Chat
+
+## GameInfoObjectivesLogic also GameInfoStatsLogic
+in-progress = In progress
+accomplished = Accomplished
+failed = Failed
+
+## GameTimerLogic
+paused = Paused
+max-speed = Max Speed
+speed = { $percentage }% Speed
+complete = { $percentage }% complete
+
+## LobbyLogic, InGameChatLogic
+chat-availability =
+    { $seconds ->
+        [zero] Chat Disabled
+        [one] Chat available in { $seconds } second...
+        *[other] Chat available in { $seconds } seconds...
+    }
+
+## IngamePowerBarLogic
+## IngamePowerCounterLogic
+power-usage = Power Usage
+
+## IngameSiloBarLogic
+## IngameCashCounterLogic
+silo-usage = Silo Usage: { $resources }/{ $capacity }
+
+## ObserverShroudSelectorLogic
+camera-option-all-players = All Players
+camera-option-disable-shroud = Disable Shroud
+camera-option-other = Other
+
+## ObserverStatsLogic
+information-none = Information: None
+basic = Basic
+economy = Economy
+production = Production
+support-powers = Support Powers
+combat = Combat
+army = Army
+earnings-graph = Earnings (graph)
+army-graph = Army (graph)
+
+## WorldTooltipLogic
+unrevealed-terrain = Unrevealed Terrain
+
+## ServerlistLogic, GameInfoStatsLogic, ObserverShroudSelectorLogic, SpawnSelectorTooltipLogic
+team-no-team =
+    { $team ->
+        [zero] No Team
+       *[other] Team { $team }
+    }
+
+## LobbyLogic, CommonSelectorLogic, InGameChatLogic
+all = All
+
+## InputSettingsLogic, CommonSelectorLogic
+none = None
+
+## LobbyLogic, IngameChatLogic
+team = Team
+
+## ServerListLogic, ReplayBrowserLogic also ObserverShroudSelectorLogic
+players = Players

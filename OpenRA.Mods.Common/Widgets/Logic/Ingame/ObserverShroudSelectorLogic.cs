@@ -35,6 +35,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		CameraOption selected;
 		readonly LabelWidget shroudLabel;
 
+		[TranslationReference]
+		static readonly string CameraOptionAllPlayers = "camera-option-all-players";
+
+		[TranslationReference]
+		static readonly string CameraOptionDisableShroud = "camera-option-disable-shroud";
+
+		[TranslationReference]
+		static readonly string CameraOptionOther = "camera-option-other";
+
+		[TranslationReference]
+		static readonly string Players = "players";
+
+		[TranslationReference("team")]
+		static readonly string Team = "team-no-team";
+
 		class CameraOption
 		{
 			public readonly Player Player;
@@ -86,10 +101,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var groups = new Dictionary<string, IEnumerable<CameraOption>>();
 
-			combined = new CameraOption(this, world, "All Players", world.Players.First(p => p.InternalName == "Everyone"));
-			disableShroud = new CameraOption(this, world, "Disable Shroud", null);
+			combined = new CameraOption(this, world, modData.Translation.GetString(CameraOptionAllPlayers), world.Players.First(p => p.InternalName == "Everyone"));
+			disableShroud = new CameraOption(this, world, modData.Translation.GetString(CameraOptionDisableShroud), null);
 			if (!limitViews)
-				groups.Add("Other", new List<CameraOption>() { combined, disableShroud });
+				groups.Add(modData.Translation.GetString(CameraOptionOther), new List<CameraOption>() { combined, disableShroud });
 
 			teams = world.Players.Where(p => !p.NonCombatant && p.Playable)
 				.Select(p => new CameraOption(this, p))
@@ -101,7 +116,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var t in teams)
 			{
 				totalPlayers += t.Count();
-				var label = noTeams ? "Players" : t.Key == 0 ? "No Team" : $"Team {t.Key}";
+				var label = noTeams ? modData.Translation.GetString(Players) : modData.Translation.GetString(Team, Translation.Arguments("team", t.Key));
 				groups.Add(label, t);
 			}
 

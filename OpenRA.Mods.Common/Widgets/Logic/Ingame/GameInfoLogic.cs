@@ -29,16 +29,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		IngameInfoPanel activePanel;
 		readonly bool hasError;
 
+		[TranslationReference]
+		static readonly string Objectives = "objectives";
+
+		[TranslationReference]
+		static readonly string Briefing = "briefing";
+
+		[TranslationReference]
+		static readonly string Options = "options";
+
+		[TranslationReference]
+		static readonly string Debug = "debug";
+
+		[TranslationReference]
+		static readonly string Chat = "chat";
+
 		[ObjectCreator.UseCtor]
 		public GameInfoLogic(Widget widget, ModData modData, World world, IngameInfoPanel initialPanel, Action<bool> hideMenu)
 		{
 			var panels = new Dictionary<IngameInfoPanel, (string Panel, string Label, Action<ButtonWidget, Widget> Setup)>()
 			{
-				{ IngameInfoPanel.Objectives, ("OBJECTIVES_PANEL", "Objectives", SetupObjectivesPanel) },
-				{ IngameInfoPanel.Map, ("MAP_PANEL", "Briefing", SetupMapPanel) },
-				{ IngameInfoPanel.LobbbyOptions, ("LOBBY_OPTIONS_PANEL", "Options", SetupLobbyOptionsPanel) },
-				{ IngameInfoPanel.Debug, ("DEBUG_PANEL", "Debug", SetupDebugPanel) },
-				{ IngameInfoPanel.Chat, ("CHAT_PANEL", "Chat", SetupChatPanel) }
+				{ IngameInfoPanel.Objectives, ("OBJECTIVES_PANEL", Objectives, SetupObjectivesPanel) },
+				{ IngameInfoPanel.Map, ("MAP_PANEL", Briefing, SetupMapPanel) },
+				{ IngameInfoPanel.LobbbyOptions, ("LOBBY_OPTIONS_PANEL", Options, SetupLobbyOptionsPanel) },
+				{ IngameInfoPanel.Debug, ("DEBUG_PANEL", Debug, SetupDebugPanel) },
+				{ IngameInfoPanel.Chat, ("CHAT_PANEL", Chat, SetupChatPanel) }
 			};
 
 			this.world = world;
@@ -91,7 +106,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (tabButton != null)
 				{
-					tabButton.Text = info.Label;
+					tabButton.Text = modData.Translation.GetString(info.Label);
 					tabButton.OnClick = () =>
 					{
 						if (activePanel == IngameInfoPanel.Chat)

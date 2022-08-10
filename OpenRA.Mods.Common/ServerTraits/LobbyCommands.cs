@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Server
 		static readonly string ChangedMap = "changed-map";
 
 		[TranslationReference]
-		static readonly string BotsDisabled = "bots-disabled";
+		static readonly string MapBotsDisabled = "map-bots-disabled";
 
 		[TranslationReference("player", "name", "value")]
 		static readonly string ValueChanged = "value-changed";
@@ -624,7 +624,7 @@ namespace OpenRA.Mods.Common.Server
 						if (!server.LobbyInfo.GlobalSettings.EnableSingleplayer)
 							server.SendLocalizedMessage(TwoHumansRequired);
 						else if (server.Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
-							server.SendLocalizedMessage(BotsDisabled);
+							server.SendLocalizedMessage(MapBotsDisabled);
 
 						var briefing = MissionBriefingOrDefault(server);
 						if (briefing != null)
