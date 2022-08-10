@@ -117,6 +117,10 @@ in-progress = In progress
 accomplished = Accomplished
 failed = Failed
 
+## GameInfoStatsLogic
+mute = Mute this player
+unmute = Unmute this player
+
 ## GameTimerLogic
 paused = Paused
 max-speed = Max Speed
