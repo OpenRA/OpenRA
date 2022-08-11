@@ -241,6 +241,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// <summary>
 		/// Expands the path search until a path is found, and returns whether a path is found successfully.
 		/// </summary>
+		/// <remarks>
+		/// If the path search has previously been expanded it will only return true if a path can be found during
+		/// *this* expansion of the search. If the search was expanded previously and the target is already
+		/// <see cref="CellStatus.Closed"/> then this method will return false.
+		/// </remarks>
 		public bool ExpandToTarget()
 		{
 			while (CanExpand())

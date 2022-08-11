@@ -629,9 +629,19 @@ namespace OpenRA.Mods.Common.Pathfinder
 				var sourcesWithPathableNodes = new List<CPos>(sourcesWithReachableNodes.Count);
 				foreach (var source in sourcesWithReachableNodes)
 				{
-					reverseAbstractSearch.TargetPredicate = cell => cell == source;
-					if (reverseAbstractSearch.ExpandToTarget())
-						sourcesWithPathableNodes.Add(source);
+					// Check if we have already found a route to this node before we attempt to expand the search.
+					var sourceStatus = reverseAbstractSearch.Graph[source];
+					if (sourceStatus.Status == CellStatus.Closed)
+					{
+						if (sourceStatus.CostSoFar != PathGraph.PathCostForInvalidPath)
+							sourcesWithPathableNodes.Add(source);
+					}
+					else
+					{
+						reverseAbstractSearch.TargetPredicate = cell => cell == source;
+						if (reverseAbstractSearch.ExpandToTarget())
+							sourcesWithPathableNodes.Add(source);
+					}
 				}
 
 				if (sourcesWithPathableNodes.Count == 0)
@@ -900,8 +910,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 				var abstractCell = gridInfo.AbstractCellForLocalCell(cell).Value;
 				var info = graph[abstractCell];
 
-				// Expand the abstract search if we have not visited the abstract cell.
-				if (info.Status == CellStatus.Unvisited)
+				// Expand the abstract search only if we have yet to get a route to the abstract cell.
+				if (info.Status != CellStatus.Closed)
 				{
 					abstractSearch.TargetPredicate = c => c == abstractCell;
 					if (!abstractSearch.ExpandToTarget())
