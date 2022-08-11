@@ -102,7 +102,9 @@ namespace OpenRA.Mods.Common.Traits
 				// For adjacent cells on the same layer, we can return the path without invoking a full search.
 				if (source.Layer == target.Layer && (source - target).LengthSquared < 3)
 				{
-					if (!world.Map.Contains(source))
+					// If the source cell is inaccessible, there is no path.
+					if (!world.Map.Contains(source) ||
+						(customCost != null && customCost(source) == PathGraph.PathCostForInvalidPath))
 						return NoPath;
 					return new List<CPos>(2) { target, source };
 				}
