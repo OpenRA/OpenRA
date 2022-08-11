@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Activities
 				var lastproc = harv.LastLinkedProc ?? harv.LinkedProc;
 				if (lastproc != null && !lastproc.Disposed)
 				{
-					var deliveryLoc = lastproc.Location + lastproc.Trait<IAcceptResources>().DeliveryOffset;
+					var deliveryLoc = lastproc.Location + lastproc.Trait<Dock>().DeliveryOffset;
 					if (self.Location == deliveryLoc && harv.IsEmpty)
 					{
 						var unblockCell = deliveryLoc + harv.Info.UnblockCell;
@@ -246,10 +246,10 @@ namespace OpenRA.Mods.Common.Activities
 		CPos? GetSearchFromProcLocation()
 		{
 			if (harv.LastLinkedProc != null && !harv.LastLinkedProc.IsDead && harv.LastLinkedProc.IsInWorld)
-				return harv.LastLinkedProc.Location + harv.LastLinkedProc.Trait<IAcceptResources>().DeliveryOffset;
+				return harv.LastLinkedProc.Location + harv.LastLinkedProc.Trait<Dock>().DeliveryOffset;
 
 			if (harv.LinkedProc != null && !harv.LinkedProc.IsDead && harv.LinkedProc.IsInWorld)
-				return harv.LinkedProc.Location + harv.LinkedProc.Trait<IAcceptResources>().DeliveryOffset;
+				return harv.LinkedProc.Location + harv.LinkedProc.Trait<Dock>().DeliveryOffset;
 
 			return null;
 		}

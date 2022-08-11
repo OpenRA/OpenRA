@@ -60,19 +60,19 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			proc = harv.LinkedProc;
-			var iao = proc.Trait<IAcceptResources>();
+			var dock = proc.Trait<Dock>();
 
-			if (self.Location != proc.Location + iao.DeliveryOffset)
+			if (self.Location != proc.Location + dock.DeliveryOffset)
 			{
 				foreach (var n in notifyHarvesterActions)
 					n.MovingToRefinery(self, proc);
 
-				QueueChild(movement.MoveTo(proc.Location + iao.DeliveryOffset, 0));
+				QueueChild(movement.MoveTo(proc.Location + dock.DeliveryOffset, 0));
 				return false;
 			}
 
 			QueueChild(new Wait(10));
-			iao.OnDock(self, this);
+			dock.OnDock(self, this);
 			return true;
 		}
 

@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Find all refineries and their occupancy count:
 			// Exclude refineries with too many harvesters clogging the delivery location.
-			var refineries = self.World.ActorsWithTrait<IAcceptResources>()
+			var refineries = self.World.ActorsWithTrait<Dock>()
 				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor))
 				.Select(r => new
 				{
@@ -295,13 +295,13 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsTraitDisabled)
 					yield break;
 
-				yield return new EnterAlliedActorTargeter<IAcceptResourcesInfo>(
+				yield return new EnterAlliedActorTargeter<DockInfo>(
 					"Deliver",
 					5,
 					Info.EnterCursor,
 					Info.EnterBlockedCursor,
 					(proc, _) => IsAcceptableProcType(proc),
-					proc => proc.Trait<IAcceptResources>().AllowDocking);
+					proc => proc.Trait<Dock>().AllowDocking);
 				yield return new HarvestOrderTargeter();
 			}
 		}
@@ -357,8 +357,8 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 
 				var targetActor = order.Target.Actor;
-				var iao = targetActor.TraitOrDefault<IAcceptResources>();
-				if (iao == null || !iao.AllowDocking || !IsAcceptableProcType(targetActor))
+				var dock = targetActor.TraitOrDefault<Dock>();
+				if (dock == null || !dock.AllowDocking || !IsAcceptableProcType(targetActor))
 					return;
 
 				self.QueueActivity(order.Queued, new FindAndDeliverResources(self, targetActor));

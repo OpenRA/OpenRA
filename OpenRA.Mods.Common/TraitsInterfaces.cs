@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Primitives;
@@ -264,13 +263,9 @@ namespace OpenRA.Mods.Common.Traits
 		void Undeploy(Actor self, bool skipMakeAnim);
 	}
 
-	public interface IAcceptResourcesInfo : ITraitInfoInterface { }
 	public interface IAcceptResources
 	{
-		void OnDock(Actor harv, DeliverResources dockOrder);
 		int AcceptResources(string resourceType, int count = 1);
-		CVec DeliveryOffset { get; }
-		bool AllowDocking { get; }
 	}
 
 	public interface IProvidesAssetBrowserPalettes

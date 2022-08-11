@@ -16,28 +16,12 @@ using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits.Render;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class RefineryInfo : TraitInfo, Requires<WithSpriteBodyInfo>, IAcceptResourcesInfo
+	public class RefineryInfo : DockInfo, Requires<WithSpriteBodyInfo>
 	{
-		[Desc("Actual harvester facing when docking.")]
-		public readonly WAngle DockAngle = WAngle.Zero;
-
-		[Desc("Docking cell relative to top-left cell.")]
-		public readonly CVec DockOffset = CVec.Zero;
-
-		[Desc("Does the refinery require the harvester to be dragged in?")]
-		public readonly bool IsDragRequired = false;
-
-		[Desc("Vector by which the harvester will be dragged when docking.")]
-		public readonly WVec DragOffset = WVec.Zero;
-
-		[Desc("In how many steps to perform the dragging?")]
-		public readonly int DragLength = 0;
-
 		[Desc("Store resources in silos. Adds cash directly without storing if set to false.")]
 		public readonly bool UseStorage = true;
 
@@ -52,33 +36,17 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Refinery(init.Self, this); }
 	}
 
-	public class Refinery : INotifyCreated, ITick, IAcceptResources, INotifySold, INotifyCapture,
-		INotifyOwnerChanged, ISync, INotifyActorDisposing
+	public class Refinery : Dock, IAcceptResources, INotifyCreated, ITick, INotifyOwnerChanged
 	{
-		readonly Actor self;
 		readonly RefineryInfo info;
 		PlayerResources playerResources;
 		IEnumerable<int> resourceValueModifiers;
 
 		int currentDisplayTick = 0;
 		int currentDisplayValue = 0;
-
-		[Sync]
-		Actor dockedHarv = null;
-
-		[Sync]
-		bool preventDock = false;
-
-		public bool AllowDocking => !preventDock;
-		public CVec DeliveryOffset => info.DockOffset;
-		public WAngle DeliveryAngle => info.DockAngle;
-		public bool IsDragRequired => info.IsDragRequired;
-		public WVec DragOffset => info.DragOffset;
-		public int DragLength => info.DragLength;
-
 		public Refinery(Actor self, RefineryInfo info)
+			: base(self, info)
 		{
-			this.self = self;
 			this.info = info;
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			currentDisplayTick = info.TickRate;
@@ -89,15 +57,9 @@ namespace OpenRA.Mods.Common.Traits
 			resourceValueModifiers = self.TraitsImplementing<IResourceValueModifier>().ToArray().Select(m => m.GetResourceValueModifier());
 		}
 
-		public virtual Activity DockSequence(Actor harv, Actor self)
+		public override Activity DockSequence(Actor harv, Actor self)
 		{
 			return new SpriteHarvesterDockSequence(harv, self, DeliveryAngle, IsDragRequired, DragOffset, DragLength);
-		}
-
-		public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()
-		{
-			return self.World.ActorsWithTrait<Harvester>()
-				.Where(a => a.Trait.LinkedProc == self);
 		}
 
 		int IAcceptResources.AcceptResources(string resourceType, int count)
@@ -124,12 +86,12 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				value = playerResources.ChangeCash(value);
 
-			foreach (var notify in self.World.ActorsWithTrait<INotifyResourceAccepted>())
+			foreach (var notify in Self.World.ActorsWithTrait<INotifyResourceAccepted>())
 			{
-				if (notify.Actor.Owner != self.Owner)
+				if (notify.Actor.Owner != Self.Owner)
 					continue;
 
-				notify.Trait.OnResourceAccepted(notify.Actor, self, resourceType, count, value);
+				notify.Trait.OnResourceAccepted(notify.Actor, Self, resourceType, count, value);
 			}
 
 			if (info.ShowTicks)
@@ -138,17 +100,8 @@ namespace OpenRA.Mods.Common.Traits
 			return count;
 		}
 
-		void CancelDock()
-		{
-			preventDock = true;
-		}
-
 		void ITick.Tick(Actor self)
 		{
-			// Harvester was killed while unloading
-			if (dockedHarv != null && dockedHarv.IsDead)
-				dockedHarv = null;
-
 			if (info.ShowTicks && currentDisplayValue > 0 && --currentDisplayTick <= 0)
 			{
 				var temp = currentDisplayValue;
@@ -159,49 +112,9 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		void INotifyActorDisposing.Disposing(Actor self)
-		{
-			CancelDock();
-			foreach (var harv in GetLinkedHarvesters())
-				harv.Trait.UnlinkProc(harv.Actor, self);
-		}
-
-		public void OnDock(Actor harv, DeliverResources dockOrder)
-		{
-			if (!preventDock)
-			{
-				dockOrder.QueueChild(new CallFunc(() => dockedHarv = harv, false));
-				dockOrder.QueueChild(DockSequence(harv, self));
-				dockOrder.QueueChild(new CallFunc(() => dockedHarv = null, false));
-			}
-		}
-
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			// Unlink any harvesters
-			foreach (var harv in GetLinkedHarvesters())
-				harv.Trait.UnlinkProc(harv.Actor, self);
-
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
-		}
-
-		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes)
-		{
-			// Steal any docked harv too
-			if (dockedHarv != null)
-			{
-				dockedHarv.ChangeOwner(newOwner);
-
-				// Relink to this refinery
-				dockedHarv.Trait<Harvester>().LinkProc(self);
-			}
-		}
-
-		void INotifySold.Selling(Actor self) { CancelDock(); }
-		void INotifySold.Sold(Actor self)
-		{
-			foreach (var harv in GetLinkedHarvesters())
-				harv.Trait.UnlinkProc(harv.Actor, self);
 		}
 	}
 }
