@@ -30,11 +30,6 @@ namespace OpenRA.Mods.Cnc.Activities
 		public override void OnStateDock(Actor self)
 		{
 			body.Docked = true;
-			foreach (var nd in self.TraitsImplementing<INotifyDockClient>())
-				nd.Docked(self, Refinery);
-
-			foreach (var nd in Refinery.TraitsImplementing<INotifyDockHost>())
-				nd.Docked(Refinery, self);
 
 			if (spriteOverlay != null && !spriteOverlay.Visible)
 			{
@@ -63,26 +58,12 @@ namespace OpenRA.Mods.Cnc.Activities
 					dockingState = DockingState.Complete;
 					body.Docked = false;
 					spriteOverlay.Visible = false;
-
-					foreach (var nd in self.TraitsImplementing<INotifyDockClient>())
-						nd.Undocked(self, Refinery);
-
-					if (Refinery.IsInWorld && !Refinery.IsDead)
-						foreach (var nd in Refinery.TraitsImplementing<INotifyDockHost>())
-							nd.Undocked(Refinery, self);
 				});
 			}
 			else
 			{
 				dockingState = DockingState.Complete;
 				body.Docked = false;
-
-				foreach (var nd in self.TraitsImplementing<INotifyDockClient>())
-					nd.Undocked(self, Refinery);
-
-				if (Refinery.IsInWorld && !Refinery.IsDead)
-					foreach (var nd in Refinery.TraitsImplementing<INotifyDockHost>())
-						nd.Undocked(Refinery, self);
 			}
 		}
 	}

@@ -29,12 +29,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override void OnStateDock(Actor self)
 		{
-			foreach (var nd in self.TraitsImplementing<INotifyDockClient>())
-				nd.Docked(self, Refinery);
-
-			foreach (var nd in Refinery.TraitsImplementing<INotifyDockHost>())
-				nd.Docked(Refinery, self);
-
 			if (wda != null)
 				wsb.PlayCustomAnimation(self, wda.DockSequence, () => wsb.PlayCustomAnimationRepeating(self, wda.DockLoopSequence));
 
@@ -54,20 +48,9 @@ namespace OpenRA.Mods.Common.Activities
 			dockingState = DockingState.Wait;
 
 			if (wda == null)
-				NotifyUndock(self);
+				dockingState = DockingState.Complete;
 			else
-				wsb.PlayCustomAnimationBackwards(self, wda.DockSequence, () => NotifyUndock(self));
-		}
-
-		void NotifyUndock(Actor self)
-		{
-			dockingState = DockingState.Complete;
-			foreach (var nd in self.TraitsImplementing<INotifyDockClient>())
-				nd.Undocked(self, Refinery);
-
-			if (Refinery.IsInWorld && !Refinery.IsDead)
-				foreach (var nd in Refinery.TraitsImplementing<INotifyDockHost>())
-					nd.Undocked(Refinery, self);
+				wsb.PlayCustomAnimationBackwards(self, wda.DockSequence, () => dockingState = DockingState.Complete);
 		}
 	}
 }
