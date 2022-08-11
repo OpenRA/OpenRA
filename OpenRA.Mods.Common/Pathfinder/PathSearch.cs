@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 			foreach (var sl in froms)
 				if (world.Map.Contains(sl))
-					search.AddInitialCell(sl);
+					search.AddInitialCell(sl, customCost);
 
 			return search;
 		}
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 			foreach (var sl in froms)
 				if (world.Map.Contains(sl))
-					search.AddInitialCell(sl);
+					search.AddInitialCell(sl, customCost);
 
 			return search;
 		}
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var graph = new SparsePathGraph(edges, estimatedSearchSize);
 			var search = new PathSearch(graph, DefaultCostEstimator(locomotor, target), 100, loc => loc == target, recorder);
 
-			search.AddInitialCell(from);
+			search.AddInitialCell(from, null);
 
 			return search;
 		}
@@ -162,10 +162,18 @@ namespace OpenRA.Mods.Common.Pathfinder
 			openQueue = new PriorityQueue<GraphConnection>(GraphConnection.ConnectionCostComparer);
 		}
 
-		void AddInitialCell(CPos location)
+		void AddInitialCell(CPos location, Func<CPos, int> customCost)
 		{
+			var initialCost = 0;
+			if (customCost != null)
+			{
+				initialCost = customCost(location);
+				if (initialCost == PathGraph.PathCostForInvalidPath)
+					return;
+			}
+
 			var estimatedCost = heuristic(location) * heuristicWeightPercentage / 100;
-			Graph[location] = new CellInfo(CellStatus.Open, 0, estimatedCost, location);
+			Graph[location] = new CellInfo(CellStatus.Open, initialCost, initialCost + estimatedCost, location);
 			var connection = new GraphConnection(location, estimatedCost);
 			openQueue.Add(connection);
 		}
