@@ -70,18 +70,26 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var frozenActor = new FrozenActor(self, this, footprint, player, startsRevealed);
 				player.PlayerActor.Trait<FrozenActorLayer>().Add(frozenActor);
-				return new FrozenState(frozenActor) { IsVisible = startsRevealed };
+				return new FrozenState(frozenActor) { IsVisible = !frozenActor.Visible };
 			});
 
 			// Set the initial visibility state
 			// This relies on actor.GetTargetablePositions(), which is also setup up in Created.
 			// Since we can't be sure whether our method will run after theirs, defer by a frame.
-			if (startsRevealed)
-				self.World.AddFrameEndTask(_ =>
+			self.World.AddFrameEndTask(_ =>
+			{
+				for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
 				{
-					for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
-						UpdateFrozenActor(frozenStates[playerIndex].FrozenActor, playerIndex);
-				});
+					var state = frozenStates[playerIndex];
+					if (startsRevealed || state.IsVisible)
+					{
+						UpdateFrozenActor(state.FrozenActor, playerIndex);
+
+						// Needed so tooltips appear.
+						state.FrozenActor.Hidden = false;
+					}
+				}
+			});
 
 			created = true;
 		}
