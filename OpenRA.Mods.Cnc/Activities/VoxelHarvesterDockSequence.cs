@@ -9,9 +9,9 @@
  */
 #endregion
 
-using OpenRA.Mods.Cnc.Traits.Render;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Traits.Render;
 
 namespace OpenRA.Mods.Cnc.Activities
 {
