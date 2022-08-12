@@ -53,7 +53,7 @@ namespace OpenRA
 
 		public static bool HasAttribute<T>(this MemberInfo mi)
 		{
-			return mi.GetCustomAttributes(typeof(T), true).Length != 0;
+			return Attribute.IsDefined(mi, typeof(T));
 		}
 
 		public static T[] GetCustomAttributes<T>(this MemberInfo mi, bool inherit)
