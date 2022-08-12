@@ -305,7 +305,7 @@ ARTY:
 		Prerequisites: vehicles.upgraded
 
 HARV:
-	Inherits: ^Vehicle
+	Inherits: ^Helicopter
 	Inherits@selection: ^SelectableEconomicUnit
 	Buildable:
 		Queue: Vehicle
@@ -331,11 +331,12 @@ HARV:
 		HP: 60000
 	Armor:
 		Type: Heavy
-	Mobile:
+	Aircraft:
+		TurnSpeed: 16
 		Speed: 72
-		Locomotor: heavywheeled
 	RevealsShroud:
 		Range: 4c0
+		Type: GroundPosition
 	WithHarvestAnimation:
 	WithDockingAnimation:
 	GpsDot:
