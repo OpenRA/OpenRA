@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
@@ -21,7 +20,6 @@ namespace OpenRA.Mods.Common.Activities
 	public class Resupply : Activity
 	{
 		readonly IHealth health;
-		readonly RepairsUnits[] allRepairsUnits;
 		readonly Target host;
 		readonly WDist closeEnough;
 		readonly Repairable repairable;
@@ -34,12 +32,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IMoveInfo moveInfo;
 		readonly bool stayOnResupplier;
 		readonly bool wasRepaired;
-		readonly PlayerResources playerResources;
-		readonly int unitCost;
 		readonly Actor self;
 
-		int remainingTicks;
-		bool played;
 		bool actualResupplyStarted;
 		ResupplyType activeResupplyTypes = ResupplyType.None;
 
@@ -48,7 +42,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.self = self;
 			this.host = Target.FromActor(host);
 			this.stayOnResupplier = stayOnResupplier;
-			allRepairsUnits = host.TraitsImplementing<RepairsUnits>().ToArray();
+			var allRepairsUnits = host.TraitsImplementing<RepairsUnits>().ToArray();
 			health = self.TraitOrDefault<IHealth>();
 			repairable = self.TraitOrDefault<Repairable>();
 
@@ -61,10 +55,6 @@ namespace OpenRA.Mods.Common.Activities
 			move = self.Trait<IMove>();
 			aircraft = move as Aircraft;
 			moveInfo = self.Info.TraitInfo<IMoveInfo>();
-			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
-
-			var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
-			unitCost = valued != null ? valued.Cost : 0;
 
 			var cannotRepairAtHost = health == null || health.DamageState == DamageState.Undamaged
 				|| allRepairsUnits.Length == 0
@@ -86,13 +76,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Tick(Actor self)
 		{
-			// Wait for the cooldown to expire before releasing the unit if this was cancelled
-			if (IsCanceling && remainingTicks > 0)
-			{
-				remainingTicks--;
-				return false;
-			}
-
 			var isHostInvalid = host.Type != TargetType.Actor || !host.Actor.IsInWorld;
 			var isCloseEnough = false;
 			if (!isHostInvalid)
@@ -123,7 +106,12 @@ namespace OpenRA.Mods.Common.Activities
 
 				return true;
 			}
-			else if (activeResupplyTypes != 0 && aircraft == null && !isCloseEnough)
+			else if (activeResupplyTypes == 0)
+			{
+				OnResupplyEnding(self);
+				return true;
+			}
+			else if (aircraft == null && !isCloseEnough)
 			{
 				var targetCell = self.World.Map.CellContaining(host.Actor.CenterPosition);
 
@@ -136,7 +124,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// We don't want to trigger this until we've reached the resupplier and can start resupplying
-			if (!actualResupplyStarted && activeResupplyTypes > 0)
+			if (!actualResupplyStarted)
 			{
 				actualResupplyStarted = true;
 				foreach (var notifyResupply in notifyResupplies)
@@ -147,7 +135,10 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			if (activeResupplyTypes.HasFlag(ResupplyType.Repair))
-				RepairTick(self);
+			{
+				if (repairable.RepairTick(self))
+					activeResupplyTypes &= ~ResupplyType.Repair;
+			}
 
 			if (activeResupplyTypes.HasFlag(ResupplyType.Rearm))
 				RearmTick(self);
@@ -234,57 +225,6 @@ namespace OpenRA.Mods.Common.Activities
 
 			foreach (var br in notifyBeingResupplied)
 				br.StoppingResupply(self, isHostInvalid ? null : host.Actor);
-		}
-
-		void RepairTick(Actor self)
-		{
-			var repairsUnits = allRepairsUnits.FirstOrDefault(r => !r.IsTraitDisabled && !r.IsTraitPaused);
-			if (repairsUnits == null)
-			{
-				if (!allRepairsUnits.Any(r => r.IsTraitPaused))
-					activeResupplyTypes &= ~ResupplyType.Repair;
-
-				return;
-			}
-
-			if (health.DamageState == DamageState.Undamaged)
-			{
-				if (host.Actor.Owner != self.Owner)
-					host.Actor.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(repairsUnits.Info.PlayerExperience);
-
-				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.Info.FinishRepairingNotification, self.Owner.Faction.InternalName);
-				TextNotificationsManager.AddTransientLine(repairsUnits.Info.FinishRepairingTextNotification, self.Owner);
-
-				activeResupplyTypes &= ~ResupplyType.Repair;
-				return;
-			}
-
-			if (remainingTicks == 0)
-			{
-				var hpToRepair = repairable != null && repairable.Info.HpPerStep > 0 ? repairable.Info.HpPerStep : repairsUnits.Info.HpPerStep;
-
-				// Cast to long to avoid overflow when multiplying by the health
-				var value = (long)unitCost * repairsUnits.Info.ValuePercentage;
-				var cost = value == 0 ? 0 : Math.Max(1, (int)(hpToRepair * value / (health.MaxHP * 100L)));
-
-				if (!played)
-				{
-					played = true;
-					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.Info.StartRepairingNotification, self.Owner.Faction.InternalName);
-					TextNotificationsManager.AddTransientLine(repairsUnits.Info.StartRepairingTextNotification, self.Owner);
-				}
-
-				if (!playerResources.TakeCash(cost, true))
-				{
-					remainingTicks = 1;
-					return;
-				}
-
-				self.InflictDamage(host.Actor, new Damage(-hpToRepair, repairsUnits.Info.RepairDamageTypes));
-				remainingTicks = repairsUnits.Info.Interval;
-			}
-			else
-				--remainingTicks;
 		}
 
 		void RearmTick(Actor self)

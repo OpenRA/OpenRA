@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
@@ -50,13 +51,20 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Repairable(init.Self, this); }
 	}
 
-	public class Repairable : IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, IObservesVariables
+	public class Repairable : IIssueOrder, IResolveOrder, IOrderVoice, INotifyCreated, IObservesVariables, INotifyBeingResupplied
 	{
 		public readonly RepairableInfo Info;
 		readonly IHealth health;
 		Rearmable rearmable;
 		bool requireForceMove;
 		bool isAircraft;
+
+		RepairsUnits[] allRepairsUnits;
+		Actor host;
+		PlayerResources playerResources;
+		int unitCost;
+		bool soundPlayed;
+		int remainingTicks;
 
 		public Repairable(Actor self, RepairableInfo info)
 		{
@@ -165,6 +173,72 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Worst case FirstOrDefault() will return a TraitPair<null, null>, which is OK.
 			return repairBuilding.FirstOrDefault().Actor;
+		}
+
+		void INotifyBeingResupplied.StartingResupply(Actor self, Actor host)
+		{
+			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
+			allRepairsUnits = host.TraitsImplementing<RepairsUnits>().ToArray();
+
+			var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
+			unitCost = valued != null ? valued.Cost : 0;
+			remainingTicks = 0;
+			this.host = host;
+		}
+
+		void INotifyBeingResupplied.StoppingResupply(Actor self, Actor host) { }
+
+		public bool RepairTick(Actor self)
+		{
+			var repairsUnits = allRepairsUnits.FirstOrDefault(r => !r.IsTraitDisabled && !r.IsTraitPaused);
+			if (repairsUnits == null)
+			{
+				if (!allRepairsUnits.Any(r => r.IsTraitPaused))
+					return true;
+
+				return false;
+			}
+
+			if (health.DamageState == DamageState.Undamaged)
+			{
+				// Give experience to your ally
+				if (host.Owner != self.Owner)
+					host.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(repairsUnits.Info.PlayerExperience);
+
+				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.Info.FinishRepairingNotification, self.Owner.Faction.InternalName);
+				TextNotificationsManager.AddTransientLine(repairsUnits.Info.FinishRepairingTextNotification, self.Owner);
+
+				return true;
+			}
+
+			if (remainingTicks == 0)
+			{
+				var hpToRepair = Info.HpPerStep > 0 ? Info.HpPerStep : repairsUnits.Info.HpPerStep;
+
+				// Cast to long to avoid overflow when multiplying by the health
+				var value = (long)unitCost * repairsUnits.Info.ValuePercentage;
+				var cost = value == 0 ? 0 : Math.Max(1, (int)(hpToRepair * value / (health.MaxHP * 100L)));
+
+				if (!soundPlayed)
+				{
+					soundPlayed = true;
+					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", repairsUnits.Info.StartRepairingNotification, self.Owner.Faction.InternalName);
+					TextNotificationsManager.AddTransientLine(repairsUnits.Info.StartRepairingTextNotification, self.Owner);
+				}
+
+				if (!playerResources.TakeCash(cost, true))
+				{
+					remainingTicks = 1;
+					return false;
+				}
+
+				self.InflictDamage(host, new Damage(-hpToRepair, repairsUnits.Info.RepairDamageTypes));
+				remainingTicks = repairsUnits.Info.Interval;
+			}
+			else
+				--remainingTicks;
+
+			return false;
 		}
 	}
 }
