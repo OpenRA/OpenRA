@@ -156,7 +156,18 @@ namespace OpenRA
 									else
 									{
 										var pos = new WPos(r.ReadInt32(), r.ReadInt32(), r.ReadInt32());
-										target = Target.FromPos(pos);
+
+										var numberOfTerrainPositions = r.ReadByte();
+										if (numberOfTerrainPositions == 0)
+											target = Target.FromPos(pos);
+										else
+										{
+											var terrainPositions = new WPos[numberOfTerrainPositions];
+											for (var i = 0; i < numberOfTerrainPositions; i++)
+												terrainPositions[i] = new WPos(r.ReadInt32(), r.ReadInt32(), r.ReadInt32());
+
+											target = Target.FromSerializedTerrainPosition(pos, terrainPositions);
+										}
 									}
 
 									break;
@@ -386,6 +397,21 @@ namespace OpenRA
 									w.Write(Target.SerializablePos.X);
 									w.Write(Target.SerializablePos.Y);
 									w.Write(Target.SerializablePos.Z);
+
+									// Don't send extra data over the network that will be restored by the Target ctor
+									var terrainPositions = Target.SerializableTerrainPositions.Length;
+									if (terrainPositions == 1 && Target.SerializableTerrainPositions[0] == Target.SerializablePos)
+										w.Write((byte)0);
+									else
+									{
+										w.Write((byte)terrainPositions);
+										foreach (var position in Target.SerializableTerrainPositions)
+										{
+											w.Write(position.X);
+											w.Write(position.Y);
+											w.Write(position.Z);
+										}
+									}
 								}
 
 								break;

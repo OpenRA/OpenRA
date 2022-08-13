@@ -291,11 +291,13 @@ namespace OpenRA.Traits
 
 		// Expose internal state for serialization by the orders code *only*
 		internal static Target FromSerializedActor(Actor a, int generation) { return a != null ? new Target(a, generation) : Invalid; }
+		internal static Target FromSerializedTerrainPosition(WPos centerPosition, WPos[] terrainPositions) { return new Target(centerPosition, terrainPositions); }
 		internal TargetType SerializableType => type;
 		internal Actor SerializableActor => actor;
 		internal int SerializableGeneration => generation;
 		internal CPos? SerializableCell => cell;
 		internal SubCell? SerializableSubCell => subCell;
 		internal WPos SerializablePos => terrainCenterPosition;
+		internal WPos[] SerializableTerrainPositions => terrainPositions;
 	}
 }
