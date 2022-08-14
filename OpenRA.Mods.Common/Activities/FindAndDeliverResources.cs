@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using OpenRA.Activities;
-using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -23,6 +22,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Harvester harv;
 		readonly HarvesterInfo harvInfo;
 		readonly Mobile mobile;
+		readonly IMove move;
 		readonly ResourceClaimLayer claimLayer;
 
 		Actor deliverActor;
@@ -38,7 +38,8 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			harv = self.Trait<Harvester>();
 			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
-			mobile = self.Trait<Mobile>();
+			move = self.Trait<IMove>();
+			mobile = move as Mobile;
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 			this.deliverActor = deliverActor;
 		}
@@ -135,8 +136,8 @@ namespace OpenRA.Mods.Common.Activities
 					if (self.Location == deliveryLoc && harv.IsEmpty)
 					{
 						var unblockCell = deliveryLoc + harv.Info.UnblockCell;
-						var moveTo = mobile.NearestMoveableCell(unblockCell, 1, 5);
-						QueueChild(mobile.MoveTo(moveTo, 1));
+						var moveTo = move.NearestMoveableCell(unblockCell);
+						QueueChild(move.MoveTo(moveTo, 1));
 					}
 				}
 
@@ -182,48 +183,65 @@ namespace OpenRA.Mods.Common.Activities
 			var harvPos = self.CenterPosition;
 
 			// Find any harvestable resources:
-			var path = mobile.PathFinder.FindPathToTargetCellByPredicate(
-				self,
-				new[] { searchFromLoc, self.Location },
-				loc =>
-					harv.CanHarvestCell(loc) &&
-					claimLayer.CanClaimCell(self, loc),
-				BlockedByActor.Stationary,
-				loc =>
-				{
-					if ((loc - searchFromLoc).LengthSquared > searchRadiusSquared)
-						return PathGraph.PathCostForInvalidPath;
+			if (mobile != null)
+			{
+				var path = mobile.PathFinder.FindPathToTargetCellByPredicate(
+					self,
+					new[] { searchFromLoc, self.Location },
+					loc =>
+						harv.CanHarvestCell(loc) &&
+						claimLayer.CanClaimCell(self, loc) &&
+						(loc - searchFromLoc).LengthSquared < searchRadiusSquared,
+					BlockedByActor.Stationary,
+					loc => LocationWeight(loc, procPos, self));
 
-					// Add a cost modifier to harvestable cells to prefer resources that are closer to the refinery.
-					// This reduces the tendency for harvesters to move in straight lines
-					if (procPos.HasValue && harvInfo.ResourceRefineryDirectionPenalty > 0 && harv.CanHarvestCell(loc))
-					{
-						var pos = map.CenterOfCell(loc);
+				if (path.Count > 0)
+					return path[0];
+			}
+			else
+			{
+				var pos = FindTileInCircle(self, searchFromLoc, searchRadius, procPos);
+				if (pos == null && searchFromLoc != self.Location)
+					pos = FindTileInCircle(self, self.Location, searchRadius, procPos);
 
-						// Calculate harv-cell-refinery angle (cosine rule)
-						var b = pos - procPos.Value;
-
-						if (b != WVec.Zero)
-						{
-							var c = pos - harvPos;
-							if (c != WVec.Zero)
-							{
-								var a = harvPos - procPos.Value;
-								var cosA = (int)(512 * (b.LengthSquared + c.LengthSquared - a.LengthSquared) / b.Length / c.Length);
-
-								// Cost modifier varies between 0 and ResourceRefineryDirectionPenalty
-								return Math.Abs(harvInfo.ResourceRefineryDirectionPenalty / 2) + harvInfo.ResourceRefineryDirectionPenalty * cosA / 2048;
-							}
-						}
-					}
-
-					return 0;
-				});
-
-			if (path.Count > 0)
-				return path[0];
+				return pos;
+			}
 
 			return null;
+		}
+
+		CPos? FindTileInCircle(Actor self, CPos target, int searchRadius, WPos? procPos)
+		{
+			return self.World.Map.FindTileInCircle(target, searchRadius, (c) => harv.CanHarvestCell(c) && claimLayer.CanClaimCell(self, c), (c) => LocationWeight(c, procPos, self));
+		}
+
+		int LocationWeight(CPos loc, WPos? procPos, Actor harv)
+		{
+			// Add a cost modifier to harvestable cells to prefer resources that are closer to the refinery.
+			// This reduces the tendency for harvesters to move in straight lines
+			if (procPos.HasValue && harvInfo.ResourceRefineryDirectionPenalty > 0)
+			{
+				var harvPos = harv.CenterPosition;
+				var pos = harv.World.Map.CenterOfCell(loc);
+
+				// Calculate harv-cell-refinery angle (cosine rule)
+				var b = pos - procPos.Value;
+
+				if (b != WVec.Zero)
+				{
+					var c = pos - harvPos;
+					if (c != WVec.Zero)
+					{
+						var a = harvPos - procPos.Value;
+						var cosA = (int)(512 * (b.LengthSquared + c.LengthSquared - a.LengthSquared) / b.Length / c.Length);
+
+						// Cost modifier varies between 0 and ResourceRefineryDirectionPenalty
+						return Math.Abs(harvInfo.ResourceRefineryDirectionPenalty / 2) + harvInfo.ResourceRefineryDirectionPenalty * cosA / 2048;
+					}
+				}
+			}
+
+			return 0;
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)

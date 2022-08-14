@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 				Actor = actor;
 				Harvester = actor.Trait<Harvester>();
 				Parachutable = actor.TraitOrDefault<Parachutable>();
-				Mobile = actor.Trait<Mobile>();
+				Mobile = actor.TraitOrDefault<Mobile>();
 			}
 		}
 
@@ -142,16 +142,30 @@ namespace OpenRA.Mods.Common.Traits
 				harv.Harvester.CanHarvestCell(cell) &&
 				claimLayer.CanClaimCell(actor, cell);
 
-			var path = harv.Mobile.PathFinder.FindPathToTargetCellByPredicate(
-				actor, new[] { actor.Location }, isValidResource, BlockedByActor.Stationary,
-				loc => world.FindActorsInCircle(world.Map.CenterOfCell(loc), Info.HarvesterEnemyAvoidanceRadius)
-					.Where(u => !u.IsDead && actor.Owner.RelationshipWith(u.Owner) == PlayerRelationship.Enemy)
-					.Sum(u => Math.Max(WDist.Zero.Length, Info.HarvesterEnemyAvoidanceRadius.Length - (world.Map.CenterOfCell(loc) - u.CenterPosition).Length)));
+			Func<CPos, int> weight = loc =>
+				world.FindActorsInCircle(world.Map.CenterOfCell(loc), Info.HarvesterEnemyAvoidanceRadius)
+				.Where(u => !u.IsDead && actor.Owner.RelationshipWith(u.Owner) == PlayerRelationship.Enemy)
+				.Sum(u => Math.Max(WDist.Zero.Length, Info.HarvesterEnemyAvoidanceRadius.Length - (world.Map.CenterOfCell(loc) - u.CenterPosition).Length));
 
-			if (path.Count == 0)
-				return Target.Invalid;
+			if (harv.Mobile != null)
+			{
+				var path = harv.Mobile.PathFinder.FindPathToTargetCellByPredicate(
+					actor, new[] { actor.Location },
+					isValidResource,
+					BlockedByActor.Stationary,
+					loc => weight(loc));
 
-			return Target.FromCell(world, path[0]);
+				if (path.Count != 0)
+					return Target.FromCell(world, path[0]);
+			}
+			else
+			{
+				var loc = actor.World.Map.FindTileInCircle(actor.Location, isValidResource, weight);
+				if (loc != null)
+					return Target.FromCell(world, loc.Value);
+			}
+
+			return Target.Invalid;
 		}
 	}
 }

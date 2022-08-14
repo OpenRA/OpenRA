@@ -1354,6 +1354,52 @@ namespace OpenRA
 			return FindTilesInAnnulus(center, 0, maxRange, allowOutsideBounds);
 		}
 
+		// Searches for the closest cell, applying a custom weight. After a tile with the smallest weight within circle is found, search is aborted.
+		// This means that if a viable cell was found 2 units away, it won't pick up on cells 3 units away even if their weight is stronger
+		public CPos? FindTileInAnnulus(CPos center, int minRange, int maxRange, Func<CPos, bool> valid, Func<CPos, int> weight, bool allowOutsideBounds = false)
+		{
+			if (maxRange < minRange)
+				throw new ArgumentOutOfRangeException(nameof(maxRange), "Maximum range is less than the minimum range.");
+
+			if (maxRange >= Grid.TilesByDistance.Length)
+				throw new ArgumentOutOfRangeException(nameof(maxRange),
+					$"The requested range ({maxRange}) cannot exceed the value of MaximumTileSearchRange ({Grid.MaximumTileSearchRange})");
+
+			CPos? closest = null;
+			var minDist = int.MaxValue;
+			for (var i = minRange; i <= maxRange; i++)
+			{
+				foreach (var offset in Grid.TilesByDistance[i])
+				{
+					var t = offset + center;
+					if ((allowOutsideBounds ? Tiles.Contains(t) : Contains(t)) && valid(t))
+					{
+						var dist = (t - center).LengthSquared + weight(t);
+						if (dist < minDist)
+						{
+							closest = t;
+							minDist = dist;
+						}
+					}
+				}
+
+				if (closest != null)
+					return closest;
+			}
+
+			return null;
+		}
+
+		public CPos? FindTileInCircle(CPos center, int maxRange, Func<CPos, bool> valid, Func<CPos, int> weight, bool allowOutsideBounds = false)
+		{
+			return FindTileInAnnulus(center, 0, maxRange, valid, weight, allowOutsideBounds);
+		}
+
+		public CPos? FindTileInCircle(CPos center, Func<CPos, bool> valid, Func<CPos, int> weight, bool allowOutsideBounds = false)
+		{
+			return FindTileInAnnulus(center, 0, Grid.TilesByDistance.Length - 1, valid, weight, allowOutsideBounds);
+		}
+
 		public Stream Open(string filename)
 		{
 			// Explicit package paths never refer to a map
