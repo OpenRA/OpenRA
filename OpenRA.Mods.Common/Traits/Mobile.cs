@@ -768,19 +768,6 @@ namespace OpenRA.Mods.Common.Traits
 			return target;
 		}
 
-		public CPos NearestCell(CPos target, Func<CPos, bool> check, int minRange, int maxRange)
-		{
-			if (check(target))
-				return target;
-
-			foreach (var tile in self.World.Map.FindTilesInAnnulus(target, minRange, maxRange))
-				if (check(tile))
-					return tile;
-
-			// Couldn't find a cell
-			return target;
-		}
-
 		public void EnteringCell(Actor self)
 		{
 			// Only crush actors on having landed

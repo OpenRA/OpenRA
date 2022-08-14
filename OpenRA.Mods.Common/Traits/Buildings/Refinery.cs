@@ -29,6 +29,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Docking cell relative to top-left cell.")]
 		public readonly CVec DockOffset = CVec.Zero;
 
+		[Desc("If harvester in an aircraft does it need to land to unload resources.")]
+		public readonly bool RequireAircraftToLand = true;
+
 		[Desc("Does the refinery require the harvester to be dragged in?")]
 		public readonly bool IsDragRequired = false;
 
@@ -75,6 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool IsDragRequired => info.IsDragRequired;
 		public WVec DragOffset => info.DragOffset;
 		public int DragLength => info.DragLength;
+		public bool RequireAircraftToLand => info.RequireAircraftToLand;
 
 		public Refinery(Actor self, RefineryInfo info)
 		{

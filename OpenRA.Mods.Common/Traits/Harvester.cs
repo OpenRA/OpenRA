@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class HarvesterInfo : ConditionalTraitInfo, Requires<MobileInfo>
+	public class HarvesterInfo : ConditionalTraitInfo, Requires<IMoveInfo>
 	{
 		public readonly HashSet<string> DeliveryBuildings = new HashSet<string>();
 
@@ -73,6 +73,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Does the unit queue harvesting runs instead of individual harvest actions?")]
 		public readonly bool QueueFullLoad = false;
 
+		[Desc("If harvester in an aircraft does it need to land to collect resources.")]
+		public readonly bool RequireAircraftToLand = true;
+
 		[GrantedConditionReference]
 		[Desc("Condition to grant while empty.")]
 		public readonly string EmptyCondition = null;
@@ -113,6 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly IResourceLayer resourceLayer;
 		readonly ResourceClaimLayer claimLayer;
 		readonly Dictionary<string, int> contents = new Dictionary<string, int>();
+		readonly IPositionable positionable;
 		int conditionToken = Actor.InvalidConditionToken;
 
 		[Sync]
@@ -140,9 +144,10 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			Contents = new ReadOnlyDictionary<string, int>(contents);
-			mobile = self.Trait<Mobile>();
+			mobile = self.TraitOrDefault<Mobile>();
 			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
+			positionable = self.Trait<IPositionable>();
 		}
 
 		protected override void Created(Actor self)
@@ -170,7 +175,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void ChooseNewProc(Actor self, Actor ignore)
 		{
 			LastLinkedProc = null;
-			LinkProc(ClosestProc(self, ignore));
+			LinkProc(ClosestProc(self, AvailableProc(self, ignore)));
 		}
 
 		bool IsAcceptableProcType(Actor proc)
@@ -179,39 +184,54 @@ namespace OpenRA.Mods.Common.Traits
 				Info.DeliveryBuildings.Contains(proc.Info.Name);
 		}
 
-		public Actor ClosestProc(Actor self, Actor ignore)
+		public IEnumerable<TraitPair<IAcceptResources>> AvailableProc(Actor self, Actor ignore)
 		{
 			// Find all refineries and their occupancy count:
+			return self.World.ActorsWithTrait<IAcceptResources>()
+				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor));
+		}
+
+		// TODO: make this a generic static methos once occupancy is tracked in docks
+		Actor ClosestProc(Actor self, IEnumerable<TraitPair<IAcceptResources>> refs)
+		{
+			if (!refs.Any())
+				return null;
+
 			// Exclude refineries with too many harvesters clogging the delivery location.
-			var refineries = self.World.ActorsWithTrait<IAcceptResources>()
-				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor))
-				.Select(r => new
+			var refineries = refs.Select(r => new
 				{
 					Location = r.Actor.Location + r.Trait.DeliveryOffset,
 					Actor = r.Actor,
 					Occupancy = self.World.ActorsHavingTrait<Harvester>(h => h.LinkedProc == r.Actor).Count()
 				})
-				.Where(r => r.Occupancy < Info.MaxUnloadQueue)
-				.ToDictionary(r => r.Location);
+				.Where(r => r.Occupancy < Info.MaxUnloadQueue);
 
-			if (refineries.Count == 0)
+			if (!refineries.Any())
 				return null;
 
-			// Start a search from each refinery's delivery location:
-			var path = mobile.PathFinder.FindPathToTargetCell(
-				self, refineries.Select(r => r.Key), self.Location, BlockedByActor.None,
-				location =>
-				{
-					if (!refineries.ContainsKey(location))
-						return 0;
+			if (mobile != null)
+			{
+				var positions = refineries.ToDictionary(r => r.Location);
 
-					// Prefer refineries with less occupancy (multiplier is to offset distance cost):
-					var occupancy = refineries[location].Occupancy;
-					return occupancy * Info.UnloadQueueCostModifier;
-				});
+				// Start a search from each refinery's delivery location:
+				var path = mobile.PathFinder.FindPathToTargetCell(
+					self, positions.Select(r => r.Key), self.Location, BlockedByActor.None,
+					location =>
+					{
+						if (!positions.ContainsKey(location))
+							return 0;
 
-			if (path.Count > 0)
-				return refineries[path.Last()].Actor;
+						var occupancy = positions[location].Occupancy;
+
+						// Prefer refineries with less occupancy (multiplier is to offset distance cost):
+						return occupancy * Info.UnloadQueueCostModifier;
+					});
+
+				if (path.Count > 0)
+					return positions[path.Last()].Actor;
+			}
+			else
+				return refineries.MinBy(r => (r.Location - self.Location).LengthSquared + r.Occupancy * Info.UnloadQueueCostModifier)?.Actor;
 
 			return null;
 		}
@@ -337,7 +357,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					// Find the nearest claimable cell to the order location (useful for group-select harvest):
 					var cell = self.World.Map.CellContaining(order.Target.CenterPosition);
-					loc = mobile.NearestCell(cell, p => mobile.CanEnterCell(p) && claimLayer.TryClaimCell(self, p), 1, 6);
+					loc = NearestCell(self, cell, p => positionable.CanEnterCell(p) && claimLayer.TryClaimCell(self, p), 1, 6);
 				}
 				else
 				{
@@ -364,6 +384,19 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(order.Queued, new FindAndDeliverResources(self, targetActor));
 				self.ShowTargetLines();
 			}
+		}
+
+		CPos NearestCell(Actor self, CPos target, Func<CPos, bool> check, int minRange, int maxRange)
+		{
+			if (check(target))
+				return target;
+
+			foreach (var tile in self.World.Map.FindTilesInAnnulus(target, minRange, maxRange))
+				if (check(tile))
+					return tile;
+
+			// Couldn't find a cell
+			return target;
 		}
 
 		int ISpeedModifier.GetSpeedModifier()

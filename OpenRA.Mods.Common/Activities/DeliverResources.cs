@@ -13,13 +13,14 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
 	public class DeliverResources : Activity
 	{
-		readonly IMove movement;
+		readonly IMove move;
 		readonly Harvester harv;
 		readonly Actor targetActor;
 		readonly INotifyHarvesterAction[] notifyHarvesterActions;
@@ -28,7 +29,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public DeliverResources(Actor self, Actor targetActor = null)
 		{
-			movement = self.Trait<IMove>();
+			move = self.Trait<IMove>();
 			harv = self.Trait<Harvester>();
 			this.targetActor = targetActor;
 			notifyHarvesterActions = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
@@ -67,8 +68,20 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var n in notifyHarvesterActions)
 					n.MovingToRefinery(self, proc);
 
-				QueueChild(movement.MoveTo(proc.Location + iao.DeliveryOffset, 0));
+				QueueChild(move.MoveTo(proc.Location + iao.DeliveryOffset, 0));
 				return false;
+			}
+
+			if (move is Aircraft)
+			{
+				var refinery = proc.Trait<Refinery>();
+				if (refinery.RequireAircraftToLand)
+				{
+					// TODO: add a custom aircraft WPos offset, aircraft aren't limited to CPos and this functionality will be needed for resupply.
+					// Land doesn't support landing on transit cells without providing an actor target, it provides an offset from CentrePosition instead.
+					var offset = self.World.Map.CenterOfCell(proc.Location + refinery.DeliveryOffset) - proc.CenterPosition;
+					QueueChild(new Land(self, Target.FromActor(proc), offset, refinery.DeliveryAngle, Color.Green));
+				}
 			}
 
 			QueueChild(new Wait(10));

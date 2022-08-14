@@ -83,6 +83,12 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
+			if (move is Aircraft && harvInfo.RequireAircraftToLand && self.World.Map.DistanceAboveTerrain(self.CenterPosition) != WDist.Zero)
+			{
+				QueueChild(new Land(self, Target.FromCell(self.World, targetCell), null, harvInfo.HarvestLineColor));
+				return false;
+			}
+
 			var resource = resourceLayer.GetResource(self.Location);
 			if (resource.Type == null || resourceLayer.RemoveResource(resource.Type, self.Location) != 1)
 				return true;

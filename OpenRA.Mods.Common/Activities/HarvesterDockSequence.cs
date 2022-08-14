@@ -18,6 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
+	// TODO: once https://github.com/OpenRA/OpenRA/pull/20178 is merged make aircraft harvesters fly up on refinery becoming unavailable
 	public abstract class HarvesterDockSequence : Activity
 	{
 		protected enum DockingState { Wait, Turn, Drag, Dock, Loop, Undock, Complete }
