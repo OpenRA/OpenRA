@@ -33,13 +33,21 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
-				var health = actorInfo.Value.TraitInfoOrDefault<IHealthInfo>();
-				if (health == null)
-					continue;
+				// Catch TypeDictionary errors
+				try
+				{
+					var health = actorInfo.Value.TraitInfoOrDefault<IHealthInfo>();
+					if (health == null)
+						continue;
 
-				var hitShapes = actorInfo.Value.TraitInfos<HitShapeInfo>();
-				if (!hitShapes.Any())
-					emitError($"Actor type `{actorInfo.Key}` has a Health trait but no HitShape trait!");
+					var hitShapes = actorInfo.Value.TraitInfos<HitShapeInfo>();
+					if (!hitShapes.Any())
+						emitError($"Actor type `{actorInfo.Key}` has a Health trait but no HitShape trait!");
+				}
+				catch (InvalidOperationException e)
+				{
+					emitError($"{e.Message} (Actor type `{actorInfo.Key}`)");
+				}
 			}
 		}
 	}

@@ -32,13 +32,21 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
-				var buildable = actorInfo.Value.TraitInfoOrDefault<BuildableInfo>();
-				if (buildable == null)
-					continue;
+				// Catch TypeDictionary errors
+				try
+				{
+					var buildable = actorInfo.Value.TraitInfoOrDefault<BuildableInfo>();
+					if (buildable == null)
+						continue;
 
-				var tooltip = actorInfo.Value.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
-				if (tooltip == null)
-					emitError("The following buildable actor has no (enabled) Tooltip: " + actorInfo.Key);
+					var tooltip = actorInfo.Value.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
+					if (tooltip == null)
+						emitError("The following buildable actor has no (enabled) Tooltip: " + actorInfo.Key);
+				}
+				catch (InvalidOperationException e)
+				{
+					emitError($"{e.Message} (Actor type `{actorInfo.Key}`)");
+				}
 			}
 		}
 	}

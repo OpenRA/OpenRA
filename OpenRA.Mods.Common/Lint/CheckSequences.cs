@@ -40,67 +40,75 @@ namespace OpenRA.Mods.Common.Lint
 			var factions = rules.Actors[SystemActors.World].TraitInfos<FactionInfo>().Select(f => f.InternalName).ToArray();
 			foreach (var actorInfo in rules.Actors)
 			{
-				var images = new HashSet<string>();
-
-				// Actors may have 0 or 1 RenderSprites traits
-				var renderInfo = actorInfo.Value.TraitInfoOrDefault<RenderSpritesInfo>();
-				if (renderInfo != null)
+				// Catch TypeDictionary errors
+				try
 				{
-					images.Add(renderInfo.GetImage(actorInfo.Value, null).ToLowerInvariant());
+					var images = new HashSet<string>();
 
-					// Some actors define faction-specific artwork
-					foreach (var faction in factions)
-						images.Add(renderInfo.GetImage(actorInfo.Value, faction).ToLowerInvariant());
-				}
-
-				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
-				{
-					// Remove the "Info" suffix
-					var traitName = traitInfo.GetType().Name;
-					traitName = traitName.Remove(traitName.Length - 4);
-
-					var fields = traitInfo.GetType().GetFields();
-					foreach (var field in fields)
+					// Actors may have 0 or 1 RenderSprites traits
+					var renderInfo = actorInfo.Value.TraitInfoOrDefault<RenderSpritesInfo>();
+					if (renderInfo != null)
 					{
-						var sequenceReference = field.GetCustomAttributes<SequenceReferenceAttribute>(true).FirstOrDefault();
-						if (sequenceReference == null)
-							continue;
+						images.Add(renderInfo.GetImage(actorInfo.Value, null).ToLowerInvariant());
 
-						// Some sequences may specify their own Image override
-						IEnumerable<string> sequenceImages = images;
-						if (!string.IsNullOrEmpty(sequenceReference.ImageReference))
+						// Some actors define faction-specific artwork
+						foreach (var faction in factions)
+							images.Add(renderInfo.GetImage(actorInfo.Value, faction).ToLowerInvariant());
+					}
+
+					foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
+					{
+						// Remove the "Info" suffix
+						var traitName = traitInfo.GetType().Name;
+						traitName = traitName.Remove(traitName.Length - 4);
+
+						var fields = traitInfo.GetType().GetFields();
+						foreach (var field in fields)
 						{
-							var imageField = fields.First(f => f.Name == sequenceReference.ImageReference);
-							var imageOverride = (string)imageField.GetValue(traitInfo);
-							if (string.IsNullOrEmpty(imageOverride))
-							{
-								if (!sequenceReference.AllowNullImage)
-									emitError($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` must define a value for `{sequenceReference.ImageReference}`");
-
+							var sequenceReference = field.GetCustomAttributes<SequenceReferenceAttribute>(true).FirstOrDefault();
+							if (sequenceReference == null)
 								continue;
+
+							// Some sequences may specify their own Image override
+							IEnumerable<string> sequenceImages = images;
+							if (!string.IsNullOrEmpty(sequenceReference.ImageReference))
+							{
+								var imageField = fields.First(f => f.Name == sequenceReference.ImageReference);
+								var imageOverride = (string)imageField.GetValue(traitInfo);
+								if (string.IsNullOrEmpty(imageOverride))
+								{
+									if (!sequenceReference.AllowNullImage)
+										emitError($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` must define a value for `{sequenceReference.ImageReference}`");
+
+									continue;
+								}
+
+								sequenceImages = new[] { imageOverride.ToLowerInvariant() };
 							}
 
-							sequenceImages = new[] { imageOverride.ToLowerInvariant() };
-						}
-
-						foreach (var sequence in LintExts.GetFieldValues(traitInfo, field, sequenceReference.DictionaryReference))
-						{
-							if (string.IsNullOrEmpty(sequence))
-								continue;
-
-							foreach (var i in sequenceImages)
+							foreach (var sequence in LintExts.GetFieldValues(traitInfo, field, sequenceReference.DictionaryReference))
 							{
-								if (sequenceReference.Prefix)
+								if (string.IsNullOrEmpty(sequence))
+									continue;
+
+								foreach (var i in sequenceImages)
 								{
-									// TODO: Remove prefixed sequence references and instead use explicit lists of lintable references
-									if (!sequences.Sequences(i).Any(s => s.StartsWith(sequence)))
-										emitWarning($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` field `{field.Name}` defines a prefix `{sequence}` that does not match any sequences on image `{i}`.");
+									if (sequenceReference.Prefix)
+									{
+										// TODO: Remove prefixed sequence references and instead use explicit lists of lintable references
+										if (!sequences.Sequences(i).Any(s => s.StartsWith(sequence)))
+											emitWarning($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` field `{field.Name}` defines a prefix `{sequence}` that does not match any sequences on image `{i}`.");
+									}
+									else if (!sequences.HasSequence(i, sequence))
+										emitError($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` field `{field.Name}` references an undefined sequence `{sequence}` on image `{i}`.");
 								}
-								else if (!sequences.HasSequence(i, sequence))
-									emitError($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` field `{field.Name}` references an undefined sequence `{sequence}` on image `{i}`.");
 							}
 						}
 					}
+				}
+				catch (InvalidOperationException e)
+				{
+					emitError($"{e.Message} (Actor type `{actorInfo.Key}`)");
 				}
 			}
 

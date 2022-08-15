@@ -33,14 +33,21 @@ namespace OpenRA.Mods.Common.Lint
 			var providedPrereqs = rules.Actors.SelectMany(a => a.Value.TraitInfos<ITechTreePrerequisiteInfo>().SelectMany(p => p.Prerequisites(a.Value)));
 
 			// TODO: this check is case insensitive while the real check in-game is not
-			foreach (var i in rules.Actors)
+			foreach (var actorInfo in rules.Actors)
 			{
-				var bi = i.Value.TraitInfoOrDefault<BuildableInfo>();
-				if (bi != null)
-					foreach (var prereq in bi.Prerequisites)
-						if (!prereq.StartsWith("~disabled"))
-							if (!providedPrereqs.Contains(prereq.Replace("!", "").Replace("~", "")))
-								emitError($"Buildable actor {i.Key} has prereq {prereq} not provided by anything.");
+				// Catch TypeDictionary errors
+				try
+				{
+					var bi = actorInfo.Value.TraitInfoOrDefault<BuildableInfo>();
+					if (bi != null)
+						foreach (var prereq in bi.Prerequisites)
+							if (!prereq.StartsWith("~disabled") && !providedPrereqs.Contains(prereq.Replace("!", "").Replace("~", "")))
+								emitError($"Buildable actor {actorInfo.Key} has prereq {prereq} not provided by anything.");
+				}
+				catch (InvalidOperationException e)
+				{
+					emitError($"{e.Message} (Actor type `{actorInfo.Key}`)");
+				}
 			}
 		}
 	}
