@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var onSelect = new Action<string>(uid =>
 					{
 						// Don't select the same map again, and handle map becoming unavailable
-						if (uid == map.Uid && modData.MapCache[uid].Status != MapStatus.Available)
+						if (uid == map.Uid || modData.MapCache[uid].Status != MapStatus.Available)
 							return;
 
 						orderManager.IssueOrder(Order.Command("map " + uid));
