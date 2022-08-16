@@ -749,6 +749,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 			if (costEstimator == null)
 				return false;
 
+			if (!world.Map.Contains(source) || !world.Map.Contains(target))
+				return false;
+
 			RebuildDomains();
 
 			var sourceGridInfo = gridInfos[GridIndex(source)];
