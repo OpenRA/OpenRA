@@ -202,7 +202,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					() => client.Faction == factionId,
 					() => orderManager.IssueOrder(Order.Command($"faction {client.Index} {factionId}")));
 				var faction = factions[factionId];
-				item.Get<LabelWidget>("LABEL").GetText = () => faction.Name;
+
+				var label = item.Get<LabelWidget>("LABEL");
+				var labelText = WidgetUtils.TruncateText(faction.Name, label.Bounds.Width, Game.Renderer.Fonts[label.Font]);
+				label.GetText = () => labelText;
+
 				var flag = item.Get<ImageWidget>("FLAG");
 				flag.GetImageCollection = () => "flags";
 				flag.GetImageName = () => factionId;
@@ -551,7 +555,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public static void SetupFactionWidget(Widget parent, Session.Client c, Dictionary<string, LobbyFaction> factions)
 		{
 			var factionName = parent.Get<LabelWidget>("FACTIONNAME");
-			factionName.GetText = () => factions[c.Faction].Name;
+			var font = Game.Renderer.Fonts[factionName.Font];
+			var truncated = new CachedTransform<string, string>(clientFaction =>
+				WidgetUtils.TruncateText(factions[clientFaction].Name, factionName.Bounds.Width, font));
+			factionName.GetText = () => truncated.Update(c.Faction);
+
 			var factionFlag = parent.Get<ImageWidget>("FACTIONFLAG");
 			factionFlag.GetImageName = () => c.Faction;
 			factionFlag.GetImageCollection = () => "flags";
