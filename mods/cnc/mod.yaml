@@ -166,7 +166,7 @@ Hotkeys:
 	common|hotkeys/control-groups.yaml
 	cnc|hotkeys.yaml
 
-LoadScreen: CncLoadScreen
+LoadScreen: DualLogoLoadScreen
 	Image: cnc|uibits/chrome.png
 	Image2x: cnc|uibits/chrome-2x.png
 	Image3x: cnc|uibits/chrome-3x.png

@@ -15,15 +15,15 @@ using OpenRA.Mods.Common.LoadScreens;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.Cnc
+namespace OpenRA.Mods.Common
 {
-	public sealed class CncLoadScreen : SheetLoadScreen
+	public sealed class DualLogoLoadScreen : SheetLoadScreen
 	{
 		int loadTick;
 
-		Sprite nodLogo, gdiLogo, evaLogo, brightBlock, dimBlock;
+		Sprite leftLogo, rightLogo, topRightLogo, brightBlock, dimBlock;
 		Sprite[] border;
-		float2 nodPos, gdiPos, evaPos;
+		float2 leftPos, rightPos, topRightPos;
 		Rectangle bounds;
 		string versionText;
 
@@ -58,9 +58,9 @@ namespace OpenRA.Mods.Cnc
 					CreateSprite(s, density, new Rectangle(223, 223, 32, 32))
 				};
 
-				nodLogo = CreateSprite(s, density, new Rectangle(0, 256, 256, 256));
-				gdiLogo = CreateSprite(s, density, new Rectangle(256, 256, 256, 256));
-				evaLogo = CreateSprite(s, density, new Rectangle(769, 320, 128, 64));
+				leftLogo = CreateSprite(s, density, new Rectangle(0, 256, 256, 256));
+				rightLogo = CreateSprite(s, density, new Rectangle(256, 256, 256, 256));
+				topRightLogo = CreateSprite(s, density, new Rectangle(769, 320, 128, 64));
 
 				brightBlock = CreateSprite(s, density, new Rectangle(777, 385, 16, 35));
 				dimBlock = CreateSprite(s, density, new Rectangle(794, 385, 16, 35));
@@ -71,18 +71,18 @@ namespace OpenRA.Mods.Cnc
 				lastResolution = r.Resolution;
 
 				bounds = new Rectangle(0, 0, lastResolution.Width, lastResolution.Height);
-				nodPos = new float2(bounds.Width / 2 - 384, bounds.Height / 2 - 128);
-				gdiPos = new float2(bounds.Width / 2 + 128, bounds.Height / 2 - 128);
-				evaPos = new float2(bounds.Width - 43 - 128, 43);
+				leftPos = new float2(bounds.Width / 2 - 384, bounds.Height / 2 - 128);
+				rightPos = new float2(bounds.Width / 2 + 128, bounds.Height / 2 - 128);
+				topRightPos = new float2(bounds.Width - 43 - 128, 43);
 			}
 
 			var barY = bounds.Height - 78;
 
 			loadTick = ++loadTick % 8;
 
-			r.RgbaSpriteRenderer.DrawSprite(gdiLogo, gdiPos);
-			r.RgbaSpriteRenderer.DrawSprite(nodLogo, nodPos);
-			r.RgbaSpriteRenderer.DrawSprite(evaLogo, evaPos);
+			r.RgbaSpriteRenderer.DrawSprite(rightLogo, rightPos);
+			r.RgbaSpriteRenderer.DrawSprite(leftLogo, leftPos);
+			r.RgbaSpriteRenderer.DrawSprite(topRightLogo, topRightPos);
 
 			WidgetUtils.DrawPanel(bounds, border);
 
