@@ -61,8 +61,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		MapPreview map;
 		Session.MapStatus mapStatus;
 
-		string lastUpdatedMap = null;
-
 		bool chatEnabled;
 		bool addBotOnMapLoad;
 		bool disableTeamChat;
@@ -234,7 +232,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 					{
-						{ "initialMap", SelectRecentMap(map.Uid) },
+						{ "initialMap", modData.MapCache.PickLastModifiedMap(MapVisibility.Lobby) ?? map.Uid },
 						{ "initialTab", MapClassification.System },
 						{ "onExit", Game.IsHost ? (Action)UpdateSelectedMap : modData.MapCache.UpdateMaps },
 						{ "onSelect", Game.IsHost ? onSelect : null },
@@ -885,17 +883,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.Settings.Server.Map = uid;
 				Game.Settings.Save();
 			}
-		}
-
-		string SelectRecentMap(string currentUid)
-		{
-			if (lastUpdatedMap != modData.MapCache.LastModifiedMap)
-			{
-				lastUpdatedMap = modData.MapCache.LastModifiedMap;
-				return lastUpdatedMap;
-			}
-
-			return currentUid;
 		}
 	}
 
