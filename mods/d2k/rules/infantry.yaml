@@ -48,7 +48,6 @@ engineer:
 		Range: 2c768
 	Mobile:
 		Speed: 31
-	InstantlyRepairs:
 	CaptureManager:
 	Captures:
 		CaptureTypes: building
