@@ -47,6 +47,24 @@ namespace OpenRA
 		public string LastModifiedMap { get; private set; } = null;
 		readonly Dictionary<string, string> mapUpdates = new Dictionary<string, string>();
 
+		string lastLoadedLastModifiedMap;
+
+		/// <summary>
+		/// If LastModifiedMap was picked already, returns a null
+		/// </summary>
+		public string PickLastModifiedMap(MapVisibility visibility)
+		{
+			UpdateMaps();
+			var map = string.IsNullOrEmpty(LastModifiedMap) ? null : this[LastModifiedMap];
+			if (map != null && map.Status == MapStatus.Available && map.Visibility.HasFlag(visibility) && lastLoadedLastModifiedMap != LastModifiedMap)
+			{
+				lastLoadedLastModifiedMap = LastModifiedMap;
+				return lastLoadedLastModifiedMap;
+			}
+
+			return null;
+		}
+
 		public MapCache(ModData modData)
 		{
 			this.modData = modData;

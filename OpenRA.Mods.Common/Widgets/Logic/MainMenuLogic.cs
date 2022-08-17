@@ -303,8 +303,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								var url = new HttpQueryBuilder(webServices.GameNews)
 								{
 									{ "version", Game.EngineVersion },
-									{ "mod", Game.ModData.Manifest.Id },
-									{ "modversion", Game.ModData.Manifest.Metadata.Version }
+									{ "mod", modData.Manifest.Id },
+									{ "modversion", modData.Manifest.Metadata.Version }
 								}.ToString();
 
 								// Parameter string is blank if the player has opted out
@@ -445,7 +445,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void StartSkirmishGame()
 		{
-			var map = Game.ModData.MapCache.ChooseInitialMap(Game.Settings.Server.Map, Game.CosmeticRandom);
+			var map = modData.MapCache.ChooseInitialMap(modData.MapCache.PickLastModifiedMap(MapVisibility.Lobby) ?? Game.Settings.Server.Map, Game.CosmeticRandom);
 			Game.Settings.Server.Map = map;
 			Game.Settings.Save();
 
