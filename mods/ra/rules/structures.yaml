@@ -1321,6 +1321,7 @@ PROC:
 		RequiresSelection: true
 		PipCount: 17
 		FullSequence: pip-yellow
+	ResourceAccumulator:
 
 SILO:
 	Inherits: ^Building

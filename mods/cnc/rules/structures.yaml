@@ -262,6 +262,7 @@ PROC:
 	Power:
 		Amount: -40
 	ProvidesPrerequisite@buildingname:
+	ResourceAccumulator:
 
 SILO:
 	Inherits: ^BaseBuilding

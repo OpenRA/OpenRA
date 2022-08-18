@@ -609,3 +609,4 @@ NAWAST:
 		PipStride: 4, 2
 		PipCount: 15
 		Palette: pips
+	ResourceAccumulator:

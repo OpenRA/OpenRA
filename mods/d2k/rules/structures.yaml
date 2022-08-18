@@ -291,6 +291,7 @@ refinery:
 		Margin: 1, 4
 		RequiresSelection: true
 		PipCount: 10
+	ResourceAccumulator:
 
 silo:
 	Inherits: ^Building

@@ -122,7 +122,6 @@ PROC:
 	TiberianSunRefinery:
 		DockAngle: 640
 		DockOffset: 2,1
-		DiscardExcessResources: true
 	StoresResources:
 		Capacity: 2000
 	CustomSellValue:
@@ -171,6 +170,8 @@ PROC:
 		PipStride: 4, 2
 		PipCount: 25
 		Palette: pips
+	ResourceAccumulator:
+		DiscardExcessResources: True
 
 GASILO:
 	Inherits: ^Building

@@ -269,6 +269,12 @@ namespace OpenRA.Mods.Common.Traits
 		void Undeploy(Actor self, bool skipMakeAnim);
 	}
 
+	public interface IResourceAccumulatorInfo : ITraitInfoInterface { }
+	public interface IResourceAccumulator
+	{
+		int AcceptResources(string resourceType, int count = 1);
+	}
+
 	public interface IAcceptResourcesInfo : ITraitInfoInterface { }
 	public interface IAcceptResources
 	{

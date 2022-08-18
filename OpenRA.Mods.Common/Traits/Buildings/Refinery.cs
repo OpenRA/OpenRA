@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
@@ -38,12 +37,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("In how many steps to perform the dragging?")]
 		public readonly int DragLength = 0;
 
-		[Desc("Store resources in silos. Adds cash directly without storing if set to false.")]
-		public readonly bool UseStorage = true;
-
-		[Desc("Discard resources once silo capacity has been reached.")]
-		public readonly bool DiscardExcessResources = false;
-
 		public readonly bool ShowTicks = true;
 		public readonly int TickLifetime = 30;
 		public readonly int TickVelocity = 2;
@@ -52,13 +45,12 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Refinery(init.Self, this); }
 	}
 
-	public class Refinery : INotifyCreated, ITick, IAcceptResources, INotifySold, INotifyCapture,
+	public class Refinery : ITick, IAcceptResources, INotifyCreated, INotifySold, INotifyCapture,
 		INotifyOwnerChanged, ISync, INotifyActorDisposing
 	{
 		readonly Actor self;
 		readonly RefineryInfo info;
-		PlayerResources playerResources;
-		IEnumerable<int> resourceValueModifiers;
+		IResourceAccumulator resourceAccumulator;
 
 		int currentDisplayTick = 0;
 		int currentDisplayValue = 0;
@@ -80,13 +72,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.self = self;
 			this.info = info;
-			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			currentDisplayTick = info.TickRate;
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
-			resourceValueModifiers = self.TraitsImplementing<IResourceValueModifier>().ToArray().Select(m => m.GetResourceValueModifier());
+			resourceAccumulator = self.Trait<IResourceAccumulator>();
 		}
 
 		public virtual Activity DockSequence(Actor harv, Actor self)
@@ -102,27 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		int IAcceptResources.AcceptResources(string resourceType, int count)
 		{
-			if (!playerResources.Info.ResourceValues.TryGetValue(resourceType, out var resourceValue))
-				return 0;
-
-			var value = Util.ApplyPercentageModifiers(count * resourceValue, resourceValueModifiers);
-
-			if (info.UseStorage)
-			{
-				var storageLimit = Math.Max(playerResources.ResourceCapacity - playerResources.Resources, 0);
-				if (!info.DiscardExcessResources)
-				{
-					// Reduce amount if needed until it will fit the available storage
-					while (value > storageLimit)
-						value = Util.ApplyPercentageModifiers(--count * resourceValue, resourceValueModifiers);
-				}
-				else
-					value = Math.Min(value, playerResources.ResourceCapacity - playerResources.Resources);
-
-				playerResources.GiveResources(value);
-			}
-			else
-				value = playerResources.ChangeCash(value);
+			var value = resourceAccumulator.AcceptResources(resourceType, count);
 
 			foreach (var notify in self.World.ActorsWithTrait<INotifyResourceAccepted>())
 			{
@@ -181,8 +152,6 @@ namespace OpenRA.Mods.Common.Traits
 			// Unlink any harvesters
 			foreach (var harv in GetLinkedHarvesters())
 				harv.Trait.UnlinkProc(harv.Actor, self);
-
-			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
 
 		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes)
