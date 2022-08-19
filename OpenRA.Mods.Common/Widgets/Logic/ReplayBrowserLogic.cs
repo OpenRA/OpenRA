@@ -463,7 +463,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					text: $"Delete {list.Count} replays?",
 					onConfirm: () =>
 					{
-						list.ForEach(DeleteReplay);
+						foreach (var replayMetadata in list)
+							DeleteReplay(replayMetadata);
+
 						if (selectedReplay == null)
 							SelectFirstVisibleReplay();
 					},

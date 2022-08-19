@@ -343,7 +343,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				text: "Delete all maps on this page?",
 				onConfirm: () =>
 				{
-					maps.Do(m => DeleteMap(m));
+					foreach (var map in maps)
+						DeleteMap(map);
+
 					after?.Invoke(Game.ModData.MapCache.ChooseInitialMap(null, Game.CosmeticRandom));
 				},
 				confirmText: "Delete",
