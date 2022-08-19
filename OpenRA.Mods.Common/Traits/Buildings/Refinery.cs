@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class RefineryInfo : TraitInfo, Requires<WithSpriteBodyInfo>, IAcceptResourcesInfo
+	public class RefineryInfo : TraitInfo, Requires<WithSpriteBodyInfo>, Requires<IResourceAccumulatorInfo>, IAcceptResourcesInfo
 	{
 		[Desc("Actual harvester facing when docking.")]
 		public readonly WAngle DockAngle = WAngle.Zero;
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Refinery(init.Self, this); }
 	}
 
-	public class Refinery : ITick, IAcceptResources, INotifyCreated, INotifySold, INotifyCapture,
+	public class Refinery : INotifyCreated, ITick, IAcceptResources, INotifySold, INotifyCapture,
 		INotifyOwnerChanged, ISync, INotifyActorDisposing
 	{
 		readonly Actor self;

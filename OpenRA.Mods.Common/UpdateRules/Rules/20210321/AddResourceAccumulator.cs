@@ -17,23 +17,17 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 	{
 		public override string Name => "Refinery had changes to use a ResourceAccumulator trait for altering player resources.";
 
-		public override string Description => "DefaultResourceAccumulator was added and traits UseStorage and DiscardExcessResources were moved from Refinery.";
+		public override string Description => "ResourceAccumulator was added and fields UseStorage and DiscardExcessResources were moved there from Refinery.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
-			MiniYamlNode resourceAccumulatorNode = null;
-
-			var refineries = actorNode.ChildrenMatching("Refinery");
-			var tiberianSunRefineries = actorNode.ChildrenMatching("TiberianSunRefinery");
-			var allRefineries = new List<MiniYamlNode>(refineries);
-			allRefineries.AddRange(tiberianSunRefineries);
-
-			foreach (var refineryNode in allRefineries)
+			var refineryNode = actorNode.LastChildMatching("Refinery") ?? actorNode.LastChildMatching("TiberianSunRefinery");
+			if (refineryNode != null)
 			{
-				resourceAccumulatorNode = new MiniYamlNode("ResourceAccumulator", "");
+				var resourceAccumulatorNode = new MiniYamlNode("ResourceAccumulator", "");
+				refineryNode.AddNode(resourceAccumulatorNode);
 
 				var useStorageNode = refineryNode.LastChildMatching("UseStorage");
-				var discardExcessResourcesNode = refineryNode.LastChildMatching("DiscardExcessResources");
 
 				if (useStorageNode != null)
 				{
@@ -41,18 +35,13 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					resourceAccumulatorNode.AddNode("UseStorage", useStorageNode.NodeValue<bool>());
 				}
 
+				var discardExcessResourcesNode = refineryNode.LastChildMatching("DiscardExcessResources");
+
 				if (discardExcessResourcesNode != null)
 				{
 					refineryNode.RemoveNode(discardExcessResourcesNode);
 					resourceAccumulatorNode.AddNode("DiscardExcessResources", discardExcessResourcesNode.NodeValue<bool>());
 				}
-
-				break;
-			}
-
-			if (resourceAccumulatorNode != null)
-			{
-				actorNode.AddNode(resourceAccumulatorNode);
 			}
 
 			yield break;

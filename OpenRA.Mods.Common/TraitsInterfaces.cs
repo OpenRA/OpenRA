@@ -272,7 +272,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IResourceAccumulatorInfo : ITraitInfoInterface { }
 	public interface IResourceAccumulator
 	{
-		int AcceptResources(string resourceType, int count = 1);
+		int AcceptResources(string resourceType, int count);
 	}
 
 	public interface IAcceptResourcesInfo : ITraitInfoInterface { }
