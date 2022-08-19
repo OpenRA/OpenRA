@@ -38,12 +38,6 @@ namespace OpenRA
 			catch { return def; }
 		}
 
-		public static void Do<T>(this IEnumerable<T> e, Action<T> fn)
-		{
-			foreach (var ee in e)
-				fn(ee);
-		}
-
 		public static Lazy<T> Lazy<T>(Func<T> p) { return new Lazy<T>(p); }
 
 		public static IEnumerable<string> GetNamespaces(this Assembly a)
