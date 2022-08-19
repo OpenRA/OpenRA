@@ -81,13 +81,11 @@ namespace OpenRA.Mods.Common.Traits
 				for (var playerIndex = 0; playerIndex < frozenStates.Count; playerIndex++)
 				{
 					var state = frozenStates[playerIndex];
+					var frozen = state.FrozenActor;
 					if (startsRevealed || state.IsVisible)
-					{
-						UpdateFrozenActor(state.FrozenActor, playerIndex);
+						UpdateFrozenActor(frozen, playerIndex);
 
-						// Needed so tooltips appear.
-						state.FrozenActor.Hidden = false;
-					}
+					frozen.RefreshHidden();
 				}
 			});
 
@@ -113,6 +111,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (isVisible)
 				UpdateFrozenActor(frozen, frozen.Viewer.World.Players.IndexOf(frozen.Viewer));
+
+			frozen.RefreshHidden();
 		}
 
 		bool IsVisibleInner(Player byPlayer)
@@ -176,7 +176,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Force a state update for the old owner so the tooltip etc doesn't show them as the owner
 			var oldOwnerIndex = self.World.Players.IndexOf(oldOwner);
-			UpdateFrozenActor(frozenStates[oldOwnerIndex].FrozenActor, oldOwnerIndex);
+			var frozen = frozenStates[oldOwnerIndex].FrozenActor;
+			UpdateFrozenActor(frozen, oldOwnerIndex);
+			frozen.RefreshHidden();
 		}
 
 		void INotifyActorDisposing.Disposing(Actor self)

@@ -54,16 +54,18 @@ namespace OpenRA.Traits
 		public DamageState DamageState { get; private set; }
 		readonly IHealth health;
 
+		readonly IVisibilityModifier[] visibilityModifiers;
+
 		// The Visible flag is tied directly to the actor visibility under the fog.
 		// If Visible is true, the actor is made invisible (via FrozenUnderFog/IDefaultVisibility)
 		// and this FrozenActor is rendered instead.
 		// The Hidden flag covers the edge case that occurs when the backing actor was last "seen"
-		// to be cloaked or otherwise not CanBeViewedByPlayer()ed. Setting Visible to true when
-		// the actor is hidden under the fog would leak the actors position via the tooltips and
-		// AutoTargetability, and keeping Visible as false would cause the actor to be rendered
-		// under the fog.
-		public bool Visible = true;
-		public bool Hidden = false;
+		// but not actually visible because a visibility modifier hid the actor. Setting Visible to
+		// true when the actor is hidden under the fog would leak the actors position via the
+		// tooltips and AutoTargetability, and keeping Visible as false would cause the actor to be
+		// rendered under the fog.
+		public bool Visible { get; private set; } = true;
+		public bool Hidden { get; private set; } = false;
 
 		public bool Shrouded { get; private set; }
 		public bool NeedRenderables { get; set; }
@@ -108,6 +110,7 @@ namespace OpenRA.Traits
 
 			tooltips = actor.TraitsImplementing<ITooltip>().ToArray();
 			health = actor.TraitOrDefault<IHealth>();
+			visibilityModifiers = actor.TraitsImplementing<IVisibilityModifier>().ToArray();
 
 			UpdateVisibility();
 		}
@@ -124,7 +127,6 @@ namespace OpenRA.Traits
 			TargetTypes = actor.GetEnabledTargetTypes();
 			targetablePositions.Clear();
 			targetablePositions.AddRange(actor.GetTargetablePositions());
-			Hidden = !actor.CanBeViewedByPlayer(viewer);
 
 			if (health != null)
 			{
@@ -137,6 +139,19 @@ namespace OpenRA.Traits
 			{
 				TooltipInfo = tooltip.TooltipInfo;
 				TooltipOwner = tooltip.Owner;
+			}
+		}
+
+		public void RefreshHidden()
+		{
+			Hidden = false;
+			foreach (var visibilityModifier in visibilityModifiers)
+			{
+				if (!visibilityModifier.IsVisible(actor, viewer))
+				{
+					Hidden = true;
+					break;
+				}
 			}
 		}
 
