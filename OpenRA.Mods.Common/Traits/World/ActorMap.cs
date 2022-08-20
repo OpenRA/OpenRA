@@ -248,8 +248,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					current = node.Actor;
 					node = node.Next;
-					if (!current.Disposed)
-						return true;
+					return true;
 				}
 
 				return false;
@@ -284,7 +283,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
 			for (var i = layer[uv]; i != null; i = i.Next)
-				if (!i.Actor.Disposed && (i.SubCell == sub || i.SubCell == SubCell.FullCell || always))
+				if (i.SubCell == sub || i.SubCell == SubCell.FullCell || always)
 					yield return i.Actor;
 		}
 
@@ -386,7 +385,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
 			for (var i = layer[uv]; i != null; i = i.Next)
-				if ((always || i.SubCell == sub || i.SubCell == SubCell.FullCell) && !i.Actor.Disposed && withCondition(i.Actor))
+				if ((always || i.SubCell == sub || i.SubCell == SubCell.FullCell) && withCondition(i.Actor))
 					return true;
 
 			return false;
