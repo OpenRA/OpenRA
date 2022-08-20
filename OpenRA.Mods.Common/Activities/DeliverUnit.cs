@@ -86,8 +86,6 @@ namespace OpenRA.Mods.Common.Activities
 				if (carryall.Carryable == null)
 					return;
 
-				self.Trait<Aircraft>().RemoveInfluence();
-
 				var localOffset = carryall.CarryableOffset.Rotate(body.QuantizeOrientation(self.Orientation));
 				var targetPosition = self.CenterPosition + body.LocalToWorld(localOffset);
 				var targetLocation = self.World.Map.CellContaining(targetPosition);
