@@ -59,7 +59,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 					else
 						getFacing = () => WAngle.Zero;
 
-					var muzzleFlash = new Animation(self.World, render.GetImage(self), getFacing);
+					var muzzleFlash = new Animation(self.World, render.GetImage(self), getFacing)
+					{
+						IsDecoration = true
+					};
+
 					visible.Add(barrel, false);
 					anims.Add(barrel,
 						new AnimationWithOffset(muzzleFlash,
