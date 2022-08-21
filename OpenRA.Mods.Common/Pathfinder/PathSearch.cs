@@ -46,9 +46,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var graph = new MapPathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, laneBias, false);
 			var search = new PathSearch(graph, loc => 0, 0, targetPredicate, recorder);
 
-			foreach (var sl in froms)
-				if (world.Map.Contains(sl))
-					search.AddInitialCell(sl, customCost);
+			AddInitialCells(world, locomotor, froms, customCost, search);
 
 			return search;
 		}
@@ -73,11 +71,17 @@ namespace OpenRA.Mods.Common.Pathfinder
 			heuristic = heuristic ?? DefaultCostEstimator(locomotor, target);
 			var search = new PathSearch(graph, heuristic, heuristicWeightPercentage, loc => loc == target, recorder);
 
-			foreach (var sl in froms)
-				if (world.Map.Contains(sl))
-					search.AddInitialCell(sl, customCost);
+			AddInitialCells(world, locomotor, froms, customCost, search);
 
 			return search;
+		}
+
+		static void AddInitialCells(World world, Locomotor locomotor, IEnumerable<CPos> froms, Func<CPos, int> customCost, PathSearch search)
+		{
+			var customMovementLayers = world.GetCustomMovementLayers();
+			foreach (var sl in froms)
+				if (world.Map.Contains(sl) && (sl.Layer == 0 || customMovementLayers[sl.Layer].EnabledForLocomotor(locomotor.Info)))
+					search.AddInitialCell(sl, customCost);
 		}
 
 		public static PathSearch ToTargetCellOverGraph(
