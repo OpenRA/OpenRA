@@ -39,8 +39,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cancel the repair state when the trait is disabled.")]
 		public readonly bool CancelWhenDisabled = false;
 
-		[Desc("Experience gained by a player for repairing structures of allied players.")]
-		public readonly int PlayerExperience = 0;
+		[Desc("Experience gained by a player for repairing structures of allied players based on cost.")]
+		public readonly int PlayerExperiencePercentage = 0;
 
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while being repaired.")]
@@ -57,18 +57,20 @@ namespace OpenRA.Mods.Common.Traits
 	public class RepairableBuilding : ConditionalTrait<RepairableBuildingInfo>, ITick
 	{
 		readonly IHealth health;
-		readonly Predicate<Player> isNotActiveAlly;
+		readonly Predicate<PlayerResources> isNotActiveAlly;
 		readonly Stack<int> repairTokens = new Stack<int>();
 		int remainingTicks;
+		int builtUpCost = 0;
+		int builtUpXP = 0;
 
-		public readonly List<Player> Repairers = new List<Player>();
+		public readonly List<PlayerResources> Repairers = new List<PlayerResources>();
 		public bool RepairActive { get; private set; }
 
 		public RepairableBuilding(Actor self, RepairableBuildingInfo info)
 			: base(info)
 		{
 			health = self.Trait<IHealth>();
-			isNotActiveAlly = player => player.WinState != WinState.Undefined || self.Owner.RelationshipWith(player) != PlayerRelationship.Ally;
+			isNotActiveAlly = pr => pr.Owner.WinState != WinState.Undefined || self.Owner.RelationshipWith(pr.Owner) != PlayerRelationship.Ally;
 		}
 
 		[Sync]
@@ -78,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var hash = 0;
 				foreach (var player in Repairers)
-					hash ^= Sync.HashPlayer(player);
+					hash ^= Sync.HashPlayer(player.Owner);
 
 				return hash;
 			}
@@ -101,8 +103,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled || !self.AppearsFriendlyTo(player.PlayerActor))
 				return;
 
+			var pr = player.PlayerActor.Trait<PlayerResources>();
+
 			// Remove the player if they are already repairing
-			if (Repairers.Remove(player))
+			if (Repairers.Remove(pr))
 			{
 				UpdateCondition(self);
 				return;
@@ -112,7 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Repairers.Count >= Info.RepairBonuses.Length - 1)
 				return;
 
-			Repairers.Add(player);
+			Repairers.Add(pr);
 
 			Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", Info.RepairingNotification, player.Faction.InternalName);
 			TextNotificationsManager.AddTransientLine(Info.RepairingTextNotification, self.Owner);
@@ -150,13 +154,22 @@ namespace OpenRA.Mods.Common.Traits
 				// The cost is the same regardless of the amount of people repairing
 				var hpToRepair = Math.Min(Info.RepairStep, health.MaxHP - health.HP);
 
-				// Cast to long to avoid overflow when multiplying by the health
-				var cost = Math.Max(1, (int)(((long)hpToRepair * Info.RepairPercent * buildingValue) / (health.MaxHP * 100L)));
+				// Have all cost values multiplied by 100 as cost tends to be miniscule. 100x comes from Info.RepairPercent
+				// Cast to long to avoid overflow
+				var cost = (int)((long)hpToRepair * Info.RepairPercent * buildingValue / health.MaxHP);
 
-				// TakeCash will return false if the player can't pay, and will stop him from contributing this Tick
-				var activePlayers = Repairers.Count(player => player.PlayerActor.Trait<PlayerResources>().TakeCash(cost, true));
+				// We are using the highest possible repair cost to find the players that
+				// can pay it as we cannot know what the actual cost will be
+				var maxMultiplier = 0;
+				for (var i = 0; i < Repairers.Count; i++)
+				{
+					var multiplier = Info.RepairBonuses[i] / (i + 1);
+					if (multiplier > maxMultiplier)
+						maxMultiplier = multiplier;
+				}
 
-				RepairActive = activePlayers > 0;
+				var activeRepairers = Repairers.Where(pr => pr.CanTakeCash(Math.Max(1, builtUpCost + cost * maxMultiplier / 100), true)).ToArray();
+				RepairActive = activeRepairers.Any();
 
 				if (!RepairActive)
 				{
@@ -164,18 +177,38 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 				}
 
-				// Bonus is applied after finding players who can pay
+				// Reduce or increase cost based on repair bonuses and amount of people repairing
+				// We aren't using `*=` to avoid losing multipliers to integer truncation
+				cost = cost * Info.RepairBonuses[activeRepairers.Length - 1] / activeRepairers.Length / 100;
+
+				// Since we use 100x values we need to wait till we reach 100 to convert them back
+				builtUpCost += cost;
+				builtUpXP += cost * Info.PlayerExperiencePercentage / 100;
+
+				if (builtUpCost >= 100)
+				{
+					var regularCost = builtUpCost / 100;
+					builtUpCost -= regularCost * 100;
+
+					foreach (var pr in activeRepairers)
+						pr.TakeCash(regularCost, true);
+				}
+
+				if (builtUpXP >= 100)
+				{
+					var regularXP = builtUpXP / 100;
+					builtUpXP -= regularXP * 100;
+					foreach (var pr in activeRepairers)
+						if (pr.Owner != self.Owner)
+							pr.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(regularXP);
+				}
 
 				// activePlayers won't cause IndexOutOfRange because we capped the max amount of players
 				// to the length of the array
-				self.InflictDamage(self, new Damage(-(hpToRepair * Info.RepairBonuses[activePlayers - 1] / 100), Info.RepairDamageTypes));
+				self.InflictDamage(self, new Damage(-hpToRepair * Info.RepairBonuses[activeRepairers.Length - 1] / 100, Info.RepairDamageTypes));
 
 				if (health.DamageState == DamageState.Undamaged)
 				{
-					foreach (var repairer in Repairers)
-						if (repairer != self.Owner)
-							repairer.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(Info.PlayerExperience);
-
 					Repairers.Clear();
 					RepairActive = false;
 					UpdateCondition(self);

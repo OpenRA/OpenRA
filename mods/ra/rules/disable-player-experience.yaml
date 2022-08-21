@@ -4,7 +4,7 @@
 
 ^Building:
 	RepairableBuilding:
-		PlayerExperience: 0
+		PlayerExperiencePercentage: 0
 
 E6:
 	Captures:

@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			repairer = repairer ?? Self.Owner;
 
-			if (!rb.Repairers.Contains(repairer))
+			if (!rb.Repairers.Contains(repairer.PlayerActor.Trait<PlayerResources>()))
 				rb.RepairBuilding(Self, repairer);
 		}
 
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			repairer = repairer ?? Self.Owner;
 
-			if (rb.RepairActive && rb.Repairers.Contains(repairer))
+			if (rb.RepairActive && rb.Repairers.Contains(repairer.PlayerActor.Trait<PlayerResources>()))
 				rb.RepairBuilding(Self, repairer);
 		}
 	}

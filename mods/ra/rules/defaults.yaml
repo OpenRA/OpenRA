@@ -701,7 +701,7 @@
 		AreaTypes: building, fake
 	RepairableBuilding:
 		RepairStep: 700
-		PlayerExperience: 5
+		PlayerExperiencePercentage: 5
 		RepairingNotification: Repairing
 	EngineerRepairable:
 	AcceptsDeliveredCash:

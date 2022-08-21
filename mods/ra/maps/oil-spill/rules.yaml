@@ -17,7 +17,7 @@ FCOM:
 		Produces: Building, Defense
 	RepairableBuilding:
 		RepairStep: 700
-		PlayerExperience: 5
+		PlayerExperiencePercentage: 5
 		RepairingNotification: Repairing
 	WithBuildingRepairDecoration:
 		Image: allyrepair

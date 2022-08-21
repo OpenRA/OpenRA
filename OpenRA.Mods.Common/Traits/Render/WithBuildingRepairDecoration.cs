@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!info.IsPlayerPalette)
 				return wr.Palette(info.Palette);
 
-			return wr.Palette(info.Palette + rb.Repairers[shownPlayer % rb.Repairers.Count].InternalName);
+			return wr.Palette(info.Palette + rb.Repairers[shownPlayer % rb.Repairers.Count].Owner.InternalName);
 		}
 
 		void CycleRepairer()

@@ -450,7 +450,7 @@
 		EmptyWeapon: BuildingExplode
 	RepairableBuilding:
 		RepairStep: 500
-		PlayerExperience: 5
+		PlayerExperiencePercentage: 5
 		RepairingNotification: Repairing
 	SpawnActorsOnSell:
 		ActorTypes: light_inf

@@ -74,12 +74,12 @@ namespace OpenRA.Mods.Common.Traits
 	public class PlayerResources : ISync
 	{
 		public readonly PlayerResourcesInfo Info;
-		readonly Player owner;
+		public readonly Player Owner;
 
 		public PlayerResources(Actor self, PlayerResourcesInfo info)
 		{
 			Info = info;
-			owner = self.Owner;
+			Owner = self.Owner;
 
 			var startingCash = self.World.LobbyInfo.GlobalSettings
 				.OptionOrDefault("startingcash", info.DefaultCash.ToString());
@@ -178,19 +178,27 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		public bool TakeCash(int num, bool notifyLowFunds = false)
+		public bool CanTakeCash(int num, bool notifyLowFunds = false)
 		{
 			if (Cash + Resources < num)
 			{
 				if (notifyLowFunds && Game.RunTime > lastNotificationTime + Info.InsufficientFundsNotificationInterval)
 				{
 					lastNotificationTime = Game.RunTime;
-					Game.Sound.PlayNotification(owner.World.Map.Rules, owner, "Speech", Info.InsufficientFundsNotification, owner.Faction.InternalName);
-					TextNotificationsManager.AddTransientLine(Info.InsufficientFundsTextNotification, owner);
+					Game.Sound.PlayNotification(Owner.World.Map.Rules, Owner, "Speech", Info.InsufficientFundsNotification, Owner.Faction.InternalName);
+					TextNotificationsManager.AddTransientLine(Info.InsufficientFundsTextNotification, Owner);
 				}
 
 				return false;
 			}
+
+			return true;
+		}
+
+		public bool TakeCash(int num, bool notifyLowFunds = false)
+		{
+			if (!CanTakeCash(num, notifyLowFunds))
+				return false;
 
 			// Spend ore before cash
 			Resources -= num;
