@@ -41,6 +41,18 @@ namespace OpenRA.Mods.Common.Widgets
 					});
 		}
 
+		// TODO: refactor buttons and related UI to use this function
+		public static CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite[]> GetCachedStatefulPanelImages(string collection)
+		{
+			return new CachedTransform<(bool, bool, bool, bool, bool), Sprite[]>(
+				((bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted) args) =>
+					{
+						var collectionName = collection + (args.Highlighted ? "-highlighted" : "");
+						var variantCollectionName = GetStatefulImageName(collectionName, args.Disabled, args.Pressed, args.Hover, args.Focused);
+						return ChromeProvider.GetPanelImages(variantCollectionName) ?? ChromeProvider.GetPanelImages(collectionName);
+					});
+		}
+
 		public static void DrawSprite(Sprite s, float2 pos)
 		{
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos);
