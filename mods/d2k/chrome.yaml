@@ -446,18 +446,23 @@ checkbox-toggle-highlighted-hover:
 checkbox-toggle-highlighted-pressed:
 	Inherits: checkbox-highlighted-pressed
 
-scrollitem-selected:
-	Inherits: button-pressed
+scrollitem:
 
 scrollitem-hover:
 	Inherits: button
 
-scrollheader-selected:
-	Inherits: button
+scrollitem-highlighted:
+	Inherits: button-pressed
 
 scrollitem-nohover:
 
-scrollitem-nohover-hover:
+scrollitem-nohover-highlighted:
+
+scrollheader:
+	Inherits: button
+
+scrollheader-highlighted:
+	Inherits: button
 
 scrollpanel-decorations:
 	Inherits: ^Glyphs

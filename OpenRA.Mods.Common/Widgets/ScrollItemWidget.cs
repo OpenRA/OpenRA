@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using OpenRA.Graphics;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -20,12 +21,15 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly bool EnableChildMouseOver = false;
 		public string ItemKey;
 
+		readonly CachedTransform<(bool, bool, bool, bool, bool), Sprite[]> getPanelCache;
+
 		[ObjectCreator.UseCtor]
 		public ScrollItemWidget(ModData modData)
 			: base(modData)
 		{
 			IsVisible = () => false;
 			VisualHeight = 0;
+			getPanelCache = WidgetUtils.GetCachedStatefulPanelImages(BaseName);
 		}
 
 		protected ScrollItemWidget(ScrollItemWidget other)
@@ -36,6 +40,7 @@ namespace OpenRA.Mods.Common.Widgets
 			Key = other.Key;
 			BaseName = other.BaseName;
 			EnableChildMouseOver = other.EnableChildMouseOver;
+			getPanelCache = WidgetUtils.GetCachedStatefulPanelImages(BaseName);
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -51,17 +56,18 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
+			if (string.IsNullOrEmpty(BaseName))
+				return;
+
 			// PERF: Only check for ourself or our direct children
-			var isHover = Ui.MouseOverWidget == this;
-			if (!IgnoreChildMouseOver && !isHover)
-				isHover = Children.Contains(Ui.MouseOverWidget);
+			var hover = Ui.MouseOverWidget == this;
+			if (!IgnoreChildMouseOver && !hover)
+				hover = Children.Contains(Ui.MouseOverWidget);
 
-			var state = IsSelected() ? BaseName + "-selected" :
-				isHover ? BaseName + "-hover" :
-				null;
+			var panel = getPanelCache.Update((IsDisabled(), Depressed, hover, false, IsSelected() || IsHighlighted()));
 
-			if (state != null)
-				WidgetUtils.DrawPanel(state, RenderBounds);
+			if (panel != null)
+				WidgetUtils.DrawPanel(RenderBounds, panel);
 		}
 
 		public override Widget Clone() { return new ScrollItemWidget(this); }

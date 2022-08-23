@@ -205,16 +205,23 @@ scrollpanel-button-gdi-disabled:
 scrollpanel-button-gdi-pressed:
 	Inherits: button-gdi-pressed
 
+scrollitem:
+
 scrollitem-hover:
 	Inherits: button
 
-scrollitem-selected:
+scrollitem-highlighted:
 	Inherits: button-pressed
 
 scrollitem-nohover:
 
-scrollitem-nohover-hover:
+scrollitem-nohover-highlighted:
 
+scrollheader:
+	Inherits: button
+
+scrollheader-highlighted:
+	Inherits: button
 
 #
 # Slider
