@@ -171,6 +171,11 @@ namespace OpenRA
 			ChannelWriter.TryWrite(new ChannelData(channelName, value));
 		}
 
+		public static void Write(string channelName, Exception e)
+		{
+			ChannelWriter.TryWrite(new ChannelData(channelName, $"{e.Message}{Environment.NewLine}{e.StackTrace}"));
+		}
+
 		public static void Write(string channelName, string format, params object[] args)
 		{
             ChannelWriter.TryWrite(new ChannelData(channelName, format.F(args)));

@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public abstract class CommonSelectorLogic : ChromeLogic
 	{
 		protected readonly Widget Widget;
+		protected readonly ModData ModData;
 		protected readonly TextFieldWidget SearchTextField;
 		protected readonly World World;
 		protected readonly WorldRenderer WorldRenderer;
@@ -33,9 +34,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		protected string[] allCategories;
 		protected string searchFilter;
 
-		public CommonSelectorLogic(Widget widget, World world, WorldRenderer worldRenderer, string templateListId, string previewTemplateId)
+		[TranslationReference]
+		static readonly string None = "none";
+
+		[TranslationReference]
+		static readonly string SearchResults = "search-results";
+
+		[TranslationReference]
+		static readonly string All = "all";
+
+		[TranslationReference]
+		static readonly string Multiple = "multiple";
+
+		public CommonSelectorLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer, string templateListId, string previewTemplateId)
 		{
 			Widget = widget;
+			ModData = modData;
 			World = world;
 			WorldRenderer = worldRenderer;
 			Editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
@@ -61,18 +75,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			categorySelector.GetText = () =>
 			{
 				if (SelectedCategories.Count == 0)
-					return "None";
+					return ModData.Translation.GetString(None);
 
 				if (!string.IsNullOrEmpty(searchFilter))
-					return "Search Results";
+					return ModData.Translation.GetString(SearchResults);
 
 				if (SelectedCategories.Count == 1)
 					return SelectedCategories.First();
 
 				if (SelectedCategories.Count == allCategories.Length)
-					return "All";
+					return ModData.Translation.GetString(All);
 
-				return "Multiple";
+				return ModData.Translation.GetString(Multiple);
 			};
 
 			categorySelector.OnMouseDown = _ =>

@@ -445,7 +445,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var deleteAllButton = panel.Get<ButtonWidget>("MNG_DELALL_BUTTON");
-			deleteAllButton.IsDisabled = () => replayState.Count(kvp => kvp.Value.Visible) == 0;
+			deleteAllButton.IsDisabled = () => !replayState.Any(kvp => kvp.Value.Visible);
 			deleteAllButton.OnClick = () =>
 			{
 				var list = replayState.Where(kvp => kvp.Value.Visible).Select(kvp => kvp.Key).ToList();
@@ -463,7 +463,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					text: $"Delete {list.Count} replays?",
 					onConfirm: () =>
 					{
-						list.ForEach(DeleteReplay);
+						foreach (var replayMetadata in list)
+							DeleteReplay(replayMetadata);
+
 						if (selectedReplay == null)
 							SelectFirstVisibleReplay();
 					},
@@ -511,7 +513,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			replayState.Remove(replay);
 		}
 
-		bool EvaluateReplayVisibility(ReplayMetadata replay)
+		static bool EvaluateReplayVisibility(ReplayMetadata replay)
 		{
 			// Game type
 			if ((filter.Type == GameType.Multiplayer && replay.GameInfo.IsSinglePlayer) || (filter.Type == GameType.Singleplayer && !replay.GameInfo.IsSinglePlayer))
@@ -675,7 +677,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception e)
 			{
-				Log.Write("debug", "Exception while parsing replay: {0}", e);
+				Log.Write("debug", $"Exception while parsing replay: {replay}");
+				Log.Write("debug", e);
 				SelectReplay(null);
 			}
 		}

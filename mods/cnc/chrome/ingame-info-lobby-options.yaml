@@ -6,7 +6,7 @@ Container@LOBBY_OPTIONS_PANEL:
 			Logic: LobbyOptionsLogic
 			X: 15
 			Y: 15
-			Width: 482
+			Width: PARENT_RIGHT - 30
 			Height: 375
 			Children:
 				Container@LOBBY_OPTIONS:

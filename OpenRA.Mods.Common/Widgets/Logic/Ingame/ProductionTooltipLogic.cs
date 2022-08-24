@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var requiresFormat = requiresLabel.Text;
 
 			ActorInfo lastActor = null;
-			Hotkey lastHotkey = Hotkey.Invalid;
+			var lastHotkey = Hotkey.Invalid;
 			var lastPowerState = pm?.PowerState ?? PowerState.Normal;
 			var descLabelY = descLabel.Bounds.Y;
 			var descLabelPadding = descLabel.Bounds.Height;

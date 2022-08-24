@@ -18,8 +18,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class GameTimerLogic : ChromeLogic
 	{
+		[TranslationReference]
+		static readonly string Paused = "paused";
+
+		[TranslationReference]
+		static readonly string MaxSpeed = "max-speed";
+
+		[TranslationReference("percentage")]
+		static readonly string Speed = "speed";
+
+		[TranslationReference("percentage")]
+		static readonly string Complete = "complete";
+
 		[ObjectCreator.UseCtor]
-		public GameTimerLogic(Widget widget, OrderManager orderManager, World world)
+		public GameTimerLogic(Widget widget, ModData modData, OrderManager orderManager, World world)
 		{
 			var timer = widget.GetOrNull<LabelWidget>("GAME_TIMER");
 			var status = widget.GetOrNull<LabelWidget>("GAME_TIMER_STATUS");
@@ -29,23 +41,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Func<bool> shouldShowStatus = () => (world.Paused || world.ReplayTimestep != world.Timestep)
 				&& (Ui.LastTickTime.Value - startTick) / 1000 % 2 == 0;
 
-			Func<string> statusText = () =>
-			{
-				if (world.Paused || world.ReplayTimestep == 0)
-					return "Paused";
+			Func<bool> paused = () => world.Paused || world.ReplayTimestep == 0;
 
-				if (world.ReplayTimestep == 1)
-					return "Max Speed";
-
-				return $"{world.Timestep * 100 / world.ReplayTimestep}% Speed";
-			};
+			var pausedText = modData.Translation.GetString(Paused);
+			var maxSpeedText = modData.Translation.GetString(MaxSpeed);
+			var speedText = new CachedTransform<int, string>(p =>
+					modData.Translation.GetString(Speed, Translation.Arguments("percentage", p)));
 
 			if (timer != null)
 			{
 				timer.GetText = () =>
 				{
-					if (status == null && shouldShowStatus())
-						return statusText();
+					if (status == null && paused() && shouldShowStatus())
+						return pausedText;
 
 					var timeLimit = tlm?.TimeLimit ?? 0;
 					var displayTick = timeLimit > 0 ? timeLimit - world.WorldTick : world.WorldTick;
@@ -57,16 +65,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				// Blink the status line
 				status.IsVisible = shouldShowStatus;
-				status.GetText = statusText;
+				status.GetText = () =>
+				{
+					if (paused())
+						return pausedText;
+
+					if (world.ReplayTimestep == 1)
+						return maxSpeedText;
+
+					return speedText.Update(world.Timestep * 100 / world.ReplayTimestep);
+				};
 			}
 
+			var timerText = new CachedTransform<int, string>(p =>
+				modData.Translation.GetString(Complete, Translation.Arguments("percentage", p)));
 			if (timer is LabelWithTooltipWidget timerTooltip)
 			{
 				var connection = orderManager.Connection as ReplayConnection;
 				if (connection != null && connection.FinalGameTick != 0)
-					timerTooltip.GetTooltipText = () => $"{world.WorldTick * 100 / connection.FinalGameTick}% complete";
+					timerTooltip.GetTooltipText = () => timerText.Update(world.WorldTick * 100 / connection.FinalGameTick);
 				else if (connection != null && connection.TickCount != 0)
-					timerTooltip.GetTooltipText = () => $"{orderManager.NetFrameNumber * 100 / connection.TickCount}% complete";
+					timerTooltip.GetTooltipText = () => timerText.Update(orderManager.NetFrameNumber * 100 / connection.TickCount);
 				else
 					timerTooltip.GetTooltipText = null;
 			}

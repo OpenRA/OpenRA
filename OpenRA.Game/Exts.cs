@@ -38,12 +38,6 @@ namespace OpenRA
 			catch { return def; }
 		}
 
-		public static void Do<T>(this IEnumerable<T> e, Action<T> fn)
-		{
-			foreach (var ee in e)
-				fn(ee);
-		}
-
 		public static Lazy<T> Lazy<T>(Func<T> p) { return new Lazy<T>(p); }
 
 		public static IEnumerable<string> GetNamespaces(this Assembly a)
@@ -53,7 +47,7 @@ namespace OpenRA
 
 		public static bool HasAttribute<T>(this MemberInfo mi)
 		{
-			return mi.GetCustomAttributes(typeof(T), true).Length != 0;
+			return Attribute.IsDefined(mi, typeof(T));
 		}
 
 		public static T[] GetCustomAttributes<T>(this MemberInfo mi, bool inherit)

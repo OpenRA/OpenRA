@@ -320,7 +320,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			RefreshServerList();
 		}
 
-		string PlayersLabel(GameServer game)
+		static string PlayersLabel(GameServer game)
 		{
 			return $"{(game.Players > 0 ? game.Players.ToString() : "No")} Player{(game.Players != 1 ? "s" : "")}{(game.Bots > 0 ? $", {game.Bots} Bot{(game.Bots != 1 ? "s" : "")}" : "")}{(game.Spectators > 0 ? $", {game.Spectators} Spectator{(game.Spectators != 1 ? "s" : "")}" : "")}";
 		}

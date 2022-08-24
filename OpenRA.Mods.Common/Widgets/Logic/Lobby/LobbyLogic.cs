@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var onSelect = new Action<string>(uid =>
 					{
 						// Don't select the same map again, and handle map becoming unavailable
-						if (uid == map.Uid && modData.MapCache[uid].Status != MapStatus.Available)
+						if (uid == map.Uid || modData.MapCache[uid].Status != MapStatus.Available)
 							return;
 
 						orderManager.IssueOrder(Order.Command("map " + uid));
@@ -212,7 +212,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				slotsButton.IsVisible = () => panel != PanelType.Servers;
 				slotsButton.IsDisabled = () => configurationDisabled() || panel != PanelType.Players ||
 					(orderManager.LobbyInfo.Slots.Values.All(s => !s.AllowBots) &&
-					orderManager.LobbyInfo.Slots.Count(s => !s.Value.LockTeam && orderManager.LobbyInfo.ClientInSlot(s.Key) != null) == 0);
+					!orderManager.LobbyInfo.Slots.Any(s => !s.Value.LockTeam && orderManager.LobbyInfo.ClientInSlot(s.Key) != null));
 
 				slotsButton.OnMouseDown = _ =>
 				{
@@ -269,7 +269,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							Title = $"{d} Teams",
 							IsSelected = () => false,
-							OnClick = () => orderManager.IssueOrder(Order.Command($"assignteams {d.ToString()}"))
+							OnClick = () => orderManager.IssueOrder(Order.Command($"assignteams {d}"))
 						}).ToList();
 
 						if (orderManager.LobbyInfo.Slots.Any(s => s.Value.AllowBots))

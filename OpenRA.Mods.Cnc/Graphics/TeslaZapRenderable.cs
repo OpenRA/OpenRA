@@ -85,7 +85,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 			if (!cache.Any() || length != cachedLength || pos != cachedPos)
 				cache = GenerateRenderables(wr);
 
-			cache.Do(c => c.Render(wr));
+			foreach (var renderable in cache)
+				renderable.Render(wr);
 		}
 
 		public Rectangle ScreenBounds(WorldRenderer wr) { return Rectangle.Empty; }

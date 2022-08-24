@@ -61,8 +61,11 @@ namespace OpenRA.Mods.Common.Lint
 
 					foreach (var entry in result.Entries)
 					{
-						if (!referencedKeys.Contains(entry.GetId()))
-							emitWarning($"Unused key `{entry.GetId()}` in {file}.");
+						// Don't flag definitions referenced (only) within the .ftl definitions as unused
+						var isReusableTerm = entry.GetType() == typeof(AstTerm);
+						var key = entry.GetId();
+						if (!referencedKeys.Contains(key) && !isReusableTerm)
+							emitWarning($"Unused key `{key}` in {file}.");
 
 						variableReferences.Clear();
 						if (entry is AstMessage message)

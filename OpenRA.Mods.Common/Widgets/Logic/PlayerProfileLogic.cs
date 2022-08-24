@@ -211,9 +211,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							{
 								var badges = Ui.LoadWidget("PLAYER_PROFILE_BADGES_INSERT", badgeContainer, new WidgetArgs()
 								{
-									{ "worldRenderer", worldRenderer },
-									{ "profile", profile },
-									{ "negotiateWidth", negotiateWidth }
+									{ nameof(worldRenderer), worldRenderer },
+									{ nameof(profile), profile },
+									{ nameof(negotiateWidth), negotiateWidth }
 								});
 
 								if (badges.Bounds.Height > 0)
@@ -236,7 +236,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 				catch (Exception e)
 				{
-					Log.Write("debug", "Failed to parse player data result with exception: {0}", e);
+					Log.Write("debug", "Failed to parse player data result with exception");
+					Log.Write("debug", e);
 				}
 				finally
 				{

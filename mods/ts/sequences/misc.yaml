@@ -722,3 +722,21 @@ fire2:
 		BlendMode: Translucent
 		Offset: 0, -18, 18
 		ZOffset: 1023
+
+caryland:
+	idle: podring
+		Length: *
+		Tick: 50
+		ZOffset: -512
+		ZRamp: 1
+		Offset: 0, 0, 1
+		BlendMode: Translucent
+
+dropland:
+	idle: podring
+		Length: *
+		Tick: 90
+		ZOffset: -512
+		ZRamp: 1
+		Offset: 0, 0, 1
+		BlendMode: Translucent

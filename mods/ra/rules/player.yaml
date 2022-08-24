@@ -172,7 +172,8 @@ Player:
 		Id: unrestricted
 	GrantConditionOnPrerequisiteManager:
 	EnemyWatcher:
-	VeteranProductionIconOverlay:
+	ProductionIconOverlayManager:
+		Type: Veterancy
 		Image: iconchevrons
 		Sequence: veteran
 	ResourceStorageWarning:

@@ -346,7 +346,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 		}
 
-		void LoadMapIntoEditor(string uid)
+		static void LoadMapIntoEditor(string uid)
 		{
 			Game.LoadEditor(uid);
 

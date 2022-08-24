@@ -17,15 +17,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class IngamePowerBarLogic : ChromeLogic
 	{
+		[TranslationReference]
+		static readonly string PowerUsage = "power-usage";
+
 		[ObjectCreator.UseCtor]
-		public IngamePowerBarLogic(Widget widget, World world)
+		public IngamePowerBarLogic(Widget widget, ModData modData, World world)
 		{
 			var powerManager = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
 			var powerBar = widget.Get<ResourceBarWidget>("POWERBAR");
 
 			powerBar.GetProvided = () => powerManager.PowerProvided;
 			powerBar.GetUsed = () => powerManager.PowerDrained;
-			powerBar.TooltipFormat = "Power Usage: {0}/{1}";
+			powerBar.TooltipFormat = modData.Translation.GetString(PowerUsage) + ": {0}/{1}";
 			powerBar.GetBarColor = () =>
 			{
 				if (powerManager.PowerState == PowerState.Critical)

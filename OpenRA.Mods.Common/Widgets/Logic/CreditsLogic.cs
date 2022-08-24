@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		IEnumerable<string> ParseLines(Stream file)
+		static IEnumerable<string> ParseLines(Stream file)
 		{
 			return file.ReadAllLines().Select(l => l.Replace("\t", "    ").Replace("*", "\u2022")).ToList();
 		}

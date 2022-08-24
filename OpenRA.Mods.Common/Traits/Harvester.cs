@@ -15,7 +15,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
-using OpenRA.Mods.Common.Pathfinder;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -183,6 +182,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Actor ClosestProc(Actor self, Actor ignore)
 		{
 			// Find all refineries and their occupancy count:
+			// Exclude refineries with too many harvesters clogging the delivery location.
 			var refineries = self.World.ActorsWithTrait<IAcceptResources>()
 				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor))
 				.Select(r => new
@@ -190,28 +190,28 @@ namespace OpenRA.Mods.Common.Traits
 					Location = r.Actor.Location + r.Trait.DeliveryOffset,
 					Actor = r.Actor,
 					Occupancy = self.World.ActorsHavingTrait<Harvester>(h => h.LinkedProc == r.Actor).Count()
-				}).ToLookup(r => r.Location);
+				})
+				.Where(r => r.Occupancy < Info.MaxUnloadQueue)
+				.ToDictionary(r => r.Location);
+
+			if (refineries.Count == 0)
+				return null;
 
 			// Start a search from each refinery's delivery location:
 			var path = mobile.PathFinder.FindPathToTargetCell(
 				self, refineries.Select(r => r.Key), self.Location, BlockedByActor.None,
 				location =>
 				{
-					if (!refineries.Contains(location))
+					if (!refineries.ContainsKey(location))
 						return 0;
 
-					var occupancy = refineries[location].First().Occupancy;
-
-					// Too many harvesters clogs up the refinery's delivery location:
-					if (occupancy >= Info.MaxUnloadQueue)
-						return PathGraph.PathCostForInvalidPath;
-
 					// Prefer refineries with less occupancy (multiplier is to offset distance cost):
+					var occupancy = refineries[location].Occupancy;
 					return occupancy * Info.UnloadQueueCostModifier;
 				});
 
 			if (path.Count > 0)
-				return refineries[path.Last()].First().Actor;
+				return refineries[path.Last()].Actor;
 
 			return null;
 		}

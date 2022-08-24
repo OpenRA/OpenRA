@@ -43,8 +43,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly EditorCursorLayer editorCursor;
 
 		[ObjectCreator.UseCtor]
-		public TileSelectorLogic(Widget widget, World world, WorldRenderer worldRenderer)
-			: base(widget, world, worldRenderer, "TILETEMPLATE_LIST", "TILEPREVIEW_TEMPLATE")
+		public TileSelectorLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer)
+			: base(widget, modData, world, worldRenderer, "TILETEMPLATE_LIST", "TILEPREVIEW_TEMPLATE")
 		{
 			terrainInfo = world.Map.Rules.TerrainInfo as ITemplatedTerrainInfo;
 			if (terrainInfo == null)
