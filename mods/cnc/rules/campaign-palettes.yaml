@@ -42,13 +42,13 @@ C17:
 	RenderSprites:
 		PlayerPalette: player-units
 	Contrail@1:
-		UsePlayerColor: False
+		StartColorUsePlayerColor: False
 	Contrail@2:
-		UsePlayerColor: False
+		StartColorUsePlayerColor: False
 	Contrail@3:
-		UsePlayerColor: False
+		StartColorUsePlayerColor: False
 	Contrail@4:
-		UsePlayerColor: False
+		StartColorUsePlayerColor: False
 
 HARV:
 	RenderSprites:
