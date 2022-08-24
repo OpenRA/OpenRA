@@ -30,6 +30,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Length of the trail (in ticks).")]
 		public readonly int TrailLength = 25;
 
+		[Desc("Time (in ticks) after which the line should appear. Controls the distance to the actor.")]
+		public readonly int TrailDelay = 0;
+
 		[Desc("Width of the trail.")]
 		public readonly WDist TrailWidth = new WDist(64);
 
@@ -57,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 
 			color = info.UsePlayerColor ? ContrailRenderable.ChooseColor(self) : info.Color;
-			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, 0, info.ZOffset);
+			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, info.TrailDelay, info.ZOffset);
 
 			body = self.Trait<BodyOrientation>();
 		}
@@ -86,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
-			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, 0, info.ZOffset);
+			trail = new ContrailRenderable(self.World, color, info.TrailWidth, info.TrailLength, info.TrailDelay, info.ZOffset);
 		}
 	}
 }
