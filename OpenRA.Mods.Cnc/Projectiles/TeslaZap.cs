@@ -17,6 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Projectiles
 {
+	[Desc("Instant-hit projectile used to create electricity-like effects.")]
 	public class TeslaZapInfo : IProjectileInfo
 	{
 		public readonly string Image = "litning";

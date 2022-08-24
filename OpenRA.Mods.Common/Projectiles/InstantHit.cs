@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Projectiles
 {
-	[Desc("Simple, invisible, usually direct-on-target projectile.")]
+	[Desc("Instant, invisible, usually direct-on-target projectile.")]
 	public class InstantHitInfo : IProjectileInfo
 	{
 		[Desc("The maximum/constant/incremental inaccuracy used in conjunction with the InaccuracyType property.")]

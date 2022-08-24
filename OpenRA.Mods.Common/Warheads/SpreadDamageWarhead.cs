@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Common.Warheads
 {
 	public enum DamageCalculationType { HitShape, ClosestTargetablePosition, CenterPosition }
 
+	[Desc("Apply damage in a specified range.")]
 	public class SpreadDamageWarhead : DamageWarhead, IRulesetLoaded<WeaponInfo>
 	{
 		[Desc("Range between falloff steps.")]

@@ -15,6 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
+	[Desc("Apply damage based on the target's health.")]
 	public class HealthPercentageDamageWarhead : TargetDamageWarhead
 	{
 		protected override void InflictDamage(Actor victim, Actor firedBy, HitShape shape, WarheadArgs args)

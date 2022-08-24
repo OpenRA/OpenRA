@@ -17,6 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
+	[Desc("Fires weapons from the point of impact.")]
 	public class FireClusterWarhead : Warhead, IRulesetLoaded<WeaponInfo>
 	{
 		[WeaponReference]
