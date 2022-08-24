@@ -22,7 +22,8 @@ namespace OpenRA.Mods.Common.Graphics
 		public int Length => trail.Length;
 
 		readonly World world;
-		readonly Color color;
+		readonly Color startcolor;
+		readonly Color endcolor;
 		readonly int zOffset;
 
 		// Store trail positions in a circular buffer
@@ -32,10 +33,10 @@ namespace OpenRA.Mods.Common.Graphics
 		int length;
 		readonly int skip;
 
-		public ContrailRenderable(World world, Color color, WDist width, int length, int skip, int zOffset)
-			: this(world, new WPos[length], width, 0, 0, skip, color, zOffset) { }
+		public ContrailRenderable(World world, Color startcolor, Color endcolor, WDist width, int length, int skip, int zOffset)
+			: this(world, new WPos[length], width, 0, 0, skip, startcolor, endcolor, zOffset) { }
 
-		ContrailRenderable(World world, WPos[] trail, WDist width, int next, int length, int skip, Color color, int zOffset)
+		ContrailRenderable(World world, WPos[] trail, WDist width, int next, int length, int skip, Color startcolor, Color endcolor, int zOffset)
 		{
 			this.world = world;
 			this.trail = trail;
@@ -43,7 +44,8 @@ namespace OpenRA.Mods.Common.Graphics
 			this.next = next;
 			this.length = length;
 			this.skip = skip;
-			this.color = color;
+			this.startcolor = startcolor;
+			this.endcolor = endcolor;
 			this.zOffset = zOffset;
 		}
 
@@ -51,13 +53,12 @@ namespace OpenRA.Mods.Common.Graphics
 		public int ZOffset => zOffset;
 		public bool IsDecoration => true;
 
-		public IRenderable WithZOffset(int newOffset) { return new ContrailRenderable(world, (WPos[])trail.Clone(), width, next, length, skip, color, newOffset); }
-
+		public IRenderable WithZOffset(int newOffset) { return new ContrailRenderable(world, (WPos[])trail.Clone(), width, next, length, skip, startcolor, endcolor, newOffset); }
 		public IRenderable OffsetBy(in WVec vec)
 		{
 			// Lambdas can't use 'in' variables, so capture a copy for later
 			var offset = vec;
-			return new ContrailRenderable(world, trail.Select(pos => pos + offset).ToArray(), width, next, length, skip, color, zOffset);
+			return new ContrailRenderable(world, trail.Select(pos => pos + offset).ToArray(), width, next, length, skip, startcolor, endcolor, zOffset);
 		}
 
 		public IRenderable AsDecoration() { return this; }
@@ -76,13 +77,12 @@ namespace OpenRA.Mods.Common.Graphics
 
 			// Start of the first line segment is the tail of the list - don't smooth it.
 			var curPos = trail[Index(next - skip - 1)];
-			var curColor = color;
+			var curColor = startcolor;
 
 			for (var i = 1; i < renderLength; i++)
 			{
 				var j = next - skip - 1 - i;
-				var alpha = ((renderLength - i) * color.A + renderLength - 1) / renderLength;
-				var nextColor = Color.FromArgb(alpha, color);
+				var nextColor = Exts.ColorLerp(i * 1f / (renderLength - 1), startcolor, endcolor);
 
 				var nextX = 0L;
 				var nextY = 0L;
@@ -123,12 +123,6 @@ namespace OpenRA.Mods.Common.Graphics
 
 			if (length < trail.Length)
 				length++;
-		}
-
-		public static Color ChooseColor(Actor self)
-		{
-			var ownerColor = Color.FromArgb(255, self.Owner.Color);
-			return Exts.ColorLerp(0.5f, ownerColor, Color.White);
 		}
 	}
 }

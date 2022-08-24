@@ -20,8 +20,10 @@ BADR:
 		Name: Badger
 	Contrail@1:
 		Offset: -432,560,0
+		StartColorAlpha: 128
 	Contrail@2:
 		Offset: -432,-560,0
+		StartColorAlpha: 128
 	SpawnActorOnDeath:
 		Actor: BADR.Husk
 	LeavesTrails@0:
@@ -110,8 +112,10 @@ MIG:
 		DecorationBounds: 1706, 1237, 0, 42
 	Contrail@1:
 		Offset: -598,-683,0
+		StartColorAlpha: 128
 	Contrail@2:
 		Offset: -598,683,0
+		StartColorAlpha: 128
 	SpawnActorOnDeath:
 		Actor: MIG.Husk
 	LeavesTrails:
@@ -191,6 +195,7 @@ YAK:
 	WithMuzzleOverlay:
 	Contrail:
 		Offset: -853,0,0
+		StartColorAlpha: 128
 	SpawnActorOnDeath:
 		Actor: YAK.Husk
 	LeavesTrails:
@@ -458,8 +463,10 @@ U2:
 	-Targetable@AIRBORNE:
 	Contrail@1:
 		Offset: -725,683,0
+		StartColorAlpha: 128
 	Contrail@2:
 		Offset: -725,-683,0
+		StartColorAlpha: 128
 	SpawnActorOnDeath:
 		Actor: U2.Husk
 	LeavesTrails:
