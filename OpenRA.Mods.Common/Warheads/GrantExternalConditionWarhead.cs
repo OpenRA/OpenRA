@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
+	[Desc("Grant an external condition to hit actors.")]
 	public class GrantExternalConditionWarhead : Warhead
 	{
 		[FieldLoader.Require]

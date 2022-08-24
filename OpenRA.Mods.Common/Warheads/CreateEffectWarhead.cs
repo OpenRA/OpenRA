@@ -19,6 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
+	[Desc("Spawn a sprite with sound.")]
 	public class CreateEffectWarhead : Warhead
 	{
 		[SequenceReference(nameof(Image), allowNullImage: true)]

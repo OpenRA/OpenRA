@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
+	[Desc("Apply damage to the targeted actor.")]
 	public class TargetDamageWarhead : DamageWarhead
 	{
 		[Desc("Damage will be applied to actors in this area. A value of zero means only targeted actor will be damaged.")]

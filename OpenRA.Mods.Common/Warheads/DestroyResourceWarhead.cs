@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
+	[Desc("Destroys resources in a circle.")]
 	public class DestroyResourceWarhead : Warhead
 	{
 		[Desc("Size of the area. The resources are removed within this area.", "Provide 2 values for a ring effect (outer/inner).")]
