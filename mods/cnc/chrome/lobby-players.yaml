@@ -141,7 +141,7 @@ Container@LOBBY_PLAYER_BIN:
 									Height: 16
 								Label@FACTIONNAME:
 									X: 40
-									Width: 60
+									Width: 50
 									Height: 25
 									Text: Faction
 						DropDownButton@TEAM_DROPDOWN:
@@ -252,7 +252,7 @@ Container@LOBBY_PLAYER_BIN:
 									Height: 15
 								Label@FACTIONNAME:
 									X: 40
-									Width: 60
+									Width: 50
 									Height: 25
 									Text: Faction
 						Label@TEAM:

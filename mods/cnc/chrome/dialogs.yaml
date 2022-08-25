@@ -75,7 +75,7 @@ ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
 					Height: 16
 				Label@LABEL:
 					X: 40
-					Width: 60
+					Width: 50
 					Height: 25
 
 ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
