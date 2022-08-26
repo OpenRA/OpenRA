@@ -105,6 +105,7 @@ namespace OpenRA.Traits
 		// Per-cell cache of the resolved cell type (shroud/fog/visible)
 		readonly ProjectedCellLayer<ShroudCellType> resolvedType;
 
+		bool disabledChanged;
 		[Sync]
 		bool disabled;
 		public bool Disabled
@@ -117,6 +118,7 @@ namespace OpenRA.Traits
 					return;
 
 				disabled = value;
+				disabledChanged = true;
 			}
 		}
 
@@ -159,13 +161,16 @@ namespace OpenRA.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (!anyCellTouched)
+			if (!anyCellTouched && !disabledChanged)
 				return;
 
 			anyCellTouched = false;
 
 			if (OnShroudChanged == null)
+			{
+				disabledChanged = false;
 				return;
+			}
 
 			// PERF: Parts of this loop are very hot.
 			// We loop over the direct index that represents the PPos in
@@ -175,7 +180,7 @@ namespace OpenRA.Traits
 			for (var index = 0; index < maxIndex; index++)
 			{
 				// PERF: Most cells are not touched
-				if (!touched[index])
+				if (!touched[index] && !disabledChanged)
 					continue;
 
 				touched[index] = false;
@@ -196,16 +201,17 @@ namespace OpenRA.Traits
 
 				// PERF: Most cells are unchanged
 				var oldResolvedType = resolvedType[index];
-				if (type != oldResolvedType)
+				if (type != oldResolvedType || disabledChanged)
 				{
 					resolvedType[index] = type;
-					var uv = touched.PPosFromIndex(index);
-					if (map.Contains(uv))
-						OnShroudChanged(uv);
+					var puv = touched.PPosFromIndex(index);
+					if (map.Contains(puv))
+						OnShroudChanged(puv);
 				}
 			}
 
 			Hash = Sync.HashPlayer(self.Owner) + self.World.WorldTick;
+			disabledChanged = false;
 		}
 
 		public static IEnumerable<PPos> ProjectedCellsInRange(Map map, WPos pos, WDist minRange, WDist maxRange, int maxHeightDelta = -1)
