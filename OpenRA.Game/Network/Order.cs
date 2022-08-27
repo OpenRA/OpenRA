@@ -144,8 +144,7 @@ namespace OpenRA
 									break;
 								}
 
-								case TargetType.Terrain:
-								{
+								case TargetType.TerrainCell:
 									if (flags.HasField(OrderFields.TargetIsCell))
 									{
 										var cell = new CPos(r.ReadInt32());
@@ -153,12 +152,23 @@ namespace OpenRA
 										if (world != null)
 											target = Target.FromCell(world, cell, subCell);
 									}
-									else
+
+									break;
+								case TargetType.TerrainCellPos:
+									if (flags.HasField(OrderFields.TargetIsCell))
 									{
+										var cell = new CPos(r.ReadInt32());
+										var subCell = (SubCell)r.ReadByte();
 										var pos = new WPos(r.ReadInt32(), r.ReadInt32(), r.ReadInt32());
-										target = Target.FromPos(pos);
+										if (world != null)
+											target = Target.FromCellWithTerrainPos(cell, subCell, pos);
 									}
 
+									break;
+								case TargetType.TerrainPos:
+								{
+									var pos2 = new WPos(r.ReadInt32(), r.ReadInt32(), r.ReadInt32());
+									target = Target.FromPos(pos2);
 									break;
 								}
 							}
@@ -368,27 +378,51 @@ namespace OpenRA
 						switch (Target.SerializableType)
 						{
 							case TargetType.Actor:
+							{
 								w.Write(UIntFromActor(Target.SerializableActor));
 								w.Write(Target.SerializableGeneration);
 								break;
+							}
+
 							case TargetType.FrozenActor:
+							{
 								w.Write(Target.FrozenActor.Viewer.PlayerActor.ActorID);
 								w.Write(Target.FrozenActor.ID);
 								break;
-							case TargetType.Terrain:
+							}
+
+							case TargetType.TerrainCell:
+							{
 								if (fields.HasField(OrderFields.TargetIsCell))
 								{
 									w.Write(Target.SerializableCell.Value.Bits);
 									w.Write((byte)Target.SerializableSubCell);
 								}
-								else
+
+								break;
+							}
+
+							case TargetType.TerrainCellPos:
+							{
+								if (fields.HasField(OrderFields.TargetIsCell))
 								{
+									w.Write(Target.SerializableCell.Value.Bits);
+									w.Write((byte)Target.SerializableSubCell);
 									w.Write(Target.SerializablePos.X);
 									w.Write(Target.SerializablePos.Y);
 									w.Write(Target.SerializablePos.Z);
 								}
 
 								break;
+							}
+
+							case TargetType.TerrainPos:
+							{
+								w.Write(Target.SerializablePos.X);
+								w.Write(Target.SerializablePos.Y);
+								w.Write(Target.SerializablePos.Z);
+								break;
+							}
 						}
 					}
 

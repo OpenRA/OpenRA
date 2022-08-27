@@ -359,26 +359,26 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		// Enumerates all armaments, that this actor possesses, that can be used against Target t
-		public IEnumerable<Armament> ChooseArmamentsForTarget(Target t, bool forceAttack)
+		public IEnumerable<Armament> ChooseArmamentsForTarget(Target target, bool forceAttack)
 		{
 			// If force-fire is not used, and the target requires force-firing or the target is
 			// terrain or invalid, no armaments can be used
-			if (!forceAttack && (t.Type == TargetType.Terrain || t.Type == TargetType.Invalid || t.RequiresForceFire))
+			if (!forceAttack && (target.IsTerrainType() || target.Type == TargetType.Invalid || target.RequiresForceFire))
 				return Enumerable.Empty<Armament>();
 
 			// Get target's owner; in case of terrain or invalid target there will be no problems
 			// with owner == null since forceFire will have to be true in this part of the method
 			// (short-circuiting in the logical expression below)
 			Player owner = null;
-			if (t.Type == TargetType.FrozenActor)
-				owner = t.FrozenActor.Owner;
-			else if (t.Type == TargetType.Actor)
-				owner = t.Actor.Owner;
+			if (target.Type == TargetType.FrozenActor)
+				owner = target.FrozenActor.Owner;
+			else if (target.Type == TargetType.Actor)
+				owner = target.Actor.Owner;
 
 			return Armaments.Where(a =>
 				!a.IsTraitDisabled
 				&& (owner == null || (forceAttack ? a.Info.ForceTargetRelationships : a.Info.TargetRelationships).HasRelationship(self.Owner.RelationshipWith(owner)))
-				&& a.Weapon.IsValidAgainst(t, self.World, self));
+				&& a.Weapon.IsValidAgainst(target, self.World, self));
 		}
 
 		public void AttackTarget(in Target target, AttackSource source, bool queued, bool allowMove, bool forceAttack = false, Color? targetLineColor = null)
@@ -511,7 +511,8 @@ namespace OpenRA.Mods.Common.Traits
 					case TargetType.Actor:
 					case TargetType.FrozenActor:
 						return CanTargetActor(self, target, ref modifiers, ref cursor);
-					case TargetType.Terrain:
+					case TargetType.TerrainCell:
+					case TargetType.TerrainCellPos:
 						return CanTargetLocation(self, self.World.Map.CellContaining(target.CenterPosition), modifiers, ref cursor);
 					default:
 						return false;

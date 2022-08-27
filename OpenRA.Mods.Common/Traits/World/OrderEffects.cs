@@ -93,7 +93,9 @@ namespace OpenRA.Mods.Common.Traits
 					return true;
 				}
 
-				case TargetType.Terrain:
+				case TargetType.TerrainCell:
+				case TargetType.TerrainCellPos:
+				case TargetType.TerrainPos:
 				{
 					world.AddFrameEndTask(w => w.Add(new SpriteAnnotation(target.CenterPosition, world, info.TerrainFlashImage, info.TerrainFlashSequence, info.TerrainFlashPalette)));
 					return true;

@@ -362,7 +362,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
 			{
-				if (target.Type != TargetType.Terrain)
+				if (!target.IsTerrainType())
 					return false;
 
 				var location = self.World.Map.CellContaining(target.CenterPosition);

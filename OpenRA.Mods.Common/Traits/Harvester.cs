@@ -390,7 +390,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
 			{
-				if (target.Type != TargetType.Terrain)
+				if (target.IsTerrainType())
 					return false;
 
 				if (modifiers.HasModifier(TargetModifiers.ForceMove))

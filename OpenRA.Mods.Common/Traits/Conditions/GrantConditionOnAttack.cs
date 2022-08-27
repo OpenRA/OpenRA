@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (lastTarget.FrozenActor != target.FrozenActor)
 					return true;
 
-			if (lastTarget.Type == TargetType.Terrain && target.Type == TargetType.Terrain)
+			if (lastTarget.IsTerrainType() && target.IsTerrainType())
 				if (lastTarget.CenterPosition != target.CenterPosition)
 					return true;
 
