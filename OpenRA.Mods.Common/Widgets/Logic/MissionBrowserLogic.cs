@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string gameSpeed;
 
 		[ObjectCreator.UseCtor]
-		public MissionBrowserLogic(Widget widget, ModData modData, World world, Action onStart, Action onExit)
+		public MissionBrowserLogic(Widget widget, ModData modData, World world, Action onStart, Action onExit, string initialMap)
 		{
 			this.modData = modData;
 			this.onStart = onStart;
@@ -154,7 +154,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			if (allPreviews.Count > 0)
-				SelectMap(allPreviews.First());
+			{
+				var uid = modData.MapCache.GetUpdatedMap(initialMap);
+				var map = uid == null ? null : modData.MapCache[uid];
+				if (map != null && map.Visibility.HasFlag(MapVisibility.MissionSelector))
+				{
+					SelectMap(map);
+					missionList.ScrollToSelectedItem();
+				}
+				else
+					SelectMap(allPreviews.First());
+			}
 
 			// Preload map preview to reduce jank
 			new Thread(() =>
@@ -401,7 +411,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			StopVideo(videoPlayer);
 
 			// If selected mission becomes unavailable, exit MissionBrowser to refresh
-			if (modData.MapCache[selectedMap.Uid].Status != MapStatus.Available)
+			var map = modData.MapCache.GetUpdatedMap(selectedMap.Uid);
+			if (map == null)
 			{
 				Game.Disconnect();
 				Ui.CloseWindow();
@@ -409,6 +420,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 			}
 
+			selectedMap = modData.MapCache[map];
 			var orders = new List<Order>();
 			if (difficulty != null)
 				orders.Add(Order.Command($"option difficulty {difficulty}"));
