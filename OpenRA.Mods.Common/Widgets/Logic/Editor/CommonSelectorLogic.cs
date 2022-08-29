@@ -71,22 +71,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
+			var none = ModData.Translation.GetString(None);
+			var searchResults = ModData.Translation.GetString(SearchResults);
+			var all = ModData.Translation.GetString(All);
+			var multiple = ModData.Translation.GetString(Multiple);
+
 			var categorySelector = widget.Get<DropDownButtonWidget>("CATEGORIES_DROPDOWN");
 			categorySelector.GetText = () =>
 			{
 				if (SelectedCategories.Count == 0)
-					return ModData.Translation.GetString(None);
+					return none;
 
 				if (!string.IsNullOrEmpty(searchFilter))
-					return ModData.Translation.GetString(SearchResults);
+					return searchResults;
 
 				if (SelectedCategories.Count == 1)
 					return SelectedCategories.First();
 
 				if (SelectedCategories.Count == allCategories.Length)
-					return ModData.Translation.GetString(All);
+					return all;
 
-				return ModData.Translation.GetString(Multiple);
+				return multiple;
 			};
 
 			categorySelector.OnMouseDown = _ =>

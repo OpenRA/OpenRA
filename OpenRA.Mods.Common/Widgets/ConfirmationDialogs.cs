@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -17,8 +18,11 @@ namespace OpenRA.Mods.Common.Widgets
 	public static class ConfirmationDialogs
 	{
 		public static void ButtonPrompt(
+			ModData modData,
 			string title,
 			string text,
+			Dictionary<string, object> titleArguments = null,
+			Dictionary<string, object> textArguments = null,
 			Action onConfirm = null,
 			Action onCancel = null,
 			Action onOther = null,
@@ -32,10 +36,12 @@ namespace OpenRA.Mods.Common.Widgets
 			var cancelButton = prompt.GetOrNull<ButtonWidget>("CANCEL_BUTTON");
 			var otherButton = prompt.GetOrNull<ButtonWidget>("OTHER_BUTTON");
 
-			prompt.Get<LabelWidget>("PROMPT_TITLE").GetText = () => title;
+			var titleMessage = modData.Translation.GetString(title, titleArguments);
+			prompt.Get<LabelWidget>("PROMPT_TITLE").GetText = () => titleMessage;
 
 			var headerTemplate = prompt.Get<LabelWidget>("PROMPT_TEXT");
-			var headerLines = text.Replace("\\n", "\n").Split('\n');
+			var textMessage = modData.Translation.GetString(text, textArguments);
+			var headerLines = textMessage.Split('\n');
 			var headerHeight = 0;
 			foreach (var l in headerLines)
 			{
@@ -61,7 +67,10 @@ namespace OpenRA.Mods.Common.Widgets
 				};
 
 				if (!string.IsNullOrEmpty(confirmText))
-					confirmButton.GetText = () => confirmText;
+				{
+					var confirmTextMessage = modData.Translation.GetString(confirmText);
+					confirmButton.GetText = () => confirmTextMessage;
+				}
 			}
 
 			if (onCancel != null && cancelButton != null)
@@ -75,7 +84,10 @@ namespace OpenRA.Mods.Common.Widgets
 				};
 
 				if (!string.IsNullOrEmpty(cancelText))
-					cancelButton.GetText = () => cancelText;
+				{
+					var cancelTextMessage = modData.Translation.GetString(cancelText);
+					cancelButton.GetText = () => cancelTextMessage;
+				}
 			}
 
 			if (onOther != null && otherButton != null)
@@ -88,11 +100,14 @@ namespace OpenRA.Mods.Common.Widgets
 				};
 
 				if (!string.IsNullOrEmpty(otherText))
-					otherButton.GetText = () => otherText;
+				{
+					var otherTextMessage = modData.Translation.GetString(otherText);
+					otherButton.GetText = () => otherTextMessage;
+				}
 			}
 		}
 
-		public static void TextInputPrompt(
+		public static void TextInputPrompt(ModData modData,
 			string title, string prompt, string initialText,
 			Action<string> onAccept, Action onCancel = null,
 			string acceptText = null, string cancelText = null,
@@ -102,13 +117,12 @@ namespace OpenRA.Mods.Common.Widgets
 			Func<bool> doValidate = null;
 			ButtonWidget acceptButton = null, cancelButton = null;
 
-			// Title
-			panel.Get<LabelWidget>("PROMPT_TITLE").GetText = () => title;
+			var titleMessage = modData.Translation.GetString(title);
+			panel.Get<LabelWidget>("PROMPT_TITLE").GetText = () => titleMessage;
 
-			// Prompt
-			panel.Get<LabelWidget>("PROMPT_TEXT").GetText = () => prompt;
+			var promptMessage = modData.Translation.GetString(prompt);
+			panel.Get<LabelWidget>("PROMPT_TEXT").GetText = () => promptMessage;
 
-			// Text input
 			var input = panel.Get<TextFieldWidget>("INPUT_TEXT");
 			var isValid = false;
 			input.Text = initialText;
@@ -133,10 +147,12 @@ namespace OpenRA.Mods.Common.Widgets
 			input.CursorPosition = input.Text.Length;
 			input.OnTextEdited = () => doValidate();
 
-			// Buttons
 			acceptButton = panel.Get<ButtonWidget>("ACCEPT_BUTTON");
 			if (!string.IsNullOrEmpty(acceptText))
-				acceptButton.GetText = () => acceptText;
+			{
+				var acceptTextMessage = modData.Translation.GetString(acceptText);
+				acceptButton.GetText = () => acceptTextMessage;
+			}
 
 			acceptButton.OnClick = () =>
 			{
@@ -149,7 +165,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 			cancelButton = panel.Get<ButtonWidget>("CANCEL_BUTTON");
 			if (!string.IsNullOrEmpty(cancelText))
-				cancelButton.GetText = () => cancelText;
+			{
+				var cancelTextMessage = modData.Translation.GetString(cancelText);
+				cancelButton.GetText = () => cancelTextMessage;
+			}
 
 			cancelButton.OnClick = () =>
 			{
@@ -157,7 +176,6 @@ namespace OpenRA.Mods.Common.Widgets
 				onCancel?.Invoke();
 			};
 
-			// Validation
 			doValidate = () =>
 			{
 				if (inputValidator == null)

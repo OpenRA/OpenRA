@@ -48,7 +48,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static readonly string Players = "players";
 
 		[TranslationReference("team")]
-		static readonly string Team = "team-no-team";
+		static readonly string TeamNumber = "team-number";
+
+		[TranslationReference]
+		static readonly string NoTeam = "no-team";
 
 		class CameraOption
 		{
@@ -116,7 +119,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var t in teams)
 			{
 				totalPlayers += t.Count();
-				var label = noTeams ? modData.Translation.GetString(Players) : modData.Translation.GetString(Team, Translation.Arguments("team", t.Key));
+				var label = noTeams ? modData.Translation.GetString(Players) : t.Key > 0
+					? modData.Translation.GetString(TeamNumber, Translation.Arguments("team", t.Key))
+					: modData.Translation.GetString(NoTeam);
+
 				groups.Add(label, t);
 			}
 

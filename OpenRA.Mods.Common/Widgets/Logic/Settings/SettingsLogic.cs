@@ -19,6 +19,39 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class SettingsLogic : ChromeLogic
 	{
+		[TranslationReference]
+		static readonly string SettingsSaveTitle = "settings-save-title";
+
+		[TranslationReference]
+		static readonly string SettingsSavePrompt = "settings-save-prompt";
+
+		[TranslationReference]
+		static readonly string SettingsSaveCancel = "settings-save-cancel";
+
+		[TranslationReference]
+		static readonly string RestartTitle = "restart-title";
+
+		[TranslationReference]
+		static readonly string RestartPrompt = "restart-prompt";
+
+		[TranslationReference]
+		static readonly string RestartAccept = "restart-accept";
+
+		[TranslationReference]
+		static readonly string RestartCancel = "restart-cancel";
+
+		[TranslationReference("panel")]
+		static readonly string ResetTitle = "reset-title";
+
+		[TranslationReference]
+		static readonly string ResetPrompt = "reset-prompt";
+
+		[TranslationReference]
+		static readonly string ResetAccept = "reset-accept";
+
+		[TranslationReference]
+		static readonly string ResetCancel = "reset-cancel";
+
 		readonly Dictionary<string, Func<bool>> leavePanelActions = new Dictionary<string, Func<bool>>();
 		readonly Dictionary<string, Action> resetPanelActions = new Dictionary<string, Action>();
 
@@ -34,7 +67,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static SettingsLogic() { }
 
 		[ObjectCreator.UseCtor]
-		public SettingsLogic(Widget widget, Action onExit, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
+		public SettingsLogic(Widget widget, Action onExit, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs, ModData modData)
 		{
 			panelContainer = widget.Get("PANEL_CONTAINER");
 			var panelTemplate = panelContainer.Get<ContainerWidget>("PANEL_TEMPLATE");
@@ -75,11 +108,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Action closeAndExit = () => { Ui.CloseWindow(); onExit(); };
 				if (needsRestart)
 				{
-					Action noRestart = () => ConfirmationDialogs.ButtonPrompt(
-						title: "Restart Required",
-						text: "Some changes will not be applied until\nthe game is restarted.",
+					Action noRestart = () => ConfirmationDialogs.ButtonPrompt(modData,
+						title: SettingsSaveTitle,
+						text: SettingsSavePrompt,
 						onCancel: closeAndExit,
-						cancelText: "Continue");
+						cancelText: SettingsSaveCancel);
 
 					if (!Game.ExternalMods.TryGetValue(ExternalMod.MakeKey(Game.ModData.Manifest), out var external))
 					{
@@ -87,13 +120,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						return;
 					}
 
-					ConfirmationDialogs.ButtonPrompt(
-						title: "Restart Now?",
-						text: "Some changes will not be applied until\nthe game is restarted. Restart now?",
+					ConfirmationDialogs.ButtonPrompt(modData,
+						title: RestartTitle,
+						text: RestartPrompt,
 						onConfirm: () => Game.SwitchToExternalMod(external, null, noRestart),
 						onCancel: closeAndExit,
-						confirmText: "Restart Now",
-						cancelText: "Restart Later");
+						confirmText: RestartAccept,
+						cancelText: RestartCancel);
 				}
 				else
 					closeAndExit();
@@ -107,13 +140,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Game.Settings.Save();
 				};
 
-				ConfirmationDialogs.ButtonPrompt(
-					title: $"Reset \"{panels[activePanel]}\"",
-					text: "Are you sure you want to reset\nall settings in this panel?",
+				ConfirmationDialogs.ButtonPrompt(modData,
+					title: ResetTitle,
+					titleArguments: Translation.Arguments("panel", panels[activePanel]),
+					text: ResetPrompt,
 					onConfirm: reset,
 					onCancel: () => { },
-					confirmText: "Reset",
-					cancelText: "Cancel");
+					confirmText: ResetAccept,
+					cancelText: ResetCancel);
 			};
 		}
 

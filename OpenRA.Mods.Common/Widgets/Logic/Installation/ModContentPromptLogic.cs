@@ -23,11 +23,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ModContent content;
 		bool requiredContentInstalled;
 
+		[TranslationReference]
+		static readonly string Continue = "continue";
+
+		[TranslationReference]
+		static readonly string Quit = "quit";
+
 		[ObjectCreator.UseCtor]
-		public ModContentPromptLogic(Widget widget, Manifest mod, ModContent content, Action continueLoading)
+		public ModContentPromptLogic(ModData modData, Widget widget, Manifest mod, ModContent content, Action continueLoading)
 		{
 			this.content = content;
 			CheckRequiredContentInstalled();
+
+			var continueMessage = modData.Translation.GetString(Continue);
+			var quitMessage = modData.Translation.GetString(Quit);
 
 			var panel = widget.Get("CONTENT_PROMPT_PANEL");
 			var headerTemplate = panel.Get<LabelWidget>("HEADER_TEMPLATE");
@@ -83,7 +92,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var quitButton = panel.Get<ButtonWidget>("QUIT_BUTTON");
-			quitButton.GetText = () => requiredContentInstalled ? "Continue" : "Quit";
+			quitButton.GetText = () => requiredContentInstalled ? continueMessage : quitMessage;
 			quitButton.Bounds.Y += headerHeight;
 			quitButton.OnClick = () =>
 			{

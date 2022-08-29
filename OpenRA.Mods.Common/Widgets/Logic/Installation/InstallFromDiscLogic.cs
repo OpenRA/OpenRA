@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		enum Mode { Progress, Message, List }
 
+		readonly ModData modData;
 		readonly ModContent content;
 		readonly Dictionary<string, ModContent.ModSource> sources;
 
@@ -53,9 +54,67 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		Mode visible = Mode.Progress;
 
+		[TranslationReference]
+		static readonly string DetectingDrives = "detecting-drives";
+
+		[TranslationReference]
+		static readonly string CheckingDiscs = "checking-discs";
+
+		[TranslationReference("title")]
+		static readonly string SearchingDiscFor = "searching-disc-for";
+
+		[TranslationReference]
+		static readonly string ContentPackageInstallation = "content-package-installation";
+
+		[TranslationReference]
+		static readonly string GameDiscs = "game-discs";
+
+		[TranslationReference]
+		static readonly string DigitalInstalls = "digital-installs";
+
+		[TranslationReference]
+		static readonly string GameContentNotFound = "game-content-not-found";
+
+		[TranslationReference]
+		static readonly string AlternativeContentSources = "alternative-content-sources";
+
+		[TranslationReference]
+		static readonly string InstallingContent = "installing-content";
+
+		[TranslationReference("filename")]
+		static readonly string CopyingFilename = "copying-filename";
+
+		[TranslationReference("filename", "progress")]
+		static readonly string CopyingFilenameProgress = "copying-filename-progress";
+
+		[TranslationReference]
+		static readonly string InstallationFailed = "installation-failed";
+
+		[TranslationReference]
+		static readonly string CheckInstallLog = "check-install-log";
+
+		[TranslationReference("filename")]
+		static readonly string Extracing = "extracting-filename";
+
+		[TranslationReference("filename", "progress")]
+		static readonly string ExtracingProgress = "extracting-filename-progress";
+
+		[TranslationReference]
+		static readonly string Continue = "continue";
+
+		[TranslationReference]
+		static readonly string Cancel = "cancel";
+
+		[TranslationReference]
+		static readonly string Retry = "retry";
+
+		[TranslationReference]
+		static readonly string Back = "back";
+
 		[ObjectCreator.UseCtor]
-		public InstallFromDiscLogic(Widget widget, ModContent content, Dictionary<string, ModContent.ModSource> sources)
+		public InstallFromDiscLogic(Widget widget, ModData modData, ModContent content, Dictionary<string, ModContent.ModSource> sources)
 		{
+			this.modData = modData;
 			this.content = content;
 			this.sources = sources;
 
@@ -108,8 +167,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void DetectContentDisks()
 		{
-			var message = "Detecting drives";
-			ShowProgressbar("Checking Discs", () => message);
+			var message = modData.Translation.GetString(DetectingDrives);
+			ShowProgressbar(modData.Translation.GetString(CheckingDiscs), () => message);
 			ShowBackRetry(DetectContentDisks);
 
 			new Task(() =>
@@ -132,7 +191,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				foreach (var kv in sources)
 				{
-					message = "Searching for " + kv.Value.Title;
+					message = modData.Translation.GetString(SearchingDiscFor, Translation.Arguments("title", kv.Value.Title));
 
 					var path = FindSourcePath(kv.Value, volumes);
 					if (path != null)
@@ -148,7 +207,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							Game.RunAfterTick(() =>
 							{
-								ShowList(kv.Value.Title, "The following content packages will be installed:", packages);
+								ShowList(kv.Value.Title, modData.Translation.GetString(ContentPackageInstallation), packages);
 								ShowContinueCancel(() => InstallFromDisc(path, kv.Value));
 							});
 
@@ -169,7 +228,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var options = new Dictionary<string, IEnumerable<string>>()
 				{
-					{ "Game Discs", discs },
+					{ modData.Translation.GetString(GameDiscs), discs },
 				};
 
 				if (Platform.CurrentPlatform == PlatformType.Windows)
@@ -179,12 +238,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						.Select(s => s.Title)
 						.Distinct();
 
-					options.Add("Digital Installs", installations);
+					options.Add(modData.Translation.GetString(DigitalInstalls), installations);
 				}
 
 				Game.RunAfterTick(() =>
 				{
-					ShowList("Game Content Not Found", "Please insert or install one of the following content sources:", options);
+					ShowList(modData.Translation.GetString(GameContentNotFound), modData.Translation.GetString(AlternativeContentSources), options);
 					ShowBackRetry(DetectContentDisks);
 				});
 			}).Start();
@@ -193,7 +252,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void InstallFromDisc(string path, ModContent.ModSource modSource)
 		{
 			var message = "";
-			ShowProgressbar("Installing Content", () => message);
+			ShowProgressbar(modData.Translation.GetString(InstallingContent), () => message);
 			ShowDisabledCancel();
 
 			new Task(() =>
@@ -231,9 +290,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 											Action<long> onProgress = null;
 											if (length < ShowPercentageThreshold)
-												message = "Copying " + displayFilename;
+												message = modData.Translation.GetString(CopyingFilename, Translation.Arguments("filename", displayFilename));
 											else
-												onProgress = b => message = $"Copying {displayFilename} ({100 * b / length}%)";
+												onProgress = b => message = modData.Translation.GetString(CopyingFilenameProgress, Translation.Arguments("filename", displayFilename, "progress", 100 * b / length));
 
 											CopyStream(source, target, length, onProgress);
 										}
@@ -244,25 +303,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 							case "extract-raw":
 								{
-									ExtractFromPackage(ExtractionType.Raw, path, i.Value, extracted, m => message = m);
+									ExtractFromPackage(modData, ExtractionType.Raw, path, i.Value, extracted, m => message = m);
 									break;
 								}
 
 							case "extract-blast":
 								{
-									ExtractFromPackage(ExtractionType.Blast, path, i.Value, extracted, m => message = m);
+									ExtractFromPackage(modData, ExtractionType.Blast, path, i.Value, extracted, m => message = m);
 									break;
 								}
 
 							case "extract-mscab":
 								{
-									ExtractFromMSCab(path, i.Value, extracted, m => message = m);
+									ExtractFromMSCab(modData, path, i.Value, extracted, m => message = m);
 									break;
 								}
 
 							case "extract-iscab":
 								{
-									ExtractFromISCab(path, i.Value, extracted, m => message = m);
+									ExtractFromISCab(modData, path, i.Value, extracted, m => message = m);
 									break;
 								}
 
@@ -296,7 +355,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					Game.RunAfterTick(() =>
 					{
-						ShowMessage("Installation Failed", "Refer to install.log in the logs directory for details.");
+						ShowMessage(modData.Translation.GetString(InstallationFailed), modData.Translation.GetString(CheckInstallLog));
 						ShowBackRetry(() => InstallFromDisc(path, modSource));
 					});
 				}
@@ -320,7 +379,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		enum ExtractionType { Raw, Blast }
 
-		static void ExtractFromPackage(ExtractionType type, string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
+		static void ExtractFromPackage(ModData modData, ExtractionType type, string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
 			// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
 			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : Path.Combine(path, actionYaml.Value);
@@ -360,9 +419,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					Action<long> onProgress = null;
 					if (length < ShowPercentageThreshold)
-						updateMessage("Extracting " + displayFilename);
+						updateMessage(modData.Translation.GetString(Extracing, Translation.Arguments("filename", displayFilename)));
 					else
-						onProgress = b => updateMessage($"Extracting {displayFilename} ({100 * b / length}%)");
+						onProgress = b => updateMessage(modData.Translation.GetString(ExtracingProgress, Translation.Arguments("filename", displayFilename, "progress", 100 * b / length)));
 
 					using (var target = File.OpenWrite(targetPath))
 					{
@@ -376,7 +435,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		static void ExtractFromMSCab(string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
+		static void ExtractFromMSCab(ModData modData, string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
 			// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
 			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : Path.Combine(path, actionYaml.Value);
@@ -400,14 +459,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						Log.Write("install", $"Extracting {sourcePath} -> {targetPath}");
 						var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
-						Action<int> onProgress = percent => updateMessage($"Extracting {displayFilename} ({percent}%)");
+						Action<int> onProgress = percent => updateMessage(modData.Translation.GetString(ExtracingProgress, Translation.Arguments("filename", displayFilename, "progress", percent)));
 						reader.ExtractFile(node.Value.Value, target, onProgress);
 					}
 				}
 			}
 		}
 
-		static void ExtractFromISCab(string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
+		static void ExtractFromISCab(ModData modData, string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
 			// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
 			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : Path.Combine(path, actionYaml.Value);
@@ -449,7 +508,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							Log.Write("install", $"Extracting {sourcePath} -> {targetPath}");
 							var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
-							Action<int> onProgress = percent => updateMessage($"Extracting {displayFilename} ({percent}%)");
+							Action<int> onProgress = percent => updateMessage(modData.Translation.GetString(ExtracingProgress, Translation.Arguments("filename", displayFilename, "progress", percent)));
 							reader.ExtractFile(node.Value.Value, target, onProgress);
 						}
 					}
@@ -627,11 +686,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void ShowContinueCancel(Action continueAction)
 		{
 			primaryButton.OnClick = continueAction;
-			primaryButton.Text = "Continue";
+			primaryButton.Text = modData.Translation.GetString(Continue);
 			primaryButton.Visible = true;
 
 			secondaryButton.OnClick = Ui.CloseWindow;
-			secondaryButton.Text = "Cancel";
+			secondaryButton.Text = modData.Translation.GetString(Cancel);
 			secondaryButton.Visible = true;
 			secondaryButton.Disabled = false;
 			Game.RunAfterTick(Ui.ResetTooltips);
@@ -640,11 +699,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void ShowBackRetry(Action retryAction)
 		{
 			primaryButton.OnClick = retryAction;
-			primaryButton.Text = "Retry";
+			primaryButton.Text = modData.Translation.GetString(Retry);
 			primaryButton.Visible = true;
 
 			secondaryButton.OnClick = Ui.CloseWindow;
-			secondaryButton.Text = "Back";
+			secondaryButton.Text = modData.Translation.GetString(Back);
 			secondaryButton.Visible = true;
 			secondaryButton.Disabled = false;
 			Game.RunAfterTick(Ui.ResetTooltips);

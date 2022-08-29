@@ -17,7 +17,7 @@ namespace OpenRA.Server
 	class PlayerMessageTracker
 	{
 		[TranslationReference("remaining")]
-		static readonly string ChatDisabled = "chat-disabled";
+		static readonly string ChatTemporaryDisabled = "chat-temp-disabled";
 
 		readonly Dictionary<int, List<long>> messageTracker = new Dictionary<int, List<long>>();
 		readonly Server server;
@@ -56,7 +56,7 @@ namespace OpenRA.Server
 			if (!isAdmin && time < settings.FloodLimitJoinCooldown)
 			{
 				var remaining = CalculateRemaining(settings.FloodLimitJoinCooldown);
-				sendLocalizedMessageTo(conn, ChatDisabled, Translation.Arguments("remaining", remaining));
+				sendLocalizedMessageTo(conn, ChatTemporaryDisabled, Translation.Arguments("remaining", remaining));
 				return true;
 			}
 
@@ -64,7 +64,7 @@ namespace OpenRA.Server
 			if (tracker.Count >= settings.FloodLimitMessageCount)
 			{
 				var remaining = CalculateRemaining(tracker[0] + settings.FloodLimitInterval);
-				sendLocalizedMessageTo(conn, ChatDisabled, Translation.Arguments("remaining", remaining));
+				sendLocalizedMessageTo(conn, ChatTemporaryDisabled, Translation.Arguments("remaining", remaining));
 				return true;
 			}
 

@@ -32,7 +32,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ContainerWidget chatChrome;
 		readonly ScrollPanelWidget chatScrollPanel;
 		readonly TextFieldWidget chatText;
-		readonly CachedTransform<int, string> chatDisabledLabel;
+		readonly CachedTransform<int, string> chatAvailableIn;
+		readonly string chatDisabled;
 		readonly Dictionary<TextNotificationPool, Widget> templates = new Dictionary<TextNotificationPool, Widget>();
 
 		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
@@ -52,6 +53,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference("seconds")]
 		static readonly string ChatAvailability = "chat-availability";
 
+		[TranslationReference]
+		static readonly string ChatDisabled = "chat-disabled";
+
 		[ObjectCreator.UseCtor]
 		public IngameChatLogic(Widget widget, OrderManager orderManager, World world, ModData modData, bool isMenuChat, Dictionary<string, MiniYaml> logicArgs)
 		{
@@ -68,6 +72,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var teamMessage = modData.Translation.GetString(Team);
 			var allMessage = modData.Translation.GetString(All);
+
+			chatDisabled = modData.Translation.GetString(ChatDisabled);
 
 			// Only execute this once, the first time this widget is loaded
 			if (TextNotificationsManager.MutedPlayers.Count == 0)
@@ -188,7 +194,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
-			chatDisabledLabel = new CachedTransform<int, string>(x => modData.Translation.GetString(ChatAvailability, Translation.Arguments("seconds", x)));
+			chatAvailableIn = new CachedTransform<int, string>(x => modData.Translation.GetString(ChatAvailability, Translation.Arguments("seconds", x)));
 
 			if (!isMenuChat)
 			{
@@ -320,7 +326,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (TextNotificationsManager.ChatDisabledUntil != uint.MaxValue)
 					remaining = (int)(TextNotificationsManager.ChatDisabledUntil - Game.RunTime + 999) / 1000;
 
-				chatText.Text = chatDisabledLabel.Update(remaining);
+				chatText.Text = remaining == 0 ? chatDisabled : chatAvailableIn.Update(remaining);
 			}
 		}
 

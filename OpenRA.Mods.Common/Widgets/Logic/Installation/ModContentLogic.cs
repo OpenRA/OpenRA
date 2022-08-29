@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ModContentLogic : ChromeLogic
 	{
+		readonly ModData modData;
 		readonly ModContent content;
 		readonly ScrollPanelWidget scrollPanel;
 		readonly Widget template;
@@ -29,9 +30,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool discAvailable;
 
+		[TranslationReference]
+		static readonly string ManualInstall = "manual-install";
+
 		[ObjectCreator.UseCtor]
-		public ModContentLogic(Widget widget, Manifest mod, ModContent content, Action onCancel)
+		public ModContentLogic(ModData modData, Widget widget, Manifest mod, ModContent content, Action onCancel)
 		{
+			this.modData = modData;
 			this.content = content;
 
 			var panel = widget.Get("CONTENT_PANEL");
@@ -137,7 +142,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var requiresDiscWidget = container.Get<LabelWidget>("REQUIRES_DISC");
 				requiresDiscWidget.IsVisible = () => !installed && !downloadEnabled;
 				if (!isSourceAvailable)
-					requiresDiscWidget.GetText = () => "Manual Install";
+				{
+					var manualInstall = modData.Translation.GetString(ManualInstall);
+					requiresDiscWidget.GetText = () => manualInstall;
+				}
 
 				scrollPanel.AddChild(container);
 			}

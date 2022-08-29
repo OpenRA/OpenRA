@@ -21,6 +21,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Action onAbort;
 		readonly Action<string> onRetry;
 
+		[TranslationReference("endpoint")]
+		static readonly string ConnectingToEndpoint = "connecting-to-endpoint";
+
 		void ConnectionStateChanged(OrderManager om, string password, NetworkConnection connection)
 		{
 			if (connection.ConnectionState == ConnectionState.Connected)
@@ -51,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public ConnectionLogic(Widget widget, ConnectionTarget endpoint, Action onConnect, Action onAbort, Action<string> onRetry)
+		public ConnectionLogic(Widget widget, ModData modData, ConnectionTarget endpoint, Action onConnect, Action onAbort, Action<string> onRetry)
 		{
 			this.onConnect = onConnect;
 			this.onAbort = onAbort;
@@ -62,7 +65,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var panel = widget;
 			panel.Get<ButtonWidget>("ABORT_BUTTON").OnClick = () => { CloseWindow(); onAbort(); };
 
-			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => $"Connecting to {endpoint}...";
+			var connectingDesc = modData.Translation.GetString(ConnectingToEndpoint, Translation.Arguments("endpoint", endpoint));
+			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => connectingDesc;
 		}
 
 		public static void Connect(ConnectionTarget endpoint, string password, Action onConnect, Action onAbort)
@@ -85,6 +89,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly PasswordFieldWidget passwordField;
 		bool passwordOffsetAdjusted;
 
+		[TranslationReference("target")]
+		static readonly string CouldNotConnectToTarget = "could-not-connect-to-target";
+
+		[TranslationReference]
+		static readonly string UnknownError = "unknown-error";
+
+		[TranslationReference]
+		static readonly string PasswordRequired = "password-required";
+
+		[TranslationReference]
+		static readonly string ConnectionFailed = "connection-failed";
+
 		[ObjectCreator.UseCtor]
 		public ConnectionFailedLogic(Widget widget, ModData modData, OrderManager orderManager, NetworkConnection connection, string password, Action onAbort, Action<string> onRetry)
 		{
@@ -104,13 +120,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				onRetry(pass);
 			};
 
-			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => $"Could not connect to {connection.Target}";
+			var connectingDescText = modData.Translation.GetString(CouldNotConnectToTarget, Translation.Arguments("target", connection.Target));
+			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => connectingDescText;
 
 			var connectionError = widget.Get<LabelWidget>("CONNECTION_ERROR");
-			connectionError.GetText = () => modData.Translation.GetString(orderManager.ServerError) ?? connection.ErrorMessage ?? "Unknown error";
+			var connectionErrorText = modData.Translation.GetString(orderManager.ServerError) ?? connection.ErrorMessage ?? modData.Translation.GetString(UnknownError);
+			connectionError.GetText = () => connectionErrorText;
 
 			var panelTitle = widget.Get<LabelWidget>("TITLE");
-			panelTitle.GetText = () => orderManager.AuthenticationFailed ? "Password Required" : "Connection Failed";
+			var panelTitleText = orderManager.AuthenticationFailed ? modData.Translation.GetString(PasswordRequired) : modData.Translation.GetString(ConnectionFailed);
+			panelTitle.GetText = () => panelTitleText;
 
 			passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");
 			if (passwordField != null)
@@ -151,6 +170,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	public class ConnectionSwitchModLogic : ChromeLogic
 	{
+		[TranslationReference]
+		static readonly string ModSwitchFailed = "mod-switch-failed";
+
 		[ObjectCreator.UseCtor]
 		public ConnectionSwitchModLogic(Widget widget, OrderManager orderManager, NetworkConnection connection, Action onAbort, Action<string> onRetry)
 		{
@@ -167,7 +189,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var launchCommand = $"Launch.URI={new UriBuilder("tcp", connection.EndPoint.Address.ToString(), connection.EndPoint.Port)}";
 				Game.SwitchToExternalMod(CurrentServerSettings.ServerExternalMod, new[] { launchCommand }, () =>
 				{
-					orderManager.ServerError = "Failed to switch mod.";
+					orderManager.ServerError = ModSwitchFailed;
 					Ui.CloseWindow();
 					Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
 					{

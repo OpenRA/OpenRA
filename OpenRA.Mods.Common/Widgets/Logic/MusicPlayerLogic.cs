@@ -18,6 +18,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MusicPlayerLogic : ChromeLogic
 	{
+		[TranslationReference]
+		static readonly string SoundMuted = "sound-muted";
+
+		[TranslationReference]
+		static readonly string NoSongPlaying = "no-song-playing";
+
 		readonly ScrollPanelWidget musicList;
 		readonly ScrollItemWidget itemTemplate;
 
@@ -25,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		MusicInfo currentSong = null;
 
 		[ObjectCreator.UseCtor]
-		public MusicPlayerLogic(Widget widget, World world, Action onExit)
+		public MusicPlayerLogic(Widget widget, World world, ModData modData, Action onExit)
 		{
 			var panel = widget;
 
@@ -43,7 +49,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				panel.Get<LabelWidget>("MUTE_LABEL").GetText = () =>
 				{
 					if (Game.Settings.Sound.Mute)
-						return "Audio has been muted in settings.";
+						return modData.Translation.GetString(SoundMuted);
 
 					return "";
 				};
@@ -95,9 +101,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return $"{minutes:D2}:{seconds:D2} / {totalMinutes:D2}:{totalSeconds:D2}";
 			};
 
+			var noSongPlaying = modData.Translation.GetString(NoSongPlaying);
 			var musicTitle = panel.GetOrNull<LabelWidget>("TITLE_LABEL");
 			if (musicTitle != null)
-				musicTitle.GetText = () => currentSong != null ? currentSong.Title : "No song playing";
+				musicTitle.GetText = () => currentSong != null ? currentSong.Title : noSongPlaying;
 
 			var musicSlider = panel.Get<SliderWidget>("MUSIC_SLIDER");
 			musicSlider.OnChange += x => Game.Sound.MusicVolume = x;

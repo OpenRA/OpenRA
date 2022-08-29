@@ -42,6 +42,36 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
+		[TranslationReference]
+		static readonly string SaveMapFailedTitle = "save-map-failed-title";
+
+		[TranslationReference]
+		static readonly string SaveMapFailedPrompt = "save-map-failed-prompt";
+
+		[TranslationReference]
+		static readonly string SaveMapFailedAccept = "save-map-failed-accept";
+
+		[TranslationReference]
+		static readonly string Unpacked = "unpacked";
+
+		[TranslationReference]
+		static readonly string OverwriteMapFailedTitle = "overwrite-map-failed-title";
+
+		[TranslationReference]
+		static readonly string OverwriteMapFailedPrompt = "overwrite-map-failed-prompt";
+
+		[TranslationReference]
+		static readonly string SaveMapFailedConfirm = "overwrite-map-failed-confirm";
+
+		[TranslationReference]
+		static readonly string OverwriteMapOutsideEditTitle = "overwrite-map-outside-edit-title";
+
+		[TranslationReference]
+		static readonly string OverwriteMapOutsideEditPrompt = "overwrite-map-outside-edit-prompt";
+
+		[TranslationReference]
+		static readonly string SaveMapMapOutsideConfirm = "overwrite-map-outside-edit-confirm";
+
 		[ObjectCreator.UseCtor]
 		public SaveMapLogic(Widget widget, ModData modData, Action<string> onSave, Action onExit,
 			Map map, List<MiniYamlNode> playerDefinitions, List<MiniYamlNode> actorDefinitions)
@@ -135,7 +165,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var fileTypes = new Dictionary<MapFileType, MapFileTypeInfo>()
 			{
 				{ MapFileType.OraMap, new MapFileTypeInfo { Extension = ".oramap", UiLabel = ".oramap" } },
-				{ MapFileType.Unpacked, new MapFileTypeInfo { Extension = "", UiLabel = "(unpacked)" } }
+				{ MapFileType.Unpacked, new MapFileTypeInfo { Extension = "", UiLabel = $"({modData.Translation.GetString(Unpacked)})" } }
 			};
 
 			var typeDropdown = widget.Get<DropDownButtonWidget>("TYPE_DROPDOWN");
@@ -192,11 +222,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Log.Write("debug", $"Failed to save map at {combinedPath}");
 					Log.Write("debug", e);
 
-					ConfirmationDialogs.ButtonPrompt(
-						title: "Failed to save map",
-						text: "See debug.log for details.",
+					ConfirmationDialogs.ButtonPrompt(modData,
+						title: SaveMapFailedTitle,
+						text: SaveMapFailedPrompt,
 						onConfirm: () => { },
-						confirmText: "OK");
+						confirmText: SaveMapFailedAccept);
 				}
 			};
 
@@ -213,10 +243,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					// When creating a new map or when file paths don't match
 					if (modData.MapCache.Any(m => m.Status == MapStatus.Available && m.Package?.Name == combinedPath))
 					{
-						ConfirmationDialogs.ButtonPrompt(
-							title: "Warning",
-							text: "By saving you will overwrite\n an already existing map.",
-							confirmText: "Save",
+						ConfirmationDialogs.ButtonPrompt(modData,
+							title: OverwriteMapFailedTitle,
+							text: OverwriteMapFailedPrompt,
+							confirmText: SaveMapFailedConfirm,
 							onConfirm: () => saveMap(combinedPath),
 							onCancel: () => { });
 
@@ -229,10 +259,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var recentUid = modData.MapCache.GetUpdatedMap(map.Uid);
 					if (recentUid != null && map.Uid != recentUid && modData.MapCache[recentUid].Status == MapStatus.Available)
 					{
-						ConfirmationDialogs.ButtonPrompt(
-							title: "Warning",
-							text: "The map has been edited from outside the editor.\n By saving you may overwrite progress",
-							confirmText: "Save",
+						ConfirmationDialogs.ButtonPrompt(modData,
+							title: OverwriteMapOutsideEditTitle,
+							text: OverwriteMapOutsideEditPrompt,
+							confirmText: SaveMapMapOutsideConfirm,
 							onConfirm: () => saveMap(combinedPath),
 							onCancel: () => { });
 

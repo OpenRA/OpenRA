@@ -25,6 +25,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		enum PlayingVideo { None, Info, Briefing, GameStart }
 
+		[TranslationReference]
+		static readonly string NoVideoTitle = "no-video-title";
+
+		[TranslationReference]
+		static readonly string NoVideoText = "no-video-text";
+
+		[TranslationReference]
+		static readonly string NoVideoCancel = "no-video-cancel";
+
+		[TranslationReference]
+		static readonly string CantPlayTitle = "cant-play-title";
+
+		[TranslationReference]
+		static readonly string CantPlayPrompt = "cant-play-prompt";
+
+		[TranslationReference]
+		static readonly string CantPlayCancel = "cant-play-cancel";
+
 		readonly ModData modData;
 		readonly Action onStart;
 		readonly ScrollPanelWidget descriptionPanel;
@@ -330,10 +348,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			if (!modData.DefaultFileSystem.Exists(video))
 			{
-				ConfirmationDialogs.ButtonPrompt(
-					title: "Video not installed",
-					text: "The game videos can be installed from the\n\"Manage Content\" menu in the mod chooser.",
-					cancelText: "Back",
+				ConfirmationDialogs.ButtonPrompt(modData,
+					title: NoVideoTitle,
+					text: NoVideoText,
+					cancelText: NoVideoCancel,
 					onCancel: () => { });
 			}
 			else
@@ -347,10 +365,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					StopVideo(player);
 
-					ConfirmationDialogs.ButtonPrompt(
-						title: "Unable to play video",
-						text: "Something went wrong during video playback.",
-						cancelText: "Back",
+					ConfirmationDialogs.ButtonPrompt(modData,
+						title: CantPlayTitle,
+						text: CantPlayPrompt,
+						cancelText: CantPlayCancel,
 						onCancel: () => { });
 				}
 				else

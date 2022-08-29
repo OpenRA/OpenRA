@@ -31,6 +31,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollPanelWidget newsPanel;
 		readonly Widget newsTemplate;
 		readonly LabelWidget newsStatus;
+		readonly ModData modData;
+
+		[TranslationReference]
+		static readonly string LoadingNews = "loading-news";
+
+		[TranslationReference("message")]
+		static readonly string NewsRetrivalFailed = "news-retrival-failed";
+
+		[TranslationReference("message")]
+		static readonly string NewsParsingFailed = "news-parsing-failed";
 
 		// Update news once per game launch
 		static bool fetchedNews;
@@ -52,6 +62,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public MainMenuLogic(Widget widget, World world, ModData modData)
 		{
+			this.modData = modData;
+
 			rootMenu = widget;
 			rootMenu.Get<LabelWidget>("VERSION_LABEL").Text = modData.Manifest.Metadata.Version;
 
@@ -205,7 +217,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				newsPanel.RemoveChild(newsTemplate);
 
 				newsStatus = newsPanel.Get<LabelWidget>("NEWS_STATUS");
-				SetNewsStatus("Loading news");
+				SetNewsStatus(modData.Translation.GetString(LoadingNews));
 			}
 
 			Game.OnRemoteDirectConnect += OnRemoteDirectConnect;
@@ -318,7 +330,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							{
 								Game.RunAfterTick(() => // run on the main thread
 								{
-									SetNewsStatus($"Failed to retrieve news: {e.Message}");
+									SetNewsStatus(modData.Translation.GetString(NewsRetrivalFailed, Translation.Arguments("message", e.Message)));
 								});
 							}
 						});
@@ -390,7 +402,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				SetNewsStatus($"Failed to parse news: {ex.Message}");
+				SetNewsStatus(modData.Translation.GetString(NewsParsingFailed, Translation.Arguments("message", ex.Message)));
 			}
 
 			return null;

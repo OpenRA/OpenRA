@@ -60,12 +60,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		float spriteScale;
 		float modelScale;
 
+		[TranslationReference("length")]
+		static readonly string LengthInSeconds = "length-in-seconds";
+
+		[TranslationReference]
+		static readonly string AllPackages = "all-packages";
+
+		readonly string allPackages;
+
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, ModData modData, WorldRenderer worldRenderer)
 		{
 			world = worldRenderer.World;
 			this.modData = modData;
 			panel = widget;
+
+			allPackages = modData.Translation.GetString(AllPackages);
 
 			var colorPickerPalettes = world.WorldActor.TraitsImplementing<IProvidesAssetBrowserColorPickerPalettes>()
 				.SelectMany(p => p.ColorPickerPaletteNames)
@@ -194,13 +204,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var frameText = panel.GetOrNull<LabelWidget>("FRAME_COUNT");
 			if (frameText != null)
 			{
+				var soundLength = new CachedTransform<int, string>(p =>
+					modData.Translation.GetString(LengthInSeconds, Translation.Arguments("length", p)));
 				frameText.GetText = () =>
 				{
 					if (isVideoLoaded)
 						return $"{player.Video.CurrentFrameIndex + 1} / {player.Video.FrameCount}";
 
 					if (currentSoundFormat != null)
-						return $"{Math.Round(currentSoundFormat.LengthInSeconds, 3)} sec";
+						return soundLength.Update((int)currentSoundFormat.LengthInSeconds);
 
 					return $"{currentFrame} / {currentSprites.Length - 1}";
 				};
@@ -607,7 +619,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string GetSourceDisplayName(IReadOnlyPackage source)
 		{
 			if (source == null)
-				return "All Packages";
+				return allPackages;
 
 			// Packages that are explicitly mounted in the filesystem use their explicit mount name
 			var fs = (OpenRA.FileSystem.FileSystem)modData.DefaultFileSystem;

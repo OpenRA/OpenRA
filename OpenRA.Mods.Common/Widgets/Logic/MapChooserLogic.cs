@@ -18,6 +18,52 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MapChooserLogic : ChromeLogic
 	{
+		[TranslationReference]
+		static readonly string AllMaps = "all-maps";
+		readonly string allMaps;
+
+		[TranslationReference]
+		static readonly string NoMatches = "no-matches";
+
+		[TranslationReference("players")]
+		static readonly string Players = "player-players";
+
+		[TranslationReference("author")]
+		static readonly string CreatedBy = "created-by";
+
+		[TranslationReference]
+		static readonly string MapSizeHuge = "map-size-huge";
+
+		[TranslationReference]
+		static readonly string MapSizeLarge = "map-size-large";
+
+		[TranslationReference]
+		static readonly string MapSizeMedium = "map-size-medium";
+
+		[TranslationReference]
+		static readonly string MapSizeSmall = "map-size-small";
+
+		[TranslationReference("map")]
+		static readonly string MapDeletionFailed = "map-deletion-failed";
+
+		[TranslationReference]
+		static readonly string DeleteMapTitle = "delete-map-title";
+
+		[TranslationReference("title")]
+		static readonly string DeleteMapPrompt = "delete-map-prompt";
+
+		[TranslationReference]
+		static readonly string DeleteMapAccept = "delete-map-accept";
+
+		[TranslationReference]
+		static readonly string DeleteAllMapsTitle = "delete-all-maps-title";
+
+		[TranslationReference]
+		static readonly string DeleteAllMapsPrompt = "delete-all-maps-prompt";
+
+		[TranslationReference]
+		static readonly string DeleteAllMapsAccept = "delete-all-maps-accept";
+
 		readonly Widget widget;
 		readonly DropDownButtonWidget gameModeDropdown;
 		readonly ModData modData;
@@ -42,6 +88,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.widget = widget;
 			this.modData = modData;
 			this.onSelect = onSelect;
+
+			allMaps = modData.Translation.GetString(AllMaps);
 
 			var approving = new Action(() =>
 			{
@@ -192,7 +240,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// 'all game types' extra item
 				categories.Insert(0, (null as string, tabMaps[tab].Length));
 
-				Func<(string Category, int Count), string> showItem = x => $"{x.Category ?? "All Maps"} ({x.Count})";
+				Func<(string Category, int Count), string> showItem = x => (x.Category ?? allMaps) + $" ({x.Count})";
 
 				Func<(string Category, int Count), ScrollItemWidget, ScrollItemWidget> setupItem = (ii, template) =>
 				{
@@ -210,7 +258,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var item = categories.FirstOrDefault(m => m.Category == category);
 					if (item == default((string, int)))
-						item.Category = "No matches";
+						item.Category = modData.Translation.GetString(NoMatches);
 
 					return showItem(item);
 				};
@@ -269,25 +317,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (type != null)
 						details = type + " ";
 
-					details += $"({preview.PlayerCount} players)";
+					details += modData.Translation.GetString(Players, Translation.Arguments("players", preview.PlayerCount));
 					detailsWidget.GetText = () => details;
 				}
 
 				var authorWidget = item.GetOrNull<LabelWithTooltipWidget>("AUTHOR");
-				if (authorWidget != null)
-				{
-					WidgetUtils.TruncateLabelToTooltip(authorWidget, $"Created by {preview.Author}");
-				}
+				if (authorWidget != null && !string.IsNullOrEmpty(preview.Author))
+					WidgetUtils.TruncateLabelToTooltip(authorWidget, modData.Translation.GetString(CreatedBy, Translation.Arguments("author", preview.Author)));
 
 				var sizeWidget = item.GetOrNull<LabelWidget>("SIZE");
 				if (sizeWidget != null)
 				{
 					var size = preview.Bounds.Width + "x" + preview.Bounds.Height;
 					var numberPlayableCells = preview.Bounds.Width * preview.Bounds.Height;
-					if (numberPlayableCells >= 120 * 120) size += " (Huge)";
-					else if (numberPlayableCells >= 90 * 90) size += " (Large)";
-					else if (numberPlayableCells >= 60 * 60) size += " (Medium)";
-					else size += " (Small)";
+					if (numberPlayableCells >= 120 * 120) size += " " + modData.Translation.GetString(MapSizeHuge);
+					else if (numberPlayableCells >= 90 * 90) size += " " + modData.Translation.GetString(MapSizeLarge);
+					else if (numberPlayableCells >= 60 * 60) size += " " + modData.Translation.GetString(MapSizeMedium);
+					else size += " " + modData.Translation.GetString(MapSizeSmall);
 					sizeWidget.GetText = () => size;
 				}
 
@@ -315,7 +361,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				TextNotificationsManager.Debug("Failed to delete map '{0}'. See the debug.log file for details.", map);
+				TextNotificationsManager.Debug(modData.Translation.GetString(MapDeletionFailed, Translation.Arguments("map", map)));
 				Log.Write("debug", ex.ToString());
 			}
 
@@ -324,23 +370,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void DeleteOneMap(string map, Action<string> after)
 		{
-			ConfirmationDialogs.ButtonPrompt(
-				title: "Delete map",
-				text: $"Delete the map '{modData.MapCache[map].Title}'?",
+			ConfirmationDialogs.ButtonPrompt(modData,
+				title: DeleteMapTitle,
+				text: DeleteMapPrompt,
+				textArguments: Translation.Arguments("title", modData.MapCache[map].Title),
 				onConfirm: () =>
 				{
 					var newUid = DeleteMap(map);
 					after?.Invoke(newUid);
 				},
-				confirmText: "Delete",
+				confirmText: DeleteMapAccept,
 				onCancel: () => { });
 		}
 
 		void DeleteAllMaps(string[] maps, Action<string> after)
 		{
-			ConfirmationDialogs.ButtonPrompt(
-				title: "Delete maps",
-				text: "Delete all maps on this page?",
+			ConfirmationDialogs.ButtonPrompt(modData,
+				title: DeleteAllMapsTitle,
+				text: DeleteAllMapsPrompt,
 				onConfirm: () =>
 				{
 					foreach (var map in maps)
@@ -348,7 +395,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					after?.Invoke(Game.ModData.MapCache.ChooseInitialMap(null, Game.CosmeticRandom));
 				},
-				confirmText: "Delete",
+				confirmText: DeleteAllMapsAccept,
 				onCancel: () => { });
 		}
 	}

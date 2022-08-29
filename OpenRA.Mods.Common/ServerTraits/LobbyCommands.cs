@@ -785,14 +785,14 @@ namespace OpenRA.Mods.Common.Server
 				}
 
 				Log.Write("server", $"Kicking client {kickClientID}.");
-				server.SendLocalizedMessage(Kicked, Translation.Arguments("admin", client.Name, "client", kickClient.Name));
+				server.SendLocalizedMessage(Kicked, Translation.Arguments("admin", client.Name, "player", kickClient.Name));
 				server.SendOrderTo(kickConn, "ServerError", YouWereKicked);
 				server.DropClient(kickConn);
 
 				if (bool.TryParse(split[1], out var tempBan) && tempBan)
 				{
 					Log.Write("server", $"Temporarily banning client {kickClientID} ({kickClient.IPAddress}).");
-					server.SendLocalizedMessage(TempBan, Translation.Arguments("admin", client.Name, "client", kickClient.Name));
+					server.SendLocalizedMessage(TempBan, Translation.Arguments("admin", client.Name, "player", kickClient.Name));
 					server.TempBans.Add(kickClient.IPAddress);
 				}
 

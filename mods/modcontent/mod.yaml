@@ -35,6 +35,9 @@ ChromeMetrics:
 	common|metrics.yaml
 	modcontent|metrics.yaml
 
+Translations:
+	common|languages/en.ftl
+
 Fonts:
 	Tiny:
 		Font: common|FreeSans.ttf
