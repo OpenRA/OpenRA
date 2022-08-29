@@ -281,10 +281,13 @@ observer-scrollpanel-button-disabled:
 	Inherits: ^Dialog
 	PanelRegion: 769, 385, 2, 2, 122, 122, 2, 2
 
-observer-scrollheader-selected:
+observer-scrollheader:
 	Inherits: observer-scrollpanel-button-disabled
 
-observer-scrollitem-selected:
+observer-scrollheader-highlighted:
+	Inherits: observer-scrollpanel-button-disabled
+
+observer-scrollitem-highlighted:
 	Inherits: observer-scrollpanel-button-pressed
 
 observer-scrollitem-hover:
