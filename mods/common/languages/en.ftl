@@ -130,7 +130,7 @@ complete = { $percentage }% complete
 ## LobbyLogic, InGameChatLogic
 chat-availability =
     { $seconds ->
-        [zero] Chat Disabled
+        [0] Chat Disabled
         [one] Chat available in { $seconds } second...
         *[other] Chat available in { $seconds } seconds...
     }
@@ -165,7 +165,7 @@ unrevealed-terrain = Unrevealed Terrain
 ## ServerlistLogic, GameInfoStatsLogic, ObserverShroudSelectorLogic, SpawnSelectorTooltipLogic
 team-no-team =
     { $team ->
-        [zero] No Team
+        [0] No Team
        *[other] Team { $team }
     }
 
