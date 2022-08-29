@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class LobbyOptionsLogic : ChromeLogic
 	{
+		readonly ModData modData;
 		readonly ScrollPanelWidget panel;
 		readonly Widget optionsContainer;
 		readonly Widget checkboxRowTemplate;
@@ -31,9 +32,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Func<bool> configurationDisabled;
 		MapPreview mapPreview;
 
+		[TranslationReference]
+		static readonly string NotAvailable = "not-available";
+
 		[ObjectCreator.UseCtor]
-		internal LobbyOptionsLogic(Widget widget, OrderManager orderManager, Func<MapPreview> getMap, Func<bool> configurationDisabled)
+		internal LobbyOptionsLogic(ModData modData, Widget widget, OrderManager orderManager, Func<MapPreview> getMap, Func<bool> configurationDisabled)
 		{
+			this.modData = modData;
 			this.getMap = getMap;
 			this.orderManager = orderManager;
 			this.configurationDisabled = configurationDisabled;
@@ -131,7 +136,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var getOptionLabel = new CachedTransform<string, string>(id =>
 				{
 					if (id == null || !option.Values.TryGetValue(id, out var value))
-						return "Not Available";
+						return modData.Translation.GetString(NotAvailable);
 
 					return value;
 				});

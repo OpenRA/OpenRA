@@ -131,6 +131,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	public class RegisteredProfileTooltipLogic : ChromeLogic
 	{
+		[TranslationReference]
+		static readonly string LoadingPlayerProfile = "loading-player-profile";
+
+		[TranslationReference]
+		static readonly string LoadingPlayerProfileFailed = "loading-player-profile-failed";
+
 		readonly PlayerDatabase playerDatabase;
 		PlayerProfile profile;
 		bool profileLoaded;
@@ -154,7 +160,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var profileWidth = 0;
 			var maxProfileWidth = widget.Bounds.Width;
-			var messageText = "Loading player profile...";
+			var messageText = modData.Translation.GetString(LoadingPlayerProfile);
 			var messageWidth = messageFont.Measure(messageText).X + 2 * message.Bounds.Left;
 
 			Task.Run(async () =>
@@ -243,7 +249,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					if (profile == null)
 					{
-						messageText = "Failed to load player profile.";
+						messageText = modData.Translation.GetString(LoadingPlayerProfileFailed);
 						messageWidth = messageFont.Measure(messageText).X + 2 * message.Bounds.Left;
 						header.Bounds.Width = widget.Bounds.Width = messageWidth;
 					}

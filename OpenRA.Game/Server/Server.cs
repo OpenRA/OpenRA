@@ -132,8 +132,11 @@ namespace OpenRA.Server
 		[TranslationReference("player")]
 		static readonly string LobbyDisconnected = "lobby-disconnected";
 
-		[TranslationReference("player", "team")]
+		[TranslationReference("player")]
 		static readonly string PlayerDisconnected = "player-disconnected";
+
+		[TranslationReference("player", "team")]
+		static readonly string PlayerTeamDisconnected = "player-team-disconnected";
 
 		[TranslationReference("player")]
 		static readonly string ObserverDisconnected = "observer-disconnected";
@@ -1178,8 +1181,10 @@ namespace OpenRA.Server
 				{
 					if (dropClient.IsObserver)
 						SendLocalizedMessage(ObserverDisconnected, Translation.Arguments("player", dropClient.Name));
+					else if (dropClient.Team > 0)
+						SendLocalizedMessage(PlayerTeamDisconnected, Translation.Arguments("player", dropClient.Name, "team", dropClient.Team));
 					else
-						SendLocalizedMessage(PlayerDisconnected, Translation.Arguments("player", dropClient.Name, "team", dropClient.Team));
+						SendLocalizedMessage(PlayerDisconnected, Translation.Arguments("player", dropClient.Name));
 				}
 				else
 					SendLocalizedMessage(LobbyDisconnected, Translation.Arguments("player", dropClient.Name));

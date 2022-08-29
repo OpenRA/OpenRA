@@ -17,11 +17,8 @@ invalid-bot-slot = Can't add bots to a slot with another client.
 invalid-bot-type = Invalid bot type.
 only-host-change-map = Only the host can change the map.
 lobby-disconnected = { $player } has left.
-player-disconnected =
-    { $team ->
-        [0] { $player } has disconnected.
-       *[other] { $player } (Team { $team }) has disconnected.
-    }
+player-disconnected = { $player } has disconnected.
+player-team-disconnected = { $player } (Team { $team }) has disconnected.
 observer-disconnected = { $player } (Spectator) has disconnected.
 unknown-map = Map was not found on server.
 searching-map = Searching for map on the Resource Center...
@@ -83,11 +80,8 @@ slot-closed = Your slot was closed by the host.
 ## Server
 game-started = Game started
 
-## Server also LobbyUtils
-bots-disabled = Bots Disabled
-
 ## PlayerMessageTracker
-chat-disabled =
+chat-temp-disabled =
     { $remaining ->
         [one] Chat is disabled. Please try again in { $remaining } second.
        *[other] Chat is disabled. Please try again in { $remaining } seconds.
@@ -105,6 +99,23 @@ type = Type
 search-results = Search Results
 multiple = Multiple
 
+## SaveMapLogic
+unpacked = unpacked
+
+save-map-failed-title = Failed to save map
+save-map-failed-prompt = See debug.log for details.
+save-map-failed-accept = OK
+
+overwrite-map-failed-title = Warning
+overwrite-map-failed-prompt = By saving you will overwrite
+    an already existing map.
+overwrite-map-failed-confirm = Save
+
+overwrite-map-outside-edit-title = Warning
+overwrite-map-outside-edit-prompt = "The map has been edited from outside the editor.
+    By saving you may overwrite progress
+overwrite-map-outside-edit-confirm = Save
+
 ## GameInfoLogic
 objectives = Objectives
 briefing = Briefing
@@ -112,7 +123,7 @@ options = Options
 debug = Debug
 chat = Chat
 
-## GameInfoObjectivesLogic also GameInfoStatsLogic
+## GameInfoObjectivesLogic, GameInfoStatsLogic
 in-progress = In progress
 accomplished = Accomplished
 failed = Failed
@@ -121,6 +132,13 @@ failed = Failed
 mute = Mute this player
 unmute = Unmute this player
 
+## GameInfoStatsLogic
+gone = Gone
+
+kick-title = Kick { $player }?
+kick-prompt = They will not be able to rejoin this game.
+kick-accept = Kick
+
 ## GameTimerLogic
 paused = Paused
 max-speed = Max Speed
@@ -128,12 +146,59 @@ speed = { $percentage }% Speed
 complete = { $percentage }% complete
 
 ## LobbyLogic, InGameChatLogic
+chat-disabled = Chat Disabled
 chat-availability =
     { $seconds ->
-        [zero] Chat Disabled
         [one] Chat available in { $seconds } second...
         *[other] Chat available in { $seconds } seconds...
     }
+
+## IngameMenuLogic
+leave = Leave
+abort-mission = Abort Mission
+
+leave-mission-title = Leave Mission
+leave-mission-prompt = Leave this game and return to the menu?
+leave-mission-accept = Leave
+leave-mission-cancel = Stay
+
+restart-button = Restart
+
+restart-mission-title = Restart
+restart-mission-prompt = Are you sure you want to restart?
+restart-mission-accept = Restart
+restart-mission-cancel = Stay
+
+surrender-button = Surrender
+
+surrender-title = Surrender
+surrender-prompt = Are you sure you want to surrender?
+surrender-accept = Surrender
+surrender-cancel = Stay
+
+load-game-button = Load Game
+save-game-button = Save Game
+
+music-button = Music
+
+settings-button = Settings
+
+return-to-map = Return to map
+resume = Resume
+
+save-map-button = Save Map
+
+error-max-player-title = Error: Max player count exceeded
+error-max-player-prompt = There are too many players defined ({ $players }/{ $max }).
+error-max-player-accept = Back
+
+exit-map-button = Exit Map Editor
+
+exit-map-editor-title = Exit Map Editor
+exit-map-editor-prompt-unsaved = Exit and lose all unsaved changes?
+exit-map-editor-prompt-deleted = The map may have been deleted outside the editor.
+exit-map-editor-confirm-anyway = Exit anyway
+exit-map-editor-confirm = Exit
 
 ## IngamePowerBarLogic
 ## IngamePowerCounterLogic
@@ -162,12 +227,68 @@ army-graph = Army (graph)
 ## WorldTooltipLogic
 unrevealed-terrain = Unrevealed Terrain
 
-## ServerlistLogic, GameInfoStatsLogic, ObserverShroudSelectorLogic, SpawnSelectorTooltipLogic
-team-no-team =
-    { $team ->
-        [zero] No Team
-       *[other] Team { $team }
+## DownloadPackageLogic
+downloading = Downloading { $title }
+fetching-mirror-list = Fetching list of mirrors...
+downloading-from = Downloading from { $host } { $received } { $suffix }
+downloading-from-progress = Downloading from { $host } { $received } / { $total } { $suffix } ({ $progress }%)
+unknown-host = unknown host
+verifying-archive = Verifying archive...
+archive-validation-failed = Archive validation failed
+extracting = Extracting...
+extracting-entry = Extracting { $entry }
+archive-extraction-failed = Archive extraction failed
+mirror-selection-failed = Online mirror is not available. Please install from an original disc.
+
+## InstallFromDiscLogic
+detecting-drives = Detecting drives
+checking-discs = Checking Discs
+searching-disc-for = Searching for { $title }
+content-package-installation = The following content packages will be installed:
+game-discs = Game Discs
+digital-installs = Digital Installs
+game-content-not-found = Game Content Not Found
+alternative-content-sources = Please insert or install one of the following content sources:
+installing-content = Installing Content
+copying-filename = Copying { $filename }
+copying-filename-progress = Copying { $filename } ({ $progress }%)
+installation-failed = Installation Failed
+check-install-log = Refer to install.log in the logs directory for details.
+extracting-filename = Extracting { $filename }
+extracting-filename-progress = Extracting { $filename } ({ $progress }%)
+cancel = Cancel
+retry = Retry
+
+## InstallFromDiscLogic, LobbyLogic
+back = Back
+
+# InstallFromDiscLogic, ModContentPromptLogic
+continue = Continue
+
+## ModContentLogic
+manual-install = Manual Install
+
+## ModContentPromptLogic
+quit = Quit
+
+## KickClientLogic
+kick-client = Kick { $player }?
+
+## KickSpectatorsLogic
+kick-spectators =
+    { $count ->
+        [one] Are you sure you want to kick one spectator?
+       *[other] Are you sure you want to kick { $count } spectators?
     }
+
+## LobbyLogic
+add = Add
+remove = Remove
+configure-bots = Configure Bots
+n-teams = { $count } Teams
+humans-vs-bots = Humans vs Bots
+free-for-all = Free for all
+configure-teams = Configure Teams
 
 ## LobbyLogic, CommonSelectorLogic, InGameChatLogic
 all = All
@@ -178,5 +299,287 @@ none = None
 ## LobbyLogic, IngameChatLogic
 team = Team
 
-## ServerListLogic, ReplayBrowserLogic also ObserverShroudSelectorLogic
+## LobbyOptionsLogic
+not-available = Not Available
+
+## LobbyUtils
+slot = Slot
+open = Open
+closed = Closed
+bots = Bots
+
+# LobbyUtils, Server
+bots-disabled = Bots Disabled
+
+## MapPreviewLogic
+connecting = Connecting...
+downloading-map = Downloading { $size } kB
+downloading-map-progress = Downloading { $size } kB ({ $progress }%)
+retry-install = Retry Install
+retry-search = Retry Search
+## also MapChooserLogic
+created-by = Created by { $author }
+
+## SpawnSelectorTooltipLogic
+disabled-spawn = Disabled spawn
+available-spawn = Available spawn
+
+## DisplaySettingsLogic
+close = Close
+medium = Medium
+far = Far
+furthest = Furthest
+
+windowed = Windowed
+legacy-fullscreen = Fullscreen (Legacy)
+fullscreen = Fullscreen
+
+display = Display { $number }
+
+show-on-damage = Show On Damage
+always-show = Always Show
+
+automatic = Automatic
+manual = Manual
+
+## DisplaySettingsLogic, InputSettingsLogic
+disabled = Disabled
+
+## DisplaySettingsLogic, InputSettingsLogic, IntroductionPromptLogic
+classic = Classic
+modern = Modern
+standard = Standard
+
+## DisplaySettingsLogic, IntroductionPromptLogic
+inverted = Inverted
+joystick = Joystick
+
+alt = Alt
+ctrl = Ctrl
+meta = Meta
+shift = Shift
+
+## SettingsLogic
+settings-save-title = Restart Required
+settings-save-prompt = Some changes will not be applied until
+    the game is restarted.
+settings-save-cancel = Continue
+
+restart-title = Restart Now?
+restart-prompt = Some changes will not be applied until
+    the game is restarted. Restart now?
+restart-accept = Restart Now
+restart-cancel = Restart Later
+
+reset-title = Reset { $panel }
+reset-prompt = Are you sure you want to reset
+    all settings in this panel?
+reset-accept = Reset
+reset-cancel = Cancel
+
+## AssetBrowserLogic
+all-packages = All Packages
+length-in-seconds = { $length } sec
+
+## ConnectionLogic
+connecting-to-endpoint = Connecting to { $endpoint }...
+could-not-connect-to-target = Could not connect to { $target }
+unknown-error = Unknown error
+password-required = Password Required
+connection-failed = Connection Failed
+mod-switch-failed = Failed to switch mod.
+
+## GameSaveBrowserLogic
+rename-save-title = Rename Save
+rename-save-prompt = Enter a new file name:
+rename-save-accept = Rename
+
+delete-save-title = Delete selected game save?
+delete-save-prompt = Delete '{ $save }'
+delete-save-accept = Delete
+
+delete-all-saves-title = Delete all game saves?
+delete-all-saves-prompt =
+    { $count ->
+        [one] Delete { $count } save.
+       *[other] Delete { $count } saves.
+    }
+delete-all-saves-accept = Delete All
+
+save-deletion-failed = Failed to delete save file '{ $savePath }'. See the logs for details.
+
+overwrite-save-title = Overwrite saved game?
+overwrite-save-prompt = Overwrite { $file }?
+overwrite-save-accept = Overwrite
+
+## MainMenuLogic
+loading-news = Loading news
+news-retrival-failed = Failed to retrieve news: { $message }
+news-parsing-failed = Failed to parse news: { $message }
+
+## MapChooserLogic
+all-maps = All Maps
+no-matches = No matches
+player-players =
+    { $players ->
+        [one] { $players } Player
+       *[other] { $players } Players
+    }
+map-size-huge = (Huge)
+map-size-large = (Large)
+map-size-medium = (Medium)
+map-size-small = (Small)
+
+map-deletion-failed = Failed to delete map '{ $map }'. See the debug.log file for details.
+
+delete-map-title = Delete map
+delete-map-prompt = Delete the map '{ $title }'?
+delete-map-accept = Delete
+
+delete-all-maps-title = Delete maps
+delete-all-maps-prompt = Delete all maps on this page?
+delete-all-maps-accept = Delete
+
+## MissionBrowserLogic
+no-video-title = Video not installed
+no-video-text = The game videos can be installed from the
+    "Manage Content" menu in the mod chooser.
+no-video-cancel = Back
+
+cant-play-title = Unable to play video
+cant-play-prompt = Something went wrong during video playback.
+cant-play-cancel = Back
+
+## MusicPlayerLogic
+sound-muted = Audio has been muted in settings.
+no-song-playing = No song playing
+
+## MuteHotkeyLogic
+audio-muted = Audio muted.
+audio-unmuted = Audio unmuted.
+
+## PlayerProfileLogic
+loading-player-profile = Loading player profile...
+loading-player-profile-failed = Failed to load player profile.
+
+## ReplayBrowserLogic
+duration = Duration: { $time }
+singleplayer = Singleplayer
+multiplayer = Multiplayer
+
+today = Today
+last-week = Last 7 days
+last-fortnight = Last 14 days
+last-month = Last 30 days
+
+replay-duration-very-short = Under 5 min
+replay-duration-short = Short (10 min)
+replay-duration-medium = Medium (30 min)
+replay-duration-long = Long (60+ min)
+
+rename-replay-title = Rename Replay
+rename-replay-prompt = Enter a new file name:
+rename-replay-accept = Rename
+
+delete-replay-title = Delete selected replay?
+delete-replay-prompt = Delete replay { $replay }?
+delete-replay-accept = Delete
+
+delete-all-replays-title = Delete all selected replays?
+delete-all-replays-prompt =
+    { $count ->
+        [one] Delete { $count } replay.
+       *[other] Delete { $count } replays.
+    }
+delete-all-replays-accept = Delete All
+
+replay-deletion-failed = Failed to delete replay file '{ $file }'. See the debug.log file for details.
+
+## ReplayUtils
+incompatible-replay-title = Incompatible Replay
+incompatible-replay-prompt = Replay metadata could not be read.
+-incompatible-replay-recorded = It was recorded with
+incompatible-replay-unknown-version = { -incompatible-replay-recorded } an unknown version: { $version }.
+incompatible-replay-unknown-mod = { -incompatible-replay-recorded } an unknown mod: { $mod }.
+incompatible-replay-unavailable-mod = { -incompatible-replay-recorded } an unavailable mod: { $mod }.
+incompatible-replay-incompatible-version = { -incompatible-replay-recorded } an incompatible version: { $version }.
+incompatible-replay-unavailable-map = { -incompatible-replay-recorded } an unavailable map: { $map }.
+
+## ServerCreationLogic
+internet-server-nat-A = Internet Server (UPnP/NAT-PMP
+internet-server-nat-B-enabled = Enabled
+internet-server-nat-B-not-supported = Not Supported
+internet-server-nat-B-disabled = Disabled
+internet-server-nat-C = ):
+
+local-server = Local Server:
+
+server-creation-failed-prompt = Could not listen on port { $port }
+server-creation-failed-port-used = Check if the port is already being used.
+server-creation-failed-error = Error is: "{ $message }" ({ $code })
+server-creation-failed-title = Server Creation Failed
+server-creation-failed-cancel = Back
+
+## ServerListLogic
+players-online =
+    { $players ->
+        [one] { $players } Player Online
+       *[other] { $players } Players Online
+    }
+
+search-status-failed = Failed to query server list.
+search-status-no-games = No games found. Try changing filters.
+no-server-selected = No Server Selected
+
+map-status-searching = Searching...
+map-classification-unknown = Unknown Map
+
+players-label =
+    { $players ->
+        [0] No Players
+        [one] One Player
+       *[other] { $players } Players
+    }
+
+bots-label =
+    { $bots ->
+        [0] No Bots
+        [one] One Bot
+       *[other] { $bots } Bots
+    }
+
+## ServerListLogic, ReplayBrowserLogic, ObserverShroudSelectorLogic
 players = Players
+
+## ServerListLogic, GameInfoStatsLogic
+spectators = Spectators
+spectators-label =
+    { $spectators ->
+        [0] No Spectators
+        [one] One Spectator
+       *[other] { $spectators } Spectators
+    }
+
+## ServerlistLogic, GameInfoStatsLogic, ObserverShroudSelectorLogic, SpawnSelectorTooltipLogic, ReplayBrowserLogic
+team-number = Team { $team }
+no-team = No Team
+
+playing = Playing
+waiting = Waiting
+
+n-other-players =
+    { $players ->
+        [one] One other player
+       *[other] { $players } other players
+    }
+
+in-progress-for =
+    { $minutes ->
+        [0] In progress
+        [one] In progress for { $minutes } minute.
+       *[other] In progress for { $minutes } minutes.
+    }
+password-protected = Password protected
+waiting-for-players = Waiting for players
+server-shutting-down = Server shutting down
+unknown-server-state = Unknown server state

@@ -26,12 +26,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return Game.Settings.Game.IntroductionPromptVersion < IntroductionVersion;
 		}
 
+		[TranslationReference]
+		static readonly string Classic = "classic";
+		readonly string classic;
+
+		[TranslationReference]
+		static readonly string Modern = "modern";
+		readonly string modern;
+
 		[ObjectCreator.UseCtor]
 		public IntroductionPromptLogic(Widget widget, ModData modData, WorldRenderer worldRenderer, Action onComplete)
 		{
 			var ps = Game.Settings.Player;
 			var ds = Game.Settings.Graphics;
 			var gs = Game.Settings.Game;
+
+			classic = modData.Translation.GetString(Classic);
+			modern = modData.Translation.GetString(Modern);
 
 			var escPressed = false;
 			var nameTextfield = widget.Get<TextFieldWidget>("PLAYERNAME");
@@ -74,8 +85,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mouseControlDescModern.IsVisible = () => !gs.UseClassicMouseStyle;
 
 			var mouseControlDropdown = widget.Get<DropDownButtonWidget>("MOUSE_CONTROL_DROPDOWN");
-			mouseControlDropdown.OnMouseDown = _ => InputSettingsLogic.ShowMouseControlDropdown(mouseControlDropdown, gs);
-			mouseControlDropdown.GetText = () => gs.UseClassicMouseStyle ? "Classic" : "Modern";
+			mouseControlDropdown.OnMouseDown = _ => InputSettingsLogic.ShowMouseControlDropdown(modData, mouseControlDropdown, gs);
+			mouseControlDropdown.GetText = () => gs.UseClassicMouseStyle ? classic : modern;
 
 			foreach (var container in new[] { mouseControlDescClassic, mouseControlDescModern })
 			{
@@ -113,8 +124,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var viewportSizes = modData.Manifest.Get<WorldViewportSizes>();
 			var battlefieldCameraDropDown = widget.Get<DropDownButtonWidget>("BATTLEFIELD_CAMERA_DROPDOWN");
-			var battlefieldCameraLabel = new CachedTransform<WorldViewport, string>(vs => DisplaySettingsLogic.ViewportSizeNames[vs]);
-			battlefieldCameraDropDown.OnMouseDown = _ => DisplaySettingsLogic.ShowBattlefieldCameraDropdown(battlefieldCameraDropDown, viewportSizes, ds);
+			var battlefieldCameraLabel = new CachedTransform<WorldViewport, string>(vs => DisplaySettingsLogic.GetViewportSizeName(modData, vs));
+			battlefieldCameraDropDown.OnMouseDown = _ => DisplaySettingsLogic.ShowBattlefieldCameraDropdown(modData, battlefieldCameraDropDown, viewportSizes, ds);
 			battlefieldCameraDropDown.GetText = () => battlefieldCameraLabel.Update(ds.ViewportDistance);
 
 			var uiScaleDropdown = widget.Get<DropDownButtonWidget>("UI_SCALE_DROPDOWN");

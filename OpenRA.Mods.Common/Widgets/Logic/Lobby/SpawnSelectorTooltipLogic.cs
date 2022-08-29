@@ -17,8 +17,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class SpawnSelectorTooltipLogic : ChromeLogic
 	{
+		[TranslationReference]
+		static readonly string DisabledSpawn = "disabled-spawn";
+
+		[TranslationReference]
+		static readonly string AvailableSpawn = "available-spawn";
+
+		[TranslationReference("team")]
+		static readonly string TeamNumber = "team-number";
+
+		readonly CachedTransform<int, string> teamMessage;
+
 		[ObjectCreator.UseCtor]
-		public SpawnSelectorTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, MapPreviewWidget preview, bool showUnoccupiedSpawnpoints)
+		public SpawnSelectorTooltipLogic(Widget widget, ModData modData, TooltipContainerWidget tooltipContainer, MapPreviewWidget preview, bool showUnoccupiedSpawnpoints)
 		{
 			var showTooltip = true;
 			widget.IsVisible = () => preview.TooltipSpawnIndex != -1 && showTooltip;
@@ -36,6 +47,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var labelText = "";
 			string playerFaction = null;
 			var playerTeam = -1;
+			teamMessage = new CachedTransform<int, string>(t => modData.Translation.GetString(TeamNumber, Translation.Arguments("team", t)));
+			var disabledSpawn = modData.Translation.GetString(DisabledSpawn);
+			var availableSpawn = modData.Translation.GetString(AvailableSpawn);
 
 			tooltipContainer.BeforeRender = () =>
 			{
@@ -58,7 +72,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						return;
 					}
 
-					labelText = preview.DisabledSpawnPoints().Contains(preview.TooltipSpawnIndex) ? "Disabled spawn" : "Available spawn";
+					labelText = preview.DisabledSpawnPoints().Contains(preview.TooltipSpawnIndex)
+						? disabledSpawn
+						: availableSpawn;
+
 					playerFaction = null;
 					playerTeam = 0;
 					widget.Bounds.Height = singleHeight;
@@ -75,7 +92,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			flag.IsVisible = () => playerFaction != null;
 			flag.GetImageCollection = () => "flags";
 			flag.GetImageName = () => playerFaction;
-			team.GetText = () => $"Team {playerTeam}";
+			team.GetText = () => teamMessage.Update(playerTeam);
 			team.IsVisible = () => playerTeam > 0;
 		}
 	}

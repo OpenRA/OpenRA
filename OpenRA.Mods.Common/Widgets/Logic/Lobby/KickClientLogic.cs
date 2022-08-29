@@ -16,10 +16,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	class KickClientLogic : ChromeLogic
 	{
+		[TranslationReference("player")]
+		static readonly string KickClient = "kick-client";
+
 		[ObjectCreator.UseCtor]
-		public KickClientLogic(Widget widget, string clientName, Action<bool> okPressed, Action cancelPressed)
+		public KickClientLogic(ModData modData, Widget widget, string clientName, Action<bool> okPressed, Action cancelPressed)
 		{
-			widget.Get<LabelWidget>("TITLE").GetText = () => $"Kick {clientName}?";
+			var kickMessage = modData.Translation.GetString(KickClient, Translation.Arguments("player", clientName));
+			widget.Get<LabelWidget>("TITLE").GetText = () => kickMessage;
 
 			var tempBan = false;
 			var preventRejoiningCheckbox = widget.Get<CheckboxWidget>("PREVENT_REJOINING_CHECKBOX");

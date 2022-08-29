@@ -16,10 +16,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	class KickSpectatorsLogic : ChromeLogic
 	{
+		[TranslationReference("count")]
+		static readonly string KickSpectators = "kick-spectators";
+
 		[ObjectCreator.UseCtor]
-		public KickSpectatorsLogic(Widget widget, int clientCount, Action okPressed, Action cancelPressed)
+		public KickSpectatorsLogic(ModData modData, Widget widget, int clientCount, Action okPressed, Action cancelPressed)
 		{
-			widget.Get<LabelWidget>("TEXT").GetText = () => $"Are you sure you want to kick {clientCount} spectators?";
+			var kickMessage = modData.Translation.GetString(KickSpectators, Translation.Arguments("count", clientCount));
+			widget.Get<LabelWidget>("TEXT").GetText = () => kickMessage;
 
 			widget.Get<ButtonWidget>("OK_BUTTON").OnClick = () =>
 			{

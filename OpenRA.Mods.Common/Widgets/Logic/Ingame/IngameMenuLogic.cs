@@ -37,6 +37,102 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool leaving;
 		bool hideMenu;
 
+		[TranslationReference]
+		static readonly string Leave = "leave";
+
+		[TranslationReference]
+		static readonly string AbortMission = "abort-mission";
+
+		[TranslationReference]
+		static readonly string LeaveMissionTitle = "leave-mission-title";
+
+		[TranslationReference]
+		static readonly string LeaveMissionPrompt = "leave-mission-prompt";
+
+		[TranslationReference]
+		static readonly string LeaveMissionAccept = "leave-mission-accept";
+
+		[TranslationReference]
+		static readonly string LeaveMissionCancel = "leave-mission-cancel";
+
+		[TranslationReference]
+		static readonly string RestartButton = "restart-button";
+
+		[TranslationReference]
+		static readonly string RestartMissionTitle = "restart-mission-title";
+
+		[TranslationReference]
+		static readonly string RestartMissionPrompt = "restart-mission-prompt";
+
+		[TranslationReference]
+		static readonly string RestartMissionAccept = "restart-mission-accept";
+
+		[TranslationReference]
+		static readonly string RestartMissionCancel = "restart-mission-cancel";
+
+		[TranslationReference]
+		static readonly string SurrenderButton = "surrender-button";
+
+		[TranslationReference]
+		static readonly string SurrenderTitle = "surrender-title";
+
+		[TranslationReference]
+		static readonly string SurrenderPrompt = "surrender-prompt";
+
+		[TranslationReference]
+		static readonly string SurrenderAccept = "surrender-accept";
+
+		[TranslationReference]
+		static readonly string SurrenderCancel = "surrender-cancel";
+
+		[TranslationReference]
+		static readonly string LoadGameButton = "load-game-button";
+
+		[TranslationReference]
+		static readonly string SaveGameButton = "save-game-button";
+
+		[TranslationReference]
+		static readonly string MusicButton = "music-button";
+
+		[TranslationReference]
+		static readonly string SettingsButton = "settings-button";
+
+		[TranslationReference]
+		static readonly string ReturnToMap = "return-to-map";
+
+		[TranslationReference]
+		static readonly string Resume = "resume";
+
+		[TranslationReference]
+		static readonly string SaveMapButton = "save-map-button";
+
+		[TranslationReference]
+		static readonly string ErrorMaxPlayerTitle = "error-max-player-title";
+
+		[TranslationReference("players", "max")]
+		static readonly string ErrorMaxPlayerPrompt = "error-max-player-prompt";
+
+		[TranslationReference]
+		static readonly string ErrorMaxPlayerAccept = "error-max-player-accept";
+
+		[TranslationReference]
+		static readonly string ExitMapButton = "exit-map-button";
+
+		[TranslationReference]
+		static readonly string ExitMapEditorTitle = "exit-map-editor-title";
+
+		[TranslationReference]
+		static readonly string ExitMapEditorPromptUnsaved = "exit-map-editor-prompt-unsaved";
+
+		[TranslationReference]
+		static readonly string ExitMapEditorPromptDeleted = "exit-map-editor-prompt-deleted";
+
+		[TranslationReference]
+		static readonly string ExitMapEditorAnywayConfirm = "exit-map-editor-confirm-anyway";
+
+		[TranslationReference]
+		static readonly string ExitMapEditorConfirm = "exit-map-editor-confirm";
+
 		[ObjectCreator.UseCtor]
 		public IngameMenuLogic(Widget widget, ModData modData, World world, Action onExit, WorldRenderer worldRenderer,
 			IngameInfoPanel initialPanel, Dictionary<string, MiniYaml> logicArgs)
@@ -175,7 +271,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			button.Id = id;
 			button.IsDisabled = () => leaving;
-			button.GetText = () => text;
+			var translation = modData.Translation.GetString(text);
+			button.GetText = () => translation;
 			buttonContainer.AddChild(button);
 			buttons.Add(button);
 
@@ -187,19 +284,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (world.Type != WorldType.Regular)
 				return;
 
-			var button = AddButton("ABORT_MISSION", world.IsGameOver ? "Leave" : "Abort Mission");
+			var button = AddButton("ABORT_MISSION", world.IsGameOver
+				? modData.Translation.GetString(Leave)
+				: modData.Translation.GetString(AbortMission));
 
 			button.OnClick = () =>
 			{
 				hideMenu = true;
 
-				ConfirmationDialogs.ButtonPrompt(
-					title: "Leave Mission",
-					text: "Leave this game and return to the menu?",
+				ConfirmationDialogs.ButtonPrompt(modData,
+					title: LeaveMissionTitle,
+					text: LeaveMissionPrompt,
 					onConfirm: OnQuit,
 					onCancel: ShowMenu,
-					confirmText: "Leave",
-					cancelText: "Stay");
+					confirmText: LeaveMissionAccept,
+					cancelText: LeaveMissionCancel);
 			};
 		}
 
@@ -224,18 +323,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.RunAfterDelay(exitDelay, Game.RestartGame);
 			};
 
-			var button = AddButton("RESTART", "Restart");
+			var button = AddButton("RESTART", RestartButton);
 			button.IsDisabled = () => hasError || leaving;
 			button.OnClick = () =>
 			{
 				hideMenu = true;
-				ConfirmationDialogs.ButtonPrompt(
-					title: "Restart",
-					text: "Are you sure you want to restart?",
+				ConfirmationDialogs.ButtonPrompt(modData,
+					title: RestartMissionTitle,
+					text: RestartMissionPrompt,
 					onConfirm: onRestart,
 					onCancel: ShowMenu,
-					confirmText: "Restart",
-					cancelText: "Stay");
+					confirmText: RestartMissionAccept,
+					cancelText: RestartMissionCancel);
 			};
 		}
 
@@ -250,18 +349,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				CloseMenu();
 			};
 
-			var button = AddButton("SURRENDER", "Surrender");
+			var button = AddButton("SURRENDER", SurrenderButton);
 			button.IsDisabled = () => world.LocalPlayer.WinState != WinState.Undefined || hasError || leaving;
 			button.OnClick = () =>
 			{
 				hideMenu = true;
-				ConfirmationDialogs.ButtonPrompt(
-					title: "Surrender",
-					text: "Are you sure you want to surrender?",
+				ConfirmationDialogs.ButtonPrompt(modData,
+					title: SurrenderTitle,
+					text: SurrenderPrompt,
 					onConfirm: onSurrender,
 					onCancel: ShowMenu,
-					confirmText: "Surrender",
-					cancelText: "Stay");
+					confirmText: SurrenderAccept,
+					cancelText: SurrenderCancel);
 			};
 		}
 
@@ -270,7 +369,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (world.Type != WorldType.Regular || !world.LobbyInfo.GlobalSettings.GameSavesEnabled || world.IsReplay)
 				return;
 
-			var button = AddButton("LOAD_GAME", "Load Game");
+			var button = AddButton("LOAD_GAME", LoadGameButton);
 			button.IsDisabled = () => leaving || !GameSaveBrowserLogic.IsLoadPanelEnabled(modData.Manifest);
 			button.OnClick = () =>
 			{
@@ -290,7 +389,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (world.Type != WorldType.Regular || !world.LobbyInfo.GlobalSettings.GameSavesEnabled || world.IsReplay)
 				return;
 
-			var button = AddButton("SAVE_GAME", "Save Game");
+			var button = AddButton("SAVE_GAME", SaveGameButton);
 			button.IsDisabled = () => hasError || leaving || !world.Players.Any(p => p.Playable && p.WinState == WinState.Undefined);
 			button.OnClick = () =>
 			{
@@ -307,7 +406,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CreateMusicButton()
 		{
-			var button = AddButton("MUSIC", "Music");
+			var button = AddButton("MUSIC", MusicButton);
 			button.OnClick = () =>
 			{
 				hideMenu = true;
@@ -321,7 +420,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CreateSettingsButton()
 		{
-			var button = AddButton("SETTINGS", "Settings");
+			var button = AddButton("SETTINGS", SettingsButton);
 			button.OnClick = () =>
 			{
 				hideMenu = true;
@@ -336,7 +435,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CreateResumeButton()
 		{
-			var button = AddButton("RESUME", world.IsGameOver ? "Return to map" : "Resume");
+			var button = AddButton("RESUME", world.IsGameOver ? ReturnToMap	: Resume);
 			button.Key = modData.Hotkeys["escape"];
 			button.OnClick = CloseMenu;
 		}
@@ -346,7 +445,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (world.Type != WorldType.Editor)
 				return;
 
-			var button = AddButton("SAVE_MAP", "Save Map");
+			var button = AddButton("SAVE_MAP", SaveMapButton);
 			button.OnClick = () =>
 			{
 				hideMenu = true;
@@ -358,11 +457,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var playerCount = new MapPlayers(playerDefinitions).Players.Count;
 				if (playerCount > MapPlayers.MaximumPlayerCount)
 				{
-					ConfirmationDialogs.ButtonPrompt(
-						title: "Error: Max player count exceeded",
-						text: $"There are too many players defined ({playerCount}/{MapPlayers.MaximumPlayerCount}).",
+					ConfirmationDialogs.ButtonPrompt(modData,
+						title: ErrorMaxPlayerTitle,
+						text: ErrorMaxPlayerPrompt,
+						textArguments: Translation.Arguments("players", playerCount, "max", MapPlayers.MaximumPlayerCount),
 						onConfirm: ShowMenu,
-						confirmText: "Back");
+						confirmText: ErrorMaxPlayerAccept);
 
 					return;
 				}
@@ -384,7 +484,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			var actionManager = world.WorldActor.Trait<EditorActionManager>();
-			var button = AddButton("EXIT_EDITOR", "Exit Map Editor");
+			var button = AddButton("EXIT_EDITOR", ExitMapButton);
 
 			// Show dialog only if updated since last save
 			button.OnClick = () =>
@@ -394,10 +494,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (actionManager.HasUnsavedItems() || deletedOrUnavailable)
 				{
 					hideMenu = true;
-					ConfirmationDialogs.ButtonPrompt(
-						title: "Warning",
-						text: deletedOrUnavailable ? "The map may have been deleted outside the editor" : "Exit and lose all unsaved changes?",
-						confirmText: deletedOrUnavailable ? "Exit anyway" : "Exit",
+					ConfirmationDialogs.ButtonPrompt(modData,
+						title: ExitMapEditorTitle,
+						text: deletedOrUnavailable ? ExitMapEditorPromptDeleted : ExitMapEditorPromptUnsaved,
+						confirmText: deletedOrUnavailable ? ExitMapEditorAnywayConfirm : ExitMapEditorConfirm,
 						onConfirm: OnQuit,
 						onCancel: ShowMenu);
 				}
