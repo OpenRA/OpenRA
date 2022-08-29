@@ -274,7 +274,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var teamLabel = tt.Get<LabelWidget>("TEAM");
 					var teamText = modData.Translation.GetString(Team, Translation.Arguments("team", team.Key));
 					teamLabel.GetText = () => teamText;
-					tt.Bounds.Width = teamLabel.Bounds.Width = Game.Renderer.Fonts[tt.Font].Measure(tt.Get<LabelWidget>("TEAM").GetText()).X;
+					tt.Bounds.Width = teamLabel.Bounds.Width = Game.Renderer.Fonts[tt.Font].Measure(teamText).X;
 
 					var colorBlockWidget = tt.Get<ColorBlockWidget>("TEAM_COLOR");
 					var scrollBarOffset = playerStatsPanel.ScrollBar != ScrollBar.Hidden
