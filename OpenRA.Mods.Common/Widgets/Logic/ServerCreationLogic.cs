@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.onExit = onExit;
 
 			var settings = Game.Settings;
-			preview = modData.MapCache[modData.MapCache.ChooseInitialMap(Game.Settings.Server.Map, Game.CosmeticRandom)];
+			preview = modData.MapCache[modData.MapCache.ChooseInitialMap(modData.MapCache.PickLastModifiedMap(MapVisibility.Lobby) ?? Game.Settings.Server.Map, Game.CosmeticRandom)];
 
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
