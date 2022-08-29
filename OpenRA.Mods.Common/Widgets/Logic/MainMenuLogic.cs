@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			singleplayerMenu.IsVisible = () => menuType == MenuType.Singleplayer;
 
 			var missionsButton = singleplayerMenu.Get<ButtonWidget>("MISSIONS_BUTTON");
-			missionsButton.OnClick = OpenMissionBrowserPanel;
+			missionsButton.OnClick = () => OpenMissionBrowserPanel(modData.MapCache.PickLastModifiedMap(MapVisibility.MissionSelector));
 
 			var hasCampaign = modData.Manifest.Missions.Length > 0;
 			var hasMissions = modData.MapCache
@@ -455,13 +455,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				() => { Game.CloseServer(); SwitchMenu(MenuType.Main); });
 		}
 
-		void OpenMissionBrowserPanel()
+		void OpenMissionBrowserPanel(string map)
 		{
 			SwitchMenu(MenuType.None);
 			Game.OpenWindow("MISSIONBROWSER_PANEL", new WidgetArgs
 			{
 				{ "onExit", () => SwitchMenu(MenuType.Singleplayer) },
-				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.Missions; } }
+				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.Missions; } },
+				{ "initialMap", map }
 			});
 		}
 
@@ -526,7 +527,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			switch (lastGameState)
 			{
 				case MenuPanel.Missions:
-					OpenMissionBrowserPanel();
+					OpenMissionBrowserPanel(null);
 					break;
 
 				case MenuPanel.Replays:
