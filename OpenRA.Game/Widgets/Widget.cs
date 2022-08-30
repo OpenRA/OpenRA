@@ -524,8 +524,10 @@ namespace OpenRA.Widgets
 
 		public virtual void RemoveChildren()
 		{
-			while (Children.Count > 0)
-				RemoveChild(Children[Children.Count - 1]);
+			foreach (var child in Children)
+				child?.Removed();
+
+			Children.Clear();
 		}
 
 		public virtual void Hidden()
