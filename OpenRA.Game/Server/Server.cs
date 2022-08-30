@@ -10,18 +10,16 @@
 #endregion
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using OpenRA;
+using LiteNetLib;
 using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -50,6 +48,7 @@ namespace OpenRA.Server
 		public readonly ServerType Type;
 
 		public List<Connection> Conns = new List<Connection>();
+		private Dictionary<int, Connection> conns = new Dictionary<int, Connection>();
 
 		public Session LobbyInfo;
 		public ServerSettings Settings;
@@ -65,15 +64,12 @@ namespace OpenRA.Server
 		public int OrderLatency = 1;
 
 		readonly int randomSeed;
-		readonly List<TcpListener> listeners = new List<TcpListener>();
 		readonly TypeDictionary serverTraits = new TypeDictionary();
 		readonly PlayerDatabase playerDatabase;
 
 		OrderBuffer orderBuffer;
 
 		volatile ServerState internalState = ServerState.WaitingPlayers;
-
-		readonly BlockingCollection<IServerEvent> events = new BlockingCollection<IServerEvent>();
 
 		ReplayRecorder recorder;
 		GameInformation gameInfo;
@@ -232,62 +228,74 @@ namespace OpenRA.Server
 		{
 			Log.AddChannel("server", "server.log", true);
 
-			SocketException lastException = null;
-			foreach (var endpoint in endpoints)
-			{
-				var listener = new TcpListener(endpoint);
-				try
-				{
-					try
-					{
-						listener.Server.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, 1);
-					}
-					catch (Exception ex)
-					{
-						if (ex is SocketException || ex is ArgumentException)
-							Log.Write("server", $"Failed to set socket option on {endpoint}: {ex.Message}");
-						else
-							throw;
-					}
+			var listener = new EventBasedNetListener();
+			var server = new NetManager(listener);
 
-					listener.Start();
-					listeners.Add(listener);
+			var endpoint = endpoints.First();
 
-					new Thread(() =>
-					{
-						while (true)
-						{
-							if (State != ServerState.WaitingPlayers)
-							{
-								listener.Stop();
-								return;
-							}
 
-							// Use a 1s timeout so we can stop listening once the game starts
-							if (listener.Server.Poll(1000000, SelectMode.SelectRead))
-							{
-								try
-								{
-									events.Add(new ConnectionConnectEvent(listener.AcceptSocket()));
-								}
-								catch (Exception)
-								{
-									// Ignore the exception that may be generated if the connection
-									// drops while we are trying to connect
-								}
-							}
-						}
-					}) { Name = $"Connection listener ({listener.LocalEndpoint})", IsBackground = true }.Start();
-				}
-				catch (SocketException ex)
-				{
-					lastException = ex;
-					Log.Write("server", $"Failed to listen on {endpoint}: {ex.Message}");
-				}
-			}
+            server.Start(endpoint.Port);
+			//foreach (var endpoint in endpoints)
+			//{
+			//	//var listener = new TcpListener(endpoint);
 
-			if (listeners.Count == 0)
-				throw lastException;
+
+				
+			//	try
+			//	{
+			//		try
+			//		{
+			//			//listener.Server.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, 1);
+			//		}
+			//		catch (Exception ex)
+			//		{
+			//			if (ex is SocketException || ex is ArgumentException)
+			//				Log.Write("server", $"Failed to set socket option on {endpoint}: {ex.Message}");
+			//			else
+			//				throw;
+			//		}
+
+			//		//listener.Start();
+			//		//listeners.Add(listener);
+
+			//		//new Thread(() =>
+			//		//{
+			//		//	while (true)
+			//		//	{
+			//		//		if (State != ServerState.WaitingPlayers)
+			//		//		{
+			//		//			listener.Stop();
+			//		//			return;
+			//		//		}
+
+			//		//		// Use a 1s timeout so we can stop listening once the game starts
+			//		//		if (listener.Server.Poll(1000000, SelectMode.SelectRead))
+			//		//		{
+			//		//			try
+			//		//			{
+			//		//				events.Add(new ConnectionConnectEvent(listener.AcceptSocket()));
+			//		//			}
+			//		//			catch (Exception)
+			//		//			{
+			//		//				// Ignore the exception that may be generated if the connection
+			//		//				// drops while we are trying to connect
+			//		//			}
+			//		//		}
+			//		//	}
+			//		//})
+			//		//{ Name = $"Connection listener ({listener.LocalEndpoint})", IsBackground = true }.Start();
+			//	}
+			//	catch (SocketException ex)
+			//	{
+			//		lastException = ex;
+			//		Log.Write("server", $"Failed to listen on {endpoint}: {ex.Message}");
+			//	}
+			//}
+
+			listener.ConnectionRequestEvent += OnConnectionRequest;
+			listener.PeerConnectedEvent += OnPeerConnected;
+			listener.PeerDisconnectedEvent += OnPeerDisconnected;
+			listener.NetworkReceiveEvent += OnNetworkReceive;
 
 			Type = type;
 			Settings = settings;
@@ -354,8 +362,12 @@ namespace OpenRA.Server
 				{
 					if (State != ServerState.ShuttingDown)
 					{
-						if (events.TryTake(out var e, 1000))
-							e.Invoke(this);
+						server.PollEvents();
+
+						foreach (var connection in Conns)
+						{
+							connection.SendPing();
+						}
 
 						// PERF: Dedicated servers need to drain the action queue to remove references blocking the GC from cleaning up disposed objects.
 						if (Type == ServerType.Dedicated)
@@ -394,37 +406,115 @@ namespace OpenRA.Server
 			{ IsBackground = true }.Start();
 		}
 
-		int nextPlayerIndex;
-		public int ChooseFreePlayerIndex()
-		{
-			return nextPlayerIndex++;
-		}
+        public const int MaxOrderLength = 131072;
 
-		internal void OnConnectionPacket(Connection conn, int frame, byte[] data)
+		private void OnNetworkReceive(NetPeer peer, NetPacketReader reader, byte channel, DeliveryMethod deliverymethod)
 		{
-			events.Add(new ConnectionPacketEvent(conn, frame, data));
-		}
-
-		internal void OnConnectionPing(Connection conn, int[] pingHistory, byte queueLength)
-		{
-			events.Add(new ConnectionPingEvent(conn, pingHistory, queueLength));
-		}
-
-		internal void OnConnectionDisconnect(Connection conn)
-		{
-			events.Add(new ConnectionDisconnectEvent(conn));
-		}
-
-		void AcceptConnection(Socket socket)
-		{
-			if (State != ServerState.WaitingPlayers)
+			if (reader.AvailableBytes == 0)
+			{
+				// Empty packet signals that the client has been dropped
 				return;
+			}
 
-			// Validate player identity by asking them to sign a random blob of data
-			// which we can then verify against the player public key database
+			var headerBuffer = new byte[8];
+			reader.GetBytes(headerBuffer, 8);
+
+			var expectLength = BitConverter.ToInt32(headerBuffer, 0) - 4;
+			var frame = BitConverter.ToInt32(headerBuffer, 4);
+
+			if (expectLength < 0 || expectLength > MaxOrderLength)
+			{
+				Log.Write("server", $"Closing socket connection to {peer.EndPoint} because of excessive order length: {expectLength}");
+				return;
+			}
+
+			var dataBuffer = new byte[expectLength];
+			reader.GetBytes(dataBuffer, expectLength);
+
+			var conn = conns[peer.Id];
+			conn.UpdateLastReceivedTime();
+
+			if (expectLength == 10 && dataBuffer[0] == (byte)OrderType.Ping)
+			{
+				var history = conn.UpdatePing((int)(Game.RunTime - BitConverter.ToInt64(dataBuffer, 1)));
+
+				ReceivePing(conn, history);
+			}
+			else
+				ReceiveOrders(conn, frame, dataBuffer);
+		}
+
+		private void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectinfo)
+		{
+			//lock (LobbyInfo)
+			//{
+			//	Conns.Remove(toDrop);
+
+			//	var dropClient = LobbyInfo.Clients.FirstOrDefault(c => c.Index == toDrop.PlayerIndex);
+			//	if (dropClient == null)
+			//	{
+			//		toDrop.Dispose();
+			//		return;
+			//	}
+
+			//	if (State == ServerState.GameStarted)
+			//	{
+			//		if (dropClient.IsObserver)
+			//			SendLocalizedMessage(ObserverDisconnected, Translation.Arguments("player", dropClient.Name));
+			//		else
+			//			SendLocalizedMessage(PlayerDisconnected, Translation.Arguments("player", dropClient.Name, "team", dropClient.Team));
+			//	}
+			//	else
+			//		SendLocalizedMessage(LobbyDisconnected, Translation.Arguments("player", dropClient.Name));
+
+			//	LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
+
+			//	// Client was the server admin
+			//	// TODO: Reassign admin for game in progress via an order
+			//	if (Type == ServerType.Dedicated && dropClient.IsAdmin && State == ServerState.WaitingPlayers)
+			//	{
+			//		// Remove any bots controlled by the admin
+			//		LobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == toDrop.PlayerIndex);
+
+			//		var nextAdmin = LobbyInfo.Clients.Where(c1 => c1.Bot == null)
+			//			.MinByOrDefault(c => c.Index);
+
+			//		if (nextAdmin != null)
+			//		{
+			//			nextAdmin.IsAdmin = true;
+			//			SendLocalizedMessage(NewAdmin, Translation.Arguments("player", nextAdmin.Name));
+			//		}
+			//	}
+
+			//	var disconnectPacket = new MemoryStream(5);
+			//	disconnectPacket.WriteByte((byte)OrderType.Disconnect);
+			//	disconnectPacket.Write(toDrop.PlayerIndex);
+			//	DispatchServerOrdersToClients(disconnectPacket.ToArray(), toDrop.LastOrdersFrame + 1);
+
+			//	if (gameInfo != null)
+			//		foreach (var player in gameInfo.Players.Where(p => p.ClientIndex == toDrop.PlayerIndex))
+			//			player.DisconnectFrame = toDrop.LastOrdersFrame + 1;
+
+			//	// All clients have left: clean up
+			//	if (!Conns.Any(c => c.Validated))
+			//		foreach (var t in serverTraits.WithInterface<INotifyServerEmpty>())
+			//			t.ServerEmpty(this);
+
+			//	if (Conns.Any(c => c.Validated) || Type == ServerType.Dedicated)
+			//		SyncLobbyClients();
+
+			//	if (Type != ServerType.Dedicated && dropClient.IsAdmin)
+			//		Shutdown();
+			//}
+
+			//toDrop.Dispose();
+		}
+
+		private void OnPeerConnected(NetPeer peer)
+		{
 			var token = Convert.ToBase64String(OpenRA.Exts.MakeArray(256, _ => (byte)Random.Next()));
 
-			var newConn = new Connection(this, socket, token);
+			var newConn = new Connection(this, peer, token);
 			try
 			{
 				// Send handshake and client index.
@@ -454,6 +544,23 @@ namespace OpenRA.Server
 			}
 
 			Conns.Add(newConn);
+            conns.Add(peer.Id, newConn);
+		}
+
+		private void OnConnectionRequest(ConnectionRequest request)
+		{
+			if (State != ServerState.WaitingPlayers)
+				request.Reject();
+			else
+			{
+				request.Accept();
+			}
+		}
+
+		int nextPlayerIndex;
+		public int ChooseFreePlayerIndex()
+		{
+			return nextPlayerIndex++;
 		}
 
 		void ValidateClient(Connection newConn, string data)
@@ -498,6 +605,7 @@ namespace OpenRA.Server
 
 				if (ModData.Manifest.Id != handshake.Mod)
 				{
+
 					Log.Write("server", $"Rejected connection from {newConn.EndPoint}; mods do not match.");
 
 					SendOrderTo(newConn, "ServerError", IncompatibleMod);
@@ -647,32 +755,30 @@ namespace OpenRA.Server
 							Log.Write("server", ex.ToString());
 						}
 
-						events.Add(new CallbackEvent(() =>
+						var notAuthenticated = Type == ServerType.Dedicated && profile == null && (Settings.RequireAuthentication || Settings.ProfileIDWhitelist.Length > 0);
+						var blacklisted = Type == ServerType.Dedicated && profile != null && Settings.ProfileIDBlacklist.Contains(profile.ProfileID);
+						var notWhitelisted = Type == ServerType.Dedicated && Settings.ProfileIDWhitelist.Length > 0 &&
+							(profile == null || !Settings.ProfileIDWhitelist.Contains(profile.ProfileID));
+
+						if (notAuthenticated)
 						{
-							var notAuthenticated = Type == ServerType.Dedicated && profile == null && (Settings.RequireAuthentication || Settings.ProfileIDWhitelist.Length > 0);
-							var blacklisted = Type == ServerType.Dedicated && profile != null && Settings.ProfileIDBlacklist.Contains(profile.ProfileID);
-							var notWhitelisted = Type == ServerType.Dedicated && Settings.ProfileIDWhitelist.Length > 0 &&
-								(profile == null || !Settings.ProfileIDWhitelist.Contains(profile.ProfileID));
-
-							if (notAuthenticated)
-							{
-								Log.Write("server", $"Rejected connection from {newConn.EndPoint}; Not authenticated.");
-								SendOrderTo(newConn, "ServerError", RequiresForumAccount);
-								DropClient(newConn);
-							}
-							else if (blacklisted || notWhitelisted)
-							{
-								if (blacklisted)
-									Log.Write("server", $"Rejected connection from {newConn.EndPoint}; In server blacklist.");
-								else
-									Log.Write("server", $"Rejected connection from {newConn.EndPoint}; Not in server whitelist.");
-
-								SendOrderTo(newConn, "ServerError", NoPermission);
-								DropClient(newConn);
-							}
+							Log.Write("server", $"Rejected connection from {newConn.EndPoint}; Not authenticated.");
+							SendOrderTo(newConn, "ServerError", RequiresForumAccount);
+							DropClient(newConn);
+						}
+						else if (blacklisted || notWhitelisted)
+						{
+							if (blacklisted)
+								Log.Write("server", $"Rejected connection from {newConn.EndPoint}; In server blacklist.");
 							else
-								completeConnection();
-						}));
+								Log.Write("server", $"Rejected connection from {newConn.EndPoint}; Not in server whitelist.");
+
+							SendOrderTo(newConn, "ServerError", NoPermission);
+							DropClient(newConn);
+						}
+						else
+							completeConnection();
+
 					});
 				}
 				else
@@ -1411,101 +1517,18 @@ namespace OpenRA.Server
 		public ConnectionTarget GetEndpointForLocalConnection()
 		{
 			var endpoints = new List<DnsEndPoint>();
-			foreach (var listener in listeners)
-			{
-				var endpoint = (IPEndPoint)listener.LocalEndpoint;
-				if (IPAddress.IPv6Any.Equals(endpoint.Address))
-					endpoints.Add(new DnsEndPoint(IPAddress.IPv6Loopback.ToString(), endpoint.Port));
-				else if (IPAddress.Any.Equals(endpoint.Address))
-					endpoints.Add(new DnsEndPoint(IPAddress.Loopback.ToString(), endpoint.Port));
-				else
-					endpoints.Add(new DnsEndPoint(endpoint.Address.ToString(), endpoint.Port));
-			}
+			//foreach (var listener in listeners)
+			//{
+			//	var endpoint = (IPEndPoint)listener.LocalEndpoint;
+			//	if (IPAddress.IPv6Any.Equals(endpoint.Address))
+			//		endpoints.Add(new DnsEndPoint(IPAddress.IPv6Loopback.ToString(), endpoint.Port));
+			//	else if (IPAddress.Any.Equals(endpoint.Address))
+			//		endpoints.Add(new DnsEndPoint(IPAddress.Loopback.ToString(), endpoint.Port));
+			//	else
+			//		endpoints.Add(new DnsEndPoint(endpoint.Address.ToString(), endpoint.Port));
+			//}
 
 			return new ConnectionTarget(endpoints);
-		}
-
-		interface IServerEvent { void Invoke(Server server); }
-
-		class ConnectionConnectEvent : IServerEvent
-		{
-			readonly Socket socket;
-			public ConnectionConnectEvent(Socket socket)
-			{
-				this.socket = socket;
-			}
-
-			void IServerEvent.Invoke(Server server)
-			{
-				server.AcceptConnection(socket);
-			}
-		}
-
-		class ConnectionDisconnectEvent : IServerEvent
-		{
-			readonly Connection connection;
-			public ConnectionDisconnectEvent(Connection connection)
-			{
-				this.connection = connection;
-			}
-
-			void IServerEvent.Invoke(Server server)
-			{
-				server.DropClient(connection);
-			}
-		}
-
-		class ConnectionPacketEvent : IServerEvent
-		{
-			readonly Connection connection;
-			readonly int frame;
-			readonly byte[] data;
-
-			public ConnectionPacketEvent(Connection connection, int frame, byte[] data)
-			{
-				this.connection = connection;
-				this.frame = frame;
-				this.data = data;
-			}
-
-			void IServerEvent.Invoke(Server server)
-			{
-				server.ReceiveOrders(connection, frame, data);
-			}
-		}
-
-		class ConnectionPingEvent : IServerEvent
-		{
-			readonly Connection connection;
-			readonly int[] pingHistory;
-			readonly byte queueLength;
-
-			public ConnectionPingEvent(Connection connection, int[] pingHistory, byte queueLength)
-			{
-				this.connection = connection;
-				this.pingHistory = pingHistory;
-				this.queueLength = queueLength;
-			}
-
-			void IServerEvent.Invoke(Server server)
-			{
-				server.ReceivePing(connection, pingHistory);
-			}
-		}
-
-		class CallbackEvent : IServerEvent
-		{
-			readonly Action action;
-
-			public CallbackEvent(Action action)
-			{
-				this.action = action;
-			}
-
-			void IServerEvent.Invoke(Server server)
-			{
-				action();
-			}
 		}
 	}
 }
