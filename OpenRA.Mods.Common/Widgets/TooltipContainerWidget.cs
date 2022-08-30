@@ -34,9 +34,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 		/// <summary>First time the current tooltip is to be rendered after the last mouse move/event.</summary>
 		bool initialRender;
+		readonly WorldRenderer worldRenderer;
 
-		public TooltipContainerWidget()
+		[ObjectCreator.UseCtor]
+		public TooltipContainerWidget(WorldRenderer worldRenderer)
 		{
+			this.worldRenderer = worldRenderer;
 			graphicSettings = Game.Settings.Graphics;
 			initialRender = true;
 
@@ -58,7 +61,11 @@ namespace OpenRA.Mods.Common.Widgets
 			if (id == null || tooltip != null)
 				return;
 
-			tooltip = Ui.LoadWidget(id, this, new WidgetArgs(widgetArgs) { { "tooltipContainer", this } });
+			tooltip = Ui.LoadWidget(id, this, new WidgetArgs(widgetArgs)
+			{
+				{ "tooltipContainer", this },
+				{ "worldRenderer", worldRenderer }
+			});
 		}
 
 		public int SetTooltip(string id, WidgetArgs args)
