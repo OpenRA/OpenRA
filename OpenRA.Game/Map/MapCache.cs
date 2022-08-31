@@ -149,7 +149,7 @@ namespace OpenRA
 						{
 							LastModifiedMap = uid;
 							if (oldMap != null)
-								mapUpdates.Add(oldMap, uid);
+								mapUpdates[oldMap] = uid;
 						}
 					}
 				}
