@@ -42,6 +42,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("How far beyond the target the projectile keeps on travelling.")]
 		public readonly WDist BeyondTargetRange = new WDist(0);
 
+		[Desc("The minimum distance the beam travels.")]
+		public readonly WDist MinDistance = WDist.Zero;
+
 		[Desc("Damage modifier applied at each range step.")]
 		public readonly int[] Falloff = { 100, 100 };
 
@@ -136,7 +139,19 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Update the target position with the range we shoot beyond the target by
 			// I.e. we can deliberately overshoot, so aim for that position
 			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(towardsTargetFacing));
-			target += dir * info.BeyondTargetRange.Length / 1024;
+			var dist = (args.SourceActor.CenterPosition - target).Length;
+			int extraDist;
+			if (info.MinDistance.Length > dist)
+			{
+				if (info.MinDistance.Length - dist < info.BeyondTargetRange.Length)
+					extraDist = info.BeyondTargetRange.Length;
+				else
+					extraDist = info.MinDistance.Length - dist;
+			}
+			else
+				extraDist = info.BeyondTargetRange.Length;
+
+			target += dir * extraDist / 1024;
 
 			length = Math.Max((target - headPos).Length / speed.Length, 1);
 			weaponRange = new WDist(Util.ApplyPercentageModifiers(args.Weapon.Range.Length, args.RangeModifiers));
