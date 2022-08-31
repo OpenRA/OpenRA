@@ -13,6 +13,7 @@ Sound:
 		Falloff: 0, 0, 100, 0
 		Range: 0, 0c450, 4c0, 8c0
 		BeyondTargetRange: 1c0
+		MinDistance: 5c0
 		Color: 00FFFFC8
 	Warhead@1Dam: SpreadDamage
 		Range: 0, 32
