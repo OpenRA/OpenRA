@@ -173,12 +173,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (health.DamageState == DamageState.Undamaged)
 				{
 					foreach (var repairer in Repairers)
-					{
-						if (repairer == self.Owner)
-							return;
-
-						repairer.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(Info.PlayerExperience);
-					}
+						if (repairer != self.Owner)
+							repairer.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(Info.PlayerExperience);
 
 					Repairers.Clear();
 					RepairActive = false;
