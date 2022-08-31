@@ -146,12 +146,21 @@ namespace OpenRA.Mods.Common.Pathfinder
 			/// <summary>
 			/// Maps a local cell to a abstract node in the graph.
 			/// Returns null when the local cell is unreachable.
+			/// Pass a null <paramref name="hpf"/> to skip cost checks if the caller already checked.
 			/// </summary>
-			public CPos? AbstractCellForLocalCell(CPos localCell)
+			public CPos? AbstractCellForLocalCell(CPos localCell, HierarchicalPathFinder hpf)
 			{
 				var abstractCell = singleAbstractCellForLayer[localCell.Layer];
 				if (abstractCell != null)
+				{
+					// All reachable cells in the grid are joined together so only a single abstract cell was needed,
+					// but there may be unreachable cells in the grid which we must exclude.
+					if (hpf != null && !hpf.CellIsAccessible(localCell))
+						return null;
 					return abstractCell;
+				}
+
+				// Only reachable cells would be populated in the lookup, so no need to check their cost.
 				if (localCellToAbstractCell.TryGetValue(localCell, out var abstractCellFromMap))
 					return abstractCellFromMap;
 				return null;
@@ -461,13 +470,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 					if (!MovementAllowedBetweenCells(cell, candidateCell))
 						return;
 
-					var gridInfo = gridInfos[GridIndex(cell)];
-					var abstractCell = gridInfo.AbstractCellForLocalCell(cell);
+					var abstractCell = AbstractCellForLocalCellNoAccessibleCheck(cell);
 					if (abstractCell == null)
 						return;
 
-					var gridInfoAdjacent = gridInfos[GridIndex(candidateCell)];
-					var abstractCellAdjacent = gridInfoAdjacent.AbstractCellForLocalCell(candidateCell);
+					var abstractCellAdjacent = AbstractCellForLocalCellNoAccessibleCheck(candidateCell);
 					if (abstractCellAdjacent == null)
 						return;
 
@@ -877,12 +884,10 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 			RebuildDomains();
 
-			var sourceGridInfo = gridInfos[GridIndex(source)];
-			var targetGridInfo = gridInfos[GridIndex(target)];
-			var abstractSource = sourceGridInfo.AbstractCellForLocalCell(source);
+			var abstractSource = AbstractCellForLocalCell(source);
 			if (abstractSource == null)
 				return false;
-			var abstractTarget = targetGridInfo.AbstractCellForLocalCell(target);
+			var abstractTarget = AbstractCellForLocalCell(target);
 			if (abstractTarget == null)
 				return false;
 			var sourceDomain = abstractDomains[abstractSource.Value];
@@ -999,11 +1004,22 @@ namespace OpenRA.Mods.Common.Pathfinder
 		}
 
 		/// <summary>
-		/// Maps a local cell to a abstract node in the graph.
-		/// Returns null when the local cell is unreachable.
+		/// Maps a local cell to a abstract node in the graph. Returns null when the local cell is unreachable.
 		/// </summary>
-		CPos? AbstractCellForLocalCell(CPos localCell) =>
-			gridInfos[GridIndex(localCell)].AbstractCellForLocalCell(localCell);
+		CPos? AbstractCellForLocalCell(CPos localCell)
+		{
+			return gridInfos[GridIndex(localCell)].AbstractCellForLocalCell(localCell, this);
+		}
+
+		/// <summary>
+		/// Maps a local cell to a abstract node in the graph. Returns null when the local cell is unreachable.
+		/// Skips the <see cref="CellIsAccessible"/> check, if it has already been performed.
+		/// If an accessible check has not been performed, call <see cref="AbstractCellForLocalCell"/> instead.
+		/// </summary>
+		CPos? AbstractCellForLocalCellNoAccessibleCheck(CPos localCell)
+		{
+			return gridInfos[GridIndex(localCell)].AbstractCellForLocalCell(localCell, null);
+		}
 
 		/// <summary>
 		/// Creates a <see cref="GraphEdge"/> from the <paramref name="localCell"/> to the <paramref name="abstractCell"/>.
@@ -1035,8 +1051,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				// If the exceptions here do fire, they indicate a bug. The abstract graph is considering a cell to be
 				// unreachable, but the local pathfinder thinks it is reachable. We must fix the abstract graph to also
 				// consider the cell to be reachable.
-				var gridInfo = gridInfos[GridIndex(cell)];
-				var maybeAbstractCell = gridInfo.AbstractCellForLocalCell(cell);
+				var maybeAbstractCell = AbstractCellForLocalCellNoAccessibleCheck(cell);
 				if (maybeAbstractCell == null)
 					throw new Exception(
 						"The abstract path should never be searched for an unreachable point. " +
