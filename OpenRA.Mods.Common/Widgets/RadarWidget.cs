@@ -255,7 +255,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var color = 0;
 			var cv = currentPlayer.Shroud.GetVisibility(puv);
-			if (cv == Shroud.CellVisibility.Hidden)
+			if (!cv.HasFlag(Shroud.CellVisibility.Explored))
 				color = ColorShroud;
 			else if (!cv.HasFlag(Shroud.CellVisibility.Visible))
 				color = ColorFog;

@@ -441,7 +441,7 @@ namespace OpenRA.Traits
 
 			if (Disabled)
 			{
-				if (FogEnabled)
+				if (fogEnabled)
 				{
 					// Shroud disabled, Fog enabled
 					if (resolvedType.Contains(puv))
@@ -457,7 +457,7 @@ namespace OpenRA.Traits
 			}
 			else
 			{
-				if (FogEnabled)
+				if (fogEnabled)
 				{
 					// Shroud and Fog enabled
 					if (resolvedType.Contains(puv))
