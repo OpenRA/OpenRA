@@ -167,7 +167,7 @@ World:
 	MapOptions:
 		ShortGameCheckboxDisplayOrder: 2
 		TechLevelDropdownDisplayOrder: 2
-		GameSpeedDropdownDisplayOrder: 3
+		GameSpeedDropdownDisplayOrder: 1
 	CreateMapPlayers:
 	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
@@ -225,7 +225,6 @@ World:
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
 	SpawnStartingUnits:
-		DropdownDisplayOrder: 1
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:
@@ -238,6 +237,7 @@ World:
 	CellTriggerOverlay:
 	StartGameNotification:
 	TimeLimitManager:
+		TimeLimitDisplayOrder: 2
 	ColorPickerManager:
 		PreviewActor: carryall.colorpicker
 		PresetHues: 0, 0.13, 0.18, 0.3, 0.475, 0.625, 0.82, 0.89, 0.97, 0.05, 0.23, 0.375, 0.525, 0.6, 0.75, 0.85

@@ -202,7 +202,7 @@ World:
 	MapOptions:
 		ShortGameCheckboxDisplayOrder: 2
 		TechLevelDropdownDisplayOrder: 2
-		GameSpeedDropdownDisplayOrder: 3
+		GameSpeedDropdownDisplayOrder: 1
 	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
 	CreateMapPlayers:
@@ -248,7 +248,6 @@ World:
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e2,e2,e2,e3,e3,apc,mtnk
 	SpawnStartingUnits:
-		DropdownDisplayOrder: 0
 	CrateSpawner:
 		Minimum: 1
 		Maximum: 6
@@ -267,6 +266,7 @@ World:
 	ScriptTriggers:
 	CellTriggerOverlay:
 	TimeLimitManager:
+		TimeLimitDisplayOrder: 2
 	ColorPickerManager:
 		PreviewActor: fact.colorpicker
 		PresetHues: 0, 0.125, 0.185, 0.4, 0.54, 0.66, 0.79, 0.875, 0, 0.14, 0.23, 0.43, 0.54, 0.625, 0.77, 0.85

@@ -303,7 +303,7 @@ World:
 	MapOptions:
 		ShortGameCheckboxDisplayOrder: 2
 		TechLevelDropdownDisplayOrder: 2
-		GameSpeedDropdownDisplayOrder: 3
+		GameSpeedDropdownDisplayOrder: 1
 	CreateMapPlayers:
 	StartingUnits@MCV:
 		Class: none
@@ -361,7 +361,6 @@ World:
 	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
 	SpawnStartingUnits:
-		DropdownDisplayOrder: 1
 	CrateSpawner:
 		Minimum: 1
 		Maximum: 6
@@ -383,6 +382,7 @@ World:
 	ScriptTriggers:
 	CellTriggerOverlay:
 	TimeLimitManager:
+		TimeLimitDisplayOrder: 2
 	ColorPickerManager:
 		PreviewActor: harv.colorpicker
 		FactionPreviewActors:
