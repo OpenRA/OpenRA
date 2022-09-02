@@ -467,6 +467,9 @@ duration = Duration: { $time }
 singleplayer = Singleplayer
 multiplayer = Multiplayer
 
+victory = Victory
+defeat = Defeat
+
 today = Today
 last-week = Last 7 days
 last-fortnight = Last 14 days
