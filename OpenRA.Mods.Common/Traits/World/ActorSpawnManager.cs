@@ -27,7 +27,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Maximum number of actors.")]
 		public readonly int Maximum = 4;
 
-		[Desc("Time (in ticks) between actor spawn. Supports 1 or 2 values.\nIf 2 values are provided they are used as a range from which a value is randomly selected.")]
+		[Desc("Time (in ticks) between actor spawn. Supports 1 or 2 values.",
+			"If 2 values are provided they are used as a range from which a value is randomly selected.")]
 		public readonly int[] SpawnInterval = { 6000 };
 
 		[FieldLoader.Require]
