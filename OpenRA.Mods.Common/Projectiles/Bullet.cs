@@ -102,11 +102,22 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Altitude above terrain below which to explode. Zero effectively deactivates airburst.")]
 		public readonly WDist AirburstAltitude = WDist.Zero;
 
+		[Desc("When set display a line behind the actor that fades out in the end.")]
 		public readonly int ContrailLength = 0;
+
+		[Desc("Equivalent to sequence ZOffset. Controls Z sorting.")]
 		public readonly int ContrailZOffset = 2047;
+
+		[Desc("Color of the emitted line when not using player colors.")]
 		public readonly Color ContrailColor = Color.White;
+
+		[Desc("Override color with owner's player color")]
 		public readonly bool ContrailUsePlayerColor = false;
+
+		[Desc("Time after which the line should appear. Controls the distance to the actor.")]
 		public readonly int ContrailDelay = 1;
+
+		[Desc("Thickness of the emitted line.")]
 		public readonly WDist ContrailWidth = new WDist(64);
 
 		public IProjectile Create(ProjectileArgs args) { return new Bullet(this, args); }
