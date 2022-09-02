@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.Require]
 		[Desc("Tunnel footprint.", "_ is passable, x is blocked, and o are tunnel portals.")]
-		public readonly string Footprint = string.Empty;
+		public readonly string Footprint = null;
 
 		[FieldLoader.Require]
 		[Desc("Terrain type of the tunnel floor.")]

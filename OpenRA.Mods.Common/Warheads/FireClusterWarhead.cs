@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Warheads
 		[FieldLoader.Require]
 		[Desc("Cluster footprint. Cells marked as X will be attacked.",
 			"Cells marked as x will be attacked randomly until RandomClusterCount is reached.")]
-		public readonly string Footprint = string.Empty;
+		public readonly string Footprint = null;
 
 		WeaponInfo weapon;
 

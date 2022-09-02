@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		[FieldLoader.Require]
 		[Desc("e.g. Infantry, Vehicles, Aircraft, Buildings")]
-		public readonly string ProductionType = "";
+		public readonly string ProductionType = null;
 
 		public override object Create(ActorInitializer init) { return new ClonesProducedUnits(init, this); }
 	}

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		[WeaponReference]
 		[FieldLoader.Require]
 		[Desc("Weapon to use for the impact.")]
-		public readonly string MissileWeapon = "";
+		public readonly string MissileWeapon = null;
 
 		[Desc("Delay (in ticks) after launch until the missile is spawned.")]
 		public readonly int MissileDelay = 0;

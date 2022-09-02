@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.Require]
 		[Desc("Actual footprint. Cells marked as x will be affected.")]
-		public readonly string Footprint = string.Empty;
+		public readonly string Footprint = null;
 
 		[Desc("Sound to instantly play at the targeted area.")]
 		public readonly string OnFireSound = null;

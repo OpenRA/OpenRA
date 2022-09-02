@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		[FieldLoader.Require]
 		[Desc("Actual footprint. Cells marked as x will be affected.")]
-		public readonly string Footprint = string.Empty;
+		public readonly string Footprint = null;
 
 		[Desc("Ticks until returning after teleportation.")]
 		public readonly int Duration = 750;
