@@ -93,6 +93,7 @@ jobs:
         run: |
           ./utility.sh all --docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/playtest/traits.md"
           ./utility.sh all --weapon-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/playtest/weapons.md"
+          ./utility.sh all --sequence-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/playtest/sequences.md"
           ./utility.sh all --lua-docs "${GIT_TAG}" > "docs/api/playtest/lua.md"
 
       - name: Update docs.openra.net (Release)
@@ -102,6 +103,7 @@ jobs:
         run: |
           ./utility.sh all --docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/release/traits.md"
           ./utility.sh all --weapon-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/release/weapons.md"
+          ./utility.sh all --sequence-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/release/sequences.md"
           ./utility.sh all --lua-docs "${GIT_TAG}" > "docs/api/release/lua.md"
 
       - name: Push docs.openra.net
