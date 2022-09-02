@@ -162,6 +162,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					muteCheckbox.IsVisible = () => !pp.IsBot && client.State != Session.ClientState.Disconnected && pp.ClientIndex != orderManager.LocalClient?.Index;
 					muteCheckbox.GetTooltipText = () => muteCheckbox.IsChecked() ? unmuteTooltip : muteTooltip;
 
+					var kickButton = item.Get<ButtonWidget>("KICK");
+					kickButton.IsVisible = () => Game.IsHost && client.Index != orderManager.LocalClient.Index && client.State != Session.ClientState.Disconnected && pp.WinState == WinState.Lost && !pp.IsBot;
+					kickButton.OnClick = () =>
+					{
+						hideMenu(true);
+						ConfirmationDialogs.ButtonPrompt(modData,
+							title: $"Kick {client.Name}?",
+							text: "They will not be able to rejoin this game.",
+							onConfirm: () =>
+							{
+								orderManager.IssueOrder(Order.Command($"kick {client.Index} {false}"));
+								hideMenu(false);
+							},
+							onCancel: () => hideMenu(false),
+							confirmText: "Kick");
+					};
+
 					playerPanel.AddChild(item);
 				}
 			}

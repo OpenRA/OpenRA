@@ -778,7 +778,10 @@ namespace OpenRA.Mods.Common.Server
 				}
 
 				var kickClient = server.GetClient(kickConn);
-				if (server.State == ServerState.GameStarted && !kickClient.IsObserver)
+
+				var winState = server.WorldPlayers.SingleOrDefault(p => p?.ClientIndex == kickClient.Index)?.Outcome;
+
+				if (server.State == ServerState.GameStarted && !kickClient.IsObserver && (winState == null || winState != WinState.Lost))
 				{
 					server.SendLocalizedMessageTo(conn, NoKickGameStarted);
 					return true;

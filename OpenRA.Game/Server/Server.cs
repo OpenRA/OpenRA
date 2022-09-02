@@ -77,7 +77,7 @@ namespace OpenRA.Server
 
 		ReplayRecorder recorder;
 		GameInformation gameInfo;
-		readonly List<GameInformation.Player> worldPlayers = new List<GameInformation.Player>();
+		public readonly List<GameInformation.Player> WorldPlayers = new List<GameInformation.Player>();
 		readonly Stopwatch pingUpdated = Stopwatch.StartNew();
 		readonly PlayerMessageTracker playerMessageTracker;
 
@@ -765,7 +765,7 @@ namespace OpenRA.Server
 
 		void SetPlayerDefeat(int playerIndex)
 		{
-			var defeatedPlayer = worldPlayers[playerIndex];
+			var defeatedPlayer = WorldPlayers[playerIndex];
 			if (defeatedPlayer == null || defeatedPlayer.Outcome != WinState.Undefined)
 				return;
 
@@ -791,9 +791,12 @@ namespace OpenRA.Server
 
 			// Make sure the written file is not valid
 			// TODO: storing a serverside replay on desync would be extremely useful
-			recorder.Metadata = null;
+			if (recorder != null)
+			{
+				recorder.Metadata = null;
 
-			recorder.Dispose();
+				recorder.Dispose();
+			}
 
 			// Stop the recording
 			recorder = null;
@@ -831,7 +834,7 @@ namespace OpenRA.Server
 				if (frame > lastDefeatStateFrame && lastDefeatState != playerDefeatState)
 				{
 					var newDefeats = playerDefeatState & ~lastDefeatState;
-					for (var i = 0; i < worldPlayers.Count; i++)
+					for (var i = 0; i < WorldPlayers.Count; i++)
 						if ((newDefeats & (1UL << i)) != 0)
 							SetPlayerDefeat(i);
 
@@ -856,17 +859,14 @@ namespace OpenRA.Server
 
 		void RecordOrder(int frame, byte[] data, int from)
 		{
-			if (recorder != null)
-			{
-				recorder.ReceiveFrame(from, frame, data);
+			recorder?.ReceiveFrame(from, frame, data);
 
-				if (data.Length > 0 && data[0] == (byte)OrderType.SyncHash)
-				{
-					if (data.Length == Order.SyncHashOrderLength)
-						HandleSyncOrder(frame, data);
-					else
-						Log.Write("server", $"Dropped sync order with length {data.Length} from client {from}. Expected length {Order.SyncHashOrderLength}.");
-				}
+			if (data.Length > 0 && data[0] == (byte)OrderType.SyncHash)
+			{
+				if (data.Length == Order.SyncHashOrderLength)
+					HandleSyncOrder(frame, data);
+				else
+					Log.Write("server", $"Dropped sync order with length {data.Length} from client {from}. Expected length {Order.SyncHashOrderLength}.");
 			}
 		}
 
@@ -1321,26 +1321,24 @@ namespace OpenRA.Server
 				// This will need to change if future code wants to use worldPlayers for other purposes
 				var playerRandom = new MersenneTwister(LobbyInfo.GlobalSettings.RandomSeed);
 				foreach (var cmpi in Map.WorldActorInfo.TraitInfos<ICreatePlayersInfo>())
-					cmpi.CreateServerPlayers(Map, LobbyInfo, worldPlayers, playerRandom);
+					cmpi.CreateServerPlayers(Map, LobbyInfo, WorldPlayers, playerRandom);
+
+				gameInfo = new GameInformation
+				{
+					Mod = Game.ModData.Manifest.Id,
+					Version = Game.ModData.Manifest.Metadata.Version,
+					MapUid = Map.Uid,
+					MapTitle = Map.Title,
+					StartTimeUtc = DateTime.UtcNow,
+				};
+
+				// Replay metadata should only include the playable players
+				foreach (var p in WorldPlayers)
+					if (p != null)
+						gameInfo.Players.Add(p);
 
 				if (recorder != null)
-				{
-					gameInfo = new GameInformation
-					{
-						Mod = Game.ModData.Manifest.Id,
-						Version = Game.ModData.Manifest.Metadata.Version,
-						MapUid = Map.Uid,
-						MapTitle = Map.Title,
-						StartTimeUtc = DateTime.UtcNow,
-					};
-
-					// Replay metadata should only include the playable players
-					foreach (var p in worldPlayers)
-						if (p != null)
-							gameInfo.Players.Add(p);
-
 					recorder.Metadata = new ReplayMetadata(gameInfo);
-				}
 
 				SyncLobbyInfo();
 				State = ServerState.GameStarted;
