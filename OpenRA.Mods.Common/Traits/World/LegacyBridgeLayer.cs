@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World)]
-	class LegacyBridgeLayerInfo : TraitInfo
+	public class LegacyBridgeLayerInfo : TraitInfo
 	{
 		[ActorReference]
 		public readonly string[] Bridges = { "bridge1", "bridge2" };
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new LegacyBridgeLayer(init.Self, this); }
 	}
 
-	class LegacyBridgeLayer : IWorldLoaded
+	public class LegacyBridgeLayer : IWorldLoaded
 	{
 		readonly LegacyBridgeLayerInfo info;
 		readonly Dictionary<ushort, (string Template, int Health)> bridgeTypes = new Dictionary<ushort, (string, int)>();
