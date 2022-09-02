@@ -17,14 +17,14 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Allows bridges to be targeted for demolition and repair.")]
-	class LegacyBridgeHutInfo : TraitInfo, IDemolishableInfo
+	public class LegacyBridgeHutInfo : TraitInfo, IDemolishableInfo
 	{
 		public bool IsValidTarget(ActorInfo actorInfo, Actor saboteur) { return false; } // TODO: bridges don't support frozen under fog
 
 		public override object Create(ActorInitializer init) { return new LegacyBridgeHut(init); }
 	}
 
-	class LegacyBridgeHut : IDemolishable
+	public class LegacyBridgeHut : IDemolishable
 	{
 		public Bridge FirstBridge { get; private set; }
 		public Bridge Bridge { get; private set; }

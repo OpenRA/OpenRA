@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Allows bridges to be targeted for demolition and repair.")]
-	class BridgeHutInfo : TraitInfo, IDemolishableInfo
+	public class BridgeHutInfo : TraitInfo, IDemolishableInfo
 	{
 		[Desc("Bridge types to act on")]
 		public readonly string[] Types = { "GroundLevelBridge" };
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new BridgeHut(init.World, this); }
 	}
 
-	class BridgeHut : INotifyCreated, IDemolishable, ITick
+	public class BridgeHut : INotifyCreated, IDemolishable, ITick
 	{
 		public readonly BridgeHutInfo Info;
 		readonly BridgeLayer bridgeLayer;

@@ -22,7 +22,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class BridgeInfo : TraitInfo, IRulesetLoaded, Requires<HealthInfo>, Requires<BuildingInfo>
+	public class BridgeInfo : TraitInfo, IRulesetLoaded, Requires<HealthInfo>, Requires<BuildingInfo>
 	{
 		public readonly bool Long = false;
 
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	class Bridge : IRender, INotifyDamageStateChanged, IRadarSignature
+	public class Bridge : IRender, INotifyDamageStateChanged, IRadarSignature
 	{
 		readonly BuildingInfo buildingInfo;
 		readonly Bridge[] neighbours = new Bridge[2];

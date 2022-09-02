@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Can instantly repair other actors, but gets consumed afterwards.")]
-	class EngineerRepairInfo : ConditionalTraitInfo
+	public class EngineerRepairInfo : ConditionalTraitInfo
 	{
 		[Desc("Uses the \"EngineerRepairable\" trait to determine repairability.")]
 		public readonly BitSet<EngineerRepairType> Types = default(BitSet<EngineerRepairType>);
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new EngineerRepair(this); }
 	}
 
-	class EngineerRepair : ConditionalTrait<EngineerRepairInfo>, IIssueOrder, IResolveOrder, IOrderVoice
+	public class EngineerRepair : ConditionalTrait<EngineerRepairInfo>, IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		public EngineerRepair(EngineerRepairInfo info)
 			: base(info) { }
