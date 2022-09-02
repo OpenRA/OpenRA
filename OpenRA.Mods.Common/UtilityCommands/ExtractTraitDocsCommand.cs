@@ -59,31 +59,42 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						.Where(y => y != type.Name && y != $"{type.Name}Info" && y != "Object" && y != "TraitInfo`1"), // HACK: This is the simplest way to exclude TraitInfo<T>, which doesn't serialize well.
 					Properties = FieldLoader.GetTypeLoadInfo(type)
 						.Where(fi => fi.Field.IsPublic && fi.Field.IsInitOnly && !fi.Field.IsStatic)
-						.Select(fi => new
+						.Select(fi =>
 						{
-							PropertyName = fi.YamlName,
-							DefaultValue = FieldSaver.SaveField(objectCreator.CreateBasic(type), fi.Field.Name).Value.Value,
-							InternalType = Util.InternalTypeName(fi.Field.FieldType),
-							UserFriendlyType = Util.FriendlyTypeName(fi.Field.FieldType),
-							Description = string.Join(" ", fi.Field.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines)),
-							OtherAttributes = fi.Field.CustomAttributes
-								.Where(a => a.AttributeType.Name != nameof(DescAttribute) && a.AttributeType.Name != nameof(FieldLoader.LoadUsingAttribute))
-								.Select(a =>
-								{
-									var name = a.AttributeType.Name;
-									name = name.EndsWith("Attribute") ? name.Substring(0, name.Length - 9) : name;
+							var typeInstance = objectCreator.CreateBasic(type);
+							var defaultValue = FieldSaver.SaveField(typeInstance, fi.Field.Name).Value.Value;
 
-									return new
+							// HACK: FieldSaver always produces an empty string if there is no value, but it can be important to distinguish between "" and null.
+							// If the field is a string we need to make sure what the value is. If not, then the value can only be null.
+							if (string.IsNullOrWhiteSpace(defaultValue))
+								defaultValue = fi.Field.FieldType == typeof(string) ? fi.Field.GetValue(typeInstance)?.ToString() : null;
+
+							return new
+							{
+								PropertyName = fi.YamlName,
+								DefaultValue = defaultValue,
+								InternalType = Util.InternalTypeName(fi.Field.FieldType),
+								UserFriendlyType = Util.FriendlyTypeName(fi.Field.FieldType),
+								Description = string.Join(" ", fi.Field.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines)),
+								OtherAttributes = fi.Field.CustomAttributes
+									.Where(a => a.AttributeType.Name != nameof(DescAttribute) && a.AttributeType.Name != nameof(FieldLoader.LoadUsingAttribute))
+									.Select(a =>
 									{
-										Name = name,
-										Parameters = a.Constructor.GetParameters()
-											.Select(pi => new
-											{
-												pi.Name,
-												Value = Util.GetAttributeParameterValue(a.ConstructorArguments[pi.Position])
-											})
-									};
-								})
+										var name = a.AttributeType.Name;
+										name = name.EndsWith("Attribute") ? name.Substring(0, name.Length - 9) : name;
+
+										return new
+										{
+											Name = name,
+											Parameters = a.Constructor.GetParameters()
+												.Select(pi => new
+												{
+													pi.Name,
+													Value = Util.GetAttributeParameterValue(a.ConstructorArguments[pi.Position])
+												})
+										};
+									})
+							};
 						})
 				});
 
