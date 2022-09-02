@@ -97,6 +97,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		static readonly string NoTeam = "no-team";
 
+		[TranslationReference]
+		static readonly string Victory = "victory";
+
+		[TranslationReference]
+		static readonly string Defeat = "defeat";
+
 		static Filter filter = new Filter();
 
 		readonly Widget panel;
@@ -331,8 +337,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var options = new List<(WinState WinState, string Text)>
 					{
 						(WinState.Undefined, ddb.GetText()),
-						(WinState.Lost, "Defeat"),
-						(WinState.Won, "Victory")
+						(WinState.Lost, modData.Translation.GetString(Defeat)),
+						(WinState.Won, modData.Translation.GetString(Victory))
 					};
 
 					var lookup = options.ToDictionary(kvp => kvp.WinState, kvp => kvp.Text);
