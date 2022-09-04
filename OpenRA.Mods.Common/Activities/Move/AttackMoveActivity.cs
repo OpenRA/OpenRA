@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				// Use the standard ScanForTarget rate limit while we are running the move activity to save performance.
 				// Override the rate limit if our attack activity has completed so we can immediately acquire a new target instead of moving.
-				target = autoTarget.ScanForTarget(self, false, true, !runningMoveActivity);
+				target = autoTarget.ScanForTarget(self, autoTarget.AllowMove, true, !runningMoveActivity);
 
 				// Cancel the current move activity and queue attack activities if we find a new target.
 				if (target.Type != TargetType.Invalid)
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Activities
 					ChildActivity?.Cancel(self);
 
 					foreach (var ab in autoTarget.ActiveAttackBases)
-						QueueChild(ab.GetAttackActivity(self, AttackSource.AttackMove, target, false, false));
+						QueueChild(ab.GetAttackActivity(self, AttackSource.AttackMove, target, autoTarget.AllowMove, false));
 				}
 
 				// Continue with the move activity (or queue a new one) when there are no targets.

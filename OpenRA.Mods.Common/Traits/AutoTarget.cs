@@ -136,6 +136,7 @@ namespace OpenRA.Mods.Common.Traits
 		int nextScanTime = 0;
 
 		public UnitStance Stance { get; private set; }
+		public bool AllowMove => allowMovement && Stance > UnitStance.Defend;
 
 		[Sync]
 		public Actor Aggressor;
@@ -240,8 +241,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Don't fire at an invisible enemy when we can't move to reveal it
-			var allowMove = allowMovement && Stance > UnitStance.Defend;
-			if (!allowMove && !attacker.CanBeViewedByPlayer(self.Owner))
+			if (!AllowMove && !attacker.CanBeViewedByPlayer(self.Owner))
 				return;
 
 			// Not a lot we can do about things we can't hurt... although maybe we should automatically run away?
@@ -256,7 +256,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Respect AutoAttack priorities.
 			if (Stance > UnitStance.ReturnFire)
 			{
-				var autoTarget = ScanForTarget(self, allowMove, true);
+				var autoTarget = ScanForTarget(self, AllowMove, true);
 
 				if (autoTarget != Target.Invalid)
 					attacker = autoTarget.Actor;
@@ -264,7 +264,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			Aggressor = attacker;
 
-			Attack(Target.FromActor(Aggressor), allowMove);
+			Attack(Target.FromActor(Aggressor), AllowMove);
 		}
 
 		void INotifyIdle.TickIdle(Actor self)
@@ -272,9 +272,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled || !Info.ScanOnIdle || Stance < UnitStance.Defend)
 				return;
 
-			var allowMove = allowMovement && Stance > UnitStance.Defend;
 			var allowTurn = Info.AllowTurning && Stance > UnitStance.HoldFire;
-			ScanAndAttack(self, allowMove, allowTurn);
+			ScanAndAttack(self, AllowMove, allowTurn);
 		}
 
 		void ITick.Tick(Actor self)
