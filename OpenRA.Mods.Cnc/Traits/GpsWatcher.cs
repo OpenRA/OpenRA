@@ -85,8 +85,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			Granted = actors.Count > 0 && Launched;
 			GrantedAllies = allyWatchers.Any(w => w.Trait.Granted);
 
-			var allyLaunched = allyWatchers.Any(w => w.Trait.Launched);
-			if ((Launched || allyLaunched) && !explored)
+			if (!explored && (Launched || allyWatchers.Any(w => w.Trait.Launched)))
 			{
 				explored = true;
 				owner.Shroud.ExploreAll();
