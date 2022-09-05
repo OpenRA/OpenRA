@@ -32,13 +32,16 @@ namespace OpenRA.Mods.Cnc.Effects
 		class DotState
 		{
 			public readonly GpsWatcher Watcher;
-			public readonly FrozenActor FrozenActor;
+			public readonly bool FrozenActorWithRenderables;
 			public bool Visible;
 			public DotState(Actor a, GpsWatcher watcher, FrozenActorLayer frozenLayer)
 			{
 				Watcher = watcher;
 				if (frozenLayer != null)
-					FrozenActor = frozenLayer.FromID(a.ActorID);
+				{
+					var frozenActor = frozenLayer.FromID(a.ActorID);
+					FrozenActorWithRenderables = frozenActor != null ? frozenActor.HasRenderables : false;
+				}
 			}
 		}
 
@@ -58,17 +61,26 @@ namespace OpenRA.Mods.Cnc.Effects
 
 		bool ShouldRender(DotState state, Player toPlayer)
 		{
+			// Hide the indicator if a frozen actor portrait is visible
+			if (state.FrozenActorWithRenderables)
+				return false;
+
 			// Hide the indicator if no watchers are available
 			if (!state.Watcher.Granted && !state.Watcher.GrantedAllies)
 				return false;
 
-			// Hide the indicator if a frozen actor portrait is visible
-			if (state.FrozenActor != null && state.FrozenActor.HasRenderables)
+			// Hide the indicator if the unit appears to be owned by an allied player
+			var owner = actor.EffectiveOwner?.Owner;
+			if (owner != null && toPlayer.IsAlliedWith(owner))
 				return false;
 
-			// Hide the indicator if the unit appears to be owned by an allied player
-			if (actor.EffectiveOwner != null && actor.EffectiveOwner.Owner != null &&
-					toPlayer.IsAlliedWith(actor.EffectiveOwner.Owner))
+			// Hide the indicator behind shroud
+			var visibility = toPlayer.Shroud.GetVisibility(actor.CenterPosition);
+			if (!visibility.HasFlag(Shroud.CellVisibility.Explored))
+				return false;
+
+			// Hide for visible
+			if (visibility.HasFlag(Shroud.CellVisibility.Visible))
 				return false;
 
 			// Hide indicator if the actor wouldn't otherwise be visible if there wasn't fog
@@ -76,11 +88,7 @@ namespace OpenRA.Mods.Cnc.Effects
 				if (!visibilityModifier.IsVisible(actor, toPlayer))
 					return false;
 
-			// Hide the indicator behind shroud
-			if (!toPlayer.Shroud.IsExplored(actor.CenterPosition))
-				return false;
-
-			return !visibility.IsVisible(actor, toPlayer) && toPlayer.Shroud.IsExplored(actor.CenterPosition);
+			return true;
 		}
 
 		void IEffect.Tick(World world)
