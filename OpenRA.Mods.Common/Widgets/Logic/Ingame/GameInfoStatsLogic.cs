@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (player.HasObjectives)
 				{
 					var mo = player.PlayerActor.Trait<MissionObjectives>();
-					checkbox.GetText = () => mo.Objectives.First().Description;
+					checkbox.GetText = () => mo.Objectives[0].Description;
 				}
 
 				statusLabel.GetText = () => player.WinState == WinState.Won ? Accomplished :
