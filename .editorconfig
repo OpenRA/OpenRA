@@ -153,6 +153,9 @@ dotnet_diagnostic.IDE1006.severity = warning
 # Avoid unnecessary zero-length array allocations.
 dotnet_diagnostic.CA1825.severity = warning
 
+# Do not use Enumerable methods on indexable collections. Instead use the collection directly.
+dotnet_diagnostic.CA1826.severity = warning
+
 # Use string.Contains(char) instead of string.Contains(string) with single characters.
 dotnet_diagnostic.CA1847.severity = warning
 
