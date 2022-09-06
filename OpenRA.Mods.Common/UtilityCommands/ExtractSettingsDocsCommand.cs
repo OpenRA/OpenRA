@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var section in sections.OrderBy(s => s.Key))
 			{
 				var fields = section.Value.GetType().GetFields();
-				if (fields.Length > 0 && fields.Where(field => field.GetCustomAttributes<DescAttribute>(false).Length > 0).Count() > 0)
+				if (fields.Any(field => field.GetCustomAttributes<DescAttribute>(false).Length > 0))
 					Console.WriteLine($"## {section.Key}");
 				else
 					Console.WriteLine();

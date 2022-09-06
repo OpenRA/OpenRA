@@ -156,6 +156,9 @@ dotnet_diagnostic.CA1825.severity = warning
 # Do not use Enumerable methods on indexable collections. Instead use the collection directly.
 dotnet_diagnostic.CA1826.severity = warning
 
+# Count() is used where Any() could be used instead to improve performance.
+dotnet_diagnostic.CA1827.severity = warning
+
 # Use string.Contains(char) instead of string.Contains(string) with single characters.
 dotnet_diagnostic.CA1847.severity = warning
 
