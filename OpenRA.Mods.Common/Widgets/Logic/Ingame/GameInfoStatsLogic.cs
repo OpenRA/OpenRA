@@ -79,8 +79,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					checkbox.GetText = () => mo.Objectives[0].Description;
 				}
 
-				statusLabel.GetText = () => player.WinState == WinState.Won ? Accomplished :
-					player.WinState == WinState.Lost ? Failed : InProgress;
+				var failed = modData.Translation.GetString(Failed);
+				var inProgress = modData.Translation.GetString(InProgress);
+				var accomplished = modData.Translation.GetString(Accomplished);
+				statusLabel.GetText = () => player.WinState == WinState.Won ? accomplished :
+					player.WinState == WinState.Lost ? failed : inProgress;
 				statusLabel.GetColor = () => player.WinState == WinState.Won ? Color.LimeGreen :
 					player.WinState == WinState.Lost ? Color.Red : Color.White;
 			}
