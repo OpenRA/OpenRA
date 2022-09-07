@@ -83,7 +83,7 @@ def format_docs(version, collectionName, types):
 
                         print(f'| {prop["PropertyName"]} | {defaultValue} | {prop["UserFriendlyType"]} | {prop["Description"]} |')
                     else:
-                        print(f'| {prop["PropertyName"]} | {prop["DefaultValue"]} | {prop["UserFriendlyType"]} | {prop["Description"]} |')
+                        print(f'| {prop["PropertyName"]} | {prop["DefaultValue"] or ""} | {prop["UserFriendlyType"]} | {prop["Description"]} |')
 
 if __name__ == "__main__":
     input_stream = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8-sig')
