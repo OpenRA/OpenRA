@@ -44,6 +44,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var extraHeightOnDouble = extras.Bounds.Y;
 			var extraHeightOnSingle = extraHeightOnDouble - (doubleHeight - singleHeight);
 
+			var unrevealedTerrain = modData.Translation.GetString(UnrevealedTerrain);
+
 			tooltipContainer.BeforeRender = () =>
 			{
 				if (viewport == null || viewport.TooltipType == WorldTooltipType.None)
@@ -57,7 +59,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				switch (viewport.TooltipType)
 				{
 					case WorldTooltipType.Unexplored:
-						labelText = modData.Translation.GetString(UnrevealedTerrain);
+						labelText = unrevealedTerrain;
 						break;
 					case WorldTooltipType.Resource:
 						labelText = viewport.ResourceTooltip;
