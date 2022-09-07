@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static readonly string NoVideoTitle = "no-video-title";
 
 		[TranslationReference]
-		static readonly string NoVideoText = "no-video-text";
+		static readonly string NoVideoPrompt = "no-video-prompt";
 
 		[TranslationReference]
 		static readonly string NoVideoCancel = "no-video-cancel";
@@ -350,7 +350,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: NoVideoTitle,
-					text: NoVideoText,
+					text: NoVideoPrompt,
 					cancelText: NoVideoCancel,
 					onCancel: () => { });
 			}
