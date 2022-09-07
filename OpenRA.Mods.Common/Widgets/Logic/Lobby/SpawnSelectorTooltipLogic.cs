@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			flag.IsVisible = () => playerFaction != null;
 			flag.GetImageCollection = () => "flags";
 			flag.GetImageName = () => playerFaction;
-			team.GetText = () => teamMessage.Update(playerTeam);
+			team.GetText = () => playerTeam > 0 ? teamMessage.Update(playerTeam) : "";
 			team.IsVisible = () => playerTeam > 0;
 		}
 	}
