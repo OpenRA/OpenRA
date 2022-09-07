@@ -26,13 +26,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		// mimic Windows compiler error format
 		static void EmitError(string e)
 		{
-			Console.WriteLine("OpenRA.Utility(1,1): Error: {0}", e);
+			Console.WriteLine($"OpenRA.Utility(1,1): Error: {e}");
 			++errors;
 		}
 
 		static void EmitWarning(string e)
 		{
-			Console.WriteLine("OpenRA.Utility(1,1): Warning: {0}", e);
+			Console.WriteLine($"OpenRA.Utility(1,1): Warning: {e}");
 		}
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				if (errors > 0)
 				{
-					Console.WriteLine("Errors: {0}", errors);
+					Console.WriteLine($"Errors: {errors}");
 					Environment.Exit(1);
 				}
 			}
