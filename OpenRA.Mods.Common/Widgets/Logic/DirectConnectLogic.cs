@@ -39,7 +39,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				portField.Text = text.Substring(last + 1);
 			}
 
-			panel.Get<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
+			var joinButton = panel.Get<ButtonWidget>("JOIN_BUTTON");
+
+			joinButton.IsDisabled = () => string.IsNullOrEmpty(ipField.Text);
+
+			joinButton.OnClick = () =>
 			{
 				var port = Exts.WithDefault(1234, () => Exts.ParseIntegerInvariant(portField.Text));
 
