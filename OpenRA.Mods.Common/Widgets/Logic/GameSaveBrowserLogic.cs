@@ -112,6 +112,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				var saveButton = panel.Get<ButtonWidget>("SAVE_BUTTON");
+				saveButton.IsDisabled = () => string.IsNullOrWhiteSpace(saveTextField.Text);
 				saveButton.OnClick = () => { Save(world); };
 				saveButton.IsVisible = () => true;
 
