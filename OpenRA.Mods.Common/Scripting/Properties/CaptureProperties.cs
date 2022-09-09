@@ -31,18 +31,19 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Captures the target actor.")]
 		public bool Capture(Actor target)
 		{
-			var targetManager = target.TraitOrDefault<CaptureManager>();
-			if (targetManager == null || !targetManager.CanBeTargetedBy(target, Self, captureManager))
+			if (!CanCapture(target))
 			{
-				Console.WriteLine($"Actor '{Self}' cannot capture actor '{target}'!");
+				Log.Write("lua", "Actor '{0}' cannot capture actor '{1}'!", Self, target);
 				return false;
 			}
+
+			// throw new LuaException("Actor '{0}' cannot capture actor '{1}'!".F(Self, target));
 
 			// NB: Scripted actions get no visible targetlines.
 			Self.QueueActivity(new CaptureActor(Self, Target.FromActor(target), null));
 			return true;
 		}
-		
+
 		[Desc("Checks if the target actor can be catured.")]
 		public bool CanCapture(Actor target)
 		{
