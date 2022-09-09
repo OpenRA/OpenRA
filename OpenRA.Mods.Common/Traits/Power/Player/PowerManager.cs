@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly PowerManagerInfo info;
-		readonly DeveloperMode devMode;
+		readonly IDeveloperMode devMode;
 
 		readonly Dictionary<Actor, int> powerDrain = new Dictionary<Actor, int>();
 
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 			this.info = info;
 
-			devMode = self.Trait<DeveloperMode>();
+			devMode = self.Trait<IDeveloperMode>();
 			wasHackEnabled = devMode.UnlimitedPower;
 		}
 

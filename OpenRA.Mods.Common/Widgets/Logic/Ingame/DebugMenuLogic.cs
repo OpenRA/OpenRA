@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public DebugMenuLogic(Widget widget, World world)
 		{
-			var devTrait = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
+			var devTrait = world.LocalPlayer.DeveloperMode;
 			var debugVis = world.WorldActor.TraitOrDefault<DebugVisualizations>();
 
 			var visibilityCheckbox = widget.GetOrNull<CheckboxWidget>("DISABLE_VISIBILITY_CHECKS");

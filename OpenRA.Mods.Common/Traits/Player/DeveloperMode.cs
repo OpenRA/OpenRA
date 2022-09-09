@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new DeveloperMode(this); }
 	}
 
-	public class DeveloperMode : IResolveOrder, ISync, INotifyCreated, IUnlocksRenderPlayer
+	public class DeveloperMode : IDeveloperMode, IResolveOrder, ISync, INotifyCreated, IUnlocksRenderPlayer
 	{
 		readonly DeveloperModeInfo info;
 		public bool Enabled { get; private set; }

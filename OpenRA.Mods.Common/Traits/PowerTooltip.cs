@@ -23,13 +23,13 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		PowerManager powerManager;
-		DeveloperMode developerMode;
+		IDeveloperMode developerMode;
 
 		public PowerTooltip(Actor self)
 		{
 			this.self = self;
 			powerManager = self.Owner.PlayerActor.Trait<PowerManager>();
-			developerMode = self.Owner.PlayerActor.Trait<DeveloperMode>();
+			developerMode = self.Owner.DeveloperMode;
 		}
 
 		public bool IsTooltipVisible(Player forPlayer)
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			powerManager = newOwner.PlayerActor.Trait<PowerManager>();
-			developerMode = newOwner.PlayerActor.Trait<DeveloperMode>();
+			developerMode = newOwner.DeveloperMode;
 		}
 	}
 }

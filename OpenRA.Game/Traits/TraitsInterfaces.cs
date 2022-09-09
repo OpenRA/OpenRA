@@ -603,4 +603,16 @@ namespace OpenRA.Traits
 	{
 		void PlayerDisconnected(Actor self, Player p);
 	}
+
+	public interface IDeveloperMode
+	{
+		bool Enabled { get; }
+		bool FastCharge { get; }
+		bool AllTech { get; }
+		bool FastBuild { get; }
+		bool DisableShroud { get; }
+		bool PathDebug { get; }
+		bool UnlimitedPower { get; }
+		bool BuildAnywhere { get; }
+	}
 }

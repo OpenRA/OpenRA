@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class BaseProvider : PausableConditionalTrait<BaseProviderInfo>, ITick, IRenderAnnotationsWhenSelected, ISelectionBar
 	{
-		readonly DeveloperMode devMode;
+		readonly IDeveloperMode devMode;
 		readonly Actor self;
 		readonly bool allyBuildEnabled;
 		readonly bool buildRadiusEnabled;
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			this.self = self;
-			devMode = self.Owner.PlayerActor.Trait<DeveloperMode>();
+			devMode = self.Owner.DeveloperMode;
 			progress = total = info.InitialDelay;
 			var mapBuildRadius = self.World.WorldActor.TraitOrDefault<MapBuildRadius>();
 			allyBuildEnabled = mapBuildRadius != null && mapBuildRadius.AllyBuildRadiusEnabled;

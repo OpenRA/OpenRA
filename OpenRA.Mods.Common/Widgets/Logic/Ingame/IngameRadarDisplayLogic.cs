@@ -10,7 +10,6 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Radar;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -27,7 +26,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var blockColor = Color.Transparent;
 			var radar = widget.Get<RadarWidget>("RADAR_MINIMAP");
 			radar.IsEnabled = () => radarEnabled;
-			var devMode = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
+			var devMode = world.LocalPlayer.DeveloperMode;
 
 			var ticker = widget.Get<LogicTickerWidget>("RADAR_TICKER");
 			ticker.OnTick = () =>

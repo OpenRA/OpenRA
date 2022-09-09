@@ -205,7 +205,7 @@ namespace OpenRA.Mods.Common.Traits
 			var requiresBuildableArea = ai.TraitInfoOrDefault<RequiresBuildableAreaInfo>();
 			var mapBuildRadius = world.WorldActor.TraitOrDefault<MapBuildRadius>();
 
-			if (requiresBuildableArea == null || p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
+			if (requiresBuildableArea == null || p.DeveloperMode.BuildAnywhere)
 				return true;
 
 			if (mapBuildRadius != null && mapBuildRadius.BuildRadiusEnabled && RequiresBaseProvider && FindBaseProvider(world, p, topLeft) == null)

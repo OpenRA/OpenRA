@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 		// Will change if the owner changes
 		PowerManager playerPower;
 		protected PlayerResources playerResources;
-		protected DeveloperMode developerMode;
+		protected IDeveloperMode developerMode;
 		protected TechTree techTree;
 
 		public Actor Actor => self;
@@ -169,7 +169,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			playerPower = self.Owner.PlayerActor.TraitOrDefault<PowerManager>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
-			developerMode = self.Owner.PlayerActor.Trait<DeveloperMode>();
+			developerMode = self.Owner.DeveloperMode;
 			techTree = self.Owner.PlayerActor.Trait<TechTree>();
 
 			productionTraits = self.TraitsImplementing<Production>().Where(p => p.Info.Produces.Contains(Info.Type)).ToArray();
@@ -190,7 +190,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			playerPower = newOwner.PlayerActor.TraitOrDefault<PowerManager>();
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
-			developerMode = newOwner.PlayerActor.Trait<DeveloperMode>();
+			developerMode = newOwner.DeveloperMode;
 			techTree = newOwner.PlayerActor.Trait<TechTree>();
 
 			if (!Info.Sticky)

@@ -30,14 +30,14 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Actor Self;
 		public readonly Dictionary<string, SupportPowerInstance> Powers = new Dictionary<string, SupportPowerInstance>();
 
-		public readonly DeveloperMode DevMode;
+		public readonly IDeveloperMode DevMode;
 		public readonly TechTree TechTree;
 		public readonly Lazy<RadarPings> RadarPings;
 
 		public SupportPowerManager(ActorInitializer init)
 		{
 			Self = init.Self;
-			DevMode = Self.Trait<DeveloperMode>();
+			DevMode = Self.Trait<IDeveloperMode>();
 			TechTree = Self.Trait<TechTree>();
 			RadarPings = Exts.Lazy(() => init.World.WorldActor.TraitOrDefault<RadarPings>());
 

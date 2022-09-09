@@ -69,7 +69,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		IEnumerable<IRenderable> DrawDecorations(Actor self, WorldRenderer wr)
 		{
 			var selected = self.World.Selection.Contains(self);
-			var rollover = self.World.Selection.RolloverContains(self);
 			var regularWorld = self.World.Type == WorldType.Regular;
 			var statusBars = Game.Settings.Game.StatusBars;
 
@@ -77,13 +76,18 @@ namespace OpenRA.Mods.Common.Traits.Render
 			//  * actor is selected / in active drag rectangle / under the mouse
 			//  * status bar preference is set to "always show"
 			//  * status bar preference is set to "when damaged" and actor is damaged
-			var displayHealth = selected || rollover || (regularWorld && statusBars == StatusBarsType.AlwaysShow)
+			var displayHealth = selected || (regularWorld && statusBars == StatusBarsType.AlwaysShow)
 				|| (regularWorld && statusBars == StatusBarsType.DamageShow && self.GetDamageState() != DamageState.Undamaged);
 
 			// Extra bars are shown when:
 			//  * actor is selected / in active drag rectangle / under the mouse
 			//  * status bar preference is set to "always show" or "when damaged"
-			var displayExtra = selected || rollover || (regularWorld && statusBars != StatusBarsType.Standard);
+			var displayExtra = selected || (regularWorld && statusBars != StatusBarsType.Standard);
+
+			// PERF: Only search rollover enumerable if needed.
+			if (!displayHealth || !displayExtra)
+				if (self.World.Selection.RolloverContains(self))
+					displayHealth = displayExtra = true;
 
 			if (selected)
 				foreach (var r in RenderSelectionBox(self, wr, Info.SelectionBoxColor))
@@ -93,7 +97,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				foreach (var r in RenderSelectionBars(self, wr, displayHealth, displayExtra))
 					yield return r;
 
-			if (selected && self.World.LocalPlayer != null && self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug)
+			if (selected && self.World.LocalPlayer != null && self.World.LocalPlayer.DeveloperMode.PathDebug)
 				yield return new TargetLineRenderable(ActivityTargetPath(self), Color.Green, 1, 2);
 
 			// Hide decorations for spectators that zoom out further than the normal minimum level

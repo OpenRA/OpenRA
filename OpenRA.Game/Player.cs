@@ -61,6 +61,7 @@ namespace OpenRA
 		public readonly string BotType;
 		public readonly Shroud Shroud;
 		public readonly FrozenActorLayer FrozenActorLayer;
+		public readonly IDeveloperMode DeveloperMode;
 
 		/// <summary>The faction (including Random, etc.) that was selected in the lobby.</summary>
 		public readonly FactionInfo DisplayFaction;
@@ -210,6 +211,7 @@ namespace OpenRA
 
 			Shroud = PlayerActor.Trait<Shroud>();
 			FrozenActorLayer = PlayerActor.TraitOrDefault<FrozenActorLayer>();
+			DeveloperMode = PlayerActor.Trait<IDeveloperMode>();
 
 			// Enable the bot logic on the host
 			if (IsBot && Game.IsHost)

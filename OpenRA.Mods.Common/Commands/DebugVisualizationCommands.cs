@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Commands
 		};
 
 		DebugVisualizations debugVis;
-		DeveloperMode devMode;
+		IDeveloperMode devMode;
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Commands
 			debugVis = world.WorldActor.TraitOrDefault<DebugVisualizations>();
 
 			if (world.LocalPlayer != null)
-				devMode = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
+				devMode = world.LocalPlayer.DeveloperMode;
 
 			if (debugVis == null)
 				return;
@@ -59,28 +59,28 @@ namespace OpenRA.Mods.Common.Commands
 			}
 		}
 
-		static void CombatGeometry(DebugVisualizations debugVis, DeveloperMode devMode)
+		static void CombatGeometry(DebugVisualizations debugVis, IDeveloperMode devMode)
 		{
 			debugVis.CombatGeometry ^= true;
 		}
 
-		static void RenderGeometry(DebugVisualizations debugVis, DeveloperMode devMode)
+		static void RenderGeometry(DebugVisualizations debugVis, IDeveloperMode devMode)
 		{
 			debugVis.RenderGeometry ^= true;
 		}
 
-		static void ScreenMap(DebugVisualizations debugVis, DeveloperMode devMode)
+		static void ScreenMap(DebugVisualizations debugVis, IDeveloperMode devMode)
 		{
 			if (devMode == null || devMode.Enabled)
 				debugVis.ScreenMap ^= true;
 		}
 
-		static void DepthBuffer(DebugVisualizations debugVis, DeveloperMode devMode)
+		static void DepthBuffer(DebugVisualizations debugVis, IDeveloperMode devMode)
 		{
 			debugVis.DepthBuffer ^= true;
 		}
 
-		static void ActorTags(DebugVisualizations debugVis, DeveloperMode devMode)
+		static void ActorTags(DebugVisualizations debugVis, IDeveloperMode devMode)
 		{
 			debugVis.ActorTags ^= true;
 		}
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Commands
 		public void InvokeCommand(string name, string arg)
 		{
 			if (commandHandlers.TryGetValue(name, out var command))
-				command.Handler(debugVis, devMode);
+				command.Handler(debugVis, (DeveloperMode)devMode);
 		}
 	}
 }

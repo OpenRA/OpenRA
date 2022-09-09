@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (order.OrderString == "DevLevelUp")
 			{
-				var developerMode = self.Owner.PlayerActor.Trait<DeveloperMode>();
+				var developerMode = self.Owner.DeveloperMode;
 				if (!developerMode.Enabled)
 					return;
 

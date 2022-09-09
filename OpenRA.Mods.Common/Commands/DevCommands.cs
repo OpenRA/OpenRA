@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Commands
 			world = w;
 
 			if (world.LocalPlayer != null)
-				developerMode = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
+				developerMode = (DeveloperMode)world.LocalPlayer.DeveloperMode;
 
 			var console = world.WorldActor.Trait<ChatCommands>();
 			var help = world.WorldActor.Trait<HelpCommand>();
