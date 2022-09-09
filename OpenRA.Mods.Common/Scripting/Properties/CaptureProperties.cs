@@ -9,7 +9,6 @@
  */
 #endregion
 
-using Eluant;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
@@ -31,12 +30,18 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Captures the target actor.")]
 		public void Capture(Actor target)
 		{
-			var targetManager = target.TraitOrDefault<CaptureManager>();
-			if (targetManager == null || !targetManager.CanBeTargetedBy(target, Self, captureManager))
-				throw new LuaException($"Actor '{Self}' cannot capture actor '{target}'!");
+			if (!CanCapture(target))
+				return;
 
 			// NB: Scripted actions get no visible targetlines.
 			Self.QueueActivity(new CaptureActor(Self, Target.FromActor(target), null));
+		}
+
+		[Desc("Checks if the target actor can be catured.")]
+		public bool CanCapture(Actor target)
+		{
+			var targetManager = target.TraitOrDefault<CaptureManager>();
+			return targetManager != null && targetManager.CanBeTargetedBy(target, Self, captureManager);
 		}
 	}
 }
