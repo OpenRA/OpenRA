@@ -37,8 +37,6 @@ namespace OpenRA.Mods.Common.Scripting
 				return false;
 			}
 
-			// throw new LuaException("Actor '{0}' cannot capture actor '{1}'!".F(Self, target));
-
 			// NB: Scripted actions get no visible targetlines.
 			Self.QueueActivity(new CaptureActor(Self, Target.FromActor(target), null));
 			return true;
