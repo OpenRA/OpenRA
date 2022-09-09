@@ -484,29 +484,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			var actionManager = world.WorldActor.Trait<EditorActionManager>();
-			var button = AddButton("EXIT_EDITOR", ExitMapButton);
+			AddButton("EXIT_EDITOR", ExitMapButton)
+				.OnClick = () => ExitEditor(actionManager, () => OnQuit(world));
+		}
 
-			// Show dialog only if updated since last save
-			button.OnClick = () =>
+		void ExitEditor(EditorActionManager actionManager, Action onSuccess)
+		{
+			var map = modData.MapCache.GetUpdatedMap(world.Map.Uid);
+			var deletedOrUnavailable = map == null || modData.MapCache[map].Status != MapStatus.Available;
+			if (actionManager.HasUnsavedItems() || deletedOrUnavailable)
 			{
-				var map = modData.MapCache.GetUpdatedMap(world.Map.Uid);
-				var deletedOrUnavailable = map == null || modData.MapCache[map].Status != MapStatus.Available;
-				if (actionManager.HasUnsavedItems() || deletedOrUnavailable)
-				{
-					hideMenu = true;
-					ConfirmationDialogs.ButtonPrompt(modData,
-						title: ExitMapEditorTitle,
-						text: deletedOrUnavailable ? ExitMapEditorPromptDeleted : ExitMapEditorPromptUnsaved,
-						confirmText: deletedOrUnavailable ? ExitMapEditorAnywayConfirm : ExitMapEditorConfirm,
-						onConfirm: () => { OnQuit(world); leaving = true; },
-						onCancel: ShowMenu);
-				}
-				else
-				{
-					OnQuit(world);
-					leaving = true;
-				}
-			};
+				hideMenu = true;
+				ConfirmationDialogs.ButtonPrompt(modData,
+					title: ExitMapEditorTitle,
+					text: deletedOrUnavailable ? ExitMapEditorPromptDeleted : ExitMapEditorPromptUnsaved,
+					confirmText: deletedOrUnavailable ? ExitMapEditorAnywayConfirm : ExitMapEditorConfirm,
+					onConfirm: () => { onSuccess(); leaving = true; },
+					onCancel: ShowMenu);
+			}
+			else
+			{
+				onSuccess();
+				leaving = true;
+			}
 		}
 	}
 }
