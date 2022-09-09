@@ -28,11 +28,32 @@ Background@ASSETBROWSER_PANEL:
 			Height: 25
 			Font: Bold
 			Text: Folders
-		ScrollPanel@ASSET_LIST:
+		DropDownButton@ASSET_TYPES_DROPDOWN:
 			X: 20
 			Y: 90
 			Width: 195
-			Height: PARENT_BOTTOM - 225
+			Height: 25
+			Font: Bold
+			Text: Asset types
+		Label@FILENAME_DESC:
+			X: 20
+			Y: 115
+			Width: 195
+			Height: 25
+			Font: TinyBold
+			Align: Center
+			Text: Filter by name
+		TextField@FILENAME_INPUT:
+			X: 20
+			Y: 140
+			Width: 195
+			Height: 25
+			Type: Filename
+		ScrollPanel@ASSET_LIST:
+			X: 20
+			Y: 170
+			Width: 195
+			Height: PARENT_BOTTOM - 250
 			CollapseHiddenChildren: True
 			Children:
 				ScrollItem@ASSET_TEMPLATE:
@@ -48,20 +69,6 @@ Background@ASSETBROWSER_PANEL:
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
-		Label@FILENAME_DESC:
-			X: 20
-			Y: 471
-			Width: 195
-			Height: 25
-			Font: TinyBold
-			Align: Center
-			Text: Filter by name
-		TextField@FILENAME_INPUT:
-			X: 20
-			Y: PARENT_BOTTOM - 105
-			Width: 195
-			Height: 25
-			Type: Filename
 		Label@SPRITE_SCALE:
 			X: PARENT_RIGHT - WIDTH - 440
 			Y: 60
@@ -272,3 +279,15 @@ Background@ASSETBROWSER_PANEL:
 			Font: Bold
 			Text: Close
 		TooltipContainer@TOOLTIP_CONTAINER:
+
+ScrollPanel@ASSET_TYPES_PANEL:
+	Width: 195
+	Height: 130
+	ItemSpacing: 5
+	TopBottomSpacing: 0
+	Children:
+		Checkbox@ASSET_TYPE_TEMPLATE:
+			X: 5
+			Y: 5
+			Width: PARENT_RIGHT - 29
+			Height: 20

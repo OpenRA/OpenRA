@@ -24,6 +24,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class AssetBrowserLogic : ChromeLogic
 	{
+		[Flags]
+		enum AssetType
+		{
+			Sprite = 1,
+			Model = 2,
+			Audio = 4,
+			Video = 8,
+			Unknown = 16
+		}
+
 		readonly string[] allowedExtensions;
 		readonly string[] allowedSpriteExtensions;
 		readonly string[] allowedModelExtensions;
@@ -59,6 +69,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		WRot modelOrientation;
 		float spriteScale;
 		float modelScale;
+		AssetType assetTypesToDisplay = AssetType.Sprite | AssetType.Model | AssetType.Audio | AssetType.Video;
 
 		[TranslationReference("length")]
 		static readonly string LengthInSeconds = "length-in-seconds";
@@ -102,6 +113,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				sourceDropdown.OnMouseDown = _ => ShowSourceDropdown(sourceDropdown);
 				var sourceName = new CachedTransform<IReadOnlyPackage, string>(GetSourceDisplayName);
 				sourceDropdown.GetText = () => sourceName.Update(assetSource);
+			}
+
+			var assetTypeDropdown = panel.GetOrNull<DropDownButtonWidget>("ASSET_TYPES_DROPDOWN");
+			if (assetTypeDropdown != null)
+			{
+				var assetTypesPanel = CreateAssetTypesPanel();
+				assetTypeDropdown.OnMouseDown = _ =>
+				{
+					assetTypeDropdown.RemovePanel();
+					assetTypeDropdown.AttachPanel(assetTypesPanel);
+				};
 			}
 
 			var spriteWidget = panel.GetOrNull<SpriteWidget>("SPRITE");
@@ -437,12 +459,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			item.IsVisible = () =>
 			{
+				var allowed = (assetTypesToDisplay.HasFlag(AssetType.Sprite) && allowedSpriteExtensions.Any(ext => filepath.EndsWith(ext, true, CultureInfo.InvariantCulture)))
+					|| (assetTypesToDisplay.HasFlag(AssetType.Model) && allowedModelExtensions.Any(ext => filepath.EndsWith(ext, true, CultureInfo.InvariantCulture)))
+					|| (assetTypesToDisplay.HasFlag(AssetType.Audio) && allowedAudioExtensions.Any(ext => filepath.EndsWith(ext, true, CultureInfo.InvariantCulture)))
+					|| (assetTypesToDisplay.HasFlag(AssetType.Video) && allowedVideoExtensions.Any(ext => filepath.EndsWith(ext, true, CultureInfo.InvariantCulture)))
+					|| (assetTypesToDisplay.HasFlag(AssetType.Unknown) && !allowedExtensions.Any(ext => filepath.EndsWith(ext, true, CultureInfo.InvariantCulture)));
+
 				if (assetVisByName.TryGetValue(filepath, out var visible))
-					return visible;
+					return visible && allowed;
 
 				visible = FilterAsset(filepath);
 				assetVisByName.Add(filepath, visible);
-				return visible;
+				return visible && allowed;
 			};
 
 			list.AddChild(item);
@@ -590,13 +618,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
-			foreach (var file in files.OrderBy(s => s.Key))
+			foreach (var file in files)
 			{
-				if (!allowedExtensions.Any(ext => file.Key.EndsWith(ext, true, CultureInfo.InvariantCulture)))
-					continue;
-
 				foreach (var package in file.Value)
+				{
+					// Don't show unknown files in the engine dir - it is full of code and git and IDE files.
+					// But do show supported types that are inside just in case.
+					// Also don't show "files" without extensions because those may be folders.
+					var fileExtension = Path.GetExtension(file.Key.ToLowerInvariant());
+					if (string.IsNullOrWhiteSpace(fileExtension) || (package.Name == Platform.EngineDir && !allowedExtensions.Contains(fileExtension)))
+						continue;
+
 					AddAsset(assetList, file.Key, package, template);
+				}
 			}
 		}
 
@@ -682,6 +716,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Just in case we're switching away from a type of asset that forced the music to mute.
 			UnMuteSounds();
+		}
+
+		Widget CreateAssetTypesPanel()
+		{
+			var assetTypesPanel = Ui.LoadWidget("ASSET_TYPES_PANEL", null, new WidgetArgs());
+			var assetTypeTemplate = assetTypesPanel.Get<CheckboxWidget>("ASSET_TYPE_TEMPLATE");
+
+			var allAssetTypes = new[] { AssetType.Sprite, AssetType.Model, AssetType.Audio, AssetType.Video, AssetType.Unknown };
+			foreach (var type in allAssetTypes)
+			{
+				var assetType = (CheckboxWidget)assetTypeTemplate.Clone();
+				var text = type.ToString();
+				assetType.GetText = () => text;
+				assetType.IsChecked = () => assetTypesToDisplay.HasFlag(type);
+				assetType.IsVisible = () => true;
+				assetType.OnClick = () =>
+				{
+					assetTypesToDisplay ^= type;
+					PopulateAssetList();
+				};
+
+				assetTypesPanel.AddChild(assetType);
+			}
+
+			return assetTypesPanel;
 		}
 	}
 }
