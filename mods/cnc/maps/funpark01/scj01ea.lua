@@ -13,8 +13,8 @@ BikeReinforcments = { "bike" }
 
 WorldLoaded = function()
 	Nod = Player.GetPlayer("Nod")
-	dinosaur = Player.GetPlayer("Dinosaur")
-	civilian = Player.GetPlayer("Civilian")
+	Dinosaur = Player.GetPlayer("Dinosaur")
+	Civilian = Player.GetPlayer("Civilian")
 
 	InvestigateObj = Nod.AddObjective("Investigate the nearby village for reports of\nstrange activity.")
 
@@ -22,9 +22,9 @@ WorldLoaded = function()
 
 	ReachVillageObj = Nod.AddObjective("Reach the village.")
 
-	Trigger.OnPlayerDiscovered(civilian, function(_, discoverer)
+	Trigger.OnPlayerDiscovered(Civilian, function(_, discoverer)
 		if discoverer == Nod and not Nod.IsObjectiveCompleted(ReachVillageObj) then
-			if not dinosaur.HasNoRequiredUnits() then
+			if not Dinosaur.HasNoRequiredUnits() then
 				KillDinos = Nod.AddObjective("Kill all creatures in the area.")
 			end
 
@@ -60,7 +60,7 @@ Tick = function()
 			Nod.MarkFailedObjective(InvestigateObj)
 		end
 
-		if dinosaur.HasNoRequiredUnits() then
+		if Dinosaur.HasNoRequiredUnits() then
 			if KillDinos then Nod.MarkCompletedObjective(KillDinos) end
 			Nod.MarkCompletedObjective(InvestigateObj)
 		end

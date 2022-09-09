@@ -122,16 +122,16 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredFootprint(AutoTrigger, function(a, id)
-		if not autoTrigger and a.Owner == GDI then
-			autoTrigger = true
+		if not AutoTriggered and a.Owner == GDI then
+			AutoTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
 			BuildAuto()
 		end
 	end)
 
 	Trigger.OnEnteredFootprint(GDIHeliTrigger, function(a, id)
-		if not gdiHeliTrigger and a.Owner == GDI then
-			gdiHeliTrigger = true
+		if not GDIHeliTriggered and a.Owner == GDI then
+			GDIHeliTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
 			Reinforcements.ReinforceWithTransport(GDI, "tran", nil, { GDIHeliEntry.Location, GDIHeliLZ.Location })
 		end

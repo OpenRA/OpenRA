@@ -38,7 +38,7 @@ end
 AttackPlayer = function()
 	Trigger.AfterDelay(DateTime.Seconds(40), function()
 		for type, count in pairs({ ['e3'] = 3, ['e4'] = 2 }) do
-			atk1Actors = Utils.Take(count, Nod.GetActorsByType(type))
+			local atk1Actors = Utils.Take(count, Nod.GetActorsByType(type))
 			Utils.Do(atk1Actors, function(unit)
 				unit.Move(waypoint6.Location)
 				unit.Move(waypoint7.Location)
@@ -52,7 +52,7 @@ AttackPlayer = function()
 
 	Trigger.AfterDelay(DateTime.Seconds(40), function()
 		for type, count in pairs({ ['e1'] = 3, ['e3'] = 2 }) do
-			atk2Actors = Utils.Take(count, Nod.GetActorsByType(type))
+			local atk2Actors = Utils.Take(count, Nod.GetActorsByType(type))
 			Utils.Do(atk2Actors, function(unit)
 				unit.Move(waypoint11.Location)
 				unit.Move(waypoint12.Location)
@@ -65,7 +65,7 @@ AttackPlayer = function()
 
 	Trigger.AfterDelay(DateTime.Seconds(80), function()
 		for type, count in pairs({ ['e3'] = 3, ['e4'] = 2 }) do
-			atk3Actors = Utils.Take(count, Nod.GetActorsByType(type))
+			local atk3Actors = Utils.Take(count, Nod.GetActorsByType(type))
 			Utils.Do(atk3Actors, function(unit)
 				unit.Move(waypoint6.Location)
 				unit.Move(waypoint7.Location)
@@ -79,7 +79,7 @@ AttackPlayer = function()
 
 	Trigger.AfterDelay(DateTime.Seconds(80), function()
 		for type, count in pairs({ ['e1'] = 3, ['e3'] = 2 }) do
-			atk4Actors = Utils.Take(count, Nod.GetActorsByType(type))
+			local atk4Actors = Utils.Take(count, Nod.GetActorsByType(type))
 			Utils.Do(atk4Actors, function(unit)
 				unit.Move(waypoint11.Location)
 				unit.Move(waypoint12.Location)
@@ -91,7 +91,7 @@ AttackPlayer = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(80), function()
-		atk5Actors = Utils.Take(2, Nod.GetActorsByType('bggy'))
+		local atk5Actors = Utils.Take(2, Nod.GetActorsByType('bggy'))
 		Utils.Do(atk5Actors, function(unit)
 			unit.Move(waypoint11.Location)
 			unit.Move(waypoint12.Location)

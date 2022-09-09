@@ -121,32 +121,32 @@ SendReinforcementsWave = function(team)
 end
 
 Trigger.OnEnteredFootprint(Atk1, function(a, id)
-	if not atk1Trigger and a.Owner == Nod then
-		atk1Trigger = true
+	if not Atk1Triggered and a.Owner == Nod then
+		Atk1Triggered = true
 		SendAttackWave(GDI5)
 		Trigger.RemoveFootprintTrigger(id)
 	end
 end)
 
 Trigger.OnEnteredFootprint(Atk2, function(a, id)
-	if not atk2Trigger and a.Owner == Nod then
-		atk2Trigger = true
+	if not Atk2Triggered and a.Owner == Nod then
+		Atk2Triggered = true
 		SendAttackWave(GDI4)
 		Trigger.RemoveFootprintTrigger(id)
 	end
 end)
 
 Trigger.OnEnteredFootprint(Atk3, function(a, id)
-	if not atk3Trigger and a.Owner == Nod then
-		atk3Trigger = true
+	if not Atk3Triggered and a.Owner == Nod then
+		Atk3Triggered = true
 		SendAttackWave(GDI6)
 		Trigger.RemoveFootprintTrigger(id)
 	end
 end)
 
 Trigger.OnEnteredFootprint(Atk4, function(a, id)
-	if not atk4Trigger and a.Owner == Nod then
-		atk4Trigger = true
+	if not Atk4Triggered and a.Owner == Nod then
+		Atk4Triggered = true
 		SendReinforcementsWave(GDI1)
 		Trigger.RemoveFootprintTrigger(id)
 	end
