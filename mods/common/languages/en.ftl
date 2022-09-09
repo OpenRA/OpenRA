@@ -222,6 +222,12 @@ dialog-exit-map-editor =
     .confirm-anyway = Exit anyway
     .confirm = Exit
 
+dialog-play-map-warning =
+    .title = Warning
+    .prompt = The map may have been deleted or has
+    errors preventing it from being loaded.
+    .cancel = Okay
+
 ## IngamePowerBarLogic
 ## IngamePowerCounterLogic
 label-power-usage = Power Usage: { $usage }/{ $capacity }

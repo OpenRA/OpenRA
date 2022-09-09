@@ -117,6 +117,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string ExitMapEditorConfirm = "dialog-exit-map-editor.confirm";
 
+		[TranslationReference]
+		const string PlayMapWarningTitle = "dialog-play-map-warning.title";
+
+		[TranslationReference]
+		const string PlayMapWarningPrompt = "dialog-play-map-warning.prompt";
+
+		[TranslationReference]
+		const string PlayMapWarningCancel = "dialog-play-map-warning.cancel";
+
 		readonly Widget menu;
 		readonly Widget buttonContainer;
 		readonly ButtonWidget buttonTemplate;
@@ -153,6 +162,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "SETTINGS", CreateSettingsButton },
 				{ "RESUME", CreateResumeButton },
 				{ "SAVE_MAP", CreateSaveMapButton },
+				{ "PLAY_MAP", CreatePlayMapButton },
 				{ "EXIT_EDITOR", CreateExitEditorButton }
 			};
 
@@ -476,6 +486,64 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "actorDefinitions", editorActorLayer.Save() }
 				});
 			};
+		}
+
+		void CreatePlayMapButton()
+		{
+			if (world.Type != WorldType.Editor)
+				return;
+
+			var actionManager = world.WorldActor.Trait<EditorActionManager>();
+			AddButton("PLAY_MAP", "Play Map")
+				.OnClick = () =>
+				{
+					hideMenu = true;
+					var uid = modData.MapCache.GetUpdatedMap(world.Map.Uid);
+					var map = uid == null ? null : modData.MapCache[uid];
+					if (map == null || (map.Visibility != MapVisibility.Lobby && map.Visibility != MapVisibility.MissionSelector))
+					{
+						ConfirmationDialogs.ButtonPrompt(modData,
+							title: PlayMapWarningTitle,
+							text: PlayMapWarningPrompt,
+							onCancel: ShowMenu,
+							cancelText: PlayMapWarningCancel);
+
+						return;
+					}
+
+					ExitEditor(actionManager, () =>
+					{
+						Ui.CloseWindow();
+						Ui.ResetTooltips();
+						void CloseMenu()
+						{
+							mpe?.Fade(MenuPaletteEffect.EffectType.None);
+							onExit();
+						}
+
+						if (map.Visibility == MapVisibility.Lobby)
+						{
+							ConnectionLogic.Connect(Game.CreateLocalServer(uid),
+								"",
+								() => Game.OpenWindow("SERVER_LOBBY", new WidgetArgs
+								{
+									{ "onExit", CloseMenu },
+									{ "onStart", () => { } },
+									{ "skirmishMode", true }
+								}),
+								() => Game.CloseServer());
+						}
+						else if (map.Visibility == MapVisibility.MissionSelector)
+						{
+							Game.OpenWindow("MISSIONBROWSER_PANEL", new WidgetArgs
+							{
+								{ "onExit", CloseMenu },
+								{ "onStart", () => { } },
+								{ "initialMap", uid }
+							});
+						}
+					});
+				};
 		}
 
 		void CreateExitEditorButton()
