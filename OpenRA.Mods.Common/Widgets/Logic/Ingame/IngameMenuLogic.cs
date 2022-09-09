@@ -126,6 +126,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string PlayMapWarningCancel = "dialog-play-map-warning.cancel";
 
+		[TranslationReference]
+		const string ExitToMapEditorTitle = "dialog-exit-to-map-editor.title";
+
+		[TranslationReference]
+		const string ExitToMapEditorPrompt = "dialog-exit-to-map-editor.prompt";
+
+		[TranslationReference]
+		const string ExitToMapEditorConfirm = "dialog-exit-to-map-editor.confirm";
+
+		[TranslationReference]
+		const string ExitToMapEditorCancel = "dialog-exit-to-map-editor.cancel";
+
 		readonly Widget menu;
 		readonly Widget buttonContainer;
 		readonly ButtonWidget buttonTemplate;
@@ -142,6 +154,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool leaving;
 		bool hideMenu;
 
+		static bool lastGameEditor = false;
+
 		[ObjectCreator.UseCtor]
 		public IngameMenuLogic(Widget widget, ModData modData, World world, Action onExit, WorldRenderer worldRenderer,
 			IngameInfoPanel initialPanel, Dictionary<string, MiniYaml> logicArgs)
@@ -154,6 +168,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var buttonHandlers = new Dictionary<string, Action>
 			{
 				{ "ABORT_MISSION", CreateAbortMissionButton },
+				{ "BACK_TO_EDITOR", CreateBackToEditorButton },
 				{ "RESTART", CreateRestartButton },
 				{ "SURRENDER", CreateSurrenderButton },
 				{ "LOAD_GAME", CreateLoadGameButton },
@@ -244,6 +259,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				exitDelay += 40 * mpe.Info.FadeLength;
 			}
 
+			lastGameEditor = false;
 			Game.RunAfterDelay(exitDelay, () =>
 			{
 				if (!Game.IsCurrentWorld(world))
@@ -513,6 +529,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					ExitEditor(actionManager, () =>
 					{
+						lastGameEditor = true;
+
 						Ui.CloseWindow();
 						Ui.ResetTooltips();
 						void CloseMenu()
@@ -543,6 +561,38 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							});
 						}
 					});
+				};
+		}
+
+		void CreateBackToEditorButton()
+		{
+			if (world.Type != WorldType.Regular || !lastGameEditor)
+				return;
+
+			AddButton("BACK_TO_EDITOR", "Back To Editor")
+				.OnClick = () =>
+				{
+					hideMenu = true;
+					void OnConfirm()
+					{
+						lastGameEditor = false;
+						var map = modData.MapCache.GetUpdatedMap(world.Map.Uid);
+						if (map == null)
+							Game.LoadShellMap();
+						else
+						{
+							DiscordService.UpdateStatus(DiscordState.InMapEditor);
+							Game.LoadEditor(map);
+						}
+					}
+
+					ConfirmationDialogs.ButtonPrompt(modData,
+						title: ExitToMapEditorTitle,
+						text: ExitToMapEditorPrompt,
+						onConfirm: OnConfirm,
+						onCancel: ShowMenu,
+						confirmText: ExitToMapEditorConfirm,
+						cancelText: ExitToMapEditorCancel);
 				};
 		}
 
