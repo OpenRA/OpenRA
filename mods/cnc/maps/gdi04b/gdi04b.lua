@@ -110,16 +110,16 @@ WorldLoaded = function()
 	SetupWorld()
 
 	Trigger.OnExitedFootprint(BhndTrigger, function(a, id)
-		if not bhndTrigger and a.Owner == GDI then
-			bhndTrigger = true
+		if not BhndTriggered and a.Owner == GDI then
+			BhndTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
 			SendHeli(NodHeli)
 		end
 	end)
 
 	Trigger.OnExitedFootprint(Atk1Trigger, function(a, id)
-		if not atk1Trigger and a.Owner == GDI then
-			atk1Trigger = true
+		if not Atk1Triggered and a.Owner == GDI then
+			Atk1Triggered = true
 			Trigger.RemoveFootprintTrigger(id)
 
 			Build(NodxUnits, false, function(actor)
@@ -131,8 +131,8 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredFootprint(Atk2Trigger, function(a, id)
-		if not atk2Trigger and a.Owner == GDI then
-			atk2Trigger = true
+		if not Atk2Triggered and a.Owner == GDI then
+			Atk2Triggered = true
 			Trigger.RemoveFootprintTrigger(id)
 
 			Build(NodxUnits, false, function(actor)
@@ -144,24 +144,20 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredFootprint(AutoTrigger, function(a, id)
-		if not autoTrigger and a.Owner == GDI then
-			autoTrigger = true
+		if not AutoTriggered and a.Owner == GDI then
+			AutoTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
 
 			Build(AutoUnits, true, function(actor)
 				Trigger.OnKilled(actor, NodUnitKilled)
 				IdleHunt(actor)
 			end)
-
-			Trigger.AfterDelay(DateTime.Seconds(4), function()
-				IdleHunt(tank)
-			end)
 		end
 	end)
 
 	Trigger.OnEnteredFootprint(GDIHeliTrigger, function(a, id)
-		if not gdiHeliTrigger and a.Owner == GDI then
-			gdiHeliTrigger = true
+		if not GDIHeliTriggered and a.Owner == GDI then
+			GDIHeliTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
 			Reinforcements.ReinforceWithTransport(GDI, "tran", nil, { HeliEntry.Location, GDIHeliLZ.Location })
 		end

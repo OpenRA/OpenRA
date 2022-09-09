@@ -68,10 +68,10 @@ CheckForHarvester = function()
 end
 
 ProduceHarvester = function(building)
-	if not buildingHarvester then
-		buildingHarvester = true
+	if not BuildingHarvester then
+		BuildingHarvester = true
 		building.Build(HarvesterProductionType, function()
-			buildingHarvester = false
+			BuildingHarvester = false
 		end)
 	end
 end

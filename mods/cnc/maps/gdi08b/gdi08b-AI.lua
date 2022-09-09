@@ -94,10 +94,10 @@ ProduceHarvester = function(building)
 	if building.IsDead or building.Owner ~= Nod then
 		return
 	end
-	if not buildingHarvester then
-		buildingHarvester = true
+	if not BuildingHarvester then
+		BuildingHarvester = true
 		building.Build(HarvesterProductionType, function()
-			buildingHarvester = false
+			BuildingHarvester = false
 		end)
 	end
 end
@@ -158,7 +158,6 @@ ProduceVehicle = function(building)
 		VehicleAttackGroup[#VehicleAttackGroup + 1] = unit[1]
 
 		if #VehicleAttackGroup >= VehicleGroupSize[Difficulty] then
-			
 			MoveAndHunt(VehicleAttackGroup, Path)
 			VehicleAttackGroup = { }
 			Trigger.AfterDelay(VehicleProductionCooldown[Difficulty], function() ProduceArty(building) end)

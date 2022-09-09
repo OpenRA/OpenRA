@@ -32,8 +32,8 @@ WorldLoaded = function()
 
 	InitObjectives(GDI)
 
-	secureAreaObjective = GDI.AddObjective("Eliminate all Nod forces in the area.")
-	beachheadObjective = GDI.AddObjective("Establish a beachhead.", "Secondary", false)
+	SecureAreaObjective = GDI.AddObjective("Eliminate all Nod forces in the area.")
+	BeachheadObjective = GDI.AddObjective("Establish a beachhead.", "Secondary", false)
 
 	ReinforceWithLandingCraft(GDI, MCVReinforcements, lstStart.Location + CVec.New(2, 0), lstEnd.Location + CVec.New(2, 0), mcvTarget.Location)
 	Reinforce(InfantryReinforcements)
@@ -46,15 +46,15 @@ end
 
 Tick = function()
 	if Nod.HasNoRequiredUnits() then
-		GDI.MarkCompletedObjective(secureAreaObjective)
+		GDI.MarkCompletedObjective(SecureAreaObjective)
 	end
 
 	if DateTime.GameTime > DateTime.Seconds(5) and GDI.HasNoRequiredUnits() then
-		GDI.MarkFailedObjective(beachheadObjective)
-		GDI.MarkFailedObjective(secureAreaObjective)
+		GDI.MarkFailedObjective(BeachheadObjective)
+		GDI.MarkFailedObjective(SecureAreaObjective)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(1) == 0 and not GDI.IsObjectiveCompleted(beachheadObjective) and CheckForBase(GDI, GDIBaseBuildings) then
-		GDI.MarkCompletedObjective(beachheadObjective)
+	if DateTime.GameTime % DateTime.Seconds(1) == 0 and not GDI.IsObjectiveCompleted(BeachheadObjective) and CheckForBase(GDI, GDIBaseBuildings) then
+		GDI.MarkCompletedObjective(BeachheadObjective)
 	end
 end

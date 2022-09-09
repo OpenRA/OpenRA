@@ -7,7 +7,7 @@
    information, see COPYING.
 ]]
 
-nodInBaseTeam = { RushBuggy, RushRifle1, RushRifle2, RushRifle3 }
+NodInBaseTeam = { RushBuggy, RushRifle1, RushRifle2, RushRifle3 }
 MobileConstructionVehicle = { "mcv" }
 EngineerReinforcements = { "e6", "e6", "e6" }
 VehicleReinforcements = { "jeep" }
@@ -44,22 +44,22 @@ WorldLoaded = function()
 
 	InitObjectives(GDI)
 
-	nodObjective = Nod.AddObjective("Destroy all GDI troops.")
-	gdiObjective1 = GDI.AddObjective("Eliminate all Nod forces in the area.")
-	gdiObjective2 = GDI.AddObjective("Capture the Tiberium refinery.", "Secondary", false)
+	NodObjective = Nod.AddObjective("Destroy all GDI troops.")
+	GDIObjective1 = GDI.AddObjective("Eliminate all Nod forces in the area.")
+	GDIObjective2 = GDI.AddObjective("Capture the Tiberium refinery.", "Secondary", false)
 
-	Trigger.OnCapture(NodRefinery, function() GDI.MarkCompletedObjective(gdiObjective2) end)
-	Trigger.OnKilled(NodRefinery, function() GDI.MarkFailedObjective(gdiObjective2) end)
+	Trigger.OnCapture(NodRefinery, function() GDI.MarkCompletedObjective(GDIObjective2) end)
+	Trigger.OnKilled(NodRefinery, function() GDI.MarkFailedObjective(GDIObjective2) end)
 
-	Trigger.OnAllKilled(nodInBaseTeam, BridgeheadSecured)
+	Trigger.OnAllKilled(NodInBaseTeam, BridgeheadSecured)
 end
 
 Tick = function()
 	if GDI.HasNoRequiredUnits() then
-		Nod.MarkCompletedObjective(nodObjective)
+		Nod.MarkCompletedObjective(NodObjective)
 	end
 
 	if Nod.HasNoRequiredUnits() then
-		GDI.MarkCompletedObjective(gdiObjective1)
+		GDI.MarkCompletedObjective(GDIObjective1)
 	end
 end

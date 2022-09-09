@@ -72,7 +72,7 @@ SendWaves = function(counter, Waves)
 end
 
 SendHeli = function(heli)
-	units = Reinforcements.ReinforceWithTransport(Nod, "tran", heli.types, heli.entry, { heli.entry[1] })
+	local units = Reinforcements.ReinforceWithTransport(Nod, "tran", heli.types, heli.entry, { heli.entry[1] })
 	Utils.Do(units[2], function(actor)
 		actor.Hunt()
 		Trigger.OnIdle(actor, actor.Hunt)
@@ -84,12 +84,12 @@ SendHeli = function(heli)
 end
 
 MoveInitialArty = function(arty, waypoints)
-	units = { arty }
+	local units = { arty }
 	MoveAndIdle(units, waypoints)
 end
 
 TankTerror = function(tank)
-	units = { tank }
+	local units = { tank }
 	MoveAndHunt(units, WaypointGroupVillageLeft)
 end
 
