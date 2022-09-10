@@ -49,7 +49,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		readonly WithTextControlGroupDecorationInfo info;
 		readonly SpriteFont font;
-		readonly Actor self;
 		readonly CachedTransform<int, string> label;
 
 		Color color;
@@ -57,7 +56,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public WithTextControlGroupDecoration(Actor self, WithTextControlGroupDecorationInfo info)
 		{
 			this.info = info;
-			this.self = self;
 			font = Game.Renderer.Fonts[info.Font];
 			color = info.UsePlayerColor ? self.Owner.Color : info.Color;
 

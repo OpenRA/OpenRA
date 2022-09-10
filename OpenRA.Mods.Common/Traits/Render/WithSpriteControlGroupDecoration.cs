@@ -40,14 +40,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithSpriteControlGroupDecoration : IDecoration
 	{
 		public readonly WithSpriteControlGroupDecorationInfo Info;
-		readonly Actor self;
 		readonly Animation anim;
 
 		public WithSpriteControlGroupDecoration(Actor self, WithSpriteControlGroupDecorationInfo info)
 		{
 			Info = info;
-			this.self = self;
-
 			anim = new Animation(self.World, Info.Image);
 		}
 

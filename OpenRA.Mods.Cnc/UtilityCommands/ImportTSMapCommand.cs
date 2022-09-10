@@ -239,9 +239,6 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0x03, new byte[] { 0x7E } }
 		};
 
-		// Veins and vein holes
-		static readonly int[] ValidVeinNeighbours = { 0x7E, 0xA7, 0xB2 };
-
 		static readonly Dictionary<string, string> DeployableActors = new Dictionary<string, string>()
 		{
 			{ "gadpsa", "lpst" },

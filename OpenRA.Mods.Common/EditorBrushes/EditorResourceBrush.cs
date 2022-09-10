@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 			editorCursor = world.WorldActor.Trait<EditorCursorLayer>();
 			resourceLayer = world.WorldActor.Trait<IResourceLayer>();
-			action = new AddResourcesEditorAction(world.Map, resourceType, resourceLayer);
+			action = new AddResourcesEditorAction(resourceType, resourceLayer);
 
 			cursorToken = editorCursor.SetResource(wr, resourceType);
 		}
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Widgets
 			else if (resourceAdded && mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
 				editorActionManager.Add(action);
-				action = new AddResourcesEditorAction(world.Map, ResourceType, resourceLayer);
+				action = new AddResourcesEditorAction(ResourceType, resourceLayer);
 				resourceAdded = false;
 			}
 
@@ -107,14 +107,12 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public string Text { get; private set; }
 
-		readonly Map map;
 		readonly IResourceLayer resourceLayer;
 		readonly string resourceType;
 		readonly List<CellResource> cellResources = new List<CellResource>();
 
-		public AddResourcesEditorAction(Map map, string resourceType, IResourceLayer resourceLayer)
+		public AddResourcesEditorAction(string resourceType, IResourceLayer resourceLayer)
 		{
-			this.map = map;
 			this.resourceType = resourceType;
 			this.resourceLayer = resourceLayer;
 		}

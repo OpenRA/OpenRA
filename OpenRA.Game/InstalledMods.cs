@@ -15,21 +15,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
-using OpenRA.Graphics;
 
 namespace OpenRA
 {
 	public class InstalledMods : IReadOnlyDictionary<string, Manifest>
 	{
 		readonly Dictionary<string, Manifest> mods;
-		readonly SheetBuilder sheetBuilder;
 
 		/// <summary>Initializes the collection of locally installed mods.</summary>
 		/// <param name="searchPaths">Filesystem paths to search for mod packages.</param>
 		/// <param name="explicitPaths">Filesystem paths to additional mod packages.</param>
 		public InstalledMods(IEnumerable<string> searchPaths, IEnumerable<string> explicitPaths)
 		{
-			sheetBuilder = new SheetBuilder(SheetType.BGRA, 256);
 			mods = GetInstalledMods(searchPaths, explicitPaths);
 		}
 
