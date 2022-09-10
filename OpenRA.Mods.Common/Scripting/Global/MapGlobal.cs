@@ -120,6 +120,18 @@ namespace OpenRA.Mods.Common.Scripting
 			return option.Value;
 		}
 
+		[Desc("Returns the value of a `ScriptLobbyDropdown` selected in the game lobby or fallback to a default value.")]
+		public LuaValue LobbyOptionOrDefault(string id, string fallback)
+		{
+			var option = Context.World.WorldActor.TraitsImplementing<ScriptLobbyDropdown>()
+				.FirstOrDefault(sld => sld.Info.ID == id);
+
+			if (option == null)
+				return fallback;
+
+			return option.Value;
+		}
+
 		[Desc("Returns a table of all the actors that were specified in the map file.")]
 		public Actor[] NamedActors => sma.Actors.Values.ToArray();
 
