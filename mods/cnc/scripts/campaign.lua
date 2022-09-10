@@ -7,7 +7,7 @@
    information, see COPYING.
 ]]
 
-Difficulty = Map.LobbyOption("difficulty")
+Difficulty = Map.LobbyOptionOrDefault("difficulty", "normal")
 
 InitObjectives = function(player)
 	Trigger.OnObjectiveCompleted(player, function(p, id)
