@@ -87,7 +87,6 @@ namespace OpenRA.Traits
 		[Flags]
 		public enum CellVisibility : byte { Hidden = 0x0, Explored = 0x1, Visible = 0x2 }
 
-		readonly Actor self;
 		readonly ShroudInfo info;
 		readonly Map map;
 
@@ -134,7 +133,6 @@ namespace OpenRA.Traits
 
 		public Shroud(Actor self, ShroudInfo info)
 		{
-			this.self = self;
 			this.info = info;
 			map = self.World.Map;
 

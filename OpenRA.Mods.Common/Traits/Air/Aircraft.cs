@@ -1224,13 +1224,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		class AssociateWithAirfieldActivity : Activity
 		{
-			readonly Actor self;
 			readonly Aircraft aircraft;
 			readonly int delay;
 
 			public AssociateWithAirfieldActivity(Actor self, int delay = 0)
 			{
-				this.self = self;
 				aircraft = self.Trait<Aircraft>();
 				IsInterruptible = false;
 				this.delay = delay;

@@ -95,7 +95,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly TimeLimitManagerInfo info;
 		readonly int ticksPerSecond;
-		MapOptions mapOptions;
 		LabelWidget countdownLabel;
 		CachedTransform<int, string> countdown;
 		int ticksRemaining;
@@ -119,7 +118,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IWorldLoaded.WorldLoaded(World w, OpenRA.Graphics.WorldRenderer wr)
 		{
-			mapOptions = w.WorldActor.Trait<MapOptions>();
 			if (string.IsNullOrWhiteSpace(info.CountdownLabel) || string.IsNullOrWhiteSpace(info.CountdownText))
 				return;
 

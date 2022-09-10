@@ -26,7 +26,6 @@ namespace OpenRA.Mods.Cnc.Effects
 		readonly Animation anim;
 
 		readonly PlayerDictionary<DotState> dotStates;
-		readonly IDefaultVisibility visibility;
 		readonly IVisibilityModifier[] visibilityModifiers;
 
 		class DotState
@@ -52,7 +51,6 @@ namespace OpenRA.Mods.Cnc.Effects
 			anim = new Animation(actor.World, info.Image);
 			anim.PlayRepeating(info.String);
 
-			visibility = actor.Trait<IDefaultVisibility>();
 			visibilityModifiers = actor.TraitsImplementing<IVisibilityModifier>().ToArray();
 
 			dotStates = new PlayerDictionary<DotState>(actor.World,

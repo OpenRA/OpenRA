@@ -1479,7 +1479,11 @@ namespace OpenRA.Server
 		{
 			readonly Connection connection;
 			readonly int[] pingHistory;
+
+			// TODO: future net code changes
+			#pragma warning disable IDE0052
 			readonly byte queueLength;
+			#pragma warning restore IDE0052
 
 			public ConnectionPingEvent(Connection connection, int[] pingHistory, byte queueLength)
 			{
