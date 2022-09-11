@@ -118,12 +118,12 @@ WorldLoaded = function()
 
 	InitObjectives(GDI)
 
-	DestroyNod = GDI.AddObjective("Destroy remaining Nod structures and units.")
-	ConstructBase = GDI.AddObjective("Construct all available buildings.", "Secondary", false)
+	DestroyNod = AddPrimaryObjective(GDI, "destroy-nod")
+	ConstructBase = AddSecondaryObjective(GDI, "construct-base")
 
 	SendReinforcements()
 
-	local destroySAMs = GDI.AddSecondaryObjective("Destroy the SAM sites to receive air support.")
+	local destroySAMs = AddSecondaryObjective(GDI, "destroy-sams")
 	Trigger.OnAllKilled(SamSites, function()
 		GDI.MarkCompletedObjective(destroySAMs)
 		Actor.Create("airstrike.proxy", true, { Owner = GDI })

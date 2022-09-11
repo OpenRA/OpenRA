@@ -32,8 +32,8 @@ WorldLoaded = function()
 
 	InitObjectives(GDI)
 
-	SecureAreaObjective = GDI.AddObjective("Eliminate all Nod forces in the area.")
-	BeachheadObjective = GDI.AddObjective("Establish a beachhead.", "Secondary", false)
+	SecureAreaObjective = AddPrimaryObjective(GDI, "eliminate-nod")
+	BeachheadObjective = AddSecondaryObjective(GDI, "establish-beachhead")
 
 	ReinforceWithLandingCraft(GDI, MCVReinforcements, lstStart.Location + CVec.New(2, 0), lstEnd.Location + CVec.New(2, 0), mcvTarget.Location)
 	Reinforce(InfantryReinforcements)

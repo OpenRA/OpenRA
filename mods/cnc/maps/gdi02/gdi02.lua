@@ -44,9 +44,9 @@ WorldLoaded = function()
 
 	InitObjectives(GDI)
 
-	NodObjective = Nod.AddObjective("Destroy all GDI troops.")
-	GDIObjective1 = GDI.AddObjective("Eliminate all Nod forces in the area.")
-	GDIObjective2 = GDI.AddObjective("Capture the Tiberium refinery.", "Secondary", false)
+	NodObjective = AddPrimaryObjective(Nod, "destroy-gdi")
+	GDIObjective1 = AddPrimaryObjective(GDI, "eliminate-nod")
+	GDIObjective2 = AddSecondaryObjective(GDI, "capture-refinery")
 
 	Trigger.OnCapture(NodRefinery, function() GDI.MarkCompletedObjective(GDIObjective2) end)
 	Trigger.OnKilled(NodRefinery, function() GDI.MarkFailedObjective(GDIObjective2) end)

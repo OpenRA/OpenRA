@@ -43,6 +43,8 @@ Atk2 = { CPos.New(16, 52), CPos.New(15, 52), CPos.New(14, 52), CPos.New(13, 52),
 Atk3 = { CPos.New(53, 58), CPos.New(52, 58), CPos.New(51, 58), CPos.New(53, 57), CPos.New(52, 57), CPos.New(51, 57), CPos.New(53, 56), CPos.New(52, 56), CPos.New(51, 56), CPos.New(53, 55), CPos.New(52, 55), CPos.New(51, 55) }
 Atk4 = { CPos.New(54, 47), CPos.New(53, 47), CPos.New(52, 47), CPos.New(51, 47), CPos.New(43, 47), CPos.New(54, 46), CPos.New(53, 46), CPos.New(52, 46), CPos.New(51, 46), CPos.New(50, 46), CPos.New(43, 46), CPos.New(42, 46), CPos.New(41, 46), CPos.New(43, 45), CPos.New(42, 45), CPos.New(41, 45), CPos.New(43, 44), CPos.New(42, 44), CPos.New(41, 44), CPos.New(43, 43), CPos.New(42, 43), CPos.New(41, 43), CPos.New(43, 42) }
 
+SamSiteGoal = 3
+
 CaptureStructures = function(actor)
 	for i = 1, #WhitelistedStructures do
 		structures = Nod.GetActorsByType(WhitelistedStructures[i])
@@ -55,7 +57,7 @@ end
 
 CheckForSams = function()
 	local sams = Nod.GetActorsByType("sam")
-	return #sams >= 3
+	return #sams >= SamSiteGoal
 end
 
 InsertNodUnits = function()
@@ -169,8 +171,9 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	EliminateGDI = Nod.AddObjective("Eliminate all GDI forces in the area.")
-	BuildSAMs = Nod.AddObjective("Build 3 SAMs to fend off the GDI bombers.", "Secondary", false)
+	EliminateGDI = AddPrimaryObjective(Nod, "eliminate-gdi-forces")
+	local buildSAMs = UserInterface.Translate("build-sams", { ["sams"] = SamSiteGoal })
+	BuildSAMs = AddSecondaryObjective(Nod, buildSAMs)
 end
 
 Tick = function()

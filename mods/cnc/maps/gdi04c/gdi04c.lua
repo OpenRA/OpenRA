@@ -73,9 +73,9 @@ WorldLoaded = function()
 		GDI.MarkFailedObjective(DefendTown)
 	end)
 
-	NodObjective = Nod.AddPrimaryObjective("Destroy all GDI troops.")
-	DefendTown = GDI.AddPrimaryObjective("Defend the town of Białystok.")
-	EliminateNod = GDI.AddPrimaryObjective("Eliminate all Nod forces in the area.")
+	NodObjective = AddPrimaryObjective(Nod, "destroy-gdi")
+	DefendTown = AddPrimaryObjective(GDI, "defend-bialystok")
+	EliminateNod = AddPrimaryObjective(GDI, "eliminate-nod")
 
 	Trigger.OnExitedFootprint(TownAttackTrigger, function(a, id)
 		if not TownAttackTriggered and a.Owner == GDI then

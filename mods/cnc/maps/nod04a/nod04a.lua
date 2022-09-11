@@ -106,8 +106,8 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	KillCivilians = Nod.AddObjective("Destroy the village and kill all civilians.")
-	KillGDI = Nod.AddObjective("Kill all GDI units in the area.", "Secondary", false)
+	KillCivilians = AddPrimaryObjective(Nod, "destroy-village-kill-civilians")
+	KillGDI = AddSecondaryObjective(Nod, "kill-gdi-units")
 
 	Camera.Position = CameraPoint.CenterPosition
 

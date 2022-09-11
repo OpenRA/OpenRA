@@ -38,9 +38,9 @@ WorldLoaded = function()
 
 	InitObjectives(GDI)
 
-	DestroySAMs = GDI.AddObjective("Destroy the SAM sites protecting the Obelisk.")
-	DestroyObelisk = GDI.AddObjective("Destroy the Obelisk.")
-	DestroyBiotechCenter = GDI.AddObjective("Destroy the biotech facility.")
+	DestroySAMs = AddPrimaryObjective(GDI, "destroy-obelisk-sams")
+	DestroyObelisk = AddPrimaryObjective(GDI, "destroy-obelisk")
+	DestroyBiotechCenter = AddPrimaryObjective(GDI, "destroy-biotech")
 
 	Trigger.OnAllKilled(SamSites, function()
 		AirSupport = Actor.Create("airstrike.proxy", true, { Owner = GDI })

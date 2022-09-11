@@ -105,18 +105,20 @@ WorldLoaded = function()
 
 	InitObjectives(GDI)
 
-	ProtectMoebius = GDI.AddObjective("Protect Dr. Mobius.")
+	ProtectMoebius = AddPrimaryObjective(GDI, "protect-mobius")
 	Trigger.OnKilled(DrMoebius, function()
 		GDI.MarkFailedObjective(ProtectMoebius)
 	end)
 
-	ProtectHospital = GDI.AddObjective("Protect the Hospital.")
+	ProtectHospital = AddPrimaryObjective(GDI, "protect-hospital")
 	Trigger.OnKilled(Hospital, function()
 		GDI.MarkFailedObjective(ProtectHospital)
 	end)
 
 	CiviliansKilledThreshold = CiviliansKilledThreshold[Difficulty]
-	ProtectCivilians = GDI.AddObjective("Keep at least " .. 14 - CiviliansKilledThreshold .. " out of 14 Civilians alive.")
+	local civilians = 14 - CiviliansKilledThreshold
+	local keepCiviliansAlive = UserInterface.Translate("keep-civilians-alive", { ["civilians"] = civilians })
+	ProtectCivilians = AddPrimaryObjective(GDI, keepCiviliansAlive)
 	Utils.Do(Civilians, function(civilian)
 		Trigger.OnKilled(civilian, function()
 			CivilianCasualties = CivilianCasualties + 1
@@ -126,11 +128,11 @@ WorldLoaded = function()
 		end)
 	end)
 
-	SecureArea = GDI.AddObjective("Destroy the Nod bases.")
+	SecureArea = AddPrimaryObjective(GDI, "destroy-nod-bases")
 
-	KillGDI = Nod.AddObjective("Kill all enemies!")
+	KillGDI = AddPrimaryObjective(Nod, "kill-all-enemies")
 
-	AirSupport = GDI.AddObjective("Destroy the SAM sites to receive air support.", "Secondary", false)
+	AirSupport = AddSecondaryObjective(GDI, "destroy-sams")
 	Trigger.OnAllKilled(SamSites, function()
 		GDI.MarkCompletedObjective(AirSupport)
 		Actor.Create("airstrike.proxy", true, { Owner = GDI })

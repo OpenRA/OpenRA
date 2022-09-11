@@ -109,7 +109,7 @@ DiscoverGDIBase = function(actor, discoverer)
 
 	BaseDiscovered = true
 
-	EliminateNod = GDI.AddObjective("Eliminate all Nod forces in the area.")
+	EliminateNod = AddPrimaryObjective(GDI, "eliminate-nod")
 	GDI.MarkCompletedObjective(FindBase)
 
 	Attack()
@@ -168,9 +168,9 @@ WorldLoaded = function()
 
 	InitObjectives(GDI)
 
-	NodObjective = Nod.AddObjective("Destroy all GDI troops.")
-	FindBase = GDI.AddObjective("Find the GDI base.")
-	DestroySAMs = GDI.AddObjective("Destroy all SAM sites to receive air support.", "Secondary", false)
+	NodObjective = AddPrimaryObjective(Nod, "destroy-gdi")
+	FindBase = AddPrimaryObjective(GDI, "find-gdi-base")
+	DestroySAMs = AddSecondaryObjective(GDI, "destroy-sams")
 
 	SetupWorld()
 
