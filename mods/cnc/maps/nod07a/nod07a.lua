@@ -36,9 +36,11 @@ NodBase = { NodBuilding1, NodBuilding2, NodBuilding3, NodHarvester }
 AbandonedBaseTrigger = { CPos.New(12, 42), CPos.New(11, 42), CPos.New(10, 42), CPos.New(13, 41), CPos.New(12, 41), CPos.New(11, 41), CPos.New(14, 40), CPos.New(13, 40), CPos.New(12, 40), CPos.New(6, 40), CPos.New(5, 40), CPos.New(4, 40), CPos.New(6, 39), CPos.New(5, 39), CPos.New(4, 39), CPos.New(6, 38), CPos.New(5, 38), CPos.New(4, 38) }
 ReinforcementsTrigger = { CPos.New(35, 23), CPos.New(34, 23), CPos.New(35, 22), CPos.New(34, 22), CPos.New(35, 21), CPos.New(34, 21), CPos.New(35, 20), CPos.New(34, 20), CPos.New(35, 19), CPos.New(34, 19), CPos.New(35, 18), CPos.New(34, 18), CPos.New(35, 17), CPos.New(34, 17), CPos.New(35, 16), CPos.New(34, 16), CPos.New(35, 15), CPos.New(34, 15), CPos.New(35, 14), CPos.New(34, 14), CPos.New(35, 13), CPos.New(34, 13), CPos.New(35, 12), CPos.New(34, 12), CPos.New(47, 11), CPos.New(46, 11), CPos.New(57, 19), CPos.New(56, 19), CPos.New(55, 19), CPos.New(54, 19), CPos.New(53, 19), CPos.New(52, 19), CPos.New(51, 19), CPos.New(50, 19), CPos.New(49, 19), CPos.New(48, 19), CPos.New(47, 19), CPos.New(46, 19), CPos.New(57, 18), CPos.New(56, 18), CPos.New(55, 18), CPos.New(54, 18), CPos.New(53, 18), CPos.New(52, 18), CPos.New(51, 18), CPos.New(50, 18), CPos.New(49, 18), CPos.New(48, 18), CPos.New(47, 18), CPos.New(46, 18), CPos.New(47, 17), CPos.New(46, 17), CPos.New(47, 16), CPos.New(46, 16), CPos.New(47, 15), CPos.New(46, 15), CPos.New(47, 14), CPos.New(46, 14), CPos.New(47, 13), CPos.New(46, 13), CPos.New(47, 12), CPos.New(46, 12) }
 
+SamSiteGoal = 3
+
 CaptureStructures = function(actor)
 	for i = 1, #WhitelistedStructures do
-		structures = Nod.GetActorsByType(WhitelistedStructures[i])
+		local structures = Nod.GetActorsByType(WhitelistedStructures[i])
 		if #structures > 0 and not actor.IsDead and not structures[1].IsDead then
 			actor.Capture(structures[1])
 			return
@@ -48,7 +50,7 @@ end
 
 CheckForSams = function()
 	local sams = Nod.GetActorsByType("sam")
-	return #sams >= 3
+	return #sams >= SamSiteGoal
 end
 
 InsertNodUnits = function()
@@ -171,10 +173,11 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	FindBase = Nod.AddObjective("Find the Nod base.")
-	EliminateGDI = Nod.AddObjective("Eliminate all GDI forces in the area.")
-	BuildSAMs = Nod.AddObjective("Build 3 SAMs to fend off the GDI bombers.", "Secondary", false)
-	GDIObjective = GDI.AddObjective("Eliminate all Nod forces in the area.")
+	FindBase = AddPrimaryObjective(Nod, "find-nod-base")
+	EliminateGDI = AddPrimaryObjective(Nod, "eliminate-gdi-forces")
+	local buildSAMs = UserInterface.Translate("build-sams", { ["sams"] = SamSiteGoal })
+	BuildSAMs = AddPrimaryObjective(Nod, buildSAMs)
+	GDIObjective = AddPrimaryObjective(GDI, "eliminate-nod")
 
 	Trigger.OnKilled(GDIProc, function()
 		Actor.Create("moneycrate", true, { Owner = GDI, Location = CPos.New(24, 54) })

@@ -38,9 +38,9 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	BuildBase = Nod.AddObjective("Build a base.")
-	DestroyGDI = Nod.AddObjective("Destroy the GDI base.")
-	GDIObjective = GDI.AddObjective("Kill all enemies.")
+	BuildBase = AddPrimaryObjective(Nod, "build-base")
+	DestroyGDI = AddPrimaryObjective(Nod, "destroy-gdi-base")
+	GDIObjective = AddPrimaryObjective(GDI, "kill-all-enemies")
 
 	Utils.Do(Guards, function(actor)
 		Trigger.OnDamaged(actor, function()

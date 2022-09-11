@@ -15,6 +15,8 @@ else
 	Rambo = "rmbo"
 end
 
+SamSiteGoal = 3
+
 WaypointGroup1 = { waypoint0, waypoint3, waypoint2, waypoint4, waypoint5, waypoint7 }
 WaypointGroup2 = { waypoint0, waypoint3, waypoint2, waypoint4, waypoint5, waypoint6 }
 WaypointGroup3 = { waypoint0, waypoint8, waypoint9, waypoint10, waypoint11, waypoint12, waypoint6, waypoint13 }
@@ -48,7 +50,7 @@ AirstrikeDelay = DateTime.Minutes(2) + DateTime.Seconds(30)
 
 CheckForSams = function(Nod)
 	local sams = Nod.GetActorsByType("sam")
-	return #sams >= 3
+	return #sams >= SamSiteGoal
 end
 
 SendGDIAirstrike = function(hq, delay)
@@ -189,13 +191,14 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	SecureFirstLanding = Nod.AddObjective("Secure the first landing zone.")
-	SecureSecondLanding = Nod.AddObjective("Secure the second landing zone.")
-	LocateNodBase = Nod.AddObjective("Locate the Nod base.")
-	CaptureRefinery = Nod.AddObjective("Capture the refinery.")
-	EliminateGDI = Nod.AddObjective("Eliminate all GDI forces in the area.")
-	BuildSAMs = Nod.AddObjective("Build 3 SAMs to fend off the GDI bombers.", "Secondary", false)
-	GDIObjective = GDI.AddObjective("Eliminate all Nod forces in the area.")
+	SecureFirstLanding = AddPrimaryObjective(Nod, "secure-first-landing-zone")
+	SecureSecondLanding = AddPrimaryObjective(Nod, "secure-second-landing-zone")
+	LocateNodBase = AddPrimaryObjective(Nod, "locate-nod-base")
+	CaptureRefinery = AddPrimaryObjective(Nod, "capture-refinery")
+	EliminateGDI = AddPrimaryObjective(Nod, "eliminate-gdi-forces")
+	local buildSAMs = UserInterface.Translate("build-sams", { ["sams"] = SamSiteGoal })
+	BuildSAMs = AddSecondaryObjective(Nod, buildSAMs)
+	GDIObjective = AddPrimaryObjective(GDI, "eliminate-nod")
 end
 
 Tick = function()

@@ -52,10 +52,10 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	GDIObjective = GDI.AddPrimaryObjective("Eliminate all Nod forces in the area.")
-	WarFactoryObjective = Nod.AddPrimaryObjective("Destroy or capture the Weapons Factory.")
-	DestroyTanksObjective = Nod.AddPrimaryObjective("Destroy the Mammoth tanks in the R&D base.")
-	KeepRamboAliveObjective = Nod.AddObjective("Keep your Commando alive.", "Secondary", false)
+	GDIObjective = AddPrimaryObjective(Nod, "eliminate-nod")
+	WarFactoryObjective = AddPrimaryObjective(Nod, "destroy-capture-warfactory")
+	DestroyTanksObjective = AddPrimaryObjective(Nod, "destroy-mammoth-tanks")
+	KeepRamboAliveObjective = AddSecondaryObjective(Nod, "keep-commando-alive")
 
 	Trigger.OnKilledOrCaptured(WeaponsFactory, function()
 		Nod.MarkCompletedObjective(WarFactoryObjective)

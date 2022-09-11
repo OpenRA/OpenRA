@@ -27,8 +27,8 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	CapturePrison = Nod.AddObjective("Capture the prison.")
-	DestroyGDI = Nod.AddObjective("Destroy all GDI forces.", "Secondary", false)
+	CapturePrison = AddPrimaryObjective(Nod, "capture-prison")
+	DestroyGDI = AddSecondaryObjective(Nod, "destroy-gdi-forces")
 
 	Trigger.OnCapture(TechCenter, function()
 		Trigger.AfterDelay(DateTime.Seconds(2), function()

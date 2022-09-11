@@ -141,11 +141,11 @@ WorldLoaded = function()
 		end
 	end)
 
-	CaptureHelipad = Nod.AddObjective("Capture the GDI helipad.")
-	NoCaptureObjective = Nod.AddObjective("Don't capture or destroy any other\nGDI main building.")
-	UseOrcaObjective = Nod.AddObjective("Use the GDI orca to wreak havoc at the village.")
-	DistractGuardsObjective = Nod.AddObjective("Distract the guards by attacking the\nmain entrance with your vehicles.", "Secondary", false)
-	GDIObjective = GDI.AddObjective("Kill all enemies.")
+	CaptureHelipad = AddPrimaryObjective(Nod, "capture-gdi-helipad")
+	NoCaptureObjective = AddPrimaryObjective(Nod, "dont-capture-or-destroy")
+	UseOrcaObjective = AddPrimaryObjective(Nod, "orca-wreak-havoc")
+	DistractGuardsObjective = AddSecondaryObjective(Nod, "distract-guards")
+	GDIObjective = AddPrimaryObjective(GDI, "kill-all-enemies")
 end
 
 Tick = function()

@@ -99,7 +99,7 @@ WorldLoaded = function()
 		KillCounterHuntThreshold = 20
 	end
 
-	DestroyObjective = GDI.AddObjective("Destroy the Nod ********.")
+	DestroyObjective = AddPrimaryObjective(GDI, "destroy-nod-building")
 
 	Trigger.OnKilled(Airfield, function()
 		GDI.MarkCompletedObjective(DestroyObjective)
