@@ -94,10 +94,13 @@ namespace OpenRA.Mods.Common.Traits
 			return new SpriteHarvesterDockSequence(harv, self, DeliveryAngle, IsDragRequired, DragOffset, DragLength);
 		}
 
-		public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()
+		void UnlinkHarvesters()
 		{
-			return self.World.ActorsWithTrait<Harvester>()
-				.Where(a => a.Trait.LinkedProc == self);
+			self.World.ApplyToActorsWithTrait<Harvester>((actor, trait) =>
+			{
+				if (trait.LinkedProc == self)
+					trait.UnlinkProc(actor, self);
+			});
 		}
 
 		int IAcceptResources.AcceptResources(string resourceType, int count)
@@ -162,8 +165,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyActorDisposing.Disposing(Actor self)
 		{
 			CancelDock();
-			foreach (var harv in GetLinkedHarvesters())
-				harv.Trait.UnlinkProc(harv.Actor, self);
+			UnlinkHarvesters();
 		}
 
 		public void OnDock(Actor harv, DeliverResources dockOrder)
@@ -178,10 +180,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			// Unlink any harvesters
-			foreach (var harv in GetLinkedHarvesters())
-				harv.Trait.UnlinkProc(harv.Actor, self);
-
+			UnlinkHarvesters();
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 		}
 
@@ -200,8 +199,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifySold.Selling(Actor self) { CancelDock(); }
 		void INotifySold.Sold(Actor self)
 		{
-			foreach (var harv in GetLinkedHarvesters())
-				harv.Trait.UnlinkProc(harv.Actor, self);
+			UnlinkHarvesters();
 		}
 	}
 }

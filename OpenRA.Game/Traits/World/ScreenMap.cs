@@ -31,6 +31,7 @@ namespace OpenRA.Traits
 	}
 
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class ScreenMapInfo : TraitInfo
 	{
 		[Desc("Size of partition bins (world pixels)")]

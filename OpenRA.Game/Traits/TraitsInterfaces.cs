@@ -203,6 +203,7 @@ namespace OpenRA.Traits
 	public interface IDefaultVisibility { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public interface IActorMap
 	{
 		IEnumerable<Actor> GetActorsAt(CPos a);
@@ -256,6 +257,7 @@ namespace OpenRA.Traits
 	public interface IPaletteModifier { void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b); }
 
 	[RequireExplicitImplementation]
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public interface ISelectionBar { float GetValue(); Color GetColor(); bool DisplayWhenEmpty { get; } }
 
 	public interface ISelectionDecorations
@@ -457,6 +459,7 @@ namespace OpenRA.Traits
 		void SetRollover(IEnumerable<Actor> actors);
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public interface IControlGroupsInfo : ITraitInfoInterface
 	{
 		string[] Groups { get; }

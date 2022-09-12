@@ -102,14 +102,18 @@ namespace OpenRA.Mods.Common.Traits
 					.Where(t => !t.IsTraitDisabled).SelectMany(pi => pi.Info.Produces) : Info.ProductionQueues;
 				foreach (var q in queues)
 				{
-					foreach (var b in self.World
-							.ActorsWithTrait<PrimaryBuilding>()
-							.Where(a =>
-								a.Actor != self &&
-								a.Actor.Owner == self.Owner &&
-								a.Trait.IsPrimary &&
-								a.Actor.TraitsImplementing<Production>().Where(p => !p.IsTraitDisabled).Any(pi => pi.Info.Produces.Contains(q))))
-						b.Trait.SetPrimaryProducer(b.Actor, false);
+					// PERF: Apply is faster than enumerating over trait pairs.
+					self.World.ApplyToActorsWithTrait<PrimaryBuilding>((actor, trait) =>
+					{
+						if (actor == self || actor.Owner != self.Owner || !trait.IsPrimary)
+							return;
+
+						var sameProduce = actor.TraitsImplementing<Production>()
+							.Where(p => !p.IsTraitDisabled).Any(pi => pi.Info.Produces.Contains(q));
+
+						if (sameProduce)
+ 							trait.SetPrimaryProducer(actor, false);
+					});
 				}
 
 				if (primaryToken == Actor.InvalidConditionToken)

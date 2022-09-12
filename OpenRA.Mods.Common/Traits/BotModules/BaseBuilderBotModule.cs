@@ -221,19 +221,20 @@ namespace OpenRA.Mods.Common.Traits
 
 		void SetRallyPointsForNewProductionBuildings(IBot bot)
 		{
-			foreach (var rp in world.ActorsWithTrait<RallyPoint>())
+			// PERF: Apply is faster than enumerating over trait pairs.
+			world.ApplyToActorsWithTrait<RallyPoint>((actor, trait) =>
 			{
-				if (rp.Actor.Owner != player)
-					continue;
+				if (actor.Owner != player)
+					return;
 
-				if (rp.Trait.Path.Count == 0 || !IsRallyPointValid(rp.Trait.Path[0], rp.Actor.Info.TraitInfoOrDefault<BuildingInfo>()))
+				if (trait.Path.Count == 0 || !IsRallyPointValid(trait.Path[0], actor.Info.TraitInfoOrDefault<BuildingInfo>()))
 				{
-					bot.QueueOrder(new Order("SetRallyPoint", rp.Actor, Target.FromCell(world, ChooseRallyLocationNear(rp.Actor)), false)
+					bot.QueueOrder(new Order("SetRallyPoint", actor, Target.FromCell(world, ChooseRallyLocationNear(actor)), false)
 					{
 						SuppressVisualFeedback = true
 					});
 				}
-			}
+			});
 		}
 
 		// Won't work for shipyards...

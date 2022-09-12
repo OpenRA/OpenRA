@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ActorMap(init.World, this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class ActorMap : IActorMap, ITick, INotifyCreated
 	{
 		class InfluenceNode
