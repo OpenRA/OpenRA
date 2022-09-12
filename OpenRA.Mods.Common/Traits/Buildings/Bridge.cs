@@ -93,6 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class Bridge : IRender, INotifyDamageStateChanged, IRadarSignature
 	{
 		readonly BuildingInfo buildingInfo;

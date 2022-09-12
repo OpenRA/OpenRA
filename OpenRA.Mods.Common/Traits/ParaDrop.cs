@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ParaDrop(init.Self, this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class ParaDrop : ITick, ISync, INotifyRemovedFromWorld
 	{
 		readonly ParaDropInfo info;

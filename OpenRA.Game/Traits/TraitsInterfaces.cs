@@ -257,7 +257,6 @@ namespace OpenRA.Traits
 	public interface IPaletteModifier { void AdjustPalette(IReadOnlyDictionary<string, MutablePalette> b); }
 
 	[RequireExplicitImplementation]
-	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public interface ISelectionBar { float GetValue(); Color GetColor(); bool DisplayWhenEmpty { get; } }
 
 	public interface ISelectionDecorations

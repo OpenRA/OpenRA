@@ -58,6 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new RallyPoint(init.Self, this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class RallyPoint : IIssueOrder, IResolveOrder, INotifyOwnerChanged, INotifyCreated
 	{
 		const string OrderID = "SetRallyPoint";

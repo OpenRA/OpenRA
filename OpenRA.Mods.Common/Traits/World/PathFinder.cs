@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class PathFinder : IPathFinder, IWorldLoaded
 	{
 		public static readonly List<CPos> NoPath = new List<CPos>(0);

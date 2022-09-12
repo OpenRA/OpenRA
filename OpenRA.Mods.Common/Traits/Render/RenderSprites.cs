@@ -78,6 +78,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class RenderSprites : IRender, ITick, INotifyOwnerChanged, INotifyEffectiveOwnerChanged, IActorPreviewInitModifier
 	{
 		static readonly (DamageState DamageState, string Prefix)[] DamagePrefixes =

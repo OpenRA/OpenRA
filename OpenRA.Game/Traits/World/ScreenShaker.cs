@@ -25,6 +25,7 @@ namespace OpenRA.Traits
 		public override object Create(ActorInitializer init) { return new ScreenShaker(this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class ScreenShaker : ITick, IWorldLoaded
 	{
 		readonly ScreenShakerInfo info;

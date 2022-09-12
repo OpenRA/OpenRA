@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Spawns the initial units for each player upon game start.")]
 	public class SpawnMapActorsInfo : TraitInfo<SpawnMapActors> { }
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class SpawnMapActors : IWorldLoaded
 	{
 		public Dictionary<string, Actor> Actors = new Dictionary<string, Actor>();

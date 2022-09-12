@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new PlayerStatistics(init.Self); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class PlayerStatistics : ITick, IResolveOrder, INotifyCreated, IWorldLoaded
 	{
 		PlayerResources resources;

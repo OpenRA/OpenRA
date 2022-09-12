@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Interactable(this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class Interactable : INotifyCreated, IMouseBounds
 	{
 		readonly InteractableInfo info;

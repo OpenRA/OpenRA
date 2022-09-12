@@ -40,6 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new EditorSelectionLayer(init.Self, this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class EditorSelectionLayer : IWorldLoaded, IRenderAboveShroud
 	{
 		readonly EditorSelectionLayerInfo info;

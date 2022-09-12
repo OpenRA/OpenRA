@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Commands
 	[Desc("Enables commands triggered by typing them into the chatbox. Attach this to the world actor.")]
 	public class ChatCommandsInfo : TraitInfo<ChatCommands> { }
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class ChatCommands : INotifyChat
 	{
 		public Dictionary<string, IChatCommand> Commands { get; }

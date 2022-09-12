@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new WarheadDebugOverlay(this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class WarheadDebugOverlay : IRenderAnnotations
 	{
 		class WHImpact

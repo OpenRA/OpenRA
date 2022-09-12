@@ -780,11 +780,13 @@ namespace OpenRA.Mods.Common.Traits
 		All
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public interface IPositionableInfo : IOccupySpaceInfo
 	{
 		bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All);
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public interface IPositionable : IOccupySpace
 	{
 		bool CanExistInCell(CPos location);
@@ -797,6 +799,7 @@ namespace OpenRA.Mods.Common.Traits
 		void SetCenterPosition(Actor self, WPos pos);
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public interface IPathFinder
 	{
 		/// <summary>

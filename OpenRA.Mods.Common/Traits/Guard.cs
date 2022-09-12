@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Guard(this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class Guard : IResolveOrder, IOrderVoice, INotifyCreated
 	{
 		readonly GuardInfo info;

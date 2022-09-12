@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackCharges(init.Self, this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class AttackCharges : AttackOmni, INotifyAttack, INotifySold
 	{
 		readonly AttackChargesInfo info;

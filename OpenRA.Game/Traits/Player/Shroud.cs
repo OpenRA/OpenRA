@@ -15,7 +15,6 @@ using System.Collections.Generic;
 namespace OpenRA.Traits
 {
 	[TraitLocation(SystemActors.Player | SystemActors.EditorPlayer)]
-	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	[Desc("Required for shroud and fog visibility checks. Add this to the player actor.")]
 	public class ShroudInfo : TraitInfo, ILobbyOptions
 	{
@@ -66,6 +65,7 @@ namespace OpenRA.Traits
 		public override object Create(ActorInitializer init) { return new Shroud(init.Self, this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class Shroud : ISync, INotifyCreated, ITick
 	{
 		public enum SourceType : byte { PassiveVisibility, Shroud, Visibility }

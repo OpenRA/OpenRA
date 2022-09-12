@@ -58,6 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new BodyOrientation(init, this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class BodyOrientation : ISync
 	{
 		readonly BodyOrientationInfo info;

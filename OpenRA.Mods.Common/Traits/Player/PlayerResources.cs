@@ -71,6 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new PlayerResources(init.Self, this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class PlayerResources : ISync
 	{
 		public readonly PlayerResourcesInfo Info;

@@ -54,6 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new RepairableBuilding(init.Self, this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class RepairableBuilding : ConditionalTrait<RepairableBuildingInfo>, ITick
 	{
 		readonly IHealth health;

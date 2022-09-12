@@ -76,6 +76,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class RenderVoxels : IRender, ITick, INotifyOwnerChanged
 	{
 		class AnimationWrapper

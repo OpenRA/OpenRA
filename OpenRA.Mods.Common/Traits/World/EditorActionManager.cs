@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	[TraitLocation(SystemActors.EditorWorld)]
 	public class EditorActionManagerInfo : TraitInfo<EditorActionManager> { }
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class EditorActionManager : IWorldLoaded
 	{
 		readonly Stack<EditorActionContainer> undoStack = new Stack<EditorActionContainer>();

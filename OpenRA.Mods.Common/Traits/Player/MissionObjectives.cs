@@ -69,6 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new MissionObjectives(init.Self.Owner, this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class MissionObjectives : INotifyWinStateChanged, ISync, IResolveOrder, IWorldLoaded
 	{
 		public readonly MissionObjectivesInfo Info;

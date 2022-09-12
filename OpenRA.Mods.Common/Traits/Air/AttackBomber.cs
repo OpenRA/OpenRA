@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackBomber(init.Self, this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class AttackBomber : AttackBase, ITick, ISync, INotifyRemovedFromWorld
 	{
 		readonly AttackBomberInfo info;

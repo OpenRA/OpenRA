@@ -241,6 +241,7 @@ namespace OpenRA.Traits
 		}
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class FrozenActorLayer : IRender, ITick, ISync
 	{
 		[Sync]

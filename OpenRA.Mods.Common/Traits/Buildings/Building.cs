@@ -263,6 +263,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class Building : IOccupySpace, ITargetableCells, INotifySold, INotifyTransform, ISync,
 		INotifyAddedToWorld, INotifyRemovedFromWorld
 	{

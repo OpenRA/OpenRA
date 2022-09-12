@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new GrantConditionOnPrerequisiteManager(init); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class GrantConditionOnPrerequisiteManager : ITechTreeElement
 	{
 		readonly Actor self;

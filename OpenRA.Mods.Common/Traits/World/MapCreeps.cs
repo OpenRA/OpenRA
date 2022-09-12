@@ -44,6 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new MapCreeps(this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class MapCreeps : INotifyCreated
 	{
 		readonly MapCreepsInfo info;

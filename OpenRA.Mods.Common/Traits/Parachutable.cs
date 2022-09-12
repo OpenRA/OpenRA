@@ -57,6 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Parachutable(init.Self, this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class Parachutable : INotifyParachute
 	{
 		readonly ParachutableInfo info;

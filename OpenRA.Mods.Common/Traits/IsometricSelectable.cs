@@ -69,6 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class IsometricSelectable : IMouseBounds, ISelectable
 	{
 		readonly IsometricSelectableInfo info;

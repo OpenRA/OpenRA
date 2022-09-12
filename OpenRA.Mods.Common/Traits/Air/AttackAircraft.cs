@@ -36,6 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackAircraft(init.Self, this); }
 	}
 
+	[TraitMultiplicity(TraitMultiplicity.OnePerActor)]
 	public class AttackAircraft : AttackFollow
 	{
 		public new readonly AttackAircraftInfo Info;
