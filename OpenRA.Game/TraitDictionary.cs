@@ -12,8 +12,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using OpenRA.Primitives;
 using OpenRA.Support;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -41,19 +43,31 @@ namespace OpenRA
 	/// </summary>
 	class TraitDictionary
 	{
-		static readonly Func<Type, ITraitContainer> CreateTraitContainer = t =>
-			(ITraitContainer)typeof(TraitContainer<>).MakeGenericType(t).GetConstructor(Type.EmptyTypes).Invoke(null);
+		static TraitMultiplicity GetTraitMultiplicity(Type traitType)
+		{
+			var tma = traitType.GetCustomAttribute<TraitMultiplicityAttribute>(false);
+			if (tma == null)
+				return TraitMultiplicity.None;
 
-		readonly Dictionary<Type, ITraitContainer> traits = new Dictionary<Type, ITraitContainer>();
+			return tma.Multiplicity;
+		}
 
-		ITraitContainer InnerGet(Type t)
+		static readonly Func<Type, ITraitContainerBase> CreateTraitContainer = t =>
+		{
+			var ct = GetTraitMultiplicity(t) == TraitMultiplicity.OnePerActor ? typeof(TraitMap<>) : typeof(TraitList<>);
+			return (ITraitContainerBase)ct.MakeGenericType(t).GetConstructor(Type.EmptyTypes).Invoke(null);
+		};
+
+		readonly Dictionary<Type, ITraitContainerBase> traits = new Dictionary<Type, ITraitContainerBase>();
+
+		ITraitContainerBase InnerGet(Type t)
 		{
 			return traits.GetOrAdd(t, CreateTraitContainer);
 		}
 
-		TraitContainer<T> InnerGet<T>()
+		ITraitContainer<T> InnerGet<T>()
 		{
-			return (TraitContainer<T>)InnerGet(typeof(T));
+			return (ITraitContainer<T>)InnerGet(typeof(T));
 		}
 
 		public void PrintReport()
@@ -80,26 +94,36 @@ namespace OpenRA
 
 		static void CheckDestroyed(Actor actor)
 		{
+			// PERF: The compiler does not inline this function. Likely due to formatting the message.
 			if (actor.Disposed)
 				throw new InvalidOperationException($"Attempted to get trait from destroyed object ({actor})");
 		}
 
 		public T Get<T>(Actor actor)
 		{
-			CheckDestroyed(actor);
+			// PERF: Inline check.
+			if (actor.Disposed)
+				CheckDestroyed(actor);
+
 			return InnerGet<T>().Get(actor);
 		}
 
 		public T GetOrDefault<T>(Actor actor)
 		{
-			CheckDestroyed(actor);
+			// PERF: Inline check.
+			if (actor.Disposed)
+				CheckDestroyed(actor);
+
 			return InnerGet<T>().GetOrDefault(actor);
 		}
 
 		public IEnumerable<T> WithInterface<T>(Actor actor)
 		{
-			CheckDestroyed(actor);
-			return InnerGet<T>().GetMultiple(actor.ActorID);
+			// PERF: Inline check.
+			if (actor.Disposed)
+				CheckDestroyed(actor);
+
+			return InnerGet<T>().GetMultiple(actor);
 		}
 
 		public IEnumerable<TraitPair<T>> ActorsWithTrait<T>()
@@ -120,7 +144,7 @@ namespace OpenRA
 		public void RemoveActor(Actor a)
 		{
 			foreach (var t in traits)
-				t.Value.RemoveActor(a.ActorID);
+				t.Value.RemoveActor(a);
 		}
 
 		public void ApplyToActorsWithTrait<T>(Action<Actor, T> action)
@@ -133,15 +157,27 @@ namespace OpenRA
 			InnerGet<T>().ApplyToAllTimed(action, text);
 		}
 
-		interface ITraitContainer
+		interface ITraitContainerBase
 		{
 			void Add(Actor actor, object trait);
-			void RemoveActor(uint actor);
+			void RemoveActor(Actor actor);
 
 			int Queries { get; }
 		}
 
-		class TraitContainer<T> : ITraitContainer
+		interface ITraitContainer<T> : ITraitContainerBase
+		{
+			T Get(Actor actor);
+			T GetOrDefault(Actor actor);
+			IEnumerable<T> GetMultiple(Actor actor);
+			IEnumerable<TraitPair<T>> All();
+			IEnumerable<Actor> Actors();
+			IEnumerable<Actor> Actors(Func<T, bool> predicate);
+			void ApplyToAll(Action<Actor, T> action);
+			void ApplyToAllTimed(Action<Actor, T> action, string text);
+		}
+
+		class TraitList<T> : ITraitContainer<T>
 		{
 			readonly List<Actor> actors = new List<Actor>();
 			readonly List<T> traits = new List<T>();
@@ -178,18 +214,18 @@ namespace OpenRA
 				return traits[index];
 			}
 
-			public IEnumerable<T> GetMultiple(uint actor)
+			public IEnumerable<T> GetMultiple(Actor actor)
 			{
 				// PERF: Custom enumerator for efficiency - using `yield` is slower.
 				++Queries;
-				return new MultipleEnumerable(this, actor);
+				return new MultipleEnumerable(this, actor.ActorID);
 			}
 
 			class MultipleEnumerable : IEnumerable<T>
 			{
-				readonly TraitContainer<T> container;
+				readonly TraitList<T> container;
 				readonly uint actor;
-				public MultipleEnumerable(TraitContainer<T> container, uint actor) { this.container = container; this.actor = actor; }
+				public MultipleEnumerable(TraitList<T> container, uint actor) { this.container = container; this.actor = actor; }
 				public IEnumerator<T> GetEnumerator() { return new MultipleEnumerator(container, actor); }
 				System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
 			}
@@ -200,7 +236,7 @@ namespace OpenRA
 				readonly List<T> traits;
 				readonly uint actor;
 				int index;
-				public MultipleEnumerator(TraitContainer<T> container, uint actor)
+				public MultipleEnumerator(TraitList<T> container, uint actor)
 					: this()
 				{
 					actors = container.actors;
@@ -256,8 +292,8 @@ namespace OpenRA
 
 			readonly struct AllEnumerable : IEnumerable<TraitPair<T>>
 			{
-				readonly TraitContainer<T> container;
-				public AllEnumerable(TraitContainer<T> container) { this.container = container; }
+				readonly TraitList<T> container;
+				public AllEnumerable(TraitList<T> container) { this.container = container; }
 				public IEnumerator<TraitPair<T>> GetEnumerator() { return new AllEnumerator(container); }
 				System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
 			}
@@ -267,7 +303,7 @@ namespace OpenRA
 				readonly List<Actor> actors;
 				readonly List<T> traits;
 				int index;
-				public AllEnumerator(TraitContainer<T> container)
+				public AllEnumerator(TraitList<T> container)
 					: this()
 				{
 					actors = container.actors;
@@ -282,14 +318,15 @@ namespace OpenRA
 				public void Dispose() { }
 			}
 
-			public void RemoveActor(uint actor)
+			public void RemoveActor(Actor actor)
 			{
-				var startIndex = actors.BinarySearchMany(actor);
-				if (startIndex >= actors.Count || actors[startIndex].ActorID != actor)
+				var actorID = actor.ActorID;
+				var startIndex = actors.BinarySearchMany(actorID);
+				if (startIndex >= actors.Count || actors[startIndex].ActorID != actorID)
 					return;
 
 				var endIndex = startIndex + 1;
-				while (endIndex < actors.Count && actors[endIndex].ActorID == actor)
+				while (endIndex < actors.Count && actors[endIndex].ActorID == actorID)
 					endIndex++;
 
 				var count = endIndex - startIndex;
@@ -313,6 +350,120 @@ namespace OpenRA
 					action(actor, trait);
 
 					perfLogger.LogTickAndRestartTimer(text, trait);
+				}
+			}
+		}
+
+		class TraitMap<T> : ITraitContainer<T>
+		{
+			readonly Dictionary<Actor, T> values = new Dictionary<Actor, T>();
+			readonly PerfTickLogger perfLogger = new PerfTickLogger();
+
+			public int Queries { get; private set; }
+
+			public void Add(Actor actor, object trait)
+			{
+				try
+				{
+					values.Add(actor, (T)trait);
+				}
+				catch (ArgumentException)
+				{
+					throw new ArgumentException($"A trait of type {typeof(T)} is already associated with actor {actor.Info.Name}. Trait was declared to have a multiplicity of OnePerActor.");
+				}
+			}
+
+			public T Get(Actor actor)
+			{
+				if (values.TryGetValue(actor, out var trait))
+					return trait;
+
+				throw new InvalidOperationException($"Actor {actor.Info.Name} does not have trait of type `{typeof(T)}`");
+			}
+
+			public T GetOrDefault(Actor actor)
+			{
+				++Queries;
+				values.TryGetValue(actor, out var trait);
+				return trait;
+			}
+
+			public IEnumerable<T> GetMultiple(Actor actor)
+			{
+				++Queries;
+				if (values.TryGetValue(actor, out var trait))
+					yield return trait;
+			}
+
+			public IEnumerable<TraitPair<T>> All()
+			{
+				// PERF: Custom enumerator for efficiency - using `yield` is slower.
+				++Queries;
+				return new AllEnumerable(values);
+			}
+
+			public IEnumerable<Actor> Actors()
+			{
+				++Queries;
+				return values.Keys;
+			}
+
+			public IEnumerable<Actor> Actors(Func<T, bool> predicate)
+			{
+				++Queries;
+				foreach (var pair in values)
+				{
+					if (!predicate(pair.Value))
+						continue;
+
+					yield return pair.Key;
+				}
+			}
+
+			readonly struct AllEnumerable : IEnumerable<TraitPair<T>>
+			{
+				readonly IEnumerable<KeyValuePair<Actor, T>> enumerable;
+				public AllEnumerable(Dictionary<Actor, T> values) { enumerable = values; }
+				public IEnumerator<TraitPair<T>> GetEnumerator() { return new AllEnumerator(enumerable); }
+				System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return GetEnumerator(); }
+			}
+
+			struct AllEnumerator : IEnumerator<TraitPair<T>>
+			{
+				readonly IEnumerator<KeyValuePair<Actor, T>> enumerator;
+
+				public AllEnumerator(IEnumerable<KeyValuePair<Actor, T>> enumerable)
+					: this()
+				{
+					enumerator = enumerable.GetEnumerator();
+				}
+
+				public void Reset() { enumerator.Reset(); }
+				public bool MoveNext() { return enumerator.MoveNext(); }
+				public TraitPair<T> Current => new TraitPair<T>(enumerator.Current.Key, enumerator.Current.Value);
+				object System.Collections.IEnumerator.Current => Current;
+				public void Dispose() { enumerator.Dispose(); }
+			}
+
+			public void RemoveActor(Actor actor)
+			{
+				values.Remove(actor);
+			}
+
+			public void ApplyToAll(Action<Actor, T> action)
+			{
+				foreach (var pair in values)
+					action(pair.Key, pair.Value);
+			}
+
+			public void ApplyToAllTimed(Action<Actor, T> action, string text)
+			{
+				perfLogger.Start();
+
+				foreach (var pair in values)
+				{
+					action(pair.Key, pair.Value);
+					perfLogger.LogTickAndRestartTimer(text, pair.Value);
 				}
 			}
 		}
