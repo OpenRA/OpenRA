@@ -17,22 +17,39 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class IngamePowerCounterLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[TranslationReference("usage", "capacity")]
 		static readonly string PowerUsage = "power-usage";
+
+		[TranslationReference]
+		static readonly string Infinite = "infinite-power";
 
 		[ObjectCreator.UseCtor]
 		public IngamePowerCounterLogic(Widget widget, ModData modData, World world)
 		{
+			var developerMode = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
+
 			var powerManager = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
 			var power = widget.Get<LabelWithTooltipWidget>("POWER");
 			var powerIcon = widget.Get<ImageWidget>("POWER_ICON");
-			var powerUsage = modData.Translation.GetString(PowerUsage);
+			var unlimitedCapacity = modData.Translation.GetString(Infinite);
 
 			powerIcon.GetImageName = () => powerManager.ExcessPower < 0 ? "power-critical" : "power-normal";
 			power.GetColor = () => powerManager.ExcessPower < 0 ? Color.Red : Color.White;
-			power.GetText = () => powerManager.PowerProvided == 1000000 ? "∞" : powerManager.ExcessPower.ToString();
-			power.GetTooltipText = () => powerUsage + ": " + powerManager.PowerDrained.ToString() +
-				(powerManager.PowerProvided != 1000000 ? "/" + powerManager.PowerProvided.ToString() : "");
+			power.GetText = () => developerMode.UnlimitedPower ? unlimitedCapacity : powerManager.ExcessPower.ToString();
+
+			var tooltipTextCached = new CachedTransform<(string, string), string>(((string usage, string capacity) args) =>
+			{
+				return modData.Translation.GetString(
+					PowerUsage,
+					Translation.Arguments("usage", args.usage, "capacity", args.capacity));
+			});
+
+			power.GetTooltipText = () =>
+			{
+				var capacity = developerMode.UnlimitedPower ? unlimitedCapacity : powerManager.PowerProvided.ToString();
+
+				return tooltipTextCached.Update((powerManager.PowerDrained.ToString(), capacity));
+			};
 		}
 	}
 }

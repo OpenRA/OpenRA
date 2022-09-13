@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class IngameSiloBarLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[TranslationReference("usage", "capacity")]
 		static readonly string SiloUsage = "silo-usage";
 
 		[ObjectCreator.UseCtor]
@@ -28,7 +28,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			siloBar.GetProvided = () => playerResources.ResourceCapacity;
 			siloBar.GetUsed = () => playerResources.Resources;
-			siloBar.TooltipFormat = modData.Translation.GetString(SiloUsage) + ": {0}/{1}";
+			siloBar.TooltipTextCached = new CachedTransform<(float Current, float Capacity), string>(usage =>
+			{
+				return modData.Translation.GetString(
+					SiloUsage,
+					Translation.Arguments("usage", usage.Current, "capacity", usage.Capacity));
+			});
 			siloBar.GetBarColor = () =>
 			{
 				if (playerResources.Resources == playerResources.ResourceCapacity)

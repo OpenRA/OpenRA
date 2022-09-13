@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string TooltipContainer;
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 
-		public string TooltipFormat = "";
+		public CachedTransform<(float, float), string> TooltipTextCached;
 		public ResourceBarOrientation Orientation = ResourceBarOrientation.Vertical;
 		public string IndicatorCollection = "sidebar-bits";
 		public string IndicatorImage = "indicator";
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (TooltipContainer == null)
 				return;
 
-			Func<string> getText = () => TooltipFormat.F(GetUsed(), GetProvided());
+			Func<string> getText = () => TooltipTextCached.Update((GetUsed(), GetProvided()));
 			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() { { "getText", getText }, { "world", world } });
 		}
 
