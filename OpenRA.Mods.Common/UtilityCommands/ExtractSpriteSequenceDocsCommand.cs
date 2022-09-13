@@ -20,9 +20,9 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class ExtractSequenceDocsCommand : IUtilityCommand
+	class ExtractSpriteSequenceDocsCommand : IUtilityCommand
 	{
-		string IUtilityCommand.Name => "--sequence-docs";
+		string IUtilityCommand.Name => "--sprite-sequence-docs";
 
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{
