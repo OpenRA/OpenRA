@@ -37,6 +37,7 @@ def format_docs(version, collectionName, types, relatedEnums):
 
     # Map the `relatedEnums` collection to a list of strings.
     enumNames = [enum['Name'] for enum in relatedEnums]
+    enumReferences = OrderedDict()
 
     title = ""
     explanation = ""
@@ -86,6 +87,10 @@ def format_docs(version, collectionName, types, relatedEnums):
                     typeName = prop["UserFriendlyType"]
                     if prop["InternalType"] in enumNames:
                         typeName = format_type_name(prop["InternalType"], True)
+                        if prop["InternalType"] in enumReferences:
+                            enumReferences[prop["InternalType"]].append(currentType["Name"])
+                        else:
+                            enumReferences[prop["InternalType"]] = [currentType["Name"]]
 
                     if "OtherAttributes" in prop:
                         attributes = []
@@ -108,6 +113,9 @@ def format_docs(version, collectionName, types, relatedEnums):
             values = [f"`{value['Value']}`" for value in relatedEnum["Values"]]
             print(f"### {relatedEnum['Name']}")
             print(f"Possible values: {', '.join(values)}\n")
+            distinctReferencingTypes = set(enumReferences[relatedEnum['Name']])
+            formattedReferencingTypes = [format_type_name(x, is_known_type(x, types)) for x in distinctReferencingTypes]
+            print(f"Referenced by: {', '.join(formattedReferencingTypes)}\n")
 
 if __name__ == "__main__":
     input_stream = io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8-sig')
