@@ -30,8 +30,8 @@ namespace OpenRA.Mods.Common.Widgets
 		Widget panel;
 		MaskWidget fullscreenMask;
 		Widget panelRoot;
-		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> getMarkerImage;
-		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> getSeparatorImage;
+		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getMarkerImage;
+		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getSeparatorImage;
 
 		[ObjectCreator.UseCtor]
 		public DropDownButtonWidget(ModData modData)
@@ -59,13 +59,13 @@ namespace OpenRA.Mods.Common.Widgets
 			if (getMarkerImage == null)
 				getMarkerImage = WidgetUtils.GetCachedStatefulImage(Decorations, DecorationMarker);
 
-			var arrowImage = getMarkerImage.Update((isDisabled, Depressed, isHover, false));
+			var arrowImage = getMarkerImage.Update((isDisabled, Depressed, isHover, false, IsHighlighted()));
 			WidgetUtils.DrawSprite(arrowImage, stateOffset + new float2(rb.Right - (int)((rb.Height + arrowImage.Size.X) / 2), rb.Top + (int)((rb.Height - arrowImage.Size.Y) / 2)));
 
 			if (getSeparatorImage == null)
 				getSeparatorImage = WidgetUtils.GetCachedStatefulImage(Separators, SeparatorImage);
 
-			var separatorImage = getSeparatorImage.Update((isDisabled, Depressed, isHover, false));
+			var separatorImage = getSeparatorImage.Update((isDisabled, Depressed, isHover, false, IsHighlighted()));
 			if (separatorImage != null)
 				WidgetUtils.DrawSprite(separatorImage, stateOffset + new float2(-3, 0) + new float2(rb.Right - rb.Height + 4, rb.Top + (int)((rb.Height - separatorImage.Size.Y) / 2)));
 		}

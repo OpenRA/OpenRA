@@ -643,7 +643,7 @@ checkmark-tick:
 		unchecked: 0, 0, 0, 0
 		unchecked-pressed: 204, 0, 16, 16
 
-checkmark-highlighted-tick:
+checkmark-tick-highlighted:
 	Inherits: checkmark-tick
 
 checkmark-cross:
@@ -654,7 +654,7 @@ checkmark-cross:
 		unchecked: 0, 0, 0, 0
 		unchecked-pressed: 238, 0, 16, 16
 
-checkmark-highlighted-cross:
+checkmark-cross-highlighted:
 	Inherits: checkmark-cross
 
 checkmark-mute:
@@ -665,7 +665,7 @@ checkmark-mute:
 		checked: 238, 34, 16, 16
 		checked-pressed: 221, 34, 16, 16
 
-checkmark-highlighted-mute:
+checkmark-mute-highlighted:
 	Inherits: checkmark-mute
 
 checkbox-hover:

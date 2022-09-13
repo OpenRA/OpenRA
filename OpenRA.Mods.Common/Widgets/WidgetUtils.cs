@@ -31,13 +31,14 @@ namespace OpenRA.Mods.Common.Widgets
 			return baseName + suffix;
 		}
 
-		public static CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> GetCachedStatefulImage(string collection, string baseName)
+		public static CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> GetCachedStatefulImage(string collection, string imageName)
 		{
-			return new CachedTransform<(bool, bool, bool, bool), Sprite>(
-				((bool Disabled, bool Pressed, bool Hover, bool Focused) args) =>
+			return new CachedTransform<(bool, bool, bool, bool, bool), Sprite>(
+				((bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted) args) =>
 					{
-						var imageName = GetStatefulImageName(baseName, args.Disabled, args.Pressed, args.Hover, args.Focused);
-						return ChromeProvider.GetImage(collection, imageName) ?? ChromeProvider.GetImage(collection, baseName);
+						var collectionName = collection + (args.Highlighted ? "-highlighted" : "");
+						var variantImageName = GetStatefulImageName(imageName, args.Disabled, args.Pressed, args.Hover, args.Focused);
+						return ChromeProvider.GetImage(collectionName, variantImageName) ?? ChromeProvider.GetImage(collectionName, imageName);
 					});
 		}
 
