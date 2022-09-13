@@ -31,6 +31,16 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		public Func<string> GetTooltipText;
 
+		readonly CachedTransform<(string, string), Sprite> getImageCache = new CachedTransform<(string, string), Sprite>(
+			((string collection, string image) args) =>
+			{
+				var sprite = ChromeProvider.GetImage(args.collection, args.image);
+				if (sprite == null)
+					throw new ArgumentException($"Sprite {args.collection}/{args.image} was not found.");
+
+				return sprite;
+			});
+
 		public ImageWidget()
 		{
 			GetImageName = () => ImageName;
@@ -60,13 +70,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			var name = GetImageName();
-			var collection = GetImageCollection();
-
-			var sprite = ChromeProvider.GetImage(collection, name);
-			if (sprite == null)
-				throw new ArgumentException($"Sprite {collection}/{name} was not found.");
-
+			var sprite = getImageCache.Update((GetImageCollection(), GetImageName()));
 			WidgetUtils.DrawSprite(sprite, RenderOrigin);
 		}
 
