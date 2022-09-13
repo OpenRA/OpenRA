@@ -160,6 +160,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var filename = widget.Get<TextFieldWidget>("FILENAME");
 			filename.Text = map.Package == null ? "" : mapIsUnpacked ? Path.GetFileName(map.Package.Name) : Path.GetFileNameWithoutExtension(map.Package.Name);
+			if (string.IsNullOrEmpty(filename.Text))
+				filename.TakeKeyboardFocus();
+
 			var fileType = mapIsUnpacked ? MapFileType.Unpacked : MapFileType.OraMap;
 
 			var fileTypes = new Dictionary<MapFileType, MapFileTypeInfo>()
@@ -231,11 +234,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var save = widget.Get<ButtonWidget>("SAVE_BUTTON");
+			save.IsDisabled = () => string.IsNullOrWhiteSpace(filename.Text) || string.IsNullOrWhiteSpace(title.Text) || string.IsNullOrWhiteSpace(author.Text);
+
 			save.OnClick = () =>
 			{
-				if (string.IsNullOrEmpty(filename.Text))
-					return;
-
 				var combinedPath = Platform.ResolvePath(Path.Combine(selectedDirectory.Folder.Name, filename.Text + fileTypes[fileType].Extension));
 
 				if (map.Package?.Name != combinedPath)
