@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				version = args[1];
 
 			var objectCreator = utility.ModData.ObjectCreator;
-			var spriteSequenceTypes = objectCreator.GetTypesImplementing<ISpriteSequence>().OrderBy(t => t.Namespace);
+			var spriteSequenceTypes = objectCreator.GetTypesImplementing<ISpriteSequence>().OrderBy(t => t.Namespace).ThenBy(t => t.Name);
 
 			var json = GenerateJson(version, spriteSequenceTypes);
 			Console.WriteLine(json);
@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						})
 				});
 
-			var relatedEnums = relatedEnumTypes.Select(type => new
+			var relatedEnums = relatedEnumTypes.OrderBy(t => t.Name).Select(type => new
 			{
 				type.Namespace,
 				type.Name,

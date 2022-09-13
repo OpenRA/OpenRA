@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				version = args[1];
 
 			var objectCreator = utility.ModData.ObjectCreator;
-			var traitInfos = objectCreator.GetTypesImplementing<TraitInfo>().OrderBy(t => t.Namespace);
+			var traitInfos = objectCreator.GetTypesImplementing<TraitInfo>().OrderBy(t => t.Namespace).ThenBy(t => t.Name);
 
 			var json = GenerateJson(version, traitInfos, objectCreator);
 			Console.WriteLine(json);
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						})
 				});
 
-			var relatedEnums = relatedEnumTypes.Select(type => new
+			var relatedEnums = relatedEnumTypes.OrderBy(t => t.Name).Select(type => new
 			{
 				type.Namespace,
 				type.Name,

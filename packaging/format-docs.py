@@ -73,7 +73,8 @@ def format_docs(version, collectionName, types, relatedEnums):
                     print("###### Inherits from: " + ", ".join([format_type_name(x, is_known_type(x, types)) for x in inheritedTypes]) + '.')
 
             if "RequiresTraits" in currentType and currentType["RequiresTraits"]:
-                print("###### Requires trait(s): " + ", ".join([format_type_name(x, is_known_type(x, types)) for x in currentType["RequiresTraits"]]) + '.')
+                formattedRequiredTraits = [format_type_name(x, is_known_type(x, types)) for x in currentType["RequiresTraits"]]
+                print("###### Requires trait(s): " + ", ".join(sorted(formattedRequiredTraits)) + '.')
 
             if len(currentType["Properties"]) > 0:
                 print()
@@ -113,7 +114,7 @@ def format_docs(version, collectionName, types, relatedEnums):
             values = [f"`{value['Value']}`" for value in relatedEnum["Values"]]
             print(f"### {relatedEnum['Name']}")
             print(f"Possible values: {', '.join(values)}\n")
-            distinctReferencingTypes = set(enumReferences[relatedEnum['Name']])
+            distinctReferencingTypes = sorted(set(enumReferences[relatedEnum['Name']]))
             formattedReferencingTypes = [format_type_name(x, is_known_type(x, types)) for x in distinctReferencingTypes]
             print(f"Referenced by: {', '.join(formattedReferencingTypes)}\n")
 
