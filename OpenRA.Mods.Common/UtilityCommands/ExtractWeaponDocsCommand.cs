@@ -40,8 +40,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var objectCreator = utility.ModData.ObjectCreator;
 			var weaponInfo = new[] { typeof(WeaponInfo) };
-			var warheads = objectCreator.GetTypesImplementing<IWarhead>().OrderBy(t => t.Namespace);
-			var projectiles = objectCreator.GetTypesImplementing<IProjectileInfo>().OrderBy(t => t.Namespace);
+			var warheads = objectCreator.GetTypesImplementing<IWarhead>().OrderBy(t => t.Namespace).ThenBy(t => t.Name);
+			var projectiles = objectCreator.GetTypesImplementing<IProjectileInfo>().OrderBy(t => t.Namespace).ThenBy(t => t.Name);
 
 			var weaponTypes = weaponInfo.Concat(projectiles).Concat(warheads);
 
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						})
 				});
 
-			var relatedEnums = relatedEnumTypes.Select(type => new
+			var relatedEnums = relatedEnumTypes.OrderBy(t => t.Name).Select(type => new
 			{
 				type.Namespace,
 				type.Name,
