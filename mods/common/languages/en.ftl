@@ -202,11 +202,12 @@ exit-map-editor-confirm = Exit
 
 ## IngamePowerBarLogic
 ## IngamePowerCounterLogic
-power-usage = Power Usage
+power-usage = Power Usage: { $usage }/{ $capacity }
+infinite-power = Infinite
 
 ## IngameSiloBarLogic
 ## IngameCashCounterLogic
-silo-usage = Silo Usage: { $resources }/{ $capacity }
+silo-usage = Silo Usage: { $usage }/{ $capacity }
 
 ## ObserverShroudSelectorLogic
 camera-option-all-players = All Players
