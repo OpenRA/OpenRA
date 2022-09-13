@@ -23,7 +23,14 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<string> GetCheckmark;
 		public Func<bool> IsChecked = () => false;
 
-		CachedTransform<(string, bool, bool), CachedTransform<(bool, bool, bool, bool), Sprite>> getCheckmarkImageCache;
+		readonly CachedTransform<(string, bool), CachedTransform<(bool, bool, bool, bool, bool), Sprite>> getCheckmarkImageCache
+			= new CachedTransform<(string, bool), CachedTransform<(bool, bool, bool, bool, bool), Sprite>>(
+			((string CheckType, bool Checked) args) =>
+			{
+				var variantImageCollection = "checkmark-" + args.CheckType;
+				var variantBaseName = args.Checked ? "checked" : "unchecked";
+				return WidgetUtils.GetCachedStatefulImage(variantImageCollection, variantBaseName);
+			});
 
 		[ObjectCreator.UseCtor]
 		public CheckboxWidget(ModData modData)
@@ -34,7 +41,6 @@ namespace OpenRA.Mods.Common.Widgets
 			TextColorDisabled = ChromeMetrics.Get<Color>("TextDisabledColor");
 			GetColor = () => TextColor;
 			GetColorDisabled = () => TextColorDisabled;
-			CreateCheckmarkImageCache();
 		}
 
 		protected CheckboxWidget(CheckboxWidget other)
@@ -48,18 +54,6 @@ namespace OpenRA.Mods.Common.Widgets
 			TextColorDisabled = other.TextColorDisabled;
 			GetColor = other.GetColor;
 			GetColorDisabled = other.GetColorDisabled;
-			CreateCheckmarkImageCache();
-		}
-
-		void CreateCheckmarkImageCache()
-		{
-			getCheckmarkImageCache = new CachedTransform<(string, bool, bool), CachedTransform<(bool, bool, bool, bool), Sprite>>(
-				((string CheckType, bool Highlighted, bool Checked) args) =>
-				{
-					var variantImageCollection = args.Highlighted ? "checkmark-highlighted-" : "checkmark-" + args.CheckType;
-					var variantBaseName = args.Checked ? "checked" : "unchecked";
-					return WidgetUtils.GetCachedStatefulImage(variantImageCollection, variantBaseName);
-				});
 		}
 
 		public override void Draw()
@@ -83,8 +77,8 @@ namespace OpenRA.Mods.Common.Widgets
 					disabled ? colordisabled : color);
 
 			var checkmarkImage = getCheckmarkImageCache
-				.Update((GetCheckmark(), IsHighlighted(), IsChecked()))
-				.Update((disabled, Depressed, hover, false));
+				.Update((GetCheckmark(), IsChecked()))
+				.Update((disabled, Depressed, hover, false, IsHighlighted()));
 			WidgetUtils.DrawSprite(checkmarkImage, new float2(rect.Right - (int)((rect.Height + checkmarkImage.Size.X) / 2), rect.Top + (int)((rect.Height - checkmarkImage.Size.Y) / 2)));
 		}
 

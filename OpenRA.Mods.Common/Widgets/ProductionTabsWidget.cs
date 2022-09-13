@@ -86,8 +86,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string Decorations = "scrollpanel-decorations";
 		public readonly string DecorationScrollLeft = "left";
 		public readonly string DecorationScrollRight = "right";
-		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> getLeftArrowImage;
-		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> getRightArrowImage;
+		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getLeftArrowImage;
+		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getRightArrowImage;
 
 		int contentWidth = 0;
 		float listOffset = 0;
@@ -193,11 +193,11 @@ namespace OpenRA.Mods.Common.Widgets
 			ButtonWidget.DrawBackground(Button, leftButtonRect, leftDisabled, leftPressed, leftHover, false);
 			ButtonWidget.DrawBackground(Button, rightButtonRect, rightDisabled, rightPressed, rightHover, false);
 
-			var leftArrowImage = getLeftArrowImage.Update((leftDisabled, leftPressed, leftHover, false));
+			var leftArrowImage = getLeftArrowImage.Update((leftDisabled, leftPressed, leftHover, false, false));
 			WidgetUtils.DrawSprite(leftArrowImage,
 				new float2(leftButtonRect.Left + 2, leftButtonRect.Top + 2));
 
-			var rightArrowImage = getRightArrowImage.Update((rightDisabled, rightPressed, rightHover, false));
+			var rightArrowImage = getRightArrowImage.Update((rightDisabled, rightPressed, rightHover, false, false));
 			WidgetUtils.DrawSprite(rightArrowImage,
 				new float2(rightButtonRect.Left + 2, rightButtonRect.Top + 2));
 

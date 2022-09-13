@@ -52,8 +52,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public string Decorations = "scrollpanel-decorations";
 		public readonly string DecorationScrollUp = "up";
 		public readonly string DecorationScrollDown = "down";
-		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> getUpArrowImage;
-		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused), Sprite> getDownArrowImage;
+		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getUpArrowImage;
+		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getDownArrowImage;
 		public int ContentHeight;
 		public ILayout Layout;
 		public int MinimumThumbSize = 10;
@@ -211,11 +211,11 @@ namespace OpenRA.Mods.Common.Widgets
 				var upOffset = !upPressed || upDisabled ? 4 : 4 + ButtonDepth;
 				var downOffset = !downPressed || downDisabled ? 4 : 4 + ButtonDepth;
 
-				var upArrowImage = getUpArrowImage.Update((upDisabled, upPressed, upHover, false));
+				var upArrowImage = getUpArrowImage.Update((upDisabled, upPressed, upHover, false, false));
 				WidgetUtils.DrawSprite(upArrowImage,
 					new float2(upButtonRect.Left + upOffset, upButtonRect.Top + upOffset));
 
-				var downArrowImage = getDownArrowImage.Update((downDisabled, downPressed, downHover, false));
+				var downArrowImage = getDownArrowImage.Update((downDisabled, downPressed, downHover, false, false));
 				WidgetUtils.DrawSprite(downArrowImage,
 					new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
 			}

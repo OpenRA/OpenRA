@@ -435,7 +435,7 @@ checkmark-tick:
 		unchecked: 0, 0, 0, 0
 		unchecked-pressed: 989, 17, 16, 16
 
-checkmark-highlighted-tick:
+checkmark-tick-highlighted:
 	Inherits: checkmark-tick
 
 checkmark-cross:
@@ -447,7 +447,7 @@ checkmark-cross:
 		unchecked: 0, 0, 0, 0
 		unchecked-pressed: 989, 0, 16, 16
 
-checkmark-highlighted-cross:
+checkmark-cross-highlighted:
 	Inherits: checkmark-cross
 
 checkmark-mute:
@@ -458,7 +458,7 @@ checkmark-mute:
 		checked: 1006, 34, 16, 16
 		checked-pressed: 989, 34, 16, 16
 
-checkmark-highlighted-mute:
+checkmark-mute-highlighted:
 	Inherits: checkmark-mute
 
 flags:
