@@ -1,6 +1,6 @@
 #!/bin/sh
 ENGINEDIR=$(dirname "$0")
-if command -v mono >/dev/null 2>&1 && [ "$(grep -c .NETCoreApp,Version= ${ENGINEDIR}/bin/OpenRA.dll)" = "0" ]; then
+if command -v mono >/dev/null 2>&1 && [ "$(grep -c .NETCoreApp,Version= "${ENGINEDIR}/bin/OpenRA.dll)"" = "0" ]; then
 	RUNTIME_LAUNCHER="mono --debug"
 else
 	RUNTIME_LAUNCHER="dotnet"
@@ -32,7 +32,7 @@ then
 fi
 
 # Launch the engine with the appropriate arguments
-${RUNTIME_LAUNCHER} ${ENGINEDIR}/bin/OpenRA.dll Engine.EngineDir=".." Engine.LaunchPath="${LAUNCHPATH}" ${MODARG} "$@"
+${RUNTIME_LAUNCHER} "${ENGINEDIR}/bin/OpenRA.dll" Engine.EngineDir=".." Engine.LaunchPath="${LAUNCHPATH}" ${MODARG} "$@"
 
 # Show a crash dialog if something went wrong
 if [ $? != 0 ] && [ $? != 1 ]; then
