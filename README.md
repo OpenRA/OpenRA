@@ -1,6 +1,7 @@
 # OpenRA
 
-A Libre/Free Real Time Strategy game engine supporting early Westwood classics.
+A Libre/Free Real Time Strategy game engine supporting early Westwood classics. [![kandi X-Ray](https://kandi.openweaver.com/badges/xray.svg)](https://kandi.openweaver.com/csharp/OpenRA/OpenRA)
+[![kandi Featured](https://kandi.openweaver.com/badges/featured.svg)](https://kandi.openweaver.com/collections/csharp/csharp-game-development)
 
 * Website: [https://www.openra.net](https://www.openra.net)
 * Chat: [#openra on Libera](ircs://irc.libera.chat:6697/openra) ([web](https://web.libera.chat/#openra)) or [Discord](https://discord.openra.net) ![Discord Badge](https://discordapp.com/api/guilds/153649279762694144/widget.png)
