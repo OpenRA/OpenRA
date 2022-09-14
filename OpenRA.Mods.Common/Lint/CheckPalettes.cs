@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Server;
 using OpenRA.Traits;
 
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			var palettes = new List<string>();
 			var playerPalettes = new List<string>();
-			GetPalettes(rules, palettes, playerPalettes);
+			GetPalettes(rules, palettes, playerPalettes, emitError);
 
 			foreach (var actorInfo in rules.Actors)
 			{
@@ -119,10 +120,11 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		void GetPalettes(Ruleset rules, List<string> palettes, List<string> playerPalettes)
+		void GetPalettes(Ruleset rules, List<string> palettes, List<string> playerPalettes, Action<string> emitError)
 		{
 			// Palettes are only defined on the world actor
 			var worldActorInfo = rules.Actors[SystemActors.World];
+			var tilesetPalettes = new List<(string Tileset, string PaletteName)>();
 			foreach (var traitInfo in worldActorInfo.TraitInfos<TraitInfo>())
 			{
 				var fields = traitInfo.GetType().GetFields();
@@ -136,9 +138,38 @@ namespace OpenRA.Mods.Common.Lint
 					foreach (var value in values)
 					{
 						if (paletteDefinition.IsPlayerPalette)
+						{
+							if (playerPalettes.Contains(value))
+								emitError($"Duplicate player palette definition for palette name {value}");
+
 							playerPalettes.Add(value);
+						}
 						else
-							palettes.Add(value);
+						{
+							// PaletteFromFile might only be active for a single tileset
+							// So ignore any duplicate palette names as long as they are on different tilesets
+							if (traitInfo is PaletteFromFileInfo paletteFromFileInfo && paletteFromFileInfo.Tileset != null)
+							{
+								var tilesetPalette = (paletteFromFileInfo.Tileset, value);
+								if (tilesetPalettes.Contains(tilesetPalette))
+									emitError($"Duplicate palette definition for palette name {value}");
+								else
+								{
+									tilesetPalettes.Add(tilesetPalette);
+
+									// Only add the basic palette name once
+									if (!palettes.Contains(value))
+										palettes.Add(value);
+								}
+							}
+							else
+							{
+								if (palettes.Contains(value))
+									emitError($"Duplicate palette definition for palette name {value}");
+
+								palettes.Add(value);
+							}
+						}
 					}
 				}
 			}
