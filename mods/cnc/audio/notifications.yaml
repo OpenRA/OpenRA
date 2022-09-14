@@ -59,6 +59,7 @@ Sounds:
 		Beepy3: beepy3
 		Beepy6: beepy6
 		CashTickDown: tone16
+			AllowInterrupt: true
 		CashTickUp: tone15
 			VolumeModifier: 0.33
 		ChatLine: scold1
