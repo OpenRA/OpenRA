@@ -40,21 +40,20 @@ namespace OpenRA.Mods.Common.Lint
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
 					var fields = traitInfo.GetType().GetFields();
-					foreach (var field in fields.Where(x => x.HasAttribute<PaletteReferenceAttribute>()))
+					foreach (var field in fields)
 					{
-						var isPlayerPalette = false;
-
 						var paletteReference = field.GetCustomAttributes<PaletteReferenceAttribute>(true).FirstOrDefault();
-						if (paletteReference != null)
+						if (paletteReference == null)
+							continue;
+
+						var isPlayerPalette = false;
+						if (!string.IsNullOrEmpty(paletteReference.PlayerPaletteReferenceSwitch))
 						{
-							if (!string.IsNullOrEmpty(paletteReference.PlayerPaletteReferenceSwitch))
-							{
-								var fieldInfo = fields.First(f => f.Name == paletteReference.PlayerPaletteReferenceSwitch);
-								isPlayerPalette = (bool)fieldInfo.GetValue(traitInfo);
-							}
-							else
-								isPlayerPalette = paletteReference.IsPlayerPalette;
+							var fieldInfo = fields.First(f => f.Name == paletteReference.PlayerPaletteReferenceSwitch);
+							isPlayerPalette = (bool)fieldInfo.GetValue(traitInfo);
 						}
+						else
+							isPlayerPalette = paletteReference.IsPlayerPalette;
 
 						var references = LintExts.GetFieldValues(traitInfo, field);
 						foreach (var reference in references)
@@ -84,21 +83,20 @@ namespace OpenRA.Mods.Common.Lint
 					continue;
 
 				var fields = projectileInfo.GetType().GetFields();
-				foreach (var field in fields.Where(x => x.HasAttribute<PaletteReferenceAttribute>()))
+				foreach (var field in fields)
 				{
-					var isPlayerPalette = false;
+					var paletteReference = field.GetCustomAttributes<PaletteReferenceAttribute>(true).FirstOrDefault();
+					if (paletteReference == null)
+						continue;
 
-					var paletteReference = field.GetCustomAttributes<PaletteReferenceAttribute>(true).First();
-					if (paletteReference != null)
+					var isPlayerPalette = false;
+					if (!string.IsNullOrEmpty(paletteReference.PlayerPaletteReferenceSwitch))
 					{
-						if (!string.IsNullOrEmpty(paletteReference.PlayerPaletteReferenceSwitch))
-						{
-							var fieldInfo = fields.First(f => f.Name == paletteReference.PlayerPaletteReferenceSwitch);
-							isPlayerPalette = (bool)fieldInfo.GetValue(projectileInfo);
-						}
-						else
-							isPlayerPalette = paletteReference.IsPlayerPalette;
+						var fieldInfo = fields.First(f => f.Name == paletteReference.PlayerPaletteReferenceSwitch);
+						isPlayerPalette = (bool)fieldInfo.GetValue(projectileInfo);
 					}
+					else
+						isPlayerPalette = paletteReference.IsPlayerPalette;
 
 					var references = LintExts.GetFieldValues(projectileInfo, field);
 					foreach (var reference in references)
@@ -128,9 +126,12 @@ namespace OpenRA.Mods.Common.Lint
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
 					var fields = traitInfo.GetType().GetFields();
-					foreach (var field in fields.Where(x => x.HasAttribute<PaletteDefinitionAttribute>()))
+					foreach (var field in fields)
 					{
-						var paletteDefinition = field.GetCustomAttributes<PaletteDefinitionAttribute>(true).First();
+						var paletteDefinition = field.GetCustomAttributes<PaletteDefinitionAttribute>(true).FirstOrDefault();
+						if (paletteDefinition == null)
+							continue;
+
 						var values = LintExts.GetFieldValues(traitInfo, field);
 						foreach (var value in values)
 						{
