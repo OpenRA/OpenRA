@@ -121,25 +121,24 @@ namespace OpenRA.Mods.Common.Lint
 
 		void GetPalettes(Ruleset rules, List<string> palettes, List<string> playerPalettes)
 		{
-			foreach (var actorInfo in rules.Actors)
+			// Palettes are only defined on the world actor
+			var worldActorInfo = rules.Actors[SystemActors.World];
+			foreach (var traitInfo in worldActorInfo.TraitInfos<TraitInfo>())
 			{
-				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
+				var fields = traitInfo.GetType().GetFields();
+				foreach (var field in fields)
 				{
-					var fields = traitInfo.GetType().GetFields();
-					foreach (var field in fields)
-					{
-						var paletteDefinition = field.GetCustomAttributes<PaletteDefinitionAttribute>(true).FirstOrDefault();
-						if (paletteDefinition == null)
-							continue;
+					var paletteDefinition = field.GetCustomAttributes<PaletteDefinitionAttribute>(true).FirstOrDefault();
+					if (paletteDefinition == null)
+						continue;
 
-						var values = LintExts.GetFieldValues(traitInfo, field);
-						foreach (var value in values)
-						{
-							if (paletteDefinition.IsPlayerPalette)
-								playerPalettes.Add(value);
-							else
-								palettes.Add(value);
-						}
+					var values = LintExts.GetFieldValues(traitInfo, field);
+					foreach (var value in values)
+					{
+						if (paletteDefinition.IsPlayerPalette)
+							playerPalettes.Add(value);
+						else
+							palettes.Add(value);
 					}
 				}
 			}
