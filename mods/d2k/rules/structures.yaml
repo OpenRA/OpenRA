@@ -991,6 +991,7 @@ high_tech_factory:
 		UnitType: ornithopter
 		DisplayBeacon: True
 		CameraActor: camera
+		CameraRemoveDelay: 60
 		ArrowSequence: arrow
 		CircleSequence: circles
 		UseDirectionalTarget: True
@@ -1074,6 +1075,7 @@ palace:
 		Cost: 1600
 	Tooltip:
 		Name: Palace
+	RallyPoint:
 	D2kBuilding:
 		Footprint: xx= xxx =xx
 		Dimensions: 3,3
@@ -1155,6 +1157,7 @@ palace:
 		DisplayBeacon: True
 		DisplayRadarPing: True
 		CameraRange: 10c0
+		CameraRemoveDelay: 60
 		ArrowSequence: arrow
 		CircleSequence: circles
 		FlightVelocity: 384
