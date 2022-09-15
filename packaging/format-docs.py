@@ -38,14 +38,19 @@ def format_docs(version, collectionName, types, relatedEnums):
     # Map the `relatedEnums` collection to a list of strings.
     enumNames = [enum['Name'] for enum in relatedEnums]
 
+    title = ""
     explanation = ""
     if collectionName == "TraitInfos":
+        title = "Traits"
         explanation = "all traits with their properties and their default values plus developer commentary"
     elif collectionName == "WeaponTypes":
+        title = "Weapons"
         explanation = "a template for weapon definitions and the types it can use (warheads and projectiles) with default values and developer commentary"
     elif collectionName == "SpriteSequenceTypes":
+        title = "Sprite sequences"
         explanation = "all sprite sequence types with their properties and their default values plus developer commentary"
 
+    print(f"# {title}\n")
     print(f"This documentation is aimed at modders and has been automatically generated for version `{version}` of OpenRA. " +
 				"Please do not edit it directly, but instead add new `[Desc(\"String\")]` tags to the source code.\n")
 
