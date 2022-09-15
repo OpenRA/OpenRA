@@ -394,7 +394,6 @@
 		UseLocation: true
 	HiddenUnderFog:
 		Type: GroundPosition
-		AlwaysVisibleRelationships: None
 	ActorLostNotification:
 		TextNotification: Unit lost.
 	AttackMove:
