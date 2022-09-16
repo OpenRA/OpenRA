@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class ScrollItemWidget : ButtonWidget
 	{
-		public readonly string BaseName = "scrollitem";
+		public new readonly string Background = "scrollitem";
 		public readonly bool EnableChildMouseOver = false;
 		public string ItemKey;
 
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			IsVisible = () => false;
 			VisualHeight = 0;
-			getPanelCache = WidgetUtils.GetCachedStatefulPanelImages(BaseName);
+			getPanelCache = WidgetUtils.GetCachedStatefulPanelImages(Background);
 		}
 
 		protected ScrollItemWidget(ScrollItemWidget other)
@@ -38,9 +38,9 @@ namespace OpenRA.Mods.Common.Widgets
 			IsVisible = () => false;
 			VisualHeight = 0;
 			Key = other.Key;
-			BaseName = other.BaseName;
+			Background = other.Background;
 			EnableChildMouseOver = other.EnableChildMouseOver;
-			getPanelCache = WidgetUtils.GetCachedStatefulPanelImages(BaseName);
+			getPanelCache = WidgetUtils.GetCachedStatefulPanelImages(Background);
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			if (string.IsNullOrEmpty(BaseName))
+			if (string.IsNullOrEmpty(Background))
 				return;
 
 			// PERF: Only check for ourself or our direct children
