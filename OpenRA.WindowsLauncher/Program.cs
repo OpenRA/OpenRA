@@ -167,7 +167,7 @@ namespace OpenRA.WindowsLauncher
 				{
 					try
 					{
-						Process.Start(faqUrl);
+						SDL.SDL_OpenURL(faqUrl);
 					}
 					catch { }
 					break;
@@ -177,7 +177,7 @@ namespace OpenRA.WindowsLauncher
 				{
 					try
 					{
-						Process.Start(Path.Combine(Platform.SupportDir, "Logs"));
+						SDL.SDL_OpenURL(Path.Combine(Platform.SupportDir, "Logs"));
 					}
 					catch { }
 					break;
