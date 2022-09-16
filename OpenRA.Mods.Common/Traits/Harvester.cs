@@ -128,9 +128,6 @@ namespace OpenRA.Mods.Common.Traits
 		int currentUnloadTicks;
 
 		[Sync]
-		int currentUnloadFinishedDelayTicks;
-
-		[Sync]
 		public int ContentHash
 		{
 			get
@@ -272,15 +269,10 @@ namespace OpenRA.Mods.Common.Traits
 						contents.Remove(resourceType);
 
 					currentUnloadTicks = Info.BaleUnloadDelay;
-					currentUnloadFinishedDelayTicks = Info.UnloadFinishedDelay;
 					UpdateCondition(self);
 					return false;
 				}
 			}
-
-			// Wait until artificial delay time has passed
-			if (--currentUnloadFinishedDelayTicks > 0)
-				return false;
 
 			return contents.Count == 0;
 		}
