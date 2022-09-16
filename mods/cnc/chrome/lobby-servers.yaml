@@ -68,6 +68,7 @@ Container@LOBBY_SERVERS_BIN:
 			Height: PARENT_BOTTOM
 			Children:
 				ScrollItem@HEADER_TEMPLATE:
+					Background: scrollheader
 					Width: PARENT_RIGHT - 27
 					Height: 20
 					X: 2

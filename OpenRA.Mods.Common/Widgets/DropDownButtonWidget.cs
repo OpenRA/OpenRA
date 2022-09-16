@@ -177,7 +177,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var group = kv.Key;
 				if (group.Length > 0 && headerTemplate != null)
 				{
-					var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => { });
+					var header = ScrollItemWidget.Setup(headerTemplate, () => false, () => { });
 					header.Get<LabelWidget>("LABEL").GetText = () => group;
 					panel.AddChild(header);
 				}

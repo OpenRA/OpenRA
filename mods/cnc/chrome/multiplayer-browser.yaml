@@ -89,6 +89,7 @@ Container@MULTIPLAYER_PANEL:
 					TopBottomSpacing: 2
 					Children:
 						ScrollItem@HEADER_TEMPLATE:
+							Background: scrollheader
 							Width: PARENT_RIGHT - 27
 							Height: 20
 							X: 2
