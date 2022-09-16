@@ -96,6 +96,12 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ReplaceSequenceEmbeddedPalette(),
 				new UnhardcodeBaseBuilderBotModule(),
 				new UnhardcodeVeteranProductionIconOverlay(),
+			}),
+
+			new UpdatePath("release-20220916", new UpdateRule[]
+			{
+				// Bleed only changes here
+				new RenameDeliveryBuildings(),
 			})
 		};
 
