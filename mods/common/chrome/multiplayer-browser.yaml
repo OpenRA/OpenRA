@@ -83,7 +83,7 @@ Background@MULTIPLAYER_PANEL:
 					X: 2
 					Width: PARENT_RIGHT - 27
 					Height: 20
-					BaseName: scrollheader
+					Background: scrollheader
 					Visible: false
 					Children:
 						Label@LABEL:

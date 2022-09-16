@@ -732,7 +732,7 @@ Container@OBSERVER_WIDGETS:
 							Y: 0
 							Width: 705
 							Height: 24
-							BaseName: scrollitem-nohover
+							Background: scrollitem-nohover
 							Children:
 								ColorBlock@PLAYER_COLOR:
 									X: 0
@@ -819,7 +819,7 @@ Container@OBSERVER_WIDGETS:
 							Y: 0
 							Width: 730
 							Height: 24
-							BaseName: scrollitem-nohover
+							Background: scrollitem-nohover
 							Children:
 								ColorBlock@PLAYER_COLOR:
 									X: 0
@@ -899,7 +899,7 @@ Container@OBSERVER_WIDGETS:
 							Y: 0
 							Width: 400
 							Height: 24
-							BaseName: scrollitem-nohover
+							Background: scrollitem-nohover
 							Children:
 								ColorBlock@PLAYER_COLOR:
 									X: 0
@@ -936,7 +936,7 @@ Container@OBSERVER_WIDGETS:
 							Y: 0
 							Width: 400
 							Height: 24
-							BaseName: scrollitem-nohover
+							Background: scrollitem-nohover
 							Children:
 								ColorBlock@PLAYER_COLOR:
 									X: 0
@@ -973,7 +973,7 @@ Container@OBSERVER_WIDGETS:
 							Y: 0
 							Width: 400
 							Height: 24
-							BaseName: scrollitem-nohover
+							Background: scrollitem-nohover
 							Children:
 								ColorBlock@PLAYER_COLOR:
 									X: 0
@@ -1010,7 +1010,7 @@ Container@OBSERVER_WIDGETS:
 							Y: 0
 							Width: 730
 							Height: 24
-							BaseName: scrollitem-nohover
+							Background: scrollitem-nohover
 							Children:
 								ColorBlock@PLAYER_COLOR:
 									X: 0

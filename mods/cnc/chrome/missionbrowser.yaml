@@ -24,7 +24,7 @@ Container@MISSIONBROWSER_PANEL:
 					Height: PARENT_BOTTOM - 30
 					Children:
 						ScrollItem@HEADER:
-							BaseName: scrollheader
+							Background: scrollheader
 							Width: PARENT_RIGHT - 27
 							Height: 13
 							X: 2
