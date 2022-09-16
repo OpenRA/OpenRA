@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CreateActorGroup(string title, IEnumerable<ActorInfo> actors)
 		{
-			var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => { });
+			var header = ScrollItemWidget.Setup(headerTemplate, () => false, () => { });
 			header.Get<LabelWidget>("LABEL").GetText = () => title;
 			actorList.AddChild(header);
 

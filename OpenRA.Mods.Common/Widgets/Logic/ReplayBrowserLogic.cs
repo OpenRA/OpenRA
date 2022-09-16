@@ -730,7 +730,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var group = kv.Key;
 					if (group.Length > 0)
 					{
-						var header = ScrollItemWidget.Setup(playerHeader, () => true, () => { });
+						var header = ScrollItemWidget.Setup(playerHeader, () => false, () => { });
 						header.Get<LabelWidget>("LABEL").GetText = () => group;
 						playerList.AddChild(header);
 					}

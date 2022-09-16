@@ -3,6 +3,7 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 	Background: panel-black
 	Children:
 		ScrollItem@HEADER:
+			Background: scrollheader
 			Width: PARENT_RIGHT - 27
 			Height: 13
 			X: 2
@@ -117,6 +118,7 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 	Background: panel-black
 	Children:
 		ScrollItem@HEADER:
+			Background: scrollheader
 			Width: PARENT_RIGHT - 27
 			Height: 13
 			X: 2

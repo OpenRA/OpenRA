@@ -4,6 +4,7 @@ ScrollPanel@MULTIPLAYER_CLIENT_LIST:
 	IgnoreChildMouseOver: true
 	Children:
 		ScrollItem@HEADER:
+			Background: scrollheader
 			Width: PARENT_RIGHT - 27
 			Height: 13
 			X: 2
