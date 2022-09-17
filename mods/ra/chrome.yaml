@@ -287,11 +287,16 @@ observer-scrollheader:
 observer-scrollheader-highlighted:
 	Inherits: observer-scrollpanel-button-disabled
 
-observer-scrollitem-highlighted:
-	Inherits: observer-scrollpanel-button-pressed
+observer-scrollitem:
 
 observer-scrollitem-hover:
 	Inherits: observer-scrollpanel-button
+
+observer-scrollitem-pressed:
+	Inherits: observer-scrollpanel-button
+
+observer-scrollitem-highlighted:
+	Inherits: observer-scrollpanel-button-pressed
 
 # Used for the main menu frame
 dialog:
@@ -581,6 +586,9 @@ checkbox-toggle-highlighted-pressed:
 scrollitem:
 
 scrollitem-hover:
+	Inherits: button
+
+scrollitem-pressed:
 	Inherits: button
 
 scrollitem-highlighted:
