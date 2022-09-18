@@ -109,7 +109,6 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 		static IEnumerable<IFinalizedRenderable> DrawZapWandering(WorldRenderer wr, float2 from, float2 to, ISpriteSequence s, string pal)
 		{
-			var z = float2.Zero;	/* hack */
 			var dist = to - from;
 			var norm = (1f / dist.Length) * new float2(-dist.Y, dist.X);
 
@@ -121,14 +120,14 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 				renderables.AddRange(DrawZap(wr, from, p1, s, out p1, pal));
 				renderables.AddRange(DrawZap(wr, p1, p2, s, out p2, pal));
-				renderables.AddRange(DrawZap(wr, p2, to, s, out z, pal));
+				renderables.AddRange(DrawZap(wr, p2, to, s, out _, pal));
 			}
 			else
 			{
 				var p1 = from + (1 / 2f) * dist + WDist.FromPDF(Game.CosmeticRandom, 2).Length * dist.Length / 4096 * norm;
 
 				renderables.AddRange(DrawZap(wr, from, p1, s, out p1, pal));
-				renderables.AddRange(DrawZap(wr, p1, to, s, out z, pal));
+				renderables.AddRange(DrawZap(wr, p1, to, s, out _, pal));
 			}
 
 			return renderables;

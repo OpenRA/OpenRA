@@ -66,7 +66,7 @@ namespace OpenRA
 			s = s.ToLowerInvariant();
 			var components = s.Split('c');
 			var cell = 0;
-			var subcell = 0;
+			int subcell;
 
 			switch (components.Length)
 			{

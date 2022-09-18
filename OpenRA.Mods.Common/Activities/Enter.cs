@@ -66,7 +66,6 @@ namespace OpenRA.Mods.Common.Activities
 			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
 				lastVisibleTarget = Target.FromTargetPositions(target);
 
-			var oldUseLastVisibleTarget = useLastVisibleTarget;
 			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
 
 			// Cancel immediately if the target died while we were entering it

@@ -118,8 +118,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			var iniFormat = basicSection.GetValue("NewINIFormat", "0");
 
-			var iniFormatVersion = 0;
-			Exts.TryParseIntegerInvariant(iniFormat, out iniFormatVersion);
+			Exts.TryParseIntegerInvariant(iniFormat, out var iniFormatVersion);
 
 			return iniFormatVersion;
 		}

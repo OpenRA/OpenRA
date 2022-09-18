@@ -38,8 +38,6 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
-			var modId = modData.Manifest.Id;
-
 			foreach (var bo in actorNode.ChildrenMatching("BodyOrientation"))
 			{
 				var usesClassicFacings = false;

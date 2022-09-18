@@ -147,6 +147,9 @@ dotnet_diagnostic.IDE0044.severity = warning
 # Unused private member.
 dotnet_diagnostic.IDE0052.severity = warning
 
+# Unnecessary value assignment.
+dotnet_diagnostic.IDE0059.severity = warning
+
 # Unused parameter.
 dotnet_diagnostic.IDE0060.severity = warning
 
