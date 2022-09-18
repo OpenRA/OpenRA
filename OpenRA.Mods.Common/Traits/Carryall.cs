@@ -97,7 +97,6 @@ namespace OpenRA.Mods.Common.Traits
 		readonly AircraftInfo aircraftInfo;
 		readonly Aircraft aircraft;
 		readonly BodyOrientation body;
-		readonly IMove move;
 		readonly IFacing facing;
 		readonly Actor self;
 
@@ -125,7 +124,6 @@ namespace OpenRA.Mods.Common.Traits
 			aircraftInfo = self.Info.TraitInfoOrDefault<AircraftInfo>();
 			aircraft = self.Trait<Aircraft>();
 			body = self.Trait<BodyOrientation>();
-			move = self.Trait<IMove>();
 			facing = self.Trait<IFacing>();
 			this.self = self;
 
@@ -347,7 +345,6 @@ namespace OpenRA.Mods.Common.Traits
 				if (!aircraftInfo.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
-				var targetLocation = move.NearestMoveableCell(cell);
 				self.QueueActivity(order.Queued, new DeliverUnit(self, order.Target, Info.DropRange, Info.TargetLineColor));
 				self.ShowTargetLines();
 			}
@@ -435,9 +432,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!info.AllowDropOff || !modifiers.HasModifier(TargetModifiers.ForceMove))
 					return false;
 
-				cursor = info.DropOffCursor;
 				var type = target.Type;
-
 				if ((type == TargetType.Actor && target.Actor.Info.HasTraitInfo<BuildingInfo>())
 					|| (target.Type == TargetType.FrozenActor && target.FrozenActor.Info.HasTraitInfo<BuildingInfo>()))
 				{

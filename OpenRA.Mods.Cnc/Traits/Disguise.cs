@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!Disguised || self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				return color;
 
-			return color = Game.Settings.Game.UsePlayerStanceColors ? AsPlayer.PlayerRelationshipColor(self) : AsPlayer.Color;
+			return Game.Settings.Game.UsePlayerStanceColors ? AsPlayer.PlayerRelationshipColor(self) : AsPlayer.Color;
 		}
 
 		public void DisguiseAs(Actor target)

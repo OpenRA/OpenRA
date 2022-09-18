@@ -167,9 +167,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			foreach (var rule in rules)
 			{
 				var manualSteps = new List<string>();
-				var allFiles = new YamlFileSet();
+				YamlFileSet allFiles;
 
-				LogLine(logWriter, "{0}: {1}", rule.GetType().Name, rule.Name);
+				LogLine(logWriter, $"{rule.GetType().Name}: {rule.Name}");
 
 				try
 				{

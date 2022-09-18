@@ -224,13 +224,11 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			uint nTwoByteLen, bit;
 			int nTwoBitLen;
 
-			var j = 0;
-
 			InitBigNum(nTmp, 0, len);
 			InitBigNum(n1, 0, len);
 			nTwoBitLen = (int)BitLenBigNum(n2, len);
 			bit = 1U << (nTwoBitLen % 32);
-			j = ((nTwoBitLen + 32) / 32) - 1;
+			var j = ((nTwoBitLen + 32) / 32) - 1;
 			nTwoByteLen = (uint)((nTwoBitLen - 1) / 32) * 4;
 			nTmp[nTwoByteLen / 4] |= 1U << ((nTwoBitLen - 1) & 0x1f);
 

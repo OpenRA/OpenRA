@@ -221,10 +221,7 @@ namespace OpenRA.Platforms.Default
 			}
 
 			if (pendingMotion != null)
-			{
 				inputHandler.OnMouseInput(pendingMotion.Value);
-				pendingMotion = null;
-			}
 		}
 	}
 }

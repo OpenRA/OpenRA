@@ -18,8 +18,6 @@ using OpenRA.Mods.Common.UpdateRules;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	using YamlFileSet = List<(IReadWritePackage, string, List<MiniYamlNode>)>;
-
 	class UpdateMapCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--update-map";
@@ -102,15 +100,23 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var externalFilenames = new HashSet<string>();
 			foreach (var rule in rules)
 			{
-				Console.WriteLine("{0}: {1}", rule.GetType().Name, rule.Name);
-				var mapFiles = new YamlFileSet();
-				var manualSteps = new List<string>();
-
+				Console.WriteLine($"{rule.GetType().Name}: {rule.Name}");
 				Console.Write("   Updating map... ");
 
 				try
 				{
-					manualSteps = UpdateUtils.UpdateMap(modData, mapPackage, rule, out mapFiles, externalFilenames);
+					var manualSteps = UpdateUtils.UpdateMap(modData, mapPackage, rule, out var mapFiles, externalFilenames);
+
+					// Files are saved after each successful automated rule update
+					mapFiles.Save();
+					Console.WriteLine("COMPLETE");
+
+					if (manualSteps.Count > 0)
+					{
+						Console.WriteLine("   Manual changes are required to complete this update:");
+						foreach (var manualStep in manualSteps)
+							Console.WriteLine("    * " + manualStep.Replace("\n", "\n      "));
+					}
 				}
 				catch (Exception ex)
 				{
@@ -119,22 +125,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					Console.WriteLine();
 					Console.WriteLine("   The automated changes for this rule were not applied because of an error.");
 					Console.WriteLine("   After the issue reported below is resolved you should run the updater");
-					Console.WriteLine("   with SOURCE set to {0} to retry these changes", rule.GetType().Name);
+					Console.WriteLine($"   with SOURCE set to {rule.GetType().Name} to retry these changes");
 					Console.WriteLine();
 					Console.WriteLine("   The exception reported was:");
 					Console.WriteLine("     " + ex.ToString().Replace("\n", "\n     "));
 					continue;
-				}
-
-				// Files are saved after each successful automated rule update
-				mapFiles.Save();
-				Console.WriteLine("COMPLETE");
-
-				if (manualSteps.Count > 0)
-				{
-					Console.WriteLine("   Manual changes are required to complete this update:");
-					foreach (var manualStep in manualSteps)
-						Console.WriteLine("    * " + manualStep.Replace("\n", "\n      "));
 				}
 
 				Console.WriteLine();

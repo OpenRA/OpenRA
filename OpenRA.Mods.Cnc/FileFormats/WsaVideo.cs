@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			Width = stream.ReadUInt16();
 			Height = stream.ReadUInt16();
 
-			var delta = stream.ReadUInt16() + 37;
+			/*var delta = */stream.ReadUInt16(); /* + 37*/
 			var flags = stream.ReadUInt16();
 
 			frameOffsets = new uint[FrameCount + 2];

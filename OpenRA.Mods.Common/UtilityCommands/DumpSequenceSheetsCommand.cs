@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var palette = new ImmutablePalette(args[1], new[] { 0 }, Array.Empty<int>());
 
-			SequenceProvider sequences = null;
+			SequenceProvider sequences;
 			var mapPackage = new Folder(Platform.EngineDir).OpenPackage(args[2], modData.ModFiles);
 			if (mapPackage != null)
 				sequences = new Map(modData, mapPackage).Rules.Sequences;

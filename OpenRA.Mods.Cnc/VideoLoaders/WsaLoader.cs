@@ -40,15 +40,15 @@ namespace OpenRA.Mods.Cnc.VideoLoaders
 			if (frames <= 1) // TODO: find a better way to differentiate .shp icons
 				return false;
 
-			var x = s.ReadUInt16();
-			var y = s.ReadUInt16();
+			/* var x = */ s.ReadUInt16();
+			/* var y = */ s.ReadUInt16();
 			var width = s.ReadUInt16();
 			var height = s.ReadUInt16();
 
 			if (width <= 0 || height <= 0)
 				return false;
 
-			var delta = s.ReadUInt16() + 37;
+			/*var delta = */ s.ReadUInt16(); /* + 37;*/
 
 			var flags = s.ReadUInt16();
 
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Cnc.VideoLoaders
 
 			if (flags == 1)
 			{
-				var palette = s.ReadBytes(768);
+				/* var palette = */ s.ReadBytes(768);
 				for (var i = 0; i < offsets.Length; i++)
 					offsets[i] += 768;
 			}

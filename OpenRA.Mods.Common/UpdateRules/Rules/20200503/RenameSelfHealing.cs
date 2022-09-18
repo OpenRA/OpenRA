@@ -23,8 +23,6 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
-			var modId = modData.Manifest.Id;
-
 			foreach (var sh in actorNode.ChildrenMatching("SelfHealing"))
 			{
 				sh.RenameChildrenMatching("HealIfBelow", "StartIfBelow");

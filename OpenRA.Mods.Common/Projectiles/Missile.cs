@@ -355,13 +355,12 @@ namespace OpenRA.Mods.Common.Projectiles
 			var tarDistVec = targetPosition + offset - pos;
 			var relTarHorDist = tarDistVec.HorizontalLength;
 
-			int predClfHgt = 0;
-			int predClfDist = 0;
-			int lastHtChg = 0;
-			int lastHt = 0;
+			var predClfHgt = 0;
+			var predClfDist = 0;
+			var lastHt = 0;
 
 			if (info.TerrainHeightAware)
-				InclineLookahead(world, relTarHorDist, out predClfHgt, out predClfDist, out lastHtChg, out lastHt);
+				InclineLookahead(world, relTarHorDist, out predClfHgt, out predClfDist, out _, out lastHt);
 
 			// Height difference between the incline height and missile height
 			var diffClfMslHgt = predClfHgt - pos.Z;
@@ -590,7 +589,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		int HomingInnerTick(int predClfDist, int diffClfMslHgt, int relTarHorDist, int lastHtChg, int lastHt,
 			int relTarHgt, int vFacing, bool targetPassedBy)
 		{
-			int desiredVFacing = vFacing;
+			int desiredVFacing;
 
 			// Incline coming up -> attempt to reach the incline so that after predClfDist
 			// the height above the terrain is positive but as close to 0 as possible

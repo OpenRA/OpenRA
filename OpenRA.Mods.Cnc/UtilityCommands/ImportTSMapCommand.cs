@@ -621,8 +621,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			}
 
 			// Merge Ground into Ambient
-			float ground = 0;
-			if (parsed.TryGetValue("Ground", out ground))
+			if (parsed.TryGetValue("Ground", out var ground))
 			{
 				if (!parsed.ContainsKey("Ambient"))
 					parsed["Ambient"] = 1f;
