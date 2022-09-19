@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (viewer != null && !Info.DisplayRelationships.HasRelationship(self.Owner.RelationshipWith(viewer)))
 				return 0;
 
-			return 1 - (float)power.RemainingTicks / power.TotalTicks;
+			return power.PowerProgress();
 		}
 
 		Color ISelectionBar.GetColor() { return Info.Color; }

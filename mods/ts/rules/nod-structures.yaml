@@ -524,10 +524,11 @@ NAMISL:
 		Amount: -50
 	ProvidesPrerequisite@buildingname:
 	SupportPowerChargeBar:
-	NukePower:
+	NukePower@ClusterMissile:
 		PauseOnCondition: empdisable || disabled
 		Cursor: nuke
 		Icon: clustermissile
+		OrderName: ClusterMissileAttack
 		ChargeInterval: 13500
 		Name: Cluster Missile
 		Description: Launches an explosive cluster warhead\nat a target location.
@@ -543,6 +544,39 @@ NAMISL:
 		MissileDelay: 18
 		DetonationAltitude: 5c0
 		SpawnOffset: 0, 0c128, 0c512
+		DisplayTimerRelationships: None
+		DisplayBeacon: False
+		DisplayRadarPing: True
+		BeaconPoster:
+		CameraRange: 10c0
+		FlightVelocity: 1c0
+		TrailImage: small_smoke_trail
+		TrailInterval: 0
+		TrailSequences: idle
+	NukePower@ChemicalMissile:
+		Prerequisites: nawast
+		PauseOnCondition: empdisable || disabled
+		Cursor: nuke
+		OrderName: ChemicalMissileAttack
+		Icon: chemicalmissile
+		ChargeInterval: 25
+		SpecialResourcesUsing:
+			Chemicals: 50
+		Name: Chemical Missile
+		Description: Launches an explosive Chemical missile\nat a target location.
+		EndChargeSpeechNotification: ChemicalMissileReady
+		SelectTargetSpeechNotification: SelectTarget
+		IncomingSpeechNotification: MissileLaunchDetected
+		EndChargeTextNotification: Chemical missile ready.
+		SelectTargetTextNotification: Select target.
+		IncomingTextNotification: Missile launch detected.
+		LaunchSound: icbm1.aud
+		MissileWeapon: ChemicalMissile
+		MissileImage: ClusterMissile
+		MissileDelay: 1
+		FlightDelay: 30
+		DetonationAltitude: 2c0
+		SpawnOffset: 0c128, -0c128, 1c0
 		DisplayTimerRelationships: None
 		DisplayBeacon: False
 		DisplayRadarPing: True
@@ -587,7 +621,9 @@ NAWAST:
 	TiberianSunRefinery:
 		DockAngle: 640
 		DockOffset: 2,1
-	StoresResources:
+		DiscardExcessResources: true
+	StoresSpecialResources:
+		Type: Chemicals
 		Capacity: 56
 	Power:
 		Amount: -40
@@ -607,6 +643,7 @@ NAWAST:
 		Sequence: bib
 	ProvidesPrerequisite@buildingname:
 	WithResourceStoragePipsDecoration:
+		ResourceType: Chemicals
 		Position: BottomLeft
 		RequiresSelection: true
 		Margin: 8, 2

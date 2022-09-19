@@ -57,6 +57,41 @@ ClusterMissile:
 		Intensity: 5
 		Multiplier: 1,1
 
+ChemicalMissile:
+	Inherits: ClusterMissile
+	Warhead@Cluster: FireCluster
+		Weapon: GreenClouds
+		Dimensions: 5,5
+		RandomClusterCount: 10
+		Footprint: __x__ _xxx_ xxXxx _xxx_ __x__
+
+GreenClouds:
+	Inherits: ^DefaultMissile
+	ValidTargets: Ground, Water, Air, Trees
+	Projectile: Missile
+		Speed: 50
+		Image: cloud
+		Sequences: cloud1
+		Palette: effect
+		-TrailImage:
+		-Shadow:
+	Warhead@1Dam: SpreadDamage
+		Spread: 216
+		Damage: 300
+		ValidTargets: Ground, Water, Air, Trees
+		Versus:
+			None: 700
+			Wood: 20
+			Light: 70
+			Heavy: 35
+			Concrete: 28
+		DamageTypes: Prone100Percent, ExplosionDeath, TriggerVisceroid
+	Warhead@2Eff: CreateEffect
+		Image: cloud
+		ImpactActors: false
+		Explosions: cloud1d
+		ValidTargets: Ground, Water, Air, Trees
+
 SuicideBomb:
 	Range: 0c512
 	TargetActorCenter: true

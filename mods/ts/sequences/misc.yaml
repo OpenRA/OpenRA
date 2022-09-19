@@ -719,6 +719,8 @@ largecraters:
 icon:
 	clustermissile:
 		Filename: mltiicon.shp
+	chemicalmissile: 
+		Filename: chemicon.shp
 	ioncannon:
 		Filename: ioncicon.shp
 	hunterseeker:
@@ -1149,3 +1151,19 @@ dropland:
 		ZRamp: 1
 		Offset: 0, 0, 1
 		BlendMode: Translucent
+
+cloud:
+	Defaults:
+		Length: *
+		ZOffset: 4096
+		ZRamp: 1
+	cloud1: 
+		Filename: cloud1.shp
+	cloud1d: 
+		Filename: cloud1d.shp
+		AlphaFade: True
+	cloud2: 
+		Filename: cloud2.shp
+	cloud2d: 
+		Filename: cloud2d.shp
+		AlphaFade: True
