@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public bool ClickThrough = true;
 		public Func<string> GetImageName;
 		public Func<string> GetImageCollection;
+		public Func<Sprite> GetSprite;
 
 		public string TooltipText;
 
@@ -48,6 +49,8 @@ namespace OpenRA.Mods.Common.Widgets
 			GetTooltipText = () => TooltipText;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+
+			GetSprite = () => getImageCache.Update((GetImageCollection(), GetImageName()));
 		}
 
 		protected ImageWidget(ImageWidget other)
@@ -64,14 +67,15 @@ namespace OpenRA.Mods.Common.Widgets
 			GetTooltipText = other.GetTooltipText;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+
+			GetSprite = () => getImageCache.Update((GetImageCollection(), GetImageName()));
 		}
 
 		public override Widget Clone() { return new ImageWidget(this); }
 
 		public override void Draw()
 		{
-			var sprite = getImageCache.Update((GetImageCollection(), GetImageName()));
-			WidgetUtils.DrawSprite(sprite, RenderOrigin);
+			WidgetUtils.DrawSprite(GetSprite(), RenderOrigin);
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)

@@ -593,44 +593,52 @@ stance-icons:
 	Regions:
 		attack-anything: 768, 119, 16, 16
 		attack-anything-disabled: 768, 136, 16, 16
-		attack-anything-active: 768, 153, 16, 16
 		defend: 785, 119, 16, 16
 		defend-disabled: 785, 136, 16, 16
-		defend-active: 785, 153, 16, 16
 		return-fire: 802, 119, 16, 16
 		return-fire-disabled: 802, 136, 16, 16
-		return-fire-active: 802, 153, 16, 16
 		hold-fire: 819, 119, 16, 16
 		hold-fire-disabled: 819, 136, 16, 16
-		hold-fire-active: 819, 153, 16, 16
+
+stance-icons-highlighted:
+	Inherits: stance-icons
+	Regions:
+		attack-anything: 768, 153, 16, 16
+		defend: 785, 153, 16, 16
+		return-fire: 802, 153, 16, 16
+		hold-fire: 819, 153, 16, 16
 
 command-icons:
 	Inherits: ^Chrome
 	Regions:
 		attack-move: 768, 246, 24, 24
 		attack-move-disabled: 768, 271, 24, 24
-		attack-move-active: 768, 296, 24, 24
 		force-move: 793, 246, 24, 24
 		force-move-disabled: 793, 271, 24, 24
-		force-move-active: 793, 296, 24, 24
 		force-attack: 818, 246, 24, 24
 		force-attack-disabled: 818, 271, 24, 24
-		force-attack-active: 818, 296, 24, 24
 		guard: 843, 246, 24, 24
 		guard-disabled: 843, 271, 24, 24
-		guard-active: 843, 296, 24, 24
 		deploy: 868, 246, 24, 24
 		deploy-disabled: 868, 271, 24, 24
-		deploy-active: 868, 296, 24, 24
 		scatter: 893, 246, 24, 24
 		scatter-disabled: 893, 271, 24, 24
-		scatter-active: 893, 296, 24, 24
 		stop: 918, 246, 24, 24
 		stop-disabled: 918, 271, 24, 24
-		stop-active: 918, 296, 24, 24
 		queue-orders: 943, 246, 24, 24
 		queue-orders-disabled: 943, 271, 24, 24
-		queue-orders-active: 943, 296, 24, 24
+
+command-icons-highlighted:
+	Inherits: command-icons
+	Regions:
+		attack-move: 768, 296, 24, 24
+		force-move: 793, 296, 24, 24
+		force-attack: 818, 296, 24, 24
+		guard: 843, 296, 24, 24
+		deploy: 868, 296, 24, 24
+		scatter: 893, 296, 24, 24
+		stop: 918, 296, 24, 24
+		queue-orders: 943, 296, 24, 24
 
 #
 # NOD chrome
