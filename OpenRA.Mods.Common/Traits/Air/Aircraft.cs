@@ -281,7 +281,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool MayYieldReservation { get; private set; }
 		public bool ForceLanding { get; private set; }
 
-		IEnumerable<CPos> landingCells = Enumerable.Empty<CPos>();
+		(CPos, SubCell)[] landingCells = Array.Empty<(CPos, SubCell)>();
 		bool requireForceMove;
 
 		readonly int creationActivityDelay;
@@ -622,10 +622,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		public (CPos Cell, SubCell SubCell)[] OccupiedCells()
 		{
-			if (self.World.Map.DistanceAboveTerrain(CenterPosition).Length >= Info.MinAirborneAltitude)
-				return landingCells.Select(c => (c, SubCell.FullCell)).ToArray();
+			return OccupiedCells(CenterPosition);
+		}
 
-			return new[] { (TopLeft, SubCell.FullCell) };
+		(CPos Cell, SubCell SubCell)[] OccupiedCells(WPos pos)
+		{
+			if (self.World.Map.DistanceAboveTerrain(pos).Length >= Info.MinAirborneAltitude)
+				return landingCells;
+
+			return new[] { (self.World.Map.CellContaining(pos), SubCell.FullCell) };
 		}
 
 		public WVec FlyStep(WAngle facing)
@@ -799,10 +804,26 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void SetPosition(Actor self, WPos pos)
 		{
+			if (!self.IsInWorld)
+			{
+				CenterPosition = pos;
+				return;
+			}
+
+			// OccupiedCells returns different results depending on the location and height of the position.
+			// If it is going to change, we must remove influence whilst the old position is still applied.
+			// Then we can apply the new position and add the new influence.
+			var oldOccupiedCells = OccupiedCells(CenterPosition);
+			var newOccupiedCells = OccupiedCells(pos);
+			var occupiedCellsChanged = !oldOccupiedCells.SequenceEqual(newOccupiedCells);
+
+			if (occupiedCellsChanged)
+				self.World.ActorMap.RemoveInfluence(self, this);
+
 			CenterPosition = pos;
 
-			if (!self.IsInWorld)
-				return;
+			if (occupiedCellsChanged)
+				self.World.ActorMap.AddInfluence(self, this);
 
 			self.World.UpdateMaps(self, this);
 
@@ -869,11 +890,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AddInfluence(IEnumerable<CPos> landingCells)
 		{
-			if (this.landingCells.Any())
+			if (this.landingCells.Length > 0)
 				throw new InvalidOperationException(
 					$"Cannot {nameof(AddInfluence)} until previous influence is removed with {nameof(RemoveInfluence)}");
 
-			this.landingCells = landingCells;
+			this.landingCells = landingCells.Select(c => (c, SubCell.FullCell)).ToArray();
 			if (self.IsInWorld)
 				self.World.ActorMap.AddInfluence(self, this);
 		}
@@ -888,12 +909,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.IsInWorld)
 				self.World.ActorMap.RemoveInfluence(self, this);
 
-			landingCells = Enumerable.Empty<CPos>();
+			landingCells = Array.Empty<(CPos, SubCell)>();
 		}
 
 		public bool HasInfluence()
 		{
-			return landingCells.Any() || self.World.Map.DistanceAboveTerrain(CenterPosition).Length < Info.MinAirborneAltitude;
+			return landingCells.Length > 0 || self.World.Map.DistanceAboveTerrain(CenterPosition).Length < Info.MinAirborneAltitude;
 		}
 
 		#endregion
