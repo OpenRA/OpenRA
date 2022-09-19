@@ -190,6 +190,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "getSpawnOccupants", (Func<Dictionary<int, SpawnOccupant>>)(() => spawnOccupants) },
 				{ "getDisabledSpawnPoints", (Func<HashSet<int>>)(() => orderManager.LobbyInfo.DisabledSpawnPoints) },
 				{ "showUnoccupiedSpawnpoints", true },
+				{ "mapUpdatesEnabled", true },
+				{
+					"onMapUpdate", (Action<string>)(uid =>
+					{
+						orderManager.IssueOrder(Order.Command("map " + uid));
+						Game.Settings.Server.Map = uid;
+						Game.Settings.Save();
+					})
+				},
 			});
 
 			mapContainer.IsVisible = () => panel != PanelType.Servers;
@@ -242,7 +251,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						{ "initialMap", modData.MapCache.PickLastModifiedMap(MapVisibility.Lobby) ?? map.Uid },
 						{ "initialTab", MapClassification.System },
-						{ "onExit", Game.IsHost ? UpdateSelectedMap : modData.MapCache.UpdateMaps },
+						{ "onExit", modData.MapCache.UpdateMaps },
 						{ "onSelect", Game.IsHost ? onSelect : null },
 						{ "filter", MapVisibility.Lobby },
 					});
@@ -419,7 +428,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					orderManager.IssueOrder(Order.Command("startgame"));
 				}
 				else
-					UpdateSelectedMap();
+					modData.MapCache.UpdateMaps();
 			}
 
 			var startGameButton = lobby.GetOrNull<ButtonWidget>("START_GAME_BUTTON");
@@ -903,20 +912,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			DiscordService.UpdateStatus(state, details);
 
 			onStart();
-		}
-
-		void UpdateSelectedMap()
-		{
-			if (modData.MapCache[map.Uid].Status == MapStatus.Available)
-				return;
-
-			var uid = modData.MapCache.GetUpdatedMap(map.Uid);
-			if (uid != null)
-			{
-				orderManager.IssueOrder(Order.Command("map " + uid));
-				Game.Settings.Server.Map = uid;
-				Game.Settings.Save();
-			}
 		}
 	}
 

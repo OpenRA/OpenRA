@@ -176,6 +176,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "getSpawnOccupants", (Func<Dictionary<int, SpawnOccupant>>)(() => spawnOccupants.Update(selectedReplay)) },
 				{ "getDisabledSpawnPoints", (Func<HashSet<int>>)(() => disabledSpawnPoints.Update(selectedReplay)) },
 				{ "showUnoccupiedSpawnpoints", false },
+				{ "mapUpdatesEnabled", false },
+				{ "onMapUpdate", (Action<string>)(_ => { }) },
 			});
 
 			var replayDuration = new CachedTransform<ReplayMetadata, string>(r =>
