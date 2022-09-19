@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (IsTraitDisabled || !self.IsAtGroundLevel() || !Info.CrushClasses.Overlaps(crushClasses))
 				return self.World.NoPlayersMask;
 
-			return Info.CrushedByFriendlies ? self.World.AllPlayersMask : ~self.Owner.AlliedPlayersMask;
+			return Info.CrushedByFriendlies ? self.World.AllPlayersMask : self.World.AllPlayersMask.Except(self.Owner.AlliedPlayersMask);
 		}
 
 		bool CrushableInner(BitSet<CrushClass> crushClasses, Player crushOwner)
