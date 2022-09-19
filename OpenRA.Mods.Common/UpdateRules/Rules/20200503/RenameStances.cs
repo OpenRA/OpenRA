@@ -14,7 +14,7 @@ using System.Collections.Generic;
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RenameStances : UpdateRule
-    {
+	{
 		public override string Name => "Renamed player 'Stances' to 'Relationships'.";
 
 		public override string Description =>

@@ -136,9 +136,10 @@ namespace OpenRA.Mods.Common.Orders
 				var ret = InnerOrder(world, cell, mi).ToArray();
 
 				// If there was a successful placement order
-				if (ret.Any(o => o.OrderString == "PlaceBuilding"
-				                 || o.OrderString == "LineBuild"
-				                 || o.OrderString == "PlacePlug"))
+				if (ret.Any(o =>
+						o.OrderString == "PlaceBuilding"
+						|| o.OrderString == "LineBuild"
+						|| o.OrderString == "PlacePlug"))
 					world.CancelInputMode();
 
 				return ret;
