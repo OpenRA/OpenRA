@@ -18,7 +18,6 @@ namespace OpenRA.Primitives
 	static class LongBitSetAllocator<T> where T : class
 	{
 		static readonly Cache<string, long> Bits = new Cache<string, long>(Allocate);
-		static long allBits = 1;
 		static long nextBits = 1;
 
 		static long Allocate(string value)
@@ -26,7 +25,6 @@ namespace OpenRA.Primitives
 			lock (Bits)
 			{
 				var bits = nextBits;
-				allBits |= bits;
 				nextBits <<= 1;
 
 				if (nextBits == 0)
@@ -87,8 +85,6 @@ namespace OpenRA.Primitives
 				nextBits = 1;
 			}
 		}
-
-		public static long Mask => allBits;
 	}
 
 	// Optimized BitSet to be used only when guaranteed to be no more than 64 values.
@@ -113,12 +109,11 @@ namespace OpenRA.Primitives
 
 		public override string ToString()
 		{
-			return BitSetAllocator<T>.GetStrings(bits).JoinWith(",");
+			return LongBitSetAllocator<T>.GetStrings(bits).JoinWith(",");
 		}
 
 		public static bool operator ==(LongBitSet<T> me, LongBitSet<T> other) { return me.bits == other.bits; }
 		public static bool operator !=(LongBitSet<T> me, LongBitSet<T> other) { return !(me == other); }
-		public static LongBitSet<T> operator ~(LongBitSet<T> me) { return new LongBitSet<T>(me.bits ^ LongBitSetAllocator<T>.Mask); }
 
 		public bool Equals(LongBitSet<T> other) { return other == this; }
 		public override bool Equals(object obj) { return obj is LongBitSet<T> && Equals((LongBitSet<T>)obj); }
@@ -158,12 +153,12 @@ namespace OpenRA.Primitives
 
 		public bool Contains(string value)
 		{
-			return BitSetAllocator<T>.BitsContainString(bits, value);
+			return LongBitSetAllocator<T>.BitsContainString(bits, value);
 		}
 
 		public IEnumerator<string> GetEnumerator()
 		{
-			return BitSetAllocator<T>.GetStrings(bits).GetEnumerator();
+			return LongBitSetAllocator<T>.GetStrings(bits).GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()

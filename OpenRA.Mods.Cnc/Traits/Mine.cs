@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				return self.World.NoPlayersMask;
 
 			// Friendly units should move around!
-			return info.BlockFriendly ? ~self.Owner.AlliedPlayersMask : self.World.AllPlayersMask;
+			return info.BlockFriendly ? self.World.AllPlayersMask.Except(self.Owner.AlliedPlayersMask) : self.World.AllPlayersMask;
 		}
 	}
 
