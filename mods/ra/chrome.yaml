@@ -203,16 +203,20 @@ stance-icons:
 	Regions:
 		attack-anything: 0, 119, 16, 16
 		attack-anything-disabled: 0, 136, 16, 16
-		attack-anything-active: 0, 153, 16, 16
 		defend: 17, 119, 16, 16
 		defend-disabled: 17, 136, 16, 16
-		defend-active: 17, 153, 16, 16
 		return-fire: 34, 119, 16, 16
 		return-fire-disabled: 34, 136, 16, 16
-		return-fire-active: 34, 153, 16, 16
 		hold-fire: 51, 119, 16, 16
 		hold-fire-disabled: 51, 136, 16, 16
-		hold-fire-active: 51, 153, 16, 16
+
+stance-icons-highlighted:
+	Inherits: stance-icons
+	Regions:
+		attack-anything: 0, 153, 16, 16
+		defend: 17, 153, 16, 16
+		return-fire: 34, 153, 16, 16
+		hold-fire: 51, 153, 16, 16
 
 command-icons:
 	Inherits: ^Glyphs
@@ -233,6 +237,9 @@ command-icons:
 		stop-disabled: 150, 232, 24, 24
 		queue-orders: 175, 207, 24, 24
 		queue-orders-disabled: 175, 232, 24, 24
+
+command-icons-highlighted:
+	Inherits: command-icons
 
 sidebar-observer:
 	Inherits: ^Sidebar

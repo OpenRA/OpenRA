@@ -177,68 +177,76 @@ command-icons-gdi:
 	Regions:
 		attack-move: 304, 331, 26, 26
 		attack-move-disabled: 304, 357, 26, 26
-		attack-move-active: 304, 383, 26, 26
 		attack-move-hover: 304, 409, 26, 26
-		attack-move-active-hover: 304, 435, 26, 26
 		force-move: 330, 331, 24, 24
 		force-move-disabled: 330, 357, 26, 26
-		force-move-active: 330, 383, 26, 26
 		force-move-hover: 330, 409, 26, 26
-		force-move-active-hover: 330, 435, 26, 26
 		force-attack: 356, 331, 26, 26
 		force-attack-disabled: 356, 357, 26, 26
-		force-attack-active: 356, 383, 26, 26
 		force-attack-hover: 356, 409, 26, 26
-		force-attack-active-hover: 356, 435, 26, 26
 		guard: 382, 331, 24, 24
 		guard-disabled: 382, 357, 26, 26
-		guard-active: 382, 383, 26, 26
 		guard-hover: 382, 409, 26, 26
-		guard-active-hover: 382, 435, 26, 26
 		deploy: 408, 331, 24, 24
 		deploy-disabled: 408, 357, 26, 26
-		deploy-active: 408, 383, 26, 26
 		deploy-hover: 408, 409, 26, 26
-		deploy-active-hover: 408, 435, 26, 26
 		scatter: 434, 331, 26, 26
 		scatter-disabled: 434, 357, 26, 26
-		scatter-active: 434, 383, 26, 26
 		scatter-hover: 434, 409, 26, 26
-		scatter-active-hover: 434, 435, 26, 26
 		stop: 460, 331, 26, 26
 		stop-disabled: 460, 357, 26, 26
 		stop-active: 460, 383, 26, 26
-		stop-hover: 460, 409, 26, 26
-		stop-active-hover: 460, 435, 26, 26
 		queue-orders: 486, 331, 26, 26
 		queue-orders-disabled: 486, 357, 26, 26
-		queue-orders-active: 486, 383, 26, 26
 		queue-orders-hover: 486, 409, 26, 26
-		queue-orders-active-hover: 486, 435, 26, 26
+
+command-icons-gdi-highlighted:
+	Inherits: command-icons-gdi
+	Regions:
+		attack-move: 304, 383, 26, 26
+		attack-move-hover: 304, 435, 26, 26
+		force-move: 330, 383, 26, 26
+		force-move-hover: 330, 435, 26, 26
+		force-attack: 356, 383, 26, 26
+		force-attack-hover: 356, 435, 26, 26
+		guard: 382, 383, 26, 26
+		guard-hover: 382, 435, 26, 26
+		deploy: 408, 383, 26, 26
+		deploy-hover: 408, 435, 26, 26
+		scatter: 434, 383, 26, 26
+		scatter-hover: 434, 435, 26, 26
+		stop: 460, 383, 26, 26
+		stop-hover: 460, 435, 26, 26
+		queue-orders: 486, 383, 26, 26
+		queue-orders-hover: 486, 435, 26, 26
 
 stance-icons-gdi:
 	Inherits: ^Chrome
 	Regions:
 		attack-anything: 424, 176, 22, 22
 		attack-anything-disabled: 424, 198, 22, 22
-		attack-anything-active: 424, 220, 22, 22
 		attack-anything-hover: 424, 242, 22, 22
-		attack-anything-active-hover: 424, 264, 22, 22
 		defend: 446, 176, 22, 22
 		defend-disabled: 446, 198, 22, 22
-		defend-active: 446, 220, 22, 22
 		defend-hover: 446, 242, 22, 22
-		defend-active-hover: 446, 264, 22, 22
 		return-fire: 468, 176, 22, 22
 		return-fire-disabled: 468, 198, 22, 22
-		return-fire-active: 468, 220, 22, 22
 		return-fire-hover: 468, 242, 22, 22
-		return-fire-active-hover: 468, 264, 22, 22
 		hold-fire: 490, 176, 22, 22
 		hold-fire-disabled: 490, 198, 22, 22
-		hold-fire-active: 490, 220, 22, 22
 		hold-fire-hover: 490, 242, 22, 22
-		hold-fire-active-hover: 490, 264, 22, 22
+
+stance-icons-gdi-highlighted:
+	Inherits: stance-icons-gdi
+	Regions:
+		attack-anything: 424, 220, 22, 22
+		attack-anything-hover: 424, 264, 22, 22
+		defend: 446, 220, 22, 22
+		defend-hover: 446, 264, 22, 22
+		return-fire: 468, 220, 22, 22
+		return-fire-hover: 468, 264, 22, 22
+		hold-fire: 490, 220, 22, 22
+		hold-fire-hover: 490, 264, 22, 22
 
 # ----------------------------------------------------------------------
 # NOD
@@ -372,68 +380,76 @@ command-icons-nod:
 	Regions:
 		attack-move: 816, 331, 26, 26
 		attack-move-disabled: 816, 357, 26, 26
-		attack-move-active: 816, 383, 26, 26
 		attack-move-hover: 816, 409, 26, 26
-		attack-move-active-hover: 816, 435, 26, 26
 		force-move: 842, 331, 24, 24
 		force-move-disabled: 842, 357, 26, 26
-		force-move-active: 842, 383, 26, 26
 		force-move-hover: 842, 409, 26, 26
-		force-move-active-hover: 842, 435, 26, 26
 		force-attack: 868, 331, 26, 26
 		force-attack-disabled: 868, 357, 26, 26
-		force-attack-active: 868, 383, 26, 26
 		force-attack-hover: 868, 409, 26, 26
-		force-attack-active-hover: 868, 435, 26, 26
 		guard: 894, 331, 24, 24
 		guard-disabled: 894, 357, 26, 26
-		guard-active: 894, 383, 26, 26
 		guard-hover: 894, 409, 26, 26
-		guard-active-hover: 894, 435, 26, 26
 		deploy: 920, 331, 24, 24
 		deploy-disabled: 920, 357, 26, 26
-		deploy-active: 920, 383, 26, 26
 		deploy-hover: 920, 409, 26, 26
-		deploy-active-hover: 920, 435, 26, 26
 		scatter: 946, 331, 26, 26
 		scatter-disabled: 946, 357, 26, 26
-		scatter-active: 946, 383, 26, 26
 		scatter-hover: 946, 409, 26, 26
-		scatter-active-hover: 946, 435, 26, 26
 		stop: 972, 331, 26, 26
 		stop-disabled: 972, 357, 26, 26
-		stop-active: 972, 383, 26, 26
 		stop-hover: 972, 409, 26, 26
-		stop-active-hover: 972, 435, 26, 26
 		queue-orders: 998, 331, 26, 26
 		queue-orders-disabled: 998, 357, 26, 26
-		queue-orders-active: 998, 383, 26, 26
 		queue-orders-hover: 998, 409, 26, 26
-		queue-orders-active-hover: 998, 435, 26, 26
+
+command-icons-nod-highlighted:
+	Inherits: command-icons-nod
+	Regions:
+		attack-move: 816, 383, 26, 26
+		attack-move-hover: 816, 435, 26, 26
+		force-move: 842, 383, 26, 26
+		force-move-hover: 842, 435, 26, 26
+		force-attack: 868, 383, 26, 26
+		force-attack-hover: 868, 435, 26, 26
+		guard: 894, 383, 26, 26
+		guard-hover: 894, 435, 26, 26
+		deploy: 920, 383, 26, 26
+		deploy-hover: 920, 435, 26, 26
+		scatter: 946, 383, 26, 26
+		scatter-hover: 946, 435, 26, 26
+		stop: 972, 383, 26, 26
+		stop-hover: 972, 435, 26, 26
+		queue-orders: 998, 383, 26, 26
+		queue-orders-hover: 998, 435, 26, 26
 
 stance-icons-nod:
 	Inherits: ^Chrome
 	Regions:
 		attack-anything: 936, 176, 22, 22
 		attack-anything-disabled: 936, 198, 22, 22
-		attack-anything-active: 936, 220, 22, 22
 		attack-anything-hover: 936, 242, 22, 22
-		attack-anything-active-hover: 936, 264, 22, 22
 		defend: 958, 176, 22, 22
 		defend-disabled: 958, 198, 22, 22
-		defend-active: 958, 220, 22, 22
 		defend-hover: 958, 242, 22, 22
-		defend-active-hover: 958, 264, 22, 22
 		return-fire: 980, 176, 22, 22
 		return-fire-disabled: 980, 198, 22, 22
-		return-fire-active: 980, 220, 22, 22
 		return-fire-hover: 980, 242, 22, 22
-		return-fire-active-hover: 980, 264, 22, 22
 		hold-fire: 1002, 176, 22, 22
 		hold-fire-disabled: 1002, 198, 22, 22
-		hold-fire-active: 1002, 220, 22, 22
 		hold-fire-hover: 1002, 242, 22, 22
-		hold-fire-active-hover: 1002, 264, 22, 22
+
+stance-icons-nod-highlighted:
+	Inherits: stance-icons-nod
+	Regions:
+		attack-anything: 936, 220, 22, 22
+		attack-anything-hover: 936, 264, 22, 22
+		defend: 958, 220, 22, 22
+		defend-hover: 958, 264, 22, 22
+		return-fire: 980, 220, 22, 22
+		return-fire-hover: 980, 264, 22, 22
+		hold-fire: 1002, 220, 22, 22
+		hold-fire-hover: 1002, 264, 22, 22
 
 # ----------------------------------------------------------------------
 # GENERIC
