@@ -468,22 +468,28 @@ namespace OpenRA.Mods.Common.Traits
 		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
 			subCell = GetValidSubCell(subCell);
-			SetLocation(cell, subCell, cell, subCell);
 
 			var position = cell.Layer == 0 ? self.World.Map.CenterOfCell(cell) :
 				self.World.GetCustomMovementLayers()[cell.Layer].CenterOfCell(cell);
 
+			// HACK: Call SetCenterPosition before SetLocation
+			// So when SetLocation calls ActorMap.CellUpdated
+			// the listeners see the new CenterPosition.
 			var subcellOffset = self.World.Map.Grid.OffsetOfSubCell(subCell);
 			SetCenterPosition(self, position + subcellOffset);
+			SetLocation(cell, subCell, cell, subCell);
 			FinishedMoving(self);
 		}
 
 		// Sets the location (fromCell, toCell, FromSubCell, ToSubCell) and CenterPosition
 		public void SetPosition(Actor self, WPos pos)
 		{
+			// HACK: Call SetCenterPosition before SetLocation
+			// So when SetLocation calls ActorMap.CellUpdated
+			// the listeners see the new CenterPosition.
 			var cell = self.World.Map.CellContaining(pos);
-			SetLocation(cell, FromSubCell, cell, FromSubCell);
 			SetCenterPosition(self, self.World.Map.CenterOfSubCell(cell, FromSubCell) + new WVec(0, 0, self.World.Map.DistanceAboveTerrain(pos).Length));
+			SetLocation(cell, FromSubCell, cell, FromSubCell);
 			FinishedMoving(self);
 		}
 
@@ -686,8 +692,11 @@ namespace OpenRA.Mods.Common.Traits
 					subCell = self.World.Map.Grid.DefaultSubCell;
 
 				// Reserve the exit cell
-				mobile.SetPosition(self, cell, subCell);
+				// HACK: Call SetCenterPosition before SetPosition
+				// So when SetPosition calls ActorMap.CellUpdated
+				// the listeners see the new CenterPosition.
 				mobile.SetCenterPosition(self, pos);
+				mobile.SetPosition(self, cell, subCell);
 
 				if (delay > 0)
 					QueueChild(new Wait(delay));

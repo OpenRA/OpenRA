@@ -183,16 +183,22 @@ namespace OpenRA.Mods.Common.Traits
 		// Sets the location (Location) and position (CenterPosition)
 		public void SetPosition(Actor self, WPos pos)
 		{
+			// HACK: Call SetCenterPosition before SetLocation
+			// So when SetLocation calls ActorMap.CellUpdated
+			// the listeners see the new CenterPosition.
 			var cell = self.World.Map.CellContaining(pos);
-			SetLocation(self, cell);
 			SetCenterPosition(self, self.World.Map.CenterOfCell(cell) + new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(pos)));
+			SetLocation(self, cell);
 		}
 
 		// Sets the location (Location) and position (CenterPosition)
 		public void SetPosition(Actor self, CPos cell, SubCell subCell = SubCell.Any)
 		{
-			SetLocation(self, cell);
+			// HACK: Call SetCenterPosition before SetLocation
+			// So when SetLocation calls ActorMap.CellUpdated
+			// the listeners see the new CenterPosition.
 			SetCenterPosition(self, self.World.Map.CenterOfCell(cell));
+			SetLocation(self, cell);
 		}
 
 		// Sets only the CenterPosition
