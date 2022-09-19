@@ -105,10 +105,10 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				case TargetType.Actor:
 					return Info.Types.Overlaps(target.Actor.GetEnabledTargetTypes()) &&
-					       Info.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(target.Actor.Owner));
+						Info.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(target.Actor.Owner));
 				case TargetType.FrozenActor:
 					return target.FrozenActor.IsValid && Info.Types.Overlaps(target.FrozenActor.TargetTypes) &&
-					       Info.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(target.FrozenActor.Owner));
+						Info.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(target.FrozenActor.Owner));
 				default:
 					return false;
 			}

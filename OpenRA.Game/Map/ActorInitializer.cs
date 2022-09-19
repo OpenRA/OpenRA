@@ -66,7 +66,7 @@ namespace OpenRA
 		{
 			var init = GetOrDefault<T>(info);
 			if (init == null)
-			    throw new InvalidOperationException($"TypeDictionary does not contain instance of type `{typeof(T)}`");
+				throw new InvalidOperationException($"TypeDictionary does not contain instance of type `{typeof(T)}`");
 
 			return init;
 		}

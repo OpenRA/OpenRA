@@ -178,7 +178,7 @@ namespace OpenRA
 
 		public static void Write(string channelName, string format, params object[] args)
 		{
-            ChannelWriter.TryWrite(new ChannelData(channelName, format.F(args)));
+			ChannelWriter.TryWrite(new ChannelData(channelName, format.F(args)));
 		}
 
 		public static void Dispose()

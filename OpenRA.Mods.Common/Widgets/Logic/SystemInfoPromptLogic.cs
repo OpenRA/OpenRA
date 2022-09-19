@@ -52,9 +52,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return "";
 
 			return $"&sysinfoversion={SystemInformationVersion}&"
-			       + GetSystemInformation()
-				       .Select(kv => kv.Key + "=" + Uri.EscapeDataString(kv.Value.Value))
-				       .JoinWith("&");
+				+ GetSystemInformation()
+					.Select(kv => kv.Key + "=" + Uri.EscapeDataString(kv.Value.Value))
+					.JoinWith("&");
 		}
 
 		[ObjectCreator.UseCtor]
