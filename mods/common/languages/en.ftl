@@ -502,11 +502,14 @@ replay-deletion-failed = Failed to delete replay file '{ $file }'. See the debug
 incompatible-replay-title = Incompatible Replay
 incompatible-replay-prompt = Replay metadata could not be read.
 -incompatible-replay-recorded = It was recorded with
-incompatible-replay-unknown-version = { -incompatible-replay-recorded } an unknown version: { $version }.
+incompatible-replay-unknown-version = { -incompatible-replay-recorded } an unknown version:
+    { $version }.
 incompatible-replay-unknown-mod = { -incompatible-replay-recorded } an unknown mod: { $mod }.
 incompatible-replay-unavailable-mod = { -incompatible-replay-recorded } an unavailable mod: { $mod }.
-incompatible-replay-incompatible-version = { -incompatible-replay-recorded } an incompatible version: { $version }.
-incompatible-replay-unavailable-map = { -incompatible-replay-recorded } an unavailable map: { $map }.
+incompatible-replay-incompatible-version = { -incompatible-replay-recorded } an incompatible version:
+    { $version }.
+incompatible-replay-unavailable-map = { -incompatible-replay-recorded } an unavailable map:
+    { $map }.
 
 ## ServerCreationLogic
 internet-server-nat-A = Internet Server (UPnP/NAT-PMP
