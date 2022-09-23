@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class HarvesterInfo : ConditionalTraitInfo, Requires<MobileInfo>
 	{
-		public readonly HashSet<string> DeliveryBuildings = new HashSet<string>();
+		public readonly HashSet<string> DeliveryActors = new HashSet<string>();
 
 		[Desc("How long (in ticks) to wait until (re-)checking for a nearby available DeliveryBuilding if not yet linked to one.")]
 		public readonly int SearchForDeliveryBuildingDelay = 125;
@@ -175,8 +175,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IsAcceptableProcType(Actor proc)
 		{
-			return Info.DeliveryBuildings.Count == 0 ||
-				Info.DeliveryBuildings.Contains(proc.Info.Name);
+			return Info.DeliveryActors.Count == 0 ||
+				Info.DeliveryActors.Contains(proc.Info.Name);
 		}
 
 		public Actor ClosestProc(Actor self, Actor ignore)

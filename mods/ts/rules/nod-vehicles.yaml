@@ -351,7 +351,7 @@ WEED:
 		Prerequisites: ~naweap, nawast, ~techlevel.superweapons
 		Description: Collects veins for processing.\n  Unarmed
 	Harvester:
-		DeliveryBuildings: nawast
+		DeliveryActors: nawast
 		Capacity: 7
 		Resources: Veins
 		BaleUnloadDelay: 20
