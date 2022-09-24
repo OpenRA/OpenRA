@@ -1339,7 +1339,6 @@ namespace OpenRA.Server
 				}
 
 				SyncLobbyInfo();
-				State = ServerState.GameStarted;
 
 				var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
 				var gameSpeedName = LobbyInfo.GlobalSettings.OptionOrDefault("gamespeed", gameSpeeds.DefaultSpeed);
@@ -1348,6 +1347,8 @@ namespace OpenRA.Server
 
 				orderBuffer = new OrderBuffer();
 				orderBuffer.Start(gameSpeed, Conns.Where(c => c.Validated).Select(c => c.PlayerIndex));
+
+				State = ServerState.GameStarted;
 
 				if (Type != ServerType.Local)
 					OrderLatency = gameSpeed.OrderLatency;
