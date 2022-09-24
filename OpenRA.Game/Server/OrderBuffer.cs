@@ -88,6 +88,9 @@ namespace OpenRA.Server
 
 			nextUpdate = now + Interval;
 
+			if (deltas.IsEmpty)
+				yield break;
+
 			if (deltas.Values.Any(q => q.Count != NumberOfFrames))
 				yield break;
 
