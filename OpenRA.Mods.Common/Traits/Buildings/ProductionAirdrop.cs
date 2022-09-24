@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
@@ -80,9 +79,6 @@ namespace OpenRA.Mods.Common.Traits
 				spawnFacing = info.Facing;
 			}
 
-			// Assume a single exit point for simplicity
-			var exit = self.Info.TraitInfos<ExitInfo>().First();
-
 			foreach (var tower in self.TraitsImplementing<INotifyDelivery>())
 				tower.IncomingDelivery(self);
 
@@ -101,7 +97,8 @@ namespace OpenRA.Mods.Common.Traits
 					new FacingInit(spawnFacing)
 				});
 
-				var exitCell = self.Location + exit.ExitCell;
+				var exit = SelectExit(self, producee, productionType);
+				var exitCell = exit != null ? self.Location + exit.Info.ExitCell : self.Location;
 				actor.QueueActivity(new Land(actor, Target.FromActor(self), WDist.Zero, WVec.Zero, info.Facing, clearCells: new CPos[1] { exitCell }));
 				actor.QueueActivity(new CallFunc(() =>
 				{
@@ -114,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 					foreach (var cargo in self.TraitsImplementing<INotifyDelivery>())
 						cargo.Delivered(self);
 
-					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit, productionType, inits));
+					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit?.Info, productionType, inits));
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.ReadyAudio, self.Owner.Faction.InternalName);
 					TextNotificationsManager.AddTransientLine(info.ReadyTextNotification, self.Owner);
 				}));
