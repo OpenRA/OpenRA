@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (mobile != null && !mobile.CanInteractWithGroundLayer(self))
 				return;
 
-			if (RequestedTarget.Type != TargetType.Invalid)
+			if (RequestedTarget.IsValidFor(self))
 			{
 				IsAiming = CanAimAtTarget(self, RequestedTarget, requestedForceAttack);
 				if (IsAiming)
@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				IsAiming = false;
 
-				if (OpportunityTarget.Type != TargetType.Invalid)
+				if (OpportunityTarget.IsValidFor(self))
 					IsAiming = CanAimAtTarget(self, OpportunityTarget, opportunityForceAttack);
 
 				if (!IsAiming && Info.OpportunityFire && autoTarget != null &&
@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 					opportunityForceAttack = false;
 					opportunityTargetIsPersistentTarget = false;
 
-					if (OpportunityTarget.Type != TargetType.Invalid)
+					if (OpportunityTarget.IsValidFor(self))
 						IsAiming = CanAimAtTarget(self, OpportunityTarget, opportunityForceAttack);
 				}
 
