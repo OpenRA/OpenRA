@@ -27,10 +27,10 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new RejectsOrders(this); }
 	}
 
-	public class RejectsOrders : ConditionalTrait<RejectsOrdersInfo>
+	public class RejectsOrders : ConditionalTrait<RejectsOrdersInfo>, IRejectsOrders
 	{
-		public HashSet<string> Reject => Info.Reject;
-		public HashSet<string> Except => Info.Except;
+		HashSet<string> IRejectsOrders.Reject => Info.Reject;
+		HashSet<string> IRejectsOrders.Except => Info.Except;
 
 		public RejectsOrders(RejectsOrdersInfo info)
 			: base(info) { }
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public static bool AcceptsOrder(this Actor self, string orderString)
 		{
-			var rejectsOrdersTraits = self.TraitsImplementing<RejectsOrders>().Where(Exts.IsTraitEnabled).ToArray();
+			var rejectsOrdersTraits = self.TraitsImplementing<IRejectsOrders>().Where(Exts.IsTraitEnabled).ToArray();
 			if (rejectsOrdersTraits.Length == 0)
 				return true;
 

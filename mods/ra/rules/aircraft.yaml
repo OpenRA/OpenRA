@@ -476,7 +476,6 @@ U2:
 		SpawnAtLastPosition: False
 		Type: CenterPosition
 		RequiresCondition: enable-smoke
-	RejectsOrders:
 	Interactable:
 	-MapEditorData:
 	GrantConditionOnDamageState@SmokeTrail:

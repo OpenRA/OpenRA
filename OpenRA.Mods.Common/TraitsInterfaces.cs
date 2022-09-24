@@ -828,4 +828,11 @@ namespace OpenRA.Mods.Common.Traits
 		/// </summary>
 		bool PathExistsForLocomotor(Locomotor locomotor, CPos source, CPos target);
 	}
+
+	[RequireExplicitImplementation]
+	public interface IRejectsOrders
+	{
+		HashSet<string> Reject { get; }
+		HashSet<string> Except { get; }
+	}
 }

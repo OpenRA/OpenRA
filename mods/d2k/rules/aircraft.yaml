@@ -126,7 +126,6 @@ ornithopter:
 		Name: Ornithopter
 	SpawnActorOnDeath:
 		Actor: ornithopter.husk
-	RejectsOrders:
 	RevealOnFire:
 	-MapEditorData:
 
