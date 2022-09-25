@@ -417,9 +417,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		string PlayerLabel(GameServer game)
 		{
-			return players.Update(game.Players)
-				+ bots.Update(game.Bots)
-				+ spectators.Update(game.Spectators);
+			var label = players.Update(game.Players);
+
+			if (game.Bots > 0)
+				label += " " + bots.Update(game.Bots);
+
+			if (game.Spectators > 0)
+				label += " " + spectators.Update(game.Spectators);
+
+			return label;
 		}
 
 		public void RefreshServerList()
