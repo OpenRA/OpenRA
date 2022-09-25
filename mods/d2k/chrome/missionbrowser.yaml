@@ -19,7 +19,7 @@ Background@MISSIONBROWSER_PANEL:
 			Height: 405
 			Children:
 				ScrollItem@HEADER:
-					BaseName: scrollheader
+					Background: scrollheader
 					Width: PARENT_RIGHT - 27
 					Height: 13
 					X: 2
