@@ -121,6 +121,7 @@ namespace OpenRA
 				{
 					Console.WriteLine("Invalid arguments for '{0}'", command);
 					GetActionUsage(command, action);
+					Environment.Exit(1);
 				}
 			}
 			catch (Exception e)
@@ -130,7 +131,10 @@ namespace OpenRA
 				Log.Write("utility", "{0}", e);
 
 				if (e is NoSuchCommandException)
+				{
 					Console.WriteLine(e.Message);
+					Environment.Exit(1);
+				}
 				else
 				{
 					Console.WriteLine("Error: Utility application crashed. See utility.log for details");
