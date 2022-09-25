@@ -53,19 +53,11 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		bool ICrushable.CrushableBy(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
+			// Friendly units should move around! (unless immune)
 			if (info.BlockFriendly && !crusher.Info.HasTraitInfo<MineImmuneInfo>() && self.Owner.RelationshipWith(crusher.Owner) == PlayerRelationship.Ally)
 				return false;
 
 			return info.CrushClasses.Overlaps(crushClasses);
-		}
-
-		LongBitSet<PlayerBitMask> ICrushable.CrushableBy(Actor self, BitSet<CrushClass> crushClasses)
-		{
-			if (!info.CrushClasses.Overlaps(crushClasses))
-				return self.World.NoPlayersMask;
-
-			// Friendly units should move around!
-			return info.BlockFriendly ? self.World.AllPlayersMask.Except(self.Owner.AlliedPlayersMask) : self.World.AllPlayersMask;
 		}
 	}
 

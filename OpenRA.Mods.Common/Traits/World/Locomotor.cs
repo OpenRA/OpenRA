@@ -131,13 +131,11 @@ namespace OpenRA.Mods.Common.Traits
 		readonly struct CellCache
 		{
 			public readonly LongBitSet<PlayerBitMask> Immovable;
-			public readonly LongBitSet<PlayerBitMask> Crushable;
 			public readonly CellFlag CellFlag;
 
-			public CellCache(LongBitSet<PlayerBitMask> immovable, CellFlag cellFlag, LongBitSet<PlayerBitMask> crushable = default(LongBitSet<PlayerBitMask>))
+			public CellCache(LongBitSet<PlayerBitMask> immovable, CellFlag cellFlag)
 			{
 				Immovable = immovable;
-				Crushable = crushable;
 				CellFlag = cellFlag;
 			}
 		}
@@ -240,10 +238,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (actor == null)
 				return false;
 
-			// All actors that may be in the cell can be crushed.
-			if (cellCache.Crushable.Overlaps(actor.Owner.PlayerMask))
-				return true;
-
 			// If the check allows: We are not blocked by moving units.
 			if (check <= BlockedByActor.Stationary && !cellFlag.HasCellFlag(CellFlag.HasStationaryActor))
 				return true;
@@ -252,17 +246,17 @@ namespace OpenRA.Mods.Common.Traits
 			if (check <= BlockedByActor.Immovable && !cellCache.Immovable.Overlaps(actor.Owner.PlayerMask))
 				return true;
 
-			// Cache doesn't account for ignored actors, subcells, temporary blockers or transit only actors.
+			// Cache doesn't account for ignored actors, subcells,
+			// temporary blockers, transit only actors or crushable actors.
 			// These must use the slow path.
-			if (ignoreActor == null && subCell == SubCell.FullCell &&
-				!cellFlag.HasCellFlag(CellFlag.HasTemporaryBlocker) && !cellFlag.HasCellFlag(CellFlag.HasTransitOnlyActor))
+			if (ignoreActor == null
+				&& subCell == SubCell.FullCell
+				&& !cellFlag.HasCellFlag(CellFlag.HasTemporaryBlocker)
+				&& !cellFlag.HasCellFlag(CellFlag.HasTransitOnlyActor)
+				&& !cellFlag.HasCellFlag(CellFlag.HasCrushableActor))
 			{
 				// We already know there are uncrushable actors in the cell so we are always blocked.
 				if (check == BlockedByActor.All)
-					return false;
-
-				// We already know there are either immovable or stationary actors which the check does not allow.
-				if (!cellFlag.HasCellFlag(CellFlag.HasCrushableActor))
 					return false;
 
 				// All actors in the cell are immovable and some cannot be crushed.
@@ -478,12 +472,10 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				var cellImmovablePlayers = default(LongBitSet<PlayerBitMask>);
-				var cellCrushablePlayers = world.AllPlayersMask;
 
 				foreach (var actor in actors)
 				{
 					var actorImmovablePlayers = world.AllPlayersMask;
-					var actorCrushablePlayers = world.NoPlayersMask;
 
 					var crushables = actor.TraitsImplementing<ICrushable>();
 					var mobile = actor.OccupiesSpace as Mobile;
@@ -496,11 +488,7 @@ namespace OpenRA.Mods.Common.Traits
 						cellFlag |= CellFlag.HasTransitOnlyActor;
 
 					if (crushables.Any())
-					{
 						cellFlag |= CellFlag.HasCrushableActor;
-						foreach (var crushable in crushables)
-							actorCrushablePlayers = actorCrushablePlayers.Union(crushable.CrushableBy(actor, Info.Crushes));
-					}
 
 					if (isMoving)
 						cellFlag |= CellFlag.HasMovingActor;
@@ -521,11 +509,10 @@ namespace OpenRA.Mods.Common.Traits
 							cellFlag |= CellFlag.HasTemporaryBlocker;
 					}
 
-					cellCrushablePlayers = cellCrushablePlayers.Intersect(actorCrushablePlayers);
 					cellImmovablePlayers = cellImmovablePlayers.Union(actorImmovablePlayers);
 				}
 
-				cache[cell] = new CellCache(cellImmovablePlayers, cellFlag, cellCrushablePlayers);
+				cache[cell] = new CellCache(cellImmovablePlayers, cellFlag);
 			}
 		}
 	}

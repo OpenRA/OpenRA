@@ -99,7 +99,6 @@ namespace OpenRA.Mods.Common.Traits
 	public interface ICrushable
 	{
 		bool CrushableBy(Actor self, Actor crusher, BitSet<CrushClass> crushClasses);
-		LongBitSet<PlayerBitMask> CrushableBy(Actor self, BitSet<CrushClass> crushClasses);
 	}
 
 	[RequireExplicitImplementation]
