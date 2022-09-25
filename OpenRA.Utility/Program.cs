@@ -119,7 +119,7 @@ namespace OpenRA
 				}
 				else
 				{
-					Console.WriteLine("Invalid arguments for '{0}'", command);
+					Console.WriteLine($"Invalid arguments for '{command}'");
 					GetActionUsage(command, action);
 					Environment.Exit(1);
 				}
@@ -127,8 +127,8 @@ namespace OpenRA
 			catch (Exception e)
 			{
 				Log.AddChannel("utility", "utility.log");
-				Log.Write("utility", "Received args: {0}", args.JoinWith(" "));
-				Log.Write("utility", "{0}", e);
+				Log.Write("utility", $"Received args: {args.JoinWith(" ")}");
+				Log.Write("utility", e);
 
 				if (e is NoSuchCommandException)
 				{
