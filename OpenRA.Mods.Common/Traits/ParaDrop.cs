@@ -102,12 +102,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				// HACK: Call SetCenterPosition before SetPosition
-				// So when SetPosition calls ActorMap.CellUpdated
-				// the listeners see the new CenterPosition.
+				dropPositionable.SetPosition(dropActor, dropCell, dropSubCell);
+
 				var dropPosition = dropActor.CenterPosition + new WVec(0, 0, self.CenterPosition.Z - dropActor.CenterPosition.Z);
 				dropPositionable.SetCenterPosition(dropActor, dropPosition);
-				dropPositionable.SetPosition(dropActor, dropCell, dropSubCell);
 				w.Add(dropActor);
 			});
 

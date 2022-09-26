@@ -46,12 +46,9 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Moves from outside the world into the cell grid.")]
 		public void MoveIntoWorld(CPos cell)
 		{
-			// HACK: Call SetCenterPosition before SetPosition
-			// So when SetPosition calls ActorMap.CellUpdated
-			// the listeners see the new CenterPosition.
 			var pos = Self.CenterPosition;
-			mobile.SetCenterPosition(Self, pos);
 			mobile.SetPosition(Self, cell);
+			mobile.SetCenterPosition(Self, pos);
 			Self.QueueActivity(mobile.ReturnToCell(Self));
 		}
 
