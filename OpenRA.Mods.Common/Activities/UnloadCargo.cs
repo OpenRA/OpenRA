@@ -120,11 +120,8 @@ namespace OpenRA.Mods.Common.Activities
 					var move = actor.Trait<IMove>();
 					var pos = actor.Trait<IPositionable>();
 
-					// HACK: Call SetCenterPosition before SetPosition
-					// So when SetPosition calls ActorMap.CellUpdated
-					// the listeners see the new CenterPosition.
-					pos.SetCenterPosition(actor, spawn);
 					pos.SetPosition(actor, exitSubCell.Value.Cell, exitSubCell.Value.SubCell);
+					pos.SetCenterPosition(actor, spawn);
 
 					actor.CancelActivity();
 					w.Add(actor);
