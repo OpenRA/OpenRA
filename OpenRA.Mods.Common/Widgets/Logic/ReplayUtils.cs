@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static readonly string IncompatibleReplayPrompt = "incompatible-replay-prompt";
 
 		[TranslationReference]
+		static readonly string IncompatibleReplayAccept = "incompatible-replay-accept";
+
+		[TranslationReference]
 		static readonly string UnknownVersion = "incompatible-replay-unknown-version";
 
 		[TranslationReference]
@@ -46,12 +49,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				onCancel = DoNothing;
 
 			if (replayMeta == null)
-			{
-				ConfirmationDialogs.ButtonPrompt(modData, IncompatibleReplayTitle,
-					IncompatibleReplayPrompt, onCancel: onCancel);
-
-				return false;
-			}
+				return IncompatibleReplayDialog(IncompatibleReplayPrompt, null, modData, onCancel);
 
 			var version = replayMeta.GameInfo.Version;
 			if (version == null)
@@ -75,7 +73,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static bool IncompatibleReplayDialog(string text, Dictionary<string, object> textArguments, ModData modData, Action onCancel)
 		{
-			ConfirmationDialogs.ButtonPrompt(modData, IncompatibleReplayTitle, text, textArguments: textArguments, onCancel: onCancel);
+			ConfirmationDialogs.ButtonPrompt(modData, IncompatibleReplayTitle, text, textArguments: textArguments, onCancel: onCancel, cancelText: IncompatibleReplayAccept);
 			return false;
 		}
 	}

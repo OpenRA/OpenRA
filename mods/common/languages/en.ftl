@@ -501,6 +501,7 @@ replay-deletion-failed = Failed to delete replay file '{ $file }'. See the debug
 ## ReplayUtils
 incompatible-replay-title = Incompatible Replay
 incompatible-replay-prompt = Replay metadata could not be read.
+incompatible-replay-accept = OK
 -incompatible-replay-recorded = It was recorded with
 incompatible-replay-unknown-version = { -incompatible-replay-recorded } an unknown version.
 incompatible-replay-unknown-mod = { -incompatible-replay-recorded } an unknown mod.
