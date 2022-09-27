@@ -23,10 +23,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		static readonly string IncompatibleReplayPrompt = "incompatible-replay-prompt";
 
-		[TranslationReference("version")]
+		[TranslationReference]
 		static readonly string UnknownVersion = "incompatible-replay-unknown-version";
 
-		[TranslationReference("mod")]
+		[TranslationReference]
 		static readonly string UnknownMod = "incompatible-replay-unknown-mod";
 
 		[TranslationReference("mod")]
@@ -55,11 +55,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var version = replayMeta.GameInfo.Version;
 			if (version == null)
-				return IncompatibleReplayDialog(UnknownVersion, Translation.Arguments("version", version), modData, onCancel);
+				return IncompatibleReplayDialog(UnknownVersion, null, modData, onCancel);
 
 			var mod = replayMeta.GameInfo.Mod;
 			if (mod == null)
-				return IncompatibleReplayDialog(UnknownMod, Translation.Arguments("mod", mod), modData, onCancel);
+				return IncompatibleReplayDialog(UnknownMod, null, modData, onCancel);
 
 			if (!Game.Mods.ContainsKey(mod))
 				return IncompatibleReplayDialog(UnvailableMod, Translation.Arguments("mod", mod), modData, onCancel);
