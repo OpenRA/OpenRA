@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns the ticks formatted to HH:MM:SS.")]
 		public string FormatTime(int ticks, bool leadingMinuteZero = true)
 		{
-			return WidgetUtils.FormatTime(ticks, leadingMinuteZero, 40);
+			return WidgetUtils.FormatTime(ticks, leadingMinuteZero, Context.World.Timestep);
 		}
 	}
 }
