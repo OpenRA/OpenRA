@@ -38,6 +38,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("How fast it can dump it's carryage.")]
 		public readonly int BaleUnloadDelay = 4;
 
+		[Desc("Artificial delay to wait after unloading before continuing with next Activity.")]
+		public readonly int UnloadFinishedDelay = 0;
+
 		[Desc("How many bales can it dump at once.")]
 		public readonly int BaleUnloadAmount = 1;
 

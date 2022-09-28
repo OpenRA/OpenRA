@@ -33,6 +33,9 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected DockingState dockingState;
 
+		[Sync]
+		int currentUnloadFinishedDelayTicks;
+
 		public HarvesterDockSequence(Actor self, Actor refinery, WAngle dockAngle, bool isDragRequired, in WVec dragOffset, int dragLength)
 		{
 			dockingState = DockingState.Turn;
@@ -84,9 +87,17 @@ namespace OpenRA.Mods.Common.Activities
 
 				case DockingState.Undock:
 					OnStateUndock(self);
+
+					// Set artificial delay time for more user control over undock timing.
+					currentUnloadFinishedDelayTicks = Harv.Info.UnloadFinishedDelay;
 					return false;
 
 				case DockingState.Complete:
+					// Wait until optional artificial delay time has passed.
+					if (--currentUnloadFinishedDelayTicks > 0)
+						return false;
+
+					// Delay is over, so now we can undock for real.
 					Harv.LastLinkedProc = Harv.LinkedProc;
 					Harv.LinkProc(null);
 					if (IsDragRequired)
