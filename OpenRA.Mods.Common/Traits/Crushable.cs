@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		LongBitSet<PlayerBitMask> ICrushable.CrushableBy(Actor self, BitSet<CrushClass> crushClasses)
 		{
-			if (IsTraitDisabled || !self.IsAtGroundLevel() || !Info.CrushClasses.Overlaps(crushClasses))
+			if (IsTraitDisabled || !Info.CrushClasses.Overlaps(crushClasses))
 				return self.World.NoPlayersMask;
 
 			return Info.CrushedByFriendlies ? self.World.AllPlayersMask : self.World.AllPlayersMask.Except(self.Owner.AlliedPlayersMask);
@@ -76,10 +76,6 @@ namespace OpenRA.Mods.Common.Traits
 		bool CrushableInner(BitSet<CrushClass> crushClasses, Player crushOwner)
 		{
 			if (IsTraitDisabled)
-				return false;
-
-			// Only make actor crushable if it is on the ground.
-			if (!self.IsAtGroundLevel())
 				return false;
 
 			if (!Info.CrushedByFriendlies && crushOwner.IsAlliedWith(self.Owner))
