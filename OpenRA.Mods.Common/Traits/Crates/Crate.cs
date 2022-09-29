@@ -103,8 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCrushed.OnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
-			// Crate can only be crushed if it is not in the air.
-			if (!self.IsAtGroundLevel() || !crushClasses.Contains(info.CrushClass))
+			if (!crushClasses.Contains(info.CrushClass))
 				return;
 
 			OnCrushInner(crusher);
@@ -231,13 +230,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool ICrushable.CrushableBy(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
-			// Crate can only be crushed if it is not in the air.
-			return self.IsAtGroundLevel() && crushClasses.Contains(info.CrushClass);
+			return crushClasses.Contains(info.CrushClass);
 		}
 
 		LongBitSet<PlayerBitMask> ICrushable.CrushableBy(Actor self, BitSet<CrushClass> crushClasses)
 		{
-			return self.IsAtGroundLevel() && crushClasses.Contains(info.CrushClass) ? self.World.AllPlayersMask : self.World.NoPlayersMask;
+			return crushClasses.Contains(info.CrushClass) ? self.World.AllPlayersMask : self.World.NoPlayersMask;
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
