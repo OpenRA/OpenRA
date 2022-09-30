@@ -185,7 +185,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (margin >= 0)
 				toTerrainOrientation = WRot.SLerp(map.TerrainOrientation(mobile.FromCell), map.TerrainOrientation(mobile.ToCell), 1, 2);
 
-			QueueChild(new MoveFirstHalf(this, from, to, mobile.Facing, mobile.Facing, null, toTerrainOrientation, margin, carryoverProgress));
+			var movingOnGroundLayer = mobile.FromCell.Layer == 0 && mobile.ToCell.Layer == 0;
+			QueueChild(new MoveFirstHalf(this, from, to, mobile.Facing, mobile.Facing, null, toTerrainOrientation, margin, carryoverProgress, movingOnGroundLayer));
 			carryoverProgress = 0;
 			return false;
 		}
@@ -360,11 +361,12 @@ namespace OpenRA.Mods.Common.Activities
 			protected readonly int ArcToLength;
 			protected readonly WAngle ArcToAngle;
 			protected readonly int Distance;
+			protected readonly bool MovingOnGroundLayer;
 			readonly int terrainOrientationMargin;
 			protected int progress;
 
 			public MovePart(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
-				WRot? fromTerrainOrientation, WRot? toTerrainOrientation, int terrainOrientationMargin, int carryoverProgress)
+				WRot? fromTerrainOrientation, WRot? toTerrainOrientation, int terrainOrientationMargin, int carryoverProgress, bool movingOnGroundLayer)
 			{
 				Move = move;
 				From = from;
@@ -376,6 +378,7 @@ namespace OpenRA.Mods.Common.Activities
 				progress = carryoverProgress;
 				Distance = (to - from).Length;
 				this.terrainOrientationMargin = Math.Min(terrainOrientationMargin, Distance / 2);
+				MovingOnGroundLayer = movingOnGroundLayer;
 
 				IsInterruptible = false; // See comments in Move.Cancel()
 
@@ -436,7 +439,9 @@ namespace OpenRA.Mods.Common.Activities
 				else
 					pos = WPos.Lerp(From, To, progress, Distance);
 
-				if (self.Location.Layer == 0)
+				// This makes sure units move smoothly moves over ramps
+				// HACK: DistanceAboveTerrain works only with ground layer
+				if (MovingOnGroundLayer)
 					pos -= new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(pos));
 
 				mobile.SetCenterPosition(self, pos);
@@ -470,8 +475,8 @@ namespace OpenRA.Mods.Common.Activities
 		class MoveFirstHalf : MovePart
 		{
 			public MoveFirstHalf(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
-				WRot? fromTerrainOrientation, WRot? toTerrainOrientation, int terrainOrientationMargin, int carryoverProgress)
-				: base(move, from, to, fromFacing, toFacing, fromTerrainOrientation, toTerrainOrientation, terrainOrientationMargin, carryoverProgress) { }
+				WRot? fromTerrainOrientation, WRot? toTerrainOrientation, int terrainOrientationMargin, int carryoverProgress, bool movingOnGroundLayer)
+				: base(move, from, to, fromFacing, toFacing, fromTerrainOrientation, toTerrainOrientation, terrainOrientationMargin, carryoverProgress, movingOnGroundLayer) { }
 
 			static bool IsTurn(Mobile mobile, CPos nextCell, Map map)
 			{
@@ -512,7 +517,8 @@ namespace OpenRA.Mods.Common.Activities
 							ToTerrainOrientation,
 							nextToTerrainOrientation,
 							margin,
-							progress - Distance);
+							progress - Distance,
+							mobile.ToCell.Layer == 0 && nextCell.Value.Cell.Layer == 0);
 
 						mobile.FinishedMoving(self);
 						mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, nextCell.Value.Cell, nextCell.Value.SubCell);
@@ -534,7 +540,8 @@ namespace OpenRA.Mods.Common.Activities
 					ToTerrainOrientation,
 					null,
 					mobile.Info.TerrainOrientationAdjustmentMargin.Length,
-					progress - Distance);
+					progress - Distance,
+					MovingOnGroundLayer);
 
 				mobile.EnteringCell(self);
 				mobile.SetLocation(mobile.ToCell, mobile.ToSubCell, mobile.ToCell, mobile.ToSubCell);
@@ -545,8 +552,8 @@ namespace OpenRA.Mods.Common.Activities
 		class MoveSecondHalf : MovePart
 		{
 			public MoveSecondHalf(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
-				WRot? fromTerrainOrientation, WRot? toTerrainOrientation, int terrainOrientationMargin, int carryoverProgress)
-				: base(move, from, to, fromFacing, toFacing, fromTerrainOrientation, toTerrainOrientation, terrainOrientationMargin, carryoverProgress) { }
+				WRot? fromTerrainOrientation, WRot? toTerrainOrientation, int terrainOrientationMargin, int carryoverProgress, bool movingOnGroundLayer)
+				: base(move, from, to, fromFacing, toFacing, fromTerrainOrientation, toTerrainOrientation, terrainOrientationMargin, carryoverProgress, movingOnGroundLayer) { }
 
 			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)
 			{
