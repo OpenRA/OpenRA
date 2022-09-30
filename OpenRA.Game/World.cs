@@ -396,7 +396,10 @@ namespace OpenRA
 			if (PauseStateLocked)
 				return;
 
-			IssueOrder(Order.FromTargetString("PauseGame", paused ? "Pause" : "UnPause", false));
+			// In single player opening and closing ingame menu in a rapid succession might mess up
+			// the orders and leave us in an incorrect state. To fix that we send immediate orders.
+			// See https://github.com/OpenRA/OpenRA/pull/20336
+			IssueOrder(Order.FromTargetString("PauseGame", paused ? "Pause" : "UnPause", LobbyInfo.NonBotClients.Count() == 1));
 			PredictedPaused = paused;
 		}
 
