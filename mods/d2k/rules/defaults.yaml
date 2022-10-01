@@ -299,6 +299,7 @@
 	Inherits: ^Husk
 	Husk:
 		AllowedTerrain: Sand, Rock, Transition, Concrete, Spice, SpiceSand, SpiceBlobs, Dune
+		Locomotor: tank
 	Targetable:
 		TargetTypes: Ground, Vehicle
 		RequiresForceFire: true

@@ -9,8 +9,10 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -18,12 +20,16 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawns remains of a husk actor with the correct facing.")]
-	public class HuskInfo : TraitInfo, IPositionableInfo, IFacingInfo, IActorPreviewInitInfo
+	public class HuskInfo : TraitInfo, IPositionableInfo, IFacingInfo, IActorPreviewInitInfo, IRulesetLoaded
 	{
 		public readonly HashSet<string> AllowedTerrain = new();
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
 		public readonly WAngle PreviewFacing = new(384);
+
+		[LocomotorReference]
+		[Desc("Used to define crushes. Locomotor must be defined on the World actor.")]
+		public readonly string Locomotor = null;
 
 		IEnumerable<ActorInit> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{
@@ -46,6 +52,15 @@ namespace OpenRA.Mods.Common.Traits
 			// IPositionable*Info*.CanEnterCell is only ever used for things like exiting production facilities,
 			// all places relevant for husks check IPositionable.CanEnterCell instead, so we can safely set this to true.
 			return true;
+		}
+
+		public LocomotorInfo LocomotorInfo { get; private set; }
+		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
+		{
+			if (string.IsNullOrEmpty(Locomotor))
+				return;
+
+			LocomotorInfo = rules.Actors[SystemActors.World].TraitInfos<LocomotorInfo>().FirstOrDefault(li => li.Name == Locomotor);
 		}
 	}
 
@@ -95,10 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			var distance = (finalPosition - CenterPosition).Length;
-			if (dragSpeed > 0 && distance > 0)
-				self.QueueActivity(new Drag(self, CenterPosition, finalPosition, distance / dragSpeed));
-
+			self.QueueActivity(new DragAndCrush(self, info.LocomotorInfo, dragSpeed, finalPosition));
 			notifyCenterPositionChanged = self.TraitsImplementing<INotifyCenterPositionChanged>().ToArray();
 		}
 
@@ -180,5 +192,40 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public HuskSpeedInit(int value)
 			: base(value) { }
+	}
+
+	public class DragAndCrush : Activity
+	{
+		readonly LocomotorInfo info;
+
+		public DragAndCrush(Actor self, LocomotorInfo info, int dragSpeed, WPos finalPosition)
+		{
+			this.info = info;
+
+			var distance = (finalPosition - self.CenterPosition).Length;
+			if (dragSpeed > 0 && distance > 0)
+				self.QueueActivity(new Drag(self, self.CenterPosition, finalPosition, distance / dragSpeed));
+		}
+
+		protected override void OnFirstRun(Actor self)
+		{
+			if (self.IsAtGroundLevel())
+				CrushAction(self, self.CenterPosition, (notifyCrushed) => notifyCrushed.OnCrush);
+		}
+
+		void CrushAction(Actor self, WPos position, Func<INotifyCrushed, Action<Actor, Actor, BitSet<CrushClass>>> action)
+		{
+			if (info == null || !info.Crushes.Any())
+				return;
+
+			var crushables = self.World.ActorMap.GetActorsAt(self.World.Map.CellContaining(position)).Where(a => a != self)
+				.SelectMany(a => a.TraitsImplementing<ICrushable>().Select(t => new TraitPair<ICrushable>(a, t)));
+
+			// Only crush actors that are on the ground level.
+			foreach (var crushable in crushables)
+				if (crushable.Trait.CrushableBy(crushable.Actor, self, info.Crushes) && crushable.Actor.IsAtGroundLevel())
+					foreach (var notifyCrushed in crushable.Actor.TraitsImplementing<INotifyCrushed>())
+						action(notifyCrushed)(crushable.Actor, self, info.Crushes);
+		}
 	}
 }

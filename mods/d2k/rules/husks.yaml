@@ -32,6 +32,8 @@ missile_tank.husk:
 
 sonic_tank.husk:
 	Inherits: ^VehicleHusk
+	Husk:
+		Locomotor: vehicle
 	Tooltip:
 		Name: Sonic Tank (Destroyed)
 	TransformOnCapture:
@@ -39,6 +41,8 @@ sonic_tank.husk:
 
 devastator.husk:
 	Inherits: ^VehicleHusk
+	Husk:
+		Locomotor: devastator
 	Health:
 		HP: 1250
 	Tooltip:

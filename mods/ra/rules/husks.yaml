@@ -26,6 +26,8 @@
 
 4TNK.Husk:
 	Inherits: ^Husk
+	Husk:
+		Locomotor: heavytracked
 	Tooltip:
 		Name: Husk (Mammoth Tank)
 	ThrowsParticle@turret:
@@ -72,6 +74,8 @@ MCV.Husk:
 
 MGG.Husk:
 	Inherits: ^Husk
+	Husk:
+		Locomotor: wheeled
 	Tooltip:
 		Name: Husk (Mobile Gap Generator)
 	ThrowsParticle@spinner:

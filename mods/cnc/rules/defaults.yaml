@@ -1069,6 +1069,7 @@
 	Inherits: ^CommonHuskDefaults
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
+		Locomotor: tracked
 	Targetable:
 		RequiresForceFire: true
 		TargetTypes: Ground, Husk
@@ -1097,6 +1098,8 @@
 
 ^LightHusk:
 	Inherits: ^Husk
+	Husk:
+		Locomotor: wheeled
 	Health:
 		HP: 4000
 
