@@ -1048,6 +1048,7 @@
 	Inherits@2: ^ClassicFacingSpriteActor
 	Husk:
 		AllowedTerrain: Clear, Rough, Road, Ore, Gems, Beach
+		Locomotor: tracked
 	WithIdleOverlay@Burns:
 		Image: fire
 		Sequence: 1
