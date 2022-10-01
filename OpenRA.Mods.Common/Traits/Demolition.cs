@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class DemolitionInfo : TraitInfo
+	class DemolitionInfo : ConditionalTraitInfo
 	{
 		[Desc("Delay to demolish the target once the explosive device is planted. " +
 			"Measured in game ticks. Default is 1.8 seconds.")]
@@ -57,23 +57,25 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Demolition(this); }
 	}
 
-	class Demolition : IIssueOrder, IResolveOrder, IOrderVoice
+	class Demolition : ConditionalTrait<DemolitionInfo>, IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		readonly DemolitionInfo info;
-
 		public Demolition(DemolitionInfo info)
-		{
-			this.info = info;
-		}
+			: base(info) { }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DemolitionOrderTargeter(info); }
+			get
+			{
+				if (IsTraitDisabled)
+					yield break;
+
+				yield return new DemolitionOrderTargeter(Info);
+			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
 		{
-			if (order.OrderID != "C4")
+			if (order.OrderID != "C4" || IsTraitDisabled)
 				return null;
 
 			return new Order(order.OrderID, self, target, queued);
@@ -81,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString != "C4")
+			if (order.OrderString != "C4" || IsTraitDisabled)
 				return;
 
 			if (order.Target.Type == TargetType.Actor)
@@ -91,15 +93,22 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 			}
 
-			self.QueueActivity(order.Queued, new Demolish(self, order.Target, info.EnterBehaviour, info.DetonationDelay,
-				info.Flashes, info.FlashesDelay, info.FlashInterval, info.DamageTypes, info.TargetLineColor));
-
+			self.QueueActivity(order.Queued, GetDemolishActivity(self, order.Target, Info.TargetLineColor));
 			self.ShowTargetLines();
+		}
+
+		public Demolish GetDemolishActivity(Actor self, Target target, Color? targetLineColor)
+		{
+			return new Demolish(self, target, Info.EnterBehaviour, Info.DetonationDelay, Info.Flashes,
+				Info.FlashesDelay, Info.FlashInterval, Info.DamageTypes, targetLineColor);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "C4" ? info.Voice : null;
+			if (IsTraitDisabled)
+				return null;
+
+			return order.OrderString == "C4" ? Info.Voice : null;
 		}
 
 		class DemolitionOrderTargeter : UnitOrderTargeter
