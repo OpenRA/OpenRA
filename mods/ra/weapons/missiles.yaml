@@ -17,7 +17,7 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 5000
-		ValidTargets: GroundActor, WaterActor, AirborneActor
+		ValidTargets: GroundActor, WaterActor
 		Versus:
 			None: 10
 			Wood: 74
@@ -41,6 +41,8 @@
 ^AntiAirMissile:
 	Inherits: ^AntiGroundMissile
 	ValidTargets: AirborneActor
+	Warhead@1Dam: SpreadDamage
+		ValidTargets: AirborneActor
 	Warhead@3Eff: CreateEffect
 		ImpactActors: false
 
@@ -58,7 +60,6 @@ Maverick:
 		CruiseAltitude: 2c0
 		RangeLimit: 14c410
 	Warhead@1Dam: SpreadDamage
-		InvalidTargets: AirborneActor
 		Damage: 7000
 		Versus:
 			None: 30
@@ -105,7 +106,6 @@ HellfireAA:
 		CloseEnough: 0c600
 	Warhead@1Dam: SpreadDamage
 		Damage: 4000
-		ValidTargets: AirborneActor
 		Versus:
 			Wood: 75
 			Light: 75
@@ -123,6 +123,7 @@ MammothTusk:
 		HorizontalRateOfTurn: 60
 		RangeLimit: 9c614
 	Warhead@1Dam: SpreadDamage
+		ValidTargets: AirborneActor, Infantry
 		Spread: 256
 		Damage: 5000
 		Versus:
@@ -153,7 +154,6 @@ Nike:
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
 		Damage: 5000
-		ValidTargets: AirborneActor
 		Versus:
 			Light: 90
 	Warhead@3Eff: CreateEffect
@@ -169,7 +169,6 @@ RedEye:
 		Speed: 298
 	Warhead@1Dam: SpreadDamage
 		Damage: 4000
-		ValidTargets: AirborneActor
 		Versus:
 			Light: 60
 
@@ -202,6 +201,8 @@ StingerAA:
 	Projectile: Missile
 		Speed: 255
 		CloseEnough: 298
+	Warhead@1Dam: SpreadDamage
+		ValidTargets: AirborneActor
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion_air
 		ImpactSounds: kaboom25.aud
@@ -308,6 +309,7 @@ SubMissileAA:
 	Inherits: ^SubMissileDefault
 	ValidTargets: AirborneActor
 	Warhead@1Dam: SpreadDamage
+		ValidTargets: AirborneActor
 		Damage: 1500
 
 SCUD:
