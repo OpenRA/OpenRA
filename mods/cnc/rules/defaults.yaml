@@ -51,7 +51,7 @@
 		Conditions:
 			250: rank-veteran
 			500: rank-veteran
-			800: rank-veteran
+			750: rank-veteran
 		LevelUpImage: crate-effects
 	GrantCondition@RANK-ELITE:
 		RequiresCondition: rank-veteran >= 3
@@ -93,7 +93,7 @@
 		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
-		ValidStances: Ally, Enemy, Neutral
+		ValidRelationships: Ally, Enemy, Neutral
 		RequiresCondition: rank-veteran == 1
 	WithDecoration@RANK-2:
 		Image: rank
@@ -101,7 +101,7 @@
 		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
-		ValidStances: Ally, Enemy, Neutral
+		ValidRelationships: Ally, Enemy, Neutral
 		RequiresCondition: rank-veteran == 2
 	WithDecoration@RANK-ELITE:
 		Image: rank
@@ -109,7 +109,7 @@
 		Palette: effect
 		Position: BottomRight
 		Margin: 5, 6
-		ValidStances: Ally, Enemy, Neutral
+		ValidRelationships: Ally, Enemy, Neutral
 		RequiresCondition: rank-elite
 
 ^InfantryExperienceHospitalHazmatOverrides:
@@ -187,6 +187,11 @@
 	AttackMove:
 		AssaultMoveCondition: assault-move
 
+^PlayerHandicaps:
+	HandicapFirepowerMultiplier:
+	HandicapDamageMultiplier:
+	HandicapProductionTimeMultiplier:
+
 ^AcceptsCloakCrate:
 	Cloak:
 		InitialDelay: 15
@@ -224,6 +229,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^ClassicFacingSpriteActor
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -269,6 +275,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^ClassicFacingSpriteActor
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -323,6 +330,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -468,6 +476,7 @@
 		Notification: CivilianKilled
 		NotifyAll: true
 	ScaredyCat:
+		AvoidTerrainTypes: Tiberium, BlueTiberium
 	Crushable:
 		CrushSound: squish2.aud
 	Voiced:
@@ -475,6 +484,7 @@
 	Wanders:
 		MinMoveDelay: 150
 		MaxMoveDelay: 750
+		AvoidTerrainTypes: Tiberium, BlueTiberium
 	MapEditorData:
 		Categories: Civilian infantry
 
@@ -490,6 +500,7 @@
 	Inherits@2: ^SpriteActor
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -544,11 +555,12 @@
 	Inherits@2: ^SpriteActor
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
 	Health:
-		HP: 30000
+		HP: 40000
 	Armor:
-		Type: Wood
+		Type: Light
 	RevealsShroud:
 		Range: 6c0
 	Mobile:
@@ -599,6 +611,7 @@
 ^Plane:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^ClassicFacingSpriteActor
+	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -606,7 +619,7 @@
 		UseLocation: true
 	HiddenUnderFog:
 		Type: GroundPosition
-		AlwaysVisibleStances: None
+		AlwaysVisibleRelationships: None
 	ActorLostNotification:
 	AttackMove:
 	WithShadow:
@@ -624,6 +637,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@3: ^SpriteActor
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -651,6 +665,7 @@
 	Inherits@2: ^SpriteActor
 	Inherits@shape: ^1x1Shape
 	Inherits@selection: ^SelectableBuilding
+	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -666,8 +681,8 @@
 	ActorPreviewPlaceBuildingPreview:
 		OverridePalette: placebuilding
 	SoundOnDamageTransition:
-		DamagedSounds: xplos.aud
-		DestroyedSounds: crumble.aud
+		DamagedSounds: xplobig4.aud
+		DestroyedSounds: crumble.aud, xplobig4.aud
 	WithSpriteBody:
 	Explodes:
 		Type: Footprint
@@ -990,12 +1005,12 @@
 	Inherits@1: ^ClassicFacingSpriteActor
 	Interactable:
 	Health:
-		HP: 14000
+		HP: 28000
 	Armor:
-		Type: Light
+		Type: Heavy
 	HiddenUnderFog:
 		Type: CenterPosition
-		AlwaysVisibleStances: None
+		AlwaysVisibleRelationships: None
 	WithFacingSpriteBody:
 	HitShape:
 	MapEditorData:
@@ -1011,7 +1026,7 @@
 	CaptureManager:
 	Capturable:
 		Types: husk
-		ValidStances: Enemy, Neutral, Ally
+		ValidRelationships: Enemy, Neutral, Ally
 	TransformOnCapture:
 		ForceHealthPercentage: 25
 	Tooltip:
@@ -1027,14 +1042,14 @@
 		Sequence: 1
 		IsDecoration: True
 	ChangesHealth:
-		Step: -100
+		Step: -200
 		StartIfBelow: 101
 		Delay: 6
 
 ^LightHusk:
 	Inherits: ^Husk
 	Health:
-		HP: 2000
+		HP: 4000
 
 ^HelicopterHusk:
 	Inherits: ^CommonHuskDefaults

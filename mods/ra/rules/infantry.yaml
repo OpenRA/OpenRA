@@ -389,14 +389,17 @@ E7:
 		Voice: Move
 	Armament@PRIMARY:
 		Weapon: Colt45
+		LocalOffset: 0,0,0, 0,0,0
 	Armament@SECONDARY:
 		Weapon: Colt45
+		LocalOffset: 0,0,0, 0,0,0
 	Armament@GARRISONED:
 		Name: garrisoned
 		Weapon: Colt45
 		MuzzleSequence: garrison-muzzle
 	WithInfantryBody:
-		DefaultAttackSequence: shoot
+		AttackSequences:
+			primary: shoot-left, shoot-right
 		StandSequences: stand
 	ExternalCondition@PRODUCED:
 		Condition: produced
@@ -435,8 +438,8 @@ MEDI:
 		Weapon: Heal
 		Cursor: heal
 		OutsideRangeCursor: heal
-		TargetStances: Ally
-		ForceTargetStances: None
+		TargetRelationships: Ally
+		ForceTargetRelationships: None
 	WithInfantryBody:
 		IdleSequences: idle
 		StandSequences: stand
@@ -475,8 +478,8 @@ MECH:
 		Weapon: Repair
 		Cursor: repair
 		OutsideRangeCursor: repair
-		TargetStances: Ally
-		ForceTargetStances: None
+		TargetRelationships: Ally
+		ForceTargetRelationships: None
 	AttackFrontal:
 		Voice: Action
 	CaptureManager:
@@ -485,7 +488,7 @@ MECH:
 		PlayerExperience: 25
 	Infiltrates:
 		Types: Husk
-		ValidStances: Ally
+		ValidRelationships: Ally
 		EnterCursor: goldwrench
 		PlayerExperience: 25
 	WithInfantryBody:

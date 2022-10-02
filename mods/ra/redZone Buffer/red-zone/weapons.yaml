@@ -1,0 +1,139 @@
+90mmAA:
+	Inherits: 90mm
+	InvalidTargets: Ground, Water, GroundActor, WaterActor
+	ValidTargets: Air
+	Projectile: Bullet
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		InvalidTargets: Ground, Water, GroundActor, WaterActor
+		ValidTargets: Air
+	Warhead@3Eff: CreateEffect
+		Explosions: med_explosion_air
+		ValidTargets: Air, AirHit
+
+M60mgAA:
+	Inherits: M60mg
+	ValidTargets: Ground, Water, GroundActor, WaterActor
+	Projectile: Bullet
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Damage: 500
+		InvalidTargets: Ground, Water, GroundActor, WaterActor
+		ValidTargets: Air
+	Warhead@3Eff: CreateEffect
+		Explosions: small_explosion_air
+		ImpactSounds: kaboom25.aud
+		ValidTargets: Air
+
+HellfireAG:
+	ReloadDelay: 100
+	Range: 7c0
+	MinRange: 5c256
+	Report: missile6.aud
+	Burst: 5
+	BurstDelays: 3
+	ValidTargets: Ground, Water, GroundActor, WaterActor
+	InvalidTargets: Infantry
+	Projectile: Bullet
+		Speed: 300
+		Blockable: false
+		LaunchAngle: 15
+		Inaccuracy: 1c0
+		Image: MISSILE
+		TrailImage: smokey
+		ContrailLength: 35
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 6000
+		ValidTargets: Ground, Water, GroundActor, WaterActor
+		Versus:
+			None: 30
+			Wood: 75
+			Light: 75
+			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosions: med_explosion
+		ImpactSounds: kaboom25.aud
+		InvalidTargets: Water
+	Warhead@4EffWater: CreateEffect
+		Explosions: med_splash
+		ImpactSounds: splash9.aud
+		ValidTargets: Water
+
+GrenadeLauncher:
+	ReloadDelay: 13
+	Range: 7c0
+	Report: silppk.aud
+	ValidTargets: Ground, Water, GroundActor, WaterActor
+	InvalidTargets: Structure, Wall, Husk
+	Projectile: Bullet
+		Speed: 2c0
+		Inaccuracy: 1c300
+	Warhead@1Dam: SpreadDamage
+		Spread: 320
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Damage: 2000
+		ValidTargets: Ground, Water, GroundActor, WaterActor
+		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+		Size: 0
+	Warhead@2Eff: CreateEffect
+		Explosions: artillery_explosion
+		ImpactSounds: kaboom15.aud
+		InvalidTargets: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: large_splash
+		ImpactSounds: splash9.aud
+		ValidTargets: Water
+
+RedEye:
+	ReloadDelay: 50
+	Range: 7c512
+	Report: missile1.aud
+	Projectile: Missile
+		Blockable: false
+		ContrailLength: 10
+		Image: MISSILE
+		HorizontalRateOfTurn: 20
+		MaximumLaunchSpeed: 298
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 2000
+		ValidTargets: AirborneActor
+		Versus:
+			None: 20
+			Wood: 20
+			Light: 20
+			Heavy: 20
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+
+ChainGun:
+	ReloadDelay: 2
+	Range: 7c0
+	MinRange: 1c768
+	Projectile: Bullet
+		Speed: 1c682
+		Blockable: false
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 3000
+		Versus:
+			None: 120
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 25
+
+Stinger:
+	Warhead@1Dam: SpreadDamage
+		Damage: 3000
+
+StingerAA:
+	Warhead@1Dam: SpreadDamage
+		Damage: 1000

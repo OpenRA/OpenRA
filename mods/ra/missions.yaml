@@ -10,6 +10,7 @@ Allied Campaign:
 	allies-07
 	allies-08a
 	allies-08b
+	allies-09a
 Soviet Campaign:
 	soviet-01
 	soviet-02a
@@ -27,6 +28,7 @@ Soviet Campaign:
 Counterstrike:
 	sarin-gas-1-crackdown
 	sarin-gas-2-down-under
+	sarin-gas-3-controlled-burn
 	fall-of-greece-1-personal-war
 	siberian-conflict-1-fresh-tracks
 	soviet-soldier-volkov-n-chitzkoi
@@ -34,6 +36,7 @@ Counterstrike:
 Aftermath:
 	production-disruption
 	monster-tank-madness
+	shock-therapy
 	situation-critical
 OpenRA Originals:
 	evacuation

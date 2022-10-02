@@ -169,7 +169,7 @@ BOAT:
 		Except: Attack
 	RevealsShroud:
 		Range: 4c0
-		ValidStances: Enemy, Neutral, Ally
+		ValidRelationships: Enemy, Neutral, Ally
 
 FACT.IN:
 	Inherits: FACT

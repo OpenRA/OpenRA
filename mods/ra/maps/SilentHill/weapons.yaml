@@ -1,0 +1,334 @@
+Lazer:
+	ReloadDelay: 8
+	Range: 9c0
+	Report: tesla1.aud
+	Projectile: TeslaZap
+	Warhead@1Dam: SpreadDamage
+		Spread: 42
+		Damage: 45
+		Versus:
+			None: 1000
+		DamageTypes: Prone50Percent, TriggerProne, ElectricityDeath
+Missiles:
+	ReloadDelay: 300
+	Range: 5c0
+	Burst: 5
+	Report: missile6.aud
+	Projectile: Bullet
+		Speed: 182
+		Blockable: false
+		LaunchAngle: 254
+		Inaccuracy: 3c938
+		Image: MISSILE
+		TrailImage: smokey
+		ContrailLength: 30
+	Warhead@1Dam: SpreadDamage
+		Spread: 426
+		Damage: 100
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Versus:
+			None: 40
+			Light: 30
+			Heavy: 30
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosions: artillery_explosion
+		ImpactSounds: kaboom15.aud
+		InvalidTargets: Water
+	Warhead@4EffWater: CreateEffect
+		Explosions: large_splash
+		ImpactSounds: splash9.aud
+		ValidTargets: Water
+TripodLauncher:
+	ReloadDelay: 50
+	Range: 16c0
+	Burst: 10
+	BurstDelays: 10
+	Report: missile6.aud
+	Projectile: Bullet
+		Speed: 102
+		Blockable: false
+		LaunchAngle: 165
+		Inaccuracy: 2c938
+		Image: MISSILE
+		TrailImage: smokey
+		ContrailLength: 30
+	Warhead@1Dam: SpreadDamage
+		Spread: 500
+		Damage: 30
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Versus:
+			None: 40
+			Light: 30
+			Heavy: 30
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosions: artillery_explosion
+		ImpactSounds: kaboom15.aud
+		InvalidTargets: Water
+	Warhead@4EffWater: CreateEffect
+		Explosions: large_splash
+		ImpactSounds: splash9.aud
+		ValidTargets: Water
+	Warhead@6Smu_areanuke: LeaveSmudge
+		SmudgeType: Scorch
+TripodNike:
+	ReloadDelay: 15
+	Range: 10
+	Report: missile1.aud
+	ValidTargets: Air
+	Projectile: Missile
+		Arm: 3
+		Blockable: false
+		ContrailLength: 10
+		Image: MISSILE
+		HorizontalRateOfTurn: 25
+		RangeLimit: 50
+		Speed: 341
+	Warhead@1Dam: SpreadDamage
+		Spread: 128
+		Damage: 50
+		ValidTargets: Air
+		Versus:
+			None: 90
+			Light: 90
+			Heavy: 50
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosions: med_explosion_air
+		ImpactSounds: kaboom25.aud
+GrenadeParticles:
+	ReloadDelay: 60
+	Range: 4c0
+	Report: firebl3.aud
+	Projectile: Bullet
+		Speed: 106
+		Blockable: false
+		LaunchAngle: 150
+		TrailImage: fb2
+		Image: fb3
+		Inaccuracy: 554
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Damage: 60
+		Versus:
+			None: 50
+			Wood: 100
+			Light: 25
+			Heavy: 5
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosions: small_explosion
+		ImpactSounds: kaboom25.aud
+		InvalidTargets: Water
+	Warhead@4EffWater: CreateEffect
+		Explosions: med_explosion
+		ImpactSounds: splash9.aud
+		ValidTargets: Water
+TripodExplode:
+	Warhead@1Dam: SpreadDamage
+		Spread: 2c0
+		Damage: 100
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+		Size: 5,4
+		Delay: 3
+	Warhead@3Eff: CreateEffect
+		Explosions: empemit
+		ImpactSounds: kaboom22.aud
+		Delay: 5
+	Warhead@4Dam: SpreadDamage
+		Spread: 3c0
+		Damage: 100
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Delay: 6
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+	Warhead@5Dam: SpreadDamage
+		Spread: 5c0
+		Damage: 100
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Delay: 7
+		Versus:
+			None: 90
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+Lazer2:
+	Report: tesla1.aud
+	ReloadDelay: 50
+	Burst: 10
+	BurstDelays: 2
+	Range: 10c0
+	ValidTargets: Ground, Infantry,Vehicle, Tank, Water, Structure, Wall
+	InvalidTargets: Husk
+	Projectile: Bullet
+		Speed: 1c682
+		ContrailLength: 200
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 25
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Versus:
+			None: 60
+			Wood: 75
+			Light: 60
+			Heavy: 25
+		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+	Warhead@3Eff: CreateEffect
+		Explosions: artillery_explosion
+		ImpactSounds: kaboom15.aud
+		InvalidTargets: Water
+	Warhead@4EffWater: CreateEffect
+		Explosions: large_splash
+		ImpactSounds: splash9.aud
+		ValidTargets: Water
+Munch:
+	Report: Munchymunchy.wav,MFDie1
+	ReloadDelay: 30
+	Range: 1c512
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 70
+		Versus:
+			None: 90
+			Wood: 10
+			Light: 30
+			Heavy: 10
+			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+Crunch:
+	Report: IKill1.aud
+	ReloadDelay: 30
+	Range: 1c512
+	Projectile: Bullet
+		Speed: 1c682
+	Warhead@1Dam: SpreadDamage
+		Spread: 213
+		Damage: 100
+		Versus:
+			None: 90
+			Wood: 10
+			Light: 30
+			Heavy: 10
+			Concrete: 10
+		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
+FireBall:
+	ReloadDelay: 65
+	Range: 4c0
+	Burst: 1
+	ValidTargets: Air, Infantry, Ground, Vehicle, Building
+	Projectile: Missile
+		Speed: 304
+		Blockable: false
+		TrailImage: fb2
+		Image: FB1
+	Warhead@1Dam: SpreadDamage
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		Spread: 3c0
+		Damage: 30
+		Versus:
+			None: 90
+			Wood: 50
+			Light: 60
+			Heavy: 25
+			Concrete: 50
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+		Size: 3
+	Warhead@3Eff: CreateEffect
+		Explosions: napalm
+		ImpactSounds: firebl3.aud
+
+Flamethrower:
+	ReloadDelay: 100
+	Range: 5c0
+	Burst: 5
+	BurstDelays: 3
+	Projectile: Bullet
+		Speed: 100
+		TrailImage: fb4
+		Image: fb3
+		LaunchAngle: 40
+		Inaccuracy: 1500
+	ValidTargets: Ground
+	Warhead@1Dam_impact: SpreadDamage
+		Spread: 1c0
+		Damage: 1
+		Falloff: 1000, 368, 135, 50, 18, 7, 0
+		ValidTargets: Ground
+		Versus:
+			Concrete: 25
+		DamageTypes: Prone50Percent, TriggerProne, FireDeath
+	Warhead@3Smu_impact: LeaveSmudge
+		SmudgeType: Scorch
+		Size: 1
+	Warhead@4Eff_impact: CreateEffect
+		Explosions: smallfire
+		ImpactSounds: firebl3.aud
+	Warhead@7Smu_areanuke1: LeaveSmudge
+		SmudgeType: Scorch
+		Size: 1
+		Delay: 5
+	Warhead@8Eff_areanuke1: CreateEffect
+		Delay: 5
+	Warhead@11Smu_areanuke2: LeaveSmudge
+		SmudgeType: Scorch
+		Size: 1
+		Delay: 10
+	Warhead@14Smu_areanuke3: LeaveSmudge
+		SmudgeType: Scorch
+		Size: 1
+		Delay: 15
+	Warhead@17Smu_areanuke4: LeaveSmudge
+		SmudgeType: Scorch
+		Size: 1
+		Delay: 20
+
+PinkyThump:
+	InvalidTargets: PinkyThump
+	Warhead@1Dam: HealthPercentageDamage
+		Spread: 7c0
+		Damage: 2
+		InvalidTargets: PinkyThump
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Crater
+		Size: 5,1
+PinkyDetonate:
+	InvalidTargets: PinkyThump
+	Warhead@1Dam: HealthPercentageDamage
+		Spread: 7c0
+		Damage: 19
+		InvalidTargets: PinkyThump
+	Warhead@2Smu: LeaveSmudge
+		SmudgeType: Scorch
+		Size: 7,6
+	Warhead@3Eff: CreateEffect
+		Explosions: nuke
+		ImpactSounds: kaboom22.aud
+

@@ -609,7 +609,7 @@ MRJ:
 		Offset: -256,0,256
 	ProximityExternalCondition@JAMMER:
 		Range: 18c0
-		ValidStances: Enemy, Neutral
+		ValidRelationships: Enemy, Neutral
 		Condition: jammed
 	WithRangeCircle@JAMMER:
 		Type: jammer
@@ -617,7 +617,7 @@ MRJ:
 		Color: 0000FF80
 	JamsMissiles:
 		Range: 5c0
-		DeflectionStances: Neutral, Enemy
+		DeflectionRelationships: Neutral, Enemy
 	RenderJammerCircle:
 
 TTNK:
@@ -735,7 +735,7 @@ DTRK:
 		EmptyWeapon: MiniNuke
 		DamageSource: Killer
 	AttackFrontal:
-		FacingTolerance: 128
+		FacingTolerance: 512
 	Armament@PRIMARY:
 		Weapon: DemoTruckTargeting
 	GrantConditionOnAttack:

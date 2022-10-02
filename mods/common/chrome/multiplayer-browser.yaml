@@ -2,7 +2,7 @@ Background@MULTIPLAYER_PANEL:
 	Logic: MultiplayerLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 808
+	Width: 900
 	Height: 600
 	Children:
 		Label@TITLE:
@@ -20,25 +20,25 @@ Background@MULTIPLAYER_PANEL:
 			Children:
 				Label@NAME:
 					X: 5
-					Width: 255
+					Width: 347
 					Height: 25
 					Text: Server
 					Align: Center
 					Font: Bold
 				Label@PLAYERS:
-					X: 290
+					X: 382
 					Width: 85
 					Height: 25
 					Text: Players
 					Font: Bold
 				Label@LOCATION:
-					X: 380
+					X: 472
 					Width: 110
 					Height: 25
 					Text: Location
 					Font: Bold
 				Label@STATUS:
-					X: 495
+					X: 587
 					Width: 50
 					Height: 25
 					Text: Status
@@ -47,7 +47,7 @@ Background@MULTIPLAYER_PANEL:
 		Background@NOTICE_CONTAINER:
 			X: 20
 			Y: 67
-			Width: 583
+			Width: 675
 			Height: 20
 			Background: dialog2
 			Children:
@@ -75,7 +75,7 @@ Background@MULTIPLAYER_PANEL:
 		ScrollPanel@SERVER_LIST:
 			X: 20
 			Y: 67
-			Width: 583
+			Width: 675
 			Height: PARENT_BOTTOM - 119
 			TopBottomSpacing: 2
 			Children:
@@ -99,12 +99,12 @@ Background@MULTIPLAYER_PANEL:
 					Children:
 						LabelWithTooltip@TITLE:
 							X: 5
-							Width: 245
+							Width: 337
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 						Image@PASSWORD_PROTECTED:
-							X: 272
+							X: 364
 							Y: 6
 							Width: 12
 							Height: 13
@@ -113,7 +113,7 @@ Background@MULTIPLAYER_PANEL:
 							TooltipTemplate: SIMPLE_TOOLTIP
 							TooltipText: Requires Password
 						Image@REQUIRES_AUTHENTICATION:
-							X: 272
+							X: 364
 							Y: 6
 							Width: 12
 							Height: 13
@@ -122,23 +122,23 @@ Background@MULTIPLAYER_PANEL:
 							TooltipTemplate: SIMPLE_TOOLTIP
 							TooltipText: Requires OpenRA forum account
 						LabelWithTooltip@PLAYERS:
-							X: 290
+							X: 382
 							Width: 85
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@LOCATION:
-							X: 380
+							X: 472
 							Width: 110
 							Height: 25
 						Label@STATUS:
-							X: 495
+							X: 587
 							Width: 50
 							Height: 25
 		Label@PROGRESS_LABEL:
 			X: 20
 			Y: 67 + (PARENT_BOTTOM - 119 - HEIGHT) / 2
-			Width: 582
+			Width: 675
 			Height: 25
 			Font: Bold
 			Align: Center
@@ -225,21 +225,21 @@ Background@MULTIPLAYER_PANEL:
 					Children:
 						LogicTicker@ANIMATION:
 		Label@PLAYER_COUNT:
-			X: 208
+			X: 254
 			Y: PARENT_BOTTOM - HEIGHT - 20
 			Width: 190
 			Height: 25
 			Align: Center
 			Font: Bold
 		Button@DIRECTCONNECT_BUTTON:
-			X: 398
+			X: 490
 			Y: PARENT_BOTTOM - HEIGHT - 20
 			Width: 100
 			Height: 25
 			Text: Direct IP
 			Font: Bold
 		Button@CREATE_BUTTON:
-			X: 503
+			X: 595
 			Y: PARENT_BOTTOM - HEIGHT - 20
 			Width: 100
 			Height: 25

@@ -1,7 +1,7 @@
 ^concrete:
 	AlwaysVisible:
 	Interactable:
-	Building:
+	D2kBuilding:
 		TerrainTypes: Rock
 		BuildSounds: CHUNG.WAV
 		AllowInvalidPlacement: true
@@ -9,9 +9,6 @@
 	RequiresBuildableArea:
 		AreaTypes: building
 		Adjacent: 4
-	LaysTerrain:
-		Template: 88
-		TerrainTypes: Rock
 	Tooltip:
 		Name: Concrete
 		GenericName: Structure
@@ -25,7 +22,7 @@
 
 concretea:
 	Inherits: ^concrete
-	Building:
+	D2kBuilding:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Tooltip:
@@ -40,7 +37,7 @@ concretea:
 
 concreteb:
 	Inherits: ^concrete
-	Building:
+	D2kBuilding:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 	Tooltip:
@@ -59,14 +56,11 @@ construction_yard:
 	Inherits@UPGRADEABLE: ^Upgradeable
 	Buildable:
 		Description: Produces structures.
-	-DamagedByTerrain:
-	Building:
+	D2kBuilding:
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
-	LaysTerrain:
-		-RequiresCondition:
-	-GrantConditionOnPrerequisite@AUTOCONCRETE:
+		-ConcretePrerequisites:
 	WithBuildingBib:
 	Selectable:
 		Bounds: 96,64
@@ -127,7 +121,7 @@ wind_trap:
 		Cost: 225
 	Tooltip:
 		Name: Wind Trap
-	Building:
+	D2kBuilding:
 		Footprint: xx xx ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
@@ -176,7 +170,7 @@ barracks:
 		Cost: 225
 	Tooltip:
 		Name: Barracks
-	Building:
+	D2kBuilding:
 		Footprint: xx xx ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
@@ -243,7 +237,7 @@ refinery:
 		Cost: 1500
 	Tooltip:
 		Name: Spice Refinery
-	Building:
+	D2kBuilding:
 		Footprint: =xx xx= ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
@@ -367,7 +361,7 @@ light_factory:
 		Cost: 500
 	Tooltip:
 		Name: Light Factory
-	Building:
+	D2kBuilding:
 		Footprint: xxx xx= ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
@@ -445,7 +439,7 @@ heavy_factory:
 		Cost: 1000
 	Tooltip:
 		Name: Heavy Factory
-	Building:
+	D2kBuilding:
 		Footprint: _x_ xxx =xX ===
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
@@ -533,7 +527,7 @@ outpost:
 		Cost: 750
 	Tooltip:
 		Name: Outpost
-	Building:
+	D2kBuilding:
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
@@ -581,7 +575,7 @@ starport:
 		Description: Dropzone for quick reinforcements, at a price.
 	Valued:
 		Cost: 1500
-	Building:
+	D2kBuilding:
 		Footprint: xxx x=x =x=
 		Dimensions: 3,3
 	Selectable:
@@ -672,7 +666,7 @@ wall:
 		Name: Concrete Wall
 		GenericName: Structure
 	AppearsOnRadar:
-	Building:
+	D2kBuilding:
 		BuildSounds: CHUNG.WAV
 		TerrainTypes: Rock, Concrete
 	FootprintPlaceBuildingPreview:
@@ -816,7 +810,7 @@ repair_pad:
 		Cost: 800
 	Tooltip:
 		Name: Repair Pad
-	Building:
+	D2kBuilding:
 		Footprint: +++ +++ +++
 		Dimensions: 3,3
 	Health:
@@ -883,7 +877,7 @@ high_tech_factory:
 	Exit:
 		SpawnOffset: 0,0,728
 		ExitCell: 0,0
-	Building:
+	D2kBuilding:
 		Footprint: _X_ xxx XXX ===
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
@@ -953,7 +947,7 @@ research_centre:
 		Cost: 1000
 	Tooltip:
 		Name: IX Research Center
-	Building:
+	D2kBuilding:
 		Footprint: _X_ xxx XXX ===
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
@@ -1005,7 +999,7 @@ palace:
 		Cost: 1600
 	Tooltip:
 		Name: Palace
-	Building:
+	D2kBuilding:
 		Footprint: xx= xxx =xx
 		Dimensions: 3,3
 	Health:

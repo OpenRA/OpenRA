@@ -1,0 +1,595 @@
+Player:
+World:
+	LuaScript:
+		Scripts: HillsSilent.lua
+	WeatherOverlay:
+		ParticleDensityFactor: 1
+		ChangingWindLevel: true
+		WindLevels: 1
+		InstantWindChanges: false
+		WindTick: 1, 1
+		UseSquares: true
+		ScatterDirection: -1, 1
+		Gravity: 0.50, 1.00
+		SwingOffset: 1.0, 1.5
+		SwingSpeed: 0.001, 0.025
+		SwingAmplitude: 1.0, 1.5
+		ParticleColors: ECECEC, E4E4E4, D0D0D0, BCBCBC
+		LineTailAlphaValue: 0
+		ParticleSize: 1, 3
+	GlobalLightingPaletteEffect:
+		Red: 0.9
+		Green: 0.9
+		Blue: 1
+		Ambient: 1.20
+	PaletteFromFile@spidercostume:
+		Name: spidercostume
+		Filename: spideypalette.pal
+		Tileset: temperat
+		ShadowIndex: 4
+		AllowModifiers: false
+	PaletteFromFile@pinky:
+		Name: pinky
+		Filename: pinky.pal
+		ShadowIndex: 1
+		AllowModifiers: false
+	FlashPaletteEffect@LIGHTNINGSTRIKE:
+		Type: LightningStrike
+	MusicPlaylist:
+		BackgroundMusic: await_r
+MONSTEREGG:
+	Inherits: ^TechBuilding
+	Health:
+		HP: 100
+	RepairableBuilding:
+	WithSpriteBody:
+	RenderSprites:
+		Image: godzillaegg
+	DamageMultiplier:
+		BaseLevel: 0
+		Modifier: 0
+E6:
+	Capturable:
+		Types: building, MonsterCap
+BIO:
+	Targetable:
+		TargetTypes: MonsterCap
+	-Selectable:
+	Tooltip:
+		Name: Monster Egg
+		Description: Unlocks the 7th circle Hell.\n Spawns Demons with Tech Center.
+	RenderSprites:
+		Image: godzillaegg
+	DamageMultiplier:
+		BaseLevel: 0
+		Modifier: 0
+	Interactable:
+		Bounds: 96,48
+	SelectionDecorations:
+THF:
+	Captures:
+		CaptureTypes: vehicle, tripod
+TRIPOD2:
+	Inherits@1: ^Vehicle
+	Inherits@2: ^GainsExperience
+	Tooltip:
+		Name: Tripod
+		Description: Alien War Hybrid.\n Strong vs Everything.
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 200
+		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.high, ~bio
+		BuildLimit: 1
+	RenderSprites:
+		Image: tripod
+		Scale: 1.5
+	Capturable:
+		Types: tripod
+		CaptureThreshold: 1
+	Health:
+		HP: 10000
+	RevealsShroud:
+		Range: 20c0
+	Mobile:
+		Speed: 13
+		Crushes: wall,mine,crate,infantry
+		SharesCell: no
+		Voice: Move
+	Valued:
+		Cost: 10000
+	WithMuzzleOverlay:
+	WithFacingSpriteBody:
+		StartSequence: run
+		Sequence: muzzle
+		PauseAnimationWhenDisabled: True
+	WithInfantryBody:
+		IdleSequences: idle
+		AttackSequence: shoot
+		StandSequences: stand
+		MoveSequence: run
+	WithDeathAnimation:
+		DeathSequence: die
+	ThrowsShrapnel:
+		Weapons: Lazer
+		Pieces: 70, 100
+		Range: 3c0, 4c0
+	Explodes:
+		Weapon: TripodExplode
+		EmptyWeapon: TripodExplode
+	AttackFrontal:
+	Armament@PRIMARY:
+		Weapon: Lazer
+		LocalOffset: 100,-700,0
+		Recoil: 22
+		FireDelay: 4
+	Armament@SECONDARY:
+		Name: secondary
+		Weapon: Lazer
+		LocalOffset: 100,650,0
+		Recoil: 22
+		FireDelay: 2
+	Armament@THIRD:
+		Weapon: TripodLauncher
+		LocalOffset: -100,-200,200, -100,200,200
+		MuzzleSequence: muzzle
+		FireDelay: 2
+	Armament@FOURTH:
+		Weapon: MammothTusk 
+		LocalOffset: -250,0,200
+		MuzzleSequence: muzzle
+		FireDelay: 2
+	DeathSounds:
+		Voice: Die
+	AutoTarget:
+	SelectionDecorations:
+		VisualBounds: 70,110,0,20
+	Selectable:
+		Bounds: 70,110
+		Voice: Select
+	ShakeOnDeath:
+		Intensity: 26
+	VoiceAnnouncement:
+		Voice: Build
+	AnnounceOnKill:
+		Voice: Kill
+	Voiced:
+		VoiceSet: TripodVoices
+		Volume: 3
+	BodyOrientation: 
+		UseClassicFacingFudge: True
+	JamsMissiles:
+		Range: 2
+		AlliedMissiles: True
+		Chance: 100
+	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+
+TRIPOD:
+	Inherits@1: ^Vehicle
+	Inherits@2: ^GainsExperience
+	Tooltip:
+		Name: Tripod
+		Description: Alien War Hybrid.\n Strong vs Everything.
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 200
+		Prerequisites: fix, atek, ~vehicles.allies, ~techlevel.high, ~bio
+		BuildLimit: 1
+	RenderSprites:
+		Image: tripod
+		Scale: 1.5
+	Health:
+		HP: 10000
+	RevealsShroud:
+		Range: 20c0
+	Capturable:
+		Type: tripod
+		CaptureThreshold: 1
+	ThrowsShrapnel:
+		Weapons: Lazer
+		Pieces: 70, 100
+		Range: 3c0, 4c0
+	Mobile:
+		Speed: 13
+		Crushes: wall,mine,crate,infantry
+		SharesCell: no
+		Voice: Move
+	Valued:
+		Cost: 10000
+	WithMuzzleOverlay:
+	WithFacingSpriteBody:
+		StartSequence: run
+		Sequence: muzzle
+		PauseAnimationWhenDisabled: True
+	WithInfantryBody:
+		IdleSequences: idle
+		AttackSequence: shoot
+		StandSequences: stand
+		MoveSequence: run
+	WithDeathAnimation:
+		DeathSequence: die
+	Explodes:
+		Weapon: TripodExplode
+		EmptyWeapon: TripodExplode
+	AttackFrontal:
+	Armament@PRIMARY:
+		Weapon: Lazer
+		LocalOffset: 100,-700,0
+		Recoil: 22
+		FireDelay: 4
+	Armament@SECONDARY:
+		Name: secondary
+		Weapon: Lazer
+		LocalOffset: 100,650,0
+		Recoil: 22
+		FireDelay: 2
+	Armament@THIRD:
+		Weapon: TripodLauncher
+		LocalOffset: -100,-200,200, -100,200,200
+		MuzzleSequence: muzzle
+		FireDelay: 2
+	Armament@FOURTH:
+		Weapon: MammothTusk 
+		LocalOffset: -250,0,200
+		MuzzleSequence: muzzle
+		FireDelay: 2
+	DeathSounds:
+		Voice: Die
+	AutoTarget:
+	SelectionDecorations:
+		VisualBounds: 70,110,0,20
+	Selectable:
+		Bounds: 70,110
+		Voice: Select
+	ShakeOnDeath:
+		Intensity: 26
+	VoiceAnnouncement:
+		Voice: Build
+	AnnounceOnKill:
+		Voice: Kill
+	Voiced:
+		VoiceSet: TripodVoices
+		Volume: 3
+	BodyOrientation: 
+		UseClassicFacingFudge: True
+	JamsMissiles:
+		Range: 2
+		AlliedMissiles: True
+		Chance: 100
+	ProducibleWithLevel:
+		Prerequisites: vehicles.upgraded
+^Monster:
+	GivesBounty:
+		Percentage: 25
+	AppearsOnRadar:
+		UseLocation: true
+	Valued:
+		Cost: 500
+	Buildable:
+		Queue: Infantry
+		BuildAtProductionType: Soldier
+		BuildPaletteOrder: 10
+		Prerequisites: ~disabled
+	Mobile:
+		Locomotor: wheeled
+		Crushes: mine
+		SharesCell: false
+		TerrainSpeeds:
+			Clear: 90
+			Rough: 80
+			Road: 100
+			Bridge: 100
+			Ore: 80
+			Gems: 80
+			Beach: 80
+		ROT: 8
+		Speed: 50
+	Health:
+		HP: 300
+		Radius: 512
+	HitShape:
+		Type: Circle
+			Radius: 488
+	Armor:
+		Type: None
+	RevealsShroud:
+		Range: 5c0
+	SelectionDecorations:
+	Selectable:
+		Bounds: 24,24,0,-4
+		Voice: AntVoice
+	AutoTarget:
+		InitialStance: AttackAnything
+		ScanRadius: 10
+	WithInfantryBody:
+		IdleSequences: idle
+		MinIdleWaitTicks: 12
+		MaxIdleWaitTicks: 50
+		StandSequences: idle
+		MoveSequence: run
+		AttackSequence: shoot
+	HiddenUnderFog:
+	GivesExperience:
+	DrawLineToTarget:
+	ActorLostNotification:
+	CombatDebugOverlay:
+	Guard:
+	Guardable:
+	BodyOrientation:
+	Huntable:
+	UpdatesPlayerStatistics:
+	AttackFrontal:
+		Voice: Action
+	AttackMove:
+		Voice: Action
+	WithMuzzleOverlay:
+	Targetable:
+		TargetTypes: Ground, Infantry
+	WithDeathAnimation:
+		DeathSequencePalette: spidercostume
+		DeathPaletteIsPlayerPalette: False
+		DeathSequence: die
+		UseDeathTypeSuffix: false
+	ScriptTriggers:
+	AnnounceOnKill:
+	ChangesHealth:
+		Step: 10
+		Delay: 25
+		StartIfBelow: 1
+		DamageCooldown: 375
+	DeathSounds:
+		Voice: Die
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
+	Voiced:
+		VoiceSet: ArachnotronVoice
+	CombatDebugOverlay:
+
+PVICE:
+	Inherits: ^Monster
+	Inherits@2: ^GainsExperience
+	Inherits@3: ^SpriteActor
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 200
+		BuildAtProductionType: Soldier
+		Prerequisites: ~bio, dome
+		IconPalette: spidercostume
+	Valued:
+		Cost: 250
+	Tooltip:
+		Name: Mutated Zombie
+		Description: Bites enemies \n that munches on enemies\n Strong vs Infantry.
+	Voiced:
+		VoiceSet: MutatedVoices
+		Volume: 3
+	Selectable:
+		Bounds: 20,20,-3,-4
+	Selectable:
+		Voice: Select
+		Bounds: 20,20,-3,-4
+	AnnounceOnKill:
+		Voice: Kill
+	Mobile:
+		Voice: Action
+		Speed: 70
+	RenderSprites:
+		Image: pvice
+		Palette: spidercostume
+	Passenger:
+		CargoType: Infantry
+	DeathSounds:
+		Voice: Die
+	AttackMove:
+		Voice: Action
+	Health:
+		HP: 100
+	AutoTarget:
+	Armor:
+		Type: Heavy
+	Armament@PRIMARY:
+		Weapon: Munch
+	WithDeathAnimation:
+		DeathSequence: die
+		DeathSequencePalette: player
+	WithInfantryBody:
+		IdleSequences: idle
+		MinIdleWaitTicks: 12
+		MaxIdleWaitTicks: 50
+		StandSequences: idle
+		MoveSequence: idle
+Zombie:
+	Buildable:
+		Prerequisites: ~disabled
+Ant:
+	Buildable:
+		Prerequisites: ~disabled
+PINKY:
+	Inherits: ^Monster
+	Inherits@2: ^GainsExperience
+	Inherits@3: ^SpriteActor
+	Buildable:
+		Queue: Vehicle
+		BuildAtProductionType: Vehicle
+		BuildPaletteOrder: 199
+		Prerequisites: fix, atek, ~vehicles.allies, ~techlevel.high, ~bio
+	BodyOrientation:
+	Valued:
+		Cost: 1200
+	Mobile:
+		Voice: Move
+		Speed: 55
+	Tooltip:
+		Name: Demon
+		Description: Demon that self destructs sending\n a fiery shockwave nearest its victims
+	Health:
+		HP: 1300
+	AutoTarget:
+	Voiced:
+		VoiceSet: PinkVoices
+		Volume: 4
+	Armor:
+		Type: Wood
+	WithFacingSpriteBody:
+		StartSequence: muzzle
+		Sequence: muzzle
+	WithInfantryBody:
+	-WithDeathAnimation:
+		DeathSequencePalette: pinky
+		DeathPaletteIsPlayerPalette: false
+	Armament@PRIMARY:
+		LocalOffset: 550,0,500
+		Weapon: Crunch
+		FireDelay: 5
+	SelectionDecorations:
+		VisualBounds: 40,50,0,5
+	Selectable:
+		Bounds: 40,50,0,5
+		Voice: Select
+	DeathSounds:
+		Voice: Die
+	AnnounceOnKill:
+		Voice: Kill
+	ThrowsShrapnel:
+		Weapons: GrenadeParticles
+		Pieces: 150,250
+		Range: 3c0, 4c0
+	Explodes:
+		Weapon: BarrelExplode
+	RenderSprites:
+		Image: pinky
+		Scale: 1.5
+		Palette: pinky
+	MadTank:
+		ThumpInterval: 8
+		ThumpShakeIntensity: 10
+		ThumpShakeMultiplier: 0,20
+		ThumpShakeTime: 10
+		ThumpDamageWeapon: PinkyThump
+		DetonationWeapon: PinkyDetonate
+		ChargeSound: IDie1.aud
+		ThumpSequence: die
+		Voice: Die
+		DetonationSound: MFDie2.aud
+		DriverActor: pvice
+	Targetable:
+		TargetTypes: Ground, PinkyThump, Repair, Vehicle, Infantry
+PINKY2:
+	Inherits: ^Monster
+	Inherits@2: ^GainsExperience
+	Inherits@3: ^SpriteActor
+	Buildable:
+		Queue: Vehicle
+		BuildAtProductionType: Vehicle
+		BuildPaletteOrder: 199
+		Prerequisites: fix, stek, ~vehicles.soviet, ~techlevel.high, ~bio
+	BodyOrientation:
+	Valued:
+		Cost: 1200
+	Mobile:
+		Voice: Move
+		Speed: 55
+	Tooltip:
+		Name: Demon
+		Description: Demon that self destructs sending\n a fiery shockwave nearest its victims
+	Health:
+		HP: 1300
+	AutoTarget:
+	Voiced:
+		VoiceSet: PinkVoices
+		Volume: 4
+	Armor:
+		Type: Wood
+	WithFacingSpriteBody:
+		StartSequence: muzzle
+		Sequence: muzzle
+	WithInfantryBody:
+	-WithDeathAnimation:
+		DeathSequencePalette: pinky
+		DeathPaletteIsPlayerPalette: false
+	Armament@PRIMARY:
+		LocalOffset: 550,0,500
+		Weapon: Crunch
+		FireDelay: 5
+	SelectionDecorations:
+		VisualBounds: 40,50,0,5
+	Selectable:
+		Bounds: 40,50,0,5
+		Voice: Select
+	DeathSounds:
+		Voice: Die
+	AnnounceOnKill:
+		Voice: Kill
+	ThrowsShrapnel:
+		Weapons: GrenadeParticles
+		Pieces: 150,250
+		Range: 3c0, 4c0
+	Explodes:
+		Weapon: BarrelExplode
+	RenderSprites:
+		Image: pinky
+		Scale: 1.5
+		Palette: pinky
+	MadTank:
+		ThumpInterval: 8
+		ThumpShakeIntensity: 10
+		ThumpShakeMultiplier: 0,20
+		ThumpShakeTime: 10
+		ThumpDamageWeapon: PinkyThump
+		DetonationWeapon: PinkyDetonate
+		ChargeSound: IDie1.aud
+		ThumpSequence: die
+		Voice: Die
+		DetonationSound: MFDie2.aud
+		DriverActor: pvice
+	Targetable:
+		TargetTypes: Ground, PinkyThump, Repair, Vehicle, Infantry
+IMP:
+	Inherits: ^Monster
+	Inherits@2: ^GainsExperience
+	Inherits@3: ^SpriteActor
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 200
+		BuildAtProductionType: Soldier
+		Prerequisites: ~bio, dome
+	BodyOrientation:
+	Valued:
+		Cost: 650
+	Tooltip:
+		Name: Imp
+		Description: Sprays flames upon victims \n Strong vs Infantry.
+
+	Health:
+		HP: 750
+	Voiced:
+		VoiceSet: ImpVoices
+		Volume: 3
+	Selectable:
+		Voice: Select
+		Bounds: 20,32,0,-10
+	AnnounceOnKill:
+		Voice: Kill
+	Mobile:
+		Voice: Move
+		Speed: 60
+	DeathSounds:
+		Voice: Die
+	AttackMove:
+		Voice: Action
+	RenderSprites:
+		Image: imp
+		Palette: spidercostume
+	Armor:
+		Type: None
+	Armament@PRIMARY:
+		Weapon: Flamethrower
+		LocalOffset: 256, 256, 600, 256, -256, 600
+	Armament@SECONDARY:
+		Name: Secondary
+		Weapon: Flamethrower
+		LocalOffset: 256, 256, 600, 256, -256, 600
+	Armament@SECONDARY1:
+		Weapon: Flamethrower
+		LocalOffset: 256, 256, 600, 256, -256, 600

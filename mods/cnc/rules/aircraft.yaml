@@ -67,7 +67,7 @@ HELI:
 		TurnSpeed: 28
 		Speed: 180
 	Health:
-		HP: 12000
+		HP: 12500
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -87,7 +87,7 @@ HELI:
 	AutoTarget:
 		ScanRadius: 4
 	AttackAircraft:
-		FacingTolerance: 20
+		FacingTolerance: 80
 		OpportunityFire: false
 		PersistentTargeting: false
 		AttackType: Hover
@@ -152,7 +152,7 @@ ORCA:
 	AutoTarget:
 		ScanRadius: 5
 	AttackAircraft:
-		FacingTolerance: 20
+		FacingTolerance: 80
 		OpportunityFire: false
 		PersistentTargeting: false
 		AttackType: Hover
@@ -189,7 +189,7 @@ C17:
 		Repulsable: False
 		MaximumPitch: 36
 	HiddenUnderFog:
-		AlwaysVisibleStances: None
+		AlwaysVisibleRelationships: None
 		Type: CenterPosition
 	Cargo:
 		MaxWeight: 10

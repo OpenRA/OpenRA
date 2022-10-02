@@ -9,7 +9,7 @@
 environment = {}
 
 -- Reset package path
-package.path = GameDir .. "/lua/?.lua"
+package.path = EngineDir .. "/lua/?.lua"
 
 -- Note: sandbox has been customized to remove math.random
 local sandbox = require('sandbox')

@@ -33,7 +33,7 @@ FlametankExplode:
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: big_napalm
-		ImpactSounds: xplobig6.aud
+		ImpactSounds: flamer2.aud
 	Warhead@3Smu: LeaveSmudge
 		SmudgeType: Scorch
 
@@ -73,6 +73,29 @@ UnitExplodeSmall:
 	Warhead@2Eff: CreateEffect
 		Explosions: big_frag
 		ImpactSounds: xplobig4.aud
+
+UnitExplodeBig:
+	Inherits: ^DamagingExplosionHE
+	Warhead@2Eff: CreateEffect
+		Explosions: big_frag
+		ImpactSounds: xplobig6.aud
+
+UnitExplodeMech:
+	Inherits: ^DamagingExplosionHE
+	Warhead@2Eff: CreateEffect
+		Explosions: poof
+		ImpactSounds: xplosml2.aud
+
+UnitExplodeHarvEmpty:
+	Inherits: ^DamagingExplosionHE
+	Warhead@2Eff: CreateEffect
+		Explosions: building
+		ImpactSounds: xplos.aud
+
+UnitExplodeStealthTank:
+	Inherits: UnitExplodeBig
+	Warhead@1Dam: SpreadDamage
+		InvalidTargets: StealthTank
 
 GrenadierExplode:
 	Inherits: ^DamagingExplosionHE

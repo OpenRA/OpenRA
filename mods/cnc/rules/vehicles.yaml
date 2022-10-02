@@ -18,7 +18,7 @@ MCV:
 	Health:
 		HP: 120000
 	Repairable:
-		HpPerStep: 2182
+		HpPerStep: 1819
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -67,7 +67,7 @@ HARV:
 	Health:
 		HP: 62500
 	Repairable:
-		HpPerStep: 2537
+		HpPerStep: 2584
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -80,6 +80,9 @@ HARV:
 		EffectiveOwnerFromOwner: true
 	WithHarvestAnimation:
 	WithDockingAnimation:
+	Explodes@EMPTY:
+		Weapon: UnitExplodeHarvEmpty
+		EmptyWeapon: UnitExplodeHarvEmpty
 	Explodes:
 		RequiresCondition: !no-tiberium
 		Weapon: TiberiumExplosion
@@ -160,6 +163,9 @@ APC:
 		Types: Infantry
 		MaxWeight: 5
 		LoadingCondition: notmobile
+	Explodes:
+		Weapon: UnitExplodeBig
+		EmptyWeapon: UnitExplodeBig
 	SpawnActorOnDeath:
 		Actor: APC.Husk
 		OwnerType: InternalName
@@ -187,7 +193,7 @@ ARTY:
 	Health:
 		HP: 7500
 	Repairable:
-		HpPerStep: 569
+		HpPerStep: 568
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -396,7 +402,7 @@ LTNK:
 	Health:
 		HP: 34000
 	Repairable:
-		HpPerStep: 2273
+		HpPerStep: 2062
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -438,7 +444,7 @@ MTNK:
 	Health:
 		HP: 45000
 	Repairable:
-		HpPerStep: 2557
+		HpPerStep: 2274
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -454,6 +460,9 @@ MTNK:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
+	Explodes:
+		Weapon: UnitExplodeBig
+		EmptyWeapon: UnitExplodeBig
 	SpawnActorOnDeath:
 		Actor: MTNK.Husk
 		OwnerType: InternalName
@@ -484,7 +493,7 @@ HTNK:
 	Health:
 		HP: 87000
 	Repairable:
-		HpPerStep: 2637
+		HpPerStep: 2198
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -512,6 +521,9 @@ HTNK:
 		Delay: 10
 		StartIfBelow: 50
 		DamageCooldown: 200
+	Explodes:
+		Weapon: UnitExplodeMech
+		EmptyWeapon: UnitExplodeMech
 	SpawnActorOnDeath:
 		Actor: HTNK.Husk
 		OwnerType: InternalName
@@ -541,7 +553,7 @@ MSAM:
 	Health:
 		HP: 12000
 	Repairable:
-		HpPerStep: 546
+		HpPerStep: 606
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -560,6 +572,9 @@ MSAM:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
 	WithSpriteTurret:
+	Explodes:
+		Weapon: UnitExplodeMech
+		EmptyWeapon: UnitExplodeMech
 	SpawnActorOnDeath:
 		Actor: MSAM.Husk
 		OwnerType: InternalName
@@ -629,7 +644,7 @@ STNK:
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Valued:
-		Cost: 1000
+		Cost: 900
 	Tooltip:
 		Name: Stealth Tank
 	UpdatesPlayerStatistics:
@@ -643,6 +658,8 @@ STNK:
 		Locomotor: heavywheeled
 		TurnSpeed: 40
 		Speed: 142
+	Targetable:
+		TargetTypes: Ground, Vehicle, StealthTank
 	Health:
 		HP: 15000
 	Repairable:
@@ -671,6 +688,9 @@ STNK:
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
+	Explodes:
+		Weapon: UnitExplodeStealthTank
+		EmptyWeapon: UnitExplodeStealthTank
 	SpawnActorOnDeath:
 		Actor: STNK.Husk
 		OwnerType: InternalName

@@ -113,7 +113,7 @@ ConsoleTriggers = function()
 			Trigger.AfterDelay(DateTime.Seconds(4), function()
 				Utils.Do(SarinVictims, function(actor)
 					if not actor.IsDead then
-						actor.Kill()
+						actor.Kill("ExplosionDeath")
 					end
 				end)
 			end)

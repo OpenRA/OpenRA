@@ -23,27 +23,34 @@ Container@LOBBY_PLAYER_BIN:
 					Font: Bold
 				Label@LABEL_LOBBY_FACTION:
 					X: 270
-					Width: 130
+					Width: 140
 					Height: 25
 					Text: Faction
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_TEAM:
-					X: 410
+					X: 420
 					Width: 48
 					Height: 25
 					Text: Team
 					Align: Center
 					Font: Bold
+				Label@LABEL_LOBBY_HANDICAP:
+					X: 478
+					Width: 72
+					Height: 25
+					Text: Handicap
+					Align: Center
+					Font: Bold
 				Label@LABEL_LOBBY_SPAWN:
-					X: 468
+					X: 560
 					Width: 48
 					Height: 25
 					Text: Spawn
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_STATUS:
-					X: 525
+					X: 617
 					Width: 20
 					Height: 25
 					Text: Ready
@@ -118,7 +125,7 @@ Container@LOBBY_PLAYER_BIN:
 									Height: PARENT_BOTTOM - 12
 						DropDownButton@FACTION:
 							X: 270
-							Width: 130
+							Width: 140
 							Height: 25
 							IgnoreChildMouseOver: true
 							TooltipContainer: TOOLTIP_CONTAINER
@@ -135,23 +142,29 @@ Container@LOBBY_PLAYER_BIN:
 									Height: 25
 									Text: Faction
 						DropDownButton@TEAM_DROPDOWN:
-							X: 410
+							X: 420
 							Width: 48
 							Height: 25
 							Text: Team
+						DropDownButton@HANDICAP_DROPDOWN:
+							X: 478
+							Width: 72
+							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipText: A handicap decreases the combat effectiveness of the player's forces
 						DropDownButton@SPAWN_DROPDOWN:
-							X: 468
+							X: 560
 							Width: 48
 							Height: 25
 							Text: Spawn
 						Checkbox@STATUS_CHECKBOX:
-							X: 525
+							X: 617
 							Y: 2
 							Width: 20
 							Height: 20
 							Visible: false
 						Image@STATUS_IMAGE:
-							X: 527
+							X: 619
 							Y: 4
 							Width: 20
 							Height: 20
@@ -225,7 +238,7 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 13
 						Container@FACTION:
 							X: 270
-							Width: 160
+							Width: 170
 							Height: 25
 							Children:
 								Image@FACTIONFLAG:
@@ -235,32 +248,43 @@ Container@LOBBY_PLAYER_BIN:
 									Height: 23
 								Label@FACTIONNAME:
 									X: 34
-									Width: 60
+									Width: 70
 									Height: 25
 									Text: Faction
 						Label@TEAM:
-							X: 410
+							X: 420
 							Width: 23
 							Height: 25
 							Align: Center
 							Text: Team
-						Label@SPAWN:
-							X: 468
-							Width: 23
-							Height: 25
-							Align: Center
 						DropDownButton@TEAM_DROPDOWN:
-							X: 410
+							X: 420
 							Width: 48
 							Height: 25
 							Visible: false
+						Label@HANDICAP:
+							X: 478
+							Width: 47
+							Height: 25
+							Align: Center
+						DropDownButton@HANDICAP_DROPDOWN:
+							X: 478
+							Width: 72
+							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipText: A handicap decreases the combat effectiveness of the player's forces
+						Label@SPAWN:
+							X: 560
+							Width: 23
+							Height: 25
+							Align: Center
 						DropDownButton@SPAWN_DROPDOWN:
-							X: 468
+							X: 560
 							Width: 48
 							Height: 25
 							Visible: false
 						Image@STATUS_IMAGE:
-							X: 527
+							X: 619
 							Y: 4
 							Width: 20
 							Height: 20
@@ -286,7 +310,7 @@ Container@LOBBY_PLAYER_BIN:
 							Visible: false
 						Button@JOIN:
 							X: 190
-							Width: 326
+							Width: 418
 							Height: 25
 							Text: Play in this slot
 				Container@TEMPLATE_EDITABLE_SPECTATOR:
@@ -333,19 +357,19 @@ Container@LOBBY_PLAYER_BIN:
 									Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@SPECTATOR:
 							X: 190
-							Width: 326
+							Width: 418
 							Height: 25
 							Text: Spectator
 							Align: Center
 							Font: Bold
 						Checkbox@STATUS_CHECKBOX:
-							X: 525
+							X: 617
 							Y: 2
 							Width: 20
 							Height: 20
 							Visible: false
 						Image@STATUS_IMAGE:
-							X: 527
+							X: 619
 							Y: 4
 							Width: 20
 							Height: 20
@@ -414,13 +438,13 @@ Container@LOBBY_PLAYER_BIN:
 									Template: ANONYMOUS_PLAYER_TOOLTIP
 						Label@SPECTATOR:
 							X: 190
-							Width: 326
+							Width: 418
 							Height: 25
 							Text: Spectator
 							Align: Center
 							Font: Bold
 						Image@STATUS_IMAGE:
-							X: 527
+							X: 619
 							Y: 4
 							Width: 20
 							Height: 20
@@ -441,7 +465,7 @@ Container@LOBBY_PLAYER_BIN:
 							Font: Regular
 						Button@SPECTATE:
 							X: 190
-							Width: 326
+							Width: 418
 							Height: 25
 							Text: Spectate
 							Font: Regular

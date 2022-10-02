@@ -133,6 +133,9 @@ STNK.Husk:
 		IntoActor: stnk
 	RenderSprites:
 		Image: stnk.destroyed
+	Explodes:
+		Weapon: UnitExplodeStealthTank
+		EmptyWeapon: UnitExplodeStealthTank
 
 TRUCK.Husk:
 	Inherits: ^LightHusk

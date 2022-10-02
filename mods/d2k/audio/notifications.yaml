@@ -62,10 +62,10 @@ Speech:
 Sounds:
 	DefaultVariant: .WAV
 	Notifications:
-		RadarUp: MULTI1
+		RadarUp: RADRON1
 		RadarDown:
-		DisablePower: POWRUP1
-		EnablePower: POWRDN1
+		DisablePower: POWRDN1
+		EnablePower: POWRUP1
 		CashTickUp: CASHTIK1
 		CashTickDown: CASHTIK1
 		LevelUp: SCORTIK1

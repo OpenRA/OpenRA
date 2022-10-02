@@ -1,7 +1,7 @@
 Sniper:
 	Report: ramgun2.aud
 	ValidTargets: Ground, Infantry
-	InvalidTargets: Vehicle, Water, Structure, Wall, Husk
+	InvalidTargets: Vehicle, Water, Structure, Wall, Husk, Creep
 	ReloadDelay: 40
 	Range: 8c0
 	Projectile: Bullet
@@ -11,6 +11,10 @@ Sniper:
 		Damage: 10000
 		ValidTargets: Infantry
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
+	Warhead@2Eff: CreateEffect
+		Explosions: piff
+		ImpactActors: false
+		ValidTargets: Ground, Water, Air
 
 ^HeavyMG:
 	ReloadDelay: 25
@@ -68,7 +72,7 @@ HeliAGGun:
 		Damage: 2000
 		Versus:
 			None: 100
-			Wood: 50
+			Wood: 75
 			Light: 75
 			Heavy: 25
 		DamageTypes: Prone80Percent, TriggerProne, RippedApartDeath
@@ -80,16 +84,6 @@ HeliAAGun:
 		ValidTargets: Air
 		Versus:
 			Light: 50
-
-Pistol:
-	Inherits: ^LightMG
-	ReloadDelay: 7
-	Range: 3c0
-	Report: gun18.aud
-	Warhead@1Dam: SpreadDamage
-		Damage: 100
-		Versus:
-			None: 100
 
 ^LightMG:
 	Inherits: ^HeavyMG
@@ -109,9 +103,30 @@ Pistol:
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piff
+		Inaccuracy: 171
+
+Pistol:
+	Inherits: ^LightMG
+	ReloadDelay: 7
+	Range: 3c0
+	Report: gun18.aud
+	Warhead@1Dam: SpreadDamage
+		Damage: 100
+		Versus:
+			None: 100
+	Warhead@2Eff: CreateEffect
+		Inaccuracy: 128
 
 M16:
 	Inherits: ^LightMG
+	Warhead@2Eff2: CreateEffect
+		Delay: 2
+		Explosions: piff
+		Inaccuracy: 171
+	Warhead@2Eff3: CreateEffect
+		Delay: 4
+		Explosions: piff
+		Inaccuracy: 171
 
 MachineGun:
 	Inherits: ^LightMG
@@ -122,7 +137,7 @@ MachineGun:
 			Wood: 10
 			Light: 70
 	Warhead@2Eff: CreateEffect
-		Explosions: piffs
+		Inaccuracy: 213
 
 MachineGunH:
 	Inherits: MachineGun
@@ -160,6 +175,6 @@ APCGun.AA:
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air
 		Versus:
-			Light: 140
+			Light: 125
 	Warhead@2Eff: CreateEffect
 		Explosions: small_poof

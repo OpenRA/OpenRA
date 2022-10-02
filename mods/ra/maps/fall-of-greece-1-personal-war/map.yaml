@@ -24,8 +24,8 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Faction: allies
-	PlayerReference@Greece:
-		Name: Greece
+	PlayerReference@England:
+		Name: England
 		Faction: allies
 		Color: A0F08C
 		Allies: GreekCivilians, Allies
@@ -41,87 +41,87 @@ Players:
 		Color: ABB7E4
 		LockSpawn: True
 		LockTeam: True
-		Allies: Greece
+		Allies: England
 		Enemies: USSR, BadGuy
 	PlayerReference@GreekCivilians:
 		Name: GreekCivilians
 		NonCombatant: True
 		Faction: allies
-		Allies: Greece
+		Allies: England
 	PlayerReference@USSR:
 		Name: USSR
 		Faction: soviet
 		Color: FF1400
 		Allies: BadGuy
-		Enemies: Greece, GreekCivilians, Allies
+		Enemies: England, GreekCivilians, Allies
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Faction: soviet
 		Color: FF1400
 		Allies: USSR
-		Enemies: Greece, GreekCivilians, Allies
+		Enemies: England, GreekCivilians, Allies
 
 Actors:
 	Actor0: brik
 		Location: 97,44
-		Owner: Greece
+		Owner: England
 	Actor1: brik
 		Location: 98,44
-		Owner: Greece
+		Owner: England
 	Actor2: brik
 		Location: 101,44
-		Owner: Greece
+		Owner: England
 	Actor3: brik
 		Location: 102,44
-		Owner: Greece
+		Owner: England
 	Actor4: brik
 		Location: 97,45
-		Owner: Greece
+		Owner: England
 	Actor5: brik
 		Location: 98,45
-		Owner: Greece
+		Owner: England
 	Actor6: brik
 		Location: 99,45
-		Owner: Greece
+		Owner: England
 	Actor7: brik
 		Location: 100,45
-		Owner: Greece
+		Owner: England
 	Actor8: brik
 		Location: 101,45
-		Owner: Greece
+		Owner: England
 	Actor9: brik
 		Location: 102,45
-		Owner: Greece
+		Owner: England
 	Actor10: brik
 		Location: 82,49
-		Owner: Greece
+		Owner: England
 	Actor11: brik
 		Location: 83,49
-		Owner: Greece
+		Owner: England
 	Actor12: brik
 		Location: 86,49
-		Owner: Greece
+		Owner: England
 	Actor13: brik
 		Location: 87,49
-		Owner: Greece
+		Owner: England
 	Actor16: brik
 		Location: 82,50
-		Owner: Greece
+		Owner: England
 	Actor17: brik
 		Location: 83,50
-		Owner: Greece
+		Owner: England
 	Actor18: brik
 		Location: 84,50
-		Owner: Greece
+		Owner: England
 	Actor19: brik
 		Location: 85,50
-		Owner: Greece
+		Owner: England
 	Actor20: brik
 		Location: 86,50
-		Owner: Greece
+		Owner: England
 	Actor21: brik
 		Location: 87,50
-		Owner: Greece
+		Owner: England
 	Actor14: brik
 		Location: 27,50
 		Owner: USSR
@@ -535,65 +535,65 @@ Actors:
 		Owner: Neutral
 	Actor391: flare
 		Location: 81,41
-		Owner: Greece
+		Owner: England
 	Actor157: apwr
 		Location: 89,40
-		Owner: Greece
+		Owner: England
 	Actor158: tent
 		Location: 89,43
-		Owner: Greece
+		Owner: England
 	Actor159: pbox
 		Location: 88,50
-		Owner: Greece
+		Owner: England
 	Actor160: pbox
 		Location: 96,45
-		Owner: Greece
+		Owner: England
 	Actor161: gun
 		Location: 92,47
-		Owner: Greece
+		Owner: England
 		Facing: 636
 	Actor162: v19
 		Location: 101,42
-		Owner: Greece
+		Owner: England
 	Actor163: brl3
 		Location: 102,41
-		Owner: Greece
+		Owner: England
 	Actor164: brl3
 		Location: 101,41
-		Owner: Greece
+		Owner: England
 	Actor165: barl
 		Location: 100,40
-		Owner: Greece
+		Owner: England
 	Actor166: brl3
 		Location: 99,39
-		Owner: Greece
+		Owner: England
 	Actor167: barl
 		Location: 98,39
-		Owner: Greece
+		Owner: England
 	Actor168: v19
 		Location: 97,39
-		Owner: Greece
+		Owner: England
 	Actor169: brl3
 		Location: 96,39
-		Owner: Greece
+		Owner: England
 	Actor170: barl
 		Location: 95,40
-		Owner: Greece
+		Owner: England
 	Actor171: barl
 		Location: 102,43
-		Owner: Greece
+		Owner: England
 	Actor172: brl3
 		Location: 100,44
-		Owner: Greece
+		Owner: England
 	Actor173: brl3
 		Location: 97,40
-		Owner: Greece
+		Owner: England
 	Actor174: brl3
 		Location: 98,40
-		Owner: Greece
+		Owner: England
 	Actor175: barl
 		Location: 102,42
-		Owner: Greece
+		Owner: England
 	Church: v01
 		Location: 93,70
 		Owner: GreekCivilians
@@ -656,16 +656,16 @@ Actors:
 		Owner: USSR
 	Actor193: brl3
 		Location: 99,43
-		Owner: Greece
+		Owner: England
 	Actor194: barl
 		Location: 98,43
-		Owner: Greece
+		Owner: England
 	CivBarrel: barl
 		Location: 94,40
-		Owner: Greece
+		Owner: England
 	Actor196: brl3
 		Location: 101,43
-		Owner: Greece
+		Owner: England
 	SovFact: fact
 		Location: 31,59
 		Owner: USSR
@@ -734,16 +734,16 @@ Actors:
 		Owner: USSR
 	Actor218: apwr
 		Location: 80,46
-		Owner: Greece
+		Owner: England
 	Actor219: dome
 		Location: 84,47
-		Owner: Greece
+		Owner: England
 	BridgeBarrel1: brl3
 		Location: 85,42
-		Owner: Greece
+		Owner: England
 	Actor221: barl
 		Location: 85,41
-		Owner: Greece
+		Owner: England
 	Actor222: v19
 		Location: 68,57
 		Owner: Neutral
@@ -882,7 +882,7 @@ Actors:
 		Facing: 508
 	FlareBoy: e1
 		Location: 75,87
-		Owner: Greece
+		Owner: England
 		Facing: 380
 		SubCell: 2
 	Actor268: e1
@@ -1305,6 +1305,6 @@ Actors:
 		Owner: Neutral
 		Location: 22,39
 
-Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, rules.yaml
+Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
 Weapons: weapons.yaml

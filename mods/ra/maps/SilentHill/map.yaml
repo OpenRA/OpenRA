@@ -1,0 +1,449 @@
+MapFormat: 11
+
+RequiresMod: ra
+
+Title: Silent Hill
+
+Author: Blunt
+
+Tileset: TEMPERAT
+
+MapSize: 98,98
+
+Bounds: 1,1,96,96
+
+Visibility: Lobby
+
+Categories: Capture the Lab
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: england
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: england
+		Enemies: Multi0, Multi1, Multi2, Multi3, Multi4, Multi5
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi4:
+		Name: Multi4
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+	PlayerReference@Multi5:
+		Name: Multi5
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+
+Actors:
+	Actor28: tc05
+		Owner: Neutral
+		Location: 15,12
+	Actor30: tc01
+		Owner: Neutral
+		Location: 23,19
+	Actor31: tc04
+		Owner: Neutral
+		Location: 78,81
+	Actor34: tc02
+		Owner: Neutral
+		Location: 78,86
+	Actor36: tc05
+		Owner: Neutral
+		Location: 70,39
+	Actor38: t11
+		Owner: Neutral
+		Location: 58,46
+	Actor58: mpspawn
+		Owner: Neutral
+		Location: 78,19
+	Actor59: mpspawn
+		Owner: Neutral
+		Location: 19,78
+	Actor56: v03
+		Owner: Neutral
+		Location: 56,24
+	Actor60: v04
+		Owner: Neutral
+		Location: 63,29
+	Actor62: t11
+		Owner: Neutral
+		Location: 61,32
+	Actor63: t11
+		Owner: Neutral
+		Location: 48,22
+	Actor64: t07
+		Owner: Neutral
+		Location: 61,19
+	Actor68: t11
+		Owner: Neutral
+		Location: 92,6
+	Actor69: t11
+		Owner: Neutral
+		Location: 92,1
+	Actor79: v03
+		Owner: Neutral
+		Location: 13,17
+	Actor80: v07
+		Owner: Neutral
+		Location: 9,22
+	Actor81: v06
+		Owner: Neutral
+		Location: 17,21
+	Actor83: tc05
+		Owner: Neutral
+		Location: 53,2
+	Actor85: tc04
+		Owner: Neutral
+		Location: 57,4
+	Actor94: mine
+		Owner: Neutral
+		Location: 40,32
+	Actor115: tc05
+		Owner: Neutral
+		Location: 21,48
+	Actor105: t16
+		Owner: Neutral
+		Location: 22,44
+	Actor116: t16
+		Owner: Neutral
+		Location: 20,42
+	Actor117: mine
+		Owner: Neutral
+		Location: 54,42
+	Actor122: v09
+		Owner: Neutral
+		Location: 95,42
+	Actor121: v11
+		Owner: Neutral
+		Location: 89,41
+	Actor123: t11
+		Owner: Neutral
+		Location: 85,28
+	Actor125: tc01
+		Owner: Neutral
+		Location: 91,45
+	Actor126: tc01
+		Owner: Neutral
+		Location: 89,48
+	Actor127: mine
+		Owner: Neutral
+		Location: 94,14
+	Actor138: t07
+		Owner: Neutral
+		Location: 2,89
+	Actor139: t07
+		Owner: Neutral
+		Location: 10,89
+	Actor140: v11
+		Owner: Neutral
+		Location: 37,94
+	Actor142: mine
+		Owner: Neutral
+		Location: 32,69
+	Actor143: tc01
+		Owner: Neutral
+		Location: 33,64
+	Actor144: t16
+		Owner: Neutral
+		Location: 37,65
+	Actor145: t16
+		Owner: Neutral
+		Location: 30,60
+	Actor148: tc01
+		Owner: Neutral
+		Location: 28,2
+	Actor149: v03
+		Owner: Neutral
+		Location: 78,76
+	Actor150: v04
+		Owner: Neutral
+		Location: 81,82
+	Actor151: v10
+		Owner: Neutral
+		Location: 74,82
+	Actor153: tc01
+		Owner: Neutral
+		Location: 89,76
+	Actor154: tc01
+		Owner: Neutral
+		Location: 93,74
+	Actor155: tc04
+		Owner: Neutral
+		Location: 39,94
+	Actor174: v03
+		Owner: Neutral
+		Location: 92,33
+	Actor176: tc02
+		Owner: Neutral
+		Location: 85,42
+	Actor146: tc05
+		Owner: Neutral
+		Location: 44,73
+	Actor147: tc01
+		Owner: Neutral
+		Location: 46,77
+	Actor178: tc03
+		Owner: Neutral
+		Location: 48,74
+	Actor193: tc04
+		Owner: Neutral
+		Location: 22,13
+	Actor210: t07
+		Owner: Neutral
+		Location: 21,63
+	Actor211: t07
+		Owner: Neutral
+		Location: 20,59
+	Actor212: t07
+		Owner: Neutral
+		Location: 19,67
+	Actor213: tc04
+		Owner: Neutral
+		Location: 2,69
+	Actor214: tc01
+		Owner: Neutral
+		Location: 4,64
+	Actor215: tc01
+		Owner: Neutral
+		Location: 1,59
+	Actor216: t16
+		Owner: Neutral
+		Location: 19,63
+	Actor217: t16
+		Owner: Neutral
+		Location: 19,50
+	Actor181: t07
+		Owner: Neutral
+		Location: 16,7
+	Actor219: t07
+		Owner: Neutral
+		Location: 12,10
+	Actor221: t07
+		Owner: Neutral
+		Location: 20,7
+	BioLab: windmill
+		Owner: Neutral
+		Location: 33,31
+	BioLab2: windmill
+		Owner: Neutral
+		Location: 71,71
+	Actor191: t16
+		Owner: Neutral
+		Location: 84,80
+	Actor202: t16
+		Owner: Neutral
+		Location: 85,85
+	Actor203: t16
+		Owner: Neutral
+		Location: 89,83
+	Actor204: t16
+		Owner: Neutral
+		Location: 84,92
+	Actor205: tc04
+		Owner: Neutral
+		Location: 91,84
+	Actor206: tc01
+		Owner: Neutral
+		Location: 76,89
+	Actor207: t13
+		Owner: Neutral
+		Location: 63,37
+	Actor185: lhus
+		Owner: Neutral
+		Location: 56,47
+	Actor208: t01
+		Owner: Neutral
+		Location: 63,70
+	Actor222: mine
+		Owner: Neutral
+		Location: 5,80
+	Actor223: mine
+		Owner: Neutral
+		Location: 67,91
+	Actor177: tc01
+		Owner: Neutral
+		Location: 33,93
+	Actor225: mine
+		Owner: Neutral
+		Location: 72,30
+	Actor194: v03
+		Owner: Neutral
+		Location: 57,2
+	Actor224: mine
+		Owner: Neutral
+		Location: 92,68
+	Actor226: tc01
+		Owner: Neutral
+		Location: 24,3
+	Actor182: mine
+		Owner: Neutral
+		Location: 5,47
+	Actor183: mine
+		Owner: Neutral
+		Location: 5,35
+	Actor186: mine
+		Owner: Neutral
+		Location: 31,42
+	Actor187: mine
+		Owner: Neutral
+		Location: 34,48
+	Actor188: mine
+		Owner: Neutral
+		Location: 18,92
+	Actor179: mine
+		Owner: Neutral
+		Location: 61,66
+	Actor180: mine
+		Owner: Neutral
+		Location: 54,63
+	Actor189: mine
+		Owner: Neutral
+		Location: 70,50
+	Actor190: mine
+		Owner: Neutral
+		Location: 71,58
+	Actor195: mine
+		Owner: Neutral
+		Location: 45,32
+	Actor196: mine
+		Owner: Neutral
+		Location: 63,45
+	Actor197: mine
+		Owner: Neutral
+		Location: 39,55
+	Actor198: mine
+		Owner: Neutral
+		Location: 45,59
+	Actor199: mine
+		Owner: Neutral
+		Location: 34,4
+	Actor201: mine
+		Owner: Neutral
+		Location: 27,10
+	Actor200: mine
+		Owner: Neutral
+		Location: 80,5
+	Actor124: oilb
+		Owner: Neutral
+		Location: 61,7
+	Actor128: oilb
+		Owner: Neutral
+		Location: 62,15
+	Actor118: oilb
+		Owner: Neutral
+		Location: 91,41
+	Actor120: oilb
+		Owner: Neutral
+		Location: 78,78
+	Actor112: oilb
+		Owner: Neutral
+		Location: 36,91
+	Actor114: oilb
+		Owner: Neutral
+		Location: 18,56
+	Actor129: oilb
+		Owner: Neutral
+		Location: 5,60
+	Actor130: oilb
+		Owner: Neutral
+		Location: 18,18
+	Actor131: oilb
+		Owner: Neutral
+		Location: 26,27
+	Actor135: oilb
+		Owner: Neutral
+		Location: 74,73
+	Actor136: mpspawn
+		Owner: Neutral
+		Location: 38,83
+	Actor157: mpspawn
+		Owner: Neutral
+		Location: 14,59
+	Actor158: mpspawn
+		Owner: Neutral
+		Location: 83,39
+	Actor159: oilb
+		Owner: Neutral
+		Location: 77,39
+	Actor119: mpspawn
+		Owner: Neutral
+		Location: 59,14
+	Actor132: oilb
+		Owner: Neutral
+		Location: 44,76
+
+Rules: rules.yaml
+
+Sequences: sequences.yaml
+
+Weapons: weapons.yaml
+
+Voices:
+	TripodVoices:
+		Voices:
+			Select: Select1,Select2
+			Move: Move1,Move2
+			Action: Action1,Action2
+			Die: Die1
+			Burned: Die1
+			Zapped: Die1
+			Build: TripodHorn
+			Kill: Kill1,Kill2
+			Demolish: Die1
+	MutatedVoices:
+		Voices:
+			Select: MFSelect3,MFSelect4
+			Move: MFMove1,MFMove2
+			Action: MFAction1,MFAction2,MFAction3
+			Die: MFDie1,MFDie2
+			Burned: MFDie1
+			Zapped: MFDie2
+			Build:
+			Kill: MFMove1,MFMove2
+			Demolish: Die1
+	ImpVoices:
+		Voices:
+			Select: ImpGrowl,ImpGrowl2
+			Move: ImpGrunt, IKill3
+			Action: ImpAttack1
+			Die: ImpHowl,ImpDie1
+			Burned: ImpScream
+			Zapped: ImpScream
+			Build:
+			Kill: ImpLaugh,ImpLaugh2
+			Demolish:
+	PinkVoices:
+		Voices:
+			Select: IKill2, ISelect2
+			Move: IKill3,IDie1
+			Action: ISelect1,IDie4
+			Die: IDie1,IDie3
+			Burned:
+			Zapped:
+			Build:
+			Kill: PKill1
+			Demolish:

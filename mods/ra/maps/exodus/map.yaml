@@ -51,17 +51,17 @@ Players:
 		Enemies: Soviets
 	PlayerReference@Allies:
 		Name: Allies
+		Bot: campaign
 		Faction: allies
 		Color: 5CC1A3
 		Allies: Allies1, Allies2
 		Enemies: Soviets
-		Bot: campaign
 	PlayerReference@Soviets:
 		Name: Soviets
+		Bot: campaign
 		Faction: soviet
 		Color: FE1100
 		Enemies: Allies1, Allies2
-		Bot: campaign
 
 Actors:
 	Actor239: dog
@@ -871,9 +871,6 @@ Actors:
 	Actor6: gun
 		Location: 28,44
 		Owner: Allies
-	Actor47: powr
-		Location: 3,37
-		Owner: Allies
 	Actor45: 2tnk
 		Location: 28,28
 		Owner: Allies
@@ -891,9 +888,6 @@ Actors:
 		Owner: Allies
 	Actor40: e1
 		Location: 24,30
-		Owner: Allies
-	Actor46: powr
-		Location: 1,37
 		Owner: Allies
 	Actor49: fenc
 		Location: 28,27
@@ -991,12 +985,6 @@ Actors:
 	Actor167: barl
 		Location: 173,24
 		Owner: Neutral
-	Actor168: powr
-		Location: 1,34
-		Owner: Allies
-	Actor183: powr
-		Location: 3,34
-		Owner: Allies
 	Actor185: apwr
 		Location: 154,72
 		Owner: Soviets
@@ -1390,44 +1378,8 @@ Actors:
 	ParadropBoxTopLeft: waypoint
 		Location: 78,27
 		Owner: Neutral
-	MountainEntry1: waypoint
-		Location: 25,44
-		Owner: Neutral
-	MountainEntry2: waypoint
-		Owner: Neutral
-		Location: 25,45
-	MountainEntry3: waypoint
-		Owner: Neutral
-		Location: 25,46
-	MountainEntry4: waypoint
-		Owner: Neutral
-		Location: 25,47
-	MountainEntry5: waypoint
-		Owner: Neutral
-		Location: 25,48
-	MountainEntry6: waypoint
-		Owner: Neutral
-		Location: 25,49
-	MountainEntry7: waypoint
-		Location: 25,50
-		Owner: Neutral
-	MountainEntry8: waypoint
-		Owner: Neutral
-		Location: 25,51
-	BridgeEntry1: waypoint
-		Owner: Neutral
-		Location: 28,29
-	BridgeEntry2: waypoint
-		Owner: Neutral
-		Location: 27,29
-	BridgeEntry3: waypoint
-		Owner: Neutral
-		Location: 26,29
-	BridgeEntry4: waypoint
-		Owner: Neutral
-		Location: 25,29
 	SovietIntel: camera.large
 		Owner: Soviets
-		Location: 130, 45
+		Location: 130,45
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml

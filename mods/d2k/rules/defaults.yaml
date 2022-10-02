@@ -184,10 +184,16 @@
 		AttackMoveCondition: attack-move
 		AssaultMoveCondition: assault-move
 
+^PlayerHandicaps:
+	HandicapFirepowerMultiplier:
+	HandicapDamageMultiplier:
+	HandicapProductionTimeMultiplier:
+
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@handicaps: ^PlayerHandicaps
 	Tooltip:
 		GenericName: Unit
 	Huntable:
@@ -250,7 +256,7 @@
 		Type: light
 	HiddenUnderFog:
 		Type: CenterPosition
-		AlwaysVisibleStances: None
+		AlwaysVisibleRelationships: None
 	Tooltip:
 		GenericName: Destroyed Unit
 	ScriptTriggers:
@@ -298,6 +304,7 @@
 	Inherits@2: ^GainsExperience
 	Inherits@3: ^SpriteActor
 	Inherits@selection: ^SelectableCombatUnit
+	Inherits@handicaps: ^PlayerHandicaps
 	Tooltip:
 		GenericName: Unit
 	Huntable:
@@ -366,6 +373,7 @@
 ^Plane:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
+	Inherits@handicaps: ^PlayerHandicaps
 	Interactable:
 	Tooltip:
 		GenericName: Unit
@@ -376,7 +384,7 @@
 		UseLocation: true
 	HiddenUnderFog:
 		Type: GroundPosition
-		AlwaysVisibleStances: None
+		AlwaysVisibleRelationships: None
 	ActorLostNotification:
 	AttackMove:
 	WithFacingSpriteBody:
@@ -391,6 +399,7 @@
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@selection: ^SelectableBuilding
+	Inherits@handicaps: ^PlayerHandicaps
 	Tooltip:
 		GenericName: Structure
 	Huntable:
@@ -404,11 +413,12 @@
 		Type: Rectangle
 			TopLeft: -512, -512
 			BottomRight: 512, 512
-	Building:
+	D2kBuilding:
 		Dimensions: 1,1
 		Footprint: x
 		TerrainTypes: Rock, Concrete
 		BuildSounds: BUILD1.WAV
+		ConcretePrerequisites: global-auto-concrete
 	D2kActorPreviewPlaceBuildingPreview:
 		RequiresPrerequisites: !global-auto-concrete
 		OverridePalette: placebuilding
@@ -448,20 +458,6 @@
 		SellSounds: BUILD1.WAV
 	Guardable:
 		Range: 3c0
-	GrantConditionOnPrerequisite@AUTOCONCRETE:
-		Condition: auto-concrete
-		Prerequisites: global-auto-concrete
-	DamagedByTerrain:
-		RequiresCondition: !auto-concrete
-		Damage: 500
-		DamageInterval: 100
-		Terrain: Rock
-		DamageThreshold: 50
-		StartOnThreshold: true
-	LaysTerrain:
-		RequiresCondition: auto-concrete
-		TerrainTypes: Rock
-		Template: 88
 	ThrowsShrapnel:
 		Weapons: Debris, Debris2, Debris3, Debris4
 		Pieces: 2, 5

@@ -121,7 +121,11 @@ SendAlliedUnits = function()
 				if unit.Type == "e6" then
 					Engineer = unit
 					Trigger.OnKilled(unit, LandingPossible)
-				end
+				elseif unit.Type == "thf" then
+					Trigger.OnKilled(unit, function()
+						player.MarkFailedObjective(StealMoney)
+					end)
+				end	
 			end)
 		end)
 	end)
@@ -297,6 +301,7 @@ InitObjectives = function()
 	end)
 
 	EliminateSuperTanks = player.AddPrimaryObjective("Eliminate these super tanks.")
+	StealMoney = player.AddPrimaryObjective("Steal money from the nearby outpost with the Thief.")
 	CrossRiver = player.AddPrimaryObjective("Secure transport to the mainland.")
 	FindOutpost = player.AddPrimaryObjective("Find our outpost and start repairs on it.")
 	RescueCivilians = player.AddSecondaryObjective("Evacuate all civilians from the hospital.")
@@ -374,6 +379,17 @@ InitTriggers = function()
 		if not HospitalEvacuated then
 			HospitalEvacuated = true
 			player.MarkFailedObjective(RescueCivilians)
+		end
+	end)
+
+	Trigger.OnInfiltrated(USSROutpostSilo, function()
+		MoneyStolen = true
+		player.MarkCompletedObjective(StealMoney)
+	end)
+
+	Trigger.OnKilledOrCaptured(USSROutpostSilo, function()
+		if not MoneyStolen then
+			player.MarkFailedObjective(StealMoney)
 		end
 	end)
 

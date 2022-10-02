@@ -1,0 +1,152 @@
+pvice:
+	Inherits: vice
+	die: zombie
+		Start: 106
+		Length: 7
+		Tick: 200
+vice:
+	idle: vice
+		Length: *
+		Tick: 80
+	icon: viceicnh
+		Start: 0
+	die: zombie
+		Start: 106
+		Length: 7
+		Tick: 200
+godzillaegg:
+	idle:
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+		Length: *
+	make:
+		Start: 0
+		Length: *
+	icon: fturicon
+		Start: 0
+tripod:
+	idle:
+		Start: 0
+		Facings: 8
+		Offset: -10,20
+	stand:
+		Start: 0
+		Facings: 8
+		Offset: -10,20
+	stand2:
+		Start: 240
+		Length: 50
+		Tick: 150
+		Offset: -10,20
+	run:
+		Start: 8
+		Length: 24
+		Facings: 8
+		Tick: 230
+		Offset: -10,20
+	turret: 3tnk
+		Start: 32
+		Facings: 32
+		UseClassicFacingFudge: True
+		ZOffset: -512
+	shoot:
+		Start: 200
+		Length: 5
+		Facings: 8
+		Offset: -10,20
+	muzzle: piff
+		Start: 0
+		Length: 1
+	missilemuzzle: samfire
+		Length: 18
+		Facings: 8
+		Offset: -2,-2
+	die:
+		Start: 240
+		Length: 50
+		Tick: 150
+		Offset: -10,20
+		ZOffset: -511
+	die-crushed:
+		Start: 240
+		Length: 50
+		Tick: 150
+		Offset: -10,20
+	icon: tripodicon
+
+tripoddestroyed:
+	Inherits: tripod
+	die:
+		Start: 240
+		Length: 50
+		Tick: 150
+pinky:
+	idle:
+		Start: 0
+		Length: 4
+		Facings: 32
+		Tick: 180
+		Offset: 1,6
+	run:
+		Start: 128
+		Length: 15
+		Tick: 140
+		Facings: 16
+		Offset: 1,6
+	shoot:
+		Start: 368
+		Length: 10
+		Facings: 16
+		Tick: 100
+		Offset: 1,6
+	die:
+		Start: 528
+		Length: 46
+		Facings: 1
+		Tick: 300
+		Offset: 1,6
+	icon: zombicon
+		Start: 0
+	muzzle: piffpiff
+		Start: 0
+		Length: 1
+imp:
+	idle: imp_stand
+		Start: 0
+		Length: 1
+		Facings: 32
+		Offset: 0,-10
+		ZOffset: 150
+	run: imp_walk
+		Start: 0
+		Length: 10
+		Tick: 75
+		Facings: 32
+		Offset: 0,-10
+		ZOffset: 150
+	shoot: imp_punch
+		Start: 0
+		Length: 17
+		Facings: 16
+		Offset: 0,-10
+		ZOffset: 150
+	die: imp_death
+		Start: 50
+		Length: 25
+		Tick: 50
+		Facings: 1
+		Offset: 0,-10
+		ZOffset: 150
+	icon: zombicon
+		Start: 0
+explosion:
+	smallfire: fire1
+		Length: *
+		Tick: 270
+		Offset: 0,-3
+		ZOffset: 1023
+	empemit: empulse
+		Length: *
+		Tick: 70

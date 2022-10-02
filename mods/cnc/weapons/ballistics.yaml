@@ -40,6 +40,7 @@
 
 120mm:
 	Inherits: ^BallisticWeapon
+	Report: tnkfire4.aud
 
 120mmDual:
 	Inherits: ^BallisticWeapon

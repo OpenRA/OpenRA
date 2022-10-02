@@ -65,6 +65,7 @@ Rockets:
 
 BikeRockets:
 	Inherits: ^MissileWeapon
+	ReloadDelay: 60
 	Burst: 2
 	BurstDelays: 10
 	Projectile: Missile
@@ -129,6 +130,7 @@ MammothMissiles:
 			Heavy: 44
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
+		ImpactSounds: xplobig4.aud
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
 
@@ -163,6 +165,7 @@ MammothMissiles:
 			Heavy: 48
 	Warhead@3Eff: CreateEffect
 		Explosions: med_frag
+		ImpactSounds: xplobig4.aud
 
 227mm.stnk:
 	Inherits: ^MissileWeapon
@@ -213,6 +216,7 @@ BoatMissile:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
+		ImpactSounds: xplobig4.aud
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
 
