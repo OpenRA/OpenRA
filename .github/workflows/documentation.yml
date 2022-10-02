@@ -91,22 +91,24 @@ jobs:
         env:
           GIT_TAG: ${{ github.event.inputs.tag }}
         run: |
-          ./utility.sh all --docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/playtest/traits.md"
-          ./utility.sh all --weapon-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/playtest/weapons.md"
-          ./utility.sh all --sprite-sequence-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/playtest/sprite-sequences.md"
-          ./utility.sh all --lua-docs "${GIT_TAG}" > "docs/api/playtest/lua.md"
+          git checkout playtest
+          ./utility.sh all --docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/traits.md"
+          ./utility.sh all --weapon-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/weapons.md"
+          ./utility.sh all --sprite-sequence-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/sprite-sequences.md"
+          ./utility.sh all --lua-docs "${GIT_TAG}" > "docs/api/lua.md"
 
       - name: Update docs.openra.net (Release)
         if: startsWith(github.event.inputs.tag, 'release-')
         env:
           GIT_TAG: ${{ github.event.inputs.tag }}
         run: |
-          ./utility.sh all --docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/release/traits.md"
-          ./utility.sh all --weapon-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/release/weapons.md"
-          ./utility.sh all --sprite-sequence-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/release/sprite-sequences.md"
-          ./utility.sh all --lua-docs "${GIT_TAG}" > "docs/api/release/lua.md"
+          git checkout release
+          ./utility.sh all --docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/traits.md"
+          ./utility.sh all --weapon-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/weapons.md"
+          ./utility.sh all --sprite-sequence-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/sprite-sequences.md"
+          ./utility.sh all --lua-docs "${GIT_TAG}" > "docs/api/lua.md"
 
-      - name: Push docs.openra.net
+      - name: Commit docs.openra.net
         env:
           GIT_TAG: ${{ github.event.inputs.tag }}
         run: |
@@ -115,5 +117,13 @@ jobs:
           git config --local user.name "GitHub Actions"
           git add *.md
           git commit -m "Update auto-generated documentation for ${GIT_TAG}"
-          git push origin master
 
+      - name: Push docs.openra.net (Release)
+        if: startsWith(github.event.inputs.tag, 'release-')
+        run: |
+          git push origin release
+
+      - name: Push docs.openra.net (Playtest)
+        if: startsWith(github.event.inputs.tag, 'playtest-')
+        run: |
+          git push origin playtest
