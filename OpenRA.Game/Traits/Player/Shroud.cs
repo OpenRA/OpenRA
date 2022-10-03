@@ -69,6 +69,7 @@ namespace OpenRA.Traits
 	{
 		public enum SourceType : byte { PassiveVisibility, Shroud, Visibility }
 		public event Action<PPos> OnShroudChanged;
+		public int RevealedCells { get; private set; }
 
 		enum ShroudCellType : byte { Shroud, Fog, Visible }
 		class ShroudSource
@@ -155,6 +156,9 @@ namespace OpenRA.Traits
 			ExploreMapEnabled = gs.OptionOrDefault("explored", info.ExploredMapCheckboxEnabled);
 			if (ExploreMapEnabled)
 				self.World.AddFrameEndTask(w => ExploreAll());
+
+			if (!fogEnabled && ExploreMapEnabled)
+				RevealedCells = map.ProjectedCells.Length;
 		}
 
 		void ITick.Tick(Actor self)
@@ -205,6 +209,17 @@ namespace OpenRA.Traits
 					var puv = touched.PPosFromIndex(index);
 					if (map.Contains(puv))
 						OnShroudChanged(puv);
+
+					if (!disabledChanged && (fogEnabled || !ExploreMapEnabled))
+					{
+						if (type == ShroudCellType.Visible)
+							RevealedCells++;
+						else if (fogEnabled && oldResolvedType == ShroudCellType.Visible)
+							RevealedCells--;
+					}
+
+					if (self.Owner.WinState == WinState.Lost)
+						RevealedCells = 0;
 				}
 			}
 
