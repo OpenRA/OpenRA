@@ -37,7 +37,7 @@ Player:
 					CheckRadius: 2c0
 				Consideration@3:
 					Against: Ally
-					Types: Ground, Water
+					Types: Ground
 					Attractiveness: -10
 					TargetMetric: Value
 					CheckRadius: 4c0
@@ -52,7 +52,7 @@ Player:
 					CheckRadius: 5c0
 				Consideration@2:
 					Against: Ally
-					Types: Air, Ground, Water
+					Types: Air, Ground
 					Attractiveness: -10
 					TargetMetric: Value
 					CheckRadius: 7c0
