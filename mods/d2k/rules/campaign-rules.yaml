@@ -30,7 +30,7 @@ World:
 	ObjectivesPanel:
 		PanelName: MISSION_OBJECTIVES
 	ActorSpawnManager:
-		Minimum: 1
+		Minimum: 0
 		Maximum: 1
 	MapCreeps:
 		CheckboxVisible: False
@@ -59,6 +59,10 @@ World:
 ^AutoTargetAllAssaultMove:
 	GrantConditionOnBotOwner@BOTOWNER:
 		Bots: campaign
+
+sandworm:
+	Sandworm:
+		ChanceToDisappear: 40
 
 harvester:
 	-MustBeDestroyed:
