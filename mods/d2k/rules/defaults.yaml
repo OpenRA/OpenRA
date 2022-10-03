@@ -126,11 +126,11 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Defense
+		ValidTargets: Infantry, Vehicle, Defense
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Structure, Defense
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@CREEPS:
 		ValidTargets: Creep
@@ -158,11 +158,11 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Air, Defense
+		ValidTargets: Infantry, Vehicle, Air, Defense
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Water, Air, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Air, Structure, Defense
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@CREEPS:
 		ValidTargets: Creep
