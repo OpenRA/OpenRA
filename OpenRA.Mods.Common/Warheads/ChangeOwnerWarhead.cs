@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
-	[Desc("Interacts with the TemporaryOwnerManager trait.")]
+	[Desc("Interacts with the `" + nameof(TemporaryOwnerManager) + "` trait.")]
 	public class ChangeOwnerWarhead : Warhead
 	{
 		[Desc("Duration of the owner change (in ticks). Set to 0 to make it permanent.")]
