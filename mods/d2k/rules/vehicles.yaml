@@ -514,7 +514,7 @@ stealth_raider:
 deviator:
 	Inherits: ^Tank
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
-	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@AUTOTARGET: ^AutoTargetVehicleAssaultMove
 	Valued:
 		Cost: 1000
 	Tooltip:

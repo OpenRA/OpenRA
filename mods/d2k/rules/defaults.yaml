@@ -153,6 +153,14 @@
 		AttackMoveCondition: attack-move
 		AssaultMoveCondition: assault-move
 
+^AutoTargetVehicleAssaultMove:
+	Inherits: ^AutoTargetGroundAssaultMove
+	AutoTargetPriority@VEHICLES:
+		ValidTargets: Vehicle
+		InvalidTargets: Infantry, Structure, Defense
+		RequiresCondition: bot-owned
+		Priority: 10
+
 ^AutoTargetAll:
 	AutoTarget:
 		AttackAnythingCondition: stance-attackanything
