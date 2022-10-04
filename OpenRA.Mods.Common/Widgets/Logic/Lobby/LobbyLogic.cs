@@ -431,14 +431,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					modData.MapCache.UpdateMaps();
 			}
 
+			bool StartDisabled() => map.Status != MapStatus.Available ||
+				orderManager.LobbyInfo.Slots.Any(sl => sl.Value.Required && orderManager.LobbyInfo.ClientInSlot(sl.Key) == null) ||
+				orderManager.LobbyInfo.Slots.All(sl => orderManager.LobbyInfo.ClientInSlot(sl.Key) == null) ||
+				(!orderManager.LobbyInfo.GlobalSettings.EnableSingleplayer && orderManager.LobbyInfo.NonBotPlayers.Count() < 2) ||
+				insufficientPlayerSpawns;
+
 			var startGameButton = lobby.GetOrNull<ButtonWidget>("START_GAME_BUTTON");
 			if (startGameButton != null)
 			{
-				startGameButton.IsDisabled = () => configurationDisabled() || map.Status != MapStatus.Available ||
-					orderManager.LobbyInfo.Slots.Any(sl => sl.Value.Required && orderManager.LobbyInfo.ClientInSlot(sl.Key) == null) ||
-					orderManager.LobbyInfo.Slots.All(sl => orderManager.LobbyInfo.ClientInSlot(sl.Key) == null) ||
-					(!orderManager.LobbyInfo.GlobalSettings.EnableSingleplayer && orderManager.LobbyInfo.NonBotPlayers.Count() < 2) ||
-					insufficientPlayerSpawns;
+				startGameButton.IsDisabled = () => configurationDisabled() || StartDisabled();
 
 				startGameButton.OnClick = () =>
 				{
@@ -453,7 +455,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var forceStartBin = Ui.LoadWidget("FORCE_START_DIALOG", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs());
 			forceStartBin.IsVisible = () => panel == PanelType.ForceStart;
 			forceStartBin.Get("KICK_WARNING").IsVisible = () => orderManager.LobbyInfo.Clients.Any(c => c.IsInvalid);
-			forceStartBin.Get<ButtonWidget>("OK_BUTTON").OnClick = StartGame;
+			var forceStartButton = forceStartBin.Get<ButtonWidget>("OK_BUTTON");
+			forceStartButton.OnClick = StartGame;
+			forceStartButton.IsDisabled = StartDisabled;
+
 			forceStartBin.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => panel = PanelType.Players;
 
 			var disconnectButton = lobby.Get<ButtonWidget>("DISCONNECT_BUTTON");
