@@ -35,6 +35,8 @@ namespace OpenRA
 
 	public sealed class Actor : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding, IEquatable<Actor>, IDisposable
 	{
+		public interface IActorMapPositionKey { }
+
 		internal readonly struct SyncHash
 		{
 			public readonly ISync Trait;
@@ -54,6 +56,9 @@ namespace OpenRA
 		public bool IsInWorld { get; internal set; }
 		public bool WillDispose { get; private set; }
 		public bool Disposed { get; private set; }
+
+		/// <summary>Optional key maintained by the actor map.</summary>
+		public IActorMapPositionKey ActorMapPositionKey { get; set; }
 
 		Activity currentActivity;
 		public Activity CurrentActivity

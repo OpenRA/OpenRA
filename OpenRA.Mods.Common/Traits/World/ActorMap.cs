@@ -182,8 +182,7 @@ namespace OpenRA.Mods.Common.Traits
 		// Position updates are done in one pass
 		// to ensure consistency during a tick
 		readonly HashSet<Actor> addActorPosition = new();
-		readonly HashSet<Actor> removeActorPosition = new();
-		readonly Predicate<Actor> actorShouldBeRemoved;
+		readonly List<(Bin, Actor)> removeActorPosition = new();
 
 		public WDist LargestActorRadius { get; }
 		public WDist LargestBlockingActorRadius { get; }
@@ -200,9 +199,6 @@ namespace OpenRA.Mods.Common.Traits
 			for (var row = 0; row < rows; row++)
 				for (var col = 0; col < cols; col++)
 					bins[row * cols + col] = new Bin();
-
-			// PERF: Cache this delegate so it does not have to be allocated repeatedly.
-			actorShouldBeRemoved = removeActorPosition.Contains;
 
 			LargestActorRadius = map.Rules.Actors.SelectMany(a => a.Value.TraitInfos<HitShapeInfo>()).Max(h => h.Type.OuterRadius);
 			var blockers = map.Rules.Actors.Where(a => a.Value.HasTraitInfo<IBlocksProjectilesInfo>());
@@ -247,7 +243,8 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					Current = node.Actor;
 					node = node.Next;
-					return true;
+					if (Current.IsInWorld)
+						return true;
 				}
 
 				return false;
@@ -298,14 +295,15 @@ namespace OpenRA.Mods.Common.Traits
 			if (!layer.Contains(uv))
 				return preferredSubCell != SubCell.Any ? preferredSubCell : SubCell.First;
 
-			if (preferredSubCell != SubCell.Any && !AnyActorsAt(uv, cell, layer, preferredSubCell, checkTransient))
+			var influenceNode = layer[uv];
+			if (preferredSubCell != SubCell.Any && !AnyActorsAt(influenceNode, cell, preferredSubCell, checkTransient))
 				return preferredSubCell;
 
-			if (!AnyActorsAt(uv, layer))
+			if (influenceNode == null)
 				return map.Grid.DefaultSubCell;
 
 			for (var i = (int)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
-				if (i != (int)preferredSubCell && !AnyActorsAt(uv, cell, layer, (SubCell)i, checkTransient))
+				if (i != (int)preferredSubCell && !AnyActorsAt(influenceNode, cell, (SubCell)i, checkTransient))
 					return (SubCell)i;
 
 			return SubCell.Invalid;
@@ -318,23 +316,18 @@ namespace OpenRA.Mods.Common.Traits
 			if (!layer.Contains(uv))
 				return preferredSubCell != SubCell.Any ? preferredSubCell : SubCell.First;
 
-			if (preferredSubCell != SubCell.Any && !AnyActorsAt(uv, layer, preferredSubCell, checkIfBlocker))
+			var influenceNode = layer[uv];
+			if (preferredSubCell != SubCell.Any && !AnyActorsAt(influenceNode, preferredSubCell, checkIfBlocker))
 				return preferredSubCell;
 
-			if (!AnyActorsAt(uv, layer))
+			if (influenceNode == null)
 				return map.Grid.DefaultSubCell;
 
 			for (var i = (byte)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
-				if (i != (byte)preferredSubCell && !AnyActorsAt(uv, layer, (SubCell)i, checkIfBlocker))
+				if (i != (byte)preferredSubCell && !AnyActorsAt(influenceNode, (SubCell)i, checkIfBlocker))
 					return (SubCell)i;
 
 			return SubCell.Invalid;
-		}
-
-		// NOTE: pos required to be in map bounds
-		bool AnyActorsAt(MPos uv, CellLayer<InfluenceNode> layer)
-		{
-			return layer[uv] != null;
 		}
 
 		// NOTE: always includes transients with influence
@@ -345,14 +338,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (!layer.Contains(uv))
 				return false;
 
-			return AnyActorsAt(uv, layer);
+			return layer[uv] != null;
 		}
 
 		// NOTE: pos required to be in map bounds
-		bool AnyActorsAt(MPos uv, CPos a, CellLayer<InfluenceNode> layer, SubCell sub, bool checkTransient)
+		bool AnyActorsAt(InfluenceNode influenceNode, CPos a, SubCell sub, bool checkTransient)
 		{
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
-			for (var i = layer[uv]; i != null; i = i.Next)
+			for (var i = influenceNode; i != null; i = i.Next)
 			{
 				if (always || i.SubCell == sub || i.SubCell == SubCell.FullCell)
 				{
@@ -376,14 +369,14 @@ namespace OpenRA.Mods.Common.Traits
 			if (!layer.Contains(uv))
 				return false;
 
-			return AnyActorsAt(uv, a, layer, sub, checkTransient);
+			return AnyActorsAt(layer[uv], a, sub, checkTransient);
 		}
 
 		// NOTE: can not check aircraft
-		bool AnyActorsAt(MPos uv, CellLayer<InfluenceNode> layer, SubCell sub, Func<Actor, bool> withCondition)
+		bool AnyActorsAt(InfluenceNode influenceNode, SubCell sub, Func<Actor, bool> withCondition)
 		{
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
-			for (var i = layer[uv]; i != null; i = i.Next)
+			for (var i = influenceNode; i != null; i = i.Next)
 				if ((always || i.SubCell == sub || i.SubCell == SubCell.FullCell) && withCondition(i.Actor))
 					return true;
 
@@ -398,7 +391,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!layer.Contains(uv))
 				return false;
 
-			return AnyActorsAt(uv, layer, sub, withCondition);
+			return AnyActorsAt(layer[uv], sub, withCondition);
 		}
 
 		public IEnumerable<Actor> AllActors()
@@ -441,9 +434,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (!layer.Contains(uv))
 					continue;
 
-				var temp = layer[uv];
-				RemoveInfluenceInner(ref temp, self);
-				layer[uv] = temp;
+				if (RemoveInfluenceInner(layer[uv], self, out var head))
+					layer[uv] = head;
 
 				if (cellTriggerInfluence.TryGetValue(c.Cell, out var triggers))
 					foreach (var t in triggers)
@@ -453,15 +445,28 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		static void RemoveInfluenceInner(ref InfluenceNode influenceNode, Actor toRemove)
+		static bool RemoveInfluenceInner(InfluenceNode influenceNode, Actor toRemove, out InfluenceNode head)
 		{
-			if (influenceNode == null)
-				return;
+			InfluenceNode prev = null;
+			for (var i = influenceNode; i != null; i = i.Next)
+			{
+				if (i.Actor == toRemove)
+				{
+					if (prev == null)
+					{
+						head = i.Next;
+						return true;
+					}
 
-			RemoveInfluenceInner(ref influenceNode.Next, toRemove);
+					prev.Next = i.Next;
+					break;
+				}
 
-			if (influenceNode.Actor == toRemove)
-				influenceNode = influenceNode.Next;
+				prev = i;
+			}
+
+			head = null;
+			return false;
 		}
 
 		public void UpdateOccupiedCells(IOccupySpace ios)
@@ -477,26 +482,24 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Position updates are done in one pass
 			// to ensure consistency during a tick
-			if (removeActorPosition.Count > 0)
+			foreach (var (bin, actor) in removeActorPosition)
 			{
-				foreach (var bin in bins)
+				var bin = (Bin)actor.ActorMapPositionKey;
+				if (bin != null)
 				{
-					var removed = bin.Actors.RemoveAll(actorShouldBeRemoved);
-					if (removed > 0)
+					if (bin.Actors.Remove(actor))
 						foreach (var t in bin.ProximityTriggers)
 							t.Dirty = true;
-				}
 
-				removeActorPosition.Clear();
+					actor.ActorMapPositionKey = null;
+				}
 			}
+
+			removeActorPosition.Clear();
 
 			foreach (var a in addActorPosition)
 			{
-				var pos = a.CenterPosition;
-				var col = WorldCoordToBinIndex(pos.X).Clamp(0, cols - 1);
-				var row = WorldCoordToBinIndex(pos.Y).Clamp(0, rows - 1);
-				var bin = BinAt(row, col);
-
+				var bin = BinForActorPosition(a);
 				bin.Actors.Add(a);
 				foreach (var t in bin.ProximityTriggers)
 					t.Dirty = true;
@@ -595,7 +598,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RemovePosition(Actor a, IOccupySpace ios)
 		{
-			removeActorPosition.Add(a);
+			removeActorPosition.Add((BinForActorPosition(a), a));
 		}
 
 		public void UpdatePosition(Actor a, IOccupySpace ios)
@@ -621,6 +624,14 @@ namespace OpenRA.Mods.Common.Traits
 			var maxCol = WorldCoordToBinIndex(worldRight).Clamp(0, cols - 1);
 			var maxRow = WorldCoordToBinIndex(worldBottom).Clamp(0, rows - 1);
 			return Rectangle.FromLTRB(minCol, minRow, maxCol, maxRow);
+		}
+
+		Bin BinForActorPosition(Actor a)
+		{
+			var pos = a.CenterPosition;
+			var col = WorldCoordToBinIndex(pos.X).Clamp(0, cols - 1);
+			var row = WorldCoordToBinIndex(pos.Y).Clamp(0, rows - 1);
+			return BinAt(row, col);
 		}
 
 		Bin BinAt(int binRow, int binCol)
