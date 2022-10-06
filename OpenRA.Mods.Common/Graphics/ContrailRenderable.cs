@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Graphics
 			for (var i = 1; i < renderLength; i++)
 			{
 				var j = next - skip - 1 - i;
-				var nextColor = Exts.ColorLerp(i * 1f / (renderLength - 1), startcolor, endcolor);
+				var nextColor = Exts.ColorLerp(i / (renderLength - 1f), startcolor, endcolor);
 
 				var nextX = 0L;
 				var nextY = 0L;
