@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
@@ -22,27 +23,27 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
 			foreach (var traitNode in actorNode.ChildrenMatching("Contrail"))
+			{
 				traitNode.RenameChildrenMatching("Color", "StartColor");
-
-			foreach (var traitNode in actorNode.ChildrenMatching("Contrail"))
 				traitNode.RenameChildrenMatching("UsePlayerColor", "StartColorUsePlayerColor");
+			}
 
 			yield break;
 		}
 
 		public override IEnumerable<string> UpdateWeaponNode(ModData modData, MiniYamlNode weaponNode)
 		{
-			foreach (var traitNode in weaponNode.ChildrenMatching("Missile"))
+			foreach (var traitNode in weaponNode.ChildrenMatching("Projectile").Where(n => n.Value.Value == "Missile"))
+			{
 				traitNode.RenameChildrenMatching("ContrailColor", "ContrailStartColor");
-
-			foreach (var traitNode in weaponNode.ChildrenMatching("Missile"))
 				traitNode.RenameChildrenMatching("ContrailUsePlayerColor", "ContrailStartColorUsePlayerColor");
+			}
 
-			foreach (var traitNode in weaponNode.ChildrenMatching("Bullet"))
+			foreach (var traitNode in weaponNode.ChildrenMatching("Projectile").Where(n => n.Value.Value == "Bullet"))
+			{
 				traitNode.RenameChildrenMatching("ContrailColor", "ContrailStartColor");
-
-			foreach (var traitNode in weaponNode.ChildrenMatching("Bullet"))
 				traitNode.RenameChildrenMatching("ContrailUsePlayerColor", "ContrailStartColorUsePlayerColor");
+			}
 
 			yield break;
 		}
