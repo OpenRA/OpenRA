@@ -96,6 +96,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveTSRefinery(),
 				new RenameMcvCrateAction(),
 				new RemoveSequenceHasEmbeddedPalette(),
+				new RenameContrailWidth(),
 			})
 		};
 
