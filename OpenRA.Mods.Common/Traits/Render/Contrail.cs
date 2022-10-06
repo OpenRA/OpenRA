@@ -33,8 +33,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Time (in ticks) after which the line should appear. Controls the distance to the actor.")]
 		public readonly int TrailDelay = 0;
 
-		[Desc("Thickness of the emitted line.")]
-		public readonly WDist TrailWidth = new(64);
+		[Desc("Thickness of the emitted line at the start of the contrail.")]
+		public readonly WDist StartWidth = new(64);
+
+		[Desc("Thickness of the emitted line at the end of the contrail. Will default to " + nameof(StartWidth) + " if left undefined")]
+		public readonly WDist? EndWidth = null;
 
 		[Desc("RGB color at the contrail start.")]
 		public readonly Color StartColor = Color.White;
@@ -74,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			startcolor = info.StartColorUsePlayerColor ? Color.FromArgb(info.StartColorAlpha, self.Owner.Color) : Color.FromArgb(info.StartColorAlpha, info.StartColor);
 			endcolor = info.EndColorUsePlayerColor ? Color.FromArgb(info.EndColorAlpha, self.Owner.Color) : Color.FromArgb(info.EndColorAlpha, info.EndColor ?? startcolor);
-			trail = new ContrailRenderable(self.World, startcolor, endcolor, info.TrailWidth, info.TrailLength, info.TrailDelay, info.ZOffset);
+			trail = new ContrailRenderable(self.World, startcolor, endcolor, info.StartWidth, info.EndWidth ?? info.StartWidth, info.TrailLength, info.TrailDelay, info.ZOffset);
 
 			body = self.Trait<BodyOrientation>();
 		}
@@ -103,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
-			trail = new ContrailRenderable(self.World, startcolor, endcolor, info.TrailWidth, info.TrailLength, info.TrailDelay, info.ZOffset);
+			trail = new ContrailRenderable(self.World, startcolor, endcolor, info.StartWidth, info.EndWidth ?? info.StartWidth, info.TrailLength, info.TrailDelay, info.ZOffset);
 		}
 	}
 }
