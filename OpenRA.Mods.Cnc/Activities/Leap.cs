@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		readonly AttackLeap attack;
 		readonly EdibleByLeap edible;
 		readonly Target target;
+		readonly bool forceAttack;
 
 		CPos destinationCell;
 		SubCell destinationSubCell = SubCell.Any;
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		int ticks = 0;
 		WPos targetPosition;
 
-		public Leap(in Target target, Mobile mobile, Mobile targetMobile, int speed, AttackLeap attack, EdibleByLeap edible)
+		public Leap(in Target target, Mobile mobile, Mobile targetMobile, int speed, AttackLeap attack, EdibleByLeap edible, bool forceAttack)
 		{
 			this.mobile = mobile;
 			this.targetMobile = targetMobile;
@@ -44,6 +45,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			this.target = target;
 			this.edible = edible;
 			this.speed = speed;
+			this.forceAttack = forceAttack;
 		}
 
 		protected override void OnFirstRun(Actor self)
@@ -97,7 +99,7 @@ namespace OpenRA.Mods.Cnc.Activities
 
 				// Revoke the condition before attacking, as it is usually used to pause the attack trait
 				attack.RevokeLeapCondition(self);
-				attack.DoAttack(self, target);
+				attack.DoAttack(self, target, forceAttack);
 
 				jumpComplete = true;
 				QueueChild(mobile.LocalMove(self, position, self.World.Map.CenterOfSubCell(destinationCell, destinationSubCell)));

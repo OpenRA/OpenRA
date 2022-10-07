@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				IsAiming = CanAimAtTarget(self, RequestedTarget, requestedForceAttack);
 				if (IsAiming)
-					DoAttack(self, RequestedTarget);
+					DoAttack(self, RequestedTarget, requestedForceAttack);
 			}
 			else
 			{
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				if (IsAiming)
-					DoAttack(self, OpportunityTarget);
+					DoAttack(self, OpportunityTarget, opportunityForceAttack);
 			}
 
 			base.Tick(self);

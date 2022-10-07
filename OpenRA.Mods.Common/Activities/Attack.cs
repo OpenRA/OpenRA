@@ -30,9 +30,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IMove move;
 		readonly IFacing facing;
 		readonly IPositionable positionable;
-		readonly bool forceAttack;
 		readonly Color? targetLineColor;
-
+		protected readonly bool ForceAttack;
 		protected Target target;
 		Target lastVisibleTarget;
 		WDist lastVisibleMaximumRange;
@@ -49,7 +48,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			this.target = target;
 			this.targetLineColor = targetLineColor;
-			this.forceAttack = forceAttack;
+			ForceAttack = forceAttack;
 
 			attackTraits = self.TraitsImplementing<AttackFrontal>().ToArray().Where(Exts.IsTraitEnabled);
 			revealsShroud = self.TraitsImplementing<RevealsShroud>().ToArray();
@@ -169,7 +168,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (attack.Info.AttackRequiresEnteringCell && !positionable.CanEnterCell(target.Actor.Location, null, BlockedByActor.None))
 				return AttackStatus.UnableToAttack;
 
-			if (!attack.Info.TargetFrozenActors && !forceAttack && target.Type == TargetType.FrozenActor)
+			if (!attack.Info.TargetFrozenActors && !ForceAttack && target.Type == TargetType.FrozenActor)
 			{
 				// Try to move within range, drop the target otherwise
 				if (move == null)
@@ -188,7 +187,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Drop the target once none of the weapons are effective against it
-			var armaments = attack.ChooseArmamentsForTarget(target, forceAttack).ToList();
+			var armaments = attack.ChooseArmamentsForTarget(target, ForceAttack).ToList();
 			if (armaments.Count == 0)
 				return AttackStatus.UnableToAttack;
 
@@ -242,7 +241,7 @@ namespace OpenRA.Mods.Common.Activities
 		void IActivityNotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)
 		{
 			// Cancel non-forced targets when switching to a more restrictive stance if they are no longer valid for auto-targeting
-			if (newStance > oldStance || forceAttack)
+			if (newStance > oldStance || ForceAttack)
 				return;
 
 			// If lastVisibleTarget is invalid we could never view the target in the first place, so we just drop it here too

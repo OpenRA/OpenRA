@@ -53,7 +53,7 @@ namespace OpenRA.Mods.D2k.Traits
 			Info = info;
 		}
 
-		public override void DoAttack(Actor self, in Target target)
+		public override void DoAttack(Actor self, in Target target, bool forceAttack)
 		{
 			// This is so that the worm does not launch an attack against a target that has reached solid rock
 			if (target.Type != TargetType.Actor || !CanAttack(self, target))
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.D2k.Traits
 				return;
 			}
 
-			var a = ChooseArmamentsForTarget(target, true).FirstOrDefault();
+			var a = ChooseArmamentsForTarget(target, forceAttack).FirstOrDefault();
 			if (a == null)
 				return;
 
@@ -74,7 +74,8 @@ namespace OpenRA.Mods.D2k.Traits
 
 		public override Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
 		{
-			return new SwallowTarget(self, newTarget, allowMove, forceAttack);
+			// HACK: we need to make it always true
+			return new SwallowTarget(self, newTarget, allowMove, true);
 		}
 
 		public class SwallowTarget : Attack
@@ -91,7 +92,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			protected override void DoAttack(Actor self, AttackFrontal attack, IEnumerable<Armament> armaments)
 			{
-				attack.DoAttack(self, target);
+				attack.DoAttack(self, target, ForceAttack);
 			}
 		}
 	}

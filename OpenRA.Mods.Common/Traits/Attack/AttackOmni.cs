@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsCanceling || !target.IsValidFor(self) || !attack.IsReachableTarget(target, allowMove))
 					return true;
 
-				attack.DoAttack(self, target);
+				attack.DoAttack(self, target, forceAttack);
 				return false;
 			}
 
