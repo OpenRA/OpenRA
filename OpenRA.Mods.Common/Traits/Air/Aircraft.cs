@@ -688,8 +688,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IsBlockedBy(Actor self, Actor otherActor, Actor ignoreActor, bool blockedByMobile = true)
 		{
-			// We are not blocked by the actor we are ignoring.
-			if (otherActor == self || otherActor == ignoreActor)
+			// We are not blocked by self, the actor we are ignoring, or by disposed actors.
+			if (otherActor == self || otherActor == ignoreActor || otherActor.Disposed)
 				return false;
 
 			// We are not blocked by actors we can nudge out of the way
