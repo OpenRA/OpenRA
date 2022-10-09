@@ -8,7 +8,7 @@ on:
 jobs:
   linux:
     name: Linux (.NET 6.0)
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Clone Repository
@@ -31,7 +31,7 @@ jobs:
 
   linux-mono:
     name: Linux (mono)
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Clone Repository

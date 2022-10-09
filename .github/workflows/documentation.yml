@@ -12,7 +12,7 @@ jobs:
   wiki:
     name: Update Wiki
     if: github.repository == 'openra/openra'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Clone Repository
         uses: actions/checkout@v2
@@ -63,7 +63,7 @@ jobs:
   docs:
     name: Update docs.openra.net
     if: github.repository == 'openra/openra'
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Clone Repository
         uses: actions/checkout@v2
