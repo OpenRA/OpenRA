@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Warheads
 				if (!AffectsParent && victim == firedBy)
 					continue;
 
-				var activeShapes = victim.TraitsImplementing<HitShape>().Where(Exts.IsTraitEnabled);
+				var activeShapes = victim.TraitsImplementing<HitShape>().Where(t => !t.IsTraitDisabled);
 				if (!activeShapes.Any(s => s.DistanceFromEdge(victim, pos).Length <= 0))
 					continue;
 

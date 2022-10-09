@@ -93,11 +93,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			enabledCapturable = self.TraitsImplementing<Capturable>()
 				.ToArray()
-				.Where(Exts.IsTraitEnabled);
+				.Where(t => !t.IsTraitDisabled);
 
 			enabledCaptures = self.TraitsImplementing<Captures>()
 				.ToArray()
-				.Where(Exts.IsTraitEnabled);
+				.Where(t => !t.IsTraitDisabled);
 
 			RefreshCaptures();
 			RefreshCapturable();

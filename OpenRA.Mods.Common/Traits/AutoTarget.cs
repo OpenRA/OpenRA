@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			var self = init.Self;
-			ActiveAttackBases = self.TraitsImplementing<AttackBase>().ToArray().Where(Exts.IsTraitEnabled);
+			ActiveAttackBases = self.TraitsImplementing<AttackBase>().ToArray().Where(t => !t.IsTraitDisabled);
 
 			stance = init.GetValue<StanceInit, UnitStance>(self.Owner.IsBot || !self.Owner.Playable ? info.InitialStanceAI : info.InitialStance);
 
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Traits
 			activeTargetPriorities =
 				self.TraitsImplementing<AutoTargetPriority>()
 					.OrderByDescending(ati => ati.Info.Priority).ToArray()
-					.Where(Exts.IsTraitEnabled).Select(atp => atp.Info);
+					.Where(t => !t.IsTraitDisabled).Select(atp => atp.Info);
 
 			overrideAutoTarget = self.TraitsImplementing<IOverrideAutoTarget>().ToArray();
 			notifyStanceChanged = self.TraitsImplementing<INotifyStanceChanged>().ToArray();
