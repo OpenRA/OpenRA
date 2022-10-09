@@ -10,7 +10,7 @@ on:
 jobs:
   source:
     name: Source Tarball
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Clone Repository
         uses: actions/checkout@v2
@@ -34,7 +34,7 @@ jobs:
 
   linux:
     name: Linux AppImages
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Clone Repository
         uses: actions/checkout@v2
@@ -134,7 +134,7 @@ jobs:
 
   windows:
     name: Windows Installers
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Clone Repository
         uses: actions/checkout@v2
