@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
@@ -18,12 +19,12 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptPropertyGroup("General")]
 	public class RepairableBuildingProperties : ScriptActorProperties, Requires<RepairableBuildingInfo>
 	{
-		readonly RepairableBuilding rb;
+		readonly RepairableBuilding[] repairableBuildings;
 
 		public RepairableBuildingProperties(ScriptContext context, Actor self)
 			: base(context, self)
 		{
-			rb = self.Trait<RepairableBuilding>();
+			repairableBuildings = self.TraitsImplementing<RepairableBuilding>().ToArray();
 		}
 
 		[Desc("Start repairs on this building. `repairer` can be an allied player.")]
@@ -31,7 +32,8 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			repairer = repairer ?? Self.Owner;
 
-			if (!rb.Repairers.Contains(repairer))
+			var rb = repairableBuildings.FirstEnabledConditionalTraitOrDefault();
+			if (rb != null && !rb.Repairers.Contains(repairer))
 				rb.RepairBuilding(Self, repairer);
 		}
 
@@ -40,7 +42,8 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			repairer = repairer ?? Self.Owner;
 
-			if (rb.RepairActive && rb.Repairers.Contains(repairer))
+			var rb = repairableBuildings.FirstEnabledConditionalTraitOrDefault();
+			if (rb != null && rb.RepairActive && rb.Repairers.Contains(repairer))
 				rb.RepairBuilding(Self, repairer);
 		}
 	}

@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -22,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 	public class WithBuildingRepairDecoration : WithDecoration
 	{
-		readonly RepairableBuilding rb;
+		readonly RepairableBuilding[] repairableBuildings;
 		readonly WithBuildingRepairDecorationInfo info;
 		int shownPlayer = 0;
 
@@ -30,16 +32,22 @@ namespace OpenRA.Mods.Common.Traits.Render
 			: base(self, info)
 		{
 			this.info = info;
-			rb = self.Trait<RepairableBuilding>();
-			anim = new Animation(self.World, info.Image,
-				() => !rb.RepairActive || rb.IsTraitDisabled || !ShouldRender(self));
-			anim.PlayThen(info.Sequence, CycleRepairer);
+			repairableBuildings = self.TraitsImplementing<RepairableBuilding>().ToArray();
+
+			Func<bool> pausedFunc = () =>
+			{
+				var rb = repairableBuildings.FirstEnabledConditionalTraitOrDefault();
+				return rb == null || !rb.RepairActive || rb.IsTraitDisabled || !ShouldRender(self);
+			};
+
+			anim = new Animation(self.World, info.Image, pausedFunc);
 			CycleRepairer();
 		}
 
 		protected override bool ShouldRender(Actor self)
 		{
-			if (rb.Repairers.Count == 0)
+			var rb = repairableBuildings.FirstEnabledConditionalTraitOrDefault();
+			if (rb == null || rb.Repairers.Count == 0)
 				return false;
 
 			return base.ShouldRender(self);
@@ -50,6 +58,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!info.IsPlayerPalette)
 				return wr.Palette(info.Palette);
 
+			var rb = repairableBuildings.FirstEnabledConditionalTraitOrDefault();
+			if (rb == null)
+				return wr.Palette(info.Palette);
+
 			return wr.Palette(info.Palette + rb.Repairers[shownPlayer % rb.Repairers.Count].InternalName);
 		}
 
@@ -57,7 +69,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			anim.PlayThen(info.Sequence, CycleRepairer);
 
-			if (++shownPlayer == rb.Repairers.Count)
+			var rb = repairableBuildings.FirstEnabledConditionalTraitOrDefault();
+			if (rb != null && ++shownPlayer == rb.Repairers.Count)
 				shownPlayer = 0;
 		}
 	}
