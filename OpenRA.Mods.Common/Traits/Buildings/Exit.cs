@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 				return Enumerable.Empty<Exit>();
 
 			var all = actor.TraitsImplementing<Exit>()
-				.Where(Exts.IsTraitEnabled);
+				.Where(t => !t.IsTraitDisabled);
 
 			if (string.IsNullOrEmpty(productionType))
 				return all;

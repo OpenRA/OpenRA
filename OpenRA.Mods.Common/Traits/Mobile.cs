@@ -604,7 +604,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		Activity WrapMove(Activity inner)
 		{
-			var moveWrapper = moveWrappers.FirstOrDefault(Exts.IsTraitEnabled);
+			var moveWrapper = moveWrappers.FirstEnabledTraitOrDefault();
 			if (moveWrapper != null)
 				return moveWrapper.WrapMove(inner);
 

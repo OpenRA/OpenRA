@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Orders
 
 			var cursor = OrderInner(world, mi)
 				.SelectMany(o => o.Subject.TraitsImplementing<Sellable>())
-				.Where(Exts.IsTraitEnabled)
+				.Where(t => !t.IsTraitDisabled)
 				.Select(si => si.Info.Cursor)
 				.FirstOrDefault();
 

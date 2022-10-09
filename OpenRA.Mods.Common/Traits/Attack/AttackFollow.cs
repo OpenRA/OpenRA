@@ -325,7 +325,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (target.Type == TargetType.FrozenActor && !attack.Info.TargetFrozenActors && !forceAttack)
 				{
 					var rs = revealsShroud
-						.Where(Exts.IsTraitEnabled)
+						.Where(t => !t.IsTraitDisabled)
 						.MaxByOrDefault(s => s.Range);
 
 					// Default to 2 cells if there are no active traits

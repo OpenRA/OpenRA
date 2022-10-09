@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public static bool AcceptsOrder(this Actor self, string orderString)
 		{
-			var rejectsOrdersTraits = self.TraitsImplementing<RejectsOrders>().Where(Exts.IsTraitEnabled).ToArray();
+			var rejectsOrdersTraits = self.TraitsImplementing<RejectsOrders>().Where(t => !t.IsTraitDisabled).ToArray();
 			if (rejectsOrdersTraits.Length == 0)
 				return true;
 

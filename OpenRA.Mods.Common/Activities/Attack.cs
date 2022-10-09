@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.targetLineColor = targetLineColor;
 			this.forceAttack = forceAttack;
 
-			attackTraits = self.TraitsImplementing<AttackFrontal>().ToArray().Where(Exts.IsTraitEnabled);
+			attackTraits = self.TraitsImplementing<AttackFrontal>().ToArray().Where(t => !t.IsTraitDisabled);
 			revealsShroud = self.TraitsImplementing<RevealsShroud>().ToArray();
 			facing = self.Trait<IFacing>();
 			positionable = self.Trait<IPositionable>();
@@ -67,8 +67,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				// Lambdas can't use 'in' variables, so capture a copy for later
 				var rangeTarget = target;
-				lastVisibleMaximumRange = attackTraits.Where(x => !x.IsTraitDisabled)
-					.Min(x => x.GetMaximumRangeVersusTarget(rangeTarget));
+				lastVisibleMaximumRange = attackTraits.Min(x => x.GetMaximumRangeVersusTarget(rangeTarget));
 
 				if (target.Type == TargetType.Actor)
 				{
@@ -176,7 +175,7 @@ namespace OpenRA.Mods.Common.Activities
 					return AttackStatus.UnableToAttack;
 
 				var rs = revealsShroud
-					.Where(Exts.IsTraitEnabled)
+					.Where(t => !t.IsTraitDisabled)
 					.MaxByOrDefault(s => s.Range);
 
 				// Default to 2 cells if there are no active traits

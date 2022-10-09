@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void INotifyCreated.Created(Actor self)
 		{
 			// Name check can be cached but enabled check can't.
-			armaments = self.TraitsImplementing<Armament>().Where(a => info.Armaments.Contains(a.Info.Name)).ToArray().Where(Exts.IsTraitEnabled);
+			armaments = self.TraitsImplementing<Armament>().Where(a => info.Armaments.Contains(a.Info.Name)).ToArray().Where(t => !t.IsTraitDisabled);
 		}
 
 		float ISelectionBar.GetValue()

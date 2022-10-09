@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 				// No construction yards - Build a new MCV
 				if (ShouldBuildMCV())
 				{
-					var unitBuilder = requestUnitProduction.FirstOrDefault(Exts.IsTraitEnabled);
+					var unitBuilder = requestUnitProduction.FirstEnabledTraitOrDefault();
 					if (unitBuilder != null)
 					{
 						var mcvInfo = AIUtils.GetInfoByCommonName(Info.McvTypes, player);
