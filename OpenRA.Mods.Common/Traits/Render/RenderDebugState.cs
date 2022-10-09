@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly SpriteFont font;
 		readonly Actor self;
 		readonly WVec offset;
-		SquadManagerBotModule ai;
+		SquadManagerBotModule[] squadManagerModules;
 
 		Color color;
 		string tagString;
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyCreated.Created(Actor self)
 		{
-			ai = self.Owner.PlayerActor.TraitsImplementing<SquadManagerBotModule>().FirstOrDefault(Exts.IsTraitEnabled);
+			squadManagerModules = self.Owner.PlayerActor.TraitsImplementing<SquadManagerBotModule>().ToArray();
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -86,11 +86,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!self.Owner.IsBot)
 				yield break;
 
-			if (ai == null)
-				yield break;
-
-			var squads = ai.Squads;
-			var squad = squads.FirstOrDefault(x => x.Units.Contains(self));
+			var squads = squadManagerModules.FirstEnabledConditionalTraitOrDefault()?.Squads;
+			var squad = squads?.FirstOrDefault(x => x.Units.Contains(self));
 			if (squad == null)
 				yield break;
 
