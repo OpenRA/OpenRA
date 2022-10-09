@@ -538,6 +538,26 @@ namespace OpenRA
 			return default;
 		}
 
+		public static T FirstEnabledConditionalTraitOrDefault<T>(this IEnumerable<T> ts) where T : IDisabledTrait
+		{
+			// PERF: Avoid LINQ.
+			foreach (var t in ts)
+				if (!t.IsTraitDisabled)
+					return t;
+
+			return default(T);
+		}
+
+		public static T FirstEnabledConditionalTraitOrDefault<T>(this T[] ts) where T : IDisabledTrait
+		{
+			// PERF: Avoid LINQ.
+			foreach (var t in ts)
+				if (!t.IsTraitDisabled)
+					return t;
+
+			return default(T);
+		}
+
 		public static LineSplitEnumerator SplitLines(this string str, char separator)
 		{
 			return new LineSplitEnumerator(str.AsSpan(), separator);
