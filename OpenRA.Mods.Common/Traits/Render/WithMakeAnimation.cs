@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (token == Actor.InvalidConditionToken)
 				token = self.GrantCondition(info.Condition);
 
-			var wsb = wsbs.FirstEnabledTraitOrDefault();
+			var wsb = wsbs.FirstEnabledConditionalTraitOrDefault();
 
 			if (wsb == null)
 				return;
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (token == Actor.InvalidConditionToken)
 				token = self.GrantCondition(info.Condition);
 
-			var wsb = wsbs.FirstEnabledTraitOrDefault();
+			var wsb = wsbs.FirstEnabledConditionalTraitOrDefault();
 
 			if (wsb == null)
 				return;
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				// (sell/transform/etc) runs. This causes visual glitches that we attempt to minimize
 				// by forcing the animation to frame 0 and regranting the make condition.
 				// These workarounds will break the actor if the followup activity doesn't dispose it!
-				wsbs.FirstEnabledTraitOrDefault()?.DefaultAnimation.PlayFetchIndex(info.Sequence, () => 0);
+				wsbs.FirstEnabledConditionalTraitOrDefault()?.DefaultAnimation.PlayFetchIndex(info.Sequence, () => 0);
 
 				token = self.GrantCondition(info.Condition);
 

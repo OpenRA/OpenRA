@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public void Demolish(Actor target)
 		{
 			// NB: Scripted actions get no visible targetlines.
-			var demolition = demolitions.FirstEnabledTraitOrDefault();
+			var demolition = demolitions.FirstEnabledConditionalTraitOrDefault();
 			if (demolition != null)
 				Self.QueueActivity(demolition.GetDemolishActivity(Self, Target.FromActor(target), null));
 		}

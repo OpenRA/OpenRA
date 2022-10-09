@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Scripting
 				}
 
 				var cs = actor.TraitsImplementing<Chronoshiftable>()
-					.FirstEnabledTraitOrDefault();
+					.FirstEnabledConditionalTraitOrDefault();
 
 				if (cs != null && cs.CanChronoshiftTo(actor, cell))
 					cs.Teleport(actor, cell, duration, killCargo, Self);

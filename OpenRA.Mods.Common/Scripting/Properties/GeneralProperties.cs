@@ -185,7 +185,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			get
 			{
-				var tooltip = tooltips.FirstEnabledTraitOrDefault();
+				var tooltip = tooltips.FirstEnabledConditionalTraitOrDefault();
 
 				return tooltip?.Info.Name;
 			}
