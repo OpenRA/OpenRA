@@ -81,6 +81,8 @@ HVR:
 	Armament:
 		Weapon: HoverMissile
 		LocalOffset: 0,242,543, 0,-242,543
+		LocalYaw: -110, 110
+		BurstsPerFire: 2
 	Turreted:
 		TurnSpeed: 28
 		Offset: -128,0,85

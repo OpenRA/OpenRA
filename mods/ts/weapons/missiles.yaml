@@ -54,10 +54,15 @@ Bazooka:
 
 HoverMissile:
 	Inherits: ^DefaultMissile
-	ReloadDelay: 68
-	Burst: 2
+	ReloadDelay: 100
+	Burst: 8
+	BurstDelays: 10, 20, 30
 	Range: 8c0
 	Report: hovrmis1.aud
+	Projectile: Missile
+		HorizontalRateOfTurn: 13
+		RangeLimit: 25c0
+		Speed: 400
 	Warhead@1Dam: SpreadDamage
 		Damage: 3000
 
