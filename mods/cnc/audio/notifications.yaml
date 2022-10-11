@@ -54,19 +54,21 @@ Sounds:
 	Notifications:
 		Appear: appear1
 		Beacon: bleep2
-			AllowInterrupt: true
+			InterruptType: Interrupt
 		Beepy2: beepy2
 		Beepy3: beepy3
 		Beepy6: beepy6
 		CashTickDown: tone16
+			InterruptType: Overlap
 		CashTickUp: tone15
 			VolumeModifier: 0.33
+			InterruptType: Overlap
 		ChatLine: scold1
-			AllowInterrupt: true
+			InterruptType: Interrupt
 		ClickDisabledSound: scold2
-			AllowInterrupt: true
+			InterruptType: Interrupt
 		ClickSound: button
-			AllowInterrupt: true
+			InterruptType: Interrupt
 		Cloak: trans1
 		Clock: clock1
 		Construction: constru2

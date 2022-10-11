@@ -33,7 +33,7 @@ namespace OpenRA.GameRules
 		{
 			FieldLoader.Load(this, y);
 
-			VoicePools = Exts.Lazy(() => Voices.ToDictionary(a => a.Key, a => new SoundPool(1f, false, a.Value)));
+			VoicePools = Exts.Lazy(() => Voices.ToDictionary(a => a.Key, a => new SoundPool(1f, SoundPool.DefaultInterruptType, a.Value)));
 			NotificationsPools = Exts.Lazy(() => ParseSoundPool(y, "Notifications"));
 		}
 
@@ -44,17 +44,17 @@ namespace OpenRA.GameRules
 			foreach (var t in classifiction.Value.Nodes)
 			{
 				var volumeModifier = 1f;
-				var volumeModifierNode = t.Value.Nodes.FirstOrDefault(x => x.Key == "VolumeModifier");
+				var volumeModifierNode = t.Value.Nodes.FirstOrDefault(x => x.Key == nameof(SoundPool.VolumeModifier));
 				if (volumeModifierNode != null)
 					volumeModifier = FieldLoader.GetValue<float>(volumeModifierNode.Key, volumeModifierNode.Value.Value);
 
-				var allowInterrupt = false;
-				var allowInterruptNode = t.Value.Nodes.FirstOrDefault(x => x.Key == "AllowInterrupt");
-				if (allowInterruptNode != null)
-					allowInterrupt = FieldLoader.GetValue<bool>(allowInterruptNode.Key, allowInterruptNode.Value.Value);
+				var interruptType = SoundPool.DefaultInterruptType;
+				var interruptTypeNode = t.Value.Nodes.FirstOrDefault(x => x.Key == nameof(SoundPool.InterruptType));
+				if (interruptTypeNode != null)
+					interruptType = FieldLoader.GetValue<SoundPool.InterruptType>(interruptTypeNode.Key, interruptTypeNode.Value.Value);
 
 				var names = FieldLoader.GetValue<string[]>(t.Key, t.Value.Value);
-				var sp = new SoundPool(volumeModifier, allowInterrupt, names);
+				var sp = new SoundPool(volumeModifier, interruptType, names);
 				ret.Add(t.Key, sp);
 			}
 
@@ -64,15 +64,17 @@ namespace OpenRA.GameRules
 
 	public class SoundPool
 	{
+		public enum InterruptType { DoNotPlay, Interrupt, Overlap }
+		public const InterruptType DefaultInterruptType = InterruptType.DoNotPlay;
 		public readonly float VolumeModifier;
-		public readonly bool AllowInterrupt;
+		public readonly InterruptType Type;
 		readonly string[] clips;
 		readonly List<string> liveclips = new List<string>();
 
-		public SoundPool(float volumeModifier, bool allowInterrupt, params string[] clips)
+		public SoundPool(float volumeModifier, InterruptType interruptType, params string[] clips)
 		{
 			VolumeModifier = volumeModifier;
-			AllowInterrupt = allowInterrupt;
+			Type = interruptType;
 			this.clips = clips;
 		}
 

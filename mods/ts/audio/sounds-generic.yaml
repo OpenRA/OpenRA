@@ -2,7 +2,7 @@ Sounds:
 	Notifications:
 		Bargraph: bargraph
 		Beacon: message1
-			AllowInterrupt: true
+			InterruptType: Interrupt
 		Bestbox: bestbox
 		Blip: blip
 		BuildPaletteClose: emblem
@@ -11,14 +11,16 @@ Sounds:
 		CantPushButtonSound: scold8
 		CashTickDown: creddwn1
 			VolumeModifier: 0.33
+			InterruptType: Overlap
 		CashTickUp: credup1
 			VolumeModifier: 0.33
+			InterruptType: Overlap
 		ChatLine: message1
-			AllowInterrupt: true
+			InterruptType: Interrupt
 		ClickDisabledSound: wrong1
-			AllowInterrupt: true
+			InterruptType: Interrupt
 		ClickSound: clicky1
-			AllowInterrupt: true
+			InterruptType: Interrupt
 		GameForming: gamefrm1
 		Gdiclose: gdiclose
 		Gdiopen: gdiopen
