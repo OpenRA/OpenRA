@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Cnc.Activities
 
 		public Teleport(Actor teleporter, CPos destination, int? maximumDistance,
 			bool killCargo, bool screenFlash, string sound, bool interruptable = true,
-			bool killOnFailure = false, BitSet<DamageType> killDamageTypes = default(BitSet<DamageType>))
+			bool killOnFailure = false, BitSet<DamageType> killDamageTypes = default)
 		{
 			var max = teleporter.World.Map.Grid.MaximumTileSearchRange;
 			if (maximumDistance > max)

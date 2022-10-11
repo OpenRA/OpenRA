@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[Desc("Damage types that this should be used for (defined on the warheads).",
 			"Leave empty to disable all filtering.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		[Desc("Trigger when Undamaged, Light, Medium, Heavy, Critical or Dead.")]
 		public readonly DamageState MinimumDamageState = DamageState.Heavy;

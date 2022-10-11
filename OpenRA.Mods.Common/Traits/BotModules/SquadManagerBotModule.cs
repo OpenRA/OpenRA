@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int ProtectionScanRadius = 8;
 
 		[Desc("Enemy target types to never target.")]
-		public readonly BitSet<TargetableType> IgnoredEnemyTargetTypes = default(BitSet<TargetableType>);
+		public readonly BitSet<TargetableType> IgnoredEnemyTargetTypes = default;
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{

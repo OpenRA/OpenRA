@@ -105,7 +105,7 @@ namespace OpenRA
 			// so we pre-filter these to avoid returning the wrong result
 			if (GridType == MapGridType.RectangularIsometric && cell.X < cell.Y)
 			{
-				value = default(T);
+				value = default;
 				return false;
 			}
 
@@ -116,7 +116,7 @@ namespace OpenRA
 				return true;
 			}
 
-			value = default(T);
+			value = default;
 			return false;
 		}
 

@@ -19,7 +19,7 @@ namespace OpenRA.Traits
 	public readonly struct Target
 	{
 		public static readonly Target[] None = Array.Empty<Target>();
-		public static readonly Target Invalid = default(Target);
+		public static readonly Target Invalid = default;
 
 		readonly TargetType type;
 		readonly Actor actor;

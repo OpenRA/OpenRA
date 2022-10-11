@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 
 		[Desc("Damage types that this should be used for (defined on the warheads).",
 			"If empty, this will be used as the default sound for all death types.")]
-		public readonly BitSet<DamageType> DeathTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DeathTypes = default;
 
 		public override object Create(ActorInitializer init) { return new DeathSounds(this); }
 	}

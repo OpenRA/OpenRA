@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		public readonly string[] DestroyedSounds = Array.Empty<string>();
 
 		[Desc("DamageType(s) that trigger the sounds. Leave empty to always trigger a sound.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		public override object Create(ActorInitializer init) { return new SoundOnDamageTransition(this); }
 	}

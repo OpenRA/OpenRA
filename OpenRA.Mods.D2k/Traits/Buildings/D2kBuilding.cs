@@ -28,7 +28,7 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 		public readonly int DamageInterval = 100;
 
 		[Desc("Apply the damage using these damagetypes.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		[Desc("Terrain types where the actor will take damage.")]
 		public readonly string[] DamageTerrainTypes = { "Rock" };

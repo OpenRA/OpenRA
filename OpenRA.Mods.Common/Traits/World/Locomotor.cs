@@ -73,10 +73,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool MoveIntoShroud = true;
 
 		[Desc("e.g. crate, wall, infantry")]
-		public readonly BitSet<CrushClass> Crushes = default(BitSet<CrushClass>);
+		public readonly BitSet<CrushClass> Crushes = default;
 
 		[Desc("Types of damage that are caused while crushing. Leave empty for no damage types.")]
-		public readonly BitSet<DamageType> CrushDamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> CrushDamageTypes = default;
 
 		[FieldLoader.LoadUsing(nameof(LoadSpeeds), true)]
 		[Desc("Lower the value on rough terrain. Leave out entries for impassable terrain.")]
@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly LongBitSet<PlayerBitMask> Crushable;
 			public readonly CellFlag CellFlag;
 
-			public CellCache(LongBitSet<PlayerBitMask> immovable, CellFlag cellFlag, LongBitSet<PlayerBitMask> crushable = default(LongBitSet<PlayerBitMask>))
+			public CellCache(LongBitSet<PlayerBitMask> immovable, CellFlag cellFlag, LongBitSet<PlayerBitMask> crushable = default)
 			{
 				Immovable = immovable;
 				Crushable = crushable;
@@ -467,13 +467,13 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (!actors.Any())
 				{
-					cache[cell] = new CellCache(default(LongBitSet<PlayerBitMask>), cellFlag);
+					cache[cell] = new CellCache(default, cellFlag);
 					return;
 				}
 
 				if (sharesCell && actorMap.HasFreeSubCell(cell))
 				{
-					cache[cell] = new CellCache(default(LongBitSet<PlayerBitMask>), cellFlag);
+					cache[cell] = new CellCache(default, cellFlag);
 					return;
 				}
 

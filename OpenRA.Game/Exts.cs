@@ -155,7 +155,7 @@ namespace OpenRA
 				if (throws)
 					throw new ArgumentException("Collection must not be empty.", nameof(ts));
 				else
-					return default(T);
+					return default;
 			}
 			else
 				return xs.ElementAt(r.Next(xs.Count));
@@ -232,7 +232,7 @@ namespace OpenRA
 					if (throws)
 						throw new ArgumentException("Collection must not be empty.", nameof(ts));
 					else
-						return default(T);
+						return default;
 				t = e.Current;
 				u = selector(t);
 				while (e.MoveNext())
@@ -525,7 +525,7 @@ namespace OpenRA
 				if (t.IsTraitEnabled())
 					return t;
 
-			return default(T);
+			return default;
 		}
 
 		public static T FirstEnabledTraitOrDefault<T>(this T[] ts)
@@ -535,7 +535,7 @@ namespace OpenRA
 				if (t.IsTraitEnabled())
 					return t;
 
-			return default(T);
+			return default;
 		}
 
 		public static LineSplitEnumerator SplitLines(this string str, char separator)
@@ -596,7 +596,7 @@ namespace OpenRA
 
 			if (values.Any(x => !names.Contains(x)))
 			{
-				value = default(T);
+				value = default;
 				return false;
 			}
 

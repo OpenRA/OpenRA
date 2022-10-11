@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class AppearsOnMapPreviewInfo : TraitInfo<AppearsOnMapPreview>, IMapPreviewSignatureInfo, Requires<IOccupySpaceInfo>
 	{
 		[Desc("Use this color to render the actor, instead of owner player color.")]
-		public readonly Color Color = default(Color);
+		public readonly Color Color = default;
 
 		[Desc("Use this terrain color to render the actor, instead of owner player color.",
 			"Overrides `Color` if both set.")]

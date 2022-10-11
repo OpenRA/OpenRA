@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		[Desc("Types of damage that this trait causes to self when 'ExplodeInstead' is true",
 			"or the return-to-origin is blocked. Leave empty for no damage types.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		public readonly string ChronoshiftSound = "chrono2.aud";
 

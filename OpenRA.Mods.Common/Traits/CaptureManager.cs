@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RefreshCapturable()
 		{
-			allyCapturableTypes = neutralCapturableTypes = enemyCapturableTypes = default(BitSet<CaptureType>);
+			allyCapturableTypes = neutralCapturableTypes = enemyCapturableTypes = default;
 			foreach (var c in enabledCapturable)
 			{
 				if (c.Info.ValidRelationships.HasRelationship(PlayerRelationship.Ally))

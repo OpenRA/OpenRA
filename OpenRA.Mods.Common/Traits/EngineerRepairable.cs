@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class EngineerRepairableInfo : ConditionalTraitInfo
 	{
 		[Desc("Actors with these Types under EngineerRepair trait can repair me.")]
-		public readonly BitSet<EngineerRepairType> Types = default(BitSet<EngineerRepairType>);
+		public readonly BitSet<EngineerRepairType> Types = default;
 
 		public override object Create(ActorInitializer init) { return new EngineerRepairable(this); }
 	}

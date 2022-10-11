@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int DamageCooldown = 0;
 
 		[Desc("Apply the health change when encountering these damage types.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		public override object Create(ActorInitializer init) { return new ChangesHealth(init.Self, this); }
 	}

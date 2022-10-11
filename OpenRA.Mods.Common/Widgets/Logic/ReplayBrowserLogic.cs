@@ -836,10 +836,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			public string Faction;
 
 			public bool IsEmpty =>
-				Type == default(GameType)
-				&& Date == default(DateType)
-				&& Duration == default(DurationType)
-				&& Outcome == default(WinState)
+				Type == default
+				&& Date == default
+				&& Duration == default
+				&& Outcome == default
 				&& string.IsNullOrEmpty(PlayerName)
 				&& string.IsNullOrEmpty(MapName)
 				&& string.IsNullOrEmpty(Faction);

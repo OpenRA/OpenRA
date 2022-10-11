@@ -62,7 +62,7 @@ namespace OpenRA
 			if (!fileSystem.Exists(filename))
 			{
 				Log.Write("sound", "LoadSound, file does not exist: {0}", filename);
-				return default(T);
+				return default;
 			}
 
 			using (var stream = fileSystem.Open(filename))

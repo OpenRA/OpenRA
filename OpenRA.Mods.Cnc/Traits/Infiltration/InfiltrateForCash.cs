@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	class InfiltrateForCashInfo : TraitInfo
 	{
 		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
-		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
+		public readonly BitSet<TargetableType> Types = default;
 
 		[Desc("Percentage of the victim's resources that will be stolen.")]
 		public readonly int Percentage = 100;

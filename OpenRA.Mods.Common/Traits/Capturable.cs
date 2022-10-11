@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("CaptureTypes (from the Captures trait) that are able to capture this.")]
-		public readonly BitSet<CaptureType> Types = default(BitSet<CaptureType>);
+		public readonly BitSet<CaptureType> Types = default;
 
 		[Desc("What player relationships the target's owner needs to be captured by this actor.")]
 		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Neutral | PlayerRelationship.Enemy;

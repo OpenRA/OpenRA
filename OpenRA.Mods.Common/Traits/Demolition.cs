@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly EnterBehaviour EnterBehaviour = EnterBehaviour.Exit;
 
 		[Desc("Types of damage that this trait causes. Leave empty for no damage types.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		[VoiceReference]
 		[Desc("Voice string when planting explosive charges.")]

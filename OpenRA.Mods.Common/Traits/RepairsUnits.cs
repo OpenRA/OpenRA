@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Interval = 24;
 
 		[Desc("Damage types used for the repair.")]
-		public readonly BitSet<DamageType> RepairDamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> RepairDamageTypes = default;
 
 		[NotificationReference("Speech")]
 		[Desc("Speech notification played when starting to repair a unit.")]

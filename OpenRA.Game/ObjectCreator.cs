@@ -112,7 +112,7 @@ namespace OpenRA
 				else
 					throw new InvalidOperationException($"Cannot locate type: {className}");
 
-				return default(T);
+				return default;
 			}
 
 			var ctor = ctorCache[type];

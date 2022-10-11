@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("This unit's cloneable type is:")]
-		public readonly BitSet<CloneableType> Types = default(BitSet<CloneableType>);
+		public readonly BitSet<CloneableType> Types = default;
 	}
 
 	public class Cloneable { }

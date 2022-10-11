@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Amount = 0;
 
 		[Desc("Award cash only if the capturer's CaptureTypes overlap with these types. Leave empty to allow all types.")]
-		public readonly BitSet<CaptureType> CaptureTypes = default(BitSet<CaptureType>);
+		public readonly BitSet<CaptureType> CaptureTypes = default;
 
 		public override object Create(ActorInitializer init) { return new GivesCashOnCapture(this); }
 	}

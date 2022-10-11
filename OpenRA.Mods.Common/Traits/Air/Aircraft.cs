@@ -86,10 +86,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool MoveIntoShroud = true;
 
 		[Desc("e.g. crate, wall, infantry")]
-		public readonly BitSet<CrushClass> Crushes = default(BitSet<CrushClass>);
+		public readonly BitSet<CrushClass> Crushes = default;
 
 		[Desc("Types of damage that are caused while crushing. Leave empty for no damage types.")]
-		public readonly BitSet<DamageType> CrushDamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> CrushDamageTypes = default;
 
 		[VoiceReference]
 		public readonly string Voice = "Action";

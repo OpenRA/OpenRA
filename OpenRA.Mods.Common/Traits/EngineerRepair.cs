@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class EngineerRepairInfo : ConditionalTraitInfo
 	{
 		[Desc("Uses the \"EngineerRepairable\" trait to determine repairability.")]
-		public readonly BitSet<EngineerRepairType> Types = default(BitSet<EngineerRepairType>);
+		public readonly BitSet<EngineerRepairType> Types = default;
 
 		[VoiceReference]
 		public readonly string Voice = "Action";

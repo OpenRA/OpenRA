@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public WeaponInfo DetonationWeaponInfo { get; private set; }
 
 		[Desc("Types of damage that this trait causes to self while self-destructing. Leave empty for no damage types.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		[CursorReference]
 		[Desc("Cursor to display when targeting.")]
