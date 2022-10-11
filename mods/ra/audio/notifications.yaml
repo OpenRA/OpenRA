@@ -120,18 +120,20 @@ Sounds:
 		RadarDown: radardn1
 		CashTickUp: cashup1
 			VolumeModifier: 0.33
+			InterruptType: Overlap
 		CashTickDown: cashdn1
 			VolumeModifier: 0.33
+			InterruptType: Overlap
 		LevelUp: hydrod1
 		DisablePower: bleep11
 		EnablePower: bleep12
 		ChatLine: rabeep1
-			AllowInterrupt: true
+			InterruptType: Interrupt
 		ClickSound: ramenu1
-			AllowInterrupt: true
+			InterruptType: Interrupt
 		ClickDisabledSound:
 		Beacon: beepslct
-			AllowInterrupt: true
+			InterruptType: Interrupt
 		AlertBuzzer: buzzy1
 		AlertBleep: bleep6
 		BaseSetup: bleep9
