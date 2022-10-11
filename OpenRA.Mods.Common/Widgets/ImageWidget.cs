@@ -33,14 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<string> GetTooltipText;
 
 		readonly CachedTransform<(string, string), Sprite> getImageCache = new CachedTransform<(string, string), Sprite>(
-			((string collection, string image) args) =>
-			{
-				var sprite = ChromeProvider.GetImage(args.collection, args.image);
-				if (sprite == null)
-					throw new ArgumentException($"Sprite {args.collection}/{args.image} was not found.");
-
-				return sprite;
-			});
+			((string collection, string image) args) => ChromeProvider.GetImage(args.collection, args.image));
 
 		public ImageWidget()
 		{

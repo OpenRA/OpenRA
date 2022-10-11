@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						var collectionName = collection + (args.Highlighted ? "-highlighted" : "");
 						var variantImageName = GetStatefulImageName(imageName, args.Disabled, args.Pressed, args.Hover, args.Focused);
-						return ChromeProvider.GetImage(collectionName, variantImageName) ?? ChromeProvider.GetImage(collectionName, imageName);
+						return ChromeProvider.TryGetImage(collectionName, variantImageName) ?? ChromeProvider.GetImage(collectionName, imageName);
 					});
 		}
 
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						var collectionName = collection + (args.Highlighted ? "-highlighted" : "");
 						var variantCollectionName = GetStatefulImageName(collectionName, args.Disabled, args.Pressed, args.Hover, args.Focused);
-						return ChromeProvider.GetPanelImages(variantCollectionName) ?? ChromeProvider.GetPanelImages(collectionName);
+						return ChromeProvider.TryGetPanelImages(variantCollectionName) ?? ChromeProvider.GetPanelImages(collectionName);
 					});
 		}
 
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public static void DrawPanel(string collection, Rectangle bounds)
 		{
-			var sprites = ChromeProvider.GetPanelImages(collection);
+			var sprites = ChromeProvider.TryGetPanelImages(collection);
 			if (sprites != null)
 				DrawPanel(bounds, sprites);
 		}
