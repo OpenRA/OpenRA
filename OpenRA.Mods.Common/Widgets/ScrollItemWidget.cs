@@ -64,10 +64,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (!IgnoreChildMouseOver && !hover)
 				hover = Children.Contains(Ui.MouseOverWidget);
 
-			var panel = getPanelCache.Update((IsDisabled(), Depressed, hover, false, IsSelected() || IsHighlighted()));
-
-			if (panel != null)
-				WidgetUtils.DrawPanel(RenderBounds, panel);
+			WidgetUtils.DrawPanel(RenderBounds, getPanelCache.Update((IsDisabled(), Depressed, hover, false, IsSelected() || IsHighlighted())));
 		}
 
 		public override Widget Clone() { return new ScrollItemWidget(this); }

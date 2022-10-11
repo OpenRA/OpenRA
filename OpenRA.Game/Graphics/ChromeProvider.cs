@@ -145,6 +145,15 @@ namespace OpenRA.Graphics
 
 		public static Sprite GetImage(string collectionName, string imageName)
 		{
+			var image = TryGetImage(collectionName, imageName);
+			if (image == null)
+				throw new ArgumentException($"Sprite `{collectionName}/{imageName}` was not found.");
+
+			return image;
+		}
+
+		public static Sprite TryGetImage(string collectionName, string imageName)
+		{
 			if (string.IsNullOrEmpty(collectionName))
 				return null;
 
@@ -153,10 +162,7 @@ namespace OpenRA.Graphics
 				return sprite;
 
 			if (!collections.TryGetValue(collectionName, out var collection))
-			{
-				Log.Write("debug", "Could not find collection '{0}'", collectionName);
 				return null;
-			}
 
 			if (!collection.Regions.TryGetValue(imageName, out var mi))
 				return null;
@@ -177,6 +183,15 @@ namespace OpenRA.Graphics
 
 		public static Sprite[] GetPanelImages(string collectionName)
 		{
+			var panel = TryGetPanelImages(collectionName);
+			if (panel == null)
+				throw new ArgumentException($"Panel `{collectionName}` was not found.");
+
+			return panel;
+		}
+
+		public static Sprite[] TryGetPanelImages(string collectionName)
+		{
 			if (string.IsNullOrEmpty(collectionName))
 				return null;
 
@@ -185,17 +200,14 @@ namespace OpenRA.Graphics
 				return cachedSprites;
 
 			if (!collections.TryGetValue(collectionName, out var collection))
-			{
-				Log.Write("debug", "Could not find collection '{0}'", collectionName);
 				return null;
-			}
 
 			Sprite[] sprites;
 			if (collection.PanelRegion != null)
 			{
 				if (collection.PanelRegion.Length != 8)
 				{
-					Log.Write("debug", "Collection '{0}' does not define a valid PanelRegion", collectionName);
+					Log.Write("debug", $"Collection '{collectionName}' does not define a valid PanelRegion");
 					return null;
 				}
 
@@ -222,18 +234,23 @@ namespace OpenRA.Graphics
 			}
 			else
 			{
+				// PERF: We don't need to search for images if there are no definitions.
+				// PERF: It's more efficient to send an empty array rather than an array of 9 nulls.
+				if (!collection.Regions.Any())
+					return Array.Empty<Sprite>();
+
 				// Support manual definitions for unusual dialog layouts
 				sprites = new[]
 				{
-					GetImage(collectionName, "corner-tl"),
-					GetImage(collectionName, "border-t"),
-					GetImage(collectionName, "corner-tr"),
-					GetImage(collectionName, "border-l"),
-					GetImage(collectionName, "background"),
-					GetImage(collectionName, "border-r"),
-					GetImage(collectionName, "corner-bl"),
-					GetImage(collectionName, "border-b"),
-					GetImage(collectionName, "corner-br")
+					TryGetImage(collectionName, "corner-tl"),
+					TryGetImage(collectionName, "border-t"),
+					TryGetImage(collectionName, "corner-tr"),
+					TryGetImage(collectionName, "border-l"),
+					TryGetImage(collectionName, "background"),
+					TryGetImage(collectionName, "border-r"),
+					TryGetImage(collectionName, "corner-bl"),
+					TryGetImage(collectionName, "border-b"),
+					TryGetImage(collectionName, "corner-br")
 				};
 			}
 
