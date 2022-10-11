@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("DeathTypes for which shroud will be revealed.",
 			"Use an empty list (the default) to allow all DeathTypes.")]
-		public readonly BitSet<DamageType> DeathTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DeathTypes = default;
 
 		public override object Create(ActorInitializer init) { return new RevealOnDeath(this); }
 	}

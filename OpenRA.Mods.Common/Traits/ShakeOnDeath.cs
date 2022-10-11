@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ShakeOnDeathInfo : TraitInfo
 	{
 		[Desc("DeathType(s) that trigger the shake. Leave empty to always trigger a shake.")]
-		public readonly BitSet<DamageType> DeathTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DeathTypes = default;
 
 		public readonly int Duration = 10;
 		public readonly int Intensity = 1;

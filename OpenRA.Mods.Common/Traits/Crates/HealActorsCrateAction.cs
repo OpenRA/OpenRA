@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	class HealActorsCrateActionInfo : CrateActionInfo
 	{
 		[Desc("The target type(s) of the actors this crate action will heal. Leave empty to heal all actors.")]
-		public readonly BitSet<TargetableType> TargetTypes = default(BitSet<TargetableType>);
+		public readonly BitSet<TargetableType> TargetTypes = default;
 
 		public override object Create(ActorInitializer init) { return new HealActorsCrateAction(init.Self, this); }
 	}

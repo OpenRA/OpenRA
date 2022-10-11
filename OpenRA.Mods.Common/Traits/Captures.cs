@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("Types of actors that it can capture, as long as the type also exists in the Capturable Type: trait.")]
-		public readonly BitSet<CaptureType> CaptureTypes = default(BitSet<CaptureType>);
+		public readonly BitSet<CaptureType> CaptureTypes = default;
 
 		[Desc("Targets with health above this percentage will be sabotaged instead of captured.",
 			"Set to 0 to disable sabotaging.")]
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int SabotageHPRemoval = 50;
 
 		[Desc("Damage types that applied with the sabotage damage.")]
-		public readonly BitSet<DamageType> SabotageDamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> SabotageDamageTypes = default;
 
 		[Desc("Delay (in ticks) that to wait next to the target before initiating the capture.")]
 		public readonly int CaptureDelay = 0;

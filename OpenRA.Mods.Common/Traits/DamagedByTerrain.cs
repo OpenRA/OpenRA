@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int DamageInterval = 0;
 
 		[Desc("Apply the damage using these damagetypes.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		[FieldLoader.Require]
 		[Desc("Terrain types where the actor will take damage.")]

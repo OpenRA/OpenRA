@@ -50,8 +50,8 @@ namespace OpenRA
 		public readonly MersenneTwister SharedRandom;
 		public readonly MersenneTwister LocalRandom;
 		public readonly IModelCache ModelCache;
-		public LongBitSet<PlayerBitMask> AllPlayersMask = default(LongBitSet<PlayerBitMask>);
-		public readonly LongBitSet<PlayerBitMask> NoPlayersMask = default(LongBitSet<PlayerBitMask>);
+		public LongBitSet<PlayerBitMask> AllPlayersMask = default;
+		public readonly LongBitSet<PlayerBitMask> NoPlayersMask = default;
 
 		public Player[] Players = Array.Empty<Player>();
 

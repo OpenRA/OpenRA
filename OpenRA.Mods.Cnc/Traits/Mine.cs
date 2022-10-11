@@ -17,10 +17,10 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	class MineInfo : TraitInfo
 	{
-		public readonly BitSet<CrushClass> CrushClasses = default(BitSet<CrushClass>);
+		public readonly BitSet<CrushClass> CrushClasses = default;
 		public readonly bool AvoidFriendly = true;
 		public readonly bool BlockFriendly = true;
-		public readonly BitSet<CrushClass> DetonateClasses = default(BitSet<CrushClass>);
+		public readonly BitSet<CrushClass> DetonateClasses = default;
 
 		public override object Create(ActorInitializer init) { return new Mine(this); }
 	}
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (mobile != null && !info.DetonateClasses.Overlaps(mobile.Info.LocomotorInfo.Crushes))
 				return;
 
-			self.Kill(crusher, mobile != null ? mobile.Info.LocomotorInfo.CrushDamageTypes : default(BitSet<DamageType>));
+			self.Kill(crusher, mobile != null ? mobile.Info.LocomotorInfo.CrushDamageTypes : default);
 		}
 
 		bool ICrushable.CrushableBy(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)

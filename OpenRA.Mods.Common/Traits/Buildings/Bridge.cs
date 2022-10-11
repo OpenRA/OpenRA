@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WeaponInfo DemolishWeaponInfo { get; private set; }
 
 		[Desc("Types of damage that this bridge causes to units over/in path of it while being destroyed/repaired. Leave empty for no damage types.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		public override object Create(ActorInitializer init) { return new Bridge(init.Self, this); }
 

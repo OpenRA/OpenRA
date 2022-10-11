@@ -327,7 +327,7 @@ namespace OpenRA
 			{
 				var inherited = new Dictionary<string, MiniYamlNode.SourceLocation>
 				{
-					{ kv.Key, default(MiniYamlNode.SourceLocation) }
+					{ kv.Key, default }
 				};
 
 				var children = ResolveInherits(kv.Value, tree, inherited);

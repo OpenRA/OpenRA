@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int DamageThreshold = 0;
 
 		[Desc("DeathType(s) that trigger the explosion. Leave empty to always trigger an explosion.")]
-		public readonly BitSet<DamageType> DeathTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DeathTypes = default;
 
 		[Desc("Who is counted as source of damage for explosion.",
 			"Possible values are Self and Killer.")]

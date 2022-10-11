@@ -37,7 +37,7 @@ namespace OpenRA.Widgets
 		{
 			if (!data.TryGetValue(key, out var s))
 			{
-				result = default(T);
+				result = default;
 				return false;
 			}
 

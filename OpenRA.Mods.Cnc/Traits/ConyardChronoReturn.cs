@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly int Damage = 1000;
 
 		[Desc("Apply the damage using these damagetypes.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition under which to teleport a replacement actor instead of triggering the vortex.")]

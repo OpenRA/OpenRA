@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool KilledOnImpassableTerrain = true;
 
 		[Desc("Types of damage that this trait causes to self when 'KilledOnImpassableTerrain' is true. Leave empty for no damage types.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		[Desc("Image where Ground/WaterCorpseSequence is looked up.")]
 		public readonly string Image = "explosion";

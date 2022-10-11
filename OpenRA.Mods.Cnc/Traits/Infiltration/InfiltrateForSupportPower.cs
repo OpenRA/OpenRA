@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string Proxy = null;
 
 		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
-		public readonly BitSet<TargetableType> Types = default(BitSet<TargetableType>);
+		public readonly BitSet<TargetableType> Types = default;
 
 		[NotificationReference("Speech")]
 		[Desc("Sound the victim will hear when technology gets stolen.")]

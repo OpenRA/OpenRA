@@ -340,7 +340,7 @@ namespace OpenRA.Widgets
 
 		void ForceYieldMouseFocus()
 		{
-			if (Ui.MouseFocusWidget == this && !YieldMouseFocus(default(MouseInput)))
+			if (Ui.MouseFocusWidget == this && !YieldMouseFocus(default))
 				Ui.MouseFocusWidget = null;
 		}
 

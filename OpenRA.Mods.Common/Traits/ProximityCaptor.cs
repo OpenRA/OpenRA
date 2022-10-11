@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ProximityCaptorInfo : TraitInfo<ProximityCaptor>
 	{
 		[FieldLoader.Require]
-		public readonly BitSet<CaptureType> Types = default(BitSet<CaptureType>);
+		public readonly BitSet<CaptureType> Types = default;
 	}
 
 	public class ProximityCaptor { }

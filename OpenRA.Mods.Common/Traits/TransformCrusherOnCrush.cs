@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly bool SkipMakeAnims = true;
 
-		public readonly BitSet<CrushClass> CrushClasses = default(BitSet<CrushClass>);
+		public readonly BitSet<CrushClass> CrushClasses = default;
 
 		public override object Create(ActorInitializer init) { return new TransformCrusherOnCrush(init, this); }
 	}

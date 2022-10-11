@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Owner = "Neutral";
 
 		[Desc("The deathtypes used when 'Action' is 'Kill'.")]
-		public readonly BitSet<DamageType> DeathTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DeathTypes = default;
 
 		public override object Create(ActorInitializer init) { return new OwnerLostAction(this); }
 	}

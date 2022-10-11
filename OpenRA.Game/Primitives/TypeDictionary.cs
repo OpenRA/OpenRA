@@ -55,7 +55,7 @@ namespace OpenRA.Primitives
 		{
 			var result = Get(typeof(T), false);
 			if (result == null)
-				return default(T);
+				return default;
 			return (T)result;
 		}
 

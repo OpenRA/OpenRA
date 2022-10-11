@@ -135,6 +135,9 @@ dotnet_diagnostic.IDE0017.severity = warning
 # Collection initialization can be simplified
 dotnet_diagnostic.IDE0028.severity = warning
 
+# Simplify 'default' expression
+dotnet_diagnostic.IDE0034.severity = warning
+
 # Modifiers are not ordered.
 dotnet_diagnostic.IDE0036.severity = warning
 

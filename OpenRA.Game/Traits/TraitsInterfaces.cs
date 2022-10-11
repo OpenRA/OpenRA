@@ -98,7 +98,7 @@ namespace OpenRA.Traits
 		public Damage(int damage)
 		{
 			Value = damage;
-			DamageTypes = default(BitSet<DamageType>);
+			DamageTypes = default;
 		}
 	}
 

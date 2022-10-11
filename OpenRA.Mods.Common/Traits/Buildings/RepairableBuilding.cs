@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int RepairStep = 7;
 
 		[Desc("Damage types used for the repair.")]
-		public readonly BitSet<DamageType> RepairDamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> RepairDamageTypes = default;
 
 		[Desc("The percentage repair bonus applied with increasing numbers of repairers.")]
 		public readonly int[] RepairBonuses = { 100, 150, 175, 200, 220, 240, 260, 280, 300 };

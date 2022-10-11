@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Defines which Armor types apply when the actor receives damage to this HitShape.",
 			"If none specified, all armor types the actor has are valid.")]
-		public readonly BitSet<ArmorType> ArmorTypes = default(BitSet<ArmorType>);
+		public readonly BitSet<ArmorType> ArmorTypes = default;
 
 		[FieldLoader.LoadUsing(nameof(LoadShape))]
 		[Desc("Engine comes with support for `Circle`, `Capsule`, `Polygon` and `Rectangle`. Defaults to `Circle` when left empty.")]

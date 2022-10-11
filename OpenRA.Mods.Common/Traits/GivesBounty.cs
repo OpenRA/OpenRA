@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("DeathTypes for which a bounty should be granted.",
 			"Use an empty list (the default) to allow all DeathTypes.")]
-		public readonly BitSet<DamageType> DeathTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DeathTypes = default;
 
 		public override object Create(ActorInitializer init) { return new GivesBounty(this); }
 	}

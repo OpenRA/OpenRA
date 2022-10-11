@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("Uses the \"Cloneable\" trait to determine whether or not we should clone a produced unit.")]
-		public readonly BitSet<CloneableType> CloneableTypes = default(BitSet<CloneableType>);
+		public readonly BitSet<CloneableType> CloneableTypes = default;
 
 		[FieldLoader.Require]
 		[Desc("e.g. Infantry, Vehicles, Aircraft, Buildings")]

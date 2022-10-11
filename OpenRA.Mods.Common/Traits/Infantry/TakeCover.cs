@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Damage types that trigger prone state. Defined on the warheads.",
 			"If Duration is negative (permanent), you can leave this empty to trigger prone state immediately.")]
-		public readonly BitSet<DamageType> DamageTriggers = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTriggers = default;
 
 		[Desc("Damage modifiers for each damage type (defined on the warheads) while the unit is prone.")]
 		public readonly Dictionary<string, int> DamageModifiers = new Dictionary<string, int>();

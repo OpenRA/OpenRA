@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int[] Delay = { 0 };
 
 		[Desc("Types of damage that this trait causes. Leave empty for no damage types.")]
-		public readonly BitSet<DamageType> DamageTypes = default(BitSet<DamageType>);
+		public readonly BitSet<DamageType> DamageTypes = default;
 
 		[GrantedConditionReference]
 		[Desc("The condition to grant moments before suiciding.")]
