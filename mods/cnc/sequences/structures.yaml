@@ -132,10 +132,12 @@ pyle:
 	idle:
 		Length: 10
 		Tick: 100
+		ZOffset: -511
 	damaged-idle:
 		Start: 10
 		Length: 10
 		Tick: 100
+		ZOffset: -511
 	dead:
 		Start: 20
 		Tick: 800
