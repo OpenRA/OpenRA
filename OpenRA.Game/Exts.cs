@@ -545,7 +545,7 @@ namespace OpenRA
 				if (!t.IsTraitDisabled)
 					return t;
 
-			return default(T);
+			return default;
 		}
 
 		public static T FirstEnabledConditionalTraitOrDefault<T>(this T[] ts) where T : IDisabledTrait
@@ -555,7 +555,7 @@ namespace OpenRA
 				if (!t.IsTraitDisabled)
 					return t;
 
-			return default(T);
+			return default;
 		}
 
 		public static LineSplitEnumerator SplitLines(this string str, char separator)
