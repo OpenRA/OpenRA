@@ -294,12 +294,18 @@ namespace OpenRA
 
 		static int GetMapFormat(IReadOnlyPackage p)
 		{
-			foreach (var line in p.GetStream("map.yaml").ReadAllLines())
+			using (var yamlStream = p.GetStream("map.yaml"))
 			{
-				// PERF This is a way to get MapFormat without expensive yaml parsing
-				var search = Regex.Match(line, "^MapFormat:\\s*(\\d*)\\s*$");
-				if (search.Success && search.Groups.Count > 0)
-					return FieldLoader.GetValue<int>("MapFormat", search.Groups[1].Value);
+				if (yamlStream == null)
+					throw new FileNotFoundException("Required file map.yaml not present in this map");
+
+				foreach (var line in yamlStream.ReadAllLines())
+				{
+					// PERF This is a way to get MapFormat without expensive yaml parsing
+					var search = Regex.Match(line, "^MapFormat:\\s*(\\d*)\\s*$");
+					if (search.Success && search.Groups.Count > 0)
+						return FieldLoader.GetValue<int>("MapFormat", search.Groups[1].Value);
+				}
 			}
 
 			throw new InvalidDataException("MapFormat is not defined");
