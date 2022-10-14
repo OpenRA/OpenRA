@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Activities
 			// We are taking off, so remove influence in ground cells.
 			aircraft.RemoveInfluence();
 
+			if (self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length > aircraft.Info.MinAirborneAltitude)
+				return;
+
 			if (aircraft.Info.TakeoffSounds.Length > 0)
 				Game.Sound.Play(SoundType.World, aircraft.Info.TakeoffSounds, self.World, aircraft.CenterPosition);
 
