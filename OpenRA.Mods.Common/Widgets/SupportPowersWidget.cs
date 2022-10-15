@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly SupportPowerManager spm;
 
 		Animation icon;
-		readonly Animation clock;
+		Animation clock;
 		Dictionary<Rectangle, SupportPowerIcon> icons = new Dictionary<Rectangle, SupportPowerIcon>();
 
 		public SupportPowerIcon TooltipIcon { get; private set; }
@@ -97,8 +97,6 @@ namespace OpenRA.Mods.Common.Widgets
 			spm = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
-
-			clock = new Animation(world, ClockAnimation);
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -113,6 +111,8 @@ namespace OpenRA.Mods.Common.Widgets
 			iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
 			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
 			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
+
+			clock = new Animation(worldRenderer.World, ClockAnimation);
 		}
 
 		public class SupportPowerIcon
