@@ -211,10 +211,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			bool CanEnterCell(Actor self, CPos cell)
 			{
-				if (mobile.locomotor.MovementCostForCell(cell) == PathGraph.MovementCostForUnreachableCell)
-					return false;
-
-				return mobile.locomotor.CanMoveFreelyInto(self, cell, BlockedByActor.All, null);
+				return mobile.locomotor.MovementCostToEnterCell(
+					self, cell, BlockedByActor.All, null) != PathGraph.MovementCostForUnreachableCell;
 			}
 		}
 	}

@@ -93,11 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 			var locomotor = GetActorLocomotor(self);
 
 			// If the target cell is inaccessible, bail early.
-			var inaccessible =
-				!world.Map.Contains(target) ||
-				!locomotor.CanMoveFreelyInto(self, target, check, ignoreActor) ||
-				(customCost != null && customCost(target) == PathGraph.PathCostForInvalidPath);
-			if (inaccessible)
+			if (!PathSearch.CellAllowsMovement(self.World, locomotor, self, target, check, customCost, ignoreActor))
 				return NoPath;
 
 			// When searching from only one source cell, some optimizations are possible.
@@ -109,8 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (source.Layer == target.Layer && (source - target).LengthSquared < 3)
 				{
 					// If the source cell is inaccessible, there is no path.
-					if (!world.Map.Contains(source) ||
-						(customCost != null && customCost(source) == PathGraph.PathCostForInvalidPath))
+					if (!PathSearch.CellAllowsMovement(self.World, locomotor, self, target, check, customCost, ignoreActor))
 						return NoPath;
 					return new List<CPos>(2) { target, source };
 				}

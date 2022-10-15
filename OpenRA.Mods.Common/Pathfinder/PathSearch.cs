@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var graph = new MapPathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, laneBias, false);
 			var search = new PathSearch(graph, loc => 0, 0, targetPredicate, recorder);
 
-			AddInitialCells(world, locomotor, froms, customCost, search);
+			AddInitialCells(world, locomotor, self, froms, check, customCost, ignoreActor, search);
 
 			return search;
 		}
@@ -71,16 +71,24 @@ namespace OpenRA.Mods.Common.Pathfinder
 			heuristic = heuristic ?? DefaultCostEstimator(locomotor, target);
 			var search = new PathSearch(graph, heuristic, heuristicWeightPercentage, loc => loc == target, recorder);
 
-			AddInitialCells(world, locomotor, froms, customCost, search);
+			AddInitialCells(world, locomotor, self, froms, check, customCost, ignoreActor, search);
 
 			return search;
 		}
 
-		static void AddInitialCells(World world, Locomotor locomotor, IEnumerable<CPos> froms, Func<CPos, int> customCost, PathSearch search)
+		public static bool CellAllowsMovement(World world, Locomotor locomotor, Actor self, CPos cell, BlockedByActor check,
+			Func<CPos, int> customCost, Actor ignoreActor)
 		{
-			var customMovementLayers = world.GetCustomMovementLayers();
+			return locomotor.MovementCostToEnterCell(self, cell, check, ignoreActor) != PathGraph.MovementCostForUnreachableCell &&
+					(cell.Layer == 0 || world.GetCustomMovementLayers()[cell.Layer].EnabledForLocomotor(locomotor.Info)) &&
+					(customCost == null || customCost(cell) != PathGraph.PathCostForInvalidPath);
+		}
+
+		static void AddInitialCells(World world, Locomotor locomotor, Actor self, IEnumerable<CPos> froms, BlockedByActor check,
+			Func<CPos, int> customCost, Actor ignoreActor, PathSearch search)
+		{
 			foreach (var sl in froms)
-				if (world.Map.Contains(sl) && (sl.Layer == 0 || customMovementLayers[sl.Layer].EnabledForLocomotor(locomotor.Info)))
+				if (CellAllowsMovement(world, locomotor, self, sl, check, customCost, ignoreActor))
 					search.AddInitialCell(sl, customCost);
 		}
 
