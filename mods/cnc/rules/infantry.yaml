@@ -223,7 +223,7 @@ RMBO:
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Inherits@DECORATIONS: ^InfantryExperienceHospitalHazmatOverrides
 	Valued:
-		Cost: 1800
+		Cost: 1500
 	Tooltip:
 		Name: Commando
 	UpdatesPlayerStatistics:

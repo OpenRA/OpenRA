@@ -37,6 +37,7 @@
 			Wood: 88
 			Light: 100
 			Heavy: 88
+			Concrete: 88
 
 120mm:
 	Inherits: ^BallisticWeapon
@@ -56,7 +57,7 @@ TurretGun:
 	Warhead@1Dam: SpreadDamage
 		Versus:
 			None: 20
-			Wood: 25
+			Wood: 50
 			Light: 100
 			Heavy: 100
 
@@ -77,10 +78,11 @@ ArtilleryShell:
 		Spread: 341
 		Damage: 10000
 		Versus:
-			None: 150
+			None: 140
 			Wood: 100
 			Light: 112
 			Heavy: 75
+			Concrete: 75
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: poof
@@ -105,6 +107,7 @@ Grenade:
 			Wood: 50
 			Light: 80
 			Heavy: 34
+			Concrete: 50
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: small_poof
