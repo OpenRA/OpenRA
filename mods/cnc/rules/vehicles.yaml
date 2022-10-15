@@ -7,7 +7,6 @@ MCV:
 		Name: Mobile Construction Vehicle
 	Buildable:
 		BuildPaletteOrder: 100
-		Prerequisites: anyhq, ~techlevel.medium, fix
 		Queue: Vehicle.GDI, Vehicle.Nod
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
@@ -424,7 +423,7 @@ LTNK:
 		TurnSpeed: 28
 		Speed: 102
 	Health:
-		HP: 34000
+		HP: 32000
 	Repairable:
 		HpPerStep: 2062
 	Armor:
@@ -519,7 +518,7 @@ HTNK:
 	Mobile:
 		Locomotor: heavytracked
 		Speed: 46
-		TurnSpeed: 12
+		TurnSpeed: 14
 	Health:
 		HP: 87000
 	Repairable:
@@ -530,7 +529,7 @@ HTNK:
 		Range: 6c0
 	WithSpriteTurret:
 	Turreted:
-		TurnSpeed: 12
+		TurnSpeed: 14
 	Armament@PRIMARY:
 		Weapon: 120mmDual
 		LocalOffset: 900,180,340, 900,-180,340
@@ -590,7 +589,7 @@ MSAM:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 5c0
+		Range: 6c0
 	Turreted:
 		TurnSpeed: 512
 		Offset: -256,0,128

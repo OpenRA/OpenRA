@@ -16,6 +16,7 @@
 			Wood: 100
 			Light: 100
 			Heavy: 10
+			Concrete: 100
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
 	Warhead@2Smu: LeaveSmudge
 		SmudgeType: Scorch
@@ -43,6 +44,7 @@ BigFlamer:
 			Wood: 75
 			Light: 75
 			Heavy: 18
+			Concrete: 75
 	Warhead@3Eff: CreateEffect
 		Explosions: med_napalm
 
@@ -58,6 +60,7 @@ Chemspray:
 			Wood: 35
 			Light: 75
 			Heavy: 75
+			Concrete: 75
 		DamageTypes: Prone50Percent, TriggerProne, TiberiumDeath
 	Warhead@3Eff: CreateEffect
 		Explosions: chemball
@@ -80,6 +83,7 @@ Napalm:
 		Versus:
 			Wood: 35
 			Heavy: 80
+			Concrete: 80
 	Warhead@3Eff: CreateEffect
 		Explosions: med_napalm
 
@@ -115,6 +119,7 @@ Laser:
 			Wood: 10
 			Light: 30
 			Heavy: 10
+			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, RippedApartDeath
 
 Tail:

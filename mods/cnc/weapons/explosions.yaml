@@ -24,6 +24,7 @@
 			Wood: 75
 			Light: 60
 			Heavy: 25
+			Concrete: 25
 
 FlametankExplode:
 	Inherits: ^DamagingExplosion
@@ -54,6 +55,7 @@ UnitExplode:
 		Versus:
 			Wood: 74
 			Heavy: 24
+			Concrete: 24
 	Warhead@2Eff: CreateEffect
 		ImpactSounds: xplobig6.aud
 
@@ -64,6 +66,7 @@ UnitExplodeShip:
 		Versus:
 			Wood: 74
 			Heavy: 24
+			Concrete: 24
 	Warhead@2Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: xplobig6.aud
@@ -105,6 +108,7 @@ GrenadierExplode:
 		Versus:
 			Wood: 70
 			Heavy: 20
+			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		ImpactSounds: xplosml2.aud
@@ -126,6 +130,7 @@ Napalm.Crate:
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
 			Wood: 100
+			Concrete: 100
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath
 	Warhead@2Eff: CreateEffect
@@ -142,6 +147,7 @@ TiberiumExplosion:
 		Versus:
 			Wood: 70
 			Heavy: 20
+			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: chemball

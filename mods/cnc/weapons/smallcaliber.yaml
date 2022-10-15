@@ -30,6 +30,7 @@ Sniper:
 			Wood: 50
 			Light: 70
 			Heavy: 30
+			Concrete: 30
 		DamageTypes: Prone50Percent, TriggerProne, RippedApartDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piffs
@@ -56,6 +57,7 @@ Vulcan:
 			Wood: 15
 			Light: 35
 			Heavy: 35
+			Concrete: 35
 
 HeliAGGun:
 	Inherits: ^HeavyMG
@@ -75,6 +77,7 @@ HeliAGGun:
 			Wood: 75
 			Light: 75
 			Heavy: 25
+			Concrete: 25
 		DamageTypes: Prone80Percent, TriggerProne, RippedApartDeath
 
 HeliAAGun:
@@ -100,6 +103,7 @@ HeliAAGun:
 			Wood: 30
 			Light: 40
 			Heavy: 10
+			Concrete: 10
 		DamageTypes: Prone50Percent, TriggerProne, BulletDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: piff
@@ -142,8 +146,9 @@ MachineGun:
 MachineGunH:
 	Inherits: MachineGun
 	Warhead@1Dam: SpreadDamage
+		Damage: 1150
 		Versus:
-			Light: 80
+			Light: 70
 
 APCGun:
 	ReloadDelay: 9
@@ -159,6 +164,7 @@ APCGun:
 			Wood: 25
 			Light: 75
 			Heavy: 25
+			Concrete: 25
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_frag

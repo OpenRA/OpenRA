@@ -893,7 +893,7 @@ GUN:
 	Health:
 		HP: 41000
 	Armor:
-		Type: Heavy
+		Type: Concrete
 	RevealsShroud:
 		Range: 6c0
 	WithBuildingBib:
@@ -950,7 +950,7 @@ SAM:
 	Health:
 		HP: 40000
 	Armor:
-		Type: Heavy
+		Type: Concrete
 	RevealsShroud:
 		Range: 8c0
 	Turreted:
@@ -996,7 +996,7 @@ OBLI:
 	Health:
 		HP: 75000
 	Armor:
-		Type: Heavy
+		Type: Concrete
 	RevealsShroud:
 		Range: 8c0
 	WithBuildingBib:
@@ -1040,6 +1040,8 @@ GTWR:
 	Building:
 	Health:
 		HP: 40000
+	Armor:
+		Type: Concrete
 	RevealsShroud:
 		Range: 7c0
 	WithBuildingBib:
@@ -1058,7 +1060,7 @@ GTWR:
 	Turreted:
 		TurnSpeed: 512
 	Power:
-		Amount: -20
+		Amount: -10
 
 ATWR:
 	Inherits: ^Defense
@@ -1080,7 +1082,7 @@ ATWR:
 	Health:
 		HP: 55000
 	Armor:
-		Type: Heavy
+		Type: Concrete
 	RevealsShroud:
 		Range: 8c0
 	-RenderRangeCircle:
@@ -1166,12 +1168,12 @@ BRIK:
 		BuildPaletteOrder: 30
 		Prerequisites: vehicleproduction
 		Queue: Defence.GDI, Defence.Nod
-		BuildDuration: 330
+		BuildDuration: 230
 		Description: Stops infantry and most tanks.\nBlocks some projectiles.
 	Health:
-		HP: 25000
+		HP: 20000
 	Armor:
-		Type: Heavy
+		Type: Concrete
 	BlocksProjectiles:
 	Crushable:
 		CrushClasses: heavywall

@@ -17,7 +17,7 @@ TRAN:
 		Speed: 150
 		AltitudeVelocity: 0c100
 	Health:
-		HP: 9000
+		HP: 12500
 	Armor:
 		Type: Light
 	RevealsShroud:
