@@ -70,11 +70,11 @@ def format_docs(version, collectionName, types, relatedEnums):
             if "InheritedTypes" in currentType and currentType["InheritedTypes"]:
                 inheritedTypes = [t for t in currentType["InheritedTypes"] if t not in ['TraitInfo', 'Warhead']] # Remove blacklisted types.
                 if inheritedTypes:
-                    print("###### Inherits from: " + ", ".join([format_type_name(x, is_known_type(x, types)) for x in inheritedTypes]) + '.')
+                    print("\n> Inherits from: " + ", ".join([format_type_name(x, is_known_type(x, types)) for x in inheritedTypes]) + '.')
 
             if "RequiresTraits" in currentType and currentType["RequiresTraits"]:
                 formattedRequiredTraits = [format_type_name(x, is_known_type(x, types)) for x in currentType["RequiresTraits"]]
-                print("###### Requires trait(s): " + ", ".join(sorted(formattedRequiredTraits)) + '.')
+                print("\n> Requires trait(s): " + ", ".join(sorted(formattedRequiredTraits)) + '.')
 
             if len(currentType["Properties"]) > 0:
                 print()
