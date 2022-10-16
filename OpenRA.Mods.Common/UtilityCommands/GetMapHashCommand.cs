@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			using (var package = new Folder(Platform.EngineDir).OpenPackage(args[1], utility.ModData.ModFiles))
-				Console.WriteLine(Map.ComputeUID(package));
+				Console.WriteLine(utility.ModData.MapLoader.ComputeUID(utility.ModData, package));
 		}
 	}
 }

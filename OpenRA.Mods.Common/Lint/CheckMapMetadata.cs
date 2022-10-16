@@ -11,6 +11,7 @@
 
 using System;
 using OpenRA.Server;
+using OpenRA.Mods.Common.MapFormats;
 
 namespace OpenRA.Mods.Common.Lint
 {
@@ -18,18 +19,20 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
-			Run(emitError, map.MapFormat, map.Author, map.Title, map.Categories);
+			var defaultMap = map as DefaultMap;
+			Run(emitError, map.Author, map.Title, map.Categories, defaultMap.MapFormat);
 		}
 
-		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)
+		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview mapPreview, Ruleset mapRules)
 		{
-			Run(emitError, map.MapFormat, map.Author, map.Title, map.Categories);
+			Run(emitError, mapPreview.Author, mapPreview.Title, mapPreview.Categories, mapPreview.MapFormat);
 		}
 
-		void Run(Action<string> emitError, int mapFormat, string author, string title, string[] categories)
+		void Run(Action<string> emitError, string author, string title, string[] categories, int mapFormat)
 		{
-			if (mapFormat < Map.SupportedMapFormat)
-				emitError($"Map format {mapFormat} does not match the supported version {Map.CurrentMapFormat}.");
+			if (mapFormat != DefaultMap.SupportedMapFormat)
+				emitError("Map format {0} does not match the supported version {1}."
+					.F(mapFormat, DefaultMap.SupportedMapFormat));
 
 			if (author == null)
 				emitError("Map does not define a valid author.");

@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var maxTerrainHeight = world.Map.Grid.MaximumTerrainHeight;
 				var tileset = modData.DefaultTerrainInfo[tilesetDropDown.Text];
-				var map = new Map(Game.ModData, tileset, width + 2, height + maxTerrainHeight + 2);
+				var map = Game.ModData.MapLoader.Create(Game.ModData, tileset, width + 2, height + maxTerrainHeight + 2);
 
 				var tl = new PPos(1, 1 + maxTerrainHeight);
 				var br = new PPos(width, height + maxTerrainHeight);

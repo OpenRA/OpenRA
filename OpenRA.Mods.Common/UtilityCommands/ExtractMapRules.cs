@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			var modData = Game.ModData = utility.ModData;
 
-			var map = new Map(modData, new Folder(Platform.EngineDir).OpenPackage(args[1], modData.ModFiles));
+			var map = modData.MapLoader.Load(modData, new Folder(Platform.EngineDir).OpenPackage(args[1], modData.ModFiles));
 			MergeAndPrint(map, "Rules", map.RuleDefinitions);
 			MergeAndPrint(map, "Sequences", map.SequenceDefinitions);
 			MergeAndPrint(map, "ModelSequences", map.ModelSequenceDefinitions);
