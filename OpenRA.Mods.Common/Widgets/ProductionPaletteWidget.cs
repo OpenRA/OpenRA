@@ -258,6 +258,22 @@ namespace OpenRA.Mods.Common.Widgets
 			if (mi.Event == MouseInputEvent.Move)
 				TooltipIcon = icon;
 
+			if (mi.Event == MouseInputEvent.Scroll)
+			{
+				if (mi.Delta.Y < 0 && CanScrollDown)
+				{
+					ScrollDown();
+					Ui.ResetTooltips();
+					Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Sounds", ClickSound, null);
+				}
+				else if (mi.Delta.Y > 0 && CanScrollUp)
+				{
+					ScrollUp();
+					Ui.ResetTooltips();
+					Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Sounds", ClickSound, null);
+				}
+			}
+
 			if (icon == null)
 				return false;
 
