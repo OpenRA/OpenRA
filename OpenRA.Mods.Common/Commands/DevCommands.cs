@@ -92,8 +92,15 @@ namespace OpenRA.Mods.Common.Commands
 		{
 			var giveCashOrder = new Order(command, world.LocalPlayer.PlayerActor, false);
 
-			if (int.TryParse(arg, out var cash))
+			if (string.IsNullOrEmpty(arg))
+				giveCashOrder.ExtraData = 0;
+			else if (int.TryParse(arg, out var cash))
 				giveCashOrder.ExtraData = (uint)cash;
+			else
+			{
+				TextNotificationsManager.Debug("Invalid amount of cash.");
+				return;
+			}
 
 			world.IssueOrder(giveCashOrder);
 		}
