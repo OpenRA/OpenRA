@@ -571,6 +571,9 @@ namespace OpenRA
 		public static void RunAfterTick(Action a) { delayedActions.Add(a, RunTime); }
 		public static void RunAfterDelay(int delayMilliseconds, Action a) { delayedActions.Add(a, RunTime + delayMilliseconds); }
 
+		[TranslationReference("filename")]
+		static readonly string SavedScreenshot = "saved-screenshot";
+
 		static void TakeScreenshotInner()
 		{
 			using (new PerfTimer("Renderer.SaveScreenshot"))
@@ -584,7 +587,7 @@ namespace OpenRA
 				Log.Write("debug", "Taking screenshot " + path);
 
 				Renderer.SaveScreenshot(path);
-				TextNotificationsManager.Debug("Saved screenshot " + filename);
+				TextNotificationsManager.Debug(ModData.Translation.GetString(SavedScreenshot, Translation.Arguments("filename", filename)));
 			}
 		}
 

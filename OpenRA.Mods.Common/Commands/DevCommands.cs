@@ -24,6 +24,12 @@ namespace OpenRA.Mods.Common.Commands
 
 	public class DevCommands : IChatCommand, IWorldLoaded
 	{
+		[TranslationReference]
+		static readonly string CheatsDisabled = "cheats-disabled";
+
+		[TranslationReference]
+		static readonly string InvalidCashAmount = "invalid-cash-amount";
+
 		readonly IDictionary<string, (string Description, Action<string, World> Handler)> commandHandlers = new Dictionary<string, (string, Action<string, World>)>
 		{
 			{ "visibility", ("toggles visibility checks and minimap.", Visibility) },
@@ -70,7 +76,7 @@ namespace OpenRA.Mods.Common.Commands
 
 			if (!developerMode.Enabled)
 			{
-				TextNotificationsManager.Debug("Cheats are disabled.");
+				TextNotificationsManager.Debug(Game.ModData.Translation.GetString(CheatsDisabled));
 				return;
 			}
 
@@ -98,7 +104,7 @@ namespace OpenRA.Mods.Common.Commands
 				giveCashOrder.ExtraData = (uint)cash;
 			else
 			{
-				TextNotificationsManager.Debug("Invalid amount of cash.");
+				TextNotificationsManager.Debug(Game.ModData.Translation.GetString(InvalidCashAmount));
 				return;
 			}
 

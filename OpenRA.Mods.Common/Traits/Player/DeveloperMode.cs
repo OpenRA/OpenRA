@@ -106,6 +106,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool enableAll;
 
+		[TranslationReference("cheat", "player", "suffix")]
+		static readonly string CheatUsed = "cheat-used";
+
 		public DeveloperMode(DeveloperModeInfo info)
 		{
 			this.info = info;
@@ -273,7 +276,8 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 			}
 
-			TextNotificationsManager.Debug("Cheat used: {0} by {1}{2}", order.OrderString, self.Owner.PlayerName, debugSuffix);
+			var arguments = Translation.Arguments("cheat", order.OrderString, "player", self.Owner.PlayerName, "suffix", debugSuffix);
+			TextNotificationsManager.Debug(Game.ModData.Translation.GetString(CheatUsed, arguments));
 		}
 
 		bool IUnlocksRenderPlayer.RenderPlayerUnlocked => Enabled;

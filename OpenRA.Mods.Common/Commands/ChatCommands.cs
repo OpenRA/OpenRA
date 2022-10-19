@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Commands
 	{
 		public Dictionary<string, IChatCommand> Commands { get; }
 
+		[TranslationReference("name")]
+		static readonly string InvalidCommand = "invalid-command";
+
 		public ChatCommands()
 		{
 			Commands = new Dictionary<string, IChatCommand>();
@@ -39,7 +42,7 @@ namespace OpenRA.Mods.Common.Commands
 				if (command.Value != null)
 					command.Value.InvokeCommand(name.ToLowerInvariant(), message.Substring(1 + name.Length).Trim());
 				else
-					TextNotificationsManager.Debug("{0} is not a valid command.", name);
+					TextNotificationsManager.Debug(Game.ModData.Translation.GetString(InvalidCommand, Translation.Arguments("name", name)));
 
 				return false;
 			}
