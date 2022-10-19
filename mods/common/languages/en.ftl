@@ -590,3 +590,20 @@ password-protected = Password protected
 waiting-for-players = Waiting for players
 server-shutting-down = Server shutting down
 unknown-server-state = Unknown server state
+
+## Game
+saved-screenshot = Saved screenshot { $filename }
+
+## ChatCommands
+invalid-command = { $name } is not a valid command.
+
+## DevCommands
+cheats-disabled = Cheats are disabled.
+invalid-cash-amount = Invalid amount of cash.
+
+## HelpCommands
+available-commands = Here are the available commands:
+no-description = no description available.
+
+## DeveloperMode
+cheat-used = Cheat used: { $cheat } by { $player }{ $suffix }

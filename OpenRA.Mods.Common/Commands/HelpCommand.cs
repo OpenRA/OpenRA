@@ -23,6 +23,12 @@ namespace OpenRA.Mods.Common.Commands
 	{
 		readonly Dictionary<string, string> helpDescriptions;
 
+		[TranslationReference]
+		static readonly string AvailableCommands = "available-commands";
+
+		[TranslationReference]
+		static readonly string NoDescription = "no-description";
+
 		World world;
 		ChatCommands console;
 
@@ -42,14 +48,14 @@ namespace OpenRA.Mods.Common.Commands
 
 		public void InvokeCommand(string name, string arg)
 		{
-			TextNotificationsManager.Debug("Here are the available commands:");
+			TextNotificationsManager.Debug(Game.ModData.Translation.GetString(AvailableCommands));
 
 			foreach (var key in console.Commands.Keys)
 			{
 				if (!helpDescriptions.TryGetValue(key, out var description))
-					description = "no description available.";
+					description = Game.ModData.Translation.GetString(NoDescription);
 
-				TextNotificationsManager.Debug("{0}: {1}", key, description);
+				TextNotificationsManager.Debug($"{key}: {description}");
 			}
 		}
 
