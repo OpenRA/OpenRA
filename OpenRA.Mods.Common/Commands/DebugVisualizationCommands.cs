@@ -23,13 +23,28 @@ namespace OpenRA.Mods.Common.Commands
 
 	public class DebugVisualizationCommands : IChatCommand, IWorldLoaded
 	{
+		[TranslationReference]
+		static readonly string CombatGeometryDescription = "combat-geometry-description";
+
+		[TranslationReference]
+		static readonly string RenderGeometryDescription = "render-geometry-description";
+
+		[TranslationReference]
+		static readonly string ScreenMapOverlayDescription = "screen-map-overlay-description";
+
+		[TranslationReference]
+		static readonly string DepthBufferDescription = "depth-buffer-description";
+
+		[TranslationReference]
+		static readonly string ActorTagsOverlayDescripition = "actor-tags-overlay-description";
+
 		readonly IDictionary<string, (string Description, Action<DebugVisualizations, DeveloperMode> Handler)> commandHandlers = new Dictionary<string, (string Description, Action<DebugVisualizations, DeveloperMode> Handler)>
 		{
-			{ "combat-geometry", ("toggles combat geometry overlay.", CombatGeometry) },
-			{ "render-geometry", ("toggles render geometry overlay.", RenderGeometry) },
-			{ "screen-map", ("toggles screen map overlay.", ScreenMap) },
-			{ "depth-buffer", ("toggles depth buffer overlay.", DepthBuffer) },
-			{ "actor-tags", ("toggles actor tags overlay.", ActorTags) },
+			{ "combat-geometry", (CombatGeometryDescription, CombatGeometry) },
+			{ "render-geometry", (RenderGeometryDescription, RenderGeometry) },
+			{ "screen-map", (ScreenMapOverlayDescription, ScreenMap) },
+			{ "depth-buffer", (DepthBufferDescription, DepthBuffer) },
+			{ "actor-tags", (ActorTagsOverlayDescripition, ActorTags) },
 		};
 
 		DebugVisualizations debugVis;

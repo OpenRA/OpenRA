@@ -30,23 +30,68 @@ namespace OpenRA.Mods.Common.Commands
 		[TranslationReference]
 		static readonly string InvalidCashAmount = "invalid-cash-amount";
 
+		[TranslationReference]
+		static readonly string ToggleVisiblityDescription = "toggle-visibility";
+
+		[TranslationReference]
+		static readonly string GiveCashDescription = "give-cash";
+
+		[TranslationReference]
+		static readonly string GiveCashAllDescription = "give-cash-all";
+
+		[TranslationReference]
+		static readonly string InstantBuildingDescription = "instant-building";
+
+		[TranslationReference]
+		static readonly string BuildAnywhereDescription = "build-anywhere";
+
+		[TranslationReference]
+		static readonly string UnlimitedPowerDescription = "unlimited-power";
+
+		[TranslationReference]
+		static readonly string EnableTechDescription = "enable-tech";
+
+		[TranslationReference]
+		static readonly string FastChargeDescription = "fast-charge";
+
+		[TranslationReference]
+		static readonly string DevCheatAllDescription = "dev-cheat-all";
+
+		[TranslationReference]
+		static readonly string DevCrashDescription = "dev-crash";
+
+		[TranslationReference]
+		static readonly string LevelUpActorDescription = "levelup-actor";
+
+		[TranslationReference]
+		static readonly string PlayerExperienceDescription = "player-experience";
+
+		[TranslationReference]
+		static readonly string PowerOutageDescription = "power-outage";
+
+		[TranslationReference]
+		static readonly string KillSelectedActorsDescription = "kill-selected-actors";
+
+		[TranslationReference]
+		static readonly string DisposeSelectedActorsDescription = "dispose-selected-actors";
+
 		readonly IDictionary<string, (string Description, Action<string, World> Handler)> commandHandlers = new Dictionary<string, (string, Action<string, World>)>
 		{
-			{ "visibility", ("toggles visibility checks and minimap.", Visibility) },
-			{ "give-cash", ("gives the default or specified amount of money.", GiveCash) },
-			{ "give-cash-all", ("gives the default or specified amount of money to all players and ai.", GiveCashAll) },
-			{ "instant-build", ("toggles instant building.", InstantBuild) },
-			{ "build-anywhere", ("toggles you the ability to build anywhere.", BuildAnywhere) },
-			{ "unlimited-power", ("toggles infinite power.", UnlimitedPower) },
-			{ "enable-tech", ("toggles the ability to build everything.", EnableTech) },
-			{ "fast-charge", ("toggles almost instant support power charging.", FastCharge) },
-			{ "all", ("toggles all cheats and gives you some cash for your trouble.", All) },
-			{ "crash", ("crashes the game.", Crash) },
-			{ "levelup", ("adds a specified number of levels to the selected actors.", LevelUp) },
-			{ "player-experience", ("adds a specified amount of player experience to the owner(s) of selected actors.", PlayerExperience) },
-			{ "power-outage", ("causes owner(s) of selected actors to have a 5 second power outage.", PowerOutage) },
-			{ "kill", ("kills selected actors.", Kill) },
-			{ "dispose", ("disposes selected actors.", Dispose) }
+			{ "visibility", (ToggleVisiblityDescription, Visibility) },
+			{ "give-cash", (GiveCashDescription, GiveCash) },
+			{ "give-cash-all", (GiveCashAllDescription, GiveCashAll) },
+			{ "instant-build", (InstantBuildingDescription, InstantBuild) },
+			{ "build-anywhere", (BuildAnywhereDescription, BuildAnywhere) },
+			{ "unlimited-power", (UnlimitedPowerDescription, UnlimitedPower) },
+			{ "enable-tech", (EnableTechDescription, EnableTech) },
+			{ "fast-charge", (FastChargeDescription, FastCharge) },
+			{ "all", (DevCheatAllDescription, All) },
+			{ "crash", (DevCrashDescription, Crash) },
+			{ "levelup", (LevelUpActorDescription, LevelUp) },
+			{ "player-experience", (PlayerExperienceDescription, PlayerExperience) },
+			{ "power-outage", (PowerOutageDescription, PowerOutage) },
+			{ "kill", (KillSelectedActorsDescription, Kill) },
+			{ "dispose", (DisposeSelectedActorsDescription, Dispose) }
 		};
 
 		World world;
