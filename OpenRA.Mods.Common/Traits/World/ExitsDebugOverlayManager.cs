@@ -27,7 +27,9 @@ namespace OpenRA.Mods.Common.Traits
 	public class ExitsDebugOverlayManager : IWorldLoaded, IChatCommand
 	{
 		const string CommandName = "exits-overlay";
-		const string CommandHelp = "Displays exits for factories.";
+
+		[TranslationReference]
+		const string CommandDescription = "exits-debug-overlay-description";
 
 		public readonly SpriteFont Font;
 		public readonly ExitsDebugOverlayManagerInfo Info;
@@ -54,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			console.RegisterCommand(CommandName, this);
-			help.RegisterHelp(CommandName, CommandHelp);
+			help.RegisterHelp(CommandName, CommandDescription);
 		}
 
 		void IChatCommand.InvokeCommand(string command, string arg)

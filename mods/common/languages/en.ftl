@@ -597,13 +597,58 @@ saved-screenshot = Saved screenshot { $filename }
 ## ChatCommands
 invalid-command = { $name } is not a valid command.
 
+## DebugVisualizationCommands
+combat-geometry-description = toggles combat geometry overlay.
+render-geometry-description = toggles render geometry overlay.
+screen-map-overlay-description = toggles screen map overlay.
+depth-buffer-description = toggles depth buffer overlay.
+actor-tags-overlay-description = toggles actor tags overlay.
+
 ## DevCommands
 cheats-disabled = Cheats are disabled.
 invalid-cash-amount = Invalid amount of cash.
+toggle-visibility = toggles visibility checks and minimap.
+give-cash = gives the default or specified amount of money.
+give-cash-all = gives the default or specified amount of money to all players and ai.
+instant-building = toggles instant building.
+build-anywhere = toggles the ability to build anywhere.
+unlimited-power = toggles infinite power.
+enable-tech = toggles the ability to build everything.
+fast-charge = toggles almost instant support power charging.
+dev-cheat-all = toggles all cheats and gives you some cash for your trouble.
+dev-crash = crashes the game.
+levelup-actor = adds a specified number of levels to the selected actors.
+player-experience = adds a specified amount of player experience to the owner(s) of selected actors.
+power-outage = causes owner(s) of selected actors to have a 5 second power outage.
+kill-selected-actors = kills selected actors.
+dispose-selected-actors = disposes selected actors.
 
 ## HelpCommands
 available-commands = Here are the available commands:
 no-description = no description available.
+help-description = provides useful info about various commands
+
+## PlayerCommands
+pause-description = pause or unpause the game
+surrender-description = self-destruct everything and lose the game
 
 ## DeveloperMode
 cheat-used = Cheat used: { $cheat } by { $player }{ $suffix }
+
+## CustomTerrainDebugOverlay
+custom-terrain-debug-overlay-description = toggles the custom terrain debug overlay.
+
+## CellTriggerOverlay
+cell-trigger-overlay-description = toggles the script triggers overlay.
+
+## ExitsDebugOverlay
+exits-debug-overlay-description = Displays exits for factories.
+
+## HierarchicalPathFinderOverlay
+hpf-overlay-description = toggles the hierarchical pathfinder overlay.
+
+## PathFinderOverlay
+path-debug-description = toggles a visualization of path searching.
+
+## TerrainGeometryOverlay
+terrain-geometry-overlay = toggles the terrain geometry overlay.

@@ -29,7 +29,9 @@ namespace OpenRA.Mods.Common.Traits
 	class CustomTerrainDebugOverlay : IWorldLoaded, IChatCommand, IRenderAnnotations
 	{
 		const string CommandName = "custom-terrain";
-		const string CommandDesc = "toggles the custom terrain debug overlay.";
+
+		[TranslationReference]
+		const string CommandDescription = "custom-terrain-debug-overlay-description";
 
 		public bool Enabled;
 
@@ -49,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			console.RegisterCommand(CommandName, this);
-			help.RegisterHelp(CommandName, CommandDesc);
+			help.RegisterHelp(CommandName, CommandDescription);
 		}
 
 		void IChatCommand.InvokeCommand(string name, string arg)

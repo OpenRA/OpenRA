@@ -32,7 +32,9 @@ namespace OpenRA.Mods.Common.Traits
 	public class CellTriggerOverlay : IRenderAnnotations, IWorldLoaded, IChatCommand
 	{
 		const string CommandName = "triggers";
-		const string CommandDesc = "toggles the script triggers overlay.";
+
+		[TranslationReference]
+		const string CommandDescription = "cell-trigger-overlay-description";
 
 		bool enabled;
 
@@ -54,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			console.RegisterCommand(CommandName, this);
-			help.RegisterHelp(CommandName, CommandDesc);
+			help.RegisterHelp(CommandName, CommandDescription);
 		}
 
 		void IChatCommand.InvokeCommand(string name, string arg)

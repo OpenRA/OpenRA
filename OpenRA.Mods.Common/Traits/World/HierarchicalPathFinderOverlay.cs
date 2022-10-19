@@ -35,7 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 	public class HierarchicalPathFinderOverlay : IRenderAnnotations, IWorldLoaded, IChatCommand
 	{
 		const string CommandName = "hpf";
-		const string CommandDesc = "toggles the hierarchical pathfinder overlay.";
+
+		[TranslationReference]
+		const string CommandDescription = "hpf-overlay-description";
 
 		readonly HierarchicalPathFinderOverlayInfo info;
 		readonly SpriteFont font;
@@ -68,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			console.RegisterCommand(CommandName, this);
-			help.RegisterHelp(CommandName, CommandDesc);
+			help.RegisterHelp(CommandName, CommandDescription);
 		}
 
 		void IChatCommand.InvokeCommand(string name, string arg)

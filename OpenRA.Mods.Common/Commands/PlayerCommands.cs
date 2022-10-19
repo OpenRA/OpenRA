@@ -22,6 +22,12 @@ namespace OpenRA.Mods.Common.Commands
 	{
 		World world;
 
+		[TranslationReference]
+		static readonly string PauseDescription = "pause-description";
+
+		[TranslationReference]
+		static readonly string SurrenderDescription = "surrender-description";
+
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			world = w;
@@ -29,9 +35,10 @@ namespace OpenRA.Mods.Common.Commands
 			var help = world.WorldActor.Trait<HelpCommand>();
 
 			console.RegisterCommand("pause", this);
-			help.RegisterHelp("pause", "pause or unpause the game");
+			help.RegisterHelp("pause", PauseDescription);
+
 			console.RegisterCommand("surrender", this);
-			help.RegisterHelp("surrender", "self-destruct everything and lose the game");
+			help.RegisterHelp("surrender", SurrenderDescription);
 		}
 
 		public void InvokeCommand(string name, string arg)

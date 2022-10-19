@@ -40,7 +40,9 @@ namespace OpenRA.Mods.Common.Traits
 	public class PathFinderOverlay : IRenderAnnotations, IWorldLoaded, IChatCommand
 	{
 		const string CommandName = "path-debug";
-		const string CommandDesc = "toggles a visualization of path searching.";
+
+		[TranslationReference]
+		const string CommandDescription = "path-debug-description";
 
 		sealed class Record : PathSearch.IRecorder, IEnumerable<(CPos Source, CPos Destination, int CostSoFar, int EstimatedRemainingCost)>
 		{
@@ -90,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			console.RegisterCommand(CommandName, this);
-			help.RegisterHelp(CommandName, CommandDesc);
+			help.RegisterHelp(CommandName, CommandDescription);
 		}
 
 		void IChatCommand.InvokeCommand(string name, string arg)

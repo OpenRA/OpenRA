@@ -29,6 +29,9 @@ namespace OpenRA.Mods.Common.Commands
 		[TranslationReference]
 		static readonly string NoDescription = "no-description";
 
+		[TranslationReference]
+		static readonly string HelpDescription = "help-description";
+
 		World world;
 		ChatCommands console;
 
@@ -43,7 +46,7 @@ namespace OpenRA.Mods.Common.Commands
 			console = world.WorldActor.Trait<ChatCommands>();
 
 			console.RegisterCommand("help", this);
-			RegisterHelp("help", "provides useful info about various commands");
+			RegisterHelp("help", HelpDescription);
 		}
 
 		public void InvokeCommand(string name, string arg)
@@ -61,7 +64,7 @@ namespace OpenRA.Mods.Common.Commands
 
 		public void RegisterHelp(string name, string description)
 		{
-			helpDescriptions[name] = description;
+			helpDescriptions[name] = Game.ModData.Translation.GetString(description);
 		}
 	}
 }
