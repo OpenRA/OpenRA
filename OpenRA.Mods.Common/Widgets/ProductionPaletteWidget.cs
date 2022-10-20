@@ -111,8 +111,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override Rectangle EventBounds => eventBounds;
 		Dictionary<Rectangle, ProductionIcon> icons = new Dictionary<Rectangle, ProductionIcon>();
-		readonly Animation cantBuild;
-		readonly Animation clock;
+		Animation cantBuild;
+		Animation clock;
 		Rectangle eventBounds = Rectangle.Empty;
 
 		readonly WorldRenderer worldRenderer;
@@ -155,16 +155,15 @@ namespace OpenRA.Mods.Common.Widgets
 			GetTooltipIcon = () => TooltipIcon;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
-
-			cantBuild = new Animation(world, NotBuildableAnimation);
-			cantBuild.PlayFetchIndex(NotBuildableSequence, () => 0);
-			clock = new Animation(world, ClockAnimation);
 		}
 
 		public override void Initialize(WidgetArgs args)
 		{
 			base.Initialize(args);
 
+			clock = new Animation(World, ClockAnimation);
+			cantBuild = new Animation(World, NotBuildableAnimation);
+			cantBuild.PlayFetchIndex(NotBuildableSequence, () => 0);
 			hotkeys = Exts.MakeArray(HotkeyCount,
 				i => modData.Hotkeys[HotkeyPrefix + (i + 1).ToString("D2")]);
 
