@@ -386,8 +386,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var item = icon.Queued.FirstOrDefault();
 			var handled = btn == MouseButton.Left ? HandleLeftClick(item, icon, startCount, modifiers)
 				: btn == MouseButton.Right ? HandleRightClick(item, icon, cancelCount)
-				: btn == MouseButton.Middle ? HandleMiddleClick(item, icon, cancelCount)
-				: false;
+				: btn == MouseButton.Middle && HandleMiddleClick(item, icon, cancelCount);
 
 			if (!handled)
 				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Sounds", ClickDisabledSound, null);
@@ -408,7 +407,7 @@ namespace OpenRA.Mods.Common.Widgets
 			// HACK: enable production if the shift key is pressed
 			e.Modifiers &= ~Modifiers.Shift;
 			var toBuild = icons.Values.FirstOrDefault(i => i.Hotkey != null && i.Hotkey.IsActivatedBy(e));
-			return toBuild != null ? HandleEvent(toBuild, MouseButton.Left, batchModifiers) : false;
+			return toBuild != null && HandleEvent(toBuild, MouseButton.Left, batchModifiers);
 		}
 
 		bool SelectProductionBuilding()
