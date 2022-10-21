@@ -26,7 +26,6 @@ namespace OpenRA.Network
 
 		readonly Queue<Chunk> chunks = new Queue<Chunk>();
 		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> sync = new Queue<(int, int, ulong)>();
-		readonly Dictionary<int, int> lastClientsFrame = new Dictionary<int, int>();
 		readonly int orderLatency;
 		int ordersFrame;
 
@@ -58,9 +57,6 @@ namespace OpenRA.Network
 					var frame = BitConverter.ToInt32(packet, 0);
 					packets.Add((client, packet));
 
-					if (frame != int.MaxValue && (!lastClientsFrame.ContainsKey(client) || frame > lastClientsFrame[client]))
-						lastClientsFrame[client] = frame;
-
 					if (packet.Length > 4 && (packet[4] == (byte)OrderType.Disconnect || packet[4] == (byte)OrderType.SyncHash))
 						continue;
 
@@ -88,31 +84,6 @@ namespace OpenRA.Network
 						chunk = new Chunk();
 
 						TickCount = Math.Max(TickCount, frame);
-					}
-				}
-
-				var lastClientToDisconnect = lastClientsFrame.MaxBy(kvp => kvp.Value).Key;
-
-				// 2nd parse : replace all disconnect packets without frame with real
-				// disconnect frame
-				// NOTE: to modify/remove if a reconnect feature is set
-				foreach (var tmpChunk in chunks)
-				{
-					foreach (var tmpPacketPair in tmpChunk.Packets)
-					{
-						var client = tmpPacketPair.ClientId;
-
-						// Don't replace the final disconnection packet - we still want this to end the replay.
-						if (client == lastClientToDisconnect)
-							continue;
-
-						var packet = tmpPacketPair.Packet;
-						if (packet.Length == Order.DisconnectOrderLength + 4 && packet[4] == (byte)OrderType.Disconnect)
-						{
-							var lastClientFrame = lastClientsFrame[client];
-							var lastFramePacket = BitConverter.GetBytes(lastClientFrame);
-							Array.Copy(lastFramePacket, packet, lastFramePacket.Length);
-						}
 					}
 				}
 			}
