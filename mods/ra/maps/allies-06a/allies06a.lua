@@ -179,7 +179,7 @@ WorldLoaded = function()
 	player = Player.GetPlayer("Greece")
 	ussr = Player.GetPlayer("USSR")
 
-	InitObjectives(Greece)
+	InitObjectives(player)
 
 	InfiltrateTechCenterObj = player.AddObjective("Infiltrate one of the Soviet tech centers with a spy.")
 	CaptureRadarDomeObj = player.AddObjective("Capture the Radar Dome at the shore.", "Secondary", false)
