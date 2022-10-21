@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Scripting
 			return true;
 		}
 
-		[Desc("Display a text message to the player.")]
+		[Desc("Display a text message to all players.")]
 		public void DisplayMessage(string text, string prefix = "Mission", Color? color = null)
 		{
 			if (string.IsNullOrEmpty(text))
@@ -195,6 +195,15 @@ namespace OpenRA.Mods.Common.Scripting
 
 			var c = color.HasValue ? color.Value : Color.White;
 			TextNotificationsManager.AddMissionLine(prefix, text, c);
+		}
+
+		[Desc("Display a text message only to this player.")]
+		public void DisplayMessageToPlayer(Player player, string text, string prefix = "Mission", Color? color = null)
+		{
+			if (world.LocalPlayer != player)
+				return;
+
+			DisplayMessage(text, prefix, color);
 		}
 
 		[Desc("Display a system message to the player. If 'prefix' is nil the default system prefix is used.")]
