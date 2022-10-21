@@ -75,6 +75,8 @@ VISC_SML:
 		CrushClasses: visceroid-fusing
 		WarnProbability: 0
 		CrushedByFriendlies: True
+	AutoCrusher:
+		CrushClasses: visceroid-fusing
 	TransformCrusherOnCrush:
 		IntoActor: visc_lrg
 		CrushClasses: visceroid-fusing
