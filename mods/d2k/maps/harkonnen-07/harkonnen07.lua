@@ -177,12 +177,12 @@ Tick = function()
 	end
 
 	if atreides_main.HasNoRequiredUnits() and atreides_small.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage("The Atreides have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillAtreides)
 	end
 
 	if corrino.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillCorrino) then
-		Media.DisplayMessage("The Emperor have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("emperor-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillCorrino)
 	end
 
@@ -191,7 +191,7 @@ Tick = function()
 	end
 
 	if (AHiTechFactory.IsDead or AHiTechFactory.Owner ~= atreides_main) and not HiTechIsDead then
-		Media.DisplayMessage("High Tech Factory neutralized! Atreides cut off from Imperial reinforcement!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("high-tech-factory-neutralized-imperial-reinforcements"), Mentat)
 		HiTechIsDead = true
 	end
 
@@ -221,14 +221,14 @@ WorldLoaded = function()
 	player = Player.GetPlayer("Harkonnen")
 
 	InitObjectives(player)
-	CaptureAtreidesConYard = player.AddPrimaryObjective("Capture the Atreides Construction Yard at the South.")
-	KillAtreides = player.AddPrimaryObjective("Destroy the Atreides.")
-	KillCorrino = player.AddPrimaryObjective("Destroy the Corrino.")
-	KillHarkonnen1 = atreides_main.AddPrimaryObjective("Kill all Harkonnen units.")
-	KillHarkonnen2 = atreides_small.AddPrimaryObjective("Kill all Harkonnen units.")
-	KillHarkonnen3 = corrino.AddPrimaryObjective("Kill all Harkonnen units.")
+	CaptureAtreidesConYard = AddPrimaryObjective(player, "capture-atreides-construction-yard-south")
+	KillAtreides = AddPrimaryObjective(player, "destroy-atreides")
+	KillCorrino = AddPrimaryObjective(player, "destroy-corrino")
+	KillHarkonnen1 = AddPrimaryObjective(atreides_main, "")
+	KillHarkonnen2 = AddPrimaryObjective(atreides_small, "")
+	KillHarkonnen3 = AddPrimaryObjective(corrino, "")
 
-	Media.DisplayMessage("Destroy Atreides High Tech Factory to cut off Atreides from Imperial reinforcements.", "Mentat")
+	Media.DisplayMessage(UserInterface.Translate("destroy-atreides-high-tech-factory-imperial-reinforcements"), Mentat)
 
 	Camera.Position = HEngineer.CenterPosition
 	AtreidesAttackLocation = AConYard2.Location

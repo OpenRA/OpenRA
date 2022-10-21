@@ -220,12 +220,12 @@ Tick = function()
 	end
 
 	if atreides_main.HasNoRequiredUnits() and atreides_small_1.HasNoRequiredUnits() and atreides_small_2.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage("The Atreides have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillAtreides)
 	end
 
 	if corrino_main.HasNoRequiredUnits() and corrino_small.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillCorrino) then
-		Media.DisplayMessage("The Emperor has been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("emperor-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillCorrino)
 	end
 
@@ -275,13 +275,13 @@ WorldLoaded = function()
 	player = Player.GetPlayer("Harkonnen")
 
 	InitObjectives(player)
-	KillAtreides = player.AddPrimaryObjective("Destroy the Atreides.")
-	KillCorrino = player.AddPrimaryObjective("Destroy the Imperial Forces.")
-	KillHarkonnen1 = atreides_main.AddPrimaryObjective("Kill all Harkonnen units.")
-	KillHarkonnen2 = atreides_small_1.AddPrimaryObjective("Kill all Harkonnen units.")
-	KillHarkonnen3 = atreides_small_2.AddPrimaryObjective("Kill all Harkonnen units.")
-	KillHarkonnen4 = corrino_main.AddPrimaryObjective("Kill all Harkonnen units.")
-	KillHarkonnen5 = corrino_small.AddPrimaryObjective("Kill all Harkonnen units.")
+	KillAtreides = AddPrimaryObjective(player, "destroy-atreides")
+	KillCorrino = AddPrimaryObjective(player, "destroy-imperial-forces")
+	KillHarkonnen1 = AddPrimaryObjective(atreides_main, "")
+	KillHarkonnen2 = AddPrimaryObjective(atreides_small_1, "")
+	KillHarkonnen3 = AddPrimaryObjective(atreides_small_2, "")
+	KillHarkonnen4 = AddPrimaryObjective(corrino_main, "")
+	KillHarkonnen5 = AddPrimaryObjective(corrino_small, "")
 
 	Camera.Position = HMCV.CenterPosition
 	AtreidesAttackLocation = HarkonnenRally.Location

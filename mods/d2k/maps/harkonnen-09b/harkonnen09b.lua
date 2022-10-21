@@ -265,9 +265,8 @@ CheckSmugglerEnemies = function()
 			end
 
 			if attacker.Owner == player and not message_check then
-
 				message_check = true
-				Media.DisplayMessage("The Smugglers are now hostile!", "Mentat")
+				Media.DisplayMessage(UserInterface.Translate("smugglers-now-hostile"), Mentat)
 			end
 		end)
 	end)
@@ -282,17 +281,17 @@ Tick = function()
 	end
 
 	if atreides_main.HasNoRequiredUnits() and atreides_small.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage("The Atreides have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillAtreides)
 	end
 
 	if corrino_main.HasNoRequiredUnits() and corrino_small.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillCorrino) then
-		Media.DisplayMessage("The Emperor has been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("emperor-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillCorrino)
 	end
 
 	if smuggler_neutral.HasNoRequiredUnits() and smuggler_harkonnen.HasNoRequiredUnits() and smuggler_ai.HasNoRequiredUnits() and smuggler_both.HasNoRequiredUnits() and not SmugglersKilled then
-		Media.DisplayMessage("The Smugglers have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("smugglers-annihilated"), Mentat)
 		SmugglersKilled = true
 	end
 
@@ -350,13 +349,13 @@ WorldLoaded = function()
 	player = Player.GetPlayer("Harkonnen")
 
 	InitObjectives(player)
-	DeployMCV = player.AddSecondaryObjective("Build an MCV and deploy it into a Construction Yard.")
-	KillAtreides = player.AddPrimaryObjective("Destroy the Atreides.")
-	KillCorrino = player.AddPrimaryObjective("Destroy the Imperial Forces.")
-	KillHarkonnen1 = atreides_main.AddPrimaryObjective("Kill all Harkonnen units.")
-	KillHarkonnen2 = atreides_small.AddPrimaryObjective("Kill all Harkonnen units.")
-	KillHarkonnen3 = corrino_main.AddPrimaryObjective("Kill all Harkonnen units.")
-	KillHarkonnen4 = corrino_small.AddPrimaryObjective("Kill all Harkonnen units.")
+	DeployMCV = AddSecondaryObjective(player, "build-deploy-mcv")
+	KillAtreides = AddPrimaryObjective(player, "destroy-atreides")
+	KillCorrino = AddPrimaryObjective(player, "destroy-imperial-forces")
+	KillHarkonnen1 = AddPrimaryObjective(atreides_main, "")
+	KillHarkonnen2 = AddPrimaryObjective(atreides_small, "")
+	KillHarkonnen3 = AddPrimaryObjective(corrino_main, "")
+	KillHarkonnen4 = AddPrimaryObjective(corrino_small, "")
 
 	-- Wait for carryall drop
 	Trigger.AfterDelay(DateTime.Seconds(10), function()

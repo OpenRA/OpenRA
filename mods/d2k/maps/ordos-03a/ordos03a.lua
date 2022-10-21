@@ -86,7 +86,7 @@ Tick = function()
 	end
 
 	if harkonnen.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillHarkonnen) then
-		Media.DisplayMessage("The Harkonnen have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("harkonnen-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillHarkonnen)
 	end
 
@@ -100,7 +100,7 @@ Tick = function()
 	end
 
 	if DateTime.GameTime % DateTime.Seconds(32) == 0 and (MessageCheck(1) or MessageCheck(2)) then
-		Media.DisplayMessage("Upgrade barracks and light factory to produce more advanced units.", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("upgrade-barracks-light-factory"), Mentat)
 	end
 end
 
@@ -109,8 +109,8 @@ WorldLoaded = function()
 	player = Player.GetPlayer("Ordos")
 
 	InitObjectives(player)
-	KillOrdos = harkonnen.AddPrimaryObjective("Kill all Ordos units.")
-	KillHarkonnen = player.AddPrimaryObjective("Eliminate all Harkonnen units and reinforcements\nin the area.")
+	KillOrdos = AddPrimaryObjective(harkonnen, "")
+	KillHarkonnen = AddPrimaryObjective(player, "eliminate-harkonnen-units-reinforcements")
 
 	Camera.Position = OConyard.CenterPosition
 

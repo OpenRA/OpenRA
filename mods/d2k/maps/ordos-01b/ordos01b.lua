@@ -53,12 +53,13 @@ OrdosEntryPath = { OrdosWaypoint.Location, OrdosRally.Location }
 
 Messages =
 {
-	"Build a concrete foundation before placing your buildings.",
-	"Build a Wind Trap for power.",
-	"Build a Refinery to collect Spice.",
-	"Build a Silo to store additional Spice."
+	UserInterface.Translate("build-concrete"),
+	UserInterface.Translate("build-windtrap"),
+	UserInterface.Translate("build-refinery"),
+	UserInterface.Translate("build-silo")
 }
 
+CachedResources = -1
 Tick = function()
 	if HarkonnenArrived and harkonnen.HasNoRequiredUnits() then
 		player.MarkCompletedObjective(KillHarkonnen)
@@ -71,21 +72,26 @@ Tick = function()
 	-- player has no Wind Trap
 	if (player.PowerProvided <= 20 or player.PowerState ~= "Normal") and DateTime.GameTime % DateTime.Seconds(32) == 0 then
 		HasPower = false
-		Media.DisplayMessage(Messages[2], "Mentat")
+		Media.DisplayMessage(Messages[2], Mentat)
 	else
 		HasPower = true
 	end
 
 	-- player has no Refinery and no Silos
 	if HasPower and player.ResourceCapacity == 0 and DateTime.GameTime % DateTime.Seconds(32) == 0 then
-		Media.DisplayMessage(Messages[3], "Mentat")
+		Media.DisplayMessage(Messages[3], Mentat)
 	end
 
 	if HasPower and player.Resources > player.ResourceCapacity * 0.8 and DateTime.GameTime % DateTime.Seconds(32) == 0 then
-		Media.DisplayMessage(Messages[4], "Mentat")
+		Media.DisplayMessage(Messages[4], Mentat)
 	end
 
-	UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. SpiceToHarvest, player.Color)
+	if player.Resources ~= CachedResources then
+		local parameters = { ["harvested"] = player.Resources, ["goal"] = SpiceToHarvest }
+		local harvestedResources = UserInterface.Translate("harvested-resources", parameters)
+		UserInterface.SetMissionText(harvestedResources)
+		CachedResources = player.Resources
+	end
 end
 
 WorldLoaded = function()
@@ -95,16 +101,17 @@ WorldLoaded = function()
 	SpiceToHarvest = ToHarvest[Difficulty]
 
 	InitObjectives(player)
-	KillAtreides = harkonnen.AddPrimaryObjective("Kill all Ordos units.")
-	GatherSpice = player.AddPrimaryObjective("Harvest " .. tostring(SpiceToHarvest) .. " Solaris worth of Spice.")
-	KillHarkonnen = player.AddSecondaryObjective("Eliminate all Harkonnen units and reinforcements\nin the area.")
+	KillOrdos = AddPrimaryObjective(harkonnen, "")
+	local harvestSpice = UserInterface.Translate("harvest-spice", { ["spice"] = SpiceToHarvest })
+	GatherSpice = AddPrimaryObjective(player, harvestSpice)
+	KillHarkonnen = AddSecondaryObjective(player, "eliminate-harkonnen-units-reinforcements")
 
 	local checkResourceCapacity = function()
 		Trigger.AfterDelay(0, function()
 			if player.ResourceCapacity < SpiceToHarvest then
-				Media.DisplayMessage("We don't have enough silo space to store the required amount of Spice!", "Mentat")
+				Media.DisplayMessage(UserInterface.Translate("not-enough-silos"), Mentat)
 				Trigger.AfterDelay(DateTime.Seconds(3), function()
-					harkonnen.MarkCompletedObjective(KillAtreides)
+					harkonnen.MarkCompletedObjective(KillOrdos)
 				end)
 
 				return true
@@ -122,10 +129,10 @@ WorldLoaded = function()
 		local refs = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "refinery" and actor.Owner == player end)
 
 		if #refs == 0 then
-			harkonnen.MarkCompletedObjective(KillAtreides)
+			harkonnen.MarkCompletedObjective(KillOrdos)
 		else
 			Trigger.OnAllRemovedFromWorld(refs, function()
-				harkonnen.MarkCompletedObjective(KillAtreides)
+				harkonnen.MarkCompletedObjective(KillOrdos)
 			end)
 
 			local silos = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "silo" and actor.Owner == player end)
@@ -134,7 +141,7 @@ WorldLoaded = function()
 		end
 	end)
 
-	Media.DisplayMessage(Messages[1], "Mentat")
+	Media.DisplayMessage(Messages[1], Mentat)
 
 	Trigger.AfterDelay(DateTime.Seconds(25), function()
 		Media.PlaySpeechNotification(player, "Reinforce")

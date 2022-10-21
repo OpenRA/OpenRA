@@ -108,7 +108,7 @@ Tick = function()
 	end
 
 	if harkonnen.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillHarkonnen) then
-		Media.DisplayMessage("The Harkonnen have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("harkonnen-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillHarkonnen)
 		player.MarkCompletedObjective(ProtectFremen)
 		player.MarkCompletedObjective(KeepIntegrity)
@@ -126,7 +126,8 @@ Tick = function()
 	if not Sietch.IsDead then
 		AttackNotifier = AttackNotifier - 1
 		local integrity = math.floor((Sietch.Health * 100) / Sietch.MaxHealth)
-		UserInterface.SetMissionText("Sietch structural integrity: " .. integrity .. "%", player.Color)
+		SiegeIntegrity = UserInterface.Translate("sietch-integrity", { ["integrity"] = integrity })
+		UserInterface.SetMissionText(SiegeIntegrity, player.Color)
 
 		if integrity < IntegrityLevel[Difficulty] then
 			player.MarkFailedObjective(KeepIntegrity)
@@ -140,17 +141,18 @@ WorldLoaded = function()
 	player = Player.GetPlayer("Atreides")
 
 	InitObjectives(player)
-	KillAtreides = harkonnen.AddPrimaryObjective("Kill all Atreides units.")
-	ProtectFremen = player.AddPrimaryObjective("Protect the Fremen Sietch.")
-	KillHarkonnen = player.AddPrimaryObjective("Destroy the Harkonnen.")
-	KeepIntegrity = player.AddSecondaryObjective("Keep the Sietch " .. IntegrityLevel[Difficulty] .. "% intact!")
+	KillAtreides = AddPrimaryObjective(harkonnen, "")
+	ProtectFremen = AddPrimaryObjective(player, "protect-fremen-sietch")
+	KillHarkonnen = AddPrimaryObjective(player, "destroy-harkonnen")
+	local keepSietchIntact = UserInterface.Translate("keep-sietch-intact", { ["integrity"] = IntegrityLevel[Difficulty] })
+	KeepIntegrity = AddPrimaryObjective(player, keepSietchIntact)
 
 	Camera.Position = AConyard.CenterPosition
 	HarkonnenAttackLocation = AConyard.Location
 
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
 		Beacon.New(player, Sietch.CenterPosition + WVec.New(0, 1024, 0))
-		Media.DisplayMessage("Fremen Sietch detected to the southeast.", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("fremen-sietch-southeast"), Mentat)
 	end)
 
 	Trigger.OnAllKilledOrCaptured(HarkonnenBase, function()
@@ -159,14 +161,14 @@ WorldLoaded = function()
 
 	Trigger.OnKilled(Sietch, function()
 		Actor.Create("invisibleBlocker", true, { Owner = fremen, Location = CPos.New(62, 59) })
-		UserInterface.SetMissionText("Sietch destroyed!", player.Color)
+		UserInterface.SetMissionText(UserInterface.Translate("sietch-destroyed"), player.Color)
 		player.MarkFailedObjective(ProtectFremen)
 	end)
 	Trigger.OnDamaged(Sietch, function()
 		if AttackNotifier <= 0 then
 			AttackNotifier = DateTime.Seconds(10)
 			Beacon.New(player, Sietch.CenterPosition + WVec.New(0, 1024, 0), DateTime.Seconds(7))
-			Media.DisplayMessage("The Fremen Sietch is under attack!", "Mentat")
+			Media.DisplayMessage(UserInterface.Translate("fremen-sietch-under-attack"), Mentat)
 
 			local defenders = fremen.GetGroundAttackers()
 			if #defenders > 0 then

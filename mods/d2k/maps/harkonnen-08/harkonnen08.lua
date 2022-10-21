@@ -201,7 +201,7 @@ CheckAttackToAtreides = function()
 				end)
 
 				check = true
-				Media.DisplayMessage("The Atreides are now hostile!", "Mentat")
+				Media.DisplayMessage(UserInterface.Translate("atreides-hostile"), Mentat)
 			end
 		end)
 	end)
@@ -223,17 +223,17 @@ Tick = function()
 	end
 
 	if ordos.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillOrdos) then
-		Media.DisplayMessage("The Ordos have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("ordos-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillOrdos)
 	end
 
 	if atreides_enemy.HasNoRequiredUnits() and atreides_neutral.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage("The Atreides have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillAtreides)
 	end
 
 	if mercenary_enemy.HasNoRequiredUnits() and mercenary_ally.HasNoRequiredUnits() and not MercenariesDestroyed then
-		Media.DisplayMessage("The Mercenaries have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("mercenaries-annihilated"), Mentat)
 		MercenariesDestroyed = true
 	end
 
@@ -265,11 +265,11 @@ WorldLoaded = function()
 	player = Player.GetPlayer("Harkonnen")
 
 	InitObjectives(player)
-	KillOrdos = player.AddPrimaryObjective("Destroy the Ordos.")
-	KillAtreides = player.AddSecondaryObjective("Destroy the Atreides.")
-	AllyWithMercenaries = player.AddSecondaryObjective("Persuade the Mercenaries to fight with\nHouse Harkonnen.")
-	KillHarkonnen1 = ordos.AddPrimaryObjective("Kill all Harkonnen units.")
-	KillHarkonnen2 = atreides_enemy.AddPrimaryObjective("Kill all Harkonnen units.")
+	KillOrdos = AddPrimaryObjective(player, "destroy-ordos")
+	KillAtreides = AddSecondaryObjective(player, "destroy-atreides")
+	AllyWithMercenaries = AddSecondaryObjective(player, "ally-mercenaries")
+	KillHarkonnen1 = AddPrimaryObjective(ordos, "")
+	KillHarkonnen2 = AddPrimaryObjective(atreides_enemy, "")
 
 	Camera.Position = HMCV.CenterPosition
 	OrdosAttackLocation = HMCV.Location
@@ -280,7 +280,7 @@ WorldLoaded = function()
 
 	Trigger.OnCapture(MHeavyFactory, function()
 		player.MarkCompletedObjective(AllyWithMercenaries)
-		Media.DisplayMessage("Leader Captured. Mercenaries have been persuaded to fight with House Harkonnen.", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("mercenary-leader-captured-allied"), Mentat)
 		MercenaryAttackLocation = MercenaryAttackPoint.Location
 
 		ChangeOwner(mercenary_enemy, mercenary_ally)
@@ -296,7 +296,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnKilledOrCaptured(OPalace, function()
-		Media.DisplayMessage("We cannot stand against the Harkonnen. We must become neutral.", "Atreides Commander")
+		Media.DisplayMessage(UserInterface.Translate("can-not-stand-harkonnen-must-become-neutral"), UserInterface.Translate("atreides-commander"))
 
 		ChangeOwner(atreides_enemy, atreides_neutral)
 		DefendAndRepairBase(atreides_neutral, AtreidesBase, 0.75, AttackGroupSize[Difficulty])

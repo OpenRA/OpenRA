@@ -367,3 +367,5 @@ Actors:
 		Location: 49,4
 
 Rules: d2k|rules/campaign-rules.yaml, d2k|rules/campaign-tooltips.yaml, d2k|rules/campaign-palettes.yaml, rules.yaml
+
+Translations: d2k|languages/lua/en.ftl

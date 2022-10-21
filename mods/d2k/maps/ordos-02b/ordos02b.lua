@@ -70,7 +70,7 @@ Tick = function()
 	end
 
 	if harkonnen.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillHarkonnen) then
-		Media.DisplayMessage("The Harkonnen have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("harkonnen-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillHarkonnen)
 	end
 end
@@ -80,8 +80,8 @@ WorldLoaded = function()
 	player = Player.GetPlayer("Ordos")
 
 	InitObjectives(player)
-	KillOrdos = harkonnen.AddPrimaryObjective("Kill all Ordos units.")
-	KillHarkonnen = player.AddPrimaryObjective("Destroy all Harkonnen forces.")
+	KillOrdos = AddPrimaryObjective(harkonnen, "")
+	KillHarkonnen = AddPrimaryObjective(player, "destroy-harkonnen-forces")
 
 	Camera.Position = OConyard.CenterPosition
 

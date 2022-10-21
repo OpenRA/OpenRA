@@ -112,7 +112,7 @@ SendStarportReinforcements = function()
 			IdleHunt(unit)
 		end)
 
-		Media.DisplayMessage("Ixian transports detected.", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("ixian-transports-detected"), Mentat)
 
 		SendStarportReinforcements()
 	end)
@@ -149,7 +149,7 @@ CheckSmugglerEnemies = function()
 			if attacker.Owner == player and not message_check then
 
 				message_check = true
-				Media.DisplayMessage("The Smugglers are now hostile!", "Mentat")
+				Media.DisplayMessage(UserInterface.Translate("smugglers-now-hostile"), Mentat)
 			end
 		end)
 	end)
@@ -162,12 +162,12 @@ Tick = function()
 	end
 
 	if ordos_main.HasNoRequiredUnits() and ordos_small.HasNoRequiredUnits() and not OrdosKilled then
-		Media.DisplayMessage("The Ordos have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("ordos-annihilated"), Mentat)
 		OrdosKilled = true
 	end
 
 	if smuggler_neutral.HasNoRequiredUnits() and smuggler_harkonnen.HasNoRequiredUnits() and smuggler_ordos.HasNoRequiredUnits() and smuggler_both.HasNoRequiredUnits() and not SmugglersKilled then
-		Media.DisplayMessage("The Smugglers have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("smugglers-annihilated"), Mentat)
 		SmugglersKilled = true
 	end
 
@@ -204,9 +204,9 @@ WorldLoaded = function()
 	player = Player.GetPlayer("Harkonnen")
 
 	InitObjectives(player)
-	DestroyStarport = player.AddPrimaryObjective("Capture or Destroy the Ordos Starport.")
-	KillHarkonnen1 = ordos_main.AddPrimaryObjective("Kill all Harkonnen units.")
-	KillHarkonnen2 = ordos_small.AddPrimaryObjective("Kill all Harkonnen units.")
+	DestroyStarport = AddPrimaryObjective(player, "capture-destroy-ordos-starport")
+	KillHarkonnen1 = AddPrimaryObjective(ordos_main, "")
+	KillHarkonnen2 = AddPrimaryObjective(ordos_small, "")
 
 	-- Wait for carryall drop
 	Trigger.AfterDelay(DateTime.Seconds(15), function()

@@ -133,12 +133,12 @@ Tick = function()
 	end
 
 	if atreides.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage("The Atreides have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillAtreides)
 	end
 
 	if fremen.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillFremen) then
-		Media.DisplayMessage("The Fremen have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("fremen-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillFremen)
 	end
 
@@ -158,9 +158,9 @@ WorldLoaded = function()
 	player = Player.GetPlayer("Harkonnen")
 
 	InitObjectives(player)
-	KillAtreides = player.AddPrimaryObjective("Destroy the Atreiedes.")
-	KillFremen = player.AddPrimaryObjective("Destroy the Fremen.")
-	KillHarkonnen = atreides.AddPrimaryObjective("Kill all Harkonnen units.")
+	KillAtreides = AddPrimaryObjective(player, "destroy-atreides")
+	KillFremen = AddPrimaryObjective(player, "destroy-fremen")
+	KillHarkonnen = AddPrimaryObjective(atreides, "")
 
 	Camera.Position = HConyard.CenterPosition
 	FremenAttackLocation = HConyard.Location
@@ -191,7 +191,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(15), function()
-		Media.DisplayMessage("Fremen concentrations spotted to the North and Southwest.", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("fremen-spotted-north-southeast"), Mentat)
 	end)
 
 	local atreidesCondition = function() return player.IsObjectiveCompleted(KillAtreides) end
