@@ -490,7 +490,7 @@ WorldLoaded = function()
 	England = Player.GetPlayer("England")
 	Civilians = Player.GetPlayer("GreekCivilians")
 
-	AddObjectives(Allies)
+	InitObjectives(Allies)
 
 	SovietObj = USSR.AddObjective("Kill Stavros.")
 	ProtectVIPs = Allies.AddObjective("Keep Stavros and Tanya alive.")
