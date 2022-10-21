@@ -4,15 +4,16 @@
 set -o errexit -o pipefail || exit $?
 
 if [ $# -ne "2" ]; then
-	echo "Usage: ${0##*/} version outputdir."
+	echo "Usage: $(basename "$0") version outputdir."
 	exit 1
 fi
 
 export GIT_TAG="$1"
 export BUILD_OUTPUT_DIR="$2"
 
-# Set the working dir to the location of this script using bash parameter expansion
-cd "${0%/*}"
+# Set the working dir to the location of this script
+HERE=$(dirname "$0")
+cd "${HERE}"
 
 #build packages using a subshell so directory changes do not persist beyond the function
 function build_package() (
