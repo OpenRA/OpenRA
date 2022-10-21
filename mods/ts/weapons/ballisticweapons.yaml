@@ -110,6 +110,13 @@ RPGTower:
 		Explosions: large_explosion
 		ImpactSounds: expnew06.aud
 
+155mmDeployCheck: ## DummyWeapon
+	ReloadDelay: 20
+	Range: 18c0
+	MinRange: 5c0
+	Projectile: InstantHit
+	Warhead@1Dam: TargetDamage
+
 Jugg90mm:
 	Inherits: ^ArtilleryWeapon
 	ReloadDelay: 150
@@ -128,6 +135,13 @@ Jugg90mm:
 	Warhead@2Eff: CreateEffect
 		Explosions: small_explosion
 		ImpactSounds: expnew13.aud
+
+Jugg90mmDeployCheck: ## DummyWeapon
+	ReloadDelay: 20
+	Range: 18c0
+	MinRange: 5c0
+	Projectile: InstantHit
+	Warhead@1Dam: TargetDamage
 
 Grenade:
 	Inherits: ^ArtilleryWeapon
