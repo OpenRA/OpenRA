@@ -220,6 +220,9 @@ namespace OpenRA.GameRules
 		/// <summary>Checks if the weapon is valid against (can target) the frozen actor.</summary>
 		public bool IsValidAgainst(FrozenActor victim, Actor firedBy)
 		{
+			if (!victim.IsValid)
+				return false;
+
 			if (!CanTargetSelf && victim.Actor == firedBy)
 				return false;
 
