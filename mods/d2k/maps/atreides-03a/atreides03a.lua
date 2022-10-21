@@ -81,13 +81,14 @@ MessageCheck = function(index)
 	return #player.GetActorsByType(AtreidesBaseBuildings[index]) > 0 and not player.HasPrerequisites({ AtreidesUpgrades[index] })
 end
 
+CachedResources = -1
 Tick = function()
 	if player.HasNoRequiredUnits() then
 		ordos.MarkCompletedObjective(KillAtreides)
 	end
 
 	if ordos.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillOrdos) then
-		Media.DisplayMessage("The Ordos have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("ordos-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillOrdos)
 	end
 
@@ -105,10 +106,15 @@ Tick = function()
 	end
 
 	if DateTime.GameTime % DateTime.Seconds(32) == 0 and (MessageCheck(1) or MessageCheck(2)) then
-		Media.DisplayMessage("Upgrade barracks and light factory to produce more advanced units.", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("upgrade-barracks-light-factory"), Mentat)
 	end
 
-	UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. SpiceToHarvest, player.Color)
+	if player.Resources ~= CachedResources then
+		local parameters = { ["harvested"] = player.Resources, ["goal"] = SpiceToHarvest }
+		local harvestedResources = UserInterface.Translate("harvested-resources", parameters)
+		UserInterface.SetMissionText(harvestedResources)
+		CachedResources = player.Resources
+	end
 end
 
 WorldLoaded = function()
@@ -118,16 +124,17 @@ WorldLoaded = function()
 	SpiceToHarvest = ToHarvest[Difficulty]
 
 	InitObjectives(player)
-	KillAtreides = ordos.AddPrimaryObjective("Kill all Atreides units.")
-	GatherSpice = player.AddPrimaryObjective("Harvest " .. tostring(SpiceToHarvest) .. " Solaris worth of Spice.")
-	KillOrdos = player.AddSecondaryObjective("Eliminate all Ordos units and reinforcements\nin the area.")
+	KillAtreides = AddPrimaryObjective(ordos, "")
+	local harvestSpice = UserInterface.Translate("harvest-spice", { ["spice"] = SpiceToHarvest })
+	GatherSpice = AddPrimaryObjective(player, harvestSpice)
+	KillOrdos = AddSecondaryObjective(player, "eliminate-ordos-units-reinforcements")
 
 	Camera.Position = AConyard.CenterPosition
 
 	local checkResourceCapacity = function()
 		Trigger.AfterDelay(0, function()
 			if player.ResourceCapacity < SpiceToHarvest then
-				Media.DisplayMessage("We don't have enough silo space to store the required amount of Spice!", "Mentat")
+				Media.DisplayMessage(UserInterface.Translate("not-enough-silos"), Mentat)
 				Trigger.AfterDelay(DateTime.Seconds(3), function()
 					ordos.MarkCompletedObjective(KillAtreides)
 				end)

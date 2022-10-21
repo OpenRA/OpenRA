@@ -103,7 +103,7 @@ Tick = function()
 	end
 
 	if atreides.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage("The Atreides have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillAtreides)
 	end
 
@@ -117,7 +117,7 @@ Tick = function()
 	end
 
 	if DateTime.GameTime % DateTime.Seconds(32) == 0 and (MessageCheck(1) or MessageCheck(2)) then
-		Media.DisplayMessage("Upgrade barracks and light factory to produce more advanced units.", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("upgrade-barracks-light-factory"), Mentat)
 	end
 end
 
@@ -126,8 +126,8 @@ WorldLoaded = function()
 	player = Player.GetPlayer("Harkonnen")
 
 	InitObjectives(player)
-	KillHarkonnen = atreides.AddPrimaryObjective("Kill all Harkonnen units.")
-	KillAtreides = player.AddPrimaryObjective("Eliminate all Atreides units and reinforcements\nin the area.")
+	KillHarkonnen = AddPrimaryObjective(atreides, "")
+	KillAtreides = AddPrimaryObjective(player, "eliminate-atreides-units-reinforcements")
 
 	Camera.Position = HConyard.CenterPosition
 

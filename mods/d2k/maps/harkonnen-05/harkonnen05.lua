@@ -147,7 +147,7 @@ SendStarportReinforcements = function()
 			return
 		end
 
-		Media.DisplayMessage("Imperial ships penetrating defense grid!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("imperial-ships-penetrating-defense-grid"), Mentat)
 	end)
 end
 
@@ -171,7 +171,7 @@ OrdosReinforcementNotification = function(currentWave, totalWaves)
 			return
 		end
 
-		Media.DisplayMessage("Enemy carryall drop detected!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("enemy-carryall-drop-detected"), Mentat)
 
 		OrdosReinforcementNotification(currentWave, totalWaves)
 	end)
@@ -186,12 +186,12 @@ Tick = function()
 	end
 
 	if ordos_main.HasNoRequiredUnits() and ordos_small.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillOrdos) then
-		Media.DisplayMessage("The Ordos have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("ordos-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillOrdos)
 	end
 
 	if corrino.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillCorrino) then
-		Media.DisplayMessage("The Emperor has been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("emperor-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillCorrino)
 	end
 
@@ -229,12 +229,12 @@ WorldLoaded = function()
 	player = Player.GetPlayer("Harkonnen")
 
 	InitObjectives(player)
-	KillOrdos = player.AddPrimaryObjective("Destroy the Ordos.")
-	KillCorrino = player.AddPrimaryObjective("Destroy the Imperial Forces.")
-	GuardOutpost = player.AddSecondaryObjective("Keep the Modified Outpost intact.")
-	KillHarkonnen1 = ordos_main.AddPrimaryObjective("Kill all Harkonnen units.")
-	KillHarkonnen2 = ordos_small.AddPrimaryObjective("Kill all Harkonnen units.")
-	KillHarkonnen3 = corrino.AddPrimaryObjective("Kill all Harkonnen units.")
+	KillOrdos = AddPrimaryObjective(player, "destroy-ordos")
+	KillCorrino = AddPrimaryObjective(player, "destroy-imperial-forces")
+	GuardOutpost = AddSecondaryObjective(player, "keep-modified-outpost-intact")
+	KillHarkonnen1 = AddPrimaryObjective(ordos_main, "")
+	KillHarkonnen2 = AddPrimaryObjective(ordos_small, "")
+	KillHarkonnen3 = AddPrimaryObjective(corrino, "")
 
 	HOutpost.GrantCondition("modified")
 
@@ -254,7 +254,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(5), function()
-		Media.DisplayMessage("Protect the Outpost from attack.", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("protect-outpost"), Mentat)
 	end)
 
 	local path = function() return Utils.Random(OrdosPaths) end

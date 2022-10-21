@@ -90,7 +90,7 @@ Tick = function()
 	end
 
 	if harkonnen.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillHarkonnen) then
-		Media.DisplayMessage("The Harkonnen have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("harkonnen-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillHarkonnen)
 	end
 
@@ -106,11 +106,11 @@ WorldLoaded = function()
 	player = Player.GetPlayer("Ordos")
 
 	InitObjectives(player)
-	KillOrdosH = harkonnen.AddPrimaryObjective("Kill all Ordos units.")
-	KillOrdosS = smuggler.AddSecondaryObjective("Kill all Ordos units.")
-	DefendOutpost = smuggler.AddPrimaryObjective("Don't let the outpost to be captured or destroyed.")
-	CaptureOutpost = player.AddPrimaryObjective("Capture the Smuggler Outpost.")
-	KillHarkonnen = player.AddSecondaryObjective("Destroy the Harkonnen.")
+	KillOrdosH = AddPrimaryObjective(harkonnen, "")
+	KillOrdosS = AddSecondaryObjective(smuggler, "")
+	DefendOutpost = AddPrimaryObjective(smuggler, "outpost-not-captured-destroyed")
+	CaptureOutpost = AddPrimaryObjective(player, "capture-smuggler-outpost")
+	KillHarkonnen = AddSecondaryObjective(player, "destroy-harkonnen")
 
 	SOutpost.GrantCondition("modified")
 
@@ -146,7 +146,7 @@ WorldLoaded = function()
 
 		if AttackNotifier <= 0 then
 			AttackNotifier = DateTime.Seconds(10)
-			Media.DisplayMessage("Don't destroy the Outpost!", "Mentat")
+			Media.DisplayMessage(UserInterface.Translate("do-not-destroy-outpost"), Mentat)
 		end
 	end)
 
@@ -156,6 +156,6 @@ WorldLoaded = function()
 	end)
 
 	Trigger.AfterDelay(HarkonnenAttackDelay[Difficulty], function()
-		Media.DisplayMessage("WARNING: Large force approaching!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("warning-large-force-approaching"), Mentat)
 	end)
 end

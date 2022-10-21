@@ -108,6 +108,7 @@ CheckHarvester = function(house)
 	end
 end
 
+CachedResources = -1
 Tick = function()
 	if player.Resources > SpiceToHarvest - 1 then
 		player.MarkCompletedObjective(GatherSpice)
@@ -121,7 +122,7 @@ Tick = function()
 	end
 
 	if atreides_main.HasNoRequiredUnits() and atreides_small_1.HasNoRequiredUnits() and atreides_small_2.HasNoRequiredUnits() and atreides_small_3.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
-		Media.DisplayMessage("The Atreides have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillAtreides)
 	end
 
@@ -130,7 +131,12 @@ Tick = function()
 	end
 
 	if player.IsObjectiveCompleted(CaptureStarport) then
-		UserInterface.SetMissionText("Harvested resources: " .. player.Resources .. "/" .. SpiceToHarvest, player.Color)
+		if player.Resources ~= CachedResources then
+			local parameters = { ["harvested"] = player.Resources, ["goal"] = SpiceToHarvest }
+			local harvestedResources = UserInterface.Translate("harvested-resources", parameters)
+			UserInterface.SetMissionText(harvestedResources)
+			CachedResources = player.Resources
+		end
 	end
 
 	CheckHarvester(atreides_main)
@@ -147,13 +153,14 @@ WorldLoaded = function()
 	SpiceToHarvest = ToHarvest[Difficulty]
 
 	InitObjectives(player)
-	KillOrdos1 = atreides_main.AddPrimaryObjective("Kill all Ordos units.")
-	KillOrdos2 = atreides_small_1.AddPrimaryObjective("Kill all Ordos units.")
-	KillOrdos3 = atreides_small_2.AddPrimaryObjective("Kill all Ordos units.")
-	KillOrdos4 = atreides_small_3.AddPrimaryObjective("Kill all Ordos units.")
-	CaptureStarport = player.AddPrimaryObjective("Capture the Atreides Starport and establish a base.")
-	GatherSpice = player.AddPrimaryObjective("Harvest " .. tostring(SpiceToHarvest) .. " Solaris worth of Spice.")
-	KillAtreides = player.AddSecondaryObjective("Destroy the Atreides.")
+	KillOrdos1 = AddPrimaryObjective(atreides_main, "")
+	KillOrdos2 = AddPrimaryObjective(atreides_small_1, "")
+	KillOrdos3 = AddPrimaryObjective(atreides_small_2, "")
+	KillOrdos4 = AddPrimaryObjective(atreides_small_3, "")
+	CaptureStarport = AddPrimaryObjective(player, "capture-atreides-starport-establish-base")
+	local harvestSpice = UserInterface.Translate("harvest-spice", { ["spice"] = SpiceToHarvest })
+	GatherSpice = AddPrimaryObjective(player, harvestSpice)
+	KillAtreides = AddSecondaryObjective(player, "destroy-atreides")
 
 	Camera.Position = OEngi1.CenterPosition
 	AtreidesAttackLocation = OEngi1.Location

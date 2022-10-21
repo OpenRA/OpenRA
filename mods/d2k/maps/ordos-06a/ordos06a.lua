@@ -141,6 +141,7 @@ ContrabandTimes =
 	hard = DateTime.Minutes(7)
 }
 
+IxianReinforcementsHaveArrived = UserInterface.Translate("ixian-reinforcements-arrived")
 SendContraband = function()
 	Media.PlaySpeechNotification(player, "Reinforce")
 
@@ -150,7 +151,7 @@ SendContraband = function()
 			c = HSLColor.White
 		end
 
-		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText("Ixian reinforcements have arrived!", c) end)
+		Trigger.AfterDelay(DateTime.Seconds(i), function() UserInterface.SetMissionText(IxianReinforcementsHaveArrived, c) end)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(6), function()
 		TimerTicks = ContrabandTimes[Difficulty]
@@ -180,7 +181,7 @@ end
 
 Tick = function()
 	if not player.IsObjectiveCompleted(KillAtreides) and atreides.HasNoRequiredUnits() then
-		Media.DisplayMessage("The Atreides have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillAtreides)
 		DestroyCarryalls(atreides)
 
@@ -190,7 +191,7 @@ Tick = function()
 	end
 
 	if not player.IsObjectiveCompleted(KillHarkonnen) and harkonnen.HasNoRequiredUnits() then
-		Media.DisplayMessage("The Harkonnen have been annihilated!", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("harkonnen-annihilated"), Mentat)
 		player.MarkCompletedObjective(KillHarkonnen)
 		DestroyCarryalls(harkonnen)
 
@@ -204,18 +205,19 @@ Tick = function()
 
 		if TimerTicks == 0 then
 			if not FirstIxiansArrived then
-				Media.DisplayMessage("Deliveries beginning to arrive. Massive reinforcements expected!", "Mentat")
+				Media.DisplayMessage(UserInterface.Translate("deliveries-arriving-massive-reinforcements"), Mentat)
 			end
 
 			FirstIxiansArrived = true
 			SendContraband()
-		else
-			local text = "Initial"
+		elseif (TimerTicks % DateTime.Seconds(1)) == 0 then
+			local time = { ["time"] = Utils.FormatTime(TimerTicks) }
+			local reinforcementsText = UserInterface.Translate("initial-reinforcements-arrive-in", time)
 			if FirstIxiansArrived then
-				text = "Additional"
+				reinforcementsText = UserInterface.Translate("additional-reinforcements-arrive-in", time)
 			end
 
-			UserInterface.SetMissionText(text .. " reinforcements will arrive in " .. Utils.FormatTime(TimerTicks), player.Color)
+			UserInterface.SetMissionText(reinforcementsText, player.Color)
 		end
 	end
 
@@ -229,9 +231,9 @@ WorldLoaded = function()
 	player = Player.GetPlayer("Ordos")
 
 	InitObjectives(player)
-	GuardStarport = player.AddObjective("Defend the Starport.")
-	KillAtreides = player.AddObjective("Destroy the Atreides.")
-	KillHarkonnen = player.AddObjective("Destroy the Harkonnen.")
+	GuardStarport = AddPrimaryObjective(player, "defend-starport")
+	KillAtreides = AddPrimaryObjective(player, "destroy-atreides")
+	KillHarkonnen = AddPrimaryObjective(player, "destroy-harkonnen")
 
 	Camera.Position = OConyard.CenterPosition
 	EnemyAttackLocations = { OConyard.Location, OStarport.Location }
@@ -242,7 +244,8 @@ WorldLoaded = function()
 
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
 		TimerTicks = InitialContrabandTimes[Difficulty]
-		Media.DisplayMessage("The first batch of Ixian reinforcements will arrive in " .. Utils.FormatTime(TimerTicks) .. ".", "Mentat")
+		local time = { ["time"] = Utils.FormatTime(TimerTicks) }
+		Media.DisplayMessage(UserInterface.Translate("ixian-reinforcements-in", time), Mentat)
 	end)
 
 	Hunt(atreides)
@@ -257,7 +260,7 @@ WorldLoaded = function()
 		IdleHunt(unit)
 	end
 	local announcementFunction = function()
-		Media.DisplayMessage("Enemy reinforcements have arrived.", "Mentat")
+		Media.DisplayMessage(UserInterface.Translate("enemy-reinforcements-arrived"), Mentat)
 	end
 
 	SendCarryallReinforcements(atreides, 0, AtreidesAttackWaves[Difficulty], EnemyAttackDelay[Difficulty], atreidesPath, AtreidesReinforcements[Difficulty], atreidesCondition, huntFunction, announcementFunction)
