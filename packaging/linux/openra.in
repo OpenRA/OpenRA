@@ -11,7 +11,13 @@ if [ "${1#${PROTOCOL_PREFIX}}" != "${1}" ]; then
 fi
 
 # Run the game
-mono {DEBUG} OpenRA.dll Game.Mod={MODID} Engine.LaunchPath="{BIN_DIR}/openra-{MODID}" "${JOIN_SERVER}" "$@" && rc=0 || rc=$?
+if test -f "OpenRA"; then
+	./OpenRA Game.Mod={MODID} Engine.LaunchPath="{BIN_DIR}/openra-{MODID}" "${JOIN_SERVER}" "$@" && rc=0 || rc=$?
+elif command -v mono >/dev/null 2>&1 && [ "$(grep -c .NETCoreApp,Version= OpenRA.dll)" = "0" ]; then
+	mono {DEBUG} OpenRA.dll Game.Mod={MODID} Engine.LaunchPath="{BIN_DIR}/openra-{MODID}" "${JOIN_SERVER}" "$@" && rc=0 || rc=$?
+else
+	dotnet OpenRA.dll Game.Mod={MODID} Engine.LaunchPath="{BIN_DIR}/openra-{MODID}" "${JOIN_SERVER}" "$@" && rc=0 || rc=$?
+fi
 
 # Show a crash dialog if something went wrong
 if [ "${rc}" != 0 ] && [ "${rc}" != 1 ]; then
