@@ -3,4 +3,10 @@ set -o errexit || exit $?
 
 cd "{GAME_INSTALL_DIR}"
 
-mono {DEBUG} OpenRA.Server.dll Game.Mod={MODID} "$@"
+if test -f "OpenRA.Server"; then
+	./OpenRA.Server Game.Mod={MODID} "$@"
+elif command -v mono >/dev/null 2>&1 && [ "$(grep -c .NETCoreApp,Version= OpenRA.Server.dll)" = "0" ]; then
+	mono {DEBUG} OpenRA.Server.dll Game.Mod={MODID} "$@"
+else
+	dotnet OpenRA.Server.dll Game.Mod={MODID} "$@"
+fi
