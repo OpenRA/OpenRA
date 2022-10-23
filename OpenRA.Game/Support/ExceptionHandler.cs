@@ -26,6 +26,9 @@ namespace OpenRA
 			if (Game.EngineVersion != null)
 				Log.Write("exception", $"OpenRA engine version {Game.EngineVersion}");
 
+			if (Game.Settings != null && Game.Settings.Player != null && Game.Settings.Player.Language != null)
+				Log.Write("exception", $"OpenRA Language: {Game.Settings.Player.Language}");
+
 			if (Game.ModData != null)
 			{
 				var mod = Game.ModData.Manifest.Metadata;
@@ -41,6 +44,8 @@ namespace OpenRA
 			Log.Write("exception", $"Date: {DateTime.UtcNow:u}");
 			Log.Write("exception", $"Operating System: {Platform.CurrentPlatform} ({Environment.OSVersion})");
 			Log.Write("exception", $"Runtime Version: {Platform.RuntimeVersion}", Platform.RuntimeVersion);
+			Log.Write("exception", $"Installed Language: {CultureInfo.InstalledUICulture.TwoLetterISOLanguageName} (Installed) {CultureInfo.CurrentCulture.TwoLetterISOLanguageName} (Current) {CultureInfo.CurrentUICulture.TwoLetterISOLanguageName} (Current UI)");
+
 			var rpt = BuildExceptionReport(ex).ToString();
 			Log.Write("exception", rpt);
 			Console.Error.WriteLine(rpt);
