@@ -1,3 +1,11 @@
+## MapOptions, MissionBrowserLogic
+slowest = Slowest
+slower = Slower
+normal = Normal
+fast = Fast
+faster = Faster
+fastest = Fastest
+
 ## Server Orders
 custom-rules = This map contains custom rules. Game experience may change.
 map-bots-disabled = Bots have been disabled on this map.
