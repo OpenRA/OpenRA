@@ -49,7 +49,7 @@ namespace OpenRA.Server
 		public readonly MersenneTwister Random = new MersenneTwister();
 		public readonly ServerType Type;
 
-		public List<Connection> Conns = new List<Connection>();
+		public readonly List<Connection> Conns = new List<Connection>();
 
 		public Session LobbyInfo;
 		public ServerSettings Settings;
@@ -391,6 +391,10 @@ namespace OpenRA.Server
 
 				foreach (var t in serverTraits.WithInterface<INotifyServerShutdown>())
 					t.ServerShutdown(this);
+
+				// Make sure to immediately close connections after the server is shutdown, we don't want to keep clients waiting
+				foreach (var c in Conns)
+					c.Dispose();
 
 				Conns.Clear();
 			})
