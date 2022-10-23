@@ -288,27 +288,27 @@ GameSpeeds:
 	DefaultSpeed: default
 	Speeds:
 		slowest:
-			Name: Slowest
+			Name: slowest
 			Timestep: 80
 			OrderLatency: 2
 		slower:
-			Name: Slower
+			Name: slower
 			Timestep: 50
 			OrderLatency: 3
 		default:
-			Name: Normal
+			Name: normal
 			Timestep: 40
 			OrderLatency: 3
 		fast:
-			Name: Fast
+			Name: fast
 			Timestep: 35
 			OrderLatency: 4
 		faster:
-			Name: Faster
+			Name: faster
 			Timestep: 30
 			OrderLatency: 4
 		fastest:
-			Name: Fastest
+			Name: fastest
 			Timestep: 20
 			OrderLatency: 6
 
