@@ -740,3 +740,128 @@ dropland:
 		ZRamp: 1
 		Offset: 0, 0, 1
 		BlendMode: Translucent
+
+casing:
+	Defaults:
+		ZOffset: 1023
+		Length: 10
+		Tick: 25
+	1:
+		Start: 10
+	2
+		Start: 20
+	3:
+		Start: 30
+	4:
+		Start: 40
+	5:
+		Start: 50
+	6:
+		Start: 60
+	7:
+		Start: 70
+	8:
+		Start: 80
+	9:
+		Start: 90
+	10:
+		Start: 100
+	11:
+		Start: 110
+	12:
+		Start: 120
+	13:
+		Start: 130
+	14:
+		Start: 140
+	15:
+		Start: 150
+
+shellcasing:
+	Inherits: casing
+
+casingscorch:
+	casingscorch: casing
+		Tick: 1200
+		Start: 10
+		Length: 1
+		ZOffset: -540
+		IgnoreWorldTint: false
+	casingscorch2: casing
+		Tick: 1200
+		Start: 12
+		Length: 1
+		ZOffset: -540
+		IgnoreWorldTint: false
+	casingscorch3: casing
+		Tick: 1200
+		Length: 1
+		Start: 16
+		ZOffset: -540
+		IgnoreWorldTint: false
+	casingscorch4: casing
+		Tick: 1200
+		Start: 18
+		Length: 1
+		ZOffset: -540
+		IgnoreWorldTint: false
+	casingscorch5: casing
+		Tick: 1200
+		Start: 21
+		Length: 1
+		ZOffset: -540
+		IgnoreWorldTint: false
+	casingscorch6: casing
+		Tick: 1200
+		Start: 26
+		Length: 1
+		ZOffset: -540
+		IgnoreWorldTint: false
+	casingscorch7: casing
+		Tick: 1200
+		Start: 27
+		Length: 1
+		ZOffset: -540
+		IgnoreWorldTint: false
+	shellcasingscorch: shellcasing
+		Tick: 1200
+		Start: 10
+		Length: 1
+		ZOffset: -540
+		IgnoreWorldTint: false
+	shellcasingscorch2: shellcasing
+		Tick: 1200
+		Start: 12
+		Length: 1
+		ZOffset: -540
+		IgnoreWorldTint: false
+	shellcasingscorch3: shellcasing
+		Tick: 1200
+		Length: 1
+		Start: 16
+		ZOffset: -540
+		IgnoreWorldTint: false
+	shellcasingscorch4: shellcasing
+		Tick: 1200
+		Start: 18
+		Length: 1
+		ZOffset: -540
+		IgnoreWorldTint: false
+	shellcasingscorch5: shellcasing
+		Tick: 1200
+		Start: 21
+		Length: 1
+		ZOffset: -540
+		IgnoreWorldTint: false
+	shellcasingscorch6: shellcasing
+		Tick: 1200
+		Start: 26
+		Length: 1
+		ZOffset: -540
+		IgnoreWorldTint: false
+	shellcasingscorch7: shellcasing
+		Tick: 1200
+		Start: 27
+		Length: 1
+		ZOffset: -540
+		IgnoreWorldTint: false

@@ -65,3 +65,39 @@ Demolish:
 DropPodExplode:
 	Warhead@1Eff: CreateEffect
 		Explosions: droppod_explosion, droppod2_explosion, droppody_explosion, droppody2_explosion
+
+CasingDebris:
+	ReloadDelay: 60
+	Range: 0c1
+	ValidTargets: Infantry, Vehicle, Building, Wall, Ground, Water, Air
+	Projectile: Bullet
+		Speed: 150
+		Inaccuracy: 0c256
+		InaccuracyType: Absolute
+		LaunchAngle: 164
+		Image: casing
+		Sequences: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+		Shadow: true
+	Warhead@: CreateEffect
+		Image: casingscorch
+		Explosions: casingscorch, casingscorch2, casingscorch3, casingscorch4, casingscorch5, casingscorch6, casingscorch7
+		ExplosionPalette: effect
+		ValidTargets: Infantry, Vehicle, Building, Wall, Ground, Air
+		InvalidTargets: Water
+	Warhead@3EffWater: CreateEffect
+		Explosions: water_piffs
+		ExplosionPalette: ra
+		ValidTargets: Water
+		InvalidTargets: Infantry, Vehicle, Building, Wall, Ground, Air
+
+ShellCasingDebris:
+	Inherits: CasingDebris
+	MinRange: 0c512
+	Range: 1c764
+	Projectile: Bullet
+		Speed: 100
+		Inaccuracy: 128
+		LaunchAngle: 164
+		Image: shellcasing
+	Warhead@: CreateEffect
+		Explosions: shellcasingscorch, shellcasingscorch2, shellcasingscorch3, shellcasingscorch4, shellcasingscorch5, shellcasingscorch6, shellcasingscorch7

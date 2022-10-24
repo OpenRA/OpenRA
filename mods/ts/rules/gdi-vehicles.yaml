@@ -209,6 +209,9 @@ MMCH:
 		Recoil: 128
 		RecoilRecovery: 32
 		LocalOffset: 1024,272,1216
+		CasingWeapon: ShellCasingDebris
+		CasingSpawnLocalOffset: 512,272,1216
+		CasingTargetOffset: 0, 1024, 0
 	DetectCloaked:
 		Range: 1c768
 		RequiresCondition: rank-elite

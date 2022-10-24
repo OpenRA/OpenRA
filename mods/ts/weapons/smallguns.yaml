@@ -93,7 +93,7 @@ RaiderCannon:
 
 HarpyClaw:
 	Inherits: ^MG
-	ReloadDelay: 36
+	ReloadDelay: 18
 	Range: 5c0
 	Report: cygun1.aud
 	Warhead@1Dam: SpreadDamage

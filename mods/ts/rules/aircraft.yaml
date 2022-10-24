@@ -439,6 +439,10 @@ APACHE:
 		Type: CenterPosition
 	Armament:
 		Weapon: HarpyClaw
+		LocalOffset: 900,-100,0, 900,100,0
+		CasingWeapon: CasingDebris
+		CasingSpawnLocalOffset: 900,-100,0, 900,100,0
+		CasingTargetOffset: 400, 512, 0, 400, -512, 0
 		PauseOnCondition: !ammo
 	AttackAircraft:
 		FacingTolerance: 80
