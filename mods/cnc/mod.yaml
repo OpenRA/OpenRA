@@ -217,7 +217,7 @@ Fonts:
 		Ascender: 24
 
 Missions:
-	./mods/cnc/missions.yaml
+	cnc|missions.yaml
 
 MapGrid:
 	TileSize: 24,24
