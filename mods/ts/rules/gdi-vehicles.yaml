@@ -209,6 +209,11 @@ MMCH:
 		Recoil: 128
 		RecoilRecovery: 32
 		LocalOffset: 1024,272,1216
+	ThrowsCasing:
+		Weapon: ShellCasingDebris
+		LocalOffset: 512,272,1216
+		TargetOffset: 0, 1024, 0
+		Turret: primary
 	DetectCloaked:
 		Range: 1c768
 		RequiresCondition: rank-elite
