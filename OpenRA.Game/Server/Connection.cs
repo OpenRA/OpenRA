@@ -21,7 +21,7 @@ using System.Threading;
 
 namespace OpenRA.Server
 {
-	public class Connection : IDisposable
+	public sealed class Connection : IDisposable
 	{
 		public const int MaxOrderLength = 131072;
 
