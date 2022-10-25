@@ -16,6 +16,7 @@ using System.Linq;
 using System.Reflection;
 using Linguini.Syntax.Ast;
 using Linguini.Syntax.Parser;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
@@ -27,10 +28,35 @@ namespace OpenRA.Mods.Common.Lint
 		readonly Dictionary<string, string[]> referencedVariablesPerKey = new Dictionary<string, string[]>();
 		readonly List<string> variableReferences = new List<string>();
 
-		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
+		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{
+			// TODO: Check all available languages
 			var language = "en";
+			Console.WriteLine($"Testing translation: {language}");
 			var translation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem);
+
+			foreach (var actorInfo in modData.DefaultRules.Actors)
+			{
+				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
+				{
+					var fields = traitInfo.GetType().GetFields();
+					foreach (var field in fields)
+					{
+						var translationReference = field.GetCustomAttributes<TranslationReferenceAttribute>(true).FirstOrDefault();
+						if (translationReference == null)
+							continue;
+
+						var keys = LintExts.GetFieldValues(traitInfo, field);
+						foreach (var key in keys)
+						{
+							if (!translation.HasMessage(key))
+								emitError($"{key} not present in {language} translation.");
+
+							referencedKeys.Add(key);
+						}
+					}
+				}
+			}
 
 			foreach (var modType in modData.ObjectCreator.GetTypes())
 			{
@@ -38,6 +64,9 @@ namespace OpenRA.Mods.Common.Lint
 				{
 					if (fieldInfo.FieldType != typeof(string))
 						emitError($"Translation attribute on non string field {fieldInfo.Name}.");
+
+					if (fieldInfo.IsInitOnly)
+						continue;
 
 					var key = (string)fieldInfo.GetValue(string.Empty);
 					if (!translation.HasMessage(key))
