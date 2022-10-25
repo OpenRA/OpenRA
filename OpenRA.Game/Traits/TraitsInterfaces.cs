@@ -540,8 +540,8 @@ namespace OpenRA.Traits
 			IReadOnlyDictionary<string, string> values, string defaultValue, bool locked)
 		{
 			Id = id;
-			Name = name;
-			Description = description;
+			Name = Game.ModData.Translation.GetString(name);
+			Description = Game.ModData.Translation.GetString(description);
 			IsVisible = visible;
 			DisplayOrder = displayorder;
 			Values = values;

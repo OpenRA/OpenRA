@@ -307,12 +307,12 @@ World:
 	CreateMapPlayers:
 	StartingUnits@MCV:
 		Class: none
-		ClassName: MCV Only
+		ClassName: mcv-only
 		Factions: gdi, nod
 		BaseActor: mcv
 	StartingUnits@light.gdi:
 		Class: light
-		ClassName: Light
+		ClassName: light
 		Factions: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,smech
@@ -320,7 +320,7 @@ World:
 		OuterSupportRadius: 5
 	StartingUnits@light.nod:
 		Class: light
-		ClassName: Light
+		ClassName: light
 		Factions: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,bggy
@@ -328,7 +328,7 @@ World:
 		OuterSupportRadius: 5
 	StartingUnits@med.gdi:
 		Class: medium
-		ClassName: Medium
+		ClassName: medium
 		Factions: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e2,e2,jumpjet,smech
@@ -336,7 +336,7 @@ World:
 		OuterSupportRadius: 5
 	StartingUnits@med.nod:
 		Class: medium
-		ClassName: Medium
+		ClassName: medium
 		Factions: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e3,e3,cyborg,bggy
@@ -344,7 +344,7 @@ World:
 		OuterSupportRadius: 5
 	StartingUnits@heavy.gdi:
 		Class: heavy
-		ClassName: Heavy
+		ClassName: heavy
 		Factions: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e2,e2,jumpjet,smech,smech,mmch
@@ -352,7 +352,7 @@ World:
 		OuterSupportRadius: 5
 	StartingUnits@heavy.nod:
 		Class: heavy
-		ClassName: Heavy
+		ClassName: heavy
 		Factions: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e3,e3,cyborg,bggy,bike,ttnk

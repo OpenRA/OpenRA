@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Internal class ID.")]
 		public readonly string Class = "none";
 
+		[TranslationReference]
 		[Desc("Exposed via the UI to the player.")]
 		public readonly string ClassName = "Unlabeled";
 

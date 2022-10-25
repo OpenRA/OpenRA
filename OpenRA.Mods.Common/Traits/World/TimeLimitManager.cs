@@ -21,11 +21,13 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This trait allows setting a time limit on matches. Attach this to the World actor.")]
 	public class TimeLimitManagerInfo : TraitInfo, ILobbyOptions, IRulesetLoaded
 	{
+		[TranslationReference]
 		[Desc("Label that will be shown for the time limit option in the lobby.")]
-		public readonly string TimeLimitLabel = "Time Limit";
+		public readonly string TimeLimitLabel = "time-limit.label";
 
+		[TranslationReference]
 		[Desc("Tooltip description that will be shown for the time limit option in the lobby.")]
-		public readonly string TimeLimitDescription = "Player or team with the highest score after this time wins";
+		public readonly string TimeLimitDescription = "time-limit.description";
 
 		[Desc("Time Limit options that will be shown in the lobby dropdown. Values are in minutes.")]
 		public readonly int[] TimeLimitOptions = { 0, 10, 20, 30, 40, 60, 90 };
@@ -74,14 +76,20 @@ namespace OpenRA.Mods.Common.Traits
 				throw new YamlException("TimeLimitDefault must be a value from TimeLimitOptions");
 		}
 
+		[TranslationReference]
+		const string NoTimeLimit = "no-time-limit";
+
+		[TranslationReference("minutes")]
+		const string TimeLimitOption = "time-limit-options";
+
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
-			var timelimits = TimeLimitOptions.ToDictionary(c => c.ToString(), c =>
+			var timelimits = TimeLimitOptions.ToDictionary(m => m.ToString(), m =>
 			{
-				if (c == 0)
-					return "No limit";
+				if (m == 0)
+					return Game.ModData.Translation.GetString(NoTimeLimit);
 				else
-					return c.ToString() + $" minute{(c > 1 ? "s" : null)}";
+					return Game.ModData.Translation.GetString(TimeLimitOption, Translation.Arguments("minutes", m));
 			});
 
 			yield return new LobbyOption("timelimit", TimeLimitLabel, TimeLimitDescription, TimeLimitDropdownVisible, TimeLimitDisplayOrder,
@@ -93,6 +101,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class TimeLimitManager : INotifyTimeLimit, ITick, IWorldLoaded
 	{
+		[TranslationReference]
+		const string TimeLimitExpired = "time-limit-expired";
+
 		readonly TimeLimitManagerInfo info;
 		readonly int ticksPerSecond;
 		LabelWidget countdownLabel;
@@ -170,7 +181,7 @@ namespace OpenRA.Mods.Common.Traits
 				countdownLabel.GetText = () => null;
 
 			if (!info.SkipTimerExpiredNotification)
-				TextNotificationsManager.AddSystemLine("Time limit has expired.");
+				TextNotificationsManager.AddSystemLine(Game.ModData.Translation.GetString(TimeLimitExpired));
 		}
 	}
 }
