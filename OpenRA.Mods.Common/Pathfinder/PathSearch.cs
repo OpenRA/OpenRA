@@ -76,11 +76,17 @@ namespace OpenRA.Mods.Common.Pathfinder
 			return search;
 		}
 
+		public static bool CellAllowsMovement(World world, Locomotor locomotor, CPos cell, Func<CPos, int> customCost)
+		{
+			return world.Map.Contains(cell) &&
+				(cell.Layer == 0 || world.GetCustomMovementLayers()[cell.Layer].EnabledForLocomotor(locomotor.Info)) &&
+				(customCost == null || customCost(cell) != PathGraph.PathCostForInvalidPath);
+		}
+
 		static void AddInitialCells(World world, Locomotor locomotor, IEnumerable<CPos> froms, Func<CPos, int> customCost, PathSearch search)
 		{
-			var customMovementLayers = world.GetCustomMovementLayers();
 			foreach (var sl in froms)
-				if (world.Map.Contains(sl) && (sl.Layer == 0 || customMovementLayers[sl.Layer].EnabledForLocomotor(locomotor.Info)))
+				if (CellAllowsMovement(world, locomotor, sl, customCost))
 					search.AddInitialCell(sl, customCost);
 		}
 
