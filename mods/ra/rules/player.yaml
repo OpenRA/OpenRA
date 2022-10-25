@@ -125,22 +125,22 @@ Player:
 		FogCheckboxDisplayOrder: 3
 	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
 		ID: bounty
-		Label: Kill Bounties
-		Description: Players receive cash bonuses when killing enemy units
+		Label: kill-bounties.label
+		Description: kill-bounties.description
 		Enabled: False
 		DisplayOrder: 8
 		Prerequisites: global-bounty
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		ID: factundeploy
-		Label: Redeployable MCVs
-		Description: Allow undeploying Construction Yard
+		Label: redeployable-mcvs.label
+		Description: redeployable-mcvs.description
 		Enabled: True
 		DisplayOrder: 7
 		Prerequisites: global-factundeploy
 	LobbyPrerequisiteCheckbox@REUSABLEENGINEERS:
 		ID: reusable-engineers
-		Label: Reusable Engineers
-		Description: Engineers remain on the battlefield after capturing a structure
+		Label: reusable-engineers.label
+		Description: reusable-engineers.description
 		Enabled: False
 		DisplayOrder: 9
 		Prerequisites: global-reusable-engineers
@@ -151,23 +151,23 @@ Player:
 	PlayerStatistics:
 	PlaceBeacon:
 	ProvidesTechPrerequisite@infonly:
-		Name: Infantry Only
+		Name: infantry-only
 		Prerequisites: techlevel.infonly
 		Id: infantryonly
 	ProvidesTechPrerequisite@low:
-		Name: Low
+		Name: low
 		Prerequisites: techlevel.infonly, techlevel.low
 		Id: low
 	ProvidesTechPrerequisite@medium:
-		Name: Medium
+		Name: medium
 		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium
 		Id: medium
 	ProvidesTechPrerequisite@high:
-		Name: No Superweapons
+		Name: no-superweapons
 		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium, techlevel.high
 		Id: nosuperweapons
 	ProvidesTechPrerequisite@unrestricted:
-		Name: Unrestricted
+		Name: unrestricted
 		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium, techlevel.high, techlevel.unrestricted
 		Id: unrestricted
 	GrantConditionOnPrerequisiteManager:

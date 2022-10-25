@@ -144,6 +144,7 @@ ChromeLayout:
 
 Translations:
 	common|languages/en.ftl
+	cnc|languages/rules/en.ftl
 
 Voices:
 	cnc|audio/voices.yaml

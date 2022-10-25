@@ -126,8 +126,8 @@ Player:
 		FogCheckboxDisplayOrder: 3
 	LobbyPrerequisiteCheckbox@AUTOCONCRETE:
 		ID: autoconcrete
-		Label: Automatic Concrete
-		Description: Concrete foundations are automatically created beneath buildings
+		Label: automatic-concrete.label
+		Description: automatic-concrete.description
 		Enabled: False
 		DisplayOrder: 7
 		Prerequisites: global-auto-concrete
@@ -158,19 +158,19 @@ Player:
 		Prerequisite: player.smuggler
 		Factions: smuggler
 	ProvidesTechPrerequisite@low:
-		Name: Low
+		Name: low
 		Prerequisites: techlevel.low
 		Id: low
 	ProvidesTechPrerequisite@medium:
-		Name: Medium
+		Name: medium
 		Prerequisites: techlevel.low, techlevel.medium
 		Id: medium
 	ProvidesTechPrerequisite@nosuper:
-		Name: No Powers
+		Name: no-powers
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high
 		Id: nopowers
 	ProvidesTechPrerequisite@all:
-		Name: Unrestricted
+		Name: unrestricted
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high, techlevel.superweapons
 		Id: unrestricted
 	EnemyWatcher:

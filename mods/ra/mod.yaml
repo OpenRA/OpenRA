@@ -140,6 +140,7 @@ ChromeLayout:
 
 Translations:
 	common|languages/en.ftl
+	ra|languages/rules/en.ftl
 
 Weapons:
 	ra|weapons/explosions.yaml

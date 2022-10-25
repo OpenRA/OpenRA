@@ -124,6 +124,7 @@ ChromeLayout:
 
 Translations:
 	common|languages/en.ftl
+	d2k|languages/rules/en.ftl
 
 Weapons:
 	d2k|weapons/debris.yaml

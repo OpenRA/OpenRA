@@ -24,11 +24,13 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly string StartingUnitsClass = "none";
 
+		[TranslationReference]
 		[Desc("Descriptive label for the starting units option in the lobby.")]
-		public readonly string DropdownLabel = "Starting Units";
+		public readonly string DropdownLabel = "starting-units.label";
 
+		[TranslationReference]
 		[Desc("Tooltip description for the starting units option in the lobby.")]
-		public readonly string DropdownDescription = "The units that players start the game with";
+		public readonly string DropdownDescription = "starting-units.description";
 
 		[Desc("Prevent the starting units option from being changed in the lobby.")]
 		public readonly bool DropdownLocked = false;
@@ -45,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Duplicate classes are defined for different race variants
 			foreach (var t in map.WorldActorInfo.TraitInfos<StartingUnitsInfo>())
-				startingUnits[t.Class] = t.ClassName;
+				startingUnits[t.Class] = Game.ModData.Translation.GetString(t.ClassName);
 
 			if (startingUnits.Count > 0)
 				yield return new LobbyOption("startingunits", DropdownLabel, DropdownDescription, DropdownVisible, DropdownDisplayOrder,

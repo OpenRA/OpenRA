@@ -42,15 +42,15 @@ Player:
 		FogCheckboxDisplayOrder: 3
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		ID: factundeploy
-		Label: Redeployable MCVs
-		Description: Allow undeploying Construction Yard
+		Label: redeployable-mcvs.label
+		Description: redeployable-mcvs.description
 		Enabled: True
 		DisplayOrder: 7
 		Prerequisites: global-factundeploy
 	LobbyPrerequisiteCheckbox@GLOBALC17STEALTH:
 		ID: C17-Stealth
-		Label: Stealth Deliveries
-		Description: Nod's delivery plane is cloaked
+		Label: stealth-deliveries.label
+		Description: stealth-deliveries.description
 		Enabled: False
 		DisplayOrder: 8
 		Prerequisites: global-C17-stealth
@@ -58,19 +58,19 @@ Player:
 	FrozenActorLayer:
 	PlaceBeacon:
 	ProvidesTechPrerequisite@low:
-		Name: Low
+		Name: low
 		Prerequisites: techlevel.low
 		Id: low
 	ProvidesTechPrerequisite@medium:
-		Name: Medium
+		Name: medium
 		Prerequisites: techlevel.low, techlevel.medium
 		Id: medium
 	ProvidesTechPrerequisite@nosuper:
-		Name: No Powers
+		Name: no-powers
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high
 		Id: nopowers
 	ProvidesTechPrerequisite@all:
-		Name: Unrestricted
+		Name: unrestricted
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high, techlevel.superweapons
 		Id: unrestricted
 	GrantConditionOnPrerequisiteManager:

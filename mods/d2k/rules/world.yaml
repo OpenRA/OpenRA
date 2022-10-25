@@ -157,8 +157,8 @@ World:
 		Type: SandCrater
 		Sequence: sandcraters
 	MapCreeps:
-		CheckboxLabel: Worms
-		CheckboxDescription: Worms roam the map and devour unprepared forces
+		CheckboxLabel: map-worms.label
+		CheckboxDescription: map-worms.description
 		CheckboxDisplayOrder: 5
 	SpawnMapActors:
 	MapBuildRadius:
@@ -173,12 +173,12 @@ World:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
 	StartingUnits@mcv:
 		Class: none
-		ClassName: MCV Only
+		ClassName: mcv-only
 		BaseActor: mcv
 		Factions: atreides, ordos, harkonnen
 	StartingUnits@lightatreides:
 		Class: light
-		ClassName: Light Support
+		ClassName: light-support
 		Factions: atreides
 		BaseActor: mcv
 		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, quad
@@ -186,7 +186,7 @@ World:
 		OuterSupportRadius: 5
 	StartingUnits@lightharkonnen:
 		Class: light
-		ClassName: Light Support
+		ClassName: light-support
 		Factions: harkonnen
 		BaseActor: mcv
 		SupportActors: light_inf, light_inf, light_inf, trooper, trooper, trike, quad
@@ -194,7 +194,7 @@ World:
 		OuterSupportRadius: 5
 	StartingUnits@lightordos:
 		Class: light
-		ClassName: Light Support
+		ClassName: light-support
 		Factions: ordos
 		BaseActor: mcv
 		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, quad
@@ -202,7 +202,7 @@ World:
 		OuterSupportRadius: 5
 	StartingUnits@heavyatreides:
 		Class: heavy
-		ClassName: Heavy Support
+		ClassName: heavy-support
 		Factions: atreides
 		BaseActor: mcv
 		SupportActors: light_inf, light_inf, light_inf, trooper, grenadier, trike, combat_tank_a, missile_tank
@@ -210,7 +210,7 @@ World:
 		OuterSupportRadius: 5
 	StartingUnits@heavyharkonnen:
 		Class: heavy
-		ClassName: Heavy Support
+		ClassName: heavy-support
 		Factions: harkonnen
 		BaseActor: mcv
 		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, quad, combat_tank_h, siege_tank
@@ -218,7 +218,7 @@ World:
 		OuterSupportRadius: 5
 	StartingUnits@heavyordos:
 		Class: heavy
-		ClassName: Heavy Support
+		ClassName: heavy-support
 		Factions: ordos
 		BaseActor: mcv
 		SupportActors: light_inf, light_inf, light_inf, trooper, engineer, raider, combat_tank_o, missile_tank

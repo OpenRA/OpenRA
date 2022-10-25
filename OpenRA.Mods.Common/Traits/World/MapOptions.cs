@@ -19,11 +19,13 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Controls the game speed, tech level, and short game lobby options.")]
 	public class MapOptionsInfo : TraitInfo, ILobbyOptions, IRulesetLoaded
 	{
+		[TranslationReference]
 		[Desc("Descriptive label for the short game checkbox in the lobby.")]
-		public readonly string ShortGameCheckboxLabel = "Short Game";
+		public readonly string ShortGameCheckboxLabel = "short-game.label";
 
+		[TranslationReference]
 		[Desc("Tooltip description for the short game checkbox in the lobby.")]
-		public readonly string ShortGameCheckboxDescription = "Players are defeated when their bases are destroyed";
+		public readonly string ShortGameCheckboxDescription = "short-game.description";
 
 		[Desc("Default value of the short game checkbox in the lobby.")]
 		public readonly bool ShortGameCheckboxEnabled = true;
@@ -37,11 +39,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the short game checkbox in the lobby.")]
 		public readonly int ShortGameCheckboxDisplayOrder = 0;
 
+		[TranslationReference]
 		[Desc("Descriptive label for the tech level option in the lobby.")]
-		public readonly string TechLevelDropdownLabel = "Tech Level";
+		public readonly string TechLevelDropdownLabel = "tech-level.label";
 
+		[TranslationReference]
 		[Desc("Tooltip description for the tech level option in the lobby.")]
-		public readonly string TechLevelDropdownDescription = "The units and abilities that players can use";
+		public readonly string TechLevelDropdownDescription = "tech-level.description";
 
 		[Desc("Default tech level.")]
 		public readonly string TechLevel = "unrestricted";
@@ -55,11 +59,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the tech level option in the lobby.")]
 		public readonly int TechLevelDropdownDisplayOrder = 0;
 
+		[TranslationReference]
 		[Desc("Tooltip description for the game speed option in the lobby.")]
-		public readonly string GameSpeedDropdownLabel = "Game Speed";
+		public readonly string GameSpeedDropdownLabel = "game-speed.label";
 
+		[TranslationReference]
 		[Desc("Description of the game speed option in the lobby.")]
-		public readonly string GameSpeedDropdownDescription = "The rate at which time passes";
+		public readonly string GameSpeedDropdownDescription = "game-speed.description";
 
 		[Desc("Default game speed (leave empty to use the default defined in mod.yaml).")]
 		public readonly string GameSpeed = null;
@@ -79,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 				ShortGameCheckboxVisible, ShortGameCheckboxDisplayOrder, ShortGameCheckboxEnabled, ShortGameCheckboxLocked);
 
 			var techLevels = map.PlayerActorInfo.TraitInfos<ProvidesTechPrerequisiteInfo>()
-				.ToDictionary(t => t.Id, t => t.Name);
+				.ToDictionary(t => t.Id, t => Game.ModData.Translation.GetString(t.Name));
 
 			if (techLevels.Count > 0)
 				yield return new LobbyOption("techlevel", TechLevelDropdownLabel, TechLevelDropdownDescription,	TechLevelDropdownVisible, TechLevelDropdownDisplayOrder,
