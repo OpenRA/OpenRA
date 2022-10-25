@@ -101,7 +101,7 @@ namespace OpenRA
 					foreach (var (k, v) in arguments)
 						fluentArguments.Add(k, v.ToFluentType());
 
-				var result = bundle.TryGetAttrMsg(key, fluentArguments, out var errors, out value);
+				var result = bundle.TryGetAttrMessage(key, fluentArguments, out var errors, out value);
 				foreach (var error in errors)
 					Log.Write("debug", $"Translation of {key}: {error}");
 
@@ -118,7 +118,7 @@ namespace OpenRA
 
 		public bool HasMessage(string key)
 		{
-			return bundle.HasMessage(key);
+			return bundle.HasAttrMessage(key);
 		}
 
 		// Adapted from Fluent.Net.SimpleExample.TranslationService by Mark Weaver

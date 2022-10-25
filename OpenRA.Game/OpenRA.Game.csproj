@@ -7,7 +7,7 @@
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Linguini.Bundle" Version="0.3.1" />
+    <PackageReference Include="Linguini.Bundle" Version="0.3.2" />
     <PackageReference Include="OpenRA-Eluant" Version="1.0.18" />
     <PackageReference Include="Mono.NAT" Version="3.0.3" />
     <PackageReference Include="SharpZipLib" Version="1.3.3" />

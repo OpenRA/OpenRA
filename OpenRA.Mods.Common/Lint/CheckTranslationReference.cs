@@ -62,54 +62,31 @@ namespace OpenRA.Mods.Common.Lint
 					foreach (var entry in result.Entries)
 					{
 						// Don't flag definitions referenced (only) within the .ftl definitions as unused
-						var isReusableTerm = entry.GetType() == typeof(AstTerm);
-						var key = entry.GetId();
-						if (!referencedKeys.Contains(key) && !isReusableTerm)
-							emitWarning($"Unused key `{key}` in {file}.");
+						if (entry.GetType() == typeof(AstTerm))
+							continue;
 
 						variableReferences.Clear();
+						var key = entry.GetId();
+
 						if (entry is AstMessage message)
 						{
-							var node = message.Value;
-							foreach (var element in node.Elements)
-							{
-								if (element is Placeable placeable)
-								{
-									var expression = placeable.Expression;
-									if (expression is IInlineExpression inlineExpression)
-									{
-										if (inlineExpression is VariableReference variableReference)
-											CheckVariableReference(variableReference.Id.Name.ToString(), entry, emitWarning, file);
-									}
+							var hasAttributes = message.Attributes.Count > 0;
 
-									if (expression is SelectExpression selectExpression)
-									{
-										foreach (var variant in selectExpression.Variants)
-										{
-											foreach (var variantElement in variant.Value.Elements)
-											{
-												if (variantElement is Placeable variantPlaceable)
-												{
-													var variantExpression = variantPlaceable.Expression;
-													if (variantExpression is IInlineExpression variantInlineExpression)
-													{
-														if (variantInlineExpression is VariableReference variantVariableReference)
-															CheckVariableReference(variantVariableReference.Id.Name.ToString(), entry, emitWarning, file);
-													}
-												}
-											}
-										}
-									}
-								}
+							if (!hasAttributes)
+							{
+								CheckUnusedKey(key, null, emitWarning, file);
+								CheckMessageValue(message.Value, key, null, emitWarning, file);
+								CheckMissingVariable(key, null, emitError, file);
 							}
-
-							if (referencedVariablesPerKey.ContainsKey(entry.GetId()))
+							else
 							{
-								var referencedVariables = referencedVariablesPerKey[entry.GetId()];
-								foreach (var referencedVariable in referencedVariables)
+								foreach (var attribute in message.Attributes)
 								{
-									if (!variableReferences.Contains(referencedVariable))
-										emitError($"Missing variable `{referencedVariable}` for key `{entry.GetId()}` in {file}.");
+									var attrName = attribute.Id.Name.ToString();
+
+									CheckUnusedKey(key, attrName, emitWarning, file);
+									CheckMessageValue(attribute.Value, key, attrName, emitWarning, file);
+									CheckMissingVariable(key, attrName, emitError, file);
 								}
 							}
 						}
@@ -118,18 +95,74 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		void CheckVariableReference(string element, IEntry entry, Action<string> emitWarning, string file)
+		void CheckUnusedKey(string key, string attribute, Action<string> emitWarning, string file)
 		{
-			variableReferences.Add(element);
+			var isAttribute = !string.IsNullOrEmpty(attribute);
+			var keyWithAtrr = isAttribute ? $"{key}.{attribute}" : key;
 
-			if (referencedVariablesPerKey.ContainsKey(entry.GetId()))
+			if (!referencedKeys.Contains(keyWithAtrr))
+				emitWarning(isAttribute ?
+					$"Unused attribute `{attribute}` of key `{key}` in {file}." :
+					$"Unused key `{key}` in {file}.");
+		}
+
+		void CheckMessageValue(Pattern node, string key, string attribute, Action<string> emitWarning, string file)
+		{
+			foreach (var element in node.Elements)
 			{
-				var referencedVariables = referencedVariablesPerKey[entry.GetId()];
-				if (!referencedVariables.Contains(element))
-					emitWarning($"Unused variable `{element}` for key `{entry.GetId()}` in {file}.");
+				if (element is Placeable placeable)
+				{
+					var expression = placeable.Expression;
+					if (expression is IInlineExpression inlineExpression)
+						if (inlineExpression is VariableReference variableReference)
+							CheckVariableReference(variableReference.Id.Name.ToString(), key, attribute, emitWarning, file);
+
+					if (expression is SelectExpression selectExpression)
+					{
+						foreach (var variant in selectExpression.Variants)
+						{
+							foreach (var variantElement in variant.Value.Elements)
+							{
+								if (variantElement is Placeable variantPlaceable)
+								{
+									var variantExpression = variantPlaceable.Expression;
+									if (variantExpression is IInlineExpression variantInlineExpression)
+										if (variantInlineExpression is VariableReference variantVariableReference)
+											CheckVariableReference(variantVariableReference.Id.Name.ToString(), key, attribute, emitWarning, file);
+								}
+							}
+						}
+					}
+				}
 			}
-			else
-				emitWarning($"Unused variable `{element}` for key `{entry.GetId()}` in {file}.");
+		}
+
+		void CheckMissingVariable(string key, string attribute, Action<string> emitError, string file)
+		{
+			var isAttribute = !string.IsNullOrEmpty(attribute);
+			var keyWithAtrr = isAttribute ? $"{key}.{attribute}" : key;
+
+			if (!referencedVariablesPerKey.ContainsKey(keyWithAtrr))
+				return;
+
+			foreach (var referencedVariable in referencedVariablesPerKey[keyWithAtrr])
+				if (!variableReferences.Contains(referencedVariable))
+					emitError(isAttribute ?
+						$"Missing variable `{referencedVariable}` for attribute `{attribute}` of key `{key}` in {file}." :
+						$"Missing variable `{referencedVariable}` for key `{key}` in {file}.");
+		}
+
+		void CheckVariableReference(string varName, string key, string attribute, Action<string> emitWarning, string file)
+		{
+			var isAttribute = !string.IsNullOrEmpty(attribute);
+			var keyWithAtrr = isAttribute ? $"{key}.{attribute}" : key;
+
+			variableReferences.Add(varName);
+
+			if (!referencedVariablesPerKey.ContainsKey(keyWithAtrr) || !referencedVariablesPerKey[keyWithAtrr].Contains(varName))
+				emitWarning(isAttribute ?
+					$"Unused variable `{varName}` for attribute `{attribute}` of key `{key}` in {file}." :
+					$"Unused variable `{varName}` for key `{key}` in {file}.");
 		}
 	}
 }
