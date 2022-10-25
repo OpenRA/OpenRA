@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 			Carrying
 		}
 
-		readonly AircraftInfo aircraftInfo;
+		protected readonly AircraftInfo AircraftInfo;
 		readonly Aircraft aircraft;
 		readonly BodyOrientation body;
 		readonly IFacing facing;
@@ -102,8 +102,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		// The actor we are currently carrying.
 		[Sync]
-		public Actor Carryable { get; private set; }
-		public CarryallState State { get; private set; }
+		public Actor Carryable { get; protected set; }
+		public CarryallState State { get; protected set; }
 
 		WAngle cachedFacing;
 		IActorPreview[] carryablePreview;
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 			Carryable = null;
 			State = CarryallState.Idle;
 
-			aircraftInfo = self.Info.TraitInfoOrDefault<AircraftInfo>();
+			AircraftInfo = self.Info.TraitInfoOrDefault<AircraftInfo>();
 			aircraft = self.Trait<Aircraft>();
 			body = self.Trait<BodyOrientation>();
 			facing = self.Trait<IFacing>();
@@ -183,11 +183,6 @@ namespace OpenRA.Mods.Common.Traits
 			UnreserveCarryable(self);
 		}
 
-		public virtual bool RequestTransportNotify(Actor self, Actor carryable, CPos destination)
-		{
-			return false;
-		}
-
 		public virtual WVec OffsetForCarryable(Actor self, Actor carryable)
 		{
 			return Info.LocalOffset - carryable.Info.TraitInfo<CarryableInfo>().LocalOffset;
@@ -239,7 +234,7 @@ namespace OpenRA.Mods.Common.Traits
 			CarryableOffset = WVec.Zero;
 		}
 
-		public virtual bool ReserveCarryable(Actor self, Actor carryable)
+		public bool ReserveCarryable(Actor self, Actor carryable)
 		{
 			if (State == CarryallState.Reserved)
 				UnreserveCarryable(self);
@@ -327,7 +322,7 @@ namespace OpenRA.Mods.Common.Traits
 				yield return new CarryallPickupOrderTargeter(Info);
 				yield return new DeployOrderTargeter("Unload", 10,
 				() => CanUnload() ? Info.UnloadCursor : Info.UnloadBlockedCursor);
-				yield return new CarryallDeliverUnitTargeter(aircraftInfo, Info);
+				yield return new CarryallDeliverUnitTargeter(AircraftInfo, Info);
 			}
 		}
 
@@ -354,7 +349,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString == "DeliverUnit")
 			{
 				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
-				if (!aircraftInfo.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
+				if (!AircraftInfo.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
 				self.QueueActivity(order.Queued, new DeliverUnit(self, order.Target, Info.DropRange, Info.TargetLineColor));
