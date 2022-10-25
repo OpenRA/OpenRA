@@ -73,13 +73,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 	/// nodes, but uses a heuristic informed from the previous level to guide the search in the right direction.</para>
 	///
 	/// <para>This implementation is aware of movement costs over terrain given by
-	/// <see cref="Locomotor.MovementCostToEnterCell"/>. It is aware of changes to the costs in terrain and able to
-	/// update the abstract graph when this occurs. It is able to search the abstract graph as if
-	/// <see cref="BlockedByActor.None"/> had been specified. If <see cref="BlockedByActor.Immovable"/> is given in the
-	/// constructor, the abstract graph will additionally account for a subset of immovable actors using the same rules
-	/// as <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, BlockedByActor, Actor)"/>. It will be aware of changes
-	/// to actors on the map and update the abstract graph when this occurs. Other types of blocking actors will not be
-	/// accounted for in the heuristic.</para>
+	/// <see cref="Locomotor.MovementCostToEnterCell(Actor, CPos, CPos, BlockedByActor, Actor)"/>. It is aware of
+	/// changes to the costs in terrain and able to update the abstract graph when this occurs. It is able to search
+	/// the abstract graph as if <see cref="BlockedByActor.None"/> had been specified. If
+	/// <see cref="BlockedByActor.Immovable"/> is given in the constructor, the abstract graph will additionally
+	/// account for a subset of immovable actors using the same rules as
+	/// <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, SubCell, BlockedByActor, Actor)"/>. It will be aware of
+	/// changes to actors on the map and update the abstract graph when this occurs. Other types of blocking actors
+	/// will not be accounted for in the heuristic.</para>
 	///
 	/// <para>If the obstacle on the map is from terrain (e.g. a cliff or lake) the heuristic will work well. If the
 	/// obstacle is from the subset of immovable actors (e.g. trees, walls, buildings) and
@@ -620,14 +621,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		/// <summary>
 		/// <see cref="BlockedByActor.Immovable"/> defines immovability based on the mobile trait. The blocking rules
-		/// in <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, BlockedByActor, Actor)"/> allow units to pass these
-		/// immovable actors if they are temporary blockers (e.g. gates) or crushable by the locomotor. Since our
-		/// abstract graph must work for any actor, we have to be conservative and can only consider a subset of the
-		/// immovable actors in the graph - ones we know cannot be passed by some actors due to these rules.
+		/// in <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, SubCell, BlockedByActor, Actor)"/> allow units to
+		/// pass these immovable actors if they are temporary blockers (e.g. gates) or crushable by the locomotor.
+		/// Since our abstract graph must work for any actor, we have to be conservative and can only consider a subset
+		/// of the immovable actors in the graph - ones we know cannot be passed by some actors due to these rules.
 		/// Both this and <see cref="ActorCellIsBlocking"/> must be true for a cell to be blocked.
 		///
 		/// This method is dependant on the logic in
-		/// <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, BlockedByActor, Actor)"/> and
+		/// <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, SubCell, BlockedByActor, Actor)"/> and
 		/// <see cref="Locomotor.UpdateCellBlocking"/>. This method must be kept in sync with changes in the locomotor
 		/// rules.
 		/// </summary>
@@ -718,24 +719,51 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 			pathFinderOverlay?.NewRecording(self, sources, target);
 
+			if (!world.Map.Contains(target))
+				return PathFinder.NoPath;
+
 			RebuildDirtyGrids();
 
 			var targetAbstractCell = AbstractCellForLocalCell(target);
 			if (targetAbstractCell == null)
 				return PathFinder.NoPath;
 
-			var sourcesWithReachableNodes = new List<CPos>(sources.Count);
+			// Unlike the target cell, the source cell is allowed to be an unreachable location.
+			// Instead, what matters is whether any cell adjacent to the source cell can be reached.
+			var sourcesWithReachableNodes = new List<(CPos Source, CPos AdjacentSource)>(sources.Count);
 			var sourceEdges = new List<GraphEdge>(sources.Count);
 			foreach (var source in sources)
 			{
-				var sourceAbstractCell = AbstractCellForLocalCell(source);
-				if (sourceAbstractCell == null)
+				if (!world.Map.Contains(source))
 					continue;
 
-				sourcesWithReachableNodes.Add(source);
-				var sourceEdge = EdgeFromLocalToAbstract(source, sourceAbstractCell.Value);
-				if (sourceEdge != null)
-					sourceEdges.Add(sourceEdge.Value);
+				// The source cell is reachable, we can add an edge from there and have no need to check adjacent cells.
+				var sourceAbstractCell = AbstractCellForLocalCell(source);
+				if (sourceAbstractCell != null)
+				{
+					sourcesWithReachableNodes.Add((source, source));
+					var sourceEdge = EdgeFromLocalToAbstract(source, sourceAbstractCell.Value);
+					if (sourceEdge != null)
+						sourceEdges.Add(sourceEdge.Value);
+					continue;
+				}
+
+				// If the source cell is unreachable, we must add edges from any adjacent cells that are reachable instead.
+				foreach (var dir in CVec.Directions)
+				{
+					var adjacentSource = source + dir;
+					if (!world.Map.Contains(adjacentSource))
+						continue;
+
+					var adjacentSourceAbstractCell = AbstractCellForLocalCell(adjacentSource);
+					if (adjacentSourceAbstractCell == null)
+						continue;
+
+					sourcesWithReachableNodes.Add((source, adjacentSource));
+					var sourceEdge = EdgeFromLocalToAbstract(adjacentSource, adjacentSourceAbstractCell.Value);
+					if (sourceEdge != null)
+						sourceEdges.Add(sourceEdge.Value);
+				}
 			}
 
 			if (sourcesWithReachableNodes.Count == 0)
@@ -751,11 +779,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 			using (var reverseAbstractSearch = PathSearch.ToTargetCellOverGraph(
 				fullGraph.GetConnections, locomotor, target, target, estimatedSearchSize, pathFinderOverlay?.RecordAbstractEdges(self)))
 			{
-				var sourcesWithPathableNodes = new List<CPos>(sourcesWithReachableNodes.Count);
-				foreach (var source in sourcesWithReachableNodes)
+				var sourcesWithPathableNodes = new HashSet<CPos>(sources.Count);
+				foreach (var (source, adjacentSource) in sourcesWithReachableNodes)
 				{
 					// Check if we have already found a route to this node before we attempt to expand the search.
-					var sourceStatus = reverseAbstractSearch.Graph[source];
+					var sourceStatus = reverseAbstractSearch.Graph[adjacentSource];
 					if (sourceStatus.Status == CellStatus.Closed)
 					{
 						if (sourceStatus.CostSoFar != PathGraph.PathCostForInvalidPath)
@@ -763,7 +791,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 					}
 					else
 					{
-						reverseAbstractSearch.TargetPredicate = cell => cell == source;
+						reverseAbstractSearch.TargetPredicate = cell => cell == adjacentSource;
 						if (reverseAbstractSearch.ExpandToTarget())
 							sourcesWithPathableNodes.Add(source);
 					}
@@ -774,7 +802,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 				using (var fromSrc = GetLocalPathSearch(
 					self, sourcesWithPathableNodes, target, customCost, ignoreActor, check, laneBias, null, heuristicWeightPercentage,
-					heuristic: Heuristic(reverseAbstractSearch, estimatedSearchSize),
+					heuristic: Heuristic(reverseAbstractSearch, estimatedSearchSize, sourcesWithPathableNodes),
 					recorder: pathFinderOverlay?.RecordLocalEdges(self)))
 					return fromSrc.FindPath();
 			}
@@ -824,12 +852,18 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 			RebuildDirtyGrids();
 
+			// If the target cell in unreachable, there is no path.
 			var targetAbstractCell = AbstractCellForLocalCell(target);
 			if (targetAbstractCell == null)
 				return PathFinder.NoPath;
+
+			// If the source cell in unreachable, there may still be a path.
+			// As long as one of the cells adjacent to the source is reachable, the path can be made.
+			// Call the other overload which can handle this scenario.
 			var sourceAbstractCell = AbstractCellForLocalCell(source);
 			if (sourceAbstractCell == null)
-				return PathFinder.NoPath;
+				return FindPath(self, new[] { source }, target, check, heuristicWeightPercentage, customCost, ignoreActor, laneBias, pathFinderOverlay);
+
 			var targetEdge = EdgeFromLocalToAbstract(target, targetAbstractCell.Value);
 			var sourceEdge = EdgeFromLocalToAbstract(source, sourceAbstractCell.Value);
 
@@ -852,11 +886,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 					using (var fromSrc = GetLocalPathSearch(
 						self, new[] { source }, target, customCost, ignoreActor, check, laneBias, null, heuristicWeightPercentage,
-						heuristic: Heuristic(reverseAbstractSearch, estimatedSearchSize),
+						heuristic: Heuristic(reverseAbstractSearch, estimatedSearchSize, null),
 						recorder: pathFinderOverlay?.RecordLocalEdges(self)))
 					using (var fromDest = GetLocalPathSearch(
 						self, new[] { target }, source, customCost, ignoreActor, check, laneBias, null, heuristicWeightPercentage,
-						heuristic: Heuristic(forwardAbstractSearch, estimatedSearchSize),
+						heuristic: Heuristic(forwardAbstractSearch, estimatedSearchSize, null),
 						recorder: pathFinderOverlay?.RecordLocalEdges(self),
 						inReverse: true))
 						return PathSearch.FindBidiPath(fromDest, fromSrc);
@@ -884,15 +918,38 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 			RebuildDomains();
 
-			var abstractSource = AbstractCellForLocalCell(source);
-			if (abstractSource == null)
-				return false;
 			var abstractTarget = AbstractCellForLocalCell(target);
 			if (abstractTarget == null)
 				return false;
-			var sourceDomain = abstractDomains[abstractSource.Value];
 			var targetDomain = abstractDomains[abstractTarget.Value];
-			return sourceDomain == targetDomain;
+
+			// The source cell is reachable, we can compare the domains directly.
+			var abstractSource = AbstractCellForLocalCell(source);
+			if (abstractSource != null)
+			{
+				var sourceDomain = abstractDomains[abstractSource.Value];
+				return sourceDomain == targetDomain;
+			}
+
+			// Unlike the target cell, the source cell is allowed to be an unreachable location.
+			// Instead, what matters is whether any cell adjacent to the source cell can be reached.
+			// So we need to compare the domains of reachable cells adjacent to the source location.
+			foreach (var dir in CVec.Directions)
+			{
+				var adjacentSource = source + dir;
+				if (!world.Map.Contains(adjacentSource))
+					continue;
+
+				var abstractAdjacentSource = AbstractCellForLocalCell(adjacentSource);
+				if (abstractAdjacentSource == null)
+					continue;
+
+				var adjacentSourceDomain = abstractDomains[abstractAdjacentSource.Value];
+				if (adjacentSourceDomain == targetDomain)
+					return true;
+			}
+
+			return false;
 		}
 
 		/// <summary>
@@ -1005,6 +1062,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		/// <summary>
 		/// Maps a local cell to a abstract node in the graph. Returns null when the local cell is unreachable.
+		/// The cell must have been checked to be on the map with <see cref="Map.Contains(CPos)"/>.
 		/// </summary>
 		CPos? AbstractCellForLocalCell(CPos localCell)
 		{
@@ -1038,7 +1096,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// (the heuristic) for a local path search. The abstract search must run in the opposite direction to the
 		/// local search. So when searching from source to target, the abstract search must be from target to source.
 		/// </summary>
-		Func<CPos, int> Heuristic(PathSearch abstractSearch, int estimatedSearchSize)
+		Func<CPos, int> Heuristic(PathSearch abstractSearch, int estimatedSearchSize, HashSet<CPos> sources)
 		{
 			var nodeForCostLookup = new Dictionary<CPos, CPos>(estimatedSearchSize);
 			var graph = (SparsePathGraph)abstractSearch.Graph;
@@ -1053,9 +1111,30 @@ namespace OpenRA.Mods.Common.Pathfinder
 				// consider the cell to be reachable.
 				var maybeAbstractCell = AbstractCellForLocalCellNoAccessibleCheck(cell);
 				if (maybeAbstractCell == null)
-					throw new Exception(
-						"The abstract path should never be searched for an unreachable point. " +
-						"This is a bug. Failed lookup for an abstract cell.");
+				{
+					// If the source cell in unreachable, use one of the adjacent reachable cells instead.
+					if (sources != null && sources.Contains(cell))
+					{
+						foreach (var dir in CVec.Directions)
+						{
+							var adjacentSource = cell + dir;
+							if (!world.Map.Contains(adjacentSource))
+								continue;
+
+							// Ideally we'd choose the cheapest cell rather than just any one of them,
+							// but we're lazy and this is an edge case.
+							maybeAbstractCell = AbstractCellForLocalCell(adjacentSource);
+							if (maybeAbstractCell != null)
+								break;
+						}
+					}
+
+					if (maybeAbstractCell == null)
+						throw new Exception(
+							"The abstract path should never be searched for an unreachable point. " +
+							"This is a bug. Failed lookup for an abstract cell.");
+				}
+
 				var abstractCell = maybeAbstractCell.Value;
 				var info = graph[abstractCell];
 
