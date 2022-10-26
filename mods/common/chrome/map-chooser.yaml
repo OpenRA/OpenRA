@@ -26,26 +26,26 @@ Background@MAPCHOOSER_PANEL:
 			Width: 140
 			Text: Custom Maps
 			Font: Bold
-		Container@SYSTEM_MAPS_TAB:
+		Container@MAP_TAB_PANES:
+			Width: PARENT_RIGHT - 40
+			Height: 438
 			X: 20
 			Y: 77
-			Width: PARENT_RIGHT - 40
-			Height: 471
 			Children:
-				ScrollPanel@MAP_LIST:
+				Container@SYSTEM_MAPS_TAB:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					Children:
-		Container@USER_MAPS_TAB:
-			X: 20
-			Y: 77
-			Width: PARENT_RIGHT - 40
-			Height: 471
-			Children:
-				ScrollPanel@MAP_LIST:
+						ScrollPanel@MAP_LIST:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+				Container@USER_MAPS_TAB:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					Children:
+						ScrollPanel@MAP_LIST:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
 		ScrollItem@MAP_TEMPLATE:
 			Width: 208
 			Height: 266
@@ -91,32 +91,44 @@ Background@MAPCHOOSER_PANEL:
 					Y: PARENT_BOTTOM - HEIGHT - 6
 					Align: Center
 					Font: Tiny
-		Label@FILTER_DESC:
-			X: PARENT_RIGHT - 467
-			Y: 50
-			Width: 60
-			Height: 24
-			Font: Bold
-			Align: Right
-			Text: Filter:
-		TextField@MAPFILTER_INPUT:
-			X: PARENT_RIGHT - 401
-			Y: 48
-			Width: 150
-			Height: 25
-		Label@FILTER_DESC_JOINER:
-			X: PARENT_RIGHT - 250
-			Y: 48
-			Width: 30
-			Height: 24
-			Font: Bold
-			Align: Center
-			Text: in
-		DropDownButton@GAMEMODE_FILTER:
-			X: PARENT_RIGHT - 220
-			Y: 48
-			Width: 200
-			Height: 25
+		Container@FILTER_ORDER_CONTROLS:
+			X: 20
+			Y: PARENT_BOTTOM - 80
+			Width: PARENT_RIGHT - 40
+			Height: PARENT_BOTTOM
+			Children:
+				Label@FILTER_DESC:
+					Width: 40
+					Height: 24
+					Font: Bold
+					Align: Right
+					Text: Filter:
+				TextField@MAPFILTER_INPUT:
+					X: 45
+					Width: 150
+					Height: 25
+				Label@FILTER_DESC_JOINER:
+					X: 195
+					Width: 30
+					Height: 24
+					Font: Bold
+					Align: Center
+					Text: in
+				DropDownButton@GAMEMODE_FILTER:
+					X: 225
+					Width: 200
+					Height: 25
+				Label@ORDERBY_LABEL:
+					X: PARENT_RIGHT - WIDTH - 200 - 5
+					Width: 100
+					Height: 24
+					Font: Bold
+					Align: Right
+					Text: Order by:
+				DropDownButton@ORDERBY:
+					X: PARENT_RIGHT - WIDTH
+					Width: 200
+					Height: 25
 		Button@RANDOMMAP_BUTTON:
 			X: 20
 			Y: PARENT_BOTTOM - 45
