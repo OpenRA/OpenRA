@@ -80,6 +80,7 @@ namespace OpenRA
 			public MapStatus Status;
 			public MapClassification Class;
 			public MapVisibility Visibility;
+			public DateTime ModifiedDate;
 
 			public MiniYaml RuleDefinitions;
 			public MiniYaml WeaponDefinitions;
@@ -187,6 +188,7 @@ namespace OpenRA
 
 		public ActorInfo WorldActorInfo => innerData.WorldActorInfo;
 		public ActorInfo PlayerActorInfo => innerData.PlayerActorInfo;
+		public DateTime ModifiedDate => innerData.ModifiedDate;
 
 		public long DownloadBytes { get; private set; }
 		public int DownloadPercentage { get; private set; }
@@ -394,6 +396,8 @@ namespace OpenRA
 			if (p.Contains("map.png"))
 				using (var dataStream = p.GetStream("map.png"))
 					newData.Preview = new Png(dataStream);
+
+			newData.ModifiedDate = File.GetLastWriteTime(p.Name);
 
 			// Assign the new data atomically
 			innerData = newData;

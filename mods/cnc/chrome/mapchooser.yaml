@@ -14,35 +14,9 @@ Container@MAPCHOOSER_PANEL:
 			Text: Select Map
 		Background@bg:
 			Width: PARENT_RIGHT
-			Height: 540
+			Height: PARENT_BOTTOM
 			Background: panel-black
 			Children:
-				Label@FILTER_DESC:
-					X: PARENT_RIGHT - WIDTH - 401
-					Y: 16
-					Width: 60
-					Height: 25
-					Font: Bold
-					Align: Right
-					Text: Filter:
-				TextField@MAPFILTER_INPUT:
-					X: PARENT_RIGHT - WIDTH - 245
-					Y: 15
-					Width: 150
-					Height: 25
-				Label@FILTER_DESC_JOINER:
-					X: PARENT_RIGHT - WIDTH - 215
-					Y: 16
-					Width: 30
-					Height: 25
-					Font: Bold
-					Align: Center
-					Text: in
-				DropDownButton@GAMEMODE_FILTER:
-					X: PARENT_RIGHT - WIDTH - 15
-					Y: 15
-					Width: 200
-					Height: 25
 				Button@SYSTEM_MAPS_TAB_BUTTON:
 					X: 15
 					Y: 15
@@ -55,26 +29,28 @@ Container@MAPCHOOSER_PANEL:
 					Height: 31
 					Width: 135
 					Text: Custom Maps
-				Container@SYSTEM_MAPS_TAB:
+				Container@MAP_TAB_PANES:
+					Width: PARENT_RIGHT - 30
+					Height: PARENT_BOTTOM - 90
 					X: 15
 					Y: 45
-					Width: PARENT_RIGHT - 30
-					Height: PARENT_BOTTOM - 60
 					Children:
-						ScrollPanel@MAP_LIST:
+						Container@SYSTEM_MAPS_TAB:
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM
-							ItemSpacing: 1
-				Container@USER_MAPS_TAB:
-					X: 15
-					Y: 45
-					Width: PARENT_RIGHT - 30
-					Height: PARENT_BOTTOM - 60
-					Children:
-						ScrollPanel@MAP_LIST:
+							Children:
+								ScrollPanel@MAP_LIST:
+									Width: PARENT_RIGHT
+									Height: PARENT_BOTTOM
+									ItemSpacing: 1
+						Container@USER_MAPS_TAB:
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM
-							ItemSpacing: 1
+							Children:
+								ScrollPanel@MAP_LIST:
+									Width: PARENT_RIGHT
+									Height: PARENT_BOTTOM
+									ItemSpacing: 1
 				ScrollItem@MAP_TEMPLATE:
 					Width: 210
 					Height: 262
@@ -120,35 +96,73 @@ Container@MAPCHOOSER_PANEL:
 							Y: PARENT_BOTTOM - HEIGHT - 2
 							Align: Center
 							Font: Tiny
+				Container@FILTER_ORDER_CONTROLS:
+					X: 15
+					Y: PARENT_BOTTOM - 40
+					Width: PARENT_RIGHT - 30
+					Height: PARENT_BOTTOM
+					Children:
+						Label@FILTER_DESC:
+							Width: 40
+							Height: 24
+							Font: Bold
+							Align: Right
+							Text: Filter:
+						TextField@MAPFILTER_INPUT:
+							X: 45
+							Width: 150
+							Height: 25
+						Label@FILTER_DESC_JOINER:
+							X: 195
+							Width: 30
+							Height: 24
+							Font: Bold
+							Align: Center
+							Text: in
+						DropDownButton@GAMEMODE_FILTER:
+							X: 225
+							Width: 200
+							Height: 25
+						Label@ORDERBY_LABEL:
+							X: PARENT_RIGHT - WIDTH - 200 - 5
+							Width: 100
+							Height: 24
+							Font: Bold
+							Align: Right
+							Text: Order by:
+						DropDownButton@ORDERBY:
+							X: PARENT_RIGHT - WIDTH
+							Width: 200
+							Height: 25
 				Button@BUTTON_CANCEL:
 					Key: escape
-					Y: 539
+					Y: PARENT_BOTTOM - 1
 					Width: 140
 					Height: 35
 					Text: Back
 				Button@RANDOMMAP_BUTTON:
 					Key: space
 					X: PARENT_RIGHT - 150 - WIDTH
-					Y: 539
+					Y: PARENT_BOTTOM - 1
 					Width: 140
 					Height: 35
 					Text: Random
 				Button@DELETE_MAP_BUTTON:
 					X: PARENT_RIGHT - 300 - WIDTH
-					Y: 539
+					Y: PARENT_BOTTOM - 1
 					Width: 140
 					Height: 35
 					Text: Delete Map
 				Button@DELETE_ALL_MAPS_BUTTON:
 					X: PARENT_RIGHT - 450 - WIDTH
-					Y: 539
+					Y: PARENT_BOTTOM - 1
 					Width: 140
 					Height: 35
 					Text: Delete All Maps
 				Button@BUTTON_OK:
 					Key: return
 					X: PARENT_RIGHT - WIDTH
-					Y: 539
+					Y: PARENT_BOTTOM - 1
 					Width: 140
 					Height: 35
 					Text: Ok

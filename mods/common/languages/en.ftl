@@ -449,6 +449,9 @@ delete-all-maps-title = Delete maps
 delete-all-maps-prompt = Delete all maps on this page?
 delete-all-maps-accept = Delete
 
+order-maps-players = Players
+order-maps-date = Map Date
+
 ## MissionBrowserLogic
 no-video-title = Video not installed
 no-video-prompt = The game videos can be installed from the
