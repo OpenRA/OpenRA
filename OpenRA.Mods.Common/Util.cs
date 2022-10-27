@@ -335,5 +335,23 @@ namespace OpenRA.Mods.Common
 					throw new InvalidEnumArgumentException(nameof(inaccuracyType), (int)inaccuracyType, typeof(InaccuracyType));
 			}
 		}
+
+		public static WVec CalculateFireEffectOffset(Actor self, BodyOrientation coords, Turreted turret, WVec effectOffset)
+		{
+			// Turret coordinates to body coordinates
+			var bodyOrientation = coords.QuantizeOrientation(self.Orientation);
+			if (turret != null)
+				effectOffset = effectOffset.Rotate(turret.WorldOrientation) + turret.Offset.Rotate(bodyOrientation);
+			else
+				effectOffset = effectOffset.Rotate(bodyOrientation);
+
+			// Body coordinates to world coordinates
+			return coords.LocalToWorld(effectOffset);
+		}
+
+		public static WRot CalculateFireEffectYawOrientation(Actor self, Turreted turret, WAngle yawFacing)
+		{
+			return WRot.FromYaw(yawFacing).Rotate(turret?.WorldOrientation ?? self.Orientation);
+		}
 	}
 }

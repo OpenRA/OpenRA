@@ -371,33 +371,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WVec MuzzleOffset(Actor self, Barrel b)
 		{
-			return CalculateMuzzleOffset(self, b);
-		}
-
-		protected virtual WVec CalculateMuzzleOffset(Actor self, Barrel b)
-		{
-			// Weapon offset in turret coordinates
-			var localOffset = b.Offset + new WVec(-Recoil, WDist.Zero, WDist.Zero);
-
-			// Turret coordinates to body coordinates
-			var bodyOrientation = coords.QuantizeOrientation(self.Orientation);
-			if (turret != null)
-				localOffset = localOffset.Rotate(turret.WorldOrientation) + turret.Offset.Rotate(bodyOrientation);
-			else
-				localOffset = localOffset.Rotate(bodyOrientation);
-
-			// Body coordinates to world coordinates
-			return coords.LocalToWorld(localOffset);
+			return Util.CalculateFireEffectOffset(self, coords, turret, b.Offset + new WVec(-Recoil, WDist.Zero, WDist.Zero));
 		}
 
 		public WRot MuzzleOrientation(Actor self, Barrel b)
 		{
-			return CalculateMuzzleOrientation(self, b);
-		}
-
-		protected virtual WRot CalculateMuzzleOrientation(Actor self, Barrel b)
-		{
-			return WRot.FromYaw(b.Yaw).Rotate(turret?.WorldOrientation ?? self.Orientation);
+			return Util.CalculateFireEffectYawOrientation(self, turret, b.Yaw);
 		}
 
 		public Actor Actor => self;
