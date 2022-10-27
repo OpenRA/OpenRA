@@ -21,6 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public WVec Offset;
 		public WAngle Yaw;
+		public int BarrelIndex;
 	}
 
 	[Desc("Allows you to attach weapons to the unit (use @IdentifierSuffix for > 1)")]
@@ -40,11 +41,15 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int FireDelay = 0;
 
 		[Desc("Muzzle position relative to turret or body, (forward, right, up) triples.",
-			"If weapon Burst = 1, it cycles through all listed offsets, otherwise the offset corresponding to current burst is used.")]
+			"If weapon Burst = 1, it cycles through all listed offsets, otherwise the offset corresponding to current burst is used.",
+			"Every position here will generate a barrel in this armament.")]
 		public readonly WVec[] LocalOffset = Array.Empty<WVec>();
 
-		[Desc("Muzzle yaw relative to turret or body.")]
+		[Desc("Muzzle yaw relative to turret or body on generated barrel.")]
 		public readonly WAngle[] LocalYaw = Array.Empty<WAngle>();
+
+		[Desc("Allow player to set the barrel index manually if needed.")]
+		public readonly int[] BarrelsIndex = Array.Empty<int>();
 
 		[Desc("Move the turret backwards when firing.")]
 		public readonly WDist Recoil = WDist.Zero;
@@ -147,12 +152,13 @@ namespace OpenRA.Mods.Common.Traits
 				barrels.Add(new Barrel
 				{
 					Offset = info.LocalOffset[i],
+					BarrelIndex = info.BarrelsIndex.Length > i && info.BarrelsIndex[i] < info.BarrelsIndex.Length ? info.BarrelsIndex[i] : i,
 					Yaw = info.LocalYaw.Length > i ? info.LocalYaw[i] : WAngle.Zero
 				});
 			}
 
 			if (barrels.Count == 0)
-				barrels.Add(new Barrel { Offset = WVec.Zero, Yaw = WAngle.Zero });
+				barrels.Add(new Barrel { BarrelIndex = 0, Offset = WVec.Zero, Yaw = WAngle.Zero });
 
 			barrelCount = barrels.Count;
 
