@@ -191,6 +191,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IOccupySpaceInfo.SharesCell => false;
 
+		public bool IsAllowedToLand => LandableTerrainTypes.Count > 0;
+
 		// Used to determine if an aircraft can spawn landed
 		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
 		{
@@ -867,6 +869,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AddInfluence((CPos, SubCell)[] landingCells)
 		{
+			if (!Info.IsAllowedToLand)
+				return;
+
 			if (HasInfluence())
 				throw new InvalidOperationException(
 					$"Cannot {nameof(AddInfluence)} until previous influence is removed with {nameof(RemoveInfluence)}");
@@ -891,7 +896,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool HasInfluence()
 		{
-			return landingCells.Length > 0;
+			return Info.IsAllowedToLand && landingCells.Length > 0;
 		}
 
 		#endregion
