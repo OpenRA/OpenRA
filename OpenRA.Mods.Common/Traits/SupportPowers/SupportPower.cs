@@ -228,7 +228,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var toPlayer = isAllied ? localPlayer ?? Self.Owner : localPlayer;
 			var speech = isAllied ? Info.LaunchSpeechNotification : Info.IncomingSpeechNotification;
-			Game.Sound.PlayNotification(Self.World.Map.Rules, toPlayer, "Speech", speech, toPlayer.Faction.InternalName);
+			Game.Sound.PlayNotification(Self.World.Map.Rules, toPlayer, "Speech", speech, (toPlayer ?? Self.Owner).Faction.InternalName);
 
 			TextNotificationsManager.AddTransientLine(isAllied ? Info.LaunchTextNotification : Info.IncomingTextNotification, toPlayer);
 		}
