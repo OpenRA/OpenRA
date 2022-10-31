@@ -19,6 +19,8 @@ MCV:
 		Type: Heavy
 	Mobile:
 		Speed: 42
+		MaxSpeed: 400
+		SpeedAccleration: 2
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
 		Range: 6c0
