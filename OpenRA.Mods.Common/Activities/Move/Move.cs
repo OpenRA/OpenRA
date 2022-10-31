@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Activities
 				firstFacing = new WAngle(firstFacing.Angle + 512);
 			}
 
-			if (firstFacing != mobile.Facing)
+			if (!mobile.Info.TurnsWhileMoving && firstFacing != mobile.Facing)
 			{
 				path.Add(nextCell.Value.Cell);
 				QueueChild(new Turn(self, firstFacing));
@@ -371,6 +371,7 @@ namespace OpenRA.Mods.Common.Activities
 			protected readonly Move Move;
 			protected readonly WAngle ActorFacingModifier;
 			protected readonly WPos From, To;
+			protected readonly WAngle FromToYaw;
 			protected readonly WAngle FromFacing, ToFacing;
 			protected readonly WRot? FromTerrainOrientation, ToTerrainOrientation;
 			protected readonly bool EnableArc;
@@ -381,6 +382,7 @@ namespace OpenRA.Mods.Common.Activities
 			protected readonly WAngle ArcToAngle;
 			protected readonly int Distance;
 			protected readonly bool MovingOnGroundLayer;
+			protected readonly bool TurnsWhileMoving;
 			readonly int terrainOrientationMargin;
 			protected int progress;
 
@@ -401,6 +403,10 @@ namespace OpenRA.Mods.Common.Activities
 				MovingOnGroundLayer = movingOnGroundLayer;
 
 				IsInterruptible = false; // See comments in Move.Cancel()
+
+				TurnsWhileMoving = move.mobile.Info.TurnsWhileMoving;
+				if (TurnsWhileMoving)
+					FromToYaw = (To - From).Yaw;
 
 				// Calculate an elliptical arc that joins from and to
 				var delta = (fromFacing - toFacing).Angle;
@@ -441,7 +447,10 @@ namespace OpenRA.Mods.Common.Activities
 				if (progress >= Distance)
 				{
 					mobile.SetCenterPosition(self, To);
-					mobile.Facing = ToFacing + ActorFacingModifier;
+					if (TurnsWhileMoving)
+						mobile.Facing = Util.TickFacing(mobile.Facing, FromToYaw + ActorFacingModifier, mobile.TurnSpeed);
+					else
+						mobile.Facing = ToFacing + ActorFacingModifier;
 
 					Move.lastMovePartCompletedTick = self.World.WorldTick;
 					Queue(OnComplete(self, mobile, Move));
@@ -480,7 +489,10 @@ namespace OpenRA.Mods.Common.Activities
 					mobile.SetTerrainRampOrientation(orientation);
 				}
 
-				mobile.Facing = WAngle.Lerp(FromFacing + ActorFacingModifier, ToFacing + ActorFacingModifier, progress, Distance);
+				if (TurnsWhileMoving)
+					mobile.Facing = Util.TickFacing(mobile.Facing, FromToYaw + ActorFacingModifier, mobile.TurnSpeed);
+				else
+					mobile.Facing = WAngle.Lerp(FromFacing + ActorFacingModifier, ToFacing + ActorFacingModifier, progress, Distance);
 
 				return false;
 			}
@@ -521,7 +533,7 @@ namespace OpenRA.Mods.Common.Activities
 				var nextCell = parent.PopPath(self);
 				if (nextCell != null)
 				{
-					if (!mobile.IsTraitPaused && !mobile.IsTraitDisabled && IsTurn(mobile, nextCell.Value.Cell, map))
+					if (!mobile.IsTraitPaused && !mobile.IsTraitDisabled && !TurnsWhileMoving && IsTurn(mobile, nextCell.Value.Cell, map))
 					{
 						var nextSubcellOffset = map.Grid.OffsetOfSubCell(nextCell.Value.SubCell);
 						WRot? nextToTerrainOrientation = null;
