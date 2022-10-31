@@ -316,7 +316,7 @@ GAHPAD:
 	RepairsUnits:
 		HpPerStep: 1000
 		PauseOnCondition: empdisable
-		PlayerExperience: 15
+		PlayerExperience: 5
 		StartRepairingNotification: Repairing
 		StartRepairingTextNotification: Repairing.
 		FinishRepairingNotification: UnitRepaired
@@ -366,7 +366,7 @@ GADEPT:
 	RepairsUnits:
 		HpPerStep: 1000
 		PauseOnCondition: empdisable
-		PlayerExperience: 15
+		PlayerExperience: 5
 		StartRepairingNotification: Repairing
 		StartRepairingTextNotification: Repairing.
 		FinishRepairingNotification: UnitRepaired

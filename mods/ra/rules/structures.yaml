@@ -214,7 +214,7 @@ SPEN:
 		StartRepairingTextNotification: Repairing.
 		FinishRepairingNotification: UnitRepaired
 		FinishRepairingTextNotification: Unit repaired.
-		PlayerExperience: 15
+		PlayerExperience: 5
 	RallyPoint:
 		ForceSetType: Ship
 	CommandBarBlacklist:
@@ -333,7 +333,7 @@ SYRD:
 		StartRepairingTextNotification: Repairing.
 		FinishRepairingNotification: UnitRepaired
 		FinishRepairingTextNotification: Unit repaired.
-		PlayerExperience: 15
+		PlayerExperience: 5
 	RallyPoint:
 		ForceSetType: Ship
 	CommandBarBlacklist:
@@ -2039,7 +2039,7 @@ FIX:
 		StartRepairingTextNotification: Repairing.
 		FinishRepairingNotification: UnitRepaired
 		FinishRepairingTextNotification: Unit repaired.
-		PlayerExperience: 15
+		PlayerExperience: 5
 	WithBuildingBib:
 		HasMinibib: true
 	WithResupplyAnimation:
