@@ -140,7 +140,10 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			if (mobile.IsTraitDisabled || mobile.IsTraitPaused)
+			{
+				mobile.AcceleratedDelta = 0;
 				return false;
+			}
 
 			if (destination == mobile.ToCell)
 				return true;
@@ -167,6 +170,7 @@ namespace OpenRA.Mods.Common.Activities
 				path.Add(nextCell.Value.Cell);
 				QueueChild(new Turn(self, firstFacing));
 				mobile.TurnToMove = true;
+				mobile.AcceleratedDelta = 0;
 				return false;
 			}
 
@@ -304,6 +308,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected override void OnLastRun(Actor self)
 		{
 			path = null;
+			mobile.AcceleratedDelta = 0;
 		}
 
 		bool CellIsEvacuating(Actor self, CPos cell)
@@ -416,7 +421,15 @@ namespace OpenRA.Mods.Common.Activities
 				// Only move by a full speed step if we didn't already move this tick.
 				// If we did, we limit the move to any carried-over leftover progress.
 				if (Move.lastMovePartCompletedTick < self.World.WorldTick)
-					progress += mobile.MovementSpeedForCell(mobile.ToCell);
+				{
+					var currentSpeed = mobile.MovementSpeedForCell(mobile.ToCell);
+					progress += currentSpeed;
+
+					if (mobile.IsTraitDisabled || mobile.IsTraitPaused)
+						mobile.AcceleratedDelta = 0;
+					else
+						mobile.AcceleratedDelta += mobile.Info.SpeedAccleration;
+				}
 
 				if (progress >= Distance)
 				{

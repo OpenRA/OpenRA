@@ -35,7 +35,14 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Speed at which the actor turns.")]
 		public readonly WAngle TurnSpeed = new WAngle(512);
 
+		[Desc("Speed at which the actor begins to move.")]
 		public readonly int Speed = 1;
+
+		[Desc("Speed of actor will increase this amount per tick.")]
+		public readonly int SpeedAccleration = 0;
+
+		[Desc("Max speed at which the actor moves.")]
+		public readonly int MaxSpeed = -1;
 
 		[Desc("If set to true, this unit will always turn in place instead of following a curved trajectory (like infantry).")]
 		public readonly bool AlwaysTurnInPlace = false;
@@ -205,6 +212,7 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyFinishedMoving[] notifyFinishedMoving;
 		IWrapMove[] moveWrappers;
 		bool requireForceMove;
+		public int AcceleratedDelta;
 
 		public bool IsImmovable { get; private set; }
 		public bool TurnToMove;
@@ -740,10 +748,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int MovementSpeedForCell(CPos cell)
 		{
+			var currentSpeed = Info.MaxSpeed > Info.Speed ? (Info.Speed + AcceleratedDelta > Info.MaxSpeed ? Info.MaxSpeed : Info.Speed + AcceleratedDelta) : Info.Speed;
 			var terrainSpeed = Locomotor.MovementSpeedForCell(cell);
 			var modifiers = speedModifiers.Value.Append(terrainSpeed);
 
-			return Util.ApplyPercentageModifiers(Info.Speed, modifiers);
+			return Util.ApplyPercentageModifiers(currentSpeed, modifiers);
 		}
 
 		public CPos NearestMoveableCell(CPos target, int minRange, int maxRange)
