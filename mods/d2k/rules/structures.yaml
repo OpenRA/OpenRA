@@ -898,7 +898,7 @@ repair_pad:
 		StartRepairingTextNotification: Repairing.
 		FinishRepairingNotification: UnitRepaired
 		FinishRepairingTextNotification: Unit repaired.
-		PlayerExperience: 15
+		PlayerExperience: 10
 	RallyPoint:
 	RenderSprites:
 		Image: repair_pad.ordos

@@ -578,7 +578,7 @@ HPAD:
 	Reservable:
 	RepairsUnits:
 		HpPerStep: 1000
-		PlayerExperience: 25
+		PlayerExperience: 5
 		StartRepairingNotification: Repairing
 		StartRepairingTextNotification: Repairing.
 	WithResupplyAnimation:
@@ -727,7 +727,7 @@ FIX:
 	RepairsUnits:
 		HpPerStep: 1000
 		Interval: 15
-		PlayerExperience: 25
+		PlayerExperience: 5
 		StartRepairingNotification: Repairing
 		StartRepairingTextNotification: Repairing.
 	RallyPoint:
