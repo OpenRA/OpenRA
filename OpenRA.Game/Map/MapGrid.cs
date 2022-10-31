@@ -126,7 +126,7 @@ namespace OpenRA
 
 		public CellRamp[] Ramps { get; }
 
-		internal readonly CVec[][] TilesByDistance;
+		public readonly CVec[][] TilesByDistance;
 
 		public MapGrid(MiniYaml yaml)
 		{

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Terrain
 
 	public interface ITerrainInfoNotifyMapCreated : ITerrainInfo
 	{
-		void MapCreated(Map map);
+		void MapCreated(IMap map);
 	}
 
 	public class TerrainTemplateInfo

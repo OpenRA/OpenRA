@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Actor types that should be treated as veins for adjacency.")]
 		public readonly HashSet<string> VeinholeActors = new() { };
 
-		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos Uv, Color Color)> destinationBuffer)
+		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(IMap map, ActorInfo ai, ActorReference s, List<(MPos Uv, Color Color)> destinationBuffer)
 		{
 			var resourceLayer = ai.TraitInfoOrDefault<IResourceLayerInfo>();
 			if (resourceLayer == null)
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			var veinholeCells = new HashSet<CPos>();
 
-			foreach (var kv in map.ActorDefinitions)
+			foreach (var kv in ((Map)map).ActorDefinitions)
 			{
 				var type = kv.Value.Value;
 				if (!VeinholeActors.Contains(type))
@@ -71,6 +71,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 
 			var terrainInfo = map.Rules.TerrainInfo;
+			var mapResources = ((IMapResource)map).Resources;
+			var mapRamp = ((IMapElevation)map).Ramp;
 			var info = terrainInfo.TerrainTypes[terrainInfo.GetTerrainIndex(terrainType)];
 
 			for (var i = 0; i < map.MapSize.X; i++)
@@ -80,7 +82,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					var uv = new MPos(i, j);
 
 					// Cell contains veins
-					if (map.Resources[uv].Type == resourceIndex)
+					if (mapResources[uv].Type == resourceIndex)
 					{
 						destinationBuffer.Add((uv, info.Color));
 						continue;
@@ -88,15 +90,15 @@ namespace OpenRA.Mods.Cnc.Traits
 
 					// Cell is a vein border if it is flat and adjacent to at least one cell
 					// that is also flat and contains veins (borders are not drawn next to slope vein cells)
-					var isBorder = map.Ramp[uv] == 0 && Common.Util.ExpandFootprint(uv.ToCPos(map), false).Any(c =>
+					var isBorder = mapRamp[uv] == 0 && Common.Util.ExpandFootprint(uv.ToCPos(map), false).Any(c =>
 					{
-						if (!map.Resources.Contains(c))
+						if (!mapResources.Contains(c))
 							return false;
 
 						if (veinholeCells.Contains(c))
 							return true;
 
-						return map.Resources[c].Type == resourceIndex && map.Ramp[c] == 0;
+						return mapResources[c].Type == resourceIndex && mapRamp[c] == 0;
 					});
 
 					if (isBorder)
@@ -174,8 +176,9 @@ namespace OpenRA.Mods.Cnc.Traits
 			resourceLayer.Info.TryGetTerrainType(info.ResourceType, out var terrainType);
 			veinRadarColor = terrainInfo.TerrainTypes[terrainInfo.GetTerrainIndex(terrainType)].Color;
 
-			renderIndices = new CellLayer<int[]>(world.Map);
-			borders = new CellLayer<Adjacency>(world.Map);
+			var map = world.Map;
+			renderIndices = new CellLayer<int[]>(map);
+			borders = new CellLayer<Adjacency>(map);
 		}
 
 		void AddDirtyCell(CPos cell, string resourceType)
@@ -219,7 +222,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (contents.Type != info.ResourceType || contents.Density == 0)
 				return null;
 
-			var ramp = world.Map.Ramp[cell];
+			var ramp = ((IMapElevation)world.Map).Ramp[cell];
 			switch (ramp)
 			{
 				case 1: return Ramp1Indices;
@@ -263,13 +266,13 @@ namespace OpenRA.Mods.Cnc.Traits
 				return false;
 
 			// Draw the vein border if this is a flat cell with veins, or a veinhole
-			return (world.Map.Ramp[cell] == 0 && renderIndices[cell] != null) || veinholeCells.Contains(cell);
+			return (((IMapElevation)world.Map).Ramp[cell] == 0 && renderIndices[cell] != null) || veinholeCells.Contains(cell);
 		}
 
 		Adjacency CalculateBorders(CPos cell)
 		{
 			// Borders are only valid on flat cells
-			if (world.Map.Ramp[cell] != 0)
+			if (((IMapElevation)world.Map).Ramp[cell] != 0)
 				return Adjacency.None;
 
 			var ret = Adjacency.None;
@@ -300,7 +303,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		void UpdateBorderSprite(CPos cell)
 		{
 			// Borders are never drawn on ramps or in cells that contain resources
-			if (HasBorder(cell) || world.Map.Ramp[cell] != 0)
+			if (HasBorder(cell) || ((IMapElevation)world.Map).Ramp[cell] != 0)
 				return;
 
 			var adjacency = CalculateBorders(cell);

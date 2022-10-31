@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 			else if (mobile != null)
 			{
-				var cell = self.World.Map.Clamp(this.self.World.Map.CellContaining(destination.CenterPosition));
+				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(destination.CenterPosition));
 				QueueChild(new Move(self, cell, unloadRange));
 			}
 

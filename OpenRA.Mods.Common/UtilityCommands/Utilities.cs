@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				try
 				{
+					// TODO: Make this use IMap instead of Map
 					map = modData.MapLoader.Load(modData, new Folder(Platform.EngineDir).OpenPackage(mapPath, modData.ModFiles));
 				}
 				catch (InvalidDataException ex)

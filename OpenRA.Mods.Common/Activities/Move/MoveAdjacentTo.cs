@@ -31,6 +31,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public MoveAdjacentTo(Actor self, in Target target, WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
+			var map = self.World.Map;
+
 			this.target = target;
 			this.targetLineColor = targetLineColor;
 			Mobile = self.Trait<Mobile>();
@@ -47,7 +49,7 @@ namespace OpenRA.Mods.Common.Activities
 			else if (initialTargetPosition.HasValue)
 			{
 				lastVisibleTarget = Target.FromPos(initialTargetPosition.Value);
-				lastVisibleTargetLocation = self.World.Map.CellContaining(initialTargetPosition.Value);
+				lastVisibleTargetLocation = map.CellContaining(initialTargetPosition.Value);
 			}
 		}
 

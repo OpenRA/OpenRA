@@ -55,16 +55,18 @@ namespace OpenRA.Mods.Common.Traits
 				yield break;
 
 			var map = wr.World.Map;
+			var mapHeight = ((IMapElevation)map).Height;
+			var mapRamp = ((IMapElevation)map).Ramp;
 			var colors = wr.World.Map.Rules.TerrainInfo.HeightDebugColors;
-			var mouseCell = wr.Viewport.ViewToWorld(Viewport.LastMousePos).ToMPos(wr.World.Map);
+			var mouseCell = wr.Viewport.ViewToWorld(Viewport.LastMousePos).ToMPos(map);
 
 			foreach (var uv in wr.Viewport.AllVisibleCells.CandidateMapCoords)
 			{
-				if (!map.Height.Contains(uv) || self.World.ShroudObscures(uv))
+				if (!mapHeight.Contains(uv) || self.World.ShroudObscures(uv))
 					continue;
 
-				var height = (int)map.Height[uv];
-				var r = map.Grid.Ramps[map.Ramp[uv]];
+				var height = (int)mapHeight[uv];
+				var r = map.Grid.Ramps[mapRamp[uv]];
 				var pos = map.CenterOfCell(uv.ToCPos(map)) - new WVec(0, 0, r.CenterHeightOffset);
 				var width = uv == mouseCell ? 3 : 1;
 

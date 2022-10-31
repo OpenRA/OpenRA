@@ -152,7 +152,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WVec CenterOffset(World w)
 		{
-			var off = (w.Map.CenterOfCell(new CPos(Dimensions.X, Dimensions.Y)) - w.Map.CenterOfCell(new CPos(1, 1))) / 2;
+			var map = w.Map;
+			var off = (map.CenterOfCell(new CPos(Dimensions.X, Dimensions.Y)) - map.CenterOfCell(new CPos(1, 1))) / 2;
 			return off - new WVec(0, 0, off.Z) + LocalCenterOffset;
 		}
 
@@ -214,8 +215,9 @@ namespace OpenRA.Mods.Common.Traits
 			var adjacent = requiresBuildableArea.Adjacent;
 			var buildingMaxBounds = Dimensions;
 
-			var scanStart = world.Map.Clamp(topLeft - new CVec(adjacent, adjacent));
-			var scanEnd = world.Map.Clamp(topLeft + buildingMaxBounds + new CVec(adjacent, adjacent));
+			var map = world.Map;
+			var scanStart = map.Clamp(topLeft - new CVec(adjacent, adjacent));
+			var scanEnd = map.Clamp(topLeft + buildingMaxBounds + new CVec(adjacent, adjacent));
 
 			var nearnessCandidates = new List<CPos>();
 			var bi = world.WorldActor.Trait<BuildingInfluence>();

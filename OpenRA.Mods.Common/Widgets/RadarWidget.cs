@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Widgets
 					playerRadarTerrain.CellTerrainColorChanged -= CellTerrainColorChanged;
 				else
 				{
-					world.Map.Tiles.CellEntryChanged -= CellTerrainColorChanged;
+					((IMapTiles)world.Map).Tiles.CellEntryChanged -= CellTerrainColorChanged;
 					foreach (var rtl in radarTerrainLayers)
 						rtl.CellEntryChanged -= CellTerrainColorChanged;
 				}
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Common.Widgets
 					newPlayerRadarTerrain.CellTerrainColorChanged += CellTerrainColorChanged;
 				else
 				{
-					world.Map.Tiles.CellEntryChanged += CellTerrainColorChanged;
+					((IMapTiles)world.Map).Tiles.CellEntryChanged += CellTerrainColorChanged;
 					foreach (var rtl in radarTerrainLayers)
 						rtl.CellEntryChanged += CellTerrainColorChanged;
 				}
@@ -361,11 +361,13 @@ namespace OpenRA.Mods.Common.Widgets
 			if (shroud != null)
 				WidgetUtils.DrawSprite(shroudSprite, o, s);
 
+			var map = world.Map;
+
 			// Draw viewport rect
 			if (hasRadar)
 			{
-				var tl = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.ProjectedPosition(worldRenderer.Viewport.TopLeft)));
-				var br = CellToMinimapPixel(world.Map.CellContaining(worldRenderer.ProjectedPosition(worldRenderer.Viewport.BottomRight)));
+				var tl = CellToMinimapPixel(map.CellContaining(worldRenderer.ProjectedPosition(worldRenderer.Viewport.TopLeft)));
+				var br = CellToMinimapPixel(map.CellContaining(worldRenderer.ProjectedPosition(worldRenderer.Viewport.BottomRight)));
 
 				Game.Renderer.EnableScissor(mapRect);
 				DrawRadarPings();
@@ -419,7 +421,7 @@ namespace OpenRA.Mods.Common.Widgets
 							t.Trait.PopulateRadarSignatureCells(t.Actor, cells);
 							foreach (var cell in cells)
 							{
-								if (!world.Map.Contains(cell.Cell))
+								if (!((IMapTiles)world.Map).Tiles.Contains(cell.Cell))
 									continue;
 
 								var uv = cell.Cell.ToMPos(world.Map.Grid.Type);

@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public GameInfoBriefingLogic(Widget widget, ModData modData, World world)
 		{
 			var previewWidget = widget.Get<MapPreviewWidget>("MAP_PREVIEW");
-			previewWidget.Preview = () => modData.MapCache[world.Map.Uid];
+			previewWidget.Preview = () => modData.MapCache[((Map)world.Map).Uid];
 
 			var mapDescriptionPanel = widget.Get<ScrollPanelWidget>("MAP_DESCRIPTION_PANEL");
 			var mapDescription = widget.Get<LabelWidget>("MAP_DESCRIPTION");

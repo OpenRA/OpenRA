@@ -66,7 +66,7 @@ namespace OpenRA
 			return X + "," + Y + "," + Layer;
 		}
 
-		public MPos ToMPos(Map map)
+		public MPos ToMPos(IMap map)
 		{
 			return ToMPos(map.Grid.Type);
 		}

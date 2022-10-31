@@ -319,7 +319,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					return true;
 
 				// Pick half or full density based on the frame
-				map.Resources[cell] = new ResourceTile(3, (byte)(frame == 52 ? 1 : 2));
+				((IMapResource)map).Resources[cell] = new ResourceTile(3, (byte)(frame == 52 ? 1 : 2));
 				return true;
 			}
 

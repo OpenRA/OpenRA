@@ -101,10 +101,12 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		bool IsValidTarget(World world, CPos cell)
 		{
-			var pos = world.Map.CenterOfCell(cell);
+			var map = world.Map;
+
+			var pos = map.CenterOfCell(cell);
 			var range = attack.GetMaximumRange().LengthSquared;
 
-			return world.Map.Contains(cell) && instance.Instances.Any(a => !a.IsTraitPaused && (a.Self.CenterPosition - pos).HorizontalLengthSquared < range);
+			return map.Contains(cell) && instance.Instances.Any(a => !a.IsTraitPaused && (a.Self.CenterPosition - pos).HorizontalLengthSquared < range);
 		}
 
 		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)

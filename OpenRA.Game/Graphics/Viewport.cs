@@ -134,7 +134,7 @@ namespace OpenRA.Graphics
 			return ret;
 		}
 
-		public Viewport(WorldRenderer wr, Map map)
+		public Viewport(WorldRenderer wr, IMap map)
 		{
 			worldRenderer = wr;
 			var grid = Game.ModData.Manifest.Get<MapGrid>();
@@ -242,6 +242,7 @@ namespace OpenRA.Graphics
 		{
 			var world = worldRenderer.Viewport.ViewToWorldPx(view);
 			var map = worldRenderer.World.Map;
+			var mapRamp = ((IMapElevation)map).Ramp;
 			var candidates = CandidateMouseoverCells(world).ToList();
 
 			foreach (var uv in candidates)
@@ -251,7 +252,7 @@ namespace OpenRA.Graphics
 				var s = worldRenderer.ScreenPxPosition(p);
 				if (Math.Abs(s.X - world.X) <= tileSize.Width && Math.Abs(s.Y - world.Y) <= tileSize.Height)
 				{
-					var ramp = map.Grid.Ramps[map.Ramp.Contains(uv) ? map.Ramp[uv] : 0];
+					var ramp = map.Grid.Ramps[mapRamp.Contains(uv) ? mapRamp[uv] : 0];
 					var pos = map.CenterOfCell(uv.ToCPos(map)) - new WVec(0, 0, ramp.CenterHeightOffset);
 					var screen = ramp.Corners.Select(c => worldRenderer.ScreenPxPosition(pos + c)).ToArray();
 					if (screen.PolygonContains(world))

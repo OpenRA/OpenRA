@@ -109,10 +109,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void Copy(CellRegion source, CVec offset)
 		{
-			var gridType = worldRenderer.World.Map.Grid.Type;
-			var mapTiles = worldRenderer.World.Map.Tiles;
-			var mapHeight = worldRenderer.World.Map.Height;
-			var mapResources = worldRenderer.World.Map.Resources;
+			var map = worldRenderer.World.Map;
+			var gridType = map.Grid.Type;
+			var mapResource = (IMapResource)map;
+			var mapTiles = ((IMapTiles)map).Tiles;
+			var mapHeight = ((IMapElevation)map).Height;
+			var mapResources = mapResource.Resources;
 
 			var dest = new CellRegion(gridType, source.TopLeft + offset, source.BottomRight + offset);
 
@@ -147,7 +149,7 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 			}
 
-			var action = new CopyPasteEditorAction(copyFilters, worldRenderer.World.Map, tiles, previews, editorLayer, dest);
+			var action = new CopyPasteEditorAction(copyFilters, (Map)worldRenderer.World.Map, tiles, previews, editorLayer, dest);
 			editorActionManager.Add(action);
 		}
 
@@ -201,9 +203,9 @@ namespace OpenRA.Mods.Common.Widgets
 			this.editorLayer = editorLayer;
 			this.dest = dest;
 
-			mapTiles = map.Tiles;
-			mapHeight = map.Height;
-			mapResources = map.Resources;
+			mapTiles = ((IMapTiles)map).Tiles;
+			mapHeight = ((IMapElevation)map).Height;
+			mapResources = ((IMapResource)map).Resources;
 
 			Text = $"Copied {tiles.Count} tiles";
 		}

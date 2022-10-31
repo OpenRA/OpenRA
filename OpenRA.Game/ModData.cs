@@ -155,17 +155,18 @@ namespace OpenRA
 			if (MapCache[uid].Status != MapStatus.Available)
 				throw new InvalidDataException($"Invalid map uid: {uid}");
 
+			// TODO: Make loader use IMap interface instead of Map
 			Map map;
 			using (new Support.PerfTimer("Map"))
 				map = MapLoader.Load(this, MapCache[uid].Package);
 
 			// Reinitialize all our assets
 			InitializeLoaders(map);
-			map.Sequences.LoadSprites();
+			((IMap)map).Sequences.LoadSprites();
 
 			// Load music with map assets mounted
 			using (new Support.PerfTimer("Map.Music"))
-				foreach (var entry in map.Rules.Music)
+				foreach (var entry in ((IMap)map).Rules.Music)
 					entry.Value.Load(map);
 
 			return map;

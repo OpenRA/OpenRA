@@ -118,10 +118,12 @@ namespace OpenRA.Mods.Common
 
 		public static WPos BetweenCells(World w, CPos from, CPos to)
 		{
-			var fromPos = from.Layer == 0 ? w.Map.CenterOfCell(from) :
+			var map = w.Map;
+
+			var fromPos = from.Layer == 0 ? map.CenterOfCell(from) :
 				w.GetCustomMovementLayers()[from.Layer].CenterOfCell(from);
 
-			var toPos = to.Layer == 0 ? w.Map.CenterOfCell(to) :
+			var toPos = to.Layer == 0 ? map.CenterOfCell(to) :
 				w.GetCustomMovementLayers()[to.Layer].CenterOfCell(to);
 
 			return WPos.Lerp(fromPos, toPos, 1, 2);

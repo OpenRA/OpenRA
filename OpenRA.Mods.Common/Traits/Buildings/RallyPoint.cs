@@ -160,8 +160,9 @@ namespace OpenRA.Mods.Common.Traits
 
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				var location = self.World.Map.CellContaining(target.CenterPosition);
-				if (self.World.Map.Contains(location))
+				var map = self.World.Map;
+				var location = map.CellContaining(target.CenterPosition);
+				if (map.Contains(location))
 				{
 					cursor = info.Cursor;
 

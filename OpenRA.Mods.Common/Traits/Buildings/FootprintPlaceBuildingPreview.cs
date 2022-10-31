@@ -90,7 +90,8 @@ namespace OpenRA.Mods.Common.Traits
 			PlaceBuildingCellType filter = PlaceBuildingCellType.Invalid | PlaceBuildingCellType.Valid | PlaceBuildingCellType.LineBuild)
 		{
 			var palette = wr.Palette(info.Palette);
-			var topLeftPos = wr.World.Map.CenterOfCell(topLeft);
+			var map = wr.World.Map;
+			var topLeftPos = map.CenterOfCell(topLeft);
 			foreach (var c in footprint)
 			{
 				if ((c.Value & filter) == 0)
@@ -98,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				var tile = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? blockedTile : validTile;
 				var sequenceAlpha = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? blockedAlpha : validAlpha;
-				var pos = wr.World.Map.CenterOfCell(c.Key);
+				var pos = map.CenterOfCell(c.Key);
 				var offset = new WVec(0, 0, topLeftPos.Z - pos.Z);
 				var traitAlpha = (c.Value & PlaceBuildingCellType.LineBuild) != 0 ? info.LineBuildFootprintAlpha : info.FootprintAlpha;
 				yield return new SpriteRenderable(tile, pos, offset, -511, palette, 1f, sequenceAlpha * traitAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);

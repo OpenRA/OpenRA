@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class EditorSelectionLayer : IWorldLoaded, IRenderAboveShroud
 	{
 		readonly EditorSelectionLayerInfo info;
-		readonly Map map;
+		readonly IMap map;
 		readonly Sprite copyTile, pasteTile;
 		readonly float copyAlpha, pasteAlpha;
 		PaletteReference palette;
@@ -96,14 +96,16 @@ namespace OpenRA.Mods.Common.Traits
 			if (wr.World.Type != WorldType.Editor)
 				yield break;
 
+			var map = wr.World.Map;
+
 			if (CopyRegion != null)
 				foreach (var c in CopyRegion)
-					yield return new SpriteRenderable(copyTile, wr.World.Map.CenterOfCell(c),
+					yield return new SpriteRenderable(copyTile, map.CenterOfCell(c),
 							WVec.Zero, -511, palette, 1f, copyAlpha * info.FootprintAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 
 			if (PasteRegion != null)
 				foreach (var c in PasteRegion)
-					yield return new SpriteRenderable(pasteTile, wr.World.Map.CenterOfCell(c),
+					yield return new SpriteRenderable(pasteTile, map.CenterOfCell(c),
 						WVec.Zero, -511, palette, 1f, pasteAlpha * info.FootprintAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 		}
 

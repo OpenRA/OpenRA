@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 			return ret;
 		}
 
-		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos Uv, Color Color)> destinationBuffer)
+		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(IMap map, ActorInfo ai, ActorReference s, List<(MPos Uv, Color Color)> destinationBuffer)
 		{
 			var resourceLayer = ai.TraitInfoOrDefault<IResourceLayerInfo>();
 			if (resourceLayer == null)
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 				for (var j = 0; j < map.MapSize.Y; j++)
 				{
 					var cell = new MPos(i, j);
-					if (colors.TryGetValue(map.Resources[cell].Type, out var color))
+					if (colors.TryGetValue(((IMapResource)map).Resources[cell].Type, out var color))
 						destinationBuffer.Add((cell, color));
 				}
 			}

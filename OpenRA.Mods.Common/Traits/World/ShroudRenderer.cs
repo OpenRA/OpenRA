@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly ShroudRendererInfo info;
 		readonly World world;
-		readonly Map map;
+		readonly IMap map;
 		readonly (Edges, Edges) notVisibleEdgesPair;
 		readonly byte variantStride;
 		readonly byte[] edgesToSpriteIndexOffset;
@@ -202,11 +202,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
+			var worldMap = w.Map;
+
 			// Initialize tile cache
 			// This includes the region outside the visible area to cover any sprites peeking outside the map
-			foreach (var uv in w.Map.AllCells.MapCoords)
+			foreach (var uv in worldMap.AllCells.MapCoords)
 			{
-				var pos = w.Map.CenterOfCell(uv.ToCPos(map));
+				var pos = worldMap.CenterOfCell(uv.ToCPos(map));
 				var screen = wr.Screen3DPosition(pos - new WVec(0, 0, pos.Z));
 				var variant = (byte)Game.CosmeticRandom.Next(info.ShroudVariants.Length);
 				tileInfos[uv] = new TileInfo(screen, variant);

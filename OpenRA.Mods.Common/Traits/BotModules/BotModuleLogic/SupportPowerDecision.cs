@@ -60,9 +60,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var answer = 0;
 			var world = firedBy.World;
-			var targetTile = world.Map.CellContaining(pos);
+			var map = world.Map;
+			var targetTile = map.CellContaining(pos);
 
-			if (!world.Map.Contains(targetTile))
+			if (!map.Contains(targetTile))
 				return 0;
 
 			foreach (var consideration in Considerations)
@@ -74,9 +75,9 @@ namespace OpenRA.Mods.Common.Traits
 					answer += consideration.GetAttractiveness(scrutinized, firedBy.RelationshipWith(scrutinized.Owner), firedBy);
 
 				var delta = new WVec(radiusToUse, radiusToUse, WDist.Zero);
-				var tl = world.Map.CellContaining(pos - delta);
-				var br = world.Map.CellContaining(pos + delta);
-				var checkFrozen = firedBy.FrozenActorLayer.FrozenActorsInRegion(new CellRegion(world.Map.Grid.Type, tl, br));
+				var tl = map.CellContaining(pos - delta);
+				var br = map.CellContaining(pos + delta);
+				var checkFrozen = firedBy.FrozenActorLayer.FrozenActorsInRegion(new CellRegion(map.Grid.Type, tl, br));
 
 				// IsValid check filters out Frozen Actors that have not initialized their Owner
 				foreach (var scrutinized in checkFrozen)

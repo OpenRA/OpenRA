@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
-			FrameLoader.GetFrames(wr.World.Map, info.Filename, Game.ModData.SpriteLoaders, out var metadata);
+			FrameLoader.GetFrames((IReadOnlyFileSystem)wr.World.Map, info.Filename, Game.ModData.SpriteLoaders, out var metadata);
 			var palettes = metadata?.GetOrDefault<EmbeddedSpritePalette>();
 			if (palettes == null || !palettes.TryGetPaletteForFrame(info.Frame, out var embeddedPalette))
 				throw new YamlException($"Cannot export palette from {info.Filename}: frame {info.Frame} does not define an embedded palette");

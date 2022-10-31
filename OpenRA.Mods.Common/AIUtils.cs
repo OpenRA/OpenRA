@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common
 
 	public static class AIUtils
 	{
-		public static bool IsAreaAvailable<T>(World world, Player player, Map map, int radius, HashSet<string> terrainTypes)
+		public static bool IsAreaAvailable<T>(World world, Player player, IMap map, int radius, HashSet<string> terrainTypes)
 		{
 			var cells = world.ActorsHavingTrait<T>().Where(a => a.Owner == player);
 

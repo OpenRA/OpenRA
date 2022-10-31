@@ -138,12 +138,13 @@ namespace OpenRA.Mods.Common.Warheads
 		/// <summary>Checks if the warhead is valid against the terrain at impact position.</summary>
 		bool IsValidAgainstTerrain(World world, WPos pos)
 		{
-			var cell = world.Map.CellContaining(pos);
-			if (!world.Map.Contains(cell))
+			var map = world.Map;
+			var cell = map.CellContaining(pos);
+			if (!map.Contains(cell))
 				return false;
 
-			var dat = world.Map.DistanceAboveTerrain(pos);
-			return IsValidTarget(dat > AirThreshold ? TargetTypeAir : world.Map.GetTerrainInfo(cell).TargetTypes);
+			var dat = map.DistanceAboveTerrain(pos);
+			return IsValidTarget(dat > AirThreshold ? TargetTypeAir : map.GetTerrainInfo(cell).TargetTypes);
 		}
 	}
 }

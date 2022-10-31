@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (logicArgs.TryGetValue("WorldViewKey", out yaml))
 				worldViewKey = modData.Hotkeys[yaml.Value];
 
-			limitViews = world.Map.Visibility.HasFlag(MapVisibility.MissionSelector);
+			limitViews = ((Map)world.Map).Visibility.HasFlag(MapVisibility.MissionSelector);
 
 			var groups = new Dictionary<string, IEnumerable<CameraOption>>();
 

@@ -232,8 +232,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.CanDeployOnRamps)
 				return true;
 
-			var map = self.World.Map;
-			return !map.Ramp.Contains(location) || map.Ramp[location] == 0;
+			var mapRamp = ((IMapElevation)self.World.Map).Ramp;
+			return !mapRamp.Contains(location) || mapRamp[location] == 0;
 		}
 
 		void INotifyDeployComplete.FinishedDeploy(Actor self)

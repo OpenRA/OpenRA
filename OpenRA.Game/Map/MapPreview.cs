@@ -63,7 +63,7 @@ namespace OpenRA
 
 	public class MapPreview : IDisposable, IReadOnlyFileSystem
 	{
-		/// <summary>Wrapper that enables map data to be replaced in an atomic fashion</summary>
+		/// <summary>Wrapper that enables map data to be replaced in an atomic fashion.</summary>
 		public class InnerData
 		{
 			public int MapFormat;
@@ -274,17 +274,16 @@ namespace OpenRA
 
 			innerData = new InnerData
 			{
-				// TO DO: Check if this MapFormat retrieval is correct and working
-				MapFormat = Map.GetMapFormat(Package),
+				MapFormat = ((IMap)map).MapFormat,
 				Title = map.Title,
 				Categories = map.Categories,
 				Author = map.Author,
-				TileSet = map.Tileset,
+				TileSet = ((IMap)map).Tileset,
 				Players = mapPlayers,
 				PlayerCount = mapPlayers.Players.Count(x => x.Value.Playable),
 				SpawnPoints = spawns.ToArray(),
-				GridType = map.Grid.Type,
-				Bounds = map.Bounds,
+				GridType = ((IMap)map).Grid.Type,
+				Bounds = ((IMap)map).Bounds,
 				Preview = null,
 				Status = MapStatus.Available,
 				Class = MapClassification.Unknown,

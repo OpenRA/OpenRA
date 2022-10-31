@@ -27,7 +27,7 @@ namespace OpenRA
 		readonly MPos mapTopLeft;
 		readonly MPos mapBottomRight;
 
-		public ProjectedCellRegion(Map map, PPos topLeft, PPos bottomRight)
+		public ProjectedCellRegion(IMap map, PPos topLeft, PPos bottomRight)
 		{
 			TopLeft = topLeft;
 			BottomRight = bottomRight;
@@ -45,7 +45,7 @@ namespace OpenRA
 			var heightOffset = map.Grid.Type == MapGridType.RectangularIsometric ? maxHeight : maxHeight / 2;
 
 			// Use the map Height data array to clamp the bottom coordinate so it doesn't overflow the map
-			mapBottomRight = map.Height.Clamp(new MPos(bottomRight.U, bottomRight.V + heightOffset));
+			mapBottomRight = ((IMapElevation)map).Height.Clamp(new MPos(bottomRight.U, bottomRight.V + heightOffset));
 		}
 
 		public bool Contains(PPos puv)

@@ -476,7 +476,8 @@ namespace OpenRA.Mods.Common.Traits
 		// Sets the location (fromCell, toCell, FromSubCell, ToSubCell) and CenterPosition
 		public void SetPosition(Actor self, WPos pos)
 		{
-			var cell = self.World.Map.CellContaining(pos);
+			var map = self.World.Map;
+			var cell = map.CellContaining(pos);
 			SetLocation(cell, FromSubCell, cell, FromSubCell);
 			SetCenterPosition(self, self.World.Map.CenterOfSubCell(cell, FromSubCell) + new WVec(0, 0, self.World.Map.DistanceAboveTerrain(pos).Length));
 			FinishedMoving(self);
@@ -665,13 +666,14 @@ namespace OpenRA.Mods.Common.Traits
 				pos = self.CenterPosition;
 				cell = mobile.ToCell;
 				subCell = mobile.ToSubCell;
+				var map = self.World.Map;
 
 				if (recalculateSubCell)
 					subCell = mobile.Info.LocomotorInfo.SharesCell ? self.World.ActorMap.FreeSubCell(cell, subCell, a => a != self) : SubCell.FullCell;
 
 				// TODO: solve/reduce cell is full problem
 				if (subCell == SubCell.Invalid)
-					subCell = self.World.Map.Grid.DefaultSubCell;
+					subCell = map.Grid.DefaultSubCell;
 
 				// Reserve the exit cell
 				mobile.SetPosition(self, cell, subCell);
@@ -680,7 +682,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (delay > 0)
 					QueueChild(new Wait(delay));
 
-				QueueChild(mobile.LocalMove(self, pos, self.World.Map.CenterOfSubCell(cell, subCell)));
+				QueueChild(mobile.LocalMove(self, pos, map.CenterOfSubCell(cell, subCell)));
 				return true;
 			}
 		}
@@ -922,7 +924,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (order.OrderString == "Move")
 			{
-				var cell = self.World.Map.Clamp(this.self.World.Map.CellContaining(order.Target.CenterPosition));
+				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
 				if (!Info.LocomotorInfo.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
@@ -993,20 +995,22 @@ namespace OpenRA.Mods.Common.Traits
 
 			public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
 			{
+				var map = self.World.Map;
+
 				if (rejectMove || target.Type != TargetType.Terrain || (mobile.requireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove)))
 					return false;
 
-				var location = self.World.Map.CellContaining(target.CenterPosition);
+				var location = map.CellContaining(target.CenterPosition);
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 				var explored = self.Owner.Shroud.IsExplored(location);
 
 				if (mobile.IsTraitPaused
-					|| !self.World.Map.Contains(location)
+					|| !map.Contains(location)
 					|| (!explored && !locomotorInfo.MoveIntoShroud)
 					|| (explored && mobile.Locomotor.MovementCostForCell(location) == PathGraph.MovementCostForUnreachableCell))
 					cursor = mobile.Info.BlockedCursor;
-				else if (!explored || !mobile.Info.TerrainCursors.TryGetValue(self.World.Map.GetTerrainInfo(location).Type, out cursor))
+				else if (!explored || !mobile.Info.TerrainCursors.TryGetValue(map.GetTerrainInfo(location).Type, out cursor))
 					cursor = mobile.Info.Cursor;
 
 				return true;

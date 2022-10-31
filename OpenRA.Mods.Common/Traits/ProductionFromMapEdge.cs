@@ -55,16 +55,17 @@ namespace OpenRA.Mods.Common.Traits
 
 			var destinations = rp != null && rp.Path.Count > 0 ? rp.Path : new List<CPos> { self.Location };
 
+			var map = self.World.Map;
 			var location = spawnLocation;
 			if (!location.HasValue)
 			{
 				if (aircraftInfo != null)
-					location = self.World.Map.ChooseClosestEdgeCell(self.Location);
+					location = map.ChooseClosestEdgeCell(self.Location);
 
 				if (mobileInfo != null)
 				{
 					var locomotor = self.World.WorldActor.TraitsImplementing<Locomotor>().First(l => l.Info.Name == mobileInfo.Locomotor);
-					location = self.World.Map.ChooseClosestMatchingEdgeCell(self.Location,
+					location = map.ChooseClosestMatchingEdgeCell(self.Location,
 						c => mobileInfo.CanEnterCell(self.World, null, c) && pathFinder.PathExistsForLocomotor(locomotor, c, destinations[0]));
 				}
 			}
@@ -73,13 +74,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (!location.HasValue)
 				return false;
 
-			var pos = self.World.Map.CenterOfCell(location.Value);
+			var pos = map.CenterOfCell(location.Value);
 
 			// If aircraft, spawn at cruise altitude
 			if (aircraftInfo != null)
 				pos += new WVec(0, 0, aircraftInfo.CruiseAltitude.Length);
 
-			var initialFacing = self.World.Map.FacingBetween(location.Value, destinations[0], WAngle.Zero);
+			var initialFacing = map.FacingBetween(location.Value, destinations[0], WAngle.Zero);
 
 			self.World.AddFrameEndTask(w =>
 			{

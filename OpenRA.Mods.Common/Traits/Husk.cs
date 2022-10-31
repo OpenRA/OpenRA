@@ -83,12 +83,13 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			self = init.Self;
 
+			var map = init.World.Map;
 			TopLeft = init.GetValue<LocationInit, CPos>();
-			CenterPosition = init.GetValue<CenterPositionInit, WPos>(init.World.Map.CenterOfCell(TopLeft));
+			CenterPosition = init.GetValue<CenterPositionInit, WPos>(map.CenterOfCell(TopLeft));
 			Facing = init.GetValue<FacingInit, WAngle>(info.GetInitialFacing());
 
 			dragSpeed = init.GetValue<HuskSpeedInit, int>(0);
-			finalPosition = init.World.Map.CenterOfCell(TopLeft);
+			finalPosition = map.CenterOfCell(TopLeft);
 
 			effectiveOwner = init.GetValue<EffectiveOwnerInit, Player>(info, self.Owner);
 		}
@@ -104,10 +105,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanExistInCell(CPos cell)
 		{
-			if (!self.World.Map.Contains(cell))
+			var map = self.World.Map;
+
+			if (!map.Contains(cell))
 				return false;
 
-			if (!info.AllowedTerrain.Contains(self.World.Map.GetTerrainInfo(cell).Type))
+			if (!info.AllowedTerrain.Contains(map.GetTerrainInfo(cell).Type))
 				return false;
 
 			return true;

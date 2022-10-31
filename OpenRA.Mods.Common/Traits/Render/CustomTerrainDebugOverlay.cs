@@ -70,13 +70,14 @@ namespace OpenRA.Mods.Common.Traits
 				if (self.World.ShroudObscures(uv))
 					continue;
 
-				var cell = uv.ToCPos(wr.World.Map);
-				var center = wr.World.Map.CenterOfCell(cell);
+				var map = wr.World.Map;
+				var cell = uv.ToCPos(map);
+				var center = map.CenterOfCell(cell);
 				var terrainType = self.World.Map.CustomTerrain[cell];
 				if (terrainType == byte.MaxValue)
 					continue;
 
-				var info = wr.World.Map.GetTerrainInfo(cell);
+				var info = map.GetTerrainInfo(cell);
 				yield return new TextAnnotationRenderable(font, center, 0, info.Color, info.Type);
 			}
 		}

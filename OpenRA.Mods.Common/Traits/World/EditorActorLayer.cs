@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (w.Type != WorldType.Editor)
 				return;
 
-			Players = new MapPlayers(w.Map.PlayerDefinitions);
+			Players = new MapPlayers(((Map)w.Map).PlayerDefinitions);
 
 			worldOwner = Players.Players.Select(kvp => kvp.Value).First(p => !p.Playable && p.OwnsWorld);
 			w.SetWorldOwner(new Player(w, null, worldOwner, playerRandom));
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 			var height = world.Map.MapSize.Y * ts.Height;
 			screenMap = new SpatiallyPartitioned<EditorActorPreview>(width, height, info.BinSize);
 
-			foreach (var kv in world.Map.ActorDefinitions)
+			foreach (var kv in ((Map)world.Map).ActorDefinitions)
 				Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.ToDictionary()), true);
 
 			// Update neighbours in one pass

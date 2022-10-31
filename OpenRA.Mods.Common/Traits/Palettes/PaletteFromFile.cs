@@ -68,8 +68,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
+			// TO DO: Make this use IMap instead of Map
 			if (info.Tileset == null || string.Equals(info.Tileset, world.Map.Tileset, StringComparison.InvariantCultureIgnoreCase))
-				wr.AddPalette(info.Name, ((IProvidesCursorPaletteInfo)info).ReadPalette(world.Map), info.AllowModifiers);
+				wr.AddPalette(info.Name, ((IProvidesCursorPaletteInfo)info).ReadPalette((Map)world.Map), info.AllowModifiers);
 		}
 
 		public IEnumerable<string> PaletteNames

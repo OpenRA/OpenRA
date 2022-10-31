@@ -17,7 +17,7 @@ namespace OpenRA
 	{
 		public int MaxIndex => Size.Width * Size.Height;
 
-		public ProjectedCellLayer(Map map)
+		public ProjectedCellLayer(IMap map)
 			: base(map) { }
 
 		public ProjectedCellLayer(MapGridType gridType, Size size)

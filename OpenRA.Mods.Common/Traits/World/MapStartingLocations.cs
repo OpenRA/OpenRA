@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Traits
 				.OptionOrDefault("separateteamspawns", info.SeparateTeamSpawnsCheckboxEnabled);
 
 			var spawns = new List<CPos>();
-			foreach (var n in self.World.Map.ActorDefinitions)
+			foreach (var n in ((Map)self.World.Map).ActorDefinitions)
 				if (n.Value.Value == "mpspawn")
 					spawns.Add(new ActorReference(n.Key, n.Value.ToDictionary()).GetValue<LocationInit, CPos>());
 
@@ -175,13 +175,15 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var p in world.Players)
 			{
+				var map = world.Map;
+
 				if (!p.Playable)
 					continue;
 
 				if (p == world.LocalPlayer)
-					wr.Viewport.Center(world.Map.CenterOfCell(p.HomeLocation));
+					wr.Viewport.Center(map.CenterOfCell(p.HomeLocation));
 
-				var cells = Shroud.ProjectedCellsInRange(world.Map, p.HomeLocation, info.InitialExploreRange)
+				var cells = Shroud.ProjectedCellsInRange(map, p.HomeLocation, info.InitialExploreRange)
 					.ToList();
 
 				foreach (var q in world.Players)

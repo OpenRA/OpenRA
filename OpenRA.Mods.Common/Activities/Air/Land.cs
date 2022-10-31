@@ -76,6 +76,8 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override bool Tick(Actor self)
 		{
+			var map = self.World.Map;
+
 			if (IsCanceling || target.Type == TargetType.Invalid)
 			{
 				if (landingInitiated)
@@ -88,7 +90,7 @@ namespace OpenRA.Mods.Common.Activities
 					var continueLanding = shouldLand && self.CurrentActivity.IsCanceling && self.CurrentActivity.NextActivity == null;
 					if (!continueLanding)
 					{
-						var dat = self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition);
+						var dat = map.DistanceAboveTerrain(aircraft.CenterPosition);
 						if (dat > aircraft.LandAltitude && dat < aircraft.Info.CruiseAltitude)
 						{
 							QueueChild(new TakeOff(self));
@@ -107,7 +109,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Reevaluate target position in case the target has moved.
 			targetPosition = target.CenterPosition + offset;
-			landingCell = self.World.Map.CellContaining(targetPosition);
+			landingCell = map.CellContaining(targetPosition);
 
 			// We are already at the landing location.
 			if ((targetPosition - pos).LengthSquared == 0)
@@ -129,7 +131,7 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					target = Target.FromCell(self.World, newLocation.Value);
 					targetPosition = target.CenterPosition + offset;
-					landingCell = self.World.Map.CellContaining(targetPosition);
+					landingCell = map.CellContaining(targetPosition);
 				}
 			}
 
@@ -237,7 +239,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Final descent.
 			if (aircraft.Info.VTOL)
 			{
-				var landAltitude = self.World.Map.DistanceAboveTerrain(targetPosition) + aircraft.LandAltitude;
+				var landAltitude = map.DistanceAboveTerrain(targetPosition) + aircraft.LandAltitude;
 				if (Fly.VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, landAltitude))
 					return false;
 
@@ -255,7 +257,7 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 			}
 
-			var landingAlt = self.World.Map.DistanceAboveTerrain(targetPosition) + aircraft.LandAltitude;
+			var landingAlt = map.DistanceAboveTerrain(targetPosition) + aircraft.LandAltitude;
 			Fly.FlyTick(self, aircraft, d.Yaw, landingAlt);
 
 			return false;

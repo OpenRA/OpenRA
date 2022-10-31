@@ -84,6 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Enabled)
 				yield break;
 
+			var map = self.World.Map;
 			var pathFinder = self.Trait<PathFinder>();
 			var visibleRegion = wr.Viewport.AllVisibleCells;
 			var locomotors = Locomotor == null
@@ -104,17 +105,17 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var connectionsFromOneNode in abstractGraph)
 				{
 					var nodeCell = connectionsFromOneNode.Key;
-					var srcUv = (PPos)nodeCell.ToMPos(self.World.Map);
+					var srcUv = (PPos)nodeCell.ToMPos(map);
 					foreach (var cost in connectionsFromOneNode.Value)
 					{
-						var destUv = (PPos)cost.Destination.ToMPos(self.World.Map);
+						var destUv = (PPos)cost.Destination.ToMPos(map);
 						if (!visibleRegion.Contains(destUv) && !visibleRegion.Contains(srcUv))
 							continue;
 
 						var connection = new WPos[]
 						{
-							self.World.Map.CenterOfSubCell(cost.Destination, SubCell.FullCell),
-							self.World.Map.CenterOfSubCell(nodeCell, SubCell.FullCell),
+							map.CenterOfSubCell(cost.Destination, SubCell.FullCell),
+							map.CenterOfSubCell(nodeCell, SubCell.FullCell),
 						};
 
 						// Connections on the ground layer given in ground color.
@@ -132,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 						var centerCell = new CPos(
 							(cost.Destination.X + nodeCell.X) / 2,
 							(cost.Destination.Y + nodeCell.Y) / 2);
-						var centerPos = self.World.Map.CenterOfSubCell(centerCell, SubCell.FullCell);
+						var centerPos = map.CenterOfSubCell(centerCell, SubCell.FullCell);
 						yield return new TextAnnotationRenderable(font, centerPos, 0, lineColor, cost.Cost.ToString());
 					}
 				}
@@ -140,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var domainForCell in abstractDomains)
 				{
 					var nodeCell = domainForCell.Key;
-					var srcUv = (PPos)nodeCell.ToMPos(self.World.Map);
+					var srcUv = (PPos)nodeCell.ToMPos(map);
 					if (!visibleRegion.Contains(srcUv))
 						continue;
 

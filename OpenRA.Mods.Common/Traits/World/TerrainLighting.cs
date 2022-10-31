@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		readonly TerrainLightingInfo info;
-		readonly Map map;
+		readonly IMap map;
 		readonly Dictionary<int, LightSource> lightSources = new();
 		readonly SpatiallyPartitioned<LightSource> partitionedLightSources;
 		readonly float3 globalTint;
@@ -111,14 +111,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		float3 ITerrainLighting.TintAt(WPos pos)
 		{
+			var mapHeight = ((IMapElevation)map).Height;
+
 			using (new PerfSample("terrain_lighting"))
 			{
 				var uv = map.CellContaining(pos).ToMPos(map);
 				var tint = globalTint;
-				if (!map.Height.Contains(uv))
+				if (!mapHeight.Contains(uv))
 					return tint;
 
-				var intensity = info.Intensity + info.HeightStep * map.Height[uv];
+				var intensity = info.Intensity + info.HeightStep * mapHeight[uv];
 				if (lightSources.Count > 0)
 				{
 					foreach (var source in partitionedLightSources.At(new int2(pos.X, pos.Y)))

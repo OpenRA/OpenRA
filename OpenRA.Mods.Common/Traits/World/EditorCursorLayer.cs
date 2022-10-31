@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (Actor.RemoveInits<SubCellInit>() > 0)
 						updated = true;
 
-					var subcell = world.Map.Tiles.Contains(cell) ? editorLayer.FreeSubCellAt(cell) : SubCell.Invalid;
+					var subcell = ((IMapTiles)world.Map).Tiles.Contains(cell) ? editorLayer.FreeSubCellAt(cell) : SubCell.Invalid;
 					if (subcell != SubCell.Invalid)
 					{
 						Actor.AddInit(new SubCellInit(subcell));

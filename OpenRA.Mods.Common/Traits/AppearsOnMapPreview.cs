@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 			"Overrides `Color` if both set.")]
 		public readonly string Terrain = null;
 
-		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos Uv, Color Color)> destinationBuffer)
+		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(IMap map, ActorInfo ai, ActorReference s, List<(MPos Uv, Color Color)> destinationBuffer)
 		{
 			Color color;
 			if (!string.IsNullOrEmpty(Terrain))
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else
 			{
-				var owner = map.PlayerDefinitions.Single(p => s.Get<OwnerInit>().InternalName == p.Value.Nodes.Last(k => k.Key == "Name").Value.Value);
+				var owner = ((Map)map).PlayerDefinitions.Single(p => s.Get<OwnerInit>().InternalName == p.Value.Nodes.Last(k => k.Key == "Name").Value.Value);
 				var colorValue = owner.Value.Nodes.Where(n => n.Key == "Color");
 				var ownerColor = colorValue.Any() ? colorValue.First().Value.Value : "FFFFFF";
 				Color.TryParse(ownerColor, out color);

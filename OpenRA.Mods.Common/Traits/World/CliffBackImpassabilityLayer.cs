@@ -37,22 +37,23 @@ namespace OpenRA.Mods.Common.Traits
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			var tileType = w.Map.Rules.TerrainInfo.GetTerrainIndex(info.TerrainType);
+			var map = w.Map;
 
 			// Units are allowed behind cliffs *only* if they are part of a tunnel portal
 			var tunnelPortals = w.WorldActor.Info.TraitInfos<TerrainTunnelInfo>()
 				.SelectMany(mti => mti.PortalCells())
 				.ToHashSet();
 
-			foreach (var uv in w.Map.AllCells.MapCoords)
+			foreach (var uv in map.AllCells.MapCoords)
 			{
-				if (tunnelPortals.Contains(uv.ToCPos(w.Map)))
+				if (tunnelPortals.Contains(uv.ToCPos(map)))
 					continue;
 
 				// All the map cells that visually overlap the current cell
-				var testCells = w.Map.ProjectedCellsCovering(uv)
-					.SelectMany(puv => w.Map.Unproject(puv));
+				var testCells = map.ProjectedCellsCovering(uv)
+					.SelectMany(puv => map.Unproject(puv));
 				if (testCells.Any(x => x.V >= uv.V + 4))
-					w.Map.CustomTerrain[uv] = tileType;
+					map.CustomTerrain[uv] = tileType;
 			}
 		}
 	}

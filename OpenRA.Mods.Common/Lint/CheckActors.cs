@@ -16,9 +16,9 @@ namespace OpenRA.Mods.Common.Lint
 {
 	public class CheckActors : ILintMapPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
+		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, IMap map)
 		{
-			var actorTypes = map.ActorDefinitions.Select(a => a.Value.Value);
+			var actorTypes = ((Map)map).ActorDefinitions.Select(a => a.Value.Value);
 			foreach (var actor in actorTypes)
 				if (!map.Rules.Actors.Keys.Contains(actor.ToLowerInvariant()))
 					emitError($"Actor {actor} is not defined by any rule.");

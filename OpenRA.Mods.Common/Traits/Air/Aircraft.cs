@@ -194,10 +194,12 @@ namespace OpenRA.Mods.Common.Traits
 		// Used to determine if an aircraft can spawn landed
 		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
 		{
-			if (!world.Map.Contains(cell))
+			var map = world.Map;
+
+			if (!map.Contains(cell))
 				return false;
 
-			var type = world.Map.GetTerrainInfo(cell).Type;
+			var type = map.GetTerrainInfo(cell).Type;
 			if (!LandableTerrainTypes.Contains(type))
 				return false;
 
@@ -468,6 +470,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual WVec GetRepulsionForce()
 		{
+			var map = self.World.Map;
+
 			if (!Info.Repulsable)
 				return WVec.Zero;
 
@@ -497,11 +501,11 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Actors outside the map bounds receive an extra nudge towards the center of the map
-			if (!self.World.Map.Contains(self.Location))
+			if (!map.Contains(self.Location))
 			{
 				// The map bounds are in projected coordinates, which is technically wrong for this,
 				// but we avoid the issues in practice by guessing the middle of the map instead of the edge
-				var center = WPos.Lerp(self.World.Map.ProjectedTopLeft, self.World.Map.ProjectedBottomRight, 1, 2);
+				var center = WPos.Lerp(map.ProjectedTopLeft, map.ProjectedBottomRight, 1, 2);
 				repulsionForce += new WVec(0, 1024, 0).Rotate(WRot.FromYaw((self.CenterPosition - center).Yaw));
 			}
 
@@ -636,18 +640,20 @@ namespace OpenRA.Mods.Common.Traits
 
 		public CPos? FindLandingLocation(CPos targetCell, WDist maxSearchDistance)
 		{
+			var map = self.World.Map;
+
 			// The easy case
 			if (CanLand(targetCell, blockedByMobile: false))
 				return targetCell;
 
 			var cellRange = (maxSearchDistance.Length + 1023) / 1024;
-			var centerPosition = self.World.Map.CenterOfCell(targetCell);
-			foreach (var c in self.World.Map.FindTilesInCircle(targetCell, cellRange))
+			var centerPosition = map.CenterOfCell(targetCell);
+			foreach (var c in map.FindTilesInCircle(targetCell, cellRange))
 			{
 				if (!CanLand(c, blockedByMobile: false))
 					continue;
 
-				var delta = self.World.Map.CenterOfCell(c) - centerPosition;
+				var delta = map.CenterOfCell(c) - centerPosition;
 				if (delta.LengthSquared < maxSearchDistance.LengthSquared)
 					return c;
 			}
@@ -666,7 +672,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanLand(CPos cell, Actor dockingActor = null, bool blockedByMobile = true)
 		{
-			if (!self.World.Map.Contains(cell))
+			var map = self.World.Map;
+
+			if (!map.Contains(cell))
 				return false;
 
 			foreach (var otherActor in self.World.ActorMap.GetActorsAt(cell))
@@ -678,7 +686,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 
 			var landableTerrain = overrideAircraftLanding != null ? overrideAircraftLanding.LandableTerrainTypes : Info.LandableTerrainTypes;
-			return landableTerrain.Contains(self.World.Map.GetTerrainInfo(cell).Type);
+			return landableTerrain.Contains(map.GetTerrainInfo(cell).Type);
 		}
 
 		bool IsBlockedBy(Actor self, Actor otherActor, Actor ignoreActor, bool blockedByMobile = true)
@@ -738,6 +746,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void OnBecomingIdle(Actor self)
 		{
+			var map = self.World.Map;
+
 			if (Info.IdleBehavior == IdleBehaviorType.LeaveMap)
 			{
 				self.QueueActivity(new FlyOffMap(self));
@@ -745,7 +755,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (Info.IdleBehavior == IdleBehaviorType.LeaveMapAtClosestEdge)
 			{
-				var edgeCell = self.World.Map.ChooseClosestEdgeCell(self.Location);
+				var edgeCell = map.ChooseClosestEdgeCell(self.Location);
 				self.QueueActivity(new FlyOffMap(self, Target.FromCell(self.World, edgeCell)));
 				self.QueueActivity(new RemoveSelf());
 			}
@@ -753,7 +763,7 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(new ReturnToBase(self, null, !Info.TakeOffOnResupply));
 			else
 			{
-				var dat = self.World.Map.DistanceAboveTerrain(CenterPosition);
+				var dat = map.DistanceAboveTerrain(CenterPosition);
 				if (dat == LandAltitude)
 				{
 					if (!CanLand(self.Location) && ReservedActor == null)
@@ -795,11 +805,12 @@ namespace OpenRA.Mods.Common.Traits
 		public void SetPosition(Actor self, WPos pos)
 		{
 			CenterPosition = pos;
+			var map = self.World.Map;
 
 			if (!self.IsInWorld)
 				return;
 
-			var altitude = self.World.Map.DistanceAboveTerrain(CenterPosition);
+			var altitude = map.DistanceAboveTerrain(CenterPosition);
 
 			// LandingCells define OccupiedCells, so we need to keep current position with LandindCells in sync.
 			// Though we don't want to update LandingCells when the unit is airborne, as when non-VTOL units reserve
@@ -1058,13 +1069,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
+			var map = self.World.Map;
+
 			if (IsTraitDisabled)
 				return;
 
 			var orderString = order.OrderString;
 			if (orderString == "Move")
 			{
-				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
+				var cell = map.Clamp(map.CellContaining(order.Target.CenterPosition));
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
@@ -1079,7 +1092,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else if (orderString == "Land")
 			{
-				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
+				var cell = map.Clamp(map.CellContaining(order.Target.CenterPosition));
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
 

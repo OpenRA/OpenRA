@@ -20,17 +20,17 @@ namespace OpenRA.Mods.Common.Lint
 {
 	public class CheckPlayers : ILintMapPass, ILintServerMapPass
 	{
-		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
+		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, IMap map)
 		{
-			var players = new MapPlayers(map.PlayerDefinitions);
+			var players = new MapPlayers(((Map)map).PlayerDefinitions);
 			var spawns = new List<CPos>();
-			foreach (var kv in map.ActorDefinitions.Where(d => d.Value.Value == "mpspawn"))
+			foreach (var kv in ((Map)map).ActorDefinitions.Where(d => d.Value.Value == "mpspawn"))
 			{
 				var s = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
 				spawns.Add(s.Get<LocationInit>().Value);
 			}
 
-			Run(emitError, emitWarning, players, map.Visibility, map.Rules.Actors[SystemActors.World], spawns.ToArray());
+			Run(emitError, emitWarning, players, ((Map)map).Visibility, map.Rules.Actors[SystemActors.World], spawns.ToArray());
 		}
 
 		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)

@@ -44,17 +44,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 
 				var actorDefinitions = editorActorLayer.Save();
 				if (actorDefinitions != null)
-					map.ActorDefinitions = actorDefinitions;
+					((Map)map).ActorDefinitions = actorDefinitions;
 
 				var playerDefinitions = editorActorLayer.Players.ToMiniYaml();
 				if (playerDefinitions != null)
-					map.PlayerDefinitions = playerDefinitions;
+					((Map)map).PlayerDefinitions = playerDefinitions;
 
-				var package = (IReadWritePackage)map.Package;
-				SaveMapLogic.SaveMapInner(map, package, world, modData);
+				var package = (IReadWritePackage)((Map)map).Package;
+				SaveMapLogic.SaveMapInner((Map)map, package, world, modData);
 			}
 
-			SaveMapLogic.SaveMap(modData, world, map, map.Package?.Name, SaveMap);
+			SaveMapLogic.SaveMap(modData, world, (Map)map, ((Map)map).Package?.Name, SaveMap);
 			return true;
 		}
 	}

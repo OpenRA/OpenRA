@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public sealed class TerrainRenderer : IRenderTerrain, IWorldLoaded, INotifyActorDisposing, ITiledTerrainRenderer
 	{
-		readonly Map map;
+		readonly IMap map;
 		TerrainSpriteLayer spriteLayer;
 		readonly DefaultTerrain terrainInfo;
 		readonly DefaultTileCache tileCache;
@@ -85,13 +85,13 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var cell in map.AllCells)
 				UpdateCell(cell);
 
-			map.Tiles.CellEntryChanged += UpdateCell;
-			map.Height.CellEntryChanged += UpdateCell;
+			((IMapTiles)map).Tiles.CellEntryChanged += UpdateCell;
+			((IMapElevation)map).Height.CellEntryChanged += UpdateCell;
 		}
 
 		public void UpdateCell(CPos cell)
 		{
-			var tile = map.Tiles[cell];
+			var tile = ((IMapTiles)map).Tiles[cell];
 			var palette = terrainInfo.Palette;
 			if (terrainInfo.Templates.TryGetValue(tile.Type, out var template))
 				palette = ((DefaultTerrainTemplateInfo)template).Palette ?? palette;
@@ -114,8 +114,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (disposed)
 				return;
 
-			map.Tiles.CellEntryChanged -= UpdateCell;
-			map.Height.CellEntryChanged -= UpdateCell;
+			((IMapTiles)map).Tiles.CellEntryChanged -= UpdateCell;
+			((IMapElevation)map).Height.CellEntryChanged -= UpdateCell;
 
 			spriteLayer.Dispose();
 

@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				Info.Sequences.Random(Game.CosmeticRandom), Info.Palette, Info.VisibleThroughFog)));
 		}
 
-		bool ShouldAddEffect(Map map, CPos cell)
+		bool ShouldAddEffect(IMap map, CPos cell)
 		{
 			if (Info.TerrainTypes.Count == 0)
 				return true;

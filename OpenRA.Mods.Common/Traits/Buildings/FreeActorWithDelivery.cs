@@ -76,14 +76,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		void CreateActors(string actorName, string deliveringActorName, out Actor cargo, out Actor carrier)
 		{
+			var map = self.World.Map;
+
 			// Get a carryall spawn location
 			var location = info.SpawnLocation;
 			if (location == CPos.Zero)
-				location = self.World.Map.ChooseClosestEdgeCell(self.Location);
+				location = map.ChooseClosestEdgeCell(self.Location);
 
-			var spawn = self.World.Map.CenterOfCell(location);
+			var spawn = map.CenterOfCell(location);
 
-			var initialFacing = self.World.Map.FacingBetween(location, self.Location, WAngle.Zero);
+			var initialFacing = map.FacingBetween(location, self.Location, WAngle.Zero);
 
 			// If aircraft, spawn at cruise altitude
 			var aircraftInfo = self.World.Map.Rules.Actors[deliveringActorName.ToLowerInvariant()].TraitInfoOrDefault<AircraftInfo>();

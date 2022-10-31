@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				// Check the actor is inside the map
 				var actor = editorCursor.Actor;
-				if (!actor.Footprint.All(c => world.Map.Tiles.Contains(c.Key)))
+				if (!actor.Footprint.All(c => ((IMapTiles)world.Map).Tiles.Contains(c.Key)))
 					return true;
 
 				var action = new AddActorAction(editorLayer, actor.Export());

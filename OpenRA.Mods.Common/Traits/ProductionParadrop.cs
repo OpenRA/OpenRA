@@ -131,8 +131,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (exitinfo != null)
 					exit += exitinfo.ExitCell;
 
-				var spawn = self.World.Map.CenterOfCell(exit) + new WVec(WDist.Zero, WDist.Zero, altitude);
-				var to = self.World.Map.CenterOfCell(exit);
+				var map = self.World.Map;
+				var spawn = map.CenterOfCell(exit) + new WVec(WDist.Zero, WDist.Zero, altitude);
+				var to = map.CenterOfCell(exit);
 
 				var initialFacing = (exitinfo != null && exitinfo.Facing.HasValue) ? exitinfo.Facing.Value : (to - spawn).Yaw;
 

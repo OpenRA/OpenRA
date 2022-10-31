@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class EditorResourceLayer : IResourceLayer, IWorldLoaded, INotifyActorDisposing
 	{
 		readonly EditorResourceLayerInfo info;
-		protected readonly Map Map;
+		protected readonly IMap Map;
 		protected readonly Dictionary<byte, string> ResourceTypesByIndex;
 		protected readonly CellLayer<ResourceLayerContents> Tiles;
 		protected Dictionary<string, int> resourceValues;
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 				kv => kv.Value.ResourceIndex,
 				kv => kv.Key);
 
-			Map.Resources.CellEntryChanged += UpdateCell;
+			((IMapResource)Map).Resources.CellEntryChanged += UpdateCell;
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
@@ -123,11 +123,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void UpdateCell(CPos cell)
 		{
-			var uv = cell.ToMPos(Map);
-			if (!Map.Resources.Contains(uv))
+			var mapResource = (IMapResource)Map;
+
+			var uv = cell.ToMPos(mapResource);
+			if (!mapResource.Resources.Contains(uv))
 				return;
 
-			var tile = Map.Resources[uv];
+			var tile = mapResource.Resources[uv];
 			var t = Tiles[uv];
 
 			var newTile = ResourceLayerContents.Empty;
@@ -144,7 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			UpdateNetWorth(t.Type, t.Density, newTile.Type, newTile.Density);
 			Tiles[uv] = newTile;
-			Map.CustomTerrain[uv] = newTerrain;
+			mapResource.CustomTerrain[uv] = newTerrain;
 			CellChanged?.Invoke(cell, newTile.Type);
 
 			if (!info.RecalculateResourceDensity)
@@ -184,7 +186,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual int CalculateCellDensity(ResourceLayerContents contents, CPos c)
 		{
-			var resources = Map.Resources;
+			var resources = ((IMapResource)Map).Resources;
 			if (contents.Type == null || !info.ResourceTypes.TryGetValue(contents.Type, out var resourceInfo) || resources[c].Type != resourceInfo.ResourceIndex)
 				return 0;
 
@@ -208,7 +210,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual bool AllowResourceAt(string resourceType, CPos cell)
 		{
-			if (!Map.Ramp.Contains(cell) || Map.Ramp[cell] != 0)
+			var mapRamp = ((IMapElevation)Map).Ramp;
+			var mapTiles = ((IMapTiles)Map).Tiles;
+
+			if (!mapRamp.Contains(cell) || mapRamp[cell] != 0)
 				return false;
 
 			if (!info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
@@ -216,7 +221,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Ignore custom terrain types when spawning resources in the editor
 			var terrainInfo = Map.Rules.TerrainInfo;
-			var terrainType = terrainInfo.TerrainTypes[terrainInfo.GetTerrainInfo(Map.Tiles[cell]).TerrainType].Type;
+			var terrainType = terrainInfo.TerrainTypes[terrainInfo.GetTerrainInfo(mapTiles[cell]).TerrainType].Type;
 
 			// TODO: Check against actors in the EditorActorLayer
 			return resourceInfo.AllowedTerrainTypes.Contains(terrainType);
@@ -224,7 +229,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool CanAddResource(string resourceType, CPos cell, int amount = 1)
 		{
-			var resources = Map.Resources;
+			var resources = ((IMapResource)Map).Resources;
 			if (!resources.Contains(cell))
 				return false;
 
@@ -242,7 +247,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual int AddResource(string resourceType, CPos cell, int amount = 1)
 		{
-			var resources = Map.Resources;
+			var mapResource = (IMapResource)Map;
+			var resources = mapResource.Resources;
 			if (!resources.Contains(cell))
 				return 0;
 
@@ -253,14 +259,14 @@ namespace OpenRA.Mods.Common.Traits
 			var content = resources[cell];
 			var oldDensity = content.Type == resourceInfo.ResourceIndex ? content.Index : 0;
 			var density = (byte)Math.Min(resourceInfo.MaxDensity, oldDensity + amount);
-			Map.Resources[cell] = new ResourceTile(resourceInfo.ResourceIndex, density);
+			mapResource.Resources[cell] = new ResourceTile(resourceInfo.ResourceIndex, density);
 
 			return density - oldDensity;
 		}
 
 		protected virtual int RemoveResource(string resourceType, CPos cell, int amount = 1)
 		{
-			var resources = Map.Resources;
+			var resources = ((IMapResource)Map).Resources;
 			if (!resources.Contains(cell))
 				return 0;
 
@@ -280,7 +286,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void ClearResources(CPos cell)
 		{
-			Map.Resources[cell] = default;
+			((IMapResource)Map).Resources[cell] = default;
 		}
 
 		void INotifyActorDisposing.Disposing(Actor self)
@@ -288,7 +294,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (disposed)
 				return;
 
-			Map.Resources.CellEntryChanged -= UpdateCell;
+			((IMapResource)Map).Resources.CellEntryChanged -= UpdateCell;
 
 			disposed = true;
 		}

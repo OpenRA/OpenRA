@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		protected override ISpriteSequence ChooseVariant(string resourceType, CPos cell)
 		{
 			Dictionary<string, Dictionary<string, ISpriteSequence>> variants;
-			switch (world.Map.Ramp[cell])
+			switch (((IMapElevation)world.Map).Ramp[cell])
 			{
 				case 1: variants = ramp1Variants; break;
 				case 2: variants = ramp2Variants; break;

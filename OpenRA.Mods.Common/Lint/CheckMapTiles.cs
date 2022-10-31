@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common.Lint
 {
 	public class CheckMapTiles : ILintMapPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
+		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, IMap map)
 		{
 			foreach (var kv in map.ReplacedInvalidTerrainTiles)
 				emitError($"Cell {kv.Key} references invalid terrain tile {kv.Value}.");

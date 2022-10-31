@@ -489,7 +489,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Show dialog only if updated since last save
 			button.OnClick = () =>
 			{
-				var map = modData.MapCache.GetUpdatedMap(world.Map.Uid);
+				var map = modData.MapCache.GetUpdatedMap(((Map)world.Map).Uid);
 				var deletedOrUnavailable = map == null || modData.MapCache[map].Status != MapStatus.Available;
 				if (actionManager.HasUnsavedItems() || deletedOrUnavailable)
 				{

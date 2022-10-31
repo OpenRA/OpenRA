@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				// Some mods may define terrain-specific bibs
 				var sequence = Sequence;
-				if (map.Tiles.Contains(cell))
+				if (((IMapTiles)map).Tiles.Contains(cell))
 				{
 					var terrain = map.GetTerrainInfo(cell).Type;
 					var testSequence = Sequence + "-" + terrain;
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				anim.IsDecoration = true;
 
 				// Z-order is one set to the top of the footprint
-				var offset = self.World.Map.CenterOfCell(cell) - self.World.Map.CenterOfCell(location) - centerOffset;
+				var offset = map.CenterOfCell(cell) - map.CenterOfCell(location) - centerOffset;
 				var awo = new AnimationWithOffset(anim, () => offset, null, -(offset.Y + centerOffset.Y + 512));
 				anims.Add(awo);
 				rs.Add(awo, info.Palette);

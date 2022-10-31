@@ -307,7 +307,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </summary>
 		void BuildGrids()
 		{
-			static Grid GetCPosBounds(Map map)
+			static Grid GetCPosBounds(IMap map)
 			{
 				if (map.Grid.Type == MapGridType.RectangularIsometric)
 				{
@@ -935,7 +935,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 			if (costEstimator == null)
 				return false;
 
-			if (!world.Map.Contains(source) || !world.Map.Contains(target))
+			var map = world.Map;
+			if (!map.Contains(source) || !map.Contains(target))
 				return false;
 
 			RebuildDomains();
@@ -1084,7 +1085,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		/// <summary>
 		/// Maps a local cell to a abstract node in the graph. Returns null when the local cell is unreachable.
-		/// The cell must have been checked to be on the map with <see cref="Map.Contains(CPos)"/>.
+		/// The cell must have been checked to be on the map with <see cref="IMap.Contains(CPos)"/>.
 		/// </summary>
 		CPos? AbstractCellForLocalCell(CPos localCell)
 		{

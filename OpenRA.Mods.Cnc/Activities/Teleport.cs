@@ -117,10 +117,12 @@ namespace OpenRA.Mods.Cnc.Activities
 
 		CPos? ChooseBestDestinationCell(Actor self, CPos destination)
 		{
+			var map = self.World.Map;
+
 			if (teleporter == null)
 				return null;
 
-			var restrictTo = maximumDistance == null ? null : self.World.Map.FindTilesInCircle(self.Location, maximumDistance.Value);
+			var restrictTo = maximumDistance == null ? null : map.FindTilesInCircle(self.Location, maximumDistance.Value);
 
 			if (maximumDistance != null)
 				destination = restrictTo.MinBy(x => (x - destination).LengthSquared);
@@ -130,7 +132,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				return destination;
 
 			var max = maximumDistance != null ? maximumDistance.Value : teleporter.World.Map.Grid.MaximumTileSearchRange;
-			foreach (var tile in self.World.Map.FindTilesInCircle(destination, max))
+			foreach (var tile in map.FindTilesInCircle(destination, max))
 			{
 				if (teleporter.Owner.Shroud.IsExplored(tile)
 					&& (restrictTo == null || restrictTo.Contains(tile))

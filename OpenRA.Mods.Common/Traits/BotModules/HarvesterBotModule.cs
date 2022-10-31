@@ -142,11 +142,12 @@ namespace OpenRA.Mods.Common.Traits
 				harv.Harvester.CanHarvestCell(cell) &&
 				claimLayer.CanClaimCell(actor, cell);
 
+			var map = world.Map;
 			var path = harv.Mobile.PathFinder.FindPathToTargetCellByPredicate(
 				actor, new[] { actor.Location }, IsValidResource, BlockedByActor.Stationary,
-				loc => world.FindActorsInCircle(world.Map.CenterOfCell(loc), Info.HarvesterEnemyAvoidanceRadius)
+				loc => world.FindActorsInCircle(map.CenterOfCell(loc), Info.HarvesterEnemyAvoidanceRadius)
 					.Where(u => !u.IsDead && actor.Owner.RelationshipWith(u.Owner) == PlayerRelationship.Enemy)
-					.Sum(u => Math.Max(WDist.Zero.Length, Info.HarvesterEnemyAvoidanceRadius.Length - (world.Map.CenterOfCell(loc) - u.CenterPosition).Length)));
+					.Sum(u => Math.Max(WDist.Zero.Length, Info.HarvesterEnemyAvoidanceRadius.Length - (map.CenterOfCell(loc) - u.CenterPosition).Length)));
 
 			if (path.Count == 0)
 				return Target.Invalid;

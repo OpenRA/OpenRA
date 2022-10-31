@@ -87,6 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyParachute.OnLanded(Actor self)
 		{
 			IsInAir = false;
+			var map = self.World.Map;
 
 			if (parachutingToken != Actor.InvalidConditionToken)
 				parachutingToken = self.RevokeCondition(parachutingToken);
@@ -99,10 +100,10 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (IgnoreActor != null && !self.World.ActorMap.GetActorsAt(cell)
-				.Any(a => a != IgnoreActor && a != self && self.World.Map.DistanceAboveTerrain(a.CenterPosition) == WDist.Zero))
+				.Any(a => a != IgnoreActor && a != self && map.DistanceAboveTerrain(a.CenterPosition) == WDist.Zero))
 				return;
 
-			var onWater = info.WaterTerrainTypes.Contains(self.World.Map.GetTerrainInfo(cell).Type);
+			var onWater = info.WaterTerrainTypes.Contains(map.GetTerrainInfo(cell).Type);
 			var sound = onWater ? info.WaterImpactSound : info.GroundImpactSound;
 			Game.Sound.Play(SoundType.World, sound, self.CenterPosition);
 

@@ -127,8 +127,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var titleText = widget.Get<LabelWidget>("TITLE");
 
-			var mapTitle = world.Map.Title;
-			var firstCategory = world.Map.Categories.FirstOrDefault();
+			var mapTitle = ((Map)world.Map).Title;
+			var firstCategory = ((Map)world.Map).Categories.FirstOrDefault();
 			if (firstCategory != null)
 				mapTitle = firstCategory + ": " + mapTitle;
 
@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			Game.LoadWidget(world, "LOBBY_OPTIONS_PANEL", optionsPanelContainer, new WidgetArgs()
 			{
-				{ "getMap", (Func<MapPreview>)(() => modData.MapCache[world.Map.Uid]) },
+				{ "getMap", (Func<MapPreview>)(() => modData.MapCache[((Map)world.Map).Uid]) },
 				{ "configurationDisabled", (Func<bool>)(() => true) }
 			});
 		}

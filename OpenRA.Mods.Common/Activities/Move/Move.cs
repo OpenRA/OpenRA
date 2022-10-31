@@ -418,6 +418,7 @@ namespace OpenRA.Mods.Common.Activities
 			public override bool Tick(Actor self)
 			{
 				var mobile = Move.mobile;
+				var map = self.World.Map;
 
 				// Only move by a full speed step if we didn't already move this tick.
 				// If we did, we limit the move to any carried-over leftover progress.
@@ -455,13 +456,13 @@ namespace OpenRA.Mods.Common.Activities
 				// Smoothly interpolate over terrain orientation changes
 				if (FromTerrainOrientation.HasValue && progress < terrainOrientationMargin)
 				{
-					var currentCellOrientation = self.World.Map.TerrainOrientation(mobile.FromCell);
+					var currentCellOrientation = map.TerrainOrientation(mobile.FromCell);
 					var orientation = WRot.SLerp(FromTerrainOrientation.Value, currentCellOrientation, progress, terrainOrientationMargin);
 					mobile.SetTerrainRampOrientation(orientation);
 				}
 				else if (ToTerrainOrientation.HasValue && Distance - progress < terrainOrientationMargin)
 				{
-					var currentCellOrientation = self.World.Map.TerrainOrientation(mobile.FromCell);
+					var currentCellOrientation = map.TerrainOrientation(mobile.FromCell);
 					var orientation = WRot.SLerp(ToTerrainOrientation.Value, currentCellOrientation, Distance - progress, terrainOrientationMargin);
 					mobile.SetTerrainRampOrientation(orientation);
 				}
@@ -484,7 +485,7 @@ namespace OpenRA.Mods.Common.Activities
 				WRot? fromTerrainOrientation, WRot? toTerrainOrientation, int terrainOrientationMargin, int carryoverProgress, bool movingOnGroundLayer)
 				: base(move, from, to, fromFacing, toFacing, fromTerrainOrientation, toTerrainOrientation, terrainOrientationMargin, carryoverProgress, movingOnGroundLayer) { }
 
-			bool IsTurn(Actor self, Mobile mobile, CPos nextCell, Map map)
+			bool IsTurn(Actor self, Mobile mobile, CPos nextCell, IMap map)
 			{
 				// Some actors with a limited number of sprite facings should never move along curved trajectories.
 				if (mobile.Info.AlwaysTurnInPlace)

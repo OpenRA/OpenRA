@@ -115,11 +115,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			if (++ticks >= cachedInterval)
 			{
-				var spawnCell = Info.SpawnAtLastPosition ? self.World.Map.CellContaining(cachedPosition) : self.World.Map.CellContaining(self.CenterPosition);
-				if (!self.World.Map.Contains(spawnCell))
+				var map = self.World.Map;
+				var spawnCell = Info.SpawnAtLastPosition ? map.CellContaining(cachedPosition) : map.CellContaining(self.CenterPosition);
+				if (!map.Contains(spawnCell))
 					return;
 
-				var type = self.World.Map.GetTerrainInfo(spawnCell).Type;
+				var type = map.GetTerrainInfo(spawnCell).Type;
 
 				if (++offset >= Info.Offsets.Length)
 					offset = 0;
@@ -134,7 +135,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					var offsetRotation = Info.Offsets[offset].Rotate(body.QuantizeOrientation(self.Orientation));
 					var spawnPosition = Info.SpawnAtLastPosition ? cachedPosition : self.CenterPosition;
 					var pos = Info.Type == TrailType.CenterPosition ? spawnPosition + body.LocalToWorld(offsetRotation) :
-						self.World.Map.CenterOfCell(spawnCell);
+						map.CenterOfCell(spawnCell);
 
 					self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(pos, spawnFacing, self.World, Info.Image,
 						Info.Sequences.Random(Game.CosmeticRandom), Info.Palette, Info.VisibleThroughFog)));

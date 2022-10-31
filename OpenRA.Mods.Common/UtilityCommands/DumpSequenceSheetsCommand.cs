@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (mapPackage == null)
 					throw new InvalidOperationException($"{args[2]} is not a valid tileset or map path");
 
-				sequences = modData.MapLoader.Load(modData, mapPackage).Sequences;
+				sequences = ((IMap)modData.MapLoader.Load(modData, mapPackage)).Sequences;
 			}
 
 			sequences.LoadSprites();

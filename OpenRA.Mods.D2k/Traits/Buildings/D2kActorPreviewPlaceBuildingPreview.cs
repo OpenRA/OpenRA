@@ -96,8 +96,9 @@ namespace OpenRA.Mods.D2k.Traits
 		protected override IEnumerable<IRenderable> RenderFootprint(WorldRenderer wr, CPos topLeft, Dictionary<CPos, PlaceBuildingCellType> footprint,
 			PlaceBuildingCellType filter = PlaceBuildingCellType.Invalid | PlaceBuildingCellType.Valid | PlaceBuildingCellType.LineBuild)
 		{
+			var map = wr.World.Map;
 			var palette = wr.Palette(info.Palette);
-			var topLeftPos = wr.World.Map.CenterOfCell(topLeft);
+			var topLeftPos = map.CenterOfCell(topLeft);
 
 			var candidateSafeTiles = unpathableCells.Update(topLeft);
 			foreach (var c in footprint)
@@ -105,11 +106,11 @@ namespace OpenRA.Mods.D2k.Traits
 				if ((c.Value & filter) == 0)
 					continue;
 
-				var isUnsafe = checkUnsafeTiles && wr.World.Map.Contains(c.Key) && candidateSafeTiles.Contains(c.Key) && info.UnsafeTerrainTypes.Contains(wr.World.Map.GetTerrainInfo(c.Key).Type);
+				var isUnsafe = checkUnsafeTiles && map.Contains(c.Key) && candidateSafeTiles.Contains(c.Key) && info.UnsafeTerrainTypes.Contains(map.GetTerrainInfo(c.Key).Type);
 				var tile = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? blockedTile : isUnsafe ? unsafeTile : validTile;
 				var sequenceAlpha = (c.Value & PlaceBuildingCellType.Invalid) != 0 ? blockedAlpha : isUnsafe ? unsafeAlpha : validAlpha;
 
-				var pos = wr.World.Map.CenterOfCell(c.Key);
+				var pos = map.CenterOfCell(c.Key);
 				var offset = new WVec(0, 0, topLeftPos.Z - pos.Z);
 				var traitAlpha = (c.Value & PlaceBuildingCellType.LineBuild) != 0 ? info.LineBuildFootprintAlpha : info.FootprintAlpha;
 				yield return new SpriteRenderable(tile, pos, offset, -511, palette, 1f, sequenceAlpha * traitAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);

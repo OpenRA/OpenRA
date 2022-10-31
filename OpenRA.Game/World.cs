@@ -136,7 +136,7 @@ namespace OpenRA
 
 		public readonly Actor WorldActor;
 
-		public readonly Map Map;
+		public readonly IMap Map;
 
 		public readonly IActorMap ActorMap;
 		public readonly ScreenMap ScreenMap;
@@ -195,7 +195,7 @@ namespace OpenRA
 			Type = type;
 			OrderManager = orderManager;
 			using (new PerfTimer("PrepareMap"))
-				Map = modData.PrepareMap(mapUID);
+				Map = (IMap)modData.PrepareMap(mapUID);
 
 			if (string.IsNullOrEmpty(modData.Manifest.DefaultOrderGenerator))
 				throw new InvalidDataException("mod.yaml must define a DefaultOrderGenerator");
@@ -214,7 +214,7 @@ namespace OpenRA
 			SharedRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 			LocalRandom = new MersenneTwister();
 
-			ModelCache = modData.ModelSequenceLoader.CacheModels(Map, modData, Map.Rules.ModelSequences);
+			ModelCache = modData.ModelSequenceLoader.CacheModels((FileSystem.IReadOnlyFileSystem)Map, modData, Map.Rules.ModelSequences);
 
 			var worldActorType = type == WorldType.Editor ? SystemActors.EditorWorld : SystemActors.World;
 			WorldActor = CreateActor(worldActorType.ToString(), new TypeDictionary());
@@ -239,8 +239,8 @@ namespace OpenRA
 				Mod = Game.ModData.Manifest.Id,
 				Version = Game.ModData.Manifest.Metadata.Version,
 
-				MapUid = Map.Uid,
-				MapTitle = Map.Title
+				MapUid = ((Map)Map).Uid,
+				MapTitle = ((Map)Map).Title
 			};
 
 			RulesContainTemporaryBlocker = Map.Rules.Actors.Any(a => a.Value.HasTraitInfo<ITemporaryBlockerInfo>());

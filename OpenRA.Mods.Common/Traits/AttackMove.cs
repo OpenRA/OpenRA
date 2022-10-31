@@ -83,7 +83,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (order.OrderString == "AttackMove" || order.OrderString == "AssaultMove")
 			{
-				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
+				var map = self.World.Map;
+
+				var cell = map.Clamp(map.CellContaining(order.Target.CenterPosition));
 				if (!Info.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
 

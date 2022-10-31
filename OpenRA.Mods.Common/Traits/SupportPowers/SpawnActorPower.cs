@@ -103,13 +103,15 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool Validate(World world, SpawnActorPowerInfo info, CPos cell)
 		{
-			if (!world.Map.Contains(cell))
+			var map = world.Map;
+
+			if (!map.Contains(cell))
 				return false;
 
 			if (!info.AllowUnderShroud && world.ShroudObscures(cell))
 				return false;
 
-			if (info.Terrain != null && !info.Terrain.Contains(world.Map.GetTerrainInfo(cell).Type))
+			if (info.Terrain != null && !info.Terrain.Contains(map.GetTerrainInfo(cell).Type))
 				return false;
 
 			return true;
