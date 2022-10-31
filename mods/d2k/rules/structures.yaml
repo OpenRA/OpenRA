@@ -204,6 +204,8 @@ barracks:
 		Range: 3c768
 	RallyPoint:
 		ForceSetType: Infantry
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@1:
 		SpawnOffset: 352,576,0
 		ExitCell: 0,2
@@ -424,6 +426,8 @@ light_factory:
 		Sequence: production-welding
 	RallyPoint:
 		ForceSetType: Vehicle
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@1:
 		SpawnOffset: 544,-224,0
 		ExitCell: 2,1
@@ -496,6 +500,8 @@ heavy_factory:
 		Range: 4c768
 	RallyPoint:
 		ForceSetType: Armor
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@1:
 		SpawnOffset: 256,192,0
 		ExitCell: 0,2
@@ -641,6 +647,8 @@ starport:
 		Range: 3c768
 	RallyPoint:
 		ForceSetType: Starport
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@1:
 		SpawnOffset: 0,-480,0
 		ExitCell: 2,2
@@ -900,6 +908,8 @@ repair_pad:
 		FinishRepairingTextNotification: Unit repaired.
 		PlayerExperience: 15
 	RallyPoint:
+	CommandBarBlacklist:
+		DisableStop: false
 	RenderSprites:
 		Image: repair_pad.ordos
 		FactionImages:
@@ -1076,6 +1086,8 @@ palace:
 	Tooltip:
 		Name: Palace
 	RallyPoint:
+	CommandBarBlacklist:
+		DisableStop: false
 	D2kBuilding:
 		Footprint: xx= xxx =xx
 		Dimensions: 3,3

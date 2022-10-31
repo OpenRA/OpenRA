@@ -217,6 +217,8 @@ SPEN:
 		PlayerExperience: 15
 	RallyPoint:
 		ForceSetType: Ship
+	CommandBarBlacklist:
+		DisableStop: false
 	ProductionBar:
 		ProductionType: Ship
 	Power:
@@ -334,6 +336,8 @@ SYRD:
 		PlayerExperience: 15
 	RallyPoint:
 		ForceSetType: Ship
+	CommandBarBlacklist:
+		DisableStop: false
 	ProductionBar:
 		ProductionType: Ship
 	Power:
@@ -1053,6 +1057,8 @@ WEAP:
 		Sequence: build-top
 	RallyPoint:
 		ForceSetType: Vehicle
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@1:
 		RequiresCondition: !being-captured
 		SpawnOffset: 213,-128,0
@@ -1412,6 +1418,8 @@ HPAD:
 		Facing: 896
 	RallyPoint:
 		ForceSetType: Helicopter
+	CommandBarBlacklist:
+		DisableStop: false
 	Production:
 		Produces: Aircraft, Helicopter
 	Reservable:
@@ -1494,6 +1502,8 @@ AFLD:
 		Facing: 768
 	RallyPoint:
 		ForceSetType: Plane
+	CommandBarBlacklist:
+		DisableStop: false
 	Production:
 		Produces: Aircraft, Plane
 	Reservable:
@@ -1765,6 +1775,8 @@ BARR:
 	WithBuildingBib:
 	RallyPoint:
 		ForceSetType: Infantry
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@1:
 		RequiresCondition: !being-captured
 		SpawnOffset: -170,810,0
@@ -1841,6 +1853,8 @@ KENN:
 		HasMinibib: True
 	RallyPoint:
 		ForceSetType: Dog
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@0:
 		RequiresCondition: !being-captured
 		SpawnOffset: -280,400,0
@@ -1928,6 +1942,8 @@ TENT:
 	WithBuildingBib:
 	RallyPoint:
 		ForceSetType: Infantry
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@1:
 		RequiresCondition: !being-captured
 		SpawnOffset: -42,810,0
@@ -2014,6 +2030,8 @@ FIX:
 		Range: 4c0
 	Reservable:
 	RallyPoint:
+	CommandBarBlacklist:
+		DisableStop: false
 	RepairsUnits:
 		HpPerStep: 1000
 		Interval: 7

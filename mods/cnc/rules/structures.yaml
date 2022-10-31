@@ -330,6 +330,8 @@ PYLE:
 		Range: 5c0
 	WithBuildingBib:
 	RallyPoint:
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@1:
 		SpawnOffset: -426,85,0
 		ExitCell: 0,1
@@ -389,6 +391,8 @@ HAND:
 		Range: 5c0
 	WithBuildingBib:
 	RallyPoint:
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@1:
 		Priority: 2
 		SpawnOffset: 512,1024,0
@@ -450,6 +454,8 @@ AFLD:
 	RevealsShroud:
 		Range: 7c0
 	RallyPoint:
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@1:
 		SpawnOffset: -1024,0,0
 		ExitCell: 3,1
@@ -516,6 +522,8 @@ WEAP:
 		RequiresCondition: !build-incomplete
 		Sequence: build-top
 	RallyPoint:
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@1:
 		SpawnOffset: -512,-512,0
 		ExitCell: 0,1
@@ -584,6 +592,8 @@ HPAD:
 	WithResupplyAnimation:
 		RequiresCondition: !build-incomplete
 	RallyPoint:
+	CommandBarBlacklist:
+		DisableStop: false
 	ProductionQueue@GDI:
 		Type: Aircraft.GDI
 		DisplayOrder: 4
@@ -731,6 +741,8 @@ FIX:
 		StartRepairingNotification: Repairing
 		StartRepairingTextNotification: Repairing.
 	RallyPoint:
+	CommandBarBlacklist:
+		DisableStop: false
 	Power:
 		Amount: -20
 	ProvidesPrerequisite@buildingname:

@@ -134,6 +134,8 @@ GAPILE:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Infantry
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@1:
 		SpawnOffset: -512,768,0
 		ExitCell: 1,2
@@ -228,6 +230,8 @@ GAWEAP:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Vehicle
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@1:
 		SpawnOffset: -384,-384,0
 		ExitCell: 3,1
@@ -303,6 +307,8 @@ GAHPAD:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Air
+	CommandBarBlacklist:
+		DisableStop: false
 	Production:
 		Produces: Air
 		PauseOnCondition: empdisable
@@ -369,6 +375,8 @@ GADEPT:
 		Palette: mouse
 		IsPlayerPalette: false
 		LineWidth: 2
+	CommandBarBlacklist:
+		DisableStop: false
 	WithIdleOverlay@LIGHT:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-light
