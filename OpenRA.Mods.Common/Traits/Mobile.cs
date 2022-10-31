@@ -805,6 +805,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		Activity LocalMove(Actor self, WPos fromPos, WPos toPos, CPos cell)
 		{
+			AcceleratedDelta = Info.MaxSpeed > Info.Speed ? Info.MaxSpeed - Info.Speed : 0;
 			var speed = MovementSpeedForCell(cell);
 			var length = speed > 0 ? (toPos - fromPos).Length / speed : 0;
 
