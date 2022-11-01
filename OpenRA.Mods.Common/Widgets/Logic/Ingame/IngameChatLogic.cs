@@ -312,7 +312,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public override void Tick()
 		{
 			var chatWasEnabled = chatEnabled;
-			chatEnabled = Game.RunTime >= TextNotificationsManager.ChatDisabledUntil && TextNotificationsManager.ChatDisabledUntil != uint.MaxValue;
+			chatEnabled = world.IsReplay || (Game.RunTime >= TextNotificationsManager.ChatDisabledUntil && TextNotificationsManager.ChatDisabledUntil != uint.MaxValue);
 
 			if (chatEnabled && !chatWasEnabled)
 			{
