@@ -265,12 +265,14 @@ namespace OpenRA.Support
 
 		public static AssemblyLoadContextBuilder AddDependencyContext(this AssemblyLoadContextBuilder builder, string depsFilePath)
 		{
-			var reader = new DependencyContextJsonReader();
-			using (var file = File.OpenRead(depsFilePath))
+			using (var reader = new DependencyContextJsonReader())
 			{
-				var deps = reader.Read(file);
-				builder.SetBaseDirectory(Path.GetDirectoryName(depsFilePath));
-				builder.AddDependencyContext(deps);
+				using (var file = File.OpenRead(depsFilePath))
+				{
+					var deps = reader.Read(file);
+					builder.SetBaseDirectory(Path.GetDirectoryName(depsFilePath));
+					builder.AddDependencyContext(deps);
+				}
 			}
 
 			return builder;
