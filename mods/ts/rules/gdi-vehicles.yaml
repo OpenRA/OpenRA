@@ -18,6 +18,8 @@ APC:
 		Speed: 113
 		PauseOnCondition: empdisable || loading || being-captured || carried
 		Locomotor: amphibious
+		CanMoveBackward: true
+		MaxBackwardCells: 6
 	Health:
 		HP: 20000
 	Armor:
