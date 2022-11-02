@@ -113,6 +113,9 @@ namespace OpenRA.Mods.Common.Widgets
 		void FloodFillWithBrush(CPos cell)
 		{
 			var map = world.Map;
+			if (!map.Contains(cell))
+				return;
+
 			var mapTiles = map.Tiles;
 			var replace = mapTiles[cell];
 
