@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool CanMoveBackward = false;
 
 		[Desc("After how many ticks the actor will turn forward during backoff")]
-		public readonly int BackwardDuration = 40;
+		public readonly int BackwardDuration = int.MaxValue;
 
 		[Desc("Actor will try to move backward if the number of the cells in path lower than this")]
 		public readonly int MaxBackwardCells = int.MaxValue;
