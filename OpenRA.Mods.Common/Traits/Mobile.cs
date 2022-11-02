@@ -71,6 +71,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("After how many ticks the actor will turn forward during backoff")]
 		public readonly int BackwardDuration = 40;
 
+		[Desc("Actor will try to move backward if the number of the cells in path lower than this")]
+		public readonly int MaxBackwardCells = int.MaxValue;
+
 		[ConsumedConditionReference]
 		[Desc("Boolean expression defining the condition under which the regular (non-force) move cursor is disabled.")]
 		public readonly BooleanExpression RequireForceMoveCondition = null;
