@@ -158,9 +158,15 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 
 			var firstFacing = self.World.Map.FacingBetween(mobile.FromCell, nextCell.Value.Cell, mobile.Facing);
+			var goBackward = false;
 
-			if (mobile.Info.CanMoveBackward && self.World.WorldTick - startTicks < mobile.Info.BackwardDuration && Math.Abs(firstFacing.Angle - mobile.Facing.Angle) > 256)
+			if (mobile.Info.CanMoveBackward &&
+				self.World.WorldTick - startTicks < mobile.Info.BackwardDuration &&
+				Math.Abs(firstFacing.Angle - mobile.Facing.Angle) > 256)
+			{
+				goBackward = true;
 				firstFacing = new WAngle(firstFacing.Angle + 512);
+			}
 
 			if (firstFacing != mobile.Facing)
 			{
@@ -186,7 +192,12 @@ namespace OpenRA.Mods.Common.Activities
 				toTerrainOrientation = WRot.SLerp(map.TerrainOrientation(mobile.FromCell), map.TerrainOrientation(mobile.ToCell), 1, 2);
 
 			var movingOnGroundLayer = mobile.FromCell.Layer == 0 && mobile.ToCell.Layer == 0;
-			QueueChild(new MoveFirstHalf(this, from, to, mobile.Facing, mobile.Facing, null, toTerrainOrientation, margin, carryoverProgress, movingOnGroundLayer));
+
+			var actorFacingModifier = WAngle.Zero;
+			if (goBackward)
+				actorFacingModifier = new WAngle(512);
+
+			QueueChild(new MoveFirstHalf(this, actorFacingModifier, from, to, mobile.Facing - actorFacingModifier, mobile.Facing - actorFacingModifier, null, toTerrainOrientation, margin, carryoverProgress, movingOnGroundLayer));
 			carryoverProgress = 0;
 			return false;
 		}
@@ -351,6 +362,7 @@ namespace OpenRA.Mods.Common.Activities
 		abstract class MovePart : Activity
 		{
 			protected readonly Move Move;
+			protected readonly WAngle ActorFacingModifier;
 			protected readonly WPos From, To;
 			protected readonly WAngle FromFacing, ToFacing;
 			protected readonly WRot? FromTerrainOrientation, ToTerrainOrientation;
@@ -365,10 +377,11 @@ namespace OpenRA.Mods.Common.Activities
 			readonly int terrainOrientationMargin;
 			protected int progress;
 
-			public MovePart(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
+			public MovePart(Move move, WAngle actorFacingModifier, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
 				WRot? fromTerrainOrientation, WRot? toTerrainOrientation, int terrainOrientationMargin, int carryoverProgress, bool movingOnGroundLayer)
 			{
 				Move = move;
+				ActorFacingModifier = actorFacingModifier;
 				From = from;
 				To = to;
 				FromFacing = fromFacing;
@@ -421,7 +434,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (progress >= Distance)
 				{
 					mobile.SetCenterPosition(self, To);
-					mobile.Facing = ToFacing;
+					mobile.Facing = ToFacing + ActorFacingModifier;
 
 					Move.lastMovePartCompletedTick = self.World.WorldTick;
 					Queue(OnComplete(self, mobile, Move));
@@ -460,7 +473,8 @@ namespace OpenRA.Mods.Common.Activities
 					mobile.SetTerrainRampOrientation(orientation);
 				}
 
-				mobile.Facing = WAngle.Lerp(FromFacing, ToFacing, progress, Distance);
+				mobile.Facing = WAngle.Lerp(FromFacing + ActorFacingModifier, ToFacing + ActorFacingModifier, progress, Distance);
+
 				return false;
 			}
 
@@ -474,9 +488,9 @@ namespace OpenRA.Mods.Common.Activities
 
 		class MoveFirstHalf : MovePart
 		{
-			public MoveFirstHalf(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
+			public MoveFirstHalf(Move move, WAngle actorFacingModifier, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
 				WRot? fromTerrainOrientation, WRot? toTerrainOrientation, int terrainOrientationMargin, int carryoverProgress, bool movingOnGroundLayer)
-				: base(move, from, to, fromFacing, toFacing, fromTerrainOrientation, toTerrainOrientation, terrainOrientationMargin, carryoverProgress, movingOnGroundLayer) { }
+				: base(move, actorFacingModifier, from, to, fromFacing, toFacing, fromTerrainOrientation, toTerrainOrientation, terrainOrientationMargin, carryoverProgress, movingOnGroundLayer) { }
 
 			static bool IsTurn(Mobile mobile, CPos nextCell, Map map)
 			{
@@ -510,10 +524,11 @@ namespace OpenRA.Mods.Common.Activities
 
 						var ret = new MoveFirstHalf(
 							Move,
+							ActorFacingModifier,
 							Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (fromSubcellOffset + toSubcellOffset) / 2,
 							Util.BetweenCells(self.World, mobile.ToCell, nextCell.Value.Cell) + (toSubcellOffset + nextSubcellOffset) / 2,
-							mobile.Facing,
-							map.FacingBetween(mobile.ToCell, nextCell.Value.Cell, mobile.Facing),
+							mobile.Facing - ActorFacingModifier,
+							map.FacingBetween(mobile.ToCell, nextCell.Value.Cell, mobile.Facing - ActorFacingModifier),
 							ToTerrainOrientation,
 							nextToTerrainOrientation,
 							margin,
@@ -533,10 +548,11 @@ namespace OpenRA.Mods.Common.Activities
 
 				var ret2 = new MoveSecondHalf(
 					Move,
+					ActorFacingModifier,
 					Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (fromSubcellOffset + toSubcellOffset) / 2,
 					toPos + toSubcellOffset,
-					mobile.Facing,
-					mobile.Facing,
+					mobile.Facing - ActorFacingModifier,
+					mobile.Facing - ActorFacingModifier,
 					ToTerrainOrientation,
 					null,
 					mobile.Info.TerrainOrientationAdjustmentMargin.Length,
@@ -551,9 +567,9 @@ namespace OpenRA.Mods.Common.Activities
 
 		class MoveSecondHalf : MovePart
 		{
-			public MoveSecondHalf(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
+			public MoveSecondHalf(Move move, WAngle actorFacingModifier, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
 				WRot? fromTerrainOrientation, WRot? toTerrainOrientation, int terrainOrientationMargin, int carryoverProgress, bool movingOnGroundLayer)
-				: base(move, from, to, fromFacing, toFacing, fromTerrainOrientation, toTerrainOrientation, terrainOrientationMargin, carryoverProgress, movingOnGroundLayer) { }
+				: base(move, actorFacingModifier, from, to, fromFacing, toFacing, fromTerrainOrientation, toTerrainOrientation, terrainOrientationMargin, carryoverProgress, movingOnGroundLayer) { }
 
 			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)
 			{
