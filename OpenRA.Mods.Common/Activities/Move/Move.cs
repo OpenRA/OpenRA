@@ -197,6 +197,13 @@ namespace OpenRA.Mods.Common.Activities
 			if (goBackward)
 				actorFacingModifier += new WAngle(512);
 
+			// We introduce this equation:
+			// Actor Facing = Moving Direction Facing + Actor Facing Modifier
+			// among those vars,
+			// 1. we can get Actor Facing from "mobile.Facing".
+			// 2. we know Actor Facing Modifier from "actorFacingModifier".
+			// 3. then we can calculate Moving Direction Facing, which is "mobile.Facing - actorFacingModifier"
+			// the same below.
 			QueueChild(new MoveFirstHalf(this, actorFacingModifier, from, to, mobile.Facing - actorFacingModifier, mobile.Facing - actorFacingModifier, null, toTerrainOrientation, margin, carryoverProgress, movingOnGroundLayer));
 			carryoverProgress = 0;
 			return false;
