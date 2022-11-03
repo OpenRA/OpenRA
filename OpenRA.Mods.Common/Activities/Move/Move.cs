@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			var actorFacingModifier = WAngle.Zero;
 			if (goBackward)
-				actorFacingModifier = new WAngle(512);
+				actorFacingModifier += new WAngle(512);
 
 			QueueChild(new MoveFirstHalf(this, actorFacingModifier, from, to, mobile.Facing - actorFacingModifier, mobile.Facing - actorFacingModifier, null, toTerrainOrientation, margin, carryoverProgress, movingOnGroundLayer));
 			carryoverProgress = 0;
