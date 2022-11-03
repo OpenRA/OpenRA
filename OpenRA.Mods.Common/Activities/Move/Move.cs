@@ -157,14 +157,21 @@ namespace OpenRA.Mods.Common.Activities
 			if (nextCell == null)
 				return false;
 
-			var firstFacing = self.World.Map.FacingBetween(mobile.FromCell, nextCell.Value.Cell, mobile.Facing);
-			var goBackward = false;
+			// We introduce this equation:
+			// Actor Facing = Moving Direction Facing + Actor Facing Modifier
+			// among those vars,
+			// 1. we can get Actor Facing from "mobile.Facing".
+			// 2. we know Actor Facing Modifier from "actorFacingModifier".
+			// 3. then we can calculate Moving Direction Facing, which is "mobile.Facing - actorFacingModifier"
+			// the same below.
+			var actorFacingModifier = -mobile.Info.MobileFacing;
+			var firstFacing = self.World.Map.FacingBetween(mobile.FromCell, nextCell.Value.Cell, mobile.Facing) + actorFacingModifier;
 
 			if (mobile.Info.CanMoveBackward &&
 				self.World.WorldTick - startTicks < mobile.Info.BackwardDuration &&
-				Math.Abs(firstFacing.Angle - mobile.Facing.Angle) > 256)
+				Math.Abs(firstFacing.Angle - mobile.Facing.Angle + mobile.Info.MobileFacing.Angle) > 256)
 			{
-				goBackward = true;
+				actorFacingModifier += new WAngle(512);
 				firstFacing = new WAngle(firstFacing.Angle + 512);
 			}
 
@@ -193,17 +200,6 @@ namespace OpenRA.Mods.Common.Activities
 
 			var movingOnGroundLayer = mobile.FromCell.Layer == 0 && mobile.ToCell.Layer == 0;
 
-			var actorFacingModifier = WAngle.Zero;
-			if (goBackward)
-				actorFacingModifier += new WAngle(512);
-
-			// We introduce this equation:
-			// Actor Facing = Moving Direction Facing + Actor Facing Modifier
-			// among those vars,
-			// 1. we can get Actor Facing from "mobile.Facing".
-			// 2. we know Actor Facing Modifier from "actorFacingModifier".
-			// 3. then we can calculate Moving Direction Facing, which is "mobile.Facing - actorFacingModifier"
-			// the same below.
 			QueueChild(new MoveFirstHalf(this, actorFacingModifier, from, to, mobile.Facing - actorFacingModifier, mobile.Facing - actorFacingModifier, null, toTerrainOrientation, margin, carryoverProgress, movingOnGroundLayer));
 			carryoverProgress = 0;
 			return false;
