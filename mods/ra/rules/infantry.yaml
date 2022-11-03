@@ -873,6 +873,7 @@ FireAnt:
 		GenericVisibility: none
 	Mobile:
 		Speed: 68
+		MobileFacing: 256
 	Armament:
 		Weapon: AntFireball
 	Health:
