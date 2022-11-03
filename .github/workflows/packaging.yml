@@ -7,6 +7,9 @@ on:
     - 'playtest-*'
     - 'devtest-*'
 
+permissions:
+  contents: write  #  for release creation (svenstaro/upload-release-action)
+
 jobs:
   source:
     name: Source Tarball

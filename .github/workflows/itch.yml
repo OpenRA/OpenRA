@@ -8,6 +8,7 @@ on:
         required: true
         default: 'release-xxxxxxxx'
 
+permissions: {}
 jobs:
   itch:
     name: Deploy to itch.io
