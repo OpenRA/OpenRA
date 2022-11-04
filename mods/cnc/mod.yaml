@@ -119,6 +119,7 @@ ChromeLayout:
 	common|chrome/ingame-transients.yaml
 	cnc|chrome/ingame-menu.yaml
 	cnc|chrome/ingame-debug.yaml
+	common|chrome/ingame-debug-hpf.yaml
 	cnc|chrome/ingame-infochat.yaml
 	cnc|chrome/ingame-info.yaml
 	cnc|chrome/ingame-infobriefing.yaml
