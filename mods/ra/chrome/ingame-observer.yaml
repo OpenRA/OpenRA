@@ -1096,3 +1096,8 @@ Container@OBSERVER_WIDGETS:
 							YAxisLabel: Army Value
 							LabelFont: TinyBold
 							AxisFont: TinyBold
+		Container@HPF_ROOT:
+			Logic: LoadIngameHierarchicalPathFinderOverlayLogic
+			X: WINDOW_RIGHT - WIDTH - 255
+			Y: 40
+			Width: 175

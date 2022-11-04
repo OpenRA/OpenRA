@@ -74,6 +74,11 @@ Container@OBSERVER_WIDGETS:
 	Children:
 		Container@CHAT_ROOT:
 		Container@PERF_ROOT:
+		Container@HPF_ROOT:
+			Logic: LoadIngameHierarchicalPathFinderOverlayLogic
+			X: WINDOW_RIGHT - WIDTH - 270
+			Y: 40
+			Width: 175
 		ViewportController:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
@@ -1159,6 +1164,11 @@ Container@PLAYER_WIDGETS:
 	Children:
 		Container@CHAT_ROOT:
 		Container@PERF_ROOT:
+		Container@HPF_ROOT:
+			Logic: LoadIngameHierarchicalPathFinderOverlayLogic
+			X: WINDOW_RIGHT - WIDTH - 240
+			Y: 40
+			Width: 175
 		ViewportController:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
@@ -1876,25 +1886,6 @@ Container@PLAYER_WIDGETS:
 			Y: 299
 			Width: 194
 			Height: 20
-		Container@HPF_OVERLAY:
-			Logic: HierarchicalPathFinderOverlayLogic
-			X: WINDOW_RIGHT - WIDTH - 240
-			Y: 40
-			Width: 175
-			Height: 60
-			Children:
-				DropDownButton@HPF_OVERLAY_LOCOMOTOR:
-					Y: PARENT_TOP
-					Width: PARENT_RIGHT
-					Height: 25
-					Text: Select Locomotor
-					Font: Regular
-				DropDownButton@HPF_OVERLAY_CHECK:
-					Y: PARENT_TOP + 35
-					Width: PARENT_RIGHT
-					Height: 25
-					Text: Select BlockedByActor
-					Font: Regular
 
 Background@FMVPLAYER:
 	Width: WINDOW_RIGHT

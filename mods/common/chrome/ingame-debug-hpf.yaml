@@ -1,0 +1,17 @@
+Container@HPF_OVERLAY:
+	Logic: HierarchicalPathFinderOverlayLogic
+	Width: PARENT_RIGHT
+	Height: 60
+	Children:
+		DropDownButton@HPF_OVERLAY_LOCOMOTOR:
+			Y: PARENT_TOP
+			Width: PARENT_RIGHT
+			Height: 25
+			Text: Select Locomotor
+			Font: Regular
+		DropDownButton@HPF_OVERLAY_CHECK:
+			Y: PARENT_TOP + 35
+			Width: PARENT_RIGHT
+			Height: 25
+			Text: Select BlockedByActor
+			Font: Regular
