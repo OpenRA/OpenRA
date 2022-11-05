@@ -121,6 +121,10 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
+			// We don't want to allow TakeOff to be cancelled
+			if (ChildActivity is TakeOff)
+				ChildHasPriority = true;
+
 			// Return once we are in the pickup state and the pickup activities have completed
 			return TickChild(self) && state == PickupState.Pickup;
 		}
