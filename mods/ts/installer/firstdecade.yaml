@@ -3,7 +3,7 @@ tfd: C&C The First Decade (English)
 		data1.hdr: bef3a08c3fc1b1caf28ca0dbb97c1f900005930e
 		data1.cab: 12ad6113a6890a1b4d5651a75378c963eaf513b9
 	Install:
-		extract-iscab: data1.hdr
+		ExtractIscab: data1.hdr
 			Volumes:
 				6: data6.cab
 				7: data7.cab
@@ -12,7 +12,7 @@ tfd: C&C The First Decade (English)
 				^SupportDir|Content/ts/tibsun.mix: Tiberian Sun\SUN\TIBSUN.MIX
 				^SupportDir|Content/ts/expand01.mix: Tiberian Sun\SUN\expand01.mix
 				^SupportDir|Content/ts/firestorm/scores01.mix: Tiberian Sun\SUN\scores01.mix
-		extract-raw: ^SupportDir|Content/ts/tibsun.mix
+		ExtractRaw: ^SupportDir|Content/ts/tibsun.mix
 			^SupportDir|Content/ts/cache.mix:
 				Offset: 300
 				Length: 169176
@@ -55,8 +55,8 @@ tfd: C&C The First Decade (English)
 			^SupportDir|Content/ts/temperat.mix:
 				Offset: 73056940
 				Length: 2037606
-		delete: ^SupportDir|Content/ts/tibsun.mix
-		extract-raw: ^SupportDir|Content/ts/expand01.mix
+		Delete: ^SupportDir|Content/ts/tibsun.mix
+		ExtractRaw: ^SupportDir|Content/ts/expand01.mix
 			^SupportDir|Content/ts/firestorm/m_emp.vxl:
 				Offset: 2187652
 				Length: 24652
@@ -591,4 +591,4 @@ tfd: C&C The First Decade (English)
 			^SupportDir|Content/ts/firestorm/sounds01.mix:
 				Offset: 28229956
 				Length: 990096
-		delete: ^SupportDir|Content/ts/expand01.mix
+		Delete: ^SupportDir|Content/ts/expand01.mix

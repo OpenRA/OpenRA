@@ -41,6 +41,7 @@ namespace OpenRA
 
 		public class ModSource
 		{
+			public readonly ObjectCreator ObjectCreator;
 			public readonly SourceType Type = SourceType.Disc;
 
 			// Used to find installation locations for SourceType.Install
@@ -56,8 +57,9 @@ namespace OpenRA
 			[FieldLoader.Ignore]
 			public readonly List<MiniYamlNode> Install;
 
-			public ModSource(MiniYaml yaml)
+			public ModSource(MiniYaml yaml, ObjectCreator objectCreator)
 			{
+				ObjectCreator = objectCreator;
 				Title = yaml.Value;
 
 				var idFiles = yaml.Nodes.FirstOrDefault(n => n.Key == "IDFiles");

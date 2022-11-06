@@ -6,10 +6,10 @@ origin: C&C The Ultimate Collection (Origin version, English)
 	IDFiles:
 		GDFBinary_en_US.dll: 4bb56a449bd0003e7ae67625d90a11ae169319d6
 	Install:
-		copy: .
+		Copy: .
 			^SupportDir|Content/ts/scores.mix: SCORES.MIX
 			^SupportDir|Content/ts/firestorm/scores01.mix: scores01.mix
-		extract-raw: TIBSUN.MIX
+		ExtractRaw: TIBSUN.MIX
 			^SupportDir|Content/ts/cache.mix:
 				Offset: 300
 				Length: 169176
@@ -52,7 +52,7 @@ origin: C&C The Ultimate Collection (Origin version, English)
 			^SupportDir|Content/ts/temperat.mix:
 				Offset: 73056940
 				Length: 2037606
-		extract-raw: expand01.mix
+		ExtractRaw: expand01.mix
 			^SupportDir|Content/ts/firestorm/m_emp.vxl:
 				Offset: 2187652
 				Length: 24652

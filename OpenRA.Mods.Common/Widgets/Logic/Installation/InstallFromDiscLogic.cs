@@ -13,18 +13,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using OpenRA.Mods.Common.FileFormats;
+using OpenRA.Mods.Common.Installer;
 using OpenRA.Widgets;
-using FS = OpenRA.FileSystem.FileSystem;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class InstallFromDiscLogic : ChromeLogic
 	{
 		// Hide percentage indicators for files smaller than 25 MB
-		const int ShowPercentageThreshold = 26214400;
+		public const int ShowPercentageThreshold = 26214400;
 
 		enum Mode { Progress, Message, List }
 
@@ -83,10 +81,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static readonly string InstallingContent = "installing-content";
 
 		[TranslationReference("filename")]
-		static readonly string CopyingFilename = "copying-filename";
+		public static readonly string CopyingFilename = "copying-filename";
 
 		[TranslationReference("filename", "progress")]
-		static readonly string CopyingFilenameProgress = "copying-filename-progress";
+		public static readonly string CopyingFilenameProgress = "copying-filename-progress";
 
 		[TranslationReference]
 		static readonly string InstallationFailed = "installation-failed";
@@ -95,10 +93,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static readonly string CheckInstallLog = "check-install-log";
 
 		[TranslationReference("filename")]
-		static readonly string Extracing = "extracting-filename";
+		public static readonly string Extracing = "extracting-filename";
 
 		[TranslationReference("filename", "progress")]
-		static readonly string ExtracingProgress = "extracting-filename-progress";
+		public static readonly string ExtracingProgress = "extracting-filename-progress";
 
 		[TranslationReference]
 		static readonly string Continue = "continue";
@@ -264,82 +262,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					foreach (var i in modSource.Install)
 					{
-						switch (i.Key)
-						{
-							case "copy":
-								{
-									var sourceDir = Path.Combine(path, i.Value.Value);
-									foreach (var node in i.Value.Nodes)
-									{
-										var sourcePath = FS.ResolveCaseInsensitivePath(Path.Combine(sourceDir, node.Value.Value));
-										var targetPath = Platform.ResolvePath(node.Key);
-										if (File.Exists(targetPath))
-										{
-											Log.Write("install", "Ignoring installed file " + targetPath);
-											continue;
-										}
-
-										Log.Write("install", $"Copying {sourcePath} -> {targetPath}");
-										extracted.Add(targetPath);
-										Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
-
-										using (var source = File.OpenRead(sourcePath))
-										using (var target = File.OpenWrite(targetPath))
-										{
-											var displayFilename = Path.GetFileName(targetPath);
-											var length = source.Length;
-
-											Action<long> onProgress = null;
-											if (length < ShowPercentageThreshold)
-												message = modData.Translation.GetString(CopyingFilename, Translation.Arguments("filename", displayFilename));
-											else
-												onProgress = b => message = modData.Translation.GetString(CopyingFilenameProgress, Translation.Arguments("filename", displayFilename, "progress", 100 * b / length));
-
-											CopyStream(source, target, length, onProgress);
-										}
-									}
-
-									break;
-								}
-
-							case "extract-raw":
-								{
-									ExtractFromPackage(modData, ExtractionType.Raw, path, i.Value, extracted, m => message = m);
-									break;
-								}
-
-							case "extract-blast":
-								{
-									ExtractFromPackage(modData, ExtractionType.Blast, path, i.Value, extracted, m => message = m);
-									break;
-								}
-
-							case "extract-mscab":
-								{
-									ExtractFromMSCab(modData, path, i.Value, extracted, m => message = m);
-									break;
-								}
-
-							case "extract-iscab":
-								{
-									ExtractFromISCab(modData, path, i.Value, extracted, m => message = m);
-									break;
-								}
-
-							case "delete":
-								{
-									// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
-									var sourcePath = i.Value.Value.StartsWith("^") ? Platform.ResolvePath(i.Value.Value) : Path.Combine(path, i.Value.Value);
-
-									Log.Write("debug", $"Deleting {sourcePath}");
-									File.Delete(sourcePath);
-									break;
-								}
-
-							default:
-								Log.Write("debug", $"Unknown installation command {i.Key} - ignoring");
-								break;
-						}
+						var sourceAction = modSource.ObjectCreator.CreateObject<ISourceAction>($"{i.Key}SourceAction");
+						sourceAction.RunActionOnSource(i.Value, path, modData, extracted, m => message = m);
 					}
 
 					Game.RunAfterTick(Ui.CloseWindow);
@@ -361,244 +285,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					});
 				}
 			}).Start();
-		}
-
-		static void CopyStream(Stream input, Stream output, long length, Action<long> onProgress = null)
-		{
-			var buffer = new byte[4096];
-			var copied = 0L;
-			while (copied < length)
-			{
-				var read = (int)Math.Min(buffer.Length, length - copied);
-				var write = input.Read(buffer, 0, read);
-				output.Write(buffer, 0, write);
-				copied += write;
-
-				onProgress?.Invoke(copied);
-			}
-		}
-
-		enum ExtractionType { Raw, Blast }
-
-		static void ExtractFromPackage(ModData modData, ExtractionType type, string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
-		{
-			// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
-			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : FS.ResolveCaseInsensitivePath(Path.Combine(path, actionYaml.Value));
-
-			using (var source = File.OpenRead(sourcePath))
-			{
-				foreach (var node in actionYaml.Nodes)
-				{
-					var targetPath = Platform.ResolvePath(node.Key);
-
-					if (File.Exists(targetPath))
-					{
-						Log.Write("install", "Skipping installed file " + targetPath);
-						continue;
-					}
-
-					var offsetNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Offset");
-					if (offsetNode == null)
-					{
-						Log.Write("install", "Skipping entry with missing Offset definition " + targetPath);
-						continue;
-					}
-
-					var lengthNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Length");
-					if (lengthNode == null)
-					{
-						Log.Write("install", "Skipping entry with missing Length definition " + targetPath);
-						continue;
-					}
-
-					var length = FieldLoader.GetValue<int>("Length", lengthNode.Value.Value);
-					source.Position = FieldLoader.GetValue<int>("Offset", offsetNode.Value.Value);
-
-					extractedFiles.Add(targetPath);
-					Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
-					var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
-
-					Action<long> onProgress = null;
-					if (length < ShowPercentageThreshold)
-						updateMessage(modData.Translation.GetString(Extracing, Translation.Arguments("filename", displayFilename)));
-					else
-						onProgress = b => updateMessage(modData.Translation.GetString(ExtracingProgress, Translation.Arguments("filename", displayFilename, "progress", 100 * b / length)));
-
-					using (var target = File.OpenWrite(targetPath))
-					{
-						Log.Write("install", $"Extracting {sourcePath} -> {targetPath}");
-						if (type == ExtractionType.Blast)
-							Blast.Decompress(source, target, (read, _) => onProgress?.Invoke(read));
-						else
-							CopyStream(source, target, length, onProgress);
-					}
-				}
-			}
-		}
-
-		static void ExtractFromMSCab(ModData modData, string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
-		{
-			// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
-			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : FS.ResolveCaseInsensitivePath(Path.Combine(path, actionYaml.Value));
-
-			using (var source = File.OpenRead(sourcePath))
-			{
-				var reader = new MSCabCompression(source);
-				foreach (var node in actionYaml.Nodes)
-				{
-					var targetPath = Platform.ResolvePath(node.Key);
-
-					if (File.Exists(targetPath))
-					{
-						Log.Write("install", "Skipping installed file " + targetPath);
-						continue;
-					}
-
-					extractedFiles.Add(targetPath);
-					Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
-					using (var target = File.OpenWrite(targetPath))
-					{
-						Log.Write("install", $"Extracting {sourcePath} -> {targetPath}");
-						var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
-						Action<int> onProgress = percent => updateMessage(modData.Translation.GetString(ExtracingProgress, Translation.Arguments("filename", displayFilename, "progress", percent)));
-						reader.ExtractFile(node.Value.Value, target, onProgress);
-					}
-				}
-			}
-		}
-
-		static void ExtractFromISCab(ModData modData, string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
-		{
-			// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
-			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : FS.ResolveCaseInsensitivePath(Path.Combine(path, actionYaml.Value));
-
-			var volumeNode = actionYaml.Nodes.FirstOrDefault(n => n.Key == "Volumes");
-			if (volumeNode == null)
-				throw new InvalidDataException("extract-iscab entry doesn't define a Volumes node");
-
-			var extractNode = actionYaml.Nodes.FirstOrDefault(n => n.Key == "Extract");
-			if (extractNode == null)
-				throw new InvalidDataException("extract-iscab entry doesn't define an Extract node");
-
-			var volumes = new Dictionary<int, Stream>();
-			try
-			{
-				foreach (var node in volumeNode.Value.Nodes)
-				{
-					var volume = FieldLoader.GetValue<int>("(key)", node.Key);
-					var stream = File.OpenRead(FS.ResolveCaseInsensitivePath(Path.Combine(path, node.Value.Value)));
-					volumes.Add(volume, stream);
-				}
-
-				using (var source = File.OpenRead(sourcePath))
-				{
-					var reader = new InstallShieldCABCompression(source, volumes);
-					foreach (var node in extractNode.Value.Nodes)
-					{
-						var targetPath = Platform.ResolvePath(node.Key);
-
-						if (File.Exists(targetPath))
-						{
-							Log.Write("install", "Skipping installed file " + targetPath);
-							continue;
-						}
-
-						extractedFiles.Add(targetPath);
-						Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
-						using (var target = File.OpenWrite(targetPath))
-						{
-							Log.Write("install", $"Extracting {sourcePath} -> {targetPath}");
-							var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
-							Action<int> onProgress = percent => updateMessage(modData.Translation.GetString(ExtracingProgress, Translation.Arguments("filename", displayFilename, "progress", percent)));
-							reader.ExtractFile(node.Value.Value, target, onProgress);
-						}
-					}
-				}
-			}
-			finally
-			{
-				foreach (var kv in volumes)
-					kv.Value.Dispose();
-			}
-		}
-
-		string FindSourcePath(ModContent.ModSource source, IEnumerable<string> volumes)
-		{
-			if (source.Type == ModContent.SourceType.RegistryDirectory || source.Type == ModContent.SourceType.RegistryDirectoryFromFile)
-			{
-				if (source.RegistryKey == null)
-					return null;
-
-				if (Platform.CurrentPlatform != PlatformType.Windows)
-					return null;
-
-				// We need an extra check for the platform here to silence a warning when the registry is accessed
-				// TODO: Remove this once our platform checks use the same method
-				if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-					return null;
-
-				foreach (var prefix in source.RegistryPrefixes)
-				{
-					if (!(Microsoft.Win32.Registry.GetValue(prefix + source.RegistryKey, source.RegistryValue, null) is string path))
-						continue;
-
-					if (source.Type == ModContent.SourceType.RegistryDirectoryFromFile)
-						path = Path.GetDirectoryName(path);
-
-					return IsValidSourcePath(path, source) ? path : null;
-				}
-
-				return null;
-			}
-
-			if (source.Type == ModContent.SourceType.Disc)
-				foreach (var volume in volumes)
-					if (IsValidSourcePath(volume, source))
-						return volume;
-
-			return null;
-		}
-
-		static bool IsValidSourcePath(string path, ModContent.ModSource source)
-		{
-			try
-			{
-				foreach (var kv in source.IDFiles.Nodes)
-				{
-					var filePath = FS.ResolveCaseInsensitivePath(Path.Combine(path, kv.Key));
-					if (!File.Exists(filePath))
-						return false;
-
-					using (var fileStream = File.OpenRead(filePath))
-					{
-						var offsetNode = kv.Value.Nodes.FirstOrDefault(n => n.Key == "Offset");
-						var lengthNode = kv.Value.Nodes.FirstOrDefault(n => n.Key == "Length");
-						if (offsetNode != null || lengthNode != null)
-						{
-							var offset = 0L;
-							if (offsetNode != null)
-								offset = FieldLoader.GetValue<long>("Offset", offsetNode.Value.Value);
-
-							var length = fileStream.Length - offset;
-							if (lengthNode != null)
-								length = FieldLoader.GetValue<long>("Length", lengthNode.Value.Value);
-
-							fileStream.Position = offset;
-							var data = fileStream.ReadBytes((int)length);
-							if (CryptoUtil.SHA1Hash(data) != kv.Value.Value)
-								return false;
-						}
-						else if (CryptoUtil.SHA1Hash(fileStream) != kv.Value.Value)
-							return false;
-					}
-				}
-			}
-			catch (Exception)
-			{
-				return false;
-			}
-
-			return true;
 		}
 
 		void ShowMessage(string title, string message)

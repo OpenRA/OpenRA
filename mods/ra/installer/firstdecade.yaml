@@ -3,7 +3,7 @@ tfd: C&C The First Decade (English)
 		data1.hdr: bef3a08c3fc1b1caf28ca0dbb97c1f900005930e
 		data1.cab: 12ad6113a6890a1b4d5651a75378c963eaf513b9
 	Install:
-		extract-iscab: data1.hdr
+		ExtractIscab: data1.hdr
 			Volumes:
 				2: data2.cab
 				3: data3.cab
@@ -16,7 +16,7 @@ tfd: C&C The First Decade (English)
 				^SupportDir|Content/ra/v2/expand/lores1.mix: Red Alert\\LORES1.MIX
 				^SupportDir|Content/ra/v2/expand/expand2.mix: Red Alert\\EXPAND2.MIX
 				^SupportDir|Content/ra/v2/cnc/desert.mix: CnC\\DESERT.MIX
-		extract-raw: ^SupportDir|Content/ra/v2/redalert.mix
+		ExtractRaw: ^SupportDir|Content/ra/v2/redalert.mix
 			^SupportDir|Content/ra/v2/hires.mix:
 				Offset: 650612
 				Length: 5817417
@@ -29,8 +29,8 @@ tfd: C&C The First Decade (English)
 			^SupportDir|Content/ra/v2/speech.mix:
 				Offset: 23042864
 				Length: 2003464
-		delete: ^SupportDir|Content/ra/v2/redalert.mix
-		extract-raw: ^SupportDir|Content/ra/v2/main.mix
+		Delete: ^SupportDir|Content/ra/v2/redalert.mix
+		ExtractRaw: ^SupportDir|Content/ra/v2/main.mix
 			^SupportDir|Content/ra/v2/movies/aagun.vqa:
 				Offset: 668669829
 				Length: 3295512
@@ -445,4 +445,4 @@ tfd: C&C The First Decade (English)
 			^SupportDir|Content/ra/v2/expand/myes1.aud:
 				Offset: 844509702
 				Length: 9073
-		delete: ^SupportDir|Content/ra/v2/main.mix
+		Delete: ^SupportDir|Content/ra/v2/main.mix

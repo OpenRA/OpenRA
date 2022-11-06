@@ -3,7 +3,7 @@ nod95: C&C Gold (Nod Disc, English)
 		DISK.WAV: 83a0235525afa5cd6096f2967e3eae032996e38c
 		CONQUER.MIX: 833e02a09aae694659eb312d3838367f681d1b30
 	Install:
-		copy: .
+		Copy: .
 			^SupportDir|Content/cnc/conquer.mix: CONQUER.MIX
 			^SupportDir|Content/cnc/desert.mix: DESERT.MIX
 			^SupportDir|Content/cnc/general.mix: GENERAL.MIX
@@ -11,7 +11,7 @@ nod95: C&C Gold (Nod Disc, English)
 			^SupportDir|Content/cnc/sounds.mix: SOUNDS.MIX
 			^SupportDir|Content/cnc/temperat.mix: TEMPERAT.MIX
 			^SupportDir|Content/cnc/winter.mix: WINTER.MIX
-		extract-blast: INSTALL/SETUP.Z
+		ExtractBlast: INSTALL/SETUP.Z
 			^SupportDir|Content/cnc/speech.mix:
 				Offset: 10203213
 				Length: 603293
@@ -21,7 +21,7 @@ nod95: C&C Gold (Nod Disc, English)
 			^SupportDir|Content/cnc/transit.mix:
 				Offset: 11078017
 				Length: 3724462
-		extract-raw: MOVIES.MIX
+		ExtractRaw: MOVIES.MIX
 			^SupportDir|Content/cnc/movies/visor.vqa:
 				Offset: 738
 				Length: 4407162

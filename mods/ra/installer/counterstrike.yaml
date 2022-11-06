@@ -3,7 +3,7 @@ counterstrike: Counterstrike Expansion Disc (English)
 		README.TXT: 0efe8087383f0b159a9633f891fb5f53c6097cd4
 		SETUP/INSTALL/CSTRIKE.RTP: fae8ba82db71574f6ecd8fb4ff4026fcb65d2adc
 	Install:
-		extract-raw: MAIN.MIX
+		ExtractRaw: MAIN.MIX
 			^SupportDir|Content/ra/v2/expand/2nd_hand.aud:
 				Offset: 209070947
 				Length: 3070092

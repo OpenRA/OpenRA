@@ -3,7 +3,7 @@ d2k-d: Dune 2000 (English)
 		MUSIC/AMBUSH.AUD: bd5926a56a83bc0e49f96037e1f909014ac0772a
 		SETUP/SETUP.Z: 2411cc5df36954ebd534ceafa3007c8aa9232909
 	Install:
-		copy: MOVIES
+		Copy: MOVIES
 			^SupportDir|Content/d2k/v2/Movies/A_BR01_E.VQA: A_BR01_E.VQA
 			^SupportDir|Content/d2k/v2/Movies/A_BR02_E.VQA: A_BR02_E.VQA
 			^SupportDir|Content/d2k/v2/Movies/A_BR03_E.VQA: A_BR03_E.VQA
@@ -46,7 +46,7 @@ d2k-d: Dune 2000 (English)
 			^SupportDir|Content/d2k/v2/Movies/G_PLN2_E.VQA: G_PLN2_E.VQA
 			^SupportDir|Content/d2k/v2/Movies/G_PLNT_E.VQA: G_PLNT_E.VQA
 			^SupportDir|Content/d2k/v2/Movies/T_TITL_E.VQA: T_TITL_E.VQA
-		copy: MUSIC
+		Copy: MUSIC
 			^SupportDir|Content/d2k/v2/Music/AMBUSH.AUD: AMBUSH.AUD
 			^SupportDir|Content/d2k/v2/Music/ARAKATAK.AUD: ARAKATAK.AUD
 			^SupportDir|Content/d2k/v2/Music/ATREGAIN.AUD: ATREGAIN.AUD
@@ -64,7 +64,7 @@ d2k-d: Dune 2000 (English)
 			^SupportDir|Content/d2k/v2/Music/SPICESCT.AUD: SPICESCT.AUD
 			^SupportDir|Content/d2k/v2/Music/UNDERCON.AUD: UNDERCON.AUD
 			^SupportDir|Content/d2k/v2/Music/WAITGAME.AUD: WAITGAME.AUD
-		extract-blast: SETUP/SETUP.Z
+		ExtractBlast: SETUP/SETUP.Z
 			^SupportDir|Content/d2k/v2/BLOXBAT.R8:
 				Offset: 702406
 				Length: 512750

@@ -6,7 +6,7 @@ origin: C&C The Ultimate Collection (Origin version, English)
 	IDFiles:
 		CONQUER.MIX: 833e02a09aae694659eb312d3838367f681d1b30
 	Install:
-		copy: .
+		Copy: .
 			^SupportDir|Content/cnc/conquer.mix: CONQUER.MIX
 			^SupportDir|Content/cnc/desert.mix: DESERT.MIX
 			^SupportDir|Content/cnc/general.mix: GENERAL.MIX
@@ -18,7 +18,7 @@ origin: C&C The Ultimate Collection (Origin version, English)
 			^SupportDir|Content/cnc/tempicnh.mix: TEMPICNH.MIX
 			^SupportDir|Content/cnc/transit.mix: TRANSIT.MIX
 			^SupportDir|Content/cnc/scores-covertops.mix: covert/SCORES.MIX
-		extract-raw: movies.mix
+		ExtractRaw: movies.mix
 			^SupportDir|Content/cnc/movies/akira.vqa:
 				Offset: 4445708
 				Length: 7803444

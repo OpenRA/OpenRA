@@ -3,7 +3,7 @@ aftermath: Aftermath Expansion Disc (English)
 		README.TXT: 9902fb74c019df1b76ff5634e68f0371d790b5e0
 		SETUP/INSTALL/PATCH.RTP: 5bce93f834f9322ddaa7233242e5b6c7fea0bf17
 	Install:
-		extract-raw: SETUP/INSTALL/PATCH.RTP
+		ExtractRaw: SETUP/INSTALL/PATCH.RTP
 			^SupportDir|Content/ra/v2/expand/expand2.mix:
 				Offset: 4712984
 				Length: 469922
@@ -13,7 +13,7 @@ aftermath: Aftermath Expansion Disc (English)
 			^SupportDir|Content/ra/v2/expand/lores1.mix:
 				Offset: 5273320
 				Length: 57076
-		extract-raw: MAIN.MIX
+		ExtractRaw: MAIN.MIX
 			^SupportDir|Content/ra/v2/expand/await.aud:
 				Offset: 158698809
 				Length: 2972788

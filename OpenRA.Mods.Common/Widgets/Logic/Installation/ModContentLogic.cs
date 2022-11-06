@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var sourceYaml = MiniYaml.Load(modFileSystem, content.Sources, null);
 			foreach (var s in sourceYaml)
-				sources.Add(s.Key, new ModContent.ModSource(s.Value));
+				sources.Add(s.Key, new ModContent.ModSource(s.Value, modObjectCreator));
 
 			var downloadYaml = MiniYaml.Load(modFileSystem, content.Downloads, null);
 			foreach (var d in downloadYaml)
