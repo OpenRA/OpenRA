@@ -336,7 +336,6 @@ ModContent:
 	Downloads:
 		ts|installer/downloads.yaml
 	Sources:
-		ts|installer/downloads.yaml
 		ts|installer/firestorm.yaml
 		ts|installer/firstdecade.yaml
 		ts|installer/origin.yaml
