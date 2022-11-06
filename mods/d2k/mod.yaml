@@ -261,7 +261,7 @@ ModContent:
 	Packages:
 		base: Base Game Files
 			TestFiles: ^SupportDir|Content/d2k/v2/BLOXBASE.R8, ^SupportDir|Content/d2k/v2/BLOXBAT.R8, ^SupportDir|Content/d2k/v2/BLOXBGBS.R8, ^SupportDir|Content/d2k/v2/BLOXICE.R8, ^SupportDir|Content/d2k/v2/BLOXTREE.R8, ^SupportDir|Content/d2k/v2/BLOXWAST.R8, ^SupportDir|Content/d2k/v2/SOUND.RS, ^SupportDir|Content/d2k/v2/PALETTE.BIN, ^SupportDir|Content/d2k/v2/FONT.BIN,  ^SupportDir|Content/d2k/v2/FONTCOL.FNT,  ^SupportDir|Content/d2k/v2/FONTCOL.FPL
-			Sources: d2k-a, d2k-b, d2k-c, d2k-d, d2k-e, gruntmods
+			Sources: d2k, gruntmods
 			Required: true
 			Download: basefiles
 		patch: 1.06 Patch Content
@@ -271,18 +271,14 @@ ModContent:
 			Download: patch106
 		music: Game Music
 			TestFiles: ^SupportDir|Content/d2k/v2/Music/AMBUSH.AUD, ^SupportDir|Content/d2k/v2/Music/WAITGAME.AUD
-			Sources: d2k-a, d2k-b, d2k-c, d2k-d, d2k-e, gruntmods
+			Sources: d2k, gruntmods
 		movies: Campaign Briefings
 			TestFiles: ^SupportDir|Content/d2k/v2/Movies/A_BR01_E.VQA
-			Sources: d2k-a, d2k-b, d2k-c, d2k-d, d2k-e
+			Sources: d2k
 	Downloads:
 		d2k|installer/downloads.yaml
 	Sources:
-		d2k|installer/d2k-a.yaml
-		d2k|installer/d2k-b.yaml
-		d2k|installer/d2k-c.yaml
-		d2k|installer/d2k-d.yaml
-		d2k|installer/d2k-e.yaml
+		d2k|installer/d2k.yaml
 		d2k|installer/gruntmods.yaml
 
 DiscordService:

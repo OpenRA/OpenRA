@@ -13,15 +13,9 @@ nod95: C&C Gold (Nod Disc, English)
 			^SupportDir|Content/cnc/temperat.mix: TEMPERAT.MIX
 			^SupportDir|Content/cnc/winter.mix: WINTER.MIX
 		ExtractBlast: INSTALL/SETUP.Z
-			^SupportDir|Content/cnc/speech.mix:
-				Offset: 10203213
-				Length: 603293
-			^SupportDir|Content/cnc/tempicnh.mix:
-				Offset: 10925941
-				Length: 119096
-			^SupportDir|Content/cnc/transit.mix:
-				Offset: 11078017
-				Length: 3724462
+			^SupportDir|Content/cnc/speech.mix: SPEECH.MIX
+			^SupportDir|Content/cnc/tempicnh.mix: TEMPICNH.MIX
+			^SupportDir|Content/cnc/transit.mix: TRANSIT.MIX
 		ExtractRaw: MOVIES.MIX
 			^SupportDir|Content/cnc/movies/visor.vqa:
 				Offset: 738
