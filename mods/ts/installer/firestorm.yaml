@@ -3,9 +3,9 @@ fstorm: Firestorm Expansion Disc (English)
 		Install/README.TXT: f2810b540fce8f3880250213ee08c57780d81c20
 		Install/Language.dll: 4df87c1a2289da57dd14d0a7299546f37357fcca
 	Install:
-		copy: .
+		Copy: .
 			^SupportDir|Content/ts/firestorm/scores01.mix: scores01.mix
-		extract-raw: Install/expand01.mix
+		ExtractRaw: Install/expand01.mix
 			^SupportDir|Content/ts/firestorm/m_emp.vxl:
 				Offset: 2187652
 				Length: 24652

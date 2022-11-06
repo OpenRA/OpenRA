@@ -6,7 +6,7 @@ gruntmods: Dune 2000: GruntMods Edition
 		Dune 2000/data/BLOXXMAS.R8: afc818feda44f5873e3af07bd2191573ba9965db
 		Dune 2000/data/DATA.R8: 2b229cf4be47104a6214237039a55329f6c45bc9
 	Install:
-		copy: Dune 2000/data/Music
+		Copy: Dune 2000/data/Music
 			^SupportDir|Content/d2k/v2/Music/AMBUSH.AUD: AMBUSH.AUD
 			^SupportDir|Content/d2k/v2/Music/ARAKATAK.AUD: ARAKATAK.AUD
 			^SupportDir|Content/d2k/v2/Music/ATREGAIN.AUD: ATREGAIN.AUD
@@ -24,7 +24,7 @@ gruntmods: Dune 2000: GruntMods Edition
 			^SupportDir|Content/d2k/v2/Music/SPICESCT.AUD: SPICESCT.AUD
 			^SupportDir|Content/d2k/v2/Music/UNDERCON.AUD: UNDERCON.AUD
 			^SupportDir|Content/d2k/v2/Music/WAITGAME.AUD: WAITGAME.AUD
-		copy: Dune 2000/data
+		Copy: Dune 2000/data
 			^SupportDir|Content/d2k/v2/BLOXBAT.R8: BLOXBAT.R8
 			^SupportDir|Content/d2k/v2/BLOXBASE.R8: BLOXBASE.R8
 			^SupportDir|Content/d2k/v2/BLOXBGBS.R8: BLOXBGBS.R8
@@ -36,10 +36,10 @@ gruntmods: Dune 2000: GruntMods Edition
 			^SupportDir|Content/d2k/v2/MOUSE.R8: MOUSE.R8
 			^SupportDir|Content/d2k/v2/FONTCOL.FNT: FONTCOL.FNT
 			^SupportDir|Content/d2k/v2/FONTCOL.FPL: FONTCOL.FPL
-		copy: Dune 2000/data/bin
+		Copy: Dune 2000/data/bin
 			^SupportDir|Content/d2k/v2/PALETTE.BIN: PALETTE.BIN
 			^SupportDir|Content/d2k/v2/FONT.BIN: FONT.BIN
-		copy: Dune 2000/data/GAMESFX
+		Copy: Dune 2000/data/GAMESFX
 			^SupportDir|Content/d2k/v2/GAMESFX/A_ECONF2.AUD: A_ECONF2.AUD
 			^SupportDir|Content/d2k/v2/GAMESFX/A_ECONF1.AUD: A_ECONF1.AUD
 			^SupportDir|Content/d2k/v2/GAMESFX/A_ECONF3.AUD: A_ECONF3.AUD
