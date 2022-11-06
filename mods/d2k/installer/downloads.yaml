@@ -1,4 +1,5 @@
 quickinstall: Quick Install Package
+	Type: ZipFile
 	SHA1: eb9ff88ca24858bd06a752f923156a6480c25c06
 	MirrorList: http://www.openra.net/packages/d2k-quickinstall-mirrors.txt
 	Extract:
@@ -269,6 +270,7 @@ quickinstall: Quick Install Package
 		^SupportDir|Content/d2k/v2/DATA.R8: v2/DATA.R8
 
 basefiles: Base Content
+	Type: ZipFile
 	SHA1: 82221691fe843a5a245969095f147e929c364234
 	MirrorList: http://www.openra.net/packages/d2k-base-mirrors.txt
 	Extract:
@@ -537,6 +539,7 @@ basefiles: Base Content
 		^SupportDir|Content/d2k/v2/SOUND.RS: v2/SOUND.RS
 
 patch106: Patch 1.06 Content
+	Type: ZipFile
 	SHA1: 90924e5254468ec79c71e456384f5895a6c84bae
 	MirrorList: http://www.openra.net/packages/d2k-patch106-mirrors.txt
 	Extract:

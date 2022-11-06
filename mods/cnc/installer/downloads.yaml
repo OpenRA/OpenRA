@@ -1,4 +1,5 @@
 basefiles: Base Freeware Content
+	Type: ZipFile
 	SHA1: 72f337464963fa37d3688eb03e80eefd33669a3d
 	MirrorList: http://www.openra.net/packages/cnc-mirrors.txt
 	Extract:
