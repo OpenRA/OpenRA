@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var downloadYaml = MiniYaml.Load(modFileSystem, content.Downloads, null);
 			foreach (var d in downloadYaml)
-				downloads.Add(d.Key, new ModContent.ModDownload(d.Value));
+				downloads.Add(d.Key, new ModContent.ModDownload(d.Value, modObjectCreator));
 
 			modFileSystem.UnmountAll();
 

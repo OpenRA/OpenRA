@@ -15,7 +15,7 @@ using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using ICSharpCode.SharpZipLib.Zip;
+using OpenRA.FileSystem;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
@@ -217,26 +217,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						try
 						{
 							using (var stream = File.OpenRead(file))
-							using (var z = new ZipFile(stream))
 							{
-								foreach (var kv in download.Extract)
+								var packageLoader = download.ObjectCreator.CreateObject<IPackageLoader>($"{download.Type}Loader");
+
+								if (packageLoader.TryParsePackage(stream, file, modData.ModFiles, out var package))
 								{
-									var entry = z.GetEntry(kv.Value);
-									if (entry == null || !entry.IsFile)
-										continue;
+									foreach (var kv in download.Extract)
+									{
+										if (!package.Contains(kv.Value))
+											continue;
 
-									onExtractProgress(modData.Translation.GetString(ExtractingEntry, Translation.Arguments("entry", entry.Name)));
-									Log.Write("install", "Extracting " + entry.Name);
-									var targetPath = Platform.ResolvePath(kv.Key);
-									Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
-									extracted.Add(targetPath);
+										onExtractProgress(modData.Translation.GetString(ExtractingEntry, Translation.Arguments("entry", kv.Value)));
+										Log.Write("install", "Extracting " + kv.Value);
+										var targetPath = Platform.ResolvePath(kv.Key);
+										Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
+										extracted.Add(targetPath);
 
-									using (var zz = z.GetInputStream(entry))
-									using (var f = File.Create(targetPath))
-										zz.CopyTo(f);
+										using (var zz = package.GetStream(kv.Value))
+										using (var f = File.Create(targetPath))
+											zz.CopyTo(f);
+									}
+
+									package.Dispose();
 								}
-
-								z.Close();
 							}
 
 							Game.RunAfterTick(() =>

@@ -1,4 +1,5 @@
 basefiles: Base Freeware Content
+	Type: ZipFile
 	SHA1: 824df30de0004ad13fac29cf16450caafee9fb1b
 	MirrorList: http://www.openra.net/packages/ts-mirrors.txt
 	Extract:
@@ -18,6 +19,7 @@ basefiles: Base Freeware Content
 		^SupportDir|Content/ts/temperat.mix: temperat.mix
 
 fstorm: Expansion Freeware Content
+	Type: ZipFile
 	SHA1: 8bff90870a9348b72cbe91314aec7d3a50311aa9
 	MirrorList: http://www.openra.net/packages/fs-mirrors.txt
 	Extract:
@@ -201,6 +203,7 @@ fstorm: Expansion Freeware Content
 		^SupportDir|Content/ts/firestorm/bigblue3.tem: firestorm/bigblue3.tem
 
 quickinstall: Quick Install Package
+	Type: ZipFile
 	SHA1: d9339e7b6ecf624ac6ca91d25c58b88fb88a49d2
 	MirrorList: http://www.openra.net/packages/ts-quickinstall-mirrors.txt
 	Extract:

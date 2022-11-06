@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				Ui.OpenWindow("PACKAGE_DOWNLOAD_PANEL", new WidgetArgs
 				{
-					{ "download", new ModContent.ModDownload(download.Value) },
+					{ "download", new ModContent.ModDownload(download.Value, modObjectCreator) },
 					{ "onSuccess", continueLoading }
 				});
 			};

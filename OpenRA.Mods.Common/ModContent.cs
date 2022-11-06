@@ -74,14 +74,17 @@ namespace OpenRA
 
 		public class ModDownload
 		{
+			public readonly ObjectCreator ObjectCreator;
 			public readonly string Title;
 			public readonly string URL;
 			public readonly string MirrorList;
 			public readonly string SHA1;
+			public readonly string Type;
 			public readonly Dictionary<string, string> Extract;
 
-			public ModDownload(MiniYaml yaml)
+			public ModDownload(MiniYaml yaml, ObjectCreator objectCreator)
 			{
+				ObjectCreator = objectCreator;
 				Title = yaml.Value;
 				FieldLoader.Load(this, yaml);
 			}
