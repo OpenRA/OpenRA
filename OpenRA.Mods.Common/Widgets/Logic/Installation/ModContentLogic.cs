@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Dictionary<string, ModContent.ModSource> sources = new Dictionary<string, ModContent.ModSource>();
 		readonly Dictionary<string, ModContent.ModDownload> downloads = new Dictionary<string, ModContent.ModDownload>();
 
-		bool discAvailable;
+		bool sourceAvailable;
 
 		[TranslationReference]
 		static readonly string ManualInstall = "manual-install";
@@ -76,11 +76,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			panel.Bounds.Y -= headerHeight / 2;
 			scrollPanel.Bounds.Y += headerHeight;
 
-			var discButton = panel.Get<ButtonWidget>("CHECK_DISC_BUTTON");
-			discButton.Bounds.Y += headerHeight;
-			discButton.IsVisible = () => discAvailable;
+			var sourceButton = panel.Get<ButtonWidget>("CHECK_SOURCE_BUTTON");
+			sourceButton.Bounds.Y += headerHeight;
+			sourceButton.IsVisible = () => sourceAvailable;
 
-			discButton.OnClick = () => Ui.OpenWindow("DISC_INSTALL_PANEL", new WidgetArgs
+			sourceButton.OnClick = () => Ui.OpenWindow("SOURCE_INSTALL_PANEL", new WidgetArgs
 			{
 				{ "sources", sources },
 				{ "content", content }
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var requiredWidget = container.Get<LabelWidget>("REQUIRED");
 				requiredWidget.IsVisible = () => p.Value.Required;
 
-				var sourceWidget = container.Get<ImageWidget>("DISC");
+				var sourceWidget = container.Get<ImageWidget>("SOURCE");
 				var sourceTitles = p.Value.Sources.Select(s => sources[s].Title).Distinct();
 				var sourceList = sourceTitles.JoinWith("\n");
 				var isSourceAvailable = sourceTitles.Any();
@@ -139,18 +139,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var installedWidget = container.Get<LabelWidget>("INSTALLED");
 				installedWidget.IsVisible = () => installed;
 
-				var requiresDiscWidget = container.Get<LabelWidget>("REQUIRES_DISC");
-				requiresDiscWidget.IsVisible = () => !installed && !downloadEnabled;
+				var requiresSourceWidget = container.Get<LabelWidget>("REQUIRES_SOURCE");
+				requiresSourceWidget.IsVisible = () => !installed && !downloadEnabled;
 				if (!isSourceAvailable)
 				{
 					var manualInstall = modData.Translation.GetString(ManualInstall);
-					requiresDiscWidget.GetText = () => manualInstall;
+					requiresSourceWidget.GetText = () => manualInstall;
 				}
 
 				scrollPanel.AddChild(container);
 			}
 
-			discAvailable = content.Packages.Values.Any(p => p.Sources.Length > 0 && !p.IsInstalled());
+			sourceAvailable = content.Packages.Values.Any(p => p.Sources.Length > 0 && !p.IsInstalled());
 		}
 	}
 }

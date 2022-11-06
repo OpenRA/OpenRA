@@ -59,10 +59,10 @@ namespace OpenRA.Mods.Common.Installer
 					var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
 
 					Action<long> onProgress = null;
-					if (length < InstallFromDiscLogic.ShowPercentageThreshold)
-						updateMessage(modData.Translation.GetString(InstallFromDiscLogic.Extracing, Translation.Arguments("filename", displayFilename)));
+					if (length < InstallFromSourceLogic.ShowPercentageThreshold)
+						updateMessage(modData.Translation.GetString(InstallFromSourceLogic.Extracing, Translation.Arguments("filename", displayFilename)));
 					else
-						onProgress = b => updateMessage(modData.Translation.GetString(InstallFromDiscLogic.ExtracingProgress, Translation.Arguments("filename", displayFilename, "progress", 100 * b / length)));
+						onProgress = b => updateMessage(modData.Translation.GetString(InstallFromSourceLogic.ExtracingProgress, Translation.Arguments("filename", displayFilename, "progress", 100 * b / length)));
 
 					using (var target = File.OpenWrite(targetPath))
 					{

@@ -19,7 +19,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class InstallFromDiscLogic : ChromeLogic
+	public class InstallFromSourceLogic : ChromeLogic
 	{
 		// Hide percentage indicators for files smaller than 25 MB
 		public const int ShowPercentageThreshold = 26214400;
@@ -54,19 +54,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Mode visible = Mode.Progress;
 
 		[TranslationReference]
-		static readonly string DetectingDrives = "detecting-drives";
+		static readonly string DetectingSources = "detecting-sources";
 
 		[TranslationReference]
-		static readonly string CheckingDiscs = "checking-discs";
+		static readonly string CheckingSources = "checking-sources";
 
 		[TranslationReference("title")]
-		static readonly string SearchingDiscFor = "searching-disc-for";
+		static readonly string SearchingSourceFor = "searching-source-for";
 
 		[TranslationReference]
 		static readonly string ContentPackageInstallation = "content-package-installation";
 
 		[TranslationReference]
-		static readonly string GameDiscs = "game-discs";
+		static readonly string GameSources = "game-sources";
 
 		[TranslationReference]
 		static readonly string DigitalInstalls = "digital-installs";
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static readonly string Back = "back";
 
 		[ObjectCreator.UseCtor]
-		public InstallFromDiscLogic(Widget widget, ModData modData, ModContent content, Dictionary<string, ModContent.ModSource> sources)
+		public InstallFromSourceLogic(Widget widget, ModData modData, ModContent content, Dictionary<string, ModContent.ModSource> sources)
 		{
 			this.modData = modData;
 			this.content = content;
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			Log.AddChannel("install", "install.log");
 
-			panel = widget.Get("DISC_INSTALL_PANEL");
+			panel = widget.Get("SOURCE_INSTALL_PANEL");
 
 			titleLabel = panel.Get<LabelWidget>("TITLE");
 
@@ -149,65 +149,39 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			listLabel = listContainer.Get<LabelWidget>("LIST_MESSAGE");
 
-			DetectContentDisks();
+			DetectContentSources();
 		}
 
-		static bool IsValidDrive(DriveInfo d)
+		void DetectContentSources()
 		{
-			if (d.DriveType == DriveType.CDRom && d.IsReady)
-				return true;
-
-			// HACK: the "TFD" DVD is detected as a fixed udf-formatted drive on OSX
-			if (d.DriveType == DriveType.Fixed && d.DriveFormat == "udf")
-				return true;
-
-			return false;
-		}
-
-		void DetectContentDisks()
-		{
-			var message = modData.Translation.GetString(DetectingDrives);
-			ShowProgressbar(modData.Translation.GetString(CheckingDiscs), () => message);
-			ShowBackRetry(DetectContentDisks);
+			var message = modData.Translation.GetString(DetectingSources);
+			ShowProgressbar(modData.Translation.GetString(CheckingSources), () => message);
+			ShowBackRetry(DetectContentSources);
 
 			new Task(() =>
 			{
-				var volumes = DriveInfo.GetDrives()
-					.Where(IsValidDrive)
-					.Select(v => v.RootDirectory.FullName);
-
-				if (Platform.CurrentPlatform == PlatformType.Linux)
-				{
-					// Outside of Gnome, most mounting tools on Linux don't set DriveType.CDRom
-					// so provide a fallback by allowing users to manually mount images on known paths
-					volumes = volumes.Concat(new[]
-					{
-						"/media/openra",
-						"/media/" + Environment.UserName + "/openra",
-						"/mnt/openra"
-					});
-				}
-
 				foreach (var kv in sources)
 				{
-					message = modData.Translation.GetString(SearchingDiscFor, Translation.Arguments("title", kv.Value.Title));
+					message = modData.Translation.GetString(SearchingSourceFor, Translation.Arguments("title", kv.Value.Title));
 
-					var path = FindSourcePath(kv.Value, volumes);
+					var sourceResolver = kv.Value.ObjectCreator.CreateObject<ISourceResolver>($"{kv.Value.Type.Value}SourceResolver");
+
+					var path = sourceResolver.FindSourcePath(kv.Value);
 					if (path != null)
 					{
-						Log.Write("install", $"Using installer `{kv.Key}: {kv.Value.Title}` of type `{kv.Value.Type}`:");
+						Log.Write("install", $"Using installer `{kv.Key}: {kv.Value.Title}` of type `{kv.Value.Type.Value}`:");
 
 						var packages = content.Packages.Values
 							.Where(p => p.Sources.Contains(kv.Key) && !p.IsInstalled())
 							.Select(p => p.Title);
 
-						// Ignore disc if content is already installed
+						// Ignore source if content is already installed
 						if (packages.Any())
 						{
 							Game.RunAfterTick(() =>
 							{
 								ShowList(kv.Value.Title, modData.Translation.GetString(ContentPackageInstallation), packages);
-								ShowContinueCancel(() => InstallFromDisc(path, kv.Value));
+								ShowContinueCancel(() => InstallFromSource(path, kv.Value));
 							});
 
 							return;
@@ -220,35 +194,38 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					.SelectMany(p => p.Sources)
 					.Select(d => sources[d]);
 
-				var discs = missingSources
-					.Where(s => s.Type == ModContent.SourceType.Disc)
-					.Select(s => s.Title)
-					.Distinct();
+				var gameSources = new HashSet<string>();
+				var digitalInstalls = new HashSet<string>();
 
-				var options = new Dictionary<string, IEnumerable<string>>()
+				foreach (var source in missingSources)
 				{
-					{ modData.Translation.GetString(GameDiscs), discs },
-				};
+					var sourceResolver = source.ObjectCreator.CreateObject<ISourceResolver>($"{source.Type.Value}SourceResolver");
 
-				if (Platform.CurrentPlatform == PlatformType.Windows)
-				{
-					var installations = missingSources
-						.Where(s => s.Type == ModContent.SourceType.RegistryDirectory || s.Type == ModContent.SourceType.RegistryDirectoryFromFile)
-						.Select(s => s.Title)
-						.Distinct();
+					var availability = sourceResolver.GetAvailability();
 
-					options.Add(modData.Translation.GetString(DigitalInstalls), installations);
+					if (availability == Availability.GameSource)
+						gameSources.Add(source.Title);
+					else if (availability == Availability.DigitalInstall)
+						digitalInstalls.Add(source.Title);
 				}
+
+				var options = new Dictionary<string, IEnumerable<string>>();
+
+				if (gameSources.Any())
+					options.Add(modData.Translation.GetString(GameSources), gameSources);
+
+				if (digitalInstalls.Any())
+					options.Add(modData.Translation.GetString(DigitalInstalls), digitalInstalls);
 
 				Game.RunAfterTick(() =>
 				{
 					ShowList(modData.Translation.GetString(GameContentNotFound), modData.Translation.GetString(AlternativeContentSources), options);
-					ShowBackRetry(DetectContentDisks);
+					ShowBackRetry(DetectContentSources);
 				});
 			}).Start();
 		}
 
-		void InstallFromDisc(string path, ModContent.ModSource modSource)
+		void InstallFromSource(string path, ModContent.ModSource modSource)
 		{
 			var message = "";
 			ShowProgressbar(modData.Translation.GetString(InstallingContent), () => message);
@@ -281,7 +258,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Game.RunAfterTick(() =>
 					{
 						ShowMessage(modData.Translation.GetString(InstallationFailed), modData.Translation.GetString(CheckInstallLog));
-						ShowBackRetry(() => InstallFromDisc(path, modSource));
+						ShowBackRetry(() => InstallFromSource(path, modSource));
 					});
 				}
 			}).Start();

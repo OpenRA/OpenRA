@@ -1,4 +1,5 @@
 aftermath: Aftermath Expansion Disc (English)
+	Type: Disc
 	IDFiles:
 		README.TXT: 9902fb74c019df1b76ff5634e68f0371d790b5e0
 		SETUP/INSTALL/PATCH.RTP: 5bce93f834f9322ddaa7233242e5b6c7fea0bf17

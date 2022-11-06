@@ -1,4 +1,5 @@
 fstorm: Firestorm Expansion Disc (English)
+	Type: Disc
 	IDFiles:
 		Install/README.TXT: f2810b540fce8f3880250213ee08c57780d81c20
 		Install/Language.dll: 4df87c1a2289da57dd14d0a7299546f37357fcca
