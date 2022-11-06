@@ -18,7 +18,6 @@ namespace OpenRA
 {
 	public class ModContent : IGlobalModData
 	{
-		public enum SourceType { Disc, RegistryDirectory, RegistryDirectoryFromFile }
 		public class ModPackage
 		{
 			public readonly string Title;
@@ -42,7 +41,9 @@ namespace OpenRA
 		public class ModSource
 		{
 			public readonly ObjectCreator ObjectCreator;
-			public readonly SourceType Type = SourceType.Disc;
+
+			[FieldLoader.Ignore]
+			public readonly MiniYaml Type;
 
 			// Used to find installation locations for SourceType.Install
 			public readonly string[] RegistryPrefixes = { string.Empty };
@@ -61,6 +62,10 @@ namespace OpenRA
 			{
 				ObjectCreator = objectCreator;
 				Title = yaml.Value;
+
+				var type = yaml.Nodes.FirstOrDefault(n => n.Key == "Type");
+				if (type != null)
+					Type = type.Value;
 
 				var idFiles = yaml.Nodes.FirstOrDefault(n => n.Key == "IDFiles");
 				if (idFiles != null)

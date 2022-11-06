@@ -43,10 +43,10 @@ namespace OpenRA.Mods.Common.Installer
 					var length = source.Length;
 
 					Action<long> onProgress = null;
-					if (length < InstallFromDiscLogic.ShowPercentageThreshold)
-						updateMessage(modData.Translation.GetString(InstallFromDiscLogic.CopyingFilename, Translation.Arguments("filename", displayFilename)));
+					if (length < InstallFromSourceLogic.ShowPercentageThreshold)
+						updateMessage(modData.Translation.GetString(InstallFromSourceLogic.CopyingFilename, Translation.Arguments("filename", displayFilename)));
 					else
-						onProgress = b => updateMessage(modData.Translation.GetString(InstallFromDiscLogic.CopyingFilenameProgress, Translation.Arguments("filename", displayFilename, "progress", 100 * b / length)));
+						onProgress = b => updateMessage(modData.Translation.GetString(InstallFromSourceLogic.CopyingFilenameProgress, Translation.Arguments("filename", displayFilename, "progress", 100 * b / length)));
 
 					InstallerUtils.CopyStream(source, target, length, onProgress);
 				}

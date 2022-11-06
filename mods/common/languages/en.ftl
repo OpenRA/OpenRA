@@ -247,14 +247,14 @@ archive-validation-failed = Archive validation failed
 extracting = Extracting...
 extracting-entry = Extracting { $entry }
 archive-extraction-failed = Archive extraction failed
-mirror-selection-failed = Online mirror is not available. Please install from an original disc.
+mirror-selection-failed = Online mirror is not available. Please install from an original source.
 
-## InstallFromDiscLogic
-detecting-drives = Detecting drives
-checking-discs = Checking Discs
-searching-disc-for = Searching for { $title }
+## InstallFromSourceLogic
+detecting-sources = Detecting drives
+checking-sources = Checking Sources
+searching-source-for = Searching for { $title }
 content-package-installation = The following content packages will be installed:
-game-discs = Game Discs
+game-sources = Game Sources
 digital-installs = Digital Installs
 game-content-not-found = Game Content Not Found
 alternative-content-sources = Please insert or install one of the following content sources:
@@ -268,10 +268,10 @@ extracting-filename-progress = Extracting { $filename } ({ $progress }%)
 cancel = Cancel
 retry = Retry
 
-## InstallFromDiscLogic, LobbyLogic
+## InstallFromSourceLogic, LobbyLogic
 back = Back
 
-# InstallFromDiscLogic, ModContentPromptLogic
+# InstallFromSourceLogic, ModContentPromptLogic
 continue = Continue
 
 ## ModContentLogic

@@ -1,4 +1,5 @@
 tibsun: Tiberian Sun (GDI or Nod Disc, English)
+	Type: Disc
 	IDFiles:
 		README.TXT: 45745c4a0c888317ec900208a426472779c42bf7
 		AUTOPLAY.WAV: 2dfce5d00f98b641849c29942b651f4e98d30e30
