@@ -19,7 +19,7 @@ namespace OpenRA.FileSystem
 {
 	public class ZipFileLoader : IPackageLoader
 	{
-		static readonly string[] Extensions = { ".zip", ".oramap" };
+		static readonly uint ZipSignature = 0x04034b50;
 
 		class ReadOnlyZipFile : IReadOnlyPackage
 		{
@@ -206,7 +206,10 @@ namespace OpenRA.FileSystem
 
 		public bool TryParsePackage(Stream s, string filename, FileSystem context, out IReadOnlyPackage package)
 		{
-			if (!Extensions.Any(e => filename.EndsWith(e, StringComparison.InvariantCultureIgnoreCase)))
+			var readSignature = s.ReadUInt32();
+			s.Position -= 4;
+
+			if (readSignature != ZipSignature)
 			{
 				package = null;
 				return false;
@@ -218,10 +221,15 @@ namespace OpenRA.FileSystem
 
 		public static bool TryParseReadWritePackage(string filename, out IReadWritePackage package)
 		{
-			if (!Extensions.Any(e => filename.EndsWith(e, StringComparison.InvariantCultureIgnoreCase)))
+			using (var s = File.OpenRead(filename))
 			{
-				package = null;
-				return false;
+				var readSignature = s.ReadUInt32();
+
+				if (readSignature != ZipSignature)
+				{
+					package = null;
+					return false;
+				}
 			}
 
 			package = new ReadWriteZipFile(filename);
