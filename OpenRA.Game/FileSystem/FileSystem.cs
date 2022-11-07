@@ -322,6 +322,28 @@ namespace OpenRA.FileSystem
 			return File.Exists(resolvedPath) ? resolvedPath : null;
 		}
 
+		public static string ResolveCaseInsensitivePath(string path)
+		{
+			var resolved = Path.GetPathRoot(path);
+
+			if (resolved == null)
+				return null;
+
+			foreach (var name in path.Substring(resolved.Length).Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar))
+			{
+				// Filter out paths of the form /foo/bar/./baz
+				if (name == ".")
+					continue;
+
+				resolved = Directory.GetFileSystemEntries(resolved).FirstOrDefault(e => e.Equals(Path.Combine(resolved, name), StringComparison.InvariantCultureIgnoreCase));
+
+				if (resolved == null)
+					return null;
+			}
+
+			return resolved;
+		}
+
 		public string GetPrefix(IReadOnlyPackage package)
 		{
 			return explicitMounts.ContainsValue(package) ? explicitMounts.First(f => f.Value == package).Key : null;

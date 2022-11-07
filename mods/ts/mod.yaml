@@ -319,12 +319,12 @@ ModContent:
 	Packages:
 		tibsun: Base Game Files
 			TestFiles: ^SupportDir|Content/ts/cache.mix, ^SupportDir|Content/ts/conquer.mix, ^SupportDir|Content/ts/isosnow.mix, ^SupportDir|Content/ts/isotemp.mix, ^SupportDir|Content/ts/local.mix, ^SupportDir|Content/ts/sidec01.mix, ^SupportDir|Content/ts/sidec02.mix, ^SupportDir|Content/ts/sno.mix, ^SupportDir|Content/ts/snow.mix, ^SupportDir|Content/ts/sounds.mix, ^SupportDir|Content/ts/speech01.mix, ^SupportDir|Content/ts/tem.mix, ^SupportDir|Content/ts/temperat.mix
-			Sources: tibsun, tibsun-linux, tfd, origin
+			Sources: tibsun, tfd, origin
 			Required: true
 			Download: basefiles
 		tibsun-music: Base Game Music
 			TestFiles: ^SupportDir|Content/ts/scores.mix
-			Sources: tibsun, tibsun-linux, tfd, origin
+			Sources: tibsun, tfd, origin
 		fstorm: Firestorm Expansion Files
 			TestFiles: ^SupportDir|Content/ts/firestorm/e01sc01.mix, ^SupportDir|Content/ts/firestorm/e01sc02.mix, ^SupportDir|Content/ts/firestorm/e01vox01.mix, ^SupportDir|Content/ts/firestorm/e01vox02.mix
 			Sources: tfd, origin, fstorm

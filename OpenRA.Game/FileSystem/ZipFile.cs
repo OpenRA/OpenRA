@@ -223,9 +223,7 @@ namespace OpenRA.FileSystem
 		{
 			using (var s = File.OpenRead(filename))
 			{
-				var readSignature = s.ReadUInt32();
-
-				if (readSignature != ZipSignature)
+				if (s.ReadUInt32() != ZipSignature)
 				{
 					package = null;
 					return false;

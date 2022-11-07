@@ -17,6 +17,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Widgets;
+using FS = OpenRA.FileSystem.FileSystem;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
@@ -270,7 +271,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 									var sourceDir = Path.Combine(path, i.Value.Value);
 									foreach (var node in i.Value.Nodes)
 									{
-										var sourcePath = Path.Combine(sourceDir, node.Value.Value);
+										var sourcePath = FS.ResolveCaseInsensitivePath(Path.Combine(sourceDir, node.Value.Value));
 										var targetPath = Platform.ResolvePath(node.Key);
 										if (File.Exists(targetPath))
 										{
@@ -382,7 +383,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static void ExtractFromPackage(ModData modData, ExtractionType type, string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
 			// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
-			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : Path.Combine(path, actionYaml.Value);
+			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : FS.ResolveCaseInsensitivePath(Path.Combine(path, actionYaml.Value));
 
 			using (var source = File.OpenRead(sourcePath))
 			{
@@ -438,7 +439,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static void ExtractFromMSCab(ModData modData, string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
 			// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
-			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : Path.Combine(path, actionYaml.Value);
+			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : FS.ResolveCaseInsensitivePath(Path.Combine(path, actionYaml.Value));
 
 			using (var source = File.OpenRead(sourcePath))
 			{
@@ -469,7 +470,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static void ExtractFromISCab(ModData modData, string path, MiniYaml actionYaml, List<string> extractedFiles, Action<string> updateMessage)
 		{
 			// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected disc path
-			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : Path.Combine(path, actionYaml.Value);
+			var sourcePath = actionYaml.Value.StartsWith("^") ? Platform.ResolvePath(actionYaml.Value) : FS.ResolveCaseInsensitivePath(Path.Combine(path, actionYaml.Value));
 
 			var volumeNode = actionYaml.Nodes.FirstOrDefault(n => n.Key == "Volumes");
 			if (volumeNode == null)
@@ -485,7 +486,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var node in volumeNode.Value.Nodes)
 				{
 					var volume = FieldLoader.GetValue<int>("(key)", node.Key);
-					var stream = File.OpenRead(Path.Combine(path, node.Value.Value));
+					var stream = File.OpenRead(FS.ResolveCaseInsensitivePath(Path.Combine(path, node.Value.Value)));
 					volumes.Add(volume, stream);
 				}
 
@@ -564,7 +565,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				foreach (var kv in source.IDFiles.Nodes)
 				{
-					var filePath = Path.Combine(path, kv.Key);
+					var filePath = FS.ResolveCaseInsensitivePath(Path.Combine(path, kv.Key));
 					if (!File.Exists(filePath))
 						return false;
 
