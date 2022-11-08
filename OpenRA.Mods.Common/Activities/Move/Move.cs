@@ -484,10 +484,14 @@ namespace OpenRA.Mods.Common.Activities
 				WRot? fromTerrainOrientation, WRot? toTerrainOrientation, int terrainOrientationMargin, int carryoverProgress, bool movingOnGroundLayer)
 				: base(move, from, to, fromFacing, toFacing, fromTerrainOrientation, toTerrainOrientation, terrainOrientationMargin, carryoverProgress, movingOnGroundLayer) { }
 
-			static bool IsTurn(Mobile mobile, CPos nextCell, Map map)
+			bool IsTurn(Actor self, Mobile mobile, CPos nextCell, Map map)
 			{
 				// Some actors with a limited number of sprite facings should never move along curved trajectories.
 				if (mobile.Info.AlwaysTurnInPlace)
+					return false;
+
+				// When Backwards duration runs out, let the Move activity do the turn.
+				if (Move.actorFacingModifier != WAngle.Zero && self.World.WorldTick - Move.startTicks >= mobile.Info.BackwardDuration)
 					return false;
 
 				// Tight U-turns should be done in place instead of making silly looking loops.
@@ -506,7 +510,7 @@ namespace OpenRA.Mods.Common.Activities
 				var nextCell = parent.PopPath(self);
 				if (nextCell != null)
 				{
-					if (!mobile.IsTraitPaused && !mobile.IsTraitDisabled && IsTurn(mobile, nextCell.Value.Cell, map))
+					if (!mobile.IsTraitPaused && !mobile.IsTraitDisabled && IsTurn(self, mobile, nextCell.Value.Cell, map))
 					{
 						var nextSubcellOffset = map.Grid.OffsetOfSubCell(nextCell.Value.SubCell);
 						WRot? nextToTerrainOrientation = null;
