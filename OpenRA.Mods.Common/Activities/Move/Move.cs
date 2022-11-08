@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Func<BlockedByActor, List<CPos>> getPath;
 		readonly Actor ignoreActor;
 		readonly Color? targetLineColor;
+		WAngle actorFacingModifier;
 
 		static readonly BlockedByActor[] PathSearchOrder =
 		{
@@ -160,7 +161,12 @@ namespace OpenRA.Mods.Common.Activities
 			var firstFacing = self.World.Map.FacingBetween(mobile.FromCell, nextCell.Value.Cell, mobile.Facing);
 
 			if (mobile.Info.CanMoveBackward && self.World.WorldTick - startTicks < mobile.Info.BackwardDuration && Math.Abs(firstFacing.Angle - mobile.Facing.Angle) > 256)
-				firstFacing = new WAngle(firstFacing.Angle + 512);
+			{
+				actorFacingModifier = new WAngle(512);
+				firstFacing += actorFacingModifier;
+			}
+			else
+				actorFacingModifier = WAngle.Zero;
 
 			if (firstFacing != mobile.Facing)
 			{
@@ -513,7 +519,7 @@ namespace OpenRA.Mods.Common.Activities
 							Util.BetweenCells(self.World, mobile.FromCell, mobile.ToCell) + (fromSubcellOffset + toSubcellOffset) / 2,
 							Util.BetweenCells(self.World, mobile.ToCell, nextCell.Value.Cell) + (toSubcellOffset + nextSubcellOffset) / 2,
 							mobile.Facing,
-							map.FacingBetween(mobile.ToCell, nextCell.Value.Cell, mobile.Facing),
+							map.FacingBetween(mobile.ToCell, nextCell.Value.Cell, mobile.Facing) + Move.actorFacingModifier,
 							ToTerrainOrientation,
 							nextToTerrainOrientation,
 							margin,
