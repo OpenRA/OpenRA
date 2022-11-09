@@ -46,6 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 		WorldRenderer worldRenderer;
 
 		public MapPlayers Players { get; private set; }
+		PlayerReference worldOwner;
 
 		public EditorActorLayer(EditorActorLayerInfo info)
 		{
@@ -59,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			Players = new MapPlayers(w.Map.PlayerDefinitions);
 
-			var worldOwner = Players.Players.Select(kvp => kvp.Value).First(p => !p.Playable && p.OwnsWorld);
+			worldOwner = Players.Players.Select(kvp => kvp.Value).First(p => !p.Playable && p.OwnsWorld);
 			w.SetWorldOwner(new Player(w, null, worldOwner, playerRandom));
 		}
 
@@ -126,11 +127,17 @@ namespace OpenRA.Mods.Common.Traits
 
 		public EditorActorPreview Add(string id, ActorReference reference, bool initialSetup = false)
 		{
-			var owner = Players.Players[reference.Get<OwnerInit>().InternalName];
+			// If an actor's doesn't have a valid owner transfer ownership to neutral
+			var ownerInit = reference.Get<OwnerInit>();
+			if (!Players.Players.TryGetValue(ownerInit.InternalName, out var owner))
+			{
+				owner = worldOwner;
+				reference.Remove(ownerInit);
+				reference.Add(new OwnerInit(worldOwner.Name));
+			}
+
 			var preview = new EditorActorPreview(worldRenderer, id, reference, owner);
-
 			Add(preview, initialSetup);
-
 			return preview;
 		}
 
