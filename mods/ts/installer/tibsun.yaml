@@ -6,46 +6,18 @@ tibsun: Tiberian Sun (GDI or Nod Disc, English)
 	Install:
 		Copy: .
 			^SupportDir|Content/ts/scores.mix: SCORES.MIX
-		ExtractRaw: INSTALL/TIBSUN.MIX
-			^SupportDir|Content/ts/cache.mix:
-				Offset: 300
-				Length: 169176
-			^SupportDir|Content/ts/conquer.mix:
-				Offset: 169484
-				Length: 5700088
-			^SupportDir|Content/ts/isosnow.mix:
-				Offset: 5869580
-				Length: 7624750
-			^SupportDir|Content/ts/isotemp.mix:
-				Offset: 13494332
-				Length: 8617646
-			^SupportDir|Content/ts/local.mix:
-				Offset: 22111980
-				Length: 18044736
-			^SupportDir|Content/ts/sidec01.mix:
-				Offset: 40156716
-				Length: 998476
-			^SupportDir|Content/ts/sidec02.mix:
-				Offset: 41155196
-				Length: 1039996
-			^SupportDir|Content/ts/snow.mix:
-				Offset: 56104508
-				Length: 2087806
-			^SupportDir|Content/ts/sno.mix:
-				Offset: 58192316
-				Length: 7826
-			^SupportDir|Content/ts/sounds.mix:
-				Offset: 58200156
-				Length: 3224136
-			^SupportDir|Content/ts/speech01.mix:
-				Offset: 61424300
-				Length: 6028236
-			^SupportDir|Content/ts/speech02.mix:
-				Offset: 67452540
-				Length: 5596628
-			^SupportDir|Content/ts/tem.mix:
-				Offset: 73049180
-				Length: 7746
-			^SupportDir|Content/ts/temperat.mix:
-				Offset: 73056940
-				Length: 2037606
+		ExtractMix: INSTALL/TIBSUN.MIX
+			^SupportDir|Content/ts/cache.mix: cache.mix
+			^SupportDir|Content/ts/conquer.mix: conquer.mix
+			^SupportDir|Content/ts/isosnow.mix: isosnow.mix
+			^SupportDir|Content/ts/isotemp.mix: isotemp.mix
+			^SupportDir|Content/ts/local.mix: local.mix
+			^SupportDir|Content/ts/sidec01.mix: sidec01.mix
+			^SupportDir|Content/ts/sidec02.mix: sidec02.mix
+			^SupportDir|Content/ts/snow.mix: snow.mix
+			^SupportDir|Content/ts/sno.mix: sno.mix
+			^SupportDir|Content/ts/sounds.mix: sounds.mix
+			^SupportDir|Content/ts/speech01.mix: speech01.mix
+			^SupportDir|Content/ts/speech02.mix: speech02.mix
+			^SupportDir|Content/ts/tem.mix: tem.mix
+			^SupportDir|Content/ts/temperat.mix: temperat.mix
