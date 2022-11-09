@@ -5,197 +5,72 @@ allied: Red Alert 95 (Allied Disc, English)
 			Length: 4096
 		INSTALL/REDALERT.MIX: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
 	Install:
-		ExtractRaw: INSTALL/REDALERT.MIX
-			^SupportDir|Content/ra/v2/hires.mix:
-				Offset: 650612
-				Length: 5817417
-			^SupportDir|Content/ra/v2/local.mix:
-				Offset: 6468029
-				Length: 3829837
-			^SupportDir|Content/ra/v2/lores.mix:
-				Offset: 10297866
-				Length: 754800
-			^SupportDir|Content/ra/v2/speech.mix:
-				Offset: 23042864
-				Length: 2003464
-		ExtractRaw: MAIN.MIX
-			^SupportDir|Content/ra/v2/conquer.mix:
-				Offset: 236
-				Length: 2177047
-			^SupportDir|Content/ra/v2/general.mix:
-				Offset: 2239848
-				Length: 14932344
-			^SupportDir|Content/ra/v2/interior.mix:
-				Offset: 17172192
-				Length: 247425
-			^SupportDir|Content/ra/v2/movies/aagun.vqa:
-				Offset: 37694331
-				Length: 3295512
-			^SupportDir|Content/ra/v2/movies/aftrmath.vqa:
-				Offset: 40989843
-				Length: 2455774
-			^SupportDir|Content/ra/v2/movies/ally1.vqa:
-				Offset: 43445617
-				Length: 13536324
-			^SupportDir|Content/ra/v2/movies/ally10.vqa:
-				Offset: 56981941
-				Length: 21506358
-			^SupportDir|Content/ra/v2/movies/ally10b.vqa:
-				Offset: 78488299
-				Length: 2565152
-			^SupportDir|Content/ra/v2/movies/ally11.vqa:
-				Offset: 81053451
-				Length: 13600398
-			^SupportDir|Content/ra/v2/movies/ally12.vqa:
-				Offset: 94653849
-				Length: 7719544
-			^SupportDir|Content/ra/v2/movies/ally14.vqa:
-				Offset: 102373393
-				Length: 11659080
-			^SupportDir|Content/ra/v2/movies/ally2.vqa:
-				Offset: 114032473
-				Length: 8014018
-			^SupportDir|Content/ra/v2/movies/ally4.vqa:
-				Offset: 122046491
-				Length: 9441906
-			^SupportDir|Content/ra/v2/movies/ally5.vqa:
-				Offset: 131488397
-				Length: 21900328
-			^SupportDir|Content/ra/v2/movies/ally6.vqa:
-				Offset: 153388725
-				Length: 26454212
-			^SupportDir|Content/ra/v2/movies/ally8.vqa:
-				Offset: 179842937
-				Length: 15401062
-			^SupportDir|Content/ra/v2/movies/ally9.vqa:
-				Offset: 195243999
-				Length: 14901460
-			^SupportDir|Content/ra/v2/movies/allyend.vqa:
-				Offset: 210145459
-				Length: 27285692
-			^SupportDir|Content/ra/v2/movies/allymorf.vqa:
-				Offset: 237431151
-				Length: 916964
-			^SupportDir|Content/ra/v2/movies/apcescpe.vqa:
-				Offset: 238348115
-				Length: 1627564
-			^SupportDir|Content/ra/v2/movies/assess.vqa:
-				Offset: 239975679
-				Length: 2929218
-			^SupportDir|Content/ra/v2/movies/battle.vqa:
-				Offset: 242904897
-				Length: 2881110
-			^SupportDir|Content/ra/v2/movies/binoc.vqa:
-				Offset: 245786007
-				Length: 4045856
-			^SupportDir|Content/ra/v2/movies/bmap.vqa:
-				Offset: 249831863
-				Length: 2414312
-			^SupportDir|Content/ra/v2/movies/brdgtilt.vqa:
-				Offset: 252246175
-				Length: 1581318
-			^SupportDir|Content/ra/v2/movies/crontest.vqa:
-				Offset: 253827493
-				Length: 2036620
-			^SupportDir|Content/ra/v2/movies/cronfail.vqa:
-				Offset: 255864113
-				Length: 1717214
-			^SupportDir|Content/ra/v2/movies/destroyr.vqa:
-				Offset: 257581327
-				Length: 2178828
-			^SupportDir|Content/ra/v2/movies/dud.vqa:
-				Offset: 259760155
-				Length: 3110418
-			^SupportDir|Content/ra/v2/movies/elevator.vqa:
-				Offset: 262870573
-				Length: 1741894
-			^SupportDir|Content/ra/v2/movies/flare.vqa:
-				Offset: 264612467
-				Length: 1731744
-			^SupportDir|Content/ra/v2/movies/frozen.vqa:
-				Offset: 266344211
-				Length: 1836994
-			^SupportDir|Content/ra/v2/movies/grvestne.vqa:
-				Offset: 268181205
-				Length: 3155668
-			^SupportDir|Content/ra/v2/movies/landing.vqa:
-				Offset: 271336873
-				Length: 2374106
-			^SupportDir|Content/ra/v2/movies/masasslt.vqa:
-				Offset: 273710979
-				Length: 5354700
-			^SupportDir|Content/ra/v2/movies/mcv.vqa:
-				Offset: 279065679
-				Length: 1296036
-			^SupportDir|Content/ra/v2/movies/mcv_land.vqa:
-				Offset: 280361715
-				Length: 1424358
-			^SupportDir|Content/ra/v2/movies/montpass.vqa:
-				Offset: 281786073
-				Length: 1701852
-			^SupportDir|Content/ra/v2/movies/oildrum.vqa:
-				Offset: 283487925
-				Length: 2430792
-			^SupportDir|Content/ra/v2/movies/overrun.vqa:
-				Offset: 285918717
-				Length: 2174548
-			^SupportDir|Content/ra/v2/movies/prolog.vqa:
-				Offset: 288093265
-				Length: 28658198
-			^SupportDir|Content/ra/v2/movies/redintro.vqa:
-				Offset: 316751463
-				Length: 2269452
-			^SupportDir|Content/ra/v2/movies/shipsink.vqa:
-				Offset: 319020915
-				Length: 3150030
-			^SupportDir|Content/ra/v2/movies/shorbom1.vqa:
-				Offset: 322170945
-				Length: 4046650
-			^SupportDir|Content/ra/v2/movies/shorbom2.vqa:
-				Offset: 326217595
-				Length: 2150364
-			^SupportDir|Content/ra/v2/movies/shorbomb.vqa:
-				Offset: 328367959
-				Length: 6111616
-			^SupportDir|Content/ra/v2/movies/snowbomb.vqa:
-				Offset: 334479575
-				Length: 2465762
-			^SupportDir|Content/ra/v2/movies/soviet1.vqa:
-				Offset: 336945337
-				Length: 24112060
-			^SupportDir|Content/ra/v2/movies/sovtstar.vqa:
-				Offset: 361057397
-				Length: 670794
-			^SupportDir|Content/ra/v2/movies/spy.vqa:
-				Offset: 361728191
-				Length: 1646808
-			^SupportDir|Content/ra/v2/movies/tanya1.vqa:
-				Offset: 363374999
-				Length: 13389684
-			^SupportDir|Content/ra/v2/movies/tanya2.vqa:
-				Offset: 376764683
-				Length: 4103388
-			^SupportDir|Content/ra/v2/movies/toofar.vqa:
-				Offset: 380868071
-				Length: 4244572
-			^SupportDir|Content/ra/v2/movies/trinity.vqa:
-				Offset: 385112643
-				Length: 1669310
-			^SupportDir|Content/ra/v2/scores.mix:
-				Offset: 386781953
-				Length: 64171360
-			^SupportDir|Content/ra/v2/snow.mix:
-				Offset: 450953313
-				Length: 1030861
-			^SupportDir|Content/ra/v2/sounds.mix:
-				Offset: 451984174
-				Length: 1006778
-			^SupportDir|Content/ra/v2/russian.mix:
-				Offset: 452990952
-				Length: 266077
-			^SupportDir|Content/ra/v2/allies.mix:
-				Offset: 453257029
-				Length: 309406
-			^SupportDir|Content/ra/v2/temperat.mix:
-				Offset: 453566435
-				Length: 1038859
+		ExtractMix: INSTALL/REDALERT.MIX
+			^SupportDir|Content/ra/v2/hires.mix: hires.mix
+			^SupportDir|Content/ra/v2/local.mix: local.mix
+			^SupportDir|Content/ra/v2/lores.mix: lores.mix
+			^SupportDir|Content/ra/v2/speech.mix: speech.mix
+		ExtractMix: MAIN.MIX
+			^SupportDir|Content/ra/v2/conquer.mix: conquer.mix
+			^SupportDir|Content/ra/v2/general.mix: general.mix
+			^SupportDir|Content/ra/v2/interior.mix: interior.mix
+			^SupportDir|Content/ra/v2/scores.mix: scores.mix
+			^SupportDir|Content/ra/v2/snow.mix: snow.mix
+			^SupportDir|Content/ra/v2/sounds.mix: sounds.mix
+			^SupportDir|Content/ra/v2/russian.mix: russian.mix
+			^SupportDir|Content/ra/v2/allies.mix: allies.mix
+			^SupportDir|Content/ra/v2/temperat.mix: temperat.mix
+			^SupportDir|Content/ra/v2/movies1.mix: movies1.mix
+		ExtractMix: ^SupportDir|Content/ra/v2/movies1.mix
+			^SupportDir|Content/ra/v2/movies/aagun.vqa: aagun.vqa
+			^SupportDir|Content/ra/v2/movies/aftrmath.vqa: aftrmath.vqa
+			^SupportDir|Content/ra/v2/movies/ally1.vqa: ally1.vqa
+			^SupportDir|Content/ra/v2/movies/ally10.vqa: ally10.vqa
+			^SupportDir|Content/ra/v2/movies/ally10b.vqa: ally10b.vqa
+			^SupportDir|Content/ra/v2/movies/ally11.vqa: ally11.vqa
+			^SupportDir|Content/ra/v2/movies/ally12.vqa: ally12.vqa
+			^SupportDir|Content/ra/v2/movies/ally14.vqa: ally14.vqa
+			^SupportDir|Content/ra/v2/movies/ally2.vqa: ally2.vqa
+			^SupportDir|Content/ra/v2/movies/ally4.vqa: ally4.vqa
+			^SupportDir|Content/ra/v2/movies/ally5.vqa: ally5.vqa
+			^SupportDir|Content/ra/v2/movies/ally6.vqa: ally6.vqa
+			^SupportDir|Content/ra/v2/movies/ally8.vqa: ally8.vqa
+			^SupportDir|Content/ra/v2/movies/ally9.vqa: ally9.vqa
+			^SupportDir|Content/ra/v2/movies/allyend.vqa: allyend.vqa
+			^SupportDir|Content/ra/v2/movies/allymorf.vqa: allymorf.vqa
+			^SupportDir|Content/ra/v2/movies/apcescpe.vqa: apcescpe.vqa
+			^SupportDir|Content/ra/v2/movies/assess.vqa: assess.vqa
+			^SupportDir|Content/ra/v2/movies/battle.vqa: battle.vqa
+			^SupportDir|Content/ra/v2/movies/binoc.vqa: binoc.vqa
+			^SupportDir|Content/ra/v2/movies/bmap.vqa: bmap.vqa
+			^SupportDir|Content/ra/v2/movies/brdgtilt.vqa: brdgtilt.vqa
+			^SupportDir|Content/ra/v2/movies/crontest.vqa: crontest.vqa
+			^SupportDir|Content/ra/v2/movies/cronfail.vqa: cronfail.vqa
+			^SupportDir|Content/ra/v2/movies/destroyr.vqa: destroyr.vqa
+			^SupportDir|Content/ra/v2/movies/dud.vqa: dud.vqa
+			^SupportDir|Content/ra/v2/movies/elevator.vqa: elevator.vqa
+			^SupportDir|Content/ra/v2/movies/flare.vqa: flare.vqa
+			^SupportDir|Content/ra/v2/movies/frozen.vqa: frozen.vqa
+			^SupportDir|Content/ra/v2/movies/grvestne.vqa: grvestne.vqa
+			^SupportDir|Content/ra/v2/movies/landing.vqa: landing.vqa
+			^SupportDir|Content/ra/v2/movies/masasslt.vqa: masasslt.vqa
+			^SupportDir|Content/ra/v2/movies/mcv.vqa: mcv.vqa
+			^SupportDir|Content/ra/v2/movies/mcv_land.vqa: mcv_land.vqa
+			^SupportDir|Content/ra/v2/movies/montpass.vqa: montpass.vqa
+			^SupportDir|Content/ra/v2/movies/oildrum.vqa: oildrum.vqa
+			^SupportDir|Content/ra/v2/movies/overrun.vqa: overrun.vqa
+			^SupportDir|Content/ra/v2/movies/prolog.vqa: prolog.vqa
+			^SupportDir|Content/ra/v2/movies/redintro.vqa: redintro.vqa
+			^SupportDir|Content/ra/v2/movies/shipsink.vqa: shipsink.vqa
+			^SupportDir|Content/ra/v2/movies/shorbom1.vqa: shorbom1.vqa
+			^SupportDir|Content/ra/v2/movies/shorbom2.vqa: shorbom2.vqa
+			^SupportDir|Content/ra/v2/movies/shorbomb.vqa: shorbomb.vqa
+			^SupportDir|Content/ra/v2/movies/snowbomb.vqa: snowbomb.vqa
+			^SupportDir|Content/ra/v2/movies/soviet1.vqa: soviet1.vqa
+			^SupportDir|Content/ra/v2/movies/sovtstar.vqa: sovtstar.vqa
+			^SupportDir|Content/ra/v2/movies/spy.vqa: spy.vqa
+			^SupportDir|Content/ra/v2/movies/tanya1.vqa: tanya1.vqa
+			^SupportDir|Content/ra/v2/movies/tanya2.vqa: tanya2.vqa
+			^SupportDir|Content/ra/v2/movies/toofar.vqa: toofar.vqa
+			^SupportDir|Content/ra/v2/movies/trinity.vqa: trinity.vqa
+		Delete: ^SupportDir|Content/ra/v2/movies1.mix
