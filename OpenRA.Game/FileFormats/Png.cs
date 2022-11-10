@@ -271,7 +271,7 @@ namespace OpenRA.FileFormats
 			throw new InvalidDataException("Unknown pixel format");
 		}
 
-		void WritePngChunk(Stream output, string type, Stream input)
+		static void WritePngChunk(Stream output, string type, Stream input)
 		{
 			input.Position = 0;
 
