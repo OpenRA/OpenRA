@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace OpenRA.Support
 {
@@ -84,25 +85,26 @@ namespace OpenRA.Support
 
 		static IEnumerable<string> Tokens(string expr, string ops)
 		{
-			var s = "";
+			StringBuilder s = new StringBuilder();
+			var str = s.ToString();
 			foreach (var c in expr)
 			{
 				if (char.IsWhiteSpace(c))
 				{
-					if (s != "") yield return s;
-					s = "";
+					if (str != "") yield return str;
+					str = "";
 				}
 				else if (ops.Contains(c))
 				{
-					if (s != "") yield return s;
-					s = "";
+					if (str != "") yield return str;
+					str = "";
 					yield return "" + c;
 				}
 				else
-					s += c;
+					str += c;
 			}
 
-			if (s != "") yield return s;
+			if (str != "") yield return str;
 		}
 	}
 }

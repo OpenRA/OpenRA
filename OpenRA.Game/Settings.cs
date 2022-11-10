@@ -165,13 +165,25 @@ namespace OpenRA
 		public bool SyncCheckUnsyncedCode = false;
 
 		[Desc("Throw an exception if the world sync hash changes while evaluating BotModules.")]
-		public bool SyncCheckBotModuleCode = false;
+		private bool syncCheckBotModuleCode = false;
+
+		public bool SyncCheckBotModuleCode
+		{
+			get { return syncCheckBotModuleCode; }
+			set { syncCheckBotModuleCode = value; }
+
+		}
 	}
 
 	public class GraphicSettings
 	{
 		[Desc("This can be set to Windowed, Fullscreen or PseudoFullscreen.")]
-		public WindowMode Mode = WindowMode.PseudoFullscreen;
+		private WindowMode mode = WindowMode.PseudoFullscreen;
+
+		public WindowMode Mode{
+			get { return mode; }
+			set { mode = value; }
+		}
 
 		[Desc("Enable VSync.")]
 		public bool VSync = true;
@@ -303,7 +315,7 @@ namespace OpenRA
 		public readonly DebugSettings Debug = new DebugSettings();
 		internal Dictionary<string, Hotkey> Keys = new Dictionary<string, Hotkey>();
 
-		public readonly Dictionary<string, object> Sections;
+		public Dictionary<string, object> Sections;
 
 		// A direct clone of the file loaded from disk.
 		// Any changed settings will be merged over this on save,
