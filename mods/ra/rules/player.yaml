@@ -125,22 +125,22 @@ Player:
 		FogCheckboxDisplayOrder: 3
 	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:
 		ID: bounty
-		Label: kill-bounties.label
-		Description: kill-bounties.description
+		Label: checkbox-kill-bounties.label
+		Description: checkbox-kill-bounties.description
 		Enabled: False
 		DisplayOrder: 8
 		Prerequisites: global-bounty
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		ID: factundeploy
-		Label: redeployable-mcvs.label
-		Description: redeployable-mcvs.description
+		Label: checkbox-redeployable-mcvs.label
+		Description: checkbox-redeployable-mcvs.description
 		Enabled: True
 		DisplayOrder: 7
 		Prerequisites: global-factundeploy
 	LobbyPrerequisiteCheckbox@REUSABLEENGINEERS:
 		ID: reusable-engineers
-		Label: reusable-engineers.label
-		Description: reusable-engineers.description
+		Label: checkbox-reusable-engineers.label
+		Description: checkbox-reusable-engineers.description
 		Enabled: False
 		DisplayOrder: 9
 		Prerequisites: global-reusable-engineers
@@ -151,23 +151,23 @@ Player:
 	PlayerStatistics:
 	PlaceBeacon:
 	ProvidesTechPrerequisite@infonly:
-		Name: infantry-only
+		Name: options-tech-level.infantry-only
 		Prerequisites: techlevel.infonly
 		Id: infantryonly
 	ProvidesTechPrerequisite@low:
-		Name: low
+		Name: options-tech-level.low
 		Prerequisites: techlevel.infonly, techlevel.low
 		Id: low
 	ProvidesTechPrerequisite@medium:
-		Name: medium
+		Name: options-tech-level.medium
 		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium
 		Id: medium
 	ProvidesTechPrerequisite@high:
-		Name: no-superweapons
+		Name: options-tech-level.no-superweapons
 		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium, techlevel.high
 		Id: nosuperweapons
 	ProvidesTechPrerequisite@unrestricted:
-		Name: unrestricted
+		Name: options-tech-level.unrestricted
 		Prerequisites: techlevel.infonly, techlevel.low, techlevel.medium, techlevel.high, techlevel.unrestricted
 		Id: unrestricted
 	GrantConditionOnPrerequisiteManager:

@@ -26,82 +26,82 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ReplayBrowserLogic : ChromeLogic
 	{
 		[TranslationReference("time")]
-		const string Duration = "duration";
+		const string Duration = "label-duration";
 
 		[TranslationReference]
-		const string Singleplayer = "singleplayer";
+		const string Singleplayer = "options-replay-type.singleplayer";
 
 		[TranslationReference]
-		const string Multiplayer = "multiplayer";
+		const string Multiplayer = "options-replay-type.multiplayer";
 
 		[TranslationReference]
-		const string Today = "today";
+		const string Today = "options-replay-date.today";
 
 		[TranslationReference]
-		const string LastWeek = "last-week";
+		const string LastWeek = "options-replay-date.last-week";
 
 		[TranslationReference]
-		const string LastFortnight = "last-fortnight";
+		const string LastFortnight = "options-replay-date.last-fortnight";
 
 		[TranslationReference]
-		const string LastMonth = "last-month";
+		const string LastMonth = "options-replay-date.last-month";
 
 		[TranslationReference]
-		const string ReplayDurationVeryShort = "replay-duration-very-short";
+		const string ReplayDurationVeryShort = "options-replay-duration.very-short";
 
 		[TranslationReference]
-		const string ReplayDurationShort = "replay-duration-short";
+		const string ReplayDurationShort = "options-replay-duration.short";
 
 		[TranslationReference]
-		const string ReplayDurationMedium = "replay-duration-medium";
+		const string ReplayDurationMedium = "options-replay-duration.medium";
 
 		[TranslationReference]
-		const string ReplayDurationLong = "replay-duration-long";
+		const string ReplayDurationLong = "options-replay-duration.long";
 
 		[TranslationReference]
-		const string RenameReplayTitle = "rename-replay-title";
+		const string RenameReplayTitle = "dialog-rename-replay.title";
 
 		[TranslationReference]
-		const string RenameReplayPrompt = "rename-replay-prompt";
+		const string RenameReplayPrompt = "dialog-rename-replay.prompt";
 
 		[TranslationReference]
-		const string RenameReplayAccept = "rename-replay-accept";
+		const string RenameReplayAccept = "dialog-rename-replay.confirm";
 
 		[TranslationReference]
-		const string DeleteReplayTitle = "delete-replay-title";
+		const string DeleteReplayTitle = "dialog-delete-replay.title";
 
 		[TranslationReference("replay")]
-		const string DeleteReplayPrompt = "delete-replay-prompt";
+		const string DeleteReplayPrompt = "dialog-delete-replay.prompt";
 
 		[TranslationReference]
-		const string DeleteReplayAccept = "delete-replay-accept";
+		const string DeleteReplayAccept = "dialog-delete-replay.confirm";
 
 		[TranslationReference]
-		const string DeleteAllReplaysTitle = "delete-all-replays-title";
+		const string DeleteAllReplaysTitle = "dialog-delete-all-replays.title";
 
 		[TranslationReference("count")]
-		const string DeleteAllReplaysPrompt = "delete-all-replays-prompt";
+		const string DeleteAllReplaysPrompt = "dialog-delete-all-replays.prompt";
 
 		[TranslationReference]
-		const string DeleteAllReplaysAccept = "delete-all-replays-accept";
+		const string DeleteAllReplaysAccept = "dialog-delete-all-replays.confirm";
 
 		[TranslationReference("file")]
-		const string ReplayDeletionFailed = "replay-deletion-failed";
+		const string ReplayDeletionFailed = "notification-replay-deletion-failed";
 
 		[TranslationReference]
-		const string Players = "players";
+		const string Players = "label-players";
 
 		[TranslationReference("team")]
-		const string TeamNumber = "team-number";
+		const string TeamNumber = "label-team-name";
 
 		[TranslationReference]
-		const string NoTeam = "no-team";
+		const string NoTeam = "label-no-team";
 
 		[TranslationReference]
-		const string Victory = "victory";
+		const string Victory = "options-winstate.victory";
 
 		[TranslationReference]
-		const string Defeat = "defeat";
+		const string Defeat = "options-winstate.defeat";
 
 		static Filter filter = new Filter();
 

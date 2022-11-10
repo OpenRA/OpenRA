@@ -35,10 +35,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[TranslationReference("length")]
-		const string LengthInSeconds = "length-in-seconds";
+		const string LengthInSeconds = "label-length-in-seconds";
 
 		[TranslationReference]
-		const string AllPackages = "all-packages";
+		const string AllPackages = "label-all-packages";
 
 		readonly string[] allowedExtensions;
 		readonly string[] allowedSpriteExtensions;

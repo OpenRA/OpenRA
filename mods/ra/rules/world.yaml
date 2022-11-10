@@ -228,12 +228,12 @@ World:
 	CreateMapPlayers:
 	StartingUnits@mcvonly:
 		Class: none
-		ClassName: mcv-only
+		ClassName: options-starting-units.mcv-only
 		Factions: allies, england, france, germany, soviet, russia, ukraine
 		BaseActor: mcv
 	StartingUnits@lightallies:
 		Class: light
-		ClassName: light-support
+		ClassName: options-starting-units.light-support
 		Factions: allies, england, france, germany
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk
@@ -241,7 +241,7 @@ World:
 		OuterSupportRadius: 5
 	StartingUnits@lightsoviet:
 		Class: light
-		ClassName: light-support
+		ClassName: options-starting-units.light-support
 		Factions: soviet, russia, ukraine
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,apc,ftrk
@@ -249,7 +249,7 @@ World:
 		OuterSupportRadius: 5
 	StartingUnits@heavyallies:
 		Class: heavy
-		ClassName: heavy-support
+		ClassName: options-starting-units.heavy-support
 		Factions: allies, england, france, germany
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,jeep,1tnk,2tnk,2tnk,2tnk
@@ -257,7 +257,7 @@ World:
 		OuterSupportRadius: 5
 	StartingUnits@heavysoviet:
 		Class: heavy
-		ClassName: heavy-support
+		ClassName: options-starting-units.heavy-support
 		Factions: soviet, russia, ukraine
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,apc,ftrk,3tnk,3tnk

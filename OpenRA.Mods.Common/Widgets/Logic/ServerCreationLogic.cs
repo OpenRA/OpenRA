@@ -20,37 +20,37 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ServerCreationLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string InternetServerNatA = "internet-server-nat-A";
+		const string InternetServerNatA = "label-internet-server-nat-A";
 
 		[TranslationReference]
-		const string InternetServerNatBenabled = "internet-server-nat-B-enabled";
+		const string InternetServerNatBenabled = "label-internet-server-nat-B-enabled";
 
 		[TranslationReference]
-		const string InternetServerNatBnotSupported = "internet-server-nat-B-not-supported";
+		const string InternetServerNatBnotSupported = "label-internet-server-nat-B-not-supported";
 
 		[TranslationReference]
-		const string InternetServerNatBdisabled = "internet-server-nat-B-disabled";
+		const string InternetServerNatBdisabled = "label-internet-server-nat-B-disabled";
 
 		[TranslationReference]
-		const string InternetServerNatC = "internet-server-nat-C";
+		const string InternetServerNatC = "label-internet-server-nat-C";
 
 		[TranslationReference]
-		const string LocalServer = "local-server";
+		const string LocalServer = "label-local-server";
 
 		[TranslationReference("port")]
-		const string ServerCreationFailedPrompt = "server-creation-failed-prompt";
+		const string ServerCreationFailedPrompt = "dialog-server-creation-failed.prompt";
 
 		[TranslationReference]
-		const string ServerCreationFailedPortUsed = "server-creation-failed-port-used";
+		const string ServerCreationFailedPortUsed = "dialog-server-creation-failed.prompt-port-used";
 
 		[TranslationReference("message", "code")]
-		const string ServerCreationFailedError = "server-creation-failed-error";
+		const string ServerCreationFailedError = "dialog-server-creation-failed.prompt-error";
 
 		[TranslationReference]
-		const string ServerCreationFailedTitle = "server-creation-failed-title";
+		const string ServerCreationFailedTitle = "dialog-server-creation-failed.title";
 
 		[TranslationReference]
-		const string ServerCreationFailedCancel = "server-creation-failed-cancel";
+		const string ServerCreationFailedCancel = "dialog-server-creation-failed.cancel";
 
 		readonly Widget panel;
 		readonly ModData modData;

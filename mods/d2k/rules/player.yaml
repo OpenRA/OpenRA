@@ -126,8 +126,8 @@ Player:
 		FogCheckboxDisplayOrder: 3
 	LobbyPrerequisiteCheckbox@AUTOCONCRETE:
 		ID: autoconcrete
-		Label: automatic-concrete.label
-		Description: automatic-concrete.description
+		Label: checkbox-automatic-concrete.label
+		Description: checkbox-automatic-concrete.description
 		Enabled: False
 		DisplayOrder: 7
 		Prerequisites: global-auto-concrete
@@ -158,19 +158,19 @@ Player:
 		Prerequisite: player.smuggler
 		Factions: smuggler
 	ProvidesTechPrerequisite@low:
-		Name: low
+		Name: options-tech-level.low
 		Prerequisites: techlevel.low
 		Id: low
 	ProvidesTechPrerequisite@medium:
-		Name: medium
+		Name: options-tech-level.medium
 		Prerequisites: techlevel.low, techlevel.medium
 		Id: medium
 	ProvidesTechPrerequisite@nosuper:
-		Name: no-powers
+		Name: options-tech-level.no-powers
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high
 		Id: nopowers
 	ProvidesTechPrerequisite@all:
-		Name: unrestricted
+		Name: options-tech-level.unrestricted
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high, techlevel.superweapons
 		Id: unrestricted
 	EnemyWatcher:

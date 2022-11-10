@@ -23,13 +23,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class MainMenuLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string LoadingNews = "loading-news";
+		const string LoadingNews = "label-loading-news";
 
 		[TranslationReference("message")]
-		const string NewsRetrivalFailed = "news-retrival-failed";
+		const string NewsRetrivalFailed = "label-news-retrival-failed";
 
 		[TranslationReference("message")]
-		const string NewsParsingFailed = "news-parsing-failed";
+		const string NewsParsingFailed = "label-news-parsing-failed";
 
 		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, StartupPrompts, None }
 

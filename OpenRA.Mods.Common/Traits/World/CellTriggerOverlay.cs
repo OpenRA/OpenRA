@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		const string CommandName = "triggers";
 
 		[TranslationReference]
-		const string CommandDescription = "cell-trigger-overlay-description";
+		const string CommandDescription = "description-cell-triggers-overlay";
 
 		bool enabled;
 

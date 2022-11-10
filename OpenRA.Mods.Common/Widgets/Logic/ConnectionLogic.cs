@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ConnectionLogic : ChromeLogic
 	{
 		[TranslationReference("endpoint")]
-		const string ConnectingToEndpoint = "connecting-to-endpoint";
+		const string ConnectingToEndpoint = "label-connecting-to-endpoint";
 
 		readonly Action onConnect;
 		readonly Action onAbort;
@@ -87,16 +87,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ConnectionFailedLogic : ChromeLogic
 	{
 		[TranslationReference("target")]
-		const string CouldNotConnectToTarget = "could-not-connect-to-target";
+		const string CouldNotConnectToTarget = "label-could-not-connect-to-target";
 
 		[TranslationReference]
-		const string UnknownError = "unknown-error";
+		const string UnknownError = "label-unknown-error";
 
 		[TranslationReference]
-		const string PasswordRequired = "password-required";
+		const string PasswordRequired = "label-password-required";
 
 		[TranslationReference]
-		const string ConnectionFailed = "connection-failed";
+		const string ConnectionFailed = "label-connection-failed";
 
 		readonly PasswordFieldWidget passwordField;
 		bool passwordOffsetAdjusted;
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ConnectionSwitchModLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string ModSwitchFailed = "mod-switch-failed";
+		const string ModSwitchFailed = "notification-mod-switch-failed";
 
 		[ObjectCreator.UseCtor]
 		public ConnectionSwitchModLogic(Widget widget, OrderManager orderManager, NetworkConnection connection, Action onAbort, Action<string> onRetry)

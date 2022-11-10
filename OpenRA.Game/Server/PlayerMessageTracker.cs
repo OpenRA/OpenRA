@@ -17,7 +17,7 @@ namespace OpenRA.Server
 	class PlayerMessageTracker
 	{
 		[TranslationReference("remaining")]
-		const string ChatTemporaryDisabled = "chat-temp-disabled";
+		const string ChatTemporaryDisabled = "notification-chat-temp-disabled";
 
 		readonly Dictionary<int, List<long>> messageTracker = new Dictionary<int, List<long>>();
 		readonly Server server;

@@ -23,40 +23,40 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class LobbyLogic : ChromeLogic, INotificationHandler<TextNotification>
 	{
 		[TranslationReference]
-		const string Add = "add";
+		const string Add = "options-slot-admin.add-bots";
 
 		[TranslationReference]
-		const string Remove = "remove";
+		const string Remove = "options-slot-admin.remove-bots";
 
 		[TranslationReference]
-		const string ConfigureBots = "configure-bots";
+		const string ConfigureBots = "options-slot-admin.configure-bots";
 
 		[TranslationReference("count")]
-		const string NumberTeams = "n-teams";
+		const string NumberTeams = "options-slot-admin.teams-count";
 
 		[TranslationReference]
-		const string HumanVsBots = "humans-vs-bots";
+		const string HumanVsBots = "options-slot-admin.humans-vs-bots";
 
 		[TranslationReference]
-		const string FreeForAll = "free-for-all";
+		const string FreeForAll = "options-slot-admin.free-for-all";
 
 		[TranslationReference]
-		const string ConfigureTeams = "configure-teams";
+		const string ConfigureTeams = "options-slot-admin.configure-teams";
 
 		[TranslationReference]
-		const string Back = "back";
+		const string Back = "button-back";
 
 		[TranslationReference]
-		const string Team = "team";
+		const string TeamChat = "button-team-chat";
 
 		[TranslationReference]
-		const string All = "all";
+		const string GeneralChat = "button-general-chat";
 
 		[TranslationReference("seconds")]
-		const string ChatAvailability = "chat-availability";
+		const string ChatAvailability = "label-chat-availability";
 
 		[TranslationReference]
-		const string ChatDisabled = "chat-disabled";
+		const string ChatDisabled = "label-chat-disabled";
 
 		static readonly Action DoNothing = () => { };
 
@@ -454,8 +454,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var chatMode = lobby.Get<ButtonWidget>("CHAT_MODE");
-			var team = modData.Translation.GetString(Team);
-			var all = modData.Translation.GetString(All);
+			var team = modData.Translation.GetString(TeamChat);
+			var all = modData.Translation.GetString(GeneralChat);
 			chatMode.GetText = () => teamChat ? team : all;
 			chatMode.OnClick = () => teamChat ^= true;
 			chatMode.IsDisabled = () => disableTeamChat || !chatEnabled;

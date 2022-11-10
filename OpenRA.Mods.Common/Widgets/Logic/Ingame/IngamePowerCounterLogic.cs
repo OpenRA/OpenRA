@@ -18,10 +18,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class IngamePowerCounterLogic : ChromeLogic
 	{
 		[TranslationReference("usage", "capacity")]
-		const string PowerUsage = "power-usage";
+		const string PowerUsage = "label-power-usage";
 
 		[TranslationReference]
-		const string Infinite = "infinite-power";
+		const string Infinite = "label-infinite-power";
 
 		[ObjectCreator.UseCtor]
 		public IngamePowerCounterLogic(Widget widget, ModData modData, World world)

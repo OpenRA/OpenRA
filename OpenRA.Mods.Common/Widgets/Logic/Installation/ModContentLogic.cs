@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ModContentLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string ManualInstall = "manual-install";
+		const string ManualInstall = "button-manual-install";
 
 		readonly ModData modData;
 		readonly ModContent content;

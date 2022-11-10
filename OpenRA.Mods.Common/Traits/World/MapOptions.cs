@@ -21,11 +21,11 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[TranslationReference]
 		[Desc("Descriptive label for the short game checkbox in the lobby.")]
-		public readonly string ShortGameCheckboxLabel = "short-game.label";
+		public readonly string ShortGameCheckboxLabel = "checkbox-short-game.label";
 
 		[TranslationReference]
 		[Desc("Tooltip description for the short game checkbox in the lobby.")]
-		public readonly string ShortGameCheckboxDescription = "short-game.description";
+		public readonly string ShortGameCheckboxDescription = "checkbox-short-game.description";
 
 		[Desc("Default value of the short game checkbox in the lobby.")]
 		public readonly bool ShortGameCheckboxEnabled = true;
@@ -41,11 +41,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		[TranslationReference]
 		[Desc("Descriptive label for the tech level option in the lobby.")]
-		public readonly string TechLevelDropdownLabel = "tech-level.label";
+		public readonly string TechLevelDropdownLabel = "dropdown-tech-level.label";
 
 		[TranslationReference]
 		[Desc("Tooltip description for the tech level option in the lobby.")]
-		public readonly string TechLevelDropdownDescription = "tech-level.description";
+		public readonly string TechLevelDropdownDescription = "dropdown-tech-level.description";
 
 		[Desc("Default tech level.")]
 		public readonly string TechLevel = "unrestricted";
@@ -61,11 +61,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		[TranslationReference]
 		[Desc("Tooltip description for the game speed option in the lobby.")]
-		public readonly string GameSpeedDropdownLabel = "game-speed.label";
+		public readonly string GameSpeedDropdownLabel = "dropdown-game-speed.label";
 
 		[TranslationReference]
 		[Desc("Description of the game speed option in the lobby.")]
-		public readonly string GameSpeedDropdownDescription = "game-speed.description";
+		public readonly string GameSpeedDropdownDescription = "dropdown-game-speed.description";
 
 		[Desc("Default game speed (leave empty to use the default defined in mod.yaml).")]
 		public readonly string GameSpeed = null;

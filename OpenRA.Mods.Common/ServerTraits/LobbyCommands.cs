@@ -25,133 +25,133 @@ namespace OpenRA.Mods.Common.Server
 	public class LobbyCommands : ServerTrait, IInterpretCommand, INotifyServerStart, INotifyServerEmpty, IClientJoined
 	{
 		[TranslationReference]
-		const string CustomRules = "custom-rules";
+		const string CustomRules = "notification-custom-rules";
 
 		[TranslationReference]
-		const string OnlyHostStartGame = "only-only-host-start-game";
+		const string OnlyHostStartGame = "notification-admin-start-game";
 
 		[TranslationReference]
-		const string NoStartUntilRequiredSlotsFull = "no-start-until-required-slots-full";
+		const string NoStartUntilRequiredSlotsFull = "notification-no-start-until-required-slots-full";
 
 		[TranslationReference]
-		const string NoStartWithoutPlayers = "no-start-without-players";
+		const string NoStartWithoutPlayers = "notification-no-start-without-players";
 
 		[TranslationReference]
-		const string TwoHumansRequired = "two-humans-required";
+		const string TwoHumansRequired = "notification-two-humans-required";
 
 		[TranslationReference]
-		const string InsufficientEnabledSpawnPoints = "insufficient-enabled-spawnPoints";
+		const string InsufficientEnabledSpawnPoints = "notification-insufficient-enabled-spawn-points";
 
 		[TranslationReference("command")]
-		const string MalformedCommand = "malformed-command";
+		const string MalformedCommand = "notification-malformed-command";
 
 		[TranslationReference]
-		const string KickNone = "kick-none";
+		const string KickNone = "notification-kick-none";
 
 		[TranslationReference]
-		const string NoKickGameStarted = "no-kick-game-started";
+		const string NoKickGameStarted = "notification-no-kick-game-started";
 
 		[TranslationReference("admin", "player")]
-		const string Kicked = "kicked";
+		const string Kicked = "notification-kicked";
 
 		[TranslationReference("admin", "player")]
-		const string TempBan = "temp-ban";
+		const string TempBan = "notification-temp-ban";
 
 		[TranslationReference]
-		const string NoTransferAdmin = "only-host-transfer-admin";
+		const string NoTransferAdmin = "notification-admin-transfer-admin";
 
 		[TranslationReference]
-		const string EmptySlot = "empty-slot";
+		const string EmptySlot = "notification-empty-slot";
 
 		[TranslationReference("admin", "player")]
-		const string MoveSpectators = "move-spectators";
+		const string MoveSpectators = "notification-move-spectators";
 
 		[TranslationReference("player", "name")]
-		const string Nick = "nick";
+		const string Nick = "notification-nick-changed";
 
 		[TranslationReference]
-		const string StateUnchangedReady = "state-unchanged-ready";
+		const string StateUnchangedReady = "notification-state-unchanged-ready";
 
 		[TranslationReference("command")]
-		const string StateUnchangedGameStarted = "state-unchanged-game-started";
+		const string StateUnchangedGameStarted = "notification-state-unchanged-game-started";
 
 		[TranslationReference("faction")]
-		const string InvalidFactionSelected = "invalid-faction-selected";
+		const string InvalidFactionSelected = "notification-invalid-faction-selected";
 
 		[TranslationReference("factions")]
-		const string SupportedFactions = "supported-factions";
+		const string SupportedFactions = "notification-supported-factions";
 
 		[TranslationReference]
-		const string RequiresHost = "requires-host";
+		const string RequiresHost = "notification-requires-host";
 
 		[TranslationReference]
-		const string InvalidBotSlot = "invalid-bot-slot";
+		const string InvalidBotSlot = "notification-invalid-bot-slot";
 
 		[TranslationReference]
-		const string InvalidBotType = "invalid-bot-type";
+		const string InvalidBotType = "notification-invalid-bot-type";
 
 		[TranslationReference]
-		const string HostChangeMap = "only-host-change-map";
+		const string HostChangeMap = "notification-admin-change-map";
 
 		[TranslationReference]
-		const string UnknownMap = "unknown-map";
+		const string UnknownMap = "notification-unknown-map";
 
 		[TranslationReference]
-		const string SearchingMap = "searching-map";
+		const string SearchingMap = "notification-searching-map";
 
 		[TranslationReference]
-		const string NotAdmin = "only-host-change-configuration";
+		const string NotAdmin = "notification-admin-change-configuration";
 
 		[TranslationReference]
-		const string InvalidConfigurationCommand = "invalid-configuration-command";
+		const string InvalidConfigurationCommand = "notification-invalid-configuration-command";
 
 		[TranslationReference("option")]
-		const string OptionLocked = "option-locked";
+		const string OptionLocked = "notification-option-locked";
 
 		[TranslationReference("player", "map")]
-		const string ChangedMap = "changed-map";
+		const string ChangedMap = "notification-changed-map";
 
 		[TranslationReference]
-		const string MapBotsDisabled = "map-bots-disabled";
+		const string MapBotsDisabled = "notification-map-bots-disabled";
 
 		[TranslationReference("player", "name", "value")]
-		const string ValueChanged = "value-changed";
+		const string ValueChanged = "notification-option-changed";
 
 		[TranslationReference]
-		const string NoMoveSpectators = "only-host-move-spectators";
+		const string NoMoveSpectators = "notification-admin-move-spectators";
 
 		[TranslationReference]
-		const string AdminOption = "admin-option";
+		const string AdminOption = "notification-admin-option";
 
 		[TranslationReference("raw")]
-		const string NumberTeams = "number-teams";
+		const string NumberTeams = "notification-error-number-teams";
 
 		[TranslationReference]
-		const string AdminClearSpawn = "admin-clear-spawn";
+		const string AdminClearSpawn = "notification-admin-clear-spawn";
 
 		[TranslationReference]
-		const string SpawnOccupied = "spawn-occupied";
+		const string SpawnOccupied = "notification-spawn-occupied";
 
 		[TranslationReference]
-		const string SpawnLocked = "spawn-locked";
+		const string SpawnLocked = "notification-spawn-locked";
 
 		[TranslationReference]
-		const string AdminLobbyInfo = "admin-lobby-info";
+		const string AdminLobbyInfo = "notification-admin-lobby-info";
 
 		[TranslationReference]
-		const string InvalidLobbyInfo = "invalid-lobby-info";
+		const string InvalidLobbyInfo = "notification-invalid-lobby-info";
 
 		[TranslationReference]
-		const string AdminKick = "admin-kick";
+		const string AdminKick = "notification-admin-kick";
 
 		[TranslationReference]
-		const string SlotClosed = "slot-closed";
+		const string SlotClosed = "notification-slot-closed";
 
 		[TranslationReference("player")]
-		const string NewAdmin = "new-admin";
+		const string NewAdmin = "notification-new-admin";
 
 		[TranslationReference]
-		const string YouWereKicked = "you-were-kicked";
+		const string YouWereKicked = "notification-you-were-kicked";
 
 		readonly IDictionary<string, Func<S, Connection, Session.Client, string, bool>> commandHandlers = new Dictionary<string, Func<S, Connection, Session.Client, string, bool>>
 		{

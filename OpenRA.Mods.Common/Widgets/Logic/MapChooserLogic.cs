@@ -19,55 +19,55 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class MapChooserLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string AllMaps = "all-maps";
+		const string AllMaps = "label-all-maps";
 
 		[TranslationReference]
-		const string NoMatches = "no-matches";
+		const string NoMatches = "label-no-matches";
 
 		[TranslationReference("players")]
-		const string Players = "player-players";
+		const string Players = "label-player-count";
 
 		[TranslationReference("author")]
-		const string CreatedBy = "created-by";
+		const string CreatedBy = "label-created-by";
 
 		[TranslationReference]
-		const string MapSizeHuge = "map-size-huge";
+		const string MapSizeHuge = "label-map-size-huge";
 
 		[TranslationReference]
-		const string MapSizeLarge = "map-size-large";
+		const string MapSizeLarge = "label-map-size-large";
 
 		[TranslationReference]
-		const string MapSizeMedium = "map-size-medium";
+		const string MapSizeMedium = "label-map-size-medium";
 
 		[TranslationReference]
-		const string MapSizeSmall = "map-size-small";
+		const string MapSizeSmall = "label-map-size-small";
 
 		[TranslationReference("map")]
-		const string MapDeletionFailed = "map-deletion-failed";
+		const string MapDeletionFailed = "notification-map-deletion-failed";
 
 		[TranslationReference]
-		const string DeleteMapTitle = "delete-map-title";
+		const string DeleteMapTitle = "dialog-delete-map.title";
 
 		[TranslationReference("title")]
-		const string DeleteMapPrompt = "delete-map-prompt";
+		const string DeleteMapPrompt = "dialog-delete-map.prompt";
 
 		[TranslationReference]
-		const string DeleteMapAccept = "delete-map-accept";
+		const string DeleteMapAccept = "dialog-delete-map.confirm";
 
 		[TranslationReference]
-		const string DeleteAllMapsTitle = "delete-all-maps-title";
+		const string DeleteAllMapsTitle = "dialog-delete-all-maps.title";
 
 		[TranslationReference]
-		const string DeleteAllMapsPrompt = "delete-all-maps-prompt";
+		const string DeleteAllMapsPrompt = "dialog-delete-all-maps.prompt";
 
 		[TranslationReference]
-		const string DeleteAllMapsAccept = "delete-all-maps-accept";
+		const string DeleteAllMapsAccept = "dialog-delete-all-maps.confirm";
 
 		[TranslationReference]
-		const string OrderMapsByPlayers = "order-maps-players";
+		const string OrderMapsByPlayers = "options-order-maps.player-count";
 
 		[TranslationReference]
-		const string OrderMapsByDate = "order-maps-date";
+		const string OrderMapsByDate = "options-order-maps.date";
 
 		readonly string allMaps;
 

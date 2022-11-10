@@ -21,13 +21,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ActorEditLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string DuplicateActorId = "duplicate-actor-id";
+		const string DuplicateActorId = "label-duplicate-actor-id";
 
 		[TranslationReference]
-		const string EnterActorId = "enter-actor-id";
+		const string EnterActorId = "label-actor-id";
 
 		[TranslationReference]
-		const string Owner = "owner";
+		const string Owner = "label-actor-owner";
 
 		// Error states define overlapping bits to simplify panel reflow logic
 		[Flags]

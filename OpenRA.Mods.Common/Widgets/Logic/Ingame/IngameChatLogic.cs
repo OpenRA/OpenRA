@@ -24,16 +24,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class IngameChatLogic : ChromeLogic, INotificationHandler<TextNotification>
 	{
 		[TranslationReference]
-		const string Team = "team";
+		const string TeamChat = "button-team-chat";
 
 		[TranslationReference]
-		const string All = "all";
+		const string GeneralChat = "button-general-chat";
 
 		[TranslationReference("seconds")]
-		const string ChatAvailability = "chat-availability";
+		const string ChatAvailability = "label-chat-availability";
 
 		[TranslationReference]
-		const string ChatDisabled = "chat-disabled";
+		const string ChatDisabled = "label-chat-disabled";
 
 		readonly Ruleset modRules;
 		readonly World world;
@@ -70,8 +70,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var disableTeamChat = alwaysDisabled || (world.LocalPlayer != null && !players.Any(p => p.IsAlliedWith(world.LocalPlayer)));
 			var teamChat = !disableTeamChat;
 
-			var teamMessage = modData.Translation.GetString(Team);
-			var allMessage = modData.Translation.GetString(All);
+			var teamMessage = modData.Translation.GetString(TeamChat);
+			var allMessage = modData.Translation.GetString(GeneralChat);
 
 			chatDisabled = modData.Translation.GetString(ChatDisabled);
 

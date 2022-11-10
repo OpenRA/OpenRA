@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	class KickSpectatorsLogic : ChromeLogic
 	{
 		[TranslationReference("count")]
-		const string KickSpectators = "kick-spectators";
+		const string KickSpectators = "dialog-kick-spectators.prompt";
 
 		[ObjectCreator.UseCtor]
 		public KickSpectatorsLogic(ModData modData, Widget widget, int clientCount, Action okPressed, Action cancelPressed)

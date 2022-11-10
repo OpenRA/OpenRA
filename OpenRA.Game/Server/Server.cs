@@ -47,73 +47,73 @@ namespace OpenRA.Server
 	public sealed class Server
 	{
 		[TranslationReference]
-		const string CustomRules = "custom-rules";
+		const string CustomRules = "notification-custom-rules";
 
 		[TranslationReference]
-		const string BotsDisabled = "bots-disabled";
+		const string BotsDisabled = "notification-map-bots-disabled";
 
 		[TranslationReference]
-		const string TwoHumansRequired = "two-humans-required";
+		const string TwoHumansRequired = "notification-two-humans-required";
 
 		[TranslationReference]
-		const string ErrorGameStarted = "error-game-started";
+		const string ErrorGameStarted = "notification-error-game-started";
 
 		[TranslationReference]
-		const string RequiresPassword = "requires-password";
+		const string RequiresPassword = "notification-requires-password";
 
 		[TranslationReference]
-		const string IncorrectPassword = "incorrect-password";
+		const string IncorrectPassword = "notification-incorrect-password";
 
 		[TranslationReference]
-		const string IncompatibleMod = "incompatible-mod";
+		const string IncompatibleMod = "notification-incompatible-mod";
 
 		[TranslationReference]
-		const string IncompatibleVersion = "incompatible-version";
+		const string IncompatibleVersion = "notification-incompatible-version";
 
 		[TranslationReference]
-		const string IncompatibleProtocol = "incompatible-protocol";
+		const string IncompatibleProtocol = "notification-incompatible-protocol";
 
 		[TranslationReference]
-		const string Banned = "banned";
+		const string Banned = "notification-you-were-banned";
 
 		[TranslationReference]
-		const string TempBanned = "temp-banned";
+		const string TempBanned = "notification-you-were-temp-banned";
 
 		[TranslationReference]
-		const string Full = "full";
+		const string Full = "notification-game-full";
 
 		[TranslationReference("player")]
-		const string Joined = "joined";
+		const string Joined = "notification-joined";
 
 		[TranslationReference]
-		const string RequiresForumAccount = "requires-forum-account";
+		const string RequiresAuthentication = "notification-requires-authentication";
 
 		[TranslationReference]
-		const string NoPermission = "no-permission";
+		const string NoPermission = "notification-no-permission-to-join";
 
 		[TranslationReference("command")]
-		const string UnknownServerCommand = "unknown-server-command";
+		const string UnknownServerCommand = "notification-unknown-server-command";
 
 		[TranslationReference("player")]
-		const string LobbyDisconnected = "lobby-disconnected";
+		const string LobbyDisconnected = "notification-lobby-disconnected";
 
 		[TranslationReference("player")]
-		const string PlayerDisconnected = "player-disconnected";
+		const string PlayerDisconnected = "notification-player-disconnected";
 
 		[TranslationReference("player", "team")]
-		const string PlayerTeamDisconnected = "player-team-disconnected";
+		const string PlayerTeamDisconnected = "notification-team-player-disconnected";
 
 		[TranslationReference("player")]
-		const string ObserverDisconnected = "observer-disconnected";
+		const string ObserverDisconnected = "notification-observer-disconnected";
 
 		[TranslationReference("player")]
-		const string NewAdmin = "new-admin";
+		const string NewAdmin = "notification-new-admin";
 
 		[TranslationReference]
-		const string YouWereKicked = "you-were-kicked";
+		const string YouWereKicked = "notification-you-were-kicked";
 
 		[TranslationReference]
-		const string GameStarted = "game-started";
+		const string GameStarted = "notification-game-started";
 
 		public readonly MersenneTwister Random = new MersenneTwister();
 		public readonly ServerType Type;
@@ -664,7 +664,7 @@ namespace OpenRA.Server
 							if (notAuthenticated)
 							{
 								Log.Write("server", $"Rejected connection from {newConn.EndPoint}; Not authenticated.");
-								SendOrderTo(newConn, "ServerError", RequiresForumAccount);
+								SendOrderTo(newConn, "ServerError", RequiresAuthentication);
 								DropClient(newConn);
 							}
 							else if (blacklisted || notWhitelisted)
@@ -687,7 +687,7 @@ namespace OpenRA.Server
 					if (Type == ServerType.Dedicated && (Settings.RequireAuthentication || Settings.ProfileIDWhitelist.Length > 0))
 					{
 						Log.Write("server", $"Rejected connection from {newConn.EndPoint}; Not authenticated.");
-						SendOrderTo(newConn, "ServerError", RequiresForumAccount);
+						SendOrderTo(newConn, "ServerError", RequiresAuthentication);
 						DropClient(newConn);
 					}
 					else

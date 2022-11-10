@@ -23,19 +23,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	class GameInfoLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string Objectives = "objectives";
+		const string Objectives = "menu-game-info.objectives";
 
 		[TranslationReference]
-		const string Briefing = "briefing";
+		const string Briefing = "menu-game-info.briefing";
 
 		[TranslationReference]
-		const string Options = "options";
+		const string Options = "menu-game-info.options";
 
 		[TranslationReference]
-		const string Debug = "debug";
+		const string Debug = "menu-game-info.debug";
 
 		[TranslationReference]
-		const string Chat = "chat";
+		const string Chat = "menu-game-info.chat";
 
 		readonly World world;
 		readonly ModData modData;

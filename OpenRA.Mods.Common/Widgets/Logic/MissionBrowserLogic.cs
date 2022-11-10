@@ -26,22 +26,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		enum PlayingVideo { None, Info, Briefing, GameStart }
 
 		[TranslationReference]
-		const string NoVideoTitle = "no-video-title";
+		const string NoVideoTitle = "dialog-no-video.title";
 
 		[TranslationReference]
-		const string NoVideoPrompt = "no-video-prompt";
+		const string NoVideoPrompt = "dialog-no-video.prompt";
 
 		[TranslationReference]
-		const string NoVideoCancel = "no-video-cancel";
+		const string NoVideoCancel = "dialog-no-video.cancel";
 
 		[TranslationReference]
-		const string CantPlayTitle = "cant-play-title";
+		const string CantPlayTitle = "dialog-cant-play-video.title";
 
 		[TranslationReference]
-		const string CantPlayPrompt = "cant-play-prompt";
+		const string CantPlayPrompt = "dialog-cant-play-video.prompt";
 
 		[TranslationReference]
-		const string CantPlayCancel = "cant-play-cancel";
+		const string CantPlayCancel = "dialog-cant-play-video.cancel";
 
 		readonly ModData modData;
 		readonly Action onStart;

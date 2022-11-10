@@ -22,11 +22,11 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[TranslationReference]
 		[Desc("Descriptive label for the developer mode checkbox in the lobby.")]
-		public readonly string CheckboxLabel = "debug-menu.label";
+		public readonly string CheckboxLabel = "checkbox-debug-menu.label";
 
 		[TranslationReference]
 		[Desc("Tooltip description for the developer mode checkbox in the lobby.")]
-		public readonly string CheckboxDescription = "debug-menu.description";
+		public readonly string CheckboxDescription = "checkbox-debug-menu.description";
 
 		[Desc("Default value of the developer mode checkbox in the lobby.")]
 		public readonly bool CheckboxEnabled = false;
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class DeveloperMode : IResolveOrder, ISync, INotifyCreated, IUnlocksRenderPlayer
 	{
 		[TranslationReference("cheat", "player", "suffix")]
-		const string CheatUsed = "cheat-used";
+		const string CheatUsed = "notification-cheat-used";
 
 		readonly DeveloperModeInfo info;
 		public bool Enabled { get; private set; }
