@@ -230,8 +230,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatScrollPanel.RemoveChildren();
 			chatScrollPanel.ScrollToBottom();
 
-			foreach (var notification in TextNotificationsManager.Notifications.Where(notif => (IsNotificationEligible(notif))))
-				AddNotification(notification, true);
+			foreach (var notification in TextNotificationsManager.Notifications)
+				if (IsNotificationEligible(notification))
+					AddNotification(notification, true);
 
 			chatText.IsDisabled = () => !chatEnabled || (world.IsReplay && !Game.Settings.Debug.EnableDebugCommandsInReplays);
 

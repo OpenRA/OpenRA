@@ -15,19 +15,19 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public class RgbaSpriteWidget : Widget
+	public class RGBASpriteWidget : Widget
 	{
 		public Func<Sprite> GetSprite = () => null;
 
-		public RgbaSpriteWidget() { }
+		public RGBASpriteWidget() { }
 
-		protected RgbaSpriteWidget(RgbaSpriteWidget other)
+		protected RGBASpriteWidget(RGBASpriteWidget other)
 			: base(other)
 		{
 			GetSprite = other.GetSprite;
 		}
 
-		public override Widget Clone() { return new RgbaSpriteWidget(this); }
+		public override Widget Clone() { return new RGBASpriteWidget(this); }
 
 		public override void Draw()
 		{

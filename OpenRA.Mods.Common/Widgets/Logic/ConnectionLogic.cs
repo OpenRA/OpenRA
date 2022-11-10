@@ -226,7 +226,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				version.GetText = () => label;
 			}
 
-			var logo = panel.GetOrNull<RgbaSpriteWidget>("MOD_ICON");
+			var logo = panel.GetOrNull<RGBASpriteWidget>("MOD_ICON");
 			if (logo != null)
 			{
 				logo.GetSprite = () =>
