@@ -15,7 +15,7 @@ using System.Collections.Generic;
 
 namespace OpenRA.Primitives
 {
-	static class LongBitSetAllocator<T> where T : class
+	static class LongBitSetAllocator
 	{
 		static readonly Cache<string, long> Bits = new Cache<string, long>(Allocate);
 		static long nextBits = 1;
@@ -93,23 +93,23 @@ namespace OpenRA.Primitives
 		readonly long bits;
 
 		public LongBitSet(params string[] values)
-			: this(LongBitSetAllocator<T>.GetBits(values)) { }
+			: this(LongBitSetAllocator.GetBits(values)) { }
 
 		LongBitSet(long bits) { this.bits = bits; }
 
 		public static LongBitSet<T> FromStringsNoAlloc(string[] values)
 		{
-			return new LongBitSet<T>(LongBitSetAllocator<T>.GetBitsNoAlloc(values)) { };
+			return new LongBitSet<T>(LongBitSetAllocator.GetBitsNoAlloc(values)) { };
 		}
 
 		public static void Reset()
 		{
-			LongBitSetAllocator<T>.Reset();
+			LongBitSetAllocator.Reset();
 		}
 
 		public override string ToString()
 		{
-			return LongBitSetAllocator<T>.GetStrings(bits).JoinWith(",");
+			return LongBitSetAllocator.GetStrings(bits).JoinWith(",");
 		}
 
 		public static bool operator ==(LongBitSet<T> me, LongBitSet<T> other) { return me.bits == other.bits; }
@@ -153,12 +153,12 @@ namespace OpenRA.Primitives
 
 		public bool Contains(string value)
 		{
-			return LongBitSetAllocator<T>.BitsContainString(bits, value);
+			return LongBitSetAllocator.BitsContainString(bits, value);
 		}
 
 		public IEnumerator<string> GetEnumerator()
 		{
-			return LongBitSetAllocator<T>.GetStrings(bits).GetEnumerator();
+			return LongBitSetAllocator.GetStrings(bits).GetEnumerator();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()

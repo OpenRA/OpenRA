@@ -90,8 +90,8 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
 
-		int2? joystickScrollStart, joystickScrollEnd;
-		int2? standardScrollStart;
+		Int2? joystickScrollStart, joystickScrollEnd;
+		Int2? standardScrollStart;
 		bool isStandardScrolling;
 
 		ScrollDirection keyboardDirections;
@@ -279,7 +279,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		public override string GetCursor(int2 pos)
+		public override string GetCursor(Int2 pos)
 		{
 			if (!(IsJoystickScrolling || isStandardScrolling) &&
 				(!Game.Settings.Game.ViewportEdgeScroll || Ui.MouseOverWidget != this))

@@ -72,12 +72,12 @@ namespace OpenRA
 				return val;
 		}
 
-		static int WindingDirectionTest(int2 v0, int2 v1, int2 p)
+		static int WindingDirectionTest(Int2 v0, Int2 v1, Int2 p)
 		{
 			return Math.Sign((v1.X - v0.X) * (p.Y - v0.Y) - (p.X - v0.X) * (v1.Y - v0.Y));
 		}
 
-		public static bool PolygonContains(this int2[] polygon, int2 p)
+		public static bool PolygonContains(this Int2[] polygon, Int2 p)
 		{
 			var windingNumber = 0;
 
@@ -95,7 +95,7 @@ namespace OpenRA
 			return windingNumber != 0;
 		}
 
-		public static bool LinesIntersect(int2 a, int2 b, int2 c, int2 d)
+		public static bool LinesIntersect(Int2 a, Int2 b, Int2 c, Int2 d)
 		{
 			// If line segments AB and CD intersect:
 			//  - the triangles ACD and BCD must have opposite sense (clockwise or anticlockwise)

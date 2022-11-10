@@ -84,16 +84,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		Polygon Bounds(Actor self, WorldRenderer wr, int[] bounds, int height)
 		{
-			int2 left, right, top, bottom;
+			Int2 left, right, top, bottom;
 			if (bounds != null)
 			{
 				// Convert from WDist to pixels
-				var offset = bounds.Length >= 4 ? new int2(bounds[2] * wr.TileSize.Width / wr.TileScale, bounds[3] * wr.TileSize.Height / wr.TileScale) : int2.Zero;
+				var offset = bounds.Length >= 4 ? new Int2(bounds[2] * wr.TileSize.Width / wr.TileScale, bounds[3] * wr.TileSize.Height / wr.TileScale) : Int2.Zero;
 				var center = wr.ScreenPxPosition(self.CenterPosition) + offset;
-				left = center - new int2(bounds[0] * wr.TileSize.Width / (2 * wr.TileScale), 0);
-				right = left + new int2(bounds[0] * wr.TileSize.Width / wr.TileScale, 0);
-				top = center - new int2(0, bounds[1] * wr.TileSize.Height / (2 * wr.TileScale));
-				bottom = top + new int2(0, bounds[1] * wr.TileSize.Height / wr.TileScale);
+				left = center - new Int2(bounds[0] * wr.TileSize.Width / (2 * wr.TileScale), 0);
+				right = left + new Int2(bounds[0] * wr.TileSize.Width / wr.TileScale, 0);
+				top = center - new Int2(0, bounds[1] * wr.TileSize.Height / (2 * wr.TileScale));
+				bottom = top + new Int2(0, bounds[1] * wr.TileSize.Height / wr.TileScale);
 			}
 			else
 			{
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (height == 0)
 				return new Polygon(new[] { top, left, bottom, right });
 
-			var h = new int2(0, height);
+			var h = new Int2(0, height);
 			return new Polygon(new[] { top - h, left - h, left, bottom, right, right - h });
 		}
 

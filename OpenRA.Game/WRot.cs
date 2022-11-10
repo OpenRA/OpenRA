@@ -151,14 +151,14 @@ namespace OpenRA
 			return new WRot(Roll, Pitch, yaw);
 		}
 
-		public void AsMatrix(out Int32Matrix4x4 mtx)
+		public void AsMatrix(out Int32Matrix4X4 mtx)
 		{
 			// Theoretically 1024 squared, but may differ slightly due to rounding
 			var lsq = x * x + y * y + z * z + w * w;
 
 			// Quaternion components use 10 bits, so there's no risk of overflow
 			#pragma warning disable SA1115 // Allow blank lines to visually separate matrix rows
-			mtx = new Int32Matrix4x4(
+			mtx = new Int32Matrix4X4(
 				lsq - 2 * (y * y + z * z),
 				2 * (x * y + z * w),
 				2 * (x * z - y * w),
@@ -181,7 +181,7 @@ namespace OpenRA
 			#pragma warning restore SA1115
 		}
 
-		public Int32Matrix4x4 AsMatrix()
+		public Int32Matrix4X4 AsMatrix()
 		{
 			AsMatrix(out var mtx);
 			return mtx;

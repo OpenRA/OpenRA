@@ -18,7 +18,7 @@ namespace OpenRA.Graphics
 {
 	public class RgbaColorRenderer
 	{
-		static readonly float3 Offset = new float3(0.5f, 0.5f, 0f);
+		static readonly Float3 Offset = new Float3(0.5f, 0.5f, 0f);
 
 		readonly SpriteRenderer parent;
 		readonly Vertex[] vertices = new Vertex[6];
@@ -28,10 +28,10 @@ namespace OpenRA.Graphics
 			this.parent = parent;
 		}
 
-		public void DrawLine(in float3 start, in float3 end, float width, Color startColor, Color endColor, BlendMode blendMode = BlendMode.Alpha)
+		public void DrawLine(in Float3 start, in Float3 end, float width, Color startColor, Color endColor, BlendMode blendMode = BlendMode.Alpha)
 		{
 			var delta = (end - start) / (end - start).XY.Length;
-			var corner = width / 2 * new float3(-delta.Y, delta.X, delta.Z);
+			var corner = width / 2 * new Float3(-delta.Y, delta.X, delta.Z);
 
 			startColor = Util.PremultiplyAlpha(startColor);
 			var sr = startColor.R / 255.0f;
@@ -55,7 +55,7 @@ namespace OpenRA.Graphics
 			parent.DrawRGBAVertices(vertices, blendMode);
 		}
 
-		public void DrawLine(in float3 start, in float3 end, float width, Color color, BlendMode blendMode = BlendMode.Alpha)
+		public void DrawLine(in Float3 start, in Float3 end, float width, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
 			var delta = (end - start) / (end - start).XY.Length;
 			var corner = width / 2 * new float2(-delta.Y, delta.X);
@@ -80,17 +80,17 @@ namespace OpenRA.Graphics
 		/// Will behave badly if the lines are parallel.
 		/// Z position is the average of a and b (ignores actual intersection point if it exists)
 		/// </summary>
-		float3 IntersectionOf(in float3 a, in float3 da, in float3 b, in float3 db)
+		Float3 IntersectionOf(in Float3 a, in Float3 da, in Float3 b, in Float3 db)
 		{
 			var crossA = a.X * (a.Y + da.Y) - a.Y * (a.X + da.X);
 			var crossB = b.X * (b.Y + db.Y) - b.Y * (b.X + db.X);
 			var x = da.X * crossB - db.X * crossA;
 			var y = da.Y * crossB - db.Y * crossA;
 			var d = da.X * db.Y - da.Y * db.X;
-			return new float3(x / d, y / d, 0.5f * (a.Z + b.Z));
+			return new Float3(x / d, y / d, 0.5f * (a.Z + b.Z));
 		}
 
-		void DrawDisconnectedLine(IEnumerable<float3> points, float width, Color color, BlendMode blendMode)
+		void DrawDisconnectedLine(IEnumerable<Float3> points, float width, Color color, BlendMode blendMode)
 		{
 			using (var e = points.GetEnumerator())
 			{
@@ -107,7 +107,7 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		void DrawConnectedLine(float3[] points, float width, Color color, bool closed, BlendMode blendMode)
+		void DrawConnectedLine(Float3[] points, float width, Color color, bool closed, BlendMode blendMode)
 		{
 			// Not a line
 			if (points.Length < 2)
@@ -129,7 +129,7 @@ namespace OpenRA.Graphics
 			var start = points[0];
 			var end = points[1];
 			var dir = (end - start) / (end - start).XY.Length;
-			var corner = width / 2 * new float3(-dir.Y, dir.X, dir.Z);
+			var corner = width / 2 * new Float3(-dir.Y, dir.X, dir.Z);
 
 			// Corners for start of line segment
 			var ca = start - corner;
@@ -140,7 +140,7 @@ namespace OpenRA.Graphics
 			{
 				var prev = points[points.Length - 1];
 				var prevDir = (start - prev) / (start - prev).XY.Length;
-				var prevCorner = width / 2 * new float3(-prevDir.Y, prevDir.X, prevDir.Z);
+				var prevCorner = width / 2 * new Float3(-prevDir.Y, prevDir.X, prevDir.Z);
 				ca = IntersectionOf(start - prevCorner, prevDir, start - corner, dir);
 				cb = IntersectionOf(start + prevCorner, prevDir, start + corner, dir);
 			}
@@ -150,7 +150,7 @@ namespace OpenRA.Graphics
 			{
 				var next = points[(i + 2) % points.Length];
 				var nextDir = (next - end) / (next - end).XY.Length;
-				var nextCorner = width / 2 * new float3(-nextDir.Y, nextDir.X, nextDir.Z);
+				var nextCorner = width / 2 * new Float3(-nextDir.Y, nextDir.X, nextDir.Z);
 
 				// Vertices for the corners joining start-end to end-next
 				var cc = closed || i < limit - 1 ? IntersectionOf(end + corner, dir, end + nextCorner, nextDir) : end + corner;
@@ -175,32 +175,32 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public void DrawLine(IEnumerable<float3> points, float width, Color color, bool connectSegments = false, BlendMode blendMode = BlendMode.Alpha)
+		public void DrawLine(IEnumerable<Float3> points, float width, Color color, bool connectSegments = false, BlendMode blendMode = BlendMode.Alpha)
 		{
 			if (!connectSegments)
 				DrawDisconnectedLine(points, width, color, blendMode);
 			else
-				DrawConnectedLine(points as float3[] ?? points.ToArray(), width, color, false, blendMode);
+				DrawConnectedLine(points as Float3[] ?? points.ToArray(), width, color, false, blendMode);
 		}
 
-		public void DrawPolygon(float3[] vertices, float width, Color color, BlendMode blendMode = BlendMode.Alpha)
+		public void DrawPolygon(Float3[] vertices, float width, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
 			DrawConnectedLine(vertices, width, color, true, blendMode);
 		}
 
 		public void DrawPolygon(float2[] vertices, float width, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
-			DrawConnectedLine(vertices.Select(v => new float3(v, 0)).ToArray(), width, color, true, blendMode);
+			DrawConnectedLine(vertices.Select(v => new Float3(v, 0)).ToArray(), width, color, true, blendMode);
 		}
 
-		public void DrawRect(in float3 tl, in float3 br, float width, Color color, BlendMode blendMode = BlendMode.Alpha)
+		public void DrawRect(in Float3 tl, in Float3 br, float width, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
-			var tr = new float3(br.X, tl.Y, tl.Z);
-			var bl = new float3(tl.X, br.Y, br.Z);
+			var tr = new Float3(br.X, tl.Y, tl.Z);
+			var bl = new Float3(tl.X, br.Y, br.Z);
 			DrawPolygon(new[] { tl, tr, br, bl }, width, color, blendMode);
 		}
 
-		public void FillTriangle(in float3 a, in float3 b, in float3 c, Color color, BlendMode blendMode = BlendMode.Alpha)
+		public void FillTriangle(in Float3 a, in Float3 b, in Float3 c, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
 			color = Util.PremultiplyAlpha(color);
 			var cr = color.R / 255.0f;
@@ -214,14 +214,14 @@ namespace OpenRA.Graphics
 			parent.DrawRGBAVertices(vertices, blendMode);
 		}
 
-		public void FillRect(in float3 tl, in float3 br, Color color, BlendMode blendMode = BlendMode.Alpha)
+		public void FillRect(in Float3 tl, in Float3 br, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
-			var tr = new float3(br.X, tl.Y, tl.Z);
-			var bl = new float3(tl.X, br.Y, br.Z);
+			var tr = new Float3(br.X, tl.Y, tl.Z);
+			var bl = new Float3(tl.X, br.Y, br.Z);
 			FillRect(tl, tr, br, bl, color, blendMode);
 		}
 
-		public void FillRect(in float3 a, in float3 b, in float3 c, in float3 d, Color color, BlendMode blendMode = BlendMode.Alpha)
+		public void FillRect(in Float3 a, in Float3 b, in Float3 c, in Float3 d, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
 			color = Util.PremultiplyAlpha(color);
 			var cr = color.R / 255.0f;
@@ -238,7 +238,7 @@ namespace OpenRA.Graphics
 			parent.DrawRGBAVertices(vertices, blendMode);
 		}
 
-		public void FillRect(in float3 a, in float3 b, in float3 c, in float3 d, Color topLeftColor, Color topRightColor, Color bottomRightColor, Color bottomLeftColor, BlendMode blendMode = BlendMode.Alpha)
+		public void FillRect(in Float3 a, in Float3 b, in Float3 c, in Float3 d, Color topLeftColor, Color topRightColor, Color bottomRightColor, Color bottomLeftColor, BlendMode blendMode = BlendMode.Alpha)
 		{
 			vertices[0] = VertexWithColor(a + Offset, topLeftColor);
 			vertices[1] = VertexWithColor(b + Offset, topRightColor);
@@ -250,7 +250,7 @@ namespace OpenRA.Graphics
 			parent.DrawRGBAVertices(vertices, blendMode);
 		}
 
-		static Vertex VertexWithColor(in float3 xyz, Color color)
+		static Vertex VertexWithColor(in Float3 xyz, Color color)
 		{
 			color = Util.PremultiplyAlpha(color);
 			var cr = color.R / 255.0f;
@@ -261,7 +261,7 @@ namespace OpenRA.Graphics
 			return new Vertex(xyz, cr, cg, cb, ca, 0, 0);
 		}
 
-		public void FillEllipse(in float3 tl, in float3 br, Color color, BlendMode blendMode = BlendMode.Alpha)
+		public void FillEllipse(in Float3 tl, in Float3 br, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
 			// TODO: Create an ellipse polygon instead
 			var a = (br.X - tl.X) / 2;
@@ -272,7 +272,7 @@ namespace OpenRA.Graphics
 			{
 				var z = float2.Lerp(tl.Z, br.Z, (y - tl.Y) / (br.Y - tl.Y));
 				var dx = a * (float)Math.Sqrt(1 - (y - yc) * (y - yc) / b / b);
-				DrawLine(new float3(xc - dx, y, z), new float3(xc + dx, y, z), 1, color, blendMode);
+				DrawLine(new Float3(xc - dx, y, z), new Float3(xc + dx, y, z), 1, color, blendMode);
 			}
 		}
 	}

@@ -17,14 +17,14 @@ namespace OpenRA.Graphics
 	{
 		readonly Sprite sprite;
 		readonly WPos effectiveWorldPos;
-		readonly int2 screenPos;
+		readonly Int2 screenPos;
 		readonly int zOffset;
 		readonly PaletteReference palette;
 		readonly float scale;
 		readonly float alpha;
 		readonly float rotation = 0f;
 
-		public UISpriteRenderable(Sprite sprite, WPos effectiveWorldPos, int2 screenPos, int zOffset, PaletteReference palette, float scale = 1f, float alpha = 1f, float rotation = 0f)
+		public UISpriteRenderable(Sprite sprite, WPos effectiveWorldPos, Int2 screenPos, int zOffset, PaletteReference palette, float scale = 1f, float alpha = 1f, float rotation = 0f)
 		{
 			this.sprite = sprite;
 			this.effectiveWorldPos = effectiveWorldPos;
@@ -58,7 +58,7 @@ namespace OpenRA.Graphics
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
-			Game.Renderer.SpriteRenderer.DrawSprite(sprite, palette, screenPos, scale, float3.Ones, alpha, rotation);
+			Game.Renderer.SpriteRenderer.DrawSprite(sprite, palette, screenPos, scale, Float3.Ones, alpha, rotation);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)

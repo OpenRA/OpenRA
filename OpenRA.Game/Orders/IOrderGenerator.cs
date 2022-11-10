@@ -16,12 +16,12 @@ namespace OpenRA.Orders
 {
 	public interface IOrderGenerator
 	{
-		IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi);
+		IEnumerable<Order> Order(World world, CPos cell, Int2 worldPixel, MouseInput mi);
 		void Tick(World world);
 		IEnumerable<IRenderable> Render(WorldRenderer wr, World world);
 		IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world);
 		IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world);
-		string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi);
+		string GetCursor(World world, CPos cell, Int2 worldPixel, MouseInput mi);
 		void Deactivate();
 		bool HandleKeyPress(KeyInput e);
 		void SelectionChanged(World world, IEnumerable<Actor> selected);

@@ -22,7 +22,7 @@ namespace OpenRA.Platforms.Default
 		public IntPtr Cursor { get; private set; }
 		IntPtr surface;
 
-		public Sdl2HardwareCursor(Size size, byte[] data, int2 hotspot)
+		public Sdl2HardwareCursor(Size size, byte[] data, Int2 hotspot)
 		{
 			try
 			{

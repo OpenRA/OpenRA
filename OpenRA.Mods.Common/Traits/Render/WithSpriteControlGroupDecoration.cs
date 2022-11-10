@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Position = "TopLeft";
 
 		[Desc("Offset sprite center position from the selection box edge.")]
-		public readonly int2 Margin = int2.Zero;
+		public readonly Int2 Margin = Int2.Zero;
 
 		public override object Create(ActorInitializer init) { return new WithSpriteControlGroupDecoration(init.Self, this); }
 	}

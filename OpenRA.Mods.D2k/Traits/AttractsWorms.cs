@@ -51,7 +51,7 @@ namespace OpenRA.Mods.D2k.Traits
 			{
 				var outer = effectiveRange[i].Length;
 				if (outer > distance)
-					return int2.Lerp(Info.Falloff[i - 1], Info.Falloff[i], distance - inner, outer - inner);
+					return Int2.Lerp(Info.Falloff[i - 1], Info.Falloff[i], distance - inner, outer - inner);
 
 				inner = outer;
 			}

@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Terrain
 	public class TerrainTemplateInfo
 	{
 		public readonly ushort Id;
-		public readonly int2 Size;
+		public readonly Int2 Size;
 		public readonly bool PickAny;
 		public readonly string[] Categories;
 

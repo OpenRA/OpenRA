@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public BackgroundWidget() { }
 
 		bool moving;
-		int2? prevMouseLocation;
+		Int2? prevMouseLocation;
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (prevMouseLocation == null)
 				prevMouseLocation = mi.Location;
-			var vec = mi.Location - (int2)prevMouseLocation;
+			var vec = mi.Location - (Int2)prevMouseLocation;
 			prevMouseLocation = mi.Location;
 			switch (mi.Event)
 			{

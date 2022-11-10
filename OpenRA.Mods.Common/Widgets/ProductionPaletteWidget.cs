@@ -43,9 +43,9 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly ReadyTextStyleOptions ReadyTextStyle = ReadyTextStyleOptions.AlternatingColor;
 		public readonly Color ReadyTextAltColor = Color.Gold;
 		public readonly int Columns = 3;
-		public readonly int2 IconSize = new int2(64, 48);
-		public readonly int2 IconMargin = int2.Zero;
-		public readonly int2 IconSpriteOffset = int2.Zero;
+		public readonly Int2 IconSize = new Int2(64, 48);
+		public readonly Int2 IconMargin = Int2.Zero;
+		public readonly Int2 IconSpriteOffset = Int2.Zero;
 
 		public readonly string ClickSound = ChromeMetrics.Get<string>("ClickSound");
 		public readonly string ClickDisabledSound = ChromeMetrics.Get<string>("ClickDisabledSound");
@@ -584,7 +584,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		public override string GetCursor(int2 pos)
+		public override string GetCursor(Int2 pos)
 		{
 			var icon = icons.Where(i => i.Key.Contains(pos))
 				.Select(i => i.Value).FirstOrDefault();

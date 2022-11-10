@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			color = info.UsePlayerColor ? self.Owner.Color : info.Color;
 		}
 
-		protected override IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 screenPos)
+		protected override IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, Int2 screenPos)
 		{
 			if (IsTraitDisabled || self.IsDead || !self.IsInWorld || !ShouldRender(self))
 				return Enumerable.Empty<IRenderable>();

@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			overlay = new Animation(self.World, rs.GetImage(self), () => IsTraitPaused);
 			overlay.PlayFetchIndex(wsb.NormalizeSequence(self, info.Sequence),
-				() => int2.Lerp(0, overlay.CurrentSequence.Length, attackCharges.ChargeLevel, attackChargesInfo.ChargeLevel + 1));
+				() => Int2.Lerp(0, overlay.CurrentSequence.Length, attackCharges.ChargeLevel, attackChargesInfo.ChargeLevel + 1));
 
 			rs.Add(new AnimationWithOffset(overlay, null, () => IsTraitDisabled, 1024),
 				info.Palette, info.IsPlayerPalette);

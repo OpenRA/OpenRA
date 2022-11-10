@@ -71,12 +71,12 @@ namespace OpenRA.Mods.Common.Widgets
 			return components.ToArray();
 		}
 
-		protected override void DrawInner(string text, SpriteFont font, Color color, int2 position)
+		protected override void DrawInner(string text, SpriteFont font, Color color, Int2 position)
 		{
 			var advance = 0;
 			foreach (var c in textComponents.Update(text))
 			{
-				base.DrawInner(c.Text, font, c.Highlighted ? HighlightColor : color, position + new int2(advance, 0));
+				base.DrawInner(c.Text, font, c.Highlighted ? HighlightColor : color, position + new Int2(advance, 0));
 				advance += font.Measure(c.Text).X;
 			}
 		}

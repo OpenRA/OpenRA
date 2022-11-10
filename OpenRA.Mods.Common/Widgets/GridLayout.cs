@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Widgets
 	public class GridLayout : ILayout
 	{
 		readonly ScrollPanelWidget widget;
-		int2 pos;
+		Int2 pos;
 
 		public GridLayout(ScrollPanelWidget w) { widget = w; }
 
@@ -26,13 +26,13 @@ namespace OpenRA.Mods.Common.Widgets
 			if (widget.Children.Count == 0)
 			{
 				widget.ContentHeight = 2 * widget.TopBottomSpacing;
-				pos = new int2(widget.ItemSpacing, widget.TopBottomSpacing);
+				pos = new Int2(widget.ItemSpacing, widget.TopBottomSpacing);
 			}
 
 			if (pos.X + w.Bounds.Width + widget.ItemSpacing > widget.Bounds.Width - widget.ScrollbarWidth)
 			{
 				/* start a new row */
-				pos = new int2(widget.ItemSpacing, widget.ContentHeight - widget.TopBottomSpacing + widget.ItemSpacing);
+				pos = new Int2(widget.ItemSpacing, widget.ContentHeight - widget.TopBottomSpacing + widget.ItemSpacing);
 			}
 
 			w.Bounds.X += pos.X;

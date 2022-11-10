@@ -227,7 +227,7 @@ namespace OpenRA.Mods.Common.Graphics
 		static readonly SpriteSequenceField<bool> FlipY = new SpriteSequenceField<bool>(nameof(FlipY), false);
 
 		[Desc("Change the position in-game on X, Y, Z.")]
-		static readonly SpriteSequenceField<float3> Offset = new SpriteSequenceField<float3>(nameof(Offset), float3.Zero);
+		static readonly SpriteSequenceField<Float3> Offset = new SpriteSequenceField<Float3>(nameof(Offset), Float3.Zero);
 
 		[Desc("Apply an OpenGL/Photoshop inspired blend mode.")]
 		static readonly SpriteSequenceField<BlendMode> BlendMode = new SpriteSequenceField<BlendMode>(nameof(BlendMode), OpenRA.BlendMode.Alpha);
@@ -422,7 +422,7 @@ namespace OpenRA.Mods.Common.Graphics
 							var dy = subOffset.Y + offset.Y + (subFlipY ? -s.Offset.Y : s.Offset.Y);
 							var dz = subOffset.Z + offset.Z + s.Offset.Z + zRamp * dy;
 
-							return new Sprite(s.Sheet, bounds, zRamp, new float3(dx, dy, dz), s.Channel, blendMode);
+							return new Sprite(s.Sheet, bounds, zRamp, new Float3(dx, dy, dz), s.Channel, blendMode);
 						}).ToList();
 
 						var frames = subFrames != null ? subFrames.Skip(subStart).Take(subLength).ToArray() : Exts.MakeArray(subLength, i => subStart + i);
@@ -447,7 +447,7 @@ namespace OpenRA.Mods.Common.Graphics
 						var dy = offset.Y + (flipY ? -s.Offset.Y : s.Offset.Y);
 						var dz = offset.Z + s.Offset.Z + zRamp * dy;
 
-						return new Sprite(s.Sheet, bounds, zRamp, new float3(dx, dy, dz), s.Channel, blendMode);
+						return new Sprite(s.Sheet, bounds, zRamp, new Float3(dx, dy, dz), s.Channel, blendMode);
 					}).ToArray();
 				}
 

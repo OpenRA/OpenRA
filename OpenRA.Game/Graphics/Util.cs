@@ -20,10 +20,10 @@ namespace OpenRA.Graphics
 		// yes, our channel order is nuts.
 		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
 
-		public static void FastCreateQuad(Vertex[] vertices, in float3 o, Sprite r, int2 samplers, float paletteTextureIndex, int nv,
-			in float3 size, in float3 tint, float alpha, float rotation = 0f)
+		public static void FastCreateQuad(Vertex[] vertices, in Float3 o, Sprite r, Int2 samplers, float paletteTextureIndex, int nv,
+			in Float3 size, in Float3 tint, float alpha, float rotation = 0f)
 		{
-			float3 a, b, c, d;
+			Float3 a, b, c, d;
 
 			// Rotate sprite if rotation angle is not equal to 0
 			if (rotation != 0f)
@@ -33,13 +33,13 @@ namespace OpenRA.Graphics
 				var angleCos = (float)Math.Cos(-rotation);
 
 				// Rotated offset for +/- x with +/- y
-				var ra = 0.5f * new float3(
+				var ra = 0.5f * new Float3(
 					size.X * angleCos - size.Y * angleSin,
 					size.X * angleSin + size.Y * angleCos,
 					(size.X * angleSin + size.Y * angleCos) * size.Z / size.Y);
 
 				// Rotated offset for +/- x with -/+ y
-				var rb = 0.5f * new float3(
+				var rb = 0.5f * new Float3(
 					size.X * angleCos + size.Y * angleSin,
 					size.X * angleSin - size.Y * angleCos,
 					(size.X * angleSin - size.Y * angleCos) * size.Z / size.Y);
@@ -52,18 +52,18 @@ namespace OpenRA.Graphics
 			else
 			{
 				a = o;
-				b = new float3(o.X + size.X, o.Y, o.Z);
-				c = new float3(o.X + size.X, o.Y + size.Y, o.Z + size.Z);
-				d = new float3(o.X, o.Y + size.Y, o.Z + size.Z);
+				b = new Float3(o.X + size.X, o.Y, o.Z);
+				c = new Float3(o.X + size.X, o.Y + size.Y, o.Z + size.Z);
+				d = new Float3(o.X, o.Y + size.Y, o.Z + size.Z);
 			}
 
 			FastCreateQuad(vertices, a, b, c, d, r, samplers, paletteTextureIndex, tint, alpha, nv);
 		}
 
 		public static void FastCreateQuad(Vertex[] vertices,
-			in float3 a, in float3 b, in float3 c, in float3 d,
-			Sprite r, int2 samplers, float paletteTextureIndex,
-			in float3 tint, float alpha, int nv)
+			in Float3 a, in Float3 b, in Float3 c, in Float3 d,
+			Sprite r, Int2 samplers, float paletteTextureIndex,
+			in Float3 tint, float alpha, int nv)
 		{
 			float sl = 0;
 			float st = 0;
@@ -225,28 +225,28 @@ namespace OpenRA.Graphics
 
 		/// <summary>Rotates a quad about its center in the x-y plane.</summary>
 		/// <param name="tl">The top left vertex of the quad</param>
-		/// <param name="size">A float3 containing the X, Y, and Z lengths of the quad</param>
+		/// <param name="size">A Float3 containing the X, Y, and Z lengths of the quad</param>
 		/// <param name="rotation">The number of radians to rotate by</param>
 		/// <returns>An array of four vertices representing the rotated quad (top-left, top-right, bottom-right, bottom-left)</returns>
-		public static float3[] RotateQuad(float3 tl, float3 size, float rotation)
+		public static Float3[] RotateQuad(Float3 tl, Float3 size, float rotation)
 		{
 			var center = tl + 0.5f * size;
 			var angleSin = (float)Math.Sin(-rotation);
 			var angleCos = (float)Math.Cos(-rotation);
 
 			// Rotated offset for +/- x with +/- y
-			var ra = 0.5f * new float3(
+			var ra = 0.5f * new Float3(
 				size.X * angleCos - size.Y * angleSin,
 				size.X * angleSin + size.Y * angleCos,
 				(size.X * angleSin + size.Y * angleCos) * size.Z / size.Y);
 
 			// Rotated offset for +/- x with -/+ y
-			var rb = 0.5f * new float3(
+			var rb = 0.5f * new Float3(
 				size.X * angleCos + size.Y * angleSin,
 				size.X * angleSin - size.Y * angleCos,
 				(size.X * angleSin - size.Y * angleCos) * size.Z / size.Y);
 
-			return new float3[]
+			return new Float3[]
 			{
 				center - ra,
 				center + rb,
@@ -261,7 +261,7 @@ namespace OpenRA.Graphics
 		/// <param name="offset">The top left vertex of the object</param>
 		/// <param name="size">A float 3 containing the X, Y, and Z lengths of the object</param>
 		/// <param name="rotation">The angle to rotate the object by (use 0f if there is no rotation)</param>
-		public static Rectangle BoundingRectangle(float3 offset, float3 size, float rotation)
+		public static Rectangle BoundingRectangle(Float3 offset, Float3 size, float rotation)
 		{
 			if (rotation == 0f)
 				return new Rectangle((int)offset.X, (int)offset.Y, (int)size.X, (int)size.Y);
@@ -482,7 +482,7 @@ namespace OpenRA.Graphics
 			return mtx;
 		}
 
-		public static float[] MakeFloatMatrix(Int32Matrix4x4 imtx)
+		public static float[] MakeFloatMatrix(Int32Matrix4X4 imtx)
 		{
 			var multipler = 1f / imtx.M44;
 			return new[]

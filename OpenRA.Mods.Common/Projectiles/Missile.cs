@@ -202,7 +202,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly WAngle minLaunchAngle;
 		readonly WAngle maxLaunchAngle;
 
-		readonly float3 shadowColor;
+		readonly Float3 shadowColor;
 		readonly float shadowAlpha;
 
 		int ticks;
@@ -291,7 +291,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			if (info.TrailUsePlayerPalette)
 				trailPalette += args.SourceActor.Owner.InternalName;
 
-			shadowColor = new float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
+			shadowColor = new Float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
 			shadowAlpha = info.ShadowColor.A / 255f;
 		}
 

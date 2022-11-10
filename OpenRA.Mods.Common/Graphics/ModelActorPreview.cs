@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		void IActorPreview.Tick() { /* not supported */ }
 
-		IEnumerable<IRenderable> IActorPreview.RenderUI(WorldRenderer wr, int2 pos, float scale)
+		IEnumerable<IRenderable> IActorPreview.RenderUI(WorldRenderer wr, Int2 pos, float scale)
 		{
 			yield return new UIModelRenderable(components, WPos.Zero + offset, pos, zOffset, camera, scale * this.scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,

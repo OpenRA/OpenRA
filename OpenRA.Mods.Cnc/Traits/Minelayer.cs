@@ -269,7 +269,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				minelayers.Add(a);
 			}
 
-			protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
+			protected override IEnumerable<Order> OrderInner(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 			{
 				if (mi.Button == Game.Settings.Game.MouseButtonPreference.Cancel)
 				{
@@ -334,13 +334,13 @@ namespace OpenRA.Mods.Cnc.Traits
 						alpha = blockedAlpha;
 					}
 
-					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c), WVec.Zero, -511, pal, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c), WVec.Zero, -511, pal, 1f, alpha, Float3.Ones, TintModifiers.IgnoreWorldTint, true);
 				}
 			}
 
 			protected override IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world) { yield break; }
 
-			protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+			protected override string GetCursor(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 			{
 				return cursor;
 			}

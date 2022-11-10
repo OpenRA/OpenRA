@@ -79,10 +79,10 @@ namespace OpenRA.Mods.Common.Widgets
 				var location = new float2(Bounds.Location) + new float2(0, y);
 
 				if (Align == TextAlign.Center)
-					location += new int2((Bounds.Width - textSize.X) / 2, 0);
+					location += new Int2((Bounds.Width - textSize.X) / 2, 0);
 
 				if (Align == TextAlign.Right)
-					location += new int2(Bounds.Width - textSize.X, 0);
+					location += new Int2(Bounds.Width - textSize.X, 0);
 
 				font.DrawTextWithShadow(t.Text, location, t.Color, bgDark, bgLight, 1);
 				y += (font.Measure(t.Text).Y + 5) * (int)Order;

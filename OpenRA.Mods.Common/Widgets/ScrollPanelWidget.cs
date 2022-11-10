@@ -235,9 +235,9 @@ namespace OpenRA.Mods.Common.Widgets
 			Game.Renderer.DisableScissor();
 		}
 
-		public override int2 ChildOrigin => RenderOrigin + new int2(ScrollBar == ScrollBar.Left ? ScrollbarWidth : 0, (int)currentListOffset);
+		public override Int2 ChildOrigin => RenderOrigin + new Int2(ScrollBar == ScrollBar.Left ? ScrollbarWidth : 0, (int)currentListOffset);
 
-		public override bool EventBoundsContains(int2 location)
+		public override bool EventBoundsContains(Int2 location)
 		{
 			return EventBounds.Contains(location);
 		}
@@ -343,7 +343,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return base.YieldMouseFocus(mi);
 		}
 
-		int2 lastMouseLocation;
+		Int2 lastMouseLocation;
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
