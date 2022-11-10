@@ -53,7 +53,12 @@ namespace OpenRA.Mods.Common.Widgets
 						return ChromeProvider.TryGetPanelImages(variantCollectionName) ?? ChromeProvider.GetPanelImages(collectionName);
 					});
 		}
-
+        public static void DrawPanel(string collection, Rectangle bounds)
+		{
+			var sprites = ChromeProvider.TryGetPanelImages(collection);
+			if (sprites != null)
+				DrawPanel(bounds, sprites);
+		}
 		public static void DrawSprite(Sprite s, float2 pos)
 		{
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos);
@@ -76,12 +81,7 @@ namespace OpenRA.Mods.Common.Widgets
 			Game.Renderer.SpriteRenderer.DrawSprite(s, p, pos - 0.5f * scale * s.Size, scale);
 		}
 
-		public static void DrawPanel(string collection, Rectangle bounds)
-		{
-			var sprites = ChromeProvider.TryGetPanelImages(collection);
-			if (sprites != null)
-				DrawPanel(bounds, sprites);
-		}
+		
 
 		public static void FillRectWithSprite(Rectangle r, Sprite s)
 		{
