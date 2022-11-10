@@ -616,7 +616,7 @@ namespace OpenRA.Widgets
 	public class InputWidget : Widget
 	{
 		public bool Disabled = false;
-		public Func<bool> IsDisabled = () => false;
+		public Func<bool> IsDisabled;
 
 		public InputWidget()
 		{

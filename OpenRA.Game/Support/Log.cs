@@ -47,22 +47,25 @@ namespace OpenRA
 		static readonly CancellationTokenSource CancellationToken = new CancellationTokenSource();
 
 		static readonly TimeSpan FlushInterval = TimeSpan.FromSeconds(5);
-		static readonly Timer Timer;
-		static readonly Thread Thread;
+		static readonly Timer Timer = new Timer(FlushToDisk, CancellationToken.Token, FlushInterval, Timeout.InfiniteTimeSpan);
+		static readonly Thread Thread = new Thread(DoWork)
+		{
+			Name = "OpenRA Logging Thread"
+		};
 
 		static Log()
 		{
 			Channel = System.Threading.Channels.Channel.CreateUnbounded<ChannelData>();
 			ChannelWriter = Channel.Writer;
 
-			Thread = new Thread(DoWork)
+			 /*Thread = new Thread(DoWork)
 			{
 				Name = "OpenRA Logging Thread"
-			};
+			};*/
 
 			Thread.Start(CancellationToken.Token);
 
-			Timer = new Timer(FlushToDisk, CancellationToken.Token, FlushInterval, Timeout.InfiniteTimeSpan);
+			//Timer = new Timer(FlushToDisk, CancellationToken.Token, FlushInterval, Timeout.InfiniteTimeSpan);
 		}
 
 		static void FlushToDisk(object state)

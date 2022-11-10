@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
@@ -24,6 +25,11 @@ namespace OpenRA.Traits
 		public readonly Polygon Bounds;
 
 		public ActorBoundsPair(Actor actor, Polygon bounds) { Actor = actor; Bounds = bounds; }
+
+		public override bool Equals([NotNullWhen(true)] object obj)
+		{
+			return base.Equals(obj);
+		}
 
 		public override int GetHashCode() { return Actor.GetHashCode() ^ Bounds.GetHashCode(); }
 
