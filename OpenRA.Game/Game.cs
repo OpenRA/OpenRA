@@ -30,7 +30,7 @@ namespace OpenRA
 	public static class Game
 	{
 		[TranslationReference("filename")]
-		const string SavedScreenshot = "saved-screenshot";
+		const string SavedScreenshot = "notification-saved-screenshot";
 
 		public const int TimestepJankThreshold = 250; // Don't catch up for delays larger than 250ms
 

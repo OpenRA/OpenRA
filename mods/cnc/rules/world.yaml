@@ -208,42 +208,42 @@ World:
 	CreateMapPlayers:
 	StartingUnits@mcvonly:
 		Class: none
-		ClassName: mcv-only
+		ClassName: options-starting-units.mcv-only
 		Factions: gdi, nod
 		BaseActor: mcv
 	StartingUnits@defaultgdia:
 		Class: light
-		ClassName: light-support
+		ClassName: options-starting-units.light-support
 		Factions: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e3,e3,jeep
 	StartingUnits@defaultnoda:
 		Class: light
-		ClassName: light-support
+		ClassName: options-starting-units.light-support
 		Factions: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e1,e3,e3,bggy
 	StartingUnits@heavynoda:
 		Class: heavy
-		ClassName: heavy-support
+		ClassName: options-starting-units.heavy-support
 		Factions: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e3,e3,ltnk,ltnk,ftnk
 	StartingUnits@heavynodb:
 		Class: heavy
-		ClassName: heavy-support
+		ClassName: options-starting-units.heavy-support
 		Factions: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e3,e3,e3,ftnk,ftnk
 	StartingUnits@heavygdia:
 		Class: heavy
-		ClassName: heavy-support
+		ClassName: options-starting-units.heavy-support
 		Factions: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e3,e3,jeep,mtnk,mtnk
 	StartingUnits@heavygdib:
 		Class: heavy
-		ClassName: heavy-support
+		ClassName: options-starting-units.heavy-support
 		Factions: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e2,e2,e2,e3,e3,apc,mtnk

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class LobbyOptionsLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string NotAvailable = "not-available";
+		const string NotAvailable = "label-not-available";
 
 		readonly ModData modData;
 		readonly ScrollPanelWidget panel;

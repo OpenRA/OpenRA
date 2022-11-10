@@ -20,13 +20,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	class GameInfoObjectivesLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string InProgress = "in-progress";
+		const string InProgress = "label-mission-in-progress";
 
 		[TranslationReference]
-		const string Accomplished = "accomplished";
+		const string Accomplished = "label-mission-accomplished";
 
 		[TranslationReference]
-		const string Failed = "failed";
+		const string Failed = "label-mission-failed";
 
 		readonly ContainerWidget template;
 

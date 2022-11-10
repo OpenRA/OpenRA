@@ -1,18 +1,20 @@
 ## Player
-low = Low
-medium = Medium
-no-powers = No Powers
-unrestricted = Unrestricted
+options-tech-level =
+    .low = Low
+    .medium = Medium
+    .no-powers = No Powers
+    .unrestricted = Unrestricted
 
-automatic-concrete =
+checkbox-automatic-concrete =
     .label = Automatic Concrete
     .description = Concrete foundations are automatically created beneath buildings
 
 ## World
-map-worms =
+dropdown-map-worms =
     .label = Worms
     .description = Worms roam the map and devour unprepared forces
 
-mcv-only = MCV Only
-light-support = Light Support
-heavy-support = Heavy Support
+options-starting-units =
+    .mcv-only = MCV Only
+    .light-support = Light Support
+    .heavy-support = Heavy Support

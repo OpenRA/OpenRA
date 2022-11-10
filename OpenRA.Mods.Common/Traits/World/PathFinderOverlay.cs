@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		const string CommandName = "path-debug";
 
 		[TranslationReference]
-		const string CommandDescription = "path-debug-description";
+		const string CommandDescription = "description-path-debug-overlay";
 
 		sealed class Record : PathSearch.IRecorder, IEnumerable<(CPos Source, CPos Destination, int CostSoFar, int EstimatedRemainingCost)>
 		{

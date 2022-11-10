@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	class KickClientLogic : ChromeLogic
 	{
 		[TranslationReference("player")]
-		const string KickClient = "kick-client";
+		const string KickClient = "dialog-kick-client.prompt";
 
 		[ObjectCreator.UseCtor]
 		public KickClientLogic(ModData modData, Widget widget, string clientName, Action<bool> okPressed, Action cancelPressed)

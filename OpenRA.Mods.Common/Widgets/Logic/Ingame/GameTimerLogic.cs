@@ -19,16 +19,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class GameTimerLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string Paused = "paused";
+		const string Paused = "label-paused";
 
 		[TranslationReference]
-		const string MaxSpeed = "max-speed";
+		const string MaxSpeed = "label-max-speed";
 
 		[TranslationReference("percentage")]
-		const string Speed = "speed";
+		const string Speed = "label-replay-speed";
 
 		[TranslationReference("percentage")]
-		const string Complete = "complete";
+		const string Complete = "label-replay-complete";
 
 		[ObjectCreator.UseCtor]
 		public GameTimerLogic(Widget widget, ModData modData, OrderManager orderManager, World world)

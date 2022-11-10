@@ -21,10 +21,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ModContentPromptLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string Continue = "continue";
+		const string Continue = "button-continue";
 
 		[TranslationReference]
-		const string Quit = "quit";
+		const string Quit = "button-quit";
 
 		readonly ModContent content;
 		bool requiredContentInstalled;

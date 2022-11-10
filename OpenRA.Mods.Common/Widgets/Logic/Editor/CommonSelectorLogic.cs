@@ -20,16 +20,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public abstract class CommonSelectorLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string None = "none";
+		const string None = "options-common-selector.none";
 
 		[TranslationReference]
-		const string SearchResults = "search-results";
+		const string SearchResults = "options-common-selector.search-results";
 
 		[TranslationReference]
-		const string All = "all";
+		const string All = "options-common-selector.all";
 
 		[TranslationReference]
-		const string Multiple = "multiple";
+		const string Multiple = "options-common-selector.multiple";
 
 		protected readonly Widget Widget;
 		protected readonly ModData ModData;

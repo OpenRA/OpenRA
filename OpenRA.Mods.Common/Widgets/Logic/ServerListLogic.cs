@@ -26,67 +26,67 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ServerListLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string SearchStatusFailed = "search-status-failed";
+		const string SearchStatusFailed = "label-search-status-failed";
 
 		[TranslationReference]
-		const string SearchStatusNoGames = "search-status-no-games";
+		const string SearchStatusNoGames = "label-search-status-no-games";
 
 		[TranslationReference("players")]
-		const string PlayersOnline = "players-online";
+		const string PlayersOnline = "label-players-online-count";
 
 		[TranslationReference]
-		const string NoServerSelected = "no-server-selected";
+		const string NoServerSelected = "label-no-server-selected";
 
 		[TranslationReference]
-		const string MapStatusSearching = "map-status-searching";
+		const string MapStatusSearching = "label-map-status-searching";
 
 		[TranslationReference]
-		const string MapClassificationUnknown = "map-classification-unknown";
+		const string MapClassificationUnknown = "label-map-classification-unknown";
 
 		[TranslationReference("players")]
-		const string PlayersLabel = "players-label";
+		const string PlayersLabel = "label-players-count";
 
 		[TranslationReference("bots")]
-		const string BotsLabel = "bots-label";
+		const string BotsLabel = "label-bots-count";
 
 		[TranslationReference("spectators")]
-		const string SpectatorsLabel = "spectators-label";
+		const string SpectatorsLabel = "label-spectators-count";
 
 		[TranslationReference]
-		const string Players = "players";
+		const string Players = "label-players";
 
 		[TranslationReference("team")]
-		const string TeamNumber = "team-number";
+		const string TeamNumber = "label-team-name";
 
 		[TranslationReference]
-		const string NoTeam = "no-team";
+		const string NoTeam = "label-no-team";
 
 		[TranslationReference]
-		const string Spectators = "spectators";
+		const string Spectators = "label-spectators";
 
 		[TranslationReference("players")]
-		const string OtherPlayers = "n-other-players";
+		const string OtherPlayers = "label-other-players-count";
 
 		[TranslationReference]
-		const string Playing = "playing";
+		const string Playing = "label-playing";
 
 		[TranslationReference]
-		const string Waiting = "waiting";
+		const string Waiting = "label-waiting";
 
 		[TranslationReference("minutes")]
-		const string InProgress = "in-progress-for";
+		const string InProgress = "label-in-progress-for";
 
 		[TranslationReference]
-		const string PasswordProtected = "password-protected";
+		const string PasswordProtected = "label-password-protected";
 
 		[TranslationReference]
-		const string WaitingForPlayers = "waiting-for-players";
+		const string WaitingForPlayers = "label-waiting-for-players";
 
 		[TranslationReference]
-		const string ServerShuttingDown = "server-shutting-down";
+		const string ServerShuttingDown = "label-server-shutting-down";
 
 		[TranslationReference]
-		const string UnknownServerState = "unknown-server-state";
+		const string UnknownServerState = "label-unknown-server-state";
 
 		readonly string noServerSelected;
 		readonly string mapStatusSearching;

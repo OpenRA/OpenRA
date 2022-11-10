@@ -19,10 +19,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class MusicPlayerLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string SoundMuted = "sound-muted";
+		const string SoundMuted = "label-sound-muted";
 
 		[TranslationReference]
-		const string NoSongPlaying = "no-song-playing";
+		const string NoSongPlaying = "label-no-song-playing";
 
 		readonly ScrollPanelWidget musicList;
 		readonly ScrollItemWidget itemTemplate;

@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		const string CommandName = "exits-overlay";
 
 		[TranslationReference]
-		const string CommandDescription = "exits-debug-overlay-description";
+		const string CommandDescription = "description-exits-overlay";
 
 		public readonly SpriteFont Font;
 		public readonly ExitsDebugOverlayManagerInfo Info;

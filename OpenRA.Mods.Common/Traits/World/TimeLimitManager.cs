@@ -23,11 +23,11 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[TranslationReference]
 		[Desc("Label that will be shown for the time limit option in the lobby.")]
-		public readonly string TimeLimitLabel = "time-limit.label";
+		public readonly string TimeLimitLabel = "dropdown-time-limit.label";
 
 		[TranslationReference]
 		[Desc("Tooltip description that will be shown for the time limit option in the lobby.")]
-		public readonly string TimeLimitDescription = "time-limit.description";
+		public readonly string TimeLimitDescription = "dropdown-time-limit.description";
 
 		[Desc("Time Limit options that will be shown in the lobby dropdown. Values are in minutes.")]
 		public readonly int[] TimeLimitOptions = { 0, 10, 20, 30, 40, 60, 90 };
@@ -77,10 +77,10 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		[TranslationReference]
-		const string NoTimeLimit = "no-time-limit";
+		const string NoTimeLimit = "options-time-limit.no-limit";
 
 		[TranslationReference("minutes")]
-		const string TimeLimitOption = "time-limit-options";
+		const string TimeLimitOption = "options-time-limit.options";
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class TimeLimitManager : INotifyTimeLimit, ITick, IWorldLoaded
 	{
 		[TranslationReference]
-		const string TimeLimitExpired = "time-limit-expired";
+		const string TimeLimitExpired = "notification-time-limit-expired";
 
 		readonly TimeLimitManagerInfo info;
 		readonly int ticksPerSecond;

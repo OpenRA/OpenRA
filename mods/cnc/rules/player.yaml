@@ -42,15 +42,15 @@ Player:
 		FogCheckboxDisplayOrder: 3
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		ID: factundeploy
-		Label: redeployable-mcvs.label
-		Description: redeployable-mcvs.description
+		Label: checkbox-redeployable-mcvs.label
+		Description: checkbox-redeployable-mcvs.description
 		Enabled: True
 		DisplayOrder: 7
 		Prerequisites: global-factundeploy
 	LobbyPrerequisiteCheckbox@GLOBALC17STEALTH:
 		ID: C17-Stealth
-		Label: stealth-deliveries.label
-		Description: stealth-deliveries.description
+		Label: checkbox-stealth-deliveries.label
+		Description: checkbox-stealth-deliveries.description
 		Enabled: False
 		DisplayOrder: 8
 		Prerequisites: global-C17-stealth
@@ -58,19 +58,19 @@ Player:
 	FrozenActorLayer:
 	PlaceBeacon:
 	ProvidesTechPrerequisite@low:
-		Name: low
+		Name: options-tech-level.low
 		Prerequisites: techlevel.low
 		Id: low
 	ProvidesTechPrerequisite@medium:
-		Name: medium
+		Name: options-tech-level.medium
 		Prerequisites: techlevel.low, techlevel.medium
 		Id: medium
 	ProvidesTechPrerequisite@nosuper:
-		Name: no-powers
+		Name: options-tech-level.no-powers
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high
 		Id: nopowers
 	ProvidesTechPrerequisite@all:
-		Name: unrestricted
+		Name: options-tech-level.unrestricted
 		Prerequisites: techlevel.low, techlevel.medium, techlevel.high, techlevel.superweapons
 		Id: unrestricted
 	GrantConditionOnPrerequisiteManager:

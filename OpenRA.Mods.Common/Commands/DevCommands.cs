@@ -25,55 +25,55 @@ namespace OpenRA.Mods.Common.Commands
 	public class DevCommands : IChatCommand, IWorldLoaded
 	{
 		[TranslationReference]
-		const string CheatsDisabled = "cheats-disabled";
+		const string CheatsDisabled = "notification-cheats-disabled";
 
 		[TranslationReference]
-		const string InvalidCashAmount = "invalid-cash-amount";
+		const string InvalidCashAmount = "notification-invalid-cash-amount";
 
 		[TranslationReference]
-		const string ToggleVisiblityDescription = "toggle-visibility";
+		const string ToggleVisiblityDescription = "description-toggle-visibility";
 
 		[TranslationReference]
-		const string GiveCashDescription = "give-cash";
+		const string GiveCashDescription = "description-give-cash";
 
 		[TranslationReference]
-		const string GiveCashAllDescription = "give-cash-all";
+		const string GiveCashAllDescription = "description-give-cash-all";
 
 		[TranslationReference]
-		const string InstantBuildingDescription = "instant-building";
+		const string InstantBuildingDescription = "description-instant-building";
 
 		[TranslationReference]
-		const string BuildAnywhereDescription = "build-anywhere";
+		const string BuildAnywhereDescription = "description-build-anywhere";
 
 		[TranslationReference]
-		const string UnlimitedPowerDescription = "unlimited-power";
+		const string UnlimitedPowerDescription = "description-unlimited-power";
 
 		[TranslationReference]
-		const string EnableTechDescription = "enable-tech";
+		const string EnableTechDescription = "description-enable-tech";
 
 		[TranslationReference]
-		const string FastChargeDescription = "fast-charge";
+		const string FastChargeDescription = "description-fast-charge";
 
 		[TranslationReference]
-		const string DevCheatAllDescription = "dev-cheat-all";
+		const string DevCheatAllDescription = "description-dev-cheat-all";
 
 		[TranslationReference]
-		const string DevCrashDescription = "dev-crash";
+		const string DevCrashDescription = "description-dev-crash";
 
 		[TranslationReference]
-		const string LevelUpActorDescription = "levelup-actor";
+		const string LevelUpActorDescription = "description-levelup-actor";
 
 		[TranslationReference]
-		const string PlayerExperienceDescription = "player-experience";
+		const string PlayerExperienceDescription = "description-player-experience";
 
 		[TranslationReference]
-		const string PowerOutageDescription = "power-outage";
+		const string PowerOutageDescription = "description-power-outage";
 
 		[TranslationReference]
-		const string KillSelectedActorsDescription = "kill-selected-actors";
+		const string KillSelectedActorsDescription = "description-kill-selected-actors";
 
 		[TranslationReference]
-		const string DisposeSelectedActorsDescription = "dispose-selected-actors";
+		const string DisposeSelectedActorsDescription = "description-dispose-selected-actors";
 
 		readonly IDictionary<string, (string Description, Action<string, World> Handler)> commandHandlers = new Dictionary<string, (string, Action<string, World>)>
 		{

@@ -21,8 +21,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ActorSelectorLogic : CommonSelectorLogic
 	{
-		[TranslationReference]
-		const string Type = "type";
+		[TranslationReference("actorType")]
+		const string ActorTypeTooltip = "label-actor-type";
 
 		class ActorSelectorActor
 		{
@@ -115,8 +115,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (tooltip != null)
 					searchTerms.Add(tooltip.Name);
 
-				var type = modData.Translation.GetString(Type);
-				var tooltipText = (tooltip == null ? $"{type}: " : tooltip.Name + $"\n{type}: ") + a.Name;
+				var actorType = modData.Translation.GetString(ActorTypeTooltip, Translation.Arguments("actorType", a.Name));
+				var tooltipText = tooltip == null ? actorType : tooltip.Name + $"\n{actorType}";
 				allActorsTemp.Add(new ActorSelectorActor(a, editorData.Categories, searchTerms.ToArray(), tooltipText));
 			}
 

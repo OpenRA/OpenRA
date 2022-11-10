@@ -23,40 +23,40 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	class GameInfoStatsLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string Unmute = "unmute";
+		const string Unmute = "label-unmute-player";
 
 		[TranslationReference]
-		const string Mute = "mute";
+		const string Mute = "label-mute-player";
 
 		[TranslationReference]
-		const string Accomplished = "accomplished";
+		const string Accomplished = "label-mission-accomplished";
 
 		[TranslationReference]
-		const string Failed = "failed";
+		const string Failed = "label-mission-failed";
 
 		[TranslationReference]
-		const string InProgress = "in-progress";
+		const string InProgress = "label-mission-in-progress";
 
 		[TranslationReference("team")]
-		const string TeamNumber = "team-number";
+		const string TeamNumber = "label-team-name";
 
 		[TranslationReference]
-		const string NoTeam = "no-team";
+		const string NoTeam = "label-no-team";
 
 		[TranslationReference]
-		const string Spectators = "spectators";
+		const string Spectators = "label-spectators";
 
 		[TranslationReference]
-		const string Gone = "gone";
+		const string Gone = "label-client-state-disconnected";
 
 		[TranslationReference("player")]
-		const string KickTitle = "kick-title";
+		const string KickTitle = "dialog-kick.title";
 
 		[TranslationReference]
-		const string KickPrompt = "kick-prompt";
+		const string KickPrompt = "dialog-kick.prompt";
 
 		[TranslationReference]
-		const string KickAccept = "kick-accept";
+		const string KickAccept = "dialog-kick.confirm";
 
 		[ObjectCreator.UseCtor]
 		public GameInfoStatsLogic(Widget widget, ModData modData, World world, OrderManager orderManager, WorldRenderer worldRenderer, Action<bool> hideMenu)

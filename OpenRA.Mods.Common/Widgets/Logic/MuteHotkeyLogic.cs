@@ -19,10 +19,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class MuteHotkeyLogic : SingleHotkeyBaseLogic
 	{
 		[TranslationReference]
-		const string AudioMuted = "audio-muted";
+		const string AudioMuted = "label-audio-muted";
 
 		[TranslationReference]
-		const string AudioUnmuted = "audio-unmuted";
+		const string AudioUnmuted = "label-audio-unmuted";
 
 		readonly ModData modData;
 

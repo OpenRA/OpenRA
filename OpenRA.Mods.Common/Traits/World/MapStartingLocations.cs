@@ -27,11 +27,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		[TranslationReference]
 		[Desc("Descriptive label for the spawn positions checkbox in the lobby.")]
-		public readonly string SeparateTeamSpawnsCheckboxLabel = "separate-team-spawns.label";
+		public readonly string SeparateTeamSpawnsCheckboxLabel = "checkbox-separate-team-spawns.label";
 
 		[TranslationReference]
 		[Desc("Tooltip description for the spawn positions checkbox in the lobby.")]
-		public readonly string SeparateTeamSpawnsCheckboxDescription = "separate-team-spawns.description";
+		public readonly string SeparateTeamSpawnsCheckboxDescription = "checkbox-separate-team-spawns.description";
 
 		[Desc("Default value of the spawn positions checkbox in the lobby.")]
 		public readonly bool SeparateTeamSpawnsCheckboxEnabled = true;

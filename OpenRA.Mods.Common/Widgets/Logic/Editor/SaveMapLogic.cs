@@ -43,34 +43,34 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[TranslationReference]
-		const string SaveMapFailedTitle = "save-map-failed-title";
+		const string SaveMapFailedTitle = "dialog-save-map-failed.title";
 
 		[TranslationReference]
-		const string SaveMapFailedPrompt = "save-map-failed-prompt";
+		const string SaveMapFailedPrompt = "dialog-save-map-failed.prompt";
 
 		[TranslationReference]
-		const string SaveMapFailedAccept = "save-map-failed-accept";
+		const string SaveMapFailedAccept = "dialog-save-map-failed.confirm";
 
 		[TranslationReference]
-		const string Unpacked = "unpacked";
+		const string Unpacked = "label-unpacked-map";
 
 		[TranslationReference]
-		const string OverwriteMapFailedTitle = "overwrite-map-failed-title";
+		const string OverwriteMapFailedTitle = "dialog-overwrite-map-failed.title";
 
 		[TranslationReference]
-		const string OverwriteMapFailedPrompt = "overwrite-map-failed-prompt";
+		const string OverwriteMapFailedPrompt = "dialog-overwrite-map-failed.prompt";
 
 		[TranslationReference]
-		const string SaveMapFailedConfirm = "overwrite-map-failed-confirm";
+		const string SaveMapFailedConfirm = "dialog-overwrite-map-failed.confirm";
 
 		[TranslationReference]
-		const string OverwriteMapOutsideEditTitle = "overwrite-map-outside-edit-title";
+		const string OverwriteMapOutsideEditTitle = "dialog-overwrite-map-outside-edit.title";
 
 		[TranslationReference]
-		const string OverwriteMapOutsideEditPrompt = "overwrite-map-outside-edit-prompt";
+		const string OverwriteMapOutsideEditPrompt = "dialog-overwrite-map-outside-edit.prompt";
 
 		[TranslationReference]
-		const string SaveMapMapOutsideConfirm = "overwrite-map-outside-edit-confirm";
+		const string SaveMapMapOutsideConfirm = "dialog-overwrite-map-outside-edit.confirm";
 
 		[ObjectCreator.UseCtor]
 		public SaveMapLogic(Widget widget, ModData modData, Action<string> onSave, Action onExit,

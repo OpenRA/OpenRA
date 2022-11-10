@@ -23,13 +23,13 @@ namespace OpenRA.Mods.Common.Traits
 	public class ColorPickerManagerInfo : TraitInfo<ColorPickerManager>, IRulesetLoaded
 	{
 		[TranslationReference]
-		const string PlayerColorTerrain = "player-color-terrain";
+		const string PlayerColorTerrain = "notification-player-color-terrain";
 
 		[TranslationReference]
-		const string PlayerColorPlayer = "player-color-player";
+		const string PlayerColorPlayer = "notification-player-color-player";
 
 		[TranslationReference]
-		const string InvalidPlayerColor = "invalid-player-color";
+		const string InvalidPlayerColor = "notification-invalid-player-color";
 
 		[Desc("Minimum and maximum saturation levels that are valid for use.")]
 		public readonly float[] HsvSaturationRange = { 0.3f, 0.95f };

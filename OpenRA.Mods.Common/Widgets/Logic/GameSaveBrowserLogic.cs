@@ -21,43 +21,43 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class GameSaveBrowserLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string RenameSaveTitle = "rename-save-title";
+		const string RenameSaveTitle = "dialog-rename-save.title";
 
 		[TranslationReference]
-		const string RenameSavePrompt = "rename-save-prompt";
+		const string RenameSavePrompt = "dialog-rename-save.prompt";
 
 		[TranslationReference]
-		const string RenameSaveAccept = "rename-save-accept";
+		const string RenameSaveAccept = "dialog-rename-save.confirm";
 
 		[TranslationReference]
-		const string DeleteSaveTitle = "delete-save-title";
+		const string DeleteSaveTitle = "dialog-delete-save.title";
 
 		[TranslationReference("save")]
-		const string DeleteSavePrompt = "delete-save-prompt";
+		const string DeleteSavePrompt = "dialog-delete-save.prompt";
 
 		[TranslationReference]
-		const string DeleteSaveAccept = "delete-save-accept";
+		const string DeleteSaveAccept = "dialog-delete-save.confirm";
 
 		[TranslationReference]
-		const string DeleteAllSavesTitle = "delete-all-saves-title";
+		const string DeleteAllSavesTitle = "dialog-delete-all-saves.title";
 
 		[TranslationReference("count")]
-		const string DeleteAllSavesPrompt = "delete-all-saves-prompt";
+		const string DeleteAllSavesPrompt = "dialog-delete-all-saves.prompt";
 
 		[TranslationReference]
-		const string DeleteAllSavesAccept = "delete-all-saves-accept";
+		const string DeleteAllSavesAccept = "dialog-delete-all-saves.confirm";
 
 		[TranslationReference("savePath")]
-		const string SaveDeletionFailed = "save-deletion-failed";
+		const string SaveDeletionFailed = "notification-save-deletion-failed";
 
 		[TranslationReference]
-		const string OverwriteSaveTitle = "overwrite-save-title";
+		const string OverwriteSaveTitle = "dialog-overwrite-save.title";
 
 		[TranslationReference("file")]
-		const string OverwriteSavePrompt = "overwrite-save-prompt";
+		const string OverwriteSavePrompt = "dialog-overwrite-save.prompt";
 
 		[TranslationReference]
-		const string OverwriteSaveAccpet = "overwrite-save-accept";
+		const string OverwriteSaveAccpet = "dialog-overwrite-save.confirm";
 
 		readonly Widget panel;
 		readonly ScrollPanelWidget gameList;

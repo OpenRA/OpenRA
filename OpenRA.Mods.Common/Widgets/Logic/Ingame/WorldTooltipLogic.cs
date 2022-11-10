@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class WorldTooltipLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string UnrevealedTerrain = "unrevealed-terrain";
+		const string UnrevealedTerrain = "label-unrevealed-terrain";
 
 		[ObjectCreator.UseCtor]
 		public WorldTooltipLogic(Widget widget, ModData modData, World world, TooltipContainerWidget tooltipContainer, ViewportControllerWidget viewport)

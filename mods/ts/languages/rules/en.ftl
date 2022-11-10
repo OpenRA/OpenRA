@@ -1,18 +1,21 @@
 ## Player
-low = Low
-medium = Medium
-no-powers = No Powers
-unrestricted = Unrestricted
+options-tech-level =
+    .low = Low
+    .medium = Medium
+    .no-powers = No Powers
+    .unrestricted = Unrestricted
 
-redeployable-mcvs =
+checkbox-redeployable-mcvs =
     .label = Redeployable MCVs
     .description = Allow undeploying Construction Yard
 
 ## World
-mcv-only = MCV Only
-light = Light
-heavy = Heavy
+options-starting-units =
+    .mcv-only = MCV Only
+    .light = Light
+    .medium = Medium
+    .heavy = Heavy
 
-map-creeps =
+dropdown-map-creeps =
     .label = Creep Actors
     .description = Hostile forces spawn on the battlefield

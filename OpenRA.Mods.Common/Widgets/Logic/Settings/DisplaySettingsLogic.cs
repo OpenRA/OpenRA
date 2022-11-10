@@ -23,46 +23,46 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class DisplaySettingsLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string Close = "close";
+		const string Close = "options-camera.close";
 
 		[TranslationReference]
-		const string Medium = "medium";
+		const string Medium = "options-camera.medium";
 
 		[TranslationReference]
-		const string Far = "far";
+		const string Far = "options-camera.far";
 
 		[TranslationReference]
-		const string Furthest = "furthest";
+		const string Furthest = "options-camera.furthest";
 
 		[TranslationReference]
-		const string Windowed = "windowed";
+		const string Windowed = "options-display-mode.windowed";
 
 		[TranslationReference]
-		const string LegacyFullscreen = "legacy-fullscreen";
+		const string LegacyFullscreen = "options-display-mode.legacy-fullscreen";
 
 		[TranslationReference]
-		const string Fullscreen = "fullscreen";
+		const string Fullscreen = "options-display-mode.fullscreen";
 
 		[TranslationReference("number")]
-		const string Display = "display";
+		const string Display = "label-video-display-index";
 
 		[TranslationReference]
-		const string Standard = "standard";
+		const string Standard = "options-status-bars.standard";
 
 		[TranslationReference]
-		const string ShowOnDamage = "show-on-damage";
+		const string ShowOnDamage = "options-status-bars.show-on-damage";
 
 		[TranslationReference]
-		const string AlwaysShow = "always-show";
+		const string AlwaysShow = "options-status-bars.always-show";
 
 		[TranslationReference]
-		const string Automatic = "automatic";
+		const string Automatic = "options-target-lines.automatic";
 
 		[TranslationReference]
-		const string Manual = "manual";
+		const string Manual = "options-target-lines.manual";
 
 		[TranslationReference]
-		const string Disabled = "disabled";
+		const string Disabled = "options-target-lines.disabled";
 
 		static readonly int OriginalVideoDisplay;
 		static readonly WindowMode OriginalGraphicsMode;

@@ -23,11 +23,11 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[TranslationReference]
 		[Desc("Descriptive label for the crates checkbox in the lobby.")]
-		public readonly string CheckboxLabel = "crates.label";
+		public readonly string CheckboxLabel = "checkbox-crates.label";
 
 		[TranslationReference]
 		[Desc("Tooltip description for the crates checkbox in the lobby.")]
-		public readonly string CheckboxDescription = "crates.description";
+		public readonly string CheckboxDescription = "checkbox-crates.description";
 
 		[Desc("Default value of the crates checkbox in the lobby.")]
 		public readonly bool CheckboxEnabled = true;

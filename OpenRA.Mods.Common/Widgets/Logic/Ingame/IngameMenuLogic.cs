@@ -22,100 +22,100 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class IngameMenuLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string Leave = "leave";
+		const string Leave = "menu-ingame.leave";
 
 		[TranslationReference]
-		const string AbortMission = "abort-mission";
+		const string AbortMission = "menu-ingame.abort";
 
 		[TranslationReference]
-		const string LeaveMissionTitle = "leave-mission-title";
+		const string LeaveMissionTitle = "dialog-leave-mission.title";
 
 		[TranslationReference]
-		const string LeaveMissionPrompt = "leave-mission-prompt";
+		const string LeaveMissionPrompt = "dialog-leave-mission.prompt";
 
 		[TranslationReference]
-		const string LeaveMissionAccept = "leave-mission-accept";
+		const string LeaveMissionAccept = "dialog-leave-mission.confirm";
 
 		[TranslationReference]
-		const string LeaveMissionCancel = "leave-mission-cancel";
+		const string LeaveMissionCancel = "dialog-leave-mission.cancel";
 
 		[TranslationReference]
-		const string RestartButton = "restart-button";
+		const string RestartButton = "menu-ingame.restart";
 
 		[TranslationReference]
-		const string RestartMissionTitle = "restart-mission-title";
+		const string RestartMissionTitle = "dialog-restart-mission.title";
 
 		[TranslationReference]
-		const string RestartMissionPrompt = "restart-mission-prompt";
+		const string RestartMissionPrompt = "dialog-restart-mission.prompt";
 
 		[TranslationReference]
-		const string RestartMissionAccept = "restart-mission-accept";
+		const string RestartMissionAccept = "dialog-restart-mission.confirm";
 
 		[TranslationReference]
-		const string RestartMissionCancel = "restart-mission-cancel";
+		const string RestartMissionCancel = "dialog-restart-mission.cancel";
 
 		[TranslationReference]
-		const string SurrenderButton = "surrender-button";
+		const string SurrenderButton = "menu-ingame.surrender";
 
 		[TranslationReference]
-		const string SurrenderTitle = "surrender-title";
+		const string SurrenderTitle = "dialog-surrender.title";
 
 		[TranslationReference]
-		const string SurrenderPrompt = "surrender-prompt";
+		const string SurrenderPrompt = "dialog-surrender.prompt";
 
 		[TranslationReference]
-		const string SurrenderAccept = "surrender-accept";
+		const string SurrenderAccept = "dialog-surrender.confirm";
 
 		[TranslationReference]
-		const string SurrenderCancel = "surrender-cancel";
+		const string SurrenderCancel = "dialog-surrender.cancel";
 
 		[TranslationReference]
-		const string LoadGameButton = "load-game-button";
+		const string LoadGameButton = "menu-ingame.load-game";
 
 		[TranslationReference]
-		const string SaveGameButton = "save-game-button";
+		const string SaveGameButton = "menu-ingame.save-game";
 
 		[TranslationReference]
-		const string MusicButton = "music-button";
+		const string MusicButton = "menu-ingame.music";
 
 		[TranslationReference]
-		const string SettingsButton = "settings-button";
+		const string SettingsButton = "menu-ingame.settings";
 
 		[TranslationReference]
-		const string ReturnToMap = "return-to-map";
+		const string ReturnToMap = "menu-ingame.return-to-map";
 
 		[TranslationReference]
-		const string Resume = "resume";
+		const string Resume = "menu-ingame.resume";
 
 		[TranslationReference]
-		const string SaveMapButton = "save-map-button";
+		const string SaveMapButton = "menu-ingame.save-map";
 
 		[TranslationReference]
-		const string ErrorMaxPlayerTitle = "error-max-player-title";
+		const string ErrorMaxPlayerTitle = "dialog-error-max-player.title";
 
 		[TranslationReference("players", "max")]
-		const string ErrorMaxPlayerPrompt = "error-max-player-prompt";
+		const string ErrorMaxPlayerPrompt = "dialog-error-max-player.prompt";
 
 		[TranslationReference]
-		const string ErrorMaxPlayerAccept = "error-max-player-accept";
+		const string ErrorMaxPlayerAccept = "dialog-error-max-player.confirm";
 
 		[TranslationReference]
-		const string ExitMapButton = "exit-map-button";
+		const string ExitMapButton = "menu-ingame.exit-map";
 
 		[TranslationReference]
-		const string ExitMapEditorTitle = "exit-map-editor-title";
+		const string ExitMapEditorTitle = "dialog-exit-map-editor.title";
 
 		[TranslationReference]
-		const string ExitMapEditorPromptUnsaved = "exit-map-editor-prompt-unsaved";
+		const string ExitMapEditorPromptUnsaved = "dialog-exit-map-editor.prompt-unsaved";
 
 		[TranslationReference]
-		const string ExitMapEditorPromptDeleted = "exit-map-editor-prompt-deleted";
+		const string ExitMapEditorPromptDeleted = "dialog-exit-map-editor.prompt-deleted";
 
 		[TranslationReference]
-		const string ExitMapEditorAnywayConfirm = "exit-map-editor-confirm-anyway";
+		const string ExitMapEditorAnywayConfirm = "dialog-exit-map-editor.confirm-anyway";
 
 		[TranslationReference]
-		const string ExitMapEditorConfirm = "exit-map-editor-confirm";
+		const string ExitMapEditorConfirm = "dialog-exit-map-editor.confirm";
 
 		readonly Widget menu;
 		readonly Widget buttonContainer;

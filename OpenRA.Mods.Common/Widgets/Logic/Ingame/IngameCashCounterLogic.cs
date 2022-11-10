@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class IngameCashCounterLogic : ChromeLogic
 	{
 		[TranslationReference("usage", "capacity")]
-		const string SiloUsage = "silo-usage";
+		const string SiloUsage = "label-silo-usage";
 
 		const float DisplayFracPerFrame = .07f;
 		const int DisplayDeltaPerFrame = 37;

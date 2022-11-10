@@ -20,22 +20,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class MapPreviewLogic : ChromeLogic
 	{
 		[TranslationReference]
-		const string Connecting = "connecting";
+		const string Connecting = "label-connecting";
 
 		[TranslationReference("size")]
-		const string Downloading = "downloading-map";
+		const string Downloading = "label-downloading-map";
 
 		[TranslationReference("size", "progress")]
-		const string DownloadingPercentage = "downloading-map-progress";
+		const string DownloadingPercentage = "label-downloading-map-progress";
 
 		[TranslationReference]
-		const string RetryInstall = "retry-install";
+		const string RetryInstall = "button-retry-install";
 
 		[TranslationReference]
-		const string RetrySearch = "retry-search";
+		const string RetrySearch = "button-retry-search";
 
 		[TranslationReference("author")]
-		const string CreatedBy = "created-by";
+		const string CreatedBy = "label-created-by";
 
 		readonly int blinkTickLength = 10;
 		bool installHighlighted;

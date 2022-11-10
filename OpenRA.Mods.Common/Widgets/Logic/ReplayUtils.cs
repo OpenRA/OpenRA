@@ -18,28 +18,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public static class ReplayUtils
 	{
 		[TranslationReference]
-		const string IncompatibleReplayTitle = "incompatible-replay-title";
+		const string IncompatibleReplayTitle = "dialog-incompatible-replay.title";
 
 		[TranslationReference]
-		const string IncompatibleReplayPrompt = "incompatible-replay-prompt";
+		const string IncompatibleReplayPrompt = "dialog-incompatible-replay.prompt";
 
 		[TranslationReference]
-		const string IncompatibleReplayAccept = "incompatible-replay-accept";
+		const string IncompatibleReplayAccept = "dialog-incompatible-replay.confirm";
 
 		[TranslationReference]
-		const string UnknownVersion = "incompatible-replay-unknown-version";
+		const string UnknownVersion = "dialog-incompatible-replay.prompt-unknown-version";
 
 		[TranslationReference]
-		const string UnknownMod = "incompatible-replay-unknown-mod";
+		const string UnknownMod = "dialog-incompatible-replay.prompt-unknown-mod";
 
 		[TranslationReference("mod")]
-		const string UnvailableMod = "incompatible-replay-unavailable-mod";
+		const string UnvailableMod = "dialog-incompatible-replay.prompt-unavailable-mod";
 
 		[TranslationReference("version")]
-		const string IncompatibleVersion = "incompatible-replay-incompatible-version";
+		const string IncompatibleVersion = "dialog-incompatible-replay.prompt-incompatible-version";
 
 		[TranslationReference("map")]
-		const string UnvailableMap = "incompatible-replay-unavailable-map";
+		const string UnvailableMap = "dialog-incompatible-replay.prompt-unavailable-map";
 
 		static readonly Action DoNothing = () => { };
 

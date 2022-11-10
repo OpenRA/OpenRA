@@ -24,37 +24,37 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class DownloadPackageLogic : ChromeLogic
 	{
 		[TranslationReference("title")]
-		const string Downloading = "downloading";
+		const string Downloading = "label-downloading";
 
 		[TranslationReference]
-		const string FetchingMirrorList = "fetching-mirror-list";
+		const string FetchingMirrorList = "label-fetching-mirror-list";
 
 		[TranslationReference]
-		const string UnknownHost = "unknown-host";
+		const string UnknownHost = "label-unknown-host";
 
 		[TranslationReference("host", "received", "suffix")]
-		const string DownloadingFrom = "downloading-from";
+		const string DownloadingFrom = "label-downloading-from";
 
 		[TranslationReference("host", "received", "total", "suffix", "progress")]
-		const string DownloadingFromProgress = "downloading-from-progress";
+		const string DownloadingFromProgress = "label-downloading-from-progress";
 
 		[TranslationReference]
-		const string VerifyingArchive = "verifying-archive";
+		const string VerifyingArchive = "label-verifying-archive";
 
 		[TranslationReference]
-		const string ArchiveValidationFailed = "archive-validation-failed";
+		const string ArchiveValidationFailed = "label-archive-validation-failed";
 
 		[TranslationReference]
-		const string Extracting = "extracting";
+		const string Extracting = "label-extracting-archive";
 
 		[TranslationReference("entry")]
-		const string ExtractingEntry = "extracting-entry";
+		const string ExtractingEntry = "label-extracting-archive-entry";
 
 		[TranslationReference]
-		const string ArchiveExtractionFailed = "archive-extraction-failed";
+		const string ArchiveExtractionFailed = "label-archive-extraction-failed";
 
 		[TranslationReference]
-		const string MirrorSelectionFailed = "mirror-selection-failed";
+		const string MirrorSelectionFailed = "label-mirror-selection-failed";
 
 		static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
 
