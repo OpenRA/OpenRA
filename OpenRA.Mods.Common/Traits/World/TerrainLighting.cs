@@ -41,9 +41,9 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly CPos Cell;
 			public readonly WDist Range;
 			public readonly float Intensity;
-			public readonly float3 Tint;
+			public readonly Float3 Tint;
 
-			public LightSource(WPos pos, CPos cell, WDist range, float intensity, in float3 tint)
+			public LightSource(WPos pos, CPos cell, WDist range, float intensity, in Float3 tint)
 			{
 				Pos = pos;
 				Cell = cell;
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Map map;
 		readonly Dictionary<int, LightSource> lightSources = new Dictionary<int, LightSource>();
 		readonly SpatiallyPartitioned<LightSource> partitionedLightSources;
-		readonly float3 globalTint;
+		readonly Float3 globalTint;
 		int nextLightSourceToken = 1;
 
 		public event Action<MPos> CellChanged = null;
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 			map = world.Map;
-			globalTint = new float3(info.RedTint, info.GreenTint, info.BlueTint);
+			globalTint = new Float3(info.RedTint, info.GreenTint, info.BlueTint);
 
 			var cellSize = map.Grid.Type == MapGridType.RectangularIsometric ? 1448 : 1024;
 			partitionedLightSources = new SpatiallyPartitioned<LightSource>(
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new Rectangle(c.X - r, c.Y - r, 2 * r, 2 * r);
 		}
 
-		public int AddLightSource(WPos pos, WDist range, float intensity, in float3 tint)
+		public int AddLightSource(WPos pos, WDist range, float intensity, in Float3 tint)
 		{
 			var token = nextLightSourceToken++;
 			var source = new LightSource(pos, map.CellContaining(pos), range, intensity, tint);
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 					CellChanged(c.ToMPos(map));
 		}
 
-		float3 ITerrainLighting.TintAt(WPos pos)
+		Float3 ITerrainLighting.TintAt(WPos pos)
 		{
 			using (new PerfSample("terrain_lighting"))
 			{
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Traits
 				var intensity = info.Intensity + info.HeightStep * map.Height[uv];
 				if (lightSources.Count > 0)
 				{
-					foreach (var source in partitionedLightSources.At(new int2(pos.X, pos.Y)))
+					foreach (var source in partitionedLightSources.At(new Int2(pos.X, pos.Y)))
 					{
 						var range = source.Range.Length;
 						var distance = (source.Pos - pos).Length;

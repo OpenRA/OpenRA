@@ -24,10 +24,10 @@ namespace OpenRA.Mods.Common.HitShapes
 		public WDist OuterRadius { get; private set; }
 
 		[FieldLoader.Require]
-		public readonly int2 TopLeft;
+		public readonly Int2 TopLeft;
 
 		[FieldLoader.Require]
-		public readonly int2 BottomRight;
+		public readonly Int2 BottomRight;
 
 		[Desc("Defines the top offset relative to the actor's center.")]
 		public readonly int VerticalTopOffset = 0;
@@ -39,8 +39,8 @@ namespace OpenRA.Mods.Common.HitShapes
 			"Mobile actors do NOT need this!")]
 		public readonly WAngle LocalYaw = WAngle.Zero;
 
-		int2 quadrantSize;
-		int2 center;
+		Int2 quadrantSize;
+		Int2 center;
 
 		WVec[] combatOverlayVertsTop;
 		WVec[] combatOverlayVertsBottom;
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.HitShapes
 
 		public RectangleShape() { }
 
-		public RectangleShape(int2 tl, int2 br)
+		public RectangleShape(Int2 tl, Int2 br)
 		{
 			TopLeft = tl;
 			BottomRight = br;
@@ -66,8 +66,8 @@ namespace OpenRA.Mods.Common.HitShapes
 			quadrantSize = (BottomRight - TopLeft) / 2;
 			center = TopLeft + quadrantSize;
 
-			var topRight = new int2(BottomRight.X, TopLeft.Y);
-			var bottomLeft = new int2(TopLeft.X, BottomRight.Y);
+			var topRight = new Int2(BottomRight.X, TopLeft.Y);
+			var bottomLeft = new Int2(TopLeft.X, BottomRight.Y);
 			var corners = new[] { TopLeft, BottomRight, topRight, bottomLeft };
 			OuterRadius = new WDist(corners.Select(x => x.Length).Max());
 

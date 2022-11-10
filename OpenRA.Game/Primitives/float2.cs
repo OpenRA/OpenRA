@@ -24,9 +24,9 @@ namespace OpenRA
 
 		public float2(float x, float y) { X = x; Y = y; }
 		public float2(Size p) { X = p.Width; Y = p.Height; }
-		public float2(int2 p) { X = p.X; Y = p.Y; }
+		public float2(Int2 p) { X = p.X; Y = p.Y; }
 
-		public static implicit operator float2(int2 src) { return new float2(src.X, src.Y); }
+		public static implicit operator float2(Int2 src) { return new float2(src.X, src.Y); }
 
 		public static float2 operator +(float2 a, float2 b) { return new float2(a.X + b.X, a.Y + b.Y); }
 		public static float2 operator -(float2 a, float2 b) { return new float2(a.X - b.X, a.Y - b.Y); }
@@ -88,7 +88,7 @@ namespace OpenRA
 		public static float Dot(float2 a, float2 b) { return a.X * b.X + a.Y * b.Y; }
 		public float2 Round() { return new float2((float)Math.Round(X), (float)Math.Round(Y)); }
 
-		public int2 ToInt2() { return new int2((int)X, (int)Y); }
+		public Int2 ToInt2() { return new Int2((int)X, (int)Y); }
 
 		public static float2 Max(float2 a, float2 b) { return new float2(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)); }
 		public static float2 Min(float2 a, float2 b) { return new float2(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y)); }
@@ -97,12 +97,12 @@ namespace OpenRA
 		public float Length => (float)Math.Sqrt(LengthSquared);
 	}
 
-	public class EWMA
+	public class Ewma
 	{
 		readonly float animRate;
 		float? value;
 
-		public EWMA(float animRate) { this.animRate = animRate; }
+		public Ewma(float animRate) { this.animRate = animRate; }
 
 		public float Update(float newValue)
 		{

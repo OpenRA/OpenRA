@@ -65,15 +65,15 @@ namespace OpenRA.Graphics
 
 			// Calculate positions in screen pixel coordinates
 			var screenContrast = (int)(contrastOffset * deviceScale);
-			var screen = new int2((int)(location.X * deviceScale + 0.5f), (int)(location.Y * deviceScale + 0.5f));
+			var screen = new Int2((int)(location.X * deviceScale + 0.5f), (int)(location.Y * deviceScale + 0.5f));
 			var contrastVector = new float2(screenContrast, screenContrast);
-			var tint = new float3(contrastColor.R / 255f, contrastColor.G / 255f, contrastColor.B / 255f);
+			var tint = new Float3(contrastColor.R / 255f, contrastColor.G / 255f, contrastColor.B / 255f);
 			foreach (var s in text)
 			{
 				if (s == '\n')
 				{
 					location += new float2(0, size);
-					screen = new int2((int)(location.X * deviceScale + 0.5f), (int)(location.Y * deviceScale + 0.5f));
+					screen = new Int2((int)(location.X * deviceScale + 0.5f), (int)(location.Y * deviceScale + 0.5f));
 					continue;
 				}
 
@@ -89,7 +89,7 @@ namespace OpenRA.Graphics
 						tint, 1f);
 				}
 
-				screen += new int2((int)(g.Advance + 0.5f), 0);
+				screen += new Int2((int)(g.Advance + 0.5f), 0);
 			}
 		}
 
@@ -99,14 +99,14 @@ namespace OpenRA.Graphics
 			location += new float2(0, size);
 
 			// Calculate positions in screen pixel coordinates
-			var screen = new int2((int)(location.X * deviceScale + 0.5f), (int)(location.Y * deviceScale + 0.5f));
-			var tint = new float3(c.R / 255f, c.G / 255f, c.B / 255f);
+			var screen = new Int2((int)(location.X * deviceScale + 0.5f), (int)(location.Y * deviceScale + 0.5f));
+			var tint = new Float3(c.R / 255f, c.G / 255f, c.B / 255f);
 			foreach (var s in text)
 			{
 				if (s == '\n')
 				{
 					location += new float2(0, size);
-					screen = new int2((int)(location.X * deviceScale + 0.5f), (int)(location.Y * deviceScale + 0.5f));
+					screen = new Int2((int)(location.X * deviceScale + 0.5f), (int)(location.Y * deviceScale + 0.5f));
 					continue;
 				}
 
@@ -119,7 +119,7 @@ namespace OpenRA.Graphics
 					1f / deviceScale,
 					tint, 1f);
 
-				screen += new int2((int)(g.Advance + 0.5f), 0);
+				screen += new Int2((int)(g.Advance + 0.5f), 0);
 			}
 		}
 
@@ -137,7 +137,7 @@ namespace OpenRA.Graphics
 			var offset = new float2(0, size);
 			var cosa = (float)Math.Cos(-angle);
 			var sina = (float)Math.Sin(-angle);
-			var tint = new float3(c.R / 255f, c.G / 255f, c.B / 255f);
+			var tint = new Float3(c.R / 255f, c.G / 255f, c.B / 255f);
 
 			var p = offset;
 			foreach (var s in text)
@@ -227,10 +227,10 @@ namespace OpenRA.Graphics
 			DrawTextWithShadow(text, location, fg, GetContrastColor(fg, bgDark, bgLight), offset, angle);
 		}
 
-		public int2 Measure(string text)
+		public Int2 Measure(string text)
 		{
 			if (string.IsNullOrEmpty(text))
-				return new int2(0, size);
+				return new Int2(0, size);
 
 			var lines = text.SplitLines('\n');
 
@@ -242,7 +242,7 @@ namespace OpenRA.Graphics
 				maxWidth = Math.Max(maxWidth, LineWidth(line));
 			}
 
-			return new int2((int)Math.Ceiling(maxWidth), rows * size);
+			return new Int2((int)Math.Ceiling(maxWidth), rows * size);
 		}
 
 		float LineWidth(ReadOnlySpan<char> line)
@@ -263,7 +263,7 @@ namespace OpenRA.Graphics
 				{
 					Sprite = null,
 					Advance = 0,
-					Offset = int2.Zero
+					Offset = Int2.Zero
 				};
 			}
 
@@ -430,7 +430,7 @@ namespace OpenRA.Graphics
 	class GlyphInfo
 	{
 		public float Advance;
-		public int2 Offset;
+		public Int2 Offset;
 		public Sprite Sprite;
 	}
 }

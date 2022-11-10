@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var prereqs = buildable.Prerequisites.Select(a => ActorName(mapRules, a))
 					.Where(s => !s.StartsWith("~", StringComparison.Ordinal) && !s.StartsWith("!", StringComparison.Ordinal));
 
-				var requiresSize = int2.Zero;
+				var requiresSize = Int2.Zero;
 				if (prereqs.Any())
 				{
 					requiresLabel.Text = requiresFormat.F(prereqs.JoinWith(", "));
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					descLabel.Bounds.Y = descLabelY;
 				}
 
-				var powerSize = new int2(0, 0);
+				var powerSize = new Int2(0, 0);
 				if (pm != null)
 				{
 					var power = actor.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(i => i.Amount);

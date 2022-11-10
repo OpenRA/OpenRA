@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				// Adjacent includes the current cell, so is always >= 1
-				var density = Math.Max(int2.Lerp(0, resourceInfo.MaxDensity, adjacent, 9), 1);
+				var density = Math.Max(Int2.Lerp(0, resourceInfo.MaxDensity, adjacent, 9), 1);
 				Content[cell] = new ResourceLayerContents(resource.Type, density);
 			}
 		}

@@ -261,7 +261,7 @@ namespace OpenRA.Traits
 	public interface ISelectionDecorations
 	{
 		IEnumerable<IRenderable> RenderSelectionAnnotations(Actor self, WorldRenderer worldRenderer, Color color);
-		int2 GetDecorationOrigin(Actor self, WorldRenderer wr, string pos, int2 margin);
+		Int2 GetDecorationOrigin(Actor self, WorldRenderer wr, string pos, Int2 margin);
 	}
 
 	public interface IMapPreviewSignatureInfo : ITraitInfoInterface
@@ -400,7 +400,7 @@ namespace OpenRA.Traits
 	public interface ITerrainLighting
 	{
 		event Action<MPos> CellChanged;
-		float3 TintAt(WPos pos);
+		Float3 TintAt(WPos pos);
 	}
 
 	public interface IRenderAboveShroud

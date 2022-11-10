@@ -182,7 +182,7 @@ namespace OpenRA
 			var bufferSize = new Size((int)(surfaceBufferSize.Width / scale), (int)(surfaceBufferSize.Height / scale));
 			if (lastBufferSize != bufferSize)
 			{
-				SpriteRenderer.SetViewportParams(bufferSize, 1, 0f, int2.Zero);
+				SpriteRenderer.SetViewportParams(bufferSize, 1, 0f, Int2.Zero);
 				lastBufferSize = bufferSize;
 			}
 		}
@@ -245,7 +245,7 @@ namespace OpenRA
 					worldDownscaleFactor++;
 
 				var s = new Size(vw / worldDownscaleFactor, vh / worldDownscaleFactor);
-				worldSprite = new Sprite(worldSheet, new Rectangle(int2.Zero, s), TextureChannel.RGBA);
+				worldSprite = new Sprite(worldSheet, new Rectangle(Int2.Zero, s), TextureChannel.RGBA);
 				lastWorldViewportSize = worldViewport.Size;
 			}
 
@@ -274,10 +274,10 @@ namespace OpenRA
 				screenBuffer.Bind();
 
 				var scale = Window.EffectiveWindowScale;
-				var bufferScale = new float3((int)(screenSprite.Bounds.Width / scale) / worldSprite.Size.X, (int)(-screenSprite.Bounds.Height / scale) / worldSprite.Size.Y, 1f);
+				var bufferScale = new Float3((int)(screenSprite.Bounds.Width / scale) / worldSprite.Size.X, (int)(-screenSprite.Bounds.Height / scale) / worldSprite.Size.Y, 1f);
 
 				SpriteRenderer.SetAntialiasingPixelsPerTexel(Window.SurfaceSize.Height * 1f / worldSprite.Bounds.Height);
-				RgbaSpriteRenderer.DrawSprite(worldSprite, float3.Zero, bufferScale);
+				RgbaSpriteRenderer.DrawSprite(worldSprite, Float3.Zero, bufferScale);
 				Flush();
 				SpriteRenderer.SetAntialiasingPixelsPerTexel(0);
 			}
@@ -318,7 +318,7 @@ namespace OpenRA
 			// Render the compositor buffers to the screen
 			// HACK / PERF: Fudge the coordinates to cover the actual window while keeping the buffer viewport parameters
 			// This saves us two redundant (and expensive) SetViewportParams each frame
-			RgbaSpriteRenderer.DrawSprite(screenSprite, new float3(0, lastBufferSize.Height, 0), new float3(lastBufferSize.Width / screenSprite.Size.X, -lastBufferSize.Height / screenSprite.Size.Y, 1f));
+			RgbaSpriteRenderer.DrawSprite(screenSprite, new Float3(0, lastBufferSize.Height, 0), new Float3(lastBufferSize.Width / screenSprite.Size.X, -lastBufferSize.Height / screenSprite.Size.Y, 1f));
 			Flush();
 
 			Window.PumpInput(inputHandler);

@@ -43,7 +43,7 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 				var y = s.ReadInt32();
 
 				Size = new Size(width, height);
-				Offset = new int2(width / 2 - x, height / 2 - y);
+				Offset = new Int2(width / 2 - x, height / 2 - y);
 
 				/*var imageOffset = */
 				s.ReadInt32();

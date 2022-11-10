@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 
 					var entryCount = s.ReadUInt32();
 					if (BitConverter.IsLittleEndian)
-						entryCount = int2.Swap(entryCount);
+						entryCount = Int2.Swap(entryCount);
 
 					// First entry offset? This is apparently bogus for EA's .big files
 					// and we don't have to try seeking there since the entries typically start next in EA's .big files.
@@ -73,8 +73,8 @@ namespace OpenRA.Mods.Cnc.FileSystem
 					Size = s.ReadUInt32();
 					if (BitConverter.IsLittleEndian)
 					{
-						Offset = int2.Swap(Offset);
-						Size = int2.Swap(Size);
+						Offset = Int2.Swap(Offset);
+						Size = Int2.Swap(Size);
 					}
 
 					Path = s.ReadASCIIZ();

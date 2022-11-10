@@ -40,13 +40,10 @@ namespace OpenRA.Scripting
 				t = nullable;
 
 			// Value wraps a CLR object
-			if (value.TryGetClrObject(out var temp))
+			if (value.TryGetClrObject(out var temp) && temp.GetType() == t)
 			{
-				if (temp.GetType() == t)
-				{
-					clrObject = temp;
-					return true;
-				}
+				clrObject = temp;
+				return true;
 			}
 
 			if (value is LuaNil && !t.IsValueType)

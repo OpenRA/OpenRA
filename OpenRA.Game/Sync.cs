@@ -42,7 +42,7 @@ namespace OpenRA
 
 		static readonly Dictionary<Type, MethodInfo> CustomHashFunctions = new Dictionary<Type, MethodInfo>()
 		{
-			{ typeof(int2), ((Func<int2, int>)HashInt2).Method },
+			{ typeof(Int2), ((Func<Int2, int>)HashInt2).Method },
 			{ typeof(CPos), ((Func<CPos, int>)HashCPos).Method },
 			{ typeof(CVec), ((Func<CVec, int>)HashCVec).Method },
 			{ typeof(WDist), ((Func<WDist, int>)HashUsingHashCode).Method },
@@ -105,7 +105,7 @@ namespace OpenRA
 			return (Func<object, int>)d.CreateDelegate(typeof(Func<object, int>));
 		}
 
-		public static int HashInt2(int2 i2)
+		public static int HashInt2(Int2 i2)
 		{
 			return ((i2.X * 5) ^ (i2.Y * 3)) / 4;
 		}

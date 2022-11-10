@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Warheads
 			{
 				var outer = effectiveRange[i].Length;
 				if (outer > distance)
-					return int2.Lerp(Falloff[i - 1], Falloff[i], distance - inner, outer - inner);
+					return Int2.Lerp(Falloff[i - 1], Falloff[i], distance - inner, outer - inner);
 
 				inner = outer;
 			}

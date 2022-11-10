@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets
 		static readonly Action Nothing = () => { };
 		readonly GraphicSettings graphicSettings;
 
-		public int2 CursorOffset = new int2(0, 20);
+		public Int2 CursorOffset = new Int2(0, 20);
 		public int BottomEdgeYOffset = -5;
 
 		public Action BeforeRender = Nothing;
@@ -86,9 +86,9 @@ namespace OpenRA.Mods.Common.Widgets
 			BeforeRender();
 		}
 
-		public override bool EventBoundsContains(int2 location) { return false; }
+		public override bool EventBoundsContains(Int2 location) { return false; }
 
-		public override int2 ChildOrigin
+		public override Int2 ChildOrigin
 		{
 			get
 			{
@@ -109,6 +109,6 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		public override string GetCursor(int2 pos) { return null; }
+		public override string GetCursor(Int2 pos) { return null; }
 	}
 }

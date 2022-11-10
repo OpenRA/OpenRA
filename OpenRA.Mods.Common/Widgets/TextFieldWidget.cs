@@ -562,14 +562,14 @@ namespace OpenRA.Mods.Common.Widgets
 
 			// Inset text by the margin and center vertically
 			var verticalMargin = (Bounds.Height - textSize.Y) / 2 - VisualHeight;
-			var textPos = pos + new int2(LeftMargin, verticalMargin);
+			var textPos = pos + new Int2(LeftMargin, verticalMargin);
 
 			// Right align when editing and scissor when the text overflows
 			var isTextOverflowing = textSize.X > Bounds.Width - LeftMargin - RightMargin;
 			if (isTextOverflowing)
 			{
 				if (HasKeyboardFocus)
-					textPos += new int2(Bounds.Width - LeftMargin - RightMargin - textSize.X, 0);
+					textPos += new Int2(Bounds.Width - LeftMargin - RightMargin - textSize.X, 0);
 
 				Game.Renderer.EnableScissor(new Rectangle(pos.X + LeftMargin, pos.Y,
 					Bounds.Width - LeftMargin - RightMargin, Bounds.Bottom));

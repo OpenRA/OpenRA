@@ -484,7 +484,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				// Searches along edges of all grids within a layer.
 				// Checks for the local edge cell if we can traverse to any of the three adjacent cells in the next grid.
 				// Builds connections in the abstract graph when any local cells have connections.
-				void AddAbstractEdges(int xIncrement, int yIncrement, CVec adjacentVec, int2 offset)
+				void AddAbstractEdges(int xIncrement, int yIncrement, CVec adjacentVec, Int2 offset)
 				{
 					var startY = gridY + offset.Y;
 					var startX = gridX + offset.X;
@@ -550,10 +550,10 @@ namespace OpenRA.Mods.Common.Pathfinder
 				}
 
 				// Top, Left, Bottom, Right
-				AddAbstractEdges(1, GridSize, new CVec(0, -1), new int2(0, 0));
-				AddAbstractEdges(GridSize, 1, new CVec(-1, 0), new int2(0, 0));
-				AddAbstractEdges(1, GridSize, new CVec(0, 1), new int2(0, GridSize - 1));
-				AddAbstractEdges(GridSize, 1, new CVec(1, 0), new int2(GridSize - 1, 0));
+				AddAbstractEdges(1, GridSize, new CVec(0, -1), new Int2(0, 0));
+				AddAbstractEdges(GridSize, 1, new CVec(-1, 0), new Int2(0, 0));
+				AddAbstractEdges(1, GridSize, new CVec(0, 1), new Int2(0, GridSize - 1));
+				AddAbstractEdges(GridSize, 1, new CVec(1, 0), new Int2(GridSize - 1, 0));
 
 				AddAbstractCustomLayerEdges();
 			}

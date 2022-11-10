@@ -70,8 +70,8 @@ namespace OpenRA.Mods.Common.Graphics
 			var cr = Game.Renderer.RgbaColorRenderer;
 			for (var i = 0; i < 6; i++)
 			{
-				cr.DrawLine(new float3[] { screen[i] + Offsets[3 * i], screen[i], screen[i] + Offsets[3 * i + 1] }, 1, color, true);
-				cr.DrawLine(new float3[] { screen[i], screen[i] + Offsets[3 * i + 2] }, 1, color, true);
+				cr.DrawLine(new Float3[] { screen[i] + Offsets[3 * i], screen[i], screen[i] + Offsets[3 * i + 1] }, 1, color, true);
+				cr.DrawLine(new Float3[] { screen[i], screen[i] + Offsets[3 * i + 2] }, 1, color, true);
 			}
 		}
 

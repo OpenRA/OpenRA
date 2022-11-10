@@ -432,8 +432,8 @@ namespace OpenRA.Mods.Common.Activities
 				if (EnableArc)
 				{
 					var angle = WAngle.Lerp(ArcFromAngle, ArcToAngle, progress, Distance);
-					var length = int2.Lerp(ArcFromLength, ArcToLength, progress, Distance);
-					var height = int2.Lerp(From.Z, To.Z, progress, Distance);
+					var length = Int2.Lerp(ArcFromLength, ArcToLength, progress, Distance);
+					var height = Int2.Lerp(From.Z, To.Z, progress, Distance);
 					pos = ArcCenter + new WVec(0, length, height).Rotate(WRot.FromYaw(angle));
 				}
 				else

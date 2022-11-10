@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 			info = (SpawnActorPowerInfo)power.Info;
 		}
 
-		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected override IEnumerable<Order> OrderInner(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			world.CancelInputMode();
 
@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
 		protected override IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world) { yield break; }
-		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected override string GetCursor(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			return power.Validate(world, info, cell) ? info.Cursor : info.BlockedCursor;
 		}

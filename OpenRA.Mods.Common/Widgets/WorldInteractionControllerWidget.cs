@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string ClickSound = ChromeMetrics.Get<string>("ClickSound");
 		public readonly string ClickDisabledSound = ChromeMetrics.Get<string>("ClickDisabledSound");
 
-		int2 dragStart, mousePos;
+		Int2 dragStart, mousePos;
 		bool isDragging = false;
 
 		bool IsValidDragbox => isDragging && (dragStart - mousePos).Length > Game.Settings.Game.SelectionDeadzone;
@@ -205,7 +205,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		public override string GetCursor(int2 screenPos)
+		public override string GetCursor(Int2 screenPos)
 		{
 			return Sync.RunUnsynced(World, () =>
 			{

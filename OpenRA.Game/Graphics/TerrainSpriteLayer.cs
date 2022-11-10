@@ -85,7 +85,7 @@ namespace OpenRA.Graphics
 
 		public void Update(CPos cell, Sprite sprite, PaletteReference palette, float scale = 1f, float alpha = 1f, bool ignoreTint = false)
 		{
-			var xyz = float3.Zero;
+			var xyz = Float3.Zero;
 			if (sprite != null)
 			{
 				var cellOrigin = map.CenterOfCell(cell) - new WVec(0, 0, map.Grid.Ramps[map.Ramp[cell]].CenterHeightOffset);
@@ -103,7 +103,7 @@ namespace OpenRA.Graphics
 				for (var i = 0; i < 6; i++)
 				{
 					var v = vertices[offset + i];
-					vertices[offset + i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, v.P, v.C, v.A * float3.Ones, v.A);
+					vertices[offset + i] = new Vertex(v.X, v.Y, v.Z, v.S, v.T, v.U, v.V, v.P, v.C, v.A * Float3.Ones, v.A);
 				}
 
 				return;
@@ -154,15 +154,15 @@ namespace OpenRA.Graphics
 			throw new InvalidDataException("Sheet overflow");
 		}
 
-		public void Update(MPos uv, Sprite sprite, PaletteReference palette, in float3 pos, float scale, float alpha, bool ignoreTint)
+		public void Update(MPos uv, Sprite sprite, PaletteReference palette, in Float3 pos, float scale, float alpha, bool ignoreTint)
 		{
-			int2 samplers;
+			Int2 samplers;
 			if (sprite != null)
 			{
 				if (sprite.BlendMode != BlendMode)
 					throw new InvalidDataException("Attempted to add sprite with a different blend mode");
 
-				samplers = new int2(GetOrAddSheetIndex(sprite.Sheet), GetOrAddSheetIndex((sprite as SpriteWithSecondaryData)?.SecondarySheet));
+				samplers = new Int2(GetOrAddSheetIndex(sprite.Sheet), GetOrAddSheetIndex((sprite as SpriteWithSecondaryData)?.SecondarySheet));
 
 				// PERF: Remove useless palette assignments for RGBA sprites
 				// HACK: This is working around the limitation that palettes are defined on traits rather than on sequences,
@@ -173,7 +173,7 @@ namespace OpenRA.Graphics
 			else
 			{
 				sprite = emptySprite;
-				samplers = int2.Zero;
+				samplers = Int2.Zero;
 			}
 
 			// The vertex buffer does not have geometry for cells outside the map
@@ -181,7 +181,7 @@ namespace OpenRA.Graphics
 				return;
 
 			var offset = rowStride * uv.V + 6 * uv.U;
-			Util.FastCreateQuad(vertices, pos, sprite, samplers, palette?.TextureIndex ?? 0, offset, scale * sprite.Size, alpha * float3.Ones, alpha);
+			Util.FastCreateQuad(vertices, pos, sprite, samplers, palette?.TextureIndex ?? 0, offset, scale * sprite.Size, alpha * Float3.Ones, alpha);
 			palettes[uv.V * map.MapSize.X + uv.U] = palette;
 
 			if (worldRenderer.TerrainLighting != null)

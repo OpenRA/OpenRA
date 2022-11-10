@@ -68,8 +68,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static readonly int OriginalVideoDisplay;
 		static readonly WindowMode OriginalGraphicsMode;
-		static readonly int2 OriginalGraphicsWindowedSize;
-		static readonly int2 OriginalGraphicsFullscreenSize;
+		static readonly Int2 OriginalGraphicsWindowedSize;
+		static readonly Int2 OriginalGraphicsFullscreenSize;
 		static readonly GLProfile OriginalGLProfile;
 
 		readonly ModData modData;
@@ -285,7 +285,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				Exts.TryParseIntegerInvariant(windowWidth.Text, out var x);
 				Exts.TryParseIntegerInvariant(windowHeight.Text, out var y);
-				ds.WindowedSize = new int2(x, y);
+				ds.WindowedSize = new Int2(x, y);
 				nameTextfield.YieldKeyboardFocus();
 
 				return ds.Mode != OriginalGraphicsMode ||

@@ -79,19 +79,19 @@ namespace OpenRA.Mods.Common.Widgets
 			var offset = font.TopOffset;
 
 			if (VAlign == TextVAlign.Top)
-				position += new int2(0, -offset);
+				position += new Int2(0, -offset);
 
 			if (VAlign == TextVAlign.Middle)
-				position += new int2(0, (Bounds.Height - textSize.Y - offset) / 2);
+				position += new Int2(0, (Bounds.Height - textSize.Y - offset) / 2);
 
 			if (VAlign == TextVAlign.Bottom)
-				position += new int2(0, Bounds.Height - textSize.Y);
+				position += new Int2(0, Bounds.Height - textSize.Y);
 
 			if (Align == TextAlign.Center)
-				position += new int2((Bounds.Width - textSize.X) / 2, 0);
+				position += new Int2((Bounds.Width - textSize.X) / 2, 0);
 
 			if (Align == TextAlign.Right)
-				position += new int2(Bounds.Width - textSize.X, 0);
+				position += new Int2(Bounds.Width - textSize.X, 0);
 
 			if (WordWrap)
 				text = WidgetUtils.WrapText(text, Bounds.Width, font);
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.Widgets
 			DrawInner(text, font, GetColor(), position);
 		}
 
-		protected virtual void DrawInner(string text, SpriteFont font, Color color, int2 position)
+		protected virtual void DrawInner(string text, SpriteFont font, Color color, Int2 position)
 		{
 			var bgDark = GetContrastColorDark();
 			var bgLight = GetContrastColorLight();

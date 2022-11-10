@@ -34,7 +34,7 @@ namespace OpenRA.Platforms.Default
 		readonly Size windowSize;
 		Size surfaceSize;
 		float windowScale = 1f;
-		int2? lockedMousePosition;
+		Int2? lockedMousePosition;
 		float scaleModifier;
 		readonly GLProfile profile;
 		readonly GLProfile[] supportedProfiles;
@@ -347,7 +347,7 @@ namespace OpenRA.Platforms.Default
 			return scaledData;
 		}
 
-		public IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot, bool pixelDouble)
+		public IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, Int2 hotspot, bool pixelDouble)
 		{
 			VerifyThreadAffinity();
 			try
@@ -403,7 +403,7 @@ namespace OpenRA.Platforms.Default
 			if (mode)
 			{
 				SDL.SDL_GetMouseState(out var x, out var y);
-				lockedMousePosition = new int2(x, y);
+				lockedMousePosition = new Int2(x, y);
 			}
 			else
 			{

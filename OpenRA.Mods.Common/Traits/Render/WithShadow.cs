@@ -35,14 +35,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithShadow : ConditionalTrait<WithShadowInfo>, IRenderModifier
 	{
 		readonly WithShadowInfo info;
-		readonly float3 shadowColor;
+		readonly Float3 shadowColor;
 		readonly float shadowAlpha;
 
 		public WithShadow(WithShadowInfo info)
 			: base(info)
 		{
 			this.info = info;
-			shadowColor = new float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
+			shadowColor = new Float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
 			shadowAlpha = info.ShadowColor.A / 255f;
 		}
 

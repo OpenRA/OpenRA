@@ -156,7 +156,13 @@ namespace OpenRA
 		public bool EnableDebugCommandsInReplays = false;
 
 		[Desc("Enable perf.log output for traits, activities and effects.")]
-		public bool EnableSimulationPerfLogging = false;
+		private bool enableSimulationPerfLogging = false;
+
+		public bool EnableSimulationPerfLogging
+		{
+			get { return enableSimulationPerfLogging; }
+			set { enableSimulationPerfLogging = value; }
+		}
 
 		[Desc("Amount of time required for triggering perf.log output.")]
 		public float LongTickThresholdMs = 1;
@@ -177,10 +183,10 @@ namespace OpenRA
 		public bool VSync = true;
 
 		[Desc("Screen resolution in fullscreen mode.")]
-		public int2 FullscreenSize = new int2(0, 0);
+		public Int2 FullscreenSize = new Int2(0, 0);
 
 		[Desc("Screen resolution in windowed mode.")]
-		public int2 WindowedSize = new int2(1024, 768);
+		public Int2 WindowedSize = new Int2(1024, 768);
 
 		public bool CursorDouble = false;
 		public WorldViewport ViewportDistance = WorldViewport.Medium;

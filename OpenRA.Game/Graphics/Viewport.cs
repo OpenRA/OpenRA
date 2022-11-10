@@ -49,14 +49,14 @@ namespace OpenRA.Graphics
 		readonly Size tileSize;
 
 		// Viewport geometry (world-px)
-		public int2 CenterLocation { get; private set; }
+		public Int2 CenterLocation { get; private set; }
 
 		public WPos CenterPosition => worldRenderer.ProjectedPosition(CenterLocation);
 
 		public Rectangle Rectangle => new Rectangle(TopLeft, new Size(viewportSize.X, viewportSize.Y));
-		public int2 TopLeft => CenterLocation - viewportSize / 2;
-		public int2 BottomRight => CenterLocation + viewportSize / 2;
-		int2 viewportSize;
+		public Int2 TopLeft => CenterLocation - viewportSize / 2;
+		public Int2 BottomRight => CenterLocation + viewportSize / 2;
+		Int2 viewportSize;
 		ProjectedCellRegion cells;
 		bool cellsDirty = true;
 
@@ -94,7 +94,7 @@ namespace OpenRA.Graphics
 			Zoom = (zoom * (float)Math.Exp(dz)).Clamp(unlockMinZoom ? unlockedMinZoom : minZoom, maxZoom);
 		}
 
-		public void AdjustZoom(float dz, int2 center)
+		public void AdjustZoom(float dz, Int2 center)
 		{
 			var oldCenter = worldRenderer.Viewport.ViewToWorldPx(center);
 			AdjustZoom(dz);
@@ -119,7 +119,7 @@ namespace OpenRA.Graphics
 		}
 
 		public static long LastMoveRunTime = 0;
-		public static int2 LastMousePos;
+		public static Int2 LastMousePos;
 
 		float ClosestTo(float[] collection, float target)
 		{
@@ -170,7 +170,7 @@ namespace OpenRA.Graphics
 					height /= 2;
 
 				mapBounds = new Rectangle(0, 0, width, height);
-				CenterLocation = new int2(width / 2, height / 2);
+				CenterLocation = new Int2(width / 2, height / 2);
 			}
 			else
 			{
@@ -257,7 +257,7 @@ namespace OpenRA.Graphics
 				t.ViewportZoomExtentsChanged(minZoom, maxZoom);
 		}
 
-		public CPos ViewToWorld(int2 view)
+		public CPos ViewToWorld(Int2 view)
 		{
 			var world = worldRenderer.Viewport.ViewToWorldPx(view);
 			var map = worldRenderer.World.Map;
@@ -298,7 +298,7 @@ namespace OpenRA.Graphics
 		}
 
 		/// <summary> Returns an unfiltered list of all cells that could potentially contain the mouse cursor</summary>
-		IEnumerable<MPos> CandidateMouseoverCells(int2 world)
+		IEnumerable<MPos> CandidateMouseoverCells(Int2 world)
 		{
 			var map = worldRenderer.World.Map;
 			var minPos = worldRenderer.ProjectedPosition(world);
@@ -312,9 +312,9 @@ namespace OpenRA.Graphics
 					yield return new MPos(u, v);
 		}
 
-		public int2 ViewToWorldPx(int2 view) { return (graphicSettings.UIScale / Zoom * view.ToFloat2()).ToInt2() + TopLeft; }
-		public int2 WorldToViewPx(int2 world) { return ((Zoom / graphicSettings.UIScale) * (world - TopLeft).ToFloat2()).ToInt2(); }
-		public int2 WorldToViewPx(in float3 world) { return ((Zoom / graphicSettings.UIScale) * (world - TopLeft).XY).ToInt2(); }
+		public Int2 ViewToWorldPx(Int2 view) { return (graphicSettings.UIScale / Zoom * view.ToFloat2()).ToInt2() + TopLeft; }
+		public Int2 WorldToViewPx(Int2 world) { return ((Zoom / graphicSettings.UIScale) * (world - TopLeft).ToFloat2()).ToInt2(); }
+		public Int2 WorldToViewPx(in Float3 world) { return ((Zoom / graphicSettings.UIScale) * (world - TopLeft).XY).ToInt2(); }
 
 		public void Center(IEnumerable<Actor> actors)
 		{

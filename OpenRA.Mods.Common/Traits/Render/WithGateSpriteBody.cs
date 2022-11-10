@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		int GetGateFrame()
 		{
-			return int2.Lerp(0, DefaultAnimation.CurrentSequence.Length - 1, gate.Position, gate.OpenPosition);
+			return Int2.Lerp(0, DefaultAnimation.CurrentSequence.Length - 1, gate.Position, gate.OpenPosition);
 		}
 
 		protected override void DamageStateChanged(Actor self)

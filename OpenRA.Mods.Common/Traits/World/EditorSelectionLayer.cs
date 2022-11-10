@@ -99,12 +99,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (CopyRegion != null)
 				foreach (var c in CopyRegion)
 					yield return new SpriteRenderable(copyTile, wr.World.Map.CenterOfCell(c),
-							WVec.Zero, -511, palette, 1f, copyAlpha * info.FootprintAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+							WVec.Zero, -511, palette, 1f, copyAlpha * info.FootprintAlpha, Float3.Ones, TintModifiers.IgnoreWorldTint, true);
 
 			if (PasteRegion != null)
 				foreach (var c in PasteRegion)
 					yield return new SpriteRenderable(pasteTile, wr.World.Map.CenterOfCell(c),
-						WVec.Zero, -511, palette, 1f, pasteAlpha * info.FootprintAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+						WVec.Zero, -511, palette, 1f, pasteAlpha * info.FootprintAlpha, Float3.Ones, TintModifiers.IgnoreWorldTint, true);
 		}
 
 		bool IRenderAboveShroud.SpatiallyPartitionable => false;

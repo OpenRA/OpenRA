@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 			// Move forward from self to target to draw helix
 			var centerPos = pos;
-			var points = new float3[railgun.CycleCount * info.QuantizationCount];
+			var points = new Float3[railgun.CycleCount * info.QuantizationCount];
 			for (var i = points.Length - 1; i >= 0; i--)
 			{
 				// Make it narrower near the end.

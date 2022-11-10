@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Orders
 		readonly string worldSelectCursor = ChromeMetrics.Get<string>("WorldSelectCursor");
 		readonly string worldDefaultCursor = ChromeMetrics.Get<string>("WorldDefaultCursor");
 
-		static Target TargetForInput(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		static Target TargetForInput(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			var actor = world.ScreenMap.ActorsAtMouse(mi)
 				.Where(a => !a.Actor.IsDead && a.Actor.Info.HasTraitInfo<ITargetableInfo>() && !world.FogObscures(a.Actor))
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Orders
 			return Target.FromCell(world, cell);
 		}
 
-		public virtual IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		public virtual IEnumerable<Order> Order(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			var target = TargetForInput(world, cell, worldPixel, mi);
 			var orders = world.Selection.Actors
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Orders
 		public virtual IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
 		public virtual IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world) { yield break; }
 
-		public virtual string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		public virtual string GetCursor(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			var target = TargetForInput(world, cell, worldPixel, mi);
 
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Orders
 		bool IOrderGenerator.HandleKeyPress(KeyInput e) { return false; }
 
 		// Used for classic mouse orders, determines whether or not action at xy is move or select
-		public virtual bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
+		public virtual bool InputOverridesSelection(World world, Int2 xy, MouseInput mi)
 		{
 			var actor = world.ScreenMap.ActorsAtMouse(xy)
 				.Where(a => !a.Actor.IsDead && a.Actor.Info.HasTraitInfo<ISelectableInfo>() && (a.Actor.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(a.Actor)))

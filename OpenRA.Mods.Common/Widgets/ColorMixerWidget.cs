@@ -91,12 +91,12 @@ namespace OpenRA.Mods.Common.Widgets
 			WidgetUtils.DrawSprite(mixerSprite, RenderOrigin, RenderBounds.Size);
 
 			var sprite = ChromeProvider.GetImage("lobby-bits", "colorpicker");
-			var pos = RenderOrigin + PxFromValue() - new int2((int)sprite.Size.X, (int)sprite.Size.Y) / 2;
+			var pos = RenderOrigin + PxFromValue() - new Int2((int)sprite.Size.X, (int)sprite.Size.Y) / 2;
 			WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X + 1, pos.Y + 1, (int)sprite.Size.X - 2, (int)sprite.Size.Y - 2), Color);
 			WidgetUtils.DrawSprite(sprite, pos);
 		}
 
-		void SetValueFromPx(int2 xy)
+		void SetValueFromPx(Int2 xy)
 		{
 			var rb = RenderBounds;
 			var h = xy.X * 1f / rb.Width;
@@ -105,12 +105,12 @@ namespace OpenRA.Mods.Common.Widgets
 			S = s.Clamp(minSat, maxSat);
 		}
 
-		int2 PxFromValue()
+		Int2 PxFromValue()
 		{
 			var rb = RenderBounds;
 			var x = RenderBounds.Width * H;
 			var y = RenderBounds.Height * (1 - (S - minSat) / (maxSat - minSat));
-			return new int2((int)x.Clamp(0, rb.Width), (int)y.Clamp(0, rb.Height));
+			return new Int2((int)x.Clamp(0, rb.Width), (int)y.Clamp(0, rb.Height));
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
