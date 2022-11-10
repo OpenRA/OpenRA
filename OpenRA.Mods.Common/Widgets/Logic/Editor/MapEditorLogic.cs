@@ -28,8 +28,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var copypasteButton = widget.GetOrNull<ButtonWidget>("COPYPASTE_BUTTON");
 			if (copypasteButton != null)
 			{
-				var copyPasteKey = copypasteButton.Key.GetValue();
-
 				copypasteButton.OnClick = () => editorViewport.SetBrush(new EditorCopyPasteBrush(editorViewport, worldRenderer, () => copyFilters));
 				copypasteButton.IsHighlighted = () => editorViewport.CurrentBrush is EditorCopyPasteBrush;
 			}
