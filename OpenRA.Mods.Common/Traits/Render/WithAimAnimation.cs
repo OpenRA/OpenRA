@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			wsb.DefaultAnimation.ReplaceAnim(seq);
 		}
 
-		void INotifyAiming.StartedAiming(Actor self, AttackBase ab)
+		void INotifyAiming.StartedAiming(Actor self, AttackBase attack)
 		{
 			// Ignore any notifications from INotifyAiming while this trait is disabled
 			// otherwise we replace the current animation without being active

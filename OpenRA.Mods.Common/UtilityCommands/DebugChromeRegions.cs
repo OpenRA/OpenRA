@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			"			var r = chromeRegions[i];",
 			"			if (x >= r[1] && x < r[1] + r[3] && y >= r[2] && y < r[2] + r[4])",
 			"				mouseover = r[0];",
-			"		}}",
+			"		\t",
 			"		if (lastover != mouseover && mouseover)",
 			"			console.log(mouseover);",
 			"	}});",

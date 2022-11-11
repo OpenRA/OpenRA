@@ -47,12 +47,12 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		void INotifyKilled.Killed(Actor self, AttackInfo attack)
+		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			if (IsTraitDisabled || !self.IsInWorld)
 				return;
 
-			if (!info.DeathTypes.IsEmpty && !attack.Damage.DamageTypes.Overlaps(info.DeathTypes))
+			if (!info.DeathTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(info.DeathTypes))
 				return;
 
 			var owner = self.Owner;

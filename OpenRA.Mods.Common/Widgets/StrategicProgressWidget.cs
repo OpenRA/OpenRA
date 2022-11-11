@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets
 				curX += 32;
 			}
 
-			offset += new Int2(0, 32);
+			_ = offset;
 
 			if (world.LocalPlayer == null) return;
 			var pendingWinner = FindFirstWinningPlayer(world);
