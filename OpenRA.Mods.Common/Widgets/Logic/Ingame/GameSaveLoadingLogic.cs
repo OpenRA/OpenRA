@@ -10,14 +10,17 @@
 #endregion
 
 using OpenRA.Widgets;
+using System.Security.Cryptography.X509Certificates;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class GameSaveLoadingLogic : ChromeLogic
 	{
+		private bool HideCursor;
 		[ObjectCreator.UseCtor]
-		public GameSaveLoadingLogic(Widget widget, ModData modData, World world)
+		public GameSaveLoadingLogic(Widget widget, ModData modData, World world,bool HC=true)
 		{
+		  
 			widget.Get<ProgressBarWidget>("PROGRESS").GetPercentage = () => world.GameSaveLoadingPercentage;
 
 			var versionLabel = widget.GetOrNull<LabelWidget>("VERSION_LABEL");
@@ -38,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return false;
 			});
 
-			Game.HideCursor = true;
+			Game.HideCursor = HC;
 		}
 
 		protected override void Dispose(bool disposing)

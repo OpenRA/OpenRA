@@ -548,7 +548,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				panel = PanelType.Players;
 
 			var chatWasEnabled = chatEnabled;
-			chatEnabled = Game.RunTime >= TextNotificationsManager.ChatDisabledUntil && TextNotificationsManager.ChatDisabledUntil != uint.MaxValue;
+			chatEnabled = worldRenderer.World.IsReplay || (Game.RunTime >= TextNotificationsManager.ChatDisabledUntil && TextNotificationsManager.ChatDisabledUntil != uint.MaxValue);
 
 			if (chatEnabled && !chatWasEnabled)
 			{

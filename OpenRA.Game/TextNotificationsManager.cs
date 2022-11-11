@@ -95,6 +95,7 @@ namespace OpenRA
 
 		public static void Clear()
 		{
+			ChatDisabledUntil = Game.RunTime;
 			NotificationsCache.Clear();
 			MutedPlayers.Clear();
 		}

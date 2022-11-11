@@ -118,6 +118,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
+			if (order.OrderString == "Stop")
+			{
+				Path.Clear();
+				return;
+			}
+
 			if (order.OrderString != OrderID)
 				return;
 
