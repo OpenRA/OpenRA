@@ -76,7 +76,6 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Render a target flash on the actor.")]
 		public void Flash(Color color, int count = 2, int interval = 2, int delay = 0)
 		{
-			// TODO: We can't use floats with Lua, so use the default 0.5f here
 			Self.World.Add(new FlashTarget(Self, color, 0.5f, count, interval, delay));
 		}
 

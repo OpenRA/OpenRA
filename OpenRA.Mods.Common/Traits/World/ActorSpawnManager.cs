@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Traits
 			while (actorsPresent < info.Minimum);
 		}
 
-		WPos SpawnActor(Actor self, Actor spawnPoint)
+		void SpawnActor(Actor self, Actor spawnPoint)
 		{
 			self.World.AddFrameEndTask(w => w.CreateActor(info.Actors.Random(self.World.SharedRandom), new TypeDictionary
 			{
@@ -114,8 +114,6 @@ namespace OpenRA.Mods.Common.Traits
 			}));
 
 			actorsPresent++;
-
-			return spawnPoint.CenterPosition;
 		}
 
 		Actor GetRandomSpawnPoint(World world, Support.MersenneTwister random)

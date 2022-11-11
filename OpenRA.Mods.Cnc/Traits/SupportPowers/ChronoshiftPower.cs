@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				alpha = s.GetAlpha(0);
 			}
 
-			protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
+			protected override IEnumerable<Order> OrderInner(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 			{
 				world.CancelInputMode();
 				if (mi.Button == MouseButton.Left)
@@ -209,10 +209,10 @@ namespace OpenRA.Mods.Cnc.Traits
 				var tiles = power.CellsMatching(xy, footprint, dimensions);
 				var palette = wr.Palette(((ChronoshiftPowerInfo)power.Info).TargetOverlayPalette);
 				foreach (var t in tiles)
-					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, palette, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, palette, 1f, alpha, Float3.Ones, TintModifiers.IgnoreWorldTint, true);
 			}
 
-			protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+			protected override string GetCursor(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 			{
 				return ((ChronoshiftPowerInfo)power.Info).SelectionCursor;
 			}
@@ -264,7 +264,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				sourceAlpha = sourceSequence.GetAlpha(0);
 			}
 
-			protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
+			protected override IEnumerable<Order> OrderInner(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 			{
 				if (mi.Button == MouseButton.Right)
 				{
@@ -310,7 +310,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					var isValid = manager.Self.Owner.Shroud.IsExplored(t + delta);
 					var tile = isValid ? validTile : invalidTile;
 					var alpha = isValid ? validAlpha : invalidAlpha;
-					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t + delta), WVec.Zero, -511, palette, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t + delta), WVec.Zero, -511, palette, 1f, alpha, Float3.Ones, TintModifiers.IgnoreWorldTint, true);
 				}
 
 				// Unit previews
@@ -323,7 +323,7 @@ namespace OpenRA.Mods.Cnc.Traits
 							unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell);
 						var tile = canEnter ? validTile : invalidTile;
 						var alpha = canEnter ? validAlpha : invalidAlpha;
-						yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(targetCell), WVec.Zero, -511, palette, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+						yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(targetCell), WVec.Zero, -511, palette, 1f, alpha, Float3.Ones, TintModifiers.IgnoreWorldTint, true);
 					}
 
 					var offset = world.Map.CenterOfCell(xy) - world.Map.CenterOfCell(sourceLocation);
@@ -353,7 +353,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				// Source tiles
 				foreach (var t in power.CellsMatching(sourceLocation, footprint, dimensions))
-					yield return new SpriteRenderable(sourceTile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, palette, 1f, sourceAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+					yield return new SpriteRenderable(sourceTile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, palette, 1f, sourceAlpha, Float3.Ones, TintModifiers.IgnoreWorldTint, true);
 			}
 
 			bool IsValidTarget(CPos xy)
@@ -385,7 +385,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				return canTeleport;
 			}
 
-			protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+			protected override string GetCursor(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 			{
 				var powerInfo = (ChronoshiftPowerInfo)power.Info;
 				return IsValidTarget(cell) ? powerInfo.TargetCursor : powerInfo.TargetBlockedCursor;

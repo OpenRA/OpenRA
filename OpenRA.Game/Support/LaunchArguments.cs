@@ -11,6 +11,7 @@
 
 using System;
 using OpenRA.Network;
+using System.Linq;
 
 namespace OpenRA
 {
@@ -35,10 +36,12 @@ namespace OpenRA
 		{
 			if (args == null)
 				return;
-
-			foreach (var f in GetType().GetFields())
-				if (args.Contains("Launch" + "." + f.Name))
-					FieldLoader.LoadField(this, f.Name, args.GetValue("Launch" + "." + f.Name, ""));
+			foreach (var f in from f in GetType().GetFields()
+							  where args.Contains("Launch" + "." + f.Name)
+							  select f)
+			{
+				FieldLoader.LoadField(this, f.Name, args.GetValue("Launch" + "." + f.Name, ""));
+			}
 		}
 
 		public ConnectionTarget GetConnectEndPoint()

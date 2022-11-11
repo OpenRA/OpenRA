@@ -57,6 +57,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	public class OrderButtonsChromeUtils
 	{
+		protected OrderButtonsChromeUtils()
+		{
+
+		}
+
 		public static void BindOrderButton<T>(World world, ButtonWidget w, string icon)
 			where T : IOrderGenerator, new()
 		{

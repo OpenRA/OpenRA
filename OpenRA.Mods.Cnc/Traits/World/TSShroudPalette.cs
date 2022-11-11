@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			Func<int, uint> makeColor = i =>
 			{
 				if (i < 128)
-					return (uint)(int2.Lerp(255, 0, i, 127) << 24);
+					return (uint)(Int2.Lerp(255, 0, i, 127) << 24);
 				return 0;
 			};
 

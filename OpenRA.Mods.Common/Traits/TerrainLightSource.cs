@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		object INotifyEditorPlacementInfo.AddedToEditor(EditorActorPreview preview, World editorWorld)
 		{
-			var tint = new float3(RedTint, GreenTint, BlueTint);
+			var tint = new Float3(RedTint, GreenTint, BlueTint);
 			return editorWorld.WorldActor.Trait<TerrainLighting>().AddLightSource(preview.CenterPosition, Range, Intensity, tint);
 		}
 
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
-			lightingToken = terrainLighting.AddLightSource(self.CenterPosition, info.Range, info.Intensity, new float3(info.RedTint, info.GreenTint, info.BlueTint));
+			lightingToken = terrainLighting.AddLightSource(self.CenterPosition, info.Range, info.Intensity, new Float3(info.RedTint, info.GreenTint, info.BlueTint));
 		}
 
 		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)

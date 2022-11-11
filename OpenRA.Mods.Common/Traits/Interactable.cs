@@ -58,11 +58,11 @@ namespace OpenRA.Mods.Common.Traits
 				return new Polygon(AutoBounds(self, wr));
 
 			// Convert from WDist to pixels
-			var size = new int2(bounds[0].Length * wr.TileSize.Width / wr.TileScale, bounds[1].Length * wr.TileSize.Height / wr.TileScale);
+			var size = new Int2(bounds[0].Length * wr.TileSize.Width / wr.TileScale, bounds[1].Length * wr.TileSize.Height / wr.TileScale);
 
 			var offset = -size / 2;
 			if (bounds.Length > 2)
-				offset += new int2(bounds[2].Length * wr.TileSize.Width / wr.TileScale, bounds[3].Length * wr.TileSize.Height / wr.TileScale);
+				offset += new Int2(bounds[2].Length * wr.TileSize.Width / wr.TileScale, bounds[3].Length * wr.TileSize.Height / wr.TileScale);
 
 			var xy = wr.ScreenPxPosition(self.CenterPosition) + offset;
 			return new Polygon(new Rectangle(xy.X, xy.Y, size.X, size.Y));

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly WorldRenderer worldRenderer;
 		readonly GraphicSettings graphicSettings;
 		string palette;
-		int2 location;
+		Int2 location;
 
 		[ObjectCreator.UseCtor]
 		public MouseAttachmentWidget(WorldRenderer worldRenderer)
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		public void SetAttachment(int2 location, Sprite sprite, string palette)
+		public void SetAttachment(Int2 location, Sprite sprite, string palette)
 		{
 			this.sprite = sprite;
 			this.location = location;
@@ -57,6 +57,6 @@ namespace OpenRA.Mods.Common.Widgets
 			palette = null;
 		}
 
-		public override int2 ChildOrigin => location;
+		public override Int2 ChildOrigin => location;
 	}
 }

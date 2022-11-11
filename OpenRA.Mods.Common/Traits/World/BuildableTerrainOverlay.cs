@@ -48,7 +48,12 @@ namespace OpenRA.Mods.Common.Traits
 		readonly World world;
 		readonly Sprite disabledSprite;
 
-		public bool Enabled = false;
+		public bool Enabled
+		{
+			get { return Enabled; }
+			set { Enabled = value; }
+		}
+
 		TerrainSpriteLayer render;
 		PaletteReference palette;
 

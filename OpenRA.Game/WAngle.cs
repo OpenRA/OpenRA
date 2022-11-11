@@ -22,7 +22,7 @@ namespace OpenRA
 	public readonly struct WAngle : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, IEquatable<WAngle>
 	{
 		public readonly int Angle;
-		public int AngleSquared => (int)Angle * Angle;
+		public int AngleSquared => Angle * Angle;
 
 		public WAngle(int a)
 		{

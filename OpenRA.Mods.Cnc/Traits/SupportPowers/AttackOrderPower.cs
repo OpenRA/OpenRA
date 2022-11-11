@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			return world.Map.Contains(cell) && instance.Instances.Any(a => !a.IsTraitPaused && (a.Self.CenterPosition - pos).HorizontalLengthSquared < range);
 		}
 
-		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected override IEnumerable<Order> OrderInner(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			world.CancelInputMode();
 			if (mi.Button == expectedButton && IsValidTarget(world, cell))
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected override string GetCursor(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			return IsValidTarget(world, cell) ? cursor : cursorBlocked;
 		}

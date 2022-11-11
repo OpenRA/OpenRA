@@ -261,13 +261,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		// Required by WithSpriteBody and WithInfantryBody
-		public int2 AutoSelectionSize()
+		public Int2 AutoSelectionSize()
 		{
 			return AutoRenderSize();
 		}
 
 		// Required by WithSpriteBody and WithInfantryBody
-		public int2 AutoRenderSize()
+		public Int2 AutoRenderSize()
 		{
 			return anims.Where(b => b.IsVisible
 				&& b.Animation.Animation.CurrentSequence != null)

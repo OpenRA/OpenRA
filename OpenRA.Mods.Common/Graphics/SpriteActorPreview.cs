@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		void IActorPreview.Tick() { animation.Tick(); }
 
-		IEnumerable<IRenderable> IActorPreview.RenderUI(WorldRenderer wr, int2 pos, float scale)
+		IEnumerable<IRenderable> IActorPreview.RenderUI(WorldRenderer wr, Int2 pos, float scale)
 		{
 			return animation.RenderUI(wr, pos, offset(), zOffset(), pr, scale);
 		}

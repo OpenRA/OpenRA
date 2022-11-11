@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			info = portableChrono.Info;
 		}
 
-		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected override IEnumerable<Order> OrderInner(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			if (mi.Button == Game.Settings.Game.MouseButtonPreference.Cancel)
 			{
@@ -278,7 +278,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				info.CircleBorderWidth);
 		}
 
-		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected override string GetCursor(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			if (self.IsInWorld && self.Location != cell
 				&& portableChrono.CanTeleport && self.Owner.Shroud.IsExplored(cell))

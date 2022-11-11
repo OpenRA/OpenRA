@@ -13,11 +13,11 @@ using System;
 
 namespace OpenRA
 {
-	public readonly struct Int32Matrix4x4 : IEquatable<Int32Matrix4x4>
+	public readonly struct Int32Matrix4X4 : IEquatable<Int32Matrix4X4>
 	{
 		public readonly int M11, M12, M13, M14, M21, M22, M23, M24, M31, M32, M33, M34, M41, M42, M43, M44;
 
-		public Int32Matrix4x4(
+		public Int32Matrix4X4(
 			int m11, int m12, int m13, int m14,
 			int m21, int m22, int m23, int m24,
 			int m31, int m32, int m33, int m34,
@@ -44,7 +44,7 @@ namespace OpenRA
 			M44 = m44;
 		}
 
-		public static bool operator ==(Int32Matrix4x4 me, Int32Matrix4x4 other)
+		public static bool operator ==(Int32Matrix4X4 me, Int32Matrix4X4 other)
 		{
 			return
 				me.M11 == other.M11 && me.M12 == other.M12 && me.M13 == other.M13 && me.M14 == other.M14 &&
@@ -53,12 +53,12 @@ namespace OpenRA
 				me.M41 == other.M41 && me.M42 == other.M42 && me.M43 == other.M43 && me.M44 == other.M44;
 		}
 
-		public static bool operator !=(Int32Matrix4x4 me, Int32Matrix4x4 other) { return !(me == other); }
+		public static bool operator !=(Int32Matrix4X4 me, Int32Matrix4X4 other) { return !(me == other); }
 
 		public override int GetHashCode() { return M11 ^ M22 ^ M33 ^ M44; }
 
-		public bool Equals(Int32Matrix4x4 other) { return other == this; }
-		public override bool Equals(object obj) { return obj is Int32Matrix4x4 && Equals((Int32Matrix4x4)obj); }
+		public bool Equals(Int32Matrix4X4 other) { return other == this; }
+		public override bool Equals(object obj) { return obj is Int32Matrix4X4 && Equals((Int32Matrix4X4)obj); }
 
 		public override string ToString()
 		{

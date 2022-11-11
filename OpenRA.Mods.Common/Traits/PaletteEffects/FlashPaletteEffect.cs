@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Used for bursted one-colored whole screen effects. Add this to the world actor.")]
 	public class FlashPaletteEffectInfo : TraitInfo
 	{
-		public readonly HashSet<string> ExcludePalettes = new HashSet<string> { "cursor", "chrome", "colorpicker", "fog", "shroud" };
+		public HashSet<string> ExcludePalettes = new HashSet<string> { "cursor", "chrome", "colorpicker", "fog", "shroud" };
 
 		[Desc("Measured in ticks.")]
 		public readonly int Length = 20;
@@ -67,15 +68,15 @@ namespace OpenRA.Mods.Common.Traits
 
 			var frac = (float)remainingFrames / Info.Length;
 
-			foreach (var pal in palettes)
+			foreach (var pal in palettes.Select(pal => pal.Value))
 			{
 				for (var x = 0; x < Palette.Size; x++)
 				{
-					var orig = pal.Value.GetColor(x);
+					var orig = pal.GetColor(x);
 					var c = Info.Color;
 					var color = Color.FromArgb(orig.A, ((int)c.R).Clamp(0, 255), ((int)c.G).Clamp(0, 255), ((int)c.B).Clamp(0, 255));
 					var final = GUtil.PremultipliedColorLerp(frac, orig, GUtil.PremultiplyAlpha(Color.FromArgb(orig.A, color)));
-					pal.Value.SetColor(x, final);
+					pal.SetColor(x, final);
 				}
 			}
 		}

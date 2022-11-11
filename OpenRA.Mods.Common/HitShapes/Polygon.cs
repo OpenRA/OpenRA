@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.HitShapes
 		public WDist OuterRadius { get; private set; }
 
 		[FieldLoader.Require]
-		public readonly int2[] Points;
+		public readonly Int2[] Points;
 
 		[Desc("Defines the top offset relative to the actor's center.")]
 		public readonly int VerticalTopOffset = 0;
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.HitShapes
 
 		public PolygonShape() { }
 
-		public PolygonShape(int2[] points) { Points = points; }
+		public PolygonShape(Int2[] points) { Points = points; }
 
 		public void Initialize()
 		{
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.HitShapes
 				squares[i] = (Points[i] - Points[i - 1]).LengthSquared;
 		}
 
-		static int DistanceSquaredFromLineSegment(int2 c, int2 a, int2 b, int ab2)
+		static int DistanceSquaredFromLineSegment(Int2 c, Int2 a, Int2 b, int ab2)
 		{
 			var ac = c - a;
 			var ac2 = ac.LengthSquared;
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.HitShapes
 			// Cast to a long for the calculations to avoid overflows
 			var ab = b - a;
 			var ap2 = ac.X * ab.X + ac.Y * ab.Y;
-			var ap = new int2((int)((long)ab.X * ap2 / ab2), (int)((long)ab.Y * ap2 / ab2));
+			var ap = new Int2((int)((long)ab.X * ap2 / ab2), (int)((long)ab.Y * ap2 / ab2));
 
 			// Length of vector pc squared.
 			return (ac - ap).LengthSquared;
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.HitShapes
 
 		public WDist DistanceFromEdge(in WVec v)
 		{
-			var p = new int2(v.X, v.Y);
+			var p = new Int2(v.X, v.Y);
 			var z = Math.Abs(v.Z);
 			if (Points.PolygonContains(p))
 				return new WDist(z);

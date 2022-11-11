@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return wr.Palette(Info.Palette + (Info.IsPlayerPalette ? self.Owner.InternalName : ""));
 		}
 
-		protected override IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 screenPos)
+		protected override IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, Int2 screenPos)
 		{
 			if (anim == null)
 				return Enumerable.Empty<IRenderable>();

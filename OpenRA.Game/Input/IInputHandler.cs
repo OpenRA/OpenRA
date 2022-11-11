@@ -26,12 +26,12 @@ namespace OpenRA
 	{
 		public MouseInputEvent Event;
 		public MouseButton Button;
-		public int2 Location;
-		public int2 Delta;
+		public Int2 Location;
+		public Int2 Delta;
 		public Modifiers Modifiers;
 		public int MultiTapCount;
 
-		public MouseInput(MouseInputEvent ev, MouseButton button, int2 location, int2 delta, Modifiers mods, int multiTapCount)
+		public MouseInput(MouseInputEvent ev, MouseButton button, Int2 location, Int2 delta, Modifiers mods, int multiTapCount)
 		{
 			Event = ev;
 			Button = button;

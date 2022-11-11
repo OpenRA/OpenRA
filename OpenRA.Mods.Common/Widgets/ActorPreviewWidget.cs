@@ -27,8 +27,8 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly WorldRenderer worldRenderer;
 
 		IActorPreview[] preview = Array.Empty<IActorPreview>();
-		public int2 PreviewOffset { get; private set; }
-		public int2 IdealPreviewSize { get; private set; }
+		public Int2 PreviewOffset { get; private set; }
+		public Int2 IdealPreviewSize { get; private set; }
 
 		[ObjectCreator.UseCtor]
 		public ActorPreviewWidget(WorldRenderer worldRenderer)
@@ -55,15 +55,15 @@ namespace OpenRA.Mods.Common.Widgets
 			// Calculate the preview bounds
 			var r = preview.SelectMany(p => p.ScreenBounds(worldRenderer, WPos.Zero));
 			var b = r.Union();
-			IdealPreviewSize = new int2(b.Width, b.Height);
-			PreviewOffset = -new int2(b.Left, b.Top) - IdealPreviewSize / 2;
+			IdealPreviewSize = new Int2(b.Width, b.Height);
+			PreviewOffset = -new Int2(b.Left, b.Top) - IdealPreviewSize / 2;
 		}
 
 		IFinalizedRenderable[] renderables;
 		public override void PrepareRenderables()
 		{
 			var scale = GetScale();
-			var origin = RenderOrigin + PreviewOffset + new int2(RenderBounds.Size.Width / 2, RenderBounds.Size.Height / 2);
+			var origin = RenderOrigin + PreviewOffset + new Int2(RenderBounds.Size.Width / 2, RenderBounds.Size.Height / 2);
 
 			renderables = preview
 				.SelectMany(p => p.RenderUI(worldRenderer, origin, scale))

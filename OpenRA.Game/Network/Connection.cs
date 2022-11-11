@@ -129,15 +129,15 @@ namespace OpenRA.Network
 			var queue = new BlockingCollection<TcpClient>();
 
 			var atLeastOneEndpoint = false;
-			foreach (var endpoint in Target.GetConnectEndPoints())
+			foreach (var endpointElement in Target.GetConnectEndPoints())
 			{
 				atLeastOneEndpoint = true;
 				new Thread(() =>
 				{
 					try
 					{
-						var client = new TcpClient(endpoint.AddressFamily) { NoDelay = true };
-						client.Connect(endpoint.Address, endpoint.Port);
+						var client = new TcpClient(endpointElement.AddressFamily) { NoDelay = true };
+						client.Connect(endpointElement.Address, endpointElement.Port);
 
 						try
 						{
@@ -152,11 +152,11 @@ namespace OpenRA.Network
 					catch (Exception ex)
 					{
 						errorMessage = "Failed to connect";
-						Log.Write("client", $"Failed to connect to {endpoint}: {ex.Message}");
+						Log.Write("client", $"Failed to connect to {endpointElement}: {ex.Message}");
 					}
 				})
 				{
-					Name = $"{GetType().Name} (connect to {endpoint})",
+					Name = $"{GetType().Name} (connect to {endpointElement})",
 					IsBackground = true
 				}.Start();
 			}

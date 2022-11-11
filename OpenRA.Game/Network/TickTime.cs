@@ -25,12 +25,7 @@ namespace OpenRA.Network
 			this.lastTickTime = lastTickTime;
 		}
 
-		public long Value
-		{
-			get => lastTickTime;
-			set => lastTickTime = value;
-		}
-
+		public long Value { get; set; }
 		public bool ShouldAdvance(long tick)
 		{
 			var i = timestep();

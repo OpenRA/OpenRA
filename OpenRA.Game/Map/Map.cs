@@ -32,7 +32,7 @@ namespace OpenRA
 		public readonly uint HeightsOffset;
 		public readonly uint ResourcesOffset;
 
-		public BinaryDataHeader(Stream s, int2 expectedSize)
+		public BinaryDataHeader(Stream s, Int2 expectedSize)
 		{
 			Format = s.ReadUInt8();
 			var width = s.ReadUInt16();
@@ -195,7 +195,7 @@ namespace OpenRA
 		public string[] Categories = { "Conquest" };
 		public string[] Translations;
 
-		public int2 MapSize { get; private set; }
+		public Int2 MapSize { get; private set; }
 
 		// Player and actor yaml. Public for access by the map importers and lint checks.
 		public List<MiniYamlNode> PlayerDefinitions = new List<MiniYamlNode>();
@@ -324,7 +324,7 @@ namespace OpenRA
 			Title = "Name your map here";
 			Author = "Your name here";
 
-			MapSize = new int2(size);
+			MapSize = new Int2(size);
 			Tileset = terrainInfo.Id;
 
 			// Empty rules that can be added to by the importers.
@@ -1058,7 +1058,7 @@ namespace OpenRA
 			Resources = CellLayer.Resize(oldMapResources, newSize, oldMapResources[MPos.Zero]);
 			Height = CellLayer.Resize(oldMapHeight, newSize, oldMapHeight[MPos.Zero]);
 			Ramp = CellLayer.Resize(oldMapRamp, newSize, oldMapRamp[MPos.Zero]);
-			MapSize = new int2(newSize);
+			MapSize = new Int2(newSize);
 
 			var tl = new MPos(0, 0);
 			var br = new MPos(MapSize.X - 1, MapSize.Y - 1);

@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Sprite spawnClaimed, spawnUnclaimed, spawnDisabled;
 		readonly SpriteFont spawnFont;
 		readonly Color spawnColor, spawnContrastColor;
-		readonly int2 spawnLabelOffset;
+		readonly Int2 spawnLabelOffset;
 
 		public Func<MapPreview> Preview = () => null;
 		public Func<Dictionary<int, SpawnOccupant>> SpawnOccupants = () => new Dictionary<int, SpawnOccupant>();
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Widgets
 			spawnFont = Game.Renderer.Fonts[ChromeMetrics.Get<string>("SpawnFont")];
 			spawnColor = ChromeMetrics.Get<Color>("SpawnColor");
 			spawnContrastColor = ChromeMetrics.Get<Color>("SpawnContrastColor");
-			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");
+			spawnLabelOffset = ChromeMetrics.Get<Int2>("SpawnLabelOffset");
 		}
 
 		protected MapPreviewWidget(MapPreviewWidget other)
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets
 			spawnFont = Game.Renderer.Fonts[ChromeMetrics.Get<string>("SpawnFont")];
 			spawnColor = ChromeMetrics.Get<Color>("SpawnColor");
 			spawnContrastColor = ChromeMetrics.Get<Color>("SpawnContrastColor");
-			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");
+			spawnLabelOffset = ChromeMetrics.Get<Int2>("SpawnLabelOffset");
 		}
 
 		public override Widget Clone() { return new MapPreviewWidget(this); }
@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Widgets
 				tooltipContainer.Value.RemoveTooltip();
 		}
 
-		public int2 ConvertToPreview(CPos cell, MapGridType gridType)
+		public Int2 ConvertToPreview(CPos cell, MapGridType gridType)
 		{
 			var preview = Preview();
 			var point = cell.ToMPos(gridType);
@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if ((point.V & 1) == 1)
 				dx += 1;
 
-			return new int2(mapRect.X + dx, mapRect.Y + dy);
+			return new Int2(mapRect.X + dx, mapRect.Y + dy);
 		}
 
 		public override void Draw()

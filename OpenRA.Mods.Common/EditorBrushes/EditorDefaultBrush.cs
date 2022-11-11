@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly IResourceLayer resourceLayer;
 
 		public EditorActorPreview SelectedActor;
-		int2 worldPixel;
+		Int2 worldPixel;
 
 		public EditorDefaultBrush(EditorViewportControllerWidget editorWidget, WorldRenderer wr)
 		{
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		long CalculateActorSelectionPriority(EditorActorPreview actor)
 		{
-			var centerPixel = new int2(actor.Bounds.X, actor.Bounds.Y);
+			var centerPixel = new Int2(actor.Bounds.X, actor.Bounds.Y);
 			var pixelDistance = (centerPixel - worldPixel).Length;
 
 			// If 2+ actors have the same pixel position, then the highest appears on top.

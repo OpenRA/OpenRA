@@ -147,12 +147,12 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (!devMode.UnlimitedPower)
 				{
-					foreach (var kv in powerDrain)
+					foreach (var kv in powerDrain.Select(kv => kv.Value))
 					{
-						if (kv.Value > 0)
-							totalProvided += kv.Value;
-						else if (kv.Value < 0)
-							totalDrained -= kv.Value;
+						if (kv > 0)
+							totalProvided += kv;
+						else if (kv < 0)
+							totalDrained -= kv;
 					}
 				}
 

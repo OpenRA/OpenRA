@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string[] UnitTypes = null;
 
 		[Desc("Number of drop pods spawned.")]
-		public readonly int2 Drops = new int2(5, 8);
+		public readonly Int2 Drops = new Int2(5, 8);
 
 		[Desc("Sets the approach direction.")]
 		public readonly WAngle PodFacing = new WAngle(128);
