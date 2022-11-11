@@ -113,17 +113,17 @@ namespace OpenRA.Mods.Common.HitShapes
 			return DistanceFromEdge((pos - new WPos(origin.X, origin.Y, pos.Z)).Rotate(-orientation));
 		}
 
-		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(HitShape hs, WorldRenderer wr, WPos actorPos, WRot orientation)
+		IEnumerable<IRenderable> IHitShape.RenderDebugOverlay(HitShape hs, WorldRenderer wr, WPos origin, WRot orientation)
 		{
 			orientation += WRot.FromYaw(LocalYaw);
-			var vertsTop = combatOverlayVertsTop.Select(v => actorPos + v.Rotate(orientation)).ToArray();
-			var vertsBottom = combatOverlayVertsBottom.Select(v => actorPos + v.Rotate(orientation)).ToArray();
+			var vertsTop = combatOverlayVertsTop.Select(v => origin + v.Rotate(orientation)).ToArray();
+			var vertsBottom = combatOverlayVertsBottom.Select(v => origin + v.Rotate(orientation)).ToArray();
 
 			var shapeColor = hs.IsTraitDisabled ? Color.LightGray : Color.Yellow;
 
-			yield return new PolygonAnnotationRenderable(vertsTop, actorPos, 1, shapeColor);
-			yield return new PolygonAnnotationRenderable(vertsBottom, actorPos, 1, shapeColor);
-			yield return new CircleAnnotationRenderable(actorPos, OuterRadius, 1, hs.IsTraitDisabled ? Color.Gray : Color.LimeGreen);
+			yield return new PolygonAnnotationRenderable(vertsTop, origin, 1, shapeColor);
+			yield return new PolygonAnnotationRenderable(vertsBottom, origin, 1, shapeColor);
+			yield return new CircleAnnotationRenderable(origin, OuterRadius, 1, hs.IsTraitDisabled ? Color.Gray : Color.LimeGreen);
 		}
 	}
 }
