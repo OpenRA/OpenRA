@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			if (parts.Count == 0
 				|| (parts[0][0] != Path.DirectorySeparatorChar
 				&& parts[0][0] != Path.AltDirectorySeparatorChar
-				&& parts[0].Contains(':') == false
+				&& parts[0].Contains(':') 
 				&& parts[0] != "." + Path.DirectorySeparatorChar
 				&& parts[0] != "." + Path.AltDirectorySeparatorChar
 				&& parts[0] != ".." + Path.DirectorySeparatorChar
@@ -95,10 +95,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				{
 					var path = Path.Combine(basePath, dir);
 
-					if (!Directory.Exists(path))
-						yield break;
-					else
-					{
+					if (Directory.Exists(path))
+						{
 						foreach (var s in Expand(path, dirs, dirIndex + 1, file))
 							yield return s;
 					}
