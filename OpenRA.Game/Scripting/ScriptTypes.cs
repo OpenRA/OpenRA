@@ -173,7 +173,9 @@ namespace OpenRA.Scripting
 				return new LuaCustomClrObject(obj);
 			}
 
-			if (obj is Array)
+			var o = obj as Array;
+
+			if (o != null)
 			{
 				var array = (Array)obj;
 				var i = 1;
