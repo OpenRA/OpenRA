@@ -18,7 +18,6 @@ namespace OpenRA.Support
 		readonly DebugSettings settings = Game.Settings.Debug;
 		readonly long threshold = PerfTimer.LongTickThresholdInStopwatchTicks;
 		long start;
-		//long current;
 		bool enabled;
 
 		long CurrentTimestamp => enabled ? Stopwatch.GetTimestamp() : 0L;

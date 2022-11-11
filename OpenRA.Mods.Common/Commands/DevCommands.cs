@@ -255,6 +255,6 @@ namespace OpenRA.Mods.Common.Commands
 		}
 
 		[Serializable]
-		class DevException : Exception { }
+		public class DevException : Exception { }
 	}
 }

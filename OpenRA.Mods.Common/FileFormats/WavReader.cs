@@ -29,12 +29,10 @@ namespace OpenRA.Mods.Common.FileFormats
 			lengthInSeconds = -1;
 
 			var type = s.ReadASCII(4);
-			if (type != "RIFF")
-				return false;
-
 			s.ReadInt32(); // File-size
 			var format = s.ReadASCII(4);
-			if (format != "WAVE")
+
+			if (type != "RIFF" && format != "WAVE")
 				return false;
 
 			WaveType audioType = 0;

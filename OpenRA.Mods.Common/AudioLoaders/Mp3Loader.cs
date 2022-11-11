@@ -88,7 +88,11 @@ namespace OpenRA.Mods.Common.AudioLoaders
 
 			public Stream WriteStream => throw new NotImplementedException();
 
-			public void CloseStream(Stream stream) { }
+			public void CloseStream(Stream stream)
+			{
+				throw new NotSupportedException();
+			}
+
 			public string Name => "";
 		}
 	}
