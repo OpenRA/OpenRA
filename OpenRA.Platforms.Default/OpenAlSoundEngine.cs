@@ -650,6 +650,7 @@ namespace OpenRA.Platforms.Default
 			}
 			catch (AggregateException)
 			{
+				// Error
 			}
 		}
 

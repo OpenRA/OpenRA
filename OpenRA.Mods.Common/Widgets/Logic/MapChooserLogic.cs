@@ -238,7 +238,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var categoryDict = new Dictionary<string, int>();
 				foreach (var map in tabMaps[tab])
 				{
-					foreach (var category in map.Categories)
+					foreach (var categoryOne in map.Categories)
 					{
 						categoryDict.TryGetValue(category, out var count);
 						categoryDict[category] = count + 1;

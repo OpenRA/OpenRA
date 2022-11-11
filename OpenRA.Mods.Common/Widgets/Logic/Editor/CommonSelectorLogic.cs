@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		static readonly string Multiple = "multiple";
 
-		public CommonSelectorLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer, string templateListId, string previewTemplateId)
+		protected CommonSelectorLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer, string templateListId, string previewTemplateId)
 		{
 			Widget = widget;
 			ModData = modData;

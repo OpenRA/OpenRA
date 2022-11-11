@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Voice = "Action";
 
 		[Desc("Color to use for the target line.")]
-		public readonly Color TargetLineColor = Color.Yellow;
+		public Color TargetLineColor = Color.Yellow;
 
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterCarryableConditions => CarryableConditions.Values;

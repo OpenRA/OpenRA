@@ -191,9 +191,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var newCount = previews.Count(p => p.Info.Name == "mpspawn");
 			var mp = Players.Players.Where(p => p.Key.StartsWith("Multi")).ToList();
-			foreach (var kv in mp)
+			foreach (var kv in mp.Select(kv => kv.Key))
 			{
-				var name = kv.Key;
+				var name = kv;
 				var index = int.Parse(name.Substring(5));
 
 				if (index >= newCount)

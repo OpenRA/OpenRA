@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!string.IsNullOrEmpty(searchFilter))
 					FilteredCategories.AddRange(
 						allTemplates.Where(t => t.SearchTerms.Any(
-							s => s.IndexOf(searchFilter, StringComparison.OrdinalIgnoreCase) >= 0))
+							s => s.Contains(searchFilter, StringComparison.OrdinalIgnoreCase)))
 						.SelectMany(t => t.Categories)
 						.Distinct()
 						.OrderBy(CategoryOrder));

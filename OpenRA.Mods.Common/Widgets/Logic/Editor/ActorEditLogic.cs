@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		// Error states define overlapping bits to simplify panel reflow logic
 		[Flags]
-		enum ActorIDStatus { Normal = 0, Duplicate = 1, Empty = 3 }
+		public enum ActorIDStatus { Normal = 0, Duplicate = 1, Empty = 2 }
 
 		readonly WorldRenderer worldRenderer;
 		readonly ModData modData;
@@ -140,15 +140,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				// Check for duplicate actor ID
-				if (!CurrentActor.ID.Equals(actorId, StringComparison.OrdinalIgnoreCase))
+				if (!CurrentActor.ID.Equals(actorId, StringComparison.OrdinalIgnoreCase) && editorActorLayer[actorId] != null)
 				{
-					if (editorActorLayer[actorId] != null)
-					{
 						nextActorIDStatus = ActorIDStatus.Duplicate;
 						actorIDErrorLabel.Text = modData.Translation.GetString(DuplicateActorId);
 						actorIDErrorLabel.Visible = true;
 						return;
-					}
 				}
 
 				SetActorID(actorId);

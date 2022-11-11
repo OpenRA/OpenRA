@@ -278,7 +278,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			var prefix = includeRemovals && node.IsRemoval() ? "-" : "";
 			var split = node.Key.IndexOf("@", StringComparison.Ordinal);
 			if (preserveSuffix && split > -1)
-				node.Key = prefix + newKey + node.Key.Substring(split);
+				node.Key = string.Concat(prefix + newKey + node.Key);
 			else
 				node.Key = prefix + newKey;
 		}

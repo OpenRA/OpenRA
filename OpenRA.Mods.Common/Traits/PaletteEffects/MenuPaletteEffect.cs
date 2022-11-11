@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (frac < 0)
 				frac = startTime = endTime = 0;
 
-			yield break;
+
 		}
 
 		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)

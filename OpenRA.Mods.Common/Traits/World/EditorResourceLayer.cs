@@ -253,7 +253,7 @@ namespace OpenRA.Mods.Common.Traits
 			var content = resources[cell];
 			var oldDensity = content.Type == resourceInfo.ResourceIndex ? content.Index : 0;
 			var density = (byte)Math.Min(resourceInfo.MaxDensity, oldDensity + amount);
-			Map.Resources[cell] = new ResourceTile((byte)resourceInfo.ResourceIndex, density);
+			Map.Resources[cell] = new ResourceTile(resourceInfo.ResourceIndex, density);
 
 			return density - oldDensity;
 		}

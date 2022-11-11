@@ -23,14 +23,14 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class GrantConditionOnPrerequisiteManager : ITechTreeElement
-	{
-		readonly Actor self;
+    {
 		readonly Dictionary<string, List<(Actor Actor, GrantConditionOnPrerequisite GrantConditionOnPrerequisite)>> upgradables = new Dictionary<string, List<(Actor, GrantConditionOnPrerequisite)>>();
 		readonly TechTree techTree;
 
 		public GrantConditionOnPrerequisiteManager(ActorInitializer init)
 		{
-			self = init.Self;
+
+			var self = init.Self;
 			techTree = self.Trait<TechTree>();
 		}
 

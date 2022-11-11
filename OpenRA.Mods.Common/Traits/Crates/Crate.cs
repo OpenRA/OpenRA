@@ -221,11 +221,11 @@ namespace OpenRA.Mods.Common.Traits
 			return info.GetAvailableSubCell(self.World, cell, ignoreActor, check);
 		}
 
-		public bool CanExistInCell(CPos cell) { return info.CanExistInCell(self.World, cell); }
+		public bool CanExistInCell(CPos location) { return info.CanExistInCell(self.World, location); }
 
-		public bool CanEnterCell(CPos a, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
+		public bool CanEnterCell(CPos location, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
 		{
-			return GetAvailableSubCell(a, SubCell.Any, ignoreActor, check) != SubCell.Invalid;
+			return GetAvailableSubCell(location, SubCell.Any, ignoreActor, check) != SubCell.Invalid;
 		}
 
 		bool ICrushable.CrushableBy(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
