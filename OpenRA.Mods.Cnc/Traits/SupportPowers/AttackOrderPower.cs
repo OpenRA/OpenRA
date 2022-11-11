@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new AttackOrderPower(init.Self, this); }
 	}
 
-	class AttackOrderPower : SupportPower, INotifyCreated, INotifyBurstComplete
+	class AttackOrderPower : SupportPower, INotifyBurstComplete
 	{
 		readonly AttackOrderPowerInfo info;
 		AttackBase attack;
