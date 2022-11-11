@@ -160,6 +160,8 @@ NAHAND:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Infantry
+	CommandBarBlacklist:
+		DisableStop: false
 	Production:
 		Produces: Infantry
 		PauseOnCondition: empdisable
@@ -207,6 +209,8 @@ NAWEAP:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Vehicle
+	CommandBarBlacklist:
+		DisableStop: false
 	Exit@1:
 		SpawnOffset: -384,-384,0
 		ExitCell: 3,1
@@ -267,6 +271,8 @@ NAHPAD:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Air
+	CommandBarBlacklist:
+		DisableStop: false
 	Production:
 		Produces: Air
 		PauseOnCondition: empdisable
@@ -274,7 +280,7 @@ NAHPAD:
 	RepairsUnits:
 		HpPerStep: 1000
 		PauseOnCondition: empdisable
-		PlayerExperience: 15
+		PlayerExperience: 5
 		StartRepairingNotification: Repairing
 		StartRepairingTextNotification: Repairing.
 		FinishRepairingNotification: UnitRepaired
