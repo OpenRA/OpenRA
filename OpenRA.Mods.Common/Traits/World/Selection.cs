@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using OpenRA.Traits;
 
@@ -95,30 +96,17 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// TODO: select BEST, not FIRST
 				var adjNewSelection = newSelection.Take(1);
-				if (isCombine)
-					actors.SymmetricExceptWith(adjNewSelection);
-				else
-				{
-					actors.Clear();
-					actors.UnionWith(adjNewSelection);
-				}
+				m1(isCombine,adjNewSelection);
 			}
 			else
 			{
-				if (isCombine)
-					actors.UnionWith(newSelection);
-				else
-				{
-					actors.Clear();
-					actors.UnionWith(newSelection);
-				}
+				m2(isCombine, newSelection);
 			}
 
 			UpdateHash();
 
 			foreach (var a in newSelection)
-				foreach (var sel in a.TraitsImplementing<INotifySelected>())
-					sel.Selected(a);
+				m3(a);
 
 			Sync.RunUnsynced(world, () => world.OrderGenerator.SelectionChanged(world, actors));
 			foreach (var ns in worldNotifySelection)
@@ -193,5 +181,34 @@ namespace OpenRA.Mods.Common.Traits
 				Combine(self.World, selected, false, false);
 			}
 		}
-	}
+		void m1(bool isCombine, IEnumerable<Actor> adjNewSelection)
+		{
+			if (isCombine)
+				actors.SymmetricExceptWith(adjNewSelection);
+			else
+			{
+				actors.Clear();
+				actors.UnionWith(adjNewSelection);
+			}
+		}
+
+		void m2(bool isCombine, IEnumerable<Actor> newSelection)
+		{
+			if (isCombine)
+				actors.UnionWith(newSelection);
+			else
+			{
+				actors.Clear();
+				actors.UnionWith(newSelection);
+			}
+		}
+
+		void m3(Actor a)
+		{
+			foreach (var sel in a.TraitsImplementing<INotifySelected>())
+				sel.Selected(a);
+		}
+
+		
+}
 }

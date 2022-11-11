@@ -81,10 +81,14 @@ namespace OpenRA.Graphics
 
 		public void ReplacePalette(string name, IPalette p)
 		{
+			mutablePalettes[name] = new MutablePalette(p);
 			if (mutablePalettes.ContainsKey(name))
-				CopyPaletteToBuffer(indices[name], mutablePalettes[name] = new MutablePalette(p));
+				CopyPaletteToBuffer(indices[name], mutablePalettes[name]);
 			else if (palettes.ContainsKey(name))
-				CopyPaletteToBuffer(indices[name], palettes[name] = new ImmutablePalette(p));
+			{
+				palettes[name] = new ImmutablePalette(p);
+				CopyPaletteToBuffer(indices[name], palettes[name]);
+			}
 			else
 				throw new InvalidOperationException($"Palette `{name}` does not exist");
 			CopyBufferToTexture();
