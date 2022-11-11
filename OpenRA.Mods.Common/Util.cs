@@ -260,7 +260,7 @@ namespace OpenRA.Mods.Common
 			if (t == typeof(int) || t == typeof(uint))
 				return "Integer";
 
-			if (t == typeof(int2))
+			if (t == typeof(Int2))
 				return "2D Integer";
 
 			if (t == typeof(float) || t == typeof(decimal))

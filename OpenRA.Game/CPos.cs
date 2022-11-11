@@ -43,7 +43,7 @@ namespace OpenRA
 
 		public static readonly CPos Zero = new CPos(0, 0, 0);
 
-		public static explicit operator CPos(int2 a) { return new CPos(a.X, a.Y); }
+		public static explicit operator CPos(Int2 a) { return new CPos(a.X, a.Y); }
 
 		public static CPos operator +(CVec a, CPos b) { return new CPos(a.X + b.X, a.Y + b.Y, b.Layer); }
 		public static CPos operator +(CPos a, CVec b) { return new CPos(a.X + b.X, a.Y + b.Y, a.Layer); }

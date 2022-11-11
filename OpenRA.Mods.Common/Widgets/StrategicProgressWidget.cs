@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (!IsVisible()) return;
 
 			var rb = RenderBounds;
-			var offset = int2.Zero;
+			var offset = Int2.Zero;
 
 			var svc = world.Players.Select(p => p.PlayerActor.TraitOrDefault<StrategicVictoryConditions>()).FirstOrDefault();
 
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets
 				curX += 32;
 			}
 
-			offset += new int2(0, 32);
+			offset += new Int2(0, 32);
 
 			if (world.LocalPlayer == null) return;
 			var pendingWinner = FindFirstWinningPlayer(world);
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var size = font.Measure(tc);
 			font.DrawTextWithContrast(tc, offset + new float2(rb.Left - size.X / 2 + 1, rb.Top + 1), Color.White, Color.Black, 1);
-			offset += new int2(0, size.Y + 1);
+			offset += new Int2(0, size.Y + 1);
 		}
 
 		public Player FindFirstWinningPlayer(World world)

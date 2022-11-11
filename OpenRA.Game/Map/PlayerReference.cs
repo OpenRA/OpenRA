@@ -21,17 +21,78 @@ namespace OpenRA
 		public string Bot = null;
 		public string StartingUnitsClass = null;
 		public bool AllowBots = true;
-		public bool Playable = false;
-		public bool Required = false;
-		public bool OwnsWorld = false;
-		public bool Spectating = false;
-		public bool NonCombatant = false;
 
-		public bool LockFaction = false;
-		public string Faction;
+		private bool playable = false;
 
-		public bool LockColor = false;
-		public Color Color = Game.ModData.Manifest.Get<DefaultPlayer>().Color;
+		public bool Playable
+		{
+			get { return playable; }
+			set { playable = value; }
+		}
+
+		private bool required = false;
+		public bool Required
+		{
+			get { return required; }
+			set { required = value; }
+		}
+
+		private bool ownsWorld = false;
+
+		public bool OwnsWorld
+		{
+			get { return ownsWorld; }
+			set { ownsWorld = value; }
+		}
+
+		private bool spectating = false;
+
+		public bool Spectating
+		{
+			get { return spectating; }
+			set { spectating = value; }
+		}
+
+		private bool nonCombatant = false;
+
+		public bool NonCombatant
+		{
+			get { return nonCombatant; }
+			set { nonCombatant = value; }
+		}
+
+		private bool lockFaction = false;
+
+		public bool LockFaction
+		{
+			get { return lockFaction; }
+			set { lockFaction = value; }
+		}
+
+
+		private string faction;
+
+		public string Faction
+		{
+			get { return faction; }
+			set { faction = value; }
+		}
+
+		private bool lockColor = false;
+
+		public bool LockColor
+		{
+			get { return lockColor; }
+			set { lockColor = value; }
+		}
+
+		private Color color = Game.ModData.Manifest.Get<DefaultPlayer>().Color;
+
+		public Color Color
+		{
+			get { return color; }
+			set { color = value; }
+		}
 
 		/// <summary>
 		/// Sets the "Home" location, which can be used by traits and scripts to e.g. set the initial camera

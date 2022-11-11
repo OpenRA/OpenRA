@@ -23,10 +23,10 @@ namespace OpenRA.Mods.Common.HitShapes
 		public WDist OuterRadius { get; private set; }
 
 		[FieldLoader.Require]
-		public readonly int2 PointA;
+		public readonly Int2 PointA;
 
 		[FieldLoader.Require]
-		public readonly int2 PointB;
+		public readonly Int2 PointB;
 
 		public readonly WDist Radius = new WDist(426);
 
@@ -36,12 +36,12 @@ namespace OpenRA.Mods.Common.HitShapes
 		[Desc("Defines the bottom offset relative to the actor's center.")]
 		public readonly int VerticalBottomOffset = 0;
 
-		int2 ab;
+		Int2 ab;
 		int abLenSq;
 
 		public CapsuleShape() { }
 
-		public CapsuleShape(int2 a, int2 b, WDist radius)
+		public CapsuleShape(Int2 a, Int2 b, WDist radius)
 		{
 			PointA = a;
 			PointB = b;
@@ -64,16 +64,16 @@ namespace OpenRA.Mods.Common.HitShapes
 
 		public WDist DistanceFromEdge(in WVec v)
 		{
-			var p = new int2(v.X, v.Y);
+			var p = new Int2(v.X, v.Y);
 
-			var t = int2.Dot(p - PointA, ab) / abLenSq;
+			var t = Int2.Dot(p - PointA, ab) / abLenSq;
 
 			if (t < 0)
 				return new WDist(Math.Max(0, (PointA - p).Length - Radius.Length));
 			if (t > 1024)
 				return new WDist(Math.Max(0, (PointB - p).Length - Radius.Length));
 
-			var projection = PointA + new int2(
+			var projection = PointA + new Int2(
 				(ab.X * t) / 1024,
 				(ab.Y * t) / 1024);
 

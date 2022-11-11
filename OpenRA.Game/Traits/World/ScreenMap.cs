@@ -153,7 +153,7 @@ namespace OpenRA.Traits
 			return bounds.Width > 0 && bounds.Height > 0;
 		}
 
-		public IEnumerable<FrozenActor> FrozenActorsAtMouse(Player viewer, int2 worldPx)
+		public IEnumerable<FrozenActor> FrozenActorsAtMouse(Player viewer, Int2 worldPx)
 		{
 			if (viewer == null)
 				return NoFrozenActors;
@@ -169,7 +169,7 @@ namespace OpenRA.Traits
 			return FrozenActorsAtMouse(viewer, worldRenderer.Viewport.ViewToWorldPx(mi.Location));
 		}
 
-		public IEnumerable<ActorBoundsPair> ActorsAtMouse(int2 worldPx)
+		public IEnumerable<ActorBoundsPair> ActorsAtMouse(Int2 worldPx)
 		{
 			return partitionedMouseActors.At(worldPx)
 				.Where(actorIsInWorld)
@@ -182,12 +182,12 @@ namespace OpenRA.Traits
 			return ActorsAtMouse(worldRenderer.Viewport.ViewToWorldPx(mi.Location));
 		}
 
-		static Rectangle RectWithCorners(int2 a, int2 b)
+		static Rectangle RectWithCorners(Int2 a, Int2 b)
 		{
 			return Rectangle.FromLTRB(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Max(a.X, b.X), Math.Max(a.Y, b.Y));
 		}
 
-		public IEnumerable<ActorBoundsPair> ActorsInMouseBox(int2 a, int2 b)
+		public IEnumerable<ActorBoundsPair> ActorsInMouseBox(Int2 a, Int2 b)
 		{
 			return ActorsInMouseBox(RectWithCorners(a, b));
 		}
@@ -200,17 +200,17 @@ namespace OpenRA.Traits
 				.Where(x => x.Bounds.IntersectsWith(r));
 		}
 
-		public IEnumerable<Actor> RenderableActorsInBox(int2 a, int2 b)
+		public IEnumerable<Actor> RenderableActorsInBox(Int2 a, Int2 b)
 		{
 			return partitionedRenderableActors.InBox(RectWithCorners(a, b)).Where(actorIsInWorld);
 		}
 
-		public IEnumerable<IEffect> RenderableEffectsInBox(int2 a, int2 b)
+		public IEnumerable<IEffect> RenderableEffectsInBox(Int2 a, Int2 b)
 		{
 			return partitionedRenderableEffects.InBox(RectWithCorners(a, b));
 		}
 
-		public IEnumerable<FrozenActor> RenderableFrozenActorsInBox(Player p, int2 a, int2 b)
+		public IEnumerable<FrozenActor> RenderableFrozenActorsInBox(Player p, Int2 a, Int2 b)
 		{
 			if (p == null)
 				return NoFrozenActors;

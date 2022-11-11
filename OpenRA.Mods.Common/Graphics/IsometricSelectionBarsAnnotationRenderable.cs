@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 			var cr = Game.Renderer.RgbaColorRenderer;
 			var da = BarWidth * barAspect;
-			var db = new int2(0, BarHeight);
+			var db = new Int2(0, BarHeight);
 			var dc = da + db;
 
 			// Filled bar

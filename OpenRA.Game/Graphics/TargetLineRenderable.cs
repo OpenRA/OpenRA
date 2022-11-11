@@ -63,9 +63,9 @@ namespace OpenRA.Graphics
 			DrawTargetMarker(color, first);
 		}
 
-		public static void DrawTargetMarker(Color color, int2 screenPos, int size = 1)
+		public static void DrawTargetMarker(Color color, Int2 screenPos, int size = 1)
 		{
-			var offset = new int2(size, size);
+			var offset = new Int2(size, size);
 			var tl = screenPos - offset;
 			var br = screenPos + offset;
 			Game.Renderer.RgbaColorRenderer.FillRect(tl, br, color);

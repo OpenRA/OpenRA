@@ -55,7 +55,7 @@ namespace OpenRA.Platforms.Default
 	{
 		static readonly FontGlyph EmptyGlyph = new FontGlyph
 		{
-			Offset = int2.Zero,
+			Offset = Int2.Zero,
 			Size = new Size(0, 0),
 			Advance = 0,
 			Data = null
@@ -108,7 +108,7 @@ namespace OpenRA.Platforms.Default
 			var g = new FontGlyph
 			{
 				Advance = glyphAdvance,
-				Offset = new int2(bitmapLeft, -bitmapTop),
+				Offset = new Int2(bitmapLeft, -bitmapTop),
 				Size = glyphSize,
 				Data = new byte[glyphSize.Width * glyphSize.Height]
 			};
@@ -131,15 +131,12 @@ namespace OpenRA.Platforms.Default
 
 		public void Dispose()
 		{
-			if (!disposed)
+			if (!disposed && faceHandle.IsAllocated)
 			{
-				if (faceHandle.IsAllocated)
-				{
-					FreeType.FT_Done_Face(face);
+				FreeType.FT_Done_Face(face);
 
-					faceHandle.Free();
-					disposed = true;
-				}
+				faceHandle.Free();
+				disposed = true;
 			}
 		}
 	}

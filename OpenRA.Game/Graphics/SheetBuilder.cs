@@ -41,7 +41,7 @@ namespace OpenRA.Graphics
 		Sheet current;
 		TextureChannel channel;
 		int rowHeight = 0;
-		int2 p;
+		Int2 p;
 
 		public static Sheet AllocateSheet(SheetType type, int sheetSize)
 		{
@@ -82,8 +82,8 @@ namespace OpenRA.Graphics
 		}
 
 		public Sprite Add(ISpriteFrame frame) { return Add(frame.Data, frame.Type, frame.Size, 0, frame.Offset); }
-		public Sprite Add(byte[] src, SpriteFrameType type, Size size) { return Add(src, type, size, 0, float3.Zero); }
-		public Sprite Add(byte[] src, SpriteFrameType type, Size size, float zRamp, in float3 spriteOffset)
+		public Sprite Add(byte[] src, SpriteFrameType type, Size size) { return Add(src, type, size, 0, Float3.Zero); }
+		public Sprite Add(byte[] src, SpriteFrameType type, Size size, float zRamp, in Float3 spriteOffset)
 		{
 			// Don't bother allocating empty sprites
 			if (size.Width == 0 || size.Height == 0)
@@ -112,12 +112,12 @@ namespace OpenRA.Graphics
 			return (TextureChannel)nextChannel;
 		}
 
-		public Sprite Allocate(Size imageSize, float scale = 1f) { return Allocate(imageSize, 0, float3.Zero, scale); }
-		public Sprite Allocate(Size imageSize, float zRamp, in float3 spriteOffset, float scale = 1f)
+		public Sprite Allocate(Size imageSize, float scale = 1f) { return Allocate(imageSize, 0, Float3.Zero, scale); }
+		public Sprite Allocate(Size imageSize, float zRamp, in Float3 spriteOffset, float scale = 1f)
 		{
 			if (imageSize.Width + p.X + margin > current.Size.Width)
 			{
-				p = new int2(0, p.Y + rowHeight + margin);
+				p = new Int2(0, p.Y + rowHeight + margin);
 				rowHeight = imageSize.Height;
 			}
 
@@ -138,11 +138,11 @@ namespace OpenRA.Graphics
 					channel = next.Value;
 
 				rowHeight = imageSize.Height;
-				p = int2.Zero;
+				p = Int2.Zero;
 			}
 
 			var rect = new Sprite(current, new Rectangle(p.X + margin, p.Y + margin, imageSize.Width, imageSize.Height), zRamp, spriteOffset, channel, BlendMode.Alpha, scale);
-			p += new int2(imageSize.Width + margin, 0);
+			p += new Int2(imageSize.Width + margin, 0);
 
 			return rect;
 		}

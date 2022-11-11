@@ -103,8 +103,8 @@ namespace OpenRA.Mods.Common.Traits
 					!ret.ContainsKey(a.Actor.Info.Name) &&
 					a.Actor.Info.TraitInfo<BuildableInfo>().BuildLimit > 0);
 
-			foreach (var buildable in buildables)
-				ret[buildable.Actor.Info.Name].Add(buildable.Actor);
+			foreach (var buildable in buildables.Select(buildable => buildable.Actor))
+				ret[buildable.Info.Name].Add(buildable);
 
 			return ret;
 		}
@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Common.Traits
 				var nowHasPrerequisites = HasPrerequisites(ownedPrerequisites) && !hasReachedLimit;
 				var nowHidden = IsHidden(ownedPrerequisites);
 
-				if (initialized == false)
+				if (initialized)
 				{
 					initialized = true;
 					hasPrerequisites = !nowHasPrerequisites;

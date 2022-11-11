@@ -356,7 +356,7 @@ namespace OpenRA.Graphics
 			return new float2((float)TileSize.Width * pos.X / TileScale, (float)TileSize.Height * (pos.Y - pos.Z) / TileScale);
 		}
 
-		public float3 Screen3DPosition(WPos pos)
+		public Float3 Screen3DPosition(WPos pos)
 		{
 			// The projection from world coordinates to screen coordinates has
 			// a non-obvious relationship between the y and z coordinates:
@@ -365,27 +365,27 @@ namespace OpenRA.Graphics
 			// * Increasing the world y coordinate increases screen y and z coordinates equally.
 			// * Increases the world z coordinate decreases screen y but doesn't change screen z.
 			var z = pos.Y * (float)TileSize.Height / TileScale;
-			return new float3((float)TileSize.Width * pos.X / TileScale, (float)TileSize.Height * (pos.Y - pos.Z) / TileScale, z);
+			return new Float3((float)TileSize.Width * pos.X / TileScale, (float)TileSize.Height * (pos.Y - pos.Z) / TileScale, z);
 		}
 
-		public int2 ScreenPxPosition(WPos pos)
+		public Int2 ScreenPxPosition(WPos pos)
 		{
 			// Round to nearest pixel
 			var px = ScreenPosition(pos);
-			return new int2((int)Math.Round(px.X), (int)Math.Round(px.Y));
+			return new Int2((int)Math.Round(px.X), (int)Math.Round(px.Y));
 		}
 
-		public float3 Screen3DPxPosition(WPos pos)
+		public Float3 Screen3DPxPosition(WPos pos)
 		{
 			// Round to nearest pixel
 			var px = Screen3DPosition(pos);
-			return new float3((float)Math.Round(px.X), (float)Math.Round(px.Y), px.Z);
+			return new Float3((float)Math.Round(px.X), (float)Math.Round(px.Y), px.Z);
 		}
 
 		// For scaling vectors to pixel sizes in the model renderer
-		public float3 ScreenVectorComponents(in WVec vec)
+		public Float3 ScreenVectorComponents(in WVec vec)
 		{
-			return new float3(
+			return new Float3(
 				(float)TileSize.Width * vec.X / TileScale,
 				(float)TileSize.Height * (vec.Y - vec.Z) / TileScale,
 				(float)TileSize.Height * vec.Z / TileScale);
@@ -398,18 +398,18 @@ namespace OpenRA.Graphics
 			return new[] { xyz.X, xyz.Y, xyz.Z, 1f };
 		}
 
-		public int2 ScreenPxOffset(in WVec vec)
+		public Int2 ScreenPxOffset(in WVec vec)
 		{
 			// Round to nearest pixel
 			var xyz = ScreenVectorComponents(vec);
-			return new int2((int)Math.Round(xyz.X), (int)Math.Round(xyz.Y));
+			return new Int2((int)Math.Round(xyz.X), (int)Math.Round(xyz.Y));
 		}
 
 		/// <summary>
 		/// Returns a position in the world that is projected to the given screen position.
 		/// There are many possible world positions, and the returned value chooses the value with no elevation.
 		/// </summary>
-		public WPos ProjectedPosition(int2 screenPx)
+		public WPos ProjectedPosition(Int2 screenPx)
 		{
 			return new WPos(TileScale * screenPx.X / TileSize.Width, TileScale * screenPx.Y / TileSize.Height, 0);
 		}

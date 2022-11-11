@@ -236,7 +236,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (content.Density > 0)
 			{
 				var maxDensity = ResourceLayer.GetMaxDensity(content.Type);
-				var frame = int2.Lerp(0, content.Sequence.Length - 1, content.Density, maxDensity);
+				var frame = Int2.Lerp(0, content.Sequence.Length - 1, content.Density, maxDensity);
 				UpdateSpriteLayers(cell, content.Sequence, frame, content.Palette);
 			}
 			else
@@ -273,7 +273,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		string IResourceRenderer.GetRenderedResourceTooltip(CPos cell) { return GetRenderedResourceTooltip(cell); }
 
-		IEnumerable<IRenderable> IResourceRenderer.RenderUIPreview(WorldRenderer wr, string resourceType, int2 origin, float scale)
+		IEnumerable<IRenderable> IResourceRenderer.RenderUIPreview(WorldRenderer wr, string resourceType, Int2 origin, float scale)
 		{
 			if (!Variants.TryGetValue(resourceType, out var variant))
 				yield break;
@@ -308,9 +308,9 @@ namespace OpenRA.Mods.Common.Traits
 			var tintModifiers = sequence.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
 
 			if (shadow != null)
-				yield return new SpriteRenderable(shadow, origin, WVec.Zero, 0, palette, sequence.Scale, alpha, float3.Ones, tintModifiers, false);
+				yield return new SpriteRenderable(shadow, origin, WVec.Zero, 0, palette, sequence.Scale, alpha, Float3.Ones, tintModifiers, false);
 
-			yield return new SpriteRenderable(sprite, origin, WVec.Zero, 0, palette, sequence.Scale, alpha, float3.Ones, tintModifiers, false);
+			yield return new SpriteRenderable(sprite, origin, WVec.Zero, 0, palette, sequence.Scale, alpha, Float3.Ones, tintModifiers, false);
 		}
 
 		event Action<CPos> IRadarTerrainLayer.CellEntryChanged

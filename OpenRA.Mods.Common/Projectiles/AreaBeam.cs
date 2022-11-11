@@ -267,7 +267,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			{
 				var outer = info.Range[i].Length;
 				if (outer > distance)
-					return int2.Lerp(info.Falloff[i - 1], info.Falloff[i], distance - inner, outer - inner);
+					return Int2.Lerp(info.Falloff[i - 1], info.Falloff[i], distance - inner, outer - inner);
 
 				inner = outer;
 			}

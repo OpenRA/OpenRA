@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget menu;
 		readonly Widget buttonContainer;
 		readonly ButtonWidget buttonTemplate;
-		readonly int2 buttonStride;
+		readonly Int2 buttonStride;
 		readonly List<ButtonWidget> buttons = new List<ButtonWidget>();
 
 		readonly ModData modData;
@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			buttonContainer.IsVisible = () => !hideMenu;
 
 			if (logicArgs.TryGetValue("ButtonStride", out var buttonStrideNode))
-				buttonStride = FieldLoader.GetValue<int2>("ButtonStride", buttonStrideNode.Value);
+				buttonStride = FieldLoader.GetValue<Int2>("ButtonStride", buttonStrideNode.Value);
 
 			var scriptContext = world.WorldActor.TraitOrDefault<LuaScript>();
 			hasError = scriptContext != null && scriptContext.FatalErrorOccurred;

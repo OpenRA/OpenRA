@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var scale = GetScale();
 			var sb = new Rectangle((int)(scale * bounds.X), (int)(scale * bounds.Y), (int)(scale * bounds.Width), (int)(scale * bounds.Height));
-			var origin = RenderOrigin + new int2((RenderBounds.Size.Width - sb.Width) / 2 - sb.X, (RenderBounds.Size.Height - sb.Height) / 2 - sb.Y);
+			var origin = RenderOrigin + new Int2((RenderBounds.Size.Width - sb.Width) / 2 - sb.X, (RenderBounds.Size.Height - sb.Height) / 2 - sb.Y);
 			foreach (var r in terrainRenderer.RenderUIPreview(worldRenderer, template, origin, scale))
 				r.PrepareRender(worldRenderer).Render(worldRenderer);
 		}

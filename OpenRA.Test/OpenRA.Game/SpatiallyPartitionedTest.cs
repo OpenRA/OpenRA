@@ -24,28 +24,28 @@ namespace OpenRA.Test
 
 			var a = new object();
 			partition.Add(a, new Rectangle(0, 0, 1, 1));
-			CollectionAssert.Contains(partition.At(new int2(0, 0)), a, "a is not present after add");
-			CollectionAssert.DoesNotContain(partition.At(new int2(0, 1)), a, "a is present in the wrong location");
-			CollectionAssert.DoesNotContain(partition.At(new int2(1, 0)), a, "a is present in the wrong location");
+			CollectionAssert.Contains(partition.At(new Int2(0, 0)), a, "a is not present after add");
+			CollectionAssert.DoesNotContain(partition.At(new Int2(0, 1)), a, "a is present in the wrong location");
+			CollectionAssert.DoesNotContain(partition.At(new Int2(1, 0)), a, "a is present in the wrong location");
 
 			var b = new object();
 			partition.Add(b, new Rectangle(1, 1, 2, 2));
-			CollectionAssert.DoesNotContain(partition.At(new int2(0, 1)), b, "b is present in the wrong location");
-			CollectionAssert.DoesNotContain(partition.At(new int2(1, 0)), b, "b is present in the wrong location");
-			CollectionAssert.Contains(partition.At(new int2(1, 1)), b, "b is not present after add");
-			CollectionAssert.Contains(partition.At(new int2(2, 2)), b, "b is not present after add");
-			CollectionAssert.DoesNotContain(partition.At(new int2(2, 3)), b, "b is present in the wrong location");
-			CollectionAssert.DoesNotContain(partition.At(new int2(3, 2)), b, "b is present in the wrong location");
-			CollectionAssert.DoesNotContain(partition.At(new int2(3, 3)), b, "b is present in the wrong location");
+			CollectionAssert.DoesNotContain(partition.At(new Int2(0, 1)), b, "b is present in the wrong location");
+			CollectionAssert.DoesNotContain(partition.At(new Int2(1, 0)), b, "b is present in the wrong location");
+			CollectionAssert.Contains(partition.At(new Int2(1, 1)), b, "b is not present after add");
+			CollectionAssert.Contains(partition.At(new Int2(2, 2)), b, "b is not present after add");
+			CollectionAssert.DoesNotContain(partition.At(new Int2(2, 3)), b, "b is present in the wrong location");
+			CollectionAssert.DoesNotContain(partition.At(new Int2(3, 2)), b, "b is present in the wrong location");
+			CollectionAssert.DoesNotContain(partition.At(new Int2(3, 3)), b, "b is present in the wrong location");
 
 			partition.Update(b, new Rectangle(4, 4, 1, 1));
-			CollectionAssert.Contains(partition.At(new int2(0, 0)), a, "a wrongly changed location when b was updated");
-			CollectionAssert.Contains(partition.At(new int2(4, 4)), b, "b is not present at the new location in the extreme corner of the partition");
-			CollectionAssert.DoesNotContain(partition.At(new int2(1, 1)), b, "b is still present at the old location after update");
+			CollectionAssert.Contains(partition.At(new Int2(0, 0)), a, "a wrongly changed location when b was updated");
+			CollectionAssert.Contains(partition.At(new Int2(4, 4)), b, "b is not present at the new location in the extreme corner of the partition");
+			CollectionAssert.DoesNotContain(partition.At(new Int2(1, 1)), b, "b is still present at the old location after update");
 
 			partition.Remove(a);
-			CollectionAssert.DoesNotContain(partition.At(new int2(0, 0)), a, "a is still present after removal");
-			CollectionAssert.Contains(partition.At(new int2(4, 4)), b, "b wrongly changed location when a was removed");
+			CollectionAssert.DoesNotContain(partition.At(new Int2(0, 0)), a, "a is still present after removal");
+			CollectionAssert.Contains(partition.At(new Int2(4, 4)), b, "b wrongly changed location when a was removed");
 		}
 
 		[TestCase(TestName = "SpatiallyPartitioned.InBox works")]

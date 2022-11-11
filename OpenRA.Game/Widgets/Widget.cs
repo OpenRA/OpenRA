@@ -156,7 +156,7 @@ namespace OpenRA.Widgets
 		{
 			// Issue a no-op mouse move to force any tooltips to be recalculated
 			HandleInput(new MouseInput(MouseInputEvent.Move, MouseButton.None,
-				Viewport.LastMousePos, int2.Zero, Modifiers.None, 0));
+				Viewport.LastMousePos, Int2.Zero, Modifiers.None, 0));
 		}
 
 		public static void Subscribe<T>(T instance)
@@ -231,16 +231,16 @@ namespace OpenRA.Widgets
 			throw new InvalidOperationException($"Widget type `{GetType().Name}` is not cloneable.");
 		}
 
-		public virtual int2 RenderOrigin
+		public virtual Int2 RenderOrigin
 		{
 			get
 			{
-				var offset = (Parent == null) ? int2.Zero : Parent.ChildOrigin;
-				return new int2(Bounds.X, Bounds.Y) + offset;
+				var offset = (Parent == null) ? Int2.Zero : Parent.ChildOrigin;
+				return new Int2(Bounds.X, Bounds.Y) + offset;
 			}
 		}
 
-		public virtual int2 ChildOrigin => RenderOrigin;
+		public virtual Int2 ChildOrigin => RenderOrigin;
 
 		public virtual Rectangle RenderBounds
 		{
@@ -300,7 +300,7 @@ namespace OpenRA.Widgets
 
 		public virtual Rectangle EventBounds => RenderBounds;
 
-		public virtual bool EventBoundsContains(int2 location)
+		public virtual bool EventBoundsContains(Int2 location)
 		{
 			// PERF: Avoid LINQ.
 			if (EventBounds.Contains(location))
@@ -370,8 +370,8 @@ namespace OpenRA.Widgets
 				Ui.KeyboardFocusWidget = null;
 		}
 
-		public virtual string GetCursor(int2 pos) { return defaultCursor; }
-		public string GetCursorOuter(int2 pos)
+		public virtual string GetCursor(Int2 pos) { return defaultCursor; }
+		public string GetCursorOuter(Int2 pos)
 		{
 			// Is the cursor on top of us?
 			if (!(IsVisible() && EventBoundsContains(pos)))
@@ -602,7 +602,7 @@ namespace OpenRA.Widgets
 		public ContainerWidget(ContainerWidget other)
 			: base(other) { IgnoreMouseOver = true; }
 
-		public override string GetCursor(int2 pos) { return null; }
+		public override string GetCursor(Int2 pos) { return null; }
 		public override Widget Clone() { return new ContainerWidget(this); }
 		public Func<KeyInput, bool> OnKeyPress = _ => false;
 		public override bool HandleKeyPress(KeyInput e) { return OnKeyPress(e); }

@@ -66,13 +66,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public static void DrawSprite(Sprite s, float2 pos, Size size)
 		{
-			var scale = new float3(size.Width / s.Size.X, size.Height / s.Size.Y, 1f);
+			var scale = new Float3(size.Width / s.Size.X, size.Height / s.Size.Y, 1f);
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos, scale);
 		}
 
 		public static void DrawSprite(Sprite s, float2 pos, float2 size)
 		{
-			var scale = new float3(size.X / s.Size.X, size.Y / s.Size.Y, 1f);
+			var scale = new Float3(size.X / s.Size.X, size.Y / s.Size.Y, 1f);
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(s, pos, scale);
 		}
 
@@ -121,8 +121,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var tl = new float2(r.Left - 0.5f, r.Top - 0.5f);
 			var br = new float2(r.Right - 0.5f, r.Bottom - 0.5f);
 
-			var tr = new float3(br.X, tl.Y, 0);
-			var bl = new float3(tl.X, br.Y, 0);
+			var tr = new Float3(br.X, tl.Y, 0);
+			var bl = new Float3(tl.X, br.Y, 0);
 
 			Game.Renderer.RgbaColorRenderer.FillRect(tl, tr, br, bl, topLeftColor, topRightColor, bottomRightColor, bottomLeftColor);
 		}

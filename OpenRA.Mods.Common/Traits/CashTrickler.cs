@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new CashTrickler(this); }
 	}
 
-	public class CashTrickler : PausableConditionalTrait<CashTricklerInfo>, ITick, ISync, INotifyCreated, INotifyOwnerChanged
+	public class CashTrickler : PausableConditionalTrait<CashTricklerInfo>, ITick, ISync, INotifyOwnerChanged
 	{
 		readonly CashTricklerInfo info;
 		PlayerResources resources;

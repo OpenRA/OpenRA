@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			// Inset text by the margin and center vertically
-			var textPos = pos + new int2(LeftMargin, (Bounds.Height - textSize.Y) / 2 - VisualHeight);
+			var textPos = pos + new Int2(LeftMargin, (Bounds.Height - textSize.Y) / 2 - VisualHeight);
 
 			// Scissor when the text overflows
 			var isTextOverflowing = textSize.X > Bounds.Width - LeftMargin - RightMargin;

@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		readonly ushort blockWidth;
 		readonly ushort blockHeight;
 		readonly byte chunkBufferParts;
-		readonly int2 blocks;
+		readonly Int2 blocks;
 		readonly uint[] offsets;
 		readonly byte[] paletteBytes;
 		readonly uint videoFlags; // if 0x10 is set the video is a 16 bit hq video (ts and later)
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			blockHeight = stream.ReadUInt8();
 			Framerate = stream.ReadUInt8();
 			chunkBufferParts = stream.ReadUInt8();
-			blocks = new int2(Width / blockWidth, Height / blockHeight);
+			blocks = new Int2(Width / blockWidth, Height / blockHeight);
 
 			numColors = stream.ReadUInt16();
 			/*var maxBlocks = */stream.ReadUInt16();
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				// Sub type is a file tag
 				if (type[3] == 'F')
 				{
-					var jmp = int2.Swap(stream.ReadUInt32());
+					var jmp = Int2.Swap(stream.ReadUInt32());
 					stream.Seek(jmp, SeekOrigin.Current);
 					type = stream.ReadASCII(4);
 				}
@@ -183,12 +183,12 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					var type = stream.ReadASCII(4);
 					if (type == "SN2J")
 					{
-						var jmp = int2.Swap(stream.ReadUInt32());
+						var jmp = Int2.Swap(stream.ReadUInt32());
 						stream.Seek(jmp, SeekOrigin.Current);
 						type = stream.ReadASCII(4);
 					}
 
-					var length = int2.Swap(stream.ReadUInt32());
+					var length = Int2.Swap(stream.ReadUInt32());
 
 					switch (type)
 					{
@@ -279,12 +279,12 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				uint length;
 				if (type == "SN2J")
 				{
-					var jmp = int2.Swap(stream.ReadUInt32());
+					var jmp = Int2.Swap(stream.ReadUInt32());
 					stream.Seek(jmp, SeekOrigin.Current);
 					type = stream.ReadASCII(4);
 					if (type == "SND2")
 					{
-						length = int2.Swap(stream.ReadUInt32());
+						length = Int2.Swap(stream.ReadUInt32());
 						stream.Seek(length, SeekOrigin.Current);
 						type = stream.ReadASCII(4);
 					}
@@ -292,7 +292,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						throw new NotSupportedException();
 				}
 
-				length = int2.Swap(stream.ReadUInt32());
+				length = Int2.Swap(stream.ReadUInt32());
 
 				switch (type)
 				{
@@ -342,7 +342,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				// Chunks are aligned on even bytes; may be padded with a single null
 				if (s.Peek() == 0) s.ReadByte();
 				var type = s.ReadASCII(4);
-				var subchunkLength = (int)int2.Swap(s.ReadUInt32());
+				var subchunkLength = (int)Int2.Swap(s.ReadUInt32());
 
 				switch (type)
 				{

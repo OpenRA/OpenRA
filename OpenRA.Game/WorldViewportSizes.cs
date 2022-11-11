@@ -15,9 +15,9 @@ namespace OpenRA
 {
 	public class WorldViewportSizes : IGlobalModData
 	{
-		public readonly int2 CloseWindowHeights = new int2(480, 600);
-		public readonly int2 MediumWindowHeights = new int2(600, 900);
-		public readonly int2 FarWindowHeights = new int2(900, 1300);
+		public readonly Int2 CloseWindowHeights = new Int2(480, 600);
+		public readonly Int2 MediumWindowHeights = new Int2(600, 900);
+		public readonly Int2 FarWindowHeights = new Int2(900, 1300);
 
 		public readonly float MaxZoomScale = 2.0f;
 		public readonly int MaxZoomWindowHeight = 240;
@@ -25,7 +25,7 @@ namespace OpenRA
 
 		public readonly Size MinEffectiveResolution = new Size(1024, 720);
 
-		public int2 GetSizeRange(WorldViewport distance)
+		public Int2 GetSizeRange(WorldViewport distance)
 		{
 			return distance == WorldViewport.Close ? CloseWindowHeights
 				: distance == WorldViewport.Medium ? MediumWindowHeights

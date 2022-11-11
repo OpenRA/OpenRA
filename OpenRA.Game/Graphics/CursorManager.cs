@@ -20,7 +20,7 @@ namespace OpenRA.Graphics
 		class Cursor
 		{
 			public string Name;
-			public int2 PaddedSize;
+			public Int2 PaddedSize;
 			public Rectangle Bounds;
 
 			public int Length;
@@ -34,7 +34,7 @@ namespace OpenRA.Graphics
 
 		Cursor cursor;
 		bool isLocked = false;
-		int2 lockedPosition;
+		Int2 lockedPosition;
 		readonly bool hardwareCursorsDisabled = false;
 		bool hardwareCursorsDoubled = false;
 
@@ -67,7 +67,7 @@ namespace OpenRA.Graphics
 				foreach (var f in frames)
 				{
 					// Hotspot is specified relative to the center of the frame
-					var hotspot = f.Offset.ToInt2() - kv.Value.Hotspot - new int2(f.Size) / 2;
+					var hotspot = f.Offset.ToInt2() - kv.Value.Hotspot - new Int2(f.Size) / 2;
 
 					// Resolve indexed data to real colours
 					var data = f.Data;
@@ -85,7 +85,7 @@ namespace OpenRA.Graphics
 				}
 
 				// Pad bottom-right edge to make the frame size a multiple of 8
-				c.PaddedSize = 8 * new int2((c.Bounds.Width + 7) / 8, (c.Bounds.Height + 7) / 8);
+				c.PaddedSize = 8 * new Int2((c.Bounds.Width + 7) / 8, (c.Bounds.Height + 7) / 8);
 
 				cursors.Add(kv.Key, c);
 			}
@@ -116,7 +116,7 @@ namespace OpenRA.Graphics
 
 					// Calculate the padding to position the frame within sequenceBounds
 					var paddingTL = -(template.Bounds.Location - template.Sprites[i].Offset.XY.ToInt2());
-					var paddingBR = template.PaddedSize - new int2(template.Sprites[i].Bounds.Size) - paddingTL;
+					var paddingBR = template.PaddedSize - new Int2(template.Sprites[i].Bounds.Size) - paddingTL;
 
 					var hardwareCursor = CreateHardwareCursor(kv.Key, template.Sprites[i], paddingTL, paddingBR, -template.Bounds.Location);
 					if (hardwareCursor != null)
@@ -246,7 +246,7 @@ namespace OpenRA.Graphics
 			return data;
 		}
 
-		IHardwareCursor CreateHardwareCursor(string name, Sprite data, int2 paddingTL, int2 paddingBR, int2 hotspot)
+		IHardwareCursor CreateHardwareCursor(string name, Sprite data, Int2 paddingTL, Int2 paddingBR, Int2 hotspot)
 		{
 			var size = data.Bounds.Size;
 			var srcStride = data.Sheet.Size.Width;

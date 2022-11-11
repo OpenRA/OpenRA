@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<IModel> GetVoxel;
 		public Func<WRot> GetRotation;
 		public Func<WAngle> GetCameraAngle;
-		public int2 IdealPreviewSize { get; private set; }
+		public Int2 IdealPreviewSize { get; private set; }
 
 		protected readonly WorldRenderer WorldRenderer;
 
@@ -201,8 +201,8 @@ namespace OpenRA.Mods.Common.Widgets
 				paletteReferenceShadow);
 
 			var screenBounds = animation.ScreenBounds(WPos.Zero, WorldRenderer, scale);
-			IdealPreviewSize = new int2(screenBounds.Width, screenBounds.Height);
-			var origin = RenderOrigin + new int2(RenderBounds.Size.Width / 2, RenderBounds.Size.Height / 2);
+			IdealPreviewSize = new Int2(screenBounds.Width, screenBounds.Height);
+			var origin = RenderOrigin + new Int2(RenderBounds.Size.Width / 2, RenderBounds.Size.Height / 2);
 
 			var camera = new WRot(WAngle.Zero, cachedCameraAngle - new WAngle(256), new WAngle(256));
 			var modelRenderable = new UIModelRenderable(

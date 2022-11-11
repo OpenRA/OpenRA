@@ -21,9 +21,9 @@ namespace OpenRA.Graphics
 		public readonly Sprite Sprite;
 		public readonly Sprite ShadowSprite;
 		public readonly float ShadowDirection;
-		public readonly float3[] ProjectedShadowBounds;
+		public readonly Float3[] ProjectedShadowBounds;
 
-		public ModelRenderProxy(Sprite sprite, Sprite shadowSprite, float3[] projectedShadowBounds, float shadowDirection)
+		public ModelRenderProxy(Sprite sprite, Sprite shadowSprite, Float3[] projectedShadowBounds, float shadowDirection)
 		{
 			Sprite = sprite;
 			ShadowSprite = shadowSprite;
@@ -151,7 +151,7 @@ namespace OpenRA.Graphics
 
 			var shadowScreenTransform = Util.MatrixMultiply(cameraTransform, invShadowTransform);
 			var shadowGroundNormal = Util.MatrixVectorMultiply(shadowTransform, groundNormal);
-			var screenCorners = new float3[4];
+			var screenCorners = new Float3[4];
 			for (var j = 0; j < 4; j++)
 			{
 				// Project to ground plane
@@ -160,7 +160,7 @@ namespace OpenRA.Graphics
 
 				// Rotate to camera-space
 				corners[j] = Util.MatrixVectorMultiply(shadowScreenTransform, corners[j]);
-				screenCorners[j] = new float3(corners[j][0], corners[j][1], 0);
+				screenCorners[j] = new Float3(corners[j][0], corners[j][1], 0);
 			}
 
 			// Shadows are rendered at twice the resolution to reduce artifacts
@@ -230,7 +230,7 @@ namespace OpenRA.Graphics
 			return new ModelRenderProxy(sprite, shadowSprite, screenCorners, -screenLightVector[2] / screenLightVector[1]);
 		}
 
-		static void CalculateSpriteGeometry(float2 tl, float2 br, float scale, out Size size, out int2 offset)
+		static void CalculateSpriteGeometry(float2 tl, float2 br, float scale, out Size size, out Int2 offset)
 		{
 			var width = (int)(scale * (br.X - tl.X));
 			var height = (int)(scale * (br.Y - tl.Y));

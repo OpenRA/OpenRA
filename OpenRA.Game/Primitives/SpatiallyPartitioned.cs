@@ -97,7 +97,7 @@ namespace OpenRA.Primitives
 					action(BinAt(row, col), actor, bounds);
 		}
 
-		public IEnumerable<T> At(int2 location)
+		public IEnumerable<T> At(Int2 location)
 		{
 			var col = (location.X / binSize).Clamp(0, cols - 1);
 			var row = (location.Y / binSize).Clamp(0, rows - 1);

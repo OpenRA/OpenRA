@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected readonly WVec CenterOffset;
 		readonly FootprintPlaceBuildingPreviewInfo info;
 		readonly IPlaceBuildingDecorationInfo[] decorations;
-		readonly int2 topLeftScreenOffset;
+		readonly Int2 topLeftScreenOffset;
 		readonly Sprite validTile, blockedTile;
 		readonly float validAlpha, blockedAlpha;
 
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 				var pos = wr.World.Map.CenterOfCell(c.Key);
 				var offset = new WVec(0, 0, topLeftPos.Z - pos.Z);
 				var traitAlpha = (c.Value & PlaceBuildingCellType.LineBuild) != 0 ? info.LineBuildFootprintAlpha : info.FootprintAlpha;
-				yield return new SpriteRenderable(tile, pos, offset, -511, palette, 1f, sequenceAlpha * traitAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+				yield return new SpriteRenderable(tile, pos, offset, -511, palette, 1f, sequenceAlpha * traitAlpha, Float3.Ones, TintModifiers.IgnoreWorldTint, true);
 			}
 		}
 
@@ -129,6 +129,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IPlaceBuildingPreview.Tick() { TickInner(); }
 
-		int2 IPlaceBuildingPreview.TopLeftScreenOffset => topLeftScreenOffset;
+		Int2 IPlaceBuildingPreview.TopLeftScreenOffset => topLeftScreenOffset;
 	}
 }

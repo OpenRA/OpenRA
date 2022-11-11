@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 				.ToArray();
 		}
 
-		public override IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		public override IEnumerable<Order> Order(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			if (mi.Button != expectedButton)
 				world.CancelInputMode();
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 				world.CancelInputMode();
 		}
 
-		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		public override string GetCursor(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			var isAssaultMove = mi.Modifiers.HasModifier(Modifiers.Ctrl);
 
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		public override bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
+		public override bool InputOverridesSelection(World world, Int2 xy, MouseInput mi)
 		{
 			// Custom order generators always override selection
 			return true;

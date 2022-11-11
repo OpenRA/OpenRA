@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Orders
 			this.order = order;
 		}
 
-		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected override IEnumerable<Order> OrderInner(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Right)
 				world.CancelInputMode();
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Orders
 		protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
 		protected override IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world) { yield break; }
 
-		protected abstract override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi);
+		protected abstract override string GetCursor(World world, CPos cell, Int2 worldPixel, MouseInput mi);
 	}
 
 	public class PowerDownOrderGenerator : GlobalButtonOrderGenerator<ToggleConditionOnOrder>
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Orders
 			return !t.IsTraitDisabled && !t.IsTraitPaused;
 		}
 
-		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected override string GetCursor(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			mi.Button = MouseButton.Left;
 			return OrderInner(world, mi).Any() ? "powerdown" : "powerdown-blocked";
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Orders
 		public SellOrderGenerator()
 			: base("Sell") { }
 
-		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected override string GetCursor(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			mi.Button = MouseButton.Left;
 

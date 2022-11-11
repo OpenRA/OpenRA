@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			var scale = GetScale();
-			var origin = RenderOrigin + new int2((RenderBounds.Size.Width - tileSize.Width) / 2, (RenderBounds.Size.Height - tileSize.Height) / 2);
+			var origin = RenderOrigin + new Int2((RenderBounds.Size.Width - tileSize.Width) / 2, (RenderBounds.Size.Height - tileSize.Height) / 2);
 			foreach (var r in resourceRenderer.RenderUIPreview(worldRenderer, resourceType, origin, scale))
 				r.PrepareRender(worldRenderer).Render(worldRenderer);
 		}

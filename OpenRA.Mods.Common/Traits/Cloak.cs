@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Flags]
-	public enum UncloakType
+	public enum UncloakTypes
 	{
 		None = 0,
 		Attack = 1,
@@ -48,8 +48,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Events leading to the actor getting uncloaked. Possible values are: Attack, Move, Unload, Infiltrate, Demolish, Dock, Damage, Heal and SelfHeal.",
 			"'Dock' is triggered when docking to a refinery or resupplying.")]
-		public readonly UncloakType UncloakOn = UncloakType.Attack
-			| UncloakType.Unload | UncloakType.Infiltrate | UncloakType.Demolish | UncloakType.Dock;
+		public readonly UncloakTypes UncloakOn = UncloakTypes.Attack
+			| UncloakTypes.Unload | UncloakTypes.Infiltrate | UncloakTypes.Demolish | UncloakTypes.Dock;
 
 		public readonly string CloakSound = null;
 		public readonly string UncloakSound = null;
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Cloak : PausableConditionalTrait<CloakInfo>, IRenderModifier, INotifyDamage, INotifyUnload, INotifyDemolition, INotifyInfiltration,
-		INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated, INotifyHarvesterAction, INotifyBeingResupplied
+		INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyHarvesterAction, INotifyBeingResupplied
 	{
 		[Sync]
 		int remainingTime;
@@ -136,9 +136,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Uncloak(int time) { remainingTime = Math.Max(remainingTime, time); }
 
-		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel) { if (Info.UncloakOn.HasFlag(UncloakType.Attack)) Uncloak(); }
+		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel) { if (Info.UncloakOn.HasFlag(UncloakTypes.Attack)) Uncloak(); }
 
-		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel) { }
+		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel)
+		{
+			throw new NotSupportedException();
+		}
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
@@ -146,8 +149,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var type = e.Damage.Value < 0
-				? (e.Attacker == self ? UncloakType.SelfHeal : UncloakType.Heal)
-				: UncloakType.Damage;
+				? (e.Attacker == self ? UncloakTypes.SelfHeal : UncloakTypes.Heal)
+				: UncloakTypes.Damage;
 			if (Info.UncloakOn.HasFlag(type))
 				Uncloak();
 		}
@@ -181,7 +184,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (remainingTime > 0 && !isDocking)
 					remainingTime--;
 
-				if (Info.UncloakOn.HasFlag(UncloakType.Move) && (lastPos == null || lastPos.Value != self.Location))
+				if (Info.UncloakOn.HasFlag(UncloakTypes.Move) && (lastPos == null || lastPos.Value != self.Location))
 				{
 					Uncloak();
 					lastPos = self.Location;
@@ -272,15 +275,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell) { }
 
-		void INotifyHarvesterAction.MovingToRefinery(Actor self, Actor refineryActor) { }
+		void INotifyHarvesterAction.MovingToRefinery(Actor self, Actor refineryActor)
+		{
+			throw new NotSupportedException();
+		}
 
-		void INotifyHarvesterAction.MovementCancelled(Actor self) { }
+		void INotifyHarvesterAction.MovementCancelled(Actor self)
+		{
+			throw new NotSupportedException();
+		}
 
 		void INotifyHarvesterAction.Harvested(Actor self, string resourceType) { }
 
 		void INotifyHarvesterAction.Docked()
 		{
-			if (Info.UncloakOn.HasFlag(UncloakType.Dock))
+			if (Info.UncloakOn.HasFlag(UncloakTypes.Dock))
 			{
 				isDocking = true;
 				Uncloak();
@@ -294,25 +303,25 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyUnload.Unloading(Actor self)
 		{
-			if (Info.UncloakOn.HasFlag(UncloakType.Unload))
+			if (Info.UncloakOn.HasFlag(UncloakTypes.Unload))
 				Uncloak();
 		}
 
 		void INotifyDemolition.Demolishing(Actor self)
 		{
-			if (Info.UncloakOn.HasFlag(UncloakType.Demolish))
+			if (Info.UncloakOn.HasFlag(UncloakTypes.Demolish))
 				Uncloak();
 		}
 
 		void INotifyInfiltration.Infiltrating(Actor self)
 		{
-			if (Info.UncloakOn.HasFlag(UncloakType.Infiltrate))
+			if (Info.UncloakOn.HasFlag(UncloakTypes.Infiltrate))
 				Uncloak();
 		}
 
 		void INotifyBeingResupplied.StartingResupply(Actor self, Actor host)
 		{
-			if (Info.UncloakOn.HasFlag(UncloakType.Dock))
+			if (Info.UncloakOn.HasFlag(UncloakTypes.Dock))
 			{
 				isDocking = true;
 				Uncloak();
@@ -321,7 +330,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyBeingResupplied.StoppingResupply(Actor self, Actor host)
 		{
-			if (Info.UncloakOn.HasFlag(UncloakType.Dock))
+			if (Info.UncloakOn.HasFlag(UncloakTypes.Dock))
 				isDocking = false;
 		}
 	}

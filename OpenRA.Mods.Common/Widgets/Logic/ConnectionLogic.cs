@@ -72,14 +72,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public static void Connect(ConnectionTarget endpoint, string password, Action onConnect, Action onAbort)
 		{
 			Game.JoinServer(endpoint, password);
-			Action<string> onRetry = newPassword => Connect(endpoint, newPassword, onConnect, onAbort);
+			Action<string> action = newPassword => Connect(endpoint, newPassword, onConnect, onAbort);
 
 			Ui.OpenWindow("CONNECTING_PANEL", new WidgetArgs()
 			{
 				{ "endpoint", endpoint },
 				{ "onConnect", onConnect },
 				{ "onAbort", onAbort },
-				{ "onRetry", onRetry }
+				{ "onRetry", action }
 			});
 		}
 	}

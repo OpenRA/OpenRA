@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		// Error states define overlapping bits to simplify panel reflow logic
 		[Flags]
-		enum ActorIDStatus { Normal = 0, Duplicate = 1, Empty = 3 }
+		public enum ActorIDStatus { Normal = 0, Duplicate = 1, Empty = 2 }
 
 		readonly WorldRenderer worldRenderer;
 		readonly ModData modData;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static readonly string Owner = "owner";
 
 		long lastScrollTime = 0;
-		int2 lastScrollPosition = int2.Zero;
+		Int2 lastScrollPosition = Int2.Zero;
 
 		ActorIDStatus actorIDStatus = ActorIDStatus.Normal;
 		ActorIDStatus nextActorIDStatus = ActorIDStatus.Normal;
@@ -140,15 +140,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				// Check for duplicate actor ID
-				if (!CurrentActor.ID.Equals(actorId, StringComparison.OrdinalIgnoreCase))
+				if (!CurrentActor.ID.Equals(actorId, StringComparison.OrdinalIgnoreCase) && editorActorLayer[actorId] != null)
 				{
-					if (editorActorLayer[actorId] != null)
-					{
 						nextActorIDStatus = ActorIDStatus.Duplicate;
 						actorIDErrorLabel.Text = modData.Translation.GetString(DuplicateActorId);
 						actorIDErrorLabel.Visible = true;
 						return;
-					}
 				}
 
 				SetActorID(actorId);
@@ -196,7 +193,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var actor = editor.DefaultBrush.SelectedActor;
 			if (actor != null)
 			{
-				var origin = worldRenderer.Viewport.WorldToViewPx(new int2(actor.Bounds.Right, actor.Bounds.Top));
+				var origin = worldRenderer.Viewport.WorldToViewPx(new Int2(actor.Bounds.Right, actor.Bounds.Top));
 
 				// If we scrolled, hide the edit box for a moment
 				if (lastScrollPosition.X != origin.X || lastScrollPosition.Y != origin.Y)

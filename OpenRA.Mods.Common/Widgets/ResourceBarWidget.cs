@@ -31,8 +31,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<float> GetProvided = () => 0;
 		public Func<float> GetUsed = () => 0;
 		public Func<Color> GetBarColor = () => Color.White;
-		readonly EWMA providedLerp = new EWMA(0.3f);
-		readonly EWMA usedLerp = new EWMA(0.3f);
+		readonly Ewma providedLerp = new Ewma(0.3f);
+		readonly Ewma usedLerp = new Ewma(0.3f);
 		readonly World world;
 		Sprite indicator;
 
