@@ -195,10 +195,22 @@ namespace OpenRA
 		public bool VSync = true;
 
 		[Desc("Screen resolution in fullscreen mode.")]
-		public Int2 FullscreenSize = new Int2(0, 0);
+		private Int2 fullscreenSize = new Int2(0, 0);
+
+		public Int2 FullscreenSize
+		{
+			get { return fullscreenSize; }
+			set { fullscreenSize = value; }
+		}
 
 		[Desc("Screen resolution in windowed mode.")]
-		public Int2 WindowedSize = new Int2(1024, 768);
+		private Int2 windowedSize = new Int2(1024, 768);
+
+		public Int2 WindowedSize
+		{
+			get { return windowedSize; }
+			set { windowedSize = value; }
+		}
 
 		public bool CursorDouble = false;
 		public WorldViewport ViewportDistance = WorldViewport.Medium;
