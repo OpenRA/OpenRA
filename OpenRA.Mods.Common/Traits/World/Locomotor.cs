@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Flags]
 	public enum CellFlag : byte
 	{
-		HasFreeSpace = 0,
+		None = 0,
 		HasMovingActor = 1,
 		HasStationaryActor = 2,
 		HasMovableActor = 4,
@@ -231,7 +231,7 @@ namespace OpenRA.Mods.Common.Traits
 			var cellFlag = cellCache.CellFlag;
 
 			// No actor in the cell or free SubCell.
-			if (cellFlag == CellFlag.HasFreeSpace)
+			if (cellFlag == CellFlag.None)
 				return true;
 
 			// If actor is null we're just checking what would happen theoretically.
@@ -463,7 +463,7 @@ namespace OpenRA.Mods.Common.Traits
 				var cache = blockingCache[cell.Layer];
 
 				var actors = actorMap.GetActorsAt(cell);
-				var cellFlag = CellFlag.HasFreeSpace;
+				var cellFlag = CellFlag.None;
 
 				if (!actors.Any())
 				{

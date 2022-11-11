@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
-			var modData = Game.ModData = utility.ModData;
+			var modData = utility.ModData;
 
 			var src = args[1];
 			var shadowIndex = Array.Empty<int>();

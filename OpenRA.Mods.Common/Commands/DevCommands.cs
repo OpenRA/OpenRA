@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Commands
 	[Desc("Enables developer cheats via the chatbox. Attach this to the world actor.")]
 	public class DevCommandsInfo : TraitInfo<DevCommands> { }
 
-	public class DevCommands : IChatCommand, IWorldLoaded
+	public class DevCommands : IChatCommand, IWorldLoaded, IDisposable
 	{
 		[TranslationReference]
 		static readonly string CheatsDisabled = "cheats-disabled";
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Commands
 		World world;
 		DeveloperMode developerMode;
 
-		public void WorldLoaded(World w, WorldRenderer wr)
+		public void WorldLoaded(World w, WorldRenderer wr) 
 		{
 			world = w;
 
@@ -252,6 +252,11 @@ namespace OpenRA.Mods.Common.Commands
 		static void IssueDevCommand(World world, string command)
 		{
 			world.IssueOrder(new Order(command, world.LocalPlayer.PlayerActor, false));
+		}
+
+		public void Dispose()
+		{
+			throw new NotImplementedException();
 		}
 
 		[Serializable]

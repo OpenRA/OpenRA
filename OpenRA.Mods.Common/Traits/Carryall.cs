@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Graphics;
@@ -69,7 +70,13 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference(dictionaryReference: LintDictionaryReference.Keys)]
 		[Desc("Conditions to grant when a specified actor is being carried.",
 			"A dictionary of [actor name]: [condition].")]
-		public Dictionary<string, string> CarryableConditions = new Dictionary<string, string>();
+		readonly Dictionary<string, string> carryableConditions = new Dictionary<string, string>();
+
+		public Dictionary<string, string> CarryableConditions
+		{
+			get { return carryableConditions; }
+			set { CarryableConditions = new Dictionary<string, string>(); }
+		}
 
 		[VoiceReference]
 		public readonly string Voice = "Action";
