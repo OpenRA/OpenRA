@@ -222,6 +222,8 @@ namespace OpenRA.Widgets
 			IgnoreChildMouseOver = widget.IgnoreChildMouseOver;
 			IgnoreMouseOver = widget.IgnoreMouseOver;
 
+			defaultCursor = widget.defaultCursor;
+
 			foreach (var child in widget.Children)
 				AddChild(child.Clone());
 		}
