@@ -62,7 +62,13 @@ namespace OpenRA
 			private set => currentActivity = value;
 		}
 
-		public int Generation;
+		private int generation;
+		public int Generation
+		{
+			get { return generation; }
+			set { generation = value; }
+		}
+
 		public Actor ReplacedByActor;
 
 		public IEffectiveOwner EffectiveOwner { get; }
@@ -368,6 +374,14 @@ namespace OpenRA
 			return ActorID == other.ActorID;
 		}
 
+		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			if (!left.TryGetClrValue(out Actor a) || !right.TryGetClrValue(out Actor b))
+				return false;
+
+			return a == b;
+		}
+
 		public override string ToString()
 		{
 			// PERF: Avoid format strings.
@@ -610,13 +624,7 @@ namespace OpenRA
 			set => luaInterface.Value[runtime, keyValue] = value;
 		}
 
-		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
-		{
-			if (!left.TryGetClrValue(out Actor a) || !right.TryGetClrValue(out Actor b))
-				return false;
 
-			return a == b;
-		}
 
 		public LuaValue ToString(LuaRuntime runtime)
 		{
