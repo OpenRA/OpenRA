@@ -16,7 +16,7 @@ namespace OpenRA
 {
 	public enum TextNotificationPool { System, Chat, Mission, Feedback, Transients }
 
-	public class TextNotification : IEquatable<TextNotification>
+	public sealed class TextNotification : IEquatable<TextNotification>
 	{
 		public readonly TextNotificationPool Pool;
 		public readonly string Prefix;

@@ -211,14 +211,14 @@ namespace OpenRA
 			var s2 = new WAngle(mul * theta.Angle / div).Sin();
 			var s3 = theta.Sin();
 
-			var x = ((long)a.x * s1 + flip * b.x * s2) / s3;
-			var y = ((long)a.y * s1 + flip * b.y * s2) / s3;
-			var z = ((long)a.z * s1 + flip * b.z * s2) / s3;
-			var w = ((long)a.w * s1 + flip * b.w * s2) / s3;
+			var xLerp = ((long)a.x * s1 + flip * b.x * s2) / s3;
+			var yLerp = ((long)a.y * s1 + flip * b.y * s2) / s3;
+			var zLerp = ((long)a.z * s1 + flip * b.z * s2) / s3;
+			var wLerp = ((long)a.w * s1 + flip * b.w * s2) / s3;
 
 			// Normalize to 1024 == 1.0
-			var l = Exts.ISqrt(x * x + y * y + z * z + w * w);
-			return new WRot((int)(1024 * x / l), (int)(1024 * y / l), (int)(1024 * z / l), (int)(1024 * w / l));
+			var l = Exts.ISqrt(xLerp * xLerp + yLerp * yLerp + zLerp * zLerp + wLerp * wLerp);
+			return new WRot((int)(1024 * xLerp / l), (int)(1024 * yLerp / l), (int)(1024 * zLerp / l), (int)(1024 * wLerp / l));
 		}
 	}
 }

@@ -39,7 +39,7 @@ namespace OpenRA.Traits
 	/// <summary>
 	/// Type tag for DamageTypes <see cref="Primitives.BitSet{T}"/>.
 	/// </summary>
-	public sealed class DamageType { DamageType() { } }
+	public sealed class DamageType { public DamageType() { } }
 
 	public interface IHealthInfo : ITraitInfoInterface
 	{
@@ -479,7 +479,7 @@ namespace OpenRA.Traits
 	/// <summary>
 	/// Indicates target types as defined on <see cref="Traits.ITargetable"/> are present in a <see cref="Primitives.BitSet{T}"/>.
 	/// </summary>
-	public sealed class TargetableType { TargetableType() { } }
+	public sealed class TargetableType { public TargetableType() { } }
 
 	public interface ITargetableInfo : ITraitInfoInterface
 	{
@@ -516,7 +516,7 @@ namespace OpenRA.Traits
 		void DoImpact(in Target target, WarheadArgs args);
 	}
 
-	public interface IRulesetLoaded<TInfo> { void RulesetLoaded(Ruleset rules, TInfo info); }
+	public interface IRulesetLoaded<in TInfo> { void RulesetLoaded(Ruleset rules, TInfo info); }
 	public interface IRulesetLoaded : IRulesetLoaded<ActorInfo>, ITraitInfoInterface { }
 
 	[RequireExplicitImplementation]

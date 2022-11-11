@@ -171,7 +171,6 @@ namespace OpenRA
 		{
 			get { return syncCheckBotModuleCode; }
 			set { syncCheckBotModuleCode = value; }
-
 		}
 	}
 
@@ -180,7 +179,8 @@ namespace OpenRA
 		[Desc("This can be set to Windowed, Fullscreen or PseudoFullscreen.")]
 		private WindowMode mode = WindowMode.PseudoFullscreen;
 
-		public WindowMode Mode{
+		public WindowMode Mode
+		{
 			get { return mode; }
 			set { mode = value; }
 		}

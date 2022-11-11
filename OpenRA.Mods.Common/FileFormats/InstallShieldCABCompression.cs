@@ -108,7 +108,6 @@ namespace OpenRA.Mods.Common.FileFormats
 			public readonly ushort DirectoryIndex;
 			public readonly uint LinkToPrevious;
 
-			public readonly uint LinkToNext;
 			public readonly LinkFlags LinkFlags;
 			public readonly ushort Volume;
 			public readonly string Filename;
@@ -131,7 +130,6 @@ namespace OpenRA.Mods.Common.FileFormats
 				DirectoryIndex = stream.ReadUInt16();
 				stream.Position += 12;
 				LinkToPrevious = stream.ReadUInt32();
-				LinkToNext = stream.ReadUInt32();
 
 				LinkFlags = (LinkFlags)stream.ReadUInt8();
 				Volume = stream.ReadUInt16();
@@ -146,15 +144,11 @@ namespace OpenRA.Mods.Common.FileFormats
 		readonly struct CommonHeader
 		{
 			public const long Size = 16;
-			public readonly uint Version;
-			public readonly uint VolumeInfo;
 			public readonly long CabDescriptorOffset;
 			public readonly uint CabDescriptorSize;
 
 			public CommonHeader(Stream stream)
 			{
-				Version = stream.ReadUInt32();
-				VolumeInfo = stream.ReadUInt32();
 				CabDescriptorOffset = stream.ReadUInt32();
 				CabDescriptorSize = stream.ReadUInt32();
 			}

@@ -57,15 +57,7 @@ namespace OpenRA
 		{
 			Channel = System.Threading.Channels.Channel.CreateUnbounded<ChannelData>();
 			ChannelWriter = Channel.Writer;
-
-			 /*Thread = new Thread(DoWork)
-			{
-				Name = "OpenRA Logging Thread"
-			};*/
-
 			Thread.Start(CancellationToken.Token);
-
-			//Timer = new Timer(FlushToDisk, CancellationToken.Token, FlushInterval, Timeout.InfiniteTimeSpan);
 		}
 
 		static void FlushToDisk(object state)

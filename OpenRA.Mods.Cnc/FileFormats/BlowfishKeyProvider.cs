@@ -193,8 +193,6 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					}
 				}
 			}
-
-			//return carry;
 		}
 
 		static unsafe uint SubBigNum(uint* dest, uint* src1, uint* src2, uint carry, int len)
