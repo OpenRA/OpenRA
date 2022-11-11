@@ -280,8 +280,8 @@ namespace OpenRA.Mods.Cnc.Traits
 				if (mi.Button == Game.Settings.Game.MouseButtonPreference.Action)
 				{
 					minelayers.First().World.CancelInputMode();
-					foreach (var minelayer in minelayers)
-						yield return new Order("PlaceMinefield", minelayer, Target.FromCell(world, cell), queued) { ExtraLocation = minefieldStart };
+					foreach (var minelyr in minelayers)
+						yield return new Order("PlaceMinefield", minelyr, Target.FromCell(world, cell), queued) { ExtraLocation = minefieldStart };
 				}
 			}
 

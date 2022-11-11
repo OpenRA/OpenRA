@@ -735,7 +735,7 @@
 	RepairableBuilding:
 		RepairPercent: 40
 		RepairStep: 1400
-		PlayerExperience: 15
+		PlayerExperience: 5
 		RepairingNotification: Repairing
 	WithDeathAnimation:
 		DeathSequence: dead
@@ -803,7 +803,7 @@
 	RepairableBuilding:
 		RepairPercent: 40
 		RepairStep: 1400
-		PlayerExperience: 15
+		PlayerExperience: 5
 		RepairingNotification: Repairing
 	EngineerRepairable:
 	RevealsShroud:

@@ -100,10 +100,10 @@ namespace OpenRA.Mods.Common.Commands
 			debugVis.ActorTags ^= true;
 		}
 
-		public void InvokeCommand(string name, string arg)
+		public void InvokeCommand(string command, string arg)
 		{
-			if (commandHandlers.TryGetValue(name, out var command))
-				command.Handler(debugVis, devMode);
+			if (commandHandlers.TryGetValue(command, out var cmd))
+				cmd.Handler(debugVis, devMode);
 		}
 	}
 }

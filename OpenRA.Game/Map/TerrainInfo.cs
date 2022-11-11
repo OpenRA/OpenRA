@@ -69,7 +69,7 @@ namespace OpenRA
 
 	// HACK: Temporary placeholder to avoid having to change all the traits that reference this constant.
 	// This can be removed after the palette references have been moved from traits to sequences.
-	public class TileSet
+	public static class TileSet
 	{
 		public const string TerrainPaletteInternalName = "terrain";
 	}

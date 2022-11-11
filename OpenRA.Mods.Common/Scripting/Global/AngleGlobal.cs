@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Scripting.Global
 		public static WAngle South => new WAngle(512);
 		public static WAngle SouthEast => new WAngle(640);
 		public static WAngle East => new WAngle(768);
-		public  static WAngle NorthEast => new WAngle(896);
+		public static WAngle NorthEast => new WAngle(896);
 
 		[Desc("Create an arbitrary angle.")]
 		public WAngle New(int a) { return new WAngle(a); }

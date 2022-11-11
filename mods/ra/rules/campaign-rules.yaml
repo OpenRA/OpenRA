@@ -96,7 +96,7 @@ FCOM:
 		Range: 0
 	RepairableBuilding:
 		RepairStep: 700
-		PlayerExperience: 25
+		PlayerExperience: 5
 		RepairingNotification: Repairing
 	WithBuildingRepairDecoration:
 		Image: allyrepair

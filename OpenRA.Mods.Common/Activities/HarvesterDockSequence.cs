@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected DockingState dockingState;
 
-		public HarvesterDockSequence(Actor self, Actor refinery, WAngle dockAngle, bool isDragRequired, in WVec dragOffset, int dragLength)
+		protected HarvesterDockSequence(Actor self, Actor refinery, WAngle dockAngle, bool isDragRequired, in WVec dragOffset, int dragLength)
 		{
 			dockingState = DockingState.Turn;
 			Refinery = refinery;

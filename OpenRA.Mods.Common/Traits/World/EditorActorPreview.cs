@@ -74,7 +74,11 @@ namespace OpenRA.Mods.Common.Traits
 			var subCellInit = reference.GetOrDefault<SubCellInit>();
 			var subCell = subCellInit != null ? subCellInit.Value : SubCell.Any;
 
-			Footprint = ios?.OccupiedCells(Info, location, subCell) ?? new Dictionary<CPos, SubCell>() { { location, SubCell.FullCell } };
+			var occupiedCells = ios?.OccupiedCells(Info, location, subCell);
+			if (occupiedCells == null || occupiedCells.Count == 0)
+				Footprint = new Dictionary<CPos, SubCell>() { { location, SubCell.FullCell } };
+			else
+				Footprint = occupiedCells;
 
 			tooltip = Info.TraitInfos<EditorOnlyTooltipInfo>().FirstOrDefault(info => info.EnabledByDefault) as TooltipInfoBase
 				?? Info.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);

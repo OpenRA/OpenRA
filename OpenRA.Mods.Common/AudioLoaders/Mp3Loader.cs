@@ -61,7 +61,6 @@ namespace OpenRA.Mods.Common.AudioLoaders
 
 				try
 				{
-					// Attempt to parse a more accurate length from the file metadata;
 					LengthInSeconds = (float)new TagLib.Mpeg.AudioFile(new StreamAbstraction(stream)).Properties.Duration.TotalSeconds;
 				}
 				catch { }
@@ -89,7 +88,11 @@ namespace OpenRA.Mods.Common.AudioLoaders
 
 			public Stream WriteStream => throw new NotImplementedException();
 
-			public void CloseStream(Stream stream) { }
+			public void CloseStream(Stream stream)
+			{
+				throw new NotSupportedException();
+			}
+
 			public string Name => "";
 		}
 	}

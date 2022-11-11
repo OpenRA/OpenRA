@@ -358,6 +358,14 @@ namespace OpenRA
 			foreach (var p in platforms)
 			{
 				if (p == null)
+
+
+
+
+
+
+
+
 					throw new InvalidOperationException("Failed to initialize platform-integration library. Check graphics.log for details.");
 
 				Settings.Game.Platform = p;

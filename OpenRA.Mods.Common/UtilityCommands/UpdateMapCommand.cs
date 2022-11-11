@@ -46,45 +46,19 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				Console.WriteLine("--update-map MAP SOURCE [--detailed] [--apply]");
 
-				if (args.Length > 2)
-					Console.WriteLine("Unknown source: " + args[2]);
-
-				Console.WriteLine("Valid sources are:");
 
 				var ruleGroups = new Dictionary<string, List<string>>();
 
+				m1(args,ruleGroups,modData);
 				// Print known tags
-				Console.WriteLine("   Update Paths:");
-				foreach (var p in UpdatePath.KnownPaths)
-				{
-					Console.WriteLine("      " + p);
-					ruleGroups[p] = UpdatePath.FromSource(modData.ObjectCreator, p, false)
-						.Select(r => r.GetType().Name)
-						.Where(r => !ruleGroups.Values.Any(g => g.Contains(r)))
-						.ToList();
-				}
-
 				// Print known rules
 				Console.WriteLine("   Individual Rules:");
-				foreach (var kv in ruleGroups)
-				{
-					if (kv.Value.Count == 0)
-						continue;
-
-					Console.WriteLine("      " + kv.Key + ":");
-					foreach (var r in kv.Value)
-						Console.WriteLine("         " + r);
-				}
+				m2(ruleGroups);
 
 				var other = UpdatePath.KnownRules(modData.ObjectCreator)
 					.Where(r => !ruleGroups.Values.Any(g => g.Contains(r)));
 
-				if (other.Any())
-				{
-					Console.WriteLine("      Other:");
-					foreach (var r in other)
-						Console.WriteLine("         " + r);
-				}
+				m3(other);
 
 				return;
 			}
@@ -146,5 +120,45 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine("Semi-automated update complete.");
 			Console.WriteLine("Please review the messages above for any manual actions that must be applied.");
 		}
+
+
+		void m1(string[] args, Dictionary<string, List<string>> RG,ModData modData)
+		{
+			if (args.Length > 2)
+				Console.WriteLine("Unknown source: " + args[2]);
+                Console.WriteLine("Valid sources are:");
+			Console.WriteLine("   Update Paths:");
+			foreach (var p in UpdatePath.KnownPaths)
+			{
+				Console.WriteLine("      " + p);
+				RG[p] = UpdatePath.FromSource(modData.ObjectCreator, p, false)
+					.Select(r => r.GetType().Name)
+					.Where(r => !RG.Values.Any(g => g.Contains(r)))
+					.ToList();
+			}
+		}
+
+		void m2(Dictionary<string, List<string>> ruleGroups)
+		{
+			foreach (var kv in ruleGroups)
+			{
+				if (kv.Value.Count == 0)
+					continue;
+
+				Console.WriteLine("      " + kv.Key + ":");
+				foreach (var r in kv.Value)
+					Console.WriteLine("         " + r);
+			}
+		}
+		void m3(IEnumerable<String> other)
+		{
+			if (other.Any())
+			{
+				Console.WriteLine("      Other:");
+				foreach (var r in other)
+				Console.WriteLine("         " + r);
+			}
+		}
+
 	}
 }

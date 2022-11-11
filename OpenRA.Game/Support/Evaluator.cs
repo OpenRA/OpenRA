@@ -85,26 +85,26 @@ namespace OpenRA.Support
 
 		static IEnumerable<string> Tokens(string expr, string ops)
 		{
-			StringBuilder s = new StringBuilder();
-			var str = s.ToString();
+			var s = new StringBuilder();
+			var s2 = new StringBuilder("");
 			foreach (var c in expr)
 			{
 				if (char.IsWhiteSpace(c))
 				{
-					if (str != "") yield return str;
-					str = "";
+					if (s.Equals(s2)) yield return s.ToString();
+					s.Insert(0, "");
 				}
 				else if (ops.Contains(c))
 				{
-					if (str != "") yield return str;
-					str = "";
+					if (s.Equals(s2)) yield return s.ToString();
+					s.Insert(0, "");
 					yield return "" + c;
 				}
 				else
-					str += c;
+					s.Append(c);
 			}
 
-			if (str != "") yield return str;
+			if (s.Equals(s2)) yield return s.ToString();
 		}
 	}
 }

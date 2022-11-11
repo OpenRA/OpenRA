@@ -64,7 +64,6 @@ namespace OpenRA.Server
 		// Default to the next frame for ServerType.Local - MP servers take the value from the selected GameSpeed.
 		public int OrderLatency = 1;
 
-		readonly int randomSeed;
 		readonly List<TcpListener> listeners = new List<TcpListener>();
 		readonly TypeDictionary serverTraits = new TypeDictionary();
 		readonly PlayerDatabase playerDatabase;
@@ -233,6 +232,7 @@ namespace OpenRA.Server
 
 		public Server(List<IPEndPoint> endpoints, ServerSettings settings, ModData modData, ServerType type)
 		{
+			int randomSeed;
 			Log.AddChannel("server", "server.log", true);
 
 			SocketException lastException = null;
