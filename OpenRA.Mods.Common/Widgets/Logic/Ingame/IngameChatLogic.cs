@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var c in orderManager.LobbyInfo.Clients)
 					TextNotificationsManager.MutedPlayers.Add(c.Index, false);
 
-			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().ToArray().SelectMany(x => x.Commands.Keys);
+			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().AsEnumerable().SelectMany(x => x.Commands.Keys);
 			tabCompletion.Names = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();
 
 			if (logicArgs.TryGetValue("Templates", out var templateIds))

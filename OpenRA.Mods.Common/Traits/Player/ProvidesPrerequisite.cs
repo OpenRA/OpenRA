@@ -21,10 +21,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Prerequisite = null;
 
 		[Desc("Only grant this prerequisite when you have these prerequisites.")]
-		public readonly string[] RequiresPrerequisites = Array.Empty<string>();
+		public string[] RequiresPrerequisites = Array.Empty<string>();
 
 		[Desc("Only grant this prerequisite for certain factions.")]
-		public readonly HashSet<string> Factions = new HashSet<string>();
+		public HashSet<string> Factions = new HashSet<string>();
 
 		[Desc("Should it recheck everything when it is captured?")]
 		public readonly bool ResetOnOwnerChange = false;
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ProvidesPrerequisite(init, this); }
 	}
 
-	public class ProvidesPrerequisite : ConditionalTrait<ProvidesPrerequisiteInfo>, ITechTreePrerequisite, INotifyOwnerChanged, INotifyCreated
+	public class ProvidesPrerequisite : ConditionalTrait<ProvidesPrerequisiteInfo>, ITechTreePrerequisite, INotifyOwnerChanged
 	{
 		readonly string prerequisite;
 

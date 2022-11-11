@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Creates a single color palette without any base palette file.")]
-	class PaletteFromRGBAInfo : TraitInfo
+	class PaletteFromRgbaInfo : TraitInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -46,14 +46,14 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Index set to be fully transparent/invisible.")]
 		public readonly int TransparentIndex = 0;
 
-		public override object Create(ActorInitializer init) { return new PaletteFromRGBA(init.World, this); }
+		public override object Create(ActorInitializer init) { return new PaletteFromRgba(init.World, this); }
 	}
 
-	class PaletteFromRGBA : ILoadsPalettes
+	class PaletteFromRgba : ILoadsPalettes
 	{
 		readonly World world;
-		readonly PaletteFromRGBAInfo info;
-		public PaletteFromRGBA(World world, PaletteFromRGBAInfo info)
+		readonly PaletteFromRgbaInfo info;
+		public PaletteFromRgba(World world, PaletteFromRgbaInfo info)
 		{
 			this.world = world;
 			this.info = info;

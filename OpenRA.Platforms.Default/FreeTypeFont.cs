@@ -131,15 +131,12 @@ namespace OpenRA.Platforms.Default
 
 		public void Dispose()
 		{
-			if (!disposed)
+			if (!disposed && faceHandle.IsAllocated)
 			{
-				if (faceHandle.IsAllocated)
-				{
-					FreeType.FT_Done_Face(face);
+				FreeType.FT_Done_Face(face);
 
-					faceHandle.Free();
-					disposed = true;
-				}
+				faceHandle.Free();
+				disposed = true;
 			}
 		}
 	}
