@@ -28,9 +28,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public readonly string OverlayFont = "TinyBold";
 
-		public readonly int2 IconSize = new int2(64, 48);
+		public readonly Int2 IconSize = new Int2(64, 48);
 		public readonly int IconMargin = 10;
-		public readonly int2 IconSpriteOffset = int2.Zero;
+		public readonly Int2 IconSpriteOffset = Int2.Zero;
 
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "SUPPORT_POWER_TOOLTIP";

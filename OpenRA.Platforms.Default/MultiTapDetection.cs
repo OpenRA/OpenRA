@@ -21,7 +21,7 @@ namespace OpenRA.Platforms.Default
 		static readonly Cache<byte, TapHistory> ClickHistoryCache =
 			new Cache<byte, TapHistory>(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
 
-		public static int DetectFromMouse(byte button, int2 xy)
+		public static int DetectFromMouse(byte button, Int2 xy)
 		{
 			return ClickHistoryCache[button].GetTapCount(xy);
 		}
@@ -33,7 +33,7 @@ namespace OpenRA.Platforms.Default
 
 		public static int DetectFromKeyboard(Keycode key, Modifiers mods)
 		{
-			return KeyHistoryCache[(key, mods)].GetTapCount(int2.Zero);
+			return KeyHistoryCache[(key, mods)].GetTapCount(Int2.Zero);
 		}
 
 		public static int InfoFromKeyboard(Keycode key, Modifiers mods)
@@ -44,20 +44,20 @@ namespace OpenRA.Platforms.Default
 
 	class TapHistory
 	{
-		public (DateTime Time, int2 Location) FirstRelease, SecondRelease, ThirdRelease;
+		public (DateTime Time, Int2 Location) FirstRelease, SecondRelease, ThirdRelease;
 
 		public TapHistory(DateTime now)
 		{
-			FirstRelease = SecondRelease = ThirdRelease = (now, int2.Zero);
+			FirstRelease = SecondRelease = ThirdRelease = (now, Int2.Zero);
 		}
 
-		static bool CloseEnough((DateTime Time, int2 Location) a, (DateTime Time, int2 Location) b)
+		static bool CloseEnough((DateTime Time, Int2 Location) a, (DateTime Time, Int2 Location) b)
 		{
 			return a.Time - b.Time < TimeSpan.FromMilliseconds(250)
 				&& (a.Location - b.Location).Length < 4;
 		}
 
-		public int GetTapCount(int2 xy)
+		public int GetTapCount(Int2 xy)
 		{
 			FirstRelease = SecondRelease;
 			SecondRelease = ThirdRelease;

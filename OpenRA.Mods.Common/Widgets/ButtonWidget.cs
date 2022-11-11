@@ -218,11 +218,11 @@ namespace OpenRA.Mods.Common.Widgets
 			tooltipContainer.Value.RemoveTooltip();
 		}
 
-		public override string GetCursor(int2 pos) { return Cursor; }
+		public override string GetCursor(Int2 pos) { return Cursor; }
 
-		public override int2 ChildOrigin =>
+		public override Int2 ChildOrigin =>
 			RenderOrigin +
-			(Depressed ? new int2(VisualHeight, VisualHeight) : new int2(0, 0));
+			(Depressed ? new Int2(VisualHeight, VisualHeight) : new Int2(0, 0));
 
 		public override void Draw()
 		{
@@ -236,7 +236,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var bgDark = GetContrastColorDark();
 			var bgLight = GetContrastColorLight();
 
-			var stateOffset = Depressed ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
+			var stateOffset = Depressed ? new Int2(VisualHeight, VisualHeight) : new Int2(0, 0);
 
 			var position = GetTextPosition(text, font, rb);
 
@@ -253,7 +253,7 @@ namespace OpenRA.Mods.Common.Widgets
 					disabled ? colordisabled : color);
 		}
 
-		int2 GetTextPosition(string text, SpriteFont font, Rectangle rb)
+		Int2 GetTextPosition(string text, SpriteFont font, Rectangle rb)
 		{
 			var textSize = font.Measure(text);
 			var y = rb.Y + (Bounds.Height - textSize.Y - font.TopOffset) / 2;
@@ -261,11 +261,11 @@ namespace OpenRA.Mods.Common.Widgets
 			switch (Align)
 			{
 				case TextAlign.Left:
-					return new int2(rb.X + LeftMargin, y);
+					return new Int2(rb.X + LeftMargin, y);
 				case TextAlign.Center:
-					return new int2(rb.X + (UsableWidth - textSize.X) / 2, y);
+					return new Int2(rb.X + (UsableWidth - textSize.X) / 2, y);
 				case TextAlign.Right:
-					return new int2(rb.X + UsableWidth - textSize.X - RightMargin, y);
+					return new Int2(rb.X + UsableWidth - textSize.X - RightMargin, y);
 				default:
 					throw new ArgumentOutOfRangeException("Align");
 			}

@@ -752,12 +752,12 @@ namespace OpenRA.Server
 		{
 			var lastTeam = -1;
 			var remainingPlayers = gameInfo.Players.Where(p => p.Outcome == WinState.Undefined);
-			foreach (var player in remainingPlayers)
+			foreach (var player in remainingPlayers.Select(player => player.Team))
 			{
-				if (lastTeam >= 0 && (player.Team != lastTeam || player.Team == 0))
+				if (lastTeam >= 0 && (player != lastTeam || player == 0))
 					return true;
 
-				lastTeam = player.Team;
+				lastTeam = player;
 			}
 
 			return false;
@@ -1093,9 +1093,9 @@ namespace OpenRA.Server
 							// Rebuild/remap the saved client state
 							// TODO: Multiplayer saves should leave all humans as spectators so they can manually pick slots
 							var adminClientIndex = LobbyInfo.Clients.First(c => c.IsAdmin).Index;
-							foreach (var kv in GameSave.SlotClients)
+							foreach (var kv in GameSave.SlotClients.Select(kv => kv.Value))
 							{
-								if (kv.Value.Bot != null)
+								if (kv.Bot != null)
 								{
 									var bot = new Session.Client()
 									{
@@ -1104,7 +1104,7 @@ namespace OpenRA.Server
 										BotControllerClientIndex = adminClientIndex
 									};
 
-									kv.Value.ApplyTo(bot);
+									kv.ApplyTo(bot);
 									LobbyInfo.Clients.Add(bot);
 								}
 								else
@@ -1112,7 +1112,7 @@ namespace OpenRA.Server
 									// This will throw if the server doesn't have enough human clients to fill all player slots
 									// See TODO above - this isn't a problem in practice because MP saves won't use this
 									var client = LobbyInfo.Clients.First(c => c.Slot == null);
-									kv.Value.ApplyTo(client);
+									kv.ApplyTo(client);
 								}
 							}
 

@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace OpenRA.Network
 {
@@ -66,16 +67,16 @@ namespace OpenRA.Network
 
 		public static OrderPacket Combine(IEnumerable<OrderPacket> packets)
 		{
-			var orders = new List<Order>();
-			foreach (var packet in packets)
+			var ordersList = new List<Order>();
+			foreach (var packet in packets.Select(packet => packet.orders))
 			{
-				if (packet.orders == null)
+				if (packet == null)
 					throw new InvalidOperationException("OrderPacket.Combine can only be used with locally generated OrderPackets.");
 
-				orders.AddRange(packet.orders);
+				ordersList.AddRange(packet);
 			}
 
-			return new OrderPacket(orders.ToArray());
+			return new OrderPacket(ordersList.ToArray());
 		}
 	}
 

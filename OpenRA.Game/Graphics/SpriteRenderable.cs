@@ -26,13 +26,13 @@ namespace OpenRA.Graphics
 		readonly PaletteReference palette;
 		readonly float scale;
 		readonly WAngle rotation = WAngle.Zero;
-		readonly float3 tint;
+		readonly Float3 tint;
 		readonly TintModifiers tintModifiers;
 		readonly float alpha;
 		readonly bool isDecoration;
 
 		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale, float alpha,
-			float3 tint, TintModifiers tintModifiers, bool isDecoration, WAngle rotation)
+			Float3 tint, TintModifiers tintModifiers, bool isDecoration, WAngle rotation)
 		{
 			this.sprite = sprite;
 			this.pos = pos;
@@ -54,7 +54,7 @@ namespace OpenRA.Graphics
 		}
 
 		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale, float alpha,
-			float3 tint, TintModifiers tintModifiers, bool isDecoration)
+			Float3 tint, TintModifiers tintModifiers, bool isDecoration)
 			: this(sprite, pos, offset, zOffset, palette, scale, alpha, tint, tintModifiers, isDecoration, WAngle.Zero) { }
 
 		public WPos Pos => pos + offset;
@@ -64,7 +64,7 @@ namespace OpenRA.Graphics
 		public bool IsDecoration => isDecoration;
 
 		public float Alpha => alpha;
-		public float3 Tint => tint;
+		public Float3 Tint => tint;
 		public TintModifiers TintModifiers => tintModifiers;
 
 		public IPalettedRenderable WithPalette(PaletteReference newPalette)
@@ -92,15 +92,15 @@ namespace OpenRA.Graphics
 			return new SpriteRenderable(sprite, pos, offset, zOffset, palette, scale, newAlpha, tint, tintModifiers, isDecoration, rotation);
 		}
 
-		public IModifyableRenderable WithTint(in float3 newTint, TintModifiers newTintModifiers)
+		public IModifyableRenderable WithTint(in Float3 newTint, TintModifiers newTintModifiers)
 		{
 			return new SpriteRenderable(sprite, pos, offset, zOffset, palette, scale, alpha, newTint, newTintModifiers, isDecoration, rotation);
 		}
 
-		float3 ScreenPosition(WorldRenderer wr)
+		Float3 ScreenPosition(WorldRenderer wr)
 		{
 			var s = 0.5f * scale * sprite.Size;
-			return wr.Screen3DPxPosition(pos) + wr.ScreenPxOffset(offset) - new float3((int)s.X, (int)s.Y, s.Z);
+			return wr.Screen3DPxPosition(pos) + wr.ScreenPxOffset(offset) - new Float3((int)s.X, (int)s.Y, s.Z);
 		}
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }

@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly WDist speed;
 		readonly string trailPalette;
 
-		readonly float3 shadowColor;
+		readonly Float3 shadowColor;
 		readonly float shadowAlpha;
 
 		readonly ContrailRenderable contrail;
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			smokeTicks = info.TrailDelay;
 			remainingBounces = info.BounceCount;
 
-			shadowColor = new float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
+			shadowColor = new Float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
 			shadowAlpha = info.ShadowColor.A / 255f;
 		}
 

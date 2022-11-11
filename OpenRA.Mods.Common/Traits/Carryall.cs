@@ -69,13 +69,13 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference(dictionaryReference: LintDictionaryReference.Keys)]
 		[Desc("Conditions to grant when a specified actor is being carried.",
 			"A dictionary of [actor name]: [condition].")]
-		public readonly Dictionary<string, string> CarryableConditions = new Dictionary<string, string>();
+		public Dictionary<string, string> CarryableConditions = new Dictionary<string, string>();
 
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
 		[Desc("Color to use for the target line.")]
-		public readonly Color TargetLineColor = Color.Yellow;
+		public Color TargetLineColor = Color.Yellow;
 
 		[GrantedConditionReference]
 		public IEnumerable<string> LinterCarryableConditions => CarryableConditions.Values;

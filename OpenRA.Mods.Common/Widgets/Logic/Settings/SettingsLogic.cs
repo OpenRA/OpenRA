@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly Widget panelContainer, tabContainer;
 		readonly ButtonWidget tabTemplate;
-		readonly int2 buttonStride;
+		readonly Int2 buttonStride;
 		readonly List<ButtonWidget> buttons = new List<ButtonWidget>();
 		readonly Dictionary<string, string> panels = new Dictionary<string, string>();
 		string activePanel;
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			tabContainer.RemoveChild(tabTemplate);
 
 			if (logicArgs.TryGetValue("ButtonStride", out var buttonStrideNode))
-				buttonStride = FieldLoader.GetValue<int2>("ButtonStride", buttonStrideNode.Value);
+				buttonStride = FieldLoader.GetValue<Int2>("ButtonStride", buttonStrideNode.Value);
 
 			if (logicArgs.TryGetValue("Panels", out var settingsPanels))
 			{

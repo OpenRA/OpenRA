@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var c in orderManager.LobbyInfo.Clients)
 					TextNotificationsManager.MutedPlayers.Add(c.Index, false);
 
-			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().ToArray().SelectMany(x => x.Commands.Keys);
+			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().AsEnumerable().SelectMany(x => x.Commands.Keys);
 			tabCompletion.Names = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();
 
 			if (logicArgs.TryGetValue("Templates", out var templateIds))
@@ -230,9 +230,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			chatScrollPanel.RemoveChildren();
 			chatScrollPanel.ScrollToBottom();
 
-			foreach (var notification in TextNotificationsManager.Notifications)
-				if (IsNotificationEligible(notification))
-					AddNotification(notification, true);
+			foreach (var notification in TextNotificationsManager.Notifications.Where(notif => (IsNotificationEligible(notif))))
+				AddNotification(notification, true);
 
 			chatText.IsDisabled = () => !chatEnabled || (world.IsReplay && !Game.Settings.Debug.EnableDebugCommandsInReplays);
 
@@ -312,7 +311,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public override void Tick()
 		{
 			var chatWasEnabled = chatEnabled;
-			chatEnabled = Game.RunTime >= TextNotificationsManager.ChatDisabledUntil && TextNotificationsManager.ChatDisabledUntil != uint.MaxValue;
+			chatEnabled = world.IsReplay || (Game.RunTime >= TextNotificationsManager.ChatDisabledUntil && TextNotificationsManager.ChatDisabledUntil != uint.MaxValue);
 
 			if (chatEnabled && !chatWasEnabled)
 			{

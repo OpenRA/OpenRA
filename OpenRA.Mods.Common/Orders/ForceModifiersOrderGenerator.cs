@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Orders
 			this.cancelOnFirstUse = cancelOnFirstUse;
 		}
 
-		public override IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		public override IEnumerable<Order> Order(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			mi.Modifiers |= Modifiers;
 
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Orders
 			return base.Order(world, cell, worldPixel, mi);
 		}
 
-		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		public override string GetCursor(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			mi.Modifiers |= Modifiers;
 			return base.GetCursor(world, cell, worldPixel, mi);

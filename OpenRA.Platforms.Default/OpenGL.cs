@@ -696,16 +696,16 @@ namespace OpenRA.Platforms.Default
 				if (hasDebugMessagesCallback)
 					Features |= GLFeatures.DebugMessagesCallback;
 
-				if (preferLegacyProfile || (major == 2 && minor == 1) || (major == 3 && minor < 2))
+				if (preferLegacyProfile || (major == 2 && minor == 1) || ((major == 3 && minor < 2) && SDL.SDL_GL_ExtensionSupported("GL_EXT_framebuffer_object") == SDL.SDL_bool.SDL_TRUE))
 				{
-					if (SDL.SDL_GL_ExtensionSupported("GL_EXT_framebuffer_object") == SDL.SDL_bool.SDL_TRUE)
-					{
 						hasValidConfiguration = true;
 						Profile = GLProfile.Legacy;
-					}
 				}
 			}
-			catch (Exception) { }
+			catch (Exception)
+			{
+				// Error
+			}
 
 			return hasValidConfiguration;
 		}

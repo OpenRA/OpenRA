@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 			var barColor2 = Color.FromArgb(255, barColor.R / 2, barColor.G / 2, barColor.B / 2);
 
-			var z = float3.Lerp(start, end, value);
+			var z = Float3.Lerp(start, end, value);
 			var cr = Game.Renderer.RgbaColorRenderer;
 			cr.DrawLine(start + p, end + p, 1, c);
 			cr.DrawLine(start + q, end + q, 1, c2);
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Graphics
 				healthColor.G / 2,
 				healthColor.B / 2);
 
-			var z = float3.Lerp(start, end, (float)health.HP / health.MaxHP);
+			var z = Float3.Lerp(start, end, (float)health.HP / health.MaxHP);
 
 			var cr = Game.Renderer.RgbaColorRenderer;
 			cr.DrawLine(start + p, end + p, 1, c);
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Graphics
 					deltaColor.R / 2,
 					deltaColor.G / 2,
 					deltaColor.B / 2);
-				var zz = float3.Lerp(start, end, (float)health.DisplayHP / health.MaxHP);
+				var zz = Float3.Lerp(start, end, (float)health.DisplayHP / health.MaxHP);
 
 				cr.DrawLine(z + p, zz + p, 1, deltaColor2);
 				cr.DrawLine(z + q, zz + q, 1, deltaColor);

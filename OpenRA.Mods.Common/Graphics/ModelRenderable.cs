@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly PaletteReference shadowPalette;
 		readonly float scale;
 		readonly float alpha;
-		readonly float3 tint;
+		readonly Float3 tint;
 		readonly TintModifiers tintModifiers;
 
 		public ModelRenderable(
@@ -41,13 +41,13 @@ namespace OpenRA.Mods.Common.Graphics
 			: this(models, pos, zOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				color, normals, shadow, 1f,
-				float3.Ones, TintModifiers.None) { }
+				Float3.Ones, TintModifiers.None) { }
 
 		public ModelRenderable(
 			IEnumerable<ModelAnimation> models, WPos pos, int zOffset, in WRot camera, float scale,
 			in WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadow,
-			float alpha, in float3 tint, TintModifiers tintModifiers)
+			float alpha, in Float3 tint, TintModifiers tintModifiers)
 		{
 			this.models = models;
 			this.pos = pos;
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public bool IsDecoration => false;
 
 		public float Alpha => alpha;
-		public float3 Tint => tint;
+		public Float3 Tint => tint;
 		public TintModifiers TintModifiers => tintModifiers;
 
 		public IPalettedRenderable WithPalette(PaletteReference newPalette)
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Graphics
 				palette, normalsPalette, shadowPalette, newAlpha, tint, tintModifiers);
 		}
 
-		public IModifyableRenderable WithTint(in float3 newTint, TintModifiers newTintModifiers)
+		public IModifyableRenderable WithTint(in Float3 newTint, TintModifiers newTintModifiers)
 		{
 			return new ModelRenderable(
 				models, pos, zOffset, camera, scale,
@@ -150,13 +150,13 @@ namespace OpenRA.Mods.Common.Graphics
 
 				// HACK: We don't have enough texture channels to pass the depth data to the shader
 				// so for now just offset everything forward so that the back corner is rendered at pos.
-				pxOrigin -= new float3(0, 0, Screen3DBounds(wr).Z.X);
+				pxOrigin -= new Float3(0, 0, Screen3DBounds(wr).Z.X);
 
 				// HACK: The previous hack isn't sufficient for the ramp type that is half flat and half
 				// sloped towards the camera. Offset it by another half cell to avoid clipping.
 				var cell = map.CellContaining(model.pos);
 				if (map.Ramp.Contains(cell) && map.Ramp[cell] == 7)
-					pxOrigin += new float3(0, 0, 0.5f * map.Grid.TileSize.Height);
+					pxOrigin += new Float3(0, 0, 0.5f * map.Grid.TileSize.Height);
 
 				var shadowOrigin = pxOrigin - groundZ * (new float2(renderProxy.ShadowDirection, 1));
 
@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Common.Graphics
 			static readonly uint[] CornerXIndex = new uint[] { 0, 0, 0, 0, 3, 3, 3, 3 };
 			static readonly uint[] CornerYIndex = new uint[] { 1, 1, 4, 4, 1, 1, 4, 4 };
 			static readonly uint[] CornerZIndex = new uint[] { 2, 5, 2, 5, 2, 5, 2, 5 };
-			static void DrawBoundsBox(WorldRenderer wr, in float3 pxPos, float[] transform, float[] bounds, float width, Color c)
+			static void DrawBoundsBox(WorldRenderer wr, in Float3 pxPos, float[] transform, float[] bounds, float width, Color c)
 			{
 				var cr = Game.Renderer.RgbaColorRenderer;
 				var corners = new float2[8];
@@ -233,7 +233,7 @@ namespace OpenRA.Mods.Common.Graphics
 				{
 					var vec = new[] { bounds[CornerXIndex[i]], bounds[CornerYIndex[i]], bounds[CornerZIndex[i]], 1 };
 					var screen = OpenRA.Graphics.Util.MatrixVectorMultiply(transform, vec);
-					corners[i] = wr.Viewport.WorldToViewPx(pxPos + new float3(screen[0], screen[1], screen[2]));
+					corners[i] = wr.Viewport.WorldToViewPx(pxPos + new Float3(screen[0], screen[1], screen[2]));
 				}
 
 				// Front face

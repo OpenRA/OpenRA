@@ -70,7 +70,7 @@ namespace OpenRA
 		void GrabWindowMouseFocus();
 		void ReleaseWindowMouseFocus();
 
-		IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot, bool pixelDouble);
+		IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, Int2 hotspot, bool pixelDouble);
 		void SetHardwareCursor(IHardwareCursor cursor);
 		void SetWindowTitle(string title);
 		void SetRelativeMouseMode(bool mode);
@@ -101,7 +101,7 @@ namespace OpenRA
 		string GLVersion { get; }
 	}
 
-	public interface IVertexBuffer<T> : IDisposable
+	public interface IVertexBuffer <in T> : IDisposable
 	{
 		void Bind();
 		void SetData(T[] vertices, int length);
@@ -167,7 +167,7 @@ namespace OpenRA
 
 	public struct FontGlyph
 	{
-		public int2 Offset;
+		public Int2 Offset;
 		public Size Size;
 		public float Advance;
 		public byte[] Data;

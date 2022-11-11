@@ -59,7 +59,7 @@ namespace OpenRA.Scripting
 	{
 		protected readonly Player Player;
 		protected readonly ScriptContext Context;
-		public ScriptPlayerProperties(ScriptContext context, Player player)
+		protected ScriptPlayerProperties(ScriptContext context, Player player)
 		{
 			Player = player;
 			Context = context;

@@ -27,13 +27,13 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class WithColoredOverlay : ConditionalTrait<WithColoredOverlayInfo>, IRenderModifier
 	{
-		readonly float3 tint;
+		readonly Float3 tint;
 		readonly float alpha;
 
 		public WithColoredOverlay(WithColoredOverlayInfo info)
 			: base(info)
 		{
-			tint = new float3(info.Color.R, info.Color.G, info.Color.B) / 255f;
+			tint = new Float3(info.Color.R, info.Color.G, info.Color.B) / 255f;
 			alpha = info.Color.A / 255f;
 		}
 

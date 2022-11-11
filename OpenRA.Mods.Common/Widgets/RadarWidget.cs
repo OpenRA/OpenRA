@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Widgets
 		bool cachedEnabled;
 
 		float previewScale = 0;
-		int2 previewOrigin = int2.Zero;
+		Int2 previewOrigin = Int2.Zero;
 		Rectangle mapRect = Rectangle.Empty;
 
 		Sheet radarSheet;
@@ -213,7 +213,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var b = Rectangle.FromLTRB(left, top, right, bottom);
 			var rb = RenderBounds;
 			previewScale = Math.Min(rb.Width * 1f / b.Width, rb.Height * 1f / b.Height);
-			previewOrigin = new int2((int)((rb.Width - previewScale * b.Width) / 2), (int)((rb.Height - previewScale * b.Height) / 2));
+			previewOrigin = new Int2((int)((rb.Width - previewScale * b.Width) / 2), (int)((rb.Height - previewScale * b.Height) / 2));
 			mapRect = new Rectangle(previewOrigin.X, previewOrigin.Y, (int)(previewScale * b.Width), (int)(previewScale * b.Height));
 
 			terrainSprite = new Sprite(radarSheet, b, TextureChannel.RGBA);
@@ -285,7 +285,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		public override string GetCursor(int2 pos)
+		public override string GetCursor(Int2 pos)
 		{
 			if (world == null || !hasRadar)
 				return null;
@@ -469,7 +469,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		int2 CellToMinimapPixel(CPos p)
+		Int2 CellToMinimapPixel(CPos p)
 		{
 			var uv = p.ToMPos(world.Map);
 			var dx = (int)(previewScale * cellWidth * (uv.U - world.Map.Bounds.Left));
@@ -479,10 +479,10 @@ namespace OpenRA.Mods.Common.Widgets
 			if (isRectangularIsometric && (uv.V & 1) == 1)
 				dx += 1;
 
-			return new int2(mapRect.X + dx, mapRect.Y + dy);
+			return new Int2(mapRect.X + dx, mapRect.Y + dy);
 		}
 
-		CPos MinimapPixelToCell(int2 p)
+		CPos MinimapPixelToCell(Int2 p)
 		{
 			var u = (int)((p.X - mapRect.X) / (previewScale * cellWidth)) + world.Map.Bounds.Left;
 			var v = (int)((p.Y - mapRect.Y) / previewScale) + world.Map.Bounds.Top;

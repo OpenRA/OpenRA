@@ -19,14 +19,14 @@ namespace OpenRA.Mods.Common.Graphics
 	{
 		readonly SpriteFont font;
 		readonly WPos effectiveWorldPos;
-		readonly int2 screenPos;
+		readonly Int2 screenPos;
 		readonly int zOffset;
 		readonly Color color;
 		readonly Color bgDark;
 		readonly Color bgLight;
 		readonly string text;
 
-		public UITextRenderable(SpriteFont font, WPos effectiveWorldPos, int2 screenPos, int zOffset, Color color, Color bgDark, Color bgLight, string text)
+		public UITextRenderable(SpriteFont font, WPos effectiveWorldPos, Int2 screenPos, int zOffset, Color color, Color bgDark, Color bgLight, string text)
 		{
 			this.font = font;
 			this.effectiveWorldPos = effectiveWorldPos;
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Graphics
 			this.text = text;
 		}
 
-		public UITextRenderable(SpriteFont font, WPos effectiveWorldPos, int2 screenPos, int zOffset, Color color, string text)
+		public UITextRenderable(SpriteFont font, WPos effectiveWorldPos, Int2 screenPos, int zOffset, Color color, string text)
 			: this(font, effectiveWorldPos, screenPos, zOffset, color,
 				ChromeMetrics.Get<Color>("TextContrastColorDark"),
 				ChromeMetrics.Get<Color>("TextContrastColorLight"),
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return new UITextRenderable(font, effectiveWorldPos, screenPos, zOffset, color, text); }
-		public IRenderable OffsetBy(in WVec vec) { return new UITextRenderable(font, effectiveWorldPos + vec, screenPos, zOffset, color, text); }
+		public IRenderable OffsetBy(in WVec offset) { return new UITextRenderable(font, effectiveWorldPos + offset, screenPos, zOffset, color, text); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }

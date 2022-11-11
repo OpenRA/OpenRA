@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Orders
 
 	public interface IPlaceBuildingPreview
 	{
-		int2 TopLeftScreenOffset { get; }
+		Int2 TopLeftScreenOffset { get; }
 		void Tick();
 		IEnumerable<IRenderable> Render(WorldRenderer wr, CPos topLeft, Dictionary<CPos, PlaceBuildingCellType> footprint);
 		IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, CPos topLeft);
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Orders
 			return cell;
 		}
 
-		public IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		public IEnumerable<Order> Order(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			if ((mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down) || (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Up))
 			{
@@ -306,7 +306,7 @@ namespace OpenRA.Mods.Common.Orders
 			return preview?.RenderAnnotations(wr, TopLeft) ?? Enumerable.Empty<IRenderable>();
 		}
 
-		public virtual string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		public virtual string GetCursor(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			return worldDefaultCursor;
 		}

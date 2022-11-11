@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Linguini.Syntax.Ast;
 using OpenRA.FileSystem;
 
 namespace OpenRA
@@ -49,7 +50,13 @@ namespace OpenRA
 		public SourceLocation Location;
 		public string Key;
 		public MiniYaml Value;
-		public string Comment;
+		private string comment;
+
+		public string Comment
+		{
+			get { return comment; }
+			set { comment = value; }
+		}
 
 		public MiniYamlNode(string k, MiniYaml v, string c = null)
 		{

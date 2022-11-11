@@ -157,7 +157,10 @@ namespace OpenRA
 
 					return;
 				}
-				catch (IOException) { }
+				catch (IOException io)
+				{
+					throw new IOException(io.Message);
+				}
 			}
 		}
 

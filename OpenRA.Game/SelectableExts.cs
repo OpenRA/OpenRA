@@ -60,7 +60,7 @@ namespace OpenRA.Traits
 			return priority;
 		}
 
-		public static Actor WithHighestSelectionPriority(this IEnumerable<ActorBoundsPair> actors, int2 selectionPixel, Modifiers modifiers)
+		public static Actor WithHighestSelectionPriority(this IEnumerable<ActorBoundsPair> actors, Int2 selectionPixel, Modifiers modifiers)
 		{
 			if (!actors.Any())
 				return null;
@@ -68,12 +68,12 @@ namespace OpenRA.Traits
 			return actors.MaxBy(a => CalculateActorSelectionPriority(a.Actor.Info, a.Bounds, selectionPixel, modifiers)).Actor;
 		}
 
-		public static FrozenActor WithHighestSelectionPriority(this IEnumerable<FrozenActor> actors, int2 selectionPixel, Modifiers modifiers)
+		public static FrozenActor WithHighestSelectionPriority(this IEnumerable<FrozenActor> actors, Int2 selectionPixel, Modifiers modifiers)
 		{
 			return actors.MaxByOrDefault(a => CalculateActorSelectionPriority(a.Info, a.MouseBounds, selectionPixel, modifiers));
 		}
 
-		static long CalculateActorSelectionPriority(ActorInfo info, in Polygon bounds, int2 selectionPixel, Modifiers modifiers)
+		static long CalculateActorSelectionPriority(ActorInfo info, in Polygon bounds, Int2 selectionPixel, Modifiers modifiers)
 		{
 			if (bounds.IsEmpty)
 				return info.SelectionPriority(modifiers);
@@ -82,7 +82,7 @@ namespace OpenRA.Traits
 			// This isn't necessarily true for arbitrary polygons, but is fine for the hexagonal and diamond
 			// shapes that are currently implemented
 			var br = bounds.BoundingRect;
-			var centerPixel = new int2(
+			var centerPixel = new Int2(
 				br.Left + br.Size.Width / 2,
 				br.Top + br.Size.Height / 2);
 

@@ -73,12 +73,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </summary>
 		public bool IntersectsLine(CPos start, CPos end)
 		{
-			var s = new int2(start.X, start.Y);
-			var e = new int2(end.X, end.Y);
-			var tl = new int2(TopLeft.X, TopLeft.Y);
-			var tr = new int2(BottomRight.X, TopLeft.Y);
-			var bl = new int2(TopLeft.X, BottomRight.Y);
-			var br = new int2(BottomRight.X, BottomRight.Y);
+			var s = new Int2(start.X, start.Y);
+			var e = new Int2(end.X, end.Y);
+			var tl = new Int2(TopLeft.X, TopLeft.Y);
+			var tr = new Int2(BottomRight.X, TopLeft.Y);
+			var bl = new Int2(TopLeft.X, BottomRight.Y);
+			var br = new Int2(BottomRight.X, BottomRight.Y);
 			return
 				Exts.LinesIntersect(s, e, tl, tr) ||
 				Exts.LinesIntersect(s, e, tl, bl) ||

@@ -191,9 +191,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var newCount = previews.Count(p => p.Info.Name == "mpspawn");
 			var mp = Players.Players.Where(p => p.Key.StartsWith("Multi")).ToList();
-			foreach (var kv in mp)
+			foreach (var kv in mp.Select(kv => kv.Key))
 			{
-				var name = kv.Key;
+				var name = kv;
 				var index = int.Parse(name.Substring(5));
 
 				if (index >= newCount)
@@ -250,7 +250,7 @@ namespace OpenRA.Mods.Common.Traits
 			return cells.ToDictionary(c => c, c => PreviewsAt(c).Select(p => p.Info.Name).ToArray());
 		}
 
-		public IEnumerable<EditorActorPreview> PreviewsInBox(int2 a, int2 b)
+		public IEnumerable<EditorActorPreview> PreviewsInBox(Int2 a, Int2 b)
 		{
 			return screenMap.InBox(Rectangle.FromLTRB(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)));
 		}
@@ -289,7 +289,7 @@ namespace OpenRA.Mods.Common.Traits
 			return SubCell.Invalid;
 		}
 
-		public IEnumerable<EditorActorPreview> PreviewsAt(int2 worldPx)
+		public IEnumerable<EditorActorPreview> PreviewsAt(Int2 worldPx)
 		{
 			return screenMap.At(worldPx);
 		}

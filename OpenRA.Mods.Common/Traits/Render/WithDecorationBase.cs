@@ -32,11 +32,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly bool RequiresSelection = false;
 
 		[Desc("Offset sprite center position from the selection box edge.")]
-		public readonly int2 Margin = int2.Zero;
+		public readonly Int2 Margin = Int2.Zero;
 
 		[Desc("Screen-space offsets to apply when defined conditions are enabled.",
 			"A dictionary of [condition string]: [x, y offset].")]
-		public readonly Dictionary<BooleanExpression, int2> Offsets = new Dictionary<BooleanExpression, int2>();
+		public readonly Dictionary<BooleanExpression, Int2> Offsets = new Dictionary<BooleanExpression, Int2>();
 
 		[Desc("The number of ticks that each step in the blink pattern in active.")]
 		public readonly int BlinkInterval = 5;
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public abstract class WithDecorationBase<InfoType> : ConditionalTrait<InfoType>, IDecoration where InfoType : WithDecorationBaseInfo
 	{
 		protected readonly Actor Self;
-		int2 conditionalOffset;
+		Int2 conditionalOffset;
 		BlinkState[] blinkPattern;
 
 		public WithDecorationBase(Actor self, InfoType info)
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		bool IDecoration.RequiresSelection => Info.RequiresSelection;
 
-		protected abstract IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 pos);
+		protected abstract IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, Int2 pos);
 
 		IEnumerable<IRenderable> IDecoration.RenderDecoration(Actor self, WorldRenderer wr, ISelectionDecorations container)
 		{
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void OffsetConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
 		{
-			conditionalOffset = int2.Zero;
+			conditionalOffset = Int2.Zero;
 			foreach (var kv in Info.Offsets)
 			{
 				if (kv.Key.Evaluate(conditions))

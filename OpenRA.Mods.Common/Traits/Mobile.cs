@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		[CursorReference(dictionaryReference: LintDictionaryReference.Values)]
 		[Desc("Cursor overrides to display for specific terrain types.",
 			"A dictionary of [terrain type]: [cursor name].")]
-		public readonly Dictionary<string, string> TerrainCursors = new Dictionary<string, string>();
+		public Dictionary<string, string> TerrainCursors = new Dictionary<string, string>();
 
 		[CursorReference]
 		[Desc("Cursor to display when a move order cannot be issued at target location.")]
@@ -207,8 +207,13 @@ namespace OpenRA.Mods.Common.Traits
 		bool requireForceMove;
 
 		public bool IsImmovable { get; private set; }
-		public bool TurnToMove;
 		public bool IsBlocking { get; private set; }
+
+		public bool TurnToMove
+		{
+			get { return TurnToMove; }
+			set { TurnToMove = value; }
+		}
 
 		public bool IsMovingBetweenCells => FromCell != ToCell;
 

@@ -44,11 +44,11 @@ namespace OpenRA.Graphics
 	public interface IModifyableRenderable : IRenderable
 	{
 		float Alpha { get; }
-		float3 Tint { get; }
+		Float3 Tint { get; }
 		TintModifiers TintModifiers { get; }
 
 		IModifyableRenderable WithAlpha(float newAlpha);
-		IModifyableRenderable WithTint(in float3 newTint, TintModifiers newTintModifiers);
+		IModifyableRenderable WithTint(in Float3 newTint, TintModifiers newTintModifiers);
 	}
 
 	public interface IFinalizedRenderable

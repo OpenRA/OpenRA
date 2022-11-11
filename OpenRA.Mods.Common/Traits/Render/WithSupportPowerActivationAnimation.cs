@@ -9,7 +9,11 @@
  */
 #endregion
 
+using System;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Net.Http;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -25,6 +29,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Body = "body";
 
 		public override object Create(ActorInitializer init) { return new WithSupportPowerActivationAnimation(init.Self, this); }
+		
 	}
 
 	public class WithSupportPowerActivationAnimation : ConditionalTrait<WithSupportPowerActivationAnimationInfo>, INotifySupportPower
@@ -37,7 +42,23 @@ namespace OpenRA.Mods.Common.Traits.Render
 			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
 		}
 
-		void INotifySupportPower.Charged(Actor self) { }
+		
+		void INotifySupportPower.Charged(Actor self) {
+			try
+			{
+				 Console.WriteLine("Acotr charged {0}",self);
+
+			}
+			catch (System.NotSupportedException e)
+			{
+				Console.WriteLine("The actor can't be charged '{e}'");
+			}
+			finally
+			{
+				Console.WriteLine("Re-try again with another actor.");
+			}
+
+		}
 
 		void INotifySupportPower.Activated(Actor self)
 		{

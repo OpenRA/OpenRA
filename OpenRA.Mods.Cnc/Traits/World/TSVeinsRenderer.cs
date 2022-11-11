@@ -375,7 +375,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			return borders[cell] != Adjacency.None ? info.Name : null;
 		}
 
-		IEnumerable<IRenderable> IResourceRenderer.RenderUIPreview(WorldRenderer wr, string resourceType, int2 origin, float scale)
+		IEnumerable<IRenderable> IResourceRenderer.RenderUIPreview(WorldRenderer wr, string resourceType, Int2 origin, float scale)
 		{
 			if (resourceType != info.ResourceType)
 				yield break;
@@ -397,7 +397,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var palette = wr.Palette(info.Palette);
 
 			var tintModifiers = veinSequence.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
-			yield return new SpriteRenderable(sprite, origin, WVec.Zero, 0, palette, veinSequence.Scale, alpha, float3.Ones, tintModifiers, false);
+			yield return new SpriteRenderable(sprite, origin, WVec.Zero, 0, palette, veinSequence.Scale, alpha, Float3.Ones, tintModifiers, false);
 		}
 
 		event Action<CPos> IRadarTerrainLayer.CellEntryChanged

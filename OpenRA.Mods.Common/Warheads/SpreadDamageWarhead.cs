@@ -69,15 +69,7 @@ namespace OpenRA.Mods.Common.Warheads
 				// PERF: Avoid using TraitsImplementing<HitShape> that needs to find the actor in the trait dictionary.
 				foreach (var targetPos in victim.EnabledTargetablePositions)
 				{
-					if (targetPos is HitShape h)
-					{
-						var distance = h.DistanceFromEdge(victim, pos).Length;
-						if (distance < closestDistance)
-						{
-							closestDistance = distance;
-							closestActiveShape = h;
-						}
-					}
+					m2(targetPos,victim,pos,closestDistance,closestActiveShape);
 				}
 
 				// Cannot be damaged without an active HitShape.
@@ -131,12 +123,29 @@ namespace OpenRA.Mods.Common.Warheads
 			{
 				var outer = effectiveRange[i].Length;
 				if (outer > distance)
-					return int2.Lerp(Falloff[i - 1], Falloff[i], distance - inner, outer - inner);
+					return Int2.Lerp(Falloff[i - 1], Falloff[i], distance - inner, outer - inner);
 
 				inner = outer;
 			}
 
 			return 0;
+		}
+		void m1(int distance,int closestDistance, HitShape closestActiveShape, HitShape h)
+		{
+			if (distance < closestDistance)
+			{
+				closestDistance = distance;
+				closestActiveShape = h;
+			}
+		}
+
+		void m2(ITargetablePositions targetPos,Actor victim,WPos pos,int closestDistance, HitShape closestActiveShape)
+		{
+			if (targetPos is HitShape h)
+			{
+				var distance = h.DistanceFromEdge(victim, pos).Length;
+				m1(distance, closestDistance, closestActiveShape,h);
+			}
 		}
 	}
 }

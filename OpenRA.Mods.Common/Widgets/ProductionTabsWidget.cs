@@ -203,7 +203,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			// Draw tab buttons
 			Game.Renderer.EnableScissor(new Rectangle(leftButtonRect.Right, rb.Y + 1, rightButtonRect.Left - leftButtonRect.Right - 1, rb.Height));
-			var origin = new int2(leftButtonRect.Right - 1 + (int)listOffset, leftButtonRect.Y);
+			var origin = new Int2(leftButtonRect.Right - 1 + (int)listOffset, leftButtonRect.Y);
 			contentWidth = 0;
 
 			foreach (var tab in tabs)
@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Common.Widgets
 				contentWidth += TabWidth - 1;
 
 				var textSize = font.Measure(tab.Name);
-				var position = new int2(rect.X + (rect.Width - textSize.X) / 2, rect.Y + (rect.Height - textSize.Y) / 2);
+				var position = new Int2(rect.X + (rect.Width - textSize.X) / 2, rect.Y + (rect.Height - textSize.Y) / 2);
 				font.DrawTextWithContrast(tab.Name, position, tab.Queue.AllQueued().Any(i => i.Done) ? Color.Gold : Color.White, Color.Black, 1);
 			}
 
@@ -300,7 +300,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			// Check production tabs
-			var offsetloc = mi.Location - new int2(leftButtonRect.Right - 1 + (int)listOffset, leftButtonRect.Y);
+			var offsetloc = mi.Location - new Int2(leftButtonRect.Right - 1 + (int)listOffset, leftButtonRect.Y);
 			if (offsetloc.X > 0 && offsetloc.X < contentWidth)
 			{
 				CurrentQueue = Groups[queueGroup].Tabs[offsetloc.X / (TabWidth - 1)].Queue;

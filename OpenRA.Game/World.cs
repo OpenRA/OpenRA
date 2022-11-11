@@ -370,8 +370,8 @@ namespace OpenRA
 		public void RemoveAll(Predicate<IEffect> predicate)
 		{
 			effects.RemoveAll(predicate);
-			unpartitionedEffects.RemoveAll(e => predicate((IEffect)e));
-			syncedEffects.RemoveAll(e => predicate((IEffect)e));
+			unpartitionedEffects.RemoveAll(e => predicate(e as IEffect));
+			syncedEffects.RemoveAll(e => predicate(e as IEffect));
 		}
 
 		public void AddFrameEndTask(Action<World> a) { frameEndActions.Enqueue(a); }
