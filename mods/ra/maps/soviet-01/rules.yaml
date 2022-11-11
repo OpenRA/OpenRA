@@ -42,6 +42,8 @@ AFLD:
 	ParatroopersPower@paratroopers:
 		Prerequisites: ~disabled
 	-RallyPoint:
+	CommandBarBlacklist:
+		DisableStop: true
 	-Sellable:
 	Demolishable:
 		-Condition:

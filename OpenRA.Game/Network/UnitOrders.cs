@@ -53,7 +53,8 @@ namespace OpenRA.Network
 				case "DisableChatEntry":
 					{
 						// Order must originate from the server
-						if (clientId != 0)
+						// Don't disable chat in replays
+						if (clientId != 0 || (world != null && world.IsReplay))
 							break;
 
 						// Server may send MaxValue to indicate that it is disabled until further notice
