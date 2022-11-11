@@ -21,21 +21,21 @@ namespace OpenRA.Graphics
 		public readonly BlendMode BlendMode;
 		public readonly TextureChannel Channel;
 		public readonly float ZRamp;
-		public readonly float3 Size;
-		public readonly float3 Offset;
+		public readonly Float3 Size;
+		public readonly Float3 Offset;
 		public readonly float Top, Left, Bottom, Right;
 
 		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel, float scale = 1)
 			: this(sheet, bounds, 0, float2.Zero, channel, BlendMode.Alpha, scale) { }
 
-		public Sprite(Sheet sheet, Rectangle bounds, float zRamp, in float3 offset, TextureChannel channel, BlendMode blendMode = BlendMode.Alpha, float scale = 1f)
+		public Sprite(Sheet sheet, Rectangle bounds, float zRamp, in Float3 offset, TextureChannel channel, BlendMode blendMode = BlendMode.Alpha, float scale = 1f)
 		{
 			Sheet = sheet;
 			Bounds = bounds;
 			Offset = offset;
 			ZRamp = zRamp;
 			Channel = channel;
-			Size = scale * new float3(bounds.Size.Width, bounds.Size.Height, bounds.Size.Height * zRamp);
+			Size = scale * new Float3(bounds.Size.Width, bounds.Size.Height, bounds.Size.Height * zRamp);
 			BlendMode = blendMode;
 
 			// Some GPUs suffer from precision issues when rendering into non 1:1 framebuffers that result

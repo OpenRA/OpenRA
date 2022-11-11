@@ -203,7 +203,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			return Math.Max(int2.Lerp(0, resourceInfo.MaxDensity, adjacent, 9), 1);
+			return Math.Max(Int2.Lerp(0, resourceInfo.MaxDensity, adjacent, 9), 1);
 		}
 
 		protected virtual bool AllowResourceAt(string resourceType, CPos cell)

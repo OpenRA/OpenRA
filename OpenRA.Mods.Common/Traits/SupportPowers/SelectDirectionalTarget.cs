@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Arrow[] directionArrows;
 
 		CPos targetCell;
-		int2 targetLocation;
+		Int2 targetLocation;
 		float2 dragDirection;
 		bool activated;
 		bool dragStarted;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 			mouseAttachment = Ui.Root.Get<MouseAttachmentWidget>("MOUSE_ATTATCHMENT");
 		}
 
-		IEnumerable<Order> IOrderGenerator.Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		IEnumerable<Order> IOrderGenerator.Order(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Right)
 			{
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> IOrderGenerator.RenderAboveShroud(WorldRenderer wr, World world) { yield break; }
 		IEnumerable<IRenderable> IOrderGenerator.RenderAnnotations(WorldRenderer wr, World world) { yield break; }
 
-		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		string IOrderGenerator.GetCursor(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			return world.Map.Contains(cell) ? cursor : "generic-blocked";
 		}

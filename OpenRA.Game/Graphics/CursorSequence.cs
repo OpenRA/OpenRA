@@ -19,7 +19,7 @@ namespace OpenRA.Graphics
 		public readonly int Start;
 		public readonly int Length;
 		public readonly string Palette;
-		public readonly int2 Hotspot;
+		public readonly Int2 Hotspot;
 
 		public readonly ISpriteFrame[] Frames;
 

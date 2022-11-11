@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Terrain
 						// The internal z axis is inverted from expectation (negative is closer)
 						var zOffset = tile != null ? -tile.ZOffset : 0;
 						var zRamp = tile != null ? tile.ZRamp : 1f;
-						var offset = new float3(f.Offset, zOffset);
+						var offset = new Float3(f.Offset, zOffset);
 						var type = SheetBuilder.FrameTypeToSheetType(f.Type);
 
 						var s = sheetBuilders[type].Allocate(f.Size, zRamp, offset);
@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.Terrain
 
 				// Ignore the offsets baked into R8 sprites
 				if (terrainInfo.IgnoreTileSpriteOffsets)
-					allSprites = allSprites.Select(s => new Sprite(s.Sheet, s.Bounds, s.ZRamp, new float3(float2.Zero, s.Offset.Z), s.Channel, s.BlendMode));
+					allSprites = allSprites.Select(s => new Sprite(s.Sheet, s.Bounds, s.ZRamp, new Float3(float2.Zero, s.Offset.Z), s.Channel, s.BlendMode));
 
 				if (onMissingImage != null && variants.Count == 0)
 					continue;

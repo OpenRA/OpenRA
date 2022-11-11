@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			interactable = self.Trait<Interactable>();
 		}
 
-		int2 GetDecorationPosition(Actor self, WorldRenderer wr, string pos)
+		Int2 GetDecorationPosition(Actor self, WorldRenderer wr, string pos)
 		{
 			var bounds = interactable.DecorationBounds(self, wr);
 			switch (pos)
@@ -41,25 +41,25 @@ namespace OpenRA.Mods.Common.Traits.Render
 				case "TopRight": return bounds.TopRight;
 				case "BottomLeft": return bounds.BottomLeft;
 				case "BottomRight": return bounds.BottomRight;
-				case "Top": return new int2(bounds.Left + bounds.Size.Width / 2, bounds.Top);
-				default: return bounds.TopLeft + new int2(bounds.Size.Width / 2, bounds.Size.Height / 2);
+				case "Top": return new Int2(bounds.Left + bounds.Size.Width / 2, bounds.Top);
+				default: return bounds.TopLeft + new Int2(bounds.Size.Width / 2, bounds.Size.Height / 2);
 			}
 		}
 
-		static int2 GetDecorationMargin(string pos, int2 margin)
+		static Int2 GetDecorationMargin(string pos, Int2 margin)
 		{
 			switch (pos)
 			{
 				case "TopLeft": return margin;
-				case "TopRight": return new int2(-margin.X, margin.Y);
-				case "BottomLeft": return new int2(margin.X, -margin.Y);
+				case "TopRight": return new Int2(-margin.X, margin.Y);
+				case "BottomLeft": return new Int2(margin.X, -margin.Y);
 				case "BottomRight": return -margin;
-				case "Top": return new int2(0, margin.Y);
-				default: return int2.Zero;
+				case "Top": return new Int2(0, margin.Y);
+				default: return Int2.Zero;
 			}
 		}
 
-		protected override int2 GetDecorationOrigin(Actor self, WorldRenderer wr, string pos, int2 margin)
+		protected override Int2 GetDecorationOrigin(Actor self, WorldRenderer wr, string pos, Int2 margin)
 		{
 			return wr.Viewport.WorldToViewPx(GetDecorationPosition(self, wr, pos)) + GetDecorationMargin(pos, margin);
 		}

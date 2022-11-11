@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly Animation shadow;
 		readonly AnimationWithOffset anim;
 		readonly WithParachuteInfo info;
-		readonly float3 shadowColor;
+		readonly Float3 shadowColor;
 		readonly float shadowAlpha;
 
 		bool renderProlonged = false;
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var rs = self.Trait<RenderSprites>();
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);
 
-			shadowColor = new float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
+			shadowColor = new Float3(info.ShadowColor.R, info.ShadowColor.G, info.ShadowColor.B) / 255f;
 			shadowAlpha = info.ShadowColor.A / 255f;
 		}
 

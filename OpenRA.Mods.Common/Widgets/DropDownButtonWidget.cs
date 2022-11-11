@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public override void Draw()
 		{
 			base.Draw();
-			var stateOffset = Depressed ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
+			var stateOffset = Depressed ? new Int2(VisualHeight, VisualHeight) : new Int2(0, 0);
 
 			var rb = RenderBounds;
 			var isDisabled = IsDisabled();
@@ -220,7 +220,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
-		public override string GetCursor(int2 pos) { return null; }
+		public override string GetCursor(Int2 pos) { return null; }
 		public override Widget Clone() { return new MaskWidget(this); }
 	}
 }

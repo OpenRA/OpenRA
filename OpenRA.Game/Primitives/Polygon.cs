@@ -19,7 +19,7 @@ namespace OpenRA.Primitives
 		public static readonly Polygon Empty = new Polygon(Rectangle.Empty);
 
 		public readonly Rectangle BoundingRect;
-		public readonly int2[] Vertices;
+		public readonly Int2[] Vertices;
 		readonly bool isRectangle;
 
 		public Polygon(Rectangle bounds)
@@ -29,7 +29,7 @@ namespace OpenRA.Primitives
 			isRectangle = true;
 		}
 
-		public Polygon(int2[] vertices)
+		public Polygon(Int2[] vertices)
 		{
 			if (vertices != null && vertices.Length > 0)
 			{
@@ -53,13 +53,13 @@ namespace OpenRA.Primitives
 			{
 				isRectangle = true;
 				BoundingRect = Rectangle.Empty;
-				Vertices = Exts.MakeArray(4, _ => int2.Zero);
+				Vertices = Exts.MakeArray(4, _ => Int2.Zero);
 			}
 		}
 
 		public bool IsEmpty => BoundingRect.IsEmpty;
 
-		public bool Contains(int2 xy)
+		public bool Contains(Int2 xy)
 		{
 			return isRectangle ? BoundingRect.Contains(xy) : Vertices.PolygonContains(xy);
 		}

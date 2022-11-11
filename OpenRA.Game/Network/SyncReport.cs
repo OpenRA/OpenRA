@@ -242,12 +242,10 @@ namespace OpenRA.Network
 				Expression getString;
 				if (memberType.IsValueType)
 				{
-					// (ISync sync) => { return ((TSync)sync).Foo.ToString(); }
 					getString = Expression.Call(getMember, toString);
 				}
 				else
 				{
-					// (ISync sync) => { var foo = ((TSync)sync).Foo; return foo == null ? null : foo.ToString(); }
 					var memberVariable = Expression.Variable(memberType, getMember.Member.Name);
 					var assignMemberVariable = Expression.Assign(memberVariable, getMember);
 					var member = Expression.Block(new[] { memberVariable }, assignMemberVariable);

@@ -40,7 +40,7 @@ namespace OpenRA.Platforms.Default
 				 | ((raw & (int)SDL.SDL_Keymod.KMOD_SHIFT) != 0 ? Modifiers.Shift : 0);
 		}
 
-		int2 EventPosition(Sdl2PlatformWindow device, int x, int y)
+		Int2 EventPosition(Sdl2PlatformWindow device, int x, int y)
 		{
 			// On Windows and Linux (X11) events are given in surface coordinates
 			// These must be scaled to our effective window coordinates
@@ -48,20 +48,20 @@ namespace OpenRA.Platforms.Default
 			if (Platform.CurrentPlatform != PlatformType.OSX && device.EffectiveWindowSize != device.SurfaceSize)
 			{
 				var s = 1 / device.EffectiveWindowScale;
-				return new int2((int)(Math.Sign(x) / 2f + x * s), (int)(Math.Sign(x) / 2f + y * s));
+				return new Int2((int)(Math.Sign(x) / 2f + x * s), (int)(Math.Sign(x) / 2f + y * s));
 			}
 
 			// On macOS we must still account for the user-requested scale modifier
 			if (Platform.CurrentPlatform == PlatformType.OSX && device.EffectiveWindowScale != device.NativeWindowScale)
 			{
 				var s = device.NativeWindowScale / device.EffectiveWindowScale;
-				return new int2((int)(Math.Sign(x) / 2f + x * s), (int)(Math.Sign(x) / 2f + y * s));
+				return new Int2((int)(Math.Sign(x) / 2f + x * s), (int)(Math.Sign(x) / 2f + y * s));
 			}
 
-			return new int2(x, y);
+			return new Int2(x, y);
 		}
 
-		public void PumpInput(Sdl2PlatformWindow device, IInputHandler inputHandler, int2? lockedMousePosition)
+		public void PumpInput(Sdl2PlatformWindow device, IInputHandler inputHandler, Int2? lockedMousePosition)
 		{
 			var mods = MakeModifiers((int)SDL.SDL_GetModState());
 			inputHandler.ModifierKeys(mods);
@@ -122,11 +122,11 @@ namespace OpenRA.Platforms.Default
 							var button = MakeButton(e.button.button);
 							lastButtonBits |= button;
 
-							var input = lockedMousePosition ?? new int2(e.button.x, e.button.y);
+							var input = lockedMousePosition ?? new Int2(e.button.x, e.button.y);
 							var pos = EventPosition(device, input.X, input.Y);
 
 							inputHandler.OnMouseInput(new MouseInput(
-								MouseInputEvent.Down, button, pos, int2.Zero, mods,
+								MouseInputEvent.Down, button, pos, Int2.Zero, mods,
 								MultiTapDetection.DetectFromMouse(e.button.button, pos)));
 
 							break;
@@ -143,11 +143,11 @@ namespace OpenRA.Platforms.Default
 							var button = MakeButton(e.button.button);
 							lastButtonBits &= ~button;
 
-							var input = lockedMousePosition ?? new int2(e.button.x, e.button.y);
+							var input = lockedMousePosition ?? new Int2(e.button.x, e.button.y);
 							var pos = EventPosition(device, input.X, input.Y);
 
 							inputHandler.OnMouseInput(new MouseInput(
-								MouseInputEvent.Up, button, pos, int2.Zero, mods,
+								MouseInputEvent.Up, button, pos, Int2.Zero, mods,
 								MultiTapDetection.InfoFromMouse(e.button.button)));
 
 							break;
@@ -155,7 +155,7 @@ namespace OpenRA.Platforms.Default
 
 					case SDL.SDL_EventType.SDL_MOUSEMOTION:
 						{
-							var mousePos = new int2(e.motion.x, e.motion.y);
+							var mousePos = new Int2(e.motion.x, e.motion.y);
 							var input = lockedMousePosition ?? mousePos;
 							var pos = EventPosition(device, input.X, input.Y);
 
@@ -174,7 +174,7 @@ namespace OpenRA.Platforms.Default
 							SDL.SDL_GetMouseState(out var x, out var y);
 
 							var pos = EventPosition(device, x, y);
-							inputHandler.OnMouseInput(new MouseInput(MouseInputEvent.Scroll, MouseButton.None, pos, new int2(0, e.wheel.y), mods, 0));
+							inputHandler.OnMouseInput(new MouseInput(MouseInputEvent.Scroll, MouseButton.None, pos, new Int2(0, e.wheel.y), mods, 0));
 
 							break;
 						}

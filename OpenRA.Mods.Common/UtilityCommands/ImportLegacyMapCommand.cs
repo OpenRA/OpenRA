@@ -241,9 +241,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return Truncate(mapSection.GetValue("Theater", "TEMPERAT"), 8).ToUpperInvariant();
 		}
 
-		static int2 LocationFromMapOffset(int offset, int mapSize)
+		static Int2 LocationFromMapOffset(int offset, int mapSize)
 		{
-			return new int2(offset % mapSize, offset / mapSize);
+			return new Int2(offset % mapSize, offset / mapSize);
 		}
 
 		void LoadWaypoints(IniSection waypointSection)

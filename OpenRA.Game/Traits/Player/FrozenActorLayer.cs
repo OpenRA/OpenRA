@@ -79,7 +79,7 @@ namespace OpenRA.Traits
 
 		int flashTicks;
 		TintModifiers flashModifiers;
-		float3 flashTint;
+		Float3 flashTint;
 		float? flashAlpha;
 
 		public FrozenActor(Actor actor, ICreatesFrozenActors frozenTrait, PPos[] footprint, Player viewer, bool startsRevealed)
@@ -199,11 +199,11 @@ namespace OpenRA.Traits
 		{
 			flashTicks = 5;
 			flashModifiers = TintModifiers.ReplaceColor;
-			flashTint = new float3(color.R, color.G, color.B) / 255f;
+			flashTint = new Float3(color.R, color.G, color.B) / 255f;
 			flashAlpha = alpha;
 		}
 
-		public void Flash(float3 tint)
+		public void Flash(Float3 tint)
 		{
 			flashTicks = 5;
 			flashModifiers = TintModifiers.None;
@@ -266,7 +266,7 @@ namespace OpenRA.Traits
 			partitionedFrozenActorIds = new SpatiallyPartitioned<uint>(
 				world.Map.MapSize.X, world.Map.MapSize.Y, binSize);
 
-			self.Trait<Shroud>().OnShroudChanged += uv => dirtyFrozenActorIds.UnionWith(partitionedFrozenActorIds.At(new int2(uv.U, uv.V)));
+			self.Trait<Shroud>().OnShroudChanged += uv => dirtyFrozenActorIds.UnionWith(partitionedFrozenActorIds.At(new Int2(uv.U, uv.V)));
 		}
 
 		public void Add(FrozenActor fa)

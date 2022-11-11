@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 				var x = r.Next(viewport.Left, viewport.Right);
 				var y = r.Next(viewport.Top, viewport.Bottom);
 
-				Pos = new int2(x, y);
+				Pos = new Int2(x, y);
 				Size = r.Next(info.ParticleSize[0], info.ParticleSize[1] + 1);
 				DirectionScatterX = info.ScatterDirection[0] + r.Next(info.ScatterDirection[1] - info.ScatterDirection[0]);
 				Gravity = float2.Lerp(info.Gravity[0], info.Gravity[1], r.NextFloat());
@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Randomly distribute particles within the initial viewport
 			var particleCount = viewportSize.Width * viewportSize.Height * info.ParticleDensityFactor / 10000;
 			particles = new Particle[particleCount];
-			var rect = new Rectangle(int2.Zero, viewportSize);
+			var rect = new Rectangle(Int2.Zero, viewportSize);
 			for (var i = 0; i < particles.Length; i++)
 				particles[i] = new Particle(info, world.LocalRandom, rect);
 		}
@@ -196,7 +196,7 @@ namespace OpenRA.Mods.Common.Traits
 		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
 		{
 			var center = wr.Viewport.CenterLocation;
-			var viewport = new Rectangle(center - new int2(viewportSize) / 2, viewportSize);
+			var viewport = new Rectangle(center - new Int2(viewportSize) / 2, viewportSize);
 			var wcr = Game.Renderer.WorldRgbaColorRenderer;
 
 			// SwingSpeed is defined in px/tick so we must account for the fraction of a tick that elapsed since the last render.
@@ -237,7 +237,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Render the particle
 				// We must provide a z coordinate to stop the GL near and far Z limits from culling the geometry
-				var a = new float3(p.Pos.X, p.Pos.Y, p.Pos.Y);
+				var a = new Float3(p.Pos.X, p.Pos.Y, p.Pos.Y);
 				if (info.UseSquares)
 				{
 					var b = a + new float2(p.Size, p.Size);
@@ -247,7 +247,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var tail = p.Pos + new float2(-windStrength, -p.Gravity * 2 / 3);
 
-					var b = new float3(tail.X, tail.Y, tail.Y);
+					var b = new Float3(tail.X, tail.Y, tail.Y);
 					wcr.DrawLine(a, b, p.Size, p.TailColor);
 				}
 			}

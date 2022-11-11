@@ -169,7 +169,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			n[0] <<= bits;
 		}
 
-		static uint SubBigNum(uint[] dest, uint[] src1, uint[] src2, uint carry, int len)
+		static void SubBigNum(uint[] dest, uint[] src1, uint[] src2, uint carry, int len)
 		{
 			uint i1, i2;
 
@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				}
 			}
 
-			return carry;
+			//return carry;
 		}
 
 		static unsafe uint SubBigNum(uint* dest, uint* src1, uint* src2, uint carry, int len)

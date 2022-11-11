@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 				earnedSeconds.Enqueue(resources.Earned);
 			}
 			else
-				DisplayIncome = int2.Lerp(lastIncome, Income, tickDelta * timestep, 1000);
+				DisplayIncome = Int2.Lerp(lastIncome, Income, tickDelta * timestep, 1000);
 		}
 
 		public void ResolveOrder(Actor self, Order order)

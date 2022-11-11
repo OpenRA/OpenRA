@@ -279,7 +279,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				RequiresMod = utility.ModData.Manifest.Id
 			};
 
-			var fullSize = new int2(iniSize[2], iniSize[3]);
+			var fullSize = new Int2(iniSize[2], iniSize[3]);
 			ReadTiles(map, file, fullSize);
 			ReadActors(map, file, "Structures", fullSize);
 			ReadActors(map, file, "Units", fullSize);
@@ -332,7 +332,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			}
 		}
 
-		static void ReadTiles(Map map, IniFile file, int2 fullSize)
+		static void ReadTiles(Map map, IniFile file, Int2 fullSize)
 		{
 			var terrainInfo = (ITemplatedTerrainInfo)Game.ModData.DefaultTerrainInfo[map.Tileset];
 			var mapSection = file.GetSection("IsoMapPack5");
@@ -370,7 +370,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			}
 		}
 
-		static void ReadOverlay(Map map, IniFile file, int2 fullSize)
+		static void ReadOverlay(Map map, IniFile file, Int2 fullSize)
 		{
 			var overlaySection = file.GetSection("OverlayPack");
 			var overlayCompressed = Convert.FromBase64String(string.Concat(overlaySection.Select(kvp => kvp.Value)));
@@ -488,7 +488,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			}
 		}
 
-		static void ReadWaypoints(Map map, IniFile file, int2 fullSize)
+		static void ReadWaypoints(Map map, IniFile file, Int2 fullSize)
 		{
 			var waypointsSection = file.GetSection("Waypoints", true);
 			foreach (var kv in waypointsSection)
@@ -510,7 +510,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			}
 		}
 
-		static void ReadTerrainActors(Map map, IniFile file, int2 fullSize)
+		static void ReadTerrainActors(Map map, IniFile file, Int2 fullSize)
 		{
 			var terrainSection = file.GetSection("Terrain", true);
 			foreach (var kv in terrainSection)
@@ -536,7 +536,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			}
 		}
 
-		static void ReadActors(Map map, IniFile file, string type, int2 fullSize)
+		static void ReadActors(Map map, IniFile file, string type, Int2 fullSize)
 		{
 			var structuresSection = file.GetSection(type, true);
 			foreach (var kv in structuresSection)

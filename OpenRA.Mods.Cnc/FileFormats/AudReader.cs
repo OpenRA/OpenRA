@@ -18,7 +18,7 @@ using OpenRA.Primitives;
 namespace OpenRA.Mods.Cnc.FileFormats
 {
 	[Flags]
-	enum SoundFlags
+	enum Sound
 	{
 		Stereo = 0x1,
 		_16Bit = 0x2,
@@ -41,9 +41,9 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				sampleRate = s.ReadUInt16();
 				var dataSize = s.ReadInt32();
 				var outputSize = s.ReadInt32();
-				var audioFlags = (SoundFlags)s.ReadByte();
-				sampleBits = (audioFlags & SoundFlags._16Bit) == 0 ? 8 : 16;
-				channels = (audioFlags & SoundFlags.Stereo) == 0 ? 1 : 2;
+				var audioFlags = (Sound)s.ReadByte();
+				sampleBits = (audioFlags & Sound._16Bit) == 0 ? 8 : 16;
+				channels = (audioFlags & Sound.Stereo) == 0 ? 1 : 2;
 				lengthInSeconds = (float)(outputSize * 8) / (channels * sampleBits * sampleRate);
 
 				var readFormat = s.ReadByte();

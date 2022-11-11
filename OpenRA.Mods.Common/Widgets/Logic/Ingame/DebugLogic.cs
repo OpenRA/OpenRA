@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 			{
 				var labelWidget = widget.Get<LabelWidget>("DEBUG_TEXT");
 
-				var cellPosText = new CachedTransform<int2, string>(t =>
+				var cellPosText = new CachedTransform<Int2, string>(t =>
 				{
 					var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
 					var map = worldRenderer.World.Map;

@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var unit in items)
 			{
 				var icon = unit.Icon;
-				var topLeftOffset = new int2(queueCol * (IconWidth + IconSpacing), 0);
+				var topLeftOffset = new Int2(queueCol * (IconWidth + IconSpacing), 0);
 
 				var iconTopLeft = RenderOrigin + topLeftOffset;
 				var centerPosition = iconTopLeft;

@@ -181,7 +181,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return RenderBounds.Contains(mi.Location) && Skippable;
 		}
 
-		public override string GetCursor(int2 pos)
+		public override string GetCursor(Int2 pos)
 		{
 			return null;
 		}

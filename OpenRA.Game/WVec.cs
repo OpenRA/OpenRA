@@ -50,7 +50,7 @@ namespace OpenRA
 			return Rotate(ref mtx);
 		}
 
-		public WVec Rotate(ref Int32Matrix4x4 mtx)
+		public WVec Rotate(ref Int32Matrix4X4 mtx)
 		{
 			var lx = (long)X;
 			var ly = (long)Y;

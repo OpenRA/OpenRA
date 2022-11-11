@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Orders
 			this.subjects = subjects;
 		}
 
-		public override IEnumerable<Order> Order(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		public override IEnumerable<Order> Order(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			if (mi.Button != expectedButton)
 				world.CancelInputMode();
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Orders
 				world.CancelInputMode();
 		}
 
-		public override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		public override string GetCursor(World world, CPos cell, Int2 worldPixel, MouseInput mi)
 		{
 			if (!subjects.Any())
 				return null;
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Orders
 			return canGuard ? cursor : "move-blocked";
 		}
 
-		public override bool InputOverridesSelection(World world, int2 xy, MouseInput mi)
+		public override bool InputOverridesSelection(World world, Int2 xy, MouseInput mi)
 		{
 			// Custom order generators always override selection
 			return true;

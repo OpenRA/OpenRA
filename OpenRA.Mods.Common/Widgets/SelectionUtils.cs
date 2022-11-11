@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Widgets
 			});
 		}
 
-		public static IEnumerable<Actor> SelectHighestPriorityActorAtPoint(World world, int2 a, Modifiers modifiers)
+		public static IEnumerable<Actor> SelectHighestPriorityActorAtPoint(World world, Int2 a, Modifiers modifiers)
 		{
 			var selected = world.ScreenMap.ActorsAtMouse(a)
 				.Where(x => x.Actor.Info.HasTraitInfo<ISelectableInfo>() && (x.Actor.Owner.IsAlliedWith(world.RenderPlayer) || !world.FogObscures(x.Actor)))
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Widgets
 				yield return selected;
 		}
 
-		public static IEnumerable<Actor> SelectActorsInBoxWithDeadzone(World world, int2 a, int2 b, Modifiers modifiers)
+		public static IEnumerable<Actor> SelectActorsInBoxWithDeadzone(World world, Int2 a, Int2 b, Modifiers modifiers)
 		{
 			// For dragboxes that are too small, shrink the dragbox to a single point (point b)
 			if ((a - b).Length <= Game.Settings.Game.SelectionDeadzone)

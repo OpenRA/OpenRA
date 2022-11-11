@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets
 			textColor = new CachedTransform<bool, Color>(disabled => disabled ? TextDisabledColor : TextColor);
 		}
 
-		protected override void DrawInner(string text, SpriteFont font, Color color, int2 position)
+		protected override void DrawInner(string text, SpriteFont font, Color color, Int2 position)
 		{
 			font.DrawText(text, position, textColor.Update(inputWidget.Value.IsDisabled()));
 		}

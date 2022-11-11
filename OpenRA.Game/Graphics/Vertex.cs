@@ -28,13 +28,13 @@ namespace OpenRA.Graphics
 		// Color tint
 		public readonly float R, G, B, A;
 
-		public Vertex(in float3 xyz, float s, float t, float u, float v, float p, float c)
-			: this(xyz.X, xyz.Y, xyz.Z, s, t, u, v, p, c, float3.Ones, 1f) { }
+		public Vertex(in Float3 xyz, float s, float t, float u, float v, float p, float c)
+			: this(xyz.X, xyz.Y, xyz.Z, s, t, u, v, p, c, Float3.Ones, 1f) { }
 
-		public Vertex(in float3 xyz, float s, float t, float u, float v, float p, float c, in float3 tint, float a)
+		public Vertex(in Float3 xyz, float s, float t, float u, float v, float p, float c, in Float3 tint, float a)
 			: this(xyz.X, xyz.Y, xyz.Z, s, t, u, v, p, c, tint.X, tint.Y, tint.Z, a) { }
 
-		public Vertex(float x, float y, float z, float s, float t, float u, float v, float p, float c, in float3 tint, float a)
+		public Vertex(float x, float y, float z, float s, float t, float u, float v, float p, float c, in Float3 tint, float a)
 			: this(x, y, z, s, t, u, v, p, c, tint.X, tint.Y, tint.Z, a) { }
 
 		public Vertex(float x, float y, float z, float s, float t, float u, float v, float p, float c, float r, float g, float b, float a)

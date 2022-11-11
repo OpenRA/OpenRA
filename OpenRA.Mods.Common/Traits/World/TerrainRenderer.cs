@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Traits
 			return templateRect ?? Rectangle.Empty;
 		}
 
-		IEnumerable<IRenderable> ITiledTerrainRenderer.RenderUIPreview(WorldRenderer wr, TerrainTemplateInfo t, int2 origin, float scale)
+		IEnumerable<IRenderable> ITiledTerrainRenderer.RenderUIPreview(WorldRenderer wr, TerrainTemplateInfo t, Int2 origin, float scale)
 		{
 			if (!(t is DefaultTerrainTemplateInfo template))
 				yield break;
@@ -203,7 +203,7 @@ namespace OpenRA.Mods.Common.Traits
 					var offset = map.Offset(new CVec(x, y), tileInfo.Height);
 					var palette = wr.Palette(template.Palette ?? terrainInfo.Palette);
 
-					yield return new SpriteRenderable(sprite, origin, offset, 0, palette, 1f, 1f, float3.Ones, TintModifiers.None, false);
+					yield return new SpriteRenderable(sprite, origin, offset, 0, palette, 1f, 1f, Float3.Ones, TintModifiers.None, false);
 				}
 			}
 		}

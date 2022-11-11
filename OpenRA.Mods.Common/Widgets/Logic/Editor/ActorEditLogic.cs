@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static readonly string Owner = "owner";
 
 		long lastScrollTime = 0;
-		int2 lastScrollPosition = int2.Zero;
+		Int2 lastScrollPosition = Int2.Zero;
 
 		ActorIDStatus actorIDStatus = ActorIDStatus.Normal;
 		ActorIDStatus nextActorIDStatus = ActorIDStatus.Normal;
@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var actor = editor.DefaultBrush.SelectedActor;
 			if (actor != null)
 			{
-				var origin = worldRenderer.Viewport.WorldToViewPx(new int2(actor.Bounds.Right, actor.Bounds.Top));
+				var origin = worldRenderer.Viewport.WorldToViewPx(new Int2(actor.Bounds.Right, actor.Bounds.Top));
 
 				// If we scrolled, hide the edit box for a moment
 				if (lastScrollPosition.X != origin.X || lastScrollPosition.Y != origin.Y)

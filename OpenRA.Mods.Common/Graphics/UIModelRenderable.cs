@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Graphics
 	{
 		readonly IEnumerable<ModelAnimation> models;
 		readonly WPos effectiveWorldPos;
-		readonly int2 screenPos;
+		readonly Int2 screenPos;
 		readonly int zOffset;
 		readonly WRot camera;
 		readonly WRot lightSource;
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly float scale;
 
 		public UIModelRenderable(
-			IEnumerable<ModelAnimation> models, WPos effectiveWorldPos, int2 screenPos, int zOffset,
+			IEnumerable<ModelAnimation> models, WPos effectiveWorldPos, Int2 screenPos, int zOffset,
 			in WRot camera, float scale, in WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadow)
 		{
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Graphics
 				var sb = pxOrigin + psb[2];
 				var sc = pxOrigin + psb[1];
 				var sd = pxOrigin + psb[3];
-				Game.Renderer.RgbaSpriteRenderer.DrawSprite(renderProxy.ShadowSprite, sa, sb, sc, sd, float3.Ones, 1f);
+				Game.Renderer.RgbaSpriteRenderer.DrawSprite(renderProxy.ShadowSprite, sa, sb, sc, sd, Float3.Ones, 1f);
 				Game.Renderer.RgbaSpriteRenderer.DrawSprite(renderProxy.Sprite, pxOrigin - 0.5f * renderProxy.Sprite.Size);
 			}
 

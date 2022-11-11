@@ -97,11 +97,11 @@ namespace OpenRA
 				{ typeof(IntegerExpression), ParseIntegerExpression },
 				{ typeof(Enum), ParseEnum },
 				{ typeof(bool), ParseBool },
-				{ typeof(int2[]), ParseInt2Array },
+				{ typeof(Int2[]), ParseInt2Array },
 				{ typeof(Size), ParseSize },
-				{ typeof(int2), ParseInt2 },
+				{ typeof(Int2), ParseInt2 },
 				{ typeof(float2), ParseFloat2 },
-				{ typeof(float3), ParseFloat3 },
+				{ typeof(Float3), ParseFloat3 },
 				{ typeof(Rectangle), ParseRectangle },
 				{ typeof(DateTime), ParseDateTime }
 			};
@@ -254,11 +254,9 @@ namespace OpenRA
 			if (value != null)
 			{
 				var parts = value.Split(SplitComma);
-				if (parts.Length == 3)
+				if (parts.Length == 3 && (Exts.TryParseIntegerInvariant(parts[0], out var rr) && Exts.TryParseIntegerInvariant(parts[1], out var rp)
+					&& Exts.TryParseIntegerInvariant(parts[2], out var ry)))
 				{
-					if (Exts.TryParseIntegerInvariant(parts[0], out var rr)
-							&& Exts.TryParseIntegerInvariant(parts[1], out var rp)
-							&& Exts.TryParseIntegerInvariant(parts[2], out var ry))
 						return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
 				}
 			}
@@ -378,9 +376,9 @@ namespace OpenRA
 				if (parts.Length % 2 != 0)
 					return InvalidValueAction(value, fieldType, fieldName);
 
-				var ints = new int2[parts.Length / 2];
+				var ints = new Int2[parts.Length / 2];
 				for (var i = 0; i < ints.Length; i++)
-					ints[i] = new int2(Exts.ParseIntegerInvariant(parts[2 * i]), Exts.ParseIntegerInvariant(parts[2 * i + 1]));
+					ints[i] = new Int2(Exts.ParseIntegerInvariant(parts[2 * i]), Exts.ParseIntegerInvariant(parts[2 * i + 1]));
 
 				return ints;
 			}
@@ -407,7 +405,7 @@ namespace OpenRA
 				if (parts.Length != 2)
 					return InvalidValueAction(value, fieldType, fieldName);
 
-				return new int2(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
+				return new Int2(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
 			}
 
 			return InvalidValueAction(value, fieldType, fieldName);
@@ -443,7 +441,7 @@ namespace OpenRA
 				if (parts.Length > 2)
 					float.TryParse(parts[2], NumberStyles.Float, NumberFormatInfo.InvariantInfo, out z);
 
-				return new float3(x, y, z);
+				return new Float3(x, y, z);
 			}
 
 			return InvalidValueAction(value, fieldType, fieldName);

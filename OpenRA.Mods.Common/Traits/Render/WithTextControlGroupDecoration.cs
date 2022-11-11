@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Position = "TopLeft";
 
 		[Desc("Offset text center position from the selection box edge.")]
-		public readonly int2 Margin = int2.Zero;
+		public readonly Int2 Margin = Int2.Zero;
 
 		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
 		{

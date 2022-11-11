@@ -28,7 +28,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly HashSet<string> UnsafeTerrainTypes = new HashSet<string> { "Rock" };
 
 		[Desc("Only check for 'unsafe' footprint tiles when you have these prerequisites.")]
-		public readonly string[] RequiresPrerequisites = Array.Empty<string>();
+		public string[] RequiresPrerequisites = Array.Empty<string>();
 
 		[Desc("Sprite image to use for the overlay.")]
 		public readonly string Image = "overlay";
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.D2k.Traits
 				var pos = wr.World.Map.CenterOfCell(c.Key);
 				var offset = new WVec(0, 0, topLeftPos.Z - pos.Z);
 				var traitAlpha = (c.Value & PlaceBuildingCellType.LineBuild) != 0 ? info.LineBuildFootprintAlpha : info.FootprintAlpha;
-				yield return new SpriteRenderable(tile, pos, offset, -511, palette, 1f, sequenceAlpha * traitAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+				yield return new SpriteRenderable(tile, pos, offset, -511, palette, 1f, sequenceAlpha * traitAlpha, Float3.Ones, TintModifiers.IgnoreWorldTint, true);
 			}
 		}
 	}

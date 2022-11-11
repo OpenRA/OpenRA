@@ -505,7 +505,6 @@ namespace OpenRA
 				return ret;
 			}
 		}
-
 		public IEnumerable<TraitPair<T>> ActorsWithTrait<T>()
 		{
 			return TraitDict.ActorsWithTrait<T>();

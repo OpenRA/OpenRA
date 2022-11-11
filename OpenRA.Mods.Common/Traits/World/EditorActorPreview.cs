@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 					.Select(r =>
 					{
 						var mr = (IModifyableRenderable)r;
-						return mr.WithTint(float3.Ones, mr.TintModifiers | TintModifiers.ReplaceColor).WithAlpha(0.5f);
+						return mr.WithTint(Float3.Ones, mr.TintModifiers | TintModifiers.ReplaceColor).WithAlpha(0.5f);
 					});
 
 				return items.Concat(overlay);
