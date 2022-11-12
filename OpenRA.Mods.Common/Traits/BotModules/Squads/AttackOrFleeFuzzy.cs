@@ -269,7 +269,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (countActors == 0)
 				return 0.0f;
 
-			return sum / countActors;
+			return (float)(sum / countActors);
 		}
 	}
 }

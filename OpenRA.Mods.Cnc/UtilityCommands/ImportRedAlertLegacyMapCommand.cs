@@ -179,8 +179,6 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				color = "red";
 				faction = "soviet";
 				break;
-			case "Special":
-			case "Neutral":
 			default:
 				color = "neutral";
 				faction = "allies";

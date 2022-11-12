@@ -249,8 +249,11 @@ namespace OpenRA.FileFormats
 			var pb = Math.Abs(p - b);
 			var pc = Math.Abs(p - c);
 
-			return (pa <= pb && pa <= pc) ? a :
-				(pb <= pc) ? b : c;
+			if (pa <= pb && pa <= pc)
+				return a;
+			else if (pb <= pc)
+				return b;
+			else return c;
 		}
 
 		[Flags]
