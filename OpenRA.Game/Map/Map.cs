@@ -1331,7 +1331,11 @@ namespace OpenRA
 			if (maxRange >= Grid.TilesByDistance.Length)
 				throw new ArgumentOutOfRangeException(nameof(maxRange),
 					$"The requested range ({maxRange}) cannot exceed the value of MaximumTileSearchRange ({Grid.MaximumTileSearchRange})");
+			return FindTilesInAnnulusIterator(center, minRange, maxRange, allowOutsideBounds=false);
+		}
 
+		private IEnumerable<CPos> FindTilesInAnnulusIterator(CPos center, int minRange, int maxRange, bool allowOutsideBounds = false)
+		{
 			for (var i = minRange; i <= maxRange; i++)
 			{
 				foreach (var offset in Grid.TilesByDistance[i])

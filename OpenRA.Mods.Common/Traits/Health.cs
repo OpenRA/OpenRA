@@ -86,8 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool RemoveOnDeath
 		{
-			get { return removeOnDeath; }
-			set { removeOnDeath = value; }
+			get => removeOnDeath; set => removeOnDeath = value;
 		}
 
 		public DamageState DamageState

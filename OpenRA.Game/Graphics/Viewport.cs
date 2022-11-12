@@ -174,7 +174,7 @@ namespace OpenRA.Graphics
 				UpdateViewportZooms();
 		}
 
-		float CalculateMinimumZoom(float minHeight, float maxHeight)
+		static float CalculateMinimumZoom(float minHeight, float maxHeight)
 		{
 			var h = Game.Renderer.NativeResolution.Height;
 
