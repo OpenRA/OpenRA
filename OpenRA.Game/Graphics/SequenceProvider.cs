@@ -147,6 +147,7 @@ namespace OpenRA.Graphics
 			if (spriteCache.IsValueCreated)
 				foreach (var sb in SpriteCache.SheetBuilders.Values)
 					sb.Dispose();
+			GC.SuppressFinalize(this);
 		}
 	}
 }

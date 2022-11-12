@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
@@ -270,7 +271,7 @@ namespace OpenRA.Graphics
 
 		void ClearHardwareCursors()
 		{
-			foreach (var c in cursors.Values)
+			foreach (var c in cursors.Select(x => x.Value))
 			{
 				for (var i = 0; i < c.Cursors.Length; i++)
 				{

@@ -13,7 +13,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public class UISpriteRenderable : IRenderable, IPalettedRenderable, IFinalizedRenderable
+	public class UISpriteRenderable : IPalettedRenderable, IFinalizedRenderable
 	{
 		readonly Sprite sprite;
 		readonly WPos effectiveWorldPos;

@@ -431,9 +431,9 @@ namespace OpenRA
 
 				// Metadata registration requires an explicit launch path
 				if (launchPath != null)
-					ExternalMods.Register(Mods[modID], launchPath, launchArgs, ModRegistration.User);
+					ExternalMods.Register(Mods[modID], launchPath, launchArgs, ModRegistrations.User);
 
-				ExternalMods.ClearInvalidRegistrations(ModRegistration.User);
+				ExternalMods.ClearInvalidRegistrations(ModRegistrations.User);
 			}
 
 			Console.WriteLine("External mods:");

@@ -196,11 +196,6 @@ namespace OpenRA
 			finally
 			{
 				inUnsyncedCode = false;
-
-				// When the world is disposing all actors and effects have been removed
-				// So do not check the hash for a disposing world since it definitively has changed
-				if (checkSyncHash && !world.Disposing && sync != world.SyncHash())
-					throw new InvalidOperationException("RunUnsynced: sync-changing code may not run here");
 			}
 		}
 
