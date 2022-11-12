@@ -285,6 +285,8 @@ namespace OpenRA
 				var disposableModule = module as IDisposable;
 				disposableModule?.Dispose();
 			}
+
+			GC.SuppressFinalize(this);
 		}
 	}
 }

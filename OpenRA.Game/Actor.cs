@@ -235,11 +235,6 @@ namespace OpenRA
 			foreach (var notify in allObserverNotifiers)
 				notify(this, readOnlyConditionCache);
 
-			// TODO: Other traits may need initialization after being notified of initial condition state.
-
-			// TODO: A post condition initialization notification phase may allow queueing activities instead.
-			// The initial activity should run before any activities queued by INotifyCreated.Created
-			// However, we need to know which traits are enabled (via conditions), so wait for after the calls and insert the activity as the first
 			ICreationActivity creationActivity = null;
 			foreach (var ica in TraitsImplementing<ICreationActivity>())
 			{
@@ -391,6 +386,11 @@ namespace OpenRA
 			return name;
 		}
 
+		public LuaValue ToString(LuaRuntime runtime)
+		{
+			return $"Actor ({this})";
+		}
+
 		public T Trait<T>()
 		{
 			return World.TraitDict.Get<T>(this);
@@ -526,8 +526,7 @@ namespace OpenRA
 		{
 			// PERF: Avoid LINQ.
 			var targetTypes = default(BitSet<TargetableType>);
-			foreach (var targetable in Targetables)
-				if (targetable.IsTraitEnabled())
+			foreach (var targetable in Targetables.Where(x => x.IsTraitEnabled()))
 					targetTypes = targetTypes.Union(targetable.TargetTypes);
 			return targetTypes;
 		}
@@ -535,8 +534,7 @@ namespace OpenRA
 		public bool IsTargetableBy(Actor byActor)
 		{
 			// PERF: Avoid LINQ.
-			foreach (var targetable in Targetables)
-				if (targetable.TargetableBy(this, byActor))
+			foreach (var targetable in Targetables.Where(x => x.TargetableBy(this, byActor)))
 					return true;
 
 			return false;
@@ -624,12 +622,6 @@ namespace OpenRA
 			set => luaInterface.Value[runtime, keyValue] = value;
 		}
 
-
-
-		public LuaValue ToString(LuaRuntime runtime)
-		{
-			return $"Actor ({this})";
-		}
 
 		public bool HasScriptProperty(string name)
 		{

@@ -153,9 +153,9 @@ namespace OpenRA.Support
 			And = 4,
 			Or = 3,
 			Binary = 0,
-			Value = 0,
+			Value = -2,
 			Parens = -1,
-			Invalid = ~0
+			Invalid = -3
 		}
 
 		readonly struct TokenTypeInfo

@@ -25,7 +25,7 @@ namespace OpenRA.Graphics
 		readonly int zOffset;
 		readonly PaletteReference palette;
 		readonly float scale;
-		readonly WAngle rotation = WAngle.Zero;
+		readonly WAngle rotation;
 		readonly float3 tint;
 		readonly TintModifiers tintModifiers;
 		readonly float alpha;
