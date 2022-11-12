@@ -335,7 +335,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If the check allows: we are not blocked by moving units.
 			if (check <= BlockedByActor.Stationary && cellFlag.HasCellFlag(CellFlag.HasMovingActor) &&
-				IsMoving(actor, otherActor))
+				otherActor.OccupiesSpace is Mobile otherMobile && otherMobile.CurrentMovementTypes.HasMovementType(MovementType.Horizontal))
 				return false;
 
 			if (cellFlag.HasCellFlag(CellFlag.HasTemporaryBlocker))
@@ -365,16 +365,6 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 			return true;
-		}
-
-		static bool IsMoving(Actor self, Actor other)
-		{
-			// PERF: Because we can be sure that OccupiesSpace is Mobile here we can save some performance by avoiding querying for the trait.
-			if (!(other.OccupiesSpace is Mobile otherMobile) || !otherMobile.CurrentMovementTypes.HasMovementType(MovementType.Horizontal))
-				return false;
-
-			// PERF: Same here.
-			return self.OccupiesSpace is Mobile;
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)
