@@ -22,7 +22,7 @@ namespace OpenRA
 		public string StartingUnitsClass = null;
 		public bool AllowBots = true;
 		public bool Playable { get; set; }
-		public bool Required{ get; set; }
+		public bool Required { get; set; }
 		public bool OwnsWorld { get; set; }
 		public bool Spectating { get; set; }
 		public bool NonCombatant { get; set; }
