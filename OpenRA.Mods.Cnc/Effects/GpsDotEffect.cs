@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Cnc.Effects
 			}
 		}
 
-		IEnumerable<IRenderable> IEffect.Render(WorldRenderer wr)
+		IEnumerable<IRenderable> IEffect.Render(WorldRenderer r)
 		{
 			return SpriteRenderable.None;
 		}

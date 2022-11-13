@@ -23,7 +23,7 @@ namespace OpenRA.Widgets
 	{
 		public const int Timestep = 40;
 
-		public static Widget Root = new ContainerWidget();
+		public static readonly Widget Root = new ContainerWidget();
 
 		public static TickTime LastTickTime = new TickTime(() => Timestep, Game.RunTime);
 
