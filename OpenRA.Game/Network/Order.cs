@@ -111,7 +111,7 @@ namespace OpenRA
 								TryGetActorFromUInt(world, subjectId, out subject);
 						}
 
-						var target = Target.Invalid;
+						var tempTarget = Target.Invalid;
 						if (flags.HasField(OrderFields.Target))
 						{
 							switch ((TargetType)r.ReadByte())
@@ -121,7 +121,7 @@ namespace OpenRA
 									var actorID = r.ReadUInt32();
 									var actorGeneration = r.ReadInt32();
 									if (world != null && TryGetActorFromUInt(world, actorID, out var targetActor))
-										target = Target.FromSerializedActor(targetActor, actorGeneration);
+										tempTarget = Target.FromSerializedActor(targetActor, actorGeneration);
 
 									break;
 								}
@@ -139,7 +139,7 @@ namespace OpenRA
 
 									var frozen = playerActor.Owner.FrozenActorLayer.FromID(frozenActorID);
 									if (frozen != null)
-										target = Target.FromFrozenActor(frozen);
+										tempTarget = Target.FromFrozenActor(frozen);
 
 									break;
 								}
@@ -151,12 +151,12 @@ namespace OpenRA
 										var cell = new CPos(r.ReadInt32());
 										var subCell = (SubCell)r.ReadByte();
 										if (world != null)
-											target = Target.FromCell(world, cell, subCell);
+											tempTarget = Target.FromCell(world, cell, subCell);
 									}
 									else
 									{
 										var pos = new WPos(r.ReadInt32(), r.ReadInt32(), r.ReadInt32());
-										target = Target.FromPos(pos);
+										tempTarget = Target.FromPos(pos);
 									}
 
 									break;
@@ -191,12 +191,12 @@ namespace OpenRA
 						}
 
 						if (world == null)
-							return new Order(order, null, target, targetString, queued, extraActors, extraLocation, extraData, groupedActors);
+							return new Order(order, null, tempTarget, targetString, queued, extraActors, extraLocation, extraData, groupedActors);
 
 						if (subject == null && flags.HasField(OrderFields.Subject))
 							return null;
 
-						return new Order(order, subject, target, targetString, queued, extraActors, extraLocation, extraData, groupedActors);
+						return new Order(order, subject, tempTarget, targetString, queued, extraActors, extraLocation, extraData, groupedActors);
 					}
 
 					case OrderType.Handshake:
