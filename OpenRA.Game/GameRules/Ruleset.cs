@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using OpenRA.FileSystem;
 using OpenRA.GameRules;
@@ -52,47 +53,76 @@ namespace OpenRA
 
 			foreach (var a in Actors.Values)
 			{
-				foreach (var t in a.TraitInfos<IRulesetLoaded>())
-				{
-					try
-					{
-						t.RulesetLoaded(this, a);
-					}
-					catch (YamlException e)
-					{
-						throw new YamlException($"Actor type {a.Name}: {e.Message}");
-					}
-				}
+				m2(a);
 			}
 
 			foreach (var weapon in Weapons)
 			{
-				if (weapon.Value.Projectile is IRulesetLoaded<WeaponInfo> projectileLoaded)
-				{
-					try
-					{
-						projectileLoaded.RulesetLoaded(this, weapon.Value);
-					}
-					catch (YamlException e)
-					{
-						throw new YamlException($"Projectile type {weapon.Key}: {e.Message}");
-					}
-				}
+				m4(weapon);
 
-				foreach (var warhead in weapon.Value.Warheads)
-				{
-					if (warhead is IRulesetLoaded<WeaponInfo> cacher)
-					{
-						try
-						{
-							cacher.RulesetLoaded(this, weapon.Value);
-						}
+				m7(weapon);
+			}
+		}
+		void m1(IRulesetLoaded t,ActorInfo a)
+		{
+			try
+			{
+				t.RulesetLoaded(this, a);
+			}
+			catch (YamlException e)
+			{
+				throw new YamlException($"Actor type {a.Name}: {e.Message}");
+			}
+		}
+		void m2(ActorInfo a)
+		{
+			foreach (var t in a.TraitInfos<IRulesetLoaded>())
+			{
+				m1(t, a);
+			}
+		}
+		void m3(IRulesetLoaded<WeaponInfo> projectileLoaded,KeyValuePair<string,WeaponInfo> weapon)
+		{
+			try
+			{
+				projectileLoaded.RulesetLoaded(this, weapon.Value);
+			}
+			catch (YamlException e)
+			{
+				throw new YamlException($"Projectile type {weapon.Key}: {e.Message}");
+			}
+		}
+		void m4(KeyValuePair<string, WeaponInfo> weapon)
+		{
+			if (weapon.Value.Projectile is IRulesetLoaded<WeaponInfo> projectileLoaded)
+			{
+				m3(projectileLoaded, weapon);
+			}
+		}
+		void m5(IRulesetLoaded<WeaponInfo> cacher, KeyValuePair<string, WeaponInfo>  weapon)
+		{
+			try
+			{
+				cacher.RulesetLoaded(this, weapon.Value);
+			}
 						catch (YamlException e)
-						{
-							throw new YamlException($"Weapon type {weapon.Key}: {e.Message}");
-						}
-					}
-				}
+			{
+				throw new YamlException($"Weapon type {weapon.Key}: {e.Message}");
+			}
+		}
+		void m6(IWarhead warhead, KeyValuePair<string, WeaponInfo> weapon)
+		{
+			if (warhead is IRulesetLoaded<WeaponInfo> cacher)
+			{
+				m5(cacher, weapon);
+			}
+		}
+
+		void m7(KeyValuePair<string, WeaponInfo> weapon)
+		{
+			foreach (var warhead in weapon.Value.Warheads)
+			{
+				m6(warhead, weapon);
 			}
 		}
 
