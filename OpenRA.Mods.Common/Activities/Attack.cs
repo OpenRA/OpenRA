@@ -23,7 +23,13 @@ namespace OpenRA.Mods.Common.Activities
 	public class Attack : Activity, IActivityNotifyStanceChanged
 	{
 		[Flags]
-		protected enum AttackStatus { None, NeedsToTurn, NeedsToMove, Attacking }
+		protected enum AttackStatus
+		{
+			None = 0,
+			NeedsToTurn = 1,
+			NeedsToMove,
+			Attacking = 4
+		}
 
 		readonly IEnumerable<AttackFrontal> attackTraits;
 		readonly RevealsShroud[] revealsShroud;

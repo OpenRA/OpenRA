@@ -54,9 +54,12 @@ namespace OpenRA
 					continue;
 
 				var temporaryBlockerTraits = temporaryBlocker.TraitsImplementing<ITemporaryBlocker>();
-				foreach (var temporaryBlockerTrait in temporaryBlockerTraits)
-					if (temporaryBlockerTrait.IsBlocking(temporaryBlocker, cell))
-						return true;
+				foreach (var _ in from temporaryBlockerTrait in temporaryBlockerTraits
+								  where temporaryBlockerTrait.IsBlocking(temporaryBlocker, cell)
+								  select new { })
+				{
+					return true;
+				}
 			}
 
 			return false;

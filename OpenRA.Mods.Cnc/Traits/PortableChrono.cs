@@ -252,7 +252,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (portableChrono.IsTraitDisabled || portableChrono.IsTraitPaused)
 			{
 				world.CancelInputMode();
-				return;
 			}
 		}
 

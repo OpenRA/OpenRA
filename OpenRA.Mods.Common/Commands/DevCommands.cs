@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -260,6 +261,38 @@ namespace OpenRA.Mods.Common.Commands
 		}
 
 		[Serializable]
-		public class DevException : Exception { }
+		public class DevException : Exception
+		{
+			public DevException()
+			{
+				// some implementation
+			}
+
+			protected DevException(SerializationInfo info, StreamingContext context)
+			{
+				// some implementation
+			}
+		}
+
+		public sealed class SubDevException: DevException
+		{
+			public SubDevException()
+			{
+				// ...
+			}
+
+			SubDevException(SerializationInfo info, StreamingContext context)
+				: base(info, context)
+			{
+				// ...
+			}
+
+			public override void GetObjectData(SerializationInfo info, StreamingContext context)
+			{
+				base.GetObjectData(info, context);
+
+				// ...
+			}
+		}
 	}
 }

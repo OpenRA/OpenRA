@@ -51,14 +51,14 @@ namespace OpenRA
 			Console.Error.WriteLine(rpt);
 		}
 
-		static StringBuilder BuildExceptionReport(Exception ex)
-		{
-			return BuildExceptionReport(ex, new StringBuilder(), 0);
-		}
-
 		static StringBuilder AppendIndentedFormatLine(this StringBuilder sb, int indent, string format, params object[] args)
 		{
 			return sb.Append(new string(' ', indent * 2)).AppendFormat(format, args).AppendLine();
+		}
+
+		static StringBuilder BuildExceptionReport(Exception ex)
+		{
+			return BuildExceptionReport(ex, new StringBuilder(), 0);
 		}
 
 		static StringBuilder BuildExceptionReport(Exception ex, StringBuilder sb, int indent)
