@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common.Activities;
@@ -30,8 +31,10 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Returns references to passengers inside the transport.")]
-		public Actor[] Passengers => cargo.Passengers.ToArray();
-
+		public IEnumerable<OpenRA.Actor> Passengers()
+		{
+			return cargo.Passengers;
+		}
 		[Desc("Specifies whether transport has any passengers.")]
 		public bool HasPassengers => cargo.Passengers.Any();
 

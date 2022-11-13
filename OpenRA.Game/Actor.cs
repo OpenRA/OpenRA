@@ -622,7 +622,6 @@ namespace OpenRA
 			set => luaInterface.Value[runtime, keyValue] = value;
 		}
 
-
 		public bool HasScriptProperty(string name)
 		{
 			return luaInterface.Value.ContainsKey(name);
