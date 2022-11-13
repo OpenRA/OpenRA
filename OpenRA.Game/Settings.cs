@@ -378,9 +378,12 @@ namespace OpenRA
 
 				// Override with commandline args
 				foreach (var kv in Sections)
-					foreach (var f in kv.Value.GetType().GetFields())
-						if (args.Contains(kv.Key + "." + f.Name))
-							FieldLoader.LoadField(kv.Value, f.Name, args.GetValue(kv.Key + "." + f.Name, ""));
+					foreach (var f in from f in kv.Value.GetType().GetFields()
+									  where args.Contains(kv.Key + "." + f.Name)
+									  select f)
+					{
+						FieldLoader.LoadField(kv.Value, f.Name, args.GetValue(kv.Key + "." + f.Name, ""));
+					}
 			}
 			finally
 			{

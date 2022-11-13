@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Channels;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.FileFormats

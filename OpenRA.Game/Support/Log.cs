@@ -42,8 +42,8 @@ namespace OpenRA
 		const int CreateLogFileMaxRetryCount = 128;
 
 		static readonly ConcurrentDictionary<string, ChannelInfo> Channels = new ConcurrentDictionary<string, ChannelInfo>();
-		static readonly Channel<ChannelData> Channel;
-		static readonly ChannelWriter<ChannelData> ChannelWriter;
+		static readonly Channel<ChannelData> Channel = LogChannel();
+		static readonly ChannelWriter<ChannelData> ChannelWriter = LogChannelWriter();
 		static readonly CancellationTokenSource CancellationToken = new CancellationTokenSource();
 
 		static readonly TimeSpan FlushInterval = TimeSpan.FromSeconds(5);
@@ -53,11 +53,19 @@ namespace OpenRA
 			Name = "OpenRA Logging Thread"
 		};
 
-		static Log()
+		static Channel<ChannelData> LogChannel()
 		{
-			Channel = System.Threading.Channels.Channel.CreateUnbounded<ChannelData>();
-			ChannelWriter = Channel.Writer;
+			Channel<ChannelData> channel = System.Threading.Channels.Channel.CreateUnbounded<ChannelData>();
 			Thread.Start(CancellationToken.Token);
+			return channel;
+		}
+
+		static ChannelWriter<ChannelData> LogChannelWriter()
+		{
+			Channel<ChannelData> channel = System.Threading.Channels.Channel.CreateUnbounded<ChannelData>();
+			ChannelWriter<ChannelData> chwr = channel.Writer;
+			Thread.Start(CancellationToken.Token);
+			return chwr;
 		}
 
 		static void FlushToDisk(object state)

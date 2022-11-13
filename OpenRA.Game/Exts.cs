@@ -460,7 +460,7 @@ namespace OpenRA
 			return result;
 		}
 
-		public static T[,] ResizeArray<T>(T[,] ts, T t, int width, int height)
+		static T[,] ResizeArray<T>(T[,] ts, T t, int width, int height)
 		{
 			var result = new T[width, height];
 			for (var i = 0; i < width; i++)

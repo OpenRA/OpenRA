@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.Effects
 				if (frozenLayer != null)
 				{
 					var frozenActor = frozenLayer.FromID(a.ActorID);
-					FrozenActorWithRenderables = frozenActor != null ? frozenActor.HasRenderables : false;
+					FrozenActorWithRenderables = frozenActor != null && frozenActor.HasRenderables;
 				}
 			}
 		}

@@ -190,6 +190,16 @@ namespace OpenRA.Mods.Common.Pathfinder
 				? Exts.MultiplyBySqrtTwo(movementCost)
 				: movementCost;
 
+			CalculateCustomCost(cellCost, neighborCPos);
+
+			// Directional bonuses for smoother flow!
+			CalculateLaneBias(neighborCPos, direction, cellCost);
+
+			return cellCost;
+		}
+
+		int CalculateCustomCost(int cellCost, CPos neighborCPos)
+		{
 			if (customCost != null)
 			{
 				var customCellCost = customCost(neighborCPos);
@@ -199,7 +209,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 				cellCost += customCellCost;
 			}
 
-			// Directional bonuses for smoother flow!
+			return cellCost;
+		}
+
+		int CalculateLaneBias(CPos neighborCPos, CVec direction, int cellCost)
+		{
 			if (laneBias)
 			{
 				var ux = neighborCPos.X + (inReverse ? 1 : 0) & 1;
