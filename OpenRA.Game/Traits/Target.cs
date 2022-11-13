@@ -284,9 +284,9 @@ namespace OpenRA.Traits
 			return other == this;
 		}
 
-		public override bool Equals(object other)
+		public override bool Equals(object obj)
 		{
-			return other is Target t && t == this;
+			return obj is Target t && t == this;
 		}
 
 		// Expose internal state for serialization by the orders code *only*

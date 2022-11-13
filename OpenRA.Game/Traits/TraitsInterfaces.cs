@@ -566,9 +566,9 @@ namespace OpenRA.Traits
 		public LobbyBooleanOption(string id, string name, string description, bool visible, int displayorder, bool defaultValue, bool locked)
 			: base(id, name, description, visible, displayorder, new ReadOnlyDictionary<string, string>(BoolValues), defaultValue.ToString(), locked) { }
 
-		public override string Label(string newValue)
+		public override string Label(string value)
 		{
-			return BoolValues[newValue].ToLowerInvariant();
+			return BoolValues[value].ToLowerInvariant();
 		}
 	}
 
