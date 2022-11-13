@@ -60,7 +60,14 @@ namespace OpenRA
 	{
 		public readonly string Type;
 		public readonly BitSet<TargetableType> TargetTypes;
-		public HashSet<string> AcceptsSmudgeType = new HashSet<string>();
+		private HashSet<string> acceptsSmudgeType = new HashSet<string>();
+
+		public HashSet<string> AcceptsSmudgeType
+		{
+			get { return acceptsSmudgeType; }
+			set { acceptsSmudgeType = value; }
+		}
+
 		public readonly Color Color;
 		public readonly bool RestrictPlayerColor = false;
 

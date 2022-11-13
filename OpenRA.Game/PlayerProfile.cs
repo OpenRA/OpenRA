@@ -46,7 +46,10 @@ namespace OpenRA
 							if (badge != null)
 								badges.Add(badge);
 						}
-						catch { }
+						catch (System.Exception e)
+						{
+							// An exception
+						}
 					});
 				}
 			}
