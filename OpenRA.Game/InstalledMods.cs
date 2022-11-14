@@ -54,7 +54,7 @@ namespace OpenRA
 			return mods;
 		}
 
-		Manifest LoadMod(string id, string path)
+		static Manifest LoadMod(string id, string path)
 		{
 			IReadOnlyPackage package = null;
 			try

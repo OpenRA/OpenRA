@@ -268,7 +268,7 @@ namespace OpenRA.Mods.Common.Traits
 		List<MiniYamlNode> IGameSaveTraitData.IssueTraitData(Actor self)
 		{
 			if (IsTraitDisabled)
-				return null;
+				return new List<MiniYamlNode>();
 
 			return new List<MiniYamlNode>()
 			{

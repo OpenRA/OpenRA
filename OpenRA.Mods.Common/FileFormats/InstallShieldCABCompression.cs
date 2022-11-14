@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.FileFormats
 	{
 		const uint MaxFileGroupCount = 71;
 
-		enum CABFlags : ushort
+		enum CAB : ushort
 		{
 			FileSplit = 0x1,
 			FileObfuscated = 0x2,
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.FileFormats
 		readonly struct FileDescriptor
 		{
 			public readonly uint Index;
-			public readonly CABFlags Flags;
+			public readonly CAB Flags;
 			public readonly uint ExpandedSize;
 			public readonly uint CompressedSize;
 			public readonly uint DataOffset;
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			public FileDescriptor(Stream stream, uint index, long tableOffset)
 			{
 				Index = index;
-				Flags = (CABFlags)stream.ReadUInt16();
+				Flags = (CAB)stream.ReadUInt16();
 				ExpandedSize = stream.ReadUInt32();
 				stream.Position += 4;
 				CompressedSize = stream.ReadUInt32();
@@ -224,14 +224,14 @@ namespace OpenRA.Mods.Common.FileFormats
 				this.volumes = volumes;
 
 				remainingInArchive = 0;
-				toExtract = file.Flags.HasFlag(CABFlags.FileCompressed) ? file.CompressedSize : file.ExpandedSize;
+				toExtract = file.Flags.HasFlag(CAB.FileCompressed) ? file.CompressedSize : file.ExpandedSize;
 
 				SetVolume(file.Volume);
 			}
 
 			public void CopyTo(Stream output, Action<int> onProgress)
 			{
-				if (file.Flags.HasFlag(CABFlags.FileCompressed))
+				if (file.Flags.HasFlag(CAB.FileCompressed))
 				{
 					var inf = new Inflater(true);
 					var buffer = new byte[165535];
@@ -299,13 +299,13 @@ namespace OpenRA.Mods.Common.FileFormats
 					throw new InvalidDataException("Not an Installshield CAB package");
 
 				uint fileOffset;
-				if (file.Flags.HasFlag(CABFlags.FileSplit))
+				if (file.Flags.HasFlag(CAB.FileSplit))
 				{
 					currentVolume.Position += CommonHeader.Size;
 					var head = new VolumeHeader(currentVolume);
 					if (file.Index == head.LastFileIndex)
 					{
-						if (file.Flags.HasFlag(CABFlags.FileCompressed))
+						if (file.Flags.HasFlag(CAB.FileCompressed))
 							remainingInArchive = head.LastFileSizeCompressed;
 						else
 							remainingInArchive = head.LastFileSizeExpanded;
@@ -314,7 +314,7 @@ namespace OpenRA.Mods.Common.FileFormats
 					}
 					else if (file.Index == head.FirstFileIndex)
 					{
-						if (file.Flags.HasFlag(CABFlags.FileCompressed))
+						if (file.Flags.HasFlag(CAB.FileCompressed))
 							remainingInArchive = head.FirstFileSizeCompressed;
 						else
 							remainingInArchive = head.FirstFileSizeExpanded;
@@ -326,7 +326,7 @@ namespace OpenRA.Mods.Common.FileFormats
 				}
 				else
 				{
-					if (file.Flags.HasFlag(CABFlags.FileCompressed))
+					if (file.Flags.HasFlag(CAB.FileCompressed))
 						remainingInArchive = file.CompressedSize;
 					else
 						remainingInArchive = file.ExpandedSize;
@@ -401,7 +401,7 @@ namespace OpenRA.Mods.Common.FileFormats
 
 		void ExtractFile(FileDescriptor file, Stream output, Action<int> onProgress = null)
 		{
-			if (file.Flags.HasFlag(CABFlags.FileInvalid))
+			if (file.Flags.HasFlag(CAB.FileInvalid))
 				throw new InvalidDataException("File Invalid");
 
 			if (file.LinkFlags.HasFlag(LinkFlags.Prev))
@@ -411,7 +411,7 @@ namespace OpenRA.Mods.Common.FileFormats
 				return;
 			}
 
-			if (file.Flags.HasFlag(CABFlags.FileObfuscated))
+			if (file.Flags.HasFlag(CAB.FileObfuscated))
 				throw new NotImplementedException("Obfuscated files are not supported");
 
 			var extracter = new CabExtracter(file, volumes);

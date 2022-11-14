@@ -130,7 +130,6 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 				// According to the information link, this is the shape of the function.
 				// We just extract factors to simplify.
-				// Possible simplification: var h = Constants.CellCost * (straight + (Constants.Sqrt2 - 2) * diag);
 				return cellCost * straight + (diagonalCellCost - 2 * cellCost) * diag;
 			};
 		}

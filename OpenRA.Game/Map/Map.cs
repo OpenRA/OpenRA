@@ -1224,11 +1224,8 @@ namespace OpenRA
 		{
 			return ChooseClosestEdgeCell(cell.ToMPos(Grid.Type)).ToCPos(Grid.Type);
 		}
-
-		public MPos ChooseClosestEdgeCell(MPos uv)
+		private PPos Methd1(PPos[] allProjected)
 		{
-			var allProjected = ProjectedCellsCovering(uv);
-
 			PPos edge;
 			if (allProjected.Length > 0)
 			{
@@ -1244,6 +1241,13 @@ namespace OpenRA
 			else
 				edge = new PPos(Bounds.Left, Bounds.Top);
 
+			return edge;
+		}
+		public MPos ChooseClosestEdgeCell(MPos uv)
+		{
+			var allProjected = ProjectedCellsCovering(uv);
+
+			var edge = Methd1(allProjected);
 			var unProjected = Unproject(edge);
 			if (unProjected.Count == 0)
 			{
