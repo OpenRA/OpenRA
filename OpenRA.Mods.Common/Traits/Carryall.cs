@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Color TargetLineColor = Color.Yellow;
 
 		[GrantedConditionReference]
-		public IEnumerable<string> LinterCarryableConditions => CarryableConditions.Values;
+		public IEnumerable<string> LinterCarryableConditions => carryableConditions.Values;
 
 		public override object Create(ActorInitializer init) { return new Carryall(init.Self, this); }
 	}

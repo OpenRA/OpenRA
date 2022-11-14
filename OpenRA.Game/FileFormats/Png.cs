@@ -305,9 +305,7 @@ namespace OpenRA.FileFormats
 					var colorType = Type == SpriteFrameType.Indexed8 ? PngColorType.Indexed | PngColorType.Color :
 						Type == SpriteFrameType.Rgb24 ? PngColorType.Color : PngColorType.Color | PngColorType.Alpha;
 
-
-				    header.WriteByte((byte)colorType);
-
+					header.WriteByte((byte)colorType);
 					header.WriteByte(0); // Compression
 					header.WriteByte(0); // Filter
 					header.WriteByte(0); // Interlacing
