@@ -27,9 +27,11 @@ namespace OpenRA
 		const char SplitComma = ',';
 
 		[Serializable]
-		public class MissingFieldsException : YamlException
+		public class MissingFieldsException : YamlException, ISerializable
 		{
+			[NonSerialized]
 			public readonly string[] Missing;
+			[NonSerialized]
 			public readonly string Header;
 			public override string Message
 			{
