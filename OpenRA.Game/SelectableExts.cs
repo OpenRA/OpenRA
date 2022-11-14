@@ -45,7 +45,6 @@ namespace OpenRA.Traits
 					throw new InvalidOperationException();
 			}
 		}
-        const int PriorityRange = 30;
 		static int BaseSelectionPriority(ISelectableInfo info, Modifiers modifiers)
 		{
 			var priority = info.Priority;
