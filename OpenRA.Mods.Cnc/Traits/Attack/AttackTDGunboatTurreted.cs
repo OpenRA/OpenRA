@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public AttackTDGunboatTurreted(Actor self, AttackTDGunboatTurretedInfo info)
 			: base(self, info) { }
 
-		public override Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor)
+		public override Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
 			return new AttackTDGunboatTurretedActivity(self, newTarget, forceAttack, targetLineColor);
 		}

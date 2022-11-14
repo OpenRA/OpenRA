@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common;
@@ -237,7 +238,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		void IDeathActorInitModifier.ModifyDeathActorInit(Actor self, TypeDictionary init) { ModifyActorInit(init); }
 		void ITransformActorInitModifier.ModifyTransformActorInit(Actor self, TypeDictionary init) { ModifyActorInit(init); }
 
-		void INotifySold.Sold(Actor self) { }
+		void INotifySold.Sold(Actor self) { throw new NotSupportedException(); }
+
 		void INotifySold.Selling(Actor self)
 		{
 			selling = true;

@@ -56,7 +56,7 @@ namespace OpenRA
 
 				return PlatformType.Linux;
 			}
-			catch { }
+			catch (System.Exception e) { Console.WriteLine(e); }
 
 			return PlatformType.Unknown;
 		}

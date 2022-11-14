@@ -42,7 +42,7 @@ namespace OpenRA.Scripting
 
 	// For property groups that are safe to initialize invoke on destroyed actors
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Interface | AttributeTargets.Delegate | AttributeTargets.Method)]
-	public sealed class ExposedForDestroyedActors : Attribute { }
+	public sealed class ExposedForDestroyedActorsAttribute : Attribute { }
 
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Interface | AttributeTargets.Delegate | AttributeTargets.Method)]
 	public sealed class ScriptActorPropertyActivityAttribute : Attribute { }
