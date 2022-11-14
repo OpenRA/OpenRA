@@ -16,7 +16,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Network
 {
-	public sealed class ReplayRecorder
+	public sealed class ReplayRecorder : IDisposable
 	{
 		// Arbitrary value.
 		const int CreateReplayFileMaxRetryCount = 128;

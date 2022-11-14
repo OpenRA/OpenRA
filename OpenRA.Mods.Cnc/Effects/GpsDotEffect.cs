@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.Effects
 				if (frozenLayer != null)
 				{
 					var frozenActor = frozenLayer.FromID(a.ActorID);
-					FrozenActorWithRenderables = frozenActor != null ? frozenActor.HasRenderables : false;
+					FrozenActorWithRenderables = frozenActor != null && frozenActor.HasRenderables;
 				}
 			}
 		}
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Cnc.Effects
 			}
 		}
 
-		IEnumerable<IRenderable> IEffect.Render(WorldRenderer wr)
+		IEnumerable<IRenderable> IEffect.Render(WorldRenderer r)
 		{
 			return SpriteRenderable.None;
 		}

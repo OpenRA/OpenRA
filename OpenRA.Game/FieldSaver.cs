@@ -15,6 +15,8 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using Mono.Nat.Logging;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -84,7 +86,7 @@ namespace OpenRA
 			// This is only for documentation generation
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
 			{
-				var result = "";
+				StringBuilder sb = new StringBuilder();
 				var dict = (System.Collections.IDictionary)v;
 				foreach (var kvp in dict)
 				{
@@ -94,10 +96,10 @@ namespace OpenRA
 					var formattedKey = FormatValue(key);
 					var formattedValue = FormatValue(value);
 
-					result += $"{formattedKey}: {formattedValue}{Environment.NewLine}";
+					sb.Append($"{formattedKey}: {formattedValue}{Environment.NewLine}");
 				}
 
-				return result;
+				return sb.ToString();
 			}
 
 			if (v is DateTime d)
@@ -111,8 +113,9 @@ namespace OpenRA
 				{
 					return conv.ConvertToInvariantString(v);
 				}
-				catch
+				catch (Exception ex)
 				{
+					Console.WriteLine(ex.Message);
 				}
 			}
 

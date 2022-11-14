@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		[Flags]
 		public enum LegacyReferencePoints
 		{
-			Center = 0,
+			None = 0,
 			Top = 1,
 			Bottom = 2,
 			Left = 4,
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		static readonly Dictionary<LegacyReferencePoints, string> PositionMap = new Dictionary<LegacyReferencePoints, string>()
 		{
-			{ LegacyReferencePoints.Center, "Center" },
+			{ LegacyReferencePoints.None, "Center" },
 			{ LegacyReferencePoints.Top, "Top" },
 			{ LegacyReferencePoints.Top | LegacyReferencePoints.Left, "TopLeft" },
 			{ LegacyReferencePoints.Top | LegacyReferencePoints.Right, "TopRight" },

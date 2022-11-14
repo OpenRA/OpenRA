@@ -21,7 +21,11 @@ using OpenRA.Primitives;
 namespace OpenRA
 {
 	[Flags]
-	enum ModRegistration { User = 1, System = 2 }
+	enum ModRegistrations
+	{
+		User = 1,
+		System = 2
+	}
 
 	public class ExternalMod
 	{
@@ -66,7 +70,7 @@ namespace OpenRA
 			// Several types of support directory types are available, depending on
 			// how the player has installed and launched the game.
 			// Read registration metadata from all of them
-			foreach (var source in GetSupportDirs(ModRegistration.User | ModRegistration.System))
+			foreach (var source in GetSupportDirs(ModRegistrations.User | ModRegistrations.System))
 			{
 				var metadataPath = Path.Combine(source, "ModMetadata");
 				if (!Directory.Exists(metadataPath))
@@ -116,7 +120,7 @@ namespace OpenRA
 				mods[key] = mod;
 		}
 
-		internal void Register(Manifest mod, string launchPath, IEnumerable<string> launchArgs, ModRegistration registration)
+		internal void Register(Manifest mod, string launchPath, IEnumerable<string> launchArgs, ModRegistrations registration)
 		{
 			if (mod.Metadata.Hidden)
 				return;
@@ -144,10 +148,10 @@ namespace OpenRA
 					yaml.Value.Nodes.Add(new MiniYamlNode("Icon3x", Convert.ToBase64String(stream.ReadAllBytes())));
 
 			var sources = new HashSet<string>();
-			if (registration.HasFlag(ModRegistration.System))
+			if (registration.HasFlag(ModRegistrations.System))
 				sources.Add(Platform.GetSupportDir(SupportDirType.System));
 
-			if (registration.HasFlag(ModRegistration.User))
+			if (registration.HasFlag(ModRegistrations.User))
 			{
 				sources.Add(Platform.GetSupportDir(SupportDirType.User));
 
@@ -186,7 +190,7 @@ namespace OpenRA
 		/// * Filename doesn't match internal key
 		/// * Fails to parse as a mod registration
 		/// </summary>
-		internal void ClearInvalidRegistrations(ModRegistration registration)
+		internal void ClearInvalidRegistrations(ModRegistrations registration)
 		{
 			foreach (var source in GetSupportDirs(registration))
 			{
@@ -234,7 +238,7 @@ namespace OpenRA
 			}
 		}
 
-		internal void Unregister(Manifest mod, ModRegistration registration)
+		internal void Unregister(Manifest mod, ModRegistrations registration)
 		{
 			var key = ExternalMod.MakeKey(mod);
 			mods.Remove(key);
@@ -255,13 +259,13 @@ namespace OpenRA
 			}
 		}
 
-		IEnumerable<string> GetSupportDirs(ModRegistration registration)
+		static IEnumerable<string> GetSupportDirs(ModRegistrations registration)
 		{
 			var sources = new HashSet<string>(4);
-			if (registration.HasFlag(ModRegistration.System))
+			if (registration.HasFlag(ModRegistrations.System))
 				sources.Add(Platform.GetSupportDir(SupportDirType.System));
 
-			if (registration.HasFlag(ModRegistration.User))
+			if (registration.HasFlag(ModRegistrations.User))
 			{
 				// User support dir may be using the modern or legacy value, or overridden by the user
 				// Add all the possibilities and let the HashSet ignore the duplicates

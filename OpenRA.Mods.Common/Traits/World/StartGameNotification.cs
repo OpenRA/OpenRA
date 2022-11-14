@@ -43,20 +43,20 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
+		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
-			if (!world.IsLoadingGameSave)
+			if (!w.IsLoadingGameSave)
 			{
-				Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.Notification, world.RenderPlayer == null ? null : world.RenderPlayer.Faction.InternalName);
+				Game.Sound.PlayNotification(w.Map.Rules, null, "Speech", info.Notification, w.RenderPlayer == null ? null : w.RenderPlayer.Faction.InternalName);
 				TextNotificationsManager.AddTransientLine(info.TextNotification, null);
 			}
 		}
 
-		void INotifyGameLoaded.GameLoaded(World world)
+		void INotifyGameLoaded.GameLoaded(World w)
 		{
-			if (!world.IsReplay)
+			if (!w.IsReplay)
 			{
-				Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.LoadedNotification, world.RenderPlayer == null ? null : world.RenderPlayer.Faction.InternalName);
+				Game.Sound.PlayNotification(w.Map.Rules, null, "Speech", info.LoadedNotification, w.RenderPlayer == null ? null : w.RenderPlayer.Faction.InternalName);
 				TextNotificationsManager.AddTransientLine(info.LoadedTextNotification, null);
 			}
 		}

@@ -77,7 +77,7 @@ ENGINEER:
 	CaptureManager:
 	Captures:
 		CaptureTypes: building
-		PlayerExperience: 50
+		PlayerExperience: 10
 	RenderSprites:
 		Image: engineer.gdi
 		FactionImages:

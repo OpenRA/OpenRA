@@ -177,7 +177,6 @@ namespace OpenRA
 		{
 			get { return syncCheckBotModuleCode; }
 			set { syncCheckBotModuleCode = value; }
-
 		}
 	}
 
@@ -186,7 +185,8 @@ namespace OpenRA
 		[Desc("This can be set to Windowed, Fullscreen or PseudoFullscreen.")]
 		private WindowMode mode = WindowMode.PseudoFullscreen;
 
-		public WindowMode Mode{
+		public WindowMode Mode
+		{
 			get { return mode; }
 			set { mode = value; }
 		}
@@ -195,10 +195,22 @@ namespace OpenRA
 		public bool VSync = true;
 
 		[Desc("Screen resolution in fullscreen mode.")]
-		public Int2 FullscreenSize = new Int2(0, 0);
+		private Int2 fullscreenSize = new Int2(0, 0);
+
+		public Int2 FullscreenSize
+		{
+			get { return fullscreenSize; }
+			set { fullscreenSize = value; }
+		}
 
 		[Desc("Screen resolution in windowed mode.")]
-		public Int2 WindowedSize = new Int2(1024, 768);
+		private Int2 windowedSize = new Int2(1024, 768);
+
+		public Int2 WindowedSize
+		{
+			get { return windowedSize; }
+			set { windowedSize = value; }
+		}
 
 		public bool CursorDouble = false;
 		public WorldViewport ViewportDistance = WorldViewport.Medium;
@@ -366,9 +378,12 @@ namespace OpenRA
 
 				// Override with commandline args
 				foreach (var kv in Sections)
-					foreach (var f in kv.Value.GetType().GetFields())
-						if (args.Contains(kv.Key + "." + f.Name))
-							FieldLoader.LoadField(kv.Value, f.Name, args.GetValue(kv.Key + "." + f.Name, ""));
+					foreach (var f in from f in kv.Value.GetType().GetFields()
+									  where args.Contains(kv.Key + "." + f.Name)
+									  select f)
+					{
+						FieldLoader.LoadField(kv.Value, f.Name, args.GetValue(kv.Key + "." + f.Name, ""));
+					}
 			}
 			finally
 			{

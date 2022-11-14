@@ -50,13 +50,7 @@ namespace OpenRA
 		public SourceLocation Location;
 		public string Key;
 		public MiniYaml Value;
-		private string comment;
-
-		public string Comment
-		{
-			get { return comment; }
-			set { comment = value; }
-		}
+		public string Comment { get; set; }
 
 		public MiniYamlNode(string k, MiniYaml v, string c = null)
 		{

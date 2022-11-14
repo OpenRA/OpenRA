@@ -209,7 +209,6 @@ namespace OpenRA.Mods.Common
 			{
 				client.Dispose();
 				client = null;
-				instance = null;
 			}
 		}
 

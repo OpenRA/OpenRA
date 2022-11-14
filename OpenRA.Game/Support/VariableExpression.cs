@@ -153,9 +153,9 @@ namespace OpenRA.Support
 			And = 4,
 			Or = 3,
 			Binary = 0,
-			Value = 0,
+			Value = -2,
 			Parens = -1,
-			Invalid = ~0
+			Invalid = -3
 		}
 
 		readonly struct TokenTypeInfo
@@ -676,7 +676,7 @@ namespace OpenRA.Support
 				else if (t.Closes != Grouping.None)
 				{
 					Token temp;
-					while (!((temp = s.Pop()).Opens != Grouping.None))
+					while ((temp = s.Pop()).Opens == Grouping.None)
 						yield return temp;
 				}
 				else if (t.OperandSides == Sides.None)
@@ -754,9 +754,8 @@ namespace OpenRA.Support
 					if (expression.Type != typeof(int))
 						throw new InvalidOperationException($"Expected System.Int type instead of {expression.Type} for {expression}");
 
-				if (type == ExpressionType.Bool)
-					if (expression.Type != typeof(bool))
-						throw new InvalidOperationException($"Expected System.Boolean type instead of {expression.Type} for {expression}");
+				if (type == ExpressionType.Bool && expression.Type != typeof(bool))
+					throw new InvalidOperationException($"Expected System.Boolean type instead of {expression.Type} for {expression}");
 				types.Add(type);
 			}
 

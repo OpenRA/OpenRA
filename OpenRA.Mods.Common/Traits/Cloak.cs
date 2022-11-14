@@ -255,12 +255,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void TraitDisabled(Actor self) { Uncloak(); }
 
-		public bool IsVisible(Actor self, Player viewer)
+		public bool IsVisible(Actor self, Player byPlayer)
 		{
-			if (!Cloaked || self.Owner.IsAlliedWith(viewer))
+			if (!Cloaked || self.Owner.IsAlliedWith(byPlayer))
 				return true;
 
-			return self.World.ActorsWithTrait<DetectCloaked>().Any(a => a.Actor.Owner.IsAlliedWith(viewer)
+			return self.World.ActorsWithTrait<DetectCloaked>().Any(a => a.Actor.Owner.IsAlliedWith(byPlayer)
 				&& Info.DetectionTypes.Overlaps(a.Trait.Info.DetectionTypes)
 				&& (self.CenterPosition - a.Actor.CenterPosition).LengthSquared <= a.Trait.Range.LengthSquared);
 		}
@@ -273,7 +273,10 @@ namespace OpenRA.Mods.Common.Traits
 			return color;
 		}
 
-		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell) { }
+		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell)
+		{
+			throw new NotSupportedException();
+		}
 
 		void INotifyHarvesterAction.MovingToRefinery(Actor self, Actor refineryActor)
 		{

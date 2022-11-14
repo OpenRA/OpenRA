@@ -843,35 +843,6 @@ namespace OpenRA
 			return png.Save();
 		}
 
-		public bool Contains(CPos cell)
-		{
-			if (Grid.Type == MapGridType.RectangularIsometric)
-			{
-				// .ToMPos() returns the same result if the X and Y coordinates
-				// are switched. X < Y is invalid in the RectangularIsometric coordinate system,
-				// so we pre-filter these to avoid returning the wrong result
-				if (cell.X < cell.Y)
-					return false;
-			}
-			else
-			{
-				// If the mod uses flat & rectangular maps, ToMPos and Contains(MPos) create unnecessary cost.
-				// Just check if CPos is within map bounds.
-				if (Grid.MaximumTerrainHeight == 0)
-					return Bounds.Contains(cell.X, cell.Y);
-			}
-
-			return Contains(cell.ToMPos(this));
-		}
-
-		public bool Contains(MPos uv)
-		{
-			// The first check ensures that the cell is within the valid map region, avoiding
-			// potential crashes in deeper code.  All CellLayers have the same geometry, and
-			// CustomTerrain is convenient.
-			return CustomTerrain.Contains(uv) && ContainsAllProjectedCellsCovering(uv);
-		}
-
 		bool ContainsAllProjectedCellsCovering(MPos uv)
 		{
 			// PERF: Checking the bounds directly here is the same as calling Contains((PPos)uv) but saves an allocation
@@ -901,6 +872,35 @@ namespace OpenRA
 		public bool Contains(PPos puv)
 		{
 			return Bounds.Contains(puv.U, puv.V);
+		}
+
+		public bool Contains(CPos cell)
+		{
+			if (Grid.Type == MapGridType.RectangularIsometric)
+			{
+				// .ToMPos() returns the same result if the X and Y coordinates
+				// are switched. X < Y is invalid in the RectangularIsometric coordinate system,
+				// so we pre-filter these to avoid returning the wrong result
+				if (cell.X < cell.Y)
+					return false;
+			}
+			else
+			{
+				// If the mod uses flat & rectangular maps, ToMPos and Contains(MPos) create unnecessary cost.
+				// Just check if CPos is within map bounds.
+				if (Grid.MaximumTerrainHeight == 0)
+					return Bounds.Contains(cell.X, cell.Y);
+			}
+
+			return Contains(cell.ToMPos(this));
+		}
+
+		public bool Contains(MPos uv)
+		{
+			// The first check ensures that the cell is within the valid map region, avoiding
+			// potential crashes in deeper code.  All CellLayers have the same geometry, and
+			// CustomTerrain is convenient.
+			return CustomTerrain.Contains(uv) && ContainsAllProjectedCellsCovering(uv);
 		}
 
 		public WPos CenterOfCell(CPos cell)
@@ -1335,7 +1335,11 @@ namespace OpenRA
 			if (maxRange >= Grid.TilesByDistance.Length)
 				throw new ArgumentOutOfRangeException(nameof(maxRange),
 					$"The requested range ({maxRange}) cannot exceed the value of MaximumTileSearchRange ({Grid.MaximumTileSearchRange})");
+			return FindTilesInAnnulusIterator(center, minRange, maxRange, allowOutsideBounds=false);
+		}
 
+		private IEnumerable<CPos> FindTilesInAnnulusIterator(CPos center, int minRange, int maxRange, bool allowOutsideBounds = false)
+		{
 			for (var i = minRange; i <= maxRange; i++)
 			{
 				foreach (var offset in Grid.TilesByDistance[i])

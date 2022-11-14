@@ -60,7 +60,14 @@ namespace OpenRA
 	{
 		public readonly string Type;
 		public readonly BitSet<TargetableType> TargetTypes;
-		public readonly HashSet<string> AcceptsSmudgeType = new HashSet<string>();
+		private HashSet<string> acceptsSmudgeType = new HashSet<string>();
+
+		public HashSet<string> AcceptsSmudgeType
+		{
+			get { return acceptsSmudgeType; }
+			set { acceptsSmudgeType = value; }
+		}
+
 		public readonly Color Color;
 		public readonly bool RestrictPlayerColor = false;
 
@@ -69,7 +76,7 @@ namespace OpenRA
 
 	// HACK: Temporary placeholder to avoid having to change all the traits that reference this constant.
 	// This can be removed after the palette references have been moved from traits to sequences.
-	public class TileSet
+	public static class TileSet
 	{
 		public const string TerrainPaletteInternalName = "terrain";
 	}

@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Commands
 			Commands = new Dictionary<string, IChatCommand>();
 		}
 
-		public bool OnChat(string playername, string message)
+		public bool OnChat(string from, string message)
 		{
 			if (message.StartsWith("/"))
 			{

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -69,7 +70,10 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
-		public void Tick() { }
+		public void Tick()
+		{
+			throw new NotSupportedException();
+		}
 
 		public void Dispose()
 		{

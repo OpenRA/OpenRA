@@ -23,7 +23,13 @@ namespace OpenRA.Mods.Common.Activities
 	public class Attack : Activity, IActivityNotifyStanceChanged
 	{
 		[Flags]
-		protected enum AttackStatus { UnableToAttack, NeedsToTurn, NeedsToMove, Attacking }
+		protected enum AttackStatus
+		{
+			None = 0,
+			NeedsToTurn = 1,
+			NeedsToMove,
+			Attacking = 4
+		}
 
 		readonly IEnumerable<AttackFrontal> attackTraits;
 		readonly RevealsShroud[] revealsShroud;
@@ -43,7 +49,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		WDist minRange;
 		WDist maxRange;
-		AttackStatus attackStatus = AttackStatus.UnableToAttack;
+		AttackStatus attackStatus = AttackStatus.None;
 
 		public Attack(Actor self, in Target target, bool allowMovement, bool forceAttack, Color? targetLineColor = null)
 		{
@@ -137,7 +143,7 @@ namespace OpenRA.Mods.Common.Activities
 				return false;
 			}
 
-			attackStatus = AttackStatus.UnableToAttack;
+			attackStatus = AttackStatus.None;
 
 			foreach (var attack in attackTraits)
 			{
@@ -163,16 +169,16 @@ namespace OpenRA.Mods.Common.Activities
 		protected virtual AttackStatus TickAttack(Actor self, AttackFrontal attack)
 		{
 			if (!target.IsValidFor(self))
-				return AttackStatus.UnableToAttack;
+				return AttackStatus.None;
 
 			if (attack.Info.AttackRequiresEnteringCell && !positionable.CanEnterCell(target.Actor.Location, null, BlockedByActor.None))
-				return AttackStatus.UnableToAttack;
+				return AttackStatus.None;
 
 			if (!attack.Info.TargetFrozenActors && !forceAttack && target.Type == TargetType.FrozenActor)
 			{
 				// Try to move within range, drop the target otherwise
 				if (move == null)
-					return AttackStatus.UnableToAttack;
+					return AttackStatus.None;
 
 				var rs = revealsShroud
 					.Where(t => !t.IsTraitDisabled)
@@ -189,7 +195,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Drop the target once none of the weapons are effective against it
 			var armaments = attack.ChooseArmamentsForTarget(target, forceAttack).ToList();
 			if (armaments.Count == 0)
-				return AttackStatus.UnableToAttack;
+				return AttackStatus.None;
 
 			// Update ranges
 			minRange = armaments.Max(a => a.Weapon.MinRange);
@@ -202,7 +208,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				// Try to move within range, drop the target otherwise
 				if (move == null)
-					return AttackStatus.UnableToAttack;
+					return AttackStatus.None;
 
 				attackStatus |= AttackStatus.NeedsToMove;
 				var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;

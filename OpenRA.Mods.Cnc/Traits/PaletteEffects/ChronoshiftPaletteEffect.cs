@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -54,14 +55,14 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			var frac = (float)remainingFrames / info.ChronoEffectLength;
 
-			foreach (var pal in palettes)
+			foreach (var palValue in palettes.Select(palValue => palValue.Value))
 			{
 				for (var x = 0; x < Palette.Size; x++)
 				{
-					var orig = pal.Value.GetColor(x);
+					var orig = palValue.GetColor(x);
 					var lum = (int)(255 * orig.GetBrightness());
 					var desat = Color.FromArgb(orig.A, lum, lum, lum);
-					pal.Value.SetColor(x, Exts.ColorLerp(frac, orig, desat));
+					palValue.SetColor(x, Exts.ColorLerp(frac, orig, desat));
 				}
 			}
 		}

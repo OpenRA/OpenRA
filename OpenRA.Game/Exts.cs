@@ -120,14 +120,22 @@ namespace OpenRA
 		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k, V v)
 		{
 			if (!d.TryGetValue(k, out var ret))
-				d.Add(k, ret = v);
+			{
+				ret = v;
+				d.Add(k, ret);
+			}
+
 			return ret;
 		}
 
 		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k, Func<K, V> createFn)
 		{
 			if (!d.TryGetValue(k, out var ret))
-				d.Add(k, ret = createFn(k));
+			{
+				ret = createFn(k);
+				d.Add(k, ret);
+			}
+
 			return ret;
 		}
 
@@ -460,7 +468,7 @@ namespace OpenRA
 			return result;
 		}
 
-		public static T[,] ResizeArray<T>(T[,] ts, T t, int width, int height)
+		static T[,] ResizeArray<T>(T[,] ts, T t, int width, int height)
 		{
 			var result = new T[width, height];
 			for (var i = 0; i < width; i++)

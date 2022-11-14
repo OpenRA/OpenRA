@@ -242,13 +242,13 @@ namespace OpenRA
 				return BinDir;
 
 			if (path.StartsWith("^SupportDir|", StringComparison.Ordinal))
-				path = SupportDir + path.Substring(12);
+				path = string.Concat(SupportDir, path.AsSpan(12));
 
 			if (path.StartsWith("^EngineDir|", StringComparison.Ordinal))
-				path = EngineDir + path.Substring(11);
+				path = string.Concat(EngineDir, path.AsSpan(11));
 
 			if (path.StartsWith("^BinDir|", StringComparison.Ordinal))
-				path = BinDir + path.Substring(8);
+				path = string.Concat(BinDir, path.AsSpan(8));
 
 			return path;
 		}

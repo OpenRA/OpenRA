@@ -291,7 +291,7 @@ namespace OpenRA.Platforms.Default
 				PauseSound(source, paused);
 		}
 
-		void PauseSound(uint source, bool paused)
+		static void PauseSound(uint source, bool paused)
 		{
 			AL10.alGetSourcei(source, AL10.AL_SOURCE_STATE, out var state);
 			if (paused)

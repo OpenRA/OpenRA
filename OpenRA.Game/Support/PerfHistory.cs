@@ -28,7 +28,7 @@ namespace OpenRA.Support
 
 		static int nextColor;
 
-		public static Cache<string, PerfItem> Items = new Cache<string, PerfItem>(
+		public static readonly Cache<string, PerfItem> Items = new Cache<string, PerfItem>(
 			s =>
 			{
 				var x = new PerfItem(s, Colors[nextColor++]);

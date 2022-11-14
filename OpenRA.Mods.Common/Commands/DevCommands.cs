@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
@@ -22,7 +23,7 @@ namespace OpenRA.Mods.Common.Commands
 	[Desc("Enables developer cheats via the chatbox. Attach this to the world actor.")]
 	public class DevCommandsInfo : TraitInfo<DevCommands> { }
 
-	public class DevCommands : IChatCommand, IWorldLoaded
+	public class DevCommands : IChatCommand, IWorldLoaded, IDisposable
 	{
 		[TranslationReference]
 		static readonly string CheatsDisabled = "cheats-disabled";
@@ -97,7 +98,7 @@ namespace OpenRA.Mods.Common.Commands
 		World world;
 		DeveloperMode developerMode;
 
-		public void WorldLoaded(World w, WorldRenderer wr)
+		public void WorldLoaded(World w, WorldRenderer wr) 
 		{
 			world = w;
 
@@ -254,7 +255,44 @@ namespace OpenRA.Mods.Common.Commands
 			world.IssueOrder(new Order(command, world.LocalPlayer.PlayerActor, false));
 		}
 
+		public void Dispose()
+		{
+			throw new NotImplementedException();
+		}
+
 		[Serializable]
-		class DevException : Exception { }
+		public class DevException : Exception
+		{
+			public DevException()
+			{
+				// some implementation
+			}
+
+			protected DevException(SerializationInfo info, StreamingContext context)
+			{
+				// some implementation
+			}
+		}
+
+		public sealed class SubDevException: DevException
+		{
+			public SubDevException()
+			{
+				// ...
+			}
+
+			SubDevException(SerializationInfo info, StreamingContext context)
+				: base(info, context)
+			{
+				// ...
+			}
+
+			public override void GetObjectData(SerializationInfo info, StreamingContext context)
+			{
+				base.GetObjectData(info, context);
+
+				// ...
+			}
+		}
 	}
 }

@@ -249,8 +249,11 @@ namespace OpenRA.FileFormats
 			var pb = Math.Abs(p - b);
 			var pc = Math.Abs(p - c);
 
-			return (pa <= pb && pa <= pc) ? a :
-				(pb <= pc) ? b : c;
+			if (pa <= pb && pa <= pc)
+				return a;
+			else if (pb <= pc)
+				return b;
+			else return c;
 		}
 
 		[Flags]
@@ -271,7 +274,7 @@ namespace OpenRA.FileFormats
 			throw new InvalidDataException("Unknown pixel format");
 		}
 
-		void WritePngChunk(Stream output, string type, Stream input)
+		static void WritePngChunk(Stream output, string type, Stream input)
 		{
 			input.Position = 0;
 
@@ -302,9 +305,7 @@ namespace OpenRA.FileFormats
 					var colorType = Type == SpriteFrameType.Indexed8 ? PngColorType.Indexed | PngColorType.Color :
 						Type == SpriteFrameType.Rgb24 ? PngColorType.Color : PngColorType.Color | PngColorType.Alpha;
 
-
-				    header.WriteByte((byte)colorType);
-
+					header.WriteByte((byte)colorType);
 					header.WriteByte(0); // Compression
 					header.WriteByte(0); // Filter
 					header.WriteByte(0); // Interlacing

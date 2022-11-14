@@ -123,7 +123,7 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		float2 Rotate(float2 v, float sina, float cosa, float2 offset)
+		static float2 Rotate(float2 v, float sina, float cosa, float2 offset)
 		{
 			return new float2(
 				v.X * cosa - v.Y * sina + offset.X,

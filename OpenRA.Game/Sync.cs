@@ -185,7 +185,6 @@ namespace OpenRA
 			if (inUnsyncedCode || world == null)
 				return fn();
 
-			var sync = checkSyncHash ? world.SyncHash() : 0;
 			inUnsyncedCode = true;
 
 			// Running this inside a try with a finally statement means isUnsyncedCode is set to false again as soon as fn completes
@@ -196,11 +195,6 @@ namespace OpenRA
 			finally
 			{
 				inUnsyncedCode = false;
-
-				// When the world is disposing all actors and effects have been removed
-				// So do not check the hash for a disposing world since it definitively has changed
-				if (checkSyncHash && !world.Disposing && sync != world.SyncHash())
-					throw new InvalidOperationException("RunUnsynced: sync-changing code may not run here");
 			}
 		}
 

@@ -86,7 +86,7 @@ namespace OpenRA.Traits
 
 		// Visible is not a super set of Explored. IsExplored may return false even if IsVisible returns true.
 		[Flags]
-		public enum CellVisibility : byte { Hidden = 0x0, Explored = 0x1, Visible = 0x2 }
+		public enum CellVisibility : byte { None = 0x0, Explored = 0x1, Visible = 0x2 }
 
 		readonly ShroudInfo info;
 		readonly Map map;
@@ -455,7 +455,7 @@ namespace OpenRA.Traits
 		// PERF: Combine IsExplored and IsVisible.
 		public CellVisibility GetVisibility(PPos puv)
 		{
-			var state = CellVisibility.Hidden;
+			var state = CellVisibility.None;
 
 			if (Disabled)
 			{

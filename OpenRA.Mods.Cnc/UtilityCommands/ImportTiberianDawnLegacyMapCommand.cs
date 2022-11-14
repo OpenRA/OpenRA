@@ -152,8 +152,6 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				color = "red";
 				faction = "nod";
 				break;
-			case "Special":
-			case "Neutral":
 			default:
 				color = "neutral";
 				faction = "gdi";

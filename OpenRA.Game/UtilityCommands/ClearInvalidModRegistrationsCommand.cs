@@ -25,12 +25,12 @@ namespace OpenRA.UtilityCommands
 		[Desc("(system|user|both)", "Removes invalid metadata entries for the in-game mod switcher.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
-			ModRegistration type = 0;
+			ModRegistrations type = 0;
 			if (args[1] == "system" || args[1] == "both")
-				type |= ModRegistration.System;
+				type |= ModRegistrations.System;
 
 			if (args[1] == "user" || args[1] == "both")
-				type |= ModRegistration.User;
+				type |= ModRegistrations.User;
 
 			new ExternalMods().ClearInvalidRegistrations(type);
 		}

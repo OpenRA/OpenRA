@@ -10,8 +10,8 @@
 #endregion
 
 using System;
-using OpenRA.Network;
 using System.Linq;
+using OpenRA.Network;
 
 namespace OpenRA
 {

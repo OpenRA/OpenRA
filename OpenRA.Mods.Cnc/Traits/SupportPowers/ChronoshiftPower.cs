@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using DiscordRPC.Exceptions;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Orders;
 using OpenRA.Mods.Common.Traits;
@@ -379,7 +380,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					// Check the terrain types. This will allow chronoshifts to occur on empty terrain to terrain of
 					// a similar type. This also keeps the cursor from changing in non-visible property, alerting the
 					// chronoshifter of enemy unit presence
-					canTeleport = power.SimilarTerrain(sourceLocation, xy);
+					canTeleport = power.SimilarTerrain(xy,sourceLocation);
 				}
 
 				return canTeleport;

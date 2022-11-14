@@ -59,11 +59,10 @@ namespace OpenRA.FileFormats
 
 			// Write data
 			var dataLength = 0;
-			{
-				// Write lobby info data
-				writer.Flush();
-				dataLength += writer.BaseStream.WriteString(Encoding.UTF8, GameInfo.Serialize());
-			}
+
+			// Write lobby info data
+			writer.Flush();
+			dataLength += writer.BaseStream.WriteString(Encoding.UTF8, GameInfo.Serialize());
 
 			// Write total length & end marker
 			writer.Write(dataLength);

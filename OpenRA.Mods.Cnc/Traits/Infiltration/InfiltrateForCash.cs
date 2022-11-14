@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var spyValue = infiltrator.Info.TraitInfoOrDefault<ValuedInfo>();
 
 			var toTake = Math.Min(info.Maximum, (targetResources.Cash + targetResources.Resources) * info.Percentage / 100);
-			var toGive = Math.Max(toTake, info.Minimum >= 0 ? info.Minimum : spyValue != null ? spyValue.Cost : 0);
+			var toGive = Math.Max(toTake, CalculateInfoMinimum(infiltrator));
 
 			targetResources.TakeCash(toTake);
 			spyResources.GiveCash(toGive);
@@ -85,6 +85,22 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			if (info.ShowTicks)
 				self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, infiltrator.Owner.Color, FloatingText.FormatCashTick(toGive), 30)));
+		}
+
+		private int CalculateInfoMinimum(Actor infiltrator)
+		{
+			var spyValue = infiltrator.Info.TraitInfoOrDefault<ValuedInfo>();
+			if (info.Minimum >= 0)
+			{
+				if (spyValue != null)
+				{
+					return spyValue.Cost;
+				}
+
+				return 0;
+			}
+
+			return info.Minimum;
 		}
 	}
 }

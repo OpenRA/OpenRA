@@ -85,7 +85,10 @@ namespace OpenRA.Mods.Common.Traits
 			self.ShowTargetLines();
 		}
 
-		void INotifyCashTransfer.OnAcceptingCash(Actor self, Actor donor) { }
+		void INotifyCashTransfer.OnAcceptingCash(Actor self, Actor donor)
+		{
+			throw new NotSupportedException();
+		}
 
 		void INotifyCashTransfer.OnDeliveringCash(Actor self, Actor acceptor)
 		{

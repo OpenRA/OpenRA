@@ -280,8 +280,8 @@ namespace OpenRA.Mods.Cnc.Traits
 				if (mi.Button == Game.Settings.Game.MouseButtonPreference.Action)
 				{
 					minelayers.First().World.CancelInputMode();
-					foreach (var minelayer in minelayers)
-						yield return new Order("PlaceMinefield", minelayer, Target.FromCell(world, cell), queued) { ExtraLocation = minefieldStart };
+					foreach (var minelyr in minelayers)
+						yield return new Order("PlaceMinefield", minelyr, Target.FromCell(world, cell), queued) { ExtraLocation = minefieldStart };
 				}
 			}
 
@@ -312,12 +312,8 @@ namespace OpenRA.Mods.Cnc.Traits
 				{
 					var tile = validTile;
 					var alpha = validAlpha;
-					if (!world.Map.Contains(c))
-					{
-						tile = blockedTile;
-						alpha = blockedAlpha;
-					}
-					else if (world.ShroudObscures(c))
+					if ((!world.Map.Contains(c)) || (world.ShroudObscures(c)) || (!this.minelayer.IsCellAcceptable(minelayer, c)
+						|| !movement.CanEnterCell(c, null, BlockedByActor.Immovable) || (mobile != null && !mobile.CanStayInCell(c))))
 					{
 						tile = blockedTile;
 						alpha = blockedAlpha;
@@ -326,12 +322,6 @@ namespace OpenRA.Mods.Cnc.Traits
 					{
 						tile = unknownTile;
 						alpha = unknownAlpha;
-					}
-					else if (!this.minelayer.IsCellAcceptable(minelayer, c)
-						|| !movement.CanEnterCell(c, null, BlockedByActor.Immovable) || (mobile != null && !mobile.CanStayInCell(c)))
-					{
-						tile = blockedTile;
-						alpha = blockedAlpha;
 					}
 
 					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c), WVec.Zero, -511, pal, 1f, alpha, Float3.Ones, TintModifiers.IgnoreWorldTint, true);
