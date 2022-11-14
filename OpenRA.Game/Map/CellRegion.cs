@@ -165,7 +165,10 @@ namespace OpenRA
 
 			public CPos Current => current;
 			object IEnumerator.Current => Current;
-			public void Dispose() { }
+			public void Dispose()
+			{
+				throw new NotSupportedException();
+			}
 		}
 	}
 }

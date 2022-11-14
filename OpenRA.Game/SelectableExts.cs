@@ -18,13 +18,12 @@ namespace OpenRA.Traits
 {
 	public static class SelectableExts
 	{
+		const int PriorityRange = 30;
 		public static int SelectionPriority(this ActorInfo a, Modifiers modifiers)
 		{
 			var selectableInfo = a.TraitInfoOrDefault<ISelectableInfo>();
 			return selectableInfo != null ? BaseSelectionPriority(selectableInfo, modifiers) : int.MinValue;
 		}
-
-		
 
 		public static int SelectionPriority(this Actor a, Modifiers modifiers)
 		{

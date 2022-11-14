@@ -762,7 +762,7 @@ namespace OpenRA
 		public byte[] SavePreview()
 		{
 			var actorTypes = Rules.Actors.Values.Where(a => a.HasTraitInfo<IMapPreviewSignatureInfo>());
-			var actors = ActorDefinitions.Where(a => actorTypes.Where(ai => ai.Name == a.Value.Value).Any());
+			var actors = ActorDefinitions.Where(a => actorTypes.Any(ai => ai.Name == a.Value.Value));
 			var positions = new List<(MPos Position, Color Color)>();
 			foreach (var actor in actors)
 			{
@@ -1253,11 +1253,8 @@ namespace OpenRA
 		{
 			return ChooseClosestEdgeCell(cell.ToMPos(Grid.Type)).ToCPos(Grid.Type);
 		}
-
-		public MPos ChooseClosestEdgeCell(MPos uv)
+		private PPos Methd1(PPos[] allProjected)
 		{
-			var allProjected = ProjectedCellsCovering(uv);
-
 			PPos edge;
 			if (allProjected.Length > 0)
 			{
@@ -1273,6 +1270,13 @@ namespace OpenRA
 			else
 				edge = new PPos(Bounds.Left, Bounds.Top);
 
+			return edge;
+		}
+		public MPos ChooseClosestEdgeCell(MPos uv)
+		{
+			var allProjected = ProjectedCellsCovering(uv);
+
+			var edge = Methd1(allProjected);
 			var unProjected = Unproject(edge);
 			if (unProjected.Count == 0)
 			{
@@ -1360,7 +1364,7 @@ namespace OpenRA
 			if (maxRange >= Grid.TilesByDistance.Length)
 				throw new ArgumentOutOfRangeException(nameof(maxRange),
 					$"The requested range ({maxRange}) cannot exceed the value of MaximumTileSearchRange ({Grid.MaximumTileSearchRange})");
-			return FindTilesInAnnulusIterator(center, minRange, maxRange, allowOutsideBounds=false);
+			return FindTilesInAnnulusIterator(center, minRange, maxRange, allowOutsideBounds);
 		}
 
 		private IEnumerable<CPos> FindTilesInAnnulusIterator(CPos center, int minRange, int maxRange, bool allowOutsideBounds = false)

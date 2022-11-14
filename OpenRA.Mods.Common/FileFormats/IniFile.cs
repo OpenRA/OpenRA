@@ -63,15 +63,16 @@ namespace OpenRA.Mods.Common.FileFormats
 			return ret;
 		}
 
-		static bool ProcessEntry(string line, IniSection currentSection)
+		static void ProcessEntry(string line, IniSection currentSection)
 		{
 			var comment = line.IndexOf(';');
+			bool nova;
 			if (comment >= 0)
 				line = line.Substring(0, comment);
 
 			line = line.Trim();
 			if (line.Length == 0)
-				return false;
+				nova= false;
 
 			var key = line;
 			var value = "";
@@ -87,7 +88,7 @@ namespace OpenRA.Mods.Common.FileFormats
 
 			if (!currentSection.Contains(key))
 				currentSection.Add(key, value);
-			return true;
+			nova = true;
 		}
 
 		public IniSection GetSection(string s)

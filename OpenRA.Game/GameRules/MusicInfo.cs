@@ -28,7 +28,6 @@ namespace OpenRA.GameRules
 			Title = value.Value;
 
 			var nd = value.ToDictionary();
-			if (nd.ContainsKey("Hidden"))
 
 			if (nd.ContainsKey("VolumeModifier"))
 				VolumeModifier = FieldLoader.GetValue<float>("VolumeModifier", nd["VolumeModifier"].Value);

@@ -16,7 +16,8 @@ namespace OpenRA.Mods.Common.FileFormats
 	public struct ImaAdpcmChunk
 	{
 		public int CompressedSize;
-		public int OutputSize;
+		private int OutputSize;
+
 
 		public static ImaAdpcmChunk Read(Stream s)
 		{

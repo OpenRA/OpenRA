@@ -9,8 +9,10 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace OpenRA
 {
@@ -48,7 +50,7 @@ namespace OpenRA
 						}
 						catch (System.Exception e)
 						{
-							// An exception
+							Console.WriteLine(e);
 						}
 					});
 				}

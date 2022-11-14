@@ -18,8 +18,8 @@ namespace OpenRA.Mods.Common.Graphics
 	public class TilesetSpecificSpriteSequenceLoader : DefaultSpriteSequenceLoader
 	{
 		public readonly string DefaultSpriteExtension = ".shp";
-		public readonly Dictionary<string, string> TilesetExtensions = new Dictionary<string, string>();
-		public readonly Dictionary<string, string> TilesetCodes = new Dictionary<string, string>();
+		public  Dictionary<string, string> TilesetExtensions = new Dictionary<string, string>();
+		public  Dictionary<string, string> TilesetCodes = new Dictionary<string, string>();
 
 		public TilesetSpecificSpriteSequenceLoader(ModData modData)
 			: base(modData)
@@ -80,9 +80,8 @@ namespace OpenRA.Mods.Common.Graphics
 
 			var spriteName = sprite ?? sequence;
 
-			if (LoadField(d, UseTilesetCode))
+			if (LoadField(d, UseTilesetCode) && loader.TilesetCodes.TryGetValue(ResolveTilesetId(tileSet, d), out var code))
 			{
-				if (loader.TilesetCodes.TryGetValue(ResolveTilesetId(tileSet, d), out var code))
 					spriteName = spriteName.Substring(0, 1) + code + spriteName.Substring(2, spriteName.Length - 2);
 			}
 
