@@ -41,7 +41,7 @@ namespace OpenRA.Scripting
 
 			// Destroyed actors cannot have their traits queried. In rare cases the actor may have already been destroyed.
 			if (actor.Disposed)
-				commandClasses = commandClasses.Where(c => c.HasAttribute<ExposedForDestroyedActors>()).ToArray();
+				commandClasses = commandClasses.Where(c => c.HasAttribute<ExposedForDestroyedActorsAttribute>()).ToArray();
 
 			Bind(CreateObjects(commandClasses, new object[] { Context, actor }));
 		}
@@ -50,7 +50,7 @@ namespace OpenRA.Scripting
 		{
 			// Remove bindings not available to destroyed actors.
 			foreach (var commandClass in Context.ActorCommands[actor.Info])
-				if (!commandClass.HasAttribute<ExposedForDestroyedActors>())
+				if (!commandClass.HasAttribute<ExposedForDestroyedActorsAttribute>())
 					Unbind(commandClass);
 		}
 	}

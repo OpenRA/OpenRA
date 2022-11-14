@@ -111,5 +111,10 @@ namespace OpenRA.Primitives
 
 			return code;
 		}
+
+		public override bool Equals(object obj)
+		{
+			return true;
+		}
 	}
 }
