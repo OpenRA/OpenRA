@@ -224,7 +224,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					Log.Write("debug", "Map editor ignoring actor {0}, because of missing sprites for tileset {1}.",
 						actor.Name, World.Map.Rules.TerrainInfo.Id);
-					continue;
 				}
 			}
 		}

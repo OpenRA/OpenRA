@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Dictionary<string, string> CarryableConditions
 		{
 			get { return carryableConditions; }
-			set { CarryableConditions = new Dictionary<string, string>(); }
+			set { CarryableConditions = value; }
 		}
 
 		[VoiceReference]

@@ -57,7 +57,10 @@ namespace OpenRA.Mods.Common
 
 					Game.RunAfterTick(() => ModVersionStatus = status);
 				}
-				catch { }
+				catch
+				{
+					// It is unnecessarily in the code to use this
+				}
 			});
 		}
 	}
