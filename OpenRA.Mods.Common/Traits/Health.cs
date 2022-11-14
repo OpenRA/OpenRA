@@ -159,6 +159,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void InflictDamage(Actor self, Actor attacker, Damage damage, bool ignoreModifiers)
 		{
+			if (self.Owner.PlayerActor.Trait<DeveloperMode>().Immortal)
+				return;
+
 			// Overkill! Don't count extra hits as more kills!
 			if (IsDead)
 				return;

@@ -75,6 +75,9 @@ namespace OpenRA.Mods.Common.Commands
 		[TranslationReference]
 		static readonly string DisposeSelectedActorsDescription = "dispose-selected-actors";
 
+		[TranslationReference]
+		static readonly string ImmortalDescription = "immortal";
+
 		readonly IDictionary<string, (string Description, Action<string, World> Handler)> commandHandlers = new Dictionary<string, (string, Action<string, World>)>
 		{
 			{ "visibility", (ToggleVisiblityDescription, Visibility) },
@@ -91,7 +94,8 @@ namespace OpenRA.Mods.Common.Commands
 			{ "player-experience", (PlayerExperienceDescription, PlayerExperience) },
 			{ "power-outage", (PowerOutageDescription, PowerOutage) },
 			{ "kill", (KillSelectedActorsDescription, Kill) },
-			{ "dispose", (DisposeSelectedActorsDescription, Dispose) }
+			{ "dispose", (DisposeSelectedActorsDescription, Dispose) },
+			{ "immortal", (ImmortalDescription, Immortal) }
 		};
 
 		World world;
@@ -247,6 +251,11 @@ namespace OpenRA.Mods.Common.Commands
 
 				world.IssueOrder(new Order("DevDispose", world.LocalPlayer.PlayerActor, Target.FromActor(actor), false));
 			}
+		}
+
+		static void Immortal(string arg, World world)
+		{
+			IssueDevCommand(world, "DevImmortal");
 		}
 
 		static void IssueDevCommand(World world, string command)

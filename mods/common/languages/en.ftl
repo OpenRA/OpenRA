@@ -633,6 +633,7 @@ player-experience = adds a specified amount of player experience to the owner(s)
 power-outage = causes owner(s) of selected actors to have a 5 second power outage.
 kill-selected-actors = kills selected actors.
 dispose-selected-actors = disposes selected actors.
+immortal = make own actors immortal
 
 ## HelpCommands
 available-commands = Here are the available commands:

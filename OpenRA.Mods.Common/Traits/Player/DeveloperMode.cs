@@ -62,6 +62,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Enable the path debug overlay by default.")]
 		public readonly bool PathDebug;
 
+		[Desc("Enable the immortal cheat by default.")]
+		public readonly bool Immortal;
+
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
 			yield return new LobbyBooleanOption("cheats", CheckboxLabel, CheckboxDescription, CheckboxVisible, CheckboxDisplayOrder, CheckboxEnabled, CheckboxLocked);
@@ -96,6 +99,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		bool buildAnywhere;
 
+		[Sync]
+		bool immortal;
+
 		public bool FastCharge => Enabled && fastCharge;
 		public bool AllTech => Enabled && allTech;
 		public bool FastBuild => Enabled && fastBuild;
@@ -103,6 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool PathDebug => Enabled && pathDebug;
 		public bool UnlimitedPower => Enabled && unlimitedPower;
 		public bool BuildAnywhere => Enabled && buildAnywhere;
+		public bool Immortal => Enabled && immortal;
 
 		bool enableAll;
 
@@ -118,6 +125,7 @@ namespace OpenRA.Mods.Common.Traits
 			pathDebug = info.PathDebug;
 			unlimitedPower = info.UnlimitedPower;
 			buildAnywhere = info.BuildAnywhere;
+			immortal = info.Immortal;
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -137,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 				case "DevAll":
 				{
 					enableAll ^= true;
-					allTech = fastCharge = fastBuild = disableShroud = unlimitedPower = buildAnywhere = enableAll;
+					allTech = fastCharge = fastBuild = disableShroud = unlimitedPower = buildAnywhere = enableAll = immortal;
 
 					if (enableAll)
 					{
@@ -269,6 +277,12 @@ namespace OpenRA.Mods.Common.Traits
 						break;
 
 					order.Target.Actor.Dispose();
+					break;
+				}
+
+				case "DevImmortal":
+				{
+					immortal ^= true;
 					break;
 				}
 
