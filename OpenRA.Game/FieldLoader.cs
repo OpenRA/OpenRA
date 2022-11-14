@@ -74,8 +74,8 @@ namespace OpenRA
 		static readonly ConcurrentCache<string, IntegerExpression> IntegerExpressionCache =
 			new ConcurrentCache<string, IntegerExpression>(expression => new IntegerExpression(expression));
 
-		static readonly Dictionary<Type, Func<string, Type, string, MemberInfo, object>> TypeParsers =
-			new Dictionary<Type, Func<string, Type, string, MemberInfo, object>>()
+		static readonly Dictionary<Type, Func<string, Type, string, object>> TypeParsers =
+			new Dictionary<Type, Func<string, Type, string, object>>()
 			{
 				{ typeof(int), ParseInt },
 				{ typeof(ushort), ParseUShort },
@@ -118,47 +118,47 @@ namespace OpenRA
 				{ typeof(Nullable<>), ParseNullable },
 			};
 
-		static object ParseInt(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseInt(string fieldName, Type fieldType, string value)
 		{
 			if (Exts.TryParseIntegerInvariant(value, out var res))
 				return res;
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseUShort(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseUShort(string fieldName, Type fieldType, string value)
 		{
 			if (ushort.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out var res))
 				return res;
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseLong(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseLong(string fieldName, Type fieldType, string value)
 		{
 			if (long.TryParse(value, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out var res))
 				return res;
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseFloat(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseFloat(string fieldName, Type fieldType, string value)
 		{
 			if (value != null && float.TryParse(value.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var res))
 				return res * (value.Contains('%') ? 0.01f : 1f);
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseDecimal(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseDecimal(string fieldName, Type fieldType, string value)
 		{
 			if (value != null && decimal.TryParse(value.Replace("%", ""), NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var res))
 				return res * (value.Contains('%') ? 0.01m : 1m);
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseString(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseString(string fieldName, Type fieldType, string value)
 		{
 			return value;
 		}
 
-		static object ParseColor(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseColor(string fieldName, Type fieldType, string value)
 		{
 			if (value != null && Color.TryParse(value, out var color))
 					return color;
@@ -166,7 +166,7 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseHotkey(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseHotkey(string fieldName, Type fieldType, string value)
 		{
 			if (Hotkey.TryParse(value, out var res))
 				return res;
@@ -174,12 +174,12 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseHotkeyReference(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseHotkeyReference(string fieldName, Type fieldType, string value)
 		{
 			return Game.ModData.Hotkeys[value];
 		}
 
-		static object ParseWDist(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseWDist(string fieldName, Type fieldType, string value)
 		{
 			if (WDist.TryParse(value, out var res))
 				return res;
@@ -187,7 +187,7 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseWVec(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseWVec(string fieldName, Type fieldType, string value)
 		{
 			if (value != null)
 			{
@@ -202,7 +202,7 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseWVecArray(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseWVecArray(string fieldName, Type fieldType, string value)
 		{
 			if (value != null)
 			{
@@ -227,31 +227,28 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseWPos(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseWPos(string fieldName, Type fieldType, string value)
 		{
-			if (value != null)
+			var parts = value.Split(SplitComma);
+			if (value != null && parts.Length == 3)
 			{
-				var parts = value.Split(SplitComma);
-				if (parts.Length == 3)
-				{
-					if (WDist.TryParse(parts[0], out var rx)
-						&& WDist.TryParse(parts[1], out var ry)
-						&& WDist.TryParse(parts[2], out var rz))
-						return new WPos(rx, ry, rz);
-				}
+				if (WDist.TryParse(parts[0], out var rx)
+					&& WDist.TryParse(parts[1], out var ry)
+					&& WDist.TryParse(parts[2], out var rz))
+					return new WPos(rx, ry, rz);
 			}
 
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseWAngle(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseWAngle(string fieldName, Type fieldType, string value)
 		{
 			if (Exts.TryParseIntegerInvariant(value, out var res))
 				return new WAngle(res);
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseWRot(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseWRot(string fieldName, Type fieldType, string value)
 		{
 			if (value != null)
 			{
@@ -266,7 +263,7 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseCPos(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseCPos(string fieldName, Type fieldType, string value)
 		{
 			if (value != null)
 			{
@@ -282,7 +279,7 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseCVec(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseCVec(string fieldName, Type fieldType, string value)
 		{
 			if (value != null)
 			{
@@ -293,7 +290,7 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseCVecArray(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseCVecArray(string fieldName, Type fieldType, string value)
 		{
 			if (value != null)
 			{
@@ -316,7 +313,7 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseBooleanExpression(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseBooleanExpression(string fieldName, Type fieldType, string value)
 		{
 			if (value != null)
 			{
@@ -333,7 +330,7 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseIntegerExpression(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseIntegerExpression(string fieldName, Type fieldType, string value)
 		{
 			if (value != null)
 			{
@@ -350,7 +347,7 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseEnum(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseEnum(string fieldName, Type fieldType, string value)
 		{
 			try
 			{
@@ -362,7 +359,7 @@ namespace OpenRA
 			}
 		}
 
-		static object ParseBool(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseBool(string fieldName, Type fieldType, string value)
 		{
 			if (bool.TryParse(value.ToLowerInvariant(), out var result))
 				return result;
@@ -370,7 +367,7 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseInt2Array(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseInt2Array(string fieldName, Type fieldType, string value)
 		{
 			if (value != null)
 			{
@@ -388,7 +385,7 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseSize(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseSize(string fieldName, Type fieldType, string value)
 		{
 			if (value != null)
 			{
@@ -399,7 +396,7 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseInt2(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseInt2(string fieldName, Type fieldType, string value)
 		{
 			if (value != null)
 			{
@@ -413,7 +410,7 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseFloat2(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseFloat2(string fieldName, Type fieldType, string value)
 		{
 			if (value != null)
 			{
@@ -430,7 +427,7 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseFloat3(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseFloat3(string fieldName, Type fieldType, string value)
 		{
 			if (value != null)
 			{
@@ -449,7 +446,7 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseRectangle(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseRectangle(string fieldName, Type fieldType, string value)
 		{
 			if (value != null)
 			{
@@ -464,7 +461,7 @@ namespace OpenRA
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
-		static object ParseDateTime(string fieldName, Type fieldType, string value, MemberInfo field)
+		static object ParseDateTime(string fieldName, Type fieldType, string value)
 		{
 			if (DateTime.TryParseExact(value, "yyyy-MM-dd HH-mm-ss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var dt))
 				return dt;
@@ -639,7 +636,7 @@ namespace OpenRA
 			else
 			{
 				if (TypeParsers.TryGetValue(fieldType, out var parseFunc))
-					return parseFunc(fieldName, fieldType, value, field);
+					return parseFunc(fieldName, fieldType, value);
 
 				if (fieldType.IsArray && fieldType.GetArrayRank() == 1)
 				{

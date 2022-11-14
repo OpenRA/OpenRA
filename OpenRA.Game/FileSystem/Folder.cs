@@ -103,6 +103,8 @@ namespace OpenRA.FileSystem
 				File.Delete(filePath);
 		}
 
-		public void Dispose() { }
+		public void Dispose() {
+			throw new NotSupportedException();
+		}
 	}
 }
