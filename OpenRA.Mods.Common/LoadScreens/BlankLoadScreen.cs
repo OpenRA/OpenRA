@@ -81,7 +81,10 @@ namespace OpenRA.Mods.Common.LoadScreens
 				{
 					replayMeta = ReplayMetadata.Read(Launch.Replay);
 				}
-				catch { }
+				catch
+				{
+					throw new System.ArgumentNullException();
+				}
 
 				if (ReplayUtils.PromptConfirmReplayCompatibility(replayMeta, Game.ModData, Game.LoadShellMap))
 					Game.JoinReplay(Launch.Replay);

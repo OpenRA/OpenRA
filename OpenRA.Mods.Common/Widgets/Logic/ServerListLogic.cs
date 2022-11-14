@@ -350,7 +350,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (currentMap.Status == MapStatus.Searching)
 						return mapStatusSearching;
 
-					if (currentMap.Class == MapClassification.Unknown)
+					if (currentMap.Class == MapClassification.None)
 						return mapClassificationUnknown;
 
 					return title.Update(currentMap);

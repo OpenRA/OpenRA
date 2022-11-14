@@ -126,7 +126,7 @@ namespace OpenRA
 
 			Metadata = FieldLoader.Load<ModMetadata>(yaml["Metadata"]);
 
-			// TODO: Use fieldloader
+		
 			MapFolders = YamlDictionary(yaml, "MapFolders");
 
 			if (yaml.TryGetValue("Packages", out var packages))

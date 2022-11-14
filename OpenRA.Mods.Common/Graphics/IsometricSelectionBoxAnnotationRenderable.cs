@@ -63,9 +63,6 @@ namespace OpenRA.Mods.Common.Graphics
 		{
 			var screen = bounds.Vertices.Select(v => wr.Viewport.WorldToViewPx(v).ToFloat2()).ToArray();
 
-			var tl = new float2(-12, -6);
-			var tr = new float2(12, -6);
-			var t = new float2(0, -13);
 
 			var cr = Game.Renderer.RgbaColorRenderer;
 			for (var i = 0; i < 6; i++)

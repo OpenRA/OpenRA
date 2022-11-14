@@ -105,14 +105,14 @@ namespace OpenRA.Mods.Common.Orders
 			if (Game.Settings.Game.UseClassicMouseStyle)
 				world.Selection.Clear();
 
-			var variants = new List<VariantWrapper>()
+			var vrnts = new List<VariantWrapper>()
 			{
 				new VariantWrapper(worldRenderer, queue, world.Map.Rules.Actors[name])
 			};
 
 			foreach (var v in variants[0].ActorInfo.TraitInfos<PlaceBuildingVariantsInfo>())
 				foreach (var a in v.Actors)
-					variants.Add(new VariantWrapper(worldRenderer, queue, world.Map.Rules.Actors[a]));
+					vrnts.Add(new VariantWrapper(worldRenderer, queue, world.Map.Rules.Actors[a]));
 
 			this.variants = variants.ToArray();
 		}

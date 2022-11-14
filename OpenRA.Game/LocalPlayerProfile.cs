@@ -49,7 +49,7 @@ namespace OpenRA
 			{
 				if (File.Exists(filePath))
 				{
-					using (var rsa = new RSACryptoServiceProvider())
+					using (var rsa = new RSACng())
 					{
 						using (var data = File.OpenRead(filePath))
 						{

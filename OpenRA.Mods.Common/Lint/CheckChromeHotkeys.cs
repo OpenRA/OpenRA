@@ -73,12 +73,9 @@ namespace OpenRA.Mods.Common.Lint
 
 				foreach (var x in checkWidgetFields)
 				{
-					if (node.Key == x.Field && parent != null && parent.Key.StartsWith(x.Widget, StringComparison.Ordinal))
-					{
-						// Keys are valid if they refer to a named key or can be parsed as a regular Hotkey.
-						if (!namedKeys.Contains(node.Value.Value) && !Hotkey.TryParse(node.Value.Value, out var unused))
-							emitError($"{node.Location} refers to a Key named `{node.Value.Value}` that does not exist");
-					}
+					if (node.Key == x.Field && parent != null && parent.Key.StartsWith(x.Widget, StringComparison.Ordinal) && !namedKeys.Contains(node.Value.Value) && !Hotkey.TryParse(node.Value.Value, out var unused))
+						emitError($"{node.Location} refers to a Key named `{node.Value.Value}` that does not exist");
+					
 				}
 
 				// Check runtime-defined hotkey names

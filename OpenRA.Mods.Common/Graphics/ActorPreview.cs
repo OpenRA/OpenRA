@@ -51,12 +51,14 @@ namespace OpenRA.Mods.Common.Graphics
 		// Forward IActorInitializer queries to the actor reference
 		// ActorReference can't reference a World instance, which prevents it from implementing this directly.
 		public T GetOrDefault<T>(TraitInfo info) where T : ActorInit { return reference.GetOrDefault<T>(info); }
+		public T GetOrDefault<T>() where T : ActorInit, ISingleInstanceInit { return reference.GetOrDefault<T>(); }
+
 		public T Get<T>(TraitInfo info) where T : ActorInit { return reference.Get<T>(info); }
+		public T Get<T>() where T : ActorInit, ISingleInstanceInit { return reference.Get<T>(); }
+
 		public U GetValue<T, U>(TraitInfo info) where T : ValueActorInit<U> { return reference.GetValue<T, U>(info); }
 		public U GetValue<T, U>(TraitInfo info, U fallback) where T : ValueActorInit<U> { return reference.GetValue<T, U>(info, fallback); }
 		public bool Contains<T>(TraitInfo info) where T : ActorInit { return reference.Contains<T>(info); }
-		public T GetOrDefault<T>() where T : ActorInit, ISingleInstanceInit { return reference.GetOrDefault<T>(); }
-		public T Get<T>() where T : ActorInit, ISingleInstanceInit { return reference.Get<T>(); }
 		public U GetValue<T, U>() where T : ValueActorInit<U>, ISingleInstanceInit { return reference.GetValue<T, U>(); }
 		public U GetValue<T, U>(U fallback) where T : ValueActorInit<U>, ISingleInstanceInit { return reference.GetValue<T, U>(fallback); }
 		public bool Contains<T>() where T : ActorInit, ISingleInstanceInit { return reference.Contains<T>(); }

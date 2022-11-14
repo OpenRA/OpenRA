@@ -32,7 +32,7 @@ namespace OpenRA
 	[Flags]
 	public enum MapClassification
 	{
-		Unknown = 0,
+		None = 0,
 		System = 1,
 		User = 2,
 		Remote = 4
@@ -249,7 +249,7 @@ namespace OpenRA
 				Bounds = Rectangle.Empty,
 				Preview = null,
 				Status = MapStatus.Unavailable,
-				Class = MapClassification.Unknown,
+				Class = MapClassification.None,
 				Visibility = MapVisibility.Lobby,
 			};
 		}
@@ -265,9 +265,9 @@ namespace OpenRA
 
 			var mapPlayers = new MapPlayers(map.PlayerDefinitions);
 			var spawns = new List<CPos>();
-			foreach (var kv in map.ActorDefinitions.Where(d => d.Value.Value == "mpspawn"))
+			foreach (var kvValue in map.ActorDefinitions.Select(kv => kv.Value))
 			{
-				var s = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
+				var s = new ActorReference(kvValue.Value, kvValue.ToDictionary());
 				spawns.Add(s.Get<LocationInit>().Value);
 			}
 
@@ -285,7 +285,7 @@ namespace OpenRA
 				Bounds = map.Bounds,
 				Preview = null,
 				Status = MapStatus.Available,
-				Class = MapClassification.Unknown,
+				Class = MapClassification.None,
 				Visibility = map.Visibility,
 			};
 

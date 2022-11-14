@@ -16,7 +16,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public sealed class CursorManager
+	public sealed class CursorManager : IDisposable
 	{
 		class Cursor
 		{
