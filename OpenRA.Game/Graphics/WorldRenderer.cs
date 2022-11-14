@@ -317,24 +317,9 @@ namespace OpenRA.Graphics
 
 			if (debugVis.Value != null && debugVis.Value.ScreenMap)
 			{
-				foreach (var r in World.ScreenMap.RenderBounds(World.RenderPlayer))
-				{
-					var tl = Viewport.WorldToViewPx(new float2(r.Left, r.Top));
-					var br = Viewport.WorldToViewPx(new float2(r.Right, r.Bottom));
-					Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.MediumSpringGreen);
-				}
+				m3();
 
-				foreach (var b in World.ScreenMap.MouseBounds(World.RenderPlayer))
-				{
-					var points = new float2[b.Vertices.Length];
-					for (var index = 0; index < b.Vertices.Length; index++)
-					{
-						var vertex = b.Vertices[index];
-						points[index] = Viewport.WorldToViewPx(vertex).ToFloat2();
-					}
-
-					Game.Renderer.RgbaColorRenderer.DrawPolygon(points, 1, Color.OrangeRed);
-				}
+				m2();
 			}
 
 			Game.Renderer.Flush();
@@ -342,6 +327,33 @@ namespace OpenRA.Graphics
 			preparedRenderables.Clear();
 			preparedOverlayRenderables.Clear();
 			preparedAnnotationRenderables.Clear();
+		}
+		void m1(Polygon b, float2[] points)
+		{
+			for (var index = 0; index < b.Vertices.Length; index++)
+			{
+				var vertex = b.Vertices[index];
+				points[index] = Viewport.WorldToViewPx(vertex).ToFloat2();
+			}
+		}
+		void m2()
+		{
+			foreach (var b in World.ScreenMap.MouseBounds(World.RenderPlayer))
+			{
+				var points = new float2[b.Vertices.Length];
+				m1(b, points);
+
+				Game.Renderer.RgbaColorRenderer.DrawPolygon(points, 1, Color.OrangeRed);
+			}
+		}
+		void m3()
+		{
+			foreach (var r in World.ScreenMap.RenderBounds(World.RenderPlayer))
+			{
+				var tl = Viewport.WorldToViewPx(new float2(r.Left, r.Top));
+				var br = Viewport.WorldToViewPx(new float2(r.Right, r.Bottom));
+				Game.Renderer.RgbaColorRenderer.DrawRect(tl, br, 1, Color.MediumSpringGreen);
+			}
 		}
 
 		public void RefreshPalette()

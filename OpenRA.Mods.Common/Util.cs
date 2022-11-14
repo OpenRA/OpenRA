@@ -49,8 +49,11 @@ namespace OpenRA.Mods.Common
 			var rightTurn = (desiredFacing - facing).Angle;
 			if (leftTurn < step.Angle || rightTurn < step.Angle)
 				return desiredFacing;
+			else if (rightTurn < leftTurn)
+				return facing + step;
+			else
+				return facing - step;
 
-			return rightTurn < leftTurn ? facing + step : facing - step;
 		}
 
 		/// <summary>
@@ -203,7 +206,8 @@ namespace OpenRA.Mods.Common
 
 		public static IEnumerable<CPos> RandomWalk(CPos p, MersenneTwister r)
 		{
-			while (true)
+
+			do
 			{
 				var dx = r.Next(-1, 2);
 				var dy = r.Next(-1, 2);
@@ -213,7 +217,7 @@ namespace OpenRA.Mods.Common
 
 				p += new CVec(dx, dy);
 				yield return p;
-			}
+			} while (!true);
 		}
 
 		public static int RandomInRange(MersenneTwister random, int[] range)

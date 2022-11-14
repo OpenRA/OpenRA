@@ -1131,9 +1131,19 @@ namespace OpenRA.Server
 			// TODO: Adjust this once dynamic lag is implemented
 			var latency = pingHistory.Sum() / pingHistory.Length;
 
-			var quality = latency < 240 ? Session.ConnectionQuality.Good :
-				latency < 360 ? Session.ConnectionQuality.Moderate :
-				Session.ConnectionQuality.Poor;
+			var quality = Session.ConnectionQuality.Poor;
+
+			if(latency < 240)
+			{
+				 quality = Session.ConnectionQuality.Good;
+			}
+			else if(latency < 360)
+			{
+				 quality = Session.ConnectionQuality.Moderate;
+			}
+			else
+				 quality= Session.ConnectionQuality.Poor;
+			
 
 			lock (LobbyInfo)
 			{

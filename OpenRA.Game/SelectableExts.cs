@@ -24,7 +24,7 @@ namespace OpenRA.Traits
 			return selectableInfo != null ? BaseSelectionPriority(selectableInfo, modifiers) : int.MinValue;
 		}
 
-		const int PriorityRange = 30;
+		
 
 		public static int SelectionPriority(this Actor a, Modifiers modifiers)
 		{
@@ -46,7 +46,7 @@ namespace OpenRA.Traits
 					throw new InvalidOperationException();
 			}
 		}
-
+        const int PriorityRange = 30;
 		static int BaseSelectionPriority(ISelectableInfo info, Modifiers modifiers)
 		{
 			var priority = info.Priority;

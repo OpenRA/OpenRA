@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -88,16 +89,7 @@ namespace OpenRA
 			{
 				StringBuilder sb = new StringBuilder();
 				var dict = (System.Collections.IDictionary)v;
-				foreach (var kvp in dict)
-				{
-					var key = ((System.Collections.DictionaryEntry)kvp).Key;
-					var value = ((System.Collections.DictionaryEntry)kvp).Value;
-
-					var formattedKey = FormatValue(key);
-					var formattedValue = FormatValue(value);
-
-					sb.Append($"{formattedKey}: {formattedValue}{Environment.NewLine}");
-				}
+				m1(dict, sb);
 
 				return sb.ToString();
 			}
@@ -121,7 +113,20 @@ namespace OpenRA
 
 			return v.ToString();
 		}
+		public static void m1(IDictionary dict, StringBuilder sb)
+		{
+			foreach (var kvp in dict)
+			{
+				var key = ((System.Collections.DictionaryEntry)kvp).Key;
+				var value = ((System.Collections.DictionaryEntry)kvp).Value;
 
+				var formattedKey = FormatValue(key);
+				var formattedValue = FormatValue(value);
+
+				sb.Append($"{formattedKey}: {formattedValue}{Environment.NewLine}");
+			}
+		}
+		
 		public static string FormatValue(object o, FieldInfo f)
 		{
 			return FormatValue(f.GetValue(o));

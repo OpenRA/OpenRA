@@ -307,6 +307,12 @@ namespace OpenRA
 			GC.Collect();
 			return Run();
 		}
+        private static bool LogException(Exception e)
+			{
+				Console.WriteLine("In the log routine. Caught {e.GetType()}");
+				Console.WriteLine("Message: {e.Message}");
+				return false;
+			}
 
 		static void Initialize(Arguments args)
 		{
@@ -325,8 +331,11 @@ namespace OpenRA
 			{
 				EngineVersion = File.ReadAllText(Path.Combine(Platform.EngineDir, "VERSION")).Trim();
 			}
-			catch { }
-
+			catch (Exception e) {
+				LogException(e);
+				throw;
+			}
+			
 			if (string.IsNullOrEmpty(EngineVersion))
 				EngineVersion = "Unknown";
 

@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 		}
 
 		public IRenderable WithZOffset(int newOffset) { return new TeslaZapRenderable(pos, zOffset, length, image, brightSequence, brightZaps, dimSequence, dimZaps, palette); }
-		public IRenderable OffsetBy(in WVec vec) { return new TeslaZapRenderable(pos + vec, zOffset, length, image, brightSequence, brightZaps, dimSequence, dimZaps, palette); }
+		public IRenderable OffsetBy(in WVec offset) { return new TeslaZapRenderable(pos + offset, zOffset, length, image, brightSequence, brightZaps, dimSequence, dimZaps, palette); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }

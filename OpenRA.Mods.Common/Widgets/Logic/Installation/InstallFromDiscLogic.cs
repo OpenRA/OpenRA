@@ -551,8 +551,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			if (source.Type == ModContent.SourceType.Disc)
-				foreach (var volume in volumes)
-					if (IsValidSourcePath(volume, source))
+				foreach (var volume in volumes.Where(volume=>IsValidSourcePath(volume, source)))
 						return volume;
 
 			return null;

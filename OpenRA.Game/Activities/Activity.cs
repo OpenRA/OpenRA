@@ -86,7 +86,7 @@ namespace OpenRA.Activities
 		bool firstRunCompleted;
 		bool lastRun;
 
-		public Activity()
+		protected Activity()
 		{
 			IsInterruptible = true;
 			ChildHasPriority = true;

@@ -190,9 +190,8 @@ namespace OpenRA
 			if (value != null)
 			{
 				var parts = value.Split(SplitComma);
-				if (parts.Length == 3)
+				if (parts.Length == 3 && WDist.TryParse(parts[0], out var rx) && WDist.TryParse(parts[1], out var ry) && WDist.TryParse(parts[2], out var rz))
 				{
-					if (WDist.TryParse(parts[0], out var rx) && WDist.TryParse(parts[1], out var ry) && WDist.TryParse(parts[2], out var rz))
 						return new WVec(rx, ry, rz);
 				}
 			}

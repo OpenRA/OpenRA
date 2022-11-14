@@ -324,37 +324,45 @@ namespace OpenRA.Graphics
 
 			for (var j = 0; j <= 2 * r; j++)
 			{
-				for (var i = 0; i <= 2 * r; i++)
-				{
-					var di = i - r;
-					var dj = j - r;
-
-					// No intersection with circle
-					if (di * di + dj * dj > (r + 1) * (r + 1))
-						continue;
-
-					// Fully contained within circle
-					if (di * di + dj * dj < (r - 1) * (r - 1))
-					{
-						elem[j * stride + i] = 1;
-						continue;
-					}
-
-					// Approximate sub-pixel intersection using a 5x5 grid
-					for (var jj = 0; jj < 5; jj++)
-					{
-						for (var ii = 0; ii < 5; ii++)
-						{
-							var si = di - (float)Math.Sign(di) * ii / 5;
-							var sj = dj - (float)Math.Sign(dj) * jj / 5;
-							if (si * si + sj * sj <= r * r)
-								elem[j * stride + i] += 0.04f;
-						}
-					}
-				}
+				m2(r,j,elem,stride);
 			}
 
 			return elem;
+		}
+		void m1(int di,int dj,int jj,int r, float[] elem,int j,int i,int stride)
+		{
+			for (var ii = 0; ii < 5; ii++)
+			{
+				var si = di - (float)Math.Sign(di) * ii / 5;
+				var sj = dj - (float)Math.Sign(dj) * jj / 5;
+				if (si * si + sj * sj <= r * r)
+					elem[j * stride + i] += 0.04f;
+			}
+		}
+		void m2(int r,int j, float[] elem,int stride) {
+
+			for (var i = 0; i <= 2 * r; i++)
+			{
+				var di = i - r;
+				var dj = j - r;
+
+				// No intersection with circle
+				if (di * di + dj * dj > (r + 1) * (r + 1))
+					continue;
+
+				// Fully contained within circle
+				if (di * di + dj * dj < (r - 1) * (r - 1))
+				{
+					elem[j * stride + i] = 1;
+					continue;
+				}
+
+				// Approximate sub-pixel intersection using a 5x5 grid
+				for (var jj = 0; jj < 5; jj++)
+				{
+					m1(di, dj, jj, r, elem, j, i, stride);
+				}
+			}
 		}
 
 		Sprite CreateContrastGlyph((char C, int Radius) c)
