@@ -27,7 +27,7 @@ namespace OpenRA
 	[Flags]
 	public enum SystemActors
 	{
-		Player = 0,
+		Player = 5,
 		EditorPlayer = 1,
 		World = 2,
 		EditorWorld = 4
@@ -238,15 +238,13 @@ namespace OpenRA
 			ICreationActivity creationActivity = null;
 			foreach (var ica in TraitsImplementing<ICreationActivity>())
 			{
-				if (!ica.IsTraitEnabled())
+				var activity = ica.GetCreationActivity();
+
+				if (!ica.IsTraitEnabled() || activity == null)
 					continue;
 
 				if (creationActivity != null)
 					throw new InvalidOperationException($"More than one enabled ICreationActivity trait: {creationActivity.GetType().Name} and {ica.GetType().Name}");
-
-				var activity = ica.GetCreationActivity();
-				if (activity == null)
-					continue;
 
 				creationActivity = ica;
 
