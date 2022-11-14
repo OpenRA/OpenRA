@@ -603,7 +603,7 @@ Container@PLAYER_WIDGETS:
 			X: WINDOW_RIGHT - 250
 			Y: 272
 			Width: 238
-			Height: 27
+			Height: 28
 			ImageCollection: sidebar
 			ImageName: background-moneybin
 			ClickThrough: false

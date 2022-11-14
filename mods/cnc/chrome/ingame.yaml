@@ -1549,7 +1549,7 @@ Container@PLAYER_WIDGETS:
 			X: WINDOW_RIGHT - WIDTH - 5
 			Y: 5
 			Width: 230
-			Height: 291
+			Height: 314
 			ImageCollection: sidebar
 			ImageName: background-sidebar
 			ClickThrough: false
