@@ -219,18 +219,16 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual void PlayLaunchSounds()
 		{
 			var localPlayer = Self.World.LocalPlayer;
-
 			if (localPlayer == null || localPlayer.Spectating)
 				return;
 
 			var isAllied = Self.Owner.IsAlliedWith(localPlayer);
 			Game.Sound.Play(SoundType.UI, isAllied ? Info.LaunchSound : Info.IncomingSound);
 
-			var toPlayer = isAllied ? localPlayer ?? Self.Owner : localPlayer;
 			var speech = isAllied ? Info.LaunchSpeechNotification : Info.IncomingSpeechNotification;
-			Game.Sound.PlayNotification(Self.World.Map.Rules, toPlayer, "Speech", speech, toPlayer.Faction.InternalName);
+			Game.Sound.PlayNotification(Self.World.Map.Rules, localPlayer, "Speech", speech, localPlayer.Faction.InternalName);
 
-			TextNotificationsManager.AddTransientLine(isAllied ? Info.LaunchTextNotification : Info.IncomingTextNotification, toPlayer);
+			TextNotificationsManager.AddTransientLine(isAllied ? Info.LaunchTextNotification : Info.IncomingTextNotification, localPlayer);
 		}
 
 		public IEnumerable<CPos> CellsMatching(CPos location, char[] footprint, CVec dimensions)
