@@ -181,6 +181,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "getSpawnOccupants", (Func<Dictionary<int, SpawnOccupant>>)(() => spawnOccupants) },
 				{ "getDisabledSpawnPoints", (Func<HashSet<int>>)(() => orderManager.LobbyInfo.DisabledSpawnPoints) },
 				{ "showUnoccupiedSpawnpoints", true },
+				{ "getSpawnPointInfos", (Func<Dictionary<int, Session.SpawnPointInfo>>)(() => orderManager.LobbyInfo.SpawnPointInfos) },
+				{ "isHost", (Func<bool>)(() => Game.IsHost) }
 			});
 
 			mapContainer.IsVisible = () => panel != PanelType.Servers;
@@ -675,7 +677,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					LobbyUtils.SetupEditableColorWidget(template, slot, client, orderManager, worldRenderer, colorManager);
 					LobbyUtils.SetupEditableFactionWidget(template, slot, client, orderManager, factions);
-					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, map);
+
+					Session.SpawnPointInfo spawnPointInfo = null;
+					if (client.SpawnPoint > 0)
+						orderManager.LobbyInfo.SpawnPointInfos.TryGetValue(client.SpawnPoint, out spawnPointInfo);
+
+					LobbyUtils.SetupEditableTeamWidget(template, slot, client, spawnPointInfo, orderManager, map);
 					LobbyUtils.SetupEditableHandicapWidget(template, slot, client, orderManager);
 					LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, map);
 					LobbyUtils.SetupEditableReadyWidget(template, client, orderManager, map, MapIsPlayable);
@@ -692,7 +699,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					if (isHost)
 					{
-						LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, map);
+						Session.SpawnPointInfo spawnPointInfo = null;
+						if (client.SpawnPoint > 0)
+							orderManager.LobbyInfo.SpawnPointInfos.TryGetValue(client.SpawnPoint, out spawnPointInfo);
+
+						LobbyUtils.SetupEditableTeamWidget(template, slot, client, spawnPointInfo, orderManager, map);
 						LobbyUtils.SetupEditableHandicapWidget(template, slot, client, orderManager);
 						LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, map);
 						LobbyUtils.SetupPlayerActionWidget(template, client, orderManager, worldRenderer,

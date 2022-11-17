@@ -57,7 +57,16 @@ namespace OpenRA.Mods.Common.Widgets
 
 	public class MapPreviewWidget : Widget
 	{
+		/// <summary>Display either the spawn point ID or team ID as spawn point label.</summary>
+		public enum ViewMode
+		{
+			SpawnPoint,
+			Team
+		}
+
 		static readonly int[] NoDisabledSpawnPoints = Array.Empty<int>();
+		static readonly Dictionary<int, Session.SpawnPointInfo> EmptySpawnPointInfos = new Dictionary<int, Session.SpawnPointInfo>(0);
+		static readonly List<int> EmptySpawnPointSelection = new List<int>(0);
 
 		public readonly bool IgnoreMouseInput = false;
 		public readonly bool ShowSpawnPoints = true;
@@ -74,9 +83,15 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<MapPreview> Preview = () => null;
 		public Func<Dictionary<int, SpawnOccupant>> SpawnOccupants = () => new Dictionary<int, SpawnOccupant>();
 		public Func<IEnumerable<int>> DisabledSpawnPoints = () => NoDisabledSpawnPoints;
+		public Func<Dictionary<int, Session.SpawnPointInfo>> SpawnPointInfos = () => EmptySpawnPointInfos;
+
+		/// <summary>Only visble during view mode team.</summary>
+		public Func<List<int>> SelectedSpawnPoints = () => EmptySpawnPointSelection;
 		public Action<MouseInput> OnMouseDown = _ => { };
+		public Func<KeyInput, bool> OnKeyDown = _ => { return false; };
 		public int TooltipSpawnIndex = -1;
 		public bool ShowUnoccupiedSpawnpoints = true;
+		public ViewMode View = ViewMode.SpawnPoint;
 
 		Rectangle mapRect;
 		float previewScale = 0;
@@ -123,6 +138,9 @@ namespace OpenRA.Mods.Common.Widgets
 			if (IgnoreMouseInput)
 				return base.HandleMouseInput(mi);
 
+			if (!RenderBounds.Contains(mi.Location) || !TakeKeyboardFocus())
+				return false;
+
 			if (mi.Event != MouseInputEvent.Down)
 				return false;
 
@@ -144,6 +162,19 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (TooltipContainer != null)
 				tooltipContainer.Value.RemoveTooltip();
+
+			YieldKeyboardFocus();
+		}
+
+		public override bool HandleKeyPress(KeyInput e)
+		{
+			if (!IsVisible())
+				return false;
+
+			if (OnKeyDown(e))
+				return true;
+
+			return base.HandleKeyPress(e);
 		}
 
 		public int2 ConvertToPreview(CPos cell, MapGridType gridType)
@@ -190,6 +221,8 @@ namespace OpenRA.Mods.Common.Widgets
 				var occupants = SpawnOccupants();
 				var disabledSpawnPoints = DisabledSpawnPoints();
 				var gridType = preview.GridType;
+				var spawnPointInfos = SpawnPointInfos();
+				var selectedSpawnPoints = SelectedSpawnPoints();
 				for (var i = 0; i < spawnPoints.Length; i++)
 				{
 					var p = spawnPoints[i];
@@ -211,15 +244,31 @@ namespace OpenRA.Mods.Common.Widgets
 						continue;
 					}
 
+					if (View == ViewMode.Team)
+					{
+						var isSelected = selectedSpawnPoints.IndexOf(i + 1) != -1;
+						if (isSelected)
+							WidgetUtils.FillRectWithColor(new Rectangle(pos.X - offset.X + 1, pos.Y - offset.Y + 1, (int)sprite.Size.X - 2, (int)sprite.Size.Y - 2), Color.White);
+					}
+
 					if (occupied)
 						WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X - offset.X + 1, pos.Y - offset.Y + 1, (int)sprite.Size.X - 2, (int)sprite.Size.Y - 2), occupant.Color);
 
 					WidgetUtils.DrawSprite(sprite, pos - offset);
 
-					var number = Convert.ToChar('A' + spawnPoints.IndexOf(p)).ToString();
-					var textOffset = spawnFont.Measure(number) / 2 + spawnLabelOffset;
+					string caption;
+					if (View == ViewMode.Team)
+					{
+						if (spawnPointInfos.TryGetValue(i + 1, out var si) && si.Team > 0)
+							caption = Convert.ToChar('0' + si.Team).ToString();
+						else
+							caption = "-";
+					}
+					else
+						caption = Convert.ToChar('A' + i).ToString();
 
-					spawnFont.DrawTextWithContrast(number, pos - textOffset, spawnColor, spawnContrastColor, 1);
+					var textOffset = spawnFont.Measure(caption) / 2 + spawnLabelOffset;
+					spawnFont.DrawTextWithContrast(caption, pos - textOffset, spawnColor, spawnContrastColor, 1);
 				}
 			}
 		}
