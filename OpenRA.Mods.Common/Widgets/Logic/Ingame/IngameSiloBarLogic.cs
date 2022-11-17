@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class IngameSiloBarLogic : ChromeLogic
 	{
 		[TranslationReference("usage", "capacity")]
-		static readonly string SiloUsage = "silo-usage";
+		const string SiloUsage = "silo-usage";
 
 		[ObjectCreator.UseCtor]
 		public IngameSiloBarLogic(Widget widget, ModData modData, World world)

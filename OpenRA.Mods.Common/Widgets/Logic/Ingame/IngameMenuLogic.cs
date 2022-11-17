@@ -21,6 +21,102 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class IngameMenuLogic : ChromeLogic
 	{
+		[TranslationReference]
+		const string Leave = "leave";
+
+		[TranslationReference]
+		const string AbortMission = "abort-mission";
+
+		[TranslationReference]
+		const string LeaveMissionTitle = "leave-mission-title";
+
+		[TranslationReference]
+		const string LeaveMissionPrompt = "leave-mission-prompt";
+
+		[TranslationReference]
+		const string LeaveMissionAccept = "leave-mission-accept";
+
+		[TranslationReference]
+		const string LeaveMissionCancel = "leave-mission-cancel";
+
+		[TranslationReference]
+		const string RestartButton = "restart-button";
+
+		[TranslationReference]
+		const string RestartMissionTitle = "restart-mission-title";
+
+		[TranslationReference]
+		const string RestartMissionPrompt = "restart-mission-prompt";
+
+		[TranslationReference]
+		const string RestartMissionAccept = "restart-mission-accept";
+
+		[TranslationReference]
+		const string RestartMissionCancel = "restart-mission-cancel";
+
+		[TranslationReference]
+		const string SurrenderButton = "surrender-button";
+
+		[TranslationReference]
+		const string SurrenderTitle = "surrender-title";
+
+		[TranslationReference]
+		const string SurrenderPrompt = "surrender-prompt";
+
+		[TranslationReference]
+		const string SurrenderAccept = "surrender-accept";
+
+		[TranslationReference]
+		const string SurrenderCancel = "surrender-cancel";
+
+		[TranslationReference]
+		const string LoadGameButton = "load-game-button";
+
+		[TranslationReference]
+		const string SaveGameButton = "save-game-button";
+
+		[TranslationReference]
+		const string MusicButton = "music-button";
+
+		[TranslationReference]
+		const string SettingsButton = "settings-button";
+
+		[TranslationReference]
+		const string ReturnToMap = "return-to-map";
+
+		[TranslationReference]
+		const string Resume = "resume";
+
+		[TranslationReference]
+		const string SaveMapButton = "save-map-button";
+
+		[TranslationReference]
+		const string ErrorMaxPlayerTitle = "error-max-player-title";
+
+		[TranslationReference("players", "max")]
+		const string ErrorMaxPlayerPrompt = "error-max-player-prompt";
+
+		[TranslationReference]
+		const string ErrorMaxPlayerAccept = "error-max-player-accept";
+
+		[TranslationReference]
+		const string ExitMapButton = "exit-map-button";
+
+		[TranslationReference]
+		const string ExitMapEditorTitle = "exit-map-editor-title";
+
+		[TranslationReference]
+		const string ExitMapEditorPromptUnsaved = "exit-map-editor-prompt-unsaved";
+
+		[TranslationReference]
+		const string ExitMapEditorPromptDeleted = "exit-map-editor-prompt-deleted";
+
+		[TranslationReference]
+		const string ExitMapEditorAnywayConfirm = "exit-map-editor-confirm-anyway";
+
+		[TranslationReference]
+		const string ExitMapEditorConfirm = "exit-map-editor-confirm";
+
 		readonly Widget menu;
 		readonly Widget buttonContainer;
 		readonly ButtonWidget buttonTemplate;
@@ -36,102 +132,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly bool hasError;
 		bool leaving;
 		bool hideMenu;
-
-		[TranslationReference]
-		static readonly string Leave = "leave";
-
-		[TranslationReference]
-		static readonly string AbortMission = "abort-mission";
-
-		[TranslationReference]
-		static readonly string LeaveMissionTitle = "leave-mission-title";
-
-		[TranslationReference]
-		static readonly string LeaveMissionPrompt = "leave-mission-prompt";
-
-		[TranslationReference]
-		static readonly string LeaveMissionAccept = "leave-mission-accept";
-
-		[TranslationReference]
-		static readonly string LeaveMissionCancel = "leave-mission-cancel";
-
-		[TranslationReference]
-		static readonly string RestartButton = "restart-button";
-
-		[TranslationReference]
-		static readonly string RestartMissionTitle = "restart-mission-title";
-
-		[TranslationReference]
-		static readonly string RestartMissionPrompt = "restart-mission-prompt";
-
-		[TranslationReference]
-		static readonly string RestartMissionAccept = "restart-mission-accept";
-
-		[TranslationReference]
-		static readonly string RestartMissionCancel = "restart-mission-cancel";
-
-		[TranslationReference]
-		static readonly string SurrenderButton = "surrender-button";
-
-		[TranslationReference]
-		static readonly string SurrenderTitle = "surrender-title";
-
-		[TranslationReference]
-		static readonly string SurrenderPrompt = "surrender-prompt";
-
-		[TranslationReference]
-		static readonly string SurrenderAccept = "surrender-accept";
-
-		[TranslationReference]
-		static readonly string SurrenderCancel = "surrender-cancel";
-
-		[TranslationReference]
-		static readonly string LoadGameButton = "load-game-button";
-
-		[TranslationReference]
-		static readonly string SaveGameButton = "save-game-button";
-
-		[TranslationReference]
-		static readonly string MusicButton = "music-button";
-
-		[TranslationReference]
-		static readonly string SettingsButton = "settings-button";
-
-		[TranslationReference]
-		static readonly string ReturnToMap = "return-to-map";
-
-		[TranslationReference]
-		static readonly string Resume = "resume";
-
-		[TranslationReference]
-		static readonly string SaveMapButton = "save-map-button";
-
-		[TranslationReference]
-		static readonly string ErrorMaxPlayerTitle = "error-max-player-title";
-
-		[TranslationReference("players", "max")]
-		static readonly string ErrorMaxPlayerPrompt = "error-max-player-prompt";
-
-		[TranslationReference]
-		static readonly string ErrorMaxPlayerAccept = "error-max-player-accept";
-
-		[TranslationReference]
-		static readonly string ExitMapButton = "exit-map-button";
-
-		[TranslationReference]
-		static readonly string ExitMapEditorTitle = "exit-map-editor-title";
-
-		[TranslationReference]
-		static readonly string ExitMapEditorPromptUnsaved = "exit-map-editor-prompt-unsaved";
-
-		[TranslationReference]
-		static readonly string ExitMapEditorPromptDeleted = "exit-map-editor-prompt-deleted";
-
-		[TranslationReference]
-		static readonly string ExitMapEditorAnywayConfirm = "exit-map-editor-confirm-anyway";
-
-		[TranslationReference]
-		static readonly string ExitMapEditorConfirm = "exit-map-editor-confirm";
 
 		[ObjectCreator.UseCtor]
 		public IngameMenuLogic(Widget widget, ModData modData, World world, Action onExit, WorldRenderer worldRenderer,

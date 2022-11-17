@@ -18,28 +18,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public static class ReplayUtils
 	{
 		[TranslationReference]
-		static readonly string IncompatibleReplayTitle = "incompatible-replay-title";
+		const string IncompatibleReplayTitle = "incompatible-replay-title";
 
 		[TranslationReference]
-		static readonly string IncompatibleReplayPrompt = "incompatible-replay-prompt";
+		const string IncompatibleReplayPrompt = "incompatible-replay-prompt";
 
 		[TranslationReference]
-		static readonly string IncompatibleReplayAccept = "incompatible-replay-accept";
+		const string IncompatibleReplayAccept = "incompatible-replay-accept";
 
 		[TranslationReference]
-		static readonly string UnknownVersion = "incompatible-replay-unknown-version";
+		const string UnknownVersion = "incompatible-replay-unknown-version";
 
 		[TranslationReference]
-		static readonly string UnknownMod = "incompatible-replay-unknown-mod";
+		const string UnknownMod = "incompatible-replay-unknown-mod";
 
 		[TranslationReference("mod")]
-		static readonly string UnvailableMod = "incompatible-replay-unavailable-mod";
+		const string UnvailableMod = "incompatible-replay-unavailable-mod";
 
 		[TranslationReference("version")]
-		static readonly string IncompatibleVersion = "incompatible-replay-incompatible-version";
+		const string IncompatibleVersion = "incompatible-replay-incompatible-version";
 
 		[TranslationReference("map")]
-		static readonly string UnvailableMap = "incompatible-replay-unavailable-map";
+		const string UnvailableMap = "incompatible-replay-unavailable-map";
 
 		static readonly Action DoNothing = () => { };
 

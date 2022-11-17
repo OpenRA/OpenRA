@@ -21,18 +21,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		// Increment the version number when adding new stats
 		const int IntroductionVersion = 1;
 
+		[TranslationReference]
+		const string Classic = "classic";
+
+		[TranslationReference]
+		const string Modern = "modern";
+
+		readonly string classic;
+		readonly string modern;
+
 		public static bool ShouldShowPrompt()
 		{
 			return Game.Settings.Game.IntroductionPromptVersion < IntroductionVersion;
 		}
-
-		[TranslationReference]
-		static readonly string Classic = "classic";
-		readonly string classic;
-
-		[TranslationReference]
-		static readonly string Modern = "modern";
-		readonly string modern;
 
 		[ObjectCreator.UseCtor]
 		public IntroductionPromptLogic(Widget widget, ModData modData, WorldRenderer worldRenderer, Action onComplete)

@@ -34,6 +34,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Unknown = 16
 		}
 
+		[TranslationReference("length")]
+		const string LengthInSeconds = "length-in-seconds";
+
+		[TranslationReference]
+		const string AllPackages = "all-packages";
+
 		readonly string[] allowedExtensions;
 		readonly string[] allowedSpriteExtensions;
 		readonly string[] allowedModelExtensions;
@@ -70,12 +76,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		float spriteScale;
 		float modelScale;
 		AssetType assetTypesToDisplay = AssetType.Sprite | AssetType.Model | AssetType.Audio | AssetType.Video;
-
-		[TranslationReference("length")]
-		static readonly string LengthInSeconds = "length-in-seconds";
-
-		[TranslationReference]
-		static readonly string AllPackages = "all-packages";
 
 		readonly string allPackages;
 

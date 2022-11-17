@@ -20,6 +20,45 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class GameSaveBrowserLogic : ChromeLogic
 	{
+		[TranslationReference]
+		const string RenameSaveTitle = "rename-save-title";
+
+		[TranslationReference]
+		const string RenameSavePrompt = "rename-save-prompt";
+
+		[TranslationReference]
+		const string RenameSaveAccept = "rename-save-accept";
+
+		[TranslationReference]
+		const string DeleteSaveTitle = "delete-save-title";
+
+		[TranslationReference("save")]
+		const string DeleteSavePrompt = "delete-save-prompt";
+
+		[TranslationReference]
+		const string DeleteSaveAccept = "delete-save-accept";
+
+		[TranslationReference]
+		const string DeleteAllSavesTitle = "delete-all-saves-title";
+
+		[TranslationReference("count")]
+		const string DeleteAllSavesPrompt = "delete-all-saves-prompt";
+
+		[TranslationReference]
+		const string DeleteAllSavesAccept = "delete-all-saves-accept";
+
+		[TranslationReference("savePath")]
+		const string SaveDeletionFailed = "save-deletion-failed";
+
+		[TranslationReference]
+		const string OverwriteSaveTitle = "overwrite-save-title";
+
+		[TranslationReference("file")]
+		const string OverwriteSavePrompt = "overwrite-save-prompt";
+
+		[TranslationReference]
+		const string OverwriteSaveAccpet = "overwrite-save-accept";
+
 		readonly Widget panel;
 		readonly ScrollPanelWidget gameList;
 		readonly TextFieldWidget saveTextField;
@@ -32,45 +71,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly string defaultSaveFilename;
 		string selectedSave;
-
-		[TranslationReference]
-		static readonly string RenameSaveTitle = "rename-save-title";
-
-		[TranslationReference]
-		static readonly string RenameSavePrompt = "rename-save-prompt";
-
-		[TranslationReference]
-		static readonly string RenameSaveAccept = "rename-save-accept";
-
-		[TranslationReference]
-		static readonly string DeleteSaveTitle = "delete-save-title";
-
-		[TranslationReference("save")]
-		static readonly string DeleteSavePrompt = "delete-save-prompt";
-
-		[TranslationReference]
-		static readonly string DeleteSaveAccept = "delete-save-accept";
-
-		[TranslationReference]
-		static readonly string DeleteAllSavesTitle = "delete-all-saves-title";
-
-		[TranslationReference("count")]
-		static readonly string DeleteAllSavesPrompt = "delete-all-saves-prompt";
-
-		[TranslationReference]
-		static readonly string DeleteAllSavesAccept = "delete-all-saves-accept";
-
-		[TranslationReference("savePath")]
-		static readonly string SaveDeletionFailed = "save-deletion-failed";
-
-		[TranslationReference]
-		static readonly string OverwriteSaveTitle = "overwrite-save-title";
-
-		[TranslationReference("file")]
-		static readonly string OverwriteSavePrompt = "overwrite-save-prompt";
-
-		[TranslationReference]
-		static readonly string OverwriteSaveAccpet = "overwrite-save-accept";
 
 		[ObjectCreator.UseCtor]
 		public GameSaveBrowserLogic(Widget widget, ModData modData, Action onExit, Action onStart, bool isSavePanel, World world)

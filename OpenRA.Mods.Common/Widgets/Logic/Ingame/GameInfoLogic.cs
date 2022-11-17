@@ -22,27 +22,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	class GameInfoLogic : ChromeLogic
 	{
+		[TranslationReference]
+		const string Objectives = "objectives";
+
+		[TranslationReference]
+		const string Briefing = "briefing";
+
+		[TranslationReference]
+		const string Options = "options";
+
+		[TranslationReference]
+		const string Debug = "debug";
+
+		[TranslationReference]
+		const string Chat = "chat";
+
 		readonly World world;
 		readonly ModData modData;
 		readonly Action<bool> hideMenu;
 		readonly IObjectivesPanel iop;
 		IngameInfoPanel activePanel;
 		readonly bool hasError;
-
-		[TranslationReference]
-		static readonly string Objectives = "objectives";
-
-		[TranslationReference]
-		static readonly string Briefing = "briefing";
-
-		[TranslationReference]
-		static readonly string Options = "options";
-
-		[TranslationReference]
-		static readonly string Debug = "debug";
-
-		[TranslationReference]
-		static readonly string Chat = "chat";
 
 		[ObjectCreator.UseCtor]
 		public GameInfoLogic(Widget widget, ModData modData, World world, IngameInfoPanel initialPanel, Action<bool> hideMenu)

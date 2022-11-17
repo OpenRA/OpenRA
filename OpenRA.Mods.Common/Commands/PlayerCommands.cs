@@ -20,13 +20,13 @@ namespace OpenRA.Mods.Common.Commands
 
 	public class PlayerCommands : IChatCommand, IWorldLoaded
 	{
+		[TranslationReference]
+		const string PauseDescription = "pause-description";
+
+		[TranslationReference]
+		const string SurrenderDescription = "surrender-description";
+
 		World world;
-
-		[TranslationReference]
-		static readonly string PauseDescription = "pause-description";
-
-		[TranslationReference]
-		static readonly string SurrenderDescription = "surrender-description";
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{

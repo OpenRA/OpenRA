@@ -23,40 +23,40 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class DownloadPackageLogic : ChromeLogic
 	{
-		static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
-
 		[TranslationReference("title")]
-		static readonly string Downloading = "downloading";
+		const string Downloading = "downloading";
 
 		[TranslationReference]
-		static readonly string FetchingMirrorList = "fetching-mirror-list";
+		const string FetchingMirrorList = "fetching-mirror-list";
 
 		[TranslationReference]
-		static readonly string UnknownHost = "unknown-host";
+		const string UnknownHost = "unknown-host";
 
 		[TranslationReference("host", "received", "suffix")]
-		static readonly string DownloadingFrom = "downloading-from";
+		const string DownloadingFrom = "downloading-from";
 
 		[TranslationReference("host", "received", "total", "suffix", "progress")]
-		static readonly string DownloadingFromProgress = "downloading-from-progress";
+		const string DownloadingFromProgress = "downloading-from-progress";
 
 		[TranslationReference]
-		static readonly string VerifyingArchive = "verifying-archive";
+		const string VerifyingArchive = "verifying-archive";
 
 		[TranslationReference]
-		static readonly string ArchiveValidationFailed = "archive-validation-failed";
+		const string ArchiveValidationFailed = "archive-validation-failed";
 
 		[TranslationReference]
-		static readonly string Extracting = "extracting";
+		const string Extracting = "extracting";
 
 		[TranslationReference("entry")]
-		static readonly string ExtractingEntry = "extracting-entry";
+		const string ExtractingEntry = "extracting-entry";
 
 		[TranslationReference]
-		static readonly string ArchiveExtractionFailed = "archive-extraction-failed";
+		const string ArchiveExtractionFailed = "archive-extraction-failed";
 
 		[TranslationReference]
-		static readonly string MirrorSelectionFailed = "mirror-selection-failed";
+		const string MirrorSelectionFailed = "mirror-selection-failed";
+
+		static readonly string[] SizeSuffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
 
 		readonly ModData modData;
 		readonly ModContent.ModDownload download;

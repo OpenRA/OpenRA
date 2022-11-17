@@ -18,13 +18,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class SpawnSelectorTooltipLogic : ChromeLogic
 	{
 		[TranslationReference]
-		static readonly string DisabledSpawn = "disabled-spawn";
+		const string DisabledSpawn = "disabled-spawn";
 
 		[TranslationReference]
-		static readonly string AvailableSpawn = "available-spawn";
+		const string AvailableSpawn = "available-spawn";
 
 		[TranslationReference("team")]
-		static readonly string TeamNumber = "team-number";
+		const string TeamNumber = "team-number";
 
 		readonly CachedTransform<int, string> teamMessage;
 

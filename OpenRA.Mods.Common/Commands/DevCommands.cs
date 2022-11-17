@@ -25,55 +25,55 @@ namespace OpenRA.Mods.Common.Commands
 	public class DevCommands : IChatCommand, IWorldLoaded
 	{
 		[TranslationReference]
-		static readonly string CheatsDisabled = "cheats-disabled";
+		const string CheatsDisabled = "cheats-disabled";
 
 		[TranslationReference]
-		static readonly string InvalidCashAmount = "invalid-cash-amount";
+		const string InvalidCashAmount = "invalid-cash-amount";
 
 		[TranslationReference]
-		static readonly string ToggleVisiblityDescription = "toggle-visibility";
+		const string ToggleVisiblityDescription = "toggle-visibility";
 
 		[TranslationReference]
-		static readonly string GiveCashDescription = "give-cash";
+		const string GiveCashDescription = "give-cash";
 
 		[TranslationReference]
-		static readonly string GiveCashAllDescription = "give-cash-all";
+		const string GiveCashAllDescription = "give-cash-all";
 
 		[TranslationReference]
-		static readonly string InstantBuildingDescription = "instant-building";
+		const string InstantBuildingDescription = "instant-building";
 
 		[TranslationReference]
-		static readonly string BuildAnywhereDescription = "build-anywhere";
+		const string BuildAnywhereDescription = "build-anywhere";
 
 		[TranslationReference]
-		static readonly string UnlimitedPowerDescription = "unlimited-power";
+		const string UnlimitedPowerDescription = "unlimited-power";
 
 		[TranslationReference]
-		static readonly string EnableTechDescription = "enable-tech";
+		const string EnableTechDescription = "enable-tech";
 
 		[TranslationReference]
-		static readonly string FastChargeDescription = "fast-charge";
+		const string FastChargeDescription = "fast-charge";
 
 		[TranslationReference]
-		static readonly string DevCheatAllDescription = "dev-cheat-all";
+		const string DevCheatAllDescription = "dev-cheat-all";
 
 		[TranslationReference]
-		static readonly string DevCrashDescription = "dev-crash";
+		const string DevCrashDescription = "dev-crash";
 
 		[TranslationReference]
-		static readonly string LevelUpActorDescription = "levelup-actor";
+		const string LevelUpActorDescription = "levelup-actor";
 
 		[TranslationReference]
-		static readonly string PlayerExperienceDescription = "player-experience";
+		const string PlayerExperienceDescription = "player-experience";
 
 		[TranslationReference]
-		static readonly string PowerOutageDescription = "power-outage";
+		const string PowerOutageDescription = "power-outage";
 
 		[TranslationReference]
-		static readonly string KillSelectedActorsDescription = "kill-selected-actors";
+		const string KillSelectedActorsDescription = "kill-selected-actors";
 
 		[TranslationReference]
-		static readonly string DisposeSelectedActorsDescription = "dispose-selected-actors";
+		const string DisposeSelectedActorsDescription = "dispose-selected-actors";
 
 		readonly IDictionary<string, (string Description, Action<string, World> Handler)> commandHandlers = new Dictionary<string, (string, Action<string, World>)>
 		{

@@ -19,16 +19,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	class GameInfoObjectivesLogic : ChromeLogic
 	{
+		[TranslationReference]
+		const string InProgress = "in-progress";
+
+		[TranslationReference]
+		const string Accomplished = "accomplished";
+
+		[TranslationReference]
+		const string Failed = "failed";
+
 		readonly ContainerWidget template;
-
-		[TranslationReference]
-		static readonly string InProgress = "in-progress";
-
-		[TranslationReference]
-		static readonly string Accomplished = "accomplished";
-
-		[TranslationReference]
-		static readonly string Failed = "failed";
 
 		[ObjectCreator.UseCtor]
 		public GameInfoObjectivesLogic(Widget widget, World world, ModData modData)

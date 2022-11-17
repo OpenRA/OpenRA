@@ -31,17 +31,22 @@ namespace OpenRA.Mods.Common.Server
 		const int RateLimitInterval = 1000;
 
 		[TranslationReference]
-		static readonly string NoPortForward = "no-port-forward";
+		const string NoPortForward = "no-port-forward";
+
 		[TranslationReference]
-		static readonly string BlacklistedTitle = "blacklisted-title";
+		const string BlacklistedTitle = "blacklisted-title";
+
 		[TranslationReference]
-		static readonly string InvalidErrorCode = "invalid-error-code";
+		const string InvalidErrorCode = "invalid-error-code";
+
 		[TranslationReference]
-		static readonly string Connected = "master-server-connected";
+		const string Connected = "master-server-connected";
+
 		[TranslationReference]
-		static readonly string Error = "master-server-error";
+		const string Error = "master-server-error";
+
 		[TranslationReference]
-		static readonly string GameOffline = "game-offline";
+		const string GameOffline = "game-offline";
 
 		static readonly Beacon LanGameBeacon;
 		static readonly Dictionary<int, string> MasterServerErrors = new Dictionary<int, string>()

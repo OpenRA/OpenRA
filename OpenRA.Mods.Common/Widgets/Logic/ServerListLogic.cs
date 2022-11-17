@@ -26,72 +26,73 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ServerListLogic : ChromeLogic
 	{
 		[TranslationReference]
-		static readonly string SearchStatusFailed = "search-status-failed";
+		const string SearchStatusFailed = "search-status-failed";
 
 		[TranslationReference]
-		static readonly string SearchStatusNoGames = "search-status-no-games";
+		const string SearchStatusNoGames = "search-status-no-games";
 
 		[TranslationReference("players")]
-		static readonly string PlayersOnline = "players-online";
+		const string PlayersOnline = "players-online";
 
 		[TranslationReference]
-		static readonly string NoServerSelected = "no-server-selected";
-		readonly string noServerSelected;
+		const string NoServerSelected = "no-server-selected";
 
 		[TranslationReference]
-		static readonly string MapStatusSearching = "map-status-searching";
-		readonly string mapStatusSearching;
+		const string MapStatusSearching = "map-status-searching";
 
 		[TranslationReference]
-		static readonly string MapClassificationUnknown = "map-classification-unknown";
-		readonly string mapClassificationUnknown;
+		const string MapClassificationUnknown = "map-classification-unknown";
 
 		[TranslationReference("players")]
-		static readonly string PlayersLabel = "players-label";
+		const string PlayersLabel = "players-label";
 
 		[TranslationReference("bots")]
-		static readonly string BotsLabel = "bots-label";
+		const string BotsLabel = "bots-label";
 
 		[TranslationReference("spectators")]
-		static readonly string SpectatorsLabel = "spectators-label";
+		const string SpectatorsLabel = "spectators-label";
 
 		[TranslationReference]
-		static readonly string Players = "players";
+		const string Players = "players";
 
 		[TranslationReference("team")]
-		static readonly string TeamNumber = "team-number";
+		const string TeamNumber = "team-number";
 
 		[TranslationReference]
-		static readonly string NoTeam = "no-team";
+		const string NoTeam = "no-team";
 
 		[TranslationReference]
-		static readonly string Spectators = "spectators";
+		const string Spectators = "spectators";
 
 		[TranslationReference("players")]
-		static readonly string OtherPlayers = "n-other-players";
+		const string OtherPlayers = "n-other-players";
 
 		[TranslationReference]
-		static readonly string Playing = "playing";
-		readonly string playing;
+		const string Playing = "playing";
 
 		[TranslationReference]
-		static readonly string Waiting = "waiting";
-		readonly string waiting;
+		const string Waiting = "waiting";
 
 		[TranslationReference("minutes")]
-		static readonly string InProgress = "in-progress-for";
+		const string InProgress = "in-progress-for";
 
 		[TranslationReference]
-		static readonly string PasswordProtected = "password-protected";
+		const string PasswordProtected = "password-protected";
 
 		[TranslationReference]
-		static readonly string WaitingForPlayers = "waiting-for-players";
+		const string WaitingForPlayers = "waiting-for-players";
 
 		[TranslationReference]
-		static readonly string ServerShuttingDown = "server-shutting-down";
+		const string ServerShuttingDown = "server-shutting-down";
 
 		[TranslationReference]
-		static readonly string UnknownServerState = "unknown-server-state";
+		const string UnknownServerState = "unknown-server-state";
+
+		readonly string noServerSelected;
+		readonly string mapStatusSearching;
+		readonly string mapClassificationUnknown;
+		readonly string playing;
+		readonly string waiting;
 
 		readonly Color incompatibleVersionColor;
 		readonly Color incompatibleProtectedGameColor;

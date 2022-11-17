@@ -21,16 +21,16 @@ namespace OpenRA.Mods.Common.Commands
 
 	public class HelpCommand : IChatCommand, IWorldLoaded
 	{
+		[TranslationReference]
+		const string AvailableCommands = "available-commands";
+
+		[TranslationReference]
+		const string NoDescription = "no-description";
+
+		[TranslationReference]
+		const string HelpDescription = "help-description";
+
 		readonly Dictionary<string, string> helpDescriptions;
-
-		[TranslationReference]
-		static readonly string AvailableCommands = "available-commands";
-
-		[TranslationReference]
-		static readonly string NoDescription = "no-description";
-
-		[TranslationReference]
-		static readonly string HelpDescription = "help-description";
 
 		World world;
 		ChatCommands console;

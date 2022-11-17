@@ -20,37 +20,37 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ServerCreationLogic : ChromeLogic
 	{
 		[TranslationReference]
-		static readonly string InternetServerNatA = "internet-server-nat-A";
+		const string InternetServerNatA = "internet-server-nat-A";
 
 		[TranslationReference]
-		static readonly string InternetServerNatBenabled = "internet-server-nat-B-enabled";
+		const string InternetServerNatBenabled = "internet-server-nat-B-enabled";
 
 		[TranslationReference]
-		static readonly string InternetServerNatBnotSupported = "internet-server-nat-B-not-supported";
+		const string InternetServerNatBnotSupported = "internet-server-nat-B-not-supported";
 
 		[TranslationReference]
-		static readonly string InternetServerNatBdisabled = "internet-server-nat-B-disabled";
+		const string InternetServerNatBdisabled = "internet-server-nat-B-disabled";
 
 		[TranslationReference]
-		static readonly string InternetServerNatC = "internet-server-nat-C";
+		const string InternetServerNatC = "internet-server-nat-C";
 
 		[TranslationReference]
-		static readonly string LocalServer = "local-server";
+		const string LocalServer = "local-server";
 
 		[TranslationReference("port")]
-		static readonly string ServerCreationFailedPrompt = "server-creation-failed-prompt";
+		const string ServerCreationFailedPrompt = "server-creation-failed-prompt";
 
 		[TranslationReference]
-		static readonly string ServerCreationFailedPortUsed = "server-creation-failed-port-used";
+		const string ServerCreationFailedPortUsed = "server-creation-failed-port-used";
 
 		[TranslationReference("message", "code")]
-		static readonly string ServerCreationFailedError = "server-creation-failed-error";
+		const string ServerCreationFailedError = "server-creation-failed-error";
 
 		[TranslationReference]
-		static readonly string ServerCreationFailedTitle = "server-creation-failed-title";
+		const string ServerCreationFailedTitle = "server-creation-failed-title";
 
 		[TranslationReference]
-		static readonly string ServerCreationFailedCancel = "server-creation-failed-cancel";
+		const string ServerCreationFailedCancel = "server-creation-failed-cancel";
 
 		readonly Widget panel;
 		readonly ModData modData;

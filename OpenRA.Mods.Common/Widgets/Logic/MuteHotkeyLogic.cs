@@ -18,13 +18,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	[ChromeLogicArgsHotkeys("MuteAudioKey")]
 	public class MuteHotkeyLogic : SingleHotkeyBaseLogic
 	{
+		[TranslationReference]
+		const string AudioMuted = "audio-muted";
+
+		[TranslationReference]
+		const string AudioUnmuted = "audio-unmuted";
+
 		readonly ModData modData;
-
-		[TranslationReference]
-		static readonly string AudioMuted = "audio-muted";
-
-		[TranslationReference]
-		static readonly string AudioUnmuted = "audio-unmuted";
 
 		[ObjectCreator.UseCtor]
 		public MuteHotkeyLogic(Widget widget, ModData modData, Dictionary<string, MiniYaml> logicArgs)

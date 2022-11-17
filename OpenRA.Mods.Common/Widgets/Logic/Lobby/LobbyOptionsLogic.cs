@@ -20,6 +20,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class LobbyOptionsLogic : ChromeLogic
 	{
+		[TranslationReference]
+		const string NotAvailable = "not-available";
+
 		readonly ModData modData;
 		readonly ScrollPanelWidget panel;
 		readonly Widget optionsContainer;
@@ -31,9 +34,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly OrderManager orderManager;
 		readonly Func<bool> configurationDisabled;
 		MapPreview mapPreview;
-
-		[TranslationReference]
-		static readonly string NotAvailable = "not-available";
 
 		[ObjectCreator.UseCtor]
 		internal LobbyOptionsLogic(ModData modData, Widget widget, OrderManager orderManager, Func<MapPreview> getMap, Func<bool> configurationDisabled)

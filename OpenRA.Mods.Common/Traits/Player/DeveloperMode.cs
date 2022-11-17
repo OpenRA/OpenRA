@@ -72,6 +72,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class DeveloperMode : IResolveOrder, ISync, INotifyCreated, IUnlocksRenderPlayer
 	{
+		[TranslationReference("cheat", "player", "suffix")]
+		const string CheatUsed = "cheat-used";
+
 		readonly DeveloperModeInfo info;
 		public bool Enabled { get; private set; }
 
@@ -105,9 +108,6 @@ namespace OpenRA.Mods.Common.Traits
 		public bool BuildAnywhere => Enabled && buildAnywhere;
 
 		bool enableAll;
-
-		[TranslationReference("cheat", "player", "suffix")]
-		static readonly string CheatUsed = "cheat-used";
 
 		public DeveloperMode(DeveloperModeInfo info)
 		{

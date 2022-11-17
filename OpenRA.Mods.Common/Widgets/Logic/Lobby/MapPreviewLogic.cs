@@ -19,27 +19,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MapPreviewLogic : ChromeLogic
 	{
+		[TranslationReference]
+		const string Connecting = "connecting";
+
+		[TranslationReference("size")]
+		const string Downloading = "downloading-map";
+
+		[TranslationReference("size", "progress")]
+		const string DownloadingPercentage = "downloading-map-progress";
+
+		[TranslationReference]
+		const string RetryInstall = "retry-install";
+
+		[TranslationReference]
+		const string RetrySearch = "retry-search";
+
+		[TranslationReference("author")]
+		const string CreatedBy = "created-by";
+
 		readonly int blinkTickLength = 10;
 		bool installHighlighted;
 		int blinkTick;
-
-		[TranslationReference]
-		static readonly string Connecting = "connecting";
-
-		[TranslationReference("size")]
-		static readonly string Downloading = "downloading-map";
-
-		[TranslationReference("size", "progress")]
-		static readonly string DownloadingPercentage = "downloading-map-progress";
-
-		[TranslationReference]
-		static readonly string RetryInstall = "retry-install";
-
-		[TranslationReference]
-		static readonly string RetrySearch = "retry-search";
-
-		[TranslationReference("author")]
-		static readonly string CreatedBy = "created-by";
 
 		[ObjectCreator.UseCtor]
 		internal MapPreviewLogic(Widget widget, ModData modData, OrderManager orderManager, Func<(MapPreview Map, Session.MapStatus Status)> getMap,

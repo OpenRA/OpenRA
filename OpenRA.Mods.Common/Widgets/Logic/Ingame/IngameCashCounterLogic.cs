@@ -17,6 +17,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class IngameCashCounterLogic : ChromeLogic
 	{
+		[TranslationReference("usage", "capacity")]
+		const string SiloUsage = "silo-usage";
+
 		const float DisplayFracPerFrame = .07f;
 		const int DisplayDeltaPerFrame = 37;
 
@@ -31,9 +34,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		int displayResources;
 
 		string siloUsageTooltip = "";
-
-		[TranslationReference("usage", "capacity")]
-		static readonly string SiloUsage = "silo-usage";
 
 		[ObjectCreator.UseCtor]
 		public IngameCashCounterLogic(Widget widget, ModData modData, World world)

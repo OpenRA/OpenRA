@@ -21,6 +21,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ActorSelectorLogic : CommonSelectorLogic
 	{
+		[TranslationReference]
+		const string Type = "type";
+
 		class ActorSelectorActor
 		{
 			public readonly ActorInfo Actor;
@@ -41,9 +44,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Ruleset mapRules;
 		readonly ActorSelectorActor[] allActors;
 		readonly EditorCursorLayer editorCursor;
-
-		[TranslationReference]
-		static readonly string Type = "type";
 
 		PlayerReference selectedOwner;
 

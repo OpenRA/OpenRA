@@ -23,6 +23,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	[ChromeLogicArgsHotkeys("CombinedViewKey", "WorldViewKey")]
 	public class ObserverShroudSelectorLogic : ChromeLogic
 	{
+		[TranslationReference]
+		const string CameraOptionAllPlayers = "camera-option-all-players";
+
+		[TranslationReference]
+		const string CameraOptionDisableShroud = "camera-option-disable-shroud";
+
+		[TranslationReference]
+		const string CameraOptionOther = "camera-option-other";
+
+		[TranslationReference]
+		const string Players = "players";
+
+		[TranslationReference("team")]
+		const string TeamNumber = "team-number";
+
+		[TranslationReference]
+		const string NoTeam = "no-team";
+
 		readonly CameraOption combined, disableShroud;
 		readonly IOrderedEnumerable<IGrouping<int, CameraOption>> teams;
 		readonly bool limitViews;
@@ -34,24 +52,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		CameraOption selected;
 		readonly LabelWidget shroudLabel;
-
-		[TranslationReference]
-		static readonly string CameraOptionAllPlayers = "camera-option-all-players";
-
-		[TranslationReference]
-		static readonly string CameraOptionDisableShroud = "camera-option-disable-shroud";
-
-		[TranslationReference]
-		static readonly string CameraOptionOther = "camera-option-other";
-
-		[TranslationReference]
-		static readonly string Players = "players";
-
-		[TranslationReference("team")]
-		static readonly string TeamNumber = "team-number";
-
-		[TranslationReference]
-		static readonly string NoTeam = "no-team";
 
 		class CameraOption
 		{

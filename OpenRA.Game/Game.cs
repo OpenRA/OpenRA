@@ -29,6 +29,9 @@ namespace OpenRA
 {
 	public static class Game
 	{
+		[TranslationReference("filename")]
+		const string SavedScreenshot = "saved-screenshot";
+
 		public const int TimestepJankThreshold = 250; // Don't catch up for delays larger than 250ms
 
 		public static InstalledMods Mods { get; private set; }
@@ -570,9 +573,6 @@ namespace OpenRA
 
 		public static void RunAfterTick(Action a) { delayedActions.Add(a, RunTime); }
 		public static void RunAfterDelay(int delayMilliseconds, Action a) { delayedActions.Add(a, RunTime + delayMilliseconds); }
-
-		[TranslationReference("filename")]
-		static readonly string SavedScreenshot = "saved-screenshot";
 
 		static void TakeScreenshotInner()
 		{

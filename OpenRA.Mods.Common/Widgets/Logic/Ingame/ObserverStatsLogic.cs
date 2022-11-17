@@ -27,6 +27,39 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		"StatisticsArmyGraphKey")]
 	public class ObserverStatsLogic : ChromeLogic
 	{
+		[TranslationReference]
+		const string InformationNone = "information-none";
+
+		[TranslationReference]
+		const string Basic = "basic";
+
+		[TranslationReference]
+		const string Economy = "economy";
+
+		[TranslationReference]
+		const string Production = "production";
+
+		[TranslationReference]
+		const string SupportPowers = "support-powers";
+
+		[TranslationReference]
+		const string Combat = "combat";
+
+		[TranslationReference]
+		const string Army = "army";
+
+		[TranslationReference]
+		const string EarningsGraph = "earnings-graph";
+
+		[TranslationReference]
+		const string ArmyGraph = "army-graph";
+
+		[TranslationReference("team")]
+		const string TeamNumber = "team-number";
+
+		[TranslationReference]
+		const string NoTeam = "no-team";
+
 		readonly ContainerWidget basicStatsHeaders;
 		readonly ContainerWidget economyStatsHeaders;
 		readonly ContainerWidget productionStatsHeaders;
@@ -53,39 +86,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly string clickSound = ChromeMetrics.Get<string>("ClickSound");
 		ObserverStatsPanel activePanel;
-
-		[TranslationReference]
-		static readonly string InformationNone = "information-none";
-
-		[TranslationReference]
-		static readonly string Basic = "basic";
-
-		[TranslationReference]
-		static readonly string Economy = "economy";
-
-		[TranslationReference]
-		static readonly string Production = "production";
-
-		[TranslationReference]
-		static readonly string SupportPowers = "support-powers";
-
-		[TranslationReference]
-		static readonly string Combat = "combat";
-
-		[TranslationReference]
-		static readonly string Army = "army";
-
-		[TranslationReference]
-		static readonly string EarningsGraph = "earnings-graph";
-
-		[TranslationReference]
-		static readonly string ArmyGraph = "army-graph";
-
-		[TranslationReference("team")]
-		static readonly string TeamNumber = "team-number";
-
-		[TranslationReference]
-		static readonly string NoTeam = "no-team";
 
 		[ObjectCreator.UseCtor]
 		public ObserverStatsLogic(World world, ModData modData, WorldRenderer worldRenderer, Widget widget, Dictionary<string, MiniYaml> logicArgs)

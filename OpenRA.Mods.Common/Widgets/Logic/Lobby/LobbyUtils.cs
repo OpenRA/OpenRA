@@ -24,19 +24,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public static class LobbyUtils
 	{
 		[TranslationReference]
-		static readonly string Open = "open";
+		const string Open = "open";
 
 		[TranslationReference]
-		static readonly string Closed = "closed";
+		const string Closed = "closed";
 
 		[TranslationReference]
-		static readonly string Bots = "bots";
+		const string Bots = "bots";
 
 		[TranslationReference]
-		static readonly string BotsDisabled = "bots-disabled";
+		const string BotsDisabled = "bots-disabled";
 
 		[TranslationReference]
-		static readonly string Slot = "slot";
+		const string Slot = "slot";
 
 		class SlotDropDownOption
 		{

@@ -19,56 +19,57 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class MapChooserLogic : ChromeLogic
 	{
 		[TranslationReference]
-		static readonly string AllMaps = "all-maps";
-		readonly string allMaps;
+		const string AllMaps = "all-maps";
 
 		[TranslationReference]
-		static readonly string NoMatches = "no-matches";
+		const string NoMatches = "no-matches";
 
 		[TranslationReference("players")]
-		static readonly string Players = "player-players";
+		const string Players = "player-players";
 
 		[TranslationReference("author")]
-		static readonly string CreatedBy = "created-by";
+		const string CreatedBy = "created-by";
 
 		[TranslationReference]
-		static readonly string MapSizeHuge = "map-size-huge";
+		const string MapSizeHuge = "map-size-huge";
 
 		[TranslationReference]
-		static readonly string MapSizeLarge = "map-size-large";
+		const string MapSizeLarge = "map-size-large";
 
 		[TranslationReference]
-		static readonly string MapSizeMedium = "map-size-medium";
+		const string MapSizeMedium = "map-size-medium";
 
 		[TranslationReference]
-		static readonly string MapSizeSmall = "map-size-small";
+		const string MapSizeSmall = "map-size-small";
 
 		[TranslationReference("map")]
-		static readonly string MapDeletionFailed = "map-deletion-failed";
+		const string MapDeletionFailed = "map-deletion-failed";
 
 		[TranslationReference]
-		static readonly string DeleteMapTitle = "delete-map-title";
+		const string DeleteMapTitle = "delete-map-title";
 
 		[TranslationReference("title")]
-		static readonly string DeleteMapPrompt = "delete-map-prompt";
+		const string DeleteMapPrompt = "delete-map-prompt";
 
 		[TranslationReference]
-		static readonly string DeleteMapAccept = "delete-map-accept";
+		const string DeleteMapAccept = "delete-map-accept";
 
 		[TranslationReference]
-		static readonly string DeleteAllMapsTitle = "delete-all-maps-title";
+		const string DeleteAllMapsTitle = "delete-all-maps-title";
 
 		[TranslationReference]
-		static readonly string DeleteAllMapsPrompt = "delete-all-maps-prompt";
+		const string DeleteAllMapsPrompt = "delete-all-maps-prompt";
 
 		[TranslationReference]
-		static readonly string DeleteAllMapsAccept = "delete-all-maps-accept";
+		const string DeleteAllMapsAccept = "delete-all-maps-accept";
 
 		[TranslationReference]
-		static readonly string OrderMapsByPlayers = "order-maps-players";
+		const string OrderMapsByPlayers = "order-maps-players";
 
 		[TranslationReference]
-		static readonly string OrderMapsByDate = "order-maps-date";
+		const string OrderMapsByDate = "order-maps-date";
+
+		readonly string allMaps;
 
 		readonly Widget widget;
 		readonly DropDownButtonWidget gameModeDropdown;

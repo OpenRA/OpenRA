@@ -18,21 +18,21 @@ namespace OpenRA.Mods.Common.Server
 {
 	public class PlayerPinger : ServerTrait, ITick
 	{
+		[TranslationReference]
+		const string PlayerDropped = "player-dropped";
+
+		[TranslationReference("player")]
+		const string ConnectionProblems = "connection-problems";
+
+		[TranslationReference("player")]
+		const string Timeout = "timeout";
+
+		[TranslationReference("player", "timeout")]
+		const string TimeoutIn = "timeout-in";
+
 		static readonly int PingInterval = 5000; // Ping every 5 seconds
 		static readonly int ConnReportInterval = 20000; // Report every 20 seconds
 		static readonly int ConnTimeout = 60000; // Drop unresponsive clients after 60 seconds
-
-		[TranslationReference]
-		static readonly string PlayerDropped = "player-dropped";
-
-		[TranslationReference("player")]
-		static readonly string ConnectionProblems = "connection-problems";
-
-		[TranslationReference("player")]
-		static readonly string Timeout = "timeout";
-
-		[TranslationReference("player", "timeout")]
-		static readonly string TimeoutIn = "timeout-in";
 
 		long lastPing = 0;
 		long lastConnReport = 0;

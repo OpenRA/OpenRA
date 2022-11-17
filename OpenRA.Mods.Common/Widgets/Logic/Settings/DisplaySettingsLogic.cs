@@ -23,48 +23,46 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class DisplaySettingsLogic : ChromeLogic
 	{
 		[TranslationReference]
-		static readonly string Close = "close";
+		const string Close = "close";
 
 		[TranslationReference]
-		static readonly string Medium = "medium";
+		const string Medium = "medium";
 
 		[TranslationReference]
-		static readonly string Far = "far";
+		const string Far = "far";
 
 		[TranslationReference]
-		static readonly string Furthest = "furthest";
+		const string Furthest = "furthest";
 
 		[TranslationReference]
-		static readonly string Windowed = "windowed";
+		const string Windowed = "windowed";
 
 		[TranslationReference]
-		static readonly string LegacyFullscreen = "legacy-fullscreen";
-		readonly string legacyFullscreen;
+		const string LegacyFullscreen = "legacy-fullscreen";
 
 		[TranslationReference]
-		static readonly string Fullscreen = "fullscreen";
-		readonly string fullscreen;
+		const string Fullscreen = "fullscreen";
 
 		[TranslationReference("number")]
-		static readonly string Display = "display";
+		const string Display = "display";
 
 		[TranslationReference]
-		static readonly string Standard = "standard";
+		const string Standard = "standard";
 
 		[TranslationReference]
-		static readonly string ShowOnDamage = "show-on-damage";
+		const string ShowOnDamage = "show-on-damage";
 
 		[TranslationReference]
-		static readonly string AlwaysShow = "always-show";
+		const string AlwaysShow = "always-show";
 
 		[TranslationReference]
-		static readonly string Automatic = "automatic";
+		const string Automatic = "automatic";
 
 		[TranslationReference]
-		static readonly string Manual = "manual";
+		const string Manual = "manual";
 
 		[TranslationReference]
-		static readonly string Disabled = "disabled";
+		const string Disabled = "disabled";
 
 		static readonly int OriginalVideoDisplay;
 		static readonly WindowMode OriginalGraphicsMode;
@@ -82,6 +80,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly string automatic;
 		readonly string manual;
 		readonly string disabled;
+
+		readonly string legacyFullscreen;
+		readonly string fullscreen;
 
 		static DisplaySettingsLogic()
 		{

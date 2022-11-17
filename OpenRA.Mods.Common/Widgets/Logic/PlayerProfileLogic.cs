@@ -132,10 +132,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class RegisteredProfileTooltipLogic : ChromeLogic
 	{
 		[TranslationReference]
-		static readonly string LoadingPlayerProfile = "loading-player-profile";
+		const string LoadingPlayerProfile = "loading-player-profile";
 
 		[TranslationReference]
-		static readonly string LoadingPlayerProfileFailed = "loading-player-profile-failed";
+		const string LoadingPlayerProfileFailed = "loading-player-profile-failed";
 
 		readonly PlayerDatabase playerDatabase;
 		PlayerProfile profile;
