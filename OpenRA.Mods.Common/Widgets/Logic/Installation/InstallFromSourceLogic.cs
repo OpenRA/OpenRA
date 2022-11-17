@@ -21,6 +21,63 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class InstallFromSourceLogic : ChromeLogic
 	{
+		[TranslationReference]
+		const string DetectingSources = "detecting-sources";
+
+		[TranslationReference]
+		const string CheckingSources = "checking-sources";
+
+		[TranslationReference("title")]
+		const string SearchingSourceFor = "searching-source-for";
+
+		[TranslationReference]
+		const string ContentPackageInstallation = "content-package-installation";
+
+		[TranslationReference]
+		const string GameSources = "game-sources";
+
+		[TranslationReference]
+		const string DigitalInstalls = "digital-installs";
+
+		[TranslationReference]
+		const string GameContentNotFound = "game-content-not-found";
+
+		[TranslationReference]
+		const string AlternativeContentSources = "alternative-content-sources";
+
+		[TranslationReference]
+		const string InstallingContent = "installing-content";
+
+		[TranslationReference("filename")]
+		public const string CopyingFilename = "copying-filename";
+
+		[TranslationReference("filename", "progress")]
+		public const string CopyingFilenameProgress = "copying-filename-progress";
+
+		[TranslationReference]
+		const string InstallationFailed = "installation-failed";
+
+		[TranslationReference]
+		const string CheckInstallLog = "check-install-log";
+
+		[TranslationReference("filename")]
+		public const string Extracing = "extracting-filename";
+
+		[TranslationReference("filename", "progress")]
+		public const string ExtracingProgress = "extracting-filename-progress";
+
+		[TranslationReference]
+		public const string Continue = "continue";
+
+		[TranslationReference]
+		const string Cancel = "cancel";
+
+		[TranslationReference]
+		const string Retry = "retry";
+
+		[TranslationReference]
+		const string Back = "back";
+
 		// Hide percentage indicators for files smaller than 25 MB
 		public const int ShowPercentageThreshold = 26214400;
 
@@ -52,63 +109,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly LabelWidget listLabel;
 
 		Mode visible = Mode.Progress;
-
-		[TranslationReference]
-		static readonly string DetectingSources = "detecting-sources";
-
-		[TranslationReference]
-		static readonly string CheckingSources = "checking-sources";
-
-		[TranslationReference("title")]
-		static readonly string SearchingSourceFor = "searching-source-for";
-
-		[TranslationReference]
-		static readonly string ContentPackageInstallation = "content-package-installation";
-
-		[TranslationReference]
-		static readonly string GameSources = "game-sources";
-
-		[TranslationReference]
-		static readonly string DigitalInstalls = "digital-installs";
-
-		[TranslationReference]
-		static readonly string GameContentNotFound = "game-content-not-found";
-
-		[TranslationReference]
-		static readonly string AlternativeContentSources = "alternative-content-sources";
-
-		[TranslationReference]
-		static readonly string InstallingContent = "installing-content";
-
-		[TranslationReference("filename")]
-		public static readonly string CopyingFilename = "copying-filename";
-
-		[TranslationReference("filename", "progress")]
-		public static readonly string CopyingFilenameProgress = "copying-filename-progress";
-
-		[TranslationReference]
-		static readonly string InstallationFailed = "installation-failed";
-
-		[TranslationReference]
-		static readonly string CheckInstallLog = "check-install-log";
-
-		[TranslationReference("filename")]
-		public static readonly string Extracing = "extracting-filename";
-
-		[TranslationReference("filename", "progress")]
-		public static readonly string ExtracingProgress = "extracting-filename-progress";
-
-		[TranslationReference]
-		static readonly string Continue = "continue";
-
-		[TranslationReference]
-		static readonly string Cancel = "cancel";
-
-		[TranslationReference]
-		static readonly string Retry = "retry";
-
-		[TranslationReference]
-		static readonly string Back = "back";
 
 		[ObjectCreator.UseCtor]
 		public InstallFromSourceLogic(Widget widget, ModData modData, ModContent content, Dictionary<string, ModContent.ModSource> sources)

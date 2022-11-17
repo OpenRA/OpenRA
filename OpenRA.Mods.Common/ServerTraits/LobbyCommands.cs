@@ -25,133 +25,133 @@ namespace OpenRA.Mods.Common.Server
 	public class LobbyCommands : ServerTrait, IInterpretCommand, INotifyServerStart, INotifyServerEmpty, IClientJoined
 	{
 		[TranslationReference]
-		static readonly string CustomRules = "custom-rules";
+		const string CustomRules = "custom-rules";
 
 		[TranslationReference]
-		static readonly string OnlyHostStartGame = "only-only-host-start-game";
+		const string OnlyHostStartGame = "only-only-host-start-game";
 
 		[TranslationReference]
-		static readonly string NoStartUntilRequiredSlotsFull = "no-start-until-required-slots-full";
+		const string NoStartUntilRequiredSlotsFull = "no-start-until-required-slots-full";
 
 		[TranslationReference]
-		static readonly string NoStartWithoutPlayers = "no-start-without-players";
+		const string NoStartWithoutPlayers = "no-start-without-players";
 
 		[TranslationReference]
-		static readonly string TwoHumansRequired = "two-humans-required";
+		const string TwoHumansRequired = "two-humans-required";
 
 		[TranslationReference]
-		static readonly string InsufficientEnabledSpawnPoints = "insufficient-enabled-spawnPoints";
+		const string InsufficientEnabledSpawnPoints = "insufficient-enabled-spawnPoints";
 
 		[TranslationReference("command")]
-		static readonly string MalformedCommand = "malformed-command";
+		const string MalformedCommand = "malformed-command";
 
 		[TranslationReference]
-		static readonly string KickNone = "kick-none";
+		const string KickNone = "kick-none";
 
 		[TranslationReference]
-		static readonly string NoKickGameStarted = "no-kick-game-started";
+		const string NoKickGameStarted = "no-kick-game-started";
 
 		[TranslationReference("admin", "player")]
-		static readonly string Kicked = "kicked";
+		const string Kicked = "kicked";
 
 		[TranslationReference("admin", "player")]
-		static readonly string TempBan = "temp-ban";
+		const string TempBan = "temp-ban";
 
 		[TranslationReference]
-		static readonly string NoTransferAdmin = "only-host-transfer-admin";
+		const string NoTransferAdmin = "only-host-transfer-admin";
 
 		[TranslationReference]
-		static readonly string EmptySlot = "empty-slot";
+		const string EmptySlot = "empty-slot";
 
 		[TranslationReference("admin", "player")]
-		static readonly string MoveSpectators = "move-spectators";
+		const string MoveSpectators = "move-spectators";
 
 		[TranslationReference("player", "name")]
-		static readonly string Nick = "nick";
+		const string Nick = "nick";
 
 		[TranslationReference]
-		static readonly string StateUnchangedReady = "state-unchanged-ready";
+		const string StateUnchangedReady = "state-unchanged-ready";
 
 		[TranslationReference("command")]
-		static readonly string StateUnchangedGameStarted = "state-unchanged-game-started";
+		const string StateUnchangedGameStarted = "state-unchanged-game-started";
 
 		[TranslationReference("faction")]
-		static readonly string InvalidFactionSelected = "invalid-faction-selected";
+		const string InvalidFactionSelected = "invalid-faction-selected";
 
 		[TranslationReference("factions")]
-		static readonly string SupportedFactions = "supported-factions";
+		const string SupportedFactions = "supported-factions";
 
 		[TranslationReference]
-		static readonly string RequiresHost = "requires-host";
+		const string RequiresHost = "requires-host";
 
 		[TranslationReference]
-		static readonly string InvalidBotSlot = "invalid-bot-slot";
+		const string InvalidBotSlot = "invalid-bot-slot";
 
 		[TranslationReference]
-		static readonly string InvalidBotType = "invalid-bot-type";
+		const string InvalidBotType = "invalid-bot-type";
 
 		[TranslationReference]
-		static readonly string HostChangeMap = "only-host-change-map";
+		const string HostChangeMap = "only-host-change-map";
 
 		[TranslationReference]
-		static readonly string UnknownMap = "unknown-map";
+		const string UnknownMap = "unknown-map";
 
 		[TranslationReference]
-		static readonly string SearchingMap = "searching-map";
+		const string SearchingMap = "searching-map";
 
 		[TranslationReference]
-		static readonly string NotAdmin = "only-host-change-configuration";
+		const string NotAdmin = "only-host-change-configuration";
 
 		[TranslationReference]
-		static readonly string InvalidConfigurationCommand = "invalid-configuration-command";
+		const string InvalidConfigurationCommand = "invalid-configuration-command";
 
 		[TranslationReference("option")]
-		static readonly string OptionLocked = "option-locked";
+		const string OptionLocked = "option-locked";
 
 		[TranslationReference("player", "map")]
-		static readonly string ChangedMap = "changed-map";
+		const string ChangedMap = "changed-map";
 
 		[TranslationReference]
-		static readonly string MapBotsDisabled = "map-bots-disabled";
+		const string MapBotsDisabled = "map-bots-disabled";
 
 		[TranslationReference("player", "name", "value")]
-		static readonly string ValueChanged = "value-changed";
+		const string ValueChanged = "value-changed";
 
 		[TranslationReference]
-		static readonly string NoMoveSpectators = "only-host-move-spectators";
+		const string NoMoveSpectators = "only-host-move-spectators";
 
 		[TranslationReference]
-		static readonly string AdminOption = "admin-option";
+		const string AdminOption = "admin-option";
 
 		[TranslationReference("raw")]
-		static readonly string NumberTeams = "number-teams";
+		const string NumberTeams = "number-teams";
 
 		[TranslationReference]
-		static readonly string AdminClearSpawn = "admin-clear-spawn";
+		const string AdminClearSpawn = "admin-clear-spawn";
 
 		[TranslationReference]
-		static readonly string SpawnOccupied = "spawn-occupied";
+		const string SpawnOccupied = "spawn-occupied";
 
 		[TranslationReference]
-		static readonly string SpawnLocked = "spawn-locked";
+		const string SpawnLocked = "spawn-locked";
 
 		[TranslationReference]
-		static readonly string AdminLobbyInfo = "admin-lobby-info";
+		const string AdminLobbyInfo = "admin-lobby-info";
 
 		[TranslationReference]
-		static readonly string InvalidLobbyInfo = "invalid-lobby-info";
+		const string InvalidLobbyInfo = "invalid-lobby-info";
 
 		[TranslationReference]
-		static readonly string AdminKick = "admin-kick";
+		const string AdminKick = "admin-kick";
 
 		[TranslationReference]
-		static readonly string SlotClosed = "slot-closed";
+		const string SlotClosed = "slot-closed";
 
 		[TranslationReference("player")]
-		public static readonly string NewAdmin = "new-admin";
+		const string NewAdmin = "new-admin";
 
 		[TranslationReference]
-		static readonly string YouWereKicked = "you-were-kicked";
+		const string YouWereKicked = "you-were-kicked";
 
 		readonly IDictionary<string, Func<S, Connection, Session.Client, string, bool>> commandHandlers = new Dictionary<string, Func<S, Connection, Session.Client, string, bool>>
 		{

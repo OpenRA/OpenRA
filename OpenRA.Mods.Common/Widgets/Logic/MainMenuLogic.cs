@@ -22,6 +22,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MainMenuLogic : ChromeLogic
 	{
+		[TranslationReference]
+		const string LoadingNews = "loading-news";
+
+		[TranslationReference("message")]
+		const string NewsRetrivalFailed = "news-retrival-failed";
+
+		[TranslationReference("message")]
+		const string NewsParsingFailed = "news-parsing-failed";
+
 		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, StartupPrompts, None }
 
 		protected enum MenuPanel { None, Missions, Skirmish, Multiplayer, MapEditor, Replays, GameSaves }
@@ -32,15 +41,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget newsTemplate;
 		readonly LabelWidget newsStatus;
 		readonly ModData modData;
-
-		[TranslationReference]
-		static readonly string LoadingNews = "loading-news";
-
-		[TranslationReference("message")]
-		static readonly string NewsRetrivalFailed = "news-retrival-failed";
-
-		[TranslationReference("message")]
-		static readonly string NewsParsingFailed = "news-parsing-failed";
 
 		// Update news once per game launch
 		static bool fetchedNews;

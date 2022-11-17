@@ -20,14 +20,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ModContentPromptLogic : ChromeLogic
 	{
+		[TranslationReference]
+		const string Continue = "continue";
+
+		[TranslationReference]
+		const string Quit = "quit";
+
 		readonly ModContent content;
 		bool requiredContentInstalled;
-
-		[TranslationReference]
-		static readonly string Continue = "continue";
-
-		[TranslationReference]
-		static readonly string Quit = "quit";
 
 		[ObjectCreator.UseCtor]
 		public ModContentPromptLogic(ModData modData, Widget widget, Manifest mod, ModContent content, Action continueLoading)

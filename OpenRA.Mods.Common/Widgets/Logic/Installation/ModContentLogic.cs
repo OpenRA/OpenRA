@@ -20,6 +20,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ModContentLogic : ChromeLogic
 	{
+		[TranslationReference]
+		const string ManualInstall = "manual-install";
+
 		readonly ModData modData;
 		readonly ModContent content;
 		readonly ScrollPanelWidget scrollPanel;
@@ -29,9 +32,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Dictionary<string, ModContent.ModDownload> downloads = new Dictionary<string, ModContent.ModDownload>();
 
 		bool sourceAvailable;
-
-		[TranslationReference]
-		static readonly string ManualInstall = "manual-install";
 
 		[ObjectCreator.UseCtor]
 		public ModContentLogic(ModData modData, Widget widget, Manifest mod, ModContent content, Action onCancel)

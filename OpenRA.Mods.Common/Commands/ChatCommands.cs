@@ -22,10 +22,10 @@ namespace OpenRA.Mods.Common.Commands
 
 	public class ChatCommands : INotifyChat
 	{
-		public Dictionary<string, IChatCommand> Commands { get; }
-
 		[TranslationReference("name")]
-		static readonly string InvalidCommand = "invalid-command";
+		const string InvalidCommand = "invalid-command";
+
+		public Dictionary<string, IChatCommand> Commands { get; }
 
 		public ChatCommands()
 		{

@@ -17,12 +17,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ConnectionLogic : ChromeLogic
 	{
+		[TranslationReference("endpoint")]
+		const string ConnectingToEndpoint = "connecting-to-endpoint";
+
 		readonly Action onConnect;
 		readonly Action onAbort;
 		readonly Action<string> onRetry;
-
-		[TranslationReference("endpoint")]
-		static readonly string ConnectingToEndpoint = "connecting-to-endpoint";
 
 		void ConnectionStateChanged(OrderManager om, string password, NetworkConnection connection)
 		{
@@ -86,20 +86,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	public class ConnectionFailedLogic : ChromeLogic
 	{
+		[TranslationReference("target")]
+		const string CouldNotConnectToTarget = "could-not-connect-to-target";
+
+		[TranslationReference]
+		const string UnknownError = "unknown-error";
+
+		[TranslationReference]
+		const string PasswordRequired = "password-required";
+
+		[TranslationReference]
+		const string ConnectionFailed = "connection-failed";
+
 		readonly PasswordFieldWidget passwordField;
 		bool passwordOffsetAdjusted;
-
-		[TranslationReference("target")]
-		static readonly string CouldNotConnectToTarget = "could-not-connect-to-target";
-
-		[TranslationReference]
-		static readonly string UnknownError = "unknown-error";
-
-		[TranslationReference]
-		static readonly string PasswordRequired = "password-required";
-
-		[TranslationReference]
-		static readonly string ConnectionFailed = "connection-failed";
 
 		[ObjectCreator.UseCtor]
 		public ConnectionFailedLogic(Widget widget, ModData modData, OrderManager orderManager, NetworkConnection connection, string password, Action onAbort, Action<string> onRetry)
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ConnectionSwitchModLogic : ChromeLogic
 	{
 		[TranslationReference]
-		static readonly string ModSwitchFailed = "mod-switch-failed";
+		const string ModSwitchFailed = "mod-switch-failed";
 
 		[ObjectCreator.UseCtor]
 		public ConnectionSwitchModLogic(Widget widget, OrderManager orderManager, NetworkConnection connection, Action onAbort, Action<string> onRetry)

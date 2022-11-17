@@ -22,6 +22,15 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Configuration options for the lobby player color picker. Attach this to the world actor.")]
 	public class ColorPickerManagerInfo : TraitInfo<ColorPickerManager>, IRulesetLoaded
 	{
+		[TranslationReference]
+		const string PlayerColorTerrain = "player-color-terrain";
+
+		[TranslationReference]
+		const string PlayerColorPlayer = "player-color-player";
+
+		[TranslationReference]
+		const string InvalidPlayerColor = "invalid-player-color";
+
 		[Desc("Minimum and maximum saturation levels that are valid for use.")]
 		public readonly float[] HsvSaturationRange = { 0.3f, 0.95f };
 
@@ -59,13 +68,6 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public Color Color;
-
-		[TranslationReference]
-		static readonly string PlayerColorTerrain = "player-color-terrain";
-		[TranslationReference]
-		static readonly string PlayerColorPlayer = "player-color-player";
-		[TranslationReference]
-		static readonly string InvalidPlayerColor = "invalid-player-color";
 
 		bool TryGetBlockingColor((float R, float G, float B) color, List<(float R, float G, float B)> candidateBlockers, out (float R, float G, float B) closestBlocker)
 		{

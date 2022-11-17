@@ -19,6 +19,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public abstract class CommonSelectorLogic : ChromeLogic
 	{
+		[TranslationReference]
+		const string None = "none";
+
+		[TranslationReference]
+		const string SearchResults = "search-results";
+
+		[TranslationReference]
+		const string All = "all";
+
+		[TranslationReference]
+		const string Multiple = "multiple";
+
 		protected readonly Widget Widget;
 		protected readonly ModData ModData;
 		protected readonly TextFieldWidget SearchTextField;
@@ -33,18 +45,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		protected string[] allCategories;
 		protected string searchFilter;
-
-		[TranslationReference]
-		static readonly string None = "none";
-
-		[TranslationReference]
-		static readonly string SearchResults = "search-results";
-
-		[TranslationReference]
-		static readonly string All = "all";
-
-		[TranslationReference]
-		static readonly string Multiple = "multiple";
 
 		public CommonSelectorLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer, string templateListId, string previewTemplateId)
 		{

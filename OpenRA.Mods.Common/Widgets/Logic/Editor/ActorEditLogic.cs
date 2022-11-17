@@ -20,6 +20,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ActorEditLogic : ChromeLogic
 	{
+		[TranslationReference]
+		const string DuplicateActorId = "duplicate-actor-id";
+
+		[TranslationReference]
+		const string EnterActorId = "enter-actor-id";
+
+		[TranslationReference]
+		const string Owner = "owner";
+
 		// Error states define overlapping bits to simplify panel reflow logic
 		[Flags]
 		enum ActorIDStatus { Normal = 0, Duplicate = 1, Empty = 3 }
@@ -43,15 +52,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly int editPanelPadding; // Padding between right edge of actor and the edit panel.
 		readonly long scrollVisibleTimeout = 100; // Delay after scrolling map before edit widget becomes visible again.
-
-		[TranslationReference]
-		static readonly string DuplicateActorId = "duplicate-actor-id";
-
-		[TranslationReference]
-		static readonly string EnterActorId = "enter-actor-id";
-
-		[TranslationReference]
-		static readonly string Owner = "owner";
 
 		long lastScrollTime = 0;
 		int2 lastScrollPosition = int2.Zero;

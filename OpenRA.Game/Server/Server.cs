@@ -46,6 +46,75 @@ namespace OpenRA.Server
 
 	public sealed class Server
 	{
+		[TranslationReference]
+		const string CustomRules = "custom-rules";
+
+		[TranslationReference]
+		const string BotsDisabled = "bots-disabled";
+
+		[TranslationReference]
+		const string TwoHumansRequired = "two-humans-required";
+
+		[TranslationReference]
+		const string ErrorGameStarted = "error-game-started";
+
+		[TranslationReference]
+		const string RequiresPassword = "requires-password";
+
+		[TranslationReference]
+		const string IncorrectPassword = "incorrect-password";
+
+		[TranslationReference]
+		const string IncompatibleMod = "incompatible-mod";
+
+		[TranslationReference]
+		const string IncompatibleVersion = "incompatible-version";
+
+		[TranslationReference]
+		const string IncompatibleProtocol = "incompatible-protocol";
+
+		[TranslationReference]
+		const string Banned = "banned";
+
+		[TranslationReference]
+		const string TempBanned = "temp-banned";
+
+		[TranslationReference]
+		const string Full = "full";
+
+		[TranslationReference("player")]
+		const string Joined = "joined";
+
+		[TranslationReference]
+		const string RequiresForumAccount = "requires-forum-account";
+
+		[TranslationReference]
+		const string NoPermission = "no-permission";
+
+		[TranslationReference("command")]
+		const string UnknownServerCommand = "unknown-server-command";
+
+		[TranslationReference("player")]
+		const string LobbyDisconnected = "lobby-disconnected";
+
+		[TranslationReference("player")]
+		const string PlayerDisconnected = "player-disconnected";
+
+		[TranslationReference("player", "team")]
+		const string PlayerTeamDisconnected = "player-team-disconnected";
+
+		[TranslationReference("player")]
+		const string ObserverDisconnected = "observer-disconnected";
+
+		[TranslationReference("player")]
+		const string NewAdmin = "new-admin";
+
+		[TranslationReference]
+		const string YouWereKicked = "you-were-kicked";
+
+		[TranslationReference]
+		const string GameStarted = "game-started";
+
 		public readonly MersenneTwister Random = new MersenneTwister();
 		public readonly ServerType Type;
 
@@ -80,75 +149,6 @@ namespace OpenRA.Server
 		readonly List<GameInformation.Player> worldPlayers = new List<GameInformation.Player>();
 		readonly Stopwatch pingUpdated = Stopwatch.StartNew();
 		readonly PlayerMessageTracker playerMessageTracker;
-
-		[TranslationReference]
-		static readonly string CustomRules = "custom-rules";
-
-		[TranslationReference]
-		static readonly string BotsDisabled = "bots-disabled";
-
-		[TranslationReference]
-		static readonly string TwoHumansRequired = "two-humans-required";
-
-		[TranslationReference]
-		static readonly string ErrorGameStarted = "error-game-started";
-
-		[TranslationReference]
-		static readonly string RequiresPassword = "requires-password";
-
-		[TranslationReference]
-		static readonly string IncorrectPassword = "incorrect-password";
-
-		[TranslationReference]
-		static readonly string IncompatibleMod = "incompatible-mod";
-
-		[TranslationReference]
-		static readonly string IncompatibleVersion = "incompatible-version";
-
-		[TranslationReference]
-		static readonly string IncompatibleProtocol = "incompatible-protocol";
-
-		[TranslationReference]
-		static readonly string Banned = "banned";
-
-		[TranslationReference]
-		static readonly string TempBanned = "temp-banned";
-
-		[TranslationReference]
-		static readonly string Full = "full";
-
-		[TranslationReference("player")]
-		static readonly string Joined = "joined";
-
-		[TranslationReference]
-		static readonly string RequiresForumAccount = "requires-forum-account";
-
-		[TranslationReference]
-		static readonly string NoPermission = "no-permission";
-
-		[TranslationReference("command")]
-		static readonly string UnknownServerCommand = "unknown-server-command";
-
-		[TranslationReference("player")]
-		static readonly string LobbyDisconnected = "lobby-disconnected";
-
-		[TranslationReference("player")]
-		static readonly string PlayerDisconnected = "player-disconnected";
-
-		[TranslationReference("player", "team")]
-		static readonly string PlayerTeamDisconnected = "player-team-disconnected";
-
-		[TranslationReference("player")]
-		static readonly string ObserverDisconnected = "observer-disconnected";
-
-		[TranslationReference("player")]
-		public static readonly string NewAdmin = "new-admin";
-
-		[TranslationReference]
-		static readonly string YouWereKicked = "you-were-kicked";
-
-		[TranslationReference]
-		public static readonly string GameStarted = "game-started";
 
 		public ServerState State
 		{

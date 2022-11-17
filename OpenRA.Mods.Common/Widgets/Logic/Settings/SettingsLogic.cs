@@ -20,37 +20,37 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class SettingsLogic : ChromeLogic
 	{
 		[TranslationReference]
-		static readonly string SettingsSaveTitle = "settings-save-title";
+		const string SettingsSaveTitle = "settings-save-title";
 
 		[TranslationReference]
-		static readonly string SettingsSavePrompt = "settings-save-prompt";
+		const string SettingsSavePrompt = "settings-save-prompt";
 
 		[TranslationReference]
-		static readonly string SettingsSaveCancel = "settings-save-cancel";
+		const string SettingsSaveCancel = "settings-save-cancel";
 
 		[TranslationReference]
-		static readonly string RestartTitle = "restart-title";
+		const string RestartTitle = "restart-title";
 
 		[TranslationReference]
-		static readonly string RestartPrompt = "restart-prompt";
+		const string RestartPrompt = "restart-prompt";
 
 		[TranslationReference]
-		static readonly string RestartAccept = "restart-accept";
+		const string RestartAccept = "restart-accept";
 
 		[TranslationReference]
-		static readonly string RestartCancel = "restart-cancel";
+		const string RestartCancel = "restart-cancel";
 
 		[TranslationReference("panel")]
-		static readonly string ResetTitle = "reset-title";
+		const string ResetTitle = "reset-title";
 
 		[TranslationReference]
-		static readonly string ResetPrompt = "reset-prompt";
+		const string ResetPrompt = "reset-prompt";
 
 		[TranslationReference]
-		static readonly string ResetAccept = "reset-accept";
+		const string ResetAccept = "reset-accept";
 
 		[TranslationReference]
-		static readonly string ResetCancel = "reset-cancel";
+		const string ResetCancel = "reset-cancel";
 
 		readonly Dictionary<string, Func<bool>> leavePanelActions = new Dictionary<string, Func<bool>>();
 		readonly Dictionary<string, Action> resetPanelActions = new Dictionary<string, Action>();

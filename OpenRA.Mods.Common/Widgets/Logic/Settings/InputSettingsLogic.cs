@@ -18,41 +18,42 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class InputSettingsLogic : ChromeLogic
 	{
 		[TranslationReference]
-		static readonly string Classic = "classic";
-		readonly string classic;
+		const string Classic = "classic";
 
 		[TranslationReference]
-		static readonly string Modern = "modern";
-		readonly string modern;
+		const string Modern = "modern";
 
 		[TranslationReference]
-		static readonly string Disabled = "disabled";
+		const string Disabled = "disabled";
 
 		[TranslationReference]
-		static readonly string Standard = "standard";
+		const string Standard = "standard";
 
 		[TranslationReference]
-		static readonly string Inverted = "inverted";
+		const string Inverted = "inverted";
 
 		[TranslationReference]
-		static readonly string Joystick = "joystick";
+		const string Joystick = "joystick";
 
 		[TranslationReference]
-		static readonly string Alt = "alt";
+		const string Alt = "alt";
 
 		[TranslationReference]
-		static readonly string Ctrl = "ctrl";
+		const string Ctrl = "ctrl";
 
 		[TranslationReference]
-		static readonly string Meta = "meta";
+		const string Meta = "meta";
 
 		[TranslationReference]
-		static readonly string Shift = "shift";
+		const string Shift = "shift";
 
 		[TranslationReference]
-		static readonly string None = "none";
+		const string None = "none";
 
 		static InputSettingsLogic() { }
+
+		readonly string classic;
+		readonly string modern;
 
 		readonly ModData modData;
 

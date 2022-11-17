@@ -23,6 +23,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	[ChromeLogicArgsHotkeys("OpenTeamChat", "OpenGeneralChat")]
 	public class IngameChatLogic : ChromeLogic, INotificationHandler<TextNotification>
 	{
+		[TranslationReference]
+		const string Team = "team";
+
+		[TranslationReference]
+		const string All = "all";
+
+		[TranslationReference("seconds")]
+		const string ChatAvailability = "chat-availability";
+
+		[TranslationReference]
+		const string ChatDisabled = "chat-disabled";
+
 		readonly Ruleset modRules;
 		readonly World world;
 
@@ -43,18 +55,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool chatEnabled;
 
 		readonly bool isMenuChat;
-
-		[TranslationReference]
-		static readonly string Team = "team";
-
-		[TranslationReference]
-		static readonly string All = "all";
-
-		[TranslationReference("seconds")]
-		static readonly string ChatAvailability = "chat-availability";
-
-		[TranslationReference]
-		static readonly string ChatDisabled = "chat-disabled";
 
 		[ObjectCreator.UseCtor]
 		public IngameChatLogic(Widget widget, OrderManager orderManager, World world, ModData modData, bool isMenuChat, Dictionary<string, MiniYaml> logicArgs)

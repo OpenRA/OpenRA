@@ -26,82 +26,82 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class ReplayBrowserLogic : ChromeLogic
 	{
 		[TranslationReference("time")]
-		static readonly string Duration = "duration";
+		const string Duration = "duration";
 
 		[TranslationReference]
-		static readonly string Singleplayer = "singleplayer";
+		const string Singleplayer = "singleplayer";
 
 		[TranslationReference]
-		static readonly string Multiplayer = "multiplayer";
+		const string Multiplayer = "multiplayer";
 
 		[TranslationReference]
-		static readonly string Today = "today";
+		const string Today = "today";
 
 		[TranslationReference]
-		static readonly string LastWeek = "last-week";
+		const string LastWeek = "last-week";
 
 		[TranslationReference]
-		static readonly string LastFortnight = "last-fortnight";
+		const string LastFortnight = "last-fortnight";
 
 		[TranslationReference]
-		static readonly string LastMonth = "last-month";
+		const string LastMonth = "last-month";
 
 		[TranslationReference]
-		static readonly string ReplayDurationVeryShort = "replay-duration-very-short";
+		const string ReplayDurationVeryShort = "replay-duration-very-short";
 
 		[TranslationReference]
-		static readonly string ReplayDurationShort = "replay-duration-short";
+		const string ReplayDurationShort = "replay-duration-short";
 
 		[TranslationReference]
-		static readonly string ReplayDurationMedium = "replay-duration-medium";
+		const string ReplayDurationMedium = "replay-duration-medium";
 
 		[TranslationReference]
-		static readonly string ReplayDurationLong = "replay-duration-long";
+		const string ReplayDurationLong = "replay-duration-long";
 
 		[TranslationReference]
-		static readonly string RenameReplayTitle = "rename-replay-title";
+		const string RenameReplayTitle = "rename-replay-title";
 
 		[TranslationReference]
-		static readonly string RenameReplayPrompt = "rename-replay-prompt";
+		const string RenameReplayPrompt = "rename-replay-prompt";
 
 		[TranslationReference]
-		static readonly string RenameReplayAccept = "rename-replay-accept";
+		const string RenameReplayAccept = "rename-replay-accept";
 
 		[TranslationReference]
-		static readonly string DeleteReplayTitle = "delete-replay-title";
+		const string DeleteReplayTitle = "delete-replay-title";
 
 		[TranslationReference("replay")]
-		static readonly string DeleteReplayPrompt = "delete-replay-prompt";
+		const string DeleteReplayPrompt = "delete-replay-prompt";
 
 		[TranslationReference]
-		static readonly string DeleteReplayAccept = "delete-replay-accept";
+		const string DeleteReplayAccept = "delete-replay-accept";
 
 		[TranslationReference]
-		static readonly string DeleteAllReplaysTitle = "delete-all-replays-title";
+		const string DeleteAllReplaysTitle = "delete-all-replays-title";
 
 		[TranslationReference("count")]
-		static readonly string DeleteAllReplaysPrompt = "delete-all-replays-prompt";
+		const string DeleteAllReplaysPrompt = "delete-all-replays-prompt";
 
 		[TranslationReference]
-		static readonly string DeleteAllReplaysAccept = "delete-all-replays-accept";
+		const string DeleteAllReplaysAccept = "delete-all-replays-accept";
 
 		[TranslationReference("file")]
-		static readonly string ReplayDeletionFailed = "replay-deletion-failed";
+		const string ReplayDeletionFailed = "replay-deletion-failed";
 
 		[TranslationReference]
-		static readonly string Players = "players";
+		const string Players = "players";
 
 		[TranslationReference("team")]
-		static readonly string TeamNumber = "team-number";
+		const string TeamNumber = "team-number";
 
 		[TranslationReference]
-		static readonly string NoTeam = "no-team";
+		const string NoTeam = "no-team";
 
 		[TranslationReference]
-		static readonly string Victory = "victory";
+		const string Victory = "victory";
 
 		[TranslationReference]
-		static readonly string Defeat = "defeat";
+		const string Defeat = "defeat";
 
 		static Filter filter = new Filter();
 

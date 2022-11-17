@@ -22,6 +22,42 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class LobbyLogic : ChromeLogic, INotificationHandler<TextNotification>
 	{
+		[TranslationReference]
+		const string Add = "add";
+
+		[TranslationReference]
+		const string Remove = "remove";
+
+		[TranslationReference]
+		const string ConfigureBots = "configure-bots";
+
+		[TranslationReference("count")]
+		const string NumberTeams = "n-teams";
+
+		[TranslationReference]
+		const string HumanVsBots = "humans-vs-bots";
+
+		[TranslationReference]
+		const string FreeForAll = "free-for-all";
+
+		[TranslationReference]
+		const string ConfigureTeams = "configure-teams";
+
+		[TranslationReference]
+		const string Back = "back";
+
+		[TranslationReference]
+		const string Team = "team";
+
+		[TranslationReference]
+		const string All = "all";
+
+		[TranslationReference("seconds")]
+		const string ChatAvailability = "chat-availability";
+
+		[TranslationReference]
+		const string ChatDisabled = "chat-disabled";
+
 		static readonly Action DoNothing = () => { };
 
 		readonly ModData modData;
@@ -72,42 +108,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly string chatLineSound = ChromeMetrics.Get<string>("ChatLineSound");
 
 		bool MapIsPlayable => (mapStatus & Session.MapStatus.Playable) == Session.MapStatus.Playable;
-
-		[TranslationReference]
-		static readonly string Add = "add";
-
-		[TranslationReference]
-		static readonly string Remove = "remove";
-
-		[TranslationReference]
-		static readonly string ConfigureBots = "configure-bots";
-
-		[TranslationReference("count")]
-		static readonly string NumberTeams = "n-teams";
-
-		[TranslationReference]
-		static readonly string HumanVsBots = "humans-vs-bots";
-
-		[TranslationReference]
-		static readonly string FreeForAll = "free-for-all";
-
-		[TranslationReference]
-		static readonly string ConfigureTeams = "configure-teams";
-
-		[TranslationReference]
-		static readonly string Back = "back";
-
-		[TranslationReference]
-		static readonly string Team = "team";
-
-		[TranslationReference]
-		static readonly string All = "all";
-
-		[TranslationReference("seconds")]
-		static readonly string ChatAvailability = "chat-availability";
-
-		[TranslationReference]
-		static readonly string ChatDisabled = "chat-disabled";
 
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om, string password, NetworkConnection connection)
