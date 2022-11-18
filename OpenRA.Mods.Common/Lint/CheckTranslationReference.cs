@@ -49,6 +49,9 @@ namespace OpenRA.Mods.Common.Lint
 						var keys = LintExts.GetFieldValues(traitInfo, field);
 						foreach (var key in keys)
 						{
+							if (referencedKeys.Contains(key))
+								continue;
+
 							if (!translation.HasMessage(key))
 								emitError($"{key} not present in {language} translation.");
 
@@ -78,6 +81,9 @@ namespace OpenRA.Mods.Common.Lint
 						continue;
 
 					var key = (string)fieldInfo.GetValue(string.Empty);
+					if (referencedKeys.Contains(key))
+						continue;
+
 					if (!translation.HasMessage(key))
 						emitError($"{key} not present in {language} translation.");
 
