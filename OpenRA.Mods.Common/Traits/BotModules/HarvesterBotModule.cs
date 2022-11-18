@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Find new harvesters
 			// TODO: Look for a more performance-friendly way to update this list
-			var newHarvesters = world.ActorsHavingTrait<Harvester>().Where(a => a.Owner == player && !harvesters.ContainsKey(a));
+			var newHarvesters = world.ActorsHavingTrait<Harvester>().Where(a => !unitCannotBeOrdered(a) && !harvesters.ContainsKey(a));
 			foreach (var a in newHarvesters)
 				harvesters[a] = new HarvesterTraitWrapper(a);
 
