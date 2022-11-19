@@ -40,8 +40,8 @@ if [ -n "${MACOS_DEVELOPER_CERTIFICATE_BASE64}" ] && [ -n "${MACOS_DEVELOPER_CER
 	security create-keychain -p build build.keychain
 	security default-keychain -s build.keychain
 	security unlock-keychain -p build build.keychain
-	security import build.p12 -k build.keychain -P "${MACOS_DEVELOPER_CERTIFICATE_PASSWORD}" -T /usr/bin/codesign >/dev/null 2>&1
-	security set-key-partition-list -S apple-tool:,apple: -s -k build build.keychain >/dev/null 2>&1
+	security import build.p12 -k build.keychain -P "${MACOS_DEVELOPER_CERTIFICATE_PASSWORD}" -T /usr/bin/codesign
+	security set-key-partition-list -S apple-tool:,apple: -s -k build build.keychain
 	rm -fr build.p12
 fi
 

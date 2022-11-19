@@ -1,15 +1,13 @@
 name: Continuous Integration
 
 on:
-  push:
   pull_request:
-    branches: [ bleed ]
+    branches: [ prep-2211 ]
 
 jobs:
-  linux:
-    name: Linux (.NET 6.0)
-    runs-on: ubuntu-20.04
-
+  macos:
+    name: macOS Disk Images
+    runs-on: macos-11
     steps:
       - name: Clone Repository
         uses: actions/checkout@v2
@@ -19,59 +17,16 @@ jobs:
         with:
           dotnet-version: '6.0.x'
 
-      - name: Check Code
+      - name: Prepare Environment
+        run: echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
+
+      - name: Package Disk Images
+        env:
+          MACOS_DEVELOPER_IDENTITY: ${{ secrets.MACOS_DEVELOPER_IDENTITY }}
+          MACOS_DEVELOPER_CERTIFICATE_BASE64: ${{ secrets.MACOS_DEVELOPER_CERTIFICATE_BASE64 }}
+          MACOS_DEVELOPER_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_DEVELOPER_CERTIFICATE_PASSWORD }}
+          MACOS_DEVELOPER_USERNAME: ${{ secrets.MACOS_DEVELOPER_USERNAME }}
+          MACOS_DEVELOPER_PASSWORD: ${{ secrets.MACOS_DEVELOPER_PASSWORD }}
         run: |
-          make check
-
-      - name: Check Mods
-        run: |
-          sudo apt-get install lua5.1
-          make check-scripts
-          make test
-
-  linux-mono:
-    name: Linux (mono)
-    runs-on: ubuntu-20.04
-
-    steps:
-      - name: Clone Repository
-        uses: actions/checkout@v2
-
-      - name: Check Code
-        run: |
-          mono --version
-          make RUNTIME=mono check
-
-      - name: Check Mods
-        run: |
-          # check-scripts does not depend on .net/mono, so is not needed here
-          make RUNTIME=mono test
-
-  windows:
-    name: Windows (.NET 6.0)
-    runs-on: windows-2019
-
-    steps:
-      - name: Clone Repository
-        uses: actions/checkout@v2
-
-      - name: Install .NET 6.0
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '6.0.x'
-
-      - name: Check Code
-        shell: powershell
-        run: |
-          # Work around runtime failures on the GH Actions runner
-          dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
-          .\make.ps1 check
-          dotnet build OpenRA.Test\OpenRA.Test.csproj -c Debug --nologo -p:TargetPlatform=win-x64
-          dotnet test bin\OpenRA.Test.dll --test-adapter-path:.
-
-      - name: Check Mods
-        run: |
-          chocolatey install lua --version 5.1.5.52
-          $ENV:Path = $ENV:Path + ";C:\Program Files (x86)\Lua\5.1\"
-          .\make.ps1 check-scripts
-          .\make.ps1 test
+          mkdir -p build/macos
+          ./packaging/macos/buildpackage.sh "${GIT_TAG}" "${PWD}/build/macos"
