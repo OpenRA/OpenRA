@@ -49,7 +49,7 @@ namespace OpenRA.Graphics
 
 			vertices = new Vertex[rowStride * map.MapSize.Y];
 			palettes = new PaletteReference[map.MapSize.X * map.MapSize.Y];
-			vertexBuffer = Game.Renderer.Context.CreateVertexBuffer(vertices.Length);
+			vertexBuffer = Game.Renderer.Context.CreateVertexBuffer<Vertex>(vertices.Length);
 
 			wr.PaletteInvalidated += UpdatePaletteIndices;
 

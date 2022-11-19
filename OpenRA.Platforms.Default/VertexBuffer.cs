@@ -20,9 +20,11 @@ namespace OpenRA.Platforms.Default
 		static readonly int VertexSize = Marshal.SizeOf(typeof(T));
 		uint buffer;
 		bool disposed;
+		public int Length { get; private set; }
 
 		public VertexBuffer(int size)
 		{
+			Length = size;
 			OpenGL.glGenBuffers(1, out buffer);
 			OpenGL.CheckGLError();
 			Bind();
@@ -57,16 +59,19 @@ namespace OpenRA.Platforms.Default
 
 		public void SetData(T[] data, int length)
 		{
+			Length = length;
 			SetData(data, 0, 0, length);
 		}
 
 		public void SetData(ref T[] data, int length)
 		{
+			Length = length;
 			SetData(data, 0, 0, length);
 		}
 
 		public void SetData(T[] data, int offset, int start, int length)
 		{
+			Length = length;
 			Bind();
 
 			var ptr = GCHandle.Alloc(data, GCHandleType.Pinned);

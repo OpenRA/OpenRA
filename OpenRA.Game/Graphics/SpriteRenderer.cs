@@ -34,7 +34,7 @@ namespace OpenRA.Graphics
 		{
 			this.renderer = renderer;
 			this.shader = shader;
-			vertices = renderer.Context.CreateVertices(renderer.TempBufferSize);
+			vertices = renderer.Context.CreateVertices<Vertex>(renderer.TempBufferSize);
 		}
 
 		public void Flush()
