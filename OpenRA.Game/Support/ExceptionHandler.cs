@@ -56,9 +56,9 @@ namespace OpenRA
 			return BuildExceptionReport(ex, new StringBuilder(), 0);
 		}
 
-		static StringBuilder AppendIndentedFormatLine(this StringBuilder sb, int indent, string format, params object[] args)
+		static StringBuilder AppendIndentedLine(this StringBuilder sb, int indent, string message)
 		{
-			return sb.Append(new string(' ', indent * 2)).AppendFormat(format, args).AppendLine();
+			return sb.Append(new string(' ', indent * 2)).Append(message).AppendLine();
 		}
 
 		static StringBuilder BuildExceptionReport(Exception ex, StringBuilder sb, int indent)
@@ -66,11 +66,11 @@ namespace OpenRA
 			if (ex == null)
 				return sb;
 
-			sb.AppendIndentedFormatLine(indent, $"Exception of type `{ex.GetType().FullName}`: {ex.Message}");
+			sb.AppendIndentedLine(indent, $"Exception of type `{ex.GetType().FullName}`: {ex.Message}");
 
 			if (ex is TypeLoadException tle)
 			{
-				sb.AppendIndentedFormatLine(indent, $"TypeName=`{tle.TypeName}`");
+				sb.AppendIndentedLine(indent, $"TypeName=`{tle.TypeName}`");
 			}
 			else if (ex is OutOfMemoryException)
 			{
@@ -78,14 +78,14 @@ namespace OpenRA
 				GC.Collect();
 				GC.WaitForPendingFinalizers();
 				GC.Collect();
-				sb.AppendIndentedFormatLine(indent, $"GC Memory (post-collect)={GC.GetTotalMemory(false):N0}");
-				sb.AppendIndentedFormatLine(indent, $"GC Memory (pre-collect)={gcMemoryBeforeCollect:N0}");
+				sb.AppendIndentedLine(indent, $"GC Memory (post-collect)={GC.GetTotalMemory(false):N0}");
+				sb.AppendIndentedLine(indent, $"GC Memory (pre-collect)={gcMemoryBeforeCollect:N0}");
 
 				using (var p = Process.GetCurrentProcess())
 				{
-					sb.AppendIndentedFormatLine(indent, $"Working Set={p.WorkingSet64:N0}");
-					sb.AppendIndentedFormatLine(indent, $"Private Memory={p.PrivateMemorySize64:N0}");
-					sb.AppendIndentedFormatLine(indent, $"Virtual Memory={p.VirtualMemorySize64:N0}");
+					sb.AppendIndentedLine(indent, $"Working Set={p.WorkingSet64:N0}");
+					sb.AppendIndentedLine(indent, $"Private Memory={p.PrivateMemorySize64:N0}");
+					sb.AppendIndentedLine(indent, $"Virtual Memory={p.VirtualMemorySize64:N0}");
 				}
 			}
 			else
@@ -95,11 +95,11 @@ namespace OpenRA
 
 			if (ex.InnerException != null)
 			{
-				sb.AppendIndentedFormatLine(indent, "Inner");
+				sb.AppendIndentedLine(indent, "Inner");
 				BuildExceptionReport(ex.InnerException, sb, indent + 1);
 			}
 
-			sb.AppendIndentedFormatLine(indent, ex.StackTrace);
+			sb.AppendIndentedLine(indent, ex.StackTrace);
 
 			return sb;
 		}
