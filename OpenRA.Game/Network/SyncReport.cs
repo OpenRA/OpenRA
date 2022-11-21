@@ -107,10 +107,14 @@ namespace OpenRA.Network
 			var reportName = "syncreport-" + DateTime.UtcNow.ToString("yyyy-MM-ddTHHmmssZ", CultureInfo.InvariantCulture) + ".log";
 			Log.AddChannel("sync", reportName);
 
+			var recordedFrames = new List<int>();
+			var desyncFrameFound = false;
 			foreach (var r in syncReports)
 			{
+				recordedFrames.Add(r.Frame);
 				if (r.Frame == frame)
 				{
+					desyncFrameFound = true;
 					var mod = Game.ModData.Manifest.Metadata;
 					Log.Write("sync", "Player: {0} ({1} {2} {3})", Game.Settings.Player.Name, Platform.CurrentPlatform, Environment.OSVersion, Platform.RuntimeVersion);
 					Log.Write("sync", "Game ID: {0} (Mod: {1} at Version {2})", orderManager.LobbyInfo.GlobalSettings.GameUid, mod.Title, mod.Version);
@@ -141,12 +145,15 @@ namespace OpenRA.Network
 					Log.Write("sync", "Orders Issued:");
 					foreach (var o in r.Orders)
 						Log.Write("sync", "\t {0}", o.ToString());
-
-					return;
 				}
 			}
 
-			Log.Write("sync", "No sync report available!");
+			Log.Write("sync", "Sync Report System Info:");
+			Log.Write("sync", "Out of sync frame: {0}", frame);
+			Log.Write("sync", "Recorded frames: " + string.Join(",", recordedFrames));
+
+			if (!desyncFrameFound)
+				Log.Write("sync", "Recorded frames do not contain the frame {0}. No sync report available!", frame);
 		}
 
 		class Report
