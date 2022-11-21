@@ -117,6 +117,8 @@ namespace OpenRA.Network
 					desyncFrameFound = true;
 					var mod = Game.ModData.Manifest.Metadata;
 					Log.Write("sync", "Player: {0} ({1} {2} {3})", Game.Settings.Player.Name, Platform.CurrentPlatform, Environment.OSVersion, Platform.RuntimeVersion);
+					if (Game.IsHost)
+						Log.Write("sync", "Player is host.");
 					Log.Write("sync", "Game ID: {0} (Mod: {1} at Version {2})", orderManager.LobbyInfo.GlobalSettings.GameUid, mod.Title, mod.Version);
 					Log.Write("sync", "Sync for net frame {0} -------------", r.Frame);
 					Log.Write("sync", "SharedRandom: {0} (#{1})", r.SyncedRandom, r.TotalCount);
@@ -149,11 +151,11 @@ namespace OpenRA.Network
 			}
 
 			Log.Write("sync", "Sync Report System Info:");
-			Log.Write("sync", "Out of sync frame: {0}", frame);
+			Log.Write("sync", $"Out of sync frame: {frame}");
 			Log.Write("sync", "Recorded frames: " + string.Join(",", recordedFrames));
 
 			if (!desyncFrameFound)
-				Log.Write("sync", "Recorded frames do not contain the frame {0}. No sync report available!", frame);
+				Log.Write("sync", $"Recorded frames do not contain the frame {frame}. No sync report available!");
 		}
 
 		class Report
