@@ -104,7 +104,7 @@ namespace OpenRA.Network
 
 		internal void DumpSyncReport(int frame)
 		{
-			var reportName = "syncreport-" + DateTime.UtcNow.ToString("yyyy-MM-ddTHHmmssZ", CultureInfo.InvariantCulture) + ".log";
+			var reportName = "syncreport-" + DateTime.UtcNow.ToString("yyyy-MM-ddTHHmmssZ", CultureInfo.InvariantCulture) + "-" + orderManager.LocalClient.Index + ".log";
 			Log.AddChannel("sync", reportName);
 
 			var recordedFrames = new List<int>();
