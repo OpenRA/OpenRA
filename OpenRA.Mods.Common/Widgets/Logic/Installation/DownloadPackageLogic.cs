@@ -139,11 +139,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			Action<string> onError = s => Game.RunAfterTick(() =>
 			{
-				Log.Write("install", "Download failed: " + s);
+				var host = downloadHost ?? modData.Translation.GetString(UnknownHost);
+				Log.Write("install", $"Download from {host} failed: " + s);
 
 				progressBar.Indeterminate = false;
 				progressBar.Percentage = 100;
-				getStatusText = () => "Error: " + s;
+				getStatusText = () => $"{host}: Error: {s}";
 				retryButton.IsVisible = () => true;
 				cancelButton.OnClick = Ui.CloseWindow;
 			});
