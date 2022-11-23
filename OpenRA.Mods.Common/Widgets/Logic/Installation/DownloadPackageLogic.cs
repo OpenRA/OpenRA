@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var dataTotal = 0.0f;
 				var mag = 0;
 				var dataSuffix = "";
-				var host = downloadHost ?? UnknownHost;
+				var host = downloadHost ?? modData.Translation.GetString(UnknownHost);
 
 				if (total < 0)
 				{
