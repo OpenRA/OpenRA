@@ -11,6 +11,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA
@@ -225,6 +226,40 @@ namespace OpenRA
 
 				return null;
 			}
+		}
+
+		public static Order RefreshOrder(Order order)
+		{
+			if (order.Type != OrderType.Fields)
+				return order;
+
+			if (order.Subject != null && !order.Subject.IsInWorld)
+				return null;
+
+			var target = Target.Invalid;
+			Actor[] extraActors = null;
+			Actor[] groupedActors = null;
+
+			if (order.target.Type == TargetType.Actor)
+			{
+				if (order.target.Actor != null && order.target.Actor.IsInWorld)
+					target = order.target;
+			}
+			else if (order.target.Type == TargetType.FrozenActor)
+			{
+				if (order.target.FrozenActor != null)
+					target = order.target;
+			}
+			else
+				target = order.target;
+
+			if (order.ExtraActors != null)
+				extraActors = order.ExtraActors.Where(a => a != null && a.IsInWorld).ToArray();
+
+			if (order.GroupedActors != null)
+				groupedActors = order.GroupedActors.Where(a => a != null && a.IsInWorld).ToArray();
+
+			return new Order(order.OrderString, order.Subject, target, order.TargetString, order.Queued, extraActors, order.ExtraLocation, order.ExtraData, groupedActors);
 		}
 
 		static uint UIntFromActor(Actor a)

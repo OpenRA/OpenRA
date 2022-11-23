@@ -33,7 +33,12 @@ namespace OpenRA.Network
 
 		public IEnumerable<Order> GetOrders(World world)
 		{
-			return orders ?? ParseData(world);
+			// When using local orders we need to make sure they are refreshed,
+			// to match the deserialised orders from other clients
+			if (orders == null)
+				return ParseData(world);
+			else
+				return RefreshOrders();
 		}
 
 		IEnumerable<Order> ParseData(World world)
@@ -47,6 +52,19 @@ namespace OpenRA.Network
 			while (data.Position < data.Length)
 			{
 				var o = Order.Deserialize(world, reader);
+				if (o != null)
+					yield return o;
+			}
+		}
+
+		IEnumerable<Order> RefreshOrders()
+		{
+			if (orders == null)
+				yield break;
+
+			foreach (var order in orders)
+			{
+				var o = Order.RefreshOrder(order);
 				if (o != null)
 					yield return o;
 			}
