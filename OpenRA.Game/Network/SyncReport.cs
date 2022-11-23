@@ -21,7 +21,7 @@ namespace OpenRA.Network
 {
 	class SyncReport
 	{
-		const int NumSyncReports = 5;
+		const int NumSyncReports = 7;
 		static readonly Cache<Type, TypeInfo> TypeInfoCache = new Cache<Type, TypeInfo>(t => new TypeInfo(t));
 
 		readonly OrderManager orderManager;
