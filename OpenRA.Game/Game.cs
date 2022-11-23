@@ -626,6 +626,8 @@ namespace OpenRA
 
 						world.Tick();
 
+						orderManager.RefreshOrders();
+
 						PerfHistory.Tick();
 					}
 

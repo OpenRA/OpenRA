@@ -47,12 +47,12 @@ namespace OpenRA.Network
 		internal int GameSaveLastFrame = -1;
 		internal int GameSaveLastSyncFrame = -1;
 
-		readonly List<Order> localOrders = new List<Order>();
 		readonly List<Order> localImmediateOrders = new List<Order>();
 
 		readonly List<ClientOrder> processClientOrders = new List<ClientOrder>();
 		readonly List<int> processClientsToRemove = new List<int>();
 
+		List<Order> localOrders = new List<Order>();
 		bool disposed;
 		bool generateSyncReport = false;
 		int sentOrdersFrame = 0;
@@ -122,6 +122,19 @@ namespace OpenRA.Network
 				localImmediateOrders.Add(order);
 			else
 				localOrders.Add(order);
+		}
+
+		public void RefreshOrders()
+		{
+			var refreshedOrders = new List<Order>();
+			foreach (var order in localOrders)
+			{
+				var o = Order.RefreshOrder(order);
+				if (o != null)
+					refreshedOrders.Add(o);
+			}
+
+			localOrders = refreshedOrders;
 		}
 
 		void SendImmediateOrders()
