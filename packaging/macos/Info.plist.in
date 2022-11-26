@@ -48,5 +48,7 @@
 	<string>{JOIN_SERVER_URL_SCHEME}</string>
 	<key>NSRequiresAquaSystemAppearance</key>
 	<false/>
+	<key>NSPrefersDisplaySafeAreaCompatibilityMode</key>
+	<true/>
 </dict>
 </plist>
