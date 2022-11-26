@@ -612,6 +612,8 @@ namespace OpenRA
 
 					Sound.Tick();
 
+					orderManager.RefreshOrders();
+
 					Sync.RunUnsynced(world, orderManager.TickImmediate);
 
 					if (world == null)
@@ -625,8 +627,6 @@ namespace OpenRA
 						});
 
 						world.Tick();
-
-						orderManager.RefreshOrders();
 
 						PerfHistory.Tick();
 					}
