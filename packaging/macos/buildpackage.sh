@@ -278,10 +278,9 @@ if [ -n "${MACOS_DEVELOPER_CERTIFICATE_BASE64}" ] && [ -n "${MACOS_DEVELOPER_CER
 fi
 
 if [ -n "${MACOS_DEVELOPER_USERNAME}" ] && [ -n "${MACOS_DEVELOPER_PASSWORD}" ]; then
-	# Parallelize processing
-	(notarize_package "build.dmg") &
-	(notarize_package "build-mono.dmg") &
-	wait
+	# Notarize sequentially to avoid issues with waiting for the submissions to finish in the background
+	notarize_package "build.dmg"
+	notarize_package "build-mono.dmg"
 fi
 
 finalize_package "standard" "build.dmg" "${OUTPUTDIR}/OpenRA-${TAG}.dmg"
