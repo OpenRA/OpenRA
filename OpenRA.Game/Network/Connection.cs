@@ -57,12 +57,12 @@ namespace OpenRA.Network
 
 		void IConnection.Send(int frame, IEnumerable<Order> o)
 		{
-			orders.Enqueue((frame, new OrderPacket(o.ToArray())));
+			orders.Enqueue((frame, new OrderPacket(o)));
 		}
 
 		void IConnection.SendImmediate(IEnumerable<Order> o)
 		{
-			immediateOrders.Enqueue(new OrderPacket(o.ToArray()));
+			immediateOrders.Enqueue(new OrderPacket(o));
 		}
 
 		void IConnection.SendSync(int frame, int syncHash, ulong defeatState)
@@ -230,14 +230,14 @@ namespace OpenRA.Network
 
 		void IConnection.Send(int frame, IEnumerable<Order> orders)
 		{
-			var o = new OrderPacket(orders.ToArray());
+			var o = new OrderPacket(orders);
 			sentOrders.Enqueue((frame, o));
 			Send(o.Serialize(frame));
 		}
 
 		void IConnection.SendImmediate(IEnumerable<Order> orders)
 		{
-			var o = new OrderPacket(orders.ToArray());
+			var o = new OrderPacket(orders);
 			sentImmediateOrders.Enqueue(o);
 			Send(o.Serialize(0));
 		}
