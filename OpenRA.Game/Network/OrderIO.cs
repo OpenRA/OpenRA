@@ -54,13 +54,14 @@ namespace OpenRA.Network
 
 		public byte[] Serialize(int frame)
 		{
-			if (data != null)
-				return data.ToArray();
-
 			var ms = new MemoryStream();
 			ms.WriteArray(BitConverter.GetBytes(frame));
-			foreach (var o in orders)
-				ms.WriteArray(o.Serialize());
+			if (data != null)
+				data.CopyTo(ms);
+			else
+				foreach (var o in orders)
+					ms.WriteArray(o.Serialize());
+
 			return ms.ToArray();
 		}
 
