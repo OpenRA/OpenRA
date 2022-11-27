@@ -16,13 +16,13 @@
 
 set -o errexit -o pipefail || exit $?
 
-if [ $# -ne "2" ]; then
-	echo "Usage: $(basename "$0") tag outputdir"
+if [[ "${OSTYPE}" != "darwin"* ]]; then
+	echo >&2 "macOS packaging requires a macOS host"
 	exit 1
 fi
 
-if [[ "${OSTYPE}" != "darwin"* ]]; then
-	echo >&2 "macOS packaging requires a macOS host"
+if [ $# -ne "4" ]; then
+	echo "Usage: $(basename "$0") tag outputdir platform dmg"
 	exit 1
 fi
 
@@ -106,7 +106,7 @@ build_app() {
 
 	# Sign binaries with developer certificate
 	if [ -n "${MACOS_DEVELOPER_IDENTITY}" ]; then
-		codesign -s "${MACOS_DEVELOPER_IDENTITY}" --timestamp --options runtime -f --entitlements entitlements.plist --deep "${LAUNCHER_DIR}"
+		codesign --sign "${MACOS_DEVELOPER_IDENTITY}" --timestamp --options runtime -f --entitlements entitlements.plist --deep "${LAUNCHER_DIR}"
 	fi
 }
 
@@ -216,43 +216,23 @@ notarize_package() {
 	# Create a temporary read-only dmg for submission (notarization service rejects read/write images)
 	hdiutil convert "${DMG_PATH}" -format ULFO -ov -o "${NOTARIZE_DMG_PATH}"
 
-	NOTARIZATION_UUID=$(xcrun altool --notarize-app --primary-bundle-id "net.openra.packaging" -u "${MACOS_DEVELOPER_USERNAME}" -p "${MACOS_DEVELOPER_PASSWORD}" --file "${NOTARIZE_DMG_PATH}" 2>&1 | awk -F' = ' '/RequestUUID/ { print $2; exit }')
-	if [ -z "${NOTARIZATION_UUID}" ]; then
-		echo "Submission failed"
-		exit 1
-	fi
+	xcrun notarytool submit "${NOTARIZE_DMG_PATH}" --wait --apple-id "${MACOS_DEVELOPER_USERNAME}" --password "${MACOS_DEVELOPER_PASSWORD}" --team-id "${MACOS_DEVELOPER_IDENTITY}"
 
-	echo "${DMG_PATH} submission UUID is ${NOTARIZATION_UUID}"
 	rm "${NOTARIZE_DMG_PATH}"
 
-	while :; do
-		sleep 30
-		NOTARIZATION_RESULT=$(xcrun altool --notarization-info "${NOTARIZATION_UUID}" -u "${MACOS_DEVELOPER_USERNAME}" -p "${MACOS_DEVELOPER_PASSWORD}" 2>&1 | awk -F': ' '/Status/ { print $2; exit }')
-		echo "${DMG_PATH}: ${NOTARIZATION_RESULT}"
+	echo "${DMG_PATH}: Stapling tickets"
+	DMG_DEVICE=$(hdiutil attach -readwrite -noverify -noautoopen "${DMG_PATH}" | egrep '^/dev/' | sed 1q | awk '{print $1}')
+	sleep 2
 
-		if [ "${NOTARIZATION_RESULT}" == "invalid" ]; then
-			NOTARIZATION_LOG_URL=$(xcrun altool --notarization-info "${NOTARIZATION_UUID}" -u "${MACOS_DEVELOPER_USERNAME}" -p "${MACOS_DEVELOPER_PASSWORD}" 2>&1 | awk -F': ' '/LogFileURL/ { print $2; exit }')
-			echo "${NOTARIZATION_UUID} failed notarization with error:"
-			curl -s "${NOTARIZATION_LOG_URL}" -w "\n"
-			exit 1
-		fi
+	xcrun stapler staple "/Volumes/OpenRA/OpenRA - Red Alert.app"
+	xcrun stapler staple "/Volumes/OpenRA/OpenRA - Tiberian Dawn.app"
+	xcrun stapler staple "/Volumes/OpenRA/OpenRA - Dune 2000.app"
 
-		if [ "${NOTARIZATION_RESULT}" == "success" ]; then
-			echo "${DMG_PATH}: Stapling tickets"
-			DMG_DEVICE=$(hdiutil attach -readwrite -noverify -noautoopen "${DMG_PATH}" | egrep '^/dev/' | sed 1q | awk '{print $1}')
-			sleep 2
+	sync
+	sync
 
-			xcrun stapler staple "/Volumes/OpenRA/OpenRA - Red Alert.app"
-			xcrun stapler staple "/Volumes/OpenRA/OpenRA - Tiberian Dawn.app"
-			xcrun stapler staple "/Volumes/OpenRA/OpenRA - Dune 2000.app"
-
-			sync
-			sync
-
-			hdiutil detach "${DMG_DEVICE}"
-			break
-		fi
-	done
+	hdiutil detach "${DMG_DEVICE}"
+	break
 }
 
 finalize_package() {
@@ -261,28 +241,26 @@ finalize_package() {
 	OUTPUT_PATH="${3}"
 
 	if [ "${PLATFORM}" = "mono" ]; then
-		hdiutil convert "${INPUT_PATH}" -format UDZO -imagekey zlib-level=9 -ov -o "${OUTPUT_PATH}"
+		hdiutil convert "${INPUT_PATH}" -format UDZO -imagekey zlib-level=9 -ov -o "${OUTPUT_PATH}-mono.dmg"
 	else
 		# ULFO offers better compression and faster decompression speeds, but is only supported by 10.11+
-		hdiutil convert "${INPUT_PATH}" -format ULFO -ov -o "${OUTPUT_PATH}"
+		hdiutil convert "${INPUT_PATH}" -format ULFO -ov -o "${OUTPUT_PATH}.dmg"
 	fi
 
 	rm "${INPUT_PATH}"
 }
 
-build_platform "standard" "build.dmg"
-build_platform "mono" "build-mono.dmg"
+PLATFORM="$3"
+DISK_IMAGE="$4"
+
+build_platform "${PLATFORM}" "${DISK_IMAGE}"
 
 if [ -n "${MACOS_DEVELOPER_CERTIFICATE_BASE64}" ] && [ -n "${MACOS_DEVELOPER_CERTIFICATE_PASSWORD}" ] && [ -n "${MACOS_DEVELOPER_IDENTITY}" ]; then
 	security delete-keychain build.keychain
 fi
 
-if [ -n "${MACOS_DEVELOPER_USERNAME}" ] && [ -n "${MACOS_DEVELOPER_PASSWORD}" ]; then
-	# Parallelize processing
-	(notarize_package "build.dmg") &
-	(notarize_package "build-mono.dmg") &
-	wait
+if [ -n "${MACOS_DEVELOPER_USERNAME}" ] && [ -n "${MACOS_DEVELOPER_PASSWORD}" ] && [ -n "${MACOS_DEVELOPER_IDENTITY}" ]; then
+	notarize_package "${DISK_IMAGE}"
 fi
 
-finalize_package "standard" "build.dmg" "${OUTPUTDIR}/OpenRA-${TAG}.dmg"
-finalize_package "mono" "build-mono.dmg" "${OUTPUTDIR}/OpenRA-${TAG}-mono.dmg"
+finalize_package "${PLATFORM}" "${DISK_IMAGE}" "${OUTPUTDIR}/OpenRA-${TAG}"
