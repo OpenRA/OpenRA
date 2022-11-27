@@ -17,32 +17,32 @@ namespace OpenRA.Network
 {
 	public class OrderPacket
 	{
-		readonly Order[] orders;
 		readonly MemoryStream data;
 		public OrderPacket(Order[] orders)
 		{
-			this.orders = orders;
-			data = null;
+			// Orders may refer to actors that no longer exist by the time
+			// that the order is resolved. In order to ensure consistent
+			// behaviour between local and remote clients, it is simplest
+			// to always serialize / deserialize orders, instead of storing
+			// the Order objects directly on the local client.
+			data = new MemoryStream();
+			foreach (var o in orders)
+				data.WriteArray(o.Serialize());
 		}
 
 		public OrderPacket(MemoryStream data)
 		{
-			orders = null;
 			this.data = data;
 		}
 
 		public IEnumerable<Order> GetOrders(World world)
 		{
-			return orders ?? ParseData(world);
-		}
-
-		IEnumerable<Order> ParseData(World world)
-		{
-			if (data == null)
+			if (data.Length == 0)
 				yield break;
 
 			// Order deserialization depends on the current world state,
 			// so must be deferred until we are ready to consume them.
+			data.Position = 0;
 			var reader = new BinaryReader(data);
 			while (data.Position < data.Length)
 			{
@@ -54,29 +54,25 @@ namespace OpenRA.Network
 
 		public byte[] Serialize(int frame)
 		{
-			var ms = new MemoryStream();
+			var ms = new MemoryStream((int)data.Length + 4);
 			ms.WriteArray(BitConverter.GetBytes(frame));
-			if (data != null)
-				data.CopyTo(ms);
-			else
-				foreach (var o in orders)
-					ms.WriteArray(o.Serialize());
 
-			return ms.ToArray();
+			data.Position = 0;
+			data.CopyTo(ms);
+
+			return ms.GetBuffer();
 		}
 
 		public static OrderPacket Combine(IEnumerable<OrderPacket> packets)
 		{
-			var orders = new List<Order>();
+			var ms = new MemoryStream();
 			foreach (var packet in packets)
 			{
-				if (packet.orders == null)
-					throw new InvalidOperationException("OrderPacket.Combine can only be used with locally generated OrderPackets.");
-
-				orders.AddRange(packet.orders);
+				packet.data.Position = 0;
+				packet.data.CopyTo(ms);
 			}
 
-			return new OrderPacket(orders.ToArray());
+			return new OrderPacket(ms);
 		}
 	}
 
