@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 				var pilot = self.World.CreateActor(true, Info.PilotActor.ToLowerInvariant(), td);
 
 				if (!inAir)
-					pilot.TraitOrDefault<Mobile>()?.Nudge(pilot);
+					pilot.QueueActivity(false, new Nudge(pilot));
 				else
 					Game.Sound.Play(SoundType.World, Info.ChuteSound, cp);
 			});

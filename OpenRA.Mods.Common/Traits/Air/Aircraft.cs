@@ -283,7 +283,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool ForceLanding { get; private set; }
 
 		(CPos, SubCell)[] landingCells = Array.Empty<(CPos, SubCell)>();
-		bool requireForceMove;
+		public bool RequireForceMove;
 
 		readonly int creationActivityDelay;
 
@@ -354,7 +354,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void RequireForceMoveConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
 		{
-			requireForceMove = Info.RequireForceMoveCondition.Evaluate(conditions);
+			RequireForceMove = Info.RequireForceMoveCondition.Evaluate(conditions);
 		}
 
 		protected override void Created(Actor self)
@@ -586,7 +586,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool AircraftCanEnter(Actor a, TargetModifiers modifiers)
 		{
-			if (requireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove))
+			if (RequireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove))
 				return false;
 
 			return AircraftCanEnter(a);
@@ -1144,28 +1144,13 @@ namespace OpenRA.Mods.Common.Traits
 				self.ShowTargetLines();
 			}
 			else if (orderString == "Scatter")
-				Nudge(self);
+			{
+				self.QueueActivity(order.Queued, new Nudge(self));
+				self.ShowTargetLines();
+			}
 		}
 
 		#endregion
-
-		void Nudge(Actor self)
-		{
-			if (IsTraitDisabled || IsTraitPaused || requireForceMove)
-				return;
-
-			// Disable nudging if the aircraft is outside the map
-			if (!self.World.Map.Contains(self.Location))
-				return;
-
-			var offset = new WVec(0, -self.World.SharedRandom.Next(512, 2048), 0)
-				.Rotate(WRot.FromFacing(self.World.SharedRandom.Next(256)));
-			var target = Target.FromPos(self.CenterPosition + offset);
-
-			self.QueueActivity(false, new Fly(self, target));
-			self.ShowTargetLines();
-			UnReserve();
-		}
 
 		#region Airborne conditions
 
@@ -1295,7 +1280,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public virtual bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
 			{
-				if (target.Type != TargetType.Terrain || (aircraft.requireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove)))
+				if (target.Type != TargetType.Terrain || (aircraft.RequireForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove)))
 					return false;
 
 				var location = self.World.Map.CellContaining(target.CenterPosition);
