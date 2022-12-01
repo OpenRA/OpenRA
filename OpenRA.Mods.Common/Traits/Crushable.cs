@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var mobile = self.TraitOrDefault<Mobile>();
 			if (mobile != null && self.World.SharedRandom.Next(100) <= Info.WarnProbability)
-				mobile.Nudge(crusher);
+				self.QueueActivity(false, new Nudge(crusher));
 		}
 
 		void INotifyCrushed.OnCrush(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)

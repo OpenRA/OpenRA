@@ -367,16 +367,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		#region Local misc stuff
 
-		public void Nudge(Actor nudger)
-		{
-			if (IsTraitDisabled || IsTraitPaused || IsImmovable)
-				return;
-
-			var cell = GetAdjacentCell(nudger.Location);
-			if (cell != null)
-				self.QueueActivity(false, MoveTo(cell.Value, 0));
-		}
-
 		public CPos? GetAdjacentCell(CPos nextCell, Func<CPos, bool> preferToAvoid = null)
 		{
 			var availCells = new List<CPos>();
@@ -873,7 +863,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (self.IsIdle)
 			{
-				Nudge(blocking);
+				self.QueueActivity(false, new Nudge(blocking));
 				return;
 			}
 
@@ -942,7 +932,10 @@ namespace OpenRA.Mods.Common.Traits
 			else if (order.OrderString == "Stop")
 				self.CancelActivity();
 			else if (order.OrderString == "Scatter")
-				Nudge(self);
+			{
+				self.QueueActivity(order.Queued, new Nudge(self));
+				self.ShowTargetLines();
+			}
 		}
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)

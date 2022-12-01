@@ -142,7 +142,8 @@ namespace OpenRA.Mods.Common.Widgets
 					if (highlightOnButtonPress)
 						scatterHighlighted = 2;
 
-					PerformKeyboardOrderOnSelection(a => new Order("Scatter", a, false));
+					var queued = Game.GetModifierKeys().HasModifier(Modifiers.Shift);
+					PerformKeyboardOrderOnSelection(a => new Order("Scatter", a, queued));
 				};
 
 				scatterButton.OnKeyPress = ki => { scatterHighlighted = 2; scatterButton.OnClick(); };
@@ -211,7 +212,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var keyOverrides = widget.GetOrNull<LogicKeyListenerWidget>("MODIFIER_OVERRIDES");
 			if (keyOverrides != null)
 			{
-				var noShiftButtons = new[] { guardButton, deployButton, attackMoveButton };
+				var noShiftButtons = new[] { guardButton, deployButton, scatterButton, attackMoveButton };
 				var keyUpButtons = new[] { guardButton, attackMoveButton };
 				keyOverrides.AddHandler(e =>
 				{
