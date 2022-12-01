@@ -24,8 +24,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		[ActorReference]
 		[FieldLoader.Require]
-		[Desc("Actor types to spawn on sell. Be sure to use lowercase.")]
+		[Desc("Actor types to spawn on sell, amount and type based on ValuePercent. Be sure to use lowercase.")]
 		public readonly string[] ActorTypes = null;
+
+		[ActorReference]
+		[Desc("Actors to spawn on sell. Be sure to use lowercase.")]
+		public readonly string[] GuaranteedActorTypes = null;
 
 		[Desc("Spawns actors only if the selling player's faction is in this list. " +
 			"Leave empty to allow all factions by default.")]
@@ -72,6 +76,42 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var eligibleLocations = buildingInfo.Tiles(self.Location).ToList();
+
+			if (eligibleLocations.Count == 0)
+				return;
+
+			var guaranteedActorTypes = Info.GuaranteedActorTypes?.Select(a =>
+			{
+				var av = self.World.Map.Rules.Actors[a].TraitInfoOrDefault<ValuedInfo>();
+				return new
+				{
+					Name = a,
+					Cost = av?.Cost ?? 0
+				};
+			}).ToList();
+
+			if (guaranteedActorTypes != null)
+			{
+				while (eligibleLocations.Count > 0 && guaranteedActorTypes.Count > 0)
+				{
+					var at = guaranteedActorTypes.Random(self.World.SharedRandom);
+					var loc = eligibleLocations.Random(self.World.SharedRandom);
+
+					eligibleLocations.Remove(loc);
+					guaranteedActorTypes.Remove(at);
+					dudesValue -= at.Cost;
+
+					self.World.AddFrameEndTask(w => w.CreateActor(at.Name, new TypeDictionary
+					{
+						new LocationInit(loc),
+						new OwnerInit(self.Owner),
+					}));
+				}
+			}
+
+			if (eligibleLocations.Count == 0)
+				return;
+
 			var actorTypes = Info.ActorTypes.Select(a =>
 			{
 				var av = self.World.Map.Rules.Actors[a].TraitInfoOrDefault<ValuedInfo>();
