@@ -454,6 +454,7 @@
 		RepairingNotification: Repairing
 	SpawnActorsOnSell:
 		ActorTypes: light_inf
+		GuaranteedActorTypes: light_inf
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	FrozenUnderFog:

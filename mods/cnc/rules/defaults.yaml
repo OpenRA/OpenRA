@@ -744,6 +744,7 @@
 		AreaTypes: building
 	SpawnActorsOnSell:
 		ActorTypes: e6,e1,e1,e1
+		GuaranteedActorTypes: e1
 	EngineerRepairable:
 	Demolishable:
 		Condition: being-demolished

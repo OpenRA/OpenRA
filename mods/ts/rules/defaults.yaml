@@ -379,9 +379,11 @@
 		UseDeathTypeSuffix: false
 	SpawnActorsOnSell@gdi:
 		ActorTypes: e1, e1, e2, medic
+		GuaranteedActorTypes: e1
 		Factions: gdi
 	SpawnActorsOnSell@nod:
 		ActorTypes: e1, e1, e1, e3, e3
+		GuaranteedActorTypes: e1
 		Factions: nod
 	MustBeDestroyed:
 		RequiredForShortGame: true

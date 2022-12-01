@@ -716,6 +716,7 @@
 	CapturableProgressBlink:
 	SpawnActorsOnSell:
 		ActorTypes: e1,e1,e1,tecn,tecn2
+		GuaranteedActorTypes: e1
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	GpsDot:

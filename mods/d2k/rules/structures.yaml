@@ -93,7 +93,8 @@ construction_yard:
 	CustomSellValue:
 		Value: 2000
 	SpawnActorsOnSell:
-		ActorTypes: light_inf, light_inf, engineer
+		ActorTypes: light_inf
+		GuaranteedActorTypes: light_inf, engineer
 	BaseBuilding:
 	ProductionBar:
 		ProductionType: Building
