@@ -31,10 +31,12 @@ namespace OpenRA
 		public readonly IPackageLoader[] PackageLoaders;
 		public readonly ISoundLoader[] SoundLoaders;
 		public readonly ISpriteLoader[] SpriteLoaders;
+		public readonly IModelLoader[] ModelLoaders;
 		public readonly ITerrainLoader TerrainLoader;
 		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
 		public readonly IModelSequenceLoader ModelSequenceLoader;
 		public readonly IVideoLoader[] VideoLoaders;
+		public readonly CustomRenderers CustomRenderers;
 		public readonly HotkeyManager Hotkeys;
 		public readonly Translation Translation;
 		public ILoadScreen LoadScreen { get; }
@@ -47,6 +49,14 @@ namespace OpenRA
 
 		readonly Lazy<IReadOnlyDictionary<string, ITerrainInfo>> defaultTerrainInfo;
 		public IReadOnlyDictionary<string, ITerrainInfo> DefaultTerrainInfo => defaultTerrainInfo.Value;
+
+		public bool CustomRendererFound(string rendererName)
+		{
+			if (CustomRenderers != null)
+				return CustomRenderers.CustRenderers.Any(cr => cr.Value.Name == rendererName);
+
+			return false;
+		}
 
 		public ModData(Manifest mod, InstalledMods mods, bool useLoadScreen = false)
 		{
@@ -73,6 +83,7 @@ namespace OpenRA
 
 			SoundLoaders = ObjectCreator.GetLoaders<ISoundLoader>(Manifest.SoundFormats, "sound");
 			SpriteLoaders = ObjectCreator.GetLoaders<ISpriteLoader>(Manifest.SpriteFormats, "sprite");
+			ModelLoaders = ObjectCreator.GetLoaders<IModelLoader>(Manifest.ModelFormats, "model");
 			VideoLoaders = ObjectCreator.GetLoaders<IVideoLoader>(Manifest.VideoFormats, "video");
 
 			var terrainFormat = Manifest.Get<TerrainFormat>();
@@ -91,14 +102,20 @@ namespace OpenRA
 
 			SpriteSequenceLoader = (ISpriteSequenceLoader)sequenceCtor.Invoke(new[] { this });
 
-			var modelFormat = Manifest.Get<ModelSequenceFormat>();
-			var modelLoader = ObjectCreator.FindType(modelFormat.Type + "Loader");
-			var modelCtor = modelLoader?.GetConstructor(new[] { typeof(ModData) });
-			if (modelLoader == null || !modelLoader.GetInterfaces().Contains(typeof(IModelSequenceLoader)) || modelCtor == null)
-				throw new InvalidOperationException($"Unable to find a model loader for type '{modelFormat.Type}'.");
+			if (Manifest.Contains<CustomRenderers>())
+			{
+				CustomRenderers = Manifest.Get<CustomRenderers>();
+				if (CustomRendererFound("ModelRenderer"))
+				{
+					var modelFormat = Manifest.Get<ModelSequenceFormat>();
+					var modelLoader = ObjectCreator.FindType(modelFormat.Type + "Loader");
+					var modelCtor = modelLoader?.GetConstructor(new[] { typeof(ModData) });
+					if (modelLoader == null || !modelLoader.GetInterfaces().Contains(typeof(IModelSequenceLoader)) || modelCtor == null)
+						throw new InvalidOperationException($"Unable to find a model loader for type '{modelFormat.Type}'.");
 
-			ModelSequenceLoader = (IModelSequenceLoader)modelCtor.Invoke(new[] { this });
-			ModelSequenceLoader.OnMissingModelError = s => Log.Write("debug", s);
+					ModelSequenceLoader = (IModelSequenceLoader)modelCtor.Invoke(new[] { this });
+				}
+			}
 
 			Hotkeys = new HotkeyManager(ModFiles, Game.Settings.Keys, Manifest);
 

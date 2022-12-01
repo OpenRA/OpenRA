@@ -18,9 +18,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class WithVoxelBarrelInfo : ConditionalTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, Requires<ArmamentInfo>, Requires<TurretedInfo>
+	public class WithModelBarrelInfo : ConditionalTraitInfo, IRenderActorPreviewModelsInfo, Requires<RenderModelsInfo>, Requires<ArmamentInfo>, Requires<TurretedInfo>
 	{
-		[Desc("Voxel sequence name to use")]
+		[Desc("Model sequence name to use")]
 		public readonly string Sequence = "barrel";
 
 		[Desc("Armament to use for recoil")]
@@ -32,13 +32,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Rotate the barrel relative to the body")]
 		public readonly WRot LocalOrientation = WRot.None;
 
-		[Desc("Defines if the Voxel should have a shadow.")]
+		[Desc("Defines if the Model should have a shadow.")]
 		public readonly bool ShowShadow = true;
 
-		public override object Create(ActorInitializer init) { return new WithVoxelBarrel(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithModelBarrel(init.Self, this); }
 
-		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
-			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
+		public IEnumerable<ModelAnimation> RenderPreviewModels(
+			ActorPreviewInitializer init, RenderModelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			if (!EnabledByDefault)
 				yield break;
@@ -59,14 +59,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class WithVoxelBarrel : ConditionalTrait<WithVoxelBarrelInfo>
+	public class WithModelBarrel : ConditionalTrait<WithModelBarrelInfo>
 	{
 		readonly Actor self;
 		readonly Armament armament;
 		readonly Turreted turreted;
 		readonly BodyOrientation body;
 
-		public WithVoxelBarrel(Actor self, WithVoxelBarrelInfo info)
+		public WithModelBarrel(Actor self, WithModelBarrelInfo info)
 			: base(info)
 		{
 			this.self = self;
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			turreted = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == armament.Info.Turret);
 
-			var rv = self.Trait<RenderVoxels>();
+			var rv = self.Trait<RenderModels>();
 			rv.Add(new ModelAnimation(self.World.ModelCache.GetModelSequence(rv.Image, Info.Sequence),
 				BarrelOffset, BarrelRotation,
 				() => IsTraitDisabled, () => 0, info.ShowShadow));

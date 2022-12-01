@@ -148,7 +148,7 @@ TTNK:
 		RequireForceMoveCondition: !undeployed
 	GrantCondition@PREVIEWWORKAROUND:
 		Condition: real-actor
-	WithVoxelBody:
+	WithModelBody:
 		RequiresCondition: undeployed
 	WithSpriteBody@deployed:
 		RequiresCondition: !undeployed && real-actor
@@ -163,11 +163,11 @@ TTNK:
 		InitialFacing: 640
 		Offset: -20, -130, 128
 		RealignDelay: -1
-	WithVoxelBarrel:
+	WithModelBarrel:
 		Armament: deployed
 		LocalOffset: 181,0,362
 		RequiresCondition: deployed
-	WithVoxelTurret@deployed:
+	WithModelTurret@deployed:
 		Turret: deployed
 		RequiresCondition: deployed
 	AttackTurreted@deployed:
@@ -200,7 +200,7 @@ TTNK:
 	RenderDetectionCircle:
 	RevealOnFire:
 		ArmamentNames: primary, deployed
-	RenderVoxels:
+	RenderModels:
 		Scale: 11.5
 
 ART2:
@@ -236,7 +236,7 @@ ART2:
 		RequiresCondition: !inside-tunnel
 		Range: 9c0
 		MaxHeightDelta: 3
-	RenderVoxels:
+	RenderModels:
 		LightAmbientColor: 0.4, 0.4, 0.4
 	RenderSprites:
 		Image: art2
@@ -260,7 +260,7 @@ ART2:
 		RequireForceMoveCondition: !undeployed
 	GrantCondition@PREVIEWWORKAROUND:
 		Condition: real-actor
-	WithVoxelBody:
+	WithModelBody:
 		RequiresCondition: undeployed
 	WithSpriteBody@deployed:
 		RequiresCondition: !undeployed && real-actor
@@ -270,12 +270,12 @@ ART2:
 		InitialFacing: 384
 		Offset: 0,0,256
 		RealignDelay: -1
-	WithVoxelBarrel:
+	WithModelBarrel:
 		Armament: deployed
 		LocalOffset: 203,0,0
 		LocalOrientation: 0, 128, 0
 		RequiresCondition: !undeployed
-	WithVoxelTurret@deployed:
+	WithModelTurret@deployed:
 		Turret: deployed
 		RequiresCondition: !undeployed
 	AttackTurreted@deployed:
@@ -376,8 +376,8 @@ WEED:
 		RequiresCondition: !inside-tunnel
 		Range: 4c0
 		MaxHeightDelta: 3
-	-WithVoxelBody:
-	WithVoxelUnloadBody:
+	-WithModelBody:
+	WithModelUnloadBody:
 	-DamagedByTerrain@VEINS:
 	-LeavesTrails@VEINS:
 	WithHarvesterPipsDecoration:
@@ -422,7 +422,7 @@ SAPC:
 		UnloadVoice: Unload
 		LoadingCondition: loading
 		EjectOnDeath: true
-	WithVoxelBody:
+	WithModelBody:
 		RequiresCondition: !submerged
 	Targetable:
 		RequiresCondition: !inside-tunnel && !submerged
@@ -474,7 +474,7 @@ SUBTANK:
 		Voice: Attack
 		PauseOnCondition: empdisable
 		FacingTolerance: 0
-	WithVoxelBody:
+	WithModelBody:
 		RequiresCondition: !submerged
 	Targetable:
 		RequiresCondition: !inside-tunnel && !submerged

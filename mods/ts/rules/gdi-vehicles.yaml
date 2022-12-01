@@ -35,9 +35,9 @@ APC:
 	GrantConditionOnTerrain:
 		Condition: inwater
 		TerrainTypes: Water
-	WithVoxelBody:
+	WithModelBody:
 		RequiresCondition: !inwater
-	WithVoxelBody@water:
+	WithModelBody@water:
 		Sequence: water
 		RequiresCondition: inwater
 	LeavesTrails:
@@ -87,7 +87,7 @@ HVR:
 	AttackTurreted:
 		Voice: Attack
 		PauseOnCondition: empdisable
-	WithVoxelTurret:
+	WithModelTurret:
 	Hovers:
 		RequiresCondition: !empdisable
 		BobDistance: -64
@@ -214,8 +214,11 @@ MMCH:
 		RequiresCondition: rank-elite
 	RenderDetectionCircle:
 	WithMuzzleOverlay:
-	RenderVoxels:
-	WithVoxelBarrel:
+	RenderModels:
+		NormalsPalette: normals
+		ShadowPalette: shadow
+		Scale: 12
+	WithModelBarrel:
 		LocalOffset: 0,51,256
 	Selectable:
 		Bounds: 905, 2534, 0, -482
@@ -262,8 +265,8 @@ HMEC:
 	Armament@RAILGUN:
 		Weapon: MechRailgun
 		LocalOffset: 368,-311,1030, 368,311,1030
-	-WithVoxelBody:
-	WithVoxelWalkerBody:
+	-WithModelBody:
+	WithModelWalkerBody:
 		TickRate: 1
 	Selectable:
 		Bounds: 1206, 2413, 0, -482
@@ -309,7 +312,7 @@ SONIC:
 	Turreted:
 		TurnSpeed: 20
 		Offset: -170,0,0
-	WithVoxelTurret:
+	WithModelTurret:
 	Explodes:
 		RequiresCondition: !rank-elite
 	Explodes@ELITE:
@@ -351,7 +354,10 @@ JUGG:
 		RequiresCondition: !inside-tunnel
 		Range: 9c0
 		MaxHeightDelta: 3
-	RenderVoxels:
+	RenderModels:
+		NormalsPalette: normals
+		ShadowPalette: shadow
+		Scale: 12
 		LightAmbientColor: 0.4, 0.4, 0.4
 	RenderSprites:
 		Image: jugg
@@ -393,7 +399,7 @@ JUGG:
 		InitialFacing: 384
 		Offset: -153,-17,633
 		RealignDelay: -1
-	WithVoxelBarrel:
+	WithModelBarrel:
 		Armament: deployed
 		LocalOffset: 512,0,362
 		LocalOrientation: 0, 128, 0

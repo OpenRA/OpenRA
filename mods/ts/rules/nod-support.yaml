@@ -198,8 +198,11 @@ NALASR:
 	Armament:
 		Weapon: TurretLaserFire
 		LocalOffset: 498,0,317
-	RenderVoxels:
-	WithVoxelTurret:
+	RenderModels:
+		NormalsPalette: normals
+		ShadowPalette: shadow
+		Scale: 12
+	WithModelTurret:
 		RequiresCondition: !build-incomplete
 	Power:
 		Amount: -40

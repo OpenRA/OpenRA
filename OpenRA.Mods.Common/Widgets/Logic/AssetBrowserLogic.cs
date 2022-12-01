@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string currentFilename;
 		IReadOnlyPackage currentPackage;
 		Sprite[] currentSprites;
-		IModel currentVoxel;
+		IModel currentModel;
 		ISound currentSound;
 		ISoundFormat currentSoundFormat;
 		Stream currentAudioStream;
@@ -151,16 +151,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (playerWidget != null)
 				playerWidget.IsVisible = () => isVideoLoaded && !isLoadError;
 
-			var modelWidget = panel.GetOrNull<ModelWidget>("VOXEL");
+			var modelWidget = panel.GetOrNull<ModelWidget>("MODEL");
 			if (modelWidget != null)
 			{
-				modelWidget.GetVoxel = () => currentVoxel;
+				modelWidget.GetModel = () => currentModel;
 				currentPalette = modelWidget.Palette;
 				modelScale = modelWidget.Scale;
 				modelWidget.GetPalette = () => currentPalette;
 				modelWidget.GetPlayerPalette = () => currentPalette;
 				modelWidget.GetRotation = () => modelOrientation;
-				modelWidget.IsVisible = () => !isVideoLoaded && !isLoadError && currentVoxel != null;
+				modelWidget.IsVisible = () => !isVideoLoaded && !isLoadError && currentModel != null;
 				modelWidget.GetScale = () => modelScale;
 			}
 
@@ -173,8 +173,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				paletteDropDown.OnMouseDown = _ => ShowPaletteDropdown(paletteDropDown);
 				paletteDropDown.GetText = () => currentPalette;
-				paletteDropDown.IsVisible = () => currentSprites != null || currentVoxel != null;
-				panel.GetOrNull<LabelWidget>("PALETTE_DESC").IsVisible = () => currentSprites != null || currentVoxel != null;
+				paletteDropDown.IsVisible = () => currentSprites != null || currentModel != null;
+				panel.GetOrNull<LabelWidget>("PALETTE_DESC").IsVisible = () => currentSprites != null || currentModel != null;
 			}
 
 			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
@@ -185,7 +185,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				colorDropdown.IsDisabled = () => !colorPickerPalettes.Contains(currentPalette);
 				colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorManager, worldRenderer);
-				colorDropdown.IsVisible = () => currentSprites != null || currentVoxel != null;
+				colorDropdown.IsVisible = () => currentSprites != null || currentModel != null;
 				panel.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => colorManager.Color;
 			}
 
@@ -339,9 +339,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				panel.GetOrNull<LabelWidget>("SPRITE_SCALE").IsVisible = () => currentSprites != null;
 			}
 
-			var voxelContainer = panel.GetOrNull("VOXEL_SELECTOR");
-			if (voxelContainer != null)
-				voxelContainer.IsVisible = () => currentVoxel != null;
+			var modelContainer = panel.GetOrNull("VOXEL_SELECTOR");
+			if (modelContainer != null)
+				modelContainer.IsVisible = () => currentModel != null;
 
 			var rollSlider = panel.GetOrNull<SliderWidget>("ROLL_SLIDER");
 			if (rollSlider != null)
@@ -384,8 +384,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				modelScaleSlider.OnChange += x => modelScale = x;
 				modelScaleSlider.GetValue = () => modelScale;
-				modelScaleSlider.IsVisible = () => currentVoxel != null;
-				panel.GetOrNull<LabelWidget>("MODEL_SCALE").IsVisible = () => currentVoxel != null;
+				modelScaleSlider.IsVisible = () => currentModel != null;
+				panel.GetOrNull<LabelWidget>("MODEL_SCALE").IsVisible = () => currentModel != null;
 			}
 
 			var assetBrowserModData = modData.Manifest.Get<AssetBrowser>();
@@ -524,12 +524,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						frameSlider.Ticks = currentSprites.Length;
 					}
 
-					currentVoxel = null;
+					currentModel = null;
 				}
 				else if (allowedModelExtensions.Contains(fileExtension))
 				{
-					var voxelName = Path.GetFileNameWithoutExtension(filename);
-					currentVoxel = world.ModelCache.GetModel(voxelName);
+					var modelName = Path.GetFileNameWithoutExtension(filename);
+					currentModel = world.ModelCache.GetModel(modelName);
 					currentSprites = null;
 				}
 				else if (allowedAudioExtensions.Contains(fileExtension))
@@ -714,7 +714,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			currentSprites = null;
 			currentFrame = 0;
 
-			currentVoxel = null;
+			currentModel = null;
 
 			currentSound = null;
 			currentSoundFormat = null;

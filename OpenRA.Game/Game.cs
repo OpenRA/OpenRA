@@ -475,6 +475,7 @@ namespace OpenRA
 
 			ModData.InitializeLoaders(ModData.DefaultFileSystem);
 			Renderer.InitializeFonts(ModData);
+			Renderer.InitializeCustomRenderers(ModData);
 
 			using (new PerfTimer("LoadMaps"))
 				ModData.MapCache.LoadMaps();
@@ -660,10 +661,11 @@ namespace OpenRA
 			{
 				++RenderFrame;
 
-				// Prepare renderables (i.e. render voxels) before calling BeginFrame
+				// Prepare renderables (i.e. render voxels and/or models) before calling BeginFrame
 				using (new PerfSample("render_prepare"))
 				{
-					Renderer.WorldModelRenderer.BeginFrame();
+					foreach (var renderer in Renderer.WorldCustomRenderers)
+						renderer.BeginFrame();
 
 					// World rendering is disabled while the loading screen is displayed
 					if (worldRenderer != null && !worldRenderer.World.IsLoadingGameSave)
@@ -673,7 +675,8 @@ namespace OpenRA
 					}
 
 					Ui.PrepareRenderables();
-					Renderer.WorldModelRenderer.EndFrame();
+					foreach (var renderer in Renderer.WorldCustomRenderers)
+						renderer.EndFrame();
 				}
 
 				// worldRenderer is null during the initial install/download screen

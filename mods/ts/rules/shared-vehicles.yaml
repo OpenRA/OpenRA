@@ -85,8 +85,8 @@ HARV:
 		RequiresCondition: !inside-tunnel
 		Range: 4c0
 		MaxHeightDelta: 3
-	-WithVoxelBody:
-	WithVoxelUnloadBody:
+	-WithModelBody:
+	WithModelUnloadBody:
 	Explodes:
 		RequiresCondition: !no-tiberium
 		Weapon: TiberiumExplosion
@@ -173,7 +173,7 @@ LPST:
 		RequireForceMoveCondition: !undeployed
 	Passenger:
 		RequireForceMoveCondition: !undeployed
-	WithVoxelBody:
+	WithModelBody:
 		RequiresCondition: undeployed
 	WithSpriteBody@deployed:
 		RequiresCondition: !undeployed && real-actor
@@ -191,5 +191,5 @@ LPST:
 		Range: 18c0
 	RenderDetectionCircle:
 		TrailCount: 3
-	RenderVoxels:
+	RenderModels:
 		Scale: 11.5

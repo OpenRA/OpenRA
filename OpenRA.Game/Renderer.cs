@@ -20,6 +20,51 @@ using OpenRA.Support;
 
 namespace OpenRA
 {
+	public interface ICustomRenderer
+	{
+		Sheet AllocateSheet();
+		void BeginFrame();
+		void Dispose();
+		void EndFrame();
+		void SetPalette(ITexture palette);
+		void SetViewportParams();
+	}
+
+	public class CustomRenderer
+	{
+		public readonly string Name;
+		public readonly string ShaderBindings;
+
+		public CustomRenderer(string name, string shaderBindings)
+		{
+			Name = name;
+			ShaderBindings = shaderBindings;
+		}
+	}
+
+	public class CustomRenderers : IGlobalModData
+	{
+		[FieldLoader.LoadUsing(nameof(LoadAttributes))]
+		public readonly Dictionary<string, CustomRenderer> CustRenderers;
+
+		static object LoadAttributes(MiniYaml y)
+		{
+			var custRenderers = new Dictionary<string, CustomRenderer>();
+			foreach (var cr in y.Nodes)
+			{
+				var name = cr.Key;
+				var shaderBindings = cr.Value.Nodes.FirstOrDefault(x => x.Key == "ShaderBindings").Value;
+
+				if (shaderBindings == null)
+					throw new YamlException($"Error parsing Custom Renderer, no ShaderBindings attribute found.");
+
+				custRenderers.Add(cr.Key, new CustomRenderer(name, shaderBindings.Value));
+			}
+
+			return custRenderers;
+		}
+	}
+
 	public sealed class Renderer : IDisposable
 	{
 		enum RenderType { None, World, UI }
@@ -27,7 +72,8 @@ namespace OpenRA
 		public SpriteRenderer WorldSpriteRenderer { get; }
 		public RgbaSpriteRenderer WorldRgbaSpriteRenderer { get; }
 		public RgbaColorRenderer WorldRgbaColorRenderer { get; }
-		public ModelRenderer WorldModelRenderer { get; }
+		public ModelRenderer WorldModelRenderer { get; set; }
+		public List<ICustomRenderer> WorldCustomRenderers { get; } = new List<ICustomRenderer>();
 		public RgbaColorRenderer RgbaColorRenderer { get; }
 		public SpriteRenderer SpriteRenderer { get; }
 		public RgbaSpriteRenderer RgbaSpriteRenderer { get; }
@@ -85,11 +131,10 @@ namespace OpenRA
 			TempBufferSize = graphicSettings.BatchSize;
 			SheetSize = graphicSettings.SheetSize;
 
-			WorldSpriteRenderer = new SpriteRenderer(this, Context.CreateShader("combined"));
+			WorldSpriteRenderer = new SpriteRenderer(this, Context.CreateUnsharedShader<CombinedShaderBindings>());
 			WorldRgbaSpriteRenderer = new RgbaSpriteRenderer(WorldSpriteRenderer);
 			WorldRgbaColorRenderer = new RgbaColorRenderer(WorldSpriteRenderer);
-			WorldModelRenderer = new ModelRenderer(this, Context.CreateShader("model"));
-			SpriteRenderer = new SpriteRenderer(this, Context.CreateShader("combined"));
+			SpriteRenderer = new SpriteRenderer(this, Context.CreateUnsharedShader<CombinedShaderBindings>());
 			RgbaSpriteRenderer = new RgbaSpriteRenderer(SpriteRenderer);
 			RgbaColorRenderer = new RgbaColorRenderer(SpriteRenderer);
 
@@ -136,6 +181,37 @@ namespace OpenRA
 						f.Value.SetScale(newEffective);
 				});
 			};
+		}
+
+		public void InitializeCustomRenderers(ModData modData)
+		{
+			var createShaderMethods = new Dictionary<string, Func<IShader>>()
+				{
+					{ "combined", () => Context.CreateUnsharedShader<CombinedShaderBindings>() },
+					{ "model", () => Context.CreateUnsharedShader<ModelShaderBindings>() },
+				};
+
+			if (modData.CustomRenderers != null)
+			{
+				var customRenderers = modData.CustomRenderers.CustRenderers;
+				foreach (var cr in customRenderers)
+				{
+					var crName = cr.Value.Name;
+					var crShaderBindingName = cr.Value.ShaderBindings;
+
+					var customRendererType = modData.ObjectCreator.FindType(crName);
+					var customRendererCtor = customRendererType?.GetConstructor(new[] { typeof(Renderer), typeof(IShader) });
+
+					if (!createShaderMethods.ContainsKey(crShaderBindingName))
+						throw new YamlException($"Error: Shader Binding {crShaderBindingName} not found when attempting to load Custom Renderer {crName}.");
+
+					var customRenderer = (ICustomRenderer)customRendererCtor.Invoke(new object[] { this, createShaderMethods[crShaderBindingName]() });
+					WorldCustomRenderers.Add(customRenderer);
+
+					if (crName == "ModelRenderer")
+						WorldModelRenderer = (ModelRenderer)customRenderer;
+				}
+			}
 		}
 
 		public void InitializeDepthBuffer(MapGrid mapGrid)
@@ -254,7 +330,8 @@ namespace OpenRA
 			if (lastWorldViewport != worldViewport)
 			{
 				WorldSpriteRenderer.SetViewportParams(worldSheet.Size, worldDownscaleFactor, depthMargin, worldViewport.Location);
-				WorldModelRenderer.SetViewportParams();
+				foreach (var renderer in WorldCustomRenderers)
+					renderer.SetViewportParams();
 
 				lastWorldViewport = worldViewport;
 			}
@@ -303,7 +380,8 @@ namespace OpenRA
 
 			SpriteRenderer.SetPalette(currentPaletteTexture, palette.ColorShifts);
 			WorldSpriteRenderer.SetPalette(currentPaletteTexture, palette.ColorShifts);
-			WorldModelRenderer.SetPalette(currentPaletteTexture);
+			foreach (var renderer in WorldCustomRenderers)
+				renderer.SetPalette(currentPaletteTexture);
 		}
 
 		public void EndFrame(IInputHandler inputHandler)
@@ -327,23 +405,18 @@ namespace OpenRA
 			renderType = RenderType.None;
 		}
 
-		public void DrawBatch(Vertex[] vertices, int numVertices, PrimitiveType type)
+		public void DrawBatch(IShader shader, ref Vertex[] vertices, int numVertices, PrimitiveType type)
 		{
 			tempBuffer.SetData(vertices, numVertices);
-			DrawBatch(tempBuffer, 0, numVertices, type);
+			DrawBatch(shader, tempBuffer, 0, numVertices, type);
 		}
 
-		public void DrawBatch(ref Vertex[] vertices, int numVertices, PrimitiveType type)
-		{
-			tempBuffer.SetData(ref vertices, numVertices);
-			DrawBatch(tempBuffer, 0, numVertices, type);
-		}
-
-		public void DrawBatch<T>(IVertexBuffer<T> vertices,
-			int firstVertex, int numVertices, PrimitiveType type)
-			where T : struct
+		public void DrawBatch(IShader shader, IVertexBuffer vertices, int firstVertex, int numVertices, PrimitiveType type)
 		{
 			vertices.Bind();
+
+			// Future notice: using ARB_vertex_array_object makes all the gl calls in LayoutAttributes obsolete.
+			shader.LayoutAttributes();
 			Context.DrawPrimitives(type, firstVertex, numVertices);
 			PerfHistory.Increment("batches", 1);
 		}
@@ -375,12 +448,9 @@ namespace OpenRA
 			}
 		}
 
-		public IVertexBuffer<T> CreateVertexBuffer<T>(int length) where T : struct
-		{
-			return Context.CreateVertexBuffer<T>(length);
-		}
-
-		public IShader CreateShader(string name) { return Context.CreateShader(name); }
+		public IVertexBuffer<T> CreateVertexBuffer<T>(int length) where T : struct { return Context.CreateVertexBuffer<T>(length); }
+		public IShader GetShader<T>() where T : IShaderBindings { return Context.CreateShader<T>(); }
+		public ITexture CreateTexture() { return Context.CreateTexture(); }
 
 		public void EnableScissor(Rectangle rect)
 		{
@@ -506,7 +576,8 @@ namespace OpenRA
 
 		public void Dispose()
 		{
-			WorldModelRenderer.Dispose();
+			foreach (var renderer in WorldCustomRenderers)
+				renderer.Dispose();
 			tempBuffer.Dispose();
 			fontSheetBuilder?.Dispose();
 			if (Fonts != null)

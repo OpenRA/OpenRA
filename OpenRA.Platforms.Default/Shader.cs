@@ -13,36 +13,21 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using OpenRA.Graphics;
 
 namespace OpenRA.Platforms.Default
 {
 	class Shader : ThreadAffine, IShader
 	{
-		public const int VertexPosAttributeIndex = 0;
-		public const int TexCoordAttributeIndex = 1;
-		public const int TexMetadataAttributeIndex = 2;
-		public const int TintAttributeIndex = 3;
-
 		readonly Dictionary<string, int> samplers = new Dictionary<string, int>();
 		readonly Dictionary<int, int> legacySizeUniforms = new Dictionary<int, int>();
 		readonly Dictionary<int, ITexture> textures = new Dictionary<int, ITexture>();
 		readonly Queue<int> unbindTextures = new Queue<int>();
 		readonly uint program;
+		readonly IShaderBindings bindings;
 
-		protected uint CompileShaderObject(int type, string name)
+		protected uint CompileShaderObject(int type, string code)
 		{
-			Stream stream;
-
-			var ext = type == OpenGL.GL_VERTEX_SHADER ? "vert" : "frag";
-
-			var filename = name + "." + ext;
-			string code;
-
-			if (Game.ModData != null && Game.ModData.DefaultFileSystem.TryOpen(filename, out stream))
-				code = stream.ReadAllText();
-			else
-				code = File.ReadAllText(Path.Combine(Platform.EngineDir, "glsl", filename));
-
 			var version = OpenGL.Profile == GLProfile.Embedded ? "300 es" :
 				OpenGL.Profile == GLProfile.Legacy ? "120" : "140";
 
@@ -68,29 +53,27 @@ namespace OpenRA.Platforms.Default
 				OpenGL.glGetShaderInfoLog(shader, len, out _, log);
 
 				Log.Write("graphics", "GL Info Log:\n{0}", log.ToString());
-				throw new InvalidProgramException($"Compile error in shader object '{filename}'");
+				throw new InvalidProgramException($"Compile error in shader object");
 			}
 
 			return shader;
 		}
 
-		public Shader(string name)
+		public Shader(IShaderBindings bindings)
 		{
-			var vertexShader = CompileShaderObject(OpenGL.GL_VERTEX_SHADER, name);
-			var fragmentShader = CompileShaderObject(OpenGL.GL_FRAGMENT_SHADER, name);
+			this.bindings = bindings;
+			var vertexShader = CompileShaderObject(OpenGL.GL_VERTEX_SHADER, bindings.VertexShaderCode);
+			var fragmentShader = CompileShaderObject(OpenGL.GL_FRAGMENT_SHADER, bindings.FragmentShaderCode);
 
 			// Assemble program
 			program = OpenGL.glCreateProgram();
 			OpenGL.CheckGLError();
 
-			OpenGL.glBindAttribLocation(program, VertexPosAttributeIndex, "aVertexPosition");
-			OpenGL.CheckGLError();
-			OpenGL.glBindAttribLocation(program, TexCoordAttributeIndex, "aVertexTexCoord");
-			OpenGL.CheckGLError();
-			OpenGL.glBindAttribLocation(program, TexMetadataAttributeIndex, "aVertexTexMetadata");
-			OpenGL.CheckGLError();
-			OpenGL.glBindAttribLocation(program, TintAttributeIndex, "aVertexTint");
-			OpenGL.CheckGLError();
+			foreach (var attribute in bindings.Attributes)
+			{
+				OpenGL.glBindAttribLocation(program, attribute.Index, attribute.Name);
+				OpenGL.CheckGLError();
+			}
 
 			if (OpenGL.Profile == GLProfile.Modern)
 			{
@@ -114,7 +97,7 @@ namespace OpenRA.Platforms.Default
 				var log = new StringBuilder(len);
 				OpenGL.glGetProgramInfoLog(program, len, out _, log);
 				Log.Write("graphics", "GL Info Log:\n{0}", log.ToString());
-				throw new InvalidProgramException($"Link error in shader program '{name}'");
+				throw new InvalidProgramException($"Link error in shader program '{bindings.VertexShaderName}' and '{bindings.FragmentShaderName}'");
 			}
 
 			OpenGL.glUseProgram(program);
@@ -152,6 +135,8 @@ namespace OpenRA.Platforms.Default
 				}
 			}
 		}
+
+		public void SetRenderData(ModelRenderData renderData) {	bindings.SetRenderData(this, renderData); }
 
 		public void PrepareRender()
 		{
@@ -283,6 +268,17 @@ namespace OpenRA.Platforms.Default
 			}
 
 			OpenGL.CheckGLError();
+		}
+
+		public void LayoutAttributes()
+		{
+			foreach (var attribute in bindings.Attributes)
+			{
+				OpenGL.glVertexAttribPointer(attribute.Index, attribute.Components, OpenGL.GL_FLOAT, false, bindings.Stride, new IntPtr(attribute.Offset));
+				OpenGL.CheckGLError();
+				OpenGL.glEnableVertexAttribArray(attribute.Index);
+				OpenGL.CheckGLError();
+			}
 		}
 	}
 }

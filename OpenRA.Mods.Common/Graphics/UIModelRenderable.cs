@@ -77,13 +77,14 @@ namespace OpenRA.Mods.Common.Graphics
 		{
 			readonly UIModelRenderable model;
 			readonly ModelRenderProxy renderProxy;
+			static readonly ModelRenderer ModelRenderer = Game.Renderer.WorldModelRenderer;
 
 			public FinalizedUIModelRenderable(WorldRenderer wr, UIModelRenderable model)
 			{
 				this.model = model;
 				var draw = model.models.Where(v => v.IsVisible);
 
-				renderProxy = Game.Renderer.WorldModelRenderer.RenderAsync(
+				renderProxy = ModelRenderer.RenderAsync(
 					wr, draw, model.camera, model.scale, WRot.None, model.lightSource,
 					model.lightAmbientColor, model.lightDiffuseColor,
 					model.palette, model.normalsPalette, model.shadowPalette);

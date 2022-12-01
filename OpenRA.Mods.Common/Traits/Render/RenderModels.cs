@@ -19,13 +19,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public interface IRenderActorPreviewVoxelsInfo : ITraitInfoInterface
+	public interface IRenderActorPreviewModelsInfo : ITraitInfoInterface
 	{
-		IEnumerable<ModelAnimation> RenderPreviewVoxels(
-			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p);
+		IEnumerable<ModelAnimation> RenderPreviewModels(
+			ActorPreviewInitializer init, RenderModelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p);
 	}
 
-	public class RenderVoxelsInfo : TraitInfo, IRenderActorPreviewInfo, Requires<BodyOrientationInfo>
+	public class RenderModelsInfo : TraitInfo, IRenderActorPreviewInfo, Requires<BodyOrientationInfo>
 	{
 		[Desc("Defaults to the actor name.")]
 		public readonly string Image = null;
@@ -39,20 +39,20 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string PlayerPalette = "player";
 
 		[PaletteReference]
-		public readonly string NormalsPalette = "normals";
+		public readonly string NormalsPalette = null;
 
 		[PaletteReference]
-		public readonly string ShadowPalette = "shadow";
+		public readonly string ShadowPalette = null;
 
 		[Desc("Change the image size.")]
-		public readonly float Scale = 12;
+		public readonly float Scale = 1;
 
 		public readonly WAngle LightPitch = WAngle.FromDegrees(50);
 		public readonly WAngle LightYaw = WAngle.FromDegrees(240);
 		public readonly float[] LightAmbientColor = { 0.6f, 0.6f, 0.6f };
 		public readonly float[] LightDiffuseColor = { 0.4f, 0.4f, 0.4f };
 
-		public override object Create(ActorInitializer init) { return new RenderVoxels(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new RenderModels(init.Self, this); }
 
 		public virtual IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
 		{
@@ -66,8 +66,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 				body.QuantizedFacings;
 			var palette = init.WorldRenderer.Palette(Palette ?? PlayerPalette + ownerName);
 
-			var components = init.Actor.TraitInfos<IRenderActorPreviewVoxelsInfo>()
-				.SelectMany(rvpi => rvpi.RenderPreviewVoxels(init, this, image, init.GetOrientation(), facings, palette))
+			var components = init.Actor.TraitInfos<IRenderActorPreviewModelsInfo>()
+				.SelectMany(rvpi => rvpi.RenderPreviewModels(init, this, image, init.GetOrientation(), facings, palette))
 				.ToArray();
 
 			yield return new ModelPreview(components, WVec.Zero, 0, Scale, LightPitch,
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	public class RenderVoxels : IRender, ITick, INotifyOwnerChanged
+	public class RenderModels : IRender, ITick, INotifyOwnerChanged
 	{
 		class AnimationWrapper
 		{
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			}
 		}
 
-		public readonly RenderVoxelsInfo Info;
+		public readonly RenderModelsInfo Info;
 
 		readonly List<ModelAnimation> components = new List<ModelAnimation>();
 		readonly Dictionary<ModelAnimation, AnimationWrapper> wrappers = new Dictionary<ModelAnimation, AnimationWrapper>();
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly WRot camera;
 		readonly WRot lightSource;
 
-		public RenderVoxels(Actor self, RenderVoxelsInfo info)
+		public RenderModels(Actor self, RenderModelsInfo info)
 		{
 			this.self = self;
 			Info = info;

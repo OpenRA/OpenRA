@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<float> GetScale;
 		public Func<int> GetLightPitch;
 		public Func<int> GetLightYaw;
-		public Func<IModel> GetVoxel;
+		public Func<IModel> GetModel;
 		public Func<WRot> GetRotation;
 		public Func<WAngle> GetCameraAngle;
 		public int2 IdealPreviewSize { get; private set; }
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			Palette = other.Palette;
 			GetPalette = other.GetPalette;
-			GetVoxel = other.GetVoxel;
+			GetModel = other.GetModel;
 
 			WorldRenderer = other.WorldRenderer;
 		}
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return new ModelWidget(this);
 		}
 
-		IModel cachedVoxel;
+		IModel cachedModel;
 		string cachedPalette;
 		string cachedPlayerPalette;
 		string cachedNormalsPalette;
@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void PrepareRenderables()
 		{
-			var voxel = GetVoxel();
+			var model = GetModel();
 			var palette = GetPalette();
 			var playerPalette = GetPlayerPalette();
 			var normalsPalette = GetNormalsPalette();
@@ -120,11 +120,11 @@ namespace OpenRA.Mods.Common.Widgets
 			var lightYaw = GetLightYaw();
 			var cameraAngle = GetCameraAngle();
 
-			if (voxel == null || palette == null)
+			if (model == null || palette == null)
 				return;
 
-			if (voxel != cachedVoxel)
-				cachedVoxel = voxel;
+			if (model != cachedModel)
+				cachedModel = model;
 
 			if (palette != cachedPalette)
 			{
@@ -175,11 +175,11 @@ namespace OpenRA.Mods.Common.Widgets
 			if (cameraAngle != cachedCameraAngle)
 				cachedCameraAngle = cameraAngle;
 
-			if (cachedVoxel == null)
+			if (cachedModel == null)
 				return;
 
 			var animation = new ModelAnimation(
-				cachedVoxel,
+				cachedModel,
 				() => WVec.Zero,
 				() => cachedRotation,
 				() => false,

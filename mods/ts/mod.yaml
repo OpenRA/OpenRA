@@ -264,6 +264,8 @@ SupportsMapsFrom: ts
 
 SoundFormats: Aud, Wav
 
+ModelFormats: Voxel
+
 SpriteFormats: ShpTS, TmpTS, ShpTD
 
 VideoFormats: Vqa
@@ -272,7 +274,11 @@ TerrainFormat: DefaultTerrain
 
 SpriteSequenceFormat: TilesetSpecificSpriteSequence
 
-ModelSequenceFormat: VoxelModelSequence
+ModelSequenceFormat: DefaultModelSequence
+
+CustomRenderers:
+	ModelRenderer:
+		ShaderBindings: model
 
 AssetBrowser:
 	SpriteExtensions: .shp, .tem, .sno

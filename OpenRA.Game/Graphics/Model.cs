@@ -16,15 +16,16 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public interface IModel
+	public interface IModel : IDisposable
 	{
 		uint Frames { get; }
 		uint Sections { get; }
 
 		float[] TransformationMatrix(uint section, uint frame);
+		float[] TransformationMatrix(uint section, uint frame, string bone);
 		float[] Size { get; }
 		float[] Bounds(uint frame);
-		ModelRenderData RenderData(uint section);
+		ModelRenderData RenderData(uint section, uint frame);
 
 		/// <summary>Returns the smallest rectangle that covers all rotations of all frames in a model</summary>
 		Rectangle AggregateBounds { get; }
@@ -34,61 +35,28 @@ namespace OpenRA.Graphics
 	{
 		public readonly int Start;
 		public readonly int Count;
-		public readonly Sheet Sheet;
+		public readonly IShader Shader;
+		public readonly IVertexBuffer VertexBuffer;
+		public readonly Dictionary<string, ITexture> Textures;
 
-		public ModelRenderData(int start, int count, Sheet sheet)
+		public ModelRenderData(int start, int count, IShader shader, IVertexBuffer vertexBuffer, Dictionary<string, ITexture> textures)
 		{
 			Start = start;
 			Count = count;
-			Sheet = sheet;
+			Shader = shader;
+			VertexBuffer = vertexBuffer;
+			Textures = textures;
 		}
 	}
 
-	public interface IModelCache : IDisposable
+	public interface IModelLoader
 	{
-		IModel GetModel(string model);
-		IModel GetModelSequence(string model, string sequence);
-		bool HasModelSequence(string model, string sequence);
-		IVertexBuffer<Vertex> VertexBuffer { get; }
+		bool TryLoadModel(IReadOnlyFileSystem fileSystem, string filename, out IModel model);
+		bool TryLoadModel(IReadOnlyFileSystem fileSystem, string filename, MiniYaml yaml, out IModel model);
 	}
 
 	public interface IModelSequenceLoader
 	{
-		Action<string> OnMissingModelError { get; set; }
-		IModelCache CacheModels(IReadOnlyFileSystem fileSystem, ModData modData, IReadOnlyDictionary<string, MiniYamlNode> modelDefinitions);
-	}
-
-	public class PlaceholderModelSequenceLoader : IModelSequenceLoader
-	{
-		public Action<string> OnMissingModelError { get; set; }
-
-		class PlaceholderModelCache : IModelCache
-		{
-			public IVertexBuffer<Vertex> VertexBuffer => throw new NotImplementedException();
-
-			public void Dispose() { }
-
-			public IModel GetModel(string model)
-			{
-				throw new NotImplementedException();
-			}
-
-			public IModel GetModelSequence(string model, string sequence)
-			{
-				throw new NotImplementedException();
-			}
-
-			public bool HasModelSequence(string model, string sequence)
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public PlaceholderModelSequenceLoader(ModData modData) { }
-
-		public IModelCache CacheModels(IReadOnlyFileSystem fileSystem, ModData modData, IReadOnlyDictionary<string, MiniYamlNode> modelDefinitions)
-		{
-			return new PlaceholderModelCache();
-		}
+		ModelCache CacheModels(IModelLoader[] loaders, IReadOnlyFileSystem fileSystem, ModData modData, IReadOnlyDictionary<string, MiniYamlNode> modelDefinitions);
 	}
 }

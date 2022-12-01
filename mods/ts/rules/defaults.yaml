@@ -869,8 +869,11 @@
 ^VoxelActor:
 	BodyOrientation:
 		QuantizedFacings: 0
-	RenderVoxels:
-	WithVoxelBody:
+	RenderModels:
+		NormalsPalette: normals
+		ShadowPalette: shadow
+		Scale: 12
+	WithModelBody:
 
 ^CivilianVoxelVehicle:
 	Inherits: ^Vehicle
@@ -935,8 +938,11 @@
 		Voice: Move
 	Guardable:
 	MustBeDestroyed:
-	RenderVoxels:
-	WithVoxelBody:
+	RenderModels:
+		NormalsPalette: normals
+		ShadowPalette: shadow
+		Scale: 12
+	WithModelBody:
 	RevealOnFire:
 	HitShape:
 	MapEditorData:
@@ -957,9 +963,12 @@
 		RequiresCondition: airborne && empdisable
 
 ^AircraftHusk:
-	RenderVoxels:
+	RenderModels:
+		NormalsPalette: normals
+		ShadowPalette: shadow
+		Scale: 12
 	RenderSprites:
-	WithVoxelBody:
+	WithModelBody:
 	BodyOrientation:
 		QuantizedFacings: 0
 		CameraPitch: 85
@@ -1158,9 +1167,12 @@
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
 	Huntable:
-	RenderVoxels:
+	RenderModels:
+		NormalsPalette: normals
+		ShadowPalette: shadow
+		Scale: 12
 	RenderSprites:
-	WithVoxelBody:
+	WithModelBody:
 	Mobile:
 		TurnSpeed: 20
 		Voice: Move

@@ -125,6 +125,7 @@ namespace OpenRA.Mods.Common.Graphics
 		{
 			readonly ModelRenderable model;
 			readonly ModelRenderProxy renderProxy;
+			static readonly ModelRenderer ModelRenderer = Game.Renderer.WorldModelRenderer;
 
 			public FinalizedModelRenderable(WorldRenderer wr, ModelRenderable model)
 			{
@@ -133,7 +134,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 				var map = wr.World.Map;
 				var groundOrientation = map.TerrainOrientation(map.CellContaining(model.pos));
-				renderProxy = Game.Renderer.WorldModelRenderer.RenderAsync(
+				renderProxy = ModelRenderer.RenderAsync(
 					wr, draw, model.camera, model.scale, groundOrientation, model.lightSource,
 					model.lightAmbientColor, model.lightDiffuseColor,
 					model.palette, model.normalsPalette, model.shadowPalette);

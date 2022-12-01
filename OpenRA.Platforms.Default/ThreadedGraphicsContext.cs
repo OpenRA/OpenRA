@@ -11,8 +11,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Threading;
+using OpenRA.Graphics;
 using OpenRA.Primitives;
 
 namespace OpenRA.Platforms.Default
@@ -44,6 +46,7 @@ namespace OpenRA.Platforms.Default
 		Func<ITexture> getCreateTexture;
 		Func<object, IFrameBuffer> getCreateFrameBuffer;
 		Func<object, IShader> getCreateShader;
+		Func<object, IShader> getCreateUnsharedShader;
 		Func<object, Type, object> getCreateVertexBuffer;
 		Action<object> doDrawPrimitives;
 		Action<object> doEnableScissor;
@@ -91,11 +94,12 @@ namespace OpenRA.Platforms.Default
 							return new ThreadedFrameBuffer(this,
 								context.CreateFrameBuffer(t.Item1, (ITextureInternal)CreateTexture(), t.Item2));
 						};
-					getCreateShader = name => new ThreadedShader(this, context.CreateShader((string)name));
+					getCreateShader = type => new ThreadedShader(this, context.CreateShader((Type)type));
+					getCreateUnsharedShader = type => new ThreadedShader(this, context.CreateUnsharedShader((Type)type));
 					getCreateVertexBuffer = (length, type) =>
 					{
-						var vertexBuffer = context.GetType().GetMethod("CreateVertexBuffer").MakeGenericMethod(type).Invoke(context, new[] { length });
-						return typeof(ThreadedVertexBuffer<>).MakeGenericType(type).GetConstructors()[0].Invoke(null, new[] { this, vertexBuffer });
+						var vertexBuffer = context.GetType().GetMethod(nameof(context.CreateVertexBuffer)).MakeGenericMethod(type).Invoke(context, new[] { length });
+						return Activator.CreateInstance(typeof(ThreadedVertexBuffer<>).MakeGenericType(type), new[] { this, vertexBuffer });
 					};
 					doDrawPrimitives =
 						 tuple =>
@@ -142,11 +146,11 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		internal T[] GetVertices<T>(int size)
+		internal T[] GetVertices<T>(int size) where T : struct
 		{
 			lock (verticesPool)
 				if (size <= BatchSize && verticesPool.Count > 0)
-					return verticesPool.Pop() as T[];
+					return verticesPool.Pop().Cast<T>().ToArray();
 
 			return new T[size < BatchSize ? BatchSize : size];
 		}
@@ -310,7 +314,7 @@ namespace OpenRA.Platforms.Default
 		object RunMessage(Message message)
 		{
 			QueueMessage(message);
-			var result = message.Result();
+			var result = message.Result(); // this is where the issue lies
 			lock (messagePool)
 				messagePool.Push(message);
 			return result;
@@ -424,10 +428,9 @@ namespace OpenRA.Platforms.Default
 			return Send(getCreateFrameBuffer, (s, clearColor));
 		}
 
-		public IShader CreateShader(string name)
-		{
-			return Send(getCreateShader, name);
-		}
+		public IShader CreateShader<T>() where T : IShaderBindings { return Send(getCreateShader, typeof(T)); }
+
+		public IShader CreateUnsharedShader<T>() where T : IShaderBindings { return Send(getCreateUnsharedShader, typeof(T)); }
 
 		public ITexture CreateTexture()
 		{
@@ -439,7 +442,7 @@ namespace OpenRA.Platforms.Default
 			return (IVertexBuffer<T>)Send(getCreateVertexBuffer, length, typeof(T));
 		}
 
-		public T[] CreateVertices<T>(int size)
+		public T[] CreateVertices<T>(int size) where T : struct
 		{
 			return GetVertices<T>(size);
 		}
@@ -550,8 +553,8 @@ namespace OpenRA.Platforms.Default
 			Length = vertexBuffer.Length;
 			this.device = device;
 			bind = vertexBuffer.Bind;
-			setData1 = tuple => { var t = (ValueTuple<T[], int>)tuple; vertexBuffer.SetData(t.Item1, t.Item2); device.ReturnVertices(t.Item1 as object[]); };
-			setData2 = tuple => { var t = (ValueTuple<T[], int, int, int>)tuple; vertexBuffer.SetData(t.Item1, t.Item2, t.Item3, t.Item4); device.ReturnVertices(t.Item1 as object[]); };
+			setData1 = tuple => { var t = (ValueTuple<T[], int>)tuple; vertexBuffer.SetData(t.Item1, t.Item2); device.ReturnVertices(t.Item1.Cast<object>().ToArray()); };
+			setData2 = tuple => { var t = (ValueTuple<T[], int, int, int>)tuple; vertexBuffer.SetData(t.Item1, t.Item2, t.Item3, t.Item4); device.ReturnVertices(t.Item1.Cast<object>().ToArray()); };
 			setData3 = tuple => { setData2(tuple); return null; };
 			dispose = vertexBuffer.Dispose;
 		}
@@ -710,6 +713,8 @@ namespace OpenRA.Platforms.Default
 		readonly Action<object> setVec2;
 		readonly Action<object> setVec3;
 		readonly Action<object> setVec4;
+		readonly Action layoutAttributes;
+		readonly Action<object> setRenderData;
 
 		public ThreadedShader(ThreadedGraphicsContext device, IShader shader)
 		{
@@ -722,6 +727,8 @@ namespace OpenRA.Platforms.Default
 			setVec2 = tuple => { var t = (ValueTuple<string, float[], int>)tuple; shader.SetVec(t.Item1, t.Item2, t.Item3); };
 			setVec3 = tuple => { var t = (ValueTuple<string, float, float>)tuple; shader.SetVec(t.Item1, t.Item2, t.Item3); };
 			setVec4 = tuple => { var t = (ValueTuple<string, float, float, float>)tuple; shader.SetVec(t.Item1, t.Item2, t.Item3, t.Item4); };
+			layoutAttributes = () => shader.LayoutAttributes();
+			setRenderData = tuple => { var t = (ValueTuple<ModelRenderData>)tuple; shader.SetRenderData(t.Item1); };
 		}
 
 		public void PrepareRender()
@@ -762,6 +769,16 @@ namespace OpenRA.Platforms.Default
 		public void SetVec(string name, float x, float y, float z)
 		{
 			device.Post(setVec4, (name, x, y, z));
+		}
+
+		public void LayoutAttributes()
+		{
+			device.Post(layoutAttributes);
+		}
+
+		public void SetRenderData(ModelRenderData renderData)
+		{
+			device.Post(setRenderData, renderData);
 		}
 	}
 }

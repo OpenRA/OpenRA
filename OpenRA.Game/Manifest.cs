@@ -83,6 +83,7 @@ namespace OpenRA
 
 		public readonly string[] SoundFormats = Array.Empty<string>();
 		public readonly string[] SpriteFormats = Array.Empty<string>();
+		public readonly string[] ModelFormats = Array.Empty<string>();
 		public readonly string[] PackageFormats = Array.Empty<string>();
 		public readonly string[] VideoFormats = Array.Empty<string>();
 
@@ -91,7 +92,7 @@ namespace OpenRA
 			"Include", "Metadata", "Folders", "MapFolders", "Packages", "Rules",
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
-			"ServerTraits", "LoadScreen", "DefaultOrderGenerator", "SupportsMapsFrom", "SoundFormats", "SpriteFormats", "VideoFormats",
+			"ServerTraits", "LoadScreen", "DefaultOrderGenerator", "SupportsMapsFrom", "SoundFormats", "SpriteFormats", "ModelFormats", "VideoFormats",
 			"RequiresMods", "PackageFormats"
 		};
 
@@ -173,6 +174,9 @@ namespace OpenRA
 
 			if (yaml.ContainsKey("SpriteFormats"))
 				SpriteFormats = FieldLoader.GetValue<string[]>("SpriteFormats", yaml["SpriteFormats"].Value);
+
+			if (yaml.ContainsKey("ModelFormats"))
+				ModelFormats = FieldLoader.GetValue<string[]>("ModelFormats", yaml["ModelFormats"].Value);
 
 			if (yaml.ContainsKey("VideoFormats"))
 				VideoFormats = FieldLoader.GetValue<string[]>("VideoFormats", yaml["VideoFormats"].Value);

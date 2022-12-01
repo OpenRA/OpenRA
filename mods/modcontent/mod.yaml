@@ -72,4 +72,4 @@ TerrainFormat: DefaultTerrain
 
 SpriteSequenceFormat: DefaultSpriteSequence
 
-ModelSequenceFormat: PlaceholderModelSequence
+ModelSequenceFormat: DefaultModelSequence
