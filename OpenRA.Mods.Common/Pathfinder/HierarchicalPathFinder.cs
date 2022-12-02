@@ -1132,7 +1132,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 					if (maybeAbstractCell == null)
 						throw new Exception(
 							"The abstract path should never be searched for an unreachable point. " +
-							"This is a bug. Failed lookup for an abstract cell.");
+							$"Cell {cell} failed lookup for an abstract cell.");
 				}
 
 				var abstractCell = maybeAbstractCell.Value;
@@ -1145,7 +1145,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 					if (!abstractSearch.ExpandToTarget())
 						throw new Exception(
 							"The abstract path should never be searched for an unreachable point. " +
-							"This is a bug. Failed to route to abstract cell.");
+							$"Abstract cell {abstractCell} failed to route to abstract cell.");
 					info = graph[abstractCell];
 				}
 
