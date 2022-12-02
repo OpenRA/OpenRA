@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	// TODO: remove all the Render*Circle duplication
-	class RenderJammerCircleInfo : TraitInfo, IPlaceBuildingDecorationInfo
+	class RenderJammerCircleInfo : ConditionalTraitInfo, IPlaceBuildingDecorationInfo
 	{
 		[Desc("Range circle color.")]
 		public readonly Color Color = Color.FromArgb(128, Color.Red);
@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
+			if (!EnabledByDefault)
+				yield break;
+
 			var jamsMissiles = ai.TraitInfoOrDefault<JamsMissilesInfo>();
 			if (jamsMissiles != null)
 			{
@@ -56,17 +59,21 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new RenderJammerCircle(this); }
 	}
 
-	class RenderJammerCircle : IRenderAnnotationsWhenSelected
+	class RenderJammerCircle : ConditionalTrait<RenderJammerCircleInfo>, IRenderAnnotationsWhenSelected
 	{
 		readonly RenderJammerCircleInfo info;
 
 		public RenderJammerCircle(RenderJammerCircleInfo info)
+			: base(info)
 		{
 			this.info = info;
 		}
 
 		public IEnumerable<IRenderable> RenderAnnotations(Actor self, WorldRenderer wr)
 		{
+			if (IsTraitDisabled)
+				yield break;
+
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				yield break;
 
