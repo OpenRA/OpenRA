@@ -182,7 +182,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 					return;
 			}
 
-			var estimatedCost = heuristic(location) * heuristicWeightPercentage / 100;
+			var heuristicCost = heuristic(location);
+			if (heuristicCost == PathGraph.PathCostForInvalidPath)
+				return;
+
+			var estimatedCost = heuristicCost * heuristicWeightPercentage / 100;
 			Graph[location] = new CellInfo(CellStatus.Open, initialCost, initialCost + estimatedCost, location);
 			var connection = new GraphConnection(location, estimatedCost);
 			openQueue.Add(connection);
@@ -237,14 +241,22 @@ namespace OpenRA.Mods.Common.Pathfinder
 					(neighborInfo.Status == CellStatus.Open && costSoFarToNeighbor >= neighborInfo.CostSoFar))
 					continue;
 
-				// Now we may seriously consider this direction using heuristics. If the cell has
-				// already been processed, we can reuse the result (just the difference between the
-				// estimated total and the cost so far)
+				// Now we may seriously consider this direction using heuristics.
 				int estimatedRemainingCostToTarget;
 				if (neighborInfo.Status == CellStatus.Open)
+				{
+					// If the cell has already been processed, we can reuse the result
+					// (just the difference between the estimated total and the cost so far)
 					estimatedRemainingCostToTarget = neighborInfo.EstimatedTotalCost - neighborInfo.CostSoFar;
+				}
 				else
-					estimatedRemainingCostToTarget = heuristic(neighbor) * heuristicWeightPercentage / 100;
+				{
+					// If the heuristic reports the cell is unreachable, we won't consider it.
+					var heuristicCost = heuristic(neighbor);
+					if (heuristicCost == PathGraph.PathCostForInvalidPath)
+						continue;
+					estimatedRemainingCostToTarget = heuristicCost * heuristicWeightPercentage / 100;
+				}
 
 				recorder?.Add(currentMinNode, neighbor, costSoFarToNeighbor, estimatedRemainingCostToTarget);
 
