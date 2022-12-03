@@ -69,6 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool Enabled { get; private set; }
 
 		Actor forActor;
+		bool record;
 		CPos[] sourceCells;
 		CPos? targetCell;
 
@@ -106,11 +107,15 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Enabled)
 			{
 				forActor = null;
+				record = false;
 				return;
 			}
 
 			if (!actor.World.Selection.Contains(actor))
+			{
+				record = false;
 				return;
+			}
 
 			abstractEdges1 = null;
 			abstractEdges2 = null;
@@ -119,11 +124,12 @@ namespace OpenRA.Mods.Common.Traits
 			sourceCells = sources.ToArray();
 			targetCell = target;
 			forActor = actor;
+			record = true;
 		}
 
 		public PathSearch.IRecorder RecordAbstractEdges(Actor actor)
 		{
-			if (forActor != actor)
+			if (!record || forActor != actor)
 				return null;
 			if (abstractEdges1 == null)
 				return abstractEdges1 = new Record();
@@ -134,7 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public PathSearch.IRecorder RecordLocalEdges(Actor actor)
 		{
-			if (forActor != actor)
+			if (!record || forActor != actor)
 				return null;
 			if (localEdges1 == null)
 				return localEdges1 = new Record();
