@@ -780,6 +780,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				fullGraph.GetConnections, locomotor, target, target, estimatedSearchSize, pathFinderOverlay?.RecordAbstractEdges(self)))
 			{
 				var sourcesWithPathableNodes = new HashSet<CPos>(sources.Count);
+				List<CPos> unpathableNodes = null;
 				foreach (var (source, adjacentSource) in sourcesWithReachableNodes)
 				{
 					// Check if we have already found a route to this node before we attempt to expand the search.
@@ -788,12 +789,24 @@ namespace OpenRA.Mods.Common.Pathfinder
 					{
 						if (sourceStatus.CostSoFar != PathGraph.PathCostForInvalidPath)
 							sourcesWithPathableNodes.Add(source);
+						else
+						{
+							if (unpathableNodes == null)
+								unpathableNodes = new List<CPos>();
+							unpathableNodes.Add(adjacentSource);
+						}
 					}
 					else
 					{
 						reverseAbstractSearch.TargetPredicate = cell => cell == adjacentSource;
 						if (reverseAbstractSearch.ExpandToTarget())
 							sourcesWithPathableNodes.Add(source);
+						else
+						{
+							if (unpathableNodes == null)
+								unpathableNodes = new List<CPos>();
+							unpathableNodes.Add(adjacentSource);
+						}
 					}
 				}
 
@@ -802,7 +815,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 				using (var fromSrc = GetLocalPathSearch(
 					self, sourcesWithPathableNodes, target, customCost, ignoreActor, check, laneBias, null, heuristicWeightPercentage,
-					heuristic: Heuristic(reverseAbstractSearch, estimatedSearchSize, sourcesWithPathableNodes),
+					heuristic: Heuristic(reverseAbstractSearch, estimatedSearchSize, sourcesWithPathableNodes, unpathableNodes),
 					recorder: pathFinderOverlay?.RecordLocalEdges(self)))
 					return fromSrc.FindPath();
 			}
@@ -852,12 +865,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 			RebuildDirtyGrids();
 
-			// If the target cell in unreachable, there is no path.
+			// If the target cell is unreachable, there is no path.
 			var targetAbstractCell = AbstractCellForLocalCell(target);
 			if (targetAbstractCell == null)
 				return PathFinder.NoPath;
 
-			// If the source cell in unreachable, there may still be a path.
+			// If the source cell is unreachable, there may still be a path.
 			// As long as one of the cells adjacent to the source is reachable, the path can be made.
 			// Call the other overload which can handle this scenario.
 			var sourceAbstractCell = AbstractCellForLocalCell(source);
@@ -886,11 +899,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 					using (var fromSrc = GetLocalPathSearch(
 						self, new[] { source }, target, customCost, ignoreActor, check, laneBias, null, heuristicWeightPercentage,
-						heuristic: Heuristic(reverseAbstractSearch, estimatedSearchSize, null),
+						heuristic: Heuristic(reverseAbstractSearch, estimatedSearchSize, null, null),
 						recorder: pathFinderOverlay?.RecordLocalEdges(self)))
 					using (var fromDest = GetLocalPathSearch(
 						self, new[] { target }, source, customCost, ignoreActor, check, laneBias, null, heuristicWeightPercentage,
-						heuristic: Heuristic(forwardAbstractSearch, estimatedSearchSize, null),
+						heuristic: Heuristic(forwardAbstractSearch, estimatedSearchSize, null, null),
 						recorder: pathFinderOverlay?.RecordLocalEdges(self),
 						inReverse: true))
 						return PathSearch.FindBidiPath(fromDest, fromSrc);
@@ -1096,13 +1109,20 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// (the heuristic) for a local path search. The abstract search must run in the opposite direction to the
 		/// local search. So when searching from source to target, the abstract search must be from target to source.
 		/// </summary>
-		Func<CPos, int> Heuristic(PathSearch abstractSearch, int estimatedSearchSize, HashSet<CPos> sources)
+		Func<CPos, int> Heuristic(PathSearch abstractSearch, int estimatedSearchSize,
+			HashSet<CPos> sources, List<CPos> unpathableNodes)
 		{
 			var nodeForCostLookup = new Dictionary<CPos, CPos>(estimatedSearchSize);
 			var graph = (SparsePathGraph)abstractSearch.Graph;
 			return cell =>
 			{
-				// All cells searched by the heuristic are guaranteed to be reachable.
+				// When dealing with an unreachable source cell, the path search will check adjacent locations.
+				// These cells may be reachable, but may represent jumping into an area cut off from the target.
+				// Searching on the abstract graph would fail to provide a route in this scenario, so bail early.
+				if (unpathableNodes != null && unpathableNodes.Contains(cell))
+					return PathGraph.PathCostForInvalidPath;
+
+				// All other cells searched by the heuristic are guaranteed to be reachable.
 				// So we don't need to handle an abstract cell lookup failing, or the search failing to expand.
 				// Cells added as initial starting points for the search are filtered out if they aren't reachable.
 				// The search only explores accessible cells from then on.
@@ -1112,13 +1132,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 				var maybeAbstractCell = AbstractCellForLocalCellNoAccessibleCheck(cell);
 				if (maybeAbstractCell == null)
 				{
-					// If the source cell in unreachable, use one of the adjacent reachable cells instead.
+					// If the source cell is unreachable, use one of the adjacent reachable cells instead.
 					if (sources != null && sources.Contains(cell))
 					{
 						foreach (var dir in CVec.Directions)
 						{
 							var adjacentSource = cell + dir;
-							if (!world.Map.Contains(adjacentSource))
+							if (!world.Map.Contains(adjacentSource) ||
+								(unpathableNodes != null && unpathableNodes.Contains(adjacentSource)))
 								continue;
 
 							// Ideally we'd choose the cheapest cell rather than just any one of them,
