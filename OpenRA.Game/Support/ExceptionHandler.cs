@@ -32,7 +32,7 @@ namespace OpenRA
 			if (Game.ModData != null)
 			{
 				var mod = Game.ModData.Manifest.Metadata;
-				Log.Write("exception", $"{mod.Title} mod version ${mod.Version}");
+				Log.Write("exception", $"{mod.Title} mod version {mod.Version}");
 			}
 
 			if (Game.OrderManager != null && Game.OrderManager.World != null && Game.OrderManager.World.Map != null)
