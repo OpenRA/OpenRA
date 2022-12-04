@@ -50,6 +50,7 @@ jobs:
       - name: Package AppImages
         run: |
           mkdir -p build/linux
+          sudo apt install libfuse2
           ./packaging/linux/buildpackage.sh "${GIT_TAG}" "${PWD}/build/linux"
 
       - name: Upload Packages
