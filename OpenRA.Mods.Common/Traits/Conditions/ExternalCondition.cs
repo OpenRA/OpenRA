@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ExternalCondition(this); }
 	}
 
-	public class ExternalCondition : ITick, INotifyCreated
+	public class ExternalCondition : ITick, INotifyCreated, INotifyOwnerChanged
 	{
 		readonly struct TimedToken
 		{
@@ -221,6 +221,12 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		bool Notifies(IConditionTimerWatcher watcher) { return watcher.Condition == Info.Condition; }
+
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		{
+			foreach (var pair in self.World.ActorsWithTrait<INotifyProximityOwnerChanged>())
+				pair.Trait.OnProximityOwnerChanged(self, oldOwner, newOwner);
+		}
 
 		void INotifyCreated.Created(Actor self)
 		{
