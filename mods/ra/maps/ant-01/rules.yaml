@@ -80,10 +80,6 @@ SPY:
 	Buildable:
 		Prerequisites: ~disabled
 
-SNIPER:
-	Buildable:
-		Prerequisites: ~disabled
-
 MGG:
 	Buildable:
 		Prerequisites: ~disabled
