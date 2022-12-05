@@ -469,6 +469,7 @@ SUBTANK:
 		MaxHeightDelta: 3
 	Armament:
 		Weapon: FireballLauncher
+		PauseOnCondition: submerged
 	AttackFrontal:
 		Voice: Attack
 		PauseOnCondition: empdisable
