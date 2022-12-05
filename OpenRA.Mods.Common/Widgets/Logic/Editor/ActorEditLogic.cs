@@ -41,6 +41,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly BackgroundWidget actorEditPanel;
 		readonly LabelWidget typeLabel;
 		readonly TextFieldWidget actorIDField;
+		readonly HashSet<TextFieldWidget> typableFields = new HashSet<TextFieldWidget>();
 		readonly LabelWidget actorIDErrorLabel;
 
 		readonly Widget initContainer;
@@ -328,6 +329,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 									if (float.TryParse(valueField.Text, out var result))
 										slider.UpdateValue(result);
 								};
+
+								valueField.OnEscKey = _ => { valueField.YieldKeyboardFocus(); return true; };
+								valueField.OnEnterKey = _ => { valueField.YieldKeyboardFocus(); return true; };
+								typableFields.Add(valueField);
 							}
 
 							initContainer.AddChild(sliderContainer);
@@ -402,6 +407,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void Close()
 		{
 			actorIDField.YieldKeyboardFocus();
+			foreach (var f in typableFields)
+				f.YieldKeyboardFocus();
+
 			editor.DefaultBrush.SelectedActor = null;
 			CurrentActor = null;
 		}
