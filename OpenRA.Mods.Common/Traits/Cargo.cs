@@ -408,29 +408,32 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
-		{
-			if (Info.EjectOnDeath)
-				while (!IsEmpty() && CanUnload(BlockedByActor.All))
+ 		{
+			if (Info.EjectOnDeath && self.IsAtGroundLevel() && (!checkTerrainType || Info.UnloadTerrainTypes.Contains(self.World.Map.GetTerrainInfo(self.Location).Type)))
+			{
+				while (!IsEmpty())
 				{
 					var passenger = Unload(self);
-					var cp = self.CenterPosition;
-					var inAir = self.World.Map.DistanceAboveTerrain(cp).Length != 0;
-					var positionable = passenger.Trait<IPositionable>();
-					positionable.SetPosition(passenger, self.Location);
-
-					if (!inAir && positionable.CanEnterCell(self.Location, self, BlockedByActor.None))
+					self.World.AddFrameEndTask(w =>
 					{
-						self.World.AddFrameEndTask(w => w.Add(passenger));
-						var nbms = passenger.TraitsImplementing<INotifyBlockingMove>();
-						foreach (var nbm in nbms)
-							nbm.OnNotifyBlockingMove(passenger, passenger);
-					}
-					else
-						passenger.Kill(e.Attacker);
-				}
+						var positionable = passenger.Trait<IPositionable>();
+						if (positionable.CanEnterCell(self.Location, self, BlockedByActor.All))
+						{
+							positionable.SetPosition(passenger, self.Location);
+							w.Add(passenger);
 
-			foreach (var c in cargo)
-				c.Kill(e.Attacker);
+							var nbms = passenger.TraitsImplementing<INotifyBlockingMove>();
+							foreach (var nbm in nbms)
+								nbm.OnNotifyBlockingMove(passenger, passenger);
+						}
+						else
+							passenger.Kill(e.Attacker);
+					});
+				}
+			}
+			else
+				foreach (var c in cargo)
+					c.Kill(e.Attacker);
 
 			cargo.Clear();
 		}
