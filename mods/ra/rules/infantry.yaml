@@ -731,62 +731,6 @@ SHOK:
 		Types: Veterancy
 		Prerequisites: barracks.upgraded
 
-SNIPER:
-	Inherits: ^Soldier
-	Valued:
-		Cost: 700
-	Tooltip:
-		Name: Sniper
-	UpdatesPlayerStatistics:
-		AddToArmyValue: true
-	Buildable:
-		Queue: Infantry
-		BuildAtProductionType: Soldier
-		BuildPaletteOrder: 80
-		Prerequisites: ~disabled
-		Description: Elite sniper infantry unit.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
-	Health:
-		HP: 8000
-	Passenger:
-		CustomPipType: red
-	RevealsShroud:
-		Range: 6c0
-	AutoTarget:
-		InitialStance: HoldFire
-		InitialStanceAI: ReturnFire
-	AutoTargetPriority@DEFAULT:
-		ValidTargets: Infantry
-	Armament@PRIMARY:
-		Weapon: Sniper
-	Armament@GARRISONED:
-		Name: garrisoned
-		Weapon: Sniper
-		MuzzleSequence: garrison-muzzle
-	WithInfantryBody:
-		DefaultAttackSequence: shoot
-		RequiresCondition: !parachute
-	WithInfantryBody@PARACHUTE:
-		RequiresCondition: parachute
-		Palette: player-noshadow
-		IsPlayerPalette: true
-	Cloak:
-		InitialDelay: 250
-		CloakDelay: 120
-		CloakSound:
-		UncloakSound:
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
-		IsPlayerPalette: true
-		PauseOnCondition: cloak-force-disabled
-	GrantConditionOnDamageState@UNCLOAK:
-		Condition: cloak-force-disabled
-		ValidDamageStates: Critical
-	-MustBeDestroyed:
-	ProducibleWithLevel:
-		Prerequisites: barracks.upgraded
-	WithProductionIconOverlay:
-		Types: Veterancy
-		Prerequisites: barracks.upgraded
-
 Zombie:
 	Inherits: ^Soldier
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove

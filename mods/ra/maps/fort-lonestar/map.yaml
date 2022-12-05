@@ -465,4 +465,6 @@ Rules: rules.yaml
 
 Weapons: weapons.yaml
 
+Sequences: sequences.yaml
+
 Music: music.yaml

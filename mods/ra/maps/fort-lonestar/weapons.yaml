@@ -174,3 +174,10 @@ SilencedPPK:
 		ValidTargets: Infantry, Vehicle, Husk
 		Versus:
 			Heavy: 50
+
+Sniper:
+	Inherits: ^SnipeWeapon
+	ReloadDelay: 70
+	Range: 10c0
+	Warhead@1Dam: SpreadDamage
+		Damage: 14000
