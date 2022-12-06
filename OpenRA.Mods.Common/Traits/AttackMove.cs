@@ -125,9 +125,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (mi.Button == expectedButton)
 			{
-				world.CancelInputMode();
-
 				var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
+				if (!queued)
+					world.CancelInputMode();
+
 				var orderName = mi.Modifiers.HasModifier(Modifiers.Ctrl) ? "AssaultMove" : "AttackMove";
 
 				// Cells outside the playable area should be clamped to the edge for consistency with move orders
