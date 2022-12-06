@@ -563,10 +563,10 @@
 		AirborneCondition: airborne
 	Targetable@GROUND:
 		RequiresCondition: !airborne
-		TargetTypes: GroundActor, Vehicle
+		TargetTypes: GroundActor, Vehicle, Aircraft # Aircraft only used for warheads, use AirborneActor instead
 	Targetable@AIRBORNE:
 		RequiresCondition: airborne
-		TargetTypes: AirborneActor
+		TargetTypes: AirborneActor, Aircraft # Use Aircraft only used for warheads, use AirborneActor instead
 	Targetable@REPAIR:
 		RequiresCondition: !airborne && damaged
 		TargetTypes: Repair

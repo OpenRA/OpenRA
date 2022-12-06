@@ -17,7 +17,7 @@
 	Warhead@1Dam: SpreadDamage
 		Spread: 128
 		Damage: 5000
-		ValidTargets: GroundActor, WaterActor
+		ValidTargets: GroundActor, WaterActor, Aircraft
 		Versus:
 			None: 10
 			Wood: 74
@@ -42,7 +42,7 @@
 	Inherits: ^AntiGroundMissile
 	ValidTargets: AirborneActor
 	Warhead@1Dam: SpreadDamage
-		ValidTargets: AirborneActor
+		ValidTargets: AirborneActor, Aircraft
 	Warhead@3Eff: CreateEffect
 		ImpactActors: false
 
@@ -123,7 +123,7 @@ MammothTusk:
 		HorizontalRateOfTurn: 60
 		RangeLimit: 9c614
 	Warhead@1Dam: SpreadDamage
-		ValidTargets: AirborneActor, Infantry
+		ValidTargets: AirborneActor, Infantry, Aircraft
 		Spread: 256
 		Damage: 5000
 		Versus:
@@ -202,7 +202,7 @@ StingerAA:
 		Speed: 255
 		CloseEnough: 298
 	Warhead@1Dam: SpreadDamage
-		ValidTargets: AirborneActor
+		ValidTargets: AirborneActor, Aircraft
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion_air
 		ImpactSounds: kaboom25.aud
@@ -309,7 +309,7 @@ SubMissileAA:
 	Inherits: ^SubMissileDefault
 	ValidTargets: AirborneActor
 	Warhead@1Dam: SpreadDamage
-		ValidTargets: AirborneActor
+		ValidTargets: AirborneActor, Aircraft
 		Damage: 1500
 
 SCUD:
