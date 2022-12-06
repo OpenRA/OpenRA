@@ -58,17 +58,32 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		int remainingDuration = 0;
 
-		bool IsProne => !IsTraitDisabled && remainingDuration != 0;
+		bool isProne = false;
+		void SetProneState(bool state)
+		{
+			localOffset = state ? info.ProneOffset : WVec.Zero;
+			isProne = state;
+		}
 
-		bool IRenderInfantrySequenceModifier.IsModifyingSequence => IsProne;
+		bool IRenderInfantrySequenceModifier.IsModifyingSequence => isProne;
 		string IRenderInfantrySequenceModifier.SequencePrefix => info.ProneSequencePrefix;
 
 		public TakeCover(ActorInitializer init, TakeCoverInfo info)
 			: base(init, info)
 		{
 			this.info = info;
-			if (info.Duration < 0 && info.DamageTriggers.IsEmpty)
+		}
+
+		protected override void Created(Actor self)
+		{
+			base.Created(self);
+
+			if (info.DamageTriggers.IsEmpty)
+			{
 				remainingDuration = info.Duration;
+				if (!IsTraitDisabled)
+					SetProneState(true);
+			}
 		}
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
@@ -79,8 +94,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (e.Damage.Value <= 0 || !e.Damage.DamageTypes.Overlaps(info.DamageTriggers))
 				return;
 
-			if (!IsProne)
-				localOffset = info.ProneOffset;
+			if (!isProne)
+				SetProneState(true);
 
 			remainingDuration = info.Duration;
 		}
@@ -89,18 +104,21 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			base.Tick(self);
 
+			if (IsTraitDisabled || info.Duration < 0)
+				return;
+
 			if (!IsTraitPaused && remainingDuration > 0)
 				remainingDuration--;
 
-			if (remainingDuration == 0)
-				localOffset = WVec.Zero;
+			if (isProne && remainingDuration == 0)
+				SetProneState(false);
 		}
 
 		public override bool HasAchievedDesiredFacing => true;
 
 		int IDamageModifier.GetDamageModifier(Actor attacker, Damage damage)
 		{
-			if (!IsProne)
+			if (!isProne)
 				return 100;
 
 			if (damage == null || damage.DamageTypes.IsEmpty)
@@ -112,20 +130,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		int ISpeedModifier.GetSpeedModifier()
 		{
-			return IsProne ? info.SpeedModifier : 100;
+			return isProne ? info.SpeedModifier : 100;
 		}
 
 		protected override void TraitDisabled(Actor self)
 		{
 			remainingDuration = 0;
+			SetProneState(false);
 		}
 
 		protected override void TraitEnabled(Actor self)
 		{
-			if (info.Duration < 0 && info.DamageTriggers.IsEmpty)
+			if (info.DamageTriggers.IsEmpty)
 			{
 				remainingDuration = info.Duration;
-				localOffset = info.ProneOffset;
+				SetProneState(true);
 			}
 		}
 	}
