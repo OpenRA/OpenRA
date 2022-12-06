@@ -114,6 +114,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.Player.ClientIndex) ?? new Session.Client()).Team)
 				.OrderByDescending(g => g.Sum(gg => gg.PlayerStatistics?.Experience ?? 0));
 
+			void KickAction(Session.Client client)
+			{
+				hideMenu(true);
+				ConfirmationDialogs.ButtonPrompt(modData,
+					title: KickTitle,
+					titleArguments: Translation.Arguments("player", client.Name),
+					text: KickPrompt,
+					onConfirm: () =>
+					{
+						orderManager.IssueOrder(Order.Command($"kick {client.Index} {false}"));
+						hideMenu(false);
+					},
+					onCancel: () => hideMenu(false),
+					confirmText: KickAccept);
+			}
+
 			foreach (var t in teams)
 			{
 				if (teams.Count() > 1)
@@ -165,6 +181,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					muteCheckbox.IsVisible = () => !pp.IsBot && client.State != Session.ClientState.Disconnected && pp.ClientIndex != orderManager.LocalClient?.Index;
 					muteCheckbox.GetTooltipText = () => muteCheckbox.IsChecked() ? unmuteTooltip : muteTooltip;
 
+					var kickButton = item.Get<ButtonWidget>("KICK");
+					kickButton.IsVisible = () => Game.IsHost && client.Index != orderManager.LocalClient?.Index && client.State != Session.ClientState.Disconnected && pp.WinState != WinState.Undefined && !pp.IsBot;
+					kickButton.OnClick = () => KickAction(client);
+
 					playerPanel.AddChild(item);
 				}
 			}
@@ -198,21 +218,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					var kickButton = item.Get<ButtonWidget>("KICK");
 					kickButton.IsVisible = () => Game.IsHost && client.Index != orderManager.LocalClient?.Index && client.State != Session.ClientState.Disconnected;
-					kickButton.OnClick = () =>
-					{
-						hideMenu(true);
-						ConfirmationDialogs.ButtonPrompt(modData,
-							title: KickTitle,
-							titleArguments: Translation.Arguments("player", client.Name),
-							text: KickPrompt,
-							onConfirm: () =>
-							{
-								orderManager.IssueOrder(Order.Command($"kick {client.Index} {false}"));
-								hideMenu(false);
-							},
-							onCancel: () => hideMenu(false),
-							confirmText: KickAccept);
-					};
+					kickButton.OnClick = () => KickAction(client);
 
 					var muteCheckbox = item.Get<CheckboxWidget>("MUTE");
 					muteCheckbox.IsChecked = () => TextNotificationsManager.MutedPlayers[client.Index];

@@ -49,6 +49,9 @@ namespace OpenRA.Mods.Common.Server
 		const string KickNone = "notification-kick-none";
 
 		[TranslationReference]
+		const string NoKickSelf = "notification-kick-self";
+
+		[TranslationReference]
 		const string NoKickGameStarted = "notification-no-kick-game-started";
 
 		[TranslationReference("admin", "player")]
@@ -794,7 +797,13 @@ namespace OpenRA.Mods.Common.Server
 				}
 
 				var kickClient = server.GetClient(kickConn);
-				if (server.State == ServerState.GameStarted && !kickClient.IsObserver)
+				if (client == kickClient)
+				{
+					server.SendLocalizedMessageTo(conn, NoKickSelf);
+					return true;
+				}
+
+				if (!server.CanKickClient(kickClient))
 				{
 					server.SendLocalizedMessageTo(conn, NoKickGameStarted);
 					return true;
