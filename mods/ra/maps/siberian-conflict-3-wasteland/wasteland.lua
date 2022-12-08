@@ -44,7 +44,7 @@ Tick = function()
 		USSR.MarkCompletedObjective(SovietObj)
 	end
 
-	if USSR.HasNoRequiredUnits() then
+	if USSR.HasNoRequiredUnits() and BadGuy.HasNoRequiredUnits() then
 		Allies.MarkCompletedObjective(DestroyAll)
 	end
 end
