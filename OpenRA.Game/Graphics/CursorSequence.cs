@@ -31,7 +31,8 @@ namespace OpenRA.Graphics
 			Palette = palette;
 			Name = name;
 
-			Frames = cache[cursorSrc].Skip(Start).ToArray();
+			var cursorSprites = cache[cursorSrc];
+			Frames = cursorSprites.Skip(Start).ToArray();
 
 			if ((d.ContainsKey("Length") && d["Length"].Value == "*") || (d.ContainsKey("End") && d["End"].Value == "*"))
 				Length = Frames.Length;
@@ -43,6 +44,12 @@ namespace OpenRA.Graphics
 				Length = 1;
 
 			Frames = Frames.Take(Length).ToArray();
+
+			if (Start > cursorSprites.Length)
+				throw new YamlException($"Cursor {name}: {nameof(Start)} is greater than the length of the sprite sequence.");
+
+			if (Length > cursorSprites.Length)
+				throw new YamlException($"Cursor {name}: {nameof(Length)} is greater than the length of the sprite sequence.");
 
 			if (d.ContainsKey("X"))
 			{
