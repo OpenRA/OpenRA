@@ -196,6 +196,9 @@ E3:
 		LocalOffset: 0,0,555
 	Armament@GARRISONED:
 		Name: garrisoned
+		Weapon: RedEye
+	Armament@GARRISONEDSECONDARY:
+		Name: garrisoned
 		Weapon: Dragon
 	TakeCover:
 		ProneOffset: 384,0,-395

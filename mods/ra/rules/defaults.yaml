@@ -486,6 +486,9 @@
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Armament:
 		Weapon: Pistol
+	Armament@GARRISONED:
+		Name: garrisoned
+		Weapon: Pistol
 	AttackFrontal:
 		FacingTolerance: 0
 	WithInfantryBody:

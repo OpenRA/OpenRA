@@ -746,6 +746,12 @@ PBOX:
 		Types: Infantry
 		MaxWeight: 1
 		InitialUnits: e1
+		PassengerConditions:
+			e3: RocketSoldier
+	WithRangeCircle@ROCKETSOLDIER:
+		Color: FFFF0080
+		Range: 5c0
+		RequiresCondition: RocketSoldier
 	-SpawnActorsOnSell:
 	AttackGarrisoned:
 		PauseOnCondition: build-incomplete
