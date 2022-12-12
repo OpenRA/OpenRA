@@ -34,6 +34,9 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("True on the 31st of October.")]
 		public bool IsHalloween => DateTime.Today.Month == 10 && DateTime.Today.Day == 31;
 
+		[Desc("True on the month of December.")]
+		public bool IsDecember => DateTime.Today.Month == 12;
+
 		[Desc("Get the current game time (in ticks).")]
 		public int GameTime => Context.World.WorldTick;
 
