@@ -377,11 +377,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				actorEditPanel.Bounds.X = origin.X + editPanelPadding;
 				actorEditPanel.Bounds.Y = origin.Y;
 			}
-			else
+			else if (CurrentActor != null)
 			{
 				// Selected actor is null, hide the border and edit panel.
-				actorIDField.YieldKeyboardFocus();
-				CurrentActor = null;
+				Close();
 			}
 		}
 
