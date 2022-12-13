@@ -19,7 +19,7 @@ Container@CHAT_PANEL:
 				TextNotificationsDisplay@CHAT_DISPLAY:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
-					RemoveTime: 250
+					DisplayDurationMs: 10000
 					BottomSpacing: 3
 		Container@CHAT_CHROME:
 			Width: PARENT_RIGHT

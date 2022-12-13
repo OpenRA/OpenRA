@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class TextNotificationsDisplayWidget : Widget
 	{
-		public readonly int RemoveTime = 0;
+		public readonly int DisplayDurationMs = 0;
 		public readonly int ItemSpacing = 4;
 		public readonly int BottomSpacing = 0;
 		public readonly int LogLength = 8;
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public string TransientsTemplate = "TRANSIENT_LINE_TEMPLATE";
 		readonly Dictionary<TextNotificationPool, Widget> templates = new Dictionary<TextNotificationPool, Widget>();
 
-		readonly List<int> expirations = new List<int>();
+		readonly List<long> expirations = new List<long>();
 
 		Rectangle overflowDrawBounds = Rectangle.Empty;
 		public override Rectangle EventBounds => Rectangle.Empty;
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			AddChild(notificationWidget);
-			expirations.Add(Game.LocalTick + RemoveTime);
+			expirations.Add(Game.RunTime + DisplayDurationMs);
 
 			while (Children.Count > LogLength)
 				RemoveNotification();
@@ -127,11 +127,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Tick()
 		{
-			if (RemoveTime == 0)
+			if (DisplayDurationMs == 0)
 				return;
 
 			// This takes advantage of the fact that recentLines is ordered by expiration, from sooner to later
-			while (Children.Count > 0 && Game.LocalTick >= expirations[0])
+			while (Children.Count > 0 && Game.RunTime >= expirations[0])
 				RemoveNotification();
 		}
 	}

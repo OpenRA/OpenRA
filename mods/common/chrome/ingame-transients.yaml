@@ -8,6 +8,6 @@ Container@TRANSIENTS_PANEL:
 		TextNotificationsDisplay@TRANSIENTS_DISPLAY:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
-			RemoveTime: 100
+			DisplayDurationMs: 4000
 			LogLength: 5
 			HideOverflow: False
