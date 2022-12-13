@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Text notification to display when the player does not have any funds.")]
 		public readonly string InsufficientFundsTextNotification = null;
 
-		[Desc("Delay (in ticks) during which warnings will be muted.")]
+		[Desc("Delay (in milliseconds) during which warnings will be muted.")]
 		public readonly int InsufficientFundsNotificationInterval = 30000;
 
 		[NotificationReference("Sounds")]
