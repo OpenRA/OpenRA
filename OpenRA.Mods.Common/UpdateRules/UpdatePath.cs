@@ -72,9 +72,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveLaysTerrain(),
 			}),
 
-			new UpdatePath("release-20210321", new UpdateRule[]
+			new UpdatePath("release-20210321", "playtest-20221203", new UpdateRule[]
 			{
-				// Bleed only changes here
 				new RenameMPTraits(),
 				new RemovePlayerHighlightPalette(),
 				new ReplaceWithColoredOverlayPalette(),
@@ -97,6 +96,11 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new UnhardcodeBaseBuilderBotModule(),
 				new UnhardcodeVeteranProductionIconOverlay(),
 				new RenameContrailProperties(),
+			}),
+
+			new UpdatePath("playtest-20221203", new UpdateRule[]
+			{
+				new TextNotificationsDisplayWidgetRemoveTime(),
 			})
 		};
 
