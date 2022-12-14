@@ -18,18 +18,22 @@ fi
 MODARG=''
 if [ z"${*#*Game.Mod=}" = z"$*" ]
 then
-	if command -v zenity > /dev/null
-	then
-		TITLE=$(zenity --title='Launch OpenRA' --list --hide-header --text 'Select game mod:' --column 'Game mod' 'Red Alert' 'Tiberian Dawn' 'Dune 2000' 'Tiberian Sun' || echo "cancel")
-		if [ "$TITLE" = "Tiberian Dawn" ]; then MODARG='Game.Mod=cnc'
-		elif [ "$TITLE" = "Dune 2000" ]; then MODARG='Game.Mod=d2k'
-		elif [ "$TITLE" = "Tiberian Sun" ]; then MODARG='Game.Mod=ts'
-		elif [ "$TITLE" = "Red Alert" ]; then MODARG='Game.Mod=ra'
-		else exit 0
-		fi
+	if [ -n "${OPENRA_GAME_MOD}" ]; then
+		MODARG="Game.Mod=${OPENRA_GAME_MOD}"
 	else
-		echo "Please provide the Game.Mod=\$MOD argument (possible \$MOD values: ra, cnc, d2k, ts)"
-		exit 1
+		if command -v zenity > /dev/null
+		then
+			TITLE=$(zenity --title='Launch OpenRA' --list --hide-header --text 'Select game mod:' --column 'Game mod' 'Red Alert' 'Tiberian Dawn' 'Dune 2000' 'Tiberian Sun' || echo "cancel")
+			if [ "$TITLE" = "Tiberian Dawn" ]; then MODARG='Game.Mod=cnc'
+			elif [ "$TITLE" = "Dune 2000" ]; then MODARG='Game.Mod=d2k'
+			elif [ "$TITLE" = "Tiberian Sun" ]; then MODARG='Game.Mod=ts'
+			elif [ "$TITLE" = "Red Alert" ]; then MODARG='Game.Mod=ra'
+			else exit 0
+			fi
+		else
+			echo "Please provide the Game.Mod=\$MOD argument (possible \$MOD values: ra, cnc, d2k, ts)"
+			exit 1
+		fi
 	fi
 fi
 
