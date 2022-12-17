@@ -8,6 +8,13 @@
 
 #import <Cocoa/Cocoa.h>
 #include <dlfcn.h>
+#include <sys/types.h>
+#include <sys/sysctl.h>
+#include <mach/machine.h>
+
+#define SYSTEM_MONO_PATH @"/Library/Frameworks/Mono.framework/Versions/Current/"
+#define SYSTEM_MONO_MIN_VERSION @"6.4"
+#define DOTNET_MIN_MACOS_VERSION 10.15
 
 @interface OpenRALauncher : NSObject <NSApplicationDelegate>
 - (void)launchGameWithArgs: (NSArray *)gameArgs;
@@ -31,8 +38,34 @@ NSTask *gameTask;
 	return @"OpenRA";
 }
 
-- (void)showCrashPrompt
+- (void)exitWithMonoPrompt
 {
+	[NSApp setActivationPolicy: NSApplicationActivationPolicyRegular];
+	[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
+
+	NSString *modName = [self modName];
+	NSString *title = [NSString stringWithFormat: @"Cannot launch %@", modName];
+	NSString *message = [NSString stringWithFormat: @"%@ requires Mono %@ or later. Please install Mono and try again.", modName, SYSTEM_MONO_MIN_VERSION];
+
+	NSAlert *alert = [[NSAlert alloc] init];
+	[alert setMessageText:title];
+	[alert setInformativeText:message];
+	[alert addButtonWithTitle:@"Download Mono"];
+	[alert addButtonWithTitle:@"Quit"];
+	NSInteger answer = [alert runModal];
+	[alert release];
+
+	if (answer == NSAlertFirstButtonReturn)
+		[[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString:@"https://www.mono-project.com/download/"]];
+
+	exit(1);
+}
+
+- (void)exitWithCrashPrompt
+{
+	[NSApp setActivationPolicy: NSApplicationActivationPolicyRegular];
+	[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
+
 	NSString *modName = [self modName];
 	NSString *message = [NSString stringWithFormat: @"%@ has encountered a fatal error and must close.\nPlease refer to the crash logs and FAQ for more information.", modName];
 
@@ -61,6 +94,8 @@ NSTask *gameTask;
 				[[NSWorkspace sharedWorkspace] openURL: [NSURL URLWithString:faqUrl]];
 		}
 	}
+
+	exit(1);
 }
 
 // Application was launched via a URL handler
@@ -120,6 +155,16 @@ NSTask *gameTask;
 	return YES;
 }
 
+- (int)hasValidMono
+{
+	NSTask *task = [[NSTask alloc] init];
+	[task setLaunchPath: [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"Contents/MacOS/checkmono"]];
+	[task launch];
+	[task waitUntilExit];
+
+	return [task terminationStatus] == 0;
+}
+
 - (void)launchGameWithArgs: (NSArray *)gameArgs
 {
 	if (launched)
@@ -129,6 +174,16 @@ NSTask *gameTask;
 	}
 
 	launched = YES;
+
+	BOOL useMono = NO;
+
+	if (@available(macOS 10.15, *))
+		useMono = [[[NSProcessInfo processInfo] environment]objectForKey:@"OPENRA_PREFER_MONO"] != nil;
+	else
+		useMono = YES;
+
+	if (useMono && ![self hasValidMono])
+		[self exitWithMonoPrompt];
 
 	// Default values - can be overriden by setting certain keys Info.plist
 	NSString *modId = nil;
@@ -144,13 +199,44 @@ NSTask *gameTask;
 	NSString *exePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"Contents/MacOS/"];
 	NSString *gamePath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: @"Contents/Resources/"];
 
-	NSString *launchPath = [exePath stringByAppendingPathComponent: @"OpenRA"];
+	NSString *launchPath;
+	NSString *dllPath;
+	NSString *hostPath;
+
+	if (useMono)
+	{
+		launchPath = [exePath stringByAppendingPathComponent: @"apphost-mono"];
+		hostPath = [SYSTEM_MONO_PATH stringByAppendingPathComponent: @"lib/libmonosgen-2.0.dylib"];;
+		dllPath = [exePath stringByAppendingPathComponent: @"mono/OpenRA.dll"];
+	}
+	else
+	{
+		size_t size;
+		cpu_type_t type;
+		size = sizeof(type);
+
+		if (sysctlbyname("hw.cputype", &type, &size, NULL, 0) == 0 && (type & 0xFF) == CPU_TYPE_ARM)
+		{
+			launchPath = [exePath stringByAppendingPathComponent: @"apphost-arm64"];
+			hostPath = [exePath stringByAppendingPathComponent: @"arm64/libhostfxr.dylib"];;
+			dllPath = [exePath stringByAppendingPathComponent: @"arm64/OpenRA.dll"];
+		}
+		else
+		{
+			launchPath = [exePath stringByAppendingPathComponent: @"apphost-x86_64"];
+			hostPath = [exePath stringByAppendingPathComponent: @"x86_64/libhostfxr.dylib"];;
+			dllPath = [exePath stringByAppendingPathComponent: @"x86_64/OpenRA.dll"];
+		}
+	}
+
 	NSString *appPath = [exePath stringByAppendingPathComponent: @"Launcher"];
 	NSString *engineLaunchPath = [self resolveTranslocatedPath: appPath];
 
-	NSMutableArray *launchArgs = [NSMutableArray arrayWithCapacity: [gameArgs count] + 2];
+	NSMutableArray *launchArgs = [NSMutableArray arrayWithCapacity: [gameArgs count] + 5];
+	[launchArgs addObject: hostPath];
+	[launchArgs addObject: dllPath];
 	[launchArgs addObject: [NSString stringWithFormat:@"Engine.LaunchPath=\"%@\"", engineLaunchPath]];
-	[launchArgs addObject: [NSString stringWithFormat:@"Engine.EngineDir=../Resources"]];
+	[launchArgs addObject: [NSString stringWithFormat:@"Engine.EngineDir=../../Resources"]];
 
 	if (modId)
 		[launchArgs addObject: [NSString stringWithFormat:@"Game.Mod=%@", modId]];
@@ -229,21 +315,15 @@ NSTask *gameTask;
 	];
 
 	int ret = [gameTask terminationStatus];
-
 	NSLog(@"launchgame exited with code %d", ret);
 	[gameTask release];
 	gameTask = nil;
 
 	// We're done here
-	if (ret == 0)
-		exit(0);
+	if (ret != 0)
+		[self exitWithCrashPrompt];
 
-	// Make the error dialog visible
-	[NSApp setActivationPolicy: NSApplicationActivationPolicyRegular];
-	[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
-	[self showCrashPrompt];
-
-	exit(1);
+	exit(0);
 }
 
 @end
