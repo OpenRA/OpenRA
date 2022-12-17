@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class SystemInfoPromptLogic : ChromeLogic
 	{
 		// Increment the version number when adding new stats
-		const int SystemInformationVersion = 4;
+		const int SystemInformationVersion = 5;
 
 		static Dictionary<string, (string Label, string Value)> GetSystemInformation()
 		{
@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				{ "id", ("Anonymous ID", Game.Settings.Debug.UUID) },
 				{ "platform", ("OS Type", Platform.CurrentPlatform.ToString()) },
+				{ "arch", ("Architecture", Platform.CurrentArchitecture.ToString()) },
 				{ "os", ("OS Version", Environment.OSVersion.ToString()) },
 				{ "x64", ("OS is 64 bit", Environment.Is64BitOperatingSystem.ToString()) },
 				{ "x64process", ("Process is 64 bit", Environment.Is64BitProcess.ToString()) },

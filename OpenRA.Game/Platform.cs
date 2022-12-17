@@ -13,6 +13,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace OpenRA
 {
@@ -23,6 +24,7 @@ namespace OpenRA
 	public static class Platform
 	{
 		public static PlatformType CurrentPlatform => LazyCurrentPlatform.Value;
+		public static Architecture CurrentArchitecture => RuntimeInformation.ProcessArchitecture;
 		public static readonly Guid SessionGUID = Guid.NewGuid();
 
 		static readonly Lazy<PlatformType> LazyCurrentPlatform = Exts.Lazy(GetCurrentPlatform);

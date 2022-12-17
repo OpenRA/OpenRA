@@ -321,7 +321,7 @@ namespace OpenRA
 			if (!string.IsNullOrEmpty(supportDirArg))
 				Platform.OverrideSupportDir(supportDirArg);
 
-			Console.WriteLine($"Platform is {Platform.CurrentPlatform}");
+			Console.WriteLine($"Platform is {Platform.CurrentPlatform} ({Platform.CurrentArchitecture})");
 
 			// Load the engine version as early as possible so it can be written to exception logs
 			try
