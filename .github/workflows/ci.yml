@@ -3,7 +3,7 @@ name: Continuous Integration
 on:
   push:
   pull_request:
-    branches: [ bleed ]
+    branches: [ bleed, 'prep-*' ]
 
 permissions:
   contents: read  #  to fetch code (actions/checkout)
