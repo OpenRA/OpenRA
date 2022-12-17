@@ -45,9 +45,10 @@ namespace OpenRA.Mods.Common.Orders
 			if (target == null)
 				yield break;
 
-			world.CancelInputMode();
-
 			var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
+			if (!queued)
+				world.CancelInputMode();
+
 			yield return new Order(orderName, null, Target.FromActor(target), queued, null, subjects.Where(s => s != target).ToArray());
 		}
 
