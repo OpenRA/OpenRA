@@ -65,8 +65,8 @@ jobs:
           file_glob: true
           file: build/linux/*
 
-  macos-net:
-    name: macOS .NET
+  macos:
+    name: macOS Disk Image
     runs-on: macos-11
     steps:
       - name: Clone Repository
@@ -89,43 +89,7 @@ jobs:
           MACOS_DEVELOPER_PASSWORD: ${{ secrets.MACOS_DEVELOPER_PASSWORD }}
         run: |
           mkdir -p build/macos
-          ./packaging/macos/buildpackage.sh "${GIT_TAG}" "${PWD}/build/macos" "standard" "build.dmg"
-
-      - name: Upload Package
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref }}
-          overwrite: true
-          file_glob: true
-          file: build/macos/*
-
-  macos-mono:
-    name: macOS Mono
-    runs-on: macos-11
-
-    steps:
-      - name: Clone Repository
-        uses: actions/checkout@v3
-
-      - name: Install .NET 6
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '6.0.x'
-
-      - name: Prepare Environment
-        run: echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
-
-      - name: Package Disk Image
-        env:
-          MACOS_DEVELOPER_IDENTITY: ${{ secrets.MACOS_DEVELOPER_IDENTITY }}
-          MACOS_DEVELOPER_CERTIFICATE_BASE64: ${{ secrets.MACOS_DEVELOPER_CERTIFICATE_BASE64 }}
-          MACOS_DEVELOPER_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_DEVELOPER_CERTIFICATE_PASSWORD }}
-          MACOS_DEVELOPER_USERNAME: ${{ secrets.MACOS_DEVELOPER_USERNAME }}
-          MACOS_DEVELOPER_PASSWORD: ${{ secrets.MACOS_DEVELOPER_PASSWORD }}
-        run: |
-          mkdir -p build/macos
-          ./packaging/macos/buildpackage.sh "${GIT_TAG}" "${PWD}/build/macos" "mono" "build-mono.dmg"
+          ./packaging/macos/buildpackage.sh "${GIT_TAG}" "${PWD}/build/macos"
 
       - name: Upload Package
         uses: svenstaro/upload-release-action@v2
