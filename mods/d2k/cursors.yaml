@@ -113,16 +113,6 @@ Cursors:
 			Length: 8
 			X: 24
 			Y: 24
-		attackoutsiderange:
-			Start: 16
-			Length: 8
-			X: 24
-			Y: 24
-		attackoutsiderange-minimap:
-			Start: 16
-			Length: 8
-			X: 24
-			Y: 24
 		harvest:
 			Start: 16
 			Length: 8
@@ -327,4 +317,15 @@ Cursors:
 		assaultmove-blocked-minimap:
 			Start: 8
 			X: -2
+			Y: -2
+	attackoutsiderange.shp: d2k
+		attackoutsiderange:
+			Start: 0
+			Length: 8
+			X: -1
+			Y: -2
+		attackoutsiderange-minimap:
+			Start: 0
+			Length: 8
+			X: -1
 			Y: -2
