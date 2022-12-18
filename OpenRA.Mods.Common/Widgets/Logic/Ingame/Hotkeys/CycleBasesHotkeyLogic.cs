@@ -41,6 +41,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 
 			var bases = world.ActorsHavingTrait<BaseBuilding>()
 				.Where(a => a.Owner == player)
+				.OrderByDescending(a => a.IsPrimaryBuilding())
+				.ThenBy(a => a.ActorID)
 				.ToList();
 
 			// If no BaseBuilding exist pick the first selectable Building.
