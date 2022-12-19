@@ -448,6 +448,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var harvesters = template.Get<LabelWidget>("HARVESTERS");
 			harvesters.GetText = () => world.ActorsWithTrait<Harvester>().Count(a => a.Actor.Owner == player && !a.Actor.IsDead && !a.Trait.IsTraitDisabled).ToString();
 
+			var carryalls = template.GetOrNull<LabelWidget>("CARRYALLS");
+			if (carryalls != null)
+				carryalls.GetText = () => world.ActorsWithTrait<AutoCarryall>().Count(a => a.Actor.Owner == player && !a.Actor.IsDead).ToString();
+
 			var derricks = template.GetOrNull<LabelWidget>("DERRICKS");
 			if (derricks != null)
 				derricks.GetText = () => world.ActorsHavingTrait<UpdatesDerrickCount>().Count(a => a.Owner == player && !a.IsDead).ToString();
