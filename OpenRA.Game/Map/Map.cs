@@ -243,6 +243,8 @@ namespace OpenRA
 		public CellRegion AllCells { get; private set; }
 		public List<CPos> AllEdgeCells { get; private set; }
 
+		public event Action<CPos> CellProjectionChanged;
+
 		// Internal data
 		readonly ModData modData;
 		CellLayer<short> cachedTerrainIndexes;
@@ -336,11 +338,12 @@ namespace OpenRA
 			Height = new CellLayer<byte>(Grid.Type, size);
 			Ramp = new CellLayer<byte>(Grid.Type, size);
 			Tiles.Clear(terrainInfo.DefaultTerrainTile);
+
 			if (Grid.MaximumTerrainHeight > 0)
 			{
-				Height.CellEntryChanged += UpdateProjection;
-				Tiles.CellEntryChanged += UpdateProjection;
 				Tiles.CellEntryChanged += UpdateRamp;
+				Tiles.CellEntryChanged += UpdateProjection;
+				Height.CellEntryChanged += UpdateProjection;
 			}
 
 			PostInit();
@@ -530,6 +533,7 @@ namespace OpenRA
 				var inverse = inverseCellProjection[uv];
 				inverse.Clear();
 				inverse.Add(uv);
+				CellProjectionChanged?.Invoke(cell);
 				return;
 			}
 
@@ -567,6 +571,8 @@ namespace OpenRA
 					projectedHeight[temp] = height;
 				}
 			}
+
+			CellProjectionChanged?.Invoke(cell);
 		}
 
 		byte ProjectedCellHeightInner(PPos puv)
