@@ -313,7 +313,7 @@ Container@OBSERVER_WIDGETS:
 						Container@ECONOMY_STATS_HEADERS:
 							X: 0
 							Y: 0
-							Width: 640
+							Width: 720
 							Height: PARENT_BOTTOM
 							Children:
 								ColorBlock@HEADER_COLOR:
@@ -382,6 +382,14 @@ Container@OBSERVER_WIDGETS:
 									Height: PARENT_BOTTOM
 									Font: Bold
 									Text: Harvesters
+									Align: Right
+									Shadow: True
+								Label@CARRYALLS_HEADER:
+									X: 635
+									Width: 80
+									Height: PARENT_BOTTOM
+									Font: Bold
+									Text: Carryalls
 									Align: Right
 									Shadow: True
 						Container@PRODUCTION_STATS_HEADERS:
@@ -717,7 +725,7 @@ Container@OBSERVER_WIDGETS:
 						ScrollItem@ECONOMY_PLAYER_TEMPLATE:
 							X: 0
 							Y: 0
-							Width: 640
+							Width: 720
 							Height: 25
 							Background: scrollitem-nohover
 							Children:
@@ -780,6 +788,13 @@ Container@OBSERVER_WIDGETS:
 									Shadow: True
 								Label@HARVESTERS:
 									X: 555
+									Y: 0
+									Width: 80
+									Height: PARENT_BOTTOM
+									Align: Right
+									Shadow: True
+								Label@CARRYALLS:
+									X: 635
 									Y: 0
 									Width: 80
 									Height: PARENT_BOTTOM
