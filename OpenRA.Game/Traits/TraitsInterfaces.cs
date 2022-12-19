@@ -535,9 +535,10 @@ namespace OpenRA.Traits
 		public readonly bool IsLocked;
 		public readonly bool IsVisible;
 		public readonly int DisplayOrder;
+		public readonly string Category;
 
 		public LobbyOption(string id, string name, string description, bool visible, int displayorder,
-			IReadOnlyDictionary<string, string> values, string defaultValue, bool locked)
+			IReadOnlyDictionary<string, string> values, string defaultValue, bool locked, string category)
 		{
 			Id = id;
 			Name = Game.ModData.Translation.GetString(name);
@@ -547,6 +548,7 @@ namespace OpenRA.Traits
 			Values = values;
 			DefaultValue = defaultValue;
 			IsLocked = locked;
+			Category = category;
 		}
 
 		public virtual string Label(string value)
@@ -563,8 +565,8 @@ namespace OpenRA.Traits
 			{ false.ToString(), "Disabled" }
 		};
 
-		public LobbyBooleanOption(string id, string name, string description, bool visible, int displayorder, bool defaultValue, bool locked)
-			: base(id, name, description, visible, displayorder, new ReadOnlyDictionary<string, string>(BoolValues), defaultValue.ToString(), locked) { }
+		public LobbyBooleanOption(string id, string name, string description, bool visible, int displayorder, bool defaultValue, bool locked, string category)
+			: base(id, name, description, visible, displayorder, new ReadOnlyDictionary<string, string>(BoolValues), defaultValue.ToString(), locked, category) { }
 
 		public override string Label(string newValue)
 		{

@@ -39,6 +39,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the short game checkbox in the lobby.")]
 		public readonly int ShortGameCheckboxDisplayOrder = 0;
 
+		[Desc("Options category in which to display the 'Short Game checkbox' in the lobby.")]
+		public readonly string ShortGameCheckboxCategory = null;
+
 		[TranslationReference]
 		[Desc("Descriptive label for the tech level option in the lobby.")]
 		public readonly string TechLevelDropdownLabel = "dropdown-tech-level.label";
@@ -58,6 +61,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Display order for the tech level option in the lobby.")]
 		public readonly int TechLevelDropdownDisplayOrder = 0;
+
+		[Desc("Options category in which to display the 'Tech Level option' in the lobby.")]
+		public readonly string TechLevelDropdownCategory = null;
 
 		[TranslationReference]
 		[Desc("Tooltip description for the game speed option in the lobby.")]
@@ -79,24 +85,27 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the game speed option in the lobby.")]
 		public readonly int GameSpeedDropdownDisplayOrder = 0;
 
+		[Desc("Options category in which to display the 'Game Speed option'> in the lobby.")]
+		public readonly string GameSpeedDropdownCategory = null;
+
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
 			yield return new LobbyBooleanOption("shortgame", ShortGameCheckboxLabel, ShortGameCheckboxDescription,
-				ShortGameCheckboxVisible, ShortGameCheckboxDisplayOrder, ShortGameCheckboxEnabled, ShortGameCheckboxLocked);
+				ShortGameCheckboxVisible, ShortGameCheckboxDisplayOrder, ShortGameCheckboxEnabled, ShortGameCheckboxLocked, ShortGameCheckboxCategory);
 
 			var techLevels = map.PlayerActorInfo.TraitInfos<ProvidesTechPrerequisiteInfo>()
 				.ToDictionary(t => t.Id, t => Game.ModData.Translation.GetString(t.Name));
 
 			if (techLevels.Count > 0)
 				yield return new LobbyOption("techlevel", TechLevelDropdownLabel, TechLevelDropdownDescription,	TechLevelDropdownVisible, TechLevelDropdownDisplayOrder,
-					techLevels, TechLevel, TechLevelDropdownLocked);
+					techLevels, TechLevel, TechLevelDropdownLocked, TechLevelDropdownCategory);
 
 			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
 			var speeds = gameSpeeds.Speeds.ToDictionary(s => s.Key, s => Game.ModData.Translation.GetString(s.Value.Name));
 
 			// NOTE: This is just exposing the UI, the backend logic for this option is hardcoded in World
 			yield return new LobbyOption("gamespeed", GameSpeedDropdownLabel, GameSpeedDropdownDescription, GameSpeedDropdownVisible, GameSpeedDropdownDisplayOrder,
-				speeds, GameSpeed ?? gameSpeeds.DefaultSpeed, GameSpeedDropdownLocked);
+				speeds, GameSpeed ?? gameSpeeds.DefaultSpeed, GameSpeedDropdownLocked, GameSpeedDropdownCategory);
 		}
 
 		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)

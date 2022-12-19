@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -26,6 +27,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ModData modData;
 		readonly ScrollPanelWidget panel;
 		readonly Widget optionsContainer;
+		readonly Widget headlineTemplate;
 		readonly Widget checkboxRowTemplate;
 		readonly Widget dropdownRowTemplate;
 		readonly int yMargin;
@@ -46,6 +48,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			panel = (ScrollPanelWidget)widget;
 			optionsContainer = widget.Get("LOBBY_OPTIONS");
 			yMargin = optionsContainer.Bounds.Y;
+			headlineTemplate = optionsContainer.Get("HEADLINE_TEMPLATE");
 			checkboxRowTemplate = optionsContainer.Get("CHECKBOX_ROW_TEMPLATE");
 			dropdownRowTemplate = optionsContainer.Get("DROPDOWN_ROW_TEMPLATE");
 
@@ -75,6 +78,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			optionsContainer.RemoveChildren();
 			optionsContainer.Bounds.Height = 0;
+
+			var categories = mapPreview.WorldActorInfo.TraitInfos<LobbyOptionCategoryInfo>()
+				.OrderBy(o => o.DisplayOrder)
+				.ToArray();
+
 			var allOptions = mapPreview.PlayerActorInfo.TraitInfos<ILobbyOptions>()
 					.Concat(mapPreview.WorldActorInfo.TraitInfos<ILobbyOptions>())
 					.SelectMany(t => t.LobbyOptions(mapPreview))
@@ -82,92 +90,119 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					.OrderBy(o => o.DisplayOrder)
 					.ToArray();
 
+			RebuildCategory(allOptions.Where(o => o.Category == null || categories.All(c => c.Category != o.Category)).ToArray());
+
+			foreach (var category in categories)
+			{
+				var headline = (LabelWidget)headlineTemplate.Clone();
+				headline.GetText = () => category.Title;
+				headline.Bounds.Y = optionsContainer.Bounds.Height;
+
+				optionsContainer.Bounds.Height += headline.Bounds.Height;
+				optionsContainer.AddChild(headline);
+
+				RebuildCategory(allOptions.Where(o => o.Category == category.Category).ToArray());
+			}
+
+			panel.ContentHeight = yMargin + optionsContainer.Bounds.Height;
+			optionsContainer.Bounds.Y = yMargin;
+
+			if (panel.ContentHeight < panel.Bounds.Height)
+				optionsContainer.Bounds.Y += (panel.Bounds.Height - panel.ContentHeight) / 2;
+
+			panel.ScrollToTop();
+		}
+
+		void RebuildCategory(IEnumerable<LobbyOption> options)
+		{
 			Widget row = null;
 			var checkboxColumns = new Queue<CheckboxWidget>();
 			var dropdownColumns = new Queue<DropDownButtonWidget>();
 
-			foreach (var option in allOptions.Where(o => o is LobbyBooleanOption))
+			foreach (var option in options)
 			{
-				if (checkboxColumns.Count == 0)
+				if (option is LobbyBooleanOption)
 				{
-					row = checkboxRowTemplate.Clone();
-					row.Bounds.Y = optionsContainer.Bounds.Height;
-					optionsContainer.Bounds.Height += row.Bounds.Height;
-					foreach (var child in row.Children)
-						if (child is CheckboxWidget childCheckbox)
-							checkboxColumns.Enqueue(childCheckbox);
-
-					optionsContainer.AddChild(row);
-				}
-
-				var checkbox = checkboxColumns.Dequeue();
-				var optionValue = new CachedTransform<Session.Global, Session.LobbyOptionState>(
-					gs => gs.LobbyOptions[option.Id]);
-
-				checkbox.GetText = () => option.Name;
-				if (option.Description != null)
-					checkbox.GetTooltipText = () => option.Description;
-
-				checkbox.IsVisible = () => true;
-				checkbox.IsChecked = () => optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsEnabled;
-				checkbox.IsDisabled = () => configurationDisabled() || optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsLocked;
-				checkbox.OnClick = () => orderManager.IssueOrder(Order.Command(
-					$"option {option.Id} {!optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsEnabled}"));
-			}
-
-			foreach (var option in allOptions.Where(o => !(o is LobbyBooleanOption)))
-			{
-				if (dropdownColumns.Count == 0)
-				{
-					row = dropdownRowTemplate.Clone() as Widget;
-					row.Bounds.Y = optionsContainer.Bounds.Height;
-					optionsContainer.Bounds.Height += row.Bounds.Height;
-					foreach (var child in row.Children)
-						if (child is DropDownButtonWidget dropDown)
-							dropdownColumns.Enqueue(dropDown);
-
-					optionsContainer.AddChild(row);
-				}
-
-				var dropdown = dropdownColumns.Dequeue();
-				var optionValue = new CachedTransform<Session.Global, Session.LobbyOptionState>(
-					gs => gs.LobbyOptions[option.Id]);
-
-				var getOptionLabel = new CachedTransform<string, string>(id =>
-				{
-					if (id == null || !option.Values.TryGetValue(id, out var value))
-						return modData.Translation.GetString(NotAvailable);
-
-					return value;
-				});
-
-				dropdown.GetText = () => getOptionLabel.Update(optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value);
-				if (option.Description != null)
-					dropdown.GetTooltipText = () => option.Description;
-				dropdown.IsVisible = () => true;
-				dropdown.IsDisabled = () => configurationDisabled() ||
-					optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsLocked;
-
-				dropdown.OnMouseDown = _ =>
-				{
-					Func<KeyValuePair<string, string>, ScrollItemWidget, ScrollItemWidget> setupItem = (c, template) =>
+					if (checkboxColumns.Count == 0)
 					{
-						Func<bool> isSelected = () => optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value == c.Key;
-						Action onClick = () => orderManager.IssueOrder(Order.Command($"option {option.Id} {c.Key}"));
+						row = checkboxRowTemplate.Clone();
+						row.Bounds.Y = optionsContainer.Bounds.Height;
+						optionsContainer.Bounds.Height += row.Bounds.Height;
+						foreach (var child in row.Children)
+							if (child is CheckboxWidget childCheckbox)
+								checkboxColumns.Enqueue(childCheckbox);
 
-						var item = ScrollItemWidget.Setup(template, isSelected, onClick);
-						item.Get<LabelWidget>("LABEL").GetText = () => c.Value;
-						return item;
+						optionsContainer.AddChild(row);
+					}
+
+					var checkbox = checkboxColumns.Dequeue();
+					var optionValue = new CachedTransform<Session.Global, Session.LobbyOptionState>(
+						gs => gs.LobbyOptions[option.Id]);
+
+					checkbox.GetText = () => option.Name;
+					if (option.Description != null)
+						checkbox.GetTooltipText = () => option.Description;
+
+					checkbox.IsVisible = () => true;
+					checkbox.IsChecked = () => optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsEnabled;
+					checkbox.IsDisabled = () => configurationDisabled() || optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsLocked;
+					checkbox.OnClick = () => orderManager.IssueOrder(Order.Command(
+						$"option {option.Id} {!optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsEnabled}"));
+				}
+				else
+				{
+					if (dropdownColumns.Count == 0)
+					{
+						row = dropdownRowTemplate.Clone() as Widget;
+						row.Bounds.Y = optionsContainer.Bounds.Height;
+						optionsContainer.Bounds.Height += row.Bounds.Height;
+						foreach (var child in row.Children)
+							if (child is DropDownButtonWidget dropDown)
+								dropdownColumns.Enqueue(dropDown);
+
+						optionsContainer.AddChild(row);
+					}
+
+					var dropdown = dropdownColumns.Dequeue();
+					var optionValue = new CachedTransform<Session.Global, Session.LobbyOptionState>(
+						gs => gs.LobbyOptions[option.Id]);
+
+					var getOptionLabel = new CachedTransform<string, string>(id =>
+					{
+						if (id == null || !option.Values.TryGetValue(id, out var value))
+							return modData.Translation.GetString(NotAvailable);
+
+						return value;
+					});
+
+					dropdown.GetText = () => getOptionLabel.Update(optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value);
+					if (option.Description != null)
+						dropdown.GetTooltipText = () => option.Description;
+					dropdown.IsVisible = () => true;
+					dropdown.IsDisabled = () => configurationDisabled() ||
+						optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsLocked;
+
+					dropdown.OnMouseDown = _ =>
+					{
+						Func<KeyValuePair<string, string>, ScrollItemWidget, ScrollItemWidget> setupItem = (c, template) =>
+						{
+							Func<bool> isSelected = () => optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value == c.Key;
+							Action onClick = () => orderManager.IssueOrder(Order.Command($"option {option.Id} {c.Key}"));
+
+							var item = ScrollItemWidget.Setup(template, isSelected, onClick);
+							item.Get<LabelWidget>("LABEL").GetText = () => c.Value;
+							return item;
+						};
+
+						dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", option.Values.Count * 30, option.Values, setupItem);
 					};
 
-					dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", option.Values.Count * 30, option.Values, setupItem);
-				};
-
-				var label = row.GetOrNull<LabelWidget>(dropdown.Id + "_DESC");
-				if (label != null)
-				{
-					label.GetText = () => option.Name + ":";
-					label.IsVisible = () => true;
+					var label = row.GetOrNull<LabelWidget>(dropdown.Id + "_DESC");
+					if (label != null)
+					{
+						label.GetText = () => option.Name + ":";
+						label.IsVisible = () => true;
+					}
 				}
 			}
 

@@ -38,6 +38,9 @@ namespace OpenRA.Traits
 		[Desc("Display order for the fog checkbox in the lobby.")]
 		public readonly int FogCheckboxDisplayOrder = 0;
 
+		[Desc("Options category in which to display the 'fog checkbox' in the lobby.")]
+		public readonly string FogCheckboxCategory = null;
+
 		[TranslationReference]
 		[Desc("Descriptive label for the explored map checkbox in the lobby.")]
 		public readonly string ExploredMapCheckboxLabel = "checkbox-explored-map.label";
@@ -58,14 +61,17 @@ namespace OpenRA.Traits
 		[Desc("Display order for the explore map checkbox in the lobby.")]
 		public readonly int ExploredMapCheckboxDisplayOrder = 0;
 
+		[Desc("Options category in which to display the 'explored map checkbox' in the lobby.")]
+		public readonly string ExploredMapCheckboxCategory = null;
+
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
 			yield return new LobbyBooleanOption("explored", Game.ModData.Translation.GetString(ExploredMapCheckboxLabel),
 				Game.ModData.Translation.GetString(ExploredMapCheckboxDescription),
-				ExploredMapCheckboxVisible, ExploredMapCheckboxDisplayOrder, ExploredMapCheckboxEnabled, ExploredMapCheckboxLocked);
+				ExploredMapCheckboxVisible, ExploredMapCheckboxDisplayOrder, ExploredMapCheckboxEnabled, ExploredMapCheckboxLocked, ExploredMapCheckboxCategory);
 			yield return new LobbyBooleanOption("fog", Game.ModData.Translation.GetString(FogCheckboxLabel),
 				Game.ModData.Translation.GetString(FogCheckboxDescription),
-				FogCheckboxVisible, FogCheckboxDisplayOrder, FogCheckboxEnabled, FogCheckboxLocked);
+				FogCheckboxVisible, FogCheckboxDisplayOrder, FogCheckboxEnabled, FogCheckboxLocked, FogCheckboxCategory);
 		}
 
 		public override object Create(ActorInitializer init) { return new Shroud(init.Self, this); }

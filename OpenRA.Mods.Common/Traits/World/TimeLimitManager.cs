@@ -55,6 +55,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the time limit dropdown in the lobby.")]
 		public readonly int TimeLimitDisplayOrder = 0;
 
+		[Desc("Options category in which to display the 'Time Limit option' in the lobby.")]
+		public readonly string TimeLimitCategory = null;
+
 		[Desc("Notification text for time limit warnings. The string '{0}' will be replaced by the remaining time in minutes, '{1}' is used for the plural form.")]
 		public readonly string Notification = "{0} minute{1} remaining.";
 
@@ -93,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 			});
 
 			yield return new LobbyOption("timelimit", TimeLimitLabel, TimeLimitDescription, TimeLimitDropdownVisible, TimeLimitDisplayOrder,
-				timelimits, TimeLimitDefault.ToString(), TimeLimitLocked);
+				timelimits, TimeLimitDefault.ToString(), TimeLimitLocked, TimeLimitCategory);
 		}
 
 		public override object Create(ActorInitializer init) { return new TimeLimitManager(init.Self, this); }

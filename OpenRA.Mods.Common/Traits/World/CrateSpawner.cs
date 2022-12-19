@@ -41,6 +41,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the crates checkbox in the lobby.")]
 		public readonly int CheckboxDisplayOrder = 0;
 
+		[Desc("Options category in which to display the 'Crates checkbox' in the lobby.")]
+		public readonly string CheckboxCategory = null;
+
 		[Desc("Minimum number of crates.")]
 		public readonly int Minimum = 1;
 
@@ -81,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
-			yield return new LobbyBooleanOption("crates", CheckboxLabel, CheckboxDescription, CheckboxVisible, CheckboxDisplayOrder, CheckboxEnabled, CheckboxLocked);
+			yield return new LobbyBooleanOption("crates", CheckboxLabel, CheckboxDescription, CheckboxVisible, CheckboxDisplayOrder, CheckboxEnabled, CheckboxLocked, CheckboxCategory);
 		}
 
 		public override object Create(ActorInitializer init) { return new CrateSpawner(init.Self, this); }

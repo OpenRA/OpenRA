@@ -41,6 +41,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the starting units option in the lobby.")]
 		public readonly int DropdownDisplayOrder = 0;
 
+		[Desc("Options category in which to display the 'Starting Units option' in the lobby.")]
+		public readonly string DropdownCategory = null;
+
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
 			var startingUnits = new Dictionary<string, string>();
@@ -51,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (startingUnits.Count > 0)
 				yield return new LobbyOption("startingunits", DropdownLabel, DropdownDescription, DropdownVisible, DropdownDisplayOrder,
-					startingUnits, StartingUnitsClass, DropdownLocked);
+					startingUnits, StartingUnitsClass, DropdownLocked, DropdownCategory);
 		}
 
 		public override object Create(ActorInitializer init) { return new SpawnStartingUnits(this); }

@@ -18,6 +18,11 @@ Container@LOBBY_OPTIONS_BIN:
 					Y: 10
 					Width: PARENT_RIGHT - 24
 					Children:
+						Label@HEADLINE_TEMPLATE:
+							Width: PARENT_RIGHT
+							Height: 30
+							Font: Bold
+							Align: Center
 						Container@CHECKBOX_ROW_TEMPLATE:
 							Width: PARENT_RIGHT
 							Height: 30
