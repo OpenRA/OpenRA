@@ -49,6 +49,6 @@
 	<key>NSRequiresAquaSystemAppearance</key>
 	<false/>
 	<key>NSPrefersDisplaySafeAreaCompatibilityMode</key>
-	<true/>
+	<false/>
 </dict>
 </plist>
