@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		// Equivalent to OnMouseUp, but without an input arg
 		public Action OnClick = () => { };
-		public Action OnDoubleClick = () => { };
+		public Action OnDoubleClick = null;
 		public Action<KeyInput> OnKeyPress = _ => { };
 
 		public string Cursor = ChromeMetrics.Get<string>("ButtonCursor");
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return false;
 
 			var disabled = IsDisabled();
-			if (HasMouseFocus && mi.Event == MouseInputEvent.Up && mi.MultiTapCount == 2)
+			if (HasMouseFocus && mi.Event == MouseInputEvent.Up && mi.MultiTapCount == 2 && OnDoubleClick != null)
 			{
 				if (!disabled)
 				{
