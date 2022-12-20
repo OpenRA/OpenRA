@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -25,41 +26,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var visibilityCheckbox = widget.GetOrNull<CheckboxWidget>("DISABLE_VISIBILITY_CHECKS");
 			if (visibilityCheckbox != null)
-			{
-				visibilityCheckbox.IsChecked = () => devTrait.DisableShroud;
-				visibilityCheckbox.OnClick = () => Order(world, "DevVisibility");
-			}
+				BindOrderCheckbox(visibilityCheckbox, world, "DevVisibility", () => devTrait.DisableShroud);
 
 			var pathCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_UNIT_PATHS");
 			if (pathCheckbox != null)
-			{
-				pathCheckbox.IsChecked = () => devTrait.PathDebug;
-				pathCheckbox.OnClick = () => Order(world, "DevPathDebug");
-			}
+				BindOrderCheckbox(pathCheckbox, world, "DevPathDebug", () => devTrait.PathDebug);
 
 			var cashButton = widget.GetOrNull<ButtonWidget>("GIVE_CASH");
 			if (cashButton != null)
-				cashButton.OnClick = () =>
-				world.IssueOrder(new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false));
+				cashButton.OnClick = () => IssueOrder(world, "DevGiveCash");
 
 			var growResourcesButton = widget.GetOrNull<ButtonWidget>("GROW_RESOURCES");
 			if (growResourcesButton != null)
-				growResourcesButton.OnClick = () =>
-				world.IssueOrder(new Order("DevGrowResources", world.LocalPlayer.PlayerActor, false));
+				growResourcesButton.OnClick = () => IssueOrder(world, "DevGrowResources");
 
 			var fastBuildCheckbox = widget.GetOrNull<CheckboxWidget>("INSTANT_BUILD");
 			if (fastBuildCheckbox != null)
-			{
-				fastBuildCheckbox.IsChecked = () => devTrait.FastBuild;
-				fastBuildCheckbox.OnClick = () => Order(world, "DevFastBuild");
-			}
+				BindOrderCheckbox(fastBuildCheckbox, world, "DevFastBuild", () => devTrait.FastBuild);
 
 			var fastChargeCheckbox = widget.GetOrNull<CheckboxWidget>("INSTANT_CHARGE");
 			if (fastChargeCheckbox != null)
-			{
-				fastChargeCheckbox.IsChecked = () => devTrait.FastCharge;
-				fastChargeCheckbox.OnClick = () => Order(world, "DevFastCharge");
-			}
+				BindOrderCheckbox(fastChargeCheckbox, world, "DevFastCharge", () => devTrait.FastCharge);
 
 			var showCombatCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_COMBATOVERLAY");
 			if (showCombatCheckbox != null)
@@ -103,34 +90,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var allTechCheckbox = widget.GetOrNull<CheckboxWidget>("ENABLE_TECH");
 			if (allTechCheckbox != null)
-			{
-				allTechCheckbox.IsChecked = () => devTrait.AllTech;
-				allTechCheckbox.OnClick = () => Order(world, "DevEnableTech");
-			}
+				BindOrderCheckbox(allTechCheckbox, world, "DevEnableTech", () => devTrait.AllTech);
 
 			var powerCheckbox = widget.GetOrNull<CheckboxWidget>("UNLIMITED_POWER");
 			if (powerCheckbox != null)
-			{
-				powerCheckbox.IsChecked = () => devTrait.UnlimitedPower;
-				powerCheckbox.OnClick = () => Order(world, "DevUnlimitedPower");
-			}
+				BindOrderCheckbox(powerCheckbox, world, "DevUnlimitedPower", () => devTrait.UnlimitedPower);
 
 			var buildAnywhereCheckbox = widget.GetOrNull<CheckboxWidget>("BUILD_ANYWHERE");
 			if (buildAnywhereCheckbox != null)
-			{
-				buildAnywhereCheckbox.IsChecked = () => devTrait.BuildAnywhere;
-				buildAnywhereCheckbox.OnClick = () => Order(world, "DevBuildAnywhere");
-			}
+				BindOrderCheckbox(buildAnywhereCheckbox, world, "DevBuildAnywhere", () => devTrait.BuildAnywhere);
 
 			var explorationButton = widget.GetOrNull<ButtonWidget>("GIVE_EXPLORATION");
 			if (explorationButton != null)
-				explorationButton.OnClick = () =>
-				world.IssueOrder(new Order("DevGiveExploration", world.LocalPlayer.PlayerActor, false));
+				explorationButton.OnClick = () => IssueOrder(world, "DevGiveExploration");
 
 			var noexplorationButton = widget.GetOrNull<ButtonWidget>("RESET_EXPLORATION");
 			if (noexplorationButton != null)
-				noexplorationButton.OnClick = () =>
-				world.IssueOrder(new Order("DevResetExploration", world.LocalPlayer.PlayerActor, false));
+				noexplorationButton.OnClick = () => IssueOrder(world, "DevResetExploration");
 
 			var showActorTagsCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_ACTOR_TAGS");
 			if (showActorTagsCheckbox != null)
@@ -153,7 +129,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		public static void Order(World world, string order)
+		static void BindOrderCheckbox(CheckboxWidget checkbox, World world, string order, Func<bool> getValue)
+		{
+			var isChecked = new PredictedCachedTransform<bool, bool>(state => state);
+			checkbox.IsChecked = () => isChecked.Update(getValue());
+			checkbox.OnClick = () =>
+			{
+				isChecked.Predict(!getValue());
+				IssueOrder(world, order);
+			};
+		}
+
+		public static void IssueOrder(World world, string order)
 		{
 			world.IssueOrder(new Order(order, world.LocalPlayer.PlayerActor, false));
 		}
