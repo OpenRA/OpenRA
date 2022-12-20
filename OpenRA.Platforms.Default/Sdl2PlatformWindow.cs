@@ -279,8 +279,6 @@ namespace OpenRA.Platforms.Default
 				else
 					windowSize = new Size((int)(surfaceSize.Width / windowScale), (int)(surfaceSize.Height / windowScale));
 
-				Console.WriteLine("Using window scale {0:F2}", windowScale);
-
 				if (Game.Settings.Game.LockMouseWindow)
 					GrabWindowMouseFocus();
 				else
@@ -307,7 +305,32 @@ namespace OpenRA.Platforms.Default
 				{
 					SDL.SDL_SetWindowFullscreen(Window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP);
 					SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
+
+					if (Platform.CurrentPlatform == PlatformType.OSX)
+					{
+						// Activating SDL_WINDOW_FULLSCREEN_DESKTOP on a display with a notch will automatically
+						// reduce the window height and align the top-left of the window to the safe area.
+						//
+						// SDL (as of version 2.26) does not contain an API to query the safeAreaInsets before
+						// the window is created. We work around this by checking the window height after going
+						// fullscreen, and recalculating our sizes to match the new window geometry.
+						//
+						// This workaround will become redundant once window resizing is implemented.
+						SDL.SDL_GetWindowSize(Window, out var width, out var height);
+						if (height != windowSize.Height)
+						{
+							windowSize = new Size(width, height);
+
+							SDL.SDL_GL_GetDrawableSize(Window, out width, out height);
+							surfaceSize = new Size(width, height);
+							windowScale = width * 1f / windowSize.Width;
+
+							Console.WriteLine($"Using new resolution: {windowSize.Width}x{windowSize.Height}");
+						}
+					}
 				}
+
+				Console.WriteLine($"Using window scale {windowScale:F2}");
 			}
 
 			// Run graphics rendering on a dedicated thread.
