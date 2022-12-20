@@ -33,13 +33,13 @@ namespace OpenRA.Mods.Cnc.Activities
 		bool returnToBase;
 		Actor rearmTarget;
 
-		public LayMines(Actor self, List<CPos> minefield = null)
+		public LayMines(Actor self, AmmoPool[] ammoPools, List<CPos> minefield = null)
 		{
 			minelayer = self.Trait<Minelayer>();
-			ammoPools = self.TraitsImplementing<AmmoPool>().ToArray();
 			movement = self.Trait<IMove>();
 			moveInfo = self.Info.TraitInfo<IMoveInfo>();
 			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
+			this.ammoPools = ammoPools;
 			this.minefield = minefield;
 		}
 
@@ -68,8 +68,12 @@ namespace OpenRA.Mods.Cnc.Activities
 
 			if ((minefield == null || minefield.Contains(self.Location)) && CanLayMine(self, self.Location))
 			{
-				if (rearmableInfo != null && ammoPools.Any(p => p.Info.Name == minelayer.Info.AmmoPoolName && !p.HasAmmo))
+				// If we don't have enough ammo to lay a mine
+				if (!ammoPools.Any(p => p.CurrentAmmoCount >= minelayer.Info.AmmoUsage))
 				{
+					if (rearmableInfo == null)
+						return true;
+
 					// Rearm (and possibly repair) at rearm building, then back out here to refill the minefield some more
 					rearmTarget = self.World.Actors.Where(a => self.Owner.RelationshipWith(a.Owner) == PlayerRelationship.Ally && rearmableInfo.RearmActors.Contains(a.Info.Name))
 						.ClosestTo(self);
@@ -141,14 +145,11 @@ namespace OpenRA.Mods.Cnc.Activities
 
 		void LayMine(Actor self)
 		{
-			if (ammoPools != null)
-			{
-				var pool = ammoPools.FirstOrDefault(x => x.Info.Name == minelayer.Info.AmmoPoolName);
-				if (pool == null)
-					return;
+			var pool = ammoPools.FirstOrDefault(p => p.CurrentAmmoCount >= minelayer.Info.AmmoUsage);
+			if (pool == null)
+				return;
 
-				pool.TakeAmmo(self, minelayer.Info.AmmoUsage);
-			}
+			pool.TakeAmmo(self, minelayer.Info.AmmoUsage);
 
 			self.World.AddFrameEndTask(w => w.CreateActor(minelayer.Info.Mine, new TypeDictionary
 			{

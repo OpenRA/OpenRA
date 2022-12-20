@@ -73,6 +73,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly Sprite Tile;
 
 		readonly Actor self;
+		readonly AmmoPool[] ammoPools;
 
 		[Sync]
 		CPos minefieldStart;
@@ -81,6 +82,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			Info = info;
 			this.self = self;
+			ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => p.Info.Name == Info.AmmoPoolName).ToArray();
 
 			var tileset = self.World.Map.Tileset.ToLowerInvariant();
 			if (self.World.Map.Rules.Sequences.HasSequence("overlay", $"{Info.TileValidName}-{tileset}"))
@@ -94,7 +96,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			get
 			{
 				yield return new BeginMinefieldOrderTargeter(Info.AbilityCursor);
-				yield return new DeployOrderTargeter("PlaceMine", 5, () => IsCellAcceptable(self, self.Location) ? Info.DeployCursor : Info.DeployBlockedCursor);
+				yield return new DeployOrderTargeter("PlaceMine", 5, () => IsCellAcceptable(self, self.Location) && HasSufficientAmmo() ? Info.DeployCursor : Info.DeployBlockedCursor);
 			}
 		}
 
@@ -124,7 +126,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued)
 		{
-			return IsCellAcceptable(self, self.Location);
+			return IsCellAcceptable(self, self.Location) && HasSufficientAmmo();
 		}
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
@@ -138,7 +140,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			else if (order.OrderString == "PlaceMine")
 			{
 				if (IsCellAcceptable(self, cell))
-					self.QueueActivity(order.Queued, new LayMines(self));
+					self.QueueActivity(order.Queued, new LayMines(self, ammoPools));
 			}
 			else if (order.OrderString == "PlaceMinefield")
 			{
@@ -153,7 +155,7 @@ namespace OpenRA.Mods.Cnc.Traits
 						&& movement.CanEnterCell(c, null, BlockedByActor.Immovable) && (mobile != null && mobile.CanStayInCell(c)))
 					.OrderBy(c => (c - minefieldStart).LengthSquared).ToList();
 
-				self.QueueActivity(order.Queued, new LayMines(self, minefield));
+				self.QueueActivity(order.Queued, new LayMines(self, ammoPools, minefield));
 				self.ShowTargetLines();
 			}
 		}
@@ -197,11 +199,19 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!self.World.Map.Contains(cell))
 				return false;
 
+			if (!self.World.ActorMap.GetActorsAt(cell).All(a => a == self))
+				return false;
+
 			if (Info.TerrainTypes.Count == 0)
 				return true;
 
 			var terrainType = self.World.Map.GetTerrainInfo(cell).Type;
 			return Info.TerrainTypes.Contains(terrainType);
+		}
+
+		bool HasSufficientAmmo()
+		{
+			return ammoPools.Length == 0 || ammoPools.Any(p => p.CurrentAmmoCount >= Info.AmmoUsage);
 		}
 
 		class MinefieldOrderGenerator : OrderGenerator
