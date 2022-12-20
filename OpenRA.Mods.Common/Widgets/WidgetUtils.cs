@@ -419,4 +419,40 @@ namespace OpenRA.Mods.Common.Widgets
 			return lastOutput;
 		}
 	}
+
+	public class PredictedCachedTransform<T, U>
+	{
+		readonly Func<T, U> transform;
+
+		bool initialized;
+		T lastInput;
+		U lastOutput;
+
+		bool predicted;
+		U prediction;
+
+		public PredictedCachedTransform(Func<T, U> transform)
+		{
+			this.transform = transform;
+		}
+
+		public void Predict(U value)
+		{
+			predicted = true;
+			prediction = value;
+		}
+
+		public U Update(T input)
+		{
+			if ((predicted || initialized) && ((input == null && lastInput == null) || (input != null && input.Equals(lastInput))))
+				return predicted ? prediction : lastOutput;
+
+			predicted = false;
+			initialized = true;
+			lastInput = input;
+			lastOutput = transform(input);
+
+			return lastOutput;
+		}
+	}
 }
