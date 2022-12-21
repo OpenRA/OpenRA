@@ -175,8 +175,8 @@ Templates:
 		Size: 1,2
 		Categories: Sand-Rock-Cliff
 		Tiles:
-			0: Transition
-			1: Transition
+			0: Rough
+			1: Rough
 	Template@10:
 		Id: 10
 		Images: BLOXBASE.R8
