@@ -657,12 +657,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public static void SetupEditableReadyWidget(Widget parent, Session.Client c, OrderManager orderManager, MapPreview map, bool isEnabled)
 		{
 			var status = parent.Get<CheckboxWidget>("STATUS_CHECKBOX");
-			status.IsChecked = () => orderManager.LocalClient.IsReady || c.Bot != null;
 			status.IsVisible = () => true;
 			status.IsDisabled = () => c.Bot != null || map.Status != MapStatus.Available || !isEnabled;
-
-			var state = orderManager.LocalClient.IsReady ? Session.ClientState.NotReady : Session.ClientState.Ready;
-			status.OnClick = () => orderManager.IssueOrder(Order.Command($"state {state}"));
+			if (c.Bot == null)
+			{
+				var isChecked = new PredictedCachedTransform<Session.Client, bool>(cc => cc.IsReady);
+				status.IsChecked = () => isChecked.Update(c);
+				status.OnClick = () =>
+				{
+					var state = isChecked.Update(c) ? Session.ClientState.NotReady : Session.ClientState.Ready;
+					orderManager.IssueOrder(Order.Command($"state {state}"));
+					isChecked.Predict(!c.IsReady);
+				};
+			}
+			else
+				status.IsChecked = () => true;
 		}
 
 		public static void SetupReadyWidget(Widget parent, Session.Client c)
