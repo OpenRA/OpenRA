@@ -13,7 +13,6 @@ using System;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -24,28 +23,19 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly ITiledTerrainRenderer terrainRenderer;
 		readonly WorldRenderer worldRenderer;
+		readonly WorldViewportSizes viewportSizes;
 
 		TerrainTemplateInfo template;
-		Rectangle bounds;
 
-		public TerrainTemplateInfo Template
-		{
-			get => template;
-
-			set
-			{
-				template = value;
-				if (template == null)
-					return;
-
-				bounds = terrainRenderer.TemplateBounds(template);
-			}
-		}
+		public int2 PreviewOffset { get; private set; }
+		public int2 IdealPreviewSize { get; private set; }
 
 		[ObjectCreator.UseCtor]
-		public TerrainTemplatePreviewWidget(WorldRenderer worldRenderer, World world)
+		public TerrainTemplatePreviewWidget(ModData modData, WorldRenderer worldRenderer, World world)
 		{
 			this.worldRenderer = worldRenderer;
+			viewportSizes = modData.Manifest.Get<WorldViewportSizes>();
+
 			terrainRenderer = world.WorldActor.TraitOrDefault<ITiledTerrainRenderer>();
 			if (terrainRenderer == null)
 				throw new YamlException("TerrainTemplatePreviewWidget requires a tile-based terrain renderer.");
@@ -55,21 +45,32 @@ namespace OpenRA.Mods.Common.Widgets
 			: base(other)
 		{
 			worldRenderer = other.worldRenderer;
+			viewportSizes = other.viewportSizes;
 			terrainRenderer = other.terrainRenderer;
-			Template = other.Template;
+			template = other.template;
 			GetScale = other.GetScale;
 		}
 
 		public override Widget Clone() { return new TerrainTemplatePreviewWidget(this); }
+
+		public void SetTemplate(TerrainTemplateInfo template)
+		{
+			this.template = template;
+			var b = terrainRenderer.TemplateBounds(template);
+			IdealPreviewSize = new int2((int)(b.Width * viewportSizes.DefaultScale), (int)(b.Height * viewportSizes.DefaultScale));
+
+			// Measured from the middle of the widget to the middle of the top-left cell of the template
+			PreviewOffset = -new int2((int)(b.Left * viewportSizes.DefaultScale), (int)(b.Top * viewportSizes.DefaultScale)) - IdealPreviewSize / 2;
+		}
 
 		public override void Draw()
 		{
 			if (template == null)
 				return;
 
-			var scale = GetScale();
-			var sb = new Rectangle((int)(scale * bounds.X), (int)(scale * bounds.Y), (int)(scale * bounds.Width), (int)(scale * bounds.Height));
-			var origin = RenderOrigin + new int2((RenderBounds.Size.Width - sb.Width) / 2 - sb.X, (RenderBounds.Size.Height - sb.Height) / 2 - sb.Y);
+			var scale = GetScale() * viewportSizes.DefaultScale;
+			var origin = RenderOrigin + PreviewOffset + new int2(RenderBounds.Size.Width / 2, RenderBounds.Size.Height / 2);
+
 			foreach (var r in terrainRenderer.RenderUIPreview(worldRenderer, template, origin, scale))
 				r.PrepareRender(worldRenderer).Render(worldRenderer);
 		}

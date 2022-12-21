@@ -227,14 +227,14 @@ namespace OpenRA.Graphics
 
 			var vd = graphicSettings.ViewportDistance;
 			if (viewportSizes.AllowNativeZoom && vd == WorldViewport.Native)
-				minZoom = 1;
+				minZoom = viewportSizes.DefaultScale;
 			else
 			{
 				var range = viewportSizes.GetSizeRange(vd);
-				minZoom = CalculateMinimumZoom(range.X, range.Y);
+				minZoom = CalculateMinimumZoom(range.X, range.Y) * viewportSizes.DefaultScale;
 			}
 
-			maxZoom = Math.Min(minZoom * viewportSizes.MaxZoomScale, Game.Renderer.NativeResolution.Height * 1f / viewportSizes.MaxZoomWindowHeight);
+			maxZoom = Math.Min(minZoom * viewportSizes.MaxZoomScale, Game.Renderer.NativeResolution.Height * viewportSizes.DefaultScale / viewportSizes.MaxZoomWindowHeight);
 
 			if (unlockMinZoom)
 			{

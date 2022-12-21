@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<float> GetScale = () => 1f;
 
 		readonly WorldRenderer worldRenderer;
+		readonly WorldViewportSizes viewportSizes;
 		readonly IResourceRenderer[] resourceRenderers;
 		readonly Size tileSize;
 
@@ -43,12 +44,18 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
+		public Size IdealPreviewSize { get; private set; }
+
 		[ObjectCreator.UseCtor]
-		public ResourcePreviewWidget(WorldRenderer worldRenderer, World world)
+		public ResourcePreviewWidget(ModData modData, WorldRenderer worldRenderer, World world)
 		{
 			this.worldRenderer = worldRenderer;
+			viewportSizes = modData.Manifest.Get<WorldViewportSizes>();
 			resourceRenderers = world.WorldActor.TraitsImplementing<IResourceRenderer>().ToArray();
 			tileSize = world.Map.Grid.TileSize;
+			IdealPreviewSize = new Size(
+				(int)(viewportSizes.DefaultScale * tileSize.Width),
+				(int)(viewportSizes.DefaultScale * tileSize.Height));
 		}
 
 		protected ResourcePreviewWidget(ResourcePreviewWidget other)
@@ -56,10 +63,12 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			GetScale = other.GetScale;
 			worldRenderer = other.worldRenderer;
+			viewportSizes = other.viewportSizes;
 			resourceRenderers = other.resourceRenderers;
 			tileSize = other.tileSize;
 			resourceType = other.resourceType;
 			resourceRenderer = other.resourceRenderer;
+			IdealPreviewSize = other.IdealPreviewSize;
 		}
 
 		public override Widget Clone() { return new ResourcePreviewWidget(this); }
@@ -69,8 +78,11 @@ namespace OpenRA.Mods.Common.Widgets
 			if (resourceRenderer == null)
 				return;
 
-			var scale = GetScale();
-			var origin = RenderOrigin + new int2((RenderBounds.Size.Width - tileSize.Width) / 2, (RenderBounds.Size.Height - tileSize.Height) / 2);
+			var scale = GetScale() * viewportSizes.DefaultScale;
+			var origin = RenderOrigin + new int2(
+				(int)(0.5f * (RenderBounds.Size.Width - scale * tileSize.Width)),
+				(int)(0.5f * (RenderBounds.Size.Height - scale * tileSize.Height)));
+
 			foreach (var r in resourceRenderer.RenderUIPreview(worldRenderer, resourceType, origin, scale))
 				r.PrepareRender(worldRenderer).Render(worldRenderer);
 		}
