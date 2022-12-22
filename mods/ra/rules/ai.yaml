@@ -364,7 +364,7 @@ Player:
 		RequiresCondition: enable-turtle-ai
 		SquadSize: 10
 		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
-		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, mnly
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen, syrd
 		AirUnitsTypes: mig, yak, heli, hind, mh60
@@ -400,11 +400,19 @@ Player:
 			dd: 10
 			ca: 10
 			pt: 10
+			mnly: 2
 		UnitLimits:
 			dog: 4
 			harv: 8
 			jeep: 4
 			ftrk: 4
+			mnly: 2
+	MinelayerBotModule@turtle:
+		Minelayers: mnly
+		IgnoredEnemyTargetTypes: Building, Defence, Air
+		UseEnemyLocationTargetTypes: Building, Defence
+		AwayFromAlliedTargetTypes: Building, Defence
+		AwayFromEnemyTargetTypes: Building, Defence
 	SquadManagerBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		SquadSize: 1
