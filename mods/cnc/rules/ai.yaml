@@ -223,6 +223,7 @@ Player:
 		ConstructionYardTypes: fact
 		AirUnitsTypes: heli, orca
 		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
+		IgnoredEnemyTargetTypes: Air
 	UnitBuilderBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
@@ -259,6 +260,7 @@ Player:
 		ConstructionYardTypes: fact
 		AirUnitsTypes: heli, orca
 		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
+		IgnoredEnemyTargetTypes: Air
 	UnitBuilderBotModule@watson:
 		RequiresCondition: enable-watson-ai
 		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI
@@ -290,6 +292,7 @@ Player:
 		ConstructionYardTypes: fact
 		AirUnitsTypes: heli, orca
 		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
+		IgnoredEnemyTargetTypes: Air
 	UnitBuilderBotModule@hal9001:
 		RequiresCondition: enable-hal9001-ai
 		UnitQueues: Vehicle.Nod, Vehicle.GDI, Infantry.Nod, Infantry.GDI, Aircraft.Nod, Aircraft.GDI

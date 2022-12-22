@@ -45,6 +45,7 @@ Player:
 		ExcludeFromSquadsTypes: harv, mcv
 		NavalUnitsTypes: dd, ca, lst, pt
 		ConstructionYardTypes: fact
+		IgnoredEnemyTargetTypes: AirborneActor
 	UnitBuilderBotModule@campaign:
 		RequiresCondition: ai-active
 		UnitsToBuild:
