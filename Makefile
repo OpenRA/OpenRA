@@ -58,6 +58,7 @@ RM_RF = $(RM) -rf
 
 RUNTIME ?= net6
 CONFIGURATION ?= Release
+DOTNET_RID = $(shell ${DOTNET} --info | grep RID: | cut -w -f3)
 
 # Only for use in target version:
 VERSION := $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || (c=$$(git rev-parse --short HEAD 2>/dev/null) && echo git-$$c))
@@ -67,12 +68,20 @@ ifndef TARGETPLATFORM
 UNAME_S := $(shell uname -s)
 UNAME_M := $(shell uname -m)
 ifeq ($(UNAME_S),Darwin)
+ifeq ($(RUNTIME)-$(DOTNET_RID),net6-osx-arm64)
+TARGETPLATFORM = osx-arm64
+else
 TARGETPLATFORM = osx-x64
+endif
 else
 ifeq ($(UNAME_M),x86_64)
 TARGETPLATFORM = linux-x64
 else
+ifeq ($(UNAME_M),aarch64)
+TARGETPLATFORM = linux-arm64
+else
 TARGETPLATFORM = unix-generic
+endif
 endif
 endif
 endif

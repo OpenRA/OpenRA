@@ -10,7 +10,7 @@
 # Arguments:
 #   SRC_PATH: Path to the root OpenRA directory
 #   DEST_PATH: Path to the root of the install destination (will be created if necessary)
-#   TARGETPLATFORM: Platform type (win-x86, win-x64, osx-x64, linux-x64, unix-generic)
+#   TARGETPLATFORM: Platform type (win-x86, win-x64, osx-x64, osx-arm64, linux-x64, linux-arm64, unix-generic)
 #   RUNTIME: Runtime type (net6, mono)
 #   COPY_GENERIC_LAUNCHER: If set to True the OpenRA.exe will also be copied (True, False)
 #   COPY_CNC_DLL: If set to True the OpenRA.Mods.Cnc.dll will also be copied (True, False)
@@ -68,13 +68,13 @@ install_assemblies() (
 			install -m644 "${LIB}" "${DEST_PATH}"
 		done
 
-		if [ "${TARGETPLATFORM}" = "linux-x64" ]; then
+		if [ "${TARGETPLATFORM}" = "linux-x64" ] || [ "${TARGETPLATFORM}" = "linux-arm64" ]; then
 			for LIB in "${SRC_PATH}/bin/"*.so; do
 				install -m755 "${LIB}" "${DEST_PATH}"
 			done
 		fi
 
-		if [ "${TARGETPLATFORM}" = "osx-x64" ]; then
+		if [ "${TARGETPLATFORM}" = "osx-x64" ] || [ "${TARGETPLATFORM}" = "osx-arm64" ]; then
 			for LIB in "${SRC_PATH}/bin/"*.dylib; do
 				install -m755 "${LIB}" "${DEST_PATH}"
 			done
