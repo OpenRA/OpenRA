@@ -21,7 +21,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	public class MinelayerInfo : TraitInfo, Requires<RearmableInfo>
+	public class MinelayerInfo : TraitInfo
 	{
 		[ActorReference]
 		public readonly string Mine = "minv";
@@ -67,13 +67,14 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new Minelayer(init.Self, this); }
 	}
 
-	public class Minelayer : IIssueOrder, IResolveOrder, ISync, IIssueDeployOrder, IOrderVoice, ITick
+	public class Minelayer : IIssueOrder, IResolveOrder, ISync, IIssueDeployOrder, IOrderVoice, ITick, INotifyCreated
 	{
 		public readonly MinelayerInfo Info;
 		public readonly Sprite Tile;
 
 		readonly Actor self;
-		readonly AmmoPool[] ammoPools;
+		AmmoPool[] ammoPools;
+		RearmableInfo rearmableInfo;
 
 		[Sync]
 		CPos minefieldStart;
@@ -82,7 +83,6 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			Info = info;
 			this.self = self;
-			ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => p.Info.Name == Info.AmmoPoolName).ToArray();
 
 			var tileset = self.World.Map.Tileset.ToLowerInvariant();
 			if (self.World.Map.Rules.Sequences.HasSequence("overlay", $"{Info.TileValidName}-{tileset}"))
@@ -91,12 +91,18 @@ namespace OpenRA.Mods.Cnc.Traits
 				Tile = self.World.Map.Rules.Sequences.GetSequence("overlay", Info.TileValidName).GetSprite(0);
 		}
 
+		void INotifyCreated.Created(Actor self)
+		{
+			ammoPools = self.TraitsImplementing<AmmoPool>().Where(p => p.Info.Name == Info.AmmoPoolName).ToArray();
+			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
+		}
+
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
 			get
 			{
 				yield return new BeginMinefieldOrderTargeter(Info.AbilityCursor);
-				yield return new DeployOrderTargeter("PlaceMine", 5, () => IsCellAcceptable(self, self.Location) && HasSufficientAmmo() ? Info.DeployCursor : Info.DeployBlockedCursor);
+				yield return new DeployOrderTargeter("PlaceMine", 5, () => CanLayMineOrRearm() ? Info.DeployCursor : Info.DeployBlockedCursor);
 			}
 		}
 
@@ -126,7 +132,12 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued)
 		{
-			return IsCellAcceptable(self, self.Location) && HasSufficientAmmo();
+			return CanLayMineOrRearm();
+		}
+
+		bool CanLayMineOrRearm()
+		{
+			return (HasSufficientAmmo() && IsCellAcceptable(self, self.Location)) || (!HasSufficientAmmo() && rearmableInfo != null);
 		}
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
@@ -139,8 +150,8 @@ namespace OpenRA.Mods.Cnc.Traits
 				minefieldStart = cell;
 			else if (order.OrderString == "PlaceMine")
 			{
-				if (IsCellAcceptable(self, cell))
-					self.QueueActivity(order.Queued, new LayMines(self, ammoPools));
+				if (CanLayMineOrRearm())
+					self.QueueActivity(order.Queued, new LayMines(self, ammoPools, rearmableInfo));
 			}
 			else if (order.OrderString == "PlaceMinefield")
 			{
@@ -155,7 +166,7 @@ namespace OpenRA.Mods.Cnc.Traits
 						&& movement.CanEnterCell(c, null, BlockedByActor.Immovable) && (mobile != null && mobile.CanStayInCell(c)))
 					.OrderBy(c => (c - minefieldStart).LengthSquared).ToList();
 
-				self.QueueActivity(order.Queued, new LayMines(self, ammoPools, minefield));
+				self.QueueActivity(order.Queued, new LayMines(self, ammoPools, rearmableInfo, minefield));
 				self.ShowTargetLines();
 			}
 		}

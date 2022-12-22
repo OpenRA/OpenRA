@@ -33,12 +33,12 @@ namespace OpenRA.Mods.Cnc.Activities
 		bool returnToBase;
 		Actor rearmTarget;
 
-		public LayMines(Actor self, AmmoPool[] ammoPools, List<CPos> minefield = null)
+		public LayMines(Actor self, AmmoPool[] ammoPools, RearmableInfo rearmableInfo, List<CPos> minefield = null)
 		{
 			minelayer = self.Trait<Minelayer>();
 			movement = self.Trait<IMove>();
 			moveInfo = self.Info.TraitInfo<IMoveInfo>();
-			rearmableInfo = self.Info.TraitInfoOrDefault<RearmableInfo>();
+			this.rearmableInfo = rearmableInfo;
 			this.ammoPools = ammoPools;
 			this.minefield = minefield;
 		}
@@ -66,10 +66,10 @@ namespace OpenRA.Mods.Cnc.Activities
 			if (IsCanceling)
 				return true;
 
-			if ((minefield == null || minefield.Contains(self.Location)) && CanLayMine(self, self.Location))
+			if (minefield == null || minefield.Contains(self.Location))
 			{
-				// If we don't have enough ammo to lay a mine
-				if (!ammoPools.Any(p => p.CurrentAmmoCount >= minelayer.Info.AmmoUsage))
+				// If we have an ammo pool but don't have enough ammo to lay a mine
+				if (ammoPools.Length != 0 && !ammoPools.Any(p => p.CurrentAmmoCount >= minelayer.Info.AmmoUsage))
 				{
 					if (rearmableInfo == null)
 						return true;
@@ -89,10 +89,13 @@ namespace OpenRA.Mods.Cnc.Activities
 					return false;
 				}
 
-				LayMine(self);
-				QueueChild(new Wait(20)); // A little wait after placing each mine, for show
-				minefield.Remove(self.Location);
-				return false;
+				if (CanLayMine(self, self.Location))
+				{
+					LayMine(self);
+					QueueChild(new Wait(20)); // A little wait after placing each mine, for show
+					minefield.Remove(self.Location);
+					return false;
+				}
 			}
 
 			var nextCell = NextValidCell(self);
