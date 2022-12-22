@@ -35,10 +35,13 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
 
-				// If there is no real player associated, don't spawn it.
-				var ownerName = actorReference.Get<OwnerInit>().InternalName;
-				if (!world.Players.Any(p => p.InternalName == ownerName))
-					continue;
+				// If an actor's doesn't have a valid owner transfer ownership to neutral
+				var ownerInit = actorReference.Get<OwnerInit>();
+				if (!world.Players.Any(p => p.InternalName == ownerInit.InstanceName))
+				{
+					actorReference.Remove(ownerInit);
+					actorReference.Add(new OwnerInit(world.WorldActor.Owner));
+				}
 
 				actorReference.Add(new SkipMakeAnimsInit());
 				actorReference.Add(new SpawnedByMapInit(kv.Key));
