@@ -21,21 +21,27 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Manages AI squads.")]
 	public class SquadManagerBotModuleInfo : ConditionalTraitInfo
 	{
+		[ActorReference]
 		[Desc("Actor types that are valid for naval squads.")]
 		public readonly HashSet<string> NavalUnitsTypes = new HashSet<string>();
 
+		[ActorReference]
 		[Desc("Actor types that are excluded from ground attacks.")]
 		public readonly HashSet<string> AirUnitsTypes = new HashSet<string>();
 
+		[ActorReference]
 		[Desc("Actor types that should generally be excluded from attack squads.")]
 		public readonly HashSet<string> ExcludeFromSquadsTypes = new HashSet<string>();
 
+		[ActorReference]
 		[Desc("Actor types that are considered construction yards (base builders).")]
 		public readonly HashSet<string> ConstructionYardTypes = new HashSet<string>();
 
+		[ActorReference]
 		[Desc("Enemy building types around which to scan for targets for naval squads.")]
 		public readonly HashSet<string> NavalProductionTypes = new HashSet<string>();
 
+		[ActorReference]
 		[Desc("Own actor types that are prioritized when defending.")]
 		public readonly HashSet<string> ProtectionTypes = new HashSet<string>();
 
