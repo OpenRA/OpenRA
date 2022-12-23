@@ -140,6 +140,10 @@ namespace OpenRA.Mods.Common.Traits
 				.Select(ihm => ihm.HuskActor(self))
 				.FirstOrDefault(a => a != null);
 
+			var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
+			if (valued != null)
+				td.Add(valued.Cost);
+
 			self.World.AddFrameEndTask(w => w.CreateActor(huskActor ?? Info.Actor, td));
 		}
 	}

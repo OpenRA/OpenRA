@@ -14,12 +14,35 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("How much the unit is worth.")]
-	public class ValuedInfo : TraitInfo<Valued>
+	public class ValuedInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Used in production, but also for bounties so remember to set it > 0 even for NPCs.")]
 		public readonly int Cost = 0;
+
+		public override object Create(ActorInitializer init) { return new Valued(init, this); }
 	}
 
-	public class Valued { }
+	public class Valued
+	{
+		public ActorInitializer Init;
+		public ValuedInfo Info;
+		public Valued(ActorInitializer init, ValuedInfo info)
+		{
+			Init = init;
+			Info = info;
+		}
+	}
+
+	public class ValuedInit : ActorInit, ISingleInstanceInit
+	{
+		public readonly int Cost = 0;
+
+		public ValuedInit(int cost)
+		{
+			Cost = cost;
+		}
+
+		public override MiniYaml Save() { return new MiniYaml(Cost.ToStringInvariant()); }
+	}
 }

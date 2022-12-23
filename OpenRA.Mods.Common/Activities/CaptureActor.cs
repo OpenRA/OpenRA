@@ -125,7 +125,25 @@ namespace OpenRA.Mods.Common.Activities
 					t.OnCapture(enterActor, self, oldOwner, self.Owner, captures.Info.CaptureTypes);
 
 				if (self.Owner.RelationshipWith(oldOwner).HasRelationship(captures.Info.PlayerExperienceRelationships))
-					self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(captures.Info.PlayerExperience + captures.Info.PlayerExperiencePercentage * (enterActor.Info.TraitInfoOrDefault<ValuedInfo>()?.Cost ?? 0) / 100);
+				{
+					var pe = self.Owner.PlayerActor.TraitOrDefault<PlayerExperience>();
+					if (pe != null)
+					{
+						var cost = 0;
+						var valued = enterActor.TraitOrDefault<Valued>();
+						if (valued != null)
+							cost = valued.Info.Cost;
+
+						if (cost == 0)
+						{
+							var valuedInit = valued.Init.GetOrDefault<ValuedInit>();
+							if (valuedInit != null)
+								cost = valuedInit.Cost;
+						}
+
+						pe.GiveExperience(captures.Info.PlayerExperience + captures.Info.PlayerExperiencePercentage * cost / 100);
+					}
+				}
 
 				if (captures.Info.ConsumedByCapture)
 					self.Dispose();
