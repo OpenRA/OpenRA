@@ -1,6 +1,15 @@
 light_inf:
 	Inherits: ^Infantry
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	AutoTargetPriority@botTargetsPriority:
+		ValidTargets: Infantry, Structure
+		InvalidTargets: Tank
+		Priority: 50
+		RequiresCondition: bot-auto_targeting
+	AutoTargetPriority@botTargetingPriority2:
+		ValidTargets: Vehicle
+		Priority: 20
+		RequiresCondition: bot-auto_targeting
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
@@ -65,6 +74,11 @@ engineer:
 trooper:
 	Inherits: ^Infantry
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	AutoTargetPriority@botTargetingPriority:
+		InvalidTargets: Infantry
+		ValidTargets: Vehicle, Defense, Structure, Tank
+		Priority: 50
+		RequiresCondition: bot-auto_targeting
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 20
@@ -152,6 +166,9 @@ thumper:
 fremen:
 	Inherits: ^Infantry
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	AutoTargetPriority@bottargeting:
+		ValidTargets: Infantry, Vehicle, Tank
+		RequiresCondition: bot-auto_targeting
 	Tooltip:
 		Name: Fremen
 	UpdatesPlayerStatistics:
@@ -199,6 +216,11 @@ fremen:
 grenadier:
 	Inherits: ^Infantry
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	AutoTargetPriority@bot:
+		ValidTargets: Infantry, Structure
+		InvalidTargets: Tank
+		Priority: 50
+		RequiresCondition: bot-auto_targeting
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
@@ -235,6 +257,14 @@ grenadier:
 sardaukar:
 	Inherits: ^Infantry
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	AutoTargetPriority@botTargetPriority:
+		ValidTargets: Vehicle, Tank, Defense
+		Priority: 50
+		RequiresCondition: bot-auto_targeting
+	AutoTargetPriority@botTargetPriority2:
+		ValidTargets: Infantry
+		Priority: 20
+		RequiresCondition: bot-auto_targeting
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50

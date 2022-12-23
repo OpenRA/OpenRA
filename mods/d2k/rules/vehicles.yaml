@@ -118,6 +118,15 @@ trike:
 	Inherits: ^Vehicle
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	AutoTargetPriority@botTargetsPriority:
+		ValidTargets: Infantry
+		InvalidTargets: Tank
+		Priority: 20
+		RequiresCondition: bot-auto_targeting
+	AutoTargetPriority@botTargetingPriority2:
+		ValidTargets: Vehicle, Structure
+		Priority: 10
+		RequiresCondition: bot-auto_targeting
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
@@ -166,6 +175,11 @@ quad:
 	Inherits: ^Vehicle
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	AutoTargetPriority@botTargetsPriority:
+		ValidTargets: Vehicle, Structure, Tank
+		InvalidTargets: Infantry
+		Priority: 10
+		RequiresCondition: bot-auto_targeting
 	Buildable:
 		Queue: Vehicle
 		Prerequisites: upgrade.light, ~techlevel.medium
@@ -209,6 +223,15 @@ siege_tank:
 	Inherits: ^Tank
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	AutoTargetPriority@botTargetsPriority:
+		ValidTargets: Infantry, Defense
+		InvalidTargets: Tank
+		Priority: 20
+		RequiresCondition: bot-auto_targeting
+	AutoTargetPriority@botTargetingPriority2:
+		ValidTargets: Vehicle, Structure
+		Priority: 10
+		RequiresCondition: bot-auto_targeting
 	Buildable:
 		Queue: Armor
 		Prerequisites: upgrade.heavy, ~techlevel.medium
@@ -266,6 +289,16 @@ missile_tank:
 	Inherits: ^Tank
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
+	AutoTargetPriority@botTargetsPriority:
+		ValidTargets: Tank, Defense, Air
+		InvalidTargets: Infantry
+		Priority: 20
+		RequiresCondition: bot-auto_targeting
+	AutoTargetPriority@botTargetingPriority2:
+		ValidTargets: Vehicle, Structure
+		InvalidTargets: Infantry
+		Priority: 10
+		RequiresCondition: bot-auto_targeting
 	Tooltip:
 		Name: Missile Tank
 	UpdatesPlayerStatistics:
@@ -315,6 +348,11 @@ sonic_tank:
 	Inherits: ^Vehicle
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	AutoTargetPriority@bot:
+		ValidTargets: Vehicle, Structure, Infantry
+		InvalidTargets: Tank
+		Priority: 10
+		RequiresCondition: bot-auto_targeting
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 100
@@ -360,6 +398,14 @@ devastator:
 	Inherits: ^Tank
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	AutoTargetPriority@botTargetsPriority:
+		ValidTargets: Tank, Vehicle, Defense
+		Priority: 20
+		RequiresCondition: bot-auto_targeting
+	AutoTargetPriority@botTargetingPriority2:
+		ValidTargets: Infantry
+		Priority: 10
+		RequiresCondition: bot-auto_targeting
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 100
@@ -437,6 +483,15 @@ raider:
 	Inherits: ^Vehicle
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	AutoTargetPriority@botTargetsPriority:
+		ValidTargets: Infantry
+		InvalidTargets: Tank
+		Priority: 20
+		RequiresCondition: bot-auto_targeting
+	AutoTargetPriority@botTargetingPriority2:
+		ValidTargets: Vehicle, Structure
+		Priority: 10
+		RequiresCondition: bot-auto_targeting
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
@@ -515,6 +570,11 @@ deviator:
 	Inherits: ^Tank
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	AutoTargetPriority@botTargetsPriority:
+		ValidTargets: Vehicle, Tank
+		InvalidTargets: Infantry, Structure, Defense
+		Priority: 10
+		RequiresCondition: bot-auto_targeting
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -562,6 +622,16 @@ deviator:
 	Inherits: ^Tank
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	AutoTargetPriority@botTargetsPriority:
+		ValidTargets: Tank, Vehicle
+		InvalidTargets: Infantry
+		Priority: 20
+		RequiresCondition: bot-auto_targeting
+	AutoTargetPriority@botTargetingPriority2:
+		ValidTargets: Defense, Structure
+		InvalidTargets: Infantry
+		Priority: 10
+		RequiresCondition: bot-auto_targeting
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 40
