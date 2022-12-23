@@ -82,19 +82,29 @@ jobs:
         run: |
           make all
 
-      - name: Clone docs.openra.net
+      - name: Clone docs.openra.net (Playtest)
+        if: startsWith(github.event.inputs.tag, 'playtest-')
         uses: actions/checkout@v2
         with:
           repository: openra/docs
           token: ${{ secrets.DOCS_TOKEN }}
           path: docs
+          ref: playtest
+
+      - name: Clone docs.openra.net (Release)
+        if: startsWith(github.event.inputs.tag, 'release-')
+        uses: actions/checkout@v2
+        with:
+          repository: openra/docs
+          token: ${{ secrets.DOCS_TOKEN }}
+          path: docs
+          ref: release
 
       - name: Update docs.openra.net (Playtest)
         if: startsWith(github.event.inputs.tag, 'playtest-')
         env:
           GIT_TAG: ${{ github.event.inputs.tag }}
         run: |
-          git checkout playtest
           ./utility.sh all --docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/traits.md"
           ./utility.sh all --weapon-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/weapons.md"
           ./utility.sh all --sprite-sequence-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/sprite-sequences.md"
@@ -105,7 +115,6 @@ jobs:
         env:
           GIT_TAG: ${{ github.event.inputs.tag }}
         run: |
-          git checkout release
           ./utility.sh all --docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/traits.md"
           ./utility.sh all --weapon-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/weapons.md"
           ./utility.sh all --sprite-sequence-docs "${GIT_TAG}" | python3 ./packaging/format-docs.py > "docs/api/sprite-sequences.md"
