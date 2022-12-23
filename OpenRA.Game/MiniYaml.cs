@@ -83,7 +83,7 @@ namespace OpenRA
 
 		public MiniYamlNode Clone()
 		{
-			return new MiniYamlNode(Key, Value.Clone());
+			return new MiniYamlNode(Key, Value.Clone(), Comment, Location);
 		}
 	}
 
