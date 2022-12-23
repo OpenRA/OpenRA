@@ -133,9 +133,11 @@ jobs:
       - name: Push docs.openra.net (Release)
         if: startsWith(github.event.inputs.tag, 'release-')
         run: |
+          cd docs
           git push origin release
 
       - name: Push docs.openra.net (Playtest)
         if: startsWith(github.event.inputs.tag, 'playtest-')
         run: |
+          cd docs
           git push origin playtest
