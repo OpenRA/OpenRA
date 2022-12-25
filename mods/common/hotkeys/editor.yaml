@@ -20,6 +20,13 @@ EditorCopy: C Ctrl
 	Platform:
 		OSX: C Meta
 
+EditorQuickSave: S Ctrl
+	Description: Save Map
+	Types: Editor
+	Contexts: Editor
+	Platform:
+		OSX: S Meta
+
 EditorTilesTab: E
 	Description: Tiles Tab
 	Types: Editor

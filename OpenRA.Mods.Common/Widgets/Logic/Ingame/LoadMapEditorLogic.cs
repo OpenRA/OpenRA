@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var editorRoot = widget.Get("WORLD_ROOT");
 			Game.LoadWidget(world, "EDITOR_WORLD_ROOT", editorRoot, new WidgetArgs());
+			Game.LoadWidget(world, "TRANSIENTS_PANEL", editorRoot, new WidgetArgs());
 		}
 	}
 }
