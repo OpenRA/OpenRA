@@ -129,6 +129,8 @@ dialog-overwrite-map-outside-edit =
     By saving you may overwrite progress
     .confirm = Save
 
+notification-save-current-map = Saved current map.
+
 ## GameInfoLogic
 menu-game-info =
     .objectives = Objectives

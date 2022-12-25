@@ -31,10 +31,12 @@ namespace OpenRA.Mods.Common.Traits
 		int nextId;
 
 		public bool Modified;
+		public bool SaveFailed;
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
 			Add(new OpenMapAction());
+			Modified = false;
 		}
 
 		public void Add(IEditorAction editorAction)
