@@ -105,10 +105,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool updateDiscordStatus = true;
 		Dictionary<int, SpawnOccupant> spawnOccupants = new();
 
-		readonly string chatLineSound = ChromeMetrics.Get<string>("ChatLineSound");
-		readonly string playerJoinedSound = ChromeMetrics.Get<string>("PlayerJoinedSound");
-		readonly string playerLeftSound = ChromeMetrics.Get<string>("PlayerLeftSound");
-		readonly string lobbyOptionChangedSound = ChromeMetrics.Get<string>("LobbyOptionChangedSound");
+		readonly string chatLineSound;
+		readonly string playerJoinedSound;
+		readonly string playerLeftSound;
+		readonly string lobbyOptionChangedSound;
 
 		bool MapIsPlayable => (mapStatus & Session.MapStatus.Playable) == Session.MapStatus.Playable;
 
@@ -169,6 +169,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.LobbyInfoChanged += UpdateSpawnOccupants;
 			Game.BeforeGameStart += OnGameStart;
 			Game.ConnectionStateChanged += ConnectionStateChanged;
+
+			ChromeMetrics.TryGet<string>("ChatLineSound", out chatLineSound);
+			ChromeMetrics.TryGet<string>("PlayerJoinedSound", out playerJoinedSound);
+			ChromeMetrics.TryGet<string>("PlayerLeftSound", out playerLeftSound);
+			ChromeMetrics.TryGet<string>("LobbyOptionChangedSound", out lobbyOptionChangedSound);
 
 			var name = lobby.GetOrNull<LabelWidget>("SERVER_NAME");
 			if (name != null)
