@@ -117,7 +117,7 @@ WorldLoaded = function()
 	local localBuildSAMs = UserInterface.Translate("build-sams", { ["sams"] = SamSiteGoal })
 	BuildSAMObjective = AddPrimaryObjective(Nod, localBuildSAMs)
 	DestroyGDI = AddPrimaryObjective(Nod, "destroy-gdi-base")
-	GDIObjective = AddPrimaryObjective(GDI, "kill-all-enemies")
+	GDIObjective = AddPrimaryObjective(GDI, "")
 
 	Trigger.AfterDelay(AirstrikeDelay, SendGDIAirstrike)
 	Trigger.AfterDelay(DateTime.Minutes(1) + DateTime.Seconds(30), SendGDI2Units)

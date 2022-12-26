@@ -52,7 +52,7 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	GDIObjective = AddPrimaryObjective(Nod, "eliminate-nod")
+	GDIObjective = AddPrimaryObjective(GDI, "")
 	WarFactoryObjective = AddPrimaryObjective(Nod, "destroy-capture-warfactory")
 	DestroyTanksObjective = AddPrimaryObjective(Nod, "destroy-mammoth-tanks")
 	KeepRamboAliveObjective = AddSecondaryObjective(Nod, "keep-commando-alive")

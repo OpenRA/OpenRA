@@ -44,7 +44,7 @@ WorldLoaded = function()
 
 	InitObjectives(GDI)
 
-	NodObjective = AddPrimaryObjective(Nod, "destroy-gdi")
+	NodObjective = AddPrimaryObjective(Nod, "")
 	GDIObjective1 = AddPrimaryObjective(GDI, "eliminate-nod")
 	GDIObjective2 = AddSecondaryObjective(GDI, "capture-refinery")
 

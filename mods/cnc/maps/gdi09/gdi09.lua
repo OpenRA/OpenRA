@@ -129,7 +129,7 @@ WorldLoaded = function()
 	end)
 
 	SecureArea = AddPrimaryObjective(GDI, "destroy-nod-force")
-	KillGDI = AddPrimaryObjective(Nod, "kill-all-enemies")
+	KillGDI = AddPrimaryObjective(Nod, "")
 
 	Trigger.AfterDelay(DateTime.Seconds(5), SendGDIReinforcements)
 

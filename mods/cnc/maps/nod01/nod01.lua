@@ -44,7 +44,7 @@ WorldLoaded = function()
 	KillNikoomba = AddPrimaryObjective(Nod, "kill-nikoomba")
 	DestroyVillage = AddPrimaryObjective(Nod, "destroy-village")
 	DestroyGDI = AddSecondaryObjective(Nod, "destroy-gdi-troops-area")
-	GDIObjective = AddPrimaryObjective(GDI, "eliminate-nod-forces")
+	GDIObjective = AddPrimaryObjective(GDI, "")
 
 	Trigger.OnKilled(Nikoomba, function()
 		Nod.MarkCompletedObjective(KillNikoomba)

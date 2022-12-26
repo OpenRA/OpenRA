@@ -145,7 +145,7 @@ WorldLoaded = function()
 	NoCaptureObjective = AddPrimaryObjective(Nod, "dont-capture-or-destroy")
 	UseOrcaObjective = AddPrimaryObjective(Nod, "orca-wreak-havoc")
 	DistractGuardsObjective = AddSecondaryObjective(Nod, "distract-guards")
-	GDIObjective = AddPrimaryObjective(GDI, "kill-all-enemies")
+	GDIObjective = AddPrimaryObjective(GDI, "")
 end
 
 Tick = function()

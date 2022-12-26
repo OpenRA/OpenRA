@@ -130,7 +130,7 @@ WorldLoaded = function()
 
 	SecureArea = AddPrimaryObjective(GDI, "destroy-nod-bases")
 
-	KillGDI = AddPrimaryObjective(Nod, "kill-all-enemies")
+	KillGDI = AddPrimaryObjective(Nod, "")
 
 	AirSupport = AddSecondaryObjective(GDI, "destroy-sams")
 	Trigger.OnAllKilled(SamSites, function()

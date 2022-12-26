@@ -73,7 +73,7 @@ WorldLoaded = function()
 		GDI.MarkFailedObjective(DefendTown)
 	end)
 
-	NodObjective = AddPrimaryObjective(Nod, "destroy-gdi")
+	NodObjective = AddPrimaryObjective(Nod, "")
 	DefendTown = AddPrimaryObjective(GDI, "defend-bialystok")
 	EliminateNod = AddPrimaryObjective(GDI, "eliminate-nod")
 

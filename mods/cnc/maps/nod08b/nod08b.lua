@@ -157,7 +157,7 @@ WorldLoaded = function()
 	LocateNodBase = AddPrimaryObjective(Nod, "locate-nod-base")
 	CaptureGDIOutpost = AddPrimaryObjective(Nod, "capture-gdi-outpost")
 	NodObjective3 = AddPrimaryObjective(Nod, "eliminate-gdi-forces")
-	GDIObjective = AddPrimaryObjective(GDI, "eliminate-nod")
+	GDIObjective = AddPrimaryObjective(GDI, "")
 end
 
 Tick = function()

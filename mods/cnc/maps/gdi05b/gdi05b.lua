@@ -117,7 +117,7 @@ WorldLoaded = function()
 
 	FindBase = AddPrimaryObjective(GDI, "find-gdi-base")
 	DestroySAMs = AddSecondaryObjective(GDI, "destroy-sams")
-	NodObjective = AddPrimaryObjective(Nod, "destroy-gdi")
+	NodObjective = AddPrimaryObjective(Nod, "")
 
 	Trigger.AfterDelay(Atk1Delay, Atk1TriggerFunction)
 	Trigger.AfterDelay(Atk2Delay, Atk2TriggerFunction)
