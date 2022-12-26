@@ -344,7 +344,7 @@ namespace OpenRA
 			if (yaml.TryGetValue("Visibility", out temp))
 				newData.Visibility = FieldLoader.GetValue<MapVisibility>("Visibility", temp.Value);
 
-			string requiresMod = string.Empty;
+			var requiresMod = string.Empty;
 			if (yaml.TryGetValue("RequiresMod", out temp))
 				requiresMod = temp.Value;
 

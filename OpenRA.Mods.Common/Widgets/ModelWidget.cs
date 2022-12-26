@@ -188,7 +188,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var animations = new ModelAnimation[] { animation };
 
-			ModelPreview preview = new ModelPreview(
+			var preview = new ModelPreview(
 				new ModelAnimation[] { animation }, WVec.Zero, 0,
 				cachedScale,
 				new WAngle(cachedLightPitch),
