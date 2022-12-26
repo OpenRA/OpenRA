@@ -342,7 +342,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var chosenTarget = Target.Invalid;
 			var chosenTargetPriority = int.MinValue;
-			int chosenTargetRange = 0;
+			var chosenTargetRange = 0;
 
 			var activePriorities = activeTargetPriorities.ToList();
 			if (activePriorities.Count == 0)

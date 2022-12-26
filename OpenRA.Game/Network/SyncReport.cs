@@ -131,7 +131,7 @@ namespace OpenRA.Network
 						Log.Write("sync", $"\t {a.ActorID} {a.Type} {a.Owner} {a.Trait} ({a.Hash})");
 
 						var nvp = a.NamesValues;
-						for (int i = 0; i < nvp.Names.Length; i++)
+						for (var i = 0; i < nvp.Names.Length; i++)
 							if (nvp.Values[i] != null)
 								Log.Write("sync", $"\t\t {nvp.Names[i]}: {nvp.Values[i]}");
 					}
@@ -142,7 +142,7 @@ namespace OpenRA.Network
 						Log.Write("sync", "\t {0} ({1})", e.Name, e.Hash);
 
 						var nvp = e.NamesValues;
-						for (int i = 0; i < nvp.Names.Length; i++)
+						for (var i = 0; i < nvp.Names.Length; i++)
 							if (nvp.Values[i] != null)
 								Log.Write("sync", $"\t\t {nvp.Names[i]}: {nvp.Values[i]}");
 					}

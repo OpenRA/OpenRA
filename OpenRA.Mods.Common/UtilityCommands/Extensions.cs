@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
 		{
 			var knownKeys = new HashSet<TKey>();
-			foreach (TSource element in source)
+			foreach (var element in source)
 			{
 				if (knownKeys.Add(keySelector(element)))
 					yield return element;

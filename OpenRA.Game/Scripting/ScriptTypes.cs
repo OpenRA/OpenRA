@@ -26,7 +26,7 @@ namespace OpenRA.Scripting
 
 		public static bool TryGetClrValue<T>(this LuaValue value, out T clrObject)
 		{
-			var ret = value.TryGetClrValue(typeof(T), out object temp);
+			var ret = value.TryGetClrValue(typeof(T), out var temp);
 			clrObject = ret ? (T)temp : default;
 			return ret;
 		}
