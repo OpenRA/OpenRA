@@ -168,7 +168,7 @@ WorldLoaded = function()
 
 	InitObjectives(GDI)
 
-	NodObjective = AddPrimaryObjective(Nod, "destroy-gdi")
+	NodObjective = AddPrimaryObjective(Nod, "")
 	FindBase = AddPrimaryObjective(GDI, "find-gdi-base")
 	DestroySAMs = AddSecondaryObjective(GDI, "destroy-sams")
 

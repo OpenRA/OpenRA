@@ -198,7 +198,7 @@ WorldLoaded = function()
 	EliminateGDI = AddPrimaryObjective(Nod, "eliminate-gdi-forces")
 	local buildSAMs = UserInterface.Translate("build-sams", { ["sams"] = SamSiteGoal })
 	BuildSAMs = AddSecondaryObjective(Nod, buildSAMs)
-	GDIObjective = AddPrimaryObjective(GDI, "eliminate-nod")
+	GDIObjective = AddPrimaryObjective(GDI, "")
 end
 
 Tick = function()

@@ -177,7 +177,7 @@ WorldLoaded = function()
 	EliminateGDI = AddPrimaryObjective(Nod, "eliminate-gdi-forces")
 	local buildSAMs = UserInterface.Translate("build-sams", { ["sams"] = SamSiteGoal })
 	BuildSAMs = AddPrimaryObjective(Nod, buildSAMs)
-	GDIObjective = AddPrimaryObjective(GDI, "eliminate-nod")
+	GDIObjective = AddPrimaryObjective(GDI, "")
 
 	Trigger.OnKilled(GDIProc, function()
 		Actor.Create("moneycrate", true, { Owner = GDI, Location = CPos.New(24, 54) })

@@ -25,14 +25,11 @@ kill-creatures = Kill all creatures in the area.
 ## gdi01
 establish-beachhead = Establish a beachhead.
 
-## gdi01, gdi02, gdi03, gdi04c, gdi05abc, nod07a, nod08ab, nod09, nod10b
+## gdi01, gdi02, gdi03, gdi04c, gdi05abc
 eliminate-nod = Eliminate all Nod forces in the area.
 
 ## gdi02, nod09
 capture-refinery = Capture the Tiberium refinery.
-
-## gdi02, gdi04c, gdi05abc
-destroy-gdi = Destroy all GDI troops.
 
 ## gdi04ab
 battlefield-control = Battlefield Control
@@ -65,9 +62,6 @@ protect-hospital = Protect the Hospital.
 keep-civilians-alive = Keep at least { $civilians } out of 14 Civilians alive.
 destroy-nod-bases = Destroy the Nod bases.
 
-## gdi08ab, gdi09, nod02ab, nod05, nod07c
-kill-all-enemies = Kill all enemies!
-
 ## gdi09
 destroy-nod-bunkers = Destroy the Nod bunkers to allow Carter's
     convoy to pass through safely.
@@ -77,7 +71,6 @@ convoy-passed-partly = Part of Carter's convoy passed through!
 destroy-gdi-troops-area = Destroy all GDI troops in the area.
 kill-nikoomba = Kill Nikoomba.
 destroy-village = Destroy the village.
-eliminate-nod-forces = Eliminate all Nod forces.
 
 ## nod02a
 destroy-gdi-units = Destroy all GDI units.

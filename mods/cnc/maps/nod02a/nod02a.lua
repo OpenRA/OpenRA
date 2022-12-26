@@ -31,7 +31,7 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	GDIObjective = AddPrimaryObjective(GDI, "kill-all-enemies")
+	GDIObjective = AddPrimaryObjective(GDI, "")
 	BuildBase = AddPrimaryObjective(Nod, "build-base")
 	DestroyGDI = AddPrimaryObjective(Nod, "destroy-gdi-units")
 

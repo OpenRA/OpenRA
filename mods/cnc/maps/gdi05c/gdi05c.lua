@@ -110,7 +110,7 @@ WorldLoaded = function()
 
 	FindBase = AddPrimaryObjective(GDI, "find-gdi-base")
 	DestroySAMs = AddSecondaryObjective(GDI, "destroy-sams")
-	NodObjective = AddPrimaryObjective(Nod, "destroy-gdi")
+	NodObjective = AddPrimaryObjective(Nod, "")
 
 	Utils.Do(ActorRemovals[Difficulty], function(unit)
 		unit.Destroy()

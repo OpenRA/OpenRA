@@ -97,7 +97,7 @@ WorldLoaded = function()
 	InitObjectives(GDI)
 
 	SecureArea = AddPrimaryObjective(GDI, "destroy-nod-force")
-	KillGDI = AddPrimaryObjective(Nod, "kill-all-enemies")
+	KillGDI = AddPrimaryObjective(Nod, "")
 
 	RepairAssets = AddSecondaryObjective(GDI, "repair-base-vehicles")
 	Trigger.AfterDelay(DateTime.Seconds(5), function() CheckRepairGDIAssetsObjective() end)
