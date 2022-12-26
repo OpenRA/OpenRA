@@ -77,12 +77,12 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			byte* ip;
 			uint t;
 			byte* mPos;
-			byte* ipEnd = @in + inLen;
+			var ipEnd = @in + inLen;
 			outLen = 0;
 			op = @out;
 			ip = @in;
-			bool gtFirstLiteralRun = false;
-			bool gtMatchDone = false;
+			var gtFirstLiteralRun = false;
+			var gtMatchDone = false;
 			if (*ip > 17)
 			{
 				t = (uint)(*ip++ - 17);

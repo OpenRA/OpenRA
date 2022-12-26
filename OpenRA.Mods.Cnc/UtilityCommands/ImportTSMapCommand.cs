@@ -338,8 +338,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var mapSection = file.GetSection("IsoMapPack5");
 
 			var data = Convert.FromBase64String(string.Concat(mapSection.Select(kvp => kvp.Value)));
-			int cells = (fullSize.X * 2 - 1) * fullSize.Y;
-			int lzoPackSize = cells * 11 + 4; // last 4 bytes contains a lzo pack header saying no more data is left
+			var cells = (fullSize.X * 2 - 1) * fullSize.Y;
+			var lzoPackSize = cells * 11 + 4; // last 4 bytes contains a lzo pack header saying no more data is left
 			var isoMapPack = new byte[lzoPackSize];
 			UnpackLZO(data, isoMapPack);
 
@@ -354,8 +354,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var z = mf.ReadUInt8();
 				/*var zero2 = */mf.ReadUInt8();
 
-				int dx = rx - ry + fullSize.X - 1;
-				int dy = rx + ry - fullSize.X - 1;
+				var dx = rx - ry + fullSize.X - 1;
+				var dy = rx + ry - fullSize.X - 1;
 				var mapCell = new MPos(dx / 2, dy);
 				var cell = mapCell.ToCPos(map);
 

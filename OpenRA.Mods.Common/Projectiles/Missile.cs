@@ -760,10 +760,10 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		WVec HomingTick(World world, in WVec tarDistVec, int relTarHorDist)
 		{
-			int predClfHgt = 0;
-			int predClfDist = 0;
-			int lastHtChg = 0;
-			int lastHt = 0;
+			var predClfHgt = 0;
+			var predClfDist = 0;
+			var lastHtChg = 0;
+			var lastHt = 0;
 
 			if (info.TerrainHeightAware)
 				InclineLookahead(world, relTarHorDist, out predClfHgt, out predClfDist, out lastHtChg, out lastHt);

@@ -108,7 +108,7 @@ namespace OpenRA.Graphics
 
 		public ImmutablePalette(IPalette p)
 		{
-			for (int i = 0; i < Palette.Size; i++)
+			for (var i = 0; i < Palette.Size; i++)
 				colors[i] = p[i];
 		}
 

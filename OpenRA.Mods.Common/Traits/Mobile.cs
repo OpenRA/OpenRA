@@ -376,7 +376,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var availCells = new List<CPos>();
 			var notStupidCells = new List<CPos>();
-			foreach (CVec direction in CVec.Directions)
+			foreach (var direction in CVec.Directions)
 			{
 				var p = ToCell + direction;
 				if (CanEnterCell(p) && CanStayInCell(p) && (preferToAvoid == null || !preferToAvoid(p)))

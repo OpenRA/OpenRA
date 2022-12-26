@@ -175,8 +175,8 @@ namespace OpenRA.Mods.Common.Scripting
 				return false;
 			}
 
-			AsyncLoader l = new AsyncLoader(Media.LoadVideo);
-			IAsyncResult ar = l.BeginInvoke(s, null, null);
+			var l = new AsyncLoader(Media.LoadVideo);
+			var ar = l.BeginInvoke(s, null, null);
 			Action onLoadComplete = () =>
 			{
 				Media.StopFMVInRadar();
