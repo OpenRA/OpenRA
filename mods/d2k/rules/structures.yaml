@@ -885,6 +885,7 @@ repair_pad:
 	Health:
 		HP: 30000
 	HitShape:
+		TargetableOffsets: 1024,0,0, 0,-1024,0, 0,1024,0, -1024,0,0
 		Type: Rectangle
 			TopLeft: -1536, -512
 			BottomRight: 1536, 512
