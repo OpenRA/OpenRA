@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Clone Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.inputs.tag }}
 
@@ -32,7 +32,7 @@ jobs:
           make all
 
       - name: Clone Wiki
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: openra/openra.wiki
           token: ${{ secrets.DOCS_TOKEN }}
@@ -69,7 +69,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Clone Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.inputs.tag }}
 
@@ -84,7 +84,7 @@ jobs:
 
       - name: Clone docs.openra.net (Playtest)
         if: startsWith(github.event.inputs.tag, 'playtest-')
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: openra/docs
           token: ${{ secrets.DOCS_TOKEN }}
@@ -93,7 +93,7 @@ jobs:
 
       - name: Clone docs.openra.net (Release)
         if: startsWith(github.event.inputs.tag, 'release-')
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: openra/docs
           token: ${{ secrets.DOCS_TOKEN }}
