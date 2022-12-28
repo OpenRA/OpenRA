@@ -235,82 +235,78 @@ tree25:
 			TEMPERATE: tree25.tem
 			SNOW: tree25.sno
 
-^fona:
-	Inherits: ^tree
-	idle:
-
 fona01:
-	Inherits: ^fona
+	Inherits: ^tree
 	idle:
 		Filename: fona01.tem
 
 fona02:
-	Inherits: ^fona
+	Inherits: ^tree
 	idle:
 		Filename: fona02.tem
 
 fona03:
-	Inherits: ^fona
+	Inherits: ^tree
 	idle:
 		Filename: fona03.tem
 
 fona04:
-	Inherits: ^fona
+	Inherits: ^tree
 	idle:
 		Filename: fona04.tem
 
 fona05:
-	Inherits: ^fona
+	Inherits: ^tree
 	idle:
 		Filename: fona05.tem
 
 fona06:
-	Inherits: ^fona
+	Inherits: ^tree
 	idle:
 		Filename: fona06.tem
 
 fona07:
-	Inherits: ^fona
+	Inherits: ^tree
 	idle:
 		Filename: fona07.tem
 
 fona08:
-	Inherits: ^fona
+	Inherits: ^tree
 	idle:
 		Filename: fona08.tem
 
 fona09:
-	Inherits: ^fona
+	Inherits: ^tree
 	idle:
 		Filename: fona09.tem
 
 fona10:
-	Inherits: ^fona
+	Inherits: ^tree
 	idle:
 		Filename: fona10.tem
 
 fona11:
-	Inherits: ^fona
+	Inherits: ^tree
 	idle:
 		Filename: fona11.tem
 
 fona12:
-	Inherits: ^fona
+	Inherits: ^tree
 	idle:
 		Filename: fona12.tem
 
 fona13:
-	Inherits: ^fona
+	Inherits: ^tree
 	idle:
 		Filename: fona13.tem
 
 fona14:
-	Inherits: ^fona
+	Inherits: ^tree
 	idle:
 		Filename: fona14.tem
 
 fona15:
-	Inherits: ^fona
+	Inherits: ^tree
 	idle:
 		Filename: fona15.tem
 
