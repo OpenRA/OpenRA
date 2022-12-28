@@ -83,16 +83,12 @@ namespace OpenRA.Mods.Common.Graphics
 		public string Filename => exception.FileName;
 
 		string ISpriteSequence.Name => throw exception;
-		int ISpriteSequence.Start => throw exception;
 		int ISpriteSequence.Length => throw exception;
-		int ISpriteSequence.Stride => throw exception;
 		int ISpriteSequence.Facings => throw exception;
 		int ISpriteSequence.InterpolatedFacings => throw exception;
 		int ISpriteSequence.Tick => throw exception;
 		int ISpriteSequence.ZOffset => throw exception;
-		int ISpriteSequence.ShadowStart => throw exception;
 		int ISpriteSequence.ShadowZOffset => throw exception;
-		int[] ISpriteSequence.Frames => throw exception;
 		Rectangle ISpriteSequence.Bounds => throw exception;
 		bool ISpriteSequence.IgnoreWorldTint => throw exception;
 		float ISpriteSequence.Scale => throw exception;
@@ -135,7 +131,6 @@ namespace OpenRA.Mods.Common.Graphics
 
 		[Desc("Frame index to start from.")]
 		static readonly SpriteSequenceField<int> Start = new SpriteSequenceField<int>(nameof(Start), 0);
-		int ISpriteSequence.Start => start;
 		int start;
 
 		[Desc("Number of frames to use. Does not have to be the total amount the sprite sheet has.")]
@@ -145,7 +140,6 @@ namespace OpenRA.Mods.Common.Graphics
 
 		[Desc("Overrides Length if a different number of frames is defined between facings.")]
 		static readonly SpriteSequenceField<int> Stride = new SpriteSequenceField<int>(nameof(Stride), -1);
-		int ISpriteSequence.Stride => stride;
 		int stride;
 
 		[Desc("The amount of directions the unit faces. Use negative values to rotate counter-clockwise.")]
@@ -175,7 +169,6 @@ namespace OpenRA.Mods.Common.Graphics
 		[Desc("If the shadow is not part of the sprite, but baked into the same sprite sheet at a fixed offset, " +
 			"set this to the frame index where it starts.")]
 		static readonly SpriteSequenceField<int> ShadowStart = new SpriteSequenceField<int>(nameof(ShadowStart), -1);
-		int ISpriteSequence.ShadowStart => shadowStart;
 		readonly int shadowStart;
 
 		[Desc("Set Z-Offset for the separate shadow. Used by the later Westwood 2.5D titles.")]
@@ -185,7 +178,6 @@ namespace OpenRA.Mods.Common.Graphics
 
 		[Desc("The individual frames to play instead of going through them sequentially from the `Start`.")]
 		static readonly SpriteSequenceField<int[]> Frames = new SpriteSequenceField<int[]>(nameof(Frames), null);
-		int[] ISpriteSequence.Frames => frames;
 		int[] frames;
 
 		[Desc("Don't apply terrain lighting or colored overlays.")]

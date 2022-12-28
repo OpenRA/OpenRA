@@ -22,16 +22,12 @@ namespace OpenRA.Graphics
 	public interface ISpriteSequence
 	{
 		string Name { get; }
-		int Start { get; }
 		int Length { get; }
-		int Stride { get; }
 		int Facings { get; }
 		int InterpolatedFacings { get; }
 		int Tick { get; }
 		int ZOffset { get; }
-		int ShadowStart { get; }
 		int ShadowZOffset { get; }
-		int[] Frames { get; }
 		Rectangle Bounds { get; }
 		bool IgnoreWorldTint { get; }
 		float Scale { get; }
