@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			foreach (var a in w.Actors)
 				ActorAddedToWorld(a);
 
-			veinSequence = w.Map.Rules.Sequences.GetSequence(info.Image, info.Sequence);
+			veinSequence = w.Map.Sequences.GetSequence(info.Image, info.Sequence);
 			veinPalette = wr.Palette(info.Palette);
 
 			var first = veinSequence.GetSprite(0);

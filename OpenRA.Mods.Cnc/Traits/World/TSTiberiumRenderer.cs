@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void LoadVariants(Dictionary<string, string[]> rampSequences, Dictionary<string, Dictionary<string, ISpriteSequence>> rampVariants)
 		{
-			var sequences = world.Map.Rules.Sequences;
+			var sequences = world.Map.Sequences;
 			foreach (var kv in rampSequences)
 			{
 				if (!Info.ResourceTypes.TryGetValue(kv.Key, out var resourceInfo))

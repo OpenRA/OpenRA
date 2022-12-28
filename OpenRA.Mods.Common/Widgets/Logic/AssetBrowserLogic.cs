@@ -505,7 +505,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var fileExtension = Path.GetExtension(filename.ToLowerInvariant());
 				if (allowedSpriteExtensions.Contains(fileExtension))
 				{
-					currentSprites = world.Map.Rules.Sequences.SpriteCache[prefix + filename];
+					currentSprites = world.Map.Sequences.SpriteCache[prefix + filename];
 					currentFrame = 0;
 
 					if (frameSlider != null && currentSprites?.Length > 0)

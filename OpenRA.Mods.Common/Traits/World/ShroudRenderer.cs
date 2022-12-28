@@ -156,11 +156,11 @@ namespace OpenRA.Mods.Common.Traits
 			shroudSprites = new (Sprite, float, float)[variantCount * variantStride];
 			fogSprites = new (Sprite, float, float)[variantCount * variantStride];
 
-			var sequenceProvider = map.Rules.Sequences;
+			var sequences = map.Sequences;
 			for (var j = 0; j < variantCount; j++)
 			{
-				var shroudSequence = sequenceProvider.GetSequence(info.Sequence, info.ShroudVariants[j]);
-				var fogSequence = sequenceProvider.GetSequence(info.Sequence, info.FogVariants[j]);
+				var shroudSequence = sequences.GetSequence(info.Sequence, info.ShroudVariants[j]);
+				var fogSequence = sequences.GetSequence(info.Sequence, info.FogVariants[j]);
 				for (var i = 0; i < info.Index.Length; i++)
 				{
 					shroudSprites[j * variantStride + i] = (shroudSequence.GetSprite(i), shroudSequence.Scale, shroudSequence.GetAlpha(i));
@@ -170,8 +170,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (info.OverrideFullShroud != null)
 				{
 					var i = (j + 1) * variantStride - 1;
-					shroudSequence = sequenceProvider.GetSequence(info.Sequence, info.OverrideFullShroud);
-					fogSequence = sequenceProvider.GetSequence(info.Sequence, info.OverrideFullFog);
+					shroudSequence = sequences.GetSequence(info.Sequence, info.OverrideFullShroud);
+					fogSequence = sequences.GetSequence(info.Sequence, info.OverrideFullFog);
 					shroudSprites[i] = (shroudSequence.GetSprite(0), shroudSequence.Scale, shroudSequence.GetAlpha(0));
 					fogSprites[i] = (fogSequence.GetSprite(0), fogSequence.Scale, fogSequence.GetAlpha(0));
 				}

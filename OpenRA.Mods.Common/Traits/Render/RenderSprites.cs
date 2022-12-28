@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
 		{
-			var sequenceProvider = init.World.Map.Rules.Sequences;
+			var sequences = init.World.Map.Sequences;
 			var faction = init.GetValue<FactionInit, string>(this);
 			var ownerName = init.Get<OwnerInit>().InternalName;
 			var image = GetImage(init.Actor, faction);
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				if (facings == -1)
 				{
 					var qbo = init.Actor.TraitInfoOrDefault<IQuantizeBodyOrientationInfo>();
-					facings = qbo?.QuantizedBodyFacings(init.Actor, sequenceProvider, faction) ?? 1;
+					facings = qbo?.QuantizedBodyFacings(init.Actor, sequences, faction) ?? 1;
 				}
 			}
 

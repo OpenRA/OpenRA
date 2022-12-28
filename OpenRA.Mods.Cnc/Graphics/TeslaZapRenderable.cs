@@ -93,8 +93,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 		public IEnumerable<IFinalizedRenderable> GenerateRenderables(WorldRenderer wr)
 		{
-			var bright = wr.World.Map.Rules.Sequences.GetSequence(image, brightSequence);
-			var dim = wr.World.Map.Rules.Sequences.GetSequence(image, dimSequence);
+			var bright = wr.World.Map.Sequences.GetSequence(image, brightSequence);
+			var dim = wr.World.Map.Sequences.GetSequence(image, dimSequence);
 
 			var source = wr.ScreenPosition(pos);
 			var target = wr.ScreenPosition(pos + length);

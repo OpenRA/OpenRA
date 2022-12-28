@@ -59,10 +59,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var faction = init.GetValue<FactionInit, string>(this);
 			var ownerName = init.Get<OwnerInit>().InternalName;
-			var sequenceProvider = init.World.Map.Rules.Sequences;
+			var sequences = init.World.Map.Sequences;
 			var image = Image ?? init.Actor.Name;
 			var facings = body.QuantizedFacings == -1 ?
-				init.Actor.TraitInfo<IQuantizeBodyOrientationInfo>().QuantizedBodyFacings(init.Actor, sequenceProvider, faction) :
+				init.Actor.TraitInfo<IQuantizeBodyOrientationInfo>().QuantizedBodyFacings(init.Actor, sequences, faction) :
 				body.QuantizedFacings;
 			var palette = init.WorldRenderer.Palette(Palette ?? PlayerPalette + ownerName);
 

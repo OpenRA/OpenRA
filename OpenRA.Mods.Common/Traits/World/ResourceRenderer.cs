@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void WorldLoaded(World w, WorldRenderer wr)
 		{
-			var sequences = w.Map.Rules.Sequences;
+			var sequences = w.Map.Sequences;
 			foreach (var kv in Info.ResourceTypes)
 			{
 				var resourceInfo = kv.Value;
@@ -141,12 +141,13 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (shadowLayer == null)
 				{
-					var firstWithShadow = resourceVariants.Values.FirstOrDefault(v => v.ShadowStart > 0);
-					if (firstWithShadow != null)
+					var firstShadow = resourceVariants.Values
+						.Select(v => v.GetShadow(0, WAngle.Zero))
+						.FirstOrDefault(s => s != null);
+					if (firstShadow != null)
 					{
-						var first = firstWithShadow.GetShadow(0, WAngle.Zero);
-						var emptySprite = new Sprite(first.Sheet, Rectangle.Empty, TextureChannel.Alpha);
-						shadowLayer = new TerrainSpriteLayer(w, wr, emptySprite, first.BlendMode, wr.World.Type != WorldType.Editor);
+						var emptySprite = new Sprite(firstShadow.Sheet, Rectangle.Empty, TextureChannel.Alpha);
+						shadowLayer = new TerrainSpriteLayer(w, wr, emptySprite, firstShadow.BlendMode, wr.World.Type != WorldType.Editor);
 					}
 				}
 

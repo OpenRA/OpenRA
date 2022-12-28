@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			SequenceProvider sequences;
 			var mapPackage = new Folder(Platform.EngineDir).OpenPackage(args[2], modData.ModFiles);
 			if (mapPackage != null)
-				sequences = new Map(modData, mapPackage).Rules.Sequences;
+				sequences = new Map(modData, mapPackage).Sequences;
 			else if (!modData.DefaultSequences.TryGetValue(args[2], out sequences))
 				throw new InvalidOperationException($"{args[2]} is not a valid tileset or map path");
 

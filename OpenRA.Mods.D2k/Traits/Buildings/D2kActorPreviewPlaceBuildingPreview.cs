@@ -72,7 +72,7 @@ namespace OpenRA.Mods.D2k.Traits
 			this.info = info;
 
 			var world = wr.World;
-			var sequences = world.Map.Rules.Sequences;
+			var sequences = world.Map.Sequences;
 
 			var techTree = init.Get<OwnerInit>().Value(world).PlayerActor.Trait<TechTree>();
 			checkUnsafeTiles = info.RequiresPrerequisites.Length > 0 && techTree.HasPrerequisites(info.RequiresPrerequisites);
