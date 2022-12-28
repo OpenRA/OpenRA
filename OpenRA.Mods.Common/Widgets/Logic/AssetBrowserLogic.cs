@@ -17,6 +17,7 @@ using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Video;
 using OpenRA.Widgets;
 
@@ -57,6 +58,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollPanelWidget assetList;
 		readonly ScrollItemWidget template;
 
+		readonly Cache<SheetType, SheetBuilder> sheetBuilders;
+		readonly Cache<string, Sprite[]> spriteCache;
+
 		IReadOnlyPackage assetSource = null;
 		bool animateFrames = false;
 
@@ -82,6 +86,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, ModData modData, WorldRenderer worldRenderer)
 		{
+			sheetBuilders = new Cache<SheetType, SheetBuilder>(t => new SheetBuilder(t));
+			spriteCache = new Cache<string, Sprite[]>(
+				filename => FrameLoader.GetFrames(modData.DefaultFileSystem, filename, modData.SpriteLoaders, out _)
+						.Select(f => sheetBuilders[SheetBuilder.FrameTypeToSheetType(f.Type)].Add(f))
+						.ToArray());
+
 			world = worldRenderer.World;
 			this.modData = modData;
 			panel = widget;
@@ -505,7 +515,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var fileExtension = Path.GetExtension(filename.ToLowerInvariant());
 				if (allowedSpriteExtensions.Contains(fileExtension))
 				{
-					currentSprites = world.Map.Sequences.SpriteCache[prefix + filename];
+					currentSprites = spriteCache[filename];
 					currentFrame = 0;
 
 					if (frameSlider != null && currentSprites?.Length > 0)
