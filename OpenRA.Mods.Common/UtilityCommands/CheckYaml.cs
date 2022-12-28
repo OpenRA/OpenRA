@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileSystem;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Lint;
 
 namespace OpenRA.Mods.Common.UtilityCommands
@@ -62,6 +63,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					// Run all rule checks on the default mod rules.
 					CheckRules(modData, modData.DefaultRules);
+					foreach (var tileset in modData.DefaultTerrainInfo.Keys)
+					{
+						Console.WriteLine($"Testing default sequences for {tileset}");
+
+						var sequences = new SequenceProvider(modData.DefaultFileSystem, modData, tileset, null);
+						CheckSequences(modData, modData.DefaultRules, sequences);
+					}
 
 					// Run all generic (not mod-level) checks here.
 					foreach (var customPassType in modData.ObjectCreator.GetTypesImplementing<ILintPass>())
@@ -120,7 +128,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			// Run all rule checks on the map if it defines custom rules.
 			if (map.RuleDefinitions != null || map.VoiceDefinitions != null || map.WeaponDefinitions != null)
+			{
 				CheckRules(modData, map.Rules);
+				if (map.SequenceDefinitions != null)
+					CheckSequences(modData, modData.DefaultRules, map.Sequences);
+			}
 
 			// Run all map-level checks here.
 			foreach (var customMapPassType in modData.ObjectCreator.GetTypesImplementing<ILintMapPass>())
@@ -149,6 +161,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				catch (Exception e)
 				{
 					EmitError($"{customRulesPassType} failed with exception: {e}");
+				}
+			}
+		}
+
+		void CheckSequences(ModData modData, Ruleset rules, SequenceProvider sequences)
+		{
+			foreach (var customSequencesPassType in modData.ObjectCreator.GetTypesImplementing<ILintSequencesPass>())
+			{
+				try
+				{
+					var customRulesPass = (ILintSequencesPass)modData.ObjectCreator.CreateBasic(customSequencesPassType);
+					customRulesPass.Run(EmitError, EmitWarning, modData, rules, sequences);
+				}
+				catch (Exception e)
+				{
+					EmitError($"{customSequencesPassType} failed with exception: {e}");
 				}
 			}
 		}
