@@ -23,7 +23,7 @@ jobs:
           ref: ${{ github.event.inputs.tag }}
 
       - name: Install .NET 6
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '6.0.x'
 
@@ -74,7 +74,7 @@ jobs:
           ref: ${{ github.event.inputs.tag }}
 
       - name: Install .NET 6
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '6.0.x'
 
