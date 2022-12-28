@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Clone Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install .NET 6.0
         uses: actions/setup-dotnet@v3
@@ -38,7 +38,7 @@ jobs:
 
     steps:
       - name: Clone Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Check Code
         run: |
@@ -56,7 +56,7 @@ jobs:
 
     steps:
       - name: Clone Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install .NET 6.0
         uses: actions/setup-dotnet@v3
