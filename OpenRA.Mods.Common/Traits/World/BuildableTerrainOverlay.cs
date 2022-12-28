@@ -59,8 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			world = self.World;
 
-			var rules = self.World.Map.Rules;
-			disabledSprite = rules.Sequences.GetSequence(info.Image, info.Sequence).GetSprite(0);
+			disabledSprite = self.World.Map.Sequences.GetSequence(info.Image, info.Sequence).GetSprite(0);
 		}
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)

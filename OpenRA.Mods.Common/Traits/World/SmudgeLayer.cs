@@ -106,10 +106,10 @@ namespace OpenRA.Mods.Common.Traits
 			world = self.World;
 			hasSmoke = !string.IsNullOrEmpty(info.SmokeImage) && info.SmokeSequences.Length > 0;
 
-			var sequenceProvider = world.Map.Rules.Sequences;
-			var types = sequenceProvider.Sequences(Info.Sequence);
+			var sequences = world.Map.Sequences;
+			var types = sequences.Sequences(Info.Sequence);
 			foreach (var t in types)
-				smudges.Add(t, sequenceProvider.GetSequence(Info.Sequence, t));
+				smudges.Add(t, sequences.GetSequence(Info.Sequence, t));
 		}
 
 		public void WorldLoaded(World w, WorldRenderer wr)

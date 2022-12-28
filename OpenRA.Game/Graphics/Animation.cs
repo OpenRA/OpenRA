@@ -22,7 +22,7 @@ namespace OpenRA.Graphics
 		public string Name { get; private set; }
 		public bool IsDecoration { get; set; }
 
-		readonly SequenceProvider sequenceProvider;
+		readonly SequenceProvider sequences;
 		readonly Func<WAngle> facingFunc;
 		readonly Func<bool> paused;
 
@@ -43,7 +43,7 @@ namespace OpenRA.Graphics
 
 		public Animation(World world, string name, Func<WAngle> facingFunc, Func<bool> paused)
 		{
-			sequenceProvider = world.Map.Rules.Sequences;
+			sequences = world.Map.Sequences;
 			Name = name.ToLowerInvariant();
 			this.facingFunc = facingFunc;
 			this.paused = paused;
@@ -236,11 +236,11 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public bool HasSequence(string seq) { return sequenceProvider.HasSequence(Name, seq); }
+		public bool HasSequence(string seq) { return sequences.HasSequence(Name, seq); }
 
 		public ISpriteSequence GetSequence(string sequenceName)
 		{
-			return sequenceProvider.GetSequence(Name, sequenceName);
+			return sequences.GetSequence(Name, sequenceName);
 		}
 
 		public string GetRandomExistingSequence(string[] sequences, MersenneTwister random)

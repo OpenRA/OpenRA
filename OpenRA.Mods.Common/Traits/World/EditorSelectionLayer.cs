@@ -59,11 +59,11 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			map = self.World.Map;
 
-			var copySequence = map.Rules.Sequences.GetSequence(info.Image, info.CopySequence);
+			var copySequence = map.Sequences.GetSequence(info.Image, info.CopySequence);
 			copyTile = copySequence.GetSprite(0);
 			copyAlpha = copySequence.GetAlpha(0);
 
-			var pasteSequence = map.Rules.Sequences.GetSequence(info.Image, info.PasteSequence);
+			var pasteSequence = map.Sequences.GetSequence(info.Image, info.PasteSequence);
 			pasteTile = pasteSequence.GetSprite(0);
 			pasteAlpha = pasteSequence.GetAlpha(0);
 		}
