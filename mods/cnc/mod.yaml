@@ -238,12 +238,6 @@ VideoFormats: Vqa, Wsa
 TerrainFormat: DefaultTerrain
 
 SpriteSequenceFormat: ClassicTilesetSpecificSpriteSequence
-	TilesetExtensions:
-		TEMPERAT: .tem
-		WINTER: .win
-		SNOW: .sno
-		DESERT: .des
-		JUNGLE: .jun
 
 ModelSequenceFormat: PlaceholderModelSequence
 
