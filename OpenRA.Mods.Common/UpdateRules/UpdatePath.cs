@@ -98,6 +98,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new UnhardcodeVeteranProductionIconOverlay(),
 				new RenameContrailProperties(),
 				new RemoveDomainIndex(),
+				new AddControlGroups(),
 			})
 		};
 
