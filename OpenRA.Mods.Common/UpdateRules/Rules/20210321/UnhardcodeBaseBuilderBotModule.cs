@@ -10,28 +10,33 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
-using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class UnhardcodeBaseBuilderBotModule : UpdateRule
 	{
+		bool anyAdded;
+
 		public override string Name => "BaseBuilderBotModule got new fields to configure buildings that are defenses.";
 
 		public override string Description => "DefenseTypes were added.";
 
+		public override IEnumerable<string> AfterUpdate(ModData modData)
+		{
+			if (anyAdded)
+				yield return "A new field was added to BaseBuilderBotModule - DefenseTypes.\n" +
+				             "Add any relevant base defense structures there.";
+
+			anyAdded = false;
+		}
+
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
-			var addNodes = new List<MiniYamlNode>();
-
-			var defense = modData.DefaultRules.Actors.Values.Where(a => a.HasTraitInfo<BuildingInfo>() && a.HasTraitInfo<AttackBaseInfo>()).Select(a => a.Name);
-			var defensetypes = new MiniYamlNode("DefenseTypes", FieldSaver.FormatValue(defense.ToList()));
-			addNodes.Add(defensetypes);
-
-			foreach (var baseBuilderManager in actorNode.ChildrenMatching("BaseBuilderBotModule"))
-				foreach (var addNode in addNodes)
-					baseBuilderManager.AddNode(addNode);
+			foreach (var squadManager in actorNode.ChildrenMatching("BaseBuilderBotModule"))
+			{
+				squadManager.AddNode(new MiniYamlNode("DefenseTypes", ""));
+				anyAdded = true;
+			}
 
 			yield break;
 		}
