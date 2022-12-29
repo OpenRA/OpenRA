@@ -24,7 +24,6 @@ namespace OpenRA.Graphics
 		string Name { get; }
 		int Length { get; }
 		int Facings { get; }
-		int InterpolatedFacings { get; }
 		int Tick { get; }
 		int ZOffset { get; }
 		int ShadowZOffset { get; }
