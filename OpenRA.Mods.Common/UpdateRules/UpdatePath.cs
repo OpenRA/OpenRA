@@ -96,6 +96,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new UnhardcodeBaseBuilderBotModule(),
 				new UnhardcodeVeteranProductionIconOverlay(),
 				new RenameContrailProperties(),
+				new RemoveDomainIndex(),
 			}),
 
 			new UpdatePath("playtest-20221203", new UpdateRule[]
