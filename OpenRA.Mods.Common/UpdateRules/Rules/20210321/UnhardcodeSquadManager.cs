@@ -10,32 +10,34 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
-using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class UnhardcodeSquadManager : UpdateRule
 	{
+		bool anyAdded;
+
 		public override string Name => "SquadManagerBotModule got new fields to configure ground attacks and defensive actions.";
 
 		public override string Description => "AirUnitsTypes and ProtectionTypes were added.";
 
+		public override IEnumerable<string> AfterUpdate(ModData modData)
+		{
+			if (anyAdded)
+				yield return "Two new fields were added to SquadManagerBotModule - AirUnitsTypes and ProtectionTypes.\n" +
+				             "Add any relevant attack aircraft or any actors worth defending there.";
+
+			anyAdded = false;
+		}
+
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
-			var addNodes = new List<MiniYamlNode>();
-
-			var aircraft = modData.DefaultRules.Actors.Values.Where(a => a.HasTraitInfo<AircraftInfo>() && a.HasTraitInfo<AttackBaseInfo>()).Select(a => a.Name);
-			var airUnits = new MiniYamlNode("AirUnitsTypes", FieldSaver.FormatValue(aircraft.ToList()));
-			addNodes.Add(airUnits);
-
-			var vips = modData.DefaultRules.Actors.Values.Where(a => a.HasTraitInfo<HarvesterInfo>() || a.HasTraitInfo<BaseBuildingInfo>() || (a.HasTraitInfo<BuildingInfo>() && a.HasTraitInfo<BuildableInfo>() && !a.HasTraitInfo<LineBuildInfo>() && !a.HasTraitInfo<PlugInfo>())).Select(a => a.Name);
-			var protection = new MiniYamlNode("ProtectionTypes", FieldSaver.FormatValue(vips.ToList()));
-			addNodes.Add(protection);
-
 			foreach (var squadManager in actorNode.ChildrenMatching("SquadManagerBotModule"))
-				foreach (var addNode in addNodes)
-					squadManager.AddNode(addNode);
+			{
+				squadManager.AddNode(new MiniYamlNode("AirUnitsTypes", ""));
+				squadManager.AddNode(new MiniYamlNode("ProtectionTypes", ""));
+				anyAdded = true;
+			}
 
 			yield break;
 		}
