@@ -11,33 +11,132 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class UnhardcodeSquadManager : UpdateRule
 	{
+		readonly List<MiniYamlNode> addNodes = new List<MiniYamlNode>();
+
+		// Excludes AttackBomber and AttackTDGunboatTurreted as actors with these AttackBase traits aren't supposed to be controlled.
+		readonly string[] attackBase = { "AttackLeap", "AttackPopupTurreted", "AttackAircraft", "AttackTesla", "AttackCharges", "AttackFollow", "AttackTurreted", "AttackFrontal", "AttackGarrisoned", "AttackOmni", "AttackSwallow" };
+		readonly string[] vipsNames = { "Harvester", "BaseBuilding" };
+		readonly string[] buildings = { "Building", "EnergyWall", "D2kBuilding" };
+		readonly string[] excludedBuildings = { "LineBuild", "Plug" };
+
 		public override string Name => "SquadManagerBotModule got new fields to configure ground attacks and defensive actions.";
 
 		public override string Description => "AirUnitsTypes and ProtectionTypes were added.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> BeforeUpdateActors(ModData modData, List<MiniYamlNode> resolvedActors)
 		{
-			var addNodes = new List<MiniYamlNode>();
+			var aircraft = new List<string>();
+			var vips = new List<string>();
 
-			var aircraft = modData.DefaultRules.Actors.Values.Where(a => a.HasTraitInfo<AircraftInfo>() && a.HasTraitInfo<AttackBaseInfo>()).Select(a => a.Name);
-			var airUnits = new MiniYamlNode("AirUnitsTypes", FieldSaver.FormatValue(aircraft.ToList()));
-			addNodes.Add(airUnits);
+			foreach (var actor in resolvedActors)
+			{
+				if (actor.Key.StartsWith('^'))
+					continue;
 
-			var vips = modData.DefaultRules.Actors.Values.Where(a => a.HasTraitInfo<HarvesterInfo>() || a.HasTraitInfo<BaseBuildingInfo>() || (a.HasTraitInfo<BuildingInfo>() && a.HasTraitInfo<BuildableInfo>() && !a.HasTraitInfo<LineBuildInfo>() && !a.HasTraitInfo<PlugInfo>())).Select(a => a.Name);
-			var protection = new MiniYamlNode("ProtectionTypes", FieldSaver.FormatValue(vips.ToList()));
-			addNodes.Add(protection);
+				var isVip = false;
+				var isBuildable = false;
+				var isBuilding = false;
+				var isAircraft = false;
+				var isExcluded = false;
+				var canAttack = false;
+				var isKillable = false;
 
-			foreach (var squadManager in actorNode.ChildrenMatching("SquadManagerBotModule"))
-				foreach (var addNode in addNodes)
-					squadManager.AddNode(addNode);
+				foreach (var trait in actor.Value.Nodes)
+				{
+					if (trait.IsRemoval())
+						continue;
+
+					if (trait.KeyMatches("Buildable", includeRemovals: false))
+					{
+						isBuildable = true;
+						continue;
+					}
+
+					if (trait.KeyMatches("Aircraft", includeRemovals: false))
+					{
+						isAircraft = true;
+						continue;
+					}
+
+					if (trait.KeyMatches("Health", includeRemovals: false))
+					{
+						isKillable = true;
+						continue;
+					}
+
+					if (vipsNames.Any(v => trait.KeyMatches(v, includeRemovals: false)))
+					{
+						isVip = true;
+						continue;
+					}
+
+					if (buildings.Any(b => trait.KeyMatches(b, includeRemovals: false)))
+					{
+						isBuilding = true;
+						continue;
+					}
+
+					if (excludedBuildings.Any(eb => trait.KeyMatches(eb, includeRemovals: false)))
+					{
+						isExcluded = true;
+						continue;
+					}
+
+					if (attackBase.Any(ab => trait.KeyMatches(ab, includeRemovals: false)))
+						canAttack = true;
+				}
+
+				if (isAircraft && isBuildable && canAttack && isKillable)
+				{
+					var name = actor.Key.ToLower();
+					if (!aircraft.Contains(name))
+						aircraft.Add(name);
+				}
+
+				if (isBuildable && isKillable && (isVip || (isBuilding && !isExcluded)))
+				{
+					var name = actor.Key.ToLower();
+					if (!vips.Contains(name))
+						vips.Add(name);
+				}
+			}
+
+			addNodes.Add(new MiniYamlNode("AirUnitsTypes", FieldSaver.FormatValue(aircraft)));
+			addNodes.Add(new MiniYamlNode("ProtectionTypes", FieldSaver.FormatValue(vips)));
 
 			yield break;
+		}
+
+		bool anyAdded = false;
+
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		{
+			foreach (var squadManager in actorNode.ChildrenMatching("SquadManagerBotModule", includeRemovals: false))
+			{
+				foreach (var addNode in addNodes)
+				{
+					if (!squadManager.ChildrenMatching(addNode.Key, includeRemovals: false).Any())
+					{
+						squadManager.AddNode(addNode);
+						anyAdded = true;
+					}
+				}
+			}
+
+			yield break;
+		}
+
+		public override IEnumerable<string> AfterUpdate(ModData modData)
+		{
+			if (anyAdded)
+				yield return "`SquadManagerBotModule` was unhardcoded and new fields added: `AirUnitsTypes` and `ProtectionTypes`. Please verify the automated changes.";
+
+			anyAdded = false;
 		}
 	}
 }
