@@ -74,7 +74,7 @@ Player:
 		ExcludeFromSquadsTypes: harv, mcv, dpod, hunter
 		ConstructionYardTypes: gacnst
 		AirUnitsTypes: orca, orcab, scrin, apache, jumpjet
-		ProtectionTypes: gapowr, gapowrup, gapile, gaweap, gahpad, gadept, garadr, gatech, gaplug, gagate_a, gagate_b, gactwr, gavulc, garock, gacsam, napowr, naapwr, nahand, naweap, nahpad, naradr, natech, nastlh, natmpl, namisl, nawast, nagate_a, nagate_b, nalasr, naobel, nasam, weed, gacnst, proc, gasilo, napuls, mcv, harv
+		ProtectionTypes: gapowr, gapile, gaweap, gahpad, gadept, garadr, gatech, gaplug, gagate_a, gagate_b, gactwr, napowr, naapwr, nahand, naweap, nahpad, naradr, natech, nastlh, natmpl, namisl, nawast, nagate_a, nagate_b, nalasr, naobel, nasam, weed, gacnst, proc, gasilo, napuls, mcv, harv
 		IgnoredEnemyTargetTypes: Air
 	UnitBuilderBotModule@test:
 		RequiresCondition: enable-test-ai
