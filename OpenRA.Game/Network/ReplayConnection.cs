@@ -27,7 +27,6 @@ namespace OpenRA.Network
 		readonly Queue<Chunk> chunks = new Queue<Chunk>();
 		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> sync = new Queue<(int, int, ulong)>();
 		readonly int orderLatency;
-		int ordersFrame;
 
 		public readonly int TickCount;
 		public readonly int FinalGameTick;
@@ -91,7 +90,6 @@ namespace OpenRA.Network
 			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
 			var gameSpeedName = LobbyInfo.GlobalSettings.OptionOrDefault("gamespeed", gameSpeeds.DefaultSpeed);
 			orderLatency = gameSpeeds.Speeds[gameSpeedName].OrderLatency;
-			ordersFrame = orderLatency;
 		}
 
 		void IConnection.StartGame() { }
@@ -103,9 +101,6 @@ namespace OpenRA.Network
 		void IConnection.SendSync(int frame, int syncHash, ulong defeatState)
 		{
 			sync.Enqueue((frame, syncHash, defeatState));
-
-			// Store the current frame so Receive() can return the next chunk of orders.
-			ordersFrame = frame + orderLatency;
 		}
 
 		void IConnection.Receive(OrderManager orderManager)
@@ -113,7 +108,7 @@ namespace OpenRA.Network
 			while (sync.Count != 0)
 				orderManager.ReceiveSync(sync.Dequeue());
 
-			while (chunks.Count != 0 && chunks.Peek().Frame <= ordersFrame)
+			while (chunks.Count != 0 && chunks.Peek().Frame <= orderManager.NetFrameNumber + orderLatency)
 			{
 				foreach (var o in chunks.Dequeue().Packets)
 				{
