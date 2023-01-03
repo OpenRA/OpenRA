@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly List<Actor> cargo = new List<Actor>();
 		readonly HashSet<Actor> reserves = new HashSet<Actor>();
-		readonly Dictionary<string, Stack<int>> passengerTokens = new Dictionary<string, Stack<int>>();
+		readonly Dictionary<string, int> passengerTokens = new Dictionary<string, int>();
 		readonly Lazy<IFacing> facing;
 		readonly bool checkTerrainType;
 
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 		int reservedWeight = 0;
 		Aircraft aircraft;
 		int loadingToken = Actor.InvalidConditionToken;
-		readonly Stack<int> loadedTokens = new Stack<int>();
+		int loadedToken = Actor.InvalidConditionToken;
 		bool takeOffAfterLoad;
 		bool initialised;
 
@@ -170,12 +170,21 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (cargo.Count > 0)
 			{
+				var passengerCounts = new Dictionary<string, int>();
 				foreach (var c in cargo)
 					if (Info.PassengerConditions.TryGetValue(c.Info.Name, out var passengerCondition))
-						passengerTokens.GetOrAdd(c.Info.Name).Push(self.GrantCondition(passengerCondition));
+						passengerCounts[c.Info.Name] = passengerCounts.GetOrAdd(c.Info.Name) + 1;
+				foreach (var c in passengerCounts)
+					if (passengerTokens.TryGetValue(c.Key, out var token))
+						self.UpdateCondition(token, c.Value);
+					else
+						passengerTokens.Add(c.Key, self.GrantCondition(Info.PassengerConditions[c.Key], c.Value));
 
 				if (!string.IsNullOrEmpty(Info.LoadedCondition))
-					loadedTokens.Push(self.GrantCondition(Info.LoadedCondition));
+					if (loadedToken == Actor.InvalidConditionToken)
+						loadedToken = self.GrantCondition(Info.LoadedCondition, cargo.Count);
+					else
+						self.UpdateCondition(loadedToken, cargo.Count);
 			}
 
 			// Defer notifications until we are certain all traits on the transport are initialised
@@ -350,11 +359,11 @@ namespace OpenRA.Mods.Common.Traits
 			var p = passenger.Trait<Passenger>();
 			p.Transport = null;
 
-			if (passengerTokens.TryGetValue(passenger.Info.Name, out var passengerToken) && passengerToken.Count > 0)
-				self.RevokeCondition(passengerToken.Pop());
+			if (passengerTokens.TryGetValue(passenger.Info.Name, out var passengerToken))
+				self.AddConditionWeight(passengerToken, -1);
 
-			if (loadedTokens.Count > 0)
-				self.RevokeCondition(loadedTokens.Pop());
+			if (loadedToken != Actor.InvalidConditionToken)
+				self.AddConditionWeight(loadedToken, -1);
 
 			return passenger;
 		}
@@ -396,11 +405,16 @@ namespace OpenRA.Mods.Common.Traits
 					npe.OnPassengerEntered(self, a);
 			}
 
-			if (Info.PassengerConditions.TryGetValue(a.Info.Name, out var passengerCondition))
-				passengerTokens.GetOrAdd(a.Info.Name).Push(self.GrantCondition(passengerCondition));
+			if (passengerTokens.TryGetValue(a.Info.Name, out var token))
+				self.AddConditionWeight(token);
+			else if (Info.PassengerConditions.TryGetValue(a.Info.Name, out var passengerCondition))
+				passengerTokens.Add(a.Info.Name, self.GrantCondition(passengerCondition));
 
 			if (!string.IsNullOrEmpty(Info.LoadedCondition))
-				loadedTokens.Push(self.GrantCondition(Info.LoadedCondition));
+				if (loadedToken == Actor.InvalidConditionToken)
+					loadedToken = self.GrantCondition(Info.LoadedCondition);
+				else
+					self.AddConditionWeight(loadedToken);
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)

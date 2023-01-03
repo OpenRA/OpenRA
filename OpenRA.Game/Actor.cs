@@ -86,8 +86,8 @@ namespace OpenRA
 			/// <summary>Delegates that have registered to be notified when this condition changes.</summary>
 			public readonly List<VariableObserverNotifier> Notifiers = new List<VariableObserverNotifier>();
 
-			/// <summary>Unique integers identifying granted instances of the condition.</summary>
-			public readonly HashSet<int> Tokens = new HashSet<int>();
+			/// <summary>Unique integers identifying granted integer weighted instances of the condition.</summary>
+			public readonly Dictionary<int, int> Tokens = new Dictionary<int, int>();
 		}
 
 		readonly Dictionary<string, ConditionState> conditionStates = new Dictionary<string, ConditionState>();
@@ -220,7 +220,7 @@ namespace OpenRA
 						// Initialize conditions that have not yet been granted to 0
 						// NOTE: Some conditions may have already been granted by INotifyCreated calling GrantCondition,
 						// and we choose to assign the token count to safely cover both cases instead of adding an if branch.
-						conditionCache[variable] = cs.Tokens.Count;
+						conditionCache[variable] = cs.Tokens.Values.Sum();
 					}
 				}
 			}
@@ -538,16 +538,30 @@ namespace OpenRA
 
 		#region Conditions
 
-		void UpdateConditionState(string condition, int token, bool isRevoke)
+		enum ConditionUpdateKind { Grant, Update, Adjust, Revoke }
+
+		void UpdateConditionState(string condition, int token, ConditionUpdateKind kind, int weight = 1)
 		{
 			var conditionState = conditionStates.GetOrAdd(condition);
 
-			if (isRevoke)
-				conditionState.Tokens.Remove(token);
-			else
-				conditionState.Tokens.Add(token);
+			switch (kind)
+			{
+				case ConditionUpdateKind.Grant:
+					if (conditionState.Tokens.TryAdd(token, weight))
+						break;
+					goto case ConditionUpdateKind.Update;
+				case ConditionUpdateKind.Update:
+					conditionState.Tokens[token] = weight;
+					break;
+				case ConditionUpdateKind.Adjust:
+					conditionState.Tokens[token] += weight;
+					break;
+				case ConditionUpdateKind.Revoke:
+					conditionState.Tokens.Remove(token);
+					break;
+			}
 
-			conditionCache[condition] = conditionState.Tokens.Count;
+			conditionCache[condition] = conditionState.Tokens.Values.Sum();
 
 			// Conditions may be granted or revoked before the state is initialized.
 			// These notifications will be processed after INotifyCreated.Created.
@@ -561,14 +575,14 @@ namespace OpenRA
 		/// Otherwise, just returns InvalidConditionToken.
 		/// </summary>
 		/// <returns>The token that is used to revoke this condition.</returns>
-		public int GrantCondition(string condition)
+		public int GrantCondition(string condition, int weight = 1)
 		{
 			if (string.IsNullOrEmpty(condition))
 				return InvalidConditionToken;
 
 			var token = nextConditionToken++;
 			conditionTokens.Add(token, condition);
-			UpdateConditionState(condition, token, false);
+			UpdateConditionState(condition, token, ConditionUpdateKind.Grant, weight);
 			return token;
 		}
 
@@ -583,8 +597,38 @@ namespace OpenRA
 				throw new InvalidOperationException($"Attempting to revoke condition with invalid token {token} for {this}.");
 
 			conditionTokens.Remove(token);
-			UpdateConditionState(condition, token, true);
+			UpdateConditionState(condition, token, ConditionUpdateKind.Revoke, 0);
 			return InvalidConditionToken;
+		}
+
+		/// <summary>
+		/// Sets the weight of a previously granted condition.
+		/// </summary>
+		/// <param name="token">The token ID returned by GrantCondition.</param>
+		/// <param name="weight">The new token weight.</param>
+		/// <returns>The token ID.</returns>
+		public int UpdateCondition(int token, int weight)
+		{
+			if (!conditionTokens.TryGetValue(token, out var condition))
+				throw new InvalidOperationException($"Attempting to update condition weight with invalid token {token} for {this}.");
+
+			UpdateConditionState(condition, token, ConditionUpdateKind.Update, weight);
+			return token;
+		}
+
+		/// <summary>
+		/// Adds to the weight of a previously granted condition.
+		/// </summary>
+		/// <param name="token">The token ID returned by GrantCondition.</param>
+		/// <param name="weight">The additional token weight.</param>
+		/// <returns>The token ID.</returns>
+		public int AddConditionWeight(int token, int weight = 1)
+		{
+			if (!conditionTokens.TryGetValue(token, out var condition))
+				throw new InvalidOperationException($"Attempting to adjust condition weight with invalid token {token} for {this}.");
+
+			UpdateConditionState(condition, token, ConditionUpdateKind.Adjust, weight);
+			return token;
 		}
 
 		/// <summary>Returns whether the specified token is valid for RevokeCondition</summary>

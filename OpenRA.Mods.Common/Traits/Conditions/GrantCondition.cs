@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Is the condition irrevocable once it has been activated?")]
 		public readonly bool GrantPermanently = false;
 
+		[Desc("Weight of the condition to grant.")]
+		public readonly int Weight = 1;
+
 		public override object Create(ActorInitializer init) { return new GrantCondition(this); }
 	}
 
@@ -37,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void TraitEnabled(Actor self)
 		{
 			if (conditionToken == Actor.InvalidConditionToken)
-				conditionToken = self.GrantCondition(Info.Condition);
+				conditionToken = self.GrantCondition(Info.Condition, Info.Weight);
 		}
 
 		protected override void TraitDisabled(Actor self)

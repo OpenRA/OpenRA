@@ -114,6 +114,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		int disguisedToken = Actor.InvalidConditionToken;
 		int disguisedAsToken = Actor.InvalidConditionToken;
 		CPos? lastPos;
+		readonly Dictionary<string, int> disguisedAsTokens = new Dictionary<string, int>();
 
 		public Disguise(Actor self, DisguiseInfo info)
 		{
@@ -223,19 +224,23 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			if (Disguised != oldDisguiseSetting)
 			{
-				if (Disguised && disguisedToken == Actor.InvalidConditionToken)
-					disguisedToken = self.GrantCondition(info.DisguisedCondition);
-				else if (!Disguised && disguisedToken != Actor.InvalidConditionToken)
-					disguisedToken = self.RevokeCondition(disguisedToken);
+					if (disguisedToken != Actor.InvalidConditionToken)
+						self.UpdateCondition(disguisedToken, Disguised ? 1 : 0);
+					if (Disguised)
+						disguisedToken = self.GrantCondition(info.DisguisedCondition);
 			}
 
 			if (AsActor != oldEffectiveActor)
 			{
 				if (disguisedAsToken != Actor.InvalidConditionToken)
-					disguisedAsToken = self.RevokeCondition(disguisedAsToken);
+					self.UpdateCondition(disguisedAsToken, 0);
 
-				if (info.DisguisedAsConditions.TryGetValue(AsActor.Name, out var disguisedAsCondition))
-					disguisedAsToken = self.GrantCondition(disguisedAsCondition);
+				if (disguisedAsTokens.TryGetValue(AsActor.Name, out var token))
+					disguisedAsToken = self.UpdateCondition(token, 1);
+				else if (info.DisguisedAsConditions.TryGetValue(AsActor.Name, out var disguisedAsCondition))
+					disguisedAsTokens.Add(AsActor.Name, disguisedAsToken = self.GrantCondition(disguisedAsCondition));
+				else
+					disguisedAsToken = Actor.InvalidConditionToken;
 			}
 		}
 
