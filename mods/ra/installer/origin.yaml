@@ -1,4 +1,3 @@
-# TODO untested, as i am not able to force origin to download the english version -.-
 ra-origin: C&C The Ultimate Collection (Origin version, English)
 	Type: RegistryDirectory
 	RegistryPrefixes: HKEY_LOCAL_MACHINE\Software\, HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\
