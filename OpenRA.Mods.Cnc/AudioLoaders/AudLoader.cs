@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 			var readFormat = s.ReadByte();
 			s.Position = start;
 
-			return readFormat == (int)SoundFormat.ImaAdpcm;
+			return readFormat == (int)SoundFormat.ImaAdpcm || readFormat == (int)SoundFormat.WestwoodCompressed;
 		}
 
 		bool ISoundLoader.TryParseSound(Stream stream, out ISoundFormat sound)

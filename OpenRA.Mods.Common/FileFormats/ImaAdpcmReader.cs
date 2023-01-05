@@ -13,24 +13,6 @@ using System.IO;
 
 namespace OpenRA.Mods.Common.FileFormats
 {
-	public struct ImaAdpcmChunk
-	{
-		public int CompressedSize;
-		public int OutputSize;
-
-		public static ImaAdpcmChunk Read(Stream s)
-		{
-			ImaAdpcmChunk c;
-			c.CompressedSize = s.ReadUInt16();
-			c.OutputSize = s.ReadUInt16();
-
-			if (s.ReadUInt32() != 0xdeaf)
-				throw new InvalidDataException("Chunk header is bogus");
-
-			return c;
-		}
-	}
-
 	public class ImaAdpcmReader
 	{
 		static readonly int[] IndexAdjust = { -1, -1, -1, -1, 2, 4, 6, 8 };

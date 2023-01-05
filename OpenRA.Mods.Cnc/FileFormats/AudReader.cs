@@ -30,6 +30,24 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		ImaAdpcm = 99,
 	}
 
+	struct AudChunk
+	{
+		public int CompressedSize;
+		public int OutputSize;
+
+		public static AudChunk Read(Stream s)
+		{
+			AudChunk c;
+			c.CompressedSize = s.ReadUInt16();
+			c.OutputSize = s.ReadUInt16();
+
+			if (s.ReadUInt32() != 0xdeaf)
+				throw new InvalidDataException("Chunk header is bogus");
+
+			return c;
+		}
+	}
+
 	public static class AudReader
 	{
 		public static bool LoadSound(Stream s, out Func<Stream> result, out int sampleRate, out int sampleBits, out int channels, out float lengthInSeconds)
@@ -50,9 +68,6 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				if (!Enum.IsDefined(typeof(SoundFormat), readFormat))
 					return false;
 
-				if (readFormat == (int)SoundFormat.WestwoodCompressed)
-					throw new NotImplementedException();
-
 				var offsetPosition = s.Position;
 				var streamLength = s.Length;
 				var segmentLength = (int)(streamLength - offsetPosition);
@@ -60,7 +75,18 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				result = () =>
 				{
 					var audioStream = SegmentStream.CreateWithoutOwningStream(s, offsetPosition, segmentLength);
-					return new AudStream(audioStream, outputSize, dataSize);
+
+					switch (readFormat)
+					{
+						case (int)SoundFormat.ImaAdpcm:
+							return new ImaAdpcmAudStream(audioStream, outputSize, dataSize);
+
+						case (int)SoundFormat.WestwoodCompressed:
+							return new WestwoodCompressedAudStream(audioStream, outputSize, dataSize);
+
+						default:
+							throw new NotImplementedException();
+					}
 				};
 			}
 			finally
@@ -71,7 +97,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			return true;
 		}
 
-		sealed class AudStream : ReadOnlyAdapterStream
+		sealed class ImaAdpcmAudStream : ReadOnlyAdapterStream
 		{
 			readonly int outputSize;
 			int dataSize;
@@ -80,7 +106,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			int baseOffset;
 			int index;
 
-			public AudStream(Stream stream, int outputSize, int dataSize)
+			public ImaAdpcmAudStream(Stream stream, int outputSize, int dataSize)
 				: base(stream)
 			{
 				this.outputSize = outputSize;
@@ -94,7 +120,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				if (dataSize <= 0)
 					return true;
 
-				var chunk = ImaAdpcmChunk.Read(baseStream);
+				var chunk = AudChunk.Read(baseStream);
 				for (var n = 0; n < chunk.CompressedSize; n++)
 				{
 					var b = baseStream.ReadUInt8();
@@ -113,6 +139,40 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						baseOffset += 2;
 					}
 				}
+
+				dataSize -= 8 + chunk.CompressedSize;
+
+				return dataSize <= 0;
+			}
+		}
+
+		sealed class WestwoodCompressedAudStream : ReadOnlyAdapterStream
+		{
+			readonly int outputSize;
+			int dataSize;
+
+			public WestwoodCompressedAudStream(Stream stream, int outputSize, int dataSize)
+				: base(stream)
+			{
+				this.outputSize = outputSize;
+				this.dataSize = dataSize;
+			}
+
+			public override long Length => outputSize;
+
+			protected override bool BufferData(Stream baseStream, Queue<byte> data)
+			{
+				if (dataSize <= 0)
+					return true;
+
+				var chunk = AudChunk.Read(baseStream);
+
+				var input = baseStream.ReadBytes(chunk.CompressedSize);
+				var output = new byte[chunk.OutputSize];
+				WestwoodCompressedReader.DecodeWestwoodCompressedSample(input, output);
+
+				foreach (var b in output)
+					data.Enqueue(b);
 
 				dataSize -= 8 + chunk.CompressedSize;
 
