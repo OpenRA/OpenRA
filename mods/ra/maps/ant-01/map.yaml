@@ -28,25 +28,25 @@ Players:
 		Name: Creeps
 		NonCombatant: True
 		Faction: england
-		Enemies: AntMan
 		Allies: Neutral
+		Enemies: AntMan
 	PlayerReference@Spain:
 		Name: Spain
-		Playable: True
 		AllowBots: False
+		Playable: True
 		Required: True
 		LockFaction: True
 		Faction: allies
 		LockColor: True
+		Color: F6D679
 		LockSpawn: True
 		LockTeam: True
 		Enemies: AntMan
-		Color: F6D679
 	PlayerReference@AntMan:
 		Name: AntMan
-		Faciton: soviet
-		Enemies: Spain, Creeps
 		Bot: campaign
+		Faction: soviet
+		Enemies: Spain, Creeps
 
 Actors:
 	Actor0: brik
