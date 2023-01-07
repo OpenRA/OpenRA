@@ -84,7 +84,9 @@ Container@AUDIO_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Mute Background Music
+									Text: Mute Menu Music
+									TooltipText: Mute background music when no specific track is playing
+									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 						Container@MUSIC_VOLUME_CONTAINER:
 							X: PARENT_RIGHT / 2 + 10
 							Width: PARENT_RIGHT / 2 - 20
