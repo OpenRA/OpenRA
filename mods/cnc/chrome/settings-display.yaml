@@ -159,7 +159,9 @@ Container@DISPLAY_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Player Stance Colors
+									Text: Player Relationship Colors
+									TooltipText: Change minimap and health bar colors based on relationship (own, enemy, ally, neutral)
+									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
 					Height: 20
@@ -173,6 +175,8 @@ Container@DISPLAY_PANEL:
 									Height: 20
 									Font: Regular
 									Text: Show UI Feedback Notifications
+									TooltipText: Show transient text notifications for UI events
+									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 						Container@TRANSIENTS_CHECKBOX_CONTAINER:
 							X: PARENT_RIGHT / 2 + 10
 							Width: PARENT_RIGHT / 2 - 20
@@ -182,6 +186,8 @@ Container@DISPLAY_PANEL:
 									Height: 20
 									Font: Regular
 									Text: Show Game Event Notifications
+									TooltipText: Show transient text notifications for game events
+									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
 					Height: 20
