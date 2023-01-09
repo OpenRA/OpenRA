@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Load VGA palette (.pal) registers.")]
-	class PaletteFromFileInfo : TraitInfo, IProvidesCursorPaletteInfo
+	class PaletteFromFileInfo : TraitInfo, ITilesetSpecificPaletteInfo, IProvidesCursorPaletteInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -45,6 +45,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool CursorPalette = false;
 
 		public override object Create(ActorInitializer init) { return new PaletteFromFile(init.World, this); }
+
+		string ITilesetSpecificPaletteInfo.Tileset => Tileset;
 
 		string IProvidesCursorPaletteInfo.Palette => CursorPalette ? Name : null;
 
