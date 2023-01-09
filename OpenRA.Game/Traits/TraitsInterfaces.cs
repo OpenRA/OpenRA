@@ -245,6 +245,12 @@ namespace OpenRA.Traits
 	}
 
 	[RequireExplicitImplementation]
+	public interface ITilesetSpecificPaletteInfo : ITraitInfoInterface
+	{
+		string Tileset { get; }
+	}
+
+	[RequireExplicitImplementation]
 	public interface IProvidesCursorPaletteInfo : ITraitInfoInterface
 	{
 		string Palette { get; }
