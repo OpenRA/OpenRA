@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Load a PNG and use its embedded palette.")]
-	class PaletteFromPngInfo : TraitInfo, IProvidesCursorPaletteInfo
+	class PaletteFromPngInfo : TraitInfo, ITilesetSpecificPaletteInfo, IProvidesCursorPaletteInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -43,6 +43,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool CursorPalette = false;
 
 		public override object Create(ActorInitializer init) { return new PaletteFromPng(init.World, this); }
+
+		string ITilesetSpecificPaletteInfo.Tileset => Tileset;
 
 		string IProvidesCursorPaletteInfo.Palette => CursorPalette ? Name : null;
 
