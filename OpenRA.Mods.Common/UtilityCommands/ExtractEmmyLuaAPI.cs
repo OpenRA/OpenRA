@@ -37,6 +37,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine("-- See https://docs.openra.net/en/latest/release/lua/ for human readable documentation.");
 
 			Console.WriteLine();
+			WriteDiagnosticsDisabling();
+			Console.WriteLine();
+
+			Console.WriteLine();
 			WriteManual();
 			Console.WriteLine();
 
@@ -62,6 +66,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			WriteScriptProperties(typeof(Player), playerProperties);
 		}
 
+		static void WriteDiagnosticsDisabling()
+		{
+			Console.WriteLine("--- This file only lists function \"signatures\", causing Lua Diagnostics errors: \"Annotations specify that a return value is required here.\"");
+			Console.WriteLine("--- Disable that specific error for the entire file.");
+			Console.WriteLine("---@diagnostic disable: missing-return");
+		}
+
 		static void WriteManual()
 		{
 			Console.WriteLine("--- This function is triggered once, after the map is loaded.");
@@ -75,14 +86,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine("---@class cpos");
 			Console.WriteLine("---@field X integer");
 			Console.WriteLine("---@field Y integer");
+			Console.WriteLine("---@operator add(cvec): cpos");
+			Console.WriteLine("---@operator sub(cvec): cpos");
 			Console.WriteLine();
 			Console.WriteLine("---@class wpos");
 			Console.WriteLine("---@field X integer");
 			Console.WriteLine("---@field Y integer");
 			Console.WriteLine("---@field Z integer");
+			Console.WriteLine("---@operator add(wvec): wpos");
+			Console.WriteLine("---@operator sub(wvec): wpos");
 			Console.WriteLine();
 			Console.WriteLine("---@class wangle");
 			Console.WriteLine("---@field Angle integer");
+			Console.WriteLine("---@operator add(wangle): wangle");
+			Console.WriteLine("---@operator sub(wangle): wangle");
 			Console.WriteLine();
 			Console.WriteLine("---@class wdist");
 			Console.WriteLine("---@field Length integer");
@@ -91,10 +108,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine("---@field X integer");
 			Console.WriteLine("---@field Y integer");
 			Console.WriteLine("---@field Z integer");
+			Console.WriteLine("---@operator add(wvec): wvec");
+			Console.WriteLine("---@operator sub(wvec): wvec");
 			Console.WriteLine();
 			Console.WriteLine("---@class cvec");
 			Console.WriteLine("---@field X integer");
 			Console.WriteLine("---@field Y integer");
+			Console.WriteLine("---@operator add(cvec): cvec");
+			Console.WriteLine("---@operator sub(cvec): cvec");
 			Console.WriteLine();
 			Console.WriteLine("---@class color");
 			Console.WriteLine("local color = { };");
@@ -137,6 +158,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			foreach (var enumType in enumTypes)
 			{
+				Console.WriteLine($"---@enum {enumType.Name}");
 				Console.WriteLine(enumType.Name + " = {");
 
 				foreach (var value in Enum.GetValues(enumType))
@@ -183,7 +205,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							Console.WriteLine($"    ---@deprecated {obsolete.Message}");
 
 						Console.WriteLine($"    ---@type {propertyInfo.PropertyType.EmmyLuaString()}");
-						body = propertyInfo.Name + " = { };";
+						body = propertyInfo.Name + " = nil;";
 					}
 
 					if (member is MethodInfo methodInfo)
@@ -222,11 +244,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var properties = implementingTypes.SelectMany(t =>
 			{
-				var required = ScriptMemberWrapper.RequiredTraitNames(t);
-				return ScriptMemberWrapper.WrappableMembers(t).Select(memberInfo => (memberInfo, required));
+				var requiredTraits = ScriptMemberWrapper.RequiredTraitNames(t);
+				return ScriptMemberWrapper.WrappableMembers(t).Select(memberInfo => (memberInfo, requiredTraits));
 			});
 
-			foreach (var (memberInfo, required) in properties)
+			var duplicateProperties = properties
+				.GroupBy(x => x.memberInfo.Name)
+				.Where(x => x.Count() > 1)
+				.Select(x => x.Key)
+				.ToHashSet();
+
+			foreach (var (memberInfo, requiredTraits) in properties)
 			{
 				Console.WriteLine();
 
@@ -242,8 +270,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (isActivity)
 					Console.WriteLine("    --- *Queued Activity*");
 
-				if (required.Any())
-					Console.WriteLine($"    --- **Requires {(required.Length == 1 ? "Trait" : "Traits")}:** {required.Select(GetDocumentationUrl).JoinWith(", ")}");
+				if (requiredTraits.Any())
+					Console.WriteLine($"    --- **Requires {(requiredTraits.Length == 1 ? "Trait" : "Traits")}:** {requiredTraits.Select(GetDocumentationUrl).JoinWith(", ")}");
 
 				if (memberInfo is MethodInfo methodInfo)
 				{
@@ -261,13 +289,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (returnType != "Void")
 						Console.WriteLine($"    ---@return {returnType}");
 
+					if (duplicateProperties.Contains(methodInfo.Name))
+						Console.WriteLine("    ---@diagnostic disable-next-line: duplicate-index");
+
 					Console.WriteLine($"    {methodInfo.Name} = function({parameterString}) end;");
 				}
 
 				if (memberInfo is PropertyInfo propertyInfo)
 				{
 					Console.WriteLine($"    ---@type {propertyInfo.PropertyType.EmmyLuaString()}");
-					Console.WriteLine("    " + propertyInfo.Name + " = { };");
+
+					if (duplicateProperties.Contains(propertyInfo.Name))
+						Console.WriteLine("    ---@diagnostic disable-next-line: duplicate-index");
+
+					Console.WriteLine("    " + propertyInfo.Name + " = nil;");
 				}
 			}
 
@@ -277,7 +312,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		static string GetDocumentationUrl(string trait)
 		{
-			return $"[{trait}](https://docs.openra.net/en/latest/release/traits/#{trait.ToLowerInvariant()})";
+			return $"[{trait}](https://docs.openra.net/en/release/traits/#{trait.ToLowerInvariant()})";
 		}
 	}
 
