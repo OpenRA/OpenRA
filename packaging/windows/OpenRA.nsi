@@ -226,6 +226,10 @@ Function ${UN}Clean
 
 	RMDir /r $INSTDIR\Support
 
+	!ifndef USE_PROGRAMFILES32
+		SetRegView 64
+	!endif
+
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA${SUFFIX}"
 	DeleteRegKey HKLM "Software\Classes\openra-ra-${TAG}"
 	DeleteRegKey HKLM "Software\Classes\openra-cnc-${TAG}"
