@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyOtherProduction { void UnitProducedByOther(Actor self, Actor producer, Actor produced, string productionType, TypeDictionary init); }
 	public interface INotifyDelivery { void IncomingDelivery(Actor self); void Delivered(Actor self); }
 	public interface INotifyDock { void Docked(Actor self, Actor dockable); void Undocked(Actor self, Actor dockable); }
-	public interface INotifyDockable { void Docked(Actor self, Actor dock); void Undocked(Actor self, Actor dock); }
+	public interface INotifyDockable { void Docked(Actor self, Actor dock); void Canceled(Actor self, Actor dock); void Undocked(Actor self, Actor dock); }
 
 	[RequireExplicitImplementation]
 	public interface INotifyResourceAccepted { void OnResourceAccepted(Actor self, Actor refinery, string resourceType, int count, int value); }

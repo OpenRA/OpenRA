@@ -279,6 +279,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		void INotifyDockable.Canceled(Actor self, Actor dock) { }
+
 		void INotifyDockable.Undocked(Actor self, Actor dock)
 		{
 			if (Info.UncloakOn.HasFlag(UncloakType.Dock))

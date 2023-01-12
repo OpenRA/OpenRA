@@ -53,5 +53,6 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		void INotifyDockable.Undocked(Actor self, Actor dock) { }
+		void INotifyDockable.Canceled(Actor self, Actor dock) { }
 	}
 }
