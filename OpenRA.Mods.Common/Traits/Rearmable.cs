@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 			RearmableAmmoPools = self.TraitsImplementing<AmmoPool>().Where(p => Info.AmmoPools.Contains(p.Info.Name)).ToArray();
 		}
 
-		void INotifyDockClient.Docked(Actor self, Actor dock)
+		void INotifyDockClient.Docked(Actor self, Actor host)
 		{
 			// Reset the ReloadDelay to avoid any issues with early cancellation
 			// from previous reload attempts (explicit order, host building died, etc).
@@ -52,7 +52,8 @@ namespace OpenRA.Mods.Common.Traits
 				pool.RemainingTicks = pool.Info.ReloadDelay;
 		}
 
-		void INotifyDockClient.Undocked(Actor self, Actor dock) { }
+		void INotifyDockClient.Undocked(Actor self, Actor host) { }
+		void INotifyDockClient.Canceled(Actor self, Actor host) { }
 
 		public bool RearmTick(Actor self)
 		{

@@ -285,6 +285,12 @@ namespace OpenRA.Mods.Common.Traits
 				isDocking = false;
 		}
 
+		void INotifyDockClient.Canceled(Actor self, Actor host)
+		{
+			if (Info.UncloakOn.HasFlag(UncloakType.Dock))
+				isDocking = false;
+		}
+
 		void INotifyUnload.Unloading(Actor self)
 		{
 			if (Info.UncloakOn.HasFlag(UncloakType.Unload))

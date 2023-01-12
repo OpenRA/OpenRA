@@ -110,6 +110,14 @@ namespace OpenRA.Mods.Common.Activities
 			throw new InvalidOperationException("Invalid harvester dock state");
 		}
 
+		public override void Cancel(Actor self, bool keepQueue = false)
+		{
+			foreach (var nd in notifyDockClients)
+				nd.Canceled(self, RefineryActor);
+
+			base.Cancel(self, keepQueue);
+		}
+
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			yield return Target.FromActor(RefineryActor);

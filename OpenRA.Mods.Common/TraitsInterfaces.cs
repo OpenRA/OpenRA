@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface INotifyDockHost { void Docked(Actor self, Actor client); void Undocked(Actor self, Actor client); }
 	[RequireExplicitImplementation]
-	public interface INotifyDockClient { void Docked(Actor self, Actor host); void Undocked(Actor self, Actor host); }
+	public interface INotifyDockClient { void Docked(Actor self, Actor host); void Canceled(Actor self, Actor host); void Undocked(Actor self, Actor host); }
 
 	[RequireExplicitImplementation]
 	public interface INotifyResourceAccepted { void OnResourceAccepted(Actor self, Actor refinery, string resourceType, int count, int value); }
