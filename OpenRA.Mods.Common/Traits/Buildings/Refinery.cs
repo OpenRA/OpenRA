@@ -75,6 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool IsDragRequired => info.IsDragRequired;
 		public WVec DragOffset => info.DragOffset;
 		public int DragLength => info.DragLength;
+		public bool IsEnabled => self.IsInWorld && !self.IsDead;
 
 		public Refinery(Actor self, RefineryInfo info)
 		{
@@ -91,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual Activity DockSequence(Actor harv, Actor self)
 		{
-			return new SpriteHarvesterDockSequence(harv, self, DeliveryAngle, IsDragRequired, DragOffset, DragLength);
+			return new SpriteHarvesterDockSequence(harv, self, this);
 		}
 
 		public IEnumerable<TraitPair<Harvester>> GetLinkedHarvesters()
