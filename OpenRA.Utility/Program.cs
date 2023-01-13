@@ -171,7 +171,7 @@ namespace OpenRA
 			var args = descParts.Take(descParts.Length - 1).JoinWith(" ");
 			var desc = descParts[descParts.Length - 1];
 
-			Console.WriteLine("  {0} {1}{3}  {2}{3}", key, args, desc, Environment.NewLine);
+			Console.WriteLine($"  {key} {args}{Environment.NewLine}  {desc}{Environment.NewLine}");
 		}
 	}
 }
