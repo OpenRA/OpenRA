@@ -325,17 +325,17 @@ namespace OpenRA.Mods.Common.Traits
 			if (otherActor == ignoreActor)
 				return false;
 
-			// If the check allows: We are not blocked by units that we can force to move out of the way.
-			if (check <= BlockedByActor.Immovable && cellFlag.HasCellFlag(CellFlag.HasMovableActor) &&
+			var otherMobile = otherActor.OccupiesSpace as Mobile;
+			var otherIsMovable = otherMobile != null && !otherMobile.IsTraitDisabled && !otherMobile.IsTraitPaused && !otherMobile.IsImmovable;
+			var otherIsMoving = otherIsMovable && otherMobile.CurrentMovementTypes.HasMovementType(MovementType.Horizontal);
+
+			// If the check allows: We are not blocked by allied units that we can force to move out of the way.
+			if (check <= BlockedByActor.Immovable && cellFlag.HasCellFlag(CellFlag.HasMovableActor) && otherIsMovable &&
 				actor.Owner.RelationshipWith(otherActor.Owner) == PlayerRelationship.Ally)
-			{
-				if (otherActor.OccupiesSpace is Mobile mobile && !mobile.IsTraitDisabled && !mobile.IsTraitPaused && !mobile.IsImmovable)
-					return false;
-			}
+				return false;
 
 			// If the check allows: we are not blocked by moving units.
-			if (check <= BlockedByActor.Stationary && cellFlag.HasCellFlag(CellFlag.HasMovingActor) &&
-				otherActor.OccupiesSpace is Mobile otherMobile && otherMobile.CurrentMovementTypes.HasMovementType(MovementType.Horizontal))
+			if (check <= BlockedByActor.Stationary && cellFlag.HasCellFlag(CellFlag.HasMovingActor) && otherIsMoving)
 				return false;
 
 			if (cellFlag.HasCellFlag(CellFlag.HasTemporaryBlocker))
