@@ -235,7 +235,7 @@ namespace OpenRA.Mods.Common.Traits
 			readonly Color? targetLineColor;
 			readonly Rearmable rearmable;
 			readonly AttackSource source;
-			readonly bool isAircraft;
+			readonly AircraftInfo aircraftInfo;
 
 			Target target;
 			Target lastVisibleTarget;
@@ -259,7 +259,7 @@ namespace OpenRA.Mods.Common.Traits
 				this.forceAttack = forceAttack;
 				this.targetLineColor = targetLineColor;
 				this.source = source;
-				isAircraft = self.Info.HasTraitInfo<AircraftInfo>();
+				aircraftInfo = self.Info.TraitInfoOrDefault<AircraftInfo>();
 
 				// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 				// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -368,7 +368,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (attack.Info.AbortOnResupply)
 						NextActivity?.Cancel(self);
 
-					if (isAircraft)
+					if (aircraftInfo != null)
 						QueueChild(new ReturnToBase(self));
 					else
 					{
@@ -381,7 +381,7 @@ namespace OpenRA.Mods.Common.Traits
 							.FirstOrDefault();
 
 						if (target != null)
-							QueueChild(new Resupply(self, target, new WDist(512)));
+							QueueChild(new Resupply(self, target, new WDist(512), !aircraftInfo.TakeOffOnResupply));
 					}
 
 					returnToBase = true;
