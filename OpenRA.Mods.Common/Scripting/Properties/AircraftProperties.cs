@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Scripting
 			var atLandAltitude = Self.World.Map.DistanceAboveTerrain(Self.CenterPosition) == aircraft.Info.LandAltitude;
 			var host = aircraft.GetActorBelow();
 			if (atLandAltitude && host != null)
-				Self.QueueActivity(new Resupply(Self, host, WDist.Zero));
+				Self.QueueActivity(new Resupply(Self, host));
 		}
 	}
 }

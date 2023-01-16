@@ -381,7 +381,7 @@ namespace OpenRA.Mods.Common.Traits
 							.FirstOrDefault();
 
 						if (target != null)
-							QueueChild(new Resupply(self, target, new WDist(512), !aircraftInfo.TakeOffOnResupply));
+							QueueChild(new Resupply(self, target, !aircraftInfo.TakeOffOnResupply));
 					}
 
 					returnToBase = true;

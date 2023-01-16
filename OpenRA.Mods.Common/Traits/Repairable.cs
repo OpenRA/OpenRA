@@ -25,6 +25,10 @@ namespace OpenRA.Mods.Common.Traits
 		[FieldLoader.Require]
 		public readonly HashSet<string> RepairActors = new HashSet<string> { };
 
+		[Desc("How close to the resupplier a unit need to be to repair. Negative means there's no distance limit. Default is\n"
+			+ "set to 512 as Ressuply needs the actor to move to host center, which might not be the centre cell.")]
+		public readonly WDist CloseEnough = new WDist(512);
+
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
@@ -135,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!CanRepairAt(order.Target.Actor) || (!CanRepair() && !CanRearm()))
 				return;
 
-			self.QueueActivity(order.Queued, new Resupply(self, order.Target.Actor, new WDist(512)));
+			self.QueueActivity(order.Queued, new Resupply(self, order.Target.Actor));
 			self.ShowTargetLines();
 		}
 

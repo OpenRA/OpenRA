@@ -57,15 +57,6 @@ namespace OpenRA.Mods.Common.Orders
 			var repairable = underCursor.TraitOrDefault<Repairable>();
 			if (repairable != null)
 				repairBuilding = repairable.FindRepairBuilding(underCursor);
-			else
-			{
-				var repairableNear = underCursor.TraitOrDefault<RepairableNear>();
-				if (repairableNear != null)
-				{
-					orderId = "RepairNear";
-					repairBuilding = repairableNear.FindRepairBuilding(underCursor);
-				}
-			}
 
 			if (repairBuilding == null)
 				yield break;
