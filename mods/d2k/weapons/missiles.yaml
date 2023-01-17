@@ -165,5 +165,6 @@ DeviatorMissile:
 		Range: 512
 		Duration: 375
 		InvalidTargets: Infantry, Structure
+		ValidRelationships: Enemy, Neutral
 	Warhead@4Concrete: DamagesConcrete
 		Damage: 1000
