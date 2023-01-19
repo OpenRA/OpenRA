@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return args.Length >= 2;
 		}
 
-		[Desc("Extract files from mod packages to the current directory")]
+		[Desc("FILENAME", "[FILENAME...]", "Extract files from mod packages to the current directory")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			var files = args.Skip(1);
