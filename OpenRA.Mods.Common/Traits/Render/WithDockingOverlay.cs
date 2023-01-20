@@ -10,11 +10,9 @@
 #endregion
 
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc.Traits.Render
+namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Rendered on the refinery when a voxel harvester is docking and undocking.")]
 	public class WithDockingOverlayInfo : PausableConditionalTraitInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
