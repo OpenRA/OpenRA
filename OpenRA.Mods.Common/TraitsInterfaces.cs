@@ -273,6 +273,12 @@ namespace OpenRA.Mods.Common.Traits
 		bool AllowDocking { get; }
 	}
 
+	public interface IDockClientBody
+	{
+		void PlayDockAnimation(Actor self, Action after);
+		void PlayReverseDockAnimation(Actor self, Action after);
+	}
+
 	public interface IProvidesAssetBrowserPalettes
 	{
 		IEnumerable<string> PaletteNames { get; }

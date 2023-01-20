@@ -9,11 +9,12 @@
  */
 #endregion
 
+using System;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class WithDockingAnimationInfo : TraitInfo<WithDockingAnimation>, Requires<WithSpriteBodyInfo>, Requires<HarvesterInfo>
+	public class WithDockingAnimationInfo : TraitInfo, Requires<WithSpriteBodyInfo>, Requires<HarvesterInfo>
 	{
 		[SequenceReference]
 		[Desc("Displayed when docking to refinery.")]
@@ -22,7 +23,29 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[SequenceReference]
 		[Desc("Looped while unloading at refinery.")]
 		public readonly string DockLoopSequence = "dock-loop";
+
+		public override object Create(ActorInitializer init) { return new WithDockingAnimation(init.Self, this); }
 	}
 
-	public class WithDockingAnimation { }
+	public class WithDockingAnimation : IDockClientBody
+	{
+		readonly WithDockingAnimationInfo info;
+		readonly WithSpriteBody wsb;
+
+		public WithDockingAnimation(Actor self, WithDockingAnimationInfo info)
+		{
+			this.info = info;
+			wsb = self.Trait<WithSpriteBody>();
+		}
+
+		void IDockClientBody.PlayDockAnimation(Actor self, Action after)
+		{
+			wsb.PlayCustomAnimation(self, info.DockSequence, () => { wsb.PlayCustomAnimationRepeating(self, info.DockLoopSequence); after(); });
+		}
+
+		void IDockClientBody.PlayReverseDockAnimation(Actor self, Action after)
+		{
+			wsb.PlayCustomAnimationBackwards(self, info.DockSequence, () => after());
+		}
+	}
 }

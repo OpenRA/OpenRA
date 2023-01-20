@@ -45,9 +45,9 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		}
 	}
 
-	public class WithVoxelUnloadBody : IAutoMouseBounds
+	public class WithVoxelUnloadBody : IAutoMouseBounds, IDockClientBody
 	{
-		public bool Docked;
+		bool docked;
 
 		readonly ModelAnimation modelAnimation;
 		readonly RenderVoxels rv;
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			var idleModel = self.World.ModelCache.GetModelSequence(rv.Image, info.IdleSequence);
 			modelAnimation = new ModelAnimation(idleModel, () => WVec.Zero,
 				() => body.QuantizeOrientation(self.Orientation),
-				() => Docked,
+				() => docked,
 				() => 0, info.ShowShadow);
 
 			rv.Add(modelAnimation);
@@ -68,8 +68,20 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			var unloadModel = self.World.ModelCache.GetModelSequence(rv.Image, info.UnloadSequence);
 			rv.Add(new ModelAnimation(unloadModel, () => WVec.Zero,
 				() => body.QuantizeOrientation(self.Orientation),
-				() => !Docked,
+				() => !docked,
 				() => 0, info.ShowShadow));
+		}
+
+		void IDockClientBody.PlayDockAnimation(Actor self, Action after)
+		{
+			docked = true;
+			after();
+		}
+
+		void IDockClientBody.PlayReverseDockAnimation(Actor self, Action after)
+		{
+			docked = false;
+			after();
 		}
 
 		Rectangle IAutoMouseBounds.AutoMouseoverBounds(Actor self, WorldRenderer wr)

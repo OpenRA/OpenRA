@@ -105,7 +105,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new TextNotificationsDisplayWidgetRemoveTime(),
 				new ExplicitSequenceFilenames(),
 				new RenameEngineerRepair(),
-				new ProductionTabsWidgetAddTabButtonCollection()
+				new ProductionTabsWidgetAddTabButtonCollection(),
+				new RemoveTSRefinery(),
 			})
 		};
 

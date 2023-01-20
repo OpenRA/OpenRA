@@ -584,7 +584,7 @@ NAWAST:
 	RevealsShroud:
 		Range: 6c0
 		MaxHeightDelta: 3
-	TiberianSunRefinery:
+	Refinery:
 		DockAngle: 640
 		DockOffset: 2,1
 	StoresResources:
