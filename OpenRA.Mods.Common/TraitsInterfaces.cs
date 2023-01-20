@@ -271,7 +271,8 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		void OnDock(Actor harv, DeliverResources dockOrder);
 		int AcceptResources(string resourceType, int count = 1);
-		CVec DeliveryOffset { get; }
+		WPos DeliveryPosition { get; }
+		WAngle DeliveryAngle { get; }
 		bool AllowDocking { get; }
 	}
 
@@ -455,6 +456,8 @@ namespace OpenRA.Mods.Common.Traits
 			WPos? initialTargetPosition = null, Color? targetLineColor = null);
 		Activity ReturnToCell(Actor self);
 		Activity MoveIntoTarget(Actor self, in Target target);
+		Activity MoveOntoTarget(Actor self, in Target target, in WVec offset,
+			WAngle? facing, Color? targetLineColor = null);
 		Activity LocalMove(Actor self, WPos fromPos, WPos toPos);
 		int EstimatedMoveDuration(Actor self, WPos fromPos, WPos toPos);
 		CPos NearestMoveableCell(CPos target);

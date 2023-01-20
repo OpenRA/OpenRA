@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Traits
 				.Where(r => r.Actor != ignore && r.Actor.Owner == self.Owner && IsAcceptableProcType(r.Actor))
 				.Select(r => new
 				{
-					Location = r.Actor.Location + r.Trait.DeliveryOffset,
+					Location = r.Actor.World.Map.CellContaining(r.Trait.DeliveryPosition),
 					Actor = r.Actor,
 					Occupancy = self.World.ActorsHavingTrait<Harvester>(h => h.LinkedProc == r.Actor).Count()
 				})
