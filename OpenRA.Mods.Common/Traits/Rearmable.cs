@@ -56,6 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool RearmTick(Actor self)
 		{
+			var rearmComplete = true;
 			foreach (var ammoPool in RearmableAmmoPools)
 			{
 				if (!ammoPool.HasFullAmmo)
@@ -69,11 +70,11 @@ namespace OpenRA.Mods.Common.Traits
 						ammoPool.GiveAmmo(self, ammoPool.Info.ReloadCount);
 					}
 
-					return false;
+					rearmComplete = false;
 				}
 			}
 
-			return true;
+			return rearmComplete;
 		}
 	}
 }
