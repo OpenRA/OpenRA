@@ -62,12 +62,13 @@ namespace OpenRA.Mods.Common.Activities
 			proc = harv.LinkedProc;
 			var iao = proc.Trait<IAcceptResources>();
 
-			if (self.Location != proc.Location + iao.DeliveryOffset)
+			if (self.CenterPosition != iao.DeliveryPosition)
 			{
 				foreach (var n in notifyHarvesterActions)
 					n.MovingToRefinery(self, proc);
 
-				QueueChild(movement.MoveTo(proc.Location + iao.DeliveryOffset, 0));
+				var target = Target.FromActor(proc);
+				QueueChild(movement.MoveOntoTarget(self, target, iao.DeliveryPosition - proc.CenterPosition, iao.DeliveryAngle));
 				return false;
 			}
 

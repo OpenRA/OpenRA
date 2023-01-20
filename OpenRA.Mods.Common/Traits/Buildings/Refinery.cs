@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool preventDock = false;
 
 		public bool AllowDocking => !preventDock;
-		public CVec DeliveryOffset => info.DockOffset;
+		public WPos DeliveryPosition => self.World.Map.CenterOfCell(self.Location + info.DockOffset);
 		public WAngle DeliveryAngle => info.DockAngle;
 		public bool IsDragRequired => info.IsDragRequired;
 		public WVec DragOffset => info.DragOffset;
