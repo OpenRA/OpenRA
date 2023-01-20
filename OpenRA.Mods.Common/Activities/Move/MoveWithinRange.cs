@@ -10,7 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -48,10 +48,23 @@ namespace OpenRA.Mods.Common.Activities
 				|| !Mobile.CanInteractWithGroundLayer(self) || !Mobile.CanStayInCell(self.Location));
 		}
 
-		protected override IEnumerable<CPos> CandidateMovementCells(Actor self)
+		protected override List<CPos> CalculatePathToTarget(Actor self, BlockedByActor check)
 		{
-			return map.FindTilesInAnnulus(lastVisibleTargetLocation, minCells, maxCells)
-				.Where(c => Mobile.CanStayInCell(c) && AtCorrectRange(map.CenterOfSubCell(c, Mobile.FromSubCell)));
+			// PERF: Assume that candidate cells don't change within a tick to avoid repeated queries
+			// when Move enumerates different BlockedByActor values.
+			if (searchCellsTick != self.World.WorldTick)
+			{
+				SearchCells.Clear();
+				searchCellsTick = self.World.WorldTick;
+				foreach (var cell in map.FindTilesInAnnulus(lastVisibleTargetLocation, minCells, maxCells))
+					if (Mobile.CanStayInCell(cell) && Mobile.CanEnterCell(cell) && AtCorrectRange(map.CenterOfSubCell(cell, Mobile.FromSubCell)))
+						SearchCells.Add(cell);
+			}
+
+			if (SearchCells.Count == 0)
+				return PathFinder.NoPath;
+
+			return Mobile.PathFinder.FindPathToTargetCells(self, self.Location, SearchCells, check);
 		}
 
 		bool AtCorrectRange(WPos origin)
