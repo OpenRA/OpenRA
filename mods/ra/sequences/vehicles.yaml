@@ -1,22 +1,29 @@
 mcv:
 	idle:
+		Filename: mcv.shp
 		Facings: 32
 		UseClassicFacings: True
-	icon: mcvicon
+	icon:
+		Filename: mcvicon.shp
 
 mcvhusk:
 	idle:
+		Filename: mcvhusk.shp
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -1023
 
 truk:
 	idle:
+		Filename: truk.shp
 		Facings: 32
 		UseClassicFacings: True
-	icon: trukicon
+	icon:
+		Filename: trukicon.shp
 
 harv:
+	Defaults:
+		Filename: harv.shp
 	idle:
 		Facings: 32
 		UseClassicFacings: True
@@ -24,34 +31,45 @@ harv:
 		Start: 32
 		Length: 8
 		Facings: 8
-	dock: harv
+	dock:
+		Filename: harv.shp
 		Start: 96
 		Length: 8
-	dock-loop: harv
+	dock-loop:
+		Filename: harv.shp
 		Start: 104
 		Length: 7
-	icon: harvicon
+	icon:
+		Filename: harvicon.shp
 		Start: 0
 
 harvempty:
+	Defaults:
+		Filename: harvempty.shp
 	Inherits: harv
 
 harvhalf:
+	Defaults:
+		Filename: harvhalf.shp
 	Inherits: harv
 
 hhusk:
 	idle:
+		Filename: hhusk.shp
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -1023
 
 hhusk2:
 	idle:
+		Filename: hhusk2.shp
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -1023
 
 1tnk:
+	Defaults:
+		Filename: 1tnk.shp
 	idle:
 		Facings: 32
 		UseClassicFacings: True
@@ -59,22 +77,28 @@ hhusk2:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
-	muzzle: gunfire2
+	muzzle:
+		Filename: gunfire2.shp
 		Length: 2
-	icon: 1tnkicon
+	icon:
+		Filename: 1tnkicon.shp
 
 1tnk.destroyed:
-	idle: 1tnk
+	idle:
+		Filename: 1tnk.shp
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
-	turret: 1tnk
+	turret:
+		Filename: 1tnk.shp
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
 
 2tnk:
+	Defaults:
+		Filename: 2tnk.shp
 	idle:
 		Facings: 32
 		UseClassicFacings: True
@@ -82,22 +106,28 @@ hhusk2:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
-	muzzle: gunfire2
+	muzzle:
+		Filename: gunfire2.shp
 		Length: 5
-	icon: 2tnkicon
+	icon:
+		Filename: 2tnkicon.shp
 
 2tnk.destroyed:
-	idle: 2tnk
+	idle:
+		Filename: 2tnk.shp
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
-	turret: 2tnk
+	turret:
+		Filename: 2tnk.shp
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
 
 3tnk:
+	Defaults:
+		Filename: 3tnk.shp
 	idle:
 		Facings: 32
 		UseClassicFacings: True
@@ -105,22 +135,28 @@ hhusk2:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
-	muzzle: gunfire2
+	muzzle:
+		Filename: gunfire2.shp
 		Length: 5
-	icon: 3tnkicon
+	icon:
+		Filename: 3tnkicon.shp
 
 3tnk.destroyed:
-	idle: 3tnk
+	idle:
+		Filename: 3tnk.shp
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
-	turret: 3tnk
+	turret:
+		Filename: 3tnk.shp
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
 
 4tnk:
+	Defaults:
+		Filename: 4tnk.shp
 	idle:
 		Facings: 32
 		UseClassicFacings: True
@@ -128,22 +164,28 @@ hhusk2:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
-	muzzle: gunfire2
+	muzzle:
+		Filename: gunfire2.shp
 		Length: 5
-	icon: 4tnkicon
+	icon:
+		Filename: 4tnkicon.shp
 
 4tnk.destroyed:
-	idle: 4tnk
+	idle:
+		Filename: 4tnk.shp
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
-	turret: 4tnk
+	turret:
+		Filename: 4tnk.shp
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
 
 v2rl:
+	Defaults:
+		Filename: v2rl.shp
 	idle:
 		Facings: 32
 		UseClassicFacings: True
@@ -151,17 +193,23 @@ v2rl:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
-	icon: v2rlicon
+	icon:
+		Filename: v2rlicon.shp
 
 arty:
 	idle:
+		Filename: arty.shp
 		Facings: 32
 		UseClassicFacings: True
-	muzzle: gunfire2
+	muzzle:
+		Filename: gunfire2.shp
 		Length: 5
-	icon: artyicon
+	icon:
+		Filename: artyicon.shp
 
 jeep:
+	Defaults:
+		Filename: jeep.shp
 	idle:
 		Facings: 32
 		UseClassicFacings: True
@@ -169,16 +217,21 @@ jeep:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
-	muzzle: minigun
+	muzzle:
+		Filename: minigun.shp
 		Length: 6
 		Facings: 8
-	icon: jeepicon
+	icon:
+		Filename: jeepicon.shp
 
 apc:
+	Defaults:
+		Filename: apc.shp
 	idle:
 		Facings: 32
 		UseClassicFacings: True
-	muzzle: minigun
+	muzzle:
+		Filename: minigun.shp
 		Length: 6
 		Facings: 8
 	open:
@@ -186,24 +239,32 @@ apc:
 		Length: 3
 	unload:
 		Start: 32
-	icon: apcicon
+	icon:
+		Filename: apcicon.shp
 
 mnly:
 	idle:
+		Filename: mnly.shp
 		Facings: 32
 		UseClassicFacings: True
-	icon: mnlyicon
+	icon:
+		Filename: mnlyicon.shp
 
 mrj:
+	Defaults:
+		Filename: mrj.shp
 	idle:
 		Facings: 32
 		UseClassicFacings: True
 	spinner:
 		Start: 32
 		Length: 32
-	icon: mrjicon
+	icon:
+		Filename: mrjicon.shp
 
 mgg:
+	Defaults:
+		Filename: mgg.shp
 	idle:
 		Facings: 32
 		UseClassicFacings: True
@@ -213,30 +274,39 @@ mgg:
 	spinner-idle:
 		Start: 32
 		Length: 1
-	icon: mggicon
+	icon:
+		Filename: mggicon.shp
 
 mgg.destroyed:
-	idle: mgg
+	idle:
+		Filename: mgg.shp
 		Facings: 32
 		UseClassicFacings: True
 		ZOffset: -512
-	spinner: mgg
+	spinner:
+		Filename: mgg.shp
 		Start: 32
 		Length: 8
 		ZOffset: -512
-	spinner-idle: mgg
+	spinner-idle:
+		Filename: mgg.shp
 		Start: 32
 
 ttnk:
+	Defaults:
+		Filename: ttnk.shp
 	idle:
 		Facings: 32
 		UseClassicFacings: True
 	spinner:
 		Start: 32
 		Length: 32
-	icon: ttnkicon
+	icon:
+		Filename: ttnkicon.shp
 
 ftrk:
+	Defaults:
+		Filename: ftrk.shp
 	idle:
 		Facings: 32
 		UseClassicFacings: True
@@ -244,25 +314,34 @@ ftrk:
 		Start: 32
 		Facings: 32
 		UseClassicFacings: True
-	muzzle: gunfire2
+	muzzle:
+		Filename: gunfire2.shp
 		Length: 2
-	icon: ftrkicon
+	icon:
+		Filename: ftrkicon.shp
 
 dtrk:
 	idle:
+		Filename: dtrk.shp
 		Facings: 32
 		UseClassicFacings: True
-	icon: dtrkicon
+	icon:
+		Filename: dtrkicon.shp
 
 ctnk:
 	idle:
+		Filename: ctnk.shp
 		Facings: 32
 		UseClassicFacings: True
-	muzzle: gunfire2
+	muzzle:
+		Filename: gunfire2.shp
 		Length: 5
-	icon: ctnkicon
+	icon:
+		Filename: ctnkicon.shp
 
 qtnk:
+	Defaults:
+		Filename: qtnk.shp
 	idle:
 		Facings: 32
 		UseClassicFacings: True
@@ -270,9 +349,12 @@ qtnk:
 		Start: 32
 		Facings: 8
 		Length: 8
-	icon: qtnkicon
+	icon:
+		Filename: qtnkicon.shp
 
 stnk:
+	Defaults:
+		Filename: stnk.shp
 	idle:
 		Facings: 32
 		UseClassicFacings: True
@@ -280,4 +362,5 @@ stnk:
 		Start: 38
 		Facings: 32
 		UseClassicFacings: True
-	icon: stnkicon
+	icon:
+		Filename: stnkicon.shp

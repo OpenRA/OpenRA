@@ -1,4 +1,6 @@
 c1:
+	Defaults:
+		Filename: c1.shp
 	stand:
 		Facings: 8
 	panic-stand:
@@ -44,43 +46,65 @@ c1:
 		Start: 182
 		Length: 4
 		Tick: 80
-	die-crushed: e1rot
+	die-crushed:
+		Filename: e1rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
 
 c2:
+	Defaults:
+		Filename: c2.shp
 	Inherits: c1
 
 c3:
+	Defaults:
+		Filename: c3.shp
 	Inherits: c1
 
 c4:
+	Defaults:
+		Filename: c4.shp
 	Inherits: c1
 
 c5:
+	Defaults:
+		Filename: c5.shp
 	Inherits: c1
 
 c6:
+	Defaults:
+		Filename: c6.shp
 	Inherits: c1
 
 c7:
+	Defaults:
+		Filename: c7.shp
 	Inherits: c1
 
 c8:
+	Defaults:
+		Filename: c8.shp
 	Inherits: c1
 
 c9:
+	Defaults:
+		Filename: c9.shp
 	Inherits: c1
 
 c10:
+	Defaults:
+		Filename: c10.shp
 	Inherits: c1
 
 delphi:
+	Defaults:
+		Filename: delphi.shp
 	Inherits: c1
 
 moebius:
 	Defaults:
+		Filename: moebius.shp
 		Tick: 80
 	stand:
 		Facings: 8
@@ -115,10 +139,13 @@ moebius:
 	die6:
 		Start: 214
 		Length: 3
-	die-crushed: e1rot
+	die-crushed:
+		Filename: e1rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
 
 chan:
+	Defaults:
+		Filename: chan.shp
 	Inherits: moebius

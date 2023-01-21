@@ -1,5 +1,6 @@
 doggie:
 	Defaults:
+		Filename: doggie.shp
 		Tick: 80
 		Offset: 0, 0, 16
 	stand:
@@ -34,7 +35,8 @@ doggie:
 		Start: 99
 		Length: 10
 		ShadowStart: 218
-	die-exploding: s_bang34
+	die-exploding:
+		Filename: s_bang34.shp
 		Length: *
 	die-crushed:
 		Start: 105
@@ -54,6 +56,7 @@ doggie:
 
 vissml:
 	idle:
+		Filename: vissml.shp
 		Length: 90
 		ShadowStart: 90
 		Tick: 80
@@ -61,16 +64,19 @@ vissml:
 
 vislrg:
 	idle:
+		Filename: vislrg.shp
 		Length: 90
 		ShadowStart: 90
 		Tick: 80
 		Offset: 0, 0, 16
 	attack:
 		Combine:
-			vislgatk:
+			0:
+				Filename: vislgatk.shp
 				Start: 5
 				Length: 35
-			vislgatk:
+			1:
+				Filename: vislgatk.shp
 				Start: 0
 				Length: 5
 		Facings: -8
@@ -80,6 +86,8 @@ vislrg:
 #		ShadowStart: 40 # TODO: enable shadow frames
 
 floater:
+	Defaults:
+		Filename: floater.shp
 	idle:
 		Length: 16
 		ShadowStart: 32

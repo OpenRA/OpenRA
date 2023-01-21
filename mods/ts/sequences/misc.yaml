@@ -1,5 +1,6 @@
 overlay:
-	Defaults: place
+	Defaults:
+		Filename: place.shp
 		Offset: 0, -12, 1
 		ZRamp: 1
 	build-valid-snow:
@@ -9,7 +10,8 @@ overlay:
 	target-select:
 
 editor-overlay:
-	Defaults: place
+	Defaults:
+		Filename: place.shp
 		Offset: 0, -12, 1
 		ZRamp: 1
 	copy:
@@ -18,100 +20,134 @@ editor-overlay:
 
 poweroff:
 	offline:
+		Filename: poweroff.shp
 		Length: *
 		Tick: 160
 		ZOffset: 2047
 
 allyrepair:
-	repair: wrench
+	repair:
+		Filename: wrench.shp
 		Length: *
 		Tick: 160
 		ZOffset: 2047
 
 rallypoint:
-	flag: mouse
+	flag:
+		Filename: mouse.shp
 		Start: 221
 		Length: 8
 		ZOffset: 3072
-	circles: null
+	circles:
+		Filename: null.shp
 
 beacon:
 	idle:
+		Filename: beacon.shp
 		Length: 5
 		Tick: 200
 		ZOffset: 2047
 
 crate:
 	idle:
+		TilesetFilenames:
+			TEMPERATE: crate.tem
+			SNOW: crate.sno
 		ShadowStart: 1
-		UseTilesetExtension: true
 		Offset: 0, -10, 10
 
 crate-effects:
 	Defaults:
 		Length: *
 		Offset: 0, 0, 96
-	dollar: money
-	reveal-map: reveal
-	hide-map: shroudx
-	firepower: firepowr
-	armor: armor
-	stealth: cloak
-	heal: healall
-	nuke: mltimisl
-	levelup: veteran
+	dollar:
+		Filename: money.shp
+	reveal-map:
+		Filename: reveal.shp
+	hide-map:
+		Filename: shroudx.shp
+	firepower:
+		Filename: firepowr.shp
+	armor:
+		Filename: armor.shp
+	stealth:
+		Filename: cloak.shp
+	heal:
+		Filename: healall.shp
+	nuke:
+		Filename: mltimisl.shp
+	levelup:
+		Filename: veteran.shp
 
 rank:
-	veteran: pips
+	veteran:
+		Filename: pips.shp
 		Start: 7
-	elite: pips
+	elite:
+		Filename: pips.shp
 		Start: 8
 		Offset: 3, 3
 
 mpspawn:
 	idle:
+		Filename: mpspawn.shp
 		Length: *
 		ZRamp: 1
 		Offset: 0, 0, 1
 
 waypoint:
 	idle:
+		Filename: waypoint.shp
 		Length: *
 		ZRamp: 1
 		Offset: 0, 0, 1
 
 camera:
 	idle:
+		Filename: camera.shp
 		Length: *
 		ZRamp: 1
 		Offset: 0, 0, 1
 
 clock:
-	idle: gclock2
+	idle:
+		Filename: gclock2.shp
 		Length: *
 
 darken:
-	idle: gclock2
+	idle:
+		Filename: gclock2.shp
 		Length: 1
 
 pips:
+	Defaults:
+		Filename: pips.shp
 	medic:
 		Start: 6
-	pip-empty: pips2
-	pip-green: pips2
+	pip-empty:
+		Filename: pips2.shp
+	pip-green:
+		Filename: pips2.shp
 		Start: 1
-	pip-yellow: pips2
+	pip-yellow:
+		Filename: pips2.shp
 		Start: 2
-	pip-gray: pips2
+	pip-gray:
+		Filename: pips2.shp
 		Start: 3
-	pip-red: pips2
+	pip-red:
+		Filename: pips2.shp
 		Start: 4
-	pip-blue: pips2
+	pip-blue:
+		Filename: pips2.shp
 		Start: 5
-	pip-ammo: ammopips
-	pip-ammoempty: ammopips
+	pip-ammo:
+		Filename: ammopips.shp
+	pip-ammoempty:
+		Filename: ammopips.shp
 		Start: 1
-	pip-disguise: pip-disguise
+	pip-disguise:
+		Filename: pip-disguise.shp
 		Length: *
 		Tick: 300
 		Offset: 0, -6
@@ -135,129 +171,180 @@ explosion:
 		Offset: 0, 0, 24
 		AlphaFade: True
 		IgnoreWorldTint: True
-	building: twlt070
+	building:
+		Filename: twlt070.shp
 		Offset: 0, 0, 36
-	ionring: ring1
+	ionring:
+		Filename: ring1.shp
 		ZRamp: 1
 		Tick: 100
 		IgnoreWorldTint: False
-	ionbeam: ionbeam
+	ionbeam:
+		Filename: ionbeam.shp
 		Offset: 0, -60, 60
 		Tick: 100
 		IgnoreWorldTint: False
-	ionbeam2: ionbeam
+	ionbeam2:
+		Filename: ionbeam.shp
 		Offset: 0, -180, 60
 		Tick: 100
 		IgnoreWorldTint: False
-	ionbeam3: ionbeam
+	ionbeam3:
+		Filename: ionbeam.shp
 		Offset: 0, -300, 60
 		Tick: 100
 		IgnoreWorldTint: False
-	ionbeam4: ionbeam
+	ionbeam4:
+		Filename: ionbeam.shp
 		Offset: 0, -420, 60
 		Tick: 100
 		IgnoreWorldTint: False
-	ionbeam5: ionbeam
+	ionbeam5:
+		Filename: ionbeam.shp
 		Offset: 0, -540, 60
 		Tick: 100
 		IgnoreWorldTint: False
-	ionbeam6: ionbeam
+	ionbeam6:
+		Filename: ionbeam.shp
 		Offset: 0, -660, 60
 		Tick: 100
 		IgnoreWorldTint: False
-	pulse_explosion: pulsefx2
+	pulse_explosion:
+		Filename: pulsefx2.shp
 		BlendMode: Additive
 		ZRamp: 1
 		Tick: 80
-	small_watersplash: h2o_exp2
+	small_watersplash:
+		Filename: h2o_exp2.shp
 		IgnoreWorldTint: False
 		AlphaFade: False
 		Alpha: 0.5
-	large_watersplash: h2o_exp1
+	large_watersplash:
+		Filename: h2o_exp1.shp
 		Offset: 0, 0, 39
 		IgnoreWorldTint: False
 		AlphaFade: False
 		Alpha: 0.5
-	water_piff: w_piff
+	water_piff:
+		Filename: w_piff.shp
 		IgnoreWorldTint: False
-	water_piffs: w_piffs
+	water_piffs:
+		Filename: w_piffs.shp
 		IgnoreWorldTint: False
-	piff: piff
+	piff:
+		Filename: piff.shp
 		IgnoreWorldTint: False
-	piffs: piffpiff
+	piffs:
+		Filename: piffpiff.shp
 		IgnoreWorldTint: False
-	small_explosion: explosml
-	medium_explosion: explomed
+	small_explosion:
+		Filename: explosml.shp
+	medium_explosion:
+		Filename: explomed.shp
 		Offset: 0, 0, 27
-	large_explosion: explolrg
+	large_explosion:
+		Filename: explolrg.shp
 		Offset: 0, 0, 31
-	tiny_bang: s_bang16
-	small_bang: s_bang24
-	medium_bang: s_bang34
-	large_bang: s_bang48
-	tiny_brnl: s_brnl20
-	small_brnl: s_brnl30
-	medium_brnl: s_brnl40
-	large_brnl: s_brnl58
+	tiny_bang:
+		Filename: s_bang16.shp
+	small_bang:
+		Filename: s_bang24.shp
+	medium_bang:
+		Filename: s_bang34.shp
+	large_bang:
+		Filename: s_bang48.shp
+	tiny_brnl:
+		Filename: s_brnl20.shp
+	small_brnl:
+		Filename: s_brnl30.shp
+	medium_brnl:
+		Filename: s_brnl40.shp
+	large_brnl:
+		Filename: s_brnl58.shp
 		Offset: 0, 0, 30
-	tiny_tumu: s_tumu22
-	small_tumu: s_tumu30
-	medium_tumu: s_tumu42
-	large_tumu: s_tumu60
+	tiny_tumu:
+		Filename: s_tumu22.shp
+	small_tumu:
+		Filename: s_tumu30.shp
+	medium_tumu:
+		Filename: s_tumu42.shp
+	large_tumu:
+		Filename: s_tumu60.shp
 		Offset: 0, 0, 31
-	tiny_clsn: s_clsn16
-	small_clsn: s_clsn22
-	medium_clsn: s_clsn30
-	large_clsn: s_clsn42
-	verylarge_clsn: s_clsn58
+	tiny_clsn:
+		Filename: s_clsn16.shp
+	small_clsn:
+		Filename: s_clsn22.shp
+	medium_clsn:
+		Filename: s_clsn30.shp
+	large_clsn:
+		Filename: s_clsn42.shp
+	verylarge_clsn:
+		Filename: s_clsn58.shp
 		Offset: 0, 0, 30
-	tiny_twlt: twlt026
-	small_twlt: twlt036
-	medium_twlt: twlt050
+	tiny_twlt:
+		Filename: twlt026.shp
+	small_twlt:
+		Filename: twlt036.shp
+	medium_twlt:
+		Filename: twlt050.shp
 		Offset: 0, 0, 26
-	large_twlt: twlt070
+	large_twlt:
+		Filename: twlt070.shp
 		Offset: 0, 0, 36
-	verylarge_twlt: twlt100
+	verylarge_twlt:
+		Filename: twlt100.shp
 		Offset: 0, 0, 51
-	tiny_grey_explosion: xgrysml1
+	tiny_grey_explosion:
+		Filename: xgrysml1.shp
 		IgnoreWorldTint: False
-	small_grey_explosion: xgrysml2
+	small_grey_explosion:
+		Filename: xgrysml2.shp
 		IgnoreWorldTint: False
-	medium_grey_explosion: xgrymed1
+	medium_grey_explosion:
+		Filename: xgrymed1.shp
 		IgnoreWorldTint: False
-	large_grey_explosion: xgrymed2
+	large_grey_explosion:
+		Filename: xgrymed2.shp
 		IgnoreWorldTint: False
-	droppod_explosion: droppod
+	droppod_explosion:
+		Filename: droppod.shp
 		Length: 8
 		Tick: 360
 		IgnoreWorldTint: False
-	droppod2_explosion: droppod2
+	droppod2_explosion:
+		Filename: droppod2.shp
 		Length: 8
 		Tick: 360
 		IgnoreWorldTint: False
-	droppody_explosion: droppody
+	droppody_explosion:
+		Filename: droppody.shp
 		Length: 8
 		Tick: 360
 		IgnoreWorldTint: False
-	droppody2_explosion: droppody2
+	droppody2_explosion:
+		Filename: droppody2.shp
 		Length: 8
 		Tick: 360
 		IgnoreWorldTint: False
 
 discus:
 	idle:
+		Filename: discus.shp
 		Length: *
 		ZOffset: 1023
 		Offset: 0, 0, 12
 
 canister:
 	idle:
+		Filename: canister.shp
 		Length: *
 		ZOffset: 1023
 		Offset: 0, 0, 12
 
 pulsball:
 	idle:
+		Filename: pulsball.shp
 		Length: *
 		BlendMode: Additive
 		ZOffset: 1023
@@ -265,25 +352,30 @@ pulsball:
 
 dragon:
 	idle:
+		Filename: dragon.shp
 		Facings: 32
 		ZOffset: 1023
 		Offset: 0, 0, 6
 
 crystal4:
 	idle:
+		TilesetFilenames:
+			TEMPERATE: crystal4.tem
+			SNOW: crystal4.sno
 		Length: 15
 		ShadowStart: 15
-		UseTilesetExtension: true
 		ZOffset: 1023
 		Offset: 0, 0, 6
 
 120mm:
 	idle:
+		Filename: 120mm.shp
 		ZOffset: 1023
 		Offset: 0, 0, 4
 
 torpedo:
 	idle:
+		Filename: torpedo.shp
 		Length: *
 		ZOffset: 1023
 		Offset: 0, 0, 8
@@ -291,6 +383,7 @@ torpedo:
 
 flameall:
 	idle:
+		Filename: flameall.shp
 		Length: 19
 		Facings: -8
 		Tick: 160
@@ -300,63 +393,72 @@ flameall:
 		Alpha: 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1
 
 largesmoke:
-	idle: lgrysmk1
+	idle:
+		Filename: lgrysmk1.shp
 		Length: *
 		ZOffset: 1023
 		Offset: 0, 0, 24
 		AlphaFade: True
 
 smallsmoke:
-	idle: sgrysmk1
+	idle:
+		Filename: sgrysmk1.shp
 		Length: *
 		ZOffset: 1023
 		Offset: 0, 0, 24
 		AlphaFade: True
 
 large_smoke_trail:
-	idle: smokey
+	idle:
+		Filename: smokey.shp
 		Length: *
 		ZOffset: 1023
 		Offset: 0, 0, 24
 		AlphaFade: True
 
 small_smoke_trail:
-	idle: smokey2
+	idle:
+		Filename: smokey2.shp
 		Length: *
 		ZOffset: 1023
 		Offset: 0, 0, 24
 		AlphaFade: True
 
 largefire:
-	idle: fire1
+	idle:
+		Filename: fire1.shp
 		Length: *
 		Offset: 0, 0, 36
 		Alpha: 0.5
 		IgnoreWorldTint: True
 
 mediumfire:
-	idle: fire2
+	idle:
+		Filename: fire2.shp
 		Length: *
 		Offset: 0, 0, 24
 		Alpha: 0.5
 		IgnoreWorldTint: True
 
 smallfire:
-	idle: fire3
+	idle:
+		Filename: fire3.shp
 		Length: *
 		Offset: 0, 0, 24
 		Alpha: 0.5
 		IgnoreWorldTint: True
 
 tinyfire:
-	idle: fire4
+	idle:
+		Filename: fire4.shp
 		Length: *
 		Offset: 0, 0, 24
 		Alpha: 0.75
 		IgnoreWorldTint: True
 
 moveflsh:
-	idle: ring
+	idle:
+		Filename: ring.shp
 		Length: *
 		Tick: 30
 		ZOffset: 2047
@@ -364,7 +466,8 @@ moveflsh:
 		AlphaFade: True
 
 wake:
-	idle: wake2
+	idle:
+		Filename: wake2.shp
 		Length: *
 		Tick: 180
 		ZOffset: -512
@@ -374,193 +477,391 @@ wake:
 
 resources:
 	Defaults:
-		UseTilesetExtension: true
 		Length: 12
 		ShadowStart: 12
 		Offset: 0, -12, 1
 		ZRamp: 1
 		IgnoreWorldTint: true
-	tib01: tib01
-	tib02: tib02
-	tib03: tib03
-	tib04: tib04
-	tib05: tib05
-	tib06: tib06
-	tib07: tib07
-	tib08: tib08
-	tib09: tib09
-	tib10: tib10
-	tib11: tib11
-	tib12: tib12
-	tib13: tib13
-	tib14: tib14
-	tib15: tib15
-	tib16: tib16
-	tib17: tib17
-	tib18: tib18
-	tib19: tib19
-	tib20: tib20
-	veins: veins
+	tib01:
+		TilesetFilenames:
+			TEMPERATE: tib01.tem
+			SNOW: tib01.sno
+	tib02:
+		TilesetFilenames:
+			TEMPERATE: tib02.tem
+			SNOW: tib02.sno
+	tib03:
+		TilesetFilenames:
+			TEMPERATE: tib03.tem
+			SNOW: tib03.sno
+	tib04:
+		TilesetFilenames:
+			TEMPERATE: tib04.tem
+			SNOW: tib04.sno
+	tib05:
+		TilesetFilenames:
+			TEMPERATE: tib05.tem
+			SNOW: tib05.sno
+	tib06:
+		TilesetFilenames:
+			TEMPERATE: tib06.tem
+			SNOW: tib06.sno
+	tib07:
+		TilesetFilenames:
+			TEMPERATE: tib07.tem
+			SNOW: tib07.sno
+	tib08:
+		TilesetFilenames:
+			TEMPERATE: tib08.tem
+			SNOW: tib08.sno
+	tib09:
+		TilesetFilenames:
+			TEMPERATE: tib09.tem
+			SNOW: tib09.sno
+	tib10:
+		TilesetFilenames:
+			TEMPERATE: tib10.tem
+			SNOW: tib10.sno
+	tib11:
+		TilesetFilenames:
+			TEMPERATE: tib11.tem
+			SNOW: tib11.sno
+	tib12:
+		TilesetFilenames:
+			TEMPERATE: tib12.tem
+			SNOW: tib12.sno
+	tib13:
+		TilesetFilenames:
+			TEMPERATE: tib13.tem
+			SNOW: tib13.sno
+	tib14:
+		TilesetFilenames:
+			TEMPERATE: tib14.tem
+			SNOW: tib14.sno
+	tib15:
+		TilesetFilenames:
+			TEMPERATE: tib15.tem
+			SNOW: tib15.sno
+	tib16:
+		TilesetFilenames:
+			TEMPERATE: tib16.tem
+			SNOW: tib16.sno
+	tib17:
+		TilesetFilenames:
+			TEMPERATE: tib17.tem
+			SNOW: tib17.sno
+	tib18:
+		TilesetFilenames:
+			TEMPERATE: tib18.tem
+			SNOW: tib18.sno
+	tib19:
+		TilesetFilenames:
+			TEMPERATE: tib19.tem
+			SNOW: tib19.sno
+	tib20:
+		TilesetFilenames:
+			TEMPERATE: tib20.tem
+			SNOW: tib20.sno
+	veins:
+		TilesetFilenames:
+			TEMPERATE: veins.tem
+			SNOW: veins.sno
 		Length: *
 		ShadowStart: -1
 		IgnoreWorldTint: false
 
 veins:
-	idle: veinatac
+	idle:
+		TilesetFilenames:
+			TEMPERATE: veinatac.tem
+			SNOW: veinatac.sno
 		Length: 12
-		UseTilesetExtension: true
 		ZOffset: 1023
 		Offset: 0, -12, 24
 
 shroud:
 	Defaults:
+		Filename: shroud.shp
 		Offset: 0, -1
 		ZRamp: 1
 	shroud:
 		Length: *
-	fog: fog
+	fog:
+		Filename: fog.shp
 		Length: *
 
 smallscorches:
 	Defaults:
-		UseTilesetExtension: true
 		Offset: 0, -12, 1
 		ZRamp: 1
-	sc1: burnt01
-	sc2: burnt02
-	sc3: burnt03
-	sc4: burnt04
-	sc5: burnt05
-	sc6: burnt06
+	sc1:
+		TilesetFilenames:
+			TEMPERATE: burnt01.tem
+			SNOW: burnt01.sno
+	sc2:
+		TilesetFilenames:
+			TEMPERATE: burnt02.tem
+			SNOW: burnt02.sno
+	sc3:
+		TilesetFilenames:
+			TEMPERATE: burnt03.tem
+			SNOW: burnt03.sno
+	sc4:
+		TilesetFilenames:
+			TEMPERATE: burnt04.tem
+			SNOW: burnt04.sno
+	sc5:
+		TilesetFilenames:
+			TEMPERATE: burnt05.tem
+			SNOW: burnt05.sno
+	sc6:
+		TilesetFilenames:
+			TEMPERATE: burnt06.tem
+			SNOW: burnt06.sno
 
 mediumscorches:
 	Defaults:
-		UseTilesetExtension: true
 		Offset: 0, -18, 1
 		ZRamp: 1
-	sc7: burnt07
-	sc8: burnt08
-	sc9: burnt09
-	sc10: burnt10
+	sc7:
+		TilesetFilenames:
+			TEMPERATE: burnt07.tem
+			SNOW: burnt07.sno
+	sc8:
+		TilesetFilenames:
+			TEMPERATE: burnt08.tem
+			SNOW: burnt08.sno
+	sc9:
+		TilesetFilenames:
+			TEMPERATE: burnt09.tem
+			SNOW: burnt09.sno
+	sc10:
+		TilesetFilenames:
+			TEMPERATE: burnt10.tem
+			SNOW: burnt10.sno
 
 largescorches:
 	Defaults:
-		UseTilesetExtension: true
 		Offset: 0, -24, 1
 		ZRamp: 1
-	sc11: burnt11
-	sc12: burnt12
+	sc11:
+		TilesetFilenames:
+			TEMPERATE: burnt11.tem
+			SNOW: burnt11.sno
+	sc12:
+		TilesetFilenames:
+			TEMPERATE: burnt12.tem
+			SNOW: burnt12.sno
 
 smallcraters:
 	Defaults:
-		UseTilesetExtension: true
 		Offset: 0, -12, 1
 		ZRamp: 1
-	cr1: crater01
-	cr2: crater02
-	cr3: crater03
-	cr4: crater04
-	cr5: crater05
-	cr6: crater06
+	cr1:
+		TilesetFilenames:
+			TEMPERATE: crater01.tem
+			SNOW: crater01.sno
+	cr2:
+		TilesetFilenames:
+			TEMPERATE: crater02.tem
+			SNOW: crater02.sno
+	cr3:
+		TilesetFilenames:
+			TEMPERATE: crater03.tem
+			SNOW: crater03.sno
+	cr4:
+		TilesetFilenames:
+			TEMPERATE: crater04.tem
+			SNOW: crater04.sno
+	cr5:
+		TilesetFilenames:
+			TEMPERATE: crater05.tem
+			SNOW: crater05.sno
+	cr6:
+		TilesetFilenames:
+			TEMPERATE: crater06.tem
+			SNOW: crater06.sno
 
 mediumcraters:
 	Defaults:
-		UseTilesetExtension: true
 		Offset: 0, -12, 1
 		ZRamp: 1
-	cr7: crater07
-	cr8: crater08
-	cr9: crater09
-	cr10: crater10
+	cr7:
+		TilesetFilenames:
+			TEMPERATE: crater07.tem
+			SNOW: crater07.sno
+	cr8:
+		TilesetFilenames:
+			TEMPERATE: crater08.tem
+			SNOW: crater08.sno
+	cr9:
+		TilesetFilenames:
+			TEMPERATE: crater09.tem
+			SNOW: crater09.sno
+	cr10:
+		TilesetFilenames:
+			TEMPERATE: crater10.tem
+			SNOW: crater10.sno
 
 largecraters:
 	Defaults:
-		UseTilesetExtension: true
 		Offset: 0, -24, 1
 		ZRamp: 1
-	cr11: crater11
-	cr12: crater12
+	cr11:
+		TilesetFilenames:
+			TEMPERATE: crater11.tem
+			SNOW: crater11.sno
+	cr12:
+		TilesetFilenames:
+			TEMPERATE: crater12.tem
+			SNOW: crater12.sno
 
 icon:
-	clustermissile: mltiicon
-	ioncannon: ioncicon
-	hunterseeker: detnicon
-	emp: pulsicon
-	droppods: podsicon
+	clustermissile:
+		Filename: mltiicon.shp
+	ioncannon:
+		Filename: ioncicon.shp
+	hunterseeker:
+		Filename: detnicon.shp
+	emp:
+		Filename: pulsicon.shp
+	droppods:
+		Filename: podsicon.shp
 
 clustermissile:
-	up: mltimisl-placeholder # TODO: use voxel
+	up: # TODO: use voxel
+		Filename: mltimisl-placeholder.shp
 		Frames: 0
 		Length: 1
-	down: mltimisl-placeholder # TODO: use voxel
+	down: # TODO: use voxel
+		Filename: mltimisl-placeholder.shp
 		Frames: 1
 		Length: 1
 
 ^rock:
 	idle:
 		ShadowStart: 1
-		UseTilesetExtension: true
 		Offset: 0, -12
 
 trock01:
 	Inherits: ^rock
+	idle:
+		TilesetFilenames:
+			TEMPERATE: trock01.tem
+			SNOW: trock01.sno
 
 trock02:
 	Inherits: ^rock
+	idle:
+		TilesetFilenames:
+			TEMPERATE: trock02.tem
+			SNOW: trock02.sno
 
 trock03:
 	Inherits: ^rock
+	idle:
+		TilesetFilenames:
+			TEMPERATE: trock03.tem
+			SNOW: trock03.sno
 
 trock04:
 	Inherits: ^rock
+	idle:
+		TilesetFilenames:
+			TEMPERATE: trock04.tem
+			SNOW: trock04.sno
 
 trock05:
 	Inherits: ^rock
+	idle:
+		TilesetFilenames:
+			TEMPERATE: trock05.tem
+			SNOW: trock05.sno
 
 srock01:
 	Inherits: ^rock
+	idle:
+		TilesetFilenames:
+			TEMPERATE: srock01.tem
+			SNOW: srock01.sno
 
 srock02:
 	Inherits: ^rock
+	idle:
+		TilesetFilenames:
+			TEMPERATE: srock02.tem
+			SNOW: srock02.sno
 
 srock03:
 	Inherits: ^rock
+	idle:
+		TilesetFilenames:
+			TEMPERATE: srock03.tem
+			SNOW: srock03.sno
 
 srock04:
 	Inherits: ^rock
+	idle:
+		TilesetFilenames:
+			TEMPERATE: srock04.tem
+			SNOW: srock04.sno
 
 srock05:
 	Inherits: ^rock
+	idle:
+		TilesetFilenames:
+			TEMPERATE: srock05.tem
+			SNOW: srock05.sno
 
 dbrissm:
 	Defaults:
 		ZOffset: 1023
 		Length: *
-	1: dbris1sm
-	2: dbris2sm
-	3: dbris3sm
-	4: dbris4sm
-	5: dbris5sm
-	6: dbris6sm
-	7: dbris7sm
-	8: dbris8sm
-	9: dbris9sm
-	10: dbrs10sm
+	1:
+		Filename: dbris1sm.shp
+	2:
+		Filename: dbris2sm.shp
+	3:
+		Filename: dbris3sm.shp
+	4:
+		Filename: dbris4sm.shp
+	5:
+		Filename: dbris5sm.shp
+	6:
+		Filename: dbris6sm.shp
+	7:
+		Filename: dbris7sm.shp
+	8:
+		Filename: dbris8sm.shp
+	9:
+		Filename: dbris9sm.shp
+	10:
+		Filename: dbrs10sm.shp
 
 dbrislg:
 	Defaults:
 		ZOffset: 1023
 		Length: *
-	1: dbris1lg
-	2: dbris2lg
-	3: dbris3lg
-	4: dbris4lg
-	5: dbris5lg
-	6: dbris6lg
-	7: dbris7lg
-	8: dbris8lg
-	9: dbris9lg
-	10: dbrs10lg
+	1:
+		Filename: dbris1lg.shp
+	2:
+		Filename: dbris2lg.shp
+	3:
+		Filename: dbris3lg.shp
+	4:
+		Filename: dbris4lg.shp
+	5:
+		Filename: dbris5lg.shp
+	6:
+		Filename: dbris6lg.shp
+	7:
+		Filename: dbris7lg.shp
+	8:
+		Filename: dbris8lg.shp
+	9:
+		Filename: dbris9lg.shp
+	10:
+		Filename: dbrs10lg.shp
 
 ^crate:
 	idle:
@@ -569,130 +870,233 @@ dbrislg:
 
 crat01:
 	Inherits: ^crate
+	idle:
+		Filename: crat01.shp
 
 crat02:
 	Inherits: ^crate
+	idle:
+		Filename: crat02.shp
 
 crat03:
 	Inherits: ^crate
+	idle:
+		Filename: crat03.shp
 
 crat04:
 	Inherits: ^crate
+	idle:
+		Filename: crat04.shp
 
 crat0a:
 	Inherits: ^crate
+	idle:
+		Filename: crat0a.shp
 
 crat0b:
 	Inherits: ^crate
+	idle:
+		Filename: crat0b.shp
 
 crat0c:
 	Inherits: ^crate
+	idle:
+		Filename: crat0c.shp
 
 drum01:
 	Inherits: ^crate
+	idle:
+		Filename: drum01.shp
 
 drum02:
 	Inherits: ^crate
+	idle:
+		Filename: drum02.shp
 
 palet01:
 	Inherits: ^crate
+	idle:
+		Filename: palet01.shp
 
 palet02:
 	Inherits: ^crate
+	idle:
+		Filename: palet02.shp
 
 palet03:
 	Inherits: ^crate
+	idle:
+		Filename: palet03.shp
 
 palet04:
 	Inherits: ^crate
+	idle:
+		Filename: palet04.shp
 
 ^tracks:
 	idle:
-		UseTilesetExtension: true
 		ZOffset: -1c0
 		Offset: 0, 0, 1
 		ZRamp: 1
 
 tracks01:
 	Inherits: ^tracks
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tracks01.tem
+			SNOW: tracks01.sno
 
 tracks02:
 	Inherits: ^tracks
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tracks02.tem
+			SNOW: tracks02.sno
 
 tracks03:
 	Inherits: ^tracks
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tracks03.tem
+			SNOW: tracks03.sno
 
 tracks04:
 	Inherits: ^tracks
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tracks04.tem
+			SNOW: tracks04.sno
 
 tracks05:
 	Inherits: ^tracks
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tracks05.tem
+			SNOW: tracks05.sno
 
 tracks06:
 	Inherits: ^tracks
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tracks06.tem
+			SNOW: tracks06.sno
 
 tracks07:
 	Inherits: ^tracks
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tracks07.tem
+			SNOW: tracks07.sno
 
 tracks08:
 	Inherits: ^tracks
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tracks08.tem
+			SNOW: tracks08.sno
 
 tracks09:
 	Inherits: ^tracks
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tracks09.tem
+			SNOW: tracks09.sno
 
 tracks10:
 	Inherits: ^tracks
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tracks10.tem
+			SNOW: tracks10.sno
 
 tracks11:
 	Inherits: ^tracks
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tracks11.tem
+			SNOW: tracks11.sno
 
 tracks12:
 	Inherits: ^tracks
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tracks12.tem
+			SNOW: tracks12.sno
 
 tracks13:
 	Inherits: ^tracks
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tracks13.tem
+			SNOW: tracks13.sno
 
 tracks14:
 	Inherits: ^tracks
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tracks14.tem
+			SNOW: tracks14.sno
 
 tracks15:
 	Inherits: ^tracks
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tracks15.tem
+			SNOW: tracks15.sno
 
 tracks16:
 	Inherits: ^tracks
+	idle:
+		TilesetFilenames:
+			TEMPERATE: tracks16.tem
+			SNOW: tracks16.sno
 
 ^tuntop:
 	idle:
 		ZRamp: 1
-		UseTilesetExtension: true
 
 tuntop01:
 	Inherits: ^tuntop
 	idle:
+		TilesetFilenames:
+			TEMPERATE: tuntop01.tem
+			SNOW: tuntop01.sno
 		Offset: 24, -49, 48
 
 tuntop02:
 	Inherits: ^tuntop
 	idle:
+		TilesetFilenames:
+			TEMPERATE: tuntop02.tem
+			SNOW: tuntop02.sno
 		Offset: -24, -49, 48
 
 tuntop03:
 	Inherits: ^tuntop
 	idle:
+		TilesetFilenames:
+			TEMPERATE: tuntop03.tem
+			SNOW: tuntop03.sno
 		Offset: 24, -49, 49
 
 tuntop04:
 	Inherits: ^tuntop
 	idle:
+		TilesetFilenames:
+			TEMPERATE: tuntop04.tem
+			SNOW: tuntop04.sno
 		Offset: -24, -49, 49
 
 dig:
 	idle:
+		Filename: dig.shp
 		Length: *
 		ZOffset: 511
 		Offset: 0, 0, 24
 
 typeglyphs:
+	Defaults:
+		Filename: typeglyphs.shp
 	infantry:
 	vehicle:
 		Start: 1
@@ -705,12 +1109,14 @@ typeglyphs:
 
 podring:
 	idle:
+		Filename: podring.shp
 		Frames: 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
 		Length: *
 		AlphaFade: True
 
 fire1:
 	idle-overlay:
+		Filename: fire1.shp
 		Length: 17
 		BlendMode: Translucent
 		Offset: 0, -24, 24
@@ -718,13 +1124,15 @@ fire1:
 
 fire2:
 	idle-overlay:
+		Filename: fire2.shp
 		Length: 17
 		BlendMode: Translucent
 		Offset: 0, -18, 18
 		ZOffset: 1023
 
 caryland:
-	idle: podring
+	idle:
+		Filename: podring.shp
 		Length: *
 		Tick: 50
 		ZOffset: -512
@@ -733,7 +1141,8 @@ caryland:
 		BlendMode: Translucent
 
 dropland:
-	idle: podring
+	idle:
+		Filename: podring.shp
 		Length: *
 		Tick: 90
 		ZOffset: -512

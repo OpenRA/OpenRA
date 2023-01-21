@@ -1,19 +1,24 @@
 fb4:
 	idle:
+		Filename: fb4.shp
 		Length: 4
 		ZOffset: 1023
 
 fire:
-	1: fire1
+	1:
+		Filename: fire1.shp
 		Length: *
 		Offset: 0,-3
 		ZOffset: 1023
-	2: fire2
+	2:
+		Filename: fire2.shp
 		Length: *
 		Offset: 0,-3
 		ZOffset: 1023
 
 burn-l:
+	Defaults:
+		Filename: burn-l.shp
 	idle:
 		Length: *
 		ZOffset: 512
@@ -27,6 +32,8 @@ burn-l:
 		ZOffset: 512
 
 burn-m:
+	Defaults:
+		Filename: burn-m.shp
 	idle:
 		Length: *
 		ZOffset: 512
@@ -40,6 +47,8 @@ burn-m:
 		ZOffset: 512
 
 burn-s:
+	Defaults:
+		Filename: burn-s.shp
 	idle:
 		Length: *
 		ZOffset: 512
@@ -54,9 +63,12 @@ burn-s:
 
 120mm:
 	idle:
+		Filename: 120mm.shp
 		ZOffset: 1023
 
 smoke_m:
+	Defaults:
+		Filename: smoke_m.shp
 	idle:
 		Length: *
 		Offset: 2, -5
@@ -73,32 +85,38 @@ smoke_m:
 		ZOffset: 512
 
 laserfire:
-	idle: veh-hit3
+	idle:
+		Filename: veh-hit3.shp
 		Length: *
 		ZOffset: 511
 
 dragon:
 	idle:
+		Filename: dragon.shp
 		Facings: 32
 		ZOffset: 1023
 
 smokey:
 	idle:
+		Filename: smokey.shp
 		Length: *
 		ZOffset: 1023
 
 bomb:
 	idle:
+		Filename: bomb.shp
 		Length: *
 		ZOffset: 1023
 
 missile:
 	idle:
+		Filename: missile.shp
 		Facings: 32
 		ZOffset: 1023
 
 patriot:
 	idle:
+		Filename: patriot.shp
 		Facings: 32
 		ZOffset: 1023
 
@@ -106,25 +124,41 @@ explosion:
 	Defaults:
 		Length: *
 		ZOffset: 2047
-	nuke_explosion: atomsfx
-	piff: piff
-	piffs: piffpiff
-	chemball: chemball
-	small_napalm: napalm1
-	med_napalm: napalm2
-	big_napalm: napalm3
-	small_frag: veh-hit3
-	med_frag: frag1
-	big_frag: frag3
-	small_poof: veh-hit2
-	poof: art-exp1
-	small_building: veh-hit1
-	building: fball1
-	building_napalm: napalm2
+	nuke_explosion:
+		Filename: atomsfx.shp
+	piff:
+		Filename: piff.shp
+	piffs:
+		Filename: piffpiff.shp
+	chemball:
+		Filename: chemball.shp
+	small_napalm:
+		Filename: napalm1.shp
+	med_napalm:
+		Filename: napalm2.shp
+	big_napalm:
+		Filename: napalm3.shp
+	small_frag:
+		Filename: veh-hit3.shp
+	med_frag:
+		Filename: frag1.shp
+	big_frag:
+		Filename: frag3.shp
+	small_poof:
+		Filename: veh-hit2.shp
+	poof:
+		Filename: art-exp1.shp
+	small_building:
+		Filename: veh-hit1.shp
+	building:
+		Filename: fball1.shp
+	building_napalm:
+		Filename: napalm2.shp
 		FlipX: true
 
 rank:
 	Defaults:
+		Filename: rank.shp
 		Offset: 0, 3
 	rank-veteran-1:
 	rank-veteran-2:
@@ -136,67 +170,82 @@ rank:
 		Offset: 1, 3
 
 rallypoint:
-	flag: flagfly
+	flag:
+		Filename: flagfly.shp
 		Length: *
 		Offset: 10,-5
 		ZOffset: 2535
-	circles: fpls
+	circles:
+		Filename: fpls.shp
 		Length: *
 		ZOffset: 2047
 
 beacon:
 	Defaults:
 		ZOffset: 2535
-	arrow: mouse2
+	arrow:
+		Filename: mouse2.shp
 		Start: 5
 		Offset: 1,-12
-	circles: fpls
+	circles:
+		Filename: fpls.shp
 		Length: *
 		ZOffset: 2047
-	airstrike: bombicon
+	airstrike:
+		Filename: bombicon.shp
 		Offset: 0,-42
-	atomic: atomicon
+	atomic:
+		Filename: atomicon.shp
 		Offset: 0,-42
-	clock: beaconclock
+	clock:
+		Filename: beaconclock.shp
 		Length: *
 		Offset: 0,-42
 
 select:
 	repair:
+		Filename: select.shp
 		Start: 2
 
 allyrepair:
 	repair:
+		Filename: allyrepair.shp
 		Length: *
 		Tick: 160
 		ZOffset: 2047
 
 scrate:
 	idle:
+		Filename: scrate.shp
 		Start: 1
 		ZOffset: -511
 
 wcrate:
 	idle:
+		Filename: wcrate.shp
 		Start: 1
 		ZOffset: -511
 
 xcratea:
-	idle: xcrate
+	idle:
+		Filename: xcrate.shp
 		ZOffset: -511
 
 xcrateb:
-	idle: xcrate
+	idle:
+		Filename: xcrate.shp
 		Start: 1
 		ZOffset: -511
 
 xcratec:
-	idle: xcrate
+	idle:
+		Filename: xcrate.shp
 		Start: 2
 		ZOffset: -511
 
 xcrated:
-	idle: xcrate
+	idle:
+		Filename: xcrate.shp
 		Start: 3
 		ZOffset: -511
 
@@ -204,56 +253,79 @@ crate-effects:
 	Defaults:
 		Length: *
 		ZOffset: 2047
-	airstrike: deviator
-	nuke: missile2
-	dollar: dollar
-	reveal-map: radarcrate
-	hide-map: empulse
-	heal: healcrate
-	mine: mine
-	redskull: rapid
-	cloak: cloakcrate
-	levelup: levelup
+	airstrike:
+		Filename: deviator.shp
+	nuke:
+		Filename: missile2.shp
+	dollar:
+		Filename: dollar.shp
+	reveal-map:
+		Filename: radarcrate.shp
+	hide-map:
+		Filename: empulse.shp
+	heal:
+		Filename: healcrate.shp
+	mine:
+		Filename: mine.shp
+	redskull:
+		Filename: rapid.shp
+	cloak:
+		Filename: cloakcrate.shp
+	levelup:
+		Filename: levelup.shp
 		Tick: 200
-	firepowerup: firepowercrate
-	armorup: armorcrate
-	speedup: speedcrate
+	firepowerup:
+		Filename: firepowercrate.shp
+	armorup:
+		Filename: armorcrate.shp
+	speedup:
+		Filename: speedcrate.shp
 
 atomic:
 	Defaults:
 		Length: *
 		ZOffset: 1023
-	up: atomicup
-	down: atomicdn
+	up:
+		Filename: atomicup.shp
+	down:
+		Filename: atomicdn.shp
 
 ionsfx:
 	idle:
+		Filename: ionsfx.shp
 		Length: *
 		Offset: 0, -78
 		ZOffset: 1023
 
 bomblet:
 	idle:
+		Filename: bomblet.shp
 		Length: *
 		ZOffset: 1023
 
 mpspawn:
 	idle:
+		Filename: mpspawn.shp
 		Length: *
 
 waypoint:
 	idle:
+		Filename: waypoint.shp
 		Length: *
 
 camera:
 	idle:
+		Filename: camera.shp
 		Length: *
 
 clock:
-	idle: hclock
+	idle:
+		Filename: hclock.shp
 		Length: *
 
 pips:
+	Defaults:
+		Filename: pips.shp
 	pip-empty:
 	pip-green:
 		Start: 1
@@ -265,18 +337,21 @@ pips:
 		Start: 4
 	pip-blue:
 		Start: 5
-	pip-heal: pip-heal
+	pip-heal:
+		Filename: pip-heal.shp
 		Offset: -1, 1
-	groups: pdigits
+	groups:
+		Filename: pdigits.shp
 		Length: *
 		Offset: 9, 5
 		Frames: 1, 2, 3, 4, 5, 6, 7, 8, 9, 0
-	pip-hazmat: pip-hazmat
+	pip-hazmat:
+		Filename: pip-hazmat.shp
 		Offset: -3, 0
 
 overlay:
-	Defaults: trans.icn
-		AddExtension: False
+	Defaults:
+		Filename: trans.icn
 	build-valid:
 	build-invalid:
 		Start: 2
@@ -287,146 +362,285 @@ overlay:
 		Start: 2
 
 editor-overlay:
-	Defaults: trans.icn
-		AddExtension: False
+	Defaults:
+		Filename: trans.icn
 	copy:
 	paste:
 		Start: 2
 
 poweroff:
 	offline:
+		Filename: poweroff.shp
 		Length: *
 		Tick: 160
 		ZOffset: 2047
 
 icon:
-	Defaults:
-		AddExtension: False
-	airstrike: bombicnh.tem
-	ioncannon: ionicnh.tem
-	abomb: atomicnh.tem
+	airstrike:
+		Filename: bombicnh.tem
+	ioncannon:
+		Filename: ionicnh.tem
+	abomb:
+		Filename: atomicnh.tem
 
 moveflsh:
 	idle:
+		Filename: moveflsh.shp
 		Length: *
 		Tick: 80
 		ZOffset: 2047
 
 resources:
 	Defaults:
-		UseTilesetExtension: true
 		Length: *
-	ti1: ti1
-	ti2: ti2
-	ti3: ti3
-	ti4: ti4
-	ti5: ti5
-	ti6: ti6
-	ti7: ti7
-	ti8: ti8
-	ti9: ti9
-	ti10: ti10
-	ti11: ti11
-	ti12: ti12
-	bti1: rtib1
-		TilesetOverrides:
-			WINTER: TEMPERAT
-			JUNGLE: TEMPERAT
-			SNOW: TEMPERAT
-	bti2: rtib2
-		TilesetOverrides:
-			WINTER: TEMPERAT
-			JUNGLE: TEMPERAT
-			SNOW: TEMPERAT
-	bti3: rtib3
-		TilesetOverrides:
-			WINTER: TEMPERAT
-			JUNGLE: TEMPERAT
-			SNOW: TEMPERAT
-	bti4: rtib4
-		TilesetOverrides:
-			WINTER: TEMPERAT
-			JUNGLE: TEMPERAT
-			SNOW: TEMPERAT
-	bti5: rtib5
-		TilesetOverrides:
-			WINTER: TEMPERAT
-			JUNGLE: TEMPERAT
-			SNOW: TEMPERAT
-	bti6: rtib6
-		TilesetOverrides:
-			WINTER: TEMPERAT
-			JUNGLE: TEMPERAT
-			SNOW: TEMPERAT
-	bti7: rtib7
-		TilesetOverrides:
-			WINTER: TEMPERAT
-			JUNGLE: TEMPERAT
-			SNOW: TEMPERAT
-	bti8: rtib8
-		TilesetOverrides:
-			WINTER: TEMPERAT
-			JUNGLE: TEMPERAT
-			SNOW: TEMPERAT
-	bti9: rtib9
-		TilesetOverrides:
-			WINTER: TEMPERAT
-			JUNGLE: TEMPERAT
-			SNOW: TEMPERAT
-	bti10: rtib10
-		TilesetOverrides:
-			WINTER: TEMPERAT
-			JUNGLE: TEMPERAT
-			SNOW: TEMPERAT
-	bti11: rtib11
-		TilesetOverrides:
-			WINTER: TEMPERAT
-			JUNGLE: TEMPERAT
-			SNOW: TEMPERAT
-	bti12: rtib12
-		TilesetOverrides:
-			WINTER: TEMPERAT
-			JUNGLE: TEMPERAT
-			SNOW: TEMPERAT
+	ti1:
+		TilesetFilenames:
+			DESERT: ti1.des
+			WINTER: ti1.win
+			SNOW: ti1.sno
+			TEMPERAT: ti1.tem
+			JUNGLE: ti1.jun
+	ti2:
+		TilesetFilenames:
+			DESERT: ti2.des
+			WINTER: ti2.win
+			SNOW: ti2.sno
+			TEMPERAT: ti2.tem
+			JUNGLE: ti2.jun
+	ti3:
+		TilesetFilenames:
+			DESERT: ti3.des
+			WINTER: ti3.win
+			SNOW: ti3.sno
+			TEMPERAT: ti3.tem
+			JUNGLE: ti3.jun
+	ti4:
+		TilesetFilenames:
+			DESERT: ti4.des
+			WINTER: ti4.win
+			SNOW: ti4.sno
+			TEMPERAT: ti4.tem
+			JUNGLE: ti4.jun
+	ti5:
+		TilesetFilenames:
+			DESERT: ti5.des
+			WINTER: ti5.win
+			SNOW: ti5.sno
+			TEMPERAT: ti5.tem
+			JUNGLE: ti5.jun
+	ti6:
+		TilesetFilenames:
+			DESERT: ti6.des
+			WINTER: ti6.win
+			SNOW: ti6.sno
+			TEMPERAT: ti6.tem
+			JUNGLE: ti6.jun
+	ti7:
+		TilesetFilenames:
+			DESERT: ti7.des
+			WINTER: ti7.win
+			SNOW: ti7.sno
+			TEMPERAT: ti7.tem
+			JUNGLE: ti7.jun
+	ti8:
+		TilesetFilenames:
+			DESERT: ti8.des
+			WINTER: ti8.win
+			SNOW: ti8.sno
+			TEMPERAT: ti8.tem
+			JUNGLE: ti8.jun
+	ti9:
+		TilesetFilenames:
+			DESERT: ti9.des
+			WINTER: ti9.win
+			SNOW: ti9.sno
+			TEMPERAT: ti9.tem
+			JUNGLE: ti9.jun
+	ti10:
+		TilesetFilenames:
+			DESERT: ti10.des
+			WINTER: ti10.win
+			SNOW: ti10.sno
+			TEMPERAT: ti10.tem
+			JUNGLE: ti10.jun
+	ti11:
+		TilesetFilenames:
+			DESERT: ti11.des
+			WINTER: ti11.win
+			SNOW: ti11.sno
+			TEMPERAT: ti11.tem
+			JUNGLE: ti11.jun
+	ti12:
+		TilesetFilenames:
+			DESERT: ti12.des
+			WINTER: ti12.win
+			SNOW: ti12.sno
+			TEMPERAT: ti12.tem
+			JUNGLE: ti12.jun
+	bti1:
+		Filename: rtib1.tem
+		TilesetFilenames:
+			DESERT: rtib1.des
+	bti2:
+		Filename: rtib2.tem
+		TilesetFilenames:
+			DESERT: rtib2.des
+	bti3:
+		Filename: rtib3.tem
+		TilesetFilenames:
+			DESERT: rtib3.des
+	bti4:
+		Filename: rtib4.tem
+		TilesetFilenames:
+			DESERT: rtib4.des
+	bti5:
+		Filename: rtib5.tem
+		TilesetFilenames:
+			DESERT: rtib5.des
+	bti6:
+		Filename: rtib6.tem
+		TilesetFilenames:
+			DESERT: rtib6.des
+	bti7:
+		Filename: rtib7.tem
+		TilesetFilenames:
+			DESERT: rtib7.des
+	bti8:
+		Filename: rtib8.tem
+		TilesetFilenames:
+			DESERT: rtib8.des
+	bti9:
+		Filename: rtib9.tem
+		TilesetFilenames:
+			DESERT: rtib9.des
+	bti10:
+		Filename: rtib10.tem
+		TilesetFilenames:
+			DESERT: rtib10.des
+	bti11:
+		Filename: rtib11.tem
+		TilesetFilenames:
+			DESERT: rtib11.des
+	bti12:
+		Filename: rtib12.tem
+		TilesetFilenames:
+			DESERT: rtib12.des
 
 shroud:
 	Defaults:
 		Length: 12
-	typea: shadow
-	typeb: shadow
+	typea:
+		Filename: shadow.shp
+	typeb:
+		Filename: shadow.shp
 		Start: 12
-	typec: shadow
+	typec:
+		Filename: shadow.shp
 		Start: 24
-	typed: shadow
+	typed:
+		Filename: shadow.shp
 		Start: 36
-	full: fullshroud
+	full:
+		Filename: fullshroud.shp
 		Length: 1
 
 # Note: The order of smudges and craters determines
 # the index that is mapped to them in maps
 scorches:
 	Defaults:
-		UseTilesetExtension: true
 		Length: *
-	sc1: sc1
-	sc2: sc2
-	sc3: sc3
-	sc4: sc4
-	sc5: sc5
-	sc6: sc6
+	sc1:
+		TilesetFilenames:
+			DESERT: sc1.des
+			WINTER: sc1.win
+			SNOW: sc1.sno
+			TEMPERAT: sc1.tem
+			JUNGLE: sc1.jun
+	sc2:
+		TilesetFilenames:
+			DESERT: sc2.des
+			WINTER: sc2.win
+			SNOW: sc2.sno
+			TEMPERAT: sc2.tem
+			JUNGLE: sc2.jun
+	sc3:
+		TilesetFilenames:
+			DESERT: sc3.des
+			WINTER: sc3.win
+			SNOW: sc3.sno
+			TEMPERAT: sc3.tem
+			JUNGLE: sc3.jun
+	sc4:
+		TilesetFilenames:
+			DESERT: sc4.des
+			WINTER: sc4.win
+			SNOW: sc4.sno
+			TEMPERAT: sc4.tem
+			JUNGLE: sc4.jun
+	sc5:
+		TilesetFilenames:
+			DESERT: sc5.des
+			WINTER: sc5.win
+			SNOW: sc5.sno
+			TEMPERAT: sc5.tem
+			JUNGLE: sc5.jun
+	sc6:
+		TilesetFilenames:
+			DESERT: sc6.des
+			WINTER: sc6.win
+			SNOW: sc6.sno
+			TEMPERAT: sc6.tem
+			JUNGLE: sc6.jun
 
 craters:
 	Defaults:
-		UseTilesetExtension: true
 		Length: *
-	cr1: cr1
-	cr2: cr2
-	cr3: cr3
-	cr4: cr4
-	cr5: cr5
-	cr6: cr6
+	cr1:
+		TilesetFilenames:
+			DESERT: cr1.des
+			WINTER: cr1.win
+			SNOW: cr1.sno
+			TEMPERAT: cr1.tem
+			JUNGLE: cr1.jun
+	cr2:
+		TilesetFilenames:
+			DESERT: cr2.des
+			WINTER: cr2.win
+			SNOW: cr2.sno
+			TEMPERAT: cr2.tem
+			JUNGLE: cr2.jun
+	cr3:
+		TilesetFilenames:
+			DESERT: cr3.des
+			WINTER: cr3.win
+			SNOW: cr3.sno
+			TEMPERAT: cr3.tem
+			JUNGLE: cr3.jun
+	cr4:
+		TilesetFilenames:
+			DESERT: cr4.des
+			WINTER: cr4.win
+			SNOW: cr4.sno
+			TEMPERAT: cr4.tem
+			JUNGLE: cr4.jun
+	cr5:
+		TilesetFilenames:
+			DESERT: cr5.des
+			WINTER: cr5.win
+			SNOW: cr5.sno
+			TEMPERAT: cr5.tem
+			JUNGLE: cr5.jun
+	cr6:
+		TilesetFilenames:
+			DESERT: cr6.des
+			WINTER: cr6.win
+			SNOW: cr6.sno
+			TEMPERAT: cr6.tem
+			JUNGLE: cr6.jun
 
 smokland:
+	Defaults:
+		Filename: smokland.shp
 	open:
 		Length: 72
 		Tick: 120
@@ -438,27 +652,35 @@ smokland:
 		ZOffset: 1023
 
 airstrikedirection:
-	arrow-t: mouse2
+	arrow-t:
+		Filename: mouse2.shp
 		Start: 1
 		Offset: 0, -15, 0
-	arrow-tr: mouse2
+	arrow-tr:
+		Filename: mouse2.shp
 		Start: 2
 		Offset: 7, -7, 0
-	arrow-r: mouse2
+	arrow-r:
+		Filename: mouse2.shp
 		Start: 3
 		Offset: 12, 0, 0
-	arrow-br: mouse2
+	arrow-br:
+		Filename: mouse2.shp
 		Start: 4
 		Offset: 7, 7, 0
-	arrow-b: mouse2
+	arrow-b:
+		Filename: mouse2.shp
 		Start: 5
 		Offset: 0, 15, 0
-	arrow-bl: mouse2
+	arrow-bl:
+		Filename: mouse2.shp
 		Start: 6
 		Offset: -7, 7, 0
-	arrow-l: mouse2
+	arrow-l:
+		Filename: mouse2.shp
 		Start: 7
 		Offset: -12, 0, 0
-	arrow-tl: mouse2
+	arrow-tl:
+		Filename: mouse2.shp
 		Start: 8
 		Offset: -7, -7, 0

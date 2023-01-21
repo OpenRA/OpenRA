@@ -1,90 +1,121 @@
 mig:
 	idle:
+		Filename: mig.shp
 		Facings: 16
 		InterpolatedFacings: 64
-	icon: migicon
+	icon:
+		Filename: migicon.shp
 
 yak:
 	idle:
+		Filename: yak.shp
 		Facings: 16
 		InterpolatedFacings: 64
-	muzzle: minigun
+	muzzle:
+		Filename: minigun.shp
 		Length: 6
 		Facings: 8
-	icon: yakicon
+	icon:
+		Filename: yakicon.shp
 
 heli:
 	idle:
+		Filename: heli.shp
 		Facings: 32
 		UseClassicFacings: True
-	rotor: lrotor
+	rotor:
+		Filename: lrotor.shp
 		Length: 4
-	slow-rotor: lrotor
+	slow-rotor:
+		Filename: lrotor.shp
 		Start: 4
 		Length: 8
-	icon: heliicon
+	icon:
+		Filename: heliicon.shp
 
 hind:
 	idle:
+		Filename: hind.shp
 		Facings: 32
 		UseClassicFacings: True
-	rotor: lrotorlg
+	rotor:
+		Filename: lrotorlg.shp
 		Length: 4
-	slow-rotor: lrotorlg
+	slow-rotor:
+		Filename: lrotorlg.shp
 		Start: 4
 		Length: 8
-	muzzle: minigun
+	muzzle:
+		Filename: minigun.shp
 		Length: 6
 		Facings: 8
-	icon: hindicon
+	icon:
+		Filename: hindicon.shp
 
 tran:
-	idle: tran2
+	idle:
+		Filename: tran2.shp
 		Facings: 32
 		UseClassicFacings: True
-	rotor: lrotor
+	rotor:
+		Filename: lrotor.shp
 		Length: 4
-	rotor2: rrotor
+	rotor2:
+		Filename: rrotor.shp
 		Length: 4
-	slow-rotor: lrotor
+	slow-rotor:
+		Filename: lrotor.shp
 		Start: 4
 		Length: 8
-	slow-rotor2: rrotor
+	slow-rotor2:
+		Filename: rrotor.shp
 		Start: 4
 		Length: 8
-	open: tran2
+	open:
+		Filename: tran2.shp
 		Start: 32
 		Length: 4
-	unload: tran2
+	unload:
+		Filename: tran2.shp
 		Start: 35
-	icon: tranicon
+	icon:
+		Filename: tranicon.shp
 
 tran1husk:
 	idle:
+		Filename: tran1husk.shp
 
 tran2husk:
 	idle:
+		Filename: tran2husk.shp
 
 u2:
 	idle:
+		Filename: u2.shp
 		Facings: 16
 		InterpolatedFacings: 64
 
 badr:
 	idle:
+		Filename: badr.shp
 		Facings: 16
 		InterpolatedFacings: 64
 
 mh60:
 	idle:
+		Filename: mh60.shp
 		Facings: 32
 		UseClassicFacings: True
-	rotor: yrotorlg
+	rotor:
+		Filename: yrotorlg.shp
 		Length: 4
-	slow-rotor: yrotorlg
+	slow-rotor:
+		Filename: yrotorlg.shp
 		Start: 4
 		Length: 8
-	muzzle: minigun
+	muzzle:
+		Filename: minigun.shp
 		Length: 6
 		Facings: 8
-	icon: mh60icon
+	icon:
+		Filename: mh60icon.shp

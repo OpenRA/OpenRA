@@ -1,23 +1,28 @@
 carryall:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 1923
 		Facings: -32
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4290
 		Offset: -30,-24
 
 ornithopter:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 1955
 		Facings: -32
 		Length: 3
 		Tick: 120
 		Transpose: true
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4292
 		Offset: -30,-24
 
 frigate:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 2517
 		Facings: 1

@@ -1,5 +1,6 @@
 tile475:
-	Defaults: BLOXWAST.R8
+	Defaults:
+		Filename: BLOXWAST.R8
 	idle:
 		Start: 706
 		Offset: -16,-16

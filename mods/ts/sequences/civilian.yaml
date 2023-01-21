@@ -1,5 +1,6 @@
 ammocrat:
-	idle: ammo01
+	idle:
+		Filename: ammo01.shp
 		DepthSprite: isodepth.shp
 		ShadowStart: 2
 		Offset: 0, -12, 12
@@ -54,67 +55,98 @@ ammocrat:
 		DepthSpriteOffset: -24, 0
 
 aban01:
+	Defaults:
+		Filename: aban01.shp
 	Inherits: ^aban2x6
 
 aban02:
+	Defaults:
+		Filename: aban02.shp
 	Inherits: ^aban5x3
 
 aban03:
+	Defaults:
+		Filename: aban03.shp
 	Inherits: ^aban2x5
 
 aban04:
+	Defaults:
+		Filename: aban04.shp
 	Inherits: ^aban4x2
 
 aban05:
+	Defaults:
+		Filename: aban05.shp
 	Inherits: ^aban3x2
 
 aban06:
+	Defaults:
+		Filename: aban06.shp
 	Inherits: ^aban2x2
 
 aban07:
+	Defaults:
+		Filename: aban07.shp
 	Inherits: ^aban2x2
 
 aban08:
+	Defaults:
+		Filename: aban08.shp
 	Inherits: ^aban2x2
 
 aban09:
 	Inherits: ^aban2x2
 	Defaults:
+		Filename: aban09.shp
 		Offset: 2, -20, 24
 
 aban10:
+	Defaults:
+		Filename: aban10.shp
 	Inherits: ^aban2x2
 
 aban11:
 	Inherits: ^aban2x2
 	Defaults:
+		Filename: aban11.shp
 		Offset: 0, -20, 24
 
 aban12:
 	Inherits: ^aban2x2
 	Defaults:
+		Filename: aban12.shp
 		Offset: 2, -22, 24
 
 aban13:
 	Inherits: ^aban1x1
 	Defaults:
+		Filename: aban13.shp
 		Offset: 0, -10, 12
 
 aban14:
+	Defaults:
+		Filename: aban14.shp
 	Inherits: ^aban1x1
 
 aban15:
 	Inherits: ^aban1x1
 	Defaults:
+		Filename: aban15.shp
 		Offset: 0, -10, 12
 
 aban16:
+	Defaults:
+		Filename: aban16.shp
 	Inherits: ^aban2x2
 
 aban17:
+	Defaults:
+		Filename: aban17.shp
 	Inherits: ^aban1x1
 
 aban18:
+	Defaults:
+		Filename: aban18.shp
 	Inherits: ^aban1x1
 
 ^bboard1x1:
@@ -145,51 +177,83 @@ aban18:
 		ShadowStart: 3
 
 bboard01:
+	Defaults:
+		Filename: bboard01.shp
 	Inherits: ^bboard1x1
 
 bboard02:
+	Defaults:
+		Filename: bboard02.shp
 	Inherits: ^bboard1x1
 
 bboard03:
+	Defaults:
+		Filename: bboard03.shp
 	Inherits: ^bboard1x1
 
 bboard04:
+	Defaults:
+		Filename: bboard04.shp
 	Inherits: ^bboard1x1
 
 bboard05:
+	Defaults:
+		Filename: bboard05.shp
 	Inherits: ^bboard1x1
 
 bboard06:
+	Defaults:
+		Filename: bboard06.shp
 	Inherits: ^bboard1x2
 
 bboard07:
+	Defaults:
+		Filename: bboard07.shp
 	Inherits: ^bboard1x2
 
 bboard08:
+	Defaults:
+		Filename: bboard08.shp
 	Inherits: ^bboard1x2
 
 bboard09:
+	Defaults:
+		Filename: bboard09.shp
 	Inherits: ^bboard1x1
 
 bboard10:
+	Defaults:
+		Filename: bboard10.shp
 	Inherits: ^bboard1x1
 
 bboard11:
+	Defaults:
+		Filename: bboard11.shp
 	Inherits: ^bboard1x1
 
 bboard12:
+	Defaults:
+		Filename: bboard12.shp
 	Inherits: ^bboard1x1
 
 bboard13:
+	Defaults:
+		Filename: bboard13.shp
 	Inherits: ^bboard1x1
 
 bboard14:
+	Defaults:
+		Filename: bboard14.shp
 	Inherits: ^bboard2x1
 
 bboard15:
+	Defaults:
+		Filename: bboard15.shp
 	Inherits: ^bboard2x1
 
 bboard16:
+	Defaults:
+		Filename: bboard16.shp
 	Inherits: ^bboard2x1
 
 ^cabase:
@@ -205,114 +269,195 @@ bboard16:
 	Inherits: ^cabase
 	Defaults:
 		Offset: 0, -12, 12
-		UseTilesetCode: true
 
 ^ca1x2:
 	Inherits: ^cabase
 	Defaults:
 		Offset: 12, -18, 18
 		DepthSpriteOffset: 12, 0
-		UseTilesetCode: true
 
 ^ca2x1:
 	Inherits: ^cabase
 	Defaults:
 		Offset: -12, -18, 18
 		DepthSpriteOffset: -12, 0
-		UseTilesetCode: true
 
 ^ca2x3:
 	Inherits: ^cabase
 	Defaults:
 		Offset: 12, -30, 30
 		DepthSpriteOffset: 12, 0
-		UseTilesetCode: true
 
 ^ca3x3:
 	Inherits: ^cabase
 	Defaults:
 		Offset: 0, -36, 36
-		UseTilesetCode: true
 
 ^ca2x2:
 	Inherits: ^cabase
 	Defaults:
 		Offset: 0, -24, 24
-		UseTilesetCode: true
 
 ca0001:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0001.shp
+			SNOW: ca0001.shp
 	Inherits: ^ca3x3
 
 ca0002:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0002.shp
+			SNOW: ca0002.shp
 	Inherits: ^ca3x3
 
 ca0003:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0003.shp
+			SNOW: ca0003.shp
 	Inherits: ^ca2x2
 
 ca0004:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0004.shp
+			SNOW: ca0004.shp
 	Inherits: ^ca2x2
 
 ca0005:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0005.shp
+			SNOW: ca0005.shp
 	Inherits: ^ca1x2
 
 ca0006:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0006.shp
+			SNOW: ca0006.shp
 	Inherits: ^ca1x2
 
 ca0007:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0007.shp
+			SNOW: ca0007.shp
 	Inherits: ^ca1x2
 
 ca0008:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0008.shp
+			SNOW: ca0008.shp
 	Inherits: ^ca2x3
 
 ca0009:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0009.shp
+			SNOW: ca0009.shp
 	Inherits: ^ca2x3
 
 ca0010:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0010.shp
+			SNOW: ca0010.shp
 	Inherits: ^ca2x2
 
 ca0011:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0011.shp
+			SNOW: ca0011.shp
 	Inherits: ^ca1x2
 
 ca0012:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0012.shp
+			SNOW: ca0012.shp
 	Inherits: ^ca1x2
 
 ca0013:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0013.shp
+			SNOW: ca0013.shp
 	Inherits: ^ca2x1
 
 ca0014:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0014.shp
+			SNOW: ca0014.shp
 	Inherits: ^ca1x1
 
 ca0015:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0015.shp
+			SNOW: ca0015.shp
 	Inherits: ^ca1x1
 
 ca0016:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0016.shp
+			SNOW: ca0016.shp
 	Inherits: ^ca1x1
 
 ca0017:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0017.shp
+			SNOW: ca0017.shp
 	Inherits: ^ca1x1
 
 ca0018:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0018.shp
+			SNOW: ca0018.shp
 	Inherits: ^ca1x2
 
 ca0019:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0019.shp
+			SNOW: ca0019.shp
 	Inherits: ^ca1x2
 
 ca0020:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0020.shp
+			SNOW: ca0020.shp
 	Inherits: ^ca1x2
 
 ca0021:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ct0021.shp
+			SNOW: ca0021.shp
 	Inherits: ^ca1x2
 
 caarmr:
 	Defaults:
 		DepthSprite: isodepth.shp
 		Offset: 0, -48, 48
-	idle: ctarmr
+	idle:
+		Filename: ctarmr.shp
 		ShadowStart: 3
-	damaged-idle: ctarmr
+	damaged-idle:
+		Filename: ctarmr.shp
 		Start: 1
 		ShadowStart: 4
-	critical-idle: ctarmr
+	critical-idle:
+		Filename: ctarmr.shp
 		Start: 2
 		ShadowStart: 5
 
@@ -320,32 +465,41 @@ caaray:
 	Defaults:
 		DepthSprite: isodepth.shp
 		Offset: 0, -24, 24
-	idle: ctaray
+	idle:
+		Filename: ctaray.shp
 		ShadowStart: 3
-	damaged-idle: ctaray
+	damaged-idle:
+		Filename: ctaray.shp
 		Start: 1
 		ShadowStart: 4
-	critical-idle: ctaray
+	critical-idle:
+		Filename: ctaray.shp
 		Start: 2
 		ShadowStart: 5
-	idle-satellite: ctaray_a
+	idle-satellite:
+		Filename: ctaray_a.shp
 		Length: 16
 		Tick: 100
-	idle-radar: ctaray_b
+	idle-radar:
+		Filename: ctaray_b.shp
 		Length: 16
 		Tick: 100
-	idle-scanner: ctaray_c
+	idle-scanner:
+		Filename: ctaray_c.shp
 		Length: 16
 		Tick: 100
-	damaged-idle-scanner: ctaray_c
+	damaged-idle-scanner:
+		Filename: ctaray_c.shp
 		Start: 16
 		Length: 16
 		Tick: 100
-	idle-light-bright: ctaray_d
+	idle-light-bright:
+		Filename: ctaray_d.shp
 		Length: 12
 		Tick: 100
 		IgnoreWorldTint: True
-	damaged-idle-light-bright: ctaray_d
+	damaged-idle-light-bright:
+		Filename: ctaray_d.shp
 		Start: 12
 		Length: 12
 		Tick: 100
@@ -353,36 +507,59 @@ caaray:
 
 cabhut:
 	idle:
+		TilesetFilenames:
+			TEMPERATE: ctbhut.shp
+			SNOW: cabhut.shp
 		DepthSprite: isodepth.shp
-		UseTilesetCode: true
 		Offset: 0, -12, 12
 		ShadowStart: 1
 
 ^cacrsh:
 	idle:
-		UseTilesetCode: true
 		Offset: 0, -12, 12
 
 cacrsh01:
 	Inherits: ^cacrsh
+	idle:
+		TilesetFilenames:
+			TEMPERATE: ctcrsh01.shp
+			SNOW: cacrsh01.shp
 
 cacrsh02:
 	Inherits: ^cacrsh
+	idle:
+		TilesetFilenames:
+			TEMPERATE: ctcrsh02.shp
+			SNOW: cacrsh02.shp
 
 cacrsh03:
 	Inherits: ^cacrsh
+	idle:
+		TilesetFilenames:
+			TEMPERATE: ctcrsh03.shp
+			SNOW: cacrsh03.shp
 
 cacrsh04:
 	Inherits: ^cacrsh
+	idle:
+		TilesetFilenames:
+			TEMPERATE: ctcrsh04.shp
+			SNOW: cacrsh04.shp
 
 cacrsh05:
 	Inherits: ^cacrsh
+	idle:
+		TilesetFilenames:
+			TEMPERATE: ctcrsh05.shp
+			SNOW: cacrsh05.shp
 
 cahosp:
 	Defaults:
+		TilesetFilenames:
+			TEMPERATE: cthosp.shp
+			SNOW: cahosp.shp
 		DepthSprite: isodepth.shp
 		DepthSpriteOffset: 15, 0
-		UseTilesetCode: true
 		Offset: 15, -36, 36
 	idle:
 		ShadowStart: 3
@@ -394,19 +571,22 @@ cahosp:
 		ShadowStart: 5
 
 capyr01:
-	idle: ctpyr01
+	idle:
+		Filename: ctpyr01.shp
 		DepthSprite: isodepth.shp
 		ShadowStart: 1
 		Offset: 0, -24, 24
 
 capyr02:
-	idle: ctpyr02
+	idle:
+		Filename: ctpyr02.shp
 		DepthSprite: isodepth.shp
 		ShadowStart: 1
 		Offset: 0, -48, 48
 
 capyr03:
-	idle: ctpyr03
+	idle:
+		Filename: ctpyr03.shp
 		DepthSprite: isodepth.shp
 		ShadowStart: 1
 		Offset: 0, -48, 48
@@ -454,102 +634,150 @@ capyr03:
 city01:
 	Inherits: ^city4x2
 	Defaults:
+		Filename: city01.shp
 		Offset: -12, -30, 36
 
 city02:
+	Defaults:
+		Filename: city02.shp
 	Inherits: ^city2x3
 
 city03:
+	Defaults:
+		Filename: city03.shp
 	Inherits: ^city3x2
 
 city04:
+	Defaults:
+		Filename: city04.shp
 	Inherits: ^city3x2
 
 city05:
+	Defaults:
+		Filename: city05.shp
 	Inherits: ^city3x2
 
 city06:
+	Defaults:
+		Filename: city06.shp
 	Inherits: ^city4x2
 
 city07:
 	Inherits: ^city4x2
 	Defaults:
+		Filename: city07.shp
 		Offset: -12, -30, 36
 
 city08:
+	Defaults:
+		Filename: city08.shp
 	Inherits: ^city2x2
 
 city09:
+	Defaults:
+		Filename: city09.shp
 	Inherits: ^city2x2
 
 city10:
+	Defaults:
+		Filename: city10.shp
 	Inherits: ^city2x2
 
 city11:
+	Defaults:
+		Filename: city11.shp
 	Inherits: ^city2x2
 
 city12:
+	Defaults:
+		Filename: city12.shp
 	Inherits: ^city2x2
 
 city13:
+	Defaults:
+		Filename: city13.shp
 	Inherits: ^city2x2
 
 city14:
+	Defaults:
+		Filename: city14.shp
 	Inherits: ^city1x1
 
 city15:
+	Defaults:
+		Filename: city15.shp
 	Inherits: ^city4x2
 
 city16:
 	Inherits: ^city4x2
 	Defaults:
+		Filename: city16.shp
 		Offset: -24, -30, 36
 
 city17:
+	Defaults:
+		Filename: city17.shp
 	Inherits: ^city4x3
 
 city18:
+	Defaults:
+		Filename: city18.shp
 	Inherits: ^city3x5
 
 city19:
+	Defaults:
+		Filename: city19.shp
 	Inherits: ^city2x2
 
 city20:
+	Defaults:
+		Filename: city20.shp
 	Inherits: ^city1x1
 
 city21:
+	Defaults:
+		Filename: city21.shp
 	Inherits: ^city1x1
 
 city22:
+	Defaults:
+		Filename: city22.shp
 	Inherits: ^city2x2
 
 ctdam:
 	Defaults:
+		Filename: ctdam.shp
 		Offset: 36,-42, 42
 	idle:
 	damaged-idle:
 		Start: 1
-	idle-lights-bright: ctdam_a
+	idle-lights-bright:
+		Filename: ctdam_a.shp
 		Length: 10
 		Tick: 200
 		IgnoreWorldTint: True
-	damaged-idle-lights-bright: ctdam_a
+	damaged-idle-lights-bright:
+		Filename: ctdam_a.shp
 		Start: 10
 		Length: 10
 		Tick: 200
 		IgnoreWorldTint: True
-	idle-water-a: ctdam_b
+	idle-water-a:
+		Filename: ctdam_b.shp
 		Length: 8
 		Tick: 200
-	damaged-idle-water-a: ctdam_b
+	damaged-idle-water-a:
+		Filename: ctdam_b.shp
 		Start: 8
 		Length: 8
 		Tick: 200
-	idle-water-b: ctdam_b
+	idle-water-b:
+		Filename: ctdam_b.shp
 		Start: 16
 		Length: 8
 		Tick: 200
-	damaged-idle-water-b: ctdam_b
+	damaged-idle-water-b:
+		Filename: ctdam_b.shp
 		Start: 24
 		Start: 8
 		Length: 8
@@ -557,6 +785,7 @@ ctdam:
 
 ctvega:
 	Defaults:
+		Filename: ctvega.shp
 		DepthSprite: isodepth.shp
 		Offset: 0, -48, 48
 	idle:
@@ -572,32 +801,57 @@ ctvega:
 	idle:
 		ShadowStart: 2
 		DepthSprite: isodepth.shp
-		UseTilesetCode: true
 		Offset: 0, -24, 24
 
 gaoldcc1:
 	Inherits: ^gaoldcc
+	idle:
+		TilesetFilenames:
+			TEMPERATE: gtoldcc1.shp
+			SNOW: gaoldcc1.shp
 
 gaoldcc2:
 	Inherits: ^gaoldcc
+	idle:
+		TilesetFilenames:
+			TEMPERATE: gtoldcc2.shp
+			SNOW: gaoldcc2.shp
 
 gaoldcc3:
 	Inherits: ^gaoldcc
+	idle:
+		TilesetFilenames:
+			TEMPERATE: gtoldcc3.shp
+			SNOW: gaoldcc3.shp
 
 gaoldcc4:
 	Inherits: ^gaoldcc
+	idle:
+		TilesetFilenames:
+			TEMPERATE: gtoldcc4.shp
+			SNOW: gaoldcc4.shp
 
 gaoldcc5:
 	Inherits: ^gaoldcc
+	idle:
+		TilesetFilenames:
+			TEMPERATE: gtoldcc5.shp
+			SNOW: gaoldcc5.shp
 
 gaoldcc6:
 	Inherits: ^gaoldcc
+	idle:
+		TilesetFilenames:
+			TEMPERATE: gtoldcc6.shp
+			SNOW: gaoldcc6.shp
 
 gakodk:
 	Defaults:
+		TilesetFilenames:
+			TEMPERATE: gtkodk.shp
+			SNOW: gakodk.shp
 		DepthSprite: isodepth.shp
 		DepthSpriteOffset: -24, 0
-		UseTilesetCode: true
 		Offset: -24, -36, 36
 	idle:
 		ShadowStart: 3
@@ -607,41 +861,71 @@ gakodk:
 	critical-idle:
 		Start: 2
 		ShadowStart: 5
-	large-lights: gakodk_a
+	large-lights:
+		TilesetFilenames:
+			TEMPERATE: gtkodk_a.shp
+			SNOW: gakodk_a.shp
 		Length: 12
 		Tick: 200
-	large-lights-bright: gakodk_a
-		Length: 12
-		Tick: 200
-		IgnoreWorldTint: True
-	damaged-large-lights: gakodk_a
-		Start: 12
-		Length: 12
-		Tick: 200
-	damaged-large-lights-bright: gakodk_a
-		Start: 12
+	large-lights-bright:
+		TilesetFilenames:
+			TEMPERATE: gtkodk_a.shp
+			SNOW: gakodk_a.shp
 		Length: 12
 		Tick: 200
 		IgnoreWorldTint: True
-	small-light: gakodk_b
+	damaged-large-lights:
+		TilesetFilenames:
+			TEMPERATE: gtkodk_a.shp
+			SNOW: gakodk_a.shp
+		Start: 12
+		Length: 12
+		Tick: 200
+	damaged-large-lights-bright:
+		TilesetFilenames:
+			TEMPERATE: gtkodk_a.shp
+			SNOW: gakodk_a.shp
+		Start: 12
+		Length: 12
+		Tick: 200
+		IgnoreWorldTint: True
+	small-light:
+		TilesetFilenames:
+			TEMPERATE: gtkodk_b.shp
+			SNOW: gakodk_b.shp
 		Length: 22
 		Tick: 200
-	small-light-bright: gakodk_b
+	small-light-bright:
+		TilesetFilenames:
+			TEMPERATE: gtkodk_b.shp
+			SNOW: gakodk_b.shp
 		Length: 22
 		Tick: 200
 		IgnoreWorldTint: True
-	small-lights: gakodk_c
+	small-lights:
+		TilesetFilenames:
+			TEMPERATE: gtkodk_c.shp
+			SNOW: gakodk_c.shp
 		Length: 12
 		Tick: 200
-	small-lights-bright: gakodk_c
+	small-lights-bright:
+		TilesetFilenames:
+			TEMPERATE: gtkodk_c.shp
+			SNOW: gakodk_c.shp
 		Length: 12
 		Tick: 200
 		IgnoreWorldTint: True
-	damaged-small-lights: gakodk_c
+	damaged-small-lights:
+		TilesetFilenames:
+			TEMPERATE: gtkodk_c.shp
+			SNOW: gakodk_c.shp
 		Start: 12
 		Length: 12
 		Tick: 200
-	damaged-small-lights-bright: gakodk_c
+	damaged-small-lights-bright:
+		TilesetFilenames:
+			TEMPERATE: gtkodk_c.shp
+			SNOW: gakodk_c.shp
 		Start: 12
 		Length: 12
 		Tick: 200
@@ -649,9 +933,11 @@ gakodk:
 
 gaspot:
 	Defaults:
+		TilesetFilenames:
+			TEMPERATE: gtspot.shp
+			SNOW: gaspot.shp
 		DepthSprite: isodepth.shp
 		Offset: 0, -12, 12
-		UseTilesetCode: true
 	idle:
 		ShadowStart: 3
 	damaged-idle:
@@ -661,67 +947,85 @@ gaspot:
 		Start: 2
 		ShadowStart: 5
 		Tick: 400
-	idle-lights-bright: gaspot_a
+	idle-lights-bright:
+		TilesetFilenames:
+			TEMPERATE: gtspot_a.shp
+			SNOW: gaspot_a.shp
 		Length: 8
 		Tick: 200
 		IgnoreWorldTint: True
-	damaged-idle-lights-bright: gaspot_a
+	damaged-idle-lights-bright:
+		TilesetFilenames:
+			TEMPERATE: gtspot_a.shp
+			SNOW: gaspot_a.shp
 		Start: 8
 		Length: 8
 		Tick: 200
 		IgnoreWorldTint: True
-	make: gaspotmk
+	make:
+		TilesetFilenames:
+			TEMPERATE: gtspotmk.shp
+			SNOW: gaspotmk.shp
 		Length: 14
 		ShadowStart: 14
-	emp-overlay: emp_fx01
+	emp-overlay:
+		Filename: emp_fx01.shp
+		TilesetFilenames:
 		Length: *
 		Offset: 0, 0
-		-DepthSprite:
-		UseTilesetCode: false
+		DepthSprite:
 		ZOffset: 512
 		BlendMode: Additive
 		IgnoreWorldTint: True
-	icon: spoticon
+	icon:
+		Filename: spoticon.shp
+		TilesetFilenames:
 		Offset: 0, 0
-		UseTilesetCode: false
-		-DepthSprite:
+		DepthSprite:
 
 galite:
 	Defaults:
 		DepthSprite: isodepth.shp
 		Offset: 0, -12, 12
-		UseTilesetCode: true
-	idle: gtlite
+	idle:
+		TilesetFilenames:
+			TEMPERATE: gtlite.shp
+			SNOW: galite.shp
 		ShadowStart: 2
-	damaged-idle: gtlite
+	damaged-idle:
+		TilesetFilenames:
+			TEMPERATE: gtlite.shp
+			SNOW: galite.shp
 		Start: 1
 		ShadowStart: 3
-	lighting: alphatst
+	lighting:
+		Filename: alphatst.shp
 		BlendMode: DoubleMultiplicative
-		UseTilesetCode: false
 		IgnoreWorldTint: true
-		-DepthSprite:
+		DepthSprite:
 		Offset: 0, 0, 240
 		ZRamp: 1
 		ZOffset: 10240
-	emp-overlay: emp_fx01
+	emp-overlay:
+		Filename: emp_fx01.shp
 		Length: *
 		Offset: 0, 0
-		-DepthSprite:
-		UseTilesetCode: false
+		DepthSprite:
 		ZOffset: 512
 		BlendMode: Additive
 		IgnoreWorldTint: True
-	icon: liteicon
+	icon:
+		Filename: liteicon.shp
 		Offset: 0, 0
-		-DepthSprite:
-		UseTilesetCode: false
+		DepthSprite:
 
 namntk:
 	Defaults:
+		TilesetFilenames:
+			TEMPERATE: ntmntk.shp
+			SNOW: namntk.shp
 		DepthSprite: isodepth.shp
 		DepthSpriteOffset: 24, 0
-		UseTilesetCode: true
 		Offset: 24, -24, 24
 	idle:
 		ShadowStart: 3
@@ -731,16 +1035,23 @@ namntk:
 	critical-idle:
 		Start: 2
 		ShadowStart: 5
-	idle-lights: namntk_a
+	idle-lights:
+		TilesetFilenames:
+			TEMPERATE: ntmntk_a.shp
+			SNOW: namntk_a.shp
 		Length: 8
 		Tick: 200
-	idle-lights-bright: namntk_a
+	idle-lights-bright:
+		TilesetFilenames:
+			TEMPERATE: ntmntk_a.shp
+			SNOW: namntk_a.shp
 		Length: 8
 		Tick: 200
 		IgnoreWorldTint: True
 
 ntpyra:
 	Defaults:
+		Filename: ntpyra.shp
 		DepthSprite: isodepth.shp
 		Offset: 0, -42, 42
 	idle:
@@ -751,16 +1062,18 @@ ntpyra:
 	critical-idle:
 		Start: 2
 		ShadowStart: 5
-	idle-lights: ntpyra_a
+	idle-lights:
+		Filename: ntpyra_a.shp
 		Length: 16
 		Tick: 200
-	damaged-idle-lights: ntpyra_a
+	damaged-idle-lights:
+		Filename: ntpyra_a.shp
 		Start: 16
 		Length: 16
 		Tick: 200
 
 ufo:
-	idle: ufo.tem
+	idle:
+		Filename: ufo.tem
 		DepthSprite: isodepth.shp
 		Offset: -24, -60, 60
-		AddExtension: false

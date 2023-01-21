@@ -103,6 +103,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			new UpdatePath("playtest-20221203", new UpdateRule[]
 			{
 				new TextNotificationsDisplayWidgetRemoveTime(),
+				new ExplicitSequenceFilenames(),
 			})
 		};
 

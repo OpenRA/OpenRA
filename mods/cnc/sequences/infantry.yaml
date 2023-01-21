@@ -1,43 +1,58 @@
 vice:
 	idle:
+		Filename: vice.shp
 		Length: *
 	muzzle:
 		Combine:
-			chem-n:
+			0:
+				Filename: chem-n.shp
 				Length: *
 				Offset: 1,2
-			chem-nw:
+			1:
+				Filename: chem-nw.shp
 				Length: *
 				Offset: 8,2
-			chem-w:
+			2:
+				Filename: chem-w.shp
 				Length: *
 				Offset: 8,-3
-			chem-sw:
+			3:
+				Filename: chem-sw.shp
 				Length: *
 				Offset: 7,-6
-			chem-s:
+			4:
+				Filename: chem-s.shp
 				Length: *
 				Offset: 1,-6
-			chem-se:
+			5:
+				Filename: chem-se.shp
 				Length: *
 				Offset: -5,-6
-			chem-e:
+			6:
+				Filename: chem-e.shp
 				Length: *
 				Offset: -7,-3
-			chem-ne:
+			7:
+				Filename: chem-ne.shp
 				Length: *
 				Offset: -3,2
 		Facings: 8
 		Length: 13
-	die: chemball
+	die:
+		Filename: chemball.shp
 		Length: *
 		ZOffset: 2047
-	icon: viceicnh
+	icon:
+		Filename: viceicnh.shp
 
 pvice:
+	Defaults:
+		Filename: pvice.shp
 	Inherits: vice
 
 e1:
+	Defaults:
+		Filename: e1.shp
 	stand:
 		Facings: 8
 	stand2:
@@ -131,15 +146,18 @@ e1:
 		Start: 366
 		Length: 11
 		Tick: 80
-	die-crushed: e1rot
+	die-crushed:
+		Filename: e1rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
-	icon: e1icnh.tem
-		AddExtension: False
+	icon:
+		Filename: e1icnh.tem
 
 e2:
+	Defaults:
+		Filename: e2.shp
 	stand:
 		Facings: 8
 	stand2:
@@ -224,15 +242,18 @@ e2:
 		Start: 494
 		Length: 11
 		Tick: 80
-	die-crushed: e2rot
+	die-crushed:
+		Filename: e2rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
-	icon: e2icnh.tem
-		AddExtension: False
+	icon:
+		Filename: e2icnh.tem
 
 e3:
+	Defaults:
+		Filename: e3.shp
 	stand:
 		Facings: 8
 	stand2:
@@ -317,15 +338,18 @@ e3:
 		Start: 382
 		Length: 11
 		Tick: 80
-	die-crushed: e3rot
+	die-crushed:
+		Filename: e3rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
-	icon: e3icnh.tem
-		AddExtension: False
+	icon:
+		Filename: e3icnh.tem
 
 e4:
+	Defaults:
+		Filename: e4.shp
 	stand:
 		Facings: 8
 	stand2:
@@ -410,43 +434,55 @@ e4:
 		Start: 494
 		Length: 10
 		Tick: 80
-	die-crushed: e4rot
+	die-crushed:
+		Filename: e4rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
 	muzzle:
+		Filename:
 		Combine:
-			flame-n:
+			0:
+				Filename: flame-n.shp
 				Length: *
 				Offset: 1,6
-			flame-nw:
+			1:
+				Filename: flame-nw.shp
 				Length: *
 				Offset: 8,7
-			flame-w:
+			2:
+				Filename: flame-w.shp
 				Length: *
 				Offset: 8,2
-			flame-sw:
+			3:
+				Filename: flame-sw.shp
 				Length: *
 				Offset: 7,-2
-			flame-s:
+			4:
+				Filename: flame-s.shp
 				Length: *
 				Offset: 1,-2
-			flame-se:
+			5:
+				Filename: flame-se.shp
 				Length: *
 				Offset: -5,-2
-			flame-e:
+			6:
+				Filename: flame-e.shp
 				Length: *
 				Offset: -7,2
-			flame-ne:
+			7:
+				Filename: flame-ne.shp
 				Length: *
 				Offset: -7,8
 		Facings: 8
 		Length: 13
-	icon: e4icnh.tem
-		AddExtension: False
+	icon:
+		Filename: e4icnh.tem
 
 e5:
+	Defaults:
+		Filename: e5.shp
 	stand:
 		Facings: 8
 	stand2:
@@ -531,43 +567,55 @@ e5:
 		Start: 494
 		Length: 10
 		Tick: 80
-	die-crushed: e4rot
+	die-crushed:
+		Filename: e4rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
 	muzzle:
+		Filename:
 		Combine:
-			chem-n:
+			0:
+				Filename: chem-n.shp
 				Length: *
 				Offset: 1,2
-			chem-nw:
+			1:
+				Filename: chem-nw.shp
 				Length: *
 				Offset: 8,2
-			chem-w:
+			2:
+				Filename: chem-w.shp
 				Length: *
 				Offset: 8,-3
-			chem-sw:
+			3:
+				Filename: chem-sw.shp
 				Length: *
 				Offset: 7,-6
-			chem-s:
+			4:
+				Filename: chem-s.shp
 				Length: *
 				Offset: 1,-6
-			chem-se:
+			5:
+				Filename: chem-se.shp
 				Length: *
 				Offset: -5,-6
-			chem-e:
+			6:
+				Filename: chem-e.shp
 				Length: *
 				Offset: -7,-3
-			chem-ne:
+			7:
+				Filename: chem-ne.shp
 				Length: *
 				Offset: -3,2
 		Facings: 8
 		Length: 13
-	icon: e5icnh.tem
-		AddExtension: False
+	icon:
+		Filename: e5icnh.tem
 
 e6:
+	Defaults:
+		Filename: e6.shp
 	stand:
 		Facings: 8
 	stand2:
@@ -644,15 +692,18 @@ e6:
 		Start: 130
 		Length: 4
 		Tick: 80
-	die-crushed: e1rot
+	die-crushed:
+		Filename: e1rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
-	icon: e6icnh.tem
-		AddExtension: False
+	icon:
+		Filename: e6icnh.tem
 
 rmbo:
+	Defaults:
+		Filename: rmbo.shp
 	stand:
 		Facings: 8
 	stand2:
@@ -741,10 +792,11 @@ rmbo:
 		Start: 308
 		Length: 4
 		Tick: 80
-	die-crushed: e1rot
+	die-crushed:
+		Filename: e1rot.shp
 		Start: 16
 		Length: 4
 		Tick: 1600
 		ZOffset: -511
-	icon: rmboicnh.tem
-		AddExtension: False
+	icon:
+		Filename: rmboicnh.tem
