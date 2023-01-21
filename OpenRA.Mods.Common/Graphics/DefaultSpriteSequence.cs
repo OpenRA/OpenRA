@@ -151,6 +151,9 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public string Name { get; }
 
+		[Desc("File name of the sprite to use for this sequence.")]
+		static readonly SpriteSequenceField<string> Filename = new SpriteSequenceField<string>(nameof(Filename), null);
+
 		[Desc("Frame index to start from.")]
 		static readonly SpriteSequenceField<int> Start = new SpriteSequenceField<int>(nameof(Start), 0);
 		int ISpriteSequence.Start => start;
@@ -261,7 +264,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		protected virtual string GetSpriteFilename(ModData modData, string tileset, string image, string sequence, MiniYaml data, MiniYaml defaults)
 		{
-			return data.Value ?? defaults.Value ?? image;
+			return LoadField(Filename, data, defaults);
 		}
 
 		protected static T LoadField<T>(string key, T fallback, MiniYaml data, MiniYaml defaults)
@@ -414,7 +417,10 @@ namespace OpenRA.Mods.Common.Graphics
 						return subFrames != null ? subFrames.Skip(subStart).Take(subLength) : Enumerable.Range(subStart, subLength);
 					};
 
-					var subFilename = GetSpriteFilename(modData, tileSet, combineSequenceNode.Key, sequence, combineData, NoData);
+					var subFilename = GetSpriteFilename(modData, tileSet, image, sequence, combineData, NoData);
+					if (subFilename == null)
+						throw new YamlException($"Sequence {image}.{sequence}.{combineSequenceNode.Key} does not define a filename.");
+
 					var subSprites = cache[subFilename, subGetUsedFrames].Select(s =>
 					{
 						if (s == null)
@@ -440,6 +446,9 @@ namespace OpenRA.Mods.Common.Graphics
 				// Apply offset to each sprite in the sequence
 				// Different sequences may apply different offsets to the same frame
 				var filename = GetSpriteFilename(modData, tileSet, image, sequence, data, defaults);
+				if (filename == null)
+					throw new YamlException($"Sequence {image}.{sequence} does not define a filename.");
+
 				sprites = cache[filename, getUsedFrames].Select(s =>
 				{
 					if (s == null)
@@ -497,11 +506,14 @@ namespace OpenRA.Mods.Common.Graphics
 			if (LoadField(HasEmbeddedPalette, data, defaults))
 			{
 				var filename = GetSpriteFilename(modData, tileSet, image, sequence, data, defaults);
+				if (filename == null)
+					throw new YamlException($"Sequence {image}.{sequence} does not define a filename.");
+
 				var metadata = cache.FrameMetadata(filename);
 				var i = frames != null ? frames[0] : start;
 				var palettes = metadata?.GetOrDefault<EmbeddedSpritePalette>();
 				if (palettes == null || !palettes.TryGetPaletteForFrame(i, out EmbeddedPalette))
-					throw new YamlException($"Cannot export palette from {filename}: frame {i} does not define an embedded palette");
+					throw new YamlException($"Cannot export palette from {filename}: frame {i} does not define an embedded palette.");
 			}
 
 			var boundSprites = SpriteBounds(sprites, frames, start, facings, length, stride, transpose);

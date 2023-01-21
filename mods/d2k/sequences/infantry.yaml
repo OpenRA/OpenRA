@@ -1,567 +1,693 @@
 light_inf:
-	stand: DATA.R8
+	stand:
+		Filename: DATA.R8
 		Start: 206
 		Facings: -8
 		Transpose: true
-	idle1: DATA.R8
+	idle1:
+		Filename: DATA.R8
 		Frames: 387, 394, 401, 408, 415, 422, 429, 436
 		Length: 8
 		Tick: 80
-	idle2: DATA.R8
+	idle2:
+		Filename: DATA.R8
 		Frames: 388, 395, 402, 409, 416, 423, 430, 437
 		Length: 8
 		Tick: 80
-	run: DATA.R8
+	run:
+		Filename: DATA.R8
 		Start: 214
 		Length: 6
 		Facings: -8
 		Tick: 110
 		Transpose: true
-	shoot: DATA.R8
+	shoot:
+		Filename: DATA.R8
 		Start: 254
 		Length: 6
 		Facings: -8
 		Transpose: true
-	prone-stand: DATA.R8
+	prone-stand:
+		Filename: DATA.R8
 		Start: 310
 		Facings: -8
 		Transpose: true
-	prone-run: DATA.R8
+	prone-run:
+		Filename: DATA.R8
 		Start: 310
 		Length: 3
 		Facings: -8
 		Transpose: true
 		Tick: 110
-	standup: DATA.R8
+	standup:
+		Filename: DATA.R8
 		Start: 302
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	prone-shoot: DATA.R8
+	prone-shoot:
+		Filename: DATA.R8
 		Start: 334
 		Length: 6
 		Facings: -8
 		Transpose: true
-	die1: DATA.R8
+	die1:
+		Filename: DATA.R8
 		Frames: 382, 389, 396, 403, 410, 417, 424, 431, 438, 443, 448, 453
 		Length: 12
 		Tick: 80
-	die2: DATA.R8
+	die2:
+		Filename: DATA.R8
 		Frames: 383, 390, 397, 404, 411, 418, 425, 432, 439, 444, 449, 454
 		Length: 12
 		Tick: 80
-	die3: DATA.R8
+	die3:
+		Filename: DATA.R8
 		Frames: 384, 391, 398, 405, 412, 419, 426, 433, 440, 445, 450, 455
 		Length: 12
 		Tick: 80
-	die4: DATA.R8
+	die4:
+		Filename: DATA.R8
 		Frames: 385, 392, 399, 406, 413, 420, 427, 434, 441, 446, 451, 456
 		Length: 12
 		Tick: 80
-	die-crushed: DATA.R8
+	die-crushed:
+		Filename: DATA.R8
 		Frames: 386, 393, 400, 407, 414, 421, 428, 435, 442, 447, 452, 457
 		Length: 12
 		Tick: 800
 		ZOffset: -511
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4272
 		Offset: -30,-24
 
 trooper:
-	stand: DATA.R8
+	stand:
+		Filename: DATA.R8
 		Start: 458
 		Facings: -8
 		Transpose: true
-	idle1: DATA.R8
+	idle1:
+		Filename: DATA.R8
 		Frames: 639, 646, 653, 660, 667, 674, 681, 688
 		Length: 8
 		Tick: 80
-	idle2: DATA.R8
+	idle2:
+		Filename: DATA.R8
 		Frames: 640, 647, 654, 661, 668, 675, 682, 689
 		Length: 8
 		Tick: 80
-	run: DATA.R8
+	run:
+		Filename: DATA.R8
 		Start: 466
 		Length: 6
 		Facings: -8
 		Tick: 120
 		Transpose: true
-	shoot: DATA.R8
+	shoot:
+		Filename: DATA.R8
 		Start: 506
 		Length: 6
 		Facings: -8
 		Transpose: true
-	prone-stand: DATA.R8
+	prone-stand:
+		Filename: DATA.R8
 		Start: 562
 		Facings: -8
 		Transpose: true
-	prone-run: DATA.R8
+	prone-run:
+		Filename: DATA.R8
 		Start: 570
 		Length: 3
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	standup: DATA.R8
+	standup:
+		Filename: DATA.R8
 		Start: 554
 		Facings: -8
 		Transpose: true
-	prone-shoot: DATA.R8
+	prone-shoot:
+		Filename: DATA.R8
 		Start: 586
 		Length: 6
 		Facings: -8
 		Transpose: true
-	die1: DATA.R8
+	die1:
+		Filename: DATA.R8
 		Frames: 634, 641, 648, 655, 662, 669, 676, 683, 690, 691, 692, 693
 		Length: 12
 		Tick: 80
-	die2: DATA.R8
+	die2:
+		Filename: DATA.R8
 		Frames: 635, 642, 649, 656, 663, 670, 677, 684
 		Length: 8
 		Tick: 80
-	die3: DATA.R8
+	die3:
+		Filename: DATA.R8
 		Frames: 636, 643, 650, 657, 664, 671, 678, 685
 		Length: 8
 		Tick: 80
-	die4: DATA.R8
+	die4:
+		Filename: DATA.R8
 		Frames: 637, 644, 651, 658, 665, 672, 679, 686
 		Length: 8
 		Tick: 80
-	die-crushed: DATA.R8
+	die-crushed:
+		Filename: DATA.R8
 		Frames: 638, 645, 652, 659, 666, 673, 680, 687
 		Length: 8
 		Tick: 800
 		ZOffset: -511
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4273
 		Offset: -30,-24
 
 engineer:
-	stand: DATA.R8
+	stand:
+		Filename: DATA.R8
 		Start: 1166
 		Facings: -8
 		Transpose: true
-	idle1: DATA.R8
+	idle1:
+		Filename: DATA.R8
 		Frames: 1347, 1354, 1361, 1368, 1375, 1382, 1389, 1396
 		Length: 8
 		Tick: 80
-	idle2: DATA.R8
+	idle2:
+		Filename: DATA.R8
 		Frames: 1348, 1355, 1362, 1369, 1376, 1383, 1390, 1397
 		Length: 8
 		Tick: 80
-	run: DATA.R8
+	run:
+		Filename: DATA.R8
 		Start: 1174
 		Length: 6
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	standup: DATA.R8
+	standup:
+		Filename: DATA.R8
 		Start: 1262
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	prone-stand: DATA.R8
+	prone-stand:
+		Filename: DATA.R8
 		Start: 1270
 		Facings: -8
 		Transpose: true
-	prone-run: DATA.R8
+	prone-run:
+		Filename: DATA.R8
 		Start: 1278
 		Length: 3
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	die1: DATA.R8
+	die1:
+		Filename: DATA.R8
 		Frames: 1342, 1349, 1356, 1363, 1370, 1377, 1384, 1391, 1398, 1399, 1400, 1401
 		Length: 12
 		Tick: 80
-	die2: DATA.R8
+	die2:
+		Filename: DATA.R8
 		Frames: 1343, 1350, 1357, 1364, 1371, 1378, 1385, 1392
 		Length: 8
 		Tick: 80
-	die3: DATA.R8
+	die3:
+		Filename: DATA.R8
 		Frames: 1344, 1351, 1358, 1365, 1372, 1379, 1386, 1393
 		Length: 8
 		Tick: 80
-	die4: DATA.R8
+	die4:
+		Filename: DATA.R8
 		Frames: 1345, 1352, 1359, 1366, 1373, 1380, 1387, 1394
 		Length: 8
 		Tick: 80
-	die-crushed: DATA.R8
+	die-crushed:
+		Filename: DATA.R8
 		Frames: 1346, 1353, 1360, 1367, 1374, 1381, 1388, 1395
 		Length: 8
 		Tick: 800
 		ZOffset: -511
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4274
 		Offset: -30,-24
 
 thumper:
-	stand: DATA.R8
+	stand:
+		Filename: DATA.R8
 		Start: 1402
 		Facings: -8
 		Transpose: true
-	idle1: DATA.R8
+	idle1:
+		Filename: DATA.R8
 		Frames: 1548, 1555, 1562, 1569, 1576, 1583, 1590, 1597
 		Length: 8
 		Tick: 80
-	idle2: DATA.R8
+	idle2:
+		Filename: DATA.R8
 		Frames: 1549, 1556, 1563, 1570, 1577, 1584, 1591, 1598
 		Length: 8
 		Tick: 80
-	run: DATA.R8
+	run:
+		Filename: DATA.R8
 		Start: 1410
 		Length: 6
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	standup: DATA.R8
+	standup:
+		Filename: DATA.R8
 		Start: 1462
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	prone-stand: DATA.R8
+	prone-stand:
+		Filename: DATA.R8
 		Start: 1470
 		Facings: -8
 		Transpose: true
-	prone-run: DATA.R8
+	prone-run:
+		Filename: DATA.R8
 		Start: 1478
 		Length: 3
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	deploy: DATA.R8
+	deploy:
+		Filename: DATA.R8
 		Start: 1458
 		Length: 5
-	thump: DATA.R8
+	thump:
+		Filename: DATA.R8
 		Start: 1458
 		Length: 5
 		Tick: 480
-	thump-sand: DATA.R8
+	thump-sand:
+		Filename: DATA.R8
 		Frames: 3882, 3883, 3879, 3880, 3881
 		Length: 5
 		Tick: 480
 		BlendMode: Multiply
-	die1: DATA.R8
+	die1:
+		Filename: DATA.R8
 		Frames: 1543, 1550, 1557, 1564, 1571, 1578, 1585, 1592, 1599, 1600, 1601, 1602
 		Length: 12
 		Tick: 80
-	die2: DATA.R8
+	die2:
+		Filename: DATA.R8
 		Frames: 1544, 1551, 1558, 1565, 1572, 1579, 1586, 1593
 		Length: 8
 		Tick: 80
-	die3: DATA.R8
+	die3:
+		Filename: DATA.R8
 		Frames: 1546, 1552, 1559, 1566, 1573, 1580, 1587, 1594
 		Length: 8
 		Tick: 80
-	die4: DATA.R8
+	die4:
+		Filename: DATA.R8
 		Frames: 1547, 1553, 1560, 1567, 1574, 1581, 1588, 1595
 		Length: 8
 		Tick: 80
-	die-crushed: DATA.R8
+	die-crushed:
+		Filename: DATA.R8
 		Frames: 1548, 1554, 1561, 1568, 1575, 1582, 1589, 1596
 		Length: 8
 		Tick: 800
 		ZOffset: -511
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4275
 		Offset: -30,-24
 
 fremen:
-	stand: DATA.R8
+	stand:
+		Filename: DATA.R8
 		Start: 694
 		Facings: -8
 		Transpose: true
-	idle1: DATA.R8
+	idle1:
+		Filename: DATA.R8
 		Frames: 875, 882, 889, 896, 903, 910, 917, 924
 		Length: 8
 		Tick: 80
-	idle2: DATA.R8
+	idle2:
+		Filename: DATA.R8
 		Frames: 876, 883, 890, 897, 904, 911, 918, 925
 		Length: 8
 		Tick: 80
-	run: DATA.R8
+	run:
+		Filename: DATA.R8
 		Start: 702
 		Length: 6
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	shoot: DATA.R8
+	shoot:
+		Filename: DATA.R8
 		Start: 742
 		Length: 6
 		Facings: -8
 		Transpose: true
-	prone-stand: DATA.R8
+	prone-stand:
+		Filename: DATA.R8
 		Start: 798
 		Facings: -8
 		Transpose: true
-	prone-run: DATA.R8
+	prone-run:
+		Filename: DATA.R8
 		Start: 806
 		Length: 3
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	standup: DATA.R8
+	standup:
+		Filename: DATA.R8
 		Start: 790
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	prone-shoot: DATA.R8
+	prone-shoot:
+		Filename: DATA.R8
 		Start: 822
 		Length: 6
 		Facings: -8
 		Transpose: true
-	die1: DATA.R8
+	die1:
+		Filename: DATA.R8
 		Frames: 870, 877, 884, 891, 898, 905, 912, 919, 926, 927, 928, 929
 		Length: 12
 		Tick: 80
-	die2: DATA.R8
+	die2:
+		Filename: DATA.R8
 		Frames: 871, 878, 885, 892, 899, 906, 913, 920
 		Length: 8
 		Tick: 80
-	die3: DATA.R8
+	die3:
+		Filename: DATA.R8
 		Frames: 872, 879, 886, 893, 900, 907, 914, 921
 		Length: 8
 		Tick: 80
-	die4: DATA.R8
+	die4:
+		Filename: DATA.R8
 		Frames: 873, 880, 887, 894, 901, 908, 915, 922
 		Length: 8
 		Tick: 80
-	die-crushed: DATA.R8
+	die-crushed:
+		Filename: DATA.R8
 		Frames: 874, 881, 888, 895, 902, 909, 916, 923
 		Length: 8
 		Tick: 800
 		ZOffset: -511
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4293
 		Offset: -30,-24
 
 saboteur:
-	stand: DATA.R8
+	stand:
+		Filename: DATA.R8
 		Start: 2149
 		Facings: -8
 		Transpose: true
-	idle1: DATA.R8
+	idle1:
+		Filename: DATA.R8
 		Frames: 2330, 2337, 2344, 2351, 2358, 2365, 2372, 2379
 		Length: 8
 		Tick: 80
-	idle2: DATA.R8
+	idle2:
+		Filename: DATA.R8
 		Frames: 2331, 2338, 2345, 2352, 2359, 2366, 2373, 2380
 		Length: 8
 		Tick: 80
-	run: DATA.R8
+	run:
+		Filename: DATA.R8
 		Start: 2157
 		Length: 6
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	prone-stand: DATA.R8
+	prone-stand:
+		Filename: DATA.R8
 		Start: 2253
 		Facings: -8
 		Transpose: true
-	prone-run: DATA.R8
+	prone-run:
+		Filename: DATA.R8
 		Start: 2261
 		Length: 3
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	standup: DATA.R8
+	standup:
+		Filename: DATA.R8
 		Start: 2245
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	die1: DATA.R8
+	die1:
+		Filename: DATA.R8
 		Frames: 2325, 2332, 2339, 2346, 2353, 2360, 2367, 2374, 2381, 2383, 2385, 2387
 		Length: 12
 		Tick: 80
-	die2: DATA.R8
+	die2:
+		Filename: DATA.R8
 		Frames: 2326, 2333, 2340, 2347, 2354, 2361, 2368, 2375, 2382, 2384, 2386, 2388
 		Length: 12
 		Tick: 80
-	die3: DATA.R8
+	die3:
+		Filename: DATA.R8
 		Frames: 2327, 2334, 2341, 2348, 2355, 2362, 2369, 2376
 		Length: 8
 		Tick: 80
-	die4: DATA.R8
+	die4:
+		Filename: DATA.R8
 		Frames: 2328, 2335, 2342, 2349, 2356, 2363, 2370, 2377
 		Length: 8
 		Tick: 80
-	die-crushed: DATA.R8
+	die-crushed:
+		Filename: DATA.R8
 		Frames: 2329, 2336, 2343, 2350, 2357, 2364, 2371, 2378
 		Length: 8
 		Tick: 800
 		ZOffset: -511
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4295
 		Offset: -30,-24
 
 sardaukar:
-	stand: DATA.R8
+	stand:
+		Filename: DATA.R8
 		Start: 930
 		Facings: -8
 		Transpose: true
-	idle1: DATA.R8
+	idle1:
+		Filename: DATA.R8
 		Frames: 1111, 1118, 1125, 1132, 1139, 1146, 1153, 1160
 		Length: 8
 		Tick: 80
 		Offset: -1,0
-	idle2: DATA.R8
+	idle2:
+		Filename: DATA.R8
 		Frames: 1112, 1119, 1126, 1133, 1140, 1147, 1154, 1161
 		Length: 8
 		Tick: 80
 		Offset: -1,0
-	run: DATA.R8
+	run:
+		Filename: DATA.R8
 		Start: 938
 		Length: 6
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	shoot: DATA.R8
+	shoot:
+		Filename: DATA.R8
 		Start: 978
 		Length: 6
 		Facings: -8
 		Transpose: true
-	prone-stand: DATA.R8
+	prone-stand:
+		Filename: DATA.R8
 		Start: 1034
 		Facings: -8
 		Transpose: true
-	prone-run: DATA.R8
+	prone-run:
+		Filename: DATA.R8
 		Start: 1042
 		Length: 3
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	standup: DATA.R8
+	standup:
+		Filename: DATA.R8
 		Start: 1026
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	prone-shoot: DATA.R8
+	prone-shoot:
+		Filename: DATA.R8
 		Start: 1058
 		Length: 6
 		Facings: -8
 		Transpose: true
-	die1: DATA.R8
+	die1:
+		Filename: DATA.R8
 		Frames: 1106, 1113, 1120, 1127, 1134, 1141, 1148, 1155, 1162, 1163, 1164, 1165
 		Length: 12
 		Tick: 80
-	die2: DATA.R8
+	die2:
+		Filename: DATA.R8
 		Frames: 1107, 1114, 1121, 1128, 1135, 1142, 1149, 1156
 		Length: 8
 		Tick: 80
-	die3: DATA.R8
+	die3:
+		Filename: DATA.R8
 		Frames: 1108, 1115, 1122, 1129, 1136, 1143, 1150, 1157
 		Length: 8
 		Tick: 80
-	die4: DATA.R8
+	die4:
+		Filename: DATA.R8
 		Frames: 1109, 1116, 1123, 1130, 1137, 1144, 1151, 1158
 		Length: 8
 		Tick: 80
-	die-crushed: DATA.R8
+	die-crushed:
+		Filename: DATA.R8
 		Frames: 1110, 1117, 1124, 1131, 1138, 1145, 1152, 1159
 		Length: 8
 		Tick: 800
 		ZOffset: -511
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4276
 		Offset: -30,-24
 
 grenadier:
-	stand: DATA.R8
+	stand:
+		Filename: DATA.R8
 		Start: 2606
 		Facings: -8
 		Transpose: true
-	idle1: DATA.R8
+	idle1:
+		Filename: DATA.R8
 		Frames: 2700, 2707, 2714, 2721, 2728, 2735, 2742, 2749
 		Length: 8
-	idle2: DATA.R8
+	idle2:
+		Filename: DATA.R8
 		Frames: 2699, 2706, 2713, 2720, 2727, 2734, 2741, 2748
 		Length: 8
-	run: DATA.R8
+	run:
+		Filename: DATA.R8
 		Start: 2526
 		Length: 6
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	throw: DATA.R8
+	throw:
+		Filename: DATA.R8
 		Start: 2574
 		Length: 5
 		Facings: -8
 		Transpose: true
 		Tick: 120
-	die1: DATA.R8
+	die1:
+		Filename: DATA.R8
 		Frames: 2694, 2701, 2708, 2715, 2722, 2729, 2736, 2743
 		Length: 8
-	die2: DATA.R8
+	die2:
+		Filename: DATA.R8
 		Frames: 2695, 2702, 2709, 2716, 2723, 2730, 2737, 2744
 		Length: 8
-	die3: DATA.R8
+	die3:
+		Filename: DATA.R8
 		Frames: 2696, 2703, 2710, 2717, 2724, 2731, 2738, 2745
 		Length: 8
-	die4: DATA.R8
+	die4:
+		Filename: DATA.R8
 		Frames: 2697, 2704, 2711, 2718, 2725, 2732, 2738, 2746
 		Length: 8
-	die-crushed: DATA.R8
+	die-crushed:
+		Filename: DATA.R8
 		Frames: 2698, 2705, 2712, 2719, 2726, 2733, 2740, 2747
 		Tick: 800
 		ZOffset: -511
-	prone-stand: DATA.R8
+	prone-stand:
+		Filename: DATA.R8
 		Start: 2622
 		Facings: -8
 		Transpose: true
-	prone-run: DATA.R8
+	prone-run:
+		Filename: DATA.R8
 		Start: 2622
 		Length: 4
 		Facings: -8
 		Tick: 120
 		Transpose: true
-	prone-throw: DATA.R8
+	prone-throw:
+		Filename: DATA.R8
 		Start: 2654
 		Length: 5
 		Facings: -8
 		Tick: 120
 		Transpose: true
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4297
 		Offset: -30,-24
 
 sandworm:
-	mouth: DATA.R8
+	mouth:
+		Filename: DATA.R8
 		Start: 3802
 		Length: 15
 		Tick: 100
-	sand: DATA.R8
+	sand:
+		Filename: DATA.R8
 		Start: 3818
 		Length: 20
 		Tick: 100
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 39
-	lightninga: DATA.R8
+	lightninga:
+		Filename: DATA.R8
 		Start: 3844
 		Length: 5
 		Tick: 80
 		BlendMode: Additive
-	lightningb: DATA.R8
+	lightningb:
+		Filename: DATA.R8
 		Start: 3849
 		Length: 5
 		Tick: 80
 		BlendMode: Additive
-	lightningc: DATA.R8
+	lightningc:
+		Filename: DATA.R8
 		Start: 3854
 		Length: 5
 		Tick: 80
 		BlendMode: Additive
-	lightningd: DATA.R8
+	lightningd:
+		Filename: DATA.R8
 		Start: 3859
 		Length: 5
 		Tick: 80
 		BlendMode: Additive
-	lightninge: DATA.R8
+	lightninge:
+		Filename: DATA.R8
 		Start: 3864
 		Length: 5
 		Tick: 80
 		BlendMode: Additive
-	lightningf: DATA.R8
+	lightningf:
+		Filename: DATA.R8
 		Start: 3869
 		Length: 5
 		Tick: 80
 		BlendMode: Additive
-	icon: wormicon.shp
+	icon:
+		Filename: wormicon.shp

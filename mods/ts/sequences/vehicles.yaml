@@ -1,5 +1,6 @@
 ^VehicleOverlays:
-	emp-overlay: emp_fx01
+	emp-overlay:
+		Filename: emp_fx01.shp
 		Offset: 0, 0, 24
 		Length: *
 		BlendMode: Additive
@@ -7,118 +8,149 @@
 
 mcv.gdi:
 	Inherits: ^VehicleOverlays
-	icon: sidebar-gdi|mcvicon
+	icon:
+		Filename: sidebar-gdi|mcvicon.shp
 
 mcv.nod:
 	Inherits: ^VehicleOverlays
-	icon: sidebar-nod|mcvicon
+	icon:
+		Filename: sidebar-nod|mcvicon.shp
 
 apc:
 	Inherits: ^VehicleOverlays
-	icon: apcicon
+	icon:
+		Filename: apcicon.shp
 
 harv.gdi:
 	Inherits: ^VehicleOverlays
-	harvest: harvestr
+	harvest:
+		Filename: harvestr.shp
 		Length: *
 		ZRamp: 1
 		Offset: 0, 0, 1
-	icon: sidebar-gdi|harvicon
+	icon:
+		Filename: sidebar-gdi|harvicon.shp
 
 harv.nod:
 	Inherits: ^VehicleOverlays
-	harvest: harvestr
+	harvest:
+		Filename: harvestr.shp
 		Length: *
 		ZRamp: 1
 		Offset: 0, 0, 1
-	icon: sidebar-nod|harvicon
+	icon:
+		Filename: sidebar-nod|harvicon.shp
 
 hvr:
 	Inherits: ^VehicleOverlays
-	icon: hovricon
+	icon:
+		Filename: hovricon.shp
 
 4tnk:
 	Inherits: ^VehicleOverlays
-	muzzle: gunfire
+	muzzle:
+		Filename: gunfire.shp
 		Length: *
 		IgnoreWorldTint: True
 
 lpst.gdi:
 	Inherits: ^VehicleOverlays
-	idle: gadpsa
+	idle:
+		TilesetFilenames:
+			TEMPERATE: gtdpsa.shp
+			SNOW: gadpsa.shp
 		DepthSprite: isodepth.shp
 		DepthSpriteOffset: -6, -6
 		Offset: 0, -13, 12
-		UseTilesetCode: true
 		ShadowStart: 3
-	make: gadpsamk
+	make:
+		TilesetFilenames:
+			TEMPERATE: gtdpsamk.shp
+			SNOW: gadpsamk.shp
 		DepthSprite: isodepth.shp
 		DepthSpriteOffset: -6, -6
 		Offset: 0, -13, 12
-		UseTilesetCode: true
 		Length: 36
 		ShadowStart: 36
-	idle-lights: gadpsa_a
+	idle-lights:
+		TilesetFilenames:
+			TEMPERATE: gtdpsa_a.shp
+			SNOW: gadpsa_a.shp
 		DepthSprite: isodepth.shp
 		DepthSpriteOffset: -6, -6
 		Offset: 0, -13, 12
-		UseTilesetCode: true
 		Length: 10
 		Tick: 200
-	idle-lights-bright: gadpsa_a
+	idle-lights-bright:
+		TilesetFilenames:
+			TEMPERATE: gtdpsa_a.shp
+			SNOW: gadpsa_a.shp
 		DepthSprite: isodepth.shp
 		DepthSpriteOffset: -6, -6
 		Offset: 0, -13, 12
-		UseTilesetCode: true
 		Length: 10
 		Tick: 200
 		IgnoreWorldTint: True
-	icon: sidebar-gdi|lpsticon
+	icon:
+		Filename: sidebar-gdi|lpsticon.shp
 
 lpst.nod:
 	Inherits: lpst.gdi
-	icon: sidebar-nod|lpsticon
+	icon:
+		Filename: sidebar-nod|lpsticon.shp
 
 repair:
 	Inherits: ^VehicleOverlays
-	icon: rboticon
+	icon:
+		Filename: rboticon.shp
 
 art2:
 	Inherits: ^VehicleOverlays
-	icon: artyicon
-	idle: gaarty
+	icon:
+		Filename: artyicon.shp
+	idle:
+		TilesetFilenames:
+			TEMPERATE: gtarty.shp
+			SNOW: gaarty.shp
 		ShadowStart: 3
 		Offset: 0, -12, 12
-		UseTilesetCode: true
 		DepthSprite: isodepth.shp
-	damaged-idle: gaarty
+	damaged-idle:
+		TilesetFilenames:
+			TEMPERATE: gtarty.shp
+			SNOW: gaarty.shp
 		Start: 1
 		ShadowStart: 4
 		Offset: 0, -12, 12
-		UseTilesetCode: true
 		DepthSprite: isodepth.shp
-	make: gaartymk
+	make:
+		TilesetFilenames:
+			TEMPERATE: gtartymk.shp
+			SNOW: gaartymk.shp
 		Length: 16
 		ShadowStart: 16
 		Offset: 0, -12, 12
-		UseTilesetCode: true
 		DepthSprite: isodepth.shp
-	muzzle: gunfire
+	muzzle:
+		Filename: gunfire.shp
 		Length: *
 		Offset: 0, 0, 24
 		IgnoreWorldTint: True
 
 weed:
 	Inherits: ^VehicleOverlays
-	icon: weedicon
+	icon:
+		Filename: weedicon.shp
 
 hmec:
 	Inherits: ^VehicleOverlays
-	icon: hmecicon
+	icon:
+		Filename: hmecicon.shp
 
 bike:
 	Inherits: ^VehicleOverlays
-	icon: cyclicon
+	icon:
+		Filename: cyclicon.shp
 
 bggy:
 	Inherits: ^VehicleOverlays
@@ -126,64 +158,84 @@ bggy:
 		Offset: 0, 0, 24
 	muzzle:
 		Combine:
-			mgun-n:
+			0:
+				Filename: mgun-n.shp
 				Length: 6
-			mgun-nw:
+			1:
+				Filename: mgun-nw.shp
 				Length: 6
-			mgun-w:
+			2:
+				Filename: mgun-w.shp
 				Length: 6
-			mgun-sw:
+			3:
+				Filename: mgun-sw.shp
 				Length: 6
-			mgun-s:
+			4:
+				Filename: mgun-s.shp
 				Length: 6
-			mgun-se:
+			5:
+				Filename: mgun-se.shp
 				Length: 6
-			mgun-e:
+			6:
+				Filename: mgun-e.shp
 				Length: 6
-			mgun-ne:
+			7:
+				Filename: mgun-ne.shp
 				Length: 6
 		Facings: 8
 		Length: 6
 		IgnoreWorldTint: True
-	icon: bggyicon
+	icon:
+		Filename: bggyicon.shp
 		Offset: 0, 0
 
 sapc:
 	Inherits: ^VehicleOverlays
-	icon: sapcicon
+	icon:
+		Filename: sapcicon.shp
 
 subtank:
 	Inherits: ^VehicleOverlays
-	icon: subticon
+	icon:
+		Filename: subticon.shp
 
 sonic:
 	Inherits: ^VehicleOverlays
-	icon: soniicon
+	icon:
+		Filename: soniicon.shp
 
 ttnk:
 	Inherits: ^VehicleOverlays
-	idle: gatick
+	idle:
+		Filename: gatick.shp
 		ShadowStart: 3
 		Offset: 0, -14, 14
-	damaged-idle: gatick
+	damaged-idle:
+		Filename: gatick.shp
 		Start: 1
 		ShadowStart: 4
 		Offset: 0, -14, 14
-	make: gatickmk
+	make:
+		Filename: gatickmk.shp
 		Length: 24
 		ShadowStart: 24
 		Offset: 0, -14, 14
-	muzzle: gunfire
+	muzzle:
+		Filename: gunfire.shp
 		Length: *
 		Offset: 0, 0, 24
 		IgnoreWorldTint: True
-	icon: tickicon
+	icon:
+		Filename: tickicon.shp
 
 stnk:
 	Inherits: ^VehicleOverlays
-	icon: stnkicon
+	icon:
+		Filename: stnkicon.shp
 
 mmch:
+	Defaults:
+		Filename: mmch.shp
 	Inherits: ^VehicleOverlays
 	stand:
 		Facings: -8
@@ -200,41 +252,51 @@ mmch:
 		Start: 120
 		Facings: -32
 		Offset: 0, 0, 12
-	muzzle: gunfire
+	muzzle:
+		Filename: gunfire.shp
 		Length: *
 		Offset: 0, 0, 12
 		IgnoreWorldTint: True
-	icon: mmchicon
+	icon:
+		Filename: mmchicon.shp
 
 jugg:
 	Inherits: ^VehicleOverlays
-	icon: juggicon
-	stand: jugger
+	icon:
+		Filename: juggicon.shp
+	stand:
+		Filename: jugger.shp
 		Facings: -8
 		Stride: 15
 		ShadowStart: 120
 		Offset: 0, 0, 12
-	walk: jugger
+	walk:
+		Filename: jugger.shp
 		Length: 15
 		Facings: -8
 		ShadowStart: 120
 		Offset: 0, 0, 12
 		Tick: 60
-	turret: djugg_a
+	turret:
+		Filename: djugg_a.shp
 		Facings: 32
 		Offset: -4, 0, 12
-	idle: djugg
+	idle:
+		Filename: djugg.shp
 		ShadowStart: 3
 		Offset: 0, -12, 12
-	damaged-idle: djugg
+	damaged-idle:
+		Filename: djugg.shp
 		Start: 1
 		ShadowStart: 4
 		Offset: 0, -12, 12
-	make: djuggmk
+	make:
+		Filename: djuggmk.shp
 		Length: 18
 		ShadowStart: 18
 		Offset: 0, -12, 12
-	muzzle: gunfire
+	muzzle:
+		Filename: gunfire.shp
 		Length: *
 		Offset: 0, 0, 24
 		IgnoreWorldTint: True
@@ -242,6 +304,7 @@ jugg:
 gghunt:
 	Inherits: ^VehicleOverlays
 	idle:
+		Filename: gghunt.shp
 		Facings: 1
 		Length: 8
 		ShadowStart: 8
@@ -249,6 +312,7 @@ gghunt:
 smech:
 	Inherits: ^VehicleOverlays
 	Defaults:
+		Filename: smech.shp
 		Offset: 0,0,8
 	stand:
 		Start: 96
@@ -271,7 +335,8 @@ smech:
 		Facings: -8
 		Tick: 80
 		IgnoreWorldTint: True
-	icon: smchicon
+	icon:
+		Filename: smchicon.shp
 
 trucka:
 	Inherits: ^VehicleOverlays

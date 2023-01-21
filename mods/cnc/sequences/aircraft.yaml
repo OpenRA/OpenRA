@@ -1,21 +1,29 @@
 c17:
 	idle:
+		Filename: c17.shp
 		Facings: 32
 		UseClassicFacings: True
-	icon: c17icnh
+	icon:
+		Filename: c17icnh.shp
 
 tran:
+	Defaults:
+		Filename: tran.shp
 	idle:
 		Facings: 32
 		UseClassicFacings: True
-	rotor: lrotor
+	rotor:
+		Filename: lrotor.shp
 		Length: 4
-	rotor2: rrotor
+	rotor2:
+		Filename: rrotor.shp
 		Length: 4
-	slow-rotor: lrotor
+	slow-rotor:
+		Filename: lrotor.shp
 		Start: 4
 		Length: 8
-	slow-rotor2: rrotor
+	slow-rotor2:
+		Filename: rrotor.shp
 		Start: 4
 		Length: 8
 	open:
@@ -23,40 +31,48 @@ tran:
 		Length: 4
 	unload:
 		Start: 35
-	icon: tranicnh.tem
-		AddExtension: False
+	icon:
+		Filename: tranicnh.tem
 
 heli:
 	idle:
+		Filename: heli.shp
 		Facings: 32
 		UseClassicFacings: True
-	rotor: lrotor
+	rotor:
+		Filename: lrotor.shp
 		Length: 4
-	slow-rotor: lrotor
+	slow-rotor:
+		Filename: lrotor.shp
 		Start: 4
 		Length: 8
-	muzzle: minigun
+	muzzle:
+		Filename: minigun.shp
 		Length: 6
 		Facings: 8
-	icon: heliicnh.tem
-		AddExtension: False
+	icon:
+		Filename: heliicnh.tem
 
 orca:
+	Defaults:
+		Filename: orca.shp
 	idle:
 		Facings: 32
 		UseClassicFacings: True
 	move:
 		Start: 32
 		Facings: 32
-	icon: orcaicnh.tem
-		AddExtension: False
+	icon:
+		Filename: orcaicnh.tem
 
 a10:
 	idle:
+		Filename: a10.shp
 		Facings: 32
 		UseClassicFacings: True
-	muzzle: minigun
+	muzzle:
+		Filename: minigun.shp
 		Length: 6
 		Facings: 8
-	icon: a10icnh.tem
-		AddExtension: False
+	icon:
+		Filename: a10icnh.tem

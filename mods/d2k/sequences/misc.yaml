@@ -3,67 +3,84 @@ explosion:
 		BlendMode: Additive
 		Tick: 80
 		ZOffset: 511
-	piff: DATA.R8
+	piff:
+		Filename: DATA.R8
 		Start: 3879
 		Length: 5
-	piffs: DATA.R8
+	piffs:
+		Filename: DATA.R8
 		Start: 3682
 		Length: 4
-	small_explosion: DATA.R8
+	small_explosion:
+		Filename: DATA.R8
 		Start: 3656
 		Length: 15
-	med_explosion: DATA.R8
+	med_explosion:
+		Filename: DATA.R8
 		Start: 3643
 		Length: 12
-	tiny_explosion: DATA.R8
+	tiny_explosion:
+		Filename: DATA.R8
 		Start: 3639
 		Length: 4
-	nuke: DATA.R8
+	nuke:
+		Filename: DATA.R8
 		Start: 4218
 		Length: 14
-	self_destruct: DATA.R8
+	self_destruct:
+		Filename: DATA.R8
 		Start: 3686
 		Length: 15
-	building: DATA.R8
+	building:
+		Filename: DATA.R8
 		Start: 3701
 		Length: 22
-	large_explosion: DATA.R8
+	large_explosion:
+		Filename: DATA.R8
 		Start: 4241
 		Length: 22
-	small_napalm: DATA.R8
+	small_napalm:
+		Filename: DATA.R8
 		Start: 3674
 		Length: 8
-	rocket_explosion: DATA.R8
+	rocket_explosion:
+		Filename: DATA.R8
 		Start: 3634
 		Length: 5
 		BlendMode: Alpha
-	shockwave: DATA.R8
+	shockwave:
+		Filename: DATA.R8
 		Start: 3940
 		Length: 6
 		Tick: 120
-	deviator: DATA.R8
+	deviator:
+		Filename: DATA.R8
 		Start: 3765
 		Length: 23
 		BlendMode: Alpha
 		Offset: 12, -10
 		Tick: 120
-	corpse: DATA.R8
+	corpse:
+		Filename: DATA.R8
 		ZOffset: -511
 		Start: 430
 		Length: 12
 		Tick: 1600
-	wall_explosion: DATA.R8
+	wall_explosion:
+		Filename: DATA.R8
 		Start: 4130
 		Length: 8
 		Tick: 120
 		BlendMode: Alpha
-	devastator: DATA.R8
+	devastator:
+		Filename: DATA.R8
 		Start: 3947
 		Length: 17
 		Tick: 120
 
 large_trail:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 4126
 		Length: 4
 		Tick: 120
@@ -71,7 +88,8 @@ large_trail:
 		ZOffset: 1023
 
 small_trail:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3988
 		Length: 4
 		Tick: 80
@@ -79,7 +97,8 @@ small_trail:
 		ZOffset: 1023
 
 small_trail2:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3793
 		Length: 4
 		Tick: 80
@@ -87,28 +106,32 @@ small_trail2:
 		ZOffset: 1023
 
 bazooka_trail:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3634
 		Length: 4
 		Tick: 80
 		ZOffset: 1023
 
 bazooka_trail2:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3797
 		Length: 4
 		Tick: 80
 		ZOffset: 1023
 
 deviator_trail:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3788
 		Length: 5
 		Tick: 80
 		ZOffset: 1023
 
 laserfire:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3639
 		Length: 4
 		Tick: 80
@@ -120,57 +143,74 @@ sandtrail:
 		Length: 8
 		Tick: 200
 		ZOffset: -512
-	traila: sandtrail.shp
-	trailb: sandtrail.shp
+	traila:
+		Filename: sandtrail.shp
+	trailb:
+		Filename: sandtrail.shp
 		Frames: 2, 6, 4, 5, 0, 1, 3, 7
-	trailc: sandtrail.shp
+	trailc:
+		Filename: sandtrail.shp
 		Frames: 7, 4, 6, 5, 2, 0, 3, 1
 
 pips:
-	groups: DATA.R8
+	groups:
+		Filename: DATA.R8
 		Length: 10
 		Frames: 18, 19, 20, 21, 22, 23, 24, 25, 26, 17
 		Offset: 3, 3
-	pickup-indicator: DATA.R8
+	pickup-indicator:
+		Filename: DATA.R8
 		Start: 112
 		Offset: -9, -9
-	pip-empty: DATA.R8
+	pip-empty:
+		Filename: DATA.R8
 		Start: 15
-	pip-green: DATA.R8
+	pip-green:
+		Filename: DATA.R8
 		Start: 16
-	tag-upgraded: DATA.R8
+	tag-upgraded:
+		Filename: DATA.R8
 		Start: 110
 		Offset: -8,-8
 
 clock:
-	idle: clock.shp
+	idle:
+		Filename: clock.shp
 		Length: *
 
 powerdown:
-	disabled: speed.shp
+	disabled:
+		Filename: speed.shp
 		Start: 3
 		ZOffset: 2047
 
 poweroff:
-	offline: poweroff.shp
+	offline:
+		Filename: poweroff.shp
 		Length: *
 		Tick: 160
 		ZOffset: 2047
 
 rank:
-	rank-veteran-1: rank.shp
-	rank-veteran-2: rank.shp
+	rank-veteran-1:
+		Filename: rank.shp
+	rank-veteran-2:
+		Filename: rank.shp
 		Start: 1
-	rank-veteran-3: rank.shp
+	rank-veteran-3:
+		Filename: rank.shp
 		Start: 2
-	rank-elite: rank.shp
+	rank-elite:
+		Filename: rank.shp
 		Start: 3
 
 overlay:
-	Defaults: DATA.R8
+	Defaults:
+		Filename: DATA.R8
 		Offset: -16,-16
 	build-valid:
-	build-unsafe: concfoot.shp
+	build-unsafe:
+		Filename: concfoot.shp
 		Offset: 0, 0
 	build-invalid:
 		Start: 1
@@ -181,68 +221,82 @@ overlay:
 		Start: 1
 
 editor-overlay:
-	Defaults: DATA.R8
+	Defaults:
+		Filename: DATA.R8
 		Offset: -16,-16
 	copy:
 	paste:
 		Start: 1
 
 rallypoint:
-	flag: flagfly.shp
+	flag:
+		Filename: flagfly.shp
 		Length: *
 		Offset: 11,-5
 		ZOffset: 2535
-	circles: fpls.shp
+	circles:
+		Filename: fpls.shp
 		Length: *
 		ZOffset: 2047
 
 beacon:
-	arrow: MOUSE.R8
+	arrow:
+		Filename: MOUSE.R8
 		Start: 148
 		Offset: -24,-24
 		ZOffset: 2535
-	circles: fpls.shp
+	circles:
+		Filename: fpls.shp
 		Length: *
 		ZOffset: 2047
 
 rpg:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3263
 		Facings: -32
 		ZOffset: 1023
 
 120mm:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3262
 		BlendMode: Additive
 		ZOffset: 1023
 
 155mm:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3329
 		ZOffset: 1023
 
 crate-effects:
 	Defaults:
 		ZOffset: 2047
-	dollar: DATA.R8
+	dollar:
+		Filename: DATA.R8
 		Start: 3932
 		Length: 8
-	reveal-map: DATA.R8
+	reveal-map:
+		Filename: DATA.R8
 		Start: 4200
 		Length: 18
-	hide-map: DATA.R8
+	hide-map:
+		Filename: DATA.R8
 		Frames: 4217, 4216, 4215, 4214, 4213, 4212, 4211, 4210, 4209, 4208, 4207, 4206, 4205, 4204, 4203, 4202, 4201, 4200
 		Length: 18
-	levelup: levelup.shp
+	levelup:
+		Filename: levelup.shp
 		Length: *
 		Tick: 200
-	cloak: DATA.R8
+	cloak:
+		Filename: DATA.R8
 		Start: 4164
 		Length: 36
 
 allyrepair:
-	repair: DATA.R8
+	repair:
+		Filename: DATA.R8
 		Frames: 3, 39
 		Length: 2
 		Tick: 300
@@ -250,50 +304,59 @@ allyrepair:
 		ZOffset: 2047
 
 missile:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3336
 		Facings: -32
 		ZOffset: 1023
 
 missile2:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3554
 		Facings: -32
 		ZOffset: 1023
 
 deathhand:
-	up: DATA.R8
+	up:
+		Filename: DATA.R8
 		Start: 2147
 		ZOffset: 1023
 		Offset: 2,0
-	down: DATA.R8
+	down:
+		Filename: DATA.R8
 		Start: 2148
 		ZOffset: 1023
 		Offset: -1,0
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4296
 		Offset: -30,-24
 
 fire:
-	1: DATA.R8
+	1:
+		Filename: DATA.R8
 		Start: 3965
 		Length: 10
 		Offset: 4,-17
 		ZOffset: 1023
 		BlendMode: Additive
-	2: DATA.R8
+	2:
+		Filename: DATA.R8
 		Start: 3976
 		Length: 11
 		Offset: 0,-3
 		ZOffset: 1023
 		BlendMode: Additive
-	3: DATA.R8
+	3:
+		Filename: DATA.R8
 		Start: 4138
 		Length: 13
 		Offset: 0,-3
 		ZOffset: 1023
 		BlendMode: Additive
-	4: DATA.R8
+	4:
+		Filename: DATA.R8
 		Start: 3965
 		Length: 10
 		Offset: 0,-3
@@ -303,133 +366,159 @@ fire:
 smoke_m:
 	Defaults:
 		ZOffset: 511
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3671
 		Length: 2
 		BlendMode: Additive
-	loop: DATA.R8
+	loop:
+		Filename: DATA.R8
 		Start: 3671
 		Length: 2
 		BlendMode: Additive
-	end: DATA.R8
+	end:
+		Filename: DATA.R8
 		Start: 3671
 		Length: 3
 		BlendMode: Additive
 
 bombs:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3528
 		Length: 4
 		ZOffset: 1023
 
 grenade:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3618
 		Length: 4
 		Tick: 80
 		ZOffset: 1023
 
 shrapnel:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3538
 		Length: 4
 		ZOffset: 1023
 
 shrapnel2:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3542
 		Length: 1
 		ZOffset: 1023
 
 shrapnel3:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3543
 		Length: 8
 		ZOffset: 1023
 
 shrapnel4:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3551
 		Length: 1
 		ZOffset: 1023
 
 mpspawn:
-	idle: mpspawn.shp
+	idle:
+		Filename: mpspawn.shp
 		Length: *
 
 waypoint:
-	idle: waypoint.shp
+	idle:
+		Filename: waypoint.shp
 		Length: *
 
 camera:
-	idle: camera.shp
+	idle:
+		Filename: camera.shp
 		Length: *
 
 wormspawner:
-	idle: wormspawner.shp
+	idle:
+		Filename: wormspawner.shp
 		Length: *
 
 sietch:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3246
 		Offset: -32,32
 
 doubleblast:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3527
 		Facings: -16
 		BlendMode: Additive
 		ZOffset: 511
 
 doubleblastbullet:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3496
 		Facings: -16
 		BlendMode: Additive
 		ZOffset: 1023
 
 icon:
-	ornistrike: DATA.R8
+	ornistrike:
+		Filename: DATA.R8
 		Start: 4292
 		Offset: -30,-24
-	fremen: DATA.R8
+	fremen:
+		Filename: DATA.R8
 		Start: 4293
 		Offset: -30,-24
-	saboteur: DATA.R8
+	saboteur:
+		Filename: DATA.R8
 		Start: 4295
 		Offset: -30,-24
-	deathhand: DATA.R8
+	deathhand:
+		Filename: DATA.R8
 		Start: 4296
 		Offset: -30,-24
 
 crate:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 102
 		ZOffset: -511
 		Offset: -16,-16
 
 spicebloom:
-	grow0: DATA.R8
+	grow0:
+		Filename: DATA.R8
 		Start: 106
 		Length: 1
 		ZOffset: -1023
 		Offset: -16,-16
-	grow1: DATA.R8
+	grow1:
+		Filename: DATA.R8
 		Start: 107
 		Length: 1
 		ZOffset: -1023
 		Offset: -16,-16
-	grow2: DATA.R8
+	grow2:
+		Filename: DATA.R8
 		Start: 108
 		Length: 1
 		ZOffset: -1023
 		Offset: -16,-16
-	grow3: DATA.R8
+	grow3:
+		Filename: DATA.R8
 		Start: 109
 		Length: 1
 		ZOffset: -1023
 		Offset: -16,-16
-	spurt: DATA.R8
+	spurt:
+		Filename: DATA.R8
 		Start: 4233
 		Length: 8
 		Tick: 80
@@ -438,7 +527,8 @@ spicebloom:
 		Offset: 0, -16
 
 moveflsh:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3874
 		Length: 5
 		Tick: 80
@@ -447,19 +537,23 @@ moveflsh:
 		HasEmbeddedPalette: True
 
 resources:
-	spicea: BLOXBASE.R8
+	spicea:
+		Filename: BLOXBASE.R8
 		Frames: 748, 300, 750, 751, 752, 753, 754, 755, 756, 757, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 300
 		Length: *
 		Offset: -16,-16
-	spiceb: BLOXBASE.R8
+	spiceb:
+		Filename: BLOXBASE.R8
 		Frames: 749, 301, 750, 751, 752, 753, 754, 755, 756, 757, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 301
 		Length: *
 		Offset: -16,-16
-	spicec: BLOXBASE.R8
+	spicec:
+		Filename: BLOXBASE.R8
 		Frames: 793, 320, 750, 751, 752, 753, 754, 755, 756, 757, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 320
 		Length: *
 		Offset: -16,-16
-	spiced: BLOXBASE.R8
+	spiced:
+		Filename: BLOXBASE.R8
 		Frames: 748, 321, 750, 751, 752, 753, 754, 755, 756, 757, 760, 761, 762, 763, 764, 765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788, 789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 321
 		Length: *
 		Offset: -16,-16
@@ -469,83 +563,107 @@ shroud:
 		BlendMode: Subtractive
 		Offset: -16,-16
 		Length: 14
-	palette: DATA.R8
+	palette:
+		Filename: DATA.R8
 		Start: 38
 		HasEmbeddedPalette: True
-	shrouda: DATA.R8
+	shrouda:
+		Filename: DATA.R8
 		Start: 40
-	shroudb: DATA.R8
+	shroudb:
+		Filename: DATA.R8
 		Start: 56
-	shroudc: DATA.R8
+	shroudc:
+		Filename: DATA.R8
 		Start: 72
-	shroudd: DATA.R8
+	shroudd:
+		Filename: DATA.R8
 		Start: 88
-	shroudfull: fullshroud.shp
+	shroudfull:
+		Filename: fullshroud.shp
 		Offset: 0,0
 		Length: 1
-	foga: DATA.R8
+	foga:
+		Filename: DATA.R8
 		BlendMode: Multiply
 		Start: 40
-	fogb: DATA.R8
+	fogb:
+		Filename: DATA.R8
 		BlendMode: Multiply
 		Start: 56
-	fogc: DATA.R8
+	fogc:
+		Filename: DATA.R8
 		BlendMode: Multiply
 		Start: 72
-	fogd: DATA.R8
+	fogd:
+		Filename: DATA.R8
 		BlendMode: Multiply
 		Start: 88
-	fogfull: fullshroud.shp
+	fogfull:
+		Filename: fullshroud.shp
 		BlendMode: Multiply
 		Offset: 0,0
 		Length: 1
 
 rockcraters:
-	rockcrater1: DATA.R8
+	rockcrater1:
+		Filename: DATA.R8
 		Start: 114
 		Length: 16
 		Offset: -16,-16
-	rockcrater2: DATA.R8
+	rockcrater2:
+		Filename: DATA.R8
 		Start: 130
 		Length: 16
 		Offset: -16,-16
 
 sandcraters:
-	sandcrater1: DATA.R8
+	sandcrater1:
+		Filename: DATA.R8
 		Start: 146
 		Length: 16
 		Offset: -16,-16
-	sandcrater2: DATA.R8
+	sandcrater2:
+		Filename: DATA.R8
 		Start: 162
 		Length: 16
 		Offset: -16,-16
 
 ornidirection:
-	arrow-t: MOUSE.R8
+	arrow-t:
+		Filename: MOUSE.R8
 		Start: 112
 		Offset: -25, -53, 0
-	arrow-tr: MOUSE.R8
+	arrow-tr:
+		Filename: MOUSE.R8
 		Start: 120
 		Offset: 6, -47, 0
-	arrow-r: MOUSE.R8
+	arrow-r:
+		Filename: MOUSE.R8
 		Start: 128
 		Offset: 17, -26, 0
-	arrow-br: MOUSE.R8
+	arrow-br:
+		Filename: MOUSE.R8
 		Start: 136
 		Offset: 6, -1, 0
-	arrow-b: MOUSE.R8
+	arrow-b:
+		Filename: MOUSE.R8
 		Start: 148
 		Offset: -25, 7, 0
-	arrow-bl: MOUSE.R8
+	arrow-bl:
+		Filename: MOUSE.R8
 		Start: 156
 		Offset: -52, -3, 0
-	arrow-l: MOUSE.R8
+	arrow-l:
+		Filename: MOUSE.R8
 		Start: 164
 		Offset: -61, -26, 0
-	arrow-tl: MOUSE.R8
+	arrow-tl:
+		Filename: MOUSE.R8
 		Start: 172
 		Offset: -52, -44, 0
 
 null:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 3552

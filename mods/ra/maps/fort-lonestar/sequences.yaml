@@ -1,4 +1,6 @@
 sniper:
+	Defaults:
+		Filename: sniper.shp
 	stand:
 		Facings: 8
 	stand2:
@@ -66,24 +68,24 @@ sniper:
 		Start: 452
 		Length: 18
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	garrison-muzzle: minigun
+	garrison-muzzle:
+		Filename: minigun.shp
 		Length: 3
 		Stride: 6
 		Facings: 8
-	icon: snipericon
+	icon:
+		Filename: snipericon.shp

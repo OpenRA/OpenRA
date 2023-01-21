@@ -1,4 +1,6 @@
 e1:
+	Defaults:
+		Filename: e1.shp
 	stand:
 		Facings: 8
 	stand2:
@@ -68,53 +70,63 @@ e1:
 		Start: 324
 		Length: 18
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: *
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
 	garrison-muzzle: minigun
+		Filename:
 		Length: 12
 		Facings: 8
 		Combine:
-			minigun:
+			0:
+				Filename: minigun.shp
 				Length: 12
 				Frames: 0,1,2,3,4,5,0,1,2,3,4,5
-			minigun:
+			1:
+				Filename: minigun.shp
 				Length: 12
 				Frames: 6,7,8,9,10,11,6,7,8,9,10,11
-			minigun:
+			2:
+				Filename: minigun.shp
 				Length: 12
 				Frames: 12,13,14,15,16,17,12,13,14,15,16,17
-			minigun:
+			3:
+				Filename: minigun.shp
 				Length: 12
 				Frames: 18,19,20,21,22,23,18,19,20,21,22,23
-			minigun:
+			4:
+				Filename: minigun.shp
 				Length: 12
 				Frames: 24,25,26,27,28,29,24,25,26,27,28,29
-			minigun:
+			5:
+				Filename: minigun.shp
 				Length: 12
 				Frames: 30,31,32,33,34,35,30,31,32,33,34,35
-			minigun:
+			6:
+				Filename: minigun.shp
 				Length: 12
 				Frames: 36,37,38,39,40,41,36,37,38,39,40,41
-			minigun:
+			7:
+				Filename: minigun.shp
 				Length: 12
 				Frames: 42,43,44,45,46,47,42,43,44,45,46,47
-	icon: e1icon
+	icon:
+		Filename: e1icon.shp
 
 e3:
+	Defaults:
+		Filename: e3.shp
 	stand:
 		Facings: 8
 	stand2:
@@ -159,22 +171,20 @@ e3:
 		Start: 340
 		Length: 18
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 144
 		Stride: 4
@@ -192,9 +202,12 @@ e3:
 		Start: 192
 		Length: 10
 		Facings: 8
-	icon: e3icon
+	icon:
+		Filename: e3icon.shp
 
 e6:
+	Defaults:
+		Filename: e6.shp
 	stand:
 		Facings: 8
 	stand2:
@@ -235,22 +248,20 @@ e6:
 		Start: 182
 		Length: 18
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 82
 		Stride: 4
@@ -264,9 +275,12 @@ e6:
 		Length: 4
 		Facings: 8
 		Tick: 100
-	icon: e6icon
+	icon:
+		Filename: e6icon.shp
 
 medi:
+	Defaults:
+		Filename: medi.shp
 	stand:
 		Facings: 8
 	run:
@@ -306,22 +320,20 @@ medi:
 		Start: 229
 		Length: 18
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 130
 		Stride: 4
@@ -331,9 +343,12 @@ medi:
 		Length: 4
 		Facings: 8
 		Tick: 100
-	icon: mediicon
+	icon:
+		Filename: mediicon.shp
 
 mech:
+	Defaults:
+		Filename: mech.shp
 	stand:
 		Facings: 8
 	run:
@@ -373,22 +388,20 @@ mech:
 		Start: 229
 		Length: 18
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 130
 		Stride: 4
@@ -398,9 +411,12 @@ mech:
 		Length: 4
 		Facings: 8
 		Tick: 100
-	icon: mechicon
+	icon:
+		Filename: mechicon.shp
 
 e2:
+	Defaults:
+		Filename: e2.shp
 	stand:
 		Facings: 8
 	stand2:
@@ -445,22 +461,20 @@ e2:
 		Start: 452
 		Length: 18
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 240
 		Stride: 4
@@ -478,9 +492,12 @@ e2:
 		Start: 288
 		Length: 12
 		Facings: 8
-	icon: e2icon
+	icon:
+		Filename: e2icon.shp
 
 dog:
+	Defaults:
+		Filename: dog.shp
 	stand:
 		Facings: 8
 	walk:
@@ -526,23 +543,27 @@ dog:
 		Start: 251
 		Length: 14
 		Tick: 80
-	die6: electdog
+	die6:
+		Filename: electdog.shp
 		Length: *
 		Tick: 80
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	jump: dogbullt
+	jump:
+		Filename: dogbullt.shp
 		Length: 4
 		Facings: 8
-	icon: dogicon
+	icon:
+		Filename: dogicon.shp
 
 spy:
+	Defaults:
+		Filename: spy.shp
 	stand:
 		Facings: 8
 	stand2:
@@ -585,22 +606,20 @@ spy:
 		Start: 324
 		Length: 18
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 144
 		Stride: 4
@@ -618,9 +637,12 @@ spy:
 		Start: 192
 		Length: 8
 		Facings: 8
-	icon: spyicon
+	icon:
+		Filename: spyicon.shp
 
 thf:
+	Defaults:
+		Filename: thf.shp
 	stand:
 		Facings: 8
 	run:
@@ -652,22 +674,20 @@ thf:
 		Start: 175
 		Length: 18
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 72
 		Stride: 4
@@ -677,9 +697,12 @@ thf:
 		Length: 4
 		Facings: 8
 		Tick: 80
-	icon: thficon
+	icon:
+		Filename: thficon.shp
 
 e7:
+	Defaults:
+		Filename: e7.shp
 	stand:
 		Facings: 8
 	run:
@@ -688,44 +711,56 @@ e7:
 		Facings: 8
 		Tick: 80
 	shoot-left:
+		Filename:
 		Combine:
-			e7:
+			0:
+				Filename: e7.shp
 				Length: 8
 				Frames: 58, 56, 64, 63, 71, 70, 79, 77
-			e7:
+			1:
+				Filename: e7.shp
 				Length: 2
 				Frames: 85, 84
 				Offset: 1, 0
-			e7:
+			2:
+				Filename: e7.shp
 				Length: 2
 				Frames: 92, 91
-			e7:
+			3:
+				Filename: e7.shp
 				Length: 2
 				Frames: 99, 98
 				Offset: 1, -2
-			e7:
+			4:
+				Filename: e7.shp
 				Length: 2
 				Frames: 107, 105
 				Offset: 0, -2
 		Length: 2
 		Facings: 8
 	shoot-right:
+		Filename:
 		Combine:
-			e7:
+			0:
+				Filename: e7.shp
 				Length: 8
 				Frames: 57, 56, 65, 63, 72, 70, 78, 77
-			e7:
+			1:
+				Filename: e7.shp
 				Length: 2
 				Frames: 86, 84
 				Offset: 1, 0
-			e7:
+			2:
+				Filename: e7.shp
 				Length: 2
 				Frames: 93, 91
-			e7:
+			3:
+				Filename: e7.shp
 				Length: 2
 				Frames: 100, 98
 				Offset: 1, -2
-			e7:
+			4:
+				Filename: e7.shp
 				Length: 2
 				Frames: 106, 105
 				Offset: 0, -2
@@ -759,22 +794,20 @@ e7:
 		Start: 298
 		Length: 18
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 128
 		Stride: 4
@@ -792,13 +825,17 @@ e7:
 		Frames: 178, 177, 186, 184, 193, 191, 199, 198, 207, 205, 214, 212, 221, 219, 227, 226
 		Length: 2
 		Facings: 8
-	garrison-muzzle: minigun
+	garrison-muzzle:
+		Filename: minigun.shp
 		Length: 3
 		Stride: 6
 		Facings: 8
-	icon: e7icon
+	icon:
+		Filename: e7icon.shp
 
 e4:
+	Defaults:
+		Filename: e4.shp
 	stand:
 		Facings: 8
 	stand2:
@@ -843,22 +880,20 @@ e4:
 		Start: 452
 		Length: 18
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
 	prone-stand:
 		Start: 208
 		Stride: 4
@@ -876,9 +911,12 @@ e4:
 		Start: 256
 		Length: 16
 		Facings: 8
-	icon: e4icon
+	icon:
+		Filename: e4icon.shp
 
 gnrl:
+	Defaults:
+		Filename: gnrl.shp
 	stand:
 		Facings: 8
 	run:
@@ -931,24 +969,24 @@ gnrl:
 		Start: 246
 		Length: 18
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
 
 shok:
+	Defaults:
+		Filename: shok.shp
 	stand:
 		Facings: 8
 	stand2:
@@ -1018,25 +1056,26 @@ shok:
 		Start: 452
 		Length: 18
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	icon: shokicon
+	icon:
+		Filename: shokicon.shp
 
 c1:
+	Defaults:
+		Filename: c1.shp
 	stand:
 		Facings: 8
 	panic-stand:
@@ -1069,22 +1108,20 @@ c1:
 		Start: 180
 		Length: 18
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
 	run:
 		Start: 56
 		Length: 6
@@ -1092,6 +1129,8 @@ c1:
 		Tick: 80
 
 c2:
+	Defaults:
+		Filename: c2.shp
 	stand:
 		Facings: 8
 	panic-stand:
@@ -1124,22 +1163,20 @@ c2:
 		Start: 180
 		Length: 18
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
 	run:
 		Start: 56
 		Length: 6
@@ -1147,6 +1184,8 @@ c2:
 		Tick: 80
 
 c11:
+	Defaults:
+		Filename: c11.shp
 	stand:
 		Facings: 8
 	panic-stand:
@@ -1179,22 +1218,20 @@ c11:
 		Start: 180
 		Length: 18
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
 	run:
 		Start: 56
 		Length: 6
@@ -1202,6 +1239,8 @@ c11:
 		Tick: 80
 
 einstein:
+	Defaults:
+		Filename: einstein.shp
 	stand:
 		Facings: 8
 	panic-stand:
@@ -1235,24 +1274,24 @@ einstein:
 		Start: 148
 		Length: 17
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
 
 delphi:
+	Defaults:
+		Filename: delphi.shp
 	stand:
 		Facings: 8
 	panic-stand:
@@ -1286,24 +1325,24 @@ delphi:
 		Start: 357
 		Length: 17
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
 
 chan:
+	Defaults:
+		Filename: chan.shp
 	stand:
 		Facings: 8
 	panic-stand:
@@ -1337,24 +1376,24 @@ chan:
 		Start: 148
 		Length: 17
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
 
 zombie:
+	Defaults:
+		Filename: zombie.shp
 	stand:
 		Facings: 8
 	stand2:
@@ -1393,86 +1432,103 @@ zombie:
 		Start: 114
 		Length: 19
 		Tick: 80
-	die6: electro
+	die6:
+		Filename: electro.tem
+		TilesetFilenames:
+			SNOW: electro.sno
 		Frames: 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13
 		Length: *
 		Tick: 80
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	die-crushed: corpse1
+	die-crushed:
+		Filename: corpse1.tem
+		TilesetFilenames:
+			SNOW: corpse1.sno
 		Length: 6
 		Tick: 1600
 		ZOffset: -511
-		UseTilesetExtension: true
-		TilesetOverrides:
-			DESERT: TEMPERAT
-			INTERIOR: TEMPERAT
-	icon: zombicon
+	icon:
+		Filename: zombicon.shp
 
 ant:
-	stand: ant1
+	stand:
+		Filename: ant1.shp
 		Facings: 8
-	run: ant1
+	run:
+		Filename: ant1.shp
 		Start: 8
 		Length: 8
 		Facings: 8
-	bite: ant1
+	bite:
+		Filename: ant1.shp
 		Start: 72
 		Length: 4
 		Facings: 8
-	die: ant1
+	die:
+		Filename: ant1.shp
 		Start: 104
 		Length: 8
 		Tick: 300
-	die-crushed: ant1
+	die-crushed:
+		Filename: ant1.shp
 		Start: 104
 		Length: 8
 		Tick: 400
 		ZOffset: -511
-	icon: anticon
+	icon:
+		Filename: anticon.shp
 
 fireant:
-	stand: ant2
+	stand:
+		Filename: ant2.shp
 		Facings: 8
-	run: ant2
+	run:
+		Filename: ant2.shp
 		Start: 8
 		Length: 8
 		Facings: 8
-	bite: ant2
+	bite:
+		Filename: ant2.shp
 		Start: 72
 		Length: 4
 		Facings: 8
-	die: ant2
+	die:
+		Filename: ant2.shp
 		Start: 104
 		Length: 8
 		Tick: 300
-	die-crushed: ant2
+	die-crushed:
+		Filename: ant2.shp
 		Start: 104
 		Length: 8
 		Tick: 400
 		ZOffset: -511
-	icon: anticon
+	icon:
+		Filename: anticon.shp
 
 scoutant:
-	stand: ant3
+	stand:
+		Filename: ant3.shp
 		Facings: 8
-	run: ant3
+	run:
+		Filename: ant3.shp
 		Start: 8
 		Length: 8
 		Facings: 8
-	bite: ant3
+	bite:
+		Filename: ant3.shp
 		Start: 72
 		Length: 4
 		Facings: 8
-	die: ant3
+	die:
+		Filename: ant3.shp
 		Start: 104
 		Length: 8
 		Tick: 300
-	die-crushed: ant3
+	die-crushed:
+		Filename: ant3.shp
 		Start: 104
 		Length: 8
 		Tick: 400
 		ZOffset: -511
-	icon: anticon
+	icon:
+		Filename: anticon.shp

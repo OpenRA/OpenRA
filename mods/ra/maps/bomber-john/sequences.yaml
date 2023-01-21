@@ -1,9 +1,12 @@
 miner:
 	idle:
+		Filename: miner.shp
 		Length: *
 		Tick: 400
 		ZOffset: -512
-	icon: jmin
+	icon:
+		Filename: jmin.shp
 
 brick:
 	idle:
+		Filename: brick.shp

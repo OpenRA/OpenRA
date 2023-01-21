@@ -1,34 +1,49 @@
 ss:
 	idle:
+		Filename: ss.shp
 		Facings: 16
-	icon: ssicon
+	icon:
+		Filename: ssicon.shp
 
 ca:
 	idle:
+		Filename: ca.shp
 		Facings: 16
-	turret: turr
+	turret:
+		Filename: turr.shp
 		Facings: 32
-	muzzle: gunfire2
+	muzzle:
+		Filename: gunfire2.shp
 		Length: 5
-	icon: caicon
+	icon:
+		Filename: caicon.shp
 
 dd:
 	idle:
+		Filename: dd.shp
 		Facings: 16
-	turret: ssam
+	turret:
+		Filename: ssam.shp
 		Facings: 32
-	icon: ddicon
+	icon:
+		Filename: ddicon.shp
 
 pt:
 	idle:
+		Filename: pt.shp
 		Facings: 16
-	turret: mgun
+	turret:
+		Filename: mgun.shp
 		Facings: 32
-	muzzle: gunfire2
+	muzzle:
+		Filename: gunfire2.shp
 		Length: 5
-	icon: pticon
+	icon:
+		Filename: pticon.shp
 
 lst:
+	Defaults:
+		Filename: lst.shp
 	idle:
 	open:
 		Start: 1
@@ -41,9 +56,12 @@ lst:
 	unload:
 		Start: 4
 		ZOffset: -511
-	icon: lsticon
+	icon:
+		Filename: lsticon.shp
 
 msub:
 	idle:
+		Filename: msub.shp
 		Facings: 16
-	icon: msubicon
+	icon:
+		Filename: msubicon.shp

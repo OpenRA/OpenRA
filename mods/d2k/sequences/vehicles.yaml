@@ -1,260 +1,319 @@
 mcv:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 1795
 		Facings: -32
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4284
 		Offset: -30,-24
 
 mcv.husk:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 1795
 		Facings: -32
 		ZOffset: -1023
 
 harvester:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 1699
 		Facings: -32
-	harvest: DATA.R8
+	harvest:
+		Filename: DATA.R8
 		Start: 3884
 		Length: 6
 		Facings: -8
 		Tick: 80
 		ZOffset: 1
 		BlendMode: Multiply
-	dock: DATA.R8
+	dock:
+		Filename: DATA.R8
 		Start: 3623
 		Length: 10
-	dock-loop: DATA.R8
+	dock-loop:
+		Filename: DATA.R8
 		Start: 3633
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4280
 		Offset: -30,-24
 
 harvester.husk:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 1699
 		Facings: -32
 		ZOffset: -512
 
 trike:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 1635
 		Facings: -32
-	muzzle: DATA.R8
+	muzzle:
+		Filename: DATA.R8
 		Start: 4092
 		Tick: 50
 		Facings: -32
 		BlendMode: Additive
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4305
 		Offset: -30,-24
 
 quad:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 1667
 		Facings: -32
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4279
 		Offset: -30,-24
 
 siege_tank:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 1763
 		Facings: -32
-	turret: DATA.R8
+	turret:
+		Filename: DATA.R8
 		Start: 1891
 		Facings: -32
-	muzzle: DATA.R8
+	muzzle:
+		Filename: DATA.R8
 		Start: 3671
 		Length: 3
 		BlendMode: Additive
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4287
 		Offset: -30,-24
 
 siege_tank.husk:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 1763
 		Facings: -32
 		ZOffset: -512
-	turret: DATA.R8
+	turret:
+		Filename: DATA.R8
 		Start: 1891
 		Facings: -32
 		ZOffset: -512
 
 missile_tank:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 1603
 		Facings: -32
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4285
 		Offset: -30,-24
 
 missile_tank.husk:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 1603
 		Facings: -32
 		ZOffset: -512
 
 sonic_tank:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 1827
 		Facings: -32
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4288
 		Offset: -30,-24
 
 sonic_tank.husk:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 1827
 		Facings: -32
 		ZOffset: -512
 
 combat_tank_a:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 1731
 		Facings: -32
-	turret: DATA.R8
+	turret:
+		Filename: DATA.R8
 		Start: 1859
 		Facings: -32
-	muzzle: DATA.R8
+	muzzle:
+		Filename: DATA.R8
 		Start: 4028
 		Tick: 60
 		Facings: -32
 		BlendMode: Additive
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4281
 		Offset: -30,-24
 
 combat_tank_a.husk:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 1731
 		Facings: -32
 		ZOffset: -512
-	turret: DATA.R8
+	turret:
+		Filename: DATA.R8
 		Start: 1859
 		Facings: -32
 		ZOffset: -512
 
 combat_tank_h:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 2051
 		Facings: -32
-	turret: DATA.R8
+	turret:
+		Filename: DATA.R8
 		Start: 2115
 		Facings: -32
-	muzzle: DATA.R8
+	muzzle:
+		Filename: DATA.R8
 		Start: 4028
 		Tick: 60
 		Facings: -32
 		BlendMode: Additive
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4282
 		Offset: -30,-24
 
 combat_tank_h.husk:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 2051
 		Facings: -32
 		ZOffset: -512
-	turret: DATA.R8
+	turret:
+		Filename: DATA.R8
 		Start: 2115
 		Facings: -32
 		ZOffset: -512
 
 combat_tank_o:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 2453
 		Facings: -32
-	turret: DATA.R8
+	turret:
+		Filename: DATA.R8
 		Start: 2485
 		Facings: -32
-	muzzle: DATA.R8
+	muzzle:
+		Filename: DATA.R8
 		Start: 4028
 		Tick: 60
 		Facings: -32
 		BlendMode: Additive
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4283
 		Offset: -30,-24
 
 combat_tank_o.husk:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 2453
 		Facings: -32
 		ZOffset: -512
-	turret: DATA.R8
+	turret:
+		Filename: DATA.R8
 		Start: 2485
 		Facings: -32
 		ZOffset: -512
 
 devastator:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 2083
 		Facings: -32
-	muzzle: DATA.R8
+	muzzle:
+		Filename: DATA.R8
 		Start: 4060
 		Tick: 80
 		Facings: -32
 		BlendMode: Additive
-	active: DATA.R8
+	active:
+		Filename: DATA.R8
 		Start: 3839
 		Length: 14
 		Tick: 130
 		BlendMode: Additive
-	active-2: DATA.R8
+	active-2:
+		Filename: DATA.R8
 		Start: 4152
 		Length: 12
 		Tick: 110
 		BlendMode: Additive
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4289
 		Offset: -30,-24
 
 devastator.husk:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 2083
 		Facings: -32
 		ZOffset: -512
 
 raider:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 2421
 		Facings: -32
-	muzzle: DATA.R8
+	muzzle:
+		Filename: DATA.R8
 		Start: 3996
 		Tick: 50
 		Facings: -32
 		BlendMode: Additive
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4278
 		Offset: -30,-24
 
 stealth_raider:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 2421
 		Facings: -32
-	muzzle: DATA.R8
+	muzzle:
+		Filename: DATA.R8
 		Start: 3996
 		Tick: 50
 		Facings: -32
 		BlendMode: Additive
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4298
 		Offset: -30,-24
 
 deviator:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 2389
 		Facings: -32
-	icon: DATA.R8
+	icon:
+		Filename: DATA.R8
 		Start: 4286
 		Offset: -30,-24
 
 deviator.husk:
-	idle: DATA.R8
+	idle:
+		Filename: DATA.R8
 		Start: 2389
 		Facings: -32
 		ZOffset: -512
