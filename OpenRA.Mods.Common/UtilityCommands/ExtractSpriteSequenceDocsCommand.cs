@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						.Select(y => y.Name)
 						.Where(y => y != type.Name && y != "Object"),
 					Properties = type.GetFields(BindingFlags.NonPublic | BindingFlags.Static)
-						.Where(fi => fi.FieldType.GetGenericTypeDefinition() == typeof(SpriteSequenceField<>))
+						.Where(fi => fi.FieldType.IsGenericType && fi.FieldType.GetGenericTypeDefinition() == typeof(SpriteSequenceField<>))
 						.Select(fi =>
 						{
 							var description = string.Join(" ", fi.GetCustomAttributes<DescAttribute>(false)
