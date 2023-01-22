@@ -205,7 +205,7 @@ E6:
 		HP: 3000
 	Passenger:
 		CustomPipType: yellow
-	EngineerRepair:
+	InstantlyRepairs:
 	RepairsBridges:
 	CaptureManager:
 	Captures@SABOTAGE:

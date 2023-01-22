@@ -13,20 +13,20 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class EngineerRepairType { }
+	public class InstantlyRepairType { }
 
 	[Desc("Eligible for instant repair.")]
-	public class EngineerRepairableInfo : ConditionalTraitInfo
+	public class InstantlyRepairableInfo : ConditionalTraitInfo
 	{
 		[Desc("Actors with these Types under EngineerRepair trait can repair me.")]
-		public readonly BitSet<EngineerRepairType> Types = default;
+		public readonly BitSet<InstantlyRepairType> Types = default;
 
-		public override object Create(ActorInitializer init) { return new EngineerRepairable(this); }
+		public override object Create(ActorInitializer init) { return new InstantlyRepairable(this); }
 	}
 
-	public class EngineerRepairable : ConditionalTrait<EngineerRepairableInfo>
+	public class InstantlyRepairable : ConditionalTrait<InstantlyRepairableInfo>
 	{
-		public EngineerRepairable(EngineerRepairableInfo info)
+		public InstantlyRepairable(InstantlyRepairableInfo info)
 			: base(info) { }
 	}
 }

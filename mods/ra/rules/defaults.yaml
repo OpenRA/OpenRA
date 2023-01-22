@@ -703,7 +703,7 @@
 		RepairStep: 700
 		PlayerExperience: 5
 		RepairingNotification: Repairing
-	EngineerRepairable:
+	InstantlyRepairable:
 	AcceptsDeliveredCash:
 	WithMakeAnimation:
 		Condition: build-incomplete
