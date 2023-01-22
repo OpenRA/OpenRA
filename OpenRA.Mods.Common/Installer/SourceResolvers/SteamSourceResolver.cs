@@ -85,11 +85,12 @@ namespace OpenRA.Mods.Common.Installer
 					break;
 
 				case PlatformType.Linux:
+					// Direct distro install
 					candidatePaths.Add(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".steam", "root"));
 
-					break;
+					// Flatpak installed via Flathub
+					candidatePaths.Add(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".var", "app", "com.valvesoftware.Steam", ".steam", "root"));
 
-				default:
 					break;
 			}
 
