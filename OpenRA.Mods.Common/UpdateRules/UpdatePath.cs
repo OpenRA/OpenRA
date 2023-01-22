@@ -104,6 +104,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			{
 				new TextNotificationsDisplayWidgetRemoveTime(),
 				new ExplicitSequenceFilenames(),
+				new RenameEngineerRepair(),
 			})
 		};
 

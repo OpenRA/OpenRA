@@ -70,7 +70,7 @@ ENGINEER:
 		HP: 10000
 	Passenger:
 		CustomPipType: yellow
-	EngineerRepair:
+	InstantlyRepairs:
 	RepairsBridges:
 		RepairNotification: BridgeRepaired
 		RepairTextNotification: Bridge repaired.

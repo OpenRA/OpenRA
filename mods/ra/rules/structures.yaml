@@ -732,7 +732,7 @@ PBOX:
 	-QuantizeFacingsFromSequence:
 	BodyOrientation:
 		QuantizedFacings: 8
-	EngineerRepairable:
+	InstantlyRepairable:
 		RequiresCondition: damaged
 	GrantConditionOnDamageState@DAMAGED:
 		Condition: damaged
@@ -794,7 +794,7 @@ HBOX:
 	-QuantizeFacingsFromSequence:
 	BodyOrientation:
 		QuantizedFacings: 8
-	EngineerRepairable:
+	InstantlyRepairable:
 		RequiresCondition: damaged
 	GrantConditionOnDamageState@DAMAGED:
 		Condition: damaged

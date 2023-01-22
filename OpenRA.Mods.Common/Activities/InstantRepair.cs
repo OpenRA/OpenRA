@@ -14,15 +14,15 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	class RepairBuilding : Enter
+	class InstantRepair : Enter
 	{
-		readonly EngineerRepairInfo info;
+		readonly InstantlyRepairsInfo info;
 
 		Actor enterActor;
 		IHealth enterHealth;
-		EngineerRepairable enterEngineerRepariable;
+		InstantlyRepairable enterInstantlyRepariable;
 
-		public RepairBuilding(Actor self, in Target target, EngineerRepairInfo info)
+		public InstantRepair(Actor self, in Target target, InstantlyRepairsInfo info)
 			: base(self, target, info.TargetLineColor)
 		{
 			this.info = info;
@@ -32,12 +32,12 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			enterActor = targetActor;
 			enterHealth = targetActor.TraitOrDefault<IHealth>();
-			enterEngineerRepariable = targetActor.TraitOrDefault<EngineerRepairable>();
+			enterInstantlyRepariable = targetActor.TraitOrDefault<InstantlyRepairable>();
 
 			// Make sure we can still repair the target before entering
 			// (but not before, because this may stop the actor in the middle of nowhere)
 			var stance = self.Owner.RelationshipWith(enterActor.Owner);
-			if (enterHealth == null || enterHealth.DamageState == DamageState.Undamaged || enterEngineerRepariable == null || enterEngineerRepariable.IsTraitDisabled || !info.ValidRelationships.HasRelationship(stance))
+			if (enterHealth == null || enterHealth.DamageState == DamageState.Undamaged || enterInstantlyRepariable == null || enterInstantlyRepariable.IsTraitDisabled || !info.ValidRelationships.HasRelationship(stance))
 			{
 				Cancel(self, true);
 				return false;
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (targetActor != enterActor)
 				return;
 
-			if (enterEngineerRepariable.IsTraitDisabled)
+			if (enterInstantlyRepariable.IsTraitDisabled)
 				return;
 
 			if (enterHealth.DamageState == DamageState.Undamaged)

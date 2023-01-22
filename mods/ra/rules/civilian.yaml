@@ -165,7 +165,7 @@ FCOM:
 	BaseProvider:
 		PauseOnCondition: being-captured
 		Range: 8c0
-	EngineerRepairable:
+	InstantlyRepairable:
 	Power:
 		Amount: 0
 	ProvidesPrerequisite@buildingname:
@@ -191,7 +191,7 @@ HOSP:
 		Types: building
 	CapturableProgressBar:
 	CapturableProgressBlink:
-	EngineerRepairable:
+	InstantlyRepairable:
 	Tooltip:
 		Name: Hospital
 	TooltipDescription@ally:
@@ -472,7 +472,7 @@ MISS:
 		Types: building
 	CapturableProgressBar:
 	CapturableProgressBlink:
-	EngineerRepairable:
+	InstantlyRepairable:
 	WithDeathAnimation:
 		DeathSequence: dead
 		UseDeathTypeSuffix: false
@@ -498,7 +498,7 @@ BIO:
 	Capturable:
 		Types: building
 	CapturableProgressBar:
-	EngineerRepairable:
+	InstantlyRepairable:
 	Tooltip:
 		Name: Biological Lab
 	TooltipDescription@ally:
@@ -538,7 +538,7 @@ OILB:
 		Types: building
 	CapturableProgressBar:
 	CapturableProgressBlink:
-	EngineerRepairable:
+	InstantlyRepairable:
 	CashTrickler:
 		Interval: 375
 		Amount: 100

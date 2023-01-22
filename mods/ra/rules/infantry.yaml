@@ -297,7 +297,7 @@ E6:
 		IsPlayerPalette: true
 	Passenger:
 		CustomPipType: yellow
-	EngineerRepair:
+	InstantlyRepairs:
 	RepairsBridges:
 	CaptureManager:
 	GrantConditionOnPrerequisite@GLOBALREUSABLEENGINEER:
