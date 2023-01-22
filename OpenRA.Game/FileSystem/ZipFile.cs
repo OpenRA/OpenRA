@@ -55,7 +55,8 @@ namespace OpenRA.FileSystem
 				get
 				{
 					foreach (ZipEntry entry in pkg)
-						yield return entry.Name;
+						if (entry.IsFile)
+							yield return entry.Name;
 				}
 			}
 
