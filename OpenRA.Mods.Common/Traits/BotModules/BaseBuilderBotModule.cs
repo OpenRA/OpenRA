@@ -52,10 +52,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly HashSet<string> DefenseQueues = new HashSet<string> { "Defense" };
 
 		[Desc("Minimum distance in cells from center of the base when checking for building placement.")]
-		public readonly int MinBaseRadius = 2;
+		public readonly int MinimumBaseRadius = 2;
 
 		[Desc("Radius in cells around the center of the base to expand.")]
-		public readonly int MaxBaseRadius = 20;
+		public readonly int MaximumBaseRadius = 20;
 
 		[Desc("Minimum excess power the AI should try to maintain.")]
 		public readonly int MinimumExcessPower = 0;
