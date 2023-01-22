@@ -144,6 +144,13 @@ Player:
 		Enabled: False
 		DisplayOrder: 9
 		Prerequisites: global-reusable-engineers
+	LobbyPrerequisiteCheckbox@GLOBALFASTREPAIRS:
+		ID: fastrepairs
+		Label: Fast Repairs
+		Description: Building repairs are performed twice as fast
+		Enabled: false
+		DisplayOrder: 11
+		Prerequisites: global-fastrepairs
 	FrozenActorLayer:
 	BaseAttackNotifier:
 		TextNotification: Base under attack.

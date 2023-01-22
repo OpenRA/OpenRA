@@ -701,8 +701,18 @@
 		AreaTypes: building, fake
 	RepairableBuilding:
 		RepairStep: 700
-		PlayerExperience: 5
 		RepairingNotification: Repairing
+		PlayerExperience: 0
+		RequiresCondition: !fastrepairs
+	RepairableBuilding@FASTREPAIRS:
+		RepairStep: 700
+		RepairInterval: 13
+		RepairingNotification: Repairing
+		PlayerExperience: 0
+		RequiresCondition: fastrepairs
+	GrantConditionOnPrerequisite@FASTREPAIRS:
+		Condition: fastrepairs
+		Prerequisites: global-fastrepairs
 	EngineerRepairable:
 	AcceptsDeliveredCash:
 	WithMakeAnimation:
@@ -733,6 +743,14 @@
 		Position: Center
 		Palette: player
 		IsPlayerPalette: True
+		RequiresCondition: !fastrepairs
+	WithBuildingRepairDecoration@FASTREPAIRS:
+		Image: allyrepair
+		Sequence: repair
+		Position: Center
+		Palette: player
+		IsPlayerPalette: True
+		RequiresCondition: fastrepairs
 
 ^ScienceBuilding:
 	Inherits: ^Building

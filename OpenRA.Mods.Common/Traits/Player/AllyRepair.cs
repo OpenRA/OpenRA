@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!building.AppearsFriendlyTo(self))
 					return;
 
-				building.TraitOrDefault<RepairableBuilding>()?.RepairBuilding(building, self.Owner);
+				building.TraitsImplementing<RepairableBuilding>().FirstEnabledConditionalTraitOrDefault()?.RepairBuilding(building, self.Owner);
 			}
 		}
 	}

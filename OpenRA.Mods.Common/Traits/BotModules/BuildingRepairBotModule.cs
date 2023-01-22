@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (self.Owner.RelationshipWith(e.Attacker.Owner) == PlayerRelationship.Neutral)
 				return;
 
-			var rb = self.TraitOrDefault<RepairableBuilding>();
+			var rb = self.TraitsImplementing<RepairableBuilding>().FirstEnabledConditionalTraitOrDefault();
 			if (rb != null)
 			{
 				if (e.DamageState > DamageState.Light && e.PreviousDamageState <= DamageState.Light && !rb.RepairActive)
