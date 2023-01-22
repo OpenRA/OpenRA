@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly PowerManager powerManager;
 		readonly PlayerResources playerResources;
 		readonly IResourceLayer resourceLayer;
+		readonly BuildingInfluence buildingInfluence;
 
 		int waitTicks;
 		Actor[] playerBuildings;
@@ -52,6 +53,8 @@ namespace OpenRA.Mods.Common.Traits
 			minimumExcessPower = baseBuilder.Info.MinimumExcessPower;
 			if (baseBuilder.Info.NavalProductionTypes.Count == 0)
 				waterState = WaterCheck.DontCheck;
+
+			buildingInfluence = world.WorldActor.Trait<BuildingInfluence>();
 		}
 
 		public void Tick(IBot bot)
@@ -381,6 +384,43 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
+		bool TooCloseToBuilding(CPos cell, ActorInfo actorInfo, BuildingInfo buildingInfo, BaseBuilderBotModule baseBuilder)
+		{
+			if (baseBuilder.Info.BaseSpacing == null)
+				return false;
+
+			if (!baseBuilder.Info.BaseSpacing.TryGetValue(actorInfo.Name, out var baseSpacing))
+				return false;
+
+			foreach (var tile in buildingInfo.Tiles(cell))
+			{
+				foreach (var adjacent in CVec.Directions)
+				{
+					for (var distance = 1; distance <= baseSpacing; distance++)
+					{
+						var adjacentTile = tile + adjacent * distance;
+						if (buildingInfluence.AnyBuildingAt(adjacentTile))
+							return true;
+					}
+				}
+			}
+
+			return false;
+		}
+
+		bool ResourcesNearby(CPos cell, int radius)
+		{
+			if (radius == 0)
+				return false;
+
+			var surroundingCells = world.Map.FindTilesInCircle(cell, radius);
+			foreach (var surroundingCell in surroundingCells)
+				if (resourceLayer.GetResource(surroundingCell).Density > 0)
+					return true;
+
+			return false;
+		}
+
 		(CPos? Location, int Variant) ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, BuildingType type)
 		{
 			var actorInfo = world.Map.Rules.Actors[actorType];
@@ -453,7 +493,13 @@ namespace OpenRA.Mods.Common.Traits
 					if (!world.CanPlaceBuilding(cell, actorInfo, buildingInfo, null))
 						continue;
 
-					if (distanceToBaseIsImportant && !variantBuildingInfo.IsCloseEnoughToBase(world, player, variantActorInfo, cell))
+					if (TooCloseToBuilding(cell, actorInfo, buildingInfo, baseBuilder))
+						continue;
+
+					if (ResourcesNearby(cell, baseBuilder.Info.ResourceDistance))
+						continue;
+
+					if (distanceToBaseIsImportant && !buildingInfo.IsCloseEnoughToBase(world, player, variantActorInfo, cell))
 						continue;
 
 					return (cell, actorVariant);

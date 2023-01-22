@@ -75,6 +75,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Number of refineries to build additionally after building a barracks.")]
 		public readonly int AdditionalMinimumRefineryCount = 1;
 
+		[Desc("Minimum distance in cells for resource patches when checking for building placement.")]
+		public readonly int ResourceDistance = 0;
+
+		[Desc("Place the following buildings at least this many cell apart to the next building.")]
+		public readonly Dictionary<string, int> BaseSpacing = null;
+
 		[Desc("Additional delay (in ticks) between structure production checks when there is no active production.",
 			"StructureProductionRandomBonusDelay is added to this.")]
 		public readonly int StructureProductionInactiveDelay = 125;
