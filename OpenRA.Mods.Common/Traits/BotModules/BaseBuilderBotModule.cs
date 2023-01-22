@@ -52,10 +52,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly HashSet<string> DefenseQueues = new HashSet<string> { "Defense" };
 
 		[Desc("Minimum distance in cells from center of the base when checking for building placement.")]
-		public readonly int MinBaseRadius = 2;
+		public readonly int MinimumBaseRadius = 2;
 
 		[Desc("Radius in cells around the center of the base to expand.")]
-		public readonly int MaxBaseRadius = 20;
+		public readonly int MaximumBaseRadius = 20;
 
 		[Desc("Minimum excess power the AI should try to maintain.")]
 		public readonly int MinimumExcessPower = 0;
@@ -74,6 +74,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("Number of refineries to build additionally after building a barracks.")]
 		public readonly int AdditionalMinimumRefineryCount = 1;
+
+		[Desc("Minimum distance in cells for resource patches when checking for building placement.")]
+		public readonly int ResourceDistance = 0;
+
+		[Desc("Place the following buildings at least this many cell apart to the next building.")]
+		public readonly Dictionary<string, int> BaseSpacing = null;
 
 		[Desc("Additional delay (in ticks) between structure production checks when there is no active production.",
 			"StructureProductionRandomBonusDelay is added to this.")]

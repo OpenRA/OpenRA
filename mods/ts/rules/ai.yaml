@@ -15,6 +15,23 @@ Player:
 		MaximumExcessPower: 200
 		ExcessPowerIncrement: 30
 		ExcessPowerIncreaseThreshold: 4
+		BaseSpacing:
+			gacnst: 1
+			proc: 2
+			gaweap: 2
+			naweap: 2
+			gapowr: 1
+			napowr: 1
+			naapwr: 1
+			gapile: 2
+			nahand: 2
+			gahpad: 1
+			nahpad: 1
+			gasilo: 1
+			garadr: 1
+			naradr: 1
+			gatech: 1
+			natech: 1
 		ConstructionYardTypes: gacnst
 		RefineryTypes: proc
 		PowerTypes: gapowr, gapowrup, napowr, naapwr

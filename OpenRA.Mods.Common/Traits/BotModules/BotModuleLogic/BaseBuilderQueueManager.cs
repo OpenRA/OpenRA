@@ -23,9 +23,10 @@ namespace OpenRA.Mods.Common.Traits
 		readonly BaseBuilderBotModule baseBuilder;
 		readonly World world;
 		readonly Player player;
-		readonly PowerManager playerPower;
+		readonly PowerManager powerManager;
 		readonly PlayerResources playerResources;
 		readonly IResourceLayer resourceLayer;
+		readonly BuildingInfluence buildingInfluence;
 
 		int waitTicks;
 		Actor[] playerBuildings;
@@ -38,20 +39,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		WaterCheck waterState = WaterCheck.NotChecked;
 
-		public BaseBuilderQueueManager(BaseBuilderBotModule baseBuilder, string category, Player p, PowerManager pm,
-			PlayerResources pr, IResourceLayer rl)
+		public BaseBuilderQueueManager(BaseBuilderBotModule baseBuilder, string category, Player player,
+			PowerManager powerManager, PlayerResources playerResources, IResourceLayer resourceLayer)
 		{
 			this.baseBuilder = baseBuilder;
-			world = p.World;
-			player = p;
-			playerPower = pm;
-			playerResources = pr;
-			resourceLayer = rl;
+			world = player.World;
+			this.player = player;
+			this.powerManager = powerManager;
+			this.playerResources = playerResources;
+			this.resourceLayer = resourceLayer;
 			this.category = category;
 			failRetryTicks = baseBuilder.Info.StructureProductionResumeDelay;
 			minimumExcessPower = baseBuilder.Info.MinimumExcessPower;
 			if (baseBuilder.Info.NavalProductionTypes.Count == 0)
 				waterState = WaterCheck.DontCheck;
+
+			buildingInfluence = world.WorldActor.Trait<BuildingInfluence>();
 		}
 
 		public void Tick(IBot bot)
@@ -73,7 +76,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (waterState == WaterCheck.NotChecked)
 			{
-				if (AIUtils.IsAreaAvailable<BaseProvider>(world, player, world.Map, baseBuilder.Info.MaxBaseRadius, baseBuilder.Info.WaterTerrainTypes))
+				if (AIUtils.IsAreaAvailable<BaseProvider>(world, player, world.Map, baseBuilder.Info.MaximumBaseRadius, baseBuilder.Info.WaterTerrainTypes))
 					waterState = WaterCheck.EnoughWater;
 				else
 				{
@@ -211,10 +214,10 @@ namespace OpenRA.Mods.Common.Traits
 				if (!actors.Contains(actor.Name))
 					return false;
 
-				if (!baseBuilder.Info.BuildingLimits.ContainsKey(actor.Name))
+				if (!baseBuilder.Info.BuildingLimits.TryGetValue(actor.Name, out var buildingLimit))
 					return true;
 
-				return playerBuildings.Count(a => a.Info.Name == actor.Name) < baseBuilder.Info.BuildingLimits[actor.Name];
+				return playerBuildings.Count(a => a.Info.Name == actor.Name) < buildingLimit;
 			});
 
 			if (orderBy != null)
@@ -225,8 +228,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool HasSufficientPowerForActor(ActorInfo actorInfo)
 		{
-			return playerPower == null || (actorInfo.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault)
-				.Sum(p => p.Amount) + playerPower.ExcessPower) >= baseBuilder.Info.MinimumExcessPower;
+			return powerManager == null || (actorInfo.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault)
+				.Sum(p => p.Amount) + powerManager.ExcessPower) >= baseBuilder.Info.MinimumExcessPower;
 		}
 
 		ActorInfo ChooseBuildingToBuild(ProductionQueue queue)
@@ -238,7 +241,7 @@ namespace OpenRA.Mods.Common.Traits
 				a => a.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(p => p.Amount));
 
 			// First priority is to get out of a low power situation
-			if (playerPower != null && playerPower.ExcessPower < minimumExcessPower)
+			if (powerManager != null && powerManager.ExcessPower < minimumExcessPower)
 			{
 				if (power != null && power.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(p => p.Amount) > 0)
 				{
@@ -343,7 +346,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (count * 100 > frac.Value * playerBuildings.Length)
 					continue;
 
-				if (baseBuilder.Info.BuildingLimits.ContainsKey(name) && baseBuilder.Info.BuildingLimits[name] <= count)
+				if (baseBuilder.Info.BuildingLimits.TryGetValue(name, out var buildingLimit) && buildingLimit <= count)
 					continue;
 
 				// If we're considering to build a naval structure, check whether there is enough water inside the base perimeter
@@ -356,12 +359,12 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Will this put us into low power?
 				var actor = world.Map.Rules.Actors[name];
-				if (playerPower != null && (playerPower.ExcessPower < minimumExcessPower || !HasSufficientPowerForActor(actor)))
+				if (powerManager != null && (powerManager.ExcessPower < minimumExcessPower || !HasSufficientPowerForActor(actor)))
 				{
 					// Try building a power plant instead
 					if (power != null && power.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(pi => pi.Amount) > 0)
 					{
-						if (playerPower.PowerOutageRemainingTicks > 0)
+						if (powerManager.PowerOutageRemainingTicks > 0)
 							AIUtils.BotDebug("{0} decided to build {1}: Priority override (is low power)", queue.Actor.Owner, power.Name);
 						else
 							AIUtils.BotDebug("{0} decided to build {1}: Priority override (would be low power)", queue.Actor.Owner, power.Name);
@@ -381,12 +384,48 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
+		bool TooCloseToBuilding(CPos cell, ActorInfo actorInfo, BuildingInfo buildingInfo, BaseBuilderBotModule baseBuilder)
+		{
+			if (baseBuilder.Info.BaseSpacing == null)
+				return false;
+
+			if (!baseBuilder.Info.BaseSpacing.TryGetValue(actorInfo.Name, out var baseSpacing))
+				return false;
+
+			foreach (var tile in buildingInfo.Tiles(cell))
+			{
+				foreach (var adjacent in CVec.Directions)
+				{
+					for (var distance = 1; distance <= baseSpacing; distance++)
+					{
+						var adjacentTile = tile + adjacent * distance;
+						if (buildingInfluence.AnyBuildingAt(adjacentTile))
+							return true;
+					}
+				}
+			}
+
+			return false;
+		}
+
+		bool ResourcesNearby(CPos cell, int radius)
+		{
+			if (radius == 0)
+				return false;
+
+			var surroundingCells = world.Map.FindTilesInCircle(cell, radius);
+			foreach (var surroundingCell in surroundingCells)
+				if (resourceLayer.GetResource(surroundingCell).Density > 0)
+					return true;
+
+			return false;
+		}
+
 		(CPos? Location, int Variant) ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, BuildingType type)
 		{
 			var actorInfo = world.Map.Rules.Actors[actorType];
-			var bi = actorInfo.TraitInfoOrDefault<BuildingInfo>();
-
-			if (bi == null)
+			var buildingInfo = actorInfo.TraitInfoOrDefault<BuildingInfo>();
+			if (buildingInfo == null)
 				return (null, 0);
 
 			// Find the buildable cell that is closest to pos and centered around center
@@ -395,7 +434,7 @@ namespace OpenRA.Mods.Common.Traits
 				var actorVariant = 0;
 				var buildingVariantInfo = actorInfo.TraitInfoOrDefault<PlaceBuildingVariantsInfo>();
 				var variantActorInfo = actorInfo;
-				var vbi = bi;
+				var variantBuildingInfo = buildingInfo;
 
 				var cells = world.Map.FindTilesInAnnulus(center, minRange, maxRange);
 
@@ -446,15 +485,21 @@ namespace OpenRA.Mods.Common.Traits
 				if (actorVariant != 0)
 				{
 					variantActorInfo = world.Map.Rules.Actors[buildingVariantInfo.Actors[actorVariant - 1]];
-					vbi = variantActorInfo.TraitInfoOrDefault<BuildingInfo>();
+					variantBuildingInfo = variantActorInfo.TraitInfoOrDefault<BuildingInfo>();
 				}
 
 				foreach (var cell in cells)
 				{
-					if (!world.CanPlaceBuilding(cell, variantActorInfo, vbi, null))
+					if (!world.CanPlaceBuilding(cell, actorInfo, buildingInfo, null))
 						continue;
 
-					if (distanceToBaseIsImportant && !vbi.IsCloseEnoughToBase(world, player, variantActorInfo, cell))
+					if (TooCloseToBuilding(cell, actorInfo, buildingInfo, baseBuilder))
+						continue;
+
+					if (ResourcesNearby(cell, baseBuilder.Info.ResourceDistance))
+						continue;
+
+					if (distanceToBaseIsImportant && !buildingInfo.IsCloseEnoughToBase(world, player, variantActorInfo, cell))
 						continue;
 
 					return (cell, actorVariant);
@@ -482,24 +527,24 @@ namespace OpenRA.Mods.Common.Traits
 					// Try and place the refinery near a resource field
 					if (resourceLayer != null)
 					{
-						var nearbyResources = world.Map.FindTilesInAnnulus(baseCenter, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius)
+						var nearbyResources = world.Map.FindTilesInAnnulus(baseCenter, baseBuilder.Info.MinimumBaseRadius, baseBuilder.Info.MaximumBaseRadius)
 							.Where(a => resourceLayer.GetResource(a).Type != null)
 							.Shuffle(world.LocalRandom).Take(baseBuilder.Info.MaxResourceCellsToCheck);
 
 						foreach (var r in nearbyResources)
 						{
-							var found = findPos(baseCenter, r, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius);
+							var found = findPos(baseCenter, r, baseBuilder.Info.MinimumBaseRadius, baseBuilder.Info.MaximumBaseRadius);
 							if (found.Location != null)
 								return found;
 						}
 					}
 
 					// Try and find a free spot somewhere else in the base
-					return findPos(baseCenter, baseCenter, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius);
+					return findPos(baseCenter, baseCenter, baseBuilder.Info.MinimumBaseRadius, baseBuilder.Info.MaximumBaseRadius);
 
 				case BuildingType.Building:
-					return findPos(baseCenter, baseCenter, baseBuilder.Info.MinBaseRadius,
-						distanceToBaseIsImportant ? baseBuilder.Info.MaxBaseRadius : world.Map.Grid.MaximumTileSearchRange);
+					return findPos(baseCenter, baseCenter, baseBuilder.Info.MinimumBaseRadius,
+						distanceToBaseIsImportant ? baseBuilder.Info.MaximumBaseRadius : world.Map.Grid.MaximumTileSearchRange);
 			}
 
 			// Can't find a build location
