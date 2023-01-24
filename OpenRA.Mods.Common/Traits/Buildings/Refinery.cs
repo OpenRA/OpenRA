@@ -45,8 +45,6 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool DiscardExcessResources = false;
 
 		public readonly bool ShowTicks = true;
-		public readonly int TickLifetime = 30;
-		public readonly int TickVelocity = 2;
 		public readonly int TickRate = 10;
 
 		public override object Create(ActorInitializer init) { return new Refinery(init.Self, this); }
