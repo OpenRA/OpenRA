@@ -59,7 +59,6 @@ HARV:
 		Bounds: 1086, 2172
 		DecorationBounds: 1086, 2172
 	Harvester:
-		DeliveryBuildings: proc
 		Capacity: 28
 		Resources: Tiberium, BlueTiberium
 		BaleLoadDelay: 15
@@ -68,8 +67,9 @@ HARV:
 		SearchFromProcRadius: 36
 		SearchFromHarvesterRadius: 18
 		HarvestVoice: Attack
-		DeliverVoice: Move
 		EmptyCondition: no-tiberium
+	DockClientManager:
+		Voice: Move
 	Mobile:
 		Speed: 71
 	Health:

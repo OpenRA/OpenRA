@@ -282,9 +282,11 @@ refinery:
 	RevealsShroud:
 		Range: 3c768
 	Refinery:
-		DockAngle: 640
-		DockOffset: 2,1
 		TickRate: 20
+	DockHost:
+		Type: Unload
+		DockAngle: 640
+		DockOffset: 1c0,512,0
 	StoresResources:
 		Capacity: 2000
 	CustomSellValue:

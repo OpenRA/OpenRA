@@ -24,12 +24,12 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		protected enum DockingState { Wait, Drag, Dock, Loop, Undock, Complete }
 
-		protected readonly Actor RefineryActor;
+		protected readonly Actor DockHostActor;
+		protected readonly IDockHost DockHost;
 		protected readonly WithDockingOverlay DockHostSpriteOverlay;
-		protected readonly Harvester Harv;
+		protected readonly DockClientManager DockClient;
 		protected readonly IDockClientBody DockClientBody;
 		protected readonly bool IsDragRequired;
-		protected readonly WVec DragOffset;
 		protected readonly int DragLength;
 		protected readonly WPos StartDrag;
 		protected readonly WPos EndDrag;
@@ -41,20 +41,30 @@ namespace OpenRA.Mods.Common.Activities
 
 		bool dockInitiated = false;
 
-		public GenericDockSequence(Actor self, Actor refineryActor, Refinery refinery)
+		public GenericDockSequence(Actor self, DockClientManager client, Actor hostActor, IDockHost host)
 		{
 			dockingState = DockingState.Drag;
-			RefineryActor = refineryActor;
-			DockHostSpriteOverlay = refineryActor.TraitOrDefault<WithDockingOverlay>();
-			IsDragRequired = refinery.IsDragRequired;
-			DragOffset = refinery.DragOffset;
-			DragLength = refinery.DragLength;
-			Harv = self.Trait<Harvester>();
+
+			DockClient = client;
 			DockClientBody = self.TraitOrDefault<IDockClientBody>();
-			StartDrag = self.CenterPosition;
-			EndDrag = refineryActor.CenterPosition + DragOffset;
 			notifyDockClients = self.TraitsImplementing<INotifyDockClient>().ToArray();
-			notifyDockHosts = refineryActor.TraitsImplementing<INotifyDockHost>().ToArray();
+
+			DockHost = host;
+			DockHostActor = hostActor;
+			DockHostSpriteOverlay = hostActor.TraitOrDefault<WithDockingOverlay>();
+			notifyDockHosts = hostActor.TraitsImplementing<INotifyDockHost>().ToArray();
+
+			if (host is IDockHostDrag sequence)
+			{
+				IsDragRequired = sequence.IsDragRequired;
+				DragLength = sequence.DragLength;
+				StartDrag = self.CenterPosition;
+				EndDrag = hostActor.CenterPosition + sequence.DragOffset;
+			}
+			else
+				IsDragRequired = false;
+
+			QueueChild(new Wait(host.DockWait));
 		}
 
 		public override bool Tick(Actor self)
@@ -65,8 +75,11 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Drag:
-					if (IsCanceling || !RefineryActor.IsInWorld || RefineryActor.IsDead || Harv.IsTraitDisabled)
+					if (IsCanceling || DockHostActor.IsDead || !DockHostActor.IsInWorld || !DockClient.CanDockAt(DockHostActor, DockHost, false, true))
+					{
+						DockClient.UnreserveHost();
 						return true;
+					}
 
 					dockingState = DockingState.Dock;
 					if (IsDragRequired)
@@ -75,10 +88,12 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Dock:
-					if (!IsCanceling && RefineryActor.IsInWorld && !RefineryActor.IsDead && !Harv.IsTraitDisabled)
+					if (!IsCanceling && !DockHostActor.IsDead && DockHostActor.IsInWorld && DockClient.CanDockAt(DockHostActor, DockHost, false, true))
 					{
 						dockInitiated = true;
 						PlayDockAnimations(self);
+						DockHost.OnDockStarted(DockHostActor, self, DockClient);
+						DockClient.OnDockStarted(self, DockHostActor, DockHost);
 						NotifyDocked(self);
 					}
 					else
@@ -87,7 +102,7 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Loop:
-					if (IsCanceling || !RefineryActor.IsInWorld || RefineryActor.IsDead || Harv.IsTraitDisabled || Harv.TickUnload(self, RefineryActor))
+					if (IsCanceling || DockHostActor.IsDead || !DockHostActor.IsInWorld || DockClient.OnDockTick(self, DockHostActor, DockHost))
 						dockingState = DockingState.Undock;
 
 					return false;
@@ -101,8 +116,8 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Complete:
-					Harv.LastLinkedProc = Harv.LinkedProc;
-					Harv.LinkProc(null);
+					DockHost.OnDockCompleted(DockHostActor, self, DockClient);
+					DockClient.OnDockCompleted(self, DockHostActor, DockHost);
 					NotifyUndocked(self);
 					if (IsDragRequired)
 						QueueChild(new Drag(self, EndDrag, StartDrag, DragLength));
@@ -145,7 +160,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		public virtual void PlayUndockAnimations(Actor self)
 		{
-			if (RefineryActor.IsInWorld && !RefineryActor.IsDead && DockHostSpriteOverlay != null && !DockHostSpriteOverlay.Visible)
+			if (DockHostActor.IsInWorld && !DockHostActor.IsDead && DockHostSpriteOverlay != null && !DockHostSpriteOverlay.Visible)
 			{
 				dockingState = DockingState.Wait;
 				DockHostSpriteOverlay.Visible = true;
@@ -176,30 +191,30 @@ namespace OpenRA.Mods.Common.Activities
 		void NotifyDocked(Actor self)
 		{
 			foreach (var nd in notifyDockClients)
-				nd.Docked(self, RefineryActor);
+				nd.Docked(self, DockHostActor);
 
 			foreach (var nd in notifyDockHosts)
-				nd.Docked(RefineryActor, self);
+				nd.Docked(DockHostActor, self);
 		}
 
 		void NotifyUndocked(Actor self)
 		{
 			foreach (var nd in notifyDockClients)
-				nd.Undocked(self, RefineryActor);
+				nd.Undocked(self, DockHostActor);
 
-			if (RefineryActor.IsInWorld && !RefineryActor.IsDead)
+			if (DockHostActor.IsInWorld && !DockHostActor.IsDead)
 				foreach (var nd in notifyDockHosts)
-					nd.Undocked(RefineryActor, self);
+					nd.Undocked(DockHostActor, self);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			yield return Target.FromActor(RefineryActor);
+			yield return Target.FromActor(DockHostActor);
 		}
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
-			yield return new TargetLineNode(Target.FromActor(RefineryActor), Color.Green);
+			yield return new TargetLineNode(Target.FromActor(DockHostActor), Color.Green);
 		}
 	}
 }

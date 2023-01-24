@@ -1287,8 +1287,10 @@ PROC:
 	RevealsShroud@GAPGEN:
 		Range: 4c0
 	Refinery:
+	DockHost:
+		Type: Unload
 		DockAngle: 256
-		DockOffset: 1,2
+		DockOffset: 0, 1c0, 0
 	StoresResources:
 		Capacity: 2000
 	CustomSellValue:

@@ -76,6 +76,7 @@ harvester:
 		BaleUnloadDelay: 5
 		SearchFromProcRadius: 30
 		SearchFromHarvesterRadius: 15
+	DockClientManager:
 	CarryableHarvester:
 	Health:
 		HP: 45000

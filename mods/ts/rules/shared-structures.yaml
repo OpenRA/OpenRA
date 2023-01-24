@@ -120,9 +120,11 @@ PROC:
 		Range: 6c0
 		MaxHeightDelta: 3
 	Refinery:
-		DockAngle: 640
-		DockOffset: 2,1
 		DiscardExcessResources: true
+	DockHost:
+		Type: Unload
+		DockAngle: 640
+		DockOffset: 362,362,0
 	StoresResources:
 		Capacity: 2000
 	CustomSellValue:
