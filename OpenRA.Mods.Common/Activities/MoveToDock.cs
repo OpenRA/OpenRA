@@ -22,14 +22,14 @@ namespace OpenRA.Mods.Common.Activities
 		readonly DockClientManager dockClient;
 		Actor dockHostActor;
 		IDockHost dockHost;
-		readonly INotifyHarvesterAction[] notifyHarvesterActions;
+		readonly INotifyDockClientMoving[] notifyDockClientMoving;
 
 		public MoveToDock(Actor self, Actor dockHostActor = null, IDockHost dockHost = null)
 		{
 			dockClient = self.Trait<DockClientManager>();
 			this.dockHostActor = dockHostActor;
 			this.dockHost = dockHost;
-			notifyHarvesterActions = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
+			notifyDockClientMoving = self.TraitsImplementing<INotifyDockClientMoving>().ToArray();
 		}
 
 		public override bool Tick(Actor self)
@@ -64,8 +64,8 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				if (dockHost.QueueMoveActivity(this, dockHostActor, self, dockClient))
 				{
-					foreach (var n in notifyHarvesterActions)
-						n.MovingToRefinery(self, dockHostActor);
+					foreach (var ndcm in notifyDockClientMoving)
+						ndcm.MovingToDock(self, dockHostActor, dockHost);
 
 					return false;
 				}
@@ -84,8 +84,8 @@ namespace OpenRA.Mods.Common.Activities
 		public override void Cancel(Actor self, bool keepQueue = false)
 		{
 			dockClient.UnreserveHost();
-			foreach (var n in notifyHarvesterActions)
-				n.MovementCancelled(self);
+			foreach (var ndcm in notifyDockClientMoving)
+				ndcm.MovementCancelled(self);
 
 			base.Cancel(self, keepQueue);
 		}

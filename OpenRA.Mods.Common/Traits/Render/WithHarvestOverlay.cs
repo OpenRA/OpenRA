@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithHarvestOverlay(init.Self, this); }
 	}
 
-	sealed class WithHarvestOverlay : INotifyHarvesterAction
+	sealed class WithHarvestOverlay : INotifyHarvestAction
 	{
 		readonly WithHarvestOverlayInfo info;
 		readonly Animation anim;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				p => ZOffsetFromCenter(self, p, 0)), info.Palette);
 		}
 
-		void INotifyHarvesterAction.Harvested(Actor self, string resourceType)
+		void INotifyHarvestAction.Harvested(Actor self, string resourceType)
 		{
 			if (visible)
 				return;
@@ -63,9 +63,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			anim.PlayThen(info.Sequence, () => visible = false);
 		}
 
-		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell) { }
-		void INotifyHarvesterAction.MovingToRefinery(Actor self, Actor targetRefinery) { }
-		void INotifyHarvesterAction.MovementCancelled(Actor self) { }
+		void INotifyHarvestAction.MovingToResources(Actor self, CPos targetCell) { }
+		void INotifyHarvestAction.MovementCancelled(Actor self) { }
 
 		public static int ZOffsetFromCenter(Actor self, WPos pos, int offset)
 		{
