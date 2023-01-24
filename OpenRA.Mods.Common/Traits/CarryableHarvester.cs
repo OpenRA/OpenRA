@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new CarryableHarvester(); }
 	}
 
-	public class CarryableHarvester : INotifyCreated, INotifyHarvesterAction
+	public class CarryableHarvester : INotifyCreated, INotifyHarvestAction, INotifyDockClientMoving
 	{
 		ICallForTransport[] transports;
 
@@ -28,25 +28,30 @@ namespace OpenRA.Mods.Common.Traits
 			transports = self.TraitsImplementing<ICallForTransport>().ToArray();
 		}
 
-		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell)
+		void INotifyHarvestAction.MovingToResources(Actor self, CPos targetCell)
 		{
 			foreach (var t in transports)
 				t.RequestTransport(self, targetCell);
 		}
 
-		void INotifyHarvesterAction.MovingToRefinery(Actor self, Actor refineryActor)
-		{
-			var dock = refineryActor.Trait<IDockHost>();
-			foreach (var t in transports)
-				t.RequestTransport(self, self.World.Map.CellContaining(dock.DockPosition));
-		}
-
-		void INotifyHarvesterAction.MovementCancelled(Actor self)
+		void INotifyHarvestAction.MovementCancelled(Actor self)
 		{
 			foreach (var t in transports)
 				t.MovementCancelled(self);
 		}
 
-		void INotifyHarvesterAction.Harvested(Actor self, string resourceType) { }
+		void INotifyDockClientMoving.MovingToDock(Actor self, Actor hostActor, IDockHost host)
+		{
+			foreach (var t in transports)
+				t.RequestTransport(self, self.World.Map.CellContaining(host.DockPosition));
+		}
+
+		void INotifyDockClientMoving.MovementCancelled(Actor self)
+		{
+			foreach (var t in transports)
+				t.MovementCancelled(self);
+		}
+
+		void INotifyHarvestAction.Harvested(Actor self, string resourceType) { }
 	}
 }

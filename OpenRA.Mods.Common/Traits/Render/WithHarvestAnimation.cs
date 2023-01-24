@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithHarvestAnimation(init, this); }
 	}
 
-	public class WithHarvestAnimation : INotifyHarvesterAction
+	public class WithHarvestAnimation : INotifyHarvestAction
 	{
 		public readonly WithHarvestAnimationInfo Info;
 		readonly WithSpriteBody wsb;
@@ -37,15 +37,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 			wsb = init.Self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == Info.Body);
 		}
 
-		void INotifyHarvesterAction.Harvested(Actor self, string resourceType)
+		void INotifyHarvestAction.Harvested(Actor self, string resourceType)
 		{
 			var sequence = wsb.NormalizeSequence(self, Info.HarvestSequence);
 			if (wsb.DefaultAnimation.HasSequence(sequence) && wsb.DefaultAnimation.CurrentSequence.Name != sequence)
 				wsb.PlayCustomAnimation(self, sequence);
 		}
 
-		void INotifyHarvesterAction.MovingToResources(Actor self, CPos targetCell) { }
-		void INotifyHarvesterAction.MovingToRefinery(Actor self, Actor refineryActor) { }
-		void INotifyHarvesterAction.MovementCancelled(Actor self) { }
+		void INotifyHarvestAction.MovingToResources(Actor self, CPos targetCell) { }
+		void INotifyHarvestAction.MovementCancelled(Actor self) { }
 	}
 }

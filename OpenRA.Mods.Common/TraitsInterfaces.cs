@@ -171,6 +171,13 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyDockClient { void Docked(Actor self, Actor host); void Undocked(Actor self, Actor host); }
 
 	[RequireExplicitImplementation]
+	public interface INotifyDockClientMoving
+	{
+		void MovingToDock(Actor self, Actor hostActor, IDockHost host);
+		void MovementCancelled(Actor self);
+	}
+
+	[RequireExplicitImplementation]
 	public interface INotifyResourceAccepted { void OnResourceAccepted(Actor self, Actor refinery, string resourceType, int count, int value); }
 	public interface INotifyParachute { void OnParachute(Actor self); void OnLanded(Actor self); }
 
@@ -202,12 +209,11 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface INotifyExitedCargo { void OnExitedCargo(Actor self, Actor cargo); }
 
-	public interface INotifyHarvesterAction
+	public interface INotifyHarvestAction
 	{
-		void MovingToResources(Actor self, CPos targetCell);
-		void MovingToRefinery(Actor self, Actor refineryActor);
-		void MovementCancelled(Actor self);
 		void Harvested(Actor self, string resourceType);
+		void MovingToResources(Actor self, CPos targetCell);
+		void MovementCancelled(Actor self);
 	}
 
 	public interface IDockClientInfo : ITraitInfoInterface { }
