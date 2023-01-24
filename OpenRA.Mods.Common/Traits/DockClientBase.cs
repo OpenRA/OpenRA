@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public abstract class DockClientBaseInfo : ConditionalTraitInfo, IDockClientInfo, Requires<DockClientManagerInfo> { }
+	public abstract class DockClientBaseInfo : ConditionalTraitInfo, IDockClientInfo, Requires<IDockClientManagerInfo> { }
 
 	public abstract class DockClientBase<InfoType> : ConditionalTrait<InfoType>, IDockClient, INotifyCreated where InfoType : DockClientBaseInfo
 	{
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			this.self = self;
-			DockClientManager = self.Trait<DockClientManager>();
+			DockClientManager = self.TraitOrDefault<DockClientManager>();
 		}
 
 		protected virtual bool CanDock()
