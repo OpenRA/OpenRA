@@ -327,6 +327,7 @@ HARV:
 		SearchFromHarvesterRadius: 8
 		HarvestFacings: 8
 		EmptyCondition: no-ore
+	DockClientManager:
 	Health:
 		HP: 60000
 	Armor:

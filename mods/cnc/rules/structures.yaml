@@ -239,12 +239,14 @@ PROC:
 	RevealsShroud:
 		Range: 6c0
 	Refinery:
+		TickRate: 15
+	DockHost:
+		Type: Unload
 		DockAngle: 448
-		DockOffset: 0,2
+		DockOffset: -1c0, 1c0, 0
 		IsDragRequired: True
 		DragOffset: -554,512,0
 		DragLength: 12
-		TickRate: 15
 	StoresResources:
 		Capacity: 1000
 	Selectable:

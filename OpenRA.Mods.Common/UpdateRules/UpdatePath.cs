@@ -88,9 +88,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new UnhardcodeBaseBuilderBotModule(),
 			}),
 
-			new UpdatePath("release-20230225", new UpdateRule[]
+			new UpdatePath("release-20230225", "playtest-20230801", new UpdateRule[]
 			{
-				// bleed only changes here
 				new TextNotificationsDisplayWidgetRemoveTime(),
 				new RenameEngineerRepair(),
 				new ProductionTabsWidgetAddTabButtonCollection(),
@@ -104,7 +103,15 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ExplicitSequenceFilenames(),
 				new RemoveSequenceHasEmbeddedPalette(),
 				new RemoveNegativeSequenceLength(),
-			})
+			}),
+
+			new UpdatePath("playtest-20230801", new UpdateRule[]
+			{
+				// bleed only changes here.
+
+				// Execute these rules last to avoid premature yaml merge crashes.
+				new AbstractDocking(),
+			}),
 		};
 
 		public static IEnumerable<UpdateRule> FromSource(ObjectCreator objectCreator, string source, bool chain = true)

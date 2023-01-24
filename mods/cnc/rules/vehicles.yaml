@@ -63,6 +63,7 @@ HARV:
 		SearchFromHarvesterRadius: 8
 		HarvestFacings: 8
 		EmptyCondition: no-tiberium
+	DockClientManager:
 	Mobile:
 		Speed: 72
 	Health:

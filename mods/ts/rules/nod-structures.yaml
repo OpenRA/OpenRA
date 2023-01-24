@@ -589,8 +589,10 @@ NAWAST:
 		Range: 6c0
 		MaxHeightDelta: 3
 	Refinery:
+	DockHost:
+		Type: UnloadWeed
 		DockAngle: 640
-		DockOffset: 2,1
+		DockOffset: 724,724,0
 	StoresResources:
 		Capacity: 56
 	Power:

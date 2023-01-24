@@ -19,66 +19,71 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class MoveToDock : Activity
 	{
-		readonly IMove movement;
-		readonly Harvester harv;
-		readonly Actor targetActor;
+		readonly DockClientManager dockClient;
+		Actor dockHostActor;
+		IDockHost dockHost;
 		readonly INotifyHarvesterAction[] notifyHarvesterActions;
 
-		Actor proc;
-
-		public MoveToDock(Actor self, Actor targetActor = null)
+		public MoveToDock(Actor self, Actor dockHostActor = null, IDockHost dockHost = null)
 		{
-			movement = self.Trait<IMove>();
-			harv = self.Trait<Harvester>();
-			this.targetActor = targetActor;
+			dockClient = self.Trait<DockClientManager>();
+			this.dockHostActor = dockHostActor;
+			this.dockHost = dockHost;
 			notifyHarvesterActions = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
-		}
-
-		protected override void OnFirstRun(Actor self)
-		{
-			if (targetActor != null && targetActor.IsInWorld)
-				harv.LinkProc(targetActor);
 		}
 
 		public override bool Tick(Actor self)
 		{
-			if (harv.IsTraitDisabled)
-				Cancel(self, true);
-
 			if (IsCanceling)
 				return true;
 
-			// Find the nearest best refinery if not explicitly ordered to a specific refinery:
-			if (harv.LinkedProc == null || !harv.LinkedProc.IsInWorld)
-				harv.ChooseNewProc(self, null);
-
-			// No refineries exist; check again after delay defined in Harvester.
-			if (harv.LinkedProc == null)
+			if (dockClient.IsTraitDisabled)
 			{
-				QueueChild(new Wait(harv.Info.SearchForDeliveryBuildingDelay));
-				return false;
+				Cancel(self, true);
+				return true;
 			}
 
-			proc = harv.LinkedProc;
-			var iao = proc.Trait<IAcceptResources>();
-
-			if (self.CenterPosition != iao.DeliveryPosition)
+			// Find the nearest DockHost if not explicitly ordered to a specific dock.
+			if (dockHost == null || !dockHost.IsEnabledAndInWorld)
 			{
-				foreach (var n in notifyHarvesterActions)
-					n.MovingToRefinery(self, proc);
-
-				var target = Target.FromActor(proc);
-				QueueChild(movement.MoveOntoTarget(self, target, iao.DeliveryPosition - proc.CenterPosition, iao.DeliveryAngle));
-				return false;
+				var host = dockClient.ClosestDock(null);
+				if (host.HasValue)
+				{
+					dockHost = host.Value.Trait;
+					dockHostActor = host.Value.Actor;
+				}
+				else
+				{
+					// No docks exist; check again after delay defined in dockClient.
+					QueueChild(new Wait(dockClient.Info.SearchForDockDelay));
+					return false;
+				}
 			}
 
-			QueueChild(new Wait(10));
-			iao.OnDock(self, this);
-			return true;
+			if (dockClient.ReserveHost(dockHostActor, dockHost))
+			{
+				if (dockHost.QueueMoveActivity(this, dockHostActor, self, dockClient))
+				{
+					foreach (var n in notifyHarvesterActions)
+						n.MovingToRefinery(self, dockHostActor);
+
+					return false;
+				}
+
+				dockHost.QueueDockActivity(this, dockHostActor, self, dockClient);
+				return true;
+			}
+			else
+			{
+				// The dock explicitely chosen by the user is currently occupied. Wait and check again.
+				QueueChild(new Wait(dockClient.Info.SearchForDockDelay));
+				return false;
+			}
 		}
 
 		public override void Cancel(Actor self, bool keepQueue = false)
 		{
+			dockClient.UnreserveHost();
 			foreach (var n in notifyHarvesterActions)
 				n.MovementCancelled(self);
 
@@ -87,10 +92,13 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
-			if (proc != null)
-				yield return new TargetLineNode(Target.FromActor(proc), harv.Info.DeliverLineColor);
+			if (dockHostActor != null)
+				yield return new TargetLineNode(Target.FromActor(dockHostActor), dockClient.DockLineColor);
 			else
-				yield return new TargetLineNode(Target.FromActor(harv.LinkedProc), harv.Info.DeliverLineColor);
+			{
+				if (dockClient.ReservedHostActor != null)
+					yield return new TargetLineNode(Target.FromActor(dockClient.ReservedHostActor), dockClient.DockLineColor);
+			}
 		}
 	}
 }

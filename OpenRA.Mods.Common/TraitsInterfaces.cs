@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Widgets;
@@ -211,6 +210,72 @@ namespace OpenRA.Mods.Common.Traits
 		void Harvested(Actor self, string resourceType);
 	}
 
+	public interface IDockClientInfo : ITraitInfoInterface { }
+
+	public interface IDockClient
+	{
+		BitSet<DockType> GetDockType { get; }
+		DockClientManager DockClientManager { get; }
+		void OnDockStarted(Actor self, Actor hostActor, IDockHost host);
+		bool OnDockTick(Actor self, Actor hostActor, IDockHost dock);
+		void OnDockCompleted(Actor self, Actor hostActor, IDockHost host);
+
+		/// <summary>Is this client allowed to dock.</summary>
+		/// <remarks>
+		/// Does not check if <see cref="Traits.DockClientManager"/> is enabled.
+		/// Function should only be called from within <see cref="IDockClient"/> or <see cref="Traits.DockClientManager"/>.
+		/// </remarks>
+		bool IsDockingPossible(BitSet<DockType> type, bool forceEnter = false);
+
+		/// <summary>Is this client allowed to dock to <paramref name="host"/>.</summary>
+		/// <remarks>
+		/// Does not check if <see cref="Traits.DockClientManager"/> is enabled.
+		/// Function should only be called from within <see cref="IDockClient"/> or <see cref="Traits.DockClientManager"/>.
+		/// </remarks>
+		bool CanDockAt(Actor hostActor, IDockHost host, bool forceEnter = false, bool ignoreOccupancy = false);
+	}
+
+	public interface IDockHostInfo : ITraitInfoInterface { }
+
+	public interface IDockHost
+	{
+		BitSet<DockType> GetDockType { get; }
+
+		/// <summary>Use this function instead of ConditionalTrait.IsTraitDisabled.</summary>
+		bool IsEnabledAndInWorld { get; }
+		int ReservationCount { get; }
+		bool CanBeReserved { get; }
+		WPos DockPosition { get; }
+		int DockWait { get; }
+		WAngle DockAngle { get; }
+
+		/// <summary>Can this <paramref name="client"/> dock at this <see cref="IDockHost"/>.</summary>
+		/// <remarks>
+		/// Does not check <see cref="DockType"/>.
+		/// Does not check if <see cref="IDockClient"/> is enabled.
+		/// Does not check if <see cref="DockClientManager"/> is enabled.
+		/// </remarks>
+		bool IsDockingPossible(Actor clientActor, IDockClient client, bool ignoreReservations = false);
+		bool Reserve(Actor self, DockClientManager client);
+		void UnreserveAll();
+		void Unreserve(DockClientManager client);
+		void OnDockStarted(Actor self, Actor clientActor, DockClientManager client);
+		void OnDockCompleted(Actor self, Actor clientActor, DockClientManager client);
+
+		/// <summary>If <paramref name="client"/> is not in range of <see cref="IDockHost"/> queues a child move activity and returns true. If in range returns false.</summary>
+		bool QueueMoveActivity(Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client);
+
+		/// <summary>Should be called when in range of <see cref="IDockHost"/>.</summary>
+		void QueueDockActivity(Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client);
+	}
+
+	public interface IDockHostDrag
+	{
+		bool IsDragRequired { get; }
+		WVec DragOffset { get; }
+		int DragLength { get; }
+	}
+
 	[RequireExplicitImplementation]
 	public interface INotifyLoadCargo
 	{
@@ -280,14 +345,9 @@ namespace OpenRA.Mods.Common.Traits
 		void Undeploy(Actor self, bool skipMakeAnim);
 	}
 
-	public interface IAcceptResourcesInfo : ITraitInfoInterface { }
 	public interface IAcceptResources
 	{
-		void OnDock(Actor harv, MoveToDock dockOrder);
-		int AcceptResources(string resourceType, int count = 1);
-		WPos DeliveryPosition { get; }
-		WAngle DeliveryAngle { get; }
-		bool AllowDocking { get; }
+		int AcceptResources(Actor self, string resourceType, int count = 1);
 	}
 
 	public interface IDockClientBody
