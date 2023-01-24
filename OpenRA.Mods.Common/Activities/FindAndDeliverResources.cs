@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Activities
 			// of the refinery entrance.
 			if (LastSearchFailed)
 			{
-				var lastproc = harv.DockClientManager.LastReservedHost;
+				var lastproc = harv.DockClientManager?.LastReservedHost;
 				if (lastproc != null)
 				{
 					var deliveryLoc = self.World.Map.CellContaining(lastproc.DockPosition);
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Activities
 			else
 			{
 				searchRadius = harvInfo.SearchFromProcRadius;
-				var dock = harv.DockClientManager.LastReservedHost;
+				var dock = harv.DockClientManager?.LastReservedHost;
 				if (dock != null)
 				{
 					dockPos = dock.DockPosition;
@@ -247,7 +247,7 @@ namespace OpenRA.Mods.Common.Activities
 			else
 			{
 				var manager = harv.DockClientManager;
-				if (manager.ReservedHostActor != null)
+				if (manager?.ReservedHostActor != null)
 					yield return new TargetLineNode(Target.FromActor(manager.ReservedHostActor), manager.DockLineColor);
 			}
 		}

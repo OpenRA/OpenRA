@@ -222,6 +222,8 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IDockClient
 	{
 		BitSet<DockType> GetDockType { get; }
+
+		/// <summary>When null, the client should act as if it can dock but never do.</summary>
 		DockClientManager DockClientManager { get; }
 		void OnDockStarted(Actor self, Actor hostActor, IDockHost host);
 		bool OnDockTick(Actor self, Actor hostActor, IDockHost dock);
@@ -282,6 +284,8 @@ namespace OpenRA.Mods.Common.Traits
 		WVec DragOffset { get; }
 		int DragLength { get; }
 	}
+
+	public interface IDockClientManagerInfo : ITraitInfoInterface { }
 
 	[RequireExplicitImplementation]
 	public interface INotifyLoadCargo

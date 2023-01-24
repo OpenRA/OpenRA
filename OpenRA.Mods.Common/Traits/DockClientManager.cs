@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Manages DockClients on the actor.")]
-	public class DockClientManagerInfo : ConditionalTraitInfo
+	public class DockClientManagerInfo : ConditionalTraitInfo, IDockClientManagerInfo
 	{
 		[Desc("How long (in ticks) to wait until (re-)checking for a nearby available DockHost.")]
 		public readonly int SearchForDockDelay = 125;
