@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class HarvesterDockSequence : Activity
+	public class GenericDockSequence : Activity
 	{
 		protected enum DockingState { Wait, Drag, Dock, Loop, Undock, Complete }
 
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		bool dockInitiated = false;
 
-		public HarvesterDockSequence(Actor self, Actor refineryActor, Refinery refinery)
+		public GenericDockSequence(Actor self, Actor refineryActor, Refinery refinery)
 		{
 			dockingState = DockingState.Drag;
 			RefineryActor = refineryActor;

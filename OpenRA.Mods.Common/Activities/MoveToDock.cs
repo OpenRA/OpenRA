@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	public class DeliverResources : Activity
+	public class MoveToDock : Activity
 	{
 		readonly IMove movement;
 		readonly Harvester harv;
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		Actor proc;
 
-		public DeliverResources(Actor self, Actor targetActor = null)
+		public MoveToDock(Actor self, Actor targetActor = null)
 		{
 			movement = self.Trait<IMove>();
 			harv = self.Trait<Harvester>();

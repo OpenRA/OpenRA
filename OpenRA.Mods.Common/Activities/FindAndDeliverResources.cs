@@ -61,13 +61,13 @@ namespace OpenRA.Mods.Common.Activities
 				// We have to make sure the actual "harvest" order is not skipped if a third order is queued,
 				// so we keep deliveredLoad false.
 				if (harv.IsFull)
-					QueueChild(new DeliverResources(self));
+					QueueChild(new MoveToDock(self));
 			}
 
 			// If an explicit "deliver" order is given, the harvester goes immediately to the refinery.
 			if (deliverActor != null)
 			{
-				QueueChild(new DeliverResources(self, deliverActor));
+				QueueChild(new MoveToDock(self, deliverActor));
 				hasDeliveredLoad = true;
 				deliverActor = null;
 			}
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Are we full or have nothing more to gather? Deliver resources.
 			if (harv.IsFull || (!harv.IsEmpty && LastSearchFailed))
 			{
-				QueueChild(new DeliverResources(self));
+				QueueChild(new MoveToDock(self));
 				hasDeliveredLoad = true;
 				return false;
 			}
