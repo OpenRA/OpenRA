@@ -86,8 +86,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string Decorations = "scrollpanel-decorations";
 		public readonly string DecorationScrollLeft = "left";
 		public readonly string DecorationScrollRight = "right";
-		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getLeftArrowImage;
-		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getRightArrowImage;
+		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getLeftArrowImage;
+		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getRightArrowImage;
 
 		int contentWidth = 0;
 		float listOffset = 0;
@@ -111,9 +111,6 @@ namespace OpenRA.Mods.Common.Widgets
 			IsVisible = () => queueGroup != null && Groups[queueGroup].Tabs.Count > 0;
 
 			paletteWidget = Exts.Lazy(() => Ui.Root.Get<ProductionPaletteWidget>(PaletteWidget));
-
-			getLeftArrowImage = WidgetUtils.GetCachedStatefulImage(Decorations, DecorationScrollLeft);
-			getRightArrowImage = WidgetUtils.GetCachedStatefulImage(Decorations, DecorationScrollRight);
 		}
 
 		public override void Initialize(WidgetArgs args)
@@ -124,6 +121,9 @@ namespace OpenRA.Mods.Common.Widgets
 			leftButtonRect = new Rectangle(rb.X, rb.Y, ArrowWidth, rb.Height);
 			rightButtonRect = new Rectangle(rb.Right - ArrowWidth, rb.Y, ArrowWidth, rb.Height);
 			font = Game.Renderer.Fonts["TinyBold"];
+
+			getLeftArrowImage = WidgetUtils.GetCachedStatefulImage(Decorations, DecorationScrollLeft);
+			getRightArrowImage = WidgetUtils.GetCachedStatefulImage(Decorations, DecorationScrollRight);
 		}
 
 		public bool SelectNextTab(bool reverse)
