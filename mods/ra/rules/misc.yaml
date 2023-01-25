@@ -346,7 +346,7 @@ powerproxy.parabombs:
 	AirstrikePower:
 		Icon: parabombs
 		Name: Parabombs (Single Use)
-		Description: A Badger drops a load of parachuted bombs on your target.
+		Description: A Badger drops a load of parachuted bombs\nat the selected location.
 		OneShot: true
 		AllowMultiple: true
 		UnitType: badr.bomber

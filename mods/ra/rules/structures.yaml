@@ -1561,7 +1561,7 @@ AFLD:
 		Icon: paratroopers
 		ChargeInterval: 7500
 		Name: Paratroopers
-		Description: A Badger drops a squad of infantry\nanywhere on the map.
+		Description: A Badger drops a squad of infantry\nat the selected location.
 		DropItems: E1R1,E1R1,E1R1,E3R1,E3R1
 		ReinforcementsArrivedSpeechNotification: ReinforcementsArrived
 		SelectTargetSpeechNotification: SelectTarget
@@ -1584,7 +1584,7 @@ AFLD:
 		Icon: parabombs
 		ChargeInterval: 7500
 		Name: Parabombs
-		Description: A squad of Badgers drop parachuted\nbombs on your target.
+		Description: A Badger drops a load of parachuted bombs\nat the selected location.
 		SelectTargetSpeechNotification: SelectTarget
 		SelectTargetTextNotification: Select target.
 		CameraActor: camera
