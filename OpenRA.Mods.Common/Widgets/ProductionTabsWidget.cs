@@ -197,11 +197,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var leftArrowImage = getLeftArrowImage.Update((leftDisabled, leftPressed, leftHover, false, false));
 			WidgetUtils.DrawSprite(leftArrowImage,
-				new float2(leftButtonRect.Left + 2, leftButtonRect.Top + 2));
+				new float2(leftButtonRect.Left + (int)((leftButtonRect.Width - leftArrowImage.Size.X) / 2), leftButtonRect.Top + (int)((leftButtonRect.Height - leftArrowImage.Size.Y) / 2)));
 
 			var rightArrowImage = getRightArrowImage.Update((rightDisabled, rightPressed, rightHover, false, false));
 			WidgetUtils.DrawSprite(rightArrowImage,
-				new float2(rightButtonRect.Left + 2, rightButtonRect.Top + 2));
+				new float2(rightButtonRect.Left + (int)((rightButtonRect.Width - rightArrowImage.Size.X) / 2), rightButtonRect.Top + (int)((rightButtonRect.Height - rightArrowImage.Size.Y) / 2)));
 
 			// Draw tab buttons
 			Game.Renderer.EnableScissor(new Rectangle(leftButtonRect.Right, rb.Y + 1, rightButtonRect.Left - leftButtonRect.Right - 1, rb.Height));
