@@ -81,7 +81,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public readonly Dictionary<string, ProductionTabGroup> Groups;
 
-		public string Button = "button";
+		public string ArrowButton = "button";
+		public string TabButton = "button";
+
 		public string Background = "panel-black";
 		public readonly string Decorations = "scrollpanel-decorations";
 		public readonly string DecorationScrollLeft = "left";
@@ -190,8 +192,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var rightHover = Ui.MouseOverWidget == this && rightButtonRect.Contains(Viewport.LastMousePos);
 
 			WidgetUtils.DrawPanel(Background, rb);
-			ButtonWidget.DrawBackground(Button, leftButtonRect, leftDisabled, leftPressed, leftHover, false);
-			ButtonWidget.DrawBackground(Button, rightButtonRect, rightDisabled, rightPressed, rightHover, false);
+			ButtonWidget.DrawBackground(ArrowButton, leftButtonRect, leftDisabled, leftPressed, leftHover, false);
+			ButtonWidget.DrawBackground(ArrowButton, rightButtonRect, rightDisabled, rightPressed, rightHover, false);
 
 			var leftArrowImage = getLeftArrowImage.Update((leftDisabled, leftPressed, leftHover, false, false));
 			WidgetUtils.DrawSprite(leftArrowImage,
@@ -211,7 +213,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var rect = new Rectangle(origin.X + contentWidth, origin.Y, TabWidth, rb.Height);
 				var hover = !leftHover && !rightHover && Ui.MouseOverWidget == this && rect.Contains(Viewport.LastMousePos);
 				var highlighted = tab.Queue == CurrentQueue;
-				ButtonWidget.DrawBackground(Button, rect, false, false, hover, highlighted);
+				ButtonWidget.DrawBackground(TabButton, rect, false, false, hover, highlighted);
 				contentWidth += TabWidth - 1;
 
 				var textSize = font.Measure(tab.Name);
