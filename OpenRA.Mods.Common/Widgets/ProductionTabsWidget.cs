@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public string TabButton = "button";
 
 		public string Background = "panel-black";
-		public readonly string Decorations = "scrollpanel-decorations";
+		public string Decorations = "scrollpanel-decorations";
 		public readonly string DecorationScrollLeft = "left";
 		public readonly string DecorationScrollRight = "right";
 		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getLeftArrowImage;
