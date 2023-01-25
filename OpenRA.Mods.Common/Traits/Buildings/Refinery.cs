@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Traits
 				harv.Trait.UnlinkProc(harv.Actor, self);
 		}
 
-		public void OnDock(Actor harv, DeliverResources dockOrder)
+		public void OnDock(Actor harv, MoveToDock dockOrder)
 		{
 			if (!preventDock)
 			{

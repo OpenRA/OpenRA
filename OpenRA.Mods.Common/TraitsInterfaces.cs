@@ -283,7 +283,7 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IAcceptResourcesInfo : ITraitInfoInterface { }
 	public interface IAcceptResources
 	{
-		void OnDock(Actor harv, DeliverResources dockOrder);
+		void OnDock(Actor harv, MoveToDock dockOrder);
 		int AcceptResources(string resourceType, int count = 1);
 		WPos DeliveryPosition { get; }
 		WAngle DeliveryAngle { get; }
