@@ -115,7 +115,7 @@ namespace OpenRA.Server
 									frame = BitConverter.ToInt32(bytes, 4);
 									state = ReceiveState.Data;
 
-									if (expectLength < 0 || expectLength > MaxOrderLength)
+									if (expectLength < 0 || (server.Type != ServerType.Local && expectLength > MaxOrderLength))
 									{
 										Log.Write("server", $"Closing socket connection to {EndPoint} because of excessive order length: {expectLength}");
 										return;
