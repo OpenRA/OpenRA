@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => connectingDescText;
 
 			var connectionError = widget.Get<LabelWidget>("CONNECTION_ERROR");
-			var connectionErrorText = modData.Translation.GetString(orderManager.ServerError) ?? connection.ErrorMessage ?? modData.Translation.GetString(UnknownError);
+			var connectionErrorText = orderManager.ServerError != null ? modData.Translation.GetString(orderManager.ServerError) : connection.ErrorMessage ?? modData.Translation.GetString(UnknownError);
 			connectionError.GetText = () => connectionErrorText;
 
 			var panelTitle = widget.Get<LabelWidget>("TITLE");
