@@ -41,19 +41,27 @@ namespace OpenRA.Mods.Common.Widgets
 
 		Action onComplete;
 
-		public void Load(string filename)
+		/// <summary>
+		/// Tries to load a video from the specified file and play it. Does nothing if the file name matches the already loaded video.
+		/// </summary>
+		/// <param name="filename">Name of the file, including the extension.</param>
+		public void LoadAndPlay(string filename)
 		{
 			if (filename == cachedVideoFileName)
 				return;
 
 			var stream = Game.ModData.DefaultFileSystem.Open(filename);
 			var video = VideoLoader.GetVideo(stream, true, Game.ModData.VideoLoaders);
-			Open(video);
+			Play(video);
 
 			cachedVideoFileName = filename;
 		}
 
-		public void Open(IVideo video)
+		/// <summary>
+		/// Plays the given <see cref="IVideo"/>.
+		/// </summary>
+		/// <param name="video">An <see cref="IVideo"/> instance.</param>
+		public void Play(IVideo video)
 		{
 			this.video = video;
 

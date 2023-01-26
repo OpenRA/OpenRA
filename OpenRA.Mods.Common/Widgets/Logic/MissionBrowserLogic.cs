@@ -370,7 +370,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				StopVideo(player);
 
 				playingVideo = pv;
-				player.Load(video);
+				player.LoadAndPlay(video);
 
 				if (player.Video == null)
 				{
