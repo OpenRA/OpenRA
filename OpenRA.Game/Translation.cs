@@ -88,6 +88,9 @@ namespace OpenRA
 
 		public bool TryGetString(string key, out string value, IDictionary<string, object> arguments = null)
 		{
+			if (string.IsNullOrEmpty(key))
+				throw new ArgumentException("A translation key must not be null or empty.", nameof(key));
+
 			try
 			{
 				if (!HasMessage(key))
