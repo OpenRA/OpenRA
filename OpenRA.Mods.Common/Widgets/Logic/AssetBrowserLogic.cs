@@ -550,7 +550,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (video != null)
 					{
 						player = panel.Get<VideoPlayerWidget>("PLAYER");
-						player.Load(prefix + filename);
+						player.LoadAndPlay(prefix + filename);
 						player.DrawOverlay = false;
 						isVideoLoaded = true;
 

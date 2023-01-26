@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 			try
 			{
-				player.Load(videoFileName);
+				player.LoadAndPlay(videoFileName);
 			}
 			catch (FileNotFoundException)
 			{
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 			try
 			{
-				player.Load(videoFileName);
+				player.LoadAndPlay(videoFileName);
 			}
 			catch (FileNotFoundException)
 			{
