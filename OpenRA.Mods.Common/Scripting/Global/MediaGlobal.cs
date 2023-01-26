@@ -10,15 +10,12 @@
 #endregion
 
 using System;
-using System.IO;
 using Eluant;
-using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Scripting;
-using OpenRA.Video;
 
 namespace OpenRA.Mods.Common.Scripting
 {
@@ -96,41 +93,18 @@ namespace OpenRA.Mods.Common.Scripting
 			playlist.Stop();
 		}
 
-		[Desc("Play a VQA video fullscreen. File name has to include the file extension.")]
-		public void PlayMovieFullscreen(string movie, LuaFunction onPlayComplete = null)
+		[Desc("Play a video fullscreen. File name has to include the file extension.")]
+		public void PlayMovieFullscreen(string videoFileName, LuaFunction onPlayComplete = null)
 		{
 			var onComplete = WrapOnPlayComplete(onPlayComplete);
-			Media.PlayFMVFullscreen(world, movie, onComplete);
+			Media.PlayFMVFullscreen(world, videoFileName, onComplete);
 		}
 
-		[Desc("Play a VQA video in the radar window. File name has to include the file extension. " +
-			"Returns true on success, if the movie wasn't found the function returns false and the callback is executed.")]
-		public bool PlayMovieInRadar(string movie, LuaFunction onPlayComplete = null)
+		[Desc("Play a video in the radar window. File name has to include the file extension.")]
+		public void PlayMovieInRadar(string videoFileName, LuaFunction onPlayComplete = null)
 		{
 			var onComplete = WrapOnPlayComplete(onPlayComplete);
-
-			Stream s;
-			try
-			{
-				s = world.Map.Open(movie);
-			}
-			catch (FileNotFoundException e)
-			{
-				Log.Write("lua", $"Couldn't play movie {e.FileName}! File doesn't exist.");
-				onComplete();
-				return false;
-			}
-
-			var l = new AsyncLoader(Media.LoadVideo);
-			var ar = l.BeginInvoke(s, null, null);
-			Action onLoadComplete = () =>
-			{
-				Media.StopFMVInRadar();
-				world.AddFrameEndTask(_ => Media.PlayFMVInRadar(l.EndInvoke(ar), onComplete));
-			};
-
-			world.AddFrameEndTask(w => w.Add(new AsyncAction(ar, onLoadComplete)));
-			return true;
+			Media.PlayFMVInRadar(videoFileName, onComplete);
 		}
 
 		[Desc("Display a text message to all players.")]
@@ -182,8 +156,6 @@ namespace OpenRA.Mods.Common.Scripting
 			var c = color ?? Color.White;
 			world.AddFrameEndTask(w => w.Add(new FloatingText(position, c, text, duration)));
 		}
-
-		public delegate IVideo AsyncLoader(Stream s);
 
 		Action WrapOnPlayComplete(LuaFunction onPlayComplete)
 		{
