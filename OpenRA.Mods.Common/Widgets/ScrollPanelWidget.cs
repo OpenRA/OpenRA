@@ -54,6 +54,10 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string DecorationScrollDown = "down";
 		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getUpArrowImage;
 		readonly CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getDownArrowImage;
+		public HotkeyReference ScrollUpKey = new HotkeyReference();
+		public HotkeyReference ScrollDownKey = new HotkeyReference();
+		public HotkeyReference NextItemKey = new HotkeyReference();
+		public HotkeyReference PreviousItemKey = new HotkeyReference();
 		public int ContentHeight;
 		public ILayout Layout;
 		public int MinimumThumbSize = 10;
@@ -397,6 +401,54 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			return upPressed || downPressed || thumbPressed;
+		}
+
+		public override bool HandleKeyPress(KeyInput e)
+		{
+			if (e.Event != KeyInputEvent.Down)
+				return false;
+
+			if (ScrollUpKey.IsActivatedBy(e))
+			{
+				Scroll(1);
+				return true;
+			}
+
+			if (ScrollDownKey.IsActivatedBy(e))
+			{
+				Scroll(-1);
+				return true;
+			}
+
+			var selectedItem = (ScrollItemWidget)Children.FirstOrDefault(c => c is ScrollItemWidget si && si.IsSelected());
+			if (selectedItem == null)
+				return false;
+
+			if (NextItemKey.IsActivatedBy(e))
+			{
+				var next = (ScrollItemWidget)Children.SkipWhile(x => x != selectedItem).Skip(1).DefaultIfEmpty(Children[0]).FirstOrDefault();
+				if (next == null)
+					return false;
+
+				Game.Sound.PlayNotification(modRules, null, "Sounds", ClickSound, null);
+				next.OnClick();
+				ScrollToSelectedItem();
+				return true;
+			}
+
+			if (PreviousItemKey.IsActivatedBy(e))
+			{
+				var previous = (ScrollItemWidget)Children.TakeWhile(x => x != selectedItem).DefaultIfEmpty(Children[Children.Count - 1]).LastOrDefault();
+				if (previous == null)
+					return false;
+
+				Game.Sound.PlayNotification(modRules, null, "Sounds", ClickSound, null);
+				previous.OnClick();
+				ScrollToSelectedItem();
+				return true;
+			}
+
+			return false;
 		}
 
 		IObservableCollection collection;

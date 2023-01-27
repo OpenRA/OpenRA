@@ -388,6 +388,10 @@ Container@EDITOR_WORLD_ROOT:
 							Height: PARENT_BOTTOM - 68
 							TopBottomSpacing: 4
 							ItemSpacing: 4
+							ScrollUpKey: PageUp
+							ScrollDownKey: PageDown
+							NextItemKey: Tab
+							PreviousItemKey: Tab SHIFT
 							Children:
 								ScrollItem@TILEPREVIEW_TEMPLATE:
 									Visible: false
@@ -414,6 +418,8 @@ Container@EDITOR_WORLD_ROOT:
 							Height: PARENT_BOTTOM - 20
 							TopBottomSpacing: 4
 							ItemSpacing: 4
+							NextItemKey: Tab
+							PreviousItemKey: Tab SHIFT
 							Children:
 								ScrollItem@LAYERPREVIEW_TEMPLATE:
 									Visible: false
@@ -479,6 +485,10 @@ Container@EDITOR_WORLD_ROOT:
 							Height: PARENT_BOTTOM - 92
 							TopBottomSpacing: 4
 							ItemSpacing: 4
+							ScrollUpKey: PageUp
+							ScrollDownKey: PageDown
+							NextItemKey: Tab
+							PreviousItemKey: Tab SHIFT
 							Children:
 								ScrollItem@ACTORPREVIEW_TEMPLATE:
 									Visible: false
@@ -509,6 +519,10 @@ Container@EDITOR_WORLD_ROOT:
 							CollapseHiddenChildren: True
 							TopBottomSpacing: 4
 							ItemSpacing: 4
+							ScrollUpKey: PageUp
+							ScrollDownKey: PageDown
+							NextItemKey: Tab
+							PreviousItemKey: Tab SHIFT
 							Children:
 								ScrollItem@HISTORY_TEMPLATE:
 									X: 4
@@ -639,7 +653,6 @@ Container@EDITOR_WORLD_ROOT:
 			Align: Left
 			Font: Bold
 			Contrast: true
-
 ScrollPanel@CATEGORY_FILTER_PANEL:
 	Width: 240
 	TopBottomSpacing: 5

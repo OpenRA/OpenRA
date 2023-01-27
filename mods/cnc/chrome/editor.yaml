@@ -415,6 +415,10 @@ Container@EDITOR_WORLD_ROOT:
 							Height: PARENT_BOTTOM - 48
 							TopBottomSpacing: 4
 							ItemSpacing: 4
+							ScrollUpKey: PageUp
+							ScrollDownKey: PageDown
+							NextItemKey: Tab
+							PreviousItemKey: Tab SHIFT
 							Children:
 								ScrollItem@TILEPREVIEW_TEMPLATE:
 									Visible: false
@@ -441,6 +445,8 @@ Container@EDITOR_WORLD_ROOT:
 							Height: PARENT_BOTTOM
 							TopBottomSpacing: 4
 							ItemSpacing: 4
+							NextItemKey: Tab
+							PreviousItemKey: Tab SHIFT
 							Children:
 								ScrollItem@LAYERPREVIEW_TEMPLATE:
 									Visible: false
@@ -511,6 +517,10 @@ Container@EDITOR_WORLD_ROOT:
 							Height: PARENT_BOTTOM - 50
 							TopBottomSpacing: 4
 							ItemSpacing: 4
+							ScrollUpKey: PageUp
+							ScrollDownKey: PageDown
+							NextItemKey: Tab
+							PreviousItemKey: Tab SHIFT
 							Children:
 								ScrollItem@ACTORPREVIEW_TEMPLATE:
 									Visible: false
@@ -541,6 +551,10 @@ Container@EDITOR_WORLD_ROOT:
 							CollapseHiddenChildren: True
 							TopBottomSpacing: 4
 							ItemSpacing: 4
+							ScrollUpKey: PageUp
+							ScrollDownKey: PageDown
+							NextItemKey: Tab
+							PreviousItemKey: Tab SHIFT
 							Children:
 								ScrollItem@HISTORY_TEMPLATE:
 									X: 4
