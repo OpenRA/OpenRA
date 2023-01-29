@@ -124,15 +124,23 @@ modify_plist "{DEV_VERSION}" "${TAG}" "${TEMPLATE_DIR}/Contents/Info.plist"
 modify_plist "{FAQ_URL}" "http://wiki.openra.net/FAQ" "${TEMPLATE_DIR}/Contents/Info.plist"
 modify_plist "{MINIMUM_SYSTEM_VERSION}" "10.11" "${TEMPLATE_DIR}/Contents/Info.plist"
 
-# Compile universal (x86_64 + arm64) Launcher and arch-specific apphosts
+# Compile universal (x86_64 + arm64) arch-specific apphosts
 clang apphost.c -o "${TEMPLATE_DIR}/Contents/MacOS/apphost-x86_64" -framework AppKit -target x86_64-apple-macos10.15
 clang apphost.c -o "${TEMPLATE_DIR}/Contents/MacOS/apphost-arm64" -framework AppKit -target arm64-apple-macos10.15
 clang apphost-mono.c -o "${TEMPLATE_DIR}/Contents/MacOS/apphost-mono" -framework AppKit -target x86_64-apple-macos10.11
 clang checkmono.c -o "${TEMPLATE_DIR}/Contents/MacOS/checkmono" -framework AppKit -target x86_64-apple-macos10.11
+
+# Compile universal (x86_64 + arm64) Launcher
 clang launcher.m -o "${TEMPLATE_DIR}/Contents/MacOS/Launcher-x86_64" -framework AppKit -target x86_64-apple-macos10.11
 clang launcher.m -o "${TEMPLATE_DIR}/Contents/MacOS/Launcher-arm64" -framework AppKit -target arm64-apple-macos10.15
 lipo -create -output "${TEMPLATE_DIR}/Contents/MacOS/Launcher" "${TEMPLATE_DIR}/Contents/MacOS/Launcher-x86_64" "${TEMPLATE_DIR}/Contents/MacOS/Launcher-arm64"
 rm "${TEMPLATE_DIR}/Contents/MacOS/Launcher-x86_64" "${TEMPLATE_DIR}/Contents/MacOS/Launcher-arm64"
+
+# Compile universal (x86_64 + arm64) Utility
+clang utility.m -o "${TEMPLATE_DIR}/Contents/MacOS/Utility-x86_64" -framework AppKit -target x86_64-apple-macos10.11
+clang utility.m -o "${TEMPLATE_DIR}/Contents/MacOS/Utility-arm64" -framework AppKit -target arm64-apple-macos10.15
+lipo -create -output "${TEMPLATE_DIR}/Contents/MacOS/Utility" "${TEMPLATE_DIR}/Contents/MacOS/Utility-x86_64" "${TEMPLATE_DIR}/Contents/MacOS/Utility-arm64"
+rm "${TEMPLATE_DIR}/Contents/MacOS/Utility-x86_64" "${TEMPLATE_DIR}/Contents/MacOS/Utility-arm64"
 
 build_app "${TEMPLATE_DIR}" "${BUILTDIR}/OpenRA - Red Alert.app" "ra" "Red Alert" "699222659766026240"
 build_app "${TEMPLATE_DIR}" "${BUILTDIR}/OpenRA - Tiberian Dawn.app" "cnc" "Tiberian Dawn" "699223250181292033"
