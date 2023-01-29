@@ -34,7 +34,7 @@ AtreidesStarportTypes = { "trike.starport", "trike.starport", "quad.starport", "
 MercenaryTankTypes = { "combat_tank_o", "combat_tank_o", "siege_tank" }
 
 ActivateAI = function()
-	IdlingUnits[Ordos] = Reinforcements.Reinforce(Ordos, InitialOrdosReinforcements[1], InitialOrdosPaths[1]), Reinforcements.Reinforce(Ordos, InitialOrdosReinforcements[2], InitialOrdosPaths[2])
+	IdlingUnits[Ordos] = Utils.Concat(Reinforcements.Reinforce(Ordos, InitialOrdosReinforcements[1], InitialOrdosPaths[1]), Reinforcements.Reinforce(Ordos, InitialOrdosReinforcements[2], InitialOrdosPaths[2]))
 	IdlingUnits[AtreidesEnemy] = Reinforcements.Reinforce(AtreidesEnemy, InitialAtreidesReinforcements, InitialAtreidesPath)
 	IdlingUnits[AtreidesNeutral] = { }
 	IdlingUnits[MercenaryEnemy] = Reinforcements.Reinforce(MercenaryEnemy, InitialMercenaryReinforcements, InitialMercenaryPath)

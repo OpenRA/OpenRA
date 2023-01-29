@@ -26,7 +26,7 @@ OrdosVehicleTypes = { "raider", "raider", "quad" }
 OrdosTankType = { "combat_tank_o" }
 
 ActivateAI = function()
-	IdlingUnits[OrdosMain] = Reinforcements.Reinforce(OrdosMain, InitialOrdosReinforcements[1], InitialOrdosPaths[1]), Reinforcements.Reinforce(OrdosMain, InitialOrdosReinforcements[2], InitialOrdosPaths[2])
+	IdlingUnits[OrdosMain] = Utils.Concat(Reinforcements.Reinforce(OrdosMain, InitialOrdosReinforcements[1], InitialOrdosPaths[1]), Reinforcements.Reinforce(OrdosMain, InitialOrdosReinforcements[2], InitialOrdosPaths[2]))
 	IdlingUnits[OrdosSmall] = Reinforcements.Reinforce(OrdosSmall, InitialOrdosReinforcements[1], InitialOrdosPaths[3])
 	IdlingUnits[Corrino] = { CSaraukar1, CSaraukar2, CSaraukar3, CSaraukar4, CSaraukar5 }
 
