@@ -37,7 +37,7 @@ AtreidesStarportTypes = { "trike.starport", "trike.starport", "quad.starport", "
 CorrinoInfantryTypes = { "light_inf", "trooper", "sardaukar" }
 
 ActivateAI = function()
-	IdlingUnits[AtreidesMain] = Reinforcements.Reinforce(AtreidesMain, InitialAtreidesReinforcements[Difficulty][1], InitialAtreidesPaths[1]), Reinforcements.Reinforce(AtreidesMain, InitialAtreidesReinforcements[Difficulty][2], InitialAtreidesPaths[2])
+	IdlingUnits[AtreidesMain] = Utils.Concat(Reinforcements.Reinforce(AtreidesMain, InitialAtreidesReinforcements[Difficulty][1], InitialAtreidesPaths[1]), Reinforcements.Reinforce(AtreidesMain, InitialAtreidesReinforcements[Difficulty][2], InitialAtreidesPaths[2]))
 	IdlingUnits[AtreidesSmall] = Reinforcements.Reinforce(AtreidesSmall, InitialAtreidesReinforcements[Difficulty][1], InitialAtreidesPaths[3])
 	IdlingUnits[Corrino] = Reinforcements.Reinforce(Corrino, InitialCorrinoReinforcements, InitialCorrinoPath)
 

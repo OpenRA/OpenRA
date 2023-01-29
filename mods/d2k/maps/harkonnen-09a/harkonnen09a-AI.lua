@@ -34,8 +34,8 @@ CorrinoSmallTankTypes = { "combat_tank_h", "combat_tank_h", "siege_tank" }
 CorrinoStarportTypes = { "trike.starport", "trike.starport", "quad.starport", "combat_tank_h.starport", "combat_tank_h.starport", "siege_tank.starport", "missile_tank.starport" }
 
 ActivateAI = function()
-	IdlingUnits[AtreidesMain] = Reinforcements.Reinforce(AtreidesMain, InitialAtreidesReinforcements[1], InitialAtreidesPaths[1]), Reinforcements.Reinforce(AtreidesMain, InitialAtreidesReinforcements[2], InitialAtreidesPaths[2]), Reinforcements.Reinforce(AtreidesMain, InitialAtreidesReinforcements[3], InitialAtreidesPaths[3])
-	IdlingUnits[AtreidesSmall1] = Reinforcements.Reinforce(AtreidesSmall1, InitialAtreidesReinforcements[4], InitialAtreidesPaths[4]), Reinforcements.Reinforce(AtreidesSmall1, InitialAtreidesReinforcements[5], InitialAtreidesPaths[5])
+	IdlingUnits[AtreidesMain] = Utils.Concat(Reinforcements.Reinforce(AtreidesMain, InitialAtreidesReinforcements[1], InitialAtreidesPaths[1]), Utils.Concat(Reinforcements.Reinforce(AtreidesMain, InitialAtreidesReinforcements[2], InitialAtreidesPaths[2]), Reinforcements.Reinforce(AtreidesMain, InitialAtreidesReinforcements[3], InitialAtreidesPaths[3])))
+	IdlingUnits[AtreidesSmall1] = Utils.Concat(Reinforcements.Reinforce(AtreidesSmall1, InitialAtreidesReinforcements[4], InitialAtreidesPaths[4]), Reinforcements.Reinforce(AtreidesSmall1, InitialAtreidesReinforcements[5], InitialAtreidesPaths[5]))
 	IdlingUnits[AtreidesSmall2] = Reinforcements.Reinforce(AtreidesSmall2, InitialAtreidesReinforcements[6], InitialAtreidesPaths[6])
 	IdlingUnits[CorrinoMain] = Reinforcements.Reinforce(CorrinoMain, InitialCorrinoReinforcements, InitialCorrinoPaths[1])
 	IdlingUnits[CorrinoSmall] = Reinforcements.Reinforce(CorrinoMain, InitialCorrinoReinforcements, InitialCorrinoPaths[2])
