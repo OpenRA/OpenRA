@@ -85,6 +85,20 @@ namespace OpenRA.Mods.Common.Scripting
 			return t;
 		}
 
+		[Desc("Concatenates two Lua tables into a single table.")]
+		public LuaTable Concat(LuaValue[] firstCollection, LuaValue[] secondCollection)
+		{
+			var t = Context.CreateTable();
+
+			foreach (var e in firstCollection)
+				t.Add(t.Count + 1, e);
+
+			foreach (var e in secondCollection)
+				t.Add(t.Count + 1, e);
+
+			return t;
+		}
+
 		[Desc("Returns a random value from a collection.")]
 		public LuaValue Random(LuaValue[] collection)
 		{
