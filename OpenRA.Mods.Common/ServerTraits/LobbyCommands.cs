@@ -787,9 +787,9 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				Exts.TryParseIntegerInvariant(split[0], out var kickClientID);
+				var kickConn = Exts.TryParseIntegerInvariant(split[0], out var kickClientID)
+					? server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == kickClientID) : null;
 
-				var kickConn = server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == kickClientID);
 				if (kickConn == null)
 				{
 					server.SendLocalizedMessageTo(conn, KickNone);
@@ -838,8 +838,8 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				Exts.TryParseIntegerInvariant(s, out var newAdminId);
-				var newAdminConn = server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == newAdminId);
+				var newAdminConn = Exts.TryParseIntegerInvariant(s, out var newAdminId)
+					? server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == newAdminId) : null;
 
 				if (newAdminConn == null)
 				{
@@ -875,8 +875,9 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				Exts.TryParseIntegerInvariant(s, out var targetId);
-				var targetConn = server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == targetId);
+				var targetConn = Exts.TryParseIntegerInvariant(s, out var targetId)
+					? server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == targetId) : null;
+
 				if (targetConn == null)
 				{
 					server.SendLocalizedMessageTo(conn, EmptySlot);
