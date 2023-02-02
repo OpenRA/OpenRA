@@ -62,22 +62,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public static void PlayFMVInRadar(string videoFileName, Action onComplete)
 		{
 			var player = Ui.Root.Get<VideoPlayerWidget>("PLAYER");
-
-			try
-			{
-				player.LoadAndPlay(videoFileName);
-			}
-			catch (FileNotFoundException)
-			{
-				onComplete();
-				return;
-			}
-
-			player.PlayThen(() =>
-			{
-				onComplete();
-				player.CloseVideo();
-			});
+			player.LoadAndPlayAsync(videoFileName, onComplete);
 		}
 	}
 }
