@@ -10,6 +10,8 @@
 #endregion
 
 using System;
+using System.IO;
+using System.Threading.Tasks;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Video;
@@ -50,11 +52,56 @@ namespace OpenRA.Mods.Common.Widgets
 			if (filename == cachedVideoFileName)
 				return;
 
+			cachedVideoFileName = filename;
 			var stream = Game.ModData.DefaultFileSystem.Open(filename);
 			var video = VideoLoader.GetVideo(stream, true, Game.ModData.VideoLoaders);
 			Play(video);
+		}
+
+		/// <summary>
+		/// Tries to load a video from the specified file and play it. Does nothing if the file name matches the already loaded video.
+		/// </summary>
+		/// <param name="filename">Name of the file, including the extension.</param>
+		/// <param name="after">Action to perform after the video ends.</param>
+		public void LoadAndPlayAsync(string filename, Action after)
+		{
+			if (filename == cachedVideoFileName)
+				return;
 
 			cachedVideoFileName = filename;
+
+			if (!stopped)
+				CloseVideo();
+
+			Task.Run(() =>
+			{
+				try
+				{
+					var stream = Game.ModData.DefaultFileSystem.Open(filename);
+					var video = VideoLoader.GetVideo(stream, true, Game.ModData.VideoLoaders);
+
+					// Safeguard against race conditions with two videos being loaded at the same time - prefer to play only the last one.
+					if (filename != cachedVideoFileName)
+					{
+						after();
+						return;
+					}
+
+					Game.RunAfterTick(() =>
+					{
+						Play(video);
+						PlayThen(() =>
+						{
+							after();
+							CloseVideo();
+						});
+					});
+				}
+				catch (FileNotFoundException)
+				{
+					after();
+				}
+			});
 		}
 
 		/// <summary>
@@ -239,7 +286,14 @@ namespace OpenRA.Mods.Common.Widgets
 			Game.Sound.StopVideo();
 			video.Reset();
 			videoSprite.Sheet.GetTexture().SetData(video.CurrentFrameData, textureSize, textureSize);
-			Game.RunAfterTick(onComplete);
+			Game.RunAfterTick(() =>
+			{
+				if (onComplete != null)
+				{
+					onComplete();
+					onComplete = null;
+				}
+			});
 		}
 
 		public void CloseVideo()
