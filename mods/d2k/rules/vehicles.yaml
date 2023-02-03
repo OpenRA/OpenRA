@@ -20,7 +20,7 @@ mcv:
 	Armor:
 		Type: light
 	Encyclopedia:
-		Description: The Mobile Construction Vehicle must be driven to a suitable deployment area. After locating an appropriate area of rock, the MCV can be transformed into a Construction Yard.\n\nMCVs are resistant to bullets and some high explosives. They are vulnerable to missiles and high caliber guns.
+		Description: The Mobile Construction Vehicle must be driven to a suitable deployment area. After locating an appropriate area of rock, the MCV can be transformed into a Construction Yard.\n\nMCVs are resistant to bullets and light explosives. They are vulnerable to missiles and high caliber guns.
 		Order: 180
 		Category: Units
 	Mobile:
@@ -192,7 +192,7 @@ quad:
 		Weapon: Rocket
 		LocalOffset: 128,64,64, 128,-64,64
 	Encyclopedia:
-		Description: Stronger than the Trike in both armor and firepower, the Quad is a four-wheeled vehicle firing armor-piercing rockets. The Quad is effective against most vehicles.\n\nQuads are resistant to bullets and high explosives, to a lesser degree. However, Quads are vulnerable to missiles and high caliber guns.
+		Description: Stronger than the Trike in both armor and firepower, the Quad is a four-wheeled vehicle firing armor-piercing rockets. The Quad is effective against most vehicles.\n\nQuads are resistant to bullets and explosives, to a lesser degree. However, Quads are vulnerable to missiles and high caliber guns.
 		Order: 110
 		Category: Units
 	AttackFrontal:
@@ -227,7 +227,7 @@ siege_tank:
 	Armor:
 		Type: light
 	Encyclopedia:
-		Description: Siege Tanks are very effective against infantry and lightly armored vehicles - but very weak against heavily armored targets. They fire over a long range.\n\nSiege Tanks are resistant to bullets, and to some degree, high explosives. These units are vulnerable to missiles and high caliber guns.
+		Description: Siege Tanks are very effective against infantry and lightly armored vehicles - but very weak against heavily armored targets. They fire over a long range.\n\nSiege Tanks are resistant to bullets, and to some degree, explosives. These units are vulnerable to missiles and high caliber guns.
 		Order: 170
 		Category: Units
 	Mobile:
@@ -341,7 +341,7 @@ sonic_tank:
 		Weapon: Sound
 		LocalOffset: 600,0,427
 	Encyclopedia:
-		Description: The Sonic Tank is most effective against infantry and lightly armored vehicles - but weaker against armored targets.\n\nThe Sonic Tank will damage all units in its firing path.\n\nThey are very resistant to bullets and high explosives, but vulnerable to missiles and high caliber guns.
+		Description: The Sonic Tank is most effective against infantry and lightly armored vehicles - but weaker against armored targets.\n\nThe Sonic Tank will damage all units in its firing path.\n\nThey are very resistant to bullets and small explosives, but vulnerable to missiles and high caliber guns.
 		Order: 200
 		Category: Units
 	AttackFrontal:
