@@ -626,7 +626,7 @@ combat_tank_h:
 	Tooltip:
 		Name: Harkonnen Combat Tank
 	Encyclopedia:
-		Description: The Combat Tank is effective against most vehicles, less so against lightly armored vehicles.\n\nThe Harkonnen Combat Tank is stronger but slower.
+		Description: The Combat Tank is effective against most vehicles, less so against lightly armored vehicles.\n\nThe Harkonnen Combat Tank is stronger than its counterparts, but also slower.
 		Order: 160
 		Category: Units
 	Buildable:
@@ -649,7 +649,7 @@ combat_tank_o:
 	Turreted:
 		TurnSpeed: 20
 	Encyclopedia:
-		Description: The Combat Tank is effective against most vehicles, less so against lightly armored vehicles.\n\nThe Ordos Combat Tank is faster but weaker.
+		Description: The Combat Tank is effective against most vehicles, less so against lightly armored vehicles.\n\nThe Ordos Combat Tank is the fastest variant of the Combat Tank, but it is also the weakest.
 		Order: 150
 		Category: Units
 	Armament:
