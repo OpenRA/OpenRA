@@ -226,7 +226,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 									foreach (var kv in download.Extract)
 									{
 										if (!package.Contains(kv.Value))
+										{
+											Log.Write("install", $"Downloaded package does not contain {kv.Value} - skipping.");
 											continue;
+										}
 
 										onExtractProgress(modData.Translation.GetString(ExtractingEntry, Translation.Arguments("entry", kv.Value)));
 										Log.Write("install", "Extracting " + kv.Value);
