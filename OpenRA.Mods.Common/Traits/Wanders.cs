@@ -36,9 +36,9 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Wanders : ConditionalTrait<WandersInfo>, INotifyIdle, INotifyBecomingIdle
 	{
-		readonly Actor self;
 		readonly WandersInfo info;
-		IResolveOrder move;
+		readonly IMoveInfo moveInfo;
+		protected readonly IMove Move;
 
 		int countdown;
 		int ticksIdle;
@@ -47,17 +47,11 @@ namespace OpenRA.Mods.Common.Traits
 		public Wanders(Actor self, WandersInfo info)
 			: base(info)
 		{
-			this.self = self;
 			this.info = info;
 			effectiveMoveRadius = info.WanderMoveRadius;
 			countdown = self.World.SharedRandom.Next(info.MinMoveDelay, info.MaxMoveDelay);
-		}
-
-		protected override void Created(Actor self)
-		{
-			move = self.Trait<IMove>() as IResolveOrder;
-
-			base.Created(self);
+			Move = self.Trait<IMove>();
+			moveInfo = self.Info.TraitInfo<IMoveInfo>();
 		}
 
 		protected virtual void OnBecomingIdle(Actor self)
@@ -78,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (--countdown > 0)
 				return;
 
-			var targetCell = PickTargetLocation();
+			var targetCell = PickTargetLocation(self);
 			if (targetCell.HasValue)
 				DoAction(self, targetCell.Value);
 		}
@@ -88,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 			TickIdle(self);
 		}
 
-		CPos? PickTargetLocation()
+		CPos? PickTargetLocation(Actor self)
 		{
 			var target = self.CenterPosition + new WVec(0, -1024 * effectiveMoveRadius, 0).Rotate(WRot.FromFacing(self.World.SharedRandom.Next(255)));
 			var targetCell = self.World.Map.CellContaining(target);
@@ -118,7 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void DoAction(Actor self, CPos targetCell)
 		{
-			move.ResolveOrder(self, new Order("Move", self, Target.FromCell(self.World, targetCell), false));
+			self.QueueActivity(Move.MoveTo(targetCell, targetLineColor: moveInfo.GetTargetLineColor()));
 		}
 	}
 }

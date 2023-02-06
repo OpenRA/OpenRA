@@ -9,6 +9,7 @@
  */
 #endregion
 
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -32,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override void DoAction(Actor self, CPos targetCell)
 		{
-			attackMove.ResolveOrder(self, new Order("AttackMove", self, Target.FromCell(self.World, targetCell), false));
+			self.QueueActivity(new AttackMoveActivity(self, () => Move.MoveTo(targetCell, targetLineColor: attackMove.Info.TargetLineColor), false));
 		}
 	}
 }
