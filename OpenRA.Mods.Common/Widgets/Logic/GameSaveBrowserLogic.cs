@@ -312,14 +312,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void SelectFirstVisible()
 		{
 			Select(isSavePanel ? null : games.FirstOrDefault());
+			if (isSavePanel)
+			{
+				saveTextField.TakeKeyboardFocus();
+				saveTextField.CursorPosition = saveTextField.Text.Length;
+			}
 		}
 
 		void Select(string savePath)
 		{
 			selectedSave = savePath;
 			if (isSavePanel)
-				saveTextField.Text = savePath == null ? defaultSaveFilename :
-					Path.GetFileNameWithoutExtension(savePath);
+			{
+				saveTextField.Text = savePath == null ? defaultSaveFilename : Path.GetFileNameWithoutExtension(savePath);
+				saveTextField.CursorPosition = saveTextField.Text.Length;
+			}
 		}
 
 		void Load()
