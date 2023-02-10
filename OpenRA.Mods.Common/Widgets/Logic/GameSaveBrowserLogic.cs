@@ -120,6 +120,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				saveTextField = saveWidgets.Get<TextFieldWidget>("SAVE_TEXTFIELD");
 				gameList.Bounds.Height -= saveWidgets.Bounds.Height;
 				saveWidgets.IsVisible = () => true;
+
+				saveTextField.OnEnterKey = _ =>
+				{
+					if (!string.IsNullOrWhiteSpace(saveTextField.Text))
+						Save(world);
+
+					return true;
+				};
 			}
 			else
 			{
