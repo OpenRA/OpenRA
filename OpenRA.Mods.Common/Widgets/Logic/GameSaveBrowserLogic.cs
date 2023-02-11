@@ -374,7 +374,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				onExit();
 			}
 
-			if (selectedSave != null || File.Exists(testPath))
+			if (File.Exists(testPath))
 			{
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: OverwriteSaveTitle,
