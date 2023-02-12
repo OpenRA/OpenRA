@@ -246,6 +246,8 @@ namespace OpenRA.Mods.Common.Traits
 		bool CanBeReserved { get; }
 		WPos LinkPosition { get; }
 		int LinkWait { get; }
+
+		// TODO: This will need to be changed once aircraft are aware of LinkFacing when calculating flight path.
 		WAngle LinkFacing { get; }
 
 		/// <summary>Can this <paramref name="client"/> link at this <see cref="ILinkHost"/>.</summary>
