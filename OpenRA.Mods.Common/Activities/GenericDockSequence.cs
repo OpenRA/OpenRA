@@ -202,7 +202,7 @@ namespace OpenRA.Mods.Common.Activities
 			foreach (var nd in notifyDockClients)
 				nd.Unlinked(self, LinkHostActor);
 
-			if (LinkHostActor.IsInWorld && !LinkHostActor.IsDead)
+			if (!LinkHostActor.IsDead)
 				foreach (var nd in notifyLinkHosts)
 					nd.Unlinked(LinkHostActor, self);
 		}
