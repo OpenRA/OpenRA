@@ -53,54 +53,54 @@ c1:
 		Tick: 1600
 
 c2:
+	Inherits: c1
 	Defaults:
 		Filename: c2.shp
-	Inherits: c1
 
 c3:
+	Inherits: c1
 	Defaults:
 		Filename: c3.shp
-	Inherits: c1
 
 c4:
+	Inherits: c1
 	Defaults:
 		Filename: c4.shp
-	Inherits: c1
 
 c5:
+	Inherits: c1
 	Defaults:
 		Filename: c5.shp
-	Inherits: c1
 
 c6:
+	Inherits: c1
 	Defaults:
 		Filename: c6.shp
-	Inherits: c1
 
 c7:
+	Inherits: c1
 	Defaults:
 		Filename: c7.shp
-	Inherits: c1
 
 c8:
+	Inherits: c1
 	Defaults:
 		Filename: c8.shp
-	Inherits: c1
 
 c9:
+	Inherits: c1
 	Defaults:
 		Filename: c9.shp
-	Inherits: c1
 
 c10:
+	Inherits: c1
 	Defaults:
 		Filename: c10.shp
-	Inherits: c1
 
 delphi:
+	Inherits: c1
 	Defaults:
 		Filename: delphi.shp
-	Inherits: c1
 
 moebius:
 	Defaults:
@@ -145,7 +145,7 @@ moebius:
 		Length: 4
 		Tick: 1600
 
-chan:
+chan:	
+	Inherits: moebius
 	Defaults:
 		Filename: chan.shp
-	Inherits: moebius

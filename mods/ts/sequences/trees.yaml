@@ -10,25 +10,25 @@
 		Tick: 160
 
 tibtre01:
+	Inherits: ^tibtree
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: tibtre01.tem
 			SNOW: tibtre01.sno
-	Inherits: ^tibtree
 
 tibtre02:
+	Inherits: ^tibtree
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: tibtre02.tem
 			SNOW: tibtre02.sno
-	Inherits: ^tibtree
 
 tibtre03:
+	Inherits: ^tibtree
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: tibtre03.tem
 			SNOW: tibtre03.sno
-	Inherits: ^tibtree
 
 bigblue:
 	Defaults:

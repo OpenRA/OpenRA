@@ -46,9 +46,9 @@ vice:
 		Filename: viceicnh.shp
 
 pvice:
+	Inherits: vice
 	Defaults:
 		Filename: pvice.shp
-	Inherits: vice
 
 e1:
 	Defaults:
