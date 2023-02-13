@@ -94,18 +94,18 @@ e1.nod:
 		Filename: sidebar-nod|e1icon.shp
 
 e2:
-	Defaults:
-		Filename: e2.shp
 	Inherits: ^BasicInfantry
 	Inherits@attack: ^BasicInfantryAttack
+	Defaults:
+		Filename: e2.shp
 	icon:
 		Filename: e2icon.shp
 
 e3:
-	Defaults:
-		Filename: e3.shp
 	Inherits: ^BasicInfantry
 	Inherits@attack: ^BasicInfantryAttack
+	Defaults:
+		Filename: e3.shp
 	icon:
 		Filename: e4icon.shp
 
@@ -124,82 +124,82 @@ engineer.nod:
 		Filename: sidebar-nod|engnicon.shp
 
 umagon:
-	Defaults:
-		Filename: umagon.shp
 	Inherits: ^BasicInfantry
 	Inherits@attack: ^BasicInfantryAttack
+	Defaults:
+		Filename: umagon.shp
 	icon:
 		Filename: umagicon.shp
 
 ghost:
-	Defaults:
-		Filename: ghost.shp
 	Inherits: ^BasicInfantry
 	Inherits@attack: ^BasicInfantryAttack
+	Defaults:
+		Filename: ghost.shp
 	icon:
 		Filename: gosticon.shp
 
 mhijack:
+	Inherits: ^BasicInfantry
 	Defaults:
 		Filename: mhijack.shp
-	Inherits: ^BasicInfantry
 	icon:
 		Filename: chamicon.shp
 
 chamspy:
+	Inherits: ^BasicInfantry
 	Defaults:
 		Filename: chamspy.shp
-	Inherits: ^BasicInfantry
 	icon:
 		Filename: chamicon.shp
 
 mutant:
-	Defaults:
-		Filename: mutant.shp
 	Inherits: ^BasicInfantry
 	Inherits@attack: ^BasicInfantryAttack
+	Defaults:
+		Filename: mutant.shp
 	icon:
 		Filename: mutcicon.shp
 
 mwmn:
-	Defaults:
-		Filename: mwmn.shp
 	Inherits: ^BasicInfantry
 	Inherits@attack: ^BasicInfantryAttack
+	Defaults:
+		Filename: mwmn.shp
 	icon:
 		Filename: mutcicon.shp
 
 mutant3:
-	Defaults:
-		Filename: mutant3.shp
 	Inherits: ^BasicInfantry
 	Inherits@attack: ^BasicInfantryAttack
+	Defaults:
+		Filename: mutant3.shp
 	icon:
 		Filename: mutcicon.shp
 
 tratos:
+	Inherits: ^BasicInfantry
 	Defaults:
 		Filename: tratos.shp
-	Inherits: ^BasicInfantry
 	icon:
 		Filename: mutcicon.shp
 
 oxanna:
+	Inherits: ^BasicInfantry
+	Inherits@attack: ^BasicInfantryAttack
 	Defaults:
 		Filename: oxanna.shp
-	Inherits: ^BasicInfantry
-	Inherits@attack: ^BasicInfantryAttack
 
 slav:
-	Defaults:
-		Filename: slav.shp
 	Inherits: ^BasicInfantry
 	Inherits@attack: ^BasicInfantryAttack
+	Defaults:
+		Filename: slav.shp
 
 civ1:
+	Inherits: ^BasicInfantry
 	Defaults:
 		Filename: civ1.shp
-	Inherits: ^BasicInfantry
 	attack:
 		Start: 164
 		Length: 6
@@ -221,9 +221,9 @@ civ1:
 		ShadowStart: 292
 
 civ2:
+	Inherits: ^BasicInfantry
 	Defaults:
 		Filename: civ2.shp
-	Inherits: ^BasicInfantry
 	panic-run:
 		Start: 86
 		Length: 6
@@ -234,9 +234,9 @@ civ2:
 		ShadowStart: 292
 
 civ3:
+	Inherits: civ1
 	Defaults:
 		Filename: civ3.shp
-	Inherits: civ1
 
 cyborg:
 	Defaults:

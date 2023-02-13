@@ -55,44 +55,44 @@ ammocrat:
 		DepthSpriteOffset: -24, 0
 
 aban01:
+	Inherits: ^aban2x6
 	Defaults:
 		Filename: aban01.shp
-	Inherits: ^aban2x6
 
 aban02:
+	Inherits: ^aban5x3
 	Defaults:
 		Filename: aban02.shp
-	Inherits: ^aban5x3
 
 aban03:
+	Inherits: ^aban2x5
 	Defaults:
 		Filename: aban03.shp
-	Inherits: ^aban2x5
 
 aban04:
+	Inherits: ^aban4x2
 	Defaults:
 		Filename: aban04.shp
-	Inherits: ^aban4x2
 
 aban05:
+	Inherits: ^aban3x2
 	Defaults:
 		Filename: aban05.shp
-	Inherits: ^aban3x2
 
 aban06:
+	Inherits: ^aban2x2
 	Defaults:
 		Filename: aban06.shp
-	Inherits: ^aban2x2
 
 aban07:
+	Inherits: ^aban2x2
 	Defaults:
 		Filename: aban07.shp
-	Inherits: ^aban2x2
 
 aban08:
+	Inherits: ^aban2x2
 	Defaults:
 		Filename: aban08.shp
-	Inherits: ^aban2x2
 
 aban09:
 	Inherits: ^aban2x2
@@ -101,9 +101,9 @@ aban09:
 		Offset: 2, -20, 24
 
 aban10:
+	Inherits: ^aban2x2
 	Defaults:
 		Filename: aban10.shp
-	Inherits: ^aban2x2
 
 aban11:
 	Inherits: ^aban2x2
@@ -124,9 +124,9 @@ aban13:
 		Offset: 0, -10, 12
 
 aban14:
+	Inherits: ^aban1x1
 	Defaults:
 		Filename: aban14.shp
-	Inherits: ^aban1x1
 
 aban15:
 	Inherits: ^aban1x1
@@ -135,19 +135,19 @@ aban15:
 		Offset: 0, -10, 12
 
 aban16:
+	Inherits: ^aban2x2
 	Defaults:
 		Filename: aban16.shp
-	Inherits: ^aban2x2
 
 aban17:
+	Inherits: ^aban1x1
 	Defaults:
 		Filename: aban17.shp
-	Inherits: ^aban1x1
 
 aban18:
+	Inherits: ^aban1x1
 	Defaults:
 		Filename: aban18.shp
-	Inherits: ^aban1x1
 
 ^bboard1x1:
 	Defaults:
@@ -177,84 +177,84 @@ aban18:
 		ShadowStart: 3
 
 bboard01:
+	Inherits: ^bboard1x1
 	Defaults:
 		Filename: bboard01.shp
-	Inherits: ^bboard1x1
 
 bboard02:
+	Inherits: ^bboard1x1
 	Defaults:
 		Filename: bboard02.shp
-	Inherits: ^bboard1x1
 
 bboard03:
+	Inherits: ^bboard1x1
 	Defaults:
 		Filename: bboard03.shp
-	Inherits: ^bboard1x1
 
 bboard04:
+	Inherits: ^bboard1x1
 	Defaults:
 		Filename: bboard04.shp
-	Inherits: ^bboard1x1
 
 bboard05:
+	Inherits: ^bboard1x1
 	Defaults:
 		Filename: bboard05.shp
-	Inherits: ^bboard1x1
 
 bboard06:
+	Inherits: ^bboard1x2
 	Defaults:
 		Filename: bboard06.shp
-	Inherits: ^bboard1x2
 
 bboard07:
+	Inherits: ^bboard1x2
 	Defaults:
 		Filename: bboard07.shp
-	Inherits: ^bboard1x2
 
 bboard08:
+	Inherits: ^bboard1x2
 	Defaults:
 		Filename: bboard08.shp
-	Inherits: ^bboard1x2
 
 bboard09:
+	Inherits: ^bboard1x1
 	Defaults:
 		Filename: bboard09.shp
-	Inherits: ^bboard1x1
 
 bboard10:
+	Inherits: ^bboard1x1
 	Defaults:
 		Filename: bboard10.shp
-	Inherits: ^bboard1x1
 
 bboard11:
+	Inherits: ^bboard1x1
 	Defaults:
 		Filename: bboard11.shp
-	Inherits: ^bboard1x1
 
 bboard12:
+	Inherits: ^bboard1x1
 	Defaults:
 		Filename: bboard12.shp
-	Inherits: ^bboard1x1
 
 bboard13:
+	Inherits: ^bboard1x1
 	Defaults:
 		Filename: bboard13.shp
-	Inherits: ^bboard1x1
 
 bboard14:
+	Inherits: ^bboard2x1
 	Defaults:
 		Filename: bboard14.shp
-	Inherits: ^bboard2x1
 
 bboard15:
+	Inherits: ^bboard2x1
 	Defaults:
 		Filename: bboard15.shp
-	Inherits: ^bboard2x1
 
 bboard16:
+	Inherits: ^bboard2x1
 	Defaults:
 		Filename: bboard16.shp
-	Inherits: ^bboard2x1
 
 ^cabase:
 	Defaults:
@@ -299,151 +299,151 @@ bboard16:
 		Offset: 0, -24, 24
 
 ca0001:
+	Inherits: ^ca3x3
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0001.shp
 			SNOW: ca0001.shp
-	Inherits: ^ca3x3
 
 ca0002:
+	Inherits: ^ca3x3
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0002.shp
 			SNOW: ca0002.shp
-	Inherits: ^ca3x3
 
 ca0003:
+	Inherits: ^ca2x2
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0003.shp
 			SNOW: ca0003.shp
-	Inherits: ^ca2x2
 
 ca0004:
+	Inherits: ^ca2x2
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0004.shp
 			SNOW: ca0004.shp
-	Inherits: ^ca2x2
 
 ca0005:
+	Inherits: ^ca1x2
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0005.shp
 			SNOW: ca0005.shp
-	Inherits: ^ca1x2
 
 ca0006:
+	Inherits: ^ca1x2
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0006.shp
 			SNOW: ca0006.shp
-	Inherits: ^ca1x2
 
 ca0007:
+	Inherits: ^ca1x2
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0007.shp
 			SNOW: ca0007.shp
-	Inherits: ^ca1x2
 
 ca0008:
+	Inherits: ^ca2x3
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0008.shp
 			SNOW: ca0008.shp
-	Inherits: ^ca2x3
 
 ca0009:
+	Inherits: ^ca2x3
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0009.shp
 			SNOW: ca0009.shp
-	Inherits: ^ca2x3
 
 ca0010:
+	Inherits: ^ca2x2
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0010.shp
 			SNOW: ca0010.shp
-	Inherits: ^ca2x2
 
 ca0011:
+	Inherits: ^ca1x2
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0011.shp
 			SNOW: ca0011.shp
-	Inherits: ^ca1x2
 
 ca0012:
+	Inherits: ^ca1x2
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0012.shp
 			SNOW: ca0012.shp
-	Inherits: ^ca1x2
 
 ca0013:
+	Inherits: ^ca2x1
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0013.shp
 			SNOW: ca0013.shp
-	Inherits: ^ca2x1
 
 ca0014:
+	Inherits: ^ca1x1
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0014.shp
 			SNOW: ca0014.shp
-	Inherits: ^ca1x1
 
 ca0015:
+	Inherits: ^ca1x1
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0015.shp
 			SNOW: ca0015.shp
-	Inherits: ^ca1x1
 
 ca0016:
+	Inherits: ^ca1x1
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0016.shp
 			SNOW: ca0016.shp
-	Inherits: ^ca1x1
 
 ca0017:
+	Inherits: ^ca1x1
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0017.shp
 			SNOW: ca0017.shp
-	Inherits: ^ca1x1
 
 ca0018:
+	Inherits: ^ca1x2
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0018.shp
 			SNOW: ca0018.shp
-	Inherits: ^ca1x2
 
 ca0019:
+	Inherits: ^ca1x2
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0019.shp
 			SNOW: ca0019.shp
-	Inherits: ^ca1x2
 
 ca0020:
+	Inherits: ^ca1x2
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0020.shp
 			SNOW: ca0020.shp
-	Inherits: ^ca1x2
 
 ca0021:
+	Inherits: ^ca1x2
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ct0021.shp
 			SNOW: ca0021.shp
-	Inherits: ^ca1x2
 
 caarmr:
 	Defaults:
@@ -638,29 +638,29 @@ city01:
 		Offset: -12, -30, 36
 
 city02:
+	Inherits: ^city2x3
 	Defaults:
 		Filename: city02.shp
-	Inherits: ^city2x3
 
 city03:
+	Inherits: ^city3x2
 	Defaults:
 		Filename: city03.shp
-	Inherits: ^city3x2
 
 city04:
+	Inherits: ^city3x2
 	Defaults:
 		Filename: city04.shp
-	Inherits: ^city3x2
 
 city05:
+	Inherits: ^city3x2
 	Defaults:
 		Filename: city05.shp
-	Inherits: ^city3x2
 
 city06:
+	Inherits: ^city4x2
 	Defaults:
 		Filename: city06.shp
-	Inherits: ^city4x2
 
 city07:
 	Inherits: ^city4x2
@@ -669,44 +669,44 @@ city07:
 		Offset: -12, -30, 36
 
 city08:
+	Inherits: ^city2x2
 	Defaults:
 		Filename: city08.shp
-	Inherits: ^city2x2
 
 city09:
+	Inherits: ^city2x2
 	Defaults:
 		Filename: city09.shp
-	Inherits: ^city2x2
 
 city10:
+	Inherits: ^city2x2
 	Defaults:
 		Filename: city10.shp
-	Inherits: ^city2x2
 
 city11:
+	Inherits: ^city2x2
 	Defaults:
 		Filename: city11.shp
-	Inherits: ^city2x2
 
 city12:
+	Inherits: ^city2x2
 	Defaults:
 		Filename: city12.shp
-	Inherits: ^city2x2
 
 city13:
+	Inherits: ^city2x2
 	Defaults:
 		Filename: city13.shp
-	Inherits: ^city2x2
 
 city14:
+	Inherits: ^city1x1
 	Defaults:
 		Filename: city14.shp
-	Inherits: ^city1x1
 
 city15:
+	Inherits: ^city4x2
 	Defaults:
 		Filename: city15.shp
-	Inherits: ^city4x2
 
 city16:
 	Inherits: ^city4x2
@@ -715,34 +715,34 @@ city16:
 		Offset: -24, -30, 36
 
 city17:
+	Inherits: ^city4x3
 	Defaults:
 		Filename: city17.shp
-	Inherits: ^city4x3
 
 city18:
+	Inherits: ^city3x5
 	Defaults:
 		Filename: city18.shp
-	Inherits: ^city3x5
 
 city19:
+	Inherits: ^city2x2
 	Defaults:
 		Filename: city19.shp
-	Inherits: ^city2x2
 
 city20:
+	Inherits: ^city1x1
 	Defaults:
 		Filename: city20.shp
-	Inherits: ^city1x1
 
 city21:
+	Inherits: ^city1x1
 	Defaults:
 		Filename: city21.shp
-	Inherits: ^city1x1
 
 city22:
+	Inherits: ^city2x2
 	Defaults:
 		Filename: city22.shp
-	Inherits: ^city2x2
 
 ctdam:
 	Defaults:

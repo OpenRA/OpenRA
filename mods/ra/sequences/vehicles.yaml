@@ -44,14 +44,14 @@ harv:
 		Start: 0
 
 harvempty:
+	Inherits: harv
 	Defaults:
 		Filename: harvempty.shp
-	Inherits: harv
 
 harvhalf:
+	Inherits: harv
 	Defaults:
 		Filename: harvhalf.shp
-	Inherits: harv
 
 hhusk:
 	idle:
