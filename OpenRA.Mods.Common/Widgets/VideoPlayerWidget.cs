@@ -144,6 +144,13 @@ namespace OpenRA.Mods.Common.Widgets
 					var videoScale = Math.Min((float)RenderBounds.Width / video.Width, RenderBounds.Height / (video.Height * AspectRatio));
 					var halfRowHeight = (int)(videoScale * scale / 2 + 0.5f);
 
+					// If the video is "too tightly packed" into the player and there is no room for drawing an overlay disable it.
+					if (halfRowHeight == 0)
+					{
+						DrawOverlay = false;
+						return;
+					}
+
 					// The overlay can be minimally stored in a 1px column which is stretched to cover the full screen
 					var overlayHeight = (int)(RenderBounds.Height * scale / halfRowHeight);
 					var overlaySheetSize = new Size(1, Exts.NextPowerOf2(overlayHeight));
