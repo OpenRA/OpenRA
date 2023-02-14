@@ -245,6 +245,12 @@ dialog4:
 	Inherits: ^Dialog
 	PanelRegion: 512, 387, 6, 6, 52, 52, 6, 6
 
+# Dummy definition, partial copy of dialog because the widget definition in `common` expects it with this name.
+dialog5:
+	Inherits: ^Dialog
+	Regions:
+		background: 1, 1, 478, 478
+
 lobby-bits:
 	Inherits: ^Glyphs
 	Regions:
