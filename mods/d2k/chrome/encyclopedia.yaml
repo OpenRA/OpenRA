@@ -54,7 +54,7 @@ Background@ENCYCLOPEDIA_PANEL:
 					Children:
 						Background@ACTOR_BG:
 							Width: 150
-							Height: 150
+							Height: 170
 							Background: dialog3
 							Children:
 								ActorPreview@ACTOR_PREVIEW:
@@ -65,13 +65,13 @@ Background@ENCYCLOPEDIA_PANEL:
 						ScrollPanel@ACTOR_DESCRIPTION_PANEL:
 							X: 150 + 10
 							Width: PARENT_RIGHT - 150 - 10
-							Height: 150
+							Height: 170
 							TopBottomSpacing: 8
 							Children:
 								Label@ACTOR_DESCRIPTION:
 									X: 8
 									Y: 8
-									Width: PARENT_RIGHT - 32
+									Width: PARENT_RIGHT - 40
 									VAlign: Top
 									Font: Regular
 		Button@BACK_BUTTON:
