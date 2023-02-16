@@ -281,7 +281,7 @@ namespace OpenRA.Mods.Common.Traits
 				barrel = Weapon.Burst == 1 ? Barrels[currentBarrel] : Barrels[Burst % Barrels.Length];
 				currentBarrel++;
 
-				FireBarrel(self, facing, target, barrel);
+				FireBarrel(self, facing, target, barrel, Burst == Weapon.Burst, i == 0);
 				Burst--;
 			}
 
@@ -290,7 +290,7 @@ namespace OpenRA.Mods.Common.Traits
 			return barrel;
 		}
 
-		protected virtual void FireBarrel(Actor self, IFacing facing, in Target target, Barrel barrel)
+		protected virtual void FireBarrel(Actor self, IFacing facing, in Target target, Barrel barrel, bool reportFirstBurst, bool reportBurstFire)
 		{
 			foreach (var na in notifyAttacks)
 				na.PreparingAttack(self, target, this, barrel);
@@ -345,10 +345,10 @@ namespace OpenRA.Mods.Common.Traits
 					if (projectile != null)
 						self.World.Add(projectile);
 
-					if (args.Weapon.Report != null && args.Weapon.Report.Length > 0)
+					if (reportBurstFire && args.Weapon.Report != null && args.Weapon.Report.Length > 0)
 						Game.Sound.Play(SoundType.World, args.Weapon.Report, self.World, self.CenterPosition);
 
-					if (burst == args.Weapon.Burst && args.Weapon.StartBurstReport != null && args.Weapon.StartBurstReport.Length > 0)
+					if (reportFirstBurst && args.Weapon.StartBurstReport != null && args.Weapon.StartBurstReport.Length > 0)
 						Game.Sound.Play(SoundType.World, args.Weapon.StartBurstReport, self.World, self.CenterPosition);
 
 					foreach (var na in notifyAttacks)
