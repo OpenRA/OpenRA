@@ -91,16 +91,10 @@ GACTWR:
 		RequiresCondition: !build-incomplete && tower.sam
 		Recoils: false
 		Sequence: turret-sam
-	Armament@VULCPRIMARY:
+	Armament@VULCAN:
 		RequiresCondition: tower.vulcan
 		Weapon: VulcanTower
-		LocalOffset: 588,120,1358
-		MuzzleSequence: muzzle
-	Armament@VULCSECONDARY:
-		RequiresCondition: tower.vulcan
-		Name: secondary
-		Weapon: VulcanTower
-		LocalOffset: 588,-120,1358
+		LocalOffset: 588,120,1358, 588,-120,1358
 		MuzzleSequence: muzzle
 	Armament@ROCKET:
 		RequiresCondition: tower.rocket

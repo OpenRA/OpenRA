@@ -210,6 +210,8 @@ Vulcan:
 
 ChainGun:
 	Inherits: ^HeavyMG
+	Burst: 2
+	BurstDelays: 0
 	ReloadDelay: 10
 	Range: 5c0
 	MinRange: 0c768
@@ -221,6 +223,8 @@ ChainGun:
 
 ChainGun.Yak:
 	Inherits: ^HeavyMG
+	Burst: 2
+	BurstDelays: 0
 	ReloadDelay: 3
 	Range: 5c0
 	MinRange: 3c0
@@ -325,5 +329,5 @@ Colt45:
 	ReloadDelay: 7
 	Range: 7c0
 	Warhead@1Dam: SpreadDamage
-		Damage: 5000
+		Damage: 10000
 

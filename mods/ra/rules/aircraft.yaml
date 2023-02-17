@@ -164,15 +164,9 @@ YAK:
 	RevealsShroud@GAPGEN:
 		Range: 9c0
 		Type: GroundPosition
-	Armament@PRIMARY:
+	Armament:
 		Weapon: ChainGun.Yak
-		LocalOffset: 256,-213,0
-		MuzzleSequence: muzzle
-		PauseOnCondition: !ammo
-	Armament@SECONDARY:
-		Name: secondary
-		Weapon: ChainGun.Yak
-		LocalOffset: 256,213,0
+		LocalOffset: 256,-213,0, 256,213,0
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	AttackAircraft:
@@ -383,15 +377,9 @@ HIND:
 	RevealsShroud@GAPGEN:
 		Range: 8c0
 		Type: GroundPosition
-	Armament@PRIMARY:
+	Armament:
 		Weapon: ChainGun
 		LocalOffset: 85,-213,-85, 85,213,-85
-		MuzzleSequence: muzzle
-		PauseOnCondition: !ammo
-	Armament@SECONDARY:
-		Name: secondary
-		Weapon: ChainGun
-		LocalOffset: 85,213,-85, 85,-213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	AttackAircraft:
@@ -507,15 +495,9 @@ MH60:
 	RevealsShroud@GAPGEN:
 		Range: 8c0
 		Type: GroundPosition
-	Armament@PRIMARY:
+	Armament:
 		Weapon: ChainGun
 		LocalOffset: 85,-213,-85, 85,213,-85
-		MuzzleSequence: muzzle
-		PauseOnCondition: !ammo
-	Armament@SECONDARY:
-		Name: secondary
-		Weapon: ChainGun
-		LocalOffset: 85,213,-85, 85,-213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	AttackAircraft:

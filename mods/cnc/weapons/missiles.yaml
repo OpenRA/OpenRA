@@ -147,7 +147,7 @@ MammothMissiles:
 	Range: 11c0
 	MinRange: 3c0
 	Burst: 4
-	BurstDelays: 4
+	BurstDelays: 0, 4, 0
 	Report: rocket1.aud
 	ValidTargets: Ground, Water
 	TargetActorCenter: true

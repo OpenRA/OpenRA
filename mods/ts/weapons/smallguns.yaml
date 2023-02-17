@@ -62,6 +62,8 @@ VulcanTower:
 	Inherits: ^MG
 	ReloadDelay: 26
 	Range: 6c0
+	Burst: 2
+	BurstDelays: 0
 	Report: chaingn1.aud
 	Warhead@1Dam: SpreadDamage
 		Damage: 1800

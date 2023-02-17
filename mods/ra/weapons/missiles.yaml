@@ -209,6 +209,8 @@ APTusk:
 	Inherits: ^AntiGroundMissile
 	ReloadDelay: 60
 	Range: 6c0
+	Burst: 2
+	BurstDelays: 0
 	Projectile: Missile
 		Speed: 298
 		TrailImage: smokey
@@ -218,6 +220,7 @@ APTusk:
 APTusk.stnk:
 	Inherits: APTusk
 	ReloadDelay: 100
+	Burst: 1
 
 TorpTube:
 	ReloadDelay: 100
