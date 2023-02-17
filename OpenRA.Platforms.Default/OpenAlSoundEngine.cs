@@ -350,6 +350,11 @@ namespace OpenRA.Platforms.Default
 			((OpenAlSound)sound)?.SetLooping(looping);
 		}
 
+		public void SetSoundPosition(ISound sound, WPos position)
+		{
+			((OpenAlSound)sound)?.SetPosition(position);
+		}
+
 		~OpenAlSoundEngine()
 		{
 			Dispose(false);
