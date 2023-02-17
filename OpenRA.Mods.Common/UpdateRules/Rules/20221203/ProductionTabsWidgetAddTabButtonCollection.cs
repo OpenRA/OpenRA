@@ -33,11 +33,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}
 
 			if (buttonCollection != null)
-			{
 				chromeNode.AddNode(new MiniYamlNode("ArrowButton", buttonCollection));
-			}
-
-			yield break;
 		}
 	}
 }

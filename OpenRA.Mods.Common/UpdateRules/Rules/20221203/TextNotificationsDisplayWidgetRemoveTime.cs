@@ -32,8 +32,6 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				var durationMilliseconds = field.NodeValue<int>() * 40;
 				field.ReplaceValue(FieldSaver.FormatValue(durationMilliseconds));
 			}
-
-			yield break;
 		}
 	}
 }

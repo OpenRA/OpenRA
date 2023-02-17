@@ -315,8 +315,6 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			foreach (var sequenceNode in imageNode.Value.Nodes.ToList())
 				if (implicitInheritedSequences.Contains(sequenceNode.Key) && !sequenceNode.Value.Nodes.Any())
 					imageNode.RemoveNode(sequenceNode);
-
-			yield break;
 		}
 
 		void ProcessNode(ModData modData, MiniYamlNode sequenceNode, MiniYamlNode resolvedSequenceNode, string imageName)
