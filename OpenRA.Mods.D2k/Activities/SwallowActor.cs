@@ -85,15 +85,7 @@ namespace OpenRA.Mods.D2k.Activities
 			if (affectedPlayers.Contains(self.World.LocalPlayer))
 				TextNotificationsManager.AddTransientLine(self.World.LocalPlayer, swallow.Info.WormAttackTextNotification);
 
-			var barrel = armament.CheckFire(self, facing, target);
-			if (barrel == null)
-				return false;
-
-			// armament.CheckFire already calls INotifyAttack.PreparingAttack
-			foreach (var notify in self.TraitsImplementing<INotifyAttack>())
-				notify.Attacking(self, target, armament, barrel);
-
-			return true;
+			return armament.CheckFire(self, facing, target, true);
 		}
 
 		public override bool Tick(Actor self)
