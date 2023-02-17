@@ -57,7 +57,9 @@ namespace OpenRA.Network
 		bool generateSyncReport = false;
 		int sentOrdersFrame = 0;
 		float tickScale = 1f;
-		bool outOfSync = false;
+
+		/// <Remarks> Should only be set in <see cref="OutOfSync"/></Remarks>
+		public bool IsOutOfSync { get; private set; } = false;
 
 		public struct ClientOrder
 		{
@@ -72,12 +74,12 @@ namespace OpenRA.Network
 
 		void OutOfSync(int frame)
 		{
-			if (outOfSync)
+			if (IsOutOfSync)
 				return;
 
 			syncReport.DumpSyncReport(frame);
 			World.OutOfSync();
-			outOfSync = true;
+			IsOutOfSync = true;
 
 			TextNotificationsManager.AddSystemLine($"Out of sync in frame {frame}.\nCompare syncreport.log with other players.");
 		}

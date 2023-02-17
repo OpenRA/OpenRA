@@ -618,6 +618,9 @@ namespace OpenRA
 		public void OutOfSync()
 		{
 			EndGame();
+
+			// In the event the replay goes out of sync, it becomes no longer usable. For polish we permanently pause the world.
+			ReplayTimestep = 0;
 		}
 	}
 
