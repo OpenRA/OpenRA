@@ -223,12 +223,7 @@ namespace OpenRA.Scripting
 
 			FatalErrorOccurred = true;
 
-			World.AddFrameEndTask(w =>
-			{
-				World.EndGame();
-				World.SetPauseState(true);
-				World.PauseStateLocked = true;
-			});
+			World.AddFrameEndTask(w => World.EndGame());
 		}
 
 		public void RegisterMapActor(string name, Actor a)

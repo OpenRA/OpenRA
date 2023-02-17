@@ -68,15 +68,19 @@ namespace OpenRA
 		public Player LocalPlayer { get; private set; }
 
 		public event Action GameOver = () => { };
+
+		/// <Remarks> Should only be set in <see cref="EndGame"/></Remarks>
 		public bool IsGameOver { get; private set; }
 		public void EndGame()
 		{
 			if (!IsGameOver)
 			{
+				SetPauseState(true);
 				IsGameOver = true;
 
 				foreach (var t in WorldActor.TraitsImplementing<IGameOver>())
 					t.GameOver(this);
+
 				gameInfo.FinalGameTick = WorldTick;
 				GameOver();
 			}
@@ -381,7 +385,6 @@ namespace OpenRA
 
 		public bool Paused { get; internal set; }
 		public bool PredictedPaused { get; internal set; }
-		public bool PauseStateLocked { get; set; }
 
 		public int WorldTick { get; private set; }
 
@@ -393,7 +396,7 @@ namespace OpenRA
 
 		public void SetPauseState(bool paused)
 		{
-			if (PauseStateLocked)
+			if (IsGameOver)
 				return;
 
 			IssueOrder(Order.FromTargetString("PauseGame", paused ? "Pause" : "UnPause", false));
@@ -615,8 +618,6 @@ namespace OpenRA
 		public void OutOfSync()
 		{
 			EndGame();
-			SetPauseState(true);
-			PauseStateLocked = true;
 		}
 	}
 
