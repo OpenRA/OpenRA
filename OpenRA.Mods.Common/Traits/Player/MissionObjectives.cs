@@ -165,12 +165,8 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				Game.RunAfterDelay(Info.GameOverDelay, () =>
 				{
-					if (!Game.IsCurrentWorld(player.World))
-						return;
-
-					player.World.EndGame();
-					player.World.SetPauseState(true);
-					player.World.PauseStateLocked = true;
+					if (Game.IsCurrentWorld(player.World))
+						player.World.EndGame();
 				});
 			}
 		}

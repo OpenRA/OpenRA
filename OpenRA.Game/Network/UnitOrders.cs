@@ -182,7 +182,7 @@ namespace OpenRA.Network
 							var pause = order.TargetString == "Pause";
 
 							// Prevent injected unpause orders from restarting a finished game
-							if (orderManager.World.PauseStateLocked && !pause)
+							if (orderManager.World.IsGameOver && !pause)
 								break;
 
 							if (orderManager.World.Paused != pause && world != null && world.LobbyInfo.NonBotClients.Count() > 1)
