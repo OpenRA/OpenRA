@@ -29,6 +29,7 @@ namespace OpenRA
 		void SetListenerPosition(WPos position);
 		void SetSoundVolume(float volume, ISound music, ISound video);
 		void SetSoundLooping(bool looping, ISound sound);
+		void SetSoundPosition(ISound sound, WPos position);
 	}
 
 	public class SoundDevice

@@ -129,9 +129,14 @@ namespace OpenRA
 			soundEngine.StopAllSounds();
 		}
 
-		public void EndLoop(ISound sound)
+		public void SetLooped(ISound sound, bool looped)
 		{
-			soundEngine.SetSoundLooping(false, sound);
+			soundEngine.SetSoundLooping(looped, sound);
+		}
+
+		public void SetPosition(ISound sound, WPos position)
+		{
+			soundEngine.SetSoundPosition(sound, position);
 		}
 
 		public void MuteAudio()
