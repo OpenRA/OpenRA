@@ -101,6 +101,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (WeaponInfo.Burst > 1 && WeaponInfo.BurstDelays.Length > 1 && (WeaponInfo.BurstDelays.Length != WeaponInfo.Burst - 1))
 				throw new YamlException($"Weapon '{weaponToLower}' has an invalid number of BurstDelays, must be single entry or Burst - 1.");
 
+			if (WeaponInfo.ReloadDelay <= 0)
+				throw new YamlException($"Weapon '{weaponToLower}' ReloadDelay value must not be equal to or lower than 0");
+
 			base.RulesetLoaded(rules, ai);
 		}
 	}
@@ -251,26 +254,32 @@ namespace OpenRA.Mods.Common.Traits
 
 		// Note: facing is only used by the legacy positioning code
 		// The world coordinate model uses Actor.Orientation
-		public virtual Barrel CheckFire(Actor self, IFacing facing, in Target target)
+		public virtual bool CheckFire(Actor self, IFacing facing, in Target target, bool notifyAttacking)
 		{
 			if (!CanFire(self, target))
-				return null;
+				return false;
 
 			if (ticksSinceLastShot >= Weapon.ReloadDelay)
 				Burst = Weapon.Burst;
 
 			ticksSinceLastShot = 0;
+			do
+			{
+				// If Weapon.Burst == 1, cycle through all LocalOffsets, otherwise use the offset corresponding to current Burst
+				currentBarrel %= barrelCount;
+				var barrel = Weapon.Burst == 1 ? Barrels[currentBarrel] : Barrels[Burst % Barrels.Length];
+				currentBarrel++;
 
-			// If Weapon.Burst == 1, cycle through all LocalOffsets, otherwise use the offset corresponding to current Burst
-			currentBarrel %= barrelCount;
-			var barrel = Weapon.Burst == 1 ? Barrels[currentBarrel] : Barrels[Burst % Barrels.Length];
-			currentBarrel++;
+				FireBarrel(self, facing, target, barrel);
+				UpdateBurst(self, target);
 
-			FireBarrel(self, facing, target, barrel);
+				if (notifyAttacking)
+					foreach (var notify in notifyAttacks)
+						notify.Attacking(self, target, this, barrel);
+			}
+			while (FireDelay == 0 && CanFire(self, target));
 
-			UpdateBurst(self, target);
-
-			return barrel;
+			return true;
 		}
 
 		protected virtual void FireBarrel(Actor self, IFacing facing, in Target target, Barrel barrel)
