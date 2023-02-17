@@ -20,7 +20,7 @@ E3:
 		HP: 10000
 	Mobile:
 		Speed: 56
-	Armament@PRIMARY:
+	Armament:
 		Weapon: Bazooka
 		LocalOffset: 356,0,967
 	TakeCover:

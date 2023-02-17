@@ -594,13 +594,9 @@ MSAM:
 	Turreted:
 		TurnSpeed: 512
 		Offset: -256,0,128
-	Armament@PRIMARY:
+	Armament:
 		Weapon: 227mm
 		LocalOffset: 213,128,0, 213,-128,0
-	Armament@SECONDARY:
-		Name: secondary
-		Weapon: 227mm
-		LocalOffset: 213,-128,0, 213,128,0
 	AttackFrontal:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True

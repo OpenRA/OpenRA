@@ -771,7 +771,7 @@ DTRK:
 		DamageSource: Killer
 	AttackFrontal:
 		FacingTolerance: 512
-	Armament@PRIMARY:
+	Armament:
 		Weapon: DemoTruckTargeting
 	GrantConditionOnAttack:
 		Condition: triggered
@@ -812,14 +812,10 @@ CTNK:
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
 		Range: 4c0
-	Armament@PRIMARY:
+	Armament:
 		Weapon: APTusk
-		LocalOffset: -160,-276,232
-		LocalYaw: 60
-	Armament@SECONDARY:
-		Weapon: APTusk
-		LocalOffset: -160,276,232
-		LocalYaw: -60
+		LocalOffset: -160,-276,232, -160,276,232
+		LocalYaw: 60, -60
 	AttackFrontal:
 		FacingTolerance: 0
 	PortableChrono:

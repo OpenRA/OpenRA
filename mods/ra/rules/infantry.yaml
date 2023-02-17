@@ -427,9 +427,6 @@ E7:
 	Armament@PRIMARY:
 		Weapon: Colt45
 		LocalOffset: 0,0,0, 0,0,0
-	Armament@SECONDARY:
-		Weapon: Colt45
-		LocalOffset: 0,0,0, 0,0,0
 	Armament@GARRISONED:
 		Name: garrisoned
 		Weapon: Colt45
