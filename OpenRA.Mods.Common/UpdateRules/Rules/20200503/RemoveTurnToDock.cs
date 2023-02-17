@@ -50,8 +50,6 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 				turningAircraft.Add(Tuple.Create(actorNode.Key, actorNode.Location.Filename));
 			}
-
-			yield break;
 		}
 	}
 }

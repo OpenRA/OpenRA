@@ -35,9 +35,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}
 
 			foreach (var scNode in actorNode.ChildrenMatching("ScaredyCat"))
-			{
 				scNode.RenameChildrenMatching("PanicLength", "PanicDuration");
-			}
 
 			yield break;
 		}

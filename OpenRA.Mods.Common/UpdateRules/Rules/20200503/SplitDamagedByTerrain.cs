@@ -28,8 +28,6 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				if (damaged.RemoveNodes("StartOnThreshold") > 0)
 					yield return $"'StartOnThreshold' was removed from {actorNode.Key} ({actorNode.Location.Filename}) without replacement.\n";
 			}
-
-			yield break;
 		}
 	}
 }

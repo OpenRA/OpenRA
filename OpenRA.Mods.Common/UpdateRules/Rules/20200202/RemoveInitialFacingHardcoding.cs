@@ -53,8 +53,6 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 				nonVTOLs.Add(Tuple.Create(actorNode.Key, actorNode.Location.Filename));
 			}
-
-			yield break;
 		}
 	}
 }
