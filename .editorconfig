@@ -144,6 +144,9 @@ dotnet_diagnostic.IDE0034.severity = warning
 # Modifiers are not ordered.
 dotnet_diagnostic.IDE0036.severity = warning
 
+# Use local function instead of lambda.
+dotnet_diagnostic.IDE0039.severity = silent
+
 # Raise a warning on build when default access modifiers are explicitly specified.
 dotnet_diagnostic.IDE0040.severity = warning
 
