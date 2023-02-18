@@ -80,7 +80,7 @@ install_assemblies() (
 			done
 		fi
 	else
-		dotnet publish -c Release -p:TargetPlatform="${TARGETPLATFORM}" -p:CopyGenericLauncher="${COPY_GENERIC_LAUNCHER}" -p:CopyCncDll="${COPY_CNC_DLL}" -p:CopyD2kDll="${COPY_D2K_DLL}" -r "${TARGETPLATFORM}" -o "${DEST_PATH}" --self-contained true
+		dotnet publish -c Release -p:TargetPlatform="${TARGETPLATFORM}" -p:CopyGenericLauncher="${COPY_GENERIC_LAUNCHER}" -p:CopyCncDll="${COPY_CNC_DLL}" -p:CopyD2kDll="${COPY_D2K_DLL}" -r "${TARGETPLATFORM}" -p:PublishDir="${DEST_PATH}" --self-contained true
 	fi
 	cd "${ORIG_PWD}"
 )
@@ -156,7 +156,7 @@ install_windows_launcher() (
 	FAQ_URL="${7}"
 
 	rm -rf "${SRC_PATH}/OpenRA.WindowsLauncher/obj" || :
-	dotnet publish "${SRC_PATH}/OpenRA.WindowsLauncher/OpenRA.WindowsLauncher.csproj" -c Release -r "${TARGETPLATFORM}" -p:LauncherName="${LAUNCHER_NAME}" -p:TargetPlatform="${TARGETPLATFORM}" -p:ModID="${MOD_ID}" -p:DisplayName="${MOD_NAME}" -p:FaqUrl="${FAQ_URL}" -o "${DEST_PATH}" --self-contained true
+	dotnet publish "${SRC_PATH}/OpenRA.WindowsLauncher/OpenRA.WindowsLauncher.csproj" -c Release -r "${TARGETPLATFORM}" -p:LauncherName="${LAUNCHER_NAME}" -p:TargetPlatform="${TARGETPLATFORM}" -p:ModID="${MOD_ID}" -p:DisplayName="${MOD_NAME}" -p:FaqUrl="${FAQ_URL}" -p:PublishDir="${DEST_PATH}" --self-contained true
 
 	# NET 6 is unable to customize the application host for windows when compiling from Linux,
 	# so we must patch the properties we need in the PE header.
