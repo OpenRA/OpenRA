@@ -38,7 +38,11 @@ end
 ---@param description string key of the translation string
 ---@return number id used to query for the objective later
 AddPrimaryObjective = function(player, description)
-	local translation = UserInterface.Translate(description)
+	local translation = description
+	if translation ~= "" then
+		translation = UserInterface.Translate(description)
+	end
+
 	Media.DisplayMessageToPlayer(player, translation, UserInterface.Translate("new-primary-objective"))
 	return player.AddObjective(translation, UserInterface.Translate("primary"), true)
 end
@@ -48,7 +52,11 @@ end
 ---@param description string key of the translation string
 ---@return number id used to query for the objective later
 AddSecondaryObjective = function(player, description)
-	local translation = UserInterface.Translate(description)
+	local translation = description
+	if translation ~= "" then
+		translation = UserInterface.Translate(description)
+	end
+
 	Media.DisplayMessageToPlayer(player, translation, UserInterface.Translate("new-secondary-objective"))
 	return player.AddObjective(translation, UserInterface.Translate("secondary"), false)
 end
