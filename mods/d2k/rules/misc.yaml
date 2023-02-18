@@ -339,7 +339,7 @@ deathhand:
 	Tooltip:
 		Name: Death Hand
 	Encyclopedia:
-		Description: The Death Hand Missiles' warhead carries atomic cluster munitions. It detonates above the target, inflicting great damage over a wide area.
+		Description: The Death Hand warhead carries atomic cluster munitions. It detonates above the target, inflicting great damage over a wide area.
 		Order: 250
 		Category: Super Weapons
 	Buildable:

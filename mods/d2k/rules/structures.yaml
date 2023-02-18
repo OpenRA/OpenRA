@@ -833,7 +833,7 @@ large_gun_turret:
 	Tooltip:
 		Name: Rocket Turret
 	Encyclopedia:
-		Description: The substantially improved Rocket Turret has a longer range and a higher rate of fire than the Gun Turret. The Rocket Turret's advanced targeting equipment requires power to operate.\n\nThe Rocket Turret is resistant to bullet and explosive weapons, but vulnerable to missiles and high caliber guns.
+		Description: The substantially improved Rocket Turret has a longer range and a higher rate of fire than the Gun Turret. The Rocket Turret's advanced targeting equipment requires power to operate.\n\nThe Rocket Turret is resistant to bullet and explosive weapons, but vulnerable to missiles and high-caliber guns.
 		Category: Buildings
 		Order: 110
 	RequiresBuildableArea:
