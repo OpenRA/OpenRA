@@ -188,7 +188,7 @@ namespace OpenRA.Network
 			public (string[] Names, Values Values) NamesValues;
 		}
 
-		struct TypeInfo
+		readonly struct TypeInfo
 		{
 			static readonly ParameterExpression SyncParam = Expression.Parameter(typeof(ISync), "sync");
 			static readonly ConstantExpression NullString = Expression.Constant(null, typeof(string));

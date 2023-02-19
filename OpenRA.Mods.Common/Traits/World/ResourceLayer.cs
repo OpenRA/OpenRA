@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public struct ResourceLayerContents
+	public readonly struct ResourceLayerContents
 	{
 		public static readonly ResourceLayerContents Empty = default;
 		public readonly string Type;
