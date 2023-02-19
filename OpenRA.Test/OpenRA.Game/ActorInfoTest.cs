@@ -82,10 +82,10 @@ namespace OpenRA.Test
 			var actorInfo = new ActorInfo("test", new MockBInfo(), new MockCInfo());
 			var ex = Assert.Throws<YamlException>(() => actorInfo.TraitsInConstructOrder());
 
-			StringAssert.Contains(typeof(MockBInfo).Name, ex.Message, "Exception message did not report a missing dependency.");
-			StringAssert.Contains(typeof(MockCInfo).Name, ex.Message, "Exception message did not report a missing dependency.");
-			StringAssert.Contains(typeof(MockInheritInfo).Name, ex.Message, "Exception message did not report a missing dependency (from a base class).");
-			StringAssert.Contains(typeof(IMock).Name, ex.Message, "Exception message did not report a missing dependency (from an interface).");
+			StringAssert.Contains(nameof(MockBInfo), ex.Message, "Exception message did not report a missing dependency.");
+			StringAssert.Contains(nameof(MockCInfo), ex.Message, "Exception message did not report a missing dependency.");
+			StringAssert.Contains(nameof(MockInheritInfo), ex.Message, "Exception message did not report a missing dependency (from a base class).");
+			StringAssert.Contains(nameof(IMock), ex.Message, "Exception message did not report a missing dependency (from an interface).");
 		}
 
 		[TestCase(TestName = "Trait ordering allows optional dependencies to be missing")]
@@ -104,9 +104,9 @@ namespace OpenRA.Test
 			var actorInfo = new ActorInfo("test", new MockDInfo(), new MockEInfo(), new MockFInfo());
 			var ex = Assert.Throws<YamlException>(() => actorInfo.TraitsInConstructOrder());
 
-			StringAssert.Contains(typeof(MockDInfo).Name, ex.Message, "Exception message should report all cyclic dependencies.");
-			StringAssert.Contains(typeof(MockEInfo).Name, ex.Message, "Exception message should report all cyclic dependencies.");
-			StringAssert.Contains(typeof(MockFInfo).Name, ex.Message, "Exception message should report all cyclic dependencies.");
+			StringAssert.Contains(nameof(MockDInfo), ex.Message, "Exception message should report all cyclic dependencies.");
+			StringAssert.Contains(nameof(MockEInfo), ex.Message, "Exception message should report all cyclic dependencies.");
+			StringAssert.Contains(nameof(MockFInfo), ex.Message, "Exception message should report all cyclic dependencies.");
 		}
 
 		[TestCase(TestName = "Trait ordering exception reports cyclic optional dependencies")]
@@ -115,9 +115,9 @@ namespace OpenRA.Test
 			var actorInfo = new ActorInfo("test", new MockJInfo(), new MockKInfo(), new MockLInfo());
 			var ex = Assert.Throws<YamlException>(() => actorInfo.TraitsInConstructOrder());
 
-			StringAssert.Contains(typeof(MockJInfo).Name, ex.Message, "Exception message should report all cyclic dependencies.");
-			StringAssert.Contains(typeof(MockKInfo).Name, ex.Message, "Exception message should report all cyclic dependencies.");
-			StringAssert.Contains(typeof(MockLInfo).Name, ex.Message, "Exception message should report all cyclic dependencies.");
+			StringAssert.Contains(nameof(MockJInfo), ex.Message, "Exception message should report all cyclic dependencies.");
+			StringAssert.Contains(nameof(MockKInfo), ex.Message, "Exception message should report all cyclic dependencies.");
+			StringAssert.Contains(nameof(MockLInfo), ex.Message, "Exception message should report all cyclic dependencies.");
 		}
 	}
 }
