@@ -163,7 +163,7 @@ namespace OpenRA.Platforms.Default
 				{
 					fixed (byte* ptr = &data[0])
 					{
-						var intPtr = new IntPtr((void*)ptr);
+						var intPtr = new IntPtr(ptr);
 						OpenGL.glGetTexImage(OpenGL.GL_TEXTURE_2D, 0, OpenGL.GL_BGRA,
 							OpenGL.GL_UNSIGNED_BYTE, intPtr);
 					}

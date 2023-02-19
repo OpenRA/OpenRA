@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				if (dropdownColumns.Count == 0)
 				{
-					row = dropdownRowTemplate.Clone() as Widget;
+					row = dropdownRowTemplate.Clone();
 					row.Bounds.Y = optionsContainer.Bounds.Height;
 					optionsContainer.Bounds.Height += row.Bounds.Height;
 					foreach (var child in row.Children)

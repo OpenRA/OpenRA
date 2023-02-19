@@ -181,7 +181,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			return !double.IsNaN(attackChance) && attackChance < 30.0;
 		}
 
-		static float NormalizedHealth(IEnumerable<Actor> actors, float normalizeByValue)
+		static float NormalizedHealth(IEnumerable<Actor> actors, int normalizeByValue)
 		{
 			var sumOfMaxHp = 0;
 			var sumOfHp = 0;

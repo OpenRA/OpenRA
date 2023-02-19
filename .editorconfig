@@ -135,6 +135,9 @@ dotnet_diagnostic.IDE0001.severity = warning
 # Simplify member access.
 dotnet_diagnostic.IDE0002.severity = warning
 
+# Remove unnecessary cast.
+dotnet_diagnostic.IDE0004.severity = warning
+
 # Use 'var' instead of explicit type.
 dotnet_diagnostic.IDE0007.severity = warning
 
