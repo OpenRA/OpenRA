@@ -156,6 +156,9 @@ dotnet_diagnostic.IDE0028.severity = warning
 # Use coalesce expression (non-nullable types).
 dotnet_diagnostic.IDE0029.severity = warning
 
+# Use coalesce expression (nullable types).
+dotnet_diagnostic.IDE0030.severity = warning
+
 # Simplify 'default' expression
 dotnet_diagnostic.IDE0034.severity = warning
 
