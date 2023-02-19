@@ -176,9 +176,8 @@ namespace OpenRA.Scripting
 				return new LuaCustomClrObject(obj);
 			}
 
-			if (obj is Array)
+			if (obj is Array array)
 			{
-				var array = (Array)obj;
 				var i = 1;
 				var table = context.CreateTable();
 
