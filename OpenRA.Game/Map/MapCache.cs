@@ -137,7 +137,7 @@ namespace OpenRA
 			IReadOnlyPackage mapPackage = null;
 			try
 			{
-				using (new Support.PerfTimer(map))
+				using (new PerfTimer(map))
 				{
 					mapPackage = package.OpenPackage(map, modData.ModFiles);
 					if (mapPackage != null)
