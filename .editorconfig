@@ -177,7 +177,10 @@ dotnet_diagnostic.IDE0041.severity = warning
 # Make field readonly.
 dotnet_diagnostic.IDE0044.severity = warning
 
-# Unused private member.
+# Remove unused private member.
+dotnet_diagnostic.IDE0051.severity = warning
+
+# Remove unread private member.
 dotnet_diagnostic.IDE0052.severity = warning
 
 # Unnecessary value assignment.
