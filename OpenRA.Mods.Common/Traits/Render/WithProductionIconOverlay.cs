@@ -27,10 +27,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			foreach (var type in Types)
 			{
-				if (!rules.Actors[SystemActors.Player].TraitInfos<ProductionIconOverlayManagerInfo>().Where(piom => piom.Type == type).Any())
+				if (!rules.Actors[SystemActors.Player].TraitInfos<ProductionIconOverlayManagerInfo>().Any(piom => piom.Type == type))
 					throw new YamlException($"A 'ProductionIconOverlayManager' with type '{type}' doesn't exist.");
 
-				if (ai.TraitInfos<WithProductionIconOverlayInfo>().Where(wpio => wpio != this && wpio.Types.Contains(type)).Any())
+				if (ai.TraitInfos<WithProductionIconOverlayInfo>().Any(wpio => wpio != this && wpio.Types.Contains(type)))
 					throw new YamlException($"Multiple 'WithProductionIconOverlay's with type '{type}' exist on the actor.");
 			}
 		}

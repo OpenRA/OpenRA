@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public virtual void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			if (rules.Actors[SystemActors.Player].TraitInfos<ProductionIconOverlayManagerInfo>().Where(piom => piom != this && piom.Type == Type).Any())
+			if (rules.Actors[SystemActors.Player].TraitInfos<ProductionIconOverlayManagerInfo>().Any(piom => piom != this && piom.Type == Type))
 				throw new YamlException($"Multiple 'ProductionIconOverlayManager's with type '{Type}' exist.");
 		}
 
