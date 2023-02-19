@@ -151,10 +151,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 							Console.WriteLine("\t\tDimensions: " + dimensions.First() + "," + dimensions.Last());
 
 							Console.Write("\t\tFootprint:");
-							var width = 0;
-							int.TryParse(dimensions.First(), out width);
-							var height = 0;
-							int.TryParse(dimensions.Last(), out height);
+							int.TryParse(dimensions.First(), out var width);
+							int.TryParse(dimensions.Last(), out var height);
 							for (var y = 0; y < height; y++)
 							{
 								Console.Write(" ");
