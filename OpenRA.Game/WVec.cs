@@ -102,7 +102,7 @@ namespace OpenRA
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }
 
 		public bool Equals(WVec other) { return other == this; }
-		public override bool Equals(object obj) { return obj is WVec && Equals((WVec)obj); }
+		public override bool Equals(object obj) { return obj is WVec vec && Equals(vec); }
 
 		public override string ToString() { return X + "," + Y + "," + Z; }
 

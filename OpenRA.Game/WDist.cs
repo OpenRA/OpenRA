@@ -93,7 +93,7 @@ namespace OpenRA
 		public override int GetHashCode() { return Length.GetHashCode(); }
 
 		public bool Equals(WDist other) { return other == this; }
-		public override bool Equals(object obj) { return obj is WDist && Equals((WDist)obj); }
+		public override bool Equals(object obj) { return obj is WDist dist && Equals(dist); }
 
 		public int CompareTo(object obj)
 		{

@@ -72,7 +72,7 @@ namespace OpenRA
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode(); }
 
 		public bool Equals(float2 other) { return this == other; }
-		public override bool Equals(object obj) { return obj is float2 && Equals((float2)obj); }
+		public override bool Equals(object obj) { return obj is float2 vec && Equals(vec); }
 
 		public override string ToString() { return X + "," + Y; }
 

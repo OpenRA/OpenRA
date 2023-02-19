@@ -109,10 +109,9 @@ namespace OpenRA.Scripting
 			}
 
 			// Translate LuaTable<int, object> -> object[]
-			if (value is LuaTable && t.IsArray)
+			if (value is LuaTable table && t.IsArray)
 			{
 				var innerType = t.GetElementType();
-				var table = (LuaTable)value;
 				var array = Array.CreateInstance(innerType, table.Count);
 				var i = 0;
 
@@ -149,23 +148,25 @@ namespace OpenRA.Scripting
 
 		public static LuaValue ToLuaValue(this object obj, ScriptContext context)
 		{
-			if (obj is LuaValue)
-				return (LuaValue)obj;
+			{
+				if (obj is LuaValue v)
+					return v;
 
-			if (obj == null)
-				return LuaNil.Instance;
+				if (obj == null)
+					return LuaNil.Instance;
 
-			if (obj is double)
-				return (double)obj;
+				if (obj is double d)
+					return d;
 
-			if (obj is int)
-				return (int)obj;
+				if (obj is int i)
+					return i;
 
-			if (obj is bool)
-				return (bool)obj;
+				if (obj is bool b)
+					return b;
 
-			if (obj is string)
-				return (string)obj;
+				if (obj is string s)
+					return s;
+			}
 
 			if (obj is IScriptBindable)
 			{

@@ -190,7 +190,7 @@ namespace OpenRA
 		public override int GetHashCode() { return Roll.GetHashCode() ^ Pitch.GetHashCode() ^ Yaw.GetHashCode(); }
 
 		public bool Equals(WRot other) { return other == this; }
-		public override bool Equals(object obj) { return obj is WRot && Equals((WRot)obj); }
+		public override bool Equals(object obj) { return obj is WRot rot && Equals(rot); }
 
 		public override string ToString() { return Roll + "," + Pitch + "," + Yaw; }
 

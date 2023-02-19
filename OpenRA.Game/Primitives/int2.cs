@@ -37,7 +37,7 @@ namespace OpenRA
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode(); }
 
 		public bool Equals(int2 other) { return this == other; }
-		public override bool Equals(object obj) { return obj is int2 && Equals((int2)obj); }
+		public override bool Equals(object obj) { return obj is int2 vec && Equals(vec); }
 
 		public override string ToString() { return X + "," + Y; }
 

@@ -116,7 +116,7 @@ namespace OpenRA.Primitives
 		public static bool operator !=(LongBitSet<T> me, LongBitSet<T> other) { return !(me == other); }
 
 		public bool Equals(LongBitSet<T> other) { return other == this; }
-		public override bool Equals(object obj) { return obj is LongBitSet<T> && Equals((LongBitSet<T>)obj); }
+		public override bool Equals(object obj) { return obj is LongBitSet<T> set && Equals(set); }
 		public override int GetHashCode() { return bits.GetHashCode(); }
 
 		public bool IsEmpty => bits == 0;

@@ -58,7 +58,7 @@ namespace OpenRA
 		public override int GetHashCode() { return M11 ^ M22 ^ M33 ^ M44; }
 
 		public bool Equals(Int32Matrix4x4 other) { return other == this; }
-		public override bool Equals(object obj) { return obj is Int32Matrix4x4 && Equals((Int32Matrix4x4)obj); }
+		public override bool Equals(object obj) { return obj is Int32Matrix4x4 matrix && Equals(matrix); }
 
 		public override string ToString()
 		{
