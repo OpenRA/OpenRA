@@ -172,7 +172,7 @@ namespace OpenRA.Mods.Common.Terrain
 			if (r.Index >= template.Stride)
 				return missingTile;
 
-			var start = template.Variants > 1 ? variant.HasValue ? variant.Value : random.Next(template.Variants) : 0;
+			var start = template.Variants > 1 ? variant ?? random.Next(template.Variants) : 0;
 			return template.Sprites[start * template.Stride + r.Index];
 		}
 

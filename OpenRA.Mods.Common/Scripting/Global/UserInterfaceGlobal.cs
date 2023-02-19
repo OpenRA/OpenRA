@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Scripting.Global
 			var luaLabel = Ui.Root.Get("INGAME_ROOT").Get<LabelWidget>("MISSION_TEXT");
 			luaLabel.GetText = () => text;
 
-			var c = color.HasValue ? color.Value : Color.White;
+			var c = color ?? Color.White;
 			luaLabel.GetColor = () => c;
 		}
 
