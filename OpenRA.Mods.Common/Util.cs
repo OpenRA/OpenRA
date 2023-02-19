@@ -142,10 +142,8 @@ namespace OpenRA.Mods.Common
 			for (var i = 0; i < items.Length - 1; i++)
 			{
 				var j = random.Next(items.Length - i);
-				var item = items[i + j];
-				items[i + j] = items[i];
-				items[i] = item;
-				yield return item;
+				(items[i], items[i + j]) = (items[i + j], items[i]);
+				yield return items[i];
 			}
 
 			if (items.Length > 0)
