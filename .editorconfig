@@ -121,6 +121,9 @@ dotnet_style_predefined_type_for_member_access = true
 # IDE0049, IDE-only counterpart of StyleCopAnalyzers - SA1121: UseBuiltInTypeAlias.
 dotnet_style_predefined_type_for_locals_parameters_members = true
 
+# Use expression body if a local function is a single line.
+csharp_style_expression_bodied_local_functions = when_on_single_line
+
 ## Others:
 
 # Show an IDE warning when default access modifiers are explicitly specified.
@@ -191,6 +194,9 @@ dotnet_diagnostic.IDE0059.severity = warning
 
 # Unused parameter.
 dotnet_diagnostic.IDE0060.severity = warning
+
+# Use expression body for local functions.
+dotnet_diagnostic.IDE0061.severity = warning
 
 # Naming rule violation.
 dotnet_diagnostic.IDE1006.severity = warning

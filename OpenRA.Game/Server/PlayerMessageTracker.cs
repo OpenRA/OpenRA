@@ -47,10 +47,7 @@ namespace OpenRA.Server
 			var tracker = messageTracker[conn.PlayerIndex];
 			tracker.RemoveAll(t => t + settings.FloodLimitInterval < time);
 
-			long CalculateRemaining(long cooldown)
-			{
-				return (cooldown - time + 999) / 1000;
-			}
+			long CalculateRemaining(long cooldown) => (cooldown - time + 999) / 1000;
 
 			// Block messages until join cooldown times out
 			if (!isAdmin && time < settings.FloodLimitJoinCooldown)
