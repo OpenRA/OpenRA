@@ -37,7 +37,7 @@ namespace OpenRA.Traits
 	}
 
 	/// <summary>
-	/// Type tag for DamageTypes <see cref="Primitives.BitSet{T}"/>.
+	/// Type tag for DamageTypes <see cref="BitSet{T}"/>.
 	/// </summary>
 	public sealed class DamageType { DamageType() { } }
 
@@ -483,7 +483,7 @@ namespace OpenRA.Traits
 	}
 
 	/// <summary>
-	/// Indicates target types as defined on <see cref="Traits.ITargetable"/> are present in a <see cref="Primitives.BitSet{T}"/>.
+	/// Indicates target types as defined on <see cref="ITargetable"/> are present in a <see cref="BitSet{T}"/>.
 	/// </summary>
 	public sealed class TargetableType { TargetableType() { } }
 

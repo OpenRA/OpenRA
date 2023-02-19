@@ -126,6 +126,9 @@ dotnet_style_predefined_type_for_locals_parameters_members = true
 # Show an IDE warning when default access modifiers are explicitly specified.
 dotnet_style_require_accessibility_modifiers = omit_if_default:warning
 
+# Simplify name.
+dotnet_diagnostic.IDE0001.severity = warning
+
 # use 'var' instead of explicit type
 dotnet_diagnostic.IDE0007.severity = warning
 
