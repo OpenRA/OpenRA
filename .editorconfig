@@ -147,6 +147,9 @@ dotnet_diagnostic.IDE0018.severity = warning
 # Use pattern matching to avoid 'as' followed by a 'null' check.
 dotnet_diagnostic.IDE0019.severity = warning
 
+# Use pattern matching to avoid 'is' check followed by a cast.
+dotnet_diagnostic.IDE0020.severity = warning
+
 # Collection initialization can be simplified
 dotnet_diagnostic.IDE0028.severity = warning
 
