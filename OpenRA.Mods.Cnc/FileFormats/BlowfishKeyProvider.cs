@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			{
 				for (i = 0; i < len - i2; i++) n[i] = n[i + i2];
 				for (; i < len; i++) n[i] = 0;
-				bits = bits % 32;
+				bits %= 32;
 			}
 
 			if (bits == 0) return;
@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			{
 				for (i = len - 1; i > i2; i--) n[i] = n[i - i2];
 				for (; i > 0; i--) n[i] = 0;
-				bits = bits % 32;
+				bits %= 32;
 			}
 
 			if (bits == 0) return;
