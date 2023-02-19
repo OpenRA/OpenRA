@@ -253,7 +253,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					.ToList();
 
 				// 'all game types' extra item
-				categories.Insert(0, (null as string, tabMaps[tab].Length));
+				categories.Insert(0, (null, tabMaps[tab].Length));
 
 				string ShowItem((string Category, int Count) x) => (x.Category ?? allMaps) + $" ({x.Count})";
 

@@ -374,7 +374,7 @@ namespace OpenRA
 		public void RemoveAll(Predicate<IEffect> predicate)
 		{
 			effects.RemoveAll(predicate);
-			unpartitionedEffects.RemoveAll(e => predicate((IEffect)e));
+			unpartitionedEffects.RemoveAll(e => predicate(e));
 			syncedEffects.RemoveAll(e => predicate((IEffect)e));
 		}
 

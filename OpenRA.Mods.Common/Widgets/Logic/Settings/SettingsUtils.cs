@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				throw new InvalidOperationException($"{group.GetType().Name} does not contain a preference type {pref}");
 
 			var ss = parent.Get<SliderWidget>(id);
-			ss.Value = (float)(int)field.GetValue(group);
+			ss.Value = (int)field.GetValue(group);
 			ss.OnChange += x => field.SetValue(group, (int)x);
 		}
 
