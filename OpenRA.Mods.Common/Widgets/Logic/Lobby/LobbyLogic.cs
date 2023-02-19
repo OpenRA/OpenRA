@@ -269,7 +269,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 									{
 										var bot = botTypes.Random(Game.CosmeticRandom);
 										var c = orderManager.LobbyInfo.ClientInSlot(slot.Key);
-										if (slot.Value.AllowBots == true && (c == null || c.Bot != null))
+										if (slot.Value.AllowBots && (c == null || c.Bot != null))
 											orderManager.IssueOrder(Order.Command($"slot_bot {slot.Key} {botController.Index} {bot}"));
 									}
 								}
