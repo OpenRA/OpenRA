@@ -146,11 +146,10 @@ namespace OpenRA.Mods.Cnc.Traits
 				minefieldStart = order.ExtraLocation;
 
 				var movement = self.Trait<IPositionable>();
-				var mobile = movement as Mobile;
 
 				var minefield = GetMinefieldCells(minefieldStart, cell, Info.MinefieldDepth)
 					.Where(c => IsCellAcceptable(self, c) && self.Owner.Shroud.IsExplored(c)
-						&& movement.CanEnterCell(c, null, BlockedByActor.Immovable) && (mobile != null && mobile.CanStayInCell(c)))
+						&& movement.CanEnterCell(c, null, BlockedByActor.Immovable) && (movement is Mobile mobile && mobile.CanStayInCell(c)))
 					.OrderBy(c => (c - minefieldStart).LengthSquared).ToList();
 
 				self.QueueActivity(order.Queued, new LayMines(self, minefield));
