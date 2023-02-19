@@ -52,10 +52,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var model = init.World.ModelCache.GetModelSequence(image, Sequence);
 
 			var turretOrientation = t.PreviewOrientation(init, orientation, facings);
-			Func<WVec> barrelOffset = () => body.LocalToWorld(t.Offset + LocalOffset.Rotate(turretOrientation()));
-			Func<WRot> barrelOrientation = () => LocalOrientation.Rotate(turretOrientation());
+			WVec BarrelOffset() => body.LocalToWorld(t.Offset + LocalOffset.Rotate(turretOrientation()));
+			WRot BarrelOrientation() => LocalOrientation.Rotate(turretOrientation());
 
-			yield return new ModelAnimation(model, barrelOffset, barrelOrientation, () => false, () => 0, ShowShadow);
+			yield return new ModelAnimation(model, BarrelOffset, BarrelOrientation, () => false, () => 0, ShowShadow);
 		}
 	}
 

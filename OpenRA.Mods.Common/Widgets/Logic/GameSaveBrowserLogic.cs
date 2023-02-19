@@ -352,12 +352,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				modData.Manifest.Metadata.Version,
 				filename);
 
-			Action inner = () =>
+			void Inner()
 			{
 				world.RequestGameSave(filename);
 				Ui.CloseWindow();
 				onExit();
-			};
+			}
 
 			if (selectedSave != null || File.Exists(testPath))
 			{
@@ -365,12 +365,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					title: OverwriteSaveTitle,
 					text: OverwriteSavePrompt,
 					textArguments: Translation.Arguments("file", saveTextField.Text),
-					onConfirm: inner,
+					onConfirm: Inner,
 					confirmText: OverwriteSaveAccpet,
 					onCancel: () => { });
 			}
 			else
-				inner();
+				Inner();
 		}
 
 		void OnGameStart()

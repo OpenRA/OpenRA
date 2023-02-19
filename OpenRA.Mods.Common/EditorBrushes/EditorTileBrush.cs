@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -257,16 +256,16 @@ namespace OpenRA.Mods.Common.Widgets
 			var mapTiles = map.Tiles;
 			var replace = mapTiles[cell];
 
-			Action<CPos> maybeEnqueue = newCell =>
+			void MaybeEnqueue(CPos newCell)
 			{
 				if (map.Contains(cell) && !touched[newCell])
 				{
 					queue.Enqueue(newCell);
 					touched[newCell] = true;
 				}
-			};
+			}
 
-			Func<CPos, bool> shouldPaint = cellToCheck =>
+			bool ShouldPaint(CPos cellToCheck)
 			{
 				for (var y = 0; y < terrainTemplate.Size.Y; y++)
 				{
@@ -279,28 +278,28 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 
 				return true;
-			};
+			}
 
-			Func<CPos, CVec, CPos> findEdge = (refCell, direction) =>
+			CPos FindEdge(CPos refCell, CVec direction)
 			{
 				while (true)
 				{
 					var newCell = refCell + direction;
-					if (!shouldPaint(newCell))
+					if (!ShouldPaint(newCell))
 						return refCell;
 					refCell = newCell;
 				}
-			};
+			}
 
 			queue.Enqueue(cell);
 			while (queue.Count > 0)
 			{
 				var queuedCell = queue.Dequeue();
-				if (!shouldPaint(queuedCell))
+				if (!ShouldPaint(queuedCell))
 					continue;
 
-				var previousCell = findEdge(queuedCell, new CVec(-1 * terrainTemplate.Size.X, 0));
-				var nextCell = findEdge(queuedCell, new CVec(1 * terrainTemplate.Size.X, 0));
+				var previousCell = FindEdge(queuedCell, new CVec(-1 * terrainTemplate.Size.X, 0));
+				var nextCell = FindEdge(queuedCell, new CVec(1 * terrainTemplate.Size.X, 0));
 
 				for (var x = previousCell.X; x <= nextCell.X; x += terrainTemplate.Size.X)
 				{
@@ -308,10 +307,10 @@ namespace OpenRA.Mods.Common.Widgets
 					var upperCell = new CPos(x, queuedCell.Y - (1 * terrainTemplate.Size.Y));
 					var lowerCell = new CPos(x, queuedCell.Y + (1 * terrainTemplate.Size.Y));
 
-					if (shouldPaint(upperCell))
-						maybeEnqueue(upperCell);
-					if (shouldPaint(lowerCell))
-						maybeEnqueue(lowerCell);
+					if (ShouldPaint(upperCell))
+						MaybeEnqueue(upperCell);
+					if (ShouldPaint(lowerCell))
+						MaybeEnqueue(lowerCell);
 				}
 			}
 		}

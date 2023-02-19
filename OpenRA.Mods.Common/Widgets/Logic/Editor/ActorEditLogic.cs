@@ -235,35 +235,35 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var ownerDropdown = ownerContainer.Get<DropDownButtonWidget>("OPTION");
 					var selectedOwner = actor.Owner;
 
-					Action<EditorActorPreview, PlayerReference> updateOwner = (preview, reference) =>
+					void UpdateOwner(EditorActorPreview preview, PlayerReference reference)
 					{
 						preview.Owner = reference;
 						preview.ReplaceInit(new OwnerInit(reference.Name));
-					};
+					}
 
-					var ownerHandler = new EditorActorOptionActionHandle<PlayerReference>(updateOwner, actor.Owner);
+					var ownerHandler = new EditorActorOptionActionHandle<PlayerReference>(UpdateOwner, actor.Owner);
 					editActorPreview.Add(ownerHandler);
 
-					Func<PlayerReference, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+					ScrollItemWidget SetupItem(PlayerReference option, ScrollItemWidget template)
 					{
 						var item = ScrollItemWidget.Setup(template, () => selectedOwner == option, () =>
 						{
 							selectedOwner = option;
-							updateOwner(CurrentActor, selectedOwner);
+							UpdateOwner(CurrentActor, selectedOwner);
 							ownerHandler.OnChange(option);
 						});
 
 						item.Get<LabelWidget>("LABEL").GetText = () => option.Name;
 						item.GetColor = () => option.Color;
 						return item;
-					};
+					}
 
 					ownerDropdown.GetText = () => selectedOwner.Name;
 					ownerDropdown.GetColor = () => selectedOwner.Color;
 					ownerDropdown.OnClick = () =>
 					{
 						var owners = editorActorLayer.Players.Players.Values.OrderBy(p => p.Name);
-						ownerDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, owners, setupItem);
+						ownerDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, owners, SetupItem);
 					};
 
 					initContainer.Bounds.Height += ownerContainer.Bounds.Height;
@@ -320,9 +320,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							var valueField = sliderContainer.GetOrNull<TextFieldWidget>("VALUE");
 							if (valueField != null)
 							{
-								Action<float> updateValueField = f => valueField.Text = ((int)f).ToString();
-								updateValueField(so.GetValue(actor));
-								slider.OnChange += updateValueField;
+								void UpdateValueField(float f) => valueField.Text = ((int)f).ToString();
+								UpdateValueField(so.GetValue(actor));
+								slider.OnChange += UpdateValueField;
 
 								valueField.OnTextEdited = () =>
 								{
@@ -348,7 +348,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							editActorPreview.Add(editorActionHandle);
 
 							var dropdown = dropdownContainer.Get<DropDownButtonWidget>("OPTION");
-							Func<KeyValuePair<string, string>, ScrollItemWidget, ScrollItemWidget> dropdownSetup = (option, template) =>
+							ScrollItemWidget DropdownSetup(KeyValuePair<string, string> option, ScrollItemWidget template)
 							{
 								var item = ScrollItemWidget.Setup(template,
 									() => ddo.GetValue(actor) == option.Key,
@@ -360,10 +360,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 								item.Get<LabelWidget>("LABEL").GetText = () => option.Value;
 								return item;
-							};
+							}
 
 							dropdown.GetText = () => ddo.Labels[ddo.GetValue(actor)];
-							dropdown.OnClick = () => dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, ddo.Labels, dropdownSetup);
+							dropdown.OnClick = () => dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, ddo.Labels, DropdownSetup);
 
 							initContainer.AddChild(dropdownContainer);
 						}

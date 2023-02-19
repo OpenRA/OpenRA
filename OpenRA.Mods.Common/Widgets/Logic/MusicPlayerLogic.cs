@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			BuildMusicTable();
 
-			Func<bool> noMusic = () => !musicPlaylist.IsMusicAvailable || musicPlaylist.CurrentSongIsBackground || currentSong == null;
+			bool NoMusic() => !musicPlaylist.IsMusicAvailable || musicPlaylist.CurrentSongIsBackground || currentSong == null;
 			panel.Get("NO_MUSIC_LABEL").IsVisible = () => !musicPlaylist.IsMusicAvailable;
 
 			if (musicPlaylist.IsMusicAvailable)
@@ -57,25 +57,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var playButton = panel.Get<ButtonWidget>("BUTTON_PLAY");
 			playButton.OnClick = Play;
-			playButton.IsDisabled = noMusic;
+			playButton.IsDisabled = NoMusic;
 			playButton.IsVisible = () => !Game.Sound.MusicPlaying;
 
 			var pauseButton = panel.Get<ButtonWidget>("BUTTON_PAUSE");
 			pauseButton.OnClick = Game.Sound.PauseMusic;
-			pauseButton.IsDisabled = noMusic;
+			pauseButton.IsDisabled = NoMusic;
 			pauseButton.IsVisible = () => Game.Sound.MusicPlaying;
 
 			var stopButton = panel.Get<ButtonWidget>("BUTTON_STOP");
 			stopButton.OnClick = () => { musicPlaylist.Stop(); };
-			stopButton.IsDisabled = noMusic;
+			stopButton.IsDisabled = NoMusic;
 
 			var nextButton = panel.Get<ButtonWidget>("BUTTON_NEXT");
 			nextButton.OnClick = () => { currentSong = musicPlaylist.GetNextSong(); Play(); };
-			nextButton.IsDisabled = noMusic;
+			nextButton.IsDisabled = NoMusic;
 
 			var prevButton = panel.Get<ButtonWidget>("BUTTON_PREV");
 			prevButton.OnClick = () => { currentSong = musicPlaylist.GetPrevSong(); Play(); };
-			prevButton.IsDisabled = noMusic;
+			prevButton.IsDisabled = NoMusic;
 
 			var shuffleCheckbox = panel.Get<CheckboxWidget>("SHUFFLE");
 			shuffleCheckbox.IsChecked = () => Game.Settings.Sound.Shuffle;

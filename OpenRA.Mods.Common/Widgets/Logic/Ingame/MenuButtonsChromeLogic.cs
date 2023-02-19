@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -52,16 +51,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (lp != null)
 				{
-					Action<Player, bool> startBlinking = (player, inhibitAnnouncement) =>
+					void StartBlinking(Player player, bool inhibitAnnouncement)
 					{
 						if (!inhibitAnnouncement && player == world.LocalPlayer)
 							blinking = true;
-					};
+					}
 
 					var mo = lp.PlayerActor.TraitOrDefault<MissionObjectives>();
 
 					if (mo != null)
-						mo.ObjectiveAdded += startBlinking;
+						mo.ObjectiveAdded += StartBlinking;
 				}
 			}
 

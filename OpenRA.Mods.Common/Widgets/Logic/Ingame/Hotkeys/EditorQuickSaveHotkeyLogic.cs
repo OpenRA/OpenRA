@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.FileSystem;
 using OpenRA.Mods.Common.Lint;
@@ -39,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 				return false;
 
 			var map = world.Map;
-			Action<string> saveMap = (string combinedPath) =>
+			void SaveMap(string combinedPath)
 			{
 				var editorActorLayer = world.WorldActor.Trait<EditorActorLayer>();
 
@@ -53,9 +52,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 
 				var package = (IReadWritePackage)map.Package;
 				SaveMapLogic.SaveMapInner(map, package, world, modData);
-			};
+			}
 
-			SaveMapLogic.SaveMap(modData, world, map, map.Package?.Name, saveMap);
+			SaveMapLogic.SaveMap(modData, world, map, map.Package?.Name, SaveMap);
 			return true;
 		}
 	}

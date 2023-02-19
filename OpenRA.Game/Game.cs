@@ -270,15 +270,14 @@ namespace OpenRA
 		{
 			OrderManager om = null;
 
-			Action lobbyReady = null;
-			lobbyReady = () =>
+			void LobbyReady()
 			{
-				LobbyInfoChanged -= lobbyReady;
+				LobbyInfoChanged -= LobbyReady;
 				foreach (var o in setupOrders)
 					om.IssueOrder(o);
-			};
+			}
 
-			LobbyInfoChanged += lobbyReady;
+			LobbyInfoChanged += LobbyReady;
 
 			om = JoinServer(CreateLocalServer(mapUID), "");
 		}

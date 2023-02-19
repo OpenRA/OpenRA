@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -93,16 +92,16 @@ namespace OpenRA.Mods.D2k.Traits
 				return;
 			}
 
-			Func<Actor, bool> isValidTarget = a =>
+			bool IsValidTarget(Actor a)
 			{
 				if (!a.Info.HasTraitInfo<AttractsWormsInfo>())
 					return false;
 
 				return mobile.CanEnterCell(a.Location, null, BlockedByActor.None);
-			};
+			}
 
 			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, WormInfo.MaxSearchRadius)
-				.Where(isValidTarget).SelectMany(a => a.TraitsImplementing<AttractsWorms>());
+				.Where(IsValidTarget).SelectMany(a => a.TraitsImplementing<AttractsWorms>());
 
 			var noiseDirection = actorsInRange.Aggregate(WVec.Zero, (a, b) => a + b.AttractionAtPosition(self.CenterPosition));
 

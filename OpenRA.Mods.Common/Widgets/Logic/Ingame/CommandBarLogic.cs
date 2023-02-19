@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets
 				attackMoveButton.IsDisabled = () => { UpdateStateIfNecessary(); return attackMoveDisabled; };
 				attackMoveButton.IsHighlighted = () => world.OrderGenerator is AttackMoveOrderGenerator;
 
-				Action<bool> toggle = allowCancel =>
+				void Toggle(bool allowCancel)
 				{
 					if (attackMoveButton.IsHighlighted())
 					{
@@ -66,10 +66,10 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 					else
 						world.OrderGenerator = new AttackMoveOrderGenerator(selectedActors, Game.Settings.Game.MouseButtonPreference.Action);
-				};
+				}
 
-				attackMoveButton.OnClick = () => toggle(true);
-				attackMoveButton.OnKeyPress = _ => toggle(false);
+				attackMoveButton.OnClick = () => Toggle(true);
+				attackMoveButton.OnKeyPress = _ => Toggle(false);
 			}
 
 			var forceMoveButton = widget.GetOrNull<ButtonWidget>("FORCE_MOVE");
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Widgets
 				guardButton.IsDisabled = () => { UpdateStateIfNecessary(); return guardDisabled; };
 				guardButton.IsHighlighted = () => world.OrderGenerator is GuardOrderGenerator;
 
-				Action<bool> toggle = allowCancel =>
+				void Toggle(bool allowCancel)
 				{
 					if (guardButton.IsHighlighted())
 					{
@@ -124,10 +124,10 @@ namespace OpenRA.Mods.Common.Widgets
 					else
 						world.OrderGenerator = new GuardOrderGenerator(selectedActors,
 							"Guard", "guard", Game.Settings.Game.MouseButtonPreference.Action);
-				};
+				}
 
-				guardButton.OnClick = () => toggle(true);
-				guardButton.OnKeyPress = _ => toggle(false);
+				guardButton.OnClick = () => Toggle(true);
+				guardButton.OnKeyPress = _ => Toggle(false);
 			}
 
 			var scatterButton = widget.GetOrNull<ButtonWidget>("SCATTER");

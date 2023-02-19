@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -34,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (foreground != null)
 					foregroundTemplate = foreground.Get("ICON_TEMPLATE");
 
-				Action<int, int> updateBackground = (_, icons) =>
+				void UpdateBackground(int _, int icons)
 				{
 					var rowHeight = palette.IconSize.Y + palette.IconMargin;
 					var rowWidth = palette.IconSize.X + palette.IconMargin;
@@ -68,12 +67,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							foreground.AddChild(row);
 						}
 					}
-				};
+				}
 
-				palette.OnIconCountChanged += updateBackground;
+				palette.OnIconCountChanged += UpdateBackground;
 
 				// Set the initial palette state
-				updateBackground(0, 0);
+				UpdateBackground(0, 0);
 			}
 		}
 	}

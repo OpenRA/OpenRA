@@ -330,7 +330,7 @@ namespace OpenRA.Mods.Common.Graphics
 			var offset = LoadField(Offset, data, defaults);
 			var blendMode = LoadField(BlendMode, data, defaults);
 
-			Func<int, IEnumerable<int>> getUsedFrames = frameCount =>
+			IEnumerable<int> GetUsedFrames(int frameCount)
 			{
 				if (LoadField(Length.Key, "", data, defaults) == "*")
 					length = frames?.Length ?? frameCount - start;
@@ -387,7 +387,7 @@ namespace OpenRA.Mods.Common.Graphics
 					return usedFrames.Concat(usedFrames.Select(i => i + shadowStart - start));
 
 				return usedFrames;
-			};
+			}
 
 			var combineNode = data.Nodes.FirstOrDefault(n => n.Key == Combine.Key);
 			if (combineNode != null)
@@ -406,7 +406,7 @@ namespace OpenRA.Mods.Common.Graphics
 					var subFrames = LoadField(Frames, combineData, NoData);
 					var subLength = 0;
 
-					Func<int, IEnumerable<int>> subGetUsedFrames = subFrameCount =>
+					IEnumerable<int> SubGetUsedFrames(int subFrameCount)
 					{
 						var combineLengthNode = combineData.Nodes.FirstOrDefault(n => n.Key == Length.Key);
 						if (combineLengthNode?.Value.Value == "*")
@@ -415,13 +415,13 @@ namespace OpenRA.Mods.Common.Graphics
 							subLength = LoadField(Length, combineData, NoData);
 
 						return subFrames != null ? subFrames.Skip(subStart).Take(subLength) : Enumerable.Range(subStart, subLength);
-					};
+					}
 
 					var subFilename = GetSpriteFilename(modData, tileSet, image, sequence, combineData, NoData);
 					if (subFilename == null)
 						throw new YamlException($"Sequence {image}.{sequence}.{combineSequenceNode.Key} does not define a filename.");
 
-					var subSprites = cache[subFilename, subGetUsedFrames].Select(s =>
+					var subSprites = cache[subFilename, SubGetUsedFrames].Select(s =>
 					{
 						if (s == null)
 							return null;
@@ -439,7 +439,7 @@ namespace OpenRA.Mods.Common.Graphics
 				}
 
 				sprites = combined.ToArray();
-				getUsedFrames(sprites.Length);
+				GetUsedFrames(sprites.Length);
 			}
 			else
 			{
@@ -449,7 +449,7 @@ namespace OpenRA.Mods.Common.Graphics
 				if (filename == null)
 					throw new YamlException($"Sequence {image}.{sequence} does not define a filename.");
 
-				sprites = cache[filename, getUsedFrames].Select(s =>
+				sprites = cache[filename, GetUsedFrames].Select(s =>
 				{
 					if (s == null)
 						return null;

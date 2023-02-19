@@ -560,7 +560,7 @@ namespace OpenRA.Mods.Common.Server
 				}
 
 				var lastMap = server.LobbyInfo.GlobalSettings.Map;
-				Action<MapPreview> selectMap = map =>
+				void SelectMap(MapPreview map)
 				{
 					lock (server.LobbyInfo)
 					{
@@ -646,28 +646,28 @@ namespace OpenRA.Mods.Common.Server
 						if (briefing != null)
 							server.SendMessage(briefing);
 					}
-				};
+				}
 
-				Action queryFailed = () => server.SendLocalizedMessageTo(conn, UnknownMap);
+				void QueryFailed() => server.SendLocalizedMessageTo(conn, UnknownMap);
 
 				var m = server.ModData.MapCache[s];
 				if (m.Status == MapStatus.Available || m.Status == MapStatus.DownloadAvailable)
-					selectMap(m);
+					SelectMap(m);
 				else if (server.Settings.QueryMapRepository)
 				{
 					server.SendLocalizedMessageTo(conn, SearchingMap);
 					var mapRepository = server.ModData.Manifest.Get<WebServices>().MapRepository;
 					var reported = false;
-					server.ModData.MapCache.QueryRemoteMapDetails(mapRepository, new[] { s }, selectMap, _ =>
+					server.ModData.MapCache.QueryRemoteMapDetails(mapRepository, new[] { s }, SelectMap, _ =>
 					{
 						if (!reported)
-							queryFailed();
+							QueryFailed();
 
 						reported = true;
 					});
 				}
 				else
-					queryFailed();
+					QueryFailed();
 
 				return true;
 			}
@@ -1232,17 +1232,17 @@ namespace OpenRA.Mods.Common.Server
 				var colorManager = server.ModData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
 				var askColor = askedColor;
 
-				Action<string> onError = message =>
+				void OnError(string message)
 				{
 					if (connectionToEcho != null && message != null)
 						server.SendLocalizedMessageTo(connectionToEcho, message);
-				};
+				}
 
 				var terrainColors = server.ModData.DefaultTerrainInfo[server.Map.TileSet].RestrictedPlayerColors;
 				var playerColors = server.LobbyInfo.Clients.Where(c => c.Index != playerIndex).Select(c => c.Color)
 					.Concat(server.Map.Players.Players.Values.Select(p => p.Color)).ToList();
 
-				return colorManager.MakeValid(askColor, server.Random, terrainColors, playerColors, onError);
+				return colorManager.MakeValid(askColor, server.Random, terrainColors, playerColors, OnError);
 			}
 		}
 

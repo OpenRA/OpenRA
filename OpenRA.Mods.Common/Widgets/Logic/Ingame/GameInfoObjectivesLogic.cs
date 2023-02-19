@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -62,12 +61,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			PopulateObjectivesList(mo, objectivesPanel, template);
 
-			Action<Player, bool> redrawObjectives = (p, _) =>
+			void RedrawObjectives(Player p, bool _)
 			{
 				if (p == player)
 					PopulateObjectivesList(mo, objectivesPanel, template);
-			};
-			mo.ObjectiveAdded += redrawObjectives;
+			}
+
+			mo.ObjectiveAdded += RedrawObjectives;
 		}
 
 		static void PopulateObjectivesList(MissionObjectives mo, ScrollPanelWidget parent, ContainerWidget template)

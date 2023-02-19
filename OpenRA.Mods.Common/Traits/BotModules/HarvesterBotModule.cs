@@ -138,12 +138,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		Target FindNextResource(Actor actor, HarvesterTraitWrapper harv)
 		{
-			Func<CPos, bool> isValidResource = cell =>
+			bool IsValidResource(CPos cell) =>
 				harv.Harvester.CanHarvestCell(cell) &&
 				claimLayer.CanClaimCell(actor, cell);
 
 			var path = harv.Mobile.PathFinder.FindPathToTargetCellByPredicate(
-				actor, new[] { actor.Location }, isValidResource, BlockedByActor.Stationary,
+				actor, new[] { actor.Location }, IsValidResource, BlockedByActor.Stationary,
 				loc => world.FindActorsInCircle(world.Map.CenterOfCell(loc), Info.HarvesterEnemyAvoidanceRadius)
 					.Where(u => !u.IsDead && actor.Owner.RelationshipWith(u.Owner) == PlayerRelationship.Enemy)
 					.Sum(u => Math.Max(WDist.Zero.Length, Info.HarvesterEnemyAvoidanceRadius.Length - (world.Map.CenterOfCell(loc) - u.CenterPosition).Length)));

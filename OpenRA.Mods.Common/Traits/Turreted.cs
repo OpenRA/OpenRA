@@ -115,13 +115,13 @@ namespace OpenRA.Mods.Common.Traits
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var turretFacing = LocalFacingFromInit(init);
 
-			Func<WRot> world = () => WRot.FromYaw(turretFacing()).Rotate(orientation());
+			WRot World() => WRot.FromYaw(turretFacing()).Rotate(orientation());
 			if (facings == 0)
-				return world;
+				return World;
 
 			// Quantize orientation to match a rendered sprite
 			// Implies no pitch or roll
-			return () => WRot.FromYaw(body.QuantizeFacing(world().Yaw, facings));
+			return () => WRot.FromYaw(body.QuantizeFacing(World().Yaw, facings));
 		}
 
 		public override object Create(ActorInitializer init) { return new Turreted(init, this); }

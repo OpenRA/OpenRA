@@ -310,7 +310,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
 			var exitDelay = iop?.ExitDelay ?? 0;
 
-			Action onRestart = () =>
+			void OnRestart()
 			{
 				Ui.CloseWindow();
 				if (mpe != null)
@@ -321,7 +321,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				Game.RunAfterDelay(exitDelay, Game.RestartGame);
-			};
+			}
 
 			var button = AddButton("RESTART", RestartButton);
 			button.IsDisabled = () => hasError || leaving;
@@ -331,7 +331,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: RestartMissionTitle,
 					text: RestartMissionPrompt,
-					onConfirm: onRestart,
+					onConfirm: OnRestart,
 					onCancel: ShowMenu,
 					confirmText: RestartMissionAccept,
 					cancelText: RestartMissionCancel);
@@ -343,11 +343,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (world.Type != WorldType.Regular || isSinglePlayer || world.LocalPlayer == null)
 				return;
 
-			Action onSurrender = () =>
+			void OnSurrender()
 			{
 				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
 				CloseMenu();
-			};
+			}
 
 			var button = AddButton("SURRENDER", SurrenderButton);
 			button.IsDisabled = () => world.LocalPlayer.WinState != WinState.Undefined || hasError || leaving;
@@ -357,7 +357,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: SurrenderTitle,
 					text: SurrenderPrompt,
-					onConfirm: onSurrender,
+					onConfirm: OnSurrender,
 					onCancel: ShowMenu,
 					confirmText: SurrenderAccept,
 					cancelText: SurrenderCancel);
