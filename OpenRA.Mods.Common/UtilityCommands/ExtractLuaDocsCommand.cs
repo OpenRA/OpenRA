@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				var required = ScriptMemberWrapper.RequiredTraitNames(cg);
 				return ScriptMemberWrapper.WrappableMembers(cg).Select(mi => (category, mi, required));
-			}).GroupBy(g => g.Item1).OrderBy(g => g.Key);
+			}).GroupBy(g => g.category).OrderBy(g => g.Key);
 
 			foreach (var kv in actorCategories)
 			{
@@ -102,10 +102,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Console.WriteLine("| Function | Description |");
 				Console.WriteLine("|---------:|-------------|");
 
-				foreach (var property in kv.OrderBy(p => p.Item2.Name))
+				foreach (var property in kv.OrderBy(p => p.mi.Name))
 				{
-					var mi = property.Item2;
-					var required = property.Item3;
+					var mi = property.mi;
+					var required = property.required;
 					var hasDesc = mi.HasAttribute<DescAttribute>();
 					var hasRequires = required.Length > 0;
 					var isActivity = mi.HasAttribute<ScriptActorPropertyActivityAttribute>();
@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				var required = ScriptMemberWrapper.RequiredTraitNames(cg);
 				return ScriptMemberWrapper.WrappableMembers(cg).Select(mi => (category, mi, required));
-			}).GroupBy(g => g.Item1).OrderBy(g => g.Key);
+			}).GroupBy(g => g.category).OrderBy(g => g.Key);
 
 			foreach (var kv in playerCategories)
 			{
@@ -151,10 +151,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Console.WriteLine("| Function | Description |");
 				Console.WriteLine("|---------:|-------------|");
 
-				foreach (var property in kv.OrderBy(p => p.Item2.Name))
+				foreach (var property in kv.OrderBy(p => p.mi.Name))
 				{
-					var mi = property.Item2;
-					var required = property.Item3;
+					var mi = property.mi;
+					var required = property.required;
 					var hasDesc = mi.HasAttribute<DescAttribute>();
 					var hasRequires = required.Length > 0;
 					var isActivity = mi.HasAttribute<ScriptActorPropertyActivityAttribute>();

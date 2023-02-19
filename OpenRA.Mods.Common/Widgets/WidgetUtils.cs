@@ -323,7 +323,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var nameFont = Game.Renderer.Fonts[label.Font];
 			var name = new CachedTransform<(string Name, WinState WinState, Session.ClientState ClientState), string>(c =>
 			{
-				var suffix = c.WinState == WinState.Undefined ? "" : " (" + c.Item2 + ")";
+				var suffix = c.WinState == WinState.Undefined ? "" : " (" + c.WinState + ")";
 				if (c.ClientState == Session.ClientState.Disconnected)
 					suffix = " (Gone)";
 
