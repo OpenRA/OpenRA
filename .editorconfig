@@ -162,6 +162,9 @@ dotnet_diagnostic.IDE0029.severity = warning
 # Use coalesce expression (nullable types).
 dotnet_diagnostic.IDE0030.severity = warning
 
+# Use null propagation.
+dotnet_diagnostic.IDE0031.severity = warning
+
 # Use explicitly provided tuple name.
 dotnet_diagnostic.IDE0033.severity = warning
 

@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Widgets
 			set
 			{
 				paletteWidget.Value.CurrentQueue = value;
-				queueGroup = value != null ? value.Info.Group : null;
+				queueGroup = value?.Info.Group;
 
 				// TODO: Scroll tabs so selected queue is visible
 			}

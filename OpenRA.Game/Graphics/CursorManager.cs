@@ -111,8 +111,7 @@ namespace OpenRA.Graphics
 				var template = kv.Value;
 				for (var i = 0; i < template.Sprites.Length; i++)
 				{
-					if (template.Cursors[i] != null)
-						template.Cursors[i].Dispose();
+					template.Cursors[i]?.Dispose();
 
 					// Calculate the padding to position the frame within sequenceBounds
 					var paddingTL = -(template.Bounds.Location - template.Sprites[i].Offset.XY.ToInt2());

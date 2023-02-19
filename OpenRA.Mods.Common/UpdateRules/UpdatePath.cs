@@ -117,8 +117,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			if (namedType != null && namedType.IsSubclassOf(typeof(UpdateRule)))
 				return new[] { (UpdateRule)objectCreator.CreateBasic(namedType) };
 
-			var namedPath = Paths.FirstOrDefault(p => p.source == source);
-			return namedPath != null ? namedPath.Rules(chain) : null;
+			return Paths.FirstOrDefault(p => p.source == source)?.Rules(chain);
 		}
 
 		public static IEnumerable<string> KnownPaths { get { return Paths.Select(p => p.source); } }

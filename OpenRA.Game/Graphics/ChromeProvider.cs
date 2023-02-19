@@ -100,9 +100,7 @@ namespace OpenRA.Graphics
 
 		static void LoadCollection(string name, MiniYaml yaml)
 		{
-			if (Game.ModData.LoadScreen != null)
-				Game.ModData.LoadScreen.Display();
-
+			Game.ModData.LoadScreen?.Display();
 			collections.Add(name, FieldLoader.Load<Collection>(yaml));
 		}
 

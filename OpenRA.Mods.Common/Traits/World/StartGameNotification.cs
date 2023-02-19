@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!world.IsLoadingGameSave)
 			{
-				Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.Notification, world.RenderPlayer == null ? null : world.RenderPlayer.Faction.InternalName);
+				Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.Notification, world.RenderPlayer?.Faction.InternalName);
 				TextNotificationsManager.AddTransientLine(info.TextNotification, null);
 			}
 		}
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!world.IsReplay)
 			{
-				Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.LoadedNotification, world.RenderPlayer == null ? null : world.RenderPlayer.Faction.InternalName);
+				Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.LoadedNotification, world.RenderPlayer?.Faction.InternalName);
 				TextNotificationsManager.AddTransientLine(info.LoadedTextNotification, null);
 			}
 		}
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!world.IsReplay)
 			{
-				Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.SavedNotification, world.RenderPlayer == null ? null : world.RenderPlayer.Faction.InternalName);
+				Game.Sound.PlayNotification(world.Map.Rules, null, "Speech", info.SavedNotification, world.RenderPlayer?.Faction.InternalName);
 				TextNotificationsManager.AddTransientLine(info.SavedTextNotification, null);
 			}
 		}
