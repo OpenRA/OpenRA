@@ -74,7 +74,7 @@ namespace OpenRA
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }
 
 		public bool Equals(WPos other) { return other == this; }
-		public override bool Equals(object obj) { return obj is WPos && Equals((WPos)obj); }
+		public override bool Equals(object obj) { return obj is WPos pos && Equals(pos); }
 
 		public override string ToString() { return X + "," + Y + "," + Z; }
 
