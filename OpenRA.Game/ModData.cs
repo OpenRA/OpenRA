@@ -118,13 +118,13 @@ namespace OpenRA
 					items.Add(t.Id, t);
 				}
 
-				return (IReadOnlyDictionary<string, ITerrainInfo>)(new ReadOnlyDictionary<string, ITerrainInfo>(items));
+				return (IReadOnlyDictionary<string, ITerrainInfo>)new ReadOnlyDictionary<string, ITerrainInfo>(items);
 			});
 
 			defaultSequences = Exts.Lazy(() =>
 			{
 				var items = DefaultTerrainInfo.ToDictionary(t => t.Key, t => new SequenceProvider(DefaultFileSystem, this, t.Key, null));
-				return (IReadOnlyDictionary<string, SequenceProvider>)(new ReadOnlyDictionary<string, SequenceProvider>(items));
+				return (IReadOnlyDictionary<string, SequenceProvider>)new ReadOnlyDictionary<string, SequenceProvider>(items);
 			});
 
 			initialThreadId = Environment.CurrentManagedThreadId;

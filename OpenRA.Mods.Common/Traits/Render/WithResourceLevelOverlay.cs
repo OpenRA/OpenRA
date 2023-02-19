@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var a = new Animation(self.World, rs.GetImage(self));
 			a.PlayFetchIndex(info.Sequence, () =>
 				playerResources.ResourceCapacity != 0 ?
-				((10 * a.CurrentSequence.Length - 1) * playerResources.Resources) / (10 * playerResources.ResourceCapacity) :
+				(10 * a.CurrentSequence.Length - 1) * playerResources.Resources / (10 * playerResources.ResourceCapacity) :
 				0);
 
 			anim = new AnimationWithOffset(a, null, () => IsTraitDisabled, 1024);

@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				for (var x = 0; x < template.Size.X; x++)
 				{
-					var tile = new TerrainTile(template.Id, (byte)(i++));
+					var tile = new TerrainTile(template.Id, (byte)i++);
 					if (!terrainInfo.TryGetTileInfo(tile, out var tileInfo))
 						continue;
 

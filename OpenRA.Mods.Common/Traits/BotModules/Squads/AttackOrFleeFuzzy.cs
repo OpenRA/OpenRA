@@ -218,7 +218,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 					var totalReloadDelay = arm.Weapon.ReloadDelay + (arm.Weapon.BurstDelays[0] * (burst - 1)).Clamp(1, 200);
 					var damageWarheads = arm.Weapon.Warheads.OfType<DamageWarhead>();
 					foreach (var warhead in damageWarheads)
-						sumOfDamage += (warhead.Damage * burst / totalReloadDelay) * 100;
+						sumOfDamage += warhead.Damage * burst / totalReloadDelay * 100;
 				}
 
 				return sumOfDamage;
@@ -239,7 +239,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (!own.Any())
 				return 0.0f;
 
-			var relative = (relativeFunc(own, getValue) / relativeFunc(enemy, getValue)) * normalizeByValue;
+			var relative = relativeFunc(own, getValue) / relativeFunc(enemy, getValue) * normalizeByValue;
 			return relative.Clamp(0.0f, 999.0f);
 		}
 

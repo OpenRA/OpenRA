@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var queue in queues)
 				tabs.Add(new ProductionTab()
 				{
-					Name = (NextQueueName++).ToString(),
+					Name = NextQueueName++.ToString(),
 					Queue = queue
 				});
 			Tabs = tabs;

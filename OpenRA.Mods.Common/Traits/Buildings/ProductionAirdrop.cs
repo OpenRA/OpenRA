@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 				var bounds = map.Bounds;
 				var center = new MPos(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height / 2).ToCPos(map);
 				var spawnVec = owner.HomeLocation - center;
-				startPos = owner.HomeLocation + spawnVec * (Exts.ISqrt((bounds.Height * bounds.Height + bounds.Width * bounds.Width) / (4 * spawnVec.LengthSquared)));
+				startPos = owner.HomeLocation + spawnVec * Exts.ISqrt((bounds.Height * bounds.Height + bounds.Width * bounds.Width) / (4 * spawnVec.LengthSquared));
 				endPos = startPos;
 				var spawnDirection = new WVec((self.Location - startPos).X, (self.Location - startPos).Y, 0);
 				spawnFacing = spawnDirection.Yaw;

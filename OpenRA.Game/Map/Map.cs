@@ -390,7 +390,7 @@ namespace OpenRA
 
 							// TODO: Remember to remove this when rewriting tile variants / PickAny
 							if (index == byte.MaxValue)
-								index = (byte)(i % 4 + (j % 4) * 4);
+								index = (byte)(i % 4 + j % 4 * 4);
 
 							Tiles[new MPos(i, j)] = new TerrainTile(tile, index);
 						}

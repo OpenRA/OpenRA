@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				var minefield = GetMinefieldCells(minefieldStart, cell, Info.MinefieldDepth)
 					.Where(c => IsCellAcceptable(self, c) && self.Owner.Shroud.IsExplored(c)
-						&& movement.CanEnterCell(c, null, BlockedByActor.Immovable) && (movement is Mobile mobile && mobile.CanStayInCell(c)))
+						&& movement.CanEnterCell(c, null, BlockedByActor.Immovable) && movement is Mobile mobile && mobile.CanStayInCell(c))
 					.OrderBy(c => (c - minefieldStart).LengthSquared).ToList();
 
 				self.QueueActivity(order.Queued, new LayMines(self, minefield));
@@ -180,7 +180,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			// TODO: proper endcaps, if anyone cares (which won't happen unless depth is large)
 			var p = end - start;
 			var q = new float2(p.Y, -p.X);
-			q = (start != end) ? (1 / q.Length) * q : new float2(1, 0);
+			q = (start != end) ? 1 / q.Length * q : new float2(1, 0);
 			var c = -float2.Dot(q, new float2(start.X, start.Y));
 
 			// return all points such that |ax + by + c| < depth

@@ -63,8 +63,8 @@ namespace OpenRA.Traits
 		float2 GetScrollOffset()
 		{
 			return GetMultiplier() * GetIntensity() * new float2(
-				(float)Math.Sin((ticks * 2 * Math.PI) / 4),
-				(float)Math.Cos((ticks * 2 * Math.PI) / 5));
+				(float)Math.Sin(ticks * 2 * Math.PI / 4),
+				(float)Math.Cos(ticks * 2 * Math.PI / 5));
 		}
 
 		float2 GetMultiplier()

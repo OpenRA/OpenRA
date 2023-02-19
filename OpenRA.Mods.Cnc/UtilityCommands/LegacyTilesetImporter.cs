@@ -146,7 +146,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 								data.AppendLine($"\t\t\t\tMinColor: {s.ReadUInt8():X2}{s.ReadUInt8():X2}{s.ReadUInt8():X2}");
 								data.AppendLine($"\t\t\t\tMaxColor: {s.ReadUInt8():X2}{s.ReadUInt8():X2}{s.ReadUInt8():X2}");
-								data.AppendLine($"\t\t\t\tZOffset: {(-tileSize.Height / 2.0f)}");
+								var zOffset = -tileSize.Height / 2.0f;
+								data.AppendLine($"\t\t\t\tZOffset: {zOffset}");
 								data.AppendLine("\t\t\t\tZRamp: 0");
 							}
 						}

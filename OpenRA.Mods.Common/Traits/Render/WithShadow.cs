@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				.Select(ma => ((IModifyableRenderable)ma).WithTint(shadowColor, ((IModifyableRenderable)ma).TintModifiers | TintModifiers.ReplaceColor)
 					.WithAlpha(shadowAlpha)
 					.OffsetBy(info.Offset - new WVec(0, 0, height))
-					.WithZOffset(ma.ZOffset + (height + info.ZOffset))
+					.WithZOffset(ma.ZOffset + height + info.ZOffset)
 					.AsDecoration());
 
 			return shadowSprites.Concat(r);

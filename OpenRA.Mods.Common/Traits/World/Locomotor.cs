@@ -91,9 +91,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (speed > 0)
 				{
 					var nodesDict = t.Value.ToDictionary();
-					var cost = (nodesDict.ContainsKey("PathingCost")
+					var cost = nodesDict.ContainsKey("PathingCost")
 						? FieldLoader.GetValue<short>("cost", nodesDict["PathingCost"].Value)
-						: 10000 / speed);
+						: 10000 / speed;
 					ret.Add(t.Key, new TerrainInfo(speed, (short)cost));
 				}
 			}

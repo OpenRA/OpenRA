@@ -48,7 +48,7 @@ namespace OpenRA.Network
 
 			var currentTimestep = timestep();
 
-			var integralTickTimestep = (tickDelta / currentTimestep) * currentTimestep;
+			var integralTickTimestep = tickDelta / currentTimestep * currentTimestep;
 			lastTickTime += integralTickTimestep >= Game.TimestepJankThreshold
 				? integralTickTimestep
 				: currentTimestep;

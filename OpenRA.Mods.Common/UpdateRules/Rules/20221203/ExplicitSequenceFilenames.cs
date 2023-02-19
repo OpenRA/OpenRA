@@ -357,7 +357,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				foreach (var node in combineNode.Value.Nodes)
 				{
 					ProcessNode(modData, node, node, node.Key);
-					node.Key = (i++).ToString();
+					node.Key = i++.ToString();
 				}
 
 				return;

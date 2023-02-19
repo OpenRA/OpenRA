@@ -217,7 +217,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			var at = (float)ticks / (length - 1);
 			var attitude = angle.Tan() * (1 - 2 * at) / (4 * 1024);
 
-			var u = (facing.Angle % 512) / 512f;
+			var u = facing.Angle % 512 / 512f;
 			var scale = 2048 * u * (1 - u);
 
 			var effective = (int)(facing.Angle < 512

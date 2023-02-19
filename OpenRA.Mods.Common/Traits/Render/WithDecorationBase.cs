@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			if (blinkPattern != null && blinkPattern.Length > 0)
 			{
-				var i = (self.World.WorldTick / Info.BlinkInterval) % blinkPattern.Length;
+				var i = self.World.WorldTick / Info.BlinkInterval % blinkPattern.Length;
 				if (blinkPattern[i] != BlinkState.On)
 					return false;
 			}

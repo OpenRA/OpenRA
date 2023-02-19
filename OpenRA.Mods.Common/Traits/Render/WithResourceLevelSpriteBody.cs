@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			DefaultAnimation.PlayFetchIndex(NormalizeSequence(self, Info.Sequence),
 				() => playerResources.ResourceCapacity != 0
-					? ((info.Stages * DefaultAnimation.CurrentSequence.Length - 1) * playerResources.Resources) / (info.Stages * playerResources.ResourceCapacity)
+					? (info.Stages * DefaultAnimation.CurrentSequence.Length - 1) * playerResources.Resources / (info.Stages * playerResources.ResourceCapacity)
 					: 0);
 		}
 

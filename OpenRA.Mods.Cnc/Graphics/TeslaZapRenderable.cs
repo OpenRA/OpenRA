@@ -110,13 +110,13 @@ namespace OpenRA.Mods.Cnc.Graphics
 		static IEnumerable<IFinalizedRenderable> DrawZapWandering(WorldRenderer wr, float2 from, float2 to, ISpriteSequence s, string pal)
 		{
 			var dist = to - from;
-			var norm = (1f / dist.Length) * new float2(-dist.Y, dist.X);
+			var norm = 1f / dist.Length * new float2(-dist.Y, dist.X);
 
 			var renderables = new List<IFinalizedRenderable>();
 			if (Game.CosmeticRandom.Next(2) != 0)
 			{
-				var p1 = from + (1 / 3f) * dist + WDist.FromPDF(Game.CosmeticRandom, 2).Length * dist.Length / 4096 * norm;
-				var p2 = from + (2 / 3f) * dist + WDist.FromPDF(Game.CosmeticRandom, 2).Length * dist.Length / 4096 * norm;
+				var p1 = from + 1 / 3f * dist + WDist.FromPDF(Game.CosmeticRandom, 2).Length * dist.Length / 4096 * norm;
+				var p2 = from + 2 / 3f * dist + WDist.FromPDF(Game.CosmeticRandom, 2).Length * dist.Length / 4096 * norm;
 
 				renderables.AddRange(DrawZap(wr, from, p1, s, out p1, pal));
 				renderables.AddRange(DrawZap(wr, p1, p2, s, out p2, pal));
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 			}
 			else
 			{
-				var p1 = from + (1 / 2f) * dist + WDist.FromPDF(Game.CosmeticRandom, 2).Length * dist.Length / 4096 * norm;
+				var p1 = from + 1 / 2f * dist + WDist.FromPDF(Game.CosmeticRandom, 2).Length * dist.Length / 4096 * norm;
 
 				renderables.AddRange(DrawZap(wr, from, p1, s, out p1, pal));
 				renderables.AddRange(DrawZap(wr, p1, to, s, out _, pal));

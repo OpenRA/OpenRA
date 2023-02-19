@@ -539,7 +539,7 @@ namespace OpenRA.Mods.Common.Traits
 				return new WVec(1024, 0, 0).Rotate(rot);
 			}
 
-			return (d * 1024 * 8) / (int)distSq;
+			return d * 1024 * 8 / (int)distSq;
 		}
 
 		public Actor GetActorBelow()
