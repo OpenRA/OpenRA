@@ -141,6 +141,9 @@ dotnet_diagnostic.IDE0011.severity = silent
 # Object initialization can be simplified / Use object initializer.
 dotnet_diagnostic.IDE0017.severity = warning
 
+# Inline variable declaration.
+dotnet_diagnostic.IDE0018.severity = warning
+
 # Collection initialization can be simplified
 dotnet_diagnostic.IDE0028.severity = warning
 
