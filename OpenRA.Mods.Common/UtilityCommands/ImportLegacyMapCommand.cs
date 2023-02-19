@@ -255,13 +255,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					Location: LocationFromMapOffset(Exts.ParseIntegerInvariant(kv.Value), MapSize)));
 
 			// Add waypoint actors skipping duplicate entries
-			foreach (var kv in wps.DistinctBy(location => location.Location))
+			foreach (var (waypointNumber, location) in wps.DistinctBy(location => location.Location))
 			{
-				if (!singlePlayer && kv.WaypointNumber <= 7)
+				if (!singlePlayer && waypointNumber <= 7)
 				{
 					var ar = new ActorReference("mpspawn")
 					{
-						new LocationInit((CPos)kv.Location),
+						new LocationInit((CPos)location),
 						new OwnerInit("Neutral")
 					};
 
@@ -272,11 +272,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					var ar = new ActorReference("waypoint")
 					{
-						new LocationInit((CPos)kv.Location),
+						new LocationInit((CPos)location),
 						new OwnerInit("Neutral")
 					};
 
-					SaveWaypoint(kv.WaypointNumber, ar);
+					SaveWaypoint(waypointNumber, ar);
 				}
 			}
 		}

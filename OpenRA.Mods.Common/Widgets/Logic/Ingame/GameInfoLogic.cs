@@ -101,12 +101,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			for (var i = 0; i < numTabs; i++)
 			{
 				var type = visiblePanels[i];
-				var info = panels[type];
+				var (panel, label, setup) = panels[type];
 				var tabButton = tabContainer?.Get<ButtonWidget>($"BUTTON{i + 1}");
 
 				if (tabButton != null)
 				{
-					tabButton.Text = modData.Translation.GetString(info.Label);
+					tabButton.Text = modData.Translation.GetString(label);
 					tabButton.OnClick = () =>
 					{
 						if (activePanel == IngameInfoPanel.Chat)
@@ -117,9 +117,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					tabButton.IsHighlighted = () => activePanel == type;
 				}
 
-				var panelContainer = widget.Get<ContainerWidget>(info.Panel);
+				var panelContainer = widget.Get<ContainerWidget>(panel);
 				panelContainer.IsVisible = () => activePanel == type;
-				info.Setup(tabButton, panelContainer);
+				setup(tabButton, panelContainer);
 
 				if (activePanel == IngameInfoPanel.AutoSelect)
 					activePanel = type;

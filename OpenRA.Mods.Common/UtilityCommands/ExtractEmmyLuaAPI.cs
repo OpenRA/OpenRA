@@ -226,15 +226,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				return ScriptMemberWrapper.WrappableMembers(t).Select(memberInfo => (memberInfo, required));
 			});
 
-			foreach (var property in properties)
+			foreach (var (memberInfo, required) in properties)
 			{
 				Console.WriteLine();
 
-				var isActivity = property.memberInfo.HasAttribute<ScriptActorPropertyActivityAttribute>();
+				var isActivity = memberInfo.HasAttribute<ScriptActorPropertyActivityAttribute>();
 
-				if (property.memberInfo.HasAttribute<DescAttribute>())
+				if (memberInfo.HasAttribute<DescAttribute>())
 				{
-					var lines = property.memberInfo.GetCustomAttributes<DescAttribute>(true).First().Lines;
+					var lines = memberInfo.GetCustomAttributes<DescAttribute>(true).First().Lines;
 					foreach (var line in lines)
 						Console.WriteLine($"    --- {line}");
 				}
@@ -242,10 +242,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (isActivity)
 					Console.WriteLine("    --- *Queued Activity*");
 
-				if (property.required.Any())
-					Console.WriteLine($"    --- **Requires {(property.required.Length == 1 ? "Trait" : "Traits")}:** {property.required.Select(GetDocumentationUrl).JoinWith(", ")}");
+				if (required.Any())
+					Console.WriteLine($"    --- **Requires {(required.Length == 1 ? "Trait" : "Traits")}:** {required.Select(GetDocumentationUrl).JoinWith(", ")}");
 
-				if (property.memberInfo is MethodInfo methodInfo)
+				if (memberInfo is MethodInfo methodInfo)
 				{
 					var attributes = methodInfo.GetCustomAttributes(false);
 					foreach (var obsolete in attributes.OfType<ObsoleteAttribute>())
@@ -264,7 +264,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					Console.WriteLine($"    {methodInfo.Name} = function({parameterString}) end;");
 				}
 
-				if (property.memberInfo is PropertyInfo propertyInfo)
+				if (memberInfo is PropertyInfo propertyInfo)
 				{
 					Console.WriteLine($"    ---@type {propertyInfo.PropertyType.EmmyLuaString()}");
 					Console.WriteLine("    " + propertyInfo.Name + " = { };");

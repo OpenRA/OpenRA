@@ -189,6 +189,9 @@ dotnet_diagnostic.IDE0040.severity = warning
 # Use 'is null' check.
 dotnet_diagnostic.IDE0041.severity = warning
 
+# Deconstruct variable declaration.
+dotnet_diagnostic.IDE0042.severity = warning
+
 # Make field readonly.
 dotnet_diagnostic.IDE0044.severity = warning
 

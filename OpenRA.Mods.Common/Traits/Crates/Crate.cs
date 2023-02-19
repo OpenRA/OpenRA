@@ -155,15 +155,15 @@ namespace OpenRA.Mods.Common.Traits
 				var totalShares = shares.Sum(a => a.Shares);
 				var n = self.World.SharedRandom.Next(totalShares);
 
-				foreach (var s in shares)
+				foreach (var (action, share) in shares)
 				{
-					if (n < s.Shares)
+					if (n < share)
 					{
-						s.Action.Activate(crusher);
+						action.Activate(crusher);
 						return;
 					}
 
-					n -= s.Shares;
+					n -= share;
 				}
 			}
 		}
