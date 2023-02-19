@@ -274,7 +274,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool Equals(EditorActorPreview other)
 		{
-			if (ReferenceEquals(null, other))
+			if (other is null)
 				return false;
 			if (ReferenceEquals(this, other))
 				return true;
@@ -284,7 +284,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override bool Equals(object obj)
 		{
-			if (ReferenceEquals(null, obj))
+			if (obj is null)
 				return false;
 			if (ReferenceEquals(this, obj))
 				return true;
