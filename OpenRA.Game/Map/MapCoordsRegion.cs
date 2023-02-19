@@ -19,7 +19,6 @@ namespace OpenRA
 		public struct MapCoordsEnumerator : IEnumerator<MPos>
 		{
 			readonly MapCoordsRegion r;
-			MPos current;
 
 			public MapCoordsEnumerator(MapCoordsRegion region)
 				: this()
@@ -30,41 +29,38 @@ namespace OpenRA
 
 			public bool MoveNext()
 			{
-				var u = current.U + 1;
-				var v = current.V;
+				var u = Current.U + 1;
+				var v = Current.V;
 
 				// Check for column overflow
-				if (u > r.bottomRight.U)
+				if (u > r.BottomRight.U)
 				{
 					v += 1;
-					u = r.topLeft.U;
+					u = r.TopLeft.U;
 
 					// Check for row overflow
-					if (v > r.bottomRight.V)
+					if (v > r.BottomRight.V)
 						return false;
 				}
 
-				current = new MPos(u, v);
+				Current = new MPos(u, v);
 				return true;
 			}
 
 			public void Reset()
 			{
-				current = new MPos(r.topLeft.U - 1, r.topLeft.V);
+				Current = new MPos(r.TopLeft.U - 1, r.TopLeft.V);
 			}
 
-			public MPos Current => current;
+			public MPos Current { get; private set; }
 			object IEnumerator.Current => Current;
 			public void Dispose() { }
 		}
 
-		readonly MPos topLeft;
-		readonly MPos bottomRight;
-
 		public MapCoordsRegion(MPos mapTopLeft, MPos mapBottomRight)
 		{
-			topLeft = mapTopLeft;
-			bottomRight = mapBottomRight;
+			TopLeft = mapTopLeft;
+			BottomRight = mapBottomRight;
 		}
 
 		public override string ToString()
@@ -87,7 +83,7 @@ namespace OpenRA
 			return GetEnumerator();
 		}
 
-		public MPos TopLeft => topLeft;
-		public MPos BottomRight => bottomRight;
+		public MPos TopLeft { get; }
+		public MPos BottomRight { get; }
 	}
 }

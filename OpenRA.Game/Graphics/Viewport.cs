@@ -66,9 +66,6 @@ namespace OpenRA.Graphics
 		WorldViewport lastViewportDistance;
 
 		float zoom = 1f;
-		float minZoom = 1f;
-		float maxZoom = 2f;
-
 		bool unlockMinZoom;
 		float unlockedMinZoomScale;
 		float unlockedMinZoom = 1f;
@@ -86,12 +83,13 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		public float MinZoom => minZoom;
+		public float MinZoom { get; private set; } = 1f;
+		public float MaxZoom { get; private set; } = 2f;
 
 		public void AdjustZoom(float dz)
 		{
 			// Exponential ensures that equal positive and negative steps have the same effect
-			Zoom = (zoom * (float)Math.Exp(dz)).Clamp(unlockMinZoom ? unlockedMinZoom : minZoom, maxZoom);
+			Zoom = (zoom * (float)Math.Exp(dz)).Clamp(unlockMinZoom ? unlockedMinZoom : MinZoom, MaxZoom);
 		}
 
 		public void AdjustZoom(float dz, int2 center)
@@ -105,10 +103,10 @@ namespace OpenRA.Graphics
 		public void ToggleZoom()
 		{
 			// Unlocked zooms always reset to the default zoom
-			if (zoom < minZoom)
-				Zoom = minZoom;
+			if (zoom < MinZoom)
+				Zoom = MinZoom;
 			else
-				Zoom = zoom > minZoom ? minZoom : maxZoom;
+				Zoom = zoom > MinZoom ? MinZoom : MaxZoom;
 		}
 
 		public void UnlockMinimumZoom(float scale)
@@ -210,14 +208,14 @@ namespace OpenRA.Graphics
 
 			var vd = graphicSettings.ViewportDistance;
 			if (viewportSizes.AllowNativeZoom && vd == WorldViewport.Native)
-				minZoom = viewportSizes.DefaultScale;
+				MinZoom = viewportSizes.DefaultScale;
 			else
 			{
 				var range = viewportSizes.GetSizeRange(vd);
-				minZoom = CalculateMinimumZoom(range.X, range.Y) * viewportSizes.DefaultScale;
+				MinZoom = CalculateMinimumZoom(range.X, range.Y) * viewportSizes.DefaultScale;
 			}
 
-			maxZoom = Math.Min(minZoom * viewportSizes.MaxZoomScale, Game.Renderer.NativeResolution.Height * viewportSizes.DefaultScale / viewportSizes.MaxZoomWindowHeight);
+			MaxZoom = Math.Min(MinZoom * viewportSizes.MaxZoomScale, Game.Renderer.NativeResolution.Height * viewportSizes.DefaultScale / viewportSizes.MaxZoomWindowHeight);
 
 			if (unlockMinZoom)
 			{
@@ -225,19 +223,19 @@ namespace OpenRA.Graphics
 				// TODO: Allow zooming out until the full map is visible
 				// We need to improve our viewport scroll handling to center the map as we zoom out
 				// before this will work well enough to enable
-				unlockedMinZoom = minZoom * unlockedMinZoomScale;
+				unlockedMinZoom = MinZoom * unlockedMinZoomScale;
 			}
 
 			if (resetCurrentZoom)
-				Zoom = minZoom;
+				Zoom = MinZoom;
 			else
-				Zoom = Zoom.Clamp(minZoom, maxZoom);
+				Zoom = Zoom.Clamp(MinZoom, MaxZoom);
 
-			var maxSize = 1f / (unlockMinZoom ? unlockedMinZoom : minZoom) * new float2(Game.Renderer.NativeResolution);
+			var maxSize = 1f / (unlockMinZoom ? unlockedMinZoom : MinZoom) * new float2(Game.Renderer.NativeResolution);
 			Game.Renderer.SetMaximumViewportSize(new Size((int)maxSize.X, (int)maxSize.Y));
 
 			foreach (var t in worldRenderer.World.WorldActor.TraitsImplementing<INotifyViewportZoomExtentsChanged>())
-				t.ViewportZoomExtentsChanged(minZoom, maxZoom);
+				t.ViewportZoomExtentsChanged(MinZoom, MaxZoom);
 		}
 
 		public CPos ViewToWorld(int2 view)

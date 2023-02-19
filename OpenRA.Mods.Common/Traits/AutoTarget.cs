@@ -135,15 +135,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		int nextScanTime = 0;
 
-		public UnitStance Stance => stance;
+		public UnitStance Stance { get; private set; }
 
 		[Sync]
 		public Actor Aggressor;
 
 		// NOT SYNCED: do not refer to this anywhere other than UI code
 		public UnitStance PredictedStance;
-
-		UnitStance stance;
 		IOverrideAutoTarget[] overrideAutoTarget;
 		INotifyStanceChanged[] notifyStanceChanged;
 		IEnumerable<AutoTargetPriorityInfo> activeTargetPriorities;
@@ -151,19 +149,19 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void SetStance(Actor self, UnitStance value)
 		{
-			if (stance == value)
+			if (Stance == value)
 				return;
 
-			var oldStance = stance;
-			stance = value;
+			var oldStance = Stance;
+			Stance = value;
 			ApplyStanceCondition(self);
 
 			foreach (var nsc in notifyStanceChanged)
-				nsc.StanceChanged(self, this, oldStance, stance);
+				nsc.StanceChanged(self, this, oldStance, Stance);
 
 			if (self.CurrentActivity != null)
 				foreach (var a in self.CurrentActivity.ActivitiesImplementing<IActivityNotifyStanceChanged>())
-					a.StanceChanged(self, this, oldStance, stance);
+					a.StanceChanged(self, this, oldStance, Stance);
 		}
 
 		void ApplyStanceCondition(Actor self)
@@ -171,7 +169,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (conditionToken != Actor.InvalidConditionToken)
 				conditionToken = self.RevokeCondition(conditionToken);
 
-			if (Info.ConditionByStance.TryGetValue(stance, out var condition))
+			if (Info.ConditionByStance.TryGetValue(Stance, out var condition))
 				conditionToken = self.GrantCondition(condition);
 		}
 
@@ -181,9 +179,9 @@ namespace OpenRA.Mods.Common.Traits
 			var self = init.Self;
 			ActiveAttackBases = self.TraitsImplementing<AttackBase>().ToArray().Where(t => !t.IsTraitDisabled);
 
-			stance = init.GetValue<StanceInit, UnitStance>(self.Owner.IsBot || !self.Owner.Playable ? info.InitialStanceAI : info.InitialStance);
+			Stance = init.GetValue<StanceInit, UnitStance>(self.Owner.IsBot || !self.Owner.Playable ? info.InitialStanceAI : info.InitialStance);
 
-			PredictedStance = stance;
+			PredictedStance = Stance;
 
 			allowMovement = Info.AllowMovement && self.TraitOrDefault<IMove>() != null;
 		}

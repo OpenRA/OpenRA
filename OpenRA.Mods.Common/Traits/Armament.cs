@@ -109,8 +109,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
-
-		readonly Actor self;
 		Turreted turret;
 		BodyOrientation coords;
 		INotifyBurstComplete[] notifyBurstComplete;
@@ -136,7 +134,7 @@ namespace OpenRA.Mods.Common.Traits
 		public Armament(Actor self, ArmamentInfo info)
 			: base(info)
 		{
-			this.self = self;
+			Actor = self;
 
 			Weapon = info.WeaponInfo;
 			Burst = Weapon.Burst;
@@ -400,6 +398,6 @@ namespace OpenRA.Mods.Common.Traits
 			return WRot.FromYaw(b.Yaw).Rotate(turret?.WorldOrientation ?? self.Orientation);
 		}
 
-		public Actor Actor => self;
+		public Actor Actor { get; }
 	}
 }

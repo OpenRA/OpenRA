@@ -16,7 +16,6 @@ namespace OpenRA.Mods.Common.Graphics
 {
 	public class SelectionBoxAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
-		readonly WPos pos;
 		readonly Rectangle decorationBounds;
 		readonly Color color;
 
@@ -25,18 +24,18 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public SelectionBoxAnnotationRenderable(WPos pos, Rectangle decorationBounds, Color color)
 		{
-			this.pos = pos;
+			Pos = pos;
 			this.decorationBounds = decorationBounds;
 			this.color = color;
 		}
 
-		public WPos Pos => pos;
+		public WPos Pos { get; }
 
 		public int ZOffset => 0;
 		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return this; }
-		public IRenderable OffsetBy(in WVec vec) { return new SelectionBoxAnnotationRenderable(pos + vec, decorationBounds, color); }
+		public IRenderable OffsetBy(in WVec vec) { return new SelectionBoxAnnotationRenderable(Pos + vec, decorationBounds, color); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }

@@ -229,24 +229,23 @@ namespace OpenRA.Mods.Common.Traits
 		struct ActorsAtEnumerator : IEnumerator<Actor>
 		{
 			InfluenceNode node;
-			Actor current;
 
 			public ActorsAtEnumerator(InfluenceNode node)
 			{
 				this.node = node;
-				current = null;
+				Current = null;
 			}
 
 			public void Reset() { throw new NotSupportedException(); }
-			public Actor Current => current;
+			public Actor Current { get; private set; }
 
-			object IEnumerator.Current => current;
+			object IEnumerator.Current => Current;
 			public void Dispose() { }
 			public bool MoveNext()
 			{
 				while (node != null)
 				{
-					current = node.Actor;
+					Current = node.Actor;
 					node = node.Next;
 					return true;
 				}

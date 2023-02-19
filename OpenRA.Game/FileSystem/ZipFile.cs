@@ -142,23 +142,22 @@ namespace OpenRA.FileSystem
 
 		sealed class ZipFolder : IReadOnlyPackage
 		{
-			public string Name => path;
+			public string Name { get; }
 			public ReadOnlyZipFile Parent { get; }
-			readonly string path;
 
 			public ZipFolder(ReadOnlyZipFile parent, string path)
 			{
 				if (path.EndsWith("/", StringComparison.Ordinal))
 					path = path.Substring(0, path.Length - 1);
 
+				Name = path;
 				Parent = parent;
-				this.path = path;
 			}
 
 			public Stream GetStream(string filename)
 			{
 				// Zip files use '/' as a path separator
-				return Parent.GetStream(path + '/' + filename);
+				return Parent.GetStream(Name + '/' + filename);
 			}
 
 			public IEnumerable<string> Contents
@@ -167,9 +166,9 @@ namespace OpenRA.FileSystem
 				{
 					foreach (var entry in Parent.Contents)
 					{
-						if (entry.StartsWith(path, StringComparison.Ordinal) && entry != path)
+						if (entry.StartsWith(Name, StringComparison.Ordinal) && entry != Name)
 						{
-							var filename = entry.Substring(path.Length + 1);
+							var filename = entry.Substring(Name.Length + 1);
 							var dirLevels = filename.Split('/').Count(c => !string.IsNullOrEmpty(c));
 							if (dirLevels == 1)
 								yield return filename;
@@ -180,12 +179,12 @@ namespace OpenRA.FileSystem
 
 			public bool Contains(string filename)
 			{
-				return Parent.Contains(path + '/' + filename);
+				return Parent.Contains(Name + '/' + filename);
 			}
 
 			public IReadOnlyPackage OpenPackage(string filename, FileSystem context)
 			{
-				return Parent.OpenPackage(path + '/' + filename, context);
+				return Parent.OpenPackage(Name + '/' + filename, context);
 			}
 
 			public void Dispose() { /* nothing to do */ }

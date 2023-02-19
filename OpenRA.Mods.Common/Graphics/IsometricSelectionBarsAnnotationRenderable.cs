@@ -25,36 +25,32 @@ namespace OpenRA.Mods.Common.Graphics
 		static readonly Color DarkEmptyColor = Color.FromArgb(160, 15, 15, 15);
 		static readonly Color DarkenColor = Color.FromArgb(24, 0, 0, 0);
 		static readonly Color LightenColor = Color.FromArgb(24, 255, 255, 255);
-
-		readonly WPos pos;
 		readonly Actor actor;
-		readonly bool displayHealth;
-		readonly bool displayExtra;
 		readonly Polygon bounds;
 
 		public IsometricSelectionBarsAnnotationRenderable(Actor actor, Polygon bounds, bool displayHealth, bool displayExtra)
 			: this(actor.CenterPosition, actor, bounds)
 		{
-			this.displayHealth = displayHealth;
-			this.displayExtra = displayExtra;
+			DisplayHealth = displayHealth;
+			DisplayExtra = displayExtra;
 		}
 
 		public IsometricSelectionBarsAnnotationRenderable(WPos pos, Actor actor, Polygon bounds)
 		{
-			this.pos = pos;
+			Pos = pos;
 			this.actor = actor;
 			this.bounds = bounds;
 		}
 
-		public WPos Pos => pos;
-		public bool DisplayHealth => displayHealth;
-		public bool DisplayExtra => displayExtra;
+		public WPos Pos { get; }
+		public bool DisplayHealth { get; }
+		public bool DisplayExtra { get; }
 
 		public int ZOffset => 0;
 		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return this; }
-		public IRenderable OffsetBy(in WVec vec) { return new IsometricSelectionBarsAnnotationRenderable(pos + vec, actor, bounds); }
+		public IRenderable OffsetBy(in WVec vec) { return new IsometricSelectionBarsAnnotationRenderable(Pos + vec, actor, bounds); }
 		public IRenderable AsDecoration() { return this; }
 
 		void DrawExtraBars(WorldRenderer wr)

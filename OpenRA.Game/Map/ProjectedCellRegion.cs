@@ -83,14 +83,12 @@ namespace OpenRA
 			// Current position, in projected map coordinates
 			int u, v;
 
-			PPos current;
-
 			public ProjectedCellRegionEnumerator(ProjectedCellRegion region)
 				: this()
 			{
 				r = region;
 				Reset();
-				current = new PPos(u, v);
+				Current = new PPos(u, v);
 			}
 
 			public bool MoveNext()
@@ -108,7 +106,7 @@ namespace OpenRA
 						return false;
 				}
 
-				current = new PPos(u, v);
+				Current = new PPos(u, v);
 				return true;
 			}
 
@@ -119,7 +117,7 @@ namespace OpenRA
 				v = r.TopLeft.V;
 			}
 
-			public PPos Current => current;
+			public PPos Current { get; private set; }
 			object IEnumerator.Current => Current;
 			public void Dispose() { }
 		}

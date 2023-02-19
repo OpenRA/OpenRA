@@ -37,8 +37,9 @@ namespace OpenRA.Mods.Common.Terrain
 	{
 		readonly Dictionary<ushort, TheaterTemplate> templates = new Dictionary<ushort, TheaterTemplate>();
 		readonly Cache<SheetType, SheetBuilder> sheetBuilders;
-		readonly Sprite missingTile;
 		readonly MersenneTwister random;
+
+		public Sprite MissingTile { get; }
 
 		public DefaultTileCache(DefaultTerrain terrainInfo, Action<uint, string> onMissingImage = null)
 		{
@@ -154,29 +155,27 @@ namespace OpenRA.Mods.Common.Terrain
 				missingSheetType = SheetType.BGRA;
 			}
 
-			missingTile = sheetBuilders[missingSheetType].Add(new byte[missingDataLength], missingFrameType, new Size(1, 1));
+			MissingTile = sheetBuilders[missingSheetType].Add(new byte[missingDataLength], missingFrameType, new Size(1, 1));
 			foreach (var sb in sheetBuilders.Values)
 				sb.Current.ReleaseBuffer();
 		}
 
 		public bool HasTileSprite(TerrainTile r, int? variant = null)
 		{
-			return TileSprite(r, variant) != missingTile;
+			return TileSprite(r, variant) != MissingTile;
 		}
 
 		public Sprite TileSprite(TerrainTile r, int? variant = null)
 		{
 			if (!templates.TryGetValue(r.Type, out var template))
-				return missingTile;
+				return MissingTile;
 
 			if (r.Index >= template.Stride)
-				return missingTile;
+				return MissingTile;
 
 			var start = template.Variants > 1 ? variant ?? random.Next(template.Variants) : 0;
 			return template.Sprites[start * template.Stride + r.Index];
 		}
-
-		public Sprite MissingTile => missingTile;
 
 		public void Dispose()
 		{
