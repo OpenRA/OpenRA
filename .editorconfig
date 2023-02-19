@@ -153,7 +153,7 @@ dotnet_diagnostic.IDE0018.severity = warning
 # Use pattern matching to avoid 'as' followed by a 'null' check.
 dotnet_diagnostic.IDE0019.severity = warning
 
-# Use pattern matching to avoid 'is' check followed by a cast.
+# Use pattern matching to avoid 'is' check followed by a cast (with variable).
 dotnet_diagnostic.IDE0020.severity = warning
 
 # Collection initialization can be simplified.
@@ -176,6 +176,9 @@ dotnet_diagnostic.IDE0034.severity = warning
 
 # Modifiers are not ordered.
 dotnet_diagnostic.IDE0036.severity = warning
+
+# Use pattern matching to avoid 'is' check followed by a cast (without variable).
+dotnet_diagnostic.IDE0038.severity = warning
 
 # Use local function instead of lambda.
 dotnet_diagnostic.IDE0039.severity = warning

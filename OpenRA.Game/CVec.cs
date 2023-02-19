@@ -55,7 +55,7 @@ namespace OpenRA
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode(); }
 
 		public bool Equals(CVec other) { return other == this; }
-		public override bool Equals(object obj) { return obj is CVec && Equals((CVec)obj); }
+		public override bool Equals(object obj) { return obj is CVec vec && Equals(vec); }
 
 		public override string ToString() { return X + "," + Y; }
 

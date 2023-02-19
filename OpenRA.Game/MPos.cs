@@ -27,7 +27,7 @@ namespace OpenRA
 		public override int GetHashCode() { return U.GetHashCode() ^ V.GetHashCode(); }
 
 		public bool Equals(MPos other) { return other == this; }
-		public override bool Equals(object obj) { return obj is MPos && Equals((MPos)obj); }
+		public override bool Equals(object obj) { return obj is MPos uv && Equals(uv); }
 
 		public MPos Clamp(Rectangle r)
 		{
@@ -88,7 +88,7 @@ namespace OpenRA
 		public override int GetHashCode() { return U.GetHashCode() ^ V.GetHashCode(); }
 
 		public bool Equals(PPos other) { return other == this; }
-		public override bool Equals(object obj) { return obj is PPos && Equals((PPos)obj); }
+		public override bool Equals(object obj) { return obj is PPos puv && Equals(puv); }
 
 		public override string ToString() { return U + "," + V; }
 	}

@@ -637,7 +637,7 @@ namespace OpenRA
 		public override int GetHashCode() { return Actor.GetHashCode() ^ Trait.GetHashCode(); }
 
 		public bool Equals(TraitPair<T> other) { return this == other; }
-		public override bool Equals(object obj) { return obj is TraitPair<T> && Equals((TraitPair<T>)obj); }
+		public override bool Equals(object obj) { return obj is TraitPair<T> pair && Equals(pair); }
 
 		public override string ToString() { return Actor.Info.Name + "->" + Trait.GetType().Name; }
 	}

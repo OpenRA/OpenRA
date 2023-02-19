@@ -56,7 +56,7 @@ namespace OpenRA
 		public override int GetHashCode() { return Bits.GetHashCode(); }
 
 		public bool Equals(CPos other) { return Bits == other.Bits; }
-		public override bool Equals(object obj) { return obj is CPos && Equals((CPos)obj); }
+		public override bool Equals(object obj) { return obj is CPos cell && Equals(cell); }
 
 		public override string ToString()
 		{
