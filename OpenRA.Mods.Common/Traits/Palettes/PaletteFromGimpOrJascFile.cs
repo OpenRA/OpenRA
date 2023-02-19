@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 
 						// Check if color has a (valid) alpha value.
 						// Note: We can't throw on "rgba.Length > 3 but parse failed", because in GIMP palettes the 'invalid' value is probably a color name string.
-						var noAlpha = rgba.Length > 3 ? !byte.TryParse(rgba[3], out a) : true;
+						var noAlpha = rgba.Length <= 3 || !byte.TryParse(rgba[3], out a);
 
 						// Index should be completely transparent/background color
 						if (i == TransparentIndex)

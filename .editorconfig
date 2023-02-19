@@ -201,6 +201,9 @@ dotnet_diagnostic.IDE0061.severity = warning
 # Simplify interpolation.
 dotnet_diagnostic.IDE0071.severity = warning
 
+# Simplify conditional expression.
+dotnet_diagnostic.IDE0075.severity = warning
+
 # Naming rule violation.
 dotnet_diagnostic.IDE1006.severity = warning
 
