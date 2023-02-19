@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 			return randomConstructionYard?.Location ?? initialBaseCenter;
 		}
 
-		public CPos DefenseCenter => defenseCenter;
+		public CPos DefenseCenter { get; private set; }
 
 		readonly World world;
 		readonly Player player;
@@ -155,8 +155,6 @@ namespace OpenRA.Mods.Common.Traits
 		IResourceLayer resourceLayer;
 		IBotPositionsUpdated[] positionsUpdatedModules;
 		CPos initialBaseCenter;
-		CPos defenseCenter;
-
 		readonly List<BaseBuilderQueueManager> builders = new List<BaseBuilderQueueManager>();
 
 		public BaseBuilderBotModule(Actor self, BaseBuilderBotModuleInfo info)
@@ -189,7 +187,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IBotPositionsUpdated.UpdatedDefenseCenter(CPos newLocation)
 		{
-			defenseCenter = newLocation;
+			DefenseCenter = newLocation;
 		}
 
 		bool IBotRequestPauseUnitProduction.PauseUnitProduction => !IsTraitDisabled && !HasAdequateRefineryCount;
@@ -273,7 +271,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new List<MiniYamlNode>()
 			{
 				new MiniYamlNode("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter)),
-				new MiniYamlNode("DefenseCenter", FieldSaver.FormatValue(defenseCenter))
+				new MiniYamlNode("DefenseCenter", FieldSaver.FormatValue(DefenseCenter))
 			};
 		}
 
@@ -288,7 +286,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var defenseCenterNode = data.FirstOrDefault(n => n.Key == "DefenseCenter");
 			if (defenseCenterNode != null)
-				defenseCenter = FieldLoader.GetValue<CPos>("DefenseCenter", defenseCenterNode.Value.Value);
+				DefenseCenter = FieldLoader.GetValue<CPos>("DefenseCenter", defenseCenterNode.Value.Value);
 		}
 	}
 }

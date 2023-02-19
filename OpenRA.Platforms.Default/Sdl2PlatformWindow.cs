@@ -22,10 +22,9 @@ namespace OpenRA.Platforms.Default
 {
 	sealed class Sdl2PlatformWindow : ThreadAffine, IPlatformWindow
 	{
-		readonly IGraphicsContext context;
 		readonly Sdl2Input input;
 
-		public IGraphicsContext Context => context;
+		public IGraphicsContext Context { get; }
 
 		readonly IntPtr window;
 		bool disposed;
@@ -341,12 +340,12 @@ namespace OpenRA.Platforms.Default
 			{
 				var ctx = new Sdl2GraphicsContext(this);
 				ctx.InitializeOpenGL();
-				context = ctx;
+				Context = ctx;
 			}
 			else
-				context = new ThreadedGraphicsContext(new Sdl2GraphicsContext(this), batchSize);
+				Context = new ThreadedGraphicsContext(new Sdl2GraphicsContext(this), batchSize);
 
-			context.SetVSyncEnabled(Game.Settings.Graphics.VSync);
+			Context.SetVSyncEnabled(Game.Settings.Graphics.VSync);
 
 			SDL.SDL_SetModState(SDL.SDL_Keymod.KMOD_NONE);
 			input = new Sdl2Input();
@@ -467,7 +466,7 @@ namespace OpenRA.Platforms.Default
 
 			disposed = true;
 
-			context?.Dispose();
+			Context?.Dispose();
 
 			if (Window != IntPtr.Zero)
 				SDL.SDL_DestroyWindow(Window);

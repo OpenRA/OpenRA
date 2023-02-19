@@ -17,8 +17,6 @@ namespace OpenRA.Mods.Common.Graphics
 	public enum BeamRenderableShape { Cylindrical, Flat }
 	public class BeamRenderable : IRenderable, IFinalizedRenderable
 	{
-		readonly WPos pos;
-		readonly int zOffset;
 		readonly WVec length;
 		readonly BeamRenderableShape shape;
 		readonly WDist width;
@@ -26,20 +24,20 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public BeamRenderable(WPos pos, int zOffset, in WVec length, BeamRenderableShape shape, WDist width, Color color)
 		{
-			this.pos = pos;
-			this.zOffset = zOffset;
+			Pos = pos;
+			ZOffset = zOffset;
 			this.length = length;
 			this.shape = shape;
 			this.width = width;
 			this.color = color;
 		}
 
-		public WPos Pos => pos;
-		public int ZOffset => zOffset;
+		public WPos Pos { get; }
+		public int ZOffset { get; }
 		public bool IsDecoration => true;
 
-		public IRenderable WithZOffset(int newOffset) { return new BeamRenderable(pos, zOffset, length, shape, width, color); }
-		public IRenderable OffsetBy(in WVec vec) { return new BeamRenderable(pos + vec, zOffset, length, shape, width, color); }
+		public IRenderable WithZOffset(int newOffset) { return new BeamRenderable(Pos, ZOffset, length, shape, width, color); }
+		public IRenderable OffsetBy(in WVec vec) { return new BeamRenderable(Pos + vec, ZOffset, length, shape, width, color); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
@@ -53,16 +51,16 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				var delta = length * width.Length / (2 * vecLength);
 				var corner = new WVec(-delta.Y, delta.X, delta.Z);
-				var a = wr.Screen3DPosition(pos - corner);
-				var b = wr.Screen3DPosition(pos + corner);
-				var c = wr.Screen3DPosition(pos + corner + length);
-				var d = wr.Screen3DPosition(pos - corner + length);
+				var a = wr.Screen3DPosition(Pos - corner);
+				var b = wr.Screen3DPosition(Pos + corner);
+				var c = wr.Screen3DPosition(Pos + corner + length);
+				var d = wr.Screen3DPosition(Pos - corner + length);
 				Game.Renderer.WorldRgbaColorRenderer.FillRect(a, b, c, d, color);
 			}
 			else
 			{
-				var start = wr.Screen3DPosition(pos);
-				var end = wr.Screen3DPosition(pos + length);
+				var start = wr.Screen3DPosition(Pos);
+				var end = wr.Screen3DPosition(Pos + length);
 				var screenWidth = wr.ScreenVector(new WVec(width, WDist.Zero, WDist.Zero))[0];
 				Game.Renderer.WorldRgbaColorRenderer.DrawLine(start, end, screenWidth, color);
 			}

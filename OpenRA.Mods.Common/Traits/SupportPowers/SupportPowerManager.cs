@@ -279,11 +279,10 @@ namespace OpenRA.Mods.Common.Traits
 	public class SelectGenericPowerTarget : OrderGenerator
 	{
 		readonly SupportPowerManager manager;
-		readonly string order;
 		readonly string cursor;
 		readonly MouseButton expectedButton;
 
-		public string OrderKey => order;
+		public string OrderKey { get; }
 
 		public SelectGenericPowerTarget(string order, SupportPowerManager manager, string cursor, MouseButton button)
 		{
@@ -292,7 +291,7 @@ namespace OpenRA.Mods.Common.Traits
 				manager.Self.World.Selection.Clear();
 
 			this.manager = manager;
-			this.order = order;
+			OrderKey = order;
 			this.cursor = cursor;
 			expectedButton = button;
 		}
@@ -301,13 +300,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			world.CancelInputMode();
 			if (mi.Button == expectedButton && world.Map.Contains(cell))
-				yield return new Order(order, manager.Self, Target.FromCell(world, cell), false) { SuppressVisualFeedback = true };
+				yield return new Order(OrderKey, manager.Self, Target.FromCell(world, cell), false) { SuppressVisualFeedback = true };
 		}
 
 		protected override void Tick(World world)
 		{
 			// Cancel the OG if we can't use the power
-			if (!manager.Powers.TryGetValue(order, out var p) || !p.Active || !p.Ready)
+			if (!manager.Powers.TryGetValue(OrderKey, out var p) || !p.Active || !p.Ready)
 				world.CancelInputMode();
 		}
 

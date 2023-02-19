@@ -126,15 +126,12 @@ namespace OpenRA
 			// Current position, in map coordinates
 			int u, v;
 
-			// Current position, in cell coordinates
-			CPos current;
-
 			public CellRegionEnumerator(CellRegion region)
 				: this()
 			{
 				r = region;
 				Reset();
-				current = new MPos(u, v).ToCPos(r.gridType);
+				Current = new MPos(u, v).ToCPos(r.gridType);
 			}
 
 			public bool MoveNext()
@@ -152,7 +149,8 @@ namespace OpenRA
 						return false;
 				}
 
-				current = new MPos(u, v).ToCPos(r.gridType);
+				// Current position, in cell coordinates
+				Current = new MPos(u, v).ToCPos(r.gridType);
 				return true;
 			}
 
@@ -163,7 +161,7 @@ namespace OpenRA
 				v = r.mapTopLeft.V;
 			}
 
-			public CPos Current => current;
+			public CPos Current { get; private set; }
 			object IEnumerator.Current => Current;
 			public void Dispose() { }
 		}

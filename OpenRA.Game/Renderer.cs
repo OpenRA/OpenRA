@@ -52,12 +52,11 @@ namespace OpenRA
 		IFrameBuffer worldBuffer;
 		Sheet worldSheet;
 		Sprite worldSprite;
-		int worldDownscaleFactor = 1;
 		Size lastMaximumViewportSize;
 		Size lastWorldViewportSize;
 
 		public Size WorldFrameBufferSize => worldSheet.Size;
-		public int WorldDownscaleFactor => worldDownscaleFactor;
+		public int WorldDownscaleFactor { get; private set; } = 1;
 
 		SheetBuilder fontSheetBuilder;
 		readonly IPlatform platform;
@@ -240,11 +239,11 @@ namespace OpenRA
 				var vh = worldViewport.Size.Height;
 				var bw = worldSheet.Size.Width;
 				var bh = worldSheet.Size.Height;
-				worldDownscaleFactor = 1;
-				while (vw / worldDownscaleFactor > bw || vh / worldDownscaleFactor > bh)
-					worldDownscaleFactor++;
+				WorldDownscaleFactor = 1;
+				while (vw / WorldDownscaleFactor > bw || vh / WorldDownscaleFactor > bh)
+					WorldDownscaleFactor++;
 
-				var s = new Size(vw / worldDownscaleFactor, vh / worldDownscaleFactor);
+				var s = new Size(vw / WorldDownscaleFactor, vh / WorldDownscaleFactor);
 				worldSprite = new Sprite(worldSheet, new Rectangle(int2.Zero, s), TextureChannel.RGBA);
 				lastWorldViewportSize = worldViewport.Size;
 			}
@@ -253,7 +252,7 @@ namespace OpenRA
 
 			if (lastWorldViewport != worldViewport)
 			{
-				WorldSpriteRenderer.SetViewportParams(worldSheet.Size, worldDownscaleFactor, depthMargin, worldViewport.Location);
+				WorldSpriteRenderer.SetViewportParams(worldSheet.Size, WorldDownscaleFactor, depthMargin, worldViewport.Location);
 				WorldModelRenderer.SetViewportParams();
 
 				lastWorldViewport = worldViewport;
@@ -391,10 +390,10 @@ namespace OpenRA
 			if (renderType == RenderType.World)
 			{
 				var r = Rectangle.FromLTRB(
-					rect.Left / worldDownscaleFactor,
-					rect.Top / worldDownscaleFactor,
-					(rect.Right + worldDownscaleFactor - 1) / worldDownscaleFactor,
-					(rect.Bottom + worldDownscaleFactor - 1) / worldDownscaleFactor);
+					rect.Left / WorldDownscaleFactor,
+					rect.Top / WorldDownscaleFactor,
+					(rect.Right + WorldDownscaleFactor - 1) / WorldDownscaleFactor,
+					(rect.Bottom + WorldDownscaleFactor - 1) / WorldDownscaleFactor);
 				worldBuffer.EnableScissor(r);
 			}
 			else
@@ -415,10 +414,10 @@ namespace OpenRA
 				{
 					var rect = scissorState.Peek();
 					var r = Rectangle.FromLTRB(
-						rect.Left / worldDownscaleFactor,
-						rect.Top / worldDownscaleFactor,
-						(rect.Right + worldDownscaleFactor - 1) / worldDownscaleFactor,
-						(rect.Bottom + worldDownscaleFactor - 1) / worldDownscaleFactor);
+						rect.Left / WorldDownscaleFactor,
+						rect.Top / WorldDownscaleFactor,
+						(rect.Right + WorldDownscaleFactor - 1) / WorldDownscaleFactor,
+						(rect.Bottom + WorldDownscaleFactor - 1) / WorldDownscaleFactor);
 					worldBuffer.EnableScissor(r);
 				}
 				else

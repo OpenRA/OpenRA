@@ -27,11 +27,10 @@ namespace OpenRA.Mods.Common.Traits
 	public class TechTree
 	{
 		readonly List<Watcher> watchers = new List<Watcher>();
-		readonly Player player;
 
 		public TechTree(ActorInitializer init)
 		{
-			player = init.Self.Owner;
+			Owner = init.Self.Owner;
 			init.World.ActorAdded += ActorChanged;
 			init.World.ActorRemoved += ActorChanged;
 		}
@@ -39,13 +38,13 @@ namespace OpenRA.Mods.Common.Traits
 		public void ActorChanged(Actor a)
 		{
 			var bi = a.Info.TraitInfoOrDefault<BuildableInfo>();
-			if (a.Owner == player && (a.Info.HasTraitInfo<ITechTreePrerequisiteInfo>() || (bi != null && bi.BuildLimit > 0)))
+			if (a.Owner == Owner && (a.Info.HasTraitInfo<ITechTreePrerequisiteInfo>() || (bi != null && bi.BuildLimit > 0)))
 				Update();
 		}
 
 		public void Update()
 		{
-			var ownedPrerequisites = GatherOwnedPrerequisites(player);
+			var ownedPrerequisites = GatherOwnedPrerequisites(Owner);
 			foreach (var w in watchers)
 				w.Update(ownedPrerequisites);
 		}
@@ -67,7 +66,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool HasPrerequisites(IEnumerable<string> prerequisites)
 		{
-			var ownedPrereqs = GatherOwnedPrerequisites(player);
+			var ownedPrereqs = GatherOwnedPrerequisites(Owner);
 			return prerequisites.All(p => !(p.Replace("~", "").StartsWith("!", StringComparison.Ordinal)
 					^ !ownedPrereqs.ContainsKey(p.Replace("!", "").Replace("~", ""))));
 		}
@@ -109,16 +108,15 @@ namespace OpenRA.Mods.Common.Traits
 			return ret;
 		}
 
-		public Player Owner => player;
+		public Player Owner { get; }
 
 		class Watcher
 		{
 			public readonly string Key;
-			public ITechTreeElement RegisteredBy => watcher;
+			public ITechTreeElement RegisteredBy { get; }
 
 			// Strings may be either actor type, or "alternate name" key
 			readonly string[] prerequisites;
-			readonly ITechTreeElement watcher;
 			bool hasPrerequisites;
 			readonly int limit;
 			bool hidden;
@@ -128,7 +126,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				Key = key;
 				this.prerequisites = prerequisites;
-				this.watcher = watcher;
+				RegisteredBy = watcher;
 				hasPrerequisites = false;
 				this.limit = limit;
 				hidden = false;
@@ -179,16 +177,16 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Hide the item from the UI if a prereq annotated with '~' is not met.
 				if (nowHidden && !hidden)
-					watcher.PrerequisitesItemHidden(Key);
+					RegisteredBy.PrerequisitesItemHidden(Key);
 
 				if (!nowHidden && hidden)
-					watcher.PrerequisitesItemVisible(Key);
+					RegisteredBy.PrerequisitesItemVisible(Key);
 
 				if (nowHasPrerequisites && !hasPrerequisites)
-					watcher.PrerequisitesAvailable(Key);
+					RegisteredBy.PrerequisitesAvailable(Key);
 
 				if (!nowHasPrerequisites && hasPrerequisites)
-					watcher.PrerequisitesUnavailable(Key);
+					RegisteredBy.PrerequisitesUnavailable(Key);
 
 				hidden = nowHidden;
 				hasPrerequisites = nowHasPrerequisites;

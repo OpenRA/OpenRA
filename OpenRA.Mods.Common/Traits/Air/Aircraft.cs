@@ -235,28 +235,26 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyCenterPositionChanged[] notifyCenterPositionChanged;
 		IOverrideAircraftLanding overrideAircraftLanding;
 
-		WRot orientation;
-
 		[Sync]
 		public WAngle Facing
 		{
-			get => orientation.Yaw;
-			set => orientation = orientation.WithYaw(value);
+			get => Orientation.Yaw;
+			set => Orientation = Orientation.WithYaw(value);
 		}
 
 		public WAngle Pitch
 		{
-			get => orientation.Pitch;
-			set => orientation = orientation.WithPitch(value);
+			get => Orientation.Pitch;
+			set => Orientation = Orientation.WithPitch(value);
 		}
 
 		public WAngle Roll
 		{
-			get => orientation.Roll;
-			set => orientation = orientation.WithRoll(value);
+			get => Orientation.Roll;
+			set => Orientation = Orientation.WithRoll(value);
 		}
 
-		public WRot Orientation => orientation;
+		public WRot Orientation { get; private set; }
 
 		[Sync]
 		public WPos CenterPosition { get; private set; }

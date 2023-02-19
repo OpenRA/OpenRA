@@ -194,7 +194,6 @@ namespace OpenRA.Mods.Common.Traits
 		WAngle oldFacing;
 		WRot orientation;
 		WPos oldPos;
-		CPos fromCell, toCell;
 		public SubCell FromSubCell, ToSubCell;
 
 		INotifyCustomLayerChanged[] notifyCustomLayerChanged;
@@ -226,10 +225,10 @@ namespace OpenRA.Mods.Common.Traits
 		#endregion
 
 		[Sync]
-		public CPos FromCell => fromCell;
+		public CPos FromCell { get; private set; }
 
 		[Sync]
-		public CPos ToCell => toCell;
+		public CPos ToCell { get; private set; }
 
 		public Locomotor Locomotor { get; private set; }
 
@@ -274,7 +273,7 @@ namespace OpenRA.Mods.Common.Traits
 			var locationInit = init.GetOrDefault<LocationInit>();
 			if (locationInit != null)
 			{
-				fromCell = toCell = locationInit.Value;
+				FromCell = ToCell = locationInit.Value;
 				SetCenterPosition(self, init.World.Map.CenterOfSubCell(FromCell, FromSubCell));
 			}
 
@@ -499,7 +498,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			foreach (var n in notifyCenterPositionChanged)
-				n.CenterPositionChanged(self, fromCell.Layer, toCell.Layer);
+				n.CenterPositionChanged(self, FromCell.Layer, ToCell.Layer);
 		}
 
 		public void SetTerrainRampOrientation(WRot orientation)
@@ -510,7 +509,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool IsLeavingCell(CPos location, SubCell subCell = SubCell.Any)
 		{
-			return ToCell != location && fromCell == location
+			return ToCell != location && FromCell == location
 				&& (subCell == SubCell.Any || FromSubCell == subCell || subCell == SubCell.FullCell || FromSubCell == SubCell.FullCell);
 		}
 
@@ -545,25 +544,25 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			RemoveInfluence();
-			fromCell = from;
-			toCell = to;
+			FromCell = from;
+			ToCell = to;
 			FromSubCell = fromSub;
 			ToSubCell = toSub;
 			AddInfluence();
 			IsBlocking = false;
 
 			// Most custom layer conditions are added/removed when starting the transition between layers.
-			if (toCell.Layer != fromCell.Layer)
+			if (ToCell.Layer != FromCell.Layer)
 				foreach (var n in notifyCustomLayerChanged)
-					n.CustomLayerChanged(self, fromCell.Layer, toCell.Layer);
+					n.CustomLayerChanged(self, FromCell.Layer, ToCell.Layer);
 		}
 
 		public void FinishedMoving(Actor self)
 		{
 			// Need to check both fromCell and toCell because FinishedMoving is called multiple times during the move
-			if (fromCell.Layer == toCell.Layer)
+			if (FromCell.Layer == ToCell.Layer)
 				foreach (var n in notifyFinishedMoving)
-					n.FinishedMoving(self, fromCell.Layer, toCell.Layer);
+					n.FinishedMoving(self, FromCell.Layer, ToCell.Layer);
 
 			// Only crush actors on having landed
 			if (!self.IsAtGroundLevel())

@@ -107,12 +107,9 @@ namespace OpenRA.Network
 		readonly Queue<OrderPacket> sentImmediateOrders = new Queue<OrderPacket>();
 		readonly ConcurrentQueue<(int FromClient, byte[] Data)> receivedPackets = new ConcurrentQueue<(int, byte[])>();
 		TcpClient tcp;
-		IPEndPoint endpoint;
-
 		volatile ConnectionState connectionState = ConnectionState.Connecting;
 		volatile int clientId;
 		bool disposed;
-		string errorMessage;
 
 		public NetworkConnection(ConnectionTarget target)
 		{
@@ -123,6 +120,12 @@ namespace OpenRA.Network
 				IsBackground = true
 			}.Start();
 		}
+
+		public ConnectionState ConnectionState => connectionState;
+
+		public IPEndPoint EndPoint { get; private set; }
+
+		public string ErrorMessage { get; private set; }
 
 		void NetworkConnectionConnect()
 		{
@@ -151,7 +154,7 @@ namespace OpenRA.Network
 					}
 					catch (Exception ex)
 					{
-						errorMessage = "Failed to connect";
+						ErrorMessage = "Failed to connect";
 						Log.Write("client", $"Failed to connect to {endpoint}: {ex.Message}");
 					}
 				})
@@ -163,7 +166,7 @@ namespace OpenRA.Network
 
 			if (!atLeastOneEndpoint)
 			{
-				errorMessage = "Failed to resolve address";
+				ErrorMessage = "Failed to resolve address";
 				connectionState = ConnectionState.NotConnected;
 			}
 
@@ -171,7 +174,7 @@ namespace OpenRA.Network
 			else if (queue.TryTake(out tcp, 5000))
 			{
 				// Copy endpoint here to have it even after getting disconnected.
-				endpoint = (IPEndPoint)tcp.Client.RemoteEndPoint;
+				EndPoint = (IPEndPoint)tcp.Client.RemoteEndPoint;
 
 				new Thread(NetworkConnectionReceive)
 				{
@@ -215,8 +218,8 @@ namespace OpenRA.Network
 			}
 			catch (Exception ex)
 			{
-				errorMessage = "Connection failed";
-				Log.Write("client", $"Connection to {endpoint} failed: {ex.Message}");
+				ErrorMessage = "Connection failed";
+				Log.Write("client", $"Connection to {EndPoint} failed: {ex.Message}");
 			}
 			finally
 			{
@@ -366,12 +369,6 @@ namespace OpenRA.Network
 			Recorder?.Dispose();
 			Recorder = new ReplayRecorder(chooseFilename);
 		}
-
-		public ConnectionState ConnectionState => connectionState;
-
-		public IPEndPoint EndPoint => endpoint;
-
-		public string ErrorMessage => errorMessage;
 
 		void IDisposable.Dispose()
 		{

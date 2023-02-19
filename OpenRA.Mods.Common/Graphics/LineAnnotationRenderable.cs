@@ -16,7 +16,6 @@ namespace OpenRA.Mods.Common.Graphics
 {
 	public class LineAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
-		readonly WPos start;
 		readonly WPos end;
 		readonly float width;
 		readonly Color startColor;
@@ -24,7 +23,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public LineAnnotationRenderable(WPos start, WPos end, float width, Color color)
 		{
-			this.start = start;
+			Pos = start;
 			this.end = end;
 			this.width = width;
 			startColor = endColor = color;
@@ -32,26 +31,26 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public LineAnnotationRenderable(WPos start, WPos end, float width, Color startColor, Color endColor)
 		{
-			this.start = start;
+			Pos = start;
 			this.end = end;
 			this.width = width;
 			this.startColor = startColor;
 			this.endColor = endColor;
 		}
 
-		public WPos Pos => start;
+		public WPos Pos { get; }
 		public int ZOffset => 0;
 		public bool IsDecoration => true;
 
-		public IRenderable WithZOffset(int newOffset) { return new LineAnnotationRenderable(start, end, width, startColor, endColor); }
-		public IRenderable OffsetBy(in WVec vec) { return new LineAnnotationRenderable(start + vec, end + vec, width, startColor, endColor); }
+		public IRenderable WithZOffset(int newOffset) { return new LineAnnotationRenderable(Pos, end, width, startColor, endColor); }
+		public IRenderable OffsetBy(in WVec vec) { return new LineAnnotationRenderable(Pos + vec, end + vec, width, startColor, endColor); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void Render(WorldRenderer wr)
 		{
 			Game.Renderer.RgbaColorRenderer.DrawLine(
-				wr.Viewport.WorldToViewPx(wr.ScreenPosition(start)),
+				wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos)),
 				wr.Viewport.WorldToViewPx(wr.Screen3DPosition(end)),
 				width, startColor, endColor);
 		}

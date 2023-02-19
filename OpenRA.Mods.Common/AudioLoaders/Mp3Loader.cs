@@ -79,13 +79,12 @@ namespace OpenRA.Mods.Common.AudioLoaders
 
 		public class StreamAbstraction : TagLib.File.IFileAbstraction
 		{
-			readonly Stream s;
 			public StreamAbstraction(Stream s)
 			{
-				this.s = s;
+				ReadStream = s;
 			}
 
-			public Stream ReadStream => s;
+			public Stream ReadStream { get; }
 
 			public Stream WriteStream => throw new NotImplementedException();
 

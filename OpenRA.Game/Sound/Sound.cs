@@ -43,7 +43,6 @@ namespace OpenRA
 		ISoundSource videoSource;
 		ISound music;
 		ISound video;
-		MusicInfo currentMusic;
 		readonly Dictionary<uint, ISound> currentSounds = new Dictionary<uint, ISound>();
 		readonly Dictionary<string, ISound> currentNotifications = new Dictionary<string, ISound>();
 		public bool DummyEngine { get; }
@@ -226,7 +225,7 @@ namespace OpenRA
 
 		Action onMusicComplete;
 		public bool MusicPlaying { get; private set; }
-		public MusicInfo CurrentMusic => currentMusic;
+		public MusicInfo CurrentMusic { get; private set; }
 
 		public void PlayMusicThen(MusicInfo m, Action then)
 		{
@@ -235,7 +234,7 @@ namespace OpenRA
 
 			onMusicComplete = then;
 
-			if (m == currentMusic && music != null)
+			if (m == CurrentMusic && music != null)
 			{
 				soundEngine.PauseSound(music, false);
 				MusicPlaying = true;
@@ -263,7 +262,7 @@ namespace OpenRA
 				return;
 			}
 
-			currentMusic = m;
+			CurrentMusic = m;
 			MusicPlaying = true;
 		}
 
@@ -290,7 +289,7 @@ namespace OpenRA
 				music = null;
 			}
 
-			currentMusic = null;
+			CurrentMusic = null;
 			MusicPlaying = false;
 		}
 

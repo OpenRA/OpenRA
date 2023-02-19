@@ -329,6 +329,8 @@ namespace OpenRA
 
 				case OrderType.Fields:
 				{
+					var targetState = Target.SerializableState;
+
 					var fields = OrderFields.None;
 					if (Subject != null)
 						fields |= OrderFields.Subject;
@@ -339,7 +341,7 @@ namespace OpenRA
 					if (ExtraData != 0)
 						fields |= OrderFields.ExtraData;
 
-					if (Target.SerializableType != TargetType.Invalid)
+					if (targetState.Type != TargetType.Invalid)
 						fields |= OrderFields.Target;
 
 					if (Queued)
@@ -354,7 +356,7 @@ namespace OpenRA
 					if (ExtraLocation != CPos.Zero)
 						fields |= OrderFields.ExtraLocation;
 
-					if (Target.SerializableCell != null)
+					if (targetState.Cell != null)
 						fields |= OrderFields.TargetIsCell;
 
 					w.Write((short)fields);
@@ -364,12 +366,12 @@ namespace OpenRA
 
 					if (fields.HasField(OrderFields.Target))
 					{
-						w.Write((byte)Target.SerializableType);
-						switch (Target.SerializableType)
+						w.Write((byte)targetState.Type);
+						switch (targetState.Type)
 						{
 							case TargetType.Actor:
-								w.Write(UIntFromActor(Target.SerializableActor));
-								w.Write(Target.SerializableGeneration);
+								w.Write(UIntFromActor(targetState.Actor));
+								w.Write(targetState.Generation);
 								break;
 							case TargetType.FrozenActor:
 								w.Write(Target.FrozenActor.Viewer.PlayerActor.ActorID);
@@ -378,14 +380,14 @@ namespace OpenRA
 							case TargetType.Terrain:
 								if (fields.HasField(OrderFields.TargetIsCell))
 								{
-									w.Write(Target.SerializableCell.Value.Bits);
-									w.Write((byte)Target.SerializableSubCell);
+									w.Write(targetState.Cell.Value.Bits);
+									w.Write((byte)targetState.SubCell);
 								}
 								else
 								{
-									w.Write(Target.SerializablePos.X);
-									w.Write(Target.SerializablePos.Y);
-									w.Write(Target.SerializablePos.Z);
+									w.Write(targetState.Pos.X);
+									w.Write(targetState.Pos.Y);
+									w.Write(targetState.Pos.Z);
 								}
 
 								break;

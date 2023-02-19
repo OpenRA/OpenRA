@@ -566,7 +566,6 @@ namespace OpenRA.Platforms.Default
 	class ThreadedTexture : ITextureInternal
 	{
 		readonly ThreadedGraphicsContext device;
-		readonly uint id;
 		readonly Func<object> getScaleFilter;
 		readonly Action<object> setScaleFilter;
 		readonly Func<object> getSize;
@@ -581,7 +580,7 @@ namespace OpenRA.Platforms.Default
 		public ThreadedTexture(ThreadedGraphicsContext device, ITextureInternal texture)
 		{
 			this.device = device;
-			id = texture.ID;
+			ID = texture.ID;
 			getScaleFilter = () => texture.ScaleFilter;
 			setScaleFilter = value => texture.ScaleFilter = (TextureScaleFilter)value;
 			getSize = () => texture.Size;
@@ -594,7 +593,7 @@ namespace OpenRA.Platforms.Default
 			dispose = texture.Dispose;
 		}
 
-		public uint ID => id;
+		public uint ID { get; }
 
 		public TextureScaleFilter ScaleFilter
 		{

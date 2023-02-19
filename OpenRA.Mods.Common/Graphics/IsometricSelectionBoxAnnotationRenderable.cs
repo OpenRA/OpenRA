@@ -29,32 +29,30 @@ namespace OpenRA.Mods.Common.Graphics
 			-TROffset, TOffset, TLOffset,
 			TLOffset, -TOffset, -TROffset
 		};
-
-		readonly WPos pos;
 		readonly Polygon bounds;
 		readonly Color color;
 
 		public IsometricSelectionBoxAnnotationRenderable(Actor actor, in Polygon bounds, Color color)
 		{
-			pos = actor.CenterPosition;
+			Pos = actor.CenterPosition;
 			this.bounds = bounds;
 			this.color = color;
 		}
 
 		public IsometricSelectionBoxAnnotationRenderable(WPos pos, in Polygon bounds, Color color)
 		{
-			this.pos = pos;
+			Pos = pos;
 			this.bounds = bounds;
 			this.color = color;
 		}
 
-		public WPos Pos => pos;
+		public WPos Pos { get; }
 
 		public int ZOffset => 0;
 		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return this; }
-		public IRenderable OffsetBy(in WVec vec) { return new IsometricSelectionBoxAnnotationRenderable(pos + vec, bounds, color); }
+		public IRenderable OffsetBy(in WVec vec) { return new IsometricSelectionBoxAnnotationRenderable(Pos + vec, bounds, color); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }

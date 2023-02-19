@@ -30,9 +30,6 @@ namespace OpenRA.Mods.Cnc.Graphics
 			new int[] { -8, 8, -4, 4, 3 },
 			new int[] { 8, -8, 4, -4, 3 }
 		};
-
-		readonly WPos pos;
-		readonly int zOffset;
 		readonly WVec length;
 		readonly string image;
 		readonly string palette;
@@ -46,8 +43,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 		public TeslaZapRenderable(WPos pos, int zOffset, in WVec length, string image, string brightSequence, int brightZaps, string dimSequence, int dimZaps, string palette)
 		{
-			this.pos = pos;
-			this.zOffset = zOffset;
+			Pos = pos;
+			ZOffset = zOffset;
 			this.length = length;
 			this.image = image;
 			this.palette = palette;
@@ -61,28 +58,28 @@ namespace OpenRA.Mods.Cnc.Graphics
 			cache = Array.Empty<IFinalizedRenderable>();
 		}
 
-		public WPos Pos => pos;
+		public WPos Pos { get; }
 		public PaletteReference Palette => null;
-		public int ZOffset => zOffset;
+		public int ZOffset { get; }
 		public bool IsDecoration => true;
 
 		public IPalettedRenderable WithPalette(PaletteReference newPalette)
 		{
-			return new TeslaZapRenderable(pos, zOffset, length, image, brightSequence, brightZaps, dimSequence, dimZaps, palette);
+			return new TeslaZapRenderable(Pos, ZOffset, length, image, brightSequence, brightZaps, dimSequence, dimZaps, palette);
 		}
 
-		public IRenderable WithZOffset(int newOffset) { return new TeslaZapRenderable(pos, zOffset, length, image, brightSequence, brightZaps, dimSequence, dimZaps, palette); }
-		public IRenderable OffsetBy(in WVec vec) { return new TeslaZapRenderable(pos + vec, zOffset, length, image, brightSequence, brightZaps, dimSequence, dimZaps, palette); }
+		public IRenderable WithZOffset(int newOffset) { return new TeslaZapRenderable(Pos, ZOffset, length, image, brightSequence, brightZaps, dimSequence, dimZaps, palette); }
+		public IRenderable OffsetBy(in WVec vec) { return new TeslaZapRenderable(Pos + vec, ZOffset, length, image, brightSequence, brightZaps, dimSequence, dimZaps, palette); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
 		public void RenderDebugGeometry(WorldRenderer wr) { }
 		public void Render(WorldRenderer wr)
 		{
-			if (wr.World.FogObscures(pos) && wr.World.FogObscures(pos + length))
+			if (wr.World.FogObscures(Pos) && wr.World.FogObscures(Pos + length))
 				return;
 
-			if (!cache.Any() || length != cachedLength || pos != cachedPos)
+			if (!cache.Any() || length != cachedLength || Pos != cachedPos)
 				cache = GenerateRenderables(wr);
 
 			foreach (var renderable in cache)
@@ -96,8 +93,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 			var bright = wr.World.Map.Sequences.GetSequence(image, brightSequence);
 			var dim = wr.World.Map.Sequences.GetSequence(image, dimSequence);
 
-			var source = wr.ScreenPosition(pos);
-			var target = wr.ScreenPosition(pos + length);
+			var source = wr.ScreenPosition(Pos);
+			var target = wr.ScreenPosition(Pos + length);
 
 			for (var n = 0; n < dimZaps; n++)
 				foreach (var z in DrawZapWandering(wr, source, target, dim, palette))
