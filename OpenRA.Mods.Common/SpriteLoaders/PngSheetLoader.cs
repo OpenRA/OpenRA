@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 				if (png.EmbeddedData.ContainsKey("FrameAmount"))
 					frameAmount = FieldLoader.GetValue<int>("FrameAmount", png.EmbeddedData["FrameAmount"]);
 				else
-					frameAmount = (png.Width / frameSize.Width) * (png.Height / frameSize.Height);
+					frameAmount = png.Width / frameSize.Width * (png.Height / frameSize.Height);
 			}
 			else if (png.EmbeddedData.ContainsKey("FrameAmount"))
 			{

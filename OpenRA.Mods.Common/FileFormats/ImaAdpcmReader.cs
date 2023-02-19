@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			var sb = (b & 8) != 0;
 			b &= 7;
 
-			var delta = (StepTable[index] * b) / 4 + StepTable[index] / 8;
+			var delta = StepTable[index] * b / 4 + StepTable[index] / 8;
 			if (sb)
 				delta = -delta;
 

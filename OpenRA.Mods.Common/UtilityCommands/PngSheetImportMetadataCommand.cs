@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (frameAmountField != null)
 				{
 					var frameAmount = FieldLoader.GetValue<int>("FrameAmount", frameAmountField);
-					if (frameAmount > (png.Width / frameSize.Width) * (png.Height / frameSize.Height))
+					if (frameAmount > png.Width / frameSize.Width * (png.Height / frameSize.Height))
 						throw new InvalidDataException(".png file is too small for given FrameSize and FrameAmount.");
 				}
 			}

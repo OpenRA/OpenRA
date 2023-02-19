@@ -215,10 +215,10 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var offset = buildingInfo.CenterOffset(self.World).Y + 1024;
 
-			return footprint.Select(c => (IRenderable)(new SpriteRenderable(
+			return footprint.Select(c => (IRenderable)new SpriteRenderable(
 				terrainRenderer.TileSprite(new TerrainTile(template, c.Value)),
 				wr.World.Map.CenterOfCell(c.Key), WVec.Zero, -offset, palette, 1f, 1f,
-				float3.Ones, TintModifiers.None, true))).ToArray();
+				float3.Ones, TintModifiers.None, true)).ToArray();
 		}
 
 		bool initialized;

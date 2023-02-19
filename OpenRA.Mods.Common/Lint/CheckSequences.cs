@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Lint
 						continue;
 
 					// All weapon sequences must specify their corresponding image
-					var image = ((string)fields.First(f => f.Name == sequenceReference.ImageReference).GetValue(projectileInfo));
+					var image = (string)fields.First(f => f.Name == sequenceReference.ImageReference).GetValue(projectileInfo);
 					if (string.IsNullOrEmpty(image))
 					{
 						if (!sequenceReference.AllowNullImage)

@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Cast to long to avoid overflow when multiplying by the health
 			var hp = health != null ? (long)health.HP : 1L;
 			var maxHP = health != null ? (long)health.MaxHP : 1L;
-			var refund = (int)((sellValue * sellableInfo.RefundPercent * hp) / (100 * maxHP));
+			var refund = (int)(sellValue * sellableInfo.RefundPercent * hp / (100 * maxHP));
 			refund = playerResources.ChangeCash(refund);
 
 			foreach (var ns in self.TraitsImplementing<INotifySold>())

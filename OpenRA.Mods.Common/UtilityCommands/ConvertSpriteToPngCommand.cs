@@ -79,7 +79,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				var png = new Png(pngData, SpriteFrameType.Indexed8, frameSize.Width, frameSize.Height, palColors);
-				png.Save($"{prefix}-{(count++):D4}.png");
+				#pragma warning disable SA1003
+				png.Save($"{prefix}-{count++:D4}.png");
+				#pragma warning restore SA1003
 			}
 
 			Console.WriteLine("Saved {0}-[0..{1}].png", prefix, count - 1);

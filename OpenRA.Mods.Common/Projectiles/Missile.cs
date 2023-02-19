@@ -301,7 +301,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			// angular speed in radians per tick = rot in facing units per tick * (pi radians / 128 facing units)
 			// pi = 314 / 100
 			// ==> loopRadius = (speed * 128 * 100) / (314 * rot)
-			return (speed * 6400) / (157 * rot);
+			return speed * 6400 / (157 * rot);
 		}
 
 		void DetermineLaunchSpeedAndAngleForIncline(int predClfDist, int diffClfMslHgt, int relTarHorDist,
@@ -315,9 +315,9 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			// Compute minimum speed necessary to both be able to face directly upwards and have enough space
 			// to hit the target without passing it by (and thus having to do horizontal loops)
-			var minSpeed = ((System.Math.Min(predClfDist * 1024 / (1024 - WAngle.FromFacing(vFacing).Sin()),
+			var minSpeed = (System.Math.Min(predClfDist * 1024 / (1024 - WAngle.FromFacing(vFacing).Sin()),
 					(relTarHorDist + predClfDist) * 1024 / (2 * (2048 - WAngle.FromFacing(vFacing).Sin())))
-				* info.VerticalRateOfTurn.Facing * 157) / 6400).Clamp(minLaunchSpeed, maxLaunchSpeed);
+				* info.VerticalRateOfTurn.Facing * 157 / 6400).Clamp(minLaunchSpeed, maxLaunchSpeed);
 
 			if ((sbyte)vFacing < 0)
 				speed = minSpeed;

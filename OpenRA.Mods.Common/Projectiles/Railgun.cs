@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			// Forward step, pointing from src to target.
 			// QuantizationCont * forwardStep == One cycle of beam in src2target direction.
-			ForwardStep = (info.HelixPitch.Length * SourceToTarget) / (info.QuantizationCount * SourceToTarget.Length);
+			ForwardStep = info.HelixPitch.Length * SourceToTarget / (info.QuantizationCount * SourceToTarget.Length);
 
 			// An easy vector to find which is perpendicular vector to forwardStep, with 0 Z component
 			LeftVector = new WVec(ForwardStep.Y, -ForwardStep.X, 0);

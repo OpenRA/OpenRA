@@ -183,6 +183,9 @@ dotnet_diagnostic.IDE0041.severity = warning
 # Make field readonly.
 dotnet_diagnostic.IDE0044.severity = warning
 
+# Remove unnecessary parentheses.
+dotnet_diagnostic.IDE0047.severity = warning
+
 # Remove unused private member.
 dotnet_diagnostic.IDE0051.severity = warning
 

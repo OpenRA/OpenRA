@@ -74,8 +74,8 @@ namespace OpenRA.Mods.Common.HitShapes
 				return new WDist(Math.Max(0, (PointB - p).Length - Radius.Length));
 
 			var projection = PointA + new int2(
-				(ab.X * t) / 1024,
-				(ab.Y * t) / 1024);
+				ab.X * t / 1024,
+				ab.Y * t / 1024);
 
 			var distance = (projection - p).Length;
 

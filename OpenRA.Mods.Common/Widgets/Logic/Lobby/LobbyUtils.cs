@@ -283,7 +283,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var selectedSpawn = DetermineSelectedSpawnPoint(mapPreview, preview, mi);
 
 			var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (Game.IsHost && c.Bot != null));
-			var playerToMove = locals.FirstOrDefault(c => ((selectedSpawn == 0) ^ (c.SpawnPoint == 0) && !c.IsObserver));
+			var playerToMove = locals.FirstOrDefault(c => (selectedSpawn == 0) ^ (c.SpawnPoint == 0) && !c.IsObserver);
 			SetSpawnPoint(orderManager, playerToMove, selectedSpawn);
 		}
 

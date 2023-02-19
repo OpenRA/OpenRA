@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WVec CenterOffset(World w)
 		{
 			var off = (w.Map.CenterOfCell(new CPos(Dimensions.X, Dimensions.Y)) - w.Map.CenterOfCell(new CPos(1, 1))) / 2;
-			return (off - new WVec(0, 0, off.Z)) + LocalCenterOffset;
+			return off - new WVec(0, 0, off.Z) + LocalCenterOffset;
 		}
 
 		public BaseProvider FindBaseProvider(World world, Player p, CPos topLeft)

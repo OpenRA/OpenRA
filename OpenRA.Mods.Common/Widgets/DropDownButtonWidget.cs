@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var panelY = RenderOrigin.Y + Bounds.Height - panelRoot.RenderOrigin.Y;
 			if (panelY + oldBounds.Height > Game.Renderer.Resolution.Height)
-				panelY -= (Bounds.Height + oldBounds.Height);
+				panelY -= Bounds.Height + oldBounds.Height;
 
 			panel.Bounds = new Rectangle(
 				panelX,
