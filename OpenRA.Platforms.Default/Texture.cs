@@ -148,9 +148,7 @@ namespace OpenRA.Platforms.Default
 				{
 					for (var i = 0; i < 4 * Size.Width * Size.Height; i += 4)
 					{
-						var temp = data[i];
-						data[i] = data[i + 2];
-						data[i + 2] = temp;
+						(data[i + 2], data[i]) = (data[i], data[i + 2]);
 					}
 				}
 
