@@ -37,11 +37,8 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length <= 0)
 			{
-				if (info.ExplosionWeapon != null)
-				{
-					// Use .FromPos since this actor is killed. Cannot use Target.FromActor
-					info.ExplosionWeapon.Impact(Target.FromPos(self.CenterPosition), self);
-				}
+				// Use .FromPos since this actor is killed. Cannot use Target.FromActor
+				info.ExplosionWeapon?.Impact(Target.FromPos(self.CenterPosition), self);
 
 				self.Kill(self);
 				Cancel(self);

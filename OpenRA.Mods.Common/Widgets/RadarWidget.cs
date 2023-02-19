@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			currentPlayer = player;
 
-			var newShroud = player != null ? player.Shroud : null;
+			var newShroud = player?.Shroud;
 
 			if (newShroud != shroud)
 			{
@@ -146,8 +146,7 @@ namespace OpenRA.Mods.Common.Widgets
 				shroud = newShroud;
 			}
 
-			var newPlayerRadarTerrain =
-				currentPlayer != null ? currentPlayer.PlayerActor.TraitOrDefault<PlayerRadarTerrain>() : null;
+			var newPlayerRadarTerrain = currentPlayer?.PlayerActor.TraitOrDefault<PlayerRadarTerrain>();
 
 			if (forceUpdate || newPlayerRadarTerrain != playerRadarTerrain)
 			{
