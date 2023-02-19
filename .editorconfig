@@ -240,6 +240,9 @@ dotnet_diagnostic.CA1827.severity = warning
 # Use Length/Count property instead of Enumerable.Count method.
 dotnet_diagnostic.CA1829.severity = warning
 
+# Use span-based 'string.Concat' (incompatible with mono builds).
+dotnet_diagnostic.CA1845.severity = none
+
 # Use string.Contains(char) instead of string.Contains(string) with single characters.
 dotnet_diagnostic.CA1847.severity = warning
 
