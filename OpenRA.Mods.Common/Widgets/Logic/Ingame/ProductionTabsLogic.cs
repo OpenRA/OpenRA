@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Widgets;
 
@@ -25,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (button == null)
 				return;
 
-			Action<bool> selectTab = reverse =>
+			void SelectTab(bool reverse)
 			{
 				if (tabs.QueueGroup == button.ProductionGroup)
 					tabs.SelectNextTab(reverse);
@@ -33,11 +32,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					tabs.QueueGroup = button.ProductionGroup;
 
 				tabs.PickUpCompletedBuilding();
-			};
+			}
 
 			button.IsDisabled = () => !tabs.Groups[button.ProductionGroup].Tabs.Any(t => t.Queue.BuildableItems().Any());
-			button.OnMouseUp = mi => selectTab(mi.Modifiers.HasModifier(Modifiers.Shift));
-			button.OnKeyPress = e => selectTab(e.Modifiers.HasModifier(Modifiers.Shift));
+			button.OnMouseUp = mi => SelectTab(mi.Modifiers.HasModifier(Modifiers.Shift));
+			button.OnKeyPress = e => SelectTab(e.Modifiers.HasModifier(Modifiers.Shift));
 			button.IsHighlighted = () => tabs.QueueGroup == button.ProductionGroup;
 
 			var chromeName = button.ProductionGroup.ToLowerInvariant();
@@ -65,7 +64,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var palette = tabs.Parent.Get<ProductionPaletteWidget>(tabs.PaletteWidget);
 				var icontemplate = background.Get("ICON_TEMPLATE");
 
-				Action<int, int> updateBackground = (oldCount, newCount) =>
+				void UpdateBackground(int oldCount, int newCount)
 				{
 					background.RemoveChildren();
 
@@ -79,12 +78,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						bg.Bounds.Y = palette.IconSize.Y * y;
 						background.AddChild(bg);
 					}
-				};
+				}
 
-				palette.OnIconCountChanged += updateBackground;
+				palette.OnIconCountChanged += UpdateBackground;
 
 				// Set the initial palette state
-				updateBackground(0, 0);
+				UpdateBackground(0, 0);
 			}
 		}
 

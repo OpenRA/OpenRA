@@ -157,17 +157,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				dropdown.OnMouseDown = _ =>
 				{
-					Func<KeyValuePair<string, string>, ScrollItemWidget, ScrollItemWidget> setupItem = (c, template) =>
+					ScrollItemWidget SetupItem(KeyValuePair<string, string> c, ScrollItemWidget template)
 					{
-						Func<bool> isSelected = () => optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value == c.Key;
-						Action onClick = () => orderManager.IssueOrder(Order.Command($"option {option.Id} {c.Key}"));
+						bool IsSelected() => optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value == c.Key;
+						void OnClick() => orderManager.IssueOrder(Order.Command($"option {option.Id} {c.Key}"));
 
-						var item = ScrollItemWidget.Setup(template, isSelected, onClick);
+						var item = ScrollItemWidget.Setup(template, IsSelected, OnClick);
 						item.Get<LabelWidget>("LABEL").GetText = () => c.Value;
 						return item;
-					};
+					}
 
-					dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", option.Values.Count * 30, option.Values, setupItem);
+					dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", option.Values.Count * 30, option.Values, SetupItem);
 				};
 
 				var label = row.GetOrNull<LabelWidget>(dropdown.Id + "_DESC");

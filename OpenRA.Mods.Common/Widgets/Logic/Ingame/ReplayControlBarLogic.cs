@@ -46,20 +46,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var originalTimestep = world.Timestep;
 
 				// In the event the replay goes out of sync, it becomes no longer usable. For polish we permanently pause the world.
-				Func<bool> isWidgetDisabled = () => orderManager.IsOutOfSync || orderManager.NetFrameNumber >= replayNetTicks;
+				bool IsWidgetDisabled() => orderManager.IsOutOfSync || orderManager.NetFrameNumber >= replayNetTicks;
 
 				var pauseButton = widget.Get<ButtonWidget>("BUTTON_PAUSE");
-				pauseButton.IsVisible = () => world.ReplayTimestep != 0 && !isWidgetDisabled();
+				pauseButton.IsVisible = () => world.ReplayTimestep != 0 && !IsWidgetDisabled();
 				pauseButton.OnClick = () => world.ReplayTimestep = 0;
 
 				var playButton = widget.Get<ButtonWidget>("BUTTON_PLAY");
-				playButton.IsVisible = () => world.ReplayTimestep == 0 || isWidgetDisabled();
+				playButton.IsVisible = () => world.ReplayTimestep == 0 || IsWidgetDisabled();
 				playButton.OnClick = () => world.ReplayTimestep = (int)Math.Ceiling(originalTimestep * multipliers[speed]);
-				playButton.IsDisabled = isWidgetDisabled;
+				playButton.IsDisabled = IsWidgetDisabled;
 
 				var slowButton = widget.Get<ButtonWidget>("BUTTON_SLOW");
 				slowButton.IsHighlighted = () => speed == PlaybackSpeed.Slow;
-				slowButton.IsDisabled = isWidgetDisabled;
+				slowButton.IsDisabled = IsWidgetDisabled;
 				slowButton.OnClick = () =>
 				{
 					speed = PlaybackSpeed.Slow;
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var normalSpeedButton = widget.Get<ButtonWidget>("BUTTON_REGULAR");
 				normalSpeedButton.IsHighlighted = () => speed == PlaybackSpeed.Regular;
-				normalSpeedButton.IsDisabled = isWidgetDisabled;
+				normalSpeedButton.IsDisabled = IsWidgetDisabled;
 				normalSpeedButton.OnClick = () =>
 				{
 					speed = PlaybackSpeed.Regular;
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var fastButton = widget.Get<ButtonWidget>("BUTTON_FAST");
 				fastButton.IsHighlighted = () => speed == PlaybackSpeed.Fast;
-				fastButton.IsDisabled = isWidgetDisabled;
+				fastButton.IsDisabled = IsWidgetDisabled;
 				fastButton.OnClick = () =>
 				{
 					speed = PlaybackSpeed.Fast;
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var maximumButton = widget.Get<ButtonWidget>("BUTTON_MAXIMUM");
 				maximumButton.IsHighlighted = () => speed == PlaybackSpeed.Maximum;
-				maximumButton.IsDisabled = isWidgetDisabled;
+				maximumButton.IsDisabled = IsWidgetDisabled;
 				maximumButton.OnClick = () =>
 				{
 					speed = PlaybackSpeed.Maximum;

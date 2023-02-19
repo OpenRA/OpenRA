@@ -115,14 +115,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var directoryDropdown = widget.Get<DropDownButtonWidget>("DIRECTORY_DROPDOWN");
 			{
-				Func<SaveDirectory, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+				ScrollItemWidget SetupItem(SaveDirectory option, ScrollItemWidget template)
 				{
 					var item = ScrollItemWidget.Setup(template,
 						() => selectedDirectory == option,
 						() => selectedDirectory = option);
 					item.Get<LabelWidget>("LABEL").GetText = () => option.DisplayName;
 					return item;
-				};
+				}
 
 				foreach (var kv in modData.MapCache.MapLocations)
 				{
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				directoryDropdown.GetText = () => selectedDirectory?.DisplayName ?? "";
 				directoryDropdown.OnClick = () =>
-					directoryDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, writableDirectories, setupItem);
+					directoryDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, writableDirectories, SetupItem);
 			}
 
 			var mapIsUnpacked = map.Package != null && map.Package is Folder;
@@ -177,25 +177,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var typeDropdown = widget.Get<DropDownButtonWidget>("TYPE_DROPDOWN");
 			{
-				Func<KeyValuePair<MapFileType, MapFileTypeInfo>, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+				ScrollItemWidget SetupItem(KeyValuePair<MapFileType, MapFileTypeInfo> option, ScrollItemWidget template)
 				{
 					var item = ScrollItemWidget.Setup(template,
 						() => fileType == option.Key,
 						() => { typeDropdown.Text = option.Value.UiLabel; fileType = option.Key; });
 					item.Get<LabelWidget>("LABEL").GetText = () => option.Value.UiLabel;
 					return item;
-				};
+				}
 
 				typeDropdown.Text = fileTypes[fileType].UiLabel;
 
 				typeDropdown.OnClick = () =>
-					typeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, fileTypes, setupItem);
+					typeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, fileTypes, SetupItem);
 			}
 
 			var close = widget.Get<ButtonWidget>("BACK_BUTTON");
 			close.OnClick = () => { Ui.CloseWindow(); onExit(); };
 
-			Action<string> saveMap = (string combinedPath) =>
+			void SaveMap(string combinedPath)
 			{
 				map.Title = title.Text;
 				map.Author = author.Text;
@@ -228,7 +228,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				onSave(map.Uid);
-			};
+			}
 
 			var save = widget.Get<ButtonWidget>("SAVE_BUTTON");
 			save.IsDisabled = () => string.IsNullOrWhiteSpace(filename.Text) || string.IsNullOrWhiteSpace(title.Text) || string.IsNullOrWhiteSpace(author.Text);
@@ -236,7 +236,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			save.OnClick = () =>
 			{
 				var combinedPath = Platform.ResolvePath(Path.Combine(selectedDirectory.Folder.Name, filename.Text + fileTypes[fileType].Extension));
-				SaveMap(modData, world, map, combinedPath, saveMap);
+				SaveMapLogic.SaveMap(modData, world, map, combinedPath, SaveMap);
 			};
 		}
 

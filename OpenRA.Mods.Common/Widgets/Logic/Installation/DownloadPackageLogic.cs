@@ -135,9 +135,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				progressBar.Percentage = progressPercentage;
 			}
 
-			Action<string> onExtractProgress = s => Game.RunAfterTick(() => getStatusText = () => s);
+			void OnExtractProgress(string s) => Game.RunAfterTick(() => getStatusText = () => s);
 
-			Action<string> onError = s => Game.RunAfterTick(() =>
+			void OnError(string s) => Game.RunAfterTick(() =>
 			{
 				var host = downloadHost ?? modData.Translation.GetString(UnknownHost);
 				Log.Write("install", $"Download from {host} failed: " + s);
@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				cancelButton.OnClick = Ui.CloseWindow;
 			});
 
-			Action<string> downloadUrl = url =>
+			void DownloadUrl(string url)
 			{
 				Log.Write("install", "Downloading " + url);
 
@@ -205,7 +205,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 							if (!archiveValid)
 							{
-								onError(modData.Translation.GetString(ArchiveValidationFailed));
+								OnError(modData.Translation.GetString(ArchiveValidationFailed));
 								return;
 							}
 						}
@@ -231,7 +231,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 											continue;
 										}
 
-										onExtractProgress(modData.Translation.GetString(ExtractingEntry, Translation.Arguments("entry", kv.Value)));
+										OnExtractProgress(modData.Translation.GetString(ExtractingEntry, Translation.Arguments("entry", kv.Value)));
 										Log.Write("install", "Extracting " + kv.Value);
 										var targetPath = Platform.ResolvePath(kv.Key);
 										Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
@@ -262,19 +262,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								File.Delete(f);
 							}
 
-							onError(modData.Translation.GetString(ArchiveExtractionFailed));
+							OnError(modData.Translation.GetString(ArchiveExtractionFailed));
 						}
 					}
 					catch (Exception e)
 					{
-						onError(e.ToString());
+						OnError(e.ToString());
 					}
 					finally
 					{
 						File.Delete(file);
 					}
 				}, token);
-			};
+			}
 
 			if (download.MirrorList != null)
 			{
@@ -289,18 +289,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						var result = await httpResponseMessage.Content.ReadAsStringAsync();
 
 						var mirrorList = result.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-						downloadUrl(mirrorList.Random(new MersenneTwister()));
+						DownloadUrl(mirrorList.Random(new MersenneTwister()));
 					}
 					catch (Exception e)
 					{
 						Log.Write("install", "Mirror selection failed with error:");
 						Log.Write("install", e.ToString());
-						onError(modData.Translation.GetString(MirrorSelectionFailed));
+						OnError(modData.Translation.GetString(MirrorSelectionFailed));
 					}
 				});
 			}
 			else
-				downloadUrl(download.URL);
+				DownloadUrl(download.URL);
 		}
 	}
 }

@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			shroudSelector.IsDisabled = () => shroudSelectorDisabled;
 			shroudSelector.OnMouseDown = _ =>
 			{
-				Func<CameraOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+				ScrollItemWidget SetupItem(CameraOption option, ScrollItemWidget template)
 				{
 					var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
 					var showFlag = option.Faction != null;
@@ -156,9 +156,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					labelAlt.GetColor = () => option.Color;
 
 					return item;
-				};
+				}
 
-				shroudSelector.ShowDropDown("SPECTATOR_DROPDOWN_TEMPLATE", 400, groups, setupItem);
+				shroudSelector.ShowDropDown("SPECTATOR_DROPDOWN_TEMPLATE", 400, groups, SetupItem);
 			};
 
 			shroudLabel = shroudSelector.Get<LabelWidget>("LABEL");

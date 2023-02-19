@@ -37,24 +37,24 @@ namespace OpenRA.Server
 			var status = cache[map];
 			var failed = false;
 
-			Action<string> onLintFailure = message =>
+			void OnLintFailure(string message)
 			{
 				Log.Write("server", "Map {0} failed lint with error: {1}", map.Title, message);
 				failed = true;
-			};
+			}
 
-			Action<string> onLintWarning = _ => { };
+			void OnLintWarning(string _) { }
 
 			foreach (var customMapPassType in modData.ObjectCreator.GetTypesImplementing<ILintServerMapPass>())
 			{
 				try
 				{
 					var customMapPass = (ILintServerMapPass)modData.ObjectCreator.CreateBasic(customMapPassType);
-					customMapPass.Run(onLintFailure, onLintWarning, modData, map, rules);
+					customMapPass.Run(OnLintFailure, OnLintWarning, modData, map, rules);
 				}
 				catch (Exception e)
 				{
-					onLintFailure(e.ToString());
+					OnLintFailure(e.ToString());
 				}
 			}
 

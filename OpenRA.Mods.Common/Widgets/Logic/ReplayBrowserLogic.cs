@@ -240,7 +240,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ddb.GetText = () => lookup[filter.Type];
 					ddb.OnMouseDown = _ =>
 					{
-						Func<(GameType GameType, string Text), ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
+						ScrollItemWidget SetupItem((GameType GameType, string Text) option, ScrollItemWidget tpl)
 						{
 							var item = ScrollItemWidget.Setup(
 								tpl,
@@ -248,9 +248,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								() => { filter.Type = option.GameType; ApplyFilter(); });
 							item.Get<LabelWidget>("LABEL").GetText = () => option.Text;
 							return item;
-						};
+						}
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, SetupItem);
 					};
 				}
 			}
@@ -275,7 +275,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ddb.GetText = () => lookup[filter.Date];
 					ddb.OnMouseDown = _ =>
 					{
-						Func<(DateType DateType, string Text), ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
+						ScrollItemWidget SetupItem((DateType DateType, string Text) option, ScrollItemWidget tpl)
 						{
 							var item = ScrollItemWidget.Setup(
 								tpl,
@@ -284,9 +284,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 							item.Get<LabelWidget>("LABEL").GetText = () => option.Text;
 							return item;
-						};
+						}
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, SetupItem);
 					};
 				}
 			}
@@ -311,7 +311,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ddb.GetText = () => lookup[filter.Duration];
 					ddb.OnMouseDown = _ =>
 					{
-						Func<(DurationType DurationType, string Text), ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
+						ScrollItemWidget SetupItem((DurationType DurationType, string Text) option, ScrollItemWidget tpl)
 						{
 							var item = ScrollItemWidget.Setup(
 								tpl,
@@ -319,9 +319,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								() => { filter.Duration = option.DurationType; ApplyFilter(); });
 							item.Get<LabelWidget>("LABEL").GetText = () => option.Text;
 							return item;
-						};
+						}
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, SetupItem);
 					};
 				}
 			}
@@ -346,7 +346,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ddb.GetText = () => lookup[filter.Outcome];
 					ddb.OnMouseDown = _ =>
 					{
-						Func<(WinState WinState, string Text), ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
+						ScrollItemWidget SetupItem((WinState WinState, string Text) option, ScrollItemWidget tpl)
 						{
 							var item = ScrollItemWidget.Setup(
 								tpl,
@@ -354,9 +354,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								() => { filter.Outcome = option.WinState; ApplyFilter(); });
 							item.Get<LabelWidget>("LABEL").GetText = () => option.Text;
 							return item;
-						};
+						}
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, SetupItem);
 					};
 				}
 			}
@@ -384,7 +384,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ddb.GetText = () => string.IsNullOrEmpty(filter.MapName) ? anyText : filter.MapName;
 					ddb.OnMouseDown = _ =>
 					{
-						Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
+						ScrollItemWidget SetupItem(string option, ScrollItemWidget tpl)
 						{
 							var item = ScrollItemWidget.Setup(
 								tpl,
@@ -392,9 +392,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								() => { filter.MapName = option; ApplyFilter(); });
 							item.Get<LabelWidget>("LABEL").GetText = () => option ?? anyText;
 							return item;
-						};
+						}
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, SetupItem);
 					};
 				}
 			}
@@ -412,7 +412,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ddb.GetText = () => string.IsNullOrEmpty(filter.PlayerName) ? anyText : filter.PlayerName;
 					ddb.OnMouseDown = _ =>
 					{
-						Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
+						ScrollItemWidget SetupItem(string option, ScrollItemWidget tpl)
 						{
 							var item = ScrollItemWidget.Setup(
 								tpl,
@@ -420,9 +420,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								() => { filter.PlayerName = option; ApplyFilter(); });
 							item.Get<LabelWidget>("LABEL").GetText = () => option ?? anyText;
 							return item;
-						};
+						}
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, SetupItem);
 					};
 				}
 			}
@@ -444,7 +444,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ddb.GetText = () => string.IsNullOrEmpty(filter.Faction) ? anyText : filter.Faction;
 					ddb.OnMouseDown = _ =>
 					{
-						Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, tpl) =>
+						ScrollItemWidget SetupItem(string option, ScrollItemWidget tpl)
 						{
 							var item = ScrollItemWidget.Setup(
 								tpl,
@@ -452,9 +452,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								() => { filter.Faction = option; ApplyFilter(); });
 							item.Get<LabelWidget>("LABEL").GetText = () => option ?? anyText;
 							return item;
-						};
+						}
 
-						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, setupItem);
+						ddb.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 330, options, SetupItem);
 					};
 				}
 			}
@@ -497,7 +497,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					});
 			};
 
-			Action<ReplayMetadata, Action> onDeleteReplay = (r, after) =>
+			void OnDeleteReplay(ReplayMetadata r, Action after)
 			{
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: DeleteReplayTitle,
@@ -510,13 +510,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					},
 					confirmText: DeleteReplayAccept,
 					onCancel: () => { });
-			};
+			}
 
 			var deleteButton = panel.Get<ButtonWidget>("MNG_DELSEL_BUTTON");
 			deleteButton.IsDisabled = () => selectedReplay == null;
 			deleteButton.OnClick = () =>
 			{
-				onDeleteReplay(selectedReplay, () =>
+				OnDeleteReplay(selectedReplay, () =>
 				{
 					if (selectedReplay == null)
 						SelectFirstVisibleReplay();
@@ -533,7 +533,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (list.Count == 1)
 				{
-					onDeleteReplay(list[0], () => { if (selectedReplay == null) SelectFirstVisibleReplay(); });
+					OnDeleteReplay(list[0], () => { if (selectedReplay == null) SelectFirstVisibleReplay(); });
 					return;
 				}
 

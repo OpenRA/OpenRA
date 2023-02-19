@@ -400,7 +400,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var key = Hotkey.FromKeyInput(e);
 
-			Func<HotkeyReference, ScrollDirection, bool> handleMapScrollKey = (hotkey, scrollDirection) =>
+			bool HandleMapScrollKey(HotkeyReference hotkey, ScrollDirection scrollDirection)
 			{
 				var isHotkey = false;
 				var keyValue = hotkey.GetValue();
@@ -411,10 +411,10 @@ namespace OpenRA.Mods.Common.Widgets
 				}
 
 				return isHotkey;
-			};
+			}
 
-			if (handleMapScrollKey(ScrollUpKey, ScrollDirection.Up) || handleMapScrollKey(ScrollDownKey, ScrollDirection.Down)
-				|| handleMapScrollKey(ScrollLeftKey, ScrollDirection.Left) || handleMapScrollKey(ScrollRightKey, ScrollDirection.Right))
+			if (HandleMapScrollKey(ScrollUpKey, ScrollDirection.Up) || HandleMapScrollKey(ScrollDownKey, ScrollDirection.Down)
+				|| HandleMapScrollKey(ScrollLeftKey, ScrollDirection.Left) || HandleMapScrollKey(ScrollRightKey, ScrollDirection.Right))
 				return true;
 
 			if (e.Event != KeyInputEvent.Down)

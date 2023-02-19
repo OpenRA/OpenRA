@@ -38,12 +38,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var tlm = world.WorldActor.TraitOrDefault<TimeLimitManager>();
 			var startTick = Ui.LastTickTime.Value;
 
-			Func<bool> shouldShowStatus = () => (world.Paused || world.ReplayTimestep != world.Timestep)
+			bool ShouldShowStatus() => (world.Paused || world.ReplayTimestep != world.Timestep)
 				&& (Ui.LastTickTime.Value - startTick) / 1000 % 2 == 0;
 
-			Func<bool> paused = () => world.Paused || world.ReplayTimestep == 0;
+			bool Paused() => world.Paused || world.ReplayTimestep == 0;
 
-			var pausedText = modData.Translation.GetString(Paused);
+			var pausedText = modData.Translation.GetString(GameTimerLogic.Paused);
 			var maxSpeedText = modData.Translation.GetString(MaxSpeed);
 			var speedText = new CachedTransform<int, string>(p =>
 					modData.Translation.GetString(Speed, Translation.Arguments("percentage", p)));
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				timer.GetText = () =>
 				{
-					if (status == null && paused() && shouldShowStatus())
+					if (status == null && Paused() && ShouldShowStatus())
 						return pausedText;
 
 					var timeLimit = tlm?.TimeLimit ?? 0;
@@ -64,10 +64,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (status != null)
 			{
 				// Blink the status line
-				status.IsVisible = shouldShowStatus;
+				status.IsVisible = ShouldShowStatus;
 				status.GetText = () =>
 				{
-					if (paused())
+					if (Paused())
 						return pausedText;
 
 					if (world.ReplayTimestep == 1)

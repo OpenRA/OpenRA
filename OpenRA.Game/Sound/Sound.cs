@@ -93,9 +93,9 @@ namespace OpenRA
 
 			this.loaders = loaders;
 			this.fileSystem = fileSystem;
-			Func<ISoundFormat, ISoundSource> loadIntoMemory = soundFormat => soundEngine.AddSoundSourceFromMemory(
+			ISoundSource LoadIntoMemory(ISoundFormat soundFormat) => soundEngine.AddSoundSourceFromMemory(
 				soundFormat.GetPCMInputStream().ReadAllBytes(), soundFormat.Channels, soundFormat.SampleBits, soundFormat.SampleRate);
-			sounds = new Cache<string, ISoundSource>(filename => LoadSound(filename, loadIntoMemory));
+			sounds = new Cache<string, ISoundSource>(filename => LoadSound(filename, LoadIntoMemory));
 			currentSounds.Clear();
 			currentNotifications.Clear();
 			video = null;
@@ -252,11 +252,11 @@ namespace OpenRA
 
 			StopMusic();
 
-			Func<ISoundFormat, ISound> stream = soundFormat => soundEngine.Play2DStream(
+			ISound Stream(ISoundFormat soundFormat) => soundEngine.Play2DStream(
 				soundFormat.GetPCMInputStream(), soundFormat.Channels, soundFormat.SampleBits, soundFormat.SampleRate,
 				looped, true, WPos.Zero, MusicVolume * m.VolumeModifier);
 
-			music = LoadSound(m.Filename, stream);
+			music = LoadSound(m.Filename, Stream);
 			if (music == null)
 			{
 				onMusicComplete = null;

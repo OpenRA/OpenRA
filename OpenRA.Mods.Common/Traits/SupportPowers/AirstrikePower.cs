@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 			Beacon beacon = null;
 			var aircraftInRange = new Dictionary<Actor, bool>();
 
-			Action<Actor> onEnterRange = a =>
+			void OnEnterRange(Actor a)
 			{
 				// Spawn a camera and remove the beacon when the first plane enters the target area
 				if (info.CameraActor != null && camera == null && !aircraftInRange.Any(kv => kv.Value))
@@ -112,18 +112,18 @@ namespace OpenRA.Mods.Common.Traits
 				RemoveBeacon(beacon);
 
 				aircraftInRange[a] = true;
-			};
+			}
 
-			Action<Actor> onExitRange = a =>
+			void OnExitRange(Actor a)
 			{
 				aircraftInRange[a] = false;
 
 				// Remove the camera when the final plane leaves the target area
 				if (!aircraftInRange.Any(kv => kv.Value))
 					RemoveCamera(camera);
-			};
+			}
 
-			Action<Actor> onRemovedFromWorld = a =>
+			void OnRemovedFromWorld(Actor a)
 			{
 				aircraftInRange[a] = false;
 
@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Traits
 					RemoveCamera(camera);
 					RemoveBeacon(beacon);
 				}
-			};
+			}
 
 			// Create the actors immediately so they can be returned
 			for (var i = -info.SquadSize / 2; i <= info.SquadSize / 2; i++)
@@ -160,9 +160,9 @@ namespace OpenRA.Mods.Common.Traits
 
 				var attack = a.Trait<AttackBomber>();
 				attack.SetTarget(target + targetOffset);
-				attack.OnEnteredAttackRange += onEnterRange;
-				attack.OnExitedAttackRange += onExitRange;
-				attack.OnRemovedFromWorld += onRemovedFromWorld;
+				attack.OnEnteredAttackRange += OnEnterRange;
+				attack.OnExitedAttackRange += OnExitRange;
+				attack.OnRemovedFromWorld += OnRemovedFromWorld;
 			}
 
 			self.World.AddFrameEndTask(w =>

@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var editorLayer = world.WorldActor.Trait<EditorActorLayer>();
 
 			selectedOwner = editorLayer.Players.Players.Values.First();
-			Func<PlayerReference, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+			ScrollItemWidget SetupItem(PlayerReference option, ScrollItemWidget template)
 			{
 				var item = ScrollItemWidget.Setup(template, () => selectedOwner == option, () => SelectOwner(option));
 
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				item.GetColor = () => option.Color;
 
 				return item;
-			};
+			}
 
 			editorLayer.OnPlayerRemoved = () =>
 			{
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ownersDropDown.OnClick = () =>
 			{
 				var owners = editorLayer.Players.Players.Values.OrderBy(p => p.Name);
-				ownersDropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, owners, setupItem);
+				ownersDropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, owners, SetupItem);
 			};
 
 			ownersDropDown.Text = selectedOwner.Name;

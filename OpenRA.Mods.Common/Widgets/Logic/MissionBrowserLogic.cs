@@ -298,14 +298,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						OnClick = () => difficulty = kv.Key
 					});
 
-					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+					ScrollItemWidget SetupItem(DropDownOption option, ScrollItemWidget template)
 					{
 						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
 						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
 						return item;
-					};
+					}
 
-					difficultyButton.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
+					difficultyButton.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, SetupItem);
 				};
 			}
 
@@ -325,14 +325,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						OnClick = () => gameSpeed = s.Key
 					});
 
-					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+					ScrollItemWidget SetupItem(DropDownOption option, ScrollItemWidget template)
 					{
 						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
 						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
 						return item;
-					};
+					}
 
-					gameSpeedButton.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
+					gameSpeedButton.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, SetupItem);
 				};
 			}
 		}

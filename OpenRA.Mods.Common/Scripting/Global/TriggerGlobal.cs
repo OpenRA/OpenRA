@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public void AfterDelay(int delay, LuaFunction func)
 		{
 			var f = (LuaFunction)func.CopyReference();
-			Action doCall = () =>
+			void DoCall()
 			{
 				try
 				{
@@ -47,9 +47,9 @@ namespace OpenRA.Mods.Common.Scripting
 				{
 					Context.FatalError(e.Message);
 				}
-			};
+			}
 
-			Context.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, doCall)));
+			Context.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, DoCall)));
 		}
 
 		[Desc("Call a function for each passenger when it enters a transport. " +
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			var group = actors.ToList();
 			var f = (LuaFunction)func.CopyReference();
-			Action<Actor> onMemberKilled = m =>
+			void OnMemberKilled(Actor m)
 			{
 				try
 				{
@@ -106,10 +106,10 @@ namespace OpenRA.Mods.Common.Scripting
 				{
 					Context.FatalError(e.Message);
 				}
-			};
+			}
 
 			foreach (var a in group)
-				GetScriptTriggers(a).OnKilledInternal += onMemberKilled;
+				GetScriptTriggers(a).OnKilledInternal += OnMemberKilled;
 		}
 
 		[Desc("Call a function when one of the actors in a group is killed. The callback " +
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			var called = false;
 			var f = (LuaFunction)func.CopyReference();
-			Action<Actor> onMemberKilled = m =>
+			void OnMemberKilled(Actor m)
 			{
 				try
 				{
@@ -135,10 +135,10 @@ namespace OpenRA.Mods.Common.Scripting
 				{
 					Context.FatalError(e.Message);
 				}
-			};
+			}
 
 			foreach (var a in actors)
-				GetScriptTriggers(a).OnKilledInternal += onMemberKilled;
+				GetScriptTriggers(a).OnKilledInternal += OnMemberKilled;
 		}
 
 		[Desc("Call a function when this actor produces another actor. " +
@@ -211,7 +211,7 @@ namespace OpenRA.Mods.Common.Scripting
 			var group = actors.ToList();
 
 			var f = (LuaFunction)func.CopyReference();
-			Action<Actor> onMemberRemoved = m =>
+			void OnMemberRemoved(Actor m)
 			{
 				try
 				{
@@ -230,9 +230,9 @@ namespace OpenRA.Mods.Common.Scripting
 				{
 					Context.FatalError(e.Message);
 				}
-			};
+			}
 
-			Action<Actor> onMemberAdded = m =>
+			void OnMemberAdded(Actor m)
 			{
 				try
 				{
@@ -245,12 +245,12 @@ namespace OpenRA.Mods.Common.Scripting
 				{
 					Context.FatalError(e.Message);
 				}
-			};
+			}
 
 			foreach (var a in group)
 			{
-				GetScriptTriggers(a).OnRemovedInternal += onMemberRemoved;
-				GetScriptTriggers(a).OnAddedInternal += onMemberAdded;
+				GetScriptTriggers(a).OnRemovedInternal += OnMemberRemoved;
+				GetScriptTriggers(a).OnAddedInternal += OnMemberAdded;
 			}
 		}
 
@@ -268,7 +268,7 @@ namespace OpenRA.Mods.Common.Scripting
 			var called = false;
 
 			var f = (LuaFunction)func.CopyReference();
-			Action<Actor> onKilledOrCaptured = m =>
+			void OnKilledOrCaptured(Actor m)
 			{
 				try
 				{
@@ -284,10 +284,10 @@ namespace OpenRA.Mods.Common.Scripting
 				{
 					Context.FatalError(e.Message);
 				}
-			};
+			}
 
-			GetScriptTriggers(a).OnCapturedInternal += onKilledOrCaptured;
-			GetScriptTriggers(a).OnKilledInternal += onKilledOrCaptured;
+			GetScriptTriggers(a).OnCapturedInternal += OnKilledOrCaptured;
+			GetScriptTriggers(a).OnKilledInternal += OnKilledOrCaptured;
 		}
 
 		[Desc("Call a function when all of the actors in a group have been killed or captured. " +
@@ -297,7 +297,7 @@ namespace OpenRA.Mods.Common.Scripting
 			var group = actors.ToList();
 
 			var f = (LuaFunction)func.CopyReference();
-			Action<Actor> onMemberKilledOrCaptured = m =>
+			void OnMemberKilledOrCaptured(Actor m)
 			{
 				try
 				{
@@ -312,12 +312,12 @@ namespace OpenRA.Mods.Common.Scripting
 				{
 					Context.FatalError(e.Message);
 				}
-			};
+			}
 
 			foreach (var a in group)
 			{
-				GetScriptTriggers(a).OnCapturedInternal += onMemberKilledOrCaptured;
-				GetScriptTriggers(a).OnKilledInternal += onMemberKilledOrCaptured;
+				GetScriptTriggers(a).OnCapturedInternal += OnMemberKilledOrCaptured;
+				GetScriptTriggers(a).OnKilledInternal += OnMemberKilledOrCaptured;
 			}
 		}
 
@@ -329,7 +329,7 @@ namespace OpenRA.Mods.Common.Scripting
 			// We can't easily dispose onEntry, so we'll have to rely on finalization for it.
 			var onEntry = (LuaFunction)func.CopyReference();
 			var triggerId = 0;
-			Action<Actor> invokeEntry = a =>
+			void InvokeEntry(Actor a)
 			{
 				try
 				{
@@ -341,9 +341,9 @@ namespace OpenRA.Mods.Common.Scripting
 				{
 					Context.FatalError(e.Message);
 				}
-			};
+			}
 
-			triggerId = Context.World.ActorMap.AddCellTrigger(cells, invokeEntry, null);
+			triggerId = Context.World.ActorMap.AddCellTrigger(cells, InvokeEntry, null);
 
 			return triggerId;
 		}
@@ -356,7 +356,7 @@ namespace OpenRA.Mods.Common.Scripting
 			// We can't easily dispose onExit, so we'll have to rely on finalization for it.
 			var onExit = (LuaFunction)func.CopyReference();
 			var triggerId = 0;
-			Action<Actor> invokeExit = a =>
+			void InvokeExit(Actor a)
 			{
 				try
 				{
@@ -368,9 +368,9 @@ namespace OpenRA.Mods.Common.Scripting
 				{
 					Context.FatalError(e.Message);
 				}
-			};
+			}
 
-			triggerId = Context.World.ActorMap.AddCellTrigger(cells, null, invokeExit);
+			triggerId = Context.World.ActorMap.AddCellTrigger(cells, null, InvokeExit);
 
 			return triggerId;
 		}
@@ -389,7 +389,7 @@ namespace OpenRA.Mods.Common.Scripting
 			// We can't easily dispose onEntry, so we'll have to rely on finalization for it.
 			var onEntry = (LuaFunction)func.CopyReference();
 			var triggerId = 0;
-			Action<Actor> invokeEntry = a =>
+			void InvokeEntry(Actor a)
 			{
 				try
 				{
@@ -401,9 +401,9 @@ namespace OpenRA.Mods.Common.Scripting
 				{
 					Context.FatalError(e.Message);
 				}
-			};
+			}
 
-			triggerId = Context.World.ActorMap.AddProximityTrigger(pos, range, WDist.Zero, invokeEntry, null);
+			triggerId = Context.World.ActorMap.AddProximityTrigger(pos, range, WDist.Zero, InvokeEntry, null);
 
 			return triggerId;
 		}
@@ -416,7 +416,7 @@ namespace OpenRA.Mods.Common.Scripting
 			// We can't easily dispose onExit, so we'll have to rely on finalization for it.
 			var onExit = (LuaFunction)func.CopyReference();
 			var triggerId = 0;
-			Action<Actor> invokeExit = a =>
+			void InvokeExit(Actor a)
 			{
 				try
 				{
@@ -428,9 +428,9 @@ namespace OpenRA.Mods.Common.Scripting
 				{
 					Context.FatalError(e.Message);
 				}
-			};
+			}
 
-			triggerId = Context.World.ActorMap.AddProximityTrigger(pos, range, WDist.Zero, null, invokeExit);
+			triggerId = Context.World.ActorMap.AddProximityTrigger(pos, range, WDist.Zero, null, InvokeExit);
 
 			return triggerId;
 		}

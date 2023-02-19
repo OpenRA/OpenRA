@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				.Where(q => (q.Info.Group ?? q.Info.Type) == button.ProductionGroup)
 				.ToArray();
 
-			Action<bool> selectTab = reverse =>
+			void SelectTab(bool reverse)
 			{
 				palette.CurrentQueue = queues.FirstOrDefault(q => q.Enabled);
 
@@ -40,12 +40,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				// Attempt to pick up a completed building (if there is one) so it can be placed
 				palette.PickUpCompletedBuilding();
-			};
+			}
 
 			button.IsDisabled = () => !queues.Any(q => q.BuildableItems().Any());
-			button.OnMouseUp = mi => selectTab(mi.Modifiers.HasModifier(Modifiers.Shift));
-			button.OnKeyPress = e => selectTab(e.Modifiers.HasModifier(Modifiers.Shift));
-			button.OnClick = () => selectTab(false);
+			button.OnMouseUp = mi => SelectTab(mi.Modifiers.HasModifier(Modifiers.Shift));
+			button.OnKeyPress = e => SelectTab(e.Modifiers.HasModifier(Modifiers.Shift));
+			button.OnClick = () => SelectTab(false);
 			button.IsHighlighted = () => queues.Contains(palette.CurrentQueue);
 
 			var chromeName = button.ProductionGroup.ToLowerInvariant();
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (foreground != null)
 					foregroundTemplate = foreground.Get("ROW_TEMPLATE");
 
-				Action<int, int> updateBackground = (_, icons) =>
+				void UpdateBackground(int _, int icons)
 				{
 					var rows = Math.Max(palette.MinimumRows, (icons + palette.Columns - 1) / palette.Columns);
 					rows = Math.Min(rows, palette.MaximumRows);
@@ -113,12 +113,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							foreground.AddChild(row);
 						}
 					}
-				};
+				}
 
-				palette.OnIconCountChanged += updateBackground;
+				palette.OnIconCountChanged += UpdateBackground;
 
 				// Set the initial palette state
-				updateBackground(0, 0);
+				UpdateBackground(0, 0);
 			}
 
 			var typesContainer = widget.Get("PRODUCTION_TYPES");

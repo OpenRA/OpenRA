@@ -170,16 +170,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ modData.Translation.GetString(Modern), false },
 			};
 
-			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			ScrollItemWidget SetupItem(string o, ScrollItemWidget itemTemplate)
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => s.UseClassicMouseStyle == options[o],
 					() => s.UseClassicMouseStyle = options[o]);
 				item.Get<LabelWidget>("LABEL").GetText = () => o;
 				return item;
-			};
+			}
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
 		}
 
 		static void ShowMouseScrollDropdown(ModData modData, DropDownButtonWidget dropdown, GameSettings s)
@@ -192,16 +192,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ modData.Translation.GetString(Joystick), MouseScrollType.Joystick },
 			};
 
-			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			ScrollItemWidget SetupItem(string o, ScrollItemWidget itemTemplate)
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => s.MouseScroll == options[o],
 					() => s.MouseScroll = options[o]);
 				item.Get<LabelWidget>("LABEL").GetText = () => o;
 				return item;
-			};
+			}
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
 		}
 
 		static void ShowZoomModifierDropdown(ModData modData, DropDownButtonWidget dropdown, GameSettings s)
@@ -215,16 +215,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ modData.Translation.GetString(None), Modifiers.None }
 			};
 
-			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			ScrollItemWidget SetupItem(string o, ScrollItemWidget itemTemplate)
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => s.ZoomModifier == options[o],
 					() => s.ZoomModifier = options[o]);
 				item.Get<LabelWidget>("LABEL").GetText = () => o;
 				return item;
-			};
+			}
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
 		}
 
 		static void MakeMouseFocusSettingsLive()

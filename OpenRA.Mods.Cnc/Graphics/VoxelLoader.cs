@@ -35,15 +35,15 @@ namespace OpenRA.Mods.Cnc.Graphics
 		static SheetBuilder CreateSheetBuilder()
 		{
 			var allocated = false;
-			Func<Sheet> allocate = () =>
+			Sheet Allocate()
 			{
 				if (allocated)
 					throw new SheetOverflowException("");
 				allocated = true;
 				return SheetBuilder.AllocateSheet(SheetType.Indexed, Game.Settings.Graphics.SheetSize);
-			};
+			}
 
-			return new SheetBuilder(SheetType.Indexed, allocate);
+			return new SheetBuilder(SheetType.Indexed, Allocate);
 		}
 
 		public VoxelLoader(IReadOnlyFileSystem fileSystem)
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 		IEnumerable<Vertex[]> GenerateSlicePlanes(VxlLimb l)
 		{
-			Func<int, int, int, VxlElement> get = (x, y, z) =>
+			VxlElement Get(int x, int y, int z)
 			{
 				if (x < 0 || y < 0 || z < 0)
 					return null;
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 					return null;
 
 				return l.VoxelMap[(byte)x, (byte)y][(byte)z];
-			};
+			}
 
 			// Cull slices without any visible faces
 			var xPlanes = new bool[l.Size[0] + 1];
@@ -124,23 +124,23 @@ namespace OpenRA.Mods.Cnc.Graphics
 				{
 					for (var z = 0; z < l.Size[2]; z++)
 					{
-						if (get(x, y, z) == null)
+						if (Get(x, y, z) == null)
 							continue;
 
 						// Only generate a plane if it is actually visible
-						if (!xPlanes[x] && get(x - 1, y, z) == null)
+						if (!xPlanes[x] && Get(x - 1, y, z) == null)
 							xPlanes[x] = true;
-						if (!xPlanes[x + 1] && get(x + 1, y, z) == null)
+						if (!xPlanes[x + 1] && Get(x + 1, y, z) == null)
 							xPlanes[x + 1] = true;
 
-						if (!yPlanes[y] && get(x, y - 1, z) == null)
+						if (!yPlanes[y] && Get(x, y - 1, z) == null)
 							yPlanes[y] = true;
-						if (!yPlanes[y + 1] && get(x, y + 1, z) == null)
+						if (!yPlanes[y + 1] && Get(x, y + 1, z) == null)
 							yPlanes[y + 1] = true;
 
-						if (!zPlanes[z] && get(x, y, z - 1) == null)
+						if (!zPlanes[z] && Get(x, y, z - 1) == null)
 							zPlanes[z] = true;
-						if (!zPlanes[z + 1] && get(x, y, z + 1) == null)
+						if (!zPlanes[z + 1] && Get(x, y, z + 1) == null)
 							zPlanes[z + 1] = true;
 					}
 				}
@@ -149,22 +149,22 @@ namespace OpenRA.Mods.Cnc.Graphics
 			for (var x = 0; x <= l.Size[0]; x++)
 				if (xPlanes[x])
 					yield return GenerateSlicePlane(l.Size[1], l.Size[2],
-						(u, v) => get(x, u, v),
-						(u, v) => get(x - 1, u, v),
+						(u, v) => Get(x, u, v),
+						(u, v) => Get(x - 1, u, v),
 						(u, v) => new float3(x, u, v));
 
 			for (var y = 0; y <= l.Size[1]; y++)
 				if (yPlanes[y])
 					yield return GenerateSlicePlane(l.Size[0], l.Size[2],
-						(u, v) => get(u, y, v),
-						(u, v) => get(u, y - 1, v),
+						(u, v) => Get(u, y, v),
+						(u, v) => Get(u, y - 1, v),
 						(u, v) => new float3(u, y, v));
 
 			for (var z = 0; z <= l.Size[2]; z++)
 				if (zPlanes[z])
 					yield return GenerateSlicePlane(l.Size[0], l.Size[1],
-						(u, v) => get(u, v, z),
-						(u, v) => get(u, v, z - 1),
+						(u, v) => Get(u, v, z),
+						(u, v) => Get(u, v, z - 1),
 						(u, v) => new float3(u, v, z));
 		}
 

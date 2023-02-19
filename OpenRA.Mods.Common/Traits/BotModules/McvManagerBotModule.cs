@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -178,7 +177,7 @@ namespace OpenRA.Mods.Common.Traits
 				return null;
 
 			// Find the buildable cell that is closest to pos and centered around center
-			Func<CPos, CPos, int, int, CPos?> findPos = (center, target, minRange, maxRange) =>
+			CPos? FindPos(CPos center, CPos target, int minRange, int maxRange)
 			{
 				var cells = world.Map.FindTilesInAnnulus(center, minRange, maxRange);
 
@@ -193,11 +192,11 @@ namespace OpenRA.Mods.Common.Traits
 						return cell;
 
 				return null;
-			};
+			}
 
 			var baseCenter = GetRandomBaseCenter();
 
-			return findPos(baseCenter, baseCenter, Info.MinBaseRadius,
+			return FindPos(baseCenter, baseCenter, Info.MinBaseRadius,
 				distanceToBaseIsImportant ? Info.MaxBaseRadius : world.Map.Grid.MaximumTileSearchRange);
 		}
 

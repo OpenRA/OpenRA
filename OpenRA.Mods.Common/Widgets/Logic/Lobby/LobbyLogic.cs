@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// Show connection failed dialog
 				Ui.CloseWindow();
 
-				Action onConnect = () =>
+				void OnConnect()
 				{
 					Game.OpenWindow("SERVER_LOBBY", new WidgetArgs()
 					{
@@ -125,9 +125,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{ "onStart", onStart },
 						{ "skirmishMode", false }
 					});
-				};
+				}
 
-				Action<string> onRetry = pass => ConnectionLogic.Connect(connection.Target, pass, onConnect, onExit);
+				Action<string> onRetry = pass => ConnectionLogic.Connect(connection.Target, pass, OnConnect, onExit);
 
 				var switchPanel = CurrentServerSettings.ServerExternalMod != null ? "CONNECTION_SWITCHMOD_PANEL" : "CONNECTIONFAILED_PANEL";
 				Ui.OpenWindow(switchPanel, new WidgetArgs()
@@ -327,13 +327,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						options.Add(modData.Translation.GetString(ConfigureTeams), teamOptions);
 					}
 
-					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+					ScrollItemWidget SetupItem(DropDownOption option, ScrollItemWidget template)
 					{
 						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
 						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
 						return item;
-					};
-					slotsButton.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 175, options, setupItem);
+					}
+
+					slotsButton.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 175, options, SetupItem);
 				};
 			}
 
@@ -401,7 +402,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			// Force start panel
-			Action startGame = () =>
+			void StartGame()
 			{
 				// Refresh MapCache and check if the selected map is available before attempting to start the game
 				if (modData.MapCache[map.Uid].Status == MapStatus.Available)
@@ -411,7 +412,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 				else
 					UpdateSelectedMap();
-			};
+			}
 
 			var startGameButton = lobby.GetOrNull<ButtonWidget>("START_GAME_BUTTON");
 			if (startGameButton != null)
@@ -428,14 +429,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (orderManager.LobbyInfo.Clients.Any(c => c.Slot != null && !c.IsAdmin && c.Bot == null && !c.IsReady))
 						panel = PanelType.ForceStart;
 					else
-						startGame();
+						StartGame();
 				};
 			}
 
 			var forceStartBin = Ui.LoadWidget("FORCE_START_DIALOG", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs());
 			forceStartBin.IsVisible = () => panel == PanelType.ForceStart;
 			forceStartBin.Get("KICK_WARNING").IsVisible = () => orderManager.LobbyInfo.Clients.Any(c => c.IsInvalid);
-			forceStartBin.Get<ButtonWidget>("OK_BUTTON").OnClick = startGame;
+			forceStartBin.Get<ButtonWidget>("OK_BUTTON").OnClick = StartGame;
 			forceStartBin.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => panel = PanelType.Players;
 
 			var disconnectButton = lobby.Get<ButtonWidget>("DISCONNECT_BUTTON");

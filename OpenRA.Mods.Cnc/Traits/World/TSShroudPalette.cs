@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -38,14 +37,14 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
-			Func<int, uint> makeColor = i =>
+			uint MakeColor(int i)
 			{
 				if (i < 128)
 					return (uint)(int2.Lerp(255, 0, i, 127) << 24);
 				return 0;
-			};
+			}
 
-			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => makeColor(i))));
+			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => MakeColor(i))));
 		}
 
 		public IEnumerable<string> PaletteNames { get { yield return info.Name; } }

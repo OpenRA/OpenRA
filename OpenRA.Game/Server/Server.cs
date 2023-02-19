@@ -541,7 +541,7 @@ namespace OpenRA.Server
 					return;
 				}
 
-				Action completeConnection = () =>
+				void CompleteConnection()
 				{
 					lock (LobbyInfo)
 					{
@@ -602,13 +602,13 @@ namespace OpenRA.Server
 						else if (Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
 							SendLocalizedMessageTo(newConn, BotsDisabled);
 					}
-				};
+				}
 
 				if (Type == ServerType.Local)
 				{
 					// Local servers can only be joined by the local client, so we can trust their identity without validation
 					client.Fingerprint = handshake.Fingerprint;
-					completeConnection();
+					CompleteConnection();
 				}
 				else if (!string.IsNullOrEmpty(handshake.Fingerprint) && !string.IsNullOrEmpty(handshake.AuthSignature))
 				{
@@ -678,7 +678,7 @@ namespace OpenRA.Server
 								DropClient(newConn);
 							}
 							else
-								completeConnection();
+								CompleteConnection();
 						}));
 					});
 				}
@@ -691,7 +691,7 @@ namespace OpenRA.Server
 						DropClient(newConn);
 					}
 					else
-						completeConnection();
+						CompleteConnection();
 				}
 			}
 			catch (Exception ex)

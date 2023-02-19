@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var i = 0;
 			var options = devices.ToDictionary(d => i++.ToString(), d => d);
 
-			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			ScrollItemWidget SetupItem(string o, ScrollItemWidget itemTemplate)
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => soundDevice == options[o],
@@ -171,9 +171,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var label = WidgetUtils.TruncateText(options[o].Label, deviceLabel.Bounds.Width, font);
 				deviceLabel.GetText = () => label;
 				return item;
-			};
+			}
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
 		}
 	}
 }

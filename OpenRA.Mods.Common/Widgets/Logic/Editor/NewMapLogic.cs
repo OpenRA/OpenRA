@@ -29,18 +29,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var tilesetDropDown = panel.Get<DropDownButtonWidget>("TILESET");
 			var tilesets = modData.DefaultTerrainInfo.Keys;
-			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+			ScrollItemWidget SetupItem(string option, ScrollItemWidget template)
 			{
 				var item = ScrollItemWidget.Setup(template,
 					() => tilesetDropDown.Text == option,
 					() => { tilesetDropDown.Text = option; });
 				item.Get<LabelWidget>("LABEL").GetText = () => option;
 				return item;
-			};
+			}
 
 			tilesetDropDown.Text = tilesets.First();
 			tilesetDropDown.OnClick = () =>
-				tilesetDropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, tilesets, setupItem);
+				tilesetDropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, tilesets, SetupItem);
 
 			var widthTextField = panel.Get<TextFieldWidget>("WIDTH");
 			var heightTextField = panel.Get<TextFieldWidget>("HEIGHT");

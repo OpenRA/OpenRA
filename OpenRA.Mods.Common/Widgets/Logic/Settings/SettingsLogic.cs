@@ -105,46 +105,46 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var current = Game.Settings;
 				current.Save();
 
-				Action closeAndExit = () => { Ui.CloseWindow(); onExit(); };
+				void CloseAndExit() { Ui.CloseWindow(); onExit(); }
 				if (needsRestart)
 				{
-					Action noRestart = () => ConfirmationDialogs.ButtonPrompt(modData,
+					void NoRestart() => ConfirmationDialogs.ButtonPrompt(modData,
 						title: SettingsSaveTitle,
 						text: SettingsSavePrompt,
-						onCancel: closeAndExit,
+						onCancel: CloseAndExit,
 						cancelText: SettingsSaveCancel);
 
 					if (!Game.ExternalMods.TryGetValue(ExternalMod.MakeKey(Game.ModData.Manifest), out var external))
 					{
-						noRestart();
+						NoRestart();
 						return;
 					}
 
 					ConfirmationDialogs.ButtonPrompt(modData,
 						title: RestartTitle,
 						text: RestartPrompt,
-						onConfirm: () => Game.SwitchToExternalMod(external, null, noRestart),
-						onCancel: closeAndExit,
+						onConfirm: () => Game.SwitchToExternalMod(external, null, NoRestart),
+						onCancel: CloseAndExit,
 						confirmText: RestartAccept,
 						cancelText: RestartCancel);
 				}
 				else
-					closeAndExit();
+					CloseAndExit();
 			};
 
 			widget.Get<ButtonWidget>("RESET_BUTTON").OnClick = () =>
 			{
-				Action reset = () =>
+				void Reset()
 				{
 					resetPanelActions[activePanel]();
 					Game.Settings.Save();
-				};
+				}
 
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: ResetTitle,
 					titleArguments: Translation.Arguments("panel", panels[activePanel]),
 					text: ResetPrompt,
-					onConfirm: reset,
+					onConfirm: Reset,
 					onCancel: () => { },
 					confirmText: ResetAccept,
 					cancelText: ResetCancel);

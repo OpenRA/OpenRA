@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -30,7 +29,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var locomotorSelector = widget.Get<DropDownButtonWidget>("HPF_OVERLAY_LOCOMOTOR");
 			locomotorSelector.OnMouseDown = _ =>
 			{
-				Func<Locomotor, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+				ScrollItemWidget SetupItem(Locomotor option, ScrollItemWidget template)
 				{
 					var item = ScrollItemWidget.Setup(
 						template,
@@ -38,16 +37,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						() => hpfOverlay.Locomotor = option);
 					item.Get<LabelWidget>("LABEL").GetText = () => option?.Info.Name ?? "(Selected Units)";
 					return item;
-				};
+				}
 
-				locomotorSelector.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", locomotors.Length * 30, locomotors, setupItem);
+				locomotorSelector.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", locomotors.Length * 30, locomotors, SetupItem);
 			};
 
 			var checks = new[] { BlockedByActor.None, BlockedByActor.Immovable };
 			var checkSelector = widget.Get<DropDownButtonWidget>("HPF_OVERLAY_CHECK");
 			checkSelector.OnMouseDown = _ =>
 			{
-				Func<BlockedByActor, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+				ScrollItemWidget SetupItem(BlockedByActor option, ScrollItemWidget template)
 				{
 					var item = ScrollItemWidget.Setup(
 						template,
@@ -55,9 +54,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						() => hpfOverlay.Check = option);
 					item.Get<LabelWidget>("LABEL").GetText = () => option.ToString();
 					return item;
-				};
+				}
 
-				checkSelector.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", checks.Length * 30, checks, setupItem);
+				checkSelector.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", checks.Length * 30, checks, SetupItem);
 			};
 		}
 	}

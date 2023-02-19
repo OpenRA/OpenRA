@@ -280,11 +280,11 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var na in notifyAttacks)
 				na.PreparingAttack(self, target, this, barrel);
 
-			Func<WPos> muzzlePosition = () => self.CenterPosition + MuzzleOffset(self, barrel);
-			Func<WAngle> muzzleFacing = () => MuzzleOrientation(self, barrel).Yaw;
-			var muzzleOrientation = WRot.FromYaw(muzzleFacing());
+			WPos MuzzlePosition() => self.CenterPosition + MuzzleOffset(self, barrel);
+			WAngle MuzzleFacing() => MuzzleOrientation(self, barrel).Yaw;
+			var muzzleOrientation = WRot.FromYaw(MuzzleFacing());
 
-			var passiveTarget = Weapon.TargetActorCenter ? target.CenterPosition : target.Positions.PositionClosestTo(muzzlePosition());
+			var passiveTarget = Weapon.TargetActorCenter ? target.CenterPosition : target.Positions.PositionClosestTo(MuzzlePosition());
 			var initialOffset = Weapon.FirstBurstTargetOffset;
 			if (initialOffset != WVec.Zero)
 			{
@@ -304,8 +304,8 @@ namespace OpenRA.Mods.Common.Traits
 			var args = new ProjectileArgs
 			{
 				Weapon = Weapon,
-				Facing = muzzleFacing(),
-				CurrentMuzzleFacing = muzzleFacing,
+				Facing = MuzzleFacing(),
+				CurrentMuzzleFacing = MuzzleFacing,
 
 				DamageModifiers = damageModifiers.ToArray(),
 
@@ -313,8 +313,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				RangeModifiers = rangeModifiers.ToArray(),
 
-				Source = muzzlePosition(),
-				CurrentSource = muzzlePosition,
+				Source = MuzzlePosition(),
+				CurrentSource = MuzzlePosition,
 				SourceActor = self,
 				PassiveTarget = passiveTarget,
 				GuidedTarget = target

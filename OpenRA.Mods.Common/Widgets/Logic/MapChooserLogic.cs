@@ -255,19 +255,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// 'all game types' extra item
 				categories.Insert(0, (null as string, tabMaps[tab].Length));
 
-				Func<(string Category, int Count), string> showItem = x => (x.Category ?? allMaps) + $" ({x.Count})";
+				string ShowItem((string Category, int Count) x) => (x.Category ?? allMaps) + $" ({x.Count})";
 
-				Func<(string Category, int Count), ScrollItemWidget, ScrollItemWidget> setupItem = (ii, template) =>
+				ScrollItemWidget SetupItem((string Category, int Count) ii, ScrollItemWidget template)
 				{
 					var item = ScrollItemWidget.Setup(template,
 						() => category == ii.Category,
 						() => { category = ii.Category; EnumerateMaps(tab, itemTemplate); });
-					item.Get<LabelWidget>("LABEL").GetText = () => showItem(ii);
+					item.Get<LabelWidget>("LABEL").GetText = () => ShowItem(ii);
 					return item;
-				};
+				}
 
 				gameModeDropdown.OnClick = () =>
-					gameModeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, categories, setupItem);
+					gameModeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, categories, SetupItem);
 
 				gameModeDropdown.GetText = () =>
 				{
@@ -275,7 +275,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (item == default((string, int)))
 						item.Category = modData.Translation.GetString(NoMatches);
 
-					return showItem(item);
+					return ShowItem(item);
 				};
 			}
 		}
@@ -295,7 +295,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (orderByFunc == null)
 				orderByFunc = orderByDict[orderByPlayer];
 
-			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, template) =>
+			ScrollItemWidget SetupItem(string o, ScrollItemWidget template)
 			{
 				var item = ScrollItemWidget.Setup(template,
 					() => orderByFunc == orderByDict[o],
@@ -303,10 +303,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				item.Get<LabelWidget>("LABEL").GetText = () => o;
 
 				return item;
-			};
+			}
 
 			orderByDropdown.OnClick = () =>
-				orderByDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, orderByDict.Keys, setupItem);
+				orderByDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, orderByDict.Keys, SetupItem);
 
 			orderByDropdown.GetText = () =>
 				orderByDict.FirstOrDefault(m => m.Value == orderByFunc).Key;
@@ -334,17 +334,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// Access the minimap to trigger async generation of the minimap.
 				preview.GetMinimap();
 
-				Action dblClick = () =>
+				void DblClick()
 				{
 					if (onSelect != null)
 					{
 						Ui.CloseWindow();
 						onSelect(preview.Uid);
 					}
-				};
+				}
 
 				var item = ScrollItemWidget.Setup(preview.Uid, template, () => selectedUid == preview.Uid,
-					() => selectedUid = preview.Uid, dblClick);
+					() => selectedUid = preview.Uid, DblClick);
 				item.IsVisible = () => item.RenderBounds.IntersectsWith(scrollpanels[tab].RenderBounds);
 
 				var titleLabel = item.Get<LabelWithTooltipWidget>("TITLE");
