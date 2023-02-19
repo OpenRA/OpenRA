@@ -57,19 +57,19 @@ namespace OpenRA.Mods.Common.Installer
 						continue;
 					}
 
-					var entry = entries[node.Value.Value];
+					var (length, offset) = entries[node.Value.Value];
 
-					source.Position = entry.Offset;
+					source.Position = offset;
 
 					extracted.Add(targetPath);
 					Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
 					var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
 
 					Action<long> onProgress = null;
-					if (entry.Length < InstallFromSourceLogic.ShowPercentageThreshold)
+					if (length < InstallFromSourceLogic.ShowPercentageThreshold)
 						updateMessage(modData.Translation.GetString(InstallFromSourceLogic.Extracing, Translation.Arguments("filename", displayFilename)));
 					else
-						onProgress = b => updateMessage(modData.Translation.GetString(InstallFromSourceLogic.ExtracingProgress, Translation.Arguments("filename", displayFilename, "progress", 100 * b / entry.Length)));
+						onProgress = b => updateMessage(modData.Translation.GetString(InstallFromSourceLogic.ExtracingProgress, Translation.Arguments("filename", displayFilename, "progress", 100 * b / length)));
 
 					using (var target = File.OpenWrite(targetPath))
 					{

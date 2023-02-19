@@ -79,9 +79,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
-			foreach (var field in traits)
-				foreach (var traitNode in actorNode.ChildrenMatching(field.TraitName))
-					traitNode.RenameChildrenMatching(field.OldName, field.NewName);
+			foreach (var (traitName, oldName, newName) in traits)
+				foreach (var traitNode in actorNode.ChildrenMatching(traitName))
+					traitNode.RenameChildrenMatching(oldName, newName);
 
 			yield break;
 		}

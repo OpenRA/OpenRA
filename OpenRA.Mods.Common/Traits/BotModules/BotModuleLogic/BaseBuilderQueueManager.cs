@@ -161,9 +161,7 @@ namespace OpenRA.Mods.Common.Traits
 					else if (baseBuilder.Info.RefineryTypes.Contains(actorInfo.Name))
 						type = BuildingType.Refinery;
 
-					var pack = ChooseBuildLocation(currentBuilding.Item, true, type);
-					location = pack.Location;
-					actorVariant = pack.Variant;
+					(location, actorVariant) = ChooseBuildLocation(currentBuilding.Item, true, type);
 				}
 
 				if (location == null)

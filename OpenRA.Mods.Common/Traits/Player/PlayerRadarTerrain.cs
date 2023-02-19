@@ -90,8 +90,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (rtl.TryGetTerrainColorPair(uv, out var c))
 					return (c.Left.ToArgb(), c.Right.ToArgb());
 
-			var tc = map.GetTerrainColorPair(uv);
-			return (tc.Left.ToArgb(), tc.Right.ToArgb());
+			var (left, right) = map.GetTerrainColorPair(uv);
+			return (left.ToArgb(), right.ToArgb());
 		}
 	}
 }

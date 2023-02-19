@@ -228,9 +228,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				flag.GetImageCollection = () => "flags";
 				flag.GetImageName = () => factionId;
 
-				var tooltip = SplitOnFirstToken(faction.Description);
-				item.GetTooltipText = () => tooltip.First;
-				item.GetTooltipDesc = () => tooltip.Second;
+				var (text, desc) = SplitOnFirstToken(faction.Description);
+				item.GetTooltipText = () => text;
+				item.GetTooltipDesc = () => desc;
 
 				return item;
 			}
@@ -566,9 +566,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.IsDisabled = () => s.LockFaction || orderManager.LocalClient.IsReady;
 			dropdown.OnMouseDown = _ => ShowFactionDropDown(dropdown, c, orderManager, factions);
 
-			var tooltip = SplitOnFirstToken(factions[c.Faction].Description);
-			dropdown.GetTooltipText = () => tooltip.First;
-			dropdown.GetTooltipDesc = () => tooltip.Second;
+			var (text, desc) = SplitOnFirstToken(factions[c.Faction].Description);
+			dropdown.GetTooltipText = () => text;
+			dropdown.GetTooltipDesc = () => desc;
 
 			SetupFactionWidget(dropdown, c, factions);
 		}
