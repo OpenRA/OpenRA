@@ -42,11 +42,6 @@ namespace OpenRA.Test
 			Assert.AreEqual(value, new IntegerExpression(expression).Evaluate(testValues), expression);
 		}
 
-		void AssertParseFailure(string expression)
-		{
-			Assert.Throws(typeof(InvalidDataException), () => new IntegerExpression(expression).Evaluate(testValues), expression);
-		}
-
 		void AssertParseFailure(string expression, string errorMessage)
 		{
 			var actualErrorMessage = Assert.Throws(typeof(InvalidDataException),

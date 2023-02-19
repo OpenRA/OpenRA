@@ -121,23 +121,6 @@ namespace OpenRA.Graphics
 		public static long LastMoveRunTime = 0;
 		public static int2 LastMousePos;
 
-		float ClosestTo(float[] collection, float target)
-		{
-			var closestValue = collection.First();
-			var subtractResult = Math.Abs(closestValue - target);
-
-			foreach (var element in collection)
-			{
-				if (Math.Abs(element - target) < subtractResult)
-				{
-					subtractResult = Math.Abs(element - target);
-					closestValue = element;
-				}
-			}
-
-			return closestValue;
-		}
-
 		public ScrollDirection GetBlockedDirections()
 		{
 			var ret = ScrollDirection.None;
