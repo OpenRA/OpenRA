@@ -153,6 +153,9 @@ dotnet_diagnostic.IDE0020.severity = warning
 # Collection initialization can be simplified
 dotnet_diagnostic.IDE0028.severity = warning
 
+# Use coalesce expression (non-nullable types).
+dotnet_diagnostic.IDE0029.severity = warning
+
 # Simplify 'default' expression
 dotnet_diagnostic.IDE0034.severity = warning
 
