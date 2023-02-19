@@ -84,7 +84,7 @@ namespace OpenRA
 			return obj is Hotkey o && (Hotkey?)o == this;
 		}
 
-		public override string ToString() { return $"{Key} {Modifiers.ToString("F")}"; }
+		public override string ToString() { return $"{Key} {Modifiers:F}"; }
 
 		public string DisplayString()
 		{

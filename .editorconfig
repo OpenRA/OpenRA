@@ -198,6 +198,9 @@ dotnet_diagnostic.IDE0060.severity = warning
 # Use expression body for local functions.
 dotnet_diagnostic.IDE0061.severity = warning
 
+# Simplify interpolation.
+dotnet_diagnostic.IDE0071.severity = warning
+
 # Naming rule violation.
 dotnet_diagnostic.IDE1006.severity = warning
 
