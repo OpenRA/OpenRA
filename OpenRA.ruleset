@@ -6,7 +6,6 @@
   <!-- Rules related to generating XML documentation that we need to silence. -->
   <!-- These are here because of GenerateDocumentationFile, which is a workaround for forcing rule IDE0005 to work outside of an IDE. -->
   <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp" RuleNamespace="Microsoft.CodeAnalysis.CSharp">
-    <Rule Id="CS1570" Action="None" /><!-- Invalid XML in XML comment. -->
     <Rule Id="CS1573" Action="None" /><!-- Parameter has no matching param tag in the XML comment. -->
     <Rule Id="CS1591" Action="None" /><!-- Missing XML comment for publicly visible type or member. -->
   </Rules>
