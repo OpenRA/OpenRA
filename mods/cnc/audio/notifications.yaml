@@ -66,9 +66,9 @@ Sounds:
 		ChatLine: scold1
 			InterruptType: Interrupt
 		ClickDisabledSound: scold2
-			InterruptType: Interrupt
+			InterruptType: Overlap
 		ClickSound: button
-			InterruptType: Interrupt
+			InterruptType: Overlap
 		Cloak: trans1
 		Clock: clock1
 		Construction: constru2
