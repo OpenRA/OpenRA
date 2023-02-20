@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var spriteWidget = panel.GetOrNull<SpriteWidget>("SPRITE");
 			if (spriteWidget != null)
 			{
-				spriteWidget.GetSprite = () => currentSprites?[currentFrame];
+				spriteWidget.GetSprite = () => currentSprites?.Length > 0 ? currentSprites[currentFrame] : null;
 				currentPalette = spriteWidget.Palette;
 				spriteScale = spriteWidget.Scale;
 				spriteWidget.GetPalette = () => currentPalette;
@@ -508,7 +508,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					currentSprites = world.Map.Rules.Sequences.SpriteCache[prefix + filename];
 					currentFrame = 0;
 
-					if (frameSlider != null)
+					if (frameSlider != null && currentSprites?.Length > 0)
 					{
 						frameSlider.MaximumValue = (float)currentSprites.Length - 1;
 						frameSlider.Ticks = currentSprites.Length;
