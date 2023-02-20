@@ -24,6 +24,8 @@ namespace OpenRA.Mods.Common
 		/// <param name="lineStart">The position the line should start at</param>
 		/// <param name="lineEnd">The position the line should end at</param>
 		/// <param name="lineWidth">How close an actor's health radius needs to be to the line to be considered 'intersected' by the line</param>
+		/// <param name="onlyBlockers">If set, only considers the size of actors that have an <see cref="IBlocksProjectiles"/>
+		/// trait which may improve search performance. However does NOT filter the returned actors on this trait.</param>
 		/// <returns>A list of all the actors intersected by the line</returns>
 		public static IEnumerable<Actor> FindActorsOnLine(this World world, WPos lineStart, WPos lineEnd, WDist lineWidth, bool onlyBlockers = false)
 		{
