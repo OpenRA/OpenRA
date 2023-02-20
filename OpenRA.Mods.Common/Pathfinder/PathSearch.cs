@@ -162,6 +162,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// The search can skip some areas of the search space, meaning it has less work to do.
 		/// </param>
 		/// <param name="targetPredicate">Determines if the given cell is the target.</param>
+		/// <param name="recorder">If provided, will record all nodes explored by searches performed.</param>
 		PathSearch(IPathGraph graph, Func<CPos, int> heuristic, int heuristicWeightPercentage, Func<CPos, bool> targetPredicate, IRecorder recorder)
 		{
 			Graph = graph;
