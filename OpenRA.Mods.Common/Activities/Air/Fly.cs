@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Common.Activities
 					// Move to CruiseAltitude, if not already there
 					if (dat != aircraft.Info.CruiseAltitude)
 					{
-						Fly.VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
+						VerticalTakeOffOrLandTick(self, aircraft, aircraft.Facing, aircraft.Info.CruiseAltitude);
 						return false;
 					}
 				}

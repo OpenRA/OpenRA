@@ -129,6 +129,9 @@ dotnet_style_require_accessibility_modifiers = omit_if_default:warning
 # Simplify name.
 dotnet_diagnostic.IDE0001.severity = warning
 
+# Simplify member access.
+dotnet_diagnostic.IDE0002.severity = warning
+
 # use 'var' instead of explicit type
 dotnet_diagnostic.IDE0007.severity = warning
 
