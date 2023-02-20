@@ -376,7 +376,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			return node.Value.Nodes.RemoveAll(n => n.KeyMatches(match, ignoreSuffix, includeRemovals));
 		}
 
-		/// <summary>Returns true if the node is of the form <match> or <match>@arbitrary</summary>
+		/// <summary>Returns true if the node is of the form [match] or [match]@[arbitrary suffix]</summary>
 		public static bool KeyMatches(this MiniYamlNode node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
 			if (node.Key == null)
@@ -394,7 +394,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			return atPosition > 0 && node.Key.Substring(0, atPosition) == prefix + match;
 		}
 
-		/// <summary>Returns true if the node is of the form <*match*>, <*match*>@arbitrary or <arbitrary>@*match*</summary>
+		/// <summary>Returns true if the node is of the form [match], [match]@[arbitrary suffix] or [arbitrary suffix]@[match]</summary>
 		public static bool KeyContains(this MiniYamlNode node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
 			if (node.Key == null)
