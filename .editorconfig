@@ -135,7 +135,7 @@ dotnet_diagnostic.IDE0001.severity = warning
 # Simplify member access.
 dotnet_diagnostic.IDE0002.severity = warning
 
-# use 'var' instead of explicit type
+# Use 'var' instead of explicit type.
 dotnet_diagnostic.IDE0007.severity = warning
 
 # Don't prefer braces (for one liners).
@@ -153,7 +153,7 @@ dotnet_diagnostic.IDE0019.severity = warning
 # Use pattern matching to avoid 'is' check followed by a cast.
 dotnet_diagnostic.IDE0020.severity = warning
 
-# Collection initialization can be simplified
+# Collection initialization can be simplified.
 dotnet_diagnostic.IDE0028.severity = warning
 
 # Use coalesce expression (non-nullable types).
@@ -165,7 +165,7 @@ dotnet_diagnostic.IDE0030.severity = warning
 # Use explicitly provided tuple name.
 dotnet_diagnostic.IDE0033.severity = warning
 
-# Simplify 'default' expression
+# Simplify 'default' expression.
 dotnet_diagnostic.IDE0034.severity = warning
 
 # Modifiers are not ordered.
