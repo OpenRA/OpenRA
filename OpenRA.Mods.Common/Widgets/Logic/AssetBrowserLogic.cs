@@ -379,10 +379,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var assetBrowserModData = modData.Manifest.Get<AssetBrowser>();
-			allowedSpriteExtensions = assetBrowserModData.SpriteExtensions;
-			allowedModelExtensions = assetBrowserModData.ModelExtensions;
-			allowedAudioExtensions = assetBrowserModData.AudioExtensions;
-			allowedVideoExtensions = assetBrowserModData.VideoExtensions;
+			allowedSpriteExtensions = assetBrowserModData.SpriteExtensions.Select(x => x.ToLowerInvariant()).ToArray();
+			allowedModelExtensions = assetBrowserModData.ModelExtensions.Select(x => x.ToLowerInvariant()).ToArray();
+			allowedAudioExtensions = assetBrowserModData.AudioExtensions.Select(x => x.ToLowerInvariant()).ToArray();
+			allowedVideoExtensions = assetBrowserModData.VideoExtensions.Select(x => x.ToLowerInvariant()).ToArray();
 			allowedExtensions = allowedSpriteExtensions
 				.Union(allowedModelExtensions)
 				.Union(allowedAudioExtensions)
