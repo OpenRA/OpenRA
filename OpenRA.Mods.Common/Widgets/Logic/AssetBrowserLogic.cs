@@ -226,15 +226,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var frameText = panel.GetOrNull<LabelWidget>("FRAME_COUNT");
 			if (frameText != null)
 			{
-				var soundLength = new CachedTransform<int, string>(p =>
-					modData.Translation.GetString(LengthInSeconds, Translation.Arguments("length", p)));
+				var soundLength = new CachedTransform<double, string>(p =>
+					modData.Translation.GetString(LengthInSeconds, Translation.Arguments("length", Math.Round(p, 3))));
+
 				frameText.GetText = () =>
 				{
 					if (isVideoLoaded)
 						return $"{player.Video.CurrentFrameIndex + 1} / {player.Video.FrameCount}";
 
 					if (currentSoundFormat != null)
-						return soundLength.Update((int)currentSoundFormat.LengthInSeconds);
+						return soundLength.Update(currentSoundFormat.LengthInSeconds);
 
 					return $"{currentFrame} / {currentSprites.Length - 1}";
 				};
