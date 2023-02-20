@@ -76,10 +76,10 @@ Sounds:
 		BuildPaletteOpen: BUTTON1
 		BuildPaletteClose: BUTTON1
 		TabClick: SIDEBAR1
-			InterruptType: Interrupt
+			InterruptType: Overlap
 		ClickSound: BUTTON1
-			InterruptType: Interrupt
+			InterruptType: Overlap
 		ClickDisabledSound: ENDLIST1
-			InterruptType: Interrupt
+			InterruptType: Overlap
 		Beacon: CHAT1
 			InterruptType: Interrupt

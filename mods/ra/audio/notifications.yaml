@@ -130,7 +130,7 @@ Sounds:
 		ChatLine: rabeep1
 			InterruptType: Interrupt
 		ClickSound: ramenu1
-			InterruptType: Interrupt
+			InterruptType: Overlap
 		ClickDisabledSound:
 		Beacon: beepslct
 			InterruptType: Interrupt
