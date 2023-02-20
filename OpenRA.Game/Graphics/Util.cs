@@ -266,7 +266,7 @@ namespace OpenRA.Graphics
 			if (rotation == 0f)
 				return new Rectangle((int)offset.X, (int)offset.Y, (int)size.X, (int)size.Y);
 
-			var rotatedQuad = Util.RotateQuad(offset, size, rotation);
+			var rotatedQuad = RotateQuad(offset, size, rotation);
 			var minX = rotatedQuad[0].X;
 			var maxX = rotatedQuad[0].X;
 			var minY = rotatedQuad[0].Y;
