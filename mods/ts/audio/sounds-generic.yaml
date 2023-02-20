@@ -18,9 +18,9 @@ Sounds:
 		ChatLine: message1
 			InterruptType: Interrupt
 		ClickDisabledSound: wrong1
-			InterruptType: Interrupt
+			InterruptType: Overlap
 		ClickSound: clicky1
-			InterruptType: Interrupt
+			InterruptType: Overlap
 		GameForming: gamefrm1
 		Gdiclose: gdiclose
 		Gdiopen: gdiopen
