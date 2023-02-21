@@ -21,6 +21,7 @@ namespace OpenRA
 		public class ModPackage
 		{
 			public readonly string Title;
+			public readonly string Identifier;
 			public readonly string[] TestFiles = Array.Empty<string>();
 			public readonly string[] Sources = Array.Empty<string>();
 			public readonly bool Required;
@@ -28,7 +29,6 @@ namespace OpenRA
 
 			public ModPackage(MiniYaml yaml)
 			{
-				Title = yaml.Value;
 				FieldLoader.Load(this, yaml);
 			}
 
