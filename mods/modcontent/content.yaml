@@ -264,7 +264,11 @@ Background@SOURCE_INSTALL_PANEL:
 									Width: PARENT_RIGHT
 									Height: 1
 									Background: panel-rule
-						Label@LIST_TEMPLATE:
+						Label@LABEL_LIST_TEMPLATE:
+							X: 6
+							Width: PARENT_RIGHT - 16
+							Height: 23
+						Checkbox@CHECKBOX_LIST_TEMPLATE:
 							X: 6
 							Width: PARENT_RIGHT - 16
 							Height: 23
