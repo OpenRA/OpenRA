@@ -261,20 +261,28 @@ ModContent:
 	HeaderMessage: The original game content may be copied from an original game disc,\nor downloaded from an online mirror of the game files.
 	QuickDownload: quickinstall
 	Packages:
-		base: Base Game Files
+		ContentPackage@base:
+			Title: Base Game Files
+			Identifier: base
 			TestFiles: ^SupportDir|Content/d2k/v2/BLOXBASE.R8, ^SupportDir|Content/d2k/v2/BLOXBAT.R8, ^SupportDir|Content/d2k/v2/BLOXBGBS.R8, ^SupportDir|Content/d2k/v2/BLOXICE.R8, ^SupportDir|Content/d2k/v2/BLOXTREE.R8, ^SupportDir|Content/d2k/v2/BLOXWAST.R8, ^SupportDir|Content/d2k/v2/SOUND.RS, ^SupportDir|Content/d2k/v2/PALETTE.BIN, ^SupportDir|Content/d2k/v2/FONT.BIN,  ^SupportDir|Content/d2k/v2/FONTCOL.FNT,  ^SupportDir|Content/d2k/v2/FONTCOL.FPL
 			Sources: d2k, gruntmods
 			Required: true
 			Download: basefiles
-		patch: 1.06 Patch Content
+		ContentPackage@patch:
+			Title: 1.06 Patch Content
+			Identifier: patch
 			TestFiles: ^SupportDir|Content/d2k/v2/DATA.R8, ^SupportDir|Content/d2k/v2/BLOXXMAS.R8
 			Sources: gruntmods
 			Required: true
 			Download: patch106
-		music: Game Music
+		ContentPackage@music:
+			Title: Game Music
+			Identifier: music
 			TestFiles: ^SupportDir|Content/d2k/v2/Music/AMBUSH.AUD, ^SupportDir|Content/d2k/v2/Music/WAITGAME.AUD
 			Sources: d2k, gruntmods
-		movies: Campaign Briefings
+		ContentPackage@movies:
+			Title: Campaign Briefings
+			Identifier: movies
 			TestFiles: ^SupportDir|Content/d2k/v2/Movies/A_BR01_E.VQA
 			Sources: d2k
 	Downloads:

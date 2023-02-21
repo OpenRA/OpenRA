@@ -313,20 +313,28 @@ ModContent:
 	QuickDownload: quickinstall
 	HeaderMessage: Game content may be extracted from the original game discs or an\nexisting digital install. OpenRA can also download the base game\nfiles from an online mirror of the 2012 freeware release of TS.
 	Packages:
-		tibsun: Base Game Files
+		ContentPackage@tibsun:
+			Title: Base Game Files
+			Identifier: tibsun
 			TestFiles: ^SupportDir|Content/ts/cache.mix, ^SupportDir|Content/ts/conquer.mix, ^SupportDir|Content/ts/isosnow.mix, ^SupportDir|Content/ts/isotemp.mix, ^SupportDir|Content/ts/local.mix, ^SupportDir|Content/ts/sidec01.mix, ^SupportDir|Content/ts/sidec02.mix, ^SupportDir|Content/ts/sno.mix, ^SupportDir|Content/ts/snow.mix, ^SupportDir|Content/ts/sounds.mix, ^SupportDir|Content/ts/speech01.mix, ^SupportDir|Content/ts/tem.mix, ^SupportDir|Content/ts/temperat.mix
 			Sources: tibsun, tfd, origin
 			Required: true
 			Download: basefiles
-		tibsun-music: Base Game Music
+		ContentPackage@tibsun-music:
+			Title: Base Game Music
+			Identifier: tibsun-music
 			TestFiles: ^SupportDir|Content/ts/scores.mix
 			Sources: tibsun, tfd, origin
-		fstorm: Firestorm Expansion Files
+		ContentPackage@fstorm:
+			Title: Firestorm Expansion Files
+			Identifier: fstorm
 			TestFiles: ^SupportDir|Content/ts/firestorm/e01sc01.mix, ^SupportDir|Content/ts/firestorm/e01sc02.mix, ^SupportDir|Content/ts/firestorm/e01vox01.mix, ^SupportDir|Content/ts/firestorm/e01vox02.mix
 			Sources: tfd, origin, fstorm
 			Required: true
 			Download: fstorm
-		fstorm-music: Firestorm Expansion Music
+		ContentPackage@fstorm-music:
+			Title: Firestorm Expansion Music
+			Identifier: fstorm-music
 			Sources: tfd, origin, fstorm
 			TestFiles: ^SupportDir|Content/ts/firestorm/scores01.mix
 	Downloads:
