@@ -237,11 +237,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				try
 				{
-					foreach (var i in modSource.Install)
+					void RunSourceActions(MiniYamlNode contentPackageYaml)
 					{
-						var sourceAction = modSource.ObjectCreator.CreateObject<ISourceAction>($"{i.Key}SourceAction");
-						sourceAction.RunActionOnSource(i.Value, path, modData, extracted, m => message = m);
+						var sourceActionListYaml = contentPackageYaml.Value.Nodes.FirstOrDefault(x => x.Key == "Actions");
+						if (sourceActionListYaml == null)
+							return;
+
+						foreach (var sourceActionNode in sourceActionListYaml.Value.Nodes)
+						{
+							var sourceAction = modSource.ObjectCreator.CreateObject<ISourceAction>($"{sourceActionNode.Key}SourceAction");
+							sourceAction.RunActionOnSource(sourceActionNode.Value, path, modData, extracted, m => message = m);
+						}
 					}
+
+					var beforeInstall = modSource.Install.FirstOrDefault(x => x.Key == "BeforeInstall");
+					if (beforeInstall != null)
+						RunSourceActions(beforeInstall);
+
+					foreach (var packageInstallationNode in modSource.Install.Where(x => x.Key == "ContentPackage"))
+						RunSourceActions(packageInstallationNode);
+
+					var afterInstall = modSource.Install.FirstOrDefault(x => x.Key == "AfterInstall");
+					if (afterInstall != null)
+						RunSourceActions(afterInstall);
 
 					Game.RunAfterTick(Ui.CloseWindow);
 				}

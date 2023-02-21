@@ -4,5 +4,9 @@ covertops: Covert Operations Expansion (English)
 		GAME/GAME.DAT: be5a6c4c0a581da09e8f34a3bbf7bd17e525085c
 		CONQUER.MIX: 713b53fa4c188ca9619c6bbeadbfc86513704266
 	Install:
-		Copy: .
-			^SupportDir|Content/cnc/scores-covertops.mix: SCORES.MIX
+		# Covert Operations music (optional):
+		ContentPackage:
+			Name: music-covertops
+			Actions:
+				Copy: .
+					^SupportDir|Content/cnc/scores-covertops.mix: SCORES.MIX
