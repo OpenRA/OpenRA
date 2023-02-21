@@ -4,15 +4,19 @@ counterstrike: Counterstrike Expansion Disc (English)
 		README.TXT: 0efe8087383f0b159a9633f891fb5f53c6097cd4
 		SETUP/INSTALL/CSTRIKE.RTP: fae8ba82db71574f6ecd8fb4ff4026fcb65d2adc
 	Install:
-		ExtractMix: MAIN.MIX
-			^SupportDir|Content/ra/v2/expand/scores.mix: scores.mix
-		ExtractMix: ^SupportDir|Content/ra/v2/expand/scores.mix
-			^SupportDir|Content/ra/v2/expand/2nd_hand.aud: 2nd_hand.aud
-			^SupportDir|Content/ra/v2/expand/araziod.aud: araziod.aud
-			^SupportDir|Content/ra/v2/expand/backstab.aud: backstab.aud
-			^SupportDir|Content/ra/v2/expand/chaos2.aud: chaos2.aud
-			^SupportDir|Content/ra/v2/expand/shut_it.aud: shut_it.aud
-			^SupportDir|Content/ra/v2/expand/twinmix1.aud: twinmix1.aud
-			^SupportDir|Content/ra/v2/expand/under3.aud: under3.aud
-			^SupportDir|Content/ra/v2/expand/vr2.aud: vr2.aud
-		Delete: ^SupportDir|Content/ra/v2/expand/scores.mix
+		# Counterstrike music (optional):
+		ContentPackage:
+			Name: music-counterstrike
+			Actions:
+				ExtractMix: MAIN.MIX
+					^SupportDir|Content/ra/v2/expand/scores.mix: scores.mix
+				ExtractMix: ^SupportDir|Content/ra/v2/expand/scores.mix
+					^SupportDir|Content/ra/v2/expand/2nd_hand.aud: 2nd_hand.aud
+					^SupportDir|Content/ra/v2/expand/araziod.aud: araziod.aud
+					^SupportDir|Content/ra/v2/expand/backstab.aud: backstab.aud
+					^SupportDir|Content/ra/v2/expand/chaos2.aud: chaos2.aud
+					^SupportDir|Content/ra/v2/expand/shut_it.aud: shut_it.aud
+					^SupportDir|Content/ra/v2/expand/twinmix1.aud: twinmix1.aud
+					^SupportDir|Content/ra/v2/expand/under3.aud: under3.aud
+					^SupportDir|Content/ra/v2/expand/vr2.aud: vr2.aud
+				Delete: ^SupportDir|Content/ra/v2/expand/scores.mix

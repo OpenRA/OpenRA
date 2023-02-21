@@ -4,53 +4,62 @@ aftermath: Aftermath Expansion Disc (English)
 		README.TXT: 9902fb74c019df1b76ff5634e68f0371d790b5e0
 		SETUP/INSTALL/PATCH.RTP: 5bce93f834f9322ddaa7233242e5b6c7fea0bf17
 	Install:
-		ExtractRaw: SETUP/INSTALL/PATCH.RTP
-			^SupportDir|Content/ra/v2/expand/expand2.mix:
-				Offset: 4712984
-				Length: 469922
-			^SupportDir|Content/ra/v2/expand/hires1.mix:
-				Offset: 5182981
-				Length: 90264
-			^SupportDir|Content/ra/v2/expand/lores1.mix:
-				Offset: 5273320
-				Length: 57076
-		ExtractMix: MAIN.MIX
-			^SupportDir|Content/ra/v2/expand/scores.mix: scores.mix
-			^SupportDir|Content/ra/v2/expand/sounds.mix: sounds.mix
-		ExtractMix: ^SupportDir|Content/ra/v2/expand/scores.mix
-			^SupportDir|Content/ra/v2/expand/await.aud: await.aud
-			^SupportDir|Content/ra/v2/expand/bog.aud: bog.aud
-			^SupportDir|Content/ra/v2/expand/float_v2.aud: float_v2.aud
-			^SupportDir|Content/ra/v2/expand/gloom.aud: gloom.aud
-			^SupportDir|Content/ra/v2/expand/grndwire.aud: grndwire.aud
-			^SupportDir|Content/ra/v2/expand/rpt.aud: rpt.aud
-			^SupportDir|Content/ra/v2/expand/search.aud: search.aud
-			^SupportDir|Content/ra/v2/expand/traction.aud: traction.aud
-			^SupportDir|Content/ra/v2/expand/wastelnd.aud: wastelnd.aud
-		Delete: ^SupportDir|Content/ra/v2/expand/scores.mix
-		ExtractMix: ^SupportDir|Content/ra/v2/expand/sounds.mix
-			^SupportDir|Content/ra/v2/expand/chrotnk1.aud: chrotnk1.aud
-			^SupportDir|Content/ra/v2/expand/fixit1.aud: fixit1.aud
-			^SupportDir|Content/ra/v2/expand/jburn1.aud: jburn1.aud
-			^SupportDir|Content/ra/v2/expand/jchrge1.aud: jchrge1.aud
-			^SupportDir|Content/ra/v2/expand/jcrisp1.aud: jcrisp1.aud
-			^SupportDir|Content/ra/v2/expand/jdance1.aud: jdance1.aud
-			^SupportDir|Content/ra/v2/expand/jjuice1.aud: jjuice1.aud
-			^SupportDir|Content/ra/v2/expand/jjump1.aud: jjump1.aud
-			^SupportDir|Content/ra/v2/expand/jlight1.aud: jlight1.aud
-			^SupportDir|Content/ra/v2/expand/jpower1.aud: jpower1.aud
-			^SupportDir|Content/ra/v2/expand/jshock1.aud: jshock1.aud
-			^SupportDir|Content/ra/v2/expand/jyes1.aud: jyes1.aud
-			^SupportDir|Content/ra/v2/expand/madchrg2.aud: madchrg2.aud
-			^SupportDir|Content/ra/v2/expand/madexplo.aud: madexplo.aud
-			^SupportDir|Content/ra/v2/expand/mboss1.aud: mboss1.aud
-			^SupportDir|Content/ra/v2/expand/mhear1.aud: mhear1.aud
-			^SupportDir|Content/ra/v2/expand/mhotdig1.aud: mhotdig1.aud
-			^SupportDir|Content/ra/v2/expand/mhowdy1.aud: mhowdy1.aud
-			^SupportDir|Content/ra/v2/expand/mhuh1.aud: mhuh1.aud
-			^SupportDir|Content/ra/v2/expand/mlaff1.aud: mlaff1.aud
-			^SupportDir|Content/ra/v2/expand/mrise1.aud: mrise1.aud
-			^SupportDir|Content/ra/v2/expand/mwrench1.aud: mwrench1.aud
-			^SupportDir|Content/ra/v2/expand/myeehaw1.aud: myeehaw1.aud
-			^SupportDir|Content/ra/v2/expand/myes1.aud: myes1.aud
-		Delete: ^SupportDir|Content/ra/v2/expand/sounds.mix
+		# Aftermath expansion files:
+		ContentPackage:
+			Name: aftermathbase
+			Actions:
+				ExtractRaw: SETUP/INSTALL/PATCH.RTP
+					^SupportDir|Content/ra/v2/expand/expand2.mix:
+						Offset: 4712984
+						Length: 469922
+					^SupportDir|Content/ra/v2/expand/hires1.mix:
+						Offset: 5182981
+						Length: 90264
+					^SupportDir|Content/ra/v2/expand/lores1.mix:
+						Offset: 5273320
+						Length: 57076
+				ExtractMix: MAIN.MIX
+					^SupportDir|Content/ra/v2/expand/sounds.mix: sounds.mix
+				ExtractMix: ^SupportDir|Content/ra/v2/expand/sounds.mix
+					^SupportDir|Content/ra/v2/expand/chrotnk1.aud: chrotnk1.aud
+					^SupportDir|Content/ra/v2/expand/fixit1.aud: fixit1.aud
+					^SupportDir|Content/ra/v2/expand/jburn1.aud: jburn1.aud
+					^SupportDir|Content/ra/v2/expand/jchrge1.aud: jchrge1.aud
+					^SupportDir|Content/ra/v2/expand/jcrisp1.aud: jcrisp1.aud
+					^SupportDir|Content/ra/v2/expand/jdance1.aud: jdance1.aud
+					^SupportDir|Content/ra/v2/expand/jjuice1.aud: jjuice1.aud
+					^SupportDir|Content/ra/v2/expand/jjump1.aud: jjump1.aud
+					^SupportDir|Content/ra/v2/expand/jlight1.aud: jlight1.aud
+					^SupportDir|Content/ra/v2/expand/jpower1.aud: jpower1.aud
+					^SupportDir|Content/ra/v2/expand/jshock1.aud: jshock1.aud
+					^SupportDir|Content/ra/v2/expand/jyes1.aud: jyes1.aud
+					^SupportDir|Content/ra/v2/expand/madchrg2.aud: madchrg2.aud
+					^SupportDir|Content/ra/v2/expand/madexplo.aud: madexplo.aud
+					^SupportDir|Content/ra/v2/expand/mboss1.aud: mboss1.aud
+					^SupportDir|Content/ra/v2/expand/mhear1.aud: mhear1.aud
+					^SupportDir|Content/ra/v2/expand/mhotdig1.aud: mhotdig1.aud
+					^SupportDir|Content/ra/v2/expand/mhowdy1.aud: mhowdy1.aud
+					^SupportDir|Content/ra/v2/expand/mhuh1.aud: mhuh1.aud
+					^SupportDir|Content/ra/v2/expand/mlaff1.aud: mlaff1.aud
+					^SupportDir|Content/ra/v2/expand/mrise1.aud: mrise1.aud
+					^SupportDir|Content/ra/v2/expand/mwrench1.aud: mwrench1.aud
+					^SupportDir|Content/ra/v2/expand/myeehaw1.aud: myeehaw1.aud
+					^SupportDir|Content/ra/v2/expand/myes1.aud: myes1.aud
+				Delete: ^SupportDir|Content/ra/v2/expand/sounds.mix
+		# Aftermath music (optional):
+		ContentPackage:
+			Name: music-aftermath
+			Actions:
+				ExtractMix: MAIN.MIX
+					^SupportDir|Content/ra/v2/expand/scores.mix: scores.mix
+				ExtractMix: ^SupportDir|Content/ra/v2/expand/scores.mix
+					^SupportDir|Content/ra/v2/expand/await.aud: await.aud
+					^SupportDir|Content/ra/v2/expand/bog.aud: bog.aud
+					^SupportDir|Content/ra/v2/expand/float_v2.aud: float_v2.aud
+					^SupportDir|Content/ra/v2/expand/gloom.aud: gloom.aud
+					^SupportDir|Content/ra/v2/expand/grndwire.aud: grndwire.aud
+					^SupportDir|Content/ra/v2/expand/rpt.aud: rpt.aud
+					^SupportDir|Content/ra/v2/expand/search.aud: search.aud
+					^SupportDir|Content/ra/v2/expand/traction.aud: traction.aud
+					^SupportDir|Content/ra/v2/expand/wastelnd.aud: wastelnd.aud
+				Delete: ^SupportDir|Content/ra/v2/expand/scores.mix

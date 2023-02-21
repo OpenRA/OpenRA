@@ -3,5 +3,9 @@ cnc95: C&C Gold (GDI or Nod Disc, English)
 	IDFiles:
 		CONQUER.MIX: 833e02a09aae694659eb312d3838367f681d1b30
 	Install:
-		Copy: .
-			^SupportDir|Content/ra/v2/cnc/desert.mix: DESERT.MIX
+		# C&C Desert Tileset:
+		ContentPackage:
+			Name: cncdesert
+			Actions:
+				Copy: .
+					^SupportDir|Content/ra/v2/cnc/desert.mix: DESERT.MIX

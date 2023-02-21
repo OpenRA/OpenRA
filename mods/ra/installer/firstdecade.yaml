@@ -3,170 +3,198 @@ tfd: C&C The First Decade (English)
 	IDFiles:
 		data1.hdr: bef3a08c3fc1b1caf28ca0dbb97c1f900005930e
 		data1.cab: 12ad6113a6890a1b4d5651a75378c963eaf513b9
+	# The First Decade doesn't include the Aftermath and Counterstrike music because someone in EA forgot to add them.
+	# Unless a patch is installed, but we probably don't want to deal with whether or not it is.
 	Install:
-		ExtractIscab: data1.hdr
-			Volumes:
-				2: data2.cab
-				3: data3.cab
-				4: data4.cab
-				5: data5.cab
-			Extract:
-				^SupportDir|Content/ra/v2/main.mix: Red Alert\\MAIN.MIX
-				^SupportDir|Content/ra/v2/redalert.mix: Red Alert\\REDALERT.MIX
-				^SupportDir|Content/ra/v2/expand/hires1.mix: Red Alert\\HIRES1.MIX
-				^SupportDir|Content/ra/v2/expand/lores1.mix: Red Alert\\LORES1.MIX
-				^SupportDir|Content/ra/v2/expand/expand2.mix: Red Alert\\EXPAND2.MIX
-				^SupportDir|Content/ra/v2/cnc/desert.mix: CnC\\DESERT.MIX
-		ExtractMix: ^SupportDir|Content/ra/v2/redalert.mix
-			^SupportDir|Content/ra/v2/hires.mix: hires.mix
-			^SupportDir|Content/ra/v2/local.mix: local.mix
-			^SupportDir|Content/ra/v2/lores.mix: lores.mix
-			^SupportDir|Content/ra/v2/speech.mix: speech.mix
-		Delete: ^SupportDir|Content/ra/v2/redalert.mix
-		ExtractMix: ^SupportDir|Content/ra/v2/main.mix
-			^SupportDir|Content/ra/v2/interior.mix: interior.mix
-			^SupportDir|Content/ra/v2/conquer.mix: conquer.mix
-			^SupportDir|Content/ra/v2/allies.mix: allies.mix
-			^SupportDir|Content/ra/v2/temperat.mix: temperat.mix
-			^SupportDir|Content/ra/v2/sounds.mix: sounds.mix
-			^SupportDir|Content/ra/v2/snow.mix: snow.mix
-			^SupportDir|Content/ra/v2/scores.mix: scores.mix
-			^SupportDir|Content/ra/v2/russian.mix: russian.mix
-			^SupportDir|Content/ra/v2/movies1.mix: movies1.mix
-			^SupportDir|Content/ra/v2/movies2.mix: movies2.mix
-		Delete: ^SupportDir|Content/ra/v2/main.mix
-		ExtractMix: ^SupportDir|Content/ra/v2/movies1.mix
-			^SupportDir|Content/ra/v2/movies/aagun.vqa: aagun.vqa
-			^SupportDir|Content/ra/v2/movies/aftrmath.vqa: aftrmath.vqa
-			^SupportDir|Content/ra/v2/movies/ally12.vqa: ally12.vqa
-			^SupportDir|Content/ra/v2/movies/ally14.vqa: ally14.vqa
-			^SupportDir|Content/ra/v2/movies/allyend.vqa: allyend.vqa
-			^SupportDir|Content/ra/v2/movies/allymorf.vqa: allymorf.vqa
-			^SupportDir|Content/ra/v2/movies/apcescpe.vqa: apcescpe.vqa
-			^SupportDir|Content/ra/v2/movies/assess.vqa: assess.vqa
-			^SupportDir|Content/ra/v2/movies/battle.vqa: battle.vqa
-			^SupportDir|Content/ra/v2/movies/binoc.vqa: binoc.vqa
-			^SupportDir|Content/ra/v2/movies/bmap.vqa: bmap.vqa
-			^SupportDir|Content/ra/v2/movies/brdgtilt.vqa: brdgtilt.vqa
-			^SupportDir|Content/ra/v2/movies/cronfail.vqa: cronfail.vqa
-			^SupportDir|Content/ra/v2/movies/crontest.vqa: crontest.vqa
-			^SupportDir|Content/ra/v2/movies/destroyr.vqa: destroyr.vqa
-			^SupportDir|Content/ra/v2/movies/dud.vqa: dud.vqa
-			^SupportDir|Content/ra/v2/movies/elevator.vqa: elevator.vqa
-			^SupportDir|Content/ra/v2/movies/flare.vqa: flare.vqa
-			^SupportDir|Content/ra/v2/movies/frozen.vqa: frozen.vqa
-			^SupportDir|Content/ra/v2/movies/grvestne.vqa: grvestne.vqa
-			^SupportDir|Content/ra/v2/movies/landing.vqa: landing.vqa
-			^SupportDir|Content/ra/v2/movies/masasslt.vqa: masasslt.vqa
-			^SupportDir|Content/ra/v2/movies/mcv.vqa: mcv.vqa
-			^SupportDir|Content/ra/v2/movies/mcv_land.vqa: mcv_land.vqa
-			^SupportDir|Content/ra/v2/movies/montpass.vqa: montpass.vqa
-			^SupportDir|Content/ra/v2/movies/oildrum.vqa: oildrum.vqa
-			^SupportDir|Content/ra/v2/movies/overrun.vqa: overrun.vqa
-			^SupportDir|Content/ra/v2/movies/prolog.vqa: prolog.vqa
-			^SupportDir|Content/ra/v2/movies/redintro.vqa: redintro.vqa
-			^SupportDir|Content/ra/v2/movies/shipsink.vqa: shipsink.vqa
-			^SupportDir|Content/ra/v2/movies/shorbom1.vqa: shorbom1.vqa
-			^SupportDir|Content/ra/v2/movies/shorbom2.vqa: shorbom2.vqa
-			^SupportDir|Content/ra/v2/movies/shorbomb.vqa: shorbomb.vqa
-			^SupportDir|Content/ra/v2/movies/snowbomb.vqa: snowbomb.vqa
-			^SupportDir|Content/ra/v2/movies/soviet1.vqa: soviet1.vqa
-			^SupportDir|Content/ra/v2/movies/sovtstar.vqa: sovtstar.vqa
-			^SupportDir|Content/ra/v2/movies/spy.vqa: spy.vqa
-			^SupportDir|Content/ra/v2/movies/tanya1.vqa: tanya1.vqa
-			^SupportDir|Content/ra/v2/movies/tanya2.vqa: tanya2.vqa
-			^SupportDir|Content/ra/v2/movies/toofar.vqa: toofar.vqa
-			^SupportDir|Content/ra/v2/movies/trinity.vqa: trinity.vqa
-			^SupportDir|Content/ra/v2/movies/ally1.vqa: ally1.vqa
-			^SupportDir|Content/ra/v2/movies/ally2.vqa: ally2.vqa
-			^SupportDir|Content/ra/v2/movies/ally4.vqa: ally4.vqa
-			^SupportDir|Content/ra/v2/movies/ally5.vqa: ally5.vqa
-			^SupportDir|Content/ra/v2/movies/ally6.vqa: ally6.vqa
-			^SupportDir|Content/ra/v2/movies/ally8.vqa: ally8.vqa
-			^SupportDir|Content/ra/v2/movies/ally9.vqa: ally9.vqa
-			^SupportDir|Content/ra/v2/movies/ally10.vqa: ally10.vqa
-			^SupportDir|Content/ra/v2/movies/ally10b.vqa: ally10b.vqa
-			^SupportDir|Content/ra/v2/movies/ally11.vqa: ally11.vqa
-		Delete: ^SupportDir|Content/ra/v2/movies1.mix
-		ExtractMix: ^SupportDir|Content/ra/v2/movies2.mix
-			^SupportDir|Content/ra/v2/movies/double.vqa: double.vqa
-			^SupportDir|Content/ra/v2/movies/dpthchrg.vqa: dpthchrg.vqa
-			^SupportDir|Content/ra/v2/movies/execute.vqa: execute.vqa
-			^SupportDir|Content/ra/v2/movies/flare.vqa: flare.vqa
-			^SupportDir|Content/ra/v2/movies/landing.vqa: landing.vqa
-			^SupportDir|Content/ra/v2/movies/mcvbrdge.vqa: mcvbrdge.vqa
-			^SupportDir|Content/ra/v2/movies/mig.vqa: mig.vqa
-			^SupportDir|Content/ra/v2/movies/movingin.vqa: movingin.vqa
-			^SupportDir|Content/ra/v2/movies/mtnkfact.vqa: mtnkfact.vqa
-			^SupportDir|Content/ra/v2/movies/nukestok.vqa: nukestok.vqa
-			^SupportDir|Content/ra/v2/movies/onthprwl.vqa: onthprwl.vqa
-			^SupportDir|Content/ra/v2/movies/periscop.vqa: periscop.vqa
-			^SupportDir|Content/ra/v2/movies/prolog.vqa: prolog.vqa
-			^SupportDir|Content/ra/v2/movies/radrraid.vqa: radrraid.vqa
-			^SupportDir|Content/ra/v2/movies/redintro.vqa: redintro.vqa
-			^SupportDir|Content/ra/v2/movies/search.vqa: search.vqa
-			^SupportDir|Content/ra/v2/movies/sfrozen.vqa: sfrozen.vqa
-			^SupportDir|Content/ra/v2/movies/sitduck.vqa: sitduck.vqa
-			^SupportDir|Content/ra/v2/movies/slntsrvc.vqa: slntsrvc.vqa
-			^SupportDir|Content/ra/v2/movies/snowbomb.vqa: snowbomb.vqa
-			^SupportDir|Content/ra/v2/movies/snstrafe.vqa: snstrafe.vqa
-			^SupportDir|Content/ra/v2/movies/sovbatl.vqa: sovbatl.vqa
-			^SupportDir|Content/ra/v2/movies/sovcemet.vqa: sovcemet.vqa
-			^SupportDir|Content/ra/v2/movies/sovfinal.vqa: sovfinal.vqa
-			^SupportDir|Content/ra/v2/movies/soviet1.vqa: soviet1.vqa
-			^SupportDir|Content/ra/v2/movies/soviet2.vqa: soviet2.vqa
-			^SupportDir|Content/ra/v2/movies/soviet3.vqa: soviet3.vqa
-			^SupportDir|Content/ra/v2/movies/soviet4.vqa: soviet4.vqa
-			^SupportDir|Content/ra/v2/movies/soviet5.vqa: soviet5.vqa
-			^SupportDir|Content/ra/v2/movies/soviet6.vqa: soviet6.vqa
-			^SupportDir|Content/ra/v2/movies/soviet7.vqa: soviet7.vqa
-			^SupportDir|Content/ra/v2/movies/soviet8.vqa: soviet8.vqa
-			^SupportDir|Content/ra/v2/movies/soviet9.vqa: soviet9.vqa
-			^SupportDir|Content/ra/v2/movies/soviet10.vqa: soviet10.vqa
-			^SupportDir|Content/ra/v2/movies/soviet11.vqa: soviet11.vqa
-			^SupportDir|Content/ra/v2/movies/soviet12.vqa: soviet12.vqa
-			^SupportDir|Content/ra/v2/movies/soviet13.vqa: soviet13.vqa
-			^SupportDir|Content/ra/v2/movies/soviet14.vqa: soviet14.vqa
-			^SupportDir|Content/ra/v2/movies/sovmcv.vqa: sovmcv.vqa
-			^SupportDir|Content/ra/v2/movies/sovtstar.vqa: sovtstar.vqa
-			^SupportDir|Content/ra/v2/movies/spotter.vqa: spotter.vqa
-			^SupportDir|Content/ra/v2/movies/strafe.vqa: strafe.vqa
-			^SupportDir|Content/ra/v2/movies/take_off.vqa: take_off.vqa
-			^SupportDir|Content/ra/v2/movies/tesla.vqa: tesla.vqa
-			^SupportDir|Content/ra/v2/movies/v2rocket.vqa: v2rocket.vqa
-			^SupportDir|Content/ra/v2/movies/aagun.vqa: aagun.vqa
-			^SupportDir|Content/ra/v2/movies/airfield.vqa: airfield.vqa
-			^SupportDir|Content/ra/v2/movies/ally1.vqa: ally1.vqa
-			^SupportDir|Content/ra/v2/movies/allymorf.vqa: allymorf.vqa
-			^SupportDir|Content/ra/v2/movies/averted.vqa: averted.vqa
-			^SupportDir|Content/ra/v2/movies/beachead.vqa: beachead.vqa
-			^SupportDir|Content/ra/v2/movies/bmap.vqa: bmap.vqa
-			^SupportDir|Content/ra/v2/movies/bombrun.vqa: bombrun.vqa
-			^SupportDir|Content/ra/v2/movies/countdwn.vqa: countdwn.vqa
-			^SupportDir|Content/ra/v2/movies/cronfail.vqa: cronfail.vqa
-		Delete: ^SupportDir|Content/ra/v2/movies2.mix
-		ExtractMix: ^SupportDir|Content/ra/v2/sounds.mix
-			^SupportDir|Content/ra/v2/expand/chrotnk1.aud: chrotnk1.aud
-			^SupportDir|Content/ra/v2/expand/fixit1.aud: fixit1.aud
-			^SupportDir|Content/ra/v2/expand/jburn1.aud: jburn1.aud
-			^SupportDir|Content/ra/v2/expand/jchrge1.aud: jchrge1.aud
-			^SupportDir|Content/ra/v2/expand/jcrisp1.aud: jcrisp1.aud
-			^SupportDir|Content/ra/v2/expand/jdance1.aud: jdance1.aud
-			^SupportDir|Content/ra/v2/expand/jjuice1.aud: jjuice1.aud
-			^SupportDir|Content/ra/v2/expand/jjump1.aud: jjump1.aud
-			^SupportDir|Content/ra/v2/expand/jlight1.aud: jlight1.aud
-			^SupportDir|Content/ra/v2/expand/jpower1.aud: jpower1.aud
-			^SupportDir|Content/ra/v2/expand/jshock1.aud: jshock1.aud
-			^SupportDir|Content/ra/v2/expand/jyes1.aud: jyes1.aud
-			^SupportDir|Content/ra/v2/expand/madchrg2.aud: madchrg2.aud
-			^SupportDir|Content/ra/v2/expand/madexplo.aud: madexplo.aud
-			^SupportDir|Content/ra/v2/expand/mboss1.aud: mboss1.aud
-			^SupportDir|Content/ra/v2/expand/mhear1.aud: mhear1.aud
-			^SupportDir|Content/ra/v2/expand/mhotdig1.aud: mhotdig1.aud
-			^SupportDir|Content/ra/v2/expand/mhowdy1.aud: mhowdy1.aud
-			^SupportDir|Content/ra/v2/expand/mhuh1.aud: mhuh1.aud
-			^SupportDir|Content/ra/v2/expand/mlaff1.aud: mlaff1.aud
-			^SupportDir|Content/ra/v2/expand/mrise1.aud: mrise1.aud
-			^SupportDir|Content/ra/v2/expand/mwrench1.aud: mwrench1.aud
-			^SupportDir|Content/ra/v2/expand/myeehaw1.aud: myeehaw1.aud
-			^SupportDir|Content/ra/v2/expand/myes1.aud: myes1.aud
+		BeforeInstall:
+			# This one step handles 3 packages - base (partially), aftermathbase (partially) and cncdesert.
+			ExtractIscab: data1.hdr
+				Volumes:
+					2: data2.cab
+					3: data3.cab
+					4: data4.cab
+					5: data5.cab
+				Extract:
+					^SupportDir|Content/ra/v2/main.mix: Red Alert\\MAIN.MIX
+					^SupportDir|Content/ra/v2/redalert.mix: Red Alert\\REDALERT.MIX
+					^SupportDir|Content/ra/v2/expand/hires1.mix: Red Alert\\HIRES1.MIX
+					^SupportDir|Content/ra/v2/expand/lores1.mix: Red Alert\\LORES1.MIX
+					^SupportDir|Content/ra/v2/expand/expand2.mix: Red Alert\\EXPAND2.MIX
+					^SupportDir|Content/ra/v2/cnc/desert.mix: CnC\\DESERT.MIX
+		# Base game files:
+		ContentPackage:
+			Name: base
+			Actions:
+				ExtractMix: ^SupportDir|Content/ra/v2/redalert.mix
+					^SupportDir|Content/ra/v2/hires.mix: hires.mix
+					^SupportDir|Content/ra/v2/local.mix: local.mix
+					^SupportDir|Content/ra/v2/lores.mix: lores.mix
+					^SupportDir|Content/ra/v2/speech.mix: speech.mix
+				Delete: ^SupportDir|Content/ra/v2/redalert.mix
+				ExtractMix: ^SupportDir|Content/ra/v2/main.mix
+					^SupportDir|Content/ra/v2/interior.mix: interior.mix
+					^SupportDir|Content/ra/v2/conquer.mix: conquer.mix
+					^SupportDir|Content/ra/v2/allies.mix: allies.mix
+					^SupportDir|Content/ra/v2/temperat.mix: temperat.mix
+					^SupportDir|Content/ra/v2/sounds.mix: sounds.mix
+					^SupportDir|Content/ra/v2/snow.mix: snow.mix
+					^SupportDir|Content/ra/v2/russian.mix: russian.mix
+		# Base game music (optional):
+		ContentPackage:
+			Name: music
+			Actions:
+				ExtractMix: ^SupportDir|Content/ra/v2/main.mix
+					^SupportDir|Content/ra/v2/scores.mix: scores.mix
+		# Allied campaign briefings (optional):
+		ContentPackage:
+			Name: movies-allied
+			Actions:
+				ExtractMix: ^SupportDir|Content/ra/v2/main.mix
+					^SupportDir|Content/ra/v2/movies1.mix: movies1.mix
+				ExtractMix: ^SupportDir|Content/ra/v2/movies1.mix
+					^SupportDir|Content/ra/v2/movies/aagun.vqa: aagun.vqa
+					^SupportDir|Content/ra/v2/movies/aftrmath.vqa: aftrmath.vqa
+					^SupportDir|Content/ra/v2/movies/ally12.vqa: ally12.vqa
+					^SupportDir|Content/ra/v2/movies/ally14.vqa: ally14.vqa
+					^SupportDir|Content/ra/v2/movies/allyend.vqa: allyend.vqa
+					^SupportDir|Content/ra/v2/movies/allymorf.vqa: allymorf.vqa
+					^SupportDir|Content/ra/v2/movies/apcescpe.vqa: apcescpe.vqa
+					^SupportDir|Content/ra/v2/movies/assess.vqa: assess.vqa
+					^SupportDir|Content/ra/v2/movies/battle.vqa: battle.vqa
+					^SupportDir|Content/ra/v2/movies/binoc.vqa: binoc.vqa
+					^SupportDir|Content/ra/v2/movies/bmap.vqa: bmap.vqa
+					^SupportDir|Content/ra/v2/movies/brdgtilt.vqa: brdgtilt.vqa
+					^SupportDir|Content/ra/v2/movies/cronfail.vqa: cronfail.vqa
+					^SupportDir|Content/ra/v2/movies/crontest.vqa: crontest.vqa
+					^SupportDir|Content/ra/v2/movies/destroyr.vqa: destroyr.vqa
+					^SupportDir|Content/ra/v2/movies/dud.vqa: dud.vqa
+					^SupportDir|Content/ra/v2/movies/elevator.vqa: elevator.vqa
+					^SupportDir|Content/ra/v2/movies/flare.vqa: flare.vqa
+					^SupportDir|Content/ra/v2/movies/frozen.vqa: frozen.vqa
+					^SupportDir|Content/ra/v2/movies/grvestne.vqa: grvestne.vqa
+					^SupportDir|Content/ra/v2/movies/landing.vqa: landing.vqa
+					^SupportDir|Content/ra/v2/movies/masasslt.vqa: masasslt.vqa
+					^SupportDir|Content/ra/v2/movies/mcv.vqa: mcv.vqa
+					^SupportDir|Content/ra/v2/movies/mcv_land.vqa: mcv_land.vqa
+					^SupportDir|Content/ra/v2/movies/montpass.vqa: montpass.vqa
+					^SupportDir|Content/ra/v2/movies/oildrum.vqa: oildrum.vqa
+					^SupportDir|Content/ra/v2/movies/overrun.vqa: overrun.vqa
+					^SupportDir|Content/ra/v2/movies/prolog.vqa: prolog.vqa
+					^SupportDir|Content/ra/v2/movies/redintro.vqa: redintro.vqa
+					^SupportDir|Content/ra/v2/movies/shipsink.vqa: shipsink.vqa
+					^SupportDir|Content/ra/v2/movies/shorbom1.vqa: shorbom1.vqa
+					^SupportDir|Content/ra/v2/movies/shorbom2.vqa: shorbom2.vqa
+					^SupportDir|Content/ra/v2/movies/shorbomb.vqa: shorbomb.vqa
+					^SupportDir|Content/ra/v2/movies/snowbomb.vqa: snowbomb.vqa
+					^SupportDir|Content/ra/v2/movies/soviet1.vqa: soviet1.vqa
+					^SupportDir|Content/ra/v2/movies/sovtstar.vqa: sovtstar.vqa
+					^SupportDir|Content/ra/v2/movies/spy.vqa: spy.vqa
+					^SupportDir|Content/ra/v2/movies/tanya1.vqa: tanya1.vqa
+					^SupportDir|Content/ra/v2/movies/tanya2.vqa: tanya2.vqa
+					^SupportDir|Content/ra/v2/movies/toofar.vqa: toofar.vqa
+					^SupportDir|Content/ra/v2/movies/trinity.vqa: trinity.vqa
+					^SupportDir|Content/ra/v2/movies/ally1.vqa: ally1.vqa
+					^SupportDir|Content/ra/v2/movies/ally2.vqa: ally2.vqa
+					^SupportDir|Content/ra/v2/movies/ally4.vqa: ally4.vqa
+					^SupportDir|Content/ra/v2/movies/ally5.vqa: ally5.vqa
+					^SupportDir|Content/ra/v2/movies/ally6.vqa: ally6.vqa
+					^SupportDir|Content/ra/v2/movies/ally8.vqa: ally8.vqa
+					^SupportDir|Content/ra/v2/movies/ally9.vqa: ally9.vqa
+					^SupportDir|Content/ra/v2/movies/ally10.vqa: ally10.vqa
+					^SupportDir|Content/ra/v2/movies/ally10b.vqa: ally10b.vqa
+					^SupportDir|Content/ra/v2/movies/ally11.vqa: ally11.vqa
+				Delete: ^SupportDir|Content/ra/v2/movies1.mix
+		# Soviet campaign briefings (optional):
+		ContentPackage:
+			Name: movies-soviet
+			Actions:
+				ExtractMix: ^SupportDir|Content/ra/v2/main.mix
+					^SupportDir|Content/ra/v2/movies2.mix: movies2.mix
+				ExtractMix: ^SupportDir|Content/ra/v2/movies2.mix
+					^SupportDir|Content/ra/v2/movies/double.vqa: double.vqa
+					^SupportDir|Content/ra/v2/movies/dpthchrg.vqa: dpthchrg.vqa
+					^SupportDir|Content/ra/v2/movies/execute.vqa: execute.vqa
+					^SupportDir|Content/ra/v2/movies/flare.vqa: flare.vqa
+					^SupportDir|Content/ra/v2/movies/landing.vqa: landing.vqa
+					^SupportDir|Content/ra/v2/movies/mcvbrdge.vqa: mcvbrdge.vqa
+					^SupportDir|Content/ra/v2/movies/mig.vqa: mig.vqa
+					^SupportDir|Content/ra/v2/movies/movingin.vqa: movingin.vqa
+					^SupportDir|Content/ra/v2/movies/mtnkfact.vqa: mtnkfact.vqa
+					^SupportDir|Content/ra/v2/movies/nukestok.vqa: nukestok.vqa
+					^SupportDir|Content/ra/v2/movies/onthprwl.vqa: onthprwl.vqa
+					^SupportDir|Content/ra/v2/movies/periscop.vqa: periscop.vqa
+					^SupportDir|Content/ra/v2/movies/prolog.vqa: prolog.vqa
+					^SupportDir|Content/ra/v2/movies/radrraid.vqa: radrraid.vqa
+					^SupportDir|Content/ra/v2/movies/redintro.vqa: redintro.vqa
+					^SupportDir|Content/ra/v2/movies/search.vqa: search.vqa
+					^SupportDir|Content/ra/v2/movies/sfrozen.vqa: sfrozen.vqa
+					^SupportDir|Content/ra/v2/movies/sitduck.vqa: sitduck.vqa
+					^SupportDir|Content/ra/v2/movies/slntsrvc.vqa: slntsrvc.vqa
+					^SupportDir|Content/ra/v2/movies/snowbomb.vqa: snowbomb.vqa
+					^SupportDir|Content/ra/v2/movies/snstrafe.vqa: snstrafe.vqa
+					^SupportDir|Content/ra/v2/movies/sovbatl.vqa: sovbatl.vqa
+					^SupportDir|Content/ra/v2/movies/sovcemet.vqa: sovcemet.vqa
+					^SupportDir|Content/ra/v2/movies/sovfinal.vqa: sovfinal.vqa
+					^SupportDir|Content/ra/v2/movies/soviet1.vqa: soviet1.vqa
+					^SupportDir|Content/ra/v2/movies/soviet2.vqa: soviet2.vqa
+					^SupportDir|Content/ra/v2/movies/soviet3.vqa: soviet3.vqa
+					^SupportDir|Content/ra/v2/movies/soviet4.vqa: soviet4.vqa
+					^SupportDir|Content/ra/v2/movies/soviet5.vqa: soviet5.vqa
+					^SupportDir|Content/ra/v2/movies/soviet6.vqa: soviet6.vqa
+					^SupportDir|Content/ra/v2/movies/soviet7.vqa: soviet7.vqa
+					^SupportDir|Content/ra/v2/movies/soviet8.vqa: soviet8.vqa
+					^SupportDir|Content/ra/v2/movies/soviet9.vqa: soviet9.vqa
+					^SupportDir|Content/ra/v2/movies/soviet10.vqa: soviet10.vqa
+					^SupportDir|Content/ra/v2/movies/soviet11.vqa: soviet11.vqa
+					^SupportDir|Content/ra/v2/movies/soviet12.vqa: soviet12.vqa
+					^SupportDir|Content/ra/v2/movies/soviet13.vqa: soviet13.vqa
+					^SupportDir|Content/ra/v2/movies/soviet14.vqa: soviet14.vqa
+					^SupportDir|Content/ra/v2/movies/sovmcv.vqa: sovmcv.vqa
+					^SupportDir|Content/ra/v2/movies/sovtstar.vqa: sovtstar.vqa
+					^SupportDir|Content/ra/v2/movies/spotter.vqa: spotter.vqa
+					^SupportDir|Content/ra/v2/movies/strafe.vqa: strafe.vqa
+					^SupportDir|Content/ra/v2/movies/take_off.vqa: take_off.vqa
+					^SupportDir|Content/ra/v2/movies/tesla.vqa: tesla.vqa
+					^SupportDir|Content/ra/v2/movies/v2rocket.vqa: v2rocket.vqa
+					^SupportDir|Content/ra/v2/movies/aagun.vqa: aagun.vqa
+					^SupportDir|Content/ra/v2/movies/airfield.vqa: airfield.vqa
+					^SupportDir|Content/ra/v2/movies/ally1.vqa: ally1.vqa
+					^SupportDir|Content/ra/v2/movies/allymorf.vqa: allymorf.vqa
+					^SupportDir|Content/ra/v2/movies/averted.vqa: averted.vqa
+					^SupportDir|Content/ra/v2/movies/beachead.vqa: beachead.vqa
+					^SupportDir|Content/ra/v2/movies/bmap.vqa: bmap.vqa
+					^SupportDir|Content/ra/v2/movies/bombrun.vqa: bombrun.vqa
+					^SupportDir|Content/ra/v2/movies/countdwn.vqa: countdwn.vqa
+					^SupportDir|Content/ra/v2/movies/cronfail.vqa: cronfail.vqa
+				Delete: ^SupportDir|Content/ra/v2/movies2.mix
+		# Aftermath expansion files:
+		ContentPackage:
+			Name: aftermathbase
+			Actions:
+				ExtractMix: ^SupportDir|Content/ra/v2/sounds.mix
+					^SupportDir|Content/ra/v2/expand/chrotnk1.aud: chrotnk1.aud
+					^SupportDir|Content/ra/v2/expand/fixit1.aud: fixit1.aud
+					^SupportDir|Content/ra/v2/expand/jburn1.aud: jburn1.aud
+					^SupportDir|Content/ra/v2/expand/jchrge1.aud: jchrge1.aud
+					^SupportDir|Content/ra/v2/expand/jcrisp1.aud: jcrisp1.aud
+					^SupportDir|Content/ra/v2/expand/jdance1.aud: jdance1.aud
+					^SupportDir|Content/ra/v2/expand/jjuice1.aud: jjuice1.aud
+					^SupportDir|Content/ra/v2/expand/jjump1.aud: jjump1.aud
+					^SupportDir|Content/ra/v2/expand/jlight1.aud: jlight1.aud
+					^SupportDir|Content/ra/v2/expand/jpower1.aud: jpower1.aud
+					^SupportDir|Content/ra/v2/expand/jshock1.aud: jshock1.aud
+					^SupportDir|Content/ra/v2/expand/jyes1.aud: jyes1.aud
+					^SupportDir|Content/ra/v2/expand/madchrg2.aud: madchrg2.aud
+					^SupportDir|Content/ra/v2/expand/madexplo.aud: madexplo.aud
+					^SupportDir|Content/ra/v2/expand/mboss1.aud: mboss1.aud
+					^SupportDir|Content/ra/v2/expand/mhear1.aud: mhear1.aud
+					^SupportDir|Content/ra/v2/expand/mhotdig1.aud: mhotdig1.aud
+					^SupportDir|Content/ra/v2/expand/mhowdy1.aud: mhowdy1.aud
+					^SupportDir|Content/ra/v2/expand/mhuh1.aud: mhuh1.aud
+					^SupportDir|Content/ra/v2/expand/mlaff1.aud: mlaff1.aud
+					^SupportDir|Content/ra/v2/expand/mrise1.aud: mrise1.aud
+					^SupportDir|Content/ra/v2/expand/mwrench1.aud: mwrench1.aud
+					^SupportDir|Content/ra/v2/expand/myeehaw1.aud: myeehaw1.aud
+					^SupportDir|Content/ra/v2/expand/myes1.aud: myes1.aud
+		AfterInstall:
+			Delete: ^SupportDir|Content/ra/v2/main.mix
