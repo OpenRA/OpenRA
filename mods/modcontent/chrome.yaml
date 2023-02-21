@@ -109,3 +109,26 @@ scrollpanel-decorations:
 		down-pressed: 453, 512, 16, 16
 		up: 470, 512, 16, 16
 		up-pressed: 470, 512, 16, 16
+
+
+# Checkbox-related definitions:
+
+checkbox:
+	Inherits: ^Chrome
+	PanelRegion: 512, 512, 10, 10, 44, 44, 10, 10
+
+checkbox-hover:
+	Inherits: checkbox
+
+checkbox-pressed:
+	Inherits: checkbox
+
+checkbox-disabled:
+	Inherits: checkbox
+
+checkmark-tick:
+	Inherits: ^Chrome
+	Regions:
+		checked: 455, 526, 16, 16
+		checked-disabled: 474, 526, 16, 16
+		unchecked: 0, 0, 0, 0 # Empty placeholder to appease the missing-sprite-exception gods.
