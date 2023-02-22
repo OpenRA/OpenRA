@@ -58,6 +58,8 @@ namespace OpenRA
 			[FieldLoader.Ignore]
 			public readonly List<MiniYamlNode> Install;
 
+			public readonly string TooltipText;
+
 			public ModSource(MiniYaml yaml, ObjectCreator objectCreator)
 			{
 				ObjectCreator = objectCreator;

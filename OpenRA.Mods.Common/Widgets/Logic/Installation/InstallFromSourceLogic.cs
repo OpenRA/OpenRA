@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollPanelWidget listPanel;
 		readonly Widget listHeaderTemplate;
 		readonly LabelWidget labelListTemplate;
-		readonly CheckboxWidget checkboxListTemplate;
+		readonly ContainerWidget checkboxListTemplate;
 		readonly LabelWidget listLabel;
 
 		ModContent.ModPackage[] availablePackages;
@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			listPanel = listContainer.Get<ScrollPanelWidget>("LIST_PANEL");
 			listHeaderTemplate = listPanel.Get("LIST_HEADER_TEMPLATE");
 			labelListTemplate = listPanel.Get<LabelWidget>("LABEL_LIST_TEMPLATE");
-			checkboxListTemplate = listPanel.Get<CheckboxWidget>("CHECKBOX_LIST_TEMPLATE");
+			checkboxListTemplate = listPanel.Get<ContainerWidget>("CHECKBOX_LIST_TEMPLATE");
 			listPanel.RemoveChildren();
 
 			listLabel = listContainer.Get<LabelWidget>("LIST_MESSAGE");
@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							Game.RunAfterTick(() =>
 							{
-								ShowList(kv.Value.Title, modData.Translation.GetString(ContentPackageInstallation));
+								ShowList(kv.Value, modData.Translation.GetString(ContentPackageInstallation));
 								ShowContinueCancel(() => InstallFromSource(path, kv.Value));
 							});
 
@@ -321,21 +321,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			panel.Bounds.Height = progressContainer.Bounds.Height;
 		}
 
-		void ShowList(string title, string message)
+		void ShowList(ModContent.ModSource source, string message)
 		{
 			visible = Mode.List;
-			titleLabel.Text = title;
+			titleLabel.Text = source.Title;
 			listLabel.Text = message;
 
 			listPanel.RemoveChildren();
 			foreach (var package in availablePackages)
 			{
-				var checkboxWidget = (CheckboxWidget)checkboxListTemplate.Clone();
+				var containerWidget = (ContainerWidget)checkboxListTemplate.Clone();
+				var checkboxWidget = containerWidget.Get<CheckboxWidget>("PACKAGE_CHECKBOX");
 				checkboxWidget.GetText = () => package.Title;
 				checkboxWidget.IsDisabled = () => package.Required;
 				checkboxWidget.IsChecked = () => selectedPackages[package.Identifier];
 				checkboxWidget.OnClick = () => selectedPackages[package.Identifier] = !selectedPackages[package.Identifier];
-				listPanel.AddChild(checkboxWidget);
+
+				var contentPackageNode = source.Install.FirstOrDefault(x =>
+					x.Value.Nodes.FirstOrDefault(y => y.Key == "Name")?.Value.Value == package.Identifier);
+
+				var tooltipText = contentPackageNode?.Value.Nodes.FirstOrDefault(x => x.Key == nameof(ModContent.ModSource.TooltipText))?.Value.Value;
+				var tooltipIcon = containerWidget.Get<ImageWidget>("PACKAGE_INFO");
+				tooltipIcon.IsVisible = () => !string.IsNullOrWhiteSpace(tooltipText);
+				tooltipIcon.GetTooltipText = () => tooltipText;
+
+				listPanel.AddChild(containerWidget);
 			}
 
 			primaryButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
