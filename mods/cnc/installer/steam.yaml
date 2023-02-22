@@ -34,6 +34,7 @@ cncr-steam: C&C Remastered Collection (Steam version, English)
 		# The Remastered Collection doesn't include trailer.vqa.
 		ContentPackage:
 			Name: movies-gdi
+			TooltipText: The Remastered Collection doesn't include trailer.vqa.
 			Actions:
 				ExtractMix: Data/CNCDATA/TIBERIAN_DAWN/CD1/MOVIES.MIX
 					^SupportDir|Content/cnc/movies/visor.vqa: visor.vqa
@@ -104,6 +105,7 @@ cncr-steam: C&C Remastered Collection (Steam version, English)
 		# The Remastered Collection doesn't include trailer.vqa.
 		ContentPackage:
 			Name: movies-nod
+			TooltipText: The Remastered Collection doesn't include trailer.vqa.
 			Actions:
 				ExtractMix: Data/CNCDATA/TIBERIAN_DAWN/CD2/MOVIES.MIX
 					^SupportDir|Content/cnc/movies/visor.vqa: visor.vqa

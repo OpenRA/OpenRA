@@ -121,6 +121,19 @@ Background@SOURCE_TOOLTIP:
 					Height: 14
 					Font: TinyBold
 
+Background@INFO_TOOLTIP:
+	Logic: SimpleTooltipLogic
+	Background: panel-thinborder
+	Height: 25
+	Children:
+		Container@LINE_HEIGHT:
+			Y: 2
+			Height: 19
+		Label@LABEL:
+			X: 5
+			Height: 23
+			Font: Bold
+
 Container@PACKAGE_DOWNLOAD_PANEL:
 	Logic: DownloadPackageLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
@@ -268,10 +281,26 @@ Background@SOURCE_INSTALL_PANEL:
 							X: 6
 							Width: PARENT_RIGHT - 16
 							Height: 23
-						Checkbox@CHECKBOX_LIST_TEMPLATE:
+						Container@CHECKBOX_LIST_TEMPLATE:
 							X: 6
 							Width: PARENT_RIGHT - 16
 							Height: 23
+							Children:
+								Checkbox@PACKAGE_CHECKBOX:
+									X: 6
+									Width: PARENT_RIGHT - 16
+									Height: 23
+									Children:
+								Image@PACKAGE_INFO:
+									X: 275
+									Y: 2
+									Width: 20
+									Height: 20
+									Visible: false
+									ImageCollection: modcontent
+									ImageName: cdicon
+									TooltipContainer: TOOLTIP_CONTAINER
+									TooltipTemplate: INFO_TOOLTIP
 		Button@PRIMARY_BUTTON:
 			X: 30
 			Y: PARENT_BOTTOM - 52
@@ -288,6 +317,7 @@ Background@SOURCE_INSTALL_PANEL:
 			Height: 32
 			Font: Bold
 			Key: escape
+		TooltipContainer@TOOLTIP_CONTAINER:
 
 Background@CONTENT_PROMPT_PANEL:
 	Logic: ModContentPromptLogic
