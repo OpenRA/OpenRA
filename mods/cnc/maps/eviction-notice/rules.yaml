@@ -1,0 +1,139 @@
+World:
+	MissionData:
+		StartVideo: consyard.vqa
+		LossVideo: bombaway.vqa
+		WinVideo: inferno.vqa
+		Briefing: GDI influence in this area is running rampant. Establish a well positioned strike base, and clean the area out. A nearby town may provide a suitable location for your base, if the occupants were "persuaded" to move....
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, eviction-notice.lua , eviction-notice-AI.lua
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: Difficulty
+		Description: The difficulty of the mission
+		Values:
+			easy: Easy
+			normal: Normal
+			hard: Hard
+		Default: normal
+
+Player:
+	EnemyWatcher:
+	PlayerResources:
+		DefaultCash: 0
+
+# Disable husks for civilian buildings and initial flame tanks
+V19:
+	-SpawnActorOnDeath:
+
+V20:
+	-SpawnActorOnDeath:
+
+V21:
+	SpawnActorOnDeath:
+		Actor: smallmcrate
+
+V22:
+	-SpawnActorOnDeath:
+
+V23:
+	-SpawnActorOnDeath:
+
+V24:
+	SpawnActorOnDeath:
+		Actor: smallmcrate
+
+V25:
+	SpawnActorOnDeath:
+		Actor: moneycrate
+
+V26:
+	SpawnActorOnDeath:
+		Actor: smallmcrate
+
+V27:
+	-SpawnActorOnDeath:
+
+V28:
+	-SpawnActorOnDeath:
+
+V29:
+	-SpawnActorOnDeath:
+
+V30:
+	-SpawnActorOnDeath:
+
+V31:
+	-SpawnActorOnDeath:
+
+C5:
+	AnnounceOnSeen:
+
+C8:
+	AnnounceOnSeen:
+
+MoneyCrate:
+	ScriptTriggers:
+
+SmallMCrate:
+	Inherits: MoneyCrate
+	ScriptTriggers:
+	GiveCashCrateAction:
+		Amount: 1000
+		Sequence: dollar
+		UseCashTick: true
+
+# Initial flame tanks can't move due to their own husks
+FTNK.nohusk:
+	Inherits: FTNK
+	-Buildable:
+	RenderSprites:
+		Image: FTNK
+	-SpawnActorOnDeath:
+
+HQ:
+	ExternalCondition@CAPTURED:
+		Condition: captured
+	AirstrikePower:
+		StartFullyCharged: True
+		RequiresCondition: captured
+
+PROC:
+	GrantConditionOnPrerequisite@AIN:
+		Condition: ain
+		Prerequisites: diffnorm
+	GrantConditionOnPrerequisite@AIH:
+		Condition: aih
+		Prerequisites: diffhard
+	ResourceValueMultiplier@AIN:
+		Modifier: 150
+		RequiresCondition: ain
+	ResourceValueMultiplier@AIH:
+		Modifier: 300
+		RequiresCondition: aih
+
+AIHProcUpgrade:
+	ProvidesPrerequisite:
+		Prerequisite: diffhard
+	Interactable:
+	AlwaysVisible:
+
+AINProcUpgrade:
+	ProvidesPrerequisite:
+		Prerequisite: diffnorm
+	Interactable:
+	AlwaysVisible:
+
+HTNK:
+	Buildable:
+		Prerequisites: ~techlevel.high
+
+A10:
+	Targetable:
+
+FLARE:
+	RevealsShroud:
+		Range: 5c0
+
+CAMERA:
+	RevealsShroud:
+		Range: 5c0

@@ -111,7 +111,7 @@ infiltrate-barracks-factory-conyard = Infiltrate the barracks, weapon factory an
 ## nod07a
 find-nod-base = Find the Nod base.
 
-## nod07ab, nod08ab, nod09
+## nod07ab, nod08ab, nod09, eviction-notice
 eliminate-gdi-forces = Eliminate all GDI forces in the area.
 
 ## nod07c
@@ -140,3 +140,13 @@ destroy-tech-center = Destroy the GDI R&D center.
 destroy-capture-warfactory = Destroy or capture the Weapons Factory.
 destroy-mammoth-tanks = Destroy the Mammoth tanks in the R&D base.
 keep-commando-alive = Keep your Commando alive.
+
+## eviction-notice
+take-civilians-money-crates = Find all the civilians' money.
+    They won't need it anymore.
+quickly-destroy-ion-cannon = Disable GDI Ion Cannon before
+    it fires two times.
+nod-soldier = Nod Soldier
+civilians-runs = Hey, those civilians... where are they going?
+destroy-ion-cannon-advise = The GDI are preparing their ion cannon. Don't let them get used to it.
+village-destruction-warning = Be careful, commander. The GDI won't stand still while we burn the entire village.
