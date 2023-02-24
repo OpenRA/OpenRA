@@ -21,7 +21,6 @@ namespace OpenRA.Mods.Cnc.Graphics
 	{
 		public Action<string> OnMissingModelError { get; set; }
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "IDE0060:Remove unused parameter", Justification = "Load game API")]
 		public VoxelModelSequenceLoader(ModData modData) { }
 
 		public IModelCache CacheModels(IReadOnlyFileSystem fileSystem, ModData modData, IReadOnlyDictionary<string, MiniYamlNode> modelSequences)

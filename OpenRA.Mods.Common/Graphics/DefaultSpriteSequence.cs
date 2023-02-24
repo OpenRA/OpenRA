@@ -43,7 +43,6 @@ namespace OpenRA.Mods.Common.Graphics
 	{
 		static readonly MiniYaml NoData = new MiniYaml(null);
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "IDE0060:Remove unused parameter", Justification = "Load game API")]
 		public DefaultSpriteSequenceLoader(ModData modData) { }
 
 		public virtual ISpriteSequence CreateSequence(ModData modData, string tileset, SpriteCache cache, string image, string sequence, MiniYaml data, MiniYaml defaults)
