@@ -124,6 +124,9 @@ dotnet_style_predefined_type_for_locals_parameters_members = true
 # Use expression body if a local function is a single line.
 csharp_style_expression_bodied_local_functions = when_on_single_line
 
+# Remove unused parameters on non public methods, ignore unused parameters on public methods.
+dotnet_code_quality_unused_parameters = non_public
+
 ## Others:
 
 # Show an IDE warning when default access modifiers are explicitly specified.

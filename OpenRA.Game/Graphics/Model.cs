@@ -84,7 +84,6 @@ namespace OpenRA.Graphics
 			}
 		}
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "IDE0060:Remove unused parameter", Justification = "Load game API")]
 		public PlaceholderModelSequenceLoader(ModData modData) { }
 
 		public IModelCache CacheModels(IReadOnlyFileSystem fileSystem, ModData modData, IReadOnlyDictionary<string, MiniYamlNode> modelDefinitions)

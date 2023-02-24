@@ -20,7 +20,6 @@ namespace OpenRA.Mods.Common.Terrain
 {
 	public class DefaultTerrainLoader : ITerrainLoader
 	{
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "IDE0060:Remove unused parameter", Justification = "Load game API")]
 		public DefaultTerrainLoader(ModData modData) { }
 
 		public ITerrainInfo ParseTerrain(IReadOnlyFileSystem fileSystem, string path)
