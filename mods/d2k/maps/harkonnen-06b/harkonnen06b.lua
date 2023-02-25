@@ -7,8 +7,8 @@
    information, see COPYING.
 ]]
 
-OrdosMainBase = { OConyard1, OOutpost, ORefinery1, ORefinery2, OHeavyFactory, OLightFactory1, OHiTechFactory, ORepair, OStarport, OGunt1, OGunt2, OGunt3, OGunt4, OGunt5, OGunt6, ORocket1, ORocket2, OBarracks1, OPower1, OPower2, OPower3, OPower4, OPower5, OPower6, OPower7, OPower8, OPower9, OPower10, OSilo1, OSilo2, OSilo3, OSilo4, OSilo5, OSilo6 }
-OrdosSmallBase = { OConyard2, ORefinery3, OBarracks2, OLightFactory2, OGunt6, OGunt7, ORocket3, ORocket4, OPower11, OPower12, OPower13, OPower14, OSilo7, OSilo8, OSilo9 }
+OrdosMainBase = { OConYard1, OOutpost, ORefinery1, ORefinery2, OHeavyFactory, OLightFactory1, OHiTechFactory, ORepair, OStarport, OGunt1, OGunt2, OGunt3, OGunt4, OGunt5, OGunt6, ORocket1, ORocket2, OBarracks1, OPower1, OPower2, OPower3, OPower4, OPower5, OPower6, OPower7, OPower8, OPower9, OPower10, OSilo1, OSilo2, OSilo3, OSilo4, OSilo5, OSilo6 }
+OrdosSmallBase = { OConYard2, ORefinery3, OBarracks2, OLightFactory2, OGunt6, OGunt7, ORocket3, ORocket4, OPower11, OPower12, OPower13, OPower14, OSilo7, OSilo8, OSilo9 }
 
 OrdosReinforcements =
 {

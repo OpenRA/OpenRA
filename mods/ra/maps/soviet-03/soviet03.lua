@@ -23,7 +23,7 @@ ExtractionHeliType = "tran"
 ExtractionPath = { HelicopterSpawn.Location, HelicopterGoal.Location }
 Farmers = { Farmer1, Farmer2, Farmer3 }
 BarrierSoldiers = { BarrierSoldier1, BarrierSoldier2, BarrierSoldier3, BarrierSoldier4, BarrierSoldier5, BarrierSoldier6 }
-RedBuildings = { RedBuildung1, RedBuilding2, RedBuilding3 }
+RedBuildings = { RedBuilding1, RedBuilding2, RedBuilding3 }
 BaseBuildings1 = { BaseBarrel1, BaseBarrel2, BaseBuilding1, BaseBuilding2 }
 BaseBuildings2 = { BaseBuilding3, BaseBuilding4, BaseBuilding5, BaseBuilding6 }
 
