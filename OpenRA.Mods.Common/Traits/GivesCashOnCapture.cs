@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			self.World.AddFrameEndTask(w => w.Add(
-				new FloatingText(self.CenterPosition, self.Owner.Color, FloatingText.FormatCashTick(amount), info.DisplayDuration)));
+				new FloatingText(self.CenterPosition, self.OwnerColor(), FloatingText.FormatCashTick(amount), info.DisplayDuration)));
 		}
 	}
 }

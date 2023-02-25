@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public string Name => Player.PlayerName;
 
 		[Desc("The player's color.")]
-		public Color Color => Player.Color;
+		public Color Color => Player.GetColor(Player);
 
 		[Desc("The player's faction.")]
 		public string Faction => Player.Faction.InternalName;

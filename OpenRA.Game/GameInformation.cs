@@ -122,7 +122,7 @@ namespace OpenRA
 				FactionId = runtimePlayer.Faction.InternalName,
 				DisplayFactionName = runtimePlayer.DisplayFaction.Name,
 				DisplayFactionId = runtimePlayer.DisplayFaction.InternalName,
-				Color = runtimePlayer.Color,
+				Color = OpenRA.Player.GetColor(runtimePlayer),
 				Team = client.Team,
 				Handicap = client.Handicap,
 				SpawnPoint = runtimePlayer.SpawnPoint,
