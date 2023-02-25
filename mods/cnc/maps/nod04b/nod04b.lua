@@ -32,7 +32,7 @@ Atk4Waypoints = { waypoint0, waypoint9 }
 Atk6ActorTriggerActivator = { Civilian1, Civilian2 }
 Atk5ActorTriggerActivator = { Soldier1, Soldier2, Soldier3, Actor105 }
 WinActorTriggerActivator = { GDICiv1, GDICiv2, GDICiv3, GDICiv4, GDICiv5, GDICiv6, GDICiv7, GDICiv8, GDICiv9, GDICiv11, GDICiv12, GDICiv13 }
-GcivActors = { Gcvi1, Gciv2, GDICiv2, GDICiv9, GDICiv10, GDICiv11 }
+GcivActors = { Gciv1, Gciv2, GDICiv2, GDICiv9, GDICiv10, GDICiv11 }
 
 Atk2CellTriggerActivator = { CPos.New(41,22), CPos.New(40,22), CPos.New(39,22), CPos.New(41,21), CPos.New(40,21), CPos.New(39,21) }
 Atk3CellTriggerActivator = { CPos.New(18,18), CPos.New(17,18), CPos.New(16,18), CPos.New(15,18), CPos.New(14,18), CPos.New(13,18), CPos.New(12,18), CPos.New(11,18), CPos.New(24,17), CPos.New(23,17), CPos.New(22,17), CPos.New(21,17), CPos.New(20,17), CPos.New(19,17), CPos.New(17,17), CPos.New(16,17), CPos.New(15,17), CPos.New(14,17), CPos.New(13,17), CPos.New(12,17), CPos.New(11,17) }

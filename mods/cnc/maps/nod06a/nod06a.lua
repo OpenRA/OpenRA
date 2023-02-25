@@ -44,14 +44,14 @@ Chn2Waypoints = { ChnEntry.Location, waypoint6.Location }
 Gdi3Waypoints = { waypoint1, waypoint3, waypoint7, waypoint8, waypoint9 }
 Gdi4Waypoints = { waypoint4, waypoint10, waypoint9, waypoint11, waypoint9, waypoint10 }
 Gdi5Waypoints = { waypoint1, waypoint4 }
-Gdi6Waypoints = { waypoint2, waypoints3 }
+Gdi6Waypoints = { waypoint2, waypoint3 }
 
 Grd2TriggerFunction = function()
 	if not Grd2Switch then
 		for type, count in pairs({ ['e1'] = 2, ['e2'] = 1, ['jeep'] = 1 }) do
 			MoveAndHunt(Utils.Take(count, GDI.GetActorsByType(type)), Gdi4Waypoints)
 		end
-		Grd2Swicth = true
+		Grd2Switch = true
 	end
 end
 
