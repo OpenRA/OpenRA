@@ -65,6 +65,8 @@ namespace OpenRA.Graphics
 			foreach (var p in world.Players)
 				UpdatePalettesForPlayer(p.InternalName, p.Color, false);
 
+			Player.SetupRelationshipColors(world.Players, world.LocalPlayer);
+
 			palette.Initialize();
 
 			TerrainLighting = world.WorldActor.TraitOrDefault<ITerrainLighting>();

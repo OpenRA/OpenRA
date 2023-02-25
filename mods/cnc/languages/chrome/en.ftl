@@ -643,7 +643,7 @@ label-status-bar-dropdown-container-bars = Status Bars:
 
 checkbox-player-stance-colors-container =
    .label = Player Relationship Colors
-   .tooltip = Change minimap and health bar colors based on relationship (own, enemy, ally, neutral)
+   .tooltip = Change player colors based on relationship (own, enemy, ally, neutral)
 
 checkbox-ui-feedback-container =
    .label = Show UI Feedback Notifications

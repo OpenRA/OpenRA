@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				foreach (var exitCell in exitCells)
 				{
-					var color = self.Owner.Color;
+					var color = self.OwnerColor();
 					var vec = exitCell - self.Location;
 					var center = wr.World.Map.CenterOfCell(exitCell);
 					yield return new TextAnnotationRenderable(manager.Font, center, 0, color, vec.ToString());
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 						continue;
 
 					var exitCellCenter = self.World.Map.CenterOfCell(exitCells[i]);
-					yield return new LineAnnotationRenderable(spawnPos, exitCellCenter, 1, self.Owner.Color);
+					yield return new LineAnnotationRenderable(spawnPos, exitCellCenter, 1, self.OwnerColor());
 				}
 			}
 		}

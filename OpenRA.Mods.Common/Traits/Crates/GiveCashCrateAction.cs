@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 				var amount = collector.Owner.PlayerActor.Trait<PlayerResources>().ChangeCash(info.Amount);
 
 				if (info.UseCashTick)
-					w.Add(new FloatingText(collector.CenterPosition, collector.Owner.Color, FloatingText.FormatCashTick(amount), 30));
+					w.Add(new FloatingText(collector.CenterPosition, collector.OwnerColor(), FloatingText.FormatCashTick(amount), 30));
 			});
 
 			base.Activate(collector);

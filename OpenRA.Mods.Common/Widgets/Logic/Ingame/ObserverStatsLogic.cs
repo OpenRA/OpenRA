@@ -515,8 +515,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static void SetupPlayerColor(Player player, ScrollItemWidget template, ColorBlockWidget colorBlockWidget, GradientColorBlockWidget gradientColorBlockWidget)
 		{
-			var color = Color.FromArgb(128, player.Color.R, player.Color.G, player.Color.B);
-			var hoverColor = Color.FromArgb(192, player.Color.R, player.Color.G, player.Color.B);
+			var pColor = player.Color;
+			var color = Color.FromArgb(128, pColor.R, pColor.G, pColor.B);
+			var hoverColor = Color.FromArgb(192, pColor.R, pColor.G, pColor.B);
 
 			var isMouseOver = new CachedTransform<Widget, bool>(w => w == template || template.Children.Contains(w));
 

@@ -69,6 +69,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						o = viewport.ActorTooltip.Owner;
 						showOwner = o != null && !o.NonCombatant && viewport.ActorTooltip.TooltipInfo.IsOwnerRowVisible;
 
+						if (showOwner)
+							ownerColor = o.Color;
+
 						var stance = o == null || world.RenderPlayer == null ? PlayerRelationship.None : o.RelationshipWith(world.RenderPlayer);
 						labelText = viewport.ActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
 						break;
@@ -78,6 +81,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						o = viewport.FrozenActorTooltip.TooltipOwner;
 						showOwner = o != null && !o.NonCombatant && viewport.FrozenActorTooltip.TooltipInfo.IsOwnerRowVisible;
+
+						if (showOwner)
+							ownerColor = o.Color;
 
 						var stance = o == null || world.RenderPlayer == null ? PlayerRelationship.None : o.RelationshipWith(world.RenderPlayer);
 						labelText = viewport.FrozenActorTooltip.TooltipInfo.TooltipForPlayerStance(stance);
@@ -107,7 +113,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					flagFaction = o.Faction.InternalName;
 					ownerName = o.PlayerName;
-					ownerColor = o.Color;
 					widget.Bounds.Height = doubleHeight;
 					widget.Bounds.Width = Math.Max(widget.Bounds.Width,
 						owner.Bounds.X + ownerFont.Measure(ownerName).X + label.Bounds.X);

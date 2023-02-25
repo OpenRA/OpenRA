@@ -18,13 +18,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 	[ChromeLogicArgsHotkeys("TogglePlayerStanceColorKey")]
 	public class TogglePlayerStanceColorHotkeyLogic : SingleHotkeyBaseLogic
 	{
+		readonly World world;
+
 		[ObjectCreator.UseCtor]
-		public TogglePlayerStanceColorHotkeyLogic(Widget widget, ModData modData, Dictionary<string, MiniYaml> logicArgs)
-			: base(widget, modData, "TogglePlayerStanceColorKey", "WORLD_KEYHANDLER", logicArgs) { }
+		public TogglePlayerStanceColorHotkeyLogic(Widget widget, World world, ModData modData, Dictionary<string, MiniYaml> logicArgs)
+			: base(widget, modData, "TogglePlayerStanceColorKey", "WORLD_KEYHANDLER", logicArgs)
+		{
+			this.world = world;
+		}
 
 		protected override bool OnHotkeyActivated(KeyInput e)
 		{
 			Game.Settings.Game.UsePlayerStanceColors ^= true;
+			Player.SetupRelationshipColors(world.Players, world.LocalPlayer);
 
 			return true;
 		}
