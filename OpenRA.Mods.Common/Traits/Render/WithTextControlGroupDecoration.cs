@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			this.info = info;
 			font = Game.Renderer.Fonts[info.Font];
-			color = info.UsePlayerColor ? self.Owner.Color : info.Color;
+			color = info.UsePlayerColor ? self.OwnerColor() : info.Color;
 
 			label = new CachedTransform<int, string>(g => self.World.ControlGroups.Groups[g]);
 		}
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			if (info.UsePlayerColor)
-				color = newOwner.Color;
+				color = self.OwnerColor();
 		}
 	}
 }

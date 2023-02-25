@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			: base(self, info)
 		{
 			font = Game.Renderer.Fonts[info.Font];
-			color = info.UsePlayerColor ? self.Owner.Color : info.Color;
+			color = info.UsePlayerColor ? self.OwnerColor() : info.Color;
 
 			name = self.Owner.PlayerName;
 			if (name.Length > info.MaxLength)
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
 			if (Info.UsePlayerColor)
-				color = newOwner.Color;
+				color = self.OwnerColor();
 
 			name = self.Owner.PlayerName;
 			if (name.Length > Info.MaxLength)

@@ -30,7 +30,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		readonly DebugVisualizations debugVis;
 		readonly SpriteFont font;
-		readonly Actor self;
 		readonly WVec offset;
 		SquadManagerBotModule[] squadManagerModules;
 
@@ -43,8 +42,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var yOffset = buildingInfo?.Dimensions.Y ?? 1;
 			offset = new WVec(0, 512 * yOffset, 0);
 
-			this.self = self;
-			color = GetColor();
+			color = self.OwnerColor();
 			font = Game.Renderer.Fonts[info.Font];
 
 			debugVis = self.World.WorldActor.TraitOrDefault<DebugVisualizations>();
@@ -60,15 +58,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			tagString = self.ToString();
 		}
 
-		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
-		{
-			color = GetColor();
-		}
-
-		Color GetColor()
-		{
-			return self.EffectiveOwner != null && self.EffectiveOwner.Disguised ? self.EffectiveOwner.Owner.Color : self.Owner.Color;
-		}
+		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) => color = self.OwnerColor();
 
 		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{

@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.Traits
 			var maxHP = healthInfo.MaxHP > 0 ? healthInfo.MaxHP : 1;
 			var damageText = $"{-e.Damage.Value} ({e.Damage.Value * 100 / maxHP}%)";
 
-			self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.Owner.Color, damageText, 30)));
+			self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.OwnerColor(), damageText, 30)));
 		}
 	}
 }
