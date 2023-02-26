@@ -83,6 +83,7 @@ namespace OpenRA.Server
 			{
 				// HACK: The engine code *still* assumes that Game.ModData is set
 				var modData = Game.ModData = new ModData(mods[modID], mods);
+				modData.MapCache.LoadPreviewImages = false; // PERF: Server doesn't need previews, save memory by not loading them.
 				modData.MapCache.LoadMaps();
 
 				settings.Map = modData.MapCache.ChooseInitialMap(settings.Map, new MersenneTwister());
