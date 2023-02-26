@@ -28,6 +28,7 @@ namespace OpenRA
 		public static readonly MapPreview UnknownMap = new MapPreview(null, null, MapGridType.Rectangular, null);
 		public IReadOnlyDictionary<IReadOnlyPackage, MapClassification> MapLocations => mapLocations;
 		readonly Dictionary<IReadOnlyPackage, MapClassification> mapLocations = new Dictionary<IReadOnlyPackage, MapClassification>();
+		public bool LoadPreviewImages = true;
 
 		readonly Cache<string, MapPreview> previews;
 		readonly ModData modData;
