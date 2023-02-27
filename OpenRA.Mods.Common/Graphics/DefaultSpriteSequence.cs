@@ -169,12 +169,13 @@ namespace OpenRA.Mods.Common.Graphics
 		int ISpriteSequence.Stride => stride;
 		int stride;
 
-		[Desc("The amount of directions the unit faces. Use negative values to rotate counter-clockwise.")]
+		[Desc("The amount of directions the unit faces without interpolation. Use negative values to rotate counter-clockwise.")]
 		static readonly SpriteSequenceField<int> Facings = new SpriteSequenceField<int>(nameof(Facings), 1);
 		int ISpriteSequence.Facings => facings;
 		protected int facings;
 
-		[Desc("The amount of directions the unit faces. Use negative values to rotate counter-clockwise.")]
+		[Desc("The amount of directions the unit faces after interpolation. Value must be positive, greater than Facings, and a power of 2. " +
+			"No interpolation is used if this value is set to -1 or if the parameter is omitted.")]
 		static readonly SpriteSequenceField<int> InterpolatedFacings = new SpriteSequenceField<int>(nameof(InterpolatedFacings), 1);
 		int ISpriteSequence.InterpolatedFacings => interpolatedFacings;
 		protected int interpolatedFacings;
