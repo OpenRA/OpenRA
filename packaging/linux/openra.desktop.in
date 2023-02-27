@@ -10,3 +10,4 @@ Terminal=false
 Categories=Game;StrategyGame;
 StartupWMClass=openra-{MODID}-{TAG}
 MimeType=x-scheme-handler/openra-{MODID}-{TAG};
+PrefersNonDefaultGPU=true
