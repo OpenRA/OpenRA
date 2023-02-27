@@ -17,7 +17,7 @@ end
 Dogs = { Dog1, Dog2, Dog3, Dog4, Dog5, Dog6, Dog7, Dog8, Dog9, Dog10, Dog11, Dog12, Dog13, Dog14, Dog15, Dog16, Dog17, Dog18, Dog19 }
 Engineers = { Prisoner1, Prisoner2, Prisoner3, Prisoner4, Prisoner5 }
 PrisonerGuards = { PrisonerGuard1, PrisonerGuard2, PrisonerGuard3 }
-EntranceGuards = { EntranceGuard1, EntranceGuard2, EntranceGuard3, EntranceGuard4, EntranceGuard5, EntranceGuard6, EntranceGuard7, EntranceGuard8, EntranceGuard9, EntranceGuard10 }
+EntranceGuards = { EntranceGuard1, EntranceGuard2, EntranceGuard3, EntranceGuard4, EntranceGuard5, EntranceGuard6, EntranceGuard7, EntranceGuard8 }
 GoalGuards = { GoalGuard1, GoalGuard2, GoalGuard3, GoalGuard4 }
 CCGuards = { CCGuard1, CCGuard2, CCGuard3, CCGuard4 }
 StartingUnitsReinforcements = { "e1", "e1", "e1", "e1" }
