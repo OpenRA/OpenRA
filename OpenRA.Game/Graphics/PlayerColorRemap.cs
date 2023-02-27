@@ -21,11 +21,12 @@ namespace OpenRA.Graphics
 		readonly float hue;
 		readonly float saturation;
 
-		public PlayerColorRemap(int[] remapIndices, float hue, float saturation)
+		public PlayerColorRemap(int[] remapIndices, Color color)
 		{
 			this.remapIndices = remapIndices;
-			this.hue = hue;
-			this.saturation = saturation;
+
+			var (r, g, b) = color.ToLinear();
+			(hue, saturation, _) = Color.RgbToHsv(r, g, b);
 		}
 
 		public Color GetRemappedColor(Color original, int index)
