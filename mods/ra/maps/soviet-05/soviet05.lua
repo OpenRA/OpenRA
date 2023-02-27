@@ -171,7 +171,7 @@ Tick = function()
 
 	if not RCheck then
 		RCheck = true
-		if Difficulty == "easy" and ReinfCheck then
+		if Difficulty == "easy" then
 			Trigger.AfterDelay(DateTime.Minutes(6), ReinfArmor)
 		elseif Difficulty == "normal" then
 			Trigger.AfterDelay(DateTime.Minutes(4), ReinfArmor)
