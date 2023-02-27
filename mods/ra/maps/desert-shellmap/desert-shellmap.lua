@@ -106,6 +106,7 @@ ShipAlliedUnits = function()
 	Trigger.AfterDelay(DateTime.Seconds(60), ShipAlliedUnits)
 end
 
+--- @param hpad actor
 InsertAlliedChinookReinforcements = function(entry, hpad)
 	local units = Reinforcements.ReinforceWithTransport(allies, "tran",
 		HelicopterUnitTypes, { entry.Location, hpad.Location + CVec.New(1, 2) }, { entry.Location })[2]
