@@ -185,7 +185,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var xAxisText = GetXAxisValueFormat().F(n / XAxisTicksPerLabel);
 				var xAxisTickTextWidth = labelFont.Measure(xAxisText).X;
-				var xLocation = x - (xAxisTickTextWidth / 2);
+				var xLocation = x - xAxisTickTextWidth / 2;
 				labelFont.DrawTextWithShadow(xAxisText, graphOrigin + new float2(xLocation, 2), Color.White, BackgroundColorDark, BackgroundColorLight, 1);
 			}
 

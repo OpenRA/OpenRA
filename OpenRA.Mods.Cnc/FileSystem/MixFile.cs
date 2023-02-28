@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 				if (count < 0)
 					throw new ArgumentOutOfRangeException(nameof(count), "Non-negative number required.");
 
-				if (offset + (count * 2) > s.Length)
+				if (offset + count * 2 > s.Length)
 					throw new ArgumentException($"Bytes to read {count * 2} and offset {offset} greater than stream length {s.Length}.");
 
 				s.Seek(offset, SeekOrigin.Begin);

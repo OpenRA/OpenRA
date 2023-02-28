@@ -127,6 +127,12 @@ csharp_style_expression_bodied_local_functions = when_on_single_line
 # Remove unused parameters on non public methods, ignore unused parameters on public methods.
 dotnet_code_quality_unused_parameters = non_public
 
+# Parentheses preferences.
+dotnet_style_parentheses_in_arithmetic_binary_operators = never_if_unnecessary
+dotnet_style_parentheses_in_relational_binary_operators = never_if_unnecessary
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity
+dotnet_style_parentheses_in_other_operators = never_if_unnecessary
+
 ## Others:
 
 # Show an IDE warning when default access modifiers are explicitly specified.
@@ -200,6 +206,9 @@ dotnet_diagnostic.IDE0044.severity = warning
 
 # Remove unnecessary parentheses.
 dotnet_diagnostic.IDE0047.severity = warning
+
+# Add parentheses for clarity.
+dotnet_diagnostic.IDE0048.severity = warning
 
 # Remove unused private member.
 dotnet_diagnostic.IDE0051.severity = warning

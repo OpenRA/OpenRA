@@ -186,11 +186,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			var checkRadius = powerDecision.CoarseScanRadius;
 			var fineCheck = powerDecision.FineScanRadius;
-			for (var i = 0 - extendedRange; i <= (checkRadius + extendedRange); i += fineCheck)
+			for (var i = 0 - extendedRange; i <= checkRadius + extendedRange; i += fineCheck)
 			{
 				var x = checkPos.X + i;
 
-				for (var j = 0 - extendedRange; j <= (checkRadius + extendedRange); j += fineCheck)
+				for (var j = 0 - extendedRange; j <= checkRadius + extendedRange; j += fineCheck)
 				{
 					var y = checkPos.Y + j;
 					var pos = world.Map.CenterOfCell(new CPos(x, y));

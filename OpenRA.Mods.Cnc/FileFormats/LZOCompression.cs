@@ -218,7 +218,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						goto match_done;
 					}
 
-					if (t >= 2 * 4 - (3 - 1) && (op - mPos) >= 4)
+					if (t >= 2 * 4 - (3 - 1) && op - mPos >= 4)
 					{
 						*(uint*)op = *(uint*)mPos;
 						op += 4; mPos += 4; t -= 4 - (3 - 1);

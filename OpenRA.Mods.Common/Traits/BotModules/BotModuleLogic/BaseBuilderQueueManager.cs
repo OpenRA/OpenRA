@@ -223,8 +223,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool HasSufficientPowerForActor(ActorInfo actorInfo)
 		{
-			return playerPower == null || (actorInfo.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault)
-				.Sum(p => p.Amount) + playerPower.ExcessPower) >= baseBuilder.Info.MinimumExcessPower;
+			return playerPower == null || actorInfo.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault)
+				.Sum(p => p.Amount) + playerPower.ExcessPower >= baseBuilder.Info.MinimumExcessPower;
 		}
 
 		ActorInfo ChooseBuildingToBuild(ProductionQueue queue)

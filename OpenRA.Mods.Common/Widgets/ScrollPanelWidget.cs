@@ -372,7 +372,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var thumbHeight = ContentHeight == 0 ? 0 : Math.Max(MinimumThumbSize, (int)(scrollbarHeight * Math.Min(rb.Height * 1f / ContentHeight, 1f)));
 				var oldOffset = currentListOffset;
 
-				var newOffset = currentListOffset + ((int)((lastMouseLocation.Y - mi.Location.Y) * (ContentHeight - rb.Height) * 1f / (scrollbarHeight - thumbHeight)));
+				var newOffset = currentListOffset + (int)((lastMouseLocation.Y - mi.Location.Y) * (ContentHeight - rb.Height) * 1f / (scrollbarHeight - thumbHeight));
 				newOffset = Math.Min(0, Math.Max(rb.Height - ContentHeight, newOffset));
 				SetListOffset(newOffset, false);
 

@@ -51,7 +51,7 @@ namespace OpenRA.Primitives
 
 			items[addLevel][addIndex] = item;
 
-			if (++index >= (1 << level))
+			if (++index >= 1 << level)
 			{
 				index = 0;
 				if (items.Count <= ++level)

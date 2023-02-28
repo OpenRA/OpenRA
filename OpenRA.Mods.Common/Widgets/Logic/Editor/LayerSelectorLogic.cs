@@ -58,8 +58,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					layerPreview.ResourceType = resourceType;
 					layerPreview.Bounds.Width = size.Width;
 					layerPreview.Bounds.Height = size.Height;
-					newResourcePreviewTemplate.Bounds.Width = size.Width + (layerPreview.Bounds.X * 2);
-					newResourcePreviewTemplate.Bounds.Height = size.Height + (layerPreview.Bounds.Y * 2);
+					newResourcePreviewTemplate.Bounds.Width = size.Width + layerPreview.Bounds.X * 2;
+					newResourcePreviewTemplate.Bounds.Height = size.Height + layerPreview.Bounds.Y * 2;
 					newResourcePreviewTemplate.IsVisible = () => true;
 					newResourcePreviewTemplate.GetTooltipText = () => resourceType;
 

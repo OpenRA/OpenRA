@@ -304,8 +304,8 @@ namespace OpenRA.Mods.Common.Widgets
 				for (var x = previousCell.X; x <= nextCell.X; x += terrainTemplate.Size.X)
 				{
 					PaintSingleCell(new CPos(x, queuedCell.Y));
-					var upperCell = new CPos(x, queuedCell.Y - (1 * terrainTemplate.Size.Y));
-					var lowerCell = new CPos(x, queuedCell.Y + (1 * terrainTemplate.Size.Y));
+					var upperCell = new CPos(x, queuedCell.Y - 1 * terrainTemplate.Size.Y);
+					var lowerCell = new CPos(x, queuedCell.Y + 1 * terrainTemplate.Size.Y);
 
 					if (ShouldPaint(upperCell))
 						MaybeEnqueue(upperCell);
