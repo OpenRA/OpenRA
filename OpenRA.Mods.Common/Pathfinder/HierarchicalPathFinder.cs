@@ -699,8 +699,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 		static CPos GetGridTopLeft(CPos cellInGrid, Grid mapBounds)
 		{
 			return new CPos(
-				((cellInGrid.X - mapBounds.TopLeft.X) / GridSize * GridSize) + mapBounds.TopLeft.X,
-				((cellInGrid.Y - mapBounds.TopLeft.Y) / GridSize * GridSize) + mapBounds.TopLeft.Y,
+				(cellInGrid.X - mapBounds.TopLeft.X) / GridSize * GridSize + mapBounds.TopLeft.X,
+				(cellInGrid.Y - mapBounds.TopLeft.Y) / GridSize * GridSize + mapBounds.TopLeft.Y,
 				cellInGrid.Layer);
 		}
 

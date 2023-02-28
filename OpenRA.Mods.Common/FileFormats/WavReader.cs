@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			{
 				this.channels = channels;
 				numBlocks = dataSize / blockAlign;
-				blockDataSize = blockAlign - (channels * 4);
+				blockDataSize = blockAlign - channels * 4;
 				outputSize = uncompressedSize * channels * 2;
 				predictor = new int[channels];
 				index = new int[channels];
@@ -268,7 +268,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			// This code contains elements from libsndfile
 			short DecodeNibble(short nibble, byte bpred, ref short idelta, ref short s1, ref short s2)
 			{
-				var predict = ((s1 * AdaptCoeff1[bpred]) + (s2 * AdaptCoeff2[bpred])) >> 8;
+				var predict = (s1 * AdaptCoeff1[bpred] + s2 * AdaptCoeff2[bpred]) >> 8;
 
 				var twosCompliment = (nibble & 0x8) > 0
 					? nibble - 0x10

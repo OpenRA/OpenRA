@@ -382,7 +382,7 @@ namespace OpenRA.Traits
 			{
 				var index = touched.Index(puv);
 				touched[index] = true;
-				explored[index] = (visibleCount[index] + passiveVisibleCount[index]) > 0;
+				explored[index] = visibleCount[index] + passiveVisibleCount[index] > 0;
 			}
 
 			anyCellTouched = true;

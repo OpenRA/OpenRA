@@ -1248,8 +1248,8 @@ namespace OpenRA
 			if (allProjected.Length > 0)
 			{
 				var puv = allProjected.First();
-				var horizontalBound = ((puv.U - Bounds.Left) < Bounds.Width / 2) ? Bounds.Left : Bounds.Right;
-				var verticalBound = ((puv.V - Bounds.Top) < Bounds.Height / 2) ? Bounds.Top : Bounds.Bottom;
+				var horizontalBound = (puv.U - Bounds.Left < Bounds.Width / 2) ? Bounds.Left : Bounds.Right;
+				var verticalBound = (puv.V - Bounds.Top < Bounds.Height / 2) ? Bounds.Top : Bounds.Bottom;
 
 				var du = Math.Abs(horizontalBound - puv.U);
 				var dv = Math.Abs(verticalBound - puv.V);

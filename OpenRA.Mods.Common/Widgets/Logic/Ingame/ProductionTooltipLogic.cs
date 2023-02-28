@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var power = actor.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(i => i.Amount);
 					powerLabel.Text = power.ToString();
-					powerLabel.GetColor = () => ((pm.PowerProvided - pm.PowerDrained) >= -power || power > 0)
+					powerLabel.GetColor = () => (pm.PowerProvided - pm.PowerDrained >= -power || power > 0)
 						? Color.White : Color.Red;
 					powerLabel.Visible = power != 0;
 					powerIcon.Visible = power != 0;

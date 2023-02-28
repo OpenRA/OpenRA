@@ -584,7 +584,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var highlightEndX = font.Measure(apparentText.Substring(0, visualSelectionEndIndex)).X;
 
 				WidgetUtils.FillRectWithColor(
-					new Rectangle(textPos.X + highlightStartX, textPos.Y, highlightEndX - highlightStartX, Bounds.Height - (verticalMargin * 2)), TextColorHighlight);
+					new Rectangle(textPos.X + highlightStartX, textPos.Y, highlightEndX - highlightStartX, Bounds.Height - verticalMargin * 2), TextColorHighlight);
 			}
 
 			var color =

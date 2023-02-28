@@ -228,7 +228,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			InitBigNum(n1, 0, len);
 			nTwoBitLen = (int)BitLenBigNum(n2, len);
 			bit = 1U << (nTwoBitLen % 32);
-			var j = ((nTwoBitLen + 32) / 32) - 1;
+			var j = (nTwoBitLen + 32) / 32 - 1;
 			nTwoByteLen = (uint)((nTwoBitLen - 1) / 32) * 4;
 			nTmp[nTwoByteLen / 4] |= 1U << ((nTwoBitLen - 1) & 0x1f);
 
@@ -293,7 +293,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					tmp = 0;
 					for (i = 0; i < len; i++)
 					{
-						tmp = mul * (*pn2) + (*pn1) + tmp;
+						tmp = mul * *pn2 + *pn1 + tmp;
 						*pn1 = (ushort)tmp;
 						pn1++;
 						pn2++;
@@ -371,8 +371,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						IncrementBigNum(globTwo, len * 2 + 1);
 						NegBigNum(globTwo, len * 2 + 1);
 						lenDiff = globTwoXtwo + 1 - globOneLenXTwo;
-						var esi = ((ushort*)g2) + (1 + globTwoXtwo - globOneLenXTwo);
-						var edi = ((ushort*)g2) + (globTwoXtwo + 1);
+						var esi = (ushort*)g2 + (1 + globTwoXtwo - globOneLenXTwo);
+						var edi = (ushort*)g2 + (globTwoXtwo + 1);
 						for (; lenDiff != 0; lenDiff--)
 						{
 							edi--;

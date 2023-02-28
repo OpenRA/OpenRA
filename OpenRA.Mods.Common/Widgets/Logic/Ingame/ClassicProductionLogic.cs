@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (scrollDown != null)
 			{
 				scrollDown.OnClick = palette.ScrollDown;
-				scrollDown.IsVisible = () => palette.TotalIconCount > (palette.MaxIconRowOffset * palette.Columns);
+				scrollDown.IsVisible = () => palette.TotalIconCount > palette.MaxIconRowOffset * palette.Columns;
 				scrollDown.IsDisabled = () => !palette.CanScrollDown;
 			}
 
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (scrollUp != null)
 			{
 				scrollUp.OnClick = palette.ScrollUp;
-				scrollUp.IsVisible = () => palette.TotalIconCount > (palette.MaxIconRowOffset * palette.Columns);
+				scrollUp.IsVisible = () => palette.TotalIconCount > palette.MaxIconRowOffset * palette.Columns;
 				scrollUp.IsDisabled = () => !palette.CanScrollUp;
 			}
 
@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Check if icon heights exceed y resolution
 			var maxItemsHeight = screenHeight - sidebarProductionHeight;
 
-			var maxIconRowOffest = (maxItemsHeight / productionPalette.IconSize.Y) - 1;
+			var maxIconRowOffest = maxItemsHeight / productionPalette.IconSize.Y - 1;
 			productionPalette.MaxIconRowOffset = Math.Min(maxIconRowOffest, productionPalette.MaximumRows);
 		}
 	}

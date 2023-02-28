@@ -409,8 +409,8 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 		{
 			var tileIndex = (int)stream.Position / 4 - 2;
 
-			var x = (tileIndex % mapSize.Width) + MapCordonWidth;
-			var y = (tileIndex / mapSize.Width) + MapCordonWidth;
+			var x = tileIndex % mapSize.Width + MapCordonWidth;
+			var y = tileIndex / mapSize.Width + MapCordonWidth;
 
 			return new CPos(x, y);
 		}

@@ -843,7 +843,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (game.State == (int)ServerState.WaitingPlayers && !filters.HasFlag(MPGameFilters.Waiting) && game.Players != 0)
 				return true;
 
-			if ((game.Players + game.Spectators) == 0 && !filters.HasFlag(MPGameFilters.Empty))
+			if (game.Players + game.Spectators == 0 && !filters.HasFlag(MPGameFilters.Empty))
 				return true;
 
 			if (!game.IsCompatible && !filters.HasFlag(MPGameFilters.Incompatible))
