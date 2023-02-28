@@ -31,20 +31,6 @@ namespace OpenRA.Mods.Common.UpdateRules
 		// release-to-bleed path.
 		static readonly UpdatePath[] Paths =
 		{
-			new UpdatePath("release-20200202", "release-20200503", new UpdateRule[]
-			{
-				new RemoveYesNo(),
-				new RemoveInitialFacingHardcoding(),
-				new RemoveAirdropActorTypeDefault(),
-				new RenameProneTime(),
-				new RemoveWithPermanentInjury(),
-				new AddResourceRenderer(),
-				new ReformatChromeProvider(),
-				new RenameSpins(),
-				new CreateScreenShakeWarhead(),
-				new RenameRallyPointPath(),
-			}),
-
 			new UpdatePath("release-20200503", "release-20210321", new UpdateRule[]
 			{
 				new AddPipDecorationTraits(),
@@ -72,7 +58,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveLaysTerrain(),
 			}),
 
-			new UpdatePath("release-20210321", "playtest-20221203", new UpdateRule[]
+			new UpdatePath("release-20210321", "release-20230225", new UpdateRule[]
 			{
 				new RenameMPTraits(),
 				new RemovePlayerHighlightPalette(),
@@ -100,8 +86,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new AddControlGroups(),
 			}),
 
-			new UpdatePath("playtest-20221203", new UpdateRule[]
+			new UpdatePath("release-20230225", new UpdateRule[]
 			{
+				// bleed only changes here
 				new TextNotificationsDisplayWidgetRemoveTime(),
 				new ExplicitSequenceFilenames(),
 				new RenameEngineerRepair(),
