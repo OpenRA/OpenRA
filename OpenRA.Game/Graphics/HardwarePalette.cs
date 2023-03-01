@@ -70,7 +70,7 @@ namespace OpenRA.Graphics
 			{
 				Height = Exts.NextPowerOf2(index + 1);
 				Array.Resize(ref buffer, Height * Palette.Size * 4);
-				Array.Resize(ref colorShiftBuffer, Height * 4);
+				Array.Resize(ref colorShiftBuffer, Height * 8);
 			}
 
 			if (allowModifiers)
@@ -90,19 +90,20 @@ namespace OpenRA.Graphics
 			CopyBufferToTexture();
 		}
 
-		public void SetColorShift(string name, float hueOffset, float satOffset, float minHue, float maxHue)
+		public void SetColorShift(string name, float hueOffset, float satOffset, float valueMultiplier, float minHue, float maxHue)
 		{
 			var index = GetPaletteIndex(name);
-			colorShiftBuffer[4 * index + 0] = hueOffset;
-			colorShiftBuffer[4 * index + 1] = satOffset;
-			colorShiftBuffer[4 * index + 2] = minHue;
-			colorShiftBuffer[4 * index + 3] = maxHue;
+			colorShiftBuffer[8 * index + 0] = minHue;
+			colorShiftBuffer[8 * index + 1] = maxHue;
+			colorShiftBuffer[8 * index + 4] = hueOffset;
+			colorShiftBuffer[8 * index + 5] = satOffset;
+			colorShiftBuffer[8 * index + 6] = valueMultiplier;
 		}
 
 		public bool HasColorShift(string name)
 		{
 			var index = GetPaletteIndex(name);
-			return colorShiftBuffer[4 * index + 2] != 0 || colorShiftBuffer[4 * index + 3] != 0;
+			return colorShiftBuffer[8 * index] != 0 || colorShiftBuffer[8 * index + 1] != 0;
 		}
 
 		public void Initialize()
@@ -125,7 +126,7 @@ namespace OpenRA.Graphics
 		void CopyBufferToTexture()
 		{
 			Texture.SetData(buffer, Palette.Size, Height);
-			ColorShifts.SetFloatData(colorShiftBuffer, 1, Height);
+			ColorShifts.SetFloatData(colorShiftBuffer, 2, Height);
 		}
 
 		public void ApplyModifiers(IEnumerable<IPaletteModifier> paletteMods)

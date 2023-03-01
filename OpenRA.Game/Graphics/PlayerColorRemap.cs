@@ -20,13 +20,14 @@ namespace OpenRA.Graphics
 		readonly int[] remapIndices;
 		readonly float hue;
 		readonly float saturation;
+		readonly float value;
 
 		public PlayerColorRemap(int[] remapIndices, Color color)
 		{
 			this.remapIndices = remapIndices;
 
 			var (r, g, b) = color.ToLinear();
-			(hue, saturation, _) = Color.RgbToHsv(r, g, b);
+			(hue, saturation, value) = Color.RgbToHsv(r, g, b);
 		}
 
 		public Color GetRemappedColor(Color original, int index)
@@ -43,7 +44,7 @@ namespace OpenRA.Graphics
 			var value = Math.Max(Math.Max(r, g), b);
 
 			// Construct the new RGB color
-			(r, g, b) = Color.HsvToRgb(hue, saturation, value);
+			(r, g, b) = Color.HsvToRgb(hue, saturation, value * this.value);
 
 			// Convert linear back to SRGB and pre-multiply by the alpha
 			return Color.FromLinear(original.A, r, g, b);
