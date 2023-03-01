@@ -84,7 +84,7 @@ WaterAttack = function()
 		types[i] = Utils.Random(SovietInfantryTypes)
 	end
 
-	return Reinforcements.ReinforceWithTransport(ussr, InsertionTransport, types, { WaterTransportSpawn.Location, Utils.Random(WaterLZs).Location }, { WaterTransportSpawn.Location })[2]
+	return Reinforcements.ReinforceWithTransport(USSR, InsertionTransport, types, { WaterTransportSpawn.Location, Utils.Random(WaterLZs).Location }, { WaterTransportSpawn.Location })[2]
 end
 
 ProtectHarvester = function(unit)
@@ -111,12 +111,12 @@ ProtectHarvester = function(unit)
 end
 
 InitAIUnits = function()
-	IdlingUnits = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == ussr and self.HasProperty("Hunt") and self.Location.Y > MainBaseTopLeft.Location.Y end)
+	IdlingUnits = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == USSR and self.HasProperty("Hunt") and self.Location.Y > MainBaseTopLeft.Location.Y end)
 
-	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == ussr and self.HasProperty("StartBuildingRepairs") end)
+	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == USSR and self.HasProperty("StartBuildingRepairs") end)
 	Utils.Do(buildings, function(actor)
 		Trigger.OnDamaged(actor, function(building)
-			if building.Owner == ussr and building.Health < building.MaxHealth * 3/4 then
+			if building.Owner == USSR and building.Health < building.MaxHealth * 3/4 then
 				building.StartBuildingRepairs()
 			end
 		end)
@@ -124,7 +124,7 @@ InitAIUnits = function()
 end
 
 InitAIEconomy = function()
-	ussr.Cash = 6000
+	USSR.Cash = 6000
 
 	if not Harvester.IsDead then
 		Harvester.FindResources()
@@ -200,7 +200,7 @@ ProduceInfantry = function()
 
 	local delay = Utils.RandomInteger(DateTime.Seconds(3), DateTime.Seconds(9))
 	local toBuild = { Utils.Random(SovietInfantryTypes) }
-	ussr.Build(toBuild, function(unit)
+	USSR.Build(toBuild, function(unit)
 		IdlingUnits[#IdlingUnits + 1] = unit[1]
 		Trigger.AfterDelay(delay, ProduceInfantry)
 
@@ -223,7 +223,7 @@ ProduceVehicles = function()
 	local delay = Utils.RandomInteger(DateTime.Seconds(5), DateTime.Seconds(9))
 	if HarvesterKilled then
 		HarvesterKilled = false
-		ussr.Build({ "harv" }, function(harv)
+		USSR.Build({ "harv" }, function(harv)
 			harv[1].FindResources()
 			ProtectHarvester(harv[1])
 			Trigger.AfterDelay(delay, ProduceVehicles)
@@ -233,7 +233,7 @@ ProduceVehicles = function()
 
 	Warfactory2.RallyPoint = Utils.Random(Rallypoints).Location
 	local toBuild = { Utils.Random(SovietVehicleTypes) }
-	ussr.Build(toBuild, function(unit)
+	USSR.Build(toBuild, function(unit)
 		IdlingUnits[#IdlingUnits + 1] = unit[1]
 		Trigger.AfterDelay(delay, ProduceVehicles)
 
@@ -248,7 +248,7 @@ ProduceAircraft = function()
 		return
 	end
 
-	ussr.Build(SovietAircraftType, function(units)
+	USSR.Build(SovietAircraftType, function(units)
 		local yak = units[1]
 		Yaks[#Yaks + 1] = yak
 
@@ -257,7 +257,7 @@ ProduceAircraft = function()
 			Trigger.AfterDelay(DateTime.Minutes(1), ProduceAircraft)
 		end
 
-		InitializeAttackAircraft(yak, greece)
+		InitializeAttackAircraft(yak, Greece)
 	end)
 end
 

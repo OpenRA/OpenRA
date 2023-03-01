@@ -110,57 +110,57 @@ end
 
 CachedResources = -1
 Tick = function()
-	if player.Resources > SpiceToHarvest - 1 then
-		player.MarkCompletedObjective(GatherSpice)
+	if Ordos.Resources > SpiceToHarvest - 1 then
+		Ordos.MarkCompletedObjective(GatherSpice)
 	end
 
-	if player.HasNoRequiredUnits() then
-		atreides_main.MarkCompletedObjective(KillOrdos1)
-		atreides_small_1.MarkCompletedObjective(KillOrdos2)
-		atreides_small_2.MarkCompletedObjective(KillOrdos3)
-		atreides_small_3.MarkCompletedObjective(KillOrdos4)
+	if Ordos.HasNoRequiredUnits() then
+		AtreidesMain.MarkCompletedObjective(KillOrdos1)
+		AtreidesSmall1.MarkCompletedObjective(KillOrdos2)
+		AtreidesSmall2.MarkCompletedObjective(KillOrdos3)
+		AtreidesSmall3.MarkCompletedObjective(KillOrdos4)
 	end
 
-	if atreides_main.HasNoRequiredUnits() and atreides_small_1.HasNoRequiredUnits() and atreides_small_2.HasNoRequiredUnits() and atreides_small_3.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
+	if AtreidesMain.HasNoRequiredUnits() and AtreidesSmall1.HasNoRequiredUnits() and AtreidesSmall2.HasNoRequiredUnits() and AtreidesSmall3.HasNoRequiredUnits() and not Ordos.IsObjectiveCompleted(KillAtreides) then
 		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
-		player.MarkCompletedObjective(KillAtreides)
+		Ordos.MarkCompletedObjective(KillAtreides)
 	end
 
-	if #player.GetActorsByType("engineer") == 0 and not player.IsObjectiveCompleted(CaptureStarport) then
-		player.MarkFailedObjective(CaptureStarport)
+	if #Ordos.GetActorsByType("engineer") == 0 and not Ordos.IsObjectiveCompleted(CaptureStarport) then
+		Ordos.MarkFailedObjective(CaptureStarport)
 	end
 
-	if player.IsObjectiveCompleted(CaptureStarport) then
-		if player.Resources ~= CachedResources then
-			local parameters = { ["harvested"] = player.Resources, ["goal"] = SpiceToHarvest }
+	if Ordos.IsObjectiveCompleted(CaptureStarport) then
+		if Ordos.Resources ~= CachedResources then
+			local parameters = { ["harvested"] = Ordos.Resources, ["goal"] = SpiceToHarvest }
 			local harvestedResources = UserInterface.Translate("harvested-resources", parameters)
 			UserInterface.SetMissionText(harvestedResources)
-			CachedResources = player.Resources
+			CachedResources = Ordos.Resources
 		end
 	end
 
-	CheckHarvester(atreides_main)
-	CheckHarvester(atreides_small_1)
+	CheckHarvester(AtreidesMain)
+	CheckHarvester(AtreidesSmall1)
 end
 
 WorldLoaded = function()
-	atreides_main = Player.GetPlayer("AtreidesMainBase")
-	atreides_small_1 = Player.GetPlayer("AtreidesSmallBase1")
-	atreides_small_2 = Player.GetPlayer("AtreidesSmallBase2")
-	atreides_small_3 = Player.GetPlayer("AtreidesSmallBase3")
-	player = Player.GetPlayer("Ordos")
+	AtreidesMain = Player.GetPlayer("AtreidesMainBase")
+	AtreidesSmall1 = Player.GetPlayer("AtreidesSmallBase1")
+	AtreidesSmall2 = Player.GetPlayer("AtreidesSmallBase2")
+	AtreidesSmall3 = Player.GetPlayer("AtreidesSmallBase3")
+	Ordos = Player.GetPlayer("Ordos")
 
 	SpiceToHarvest = ToHarvest[Difficulty]
 
-	InitObjectives(player)
-	KillOrdos1 = AddPrimaryObjective(atreides_main, "")
-	KillOrdos2 = AddPrimaryObjective(atreides_small_1, "")
-	KillOrdos3 = AddPrimaryObjective(atreides_small_2, "")
-	KillOrdos4 = AddPrimaryObjective(atreides_small_3, "")
-	CaptureStarport = AddPrimaryObjective(player, "capture-atreides-starport-establish-base")
+	InitObjectives(Ordos)
+	KillOrdos1 = AddPrimaryObjective(AtreidesMain, "")
+	KillOrdos2 = AddPrimaryObjective(AtreidesSmall1, "")
+	KillOrdos3 = AddPrimaryObjective(AtreidesSmall2, "")
+	KillOrdos4 = AddPrimaryObjective(AtreidesSmall3, "")
+	CaptureStarport = AddPrimaryObjective(Ordos, "capture-atreides-starport-establish-base")
 	local harvestSpice = UserInterface.Translate("harvest-spice", { ["spice"] = SpiceToHarvest })
-	GatherSpice = AddPrimaryObjective(player, harvestSpice)
-	KillAtreides = AddSecondaryObjective(player, "destroy-atreides")
+	GatherSpice = AddPrimaryObjective(Ordos, harvestSpice)
+	KillAtreides = AddSecondaryObjective(Ordos, "destroy-atreides")
 
 	Camera.Position = OEngi1.CenterPosition
 	AtreidesAttackLocation = OEngi1.Location
@@ -173,45 +173,45 @@ WorldLoaded = function()
 		OCombat2.Destroy()
 	end
 
-	Hunt(atreides_main)
-	Hunt(atreides_small_1)
-	Hunt(atreides_small_2)
-	Hunt(atreides_small_3)
+	Hunt(AtreidesMain)
+	Hunt(AtreidesSmall1)
+	Hunt(AtreidesSmall2)
+	Hunt(AtreidesSmall3)
 
 	local path = function() return Utils.Random(AtreidesPaths) end
-	local waveCondition = function() return player.IsObjectiveCompleted(KillAtreides) end
+	local waveCondition = function() return Ordos.IsObjectiveCompleted(KillAtreides) end
 	local huntFunction = function(unit)
 		unit.AttackMove(AtreidesAttackLocation)
 		IdleHunt(unit)
 	end
-	SendCarryallReinforcements(atreides_main, 0, 8, AtreidesAttackDelay[Difficulty], path, AtreidesReinforcements[Difficulty], waveCondition, huntFunction)
+	SendCarryallReinforcements(AtreidesMain, 0, 8, AtreidesAttackDelay[Difficulty], path, AtreidesReinforcements[Difficulty], waveCondition, huntFunction)
 
-	Actor.Create("upgrade.barracks", true, { Owner = atreides_main })
-	Actor.Create("upgrade.light", true, { Owner = atreides_main })
-	Actor.Create("upgrade.heavy", true, { Owner = atreides_main })
-	Actor.Create("upgrade.barracks", true, { Owner = atreides_small_1 })
-	Actor.Create("upgrade.barracks", true, { Owner = atreides_small_2 })
+	Actor.Create("upgrade.barracks", true, { Owner = AtreidesMain })
+	Actor.Create("upgrade.light", true, { Owner = AtreidesMain })
+	Actor.Create("upgrade.heavy", true, { Owner = AtreidesMain })
+	Actor.Create("upgrade.barracks", true, { Owner = AtreidesSmall1 })
+	Actor.Create("upgrade.barracks", true, { Owner = AtreidesSmall2 })
 	Trigger.AfterDelay(0, ActivateAI)
 
 	Trigger.OnKilled(AStarport, function()
-		if not player.IsObjectiveCompleted(CaptureStarport) then
-			player.MarkFailedObjective(CaptureStarport)
+		if not Ordos.IsObjectiveCompleted(CaptureStarport) then
+			Ordos.MarkFailedObjective(CaptureStarport)
 		end
 	end)
 
 	Trigger.OnCapture(AStarport, function()
-		player.MarkCompletedObjective(CaptureStarport)
+		Ordos.MarkCompletedObjective(CaptureStarport)
 
 		if not AIProductionActivated then
 			ActivateAIProduction()
 		end
 
-		Reinforcements.ReinforceWithTransport(player, "frigate", { "mcv" }, { OrdosStarportEntry.Location, AStarport.Location + CVec.New(1, 1) }, { OrdosStarportExit.Location })
+		Reinforcements.ReinforceWithTransport(Ordos, "frigate", { "mcv" }, { OrdosStarportEntry.Location, AStarport.Location + CVec.New(1, 1) }, { OrdosStarportExit.Location })
 
-		if APower8.Owner ~= player and not APower8.IsDead then
+		if APower8.Owner ~= Ordos and not APower8.IsDead then
 			APower8.Sell()
 		end
-		if APower9.Owner ~= player and not APower9.IsDead then
+		if APower9.Owner ~= Ordos and not APower9.IsDead then
 			APower9.Sell()
 		end
 	end)

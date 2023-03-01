@@ -36,7 +36,7 @@ FootprintTrigger12 = { CPos.New(35, 39), CPos.New(35, 40), CPos.New(35, 41), CPo
 ExtractionHelicopterType = "tran"
 ExtractionPath = { ChinookEntry.Location, ExtractionPoint.Location }
 
-lstReinforcements =
+LstReinforcements =
 {
 	first =
 	{
@@ -241,7 +241,7 @@ FootprintTriggers = function()
 			Trigger.RemoveFootprintTrigger(id)
 			foot6Triggered = true
 
-			local reinforcement = lstReinforcements.first
+			local reinforcement = LstReinforcements.first
 			Media.PlaySpeechNotification(Allies, "ReinforcementsArrived")
 			Reinforcements.ReinforceWithTransport(Allies, "lst.reinforcement", reinforcement.actors, reinforcement.entryPath, reinforcement.exitPath)
 		end
@@ -349,7 +349,7 @@ FootprintTriggers = function()
 				trig11camera.Destroy()
 			end)
 
-			local reinforcement = lstReinforcements.second
+			local reinforcement = LstReinforcements.second
 			Media.PlaySpeechNotification(Allies, "ReinforcementsArrived")
 			Reinforcements.ReinforceWithTransport(Allies, "lst.reinforcement", reinforcement.actors, reinforcement.entryPath, reinforcement.exitPath)
 		end

@@ -40,25 +40,25 @@ Patrol3 = { "e1", "e1", "dog.patrol" }
 TransportType = "lst.unselectable.unloadonly"
 
 SecureLabFailed = function()
-	Utils.Do(humans, function(player)
+	Utils.Do(Humans, function(player)
 		if player then
-			player.MarkFailedObjective(secureLab)
+			player.MarkFailedObjective(SecureLab)
 		end
 	end)
 end
 
-timerStarted = false
+TimerStarted = false
 StartTimer = function()
-	Utils.Do(humans, function(player)
+	Utils.Do(Humans, function(player)
 		if player.IsLocalPlayer then
 			TimerColor = player.Color
 		end
 	end)
 	CountDownTimerAnnouncements()
-	ticked = TimerTicks
-	timerStarted = true
+	Ticked = TimerTicks
+	TimerStarted = true
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Utils.Do(humans, function(player)
+		Utils.Do(Humans, function(player)
 			Media.PlaySpeechNotification(player, "TimerStarted")
 		end)
 	end)
@@ -68,8 +68,8 @@ CountDownTimerAnnouncements = function()
 	for i = #Announcements, 1, -1 do
 		local delay = TimerTicks - Announcements[i].delay
 		Trigger.AfterDelay(delay, function()
-			if not labSecured then
-				Utils.Do(humans, function(player)
+			if not LabSecured then
+				Utils.Do(Humans, function(player)
 					Media.PlaySpeechNotification(player, Announcements[i].speech)
 				end)
 			end
@@ -77,13 +77,13 @@ CountDownTimerAnnouncements = function()
 	end
 end
 
-reinforcementsHaveArrived = false
+ReinforcementsHaveArrived = false
 LabInfiltrated = function()
-	Utils.Do(humans, function(player)
+	Utils.Do(Humans, function(player)
 		if player then
-			secureLab = AddPrimaryObjective(player, "secure-laboratory-guards")
-			destroyBase = AddPrimaryObjective(player, "destroy-remaining-soviet-presence")
-			player.MarkCompletedObjective(infiltrateLab)
+			SecureLab = AddPrimaryObjective(player, "secure-laboratory-guards")
+			DestroyBase = AddPrimaryObjective(player, "destroy-remaining-soviet-presence")
+			player.MarkCompletedObjective(InfiltrateLab)
 			Trigger.ClearAll(Lab)
 			Trigger.AfterDelay(0, function()
 				Trigger.OnKilled(Lab, SecureLabFailed)
@@ -95,46 +95,46 @@ LabInfiltrated = function()
 	local entryPath = { ReinforcementsEntryPoint.Location, ReinforcementsUnloadPoint.Location }
 	local exit = { ReinforcementsEntryPoint.Location }
 
-	mcvActors = { "mcv" }
-	if player2 then
+	local mcvActors = { "mcv" }
+	if Allies2 then
 		mcvActors = { "mcv", "mcv" }
 	end
 
-	local reinforcements = Reinforcements.ReinforceWithTransport(allies, TransportType, mcvActors, entryPath, exit)
+	local reinforcements = Reinforcements.ReinforceWithTransport(Allies, TransportType, mcvActors, entryPath, exit)
 	local mcvs = reinforcements[2]
 
 	Trigger.OnAddedToWorld(mcvs[1], function(mcvUnloaded)
 
 		-- Don't call this twice (because of the owner change)
-		if mcvUnloaded.Owner == player1 then
+		if mcvUnloaded.Owner == Allies1 then
 			return
 		end
 
-		mcvUnloaded.Owner = player1
-		if not player2 then
-			player1.Cash = 5000
+		mcvUnloaded.Owner = Allies1
+		if not Allies2 then
+			Allies1.Cash = 5000
 		end
-		Media.PlaySpeechNotification(player, "AlliedReinforcementsSouth")
+		Media.PlaySpeechNotification(Allies1, "AlliedReinforcementsSouth")
 		StartTimer()
 		HijackTruck.Destroy()
-		reinforcementsHaveArrived = true
+		ReinforcementsHaveArrived = true
 	end)
 
-	if player2 then
+	if Allies2 then
 		Trigger.OnAddedToWorld(mcvs[2], function(mcvUnloaded)
 
 			-- Don't call this twice (because of the owner change)
-			if mcvUnloaded.Owner == player2 then
+			if mcvUnloaded.Owner == Allies2 then
 				return
 			end
 
-			mcvUnloaded.Owner = player2
-			player1.Cash = 2500
-			player2.Cash = 2500
+			mcvUnloaded.Owner = Allies2
+			Allies1.Cash = 2500
+			Allies2.Cash = 2500
 		end)
 	end
 
-	Utils.Do(humans, function(player)
+	Utils.Do(Humans, function(player)
 		for i = 0, 2 do
 			Trigger.AfterDelay(DateTime.Seconds(i), function()
 				Media.PlaySoundNotification(player, "AlertBuzzer")
@@ -155,9 +155,9 @@ LabInfiltrated = function()
 end
 
 InfiltrateLabFailed = function()
-	Utils.Do(humans, function(player)
+	Utils.Do(Humans, function(player)
 		if player then
-			player.MarkFailedObjective(infiltrateLab)
+			player.MarkFailedObjective(InfiltrateLab)
 		end
 	end)
 end
@@ -170,14 +170,14 @@ ChangeOwnerOnAddedToWorld = function(actor, newOwner)
 end
 
 InsertSpies = function()
-	Utils.Do(humans, function(player)
+	Utils.Do(Humans, function(player)
 		if player then
-			infiltrateLab = AddPrimaryObjective(player, "infiltrate-laboratory")
+			InfiltrateLab = AddPrimaryObjective(player, "infiltrate-laboratory")
 		end
 	end)
 
 	Trigger.OnKilled(Lab, function()
-		if not player1.IsObjectiveCompleted(infiltrateLab) then
+		if not Allies1.IsObjectiveCompleted(InfiltrateLab) then
 			InfiltrateLabFailed()
 		end
 	end)
@@ -188,30 +188,30 @@ InsertSpies = function()
 	Trigger.OnInfiltrated(Lab, function()
 		infiltrationCount = infiltrationCount + 1
 
-		if (player2 and infiltrationCount == 2) or not player2 then
+		if (Allies2 and infiltrationCount == 2) or not Allies2 then
 			Trigger.AfterDelay(DateTime.Seconds(3), LabInfiltrated)
 		end
 	end)
 
-	spyActors = { "spy.strong" }
-	if player2 then
+	local spyActors = { "spy.strong" }
+	if Allies2 then
 		spyActors = { "spy.strong", "spy.strong" }
 	end
 
 	local entryPath = { SpyReinforcementsEntryPoint.Location, SpyReinforcementsUnloadPoint.Location }
 	local exit = { SpyReinforcementsExitPoint.Location }
-	local reinforcements = Reinforcements.ReinforceWithTransport(allies, TransportType, spyActors, entryPath, exit)
+	local reinforcements = Reinforcements.ReinforceWithTransport(Allies, TransportType, spyActors, entryPath, exit)
 
 	local transport = reinforcements[1]
 	Camera.Position = transport.CenterPosition
 
-	spies = reinforcements[2]
+	local spies = reinforcements[2]
 	Trigger.OnAnyKilled(spies, InfiltrateLabFailed)
 
-	ChangeOwnerOnAddedToWorld(spies[1], player1)
+	ChangeOwnerOnAddedToWorld(spies[1], Allies1)
 
-	if player2 then
-		ChangeOwnerOnAddedToWorld(spies[2], player2)
+	if Allies2 then
+		ChangeOwnerOnAddedToWorld(spies[2], Allies2)
 	end
 end
 
@@ -237,7 +237,7 @@ CapOre = function(player)
 end
 
 NewPatrol = function(actorType, start, waypoints)
-	local guard = Actor.Create(actorType, true, { Owner = soviets, Location = start })
+	local guard = Actor.Create(actorType, true, { Owner = Soviets, Location = start })
 	guard.Patrol(waypoints, true, Utils.RandomInteger(50, 75))
 end
 
@@ -260,20 +260,20 @@ SetupPatrols = function()
 	end)
 end
 
-ticked = 0
+Ticked = 0
 SecureLabTimer = function()
-	if not timerStarted or labSecured then
+	if not TimerStarted or LabSecured then
 		return
 	end
 
-	if ticked > 0 then
-		if (ticked % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("secure-lab-in", { ["time"] = Utils.FormatTime(ticked) })
+	if Ticked > 0 then
+		if (Ticked % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("secure-lab-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(Timer, TimerColor)
 		end
-		ticked = ticked - 1
-	elseif ticked <= 0 then
-		TimerColor = soviets.Color
+		Ticked = Ticked - 1
+	elseif Ticked <= 0 then
+		TimerColor = Soviets.Color
 		UserInterface.SetMissionText(UserInterface.Translate("soviet-research-lab-not-secured-in-time"), TimerColor)
 		SecureLabFailed()
 	end
@@ -281,18 +281,18 @@ end
 
 SovietBaseMaintenanceSetup = function()
 	local sovietbuildings = Utils.Where(Map.NamedActors, function(a)
-		return a.Owner == soviets and a.HasProperty("StartBuildingRepairs")
+		return a.Owner == Soviets and a.HasProperty("StartBuildingRepairs")
 	end)
 
 	Trigger.OnAllKilledOrCaptured(sovietbuildings, function()
-		Utils.Do(humans, function(player)
-			player.MarkCompletedObjective(destroyBase)
+		Utils.Do(Humans, function(player)
+			player.MarkCompletedObjective(DestroyBase)
 		end)
 	end)
 
 	Utils.Do(sovietbuildings, function(sovietbuilding)
 		Trigger.OnDamaged(sovietbuilding, function(building)
-			if building.Owner == soviets and building.Health < building.MaxHealth * 3/4 then
+			if building.Owner == Soviets and building.Health < building.MaxHealth * 3/4 then
 				building.StartBuildingRepairs()
 			end
 		end)
@@ -300,61 +300,61 @@ SovietBaseMaintenanceSetup = function()
 end
 
 CheckPlayerDefeat = function()
-	if not reinforcementsHaveArrived then
+	if not ReinforcementsHaveArrived then
 		return
 	end
 
-	Utils.Do(humans, function(player)
+	Utils.Do(Humans, function(player)
 		if player.HasNoRequiredUnits() then
-			player.MarkFailedObjective(destroyBase)
+			player.MarkFailedObjective(DestroyBase)
 		end
 	end)
 end
 
-labSecured = false
+LabSecured = false
 CheckLabSecured = function()
-	if not reinforcementsHaveArrived or labSecured then
+	if not ReinforcementsHaveArrived or LabSecured then
 		return
 	end
 
-	if player1.HasNoRequiredUnits() or (player2 and player2.HasNoRequiredUnits()) then
-		Utils.Do(humans, function(player)
-			player.MarkFailedObjective(secureLab)
+	if Allies1.HasNoRequiredUnits() or (Allies2 and Allies2.HasNoRequiredUnits()) then
+		Utils.Do(Humans, function(player)
+			player.MarkFailedObjective(SecureLab)
 		end)
 	end
 
 	local radius = WDist.FromCells(10)
 	local labGuards = Utils.Where(Map.ActorsInCircle(LabWaypoint.CenterPosition, radius), function(a)
-		return a.Owner == soviets and a.HasProperty("Move")
+		return a.Owner == Soviets and a.HasProperty("Move")
 	end)
 
 	if #labGuards < 1 then
-		labSecured = true
-		Utils.Do(humans, function(player)
-			player.MarkCompletedObjective(secureLab)
+		LabSecured = true
+		Utils.Do(Humans, function(player)
+			player.MarkCompletedObjective(SecureLab)
 		end)
 		UserInterface.SetMissionText("")
 	end
 end
 
 Tick = function()
-	CapOre(soviets)
+	CapOre(Soviets)
 	SecureLabTimer()
 	CheckLabSecured()
 	CheckPlayerDefeat()
 end
 
 WorldLoaded = function()
-	allies = Player.GetPlayer("Allies")
-	neutral = Player.GetPlayer("Neutral")
-	creeps = Player.GetPlayer("Creeps")
-	soviets = Player.GetPlayer("Soviets")
+	Allies = Player.GetPlayer("Allies")
+	Neutral = Player.GetPlayer("Neutral")
+	Creeps = Player.GetPlayer("Creeps")
+	Soviets = Player.GetPlayer("Soviets")
 
-	player1 = Player.GetPlayer("Allies1")
-	player2 = Player.GetPlayer("Allies2")
-	humans = { player1, player2 }
+	Allies1 = Player.GetPlayer("Allies1")
+	Allies2 = Player.GetPlayer("Allies2")
+	Humans = { Allies1, Allies2 }
 
-	Utils.Do(humans, function(player)
+	Utils.Do(Humans, function(player)
 		if player and player.IsLocalPlayer then
 			InitObjectives(player)
 		end

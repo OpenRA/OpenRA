@@ -52,11 +52,11 @@ OrdosPath = { OrdosEntry.Location, OrdosRally.Location }
 
 SendHarkonnen = function(path)
 	Trigger.AfterDelay(HarkonnenAttackDelay[Difficulty], function()
-		if player.IsObjectiveCompleted(KillHarkonnen) then
+		if Ordos.IsObjectiveCompleted(KillHarkonnen) then
 			return
 		end
 
-		local units = Reinforcements.ReinforceWithTransport(harkonnen, "carryall.reinforce", HarkonnenLightInfantryRushers[Difficulty], path, { path[1] })[2]
+		local units = Reinforcements.ReinforceWithTransport(Harkonnen, "carryall.reinforce", HarkonnenLightInfantryRushers[Difficulty], path, { path[1] })[2]
 		Utils.Do(units, function(unit)
 			unit.AttackMove(HarkonnenAttackLocation)
 			IdleHunt(unit)
@@ -83,64 +83,64 @@ end
 
 AttackNotifier = 0
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		harkonnen.MarkCompletedObjective(KillOrdosH)
-		smuggler.MarkCompletedObjective(KillOrdosS)
-		smuggler.MarkCompletedObjective(DefendOutpost)
+	if Ordos.HasNoRequiredUnits() then
+		Harkonnen.MarkCompletedObjective(KillOrdosH)
+		Smuggler.MarkCompletedObjective(KillOrdosS)
+		Smuggler.MarkCompletedObjective(DefendOutpost)
 	end
 
-	if harkonnen.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillHarkonnen) then
+	if Harkonnen.HasNoRequiredUnits() and not Ordos.IsObjectiveCompleted(KillHarkonnen) then
 		Media.DisplayMessage(UserInterface.Translate("harkonnen-annihilated"), Mentat)
-		player.MarkCompletedObjective(KillHarkonnen)
+		Ordos.MarkCompletedObjective(KillHarkonnen)
 	end
 
-	CheckHarvester(harkonnen)
-	CheckHarvester(smuggler)
+	CheckHarvester(Harkonnen)
+	CheckHarvester(Smuggler)
 
 	AttackNotifier = AttackNotifier - 1
 end
 
 WorldLoaded = function()
-	harkonnen = Player.GetPlayer("Harkonnen")
-	smuggler = Player.GetPlayer("Smugglers")
-	player = Player.GetPlayer("Ordos")
+	Harkonnen = Player.GetPlayer("Harkonnen")
+	Smuggler = Player.GetPlayer("Smugglers")
+	Ordos = Player.GetPlayer("Ordos")
 
-	InitObjectives(player)
-	KillOrdosH = AddPrimaryObjective(harkonnen, "")
-	KillOrdosS = AddSecondaryObjective(smuggler, "")
-	DefendOutpost = AddPrimaryObjective(smuggler, "outpost-not-captured-destroyed")
-	CaptureOutpost = AddPrimaryObjective(player, "capture-smuggler-outpost")
-	KillHarkonnen = AddSecondaryObjective(player, "destroy-harkonnen")
+	InitObjectives(Ordos)
+	KillOrdosH = AddPrimaryObjective(Harkonnen, "")
+	KillOrdosS = AddSecondaryObjective(Smuggler, "")
+	DefendOutpost = AddPrimaryObjective(Smuggler, "outpost-not-captured-destroyed")
+	CaptureOutpost = AddPrimaryObjective(Ordos, "capture-smuggler-outpost")
+	KillHarkonnen = AddSecondaryObjective(Ordos, "destroy-harkonnen")
 
 	SOutpost.GrantCondition("modified")
 
 	Camera.Position = OConyard.CenterPosition
 	HarkonnenAttackLocation = OConyard.Location
 
-	Hunt(harkonnen)
-	Hunt(smuggler)
+	Hunt(Harkonnen)
+	Hunt(Smuggler)
 
 	SendHarkonnen(LightInfantryRushersPaths[1])
 	SendHarkonnen(LightInfantryRushersPaths[2])
 	SendHarkonnen(LightInfantryRushersPaths[3])
 
-	Actor.Create("upgrade.barracks", true, { Owner = harkonnen })
-	Actor.Create("upgrade.light", true, { Owner = harkonnen })
-	Actor.Create("upgrade.barracks", true, { Owner = smuggler })
-	Actor.Create("upgrade.light", true, { Owner = smuggler })
+	Actor.Create("upgrade.barracks", true, { Owner = Harkonnen })
+	Actor.Create("upgrade.light", true, { Owner = Harkonnen })
+	Actor.Create("upgrade.barracks", true, { Owner = Smuggler })
+	Actor.Create("upgrade.light", true, { Owner = Smuggler })
 	Trigger.AfterDelay(0, ActivateAI)
 
 	Trigger.OnKilled(SOutpost, function()
-		player.MarkFailedObjective(CaptureOutpost)
+		Ordos.MarkFailedObjective(CaptureOutpost)
 	end)
 	Trigger.OnCapture(SOutpost, function()
 		Trigger.AfterDelay(DateTime.Seconds(2), function()
-			player.MarkCompletedObjective(CaptureOutpost)
-			smuggler.MarkFailedObjective(DefendOutpost)
+			Ordos.MarkCompletedObjective(CaptureOutpost)
+			Smuggler.MarkFailedObjective(DefendOutpost)
 		end)
 	end)
 	Trigger.OnDamaged(SOutpost, function()
-		if SOutpost.Owner ~= smuggler then
+		if SOutpost.Owner ~= Smuggler then
 			return
 		end
 
@@ -151,8 +151,8 @@ WorldLoaded = function()
 	end)
 
 	Trigger.AfterDelay(HarkonnenAttackDelay[Difficulty] - DateTime.Seconds(5), function()
-		Media.PlaySpeechNotification(player, "Reinforce")
-		Reinforcements.Reinforce(player, OrdosReinforcements, OrdosPath)
+		Media.PlaySpeechNotification(Ordos, "Reinforce")
+		Reinforcements.Reinforce(Ordos, OrdosReinforcements, OrdosPath)
 	end)
 
 	Trigger.AfterDelay(HarkonnenAttackDelay[Difficulty], function()

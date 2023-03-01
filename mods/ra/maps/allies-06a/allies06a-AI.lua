@@ -83,13 +83,13 @@ end
 
 Attack = 0
 ProduceInfantry = function()
-	if SovietBarracks.IsDead or SovietBarracks.Owner ~= ussr then
+	if SovietBarracks.IsDead or SovietBarracks.Owner ~= USSR then
 		return
 	end
 
 	Attack = Attack + 1
 	local toBuild = Utils.Random(InfTypes)
-	ussr.Build(toBuild, function(units)
+	USSR.Build(toBuild, function(units)
 		if Attack == 2 and not AttackTnk1.IsDead then
 			units[#units + 1] = AttackTnk1
 		elseif Attack == 4 and not AttackTnk2.IsDead then
@@ -102,10 +102,10 @@ ProduceInfantry = function()
 end
 
 ProduceVehicles = function()
-	if WeaponsFactory.IsDead or WeaponsFactory.Owner ~= ussr then
+	if WeaponsFactory.IsDead or WeaponsFactory.Owner ~= USSR then
 		return
 	end
-	ussr.Build(VehicleTypes, function(units)
+	USSR.Build(VehicleTypes, function(units)
 		Utils.Do(units, function(unit)
 			if unit.Type ~= "harv" then
 				IdlingTanks[#IdlingTanks + 1] = unit
@@ -115,18 +115,18 @@ ProduceVehicles = function()
 end
 
 ProduceNaval = function()
-	if not shouldProduce and #Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == player and self.Type == "syrd" end) < 1 then
+	if not ShouldProduce and #Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == Greece and self.Type == "syrd" end) < 1 then
 		Trigger.AfterDelay(DateTime.Minutes(1), ProduceNaval)
 		return
 	end
 
-	shouldProduce = true
+	ShouldProduce = true
 
-	if SubPen.IsDead or SubPen.Owner ~= ussr then
+	if SubPen.IsDead or SubPen.Owner ~= USSR then
 		return
 	end
 
-	ussr.Build(WaterAttackTypes, function(units)
+	USSR.Build(WaterAttackTypes, function(units)
 		Utils.Do(units, function(unit)
 			IdlingNavalUnits[#IdlingNavalUnits + 1] = unit
 		end)
@@ -141,11 +141,11 @@ ProduceNaval = function()
 end
 
 ProduceAircraft = function()
-	if Airfield.IsDead or Airfield.Owner ~= ussr then
+	if Airfield.IsDead or Airfield.Owner ~= USSR then
 		return
 	end
 
-	ussr.Build(SovietAircraftType, function(units)
+	USSR.Build(SovietAircraftType, function(units)
 		local yak = units[1]
 		Yaks[#Yaks + 1] = yak
 
@@ -154,7 +154,7 @@ ProduceAircraft = function()
 			Trigger.AfterDelay(DateTime.Seconds(BuildDelays), ProduceAircraft)
 		end
 
-		InitializeAttackAircraft(yak, player)
+		InitializeAttackAircraft(yak, Greece)
 	end)
 end
 
@@ -185,7 +185,7 @@ end
 WTransWaves = function()
 	local way = Utils.Random(WTransWays)
 	local units = Utils.Random(WTransUnits)
-	local attackUnits = Reinforcements.ReinforceWithTransport(ussr, "lst", units , way, { way[2], way[1] })[2]
+	local attackUnits = Reinforcements.ReinforceWithTransport(USSR, "lst", units , way, { way[2], way[1] })[2]
 	Utils.Do(attackUnits, function(a)
 		Trigger.OnAddedToWorld(a, function()
 			a.AttackMove(UnitBStopLocation.Location)

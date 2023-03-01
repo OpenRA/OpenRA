@@ -47,7 +47,7 @@ SamSiteGoal = 3
 
 CaptureStructures = function(actor)
 	for i = 1, #WhitelistedStructures do
-		structures = Nod.GetActorsByType(WhitelistedStructures[i])
+		local structures = Nod.GetActorsByType(WhitelistedStructures[i])
 		if #structures > 0 and not actor.IsDead and not structures[1].IsDead then
 			actor.Capture(structures[1])
 			return

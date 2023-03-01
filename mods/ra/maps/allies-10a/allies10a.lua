@@ -93,7 +93,7 @@ end
 
 LaunchMissiles = function()
 	MissilesLaunched = true
-	local missileCam = Actor.Create("camera", true, { Owner = Greece, Location = FCom.Location })
+	Actor.Create("camera", true, { Owner = Greece, Location = FCom.Location })
 	Camera.Position = FCom.CenterPosition
 	Media.PlaySpeechNotification(Greece, "AbombLaunchDetected")
 	MissileSilo1.ActivateNukePower(CPos.New(127, 127))

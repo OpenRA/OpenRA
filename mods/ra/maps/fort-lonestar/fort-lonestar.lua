@@ -100,7 +100,7 @@ IdleHunt = function(actor)
 end
 
 SendUnits = function(entryCell, unitTypes, targetCell, extraData)
-	Reinforcements.Reinforce(soviets, unitTypes, { entryCell }, 40, function(a)
+	Reinforcements.Reinforce(Soviets, unitTypes, { entryCell }, 40, function(a)
 		if not a.HasProperty("AttackMove") then
 			Trigger.OnIdle(a, function(a)
 				a.Move(targetCell)
@@ -140,7 +140,7 @@ SendWave = function()
 			end)
 		end
 
-		Utils.Do(players, function(player)
+		Utils.Do(Players, function(player)
 			Media.PlaySpeechNotification(player, "EnemyUnitsApproaching")
 		end)
 
@@ -174,7 +174,7 @@ end
 
 SovietsRetreating = function()
 	Utils.Do(Snipers, function(a)
-		if not a.IsDead and a.Owner == soviets then
+		if not a.IsDead and a.Owner == Soviets then
 			a.Destroy()
 		end
 	end)
@@ -201,7 +201,7 @@ Tick = function()
 end
 
 SetupWallOwners = function()
-	Utils.Do(players, function(player)
+	Utils.Do(Players, function(player)
 		Utils.Do(Walls[player.Spawn], function(wall)
 			wall.Owner = player
 		end)
@@ -209,14 +209,14 @@ SetupWallOwners = function()
 end
 
 WorldLoaded = function()
-	soviets = Player.GetPlayer("Soviets")
-	players = { }
+	Soviets = Player.GetPlayer("Soviets")
+	Players = { }
 	for i = 0, 4 do
 		local player = Player.GetPlayer("Multi" ..i)
-		players[i] = player
+		Players[i] = player
 
-		if players[i] and players[i].IsBot then
-			ActivateAI(players[i], i)
+		if Players[i] and Players[i].IsBot then
+			ActivateAI(Players[i], i)
 		end
 	end
 
@@ -224,6 +224,6 @@ WorldLoaded = function()
 
 	SetupWallOwners()
 
-	ParaProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = soviets })
+	ParaProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = Soviets })
 	SendWave()
 end

@@ -40,13 +40,13 @@ AlloyFacilityDestroyed = false
 WorldLoaded = function()
 
 --Players Setup
-	player = Player.GetPlayer("USSR")
-	greece = Player.GetPlayer("Greece")
-	goodguy = Player.GetPlayer("GoodGuy")
-	spain = Player.GetPlayer("Spain")
-	france = Player.GetPlayer("France")
+	USSR = Player.GetPlayer("USSR")
+	Greece = Player.GetPlayer("Greece")
+	GoodGuy = Player.GetPlayer("GoodGuy")
+	Spain = Player.GetPlayer("Spain")
+	France = Player.GetPlayer("France")
 
-	greece.Cash = 20000
+	Greece.Cash = 20000
 
 	Camera.Position	= DefaultCameraPosition.CenterPosition
 
@@ -62,45 +62,45 @@ WorldLoaded = function()
 	end
 
 --Objectives Setup
-	InitObjectives(player)
+	InitObjectives(USSR)
 
-	DestroyControlCenter = AddPrimaryObjective(player, "destroy-control-center")
-	KeepTanksAlive = AddPrimaryObjective(player, "tank-division-must-not-be-destroyed")
-	KeepVolkovAlive = AddPrimaryObjective(player, "volkov-survive")
-	KeepChitzkoiAlive = AddSecondaryObjective(player, "keep-chitzkoi-alive")
+	DestroyControlCenter = AddPrimaryObjective(USSR, "destroy-control-center")
+	KeepTanksAlive = AddPrimaryObjective(USSR, "tank-division-must-not-be-destroyed")
+	KeepVolkovAlive = AddPrimaryObjective(USSR, "volkov-survive")
+	KeepChitzkoiAlive = AddSecondaryObjective(USSR, "keep-chitzkoi-alive")
 
 	Trigger.OnKilled(ControlCenter, function()
 		Utils.Do(HeavyTurrets, function(struc)
 			if not struc.IsDead then struc.Kill() end
 		end)
-		player.MarkCompletedObjective(DestroyControlCenter)
-		DestroyAlloyFacility = AddPrimaryObjective(player, "destroy-alloy-facility")
-		Media.PlaySpeechNotification(player, "FirstObjectiveMet")
+		USSR.MarkCompletedObjective(DestroyControlCenter)
+		DestroyAlloyFacility = AddPrimaryObjective(USSR, "destroy-alloy-facility")
+		Media.PlaySpeechNotification(USSR, "FirstObjectiveMet")
 		Media.DisplayMessage(UserInterface.Translate("heavy-turret-control-destroyed"))
 	end)
 
 	Trigger.OnKilled(AlloyFacility, function()
-		if not player.IsObjectiveCompleted(DestroyControlCenter) then --Prevent a crash if the player somehow manage to cheese the mission and destroy
-			player.MarkCompletedObjective(DestroyControlCenter) --the Alloy Facility without destroying the Control Center.
-			DestroyAlloyFacility = AddPrimaryObjective(player, "destroy-alloy-facility")
+		if not USSR.IsObjectiveCompleted(DestroyControlCenter) then --Prevent a crash if the player somehow manage to cheese the mission and destroy
+			USSR.MarkCompletedObjective(DestroyControlCenter) --the Alloy Facility without destroying the Control Center.
+			DestroyAlloyFacility = AddPrimaryObjective(USSR, "destroy-alloy-facility")
 		end
 		Trigger.AfterDelay(DateTime.Seconds(2), function()
-			player.MarkCompletedObjective(DestroyAlloyFacility)
-			player.MarkCompletedObjective(KeepTanksAlive)
-			player.MarkCompletedObjective(KeepVolkovAlive)
-			player.MarkCompletedObjective(KeepChitzkoiAlive)
+			USSR.MarkCompletedObjective(DestroyAlloyFacility)
+			USSR.MarkCompletedObjective(KeepTanksAlive)
+			USSR.MarkCompletedObjective(KeepVolkovAlive)
+			USSR.MarkCompletedObjective(KeepChitzkoiAlive)
 		end)
 		AlloyFacilityDestroyed = true
-		Media.PlaySpeechNotification(player, "SecondObjectiveMet")
+		Media.PlaySpeechNotification(USSR, "SecondObjectiveMet")
 	end)
 
 	Trigger.OnAllKilled(PlayerTankDivision, function()
-		if not AlloyFacilityDestroyed then player.MarkFailedObjective(KeepTanksAlive) end
+		if not AlloyFacilityDestroyed then USSR.MarkFailedObjective(KeepTanksAlive) end
 	end)
 
 	Trigger.AfterDelay(0, function()
-		local AlliedBaseCamera = Actor.Create("camera", true, { Owner = player, Location = waypoint12.Location })
-		local SuperTeamCamera = Actor.Create("camera", true, { Owner = player, Location = DefaultCameraPosition.Location })
+		local AlliedBaseCamera = Actor.Create("camera", true, { Owner = USSR, Location = waypoint12.Location })
+		local SuperTeamCamera = Actor.Create("camera", true, { Owner = USSR, Location = DefaultCameraPosition.Location })
 		Trigger.AfterDelay(1, function()
 			if AlliedBaseCamera.IsInWorld then AlliedBaseCamera.Destroy() end
 		end)
@@ -112,9 +112,9 @@ WorldLoaded = function()
 --Super Team Setup
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
 		local spawn = superteamspawn.CenterPosition + WVec.New(0, 0, Actor.CruiseAltitude("badr"))
-		local transport = Actor.Create("badr", true, { CenterPosition = spawn, Owner = player, Facing = (superteamdrop.CenterPosition - spawn).Facing, Health = 3 })
+		local transport = Actor.Create("badr", true, { CenterPosition = spawn, Owner = USSR, Facing = (superteamdrop.CenterPosition - spawn).Facing, Health = 3 })
 		Utils.Do(SuperTeam, function(type)
-			local a = Actor.Create(type, false, { Owner = player })
+			local a = Actor.Create(type, false, { Owner = USSR })
 			transport.LoadPassenger(a)
 			if a.Type == "volk" then
 				VolkovIsDead(a)
@@ -123,12 +123,12 @@ WorldLoaded = function()
 				ChitzkoiIsDead(a)
 			end
 		end)
-		Media.PlaySpeechNotification(player, "ReinforcementsArrived")
+		Media.PlaySpeechNotification(USSR, "ReinforcementsArrived")
 		transport.Paradrop(CPos.New(21, 82))
 	end)
 
 	Trigger.OnEnteredFootprint(SuperTeamLandCell, function(unit, id)
-		if unit.Owner == player then
+		if unit.Owner == USSR then
 			Trigger.RemoveFootprintTrigger(id)
 			Trigger.AfterDelay(DateTime.Seconds(2), function()
 				if not BarrelsShooter[1].IsDead then
@@ -147,14 +147,14 @@ WorldLoaded = function()
 
 --Guards Squads Setup -- I used proximity triggers to make them hunt you down in order to mimic their behavior from the original mission
 	Trigger.OnEnteredProximityTrigger(RangerGuard01.CenterPosition, WDist.New(70 * 70), function(unit, id)
-		if not RangerGuard01.IsDead and unit.Owner == player then
+		if not RangerGuard01.IsDead and unit.Owner == USSR then
 			Trigger.OnIdle(RangerGuard01, RangerGuard01.Hunt)
 			Trigger.RemoveProximityTrigger(id)
 		end
 	end)
 
 	Trigger.OnEnteredProximityTrigger(waypoint7.CenterPosition, WDist.FromCells(6), function(unit, id)
-		if unit.Owner == player then
+		if unit.Owner == USSR then
 			Utils.Do(InfGuardSquad01, function(actor)
 				if not actor.IsDead then
 					Trigger.OnIdle(actor, actor.Hunt)
@@ -165,7 +165,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredProximityTrigger(InfGuardSquad02Unit01.CenterPosition, WDist.FromCells(6), function(unit, id)
-		if unit.Owner == player and (unit.Type == "volk" or unit.Type == "zkoi") then
+		if unit.Owner == USSR and (unit.Type == "volk" or unit.Type == "zkoi") then
 			Utils.Do(InfGuardSquad02, function(actor)
 				if not actor.IsDead then
 					Trigger.OnIdle(actor, actor.Hunt)
@@ -176,8 +176,8 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredProximityTrigger(InfGuardSquad03Unit05.CenterPosition, WDist.FromCells(8), function(unit, id)
-		if unit.Owner == player then
-			local HospitalCamera = Actor.Create("camera", true, { Owner = player, Location = waypoint13.Location })
+		if unit.Owner == USSR then
+			local HospitalCamera = Actor.Create("camera", true, { Owner = USSR, Location = waypoint13.Location })
 			Utils.Do(InfGuardSquad03, function(actor)
 				if not actor.IsDead then
 					Trigger.OnIdle(actor, actor.Hunt)
@@ -199,7 +199,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredProximityTrigger(LightTankGuard02.CenterPosition, WDist.FromCells(8), function(unit, id)
-		if not LightTankGuard02.IsDead and unit.Owner == player and (unit.Type == "volk" or unit.Type == "zkoi") then
+		if not LightTankGuard02.IsDead and unit.Owner == USSR and (unit.Type == "volk" or unit.Type == "zkoi") then
 			Trigger.OnIdle(LightTankGuard02, LightTankGuard02.Hunt)
 			Trigger.RemoveProximityTrigger(id)
 		end
@@ -207,10 +207,10 @@ WorldLoaded = function()
 
 --Tanya Squad Setup
 	Trigger.OnEnteredFootprint(TanyaTrigger, function(unit, id)
-		if unit.Owner == player then
+		if unit.Owner == USSR then
 			if not TanyaSquadTanya.IsDead then
-				local TanyaSquadCamera = Actor.Create("camera", true, { Owner = player, Location = waypoint85.Location })
-				Media.PlaySoundNotification(player, "rokroll")
+				local TanyaSquadCamera = Actor.Create("camera", true, { Owner = USSR, Location = waypoint85.Location })
+				Media.PlaySoundNotification(USSR, "rokroll")
 				Utils.Do(TanyaSquad, function(actor)
 					if not actor.IsDead then
 						Trigger.OnIdle(actor, actor.Hunt)
@@ -239,9 +239,9 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredFootprint(CivTeam01Trigger, function(unit, id)
-		if unit.Owner == player then
+		if unit.Owner == USSR then
 			if not TownHouse03.IsDead then
-				local civ01 = Reinforcements.Reinforce(spain, CivTeam01, { civteam01spawn.Location }, 0)
+				local civ01 = Reinforcements.Reinforce(Spain, CivTeam01, { civteam01spawn.Location }, 0)
 				Utils.Do(civ01, function(actor)
 					if not actor.IsDead then
 						Trigger.OnIdle(actor, actor.Hunt)
@@ -253,9 +253,9 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredFootprint(CivTeam02Trigger, function(unit, id)
-		if unit.Owner == player then
+		if unit.Owner == USSR then
 			if not TownHouse04.IsDead then
-				local civ02 = Reinforcements.Reinforce(spain, CivTeam02, { civteam02spawn.Location }, 0)
+				local civ02 = Reinforcements.Reinforce(Spain, CivTeam02, { civteam02spawn.Location }, 0)
 				Utils.Do(civ02, function(actor)
 					if not actor.IsDead then
 						Trigger.OnIdle(actor, actor.Hunt)
@@ -268,8 +268,8 @@ WorldLoaded = function()
 
 --Minefield Setup
 	Trigger.OnEnteredFootprint(MineSoldierTrigger, function(unit, id)
-		if unit.Owner == player then
-			local MineSoldierCamera1 = Actor.Create("camera", true, { Owner = player, Location = waypoint96.Location })
+		if unit.Owner == USSR then
+			local MineSoldierCamera1 = Actor.Create("camera", true, { Owner = USSR, Location = waypoint96.Location })
 			Trigger.AfterDelay(DateTime.Seconds(10), function()
 				if MineSoldierCamera1.IsInWorld then MineSoldierCamera1.Destroy() end
 			end)
@@ -296,8 +296,8 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredFootprint(MineRevealTrigger, function(unit, id)
-		if unit.Owner == goodguy then
-			local MineSoldierCamera2 = Actor.Create("camera", true, { Owner = player, Location = waypoint76.Location })
+		if unit.Owner == GoodGuy then
+			local MineSoldierCamera2 = Actor.Create("camera", true, { Owner = USSR, Location = waypoint76.Location })
 			Trigger.AfterDelay(DateTime.Seconds(12), function()
 				if MineSoldierCamera2.IsInWorld then MineSoldierCamera2.Destroy() end
 			end)
@@ -307,10 +307,10 @@ WorldLoaded = function()
 
 --Paradrop Rifle Team Setup
 	Trigger.OnEnteredFootprint(ParaTrigger, function(unit, id)
-		if unit.Owner == player then
-			local powerproxy = Actor.Create("powerproxy.pararifles", true, { Owner = greece })
+		if unit.Owner == USSR then
+			local powerproxy = Actor.Create("powerproxy.pararifles", true, { Owner = Greece })
 			local aircraft = powerproxy.TargetParatroopers(waypoint89.CenterPosition, Angle.South)
-			local prtcamera = Actor.Create("camera", true, { Owner = player, Location = waypoint89.Location })
+			local prtcamera = Actor.Create("camera", true, { Owner = USSR, Location = waypoint89.Location })
 			Utils.Do(aircraft, function(a)
 				Trigger.OnPassengerExited(a, function(t, p)
 					IdleHunt(p)
@@ -332,7 +332,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
-		local GreeceHarvesters = greece.GetActorsByType("harv")
+		local GreeceHarvesters = Greece.GetActorsByType("harv")
 		Trigger.OnAllKilled(GreeceHarvesters, function()
 			GreeceHarvestersAreDead = true
 		end)
@@ -342,16 +342,16 @@ end
 
 VolkovIsDead = function(a)
 	Trigger.OnKilled(a, function()
-		player.MarkFailedObjective(KeepVolkovAlive)
+		USSR.MarkFailedObjective(KeepVolkovAlive)
 	end)
 end
 
 ChitzkoiIsDead = function(a)
 	Trigger.OnKilled(a, function()
-		player.MarkFailedObjective(KeepChitzkoiAlive)
+		USSR.MarkFailedObjective(KeepChitzkoiAlive)
 		Media.DisplayMessage(UserInterface.Translate("rebuild-chitzkoy"))
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.PlaySpeechNotification(player, "ObjectiveNotMet")
+			Media.PlaySpeechNotification(USSR, "ObjectiveNotMet")
 		end)
 	end)
 end

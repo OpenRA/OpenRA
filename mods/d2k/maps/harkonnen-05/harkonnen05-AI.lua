@@ -26,13 +26,13 @@ OrdosVehicleTypes = { "raider", "raider", "quad" }
 OrdosTankType = { "combat_tank_o" }
 
 ActivateAI = function()
-	IdlingUnits[ordos_main] = Reinforcements.Reinforce(ordos_main, InitialOrdosReinforcements[1], InitialOrdosPaths[1]), Reinforcements.Reinforce(ordos_main, InitialOrdosReinforcements[2], InitialOrdosPaths[2])
-	IdlingUnits[ordos_small] = Reinforcements.Reinforce(ordos_small, InitialOrdosReinforcements[1], InitialOrdosPaths[3])
-	IdlingUnits[corrino] = { CSaraukar1, CSaraukar2, CSaraukar3, CSaraukar4, CSaraukar5 }
+	IdlingUnits[OrdosMain] = Reinforcements.Reinforce(OrdosMain, InitialOrdosReinforcements[1], InitialOrdosPaths[1]), Reinforcements.Reinforce(OrdosMain, InitialOrdosReinforcements[2], InitialOrdosPaths[2])
+	IdlingUnits[OrdosSmall] = Reinforcements.Reinforce(OrdosSmall, InitialOrdosReinforcements[1], InitialOrdosPaths[3])
+	IdlingUnits[Corrino] = { CSaraukar1, CSaraukar2, CSaraukar3, CSaraukar4, CSaraukar5 }
 
-	DefendAndRepairBase(ordos_main, OrdosMainBase, 0.75, AttackGroupSize[Difficulty])
-	DefendAndRepairBase(ordos_small, OrdosSmallBase, 0.75, AttackGroupSize[Difficulty])
-	DefendAndRepairBase(corrino, CorrinoBase, 0.75, AttackGroupSize[Difficulty])
+	DefendAndRepairBase(OrdosMain, OrdosMainBase, 0.75, AttackGroupSize[Difficulty])
+	DefendAndRepairBase(OrdosSmall, OrdosSmallBase, 0.75, AttackGroupSize[Difficulty])
+	DefendAndRepairBase(Corrino, CorrinoBase, 0.75, AttackGroupSize[Difficulty])
 
 	local delay = function() return Utils.RandomInteger(AttackDelays[Difficulty][1], AttackDelays[Difficulty][2] + 1) end
 	local infantryToBuild = function() return { Utils.Random(OrdosInfantryTypes) } end
@@ -40,10 +40,10 @@ ActivateAI = function()
 	local tanksToBuild = function() return OrdosTankType end
 	local attackThresholdSize = AttackGroupSize[Difficulty] * 2.5
 
-	ProduceUnits(ordos_main, OBarracks1, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
-	ProduceUnits(ordos_main, OLightFactory1, delay, vehilcesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
-	ProduceUnits(ordos_main, OHeavyFactory, delay, tanksToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	ProduceUnits(OrdosMain, OBarracks1, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	ProduceUnits(OrdosMain, OLightFactory1, delay, vehilcesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	ProduceUnits(OrdosMain, OHeavyFactory, delay, tanksToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
 
-	ProduceUnits(ordos_small, OBarracks3, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
-	ProduceUnits(ordos_small, OLightFactory2, delay, vehilcesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	ProduceUnits(OrdosSmall, OBarracks3, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	ProduceUnits(OrdosSmall, OLightFactory2, delay, vehilcesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
 end

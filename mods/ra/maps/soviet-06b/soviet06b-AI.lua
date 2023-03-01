@@ -7,7 +7,7 @@
    information, see COPYING.
 ]]
 IdlingUnits = function()
-	local lazyUnits = enemy.GetGroundAttackers()
+	local lazyUnits = Greece.GetGroundAttackers()
 
 	Utils.Do(lazyUnits, function(unit)
 		Trigger.OnDamaged(unit, function()
@@ -38,19 +38,19 @@ end
 
 BuildBuilding = function(building)
 	Trigger.AfterDelay(Actor.BuildTime(building.type), function()
-		if CYard.IsDead or CYard.Owner ~= enemy then
+		if CYard.IsDead or CYard.Owner ~= Greece then
 			return
-		elseif Harvester.IsDead and enemy.Resources <= 299 then
+		elseif Harvester.IsDead and Greece.Resources <= 299 then
 			return
 		end
 
-		local actor = Actor.Create(building.type, true, { Owner = enemy, Location = CYardLocation.Location + building.pos })
-		enemy.Cash = enemy.Cash - building.cost
+		local actor = Actor.Create(building.type, true, { Owner = Greece, Location = CYardLocation.Location + building.pos })
+		Greece.Cash = Greece.Cash - building.cost
 
 		building.exists = true
 		Trigger.OnKilled(actor, function() building.exists = false end)
 		Trigger.OnDamaged(actor, function(building)
-			if building.Owner == enemy and building.Health < building.MaxHealth * 3/4 then
+			if building.Owner == Greece and building.Health < building.MaxHealth * 3/4 then
 				building.StartBuildingRepairs()
 			end
 		end)
@@ -62,14 +62,14 @@ end
 ProduceInfantry = function()
 	if not BaseTent.exists then
 		return
-	elseif Harvester.IsDead and enemy.Resources <= 299 then
+	elseif Harvester.IsDead and Greece.Resources <= 299 then
 		return
 	end
 
 	local delay = Utils.RandomInteger(DateTime.Seconds(3), DateTime.Seconds(9))
 	local toBuild = { Utils.Random(AlliedInfantryTypes) }
 	local Path = Utils.Random(AttackPaths)
-	enemy.Build(toBuild, function(unit)
+	Greece.Build(toBuild, function(unit)
 		InfAttack[#InfAttack + 1] = unit[1]
 
 		if #InfAttack >= 10 then
@@ -85,14 +85,14 @@ end
 ProduceArmor = function()
 	if not BaseWeap.exists then
 		return
-	elseif Harvester.IsDead and enemy.Resources <= 599 then
+	elseif Harvester.IsDead and Greece.Resources <= 599 then
 		return
 	end
 
 	local delay = Utils.RandomInteger(DateTime.Seconds(12), DateTime.Seconds(17))
 	local toBuild = { Utils.Random(AlliedArmorTypes) }
 	local Path = Utils.Random(AttackPaths)
-	enemy.Build(toBuild, function(unit)
+	Greece.Build(toBuild, function(unit)
 		ArmorAttack[#ArmorAttack + 1] = unit[1]
 
 		if #ArmorAttack >= 6 then

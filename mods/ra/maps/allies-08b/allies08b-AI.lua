@@ -83,11 +83,11 @@ SendAttackGroup = function()
 end
 
 ProduceInfantry = function()
-	if USSRRax.IsDead or USSRRax.Owner ~= ussr then
+	if USSRRax.IsDead or USSRRax.Owner ~= USSR then
 		return
 	end
 
-	ussr.Build({ Utils.Random(SovietInfantry) }, function(units)
+	USSR.Build({ Utils.Random(SovietInfantry) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
 		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceInfantry)
@@ -95,11 +95,11 @@ ProduceInfantry = function()
 end
 
 ProduceVehicles = function()
-	if USSRWarFactory.IsDead or USSRWarFactory.Owner ~= ussr then
+	if USSRWarFactory.IsDead or USSRWarFactory.Owner ~= USSR then
 		return
 	end
 
-	ussr.Build({ Utils.Random(SovietVehicles) }, function(units)
+	USSR.Build({ Utils.Random(SovietVehicles) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
 		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceVehicles)
@@ -107,11 +107,11 @@ ProduceVehicles = function()
 end
 
 ProduceAircraft = function()
-	if (Airfield1.IsDead or Airfield1.Owner ~= ussr) and (Airfield2.IsDead or Airfield2.Owner ~= ussr) then
+	if (Airfield1.IsDead or Airfield1.Owner ~= USSR) and (Airfield2.IsDead or Airfield2.Owner ~= USSR) then
 		return
 	end
 
-	ussr.Build(SovietAircraftType, function(units)
+	USSR.Build(SovietAircraftType, function(units)
 		local mig = units[1]
 		Migs[#Migs + 1] = mig
 
@@ -122,13 +122,13 @@ ProduceAircraft = function()
 			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Difficulty] / 2), ProduceAircraft)
 		end
 
-		InitializeAttackAircraft(mig, greece)
+		InitializeAttackAircraft(mig, Greece)
 	end)
 end
 
 GroundWaves = function()
 	local path = Utils.Random(GroundAttackPaths)
-	local units = Reinforcements.Reinforce(ussr, Utils.Random(GroundAttackUnits[GroundAttackUnitType]), { path[1] })
+	local units = Reinforcements.Reinforce(USSR, Utils.Random(GroundAttackUnits[GroundAttackUnitType]), { path[1] })
 	local lastWaypoint = path[#path]
 	Utils.Do(units, function(unit)
 		Trigger.OnAddedToWorld(unit, function()
@@ -145,7 +145,7 @@ end
 WTransWaves = function()
 	local way = Utils.Random(WTransWays)
 	local units = Utils.Random(WTransUnits)
-	local attackUnits = Reinforcements.ReinforceWithTransport(ussr, "lst", units , way, { way[2], way[1] })[2]
+	local attackUnits = Reinforcements.ReinforceWithTransport(USSR, "lst", units , way, { way[2], way[1] })[2]
 	Utils.Do(attackUnits, function(a)
 		Trigger.OnAddedToWorld(a, function()
 			a.AttackMove(AttackChrono.Location)
@@ -169,15 +169,15 @@ end
 
 SendParabombs = function()
 	local airfield = Airfield1
-	if Airfield1.IsDead or Airfield1.Owner ~= ussr then
-		if Airfield2.IsDead or Airfield2.Owner ~= ussr then
+	if Airfield1.IsDead or Airfield1.Owner ~= USSR then
+		if Airfield2.IsDead or Airfield2.Owner ~= USSR then
 			return
 		end
 
 		airfield = Airfield2
 	end
 
-	local targets = Utils.Where(greece.GetActors(), function(actor)
+	local targets = Utils.Where(Greece.GetActors(), function(actor)
 		return
 			actor.HasProperty("Sell") and
 			actor.Type ~= "brik" and
@@ -199,10 +199,10 @@ ActivateAI = function()
 	ParadropDelays = ParadropDelays[Difficulty]
 	BombDelays = BombDelays[Difficulty]
 
-	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == ussr and self.HasProperty("StartBuildingRepairs") end)
+	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == USSR and self.HasProperty("StartBuildingRepairs") end)
 	Utils.Do(buildings, function(actor)
 		Trigger.OnDamaged(actor, function(building)
-			if building.Owner == ussr and building.Health < building.MaxHealth * 3/4 then
+			if building.Owner == USSR and building.Health < building.MaxHealth * 3/4 then
 				building.StartBuildingRepairs()
 			end
 		end)

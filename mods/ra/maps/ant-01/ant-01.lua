@@ -15,7 +15,7 @@ AtEndGame = false
 TimerColor = Player.GetPlayer("Spain").Color
 InsertionHelicopterType = "tran.insertion"
 TimerTicks = DateTime.Minutes(18) -- 18 minutes is roughly 30 mins in the original game
-ticks = TimerTicks
+Ticks = TimerTicks
 
 --Table Vars
 TankPath = { waypoint12.Location, waypoint13.Location }
@@ -104,27 +104,27 @@ SetupTimeNotifications = function()
 end
 
 GetTicks = function()
-	return ticks
+	return Ticks
 end
 
 Tick = function()
 	if SurviveObjective ~= nil then
-		if ticks > 0 then
-			if ticks == DateTime.Minutes(17) then
+		if Ticks > 0 then
+			if Ticks == DateTime.Minutes(17) then
 				StartAntAttack()
-			elseif ticks == DateTime.Minutes(15) then
+			elseif Ticks == DateTime.Minutes(15) then
 				SendInsertionHelicopter()
-			elseif ticks == DateTime.Minutes(12) then
+			elseif Ticks == DateTime.Minutes(12) then
 				StartAntAttack()
-			elseif ticks == DateTime.Minutes(6) then
+			elseif Ticks == DateTime.Minutes(6) then
 				StartAntAttack()
-			elseif ticks == DateTime.Minutes(1) then
+			elseif Ticks == DateTime.Minutes(1) then
 				EndAntAttack()
 			end
 
-			ticks = ticks - 1;
-			if (ticks % DateTime.Seconds(1)) == 0 then
-				Timer = UserInterface.Translate("reinforcements-arrive-in", { ["time"] = Utils.FormatTime(ticks) })
+			Ticks = Ticks - 1;
+			if (Ticks % DateTime.Seconds(1)) == 0 then
+				Timer = UserInterface.Translate("reinforcements-arrive-in", { ["time"] = Utils.FormatTime(Ticks) })
 				UserInterface.SetMissionText(Timer, TimerColor)
 			end
 		else
@@ -136,7 +136,7 @@ Tick = function()
 				SendTanks()
 				Trigger.AfterDelay(DateTime.Seconds(2), function() TimerExpired() end)
 			end
-			ticks = ticks - 1
+			Ticks = Ticks - 1
 		end
 	end
 end

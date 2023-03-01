@@ -68,7 +68,7 @@ SendApcReinforcements = function()
 	end
 end
 
-CreateCivilians = function(actor, discoverer)
+CreateCivilians = function()
 	Utils.Do(NodCiviliansActors, function(actor)
 		actor.Owner = Nod
 	end)
@@ -96,7 +96,7 @@ WorldLoaded = function()
 
 	Trigger.OnAnyKilled(Atk6ActorTriggerActivator, function()
 		Reinforcements.ReinforceWithTransport(GDI, "apc", Atk6Units, Atk6WaypointsPart1, Atk6WaypointsPart2,
-			function(transport, cargo)
+			function(_, cargo)
 				Utils.Do(cargo, IdleHunt)
 			end, IdleHunt)
 	end)

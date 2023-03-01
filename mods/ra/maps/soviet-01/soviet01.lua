@@ -14,7 +14,7 @@ InsertYaks = function()
 	Utils.Do(Yaks, function(yakType)
 		local start = YakEntry.CenterPosition + WVec.New(0, (i - 1) * 1536, Actor.CruiseAltitude(yakType))
 		local dest = StartJeep.Location + CVec.New(0, 2 * i)
-		local yak = Actor.Create(yakType, true, { CenterPosition = start, Owner = player, Facing = (Map.CenterOfCell(dest) - start).Facing })
+		local yak = Actor.Create(yakType, true, { CenterPosition = start, Owner = USSR, Facing = (Map.CenterOfCell(dest) - start).Facing })
 		yak.Move(dest)
 		yak.ReturnToBase(Airfields[i])
 		i = i + 1
@@ -25,7 +25,7 @@ JeepDemolishingBridge = function()
 	StartJeep.Move(StartJeepMovePoint.Location)
 
 	Trigger.OnEnteredFootprint({ StartJeepMovePoint.Location }, function(actor, id)
-		if actor.Owner == france and not BridgeBarrel.IsDead then
+		if actor.Owner == France and not BridgeBarrel.IsDead then
 			Trigger.RemoveFootprintTrigger(id)
 			BridgeBarrel.Kill()
 		end
@@ -41,24 +41,24 @@ end
 
 Paratroopers = function()
 	Trigger.OnKilled(StartJeep, function()
-		Media.PlaySpeechNotification(player, "ReinforcementsArrived")
+		Media.PlaySpeechNotification(USSR, "ReinforcementsArrived")
 		Paradrop.TargetParatroopers(StartJeepMovePoint.CenterPosition, Angle.East)
 	end)
 
 	Trigger.OnKilled(Church, function()
-		Media.PlaySpeechNotification(player, "ReinforcementsArrived")
+		Media.PlaySpeechNotification(USSR, "ReinforcementsArrived")
 		Paradrop.TargetParatroopers(StartJeepMovePoint.CenterPosition, Angle.East)
 	end)
 
 	Trigger.OnKilled(ParaHut, function()
-		Media.PlaySpeechNotification(player, "ReinforcementsArrived")
+		Media.PlaySpeechNotification(USSR, "ReinforcementsArrived")
 		Paradrop.TargetParatroopers(StartJeepMovePoint.CenterPosition, Angle.East)
 	end)
 end
 
 PanicAttack = function()
 	if not HouseDamaged then
-		local panicTeam = Reinforcements.Reinforce(france, { "c3", "c6", "c9" }, { CivSpawn.Location }, 0)
+		local panicTeam = Reinforcements.Reinforce(France, { "c3", "c6", "c9" }, { CivSpawn.Location }, 0)
 		Utils.Do(panicTeam, function(a)
 			a.Move(a.Location + CVec.New(-1,-1))
 			a.Panic()
@@ -68,21 +68,21 @@ PanicAttack = function()
 end
 
 WorldLoaded = function()
-	player = Player.GetPlayer("USSR")
-	france = Player.GetPlayer("France")
-	germany = Player.GetPlayer("Germany")
+	USSR = Player.GetPlayer("USSR")
+	France = Player.GetPlayer("France")
+	Germany = Player.GetPlayer("Germany")
 
-	InitObjectives(player)
+	InitObjectives(USSR)
 
-	VillageRaidObjective = AddPrimaryObjective(player, "raze-village")
+	VillageRaidObjective = AddPrimaryObjective(USSR, "raze-village")
 
 	Trigger.OnAllRemovedFromWorld(Airfields, function()
-		player.MarkFailedObjective(VillageRaidObjective)
+		USSR.MarkFailedObjective(VillageRaidObjective)
 	end)
 
 	JeepDemolishingBridge()
 
-	Paradrop = Actor.Create("powerproxy.paratroopers", false, { Owner = player })
+	Paradrop = Actor.Create("powerproxy.paratroopers", false, { Owner = USSR })
 	Trigger.AfterDelay(DateTime.Seconds(2), InsertYaks)
 	Paratroopers()
 	Trigger.OnDamaged(HayHouse, PanicAttack)
@@ -99,7 +99,7 @@ WorldLoaded = function()
 end
 
 Tick = function()
-	if france.HasNoRequiredUnits() and germany.HasNoRequiredUnits() then
-		player.MarkCompletedObjective(VillageRaidObjective)
+	if France.HasNoRequiredUnits() and Germany.HasNoRequiredUnits() then
+		USSR.MarkCompletedObjective(VillageRaidObjective)
 	end
 end

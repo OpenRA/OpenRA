@@ -64,11 +64,11 @@ SendBGAttackGroup = function()
 end
 
 ProduceBadGuyInfantry = function()
-	if BadGuyRax.IsDead or BadGuyRax.Owner ~= badguy then
+	if BadGuyRax.IsDead or BadGuyRax.Owner ~= BadGuy then
 		return
 	end
 
-	badguy.Build({ Utils.Random(SovietInfantry) }, function(units)
+	BadGuy.Build({ Utils.Random(SovietInfantry) }, function(units)
 		table.insert(BGAttackGroup, units[1])
 		SendBGAttackGroup()
 		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceBadGuyInfantry)
@@ -90,11 +90,11 @@ SendAttackGroup = function()
 end
 
 ProduceUSSRInfantry = function()
-	if USSRRax.IsDead or USSRRax.Owner ~= ussr then
+	if USSRRax.IsDead or USSRRax.Owner ~= USSR then
 		return
 	end
 
-	ussr.Build({ Utils.Random(SovietInfantry) }, function(units)
+	USSR.Build({ Utils.Random(SovietInfantry) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
 		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceUSSRInfantry)
@@ -102,11 +102,11 @@ ProduceUSSRInfantry = function()
 end
 
 ProduceVehicles = function()
-	if USSRWarFactory.IsDead or USSRWarFactory.Owner ~= ussr then
+	if USSRWarFactory.IsDead or USSRWarFactory.Owner ~= USSR then
 		return
 	end
 
-	ussr.Build({ Utils.Random(SovietVehicles) }, function(units)
+	USSR.Build({ Utils.Random(SovietVehicles) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
 		Trigger.AfterDelay(ProductionInterval[Difficulty], ProduceVehicles)
@@ -114,11 +114,11 @@ ProduceVehicles = function()
 end
 
 ProduceAircraft = function()
-	if (Airfield1.IsDead or Airfield1.Owner ~= ussr) and (Airfield2.IsDead or Airfield2.Owner ~= ussr) and (Airfield3.IsDead or Airfield3.Owner ~= ussr) and (Airfield4.IsDead or Airfield4.Owner ~= ussr) then
+	if (Airfield1.IsDead or Airfield1.Owner ~= USSR) and (Airfield2.IsDead or Airfield2.Owner ~= USSR) and (Airfield3.IsDead or Airfield3.Owner ~= USSR) and (Airfield4.IsDead or Airfield4.Owner ~= USSR) then
 		return
 	end
 
-	ussr.Build(SovietAircraftType, function(units)
+	USSR.Build(SovietAircraftType, function(units)
 		local yak = units[1]
 		Yaks[#Yaks + 1] = yak
 
@@ -129,17 +129,17 @@ ProduceAircraft = function()
 			Trigger.AfterDelay(DateTime.Seconds(ProductionInterval[Difficulty] / 2), ProduceAircraft)
 		end
 
-		InitializeAttackAircraft(yak, greece)
+		InitializeAttackAircraft(yak, Greece)
 	end)
 end
 
 ActivateAI = function()
 	SovietVehicles = SovietVehicles[Difficulty]
 
-	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == ussr and self.HasProperty("StartBuildingRepairs") end)
+	local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == USSR and self.HasProperty("StartBuildingRepairs") end)
 	Utils.Do(buildings, function(actor)
 		Trigger.OnDamaged(actor, function(building)
-			if building.Owner == ussr and building.Health < building.MaxHealth * 3/4 then
+			if building.Owner == USSR and building.Health < building.MaxHealth * 3/4 then
 				building.StartBuildingRepairs()
 			end
 		end)

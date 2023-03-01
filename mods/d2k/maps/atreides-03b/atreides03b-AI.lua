@@ -24,12 +24,12 @@ AttackDelays =
 OrdosInfantryTypes = { "light_inf", "light_inf", "light_inf", "trooper", "trooper" }
 
 InitAIUnits = function()
-	IdlingUnits[ordos] = Reinforcements.Reinforce(ordos, InitialOrdosReinforcements, OrdosPaths[2])
-	DefendAndRepairBase(ordos, OrdosBase, 0.75, AttackGroupSize[Difficulty])
+	IdlingUnits[Ordos] = Reinforcements.Reinforce(Ordos, InitialOrdosReinforcements, OrdosPaths[2])
+	DefendAndRepairBase(Ordos, OrdosBase, 0.75, AttackGroupSize[Difficulty])
 end
 
 ActivateAI = function()
-	LastHarvesterEaten[ordos] = true
+	LastHarvesterEaten[Ordos] = true
 	Trigger.AfterDelay(0, InitAIUnits)
 
 	OConyard.Produce(AtreidesUpgrades[1])
@@ -40,6 +40,6 @@ ActivateAI = function()
 
 	-- Finish the upgrades first before trying to build something
 	Trigger.AfterDelay(DateTime.Seconds(14), function()
-		ProduceUnits(ordos, OBarracks, delay, toBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+		ProduceUnits(Ordos, OBarracks, delay, toBuild, AttackGroupSize[Difficulty], attackThresholdSize)
 	end)
 end

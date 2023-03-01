@@ -27,7 +27,7 @@ EnemyTankType = { "combat_tank_a" }
 
 InitAIUnits = function(house)
 	LastHarvesterEaten[house] = true
-	if house ~= atreides_small_3 then
+	if house ~= AtreidesSmall3 then
 		IdlingUnits[house] = Reinforcements.Reinforce(house, InitialReinforcements[house.InternalName], InitialReinforcementsPaths[house.InternalName])
 	else
 		IdlingUnits[house] = { }
@@ -43,20 +43,20 @@ ActivateAIProduction = function()
 	local tanksToBuild = function() return EnemyTankType end
 	local attackTresholdSize = AttackGroupSize[Difficulty] * 2.5
 
-	ProduceUnits(atreides_main, ABarracks1, delay, infantryToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
-	ProduceUnits(atreides_main, ALightFactory, delay, vehiclesToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
-	ProduceUnits(atreides_main, AHeavyFactory, delay, tanksToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
+	ProduceUnits(AtreidesMain, ABarracks1, delay, infantryToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
+	ProduceUnits(AtreidesMain, ALightFactory, delay, vehiclesToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
+	ProduceUnits(AtreidesMain, AHeavyFactory, delay, tanksToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
 
-	ProduceUnits(atreides_small_1, ABarracks2, delay, infantryToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
+	ProduceUnits(AtreidesSmall1, ABarracks2, delay, infantryToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
 
-	ProduceUnits(atreides_small_2, ABarracks3, delay, infantryToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
+	ProduceUnits(AtreidesSmall2, ABarracks3, delay, infantryToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
 
 	AIProductionActivated = true
 end
 
 ActivateAI = function()
-	InitAIUnits(atreides_main)
-	InitAIUnits(atreides_small_1)
-	InitAIUnits(atreides_small_2)
-	InitAIUnits(atreides_small_3)
+	InitAIUnits(AtreidesMain)
+	InitAIUnits(AtreidesSmall1)
+	InitAIUnits(AtreidesSmall2)
+	InitAIUnits(AtreidesSmall3)
 end

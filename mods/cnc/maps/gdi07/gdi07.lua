@@ -103,7 +103,7 @@ AttackPlayer = function()
 
 	Utils.Do(NodBase, function(actor)
 		Trigger.OnRemovedFromWorld(actor, function()
-			Utils.Do(Nod.GetGroundAttackers(Nod), IdleHunt)
+			Utils.Do(Nod.GetGroundAttackers(), IdleHunt)
 		end)
 	end)
 
