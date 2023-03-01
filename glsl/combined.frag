@@ -211,14 +211,16 @@ vec4 SamplePalettedBilinear(float samplerIndex, vec2 coords, vec2 textureSize)
 vec4 ColorShift(vec4 c, float p)
 {
 	#if __VERSION__ == 120
-	vec4 shift = texture2D(ColorShifts, vec2(0.5, p));
+	vec4 range = texture2D(ColorShifts, vec2(0.25, p));
+ 	vec4 shift = texture2D(ColorShifts, vec2(0.75, p));
 	#else
-	vec4 shift = texture(ColorShifts, vec2(0.5, p));
+	vec4 range = texture(ColorShifts, vec2(0.25, p));
+ 	vec4 shift = texture(ColorShifts, vec2(0.75, p));
 	#endif
 
 	vec3 hsv = rgb2hsv(srgb2linear(c).rgb);
-	if (hsv.r >= shift.b && shift.a >= hsv.r)
-		c = linear2srgb(vec4(hsv2rgb(vec3(hsv.r + shift.r, clamp(hsv.g + shift.g, 0.0, 1.0), hsv.b)), c.a));
+	if (hsv.r > range.r && range.g >= hsv.r)
+		c = linear2srgb(vec4(hsv2rgb(vec3(hsv.r + shift.r, clamp(hsv.g + shift.g, 0.0, 1.0), hsv.b * clamp(shift.b, 0.0, 1.0))), c.a));
 
 	return c;
 }

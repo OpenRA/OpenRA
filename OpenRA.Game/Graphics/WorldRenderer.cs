@@ -113,9 +113,9 @@ namespace OpenRA.Graphics
 				palettes[name].Palette = pal;
 		}
 
-		public void SetPaletteColorShift(string name, float hueOffset, float satOffset, float minHue, float maxHue)
+		public void SetPaletteColorShift(string name, float hueOffset, float satOffset, float valueModifier, float minHue, float maxHue)
 		{
-			palette.SetColorShift(name, hueOffset, satOffset, minHue, maxHue);
+			palette.SetColorShift(name, hueOffset, satOffset, valueModifier, minHue, maxHue);
 		}
 
 		// PERF: Avoid LINQ.
