@@ -28,49 +28,49 @@ WinTriggerArea = { CPos.New(111, 59), CPos.New(111, 60), CPos.New(111, 61), CPos
 
 ObjectiveTriggers = function()
 	Trigger.OnEnteredFootprint(WinTriggerArea, function(a, id)
-		if not EscapeGoalTrigger and a.Owner == greece then
+		if not EscapeGoalTrigger and a.Owner == Greece then
 			EscapeGoalTrigger = true
 
-			greece.MarkCompletedObjective(ExitBase)
+			Greece.MarkCompletedObjective(ExitBase)
 			if Difficulty == "hard" then
-				greece.MarkCompletedObjective(NoCasualties)
+				Greece.MarkCompletedObjective(NoCasualties)
 			end
 
 			if not TanyaFreed then
-				greece.MarkFailedObjective(FreeTanya)
+				Greece.MarkFailedObjective(FreeTanyaObjective)
 			else
-				greece.MarkCompletedObjective(FreeTanya)
+				Greece.MarkCompletedObjective(FreeTanyaObjective)
 			end
 		end
 	end)
 
 	Trigger.OnKilled(Tanya, function()
-		greece.MarkFailedObjective(FreeTanya)
+		Greece.MarkFailedObjective(FreeTanyaObjective)
 	end)
 
 	Trigger.OnAllKilled(TanyaTowers, function()
 		TanyaFreed = true
 		if not Tanya.IsDead then
-			Media.PlaySpeechNotification(greece, "TanyaRescued")
-			Tanya.Owner = greece
+			Media.PlaySpeechNotification(Greece, "TanyaRescued")
+			Tanya.Owner = Greece
 		end
 	end)
 
 	Trigger.OnAllKilled(SovietImportantGuys, function()
-		greece.MarkCompletedObjective(KillVIPs)
+		Greece.MarkCompletedObjective(KillVIPs)
 	end)
 
 	Trigger.OnInfiltrated(WarFactory2, function()
-		if not StealMammoth.IsDead or StealMammoth.Owner == ussr then
-			greece.MarkCompletedObjective(StealTank)
-			StealMammoth.Owner = greece
+		if not StealMammoth.IsDead or StealMammoth.Owner == USSR then
+			Greece.MarkCompletedObjective(StealTank)
+			StealMammoth.Owner = Greece
 		end
 	end)
 end
 
 ConsoleTriggers = function()
 	Trigger.OnEnteredProximityTrigger(Terminal1.CenterPosition, WDist.FromCells(1), function(actor, id)
-		if actor.Owner == greece then
+		if actor.Owner == Greece then
 			Trigger.RemoveProximityTrigger(id)
 			if not FlameTower1.IsDead then
 				Media.DisplayMessage(UserInterface.Translate("flame-turret-deactivated"), UserInterface.Translate("console"))
@@ -80,7 +80,7 @@ ConsoleTriggers = function()
 	end)
 
 	Trigger.OnEnteredProximityTrigger(Terminal2.CenterPosition, WDist.FromCells(1), function(actor, id)
-		if actor.Owner == greece then
+		if actor.Owner == Greece then
 			Trigger.RemoveProximityTrigger(id)
 			if not FlameTower2.IsDead then
 				Media.DisplayMessage(UserInterface.Translate("flame-turret-deactivated"), UserInterface.Translate("console"))
@@ -90,7 +90,7 @@ ConsoleTriggers = function()
 	end)
 
 	Trigger.OnEnteredProximityTrigger(Terminal3.CenterPosition, WDist.FromCells(1), function(actor, id)
-		if actor.Owner == greece then
+		if actor.Owner == Greece then
 			Trigger.RemoveProximityTrigger(id)
 			if not FlameTower3.IsDead then
 				Media.DisplayMessage(UserInterface.Translate("flame-turret-deactivated"), UserInterface.Translate("console"))
@@ -101,16 +101,16 @@ ConsoleTriggers = function()
 
 	local gasActive
 	Trigger.OnEnteredProximityTrigger(Terminal4.CenterPosition, WDist.FromCells(1), function(actor, id)
-		if actor.Owner == greece and not gasActive then
+		if actor.Owner == Greece and not gasActive then
 			Trigger.RemoveProximityTrigger(id)
 			gasActive = true
 
 			Media.DisplayMessage(UserInterface.Translate("sarin-dispenser-activated"), UserInterface.Translate("console"))
-			local KillCamera = Actor.Create("camera", true, { Owner = greece, Location = Sarin2.Location })
-			local flare1 = Actor.Create("flare", true, { Owner = england, Location = Sarin1.Location })
-			local flare2 = Actor.Create("flare", true, { Owner = england, Location = Sarin2.Location })
-			local flare3 = Actor.Create("flare", true, { Owner = england, Location = Sarin3.Location })
-			local flare4 = Actor.Create("flare", true, { Owner = england, Location = Sarin4.Location })
+			local KillCamera = Actor.Create("camera", true, { Owner = Greece, Location = Sarin2.Location })
+			local flare1 = Actor.Create("flare", true, { Owner = England, Location = Sarin1.Location })
+			local flare2 = Actor.Create("flare", true, { Owner = England, Location = Sarin2.Location })
+			local flare3 = Actor.Create("flare", true, { Owner = England, Location = Sarin3.Location })
+			local flare4 = Actor.Create("flare", true, { Owner = England, Location = Sarin4.Location })
 			Trigger.AfterDelay(DateTime.Seconds(4), function()
 				Utils.Do(SarinVictims, function(actor)
 					if not actor.IsDead then
@@ -130,7 +130,7 @@ ConsoleTriggers = function()
 	end)
 
 	Trigger.OnEnteredProximityTrigger(Terminal5.CenterPosition, WDist.FromCells(1), function(actor, id)
-		if actor.Owner == greece then
+		if actor.Owner == Greece then
 			Trigger.RemoveProximityTrigger(id)
 			if not BadCoil.IsDead then
 				Media.DisplayMessage(UserInterface.Translate("tesla-coil-deactivated"), UserInterface.Translate("console"))
@@ -141,13 +141,13 @@ ConsoleTriggers = function()
 
 	local teslaActive
 	Trigger.OnEnteredProximityTrigger(Terminal6.CenterPosition, WDist.FromCells(1), function(actor, id)
-		if actor.Owner == greece and not teslaActive then
+		if actor.Owner == Greece and not teslaActive then
 			Trigger.RemoveProximityTrigger(id)
 			teslaActive = true
 
 			Media.DisplayMessage(UserInterface.Translate("tesla-coil-activated"), UserInterface.Translate("console"))
-			local tesla1 = Actor.Create("tsla", true, { Owner = turkey, Location = TurkeyCoil1.Location })
-			local tesla2 = Actor.Create("tsla", true, { Owner = turkey, Location = TurkeyCoil2.Location })
+			local tesla1 = Actor.Create("tsla", true, { Owner = Turkey, Location = TurkeyCoil1.Location })
+			local tesla2 = Actor.Create("tsla", true, { Owner = Turkey, Location = TurkeyCoil2.Location })
 			Trigger.AfterDelay(DateTime.Seconds(10), function()
 				if not tesla1.IsDead then
 					tesla1.Kill()
@@ -160,7 +160,7 @@ ConsoleTriggers = function()
 	end)
 
 	Trigger.OnEnteredProximityTrigger(Terminal7.CenterPosition, WDist.FromCells(1), function(actor, id)
-		if actor.Owner == greece then
+		if actor.Owner == Greece then
 			Trigger.RemoveProximityTrigger(id)
 			if not FlameTowerTanya1.IsDead then
 				Media.DisplayMessage(UserInterface.Translate("flame-turret-deactivated"), UserInterface.Translate("console"))
@@ -174,7 +174,7 @@ ConsoleTriggers = function()
 	end)
 
 	Trigger.OnEnteredProximityTrigger(Terminal8.CenterPosition, WDist.FromCells(1), function(actor, id)
-		if actor.Owner == greece then
+		if actor.Owner == Greece then
 			Trigger.RemoveProximityTrigger(id)
 			if not FlameTowerExit1.IsDead then
 				Media.DisplayMessage(UserInterface.Translate("flame-turret-deactivated"), UserInterface.Translate("console"))
@@ -190,7 +190,7 @@ end
 
 CameraTriggers = function()
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
-		local startCamera = Actor.Create("camera", true, { Owner = greece, Location = start.Location })
+		local startCamera = Actor.Create("camera", true, { Owner = Greece, Location = start.Location })
 		Trigger.AfterDelay(DateTime.Seconds(10), function()
 			startCamera.Destroy()
 		end)
@@ -198,11 +198,11 @@ CameraTriggers = function()
 
 	local cam1Triggered
 	Trigger.OnEnteredProximityTrigger(CameraTrigger1.CenterPosition, WDist.FromCells(8), function(actor, id)
-		if actor.Owner == greece and not cam1Triggered then
+		if actor.Owner == Greece and not cam1Triggered then
 			Trigger.RemoveProximityTrigger(id)
 			cam1Triggered = true
 
-			local camera1 = Actor.Create("camera", true, { Owner = greece, Location = CameraTrigger1.Location })
+			local camera1 = Actor.Create("camera", true, { Owner = Greece, Location = CameraTrigger1.Location })
 			Trigger.OnAllKilled(Camera1Towers, function()
 				camera1.Destroy()
 			end)
@@ -211,11 +211,11 @@ CameraTriggers = function()
 
 	local cam2Triggered
 	Trigger.OnEnteredProximityTrigger(CameraTrigger2.CenterPosition, WDist.FromCells(8), function(actor, id)
-		if actor.Owner == greece and not cam2Triggered then
+		if actor.Owner == Greece and not cam2Triggered then
 			Trigger.RemoveProximityTrigger(id)
 			cam2Triggered = true
 
-			local camera2 = Actor.Create("camera", true, { Owner = greece, Location = CameraTrigger2.Location })
+			local camera2 = Actor.Create("camera", true, { Owner = Greece, Location = CameraTrigger2.Location })
 			Utils.Do(Camera2Team, function(actor)
 				actor.AttackMove(CameraTrigger1.Location)
 			end)
@@ -227,13 +227,13 @@ CameraTriggers = function()
 
 	local cam3Triggered
 	Trigger.OnEnteredProximityTrigger(CameraTrigger3.CenterPosition, WDist.FromCells(8), function(actor, id)
-		if actor.Owner == greece and not cam3Triggered then
+		if actor.Owner == Greece and not cam3Triggered then
 			Trigger.RemoveProximityTrigger(id)
 			cam3Triggered = true
 
-			local camera3 = Actor.Create("camera", true, { Owner = greece, Location = CameraTrigger3.Location })
-			Actor.Create("apwr", true, { Owner = france, Location = PowerPlantSpawn1.Location })
-			Actor.Create("apwr", true, { Owner = germany, Location = PowerPlantSpawn2.Location })
+			local camera3 = Actor.Create("camera", true, { Owner = Greece, Location = CameraTrigger3.Location })
+			Actor.Create("apwr", true, { Owner = France, Location = PowerPlantSpawn1.Location })
+			Actor.Create("apwr", true, { Owner = Germany, Location = PowerPlantSpawn2.Location })
 			if not Mammoth1.IsDead then
 				Mammoth1.AttackMove(MammothGo.Location)
 			end
@@ -246,11 +246,11 @@ CameraTriggers = function()
 
 	local cam4Triggered
 	Trigger.OnEnteredProximityTrigger(CameraTrigger4.CenterPosition, WDist.FromCells(9), function(actor, id)
-		if actor.Owner == greece and not cam4Triggered then
+		if actor.Owner == Greece and not cam4Triggered then
 			Trigger.RemoveProximityTrigger(id)
 			cam4Triggered = true
 
-			local camera4 = Actor.Create("camera", true, { Owner = greece, Location = CameraTrigger4.Location })
+			local camera4 = Actor.Create("camera", true, { Owner = Greece, Location = CameraTrigger4.Location })
 			Trigger.OnKilled(Mammoth2, function()
 				camera4.Destroy()
 			end)
@@ -259,11 +259,11 @@ CameraTriggers = function()
 
 	local cam5Triggered
 	Trigger.OnEnteredProximityTrigger(CameraTrigger5.CenterPosition, WDist.FromCells(8), function(actor, id)
-		if actor.Owner == greece and not cam5Triggered then
+		if actor.Owner == Greece and not cam5Triggered then
 			Trigger.RemoveProximityTrigger(id)
 			cam5Triggered = true
 
-			local camera5 = Actor.Create("camera", true, { Owner = greece, Location = CameraTrigger5.Location })
+			local camera5 = Actor.Create("camera", true, { Owner = Greece, Location = CameraTrigger5.Location })
 			Trigger.AfterDelay(DateTime.Seconds(10), function()
 				camera5.Destroy()
 			end)
@@ -272,21 +272,21 @@ CameraTriggers = function()
 
 	local cam6Triggered
 	Trigger.OnEnteredProximityTrigger(CameraTrigger6.CenterPosition, WDist.FromCells(11), function(actor, id)
-		if actor.Owner == greece and not cam6Triggered then
+		if actor.Owner == Greece and not cam6Triggered then
 			Trigger.RemoveProximityTrigger(id)
 			cam6Triggered = true
 
-			Actor.Create("camera", true, { Owner = greece, Location = CameraTrigger6.Location })
+			Actor.Create("camera", true, { Owner = Greece, Location = CameraTrigger6.Location })
 		end
 	end)
 
 	local executionTriggered
 	Trigger.OnEnteredFootprint(ExecutionArea, function(actor, id)
-		if actor.Owner == greece and not executionTriggered then
+		if actor.Owner == Greece and not executionTriggered then
 			Trigger.RemoveFootprintTrigger(id)
 			executionTriggered = true
 
-			local camera7 = Actor.Create("camera", true, { Owner = greece, Location = CameraTrigger7.Location })
+			local camera7 = Actor.Create("camera", true, { Owner = Greece, Location = CameraTrigger7.Location })
 			Trigger.AfterDelay(DateTime.Seconds(25), function()
 				camera7.Destroy()
 			end)
@@ -301,7 +301,7 @@ TruckSteal = function()
 		if not TruckStolen and not StealTruck.IsDead then
 			TruckStolen = true
 
-			local truckSteal1 = Actor.Create("camera", true, { Owner = greece, Location = TruckDrive1.Location })
+			local truckSteal1 = Actor.Create("camera", true, { Owner = Greece, Location = TruckDrive1.Location })
 			Trigger.AfterDelay(DateTime.Seconds(10), function()
 				truckSteal1.Destroy()
 			end)
@@ -326,8 +326,8 @@ TruckSteal = function()
 end
 
 SpyTruckDrive = function()
-	StealTruck = Reinforcements.Reinforce(ussr, TruckType, TruckEntry)
-	local truckSteal2 = Actor.Create("camera", true, { Owner = greece, Location = TruckCamera.Location })
+	StealTruck = Reinforcements.Reinforce(USSR, TruckType, TruckEntry)
+	local truckSteal2 = Actor.Create("camera", true, { Owner = Greece, Location = TruckCamera.Location })
 	Trigger.AfterDelay(DateTime.Seconds(10), function()
 		truckSteal2.Destroy()
 	end)
@@ -338,11 +338,11 @@ SpyTruckDrive = function()
 			Trigger.RemoveFootprintTrigger(id)
 			spyCreated = true
 
-			Spy = Actor.Create("spy", true, { Owner = greece, Location = TruckDrive5.Location })
-			Spy.DisguiseAsType("e1", ussr)
+			Spy = Actor.Create("spy", true, { Owner = Greece, Location = TruckDrive5.Location })
+			Spy.DisguiseAsType("e1", USSR)
 			Spy.Move(SpyMove.Location)
 
-			local dogCrewCamera = Actor.Create("camera", true, { Owner = greece, Location = DoggyCam.Location })
+			local dogCrewCamera = Actor.Create("camera", true, { Owner = Greece, Location = DoggyCam.Location })
 			Trigger.AfterDelay(DateTime.Seconds(10), function()
 				dogCrewCamera.Destroy()
 			end)
@@ -367,13 +367,13 @@ PrisonEscape = function()
 		Trigger.RemoveFootprintTrigger(id)
 
 		Media.DisplayMessage(UserInterface.Translate("prisoners-escaping"), UserInterface.Translate("intercom"))
-		Media.PlaySoundNotification(greece, "AlertBuzzer")
+		Media.PlaySoundNotification(Greece, "AlertBuzzer")
 		Utils.Do(GuardDogs, IdleHunt)
 	end)
 end
 
 ScientistExecution = function()
-	Media.PlaySoundNotification(greece, "AlertBleep")
+	Media.PlaySoundNotification(Greece, "AlertBleep")
 	Media.DisplayMessage(UserInterface.Translate("hurry-base-compromised"), UserInterface.Translate("soviet-officer"))
 	Utils.Do(DemoTeam, function(actor)
 		actor.AttackMove(DemoDrive2.Location)
@@ -440,35 +440,35 @@ end
 
 AcceptableLosses = 0
 Tick = function()
-	if greece.HasNoRequiredUnits() then
-		greece.MarkFailedObjective(ExitBase)
+	if Greece.HasNoRequiredUnits() then
+		Greece.MarkFailedObjective(ExitBase)
 	end
 
-	if Difficulty == "hard" and greece.UnitsLost > AcceptableLosses then
-		greece.MarkFailedObjective(NoCasualties)
+	if Difficulty == "hard" and Greece.UnitsLost > AcceptableLosses then
+		Greece.MarkFailedObjective(NoCasualties)
 	end
 end
 
 WorldLoaded = function()
-	greece = Player.GetPlayer("Greece")
-	england = Player.GetPlayer("England")
-	turkey = Player.GetPlayer("Turkey")
-	ussr = Player.GetPlayer("USSR")
-	france = Player.GetPlayer("France")
-	germany = Player.GetPlayer("Germany")
+	Greece = Player.GetPlayer("Greece")
+	England = Player.GetPlayer("England")
+	Turkey = Player.GetPlayer("Turkey")
+	USSR = Player.GetPlayer("USSR")
+	France = Player.GetPlayer("France")
+	Germany = Player.GetPlayer("Germany")
 
-	InitObjectives(greece)
+	InitObjectives(Greece)
 
-	ussrObj = ussr.AddObjective("")
-	ExitBase = AddPrimaryObjective(greece, "reach-eastern-exit")
-	FreeTanya = AddPrimaryObjective(greece, "free-tanya-keep-alive")
-	KillVIPs = AddSecondaryObjective(greece, "kill-soviet-officers-scientists")
-	StealTank = AddSecondaryObjective(greece, "steal-soviet-mammoth-tank")
+	USSRobjective = USSR.AddObjective("")
+	ExitBase = AddPrimaryObjective(Greece, "reach-eastern-exit")
+	FreeTanyaObjective = AddPrimaryObjective(Greece, "free-tanya-keep-alive")
+	KillVIPs = AddSecondaryObjective(Greece, "kill-soviet-officers-scientists")
+	StealTank = AddSecondaryObjective(Greece, "steal-soviet-mammoth-tank")
 	if Difficulty == "hard" then
-		NoCasualties = AddPrimaryObjective(greece, "no-casualties")
+		NoCasualties = AddPrimaryObjective(Greece, "no-casualties")
 	end
 
-	StartSpy.DisguiseAsType("e1", ussr)
+	StartSpy.DisguiseAsType("e1", USSR)
 	StartAttacker1.AttackMove(start.Location)
 	StartAttacker2.AttackMove(start.Location)
 

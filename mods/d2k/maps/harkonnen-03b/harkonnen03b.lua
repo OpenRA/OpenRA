@@ -96,25 +96,25 @@ HarkonnenBaseBuildings = { "barracks", "light_factory" }
 HarkonnenUpgrades = { "upgrade.barracks", "upgrade.light" }
 
 MessageCheck = function(index)
-	return #player.GetActorsByType(HarkonnenBaseBuildings[index]) > 0 and not player.HasPrerequisites({ HarkonnenUpgrades[index] })
+	return #Harkonnen.GetActorsByType(HarkonnenBaseBuildings[index]) > 0 and not Harkonnen.HasPrerequisites({ HarkonnenUpgrades[index] })
 end
 
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		atreides.MarkCompletedObjective(KillHarkonnen)
+	if Harkonnen.HasNoRequiredUnits() then
+		Atreides.MarkCompletedObjective(KillHarkonnen)
 	end
 
-	if atreides.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
+	if Atreides.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillAtreides) then
 		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
-		player.MarkCompletedObjective(KillAtreides)
+		Harkonnen.MarkCompletedObjective(KillAtreides)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[atreides] then
-		local units = atreides.GetActorsByType("harvester")
+	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[Atreides] then
+		local units = Atreides.GetActorsByType("harvester")
 
 		if #units > 0 then
-			LastHarvesterEaten[atreides] = false
-			ProtectHarvester(units[1], atreides, AttackGroupSize[Difficulty])
+			LastHarvesterEaten[Atreides] = false
+			ProtectHarvester(units[1], Atreides, AttackGroupSize[Difficulty])
 		end
 	end
 
@@ -124,30 +124,30 @@ Tick = function()
 end
 
 WorldLoaded = function()
-	atreides = Player.GetPlayer("Atreides")
-	player = Player.GetPlayer("Harkonnen")
+	Atreides = Player.GetPlayer("Atreides")
+	Harkonnen = Player.GetPlayer("Harkonnen")
 
-	InitObjectives(player)
-	KillHarkonnen = AddPrimaryObjective(atreides, "")
-	KillAtreides = AddPrimaryObjective(player, "eliminate-atreides-units-reinforcements")
+	InitObjectives(Harkonnen)
+	KillHarkonnen = AddPrimaryObjective(Atreides, "")
+	KillAtreides = AddPrimaryObjective(Harkonnen, "eliminate-atreides-units-reinforcements")
 
 	Camera.Position = HConyard.CenterPosition
 
 	Trigger.OnAllKilled(AtreidesBase, function()
-		Utils.Do(atreides.GetGroundAttackers(), IdleHunt)
+		Utils.Do(Atreides.GetGroundAttackers(), IdleHunt)
 	end)
 
 	local path = function() return Utils.Random(AtreidesPaths) end
-	local waveCondition = function() return player.IsObjectiveCompleted(KillAtreides) end
-	SendCarryallReinforcements(atreides, 0, AtreidesAttackWaves[Difficulty], AtreidesAttackDelay[Difficulty], path, AtreidesReinforcements[Difficulty], waveCondition)
+	local waveCondition = function() return Harkonnen.IsObjectiveCompleted(KillAtreides) end
+	SendCarryallReinforcements(Atreides, 0, AtreidesAttackWaves[Difficulty], AtreidesAttackDelay[Difficulty], path, AtreidesReinforcements[Difficulty], waveCondition)
 	ActivateAI()
 
 	Trigger.AfterDelay(DateTime.Minutes(2) + DateTime.Seconds(30), function()
-		Reinforcements.ReinforceWithTransport(player, "carryall.reinforce", HarkonnenReinforcements, HarkonnenPath, { HarkonnenPath[1] })
+		Reinforcements.ReinforceWithTransport(Harkonnen, "carryall.reinforce", HarkonnenReinforcements, HarkonnenPath, { HarkonnenPath[1] })
 	end)
 
-	TriggerCarryallReinforcements(player, atreides, AtreidesBaseAreaTriggers[1], AtreidesHunters[1], AtreidesHunterPaths[1])
-	TriggerCarryallReinforcements(player, atreides, AtreidesBaseAreaTriggers[2], AtreidesHunters[2], AtreidesHunterPaths[2])
-	TriggerCarryallReinforcements(player, atreides, AtreidesBaseAreaTriggers[3], AtreidesHunters[3], AtreidesHunterPaths[3])
-	TriggerCarryallReinforcements(player, atreides, AtreidesBaseAreaTriggers[4], AtreidesHunters[4], AtreidesHunterPaths[4])
+	TriggerCarryallReinforcements(Harkonnen, Atreides, AtreidesBaseAreaTriggers[1], AtreidesHunters[1], AtreidesHunterPaths[1])
+	TriggerCarryallReinforcements(Harkonnen, Atreides, AtreidesBaseAreaTriggers[2], AtreidesHunters[2], AtreidesHunterPaths[2])
+	TriggerCarryallReinforcements(Harkonnen, Atreides, AtreidesBaseAreaTriggers[3], AtreidesHunters[3], AtreidesHunterPaths[3])
+	TriggerCarryallReinforcements(Harkonnen, Atreides, AtreidesBaseAreaTriggers[4], AtreidesHunters[4], AtreidesHunterPaths[4])
 end

@@ -26,17 +26,17 @@ CameraBarrierTrigger = { CPos.New(65, 39), CPos.New(65, 40), CPos.New(66, 40), C
 CameraBaseTrigger = { CPos.New(53, 42), CPos.New(54, 42), CPos.New(54, 41), CPos.New(55, 41), CPos.New(56, 41), CPos.New(56, 40), CPos.New(57, 40), CPos.New(57, 39), CPos.New(58, 39), CPos.New(59, 39), CPos.New(59, 38), CPos.New(60, 38), CPos.New(61, 38) }
 
 Trigger.OnEnteredFootprint(TruckGoalTrigger, function(a, id)
-	if not truckGoalTrigger and a.Owner == player and a.Type == "truk" then
-		truckGoalTrigger = true
-		player.MarkCompletedObjective(sovietObjective)
-		player.MarkCompletedObjective(SaveAllTrucks)
+	if not TruckGoalTriggered and a.Owner == USSR and a.Type == "truk" then
+		TruckGoalTriggered = true
+		USSR.MarkCompletedObjective(SovietObjective)
+		USSR.MarkCompletedObjective(SaveAllTrucks)
 	end
 end)
 
 Trigger.OnEnteredFootprint(CameraBarrierTrigger, function(a, id)
-	if not cameraBarrierTrigger and a.Owner == player then
-		cameraBarrierTrigger = true
-		local cameraBarrier = Actor.Create("camera", true, { Owner = player, Location = CameraBarrier.Location })
+	if not CameraBarrierTriggered and a.Owner == USSR then
+		CameraBarrierTriggered = true
+		local cameraBarrier = Actor.Create("camera", true, { Owner = USSR, Location = CameraBarrier.Location })
 		Trigger.AfterDelay(DateTime.Seconds(15), function()
 			cameraBarrier.Destroy()
 		end)
@@ -44,12 +44,12 @@ Trigger.OnEnteredFootprint(CameraBarrierTrigger, function(a, id)
 end)
 
 Trigger.OnEnteredFootprint(CameraBaseTrigger, function(a, id)
-	if not cameraBaseTrigger and a.Owner == player then
-		cameraBaseTrigger = true
-		local cameraBase1 = Actor.Create("camera", true, { Owner = player, Location = CameraBase1.Location })
-		local cameraBase2 = Actor.Create("camera", true, { Owner = player, Location = CameraBase2.Location })
-		local cameraBase3 = Actor.Create("camera", true, { Owner = player, Location = CameraBase3.Location })
-		local cameraBase4 = Actor.Create("camera", true, { Owner = player, Location = CameraBase4.Location })
+	if not CameraBaseTriggered and a.Owner == USSR then
+		CameraBaseTriggered = true
+		local cameraBase1 = Actor.Create("camera", true, { Owner = USSR, Location = CameraBase1.Location })
+		local cameraBase2 = Actor.Create("camera", true, { Owner = USSR, Location = CameraBase2.Location })
+		local cameraBase3 = Actor.Create("camera", true, { Owner = USSR, Location = CameraBase3.Location })
+		local cameraBase4 = Actor.Create("camera", true, { Owner = USSR, Location = CameraBase4.Location })
 		Trigger.AfterDelay(DateTime.Minutes(1), function()
 			cameraBase1.Destroy()
 			cameraBase2.Destroy()
@@ -60,44 +60,44 @@ Trigger.OnEnteredFootprint(CameraBaseTrigger, function(a, id)
 end)
 
 Trigger.OnAllKilled(Trucks, function()
-	enemy.MarkCompletedObjective(alliedObjective)
+	Greece.MarkCompletedObjective(AlliedObjective)
 end)
 
 Trigger.OnAnyKilled(Trucks, function()
-	player.MarkFailedObjective(SaveAllTrucks)
+	USSR.MarkFailedObjective(SaveAllTrucks)
 end)
 
-Trigger.OnKilled(Apwr, function(building)
+Trigger.OnKilled(Apwr, function()
 	BaseApwr.exists = false
 end)
 
-Trigger.OnKilled(Barr, function(building)
+Trigger.OnKilled(Barr, function()
 	BaseTent.exists = false
 end)
 
-Trigger.OnKilled(Proc, function(building)
+Trigger.OnKilled(Proc, function()
 	BaseProc.exists = false
 end)
 
-Trigger.OnKilled(Weap, function(building)
+Trigger.OnKilled(Weap, function()
 	BaseWeap.exists = false
 end)
 
-Trigger.OnKilled(Apwr2, function(building)
+Trigger.OnKilled(Apwr2, function()
 	BaseApwr2.exists = false
 end)
 
 Trigger.OnKilledOrCaptured(Dome, function()
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
-		player.MarkCompletedObjective(sovietObjective2)
-		Media.PlaySpeechNotification(player, "ObjectiveMet")
+		USSR.MarkCompletedObjective(SovietObjective2)
+		Media.PlaySpeechNotification(USSR, "ObjectiveMet")
 	end)
 end)
 
 -- Activate the AI once the player deployed the Mcv
 Trigger.OnRemovedFromWorld(Mcv, function()
-	if not mcvDeployed then
-		mcvDeployed = true
+	if not McvDeployed then
+		McvDeployed = true
 		BuildBase()
 		SendEnemies()
 		Trigger.AfterDelay(DateTime.Minutes(1), ProduceInfantry)
@@ -111,8 +111,8 @@ Trigger.OnRemovedFromWorld(Mcv, function()
 end)
 
 WorldLoaded = function()
-	player = Player.GetPlayer("USSR")
-	enemy = Player.GetPlayer("Greece")
+	USSR = Player.GetPlayer("USSR")
+	Greece = Player.GetPlayer("Greece")
 
 	Camera.Position = CameraStart.CenterPosition
 
@@ -123,33 +123,33 @@ WorldLoaded = function()
 	end)
 
 	Utils.Do(Map.NamedActors, function(actor)
-		if actor.Owner == enemy and actor.HasProperty("StartBuildingRepairs") then
+		if actor.Owner == Greece and actor.HasProperty("StartBuildingRepairs") then
 			Trigger.OnDamaged(actor, function(building)
-				if building.Owner == enemy and building.Health < 3/4 * building.MaxHealth then
+				if building.Owner == Greece and building.Health < 3/4 * building.MaxHealth then
 					building.StartBuildingRepairs()
 				end
 			end)
 		end
 	end)
 
-	Reinforcements.ReinforceWithTransport(player, "apc", SovietReinforcements1, SovietReinforcements1Waypoints)
-	Reinforcements.ReinforceWithTransport(player, "apc", SovietReinforcements2, SovietReinforcements2Waypoints)
+	Reinforcements.ReinforceWithTransport(USSR, "apc", SovietReinforcements1, SovietReinforcements1Waypoints)
+	Reinforcements.ReinforceWithTransport(USSR, "apc", SovietReinforcements2, SovietReinforcements2Waypoints)
 
-	InitObjectives(player)
+	InitObjectives(USSR)
 
-	alliedObjective = AddPrimaryObjective(enemy, "")
-	sovietObjective = AddPrimaryObjective(player, "escort-convoy")
-	sovietObjective2 = AddSecondaryObjective(player, "destroy-capture-radar-dome-reinforcements")
-	SaveAllTrucks = AddSecondaryObjective(player, "Keep all trucks alive.")
+	AlliedObjective = AddPrimaryObjective(Greece, "")
+	SovietObjective = AddPrimaryObjective(USSR, "escort-convoy")
+	SovietObjective2 = AddSecondaryObjective(USSR, "destroy-capture-radar-dome-reinforcements")
+	SaveAllTrucks = AddSecondaryObjective(USSR, "Keep all trucks alive.")
 end
 
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		enemy.MarkCompletedObjective(alliedObjective)
+	if USSR.HasNoRequiredUnits() then
+		Greece.MarkCompletedObjective(AlliedObjective)
 	end
 
-	if enemy.Resources >= enemy.ResourceCapacity * 0.75 then
-		enemy.Cash = enemy.Cash + enemy.Resources - enemy.ResourceCapacity * 0.25
-		enemy.Resources = enemy.ResourceCapacity * 0.25
+	if Greece.Resources >= Greece.ResourceCapacity * 0.75 then
+		Greece.Cash = Greece.Cash + Greece.Resources - Greece.ResourceCapacity * 0.25
+		Greece.Resources = Greece.ResourceCapacity * 0.25
 	end
 end

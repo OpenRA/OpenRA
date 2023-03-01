@@ -68,23 +68,23 @@ GuardHarvester = function(unit, harvester)
 	end
 end
 
-ticked = TimerTicks
+Ticked = TimerTicks
 Tick = function()
-	if soviets.HasNoRequiredUnits() then
+	if Soviets.HasNoRequiredUnits() then
 		if DestroyObj then
-			allies.MarkCompletedObjective(DestroyObj)
+			Allies.MarkCompletedObjective(DestroyObj)
 		else
-			DestroyObj = AddPrimaryObjective(allies, "destroy-all-soviet-forces")
-			allies.MarkCompletedObjective(DestroyObj)
+			DestroyObj = AddPrimaryObjective(Allies, "destroy-all-soviet-forces")
+			Allies.MarkCompletedObjective(DestroyObj)
 		end
 	end
 
-	if allies.HasNoRequiredUnits() then
-		soviets.MarkCompletedObjective(SovietObj)
+	if Allies.HasNoRequiredUnits() then
+		Soviets.MarkCompletedObjective(SovietObj)
 	end
 
-	if soviets.Resources > soviets.ResourceCapacity / 2 then
-		soviets.Resources = soviets.ResourceCapacity / 2
+	if Soviets.Resources > Soviets.ResourceCapacity / 2 then
+		Soviets.Resources = Soviets.ResourceCapacity / 2
 	end
 
 	if DateTime.GameTime == ProduceAtFrame then
@@ -105,25 +105,25 @@ Tick = function()
 		end
 	end
 
-	if DateTime.Minutes(5) == ticked then
-		Media.PlaySpeechNotification(allies, "WarningFiveMinutesRemaining")
+	if DateTime.Minutes(5) == Ticked then
+		Media.PlaySpeechNotification(Allies, "WarningFiveMinutesRemaining")
 		InitCountDown()
 	end
 
-	if ticked > 0 then
-		if (ticked % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("soviet-reinforcements-arrive-in", { ["time"] = Utils.FormatTime(ticked) })
+	if Ticked > 0 then
+		if (Ticked % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("soviet-reinforcements-arrive-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(Timer, TimerColor)
 		end
-		ticked = ticked - 1
-	elseif ticked == 0 then
+		Ticked = Ticked - 1
+	elseif Ticked == 0 then
 		FinishTimer()
-		ticked = ticked - 1
+		Ticked = Ticked - 1
 	end
 end
 
 SendSovietParadrops = function(table)
-	local paraproxy = Actor.Create(table.type, false, { Owner = soviets })
+	local paraproxy = Actor.Create(table.type, false, { Owner = Soviets })
 	local aircraft = paraproxy.TargetParatroopers(table.target.CenterPosition)
 	Utils.Do(aircraft, function(a)
 		Trigger.OnPassengerExited(a, function(t, p)
@@ -134,7 +134,7 @@ SendSovietParadrops = function(table)
 end
 
 SpawnSovietInfantry = function()
-	soviets.Build({ Utils.Random(SovietInfantry) }, function(units)
+	Soviets.Build({ Utils.Random(SovietInfantry) }, function(units)
 		IdleHunt(units[1])
 	end)
 end
@@ -142,7 +142,7 @@ end
 SpawnSovietVehicle = function(spawnpoints, rallypoints)
 	local route = Utils.RandomInteger(1, #spawnpoints + 1)
 	local rally = Utils.RandomInteger(1, #rallypoints + 1)
-	local unit = Reinforcements.Reinforce(soviets, { Utils.Random(SovietVehicles) }, { spawnpoints[route].Location })[1]
+	local unit = Reinforcements.Reinforce(Soviets, { Utils.Random(SovietVehicles) }, { spawnpoints[route].Location })[1]
 	unit.AttackMove(rallypoints[rally].Location)
 	IdleHunt(unit)
 
@@ -152,7 +152,7 @@ SpawnSovietVehicle = function(spawnpoints, rallypoints)
 end
 
 SpawnAndAttack = function(types, entry)
-	local units = Reinforcements.Reinforce(soviets, types, { entry })
+	local units = Reinforcements.Reinforce(Soviets, types, { entry })
 	Utils.Do(units, function(unit)
 		IdleHunt(unit)
 
@@ -164,10 +164,10 @@ SpawnAndAttack = function(types, entry)
 end
 
 SendFrenchReinforcements = function()
-	local camera = Actor.Create("camera", true, { Owner = allies, Location = SovietRally1.Location })
-	Beacon.New(allies, FranceEntry.CenterPosition - WVec.New(0, 3 * 1024, 0))
-	Media.PlaySpeechNotification(allies, "AlliedReinforcementsArrived")
-	Reinforcements.Reinforce(allies, FrenchSquad, { FranceEntry.Location, FranceRally.Location })
+	local camera = Actor.Create("camera", true, { Owner = Allies, Location = SovietRally1.Location })
+	Beacon.New(Allies, FranceEntry.CenterPosition - WVec.New(0, 3 * 1024, 0))
+	Media.PlaySpeechNotification(Allies, "AlliedReinforcementsArrived")
+	Reinforcements.Reinforce(Allies, FrenchSquad, { FranceEntry.Location, FranceRally.Location })
 	Trigger.AfterDelay(DateTime.Seconds(3), function() camera.Destroy() end)
 end
 
@@ -179,7 +179,7 @@ FrenchReinforcements = function()
 		return
 	end
 
-	powerproxy = Actor.Create("powerproxy.parabombs", false, { Owner = allies })
+	local powerproxy = Actor.Create("powerproxy.parabombs", false, { Owner = Allies })
 	powerproxy.TargetAirstrike(drum1.CenterPosition, Angle.NorthEast + Angle.New(16))
 	powerproxy.TargetAirstrike(drum2.CenterPosition, Angle.NorthEast)
 	powerproxy.TargetAirstrike(drum3.CenterPosition, Angle.NorthEast - Angle.New(16))
@@ -215,9 +215,9 @@ FinalAttack = function()
 	Trigger.OnAllKilledOrCaptured(units, function()
 		if not DestroyObj then
 			Media.DisplayMessage(UserInterface.Translate("reinforced-position-initiate-counter-attack"), UserInterface.Translate("incoming-report"))
-			DestroyObj = AddPrimaryObjective(allies, "destroy-remaining-soviet-forces-area")
+			DestroyObj = AddPrimaryObjective(Allies, "destroy-remaining-soviet-forces-area")
 		end
-		allies.MarkCompletedObjective(SurviveObj)
+		Allies.MarkCompletedObjective(SurviveObj)
 	end)
 end
 
@@ -234,15 +234,15 @@ FinishTimer = function()
 	Trigger.AfterDelay(DateTime.Seconds(10), function() UserInterface.SetMissionText("") end)
 end
 
-wave = 1
+Wave = 1
 SendParadrops = function()
-	SendSovietParadrops(ParaWaves[wave])
+	SendSovietParadrops(ParaWaves[Wave])
 
-	wave = wave + 1
-	if wave > #ParaWaves then
+	Wave = Wave + 1
+	if Wave > #ParaWaves then
 		Trigger.AfterDelay(AttackTicks, FrenchReinforcements)
 	else
-		Trigger.AfterDelay(ParaWaves[wave].delay, SendParadrops)
+		Trigger.AfterDelay(ParaWaves[Wave].delay, SendParadrops)
 	end
 end
 
@@ -251,12 +251,12 @@ SetupBridges = function()
 	local counter = function()
 		count = count + 1
 		if count == 2 then
-			allies.MarkCompletedObjective(RepairBridges)
+			Allies.MarkCompletedObjective(RepairBridges)
 		end
 	end
 
 	Media.DisplayMessage(UserInterface.Translate("repair-bridges-for-reinforcement"), UserInterface.Translate("incoming-report"))
-	RepairBridges = AddSecondaryObjective(allies, "repair-two-southern-bridges")
+	RepairBridges = AddSecondaryObjective(Allies, "repair-two-southern-bridges")
 
 	local bridgeA = Map.ActorsInCircle(BrokenBridge1.CenterPosition, WDist.FromCells(1), function(self) return self.Type == "bridge1" end)
 	local bridgeB = Map.ActorsInCircle(BrokenBridge2.CenterPosition, WDist.FromCells(1), function(self) return self.Type == "bridge1" end)
@@ -264,39 +264,39 @@ SetupBridges = function()
 	Utils.Do(bridgeA, function(bridge)
 		Trigger.OnDamaged(bridge, function()
 			Utils.Do(bridgeA, function(self) Trigger.ClearAll(self) end)
-			Media.PlaySpeechNotification(allies, "AlliedReinforcementsArrived")
-			Reinforcements.Reinforce(allies, { "1tnk", "2tnk", "2tnk" }, { ReinforcementsEntry1.Location, ReinforcementsRally1.Location })
+			Media.PlaySpeechNotification(Allies, "AlliedReinforcementsArrived")
+			Reinforcements.Reinforce(Allies, { "1tnk", "2tnk", "2tnk" }, { ReinforcementsEntry1.Location, ReinforcementsRally1.Location })
 			counter()
 		end)
 	end)
 	Utils.Do(bridgeB, function(bridge)
 		Trigger.OnDamaged(bridge, function()
 			Utils.Do(bridgeB, function(self) Trigger.ClearAll(self) end)
-			Media.PlaySpeechNotification(allies, "AlliedReinforcementsArrived")
-			Reinforcements.Reinforce(allies, { "jeep", "1tnk", "1tnk" }, { ReinforcementsEntry2.Location, ReinforcementsRally2.Location })
+			Media.PlaySpeechNotification(Allies, "AlliedReinforcementsArrived")
+			Reinforcements.Reinforce(Allies, { "jeep", "1tnk", "1tnk" }, { ReinforcementsEntry2.Location, ReinforcementsRally2.Location })
 			counter()
 		end)
 	end)
 end
 
 InitCountDown = function()
-	Trigger.AfterDelay(DateTime.Minutes(1), function() Media.PlaySpeechNotification(allies, "WarningFourMinutesRemaining") end)
-	Trigger.AfterDelay(DateTime.Minutes(2), function() Media.PlaySpeechNotification(allies, "WarningThreeMinutesRemaining") end)
-	Trigger.AfterDelay(DateTime.Minutes(3), function() Media.PlaySpeechNotification(allies, "WarningTwoMinutesRemaining") end)
-	Trigger.AfterDelay(DateTime.Minutes(4), function() Media.PlaySpeechNotification(allies, "WarningOneMinuteRemaining") end)
+	Trigger.AfterDelay(DateTime.Minutes(1), function() Media.PlaySpeechNotification(Allies, "WarningFourMinutesRemaining") end)
+	Trigger.AfterDelay(DateTime.Minutes(2), function() Media.PlaySpeechNotification(Allies, "WarningThreeMinutesRemaining") end)
+	Trigger.AfterDelay(DateTime.Minutes(3), function() Media.PlaySpeechNotification(Allies, "WarningTwoMinutesRemaining") end)
+	Trigger.AfterDelay(DateTime.Minutes(4), function() Media.PlaySpeechNotification(Allies, "WarningOneMinuteRemaining") end)
 end
 
 AddObjectives = function()
-	InitObjectives(allies)
+	InitObjectives(Allies)
 
-	SurviveObj = AddPrimaryObjective(allies, "enforce-position-hold-out-onslaught")
-	SovietObj = AddPrimaryObjective(soviets, "")
+	SurviveObj = AddPrimaryObjective(Allies, "enforce-position-hold-out-onslaught")
+	SovietObj = AddPrimaryObjective(Soviets, "")
 
 	Trigger.AfterDelay(DateTime.Seconds(15), function()
 		SetupBridges()
 	end)
 
-	Trigger.OnPlayerWon(allies, function()
+	Trigger.OnPlayerWon(Allies, function()
 		Media.DisplayMessage(UserInterface.Translate("remaining-soviet-presence-destroyed"), UserInterface.Translate("incoming-report"))
 	end)
 end
@@ -305,11 +305,11 @@ InitMission = function()
 	Camera.Position = AlliesBase.CenterPosition
 	TimerColor = HSLColor.Red
 
-	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(allies, "MissionTimerInitialised") end)
+	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(Allies, "MissionTimerInitialised") end)
 
 	Trigger.AfterDelay(TimerTicks, function()
 		Media.DisplayMessage(UserInterface.Translate("soviet-reinforcements-approaching"), UserInterface.Translate("incoming-report"))
-		Media.PlaySpeechNotification(allies, "SovietReinforcementsArrived")
+		Media.PlaySpeechNotification(Allies, "SovietReinforcementsArrived")
 		SpawnSovietVehicle(NewSovietEntryPoints, NewSovietRallyPoints)
 		FinalAttack()
 		Producing = false
@@ -361,7 +361,7 @@ SetupSoviets = function()
 			toBuild[i] = Utils.Random(SovietInfantry)
 		end
 
-		soviets.Build(toBuild, function(units)
+		Soviets.Build(toBuild, function(units)
 			Utils.Do(units, function(unit)
 				InfantryGuards[#InfantryGuards + 1] = unit
 				GuardHarvester(unit, Harvester2)
@@ -373,10 +373,10 @@ SetupSoviets = function()
 	end)
 
 	Trigger.AfterDelay(0, function()
-		local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == soviets and self.HasProperty("StartBuildingRepairs") end)
+		local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == Soviets and self.HasProperty("StartBuildingRepairs") end)
 		Utils.Do(buildings, function(actor)
 			Trigger.OnDamaged(actor, function(building)
-				if building.Owner == soviets and building.Health < building.MaxHealth * 3/4 then
+				if building.Owner == Soviets and building.Health < building.MaxHealth * 3/4 then
 					building.StartBuildingRepairs()
 				end
 			end)
@@ -385,9 +385,8 @@ SetupSoviets = function()
 end
 
 WorldLoaded = function()
-
-	allies = Player.GetPlayer("Allies")
-	soviets = Player.GetPlayer("Soviets")
+	Allies = Player.GetPlayer("Allies")
+	Soviets = Player.GetPlayer("Soviets")
 
 	AddObjectives()
 	InitMission()

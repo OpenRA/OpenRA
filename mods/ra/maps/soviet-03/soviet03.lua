@@ -7,11 +7,11 @@
    information, see COPYING.
 ]]
 if Difficulty == "easy" then
-	remainingTime = DateTime.Minutes(7)
+	RemainingTime = DateTime.Minutes(7)
 elseif Difficulty == "normal" then
-	remainingTime = DateTime.Minutes(6)
+	RemainingTime = DateTime.Minutes(6)
 elseif Difficulty == "hard" then
-	remainingTime = DateTime.Minutes(5)
+	RemainingTime = DateTime.Minutes(5)
 end
 
 USSRReinforcements1 = { "dog", "dog", "dog", "dog", "dog" }
@@ -39,19 +39,19 @@ RTrapTrigger = { CPos.New(46, 34), CPos.New(47, 35), CPos.New(48, 36), CPos.New(
 SpyHideout4Trigger = { CPos.New(41, 34), CPos.New(41, 35), CPos.New(41, 36), CPos.New(41, 37), CPos.New(41, 38) }
 
 IntroSequence = function()
-	TheSpy.DisguiseAsType("e1", player)
-	Actor.Create("camera", true, { Owner = player, Location = Playerbase.Location })
-	Actor.Create("camera", true, { Owner = player, Location = IntroCamera.Location })
-	Actor.Create("camera", true, { Owner = player, Location = FarmArea.Location })
+	TheSpy.DisguiseAsType("e1", USSR)
+	Actor.Create("camera", true, { Owner = USSR, Location = Playerbase.Location })
+	Actor.Create("camera", true, { Owner = USSR, Location = IntroCamera.Location })
+	Actor.Create("camera", true, { Owner = USSR, Location = FarmArea.Location })
 	if not TheSpy.IsDead then
 		TheSpy.Move(SpyWaypoint1.Location)
 		TheSpy.Move(SpyWaypoint2.Location)
 	end
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
-		Media.PlaySoundNotification(player, "sking")
+		Media.PlaySoundNotification(USSR, "sking")
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
-		Media.PlaySpeechNotification(player, "ExplosiveChargePlaced")
+		Media.PlaySpeechNotification(USSR, "ExplosiveChargePlaced")
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(4), function()
 		if not RSoldier1.IsDead and not BaseBarrel1.IsDead then
@@ -82,20 +82,20 @@ IntroSequence = function()
 		end
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(8), function()
-		Dogs = Reinforcements.Reinforce(player, USSRReinforcements1, { ReinforcementSpawn.Location, ReinforcementGoal.Location }, 0)
-		Media.PlaySpeechNotification(player, "ReinforcementsArrived")
-		timerstarted = true
+		Dogs = Reinforcements.Reinforce(USSR, USSRReinforcements1, { ReinforcementSpawn.Location, ReinforcementGoal.Location }, 0)
+		Media.PlaySpeechNotification(USSR, "ReinforcementsArrived")
+		TimerStarted = true
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(9), function()
-		Media.PlaySoundNotification(player, "AlertBleep")
+		Media.PlaySoundNotification(USSR, "AlertBleep")
 	end)
 		Trigger.AfterDelay(DateTime.Seconds(10), function()
-		Media.PlaySpeechNotification(player, "TimerStarted")
+		Media.PlaySpeechNotification(USSR, "TimerStarted")
 	end)
 end
 
 SendUSSRParadrops = function()
-	paraproxy = Actor.Create("powerproxy.paratroopers", false, { Owner = player })
+	local paraproxy = Actor.Create("powerproxy.paratroopers", false, { Owner = USSR })
 	paraproxy.TargetParatroopers(ReinforcementDropOff.CenterPosition, Angle.North)
 	paraproxy.Destroy()
 end
@@ -112,11 +112,11 @@ SpyFinalSequency = function()
 end
 
 SpyHelicopterEscape = function()
-	if not spyHelicopterEscape then
-		spyHelicopterEscape = true
+	if not SpyHelicopterEscaped then
+		SpyHelicopterEscaped = true
 		SpyFinalSequency()
-		Actor.Create("camera", true, { Owner = player, Location = CameraFinalArea.Location })
-		ExtractionHeli = Reinforcements.ReinforceWithTransport(greece, ExtractionHeliType, nil, ExtractionPath)[1]
+		Actor.Create("camera", true, { Owner = USSR, Location = CameraFinalArea.Location })
+		ExtractionHeli = Reinforcements.ReinforceWithTransport(Greece, ExtractionHeliType, nil, ExtractionPath)[1]
 		local exitPos = CPos.New(ExtractionPath[1].X, ExtractionPath[2].Y)
 		Trigger.AfterDelay(DateTime.Seconds(5), function()
 			if not TheSpy.IsDead and not ExtractionHeli.IsDead then
@@ -129,22 +129,22 @@ SpyHelicopterEscape = function()
 			end
 		end)
 		Trigger.AfterDelay(DateTime.Seconds(12), function()
-			enemy.MarkCompletedObjective(alliedObjective)
+			England.MarkCompletedObjective(AlliedObjective)
 		end)
 	end
 end
 
 Trigger.OnAllKilled(Farmers, function()
-	Reinforcements.Reinforce(player, USSRReinforcementsFarm, { FarmSpawn.Location, FarmArea.Location }, 0)
-	player.MarkCompletedObjective(sovietObjective2)
+	Reinforcements.Reinforce(USSR, USSRReinforcementsFarm, { FarmSpawn.Location, FarmArea.Location }, 0)
+	USSR.MarkCompletedObjective(SovietObjective2)
 end)
 
 Trigger.OnAllKilled(RedBuildings, function()
-	player.MarkCompletedObjective(sovietObjective3)
+	USSR.MarkCompletedObjective(SovietObjective3)
 end)
 
 Trigger.OnAnyKilled(BarrierSoldiers, function()
-	if barrier1Trigger then
+	if Barrier1Triggered then
 		Utils.Do(BarrierSoldiers, function(actor)
 			if not actor.IsDead then
 				Trigger.OnIdle(actor, actor.Hunt)
@@ -154,10 +154,10 @@ Trigger.OnAnyKilled(BarrierSoldiers, function()
 end)
 
 Trigger.OnEnteredFootprint(SpyHideout1Trigger, function(a, id)
-	if not spyHideout1Trigger and a.Owner == player then
-		spyHideout1Trigger = true
+	if not SpyHideout1Triggered and a.Owner == USSR then
+		SpyHideout1Triggered = true
 		Trigger.RemoveFootprintTrigger(id)
-		Actor.Create("camera", true, { Owner = player, Location = SpyHideout1.Location })
+		Actor.Create("camera", true, { Owner = USSR, Location = SpyHideout1.Location })
 		if not TheSpy.IsDead and not SpyHideout1.IsDead then
 			TheSpy.EnterTransport(SpyHideout1)
 		end
@@ -165,11 +165,11 @@ Trigger.OnEnteredFootprint(SpyHideout1Trigger, function(a, id)
 end)
 
 Trigger.OnEnteredFootprint(SpyHideout2PathTrigger, function(a, id)
-	if not spyHideout2PathTrigger and a.Owner == player then
-		spyHideout2PathTrigger = true
+	if not SpyHideout2PathTriggered and a.Owner == USSR then
+		SpyHideout2PathTriggered = true
 		Trigger.RemoveFootprintTrigger(id)
-		Actor.Create("camera", true, { Owner = player, Location = CameraSpyVillage.Location })
-		Actor.Create("camera", true, { Owner = player, Location = CameraVillage.Location })
+		Actor.Create("camera", true, { Owner = USSR, Location = CameraSpyVillage.Location })
+		Actor.Create("camera", true, { Owner = USSR, Location = CameraVillage.Location })
 		if not TheSpy.IsDead and not SpyHideout2.IsDead then
 			TheSpy.EnterTransport(SpyHideout2)
 		end
@@ -177,10 +177,10 @@ Trigger.OnEnteredFootprint(SpyHideout2PathTrigger, function(a, id)
 end)
 
 Trigger.OnEnteredFootprint(SpyHideout2Trigger, function(a, id)
-	if not spyHideout2Trigger and a.Owner == player then
-		spyHideout2Trigger = true
-		SpyGuards1 = Reinforcements.Reinforce(greece, EnemyReinforcements1SpyHideout2, { EnemyReinforcements1.Location, EnemyReinforcements1Goal.Location }, 0)
-		SpyGuards2 = Reinforcements.Reinforce(greece, EnemyReinforcements2SpyHideout2, { EnemyReinforcements2.Location, EnemyReinforcements2Goal.Location }, 0)
+	if not SpyHideout2Triggered and a.Owner == USSR then
+		SpyHideout2Triggered = true
+		SpyGuards1 = Reinforcements.Reinforce(Greece, EnemyReinforcements1SpyHideout2, { EnemyReinforcements1.Location, EnemyReinforcements1Goal.Location }, 0)
+		SpyGuards2 = Reinforcements.Reinforce(Greece, EnemyReinforcements2SpyHideout2, { EnemyReinforcements2.Location, EnemyReinforcements2Goal.Location }, 0)
 		Utils.Do(SpyGuards1, function(actor)
 			if not actor.IsDead then
 				Trigger.OnIdle(actor, actor.Hunt)
@@ -203,22 +203,22 @@ Trigger.OnEnteredFootprint(SpyHideout2Trigger, function(a, id)
 		end)
 		Trigger.AfterDelay(DateTime.Seconds(7), function()
 			SendUSSRParadrops()
-			Media.PlaySpeechNotification(player, "ReinforcementsArrived")
+			Media.PlaySpeechNotification(USSR, "ReinforcementsArrived")
 		end)
 	end
 end)
 
 Trigger.OnEnteredFootprint(SpyTransport1CheckpointTrigger, function(a, id)
-	if not spyTransport1CheckpointTrigger and a.Owner == enemy then
-		spyTransport1CheckpointTrigger = true
+	if not SpyTransport1CheckpointTriggered and a.Owner == England then
+		SpyTransport1CheckpointTriggered = true
 		Trigger.AfterDelay(DateTime.Seconds(2), function()
-			Actor.Create("camera", true, { Owner = player, Location = CameraWater1.Location })
-			Actor.Create("camera", true, { Owner = player, Location = CameraWater2.Location })
-			Actor.Create("camera", true, { Owner = player, Location = CameraWater3.Location })
-			Actor.Create("camera", true, { Owner = player, Location = CameraWater4.Location })
-			Actor.Create("camera", true, { Owner = player, Location = CameraWater5.Location })
-			Actor.Create("camera", true, { Owner = player, Location = CameraWater6.Location })
-			Actor.Create("camera", true, { Owner = player, Location = TransportPath2.Location })
+			Actor.Create("camera", true, { Owner = USSR, Location = CameraWater1.Location })
+			Actor.Create("camera", true, { Owner = USSR, Location = CameraWater2.Location })
+			Actor.Create("camera", true, { Owner = USSR, Location = CameraWater3.Location })
+			Actor.Create("camera", true, { Owner = USSR, Location = CameraWater4.Location })
+			Actor.Create("camera", true, { Owner = USSR, Location = CameraWater5.Location })
+			Actor.Create("camera", true, { Owner = USSR, Location = CameraWater6.Location })
+			Actor.Create("camera", true, { Owner = USSR, Location = TransportPath2.Location })
 			if not Transport.IsDead then
 				Transport.Wait(25)
 				Transport.Move(TransportPath2Water.Location)
@@ -228,8 +228,8 @@ Trigger.OnEnteredFootprint(SpyTransport1CheckpointTrigger, function(a, id)
 end)
 
 Trigger.OnEnteredFootprint(SpyTransport2CheckpointTrigger, function(a, id)
-	if not spyTransport2CheckpointTrigger and a.Owner == greece then
-		spyTransport2CheckpointTrigger = true
+	if not SpyTransport2CheckpointTriggered and a.Owner == Greece then
+		SpyTransport2CheckpointTriggered = true
 		Transport.UnloadPassengers()
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			if not TheSpy.IsDead then
@@ -246,35 +246,35 @@ Trigger.OnEnteredFootprint(SpyTransport2CheckpointTrigger, function(a, id)
 end)
 
 Trigger.OnEnteredFootprint(Barrier1Trigger, function(a, id)
-	if not barrier1Trigger and a.Owner == player then
-		barrier1Trigger = true
-		Actor.Create("camera", true, { Owner = player, Location = CameraBarrier.Location })
+	if not Barrier1Triggered and a.Owner == USSR then
+		Barrier1Triggered = true
+		Actor.Create("camera", true, { Owner = USSR, Location = CameraBarrier.Location })
 	end
 end)
 
 Trigger.OnEnteredFootprint(Barrier2Trigger, function(a, id)
-	if not barrier2Trigger and a.Owner == player then
-		barrier2Trigger = true
-		Actor.Create("camera", true, { Owner = player, Location = CameraSpyHideout31.Location })
-		Actor.Create("camera", true, { Owner = player, Location = CameraSpyHideout32.Location })
-		Actor.Create("camera", true, { Owner = player, Location = CameraSpyHideout33.Location })
+	if not Barrier2Triggered and a.Owner == USSR then
+		Barrier2Triggered = true
+		Actor.Create("camera", true, { Owner = USSR, Location = CameraSpyHideout31.Location })
+		Actor.Create("camera", true, { Owner = USSR, Location = CameraSpyHideout32.Location })
+		Actor.Create("camera", true, { Owner = USSR, Location = CameraSpyHideout33.Location })
 	end
 end)
 
 Trigger.OnEnteredFootprint(SpyHideout3Trigger, function(a, id)
-	if not spyHideout3Trigger and a.Owner == player then
-		spyHideout3Trigger = true
+	if not SpyHideout3Triggered and a.Owner == USSR then
+		SpyHideout3Triggered = true
 		if Difficulty ~= "hard" then
-			Reinforcements.Reinforce(player, USSRReinforcements2, { ReinforcementSpawn.Location, CameraSpyHideout33.Location }, 0)
-			Media.PlaySpeechNotification(player, "ReinforcementsArrived")
+			Reinforcements.Reinforce(USSR, USSRReinforcements2, { ReinforcementSpawn.Location, CameraSpyHideout33.Location }, 0)
+			Media.PlaySpeechNotification(USSR, "ReinforcementsArrived")
 		end
 	end
 end)
 
 Trigger.OnEnteredFootprint(RTrapTrigger, function(a, id)
-	if not rTrapTrigger and a.Owner == player then
-		rTrapTrigger = true
-		Actor.Create("camera", true, { Owner = player, Location = CameraFinalArea.Location })
+	if not RTrapTriggered and a.Owner == USSR then
+		RTrapTriggered = true
+		Actor.Create("camera", true, { Owner = USSR, Location = CameraFinalArea.Location })
 		if not RSoldier3.IsDead and not RSoldierTrap.IsDead then
 			RSoldier3.Attack(RSoldierTrap)
 		end
@@ -285,10 +285,10 @@ Trigger.OnEnteredFootprint(RTrapTrigger, function(a, id)
 end)
 
 Trigger.OnEnteredFootprint(SpyHideout4Trigger, function(a, id)
-	if not spyHideout4Trigger and a.Owner == player then
-		spyHideout4Trigger = true
+	if not SpyHideout4Triggered and a.Owner == USSR then
+		SpyHideout4Triggered = true
 		SpyFinalSequency()
-		Actor.Create("camera", true, { Owner = player, Location = HelicopterGoal.Location })
+		Actor.Create("camera", true, { Owner = USSR, Location = HelicopterGoal.Location })
 	end
 end)
 
@@ -332,54 +332,54 @@ Trigger.OnKilled(Hideout3Barrel, function()
 end)
 
 WorldLoaded = function()
-	player = Player.GetPlayer("USSR")
-	enemy = Player.GetPlayer("England")
-	greece = Player.GetPlayer("Greece")
+	USSR = Player.GetPlayer("USSR")
+	England = Player.GetPlayer("England")
+	Greece = Player.GetPlayer("Greece")
 
 	Camera.Position = Playerbase.CenterPosition
 	IntroSequence()
 
-	InitObjectives(player)
-	alliedObjective = AddPrimaryObjective(enemy, "")
-	sovietObjective1 = AddPrimaryObjective(player, "kill-enemy-spy")
-	sovietObjective2 = AddSecondaryObjective(player, "clear-farm-reinforcements")
-	sovietObjective3 = AddSecondaryObjective(player, "scavenge-civilian-buildings")
+	InitObjectives(USSR)
+	AlliedObjective = AddPrimaryObjective(England, "")
+	SovietObjective1 = AddPrimaryObjective(USSR, "kill-enemy-spy")
+	SovietObjective2 = AddSecondaryObjective(USSR, "clear-farm-reinforcements")
+	SovietObjective3 = AddSecondaryObjective(USSR, "scavenge-civilian-buildings")
 end
 
 Trigger.OnKilled(TheSpy, function()
-	player.MarkCompletedObjective(sovietObjective1)
+	USSR.MarkCompletedObjective(SovietObjective1)
 end)
 
 Tick = function()
 	Trigger.AfterDelay(DateTime.Seconds(12), function()
-		if player.HasNoRequiredUnits() then
-			enemy.MarkCompletedObjective(alliedObjective)
+		if USSR.HasNoRequiredUnits() then
+			England.MarkCompletedObjective(AlliedObjective)
 		end
 	end)
 	if not SpyHideout4.IsDead and SpyHideout4.HasPassengers then
-		spyReachedHideout4 = true
+		SpyReachedHideout4 = true
 	end
-	if remainingTime == DateTime.Minutes(5) and Difficulty ~= "hard" then
-		Media.PlaySpeechNotification(player, "WarningFiveMinutesRemaining")
-	elseif remainingTime == DateTime.Minutes(4) then
-		Media.PlaySpeechNotification(player, "WarningFourMinutesRemaining")
-	elseif remainingTime == DateTime.Minutes(3) then
-		Media.PlaySpeechNotification(player, "WarningThreeMinutesRemaining")
-	elseif remainingTime == DateTime.Minutes(2) then
-		Media.PlaySpeechNotification(player, "WarningTwoMinutesRemaining")
-	elseif remainingTime == DateTime.Minutes(1) then
-		Media.PlaySpeechNotification(player, "WarningOneMinuteRemaining")
+	if RemainingTime == DateTime.Minutes(5) and Difficulty ~= "hard" then
+		Media.PlaySpeechNotification(USSR, "WarningFiveMinutesRemaining")
+	elseif RemainingTime == DateTime.Minutes(4) then
+		Media.PlaySpeechNotification(USSR, "WarningFourMinutesRemaining")
+	elseif RemainingTime == DateTime.Minutes(3) then
+		Media.PlaySpeechNotification(USSR, "WarningThreeMinutesRemaining")
+	elseif RemainingTime == DateTime.Minutes(2) then
+		Media.PlaySpeechNotification(USSR, "WarningTwoMinutesRemaining")
+	elseif RemainingTime == DateTime.Minutes(1) then
+		Media.PlaySpeechNotification(USSR, "WarningOneMinuteRemaining")
 	end
-	if remainingTime > 0 and timerstarted then
-		if (remainingTime % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("time-remaining", { ["time"] = Utils.FormatTime(remainingTime) })
-			UserInterface.SetMissionText(Timer, player.Color)
+	if RemainingTime > 0 and TimerStarted then
+		if (RemainingTime % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("time-remaining", { ["time"] = Utils.FormatTime(RemainingTime) })
+			UserInterface.SetMissionText(Timer, USSR.Color)
 		end
-		remainingTime = remainingTime - 1
-	elseif remainingTime == 0 and not spyReachedHideout4 then
+		RemainingTime = RemainingTime - 1
+	elseif RemainingTime == 0 and not SpyReachedHideout4 then
 		UserInterface.SetMissionText("")
-		enemy.MarkCompletedObjective(alliedObjective)
-	elseif remainingTime == 0 and spyReachedHideout4 then
+		England.MarkCompletedObjective(AlliedObjective)
+	elseif RemainingTime == 0 and SpyReachedHideout4 then
 		UserInterface.SetMissionText("")
 		SpyHelicopterEscape()
 	end

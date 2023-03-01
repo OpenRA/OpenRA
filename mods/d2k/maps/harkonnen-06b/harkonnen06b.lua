@@ -102,11 +102,11 @@ InitialOrdosPaths =
 
 SendStarportReinforcements = function()
 	Trigger.AfterDelay(OrdosStarportDelay[Difficulty], function()
-		if OStarport.IsDead or OStarport.Owner ~= ordos_main then
+		if OStarport.IsDead or OStarport.Owner ~= OrdosMain then
 			return
 		end
 
-		local units = Reinforcements.ReinforceWithTransport(ordos_main, "frigate", OrdosStarportReinforcements[Difficulty], { OrdosStarportEntry.Location, OStarport.Location + CVec.New(1, 1) }, { OrdosStarportExit.Location })[2]
+		local units = Reinforcements.ReinforceWithTransport(OrdosMain, "frigate", OrdosStarportReinforcements[Difficulty], { OrdosStarportEntry.Location, OStarport.Location + CVec.New(1, 1) }, { OrdosStarportExit.Location })[2]
 		Utils.Do(units, function(unit)
 			unit.AttackMove(OrdosAttackLocation)
 			IdleHunt(unit)
@@ -130,25 +130,25 @@ end
 CheckSmugglerEnemies = function()
 	Utils.Do(SmugglerUnits, function(unit)
 		Trigger.OnDamaged(unit, function(self, attacker)
-			if unit.Owner == smuggler_neutral and attacker.Owner == player then
-				ChangeOwner(smuggler_neutral, smuggler_harkonnen)
+			if unit.Owner == SmugglerNeutral and attacker.Owner == Harkonnen then
+				ChangeOwner(SmugglerNeutral, SmugglerHarkonnen)
 			end
 
-			if unit.Owner == smuggler_ordos and attacker.Owner == player then
-				ChangeOwner(smuggler_ordos, smuggler_both)
+			if unit.Owner == SmugglerOrdos and attacker.Owner == Harkonnen then
+				ChangeOwner(SmugglerOrdos, SmugglerBoth)
 			end
 
-			if unit.Owner == smuggler_neutral and (attacker.Owner == ordos_main or attacker.Owner == ordos_small) then
-				ChangeOwner(smuggler_neutral, smuggler_ordos)
+			if unit.Owner == SmugglerNeutral and (attacker.Owner == OrdosMain or attacker.Owner == OrdosSmall) then
+				ChangeOwner(SmugglerNeutral, SmugglerOrdos)
 			end
 
-			if unit.Owner == smuggler_harkonnen and (attacker.Owner == ordos_main or attacker.Owner == ordos_small) then
-				ChangeOwner(smuggler_harkonnen, smuggler_both)
+			if unit.Owner == SmugglerHarkonnen and (attacker.Owner == OrdosMain or attacker.Owner == OrdosSmall) then
+				ChangeOwner(SmugglerHarkonnen, SmugglerBoth)
 			end
 
-			if attacker.Owner == player and not message_check then
+			if attacker.Owner == Harkonnen and not MessageCheck then
 
-				message_check = true
+				MessageCheck = true
 				Media.DisplayMessage(UserInterface.Translate("smugglers-now-hostile"), Mentat)
 			end
 		end)
@@ -156,61 +156,61 @@ CheckSmugglerEnemies = function()
 end
 
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		ordos_main.MarkCompletedObjective(KillHarkonnen1)
-		ordos_small.MarkCompletedObjective(KillHarkonnen2)
+	if Harkonnen.HasNoRequiredUnits() then
+		OrdosMain.MarkCompletedObjective(KillHarkonnen1)
+		OrdosSmall.MarkCompletedObjective(KillHarkonnen2)
 	end
 
-	if ordos_main.HasNoRequiredUnits() and ordos_small.HasNoRequiredUnits() and not OrdosKilled then
+	if OrdosMain.HasNoRequiredUnits() and OrdosSmall.HasNoRequiredUnits() and not OrdosKilled then
 		Media.DisplayMessage(UserInterface.Translate("ordos-annihilated"), Mentat)
 		OrdosKilled = true
 	end
 
-	if smuggler_neutral.HasNoRequiredUnits() and smuggler_harkonnen.HasNoRequiredUnits() and smuggler_ordos.HasNoRequiredUnits() and smuggler_both.HasNoRequiredUnits() and not SmugglersKilled then
+	if SmugglerNeutral.HasNoRequiredUnits() and SmugglerHarkonnen.HasNoRequiredUnits() and SmugglerOrdos.HasNoRequiredUnits() and SmugglerBoth.HasNoRequiredUnits() and not SmugglersKilled then
 		Media.DisplayMessage(UserInterface.Translate("smugglers-annihilated"), Mentat)
 		SmugglersKilled = true
 	end
 
-	if (OStarport.IsDead or OStarport.Owner == player) and not player.IsObjectiveCompleted(DestroyStarport) then
-		player.MarkCompletedObjective(DestroyStarport)
+	if (OStarport.IsDead or OStarport.Owner == Harkonnen) and not Harkonnen.IsObjectiveCompleted(DestroyStarport) then
+		Harkonnen.MarkCompletedObjective(DestroyStarport)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[ordos_main] then
-		local units = ordos_main.GetActorsByType("harvester")
+	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[OrdosMain] then
+		local units = OrdosMain.GetActorsByType("harvester")
 
 		if #units > 0 then
-			LastHarvesterEaten[ordos_main] = false
-			ProtectHarvester(units[1], ordos_main, AttackGroupSize[Difficulty])
+			LastHarvesterEaten[OrdosMain] = false
+			ProtectHarvester(units[1], OrdosMain, AttackGroupSize[Difficulty])
 		end
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[ordos_small] then
-		local units = ordos_small.GetActorsByType("harvester")
+	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[OrdosSmall] then
+		local units = OrdosSmall.GetActorsByType("harvester")
 
 		if #units > 0 then
-			LastHarvesterEaten[ordos_small] = false
-			ProtectHarvester(units[1], ordos_small, AttackGroupSize[Difficulty])
+			LastHarvesterEaten[OrdosSmall] = false
+			ProtectHarvester(units[1], OrdosSmall, AttackGroupSize[Difficulty])
 		end
 	end
 end
 
 WorldLoaded = function()
-	ordos_main = Player.GetPlayer("Ordos Main Base")
-	ordos_small = Player.GetPlayer("Ordos Small Base")
-	smuggler_neutral = Player.GetPlayer("Smugglers - Neutral")
-	smuggler_harkonnen = Player.GetPlayer("Smugglers - Enemy to Harkonnen")
-	smuggler_ordos = Player.GetPlayer("Smugglers - Enemy to Ordos")
-	smuggler_both = Player.GetPlayer("Smugglers - Enemy to Both")
-	player = Player.GetPlayer("Harkonnen")
+	OrdosMain = Player.GetPlayer("Ordos Main Base")
+	OrdosSmall = Player.GetPlayer("Ordos Small Base")
+	SmugglerNeutral = Player.GetPlayer("Smugglers - Neutral")
+	SmugglerHarkonnen = Player.GetPlayer("Smugglers - Enemy to Harkonnen")
+	SmugglerOrdos = Player.GetPlayer("Smugglers - Enemy to Ordos")
+	SmugglerBoth = Player.GetPlayer("Smugglers - Enemy to Both")
+	Harkonnen = Player.GetPlayer("Harkonnen")
 
-	InitObjectives(player)
-	DestroyStarport = AddPrimaryObjective(player, "capture-destroy-ordos-starport")
-	KillHarkonnen1 = AddPrimaryObjective(ordos_main, "")
-	KillHarkonnen2 = AddPrimaryObjective(ordos_small, "")
+	InitObjectives(Harkonnen)
+	DestroyStarport = AddPrimaryObjective(Harkonnen, "capture-destroy-ordos-starport")
+	KillHarkonnen1 = AddPrimaryObjective(OrdosMain, "")
+	KillHarkonnen2 = AddPrimaryObjective(OrdosSmall, "")
 
 	-- Wait for carryall drop
 	Trigger.AfterDelay(DateTime.Seconds(15), function()
-		SmugglerUnits = smuggler_neutral.GetActors()
+		SmugglerUnits = SmugglerNeutral.GetActors()
 		CheckSmugglerEnemies()
 	end)
 
@@ -218,11 +218,11 @@ WorldLoaded = function()
 	OrdosAttackLocation = HConYard.Location
 
 	Trigger.OnAllKilledOrCaptured(OrdosMainBase, function()
-		Utils.Do(ordos_main.GetGroundAttackers(), IdleHunt)
+		Utils.Do(OrdosMain.GetGroundAttackers(), IdleHunt)
 	end)
 
 	Trigger.OnAllKilledOrCaptured(OrdosSmallBase, function()
-		Utils.Do(ordos_small.GetGroundAttackers(), IdleHunt)
+		Utils.Do(OrdosSmall.GetGroundAttackers(), IdleHunt)
 	end)
 
 	local path = function() return Utils.Random(OrdosPaths) end
@@ -231,14 +231,14 @@ WorldLoaded = function()
 		unit.AttackMove(OrdosAttackLocation)
 		IdleHunt(unit)
 	end
-	SendCarryallReinforcements(ordos_main, 0, OrdosAttackWaves[Difficulty], OrdosAttackDelay[Difficulty], path, OrdosReinforcements[Difficulty], waveCondition, huntFunction)
+	SendCarryallReinforcements(OrdosMain, 0, OrdosAttackWaves[Difficulty], OrdosAttackDelay[Difficulty], path, OrdosReinforcements[Difficulty], waveCondition, huntFunction)
 
 	SendStarportReinforcements()
 
-	Actor.Create("upgrade.barracks", true, { Owner = ordos_main })
-	Actor.Create("upgrade.light", true, { Owner = ordos_main })
-	Actor.Create("upgrade.heavy", true, { Owner = ordos_main })
-	Actor.Create("upgrade.barracks", true, { Owner = ordos_small })
-	Actor.Create("upgrade.light", true, { Owner = ordos_small })
+	Actor.Create("upgrade.barracks", true, { Owner = OrdosMain })
+	Actor.Create("upgrade.light", true, { Owner = OrdosMain })
+	Actor.Create("upgrade.heavy", true, { Owner = OrdosMain })
+	Actor.Create("upgrade.barracks", true, { Owner = OrdosSmall })
+	Actor.Create("upgrade.light", true, { Owner = OrdosSmall })
 	Trigger.AfterDelay(0, ActivateAI)
 end

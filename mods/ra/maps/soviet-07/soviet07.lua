@@ -7,11 +7,11 @@
    information, see COPYING.
 ]]
 if Difficulty == "easy" then
-	remainingTime = DateTime.Minutes(7)
+	RemainingTime = DateTime.Minutes(7)
 elseif Difficulty == "normal" then
-	remainingTime = DateTime.Minutes(6)
+	RemainingTime = DateTime.Minutes(6)
 elseif Difficulty == "hard" then
-	remainingTime = DateTime.Minutes(5)
+	RemainingTime = DateTime.Minutes(5)
 end
 
 Dogs = { Dog1, Dog2, Dog3, Dog4, Dog5, Dog6, Dog7, Dog8, Dog9, Dog10, Dog11, Dog12, Dog13, Dog14, Dog15, Dog16, Dog17, Dog18, Dog19 }
@@ -40,61 +40,61 @@ RSoldierTrapTrigger = { CPos.New(72, 72), CPos.New(72,73), CPos.New(72,74) }
 SoldierTrap2Trigger = { CPos.New(51, 73), CPos.New(51, 74) }
 
 Trigger.OnEnteredFootprint(CameraCCTrigger, function(a, id)
-	if not cameraCCTrigger and a.Owner == player then
-		cameraCCTrigger = true
-		Actor.Create("camera", true, { Owner = player, Location = CameraCC.Location })
+	if not CameraCCTriggered and a.Owner == USSR then
+		CameraCCTriggered = true
+		Actor.Create("camera", true, { Owner = USSR, Location = CameraCC.Location })
 	end
 end)
 
 Trigger.OnEnteredFootprint(CameraGoalCenterTrigger, function(a, id)
-	if not cameraGoalCenterTrigger and a.Owner == player then
-		cameraGoalCenterTrigger = true
-		if not controlCenterEngineerTrigger then
-			Actor.Create("camera", true, { Owner = player, Location = CameraGoalCenter1.Location })
-			Actor.Create("camera", true, { Owner = player, Location = CameraGoalCenter2.Location })
-			Actor.Create("camera", true, { Owner = player, Location = CameraGoalCenter3.Location })
+	if not CameraGoalCenterTriggered and a.Owner == USSR then
+		CameraGoalCenterTriggered = true
+		if not ControlCenterEngineerTriggered then
+			Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalCenter1.Location })
+			Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalCenter2.Location })
+			Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalCenter3.Location })
 		end
 	end
 end)
 
 Trigger.OnEnteredFootprint(CameraGoalLeftTrigger, function(a, id)
-	if not cameraGoalLeftTrigger and a.Owner == player then
-		cameraGoalLeftTrigger = true
-		Actor.Create("camera", true, { Owner = player, Location = CameraGoalLeft1.Location })
-		Actor.Create("camera", true, { Owner = player, Location = CameraGoalLeft2.Location })
+	if not CameraGoalLeftTriggered and a.Owner == USSR then
+		CameraGoalLeftTriggered = true
+		Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalLeft1.Location })
+		Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalLeft2.Location })
 	end
 end)
 
 Trigger.OnEnteredFootprint(CameraGoalRightTrigger, function(a, id)
-	if not cameraGoalRightTrigger and a.Owner == player then
-		cameraGoalRightTrigger = true
-		Actor.Create("camera", true, { Owner = player, Location = CameraGoalRight1.Location })
-		Actor.Create("camera", true, { Owner = player, Location = CameraGoalRight2.Location })
+	if not CameraGoalRightTriggered and a.Owner == USSR then
+		CameraGoalRightTriggered = true
+		Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalRight1.Location })
+		Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalRight2.Location })
 	end
 end)
 
 Trigger.OnEnteredFootprint(ControlCenterTrigger, function(a, id)
-	if not controlCenterTrigger and a.Owner == player and a.Type == "e1" then
-		controlCenterTrigger = true
+	if not ControlCenterTriggered and a.Owner == USSR and a.Type == "e1" then
+		ControlCenterTriggered = true
 		FTurPrisoners.Kill()
 		FTurLeft.Kill()
 		FTurRight.Kill()
 		FTurBottom.Kill()
-		player.MarkCompletedObjective(sovietObjective1)
+		USSR.MarkCompletedObjective(SovietObjective1)
 	end
 end)
 
 Trigger.OnEnteredFootprint(ControlCenterEngineerTrigger, function(a, id)
-	if not controlCenterEngineerTrigger and a.Owner == player and a.Type == "e6" then
-		controlCenterEngineerTrigger = true
-		local fturA = Actor.Create("ftur", true, { Owner = player, Location = FTur1Goal.Location})
-		local fturB = Actor.Create("ftur", true, { Owner = player, Location = FTur2Goal.Location})
+	if not ControlCenterEngineerTriggered and a.Owner == USSR and a.Type == "e6" then
+		ControlCenterEngineerTriggered = true
+		local fturA = Actor.Create("ftur", true, { Owner = USSR, Location = FTur1Goal.Location})
+		local fturB = Actor.Create("ftur", true, { Owner = USSR, Location = FTur2Goal.Location})
 		Camera.Position = CameraGoalCenter1.CenterPosition
 
-		if not cameraGoalRightTrigger then
-			Actor.Create("camera", true, { Owner = player, Location = CameraGoalCenter1.Location })
-			Actor.Create("camera", true, { Owner = player, Location = CameraGoalCenter2.Location })
-			Actor.Create("camera", true, { Owner = player, Location = CameraGoalCenter3.Location })
+		if not CameraGoalRightTriggered then
+			Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalCenter1.Location })
+			Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalCenter2.Location })
+			Actor.Create("camera", true, { Owner = USSR, Location = CameraGoalCenter3.Location })
 		end
 
 		Utils.Do(GoalGuards, function(actor)
@@ -108,75 +108,75 @@ Trigger.OnEnteredFootprint(ControlCenterEngineerTrigger, function(a, id)
 			Tanya.Demolish(fturB)
 		end
 
-		player.MarkCompletedObjective(sovietObjective4)
+		USSR.MarkCompletedObjective(SovietObjective4)
 	end
 end)
 
 Trigger.OnEnteredFootprint(FTurBottomTrigger, function(a, id)
-	if not fTurBottomTrigger and a.Owner == player then
-		fTurBottomTrigger = true
-		if not rSoldierTrapTrigger then
-			Actor.Create("camera", true, { Owner = player, Location = CameraRSoldier.Location })
-			Actor.Create("camera", true, { Owner = player, Location = CameraFTurBottom.Location })
+	if not FTurBottomTriggered and a.Owner == USSR then
+		FTurBottomTriggered = true
+		if not RSoldierTrapTriggered then
+			Actor.Create("camera", true, { Owner = USSR, Location = CameraRSoldier.Location })
+			Actor.Create("camera", true, { Owner = USSR, Location = CameraFTurBottom.Location })
 		end
 	end
 end)
 
 Trigger.OnEnteredFootprint(FTurLeftTrigger, function(a, id)
-	if not fTurLeftTrigger and a.Owner == player then
-		fTurLeftTrigger = true
-		Actor.Create("camera", true, { Owner = player, Location = CameraFTurLeft.Location })
+	if not FTurLeftTriggered and a.Owner == USSR then
+		FTurLeftTriggered = true
+		Actor.Create("camera", true, { Owner = USSR, Location = CameraFTurLeft.Location })
 	end
 end)
 
 Trigger.OnEnteredFootprint(FTurRightTrigger, function(a, id)
-	if not fTurRightTrigger and a.Owner == player then
-		fTurRightTrigger = true
-		Actor.Create("camera", true, { Owner = player, Location = CameraFTurRight.Location })
+	if not FTurRightTriggered and a.Owner == USSR then
+		FTurRightTriggered = true
+		Actor.Create("camera", true, { Owner = USSR, Location = CameraFTurRight.Location })
 	end
 end)
 
 Trigger.OnEnteredFootprint(GoalCenterTrigger, function(a, id)
-	if not goalCenterTrigger and a.Owner == player and a.Type == "e6" then
-		goalCenterTrigger = true
-		player.MarkCompletedObjective(sovietObjective5)
+	if not GoalCenterTriggered and a.Owner == USSR and a.Type == "e6" then
+		GoalCenterTriggered = true
+		USSR.MarkCompletedObjective(SovietObjective5)
 	end
 end)
 
 Trigger.OnEnteredFootprint(GoalLeft1Trigger, function(a, id)
-	if not goalLeft1Trigger and a.Owner == player and a.Type == "e6" then
-		goalLeft1Trigger = true
-		Media.PlaySpeechNotification(player, "ControlCenterDeactivated")
+	if not GoalLeft1Triggered and a.Owner == USSR and a.Type == "e6" then
+		GoalLeft1Triggered = true
+		Media.PlaySpeechNotification(USSR, "ControlCenterDeactivated")
 	end
 end)
 
 Trigger.OnEnteredFootprint(GoalLeft2Trigger, function(a, id)
-	if not goalLeft2Trigger and a.Owner == player and a.Type == "e6" then
-		goalLeft2Trigger = true
-		Media.PlaySpeechNotification(player, "ControlCenterDeactivated")
+	if not GoalLeft2Triggered and a.Owner == USSR and a.Type == "e6" then
+		GoalLeft2Triggered = true
+		Media.PlaySpeechNotification(USSR, "ControlCenterDeactivated")
 	end
 end)
 
 Trigger.OnEnteredFootprint(GoalRight1Trigger, function(a, id)
-	if not goalRight1Trigger and a.Owner == player and a.Type == "e6" then
-		goalRight1Trigger = true
-		Media.PlaySpeechNotification(player, "ControlCenterDeactivated")
+	if not GoalRight1Triggered and a.Owner == USSR and a.Type == "e6" then
+		GoalRight1Triggered = true
+		Media.PlaySpeechNotification(USSR, "ControlCenterDeactivated")
 	end
 end)
 
 Trigger.OnEnteredFootprint(GoalRight2Trigger, function(a, id)
-	if not goalRight2Trigger and a.Owner == player and a.Type == "e6" then
-		goalRight2Trigger = true
-		Media.PlaySpeechNotification(player, "ControlCenterDeactivated")
+	if not GoalRight2Triggered and a.Owner == USSR and a.Type == "e6" then
+		GoalRight2Triggered = true
+		Media.PlaySpeechNotification(USSR, "ControlCenterDeactivated")
 	end
 end)
 
 Trigger.OnEnteredFootprint(RSoldierTrapTrigger, function(a, id)
-	if not rSoldierTrapTrigger and a.Owner == player then
-		rSoldierTrapTrigger = true
-		if not fTurBottomTrigger then
-			Actor.Create("camera", true, { Owner = player, Location = CameraRSoldier.Location })
-			Actor.Create("camera", true, { Owner = player, Location = CameraFTurBottom.Location })
+	if not RSoldierTrapTriggered and a.Owner == USSR then
+		RSoldierTrapTriggered = true
+		if not FTurBottomTriggered then
+			Actor.Create("camera", true, { Owner = USSR, Location = CameraRSoldier.Location })
+			Actor.Create("camera", true, { Owner = USSR, Location = CameraFTurBottom.Location })
 		end
 
 		if not RSoldier1.IsDead and not RSoldierTrap1.IsDead then
@@ -190,9 +190,9 @@ Trigger.OnEnteredFootprint(RSoldierTrapTrigger, function(a, id)
 end)
 
 Trigger.OnEnteredFootprint(SoldierTrap2Trigger, function(a, id)
-	if not soldierTrap2Trigger and a.Owner == player then
-		soldierTrap2Trigger = true
-		Actor.Create("camera", true, { Owner = player, Location = CameraSoldierTrap2.Location })
+	if not SoldierTrap2Triggered and a.Owner == USSR then
+		SoldierTrap2Triggered = true
+		Actor.Create("camera", true, { Owner = USSR, Location = CameraSoldierTrap2.Location })
 		if not SoldierTrap2.IsDead then
 			PrisonEntranceGuard.Attack(SoldierTrap2)
 		end
@@ -201,22 +201,22 @@ Trigger.OnEnteredFootprint(SoldierTrap2Trigger, function(a, id)
 end)
 
 Trigger.OnAllKilled(Engineers, function()
-	enemy.MarkCompletedObjective(alliedObjective)
+	Greece.MarkCompletedObjective(AlliedObjective)
 end)
 
 Trigger.OnAllKilled(PrisonerGuards, function()
 	Utils.Do(Engineers, function(actor)
-		actor.Owner = player
+		actor.Owner = USSR
 	end)
 
-	Prisoner6.Owner = player
-	player.MarkCompletedObjective(sovietObjective2)
+	Prisoner6.Owner = USSR
+	USSR.MarkCompletedObjective(SovietObjective2)
 end)
 
 Trigger.OnKilled(BarlCC, function()
-	if not cameraCCTrigger then
-		Actor.Create("camera", true, { Owner = player, Location = CameraCC.Location })
-		cameraCCTrigger = true
+	if not CameraCCTriggered then
+		Actor.Create("camera", true, { Owner = USSR, Location = CameraCC.Location })
+		CameraCCTriggered = true
 	end
 
 	Utils.Do(CCGuards, function(actor)
@@ -229,13 +229,13 @@ end)
 Trigger.OnKilled(PBoxBrl, function()
 	PBox.Kill()
 	Utils.Do(Dogs, function(actor)
-		actor.Owner = player
+		actor.Owner = USSR
 	end)
-	player.MarkCompletedObjective(sovietObjective6)
+	USSR.MarkCompletedObjective(SovietObjective6)
 end)
 
 Trigger.OnKilled(PrisonEntranceGuard, function()
-	if controlCenterTrigger then
+	if ControlCenterTriggered then
 		Utils.Do(PrisonerGuards, function(actor)
 			if not actor.IsDead then
 				actor.Hunt()
@@ -245,7 +245,7 @@ Trigger.OnKilled(PrisonEntranceGuard, function()
 end)
 
 IntroSequence = function()
-	StartingUnits = Reinforcements.Reinforce(player, StartingUnitsReinforcements, { StartingUnitsSpawn.Location, SoldierTrap1Waypoint1.Location }, 0)
+	StartingUnits = Reinforcements.Reinforce(USSR, StartingUnitsReinforcements, { StartingUnitsSpawn.Location, SoldierTrap1Waypoint1.Location }, 0)
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
 		Utils.Do(EntranceGuards, function(actor)
 			if not SoldierTrap1.IsDead then
@@ -255,67 +255,67 @@ IntroSequence = function()
 			actor.AttackMove(SoldierTrap1Waypoint2.Location)
 			actor.AttackMove(SoldierTrap1Waypoint3.Location)
 		end)
-		Media.PlaySpeechNotification(player, "TimerStarted")
-		timerStarted = true
+		Media.PlaySpeechNotification(USSR, "TimerStarted")
+		TimerStarted = true
 	end)
 
 	-- Trigger a game over if the player lost all human units before the security system has been deactivated
 	Trigger.OnAllKilled(StartingUnits, function()
-		if not controlCenterTrigger then
-			enemy.MarkCompletedObjective(alliedObjective)
+		if not ControlCenterTriggered then
+			Greece.MarkCompletedObjective(AlliedObjective)
 		end
 	end)
 end
 
 WorldLoaded = function()
-	player = Player.GetPlayer("USSR")
-	enemy = Player.GetPlayer("Greece")
+	USSR = Player.GetPlayer("USSR")
+	Greece = Player.GetPlayer("Greece")
 
 	Camera.Position = SoldierTrap1Waypoint1.CenterPosition
-	Actor.Create("camera", true, { Owner = player, Location = CameraStart1.Location })
-	Actor.Create("camera", true, { Owner = player, Location = CameraStart2.Location })
+	Actor.Create("camera", true, { Owner = USSR, Location = CameraStart1.Location })
+	Actor.Create("camera", true, { Owner = USSR, Location = CameraStart2.Location })
 
 	IntroSequence()
 
-	InitObjectives(player)
-	alliedObjective = AddPrimaryObjective(enemy, "")
-	sovietObjective1 = AddPrimaryObjective(player, "deactivate-security-system")
-	sovietObjective2 = AddPrimaryObjective(player, "rescue-engineers")
-	sovietObjective3 = AddPrimaryObjective(player, "engineers-coolant-station")
-	sovietObjective4 = AddPrimaryObjective(player, "engineer-reprogram-security")
-	sovietObjective5 = AddPrimaryObjective(player, "engineer-reactor-core")
-	sovietObjective6 = AddSecondaryObjective(player, "free-dogs")
+	InitObjectives(USSR)
+	AlliedObjective = AddPrimaryObjective(Greece, "")
+	SovietObjective1 = AddPrimaryObjective(USSR, "deactivate-security-system")
+	SovietObjective2 = AddPrimaryObjective(USSR, "rescue-engineers")
+	SovietObjective3 = AddPrimaryObjective(USSR, "engineers-coolant-station")
+	SovietObjective4 = AddPrimaryObjective(USSR, "engineer-reprogram-security")
+	SovietObjective5 = AddPrimaryObjective(USSR, "engineer-reactor-core")
+	SovietObjective6 = AddSecondaryObjective(USSR, "free-dogs")
 end
 
 Tick = function()
-	if player.HasNoRequiredUnits() and timerStarted then
-		enemy.MarkCompletedObjective(alliedObjective)
+	if USSR.HasNoRequiredUnits() and TimerStarted then
+		Greece.MarkCompletedObjective(AlliedObjective)
 	end
 
-	if remainingTime == DateTime.Minutes(5) and Difficulty ~= "hard" then
-		Media.PlaySpeechNotification(player, "WarningFiveMinutesRemaining")
-	elseif remainingTime == DateTime.Minutes(4) then
-		Media.PlaySpeechNotification(player, "WarningFourMinutesRemaining")
-	elseif remainingTime == DateTime.Minutes(3) then
-		Media.PlaySpeechNotification(player, "WarningThreeMinutesRemaining")
-	elseif remainingTime == DateTime.Minutes(2) then
-		Media.PlaySpeechNotification(player, "WarningTwoMinutesRemaining")
-	elseif remainingTime == DateTime.Minutes(1) then
-		Media.PlaySpeechNotification(player, "WarningOneMinuteRemaining")
+	if RemainingTime == DateTime.Minutes(5) and Difficulty ~= "hard" then
+		Media.PlaySpeechNotification(USSR, "WarningFiveMinutesRemaining")
+	elseif RemainingTime == DateTime.Minutes(4) then
+		Media.PlaySpeechNotification(USSR, "WarningFourMinutesRemaining")
+	elseif RemainingTime == DateTime.Minutes(3) then
+		Media.PlaySpeechNotification(USSR, "WarningThreeMinutesRemaining")
+	elseif RemainingTime == DateTime.Minutes(2) then
+		Media.PlaySpeechNotification(USSR, "WarningTwoMinutesRemaining")
+	elseif RemainingTime == DateTime.Minutes(1) then
+		Media.PlaySpeechNotification(USSR, "WarningOneMinuteRemaining")
 	end
 
-	if goalLeft1Trigger and goalLeft2Trigger and goalRight1Trigger and goalRight2Trigger then
-		player.MarkCompletedObjective(sovietObjective3)
+	if GoalLeft1Triggered and GoalLeft2Triggered and GoalRight1Triggered and GoalRight2Triggered then
+		USSR.MarkCompletedObjective(SovietObjective3)
 	end
 
-	if remainingTime > 0 and timerStarted then
-		if (remainingTime % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("time-until-meltdown", { ["time"] = Utils.FormatTime(remainingTime) })
-			UserInterface.SetMissionText(Timer, player.Color)
+	if RemainingTime > 0 and TimerStarted then
+		if (RemainingTime % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("time-until-meltdown", { ["time"] = Utils.FormatTime(RemainingTime) })
+			UserInterface.SetMissionText(Timer, USSR.Color)
 		end
-		remainingTime = remainingTime - 1
-	elseif remainingTime == 0 then
+		RemainingTime = RemainingTime - 1
+	elseif RemainingTime == 0 then
 		UserInterface.SetMissionText("")
-		enemy.MarkCompletedObjective(alliedObjective)
+		Greece.MarkCompletedObjective(AlliedObjective)
 	end
 end

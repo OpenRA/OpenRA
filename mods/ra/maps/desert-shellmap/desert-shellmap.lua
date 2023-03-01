@@ -46,7 +46,7 @@ Mig2Waypoints = { Mig21, Mig22, Mig23, Mig24 }
 
 BindActorTriggers = function(a)
 	if a.HasProperty("Hunt") then
-		if a.Owner == allies then
+		if a.Owner == Allies then
 			Trigger.OnIdle(a, function(a)
 				if a.IsInWorld then
 					a.Hunt()
@@ -76,7 +76,7 @@ BindActorTriggers = function(a)
 end
 
 SendSovietUnits = function(entryCell, unitTypes, interval)
-	local units = Reinforcements.Reinforce(soviets, unitTypes, { entryCell }, interval)
+	local units = Reinforcements.Reinforce(Soviets, unitTypes, { entryCell }, interval)
 	Utils.Do(units, function(unit)
 		BindActorTriggers(unit)
 	end)
@@ -85,7 +85,7 @@ end
 
 SendMigs = function(waypoints)
 	local migEntryPath = { waypoints[1].Location, waypoints[2].Location }
-	local migs = Reinforcements.Reinforce(soviets, { "mig" }, migEntryPath, 4)
+	local migs = Reinforcements.Reinforce(Soviets, { "mig" }, migEntryPath, 4)
 	Utils.Do(migs, function(mig)
 		mig.Move(waypoints[3].Location)
 		mig.Move(waypoints[4].Location)
@@ -96,7 +96,7 @@ SendMigs = function(waypoints)
 end
 
 ShipAlliedUnits = function()
-	local units = Reinforcements.ReinforceWithTransport(allies, "lst",
+	local units = Reinforcements.ReinforceWithTransport(Allies, "lst",
 		ShipUnitTypes, { LstEntry.Location, LstUnload.Location }, { LstEntry.Location })[2]
 
 	Utils.Do(units, function(unit)
@@ -108,7 +108,7 @@ end
 
 --- @param hpad actor
 InsertAlliedChinookReinforcements = function(entry, hpad)
-	local units = Reinforcements.ReinforceWithTransport(allies, "tran",
+	local units = Reinforcements.ReinforceWithTransport(Allies, "tran",
 		HelicopterUnitTypes, { entry.Location, hpad.Location + CVec.New(1, 2) }, { entry.Location })[2]
 
 	Utils.Do(units, function(unit)
@@ -120,7 +120,7 @@ end
 
 ParadropSovietUnits = function()
 	local lz = Utils.Random(ParadropWaypoints)
-	local aircraft = powerproxy.TargetParatroopers(lz.CenterPosition)
+	local aircraft = PowerProxy.TargetParatroopers(lz.CenterPosition)
 
 	Utils.Do(aircraft, function(a)
 		Trigger.OnPassengerExited(a, function(t, p)
@@ -143,7 +143,7 @@ end
 
 SetupAlliedUnits = function()
 	Utils.Do(Map.NamedActors, function(a)
-		if a.Owner == allies and a.HasProperty("AcceptsCondition") and a.AcceptsCondition("unkillable") then
+		if a.Owner == Allies and a.HasProperty("AcceptsCondition") and a.AcceptsCondition("unkillable") then
 			a.GrantCondition("unkillable")
 			a.Stance = "Defend"
 		end
@@ -160,7 +160,7 @@ ChronoshiftAlliedUnits = function()
 	local cells = Utils.ExpandFootprint({ ChronoshiftLocation.Location }, false)
 	local units = { }
 	for i = 1, #cells do
-		local unit = Actor.Create("2tnk", true, { Owner = allies, Facing = Angle.North })
+		local unit = Actor.Create("2tnk", true, { Owner = Allies, Facing = Angle.North })
 		BindActorTriggers(unit)
 		units[unit] = cells[i]
 	end
@@ -168,27 +168,27 @@ ChronoshiftAlliedUnits = function()
 	Trigger.AfterDelay(DateTime.Seconds(60), ChronoshiftAlliedUnits)
 end
 
-ticks = 0
-speed = 5
+Ticks = 0
+Speed = 5
 
 Tick = function()
-	ticks = ticks + 1
+	Ticks = Ticks + 1
 
-	local t = (ticks + 45) % (360 * speed) * (math.pi / 180) / speed;
-	Camera.Position = viewportOrigin + WVec.New(19200 * math.sin(t), 20480 * math.cos(t), 0)
+	local t = (Ticks + 45) % (360 * Speed) * (math.pi / 180) / Speed;
+	Camera.Position = ViewportOrigin + WVec.New(19200 * math.sin(t), 20480 * math.cos(t), 0)
 end
 
 WorldLoaded = function()
-	allies = Player.GetPlayer("Allies")
-	soviets = Player.GetPlayer("Soviets")
-	viewportOrigin = Camera.Position
+	Allies = Player.GetPlayer("Allies")
+	Soviets = Player.GetPlayer("Soviets")
+	ViewportOrigin = Camera.Position
 
 	SetupAlliedUnits()
 	SetupFactories()
 	ShipAlliedUnits()
 	InsertAlliedChinookReinforcements(Chinook1Entry, HeliPad1)
 	InsertAlliedChinookReinforcements(Chinook2Entry, HeliPad2)
-	powerproxy = Actor.Create(ProxyType, false, { Owner = soviets })
+	PowerProxy = Actor.Create(ProxyType, false, { Owner = Soviets })
 	ParadropSovietUnits()
 	Trigger.AfterDelay(DateTime.Seconds(5), ChronoshiftAlliedUnits)
 	Utils.Do(ProducedUnitTypes, ProduceUnits)

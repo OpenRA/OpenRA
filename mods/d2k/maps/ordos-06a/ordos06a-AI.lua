@@ -35,8 +35,8 @@ InitAIUnits = function(house)
 end
 
 ActivateAI = function()
-	InitAIUnits(atreides)
-	InitAIUnits(harkonnen)
+	InitAIUnits(Atreides)
+	InitAIUnits(Harkonnen)
 
 	local delay = function() return Utils.RandomInteger(ProductionDelays[Difficulty][1], ProductionDelays[Difficulty][2] + 1) end
 	local infantryToBuild = function() return { Utils.Random(EnemyInfantryTypes) } end
@@ -45,10 +45,10 @@ ActivateAI = function()
 	local tanksToBuildHarkonnen = function() return { Utils.Random(HarkonnenTankTypes) } end
 	local attackTresholdSize = AttackGroupSize[Difficulty] * 2.5
 
-	ProduceUnits(atreides, ABarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
-	ProduceUnits(atreides, ALightFactory, delay, vehiclesToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
-	ProduceUnits(atreides, AHeavyFactory, delay, tanksToBuildAtreides, AttackGroupSize[Difficulty], attackTresholdSize)
+	ProduceUnits(Atreides, ABarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
+	ProduceUnits(Atreides, ALightFactory, delay, vehiclesToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
+	ProduceUnits(Atreides, AHeavyFactory, delay, tanksToBuildAtreides, AttackGroupSize[Difficulty], attackTresholdSize)
 
-	ProduceUnits(harkonnen, HBarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
-	ProduceUnits(harkonnen, HHeavyFactory, delay, tanksToBuildHarkonnen, AttackGroupSize[Difficulty], attackTresholdSize)
+	ProduceUnits(Harkonnen, HBarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackTresholdSize)
+	ProduceUnits(Harkonnen, HHeavyFactory, delay, tanksToBuildHarkonnen, AttackGroupSize[Difficulty], attackTresholdSize)
 end

@@ -46,7 +46,7 @@ BridgeIsIntact = true
 --Mission Functions Setup
 HuntObjectiveTruck = function(a)
 	if a.HasProperty("Hunt") then
-		if a.Owner == greece or a.Owner == goodguy then
+		if a.Owner == Greece or a.Owner == GoodGuy then
 			Trigger.OnIdle(a, function(a)
 				if a.IsInWorld and not ObjectiveTruck01.IsDead then
 					a.AttackMove(ObjectiveTruck01.Location, 2)
@@ -79,7 +79,7 @@ end
 SpawnAlliedHuntingParty = function()
 	Trigger.AfterDelay(DateTime.Minutes(3), function()
 		if BridgeIsIntact then
-			local tanks = Reinforcements.Reinforce(greece, AlliedHuntingParty, { AlliedHuntingPartySpawn.Location, AlliedHuntingPartyWP01.Location,AlliedHuntingPartyWP03.Location, AlliedHuntingPartyWP05.Location }, 0)
+			local tanks = Reinforcements.Reinforce(Greece, AlliedHuntingParty, { AlliedHuntingPartySpawn.Location, AlliedHuntingPartyWP01.Location,AlliedHuntingPartyWP03.Location, AlliedHuntingPartyWP05.Location }, 0)
 			Utils.Do(tanks, function(units)
 				HuntObjectiveTruck(units)
 			end)
@@ -90,45 +90,45 @@ end
 
 WorldLoaded = function()
 --Players Setup
-	player = Player.GetPlayer("USSR")
-	greece = Player.GetPlayer("Greece")
-	goodguy = Player.GetPlayer("GoodGuy")
-	badguy = Player.GetPlayer("BadGuy")
-	neutral = Player.GetPlayer("Neutral")
-	creeps = Player.GetPlayer("Creeps")
+	USSR = Player.GetPlayer("USSR")
+	Greece = Player.GetPlayer("Greece")
+	GoodGuy = Player.GetPlayer("GoodGuy")
+	BadGuy = Player.GetPlayer("BadGuy")
+	Neutral = Player.GetPlayer("Neutral")
+	Creeps = Player.GetPlayer("Creeps")
 
 	Camera.Position	= DefaultCameraPosition.CenterPosition
 
 --Objectives Setup
-	InitObjectives(player)
+	InitObjectives(USSR)
 
-	BringSupplyTruck = AddPrimaryObjective(player, "supply-truck-waystation")
-	ProtectWaystation = AddPrimaryObjective(player, "waystation-must-not-be-destroyed")
-	DestroyAAGuns = AddSecondaryObjective(player, "destory-aa-guns-enable-air-support")
-	PreventAlliedIncursions = AddSecondaryObjective(player, "find-destroy-bridge-stop-allied-reinforcements")
+	BringSupplyTruck = AddPrimaryObjective(USSR, "supply-truck-waystation")
+	ProtectWaystation = AddPrimaryObjective(USSR, "waystation-must-not-be-destroyed")
+	DestroyAAGuns = AddSecondaryObjective(USSR, "destory-aa-guns-enable-air-support")
+	PreventAlliedIncursions = AddSecondaryObjective(USSR, "find-destroy-bridge-stop-allied-reinforcements")
 
 	Trigger.OnKilled(USSRTechCenter01, function()
-		player.MarkFailedObjective(ProtectWaystation)
+		USSR.MarkFailedObjective(ProtectWaystation)
 	end)
 
 	Trigger.OnKilled(ObjectiveTruck01, function()
-		player.MarkFailedObjective(BringSupplyTruck)
+		USSR.MarkFailedObjective(BringSupplyTruck)
 	end)
 
 	Trigger.OnEnteredFootprint(WaystationTrigger, function(unit, id)
 		if unit == ObjectiveTruck01 then
 			Trigger.RemoveFootprintTrigger(id)
-			player.MarkCompletedObjective(BringSupplyTruck)
-			player.MarkCompletedObjective(ProtectWaystation)
+			USSR.MarkCompletedObjective(BringSupplyTruck)
+			USSR.MarkCompletedObjective(ProtectWaystation)
 		end
 	end)
 
 	Trigger.OnAllKilled(AlliedAAGuns, function()
-		player.MarkCompletedObjective(DestroyAAGuns)
-		Media.PlaySpeechNotification(player, "ObjectiveMet")
+		USSR.MarkCompletedObjective(DestroyAAGuns)
+		Media.PlaySpeechNotification(USSR, "ObjectiveMet")
 		Trigger.AfterDelay(DateTime.Seconds(2), function()
-			Actor.Create("powerproxy.spyplane", true, { Owner = player })
-			Actor.Create("powerproxy.parabombs", true, { Owner = player })
+			Actor.Create("powerproxy.spyplane", true, { Owner = USSR })
+			Actor.Create("powerproxy.parabombs", true, { Owner = USSR })
 			Media.DisplayMessage(UserInterface.Translate("air-support-t-minus-3"))
 		end)
   end)
@@ -137,21 +137,21 @@ WorldLoaded = function()
 	SpawnAlliedHuntingParty()
 
 	Trigger.AfterDelay(0, function()
-		local playerrevealcam = Actor.Create("camera", true, { Owner = player, Location = PlayerStartLocation.Location })
+		local playerrevealcam = Actor.Create("camera", true, { Owner = USSR, Location = PlayerStartLocation.Location })
 		Trigger.AfterDelay(1, function()
 			if playerrevealcam.IsInWorld then playerrevealcam.Destroy() end
 		end)
 	end)
 
 	Trigger.OnEnteredFootprint(Inf01Trigger, function(unit, id)
-		if unit.Owner == player then
+		if unit.Owner == USSR then
 			if not AlliedGNRLHouse.IsDead then
-				Reinforcements.Reinforce(greece, { "gnrl" }, { AlliedGNRLSpawn.Location, AlliedGNRLDestination.Location }, 0, function(unit)
+				Reinforcements.Reinforce(Greece, { "gnrl" }, { AlliedGNRLSpawn.Location, AlliedGNRLDestination.Location }, 0, function(unit)
 					HuntEnemyUnits(unit)
 				end)
 			end
 			Utils.Do(AlliedSquad01, HuntEnemyUnits)
-			local alliedgnrlcamera = Actor.Create("scamera", true, { Owner = player, Location = AlliedGNRLSpawn.Location })
+			local alliedgnrlcamera = Actor.Create("scamera", true, { Owner = USSR, Location = AlliedGNRLSpawn.Location })
 			Trigger.AfterDelay(DateTime.Seconds(6), function()
 				if alliedgnrlcamera.IsInWorld then alliedgnrlcamera.Destroy() end
 			end)
@@ -160,7 +160,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredFootprint(Inf02Trigger, function(unit, id)
-		if unit.Owner == player then
+		if unit.Owner == USSR then
 			Utils.Do(AlliedSquad02, HuntEnemyUnits)
 			Trigger.RemoveFootprintTrigger(id)
 		end
@@ -168,30 +168,30 @@ WorldLoaded = function()
 
 	Utils.Do(AlliedSquad03, function(actor)
 		Trigger.OnDamaged(actor, function(unit, attacker)
-			if attacker.Owner == player then
+			if attacker.Owner == USSR then
 				Utils.Do(AlliedSquad03, HuntEnemyUnits)
 			end
 		end)
 	end)
 
 	Trigger.OnEnteredFootprint(RevealBridgeTrigger, function(unit, id)
-		if unit.Owner == player then
-			local bridgecamera01 = Actor.Create("camera", true, { Owner = player, Location = AlliedHuntingPartySpawn.Location })
-			local bridgecamera02 = Actor.Create("camera", true, { Owner = player, Location = AlliedHuntingPartyWP01.Location })
+		if unit.Owner == USSR then
+			local bridgecamera01 = Actor.Create("camera", true, { Owner = USSR, Location = AlliedHuntingPartySpawn.Location })
+			local bridgecamera02 = Actor.Create("camera", true, { Owner = USSR, Location = AlliedHuntingPartyWP01.Location })
 			Trigger.AfterDelay(DateTime.Seconds(6), function()
 				if bridgecamera01.IsInWorld then bridgecamera01.Destroy() end
 				if bridgecamera02.IsInWorld then bridgecamera02.Destroy() end
 			end)
 			if Difficulty == "normal" then
-				Reinforcements.Reinforce(goodguy, { "dd" }, { AlliedDestroyer01Spawn.Location, AlliedDestroyer01WP01.Location, AlliedDestroyer01WP02.Location }, 0, function(unit)
+				Reinforcements.Reinforce(GoodGuy, { "dd" }, { AlliedDestroyer01Spawn.Location, AlliedDestroyer01WP01.Location, AlliedDestroyer01WP02.Location }, 0, function(unit)
 					unit.Stance = "Defend"
 				end)
 			end
 			if Difficulty == "hard" then
-				Reinforcements.Reinforce(goodguy, { "dd" }, { AlliedDestroyer01Spawn.Location, AlliedDestroyer01WP01.Location, AlliedDestroyer01WP02.Location }, 0, function(unit)
+				Reinforcements.Reinforce(GoodGuy, { "dd" }, { AlliedDestroyer01Spawn.Location, AlliedDestroyer01WP01.Location, AlliedDestroyer01WP02.Location }, 0, function(unit)
 					unit.Stance = "Defend"
 				end)
-				Reinforcements.Reinforce(goodguy, { "dd" }, { AlliedDestroyer02Spawn.Location, AlliedDestroyer02WP01.Location, AlliedDestroyer02WP02.Location }, 0, function(unit)
+				Reinforcements.Reinforce(GoodGuy, { "dd" }, { AlliedDestroyer02Spawn.Location, AlliedDestroyer02WP01.Location, AlliedDestroyer02WP02.Location }, 0, function(unit)
 					unit.Stance = "Defend"
 				end)
 			end
@@ -200,7 +200,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Minutes(9), function()
-		local powerproxy01 = Actor.Create("powerproxy.paratroopers", true, { Owner = greece })
+		local powerproxy01 = Actor.Create("powerproxy.paratroopers", true, { Owner = Greece })
 		local aircraft01 = powerproxy01.TargetParatroopers(AlliedParadropLZ01.CenterPosition, Angle.SouthWest)
 		Utils.Do(aircraft01, function(a)
 			Trigger.OnPassengerExited(a, function(t, p)
@@ -208,7 +208,7 @@ WorldLoaded = function()
 			end)
 		end)
 
-		local powerproxy02 = Actor.Create("powerproxy.paratroopers", true, { Owner = goodguy })
+		local powerproxy02 = Actor.Create("powerproxy.paratroopers", true, { Owner = GoodGuy })
 		local aircraft02 = powerproxy02.TargetParatroopers(AlliedParadropLZ02.CenterPosition, Angle.SouthWest)
 		Utils.Do(aircraft02, function(a)
 			Trigger.OnPassengerExited(a, function(t, p)
@@ -223,8 +223,8 @@ WorldLoaded = function()
 			BridgeIsIntact = false
 			if not BridgeBarrel01.IsDead then BridgeBarrel01.Kill() end
 			if not BridgeBarrel03.IsDead then BridgeBarrel03.Kill() end
-			player.MarkCompletedObjective(PreventAlliedIncursions)
-			Media.PlaySpeechNotification(player, "ObjectiveMet")
+			USSR.MarkCompletedObjective(PreventAlliedIncursions)
+			Media.PlaySpeechNotification(USSR, "ObjectiveMet")
 			Trigger.AfterDelay(DateTime.Seconds(2), function()
 				Media.DisplayMessage(UserInterface.Translate("allied-ground-reinforcements-stopped"))
 			end)
@@ -239,12 +239,12 @@ WorldLoaded = function()
 
 	Trigger.OnAnyKilled(AlliedSquad04, function()
 		if BridgeIsIntact then
-			local tanks = Reinforcements.Reinforce(greece, AlliedTanksReinforcement, { AlliedHuntingPartySpawn.Location, AlliedHuntingPartyWP01.Location }, 0, function(units)
+			local tanks = Reinforcements.Reinforce(Greece, AlliedTanksReinforcement, { AlliedHuntingPartySpawn.Location, AlliedHuntingPartyWP01.Location }, 0, function(units)
 				AlliedGroundPatrols(units)
 			end)
 			Trigger.OnAllKilled(tanks, function()
 				if BridgeIsIntact then
-					Reinforcements.Reinforce(greece, AlliedTanksReinforcement, { AlliedHuntingPartySpawn.Location, AlliedHuntingPartyWP01.Location }, 0, function(units)
+					Reinforcements.Reinforce(Greece, AlliedTanksReinforcement, { AlliedHuntingPartySpawn.Location, AlliedHuntingPartyWP01.Location }, 0, function(units)
 					AlliedGroundPatrols(units)
 					end)
 				end
@@ -254,12 +254,12 @@ WorldLoaded = function()
 
 	Trigger.OnAllKilled(AlliedSquad04, function()
 		if BridgeIsIntact then
-			local tanks = Reinforcements.Reinforce(greece, AlliedTanksReinforcement, { AlliedHuntingPartySpawn.Location, AlliedHuntingPartyWP01.Location }, 0, function(units)
+			local tanks = Reinforcements.Reinforce(Greece, AlliedTanksReinforcement, { AlliedHuntingPartySpawn.Location, AlliedHuntingPartyWP01.Location }, 0, function(units)
 				AlliedGroundPatrols(units)
 			end)
 			Trigger.OnAllKilled(tanks, function()
 				if BridgeIsIntact then
-					Reinforcements.Reinforce(greece, AlliedTanksReinforcement, { AlliedHuntingPartySpawn.Location, AlliedHuntingPartyWP01.Location }, 0, function(units)
+					Reinforcements.Reinforce(Greece, AlliedTanksReinforcement, { AlliedHuntingPartySpawn.Location, AlliedHuntingPartyWP01.Location }, 0, function(units)
 					AlliedGroundPatrols(units)
 					end)
 				end

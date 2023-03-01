@@ -200,7 +200,7 @@ end
 
 UnitsArrived = false
 TimerFinished = false
-ticked = TimerTicks
+Ticked = TimerTicks
 Tick = function()
 	if BadGuy.PowerState ~= "Normal" then
 		PowerDownTeslas()
@@ -210,13 +210,13 @@ Tick = function()
 		USSR.MarkCompletedObjective(EscapeWithSub)
 	end
 
-	if ticked > 0 then
-		if (ticked % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("submarine-completes-in", { ["time"] = Utils.FormatTime(ticked) })
+	if Ticked > 0 then
+		if (Ticked % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("submarine-completes-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(Timer, TimerColor)
 		end
-		ticked = ticked - 1
-	elseif ticked == 0 and not TimerFinished then
+		Ticked = Ticked - 1
+	elseif Ticked == 0 and not TimerFinished then
 		MissileSubEscape()
 		TimerFinished = true
 	end

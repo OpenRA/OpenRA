@@ -25,28 +25,28 @@ CombatTeam2 =
 
 SetupTriggers = function()
 	Trigger.OnInfiltrated(RadarDome, function()
-		greece.MarkCompletedObjective(objRadarSpy)
-		Actor.Create("camera", true, { Owner = greece, Location = Cam1.Location })
-		Actor.Create("camera", true, { Owner = greece, Location = Cam2.Location })
-		Actor.Create("camera", true, { Owner = greece, Location = Cam3.Location })
-		Actor.Create("camera", true, { Owner = greece, Location = Cam4.Location })
+		Greece.MarkCompletedObjective(RadarSpyObjective)
+		Actor.Create("camera", true, { Owner = Greece, Location = Cam1.Location })
+		Actor.Create("camera", true, { Owner = Greece, Location = Cam2.Location })
+		Actor.Create("camera", true, { Owner = Greece, Location = Cam3.Location })
+		Actor.Create("camera", true, { Owner = Greece, Location = Cam4.Location })
 	end)
 
 	Trigger.OnKilled(RadarDome, function()
-		if not greece.IsObjectiveCompleted(objRadarSpy) then
-			greece.MarkFailedObjective(objRadarSpy)
+		if not Greece.IsObjectiveCompleted(RadarSpyObjective) then
+			Greece.MarkFailedObjective(RadarSpyObjective)
 		end
 	end)
 
 	Trigger.OnAllKilled(ConvoyTrucks, function()
-		greece.MarkCompletedObjective(objDestroyAllTrucks)
+		Greece.MarkCompletedObjective(DestroyAllTrucksObjective)
 	end)
 end
 
 MissionStart = function()
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
-		Reinforcements.Reinforce(greece, CombatTeam1, { TruckEscapeCenter.Location, DefaultCameraPosition.Location })
-		local StartCamera = Actor.Create("camera", true, { Owner = greece, Location = DefaultCameraPosition.Location })
+		Reinforcements.Reinforce(Greece, CombatTeam1, { TruckEscapeCenter.Location, DefaultCameraPosition.Location })
+		local StartCamera = Actor.Create("camera", true, { Owner = Greece, Location = DefaultCameraPosition.Location })
 		Trigger.AfterDelay(DateTime.Seconds(10), function()
 			StartCamera.Destroy()
 		end)
@@ -87,8 +87,8 @@ MissionStart = function()
 
 	Trigger.AfterDelay(DateTime.Minutes(1), function()
 		CombatTeam2 = CombatTeam2[Difficulty]
-		Reinforcements.Reinforce(greece, CombatTeam2, { TruckEscapeCenter.Location, DefaultCameraPosition.Location })
-		Media.PlaySpeechNotification(greece, "ReinforcementsArrived")
+		Reinforcements.Reinforce(Greece, CombatTeam2, { TruckEscapeCenter.Location, DefaultCameraPosition.Location })
+		Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
 	end)
 end
 
@@ -103,7 +103,7 @@ MoveTruckEscapeRoute = function(truck, route)
 		return
 	else
 		Media.DisplayMessage(UserInterface.Translate("convoy-truck-escaping"))
-		Media.PlaySoundNotification(greece, "AlertBleep")
+		Media.PlaySoundNotification(Greece, "AlertBleep")
 		Utils.Do(route, function(waypoint)
 			truck.Move(waypoint.Location)
 		end)
@@ -111,7 +111,7 @@ MoveTruckEscapeRoute = function(truck, route)
 		Trigger.OnIdle(truck, function()
 			if truck.Location == route[#route].Location then
 				truck.Destroy()
-				greece.MarkFailedObjective(objDestroyAllTrucks)
+				Greece.MarkFailedObjective(DestroyAllTrucksObjective)
 			else
 				truck.Move(route[#route].Location)
 			end
@@ -120,29 +120,29 @@ MoveTruckEscapeRoute = function(truck, route)
 end
 
 Tick = function()
-	ussr.Cash = 5000
-	badguy.Cash = 5000
+	USSR.Cash = 5000
+	BadGuy.Cash = 5000
 
-	if ussr.HasNoRequiredUnits() and badguy.HasNoRequiredUnits() then
-		greece.MarkCompletedObjective(objKillAll)
+	if USSR.HasNoRequiredUnits() and BadGuy.HasNoRequiredUnits() then
+		Greece.MarkCompletedObjective(KillAllObjective)
 	end
 
-	if greece.HasNoRequiredUnits() then
-		ussr.MarkCompletedObjective(ussrObj)
+	if Greece.HasNoRequiredUnits() then
+		USSR.MarkCompletedObjective(USSRobjective)
 	end
 end
 
 WorldLoaded = function()
-	greece = Player.GetPlayer("Greece")
-	ussr = Player.GetPlayer("USSR")
-	badguy = Player.GetPlayer("BadGuy")
+	Greece = Player.GetPlayer("Greece")
+	USSR = Player.GetPlayer("USSR")
+	BadGuy = Player.GetPlayer("BadGuy")
 
-	InitObjectives(greece)
+	InitObjectives(Greece)
 
-	objDestroyAllTrucks = AddPrimaryObjective(greece, "prevent-soviet-trucks-escaping")
-	objKillAll = AddPrimaryObjective(greece, "clear-sector-soviet-presence")
-	objRadarSpy = AddSecondaryObjective(greece, "infiltrate-radar-reveal-escape-routes")
-	ussrObj = ussr.AddObjective("")
+	DestroyAllTrucksObjective = AddPrimaryObjective(Greece, "prevent-soviet-trucks-escaping")
+	KillAllObjective = AddPrimaryObjective(Greece, "clear-sector-soviet-presence")
+	RadarSpyObjective = AddSecondaryObjective(Greece, "infiltrate-radar-reveal-escape-routes")
+	USSRobjective = USSR.AddObjective("")
 
 	ActivateAI()
 	SetupTriggers()

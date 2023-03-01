@@ -95,7 +95,7 @@ Tick = function()
 end
 
 SetupWorld = function()
-	Utils.Do(Nod.GetGroundAttackers(Nod), function(unit)
+	Utils.Do(Nod.GetGroundAttackers(), function(unit)
 		Trigger.OnKilled(unit, NodUnitKilled)
 	end)
 
