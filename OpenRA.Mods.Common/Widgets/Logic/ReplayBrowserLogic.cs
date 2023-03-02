@@ -378,7 +378,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var options = replays.Select(r => r.GameInfo.MapTitle).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 					options.Sort(StringComparer.OrdinalIgnoreCase);
-					options.Insert(0, null);	// no filter
+					options.Insert(0, null); // no filter
 
 					var anyText = ddb.GetText();
 					ddb.GetText = () => string.IsNullOrEmpty(filter.MapName) ? anyText : filter.MapName;
@@ -406,7 +406,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var options = replays.SelectMany(r => r.GameInfo.Players.Select(p => p.Name)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 					options.Sort(StringComparer.OrdinalIgnoreCase);
-					options.Insert(0, null);	// no filter
+					options.Insert(0, null); // no filter
 
 					var anyText = ddb.GetText();
 					ddb.GetText = () => string.IsNullOrEmpty(filter.PlayerName) ? anyText : filter.PlayerName;
@@ -438,7 +438,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						.SelectMany(r => r.GameInfo.Players.Select(p => p.FactionName).Where(n => !string.IsNullOrEmpty(n)))
 						.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 					options.Sort(StringComparer.OrdinalIgnoreCase);
-					options.Insert(0, null);	// no filter
+					options.Insert(0, null); // no filter
 
 					var anyText = ddb.GetText();
 					ddb.GetText = () => string.IsNullOrEmpty(filter.Faction) ? anyText : filter.Faction;

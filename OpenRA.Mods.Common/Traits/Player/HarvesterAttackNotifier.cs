@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Don't track healing
 			if (e.Damage.Value < 0)
-			 	return;
+				return;
 
 			// Only track last hit against our harvesters
 			if (!self.Info.HasTraitInfo<HarvesterInfo>())

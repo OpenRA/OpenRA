@@ -433,11 +433,11 @@ namespace OpenRA.Mods.Common.FileFormats
 				{
 					if (version <= 5)
 					{
-						header.Position = cabDescriptorOffset +	cabDescriptor.FileTableOffset + cabDescriptor.FileTableOffset2 + i * 4;
-						header.Position = cabDescriptorOffset +	cabDescriptor.FileTableOffset + header.ReadUInt32();
+						header.Position = cabDescriptorOffset + cabDescriptor.FileTableOffset + cabDescriptor.FileTableOffset2 + i * 4;
+						header.Position = cabDescriptorOffset + cabDescriptor.FileTableOffset + header.ReadUInt32();
 					}
 					else
-						header.Position = cabDescriptorOffset +	cabDescriptor.FileTableOffset + cabDescriptor.FileTableOffset2 + i * 0x57;
+						header.Position = cabDescriptorOffset + cabDescriptor.FileTableOffset + cabDescriptor.FileTableOffset2 + i * 0x57;
 
 					var file = new FileDescriptor(header, i, cabDescriptorOffset + cabDescriptor.FileTableOffset, version);
 					var path = $"{fileGroup.Name}\\{directories[file.DirectoryIndex].Name}\\{file.Filename}";

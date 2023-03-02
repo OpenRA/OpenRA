@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						// Server does not provide the total file length
 						if (map.DownloadPercentage == 0)
-							 modData.Translation.GetString(Downloading, Translation.Arguments("size", map.DownloadBytes / 1024));
+							modData.Translation.GetString(Downloading, Translation.Arguments("size", map.DownloadBytes / 1024));
 
 						return modData.Translation.GetString(DownloadingPercentage, Translation.Arguments("size", map.DownloadBytes / 1024, "progress", map.DownloadPercentage));
 					};

@@ -97,7 +97,7 @@ namespace OpenRA.Graphics
 
 		public Sprite Add(Png src, float scale = 1f)
 		{
-			var rect = Allocate(new Size(src.Width, src.Height),  scale);
+			var rect = Allocate(new Size(src.Width, src.Height), scale);
 			Util.FastCopyIntoSprite(rect, src);
 			current.CommitBufferedData();
 			return rect;

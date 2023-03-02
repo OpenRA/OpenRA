@@ -277,8 +277,8 @@ namespace OpenRA.Mods.Common.FileFormats
 			var left = 1; // one possible code of zero length
 			for (var len = 1; len <= Blast.MAXBITS; len++)
 			{
-				left <<= 1;	// one more bit, double codes left
-				left -= Count[len];	// deduct count from possible codes
+				left <<= 1; // one more bit, double codes left
+				left -= Count[len]; // deduct count from possible codes
 				if (left < 0)
 					throw new InvalidDataException("over subscribed code set");
 			}

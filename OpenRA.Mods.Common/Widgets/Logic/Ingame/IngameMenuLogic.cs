@@ -435,7 +435,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CreateResumeButton()
 		{
-			var button = AddButton("RESUME", world.IsGameOver ? ReturnToMap	: Resume);
+			var button = AddButton("RESUME", world.IsGameOver ? ReturnToMap : Resume);
 			button.Key = modData.Hotkeys["escape"];
 			button.OnClick = CloseMenu;
 		}

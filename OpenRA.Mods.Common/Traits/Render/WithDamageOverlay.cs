@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				return;
 
 			if (isSmoking) return;
-			if (e.Damage.Value < 0) return;	/* getting healed */
+			if (e.Damage.Value < 0) return; /* getting healed */
 			if (e.DamageState < info.MinimumDamageState) return;
 			if (e.DamageState > info.MaximumDamageState) return;
 

@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		void ReturnLayer(CellLayer<CellInfo> layer)
 		{
 			lock (pool)
-			   if (pool.Count < MaxPoolSize)
+				if (pool.Count < MaxPoolSize)
 					pool.Push(layer);
 		}
 

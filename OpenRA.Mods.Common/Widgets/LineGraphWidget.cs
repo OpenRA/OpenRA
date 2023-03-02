@@ -174,7 +174,9 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			// Draw x axis
-			axisFont.DrawTextWithShadow(xAxisLabel, new float2(graphOrigin.X, origin.Y) + new float2(width / 2 - xAxisLabelSize.X / 2, -(xAxisLabelSize.Y + Padding)), Color.White, BackgroundColorDark, BackgroundColorLight, 1);
+			axisFont.DrawTextWithShadow(xAxisLabel,
+				new float2(graphOrigin.X, origin.Y) + new float2(width / 2 - xAxisLabelSize.X / 2, -(xAxisLabelSize.Y + Padding)),
+				Color.White, BackgroundColorDark, BackgroundColorLight, 1);
 
 			// TODO: make this stuff not draw outside of the RenderBounds
 			for (int n = pointStart, x = 0; n <= pointEnd; n++, x += xStep)
@@ -186,11 +188,15 @@ namespace OpenRA.Mods.Common.Widgets
 				var xAxisText = GetXAxisValueFormat().F(n / XAxisTicksPerLabel);
 				var xAxisTickTextWidth = labelFont.Measure(xAxisText).X;
 				var xLocation = x - xAxisTickTextWidth / 2;
-				labelFont.DrawTextWithShadow(xAxisText, graphOrigin + new float2(xLocation, 2), Color.White, BackgroundColorDark, BackgroundColorLight, 1);
+				labelFont.DrawTextWithShadow(xAxisText,
+					graphOrigin + new float2(xLocation, 2),
+					Color.White, BackgroundColorDark, BackgroundColorLight, 1);
 			}
 
 			// Draw y axis
-			axisFont.DrawTextWithShadow(yAxisLabel,  new float2(origin.X, graphOrigin.Y) + new float2(5 - axisFont.TopOffset, -(height / 2 - yAxisLabelSize.X / 2)), Color.White, BackgroundColorDark, BackgroundColorLight, 1, (float)Math.PI / 2);
+			axisFont.DrawTextWithShadow(yAxisLabel,
+				new float2(origin.X, graphOrigin.Y) + new float2(5 - axisFont.TopOffset, -(height / 2 - yAxisLabelSize.X / 2)),
+				Color.White, BackgroundColorDark, BackgroundColorLight, 1, (float)Math.PI / 2);
 
 			for (var y = GetDisplayFirstYAxisValue() ? 0 : yStep; y <= height; y += yStep)
 			{
@@ -202,7 +208,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var yLocation = y + (textWidth.Y + labelFont.TopOffset) / 2;
 
-				labelFont.DrawTextWithShadow(text, graphOrigin + new float2(-(textWidth.X + 3), -yLocation), Color.White, BackgroundColorDark, BackgroundColorLight, 1);
+				labelFont.DrawTextWithShadow(text,
+					graphOrigin + new float2(-(textWidth.X + 3), -yLocation),
+					Color.White, BackgroundColorDark, BackgroundColorLight, 1);
 			}
 
 			// Bottom line

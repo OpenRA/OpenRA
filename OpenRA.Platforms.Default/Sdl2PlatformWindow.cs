@@ -127,7 +127,7 @@ namespace OpenRA.Platforms.Default
 		[DllImport("libX11")]
 		static extern IntPtr XInternAtom(IntPtr display, string atom_name, bool only_if_exists);
 
-		[DllImport("libX11", CharSet=CharSet.Ansi)]
+		[DllImport("libX11", CharSet = CharSet.Ansi)]
 		static extern int XChangeProperty(IntPtr display, IntPtr window, IntPtr property, IntPtr type, int format, IntPtr mode, string data, int elements);
 
 		[DllImport("libX11")]

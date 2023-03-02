@@ -29,7 +29,10 @@ namespace OpenRA
 		public readonly WVec[][] Polygons;
 		public readonly WRot Orientation;
 
-		public CellRamp(MapGridType type, WRot orientation, RampCornerHeight tl = RampCornerHeight.Low, RampCornerHeight tr = RampCornerHeight.Low, RampCornerHeight br = RampCornerHeight.Low,  RampCornerHeight bl = RampCornerHeight.Low, RampSplit split = RampSplit.Flat)
+		public CellRamp(MapGridType type, WRot orientation,
+			RampCornerHeight tl = RampCornerHeight.Low, RampCornerHeight tr = RampCornerHeight.Low,
+			RampCornerHeight br = RampCornerHeight.Low, RampCornerHeight bl = RampCornerHeight.Low,
+			RampSplit split = RampSplit.Flat)
 		{
 			Orientation = orientation;
 			if (type == MapGridType.RectangularIsometric)
