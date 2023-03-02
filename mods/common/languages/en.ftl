@@ -431,7 +431,7 @@ dialog-overwrite-save =
 
 ## MainMenuLogic
 label-loading-news = Loading news
-label-news-retrival-failed = Failed to retrieve news: { $message }
+label-news-retrieval-failed = Failed to retrieve news: { $message }
 label-news-parsing-failed = Failed to parse news: { $message }
 
 ## MapChooserLogic

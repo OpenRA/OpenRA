@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 	{
 		public override string Name => "Rename contrail color properties";
 
-		public override string Description => "Rename contrail color properties `Color` to `StartColor` and `UsePlayerColor` to `StartColorUsePlayerColor` in traits and weapons to acount for added `EndColor` functionality";
+		public override string Description => "Rename contrail color properties `Color` to `StartColor` and `UsePlayerColor` to `StartColorUsePlayerColor` in traits and weapons to account for added `EndColor` functionality";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

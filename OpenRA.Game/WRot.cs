@@ -25,7 +25,7 @@ namespace OpenRA
 		readonly int x, y, z, w;
 
 		/// <summary>
-		/// Construct a rotation from euler angles.
+		/// Construct a rotation from Euler angles.
 		/// </summary>
 		public WRot(WAngle roll, WAngle pitch, WAngle yaw)
 		{

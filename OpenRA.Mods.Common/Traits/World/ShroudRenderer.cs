@@ -279,13 +279,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var cv = cellVisibility(puv);
 
-			// If a cell is covered by shroud, then all neigbhors are covered by shroud and fog.
+			// If a cell is covered by shroud, then all neighbors are covered by shroud and fog.
 			if (!cv.HasFlag(Shroud.CellVisibility.Explored))
 				return notVisibleEdgesPair;
 
 			var ncv = GetNeighborsVisbility(puv);
 
-			// If a cell is covered by fog, then all neigbhors are as well.
+			// If a cell is covered by fog, then all neighbors are as well.
 			var edgesFog = cv.HasFlag(Shroud.CellVisibility.Visible) ? GetEdges(ncv, Shroud.CellVisibility.Visible) : notVisibleEdgesPair.Item2;
 
 			var edgesShroud = GetEdges(ncv, Shroud.CellVisibility.Explored);
