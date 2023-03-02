@@ -31,8 +31,8 @@ namespace OpenRA.Traits
 			get => depthBuffer;
 			set
 			{
-				 depthBuffer = value;
-				 depthBufferDirty = true;
+				depthBuffer = value;
+				depthBufferDirty = true;
 			}
 		}
 

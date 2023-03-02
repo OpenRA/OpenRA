@@ -159,7 +159,7 @@ namespace OpenRA
 		static object ParseColor(string fieldName, Type fieldType, string value, MemberInfo field)
 		{
 			if (value != null && Color.TryParse(value, out var color))
-					return color;
+				return color;
 
 			return InvalidValueAction(value, fieldType, fieldName);
 		}

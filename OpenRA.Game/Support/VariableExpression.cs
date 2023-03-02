@@ -77,14 +77,14 @@ namespace OpenRA.Support
 				case '9':
 					return CharClass.Digit;
 
-					// Fast-track normal whitespace
+				// Fast-track normal whitespace
 				case ' ':
 				case '\t':
 				case '\n':
 				case '\r':
 					return CharClass.Whitespace;
 
-					// Should other whitespace be tested?
+				// Should other whitespace be tested?
 				default:
 					return char.IsWhiteSpace(c) ? CharClass.Whitespace : CharClass.Id;
 			}

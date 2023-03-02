@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Graphics
 					return;
 
 				var displayValue = health.DisplayHP != health.HP ? (float?)health.DisplayHP / health.MaxHP : null;
-				DrawBar(wr, (float)health.HP / health.MaxHP, GetHealthColor(health), 0,  displayValue, Color.OrangeRed);
+				DrawBar(wr, (float)health.HP / health.MaxHP, GetHealthColor(health), 0, displayValue, Color.OrangeRed);
 			}
 
 			if (DisplayExtra)

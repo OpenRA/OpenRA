@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 		public static IEnumerable<(CPos Cell, Actor Actor)> GetLineBuildCells(World world, CPos cell, ActorInfo ai, BuildingInfo bi, Player owner)
 		{
 			var lbi = ai.TraitInfo<LineBuildInfo>();
-			var topLeft = cell;	// 1x1 assumption!
+			var topLeft = cell; // 1x1 assumption!
 
 			if (world.IsCellBuildable(topLeft, ai, bi))
 				yield return (topLeft, null);

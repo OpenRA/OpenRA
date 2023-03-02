@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			Facing = Facing == Left ? Right : Left;
 		}
 
-		int MovementSpeed => OpenRA.Mods.Common.Util.ApplyPercentageModifiers(Info.Speed, speedModifiers);
+		int MovementSpeed => Common.Util.ApplyPercentageModifiers(Info.Speed, speedModifiers);
 
 		public (CPos, SubCell)[] OccupiedCells() { return new[] { (TopLeft, SubCell.FullCell) }; }
 
