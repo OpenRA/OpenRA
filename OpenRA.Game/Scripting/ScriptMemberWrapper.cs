@@ -114,7 +114,7 @@ namespace OpenRA.Scripting
 			{
 				var pi = (PropertyInfo)Member;
 				if (!value.TryGetClrValue(pi.PropertyType, out var clrValue))
-					throw new LuaException($"Unable to convert '{value.WrappedClrType().Name}' to Clr type '{pi.PropertyType}'");
+					throw new LuaException($"Unable to convert '{value.WrappedClrType().Name}' to CLR type '{pi.PropertyType}'");
 
 				pi.SetValue(Target, clrValue, null);
 			}

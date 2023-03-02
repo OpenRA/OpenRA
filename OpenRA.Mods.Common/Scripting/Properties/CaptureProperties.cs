@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Scripting
 			Self.QueueActivity(new CaptureActor(Self, Target.FromActor(target), null));
 		}
 
-		[Desc("Checks if the target actor can be catured.")]
+		[Desc("Checks if the target actor can be captured.")]
 		public bool CanCapture(Actor target)
 		{
 			var targetManager = target.TraitOrDefault<CaptureManager>();

@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			bridges = new CellLayer<Bridge>(w.Map);
 
-			// Build a list of templates that should be overlayed with bridges
+			// Build a list of templates that should be overlaid with bridges
 			foreach (var bridge in info.Bridges)
 			{
 				var bi = w.Map.Rules.Actors[bridge].TraitInfo<BridgeInfo>();

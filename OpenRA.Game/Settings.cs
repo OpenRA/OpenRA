@@ -105,7 +105,7 @@ namespace OpenRA
 		[Desc("Delay in milliseconds before newly joined players can send chat messages.")]
 		public int FloodLimitJoinCooldown = 5000;
 
-		[Desc("Amount of miliseconds player chat messages are tracked for.")]
+		[Desc("Amount of milliseconds player chat messages are tracked for.")]
 		public int FloodLimitInterval = 5000;
 
 		[Desc("Amount of chat messages per FloodLimitInterval a players can send before flood is detected.")]

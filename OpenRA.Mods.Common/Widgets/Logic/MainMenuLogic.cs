@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string LoadingNews = "label-loading-news";
 
 		[TranslationReference("message")]
-		const string NewsRetrivalFailed = "label-news-retrival-failed";
+		const string NewsRetrivalFailed = "label-news-retrieval-failed";
 
 		[TranslationReference("message")]
 		const string NewsParsingFailed = "label-news-parsing-failed";
