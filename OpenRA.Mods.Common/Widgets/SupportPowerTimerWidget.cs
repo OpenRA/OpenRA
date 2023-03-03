@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -25,6 +26,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly TextAlign Align = TextAlign.Left;
 		public readonly TimerOrder Order = TimerOrder.Descending;
 
+		readonly SpriteFont font;
 		readonly IEnumerable<SupportPowerInstance> powers;
 		readonly Color bgDark, bgLight;
 		(string Text, Color Color)[] texts;
@@ -39,6 +41,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			bgDark = ChromeMetrics.Get<Color>("TextContrastColorDark");
 			bgLight = ChromeMetrics.Get<Color>("TextContrastColorLight");
+			font = Game.Renderer.Fonts[Font];
 		}
 
 		public override void Tick()
@@ -74,7 +77,6 @@ namespace OpenRA.Mods.Common.Widgets
 			var y = 0;
 			foreach (var t in texts)
 			{
-				var font = Game.Renderer.Fonts[Font];
 				var textSize = font.Measure(t.Text);
 				var location = new float2(Bounds.Location) + new float2(0, y);
 
