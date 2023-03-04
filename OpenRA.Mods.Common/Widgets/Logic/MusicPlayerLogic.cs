@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			pauseButton.IsVisible = () => Game.Sound.MusicPlaying;
 
 			var stopButton = panel.Get<ButtonWidget>("BUTTON_STOP");
-			stopButton.OnClick = () => { musicPlaylist.Stop(); };
+			stopButton.OnClick = musicPlaylist.Stop;
 			stopButton.IsDisabled = NoMusic;
 
 			var nextButton = panel.Get<ButtonWidget>("BUTTON_NEXT");

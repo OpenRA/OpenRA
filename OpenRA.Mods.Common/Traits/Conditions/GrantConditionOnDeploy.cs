@@ -81,9 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 				},
 				(actor, value) =>
-				{
-					actor.ReplaceInit(new DeployStateInit(value ? DeployState.Deployed : DeployState.Undeployed));
-				});
+					actor.ReplaceInit(new DeployStateInit(value ? DeployState.Deployed : DeployState.Undeployed)));
 		}
 
 		public override object Create(ActorInitializer init) { return new GrantConditionOnDeploy(init, this); }

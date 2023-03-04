@@ -47,10 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					return true;
 				},
-				(actor, value) =>
-				{
-					actor.ReplaceInit(new FreeActorInit(this, value), this);
-				});
+				(actor, value) => actor.ReplaceInit(new FreeActorInit(this, value), this));
 		}
 
 		public override object Create(ActorInitializer init) { return new FreeActor(init, this); }

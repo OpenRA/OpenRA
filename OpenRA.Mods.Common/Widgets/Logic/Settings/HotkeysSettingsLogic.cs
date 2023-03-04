@@ -68,10 +68,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var hotkeyValidColor = ChromeMetrics.Get<Color>("HotkeyColor");
 			var hotkeyInvalidColor = ChromeMetrics.Get<Color>("HotkeyColorInvalid");
 
-			remapButton.GetColor = () =>
-			{
-				return hd.HasDuplicates ? hotkeyInvalidColor : hotkeyValidColor;
-			};
+			remapButton.GetColor = () => hd.HasDuplicates ? hotkeyInvalidColor : hotkeyValidColor;
 
 			if (selectedHotkeyDefinition == hd)
 			{
@@ -253,9 +250,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			hotkeyEntryWidget.IsValid = () => isHotkeyValid;
 			hotkeyEntryWidget.OnLoseFocus = ValidateHotkey;
 			hotkeyEntryWidget.OnEscKey = _ =>
-			{
 				hotkeyEntryWidget.Key = modData.Hotkeys[selectedHotkeyDefinition.Name].GetValue();
-			};
 			hotkeyEntryWidget.IsDisabled = () => selectedHotkeyDefinition.Readonly;
 
 			validHotkeyEntryWidth = hotkeyEntryWidget.Bounds.Width;

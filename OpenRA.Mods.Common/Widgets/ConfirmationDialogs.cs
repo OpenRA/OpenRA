@@ -94,10 +94,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				otherButton.Visible = true;
 				otherButton.Bounds.Y += headerHeight;
-				otherButton.OnClick = () =>
-				{
-					onOther();
-				};
+				otherButton.OnClick = onOther;
 
 				if (!string.IsNullOrEmpty(otherText))
 				{

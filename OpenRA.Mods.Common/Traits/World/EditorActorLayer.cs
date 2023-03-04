@@ -284,10 +284,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			for (var i = (byte)SubCell.First; i < map.Grid.SubCellOffsets.Length; i++)
 			{
-				var blocked = previews.Any(p =>
-				{
-					return p.Footprint.TryGetValue(cell, out var s) && s == (SubCell)i;
-				});
+				var blocked = previews.Any(p => p.Footprint.TryGetValue(cell, out var s) && s == (SubCell)i);
 
 				if (!blocked)
 					return (SubCell)i;

@@ -452,7 +452,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var item = ScrollItemWidget.Setup(template,
 				() => currentFilename == filepath && currentPackage == package,
-				() => { LoadAsset(package, filepath); });
+				() => LoadAsset(package, filepath));
 
 			var label = item.Get<LabelWithTooltipWidget>("TITLE");
 			WidgetUtils.TruncateLabelToTooltip(label, filepath);

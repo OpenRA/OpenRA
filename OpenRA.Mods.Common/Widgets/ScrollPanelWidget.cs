@@ -285,10 +285,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void ScrollToItem(string itemKey, bool smooth = false)
 		{
-			var item = Children.FirstOrDefault(c =>
-			{
-				return c is ScrollItemWidget si && si.ItemKey == itemKey;
-			});
+			var item = Children.FirstOrDefault(c => c is ScrollItemWidget si && si.ItemKey == itemKey);
 
 			if (item != null)
 				ScrollToItem(item, smooth);
@@ -296,10 +293,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void ScrollToSelectedItem()
 		{
-			var item = Children.FirstOrDefault(c =>
-			{
-				return c is ScrollItemWidget si && si.IsSelected();
-			});
+			var item = Children.FirstOrDefault(c => c is ScrollItemWidget si && si.IsSelected());
 
 			if (item != null)
 				ScrollToItem(item);

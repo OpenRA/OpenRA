@@ -86,15 +86,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Console.WriteLine("  },");
 			}
 
-			var actorProperties = utility.ModData.ObjectCreator.GetTypesImplementing<ScriptActorProperties>().SelectMany(cg =>
-			{
-				return ScriptMemberWrapper.WrappableMembers(cg);
-			});
+			var actorProperties = utility.ModData.ObjectCreator.GetTypesImplementing<ScriptActorProperties>()
+				.SelectMany(ScriptMemberWrapper.WrappableMembers);
 
-			var scriptProperties = utility.ModData.ObjectCreator.GetTypesImplementing<ScriptPlayerProperties>().SelectMany(cg =>
-			{
-				return ScriptMemberWrapper.WrappableMembers(cg);
-			});
+			var scriptProperties = utility.ModData.ObjectCreator.GetTypesImplementing<ScriptPlayerProperties>()
+				.SelectMany(ScriptMemberWrapper.WrappableMembers);
 
 			var properties = actorProperties.Concat(scriptProperties);
 			foreach (var property in properties.OrderBy(m => m.Name))

@@ -121,8 +121,11 @@ dotnet_style_predefined_type_for_member_access = true
 # IDE0049, IDE-only counterpart of StyleCopAnalyzers - SA1121: UseBuiltInTypeAlias.
 dotnet_style_predefined_type_for_locals_parameters_members = true
 
-# Use expression body if a local function is a single line.
+# Use expression body for some items if on a single line.
 csharp_style_expression_bodied_local_functions = when_on_single_line
+
+# This rule is buggy and not enforced for builds. ':warning' will at least enforce it in the IDE.
+csharp_style_expression_bodied_lambdas = when_on_single_line:warning
 
 # Remove unused parameters on non public methods, ignore unused parameters on public methods.
 dotnet_code_quality_unused_parameters = non_public
@@ -215,6 +218,9 @@ dotnet_diagnostic.IDE0051.severity = warning
 
 # Remove unread private member.
 dotnet_diagnostic.IDE0052.severity = warning
+
+# Use expression body for lambdas.
+dotnet_diagnostic.IDE0053.severity = warning
 
 # Use compound assignment.
 dotnet_diagnostic.IDE0054.severity = warning

@@ -65,7 +65,7 @@ namespace OpenRA
 		{
 			var newConnection = new NetworkConnection(endpoint);
 			if (recordReplay)
-				newConnection.StartRecording(() => { return TimestampedFilename(); });
+				newConnection.StartRecording(() => TimestampedFilename());
 
 			var om = new OrderManager(newConnection);
 			JoinInner(om);
@@ -618,10 +618,7 @@ namespace OpenRA
 
 					if (orderManager.TryTick())
 					{
-						Sync.RunUnsynced(world, () =>
-						{
-							world.OrderGenerator.Tick(world);
-						});
+						Sync.RunUnsynced(world, () => world.OrderGenerator.Tick(world));
 
 						world.Tick();
 
