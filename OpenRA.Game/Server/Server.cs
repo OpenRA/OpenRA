@@ -336,7 +336,7 @@ namespace OpenRA.Server
 
 			if (Settings.RecordReplays && Type == ServerType.Dedicated)
 			{
-				recorder = new ReplayRecorder(() => { return Game.TimestampedFilename(extra: "-Server"); });
+				recorder = new ReplayRecorder(() => Game.TimestampedFilename(extra: "-Server"));
 
 				// We only need one handshake to initialize the replay.
 				// Add it now, then ignore the redundant handshakes from each client

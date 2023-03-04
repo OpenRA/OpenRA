@@ -106,8 +106,8 @@ namespace OpenRA.Platforms.Default
 							var t = (ValueTuple<int, int, int, int>)tuple;
 							context.EnableScissor(t.Item1, t.Item2, t.Item3, t.Item4);
 						};
-					doSetBlendMode = mode => { context.SetBlendMode((BlendMode)mode); };
-					doSetVSync = enabled => { context.SetVSyncEnabled((bool)enabled); };
+					doSetBlendMode = mode => context.SetBlendMode((BlendMode)mode);
+					doSetVSync = enabled => context.SetVSyncEnabled((bool)enabled);
 
 					Monitor.Pulse(syncObject);
 				}

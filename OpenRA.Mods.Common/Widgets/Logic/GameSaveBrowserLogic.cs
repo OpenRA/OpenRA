@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var saveButton = panel.Get<ButtonWidget>("SAVE_BUTTON");
 				saveButton.IsDisabled = () => string.IsNullOrWhiteSpace(saveTextField.Text);
-				saveButton.OnClick = () => { Save(world); };
+				saveButton.OnClick = () => Save(world);
 				saveButton.IsVisible = () => true;
 
 				var saveWidgets = panel.Get("SAVE_WIDGETS");
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var loadButton = panel.Get<ButtonWidget>("LOAD_BUTTON");
 				loadButton.IsVisible = () => true;
 				loadButton.IsDisabled = () => selectedSave == null;
-				loadButton.OnClick = () => { Load(); };
+				loadButton.OnClick = Load;
 			}
 
 			if (Directory.Exists(baseSavePath))

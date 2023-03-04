@@ -204,10 +204,7 @@ namespace OpenRA.Mods.Common.Traits
 					Info.BeaconDelay,
 					info.FlightDelay - info.BeaconRemoveAdvance);
 
-				self.World.AddFrameEndTask(w =>
-				{
-					w.Add(beacon);
-				});
+				self.World.AddFrameEndTask(w => w.Add(beacon));
 			}
 		}
 

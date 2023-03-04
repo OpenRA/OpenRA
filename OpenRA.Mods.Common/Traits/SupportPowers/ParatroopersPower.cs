@@ -283,10 +283,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (beacon == null)
 				return;
 
-			Self.World.AddFrameEndTask(w =>
-			{
-				w.Remove(beacon);
-			});
+			Self.World.AddFrameEndTask(w => w.Remove(beacon));
 		}
 	}
 }

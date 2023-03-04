@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var item = ScrollItemWidget.Setup(template,
 					() => tilesetDropDown.Text == option,
-					() => { tilesetDropDown.Text = option; });
+					() => tilesetDropDown.Text = option);
 				item.Get<LabelWidget>("LABEL").GetText = () => option;
 				return item;
 			}

@@ -125,9 +125,7 @@ namespace OpenRA.Mods.Common.Traits
 			checkTerrainType = info.UnloadTerrainTypes.Count > 0;
 
 			currentAdjacentCells = new CachedTransform<CPos, IEnumerable<CPos>>(loc =>
-			{
-				return Util.AdjacentCells(self.World, Target.FromActor(self)).Where(c => loc != c);
-			});
+				Util.AdjacentCells(self.World, Target.FromActor(self)).Where(c => loc != c));
 
 			var runtimeCargoInit = init.GetOrDefault<RuntimeCargoInit>(info);
 			var cargoInit = init.GetOrDefault<CargoInit>(info);

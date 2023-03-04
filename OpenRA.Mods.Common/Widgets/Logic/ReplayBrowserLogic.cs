@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var watch = panel.Get<ButtonWidget>("WATCH_BUTTON");
 			watch.IsDisabled = () => selectedReplay == null || map.Status != MapStatus.Available;
-			watch.OnClick = () => { WatchReplay(); };
+			watch.OnClick = WatchReplay;
 
 			var mapPreviewRoot = panel.Get("MAP_PREVIEW_ROOT");
 			mapPreviewRoot.IsVisible = () => selectedReplay != null;

@@ -56,14 +56,10 @@ namespace OpenRA
 		}
 
 		public static Func<string, Type, string, object> InvalidValueAction = (s, t, f) =>
-		{
 			throw new YamlException($"FieldLoader: Cannot parse `{s}` into `{f}.{t}` ");
-		};
 
 		public static Action<string, Type> UnknownFieldAction = (s, f) =>
-		{
 			throw new NotImplementedException($"FieldLoader: Missing field `{s}` on `{f.Name}`");
-		};
 
 		static readonly ConcurrentCache<Type, FieldLoadInfo[]> TypeLoadInfo =
 			new ConcurrentCache<Type, FieldLoadInfo[]>(BuildTypeLoadInfo);

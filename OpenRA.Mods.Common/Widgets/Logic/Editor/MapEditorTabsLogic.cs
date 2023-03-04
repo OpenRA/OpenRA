@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var tab = tabContainer.Get<ButtonWidget>(buttonId);
 			tab.IsHighlighted = () => menuType == tabType;
-			tab.OnClick = () => { menuType = tabType; };
+			tab.OnClick = () => menuType = tabType;
 
 			var container = widget.Parent.Get<ContainerWidget>(tabId);
 			container.IsVisible = () => menuType == tabType;

@@ -61,9 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 			base.Created(self);
 
 			self.World.AddFrameEndTask(w =>
-			{
-				remainingTicks = Util.ApplyPercentageModifiers(Info.Delay, modifiers.Select(m => m.GetReloadAmmoModifier()));
-			});
+				remainingTicks = Util.ApplyPercentageModifiers(Info.Delay, modifiers.Select(m => m.GetReloadAmmoModifier())));
 		}
 
 		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel)
