@@ -112,11 +112,10 @@ check:
 	@echo
 	@echo "Compiling in Debug mode..."
 ifeq ($(RUNTIME), mono)
-# Enabling EnforceCodeStyleInBuild and GenerateDocumentationFile as a workaround for some code style rules (in particular IDE0005) being bugged and not reporting warnings/errors otherwise.
-	@$(MSBUILD) -t:build -restore -p:Configuration=Debug -warnaserror -p:TargetPlatform=$(TARGETPLATFORM) -p:EnforceCodeStyleInBuild=true -p:GenerateDocumentationFile=true
+	@$(MSBUILD) -t:clean\;build -restore -p:Configuration=Debug -warnaserror -p:TargetPlatform=$(TARGETPLATFORM)
 else
-# Enabling EnforceCodeStyleInBuild and GenerateDocumentationFile as a workaround for some code style rules (in particular IDE0005) being bugged and not reporting warnings/errors otherwise.
-	@$(DOTNET) build -c Debug -nologo -warnaserror -p:TargetPlatform=$(TARGETPLATFORM) -p:EnforceCodeStyleInBuild=true -p:GenerateDocumentationFile=true
+	@$(DOTNET) clean -c Debug --nologo --verbosity minimal
+	@$(DOTNET) build -c Debug -nologo -warnaserror -p:TargetPlatform=$(TARGETPLATFORM)
 endif
 ifeq ($(TARGETPLATFORM), unix-generic)
 	@./configure-system-libraries.sh
