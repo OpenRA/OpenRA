@@ -44,7 +44,7 @@ CRATE:
 		MaxAmount: 5
 		MinAmount: 1
 		MaxDuplicateValue: 1500
-	GiveMcvCrateAction:
+	GiveBaseBuilderCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 100
 		Units: mcv

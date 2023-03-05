@@ -20,7 +20,7 @@ CRATE:
 		SelectionShares: 5
 		Sequence: cloak
 		Condition: cloak-crate-collected
-	GiveMcvCrateAction:
+	GiveBaseBuilderCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 50
 		Units: mcv

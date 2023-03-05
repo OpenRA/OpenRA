@@ -94,6 +94,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RenameEngineerRepair(),
 				new ProductionTabsWidgetAddTabButtonCollection(),
 				new RemoveTSRefinery(),
+				new RenameMcvCrateAction(),
 			})
 		};
 
