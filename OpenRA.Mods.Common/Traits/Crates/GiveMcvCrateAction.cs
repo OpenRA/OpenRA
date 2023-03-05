@@ -14,18 +14,18 @@ using System.Linq;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Spawns units when collected.", "Adjust selection shares when player has no base.")]
-	class GiveMcvCrateActionInfo : GiveUnitCrateActionInfo
+	class GiveBaseBuilderCrateActionInfo : GiveUnitCrateActionInfo
 	{
-		[Desc("The selection shares to use if the collector has no base.")]
+		[Desc("The selection shares to use if the collector has no actor with `" + nameof(BaseBuilding) + ".")]
 		public readonly int NoBaseSelectionShares = 1000;
 
-		public override object Create(ActorInitializer init) { return new GiveMcvCrateAction(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new GiveBaseBuilderCrateAction(init.Self, this); }
 	}
 
-	class GiveMcvCrateAction : GiveUnitCrateAction
+	class GiveBaseBuilderCrateAction : GiveUnitCrateAction
 	{
-		readonly GiveMcvCrateActionInfo info;
-		public GiveMcvCrateAction(Actor self, GiveMcvCrateActionInfo info)
+		readonly GiveBaseBuilderCrateActionInfo info;
+		public GiveBaseBuilderCrateAction(Actor self, GiveBaseBuilderCrateActionInfo info)
 			: base(self, info)
 		{
 			this.info = info;

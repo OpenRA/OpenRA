@@ -87,7 +87,7 @@ FORTCRATE:
 	ExplodeCrateAction@bigboom:
 		Weapon: SCUD
 		SelectionShares: 5
-	GiveMcvCrateAction:
+	GiveBaseBuilderCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 1000
 		Units: mobiletent

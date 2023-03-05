@@ -93,7 +93,7 @@ CRATE:
 	RevealMapCrateAction:
 		SelectionShares: 1
 		Sequence: reveal-map
-	GiveMcvCrateAction:
+	GiveBaseBuilderCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 100
 		Units: mcv

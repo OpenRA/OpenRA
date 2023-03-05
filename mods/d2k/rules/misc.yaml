@@ -125,7 +125,7 @@ crate:
 		Units: deviator
 		ValidFactions: ordos
 		Prerequisites: techlevel.high, heavy_factory, research_centre
-	GiveMcvCrateAction:
+	GiveBaseBuilderCrateAction:
 		SelectionShares: 0
 		NoBaseSelectionShares: 9001
 		Units: mcv
