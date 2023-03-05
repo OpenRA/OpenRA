@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Notification = "HarvesterAttack";
 
 		[Desc("Text notification to display.")]
-		public string TextNotification = null;
+		public readonly string TextNotification = null;
 
 		public override object Create(ActorInitializer init) { return new HarvesterAttackNotifier(init.Self, this); }
 	}
