@@ -12,7 +12,6 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ExternalConsole>false</ExternalConsole>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    <CodeAnalysisRuleSet>$(EngineRootPath)/OpenRA.ruleset</CodeAnalysisRuleSet>
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
@@ -30,6 +29,12 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>false</Optimize>
+    <!-- Enable only for Debug builds to improve compile-time performance for Release builds -->
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <!-- Enabling GenerateDocumentationFile is required for IDE0005 (Remove unnecessary import) 
+      rule to run in command line builds. https://github.com/dotnet/roslyn/issues/41640
+      Enable only for Debug builds to improve compile-time performance for Release builds -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
