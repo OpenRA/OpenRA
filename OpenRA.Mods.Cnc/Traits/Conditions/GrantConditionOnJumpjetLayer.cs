@@ -9,7 +9,9 @@
  */
 #endregion
 
-namespace OpenRA.Mods.Common.Traits
+using OpenRA.Mods.Common.Traits;
+
+namespace OpenRA.Mods.Cnc.Traits
 {
 	public class GrantConditionOnJumpjetLayerInfo : GrantConditionOnLayerInfo
 	{

@@ -10,9 +10,10 @@
 #endregion
 
 using OpenRA.Mods.Common.Pathfinder;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits
+namespace OpenRA.Mods.Cnc.Traits
 {
 	[TraitLocation(SystemActors.World)]
 	public class JumpjetActorLayerInfo : TraitInfo, ICustomMovementLayerInfo
