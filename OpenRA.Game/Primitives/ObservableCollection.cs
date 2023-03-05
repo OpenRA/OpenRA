@@ -20,10 +20,7 @@ namespace OpenRA.Primitives
 	{
 		public event Action<IObservableCollection, object> OnAdd = (x, k) => { };
 
-		// TODO Workaround for https://github.com/OpenRA/OpenRA/issues/6101
-		#pragma warning disable 67
 		public event Action<IObservableCollection, object> OnRemove = (x, k) => { };
-		#pragma warning restore
 		public event Action<IObservableCollection, int> OnRemoveAt = (x, i) => { };
 		public event Action<IObservableCollection, object, object> OnSet = (x, o, n) => { };
 		public event Action<IObservableCollection> OnRefresh = x => { };
