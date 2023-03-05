@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Notification = "BaseAttack";
 
 		[Desc("Text notification to display.")]
-		public string TextNotification = null;
+		public readonly string TextNotification = null;
 
 		[NotificationReference("Speech")]
 		[Desc("Speech notification to play to allies when under attack.",
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string AllyNotification = null;
 
 		[Desc("Text notification to display to allies when under attack.")]
-		public string AllyTextNotification = null;
+		public readonly string AllyTextNotification = null;
 
 		public override object Create(ActorInitializer init) { return new BaseAttackNotifier(init.Self, this); }
 	}
