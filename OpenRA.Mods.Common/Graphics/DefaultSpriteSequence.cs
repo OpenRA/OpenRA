@@ -19,26 +19,6 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.Graphics
 {
-	public class EmbeddedSpritePalette
-	{
-		readonly uint[] filePalette = null;
-		readonly Dictionary<int, uint[]> framePalettes = null;
-
-		public EmbeddedSpritePalette(uint[] filePalette = null, Dictionary<int, uint[]> framePalettes = null)
-		{
-			this.filePalette = filePalette;
-			this.framePalettes = framePalettes;
-		}
-
-		public bool TryGetPaletteForFrame(int frame, out uint[] palette)
-		{
-			if (framePalettes == null || !framePalettes.TryGetValue(frame, out palette))
-				palette = filePalette;
-
-			return palette != null;
-		}
-	}
-
 	public class DefaultSpriteSequenceLoader : ISpriteSequenceLoader
 	{
 		static readonly MiniYaml NoData = new MiniYaml(null);
@@ -255,11 +235,6 @@ namespace OpenRA.Mods.Common.Graphics
 
 		[Desc("X, Y offset to apply to the depth sprite.")]
 		static readonly SpriteSequenceField<float2> DepthSpriteOffset = new SpriteSequenceField<float2>(nameof(DepthSpriteOffset), float2.Zero);
-
-		[Desc("Make a custom palette embedded in the sprite available to the PaletteFromEmbeddedSpritePalette trait.")]
-		static readonly SpriteSequenceField<bool> HasEmbeddedPalette = new SpriteSequenceField<bool>(nameof(HasEmbeddedPalette), false);
-
-		public readonly uint[] EmbeddedPalette;
 
 		protected virtual string GetSpriteFilename(ModData modData, string tileset, string image, string sequence, MiniYaml data, MiniYaml defaults)
 		{
@@ -500,19 +475,6 @@ namespace OpenRA.Mods.Common.Graphics
 					var r = Rectangle.FromLTRB(cw - w, ch - h, cw + w, ch + h);
 					return new SpriteWithSecondaryData(s, ds.Sheet, r, ds.Channel);
 				}).ToArray();
-			}
-
-			if (LoadField(HasEmbeddedPalette, data, defaults))
-			{
-				var filename = GetSpriteFilename(modData, tileSet, image, sequence, data, defaults);
-				if (filename == null)
-					throw new YamlException($"Sequence {image}.{sequence} does not define a filename.");
-
-				var metadata = cache.FrameMetadata(filename);
-				var i = frames != null ? frames[0] : start;
-				var palettes = metadata?.GetOrDefault<EmbeddedSpritePalette>();
-				if (palettes == null || !palettes.TryGetPaletteForFrame(i, out EmbeddedPalette))
-					throw new YamlException($"Cannot export palette from {filename}: frame {i} does not define an embedded palette.");
 			}
 
 			var boundSprites = SpriteBounds(sprites, frames, start, facings, length, stride, transpose);

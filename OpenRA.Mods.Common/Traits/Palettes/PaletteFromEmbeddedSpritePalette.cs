@@ -10,10 +10,9 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.FileSystem;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.SpriteLoaders;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -27,13 +26,11 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Name = null;
 
 		[FieldLoader.Require]
-		[Desc("Sequence image holding the palette definition")]
-		public readonly string Image = null;
+		[Desc("Filename of sprite that contains the palette definition.")]
+		public readonly string Filename = null;
 
-		[FieldLoader.Require]
-		[SequenceReference(nameof(Image))]
-		[Desc("Sequence holding the palette definition")]
-		public readonly string Sequence = null;
+		[Desc("Image frame associated with the palette definition, if relevant.")]
+		public readonly int Frame = 0;
 
 		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;
@@ -47,8 +44,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		ImmutablePalette IProvidesCursorPaletteInfo.ReadPalette(IReadOnlyFileSystem fileSystem)
 		{
-			var sequence = (DefaultSpriteSequence)Game.ModData.DefaultSequences.Values.First().GetSequence(Image, Sequence);
-			return new ImmutablePalette(sequence.EmbeddedPalette);
+			FrameLoader.GetFrames(fileSystem, Filename, Game.ModData.SpriteLoaders, out var metadata);
+			var palettes = metadata?.GetOrDefault<EmbeddedSpritePalette>();
+			if (palettes == null || !palettes.TryGetPaletteForFrame(Frame, out var embeddedPalette))
+				throw new YamlException($"Cannot export palette from {Filename}: frame {Frame} does not define an embedded palette");
+
+			return new ImmutablePalette(embeddedPalette);
 		}
 	}
 
@@ -59,8 +60,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
-			var sequence = (DefaultSpriteSequence)wr.World.Map.Rules.Sequences.GetSequence(info.Image, info.Sequence);
-			wr.AddPalette(info.Name, new ImmutablePalette(sequence.EmbeddedPalette), info.AllowModifiers);
+			FrameLoader.GetFrames(wr.World.Map, info.Filename, Game.ModData.SpriteLoaders, out var metadata);
+			var palettes = metadata?.GetOrDefault<EmbeddedSpritePalette>();
+			if (palettes == null || !palettes.TryGetPaletteForFrame(info.Frame, out var embeddedPalette))
+				throw new YamlException($"Cannot export palette from {info.Filename}: frame {info.Frame} does not define an embedded palette");
+
+			wr.AddPalette(info.Name, new ImmutablePalette(embeddedPalette), info.AllowModifiers);
 		}
 
 		public IEnumerable<string> PaletteNames { get { yield return info.Name; } }
