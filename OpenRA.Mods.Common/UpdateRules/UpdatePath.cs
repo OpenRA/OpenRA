@@ -95,6 +95,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ProductionTabsWidgetAddTabButtonCollection(),
 				new RemoveTSRefinery(),
 				new RenameMcvCrateAction(),
+				new RemoveSequenceHasEmbeddedPalette(),
 			})
 		};
 

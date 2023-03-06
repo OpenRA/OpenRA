@@ -534,7 +534,6 @@ moveflsh:
 		Tick: 80
 		BlendMode: Multiply
 		ZOffset: 2047
-		HasEmbeddedPalette: True
 
 resources:
 	spicea:
@@ -563,10 +562,6 @@ shroud:
 		BlendMode: Subtractive
 		Offset: -16,-16
 		Length: 14
-	palette:
-		Filename: DATA.R8
-		Start: 38
-		HasEmbeddedPalette: True
 	shrouda:
 		Filename: DATA.R8
 		Start: 40

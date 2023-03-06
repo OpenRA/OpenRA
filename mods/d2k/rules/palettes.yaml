@@ -24,8 +24,8 @@
 		AllowModifiers: false
 	PaletteFromEmbeddedSpritePalette@moveflash-base:
 		Name: moveflash-base
-		Image: moveflsh
-		Sequence: idle
+		Filename: DATA.R8
+		Frame: 3874
 	PaletteFromScaledPalette@moveflash:
 		Name: moveflash
 		BasePalette: moveflash-base
@@ -47,8 +47,8 @@
 		Offset: -64
 	PaletteFromEmbeddedSpritePalette@shroud:
 		Name: shroud
-		Image: shroud
-		Sequence: palette
+		Filename: DATA.R8
+		Frame: 38
 	D2kFogPalette@fog:
 		Name: fog
 		BasePalette: shroud

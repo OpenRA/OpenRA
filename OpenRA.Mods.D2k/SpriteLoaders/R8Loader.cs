@@ -12,7 +12,7 @@
 using System.Collections.Generic;
 using System.IO;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.SpriteLoaders;
 using OpenRA.Primitives;
 
 namespace OpenRA.Mods.D2k.SpriteLoaders
