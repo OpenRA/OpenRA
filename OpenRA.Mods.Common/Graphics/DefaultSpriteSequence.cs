@@ -101,11 +101,14 @@ namespace OpenRA.Mods.Common.Graphics
 		protected readonly struct ReservationInfo
 		{
 			public readonly string Filename;
-			public readonly int[] LoadFrames;
+			public readonly List<int> LoadFrames;
 			public readonly int[] Frames;
 			public readonly MiniYamlNode.SourceLocation Location;
 
 			public ReservationInfo(string filename, int[] loadFrames, int[] frames, MiniYamlNode.SourceLocation location)
+				: this(filename, loadFrames?.ToList(), frames, location) { }
+
+			public ReservationInfo(string filename, List<int> loadFrames, int[] frames, MiniYamlNode.SourceLocation location)
 			{
 				Filename = filename;
 				LoadFrames = loadFrames;
@@ -294,37 +297,37 @@ namespace OpenRA.Mods.Common.Graphics
 			return Rectangle.FromLTRB(left, top, right, bottom);
 		}
 
-		protected static int[] CalculateFrameIndices(int start, int length, int stride, int facings, int[] frames, bool transpose, bool reverseFacings)
+		protected static List<int> CalculateFrameIndices(int start, int? length, int stride, int facings, int[] frames, bool transpose, bool reverseFacings, int shadowStart)
 		{
+			// Request all frames
+			if (length == null)
+				return null;
+
+			// Only request the subset of frames that we actually need
 			var usedFrames = new List<int>();
 			for (var facing = 0; facing < facings; facing++)
 			{
 				var facingInner = reverseFacings ? (facings - facing) % facings : facing;
-				for (var frame = 0; frame < length; frame++)
+				for (var frame = 0; frame < length.Value; frame++)
 				{
-					var i = transpose ? frame % length * facings + facingInner :
-						facingInner * stride + frame % length;
+					var i = transpose ? frame % length.Value * facings + facingInner :
+						facingInner * stride + frame % length.Value;
 
 					usedFrames.Add(frames?[i] ?? start + i);
 				}
 			}
 
-			return usedFrames.ToArray();
+			if (shadowStart >= 0)
+				usedFrames.AddRange(usedFrames.ToList().Select(i => i + shadowStart - start));
+
+			return usedFrames;
 		}
 
 		protected virtual IEnumerable<ReservationInfo> ParseFilenames(ModData modData, string tileset, int[] frames, MiniYaml data, MiniYaml defaults)
 		{
 			var filename = LoadField(Filename, data, defaults, out var location);
 
-			// Only request the subset of frames that we actually need.
-			int[] loadFrames = null;
-			if (length != null)
-			{
-				loadFrames = CalculateFrameIndices(start, length.Value, stride ?? length.Value, facings, frames, transpose, reverseFacings);
-				if (shadowStart >= 0)
-					loadFrames = loadFrames.Concat(loadFrames.Select(i => i + shadowStart - start)).ToArray();
-			}
-
+			var loadFrames = CalculateFrameIndices(start, length, stride ?? length ?? 0, facings, frames, transpose, reverseFacings, shadowStart);
 			yield return new ReservationInfo(filename, loadFrames, frames, location);
 		}
 
@@ -502,7 +505,7 @@ namespace OpenRA.Mods.Common.Graphics
 				alpha = Exts.MakeArray(length.Value, i => float2.Lerp(1f, 0f, i / (length.Value - 1f)));
 
 			// Reindex sprites to order facings anti-clockwise and remove unused frames
-			var index = CalculateFrameIndices(start, length.Value, stride ?? length.Value, facings, null, transpose, reverseFacings).ToList();
+			var index = CalculateFrameIndices(start, length.Value, stride ?? length.Value, facings, null, transpose, reverseFacings, -1);
 			if (reverses)
 			{
 				index.AddRange(index.Skip(1).Take(length.Value - 2).Reverse());
