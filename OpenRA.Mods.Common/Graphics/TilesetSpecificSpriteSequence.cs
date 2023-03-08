@@ -43,15 +43,7 @@ namespace OpenRA.Mods.Common.Graphics
 				var tilesetNode = node.Value.Nodes.FirstOrDefault(n => n.Key == tileset);
 				if (tilesetNode != null)
 				{
-					// Only request the subset of frames that we actually need
-					int[] loadFrames = null;
-					if (length != null)
-					{
-						loadFrames = CalculateFrameIndices(start, length.Value, stride ?? length.Value, facings, frames, transpose, reverseFacings);
-						if (shadowStart >= 0)
-							loadFrames = loadFrames.Concat(loadFrames.Select(i => i + shadowStart - start)).ToArray();
-					}
-
+					var loadFrames = CalculateFrameIndices(start, length, stride ?? length ?? 0, facings, frames, transpose, reverseFacings, shadowStart);
 					return new[] { new ReservationInfo(tilesetNode.Value.Value, loadFrames, frames, tilesetNode.Location) };
 				}
 			}
