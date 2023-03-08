@@ -188,12 +188,13 @@ namespace OpenRA
 
 		bool wasLoadingGameSave;
 
-		internal World(ModData modData, Map map, OrderManager orderManager, WorldType type)
+		internal World(string mapUID, ModData modData, OrderManager orderManager, WorldType type)
 		{
 			this.modData = modData;
 			Type = type;
 			OrderManager = orderManager;
-			Map = map;
+			using (new PerfTimer("PrepareMap"))
+				Map = modData.PrepareMap(mapUID);
 
 			if (string.IsNullOrEmpty(modData.Manifest.DefaultOrderGenerator))
 				throw new InvalidDataException("mod.yaml must define a DefaultOrderGenerator");
@@ -212,7 +213,7 @@ namespace OpenRA
 			SharedRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 			LocalRandom = new MersenneTwister();
 
-			ModelCache = modData.ModelSequenceLoader.CacheModels(map, modData, map.Rules.ModelSequences);
+			ModelCache = modData.ModelSequenceLoader.CacheModels(Map, modData, Map.Rules.ModelSequences);
 
 			var worldActorType = type == WorldType.Editor ? SystemActors.EditorWorld : SystemActors.World;
 			WorldActor = CreateActor(worldActorType.ToString(), new TypeDictionary());
@@ -241,7 +242,7 @@ namespace OpenRA
 				MapTitle = Map.Title
 			};
 
-			RulesContainTemporaryBlocker = map.Rules.Actors.Any(a => a.Value.HasTraitInfo<ITemporaryBlockerInfo>());
+			RulesContainTemporaryBlocker = Map.Rules.Actors.Any(a => a.Value.HasTraitInfo<ITemporaryBlockerInfo>());
 			gameSettings = Game.Settings.Game;
 		}
 
@@ -611,6 +612,8 @@ namespace OpenRA
 			// A matching check in Game.JoinInner handles OM disposal for all other cases.
 			if (Type == WorldType.Shellmap)
 				OrderManager.Dispose();
+
+			Map.Dispose();
 
 			Game.FinishBenchmark();
 		}

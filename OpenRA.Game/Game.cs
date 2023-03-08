@@ -187,13 +187,8 @@ namespace OpenRA
 			Cursor.SetCursor(null);
 			BeforeGameStart();
 
-			Map map;
-
-			using (new PerfTimer("PrepareMap"))
-				map = ModData.PrepareMap(mapUID);
-
 			using (new PerfTimer("NewWorld"))
-				OrderManager.World = new World(ModData, map, OrderManager, type);
+				OrderManager.World = new World(mapUID, ModData, OrderManager, type);
 
 			OrderManager.World.GameOver += FinishBenchmark;
 

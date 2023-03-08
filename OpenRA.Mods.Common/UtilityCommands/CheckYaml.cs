@@ -97,8 +97,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (package == null)
 						continue;
 
-					var testMap = new Map(modData, package);
-					TestMap(testMap, modData);
+					using (var testMap = new Map(modData, package))
+						TestMap(testMap, modData);
 				}
 
 				if (errors > 0)
