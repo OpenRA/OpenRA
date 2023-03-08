@@ -20,12 +20,6 @@ World:
 		Scripts: desert-shellmap.lua
 	-StartGameNotification:
 
-^Palettes:
-	IndexedPlayerPalette:
-		PlayerIndex:
-			Soviets: 229, 230, 231, 232, 233, 234, 235, 8, 236, 237, 238, 239, 221, 222, 223, 223
-			Allies: 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175
-
 ^ExistsInWorld:
 	GivesExperience:
 		ActorExperienceModifier: 0
