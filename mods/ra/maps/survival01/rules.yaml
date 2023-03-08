@@ -21,6 +21,9 @@ World:
 	IndexedPlayerPalette:
 		PlayerIndex:
 			Allies: 224, 224, 225, 225, 226, 184, 185, 186, 187, 188, 188, 189, 190, 190, 191, 191
+	IndexedPlayerPalette@NOSHADOW:
+		PlayerIndex:
+			Allies: 224, 224, 225, 225, 226, 184, 185, 186, 187, 188, 188, 189, 190, 190, 191, 191
 
 powerproxy.paratroopers:
 	ParatroopersPower:
