@@ -41,6 +41,7 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public enum ReadyTextStyleOptions { Solid, AlternatingColor, Blinking }
 		public readonly ReadyTextStyleOptions ReadyTextStyle = ReadyTextStyleOptions.AlternatingColor;
+		public readonly Color TextColor = Color.White;
 		public readonly Color ReadyTextAltColor = Color.Gold;
 		public readonly int Columns = 3;
 		public readonly int2 IconSize = new int2(64, 48);
@@ -559,27 +560,27 @@ namespace OpenRA.Mods.Common.Widgets
 					if (first.Done)
 					{
 						if (ReadyTextStyle == ReadyTextStyleOptions.Solid || orderManager.LocalFrameNumber * worldRenderer.World.Timestep / 360 % 2 == 0)
-							overlayFont.DrawTextWithContrast(ReadyText, icon.Pos + readyOffset, Color.White, Color.Black, 1);
+							overlayFont.DrawTextWithContrast(ReadyText, icon.Pos + readyOffset, TextColor, Color.Black, 1);
 						else if (ReadyTextStyle == ReadyTextStyleOptions.AlternatingColor)
 							overlayFont.DrawTextWithContrast(ReadyText, icon.Pos + readyOffset, ReadyTextAltColor, Color.Black, 1);
 					}
 					else if (first.Paused)
 						overlayFont.DrawTextWithContrast(HoldText,
 							icon.Pos + holdOffset,
-							Color.White, Color.Black, 1);
+							TextColor, Color.Black, 1);
 					else if (!waiting && DrawTime)
 						overlayFont.DrawTextWithContrast(WidgetUtils.FormatTime(first.Queue.RemainingTimeActual(first), World.Timestep),
 							icon.Pos + timeOffset,
-							Color.White, Color.Black, 1);
+							TextColor, Color.Black, 1);
 
 					if (first.Infinite && symbolFont != null)
 						symbolFont.DrawTextWithContrast(InfiniteSymbol,
 							icon.Pos + infiniteOffset,
-							Color.White, Color.Black, 1);
+							TextColor, Color.Black, 1);
 					else if (total > 1 || waiting)
 						overlayFont.DrawTextWithContrast(total.ToString(),
 							icon.Pos + queuedOffset,
-							Color.White, Color.Black, 1);
+							TextColor, Color.Black, 1);
 				}
 			}
 		}

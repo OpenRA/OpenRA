@@ -91,6 +91,9 @@ namespace OpenRA.Mods.Common.Widgets
 		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getLeftArrowImage;
 		CachedTransform<(bool Disabled, bool Pressed, bool Hover, bool Focused, bool Highlighted), Sprite> getRightArrowImage;
 
+		public readonly Color TabColor = Color.White;
+		public readonly Color TabColorDone = Color.Gold;
+
 		int contentWidth = 0;
 		float listOffset = 0;
 		bool leftPressed = false;
@@ -218,7 +221,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var textSize = font.Measure(tab.Name);
 				var position = new int2(rect.X + (rect.Width - textSize.X) / 2, rect.Y + (rect.Height - textSize.Y) / 2);
-				font.DrawTextWithContrast(tab.Name, position, tab.Queue.AllQueued().Any(i => i.Done) ? Color.Gold : Color.White, Color.Black, 1);
+				font.DrawTextWithContrast(tab.Name, position, tab.Queue.AllQueued().Any(i => i.Done) ? TabColorDone : TabColor, Color.Black, 1);
 			}
 
 			Game.Renderer.DisableScissor();
