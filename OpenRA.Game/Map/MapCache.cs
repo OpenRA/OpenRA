@@ -214,12 +214,6 @@ namespace OpenRA
 						yield return mapPackage;
 		}
 
-		public IEnumerable<Map> EnumerateMapsWithoutCaching(MapClassification classification = MapClassification.System)
-		{
-			foreach (var mapPackage in EnumerateMapPackagesWithoutCaching(classification))
-				yield return new Map(modData, mapPackage);
-		}
-
 		public void QueryRemoteMapDetails(string repositoryUrl, IEnumerable<string> uids, Action<MapPreview> mapDetailsReceived = null, Action<MapPreview> mapQueryFailed = null)
 		{
 			var queryUids = uids.Distinct()

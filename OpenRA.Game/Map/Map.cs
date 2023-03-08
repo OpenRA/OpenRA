@@ -149,7 +149,7 @@ namespace OpenRA
 		}
 	}
 
-	public class Map : IReadOnlyFileSystem
+	public class Map : IReadOnlyFileSystem, IDisposable
 	{
 		public const int SupportedMapFormat = 11;
 		public const int CurrentMapFormat = 12;
@@ -1416,6 +1416,11 @@ namespace OpenRA
 				return message;
 
 			return modData.Translation.GetString(key, args);
+		}
+
+		public void Dispose()
+		{
+			Sequences.Dispose();
 		}
 	}
 }
