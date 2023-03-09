@@ -22,7 +22,7 @@ namespace OpenRA.Graphics
 		public string Name { get; private set; }
 		public bool IsDecoration { get; set; }
 
-		readonly SequenceProvider sequences;
+		readonly SequenceSet sequences;
 		readonly Func<WAngle> facingFunc;
 		readonly Func<bool> paused;
 

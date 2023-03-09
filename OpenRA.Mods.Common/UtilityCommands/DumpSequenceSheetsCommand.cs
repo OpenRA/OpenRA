@@ -34,8 +34,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var palette = new ImmutablePalette(args[1], new[] { 0 }, Array.Empty<int>());
 
-			SequenceProvider sequences;
-			if (!modData.DefaultSequences.TryGetValue(args[2], out sequences))
+			SequenceSet sequences;
+			if (modData.DefaultTerrainInfo.ContainsKey(args[2]))
+				sequences = new SequenceSet(modData.ModFiles, modData, args[2], null);
+			else
 			{
 				var mapPackage = new Folder(Platform.EngineDir).OpenPackage(args[2], modData.ModFiles);
 				if (mapPackage == null)
@@ -44,7 +46,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				sequences = new Map(modData, mapPackage).Sequences;
 			}
 
-			sequences.Preload();
+			sequences.LoadSprites();
 
 			var count = 0;
 

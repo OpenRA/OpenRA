@@ -51,8 +51,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var relatedEnumTypes = new HashSet<Type>();
 
 			var sequenceTypesInfo = sequenceTypes
-				.Where(x => !x.ContainsGenericParameters && !x.IsAbstract
-					&& x.Name != nameof(FileNotFoundSequence)) // NOTE: This is the simplest way to exclude FileNotFoundSequence, which shouldn't be added.
+				.Where(x => !x.ContainsGenericParameters && !x.IsAbstract)
 				.Select(type => new
 				{
 					type.Namespace,

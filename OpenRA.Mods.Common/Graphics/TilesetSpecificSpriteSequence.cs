@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public override ISpriteSequence CreateSequence(ModData modData, string tileSet, SpriteCache cache, string image, string sequence, MiniYaml data, MiniYaml defaults)
 		{
-			return new TilesetSpecificSpriteSequence(modData, tileSet, cache, this, image, sequence, data, defaults);
+			return new TilesetSpecificSpriteSequence(cache, this, image, sequence, data, defaults);
 		}
 	}
 
@@ -32,20 +32,56 @@ namespace OpenRA.Mods.Common.Graphics
 		[Desc("Dictionary of <tileset name>: filename to override the Filename key.")]
 		static readonly SpriteSequenceField<Dictionary<string, string>> TilesetFilenames = new SpriteSequenceField<Dictionary<string, string>>(nameof(TilesetFilenames), null);
 
-		public TilesetSpecificSpriteSequence(ModData modData, string tileset, SpriteCache cache, ISpriteSequenceLoader loader, string image, string sequence, MiniYaml data, MiniYaml defaults)
-			: base(modData, tileset, cache, loader, image, sequence, data, defaults) { }
+		public TilesetSpecificSpriteSequence(SpriteCache cache, ISpriteSequenceLoader loader, string image, string sequence, MiniYaml data, MiniYaml defaults)
+			: base(cache, loader, image, sequence, data, defaults) { }
 
-		protected override string GetSpriteFilename(ModData modData, string tileset, string image, string sequence, MiniYaml data, MiniYaml defaults)
+		protected override IEnumerable<ReservationInfo> ParseFilenames(ModData modData, string tileset, int[] frames, MiniYaml data, MiniYaml defaults)
 		{
 			var node = data.Nodes.FirstOrDefault(n => n.Key == TilesetFilenames.Key) ?? defaults.Nodes.FirstOrDefault(n => n.Key == TilesetFilenames.Key);
 			if (node != null)
 			{
 				var tilesetNode = node.Value.Nodes.FirstOrDefault(n => n.Key == tileset);
 				if (tilesetNode != null)
-					return tilesetNode.Value.Value;
+				{
+					// Only request the subset of frames that we actually need
+					int[] loadFrames = null;
+					if (length != null)
+					{
+						loadFrames = CalculateFrameIndices(start, length.Value, stride ?? length.Value, facings, frames, transpose, reverseFacings);
+						if (shadowStart >= 0)
+							loadFrames = loadFrames.Concat(loadFrames.Select(i => i + shadowStart - start)).ToArray();
+					}
+
+					return new[] { new ReservationInfo(tilesetNode.Value.Value, loadFrames, frames, tilesetNode.Location) };
+				}
 			}
 
-			return base.GetSpriteFilename(modData, tileset, image, sequence, data, defaults);
+			return base.ParseFilenames(modData, tileset, frames, data, defaults);
+		}
+
+		protected override IEnumerable<ReservationInfo> ParseCombineFilenames(ModData modData, string tileset, int[] frames, MiniYaml data)
+		{
+			var node = data.Nodes.FirstOrDefault(n => n.Key == TilesetFilenames.Key);
+			if (node != null)
+			{
+				var tilesetNode = node.Value.Nodes.FirstOrDefault(n => n.Key == tileset);
+				if (tilesetNode != null)
+				{
+					if (frames == null)
+					{
+						if (LoadField<string>("Length", null, data) != "*")
+						{
+							var subStart = LoadField("Start", 0, data);
+							var subLength = LoadField("Length", 1, data);
+							frames = Exts.MakeArray(subLength, i => subStart + i);
+						}
+					}
+
+					return new[] { new ReservationInfo(tilesetNode.Value.Value, frames, frames, tilesetNode.Location) };
+				}
+			}
+
+			return base.ParseCombineFilenames(modData, tileset, frames, data);
 		}
 	}
 }

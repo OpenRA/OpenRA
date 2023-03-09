@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					{
 						Console.WriteLine($"Testing default sequences for {tileset}");
 
-						var sequences = new SequenceProvider(modData.DefaultFileSystem, modData, tileset, null);
+						var sequences = new SequenceSet(modData.DefaultFileSystem, modData, tileset, null);
 						CheckSequences(modData, modData.DefaultRules, sequences);
 					}
 
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 		}
 
-		void CheckSequences(ModData modData, Ruleset rules, SequenceProvider sequences)
+		void CheckSequences(ModData modData, Ruleset rules, SequenceSet sequences)
 		{
 			foreach (var customSequencesPassType in modData.ObjectCreator.GetTypesImplementing<ILintSequencesPass>())
 			{

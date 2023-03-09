@@ -226,7 +226,7 @@ namespace OpenRA
 		{
 			return Ruleset.Load(modData, this, TileSet, innerData.RuleDefinitions,
 				innerData.WeaponDefinitions, innerData.VoiceDefinitions, innerData.NotificationDefinitions,
-				innerData.MusicDefinitions, innerData.SequenceDefinitions, innerData.ModelSequenceDefinitions);
+				innerData.MusicDefinitions, innerData.ModelSequenceDefinitions);
 		}
 
 		public MapPreview(ModData modData, string uid, MapGridType gridType, MapCache cache)

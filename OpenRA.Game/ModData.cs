@@ -48,9 +48,6 @@ namespace OpenRA
 		readonly Lazy<IReadOnlyDictionary<string, ITerrainInfo>> defaultTerrainInfo;
 		public IReadOnlyDictionary<string, ITerrainInfo> DefaultTerrainInfo => defaultTerrainInfo.Value;
 
-		readonly Lazy<IReadOnlyDictionary<string, SequenceProvider>> defaultSequences;
-		public IReadOnlyDictionary<string, SequenceProvider> DefaultSequences => defaultSequences.Value;
-
 		public ModData(Manifest mod, InstalledMods mods, bool useLoadScreen = false)
 		{
 			Languages = Array.Empty<string>();
@@ -121,12 +118,6 @@ namespace OpenRA
 				return (IReadOnlyDictionary<string, ITerrainInfo>)new ReadOnlyDictionary<string, ITerrainInfo>(items);
 			});
 
-			defaultSequences = Exts.Lazy(() =>
-			{
-				var items = DefaultTerrainInfo.ToDictionary(t => t.Key, t => new SequenceProvider(DefaultFileSystem, this, t.Key, null));
-				return (IReadOnlyDictionary<string, SequenceProvider>)new ReadOnlyDictionary<string, SequenceProvider>(items);
-			});
-
 			initialThreadId = Environment.CurrentManagedThreadId;
 		}
 
@@ -167,6 +158,7 @@ namespace OpenRA
 
 			// Reinitialize all our assets
 			InitializeLoaders(map);
+			map.Sequences.LoadSprites();
 
 			// Load music with map assets mounted
 			using (new Support.PerfTimer("Map.Music"))

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 		public override ISpriteSequence CreateSequence(ModData modData, string tileset, SpriteCache cache, string image, string sequence, MiniYaml data, MiniYaml defaults)
 		{
-			return new ClassicSpriteSequence(modData, tileset, cache, this, image, sequence, data, defaults);
+			return new ClassicSpriteSequence(cache, this, image, sequence, data, defaults);
 		}
 	}
 
@@ -33,8 +33,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 		static readonly SpriteSequenceField<bool> UseClassicFacings = new SpriteSequenceField<bool>(nameof(UseClassicFacings), false);
 		readonly bool useClassicFacings;
 
-		public ClassicSpriteSequence(ModData modData, string tileSet, SpriteCache cache, ISpriteSequenceLoader loader, string image, string sequence, MiniYaml data, MiniYaml defaults)
-			: base(modData, tileSet, cache, loader, image, sequence, data, defaults)
+		public ClassicSpriteSequence(SpriteCache cache, ISpriteSequenceLoader loader, string image, string sequence, MiniYaml data, MiniYaml defaults)
+			: base(cache, loader, image, sequence, data, defaults)
 		{
 			useClassicFacings = LoadField(UseClassicFacings, data, defaults);
 

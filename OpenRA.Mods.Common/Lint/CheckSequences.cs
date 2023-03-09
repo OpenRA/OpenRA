@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Lint
 {
 	class CheckSequences : ILintSequencesPass
 	{
-		void ILintSequencesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules, SequenceProvider sequences)
+		void ILintSequencesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules, SequenceSet sequences)
 		{
 			var factions = rules.Actors[SystemActors.World].TraitInfos<FactionInfo>().Select(f => f.InternalName).ToArray();
 			foreach (var actorInfo in rules.Actors)

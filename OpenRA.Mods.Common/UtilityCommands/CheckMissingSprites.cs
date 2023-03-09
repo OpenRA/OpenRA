@@ -10,7 +10,7 @@
 #endregion
 
 using System;
-using OpenRA.Mods.Common.Graphics;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
 
@@ -38,29 +38,21 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			// any tilesets from being checked further.
 			try
 			{
-				// DefaultSequences is a dictionary of tileset: SequenceProvider
-				// so we can also use this to key our tileset checks
-				foreach (var kv in modData.DefaultSequences)
+				foreach (var (tileset, terrainInfo) in modData.DefaultTerrainInfo)
 				{
 					try
 					{
-						Console.WriteLine("Tileset: " + kv.Key);
-						var terrainInfo = modData.DefaultTerrainInfo[kv.Key];
-
+						Console.WriteLine("Tileset: " + tileset);
 						if (terrainInfo is ITemplatedTerrainInfo templatedTerrainInfo)
-							foreach (var r in modData.DefaultRules.Actors[SystemActors.World].TraitInfos<ITiledTerrainRendererInfo>())
-								failed |= r.ValidateTileSprites(templatedTerrainInfo, Console.WriteLine);
+							foreach (var ttr in modData.DefaultRules.Actors[SystemActors.World].TraitInfos<ITiledTerrainRendererInfo>())
+								failed |= ttr.ValidateTileSprites(templatedTerrainInfo, Console.WriteLine);
 
-						foreach (var image in kv.Value.Images)
+						var sequences = new SequenceSet(modData.DefaultFileSystem, modData, tileset, null);
+						sequences.SpriteCache.LoadReservations(modData);
+						foreach (var (filename, location) in sequences.SpriteCache.MissingFiles)
 						{
-							foreach (var sequence in kv.Value.Sequences(image))
-							{
-								if (!(kv.Value.GetSequence(image, sequence) is FileNotFoundSequence s))
-									continue;
-
-								Console.WriteLine("\tSequence `{0}.{1}` references sprite `{2}` that does not exist.", image, sequence, s.Filename);
-								failed = true;
-							}
+							Console.WriteLine($"\t{location}: {filename} not found");
+							failed = true;
 						}
 					}
 					catch (YamlException e)

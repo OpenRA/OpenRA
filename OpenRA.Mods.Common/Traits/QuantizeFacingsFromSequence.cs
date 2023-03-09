@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Defines sequence to derive facings from.")]
 		public readonly string Sequence = "idle";
 
-		public int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequences, string faction)
+		public int QuantizedBodyFacings(ActorInfo ai, SequenceSet sequences, string faction)
 		{
 			if (string.IsNullOrEmpty(Sequence))
 				throw new InvalidOperationException($"Actor {ai.Name} is missing sequence to quantize facings from.");
