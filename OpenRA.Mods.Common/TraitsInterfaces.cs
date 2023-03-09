@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface IQuantizeBodyOrientationInfo : ITraitInfoInterface
 	{
-		int QuantizedBodyFacings(ActorInfo ai, SequenceProvider sequenceProvider, string race);
+		int QuantizedBodyFacings(ActorInfo ai, SequenceSet sequences, string faction);
 	}
 
 	public interface IPlaceBuildingDecorationInfo : ITraitInfoInterface

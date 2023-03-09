@@ -218,7 +218,7 @@ namespace OpenRA
 		public string Uid { get; private set; }
 
 		public Ruleset Rules { get; private set; }
-		public SequenceProvider Sequences => Rules.Sequences;
+		public SequenceSet Sequences { get; private set; }
 
 		public bool InvalidCustomRules { get; private set; }
 		public Exception InvalidCustomRulesException { get; private set; }
@@ -439,7 +439,7 @@ namespace OpenRA
 			try
 			{
 				Rules = Ruleset.Load(modData, this, Tileset, RuleDefinitions, WeaponDefinitions,
-					VoiceDefinitions, NotificationDefinitions, MusicDefinitions, SequenceDefinitions, ModelSequenceDefinitions);
+					VoiceDefinitions, NotificationDefinitions, MusicDefinitions, ModelSequenceDefinitions);
 			}
 			catch (Exception e)
 			{
@@ -449,8 +449,7 @@ namespace OpenRA
 				Rules = Ruleset.LoadDefaultsForTileSet(modData, Tileset);
 			}
 
-			Rules.Sequences.Preload();
-
+			Sequences = new SequenceSet(this, modData, Tileset, SequenceDefinitions);
 			Translation = new Translation(Game.Settings.Player.Language, Translations, this);
 
 			var tl = new MPos(0, 0).ToCPos(this);
