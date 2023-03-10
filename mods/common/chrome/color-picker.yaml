@@ -41,18 +41,37 @@ Background@COLOR_CHOOSER:
 			Width: 80
 			Text: Palette
 			Font: Bold
-		Background@MIXER_TAB:
-			Background: dialog3
+		Container@MIXER_TAB:
 			X: 5
 			Y: 5
 			Width: PARENT_RIGHT - 90
 			Height: PARENT_BOTTOM - 34
 			Children:
-				ColorMixer@MIXER:
-					X: 2
-					Y: 2
-					Width: PARENT_RIGHT - 4
-					Height: PARENT_BOTTOM - 4
+				Background@HUEBG:
+					Background: dialog3
+					X: 0
+					Y: 0
+					Width: PARENT_RIGHT
+					Height: 17
+					Children:
+						HueSlider@HUE_SLIDER:
+							X: 2
+							Y: 2
+							Width: PARENT_RIGHT - 4
+							Height: PARENT_BOTTOM - 4
+							Ticks: 5
+				Background@MIXERBG:
+					Background: dialog3
+					X: 0
+					Y: 22
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM - 22
+					Children:
+						ColorMixer@MIXER:
+							X: 2
+							Y: 2
+							Width: PARENT_RIGHT - 4
+							Height: PARENT_BOTTOM - 4
 		Background@PALETTE_TAB:
 			Background: dialog3
 			X: 5

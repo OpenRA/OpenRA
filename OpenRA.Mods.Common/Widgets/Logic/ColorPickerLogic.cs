@@ -29,13 +29,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Dictionary<string, MiniYaml> logicArgs)
 		{
 			var mixer = widget.Get<ColorMixerWidget>("MIXER");
+			var hueSlider = widget.Get<HueSliderWidget>("HUE_SLIDER");
 
 			// Set the initial state
 			// All users need to use the same TraitInfo instance, chosen as the default mod rules
 			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
-			mixer.SetColorLimits(colorManager.HsvSaturationRange[0], colorManager.HsvSaturationRange[1], colorManager.V);
+			mixer.SetColorLimits(colorManager.HsvSaturationRange[0], colorManager.HsvSaturationRange[1], colorManager.HsvValueRange[0], colorManager.HsvValueRange[1]);
 			mixer.OnChange += () => onChange(mixer.Color);
 			mixer.Set(initialColor);
+
+			hueSlider.OnChange += h =>
+			{
+				mixer.SetColorLimits(colorManager.HsvSaturationRange[0], colorManager.HsvSaturationRange[1], colorManager.HsvValueRange[0], colorManager.HsvValueRange[1], h);
+				var (_, _, s, v) = mixer.Color.ToAhsv();
+				mixer.Set(Color.FromAhsv(h, s, v));
+				onChange(mixer.Color);
+			};
+
+			hueSlider.UpdateValue(initialColor.ToAhsv().H);
 
 			var randomButton = widget.GetOrNull<ButtonWidget>("RANDOM_BUTTON");
 			if (randomButton != null)
@@ -45,7 +56,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					.Distinct()
 					.ToList();
 				var playerColors = Enumerable.Empty<Color>();
-				randomButton.OnClick = () => mixer.Set(colorManager.RandomValidColor(world.LocalRandom, terrainColors, playerColors));
+				randomButton.OnClick = () =>
+				{
+					var randomColor = colorManager.RandomValidColor(world.LocalRandom, terrainColors, playerColors);
+					mixer.Set(randomColor);
+					hueSlider.UpdateValue(randomColor.ToAhsv().H);
+				};
 			}
 
 			if (initialFaction == null || !colorManager.FactionPreviewActors.TryGetValue(initialFaction, out var actorType))
@@ -117,13 +133,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!int.TryParse(yaml.Value, out paletteCustomRows))
 					throw new YamlException($"Invalid value for PaletteCustomRows: {yaml.Value}");
 
-			var presetColors = colorManager.PresetColors().ToList();
+			var presetColors = colorManager.PresetColors;
 			for (var j = 0; j < palettePresetRows; j++)
 			{
 				for (var i = 0; i < paletteCols; i++)
 				{
 					var colorIndex = j * paletteCols + i;
-					if (colorIndex >= presetColors.Count)
+					if (colorIndex >= presetColors.Length)
 						break;
 
 					var color = presetColors[colorIndex];
@@ -136,7 +152,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					newSwatch.OnMouseUp = m =>
 					{
 						mixer.Set(color);
-						onChange(color);
+						hueSlider.UpdateValue(color.ToAhsv().H);
 					};
 
 					presetArea.AddChild(newSwatch);
@@ -160,7 +176,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var color = newSwatch.GetColor();
 						mixer.Set(color);
-						onChange(color);
+						hueSlider.UpdateValue(color.ToAhsv().H);
 					};
 
 					customArea.AddChild(newSwatch);
