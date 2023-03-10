@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World)]
 	[Desc("Configuration options for the lobby player color picker. Attach this to the world actor.")]
-	public class ColorPickerManagerInfo : TraitInfo<ColorPickerManager>, IRulesetLoaded
+	public class ColorPickerManagerInfo : TraitInfo<ColorPickerManager>
 	{
 		[TranslationReference]
 		const string PlayerColorTerrain = "notification-player-color-terrain";
@@ -34,17 +34,14 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Minimum and maximum saturation levels that are valid for use.")]
 		public readonly float[] HsvSaturationRange = { 0.3f, 0.95f };
 
-		[Desc("HSV value component for player colors.")]
-		public readonly float V = 0.95f;
+		[Desc("Minimum and maximum value levels that are valid for use.")]
+		public readonly float[] HsvValueRange = { 0.3f, 0.95f };
 
 		[Desc("Perceptual color threshold for determining whether two colors are too similar.")]
 		public readonly float SimilarityThreshold = 0.314f;
 
-		[Desc("List of hue components for the preset colors in the palette tab. Each entry must have a corresponding PresetSaturations definition.")]
-		public readonly float[] PresetHues = Array.Empty<float>();
-
-		[Desc("List of saturation components for the preset colors in the palette tab. Each entry must have a corresponding PresetHues definition.")]
-		public readonly float[] PresetSaturations = Array.Empty<float>();
+		[Desc("List of colors to be displayed in the palette tab.")]
+		public readonly Color[] PresetColors = Array.Empty<Color>();
 
 		[ActorReference]
 		[Desc("Actor type to show in the color picker. This can be overridden for specific factions with FactionPreviewActors.")]
@@ -54,18 +51,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Actor type to show in the color picker for specific factions. Overrides PreviewActor.",
 			"A dictionary of [faction name]: [actor name].")]
 		public readonly Dictionary<string, string> FactionPreviewActors = new();
-
-		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
-		{
-			if (PresetHues.Length != PresetSaturations.Length)
-				throw new YamlException("PresetHues and PresetSaturations must have the same number of elements.");
-		}
-
-		public IEnumerable<Color> PresetColors()
-		{
-			for (var i = 0; i < PresetHues.Length; i++)
-				yield return Color.FromAhsv(PresetHues[i], PresetSaturations[i], V);
-		}
 
 		public Color Color;
 
@@ -102,60 +87,56 @@ namespace OpenRA.Mods.Common.Traits
 			var terrainLinear = terrainColors.Select(c => c.ToLinear()).ToList();
 			var playerLinear = playerColors.Select(c => c.ToLinear()).ToList();
 
-			if (PresetHues.Length > 0)
+			foreach (var color in PresetColors.Shuffle(random))
 			{
-				foreach (var i in Exts.MakeArray(PresetHues.Length, x => x).Shuffle(random))
-				{
-					var h = PresetHues[i];
-					var s = PresetSaturations[i];
-					var preset = Color.FromAhsv(h, s, V);
-
-					// Color may already be taken
-					var linear = preset.ToLinear();
-					if (!TryGetBlockingColor(linear, terrainLinear, out _) && !TryGetBlockingColor(linear, playerLinear, out _))
-						return preset;
-				}
+				// Color may already be taken
+				var linear = color.ToLinear();
+				if (!TryGetBlockingColor(linear, terrainLinear, out _) && !TryGetBlockingColor(linear, playerLinear, out _))
+					return color;
 			}
 
 			// Fall back to a random non-preset color
 			var randomHue = random.NextFloat();
 			var randomSat = float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
-			return MakeValid(randomHue, randomSat, random, terrainLinear, playerLinear, null);
+			var randomVal = float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
+			return MakeValid(randomHue, randomSat, randomVal, random, terrainLinear, playerLinear, null);
 		}
 
 		public Color RandomValidColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors)
 		{
 			var h = random.NextFloat();
 			var s = float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
-			return MakeValid(h, s, random, terrainColors, playerColors, null);
+			var v = float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
+			return MakeValid(h, s, v, random, terrainColors, playerColors, null);
 		}
 
 		public Color MakeValid(Color color, MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, Action<string> onError = null)
 		{
-			var (_, h, s, _) = color.ToAhsv();
-			return MakeValid(h, s, random, terrainColors, playerColors, onError);
+			var (_, h, s, v) = color.ToAhsv();
+			return MakeValid(h, s, v, random, terrainColors, playerColors, onError);
 		}
 
-		Color MakeValid(float hue, float sat, MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, Action<string> onError)
+		Color MakeValid(float hue, float sat, float val, MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, Action<string> onError)
 		{
 			var terrainLinear = terrainColors.Select(c => c.ToLinear()).ToList();
 			var playerLinear = playerColors.Select(c => c.ToLinear()).ToList();
 
-			return MakeValid(hue, sat, random, terrainLinear, playerLinear, onError);
+			return MakeValid(hue, sat, val, random, terrainLinear, playerLinear, onError);
 		}
 
-		Color MakeValid(float hue, float sat, MersenneTwister random, List<(float R, float G, float B)> terrainLinear, List<(float R, float G, float B)> playerLinear, Action<string> onError)
+		Color MakeValid(float hue, float sat, float val, MersenneTwister random, List<(float R, float G, float B)> terrainLinear, List<(float R, float G, float B)> playerLinear, Action<string> onError)
 		{
 			// Clamp saturation without triggering a warning
 			// This can only happen due to rounding errors (common) or modified clients (rare)
 			sat = sat.Clamp(HsvSaturationRange[0], HsvSaturationRange[1]);
+			val = val.Clamp(HsvValueRange[0], HsvValueRange[1]);
 
 			// Limit to 100 attempts, which is enough to move all the way around the hue range
 			string errorMessage = null;
 			var stepSign = 0;
 			for (var i = 0; i < 101; i++)
 			{
-				var linear = Color.FromAhsv(hue, sat, V).ToLinear();
+				var linear = Color.FromAhsv(hue, sat, val).ToLinear();
 				if (TryGetBlockingColor(linear, terrainLinear, out var blocker))
 					errorMessage = PlayerColorTerrain;
 				else if (TryGetBlockingColor(linear, playerLinear, out blocker))
@@ -165,7 +146,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (errorMessage != null)
 						onError?.Invoke(errorMessage);
 
-					return Color.FromAhsv(hue, sat, V);
+					return Color.FromAhsv(hue, sat, val);
 				}
 
 				// Pick a direction based on the first blocking color and step in hue
@@ -179,7 +160,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Failed to find a solution within a reasonable time: return a random color without any validation
 			onError?.Invoke(InvalidPlayerColor);
-			return Color.FromAhsv(random.NextFloat(), float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat()), V);
+			var randomSat = float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
+			var randomVal = float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
+			return Color.FromAhsv(random.NextFloat(), randomSat, randomVal);
 		}
 	}
 
