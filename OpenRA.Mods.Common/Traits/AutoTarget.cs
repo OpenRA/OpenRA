@@ -256,6 +256,15 @@ namespace OpenRA.Mods.Common.Traits
 			if (attacker.AppearsFriendlyTo(self))
 				return;
 
+			// Respect AutoAttack priorities.
+			if (stance > UnitStance.ReturnFire)
+			{
+				var autoTarget = ScanForTarget(self, allowMove, true);
+
+				if (autoTarget != Target.Invalid)
+					attacker = autoTarget.Actor;
+			}
+
 			Aggressor = attacker;
 
 			Attack(Target.FromActor(Aggressor), allowMove);
