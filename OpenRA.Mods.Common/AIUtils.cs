@@ -74,10 +74,10 @@ namespace OpenRA.Mods.Common
 			return owner.World.Map.Rules.Actors.Where(k => names.Contains(k.Key)).Random(owner.World.LocalRandom).Value;
 		}
 
-		public static void BotDebug(string s, params object[] args)
+		public static void BotDebug(string format, params object[] args)
 		{
 			if (Game.Settings.Debug.BotDebug)
-				TextNotificationsManager.Debug(s, args);
+				TextNotificationsManager.Debug(format, args);
 		}
 	}
 }

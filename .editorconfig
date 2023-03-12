@@ -602,24 +602,220 @@ dotnet_diagnostic.SA1649.severity = none # FileNameMustMatchTypeName
 #### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
 
 # Below we enable specific rules by setting severity to warning.
+# Rules are listed below with any options available.
+# Options are commented out if they match the defaults.
 
-# Avoid unnecessary zero-length array allocations.
+# Rule options that apply over multiple rules are set here.
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-quality-rule-options
+dotnet_code_quality.api_surface = all
+
+### Design Rules
+### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/design-warnings
+
+# Provide ObsoleteAttribute message.
+dotnet_diagnostic.CA1041.severity = warning
+
+# Do not declare protected members in sealed types.
+dotnet_diagnostic.CA1047.severity = warning
+
+# Declare types in namespaces.
+dotnet_diagnostic.CA1050.severity = warning
+
+# Do not hide base class methods.
+dotnet_diagnostic.CA1061.severity = warning
+
+# Override 'Equals' when implementing 'IEquatable'.
+dotnet_diagnostic.CA1067.severity = warning
+
+# 'CancellationToken' parameters must come last.
+dotnet_diagnostic.CA1068.severity = warning
+
+# Do not declare event fields as virtual.
+dotnet_diagnostic.CA1070.severity = warning
+
+### Documentation Rules
+### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/documentation-warnings
+
+# Avoid using 'cref' tags with a prefix.
+dotnet_diagnostic.CA1200.severity = warning
+
+### Globalization Rules
+### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/globalization-warnings
+
+### Portability and Interoperability Rules
+### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/interoperability-warnings
+
+# Do not use 'OutAttribute' on string parameters for P/Invokes.
+dotnet_diagnostic.CA1417.severity = warning
+
+### Maintainability Rules
+### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/maintainability-warnings
+
+# Use 'nameof' in place of string.
+dotnet_diagnostic.CA1507.severity = warning
+
+### Naming Rules
+### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/naming-warnings
+
+# Do not prefix enum values with type name.
+dotnet_code_quality.CA1712.enum_values_prefix_trigger = AnyEnumValue
+dotnet_diagnostic.CA1712.severity = warning
+
+# Flags enums should have plural names.
+dotnet_diagnostic.CA1714.severity = warning
+
+# Only 'FlagsAttribute' enums should have plural names.
+dotnet_diagnostic.CA1717.severity = warning
+
+### Performance Rules
+### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/performance-warnings
+
+# Remove empty finalizers.
+dotnet_diagnostic.CA1821.severity = warning
+
+# Avoid unused private fields.
+dotnet_diagnostic.CA1823.severity = warning
+
+# Avoid zero-length array allocations.
 dotnet_diagnostic.CA1825.severity = warning
 
-# Do not use Enumerable methods on indexable collections. Instead use the collection directly.
+# Use property instead of Linq Enumerable method.
+#dotnet_code_quality.CA1826.exclude_ordefault_methods = false
 dotnet_diagnostic.CA1826.severity = warning
 
-# Count() is used where Any() could be used instead to improve performance.
+# Do not use Count/LongCount when Any can be used.
 dotnet_diagnostic.CA1827.severity = warning
+
+# Do not use CountAsync/LongCountAsync when AnyAsync can be used.
+dotnet_diagnostic.CA1828.severity = warning
 
 # Use Length/Count property instead of Enumerable.Count method.
 dotnet_diagnostic.CA1829.severity = warning
+
+# Prefer strongly-typed Append and Insert method overloads on StringBuilder.
+dotnet_diagnostic.CA1830.severity = warning
+
+# Use AsSpan instead of Range-based indexers for string when appropriate.
+dotnet_diagnostic.CA1831.severity = warning
+
+# Use AsSpan or AsMemory instead of Range-based indexers for getting ReadOnlySpan or ReadOnlyMemory portion of an array.
+dotnet_diagnostic.CA1832.severity = warning
+
+# Use AsSpan or AsMemory instead of Range-based indexers for getting Span or Memory portion of an array.
+dotnet_diagnostic.CA1833.severity = warning
+
+# Prefer the memory-based overloads of ReadAsync/WriteAsync methods in stream-based classes.
+dotnet_diagnostic.CA1835.severity = warning
+
+# Prefer IsEmpty over Count when available.
+dotnet_diagnostic.CA1836.severity = warning
+
+# Use Environment.ProcessId instead of Process.GetCurrentProcess().Id.
+dotnet_diagnostic.CA1837.severity = warning
+
+# Avoid StringBuilder parameters for P/Invokes.
+dotnet_diagnostic.CA1838.severity = warning
+
+# Use Environment.CurrentManagedThreadId instead of Thread.CurrentThread.ManagedThreadId.
+dotnet_diagnostic.CA1840.severity = warning
+
+# Do not use 'WhenAll' with a single task.
+dotnet_diagnostic.CA1842.severity = warning
+
+# Do not use 'WaitAll' with a single task.
+dotnet_diagnostic.CA1843.severity = warning
+
+# Provide memory-based overrides of async methods when subclassing 'Stream'.
+dotnet_diagnostic.CA1844.severity = warning
 
 # Use span-based 'string.Concat'.
 dotnet_diagnostic.CA1845.severity = warning
 
 # Use string.Contains(char) instead of string.Contains(string) with single characters.
 dotnet_diagnostic.CA1847.severity = warning
+
+# Unnecessary call to 'Dictionary.ContainsKey(key)'.
+dotnet_diagnostic.CA1853.severity = warning
+
+# Use Span<T>.Clear() instead of Span<T>.Fill().
+dotnet_diagnostic.CA1855.severity = warning
+
+# Use StartsWith instead of IndexOf.
+dotnet_diagnostic.CA1858.severity = warning
+
+# Avoid using 'Enumerable.Any()' extension method.
+dotnet_diagnostic.CA1860.severity = warning
+
+### Reliability Rules
+### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/reliability-warnings
+
+# Do not assign property within its setter.
+dotnet_diagnostic.CA2011.severity = warning
+
+# Use ValueTasks correctly.
+dotnet_diagnostic.CA2012.severity = warning
+
+# Do not use ReferenceEquals with value types.
+dotnet_diagnostic.CA2013.severity = warning
+
+# Do not use stackalloc in loops.
+dotnet_diagnostic.CA2014.severity = warning
+
+# Forward the CancellationToken parameter to methods that take one.
+dotnet_diagnostic.CA2016.severity = warning
+
+# The 'count' argument to Buffer.BlockCopy should specify the number of bytes to copy.
+dotnet_diagnostic.CA2018.severity = warning
+
+### Security Rules
+### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/security-warnings
+
+# Do Not Use Broken Cryptographic Algorithms.
+dotnet_diagnostic.CA5351.severity = warning
+
+### Usage Rules
+### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/usage-warnings
+
+# Rethrow to preserve stack details.
+dotnet_diagnostic.CA2200.severity = warning
+
+# Initialize value type static fields inline.
+dotnet_diagnostic.CA2207.severity = warning
+
+# Override GetHashCode on overriding Equals.
+dotnet_diagnostic.CA2218.severity = warning
+
+# Overload operator equals on overriding ValueType.Equals.
+dotnet_diagnostic.CA2231.severity = warning
+
+# Provide correct arguments to formatting methods.
+#dotnet_code_quality.CA2241.additional_string_formatting_methods =
+dotnet_code_quality.CA2241.try_determine_additional_string_formatting_methods_automatically = true
+dotnet_diagnostic.CA2241.severity = warning
+
+# Test for NaN correctly.
+dotnet_diagnostic.CA2242.severity = warning
+
+# Attribute string literals should parse correctly.
+dotnet_diagnostic.CA2243.severity = warning
+
+# Do not duplicate indexed element initializations.
+dotnet_diagnostic.CA2244.severity = warning
+
+# Do not assign a property to itself.
+dotnet_diagnostic.CA2245.severity = warning
+
+# Argument passed to TaskCompletionSource constructor should be TaskCreationOptions enum instead of TaskContinuationOptions enum.
+dotnet_diagnostic.CA2247.severity = warning
+
+# Provide correct enum argument to Enum.HasFlag.
+dotnet_diagnostic.CA2248.severity = warning
+
+# Use ThrowIfCancellationRequested.
+dotnet_diagnostic.CA2250.severity = warning
+
+# Ensure ThreadStatic is only used with static fields.
+dotnet_diagnostic.CA2259.severity = warning
 
 ### Roslynator
 ### https://github.com/JosefPihrt/Roslynator/tree/main/docs/analyzers
