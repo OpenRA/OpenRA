@@ -139,12 +139,12 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Displays a debug message to the player, if \"Show Map Debug Messages\" is checked in the settings.")]
-		public void Debug(string text)
+		public void Debug(string format)
 		{
-			if (string.IsNullOrEmpty(text) || !Game.Settings.Debug.LuaDebug)
+			if (string.IsNullOrEmpty(format) || !Game.Settings.Debug.LuaDebug)
 				return;
 
-			TextNotificationsManager.Debug(text);
+			TextNotificationsManager.Debug(format);
 		}
 
 		[Desc("Display a text message at the specified location.")]
