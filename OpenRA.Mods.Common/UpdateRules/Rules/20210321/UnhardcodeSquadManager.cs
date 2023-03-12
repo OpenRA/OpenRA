@@ -93,14 +93,14 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 				if (isAircraft && isBuildable && canAttack && isKillable)
 				{
-					var name = actor.Key.ToLower();
+					var name = actor.Key.ToLowerInvariant();
 					if (!aircraft.Contains(name))
 						aircraft.Add(name);
 				}
 
 				if (isBuildable && isKillable && (isVip || (isBuilding && !isExcluded)))
 				{
-					var name = actor.Key.ToLower();
+					var name = actor.Key.ToLowerInvariant();
 					if (!vips.Contains(name))
 						vips.Add(name);
 				}
