@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			return MoveStep(MovementSpeed, facing);
 		}
 
-		WVec MoveStep(int speed, WAngle facing)
+		static WVec MoveStep(int speed, WAngle facing)
 		{
 			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(facing));
 			return speed * dir / 1024;

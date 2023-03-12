@@ -302,7 +302,7 @@ namespace OpenRA.Graphics
 			return fbo;
 		}
 
-		void DisableFrameBuffer(IFrameBuffer fbo)
+		static void DisableFrameBuffer(IFrameBuffer fbo)
 		{
 			Game.Renderer.Flush();
 			Game.Renderer.Context.DisableDepthBuffer();

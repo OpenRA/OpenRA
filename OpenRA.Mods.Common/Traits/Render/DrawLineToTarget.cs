@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 			return RenderAboveShroud(self, wr);
 		}
 
-		IEnumerable<IRenderable> RenderAboveShroud(Actor self, WorldRenderer wr)
+		static IEnumerable<IRenderable> RenderAboveShroud(Actor self, WorldRenderer wr)
 		{
 			var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
 			var a = self.CurrentActivity;

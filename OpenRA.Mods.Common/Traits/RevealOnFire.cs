@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		Player GetTargetPlayer(in Target target)
+		static Player GetTargetPlayer(in Target target)
 		{
 			if (target.Type == TargetType.Actor)
 				return target.Actor.Owner;

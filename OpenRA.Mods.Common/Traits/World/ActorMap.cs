@@ -345,7 +345,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		// NOTE: pos required to be in map bounds
-		bool AnyActorsAt(InfluenceNode influenceNode, CPos a, SubCell sub, bool checkTransient)
+		static bool AnyActorsAt(InfluenceNode influenceNode, CPos a, SubCell sub, bool checkTransient)
 		{
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
 			for (var i = influenceNode; i != null; i = i.Next)
@@ -376,7 +376,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		// NOTE: can not check aircraft
-		bool AnyActorsAt(InfluenceNode influenceNode, SubCell sub, Func<Actor, bool> withCondition)
+		static bool AnyActorsAt(InfluenceNode influenceNode, SubCell sub, Func<Actor, bool> withCondition)
 		{
 			var always = sub == SubCell.FullCell || sub == SubCell.Any;
 

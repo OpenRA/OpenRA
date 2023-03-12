@@ -49,7 +49,7 @@ namespace OpenRA
 			assemblies = assemblyList.SelectMany(asm => asm.GetNamespaces().Select(ns => (asm, ns))).ToArray();
 		}
 
-		void LoadAssembly(List<Assembly> assemblyList, string resolvedPath)
+		static void LoadAssembly(List<Assembly> assemblyList, string resolvedPath)
 		{
 			// .NET doesn't provide any way of querying the metadata of an assembly without either:
 			//   (a) loading duplicate data into the application domain, breaking the world.

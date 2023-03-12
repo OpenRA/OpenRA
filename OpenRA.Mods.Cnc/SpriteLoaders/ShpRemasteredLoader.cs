@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 		static readonly Regex FilenameRegex = new(@"^(?<prefix>.+?[\-_])(?<frame>\d{4})\.tga$");
 		static readonly Regex MetaRegex = new(@"^\{""size"":\[(?<width>\d+),(?<height>\d+)\],""crop"":\[(?<left>\d+),(?<top>\d+),(?<right>\d+),(?<bottom>\d+)\]\}$");
 
-		int ParseGroup(Match match, string group)
+		static int ParseGroup(Match match, string group)
 		{
 			return int.Parse(match.Groups[group].Value);
 		}

@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Lint
 			CheckMapYaml(emitError, modData, map, map.RuleDefinitions);
 		}
 
-		string NormalizeName(string key)
+		static string NormalizeName(string key)
 		{
 			var name = key.Split('@')[0];
 			if (name.StartsWith("-", StringComparison.Ordinal))
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Lint
 			return name;
 		}
 
-		void CheckActors(IEnumerable<MiniYamlNode> actors, Action<string> emitError, ModData modData)
+		static void CheckActors(IEnumerable<MiniYamlNode> actors, Action<string> emitError, ModData modData)
 		{
 			foreach (var actor in actors)
 			{
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		void CheckMapYaml(Action<string> emitError, ModData modData, IReadOnlyFileSystem fileSystem, MiniYaml ruleDefinitions)
+		static void CheckMapYaml(Action<string> emitError, ModData modData, IReadOnlyFileSystem fileSystem, MiniYaml ruleDefinitions)
 		{
 			if (ruleDefinitions == null)
 				return;

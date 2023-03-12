@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, map.MapFormat, map.Author, map.Title, map.Categories);
 		}
 
-		void Run(Action<string> emitError, int mapFormat, string author, string title, string[] categories)
+		static void Run(Action<string> emitError, int mapFormat, string author, string title, string[] categories)
 		{
 			if (mapFormat < Map.SupportedMapFormat)
 				emitError($"Map format `{mapFormat}` does not match the supported version `{Map.CurrentMapFormat}`.");

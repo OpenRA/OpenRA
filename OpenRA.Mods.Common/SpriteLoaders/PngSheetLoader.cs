@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			return true;
 		}
 
-		void RegionsFromFrames(Png png, out List<Rectangle> regions, out List<float2> offsets)
+		static void RegionsFromFrames(Png png, out List<Rectangle> regions, out List<float2> offsets)
 		{
 			regions = new List<Rectangle>();
 			offsets = new List<float2>();
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			}
 		}
 
-		void RegionsFromSlices(Png png, out List<Rectangle> regions, out List<float2> offsets)
+		static void RegionsFromSlices(Png png, out List<Rectangle> regions, out List<float2> offsets)
 		{
 			// Default: whole image is 1 frame.
 			var frameSize = new Size(png.Width, png.Height);

@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, mapRules);
 		}
 
-		void Run(Action<string> emitError, Ruleset rules)
+		static void Run(Action<string> emitError, Ruleset rules)
 		{
 			var palettes = new List<string>();
 			var playerPalettes = new List<string>();
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		void GetPalettes(Ruleset rules, List<string> palettes, List<string> playerPalettes, Action<string> emitError)
+		static void GetPalettes(Ruleset rules, List<string> palettes, List<string> playerPalettes, Action<string> emitError)
 		{
 			// Palettes are only defined on the world actor.
 			var worldActorInfo = rules.Actors[SystemActors.World];

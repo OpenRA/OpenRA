@@ -351,7 +351,7 @@ namespace OpenRA.Platforms.Default
 			input = new Sdl2Input();
 		}
 
-		byte[] DoublePixelData(byte[] data, Size size)
+		static byte[] DoublePixelData(byte[] data, Size size)
 		{
 			var scaledData = new byte[4 * data.Length];
 			for (var y = 0; y < size.Height; y++)
@@ -498,13 +498,13 @@ namespace OpenRA.Platforms.Default
 		public string GetClipboardText()
 		{
 			VerifyThreadAffinity();
-			return input.GetClipboardText();
+			return Sdl2Input.GetClipboardText();
 		}
 
 		public bool SetClipboardText(string text)
 		{
 			VerifyThreadAffinity();
-			return input.SetClipboardText(text);
+			return Sdl2Input.SetClipboardText(text);
 		}
 
 		static void SetSDLAttributes(GLProfile profile)

@@ -257,7 +257,7 @@ namespace OpenRA
 			}
 		}
 
-		IEnumerable<string> GetSupportDirs(ModRegistration registration)
+		static IEnumerable<string> GetSupportDirs(ModRegistration registration)
 		{
 			var sources = new HashSet<string>(4);
 			if (registration.HasFlag(ModRegistration.System))

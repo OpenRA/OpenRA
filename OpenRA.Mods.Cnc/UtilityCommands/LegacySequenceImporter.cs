@@ -252,7 +252,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			Console.WriteLine();
 		}
 
-		void ConvertStartLengthFacings(string input)
+		static void ConvertStartLengthFacings(string input)
 		{
 			var splitting = input.Split(',');
 			if (splitting.Length >= 3)

@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Lint
 			CheckMapYaml(emitError, modData, map, map.RuleDefinitions);
 		}
 
-		void CheckMapYaml(Action<string> emitError, ModData modData, IReadOnlyFileSystem fileSystem, MiniYaml ruleDefinitions)
+		static void CheckMapYaml(Action<string> emitError, ModData modData, IReadOnlyFileSystem fileSystem, MiniYaml ruleDefinitions)
 		{
 			if (ruleDefinitions == null)
 				return;
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, nodes);
 		}
 
-		void Run(Action<string> emitError, List<MiniYamlNode> nodes)
+		static void Run(Action<string> emitError, List<MiniYamlNode> nodes)
 		{
 			// Build a list of all inheritance relationships.
 			var inheritsMap = new Dictionary<string, List<string>>();
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Lint
 			CheckInheritance(emitError, "Player", inheritsMap);
 		}
 
-		void CheckInheritance(Action<string> emitError, string actor, Dictionary<string, List<string>> inheritsMap)
+		static void CheckInheritance(Action<string> emitError, string actor, Dictionary<string, List<string>> inheritsMap)
 		{
 			var toResolve = new Queue<string>(inheritsMap.Keys.Where(k => string.Equals(k, actor, StringComparison.InvariantCultureIgnoreCase)));
 			while (toResolve.TryDequeue(out var key))

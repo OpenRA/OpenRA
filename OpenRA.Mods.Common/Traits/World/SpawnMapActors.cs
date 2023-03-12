@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		bool PreventMapSpawn(World world, ActorReference actorReference, IEnumerable<IPreventMapSpawn> preventMapSpawns)
+		static bool PreventMapSpawn(World world, ActorReference actorReference, IEnumerable<IPreventMapSpawn> preventMapSpawns)
 		{
 			foreach (var pms in preventMapSpawns)
 				if (pms.PreventMapSpawn(world, actorReference))

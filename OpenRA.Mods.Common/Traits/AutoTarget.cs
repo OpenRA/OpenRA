@@ -444,7 +444,7 @@ namespace OpenRA.Mods.Common.Traits
 			return chosenTarget;
 		}
 
-		bool PreventsAutoTarget(Actor attacker, Actor target)
+		static bool PreventsAutoTarget(Actor attacker, Actor target)
 		{
 			foreach (var deat in target.TraitsImplementing<IDisableEnemyAutoTarget>())
 				if (deat.DisableEnemyAutoTarget(target, attacker))

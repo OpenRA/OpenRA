@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, emitWarning, rules, sequences);
 		}
 
-		void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules, SequenceSet sequences)
+		static void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules, SequenceSet sequences)
 		{
 			var factions = rules.Actors[SystemActors.World].TraitInfos<FactionInfo>().Select(f => f.InternalName).ToArray();
 			foreach (var actorInfo in rules.Actors)

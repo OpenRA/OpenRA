@@ -114,7 +114,7 @@ namespace OpenRA.Graphics
 			return new int2(sheetIndex, secondarySheetIndex);
 		}
 
-		float ResolveTextureIndex(Sprite s, PaletteReference pal)
+		static float ResolveTextureIndex(Sprite s, PaletteReference pal)
 		{
 			if (pal == null)
 				return 0;

@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 				info.BinSize * tileScale);
 		}
 
-		Rectangle Bounds(LightSource source)
+		static Rectangle Bounds(LightSource source)
 		{
 			var c = source.Pos;
 			var r = source.Range.Length;

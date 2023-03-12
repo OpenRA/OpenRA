@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return !invalid || PrintUsage();
 		}
 
-		bool PrintUsage()
+		static bool PrintUsage()
 		{
 			Console.WriteLine("");
 			Console.WriteLine("Usage:");
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return !invalid || PrintUsage();
 		}
 
-		bool PrintUsage()
+		static bool PrintUsage()
 		{
 			Console.WriteLine("");
 			Console.WriteLine("Usage:");

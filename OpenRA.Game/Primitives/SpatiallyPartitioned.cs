@@ -30,7 +30,7 @@ namespace OpenRA.Primitives
 			itemBoundsBins = Exts.MakeArray(rows * cols, _ => new Dictionary<T, Rectangle>());
 		}
 
-		void ValidateBounds(T actor, Rectangle bounds)
+		static void ValidateBounds(T actor, Rectangle bounds)
 		{
 			if (bounds.Width == 0 || bounds.Height == 0)
 				throw new ArgumentException($"Bounds of actor {actor} are empty.", nameof(bounds));

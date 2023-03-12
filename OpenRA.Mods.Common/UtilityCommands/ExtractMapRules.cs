@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		string IUtilityCommand.Name => "--map-rules";
 		bool IUtilityCommand.ValidateArguments(string[] args) { return args.Length == 2; }
 
-		void MergeAndPrint(Map map, string key, MiniYaml value)
+		static void MergeAndPrint(Map map, string key, MiniYaml value)
 		{
 			var nodes = new List<MiniYamlNode>();
 			var includes = new List<string>();

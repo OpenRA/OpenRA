@@ -18,7 +18,7 @@ namespace OpenRA.Test
 	[TestFixture]
 	public class OrderTest
 	{
-		byte[] RoundTripOrder(byte[] bytes)
+		static byte[] RoundTripOrder(byte[] bytes)
 		{
 			return Order.Deserialize(null, new BinaryReader(new MemoryStream(bytes))).Serialize();
 		}
