@@ -121,13 +121,13 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			if (Info.UnitDelays != null &&
-				Info.UnitDelays.ContainsKey(name) &&
-				Info.UnitDelays[name] > world.WorldTick)
+				Info.UnitDelays.TryGetValue(name, out var delay) &&
+				delay > world.WorldTick)
 				return;
 
 			if (Info.UnitLimits != null &&
-				Info.UnitLimits.ContainsKey(name) &&
-				world.Actors.Count(a => a.Owner == player && a.Info.Name == name) >= Info.UnitLimits[name])
+				Info.UnitLimits.TryGetValue(name, out var limit) &&
+				world.Actors.Count(a => a.Owner == player && a.Info.Name == name) >= limit)
 				return;
 
 			bot.QueueOrder(Order.StartProduction(queue.Actor, name, 1));

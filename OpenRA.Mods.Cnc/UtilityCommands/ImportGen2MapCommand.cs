@@ -370,11 +370,11 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 						var visibility = FieldLoader.GetValue<int>(kv.Key, kv.Value);
 						lightingNodes.Add(new MiniYamlNode("Range", FieldSaver.FormatValue(new WDist(visibility * 4))));
 					}
-					else if (lightingTypes.ContainsKey(kv.Key))
+					else if (lightingTypes.TryGetValue(kv.Key, out var lightingType))
 					{
 						// Some maps use "," instead of "."!
 						var value = FieldLoader.GetValue<float>(kv.Key, kv.Value.Replace(',', '.'));
-						lightingNodes.Add(new MiniYamlNode(lightingTypes[kv.Key], FieldSaver.FormatValue(value)));
+						lightingNodes.Add(new MiniYamlNode(lightingType, FieldSaver.FormatValue(value)));
 					}
 				}
 

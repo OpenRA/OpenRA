@@ -225,8 +225,8 @@ namespace OpenRA.Mods.Common.Scripting
 
 				var queue = GetBuildableInfo(unit.Info.Name).Queue.First();
 
-				if (productionHandlers.ContainsKey(queue))
-					productionHandlers[queue](factory, unit);
+				if (productionHandlers.TryGetValue(queue, out var productionHandler))
+					productionHandler(factory, unit);
 			}
 
 			var triggers = TriggerGlobal.GetScriptTriggers(player.PlayerActor);

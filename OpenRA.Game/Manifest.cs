@@ -157,25 +157,25 @@ namespace OpenRA
 			// Allow inherited mods to import parent maps.
 			var compat = new List<string> { Id };
 
-			if (yaml.ContainsKey("SupportsMapsFrom"))
-				compat.AddRange(yaml["SupportsMapsFrom"].Value.Split(',').Select(c => c.Trim()));
+			if (yaml.TryGetValue("SupportsMapsFrom", out var entry))
+				compat.AddRange(entry.Value.Split(',').Select(c => c.Trim()));
 
 			MapCompatibility = compat.ToArray();
 
-			if (yaml.ContainsKey("DefaultOrderGenerator"))
-				DefaultOrderGenerator = yaml["DefaultOrderGenerator"].Value;
+			if (yaml.TryGetValue("DefaultOrderGenerator", out entry))
+				DefaultOrderGenerator = entry.Value;
 
-			if (yaml.ContainsKey("PackageFormats"))
-				PackageFormats = FieldLoader.GetValue<string[]>("PackageFormats", yaml["PackageFormats"].Value);
+			if (yaml.TryGetValue("PackageFormats", out entry))
+				PackageFormats = FieldLoader.GetValue<string[]>("PackageFormats", entry.Value);
 
-			if (yaml.ContainsKey("SoundFormats"))
-				SoundFormats = FieldLoader.GetValue<string[]>("SoundFormats", yaml["SoundFormats"].Value);
+			if (yaml.TryGetValue("SoundFormats", out entry))
+				SoundFormats = FieldLoader.GetValue<string[]>("SoundFormats", entry.Value);
 
-			if (yaml.ContainsKey("SpriteFormats"))
-				SpriteFormats = FieldLoader.GetValue<string[]>("SpriteFormats", yaml["SpriteFormats"].Value);
+			if (yaml.TryGetValue("SpriteFormats", out entry))
+				SpriteFormats = FieldLoader.GetValue<string[]>("SpriteFormats", entry.Value);
 
-			if (yaml.ContainsKey("VideoFormats"))
-				VideoFormats = FieldLoader.GetValue<string[]>("VideoFormats", yaml["VideoFormats"].Value);
+			if (yaml.TryGetValue("VideoFormats", out entry))
+				VideoFormats = FieldLoader.GetValue<string[]>("VideoFormats", entry.Value);
 		}
 
 		public void LoadCustomData(ObjectCreator oc)

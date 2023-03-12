@@ -322,8 +322,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Does this building have initial delay, if so have we passed it?
 				if (baseBuilder.Info.BuildingDelays != null &&
-					baseBuilder.Info.BuildingDelays.ContainsKey(name) &&
-					baseBuilder.Info.BuildingDelays[name] > world.WorldTick)
+					baseBuilder.Info.BuildingDelays.TryGetValue(name, out var delay) &&
+					delay > world.WorldTick)
 					continue;
 
 				// Can we build this structure?
@@ -341,7 +341,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (count * 100 > frac.Value * playerBuildings.Length)
 					continue;
 
-				if (baseBuilder.Info.BuildingLimits.ContainsKey(name) && baseBuilder.Info.BuildingLimits[name] <= count)
+				if (baseBuilder.Info.BuildingLimits.TryGetValue(name, out var limit) && limit <= count)
 					continue;
 
 				// If we're considering to build a naval structure, check whether there is enough water inside the base perimeter

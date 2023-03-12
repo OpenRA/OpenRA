@@ -166,7 +166,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				// Existing smudge; make it deeper
 				// A null Sequence indicates a deleted smudge.
-				var tile = dirty.ContainsKey(loc) && dirty[loc].Sequence != null ? dirty[loc] : tiles[loc];
+				var tile = dirty.TryGetValue(loc, out var d) && d.Sequence != null ? d : tiles[loc];
 				var maxDepth = smudges[tile.Type].Length;
 				if (tile.Depth < maxDepth - 1)
 					tile.Depth++;
@@ -180,7 +180,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!world.Map.Contains(loc))
 				return;
 
-			var tile = dirty.ContainsKey(loc) ? dirty[loc] : default;
+			var tile = dirty.TryGetValue(loc, out var d) ? d : default;
 
 			// Setting Sequence to null to indicate a deleted smudge.
 			tile.Sequence = null;

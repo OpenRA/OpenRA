@@ -264,8 +264,8 @@ namespace OpenRA.Widgets
 				? new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
 				: Parent.Bounds;
 
-			var substitutions = args.ContainsKey("substitutions") ?
-				new Dictionary<string, int>((Dictionary<string, int>)args["substitutions"]) :
+			var substitutions = args.TryGetValue("substitutions", out var subs) ?
+				new Dictionary<string, int>((Dictionary<string, int>)subs) :
 				new Dictionary<string, int>();
 
 			substitutions.Add("WINDOW_RIGHT", Game.Renderer.Resolution.Width);
