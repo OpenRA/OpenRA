@@ -209,7 +209,7 @@ namespace OpenRA.Platforms.Default
 							var lines = p.StandardOutput.ReadToEnd().Split('\n');
 
 							foreach (var line in lines)
-								if (line.StartsWith("Xft.dpi") && int.TryParse(line[8..], out var dpi))
+								if (line.StartsWith("Xft.dpi") && int.TryParse(line.AsSpan(8), out var dpi))
 									windowScale = dpi / 96f;
 						}
 						catch { }
