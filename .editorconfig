@@ -619,6 +619,9 @@ dotnet_diagnostic.CA1010.severity = warning
 # Mark attributes with 'AttributeUsageAttribute'.
 dotnet_diagnostic.CA1018.severity = warning
 
+# Override methods on comparable types.
+dotnet_diagnostic.CA1036.severity = warning
+
 # Provide ObsoleteAttribute message.
 dotnet_diagnostic.CA1041.severity = warning
 
