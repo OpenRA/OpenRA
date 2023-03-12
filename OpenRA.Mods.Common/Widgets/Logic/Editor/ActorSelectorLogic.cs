@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!string.IsNullOrEmpty(searchFilter))
 					FilteredCategories.AddRange(
 						allActors.Where(t => t.SearchTerms.Any(
-							s => s.IndexOf(searchFilter, StringComparison.OrdinalIgnoreCase) >= 0))
+							s => s.Contains(searchFilter, StringComparison.CurrentCultureIgnoreCase)))
 						.SelectMany(t => t.Categories)
 						.Distinct()
 						.OrderBy(x => x));
@@ -181,7 +181,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!SelectedCategories.Overlaps(a.Categories))
 					continue;
 
-				if (!string.IsNullOrEmpty(searchFilter) && !a.SearchTerms.Any(s => s.IndexOf(searchFilter, StringComparison.OrdinalIgnoreCase) >= 0))
+				if (!string.IsNullOrEmpty(searchFilter) &&
+					!a.SearchTerms.Any(s => s.Contains(searchFilter, StringComparison.CurrentCultureIgnoreCase)))
 					continue;
 
 				var actor = a.Actor;

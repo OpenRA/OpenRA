@@ -124,7 +124,7 @@ namespace OpenRA
 			{
 				var actors = MergeOrDefault("Manifest,Rules", fs, m.Rules, null, null,
 					k => new ActorInfo(modData.ObjectCreator, k.Key.ToLowerInvariant(), k.Value),
-					filterNode: n => n.Key.StartsWith(ActorInfo.AbstractActorPrefix, StringComparison.Ordinal));
+					filterNode: n => n.Key.StartsWith(ActorInfo.AbstractActorPrefix));
 
 				var weapons = MergeOrDefault("Manifest,Weapons", fs, m.Weapons, null, null,
 					k => new WeaponInfo(k.Value));
@@ -182,7 +182,7 @@ namespace OpenRA
 			{
 				var actors = MergeOrDefault("Rules", fileSystem, m.Rules, mapRules, dr.Actors,
 					k => new ActorInfo(modData.ObjectCreator, k.Key.ToLowerInvariant(), k.Value),
-					filterNode: n => n.Key.StartsWith(ActorInfo.AbstractActorPrefix, StringComparison.Ordinal));
+					filterNode: n => n.Key.StartsWith(ActorInfo.AbstractActorPrefix));
 
 				var weapons = MergeOrDefault("Weapons", fileSystem, m.Weapons, mapWeapons, dr.Weapons,
 					k => new WeaponInfo(k.Value));

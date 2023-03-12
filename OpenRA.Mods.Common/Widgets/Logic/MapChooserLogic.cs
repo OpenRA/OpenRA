@@ -325,8 +325,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var validMaps = tabMaps[tab]
 				.Where(m => category == null || m.Categories.Contains(category))
 				.Where(m => mapFilter == null ||
-					(m.Title != null && m.Title.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0) ||
-					(m.Author != null && m.Author.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0) ||
+					(m.Title != null && m.Title.Contains(mapFilter, StringComparison.CurrentCultureIgnoreCase)) ||
+					(m.Author != null && m.Author.Contains(mapFilter, StringComparison.CurrentCultureIgnoreCase)) ||
 					m.PlayerCount == playerCountFilter);
 
 			IOrderedEnumerable<MapPreview> maps;

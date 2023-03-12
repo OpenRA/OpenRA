@@ -22,7 +22,7 @@ namespace OpenRA
 	/// </summary>
 	public class ActorInfo
 	{
-		public const string AbstractActorPrefix = "^";
+		public const char AbstractActorPrefix = '^';
 		public const char TraitInstanceSeparator = '@';
 
 		/// <summary>

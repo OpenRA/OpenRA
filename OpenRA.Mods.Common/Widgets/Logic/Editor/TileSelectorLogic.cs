@@ -102,7 +102,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!SelectedCategories.Overlaps(t.Categories))
 					continue;
 
-				if (!string.IsNullOrEmpty(searchFilter) && !t.SearchTerms.Any(s => s.IndexOf(searchFilter, StringComparison.OrdinalIgnoreCase) >= 0))
+				if (!string.IsNullOrEmpty(searchFilter) &&
+					!t.SearchTerms.Any(s => s.Contains(searchFilter, StringComparison.CurrentCultureIgnoreCase)))
 					continue;
 
 				var tileId = t.Template.Id;

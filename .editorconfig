@@ -892,8 +892,14 @@ dotnet_diagnostic.CA2247.severity = warning
 # Provide correct enum argument to Enum.HasFlag.
 dotnet_diagnostic.CA2248.severity = warning
 
+# Consider using String.Contains instead of String.IndexOf.
+dotnet_diagnostic.CA2249.severity = warning
+
 # Use ThrowIfCancellationRequested.
 dotnet_diagnostic.CA2250.severity = warning
+
+# Use String.Equals over String.Compare.
+dotnet_diagnostic.CA2251.severity = warning
 
 # Ensure ThreadStatic is only used with static fields.
 dotnet_diagnostic.CA2259.severity = warning
