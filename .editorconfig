@@ -762,6 +762,9 @@ dotnet_diagnostic.CA1846.severity = warning
 # Use string.Contains(char) instead of string.Contains(string) with single characters.
 dotnet_diagnostic.CA1847.severity = warning
 
+# Call async methods when in an async method.
+dotnet_diagnostic.CA1849.severity = warning
+
 # Unnecessary call to 'Dictionary.ContainsKey(key)'.
 dotnet_diagnostic.CA1853.severity = warning
 
