@@ -28,7 +28,7 @@ namespace OpenRA.Scripting
 		readonly List<string> membersToRemove = new List<string>();
 #endif
 
-		public ScriptObjectWrapper(ScriptContext context)
+		protected ScriptObjectWrapper(ScriptContext context)
 		{
 			Context = context;
 		}

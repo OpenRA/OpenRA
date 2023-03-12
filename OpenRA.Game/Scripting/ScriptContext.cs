@@ -50,7 +50,8 @@ namespace OpenRA.Scripting
 	{
 		protected readonly Actor Self;
 		protected readonly ScriptContext Context;
-		public ScriptActorProperties(ScriptContext context, Actor self)
+
+		protected ScriptActorProperties(ScriptContext context, Actor self)
 		{
 			Self = self;
 			Context = context;
@@ -61,7 +62,8 @@ namespace OpenRA.Scripting
 	{
 		protected readonly Player Player;
 		protected readonly ScriptContext Context;
-		public ScriptPlayerProperties(ScriptContext context, Player player)
+
+		protected ScriptPlayerProperties(ScriptContext context, Player player)
 		{
 			Player = player;
 			Context = context;
@@ -87,7 +89,8 @@ namespace OpenRA.Scripting
 		protected override string MemberNotFoundError(string memberName) { return $"Table '{Name}' does not define a property '{memberName}'"; }
 
 		public readonly string Name;
-		public ScriptGlobal(ScriptContext context)
+
+		protected ScriptGlobal(ScriptContext context)
 			: base(context)
 		{
 			// GetType resolves the actual (subclass) type

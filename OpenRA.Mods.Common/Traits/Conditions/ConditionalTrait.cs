@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		public bool IsTraitDisabled { get; private set; }
 
-		public ConditionalTrait(InfoType info)
+		protected ConditionalTrait(InfoType info)
 		{
 			Info = info;
 

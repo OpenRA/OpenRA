@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected abstract void AddCellsToPlayerShroud(Actor self, Player player, PPos[] uv);
 		protected abstract void RemoveCellsFromPlayerShroud(Actor self, Player player);
 
-		public AffectsShroud(AffectsShroudInfo info)
+		protected AffectsShroud(AffectsShroudInfo info)
 			: base(info)
 		{
 			if (Info.Type == VisibilityType.Footprint)

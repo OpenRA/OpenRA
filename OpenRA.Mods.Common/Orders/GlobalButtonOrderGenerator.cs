@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Orders
 	{
 		readonly string order;
 
-		public GlobalButtonOrderGenerator(string order)
+		protected GlobalButtonOrderGenerator(string order)
 		{
 			this.order = order;
 		}

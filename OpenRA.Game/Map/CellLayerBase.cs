@@ -24,10 +24,10 @@ namespace OpenRA
 		protected readonly T[] Entries;
 		protected readonly Rectangle Bounds;
 
-		public CellLayerBase(Map map)
+		protected CellLayerBase(Map map)
 			: this(map.Grid.Type, new Size(map.MapSize.X, map.MapSize.Y)) { }
 
-		public CellLayerBase(MapGridType gridType, Size size)
+		protected CellLayerBase(MapGridType gridType, Size size)
 		{
 			Size = size;
 			Bounds = new Rectangle(0, 0, Size.Width, Size.Height);

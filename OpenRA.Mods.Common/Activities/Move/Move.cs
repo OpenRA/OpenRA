@@ -372,7 +372,7 @@ namespace OpenRA.Mods.Common.Activities
 			readonly int terrainOrientationMargin;
 			protected int progress;
 
-			public MovePart(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
+			protected MovePart(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
 				WRot? fromTerrainOrientation, WRot? toTerrainOrientation, int terrainOrientationMargin,
 				int carryoverProgress, bool shouldArc, bool movingOnGroundLayer)
 			{

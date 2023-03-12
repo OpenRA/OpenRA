@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		DeveloperMode developerMode;
 
-		public SelectionDecorationsBase(SelectionDecorationsBaseInfo info)
+		protected SelectionDecorationsBase(SelectionDecorationsBaseInfo info)
 		{
 			Info = info;
 		}
