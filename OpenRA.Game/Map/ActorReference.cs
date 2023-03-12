@@ -22,7 +22,7 @@ namespace OpenRA
 {
 	public interface ISuppressInitExport { }
 
-	public class ActorReference : IEnumerable
+	public class ActorReference : IEnumerable<object>
 	{
 		public string Type;
 		readonly Lazy<TypeDictionary> initDict;
@@ -104,7 +104,9 @@ namespace OpenRA
 			return ret;
 		}
 
-		public IEnumerator GetEnumerator() { return initDict.Value.GetEnumerator(); }
+		public IEnumerator<object> GetEnumerator() { return initDict.Value.GetEnumerator(); }
+
+		IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
 
 		public ActorReference Clone()
 		{
