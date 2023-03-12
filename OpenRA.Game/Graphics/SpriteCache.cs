@@ -18,7 +18,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	public class SpriteCache : IDisposable
+	public sealed class SpriteCache : IDisposable
 	{
 		public readonly Dictionary<SheetType, SheetBuilder> SheetBuilders;
 		readonly ISpriteLoader[] loaders;

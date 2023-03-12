@@ -61,7 +61,7 @@ namespace OpenRA
 		public readonly int mapformat;
 	}
 
-	public class MapPreview : IDisposable, IReadOnlyFileSystem
+	public sealed class MapPreview : IDisposable, IReadOnlyFileSystem
 	{
 		/// <summary>Wrapper that enables map data to be replaced in an atomic fashion.</summary>
 		sealed class InnerData

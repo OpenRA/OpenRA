@@ -65,7 +65,7 @@ namespace OpenRA
 	}
 
 	/// <summary>Describes what is to be loaded in order to run a mod.</summary>
-	public class Manifest : IDisposable
+	public sealed class Manifest : IDisposable
 	{
 		public readonly string Id;
 		public readonly IReadOnlyPackage Package;
