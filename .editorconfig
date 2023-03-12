@@ -735,6 +735,9 @@ dotnet_diagnostic.CA1837.severity = warning
 # Avoid StringBuilder parameters for P/Invokes.
 dotnet_diagnostic.CA1838.severity = warning
 
+# Use Environment.ProcessPath instead of Process.GetCurrentProcess().MainModule.FileName.
+dotnet_diagnostic.CA1839.severity = warning
+
 # Use Environment.CurrentManagedThreadId instead of Thread.CurrentThread.ManagedThreadId.
 dotnet_diagnostic.CA1840.severity = warning
 
