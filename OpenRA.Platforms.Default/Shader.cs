@@ -29,7 +29,7 @@ namespace OpenRA.Platforms.Default
 		readonly Queue<int> unbindTextures = new();
 		readonly uint program;
 
-		protected uint CompileShaderObject(int type, string name)
+		protected static uint CompileShaderObject(int type, string name)
 		{
 			var ext = type == OpenGL.GL_VERTEX_SHADER ? "vert" : "frag";
 			var filename = Path.Combine(Platform.EngineDir, "glsl", name + "." + ext);

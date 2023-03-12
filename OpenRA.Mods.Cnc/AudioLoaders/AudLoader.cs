@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 {
 	public class AudLoader : ISoundLoader
 	{
-		bool IsAud(Stream s)
+		static bool IsAud(Stream s)
 		{
 			var start = s.Position;
 			s.Position += 11;

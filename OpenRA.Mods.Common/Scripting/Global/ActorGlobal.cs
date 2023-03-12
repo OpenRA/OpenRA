@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public ActorGlobal(ScriptContext context)
 			: base(context) { }
 
-		ActorInit CreateInit(string initName, LuaValue value)
+		static ActorInit CreateInit(string initName, LuaValue value)
 		{
 			// Find the requested type
 			var initInstance = initName.Split(ActorInfo.TraitInstanceSeparator);

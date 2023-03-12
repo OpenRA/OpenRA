@@ -112,7 +112,7 @@ namespace OpenRA.Server
 			}
 		}
 
-		long Median(long[] a)
+		static long Median(long[] a)
 		{
 			Array.Sort(a);
 			var n = a.Length;

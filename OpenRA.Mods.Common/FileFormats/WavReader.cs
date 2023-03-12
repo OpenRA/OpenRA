@@ -258,7 +258,7 @@ namespace OpenRA.Mods.Common.FileFormats
 				return ++currentBlock >= numBlocks;
 			}
 
-			short WriteSample(short t, Queue<byte> data)
+			static short WriteSample(short t, Queue<byte> data)
 			{
 				data.Enqueue((byte)t);
 				data.Enqueue((byte)(t >> 8));
@@ -266,7 +266,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 
 			// This code contains elements from libsndfile
-			short DecodeNibble(short nibble, byte bpred, ref short idelta, ref short s1, ref short s2)
+			static short DecodeNibble(short nibble, byte bpred, ref short idelta, ref short s1, ref short s2)
 			{
 				var predict = (s1 * AdaptCoeff1[bpred] + s2 * AdaptCoeff2[bpred]) >> 8;
 

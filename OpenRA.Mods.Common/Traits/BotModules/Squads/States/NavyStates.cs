@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			return ShouldFlee(owner, enemies => !AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemies));
 		}
 
-		protected Actor FindClosestEnemy(Squad owner)
+		protected static Actor FindClosestEnemy(Squad owner)
 		{
 			var first = owner.Units.First();
 

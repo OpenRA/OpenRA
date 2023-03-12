@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, emitWarning, map.Players, map.Visibility, map.WorldActorInfo, map.SpawnPoints);
 		}
 
-		void Run(Action<string> emitError, Action<string> emitWarning, MapPlayers players, MapVisibility visibility, ActorInfo worldActorInfo, CPos[] spawnPoints)
+		static void Run(Action<string> emitError, Action<string> emitWarning, MapPlayers players, MapVisibility visibility, ActorInfo worldActorInfo, CPos[] spawnPoints)
 		{
 			if (players.Players.Count > 64)
 				emitError("Defining more than 64 players is not allowed.");

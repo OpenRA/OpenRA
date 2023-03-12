@@ -689,6 +689,10 @@ dotnet_diagnostic.CA1717.severity = warning
 # Remove empty finalizers.
 dotnet_diagnostic.CA1821.severity = warning
 
+# Mark members as static.
+dotnet_code_quality.CA1822.api_surface = private,internal
+dotnet_diagnostic.CA1822.severity = warning
+
 # Avoid unused private fields.
 dotnet_diagnostic.CA1823.severity = warning
 

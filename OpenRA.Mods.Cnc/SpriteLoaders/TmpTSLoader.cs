@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			}
 		}
 
-		bool IsTmpTS(Stream s)
+		static bool IsTmpTS(Stream s)
 		{
 			var start = s.Position;
 			s.Position += 8;
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			return test == sx * sy / 2 + 52;
 		}
 
-		ISpriteFrame[] ParseFrames(Stream s)
+		static ISpriteFrame[] ParseFrames(Stream s)
 		{
 			var start = s.Position;
 			var templateWidth = s.ReadUInt32();

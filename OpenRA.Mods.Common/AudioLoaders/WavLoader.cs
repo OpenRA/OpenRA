@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 {
 	public class WavLoader : ISoundLoader
 	{
-		bool IsWave(Stream s)
+		static bool IsWave(Stream s)
 		{
 			var start = s.Position;
 			var type = s.ReadASCII(4);

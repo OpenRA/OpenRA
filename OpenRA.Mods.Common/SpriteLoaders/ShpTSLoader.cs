@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			}
 		}
 
-		bool IsShpTS(Stream s)
+		static bool IsShpTS(Stream s)
 		{
 			var start = s.Position;
 
@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			return f == imageCount || type < 4;
 		}
 
-		ShpTSFrame[] ParseFrames(Stream s)
+		static ShpTSFrame[] ParseFrames(Stream s)
 		{
 			var start = s.Position;
 

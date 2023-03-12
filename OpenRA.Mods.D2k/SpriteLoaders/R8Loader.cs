@@ -78,7 +78,7 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 			}
 		}
 
-		bool IsR8(Stream s)
+		static bool IsR8(Stream s)
 		{
 			var start = s.Position;
 

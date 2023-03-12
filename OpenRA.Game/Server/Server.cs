@@ -702,7 +702,7 @@ namespace OpenRA.Server
 			}
 		}
 
-		byte[] CreateFrame(int client, int frame, byte[] data)
+		static byte[] CreateFrame(int client, int frame, byte[] data)
 		{
 			var ms = new MemoryStream(data.Length + 12);
 			ms.WriteArray(BitConverter.GetBytes(data.Length + 4));
@@ -712,7 +712,7 @@ namespace OpenRA.Server
 			return ms.GetBuffer();
 		}
 
-		byte[] CreateAckFrame(int frame, byte count)
+		static byte[] CreateAckFrame(int frame, byte count)
 		{
 			var ms = new MemoryStream(14);
 			ms.WriteArray(BitConverter.GetBytes(6));
@@ -723,7 +723,7 @@ namespace OpenRA.Server
 			return ms.GetBuffer();
 		}
 
-		byte[] CreateTickScaleFrame(float scale)
+		static byte[] CreateTickScaleFrame(float scale)
 		{
 			var ms = new MemoryStream(17);
 			ms.WriteArray(BitConverter.GetBytes(9));

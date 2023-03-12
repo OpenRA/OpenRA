@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Traits
 				&& world.Map.Rules.Music[song].Exists;
 		}
 
-		bool SongExists(MusicInfo song)
+		static bool SongExists(MusicInfo song)
 		{
 			return song != null && song.Exists;
 		}

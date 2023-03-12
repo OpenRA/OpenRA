@@ -312,7 +312,7 @@ namespace OpenRA.Mods.Common.Activities
 			path = null;
 		}
 
-		bool CellIsEvacuating(Actor self, CPos cell)
+		static bool CellIsEvacuating(Actor self, CPos cell)
 		{
 			foreach (var actor in self.World.ActorMap.GetActorsAt(cell))
 			{

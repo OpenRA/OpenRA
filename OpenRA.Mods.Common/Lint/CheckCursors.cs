@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, modData, mapRules);
 		}
 
-		void Run(Action<string> emitError, ModData modData, Ruleset rules)
+		static void Run(Action<string> emitError, ModData modData, Ruleset rules)
 		{
 			var fileSystem = modData.DefaultFileSystem;
 			var sequenceYaml = MiniYaml.Merge(modData.Manifest.Cursors.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s)));

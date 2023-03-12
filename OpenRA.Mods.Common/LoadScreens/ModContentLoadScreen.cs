@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			}
 		}
 
-		bool IsModInstalled(ModContent content)
+		static bool IsModInstalled(ModContent content)
 		{
 			return content.Packages
 				.Where(p => p.Value.Required)

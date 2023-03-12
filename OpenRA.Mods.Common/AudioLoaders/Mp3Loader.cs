@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 {
 	public class Mp3Loader : ISoundLoader
 	{
-		bool IsMp3(Stream s)
+		static bool IsMp3(Stream s)
 		{
 			var start = s.Position;
 
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 			}
 		}
 
-		Stream Clone(Mp3Format cloneFrom)
+		static Stream Clone(Mp3Format cloneFrom)
 		{
 			return SegmentStream.CreateWithoutOwningStream(cloneFrom.stream, 0, (int)cloneFrom.stream.Length);
 		}

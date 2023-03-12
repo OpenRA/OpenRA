@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			}
 		}
 
-		bool IsTmpRA(Stream s)
+		static bool IsTmpRA(Stream s)
 		{
 			var start = s.Position;
 
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			return a == 0 && b == 0x2c73;
 		}
 
-		TmpRAFrame[] ParseFrames(Stream s)
+		static TmpRAFrame[] ParseFrames(Stream s)
 		{
 			var start = s.Position;
 			var width = s.ReadUInt16();

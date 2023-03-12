@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			decorations = selectedDecorations.Where(d => !d.RequiresSelection).ToArray();
 		}
 
-		IEnumerable<WPos> ActivityTargetPath(Actor self)
+		static IEnumerable<WPos> ActivityTargetPath(Actor self)
 		{
 			if (!self.IsInWorld || self.IsDead)
 				yield break;

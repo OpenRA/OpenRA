@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Graphics
 			}
 		}
 
-		void DrawSelectionBar(float2 start, float2 end, float value, Color barColor)
+		static void DrawSelectionBar(float2 start, float2 end, float value, Color barColor)
 		{
 			var c = Color.FromArgb(128, 30, 30, 30);
 			var c2 = Color.FromArgb(128, 10, 10, 10);

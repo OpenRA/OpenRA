@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Lint
 			CheckMapYaml(emitError, emitWarning, modData, map, map.WeaponDefinitions);
 		}
 
-		string NormalizeName(string key)
+		static string NormalizeName(string key)
 		{
 			var name = key.Split('@')[0];
 			if (name.StartsWith("-", StringComparison.Ordinal))
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Lint
 			return name;
 		}
 
-		void CheckWeapons(IEnumerable<MiniYamlNode> weapons, Action<string> emitError, Action<string> emitWarning, ModData modData)
+		static void CheckWeapons(IEnumerable<MiniYamlNode> weapons, Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{
 			var weaponInfo = typeof(WeaponInfo);
 			foreach (var weapon in weapons)
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		void CheckMapYaml(Action<string> emitError, Action<string> emitWarning, ModData modData, IReadOnlyFileSystem fileSystem, MiniYaml weaponDefinitions)
+		static void CheckMapYaml(Action<string> emitError, Action<string> emitWarning, ModData modData, IReadOnlyFileSystem fileSystem, MiniYaml weaponDefinitions)
 		{
 			if (weaponDefinitions == null)
 				return;

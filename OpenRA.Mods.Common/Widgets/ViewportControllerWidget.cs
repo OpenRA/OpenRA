@@ -481,7 +481,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return world.OrderGenerator.HandleKeyPress(e);
 		}
 
-		ScrollDirection CheckForDirections()
+		static ScrollDirection CheckForDirections()
 		{
 			var margin = Game.Settings.Game.ViewportEdgeScrollMargin;
 			var directions = ScrollDirection.None;

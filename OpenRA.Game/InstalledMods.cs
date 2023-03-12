@@ -54,7 +54,7 @@ namespace OpenRA
 			return mods;
 		}
 
-		Manifest LoadMod(string id, string path)
+		static Manifest LoadMod(string id, string path)
 		{
 			IReadOnlyPackage package = null;
 			try
@@ -79,7 +79,7 @@ namespace OpenRA
 			return null;
 		}
 
-		Dictionary<string, Manifest> GetInstalledMods(IEnumerable<string> searchPaths, IEnumerable<string> explicitPaths)
+		static Dictionary<string, Manifest> GetInstalledMods(IEnumerable<string> searchPaths, IEnumerable<string> explicitPaths)
 		{
 			var ret = new Dictionary<string, Manifest>();
 			var candidates = GetCandidateMods(searchPaths)

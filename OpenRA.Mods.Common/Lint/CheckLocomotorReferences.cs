@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, mapRules);
 		}
 
-		void Run(Action<string> emitError, Ruleset rules)
+		static void Run(Action<string> emitError, Ruleset rules)
 		{
 			var worldActor = rules.Actors[SystemActors.World];
 			var locomotorInfos = worldActor.TraitInfos<LocomotorInfo>().ToArray();
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		void CheckLocomotors(ActorInfo actorInfo, Action<string> emitError, LocomotorInfo[] locomotorInfos, string locomotor)
+		static void CheckLocomotors(ActorInfo actorInfo, Action<string> emitError, LocomotorInfo[] locomotorInfos, string locomotor)
 		{
 			if (!locomotorInfos.Any(l => l.Name == locomotor))
 				emitError($"Actor `{actorInfo.Name}` defines Locomotor `{locomotor}` not found on World actor.");

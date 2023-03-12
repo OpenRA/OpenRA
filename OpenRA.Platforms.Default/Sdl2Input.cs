@@ -20,8 +20,8 @@ namespace OpenRA.Platforms.Default
 	{
 		MouseButton lastButtonBits = MouseButton.None;
 
-		public string GetClipboardText() { return SDL.SDL_GetClipboardText(); }
-		public bool SetClipboardText(string text) { return SDL.SDL_SetClipboardText(text) == 0; }
+		public static string GetClipboardText() { return SDL.SDL_GetClipboardText(); }
+		public static bool SetClipboardText(string text) { return SDL.SDL_SetClipboardText(text) == 0; }
 
 		static MouseButton MakeButton(byte b)
 		{
@@ -40,7 +40,7 @@ namespace OpenRA.Platforms.Default
 				 | ((raw & (int)SDL.SDL_Keymod.KMOD_SHIFT) != 0 ? Modifiers.Shift : 0);
 		}
 
-		int2 EventPosition(Sdl2PlatformWindow device, int x, int y)
+		static int2 EventPosition(Sdl2PlatformWindow device, int x, int y)
 		{
 			// On Windows and Linux (X11) events are given in surface coordinates
 			// These must be scaled to our effective window coordinates

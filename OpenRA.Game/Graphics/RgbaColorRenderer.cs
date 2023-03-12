@@ -80,7 +80,7 @@ namespace OpenRA.Graphics
 		/// Will behave badly if the lines are parallel.
 		/// Z position is the average of a and b (ignores actual intersection point if it exists).
 		/// </summary>
-		float3 IntersectionOf(in float3 a, in float3 da, in float3 b, in float3 db)
+		static float3 IntersectionOf(in float3 a, in float3 da, in float3 b, in float3 db)
 		{
 			var crossA = a.X * (a.Y + da.Y) - a.Y * (a.X + da.X);
 			var crossB = b.X * (b.Y + db.Y) - b.Y * (b.X + db.X);

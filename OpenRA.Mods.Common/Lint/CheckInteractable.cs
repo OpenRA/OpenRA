@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, mapRules, modData);
 		}
 
-		void Run(Action<string> emitError, Ruleset rules, ModData modData)
+		static void Run(Action<string> emitError, Ruleset rules, ModData modData)
 		{
 			// As the map has not been created we need to get MapGrid info directly from manifest.
 			var grid = modData.Manifest.Get<MapGrid>();
