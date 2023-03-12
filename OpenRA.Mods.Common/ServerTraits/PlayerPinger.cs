@@ -30,9 +30,9 @@ namespace OpenRA.Mods.Common.Server
 		[TranslationReference("player", "timeout")]
 		const string TimeoutIn = "notification-timeout-dropped-in";
 
-		static readonly int PingInterval = 5000; // Ping every 5 seconds
-		static readonly int ConnReportInterval = 20000; // Report every 20 seconds
-		static readonly int ConnTimeout = 60000; // Drop unresponsive clients after 60 seconds
+		const int PingInterval = 5000; // Ping every 5 seconds
+		const int ConnReportInterval = 20000; // Report every 20 seconds
+		const int ConnTimeout = 60000; // Drop unresponsive clients after 60 seconds
 
 		long lastPing = 0;
 		long lastConnReport = 0;

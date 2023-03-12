@@ -17,7 +17,7 @@ namespace OpenRA
 {
 	public static class TextNotificationsManager
 	{
-		public static readonly int SystemClientId = -1;
+		public const int SystemClientId = -1;
 		static readonly string SystemMessageLabel;
 
 		public static long ChatDisabledUntil { get; internal set; }
