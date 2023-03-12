@@ -44,6 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		protected override void Dispose(bool disposing)
 		{
 			Game.HideCursor = false;
+			base.Dispose(disposing);
 		}
 	}
 }

@@ -819,6 +819,9 @@ dotnet_diagnostic.CA2200.severity = warning
 # Initialize value type static fields inline.
 dotnet_diagnostic.CA2207.severity = warning
 
+# Dispose methods should call base class dispose.
+dotnet_diagnostic.CA2215.severity = warning
+
 # Override GetHashCode on overriding Equals.
 dotnet_diagnostic.CA2218.severity = warning
 
