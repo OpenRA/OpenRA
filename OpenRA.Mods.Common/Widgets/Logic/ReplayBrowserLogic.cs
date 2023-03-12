@@ -390,7 +390,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							var item = ScrollItemWidget.Setup(
 								tpl,
-								() => string.Compare(filter.MapName, option, true) == 0,
+								() => string.Equals(filter.MapName, option, StringComparison.CurrentCultureIgnoreCase),
 								() => { filter.MapName = option; ApplyFilter(); });
 							item.Get<LabelWidget>("LABEL").GetText = () => option ?? anyText;
 							return item;
@@ -418,7 +418,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							var item = ScrollItemWidget.Setup(
 								tpl,
-								() => string.Compare(filter.PlayerName, option, true) == 0,
+								() => string.Equals(filter.PlayerName, option, StringComparison.CurrentCultureIgnoreCase),
 								() => { filter.PlayerName = option; ApplyFilter(); });
 							item.Get<LabelWidget>("LABEL").GetText = () => option ?? anyText;
 							return item;
@@ -450,7 +450,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							var item = ScrollItemWidget.Setup(
 								tpl,
-								() => string.Compare(filter.Faction, option, true) == 0,
+								() => string.Equals(filter.Faction, option, StringComparison.CurrentCultureIgnoreCase),
 								() => { filter.Faction = option; ApplyFilter(); });
 							item.Get<LabelWidget>("LABEL").GetText = () => option ?? anyText;
 							return item;
@@ -658,13 +658,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			// Map
-			if (!string.IsNullOrEmpty(filter.MapName) && string.Compare(filter.MapName, replay.GameInfo.MapTitle, true) != 0)
+			if (!string.IsNullOrEmpty(filter.MapName) &&
+				!string.Equals(filter.MapName, replay.GameInfo.MapTitle, StringComparison.CurrentCultureIgnoreCase))
 				return false;
 
 			// Player
 			if (!string.IsNullOrEmpty(filter.PlayerName))
 			{
-				var player = replay.GameInfo.Players.FirstOrDefault(p => string.Compare(filter.PlayerName, p.Name, true) == 0);
+				var player = replay.GameInfo.Players.FirstOrDefault(
+					p => string.Equals(filter.PlayerName, p.Name, StringComparison.CurrentCultureIgnoreCase));
 				if (player == null)
 					return false;
 
@@ -673,7 +675,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return false;
 
 				// Faction
-				if (!string.IsNullOrEmpty(filter.Faction) && string.Compare(filter.Faction, player.FactionName, true) != 0)
+				if (!string.IsNullOrEmpty(filter.Faction) &&
+					!string.Equals(filter.Faction, player.FactionName, StringComparison.CurrentCultureIgnoreCase))
 					return false;
 			}
 

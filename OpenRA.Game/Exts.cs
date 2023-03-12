@@ -22,11 +22,6 @@ namespace OpenRA
 {
 	public static class Exts
 	{
-		public static bool IsUppercase(this string str)
-		{
-			return string.Compare(str.ToUpperInvariant(), str, false) == 0;
-		}
-
 		public static T WithDefault<T>(T def, Func<T> f)
 		{
 			try { return f(); }

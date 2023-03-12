@@ -664,6 +664,9 @@ dotnet_diagnostic.CA1200.severity = warning
 ### Globalization Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/globalization-warnings
 
+# Specify 'CultureInfo'.
+dotnet_diagnostic.CA1304.severity = warning
+
 ### Portability and Interoperability Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/interoperability-warnings
 

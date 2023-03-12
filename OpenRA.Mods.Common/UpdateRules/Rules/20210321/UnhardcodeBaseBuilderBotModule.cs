@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 				if (isBuildable && isBuilding && canAttack)
 				{
-					var name = actor.Key.ToLower();
+					var name = actor.Key.ToLowerInvariant();
 					if (!defences.Contains(name))
 						defences.Add(name);
 				}
