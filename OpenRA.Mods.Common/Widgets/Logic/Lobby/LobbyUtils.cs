@@ -241,31 +241,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.ShowDropDown("FACTION_DROPDOWN_TEMPLATE", 154, options, SetupItem);
 		}
 
-		public static void ShowColorDropDown(DropDownButtonWidget color, Session.Client client,
-			OrderManager orderManager, WorldRenderer worldRenderer, ColorPickerManagerInfo colorManager)
-		{
-			void OnExit()
-			{
-				if (client == orderManager.LocalClient)
-				{
-					Game.Settings.Player.Color = colorManager.Color;
-					Game.Settings.Save();
-				}
-
-				color.RemovePanel();
-				orderManager.IssueOrder(Order.Command($"color {client.Index} {colorManager.Color}"));
-			}
-
-			var colorChooser = Game.LoadWidget(worldRenderer.World, "COLOR_CHOOSER", null, new WidgetArgs()
-			{
-				{ "onChange", (Action<Color>)(c => colorManager.Color = c) },
-				{ "initialColor", client.Color },
-				{ "initialFaction", client.Faction }
-			});
-
-			color.AttachPanel(colorChooser, OnExit);
-		}
-
 		public static void SelectSpawnPoint(OrderManager orderManager, MapPreviewWidget mapPreview, MapPreview preview, MouseInput mi)
 		{
 			if (orderManager.LocalClient.State == Session.ClientState.Ready)
@@ -544,13 +519,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
-		public static void SetupEditableColorWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, WorldRenderer worldRenderer, ColorPickerManagerInfo colorManager)
+		public static void SetupEditableColorWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, WorldRenderer worldRenderer, IColorPickerManagerInfo colorManager)
 		{
-			var color = parent.Get<DropDownButtonWidget>("COLOR");
-			color.IsDisabled = () => (s != null && s.LockColor) || orderManager.LocalClient.IsReady;
-			color.OnMouseDown = _ => ShowColorDropDown(color, c, orderManager, worldRenderer, colorManager);
+			var colorDropdown = parent.Get<DropDownButtonWidget>("COLOR");
+			colorDropdown.IsDisabled = () => (s != null && s.LockColor) || orderManager.LocalClient.IsReady;
+			colorDropdown.OnMouseDown = _ => colorManager.ShowColorDropDown(colorDropdown, c.Color, c.Faction, worldRenderer, color =>
+			{
+				if (c == orderManager.LocalClient)
+				{
+					Game.Settings.Player.Color = color;
+					Game.Settings.Save();
+				}
 
-			SetupColorWidget(color, c);
+				orderManager.IssueOrder(Order.Command($"color {c.Index} {color}"));
+			});
+
+			SetupColorWidget(colorDropdown, c);
 		}
 
 		public static void SetupColorWidget(Widget parent, Session.Client c)

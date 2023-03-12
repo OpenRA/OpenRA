@@ -16,7 +16,9 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Terrain;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -288,6 +290,18 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IProvidesAssetBrowserColorPickerPalettes
 	{
 		IEnumerable<string> ColorPickerPaletteNames { get; }
+	}
+
+	public interface IColorPickerManagerInfo : ITraitInfoInterface
+	{
+		(float sMin, float sMax) SaturationRange { get; }
+		(float vMin, float vMax) ValueRange { get; }
+		event Action<Color> OnColorPickerColorUpdate;
+		Color[] PresetColors { get; }
+		Color RandomPresetColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors);
+		Color RandomValidColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors);
+		Color MakeValid(Color color, MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, Action<string> onError = null);
+		void ShowColorDropDown(DropDownButtonWidget dropdownButton, Color initialColor, string initialFaction, WorldRenderer worldRenderer, Action<Color> onExit);
 	}
 
 	public interface ICallForTransport

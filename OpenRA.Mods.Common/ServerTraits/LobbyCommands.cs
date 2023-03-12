@@ -529,10 +529,11 @@ namespace OpenRA.Mods.Common.Server
 					};
 
 					// Pick a random color for the bot
-					var colorManager = server.ModData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
+					var colorManager = server.ModData.DefaultRules.Actors[SystemActors.World].TraitInfo<IColorPickerManagerInfo>();
 					var terrainColors = server.ModData.DefaultTerrainInfo[server.Map.TileSet].RestrictedPlayerColors;
 					var playerColors = server.LobbyInfo.Clients.Select(c => c.Color)
 						.Concat(server.Map.Players.Players.Values.Select(p => p.Color));
+
 					bot.Color = bot.PreferredColor = colorManager.RandomPresetColor(server.Random, terrainColors, playerColors);
 
 					server.LobbyInfo.Clients.Add(bot);
@@ -1239,7 +1240,7 @@ namespace OpenRA.Mods.Common.Server
 		{
 			lock (server.LobbyInfo)
 			{
-				var colorManager = server.ModData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
+				var colorManager = server.ModData.DefaultRules.Actors[SystemActors.World].TraitInfo<IColorPickerManagerInfo>();
 				var askColor = askedColor;
 
 				void OnError(string message)

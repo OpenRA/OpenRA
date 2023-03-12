@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -25,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		int paletteTabHighlighted = 0;
 
 		[ObjectCreator.UseCtor]
-		public ColorPickerLogic(Widget widget, ModData modData, World world, Color initialColor, string initialFaction, Action<Color> onChange,
+		public ColorPickerLogic(Widget widget, ModData modData, World world, Color initialColor, Action<Color> onChange, Action<Widget> extraLogic,
 			Dictionary<string, MiniYaml> logicArgs)
 		{
 			var mixer = widget.Get<ColorMixerWidget>("MIXER");
@@ -33,14 +32,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Set the initial state
 			// All users need to use the same TraitInfo instance, chosen as the default mod rules
-			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
-			mixer.SetColorLimits(colorManager.HsvSaturationRange[0], colorManager.HsvSaturationRange[1], colorManager.HsvValueRange[0], colorManager.HsvValueRange[1]);
+			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<IColorPickerManagerInfo>();
+
+			var (sMin, sMax) = colorManager.SaturationRange;
+			var (vMin, vMax) = colorManager.ValueRange;
+			mixer.SetColorLimits(sMin, sMax, vMin, vMax);
 			mixer.OnChange += () => onChange(mixer.Color);
 			mixer.Set(initialColor);
 
 			hueSlider.OnChange += h =>
 			{
-				mixer.SetColorLimits(colorManager.HsvSaturationRange[0], colorManager.HsvSaturationRange[1], colorManager.HsvValueRange[0], colorManager.HsvValueRange[1], h);
+				mixer.SetColorLimits(sMin, sMax, vMin, vMax, h);
 				var (_, _, s, v) = mixer.Color.ToAhsv();
 				mixer.Set(Color.FromAhsv(h, s, v));
 				onChange(mixer.Color);
@@ -63,34 +65,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					hueSlider.UpdateValue(randomColor.ToAhsv().H);
 				};
 			}
-
-			if (initialFaction == null || !colorManager.FactionPreviewActors.TryGetValue(initialFaction, out var actorType))
-				actorType = colorManager.PreviewActor;
-
-			if (actorType == null)
-			{
-				var message = "ColorPickerManager does not define a preview actor";
-				if (initialFaction != null)
-					message += " for faction " + initialFaction;
-				message += "!";
-
-				throw new YamlException(message);
-			}
-
-			var preview = widget.GetOrNull<ActorPreviewWidget>("PREVIEW");
-			var actor = world.Map.Rules.Actors[actorType];
-
-			var td = new TypeDictionary
-			{
-				new OwnerInit(world.WorldActor.Owner),
-				new FactionInit(world.WorldActor.Owner.PlayerReference.Faction)
-			};
-
-			foreach (var api in actor.TraitInfos<IActorPreviewInitInfo>())
-				foreach (var o in api.ActorPreviewInits(actor, ActorPreviewType.ColorPicker))
-					td.Add(o);
-
-			preview?.SetPreview(actor, td);
 
 			// HACK: the value returned from the color mixer will generally not
 			// be equal to the given initialColor due to its internal RGB -> HSL -> RGB
@@ -205,20 +179,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						paletteTabHighlighted = 4;
 				};
 			}
-		}
 
-		public static void ShowColorDropDown(DropDownButtonWidget color, ColorPickerManagerInfo colorManager, WorldRenderer worldRenderer, Action onExit = null)
-		{
-			color.RemovePanel();
-
-			var colorChooser = Game.LoadWidget(worldRenderer.World, "COLOR_CHOOSER", null, new WidgetArgs()
-			{
-				{ "onChange", (Action<Color>)(c => colorManager.Color = c) },
-				{ "initialColor", colorManager.Color },
-				{ "initialFaction", null }
-			});
-
-			color.AttachPanel(colorChooser, onExit);
+			// Attach logic to preview actor.
+			extraLogic(widget);
 		}
 
 		public override void Tick()
