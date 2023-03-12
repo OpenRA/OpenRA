@@ -767,8 +767,8 @@ dotnet_diagnostic.CA1843.severity = warning
 # Provide memory-based overrides of async methods when subclassing 'Stream'.
 dotnet_diagnostic.CA1844.severity = warning
 
-# Use span-based 'string.Concat'.
-dotnet_diagnostic.CA1845.severity = warning
+# Use span-based 'string.Concat'. (Not available on mono)
+dotnet_diagnostic.CA1845.severity = none
 
 # Prefer AsSpan over Substring.
 dotnet_diagnostic.CA1846.severity = warning
