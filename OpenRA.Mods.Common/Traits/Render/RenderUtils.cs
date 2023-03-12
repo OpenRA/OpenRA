@@ -11,7 +11,7 @@
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class RenderUtils
+	public static class RenderUtils
 	{
 		public static int ZOffsetFromCenter(Actor self, WPos pos, int offset)
 		{

@@ -17,7 +17,7 @@ namespace OpenRA.Network
 {
 	public enum NatStatus { Enabled, Disabled, NotSupported }
 
-	public class Nat
+	public static class Nat
 	{
 		public static NatStatus Status => NatUtility.IsSearching ? natDevice != null ? NatStatus.Enabled : NatStatus.NotSupported : NatStatus.Disabled;
 

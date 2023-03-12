@@ -634,6 +634,9 @@ dotnet_diagnostic.CA1047.severity = warning
 # Declare types in namespaces.
 dotnet_diagnostic.CA1050.severity = warning
 
+# Static holder types should be 'Static' or 'NotInheritable'.
+dotnet_diagnostic.CA1052.severity = warning
+
 # Do not hide base class methods.
 dotnet_diagnostic.CA1061.severity = warning
 

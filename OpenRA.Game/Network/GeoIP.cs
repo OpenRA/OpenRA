@@ -19,7 +19,7 @@ using ICSharpCode.SharpZipLib.Zip;
 
 namespace OpenRA.Network
 {
-	public class GeoIP
+	public static class GeoIP
 	{
 		sealed class IP2LocationReader
 		{

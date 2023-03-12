@@ -27,9 +27,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return Encyclopedia.Instance; }
 	}
 
-	public class Encyclopedia
+	public readonly struct Encyclopedia
 	{
-		public static readonly Encyclopedia Instance = new();
-		Encyclopedia() { }
+		public static readonly object Instance = default(Encyclopedia);
 	}
 }
