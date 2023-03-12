@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	public class LintExts
+	public static class LintExts
 	{
 		public static IEnumerable<string> GetFieldValues(object ruleInfo, FieldInfo fieldInfo,
 			LintDictionaryReference dictionaryReference = LintDictionaryReference.None)

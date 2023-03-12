@@ -16,7 +16,7 @@ using FS = OpenRA.FileSystem.FileSystem;
 
 namespace OpenRA.Mods.Common.Installer
 {
-	public class InstallerUtils
+	public static class InstallerUtils
 	{
 		public static bool IsValidSourcePath(string path, ModContent.ModSource source)
 		{

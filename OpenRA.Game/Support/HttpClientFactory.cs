@@ -14,7 +14,7 @@ using System.Net.Http;
 
 namespace OpenRA.Support
 {
-	public class HttpClientFactory
+	public static class HttpClientFactory
 	{
 #if NET5_0_OR_GREATER
 		const int MaxConnectionPerServer = 20;

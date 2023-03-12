@@ -13,7 +13,7 @@ using System.IO;
 
 namespace OpenRA.Mods.Common.FileFormats
 {
-	public class ImaAdpcmReader
+	public static class ImaAdpcmReader
 	{
 		static readonly int[] IndexAdjust = { -1, -1, -1, -1, 2, 4, 6, 8 };
 		static readonly int[] StepTable =
