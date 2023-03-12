@@ -720,6 +720,9 @@ dotnet_diagnostic.CA1832.severity = warning
 # Use AsSpan or AsMemory instead of Range-based indexers for getting Span or Memory portion of an array.
 dotnet_diagnostic.CA1833.severity = warning
 
+# Use StringBuilder.Append(char) for single character strings.
+dotnet_diagnostic.CA1834.severity = warning
+
 # Prefer the memory-based overloads of ReadAsync/WriteAsync methods in stream-based classes.
 dotnet_diagnostic.CA1835.severity = warning
 
