@@ -16,10 +16,10 @@ using System.Text;
 
 namespace OpenRA.Support
 {
-	public class HttpQueryBuilder : IEnumerable
+	public class HttpQueryBuilder : IEnumerable<KeyValuePair<string, string>>
 	{
 		readonly string url;
-		readonly List<Parameter> parameters = new();
+		readonly List<KeyValuePair<string, string>> parameters = new();
 
 		public HttpQueryBuilder(string url)
 		{
@@ -28,11 +28,9 @@ namespace OpenRA.Support
 
 		public void Add(string name, object value)
 		{
-			parameters.Add(new Parameter
-			{
-				Name = name,
-				Value = Uri.EscapeDataString(value.ToString())
-			});
+			parameters.Add(KeyValuePair.Create(
+				name,
+				Uri.EscapeDataString(value.ToString())));
 		}
 
 		public override string ToString()
@@ -42,20 +40,19 @@ namespace OpenRA.Support
 			builder.Append("?");
 
 			foreach (var parameter in parameters)
-				builder.Append($"{parameter.Name}={parameter.Value}&");
+				builder.Append($"{parameter.Key}={parameter.Value}&");
 
 			return builder.ToString();
 		}
 
-		class Parameter
+		public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
 		{
-			public string Name { get; set; }
-			public string Value { get; set; }
+			return parameters.GetEnumerator();
 		}
 
-		public IEnumerator GetEnumerator()
+		IEnumerator IEnumerable.GetEnumerator()
 		{
-			throw new NotImplementedException();
+			return GetEnumerator();
 		}
 	}
 }

@@ -612,6 +612,10 @@ dotnet_code_quality.api_surface = all
 ### Design Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/design-warnings
 
+# Collections should implement generic interface.
+#dotnet_code_quality.CA1010.additional_required_generic_interfaces =
+dotnet_diagnostic.CA1010.severity = warning
+
 # Provide ObsoleteAttribute message.
 dotnet_diagnostic.CA1041.severity = warning
 
