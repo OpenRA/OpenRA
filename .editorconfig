@@ -637,6 +637,9 @@ dotnet_diagnostic.CA1061.severity = warning
 # Exceptions should be public.
 dotnet_diagnostic.CA1064.severity = warning
 
+# Implement 'IEquatable' when overriding 'Equals'.
+dotnet_diagnostic.CA1066.severity = warning
+
 # Override 'Equals' when implementing 'IEquatable'.
 dotnet_diagnostic.CA1067.severity = warning
 
