@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			List<float2> frameOffsets;
 
 			// Prefer manual defined regions over auto sliced regions.
-			if (png.EmbeddedData.Any(meta => meta.Key.StartsWith("Frame[")))
+			if (png.EmbeddedData.Any(meta => meta.Key.StartsWith("Frame[", StringComparison.Ordinal)))
 				RegionsFromFrames(png, out frameRegions, out frameOffsets);
 			else
 				RegionsFromSlices(png, out frameRegions, out frameOffsets);

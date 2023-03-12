@@ -86,9 +86,9 @@ namespace OpenRA
 		{
 			// Always load english strings to provide a fallback for missing translations.
 			// It is important to load the english files first so the chosen language's files can override them.
-			var paths = translations.Where(t => t.EndsWith("en.ftl")).ToHashSet();
+			var paths = translations.Where(t => t.EndsWith("en.ftl", StringComparison.Ordinal)).ToHashSet();
 			foreach (var t in translations)
-				if (t.EndsWith($"{language}.ftl"))
+				if (t.EndsWith($"{language}.ftl", StringComparison.Ordinal))
 					paths.Add(t);
 
 			foreach (var path in paths)

@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -116,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString.StartsWith("Dev"))
+			if (order.OrderString.StartsWith("Dev", StringComparison.Ordinal))
 				return;
 
 			OrderCount++;

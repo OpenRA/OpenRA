@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Lint
 					var bi = actorInfo.Value.TraitInfoOrDefault<BuildableInfo>();
 					if (bi != null)
 						foreach (var prereq in bi.Prerequisites)
-							if (!prereq.StartsWith("~disabled") && !providedPrereqs.Contains(prereq.Replace("!", "").Replace("~", "")))
+							if (!prereq.StartsWith("~disabled", StringComparison.Ordinal) && !providedPrereqs.Contains(prereq.Replace("!", "").Replace("~", "")))
 								emitError($"Buildable actor `{actorInfo.Key}` has prereq `{prereq}` not provided by anything.");
 				}
 				catch (InvalidOperationException e)

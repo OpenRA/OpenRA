@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (buildable != null)
 			{
 				var prerequisites = buildable.Prerequisites.Select(a => ActorName(modData.DefaultRules, a))
-					.Where(s => !s.StartsWith("~", StringComparison.Ordinal) && !s.StartsWith("!", StringComparison.Ordinal));
+					.Where(s => !s.StartsWith('~') && !s.StartsWith('!'));
 				if (prerequisites.Any())
 					text += $"Requires {prerequisites.JoinWith(", ")}\n\n";
 			}

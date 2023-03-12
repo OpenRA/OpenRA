@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				var prereqs = buildable.Prerequisites.Select(a => ActorName(mapRules, a))
-					.Where(s => !s.StartsWith("~", StringComparison.Ordinal) && !s.StartsWith("!", StringComparison.Ordinal));
+					.Where(s => !s.StartsWith('~') && !s.StartsWith('!'));
 
 				var requiresSize = int2.Zero;
 				if (prereqs.Any())

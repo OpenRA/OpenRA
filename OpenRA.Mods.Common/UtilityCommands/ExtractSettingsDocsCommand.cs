@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					}
 
 					var value = field.GetValue(section.Value);
-					if (value != null && !value.ToString().StartsWith("System."))
+					if (value != null && !value.ToString().StartsWith("System.", StringComparison.Ordinal))
 					{
 						Console.WriteLine($"**Default Value:** {value}");
 						Console.WriteLine();

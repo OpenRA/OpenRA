@@ -94,7 +94,7 @@ namespace OpenRA.Graphics
 			foreach (var node in nodes)
 			{
 				// Nodes starting with ^ are inheritable but never loaded directly
-				if (node.Key.StartsWith(ActorInfo.AbstractActorPrefix, StringComparison.Ordinal))
+				if (node.Key.StartsWith(ActorInfo.AbstractActorPrefix))
 					continue;
 
 				images[node.Key] = modData.SpriteSequenceLoader.ParseSequences(modData, tileSet, SpriteCache, node);

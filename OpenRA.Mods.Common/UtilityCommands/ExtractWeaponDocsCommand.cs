@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				.Select(type => new
 				{
 					type.Namespace,
-					Name = type.Name.EndsWith("Info") ? type.Name[..^4] : type.Name,
+					Name = type.Name.EndsWith("Info", StringComparison.Ordinal) ? type.Name[..^4] : type.Name,
 					Description = string.Join(" ", Utility.GetCustomAttributes<DescAttribute>(type, false).SelectMany(d => d.Lines)),
 					InheritedTypes = type.BaseTypes()
 						.Select(y => y.Name)
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 									.Select(a =>
 									{
 										var name = a.AttributeType.Name;
-										name = name.EndsWith("Attribute") ? name[..^9] : name;
+										name = name.EndsWith("Attribute", StringComparison.Ordinal) ? name[..^9] : name;
 
 										return new
 										{

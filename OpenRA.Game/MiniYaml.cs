@@ -438,7 +438,7 @@ namespace OpenRA
 					foreach (var r in ResolveInherits(parent, tree, inherited))
 						MergeIntoResolved(r, resolved, resolvedKeys, tree, inherited);
 				}
-				else if (n.Key.StartsWith("-", StringComparison.Ordinal))
+				else if (n.Key.StartsWith('-'))
 				{
 					var removed = n.Key[1..];
 					if (resolved.RemoveAll(r => r.Key == removed) == 0)

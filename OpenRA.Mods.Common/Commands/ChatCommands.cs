@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Commands
 
 		public bool OnChat(string playername, string message)
 		{
-			if (message.StartsWith("/"))
+			if (message.StartsWith('/'))
 			{
 				var name = message[1..].Split(' ')[0].ToLowerInvariant();
 				var command = Commands.FirstOrDefault(x => x.Key == name);

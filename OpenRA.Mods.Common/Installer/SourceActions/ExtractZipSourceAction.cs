@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Installer
 		public void RunActionOnSource(MiniYaml actionYaml, string path, ModData modData, List<string> extracted,
 			Action<string> updateMessage)
 		{
-			var zipPath = actionYaml.Value.StartsWith("^")
+			var zipPath = actionYaml.Value.StartsWith('^')
 				? Platform.ResolvePath(actionYaml.Value)
 				: FS.ResolveCaseInsensitivePath(Path.Combine(path, actionYaml.Value));
 

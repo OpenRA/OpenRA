@@ -46,7 +46,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var interfaceMembers = interfaceType.GetMembers();
 					foreach (var interfaceMember in interfaceMembers)
 					{
-						if (interfaceMember.Name.StartsWith("get_") || interfaceMember.Name.StartsWith("set_") || interfaceMember.Name.StartsWith("add_") || interfaceMember.Name.StartsWith("remove_"))
+						if (interfaceMember.Name.StartsWith("get_", StringComparison.Ordinal) ||
+							interfaceMember.Name.StartsWith("set_", StringComparison.Ordinal) ||
+							interfaceMember.Name.StartsWith("add_", StringComparison.Ordinal) ||
+							interfaceMember.Name.StartsWith("remove_", StringComparison.Ordinal))
 							continue;
 
 						var interfaceMethod = interfaceMember as MethodInfo;
