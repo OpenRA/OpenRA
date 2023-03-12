@@ -765,6 +765,9 @@ dotnet_diagnostic.CA1847.severity = warning
 # Call async methods when in an async method.
 dotnet_diagnostic.CA1849.severity = warning
 
+# Prefer static HashData method over ComputeHash. (Not available on mono)
+dotnet_diagnostic.CA1850.severity = none
+
 # Unnecessary call to 'Dictionary.ContainsKey(key)'.
 dotnet_diagnostic.CA1853.severity = warning
 
