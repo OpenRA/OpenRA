@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -61,11 +62,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
-			var startingCash = SelectableCash.ToDictionary(c => c.ToString(), c => "$" + c.ToString());
+			var startingCash = SelectableCash.ToDictionary(c => c.ToStringInvariant(), c => "$" + c.ToString(NumberFormatInfo.CurrentInfo));
 
 			if (startingCash.Count > 0)
 				yield return new LobbyOption(map, "startingcash", DefaultCashDropdownLabel, DefaultCashDropdownDescription, DefaultCashDropdownVisible, DefaultCashDropdownDisplayOrder,
-					startingCash, DefaultCash.ToString(), DefaultCashDropdownLocked);
+					startingCash, DefaultCash.ToStringInvariant(), DefaultCashDropdownLocked);
 		}
 
 		public override object Create(ActorInitializer init) { return new PlayerResources(init.Self, this); }
@@ -82,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 			owner = self.Owner;
 
 			var startingCash = self.World.LobbyInfo.GlobalSettings
-				.OptionOrDefault("startingcash", info.DefaultCash.ToString());
+				.OptionOrDefault("startingcash", info.DefaultCash.ToStringInvariant());
 
 			if (!int.TryParse(startingCash, out Cash))
 				Cash = info.DefaultCash;

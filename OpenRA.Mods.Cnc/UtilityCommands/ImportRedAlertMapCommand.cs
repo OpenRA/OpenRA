@@ -196,7 +196,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var sb = new StringBuilder();
 			for (var i = 1; ; i++)
 			{
-				var line = mapPackSection.GetValue(i.ToString(), null);
+				var line = mapPackSection.GetValue(i.ToStringInvariant(), null);
 				if (line == null)
 					break;
 

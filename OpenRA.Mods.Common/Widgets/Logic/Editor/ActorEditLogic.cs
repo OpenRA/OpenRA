@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -318,7 +319,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							var valueField = sliderContainer.GetOrNull<TextFieldWidget>("VALUE");
 							if (valueField != null)
 							{
-								void UpdateValueField(float f) => valueField.Text = ((int)f).ToString();
+								void UpdateValueField(float f) => valueField.Text = ((int)f).ToString(NumberFormatInfo.CurrentInfo);
 								UpdateValueField(so.GetValue(actor));
 								slider.OnChange += UpdateValueField;
 

@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
@@ -32,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				Template = template;
 				Categories = template.Categories;
-				Tooltip = template.Id.ToString();
+				Tooltip = template.Id.ToString(NumberFormatInfo.CurrentInfo);
 				SearchTerms = new[] { Tooltip };
 			}
 		}
@@ -71,7 +72,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!string.IsNullOrEmpty(searchFilter))
 					FilteredCategories.AddRange(
 						allTemplates.Where(t => t.SearchTerms.Any(
-							s => s.IndexOf(searchFilter, StringComparison.OrdinalIgnoreCase) >= 0))
+							s => s.Contains(searchFilter, StringComparison.CurrentCultureIgnoreCase)))
 						.SelectMany(t => t.Categories)
 						.Distinct()
 						.OrderBy(CategoryOrder));

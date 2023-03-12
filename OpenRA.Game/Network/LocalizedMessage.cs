@@ -102,7 +102,7 @@ namespace OpenRA.Network
 		{
 			var root = new List<MiniYamlNode>
 			{
-				new MiniYamlNode("Protocol", ProtocolVersion.ToString()),
+				new MiniYamlNode("Protocol", ProtocolVersion.ToStringInvariant()),
 				new MiniYamlNode("Key", key)
 			};
 

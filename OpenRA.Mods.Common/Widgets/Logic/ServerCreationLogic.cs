@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.Linq;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -136,7 +137,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				settings.Server.Name = serverName.Text;
 			};
 
-			panel.Get<TextFieldWidget>("LISTEN_PORT").Text = settings.Server.ListenPort.ToString();
+			panel.Get<TextFieldWidget>("LISTEN_PORT").Text = settings.Server.ListenPort.ToString(NumberFormatInfo.CurrentInfo);
 
 			advertiseOnline = Game.Settings.Server.AdvertiseOnline;
 
@@ -221,7 +222,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void CreateAndJoin()
 		{
 			var name = Game.Settings.SanitizedServerName(panel.Get<TextFieldWidget>("SERVER_NAME").Text);
-			if (!Exts.TryParseIntegerInvariant(panel.Get<TextFieldWidget>("LISTEN_PORT").Text, out var listenPort))
+			if (!int.TryParse(panel.Get<TextFieldWidget>("LISTEN_PORT").Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var listenPort))
 				listenPort = 1234;
 
 			var passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");

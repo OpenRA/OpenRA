@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			for (var i = 0; i < count; i++)
 			{
-				var suffix = (i + 1).ToString("D2");
+				var suffix = (i + 1).ToStringInvariant("D2");
 				yield return savePrefix + suffix;
 				yield return restorePrefix + suffix;
 			}
@@ -153,10 +153,10 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Initialize(args);
 
 			saveBookmarkHotkeys = Exts.MakeArray(BookmarkKeyCount,
-				i => modData.Hotkeys[BookmarkSaveKeyPrefix + (i + 1).ToString("D2")]);
+				i => modData.Hotkeys[BookmarkSaveKeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
 			restoreBookmarkHotkeys = Exts.MakeArray(BookmarkKeyCount,
-				i => modData.Hotkeys[BookmarkRestoreKeyPrefix + (i + 1).ToString("D2")]);
+				i => modData.Hotkeys[BookmarkRestoreKeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
 			bookmarkPositions = new WPos?[BookmarkKeyCount];
 		}

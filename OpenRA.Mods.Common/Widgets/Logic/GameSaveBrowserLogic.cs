@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using OpenRA.Network;
@@ -254,7 +255,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var label = item.Get<LabelWithTooltipWidget>("TITLE");
 				WidgetUtils.TruncateLabelToTooltip(label, title);
 
-				var date = File.GetLastWriteTime(savePath).ToString("yyyy-MM-dd HH:mm:ss");
+				var date = File.GetLastWriteTime(savePath).ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.CurrentCulture);
 				item.Get<LabelWidget>("DATE").GetText = () => date;
 
 				gameList.AddChild(item);

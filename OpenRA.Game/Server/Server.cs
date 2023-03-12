@@ -968,7 +968,7 @@ namespace OpenRA.Server
 
 		void WriteLineWithTimeStamp(string line)
 		{
-			Console.WriteLine($"[{DateTime.Now.ToString(Settings.TimestampFormat)}] {line}");
+			Console.WriteLine($"[{DateTime.Now.ToString(Settings.TimestampFormat, CultureInfo.CurrentCulture)}] {line}");
 		}
 
 		void InterpretServerOrder(Connection conn, Order o)
@@ -1019,7 +1019,7 @@ namespace OpenRA.Server
 							if (GameSave != null)
 							{
 								var data = MiniYaml.FromString(o.TargetString)[0];
-								GameSave.AddTraitData(int.Parse(data.Key), data.Value);
+								GameSave.AddTraitData(OpenRA.Exts.ParseInt32Invariant(data.Key), data.Value);
 							}
 
 							break;
@@ -1375,8 +1375,8 @@ namespace OpenRA.Server
 					{
 						startGameData = new List<MiniYamlNode>()
 						{
-							new MiniYamlNode("SaveLastOrdersFrame", GameSave.LastOrdersFrame.ToString()),
-							new MiniYamlNode("SaveSyncFrame", GameSave.LastSyncFrame.ToString())
+							new MiniYamlNode("SaveLastOrdersFrame", GameSave.LastOrdersFrame.ToStringInvariant()),
+							new MiniYamlNode("SaveSyncFrame", GameSave.LastSyncFrame.ToStringInvariant())
 						}.WriteToString();
 					}
 				}

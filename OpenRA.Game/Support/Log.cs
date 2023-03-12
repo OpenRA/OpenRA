@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Threading.Channels;
@@ -110,7 +111,7 @@ namespace OpenRA
 				writer.WriteLine(item.Text);
 			else
 			{
-				var timestamp = DateTime.Now.ToString(Game.Settings.Server.TimestampFormat);
+				var timestamp = DateTime.Now.ToString(Game.Settings.Server.TimestampFormat, CultureInfo.CurrentCulture);
 				writer.WriteLine("[{0}] {1}", timestamp, item.Text);
 			}
 		}

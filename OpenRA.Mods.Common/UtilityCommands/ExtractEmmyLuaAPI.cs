@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using OpenRA.Scripting;
@@ -162,7 +163,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Console.WriteLine(enumType.Name + " = {");
 
 				foreach (var value in Enum.GetValues(enumType))
-					Console.WriteLine($"    {value} = {Convert.ChangeType(value, typeof(int))},");
+					Console.WriteLine($"    {value} = {Convert.ChangeType(value, typeof(int), NumberFormatInfo.InvariantInfo)},");
 
 				Console.WriteLine("}");
 				Console.WriteLine();

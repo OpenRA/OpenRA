@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -113,7 +114,7 @@ namespace OpenRA.Server
 
 		static void WriteLineWithTimeStamp(string line)
 		{
-			Console.WriteLine($"[{DateTime.Now.ToString(Game.Settings.Server.TimestampFormat)}] {line}");
+			Console.WriteLine($"[{DateTime.Now.ToString(Game.Settings.Server.TimestampFormat, CultureInfo.CurrentCulture)}] {line}");
 		}
 	}
 }

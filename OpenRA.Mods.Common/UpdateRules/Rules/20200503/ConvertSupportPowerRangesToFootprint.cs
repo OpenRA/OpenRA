@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}
 
 			var size = 2 * range + 1;
-			power.AddNode(new MiniYamlNodeBuilder("Dimensions", size.ToString() + ", " + size.ToString()));
+			power.AddNode(new MiniYamlNodeBuilder("Dimensions", size.ToStringInvariant() + ", " + size.ToStringInvariant()));
 
 			var footprint = string.Empty;
 

@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Commands;
@@ -133,7 +134,7 @@ namespace OpenRA.Mods.Common.Traits
 							(cost.Destination.X + nodeCell.X) / 2,
 							(cost.Destination.Y + nodeCell.Y) / 2);
 						var centerPos = self.World.Map.CenterOfSubCell(centerCell, SubCell.FullCell);
-						yield return new TextAnnotationRenderable(font, centerPos, 0, lineColor, cost.Cost.ToString());
+						yield return new TextAnnotationRenderable(font, centerPos, 0, lineColor, cost.Cost.ToString(NumberFormatInfo.CurrentInfo));
 					}
 				}
 

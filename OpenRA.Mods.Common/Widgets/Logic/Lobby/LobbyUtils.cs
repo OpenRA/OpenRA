@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -156,7 +157,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => client.Team == ii,
 					() => orderManager.IssueOrder(Order.Command($"team {client.Index} {ii}")));
-				item.Get<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
+				item.Get<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString(NumberFormatInfo.CurrentInfo);
 				return item;
 			}
 
@@ -576,7 +577,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.IsVisible = () => true;
 			dropdown.IsDisabled = () => s.LockTeam || orderManager.LocalClient.IsReady;
 			dropdown.OnMouseDown = _ => ShowTeamDropDown(dropdown, c, orderManager, map.PlayerCount);
-			dropdown.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
+			dropdown.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString(NumberFormatInfo.CurrentInfo);
 
 			HideChildWidget(parent, "TEAM");
 		}
@@ -585,7 +586,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var team = parent.Get<LabelWidget>("TEAM");
 			team.IsVisible = () => true;
-			team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
+			team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString(NumberFormatInfo.CurrentInfo);
 			HideChildWidget(parent, "TEAM_DROPDOWN");
 		}
 

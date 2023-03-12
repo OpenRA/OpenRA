@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			for (var i = 0; i < count; i++)
 			{
-				var suffix = (i + 1).ToString("D2");
+				var suffix = (i + 1).ToStringInvariant("D2");
 				yield return selectPrefix + suffix;
 				yield return createPrefix + suffix;
 				yield return addToPrefix + suffix;
@@ -111,19 +111,19 @@ namespace OpenRA.Mods.Common.Widgets
 			base.Initialize(args);
 
 			selectGroupHotkeys = Exts.MakeArray(hotkeyCount,
-				i => modData.Hotkeys[SelectGroupKeyPrefix + (i + 1).ToString("D2")]);
+				i => modData.Hotkeys[SelectGroupKeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
 			createGroupHotkeys = Exts.MakeArray(hotkeyCount,
-				i => modData.Hotkeys[CreateGroupKeyPrefix + (i + 1).ToString("D2")]);
+				i => modData.Hotkeys[CreateGroupKeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
 			addToGroupHotkeys = Exts.MakeArray(hotkeyCount,
-				i => modData.Hotkeys[AddToGroupKeyPrefix + (i + 1).ToString("D2")]);
+				i => modData.Hotkeys[AddToGroupKeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
 			combineWithGroupHotkeys = Exts.MakeArray(hotkeyCount,
-				i => modData.Hotkeys[CombineWithGroupKeyPrefix + (i + 1).ToString("D2")]);
+				i => modData.Hotkeys[CombineWithGroupKeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
 			jumpToGroupHotkeys = Exts.MakeArray(hotkeyCount,
-				i => modData.Hotkeys[JumpToGroupKeyPrefix + (i + 1).ToString("D2")]);
+				i => modData.Hotkeys[JumpToGroupKeyPrefix + (i + 1).ToStringInvariant("D2")]);
 		}
 
 		public override bool HandleKeyPress(KeyInput e)

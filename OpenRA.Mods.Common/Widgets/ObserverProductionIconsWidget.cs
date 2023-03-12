@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -201,7 +202,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				if (icon.Queued.Count > 1)
 				{
-					text = icon.Queued.Count.ToString();
+					text = icon.Queued.Count.ToString(NumberFormatInfo.CurrentInfo);
 					bold.DrawTextWithContrast(text, icon.Pos + new float2(16, 0) - new float2(bold.Measure(text).X / 2, 0),
 						Color.White, Color.Black, 1);
 				}

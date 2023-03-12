@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -46,7 +47,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				tabs.Add(t);
 				queues.Remove(t.Queue);
-				largestUsedName = Math.Max(int.Parse(t.Name), largestUsedName);
+				largestUsedName = Math.Max(int.Parse(t.Name, NumberFormatInfo.CurrentInfo), largestUsedName);
 			}
 
 			NextQueueName = largestUsedName + 1;
@@ -55,7 +56,7 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var queue in queues)
 				tabs.Add(new ProductionTab()
 				{
-					Name = NextQueueName++.ToString(),
+					Name = NextQueueName++.ToString(NumberFormatInfo.CurrentInfo),
 					Queue = queue
 				});
 			Tabs = tabs;

@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			var host = server.Address.Split(':')[0];
-			var port = Exts.ParseIntegerInvariant(server.Address.Split(':')[1]);
+			var port = Exts.ParseInt32Invariant(server.Address.Split(':')[1]);
 
 			ConnectionLogic.Connect(new ConnectionTarget(host, port), "", OpenLobby, DoNothing);
 		}

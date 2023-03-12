@@ -71,12 +71,12 @@ namespace OpenRA
 			switch (components.Length)
 			{
 				case 2:
-					if (!Exts.TryParseIntegerInvariant(components[0], out cell) ||
-						!Exts.TryParseIntegerInvariant(components[1], out subcell))
+					if (!Exts.TryParseInt32Invariant(components[0], out cell) ||
+						!Exts.TryParseInt32Invariant(components[1], out subcell))
 						return false;
 					break;
 				case 1:
-					if (!Exts.TryParseIntegerInvariant(components[0], out subcell))
+					if (!Exts.TryParseInt32Invariant(components[0], out subcell))
 						return false;
 					break;
 				default: return false;
@@ -107,7 +107,7 @@ namespace OpenRA
 		public override string ToString()
 		{
 			var absLength = Math.Abs(Length);
-			var absValue = (absLength / 1024).ToString() + "c" + (absLength % 1024).ToString();
+			var absValue = (absLength / 1024).ToStringInvariant() + "c" + (absLength % 1024).ToStringInvariant();
 			return Length < 0 ? "-" + absValue : absValue;
 		}
 

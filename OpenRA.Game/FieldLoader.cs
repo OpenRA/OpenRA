@@ -118,7 +118,7 @@ namespace OpenRA
 
 		static object ParseInt(string fieldName, Type fieldType, string value, MemberInfo field)
 		{
-			if (Exts.TryParseIntegerInvariant(value, out var res))
+			if (Exts.TryParseInt32Invariant(value, out var res))
 			{
 				if (res >= 0 && res < BoxedInts.Length)
 					return BoxedInts[res];
@@ -249,7 +249,7 @@ namespace OpenRA
 
 		static object ParseWAngle(string fieldName, Type fieldType, string value, MemberInfo field)
 		{
-			if (Exts.TryParseIntegerInvariant(value, out var res))
+			if (Exts.TryParseInt32Invariant(value, out var res))
 				return new WAngle(res);
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
@@ -261,9 +261,9 @@ namespace OpenRA
 				var parts = value.Split(SplitComma);
 				if (parts.Length == 3)
 				{
-					if (Exts.TryParseIntegerInvariant(parts[0], out var rr)
-							&& Exts.TryParseIntegerInvariant(parts[1], out var rp)
-							&& Exts.TryParseIntegerInvariant(parts[2], out var ry))
+					if (Exts.TryParseInt32Invariant(parts[0], out var rr)
+							&& Exts.TryParseInt32Invariant(parts[1], out var rp)
+							&& Exts.TryParseInt32Invariant(parts[2], out var ry))
 						return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
 				}
 			}
@@ -278,10 +278,10 @@ namespace OpenRA
 				var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
 				if (parts.Length == 3)
 					return new CPos(
-						Exts.ParseIntegerInvariant(parts[0]),
-						Exts.ParseIntegerInvariant(parts[1]),
-						Exts.ParseByte(parts[2]));
-				return new CPos(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
+						Exts.ParseInt32Invariant(parts[0]),
+						Exts.ParseInt32Invariant(parts[1]),
+						Exts.ParseByteInvariant(parts[2]));
+				return new CPos(Exts.ParseInt32Invariant(parts[0]), Exts.ParseInt32Invariant(parts[1]));
 			}
 
 			return InvalidValueAction(value, fieldType, fieldName);
@@ -292,7 +292,7 @@ namespace OpenRA
 			if (value != null)
 			{
 				var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
-				return new CVec(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
+				return new CVec(Exts.ParseInt32Invariant(parts[0]), Exts.ParseInt32Invariant(parts[1]));
 			}
 
 			return InvalidValueAction(value, fieldType, fieldName);
@@ -385,7 +385,7 @@ namespace OpenRA
 
 				var ints = new int2[parts.Length / 2];
 				for (var i = 0; i < ints.Length; i++)
-					ints[i] = new int2(Exts.ParseIntegerInvariant(parts[2 * i]), Exts.ParseIntegerInvariant(parts[2 * i + 1]));
+					ints[i] = new int2(Exts.ParseInt32Invariant(parts[2 * i]), Exts.ParseInt32Invariant(parts[2 * i + 1]));
 
 				return ints;
 			}
@@ -398,7 +398,7 @@ namespace OpenRA
 			if (value != null)
 			{
 				var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
-				return new Size(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
+				return new Size(Exts.ParseInt32Invariant(parts[0]), Exts.ParseInt32Invariant(parts[1]));
 			}
 
 			return InvalidValueAction(value, fieldType, fieldName);
@@ -412,7 +412,7 @@ namespace OpenRA
 				if (parts.Length != 2)
 					return InvalidValueAction(value, fieldType, fieldName);
 
-				return new int2(Exts.ParseIntegerInvariant(parts[0]), Exts.ParseIntegerInvariant(parts[1]));
+				return new int2(Exts.ParseInt32Invariant(parts[0]), Exts.ParseInt32Invariant(parts[1]));
 			}
 
 			return InvalidValueAction(value, fieldType, fieldName);
@@ -460,10 +460,10 @@ namespace OpenRA
 			{
 				var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
 				return new Rectangle(
-					Exts.ParseIntegerInvariant(parts[0]),
-					Exts.ParseIntegerInvariant(parts[1]),
-					Exts.ParseIntegerInvariant(parts[2]),
-					Exts.ParseIntegerInvariant(parts[3]));
+					Exts.ParseInt32Invariant(parts[0]),
+					Exts.ParseInt32Invariant(parts[1]),
+					Exts.ParseInt32Invariant(parts[2]),
+					Exts.ParseInt32Invariant(parts[3]));
 			}
 
 			return InvalidValueAction(value, fieldType, fieldName);

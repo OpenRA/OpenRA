@@ -170,7 +170,7 @@ namespace OpenRA.Network
 				case "SaveTraitData":
 					{
 						var data = MiniYaml.FromString(order.TargetString)[0];
-						var traitIndex = int.Parse(data.Key);
+						var traitIndex = Exts.ParseInt32Invariant(data.Key);
 
 						world?.AddGameSaveTraitData(traitIndex, data.Value);
 
@@ -343,7 +343,7 @@ namespace OpenRA.Network
 							var strings = node.Key.Split('@');
 							if (strings[0] == "ConnectionQuality")
 							{
-								var client = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.Index == int.Parse(strings[1]));
+								var client = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.Index == Exts.ParseInt32Invariant(strings[1]));
 								if (client != null)
 									client.ConnectionQuality = FieldLoader.GetValue<Session.ConnectionQuality>("ConnectionQuality", node.Value.Value);
 							}

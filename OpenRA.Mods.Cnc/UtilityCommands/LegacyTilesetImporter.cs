@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				{
 					var section = file.GetSection($"TileSet{tilesetGroupIndex:D4}");
 
-					var sectionCount = int.Parse(section.GetValue("TilesInSet", "1"));
+					var sectionCount = Exts.ParseInt32Invariant(section.GetValue("TilesInSet", "1"));
 					var sectionFilename = section.GetValue("FileName", "").ToLowerInvariant();
 					var sectionCategory = section.GetValue("SetName", "");
 					if (!string.IsNullOrEmpty(sectionCategory) && sectionFilename != "blank")
