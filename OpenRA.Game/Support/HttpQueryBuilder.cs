@@ -37,7 +37,7 @@ namespace OpenRA.Support
 		{
 			var builder = new StringBuilder(url);
 
-			builder.Append("?");
+			builder.Append('?');
 
 			foreach (var parameter in parameters)
 				builder.Append($"{parameter.Key}={parameter.Value}&");
