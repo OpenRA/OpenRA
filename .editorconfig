@@ -830,6 +830,9 @@ dotnet_diagnostic.CA5351.severity = warning
 ### Usage Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/usage-warnings
 
+# Call GC.SuppressFinalize correctly.
+dotnet_diagnostic.CA1816.severity = warning
+
 # Rethrow to preserve stack details.
 dotnet_diagnostic.CA2200.severity = warning
 

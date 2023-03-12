@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 		}
 	}
 
-	public class VoxelModelCache : IModelCache
+	public sealed class VoxelModelCache : IModelCache
 	{
 		readonly VoxelLoader loader;
 		readonly Dictionary<string, Dictionary<string, IModel>> models = new();

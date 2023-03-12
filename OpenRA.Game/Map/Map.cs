@@ -149,7 +149,7 @@ namespace OpenRA
 		}
 	}
 
-	public class Map : IReadOnlyFileSystem, IDisposable
+	public sealed class Map : IReadOnlyFileSystem, IDisposable
 	{
 		public const int SupportedMapFormat = 11;
 		public const int CurrentMapFormat = 12;
