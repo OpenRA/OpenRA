@@ -616,6 +616,9 @@ dotnet_code_quality.api_surface = all
 #dotnet_code_quality.CA1010.additional_required_generic_interfaces =
 dotnet_diagnostic.CA1010.severity = warning
 
+# Mark attributes with 'AttributeUsageAttribute'.
+dotnet_diagnostic.CA1018.severity = warning
+
 # Provide ObsoleteAttribute message.
 dotnet_diagnostic.CA1041.severity = warning
 

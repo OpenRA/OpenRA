@@ -23,6 +23,7 @@ using OpenRA.Support;
 
 namespace OpenRA.Traits
 {
+	[AttributeUsage(AttributeTargets.Interface)]
 	public sealed class RequireExplicitImplementationAttribute : Attribute { }
 
 	[Flags]
