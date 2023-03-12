@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 
 			// This buffer can be static because it can only be used by 1 instance per thread.
 			[ThreadStatic]
-			static float[] conversionBuffer = null;
+			static float[] conversionBuffer;
 
 			public OggStream(OggFormat format)
 			{

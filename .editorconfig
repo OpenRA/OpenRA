@@ -801,6 +801,9 @@ dotnet_diagnostic.CA2016.severity = warning
 # The 'count' argument to Buffer.BlockCopy should specify the number of bytes to copy.
 dotnet_diagnostic.CA2018.severity = warning
 
+# ThreadStatic fields should not use inline initialization.
+dotnet_diagnostic.CA2019.severity = warning
+
 ### Security Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/security-warnings
 
