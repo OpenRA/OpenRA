@@ -81,7 +81,7 @@ namespace OpenRA.Graphics
 				.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s)));
 
 			foreach (var c in chrome)
-				if (!c.Key.StartsWith("^", StringComparison.Ordinal))
+				if (!c.Key.StartsWith('^'))
 					LoadCollection(c.Key, c.Value);
 		}
 

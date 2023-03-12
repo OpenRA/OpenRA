@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -66,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool HasPrerequisites(IEnumerable<string> prerequisites)
 		{
 			var ownedPrereqs = GatherOwnedPrerequisites(Owner);
-			return prerequisites.All(p => !(p.Replace("~", "").StartsWith("!", StringComparison.Ordinal)
+			return prerequisites.All(p => !(p.Replace("~", "").StartsWith('!')
 					^ !ownedPrereqs.ContainsKey(p.Replace("!", "").Replace("~", ""))));
 		}
 
@@ -142,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var prereq in prerequisites)
 				{
 					var withoutTilde = prereq.Replace("~", "");
-					if (withoutTilde.StartsWith("!", StringComparison.Ordinal) ^ !ownedPrerequisites.ContainsKey(withoutTilde.Replace("!", "")))
+					if (withoutTilde.StartsWith('!') ^ !ownedPrerequisites.ContainsKey(withoutTilde.Replace("!", "")))
 						return false;
 				}
 
@@ -154,10 +153,10 @@ namespace OpenRA.Mods.Common.Traits
 				// PERF: Avoid LINQ.
 				foreach (var prereq in prerequisites)
 				{
-					if (!prereq.StartsWith("~", StringComparison.Ordinal))
+					if (!prereq.StartsWith('~'))
 						continue;
 					var withoutTilde = prereq.Replace("~", "");
-					if (withoutTilde.StartsWith("!", StringComparison.Ordinal) ^ !ownedPrerequisites.ContainsKey(withoutTilde.Replace("!", "")))
+					if (withoutTilde.StartsWith('!') ^ !ownedPrerequisites.ContainsKey(withoutTilde.Replace("!", "")))
 						return true;
 				}
 

@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var toComplete = "";
-			if (text.StartsWith("/") && Commands != null)
+			if (text.StartsWith('/') && Commands != null)
 			{
 				prefix = "/";
 				suffix = "";

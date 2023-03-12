@@ -275,7 +275,10 @@ namespace OpenRA
 			try
 			{
 				foreach (var filename in contents)
-					if (filename.EndsWith(".yaml") || filename.EndsWith(".bin") || filename.EndsWith(".lua") || (format >= 12 && filename == "map.png"))
+					if (filename.EndsWith(".yaml", StringComparison.Ordinal) ||
+						filename.EndsWith(".bin", StringComparison.Ordinal) ||
+						filename.EndsWith(".lua", StringComparison.Ordinal) ||
+						(format >= 12 && filename == "map.png"))
 						streams.Add(package.GetStream(filename));
 
 				// Take the SHA1

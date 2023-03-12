@@ -83,14 +83,14 @@ namespace OpenRA.FileSystem
 
 		public void Mount(string name, string explicitName = null)
 		{
-			var optional = name.StartsWith("~", StringComparison.Ordinal);
+			var optional = name.StartsWith('~');
 			if (optional)
 				name = name[1..];
 
 			try
 			{
 				IReadOnlyPackage package;
-				if (name.StartsWith("$", StringComparison.Ordinal))
+				if (name.StartsWith('$'))
 				{
 					name = name[1..];
 
@@ -295,7 +295,7 @@ namespace OpenRA.FileSystem
 		public static string ResolveAssemblyPath(string path, Manifest manifest, InstalledMods installedMods)
 		{
 			var explicitSplit = path.IndexOf('|');
-			if (explicitSplit > 0 && !path.StartsWith("^"))
+			if (explicitSplit > 0 && !path.StartsWith('^'))
 			{
 				var parent = path[..explicitSplit];
 				var filename = path[(explicitSplit + 1)..];
@@ -304,7 +304,7 @@ namespace OpenRA.FileSystem
 				if (parentPath == null)
 					return null;
 
-				if (parentPath.StartsWith("$", StringComparison.Ordinal))
+				if (parentPath.StartsWith('$'))
 				{
 					if (!installedMods.TryGetValue(parentPath[1..], out var mod))
 						return null;

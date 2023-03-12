@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Lint
 		static string NormalizeName(string key)
 		{
 			var name = key.Split('@')[0];
-			if (name.StartsWith("-", StringComparison.Ordinal))
+			if (name.StartsWith('-'))
 				return name[1..];
 
 			return name;
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Lint
 				foreach (var field in weapon.Value.Nodes)
 				{
 					// Removals can never define children or values
-					if (field.Key.StartsWith("-", StringComparison.Ordinal))
+					if (field.Key.StartsWith('-'))
 					{
 						if (field.Value.Nodes.Length > 0)
 							emitError($"{field.Location} `{field.Key}` defines child nodes, which is not valid for removals.");

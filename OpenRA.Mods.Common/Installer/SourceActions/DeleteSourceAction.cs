@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Installer
 		public void RunActionOnSource(MiniYaml actionYaml, string path, ModData modData, List<string> extracted, Action<string> updateMessage)
 		{
 			// Yaml path must be specified relative to a named directory (e.g. ^SupportDir)
-			if (!actionYaml.Value.StartsWith("^"))
+			if (!actionYaml.Value.StartsWith('^'))
 				return;
 
 			var sourcePath = Platform.ResolvePath(actionYaml.Value);

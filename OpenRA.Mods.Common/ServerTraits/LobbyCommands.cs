@@ -207,7 +207,7 @@ namespace OpenRA.Mods.Common.Server
 			lock (server.LobbyInfo)
 			{
 				// Kick command is always valid for the host
-				if (command.StartsWith("kick "))
+				if (command.StartsWith("kick ", StringComparison.Ordinal))
 					return true;
 
 				if (server.State == ServerState.GameStarted)
@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Common.Server
 					server.SendLocalizedMessageTo(conn, StateUnchangedGameStarted, Translation.Arguments("command", command));
 					return false;
 				}
-				else if (client.State == Session.ClientState.Ready && !(command.StartsWith("state") || command == "startgame"))
+				else if (client.State == Session.ClientState.Ready && !(command.StartsWith("state", StringComparison.Ordinal) || command == "startgame"))
 				{
 					server.SendLocalizedMessageTo(conn, StateUnchangedReady);
 					return false;

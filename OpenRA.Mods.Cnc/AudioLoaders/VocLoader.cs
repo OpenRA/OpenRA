@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 		{
 			var vfh = VocFileHeader.Read(stream);
 
-			if (!vfh.Description.StartsWith("Creative Voice File"))
+			if (!vfh.Description.StartsWith("Creative Voice File", StringComparison.Ordinal))
 				throw new InvalidDataException("Voc header description not recognized");
 			if (vfh.DatablockOffset != 26)
 				throw new InvalidDataException("Voc header offset is wrong");

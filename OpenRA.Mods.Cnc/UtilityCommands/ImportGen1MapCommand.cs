@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 				var player = basic.GetValue("Player", string.Empty);
 				if (!string.IsNullOrEmpty(player))
-					singlePlayer = !player.StartsWith("Multi");
+					singlePlayer = !player.StartsWith("Multi", StringComparison.Ordinal);
 
 				var mapSection = file.GetSection("Map");
 
@@ -332,9 +332,9 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var key = $"{loc % MapSize},{loc / MapSize}";
 				var value = $"{type},{parts[2]}";
 				var node = new MiniYamlNode(key, value);
-				if (type.StartsWith("sc"))
+				if (type.StartsWith("sc", StringComparison.Ordinal))
 					scorches.Add(node);
-				else if (type.StartsWith("cr"))
+				else if (type.StartsWith("cr", StringComparison.Ordinal))
 					craters.Add(node);
 			}
 

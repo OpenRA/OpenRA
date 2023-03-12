@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -110,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// PERF: Avoid LINQ.
 			foreach (var pref in prefixes)
-				if (name.StartsWith(pref))
+				if (name.StartsWith(pref, StringComparison.Ordinal))
 					return true;
 
 			return false;

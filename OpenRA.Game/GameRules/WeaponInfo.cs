@@ -159,7 +159,7 @@ namespace OpenRA.GameRules
 		static object LoadWarheads(MiniYaml yaml)
 		{
 			var retList = new List<IWarhead>();
-			foreach (var node in yaml.Nodes.Where(n => n.Key.StartsWith("Warhead")))
+			foreach (var node in yaml.Nodes.Where(n => n.Key.StartsWith("Warhead", StringComparison.Ordinal)))
 			{
 				var ret = Game.CreateObject<IWarhead>(node.Value.Value + "Warhead");
 				if (ret == null)

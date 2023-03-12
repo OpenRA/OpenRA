@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Traits
 		void SyncMultiplayerCount()
 		{
 			var newCount = previews.Count(p => p.Info.Name == "mpspawn");
-			var mp = Players.Players.Where(p => p.Key.StartsWith("Multi")).ToList();
+			var mp = Players.Players.Where(p => p.Key.StartsWith("Multi", StringComparison.Ordinal)).ToList();
 			foreach (var kv in mp)
 			{
 				var name = kv.Key;

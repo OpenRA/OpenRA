@@ -192,7 +192,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				defaultTilesetFilenamesNode = defaultsNode.LastChildMatching("TilesetFilenames") ?? defaultTilesetFilenamesNode;
 			}
 
-			if ((defaultFilenameNode == null || defaultTilesetFilenamesNode == null) && !imageNode.Key.StartsWith("^"))
+			if ((defaultFilenameNode == null || defaultTilesetFilenamesNode == null) && !imageNode.Key.StartsWith('^'))
 			{
 				var duplicateCount = new Dictionary<string, int>();
 				var duplicateTilesetCount = new Dictionary<string, int>();
@@ -372,7 +372,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 			// Replace removals with masking
 			foreach (var node in sequenceNode.Value.Nodes)
-				if (node.Key?.StartsWith("-") ?? false)
+				if (node.Key?.StartsWith('-') ?? false)
 					node.Key = node.Key[1..];
 
 			var combineNode = sequenceNode.LastChildMatching("Combine");
@@ -389,7 +389,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}
 
 			var filename = string.IsNullOrEmpty(resolvedSequenceNode.Value.Value) ? imageName : resolvedSequenceNode.Value.Value;
-			if (filename.StartsWith("^"))
+			if (filename.StartsWith('^'))
 				return;
 
 			if (useTilesetExtension || useTilesetCode)

@@ -109,14 +109,14 @@ namespace OpenRA
 						var p = Process.Start(psi);
 						string line;
 						while ((line = p.StandardOutput.ReadLine()) != null)
-							if (line.StartsWith("Operating System: "))
+							if (line.StartsWith("Operating System: ", StringComparison.Ordinal))
 								return line[18..] + suffix;
 					}
 					catch { }
 
 					if (File.Exists("/etc/os-release"))
 						foreach (var line in File.ReadLines("/etc/os-release"))
-							if (line.StartsWith("PRETTY_NAME="))
+							if (line.StartsWith("PRETTY_NAME=", StringComparison.Ordinal))
 								return line[13..^1] + suffix;
 				}
 				else if (CurrentPlatform == PlatformType.OSX)
@@ -134,7 +134,7 @@ namespace OpenRA
 						while ((line = p.StandardOutput.ReadLine()) != null)
 						{
 							line = line.Trim();
-							if (line.StartsWith("System Version: "))
+							if (line.StartsWith("System Version: ", StringComparison.Ordinal))
 								return line[16..];
 						}
 					}

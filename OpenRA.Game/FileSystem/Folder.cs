@@ -80,7 +80,7 @@ namespace OpenRA.FileSystem
 			// in FileSystem.OpenPackage.  Their internal name therefore contains the
 			// full parent path too.  We need to be careful to not add a second path
 			// prefix to these hacked packages.
-			var filePath = filename.StartsWith(Name) ? filename : Path.Combine(Name, filename);
+			var filePath = filename.StartsWith(Name, StringComparison.Ordinal) ? filename : Path.Combine(Name, filename);
 
 			Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 			using (var s = File.Create(filePath))
@@ -94,7 +94,7 @@ namespace OpenRA.FileSystem
 			// in FileSystem.OpenPackage.  Their internal name therefore contains the
 			// full parent path too.  We need to be careful to not add a second path
 			// prefix to these hacked packages.
-			var filePath = filename.StartsWith(Name) ? filename : Path.Combine(Name, filename);
+			var filePath = filename.StartsWith(Name, StringComparison.Ordinal) ? filename : Path.Combine(Name, filename);
 			if (Directory.Exists(filePath))
 				Directory.Delete(filePath, true);
 			else if (File.Exists(filePath))

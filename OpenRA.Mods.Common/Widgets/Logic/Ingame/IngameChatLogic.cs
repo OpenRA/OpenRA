@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Commands;
@@ -143,7 +142,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var team = teamChat && !disableTeamChat;
 				if (chatText.Text != "")
 				{
-					if (!chatText.Text.StartsWith("/", StringComparison.Ordinal))
+					if (!chatText.Text.StartsWith('/'))
 					{
 						// This should never happen, but avoid a crash if it does somehow (chat will just stay open)
 						if (!isObserver && orderManager.LocalClient == null && world.LocalPlayer == null)
