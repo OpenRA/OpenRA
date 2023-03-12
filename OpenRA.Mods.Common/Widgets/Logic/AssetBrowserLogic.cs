@@ -177,16 +177,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				panel.GetOrNull<LabelWidget>("PALETTE_DESC").IsVisible = () => currentSprites != null || currentVoxel != null;
 			}
 
-			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
-			colorManager.Color = Game.Settings.Player.Color;
+			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<IColorPickerManagerInfo>();
 
 			var colorDropdown = panel.GetOrNull<DropDownButtonWidget>("COLOR");
 			if (colorDropdown != null)
 			{
+				var color = Game.Settings.Player.Color;
 				colorDropdown.IsDisabled = () => !colorPickerPalettes.Contains(currentPalette);
-				colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorManager, worldRenderer);
+				colorDropdown.OnMouseDown = _ => colorManager.ShowColorDropDown(colorDropdown, color, null, worldRenderer, c => color = c);
 				colorDropdown.IsVisible = () => currentSprites != null || currentVoxel != null;
-				panel.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => colorManager.Color;
+
+				panel.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => color;
 			}
 
 			filenameInput = panel.Get<TextFieldWidget>("FILENAME_INPUT");

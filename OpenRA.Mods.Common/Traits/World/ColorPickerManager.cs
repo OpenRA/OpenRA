@@ -12,15 +12,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World)]
 	[Desc("Configuration options for the lobby player color picker. Attach this to the world actor.")]
-	public class ColorPickerManagerInfo : TraitInfo<ColorPickerManager>
+	public class ColorPickerManagerInfo : TraitInfo<ColorPickerManager>, IColorPickerManagerInfo
 	{
 		[TranslationReference]
 		const string PlayerColorTerrain = "notification-player-color-terrain";
@@ -52,9 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 			"A dictionary of [faction name]: [actor name].")]
 		public readonly Dictionary<string, string> FactionPreviewActors = new();
 
-		public Color Color;
-
-		bool TryGetBlockingColor((float R, float G, float B) color, List<(float R, float G, float B)> candidateBlockers, out (float R, float G, float B) closestBlocker)
+		public bool TryGetBlockingColor((float R, float G, float B) color, List<(float R, float G, float B)> candidateBlockers, out (float R, float G, float B) closestBlocker)
 		{
 			var closestDistance = SimilarityThreshold;
 			closestBlocker = default;
@@ -80,40 +81,6 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			return closestDistance < SimilarityThreshold;
-		}
-
-		public Color RandomPresetColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors)
-		{
-			var terrainLinear = terrainColors.Select(c => c.ToLinear()).ToList();
-			var playerLinear = playerColors.Select(c => c.ToLinear()).ToList();
-
-			foreach (var color in PresetColors.Shuffle(random))
-			{
-				// Color may already be taken
-				var linear = color.ToLinear();
-				if (!TryGetBlockingColor(linear, terrainLinear, out _) && !TryGetBlockingColor(linear, playerLinear, out _))
-					return color;
-			}
-
-			// Fall back to a random non-preset color
-			var randomHue = random.NextFloat();
-			var randomSat = float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
-			var randomVal = float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
-			return MakeValid(randomHue, randomSat, randomVal, random, terrainLinear, playerLinear, null);
-		}
-
-		public Color RandomValidColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors)
-		{
-			var h = random.NextFloat();
-			var s = float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
-			var v = float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
-			return MakeValid(h, s, v, random, terrainColors, playerColors, null);
-		}
-
-		public Color MakeValid(Color color, MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, Action<string> onError = null)
-		{
-			var (_, h, s, v) = color.ToAhsv();
-			return MakeValid(h, s, v, random, terrainColors, playerColors, onError);
 		}
 
 		Color MakeValid(float hue, float sat, float val, MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, Action<string> onError)
@@ -164,6 +131,97 @@ namespace OpenRA.Mods.Common.Traits
 			var randomVal = float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
 			return Color.FromAhsv(random.NextFloat(), randomSat, randomVal);
 		}
+
+		#region IColorPickerManagerInfo
+
+		public event Action<Color> OnColorPickerColorUpdate;
+
+		(float sMin, float sMax) IColorPickerManagerInfo.SaturationRange => (HsvSaturationRange[0], HsvSaturationRange[1]);
+		(float vMin, float vMax) IColorPickerManagerInfo.ValueRange => (HsvValueRange[0], HsvValueRange[1]);
+
+		Color[] IColorPickerManagerInfo.PresetColors => PresetColors;
+
+		Color IColorPickerManagerInfo.RandomPresetColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors)
+		{
+			var terrainLinear = terrainColors.Select(c => c.ToLinear()).ToList();
+			var playerLinear = playerColors.Select(c => c.ToLinear()).ToList();
+
+			foreach (var color in PresetColors.Shuffle(random))
+			{
+				// Color may already be taken
+				var linear = color.ToLinear();
+				if (!TryGetBlockingColor(linear, terrainLinear, out _) && !TryGetBlockingColor(linear, playerLinear, out _))
+					return color;
+			}
+
+			// Fall back to a random non-preset color
+			var randomHue = random.NextFloat();
+			var randomSat = float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
+			var randomVal = float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
+			return MakeValid(randomHue, randomSat, randomVal, random, terrainLinear, playerLinear, null);
+		}
+
+		Color IColorPickerManagerInfo.MakeValid(Color color, MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, Action<string> onError)
+		{
+			var (_, h, s, v) = color.ToAhsv();
+			return MakeValid(h, s, v, random, terrainColors, playerColors, onError);
+		}
+
+		Color IColorPickerManagerInfo.RandomValidColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors)
+		{
+			var h = random.NextFloat();
+			var s = float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
+			var v = float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
+			return MakeValid(h, s, v, random, terrainColors, playerColors, null);
+		}
+
+		void IColorPickerManagerInfo.ShowColorDropDown(DropDownButtonWidget dropdownButton, Color initialColor, string initialFaction, WorldRenderer worldRenderer, Action<Color> onExit)
+		{
+			dropdownButton.RemovePanel();
+
+			// We do not want to force other ColorPickerManager implementations to have an Actor preview.
+			// We achieve this by fully encapsulating its initialisation.
+			void AddActorPreview(Widget parent)
+			{
+				var preview = parent.GetOrNull<ActorPreviewWidget>("PREVIEW");
+				if (preview == null)
+					return;
+
+				if (initialFaction == null || !FactionPreviewActors.TryGetValue(initialFaction, out var actorType))
+				{
+					if (PreviewActor == null)
+						throw new YamlException($"{nameof(ColorPickerManager)} does not define a preview actor" + (initialFaction == null ? "." : $"for faction {initialFaction}."));
+
+					actorType = PreviewActor;
+				}
+
+				var actor = worldRenderer.World.Map.Rules.Actors[actorType];
+
+				var td = new TypeDictionary
+				{
+					new OwnerInit(worldRenderer.World.WorldActor.Owner),
+					new FactionInit(worldRenderer.World.WorldActor.Owner.PlayerReference.Faction)
+				};
+
+				foreach (var api in actor.TraitInfos<IActorPreviewInitInfo>())
+					foreach (var o in api.ActorPreviewInits(actor, ActorPreviewType.ColorPicker))
+						td.Add(o);
+
+				preview.SetPreview(actor, td);
+			}
+
+			var finalColor = initialColor;
+			var colorChooser = Game.LoadWidget(worldRenderer.World, "COLOR_CHOOSER", null, new WidgetArgs()
+			{
+				{ "onChange", (Action<Color>)(c => { finalColor = c; OnColorPickerColorUpdate(c); }) },
+				{ "initialColor", initialColor },
+				{ "extraLogic", (Action<Widget>)AddActorPreview },
+			});
+
+			dropdownButton.AttachPanel(colorChooser, () => onExit(finalColor));
+		}
+
+		#endregion
 	}
 
 	public class ColorPickerManager { }

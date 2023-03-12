@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly Dictionary<string, LobbyFaction> factions = new();
 
-		readonly ColorPickerManagerInfo colorManager;
+		readonly IColorPickerManagerInfo colorManager;
 
 		readonly TabCompletionLogic tabCompletion = new();
 
@@ -198,8 +198,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			editableSpectatorTemplate = players.Get("TEMPLATE_EDITABLE_SPECTATOR");
 			nonEditableSpectatorTemplate = players.Get("TEMPLATE_NONEDITABLE_SPECTATOR");
 			newSpectatorTemplate = players.Get("TEMPLATE_NEW_SPECTATOR");
-			colorManager = modRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
-			colorManager.Color = Game.Settings.Player.Color;
+			colorManager = modRules.Actors[SystemActors.World].TraitInfo<IColorPickerManagerInfo>();
 
 			foreach (var f in modRules.Actors[SystemActors.World].TraitInfos<FactionInfo>())
 				factions.Add(f.InternalName, new LobbyFaction { Selectable = f.Selectable, Name = f.Name, Side = f.Side, Description = f.Description });
