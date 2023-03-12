@@ -576,7 +576,7 @@ namespace OpenRA.Support
 			}
 		}
 
-		public VariableExpression(string expression)
+		protected VariableExpression(string expression)
 		{
 			Expression = expression;
 		}

@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool wasAiming;
 
-		public AttackBase(Actor self, AttackBaseInfo info)
+		protected AttackBase(Actor self, AttackBaseInfo info)
 			: base(info)
 		{
 			this.self = self;

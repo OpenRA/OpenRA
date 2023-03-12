@@ -204,9 +204,10 @@ namespace OpenRA.Widgets
 		public Rectangle Bounds;
 		public Widget Parent = null;
 		public Func<bool> IsVisible;
-		public Widget() { IsVisible = () => Visible; }
 
-		public Widget(Widget widget)
+		protected Widget() { IsVisible = () => Visible; }
+
+		protected Widget(Widget widget)
 		{
 			Id = widget.Id;
 			X = widget.X;

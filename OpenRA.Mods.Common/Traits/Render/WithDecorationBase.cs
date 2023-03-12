@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		int2 conditionalOffset;
 		BlinkState[] blinkPattern;
 
-		public WithDecorationBase(Actor self, InfoType info)
+		protected WithDecorationBase(Actor self, InfoType info)
 			: base(info)
 		{
 			Self = self;

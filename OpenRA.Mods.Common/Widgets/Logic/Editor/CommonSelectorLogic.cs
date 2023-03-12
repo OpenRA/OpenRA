@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		protected string[] allCategories;
 		protected string searchFilter;
 
-		public CommonSelectorLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer, string templateListId, string previewTemplateId)
+		protected CommonSelectorLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer, string templateListId, string previewTemplateId)
 		{
 			Widget = widget;
 			ModData = modData;

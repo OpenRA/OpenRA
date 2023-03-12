@@ -569,7 +569,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Name;
 		public readonly int DisplayOrder;
 
-		public EditorActorOption(string name, int displayOrder)
+		protected EditorActorOption(string name, int displayOrder)
 		{
 			Name = name;
 			DisplayOrder = displayOrder;

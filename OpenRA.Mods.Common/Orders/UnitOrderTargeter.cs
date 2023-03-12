@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Orders
 		readonly string cursor;
 		readonly bool targetEnemyUnits, targetAllyUnits;
 
-		public UnitOrderTargeter(string order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits)
+		protected UnitOrderTargeter(string order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits)
 		{
 			OrderID = order;
 			OrderPriority = priority;
