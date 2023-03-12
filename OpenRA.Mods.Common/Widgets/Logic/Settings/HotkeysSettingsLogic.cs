@@ -322,7 +322,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool IsHotkeyVisibleInFilter(HotkeyDefinition hd)
 		{
 			var filter = filterInput.Text;
-			var isFilteredByName = string.IsNullOrWhiteSpace(filter) || hd.Description.Contains(filter, StringComparison.OrdinalIgnoreCase);
+			var isFilteredByName = string.IsNullOrWhiteSpace(filter) ||
+				hd.Description.Contains(filter, StringComparison.CurrentCultureIgnoreCase);
 			var isFilteredByContext = currentContext == "Any" || hd.Contexts.Contains(currentContext);
 
 			return isFilteredByName && isFilteredByContext;

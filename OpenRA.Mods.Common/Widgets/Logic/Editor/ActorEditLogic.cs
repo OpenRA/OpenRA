@@ -491,7 +491,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public void Do()
 		{
-			actor = editorActorLayer[actorId.ToLowerInvariant()];
+			actor = editorActorLayer[actorId];
 			foreach (var editorActionHandle in handles)
 				editorActionHandle.Do(actor);
 		}
