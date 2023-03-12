@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Effects
 {
 	public class Beacon : IEffect, IScriptBindable, IEffectAboveShroud
 	{
-		static readonly int MaxArrowHeight = 512;
+		const int MaxArrowHeight = 512;
 
 		readonly Player owner;
 		readonly WPos position;

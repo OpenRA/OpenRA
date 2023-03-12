@@ -19,7 +19,7 @@ namespace OpenRA.FileSystem
 {
 	public class ZipFileLoader : IPackageLoader
 	{
-		static readonly uint ZipSignature = 0x04034b50;
+		const uint ZipSignature = 0x04034b50;
 
 		class ReadOnlyZipFile : IReadOnlyPackage
 		{

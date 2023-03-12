@@ -692,6 +692,10 @@ dotnet_diagnostic.CA1717.severity = warning
 ### Performance Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/performance-warnings
 
+# Use Literals Where Appropriate.
+#dotnet_code_quality.CA1802.required_modifiers = static
+dotnet_diagnostic.CA1802.severity = warning
+
 # Remove empty finalizers.
 dotnet_diagnostic.CA1821.severity = warning
 

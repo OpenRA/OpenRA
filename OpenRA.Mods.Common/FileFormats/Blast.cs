@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Common.FileFormats
 {
 	public static class Blast
 	{
-		public static readonly int MAXBITS = 13; // maximum code length
-		public static readonly int MAXWIN = 4096; // maximum window size
+		public const int MAXBITS = 13; // maximum code length
+		public const int MAXWIN = 4096; // maximum window size
 
 		static readonly byte[] LitLen =
 		{
