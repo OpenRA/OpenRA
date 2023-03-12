@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Globalization;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -35,20 +36,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			powerIcon.GetImageName = () => powerManager.ExcessPower < 0 ? "power-critical" : "power-normal";
 			power.GetColor = () => powerManager.ExcessPower < 0 ? Color.Red : Color.White;
-			power.GetText = () => developerMode.UnlimitedPower ? unlimitedCapacity : powerManager.ExcessPower.ToString();
+			power.GetText = () => developerMode.UnlimitedPower ? unlimitedCapacity : powerManager.ExcessPower.ToString(NumberFormatInfo.CurrentInfo);
 
-			var tooltipTextCached = new CachedTransform<(string, string), string>(((string Usage, string Capacity) args) =>
+			var tooltipTextCached = new CachedTransform<(int, int?), string>(((int Usage, int? Capacity) args) =>
 			{
+				var capacity = args.Capacity == null ? unlimitedCapacity : args.Capacity.Value.ToString(NumberFormatInfo.CurrentInfo);
 				return TranslationProvider.GetString(
 					PowerUsage,
-					Translation.Arguments("usage", args.Usage, "capacity", args.Capacity));
+					Translation.Arguments(
+						"usage", args.Usage.ToString(NumberFormatInfo.CurrentInfo),
+						"capacity", capacity));
 			});
 
 			power.GetTooltipText = () =>
 			{
-				var capacity = developerMode.UnlimitedPower ? unlimitedCapacity : powerManager.PowerProvided.ToString();
+				var capacity = developerMode.UnlimitedPower ? (int?)null : powerManager.PowerProvided;
 
-				return tooltipTextCached.Update((powerManager.PowerDrained.ToString(), capacity));
+				return tooltipTextCached.Update((powerManager.PowerDrained, capacity));
 			};
 		}
 	}

@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
@@ -77,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			siloUsageTooltip = siloUsageTooltipCache.Update((playerResources.Resources, playerResources.ResourceCapacity));
-			cashLabel.Text = displayResources.ToString();
+			cashLabel.Text = displayResources.ToString(CultureInfo.CurrentCulture);
 		}
 	}
 }

@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Globalization;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -140,7 +141,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						: TranslationProvider.GetString(NoTeam);
 					teamHeader.Get<LabelWidget>("TEAM").GetText = () => team;
 					var teamRating = teamHeader.Get<LabelWidget>("TEAM_SCORE");
-					var scoreCache = new CachedTransform<int, string>(s => s.ToString());
+					var scoreCache = new CachedTransform<int, string>(s => s.ToString(NumberFormatInfo.CurrentInfo));
 					var teamMemberScores = t.Select(tt => tt.PlayerStatistics).Where(s => s != null).ToArray().Select(s => s.Experience);
 					teamRating.GetText = () => scoreCache.Update(teamMemberScores.Sum());
 
@@ -172,7 +173,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					WidgetUtils.TruncateLabelToTooltip(item.Get<LabelWithTooltipWidget>("FACTION"), factionName);
 
-					var scoreCache = new CachedTransform<int, string>(s => s.ToString());
+					var scoreCache = new CachedTransform<int, string>(s => s.ToString(NumberFormatInfo.CurrentInfo));
 					item.Get<LabelWidget>("SCORE").GetText = () => scoreCache.Update(p.PlayerStatistics?.Experience ?? 0);
 
 					var muteCheckbox = item.Get<CheckboxWidget>("MUTE");

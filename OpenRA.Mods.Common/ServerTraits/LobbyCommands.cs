@@ -487,7 +487,7 @@ namespace OpenRA.Mods.Common.Server
 
 				var slot = server.LobbyInfo.Slots[parts[0]];
 				var bot = server.LobbyInfo.ClientInSlot(parts[0]);
-				if (!Exts.TryParseIntegerInvariant(parts[1], out var controllerClientIndex))
+				if (!Exts.TryParseInt32Invariant(parts[1], out var controllerClientIndex))
 				{
 					Log.Write("server", $"Invalid bot controller client index: {parts[1]}");
 					return false;
@@ -738,7 +738,7 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				if (!Exts.TryParseIntegerInvariant(raw, out var teamCount))
+				if (!Exts.TryParseInt32Invariant(raw, out var teamCount))
 				{
 					server.SendLocalizedMessageTo(conn, NumberTeams, Translation.Arguments("raw", raw));
 					return true;
@@ -788,7 +788,7 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				var kickConn = Exts.TryParseIntegerInvariant(split[0], out var kickClientID)
+				var kickConn = Exts.TryParseInt32Invariant(split[0], out var kickClientID)
 					? server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == kickClientID) : null;
 
 				if (kickConn == null)
@@ -839,7 +839,7 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				var newAdminConn = Exts.TryParseIntegerInvariant(s, out var newAdminId)
+				var newAdminConn = Exts.TryParseInt32Invariant(s, out var newAdminId)
 					? server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == newAdminId) : null;
 
 				if (newAdminConn == null)
@@ -876,7 +876,7 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				var targetConn = Exts.TryParseIntegerInvariant(s, out var targetId)
+				var targetConn = Exts.TryParseInt32Invariant(s, out var targetId)
 					? server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == targetId) : null;
 
 				if (targetConn == null)
@@ -923,7 +923,7 @@ namespace OpenRA.Mods.Common.Server
 			lock (server.LobbyInfo)
 			{
 				var parts = s.Split(' ');
-				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseIntegerInvariant(parts[0]));
+				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseInt32Invariant(parts[0]));
 
 				// Only the host can change other client's info
 				if (targetClient.Index != client.Index && !client.IsAdmin)
@@ -956,7 +956,7 @@ namespace OpenRA.Mods.Common.Server
 			lock (server.LobbyInfo)
 			{
 				var parts = s.Split(' ');
-				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseIntegerInvariant(parts[0]));
+				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseInt32Invariant(parts[0]));
 
 				// Only the host can change other client's info
 				if (targetClient.Index != client.Index && !client.IsAdmin)
@@ -966,7 +966,7 @@ namespace OpenRA.Mods.Common.Server
 				if (server.LobbyInfo.Slots[targetClient.Slot].LockTeam)
 					return true;
 
-				if (!Exts.TryParseIntegerInvariant(parts[1], out var team))
+				if (!Exts.TryParseInt32Invariant(parts[1], out var team))
 				{
 					Log.Write("server", $"Invalid team: {s}");
 					return false;
@@ -984,7 +984,7 @@ namespace OpenRA.Mods.Common.Server
 			lock (server.LobbyInfo)
 			{
 				var parts = s.Split(' ');
-				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseIntegerInvariant(parts[0]));
+				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseInt32Invariant(parts[0]));
 
 				// Only the host can change other client's info
 				if (targetClient.Index != client.Index && !client.IsAdmin)
@@ -994,7 +994,7 @@ namespace OpenRA.Mods.Common.Server
 				if (server.LobbyInfo.Slots[targetClient.Slot].LockHandicap)
 					return true;
 
-				if (!Exts.TryParseIntegerInvariant(parts[1], out var handicap))
+				if (!Exts.TryParseInt32Invariant(parts[1], out var handicap))
 				{
 					Log.Write("server", $"Invalid handicap: {s}");
 					return false;
@@ -1017,7 +1017,7 @@ namespace OpenRA.Mods.Common.Server
 
 		static bool ClearPlayerSpawn(S server, Connection conn, Session.Client client, string s)
 		{
-			var spawnPoint = Exts.ParseIntegerInvariant(s);
+			var spawnPoint = Exts.ParseInt32Invariant(s);
 			if (spawnPoint == 0)
 				return true;
 
@@ -1059,7 +1059,7 @@ namespace OpenRA.Mods.Common.Server
 			lock (server.LobbyInfo)
 			{
 				var parts = s.Split(' ');
-				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseIntegerInvariant(parts[0]));
+				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseInt32Invariant(parts[0]));
 
 				// Only the host can change other client's info
 				if (targetClient.Index != client.Index && !client.IsAdmin)
@@ -1073,7 +1073,7 @@ namespace OpenRA.Mods.Common.Server
 				if (server.LobbyInfo.Slots[targetClient.Slot].LockSpawn)
 					return true;
 
-				if (!Exts.TryParseIntegerInvariant(parts[1], out var spawnPoint)
+				if (!Exts.TryParseInt32Invariant(parts[1], out var spawnPoint)
 				    || spawnPoint < 0 || spawnPoint > server.Map.SpawnPoints.Length)
 				{
 					Log.Write("server", $"Invalid spawn point: {parts[1]}");
@@ -1114,7 +1114,7 @@ namespace OpenRA.Mods.Common.Server
 			lock (server.LobbyInfo)
 			{
 				var parts = s.Split(' ');
-				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseIntegerInvariant(parts[0]));
+				var targetClient = server.LobbyInfo.ClientWithIndex(Exts.ParseInt32Invariant(parts[0]));
 
 				// Only the host can change other client's info
 				if (targetClient.Index != client.Index && !client.IsAdmin)

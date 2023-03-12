@@ -300,7 +300,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (reloadIcon != null)
 				{
 					var disabledFrame = 0;
-					var disabledImage = "disabled-" + disabledFrame.ToString();
+					var disabledImage = "disabled-" + disabledFrame.ToStringInvariant();
 					reloadIcon.GetImageName = () => searchStatus == SearchStatus.Fetching ? disabledImage : reloadIcon.ImageName;
 
 					var reloadTicker = reloadIcon.Get<LogicTickerWidget>("ANIMATION");
@@ -309,7 +309,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						reloadTicker.OnTick = () =>
 						{
 							disabledFrame = searchStatus == SearchStatus.Fetching ? (disabledFrame + 1) % 12 : 0;
-							disabledImage = "disabled-" + disabledFrame.ToString();
+							disabledImage = "disabled-" + disabledFrame.ToStringInvariant();
 						};
 					}
 				}

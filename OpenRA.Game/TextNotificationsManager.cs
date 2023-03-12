@@ -78,7 +78,7 @@ namespace OpenRA
 
 		public static void Debug(string format, params object[] args)
 		{
-			AddSystemLine("Debug", string.Format(format, args));
+			AddSystemLine("Debug", format.FormatCurrent(args));
 		}
 
 		static void AddTextNotification(TextNotificationPool pool, int clientId, string prefix, string text, Color? prefixColor = null, Color? textColor = null)

@@ -26,8 +26,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			foreach (var dltt in actorNode.ChildrenMatching("DrawLineToTarget", includeRemovals: false))
 			{
 				var delayNode = dltt.LastChildMatching("Delay", false);
-				if (delayNode != null && Exts.TryParseIntegerInvariant(delayNode.Value.Value, out var delay))
-					delayNode.ReplaceValue((delay * 1000 / 25).ToString());
+				if (delayNode != null && Exts.TryParseInt32Invariant(delayNode.Value.Value, out var delay))
+					delayNode.ReplaceValue((delay * 1000 / 25).ToStringInvariant());
 			}
 
 			yield break;

@@ -751,7 +751,7 @@ namespace OpenRA.Platforms.Default
 				return;
 
 			string errorText;
-			errorText = ErrorToText.TryGetValue(type, out errorText) ? errorText : type.ToString("X");
+			errorText = ErrorToText.TryGetValue(type, out errorText) ? errorText : type.ToStringInvariant("X");
 			var error = $"GL Error: {errorText}\n{new StackTrace()}";
 
 			WriteGraphicsLog(error);
@@ -788,9 +788,9 @@ namespace OpenRA.Platforms.Default
 			string typeText;
 			string severityText;
 
-			sourceText = DebugSourceToText.TryGetValue(source, out sourceText) ? sourceText : source.ToString("X");
-			typeText = DebugTypeToText.TryGetValue(type, out typeText) ? typeText : type.ToString("X");
-			severityText = DebugSeverityToText.TryGetValue(severity, out severityText) ? severityText : severity.ToString("X");
+			sourceText = DebugSourceToText.TryGetValue(source, out sourceText) ? sourceText : source.ToStringInvariant("X");
+			typeText = DebugTypeToText.TryGetValue(type, out typeText) ? typeText : type.ToStringInvariant("X");
+			severityText = DebugSeverityToText.TryGetValue(severity, out severityText) ? severityText : severity.ToStringInvariant("X");
 			var messageText = message.ToString();
 
 			return $"{severityText} - GL Debug {sourceText} Output: {typeText} - {messageText}\n{new StackTrace()}";

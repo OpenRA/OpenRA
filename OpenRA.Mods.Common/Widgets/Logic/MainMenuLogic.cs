@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -430,7 +431,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var authorDateTimeLabel = newsItem.Get<LabelWidget>("AUTHOR_DATETIME");
 				var authorDateTime = TranslationProvider.GetString(AuthorDateTime, Translation.Arguments(
 					"author", item.Author,
-					"datetime", item.DateTime.ToLocalTime().ToString()));
+					"datetime", item.DateTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)));
 
 				authorDateTimeLabel.GetText = () => authorDateTime;
 

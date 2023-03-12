@@ -121,10 +121,10 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 			if (vfh.DatablockOffset != 26)
 				throw new InvalidDataException("Voc header offset is wrong");
 			if (vfh.Version < 0x0100 || vfh.Version >= 0x0200)
-				throw new InvalidDataException("Voc header version " + vfh.Version.ToString("X") + " not supported");
+				throw new InvalidDataException("Voc header version " + vfh.Version.ToStringInvariant("X") + " not supported");
 			if (vfh.ID != ~vfh.Version + 0x1234)
 				throw new InvalidDataException("Voc header id is bogus - expected: " +
-					(~vfh.Version + 0x1234).ToString("X") + " but value is : " + vfh.ID.ToString("X"));
+					(~vfh.Version + 0x1234).ToStringInvariant("X") + " but value is : " + vfh.ID.ToStringInvariant("X"));
 		}
 
 		static int GetSampleRateFromVocRate(int vocSampleRate)

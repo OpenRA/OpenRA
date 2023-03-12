@@ -146,7 +146,7 @@ namespace OpenRA.Network
 
 				var traitData = MiniYaml.FromString(rs.ReadString(Encoding.UTF8, Connection.MaxOrderLength));
 				foreach (var td in traitData)
-					TraitData.Add(int.Parse(td.Key), td.Value);
+					TraitData.Add(Exts.ParseInt32Invariant(td.Key), td.Value);
 
 				rs.Seek(0, SeekOrigin.Begin);
 				ordersStream.Write(rs.ReadBytes(metadataOffset), 0, metadataOffset);
@@ -238,7 +238,7 @@ namespace OpenRA.Network
 			// Send the trait data first to guarantee that it is available when needed
 			foreach (var kv in TraitData)
 			{
-				var data = new List<MiniYamlNode>() { new MiniYamlNode(kv.Key.ToString(), kv.Value) }.WriteToString();
+				var data = new List<MiniYamlNode>() { new MiniYamlNode(kv.Key.ToStringInvariant(), kv.Value) }.WriteToString();
 				packetFn(0, 0, Order.FromTargetString("SaveTraitData", data, true).Serialize());
 			}
 
@@ -310,7 +310,7 @@ namespace OpenRA.Network
 				file.Write(BitConverter.GetBytes(TraitDataMarker), 0, 4);
 
 				var traitDataNodes = TraitData
-					.Select(kv => new MiniYamlNode(kv.Key.ToString(), kv.Value))
+					.Select(kv => new MiniYamlNode(kv.Key.ToStringInvariant(), kv.Value))
 					.ToList();
 				file.WriteString(Encoding.UTF8, traitDataNodes.WriteToString());
 

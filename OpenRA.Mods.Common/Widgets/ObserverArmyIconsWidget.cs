@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -137,7 +138,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var bold = Game.Renderer.Fonts["TinyBold"];
 			foreach (var armyIcon in armyIcons)
 			{
-				var text = armyIcon.Unit.Count.ToString();
+				var text = armyIcon.Unit.Count.ToString(NumberFormatInfo.CurrentInfo);
 				bold.DrawTextWithContrast(text, armyIcon.Bounds.Location + new float2(iconSize.X, 0) - new float2(bold.Measure(text).X, bold.TopOffset),
 					Color.White, Color.Black, 1);
 			}

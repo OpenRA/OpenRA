@@ -224,9 +224,9 @@ namespace OpenRA.Primitives
 		public override string ToString()
 		{
 			if (A == 255)
-				return R.ToString("X2") + G.ToString("X2") + B.ToString("X2");
+				return R.ToStringInvariant("X2") + G.ToStringInvariant("X2") + B.ToStringInvariant("X2");
 
-			return R.ToString("X2") + G.ToString("X2") + B.ToString("X2") + A.ToString("X2");
+			return R.ToStringInvariant("X2") + G.ToStringInvariant("X2") + B.ToStringInvariant("X2") + A.ToStringInvariant("X2");
 		}
 
 		public static Color Transparent => FromArgb(0x00FFFFFF);

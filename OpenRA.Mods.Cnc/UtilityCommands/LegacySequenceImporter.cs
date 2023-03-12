@@ -62,8 +62,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var size = foundation.Split('x');
 				if (size.Length == 2)
 				{
-					var x = int.Parse(size[0]);
-					var y = int.Parse(size[1]);
+					var x = Exts.ParseInt32Invariant(size[0]);
+					var y = Exts.ParseInt32Invariant(size[1]);
 
 					var xOffset = (x - y) * grid.TileSize.Width / 4;
 					var yOffset = (x + y) * grid.TileSize.Height / 4;

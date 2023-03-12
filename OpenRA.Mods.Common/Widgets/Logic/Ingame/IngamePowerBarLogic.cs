@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Globalization;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -36,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var capacity = developerMode.UnlimitedPower ?
 					TranslationProvider.GetString(Infinite) :
-					powerManager.PowerProvided.ToString();
+					powerManager.PowerProvided.ToString(NumberFormatInfo.CurrentInfo);
 
 				return TranslationProvider.GetString(
 					PowerUsage,

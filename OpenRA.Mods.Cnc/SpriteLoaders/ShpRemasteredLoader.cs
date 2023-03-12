@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 
 		static int ParseGroup(Match match, string group)
 		{
-			return int.Parse(match.Groups[group].Value);
+			return Exts.ParseInt32Invariant(match.Groups[group].Value);
 		}
 
 		public IReadOnlyList<ISpriteFrame> Frames { get; }
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 				if (prefix != framePrefix)
 					throw new InvalidDataException($"Frame prefix mismatch: `{prefix}` != `{framePrefix}`");
 
-				frameCount = Math.Max(frameCount, int.Parse(match.Groups["frame"].Value) + 1);
+				frameCount = Math.Max(frameCount, Exts.ParseInt32Invariant(match.Groups["frame"].Value) + 1);
 			}
 
 			var frames = new ISpriteFrame[frameCount];

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Lint;
@@ -146,7 +147,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (string.IsNullOrEmpty(prefix))
 				emitError($"{widgetNode.Location} must define HotkeyPrefix if HotkeyCount > 0.");
 
-			return Exts.MakeArray(count, i => prefix + (i + 1).ToString("D2"));
+			return Exts.MakeArray(count, i => prefix + (i + 1).ToStringInvariant("D2"));
 		}
 
 		[ObjectCreator.UseCtor]
@@ -169,7 +170,7 @@ namespace OpenRA.Mods.Common.Widgets
 			cantBuild = new Animation(World, NotBuildableAnimation);
 			cantBuild.PlayFetchIndex(NotBuildableSequence, () => 0);
 			hotkeys = Exts.MakeArray(HotkeyCount,
-				i => modData.Hotkeys[HotkeyPrefix + (i + 1).ToString("D2")]);
+				i => modData.Hotkeys[HotkeyPrefix + (i + 1).ToStringInvariant("D2")]);
 
 			overlayFont = Game.Renderer.Fonts[OverlayFont];
 			Game.Renderer.Fonts.TryGetValue(SymbolsFont, out symbolFont);
@@ -584,14 +585,14 @@ namespace OpenRA.Mods.Common.Widgets
 						var pos = QueuedOffset;
 						if (QueuedTextAlign != TextAlign.Left)
 						{
-							var size = overlayFont.Measure(total.ToString());
+							var size = overlayFont.Measure(total.ToString(NumberFormatInfo.CurrentInfo));
 
 							pos = QueuedTextAlign == TextAlign.Center ?
 								new float2(QueuedOffset.X - size.X / 2, QueuedOffset.Y) :
 								new float2(QueuedOffset.X - size.X, QueuedOffset.Y);
 						}
 
-						overlayFont.DrawTextWithContrast(total.ToString(),
+						overlayFont.DrawTextWithContrast(total.ToString(NumberFormatInfo.CurrentInfo),
 							icon.Pos + pos,
 							TextColor, Color.Black, 1);
 					}

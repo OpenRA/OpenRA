@@ -207,7 +207,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var waypointsSection = file.GetSection("Waypoints", true);
 			foreach (var kv in waypointsSection)
 			{
-				var pos = int.Parse(kv.Value);
+				var pos = Exts.ParseInt32Invariant(kv.Value);
 				var ry = pos / 1000;
 				var rx = pos - ry * 1000;
 				var cell = ToMPos(rx, ry, fullSize.X).ToCPos(map);
@@ -230,7 +230,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var terrainSection = file.GetSection("Terrain", true);
 			foreach (var kv in terrainSection)
 			{
-				var pos = int.Parse(kv.Key);
+				var pos = Exts.ParseInt32Invariant(kv.Key);
 				var ry = pos / 1000;
 				var rx = pos - ry * 1000;
 				var cell = ToMPos(rx, ry, fullSize.X).ToCPos(map);
@@ -268,10 +268,10 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					isDeployed = true;
 				}
 
-				var health = short.Parse(entries[2]);
-				var rx = int.Parse(entries[3]);
-				var ry = int.Parse(entries[4]);
-				var facing = (byte)(224 - byte.Parse(entries[type == "Infantry" ? 7 : 5]));
+				var health = Exts.ParseInt16Invariant(entries[2]);
+				var rx = Exts.ParseInt32Invariant(entries[3]);
+				var ry = Exts.ParseInt32Invariant(entries[4]);
+				var facing = (byte)(224 - Exts.ParseByteInvariant(entries[type == "Infantry" ? 7 : 5]));
 
 				var cell = ToMPos(rx, ry, fullSize.X).ToCPos(map);
 
@@ -284,7 +284,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				if (type == "Infantry")
 				{
 					var subcell = 0;
-					switch (byte.Parse(entries[5]))
+					switch (Exts.ParseByteInvariant(entries[5]))
 					{
 						case 2: subcell = 3; break;
 						case 3: subcell = 1; break;

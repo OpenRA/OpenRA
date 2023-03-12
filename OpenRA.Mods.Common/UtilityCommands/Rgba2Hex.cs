@@ -81,16 +81,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (parts.Length == 3)
 				{
 					foreach (var c in parts)
-						Console.Write(byte.Parse(c).ToString("X2"));
+						Console.Write(Exts.ParseByteInvariant(c).ToStringInvariant("X2"));
 				}
 				else
 				{
-					Console.Write(byte.Parse(parts[0]).ToString("X2"));
-					Console.Write(byte.Parse(parts[1]).ToString("X2"));
-					Console.Write(byte.Parse(parts[2]).ToString("X2"));
-					var alpha = byte.Parse(parts[3]);
+					Console.Write(Exts.ParseByteInvariant(parts[0]).ToStringInvariant("X2"));
+					Console.Write(Exts.ParseByteInvariant(parts[1]).ToStringInvariant("X2"));
+					Console.Write(Exts.ParseByteInvariant(parts[2]).ToStringInvariant("X2"));
+					var alpha = Exts.ParseByteInvariant(parts[3]);
 					if (alpha < 255)
-						Console.Write(alpha.ToString("X2"));
+						Console.Write(alpha.ToStringInvariant("X2"));
 				}
 
 				if (++i != args.Length)
@@ -186,16 +186,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (parts.Length == 3)
 				{
 					foreach (var c in parts)
-						Console.Write(byte.Parse(c).ToString("X2"));
+						Console.Write(Exts.ParseByteInvariant(c).ToStringInvariant("X2"));
 				}
 				else
 				{
-					Console.Write(byte.Parse(parts[1]).ToString("X2"));
-					Console.Write(byte.Parse(parts[2]).ToString("X2"));
-					Console.Write(byte.Parse(parts[3]).ToString("X2"));
-					var alpha = byte.Parse(parts[0]);
+					Console.Write(Exts.ParseByteInvariant(parts[1]).ToStringInvariant("X2"));
+					Console.Write(Exts.ParseByteInvariant(parts[2]).ToStringInvariant("X2"));
+					Console.Write(Exts.ParseByteInvariant(parts[3]).ToStringInvariant("X2"));
+					var alpha = Exts.ParseByteInvariant(parts[0]);
 					if (alpha < 255)
-						Console.Write(alpha.ToString("X2"));
+						Console.Write(alpha.ToStringInvariant("X2"));
 				}
 
 				if (++i != args.Length)

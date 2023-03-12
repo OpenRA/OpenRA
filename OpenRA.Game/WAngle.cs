@@ -168,7 +168,7 @@ namespace OpenRA
 		public float RendererRadians() { return (float)(Angle * Math.PI / 512f); }
 		public float RendererDegrees() { return Angle * 0.3515625f; }
 
-		public override string ToString() { return Angle.ToString(); }
+		public override string ToString() { return Angle.ToStringInvariant(); }
 
 		static readonly int[] CosineTable =
 		{

@@ -27,7 +27,7 @@ namespace OpenRA.Graphics
 		{
 			var d = info.ToDictionary();
 
-			Start = Exts.ParseIntegerInvariant(d["Start"].Value);
+			Start = Exts.ParseInt32Invariant(d["Start"].Value);
 			Palette = palette;
 			Name = name;
 
@@ -38,9 +38,9 @@ namespace OpenRA.Graphics
 				(d.TryGetValue("End", out yaml) && yaml.Value == "*"))
 				Length = Frames.Length;
 			else if (d.TryGetValue("Length", out yaml))
-				Length = Exts.ParseIntegerInvariant(yaml.Value);
+				Length = Exts.ParseInt32Invariant(yaml.Value);
 			else if (d.TryGetValue("End", out yaml))
-				Length = Exts.ParseIntegerInvariant(yaml.Value) - Start;
+				Length = Exts.ParseInt32Invariant(yaml.Value) - Start;
 			else
 				Length = 1;
 
@@ -54,13 +54,13 @@ namespace OpenRA.Graphics
 
 			if (d.TryGetValue("X", out yaml))
 			{
-				Exts.TryParseIntegerInvariant(yaml.Value, out var x);
+				Exts.TryParseInt32Invariant(yaml.Value, out var x);
 				Hotspot = Hotspot.WithX(x);
 			}
 
 			if (d.TryGetValue("Y", out yaml))
 			{
-				Exts.TryParseIntegerInvariant(yaml.Value, out var y);
+				Exts.TryParseInt32Invariant(yaml.Value, out var y);
 				Hotspot = Hotspot.WithY(y);
 			}
 		}

@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (cg.Count > 0)
 				{
 					var actorIds = cg.Select(a => a.ActorID).ToArray();
-					groups.Add(new MiniYamlNode(i.ToString(), FieldSaver.FormatValue(actorIds)));
+					groups.Add(new MiniYamlNode(i.ToStringInvariant(), FieldSaver.FormatValue(actorIds)));
 				}
 			}
 
@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var group = FieldLoader.GetValue<uint[]>(n.Key, n.Value.Value)
 						.Select(a => self.World.GetActorById(a)).Where(a => a != null);
-					controlGroups[int.Parse(n.Key)].AddRange(group);
+					controlGroups[Exts.ParseInt32Invariant(n.Key)].AddRange(group);
 				}
 			}
 		}

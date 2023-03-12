@@ -68,10 +68,10 @@ namespace OpenRA.Support
 				Log.Write("perf", GetHeader(Indentation, name));
 				foreach (var child in children)
 					child.Write();
-				Log.Write("perf", string.Format(FormatString, ElapsedMs, GetFooter(Indentation)));
+				Log.Write("perf", FormatString.FormatInvariant(ElapsedMs, GetFooter(Indentation)));
 			}
 			else if (ticks >= thresholdTicks)
-				Log.Write("perf", string.Format(FormatString, ElapsedMs, Indentation + name));
+				Log.Write("perf", FormatString.FormatInvariant(ElapsedMs, Indentation + name));
 		}
 
 		public static long MillisToTicks(float millis)
@@ -85,7 +85,7 @@ namespace OpenRA.Support
 		{
 			var type = item.GetType();
 			var label = type == typeof(string) || type.IsGenericType ? item.ToString() : type.Name;
-			Log.Write("perf", string.Format(FormatStringLongTick,
+			Log.Write("perf", FormatStringLongTick.FormatInvariant(
 				1000f * (endStopwatchTicks - startStopwatchTicks) / Stopwatch.Frequency,
 				Game.LocalTick,
 				name,

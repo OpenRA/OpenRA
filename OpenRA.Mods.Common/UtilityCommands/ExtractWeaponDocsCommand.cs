@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Newtonsoft.Json;
 using OpenRA.GameRules;
@@ -105,7 +106,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				type.Name,
 				Values = Enum.GetNames(type).Select(x => new
 				{
-					Key = Convert.ToInt32(Enum.Parse(type, x)),
+					Key = Convert.ToInt32(Enum.Parse(type, x), NumberFormatInfo.InvariantInfo),
 					Value = x
 				})
 			});
