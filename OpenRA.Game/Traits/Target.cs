@@ -16,7 +16,7 @@ using System.Linq;
 namespace OpenRA.Traits
 {
 	public enum TargetType : byte { Invalid, Actor, Terrain, FrozenActor }
-	public readonly struct Target
+	public readonly struct Target : IEquatable<Target>
 	{
 		public static readonly Target[] None = Array.Empty<Target>();
 		public static readonly Target Invalid = default;
