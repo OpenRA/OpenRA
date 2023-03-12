@@ -35,7 +35,7 @@ namespace OpenRA
 
 			foreach (var kv in settings)
 			{
-				if (definitions.ContainsKey(kv.Key) && !definitions[kv.Key].Readonly)
+				if (definitions.TryGetValue(kv.Key, out var definition) && !definition.Readonly)
 					keys[kv.Key] = kv.Value;
 			}
 
@@ -43,6 +43,9 @@ namespace OpenRA
 				hd.Value.HasDuplicates = GetFirstDuplicate(hd.Value, this[hd.Value.Name].GetValue()) != null;
 		}
 
+		[System.Diagnostics.CodeAnalysis.SuppressMessage(
+			"Performance", "CA1854:Prefer the 'IDictionary.TryGetValue(TKey, out TValue)' method",
+			Justification = "Func must perform a live lookup in the collection, as the lookup value can change.")]
 		internal Func<Hotkey> GetHotkeyReference(string name)
 		{
 			// Is this a mod-defined hotkey?

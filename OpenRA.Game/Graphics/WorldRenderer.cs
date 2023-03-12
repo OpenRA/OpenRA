@@ -109,8 +109,8 @@ namespace OpenRA.Graphics
 			palette.ReplacePalette(name, pal);
 
 			// Update cached PlayerReference if one exists
-			if (palettes.ContainsKey(name))
-				palettes[name].Palette = pal;
+			if (palettes.TryGetValue(name, out var paletteReference))
+				paletteReference.Palette = pal;
 		}
 
 		public void SetPaletteColorShift(string name, float hueOffset, float satOffset, float valueModifier, float minHue, float maxHue)

@@ -46,8 +46,8 @@ namespace OpenRA.Mods.Common.Widgets
 			this.world = world;
 
 			var highlightOnButtonPress = false;
-			if (logicArgs.ContainsKey("HighlightOnButtonPress"))
-				highlightOnButtonPress = FieldLoader.GetValue<bool>("HighlightOnButtonPress", logicArgs["HighlightOnButtonPress"].Value);
+			if (logicArgs.TryGetValue("HighlightOnButtonPress", out var entry))
+				highlightOnButtonPress = FieldLoader.GetValue<bool>("HighlightOnButtonPress", entry.Value);
 
 			var attackMoveButton = widget.GetOrNull<ButtonWidget>("ATTACK_MOVE");
 			if (attackMoveButton != null)

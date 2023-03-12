@@ -264,7 +264,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					foreach (var packageInstallationNode in modSource.Install.Where(x => x.Key == "ContentPackage"))
 					{
 						var packageName = packageInstallationNode.Value.Nodes.SingleOrDefault(x => x.Key == "Name")?.Value.Value;
-						if (!string.IsNullOrEmpty(packageName) && selectedPackages.ContainsKey(packageName) && selectedPackages[packageName])
+						if (!string.IsNullOrEmpty(packageName) && selectedPackages.TryGetValue(packageName, out var required) && required)
 							RunSourceActions(packageInstallationNode);
 					}
 

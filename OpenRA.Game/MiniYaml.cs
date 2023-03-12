@@ -146,7 +146,7 @@ namespace OpenRA
 		public static List<MiniYamlNode> NodesOrEmpty(MiniYaml y, string s)
 		{
 			var nd = y.ToDictionary();
-			return nd.ContainsKey(s) ? nd[s].Nodes : new List<MiniYamlNode>();
+			return nd.TryGetValue(s, out var v) ? v.Nodes : new List<MiniYamlNode>();
 		}
 
 		static List<MiniYamlNode> FromLines(IEnumerable<ReadOnlyMemory<char>> lines, string filename, bool discardCommentsAndWhitespace, Dictionary<string, string> stringPool)
@@ -368,8 +368,8 @@ namespace OpenRA
 						throw new YamlException(
 							$"{n.Location}: Parent type `{n.Value.Value}` not found");
 
-					if (inherited.ContainsKey(n.Value.Value))
-						throw new YamlException($"{n.Location}: Parent type `{n.Value.Value}` was already inherited by this yaml tree at {inherited[n.Value.Value]} (note: may be from a derived tree)");
+					if (inherited.TryGetValue(n.Value.Value, out var location))
+						throw new YamlException($"{n.Location}: Parent type `{n.Value.Value}` was already inherited by this yaml tree at {location} (note: may be from a derived tree)");
 
 					inherited.Add(n.Value.Value, n.Location);
 					foreach (var r in ResolveInherits(parent, tree, inherited))

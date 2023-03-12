@@ -102,8 +102,8 @@ namespace OpenRA.Mods.Common.Traits
 		public void ResolveOrder(Actor self, Order order)
 		{
 			// order.OrderString is the key of the support power
-			if (Powers.ContainsKey(order.OrderString))
-				Powers[order.OrderString].Activate(order);
+			if (Powers.TryGetValue(order.OrderString, out var sp))
+				sp.Activate(order);
 		}
 
 		static readonly SupportPowerInstance[] NoInstances = Array.Empty<SupportPowerInstance>();

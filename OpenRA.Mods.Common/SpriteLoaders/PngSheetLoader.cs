@@ -115,29 +115,29 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			var frameSize = new Size(png.Width, png.Height);
 			var frameAmount = 1;
 
-			if (png.EmbeddedData.ContainsKey("FrameSize"))
+			if (png.EmbeddedData.TryGetValue("FrameSize", out var value))
 			{
 				// If FrameSize exist, use it and...
-				frameSize = FieldLoader.GetValue<Size>("FrameSize", png.EmbeddedData["FrameSize"]);
+				frameSize = FieldLoader.GetValue<Size>("FrameSize", value);
 
 				// ... either use FrameAmount or calculate how many times FrameSize fits into the image.
-				if (png.EmbeddedData.ContainsKey("FrameAmount"))
-					frameAmount = FieldLoader.GetValue<int>("FrameAmount", png.EmbeddedData["FrameAmount"]);
+				if (png.EmbeddedData.TryGetValue("FrameAmount", out value))
+					frameAmount = FieldLoader.GetValue<int>("FrameAmount", value);
 				else
 					frameAmount = png.Width / frameSize.Width * (png.Height / frameSize.Height);
 			}
-			else if (png.EmbeddedData.ContainsKey("FrameAmount"))
+			else if (png.EmbeddedData.TryGetValue("FrameAmount", out value))
 			{
 				// Otherwise, calculate the number of frames by splitting the image horizontally by FrameAmount.
-				frameAmount = FieldLoader.GetValue<int>("FrameAmount", png.EmbeddedData["FrameAmount"]);
+				frameAmount = FieldLoader.GetValue<int>("FrameAmount", value);
 				frameSize = new Size(png.Width / frameAmount, png.Height);
 			}
 
 			float2 offset;
 
 			// If Offset property exists, use its value. Otherwise assume the frame is centered.
-			if (png.EmbeddedData.ContainsKey("Offset"))
-				offset = FieldLoader.GetValue<float2>("Offset", png.EmbeddedData["Offset"]);
+			if (png.EmbeddedData.TryGetValue("Offset", out value))
+				offset = FieldLoader.GetValue<float2>("Offset", value);
 			else
 				offset = float2.Zero;
 

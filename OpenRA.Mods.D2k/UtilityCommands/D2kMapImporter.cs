@@ -367,9 +367,8 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 					map.Resources[locationOnMap] = new ResourceTile(1, 2);
 
 				// Actors
-				if (ActorDataByActorCode.ContainsKey(tileSpecialInfo))
+				if (ActorDataByActorCode.TryGetValue(tileSpecialInfo, out var kvp))
 				{
-					var kvp = ActorDataByActorCode[tileSpecialInfo];
 					if (!rules.Actors.ContainsKey(kvp.Actor.ToLowerInvariant()))
 						Console.WriteLine($"Ignoring unknown actor type: `{kvp.Actor.ToLowerInvariant()}`");
 					else

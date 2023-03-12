@@ -788,6 +788,9 @@ dotnet_diagnostic.CA1852.severity = warning
 # Unnecessary call to 'Dictionary.ContainsKey(key)'.
 dotnet_diagnostic.CA1853.severity = warning
 
+# Prefer the IDictionary.TryGetValue(TKey, out TValue) method.
+dotnet_diagnostic.CA1854.severity = warning
+
 # Use Span<T>.Clear() instead of Span<T>.Fill().
 dotnet_diagnostic.CA1855.severity = warning
 
