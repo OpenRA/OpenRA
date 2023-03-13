@@ -825,6 +825,9 @@ dotnet_diagnostic.CA2208.severity = warning
 # Dispose methods should call base class dispose.
 dotnet_diagnostic.CA2215.severity = warning
 
+# Disposable types should declare finalizer.
+dotnet_diagnostic.CA2216.severity = warning
+
 # Override GetHashCode on overriding Equals.
 dotnet_diagnostic.CA2218.severity = warning
 
