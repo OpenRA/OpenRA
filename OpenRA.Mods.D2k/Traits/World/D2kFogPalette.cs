@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.D2k.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
-	class D2kFogPaletteInfo : TraitInfo
+	sealed class D2kFogPaletteInfo : TraitInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public override object Create(ActorInitializer init) { return new D2kFogPalette(this); }
 	}
 
-	class D2kFogPalette : ILoadsPalettes, IProvidesAssetBrowserPalettes
+	sealed class D2kFogPalette : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly D2kFogPaletteInfo info;
 		public D2kFogPalette(D2kFogPaletteInfo info) { this.info = info; }

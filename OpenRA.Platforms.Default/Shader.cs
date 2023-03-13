@@ -16,7 +16,7 @@ using System.Text;
 
 namespace OpenRA.Platforms.Default
 {
-	class Shader : ThreadAffine, IShader
+	sealed class Shader : ThreadAffine, IShader
 	{
 		public const int VertexPosAttributeIndex = 0;
 		public const int TexCoordAttributeIndex = 1;
@@ -29,7 +29,7 @@ namespace OpenRA.Platforms.Default
 		readonly Queue<int> unbindTextures = new();
 		readonly uint program;
 
-		protected static uint CompileShaderObject(int type, string name)
+		static uint CompileShaderObject(int type, string name)
 		{
 			var ext = type == OpenGL.GL_VERTEX_SHADER ? "vert" : "frag";
 			var filename = Path.Combine(Platform.EngineDir, "glsl", name + "." + ext);

@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class IonCannonPowerInfo : SupportPowerInfo, IRulesetLoaded
+	sealed class IonCannonPowerInfo : SupportPowerInfo, IRulesetLoaded
 	{
 		[ActorReference]
 		[Desc("Actor to spawn when the attack starts")]
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	class IonCannonPower : SupportPower
+	sealed class IonCannonPower : SupportPower
 	{
 		readonly IonCannonPowerInfo info;
 

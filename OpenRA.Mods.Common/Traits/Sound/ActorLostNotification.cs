@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Sound
 {
-	class ActorLostNotificationInfo : ConditionalTraitInfo
+	sealed class ActorLostNotificationInfo : ConditionalTraitInfo
 	{
 		[NotificationReference("Speech")]
 		[Desc("Speech notification to play.")]
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		public override object Create(ActorInitializer init) { return new ActorLostNotification(this); }
 	}
 
-	class ActorLostNotification : ConditionalTrait<ActorLostNotificationInfo>, INotifyKilled
+	sealed class ActorLostNotification : ConditionalTrait<ActorLostNotificationInfo>, INotifyKilled
 	{
 		public ActorLostNotification(ActorLostNotificationInfo info)
 			: base(info) { }

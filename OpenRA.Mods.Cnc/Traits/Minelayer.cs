@@ -204,7 +204,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			return Info.TerrainTypes.Contains(terrainType);
 		}
 
-		class MinefieldOrderGenerator : OrderGenerator
+		sealed class MinefieldOrderGenerator : OrderGenerator
 		{
 			readonly List<Actor> minelayers;
 			readonly Minelayer minelayer;
@@ -347,7 +347,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		class BeginMinefieldOrderTargeter : IOrderTargeter
+		sealed class BeginMinefieldOrderTargeter : IOrderTargeter
 		{
 			public string OrderID => "BeginMinefield";
 			public int OrderPriority => 5;
@@ -377,7 +377,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				return modifiers.HasModifier(TargetModifiers.ForceAttack);
 			}
 
-			public bool IsQueued { get; protected set; }
+			public bool IsQueued { get; private set; }
 		}
 	}
 }

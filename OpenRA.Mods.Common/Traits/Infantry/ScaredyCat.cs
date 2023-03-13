@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Makes the unit automatically run around when taking damage.")]
-	class ScaredyCatInfo : TraitInfo, Requires<MobileInfo>
+	sealed class ScaredyCatInfo : TraitInfo, Requires<MobileInfo>
 	{
 		[Desc("Chance (out of 100) the unit has to enter panic mode when attacked.")]
 		public readonly int PanicChance = 100;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ScaredyCat(init.Self, this); }
 	}
 
-	class ScaredyCat : ITick, INotifyIdle, INotifyDamage, INotifyAttack, ISpeedModifier, ISync, IRenderInfantrySequenceModifier
+	sealed class ScaredyCat : ITick, INotifyIdle, INotifyDamage, INotifyAttack, ISpeedModifier, ISync, IRenderInfantrySequenceModifier
 	{
 		readonly ScaredyCatInfo info;
 		readonly Mobile mobile;

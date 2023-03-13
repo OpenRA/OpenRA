@@ -212,7 +212,7 @@ namespace OpenRA.Mods.Common.Activities
 		}
 	}
 
-	class FlyAttackRun : Activity
+	sealed class FlyAttackRun : Activity
 	{
 		readonly AttackAircraft attack;
 		readonly WDist exitRange;
@@ -261,7 +261,7 @@ namespace OpenRA.Mods.Common.Activities
 		}
 	}
 
-	class StrafeAttackRun : Activity
+	sealed class StrafeAttackRun : Activity
 	{
 		readonly AttackAircraft attackAircraft;
 		readonly Aircraft aircraft;

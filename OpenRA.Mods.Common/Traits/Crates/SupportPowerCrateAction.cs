@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Gives a supportpower to the collector.")]
-	class SupportPowerCrateActionInfo : CrateActionInfo
+	sealed class SupportPowerCrateActionInfo : CrateActionInfo
 	{
 		[ActorReference]
 		[FieldLoader.Require]
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new SupportPowerCrateAction(init.Self, this); }
 	}
 
-	class SupportPowerCrateAction : CrateAction
+	sealed class SupportPowerCrateAction : CrateAction
 	{
 		readonly SupportPowerCrateActionInfo info;
 		public SupportPowerCrateAction(Actor self, SupportPowerCrateActionInfo info)

@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Reveals a decoration sprite to the indicated players when infiltrated.")]
-	class InfiltrateForDecorationInfo : WithDecorationInfo
+	sealed class InfiltrateForDecorationInfo : WithDecorationInfo
 	{
 		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
 		public readonly BitSet<TargetableType> Types = default;
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new InfiltrateForDecoration(init.Self, this); }
 	}
 
-	class InfiltrateForDecoration : WithDecoration, INotifyInfiltrated
+	sealed class InfiltrateForDecoration : WithDecoration, INotifyInfiltrated
 	{
 		readonly HashSet<Player> infiltrators = new();
 		readonly InfiltrateForDecorationInfo info;

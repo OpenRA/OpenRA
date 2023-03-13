@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 	{
 		enum Format { XORPrev = 0x20, XORLCW = 0x40, LCW = 0x80 }
 
-		class ImageHeader : ISpriteFrame
+		sealed class ImageHeader : ISpriteFrame
 		{
 			public SpriteFrameType Type => SpriteFrameType.Indexed8;
 			public Size Size => reader.Size;

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class HarvesterBotModule : ConditionalTrait<HarvesterBotModuleInfo>, IBotTick
 	{
-		class HarvesterTraitWrapper
+		sealed class HarvesterTraitWrapper
 		{
 			public readonly Actor Actor;
 			public readonly Harvester Harvester;

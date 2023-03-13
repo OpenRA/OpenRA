@@ -16,7 +16,7 @@ using SDL2;
 
 namespace OpenRA.Platforms.Default
 {
-	class Sdl2Input
+	sealed class Sdl2Input
 	{
 		MouseButton lastButtonBits = MouseButton.None;
 

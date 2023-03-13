@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 	public class PngSheetLoader : ISpriteLoader
 	{
-		class PngSheetFrame : ISpriteFrame
+		sealed class PngSheetFrame : ISpriteFrame
 		{
 			public SpriteFrameType Type { get; set; }
 			public Size Size { get; set; }

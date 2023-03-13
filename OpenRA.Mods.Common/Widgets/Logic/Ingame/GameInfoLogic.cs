@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public enum IngameInfoPanel { AutoSelect, Map, Objectives, Debug, Chat, LobbbyOptions }
 
-	class GameInfoLogic : ChromeLogic
+	sealed class GameInfoLogic : ChromeLogic
 	{
 		[TranslationReference]
 		const string Objectives = "menu-game-info.objectives";

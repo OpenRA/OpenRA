@@ -461,7 +461,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool ShouldDoOnSave { get; }
 	}
 
-	class EditActorEditorAction : IEditorAction
+	sealed class EditActorEditorAction : IEditorAction
 	{
 		[TranslationReference("name", "id")]
 		const string EditedActor = "notification-edited-actor";
@@ -502,7 +502,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 	}
 
-	class EditActorPreview
+	sealed class EditActorPreview
 	{
 		readonly EditorActorPreview actor;
 		readonly SetActorIdAction setActorIdAction;

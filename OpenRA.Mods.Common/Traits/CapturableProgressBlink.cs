@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Blinks the actor and captor when it is being captured.")]
-	class CapturableProgressBlinkInfo : ConditionalTraitInfo, Requires<CapturableInfo>
+	sealed class CapturableProgressBlinkInfo : ConditionalTraitInfo, Requires<CapturableInfo>
 	{
 		[Desc("Number of ticks to wait between repeating blinks.")]
 		public readonly int Interval = 50;
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new CapturableProgressBlink(this); }
 	}
 
-	class CapturableProgressBlink : ConditionalTrait<CapturableProgressBlinkInfo>, ITick, ICaptureProgressWatcher
+	sealed class CapturableProgressBlink : ConditionalTrait<CapturableProgressBlinkInfo>, ITick, ICaptureProgressWatcher
 	{
 		readonly List<Player> captorOwners = new();
 		readonly HashSet<Actor> captors = new();

@@ -18,7 +18,7 @@ using OpenRA.Mods.Common.Lint;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class CheckYaml : IUtilityCommand
+	sealed class CheckYaml : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--check-yaml";
 

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference("actorType")]
 		const string ActorTypeTooltip = "label-actor-type";
 
-		class ActorSelectorActor
+		sealed class ActorSelectorActor
 		{
 			public readonly ActorInfo Actor;
 			public readonly string[] Categories;

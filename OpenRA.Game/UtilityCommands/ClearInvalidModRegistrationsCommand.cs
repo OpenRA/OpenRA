@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace OpenRA.UtilityCommands
 {
-	class ClearInvalidModRegistrationsCommand : IUtilityCommand
+	sealed class ClearInvalidModRegistrationsCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--clear-invalid-mod-registrations";
 

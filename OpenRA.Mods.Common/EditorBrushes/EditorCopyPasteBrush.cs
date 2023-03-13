@@ -174,7 +174,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 	}
 
-	class CopyPasteEditorAction : IEditorAction
+	sealed class CopyPasteEditorAction : IEditorAction
 	{
 		[TranslationReference("amount")]
 		const string CopiedTiles = "notification-copied-tiles";
@@ -271,7 +271,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 	}
 
-	class UndoCopyPaste
+	sealed class UndoCopyPaste
 	{
 		public CPos Cell { get; }
 		public TerrainTile MapTile { get; }

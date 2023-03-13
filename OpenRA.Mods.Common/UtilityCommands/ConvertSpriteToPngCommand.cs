@@ -18,7 +18,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class ConvertSpriteToPngCommand : IUtilityCommand
+	sealed class ConvertSpriteToPngCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--png";
 

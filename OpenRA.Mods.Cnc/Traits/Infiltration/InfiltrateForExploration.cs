@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Steal and reset the owner's exploration.")]
-	class InfiltrateForExplorationInfo : TraitInfo
+	sealed class InfiltrateForExplorationInfo : TraitInfo
 	{
 		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
 		public readonly BitSet<TargetableType> Types = default;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new InfiltrateForExploration(this); }
 	}
 
-	class InfiltrateForExploration : INotifyInfiltrated
+	sealed class InfiltrateForExploration : INotifyInfiltrated
 	{
 		readonly InfiltrateForExplorationInfo info;
 

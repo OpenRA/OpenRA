@@ -190,7 +190,7 @@ namespace OpenRA.FileSystem
 			public void Dispose() { /* nothing to do */ }
 		}
 
-		class StaticStreamDataSource : IStaticDataSource
+		sealed class StaticStreamDataSource : IStaticDataSource
 		{
 			readonly Stream s;
 			public StaticStreamDataSource(Stream s)

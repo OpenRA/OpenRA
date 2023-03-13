@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 	}
 
-	class AddResourcesEditorAction : IEditorAction
+	sealed class AddResourcesEditorAction : IEditorAction
 	{
 		[TranslationReference("amount", "type")]
 		const string AddedResource = "notification-added-resource";

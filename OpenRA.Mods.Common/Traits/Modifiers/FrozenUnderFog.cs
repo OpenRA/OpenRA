@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		bool isRendering;
 		bool created;
 
-		class FrozenState
+		sealed class FrozenState
 		{
 			public readonly FrozenActor FrozenActor;
 			public bool IsVisible;

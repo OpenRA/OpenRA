@@ -133,5 +133,5 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	class HideBibPreviewInit : RuntimeFlagInit { }
+	sealed class HideBibPreviewInit : RuntimeFlagInit { }
 }

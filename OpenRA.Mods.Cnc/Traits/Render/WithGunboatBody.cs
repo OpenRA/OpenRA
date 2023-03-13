@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
-	class WithGunboatBodyInfo : WithSpriteBodyInfo, Requires<BodyOrientationInfo>, Requires<IFacingInfo>, Requires<TurretedInfo>
+	sealed class WithGunboatBodyInfo : WithSpriteBodyInfo, Requires<BodyOrientationInfo>, Requires<IFacingInfo>, Requires<TurretedInfo>
 	{
 		[Desc("Turreted 'Turret' key to display")]
 		public readonly string Turret = "primary";
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithGunboatBody(init, this); }
 	}
 
-	class WithGunboatBody : WithSpriteBody, ITick
+	sealed class WithGunboatBody : WithSpriteBody, ITick
 	{
 		readonly WithGunboatBodyInfo info;
 		readonly Animation wake;

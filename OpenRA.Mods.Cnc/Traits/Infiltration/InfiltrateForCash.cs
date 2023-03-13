@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Funds are transferred from the owner to the infiltrator.")]
-	class InfiltrateForCashInfo : TraitInfo
+	sealed class InfiltrateForCashInfo : TraitInfo
 	{
 		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
 		public readonly BitSet<TargetableType> Types = default;
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new InfiltrateForCash(this); }
 	}
 
-	class InfiltrateForCash : INotifyInfiltrated
+	sealed class InfiltrateForCash : INotifyInfiltrated
 	{
 		readonly InfiltrateForCashInfo info;
 

@@ -61,12 +61,12 @@ namespace OpenRA.Platforms.Default
 		public void Dispose() { }
 	}
 
-	class NullSoundSource : ISoundSource
+	sealed class NullSoundSource : ISoundSource
 	{
 		public void Dispose() { }
 	}
 
-	class NullSound : ISound
+	sealed class NullSound : ISound
 	{
 		public float Volume { get; set; }
 		public float SeekPosition => 0;

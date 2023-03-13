@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class AutoCrusherInfo : PausableConditionalTraitInfo, Requires<IMoveInfo>
+	sealed class AutoCrusherInfo : PausableConditionalTraitInfo, Requires<IMoveInfo>
 	{
 		[Desc("Maximum range to scan for targets.")]
 		public readonly WDist ScanRadius = WDist.FromCells(5);
@@ -36,20 +36,20 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AutoCrusher(init.Self, this); }
 	}
 
-	class AutoCrusher : PausableConditionalTrait<AutoCrusherInfo>, INotifyIdle
+	sealed class AutoCrusher : PausableConditionalTrait<AutoCrusherInfo>, INotifyIdle
 	{
 		int nextScanTime;
 		readonly IMoveInfo moveInfo;
 		readonly bool isAircraft;
-		protected readonly IMove Move;
+		readonly IMove move;
 
 		public AutoCrusher(Actor self, AutoCrusherInfo info)
 			: base(info)
 		{
-			Move = self.Trait<IMove>();
+			move = self.Trait<IMove>();
 			moveInfo = self.Info.TraitInfo<IMoveInfo>();
 			nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
-			isAircraft = Move is Aircraft;
+			isAircraft = move is Aircraft;
 		}
 
 		void INotifyIdle.TickIdle(Actor self)
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (isAircraft)
 				self.QueueActivity(new Land(self, Target.FromActor(crushableActor), targetLineColor: moveInfo.GetTargetLineColor()));
 			else
-				self.QueueActivity(Move.MoveTo(crushableActor.Location, targetLineColor: moveInfo.GetTargetLineColor()));
+				self.QueueActivity(move.MoveTo(crushableActor.Location, targetLineColor: moveInfo.GetTargetLineColor()));
 
 			nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
 		}

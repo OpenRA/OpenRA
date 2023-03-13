@@ -27,12 +27,12 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[TraitLocation(SystemActors.World)]
-	class BridgeLayerInfo : TraitInfo
+	sealed class BridgeLayerInfo : TraitInfo
 	{
 		public override object Create(ActorInitializer init) { return new BridgeLayer(init.World); }
 	}
 
-	class BridgeLayer
+	sealed class BridgeLayer
 	{
 		readonly CellLayer<Actor> bridges;
 

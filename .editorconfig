@@ -772,6 +772,9 @@ dotnet_diagnostic.CA1849.severity = warning
 # Prefer static HashData method over ComputeHash. (Not available on mono)
 dotnet_diagnostic.CA1850.severity = none
 
+# Seal internal types.
+dotnet_diagnostic.CA1852.severity = warning
+
 # Unnecessary call to 'Dictionary.ContainsKey(key)'.
 dotnet_diagnostic.CA1853.severity = warning
 

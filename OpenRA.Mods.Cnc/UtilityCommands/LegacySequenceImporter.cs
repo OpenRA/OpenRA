@@ -16,7 +16,7 @@ using OpenRA.Mods.Common.FileFormats;
 
 namespace OpenRA.Mods.Cnc.UtilityCommands
 {
-	class ImportLegacySequenceCommand : IUtilityCommand
+	sealed class ImportLegacySequenceCommand : IUtilityCommand
 	{
 		bool IUtilityCommand.ValidateArguments(string[] args)
 		{

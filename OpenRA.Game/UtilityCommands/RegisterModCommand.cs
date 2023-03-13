@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace OpenRA.UtilityCommands
 {
-	class RegisterModCommand : IUtilityCommand
+	sealed class RegisterModCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--register-mod";
 

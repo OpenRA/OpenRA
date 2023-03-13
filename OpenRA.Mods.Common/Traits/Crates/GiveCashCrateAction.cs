@@ -14,7 +14,7 @@ using OpenRA.Mods.Common.Effects;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Gives cash to the collector.")]
-	class GiveCashCrateActionInfo : CrateActionInfo
+	sealed class GiveCashCrateActionInfo : CrateActionInfo
 	{
 		[Desc("Amount of cash to give.")]
 		public readonly int Amount = 2000;
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new GiveCashCrateAction(init.Self, this); }
 	}
 
-	class GiveCashCrateAction : CrateAction
+	sealed class GiveCashCrateAction : CrateAction
 	{
 		readonly GiveCashCrateActionInfo info;
 		public GiveCashCrateAction(Actor self, GiveCashCrateActionInfo info)

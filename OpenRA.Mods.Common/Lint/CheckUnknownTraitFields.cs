@@ -16,7 +16,7 @@ using OpenRA.Server;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckUnknownTraitFields : ILintPass, ILintMapPass, ILintServerMapPass
+	sealed class CheckUnknownTraitFields : ILintPass, ILintMapPass, ILintServerMapPass
 	{
 		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{

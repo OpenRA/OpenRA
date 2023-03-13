@@ -19,7 +19,7 @@ namespace OpenRA.Mods.D2k.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Create a palette by applying a scale and offset to the colors in another palette.")]
-	class PaletteFromScaledPaletteInfo : TraitInfo
+	sealed class PaletteFromScaledPaletteInfo : TraitInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public override object Create(ActorInitializer init) { return new PaletteFromScaledPalette(this); }
 	}
 
-	class PaletteFromScaledPalette : ILoadsPalettes, IProvidesAssetBrowserPalettes
+	sealed class PaletteFromScaledPalette : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly PaletteFromScaledPaletteInfo info;
 		public PaletteFromScaledPalette(PaletteFromScaledPaletteInfo info) { this.info = info; }
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public IEnumerable<string> PaletteNames { get { yield return info.Name; } }
 	}
 
-	class ScaledPaletteRemap : IPaletteRemap
+	sealed class ScaledPaletteRemap : IPaletteRemap
 	{
 		readonly float scale;
 		readonly int offset;

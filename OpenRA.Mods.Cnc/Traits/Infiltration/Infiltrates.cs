@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	class InfiltrationOrderTargeter : UnitOrderTargeter
+	sealed class InfiltrationOrderTargeter : UnitOrderTargeter
 	{
 		readonly InfiltratesInfo info;
 

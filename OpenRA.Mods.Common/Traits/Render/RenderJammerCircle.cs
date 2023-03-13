@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	// TODO: remove all the Render*Circle duplication
-	class RenderJammerCircleInfo : ConditionalTraitInfo, IPlaceBuildingDecorationInfo
+	sealed class RenderJammerCircleInfo : ConditionalTraitInfo, IPlaceBuildingDecorationInfo
 	{
 		[Desc("Range circle color.")]
 		public readonly Color Color = Color.FromArgb(128, Color.Red);
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new RenderJammerCircle(this); }
 	}
 
-	class RenderJammerCircle : ConditionalTrait<RenderJammerCircleInfo>, IRenderAnnotationsWhenSelected
+	sealed class RenderJammerCircle : ConditionalTrait<RenderJammerCircleInfo>, IRenderAnnotationsWhenSelected
 	{
 		readonly RenderJammerCircleInfo info;
 

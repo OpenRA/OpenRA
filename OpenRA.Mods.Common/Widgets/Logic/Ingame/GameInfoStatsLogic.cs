@@ -20,7 +20,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	class GameInfoStatsLogic : ChromeLogic
+	sealed class GameInfoStatsLogic : ChromeLogic
 	{
 		[TranslationReference]
 		const string Unmute = "label-unmute-player";

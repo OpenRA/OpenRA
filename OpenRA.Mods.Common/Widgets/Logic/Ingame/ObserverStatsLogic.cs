@@ -595,7 +595,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		// HACK The height of the templates and the scrollpanel needs to be kept in synch
 		bool ShowScrollBar => players.Count() + (hasTeams ? teams.Count() : 0) > 10;
 
-		class StatsDropDownOption
+		sealed class StatsDropDownOption
 		{
 			public string Title;
 			public Func<bool> IsSelected;

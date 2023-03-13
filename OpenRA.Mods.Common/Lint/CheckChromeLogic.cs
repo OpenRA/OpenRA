@@ -15,7 +15,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckChromeLogic : ILintPass
+	sealed class CheckChromeLogic : ILintPass
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{

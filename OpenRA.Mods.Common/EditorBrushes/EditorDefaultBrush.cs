@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public void Dispose() { }
 	}
 
-	class RemoveActorAction : IEditorAction
+	sealed class RemoveActorAction : IEditorAction
 	{
 		[TranslationReference("name", "id")]
 		const string RemovedActor = "notification-removed-actor";
@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 	}
 
-	class RemoveResourceAction : IEditorAction
+	sealed class RemoveResourceAction : IEditorAction
 	{
 		[TranslationReference("type")]
 		const string RemovedResource = "notification-removed-resource";

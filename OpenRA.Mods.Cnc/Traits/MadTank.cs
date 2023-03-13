@@ -21,7 +21,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class MadTankInfo : TraitInfo, IRulesetLoaded, Requires<ExplodesInfo>, Requires<WithFacingSpriteBodyInfo>
+	sealed class MadTankInfo : TraitInfo, IRulesetLoaded, Requires<ExplodesInfo>, Requires<WithFacingSpriteBodyInfo>
 	{
 		[SequenceReference]
 		public readonly string ThumpSequence = "piston";
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	class MadTank : IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
+	sealed class MadTank : IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder
 	{
 		readonly MadTankInfo info;
 
@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				self.QueueActivity(order.Queued, new DetonationSequence(self, this));
 		}
 
-		class DetonationSequence : Activity
+		sealed class DetonationSequence : Activity
 		{
 			readonly Actor self;
 			readonly MadTank mad;

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	}
 
 	[Desc("Render trait for actors that change sprites if neighbors with the same trait are present.")]
-	class WithWallSpriteBodyInfo : WithSpriteBodyInfo, IWallConnectorInfo, Requires<BuildingInfo>
+	sealed class WithWallSpriteBodyInfo : WithSpriteBodyInfo, IWallConnectorInfo, Requires<BuildingInfo>
 	{
 		public readonly string Type = "wall";
 
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	class WithWallSpriteBody : WithSpriteBody, INotifyRemovedFromWorld, IWallConnector, ITick
+	sealed class WithWallSpriteBody : WithSpriteBody, INotifyRemovedFromWorld, IWallConnector, ITick
 	{
 		readonly WithWallSpriteBodyInfo wallInfo;
 		int adjacent = 0;

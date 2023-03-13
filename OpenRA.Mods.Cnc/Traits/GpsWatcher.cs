@@ -18,14 +18,14 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	[TraitLocation(SystemActors.Player)]
 	[Desc("Required for `GpsPower`. Attach this to the player actor.")]
-	class GpsWatcherInfo : TraitInfo
+	sealed class GpsWatcherInfo : TraitInfo
 	{
 		public override object Create(ActorInitializer init) { return new GpsWatcher(init.Self.Owner); }
 	}
 
 	interface IOnGpsRefreshed { void OnGpsRefresh(Actor self, Player player); }
 
-	class GpsWatcher : ISync, IPreventsShroudReset
+	sealed class GpsWatcher : ISync, IPreventsShroudReset
 	{
 		[Sync]
 		public bool Launched { get; private set; }

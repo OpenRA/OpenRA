@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	class DonateCash : Enter
+	sealed class DonateCash : Enter
 	{
 		readonly int payload;
 		readonly int playerExperience;

@@ -19,7 +19,7 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 {
 	public class R8Loader : ISpriteLoader
 	{
-		class R8Frame : ISpriteFrame
+		sealed class R8Frame : ISpriteFrame
 		{
 			public SpriteFrameType Type => SpriteFrameType.Indexed8;
 			public Size Size { get; }

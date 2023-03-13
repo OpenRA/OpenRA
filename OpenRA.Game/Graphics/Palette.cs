@@ -40,7 +40,7 @@ namespace OpenRA.Graphics
 			return new ReadOnlyPalette(palette);
 		}
 
-		class ReadOnlyPalette : IPalette
+		sealed class ReadOnlyPalette : IPalette
 		{
 			readonly IPalette palette;
 			public ReadOnlyPalette(IPalette palette) { this.palette = palette; }

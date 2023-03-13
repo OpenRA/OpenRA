@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
-	class ChangeTargetLineDelayToMilliseconds : UpdateRule
+	sealed class ChangeTargetLineDelayToMilliseconds : UpdateRule
 	{
 		public override string Name => "Changed DrawLineToTarget.Delay interpretation from ticks to milliseconds.";
 

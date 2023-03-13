@@ -200,7 +200,7 @@ namespace OpenRA.Mods.Common.FileFormats
 		}
 	}
 
-	class BitReader
+	sealed class BitReader
 	{
 		readonly Stream stream;
 		byte bitBuffer = 0;
@@ -242,7 +242,7 @@ namespace OpenRA.Mods.Common.FileFormats
 	 * codes.  Those tables are the number of codes of each length, and the symbols
 	 * sorted by length, retaining their original order within each length.
 	 */
-	class Huffman
+	sealed class Huffman
 	{
 		public short[] Count; // number of symbols of each length
 		public short[] Symbol; // canonically ordered symbols

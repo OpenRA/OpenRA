@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			(DamageState.Light, "scuffed-")
 		};
 
-		class AnimationWrapper
+		sealed class AnimationWrapper
 		{
 			public readonly AnimationWithOffset Animation;
 			public readonly string Palette;

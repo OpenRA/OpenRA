@@ -14,7 +14,7 @@ using OpenRA.Primitives;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor is crushable.")]
-	class CrushableInfo : ConditionalTraitInfo
+	sealed class CrushableInfo : ConditionalTraitInfo
 	{
 		[Desc("Sound to play when being crushed.")]
 		public readonly string CrushSound = null;
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Crushable(init.Self, this); }
 	}
 
-	class Crushable : ConditionalTrait<CrushableInfo>, ICrushable, INotifyCrushed
+	sealed class Crushable : ConditionalTrait<CrushableInfo>, ICrushable, INotifyCrushed
 	{
 		readonly Actor self;
 

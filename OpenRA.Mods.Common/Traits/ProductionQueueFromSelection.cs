@@ -18,7 +18,7 @@ using OpenRA.Widgets;
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World)]
-	class ProductionQueueFromSelectionInfo : TraitInfo
+	sealed class ProductionQueueFromSelectionInfo : TraitInfo
 	{
 		public readonly string ProductionTabsWidget = null;
 		public readonly string ProductionPaletteWidget = null;
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ProductionQueueFromSelection(init.World, this); }
 	}
 
-	class ProductionQueueFromSelection : INotifySelection
+	sealed class ProductionQueueFromSelection : INotifySelection
 	{
 		readonly World world;
 		readonly Lazy<ProductionTabsWidget> tabsWidget;

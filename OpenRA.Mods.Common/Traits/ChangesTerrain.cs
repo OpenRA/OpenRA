@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Modifies the terrain type underneath the actors location.")]
-	class ChangesTerrainInfo : TraitInfo, Requires<ImmobileInfo>
+	sealed class ChangesTerrainInfo : TraitInfo, Requires<ImmobileInfo>
 	{
 		[FieldLoader.Require]
 		public readonly string TerrainType = null;
@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ChangesTerrain(this); }
 	}
 
-	class ChangesTerrain : INotifyAddedToWorld, INotifyRemovedFromWorld
+	sealed class ChangesTerrain : INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		readonly ChangesTerrainInfo info;
 		byte previousTerrain;

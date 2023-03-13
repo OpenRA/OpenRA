@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Create a color picker palette from another palette.")]
-	class ColorPickerPaletteInfo : TraitInfo
+	sealed class ColorPickerPaletteInfo : TraitInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ColorPickerPalette(this); }
 	}
 
-	class ColorPickerPalette : ILoadsPalettes, IProvidesAssetBrowserColorPickerPalettes, ITickRender
+	sealed class ColorPickerPalette : ILoadsPalettes, IProvidesAssetBrowserColorPickerPalettes, ITickRender
 	{
 		readonly ColorPickerPaletteInfo info;
 		Color color;

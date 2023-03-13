@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	class InstantRepair : Enter
+	sealed class InstantRepair : Enter
 	{
 		readonly InstantlyRepairsInfo info;
 

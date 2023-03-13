@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.UtilityCommands
 {
-	class ImportTiberianSunMapCommand : ImportGen2MapCommand, IUtilityCommand
+	sealed class ImportTiberianSunMapCommand : ImportGen2MapCommand, IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--import-ts-map";
 

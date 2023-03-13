@@ -242,7 +242,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 		}
 
-		class CabExtracter
+		sealed class CabExtracter
 		{
 			readonly FileDescriptor file;
 			readonly Dictionary<int, Stream> volumes;

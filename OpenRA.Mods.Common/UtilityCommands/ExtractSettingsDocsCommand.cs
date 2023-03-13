@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class ExtractSettingsDocsCommand : IUtilityCommand
+	sealed class ExtractSettingsDocsCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--settings-docs";
 

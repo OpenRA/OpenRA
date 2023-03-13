@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	class KickClientLogic : ChromeLogic
+	sealed class KickClientLogic : ChromeLogic
 	{
 		[TranslationReference("player")]
 		const string KickClient = "dialog-kick-client.prompt";

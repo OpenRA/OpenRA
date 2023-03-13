@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Turns actor randomly when idle.")]
-	class TurnOnIdleInfo : ConditionalTraitInfo, Requires<MobileInfo>
+	sealed class TurnOnIdleInfo : ConditionalTraitInfo, Requires<MobileInfo>
 	{
 		[Desc("Minimum amount of ticks the actor will wait before the turn.")]
 		public readonly int MinDelay = 400;
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new TurnOnIdle(init, this); }
 	}
 
-	class TurnOnIdle : ConditionalTrait<TurnOnIdleInfo>, INotifyIdle
+	sealed class TurnOnIdle : ConditionalTrait<TurnOnIdleInfo>, INotifyIdle
 	{
 		int currentDelay;
 		WAngle targetFacing;

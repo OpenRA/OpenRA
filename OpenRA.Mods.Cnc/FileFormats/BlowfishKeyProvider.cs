@@ -16,11 +16,11 @@ namespace OpenRA.Mods.Cnc.FileFormats
 {
 	/* TODO: Convert this direct C port into readable code. */
 
-	class BlowfishKeyProvider
+	sealed class BlowfishKeyProvider
 	{
 		const string PublicKeyString = "AihRvNoIbTn85FZRYNZRcT+i6KpU+maCsEqr3Q5q+LDB5tH7Tz2qQ38V";
 
-		class PublicKey
+		sealed class PublicKey
 		{
 			public readonly uint[] KeyOne = new uint[64];
 			public readonly uint[] KeyTwo = new uint[64];

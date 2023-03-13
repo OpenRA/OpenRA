@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Traits
 			return points;
 		}
 
-		class Arrow
+		sealed class Arrow
 		{
 			public Sprite Sprite { get; }
 			public double EndAngle { get; }

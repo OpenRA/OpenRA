@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 	public class RenderVoxels : IRender, ITick, INotifyOwnerChanged
 	{
-		class AnimationWrapper
+		sealed class AnimationWrapper
 		{
 			readonly ModelAnimation model;
 			bool cachedVisible;

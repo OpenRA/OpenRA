@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		CameraOption selected;
 		readonly LabelWidget shroudLabel;
 
-		class CameraOption
+		sealed class CameraOption
 		{
 			public readonly Player Player;
 			public readonly string Label;

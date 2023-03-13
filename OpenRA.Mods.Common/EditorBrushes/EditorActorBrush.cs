@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 	}
 
-	class AddActorAction : IEditorAction
+	sealed class AddActorAction : IEditorAction
 	{
 		public string Text { get; private set; }
 

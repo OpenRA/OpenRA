@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class TileSelectorLogic : CommonSelectorLogic
 	{
-		class TileSelectorTemplate
+		sealed class TileSelectorTemplate
 		{
 			public readonly TerrainTemplateInfo Template;
 			public readonly string[] Categories;

@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class CreateManPage : IUtilityCommand
+	sealed class CreateManPage : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--man-page";
 

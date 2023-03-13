@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 {
 	public class TmpRALoader : ISpriteLoader
 	{
-		class TmpRAFrame : ISpriteFrame
+		sealed class TmpRAFrame : ISpriteFrame
 		{
 			public SpriteFrameType Type => SpriteFrameType.Indexed8;
 			public Size Size { get; }

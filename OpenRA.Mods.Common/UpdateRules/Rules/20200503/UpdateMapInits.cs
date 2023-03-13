@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
-	class UpdateMapInits : UpdateRule
+	sealed class UpdateMapInits : UpdateRule
 	{
 		public override string Name => "Update map actor definitions";
 

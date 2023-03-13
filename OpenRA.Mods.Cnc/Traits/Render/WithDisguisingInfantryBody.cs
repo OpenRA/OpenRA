@@ -15,12 +15,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
-	class WithDisguisingInfantryBodyInfo : WithInfantryBodyInfo, Requires<DisguiseInfo>
+	sealed class WithDisguisingInfantryBodyInfo : WithInfantryBodyInfo, Requires<DisguiseInfo>
 	{
 		public override object Create(ActorInitializer init) { return new WithDisguisingInfantryBody(init, this); }
 	}
 
-	class WithDisguisingInfantryBody : WithInfantryBody
+	sealed class WithDisguisingInfantryBody : WithInfantryBody
 	{
 		readonly Disguise disguise;
 		readonly RenderSprites rs;

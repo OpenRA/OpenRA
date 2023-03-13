@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class SequencePlaceBuildingPreview { }
 
-	class SequencePlaceBuildingPreviewPreview : FootprintPlaceBuildingPreviewPreview
+	sealed class SequencePlaceBuildingPreviewPreview : FootprintPlaceBuildingPreviewPreview
 	{
 		readonly SequencePlaceBuildingPreviewInfo info;
 		readonly Animation preview;

@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	class KickSpectatorsLogic : ChromeLogic
+	sealed class KickSpectatorsLogic : ChromeLogic
 	{
 		[TranslationReference("count")]
 		const string KickSpectators = "dialog-kick-spectators.prompt";

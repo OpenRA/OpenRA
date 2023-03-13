@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Activities
 				yield return new TargetLineNode(destination, targetLineColor.Value);
 		}
 
-		class ReleaseUnit : Activity
+		sealed class ReleaseUnit : Activity
 		{
 			readonly Carryall carryall;
 			readonly BodyOrientation body;

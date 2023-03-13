@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class ThrowsParticleInfo : TraitInfo, Requires<WithSpriteBodyInfo>, Requires<BodyOrientationInfo>
+	sealed class ThrowsParticleInfo : TraitInfo, Requires<WithSpriteBodyInfo>, Requires<BodyOrientationInfo>
 	{
 		[FieldLoader.Require]
 		public readonly string Anim = null;
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ThrowsParticle(init, this); }
 	}
 
-	class ThrowsParticle : ITick
+	sealed class ThrowsParticle : ITick
 	{
 		WVec pos;
 		readonly WVec initialPos;

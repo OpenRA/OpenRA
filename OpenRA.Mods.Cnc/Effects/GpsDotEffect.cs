@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Effects
 {
-	class GpsDotEffect : IEffect, IEffectAnnotation
+	sealed class GpsDotEffect : IEffect, IEffectAnnotation
 	{
 		readonly Actor actor;
 		readonly GpsDotInfo info;
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Cnc.Effects
 		readonly PlayerDictionary<DotState> dotStates;
 		readonly IVisibilityModifier[] visibilityModifiers;
 
-		class DotState
+		sealed class DotState
 		{
 			public readonly GpsWatcher Watcher;
 			public readonly bool FrozenActorWithRenderables;

@@ -411,7 +411,7 @@ namespace OpenRA.Mods.Common.Traits
 			return stances;
 		}
 
-		class AttackOrderTargeter : IOrderTargeter
+		sealed class AttackOrderTargeter : IOrderTargeter
 		{
 			readonly AttackBase ab;
 
@@ -514,7 +514,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			public bool IsQueued { get; protected set; }
+			public bool IsQueued { get; private set; }
 		}
 	}
 }

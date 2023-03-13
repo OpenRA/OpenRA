@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class BuildingInfluence
 	{
-		class InfluenceNode
+		sealed class InfluenceNode
 		{
 			public InfluenceNode Next;
 			public Actor Actor;

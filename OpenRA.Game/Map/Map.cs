@@ -65,7 +65,7 @@ namespace OpenRA
 		MissionSelector = 4
 	}
 
-	class MapField
+	sealed class MapField
 	{
 		enum Type { Normal, NodeList, MiniYaml }
 		readonly FieldInfo field;

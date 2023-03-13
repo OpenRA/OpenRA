@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.FileFormats
 {
 	public sealed class MSCabCompression
 	{
-		class CabFolder
+		sealed class CabFolder
 		{
 			public readonly uint BlockOffset;
 			public readonly ushort BlockCount;
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 		}
 
-		class CabFile
+		sealed class CabFile
 		{
 			public readonly string FileName;
 			public readonly uint DecompressedLength;

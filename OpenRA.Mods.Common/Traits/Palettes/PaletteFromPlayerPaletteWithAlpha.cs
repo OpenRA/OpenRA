@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Create player palettes by applying alpha transparency to another player palette.")]
-	class PaletteFromPlayerPaletteWithAlphaInfo : TraitInfo
+	sealed class PaletteFromPlayerPaletteWithAlphaInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[PaletteDefinition(true)]
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new PaletteFromPlayerPaletteWithAlpha(this); }
 	}
 
-	class PaletteFromPlayerPaletteWithAlpha : ILoadsPlayerPalettes
+	sealed class PaletteFromPlayerPaletteWithAlpha : ILoadsPlayerPalettes
 	{
 		readonly PaletteFromPlayerPaletteWithAlphaInfo info;
 

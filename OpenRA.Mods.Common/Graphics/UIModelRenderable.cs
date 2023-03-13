@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Graphics
 			return new FinalizedUIModelRenderable(wr, this);
 		}
 
-		class FinalizedUIModelRenderable : IFinalizedRenderable
+		sealed class FinalizedUIModelRenderable : IFinalizedRenderable
 		{
 			readonly UIModelRenderable model;
 			readonly ModelRenderProxy renderProxy;

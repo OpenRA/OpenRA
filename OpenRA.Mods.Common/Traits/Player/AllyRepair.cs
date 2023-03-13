@@ -15,9 +15,9 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.Player)]
 	[Desc("Attach this to the player actor to allow building repair by team mates.")]
-	class AllyRepairInfo : TraitInfo<AllyRepair> { }
+	sealed class AllyRepairInfo : TraitInfo<AllyRepair> { }
 
-	class AllyRepair : IResolveOrder
+	sealed class AllyRepair : IResolveOrder
 	{
 		public void ResolveOrder(Actor self, Order order)
 		{

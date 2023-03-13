@@ -551,7 +551,7 @@ namespace OpenRA.Support
 			}
 		}
 
-		class VariableToken : Token
+		sealed class VariableToken : Token
 		{
 			public readonly string Name;
 
@@ -561,7 +561,7 @@ namespace OpenRA.Support
 				: base(TokenType.Variable, index) { Name = symbol; }
 		}
 
-		class NumberToken : Token
+		sealed class NumberToken : Token
 		{
 			public readonly int Value;
 			readonly string symbol;
@@ -714,7 +714,7 @@ namespace OpenRA.Support
 			return Expressions.Expression.Condition(test, ifTrue, ifFalse);
 		}
 
-		class AstStack
+		sealed class AstStack
 		{
 			readonly List<Expression> expressions = new();
 			readonly List<ExpressionType> types = new();
@@ -772,7 +772,7 @@ namespace OpenRA.Support
 			}
 		}
 
-		class Compiler
+		sealed class Compiler
 		{
 			readonly AstStack ast = new();
 

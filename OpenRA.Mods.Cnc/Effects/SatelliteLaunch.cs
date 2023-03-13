@@ -16,7 +16,7 @@ using OpenRA.Mods.Cnc.Traits;
 
 namespace OpenRA.Mods.Cnc.Effects
 {
-	class SatelliteLaunch : IEffect, ISpatiallyPartitionable
+	sealed class SatelliteLaunch : IEffect, ISpatiallyPartitionable
 	{
 		readonly GpsPowerInfo info;
 		readonly Actor launcher;

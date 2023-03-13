@@ -16,7 +16,7 @@ using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class CheckMissingSprites : IUtilityCommand
+	sealed class CheckMissingSprites : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--check-missing-sprites";
 

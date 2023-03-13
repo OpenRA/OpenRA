@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
-	class ReplaceFacingAngles : UpdateRule
+	sealed class ReplaceFacingAngles : UpdateRule
 	{
 		static readonly Dictionary<string, string[]> TraitFields = new()
 		{

@@ -18,7 +18,7 @@ using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckTranslationSyntax : ILintPass, ILintMapPass
+	sealed class CheckTranslationSyntax : ILintPass, ILintMapPass
 	{
 		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{

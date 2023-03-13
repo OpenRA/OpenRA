@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		}
 	}
 
-	class AirIdleState : AirStateBase, IState
+	sealed class AirIdleState : AirStateBase, IState
 	{
 		public void Activate(Squad owner) { }
 
@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		public void Deactivate(Squad owner) { }
 	}
 
-	class AirAttackState : AirStateBase, IState
+	sealed class AirAttackState : AirStateBase, IState
 	{
 		public void Activate(Squad owner) { }
 
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		public void Deactivate(Squad owner) { }
 	}
 
-	class AirFleeState : AirStateBase, IState
+	sealed class AirFleeState : AirStateBase, IState
 	{
 		public void Activate(Squad owner) { }
 

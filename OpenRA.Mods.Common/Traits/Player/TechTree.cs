@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Player Owner { get; }
 
-		class Watcher
+		sealed class Watcher
 		{
 			public readonly string Key;
 			public ITechTreeElement RegisteredBy { get; }

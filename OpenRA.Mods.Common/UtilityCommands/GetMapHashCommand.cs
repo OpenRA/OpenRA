@@ -14,7 +14,7 @@ using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class GetMapHashCommand : IUtilityCommand
+	sealed class GetMapHashCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--map-hash";
 

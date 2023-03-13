@@ -18,7 +18,7 @@ using OpenRA.Mods.Common.FileFormats;
 
 namespace OpenRA.Mods.Cnc.UtilityCommands
 {
-	class ImportLegacyTilesetCommand : IUtilityCommand
+	sealed class ImportLegacyTilesetCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--tileset-import";
 

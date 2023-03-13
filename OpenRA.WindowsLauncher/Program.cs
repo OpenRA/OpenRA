@@ -21,7 +21,7 @@ using SDL2;
 
 namespace OpenRA.WindowsLauncher
 {
-	class WindowsLauncher
+	sealed class WindowsLauncher
 	{
 		[DllImport("user32.dll")]
 		static extern bool SetForegroundWindow(IntPtr hWnd);

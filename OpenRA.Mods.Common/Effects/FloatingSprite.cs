@@ -15,7 +15,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.Effects
 {
-	class FloatingSprite : IEffect, ISpatiallyPartitionable
+	sealed class FloatingSprite : IEffect, ISpatiallyPartitionable
 	{
 		readonly WDist[] speed;
 		readonly WDist[] gravity;

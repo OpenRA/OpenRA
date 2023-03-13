@@ -18,7 +18,7 @@ using OpenRA.Mods.Common.UpdateRules;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class UpdateMapCommand : IUtilityCommand
+	sealed class UpdateMapCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--update-map";
 

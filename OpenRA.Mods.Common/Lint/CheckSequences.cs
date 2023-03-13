@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckSequences : ILintSequencesPass, ILintServerMapPass
+	sealed class CheckSequences : ILintSequencesPass, ILintServerMapPass
 	{
 		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)
 		{

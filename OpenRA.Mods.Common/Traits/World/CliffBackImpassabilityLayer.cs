@@ -18,14 +18,14 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Sets a custom terrain type for cells that are obscured by back-facing cliffs.",
 		"This trait replicates the default CliffBackImpassability=2 behaviour from the TS/RA2 rules.ini.")]
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
-	class CliffBackImpassabilityLayerInfo : TraitInfo
+	sealed class CliffBackImpassabilityLayerInfo : TraitInfo
 	{
 		public readonly string TerrainType = "Impassable";
 
 		public override object Create(ActorInitializer init) { return new CliffBackImpassabilityLayer(this); }
 	}
 
-	class CliffBackImpassabilityLayer : IWorldLoaded
+	sealed class CliffBackImpassabilityLayer : IWorldLoaded
 	{
 		readonly CliffBackImpassabilityLayerInfo info;
 

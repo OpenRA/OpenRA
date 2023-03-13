@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class InfiltrateForSupportPowerResetInfo : TraitInfo
+	sealed class InfiltrateForSupportPowerResetInfo : TraitInfo
 	{
 		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
 		public readonly BitSet<TargetableType> Types = default;
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new InfiltrateForSupportPowerReset(this); }
 	}
 
-	class InfiltrateForSupportPowerReset : INotifyInfiltrated
+	sealed class InfiltrateForSupportPowerReset : INotifyInfiltrated
 	{
 		readonly InfiltrateForSupportPowerResetInfo info;
 

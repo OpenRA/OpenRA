@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Cnc.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Adds the hard-coded shroud palette to the game")]
-	class TSShroudPaletteInfo : TraitInfo
+	sealed class TSShroudPaletteInfo : TraitInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new TSShroudPalette(this); }
 	}
 
-	class TSShroudPalette : ILoadsPalettes, IProvidesAssetBrowserPalettes
+	sealed class TSShroudPalette : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly TSShroudPaletteInfo info;
 

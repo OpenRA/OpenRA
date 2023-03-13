@@ -23,7 +23,7 @@ namespace OpenRA.Mods.D2k.Activities
 {
 	enum AttackState { Uninitialized, Burrowed, Attacking }
 
-	class SwallowActor : Activity
+	sealed class SwallowActor : Activity
 	{
 		const int NearEnough = 1;
 

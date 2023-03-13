@@ -36,7 +36,7 @@ namespace OpenRA.Platforms.Default
 			return defaultDevices.Concat(physicalDevices).ToArray();
 		}
 
-		class PoolSlot
+		sealed class PoolSlot
 		{
 			public bool IsActive;
 			public int FrameStarted;
@@ -386,7 +386,7 @@ namespace OpenRA.Platforms.Default
 		}
 	}
 
-	class OpenAlSoundSource : ISoundSource
+	sealed class OpenAlSoundSource : ISoundSource
 	{
 		uint buffer;
 		bool disposed;
@@ -401,7 +401,7 @@ namespace OpenRA.Platforms.Default
 			AL10.alBufferData(buffer, OpenAlSoundEngine.MakeALFormat(channels, sampleBits), data, byteCount, sampleRate);
 		}
 
-		protected virtual void Dispose(bool disposing)
+		void Dispose(bool _)
 		{
 			if (!disposed)
 			{
@@ -538,7 +538,7 @@ namespace OpenRA.Platforms.Default
 		}
 	}
 
-	class OpenAlAsyncLoadSound : OpenAlSound
+	sealed class OpenAlAsyncLoadSound : OpenAlSound
 	{
 		static readonly byte[] SilentData = new byte[2];
 		readonly CancellationTokenSource cts = new();

@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Grants a condition while the trait is active.")]
-	class GrantConditionOnFactionInfo : ConditionalTraitInfo
+	sealed class GrantConditionOnFactionInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new GrantConditionOnFaction(init, this); }
 	}
 
-	class GrantConditionOnFaction : ConditionalTrait<GrantConditionOnFactionInfo>, INotifyOwnerChanged
+	sealed class GrantConditionOnFaction : ConditionalTrait<GrantConditionOnFactionInfo>, INotifyOwnerChanged
 	{
 		int conditionToken = Actor.InvalidConditionToken;
 		string faction;

@@ -11,7 +11,7 @@
 
 namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 {
-	class StateMachine
+	sealed class StateMachine
 	{
 		IState currentState;
 		IState previousState;

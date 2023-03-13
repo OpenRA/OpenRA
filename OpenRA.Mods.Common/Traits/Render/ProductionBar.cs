@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Visualizes the remaining build time of actor produced here.")]
-	class ProductionBarInfo : ConditionalTraitInfo, Requires<ProductionInfo>, IRulesetLoaded
+	sealed class ProductionBarInfo : ConditionalTraitInfo, Requires<ProductionInfo>, IRulesetLoaded
 	{
 		[FieldLoader.Require]
 		[Desc("Production queue type, for actors with multiple queues.")]
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new ProductionBar(init.Self, this); }
 	}
 
-	class ProductionBar : ConditionalTrait<ProductionBarInfo>, ISelectionBar, ITick, INotifyOwnerChanged
+	sealed class ProductionBar : ConditionalTrait<ProductionBarInfo>, ISelectionBar, ITick, INotifyOwnerChanged
 	{
 		readonly Actor self;
 		ProductionQueue queue;

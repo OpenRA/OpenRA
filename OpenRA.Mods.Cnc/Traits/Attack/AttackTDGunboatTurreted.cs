@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			return new AttackTDGunboatTurretedActivity(self, newTarget, forceAttack, targetLineColor);
 		}
 
-		class AttackTDGunboatTurretedActivity : Activity
+		sealed class AttackTDGunboatTurretedActivity : Activity
 		{
 			readonly AttackTDGunboatTurreted attack;
 			readonly Target target;

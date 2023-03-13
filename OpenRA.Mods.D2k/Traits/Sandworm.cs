@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.D2k.Traits
 {
-	class SandwormInfo : WandersInfo, Requires<MobileInfo>, Requires<AttackBaseInfo>
+	sealed class SandwormInfo : WandersInfo, Requires<MobileInfo>, Requires<AttackBaseInfo>
 	{
 		[Desc("Time between rescanning for targets (in ticks).")]
 		public readonly int TargetRescanInterval = 125;
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public override object Create(ActorInitializer init) { return new Sandworm(init.Self, this); }
 	}
 
-	class Sandworm : Wanders, ITick, INotifyActorDisposing
+	sealed class Sandworm : Wanders, ITick, INotifyActorDisposing
 	{
 		public readonly SandwormInfo WormInfo;
 

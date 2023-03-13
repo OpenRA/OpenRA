@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	class GameInfoBriefingLogic : ChromeLogic
+	sealed class GameInfoBriefingLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public GameInfoBriefingLogic(Widget widget, ModData modData, World world)

@@ -15,7 +15,7 @@ using OpenRA.Mods.Common.FileFormats;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class ListMSCabContentsCommand : IUtilityCommand
+	sealed class ListMSCabContentsCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--list-mscab";
 

@@ -16,12 +16,12 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Will AttackMove to a random location within MoveRadius when idle.",
 		"This conflicts with player orders and should only be added to animal creeps.")]
-	class AttackWanderInfo : WandersInfo, Requires<AttackMoveInfo>
+	sealed class AttackWanderInfo : WandersInfo, Requires<AttackMoveInfo>
 	{
 		public override object Create(ActorInitializer init) { return new AttackWander(init.Self, this); }
 	}
 
-	class AttackWander : Wanders
+	sealed class AttackWander : Wanders
 	{
 		readonly AttackMove attackMove;
 

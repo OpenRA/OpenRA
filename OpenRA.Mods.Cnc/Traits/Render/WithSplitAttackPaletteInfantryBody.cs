@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits.Render
 {
-	class WithSplitAttackPaletteInfantryBodyInfo : WithInfantryBodyInfo
+	sealed class WithSplitAttackPaletteInfantryBodyInfo : WithInfantryBodyInfo
 	{
 		[PaletteReference]
 		[Desc("Palette to use for the split attack rendering.")]
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		public override object Create(ActorInitializer init) { return new WithSplitAttackPaletteInfantryBody(init, this); }
 	}
 
-	class WithSplitAttackPaletteInfantryBody : WithInfantryBody
+	sealed class WithSplitAttackPaletteInfantryBody : WithInfantryBody
 	{
 		readonly WithSplitAttackPaletteInfantryBodyInfo info;
 		readonly Animation splitAnimation;

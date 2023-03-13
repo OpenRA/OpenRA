@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Graphics
 			return new FinalizedModelRenderable(wr, this);
 		}
 
-		class FinalizedModelRenderable : IFinalizedRenderable
+		sealed class FinalizedModelRenderable : IFinalizedRenderable
 		{
 			readonly ModelRenderable model;
 			readonly ModelRenderProxy renderProxy;

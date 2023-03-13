@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	class DonateExperience : Enter
+	sealed class DonateExperience : Enter
 	{
 		readonly int level;
 		readonly int playerExperience;

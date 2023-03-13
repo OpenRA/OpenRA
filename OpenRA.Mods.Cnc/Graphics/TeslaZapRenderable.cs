@@ -17,7 +17,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Cnc.Graphics
 {
-	class TeslaZapRenderable : IPalettedRenderable, IFinalizedRenderable
+	sealed class TeslaZapRenderable : IPalettedRenderable, IFinalizedRenderable
 	{
 		static readonly int[][] Steps = new[]
 		{

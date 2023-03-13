@@ -1230,7 +1230,7 @@ namespace OpenRA.Mods.Common.Traits
 			return new AssociateWithAirfieldActivity(self, creationActivityDelay);
 		}
 
-		class AssociateWithAirfieldActivity : Activity
+		sealed class AssociateWithAirfieldActivity : Activity
 		{
 			readonly Aircraft aircraft;
 			readonly int delay;

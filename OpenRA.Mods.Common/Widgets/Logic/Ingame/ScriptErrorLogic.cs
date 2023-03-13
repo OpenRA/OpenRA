@@ -14,7 +14,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	class ScriptErrorLogic : ChromeLogic
+	sealed class ScriptErrorLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
 		public ScriptErrorLogic(Widget widget, World world)
