@@ -24,11 +24,11 @@ AttackDelays =
 HarkonnenInfantryTypes = { "light_inf" }
 
 ActivateAI = function()
-	IdlingUnits[harkonnen] = { }
+	IdlingUnits[Harkonnen] = { }
 	local delay = function() return Utils.RandomInteger(AttackDelays[Difficulty][1], AttackDelays[Difficulty][2] + 1) end
 	local toBuild = function() return HarkonnenInfantryTypes end
 	local attackThresholdSize = AttackGroupSize[Difficulty] * 2.5
 
-	DefendAndRepairBase(harkonnen, HarkonnenBase, 0.75, AttackGroupSize[Difficulty])
-	ProduceUnits(harkonnen, HBarracks, delay, toBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	DefendAndRepairBase(Harkonnen, HarkonnenBase, 0.75, AttackGroupSize[Difficulty])
+	ProduceUnits(Harkonnen, HBarracks, delay, toBuild, AttackGroupSize[Difficulty], attackThresholdSize)
 end

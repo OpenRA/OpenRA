@@ -44,10 +44,10 @@ MissionStart = function()
 		TroopsArrived = true
 	end)
 
-	InfantryProduction()
+	ProduceInfantry()
 end
 
-InfantryProduction = function()
+ProduceInfantry = function()
 	if (SETent1.IsDead or SETent1.Owner ~= Greece) and (SETent2.IsDead or SETent2.Owner ~= Greece) then
 		return
 	end
@@ -56,7 +56,7 @@ InfantryProduction = function()
 
 	Greece.Build(toBuild, function(unit)
 		IdlingUnits[#IdlingUnits + 1] = unit[1]
-		Trigger.AfterDelay(InfantryDelay, InfantryProduction)
+		Trigger.AfterDelay(InfantryDelay, ProduceInfantry)
 
 		if #IdlingUnits >= (AttackGroupSize * 1.5) then
 			SendAttack()

@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.HitShapes
 			combatOverlayVertsTop = Points.Select(p => new WVec(p.X, p.Y, VerticalTopOffset)).ToArray();
 			combatOverlayVertsBottom = Points.Select(p => new WVec(p.X, p.Y, VerticalBottomOffset)).ToArray();
 			squares = new int[Points.Length];
-			squares[0] = (Points[0] - Points[Points.Length - 1]).LengthSquared;
+			squares[0] = (Points[0] - Points[^1]).LengthSquared;
 			for (var i = 1; i < Points.Length; i++)
 				squares[i] = (Points[i] - Points[i - 1]).LengthSquared;
 		}
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.HitShapes
 			if (Points.PolygonContains(p))
 				return new WDist(z);
 
-			var min2 = DistanceSquaredFromLineSegment(p, Points[Points.Length - 1], Points[0], squares[0]);
+			var min2 = DistanceSquaredFromLineSegment(p, Points[^1], Points[0], squares[0]);
 			for (var i = 1; i < Points.Length; i++)
 			{
 				var d2 = DistanceSquaredFromLineSegment(p, Points[i - 1], Points[i], squares[i]);

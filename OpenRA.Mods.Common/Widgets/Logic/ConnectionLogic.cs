@@ -42,6 +42,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "connection", connection },
 					{ "password", password },
 					{ "onAbort", onAbort },
+					{ "onQuit", null },
 					{ "onRetry", onRetry }
 				});
 			}
@@ -102,16 +103,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool passwordOffsetAdjusted;
 
 		[ObjectCreator.UseCtor]
-		public ConnectionFailedLogic(Widget widget, ModData modData, OrderManager orderManager, NetworkConnection connection, string password, Action onAbort, Action<string> onRetry)
+		public ConnectionFailedLogic(Widget widget, ModData modData, OrderManager orderManager, NetworkConnection connection, string password, Action onAbort, Action onQuit, Action<string> onRetry)
 		{
 			var panel = widget;
 			var abortButton = panel.Get<ButtonWidget>("ABORT_BUTTON");
+			var quitButton = panel.Get<ButtonWidget>("QUIT_BUTTON");
 			var retryButton = panel.Get<ButtonWidget>("RETRY_BUTTON");
+			var leaving = false;
 
 			abortButton.Visible = onAbort != null;
+			abortButton.IsDisabled = () => leaving;
 			abortButton.OnClick = () => { Ui.CloseWindow(); onAbort(); };
 
+			quitButton.Visible = onQuit != null;
+			quitButton.IsDisabled = () => leaving;
+			quitButton.OnClick = () => { onQuit(); leaving = true; };
+
 			retryButton.Visible = onRetry != null;
+			retryButton.IsDisabled = () => leaving;
 			retryButton.OnClick = () =>
 			{
 				var pass = passwordField != null && passwordField.IsVisible() ? passwordField.Text : password;

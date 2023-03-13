@@ -76,7 +76,7 @@ namespace OpenRA
 
 		public override string ToString() { return X + "," + Y; }
 
-		public static readonly float2 Zero = new float2(0, 0);
+		public static readonly float2 Zero = new(0, 0);
 
 		public static bool WithinEpsilon(float2 a, float2 b, float e)
 		{

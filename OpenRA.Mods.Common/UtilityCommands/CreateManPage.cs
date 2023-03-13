@@ -41,10 +41,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			sections.Add("Launch", new LaunchArguments(new Arguments(Array.Empty<string>())));
 			foreach (var section in sections.OrderBy(s => s.Key))
 			{
-				var fields = section.Value.GetType().GetFields();
+				var fields = Utility.GetFields(section.Value.GetType());
 				foreach (var field in fields)
 				{
-					if (!field.HasAttribute<DescAttribute>())
+					if (!Utility.HasAttribute<DescAttribute>(field))
 						continue;
 
 					Console.WriteLine(".TP");
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					else
 						Console.WriteLine();
 
-					var lines = field.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines);
+					var lines = Utility.GetCustomAttributes<DescAttribute>(field, false).SelectMany(d => d.Lines);
 					foreach (var line in lines)
 						Console.WriteLine(line);
 				}

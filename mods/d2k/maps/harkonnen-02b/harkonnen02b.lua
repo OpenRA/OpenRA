@@ -65,31 +65,31 @@ AtreidesAttackWaves =
 }
 
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		atreides.MarkCompletedObjective(KillHarkonnen)
+	if Harkonnen.HasNoRequiredUnits() then
+		Atreides.MarkCompletedObjective(KillHarkonnen)
 	end
 
-	if atreides.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
+	if Atreides.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillAtreides) then
 		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
-		player.MarkCompletedObjective(KillAtreides)
+		Harkonnen.MarkCompletedObjective(KillAtreides)
 	end
 end
 
 WorldLoaded = function()
-	atreides = Player.GetPlayer("Atreides")
-	player = Player.GetPlayer("Harkonnen")
+	Atreides = Player.GetPlayer("Atreides")
+	Harkonnen = Player.GetPlayer("Harkonnen")
 
-	InitObjectives(player)
-	KillHarkonnen = AddPrimaryObjective(atreides, "")
-	KillAtreides = AddSecondaryObjective(player, "destroy-atreides-forces")
+	InitObjectives(Harkonnen)
+	KillHarkonnen = AddPrimaryObjective(Atreides, "")
+	KillAtreides = AddSecondaryObjective(Harkonnen, "destroy-atreides-forces")
 
 	Camera.Position = HConyard.CenterPosition
 
 	Trigger.OnAllKilled(AtreidesBase, function()
-		Utils.Do(atreides.GetGroundAttackers(), IdleHunt)
+		Utils.Do(Atreides.GetGroundAttackers(), IdleHunt)
 	end)
 
 	local path = function() return Utils.Random(AtreidesAttackPaths) end
-	SendCarryallReinforcements(atreides, 0, AtreidesAttackWaves[Difficulty], AtreidesAttackDelay[Difficulty], path, AtreidesReinforcements[Difficulty])
+	SendCarryallReinforcements(Atreides, 0, AtreidesAttackWaves[Difficulty], AtreidesAttackDelay[Difficulty], path, AtreidesReinforcements[Difficulty])
 	Trigger.AfterDelay(0, ActivateAI)
 end

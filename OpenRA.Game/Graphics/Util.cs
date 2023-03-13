@@ -224,10 +224,10 @@ namespace OpenRA.Graphics
 		}
 
 		/// <summary>Rotates a quad about its center in the x-y plane.</summary>
-		/// <param name="tl">The top left vertex of the quad</param>
-		/// <param name="size">A float3 containing the X, Y, and Z lengths of the quad</param>
-		/// <param name="rotation">The number of radians to rotate by</param>
-		/// <returns>An array of four vertices representing the rotated quad (top-left, top-right, bottom-right, bottom-left)</returns>
+		/// <param name="tl">The top left vertex of the quad.</param>
+		/// <param name="size">A float3 containing the X, Y, and Z lengths of the quad.</param>
+		/// <param name="rotation">The number of radians to rotate by.</param>
+		/// <returns>An array of four vertices representing the rotated quad (top-left, top-right, bottom-right, bottom-left).</returns>
 		public static float3[] RotateQuad(float3 tl, float3 size, float rotation)
 		{
 			var center = tl + 0.5f * size;
@@ -258,9 +258,9 @@ namespace OpenRA.Graphics
 		/// <summary>
 		/// Returns the bounds of an object. Used for determining which objects need to be rendered on screen, and which do not.
 		/// </summary>
-		/// <param name="offset">The top left vertex of the object</param>
-		/// <param name="size">A float 3 containing the X, Y, and Z lengths of the object</param>
-		/// <param name="rotation">The angle to rotate the object by (use 0f if there is no rotation)</param>
+		/// <param name="offset">The top left vertex of the object.</param>
+		/// <param name="size">A float 3 containing the X, Y, and Z lengths of the object.</param>
+		/// <param name="rotation">The angle to rotate the object by (use 0f if there is no rotation).</param>
 		public static Rectangle BoundingRectangle(float3 offset, float3 size, float rotation)
 		{
 			if (rotation == 0f)

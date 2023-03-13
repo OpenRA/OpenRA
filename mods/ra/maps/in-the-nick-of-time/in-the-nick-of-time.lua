@@ -129,7 +129,7 @@ AlliedReinforcements = function()
 
 			Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
 			local chinookChalk2 = Reinforcements.ReinforceWithTransport(Greece, "tran.reinforcement", NorthChinookChalk, NorthChinookPath, { NorthChinookPath[1] })
-			InfantryProduction()
+			ProduceInfantry()
 			TankProduction()
 		end
 	end)
@@ -266,7 +266,7 @@ AttackGroupSize = 4
 ProductionDelay = DateTime.Seconds(10)
 IdlingUnits = { }
 
-InfantryProduction = function()
+ProduceInfantry = function()
 	if (Tent1.IsDead or Tent1.Owner ~= USSR) and (Tent2.IsDead or Tent2.Owner ~= USSR) then
 		return
 	end
@@ -275,7 +275,7 @@ InfantryProduction = function()
 
 	USSR.Build(toBuild, function(unit)
 		IdlingUnits[#IdlingUnits + 1] = unit[1]
-		Trigger.AfterDelay(ProductionDelay, InfantryProduction)
+		Trigger.AfterDelay(ProductionDelay, ProduceInfantry)
 
 		if #IdlingUnits >= (AttackGroupSize * 1.5) then
 			SendAttack()
@@ -336,19 +336,19 @@ LoseTriggers = function()
 	end)
 end
 
-ticked = TimerTicks
+Ticked = TimerTicks
 Tick = function()
 	if Greece.HasNoRequiredUnits() and UnitsArrived then
 		USSR.MarkCompletedObjective(SovietObj)
 	end
 
-	if ticked > 0 then
-		if (ticked % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("chronosphere-explodes-in", { ["time"] = Utils.FormatTime(ticked) })
+	if Ticked > 0 then
+		if (Ticked % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("chronosphere-explodes-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(Timer, TimerColor)
 		end
-		ticked = ticked - 1
-	elseif ticked == 0 then
+		Ticked = Ticked - 1
+	elseif Ticked == 0 then
 		UserInterface.SetMissionText(UserInterface.Translate("too-late"), USSR.Color)
 		USSR.MarkCompletedObjective(SovietObj)
 	end

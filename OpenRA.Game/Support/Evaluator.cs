@@ -80,7 +80,7 @@ namespace OpenRA.Support
 		}
 
 		static readonly Dictionary<string, int> Prec
-			= new Dictionary<string, int> { { "+", 0 }, { "-", 0 }, { "*", 1 }, { "/", 1 }, { "(", -1 } };
+			= new() { { "+", 0 }, { "-", 0 }, { "*", 1 }, { "/", 1 }, { "(", -1 } };
 
 		static IEnumerable<string> Tokens(string expr, string ops)
 		{

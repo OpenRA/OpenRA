@@ -150,19 +150,19 @@ SendInVolkov = function()
 	end
 end
 
-ticked = TimerTicks
+Ticked = TimerTicks
 Tick = function()
 	if Turkey.PowerState ~= "Normal" then
 		SendInVolkov()
 	end
 
-	if ticked > 0 then
-		if (ticked % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("missiles-launch-in", { ["time"] = Utils.FormatTime(ticked) })
+	if Ticked > 0 then
+		if (Ticked % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("missiles-launch-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(Timer, TimerColor)
 		end
-		ticked = ticked - 1
-	elseif ticked == 0 then
+		Ticked = Ticked - 1
+	elseif Ticked == 0 then
 		UserInterface.SetMissionText(UserInterface.Translate("too-late"), USSR.Color)
 		Turkey.MarkCompletedObjective(LaunchMissles)
 	end

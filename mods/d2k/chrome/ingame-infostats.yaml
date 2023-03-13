@@ -132,6 +132,19 @@ Container@SKIRMISH_STATS:
 							Checkmark: mute
 							Background: checkbox-toggle
 							TooltipContainer: TOOLTIP_CONTAINER
+						Button@KICK:
+							X: 485
+							Width: 25
+							Height: 25
+							Background: checkbox-toggle
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipText: Kick this player
+							Children:
+								Image:
+									ImageCollection: lobby-bits
+									ImageName: kick
+									X: 7
+									Y: 7
 				Container@SPECTATOR_TEMPLATE:
 					Width: PARENT_RIGHT - 27
 					Height: 25

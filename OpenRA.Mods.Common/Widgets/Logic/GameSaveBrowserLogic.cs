@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget panel;
 		readonly ScrollPanelWidget gameList;
 		readonly TextFieldWidget saveTextField;
-		readonly List<string> games = new List<string>();
+		readonly List<string> games = new();
 		readonly Action onStart;
 		readonly Action onExit;
 		readonly ModData modData;
@@ -120,6 +120,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				saveTextField = saveWidgets.Get<TextFieldWidget>("SAVE_TEXTFIELD");
 				gameList.Bounds.Height -= saveWidgets.Bounds.Height;
 				saveWidgets.IsVisible = () => true;
+
+				saveTextField.OnEnterKey = _ =>
+				{
+					if (!string.IsNullOrWhiteSpace(saveTextField.Text))
+						Save(world);
+
+					return true;
+				};
 			}
 			else
 			{
@@ -268,7 +276,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				games[games.IndexOf(oldPath)] = newPath;
 				foreach (var c in gameList.Children)
 				{
-					if (!(c is ScrollItemWidget item) || item.ItemKey != oldPath)
+					if (c is not ScrollItemWidget item || item.ItemKey != oldPath)
 						continue;
 
 					item.ItemKey = newPath;
@@ -312,14 +320,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void SelectFirstVisible()
 		{
 			Select(isSavePanel ? null : games.FirstOrDefault());
+			if (isSavePanel)
+			{
+				saveTextField.TakeKeyboardFocus();
+				saveTextField.CursorPosition = saveTextField.Text.Length;
+			}
 		}
 
 		void Select(string savePath)
 		{
 			selectedSave = savePath;
 			if (isSavePanel)
-				saveTextField.Text = savePath == null ? defaultSaveFilename :
-					Path.GetFileNameWithoutExtension(savePath);
+			{
+				saveTextField.Text = savePath == null ? defaultSaveFilename : Path.GetFileNameWithoutExtension(savePath);
+				saveTextField.CursorPosition = saveTextField.Text.Length;
+			}
 		}
 
 		void Load()
@@ -359,7 +374,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				onExit();
 			}
 
-			if (selectedSave != null || File.Exists(testPath))
+			if (File.Exists(testPath))
 			{
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: OverwriteSaveTitle,

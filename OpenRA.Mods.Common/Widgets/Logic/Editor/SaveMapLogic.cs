@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				foreach (var kv in modData.MapCache.MapLocations)
 				{
-					if (!(kv.Key is Folder folder))
+					if (kv.Key is not Folder folder)
 						continue;
 
 					try
@@ -147,13 +147,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (map.Package != null)
 				{
 					selectedDirectory = writableDirectories.FirstOrDefault(k => k.Folder.Contains(map.Package.Name));
-					if (selectedDirectory == null)
-						selectedDirectory = writableDirectories.FirstOrDefault(k => Directory.GetDirectories(k.Folder.Name).Any(f => f.Contains(map.Package.Name)));
+					selectedDirectory ??= writableDirectories.FirstOrDefault(k => Directory.GetDirectories(k.Folder.Name).Any(f => f.Contains(map.Package.Name)));
 				}
 
 				// Prioritize MapClassification.User directories over system directories
-				if (selectedDirectory == null)
-					selectedDirectory = writableDirectories.OrderByDescending(kv => kv.Classification).First();
+				selectedDirectory ??= writableDirectories.OrderByDescending(kv => kv.Classification).First();
 
 				directoryDropdown.GetText = () => selectedDirectory?.DisplayName ?? "";
 				directoryDropdown.OnClick = () =>
@@ -211,7 +209,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				try
 				{
-					if (!(map.Package is IReadWritePackage package) || package.Name != combinedPath)
+					if (map.Package is not IReadWritePackage package || package.Name != combinedPath)
 					{
 						selectedDirectory.Folder.Delete(combinedPath);
 						if (fileType == MapFileType.OraMap)

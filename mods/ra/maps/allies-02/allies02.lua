@@ -50,8 +50,8 @@ else
 end
 
 SendJeepReinforcements = function()
-	Media.PlaySpeechNotification(player, "ReinforcementsArrived")
-	Reinforcements.Reinforce(player, JeepReinforcements, JeepPath, DateTime.Seconds(1))
+	Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
+	Reinforcements.Reinforce(Greece, JeepReinforcements, JeepPath, DateTime.Seconds(1))
 end
 
 RunInitialActivities = function()
@@ -59,12 +59,12 @@ RunInitialActivities = function()
 	Trigger.OnKilled(Harvester, function() HarvesterKilled = true end)
 
 	Trigger.OnAllKilled(PathGuards, function()
-		player.MarkCompletedObjective(SecureObjective)
+		Greece.MarkCompletedObjective(SecureObjective)
 		SendTrucks()
 	end)
 
 	Trigger.OnAllKilled(SovietBase, function()
-		Utils.Do(ussr.GetGroundAttackers(), function(unit)
+		Utils.Do(USSR.GetGroundAttackers(), function(unit)
 			if not Utils.Any(PathGuards, function(pg) return pg == unit end) then
 				Trigger.OnIdle(unit, unit.Hunt)
 			end
@@ -72,15 +72,15 @@ RunInitialActivities = function()
 	end)
 
 	if InfantryTypes then
-		Trigger.AfterDelay(InfantryDelay, InfantryProduction)
+		Trigger.AfterDelay(InfantryDelay, ProduceInfantry)
 	end
 
 	if VehicleTypes then
-		Trigger.AfterDelay(VehicleDelay, VehicleProduction)
+		Trigger.AfterDelay(VehicleDelay, ProduceVehicles)
 	end
 end
 
-InfantryProduction = function()
+ProduceInfantry = function()
 	if SovietBarracks.IsDead then
 		return
 	end
@@ -88,12 +88,12 @@ InfantryProduction = function()
 	local toBuild = { Utils.Random(InfantryTypes) }
 
 	if SovietKennel.IsDead and toBuild == "dog" then
-		toBuild = "e1"
+		toBuild = { "e1" }
 	end
 
-	ussr.Build(toBuild, function(unit)
+	USSR.Build(toBuild, function(unit)
 		IdlingUnits[#IdlingUnits + 1] = unit[1]
-		Trigger.AfterDelay(InfantryDelay, InfantryProduction)
+		Trigger.AfterDelay(InfantryDelay, ProduceInfantry)
 
 		if #IdlingUnits >= (AttackGroupSize * 1.5) then
 			SendAttack()
@@ -101,26 +101,26 @@ InfantryProduction = function()
 	end)
 end
 
-VehicleProduction = function()
+ProduceVehicles = function()
 	if SovietWarfactory.IsDead then
 		return
 	end
 
 	if HarvesterKilled then
-		ussr.Build({ "harv" }, function(harv)
+		USSR.Build({ "harv" }, function(harv)
 			harv[1].FindResources()
 			Trigger.OnKilled(harv[1], function() HarvesterKilled = true end)
 
 			HarvesterKilled = false
-			VehicleProduction()
+			ProduceVehicles()
 		end)
 		return
 	end
 
 	local toBuild = { Utils.Random(VehicleTypes) }
-	ussr.Build(toBuild, function(unit)
+	USSR.Build(toBuild, function(unit)
 		IdlingUnits[#IdlingUnits + 1] = unit[1]
-		Trigger.AfterDelay(VehicleDelay, VehicleProduction)
+		Trigger.AfterDelay(VehicleDelay, ProduceVehicles)
 
 		if #IdlingUnits >= (AttackGroupSize * 1.5) then
 			SendAttack()
@@ -149,14 +149,14 @@ SendAttack = function()
 end
 
 Tick = function()
-	ussr.Resources = ussr.Resources - (0.01 * ussr.ResourceCapacity / 25)
+	USSR.Resources = USSR.Resources - (0.01 * USSR.ResourceCapacity / 25)
 
-	if ussr.HasNoRequiredUnits() then
-		player.MarkCompletedObjective(ConquestObjective)
+	if USSR.HasNoRequiredUnits() then
+		Greece.MarkCompletedObjective(ConquestObjective)
 	end
 
-	if player.HasNoRequiredUnits() then
-		ussr.MarkCompletedObjective(ussrObj)
+	if Greece.HasNoRequiredUnits() then
+		USSR.MarkCompletedObjective(USSRobjective)
 	end
 end
 
@@ -182,22 +182,22 @@ SendTrucks = function()
 
 		DateTime.TimeLimit = 0
 		UserInterface.SetMissionText("")
-		ConvoyObjective = AddPrimaryObjective(player, "escort-convoy")
+		ConvoyObjective = AddPrimaryObjective(Greece, "escort-convoy")
 
-		Media.PlaySpeechNotification(player, "ConvoyApproaching")
+		Media.PlaySpeechNotification(Greece, "ConvoyApproaching")
 		Trigger.AfterDelay(DateTime.Seconds(3), function()
 			ConvoyUnharmed = true
-			local trucks = Reinforcements.Reinforce(england, TruckReinforcements, TruckPath, DateTime.Seconds(1),
+			local trucks = Reinforcements.Reinforce(England, TruckReinforcements, TruckPath, DateTime.Seconds(1),
 				function(truck)
 					Trigger.OnIdle(truck, function() truck.Move(TruckExitPoint.Location) end)
 				end)
-			count = 0
+			local count = 0
 			Trigger.OnEnteredFootprint( { TruckExitPoint.Location }, function(a, id)
-				if a.Owner == england then
+				if a.Owner == England then
 					count = count + 1
 					a.Destroy()
 					if count == 3 then
-						player.MarkCompletedObjective(ConvoyObjective)
+						Greece.MarkCompletedObjective(ConvoyObjective)
 						Trigger.RemoveFootprintTrigger(id)
 					end
 				end
@@ -208,30 +208,30 @@ SendTrucks = function()
 end
 
 ConvoyCasualites = function()
-	Media.PlaySpeechNotification(player, "ConvoyUnitLost")
+	Media.PlaySpeechNotification(Greece, "ConvoyUnitLost")
 	if ConvoyUnharmed then
 		ConvoyUnharmed = false
-		Trigger.AfterDelay(DateTime.Seconds(1), function() player.MarkFailedObjective(ConvoyObjective) end)
+		Trigger.AfterDelay(DateTime.Seconds(1), function() Greece.MarkFailedObjective(ConvoyObjective) end)
 	end
 end
 
 WorldLoaded = function()
-	player = Player.GetPlayer("Greece")
-	england = Player.GetPlayer("England")
-	ussr = Player.GetPlayer("USSR")
+	Greece = Player.GetPlayer("Greece")
+	England = Player.GetPlayer("England")
+	USSR = Player.GetPlayer("USSR")
 
-	InitObjectives(player)
+	InitObjectives(Greece)
 
-	ussrObj = AddPrimaryObjective(ussr, "")
+	USSRobjective = AddPrimaryObjective(USSR, "")
 
-	SecureObjective = AddPrimaryObjective(player, "secure-convoy")
-	ConquestObjective = AddPrimaryObjective(player, "eliminate-soviets")
+	SecureObjective = AddPrimaryObjective(Greece, "secure-convoy")
+	ConquestObjective = AddPrimaryObjective(Greece, "eliminate-soviets")
 
-	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(allies, "MissionTimerInitialised") end)
+	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(Allies, "MissionTimerInitialised") end)
 
 	RunInitialActivities()
 
-	Reinforcements.Reinforce(player, ConstructionVehicleReinforcements, ConstructionVehiclePath)
+	Reinforcements.Reinforce(Greece, ConstructionVehicleReinforcements, ConstructionVehiclePath)
 	Trigger.AfterDelay(DateTime.Seconds(5), SendJeepReinforcements)
 	Trigger.AfterDelay(DateTime.Seconds(10), SendJeepReinforcements)
 
@@ -241,5 +241,5 @@ WorldLoaded = function()
 	end)
 
 	Camera.Position = ReinforcementsEntryPoint.CenterPosition
-	TimerColor = player.Color
+	TimerColor = Greece.Color
 end

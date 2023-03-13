@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly TooltipInfoBase tooltip;
 		IActorPreview[] previews;
 		readonly ActorReference reference;
-		readonly Dictionary<INotifyEditorPlacementInfo, object> editorData = new Dictionary<INotifyEditorPlacementInfo, object>();
+		readonly Dictionary<INotifyEditorPlacementInfo, object> editorData = new();
 
 		public EditorActorPreview(WorldRenderer worldRenderer, string id, ActorReference reference, PlayerReference owner)
 		{

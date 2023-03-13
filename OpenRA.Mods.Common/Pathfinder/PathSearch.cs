@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		// PERF: Maintain a pool of layers used for paths searches for each world. These searches are performed often
 		// so we wish to avoid the high cost of initializing a new search space every time by reusing the old ones.
-		static readonly ConditionalWeakTable<World, CellInfoLayerPool> LayerPoolTable = new ConditionalWeakTable<World, CellInfoLayerPool>();
+		static readonly ConditionalWeakTable<World, CellInfoLayerPool> LayerPoolTable = new();
 		static readonly ConditionalWeakTable<World, CellInfoLayerPool>.CreateValueCallback CreateLayerPool = world => new CellInfoLayerPool(world.Map);
 
 		static CellInfoLayerPool LayerPoolForWorld(World world)
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var graph = new MapPathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, laneBias, false);
 			var search = new PathSearch(graph, loc => 0, 0, targetPredicate, recorder);
 
-			AddInitialCells(world, locomotor, froms, customCost, search);
+			AddInitialCells(world, locomotor, self, froms, check, customCost, ignoreActor, false, search);
 
 			return search;
 		}
@@ -68,14 +68,25 @@ namespace OpenRA.Mods.Common.Pathfinder
 			else
 				graph = new MapPathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, laneBias, inReverse);
 
-			heuristic = heuristic ?? DefaultCostEstimator(locomotor, target);
+			heuristic ??= DefaultCostEstimator(locomotor, target);
 			var search = new PathSearch(graph, heuristic, heuristicWeightPercentage, loc => loc == target, recorder);
 
-			AddInitialCells(world, locomotor, froms, customCost, search);
+			AddInitialCells(world, locomotor, self, froms, check, customCost, ignoreActor, inReverse, search);
 
 			return search;
 		}
 
+		/// <summary>
+		/// Determines if a cell is a valid pathfinding location.
+		/// <list type="bullet">
+		/// <item>It is in the world.</item>
+		/// <item>It is either on the ground layer (0) or on an *enabled* custom movement layer.</item>
+		/// <item>It has not been excluded by the <paramref name="customCost"/>.</item>
+		/// </list>
+		/// If required, follow this with a call to
+		/// <see cref="Locomotor.MovementCostToEnterCell(Actor, CPos, CPos, BlockedByActor, Actor, bool)"/> to
+		/// determine if the cell is accessible.
+		/// </summary>
 		public static bool CellAllowsMovement(World world, Locomotor locomotor, CPos cell, Func<CPos, int> customCost)
 		{
 			return world.Map.Contains(cell) &&
@@ -83,10 +94,18 @@ namespace OpenRA.Mods.Common.Pathfinder
 				(customCost == null || customCost(cell) != PathGraph.PathCostForInvalidPath);
 		}
 
-		static void AddInitialCells(World world, Locomotor locomotor, IEnumerable<CPos> froms, Func<CPos, int> customCost, PathSearch search)
+		static void AddInitialCells(World world, Locomotor locomotor, Actor self, IEnumerable<CPos> froms,
+			BlockedByActor check, Func<CPos, int> customCost, Actor ignoreActor, bool inReverse, PathSearch search)
 		{
+			// A source cell is allowed to have an unreachable movement cost.
+			// Therefore we don't need to check if the cell is accessible, only that it allows movement.
+			// *Unless* the search is being done in reverse, in this case the source is really a target,
+			// and a target is required to have a reachable cost.
+			// We also need to ignore self, so we don't consider the location blocked by ourselves!
 			foreach (var sl in froms)
-				if (CellAllowsMovement(world, locomotor, sl, customCost))
+				if (CellAllowsMovement(world, locomotor, sl, customCost) &&
+					(!inReverse || locomotor.MovementCostToEnterCell(self, sl, check, ignoreActor, true)
+						!= PathGraph.MovementCostForUnreachableCell))
 					search.AddInitialCell(sl, customCost);
 		}
 
@@ -170,7 +189,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			this.heuristicWeightPercentage = heuristicWeightPercentage;
 			TargetPredicate = targetPredicate;
 			this.recorder = recorder;
-			openQueue = new PriorityQueue<GraphConnection>(GraphConnection.ConnectionCostComparer);
+			openQueue = new Primitives.PriorityQueue<GraphConnection, GraphConnection.CostComparer>(default);
 		}
 
 		void AddInitialCell(CPos location, Func<CPos, int> customCost)
@@ -219,9 +238,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		/// <summary>
 		/// This function analyzes the neighbors of the most promising node in the pathfinding graph
-		/// using the A* algorithm (A-star) and returns that node
+		/// using the A* algorithm (A-star) and returns that node.
 		/// </summary>
-		/// <returns>The most promising node of the iteration</returns>
+		/// <returns>The most promising node of the iteration.</returns>
 		CPos Expand()
 		{
 			var currentMinNode = openQueue.Pop().Destination;
@@ -229,7 +248,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var currentInfo = Graph[currentMinNode];
 			Graph[currentMinNode] = new CellInfo(CellStatus.Closed, currentInfo.CostSoFar, currentInfo.EstimatedTotalCost, currentInfo.PreviousNode);
 
-			foreach (var connection in Graph.GetConnections(currentMinNode))
+			foreach (var connection in Graph.GetConnections(currentMinNode, TargetPredicate))
 			{
 				// Calculate the cost up to that point
 				var costSoFarToNeighbor = currentInfo.CostSoFar + connection.Cost;

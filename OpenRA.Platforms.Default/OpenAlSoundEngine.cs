@@ -51,7 +51,7 @@ namespace OpenRA.Platforms.Default
 		const int GroupDistanceSqr = GroupDistance * GroupDistance;
 		const int PoolSize = 32;
 
-		readonly Dictionary<uint, PoolSlot> sourcePool = new Dictionary<uint, PoolSlot>(PoolSize);
+		readonly Dictionary<uint, PoolSlot> sourcePool = new(PoolSize);
 		float volume = 1f;
 		IntPtr device;
 		IntPtr context;
@@ -541,7 +541,7 @@ namespace OpenRA.Platforms.Default
 	class OpenAlAsyncLoadSound : OpenAlSound
 	{
 		static readonly byte[] SilentData = new byte[2];
-		readonly CancellationTokenSource cts = new CancellationTokenSource();
+		readonly CancellationTokenSource cts = new();
 		readonly Task playTask;
 
 		public OpenAlAsyncLoadSound(uint source, bool looping, bool relative, WPos pos, float volume, int channels, int sampleBits, int sampleRate, Stream stream)

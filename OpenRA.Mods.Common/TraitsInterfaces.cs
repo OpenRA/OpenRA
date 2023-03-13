@@ -16,7 +16,9 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Terrain;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -288,6 +290,18 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IProvidesAssetBrowserColorPickerPalettes
 	{
 		IEnumerable<string> ColorPickerPaletteNames { get; }
+	}
+
+	public interface IColorPickerManagerInfo : ITraitInfoInterface
+	{
+		(float SMin, float SMax) SaturationRange { get; }
+		(float VMin, float VMax) ValueRange { get; }
+		event Action<Color> OnColorPickerColorUpdate;
+		Color[] PresetColors { get; }
+		Color RandomPresetColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors);
+		Color RandomValidColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors);
+		Color MakeValid(Color color, MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, Action<string> onError = null);
+		void ShowColorDropDown(DropDownButtonWidget dropdownButton, Color initialColor, string initialFaction, WorldRenderer worldRenderer, Action<Color> onExit);
 	}
 
 	public interface ICallForTransport
@@ -797,8 +811,25 @@ namespace OpenRA.Mods.Common.Traits
 		/// Returned path is *reversed* and given target to source.
 		/// The shortest path between a source and the target is returned.
 		/// </summary>
+		/// <remarks>Path searches are not guaranteed to by symmetric,
+		/// the source and target locations cannot be swapped.
+		/// Call <see cref="FindPathToTargetCells"/> instead.</remarks>
 		List<CPos> FindPathToTargetCell(
 			Actor self, IEnumerable<CPos> sources, CPos target, BlockedByActor check,
+			Func<CPos, int> customCost = null,
+			Actor ignoreActor = null,
+			bool laneBias = true);
+
+		/// <summary>
+		/// Calculates a path for the actor from source to multiple possible targets.
+		/// Returned path is *reversed* and given target to source.
+		/// The shortest path between the source and a target is returned.
+		/// </summary>
+		/// <remarks>Path searches are not guaranteed to by symmetric,
+		/// the source and target locations cannot be swapped.
+		/// Call <see cref="FindPathToTargetCell"/> instead.</remarks>
+		List<CPos> FindPathToTargetCells(
+			Actor self, CPos source, IEnumerable<CPos> targets, BlockedByActor check,
 			Func<CPos, int> customCost = null,
 			Actor ignoreActor = null,
 			bool laneBias = true);
@@ -819,6 +850,8 @@ namespace OpenRA.Mods.Common.Traits
 		/// Only terrain is taken into account, i.e. as if <see cref="BlockedByActor.None"/> was given.
 		/// This would apply for any actor using the given <see cref="Locomotor"/>.
 		/// </summary>
+		/// <remarks>Path searches are not guaranteed to by symmetric,
+		/// the source and target locations cannot be swapped.</remarks>
 		bool PathExistsForLocomotor(Locomotor locomotor, CPos source, CPos target);
 	}
 }

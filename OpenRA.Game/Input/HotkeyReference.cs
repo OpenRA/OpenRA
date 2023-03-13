@@ -14,7 +14,7 @@ using System;
 namespace OpenRA
 {
 	/// <summary>
-	/// A reference to either a named hotkey (defined in the game settings) or a statically assigned hotkey
+	/// A reference to either a named hotkey (defined in the game settings) or a statically assigned hotkey.
 	/// </summary>
 	public class HotkeyReference
 	{

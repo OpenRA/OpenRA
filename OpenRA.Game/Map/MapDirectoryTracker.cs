@@ -25,7 +25,7 @@ namespace OpenRA
 		readonly MapClassification classification;
 
 		enum MapAction { Add, Delete, Update }
-		readonly Dictionary<string, MapAction> mapActionQueue = new Dictionary<string, MapAction>();
+		readonly Dictionary<string, MapAction> mapActionQueue = new();
 
 		bool dirty = false;
 

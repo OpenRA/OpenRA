@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 	{
 		static readonly float[] ChannelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
 
-		readonly List<Vertex[]> vertices = new List<Vertex[]>();
+		readonly List<Vertex[]> vertices = new();
 		readonly Cache<(string, string), Voxel> voxels;
 		readonly IReadOnlyFileSystem fileSystem;
 		IVertexBuffer<Vertex> vertexBuffer;

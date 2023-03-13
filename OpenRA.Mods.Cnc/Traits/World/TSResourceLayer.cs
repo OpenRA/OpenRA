@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		[ActorReference]
 		[Desc("Actor types that should be treated as veins for adjacency.")]
-		public readonly HashSet<string> VeinholeActors = new HashSet<string> { };
+		public readonly HashSet<string> VeinholeActors = new() { };
 
 		public override object Create(ActorInitializer init) { return new TSResourceLayer(init.Self, this); }
 	}
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	class TSResourceLayer : ResourceLayer, INotifyActorDisposing
 	{
 		readonly TSResourceLayerInfo info;
-		readonly HashSet<CPos> veinholeCells = new HashSet<CPos>();
+		readonly HashSet<CPos> veinholeCells = new();
 
 		public TSResourceLayer(Actor self, TSResourceLayerInfo info)
 			: base(self, info)

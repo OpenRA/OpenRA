@@ -61,16 +61,16 @@ Messages =
 
 CachedResources = -1
 Tick = function()
-	if AtreidesArrived and atreides.HasNoRequiredUnits() then
-		player.MarkCompletedObjective(KillAtreides)
+	if AtreidesArrived and Atreides.HasNoRequiredUnits() then
+		Harkonnen.MarkCompletedObjective(KillAtreides)
 	end
 
-	if player.Resources > SpiceToHarvest - 1 then
-		player.MarkCompletedObjective(GatherSpice)
+	if Harkonnen.Resources > SpiceToHarvest - 1 then
+		Harkonnen.MarkCompletedObjective(GatherSpice)
 	end
 
 	-- player has no Wind Trap
-	if (player.PowerProvided <= 20 or player.PowerState ~= "Normal") and DateTime.GameTime % DateTime.Seconds(32) == 0 then
+	if (Harkonnen.PowerProvided <= 20 or Harkonnen.PowerState ~= "Normal") and DateTime.GameTime % DateTime.Seconds(32) == 0 then
 		HasPower = false
 		Media.DisplayMessage(Messages[2], Mentat)
 	else
@@ -78,40 +78,40 @@ Tick = function()
 	end
 
 	-- player has no Refinery and no Silos
-	if HasPower and player.ResourceCapacity == 0 and DateTime.GameTime % DateTime.Seconds(32) == 0 then
+	if HasPower and Harkonnen.ResourceCapacity == 0 and DateTime.GameTime % DateTime.Seconds(32) == 0 then
 		Media.DisplayMessage(Messages[3], Mentat)
 	end
 
-	if HasPower and player.Resources > player.ResourceCapacity * 0.8 and DateTime.GameTime % DateTime.Seconds(32) == 0 then
+	if HasPower and Harkonnen.Resources > Harkonnen.ResourceCapacity * 0.8 and DateTime.GameTime % DateTime.Seconds(32) == 0 then
 		Media.DisplayMessage(Messages[4], Mentat)
 	end
 
-	if player.Resources ~= CachedResources then
-		local parameters = { ["harvested"] = player.Resources, ["goal"] = SpiceToHarvest }
+	if Harkonnen.Resources ~= CachedResources then
+		local parameters = { ["harvested"] = Harkonnen.Resources, ["goal"] = SpiceToHarvest }
 		local harvestedResources = UserInterface.Translate("harvested-resources", parameters)
 		UserInterface.SetMissionText(harvestedResources)
-		CachedResources = player.Resources
+		CachedResources = Harkonnen.Resources
 	end
 end
 
 WorldLoaded = function()
-	player = Player.GetPlayer("Harkonnen")
-	atreides = Player.GetPlayer("Atreides")
+	Harkonnen = Player.GetPlayer("Harkonnen")
+	Atreides = Player.GetPlayer("Atreides")
 
 	SpiceToHarvest = ToHarvest[Difficulty]
 
-	InitObjectives(player)
-	KillHarkonnen = AddPrimaryObjective(atreides, "")
+	InitObjectives(Harkonnen)
+	KillHarkonnen = AddPrimaryObjective(Atreides, "")
 	local harvestSpice = UserInterface.Translate("harvest-spice", { ["spice"] = SpiceToHarvest })
-	GatherSpice = AddPrimaryObjective(player, harvestSpice)
-	KillAtreides = AddSecondaryObjective(player, "eliminate-atreides-units-reinforcements")
+	GatherSpice = AddPrimaryObjective(Harkonnen, harvestSpice)
+	KillAtreides = AddSecondaryObjective(Harkonnen, "eliminate-atreides-units-reinforcements")
 
 	local checkResourceCapacity = function()
 		Trigger.AfterDelay(0, function()
-			if player.ResourceCapacity < SpiceToHarvest then
+			if Harkonnen.ResourceCapacity < SpiceToHarvest then
 				Media.DisplayMessage(UserInterface.Translate("not-enough-silos"), Mentat)
 				Trigger.AfterDelay(DateTime.Seconds(3), function()
-					harkonnen.MarkCompletedObjective(KillAtreides)
+					Harkonnen.MarkCompletedObjective(KillAtreides)
 				end)
 
 				return true
@@ -126,16 +126,16 @@ WorldLoaded = function()
 			return
 		end
 
-		local refs = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "refinery" and actor.Owner == player end)
+		local refs = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "refinery" and actor.Owner == Harkonnen end)
 
 		if #refs == 0 then
-			atreides.MarkCompletedObjective(KillHarkonnen)
+			Atreides.MarkCompletedObjective(KillHarkonnen)
 		else
 			Trigger.OnAllRemovedFromWorld(refs, function()
-				atreides.MarkCompletedObjective(KillHarkonnen)
+				Atreides.MarkCompletedObjective(KillHarkonnen)
 			end)
 
-			local silos = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "silo" and actor.Owner == player end)
+			local silos = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "silo" and actor.Owner == Harkonnen end)
 			Utils.Do(refs, function(actor) Trigger.OnRemovedFromWorld(actor, checkResourceCapacity) end)
 			Utils.Do(silos, function(actor) Trigger.OnRemovedFromWorld(actor, checkResourceCapacity) end)
 		end
@@ -144,8 +144,8 @@ WorldLoaded = function()
 	Media.DisplayMessage(Messages[1], Mentat)
 
 	Trigger.AfterDelay(DateTime.Seconds(25), function()
-		Media.PlaySpeechNotification(player, "Reinforce")
-		Reinforcements.Reinforce(player, HarkonnenReinforcements, HarkonnenEntryPath)
+		Media.PlaySpeechNotification(Harkonnen, "Reinforce")
+		Reinforcements.Reinforce(Harkonnen, HarkonnenReinforcements, HarkonnenEntryPath)
 	end)
 
 	WavesLeft = AtreidesAttackWaves[Difficulty]
@@ -159,7 +159,7 @@ SendReinforcements = function()
 	if AtreidesAttackDelay < 0 then AtreidesAttackDelay = 0 end
 
 	Trigger.AfterDelay(delay, function()
-		Reinforcements.Reinforce(atreides, Utils.Random(units), { Utils.Random(AtreidesEntryWaypoints) }, 10, IdleHunt)
+		Reinforcements.Reinforce(Atreides, Utils.Random(units), { Utils.Random(AtreidesEntryWaypoints) }, 10, IdleHunt)
 
 		WavesLeft = WavesLeft - 1
 		if WavesLeft == 0 then

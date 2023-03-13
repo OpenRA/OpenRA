@@ -27,18 +27,18 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly ModData modData;
 		readonly IEnumerable<IResourceRenderer> resourceRenderers;
 
-		public readonly HotkeyReference ZoomInKey = new HotkeyReference();
-		public readonly HotkeyReference ZoomOutKey = new HotkeyReference();
+		public readonly HotkeyReference ZoomInKey = new();
+		public readonly HotkeyReference ZoomOutKey = new();
 
-		public readonly HotkeyReference ScrollUpKey = new HotkeyReference();
-		public readonly HotkeyReference ScrollDownKey = new HotkeyReference();
-		public readonly HotkeyReference ScrollLeftKey = new HotkeyReference();
-		public readonly HotkeyReference ScrollRightKey = new HotkeyReference();
+		public readonly HotkeyReference ScrollUpKey = new();
+		public readonly HotkeyReference ScrollDownKey = new();
+		public readonly HotkeyReference ScrollLeftKey = new();
+		public readonly HotkeyReference ScrollRightKey = new();
 
-		public readonly HotkeyReference JumpToTopEdgeKey = new HotkeyReference();
-		public readonly HotkeyReference JumpToBottomEdgeKey = new HotkeyReference();
-		public readonly HotkeyReference JumpToLeftEdgeKey = new HotkeyReference();
-		public readonly HotkeyReference JumpToRightEdgeKey = new HotkeyReference();
+		public readonly HotkeyReference JumpToTopEdgeKey = new();
+		public readonly HotkeyReference JumpToBottomEdgeKey = new();
+		public readonly HotkeyReference JumpToLeftEdgeKey = new();
+		public readonly HotkeyReference JumpToRightEdgeKey = new();
 
 		// Note: LinterHotkeyNames assumes that these are disabled by default
 		public readonly string BookmarkSaveKeyPrefix = null;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public FrozenActor FrozenActorTooltip { get; private set; }
 		public string ResourceTooltip { get; private set; }
 
-		static readonly Dictionary<ScrollDirection, string> ScrollCursors = new Dictionary<ScrollDirection, string>
+		static readonly Dictionary<ScrollDirection, string> ScrollCursors = new()
 		{
 			{ ScrollDirection.Up | ScrollDirection.Left, "scroll-tl" },
 			{ ScrollDirection.Up | ScrollDirection.Right, "scroll-tr" },
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{ ScrollDirection.Right, "scroll-r" },
 		};
 
-		static readonly Dictionary<ScrollDirection, string> JoystickCursors = new Dictionary<ScrollDirection, string>
+		static readonly Dictionary<ScrollDirection, string> JoystickCursors = new()
 		{
 			{ ScrollDirection.Up | ScrollDirection.Left, "joystick-tl-blocked" },
 			{ ScrollDirection.Up | ScrollDirection.Right, "joystick-tr-blocked" },
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{ ScrollDirection.Right, "joystick-r-blocked" },
 		};
 
-		static readonly Dictionary<ScrollDirection, float2> ScrollOffsets = new Dictionary<ScrollDirection, float2>
+		static readonly Dictionary<ScrollDirection, float2> ScrollOffsets = new()
 		{
 			{ ScrollDirection.Up, new float2(0, -1) },
 			{ ScrollDirection.Down, new float2(0, 1) },

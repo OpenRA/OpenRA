@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 
-		readonly Dictionary<Actor, int> tokens = new Dictionary<Actor, int>();
+		readonly Dictionary<Actor, int> tokens = new();
 
 		int proximityTrigger;
 		WPos cachedPosition;

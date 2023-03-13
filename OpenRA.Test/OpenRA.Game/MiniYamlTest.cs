@@ -104,6 +104,48 @@ Test:
 			Assert.IsFalse(result.Any(n => n.Key == "MockA2"), "Node should not have the MockA2 child, but does.");
 		}
 
+		[TestCase(TestName = "Child can be immediately removed")]
+		public void ChildCanBeImmediatelyRemoved()
+		{
+			var baseYaml = @"
+^BaseA:
+    MockString:
+        AString: Base
+Test:
+    Inherits: ^BaseA
+    MockString:
+        AString: Override
+    -MockString:
+";
+
+			var result = MiniYaml.Merge(new[] { baseYaml }.Select(s => MiniYaml.FromString(s, "")))
+				 .First(n => n.Key == "Test").Value.Nodes;
+
+			Assert.IsFalse(result.Any(n => n.Key == "MockString"), "Node should not have the MockString child, but does.");
+		}
+
+		[TestCase(TestName = "Child can be removed and immediately overridden")]
+		public void ChildCanBeRemovedAndImmediatelyOverridden()
+		{
+			var baseYaml = @"
+^BaseA:
+    MockString:
+        AString: Base
+Test:
+    Inherits: ^BaseA
+    -MockString:
+    MockString:
+        AString: Override
+";
+
+			var result = MiniYaml.Merge(new[] { baseYaml }.Select(s => MiniYaml.FromString(s, "")))
+				 .First(n => n.Key == "Test").Value.Nodes;
+
+			Assert.IsTrue(result.Any(n => n.Key == "MockString"), "Node should have the MockString child, but does not.");
+			Assert.IsTrue(result.First(n => n.Key == "MockString").Value.ToDictionary()["AString"].Value == "Override",
+				"MockString value has not been set with the correct override value for AString.");
+		}
+
 		[TestCase(TestName = "Child can be removed and later overridden")]
 		public void ChildCanBeRemovedAndLaterOverridden()
 		{
@@ -153,6 +195,69 @@ Test:
 			Assert.IsTrue(result.Any(n => n.Key == "MockString"), "Node should have the MockString child, but does not.");
 			Assert.IsFalse(result.First(n => n.Key == "MockString").Value.Nodes.Any(n => n.Key == "AString"),
 				"MockString value should have been removed, but was not.");
+		}
+
+		[TestCase(TestName = "Child subnode can be removed and immediately overridden")]
+		public void ChildSubNodeCanBeRemovedAndImmediatelyOverridden()
+		{
+			var baseYaml = @"
+^BaseA:
+	MockString:
+		CollectionOfStrings:
+			StringA: A
+			StringB: B
+Test:
+    Inherits: ^BaseA
+    MockString:
+		-CollectionOfStrings:
+		CollectionOfStrings:
+			StringC: C
+";
+
+			var merged = MiniYaml.Merge(new[] { baseYaml }.Select(s => MiniYaml.FromString(s, "")))
+				.First(n => n.Key == "Test");
+
+			var traitNode = merged.Value.Nodes.Single();
+			var fieldNodes = traitNode.Value.Nodes;
+			var fieldSubNodes = fieldNodes.Single().Value.Nodes;
+
+			Assert.IsTrue(fieldSubNodes.Count == 1, "Collection of strings should only contain the overriding subnode.");
+			Assert.IsTrue(fieldSubNodes.Single(n => n.Key == "StringC").Value.Value == "C",
+				"CollectionOfStrings value has not been set with the correct override value for StringC.");
+		}
+
+		[TestCase(TestName = "Child subnode can be removed and later overridden")]
+		public void ChildSubNodeCanBeRemovedAndLaterOverridden()
+		{
+			var baseYaml = @"
+^BaseA:
+	MockString:
+		CollectionOfStrings:
+			StringA: A
+			StringB: B
+Test:
+    Inherits: ^BaseA
+    MockString:
+		-CollectionOfStrings:
+";
+
+			var overrideYaml = @"
+Test:
+    MockString:
+		CollectionOfStrings:
+			StringC: C
+";
+
+			var merged = MiniYaml.Merge(new[] { baseYaml, overrideYaml }.Select(s => MiniYaml.FromString(s, "")))
+				.First(n => n.Key == "Test");
+
+			var traitNode = merged.Value.Nodes.Single();
+			var fieldNodes = traitNode.Value.Nodes;
+			var fieldSubNodes = fieldNodes.Single().Value.Nodes;
+
+			Assert.IsTrue(fieldSubNodes.Count == 1, "Collection of strings should only contain the overriding subnode.");
+			Assert.IsTrue(fieldSubNodes.Single(n => n.Key == "StringC").Value.Value == "C",
+				"CollectionOfStrings value has not been set with the correct override value for StringC.");
 		}
 
 		[TestCase(TestName = "Empty lines should count toward line numbers")]

@@ -48,7 +48,7 @@ namespace OpenRA
 		internal static OrderManager OrderManager;
 		static Server.Server server;
 
-		public static MersenneTwister CosmeticRandom = new MersenneTwister(); // not synced
+		public static MersenneTwister CosmeticRandom = new(); // not synced
 
 		public static Renderer Renderer;
 		public static Sound Sound;
@@ -416,7 +416,7 @@ namespace OpenRA
 				// Sanitize input from platform-specific launchers
 				// Process.Start requires paths to not be quoted, even if they contain spaces
 				if (launchPath != null && launchPath.First() == '"' && launchPath.Last() == '"')
-					launchPath = launchPath.Substring(1, launchPath.Length - 2);
+					launchPath = launchPath[1..^1];
 
 				// Metadata registration requires an explicit launch path
 				if (launchPath != null)
@@ -563,7 +563,7 @@ namespace OpenRA
 
 		// Note: These delayed actions should only be used by widgets or disposing objects
 		// - things that depend on a particular world should be queuing them on the world actor.
-		static volatile ActionQueue delayedActions = new ActionQueue();
+		static volatile ActionQueue delayedActions = new();
 
 		public static void RunAfterTick(Action a) { delayedActions.Add(a, RunTime); }
 		public static void RunAfterDelay(int delayMilliseconds, Action a) { delayedActions.Add(a, RunTime + delayMilliseconds); }

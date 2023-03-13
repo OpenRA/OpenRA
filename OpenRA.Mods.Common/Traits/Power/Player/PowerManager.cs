@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly PowerManagerInfo info;
 		readonly DeveloperMode devMode;
 
-		readonly Dictionary<Actor, int> powerDrain = new Dictionary<Actor, int>();
+		readonly Dictionary<Actor, int> powerDrain = new();
 
 		[Sync]
 		int totalProvided;

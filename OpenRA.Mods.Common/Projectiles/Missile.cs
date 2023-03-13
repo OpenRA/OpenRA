@@ -45,22 +45,22 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly Color ShadowColor = Color.FromArgb(140, 0, 0, 0);
 
 		[Desc("Minimum vertical launch angle (pitch).")]
-		public readonly WAngle MinimumLaunchAngle = new WAngle(-64);
+		public readonly WAngle MinimumLaunchAngle = new(-64);
 
 		[Desc("Maximum vertical launch angle (pitch).")]
-		public readonly WAngle MaximumLaunchAngle = new WAngle(128);
+		public readonly WAngle MaximumLaunchAngle = new(128);
 
 		[Desc("Minimum launch speed in WDist / tick. Defaults to Speed if -1.")]
-		public readonly WDist MinimumLaunchSpeed = new WDist(-1);
+		public readonly WDist MinimumLaunchSpeed = new(-1);
 
 		[Desc("Maximum launch speed in WDist / tick. Defaults to Speed if -1.")]
-		public readonly WDist MaximumLaunchSpeed = new WDist(-1);
+		public readonly WDist MaximumLaunchSpeed = new(-1);
 
 		[Desc("Maximum projectile speed in WDist / tick")]
-		public readonly WDist Speed = new WDist(384);
+		public readonly WDist Speed = new(384);
 
 		[Desc("Projectile acceleration when propulsion activated.")]
-		public readonly WDist Acceleration = new WDist(5);
+		public readonly WDist Acceleration = new(5);
 
 		[Desc("How many ticks before this missile is armed and can explode.")]
 		public readonly int Arm = 0;
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly bool TerrainHeightAware = false;
 
 		[Desc("Width of projectile (used for finding blocking actors).")]
-		public readonly WDist Width = new WDist(1);
+		public readonly WDist Width = new(1);
 
 		[Desc("The maximum/constant/incremental inaccuracy used in conjunction with the InaccuracyType property.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
@@ -81,16 +81,16 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly InaccuracyType InaccuracyType = InaccuracyType.Absolute;
 
 		[Desc("Inaccuracy override when successfully locked onto target. Defaults to Inaccuracy if negative.")]
-		public readonly WDist LockOnInaccuracy = new WDist(-1);
+		public readonly WDist LockOnInaccuracy = new(-1);
 
 		[Desc("Probability of locking onto and following target.")]
 		public readonly int LockOnProbability = 100;
 
 		[Desc("Horizontal rate of turn.")]
-		public readonly WAngle HorizontalRateOfTurn = new WAngle(20);
+		public readonly WAngle HorizontalRateOfTurn = new(20);
 
 		[Desc("Vertical rate of turn.")]
-		public readonly WAngle VerticalRateOfTurn = new WAngle(24);
+		public readonly WAngle VerticalRateOfTurn = new(24);
 
 		[Desc("Gravity applied while in free fall.")]
 		public readonly int Gravity = 10;
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly WDist AirburstAltitude = WDist.Zero;
 
 		[Desc("Cruise altitude. Zero means no cruise altitude used.")]
-		public readonly WDist CruiseAltitude = new WDist(512);
+		public readonly WDist CruiseAltitude = new(512);
 
 		[Desc("Activate homing mechanism after this many ticks.")]
 		public readonly int HomingActivationDelay = 0;
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly int ContrailZOffset = 2047;
 
 		[Desc("Thickness of the emitted line.")]
-		public readonly WDist ContrailWidth = new WDist(64);
+		public readonly WDist ContrailWidth = new(64);
 
 		[Desc("RGB color at the contrail start.")]
 		public readonly Color ContrailStartColor = Color.White;
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("Explodes when inside this proximity radius to target.",
 			"Note: If this value is lower than the missile speed, this check might",
 			"not trigger fast enough, causing the missile to fly past the target.")]
-		public readonly WDist CloseEnough = new WDist(298);
+		public readonly WDist CloseEnough = new(298);
 
 		public IProjectile Create(ProjectileArgs args) { return new Missile(this, args); }
 	}

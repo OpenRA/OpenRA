@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (button.DisableWorldSounds)
 				Game.Sound.DisableWorldSounds = true;
 
-			widgetArgs = widgetArgs ?? new WidgetArgs();
+			widgetArgs ??= new WidgetArgs();
 			widgetArgs.Add("onExit", () =>
 			{
 				if (button.HideIngameUI)

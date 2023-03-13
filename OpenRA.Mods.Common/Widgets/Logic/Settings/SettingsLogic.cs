@@ -52,14 +52,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string ResetCancel = "dialog-settings-reset.cancel";
 
-		readonly Dictionary<string, Func<bool>> leavePanelActions = new Dictionary<string, Func<bool>>();
-		readonly Dictionary<string, Action> resetPanelActions = new Dictionary<string, Action>();
+		readonly Dictionary<string, Func<bool>> leavePanelActions = new();
+		readonly Dictionary<string, Action> resetPanelActions = new();
 
 		readonly Widget panelContainer, tabContainer;
 		readonly ButtonWidget tabTemplate;
 		readonly int2 buttonStride;
-		readonly List<ButtonWidget> buttons = new List<ButtonWidget>();
-		readonly Dictionary<string, string> panels = new Dictionary<string, string>();
+		readonly List<ButtonWidget> buttons = new();
+		readonly Dictionary<string, string> panels = new();
 		string activePanel;
 
 		bool needsRestart = false;
@@ -155,8 +155,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var panel = panelContainer.Get(panelID);
 
-			if (activePanel == null)
-				activePanel = panelID;
+			activePanel ??= panelID;
 
 			panel.IsVisible = () => activePanel == panelID;
 

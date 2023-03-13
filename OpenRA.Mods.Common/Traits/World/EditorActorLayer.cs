@@ -39,8 +39,8 @@ namespace OpenRA.Mods.Common.Traits
 	public class EditorActorLayer : IWorldLoaded, ITickRender, IRender, IRadarSignature, ICreatePlayers, IRenderAnnotations
 	{
 		readonly EditorActorLayerInfo info;
-		readonly List<EditorActorPreview> previews = new List<EditorActorPreview>();
-		readonly Dictionary<CPos, List<EditorActorPreview>> cellMap = new Dictionary<CPos, List<EditorActorPreview>>();
+		readonly List<EditorActorPreview> previews = new();
+		readonly Dictionary<CPos, List<EditorActorPreview>> cellMap = new();
 
 		SpatiallyPartitioned<EditorActorPreview> screenMap;
 		WorldRenderer worldRenderer;
@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var kv in mp)
 			{
 				var name = kv.Key;
-				var index = int.Parse(name.Substring(5));
+				var index = int.Parse(name[5..]);
 
 				if (index >= newCount)
 				{

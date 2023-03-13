@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			var mobileInfo = ai.TraitInfoOrDefault<MobileInfo>();
-			if (mobileInfo == null || !(mobileInfo.LocomotorInfo is JumpjetLocomotorInfo))
+			if (mobileInfo == null || mobileInfo.LocomotorInfo is not JumpjetLocomotorInfo)
 				throw new YamlException("GrantConditionOnJumpjetLayer requires Mobile to be linked to a JumpjetLocomotor!");
 
 			base.RulesetLoaded(rules, ai);

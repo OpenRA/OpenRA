@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 	public class Squad
 	{
-		public List<Actor> Units = new List<Actor>();
+		public List<Actor> Units = new();
 		public SquadType Type;
 
 		internal IBot Bot;

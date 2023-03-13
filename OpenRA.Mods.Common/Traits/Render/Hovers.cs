@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class HoversInfo : ConditionalTraitInfo, Requires<IMoveInfo>
 	{
 		[Desc("Maximum visual Z axis distance relative to actual position + InitialHeight.")]
-		public readonly WDist BobDistance = new WDist(-43);
+		public readonly WDist BobDistance = new(-43);
 
 		[Desc("Actual altitude of actor needs to be this or higher to enable hover effect.")]
 		public readonly WDist MinHoveringAltitude = WDist.Zero;
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly int RiseTicks = 20;
 
 		[Desc("Initial Z axis modifier relative to actual position.")]
-		public readonly WDist InitialHeight = new WDist(43);
+		public readonly WDist InitialHeight = new(43);
 
 		public override object Create(ActorInitializer init) { return new Hovers(this); }
 

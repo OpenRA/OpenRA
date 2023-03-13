@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 	public class ClassicSpriteSequence : DefaultSpriteSequence
 	{
 		[Desc("Incorporate a compensation factor for the rotational distortion present in the first-generation Westwood games.")]
-		static readonly SpriteSequenceField<bool> UseClassicFacings = new SpriteSequenceField<bool>(nameof(UseClassicFacings), false);
+		static readonly SpriteSequenceField<bool> UseClassicFacings = new(nameof(UseClassicFacings), false);
 		readonly bool useClassicFacings;
 
 		public ClassicSpriteSequence(SpriteCache cache, ISpriteSequenceLoader loader, string image, string sequence, MiniYaml data, MiniYaml defaults)

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "The trait NukePower (via the NukeLaunch projectile that it uses) no longer has built-in palette flashing.";
 
-		readonly List<Tuple<string, string, string>> weaponsToUpdate = new List<Tuple<string, string, string>>();
+		readonly List<Tuple<string, string, string>> weaponsToUpdate = new();
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{

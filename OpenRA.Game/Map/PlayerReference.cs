@@ -36,7 +36,7 @@ namespace OpenRA
 		/// <summary>
 		/// Sets the "Home" location, which can be used by traits and scripts to e.g. set the initial camera
 		/// location or choose the map edge for reinforcements.
-		/// This will usually be overridden for client (lobby slot) players with a location based on the Spawn index
+		/// This will usually be overridden for client (lobby slot) players with a location based on the Spawn index.
 		/// </summary>
 		public CPos HomeLocation = CPos.Zero;
 

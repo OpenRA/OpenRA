@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common
 		/// <summary>
 		/// Adds step angle units to facing in the direction that takes it closer to desiredFacing.
 		/// If facing is already within step of desiredFacing then desiredFacing is returned.
-		/// Step is given as an integer to allow negative values (step away from the desired facing)
+		/// Step is given as an integer to allow negative values (step away from the desired facing).
 		/// </summary>
 		public static WAngle TickFacing(WAngle facing, WAngle desiredFacing, WAngle step)
 		{
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common
 
 		/// <summary>
 		/// Determines whether desiredFacing is clockwise (-1) or anticlockwise (+1) of facing.
-		/// If desiredFacing is equal to facing or directly behind facing we treat it as being anticlockwise
+		/// If desiredFacing is equal to facing or directly behind facing we treat it as being anticlockwise.
 		/// </summary>
 		public static int GetTurnDirection(WAngle facing, WAngle desiredFacing)
 		{
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common
 		}
 
 		/// <summary>
-		/// Returns the remainder angle after rounding to the nearest whole step / facing
+		/// Returns the remainder angle after rounding to the nearest whole step / facing.
 		/// </summary>
 		public static WAngle AngleDiffToStep(WAngle facing, int numFrames)
 		{
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common
 			return new WAngle(IndexFacing(facing, facings) * (1024 / facings));
 		}
 
-		/// <summary>Wraps an arbitrary integer facing value into the range 0 - 255</summary>
+		/// <summary>Wraps an arbitrary integer facing value into the range 0 - 255.</summary>
 		public static int NormalizeFacing(int f)
 		{
 			if (f >= 0)
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common
 			}
 
 			if (items.Length > 0)
-				yield return items[items.Length - 1];
+				yield return items[^1];
 		}
 
 		static IEnumerable<CPos> Neighbours(CPos c, bool allowDiagonal)
@@ -229,8 +229,33 @@ namespace OpenRA.Mods.Common
 		public static string InternalTypeName(Type t)
 		{
 			return t.IsGenericType
-				? $"{t.Name.Substring(0, t.Name.IndexOf('`'))}<{string.Join(", ", t.GenericTypeArguments.Select(arg => arg.Name))}>"
+				? $"{t.Name[..t.Name.IndexOf('`')]}<{string.Join(", ", t.GenericTypeArguments.Select(arg => arg.Name))}>"
 				: t.Name;
+		}
+
+		public static WDist RandomDistance(MersenneTwister random, WDist[] distance)
+		{
+			if (distance.Length == 0)
+				return WDist.Zero;
+
+			if (distance.Length == 1)
+				return distance[0];
+
+			return new WDist(random.Next(distance[0].Length, distance[1].Length));
+		}
+
+		public static WVec RandomVector(MersenneTwister random, WVec[] vector)
+		{
+			if (vector.Length == 0)
+				return WVec.Zero;
+
+			if (vector.Length == 1)
+				return vector[0];
+
+			var x = random.Next(vector[0].X, vector[1].X);
+			var y = random.Next(vector[0].Y, vector[1].Y);
+			var z = random.Next(vector[0].Z, vector[1].Z);
+			return new WVec(x, y, z);
 		}
 
 		public static string FriendlyTypeName(Type t)

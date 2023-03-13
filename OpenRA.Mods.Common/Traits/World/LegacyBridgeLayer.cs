@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class LegacyBridgeLayer : IWorldLoaded
 	{
 		readonly LegacyBridgeLayerInfo info;
-		readonly Dictionary<ushort, (string Template, int Health)> bridgeTypes = new Dictionary<ushort, (string, int)>();
+		readonly Dictionary<ushort, (string Template, int Health)> bridgeTypes = new();
 		readonly ITemplatedTerrainInfo terrainInfo;
 
 		CellLayer<Bridge> bridges;

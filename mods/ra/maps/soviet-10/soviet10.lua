@@ -45,7 +45,7 @@ HunterTeam = { "1tnk", "1tnk", "1tnk", "1tnk", "2tnk", "2tnk", "arty" }
 StartTimer = false
 TimerColor = Player.GetPlayer("USSR").Color
 TimerTicks = DateTime.Minutes(9)
-ticked = TimerTicks
+Ticked = TimerTicks
 StartTimerDelay =
 {
 	easy = DateTime.Minutes(5),
@@ -144,9 +144,9 @@ MissionSetup = function()
 	end)
 
 	Trigger.OnEnteredFootprint(LightVehicleAttackTrigger, function(unit, id)
-		if not attackTriggered and unit.Type == "3tnk" then
+		if not AttackTriggered and unit.Type == "3tnk" then
 			Trigger.RemoveFootprintTrigger(id)
-			attackTriggered = true
+			AttackTriggered = true
 
 			Utils.Do(LightVehicleAttack, function(unit)
 				if not unit.IsDead then
@@ -157,9 +157,9 @@ MissionSetup = function()
 	end)
 
 	Trigger.OnEnteredFootprint(EngiDropTriggerArea, function(unit, id)
-		if unit.Owner == USSR and not dropTriggered then
+		if unit.Owner == USSR and not DropTriggered then
 			Trigger.RemoveFootprintTrigger(id)
-			dropTriggered = true
+			DropTriggered = true
 
 			Media.PlaySpeechNotification(USSR, "SignalFlare")
 			local engiFlare = Actor.Create("flare", true, { Owner = USSR, Location = EngiDropLZ.Location })
@@ -174,9 +174,9 @@ MissionSetup = function()
 	end)
 
 	Trigger.OnEnteredFootprint(ChinookAmbushTrigger, function(unit, id)
-		if not chinookTriggered and unit.Owner == USSR then
+		if not ChinookTriggered and unit.Owner == USSR then
 			Trigger.RemoveFootprintTrigger(id)
-			chinookTriggered = true
+			ChinookTriggered = true
 
 			local chalk = Reinforcements.ReinforceWithTransport(Greece, "tran", ChinookChalk , ChinookPath, { ChinookPath[1] })[2]
 			Utils.Do(chalk, function(unit)
@@ -224,7 +224,7 @@ ClosestActorTo = function(actors, target)
 	local closestActor = nil
 	Utils.Do(actors, function(actor)
 		local offset = actor.Location - target.Location
-		distSq = offset.X * offset.X + offset.Y * offset.Y
+		local distSq = offset.X * offset.X + offset.Y * offset.Y
 		if closestActor == nil or distSq < closestDistSq then
 			closestDistSq = distSq
 			closestActor = actor
@@ -289,16 +289,16 @@ end
 
 Tick = function()
 	if StartTimer then
-		if ticked > 0 then
-			if (ticked % DateTime.Seconds(1)) == 0 then
-				Timer = UserInterface.Translate("corridor-closes-in", { ["time"] = Utils.FormatTime(ticked) })
+		if Ticked > 0 then
+			if (Ticked % DateTime.Seconds(1)) == 0 then
+				Timer = UserInterface.Translate("corridor-closes-in", { ["time"] = Utils.FormatTime(Ticked) })
 				UserInterface.SetMissionText(Timer, TimerColor)
 			end
-			ticked = ticked - 1
-		elseif ticked == 0 then
+			Ticked = Ticked - 1
+		elseif Ticked == 0 then
 			FinishTimer()
 			SendHunters()
-			ticked = ticked - 1
+			Ticked = Ticked - 1
 		end
 	end
 

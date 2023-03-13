@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public string Background = "progressbar-bg";
 		public string Bar = "progressbar-thumb";
-		public Size BarMargin = new Size(2, 2);
+		public Size BarMargin = new(2, 2);
 
 		public int Percentage = 0;
 		public bool Indeterminate = false;

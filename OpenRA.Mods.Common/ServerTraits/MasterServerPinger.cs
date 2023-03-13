@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Server
 		const string GameOffline = "notification-game-offline";
 
 		static readonly Beacon LanGameBeacon;
-		static readonly Dictionary<int, string> MasterServerErrors = new Dictionary<int, string>()
+		static readonly Dictionary<int, string> MasterServerErrors = new()
 		{
 			{ 1, NoPortForward },
 			{ 2, BlacklistedTitle }
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Server
 		bool isInitialPing = true;
 
 		volatile bool isBusy;
-		readonly Queue<string> masterServerMessages = new Queue<string>();
+		readonly Queue<string> masterServerMessages = new();
 
 		static MasterServerPinger()
 		{

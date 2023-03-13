@@ -23,12 +23,12 @@ namespace OpenRA.Network
 		const OrderPacket ClientDisconnected = null;
 
 		readonly SyncReport syncReport;
-		readonly Dictionary<int, Queue<(int Frame, OrderPacket Orders)>> pendingOrders = new Dictionary<int, Queue<(int, OrderPacket)>>();
-		readonly Dictionary<int, (int SyncHash, ulong DefeatState)> syncForFrame = new Dictionary<int, (int, ulong)>();
+		readonly Dictionary<int, Queue<(int Frame, OrderPacket Orders)>> pendingOrders = new();
+		readonly Dictionary<int, (int SyncHash, ulong DefeatState)> syncForFrame = new();
 
-		public Session LobbyInfo = new Session();
+		public Session LobbyInfo = new();
 
-		/// <summary> Null when watching a replay </summary>
+		/// <summary>Null when watching a replay.</summary>
 		public Session.Client LocalClient => LobbyInfo.ClientWithIndex(Connection.LocalClientId);
 		public World World;
 		public int OrderQueueLength => pendingOrders.Count > 0 ? pendingOrders.Min(q => q.Value.Count) : 0;
@@ -47,18 +47,22 @@ namespace OpenRA.Network
 		internal int GameSaveLastFrame = -1;
 		internal int GameSaveLastSyncFrame = -1;
 
-		readonly List<Order> localOrders = new List<Order>();
-		readonly List<Order> localImmediateOrders = new List<Order>();
+		readonly List<Order> localOrders = new();
+		readonly List<Order> localImmediateOrders = new();
 
-		readonly List<ClientOrder> processClientOrders = new List<ClientOrder>();
-		readonly List<int> processClientsToRemove = new List<int>();
+		readonly List<ClientOrder> processClientOrders = new();
+		readonly List<int> processClientsToRemove = new();
 
 		bool disposed;
 		bool generateSyncReport = false;
 		int sentOrdersFrame = 0;
 		float tickScale = 1f;
 
-		/// <Remarks> Should only be set in <see cref="OutOfSync"/></Remarks>
+		/// <summary>
+		/// Indicates if the world state of other players or a replay has diverged from the local state.
+		/// The game cannot reliably continue in this condition and is unusable.
+		/// </summary>
+		/// <remarks>Should only be set in <see cref="OutOfSync"/>.</remarks>
 		public bool IsOutOfSync { get; private set; } = false;
 
 		public struct ClientOrder
@@ -95,7 +99,7 @@ namespace OpenRA.Network
 
 			// Generating sync reports is expensive, so only do it if we have
 			// other players to compare against if a desync did occur
-			generateSyncReport = !(Connection is ReplayConnection) && LobbyInfo.GlobalSettings.EnableSyncReports;
+			generateSyncReport = Connection is not ReplayConnection && LobbyInfo.GlobalSettings.EnableSyncReports;
 
 			NetFrameNumber = 1;
 			LocalFrameNumber = 0;

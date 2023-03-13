@@ -19,7 +19,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	/// <summary> Contains all functions that are unit-specific. </summary>
+	/// <summary>Contains all functions that are unit-specific.</summary>
 	public class CommandBarLogic : ChromeLogic
 	{
 		readonly World world;
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				forceAttackButton.IsDisabled = () => { UpdateStateIfNecessary(); return forceAttackDisabled; };
 				forceAttackButton.IsHighlighted = () => !forceAttackButton.IsDisabled() && IsForceModifiersActive(Modifiers.Ctrl)
-					&& !(world.OrderGenerator is AttackMoveOrderGenerator);
+					&& world.OrderGenerator is not AttackMoveOrderGenerator;
 
 				forceAttackButton.OnClick = () =>
 				{

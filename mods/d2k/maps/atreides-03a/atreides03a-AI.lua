@@ -24,16 +24,16 @@ OrdosInfantryTypes = { "light_inf", "light_inf", "light_inf", "trooper", "troope
 OrdosVehicleTypes = { "raider", "raider", "quad" }
 
 InitAIUnits = function()
-	IdlingUnits[ordos] = Reinforcements.Reinforce(ordos, InitialOrdosReinforcements, OrdosPaths[2])
-	IdlingUnits[ordos][#IdlingUnits + 1] = OTrooper1
-	IdlingUnits[ordos][#IdlingUnits + 1] = OTrooper2
-	IdlingUnits[ordos][#IdlingUnits + 1] = ORaider
+	IdlingUnits[Ordos] = Reinforcements.Reinforce(Ordos, InitialOrdosReinforcements, OrdosPaths[2])
+	IdlingUnits[Ordos][#IdlingUnits + 1] = OTrooper1
+	IdlingUnits[Ordos][#IdlingUnits + 1] = OTrooper2
+	IdlingUnits[Ordos][#IdlingUnits + 1] = ORaider
 
-	DefendAndRepairBase(ordos, OrdosBase, 0.75, AttackGroupSize[Difficulty])
+	DefendAndRepairBase(Ordos, OrdosBase, 0.75, AttackGroupSize[Difficulty])
 end
 
 ActivateAI = function()
-	LastHarvesterEaten[ordos] = true
+	LastHarvesterEaten[Ordos] = true
 	Trigger.AfterDelay(0, InitAIUnits)
 
 	OConyard.Produce(AtreidesUpgrades[1])
@@ -46,7 +46,7 @@ ActivateAI = function()
 
 	-- Finish the upgrades first before trying to build something
 	Trigger.AfterDelay(DateTime.Seconds(14), function()
-		ProduceUnits(ordos, OBarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
-		ProduceUnits(ordos, OLightFactory, delay, vehiclesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+		ProduceUnits(Ordos, OBarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+		ProduceUnits(Ordos, OLightFactory, delay, vehiclesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
 	end)
 end

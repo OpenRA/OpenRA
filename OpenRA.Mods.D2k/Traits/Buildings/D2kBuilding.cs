@@ -84,7 +84,7 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 			{
 				var map = self.World.Map;
 
-				if (!(self.World.Map.Rules.TerrainInfo is ITemplatedTerrainInfo terrainInfo))
+				if (self.World.Map.Rules.TerrainInfo is not ITemplatedTerrainInfo terrainInfo)
 					throw new InvalidDataException("D2kBuilding requires a template-based tileset.");
 
 				var template = terrainInfo.Templates[info.ConcreteTemplate];

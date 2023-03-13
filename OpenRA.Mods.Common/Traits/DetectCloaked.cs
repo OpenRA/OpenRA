@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class DetectCloakedInfo : ConditionalTraitInfo
 	{
 		[Desc("Specific cloak classifications I can reveal.")]
-		public readonly BitSet<DetectionType> DetectionTypes = new BitSet<DetectionType>("Cloak");
+		public readonly BitSet<DetectionType> DetectionTypes = new("Cloak");
 
 		public readonly WDist Range = WDist.FromCells(5);
 

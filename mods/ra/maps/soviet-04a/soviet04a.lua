@@ -26,29 +26,29 @@ RunInitialActivities = function()
 		end
 	end)
 
-	Reinforcements.Reinforce(player, SovietMCV, SovietStartToBasePath, 0, function(mcv)
+	Reinforcements.Reinforce(USSR, SovietMCV, SovietStartToBasePath, 0, function(mcv)
 		mcv.Move(StartCamPoint.Location)
 	end)
-	Media.PlaySpeechNotification(player, "ReinforcementsArrived")
+	Media.PlaySpeechNotification(USSR, "ReinforcementsArrived")
 
-	Trigger.OnKilled(Barr, function(building)
+	Trigger.OnKilled(Barr, function()
 		BaseBarracks.exists = false
 	end)
 
-	Trigger.OnKilled(Proc, function(building)
+	Trigger.OnKilled(Proc, function()
 		BaseProc.exists = false
 	end)
 
-	Trigger.OnKilled(Weap, function(building)
+	Trigger.OnKilled(Weap, function()
 		BaseWeaponsFactory.exists = false
 	end)
 
 	Trigger.OnEnteredFootprint(VillageCamArea, function(actor, id)
-		if actor.Owner == player then
+		if actor.Owner == USSR then
 			Trigger.RemoveFootprintTrigger(id)
 
 			if not AllVillagersDead then
-				VillageCamera = Actor.Create("camera", true, { Owner = player, Location = VillagePoint.Location })
+				VillageCamera = Actor.Create("camera", true, { Owner = USSR, Location = VillagePoint.Location })
 			end
 		end
 	end)
@@ -101,11 +101,11 @@ end
 
 Tick = function()
 	if Greece.HasNoRequiredUnits() then
-		player.MarkCompletedObjective(KillAll)
-		player.MarkCompletedObjective(KillRadar)
+		USSR.MarkCompletedObjective(KillAll)
+		USSR.MarkCompletedObjective(KillRadar)
 	end
 
-	if player.HasNoRequiredUnits() then
+	if USSR.HasNoRequiredUnits() then
 		Greece.MarkCompletedObjective(BeatUSSR)
 	end
 
@@ -127,20 +127,20 @@ Tick = function()
 end
 
 WorldLoaded = function()
-	player = Player.GetPlayer("USSR")
+	USSR = Player.GetPlayer("USSR")
 	Greece = Player.GetPlayer("Greece")
 
 	RunInitialActivities()
 
-	InitObjectives(player)
+	InitObjectives(USSR)
 
-	KillAll = AddPrimaryObjective(player, "defeat-allied-forces")
+	KillAll = AddPrimaryObjective(USSR, "defeat-allied-forces")
 	BeatUSSR = AddPrimaryObjective(Greece, "")
-	KillRadar = AddSecondaryObjective(player, "destroy-radar-dome-reinforcements")
+	KillRadar = AddSecondaryObjective(USSR, "destroy-radar-dome-reinforcements")
 
 	Trigger.OnKilled(RadarDome, function()
-		player.MarkCompletedObjective(KillRadar)
-		Media.PlaySpeechNotification(player, "ObjectiveMet")
+		USSR.MarkCompletedObjective(KillRadar)
+		Media.PlaySpeechNotification(USSR, "ObjectiveMet")
 	end)
 
 	Camera.Position = StartCamPoint.CenterPosition

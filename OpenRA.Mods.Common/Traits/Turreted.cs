@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Turret = "primary";
 
 		[Desc("Speed at which the turret turns.")]
-		public readonly WAngle TurnSpeed = new WAngle(512);
+		public readonly WAngle TurnSpeed = new(512);
 
 		public readonly WAngle InitialFacing = WAngle.Zero;
 
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (turretFacingInit != null)
 			{
 				var facing = turretFacingInit.Value;
-				return bodyFacing != null ? (Func<WAngle>)(() => bodyFacing() + facing) : () => facing;
+				return bodyFacing != null ? () => bodyFacing() + facing : () => facing;
 			}
 
 			var dynamicFacingInit = init.GetOrDefault<DynamicTurretFacingInit>(info);

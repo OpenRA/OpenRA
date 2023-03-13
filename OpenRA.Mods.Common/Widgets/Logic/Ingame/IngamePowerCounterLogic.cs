@@ -37,11 +37,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			power.GetColor = () => powerManager.ExcessPower < 0 ? Color.Red : Color.White;
 			power.GetText = () => developerMode.UnlimitedPower ? unlimitedCapacity : powerManager.ExcessPower.ToString();
 
-			var tooltipTextCached = new CachedTransform<(string, string), string>(((string usage, string capacity) args) =>
+			var tooltipTextCached = new CachedTransform<(string, string), string>(((string Usage, string Capacity) args) =>
 			{
 				return modData.Translation.GetString(
 					PowerUsage,
-					Translation.Arguments("usage", args.usage, "capacity", args.capacity));
+					Translation.Arguments("usage", args.Usage, "capacity", args.Capacity));
 			});
 
 			power.GetTooltipText = () =>

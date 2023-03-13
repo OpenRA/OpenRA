@@ -25,13 +25,13 @@ AtreidesInfantryTypes = { "light_inf" }
 AtreidesVehicleTypes = { "trike" }
 
 ActivateAI = function()
-	IdlingUnits[atreides] = { }
+	IdlingUnits[Atreides] = { }
 	local delay = function() return Utils.RandomInteger(AttackDelays[Difficulty][1], AttackDelays[Difficulty][2] + 1) end
 	local infantryToBuild = function() return AtreidesInfantryTypes end
 	local vehilcesToBuild = function() return AtreidesVehicleTypes end
 	local attackThresholdSize = AttackGroupSize[Difficulty] * 2.5
 
-	DefendAndRepairBase(atreides, AtreidesBase, 0.75, AttackGroupSize[Difficulty])
-	ProduceUnits(atreides, ABarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
-	ProduceUnits(atreides, ALightFactory, delay, vehilcesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	DefendAndRepairBase(Atreides, AtreidesBase, 0.75, AttackGroupSize[Difficulty])
+	ProduceUnits(Atreides, ABarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	ProduceUnits(Atreides, ALightFactory, delay, vehilcesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
 end

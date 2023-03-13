@@ -162,14 +162,14 @@ namespace OpenRA
 
 		static void GetActionUsage(string key, Action<Utility, string[]> action)
 		{
-			var descParts = action.Method.GetCustomAttributes<DescAttribute>(true)
+			var descParts = Utility.GetCustomAttributes<DescAttribute>(action.Method, true)
 					.SelectMany(d => d.Lines).ToArray();
 
 			if (descParts.Length == 0)
 				return;
 
 			var args = descParts.Take(descParts.Length - 1).JoinWith(" ");
-			var desc = descParts[descParts.Length - 1];
+			var desc = descParts[^1];
 
 			Console.WriteLine($"  {key} {args}{Environment.NewLine}  {desc}{Environment.NewLine}");
 		}

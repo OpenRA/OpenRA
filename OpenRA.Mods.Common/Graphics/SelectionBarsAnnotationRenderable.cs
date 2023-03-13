@@ -17,35 +17,32 @@ namespace OpenRA.Mods.Common.Graphics
 {
 	public class SelectionBarsAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
-		readonly WPos pos;
 		readonly Actor actor;
-		readonly bool displayHealth;
-		readonly bool displayExtra;
 		readonly Rectangle decorationBounds;
 
 		public SelectionBarsAnnotationRenderable(Actor actor, Rectangle decorationBounds, bool displayHealth, bool displayExtra)
 			: this(actor.CenterPosition, actor, decorationBounds)
 		{
-			this.displayHealth = displayHealth;
-			this.displayExtra = displayExtra;
+			DisplayHealth = displayHealth;
+			DisplayExtra = displayExtra;
 		}
 
 		public SelectionBarsAnnotationRenderable(WPos pos, Actor actor, Rectangle decorationBounds)
 		{
-			this.pos = pos;
+			Pos = pos;
 			this.actor = actor;
 			this.decorationBounds = decorationBounds;
 		}
 
-		public WPos Pos => pos;
-		public bool DisplayHealth => displayHealth;
-		public bool DisplayExtra => displayExtra;
+		public WPos Pos { get; }
+		public bool DisplayHealth { get; }
+		public bool DisplayExtra { get; }
 
 		public int ZOffset => 0;
 		public bool IsDecoration => true;
 
 		public IRenderable WithZOffset(int newOffset) { return this; }
-		public IRenderable OffsetBy(in WVec vec) { return new SelectionBarsAnnotationRenderable(pos + vec, actor, decorationBounds); }
+		public IRenderable OffsetBy(in WVec vec) { return new SelectionBarsAnnotationRenderable(Pos + vec, actor, decorationBounds); }
 		public IRenderable AsDecoration() { return this; }
 
 		void DrawExtraBars(float2 start, float2 end)

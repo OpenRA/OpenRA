@@ -24,8 +24,8 @@ namespace OpenRA.Network
 			public (int ClientId, byte[] Packet)[] Packets;
 		}
 
-		readonly Queue<Chunk> chunks = new Queue<Chunk>();
-		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> sync = new Queue<(int, int, ulong)>();
+		readonly Queue<Chunk> chunks = new();
+		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> sync = new();
 		readonly int orderLatency;
 
 		public readonly int TickCount;

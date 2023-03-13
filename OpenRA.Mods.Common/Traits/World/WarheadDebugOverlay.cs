@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly Color Color;
 			public int Time;
 
-			public WDist OuterRange => Range[Range.Length - 1];
+			public WDist OuterRange => Range[^1];
 
 			public WHImpact(WPos pos, WDist[] range, int time, Color color)
 			{
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		readonly WarheadDebugOverlayInfo info;
-		readonly List<WHImpact> impacts = new List<WHImpact>();
+		readonly List<WHImpact> impacts = new();
 
 		public WarheadDebugOverlay(WarheadDebugOverlayInfo info)
 		{

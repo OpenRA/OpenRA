@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 			"Overrides `Color` if both set.")]
 		public readonly string Terrain = null;
 
-		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos, Color)> destinationBuffer)
+		void IMapPreviewSignatureInfo.PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos Uv, Color Color)> destinationBuffer)
 		{
 			Color color;
 			if (!string.IsNullOrEmpty(Terrain))

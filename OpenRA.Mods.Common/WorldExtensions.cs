@@ -21,12 +21,12 @@ namespace OpenRA.Mods.Common
 		/// Finds all the actors of which their health radius is intersected by a line (with a definable width) between two points.
 		/// </summary>
 		/// <param name="world">The engine world the line intersection is to be done in.</param>
-		/// <param name="lineStart">The position the line should start at</param>
-		/// <param name="lineEnd">The position the line should end at</param>
-		/// <param name="lineWidth">How close an actor's health radius needs to be to the line to be considered 'intersected' by the line</param>
+		/// <param name="lineStart">The position the line should start at.</param>
+		/// <param name="lineEnd">The position the line should end at.</param>
+		/// <param name="lineWidth">How close an actor's health radius needs to be to the line to be considered 'intersected' by the line.</param>
 		/// <param name="onlyBlockers">If set, only considers the size of actors that have an <see cref="IBlocksProjectiles"/>
 		/// trait which may improve search performance. However does NOT filter the returned actors on this trait.</param>
-		/// <returns>A list of all the actors intersected by the line</returns>
+		/// <returns>A list of all the actors intersected by the line.</returns>
 		public static IEnumerable<Actor> FindActorsOnLine(this World world, WPos lineStart, WPos lineEnd, WDist lineWidth, bool onlyBlockers = false)
 		{
 			// This line intersection check is done by first just finding all actors within a square that starts at the source, and ends at the target.
@@ -84,10 +84,10 @@ namespace OpenRA.Mods.Common
 		/// <summary>
 		/// Find the point (D) on a line (A-B) that is closest to the target point (C).
 		/// </summary>
-		/// <param name="lineStart">The source point (tail) of the line</param>
-		/// <param name="lineEnd">The target point (head) of the line</param>
-		/// <param name="point">The target point that the minimum distance should be found to</param>
-		/// <returns>The WPos that is the point on the line that is closest to the target point</returns>
+		/// <param name="lineStart">The source point (tail) of the line.</param>
+		/// <param name="lineEnd">The target point (head) of the line.</param>
+		/// <param name="point">The target point that the minimum distance should be found to.</param>
+		/// <returns>The WPos that is the point on the line that is closest to the target point.</returns>
 		public static WPos MinimumPointLineProjection(this WPos lineStart, WPos lineEnd, WPos point)
 		{
 			var squaredLength = (lineEnd - lineStart).HorizontalLengthSquared;

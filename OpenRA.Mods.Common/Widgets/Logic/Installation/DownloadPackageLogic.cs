@@ -239,7 +239,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 										using (var zz = package.GetStream(kv.Value))
 										using (var f = File.Create(targetPath))
-											zz.CopyTo(f);
+											await zz.CopyToAsync(f);
 									}
 
 									package.Dispose();

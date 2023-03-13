@@ -20,6 +20,9 @@ namespace OpenRA.Mods.Common.Installer
 	{
 		public static bool IsValidSourcePath(string path, ModContent.ModSource source)
 		{
+			if (source.IDFiles == null)
+				return true;
+
 			try
 			{
 				foreach (var kv in source.IDFiles.Nodes)

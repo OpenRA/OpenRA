@@ -40,8 +40,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		protected readonly ScrollPanelWidget Panel;
 		protected readonly ScrollItemWidget ItemTemplate;
 
-		protected readonly HashSet<string> SelectedCategories = new HashSet<string>();
-		protected readonly List<string> FilteredCategories = new List<string>();
+		protected readonly HashSet<string> SelectedCategories = new();
+		protected readonly List<string> FilteredCategories = new();
 
 		protected string[] allCategories;
 		protected string searchFilter;

@@ -39,9 +39,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			if (args.Contains("--noshadow"))
 			{
 				Array.Resize(ref shadowIndex, shadowIndex.Length + 3);
-				shadowIndex[shadowIndex.Length - 1] = 1;
-				shadowIndex[shadowIndex.Length - 2] = 3;
-				shadowIndex[shadowIndex.Length - 3] = 4;
+				shadowIndex[^1] = 1;
+				shadowIndex[^2] = 3;
+				shadowIndex[^3] = 4;
 			}
 
 			var palette = new ImmutablePalette(args[2], new[] { 0 }, shadowIndex);

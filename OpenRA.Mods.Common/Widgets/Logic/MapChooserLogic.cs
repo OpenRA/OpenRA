@@ -77,9 +77,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		MapClassification currentTab;
 
-		readonly Dictionary<MapClassification, ScrollPanelWidget> scrollpanels = new Dictionary<MapClassification, ScrollPanelWidget>();
+		readonly Dictionary<MapClassification, ScrollPanelWidget> scrollpanels = new();
 
-		readonly Dictionary<MapClassification, MapPreview[]> tabMaps = new Dictionary<MapClassification, MapPreview[]>();
+		readonly Dictionary<MapClassification, MapPreview[]> tabMaps = new();
 		string[] visibleMaps;
 
 		string selectedUid;
@@ -292,8 +292,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ orderByDate, m => -m.ModifiedDate.Ticks }
 			};
 
-			if (orderByFunc == null)
-				orderByFunc = orderByDict[orderByPlayer];
+			orderByFunc ??= orderByDict[orderByPlayer];
 
 			ScrollItemWidget SetupItem(string o, ScrollItemWidget template)
 			{

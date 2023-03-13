@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			var name = key.Split('@')[0];
 			if (name.StartsWith("-", StringComparison.Ordinal))
-				return name.Substring(1);
+				return name[1..];
 
 			return name;
 		}

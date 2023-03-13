@@ -115,15 +115,15 @@ namespace OpenRA.Server
 		[TranslationReference]
 		const string GameStarted = "notification-game-started";
 
-		public readonly MersenneTwister Random = new MersenneTwister();
+		public readonly MersenneTwister Random = new();
 		public readonly ServerType Type;
 
-		public readonly List<Connection> Conns = new List<Connection>();
+		public readonly List<Connection> Conns = new();
 
 		public Session LobbyInfo;
 		public ServerSettings Settings;
 		public ModData ModData;
-		public List<string> TempBans = new List<string>();
+		public List<string> TempBans = new();
 
 		// Managed by LobbyCommands
 		public MapPreview Map;
@@ -134,19 +134,19 @@ namespace OpenRA.Server
 		public int OrderLatency = 1;
 
 		readonly int randomSeed;
-		readonly List<TcpListener> listeners = new List<TcpListener>();
-		readonly TypeDictionary serverTraits = new TypeDictionary();
+		readonly List<TcpListener> listeners = new();
+		readonly TypeDictionary serverTraits = new();
 		readonly PlayerDatabase playerDatabase;
 
 		OrderBuffer orderBuffer;
 
 		volatile ServerState internalState = ServerState.WaitingPlayers;
 
-		readonly BlockingCollection<IServerEvent> events = new BlockingCollection<IServerEvent>();
+		readonly BlockingCollection<IServerEvent> events = new();
 
 		ReplayRecorder recorder;
 		GameInformation gameInfo;
-		readonly List<GameInformation.Player> worldPlayers = new List<GameInformation.Player>();
+		readonly List<GameInformation.Player> worldPlayers = new();
 		readonly Stopwatch pingUpdated = Stopwatch.StartNew();
 		readonly PlayerMessageTracker playerMessageTracker;
 
@@ -791,15 +791,18 @@ namespace OpenRA.Server
 
 			// Make sure the written file is not valid
 			// TODO: storing a serverside replay on desync would be extremely useful
-			recorder.Metadata = null;
+			if (recorder != null)
+			{
+				recorder.Metadata = null;
 
-			recorder.Dispose();
+				recorder.Dispose();
+			}
 
 			// Stop the recording
 			recorder = null;
 		}
 
-		readonly Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
+		readonly Dictionary<int, byte[]> syncForFrame = new();
 		int lastDefeatStateFrame;
 		ulong lastDefeatState;
 
@@ -856,17 +859,14 @@ namespace OpenRA.Server
 
 		void RecordOrder(int frame, byte[] data, int from)
 		{
-			if (recorder != null)
-			{
-				recorder.ReceiveFrame(from, frame, data);
+			recorder?.ReceiveFrame(from, frame, data);
 
-				if (data.Length > 0 && data[0] == (byte)OrderType.SyncHash)
-				{
-					if (data.Length == Order.SyncHashOrderLength)
-						HandleSyncOrder(frame, data);
-					else
-						Log.Write("server", $"Dropped sync order with length {data.Length} from client {from}. Expected length {Order.SyncHashOrderLength}.");
-				}
+			if (data.Length > 0 && data[0] == (byte)OrderType.SyncHash)
+			{
+				if (data.Length == Order.SyncHashOrderLength)
+					HandleSyncOrder(frame, data);
+				else
+					Log.Write("server", $"Dropped sync order with length {data.Length} from client {from}. Expected length {Order.SyncHashOrderLength}.");
 			}
 		}
 
@@ -1163,6 +1163,16 @@ namespace OpenRA.Server
 			return LobbyInfo.ClientWithIndex(conn.PlayerIndex);
 		}
 
+		/// <summary>Does not check if client is admin.</summary>
+		public bool CanKickClient(Session.Client kickee)
+		{
+			if (State != ServerState.GameStarted || kickee.IsObserver)
+				return true;
+
+			var player = worldPlayers.FirstOrDefault(p => p?.ClientIndex == kickee.Index);
+			return player != null && player.Outcome != WinState.Undefined;
+		}
+
 		public void DropClient(Connection toDrop)
 		{
 			lock (LobbyInfo)
@@ -1323,24 +1333,22 @@ namespace OpenRA.Server
 				foreach (var cmpi in Map.WorldActorInfo.TraitInfos<ICreatePlayersInfo>())
 					cmpi.CreateServerPlayers(Map, LobbyInfo, worldPlayers, playerRandom);
 
-				if (recorder != null)
+				gameInfo = new GameInformation
 				{
-					gameInfo = new GameInformation
-					{
-						Mod = Game.ModData.Manifest.Id,
-						Version = Game.ModData.Manifest.Metadata.Version,
-						MapUid = Map.Uid,
-						MapTitle = Map.Title,
-						StartTimeUtc = DateTime.UtcNow,
-					};
+					Mod = Game.ModData.Manifest.Id,
+					Version = Game.ModData.Manifest.Metadata.Version,
+					MapUid = Map.Uid,
+					MapTitle = Map.Title,
+					StartTimeUtc = DateTime.UtcNow,
+				};
 
-					// Replay metadata should only include the playable players
-					foreach (var p in worldPlayers)
-						if (p != null)
-							gameInfo.Players.Add(p);
+				// Replay metadata should only include the playable players
+				foreach (var p in worldPlayers)
+					if (p != null)
+						gameInfo.Players.Add(p);
 
+				if (recorder != null)
 					recorder.Metadata = new ReplayMetadata(gameInfo);
-				}
 
 				SyncLobbyInfo();
 

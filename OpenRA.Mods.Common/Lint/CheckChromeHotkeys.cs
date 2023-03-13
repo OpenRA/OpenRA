@@ -38,21 +38,21 @@ namespace OpenRA.Mods.Common.Lint
 
 			// Build the list of widget keys to validate
 			var checkWidgetFields = modData.ObjectCreator.GetTypesImplementing<Widget>()
-				.SelectMany(w => w.GetFields()
+				.SelectMany(w => Utility.GetFields(w)
 					.Where(f => f.FieldType == typeof(HotkeyReference))
-					.Select(f => (w.Name.Substring(0, w.Name.Length - 6), f.Name)))
+					.Select(f => (w.Name[..^6], f.Name)))
 				.ToArray();
 
 			var customLintMethods = new Dictionary<string, List<string>>();
 
 			foreach (var w in modData.ObjectCreator.GetTypesImplementing<Widget>())
 			{
-				foreach (var m in w.GetMethods().Where(m => m.HasAttribute<CustomLintableHotkeyNames>()))
+				foreach (var m in w.GetMethods().Where(m => Utility.HasAttribute<CustomLintableHotkeyNames>(m)))
 				{
 					var p = m.GetParameters();
 					if (p.Length == 3 && p[0].ParameterType == typeof(MiniYamlNode) && p[1].ParameterType == typeof(Action<string>)
 							&& p[2].ParameterType == typeof(Action<string>))
-						customLintMethods.GetOrAdd(w.Name.Substring(0, w.Name.Length - 6)).Add(m.Name);
+						customLintMethods.GetOrAdd(w.Name[..^6]).Add(m.Name);
 				}
 			}
 
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Lint
 						if (type == null)
 							continue;
 
-						checkArgKeys.AddRange(type.GetCustomAttributes<ChromeLogicArgsHotkeys>(true).SelectMany(x => x.LogicArgKeys));
+						checkArgKeys.AddRange(Utility.GetCustomAttributes<ChromeLogicArgsHotkeys>(type, true).SelectMany(x => x.LogicArgKeys));
 					}
 
 					foreach (var n in node.Value.Nodes)

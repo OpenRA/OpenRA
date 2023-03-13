@@ -47,15 +47,15 @@ namespace OpenRA.Traits
 		readonly Func<Actor, ActorBoundsPair> selectActorAndBounds;
 		readonly Cache<Player, SpatiallyPartitioned<FrozenActor>> partitionedMouseFrozenActors;
 		readonly SpatiallyPartitioned<Actor> partitionedMouseActors;
-		readonly Dictionary<Actor, ActorBoundsPair> partitionedMouseActorBounds = new Dictionary<Actor, ActorBoundsPair>();
+		readonly Dictionary<Actor, ActorBoundsPair> partitionedMouseActorBounds = new();
 
 		readonly Cache<Player, SpatiallyPartitioned<FrozenActor>> partitionedRenderableFrozenActors;
 		readonly SpatiallyPartitioned<Actor> partitionedRenderableActors;
 		readonly SpatiallyPartitioned<IEffect> partitionedRenderableEffects;
 
 		// Updates are done in one pass to ensure all bound changes have been applied
-		readonly HashSet<Actor> addOrUpdateActors = new HashSet<Actor>();
-		readonly HashSet<Actor> removeActors = new HashSet<Actor>();
+		readonly HashSet<Actor> addOrUpdateActors = new();
+		readonly HashSet<Actor> removeActors = new();
 		readonly Cache<Player, HashSet<FrozenActor>> addOrUpdateFrozenActors;
 		readonly Cache<Player, HashSet<FrozenActor>> removeFrozenActors;
 

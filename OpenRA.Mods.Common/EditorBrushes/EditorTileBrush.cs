@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Map map;
 		readonly CPos cell;
 
-		readonly Queue<UndoTile> undoTiles = new Queue<UndoTile>();
+		readonly Queue<UndoTile> undoTiles = new();
 		readonly TerrainTemplateInfo terrainTemplate;
 
 		public PaintTileEditorAction(ushort template, Map map, CPos cell)
@@ -230,7 +230,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Map map;
 		readonly CPos cell;
 
-		readonly Queue<UndoTile> undoTiles = new Queue<UndoTile>();
+		readonly Queue<UndoTile> undoTiles = new();
 		readonly TerrainTemplateInfo terrainTemplate;
 
 		public FloodFillEditorAction(ushort template, Map map, CPos cell)

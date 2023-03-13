@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Warheads
 	public abstract class Warhead : IWarhead
 	{
 		[Desc("What types of targets are affected.")]
-		public readonly BitSet<TargetableType> ValidTargets = new BitSet<TargetableType>("Ground", "Water");
+		public readonly BitSet<TargetableType> ValidTargets = new("Ground", "Water");
 
 		[Desc("What types of targets are unaffected.", "Overrules ValidTargets.")]
 		public readonly BitSet<TargetableType> InvalidTargets;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly bool AffectsParent = false;
 
 		[Desc("If impact is above this altitude, warheads that would affect terrain ignore terrain target types (and either do nothing or perform their own checks).")]
-		public readonly WDist AirThreshold = new WDist(128);
+		public readonly WDist AirThreshold = new(128);
 
 		[Desc("Delay in ticks before applying the warhead effect.", "0 = instant (old model).")]
 		public readonly int Delay = 0;

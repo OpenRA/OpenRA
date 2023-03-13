@@ -21,7 +21,7 @@ namespace OpenRA.Support
 		static readonly TimeSpan ConnectionLifeTime = TimeSpan.FromMinutes(1);
 #endif
 
-		static readonly Lazy<HttpMessageHandler> Handler = new Lazy<HttpMessageHandler>(GetHandler);
+		static readonly Lazy<HttpMessageHandler> Handler = new(GetHandler);
 
 		public static HttpClient Create()
 		{

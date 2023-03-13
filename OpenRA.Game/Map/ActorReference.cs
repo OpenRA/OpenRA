@@ -22,7 +22,7 @@ namespace OpenRA
 {
 	public interface ISuppressInitExport { }
 
-	public class ActorReference : IEnumerable
+	public class ActorReference : IEnumerable<object>
 	{
 		public string Type;
 		readonly Lazy<TypeDictionary> initDict;
@@ -87,14 +87,14 @@ namespace OpenRA
 			var ret = new MiniYaml(Type);
 			foreach (var o in initDict.Value)
 			{
-				if (!(o is ActorInit init) || o is ISuppressInitExport)
+				if (o is not ActorInit init || o is ISuppressInitExport)
 					continue;
 
 				if (initFilter != null && !initFilter(init))
 					continue;
 
 				var initTypeName = init.GetType().Name;
-				var initName = initTypeName.Substring(0, initTypeName.Length - 4);
+				var initName = initTypeName[..^4];
 				if (!string.IsNullOrEmpty(init.InstanceName))
 					initName += ActorInfo.TraitInstanceSeparator + init.InstanceName;
 
@@ -104,7 +104,9 @@ namespace OpenRA
 			return ret;
 		}
 
-		public IEnumerator GetEnumerator() { return initDict.Value.GetEnumerator(); }
+		public IEnumerator<object> GetEnumerator() { return initDict.Value.GetEnumerator(); }
+
+		IEnumerator IEnumerable.GetEnumerator() { return GetEnumerator(); }
 
 		public ActorReference Clone()
 		{

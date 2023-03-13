@@ -1,5 +1,5 @@
 #!/bin/sh
-# example launch script, see https://github.com/OpenRA/OpenRA/wiki/Dedicated for details
+# example launch script, see https://github.com/OpenRA/OpenRA/wiki/Dedicated-Server for details
 
 # Usage:
 #  $ ./launch-dedicated.sh # Launch a dedicated server with default settings
@@ -17,6 +17,7 @@ fi
 
 Name="${Name:-"Dedicated Server"}"
 Mod="${Mod:-"ra"}"
+Map="${Map:-""}"
 ListenPort="${ListenPort:-"1234"}"
 AdvertiseOnline="${AdvertiseOnline:-"True"}"
 Password="${Password:-""}"
@@ -32,13 +33,14 @@ EnableGeoIP="${EnableGeoIP:-"True"}"
 EnableLintChecks="${EnableLintChecks:-"True"}"
 ShareAnonymizedIPs="${ShareAnonymizedIPs:-"True"}"
 
-JoinChatDelay="${JoinChatDelay:-"5000"}"
+FloodLimitJoinCooldown="${FloodLimitJoinCooldown:-"5000"}"
 
 SupportDir="${SupportDir:-""}"
 
 while true; do
      ${RUNTIME_LAUNCHER} "${ENGINEDIR}/bin/OpenRA.Server.dll" Engine.EngineDir=".." Game.Mod="$Mod" \
      Server.Name="$Name" \
+     Server.Map="$Map" \
      Server.ListenPort="$ListenPort" \
      Server.AdvertiseOnline="$AdvertiseOnline" \
      Server.EnableSingleplayer="$EnableSingleplayer" \
@@ -51,6 +53,6 @@ while true; do
      Server.EnableGeoIP="$EnableGeoIP" \
      Server.EnableLintChecks="$EnableLintChecks" \
      Server.ShareAnonymizedIPs="$ShareAnonymizedIPs" \
-     Server.JoinChatDelay="$JoinChatDelay" \
+     Server.FloodLimitJoinCooldown="$FloodLimitJoinCooldown" \
      Engine.SupportDir="$SupportDir" || :
 done

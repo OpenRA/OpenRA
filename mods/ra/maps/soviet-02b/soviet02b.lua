@@ -41,7 +41,7 @@ ProduceInfantry = function()
 		return
 	end
 
-	enemy.Build({ Utils.Random(AlliedInfantry) }, function(units)
+	Greece.Build({ Utils.Random(AlliedInfantry) }, function(units)
 		table.insert(AttackGroup, units[1])
 		SendAttackGroup()
 		Trigger.AfterDelay(DateTime.Seconds(10), ProduceInfantry)
@@ -49,54 +49,54 @@ ProduceInfantry = function()
 end
 
 SendUSSRParadrops = function()
-	paraproxy1 = Actor.Create("powerproxy.paratroopers", false, { Owner = player })
+	local paraproxy1 = Actor.Create("powerproxy.paratroopers", false, { Owner = USSR })
 	paraproxy1.TargetParatroopers(ParachuteBaseEntrance.CenterPosition, Angle.North)
 	paraproxy1.Destroy()
 end
 
 SendUSSRParadropsBase = function()
-	paraproxy2 = Actor.Create("powerproxy.paratroopers2", false, { Owner = player })
+	local paraproxy2 = Actor.Create("powerproxy.paratroopers2", false, { Owner = USSR })
 	paraproxy2.TargetParatroopers(ParachuteBase1.CenterPosition, Angle.East)
 	paraproxy2.Destroy()
-	paraproxy3 = Actor.Create("powerproxy.paratroopers3", false, { Owner = player })
+	local paraproxy3 = Actor.Create("powerproxy.paratroopers3", false, { Owner = USSR })
 	paraproxy3.TargetParatroopers(ParachuteBase2.CenterPosition, Angle.East)
 	paraproxy3.Destroy()
 end
 
-Trigger.OnEnteredFootprint(BridgeShroudTrigger, function(a, id)
-	if not bridgeShroudTrigger and a.Owner == player then
-		bridgeShroudTrigger = true
-		local cameraBridge = Actor.Create("camera", true, { Owner = player, Location = CameraBridge.Location })
+Trigger.OnEnteredFootprint(BridgeShroudTrigger, function(a)
+	if not BridgeShroudTriggered and a.Owner == USSR then
+		BridgeShroudTriggered = true
+		local cameraBridge = Actor.Create("camera", true, { Owner = USSR, Location = CameraBridge.Location })
 		Trigger.AfterDelay(DateTime.Seconds(15), function()
 			cameraBridge.Destroy()
 		end)
 	end
 end)
 
-Trigger.OnEnteredFootprint(BridgeExplosionTrigger, function(a, id)
-	if not bridgeExplosionTrigger and a.Owner == player then
-		bridgeExplosionTrigger = true
+Trigger.OnEnteredFootprint(BridgeExplosionTrigger, function(a)
+	if not BridgeExplosionTriggered and a.Owner == USSR then
+		BridgeExplosionTriggered = true
 		if not BarrelBridge.IsDead then
 			BarrelBridge.Kill()
 		end
 	end
 end)
 
-Trigger.OnEnteredFootprint(EnemyBaseEntranceShroudTrigger, function(a, id)
-	if not enemyBaseEntranceShroudTrigger and a.Owner == player then
-		enemyBaseEntranceShroudTrigger = true
-		local cameraBaseEntrance = Actor.Create("camera", true, { Owner = player, Location = CameraBaseEntrance.Location })
+Trigger.OnEnteredFootprint(EnemyBaseEntranceShroudTrigger, function(a)
+	if not EnemyBaseEntranceShroudTriggered and a.Owner == USSR then
+		EnemyBaseEntranceShroudTriggered = true
+		local cameraBaseEntrance = Actor.Create("camera", true, { Owner = USSR, Location = CameraBaseEntrance.Location })
 		Trigger.AfterDelay(DateTime.Seconds(15), function()
 			cameraBaseEntrance.Destroy()
 		end)
 	end
 end)
 
-Trigger.OnEnteredFootprint(EnemyBaseShroudTrigger, function(a, id)
-	if not enemyBaseShroudTrigger and a.Owner == player then
-		enemyBaseShroudTrigger = true
-		local cameraBase1 = Actor.Create("camera", true, { Owner = player, Location = CameraBase1.Location })
-		local cameraBase2 = Actor.Create("camera", true, { Owner = player, Location = CameraBase2.Location })
+Trigger.OnEnteredFootprint(EnemyBaseShroudTrigger, function(a)
+	if not EnemyBaseShroudTriggered and a.Owner == USSR then
+		EnemyBaseShroudTriggered = true
+		local cameraBase1 = Actor.Create("camera", true, { Owner = USSR, Location = CameraBase1.Location })
+		local cameraBase2 = Actor.Create("camera", true, { Owner = USSR, Location = CameraBase2.Location })
 		Trigger.AfterDelay(DateTime.Seconds(15), function()
 			cameraBase1.Destroy()
 			cameraBase2.Destroy()
@@ -104,17 +104,17 @@ Trigger.OnEnteredFootprint(EnemyBaseShroudTrigger, function(a, id)
 	end
 end)
 
-Trigger.OnEnteredFootprint(ParachuteTrigger, function(a, id)
-	if not parachuteTrigger and a.Owner == player then
-		parachuteTrigger = true
+Trigger.OnEnteredFootprint(ParachuteTrigger, function(a)
+	if not ParachuteTriggered and a.Owner == USSR then
+		ParachuteTriggered = true
 		SendUSSRParadrops()
-		Media.PlaySpeechNotification(player, "ReinforcementsArrived")
+		Media.PlaySpeechNotification(USSR, "ReinforcementsArrived")
 	end
 end)
 
 Trigger.OnEnteredFootprint(TransportTrigger, function(a, id)
-	if not transportTrigger and a.Type == "truk" then
-		transportTrigger = true
+	if not TransportTriggered and a.Type == "truk" then
+		TransportTriggered = true
 		if not TransportTruck.IsDead then
 			TransportTruck.Wait(DateTime.Seconds(5))
 			TransportTruck.Move(TransportWaypoint2.Location)
@@ -124,14 +124,14 @@ Trigger.OnEnteredFootprint(TransportTrigger, function(a, id)
 			TransportTruck.Move(TransportWaypoint1.Location)
 		end
 		Trigger.AfterDelay(DateTime.Seconds(10), function()
-			transportTrigger = false
+			TransportTriggered = false
 		end)
 	end
 end)
 
 Trigger.OnKilled(BarrelBase, function()
 		SendUSSRParadropsBase()
-		Media.PlaySpeechNotification(player, "ReinforcementsArrived")
+		Media.PlaySpeechNotification(USSR, "ReinforcementsArrived")
 end)
 
 Trigger.OnKilled(BarrelBridge, function()
@@ -142,64 +142,64 @@ Trigger.OnKilled(BarrelBridge, function()
 end)
 
 Trigger.OnKilled(Church1, function()
-	Actor.Create("moneycrate", true, { Owner = player, Location = TransportWaypoint3.Location })
+	Actor.Create("moneycrate", true, { Owner = USSR, Location = TransportWaypoint3.Location })
 end)
 
 Trigger.OnKilled(Church2, function()
-	Actor.Create("healcrate", true, { Owner = player, Location = Church2.Location })
+	Actor.Create("healcrate", true, { Owner = USSR, Location = Church2.Location })
 end)
 
 Trigger.OnKilled(ForwardCommand, function()
-	enemy.MarkCompletedObjective(alliedObjective)
+	Greece.MarkCompletedObjective(AlliedObjective)
 end)
 
 Trigger.OnKilled(IntroSoldier1, function()
-	local cameraIntro = Actor.Create("camera", true, { Owner = player, Location = CameraStart.Location })
+	local cameraIntro = Actor.Create("camera", true, { Owner = USSR, Location = CameraStart.Location })
 	Trigger.AfterDelay(DateTime.Seconds(15), function()
 		cameraIntro.Destroy()
 	end)
 end)
 
 WorldLoaded = function()
-	player = Player.GetPlayer("USSR")
-	enemy = Player.GetPlayer("Greece")
+	USSR = Player.GetPlayer("USSR")
+	Greece = Player.GetPlayer("Greece")
 	Utils.Do(IntroAttackers, function(actor)
 		if not actor.IsDead then
 			Trigger.OnIdle(actor, actor.Hunt)
 		end
 	end)
 	Trigger.AfterDelay(0, function()
-		local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == enemy and self.HasProperty("StartBuildingRepairs") end)
+		local buildings = Utils.Where(Map.ActorsInWorld, function(self) return self.Owner == Greece and self.HasProperty("StartBuildingRepairs") end)
 		Utils.Do(buildings, function(actor)
-			Trigger.OnDamaged(actor, function(building, attacker)
-				if building.Owner == enemy and building.Health < building.MaxHealth * 0.8 then
+			Trigger.OnDamaged(actor, function(building)
+				if building.Owner == Greece and building.Health < building.MaxHealth * 0.8 then
 					building.StartBuildingRepairs()
 				end
 			end)
 		end)
 	end)
 
-	InitObjectives(player)
-	alliedObjective = AddPrimaryObjective(enemy, "")
-	sovietObjective1 = AddPrimaryObjective(player, "protect-command-center")
-	sovietObjective2 = AddPrimaryObjective(player, "destroy-allied-units-structures")
+	InitObjectives(USSR)
+	AlliedObjective = AddPrimaryObjective(Greece, "")
+	SovietObjective1 = AddPrimaryObjective(USSR, "protect-command-center")
+	SovietObjective2 = AddPrimaryObjective(USSR, "destroy-allied-units-structures")
 
-	enemy.Resources = 2000
+	Greece.Resources = 2000
 	Trigger.AfterDelay(DateTime.Seconds(30), ProduceInfantry)
 end
 
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		enemy.MarkCompletedObjective(alliedObjective)
+	if USSR.HasNoRequiredUnits() then
+		Greece.MarkCompletedObjective(AlliedObjective)
 	end
 
-	if enemy.HasNoRequiredUnits() then
-		player.MarkCompletedObjective(sovietObjective1)
-		player.MarkCompletedObjective(sovietObjective2)
+	if Greece.HasNoRequiredUnits() then
+		USSR.MarkCompletedObjective(SovietObjective1)
+		USSR.MarkCompletedObjective(SovietObjective2)
 	end
 
-	if enemy.Resources >= enemy.ResourceCapacity * 0.75 then
-		enemy.Cash = enemy.Cash + enemy.Resources - enemy.ResourceCapacity * 0.25
-		enemy.Resources = enemy.ResourceCapacity * 0.25
+	if Greece.Resources >= Greece.ResourceCapacity * 0.75 then
+		Greece.Cash = Greece.Cash + Greece.Resources - Greece.ResourceCapacity * 0.25
+		Greece.Resources = Greece.ResourceCapacity * 0.25
 	end
 end

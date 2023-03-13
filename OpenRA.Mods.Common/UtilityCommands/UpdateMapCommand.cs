@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			// HACK: We know that maps can only be oramap or folders, which are ReadWrite
 			var folder = new Folder(Platform.EngineDir);
-			if (!(folder.OpenPackage(args[1], modData.ModFiles) is IReadWritePackage package))
+			if (folder.OpenPackage(args[1], modData.ModFiles) is not IReadWritePackage package)
 				throw new FileNotFoundException(args[1]);
 
 			IEnumerable<UpdateRule> rules = null;

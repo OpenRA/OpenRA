@@ -95,41 +95,41 @@ InitialSovietPatrols = function()
 end
 
 InitialAlliedReinforcements = function()
-	local camera = Actor.Create("Camera", true, { Owner = player, Location = DefaultCameraPosition.Location })
+	local camera = Actor.Create("Camera", true, { Owner = Greece, Location = DefaultCameraPosition.Location })
 	Trigger.AfterDelay(DateTime.Seconds(30), camera.Destroy)
 
-	Reinforcements.Reinforce(player, AlliedReinforcementsA, { AlliedEntry1.Location, UnitBStopLocation.Location }, 2)
+	Reinforcements.Reinforce(Greece, AlliedReinforcementsA, { AlliedEntry1.Location, UnitBStopLocation.Location }, 2)
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
-		Reinforcements.Reinforce(player, AlliedReinforcementsB, { AlliedEntry2.Location, UnitAStopLocation.Location }, 2)
+		Reinforcements.Reinforce(Greece, AlliedReinforcementsB, { AlliedEntry2.Location, UnitAStopLocation.Location }, 2)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(5), function()
-		Reinforcements.Reinforce(player, { "mcv" }, { AlliedEntry3.Location, MCVStopLocation.Location })
+		Reinforcements.Reinforce(Greece, { "mcv" }, { AlliedEntry3.Location, MCVStopLocation.Location })
 	end)
 end
 
 CaptureRadarDome = function()
 	Trigger.OnKilled(RadarDome, function()
-		player.MarkFailedObjective(CaptureRadarDomeObj)
+		Greece.MarkFailedObjective(CaptureRadarDomeObj)
 	end)
 
 	Trigger.OnCapture(RadarDome, function()
-		player.MarkCompletedObjective(CaptureRadarDomeObj)
+		Greece.MarkCompletedObjective(CaptureRadarDomeObj)
 
 		Utils.Do(SovietTechLabs, function(a)
 			if a.IsDead then
 				return
 			end
 
-			Beacon.New(player, a.CenterPosition)
+			Beacon.New(Greece, a.CenterPosition)
 			if Difficulty ~= "hard" then
-				Actor.Create("TECH.CAM", true, { Owner = player, Location = a.Location + CVec.New(1, 1) })
+				Actor.Create("TECH.CAM", true, { Owner = Greece, Location = a.Location + CVec.New(1, 1) })
 			end
 		end)
 
 		Media.DisplayMessage(UserInterface.Translate("soviet-tech-centers-discovered"))
 
 		if Difficulty == "easy" then
-			Actor.Create("Camera", true, { Owner = player, Location = Weapcam.Location })
+			Actor.Create("Camera", true, { Owner = Greece, Location = Weapcam.Location })
 		end
 	end)
 end
@@ -137,14 +137,14 @@ end
 InfiltrateTechCenter = function()
 	Utils.Do(SovietTechLabs, function(a)
 		Trigger.OnInfiltrated(a, function()
-			if infiltrated then
+			if Infiltrated then
 				return
 			end
-			infiltrated = true
-			DestroySovietsObj = AddPrimaryObjective(player, "destroy-soviet-buildings-units")
-			player.MarkCompletedObjective(InfiltrateTechCenterObj)
+			Infiltrated = true
+			DestroySovietsObj = AddPrimaryObjective(Greece, "destroy-soviet-buildings-units")
+			Greece.MarkCompletedObjective(InfiltrateTechCenterObj)
 
-			local Proxy = Actor.Create("powerproxy.paratroopers", false, { Owner = ussr })
+			local Proxy = Actor.Create("powerproxy.paratroopers", false, { Owner = USSR })
 			Utils.Do(ParadropWaypoints[Difficulty], function(waypoint)
 				Proxy.TargetParatroopers(waypoint.CenterPosition, Angle.South)
 			end)
@@ -152,37 +152,37 @@ InfiltrateTechCenter = function()
 		end)
 
 		Trigger.OnCapture(a, function()
-			if not infiltrated then
+			if not Infiltrated then
 				Media.DisplayMessage(UserInterface.Translate("dont-capture-tech-centers"))
 			end
 		end)
 	end)
 
 	Trigger.OnAllKilledOrCaptured(SovietTechLabs, function()
-		if not player.IsObjectiveCompleted(InfiltrateTechCenterObj) then
-			player.MarkFailedObjective(InfiltrateTechCenterObj)
+		if not Greece.IsObjectiveCompleted(InfiltrateTechCenterObj) then
+			Greece.MarkFailedObjective(InfiltrateTechCenterObj)
 		end
 	end)
 end
 
 Tick = function()
-	if DateTime.GameTime > DateTime.Seconds(10) and player.HasNoRequiredUnits() then
-		player.MarkFailedObjective(InfiltrateTechCenterObj)
+	if DateTime.GameTime > DateTime.Seconds(10) and Greece.HasNoRequiredUnits() then
+		Greece.MarkFailedObjective(InfiltrateTechCenterObj)
 	end
 
-	if DestroySovietsObj and ussr.HasNoRequiredUnits() then
-		player.MarkCompletedObjective(DestroySovietsObj)
+	if DestroySovietsObj and USSR.HasNoRequiredUnits() then
+		Greece.MarkCompletedObjective(DestroySovietsObj)
 	end
 end
 
 WorldLoaded = function()
-	player = Player.GetPlayer("Greece")
-	ussr = Player.GetPlayer("USSR")
+	Greece = Player.GetPlayer("Greece")
+	USSR = Player.GetPlayer("USSR")
 
-	InitObjectives(player)
+	InitObjectives(Greece)
 
-	InfiltrateTechCenterObj = AddPrimaryObjective(player, "infiltrate-tech-center-spy")
-	CaptureRadarDomeObj = AddSecondaryObjective(player, "capture-radar-shore")
+	InfiltrateTechCenterObj = AddPrimaryObjective(Greece, "infiltrate-tech-center-spy")
+	CaptureRadarDomeObj = AddSecondaryObjective(Greece, "capture-radar-shore")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
 
@@ -196,9 +196,9 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredProximityTrigger(SovietMiniBaseCam.CenterPosition, WDist.New(1024 * 6), function(a, id)
-		if a.Owner == player then
+		if a.Owner == Greece then
 			Trigger.RemoveProximityTrigger(id)
-			local cam = Actor.Create("Camera", true, { Owner = player, Location = SovietMiniBaseCam.Location })
+			local cam = Actor.Create("Camera", true, { Owner = Greece, Location = SovietMiniBaseCam.Location })
 			Trigger.AfterDelay(DateTime.Seconds(15), cam.Destroy)
 		end
 	end)

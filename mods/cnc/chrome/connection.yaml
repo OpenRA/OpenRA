@@ -83,6 +83,12 @@ Container@CONNECTIONFAILED_PANEL:
 			Width: 140
 			Height: 35
 			Text: Abort
+		Button@QUIT_BUTTON:
+			Key: escape
+			Y: 84
+			Width: 140
+			Height: 35
+			Text: Quit
 		Button@RETRY_BUTTON:
 			Key: return
 			X: 230

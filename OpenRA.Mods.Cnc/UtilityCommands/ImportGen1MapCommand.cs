@@ -15,26 +15,27 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using OpenRA.FileSystem;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.UtilityCommands
+namespace OpenRA.Mods.Cnc.UtilityCommands
 {
-	public abstract class ImportLegacyMapCommand
+	public abstract class ImportGen1MapCommand
 	{
 		public readonly int MapSize;
 
-		protected ImportLegacyMapCommand(int mapSize)
+		protected ImportGen1MapCommand(int mapSize)
 		{
 			MapSize = mapSize;
 		}
 
 		public ModData ModData;
 		public Map Map;
-		public List<string> Players = new List<string>();
+		public List<string> Players = new();
 		public MapPlayers MapPlayers;
 		bool singlePlayer;
 		int spawnCount;
@@ -231,7 +232,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		static string Truncate(string s, int maxLength)
 		{
-			return s.Length <= maxLength ? s : s.Substring(0, maxLength);
+			return s.Length <= maxLength ? s : s[..maxLength];
 		}
 
 		static string GetTileset(IniSection mapSection)
@@ -307,8 +308,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 
 			var worldNode = Map.RuleDefinitions.Nodes.FirstOrDefault(n => n.Key == "World");
-			if (worldNode == null)
-				worldNode = new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()));
+			worldNode ??= new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()));
 
 			if (scorches.Count > 0)
 			{
@@ -329,7 +329,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		}
 
 		// TODO: fix this -- will have bitrotted pretty badly.
-		static readonly Dictionary<string, Color> NamedColorMapping = new Dictionary<string, Color>()
+		static readonly Dictionary<string, Color> NamedColorMapping = new()
 		{
 			{ "gold", Color.FromArgb(246, 214, 121) },
 			{ "blue", Color.FromArgb(226, 230, 246) },
@@ -452,4 +452,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 		}
 	}
+
+#if !NET6_0_OR_GREATER
+	public static class Extensions
+	{
+		/// <summary>
+		/// Only used for Mono builds. .NET 6 added the exact same thing.
+		/// </summary>
+		public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+		{
+			var knownKeys = new HashSet<TKey>();
+			foreach (var element in source)
+			{
+				if (knownKeys.Add(keySelector(element)))
+					yield return element;
+			}
+		}
+	}
+#endif
 }

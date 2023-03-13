@@ -64,7 +64,7 @@ namespace OpenRA
 		public bool Hidden;
 	}
 
-	/// <summary> Describes what is to be loaded in order to run a mod. </summary>
+	/// <summary>Describes what is to be loaded in order to run a mod.</summary>
 	public class Manifest : IDisposable
 	{
 		public readonly string Id;
@@ -95,7 +95,7 @@ namespace OpenRA
 			"RequiresMods", "PackageFormats"
 		};
 
-		readonly TypeDictionary modules = new TypeDictionary();
+		readonly TypeDictionary modules = new();
 		readonly Dictionary<string, MiniYaml> yaml;
 
 		bool customDataLoaded;

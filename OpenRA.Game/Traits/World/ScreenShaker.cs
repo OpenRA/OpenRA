@@ -19,8 +19,8 @@ namespace OpenRA.Traits
 	[TraitLocation(SystemActors.World)]
 	public class ScreenShakerInfo : TraitInfo
 	{
-		public readonly float2 MinMultiplier = new float2(-3, -3);
-		public readonly float2 MaxMultiplier = new float2(3, 3);
+		public readonly float2 MinMultiplier = new(-3, -3);
+		public readonly float2 MaxMultiplier = new(3, 3);
 
 		public override object Create(ActorInitializer init) { return new ScreenShaker(this); }
 	}
@@ -29,7 +29,7 @@ namespace OpenRA.Traits
 	{
 		readonly ScreenShakerInfo info;
 		WorldRenderer worldRenderer;
-		readonly List<ShakeEffect> shakeEffects = new List<ShakeEffect>();
+		readonly List<ShakeEffect> shakeEffects = new();
 		int ticks = 0;
 
 		public ScreenShaker(ScreenShakerInfo info)

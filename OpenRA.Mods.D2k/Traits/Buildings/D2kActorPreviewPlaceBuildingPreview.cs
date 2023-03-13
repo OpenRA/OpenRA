@@ -25,7 +25,7 @@ namespace OpenRA.Mods.D2k.Traits
 	public class D2kActorPreviewPlaceBuildingPreviewInfo : ActorPreviewPlaceBuildingPreviewInfo
 	{
 		[Desc("Terrain types that should show the 'unsafe' footprint tile.")]
-		public readonly HashSet<string> UnsafeTerrainTypes = new HashSet<string> { "Rock" };
+		public readonly HashSet<string> UnsafeTerrainTypes = new() { "Rock" };
 
 		[Desc("Only check for 'unsafe' footprint tiles when you have these prerequisites.")]
 		public readonly string[] RequiresPrerequisites = Array.Empty<string>();
@@ -33,15 +33,15 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("Sprite image to use for the overlay.")]
 		public readonly string Image = "overlay";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		[Desc("Sprite overlay to use for valid cells.")]
 		public readonly string TileValidName = "build-valid";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		[Desc("Sprite overlay to use for invalid cells.")]
 		public readonly string TileInvalidName = "build-invalid";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		[Desc("Sprite overlay to use for blocked cells.")]
 		public readonly string TileUnsafeName = "build-unsafe";
 

@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	public class ProductionTabGroup
 	{
-		public List<ProductionTab> Tabs = new List<ProductionTab>();
+		public List<ProductionTab> Tabs = new();
 		public string Group;
 		public int NextQueueName = 1;
 		public bool Alert { get { return Tabs.Any(t => t.Queue.AllQueued().Any(i => i.Done)); } }
@@ -76,8 +76,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string ClickSound = ChromeMetrics.Get<string>("ClickSound");
 		public readonly string ClickDisabledSound = ChromeMetrics.Get<string>("ClickDisabledSound");
 
-		public readonly HotkeyReference PreviousProductionTabKey = new HotkeyReference();
-		public readonly HotkeyReference NextProductionTabKey = new HotkeyReference();
+		public readonly HotkeyReference PreviousProductionTabKey = new();
+		public readonly HotkeyReference NextProductionTabKey = new();
 
 		public readonly Dictionary<string, ProductionTabGroup> Groups;
 

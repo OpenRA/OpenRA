@@ -46,13 +46,13 @@ SendAttack = function(owner, size)
 end
 
 InitAIUnits = function()
-	IdlingUnits[harkonnen] = Reinforcements.Reinforce(harkonnen, InitialHarkonnenReinforcements, HarkonnenPaths[1])
+	IdlingUnits[Harkonnen] = Reinforcements.Reinforce(Harkonnen, InitialHarkonnenReinforcements, HarkonnenPaths[1])
 
-	DefendAndRepairBase(harkonnen, HarkonnenBase, 0.75, AttackGroupSize[Difficulty])
+	DefendAndRepairBase(Harkonnen, HarkonnenBase, 0.75, AttackGroupSize[Difficulty])
 end
 
 ActivateAI = function()
-	LastHarvesterEaten[harkonnen] = true
+	LastHarvesterEaten[Harkonnen] = true
 	InitAIUnits()
 	FremenProduction()
 
@@ -61,6 +61,6 @@ ActivateAI = function()
 	local tanksToBuild = function() return HarkonnenTankType end
 	local attackThresholdSize = AttackGroupSize[Difficulty] * 2.5
 
-	ProduceUnits(harkonnen, HarkonnenBarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
-	ProduceUnits(harkonnen, HarkonnenHeavyFact, delay, tanksToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	ProduceUnits(Harkonnen, HarkonnenBarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	ProduceUnits(Harkonnen, HarkonnenHeavyFact, delay, tanksToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
 end

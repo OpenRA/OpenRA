@@ -31,7 +31,7 @@ namespace OpenRA.FileFormats
 		public Color[] Palette { get; }
 		public byte[] Data { get; }
 		public SpriteFrameType Type { get; }
-		public Dictionary<string, string> EmbeddedData = new Dictionary<string, string>();
+		public Dictionary<string, string> EmbeddedData = new();
 
 		public int PixelStride => Type == SpriteFrameType.Indexed8 ? 1 : Type == SpriteFrameType.Rgb24 ? 3 : 4;
 

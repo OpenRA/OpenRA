@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"The PaletteFromEmbeddedSpritePalette trait no longer references a sequence.\n" +
 			"Image and Sequence are replaced by Filename and Frame.";
 
-		readonly HashSet<string> locations = new HashSet<string>();
+		readonly HashSet<string> locations = new();
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{

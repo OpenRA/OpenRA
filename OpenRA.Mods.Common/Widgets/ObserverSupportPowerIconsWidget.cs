@@ -41,8 +41,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public string ClockPalette = "chrome";
 		public Func<Player> GetPlayer;
 
-		readonly List<SupportPowersWidget.SupportPowerIcon> supportPowerIconsIcons = new List<SupportPowersWidget.SupportPowerIcon>();
-		readonly List<Rectangle> supportPowerIconsBounds = new List<Rectangle>();
+		readonly List<SupportPowersWidget.SupportPowerIcon> supportPowerIconsIcons = new();
+		readonly List<Rectangle> supportPowerIconsBounds = new();
 		Animation icon;
 		int lastIconIdx;
 		int currentTooltipToken;

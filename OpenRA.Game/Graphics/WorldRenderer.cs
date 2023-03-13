@@ -31,19 +31,19 @@ namespace OpenRA.Graphics
 
 		public event Action PaletteInvalidated = null;
 
-		readonly HashSet<Actor> onScreenActors = new HashSet<Actor>();
-		readonly HardwarePalette palette = new HardwarePalette();
-		readonly Dictionary<string, PaletteReference> palettes = new Dictionary<string, PaletteReference>();
+		readonly HashSet<Actor> onScreenActors = new();
+		readonly HardwarePalette palette = new();
+		readonly Dictionary<string, PaletteReference> palettes = new();
 		readonly IRenderTerrain terrainRenderer;
 		readonly Lazy<DebugVisualizations> debugVis;
 		readonly Func<string, PaletteReference> createPaletteReference;
 		readonly bool enableDepthBuffer;
 
-		readonly List<IFinalizedRenderable> preparedRenderables = new List<IFinalizedRenderable>();
-		readonly List<IFinalizedRenderable> preparedOverlayRenderables = new List<IFinalizedRenderable>();
-		readonly List<IFinalizedRenderable> preparedAnnotationRenderables = new List<IFinalizedRenderable>();
+		readonly List<IFinalizedRenderable> preparedRenderables = new();
+		readonly List<IFinalizedRenderable> preparedOverlayRenderables = new();
+		readonly List<IFinalizedRenderable> preparedAnnotationRenderables = new();
 
-		readonly List<IRenderable> renderablesBuffer = new List<IRenderable>();
+		readonly List<IRenderable> renderablesBuffer = new();
 
 		internal WorldRenderer(ModData modData, World world)
 		{
@@ -177,7 +177,7 @@ namespace OpenRA.Graphics
 
 			foreach (var e in World.Effects)
 			{
-				if (!(e is IEffectAboveShroud ea))
+				if (e is not IEffectAboveShroud ea)
 					continue;
 
 				foreach (var renderable in ea.RenderAboveShroud(this))
@@ -218,7 +218,7 @@ namespace OpenRA.Graphics
 
 			foreach (var e in World.Effects)
 			{
-				if (!(e is IEffectAnnotation ea))
+				if (e is not IEffectAnnotation ea)
 					continue;
 
 				foreach (var renderAnnotation in ea.RenderAnnotation(this))

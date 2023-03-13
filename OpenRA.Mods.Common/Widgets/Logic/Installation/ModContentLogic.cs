@@ -28,8 +28,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollPanelWidget scrollPanel;
 		readonly Widget template;
 
-		readonly Dictionary<string, ModContent.ModSource> sources = new Dictionary<string, ModContent.ModSource>();
-		readonly Dictionary<string, ModContent.ModDownload> downloads = new Dictionary<string, ModContent.ModDownload>();
+		readonly Dictionary<string, ModContent.ModSource> sources = new();
+		readonly Dictionary<string, ModContent.ModDownload> downloads = new();
 
 		bool sourceAvailable;
 

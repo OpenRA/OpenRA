@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly int Intensity = 0;
 
 		[Desc("Shake multipliers by the X and Y axis, comma-separated.")]
-		public readonly float2 Multiplier = new float2(0, 0);
+		public readonly float2 Multiplier = new(0, 0);
 
 		public override void DoImpact(in Target target, WarheadArgs args)
 		{

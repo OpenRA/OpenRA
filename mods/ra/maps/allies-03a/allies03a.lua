@@ -24,7 +24,7 @@ else
 end
 
 ProduceUnits = function(factory, count)
-	if ussr.IsProducing("e1") then
+	if USSR.IsProducing("e1") then
 		Trigger.AfterDelay(DateTime.Seconds(5), function() ProduceUnits(factory, count) end)
 		return
 	end
@@ -37,7 +37,7 @@ ProduceUnits = function(factory, count)
 
 	if not factory.IsDead then
 		factory.IsPrimaryBuilding = true
-		ussr.Build(units, function(soldiers)
+		USSR.Build(units, function(soldiers)
 			Utils.Do(soldiers, function(unit) IdleHunt(unit) end)
 		end)
 	end
@@ -46,8 +46,8 @@ end
 SendAlliedUnits = function()
 	Camera.Position = TanyaWaypoint.CenterPosition
 
-	local Artillery = Actor.Create("arty", true, { Owner = player, Location = AlliedUnitsEntry.Location })
-	local Tanya = Actor.Create(TanyaType, true, { Owner = player, Location = AlliedUnitsEntry.Location })
+	local Artillery = Actor.Create("arty", true, { Owner = Greece, Location = AlliedUnitsEntry.Location })
+	local Tanya = Actor.Create(TanyaType, true, { Owner = Greece, Location = AlliedUnitsEntry.Location })
 
 	if TanyaType == "e7.noautotarget" then
 		Trigger.AfterDelay(DateTime.Seconds(2), function()
@@ -59,11 +59,11 @@ SendAlliedUnits = function()
 	Tanya.Move(TanyaWaypoint.Location)
 	Artillery.Move(ArtilleryWaypoint.Location)
 
-	Trigger.OnKilled(Tanya, function() player.MarkFailedObjective(TanyaSurvive) end)
+	Trigger.OnKilled(Tanya, function() Greece.MarkFailedObjective(TanyaSurvive) end)
 end
 
 SendUSSRParadrops = function()
-	local powerproxy = Actor.Create("powerproxy.paratroopers", false, { Owner = ussr })
+	local powerproxy = Actor.Create("powerproxy.paratroopers", false, { Owner = USSR })
 
 	local aircraftA = powerproxy.TargetParatroopers(ParadropLZ.CenterPosition, Angle.SouthEast)
 	Utils.Do(aircraftA, function(a)
@@ -83,13 +83,13 @@ SendUSSRParadrops = function()
 end
 
 SendUSSRWaterTransport = function()
-	local units = Reinforcements.ReinforceWithTransport(ussr, "lst", TransportReinforcements, { WaterTransportEntry.Location, WaterTransportLoadout.Location }, { WaterTransportExit.Location })[2]
+	local units = Reinforcements.ReinforceWithTransport(USSR, "lst", TransportReinforcements, { WaterTransportEntry.Location, WaterTransportLoadout.Location }, { WaterTransportExit.Location })[2]
 	Utils.Do(units, function(unit) IdleHunt(unit) end)
 end
 
 SendUSSRTankReinforcements = function()
-	local camera = Actor.Create("camera", true, { Owner = player, Location = USSRReinforcementsCameraWaypoint.Location })
-	local ussrTank = Reinforcements.Reinforce(ussr, { "3tnk" }, { USSRReinforcementsEntryWaypoint.Location, USSRReinforcementsRallyWaypoint1.Location, USSRReinforcementsRallyWaypoint2.Location })[1]
+	local camera = Actor.Create("camera", true, { Owner = Greece, Location = USSRReinforcementsCameraWaypoint.Location })
+	local ussrTank = Reinforcements.Reinforce(USSR, { "3tnk" }, { USSRReinforcementsEntryWaypoint.Location, USSRReinforcementsRallyWaypoint1.Location, USSRReinforcementsRallyWaypoint2.Location })[1]
 	Trigger.OnRemovedFromWorld(ussrTank, function()
 		Trigger.AfterDelay(DateTime.Seconds(3), function()
 			if not	camera.IsDead then
@@ -100,28 +100,28 @@ SendUSSRTankReinforcements = function()
 end
 
 InitPlayers = function()
-	player = Player.GetPlayer("Greece")
-	ussr = Player.GetPlayer("USSR")
+	Greece = Player.GetPlayer("Greece")
+	USSR = Player.GetPlayer("USSR")
 
-	ussr.Cash = 10000
+	USSR.Cash = 10000
 end
 
 AddObjectives = function()
-	KillBridges = AddPrimaryObjective(player, "destroy-bridges")
-	TanyaSurvive = AddPrimaryObjective(player, "tanya-survive")
-	KillUSSR = AddSecondaryObjective(player, "destroy-oilpumps")
-	FreePrisoners = AddSecondaryObjective(player, "free-prisoners")
+	KillBridges = AddPrimaryObjective(Greece, "destroy-bridges")
+	TanyaSurvive = AddPrimaryObjective(Greece, "tanya-survive")
+	KillUSSR = AddSecondaryObjective(Greece, "destroy-oilpumps")
+	FreePrisoners = AddSecondaryObjective(Greece, "free-prisoners")
 end
 
 InitTriggers = function()
-	Utils.Do(ussr.GetGroundAttackers(), function(unit)
+	Utils.Do(USSR.GetGroundAttackers(), function(unit)
 		Trigger.OnDamaged(unit, function() IdleHunt(unit) end)
 	end)
 
-	Trigger.OnAnyKilled(Prisoners, function() player.MarkFailedObjective(FreePrisoners) end)
+	Trigger.OnAnyKilled(Prisoners, function() Greece.MarkFailedObjective(FreePrisoners) end)
 
 	Trigger.OnKilled(USSRTechCenter, function()
-		Actor.Create("moneycrate", true, { Owner = ussr, Location = USSRMoneyCrateSpawn.Location })
+		Actor.Create("moneycrate", true, { Owner = USSR, Location = USSRMoneyCrateSpawn.Location })
 	end)
 
 	Trigger.OnKilled(ExplosiveBarrel, function()
@@ -135,9 +135,9 @@ InitTriggers = function()
 	end)
 
 	local baseTrigger = Trigger.OnEnteredFootprint(CameraTriggerArea, function(a, id)
-		if a.Owner == player and not baseCamera then
+		if a.Owner == Greece and not BaseCamera then
 			Trigger.RemoveFootprintTrigger(id)
-			baseCamera = Actor.Create("camera", true, { Owner = player, Location = BaseCameraWaypoint.Location })
+			BaseCamera = Actor.Create("camera", true, { Owner = Greece, Location = BaseCameraWaypoint.Location })
 		end
 	end)
 
@@ -145,8 +145,8 @@ InitTriggers = function()
 		Trigger.OnDamaged(unit, function()
 			if not FirstBaseAlert then
 				FirstBaseAlert = true
-				if not baseCamera then
-					baseCamera = Actor.Create("camera", true, { Owner = player, Location = BaseCameraWaypoint.Location })
+				if not BaseCamera then
+					BaseCamera = Actor.Create("camera", true, { Owner = Greece, Location = BaseCameraWaypoint.Location })
 					Trigger.RemoveFootprintTrigger(baseTrigger)
 				end
 				Utils.Do(FirstUSSRBase, function(unit)
@@ -156,7 +156,7 @@ InitTriggers = function()
 				end)
 				for i = 0, 2 do
 					Trigger.AfterDelay(DateTime.Seconds(i), function()
-						Media.PlaySoundNotification(player, "AlertBuzzer")
+						Media.PlaySoundNotification(Greece, "AlertBuzzer")
 					end)
 				end
 				ProduceUnits(ProductionBuildings[1], Utils.RandomInteger(4, 8))
@@ -164,8 +164,8 @@ InitTriggers = function()
 		end)
 	end)
 	Trigger.OnAllKilledOrCaptured(FirstUSSRBase, function()
-		if baseCamera and baseCamera.IsInWorld then
-			baseCamera.Destroy()
+		if BaseCamera and BaseCamera.IsInWorld then
+			BaseCamera.Destroy()
 		end
 	end)
 
@@ -180,7 +180,7 @@ InitTriggers = function()
 				end)
 				for i = 0, 2 do
 					Trigger.AfterDelay(DateTime.Seconds(i), function()
-						Media.PlaySoundNotification(player, "AlertBuzzer")
+						Media.PlaySoundNotification(Greece, "AlertBuzzer")
 					end)
 				end
 				ProduceUnits(ProductionBuildings[2], Utils.RandomInteger(5, 7))
@@ -189,7 +189,7 @@ InitTriggers = function()
 	end)
 
 	Trigger.OnCapture(USSRRadarDome, function(self)
-		largeCamera = Actor.Create("camera.verylarge", true, { Owner = player, Location = LargeCameraWaypoint.Location })
+		local largeCamera = Actor.Create("camera.verylarge", true, { Owner = Greece, Location = LargeCameraWaypoint.Location })
 		Trigger.ClearAll(self)
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Trigger.OnRemovedFromWorld(self, function()
@@ -200,22 +200,22 @@ InitTriggers = function()
 	end)
 
 	Trigger.OnEnteredFootprint(WaterTransportTriggerArea, function(a, id)
-		if a.Owner == player and not waterTransportTriggered then
-			waterTransportTriggered = true
+		if a.Owner == Greece and not WaterTransportTriggered then
+			WaterTransportTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
 			SendUSSRWaterTransport()
 		end
 	end)
 	Trigger.OnEnteredFootprint(ParadropTriggerArea, function(a, id)
-		if a.Owner == player and not paradropsTriggered then
-			paradropsTriggered = true
+		if a.Owner == Greece and not ParadropsTriggered then
+			ParadropsTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
 			SendUSSRParadrops()
 		end
 	end)
 	Trigger.OnEnteredFootprint(ReinforcementsTriggerArea, function(a, id)
-		if a.Owner == player and not reinforcementsTriggered then
-			reinforcementsTriggered = true
+		if a.Owner == Greece and not ReinforcementsTriggered then
+			ReinforcementsTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
 			Trigger.AfterDelay(DateTime.Seconds(1), function() SendUSSRTankReinforcements() end)
 		end
@@ -225,19 +225,19 @@ InitTriggers = function()
 		local bridges = Utils.Where(Map.ActorsInWorld, function(actor) return actor.Type == "bridge1" end)
 
 		Trigger.OnAllKilled(bridges, function()
-			player.MarkCompletedObjective(KillBridges)
-			player.MarkCompletedObjective(TanyaSurvive)
+			Greece.MarkCompletedObjective(KillBridges)
+			Greece.MarkCompletedObjective(TanyaSurvive)
 
 			-- The prisoners are free once their guards are dead
 			if PGuard1.IsDead and PGuard2.IsDead then
-				player.MarkCompletedObjective(FreePrisoners)
+				Greece.MarkCompletedObjective(FreePrisoners)
 			end
 		end)
 
-		local oilPumps = ussr.GetActorsByType("v19")
+		local oilPumps = USSR.GetActorsByType("v19")
 
 		Trigger.OnAllKilled(oilPumps, function()
-			player.MarkCompletedObjective(KillUSSR)
+			Greece.MarkCompletedObjective(KillUSSR)
 		end)
 	end)
 
@@ -253,7 +253,7 @@ WorldLoaded = function()
 
 	InitPlayers()
 
-	InitObjectives(player)
+	InitObjectives(Greece)
 	AddObjectives()
 	InitTriggers()
 	SendAlliedUnits()

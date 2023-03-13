@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "BUTTON_TOOLTIP";
 
-		public HotkeyReference Key = new HotkeyReference();
+		public HotkeyReference Key = new();
 		public bool DisableKeyRepeat = false;
 		public bool DisableKeySound = false;
 
@@ -263,11 +263,10 @@ namespace OpenRA.Mods.Common.Widgets
 				case TextAlign.Left:
 					return new int2(rb.X + LeftMargin, y);
 				case TextAlign.Center:
+				default:
 					return new int2(rb.X + (UsableWidth - textSize.X) / 2, y);
 				case TextAlign.Right:
 					return new int2(rb.X + UsableWidth - textSize.X - RightMargin, y);
-				default:
-					throw new ArgumentOutOfRangeException("Align");
 			}
 		}
 

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Projectiles
 	public class LaserZapInfo : IProjectileInfo
 	{
 		[Desc("The width of the zap.")]
-		public readonly WDist Width = new WDist(86);
+		public readonly WDist Width = new(86);
 
 		[Desc("The shape of the beam.  Accepts values Cylindrical or Flat.")]
 		public readonly BeamRenderableShape Shape = BeamRenderableShape.Cylindrical;
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly bool SecondaryBeam = false;
 
 		[Desc("The width of the zap.")]
-		public readonly WDist SecondaryBeamWidth = new WDist(86);
+		public readonly WDist SecondaryBeamWidth = new(86);
 
 		[Desc("The shape of the beam.  Accepts values Cylindrical or Flat.")]
 		public readonly BeamRenderableShape SecondaryBeamShape = BeamRenderableShape.Cylindrical;

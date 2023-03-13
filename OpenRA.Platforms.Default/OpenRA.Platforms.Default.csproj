@@ -3,7 +3,7 @@
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj" />
     <PackageReference Include="OpenRA-Freetype6" Version="1.0.9" />
     <PackageReference Include="OpenRA-OpenAL-CS" Version="1.0.19" />
-    <PackageReference Include="OpenRA-SDL2-CS" Version="1.0.36" />
+    <PackageReference Include="OpenRA-SDL2-CS" Version="1.0.37" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="OpenRA.Platforms.Default.dll.config" Condition="'$(TargetPlatform)' != 'win-x64' And '$(TargetPlatform)' != 'win-x86'">

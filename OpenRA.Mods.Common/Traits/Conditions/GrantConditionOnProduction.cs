@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[ActorReference]
 		[Desc("The actors to grant condition for. If empty condition will be granted for all actors.")]
-		public readonly HashSet<string> Actors = new HashSet<string>();
+		public readonly HashSet<string> Actors = new();
 
 		[Desc("How long condition is applies for. Use -1 for infinite.")]
 		public readonly int Duration = -1;

@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int TrailDelay = 0;
 
 		[Desc("Thickness of the emitted line.")]
-		public readonly WDist TrailWidth = new WDist(64);
+		public readonly WDist TrailWidth = new(64);
 
 		[Desc("RGB color at the contrail start.")]
 		public readonly Color StartColor = Color.White;

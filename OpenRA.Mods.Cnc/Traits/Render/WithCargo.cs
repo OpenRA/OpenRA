@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		public readonly WVec[] LocalOffset = { WVec.Zero };
 
 		[Desc("Passenger CargoType to display.")]
-		public readonly HashSet<string> DisplayTypes = new HashSet<string>();
+		public readonly HashSet<string> DisplayTypes = new();
 
 		public override object Create(ActorInitializer init) { return new WithCargo(init.Self, this); }
 	}
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		readonly IFacing facing;
 		WAngle cachedFacing;
 
-		readonly Dictionary<Actor, IActorPreview[]> previews = new Dictionary<Actor, IActorPreview[]>();
+		readonly Dictionary<Actor, IActorPreview[]> previews = new();
 
 		public WithCargo(Actor self, WithCargoInfo info)
 		{

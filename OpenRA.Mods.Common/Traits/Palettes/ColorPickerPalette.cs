@@ -44,19 +44,22 @@ namespace OpenRA.Mods.Common.Traits
 	class ColorPickerPalette : ILoadsPalettes, IProvidesAssetBrowserColorPickerPalettes, ITickRender
 	{
 		readonly ColorPickerPaletteInfo info;
-		readonly ColorPickerManagerInfo colorManager;
 		Color color;
+		Color preferredColor;
 
 		public ColorPickerPalette(ColorPickerPaletteInfo info)
 		{
-			// All users need to use the same TraitInfo instance, chosen as the default mod rules
-			colorManager = Game.ModData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
 			this.info = info;
+
+			// All users need to use the same TraitInfo instance, chosen as the default mod rules
+			var colorManager = Game.ModData.DefaultRules.Actors[SystemActors.World].TraitInfo<IColorPickerManagerInfo>();
+			colorManager.OnColorPickerColorUpdate += c => preferredColor = c;
+			preferredColor = Game.Settings.Player.Color;
 		}
 
 		void ILoadsPalettes.LoadPalettes(WorldRenderer wr)
 		{
-			color = colorManager.Color;
+			color = preferredColor;
 			var remap = new PlayerColorRemap(info.RemapIndex.Length == 0 ? Enumerable.Range(0, 256).ToArray() : info.RemapIndex, color);
 			wr.AddPalette(info.Name, new ImmutablePalette(wr.Palette(info.BasePalette).Palette, remap), info.AllowModifiers);
 		}
@@ -65,10 +68,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITickRender.TickRender(WorldRenderer wr, Actor self)
 		{
-			if (color == colorManager.Color)
+			if (color == preferredColor)
 				return;
 
-			color = colorManager.Color;
+			color = preferredColor;
 			var remap = new PlayerColorRemap(info.RemapIndex.Length == 0 ? Enumerable.Range(0, 256).ToArray() : info.RemapIndex, color);
 			wr.ReplacePalette(info.Name, new ImmutablePalette(wr.Palette(info.BasePalette).Palette, remap));
 		}

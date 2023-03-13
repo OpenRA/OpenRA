@@ -38,10 +38,10 @@ namespace OpenRA.Traits
 		public readonly WPos CenterPosition;
 		readonly Actor actor;
 		readonly ICreatesFrozenActors frozenTrait;
-		readonly Player viewer;
 		readonly Shroud shroud;
-		readonly List<WPos> targetablePositions = new List<WPos>();
+		readonly List<WPos> targetablePositions = new();
 
+		public Player Viewer { get; }
 		public Player Owner { get; private set; }
 		public BitSet<TargetableType> TargetTypes { get; private set; }
 		public IEnumerable<WPos> TargetablePositions => targetablePositions;
@@ -86,7 +86,7 @@ namespace OpenRA.Traits
 		{
 			this.actor = actor;
 			this.frozenTrait = frozenTrait;
-			this.viewer = viewer;
+			Viewer = viewer;
 			shroud = viewer.Shroud;
 			NeedRenderables = startsRevealed;
 
@@ -119,7 +119,6 @@ namespace OpenRA.Traits
 		public bool IsValid => Owner != null;
 		public ActorInfo Info => actor.Info;
 		public Actor Actor => !actor.IsDead ? actor : null;
-		public Player Viewer => viewer;
 
 		public void RefreshState()
 		{
@@ -147,7 +146,7 @@ namespace OpenRA.Traits
 			Hidden = false;
 			foreach (var visibilityModifier in visibilityModifiers)
 			{
-				if (!visibilityModifier.IsVisible(actor, viewer))
+				if (!visibilityModifier.IsVisible(actor, Viewer))
 				{
 					Hidden = true;
 					break;
@@ -254,7 +253,7 @@ namespace OpenRA.Traits
 		readonly Player owner;
 		readonly Dictionary<uint, FrozenActor> frozenActorsById;
 		readonly SpatiallyPartitioned<uint> partitionedFrozenActorIds;
-		readonly HashSet<uint> dirtyFrozenActorIds = new HashSet<uint>();
+		readonly HashSet<uint> dirtyFrozenActorIds = new();
 
 		public FrozenActorLayer(Actor self, FrozenActorLayerInfo info)
 		{

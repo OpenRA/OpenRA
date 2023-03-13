@@ -21,9 +21,9 @@ namespace OpenRA.Graphics
 		public ITexture ColorShifts { get; }
 
 		public int Height { get; private set; }
-		readonly Dictionary<string, ImmutablePalette> palettes = new Dictionary<string, ImmutablePalette>();
-		readonly Dictionary<string, MutablePalette> mutablePalettes = new Dictionary<string, MutablePalette>();
-		readonly Dictionary<string, int> indices = new Dictionary<string, int>();
+		readonly Dictionary<string, ImmutablePalette> palettes = new();
+		readonly Dictionary<string, MutablePalette> mutablePalettes = new();
+		readonly Dictionary<string, int> indices = new();
 		byte[] buffer = Array.Empty<byte>();
 		float[] colorShiftBuffer = Array.Empty<float>();
 

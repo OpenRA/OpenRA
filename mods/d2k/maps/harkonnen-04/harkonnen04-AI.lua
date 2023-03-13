@@ -26,12 +26,12 @@ AtreidesVehicleTypes = { "trike", "trike", "quad" }
 AtreidesTankType = { "combat_tank_a" }
 
 ActivateAI = function()
-	IdlingUnits[fremen] = { }
-	IdlingUnits[atreides] = Reinforcements.Reinforce(atreides, InitialAtreidesReinforcements[1], AtreidesPaths[2]), Reinforcements.Reinforce(atreides, InitialAtreidesReinforcements[2], AtreidesPaths[3])
+	IdlingUnits[Fremen] = { }
+	IdlingUnits[Atreides] = Reinforcements.Reinforce(Atreides, InitialAtreidesReinforcements[1], AtreidesPaths[2]), Reinforcements.Reinforce(Atreides, InitialAtreidesReinforcements[2], AtreidesPaths[3])
 	FremenProduction()
 
-	DefendAndRepairBase(atreides, AtreidesBase, 0.75, AttackGroupSize[Difficulty])
-	DefendAndRepairBase(fremen, FremenBase, 0.75, AttackGroupSize[Difficulty])
+	DefendAndRepairBase(Atreides, AtreidesBase, 0.75, AttackGroupSize[Difficulty])
+	DefendAndRepairBase(Fremen, FremenBase, 0.75, AttackGroupSize[Difficulty])
 
 	local delay = function() return Utils.RandomInteger(AttackDelays[Difficulty][1], AttackDelays[Difficulty][2] + 1) end
 	local infantryToBuild = function() return { Utils.Random(AtreidesInfantryTypes) } end
@@ -39,7 +39,7 @@ ActivateAI = function()
 	local tanksToBuild = function() return AtreidesTankType end
 	local attackThresholdSize = AttackGroupSize[Difficulty] * 2.5
 
-	ProduceUnits(atreides, ABarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
-	ProduceUnits(atreides, ALightFactory, delay, vehilcesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
-	ProduceUnits(atreides, AHeavyFactory, delay, tanksToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	ProduceUnits(Atreides, ABarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	ProduceUnits(Atreides, ALightFactory, delay, vehilcesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+	ProduceUnits(Atreides, AHeavyFactory, delay, tanksToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
 end

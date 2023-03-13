@@ -5,14 +5,13 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>9</LangVersion>
     <DebugSymbols>true</DebugSymbols>
     <EngineRootPath Condition="'$(EngineRootPath)' == ''">..</EngineRootPath>
     <OutputPath>$(EngineRootPath)/bin</OutputPath>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ExternalConsole>false</ExternalConsole>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    <CodeAnalysisRuleSet>$(EngineRootPath)/OpenRA.ruleset</CodeAnalysisRuleSet>
     <Nullable>disable</Nullable>
   </PropertyGroup>
 
@@ -30,6 +29,12 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <Optimize>false</Optimize>
+    <!-- Enable only for Debug builds to improve compile-time performance for Release builds -->
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <!-- Enabling GenerateDocumentationFile is required for IDE0005 (Remove unnecessary import) 
+      rule to run in command line builds. https://github.com/dotnet/roslyn/issues/41640
+      Enable only for Debug builds to improve compile-time performance for Release builds -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -46,7 +51,6 @@
 
   <!-- StyleCop -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="All" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435" PrivateAssets="All" />
   </ItemGroup>
 </Project>

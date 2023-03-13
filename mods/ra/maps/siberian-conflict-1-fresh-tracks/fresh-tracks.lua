@@ -217,16 +217,16 @@ FinishTimer = function()
 	Trigger.AfterDelay(DateTime.Seconds(6), function() UserInterface.SetMissionText("") end)
 end
 
-ticked = TimerTicks
+Ticked = TimerTicks
 ConvoysSent = false
 Tick = function()
-	if ticked > 0 then
-		if (ticked % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("first-trucks-arrive-in", { ["time"] = Utils.FormatTime(ticked) })
+	if Ticked > 0 then
+		if (Ticked % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("first-trucks-arrive-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(Timer, TimerColor)
 		end
-		ticked = ticked - 1
-	elseif ticked == 0 and not ConvoysSent then
+		Ticked = Ticked - 1
+	elseif Ticked == 0 and not ConvoysSent then
 		SendConvoys()
 		FinishTimer()
 	end

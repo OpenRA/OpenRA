@@ -15,7 +15,7 @@ namespace OpenRA
 {
 	public readonly struct Hotkey : IEquatable<Hotkey>
 	{
-		public static Hotkey Invalid = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
+		public static Hotkey Invalid = new(Keycode.UNKNOWN, Modifiers.None);
 		public bool IsValid()
 		{
 			return Key != Keycode.UNKNOWN;
@@ -42,7 +42,7 @@ namespace OpenRA
 			var mods = Modifiers.None;
 			if (parts.Length >= 2)
 			{
-				var modString = s.Substring(s.IndexOf(' '));
+				var modString = s[s.IndexOf(' ')..];
 				if (!Enum<Modifiers>.TryParse(modString, true, out mods))
 					return false;
 			}

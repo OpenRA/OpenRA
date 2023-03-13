@@ -19,7 +19,7 @@ namespace OpenRA
 		public readonly int U, V;
 
 		public MPos(int u, int v) { U = u; V = v; }
-		public static readonly MPos Zero = new MPos(0, 0);
+		public static readonly MPos Zero = new(0, 0);
 
 		public static bool operator ==(MPos me, MPos other) { return me.U == other.U && me.V == other.V; }
 		public static bool operator !=(MPos me, MPos other) { return !(me == other); }
@@ -64,14 +64,14 @@ namespace OpenRA
 	}
 
 	/// <summary>
-	/// Projected map position
+	/// Projected map position.
 	/// </summary>
 	public readonly struct PPos : IEquatable<PPos>
 	{
 		public readonly int U, V;
 
 		public PPos(int u, int v) { U = u; V = v; }
-		public static readonly PPos Zero = new PPos(0, 0);
+		public static readonly PPos Zero = new(0, 0);
 
 		public static bool operator ==(PPos me, PPos other) { return me.U == other.U && me.V == other.V; }
 		public static bool operator !=(PPos me, PPos other) { return !(me == other); }

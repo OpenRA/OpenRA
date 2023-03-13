@@ -59,9 +59,9 @@ BaseBuildings = { Powr1, Barr, Proc, Weap, Powr2, Powr3, Powr4, Ftur1, Ftur2, Ft
 InitialBase = { Barracks, Refinery, PowerPlant1, PowerPlant2, PowerPlant3, PowerPlant4, Warfactory, Flametur1, Flametur2, Flametur3, Airfield1, Airfield2 }
 
 BuildBase = function()
-	if Conyard.IsDead or Conyard.Owner ~= ussr then
+	if Conyard.IsDead or Conyard.Owner ~= USSR then
 		return
-	elseif Harvester.IsDead and ussr.Resources <= 299 then
+	elseif Harvester.IsDead and USSR.Resources <= 299 then
 		return
 	end
 
@@ -77,13 +77,13 @@ end
 
 BuildBuilding = function(building)
 	Trigger.AfterDelay(Actor.BuildTime(building.name), function()
-		local actor = Actor.Create(building.name, true, { Owner = ussr, Location = building.pos })
-		ussr.Cash = ussr.Cash - building.prize
+		local actor = Actor.Create(building.name, true, { Owner = USSR, Location = building.pos })
+		USSR.Cash = USSR.Cash - building.prize
 
 		building.exists = true
 		Trigger.OnKilled(actor, function() building.exists = false end)
 		Trigger.OnDamaged(actor, function(building)
-			if building.Owner == ussr and building.Health < building.MaxHealth * 3/4 then
+			if building.Owner == USSR and building.Health < building.MaxHealth * 3/4 then
 				building.StartBuildingRepairs()
 				DefendActor(actor)
 			end
@@ -163,13 +163,13 @@ DefendActor = function(unit)
 end
 
 InitAIUnits = function()
-	IdlingUnits = ussr.GetGroundAttackers()
+	IdlingUnits = USSR.GetGroundAttackers()
 
 	DefendActor(Conyard)
 	for i,v in ipairs(InitialBase) do
 		DefendActor(v)
 		Trigger.OnDamaged(v, function(building)
-			if building.Owner == ussr and building.Health < building.MaxHealth * 3/4 then
+			if building.Owner == USSR and building.Health < building.MaxHealth * 3/4 then
 				building.StartBuildingRepairs()
 			end
 		end)
@@ -189,7 +189,7 @@ ProduceInfantry = function()
 	-- See AttackDelay in WorldLoaded
 	local delay = Utils.RandomInteger(AttackDelay[1], AttackDelay[2])
 	local toBuild = { Utils.Random(SovietInfantryTypes) }
-	ussr.Build(toBuild, function(unit)
+	USSR.Build(toBuild, function(unit)
 		IdlingUnits[#IdlingUnits + 1] = unit[1]
 		Trigger.AfterDelay(delay, ProduceInfantry)
 
@@ -209,14 +209,14 @@ ProduceVehicles = function()
 	-- See AttackDelay in WorldLoaded
 	local delay = Utils.RandomInteger(AttackDelay[1], AttackDelay[2])
 	if HarvesterKilled then
-		ussr.Build({ "harv" }, function(harv)
+		USSR.Build({ "harv" }, function(harv)
 			ProtectHarvester(harv[1])
 			HarvesterKilled = false
 			Trigger.AfterDelay(delay, ProduceVehicles)
 		end)
 	else
 		local toBuild = { Utils.Random(SovietVehicleTypes) }
-		ussr.Build(toBuild, function(unit)
+		USSR.Build(toBuild, function(unit)
 			IdlingUnits[#IdlingUnits + 1] = unit[1]
 			Trigger.AfterDelay(delay, ProduceVehicles)
 
@@ -229,7 +229,7 @@ ProduceVehicles = function()
 end
 
 ProduceAircraft = function()
-	ussr.Build(SovietAircraftType, function(units)
+	USSR.Build(SovietAircraftType, function(units)
 		local yak = units[1]
 		Yaks[#Yaks + 1] = yak
 
@@ -238,7 +238,7 @@ ProduceAircraft = function()
 			Trigger.AfterDelay(DateTime.Minutes(1), ProduceAircraft)
 		end
 
-		InitializeAttackAircraft(yak, player)
+		InitializeAttackAircraft(yak, Greece)
 	end)
 end
 

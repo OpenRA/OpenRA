@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
-					var fields = traitInfo.GetType().GetFields().Where(f => f.HasAttribute<VoiceSetReferenceAttribute>());
+					var fields = Utility.GetFields(traitInfo.GetType()).Where(f => Utility.HasAttribute<VoiceSetReferenceAttribute>(f));
 					foreach (var field in fields)
 					{
 						var voiceSets = LintExts.GetFieldValues(traitInfo, field);
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Lint
 
 			foreach (var traitInfo in actorInfo.TraitInfos<TraitInfo>())
 			{
-				var fields = traitInfo.GetType().GetFields().Where(f => f.HasAttribute<VoiceReferenceAttribute>());
+				var fields = Utility.GetFields(traitInfo.GetType()).Where(f => Utility.HasAttribute<VoiceReferenceAttribute>(f));
 				foreach (var field in fields)
 				{
 					var voices = LintExts.GetFieldValues(traitInfo, field);
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Lint
 						if (string.IsNullOrEmpty(voice))
 							continue;
 
-						if (!soundInfo.Voices.Keys.Contains(voice))
+						if (!soundInfo.Voices.ContainsKey(voice))
 							emitError($"Actor {actorInfo.Name} using voice set {voiceSet} does not define {voice} voice required by {traitInfo}.");
 					}
 				}

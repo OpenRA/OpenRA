@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("The maximum inaccuracy of the effect spawn position relative to actual impact position.")]
 		public readonly WDist Inaccuracy = WDist.Zero;
 
-		static readonly BitSet<TargetableType> TargetTypeAir = new BitSet<TargetableType>("Air");
+		static readonly BitSet<TargetableType> TargetTypeAir = new("Air");
 
 		/// <summary>Checks if there are any actors at impact position and if the warhead is valid against any of them.</summary>
 		ImpactActorType ActorTypeAtImpact(World world, WPos pos, Actor firedBy)

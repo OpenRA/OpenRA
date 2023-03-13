@@ -46,6 +46,12 @@ namespace OpenRA.Platforms.Default
 
 		public void Dispose()
 		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		void Dispose(bool _)
+		{
 			if (Cursor != IntPtr.Zero)
 			{
 				SDL.SDL_FreeCursor(Cursor);
@@ -57,6 +63,11 @@ namespace OpenRA.Platforms.Default
 				SDL.SDL_FreeSurface(surface);
 				surface = IntPtr.Zero;
 			}
+		}
+
+		~Sdl2HardwareCursor()
+		{
+			Dispose(false);
 		}
 	}
 }

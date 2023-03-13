@@ -105,7 +105,7 @@ SendStarportReinforcements = function(faction)
 			return
 		end
 
-		reinforcements = Utils.Random(MercenaryStarportReinforcements)
+		local reinforcements = Utils.Random(MercenaryStarportReinforcements)
 
 		local units = Reinforcements.ReinforceWithTransport(faction, "frigate", reinforcements, { MercenaryStarportEntry.Location, MStarport.Location + CVec.New(1, 1) }, { MercenaryStarportExit.Location })[2]
 		Utils.Do(units, function(unit)
@@ -118,11 +118,11 @@ SendStarportReinforcements = function(faction)
 end
 
 SendAirStrike = function()
-	if AHiTechFactory.IsDead or AHiTechFactory.Owner ~= atreides_enemy then
+	if AHiTechFactory.IsDead or AHiTechFactory.Owner ~= AtreidesEnemy then
 		return
 	end
 
-	local targets = Utils.Where(player.GetActors(), function(actor)
+	local targets = Utils.Where(Harkonnen.GetActors(), function(actor)
 		return
 			actor.HasProperty("Sell") and
 			actor.Type ~= "wall" and
@@ -151,13 +151,13 @@ GetSaboteurTargets = function(player)
 end
 
 BuildSaboteur = function()
-	if OPalace.IsDead or OPalace.Owner ~= ordos then
+	if OPalace.IsDead or OPalace.Owner ~= Ordos then
 		return
 	end
 
-	local targets = GetSaboteurTargets(player)
+	local targets = GetSaboteurTargets(Harkonnen)
 	if #targets > 0 then
-		local saboteur = Actor.Create("saboteur", true, { Owner = ordos, Location = OPalace.Location + CVec.New(0, 2) })
+		local saboteur = Actor.Create("saboteur", true, { Owner = Ordos, Location = OPalace.Location + CVec.New(0, 2) })
 		saboteur.Move(saboteur.Location + CVec.New(0, 1))
 		saboteur.Wait(DateTime.Seconds(5))
 
@@ -173,7 +173,7 @@ BuildSaboteur = function()
 end
 
 SendSaboteur = function(saboteur)
-	local targets = GetSaboteurTargets(player)
+	local targets = GetSaboteurTargets(Harkonnen)
 	if #targets < 1 then
 		return
 	end
@@ -188,19 +188,19 @@ SendSaboteur = function(saboteur)
 end
 
 CheckAttackToAtreides = function()
-	AtreidesUnits = atreides_neutral.GetActors()
+	AtreidesUnits = AtreidesNeutral.GetActors()
 
 	Utils.Do(AtreidesUnits, function(unit)
 		Trigger.OnDamaged(unit, function(self, attacker)
-			if attacker.Owner == player and not check then
-				ChangeOwner(atreides_neutral, atreides_enemy)
+			if attacker.Owner == Harkonnen and not Check then
+				ChangeOwner(AtreidesNeutral, AtreidesEnemy)
 
 				-- Ensure that harvesters that was on a carryall switched sides.
 				Trigger.AfterDelay(DateTime.Seconds(15), function()
-					ChangeOwner(atreides_neutral, atreides_enemy)
+					ChangeOwner(AtreidesNeutral, AtreidesEnemy)
 				end)
 
-				check = true
+				Check = true
 				Media.DisplayMessage(UserInterface.Translate("atreides-hostile"), Mentat)
 			end
 		end)
@@ -217,59 +217,59 @@ ChangeOwner = function(old_owner, new_owner)
 end
 
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		ordos.MarkCompletedObjective(KillHarkonnen1)
-		atreides_enemy.MarkCompletedObjective(KillHarkonnen2)
+	if Harkonnen.HasNoRequiredUnits() then
+		Ordos.MarkCompletedObjective(KillHarkonnen1)
+		AtreidesEnemy.MarkCompletedObjective(KillHarkonnen2)
 	end
 
-	if ordos.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillOrdos) then
+	if Ordos.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillOrdos) then
 		Media.DisplayMessage(UserInterface.Translate("ordos-annihilated"), Mentat)
-		player.MarkCompletedObjective(KillOrdos)
+		Harkonnen.MarkCompletedObjective(KillOrdos)
 	end
 
-	if atreides_enemy.HasNoRequiredUnits() and atreides_neutral.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
+	if AtreidesEnemy.HasNoRequiredUnits() and AtreidesNeutral.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillAtreides) then
 		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
-		player.MarkCompletedObjective(KillAtreides)
+		Harkonnen.MarkCompletedObjective(KillAtreides)
 	end
 
-	if mercenary_enemy.HasNoRequiredUnits() and mercenary_ally.HasNoRequiredUnits() and not MercenariesDestroyed then
+	if MercenaryEnemy.HasNoRequiredUnits() and MercenaryAlly.HasNoRequiredUnits() and not MercenariesDestroyed then
 		Media.DisplayMessage(UserInterface.Translate("mercenaries-annihilated"), Mentat)
 		MercenariesDestroyed = true
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[ordos] then
-		local units = ordos.GetActorsByType("harvester")
+	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[Ordos] then
+		local units = Ordos.GetActorsByType("harvester")
 
 		if #units > 0 then
-			LastHarvesterEaten[ordos] = false
-			ProtectHarvester(units[1], ordos, AttackGroupSize[Difficulty])
+			LastHarvesterEaten[Ordos] = false
+			ProtectHarvester(units[1], Ordos, AttackGroupSize[Difficulty])
 		end
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[atreides_enemy] then
-		local units = atreides_enemy.GetActorsByType("harvester")
+	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[AtreidesEnemy] then
+		local units = AtreidesEnemy.GetActorsByType("harvester")
 
 		if #units > 0 then
-			LastHarvesterEaten[atreides_enemy] = false
-			ProtectHarvester(units[1], atreides_enemy, AttackGroupSize[Difficulty])
+			LastHarvesterEaten[AtreidesEnemy] = false
+			ProtectHarvester(units[1], AtreidesEnemy, AttackGroupSize[Difficulty])
 		end
 	end
 end
 
 WorldLoaded = function()
-	ordos = Player.GetPlayer("Ordos")
-	atreides_enemy = Player.GetPlayer("Ordos Aligned Atreides")
-	atreides_neutral = Player.GetPlayer("Neutral Atreides")
-	mercenary_enemy = Player.GetPlayer("Ordos Aligned Mercenaries")
-	mercenary_ally = Player.GetPlayer("Harkonnen Aligned Mercenaries")
-	player = Player.GetPlayer("Harkonnen")
+	Ordos = Player.GetPlayer("Ordos")
+	AtreidesEnemy = Player.GetPlayer("Ordos Aligned Atreides")
+	AtreidesNeutral = Player.GetPlayer("Neutral Atreides")
+	MercenaryEnemy = Player.GetPlayer("Ordos Aligned Mercenaries")
+	MercenaryAlly = Player.GetPlayer("Harkonnen Aligned Mercenaries")
+	Harkonnen = Player.GetPlayer("Harkonnen")
 
-	InitObjectives(player)
-	KillOrdos = AddPrimaryObjective(player, "destroy-ordos")
-	KillAtreides = AddSecondaryObjective(player, "destroy-atreides")
-	AllyWithMercenaries = AddSecondaryObjective(player, "ally-mercenaries")
-	KillHarkonnen1 = AddPrimaryObjective(ordos, "")
-	KillHarkonnen2 = AddPrimaryObjective(atreides_enemy, "")
+	InitObjectives(Harkonnen)
+	KillOrdos = AddPrimaryObjective(Harkonnen, "destroy-ordos")
+	KillAtreides = AddSecondaryObjective(Harkonnen, "destroy-atreides")
+	AllyWithMercenaries = AddSecondaryObjective(Harkonnen, "ally-mercenaries")
+	KillHarkonnen1 = AddPrimaryObjective(Ordos, "")
+	KillHarkonnen2 = AddPrimaryObjective(AtreidesEnemy, "")
 
 	Camera.Position = HMCV.CenterPosition
 	OrdosAttackLocation = HMCV.Location
@@ -279,66 +279,66 @@ WorldLoaded = function()
 	Trigger.AfterDelay(DateTime.Minutes(1) + DateTime.Seconds(30), BuildSaboteur)
 
 	Trigger.OnCapture(MHeavyFactory, function()
-		player.MarkCompletedObjective(AllyWithMercenaries)
+		Harkonnen.MarkCompletedObjective(AllyWithMercenaries)
 		Media.DisplayMessage(UserInterface.Translate("mercenary-leader-captured-allied"), Mentat)
 		MercenaryAttackLocation = MercenaryAttackPoint.Location
 
-		ChangeOwner(mercenary_enemy, mercenary_ally)
-		SendStarportReinforcements(mercenary_ally)
-		DefendAndRepairBase(mercenary_ally, MercenaryBase, 0.75, AttackGroupSize[Difficulty])
-		IdlingUnits[mercenary_ally] = IdlingUnits[mercenary_enemy]
+		ChangeOwner(MercenaryEnemy, MercenaryAlly)
+		SendStarportReinforcements(MercenaryAlly)
+		DefendAndRepairBase(MercenaryAlly, MercenaryBase, 0.75, AttackGroupSize[Difficulty])
+		IdlingUnits[MercenaryAlly] = IdlingUnits[MercenaryEnemy]
 	end)
 
 	Trigger.OnKilled(MHeavyFactory, function()
-		if not player.IsObjectiveCompleted(AllyWithMercenaries) then
-			player.MarkFailedObjective(AllyWithMercenaries)
+		if not Harkonnen.IsObjectiveCompleted(AllyWithMercenaries) then
+			Harkonnen.MarkFailedObjective(AllyWithMercenaries)
 		end
 	end)
 
 	Trigger.OnKilledOrCaptured(OPalace, function()
 		Media.DisplayMessage(UserInterface.Translate("can-not-stand-harkonnen-must-become-neutral"), UserInterface.Translate("atreides-commander"))
 
-		ChangeOwner(atreides_enemy, atreides_neutral)
-		DefendAndRepairBase(atreides_neutral, AtreidesBase, 0.75, AttackGroupSize[Difficulty])
-		IdlingUnits[atreides_neutral] = IdlingUnits[atreides_enemy]
+		ChangeOwner(AtreidesEnemy, AtreidesNeutral)
+		DefendAndRepairBase(AtreidesNeutral, AtreidesBase, 0.75, AttackGroupSize[Difficulty])
+		IdlingUnits[AtreidesNeutral] = IdlingUnits[AtreidesEnemy]
 
 		-- Ensure that harvesters that was on a carryall switched sides.
 		Trigger.AfterDelay(DateTime.Seconds(15), function()
-			ChangeOwner(atreides_enemy, atreides_neutral)
+			ChangeOwner(AtreidesEnemy, AtreidesNeutral)
 			CheckAttackToAtreides()
 		end)
 	end)
 
 	Trigger.OnAllKilledOrCaptured(OrdosBase, function()
-		Utils.Do(ordos.GetGroundAttackers(), IdleHunt)
+		Utils.Do(Ordos.GetGroundAttackers(), IdleHunt)
 	end)
 
 	Trigger.OnAllKilledOrCaptured(AtreidesBase, function()
-		Utils.Do(atreides_enemy.GetGroundAttackers(), IdleHunt)
+		Utils.Do(AtreidesEnemy.GetGroundAttackers(), IdleHunt)
 	end)
 
 	Trigger.OnAllKilledOrCaptured(MercenaryBase, function()
-		Utils.Do(mercenary_enemy.GetGroundAttackers(), IdleHunt)
-		Utils.Do(mercenary_ally.GetGroundAttackers(), IdleHunt)
+		Utils.Do(MercenaryEnemy.GetGroundAttackers(), IdleHunt)
+		Utils.Do(MercenaryAlly.GetGroundAttackers(), IdleHunt)
 	end)
 
 	local path = function() return Utils.Random(OrdosPaths) end
-	local waveCondition = function() return player.IsObjectiveCompleted(KillOrdos) end
+	local waveCondition = function() return Harkonnen.IsObjectiveCompleted(KillOrdos) end
 	local huntFunction = function(unit)
 		unit.AttackMove(OrdosAttackLocation)
 		IdleHunt(unit)
 	end
-	SendCarryallReinforcements(ordos, 0, OrdosAttackWaves[Difficulty], OrdosAttackDelay[Difficulty], path, OrdosReinforcements[Difficulty], waveCondition, huntFunction)
+	SendCarryallReinforcements(Ordos, 0, OrdosAttackWaves[Difficulty], OrdosAttackDelay[Difficulty], path, OrdosReinforcements[Difficulty], waveCondition, huntFunction)
 
-	SendStarportReinforcements(mercenary_enemy)
+	SendStarportReinforcements(MercenaryEnemy)
 
-	Actor.Create("upgrade.barracks", true, { Owner = ordos })
-	Actor.Create("upgrade.light", true, { Owner = ordos })
-	Actor.Create("upgrade.heavy", true, { Owner = ordos })
-	Actor.Create("upgrade.barracks", true, { Owner = atreides_enemy })
-	Actor.Create("upgrade.light", true, { Owner = atreides_enemy })
-	Actor.Create("upgrade.heavy", true, { Owner = atreides_enemy })
-	Actor.Create("upgrade.hightech", true, { Owner = atreides_enemy })
-	Actor.Create("upgrade.heavy", true, { Owner = mercenary_enemy })
+	Actor.Create("upgrade.barracks", true, { Owner = Ordos })
+	Actor.Create("upgrade.light", true, { Owner = Ordos })
+	Actor.Create("upgrade.heavy", true, { Owner = Ordos })
+	Actor.Create("upgrade.barracks", true, { Owner = AtreidesEnemy })
+	Actor.Create("upgrade.light", true, { Owner = AtreidesEnemy })
+	Actor.Create("upgrade.heavy", true, { Owner = AtreidesEnemy })
+	Actor.Create("upgrade.hightech", true, { Owner = AtreidesEnemy })
+	Actor.Create("upgrade.heavy", true, { Owner = MercenaryEnemy })
 	Trigger.AfterDelay(0, ActivateAI)
 end

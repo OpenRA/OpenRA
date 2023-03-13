@@ -41,7 +41,7 @@ namespace OpenRA
 			Bits = (x & 0xFFF) << 20 | (y & 0xFFF) << 8 | layer;
 		}
 
-		public static readonly CPos Zero = new CPos(0, 0, 0);
+		public static readonly CPos Zero = new(0, 0, 0);
 
 		public static explicit operator CPos(int2 a) { return new CPos(a.X, a.Y); }
 

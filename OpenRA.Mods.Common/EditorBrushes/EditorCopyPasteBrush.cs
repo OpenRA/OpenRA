@@ -187,12 +187,12 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly CellLayer<byte> mapHeight;
 		readonly CellLayer<ResourceTile> mapResources;
 
-		readonly Queue<UndoCopyPaste> undoCopyPastes = new Queue<UndoCopyPaste>();
-		readonly Queue<EditorActorPreview> removedActors = new Queue<EditorActorPreview>();
-		readonly Queue<EditorActorPreview> addedActorPreviews = new Queue<EditorActorPreview>();
+		readonly Queue<UndoCopyPaste> undoCopyPastes = new();
+		readonly Queue<EditorActorPreview> removedActors = new();
+		readonly Queue<EditorActorPreview> addedActorPreviews = new();
 
 		public CopyPasteEditorAction(MapCopyFilters copyFilters, Map map,
-			Dictionary<CPos, (TerrainTile, ResourceTile, byte)> tiles, Dictionary<string, ActorReference> previews,
+			Dictionary<CPos, (TerrainTile Tile, ResourceTile Resource, byte Height)> tiles, Dictionary<string, ActorReference> previews,
 			EditorActorLayer editorLayer, CellRegion dest)
 		{
 			this.copyFilters = copyFilters;

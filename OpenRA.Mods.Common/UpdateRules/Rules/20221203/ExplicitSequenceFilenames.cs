@@ -27,8 +27,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		string defaultSpriteExtension = ".shp";
 		List<MiniYamlNode> resolvedImagesNodes;
-		readonly Dictionary<string, string> tilesetExtensions = new Dictionary<string, string>();
-		readonly Dictionary<string, string> tilesetCodes = new Dictionary<string, string>();
+		readonly Dictionary<string, string> tilesetExtensions = new();
+		readonly Dictionary<string, string> tilesetCodes = new();
 		bool parseModYaml = true;
 		bool reportModYamlChanges;
 		bool disabled;
@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 						continue;
 
 					resolvedSequenceNode.Value.Nodes = MiniYaml.Merge(new[] { resolvedDefaultsNode.Value.Nodes, resolvedSequenceNode.Value.Nodes });
-					resolvedSequenceNode.Value.Value = resolvedSequenceNode.Value.Value ?? resolvedDefaultsNode.Value.Value;
+					resolvedSequenceNode.Value.Value ??= resolvedDefaultsNode.Value.Value;
 				}
 			}
 
@@ -359,7 +359,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			// Replace removals with masking
 			foreach (var node in sequenceNode.Value.Nodes)
 				if (node.Key?.StartsWith("-") ?? false)
-					node.Key = node.Key.Substring(1);
+					node.Key = node.Key[1..];
 
 			var combineNode = sequenceNode.LastChildMatching("Combine");
 			if (combineNode != null)
@@ -389,8 +389,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 					var overrideFilename = filename;
 					if (useTilesetCode)
-						overrideFilename = filename.Substring(0, 1) + tilesetCodes[sequenceTileset] +
-						                   filename.Substring(2, filename.Length - 2);
+						overrideFilename = filename[..1] + tilesetCodes[sequenceTileset] +
+						                   filename[2..];
 
 					if (addExtension)
 						overrideFilename += useTilesetExtension ? tilesetExtensions[sequenceTileset] : defaultSpriteExtension;

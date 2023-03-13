@@ -111,7 +111,6 @@ harvester:
 		Margin: 1, 4
 		RequiresSelection: true
 		PipCount: 7
-	-GrantConditionOnDamageState@HEAVY:
 	-SpeedMultiplier@HEAVYDAMAGE:
 
 trike:

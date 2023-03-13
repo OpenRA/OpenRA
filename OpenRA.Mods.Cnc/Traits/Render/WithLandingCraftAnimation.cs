@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	public class WithLandingCraftAnimationInfo : TraitInfo, Requires<IMoveInfo>, Requires<WithSpriteBodyInfo>, Requires<CargoInfo>
 	{
-		public readonly HashSet<string> OpenTerrainTypes = new HashSet<string> { "Clear" };
+		public readonly HashSet<string> OpenTerrainTypes = new() { "Clear" };
 
 		[SequenceReference]
 		public readonly string OpenSequence = "open";

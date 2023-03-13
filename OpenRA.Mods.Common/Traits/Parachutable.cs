@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string WaterCorpsePalette = "effect";
 
 		[Desc("Terrain types on which to display WaterCorpseSequence.")]
-		public readonly HashSet<string> WaterTerrainTypes = new HashSet<string> { "Water" };
+		public readonly HashSet<string> WaterTerrainTypes = new() { "Water" };
 
 		public readonly string WaterImpactSound = null;
 

@@ -25,7 +25,7 @@ namespace OpenRA
 		public WPos(int x, int y, int z) { X = x; Y = y; Z = z; }
 		public WPos(WDist x, WDist y, WDist z) { X = x.Length; Y = y.Length; Z = z.Length; }
 
-		public static readonly WPos Zero = new WPos(0, 0, 0);
+		public static readonly WPos Zero = new(0, 0, 0);
 
 		public static explicit operator WVec(in WPos a) { return new WVec(a.X, a.Y, a.Z); }
 
@@ -37,12 +37,12 @@ namespace OpenRA
 		public static bool operator !=(in WPos me, in WPos other) { return !(me == other); }
 
 		/// <summary>
-		/// Returns the linear interpolation between points 'a' and 'b'
+		/// Returns the linear interpolation between points 'a' and 'b'.
 		/// </summary>
 		public static WPos Lerp(in WPos a, in WPos b, int mul, int div) { return a + (b - a) * mul / div; }
 
 		/// <summary>
-		/// Returns the linear interpolation between points 'a' and 'b'
+		/// Returns the linear interpolation between points 'a' and 'b'.
 		/// </summary>
 		public static WPos Lerp(in WPos a, in WPos b, long mul, long div)
 		{

@@ -15,33 +15,33 @@ ScientistEvacuationFootprint = { CPos.New(29, 60), CPos.New(29, 61), CPos.New(29
 
 InitialAlliedReinforcements = function()
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
-		Media.PlaySpeechNotification(greece, "ReinforcementsArrived")
-		Reinforcements.Reinforce(greece, { "mcv" }, { MCVEntry.Location, MCVStop.Location })
-		Reinforcements.Reinforce(greece, AlliedBoatReinforcements, { DDEntry.Location, DDStop.Location })
+		Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
+		Reinforcements.Reinforce(Greece, { "mcv" }, { MCVEntry.Location, MCVStop.Location })
+		Reinforcements.Reinforce(Greece, AlliedBoatReinforcements, { DDEntry.Location, DDStop.Location })
 	end)
 end
 
 CreateScientists = function()
-	scientists = Reinforcements.Reinforce(greece, ScientistTypes, { ScientistsExit.Location })
+	local scientists = Reinforcements.Reinforce(Greece, ScientistTypes, { ScientistsExit.Location })
 	Utils.Do(scientists, function(s)
 		s.Move(s.Location + CVec.New(0, 1))
 		s.Scatter()
 	end)
 
-	local flare = Actor.Create("flare", true, { Owner = greece, Location = DefaultCameraPosition.Location + CVec.New(-1, 0) })
-	Trigger.AfterDelay(DateTime.Seconds(2), function() Media.PlaySpeechNotification(player, "SignalFlareNorth") end)
+	local flare = Actor.Create("flare", true, { Owner = Greece, Location = DefaultCameraPosition.Location + CVec.New(-1, 0) })
+	Trigger.AfterDelay(DateTime.Seconds(2), function() Media.PlaySpeechNotification(Greece, "SignalFlareNorth") end)
 
 	Trigger.OnAnyKilled(scientists, function()
-		Media.PlaySpeechNotification(greece, "ObjectiveNotMet")
-		greece.MarkFailedObjective(EvacuateScientists)
+		Media.PlaySpeechNotification(Greece, "ObjectiveNotMet")
+		Greece.MarkFailedObjective(EvacuateScientists)
 	end)
 
 	-- Add the footprint trigger in a frame end task (delay 0) to avoid crashes
 	local left = #scientists
 	Trigger.AfterDelay(0, function()
 		local changeOwnerTrigger = Trigger.OnEnteredFootprint(ScientistEvacuationFootprint, function(a, id)
-			if a.Owner == greece and a.Type == "chan" then
-				a.Owner = germany
+			if a.Owner == Greece and a.Type == "chan" then
+				a.Owner = Germany
 				a.Stop()
 				a.Move(MCVEntry.Location)
 
@@ -54,7 +54,7 @@ CreateScientists = function()
 
 		-- Use a cell trigger to destroy the scientists preventing the player from causing glitchs by blocking the path
 		Trigger.OnEnteredFootprint({ MCVEntry.Location }, function(a, id)
-			if a.Owner == germany then
+			if a.Owner == Germany then
 				a.Stop()
 				a.Destroy()
 
@@ -64,9 +64,9 @@ CreateScientists = function()
 					Trigger.RemoveFootprintTrigger(changeOwnerTrigger)
 					flare.Destroy()
 
-					if not greece.IsObjectiveCompleted(EvacuateScientists) and not greece.IsObjectiveFailed(EvacuateScientists) then
-						Media.PlaySpeechNotification(greece, "ObjectiveMet")
-						greece.MarkCompletedObjective(EvacuateScientists)
+					if not Greece.IsObjectiveCompleted(EvacuateScientists) and not Greece.IsObjectiveFailed(EvacuateScientists) then
+						Media.PlaySpeechNotification(Greece, "ObjectiveMet")
+						Greece.MarkCompletedObjective(EvacuateScientists)
 					end
 				end
 			end
@@ -78,84 +78,84 @@ DefendChronosphereCompleted = function()
 	local cells = Utils.ExpandFootprint({ ChronoshiftLocation.Location }, false)
 	local units = { }
 	for i = 1, #cells do
-		local unit = Actor.Create("2tnk", true, { Owner = greece, Facing = Angle.North })
+		local unit = Actor.Create("2tnk", true, { Owner = Greece, Facing = Angle.North })
 		units[unit] = cells[i]
 	end
 	Chronosphere.Chronoshift(units)
-	UserInterface.SetMissionText(UserInterface.Translate("experiment-successful"), greece.Color)
+	UserInterface.SetMissionText(UserInterface.Translate("experiment-successful"), Greece.Color)
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		greece.MarkCompletedObjective(DefendChronosphere)
-		greece.MarkCompletedObjective(KeepBasePowered)
+		Greece.MarkCompletedObjective(DefendChronosphere)
+		Greece.MarkCompletedObjective(KeepBasePowered)
 	end)
 end
 
-ticked = TimerTicks
+Ticked = TimerTicks
 Tick = function()
-	ussr.Cash = 5000
+	USSR.Cash = 5000
 
-	if ussr.HasNoRequiredUnits() then
-		greece.MarkCompletedObjective(DefendChronosphere)
-		greece.MarkCompletedObjective(KeepBasePowered)
+	if USSR.HasNoRequiredUnits() then
+		Greece.MarkCompletedObjective(DefendChronosphere)
+		Greece.MarkCompletedObjective(KeepBasePowered)
 	end
 
-	if greece.HasNoRequiredUnits() then
-		ussr.MarkCompletedObjective(BeatAllies)
+	if Greece.HasNoRequiredUnits() then
+		USSR.MarkCompletedObjective(BeatAllies)
 	end
 
-	if ticked > 0 then
-		if (ticked % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("chronosphere-experiments-completes-in", { ["time"] = Utils.FormatTime(ticked) })
+	if Ticked > 0 then
+		if (Ticked % DateTime.Seconds(1)) == 0 then
+			Timer = UserInterface.Translate("chronosphere-experiments-completes-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(Timer, TimerColor)
 		end
-		ticked = ticked - 1
-	elseif ticked == 0 and (greece.PowerState ~= "Normal") then
-		greece.MarkFailedObjective(KeepBasePowered)
-	elseif ticked == 0 then
+		Ticked = Ticked - 1
+	elseif Ticked == 0 and (Greece.PowerState ~= "Normal") then
+		Greece.MarkFailedObjective(KeepBasePowered)
+	elseif Ticked == 0 then
 		DefendChronosphereCompleted()
-		ticked = ticked - 1
+		Ticked = Ticked - 1
 	end
 end
 
 WorldLoaded = function()
-	greece = Player.GetPlayer("Greece")
-	ussr = Player.GetPlayer("USSR")
-	germany = Player.GetPlayer("Germany")
+	Greece = Player.GetPlayer("Greece")
+	USSR = Player.GetPlayer("USSR")
+	Germany = Player.GetPlayer("Germany")
 
-	InitObjectives(greece)
-	DefendChronosphere = AddPrimaryObjective(greece, "defend-chronosphere-tech-center")
-	KeepBasePowered = AddPrimaryObjective(greece, "chronosphere-needs-power")
-	EvacuateScientists = AddSecondaryObjective(greece, "evacuate-scientists-from-island")
-	BeatAllies = AddPrimaryObjective(ussr, "")
+	InitObjectives(Greece)
+	DefendChronosphere = AddPrimaryObjective(Greece, "defend-chronosphere-tech-center")
+	KeepBasePowered = AddPrimaryObjective(Greece, "chronosphere-needs-power")
+	EvacuateScientists = AddSecondaryObjective(Greece, "evacuate-scientists-from-island")
+	BeatAllies = AddPrimaryObjective(USSR, "")
 
 	Trigger.AfterDelay(DateTime.Minutes(1), function()
-		Media.PlaySpeechNotification(greece, "TwentyMinutesRemaining")
+		Media.PlaySpeechNotification(Greece, "TwentyMinutesRemaining")
 	end)
 	Trigger.AfterDelay(DateTime.Minutes(11), function()
-		Media.PlaySpeechNotification(greece, "TenMinutesRemaining")
+		Media.PlaySpeechNotification(Greece, "TenMinutesRemaining")
 	end)
 	Trigger.AfterDelay(DateTime.Minutes(16), function()
-		Media.PlaySpeechNotification(greece, "WarningFiveMinutesRemaining")
+		Media.PlaySpeechNotification(Greece, "WarningFiveMinutesRemaining")
 	end)
 	Trigger.AfterDelay(DateTime.Minutes(18), function()
-		Media.PlaySpeechNotification(greece, "WarningThreeMinutesRemaining")
+		Media.PlaySpeechNotification(Greece, "WarningThreeMinutesRemaining")
 	end)
 	Trigger.AfterDelay(DateTime.Minutes(20), function()
-		Media.PlaySpeechNotification(greece, "WarningOneMinuteRemaining")
+		Media.PlaySpeechNotification(Greece, "WarningOneMinuteRemaining")
 	end)
 
-	PowerProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = ussr })
+	PowerProxy = Actor.Create("powerproxy.paratroopers", false, { Owner = USSR })
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
-	TimerColor = greece.Color
+	TimerColor = Greece.Color
 
 	Trigger.OnAnyKilled(ObjectiveBuildings, function()
-		greece.MarkFailedObjective(DefendChronosphere)
+		Greece.MarkFailedObjective(DefendChronosphere)
 	end)
 
 	Trigger.OnEnteredFootprint(ScientistDiscoveryFootprint, function(a, id)
-		if a.Owner == greece and not scientistsTriggered then
-			scientistsTriggered = true
+		if a.Owner == Greece and not ScientistsTriggered then
+			ScientistsTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
 			CreateScientists()
 		end

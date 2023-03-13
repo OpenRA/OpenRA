@@ -25,13 +25,13 @@ AtreidesInfantryTypes = { "light_inf", "light_inf", "light_inf", "trooper", "tro
 AtreidesVehicleTypes = { "trike", "trike", "quad" }
 
 InitAIUnits = function()
-	IdlingUnits[atreides] = Reinforcements.Reinforce(atreides, AtreidesInitialReinforcements, AtreidesInitialPath)
+	IdlingUnits[Atreides] = Reinforcements.Reinforce(Atreides, AtreidesInitialReinforcements, AtreidesInitialPath)
 
-	DefendAndRepairBase(atreides, AtreidesBase, 0.75, AttackGroupSize[Difficulty])
+	DefendAndRepairBase(Atreides, AtreidesBase, 0.75, AttackGroupSize[Difficulty])
 end
 
 ActivateAI = function()
-	LastHarvesterEaten[atreides] = true
+	LastHarvesterEaten[Atreides] = true
 	Trigger.AfterDelay(0, InitAIUnits)
 
 	AConyard.Produce(HarkonnenUpgrades[1])
@@ -44,7 +44,7 @@ ActivateAI = function()
 
 	-- Finish the upgrades first before trying to build something
 	Trigger.AfterDelay(DateTime.Seconds(14), function()
-		ProduceUnits(atreides, ABarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
-		ProduceUnits(atreides, ALightFactory, delay, vehilcesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+		ProduceUnits(Atreides, ABarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+		ProduceUnits(Atreides, ALightFactory, delay, vehilcesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
 	end)
 end

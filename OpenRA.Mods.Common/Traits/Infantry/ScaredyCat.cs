@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int AttackPanicChance = 20;
 
 		[Desc("The terrain types that this actor should avoid running on to while panicking.")]
-		public readonly HashSet<string> AvoidTerrainTypes = new HashSet<string>();
+		public readonly HashSet<string> AvoidTerrainTypes = new();
 
 		[SequenceReference(prefix: true)]
 		public readonly string PanicSequencePrefix = "panic-";

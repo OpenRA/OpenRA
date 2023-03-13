@@ -7,7 +7,7 @@
    information, see COPYING.
 ]]
 
-lstReinforcements =
+LstReinforcements =
 {
 	actors = { "mcv" },
 	entryPath = { AlliedMCVEntry.Location, Unload1.Location },
@@ -28,7 +28,7 @@ KosyginContacted = false
 InitialAlliedReinforcements = function()
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
 		Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
-		Reinforcements.ReinforceWithTransport(Greece, "lst.reinforcement", lstReinforcements.actors, lstReinforcements.entryPath, lstReinforcements.exitPath)
+		Reinforcements.ReinforceWithTransport(Greece, "lst.reinforcement", LstReinforcements.actors, LstReinforcements.entryPath, LstReinforcements.exitPath)
 	end)
 end
 

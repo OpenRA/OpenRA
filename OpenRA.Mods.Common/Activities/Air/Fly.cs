@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Activities
 		Target target;
 		Target lastVisibleTarget;
 		bool useLastVisibleTarget;
-		readonly List<WPos> positionBuffer = new List<WPos>();
+		readonly List<WPos> positionBuffer = new();
 
 		public Fly(Actor self, in Target t, WDist nearEnough, WPos? initialTargetPosition = null, Color? targetLineColor = null)
 			: this(self, t, initialTargetPosition, targetLineColor)

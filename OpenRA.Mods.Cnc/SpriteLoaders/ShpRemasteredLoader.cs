@@ -48,8 +48,8 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 
 	public class ShpRemasteredSprite
 	{
-		static readonly Regex FilenameRegex = new Regex(@"^(?<prefix>.+?[\-_])(?<frame>\d{4})\.tga$");
-		static readonly Regex MetaRegex = new Regex(@"^\{""size"":\[(?<width>\d+),(?<height>\d+)\],""crop"":\[(?<left>\d+),(?<top>\d+),(?<right>\d+),(?<bottom>\d+)\]\}$");
+		static readonly Regex FilenameRegex = new(@"^(?<prefix>.+?[\-_])(?<frame>\d{4})\.tga$");
+		static readonly Regex MetaRegex = new(@"^\{""size"":\[(?<width>\d+),(?<height>\d+)\],""crop"":\[(?<left>\d+),(?<top>\d+),(?<right>\d+),(?<bottom>\d+)\]\}$");
 
 		int ParseGroup(Match match, string group)
 		{
@@ -71,8 +71,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 					continue;
 
 				var prefix = match.Groups["prefix"].Value;
-				if (framePrefix == null)
-					framePrefix = prefix;
+				framePrefix ??= prefix;
 
 				if (prefix != framePrefix)
 					throw new InvalidDataException($"Frame prefix mismatch: `{prefix}` != `{framePrefix}`");

@@ -24,8 +24,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<bool> IsChecked = () => false;
 
 		readonly CachedTransform<(string, bool), CachedTransform<(bool, bool, bool, bool, bool), Sprite>> getCheckmarkImageCache
-			= new CachedTransform<(string, bool), CachedTransform<(bool, bool, bool, bool, bool), Sprite>>(
-			((string CheckType, bool Checked) args) =>
+			= new(((string CheckType, bool Checked) args) =>
 			{
 				var variantImageCollection = "checkmark-" + args.CheckType;
 				var variantBaseName = args.Checked ? "checked" : "unchecked";

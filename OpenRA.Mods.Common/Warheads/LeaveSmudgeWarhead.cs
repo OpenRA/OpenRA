@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly int[] Size = { 0, 0 };
 
 		[Desc("Type of smudge to apply to terrain.")]
-		public readonly HashSet<string> SmudgeType = new HashSet<string>();
+		public readonly HashSet<string> SmudgeType = new();
 
 		[Desc("Percentage chance the smudge is created.")]
 		public readonly int Chance = 100;

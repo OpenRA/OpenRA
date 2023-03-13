@@ -17,8 +17,6 @@ namespace OpenRA.Mods.Common.Graphics
 {
 	public class RailgunHelixRenderable : IRenderable, IFinalizedRenderable
 	{
-		readonly WPos pos;
-		readonly int zOffset;
 		readonly Railgun railgun;
 		readonly RailgunInfo info;
 		readonly WDist helixRadius;
@@ -29,8 +27,8 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public RailgunHelixRenderable(WPos pos, int zOffset, Railgun railgun, RailgunInfo railgunInfo, int ticks)
 		{
-			this.pos = pos;
-			this.zOffset = zOffset;
+			Pos = pos;
+			ZOffset = zOffset;
 			this.railgun = railgun;
 			info = railgunInfo;
 			this.ticks = ticks;
@@ -40,12 +38,12 @@ namespace OpenRA.Mods.Common.Graphics
 			angle = new WAngle(ticks * info.HelixAngleDeltaPerTick.Angle);
 		}
 
-		public WPos Pos => pos;
-		public int ZOffset => zOffset;
+		public WPos Pos { get; }
+		public int ZOffset { get; }
 		public bool IsDecoration => true;
 
-		public IRenderable WithZOffset(int newOffset) { return new RailgunHelixRenderable(pos, newOffset, railgun, info, ticks); }
-		public IRenderable OffsetBy(in WVec vec) { return new RailgunHelixRenderable(pos + vec, zOffset, railgun, info, ticks); }
+		public IRenderable WithZOffset(int newOffset) { return new RailgunHelixRenderable(Pos, newOffset, railgun, info, ticks); }
+		public IRenderable OffsetBy(in WVec vec) { return new RailgunHelixRenderable(Pos + vec, ZOffset, railgun, info, ticks); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
@@ -57,7 +55,7 @@ namespace OpenRA.Mods.Common.Graphics
 			var screenWidth = wr.ScreenVector(new WVec(info.HelixThickness.Length, 0, 0))[0];
 
 			// Move forward from self to target to draw helix
-			var centerPos = pos;
+			var centerPos = Pos;
 			var points = new float3[railgun.CycleCount * info.QuantizationCount];
 			for (var i = points.Length - 1; i >= 0; i--)
 			{

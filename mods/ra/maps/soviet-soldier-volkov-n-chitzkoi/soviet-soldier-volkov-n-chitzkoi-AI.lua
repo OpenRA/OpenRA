@@ -54,13 +54,13 @@ end
 ProduceInfantry = function()
 	if AlliedBarracks01.IsDead then
 		return
-	elseif (OreRefinery01.IsDead and OreRefinery02.IsDead or GreeceHarvestersAreDead) and greece.Resources <= 299 then
+	elseif (OreRefinery01.IsDead and OreRefinery02.IsDead or GreeceHarvestersAreDead) and Greece.Resources <= 299 then
 		return
 	end
 
 	local delay = Utils.RandomInteger(DateTime.Seconds(1), DateTime.Seconds(2))
 	local toBuild = { Utils.Random(AlliedInfantryTypes) }
-	greece.Build(toBuild, function(unit)
+	Greece.Build(toBuild, function(unit)
 		InfAttack[#InfAttack + 1] = unit[1]
 
 		if #InfAttack >= 5 then
@@ -76,7 +76,7 @@ end
 ProduceArmor = function()
 	if AlliedWarFact01.IsDead and AlliedWarFact02.IsDead then
 		return
-	elseif (OreRefinery01.IsDead and OreRefinery02.IsDead or GreeceHarvestersAreDead) and greece.Resources <= 699 then
+	elseif (OreRefinery01.IsDead and OreRefinery02.IsDead or GreeceHarvestersAreDead) and Greece.Resources <= 699 then
 		return
 	end
 
@@ -84,7 +84,7 @@ ProduceArmor = function()
 	local toBuild = { Utils.Random(AlliedArmorTypes) }
 	local Rally = Utils.Random(AlliedWarFactRally)
 	Utils.Do(AlliedWarFact, function(fact) fact.RallyPoint = Rally.Location end)
-	greece.Build(toBuild, function(unit)
+	Greece.Build(toBuild, function(unit)
 		ArmorAttack[#ArmorAttack + 1] = unit[1]
 
 		if #ArmorAttack >= ArmorAttackNumbers[Difficulty] then
@@ -100,11 +100,11 @@ end
 ProduceNavyGuard = function()
 	if NavalYard01.IsDead then
 		return
-	elseif (OreRefinery01.IsDead and OreRefinery02.IsDead or GreeceHarvestersAreDead) and greece.Resources <= 2399 then
+	elseif (OreRefinery01.IsDead and OreRefinery02.IsDead or GreeceHarvestersAreDead) and Greece.Resources <= 2399 then
 		return
 	end
 	NavalYard01.RallyPoint = waypoint26.Location
-	greece.Build(AlliedNavyGuard, function(nvgrd)
+	Greece.Build(AlliedNavyGuard, function(nvgrd)
 		Utils.Do(nvgrd, function(unit)
 			Trigger.OnKilled(unit, ProduceNavyGuard)
 		end)

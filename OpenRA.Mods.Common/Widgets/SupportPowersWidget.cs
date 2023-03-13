@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public readonly string OverlayFont = "TinyBold";
 
-		public readonly int2 IconSize = new int2(64, 48);
+		public readonly int2 IconSize = new(64, 48);
 		public readonly int IconMargin = 10;
 		public readonly int2 IconSpriteOffset = int2.Zero;
 
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		Animation icon;
 		Animation clock;
-		Dictionary<Rectangle, SupportPowerIcon> icons = new Dictionary<Rectangle, SupportPowerIcon>();
+		Dictionary<Rectangle, SupportPowerIcon> icons = new();
 
 		public SupportPowerIcon TooltipIcon { get; private set; }
 		public Func<SupportPowerIcon> GetTooltipIcon;

@@ -382,6 +382,16 @@ smoke_m:
 		Length: 3
 		BlendMode: Additive
 
+smoke3:
+	particles:
+		Filename: DATA.R8
+		ZOffset: 511
+		Start: 3747
+		Length: 7
+		Tick: 120
+		BlendMode: Subtractive
+		HasEmbeddedPalette: True
+
 bombs:
 	idle:
 		Filename: DATA.R8

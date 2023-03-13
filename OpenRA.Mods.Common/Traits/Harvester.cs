@@ -22,13 +22,13 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public class HarvesterInfo : ConditionalTraitInfo, Requires<MobileInfo>
 	{
-		public readonly HashSet<string> DeliveryBuildings = new HashSet<string>();
+		public readonly HashSet<string> DeliveryBuildings = new();
 
 		[Desc("How long (in ticks) to wait until (re-)checking for a nearby available DeliveryBuilding if not yet linked to one.")]
 		public readonly int SearchForDeliveryBuildingDelay = 125;
 
 		[Desc("Cell to move to when automatically unblocking DeliveryBuilding.")]
-		public readonly CVec UnblockCell = new CVec(0, 4);
+		public readonly CVec UnblockCell = new(0, 4);
 
 		[Desc("How much resources it can carry.")]
 		public readonly int Capacity = 28;
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int HarvestFacings = 0;
 
 		[Desc("Which resources it can harvest.")]
-		public readonly HashSet<string> Resources = new HashSet<string>();
+		public readonly HashSet<string> Resources = new();
 
 		[Desc("Percentage of maximum speed when fully loaded.")]
 		public readonly int FullyLoadedSpeed = 85;
@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Mobile mobile;
 		readonly IResourceLayer resourceLayer;
 		readonly ResourceClaimLayer claimLayer;
-		readonly Dictionary<string, int> contents = new Dictionary<string, int>();
+		readonly Dictionary<string, int> contents = new();
 		int conditionToken = Actor.InvalidConditionToken;
 
 		[Sync]
@@ -198,8 +198,8 @@ namespace OpenRA.Mods.Common.Traits
 				return null;
 
 			// Start a search from each refinery's delivery location:
-			var path = mobile.PathFinder.FindPathToTargetCell(
-				self, refineries.Select(r => r.Key), self.Location, BlockedByActor.None,
+			var path = mobile.PathFinder.FindPathToTargetCells(
+				self, self.Location, refineries.Select(r => r.Key), BlockedByActor.None,
 				location =>
 				{
 					if (!refineries.ContainsKey(location))
@@ -211,7 +211,7 @@ namespace OpenRA.Mods.Common.Traits
 				});
 
 			if (path.Count > 0)
-				return refineries[path.Last()].Actor;
+				return refineries[path[0]].Actor;
 
 			return null;
 		}

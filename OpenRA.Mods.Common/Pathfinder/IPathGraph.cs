@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// <remarks>PERF: Returns a <see cref="List{T}"/> rather than an <see cref="IEnumerable{T}"/> as enumerating
 		/// this efficiently is important for pathfinding performance. Callers should interact with this as an
 		/// <see cref="IEnumerable{T}"/> and not mutate the result.</remarks>
-		List<GraphConnection> GetConnections(CPos source);
+		List<GraphConnection> GetConnections(CPos source, Func<CPos, bool> targetPredicate);
 
 		/// <summary>
 		/// Gets or sets the pathfinding information for a given node.
@@ -77,12 +77,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 	/// </summary>
 	public readonly struct GraphConnection
 	{
-		public static readonly CostComparer ConnectionCostComparer = CostComparer.Instance;
-
-		public sealed class CostComparer : IComparer<GraphConnection>
+		public readonly struct CostComparer : IComparer<GraphConnection>
 		{
-			public static readonly CostComparer Instance = new CostComparer();
-			CostComparer() { }
 			public int Compare(GraphConnection x, GraphConnection y)
 			{
 				return x.Cost.CompareTo(y.Cost);

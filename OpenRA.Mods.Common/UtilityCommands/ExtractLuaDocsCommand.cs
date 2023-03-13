@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			foreach (var t in tables)
 			{
-				var name = t.GetCustomAttributes<ScriptGlobalAttribute>(true).First().Name;
+				var name = Utility.GetCustomAttributes<ScriptGlobalAttribute>(t, true).First().Name;
 				var members = ScriptMemberWrapper.WrappableMembers(t);
 
 				Console.WriteLine();
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Console.WriteLine("|---------:|-------------|");
 				foreach (var m in members.OrderBy(m => m.Name))
 				{
-					var desc = m.HasAttribute<DescAttribute>() ? m.GetCustomAttributes<DescAttribute>(true).First().Lines.JoinWith("<br />") : "";
+					var desc = Utility.HasAttribute<DescAttribute>(m) ? Utility.GetCustomAttributes<DescAttribute>(m, true).First().Lines.JoinWith("<br />") : "";
 					Console.WriteLine($"| **{m.LuaDocString()}** | {desc} |");
 				}
 			}
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var actorCategories = utility.ModData.ObjectCreator.GetTypesImplementing<ScriptActorProperties>().SelectMany(cg =>
 			{
-				var catAttr = cg.GetCustomAttributes<ScriptPropertyGroupAttribute>(false).FirstOrDefault();
+				var catAttr = Utility.GetCustomAttributes<ScriptPropertyGroupAttribute>(cg, false).FirstOrDefault();
 				var category = catAttr != null ? catAttr.Category : "Unsorted";
 
 				var required = ScriptMemberWrapper.RequiredTraitNames(cg);
@@ -106,9 +106,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					var mi = property.mi;
 					var required = property.required;
-					var hasDesc = mi.HasAttribute<DescAttribute>();
+					var hasDesc = Utility.HasAttribute<DescAttribute>(mi);
 					var hasRequires = required.Length > 0;
-					var isActivity = mi.HasAttribute<ScriptActorPropertyActivityAttribute>();
+					var isActivity = Utility.HasAttribute<ScriptActorPropertyActivityAttribute>(mi);
 
 					Console.Write($"| **{mi.LuaDocString()}**");
 
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					Console.Write(" | ");
 
 					if (hasDesc)
-						Console.Write(mi.GetCustomAttributes<DescAttribute>(false).First().Lines.JoinWith("<br />"));
+						Console.Write(Utility.GetCustomAttributes<DescAttribute>(mi, false).First().Lines.JoinWith("<br />"));
 
 					if (hasDesc && hasRequires)
 						Console.Write("<br />");
@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var playerCategories = utility.ModData.ObjectCreator.GetTypesImplementing<ScriptPlayerProperties>().SelectMany(cg =>
 			{
-				var catAttr = cg.GetCustomAttributes<ScriptPropertyGroupAttribute>(false).FirstOrDefault();
+				var catAttr = Utility.GetCustomAttributes<ScriptPropertyGroupAttribute>(cg, false).FirstOrDefault();
 				var category = catAttr != null ? catAttr.Category : "Unsorted";
 
 				var required = ScriptMemberWrapper.RequiredTraitNames(cg);
@@ -155,9 +155,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					var mi = property.mi;
 					var required = property.required;
-					var hasDesc = mi.HasAttribute<DescAttribute>();
+					var hasDesc = Utility.HasAttribute<DescAttribute>(mi);
 					var hasRequires = required.Length > 0;
-					var isActivity = mi.HasAttribute<ScriptActorPropertyActivityAttribute>();
+					var isActivity = Utility.HasAttribute<ScriptActorPropertyActivityAttribute>(mi);
 
 					Console.Write($"| **{mi.LuaDocString()}**");
 
@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					Console.Write(" | ");
 
 					if (hasDesc)
-						Console.Write(mi.GetCustomAttributes<DescAttribute>(false).First().Lines.JoinWith("<br />"));
+						Console.Write(Utility.GetCustomAttributes<DescAttribute>(mi, false).First().Lines.JoinWith("<br />"));
 
 					if (hasDesc && hasRequires)
 						Console.Write("<br />");

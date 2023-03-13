@@ -23,10 +23,10 @@ namespace OpenRA.Platforms.Default
 		public const int TexMetadataAttributeIndex = 2;
 		public const int TintAttributeIndex = 3;
 
-		readonly Dictionary<string, int> samplers = new Dictionary<string, int>();
-		readonly Dictionary<int, int> legacySizeUniforms = new Dictionary<int, int>();
-		readonly Dictionary<int, ITexture> textures = new Dictionary<int, ITexture>();
-		readonly Queue<int> unbindTextures = new Queue<int>();
+		readonly Dictionary<string, int> samplers = new();
+		readonly Dictionary<int, int> legacySizeUniforms = new();
+		readonly Dictionary<int, ITexture> textures = new();
+		readonly Queue<int> unbindTextures = new();
 		readonly uint program;
 
 		protected uint CompileShaderObject(int type, string name)

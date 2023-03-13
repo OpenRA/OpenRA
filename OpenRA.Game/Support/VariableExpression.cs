@@ -24,7 +24,7 @@ namespace OpenRA.Support
 		public static readonly IReadOnlyDictionary<string, int> NoVariables = new ReadOnlyDictionary<string, int>(new Dictionary<string, int>());
 
 		public readonly string Expression;
-		readonly HashSet<string> variables = new HashSet<string>();
+		readonly HashSet<string> variables = new();
 		public IEnumerable<string> Variables => variables;
 
 		enum CharClass { Whitespace, Operator, Mixed, Id, Digit }
@@ -354,7 +354,7 @@ namespace OpenRA.Support
 						if (cc != CharClass.Digit)
 						{
 							if (cc != CharClass.Whitespace && cc != CharClass.Operator && cc != CharClass.Mixed)
-								throw new InvalidDataException($"Number {int.Parse(expression.Substring(start, i - start))} and variable merged at index {start}");
+								throw new InvalidDataException($"Number {int.Parse(expression[start..i])} and variable merged at index {start}");
 
 							return true;
 						}
@@ -369,7 +369,7 @@ namespace OpenRA.Support
 			static TokenType VariableOrKeyword(string expression, int start, ref int i)
 			{
 				if (CharClassOf(expression[i - 1]) == CharClass.Mixed)
-					throw new InvalidDataException($"Invalid identifier end character at index {i - 1} for `{expression.Substring(start, i - start)}`");
+					throw new InvalidDataException($"Invalid identifier end character at index {i - 1} for `{expression[start..i]}`");
 
 				return VariableOrKeyword(expression, start, i - start);
 			}
@@ -540,10 +540,10 @@ namespace OpenRA.Support
 				switch (type)
 				{
 					case TokenType.Number:
-						return new NumberToken(start, expression.Substring(start, i - start));
+						return new NumberToken(start, expression[start..i]);
 
 					case TokenType.Variable:
-						return new VariableToken(start, expression.Substring(start, i - start));
+						return new VariableToken(start, expression[start..i]);
 
 					default:
 						return new Token(type, start);
@@ -716,15 +716,15 @@ namespace OpenRA.Support
 
 		class AstStack
 		{
-			readonly List<Expression> expressions = new List<Expression>();
-			readonly List<ExpressionType> types = new List<ExpressionType>();
+			readonly List<Expression> expressions = new();
+			readonly List<ExpressionType> types = new();
 
-			public ExpressionType PeekType() { return types[types.Count - 1]; }
+			public ExpressionType PeekType() { return types[^1]; }
 
 			public Expression Peek(ExpressionType toType)
 			{
-				var fromType = types[types.Count - 1];
-				var expression = expressions[expressions.Count - 1];
+				var fromType = types[^1];
+				var expression = expressions[^1];
 				if (toType == fromType)
 					return expression;
 
@@ -774,7 +774,7 @@ namespace OpenRA.Support
 
 		class Compiler
 		{
-			readonly AstStack ast = new AstStack();
+			readonly AstStack ast = new();
 
 			public Expression Build(Token[] postfix, ExpressionType resultType)
 			{

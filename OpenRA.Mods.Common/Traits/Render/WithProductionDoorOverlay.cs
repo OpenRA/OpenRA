@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (exitingActor == null)
 				return;
 
-			if (!exitingActor.IsInWorld || exitingActor.Location != openExit || !(exitingActor.CurrentActivity is Mobile.ReturnToCellActivity))
+			if (!exitingActor.IsInWorld || exitingActor.Location != openExit || exitingActor.CurrentActivity is not Mobile.ReturnToCellActivity)
 			{
 				desiredFrame = 0;
 				exitingActor = null;

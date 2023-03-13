@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			name = self.Owner.PlayerName;
 			if (name.Length > info.MaxLength)
-				name = name.Substring(0, info.MaxLength);
+				name = name[..info.MaxLength];
 		}
 
 		protected override IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 screenPos)
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			name = self.Owner.PlayerName;
 			if (name.Length > Info.MaxLength)
-				name = name.Substring(0, Info.MaxLength);
+				name = name[..Info.MaxLength];
 		}
 	}
 }

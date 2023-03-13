@@ -23,7 +23,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly int[] Falloff = { 100, 100, 25, 11, 6, 4, 3, 2, 1, 0 };
 
 		[Desc("Range between falloff steps.")]
-		public readonly WDist Spread = new WDist(3072);
+		public readonly WDist Spread = new(3072);
 
 		[Desc("Ranges at which each Falloff step is defined. Overrides Spread.")]
 		public readonly WDist[] Range = null;
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.D2k.Traits
 			var length = distance.Length;
 
 			// Actor is too far to hear anything.
-			if (length > effectiveRange[effectiveRange.Length - 1].Length)
+			if (length > effectiveRange[^1].Length)
 				return WVec.Zero;
 
 			var direction = 1024 * distance / length;

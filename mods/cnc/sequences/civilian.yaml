@@ -145,7 +145,7 @@ moebius:
 		Length: 4
 		Tick: 1600
 
-chan:	
+chan:
 	Inherits: moebius
 	Defaults:
 		Filename: chan.shp

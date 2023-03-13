@@ -63,7 +63,7 @@ namespace OpenRA
 
 	public class MapPreview : IDisposable, IReadOnlyFileSystem
 	{
-		/// <summary>Wrapper that enables map data to be replaced in an atomic fashion</summary>
+		/// <summary>Wrapper that enables map data to be replaced in an atomic fashion.</summary>
 		class InnerData
 		{
 			public int MapFormat;
@@ -185,6 +185,7 @@ namespace OpenRA
 
 		public MiniYaml RuleDefinitions => innerData.RuleDefinitions;
 		public MiniYaml WeaponDefinitions => innerData.WeaponDefinitions;
+		public MiniYaml SequenceDefinitions => innerData.SequenceDefinitions;
 
 		public ActorInfo WorldActorInfo => innerData.WorldActorInfo;
 		public ActorInfo PlayerActorInfo => innerData.PlayerActorInfo;
@@ -480,7 +481,7 @@ namespace OpenRA
 
 			innerData.Status = MapStatus.Downloading;
 			var installLocation = cache.MapLocations.FirstOrDefault(p => p.Value == MapClassification.User);
-			if (!(installLocation.Key is IReadWritePackage mapInstallPackage))
+			if (installLocation.Key is not IReadWritePackage mapInstallPackage)
 			{
 				Log.Write("debug", "Map install directory not found");
 				innerData.Status = MapStatus.DownloadError;

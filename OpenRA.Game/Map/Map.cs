@@ -155,7 +155,7 @@ namespace OpenRA
 		public const int CurrentMapFormat = 12;
 		const short InvalidCachedTerrainIndex = -1;
 
-		/// <summary>Defines the order of the fields in map.yaml</summary>
+		/// <summary>Defines the order of the fields in map.yaml.</summary>
 		static readonly MapField[] YamlFields =
 		{
 			new MapField("MapFormat"),
@@ -198,8 +198,8 @@ namespace OpenRA
 		public int2 MapSize { get; private set; }
 
 		// Player and actor yaml. Public for access by the map importers and lint checks.
-		public List<MiniYamlNode> PlayerDefinitions = new List<MiniYamlNode>();
-		public List<MiniYamlNode> ActorDefinitions = new List<MiniYamlNode>();
+		public List<MiniYamlNode> PlayerDefinitions = new();
+		public List<MiniYamlNode> ActorDefinitions = new();
 
 		// Custom map yaml. Public for access by the map importers and lint checks
 		public readonly MiniYaml RuleDefinitions;
@@ -210,7 +210,7 @@ namespace OpenRA
 		public readonly MiniYaml MusicDefinitions;
 		public readonly MiniYaml NotificationDefinitions;
 
-		public readonly Dictionary<CPos, TerrainTile> ReplacedInvalidTerrainTiles = new Dictionary<CPos, TerrainTile>();
+		public readonly Dictionary<CPos, TerrainTile> ReplacedInvalidTerrainTiles = new();
 
 		// Generated data
 		public readonly MapGrid Grid;
@@ -993,11 +993,11 @@ namespace OpenRA
 		}
 
 		/// <summary>
-		/// The size of the map Height step in world units
+		/// The size of the map Height step in world units.
 		/// </summary>
 		/// RectangularIsometric defines 1024 units along the diagonal axis,
 		/// giving a half-tile height step of sqrt(2) * 512
-		public WDist CellHeightStep => new WDist(Grid.Type == MapGridType.RectangularIsometric ? 724 : 512);
+		public WDist CellHeightStep => new(Grid.Type == MapGridType.RectangularIsometric ? 724 : 512);
 
 		public CPos CellContaining(WPos pos)
 		{

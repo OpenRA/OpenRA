@@ -31,7 +31,7 @@ namespace OpenRA.Support
 		List<PerfTimer> children;
 		long ticks;
 
-		static readonly ThreadLocal<PerfTimer> ParentThreadLocal = new ThreadLocal<PerfTimer>();
+		static readonly ThreadLocal<PerfTimer> ParentThreadLocal = new();
 
 		public PerfTimer(string name, float thresholdMs = 0)
 		{
@@ -55,8 +55,7 @@ namespace OpenRA.Support
 				Write();
 			else if (ElapsedMs > thresholdMs)
 			{
-				if (parent.children == null)
-					parent.children = new List<PerfTimer>();
+				parent.children ??= new List<PerfTimer>();
 				parent.children.Add(this);
 			}
 		}

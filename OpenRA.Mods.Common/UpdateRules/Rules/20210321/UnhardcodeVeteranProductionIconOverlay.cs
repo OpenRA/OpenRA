@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "ProductionIconOverlayManager now works with the new WithProductionIconOverlay trait, instead of ProducibleWithLevel.";
 
-		readonly List<string> locations = new List<string>();
+		readonly List<string> locations = new();
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{

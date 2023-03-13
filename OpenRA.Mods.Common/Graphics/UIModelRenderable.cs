@@ -20,14 +20,11 @@ namespace OpenRA.Mods.Common.Graphics
 	public class UIModelRenderable : IRenderable, IPalettedRenderable
 	{
 		readonly IEnumerable<ModelAnimation> models;
-		readonly WPos effectiveWorldPos;
 		readonly int2 screenPos;
-		readonly int zOffset;
 		readonly WRot camera;
 		readonly WRot lightSource;
 		readonly float[] lightAmbientColor;
 		readonly float[] lightDiffuseColor;
-		readonly PaletteReference palette;
 		readonly PaletteReference normalsPalette;
 		readonly PaletteReference shadowPalette;
 		readonly float scale;
@@ -38,28 +35,28 @@ namespace OpenRA.Mods.Common.Graphics
 			PaletteReference color, PaletteReference normals, PaletteReference shadow)
 		{
 			this.models = models;
-			this.effectiveWorldPos = effectiveWorldPos;
+			Pos = effectiveWorldPos;
 			this.screenPos = screenPos;
-			this.zOffset = zOffset;
+			ZOffset = zOffset;
 			this.scale = scale;
 			this.camera = camera;
 			this.lightSource = lightSource;
 			this.lightAmbientColor = lightAmbientColor;
 			this.lightDiffuseColor = lightDiffuseColor;
-			palette = color;
+			Palette = color;
 			normalsPalette = normals;
 			shadowPalette = shadow;
 		}
 
-		public WPos Pos => effectiveWorldPos;
-		public PaletteReference Palette => palette;
-		public int ZOffset => zOffset;
+		public WPos Pos { get; }
+		public PaletteReference Palette { get; }
+		public int ZOffset { get; }
 		public bool IsDecoration => false;
 
 		public IPalettedRenderable WithPalette(PaletteReference newPalette)
 		{
 			return new UIModelRenderable(
-				models, effectiveWorldPos, screenPos, zOffset, camera, scale,
+				models, Pos, screenPos, ZOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				newPalette, normalsPalette, shadowPalette);
 		}
@@ -86,7 +83,7 @@ namespace OpenRA.Mods.Common.Graphics
 				renderProxy = Game.Renderer.WorldModelRenderer.RenderAsync(
 					wr, draw, model.camera, model.scale, WRot.None, model.lightSource,
 					model.lightAmbientColor, model.lightDiffuseColor,
-					model.palette, model.normalsPalette, model.shadowPalette);
+					model.Palette, model.normalsPalette, model.shadowPalette);
 			}
 
 			public void Render(WorldRenderer wr)

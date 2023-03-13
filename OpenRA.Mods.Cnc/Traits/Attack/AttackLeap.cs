@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	public class AttackLeapInfo : AttackFrontalInfo, Requires<MobileInfo>
 	{
 		[Desc("Leap speed (in WDist units/tick).")]
-		public readonly WDist Speed = new WDist(426);
+		public readonly WDist Speed = new(426);
 
 		[Desc("Conditions that last from start of the leap until the attack.")]
 		[GrantedConditionReference]

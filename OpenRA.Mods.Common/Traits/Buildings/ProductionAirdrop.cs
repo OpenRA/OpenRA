@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool BaselineSpawn = false;
 
 		[Desc("Direction the aircraft should face to land.")]
-		public readonly WAngle Facing = new WAngle(256);
+		public readonly WAngle Facing = new(256);
 
 		public override object Create(ActorInitializer init) { return new ProductionAirdrop(init, this); }
 	}

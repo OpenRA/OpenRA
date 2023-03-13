@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public readonly RenderSpritesInfo Info;
 		readonly string faction;
-		readonly List<AnimationWrapper> anims = new List<AnimationWrapper>();
+		readonly List<AnimationWrapper> anims = new();
 		string cachedImage;
 
 		public static Func<WAngle> MakeFacingFunc(Actor self)
@@ -240,7 +240,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			{
 				if (sequence.StartsWith(s.Prefix, StringComparison.Ordinal))
 				{
-					sequence = sequence.Substring(s.Prefix.Length);
+					sequence = sequence[s.Prefix.Length..];
 					break;
 				}
 			}

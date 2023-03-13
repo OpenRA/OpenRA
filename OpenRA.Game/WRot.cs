@@ -53,7 +53,7 @@ namespace OpenRA
 
 		/// <summary>
 		/// Construct a rotation from an axis and angle.
-		/// The axis is expected to be normalized to length 1024
+		/// The axis is expected to be normalized to length 1024.
 		/// </summary>
 		public WRot(WVec axis, WAngle angle)
 		{
@@ -76,7 +76,7 @@ namespace OpenRA
 			(Roll, Pitch, Yaw) = QuaternionToEuler(x, y, z, w);
 		}
 
-		static (WAngle, WAngle, WAngle) QuaternionToEuler(int x, int y, int z, int w)
+		static (WAngle Roll, WAngle Pitch, WAngle Yaw) QuaternionToEuler(int x, int y, int z, int w)
 		{
 			// Theoretically 1024 squared, but may differ slightly due to rounding
 			var lsq = x * x + y * y + z * z + w * w;
@@ -105,7 +105,7 @@ namespace OpenRA
 			Yaw = yaw;
 		}
 
-		public static readonly WRot None = new WRot(WAngle.Zero, WAngle.Zero, WAngle.Zero);
+		public static readonly WRot None = new(WAngle.Zero, WAngle.Zero, WAngle.Zero);
 
 		public static WRot FromFacing(int facing) { return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing)); }
 		public static WRot FromYaw(WAngle yaw) { return new WRot(WAngle.Zero, WAngle.Zero, yaw); }

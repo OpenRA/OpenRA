@@ -130,7 +130,7 @@
 		IsPlayerPalette: true
 		CloakSound: cloak5.aud
 		UncloakSound: cloak5.aud
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal, SupportPower
 		CloakType: nod-stealth
 	ExternalCondition@CLOAKGENERATOR:
 		Condition: cloakgenerator

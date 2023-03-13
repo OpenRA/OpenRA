@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 {
 	/// <summary>
 	/// Describes the three states that a node in the graph can have.
-	/// Based on A* algorithm specification
+	/// Based on A* algorithm specification.
 	/// </summary>
 	public enum CellStatus : byte
 	{

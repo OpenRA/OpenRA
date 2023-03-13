@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Activities
 			return TickChild(self);
 		}
 
-		readonly List<CPos> searchCells = new List<CPos>();
+		readonly List<CPos> searchCells = new();
 		int searchCellsTick = -1;
 
 		List<CPos> CalculatePathToTarget(Actor self, BlockedByActor check)
@@ -127,9 +127,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (searchCells.Count == 0)
 				return PathFinder.NoPath;
 
-			var path = Mobile.PathFinder.FindPathToTargetCell(self, searchCells, loc, check);
-			path.Reverse();
-			return path;
+			return Mobile.PathFinder.FindPathToTargetCells(self, loc, searchCells, check);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)

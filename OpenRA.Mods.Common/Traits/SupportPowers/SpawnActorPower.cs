@@ -121,10 +121,9 @@ namespace OpenRA.Mods.Common.Traits
 		readonly SpawnActorPower power;
 		readonly SpawnActorPowerInfo info;
 		readonly SupportPowerManager manager;
-		readonly string order;
 		readonly MouseButton expectedButton;
 
-		public string OrderKey { get { return order; } }
+		public string OrderKey { get; }
 
 		public SelectSpawnActorPowerTarget(string order, SupportPowerManager manager, SpawnActorPower power, MouseButton button)
 		{
@@ -134,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			this.manager = manager;
 			this.power = power;
-			this.order = order;
+			OrderKey = order;
 			expectedButton = button;
 
 			info = (SpawnActorPowerInfo)power.Info;
@@ -148,13 +147,13 @@ namespace OpenRA.Mods.Common.Traits
 				yield break;
 
 			if (mi.Button == expectedButton)
-				yield return new Order(order, manager.Self, Target.FromCell(world, cell), false) { SuppressVisualFeedback = true };
+				yield return new Order(OrderKey, manager.Self, Target.FromCell(world, cell), false) { SuppressVisualFeedback = true };
 		}
 
 		protected override void Tick(World world)
 		{
 			// Cancel the OG if we can't use the power
-			if (!manager.Powers.ContainsKey(order))
+			if (!manager.Powers.ContainsKey(OrderKey))
 				world.CancelInputMode();
 		}
 

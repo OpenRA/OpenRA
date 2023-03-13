@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class UnhardcodeSquadManager : UpdateRule
 	{
-		readonly List<MiniYamlNode> addNodes = new List<MiniYamlNode>();
+		readonly List<MiniYamlNode> addNodes = new();
 
 		// Excludes AttackBomber and AttackTDGunboatTurreted as actors with these AttackBase traits aren't supposed to be controlled.
 		readonly string[] attackBase = { "AttackLeap", "AttackPopupTurreted", "AttackAircraft", "AttackTesla", "AttackCharges", "AttackFollow", "AttackTurreted", "AttackFrontal", "AttackGarrisoned", "AttackOmni", "AttackSwallow" };

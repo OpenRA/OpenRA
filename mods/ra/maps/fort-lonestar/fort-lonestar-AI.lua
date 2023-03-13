@@ -47,7 +47,7 @@ end
 
 InitialInfantryProduction = function(id, units)
 	local productionComplete = AIPlayers[id].Build(units, function(actors)
-		InfantryProduction(id)
+		ProduceInfantry(id)
 	end)
 
 	Trigger.OnProduction(AIBarracks[id], function(producer, produced)
@@ -55,13 +55,13 @@ InitialInfantryProduction = function(id, units)
 	end)
 end
 
-InfantryProduction = function(id)
+ProduceInfantry = function(id)
 	local productionComplete = AIPlayers[id].Build({ Utils.Random(UnitsToBuild) }, function(actors)
-		Trigger.AfterDelay(0, function() InfantryProduction(id) end)
+		Trigger.AfterDelay(0, function() ProduceInfantry(id) end)
 	end)
 
 	if not productionComplete then
-		Trigger.AfterDelay(0, function() InfantryProduction(id) end)
+		Trigger.AfterDelay(0, function() ProduceInfantry(id) end)
 	end
 end
 

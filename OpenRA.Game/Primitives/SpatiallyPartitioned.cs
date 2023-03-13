@@ -18,7 +18,7 @@ namespace OpenRA.Primitives
 	{
 		readonly int rows, cols, binSize;
 		readonly Dictionary<T, Rectangle>[] itemBoundsBins;
-		readonly Dictionary<T, Rectangle> itemBounds = new Dictionary<T, Rectangle>();
+		readonly Dictionary<T, Rectangle> itemBounds = new();
 		readonly Action<Dictionary<T, Rectangle>, T, Rectangle> addItem = (bin, actor, bounds) => bin.Add(actor, bounds);
 		readonly Action<Dictionary<T, Rectangle>, T, Rectangle> removeItem = (bin, actor, bounds) => bin.Remove(actor);
 

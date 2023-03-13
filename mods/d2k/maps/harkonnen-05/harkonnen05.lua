@@ -131,11 +131,11 @@ HarkonnenPaths =
 
 SendStarportReinforcements = function()
 	Trigger.AfterDelay(CorrinoStarportDelay[Difficulty], function()
-		if CStarport.IsDead or CStarport.Owner ~= corrino then
+		if CStarport.IsDead or CStarport.Owner ~= Corrino then
 			return
 		end
 
-		local units = Reinforcements.ReinforceWithTransport(corrino, "frigate", CorrinoStarportReinforcements[Difficulty], { CorrinoStarportEntry.Location, CStarport.Location + CVec.New(1, 1) }, { CorrinoStarportExit.Location })[2]
+		local units = Reinforcements.ReinforceWithTransport(Corrino, "frigate", CorrinoStarportReinforcements[Difficulty], { CorrinoStarportEntry.Location, CStarport.Location + CVec.New(1, 1) }, { CorrinoStarportExit.Location })[2]
 		Utils.Do(units, function(unit)
 			unit.AttackMove(OrdosAttackLocation)
 			IdleHunt(unit)
@@ -143,7 +143,7 @@ SendStarportReinforcements = function()
 
 		SendStarportReinforcements()
 
-		if player.IsObjectiveFailed(GuardOutpost) then
+		if Harkonnen.IsObjectiveFailed(GuardOutpost) then
 			return
 		end
 
@@ -153,16 +153,16 @@ end
 
 SendHarkonnenReinforcements = function(delay, number)
 	Trigger.AfterDelay(delay, function()
-		Reinforcements.ReinforceWithTransport(player, "carryall.reinforce", HarkonnenReinforcements[number], HarkonnenPaths[number], { HarkonnenPaths[number][1] })
+		Reinforcements.ReinforceWithTransport(Harkonnen, "carryall.reinforce", HarkonnenReinforcements[number], HarkonnenPaths[number], { HarkonnenPaths[number][1] })
 		Trigger.AfterDelay(DateTime.Seconds(5), function()
-			Media.PlaySpeechNotification(player, "Reinforce")
+			Media.PlaySpeechNotification(Harkonnen, "Reinforce")
 		end)
 	end)
 end
 
 OrdosReinforcementNotification = function(currentWave, totalWaves)
 	Trigger.AfterDelay(OrdosAttackDelay[Difficulty], function()
-		if player.IsObjectiveFailed(GuardOutpost) or player.IsObjectiveCompleted(KillOrdos) then
+		if Harkonnen.IsObjectiveFailed(GuardOutpost) or Harkonnen.IsObjectiveCompleted(KillOrdos) then
 			return
 		end
 
@@ -179,62 +179,62 @@ end
 
 
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		ordos_main.MarkCompletedObjective(KillHarkonnen1)
-		ordos_small.MarkCompletedObjective(KillHarkonnen2)
-		corrino.MarkCompletedObjective(KillHarkonnen3)
+	if Harkonnen.HasNoRequiredUnits() then
+		OrdosMain.MarkCompletedObjective(KillHarkonnen1)
+		OrdosSmall.MarkCompletedObjective(KillHarkonnen2)
+		Corrino.MarkCompletedObjective(KillHarkonnen3)
 	end
 
-	if ordos_main.HasNoRequiredUnits() and ordos_small.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillOrdos) then
+	if OrdosMain.HasNoRequiredUnits() and OrdosSmall.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillOrdos) then
 		Media.DisplayMessage(UserInterface.Translate("ordos-annihilated"), Mentat)
-		player.MarkCompletedObjective(KillOrdos)
+		Harkonnen.MarkCompletedObjective(KillOrdos)
 	end
 
-	if corrino.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillCorrino) then
+	if Corrino.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillCorrino) then
 		Media.DisplayMessage(UserInterface.Translate("emperor-annihilated"), Mentat)
-		player.MarkCompletedObjective(KillCorrino)
+		Harkonnen.MarkCompletedObjective(KillCorrino)
 	end
 
-	if player.IsObjectiveCompleted(KillOrdos) and player.IsObjectiveCompleted(KillCorrino) and not player.IsObjectiveCompleted(GuardOutpost) then
-		player.MarkCompletedObjective(GuardOutpost)
+	if Harkonnen.IsObjectiveCompleted(KillOrdos) and Harkonnen.IsObjectiveCompleted(KillCorrino) and not Harkonnen.IsObjectiveCompleted(GuardOutpost) then
+		Harkonnen.MarkCompletedObjective(GuardOutpost)
 	end
 
-	if (HOutpost.IsDead or HOutpost.Owner ~= player) and not player.IsObjectiveFailed(GuardOutpost) then
-		player.MarkFailedObjective(GuardOutpost)
+	if (HOutpost.IsDead or HOutpost.Owner ~= Harkonnen) and not Harkonnen.IsObjectiveFailed(GuardOutpost) then
+		Harkonnen.MarkFailedObjective(GuardOutpost)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[ordos_main] then
-		local units = ordos_main.GetActorsByType("harvester")
+	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[OrdosMain] then
+		local units = OrdosMain.GetActorsByType("harvester")
 
 		if #units > 0 then
-			LastHarvesterEaten[ordos_main] = false
-			ProtectHarvester(units[1], ordos_main, AttackGroupSize[Difficulty])
+			LastHarvesterEaten[OrdosMain] = false
+			ProtectHarvester(units[1], OrdosMain, AttackGroupSize[Difficulty])
 		end
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[ordos_small] then
-		local units = ordos_small.GetActorsByType("harvester")
+	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[OrdosSmall] then
+		local units = OrdosSmall.GetActorsByType("harvester")
 
 		if #units > 0 then
-			LastHarvesterEaten[ordos_small] = false
-			ProtectHarvester(units[1], ordos_small, AttackGroupSize[Difficulty])
+			LastHarvesterEaten[OrdosSmall] = false
+			ProtectHarvester(units[1], OrdosSmall, AttackGroupSize[Difficulty])
 		end
 	end
 end
 
 WorldLoaded = function()
-	ordos_main = Player.GetPlayer("Ordos Main Base")
-	ordos_small = Player.GetPlayer("Ordos Small Base")
-	corrino = Player.GetPlayer("Corrino")
-	player = Player.GetPlayer("Harkonnen")
+	OrdosMain = Player.GetPlayer("Ordos Main Base")
+	OrdosSmall = Player.GetPlayer("Ordos Small Base")
+	Corrino = Player.GetPlayer("Corrino")
+	Harkonnen = Player.GetPlayer("Harkonnen")
 
-	InitObjectives(player)
-	KillOrdos = AddPrimaryObjective(player, "destroy-ordos")
-	KillCorrino = AddPrimaryObjective(player, "destroy-imperial-forces")
-	GuardOutpost = AddSecondaryObjective(player, "keep-modified-outpost-intact")
-	KillHarkonnen1 = AddPrimaryObjective(ordos_main, "")
-	KillHarkonnen2 = AddPrimaryObjective(ordos_small, "")
-	KillHarkonnen3 = AddPrimaryObjective(corrino, "")
+	InitObjectives(Harkonnen)
+	KillOrdos = AddPrimaryObjective(Harkonnen, "destroy-ordos")
+	KillCorrino = AddPrimaryObjective(Harkonnen, "destroy-imperial-forces")
+	GuardOutpost = AddSecondaryObjective(Harkonnen, "keep-modified-outpost-intact")
+	KillHarkonnen1 = AddPrimaryObjective(OrdosMain, "")
+	KillHarkonnen2 = AddPrimaryObjective(OrdosSmall, "")
+	KillHarkonnen3 = AddPrimaryObjective(Corrino, "")
 
 	HOutpost.GrantCondition("modified")
 
@@ -242,15 +242,15 @@ WorldLoaded = function()
 	OrdosAttackLocation = HConYard.Location
 
 	Trigger.OnAllKilledOrCaptured(OrdosMainBase, function()
-		Utils.Do(ordos_main.GetGroundAttackers(), IdleHunt)
+		Utils.Do(OrdosMain.GetGroundAttackers(), IdleHunt)
 	end)
 
 	Trigger.OnAllKilledOrCaptured(OrdosSmallBase, function()
-		Utils.Do(ordos_small.GetGroundAttackers(), IdleHunt)
+		Utils.Do(OrdosSmall.GetGroundAttackers(), IdleHunt)
 	end)
 
 	Trigger.OnAllKilledOrCaptured(CorrinoBase, function()
-		Utils.Do(corrino.GetGroundAttackers(), IdleHunt)
+		Utils.Do(Corrino.GetGroundAttackers(), IdleHunt)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(5), function()
@@ -258,28 +258,28 @@ WorldLoaded = function()
 	end)
 
 	local path = function() return Utils.Random(OrdosPaths) end
-	local waveCondition = function() return player.IsObjectiveCompleted(KillOrdos) end
+	local waveCondition = function() return Harkonnen.IsObjectiveCompleted(KillOrdos) end
 	local huntFunction = function(unit)
 		unit.AttackMove(OrdosAttackLocation)
 		IdleHunt(unit)
 	end
-	SendCarryallReinforcements(ordos_main, 0, OrdosAttackWaves[Difficulty], OrdosAttackDelay[Difficulty], path, OrdosReinforcements[Difficulty], waveCondition, huntFunction)
+	SendCarryallReinforcements(OrdosMain, 0, OrdosAttackWaves[Difficulty], OrdosAttackDelay[Difficulty], path, OrdosReinforcements[Difficulty], waveCondition, huntFunction)
 	OrdosReinforcementNotification(0, OrdosAttackWaves[Difficulty])
 
 	SendStarportReinforcements()
 
-	Actor.Create("upgrade.barracks", true, { Owner = ordos_main })
-	Actor.Create("upgrade.light", true, { Owner = ordos_main })
-	Actor.Create("upgrade.heavy", true, { Owner = ordos_main })
-	Actor.Create("upgrade.barracks", true, { Owner = ordos_small })
-	Actor.Create("upgrade.light", true, { Owner = ordos_small })
+	Actor.Create("upgrade.barracks", true, { Owner = OrdosMain })
+	Actor.Create("upgrade.light", true, { Owner = OrdosMain })
+	Actor.Create("upgrade.heavy", true, { Owner = OrdosMain })
+	Actor.Create("upgrade.barracks", true, { Owner = OrdosSmall })
+	Actor.Create("upgrade.light", true, { Owner = OrdosSmall })
 	Trigger.AfterDelay(0, ActivateAI)
 
 	SendHarkonnenReinforcements(DateTime.Seconds(15), 1)
 	SendHarkonnenReinforcements(DateTime.Seconds(30), 1)
 	SendHarkonnenReinforcements(DateTime.Seconds(35), 2)
 
-	local ordosCondition = function() return player.IsObjectiveCompleted(KillOrdos) end
-	TriggerCarryallReinforcements(player, ordos_main, BaseAreaTriggers[1], OrdosHunters[1], OrdosHunterPaths[2], ordosCondition)
-	TriggerCarryallReinforcements(player, ordos_main, BaseAreaTriggers[2], OrdosHunters[2], OrdosHunterPaths[1], ordosCondition)
+	local ordosCondition = function() return Harkonnen.IsObjectiveCompleted(KillOrdos) end
+	TriggerCarryallReinforcements(Harkonnen, OrdosMain, BaseAreaTriggers[1], OrdosHunters[1], OrdosHunterPaths[2], ordosCondition)
+	TriggerCarryallReinforcements(Harkonnen, OrdosMain, BaseAreaTriggers[2], OrdosHunters[2], OrdosHunterPaths[1], ordosCondition)
 end

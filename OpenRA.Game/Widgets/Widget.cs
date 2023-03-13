@@ -25,15 +25,15 @@ namespace OpenRA.Widgets
 
 		public static Widget Root = new ContainerWidget();
 
-		public static TickTime LastTickTime = new TickTime(() => Timestep, Game.RunTime);
+		public static TickTime LastTickTime = new(() => Timestep, Game.RunTime);
 
-		static readonly Stack<Widget> WindowList = new Stack<Widget>();
+		static readonly Stack<Widget> WindowList = new();
 
 		public static Widget MouseFocusWidget;
 		public static Widget KeyboardFocusWidget;
 		public static Widget MouseOverWidget;
 
-		static readonly Mediator Mediator = new Mediator();
+		static readonly Mediator Mediator = new();
 
 		public static void CloseWindow()
 		{
@@ -125,9 +125,9 @@ namespace OpenRA.Widgets
 			return handled;
 		}
 
-		/// <summary>Possibly handle keyboard input (if this widget has keyboard focus)</summary>
-		/// <returns><c>true</c>, if keyboard input was handled, <c>false</c> if the input should bubble to the parent widget</returns>
-		/// <param name="e">Key input data</param>
+		/// <summary>Possibly handle keyboard input (if this widget has keyboard focus).</summary>
+		/// <returns><c>true</c>, if keyboard input was handled, <c>false</c> if the input should bubble to the parent widget.</returns>
+		/// <param name="e">Key input data.</param>
 		public static bool HandleKeyPress(KeyInput e)
 		{
 			if (KeyboardFocusWidget != null)
@@ -185,7 +185,7 @@ namespace OpenRA.Widgets
 	{
 		string defaultCursor = null;
 
-		public readonly List<Widget> Children = new List<Widget>();
+		public readonly List<Widget> Children = new();
 
 		// Info defined in YAML
 		public string Id = null;
@@ -395,8 +395,8 @@ namespace OpenRA.Widgets
 		public virtual void MouseExited() { }
 
 		/// <summary>Possibly handles mouse input (click, drag, scroll, etc).</summary>
-		/// <returns><c>true</c>, if mouse input was handled, <c>false</c> if the input should bubble to the parent widget</returns>
-		/// <param name="mi">Mouse input data</param>
+		/// <returns><c>true</c>, if mouse input was handled, <c>false</c> if the input should bubble to the parent widget.</returns>
+		/// <param name="mi">Mouse input data.</param>
 		public virtual bool HandleMouseInput(MouseInput mi) { return false; }
 
 		public bool HandleMouseInputOuter(MouseInput mi)
@@ -644,7 +644,7 @@ namespace OpenRA.Widgets
 
 	public sealed class Mediator
 	{
-		readonly TypeDictionary types = new TypeDictionary();
+		readonly TypeDictionary types = new();
 
 		public void Subscribe<T>(T instance)
 		{

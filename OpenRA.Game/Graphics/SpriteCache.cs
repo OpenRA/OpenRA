@@ -24,14 +24,14 @@ namespace OpenRA.Graphics
 		readonly ISpriteLoader[] loaders;
 		readonly IReadOnlyFileSystem fileSystem;
 
-		readonly Dictionary<int, (int[] Frames, MiniYamlNode.SourceLocation Location)> spriteReservations = new Dictionary<int, (int[], MiniYamlNode.SourceLocation)>();
-		readonly Dictionary<int, (int[] Frames, MiniYamlNode.SourceLocation Location)> frameReservations = new Dictionary<int, (int[], MiniYamlNode.SourceLocation)>();
-		readonly Dictionary<string, List<int>> reservationsByFilename = new Dictionary<string, List<int>>();
+		readonly Dictionary<int, (int[] Frames, MiniYamlNode.SourceLocation Location)> spriteReservations = new();
+		readonly Dictionary<int, (int[] Frames, MiniYamlNode.SourceLocation Location)> frameReservations = new();
+		readonly Dictionary<string, List<int>> reservationsByFilename = new();
 
-		readonly Dictionary<int, ISpriteFrame[]> resolvedFrames = new Dictionary<int, ISpriteFrame[]>();
-		readonly Dictionary<int, Sprite[]> resolvedSprites = new Dictionary<int, Sprite[]>();
+		readonly Dictionary<int, ISpriteFrame[]> resolvedFrames = new();
+		readonly Dictionary<int, Sprite[]> resolvedSprites = new();
 
-		readonly Dictionary<int, (string Filename, MiniYamlNode.SourceLocation Location)> missingFiles = new Dictionary<int, (string, MiniYamlNode.SourceLocation)>();
+		readonly Dictionary<int, (string Filename, MiniYamlNode.SourceLocation Location)> missingFiles = new();
 
 		int nextReservationToken = 1;
 

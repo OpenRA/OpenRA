@@ -45,8 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (r.IsTraitDisabled)
 							continue;
 
-						if (acceptedReplacements == null)
-							acceptedReplacements = new HashSet<string>();
+						acceptedReplacements ??= new HashSet<string>();
 
 						acceptedReplacements.UnionWith(r.Info.Types);
 					}

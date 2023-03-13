@@ -2,6 +2,7 @@ ss:
 	idle:
 		Filename: ss.shp
 		Facings: 16
+		InterpolatedFacings: 32
 	icon:
 		Filename: ssicon.shp
 
@@ -63,5 +64,6 @@ msub:
 	idle:
 		Filename: msub.shp
 		Facings: 16
+		InterpolatedFacings: 32
 	icon:
 		Filename: msubicon.shp

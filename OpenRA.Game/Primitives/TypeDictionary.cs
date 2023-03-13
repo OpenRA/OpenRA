@@ -16,10 +16,10 @@ using System.Linq;
 
 namespace OpenRA.Primitives
 {
-	public class TypeDictionary : IEnumerable
+	public class TypeDictionary : IEnumerable<object>
 	{
 		static readonly Func<Type, List<object>> CreateList = type => new List<object>();
-		readonly Dictionary<Type, List<object>> data = new Dictionary<Type, List<object>>();
+		readonly Dictionary<Type, List<object>> data = new();
 
 		public void Add(object val)
 		{
@@ -105,9 +105,14 @@ namespace OpenRA.Primitives
 				objs.TrimExcess();
 		}
 
-		public IEnumerator GetEnumerator()
+		public IEnumerator<object> GetEnumerator()
 		{
 			return WithInterface<object>().GetEnumerator();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
 		}
 	}
 

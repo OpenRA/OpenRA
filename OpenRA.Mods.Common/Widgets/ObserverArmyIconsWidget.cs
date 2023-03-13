@@ -39,9 +39,9 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string TooltipContainer;
 
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
-		readonly List<ArmyIcon> armyIcons = new List<ArmyIcon>();
+		readonly List<ArmyIcon> armyIcons = new();
 
-		readonly CachedTransform<Player, PlayerStatistics> stats = new CachedTransform<Player, PlayerStatistics>(player => player.PlayerActor.TraitOrDefault<PlayerStatistics>());
+		readonly CachedTransform<Player, PlayerStatistics> stats = new(player => player.PlayerActor.TraitOrDefault<PlayerStatistics>());
 
 		int lastIconIdx;
 		int currentTooltipToken;

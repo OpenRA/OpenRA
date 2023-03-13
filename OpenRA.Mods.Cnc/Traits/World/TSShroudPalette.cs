@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
-			uint MakeColor(int i)
+			static uint MakeColor(int i)
 			{
 				if (i < 128)
 					return (uint)(int2.Lerp(255, 0, i, 127) << 24);

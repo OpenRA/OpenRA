@@ -38,7 +38,7 @@ WorldLoaded = function()
 
 	InitObjectives(Nod)
 
-	BuildBase = AddPrimaryObjective(Nod, "build-base")
+	BuildBaseObjective = AddPrimaryObjective(Nod, "build-base")
 	DestroyGDI = AddPrimaryObjective(Nod, "destroy-gdi-base")
 	GDIObjective = AddPrimaryObjective(GDI, "")
 
@@ -111,7 +111,7 @@ Tick = function()
 		GDI.MarkCompletedObjective(GDIObjective)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(1) == 0 and not Nod.IsObjectiveCompleted(BuildBase) and CheckForBase(Nod, NodBaseBuildings) then
-		Nod.MarkCompletedObjective(BuildBase)
+	if DateTime.GameTime % DateTime.Seconds(1) == 0 and not Nod.IsObjectiveCompleted(BuildBaseObjective) and CheckForBase(Nod, NodBaseBuildings) then
+		Nod.MarkCompletedObjective(BuildBaseObjective)
 	end
 end

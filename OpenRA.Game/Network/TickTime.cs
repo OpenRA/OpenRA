@@ -17,19 +17,13 @@ namespace OpenRA.Network
 	{
 		readonly Func<int> timestep;
 
-		long lastTickTime;
-
 		public TickTime(Func<int> timestep, long lastTickTime)
 		{
 			this.timestep = timestep;
-			this.lastTickTime = lastTickTime;
+			Value = lastTickTime;
 		}
 
-		public long Value
-		{
-			get => lastTickTime;
-			set => lastTickTime = value;
-		}
+		public long Value { get; set; }
 
 		public bool ShouldAdvance(long tick)
 		{
@@ -38,18 +32,18 @@ namespace OpenRA.Network
 			if (i == 0)
 				return false;
 
-			var tickDelta = tick - lastTickTime;
+			var tickDelta = tick - Value;
 			return tickDelta >= i;
 		}
 
 		public void AdvanceTickTime(long tick)
 		{
-			var tickDelta = tick - lastTickTime;
+			var tickDelta = tick - Value;
 
 			var currentTimestep = timestep();
 
 			var integralTickTimestep = tickDelta / currentTimestep * currentTimestep;
-			lastTickTime += integralTickTimestep >= Game.TimestepJankThreshold
+			Value += integralTickTimestep >= Game.TimestepJankThreshold
 				? integralTickTimestep
 				: currentTimestep;
 		}

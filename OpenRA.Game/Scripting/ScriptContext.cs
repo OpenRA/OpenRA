@@ -33,6 +33,7 @@ namespace OpenRA.Scripting
 	}
 
 	// For traitinfos that provide actor / player commands
+	[AttributeUsage(AttributeTargets.Class)]
 	public sealed class ScriptPropertyGroupAttribute : Attribute
 	{
 		public readonly string Category;
@@ -40,8 +41,10 @@ namespace OpenRA.Scripting
 	}
 
 	// For property groups that are safe to initialize invoke on destroyed actors
+	[AttributeUsage(AttributeTargets.Class)]
 	public sealed class ExposedForDestroyedActors : Attribute { }
 
+	[AttributeUsage(AttributeTargets.Property | AttributeTargets.Method)]
 	public sealed class ScriptActorPropertyActivityAttribute : Attribute { }
 
 	public abstract class ScriptActorProperties
@@ -115,6 +118,7 @@ namespace OpenRA.Scripting
 		}
 	}
 
+	[AttributeUsage(AttributeTargets.Class)]
 	public sealed class ScriptGlobalAttribute : Attribute
 	{
 		public readonly string Name;

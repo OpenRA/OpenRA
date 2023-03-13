@@ -37,13 +37,13 @@ AtreidesStarportTypes = { "trike.starport", "trike.starport", "quad.starport", "
 CorrinoInfantryTypes = { "light_inf", "trooper", "sardaukar" }
 
 ActivateAI = function()
-	IdlingUnits[atreides_main] = Reinforcements.Reinforce(atreides_main, InitialAtreidesReinforcements[Difficulty][1], InitialAtreidesPaths[1]), Reinforcements.Reinforce(atreides_main, InitialAtreidesReinforcements[Difficulty][2], InitialAtreidesPaths[2])
-	IdlingUnits[atreides_small] = Reinforcements.Reinforce(atreides_small, InitialAtreidesReinforcements[Difficulty][1], InitialAtreidesPaths[3])
-	IdlingUnits[corrino] = Reinforcements.Reinforce(corrino, InitialCorrinoReinforcements, InitialCorrinoPath)
+	IdlingUnits[AtreidesMain] = Reinforcements.Reinforce(AtreidesMain, InitialAtreidesReinforcements[Difficulty][1], InitialAtreidesPaths[1]), Reinforcements.Reinforce(AtreidesMain, InitialAtreidesReinforcements[Difficulty][2], InitialAtreidesPaths[2])
+	IdlingUnits[AtreidesSmall] = Reinforcements.Reinforce(AtreidesSmall, InitialAtreidesReinforcements[Difficulty][1], InitialAtreidesPaths[3])
+	IdlingUnits[Corrino] = Reinforcements.Reinforce(Corrino, InitialCorrinoReinforcements, InitialCorrinoPath)
 
-	DefendAndRepairBase(atreides_main, AtreidesMainBase, 0.75, AttackGroupSize[Difficulty])
-	DefendAndRepairBase(atreides_small, AtreidesSmallBase, 0.75, AttackGroupSize[Difficulty])
-	DefendAndRepairBase(corrino, CorrinoBase, 0.75, AttackGroupSize[Difficulty])
+	DefendAndRepairBase(AtreidesMain, AtreidesMainBase, 0.75, AttackGroupSize[Difficulty])
+	DefendAndRepairBase(AtreidesSmall, AtreidesSmallBase, 0.75, AttackGroupSize[Difficulty])
+	DefendAndRepairBase(Corrino, CorrinoBase, 0.75, AttackGroupSize[Difficulty])
 
 	local delay = function() return Utils.RandomInteger(AttackDelays[Difficulty][1], AttackDelays[Difficulty][2] + 1) end
 	local infantryToBuildAtreides = function() return { Utils.Random(AtreidesInfantryTypes) } end
@@ -55,13 +55,13 @@ ActivateAI = function()
 	local attackThresholdSize = AttackGroupSize[Difficulty] * 2.5
 
 	Trigger.AfterDelay(InitialProductionDelay[Difficulty], function()
-		ProduceUnits(atreides_main, ALightFactory1, delay, vehilcesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
-		ProduceUnits(atreides_main, AHeavyFactory1, delay, tanksToBuildMain, AttackGroupSize[Difficulty], attackThresholdSize)
-		ProduceUnits(atreides_main, AStarport, delay, unitsToBuy, AttackGroupSize[Difficulty], attackThresholdSize)
+		ProduceUnits(AtreidesMain, ALightFactory1, delay, vehilcesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+		ProduceUnits(AtreidesMain, AHeavyFactory1, delay, tanksToBuildMain, AttackGroupSize[Difficulty], attackThresholdSize)
+		ProduceUnits(AtreidesMain, AStarport, delay, unitsToBuy, AttackGroupSize[Difficulty], attackThresholdSize)
 
-		ProduceUnits(atreides_small, ABarracks, delay, infantryToBuildAtreides, AttackGroupSize[Difficulty], attackThresholdSize)
-		ProduceUnits(atreides_small, AHeavyFactory2, delay, tanksToBuildSmall, AttackGroupSize[Difficulty], attackThresholdSize)
+		ProduceUnits(AtreidesSmall, ABarracks, delay, infantryToBuildAtreides, AttackGroupSize[Difficulty], attackThresholdSize)
+		ProduceUnits(AtreidesSmall, AHeavyFactory2, delay, tanksToBuildSmall, AttackGroupSize[Difficulty], attackThresholdSize)
 
-		ProduceUnits(corrino, CBarracks, delay, infantryToBuildCorrino, AttackGroupSize[Difficulty], attackThresholdSize)
+		ProduceUnits(Corrino, CBarracks, delay, infantryToBuildCorrino, AttackGroupSize[Difficulty], attackThresholdSize)
 	end)
 end

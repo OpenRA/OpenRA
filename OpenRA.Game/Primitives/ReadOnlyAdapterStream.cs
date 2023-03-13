@@ -21,7 +21,7 @@ namespace OpenRA.Primitives
 	/// </summary>
 	public abstract class ReadOnlyAdapterStream : Stream
 	{
-		readonly Queue<byte> data = new Queue<byte>(1024);
+		readonly Queue<byte> data = new(1024);
 		readonly Stream baseStream;
 		bool baseStreamEmpty;
 

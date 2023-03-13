@@ -18,8 +18,6 @@ namespace OpenRA.Mods.Common.Graphics
 	{
 		const int CircleSegments = 32;
 		static readonly WVec[] FacingOffsets = Exts.MakeArray(CircleSegments, i => new WVec(1024, 0, 0).Rotate(WRot.FromFacing(i * 256 / CircleSegments)));
-
-		readonly WPos centerPosition;
 		readonly WDist radius;
 		readonly int width;
 		readonly Color color;
@@ -27,19 +25,19 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public CircleAnnotationRenderable(WPos centerPosition, WDist radius, int width, Color color, bool filled = false)
 		{
-			this.centerPosition = centerPosition;
+			Pos = centerPosition;
 			this.radius = radius;
 			this.width = width;
 			this.color = color;
 			this.filled = filled;
 		}
 
-		public WPos Pos => centerPosition;
+		public WPos Pos { get; }
 		public int ZOffset => 0;
 		public bool IsDecoration => true;
 
-		public IRenderable WithZOffset(int newOffset) { return new CircleAnnotationRenderable(centerPosition, radius, width, color, filled); }
-		public IRenderable OffsetBy(in WVec vec) { return new CircleAnnotationRenderable(centerPosition + vec, radius, width, color, filled); }
+		public IRenderable WithZOffset(int newOffset) { return new CircleAnnotationRenderable(Pos, radius, width, color, filled); }
+		public IRenderable OffsetBy(in WVec vec) { return new CircleAnnotationRenderable(Pos + vec, radius, width, color, filled); }
 		public IRenderable AsDecoration() { return this; }
 
 		public IFinalizedRenderable PrepareRender(WorldRenderer wr) { return this; }
@@ -49,18 +47,18 @@ namespace OpenRA.Mods.Common.Graphics
 			if (filled)
 			{
 				var offset = new WVec(radius.Length, radius.Length, 0);
-				var tl = wr.Viewport.WorldToViewPx(wr.ScreenPosition(centerPosition - offset));
-				var br = wr.Viewport.WorldToViewPx(wr.ScreenPosition(centerPosition + offset));
+				var tl = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos - offset));
+				var br = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos + offset));
 
 				cr.FillEllipse(tl, br, color);
 			}
 			else
 			{
 				var r = radius.Length;
-				var a = wr.Viewport.WorldToViewPx(wr.ScreenPosition(centerPosition + r * FacingOffsets[CircleSegments - 1] / 1024));
+				var a = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos + r * FacingOffsets[CircleSegments - 1] / 1024));
 				for (var i = 0; i < CircleSegments; i++)
 				{
-					var b = wr.Viewport.WorldToViewPx(wr.ScreenPosition(centerPosition + r * FacingOffsets[i] / 1024));
+					var b = wr.Viewport.WorldToViewPx(wr.ScreenPosition(Pos + r * FacingOffsets[i] / 1024));
 					cr.DrawLine(a, b, width, color);
 					a = b;
 				}

@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.FileFormats
 	{
 		const uint MaxFileGroupCount = 71;
 
+		[Flags]
 		enum CABFlags : ushort
 		{
 			FileSplit = 0x1,
@@ -372,7 +373,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 		}
 
-		readonly Dictionary<string, FileDescriptor> index = new Dictionary<string, FileDescriptor>();
+		readonly Dictionary<string, FileDescriptor> index = new();
 		readonly Dictionary<int, Stream> volumes;
 		readonly uint version;
 

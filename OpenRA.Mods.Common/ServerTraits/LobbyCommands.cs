@@ -49,6 +49,9 @@ namespace OpenRA.Mods.Common.Server
 		const string KickNone = "notification-kick-none";
 
 		[TranslationReference]
+		const string NoKickSelf = "notification-kick-self";
+
+		[TranslationReference]
 		const string NoKickGameStarted = "notification-no-kick-game-started";
 
 		[TranslationReference("admin", "player")]
@@ -526,10 +529,11 @@ namespace OpenRA.Mods.Common.Server
 					};
 
 					// Pick a random color for the bot
-					var colorManager = server.ModData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
+					var colorManager = server.ModData.DefaultRules.Actors[SystemActors.World].TraitInfo<IColorPickerManagerInfo>();
 					var terrainColors = server.ModData.DefaultTerrainInfo[server.Map.TileSet].RestrictedPlayerColors;
 					var playerColors = server.LobbyInfo.Clients.Select(c => c.Color)
 						.Concat(server.Map.Players.Players.Values.Select(p => p.Color));
+
 					bot.Color = bot.PreferredColor = colorManager.RandomPresetColor(server.Random, terrainColors, playerColors);
 
 					server.LobbyInfo.Clients.Add(bot);
@@ -784,9 +788,9 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				Exts.TryParseIntegerInvariant(split[0], out var kickClientID);
+				var kickConn = Exts.TryParseIntegerInvariant(split[0], out var kickClientID)
+					? server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == kickClientID) : null;
 
-				var kickConn = server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == kickClientID);
 				if (kickConn == null)
 				{
 					server.SendLocalizedMessageTo(conn, KickNone);
@@ -794,7 +798,13 @@ namespace OpenRA.Mods.Common.Server
 				}
 
 				var kickClient = server.GetClient(kickConn);
-				if (server.State == ServerState.GameStarted && !kickClient.IsObserver)
+				if (client == kickClient)
+				{
+					server.SendLocalizedMessageTo(conn, NoKickSelf);
+					return true;
+				}
+
+				if (!server.CanKickClient(kickClient))
 				{
 					server.SendLocalizedMessageTo(conn, NoKickGameStarted);
 					return true;
@@ -829,8 +839,8 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				Exts.TryParseIntegerInvariant(s, out var newAdminId);
-				var newAdminConn = server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == newAdminId);
+				var newAdminConn = Exts.TryParseIntegerInvariant(s, out var newAdminId)
+					? server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == newAdminId) : null;
 
 				if (newAdminConn == null)
 				{
@@ -866,8 +876,9 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				Exts.TryParseIntegerInvariant(s, out var targetId);
-				var targetConn = server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == targetId);
+				var targetConn = Exts.TryParseIntegerInvariant(s, out var targetId)
+					? server.Conns.SingleOrDefault(c => server.GetClient(c)?.Index == targetId) : null;
+
 				if (targetConn == null)
 				{
 					server.SendLocalizedMessageTo(conn, EmptySlot);
@@ -1229,7 +1240,7 @@ namespace OpenRA.Mods.Common.Server
 		{
 			lock (server.LobbyInfo)
 			{
-				var colorManager = server.ModData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
+				var colorManager = server.ModData.DefaultRules.Actors[SystemActors.World].TraitInfo<IColorPickerManagerInfo>();
 				var askColor = askedColor;
 
 				void OnError(string message)

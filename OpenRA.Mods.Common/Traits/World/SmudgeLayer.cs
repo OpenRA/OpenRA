@@ -90,9 +90,9 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public readonly SmudgeLayerInfo Info;
-		readonly Dictionary<CPos, Smudge> tiles = new Dictionary<CPos, Smudge>();
-		readonly Dictionary<CPos, Smudge> dirty = new Dictionary<CPos, Smudge>();
-		readonly Dictionary<string, ISpriteSequence> smudges = new Dictionary<string, ISpriteSequence>();
+		readonly Dictionary<CPos, Smudge> tiles = new();
+		readonly Dictionary<CPos, Smudge> dirty = new();
+		readonly Dictionary<string, ISpriteSequence> smudges = new();
 		readonly World world;
 		readonly bool hasSmoke;
 

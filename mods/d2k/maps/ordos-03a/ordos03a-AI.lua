@@ -25,13 +25,13 @@ HarkonnenInfantryTypes = { "light_inf", "light_inf", "light_inf", "trooper", "tr
 HarkonnenVehicleTypes = { "trike", "trike", "quad" }
 
 InitAIUnits = function()
-	IdlingUnits[harkonnen] = Reinforcements.Reinforce(harkonnen, HarkonnenInitialReinforcements, HarkonnenInitialPath)
+	IdlingUnits[Harkonnen] = Reinforcements.Reinforce(Harkonnen, HarkonnenInitialReinforcements, HarkonnenInitialPath)
 
-	DefendAndRepairBase(harkonnen, HarkonnenBase, 0.75, AttackGroupSize[Difficulty])
+	DefendAndRepairBase(Harkonnen, HarkonnenBase, 0.75, AttackGroupSize[Difficulty])
 end
 
 ActivateAI = function()
-	LastHarvesterEaten[harkonnen] = true
+	LastHarvesterEaten[Harkonnen] = true
 	Trigger.AfterDelay(0, InitAIUnits)
 
 	HConyard.Produce(OrdosUpgrades[1])
@@ -44,7 +44,7 @@ ActivateAI = function()
 
 	-- Finish the upgrades first before trying to build something
 	Trigger.AfterDelay(DateTime.Seconds(14), function()
-		ProduceUnits(harkonnen, HBarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
-		ProduceUnits(harkonnen, HLightFactory, delay, vehilcesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+		ProduceUnits(Harkonnen, HBarracks, delay, infantryToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
+		ProduceUnits(Harkonnen, HLightFactory, delay, vehilcesToBuild, AttackGroupSize[Difficulty], attackThresholdSize)
 	end)
 end

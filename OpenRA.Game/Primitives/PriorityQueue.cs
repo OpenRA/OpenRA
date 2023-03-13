@@ -22,19 +22,39 @@ namespace OpenRA.Primitives
 		T Pop();
 	}
 
-	public class PriorityQueue<T> : IPriorityQueue<T>
+	/// <summary>
+	/// Represents a collection of items that have a priority.
+	/// On pop, the item with the lowest priority value is removed.
+	/// </summary>
+	public sealed class PriorityQueue<T, TComparer> : IPriorityQueue<T> where TComparer : struct, IComparer<T>
 	{
-		readonly List<T[]> items;
-		readonly IComparer<T> comparer;
-		int level, index;
+		/// <summary>
+		/// Compares two items to determine their priority.
+		/// PERF: Using a struct allows the calls to be devirtualized.
+		/// </summary>
+		readonly TComparer comparer;
 
-		public PriorityQueue()
-			: this(Comparer<T>.Default) { }
+		/// <summary>
+		/// A <a href="https://en.wikipedia.org/wiki/Binary_heap">binary min-heap</a> storing the items.
+		/// An array divided into sub arrays called levels. At each level the size of a level array doubles.
+		/// Elements at deeper levels always have higher priority values than elements nearer to the root.
+		/// </summary>
+		T[] items;
 
-		public PriorityQueue(IComparer<T> comparer)
+		/// <summary>
+		/// Index of deepest level.
+		/// </summary>
+		int level;
+
+		/// <summary>
+		/// Number of elements in the deepest level.
+		/// </summary>
+		int index;
+
+		public PriorityQueue(TComparer comparer)
 		{
-			items = new List<T[]> { new T[1] };
 			this.comparer = comparer;
+			items = new T[1];
 		}
 
 		public void Add(T item)
@@ -42,29 +62,37 @@ namespace OpenRA.Primitives
 			var addLevel = level;
 			var addIndex = index;
 
-			while (addLevel >= 1 && comparer.Compare(Above(addLevel, addIndex), item) > 0)
+			while (addLevel >= 1)
 			{
-				items[addLevel][addIndex] = Above(addLevel, addIndex);
-				--addLevel;
-				addIndex >>= 1;
+				var above = items[AboveIndex(addLevel, addIndex)];
+				if (comparer.Compare(above, item) > 0)
+				{
+					items[Index(addLevel, addIndex)] = above;
+					--addLevel;
+					addIndex >>= 1;
+				}
+				else
+					break;
 			}
 
-			items[addLevel][addIndex] = item;
+			items[Index(addLevel, addIndex)] = item;
 
 			if (++index >= 1 << level)
 			{
 				index = 0;
-				if (items.Count <= ++level)
-					items.Add(new T[1 << level]);
+				var count = 2 * (1 << ++level);
+				if (count - 1 >= items.Length)
+					Array.Resize(ref items, count);
 			}
 		}
 
 		public bool Empty => level == 0;
 
-		T At(int level, int index) { return items[level][index]; }
-		T Above(int level, int index) { return items[level - 1][index >> 1]; }
+		static int Index(int level, int index) { return (1 << level) - 1 + index; }
 
-		T Last()
+		static int AboveIndex(int level, int index) { return (1 << (level - 1)) - 1 + (index >> 1); }
+
+		int IndexLast()
 		{
 			var lastLevel = level;
 			var lastIndex = index;
@@ -72,20 +100,21 @@ namespace OpenRA.Primitives
 			if (--lastIndex < 0)
 				lastIndex = (1 << --lastLevel) - 1;
 
-			return At(lastLevel, lastIndex);
+			return Index(lastLevel, lastIndex);
 		}
 
 		public T Peek()
 		{
 			if (level <= 0 && index <= 0)
 				throw new InvalidOperationException("PriorityQueue empty.");
-			return At(0, 0);
+
+			return items[Index(0, 0)];
 		}
 
 		public T Pop()
 		{
 			var ret = Peek();
-			BubbleInto(0, 0, Last());
+			BubbleInto(0, 0, items[IndexLast()]);
 			if (--index < 0)
 				index = (1 << --level) - 1;
 			return ret;
@@ -93,27 +122,38 @@ namespace OpenRA.Primitives
 
 		void BubbleInto(int intoLevel, int intoIndex, T val)
 		{
-			var downLevel = intoLevel + 1;
-			var downIndex = intoIndex << 1;
-
-			if (downLevel > level || (downLevel == level && downIndex >= index))
+			while (true)
 			{
-				items[intoLevel][intoIndex] = val;
-				return;
+				var downLevel = intoLevel + 1;
+				var downIndex = intoIndex << 1;
+
+				if (downLevel > level || (downLevel == level && downIndex >= index))
+				{
+					items[Index(intoLevel, intoIndex)] = val;
+					return;
+				}
+
+				var down = items[Index(downLevel, downIndex)];
+				if (downLevel < level || (downLevel == level && downIndex < index - 1))
+				{
+					var downRight = items[Index(downLevel, downIndex + 1)];
+					if (comparer.Compare(down, downRight) >= 0)
+					{
+						down = downRight;
+						++downIndex;
+					}
+				}
+
+				if (comparer.Compare(val, down) <= 0)
+				{
+					items[Index(intoLevel, intoIndex)] = val;
+					return;
+				}
+
+				items[Index(intoLevel, intoIndex)] = down;
+				intoLevel = downLevel;
+				intoIndex = downIndex;
 			}
-
-			if ((downLevel < level || (downLevel == level && downIndex < index - 1)) &&
-				comparer.Compare(At(downLevel, downIndex), At(downLevel, downIndex + 1)) >= 0)
-				++downIndex;
-
-			if (comparer.Compare(val, At(downLevel, downIndex)) <= 0)
-			{
-				items[intoLevel][intoIndex] = val;
-				return;
-			}
-
-			items[intoLevel][intoIndex] = At(downLevel, downIndex);
-			BubbleInto(downLevel, downIndex, val);
 		}
 	}
 }

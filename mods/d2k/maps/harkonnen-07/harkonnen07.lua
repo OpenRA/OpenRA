@@ -124,9 +124,9 @@ HarkonnenPaths =
 }
 
 SendHarkonnenReinforcements = function(number)
-	Reinforcements.ReinforceWithTransport(player, "carryall.reinforce", HarkonnenReinforcements[Difficulty][number], HarkonnenPaths[number], { HarkonnenPaths[number][1] })
+	Reinforcements.ReinforceWithTransport(Harkonnen, "carryall.reinforce", HarkonnenReinforcements[Difficulty][number], HarkonnenPaths[number], { HarkonnenPaths[number][1] })
 	Trigger.AfterDelay(DateTime.Seconds(9), function()
-		Media.PlaySpeechNotification(player, "Reinforce")
+		Media.PlaySpeechNotification(Harkonnen, "Reinforce")
 	end)
 end
 
@@ -152,7 +152,7 @@ SendAirStrike = function()
 		return
 	end
 
-	local targets = Utils.Where(player.GetActors(), function(actor)
+	local targets = Utils.Where(Harkonnen.GetActors(), function(actor)
 		return
 			actor.HasProperty("Sell") and
 			actor.Type ~= "wall" and
@@ -170,63 +170,63 @@ SendAirStrike = function()
 end
 
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		atreides_main.MarkCompletedObjective(KillHarkonnen1)
-		atreides_small.MarkCompletedObjective(KillHarkonnen2)
-		corrino.MarkCompletedObjective(KillHarkonnen3)
+	if Harkonnen.HasNoRequiredUnits() then
+		AtreidesMain.MarkCompletedObjective(KillHarkonnen1)
+		AtreidesSmall.MarkCompletedObjective(KillHarkonnen2)
+		Corrino.MarkCompletedObjective(KillHarkonnen3)
 	end
 
-	if atreides_main.HasNoRequiredUnits() and atreides_small.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
+	if AtreidesMain.HasNoRequiredUnits() and AtreidesSmall.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillAtreides) then
 		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
-		player.MarkCompletedObjective(KillAtreides)
+		Harkonnen.MarkCompletedObjective(KillAtreides)
 	end
 
-	if corrino.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillCorrino) then
+	if Corrino.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillCorrino) then
 		Media.DisplayMessage(UserInterface.Translate("emperor-annihilated"), Mentat)
-		player.MarkCompletedObjective(KillCorrino)
+		Harkonnen.MarkCompletedObjective(KillCorrino)
 	end
 
-	if (HEngineer.IsDead or AConYard2.IsDead) and not player.IsObjectiveCompleted(CaptureAtreidesConYard) then
-		player.MarkFailedObjective(CaptureAtreidesConYard)
+	if (HEngineer.IsDead or AConYard2.IsDead) and not Harkonnen.IsObjectiveCompleted(CaptureAtreidesConYard) then
+		Harkonnen.MarkFailedObjective(CaptureAtreidesConYard)
 	end
 
-	if (AHiTechFactory.IsDead or AHiTechFactory.Owner ~= atreides_main) and not HiTechIsDead then
+	if (AHiTechFactory.IsDead or AHiTechFactory.Owner ~= AtreidesMain) and not HiTechIsDead then
 		Media.DisplayMessage(UserInterface.Translate("high-tech-factory-neutralized-imperial-reinforcements"), Mentat)
 		HiTechIsDead = true
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[ordos_main] then
-		local units = ordos_main.GetActorsByType("harvester")
+	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[OrdosMain] then
+		local units = OrdosMain.GetActorsByType("harvester")
 
 		if #units > 0 then
-			LastHarvesterEaten[ordos_main] = false
-			ProtectHarvester(units[1], ordos_main, AttackGroupSize[Difficulty])
+			LastHarvesterEaten[OrdosMain] = false
+			ProtectHarvester(units[1], OrdosMain, AttackGroupSize[Difficulty])
 		end
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[ordos_small] then
-		local units = ordos_small.GetActorsByType("harvester")
+	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[OrdosSmall] then
+		local units = OrdosSmall.GetActorsByType("harvester")
 
 		if #units > 0 then
-			LastHarvesterEaten[ordos_small] = false
-			ProtectHarvester(units[1], ordos_small, AttackGroupSize[Difficulty])
+			LastHarvesterEaten[OrdosSmall] = false
+			ProtectHarvester(units[1], OrdosSmall, AttackGroupSize[Difficulty])
 		end
 	end
 end
 
 WorldLoaded = function()
-	atreides_main = Player.GetPlayer("Atreides Main Base")
-	atreides_small = Player.GetPlayer("Atreides Small Base")
-	corrino = Player.GetPlayer("Corrino")
-	player = Player.GetPlayer("Harkonnen")
+	AtreidesMain = Player.GetPlayer("Atreides Main Base")
+	AtreidesSmall = Player.GetPlayer("Atreides Small Base")
+	Corrino = Player.GetPlayer("Corrino")
+	Harkonnen = Player.GetPlayer("Harkonnen")
 
-	InitObjectives(player)
-	CaptureAtreidesConYard = AddPrimaryObjective(player, "capture-atreides-construction-yard-south")
-	KillAtreides = AddPrimaryObjective(player, "destroy-atreides")
-	KillCorrino = AddPrimaryObjective(player, "destroy-corrino")
-	KillHarkonnen1 = AddPrimaryObjective(atreides_main, "")
-	KillHarkonnen2 = AddPrimaryObjective(atreides_small, "")
-	KillHarkonnen3 = AddPrimaryObjective(corrino, "")
+	InitObjectives(Harkonnen)
+	CaptureAtreidesConYard = AddPrimaryObjective(Harkonnen, "capture-atreides-construction-yard-south")
+	KillAtreides = AddPrimaryObjective(Harkonnen, "destroy-atreides")
+	KillCorrino = AddPrimaryObjective(Harkonnen, "destroy-corrino")
+	KillHarkonnen1 = AddPrimaryObjective(AtreidesMain, "")
+	KillHarkonnen2 = AddPrimaryObjective(AtreidesSmall, "")
+	KillHarkonnen3 = AddPrimaryObjective(Corrino, "")
 
 	Media.DisplayMessage(UserInterface.Translate("destroy-atreides-high-tech-factory-imperial-reinforcements"), Mentat)
 
@@ -236,39 +236,39 @@ WorldLoaded = function()
 	Trigger.AfterDelay(DateTime.Minutes(5), SendAirStrike)
 
 	Trigger.OnCapture(AConYard2, function()
-		player.MarkCompletedObjective(CaptureAtreidesConYard)
+		Harkonnen.MarkCompletedObjective(CaptureAtreidesConYard)
 	end)
 
 	Trigger.OnAllKilledOrCaptured(AtreidesMainBase, function()
-		Utils.Do(atreides_main.GetGroundAttackers(), IdleHunt)
+		Utils.Do(AtreidesMain.GetGroundAttackers(), IdleHunt)
 	end)
 
 	Trigger.OnAllKilledOrCaptured(AtreidesSmallBase, function()
-		Utils.Do(atreides_small.GetGroundAttackers(), IdleHunt)
+		Utils.Do(AtreidesSmall.GetGroundAttackers(), IdleHunt)
 	end)
 
 	Trigger.OnAllKilledOrCaptured(CorrinoBase, function()
-		Utils.Do(corrino.GetGroundAttackers(), IdleHunt)
+		Utils.Do(Corrino.GetGroundAttackers(), IdleHunt)
 	end)
 
-	local atreidesWaveCondition = function() return player.IsObjectiveCompleted(KillAtreides) or HiTechIsDead end
-	local corrinoWaveCondition = function() return player.IsObjectiveCompleted(KillCorrino) or HiTechIsDead end
+	local atreidesWaveCondition = function() return Harkonnen.IsObjectiveCompleted(KillAtreides) or HiTechIsDead end
+	local corrinoWaveCondition = function() return Harkonnen.IsObjectiveCompleted(KillCorrino) or HiTechIsDead end
 	local huntFunction = function(unit)
 		unit.AttackMove(AtreidesAttackLocation)
 		IdleHunt(unit)
 	end
-	SendEnemyReinforcements(atreides_main, EnemyAttackDelay[Difficulty], AtreidesPath, AtreidesReinforcements[Difficulty], atreidesWaveCondition, huntFunction)
+	SendEnemyReinforcements(AtreidesMain, EnemyAttackDelay[Difficulty], AtreidesPath, AtreidesReinforcements[Difficulty], atreidesWaveCondition, huntFunction)
 	Trigger.AfterDelay(CorrinoInitialAttackDelay[Difficulty], function()
-		SendEnemyReinforcements(corrino, EnemyAttackDelay[Difficulty], CorrinoPaths[1], CorrinoReinforcements[Difficulty][1], corrinoWaveCondition, huntFunction)
-		SendEnemyReinforcements(corrino, EnemyAttackDelay[Difficulty], CorrinoPaths[2], CorrinoReinforcements[Difficulty][2], corrinoWaveCondition, huntFunction)
+		SendEnemyReinforcements(Corrino, EnemyAttackDelay[Difficulty], CorrinoPaths[1], CorrinoReinforcements[Difficulty][1], corrinoWaveCondition, huntFunction)
+		SendEnemyReinforcements(Corrino, EnemyAttackDelay[Difficulty], CorrinoPaths[2], CorrinoReinforcements[Difficulty][2], corrinoWaveCondition, huntFunction)
 	end)
 
-	Actor.Create("upgrade.light", true, { Owner = atreides_main })
-	Actor.Create("upgrade.heavy", true, { Owner = atreides_main })
-	Actor.Create("upgrade.hightech", true, { Owner = atreides_main })
-	Actor.Create("upgrade.barracks", true, { Owner = atreides_small })
-	Actor.Create("upgrade.heavy", true, { Owner = atreides_small })
-	Actor.Create("upgrade.barracks", true, { Owner = corrino })
+	Actor.Create("upgrade.light", true, { Owner = AtreidesMain })
+	Actor.Create("upgrade.heavy", true, { Owner = AtreidesMain })
+	Actor.Create("upgrade.hightech", true, { Owner = AtreidesMain })
+	Actor.Create("upgrade.barracks", true, { Owner = AtreidesSmall })
+	Actor.Create("upgrade.heavy", true, { Owner = AtreidesSmall })
+	Actor.Create("upgrade.barracks", true, { Owner = Corrino })
 	Trigger.AfterDelay(0, ActivateAI)
 
 	SendHarkonnenReinforcements(1)

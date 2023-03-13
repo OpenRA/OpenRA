@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var tables = utility.ModData.ObjectCreator.GetTypesImplementing<ScriptGlobal>().OrderBy(t => t.Name);
 			foreach (var t in tables)
 			{
-				var name = t.GetCustomAttributes<ScriptGlobalAttribute>(true).First().Name;
+				var name = Utility.GetCustomAttributes<ScriptGlobalAttribute>(t, true).First().Name;
 				Console.WriteLine("  " + name + " = {");
 				Console.WriteLine("    type = \"class\",");
 				Console.WriteLine("    childs = {");
@@ -64,9 +64,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (propertyInfo != null)
 						Console.WriteLine("        type = \"value\",");
 
-					if (member.HasAttribute<DescAttribute>())
+					if (Utility.HasAttribute<DescAttribute>(member))
 					{
-						var desc = member.GetCustomAttributes<DescAttribute>(true).First().Lines.JoinWith("\n");
+						var desc = Utility.GetCustomAttributes<DescAttribute>(member, true).First().Lines.JoinWith("\n");
 						Console.WriteLine("        description = [[{0}]],", desc);
 					}
 
@@ -105,9 +105,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (propertyInfo != null)
 					Console.WriteLine("    type = \"value\",");
 
-				if (property.HasAttribute<DescAttribute>())
+				if (Utility.HasAttribute<DescAttribute>(property))
 				{
-					var desc = property.GetCustomAttributes<DescAttribute>(true).First().Lines.JoinWith("\n");
+					var desc = Utility.GetCustomAttributes<DescAttribute>(property, true).First().Lines.JoinWith("\n");
 					Console.WriteLine("    description = [[{0}]],", desc);
 				}
 

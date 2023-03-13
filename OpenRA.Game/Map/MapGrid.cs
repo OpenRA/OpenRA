@@ -106,7 +106,7 @@ namespace OpenRA
 	public class MapGrid : IGlobalModData
 	{
 		public readonly MapGridType Type = MapGridType.Rectangular;
-		public readonly Size TileSize = new Size(24, 24);
+		public readonly Size TileSize = new(24, 24);
 		public readonly byte MaximumTerrainHeight = 0;
 		public readonly SubCell DefaultSubCell = (SubCell)byte.MaxValue;
 

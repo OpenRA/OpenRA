@@ -22,7 +22,7 @@ namespace OpenRA.Scripting
 		protected abstract string MemberNotFoundError(string memberName);
 
 		protected readonly ScriptContext Context;
-		readonly Dictionary<string, ScriptMemberWrapper> members = new Dictionary<string, ScriptMemberWrapper>();
+		readonly Dictionary<string, ScriptMemberWrapper> members = new();
 
 #if !NET5_0_OR_GREATER
 		readonly List<string> membersToRemove = new List<string>();

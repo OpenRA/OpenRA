@@ -148,17 +148,17 @@ ContrabandTimes =
 	hard = DateTime.Minutes(2) + DateTime.Seconds(30)
 }
 
-wave = 0
+Wave = 0
 SendHarkonnen = function()
 	Trigger.AfterDelay(HarkonnenAttackDelay[Difficulty], function()
-		if player.IsObjectiveCompleted(KillHarkonnen) then
+		if Atreides.IsObjectiveCompleted(KillHarkonnen) then
 			return
 		end
 
-		wave = wave + 1
+		Wave = Wave + 1
 
-		if InfantryReinforcements and wave % 4 == 0 then
-			local inf = Reinforcements.Reinforce(harkonnen, HarkonnenInfantryReinforcements[Difficulty][wave/4], InfantryPath)
+		if InfantryReinforcements and Wave % 4 == 0 then
+			local inf = Reinforcements.Reinforce(Harkonnen, HarkonnenInfantryReinforcements[Difficulty][Wave/4], InfantryPath)
 			Utils.Do(inf, function(unit)
 				unit.AttackMove(HarkonnenAttackLocation)
 				IdleHunt(unit)
@@ -166,13 +166,13 @@ SendHarkonnen = function()
 		end
 
 		local entryPath = Utils.Random(HarkonnenPaths)
-		local units = Reinforcements.ReinforceWithTransport(harkonnen, "carryall.reinforce", HarkonnenReinforcements[Difficulty][wave], entryPath, { entryPath[1] })[2]
+		local units = Reinforcements.ReinforceWithTransport(Harkonnen, "carryall.reinforce", HarkonnenReinforcements[Difficulty][Wave], entryPath, { entryPath[1] })[2]
 		Utils.Do(units, function(unit)
 			unit.AttackMove(HarkonnenAttackLocation)
 			IdleHunt(unit)
 		end)
 
-		if wave < HarkonnenAttackWaves[Difficulty] then
+		if Wave < HarkonnenAttackWaves[Difficulty] then
 			SendHarkonnen()
 			return
 		end
@@ -181,21 +181,21 @@ SendHarkonnen = function()
 	end)
 end
 
-mercWave = 0
+MercWave = 0
 SendMercenaries = function()
 	Trigger.AfterDelay(MercenaryAttackDelay[Difficulty], function()
-		mercWave = mercWave + 1
+		MercWave = MercWave + 1
 
 		Media.DisplayMessage(UserInterface.Translate("incoming-mercenary-force"), Mentat)
 
-		local units = Reinforcements.Reinforce(mercenary, MercenaryReinforcements[Difficulty][mercWave], MercenarySpawn)
+		local units = Reinforcements.Reinforce(Mercenary, MercenaryReinforcements[Difficulty][MercWave], MercenarySpawn)
 		Utils.Do(units, function(unit)
 			unit.AttackMove(MercenaryAttackLocation1)
 			unit.AttackMove(MercenaryAttackLocation2)
 			IdleHunt(unit)
 		end)
 
-		if mercWave < MercenaryAttackWaves[Difficulty] then
+		if MercWave < MercenaryAttackWaves[Difficulty] then
 			SendMercenaries()
 			return
 		end
@@ -206,21 +206,21 @@ end
 
 SendContraband = function(owner)
 	ContrabandArrived = true
-	UserInterface.SetMissionText(UserInterface.Translate("contraband-has-arrived"), player.Color)
+	UserInterface.SetMissionText(UserInterface.Translate("contraband-has-arrived"), Atreides.Color)
 
 	local units = SmugglerReinforcements
-	if owner == player then
+	if owner == Atreides then
 		units = ContrabandReinforcements
 	end
 
 	Reinforcements.ReinforceWithTransport(owner, "frigate", units, { ContrabandEntry.Location, Starport.Location + CVec.New(1, 1) }, { ContrabandExit.Location })
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		if owner == player then
-			player.MarkCompletedObjective(CaptureStarport)
+		if owner == Atreides then
+			Atreides.MarkCompletedObjective(CaptureStarport)
 			Media.DisplayMessage(UserInterface.Translate("contraband-confiscated"), Mentat)
 		else
-			player.MarkFailedObjective(CaptureStarport)
+			Atreides.MarkFailedObjective(CaptureStarport)
 			Media.DisplayMessage(UserInterface.Translate("contraband-not-confiscated"), Mentat)
 		end
 	end)
@@ -232,13 +232,13 @@ end
 
 SmugglersAttack = function()
 	Utils.Do(SmugglerBase, function(building)
-		if not building.IsDead and building.Owner == smuggler then
+		if not building.IsDead and building.Owner == Smuggler then
 			building.Sell()
 		end
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(1), function()
-		Utils.Do(smuggler.GetGroundAttackers(), function(unit)
+		Utils.Do(Smuggler.GetGroundAttackers(), function(unit)
 			IdleHunt(unit)
 		end)
 	end)
@@ -246,26 +246,26 @@ end
 
 AttackNotifier = 0
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		harkonnen.MarkCompletedObjective(KillAtreides)
+	if Atreides.HasNoRequiredUnits() then
+		Harkonnen.MarkCompletedObjective(KillAtreides)
 	end
 
-	if LastHarkonnenArrived and not player.IsObjectiveCompleted(KillHarkonnen) and harkonnen.HasNoRequiredUnits() then
+	if LastHarkonnenArrived and not Atreides.IsObjectiveCompleted(KillHarkonnen) and Harkonnen.HasNoRequiredUnits() then
 		Media.DisplayMessage(UserInterface.Translate("atreides-05"), Mentat)
-		player.MarkCompletedObjective(KillHarkonnen)
+		Atreides.MarkCompletedObjective(KillHarkonnen)
 	end
 
-	if LastMercenariesArrived and not player.IsObjectiveCompleted(KillSmuggler) and smuggler.HasNoRequiredUnits() and mercenary.HasNoRequiredUnits() then
+	if LastMercenariesArrived and not Atreides.IsObjectiveCompleted(KillSmuggler) and Smuggler.HasNoRequiredUnits() and Mercenary.HasNoRequiredUnits() then
 		Media.DisplayMessage(UserInterface.Translate("smugglers-annihilated"), Mentat)
-		player.MarkCompletedObjective(KillSmuggler)
+		Atreides.MarkCompletedObjective(KillSmuggler)
 	end
 
-	if LastHarvesterEaten[harkonnen] and DateTime.GameTime % DateTime.Seconds(10) == 0 then
-		local units = harkonnen.GetActorsByType("harvester")
+	if LastHarvesterEaten[Harkonnen] and DateTime.GameTime % DateTime.Seconds(10) == 0 then
+		local units = Harkonnen.GetActorsByType("harvester")
 
 		if #units > 0 then
-			LastHarvesterEaten[harkonnen] = false
-			ProtectHarvester(units[1], harkonnen, AttackGroupSize[Difficulty])
+			LastHarvesterEaten[Harkonnen] = false
+			ProtectHarvester(units[1], Harkonnen, AttackGroupSize[Difficulty])
 		end
 	end
 
@@ -275,28 +275,28 @@ Tick = function()
 		TimerTicks = TimerTicks - 1
 		if (TimerTicks % DateTime.Seconds(1)) == 0 then
 			local contrabandArrivesIn = UserInterface.Translate("contraband-arrives-in", { ["time"] = Utils.FormatTime(TimerTicks)})
-			UserInterface.SetMissionText(contrabandArrivesIn, player.Color)
+			UserInterface.SetMissionText(contrabandArrivesIn, Atreides.Color)
 		end
 
 		if TimerTicks <= 0 then
-			SendContraband(smuggler)
+			SendContraband(Smuggler)
 		end
 	end
 end
 
 WorldLoaded = function()
-	harkonnen = Player.GetPlayer("Harkonnen")
-	smuggler = Player.GetPlayer("Smugglers")
-	mercenary = Player.GetPlayer("Mercenaries")
-	player = Player.GetPlayer("Atreides")
+	Harkonnen = Player.GetPlayer("Harkonnen")
+	Smuggler = Player.GetPlayer("Smugglers")
+	Mercenary = Player.GetPlayer("Mercenaries")
+	Atreides = Player.GetPlayer("Atreides")
 
 	InfantryReinforcements = Difficulty ~= "easy"
 
-	InitObjectives(player)
-	KillAtreides = AddPrimaryObjective(harkonnen, "")
-	CaptureBarracks = AddPrimaryObjective(player, "capture-barracks-sietch-tabr")
-	KillHarkonnen = AddSecondaryObjective(player, "annihilate-harkonnen-units-reinforcements")
-	CaptureStarport = AddSecondaryObjective(player, "capture-smuggler-starport-confiscate-contraband")
+	InitObjectives(Atreides)
+	KillAtreides = AddPrimaryObjective(Harkonnen, "")
+	CaptureBarracks = AddPrimaryObjective(Atreides, "capture-barracks-sietch-tabr")
+	KillHarkonnen = AddSecondaryObjective(Atreides, "annihilate-harkonnen-units-reinforcements")
+	CaptureStarport = AddSecondaryObjective(Atreides, "capture-smuggler-starport-confiscate-contraband")
 
 	Camera.Position = ARefinery.CenterPosition
 	HarkonnenAttackLocation = AtreidesRally.Location
@@ -311,14 +311,14 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnAllKilledOrCaptured(HarkonnenBase, function()
-		Utils.Do(harkonnen.GetGroundAttackers(), IdleHunt)
+		Utils.Do(Harkonnen.GetGroundAttackers(), IdleHunt)
 	end)
 
 	Trigger.OnKilled(Starport, function()
-		if not player.IsObjectiveCompleted(CaptureStarport) then
+		if not Atreides.IsObjectiveCompleted(CaptureStarport) then
 			ContrabandArrived = true
-			UserInterface.SetMissionText(UserInterface.Translate("starport-destroyed-no-contraband"), player.Color)
-			player.MarkFailedObjective(CaptureStarport)
+			UserInterface.SetMissionText(UserInterface.Translate("starport-destroyed-no-contraband"), Atreides.Color)
+			Atreides.MarkFailedObjective(CaptureStarport)
 			SmugglersAttack()
 
 			Trigger.AfterDelay(DateTime.Seconds(15), function()
@@ -327,11 +327,11 @@ WorldLoaded = function()
 		end
 
 		if DefendStarport then
-			player.MarkFailedObjective(DefendStarport)
+			Atreides.MarkFailedObjective(DefendStarport)
 		end
 	end)
 	Trigger.OnDamaged(Starport, function()
-		if Starport.Owner ~= smuggler then
+		if Starport.Owner ~= Smuggler then
 			return
 		end
 
@@ -339,7 +339,7 @@ WorldLoaded = function()
 			AttackNotifier = DateTime.Seconds(10)
 			Media.DisplayMessage(UserInterface.Translate("do-not-destroy-starport"), Mentat)
 
-			local defenders = smuggler.GetGroundAttackers()
+			local defenders = Smuggler.GetGroundAttackers()
 			if #defenders > 0 then
 				Utils.Do(defenders, function(unit)
 					unit.Guard(Starport)
@@ -348,23 +348,23 @@ WorldLoaded = function()
 		end
 	end)
 	Trigger.OnCapture(Starport, function()
-		DefendStarport = AddSecondaryObjective(player, "defend-captured-starport")
+		DefendStarport = AddSecondaryObjective(Atreides, "defend-captured-starport")
 
 		Trigger.ClearAll(Starport)
 		Trigger.AfterDelay(0, function()
 			Trigger.OnRemovedFromWorld(Starport, function()
-				player.MarkFailedObjective(DefendStarport)
+				Atreides.MarkFailedObjective(DefendStarport)
 			end)
 		end)
 
 		if not ContrabandArrived then
-			SendContraband(player)
+			SendContraband(Atreides)
 		end
 		SmugglersAttack()
 	end)
 
 	Trigger.OnKilled(HarkonnenBarracks, function()
-		player.MarkFailedObjective(CaptureBarracks)
+		Atreides.MarkFailedObjective(CaptureBarracks)
 	end)
 	Trigger.OnDamaged(HarkonnenBarracks, function()
 		if AttackNotifier <= 0 and HarkonnenBarracks.Health < HarkonnenBarracks.MaxHealth * 3/4 then
@@ -376,52 +376,52 @@ WorldLoaded = function()
 		Media.DisplayMessage(UserInterface.Translate("hostages-released"), Mentat)
 
 		if DefendStarport then
-			player.MarkCompletedObjective(DefendStarport)
+			Atreides.MarkCompletedObjective(DefendStarport)
 		end
 
 		Trigger.AfterDelay(DateTime.Seconds(3), function()
-			player.MarkCompletedObjective(CaptureBarracks)
+			Atreides.MarkCompletedObjective(CaptureBarracks)
 		end)
 	end)
 
 	SendHarkonnen()
-	Actor.Create("upgrade.barracks", true, { Owner = harkonnen })
-	Actor.Create("upgrade.light", true, { Owner = harkonnen })
-	Actor.Create("upgrade.heavy", true, { Owner = harkonnen })
+	Actor.Create("upgrade.barracks", true, { Owner = Harkonnen })
+	Actor.Create("upgrade.light", true, { Owner = Harkonnen })
+	Actor.Create("upgrade.heavy", true, { Owner = Harkonnen })
 	Trigger.AfterDelay(0, ActivateAI)
 
 	Trigger.AfterDelay(DateTime.Minutes(1), function()
-		Media.PlaySpeechNotification(player, "Reinforce")
-		Reinforcements.ReinforceWithTransport(player, "carryall.reinforce", AtreidesReinforcements, AtreidesPath, { AtreidesPath[1] })
+		Media.PlaySpeechNotification(Atreides, "Reinforce")
+		Reinforcements.ReinforceWithTransport(Atreides, "carryall.reinforce", AtreidesReinforcements, AtreidesPath, { AtreidesPath[1] })
 	end)
 
 	local smugglerWaypoint = SmugglerWaypoint1.Location
 	Trigger.OnEnteredFootprint({ smugglerWaypoint + CVec.New(-2, 0), smugglerWaypoint + CVec.New(-1, 0), smugglerWaypoint, smugglerWaypoint + CVec.New(1, -1), smugglerWaypoint + CVec.New(2, -1), SmugglerWaypoint3.Location }, function(a, id)
-		if not warned and a.Owner == player and a.Type ~= "carryall" then
-			warned = true
+		if not Warned and a.Owner == Atreides and a.Type ~= "carryall" then
+			Warned = true
 			Trigger.RemoveFootprintTrigger(id)
 			Media.DisplayMessage(UserInterface.Translate("stay-away-from-starport"), UserInterface.Translate("smuggler-leader"))
 		end
 	end)
 
 	Trigger.OnEnteredFootprint({ SmugglerWaypoint2.Location }, function(a, id)
-		if not paid and a.Owner == player and a.Type ~= "carryall" then
-			paid = true
+		if not Paid and a.Owner == Atreides and a.Type ~= "carryall" then
+			Paid = true
 			Trigger.RemoveFootprintTrigger(id)
 			Media.DisplayMessage(UserInterface.Translate("were-warned-will-pay"), UserInterface.Translate("smuggler-leader"))
-			Utils.Do(smuggler.GetGroundAttackers(), function(unit)
+			Utils.Do(Smuggler.GetGroundAttackers(), function(unit)
 				unit.AttackMove(SmugglerWaypoint2.Location)
 			end)
 
 			Trigger.AfterDelay(DateTime.Seconds(3), function()
-				KillSmuggler = AddSecondaryObjective(player, "destroy-smugglers-mercenaries")
+				KillSmuggler = AddSecondaryObjective(Atreides, "destroy-smugglers-mercenaries")
 				SendMercenaries()
 			end)
 		end
 	end)
 
 	Trigger.OnEnteredProximityTrigger(HarkonnenBarracks.CenterPosition, WDist.New(5 * 1024), function(a, id)
-		if a.Owner == player and a.Type ~= "carryall" then
+		if a.Owner == Atreides and a.Type ~= "carryall" then
 			Trigger.RemoveProximityTrigger(id)
 			Media.DisplayMessage(UserInterface.Translate("capture-harkonnen-barracks-release-hostages"), Mentat)
 			StopInfantryProduction = true

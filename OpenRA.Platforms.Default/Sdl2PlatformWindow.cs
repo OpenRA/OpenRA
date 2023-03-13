@@ -22,15 +22,14 @@ namespace OpenRA.Platforms.Default
 {
 	sealed class Sdl2PlatformWindow : ThreadAffine, IPlatformWindow
 	{
-		readonly IGraphicsContext context;
 		readonly Sdl2Input input;
 
-		public IGraphicsContext Context => context;
+		public IGraphicsContext Context { get; }
 
 		readonly IntPtr window;
 		bool disposed;
 
-		readonly object syncObject = new object();
+		readonly object syncObject = new();
 		readonly Size windowSize;
 		Size surfaceSize;
 		float windowScale = 1f;
@@ -210,7 +209,7 @@ namespace OpenRA.Platforms.Default
 							var lines = p.StandardOutput.ReadToEnd().Split('\n');
 
 							foreach (var line in lines)
-								if (line.StartsWith("Xft.dpi") && int.TryParse(line.Substring(8), out var dpi))
+								if (line.StartsWith("Xft.dpi") && int.TryParse(line.AsSpan(8), out var dpi))
 									windowScale = dpi / 96f;
 						}
 						catch { }
@@ -341,12 +340,12 @@ namespace OpenRA.Platforms.Default
 			{
 				var ctx = new Sdl2GraphicsContext(this);
 				ctx.InitializeOpenGL();
-				context = ctx;
+				Context = ctx;
 			}
 			else
-				context = new ThreadedGraphicsContext(new Sdl2GraphicsContext(this), batchSize);
+				Context = new ThreadedGraphicsContext(new Sdl2GraphicsContext(this), batchSize);
 
-			context.SetVSyncEnabled(Game.Settings.Graphics.VSync);
+			Context.SetVSyncEnabled(Game.Settings.Graphics.VSync);
 
 			SDL.SDL_SetModState(SDL.SDL_Keymod.KMOD_NONE);
 			input = new Sdl2Input();
@@ -467,7 +466,7 @@ namespace OpenRA.Platforms.Default
 
 			disposed = true;
 
-			context?.Dispose();
+			Context?.Dispose();
 
 			if (Window != IntPtr.Zero)
 				SDL.SDL_DestroyWindow(Window);

@@ -122,51 +122,51 @@ FremenProduction = function()
 	end
 
 	local delay = Utils.RandomInteger(FremenInterval[Difficulty][1], FremenInterval[Difficulty][2] + 1)
-	fremen.Build({ "nsfremen" }, function()
+	Fremen.Build({ "nsfremen" }, function()
 		Trigger.AfterDelay(delay, FremenProduction)
 	end)
 end
 
 Tick = function()
-	if player.HasNoRequiredUnits() then
-		atreides.MarkCompletedObjective(KillHarkonnen)
+	if Harkonnen.HasNoRequiredUnits() then
+		Atreides.MarkCompletedObjective(KillHarkonnen)
 	end
 
-	if atreides.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillAtreides) then
+	if Atreides.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillAtreides) then
 		Media.DisplayMessage(UserInterface.Translate("atreides-annihilated"), Mentat)
-		player.MarkCompletedObjective(KillAtreides)
+		Harkonnen.MarkCompletedObjective(KillAtreides)
 	end
 
-	if fremen.HasNoRequiredUnits() and not player.IsObjectiveCompleted(KillFremen) then
+	if Fremen.HasNoRequiredUnits() and not Harkonnen.IsObjectiveCompleted(KillFremen) then
 		Media.DisplayMessage(UserInterface.Translate("fremen-annihilated"), Mentat)
-		player.MarkCompletedObjective(KillFremen)
+		Harkonnen.MarkCompletedObjective(KillFremen)
 	end
 
-	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[atreides] then
-		local units = atreides.GetActorsByType("harvester")
+	if DateTime.GameTime % DateTime.Seconds(10) == 0 and LastHarvesterEaten[Atreides] then
+		local units = Atreides.GetActorsByType("harvester")
 
 		if #units > 0 then
-			LastHarvesterEaten[atreides] = false
-			ProtectHarvester(units[1], atreides, AttackGroupSize[Difficulty])
+			LastHarvesterEaten[Atreides] = false
+			ProtectHarvester(units[1], Atreides, AttackGroupSize[Difficulty])
 		end
 	end
 end
 
 WorldLoaded = function()
-	atreides = Player.GetPlayer("Atreides")
-	fremen = Player.GetPlayer("Fremen")
-	player = Player.GetPlayer("Harkonnen")
+	Atreides = Player.GetPlayer("Atreides")
+	Fremen = Player.GetPlayer("Fremen")
+	Harkonnen = Player.GetPlayer("Harkonnen")
 
-	InitObjectives(player)
-	KillAtreides = AddPrimaryObjective(player, "destroy-atreides")
-	KillFremen = AddPrimaryObjective(player, "destroy-fremen")
-	KillHarkonnen = AddPrimaryObjective(atreides, "")
+	InitObjectives(Harkonnen)
+	KillAtreides = AddPrimaryObjective(Harkonnen, "destroy-atreides")
+	KillFremen = AddPrimaryObjective(Harkonnen, "destroy-fremen")
+	KillHarkonnen = AddPrimaryObjective(Atreides, "")
 
 	Camera.Position = HConyard.CenterPosition
 	FremenAttackLocation = HConyard.Location
 
 	Trigger.OnAllKilledOrCaptured(AtreidesBase, function()
-		Utils.Do(atreides.GetGroundAttackers(), IdleHunt)
+		Utils.Do(Atreides.GetGroundAttackers(), IdleHunt)
 	end)
 
 	Trigger.OnAllKilled(Sietches, function()
@@ -174,31 +174,31 @@ WorldLoaded = function()
 	end)
 
 	local path = function() return Utils.Random(FremenPaths) end
-	local waveCondition = function() return player.IsObjectiveCompleted(KillFremen) end
+	local waveCondition = function() return Harkonnen.IsObjectiveCompleted(KillFremen) end
 	local huntFunction = function(unit)
 		unit.AttackMove(FremenAttackLocation)
 		IdleHunt(unit)
 	end
-	SendCarryallReinforcements(fremen, 0, FremenAttackWaves[Difficulty], FremenAttackDelay[Difficulty], path, FremenReinforcements[Difficulty], waveCondition, huntFunction)
+	SendCarryallReinforcements(Fremen, 0, FremenAttackWaves[Difficulty], FremenAttackDelay[Difficulty], path, FremenReinforcements[Difficulty], waveCondition, huntFunction)
 
-	Actor.Create("upgrade.barracks", true, { Owner = atreides })
-	Actor.Create("upgrade.light", true, { Owner = atreides })
+	Actor.Create("upgrade.barracks", true, { Owner = Atreides })
+	Actor.Create("upgrade.light", true, { Owner = Atreides })
 	Trigger.AfterDelay(0, ActivateAI)
 
 	Trigger.AfterDelay(DateTime.Minutes(1) + DateTime.Seconds(15), function()
-		Media.PlaySpeechNotification(player, "Reinforce")
-		Reinforcements.Reinforce(player, HarkonnenReinforcements, HarkonnenPath)
+		Media.PlaySpeechNotification(Harkonnen, "Reinforce")
+		Reinforcements.Reinforce(Harkonnen, HarkonnenReinforcements, HarkonnenPath)
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(15), function()
 		Media.DisplayMessage(UserInterface.Translate("fremen-spotted-north-southeast"), Mentat)
 	end)
 
-	local atreidesCondition = function() return player.IsObjectiveCompleted(KillAtreides) end
-	TriggerCarryallReinforcements(player, atreides, BaseAreaTriggers[1], AtreidesHunters,  AtreidesPaths[1], atreidesCondition)
+	local atreidesCondition = function() return Harkonnen.IsObjectiveCompleted(KillAtreides) end
+	TriggerCarryallReinforcements(Harkonnen, Atreides, BaseAreaTriggers[1], AtreidesHunters,  AtreidesPaths[1], atreidesCondition)
 
-	local fremenCondition = function() return player.IsObjectiveCompleted(KillFremen) end
-	TriggerCarryallReinforcements(player, fremen, BaseAreaTriggers[1], FremenHunters[1],  FremenHunterPaths[3], fremenCondition)
-	TriggerCarryallReinforcements(player, fremen, BaseAreaTriggers[2], FremenHunters[2],  FremenHunterPaths[2], fremenCondition)
-	TriggerCarryallReinforcements(player, fremen, BaseAreaTriggers[3], FremenHunters[3],  FremenHunterPaths[1], fremenCondition)
+	local fremenCondition = function() return Harkonnen.IsObjectiveCompleted(KillFremen) end
+	TriggerCarryallReinforcements(Harkonnen, Fremen, BaseAreaTriggers[1], FremenHunters[1],  FremenHunterPaths[3], fremenCondition)
+	TriggerCarryallReinforcements(Harkonnen, Fremen, BaseAreaTriggers[2], FremenHunters[2],  FremenHunterPaths[2], fremenCondition)
+	TriggerCarryallReinforcements(Harkonnen, Fremen, BaseAreaTriggers[3], FremenHunters[3],  FremenHunterPaths[1], fremenCondition)
 end

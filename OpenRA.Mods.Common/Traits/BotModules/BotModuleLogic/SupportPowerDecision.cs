@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.LoadUsing(nameof(LoadConsiderations))]
 		[Desc("The decisions associated with this power")]
-		public readonly List<Consideration> Considerations = new List<Consideration>();
+		public readonly List<Consideration> Considerations = new();
 
 		[Desc("Minimum ticks to wait until next Decision scan attempt.")]
 		public readonly int MinimumScanTimeInterval = 250;
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 			return ret;
 		}
 
-		/// <summary>Evaluates the attractiveness of a position according to all considerations</summary>
+		/// <summary>Evaluates the attractiveness of a position according to all considerations.</summary>
 		public int GetAttractiveness(WPos pos, Player firedBy)
 		{
 			var answer = 0;
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 			return answer;
 		}
 
-		/// <summary>Evaluates the attractiveness of a group of actors according to all considerations</summary>
+		/// <summary>Evaluates the attractiveness of a group of actors according to all considerations.</summary>
 		public int GetAttractiveness(IEnumerable<Actor> actors, Player firedBy)
 		{
 			var answer = 0;
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly PlayerRelationship Against = PlayerRelationship.Enemy;
 
 			[Desc("What types should the desired targets of this power be?")]
-			public readonly BitSet<TargetableType> Types = new BitSet<TargetableType>("Air", "Ground", "Water");
+			public readonly BitSet<TargetableType> Types = new("Air", "Ground", "Water");
 
 			[Desc("How attractive are these types of targets?")]
 			public readonly int Attractiveness = 100;
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Traits
 				FieldLoader.Load(this, yaml);
 			}
 
-			/// <summary>Evaluates a single actor according to the rules defined in this consideration</summary>
+			/// <summary>Evaluates a single actor according to the rules defined in this consideration.</summary>
 			public int GetAttractiveness(Actor a, PlayerRelationship stance, Player firedBy)
 			{
 				if (stance != Against)

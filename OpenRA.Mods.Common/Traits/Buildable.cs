@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] Prerequisites = Array.Empty<string>();
 
 		[Desc("Production queue(s) that can produce this.")]
-		public readonly HashSet<string> Queue = new HashSet<string>();
+		public readonly HashSet<string> Queue = new();
 
 		[Desc("Override the production structure type (from the Production Produces list) that this unit should be built at.")]
 		public readonly string BuildAtProductionType = null;

@@ -177,16 +177,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				panel.GetOrNull<LabelWidget>("PALETTE_DESC").IsVisible = () => currentSprites != null || currentVoxel != null;
 			}
 
-			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<ColorPickerManagerInfo>();
-			colorManager.Color = Game.Settings.Player.Color;
+			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<IColorPickerManagerInfo>();
 
 			var colorDropdown = panel.GetOrNull<DropDownButtonWidget>("COLOR");
 			if (colorDropdown != null)
 			{
+				var color = Game.Settings.Player.Color;
 				colorDropdown.IsDisabled = () => !colorPickerPalettes.Contains(currentPalette);
-				colorDropdown.OnMouseDown = _ => ColorPickerLogic.ShowColorDropDown(colorDropdown, colorManager, worldRenderer);
+				colorDropdown.OnMouseDown = _ => colorManager.ShowColorDropDown(colorDropdown, color, null, worldRenderer, c => color = c);
 				colorDropdown.IsVisible = () => currentSprites != null || currentVoxel != null;
-				panel.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => colorManager.Color;
+
+				panel.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => color;
 			}
 
 			filenameInput = panel.Get<TextFieldWidget>("FILENAME_INPUT");
@@ -430,7 +431,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				currentFrame = currentSprites.Length - 1;
 		}
 
-		readonly Dictionary<string, bool> assetVisByName = new Dictionary<string, bool>();
+		readonly Dictionary<string, bool> assetVisByName = new();
 
 		bool FilterAsset(string filename)
 		{
@@ -676,15 +677,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				name = source.Name;
 				var compare = Platform.CurrentPlatform == PlatformType.Windows ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
 				if (name.StartsWith(modData.Manifest.Package.Name, compare))
-					name = "$" + modData.Manifest.Id + "/" + name.Substring(modData.Manifest.Package.Name.Length + 1);
+					name = "$" + modData.Manifest.Id + "/" + name[(modData.Manifest.Package.Name.Length + 1)..];
 				else if (name.StartsWith(Platform.EngineDir, compare))
-					name = "./" + name.Substring(Platform.EngineDir.Length);
+					name = "./" + name[Platform.EngineDir.Length..];
 				else if (name.StartsWith(Platform.SupportDir, compare))
-					name = "^" + name.Substring(Platform.SupportDir.Length);
+					name = "^" + name[Platform.SupportDir.Length..];
 			}
 
 			if (name.Length > 18)
-				name = "..." + name.Substring(name.Length - 15);
+				name = "..." + name[^15..];
 
 			return name;
 		}

@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			var yaml = new YamlFileSet();
 			foreach (var filename in files)
 			{
-				if (!modData.ModFiles.TryGetPackageContaining(filename, out var package, out var name) || !(package is IReadWritePackage))
+				if (!modData.ModFiles.TryGetPackageContaining(filename, out var package, out var name) || package is not IReadWritePackage)
 				{
 					Console.WriteLine("Failed to load file `{0}` for writing. It will not be updated.", filename);
 					continue;
@@ -315,19 +315,19 @@ namespace OpenRA.Mods.Common.UpdateRules
 			}
 		}
 
-		/// <summary>Checks if node is a removal (has '-' prefix)</summary>
+		/// <summary>Checks if node is a removal (has '-' prefix).</summary>
 		public static bool IsRemoval(this MiniYamlNode node)
 		{
 			return node.Key[0].ToString() == "-";
 		}
 
-		/// <summary>Renames a yaml key preserving any @suffix</summary>
+		/// <summary>Renames a yaml key preserving any @suffix.</summary>
 		public static void RenameKey(this MiniYamlNode node, string newKey, bool preserveSuffix = true, bool includeRemovals = true)
 		{
 			var prefix = includeRemovals && node.IsRemoval() ? "-" : "";
 			var split = node.Key.IndexOf("@", StringComparison.Ordinal);
 			if (preserveSuffix && split > -1)
-				node.Key = prefix + newKey + node.Key.Substring(split);
+				node.Key = prefix + newKey + node.Key[split..];
 			else
 				node.Key = prefix + newKey;
 		}
@@ -370,13 +370,13 @@ namespace OpenRA.Mods.Common.UpdateRules
 			node.MoveNode(fromNode, toNode);
 		}
 
-		/// <summary>Removes children with keys equal to [match] or [match]@[arbitrary suffix]</summary>
+		/// <summary>Removes children with keys equal to [match] or [match]@[arbitrary suffix].</summary>
 		public static int RemoveNodes(this MiniYamlNode node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
 			return node.Value.Nodes.RemoveAll(n => n.KeyMatches(match, ignoreSuffix, includeRemovals));
 		}
 
-		/// <summary>Returns true if the node is of the form [match] or [match]@[arbitrary suffix]</summary>
+		/// <summary>Returns true if the node is of the form [match] or [match]@[arbitrary suffix].</summary>
 		public static bool KeyMatches(this MiniYamlNode node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
 			if (node.Key == null)
@@ -391,17 +391,17 @@ namespace OpenRA.Mods.Common.UpdateRules
 				return false;
 
 			var atPosition = node.Key.IndexOf('@');
-			return atPosition > 0 && node.Key.Substring(0, atPosition) == prefix + match;
+			return atPosition > 0 && node.Key[..atPosition] == prefix + match;
 		}
 
-		/// <summary>Returns true if the node is of the form [match], [match]@[arbitrary suffix] or [arbitrary suffix]@[match]</summary>
+		/// <summary>Returns true if the node is of the form [match], [match]@[arbitrary suffix] or [arbitrary suffix]@[match].</summary>
 		public static bool KeyContains(this MiniYamlNode node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
 			if (node.Key == null)
 				return false;
 
 			var atPosition = node.Key.IndexOf('@');
-			var relevantPart = ignoreSuffix && atPosition > 0 ? node.Key.Substring(0, atPosition) : node.Key;
+			var relevantPart = ignoreSuffix && atPosition > 0 ? node.Key[..atPosition] : node.Key;
 
 			if (relevantPart.Contains(match) && (includeRemovals || !node.IsRemoval()))
 				return true;
@@ -409,13 +409,13 @@ namespace OpenRA.Mods.Common.UpdateRules
 			return false;
 		}
 
-		/// <summary>Returns children with keys equal to [match] or [match]@[arbitrary suffix]</summary>
+		/// <summary>Returns children with keys equal to [match] or [match]@[arbitrary suffix].</summary>
 		public static IEnumerable<MiniYamlNode> ChildrenMatching(this MiniYamlNode node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
 			return node.Value.Nodes.Where(n => n.KeyMatches(match, ignoreSuffix, includeRemovals));
 		}
 
-		/// <summary>Returns children whose keys contain 'match' (optionally in the suffix)</summary>
+		/// <summary>Returns children whose keys contain 'match' (optionally in the suffix).</summary>
 		public static IEnumerable<MiniYamlNode> ChildrenContaining(this MiniYamlNode node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
 			return node.Value.Nodes.Where(n => n.KeyContains(match, ignoreSuffix, includeRemovals));

@@ -16,7 +16,7 @@
 #include <mach/machine.h>
 
 #define SYSTEM_MONO_PATH @"/Library/Frameworks/Mono.framework/Versions/Current/"
-#define SYSTEM_MONO_MIN_VERSION @"6.4"
+#define SYSTEM_MONO_MIN_VERSION @"6.12"
 #define DOTNET_MIN_MACOS_VERSION 10.15
 
 typedef void* hostfxr_handle;

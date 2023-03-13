@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string CashTickDownNotification = null;
 
 		[Desc("Monetary value of each resource type.", "Dictionary of [resource type]: [value per unit].")]
-		public readonly Dictionary<string, int> ResourceValues = new Dictionary<string, int>();
+		public readonly Dictionary<string, int> ResourceValues = new();
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{

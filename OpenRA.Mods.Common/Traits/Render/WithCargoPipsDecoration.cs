@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[SequenceReference(nameof(Image), dictionaryReference: LintDictionaryReference.Values)]
 		[Desc("Pip sequence to use for specific passenger actors.")]
-		public readonly Dictionary<string, string> CustomPipSequences = new Dictionary<string, string>();
+		public readonly Dictionary<string, string> CustomPipSequences = new();
 
 		[PaletteReference]
 		public readonly string Palette = "chrome";

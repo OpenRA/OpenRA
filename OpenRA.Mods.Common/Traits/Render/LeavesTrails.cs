@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Palette = "effect";
 
 		[Desc("Only leave trail on listed terrain types. Leave empty to leave trail on all terrain types.")]
-		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
+		public readonly HashSet<string> TerrainTypes = new();
 
 		[Desc("Accepts values: Cell to draw the trail sprite in the center of the current cell,",
 			"CenterPosition to draw the trail sprite at the current position.")]
