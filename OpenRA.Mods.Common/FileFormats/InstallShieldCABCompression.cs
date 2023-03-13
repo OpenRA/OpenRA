@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.FileFormats
 	{
 		const uint MaxFileGroupCount = 71;
 
+		[Flags]
 		enum CABFlags : ushort
 		{
 			FileSplit = 0x1,
