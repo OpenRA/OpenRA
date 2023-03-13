@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class ExtractWeaponDocsCommand : IUtilityCommand
+	sealed class ExtractWeaponDocsCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--weapon-docs";
 

@@ -81,7 +81,7 @@ namespace OpenRA
 		/// <summary>Value used to represent an invalid token.</summary>
 		public static readonly int InvalidConditionToken = -1;
 
-		class ConditionState
+		sealed class ConditionState
 		{
 			/// <summary>Delegates that have registered to be notified when this condition changes.</summary>
 			public readonly List<VariableObserverNotifier> Notifiers = new();

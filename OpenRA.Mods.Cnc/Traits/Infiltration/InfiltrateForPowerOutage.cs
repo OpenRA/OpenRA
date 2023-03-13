@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class InfiltrateForPowerOutageInfo : TraitInfo
+	sealed class InfiltrateForPowerOutageInfo : TraitInfo
 	{
 		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
 		public readonly BitSet<TargetableType> Types = default;
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new InfiltrateForPowerOutage(init.Self, this); }
 	}
 
-	class InfiltrateForPowerOutage : INotifyOwnerChanged, INotifyInfiltrated
+	sealed class InfiltrateForPowerOutage : INotifyOwnerChanged, INotifyInfiltrated
 	{
 		readonly InfiltrateForPowerOutageInfo info;
 		PowerManager playerPower;

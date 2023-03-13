@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Lint
 	[AttributeUsage(AttributeTargets.Method)]
 	public sealed class CustomLintableHotkeyNames : Attribute { }
 
-	class CheckChromeHotkeys : ILintPass
+	sealed class CheckChromeHotkeys : ILintPass
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{

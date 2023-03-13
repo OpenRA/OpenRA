@@ -15,7 +15,7 @@ using OpenRA.Primitives;
 namespace OpenRA.Test
 {
 	[TestFixture]
-	class SpatiallyPartitionedTest
+	sealed class SpatiallyPartitionedTest
 	{
 		[TestCase(TestName = "SpatiallyPartitioned.At works")]
 		public void SpatiallyPartitionedAtTest()

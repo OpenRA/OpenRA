@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 {
 	public class ShpTSLoader : ISpriteLoader
 	{
-		class ShpTSFrame : ISpriteFrame
+		sealed class ShpTSFrame : ISpriteFrame
 		{
 			public SpriteFrameType Type => SpriteFrameType.Indexed8;
 			public Size Size { get; }

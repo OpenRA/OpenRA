@@ -16,7 +16,7 @@ using OpenRA.Mods.Cnc.Traits;
 
 namespace OpenRA.Mods.Cnc.Effects
 {
-	class GpsSatellite : IEffect, ISpatiallyPartitionable
+	sealed class GpsSatellite : IEffect, ISpatiallyPartitionable
 	{
 		readonly Player launcher;
 		readonly Animation anim;

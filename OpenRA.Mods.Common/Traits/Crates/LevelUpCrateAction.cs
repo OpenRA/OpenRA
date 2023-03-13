@@ -14,7 +14,7 @@ using System.Linq;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Gives experience levels to the collector.")]
-	class LevelUpCrateActionInfo : CrateActionInfo
+	sealed class LevelUpCrateActionInfo : CrateActionInfo
 	{
 		[Desc("Number of experience levels to give.")]
 		public readonly int Levels = 1;
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new LevelUpCrateAction(init.Self, this); }
 	}
 
-	class LevelUpCrateAction : CrateAction
+	sealed class LevelUpCrateAction : CrateAction
 	{
 		readonly Actor self;
 		readonly LevelUpCrateActionInfo info;

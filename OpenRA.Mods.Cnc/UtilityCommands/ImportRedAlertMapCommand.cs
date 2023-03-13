@@ -19,7 +19,7 @@ using OpenRA.Mods.Common.FileFormats;
 
 namespace OpenRA.Mods.Cnc.UtilityCommands
 {
-	class ImportRedAlertMapCommand : ImportGen1MapCommand, IUtilityCommand
+	sealed class ImportRedAlertMapCommand : ImportGen1MapCommand, IUtilityCommand
 	{
 		// TODO: 128x128 is probably not true for "mega maps" from the expansions.
 		public ImportRedAlertMapCommand()

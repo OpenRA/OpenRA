@@ -16,7 +16,7 @@ using OpenRA.Server;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckInteractable : ILintRulesPass, ILintServerMapPass
+	sealed class CheckInteractable : ILintRulesPass, ILintServerMapPass
 	{
 		void ILintRulesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{

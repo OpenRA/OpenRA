@@ -378,7 +378,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			newsStatus.GetText = () => message;
 		}
 
-		class NewsItem
+		sealed class NewsItem
 		{
 			public string Title;
 			public string Author;

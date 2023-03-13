@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 	}
 
-	class PaintTileEditorAction : IEditorAction
+	sealed class PaintTileEditorAction : IEditorAction
 	{
 		[TranslationReference("id")]
 		const string AddedTile = "notification-added-tile";
@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 	}
 
-	class FloodFillEditorAction : IEditorAction
+	sealed class FloodFillEditorAction : IEditorAction
 	{
 		[TranslationReference("id")]
 		const string FilledTile = "notification-filled-tile";
@@ -363,7 +363,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 	}
 
-	class UndoTile
+	sealed class UndoTile
 	{
 		public CPos Cell { get; }
 		public TerrainTile MapTile { get; }

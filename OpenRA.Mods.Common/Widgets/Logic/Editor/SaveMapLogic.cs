@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			public string UiLabel;
 		}
 
-		class SaveDirectory
+		sealed class SaveDirectory
 		{
 			public readonly Folder Folder;
 			public readonly string DisplayName;

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public enum RangeCircleMode { Maximum, Minimum }
 
 	[Desc("Draw a circle indicating my weapon's range.")]
-	class RenderRangeCircleInfo : TraitInfo, IPlaceBuildingDecorationInfo, IRulesetLoaded, Requires<AttackBaseInfo>
+	sealed class RenderRangeCircleInfo : TraitInfo, IPlaceBuildingDecorationInfo, IRulesetLoaded, Requires<AttackBaseInfo>
 	{
 		public readonly string RangeCircleType = null;
 
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	class RenderRangeCircle : IRenderAnnotationsWhenSelected
+	sealed class RenderRangeCircle : IRenderAnnotationsWhenSelected
 	{
 		public readonly RenderRangeCircleInfo Info;
 		readonly Actor self;

@@ -76,7 +76,7 @@ namespace OpenRA.Traits
 		public int RevealedCells { get; private set; }
 
 		enum ShroudCellType : byte { Shroud, Fog, Visible }
-		class ShroudSource
+		sealed class ShroudSource
 		{
 			public readonly SourceType Type;
 			public readonly PPos[] ProjectedCells;

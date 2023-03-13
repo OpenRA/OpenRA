@@ -39,7 +39,7 @@ namespace OpenRA
 	/// <summary>
 	/// Provides efficient ways to query a set of actors by their traits.
 	/// </summary>
-	class TraitDictionary
+	sealed class TraitDictionary
 	{
 		static readonly Func<Type, ITraitContainer> CreateTraitContainer = t =>
 			(ITraitContainer)typeof(TraitContainer<>).MakeGenericType(t).GetConstructor(Type.EmptyTypes).Invoke(null);
@@ -141,7 +141,7 @@ namespace OpenRA
 			int Queries { get; }
 		}
 
-		class TraitContainer<T> : ITraitContainer
+		sealed class TraitContainer<T> : ITraitContainer
 		{
 			readonly List<Actor> actors = new();
 			readonly List<T> traits = new();
@@ -185,7 +185,7 @@ namespace OpenRA
 				return new MultipleEnumerable(this, actor);
 			}
 
-			class MultipleEnumerable : IEnumerable<T>
+			sealed class MultipleEnumerable : IEnumerable<T>
 			{
 				readonly TraitContainer<T> container;
 				readonly uint actor;

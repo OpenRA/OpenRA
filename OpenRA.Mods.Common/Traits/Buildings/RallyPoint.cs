@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.Traits
 			return order.OrderString == OrderID && order.ExtraData == ForceSet;
 		}
 
-		class RallyPointOrderTargeter : IOrderTargeter
+		sealed class RallyPointOrderTargeter : IOrderTargeter
 		{
 			readonly RallyPointInfo info;
 
@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 			public int OrderPriority => 0;
 			public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 			public bool ForceSet { get; private set; }
-			public bool IsQueued { get; protected set; }
+			public bool IsQueued { get; private set; }
 
 			public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
 			{

@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class ExtractTraitDocsCommand : IUtilityCommand
+	sealed class ExtractTraitDocsCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--docs";
 

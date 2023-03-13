@@ -20,7 +20,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Cnc.UtilityCommands
 {
-	class RemapShpCommand : IUtilityCommand
+	sealed class RemapShpCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--remap";
 

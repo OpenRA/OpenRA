@@ -16,7 +16,7 @@ using System.Reflection;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckSyncAnnotations : ILintPass
+	sealed class CheckSyncAnnotations : ILintPass
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{

@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			VariableLengthTable = 4
 		}
 
-		class ShpD2Frame : ISpriteFrame
+		sealed class ShpD2Frame : ISpriteFrame
 		{
 			public SpriteFrameType Type => SpriteFrameType.Indexed8;
 			public Size Size { get; }

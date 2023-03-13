@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Orders
 	{
 		readonly string worldDefaultCursor = ChromeMetrics.Get<string>("WorldDefaultCursor");
 
-		class VariantWrapper
+		sealed class VariantWrapper
 		{
 			public readonly ActorInfo ActorInfo;
 			public readonly BuildingInfo BuildingInfo;

@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Bridge actor that can't be passed underneath.")]
-	class GroundLevelBridgeInfo : TraitInfo, IRulesetLoaded, Requires<BuildingInfo>, Requires<IHealthInfo>
+	sealed class GroundLevelBridgeInfo : TraitInfo, IRulesetLoaded, Requires<BuildingInfo>, Requires<IHealthInfo>
 	{
 		public readonly string TerrainType = "Bridge";
 
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new GroundLevelBridge(init.Self, this); }
 	}
 
-	class GroundLevelBridge : IBridgeSegment, INotifyAddedToWorld, INotifyRemovedFromWorld
+	sealed class GroundLevelBridge : IBridgeSegment, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		public readonly GroundLevelBridgeInfo Info;
 		readonly Actor self;

@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Heals all actors that belong to the owner of the collector.")]
-	class HealActorsCrateActionInfo : CrateActionInfo
+	sealed class HealActorsCrateActionInfo : CrateActionInfo
 	{
 		[Desc("The target type(s) of the actors this crate action will heal. Leave empty to heal all actors.")]
 		public readonly BitSet<TargetableType> TargetTypes = default;
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new HealActorsCrateAction(init.Self, this); }
 	}
 
-	class HealActorsCrateAction : CrateAction
+	sealed class HealActorsCrateAction : CrateAction
 	{
 		readonly HealActorsCrateActionInfo info;
 

@@ -17,7 +17,7 @@ using OpenRA.Scripting;
 namespace OpenRA.Mods.Common.UtilityCommands
 {
 	// See https://studio.zerobrane.com/doc-api-auto-complete for reference
-	class ExtractZeroBraneStudioLuaAPI : IUtilityCommand
+	sealed class ExtractZeroBraneStudioLuaAPI : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--zbstudio-lua-api";
 

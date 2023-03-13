@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Creates duplicates of the actor that collects the crate.")]
-	class DuplicateUnitCrateActionInfo : CrateActionInfo
+	sealed class DuplicateUnitCrateActionInfo : CrateActionInfo
 	{
 		[Desc("The maximum number of duplicates to make.")]
 		public readonly int MaxAmount = 2;
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new DuplicateUnitCrateAction(init.Self, this); }
 	}
 
-	class DuplicateUnitCrateAction : CrateAction
+	sealed class DuplicateUnitCrateAction : CrateAction
 	{
 		readonly DuplicateUnitCrateActionInfo info;
 

@@ -17,7 +17,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class DebugChromeRegions : IUtilityCommand
+	sealed class DebugChromeRegions : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--debug-chrome-regions";
 

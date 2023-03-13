@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	using YamlFileSet = List<(IReadWritePackage, string, List<MiniYamlNode>)>;
 
-	class UpdateModCommand : IUtilityCommand
+	sealed class UpdateModCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--update-mod";
 

@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	class WithDeadBridgeSpriteBodyInfo : WithSpriteBodyInfo
+	sealed class WithDeadBridgeSpriteBodyInfo : WithSpriteBodyInfo
 	{
 		[ActorReference]
 		public readonly string[] RampActors = Array.Empty<string>();
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	class WithDeadBridgeSpriteBody : WithSpriteBody
+	sealed class WithDeadBridgeSpriteBody : WithSpriteBody
 	{
 		readonly WithDeadBridgeSpriteBodyInfo bridgeInfo;
 		readonly BridgeLayer bridgeLayer;

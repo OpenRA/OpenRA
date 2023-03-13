@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		class RepairBridgeOrderTargeter : UnitOrderTargeter
+		sealed class RepairBridgeOrderTargeter : UnitOrderTargeter
 		{
 			readonly RepairsBridgesInfo info;
 

@@ -427,7 +427,7 @@ namespace OpenRA.Graphics
 		}
 	}
 
-	class GlyphInfo
+	sealed class GlyphInfo
 	{
 		public float Advance;
 		public int2 Offset;

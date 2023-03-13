@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common
 			: base(value) { }
 	}
 
-	class ActorInitLoader : TypeConverter
+	sealed class ActorInitLoader : TypeConverter
 	{
 		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
 		{

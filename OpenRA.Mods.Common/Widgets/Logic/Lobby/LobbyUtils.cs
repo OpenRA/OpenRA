@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string Slot = "options-lobby-slot.slot";
 
-		class SlotDropDownOption
+		sealed class SlotDropDownOption
 		{
 			public readonly string Title;
 			public readonly string Order;
@@ -677,7 +677,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 	}
 
-	class ShowPlayerActionDropDownOption
+	sealed class ShowPlayerActionDropDownOption
 	{
 		public Action Click { get; set; }
 		public string Title;

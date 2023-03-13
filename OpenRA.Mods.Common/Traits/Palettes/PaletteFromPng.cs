@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Load a PNG and use its embedded palette.")]
-	class PaletteFromPngInfo : TraitInfo, ITilesetSpecificPaletteInfo, IProvidesCursorPaletteInfo
+	sealed class PaletteFromPngInfo : TraitInfo, ITilesetSpecificPaletteInfo, IProvidesCursorPaletteInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	class PaletteFromPng : ILoadsPalettes, IProvidesAssetBrowserPalettes
+	sealed class PaletteFromPng : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly World world;
 		readonly PaletteFromPngInfo info;

@@ -13,7 +13,7 @@ using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class RefreshMapCommand : IUtilityCommand
+	sealed class RefreshMapCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--refresh-map";
 

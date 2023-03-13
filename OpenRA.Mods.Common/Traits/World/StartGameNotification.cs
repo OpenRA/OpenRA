@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World)]
-	class StartGameNotificationInfo : TraitInfo
+	sealed class StartGameNotificationInfo : TraitInfo
 	{
 		[NotificationReference("Speech")]
 		public readonly string Notification = "StartGame";
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new StartGameNotification(this); }
 	}
 
-	class StartGameNotification : IWorldLoaded, INotifyGameLoaded, INotifyGameSaved
+	sealed class StartGameNotification : IWorldLoaded, INotifyGameLoaded, INotifyGameSaved
 	{
 		readonly StartGameNotificationInfo info;
 		public StartGameNotification(StartGameNotificationInfo info)

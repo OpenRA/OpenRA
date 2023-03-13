@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Demolishable : ConditionalTrait<DemolishableInfo>, IDemolishable, ITick, INotifyOwnerChanged
 	{
-		class DemolishAction
+		sealed class DemolishAction
 		{
 			public readonly Actor Saboteur;
 			public readonly int Token;

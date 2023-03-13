@@ -166,7 +166,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		class MoveOrderTargeter : IOrderTargeter
+		sealed class MoveOrderTargeter : IOrderTargeter
 		{
 			readonly TransformsIntoMobile mobile;
 			readonly bool rejectMove;
@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public string OrderID => "Move";
 			public int OrderPriority => 4;
-			public bool IsQueued { get; protected set; }
+			public bool IsQueued { get; private set; }
 
 			public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
 			{

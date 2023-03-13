@@ -16,7 +16,7 @@ using OpenRA.Server;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckSpriteBodies : ILintRulesPass, ILintServerMapPass
+	sealed class CheckSpriteBodies : ILintRulesPass, ILintServerMapPass
 	{
 		void ILintRulesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules)
 		{

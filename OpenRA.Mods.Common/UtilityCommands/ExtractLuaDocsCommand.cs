@@ -15,7 +15,7 @@ using OpenRA.Scripting;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class ExtractLuaDocsCommand : IUtilityCommand
+	sealed class ExtractLuaDocsCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--lua-docs";
 

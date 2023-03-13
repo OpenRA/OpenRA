@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Common.Orders
 			return order;
 		}
 
-		class UnitOrderResult
+		sealed class UnitOrderResult
 		{
 			public readonly Actor Actor;
 			public readonly IOrderTargeter Order;

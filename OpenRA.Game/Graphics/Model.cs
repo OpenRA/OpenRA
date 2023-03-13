@@ -62,7 +62,7 @@ namespace OpenRA.Graphics
 	{
 		public Action<string> OnMissingModelError { get; set; }
 
-		class PlaceholderModelCache : IModelCache
+		sealed class PlaceholderModelCache : IModelCache
 		{
 			public IVertexBuffer<Vertex> VertexBuffer => throw new NotImplementedException();
 

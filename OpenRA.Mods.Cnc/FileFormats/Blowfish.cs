@@ -11,7 +11,7 @@
 
 namespace OpenRA.Mods.Cnc.FileFormats
 {
-	class Blowfish
+	sealed class Blowfish
 	{
 		public Blowfish(byte[] key)
 		{

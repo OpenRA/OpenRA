@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	[TraitLocation(SystemActors.Player)]
 	[Desc("Tracks neutral and enemy actors' visibility and notifies the player.",
 		"Attach this to the player actor. The actors to track need the 'AnnounceOnSeen' trait.")]
-	class EnemyWatcherInfo : TraitInfo
+	sealed class EnemyWatcherInfo : TraitInfo
 	{
 		[Desc("Interval in ticks between scanning for enemies.")]
 		public readonly int ScanInterval = 25;
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new EnemyWatcher(this); }
 	}
 
-	class EnemyWatcher : ITick
+	sealed class EnemyWatcher : ITick
 	{
 		readonly EnemyWatcherInfo info;
 		readonly HashSet<Player> discoveredPlayers;

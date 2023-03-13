@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 	public class DdsSprite
 	{
-		class DdsFrame : ISpriteFrame
+		sealed class DdsFrame : ISpriteFrame
 		{
 			public SpriteFrameType Type { get; }
 			public Size Size { get; }

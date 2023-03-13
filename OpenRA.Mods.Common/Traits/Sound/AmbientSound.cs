@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Sound
 {
 	[Desc("Plays a looping audio file at the actor position. Attach this to the `World` actor to cover the whole map.")]
-	class AmbientSoundInfo : ConditionalTraitInfo
+	sealed class AmbientSoundInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
 		public readonly string[] SoundFiles = null;
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		public override object Create(ActorInitializer init) { return new AmbientSound(init.Self, this); }
 	}
 
-	class AmbientSound : ConditionalTrait<AmbientSoundInfo>, ITick, INotifyRemovedFromWorld
+	sealed class AmbientSound : ConditionalTrait<AmbientSoundInfo>, ITick, INotifyRemovedFromWorld
 	{
 		readonly bool loop;
 		readonly HashSet<ISound> currentSounds = new();

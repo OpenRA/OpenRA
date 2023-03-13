@@ -64,7 +64,7 @@ namespace OpenRA
 	public class MapPreview : IDisposable, IReadOnlyFileSystem
 	{
 		/// <summary>Wrapper that enables map data to be replaced in an atomic fashion.</summary>
-		class InnerData
+		sealed class InnerData
 		{
 			public int MapFormat;
 			public string Title;

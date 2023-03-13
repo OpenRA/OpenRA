@@ -15,7 +15,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class DumpSequenceSheetsCommand : IUtilityCommand
+	sealed class DumpSequenceSheetsCommand : IUtilityCommand
 	{
 		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
 

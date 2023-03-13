@@ -17,7 +17,7 @@ namespace OpenRA.Graphics
 {
 	public sealed class CursorManager
 	{
-		class Cursor
+		sealed class Cursor
 		{
 			public string Name;
 			public int2 PaddedSize;

@@ -17,12 +17,12 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Produce a unit on the closest map edge cell and move into the world.")]
-	class ProductionFromMapEdgeInfo : ProductionInfo
+	sealed class ProductionFromMapEdgeInfo : ProductionInfo
 	{
 		public override object Create(ActorInitializer init) { return new ProductionFromMapEdge(init, this); }
 	}
 
-	class ProductionFromMapEdge : Production
+	sealed class ProductionFromMapEdge : Production
 	{
 		readonly CPos? spawnLocation;
 		readonly IPathFinder pathFinder;

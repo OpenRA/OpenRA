@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[TraitLocation(SystemActors.EditorWorld)]
-	class TSEditorResourceLayerInfo : EditorResourceLayerInfo, Requires<EditorActorLayerInfo>
+	sealed class TSEditorResourceLayerInfo : EditorResourceLayerInfo, Requires<EditorActorLayerInfo>
 	{
 		public readonly string VeinType = "Veins";
 
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new TSEditorResourceLayer(init.Self, this); }
 	}
 
-	class TSEditorResourceLayer : EditorResourceLayer
+	sealed class TSEditorResourceLayer : EditorResourceLayer
 	{
 		readonly TSEditorResourceLayerInfo info;
 		readonly EditorActorLayer actorLayer;

@@ -18,7 +18,7 @@ namespace OpenRA.Network
 {
 	public sealed class ReplayConnection : IConnection
 	{
-		class Chunk
+		sealed class Chunk
 		{
 			public int Frame;
 			public (int ClientId, byte[] Packet)[] Packets;

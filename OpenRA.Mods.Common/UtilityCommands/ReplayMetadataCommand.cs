@@ -15,7 +15,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class ReplayMetadataCommand : IUtilityCommand
+	sealed class ReplayMetadataCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--replay-metadata";
 

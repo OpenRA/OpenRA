@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
-	class UpdateTilesetColors : UpdateRule
+	sealed class UpdateTilesetColors : UpdateRule
 	{
 		public override string Name => "Rename Tileset LeftColor and RightColor";
 

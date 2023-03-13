@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class MineInfo : TraitInfo
+	sealed class MineInfo : TraitInfo
 	{
 		public readonly BitSet<CrushClass> CrushClasses = default;
 		public readonly bool AvoidFriendly = true;
@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new Mine(this); }
 	}
 
-	class Mine : ICrushable, INotifyCrushed
+	sealed class Mine : ICrushable, INotifyCrushed
 	{
 		readonly MineInfo info;
 
@@ -70,6 +70,6 @@ namespace OpenRA.Mods.Cnc.Traits
 	}
 
 	[Desc("Tag trait for stuff that should not trigger mines.")]
-	class MineImmuneInfo : TraitInfo<MineImmune> { }
-	class MineImmune { }
+	sealed class MineImmuneInfo : TraitInfo<MineImmune> { }
+	sealed class MineImmune { }
 }

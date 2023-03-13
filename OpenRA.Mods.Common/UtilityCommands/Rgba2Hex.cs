@@ -13,7 +13,7 @@ using System;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class Rgba2Hex : IUtilityCommand
+	sealed class Rgba2Hex : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--rgba2hex";
 
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		}
 	}
 
-	class Argb2Hex : IUtilityCommand
+	sealed class Argb2Hex : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--argb2hex";
 

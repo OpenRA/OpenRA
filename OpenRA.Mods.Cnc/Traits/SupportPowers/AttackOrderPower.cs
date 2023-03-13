@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class AttackOrderPowerInfo : SupportPowerInfo, Requires<AttackBaseInfo>
+	sealed class AttackOrderPowerInfo : SupportPowerInfo, Requires<AttackBaseInfo>
 	{
 		[Desc("Range circle color.")]
 		public readonly Color CircleColor = Color.Red;
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new AttackOrderPower(init.Self, this); }
 	}
 
-	class AttackOrderPower : SupportPower, INotifyCreated, INotifyBurstComplete
+	sealed class AttackOrderPower : SupportPower, INotifyCreated, INotifyBurstComplete
 	{
 		readonly AttackOrderPowerInfo info;
 		AttackBase attack;

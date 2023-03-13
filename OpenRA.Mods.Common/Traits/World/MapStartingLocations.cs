@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 				SeparateTeamSpawnsCheckboxLocked);
 		}
 
-		class AssignSpawnLocationsState
+		sealed class AssignSpawnLocationsState
 		{
 			public CPos[] SpawnLocations;
 			public List<int> AvailableSpawnPoints;

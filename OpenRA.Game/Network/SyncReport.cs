@@ -19,7 +19,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Network
 {
-	class SyncReport
+	sealed class SyncReport
 	{
 		const int NumSyncReports = 7;
 		static readonly Cache<Type, TypeInfo> TypeInfoCache = new(t => new TypeInfo(t));
@@ -161,7 +161,7 @@ namespace OpenRA.Network
 				Log.Write("sync", $"Recorded frames do not contain the frame {frame}. No sync report available!");
 		}
 
-		class Report
+		sealed class Report
 		{
 			public int Frame;
 			public int SyncedRandom;

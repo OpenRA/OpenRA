@@ -14,7 +14,7 @@ using System.Linq;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Hides the entire map in shroud.")]
-	class HideMapCrateActionInfo : CrateActionInfo
+	sealed class HideMapCrateActionInfo : CrateActionInfo
 	{
 		[Desc("Should the map also be hidden for the allies of the collector's owner?")]
 		public readonly bool IncludeAllies = false;
@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new HideMapCrateAction(init.Self, this); }
 	}
 
-	class HideMapCrateAction : CrateAction
+	sealed class HideMapCrateAction : CrateAction
 	{
 		readonly HideMapCrateActionInfo info;
 

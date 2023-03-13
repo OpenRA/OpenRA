@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Create a palette by applying alpha transparency to another palette.")]
-	class PaletteFromPaletteWithAlphaInfo : TraitInfo
+	sealed class PaletteFromPaletteWithAlphaInfo : TraitInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new PaletteFromPaletteWithAlpha(this); }
 	}
 
-	class PaletteFromPaletteWithAlpha : ILoadsPalettes, IProvidesAssetBrowserPalettes
+	sealed class PaletteFromPaletteWithAlpha : ILoadsPalettes, IProvidesAssetBrowserPalettes
 	{
 		readonly PaletteFromPaletteWithAlphaInfo info;
 
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 		public IEnumerable<string> PaletteNames { get { yield return info.Name; } }
 	}
 
-	class AlphaPaletteRemap : IPaletteRemap
+	sealed class AlphaPaletteRemap : IPaletteRemap
 	{
 		readonly float alpha;
 		readonly bool premultiply;

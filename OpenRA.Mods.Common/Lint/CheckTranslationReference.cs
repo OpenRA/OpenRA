@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckTranslationReference : ILintPass, ILintMapPass
+	sealed class CheckTranslationReference : ILintPass, ILintMapPass
 	{
 		const BindingFlags Binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
 

@@ -819,13 +819,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			base.Dispose(disposing);
 		}
 
-		class ReplayState
+		sealed class ReplayState
 		{
 			public bool Visible;
 			public ScrollItemWidget Item;
 		}
 
-		class Filter
+		sealed class Filter
 		{
 			public GameType Type;
 			public DateType Date;

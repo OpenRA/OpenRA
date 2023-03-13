@@ -17,7 +17,7 @@ using OpenRA.Mods.Common.FileFormats;
 
 namespace OpenRA.Mods.Cnc.UtilityCommands
 {
-	class ImportTiberianDawnMapCommand : ImportGen1MapCommand, IUtilityCommand
+	sealed class ImportTiberianDawnMapCommand : ImportGen1MapCommand, IUtilityCommand
 	{
 		// NOTE: 64x64 map size is a C&C95 engine limitation
 		public ImportTiberianDawnMapCommand()

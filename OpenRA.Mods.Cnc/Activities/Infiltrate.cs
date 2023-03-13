@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Activities
 {
-	class Infiltrate : Enter
+	sealed class Infiltrate : Enter
 	{
 		readonly Infiltrates infiltrates;
 		readonly INotifyInfiltration[] notifiers;

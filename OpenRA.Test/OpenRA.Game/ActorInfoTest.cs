@@ -19,21 +19,21 @@ namespace OpenRA.Test
 	class MockTraitInfo : TraitInfo { public override object Create(ActorInitializer init) { return null; } }
 	class MockInheritInfo : MockTraitInfo { }
 
-	class MockAInfo : MockInheritInfo, IMock { }
-	class MockBInfo : MockTraitInfo, Requires<IMock>, Requires<MockInheritInfo> { }
-	class MockCInfo : MockTraitInfo, Requires<MockBInfo> { }
+	sealed class MockAInfo : MockInheritInfo, IMock { }
+	sealed class MockBInfo : MockTraitInfo, Requires<IMock>, Requires<MockInheritInfo> { }
+	sealed class MockCInfo : MockTraitInfo, Requires<MockBInfo> { }
 
-	class MockDInfo : MockTraitInfo, Requires<MockEInfo> { }
-	class MockEInfo : MockTraitInfo, Requires<MockFInfo> { }
-	class MockFInfo : MockTraitInfo, Requires<MockDInfo> { }
+	sealed class MockDInfo : MockTraitInfo, Requires<MockEInfo> { }
+	sealed class MockEInfo : MockTraitInfo, Requires<MockFInfo> { }
+	sealed class MockFInfo : MockTraitInfo, Requires<MockDInfo> { }
 
-	class MockGInfo : MockInheritInfo, IMock, NotBefore<MockAInfo> { }
-	class MockHInfo : MockTraitInfo, NotBefore<IMock>, NotBefore<MockInheritInfo>, NotBefore<MockBInfo> { }
-	class MockIInfo : MockTraitInfo, NotBefore<MockHInfo>, NotBefore<MockCInfo> { }
+	sealed class MockGInfo : MockInheritInfo, IMock, NotBefore<MockAInfo> { }
+	sealed class MockHInfo : MockTraitInfo, NotBefore<IMock>, NotBefore<MockInheritInfo>, NotBefore<MockBInfo> { }
+	sealed class MockIInfo : MockTraitInfo, NotBefore<MockHInfo>, NotBefore<MockCInfo> { }
 
-	class MockJInfo : MockTraitInfo, NotBefore<MockKInfo> { }
-	class MockKInfo : MockTraitInfo, NotBefore<MockLInfo> { }
-	class MockLInfo : MockTraitInfo, NotBefore<MockJInfo> { }
+	sealed class MockJInfo : MockTraitInfo, NotBefore<MockKInfo> { }
+	sealed class MockKInfo : MockTraitInfo, NotBefore<MockLInfo> { }
+	sealed class MockLInfo : MockTraitInfo, NotBefore<MockJInfo> { }
 
 	[TestFixture]
 	public class ActorInfoTest

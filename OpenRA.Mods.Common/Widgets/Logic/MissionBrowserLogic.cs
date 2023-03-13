@@ -446,7 +446,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.CreateAndStartLocalServer(selectedMap.Uid, orders);
 		}
 
-		class DropDownOption
+		sealed class DropDownOption
 		{
 			public string Title;
 			public Func<bool> IsSelected;

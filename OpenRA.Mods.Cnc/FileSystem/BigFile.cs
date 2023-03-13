@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 				}
 			}
 
-			class Entry
+			sealed class Entry
 			{
 				public readonly uint Offset;
 				public readonly uint Size;

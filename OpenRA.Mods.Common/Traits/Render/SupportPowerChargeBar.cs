@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Display the time remaining until the super weapon attached to the actor is ready.")]
-	class SupportPowerChargeBarInfo : ConditionalTraitInfo
+	sealed class SupportPowerChargeBarInfo : ConditionalTraitInfo
 	{
 		[Desc("Defines to which players the bar is to be shown.")]
 		public readonly PlayerRelationship DisplayRelationships = PlayerRelationship.Ally;
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new SupportPowerChargeBar(init.Self, this); }
 	}
 
-	class SupportPowerChargeBar : ConditionalTrait<SupportPowerChargeBarInfo>, ISelectionBar, INotifyOwnerChanged
+	sealed class SupportPowerChargeBar : ConditionalTrait<SupportPowerChargeBarInfo>, ISelectionBar, INotifyOwnerChanged
 	{
 		readonly Actor self;
 		SupportPowerManager spm;

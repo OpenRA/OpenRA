@@ -378,7 +378,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		class CarryallPickupOrderTargeter : UnitOrderTargeter
+		sealed class CarryallPickupOrderTargeter : UnitOrderTargeter
 		{
 			public CarryallPickupOrderTargeter(CarryallInfo info)
 				: base("PickupUnit", 5, info.PickUpCursor, false, true)
@@ -411,14 +411,14 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		class CarryallDeliverUnitTargeter : IOrderTargeter
+		sealed class CarryallDeliverUnitTargeter : IOrderTargeter
 		{
 			readonly AircraftInfo aircraftInfo;
 			readonly CarryallInfo info;
 
 			public string OrderID => "DeliverUnit";
 			public int OrderPriority => 6;
-			public bool IsQueued { get; protected set; }
+			public bool IsQueued { get; private set; }
 			public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
 			public CarryallDeliverUnitTargeter(AircraftInfo aircraftInfo, CarryallInfo info)

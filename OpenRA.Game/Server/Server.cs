@@ -1441,7 +1441,7 @@ namespace OpenRA.Server
 
 		interface IServerEvent { void Invoke(Server server); }
 
-		class ConnectionConnectEvent : IServerEvent
+		sealed class ConnectionConnectEvent : IServerEvent
 		{
 			readonly Socket socket;
 			public ConnectionConnectEvent(Socket socket)
@@ -1455,7 +1455,7 @@ namespace OpenRA.Server
 			}
 		}
 
-		class ConnectionDisconnectEvent : IServerEvent
+		sealed class ConnectionDisconnectEvent : IServerEvent
 		{
 			readonly Connection connection;
 			public ConnectionDisconnectEvent(Connection connection)
@@ -1469,7 +1469,7 @@ namespace OpenRA.Server
 			}
 		}
 
-		class ConnectionPacketEvent : IServerEvent
+		sealed class ConnectionPacketEvent : IServerEvent
 		{
 			readonly Connection connection;
 			readonly int frame;
@@ -1488,7 +1488,7 @@ namespace OpenRA.Server
 			}
 		}
 
-		class ConnectionPingEvent : IServerEvent
+		sealed class ConnectionPingEvent : IServerEvent
 		{
 			readonly Connection connection;
 			readonly int[] pingHistory;
@@ -1511,7 +1511,7 @@ namespace OpenRA.Server
 			}
 		}
 
-		class CallbackEvent : IServerEvent
+		sealed class CallbackEvent : IServerEvent
 		{
 			readonly Action action;
 

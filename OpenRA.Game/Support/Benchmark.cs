@@ -14,7 +14,7 @@ using System.Globalization;
 
 namespace OpenRA.Support
 {
-	class Benchmark
+	sealed class Benchmark
 	{
 		readonly string prefix;
 		readonly Dictionary<string, List<BenchmarkPoint>> samples = new();
@@ -30,7 +30,7 @@ namespace OpenRA.Support
 				samples.GetOrAdd(item.Key).Add(new BenchmarkPoint(localTick, item.Value.LastValue));
 		}
 
-		class BenchmarkPoint
+		sealed class BenchmarkPoint
 		{
 			public int Tick { get; }
 			public double Value { get; }

@@ -19,7 +19,7 @@ using OpenRA.Support;
 namespace OpenRA.Test
 {
 	[TestFixture]
-	class PriorityQueueTest
+	sealed class PriorityQueueTest
 	{
 		readonly struct Int32Comparer : IComparer<int>
 		{

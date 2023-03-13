@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Implements the charge-then-burst attack logic specific to the RA tesla coil.")]
-	class AttackTeslaInfo : AttackBaseInfo
+	sealed class AttackTeslaInfo : AttackBaseInfo
 	{
 		[Desc("How many charges this actor has to attack with, once charged.")]
 		public readonly int MaxCharges = 1;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new AttackTesla(init.Self, this); }
 	}
 
-	class AttackTesla : AttackBase, ITick, INotifyAttack
+	sealed class AttackTesla : AttackBase, ITick, INotifyAttack
 	{
 		readonly AttackTeslaInfo info;
 
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			return new ChargeAttack(this, newTarget, forceAttack, targetLineColor);
 		}
 
-		class ChargeAttack : Activity, IActivityNotifyStanceChanged
+		sealed class ChargeAttack : Activity, IActivityNotifyStanceChanged
 		{
 			readonly AttackTesla attack;
 			readonly Target target;
@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			}
 		}
 
-		class ChargeFire : Activity
+		sealed class ChargeFire : Activity
 		{
 			readonly AttackTesla attack;
 			readonly Target target;

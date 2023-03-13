@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	class RepairBridge : Enter
+	sealed class RepairBridge : Enter
 	{
 		readonly EnterBehaviour enterBehaviour;
 		readonly string speechNotification;

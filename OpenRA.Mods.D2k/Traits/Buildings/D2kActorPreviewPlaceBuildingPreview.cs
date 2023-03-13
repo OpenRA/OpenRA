@@ -58,7 +58,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 	public class D2kActorPreviewPlaceBuildingPreview { }
 
-	class D2kActorPreviewPlaceBuildingPreviewPreview : ActorPreviewPlaceBuildingPreviewPreview
+	sealed class D2kActorPreviewPlaceBuildingPreviewPreview : ActorPreviewPlaceBuildingPreviewPreview
 	{
 		readonly D2kActorPreviewPlaceBuildingPreviewInfo info;
 		readonly bool checkUnsafeTiles;

@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	class KillsSelfInfo : ConditionalTraitInfo
+	sealed class KillsSelfInfo : ConditionalTraitInfo
 	{
 		[Desc("Remove the actor from the world (and destroy it) instead of killing it.")]
 		public readonly bool RemoveInstead = false;
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new KillsSelf(init.Self, this); }
 	}
 
-	class KillsSelf : ConditionalTrait<KillsSelfInfo>, INotifyAddedToWorld, ITick
+	sealed class KillsSelf : ConditionalTrait<KillsSelfInfo>, INotifyAddedToWorld, ITick
 	{
 		int lifetime;
 

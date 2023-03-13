@@ -20,7 +20,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.Cnc.UtilityCommands
 {
-	class ConvertPngToShpCommand : IUtilityCommand
+	sealed class ConvertPngToShpCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--shp";
 

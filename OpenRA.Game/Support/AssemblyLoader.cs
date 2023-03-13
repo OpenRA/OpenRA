@@ -97,7 +97,7 @@ namespace OpenRA.Support
 		}
 	}
 
-	class ManagedLoadContext : AssemblyLoadContext
+	sealed class ManagedLoadContext : AssemblyLoadContext
 	{
 		readonly string basePath;
 		readonly Dictionary<string, ManagedLibrary> managedAssemblies;

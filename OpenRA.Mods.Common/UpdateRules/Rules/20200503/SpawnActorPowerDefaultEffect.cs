@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
-	class SpawnActorPowerDefaultEffect : UpdateRule
+	sealed class SpawnActorPowerDefaultEffect : UpdateRule
 	{
 		public override string Name => "Set SpawnActorPower EffectSequence to it's previous default value.";
 

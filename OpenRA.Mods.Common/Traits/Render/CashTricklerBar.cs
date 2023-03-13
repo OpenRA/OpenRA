@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Display the time remaining until the next cash is given by actor's CashTrickler trait.")]
-	class CashTricklerBarInfo : TraitInfo, Requires<CashTricklerInfo>
+	sealed class CashTricklerBarInfo : TraitInfo, Requires<CashTricklerInfo>
 	{
 		[Desc("Defines to which players the bar is to be shown.")]
 		public readonly PlayerRelationship DisplayRelationships = PlayerRelationship.Ally;
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new CashTricklerBar(init.Self, this); }
 	}
 
-	class CashTricklerBar : ISelectionBar
+	sealed class CashTricklerBar : ISelectionBar
 	{
 		readonly Actor self;
 		readonly CashTricklerBarInfo info;

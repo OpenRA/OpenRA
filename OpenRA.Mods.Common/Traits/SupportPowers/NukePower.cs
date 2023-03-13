@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	class NukePower : SupportPower
+	sealed class NukePower : SupportPower
 	{
 		readonly NukePowerInfo info;
 		BodyOrientation body;

@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.UtilityCommands
 {
 	// See https://emmylua.github.io/annotation.html for reference
-	class ExtractEmmyLuaAPI : IUtilityCommand
+	sealed class ExtractEmmyLuaAPI : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--emmy-lua-api";
 

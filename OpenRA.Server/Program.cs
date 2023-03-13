@@ -19,7 +19,7 @@ using OpenRA.Support;
 
 namespace OpenRA.Server
 {
-	class Program
+	sealed class Program
 	{
 		static void Main(string[] args)
 		{

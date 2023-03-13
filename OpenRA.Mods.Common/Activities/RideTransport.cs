@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	class RideTransport : Enter
+	sealed class RideTransport : Enter
 	{
 		readonly Passenger passenger;
 

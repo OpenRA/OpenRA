@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace OpenRA.Server
 {
-	class PlayerMessageTracker
+	sealed class PlayerMessageTracker
 	{
 		[TranslationReference("remaining")]
 		const string ChatTemporaryDisabled = "notification-chat-temp-disabled";

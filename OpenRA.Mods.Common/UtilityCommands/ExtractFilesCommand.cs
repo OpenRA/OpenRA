@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class ExtractFilesCommand : IUtilityCommand
+	sealed class ExtractFilesCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--extract";
 

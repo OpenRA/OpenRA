@@ -17,7 +17,7 @@ using OpenRA.Server;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckUnknownWeaponFields : ILintPass, ILintMapPass, ILintServerMapPass
+	sealed class CheckUnknownWeaponFields : ILintPass, ILintMapPass, ILintServerMapPass
 	{
 		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{

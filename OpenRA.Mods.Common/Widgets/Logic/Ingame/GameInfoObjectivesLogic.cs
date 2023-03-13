@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	class GameInfoObjectivesLogic : ChromeLogic
+	sealed class GameInfoObjectivesLogic : ChromeLogic
 	{
 		[TranslationReference]
 		const string InProgress = "label-mission-in-progress";

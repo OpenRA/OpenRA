@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
-	class RenameInfiltrationNotifications : UpdateRule
+	sealed class RenameInfiltrationNotifications : UpdateRule
 	{
 		public override string Name => "Renamed InfiltrateForCash Notification to InfiltratedNotification.";
 

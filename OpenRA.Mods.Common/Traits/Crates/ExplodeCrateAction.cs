@@ -14,7 +14,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Fires a weapon at the location when collected.")]
-	class ExplodeCrateActionInfo : CrateActionInfo
+	sealed class ExplodeCrateActionInfo : CrateActionInfo
 	{
 		[WeaponReference]
 		[FieldLoader.Require]
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ExplodeCrateAction(init.Self, this); }
 	}
 
-	class ExplodeCrateAction : CrateAction
+	sealed class ExplodeCrateAction : CrateAction
 	{
 		readonly ExplodeCrateActionInfo info;
 

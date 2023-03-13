@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		}
 	}
 
-	class GroundUnitsIdleState : GroundStateBase, IState
+	sealed class GroundUnitsIdleState : GroundStateBase, IState
 	{
 		public void Activate(Squad owner) { }
 
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		public void Deactivate(Squad owner) { }
 	}
 
-	class GroundUnitsAttackMoveState : GroundStateBase, IState
+	sealed class GroundUnitsAttackMoveState : GroundStateBase, IState
 	{
 		int lastUpdatedTick;
 		CPos? lastLeaderLocation;
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		public void Deactivate(Squad owner) { }
 	}
 
-	class GroundUnitsAttackState : GroundStateBase, IState
+	sealed class GroundUnitsAttackState : GroundStateBase, IState
 	{
 		int lastUpdatedTick;
 		CPos? lastLeaderLocation;
@@ -206,7 +206,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		public void Deactivate(Squad owner) { }
 	}
 
-	class GroundUnitsFleeState : GroundStateBase, IState
+	sealed class GroundUnitsFleeState : GroundStateBase, IState
 	{
 		public void Activate(Squad owner) { }
 

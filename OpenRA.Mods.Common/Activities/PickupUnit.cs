@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Activities
 				yield return new TargetLineNode(Target.FromActor(cargo), targetLineColor.Value);
 		}
 
-		class AttachUnit : Activity
+		sealed class AttachUnit : Activity
 		{
 			readonly Actor cargo;
 			readonly Carryable carryable;

@@ -17,7 +17,7 @@ using OpenRA.Primitives;
 namespace OpenRA.Test
 {
 	[TestFixture]
-	class ActionQueueTest
+	sealed class ActionQueueTest
 	{
 		[TestCase(TestName = "ActionQueue performs actions in order of time, then insertion order.")]
 		public void ActionsArePerformedOrderedByTimeThenByInsertionOrder()

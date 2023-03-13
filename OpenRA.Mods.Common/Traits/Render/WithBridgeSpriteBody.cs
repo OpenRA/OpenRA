@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	class WithBridgeSpriteBodyInfo : WithSpriteBodyInfo
+	sealed class WithBridgeSpriteBodyInfo : WithSpriteBodyInfo
 	{
 		public readonly string Type = "GroundLevelBridge";
 
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 	}
 
-	class WithBridgeSpriteBody : WithSpriteBody, INotifyRemovedFromWorld
+	sealed class WithBridgeSpriteBody : WithSpriteBody, INotifyRemovedFromWorld
 	{
 		readonly WithBridgeSpriteBodyInfo bridgeInfo;
 		readonly BridgeLayer bridgeLayer;

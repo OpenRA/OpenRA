@@ -29,20 +29,20 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ActorMap : IActorMap, ITick, INotifyCreated
 	{
-		class InfluenceNode
+		sealed class InfluenceNode
 		{
 			public InfluenceNode Next;
 			public SubCell SubCell;
 			public Actor Actor;
 		}
 
-		class Bin
+		sealed class Bin
 		{
 			public readonly List<Actor> Actors = new();
 			public readonly List<ProximityTrigger> ProximityTriggers = new();
 		}
 
-		class CellTrigger
+		sealed class CellTrigger
 		{
 			public readonly CPos[] Footprint;
 			public bool Dirty;
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		class ProximityTrigger : IDisposable
+		sealed class ProximityTrigger : IDisposable
 		{
 			public WPos TopLeft { get; private set; }
 			public WPos BottomRight { get; private set; }

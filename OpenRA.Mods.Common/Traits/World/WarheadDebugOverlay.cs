@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class WarheadDebugOverlay : IRenderAnnotations
 	{
-		class WHImpact
+		sealed class WHImpact
 		{
 			public readonly WPos CenterPosition;
 			public readonly WDist[] Range;

@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Common.Activities
 		}
 	}
 
-	class IssueOrderAfterTransform : Activity
+	sealed class IssueOrderAfterTransform : Activity
 	{
 		readonly string orderString;
 		readonly Target target;

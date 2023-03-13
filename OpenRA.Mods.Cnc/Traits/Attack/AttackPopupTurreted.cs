@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Actor's turret rises from the ground before attacking.")]
-	class AttackPopupTurretedInfo : AttackTurretedInfo, Requires<BuildingInfo>, Requires<WithEmbeddedTurretSpriteBodyInfo>
+	sealed class AttackPopupTurretedInfo : AttackTurretedInfo, Requires<BuildingInfo>, Requires<WithEmbeddedTurretSpriteBodyInfo>
 	{
 		[Desc("How many game ticks should pass before closing the actor's turret.")]
 		public readonly int CloseDelay = 125;
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new AttackPopupTurreted(init, this); }
 	}
 
-	class AttackPopupTurreted : AttackTurreted, INotifyIdle, IDamageModifier
+	sealed class AttackPopupTurreted : AttackTurreted, INotifyIdle, IDamageModifier
 	{
 		enum PopupState { Open, Rotating, Transitioning, Closed }
 

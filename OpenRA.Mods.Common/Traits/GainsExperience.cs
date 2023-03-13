@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	class ExperienceInit : ValueActorInit<int>
+	sealed class ExperienceInit : ValueActorInit<int>
 	{
 		public ExperienceInit(TraitInfo info, int value)
 			: base(info, value) { }

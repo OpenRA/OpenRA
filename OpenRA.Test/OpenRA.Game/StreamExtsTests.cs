@@ -17,7 +17,7 @@ using NUnit.Framework;
 namespace OpenRA.Test
 {
 	[TestFixture]
-	class StreamExtsTests
+	sealed class StreamExtsTests
 	{
 		[TestCase(TestName = "ReadAllLines is equivalent to ReadAllLinesAsMemory")]
 		public void ReadAllLines()

@@ -15,7 +15,7 @@ using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.D2k.UtilityCommands
 {
-	class ImportD2kMapCommand : IUtilityCommand
+	sealed class ImportD2kMapCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--import-d2k-map";
 

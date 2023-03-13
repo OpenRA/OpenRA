@@ -155,7 +155,7 @@ namespace OpenRA.Platforms.Default
 					verticesPool.Push(vertices);
 		}
 
-		class Message
+		sealed class Message
 		{
 			public Message(ThreadedGraphicsContext device)
 			{
@@ -450,7 +450,7 @@ namespace OpenRA.Platforms.Default
 		}
 	}
 
-	class ThreadedFrameBuffer : IFrameBuffer
+	sealed class ThreadedFrameBuffer : IFrameBuffer
 	{
 		readonly ThreadedGraphicsContext device;
 		readonly Func<ITexture> getTexture;
@@ -500,7 +500,7 @@ namespace OpenRA.Platforms.Default
 		}
 	}
 
-	class ThreadedVertexBuffer : IVertexBuffer<Vertex>
+	sealed class ThreadedVertexBuffer : IVertexBuffer<Vertex>
 	{
 		readonly ThreadedGraphicsContext device;
 		readonly Action bind;
@@ -563,7 +563,7 @@ namespace OpenRA.Platforms.Default
 		}
 	}
 
-	class ThreadedTexture : ITextureInternal
+	sealed class ThreadedTexture : ITextureInternal
 	{
 		readonly ThreadedGraphicsContext device;
 		readonly Func<object> getScaleFilter;
@@ -658,7 +658,7 @@ namespace OpenRA.Platforms.Default
 		}
 	}
 
-	class ThreadedShader : IShader
+	sealed class ThreadedShader : IShader
 	{
 		readonly ThreadedGraphicsContext device;
 		readonly Action prepareRender;

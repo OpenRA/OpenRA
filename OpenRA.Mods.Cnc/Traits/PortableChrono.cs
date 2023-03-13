@@ -21,7 +21,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class PortableChronoInfo : PausableConditionalTraitInfo, Requires<IMoveInfo>
+	sealed class PortableChronoInfo : PausableConditionalTraitInfo, Requires<IMoveInfo>
 	{
 		[Desc("Cooldown in ticks until the unit can teleport.")]
 		public readonly int ChargeDelay = 500;
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new PortableChrono(init.Self, this); }
 	}
 
-	class PortableChrono : PausableConditionalTrait<PortableChronoInfo>, IIssueOrder, IResolveOrder, ITick, ISelectionBar, IOrderVoice, ISync
+	sealed class PortableChrono : PausableConditionalTrait<PortableChronoInfo>, IIssueOrder, IResolveOrder, ITick, ISelectionBar, IOrderVoice, ISync
 	{
 		readonly IMove move;
 		[Sync]
@@ -177,7 +177,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	class PortableChronoOrderTargeter : IOrderTargeter
+	sealed class PortableChronoOrderTargeter : IOrderTargeter
 	{
 		readonly string targetCursor;
 
@@ -188,7 +188,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public string OrderID => "PortableChronoTeleport";
 		public int OrderPriority => 5;
-		public bool IsQueued { get; protected set; }
+		public bool IsQueued { get; private set; }
 		public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
 
 		public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
@@ -212,7 +212,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	class PortableChronoOrderGenerator : OrderGenerator
+	sealed class PortableChronoOrderGenerator : OrderGenerator
 	{
 		readonly Actor self;
 		readonly PortableChrono portableChrono;

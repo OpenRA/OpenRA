@@ -16,7 +16,7 @@ using OpenRA.Mods.Common.FileFormats;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	class ListInstallShieldCabContentsCommand : IUtilityCommand
+	sealed class ListInstallShieldCabContentsCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name => "--list-installshield-cab";
 

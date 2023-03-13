@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Transform into a different actor type.")]
-	class InfiltrateForTransformInfo : TraitInfo
+	sealed class InfiltrateForTransformInfo : TraitInfo
 	{
 		[ActorReference]
 		[FieldLoader.Require]
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new InfiltrateForTransform(init, this); }
 	}
 
-	class InfiltrateForTransform : INotifyInfiltrated
+	sealed class InfiltrateForTransform : INotifyInfiltrated
 	{
 		readonly InfiltrateForTransformInfo info;
 		readonly string faction;

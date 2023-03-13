@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Creates a greyscale palette without any base palette file.")]
-	class PaletteFromGrayscaleInfo : TraitInfo, ITilesetSpecificPaletteInfo
+	sealed class PaletteFromGrayscaleInfo : TraitInfo, ITilesetSpecificPaletteInfo
 	{
 		[PaletteDefinition]
 		[FieldLoader.Require]
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new PaletteFromGrayscale(init.World, this); }
 	}
 
-	class PaletteFromGrayscale : ILoadsPalettes
+	sealed class PaletteFromGrayscale : ILoadsPalettes
 	{
 		readonly World world;
 		readonly PaletteFromGrayscaleInfo info;

@@ -42,7 +42,7 @@ namespace OpenRA.Platforms.Default
 		}
 	}
 
-	class TapHistory
+	sealed class TapHistory
 	{
 		public (DateTime Time, int2 Location) FirstRelease, SecondRelease, ThirdRelease;
 

@@ -13,14 +13,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 {
-	class UnitsForProtectionIdleState : GroundStateBase, IState
+	sealed class UnitsForProtectionIdleState : GroundStateBase, IState
 	{
 		public void Activate(Squad owner) { }
 		public void Tick(Squad owner) { owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionAttackState(), true); }
 		public void Deactivate(Squad owner) { }
 	}
 
-	class UnitsForProtectionAttackState : GroundStateBase, IState
+	sealed class UnitsForProtectionAttackState : GroundStateBase, IState
 	{
 		public const int BackoffTicks = 4;
 		internal int Backoff = BackoffTicks;
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		public void Deactivate(Squad owner) { }
 	}
 
-	class UnitsForProtectionFleeState : GroundStateBase, IState
+	sealed class UnitsForProtectionFleeState : GroundStateBase, IState
 	{
 		public void Activate(Squad owner) { }
 

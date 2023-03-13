@@ -17,14 +17,14 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Visualize capture progress.")]
-	class CapturableProgressBarInfo : ConditionalTraitInfo, Requires<CapturableInfo>
+	sealed class CapturableProgressBarInfo : ConditionalTraitInfo, Requires<CapturableInfo>
 	{
 		public readonly Color Color = Color.Orange;
 
 		public override object Create(ActorInitializer init) { return new CapturableProgressBar(this); }
 	}
 
-	class CapturableProgressBar : ConditionalTrait<CapturableProgressBarInfo>, ISelectionBar, ICaptureProgressWatcher
+	sealed class CapturableProgressBar : ConditionalTrait<CapturableProgressBarInfo>, ISelectionBar, ICaptureProgressWatcher
 	{
 		readonly Dictionary<Actor, (int Current, int Total)> progress = new();
 

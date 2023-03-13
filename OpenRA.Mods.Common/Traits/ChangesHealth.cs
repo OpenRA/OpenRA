@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Attach this to actors which should regenerate or lose health points over time.")]
-	class ChangesHealthInfo : ConditionalTraitInfo, Requires<IHealthInfo>
+	sealed class ChangesHealthInfo : ConditionalTraitInfo, Requires<IHealthInfo>
 	{
 		[Desc("Absolute amount of health points added in each step.",
 			"Use negative values to apply damage.")]
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ChangesHealth(init.Self, this); }
 	}
 
-	class ChangesHealth : ConditionalTrait<ChangesHealthInfo>, ITick, INotifyDamage, ISync
+	sealed class ChangesHealth : ConditionalTrait<ChangesHealthInfo>, ITick, INotifyDamage, ISync
 	{
 		readonly IHealth health;
 

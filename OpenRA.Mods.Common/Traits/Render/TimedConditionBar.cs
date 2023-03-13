@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Visualizes the remaining time for a condition.")]
-	class TimedConditionBarInfo : TraitInfo
+	sealed class TimedConditionBarInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[Desc("Condition that this bar corresponds to")]
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new TimedConditionBar(init.Self, this); }
 	}
 
-	class TimedConditionBar : ISelectionBar, IConditionTimerWatcher
+	sealed class TimedConditionBar : ISelectionBar, IConditionTimerWatcher
 	{
 		readonly TimedConditionBarInfo info;
 		readonly Actor self;

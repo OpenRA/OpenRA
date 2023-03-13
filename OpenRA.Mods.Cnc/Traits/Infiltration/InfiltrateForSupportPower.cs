@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	class InfiltrateForSupportPowerInfo : TraitInfo
+	sealed class InfiltrateForSupportPowerInfo : TraitInfo
 	{
 		[ActorReference]
 		[FieldLoader.Require]
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new InfiltrateForSupportPower(this); }
 	}
 
-	class InfiltrateForSupportPower : INotifyInfiltrated
+	sealed class InfiltrateForSupportPower : INotifyInfiltrated
 	{
 		readonly InfiltrateForSupportPowerInfo info;
 

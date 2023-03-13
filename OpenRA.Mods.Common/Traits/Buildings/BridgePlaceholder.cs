@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Placeholder actor used for dead segments and bridge end ramps.")]
-	class BridgePlaceholderInfo : TraitInfo
+	sealed class BridgePlaceholderInfo : TraitInfo
 	{
 		public readonly string Type = "GroundLevelBridge";
 
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new BridgePlaceholder(init.Self, this); }
 	}
 
-	class BridgePlaceholder : IBridgeSegment, INotifyAddedToWorld, INotifyRemovedFromWorld
+	sealed class BridgePlaceholder : IBridgeSegment, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		public readonly BridgePlaceholderInfo Info;
 		readonly Actor self;

@@ -14,6 +14,6 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("This actor does not care about any type of cloak its targets might have, regardless of distance.")]
-	class IgnoresCloakInfo : TraitInfo<IgnoresCloak> { }
-	class IgnoresCloak { }
+	sealed class IgnoresCloakInfo : TraitInfo<IgnoresCloak> { }
+	sealed class IgnoresCloak { }
 }

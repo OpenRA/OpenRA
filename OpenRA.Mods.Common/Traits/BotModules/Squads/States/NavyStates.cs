@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		}
 	}
 
-	class NavyUnitsIdleState : NavyStateBase, IState
+	sealed class NavyUnitsIdleState : NavyStateBase, IState
 	{
 		public void Activate(Squad owner) { }
 
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		public void Deactivate(Squad owner) { }
 	}
 
-	class NavyUnitsAttackMoveState : NavyStateBase, IState
+	sealed class NavyUnitsAttackMoveState : NavyStateBase, IState
 	{
 		int lastUpdatedTick;
 		CPos? lastLeaderLocation;
@@ -172,7 +172,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		public void Deactivate(Squad owner) { }
 	}
 
-	class NavyUnitsAttackState : NavyStateBase, IState
+	sealed class NavyUnitsAttackState : NavyStateBase, IState
 	{
 		int lastUpdatedTick;
 		CPos? lastLeaderLocation;
@@ -230,7 +230,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		public void Deactivate(Squad owner) { }
 	}
 
-	class NavyUnitsFleeState : NavyStateBase, IState
+	sealed class NavyUnitsFleeState : NavyStateBase, IState
 	{
 		public void Activate(Squad owner) { }
 

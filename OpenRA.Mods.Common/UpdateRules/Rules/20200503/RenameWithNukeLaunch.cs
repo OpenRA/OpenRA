@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
-	class RenameWithNukeLaunch : UpdateRule
+	sealed class RenameWithNukeLaunch : UpdateRule
 	{
 		public override string Name => "Renamed WithNukeLaunchAnimation and Overlay";
 

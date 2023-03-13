@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
 {
-	class Sell : Activity
+	sealed class Sell : Activity
 	{
 		readonly IHealth health;
 		readonly SellableInfo sellableInfo;

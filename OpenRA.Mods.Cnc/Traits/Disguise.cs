@@ -20,12 +20,12 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[Desc("Overrides the default Tooltip when this actor is disguised (aids in deceiving enemy players).")]
-	class DisguiseTooltipInfo : TooltipInfo, Requires<DisguiseInfo>
+	sealed class DisguiseTooltipInfo : TooltipInfo, Requires<DisguiseInfo>
 	{
 		public override object Create(ActorInitializer init) { return new DisguiseTooltip(init.Self, this); }
 	}
 
-	class DisguiseTooltip : ConditionalTrait<DisguiseTooltipInfo>, ITooltip
+	sealed class DisguiseTooltip : ConditionalTrait<DisguiseTooltipInfo>, ITooltip
 	{
 		readonly Actor self;
 		readonly Disguise disguise;
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	}
 
 	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
-	class DisguiseInfo : TraitInfo
+	sealed class DisguiseInfo : TraitInfo
 	{
 		[VoiceReference]
 		public readonly string Voice = "Action";
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
 	}
 
-	class Disguise : IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack,
+	sealed class Disguise : IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack,
 		INotifyDamage, INotifyUnload, INotifyDemolition, INotifyInfiltration, ITick
 	{
 		public ActorInfo AsActor { get; private set; }
@@ -280,7 +280,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	class DisguiseOrderTargeter : UnitOrderTargeter
+	sealed class DisguiseOrderTargeter : UnitOrderTargeter
 	{
 		readonly DisguiseInfo info;
 
