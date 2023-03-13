@@ -263,11 +263,10 @@ namespace OpenRA.Mods.Common.Widgets
 				case TextAlign.Left:
 					return new int2(rb.X + LeftMargin, y);
 				case TextAlign.Center:
+				default:
 					return new int2(rb.X + (UsableWidth - textSize.X) / 2, y);
 				case TextAlign.Right:
 					return new int2(rb.X + UsableWidth - textSize.X - RightMargin, y);
-				default:
-					throw new ArgumentOutOfRangeException("Align");
 			}
 		}
 
