@@ -819,6 +819,9 @@ dotnet_diagnostic.CA2200.severity = warning
 # Initialize value type static fields inline.
 dotnet_diagnostic.CA2207.severity = warning
 
+# Instantiate argument exceptions correctly.
+dotnet_diagnostic.CA2208.severity = warning
+
 # Dispose methods should call base class dispose.
 dotnet_diagnostic.CA2215.severity = warning
 
