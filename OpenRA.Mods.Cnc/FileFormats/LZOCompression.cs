@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						}
 
 						mPos = op - 1;
-						mPos -= (*(ushort*)(void*)ip) >> 2;
+						mPos -= (*(ushort*)ip) >> 2;
 						ip += 2;
 					}
 					else if (t >= 16)
