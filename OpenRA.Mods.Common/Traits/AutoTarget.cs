@@ -255,7 +255,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Respect AutoAttack priorities.
-			if (stance > UnitStance.ReturnFire)
+			if (Stance > UnitStance.ReturnFire)
 			{
 				var autoTarget = ScanForTarget(self, allowMove, true);
 
