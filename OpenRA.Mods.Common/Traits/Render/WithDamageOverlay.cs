@@ -29,6 +29,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[SequenceReference(nameof(Image))]
 		public readonly string EndSequence = "end";
 
+		public readonly int LoopCount = 1;
+
 		[PaletteReference(nameof(IsPlayerPalette))]
 		[Desc("Custom palette name.")]
 		public readonly string Palette = null;
@@ -52,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly WithDamageOverlayInfo info;
 		readonly Animation anim;
 
-		bool isSmoking;
+		int smokeState = -1;
 
 		public WithDamageOverlay(Actor self, WithDamageOverlayInfo info)
 		{
@@ -61,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var rs = self.Trait<RenderSprites>();
 
 			anim = new Animation(self.World, info.Image);
-			rs.Add(new AnimationWithOffset(anim, null, () => !isSmoking),
+			rs.Add(new AnimationWithOffset(anim, null, () => smokeState == -1),
 				info.Palette, info.IsPlayerPalette);
 		}
 
@@ -70,16 +72,24 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!info.DamageTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(info.DamageTypes))
 				return;
 
-			if (isSmoking) return;
+			if (smokeState != -1) return;
 			if (e.Damage.Value < 0) return; /* getting healed */
 			if (e.DamageState < info.MinimumDamageState) return;
 			if (e.DamageState > info.MaximumDamageState) return;
 
-			isSmoking = true;
-			anim.PlayThen(info.IdleSequence,
-				() => anim.PlayThen(info.LoopSequence,
-					() => anim.PlayThen(info.EndSequence,
-						() => isSmoking = false)));
+			Play();
+		}
+
+		void Play()
+		{
+			smokeState++;
+
+			if (smokeState == 0)
+				anim.PlayThen(info.IdleSequence, Play);
+			else if (smokeState <= info.LoopCount)
+				anim.PlayThen(info.LoopSequence, Play);
+			else
+				anim.PlayThen(info.EndSequence, () => smokeState = -1);
 		}
 	}
 }
