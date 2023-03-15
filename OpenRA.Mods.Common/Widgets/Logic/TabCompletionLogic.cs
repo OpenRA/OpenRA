@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				else
 				{
 					prefix = "";
-					suffix = ": ";
+					suffix = " ";
 					toComplete = text;
 				}
 
