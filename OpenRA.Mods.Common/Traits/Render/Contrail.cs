@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The alpha value [from 0 to 255] of color at the contrail the start.")]
 		public readonly int StartColorAlpha = 255;
 
-		[Desc("RGB color at the contrail end. Set to start color if undefined")]
+		[Desc("RGB color at the contrail end. Will default to " + nameof(StartColor) + " if left undefined")]
 		public readonly Color? EndColor;
 
 		[Desc("Use player remap color instead of a custom color at the contrail end.")]

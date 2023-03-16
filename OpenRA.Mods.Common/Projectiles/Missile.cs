@@ -154,7 +154,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("The alpha value [from 0 to 255] of color at the contrail the start.")]
 		public readonly int ContrailStartColorAlpha = 255;
 
-		[Desc("RGB color at the contrail end. Set to start color if undefined")]
+		[Desc("RGB color at the contrail end. Will default to " + nameof(ContrailStartColor) + " if left undefined")]
 		public readonly Color? ContrailEndColor;
 
 		[Desc("Use player remap color instead of a custom color at the contrail end.")]
