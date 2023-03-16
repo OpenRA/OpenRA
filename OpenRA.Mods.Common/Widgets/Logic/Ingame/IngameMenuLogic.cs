@@ -207,7 +207,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		void OnQuit()
+		public static void OnQuit(World world)
 		{
 			// TODO: Create a mechanism to do things like this cleaner. Also needed for scripted missions
 			if (world.Type == WorldType.Regular)
@@ -221,10 +221,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
-			leaving = true;
-
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
 			var exitDelay = iop?.ExitDelay ?? 0;
+			var mpe = world.WorldActor.TraitOrDefault<MenuPaletteEffect>();
 			if (mpe != null)
 			{
 				Game.RunAfterDelay(exitDelay, () =>
@@ -295,7 +294,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: LeaveMissionTitle,
 					text: LeaveMissionPrompt,
-					onConfirm: OnQuit,
+					onConfirm: () => { OnQuit(world); leaving = true; },
 					onCancel: ShowMenu,
 					confirmText: LeaveMissionAccept,
 					cancelText: LeaveMissionCancel);
@@ -499,11 +498,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						title: ExitMapEditorTitle,
 						text: deletedOrUnavailable ? ExitMapEditorPromptDeleted : ExitMapEditorPromptUnsaved,
 						confirmText: deletedOrUnavailable ? ExitMapEditorAnywayConfirm : ExitMapEditorConfirm,
-						onConfirm: OnQuit,
+						onConfirm: () => { OnQuit(world); leaving = true; },
 						onCancel: ShowMenu);
 				}
 				else
-					OnQuit();
+				{
+					OnQuit(world);
+					leaving = true;
+				}
 			};
 		}
 	}

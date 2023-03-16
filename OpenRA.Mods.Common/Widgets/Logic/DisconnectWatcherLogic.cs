@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class DisconnectWatcherLogic : ChromeLogic
 	{
 		[ObjectCreator.UseCtor]
-		public DisconnectWatcherLogic(Widget widget, OrderManager orderManager)
+		public DisconnectWatcherLogic(Widget widget, World world, OrderManager orderManager)
 		{
 			var disconnected = false;
 			widget.Get<LogicTickerWidget>("DISCONNECT_WATCHER").OnTick = () =>
@@ -34,6 +34,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "password", CurrentServerSettings.Password },
 					{ "connection", connection },
 					{ "onAbort", null },
+					{ "onQuit", () => IngameMenuLogic.OnQuit(world) },
 					{ "onRetry", null }
 				}));
 

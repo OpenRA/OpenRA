@@ -136,6 +136,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "connection", connection },
 					{ "password", password },
 					{ "onAbort", onExit },
+					{ "onQuit", null },
 					{ "onRetry", onRetry }
 				});
 			}
