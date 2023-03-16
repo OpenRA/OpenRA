@@ -54,7 +54,7 @@ Background@CONNECTIONFAILED_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Cancel
+			Text: Abort
 			Font: Bold
 			Key: escape
 
@@ -154,6 +154,6 @@ Background@CONNECTION_SWITCHMOD_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Cancel
+			Text: Abort
 			Font: Bold
 			Key: escape
