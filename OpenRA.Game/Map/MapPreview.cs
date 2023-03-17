@@ -185,6 +185,7 @@ namespace OpenRA
 
 		public MiniYaml RuleDefinitions => innerData.RuleDefinitions;
 		public MiniYaml WeaponDefinitions => innerData.WeaponDefinitions;
+		public MiniYaml SequenceDefinitions => innerData.SequenceDefinitions;
 
 		public ActorInfo WorldActorInfo => innerData.WorldActorInfo;
 		public ActorInfo PlayerActorInfo => innerData.PlayerActorInfo;
