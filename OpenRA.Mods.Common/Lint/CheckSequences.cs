@@ -14,13 +14,27 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits.Render;
+using OpenRA.Server;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckSequences : ILintSequencesPass
+	class CheckSequences : ILintSequencesPass, ILintServerMapPass
 	{
+		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)
+		{
+			using (var sequences = new SequenceSet(map, modData, map.TileSet, map.SequenceDefinitions))
+			{
+				Run(emitError, emitWarning, mapRules, sequences);
+			}
+		}
+
 		void ILintSequencesPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules, SequenceSet sequences)
+		{
+			Run(emitError, emitWarning, rules, sequences);
+		}
+
+		void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules, SequenceSet sequences)
 		{
 			var factions = rules.Actors[SystemActors.World].TraitInfos<FactionInfo>().Select(f => f.InternalName).ToArray();
 			foreach (var actorInfo in rules.Actors)
