@@ -37,8 +37,8 @@ namespace OpenRA
 				return;
 
 			foreach (var f in GetType().GetFields())
-				if (args.Contains("Launch" + "." + f.Name))
-					FieldLoader.LoadField(this, f.Name, args.GetValue("Launch" + "." + f.Name, ""));
+				if (args.Contains("Launch." + f.Name))
+					FieldLoader.LoadField(this, f.Name, args.GetValue("Launch." + f.Name, ""));
 		}
 
 		public ConnectionTarget GetConnectEndPoint()
