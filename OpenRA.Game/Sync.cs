@@ -151,8 +151,8 @@ namespace OpenRA
 				case TargetType.Terrain:
 					return HashUsingHashCode(t.CenterPosition);
 
-				default:
 				case TargetType.Invalid:
+				default:
 					return 0;
 			}
 		}

@@ -1004,6 +1004,9 @@ dotnet_diagnostic.RCS1084.severity = warning
 # Remove empty region.
 dotnet_diagnostic.RCS1091.severity = warning
 
+# Default label should be the last label in a switch section.
+dotnet_diagnostic.RCS1099.severity = warning
+
 # Unnecessary interpolation.
 dotnet_diagnostic.RCS1105.severity = warning
 
