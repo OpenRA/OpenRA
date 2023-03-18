@@ -59,8 +59,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (ChildActivity != null)
 				foreach (var n in ChildActivity.TargetLineNodes(self))
 					yield return n;
-
-			yield break;
 		}
 	}
 }

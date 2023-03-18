@@ -1031,6 +1031,9 @@ dotnet_diagnostic.RCS1132.severity = warning
 # Remove redundant Dispose/Close call.
 dotnet_diagnostic.RCS1133.severity = warning
 
+# Remove redundant statement.
+dotnet_diagnostic.RCS1134.severity = warning
+
 # Merge switch sections with equivalent content.
 dotnet_diagnostic.RCS1136.severity = warning
 

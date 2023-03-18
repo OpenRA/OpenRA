@@ -256,8 +256,6 @@ namespace OpenRA.Mods.Common.Traits
 			if (NextActivity != null)
 				foreach (var n in NextActivity.TargetLineNodes(self))
 					yield return n;
-
-			yield break;
 		}
 	}
 }

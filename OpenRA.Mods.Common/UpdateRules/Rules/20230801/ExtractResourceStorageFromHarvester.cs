@@ -42,8 +42,6 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				storesResources.AddNode(resources);
 
 			actorNode.AddNode(storesResources);
-
-			yield break;
 		}
 	}
 }

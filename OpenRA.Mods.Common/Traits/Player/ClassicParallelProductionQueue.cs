@@ -181,10 +181,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			if (!anyProducers)
-			{
 				CancelProduction(unit.Name, 1);
-				return false;
-			}
 
 			return false;
 		}
