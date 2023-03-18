@@ -79,7 +79,7 @@ namespace OpenRA.Support
 					var y = (mt[i] & 0x80000000) | (mt[(i + 1) % 624] & 0x7fffffff);
 					mt[i] = mt[(i + 397u) % 624u] ^ (y >> 1);
 					if ((y & 1) == 1)
-						mt[i] = mt[i] ^ 2567483615;
+						mt[i] ^= 2567483615;
 				}
 			}
 		}

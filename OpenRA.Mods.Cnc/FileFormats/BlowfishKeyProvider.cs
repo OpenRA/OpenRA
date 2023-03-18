@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 			if (bits == 0) return;
 			for (i = 0; i < len - 1; i++) n[i] = (n[i] >> bits) | (n[i + 1] << (32 - bits));
-			n[i] = n[i] >> bits;
+			n[i] >>= bits;
 		}
 
 		static void ShlBigNum(uint[] n, int bits, int len)
