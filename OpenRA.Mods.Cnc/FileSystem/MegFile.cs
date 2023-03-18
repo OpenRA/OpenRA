@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 {
 	/// <summary>
 	/// This class supports loading unencrypted V3 .meg files using
-	/// reference documentation from here https://modtools.petrolution.net/docs/MegFileFormat
+	/// reference documentation from here https://modtools.petrolution.net/docs/MegFileFormat.
 	/// </summary>
 	public class MegV3Loader : IPackageLoader
 	{

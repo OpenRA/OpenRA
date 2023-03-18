@@ -28,7 +28,7 @@ namespace OpenRA.Network
 
 		public Session LobbyInfo = new Session();
 
-		/// <summary> Null when watching a replay </summary>
+		/// <summary>Null when watching a replay.</summary>
 		public Session.Client LocalClient => LobbyInfo.ClientWithIndex(Connection.LocalClientId);
 		public World World;
 		public int OrderQueueLength => pendingOrders.Count > 0 ? pendingOrders.Min(q => q.Value.Count) : 0;
@@ -58,7 +58,11 @@ namespace OpenRA.Network
 		int sentOrdersFrame = 0;
 		float tickScale = 1f;
 
-		/// <Remarks> Should only be set in <see cref="OutOfSync"/></Remarks>
+		/// <summary>
+		/// Indicates if the world state of other players or a replay has diverged from the local state.
+		/// The game cannot reliably continue in this condition and is unusable.
+		/// </summary>
+		/// <remarks>Should only be set in <see cref="OutOfSync"/>.</remarks>
 		public bool IsOutOfSync { get; private set; } = false;
 
 		public struct ClientOrder

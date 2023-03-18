@@ -271,7 +271,7 @@ namespace OpenRA.FileSystem
 		}
 
 		/// <summary>
-		/// Returns true if the given filename references an external mod via an explicit mount
+		/// Returns true if the given filename references an external mod via an explicit mount.
 		/// </summary>
 		public bool IsExternalModFile(string filename)
 		{

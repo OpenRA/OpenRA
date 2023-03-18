@@ -102,7 +102,7 @@ namespace OpenRA
 
 		/// <summary>
 		/// Find the index of CosineTable that has the value closest to the given value.
-		/// The first or last index will be returned for values above or below the valid range
+		/// The first or last index will be returned for values above or below the valid range.
 		/// </summary>
 		static int ClosestCosineIndex(int value)
 		{

@@ -69,7 +69,8 @@ namespace OpenRA
 
 		public event Action GameOver = () => { };
 
-		/// <Remarks> Should only be set in <see cref="EndGame"/></Remarks>
+		/// <summary>Indicates that the game has ended.</summary>
+		/// <remarks>Should only be set in <see cref="EndGame"/>.</remarks>
 		public bool IsGameOver { get; private set; }
 		public void EndGame()
 		{

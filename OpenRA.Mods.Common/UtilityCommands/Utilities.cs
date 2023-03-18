@@ -18,7 +18,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 {
 	public static class Utilities
 	{
-		/// <exception cref="ArgumentNullException">Thrown if manifestPropertySelector is null.</exception>
 		public static MiniYamlNode GetTopLevelNodeByKey(ModData modData, string key,
 			Func<Manifest, string[]> manifestPropertySelector,
 			Func<Map, MiniYaml> mapPropertySelector = null,

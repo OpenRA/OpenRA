@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 	public static class CRC32
 	{
 		/// <summary>
-		/// The CRC32 lookup table
+		/// The CRC32 lookup table.
 		/// </summary>
 		static readonly uint[] LookUp = new uint[256]
 		{

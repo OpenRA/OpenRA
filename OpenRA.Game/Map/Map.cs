@@ -155,7 +155,7 @@ namespace OpenRA
 		public const int CurrentMapFormat = 12;
 		const short InvalidCachedTerrainIndex = -1;
 
-		/// <summary>Defines the order of the fields in map.yaml</summary>
+		/// <summary>Defines the order of the fields in map.yaml.</summary>
 		static readonly MapField[] YamlFields =
 		{
 			new MapField("MapFormat"),
@@ -993,7 +993,7 @@ namespace OpenRA
 		}
 
 		/// <summary>
-		/// The size of the map Height step in world units
+		/// The size of the map Height step in world units.
 		/// </summary>
 		/// RectangularIsometric defines 1024 units along the diagonal axis,
 		/// giving a half-tile height step of sqrt(2) * 512

@@ -520,7 +520,7 @@ dotnet_naming_rule.most_symbols_should_be_pascal_case.severity = warning
 
 
 ### StyleCop.Analyzers
-### https://github.com/DotNetAnalyzers/StyleCopAnalyzers/tree/master/documentation
+### https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/DOCUMENTATION.md
 
 # Below we enable rule categories by setting severity to warning.
 # We'll only list rules to disable.
@@ -536,6 +536,15 @@ dotnet_analyzer_diagnostic.category-StyleCop.CSharp.ReadabilityRules.severity = 
 dotnet_analyzer_diagnostic.category-StyleCop.CSharp.SpacingRules.severity = warning
 dotnet_analyzer_diagnostic.category-StyleCop.CSharp.SpecialRules.severity = warning
 
+# Rules that are covered by IDE0001 Simplify name
+dotnet_diagnostic.SA1125.severity = none # UseShorthandForNullableTypes
+
+# Rules that are covered by IDE0047 Remove unnecessary parentheses
+dotnet_diagnostic.SA1119.severity = none # StatementMustNotUseUnnecessaryParenthesis
+
+# Rules that are covered by IDE0055 Formatting Rules
+dotnet_diagnostic.SA1027.severity = none # UseTabsCorrectly
+
 # Rules that are covered by IDE1006 Naming Rules
 dotnet_diagnostic.SA1300.severity = none # ElementMustBeginWithUpperCaseLetter
 dotnet_diagnostic.SA1302.severity = none # InterfaceNamesMustBeginWithI
@@ -549,50 +558,45 @@ dotnet_diagnostic.SA1313.severity = none # ParameterNamesMustBeginWithLowerCaseL
 
 # Rules that conflict with OpenRA project style conventions
 dotnet_diagnostic.SA1101.severity = none # PrefixLocalCallsWithThis
+dotnet_diagnostic.SA1107.severity = none # CodeMustNotContainMultipleStatementsOnOneLine
+dotnet_diagnostic.SA1116.severity = none # SplitParametersMustStartOnLineAfterDeclaration
 dotnet_diagnostic.SA1117.severity = none # ParametersMustBeOnSameLineOrSeparateLines
 dotnet_diagnostic.SA1118.severity = none # ParameterMustNotSpanMultipleLines
 dotnet_diagnostic.SA1122.severity = none # UseStringEmptyForEmptyStrings
 dotnet_diagnostic.SA1124.severity = none # DoNotUseRegions
 dotnet_diagnostic.SA1127.severity = none # GenericTypeConstraintsMustBeOnOwnLine
+dotnet_diagnostic.SA1132.severity = none # DoNotCombineFields
 dotnet_diagnostic.SA1135.severity = none # UsingDirectivesMustBeQualified
 dotnet_diagnostic.SA1136.severity = none # EnumValuesShouldBeOnSeparateLines
 dotnet_diagnostic.SA1200.severity = none # UsingDirectivesMustBePlacedCorrectly
 dotnet_diagnostic.SA1201.severity = none # ElementsMustAppearInTheCorrectOrder
 dotnet_diagnostic.SA1202.severity = none # ElementsMustBeOrderedByAccess
+dotnet_diagnostic.SA1204.severity = none # StaticElementsMustAppearBeforeInstanceElements
+dotnet_diagnostic.SA1214.severity = none # ReadonlyElementsMustAppearBeforeNonReadonlyElements
+dotnet_diagnostic.SX1309.severity = none # FieldNamesMustBeginWithUnderscore
+dotnet_diagnostic.SX1309S.severity = none # StaticFieldNamesMustBeginWithUnderscore
 dotnet_diagnostic.SA1314.severity = none # TypeParameterNamesMustBeginWithT
 dotnet_diagnostic.SA1400.severity = none # AccessModifierMustBeDeclared
 dotnet_diagnostic.SA1401.severity = none # FieldsMustBePrivate
 dotnet_diagnostic.SA1402.severity = none # FileMayOnlyContainASingleType
 dotnet_diagnostic.SA1407.severity = none # ArithmeticExpressionsMustDeclarePrecedence
+dotnet_diagnostic.SA1413.severity = none # UseTrailingCommasInMultiLineInitializers
 dotnet_diagnostic.SA1501.severity = none # StatementMustNotBeOnSingleLine
 dotnet_diagnostic.SA1502.severity = none # ElementMustNotBeOnSingleLine
 dotnet_diagnostic.SA1503.severity = none # BracesMustNotBeOmitted
+dotnet_diagnostic.SA1516.severity = none # ElementsMustBeSeparatedByBlankLine
 dotnet_diagnostic.SA1519.severity = none # BracesMustNotBeOmittedFromMultiLineChildStatement
 dotnet_diagnostic.SA1520.severity = none # UseBracesConsistently
 dotnet_diagnostic.SA1600.severity = none # ElementsMustBeDocumented
 dotnet_diagnostic.SA1601.severity = none # PartialElementsMustBeDocumented
 dotnet_diagnostic.SA1602.severity = none # EnumerationItemsMustBeDocumented
-dotnet_diagnostic.SA1633.severity = none # FileMustHaveHeader
-dotnet_diagnostic.SA1649.severity = none # FileNameMustMatchTypeName
-
-# Rules that could potentially be enabled after existing violations are fixed
-dotnet_diagnostic.SA1027.severity = none # UseTabsCorrectly
-dotnet_diagnostic.SA1107.severity = none # CodeMustNotContainMultipleStatementsOnOneLine
-dotnet_diagnostic.SA1116.severity = none # SplitParametersMustStartOnLineAfterDeclaration
-dotnet_diagnostic.SA1119.severity = none # StatementMustNotUseUnnecessaryParenthesis
-dotnet_diagnostic.SA1132.severity = none # DoNotCombineFields
-dotnet_diagnostic.SA1204.severity = none # StaticElementsMustAppearBeforeInstanceElements
-dotnet_diagnostic.SA1214.severity = none # ReadonlyElementsMustAppearBeforeNonReadonlyElements
-dotnet_diagnostic.SA1413.severity = none # UseTrailingCommasInMultiLineInitializers
-dotnet_diagnostic.SA1516.severity = none # ElementsMustBeSeparatedByBlankLine
-dotnet_diagnostic.SA1604.severity = none # ElementDocumentationShouldHaveSummary
 dotnet_diagnostic.SA1611.severity = none # ElementParametersShouldBeDocumented
 dotnet_diagnostic.SA1615.severity = none # ElementReturnValueShouldBeDocumented
 dotnet_diagnostic.SA1618.severity = none # GenericTypeParametersShouldBeDocumented
 dotnet_diagnostic.SA1623.severity = none # PropertySummaryDocumentationShouldMatchAccessors
-dotnet_diagnostic.SA1629.severity = none # DocumentationTextShouldEndWithAPeriod
+dotnet_diagnostic.SA1633.severity = none # FileMustHaveHeader
 dotnet_diagnostic.SA1642.severity = none # ConstructorSummaryDocumentationShouldBeginWithStandardText
-
+dotnet_diagnostic.SA1649.severity = none # FileNameMustMatchTypeName
 
 #### Code Quality Rules
 #### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/

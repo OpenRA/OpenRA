@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 			return ret;
 		}
 
-		/// <summary>Evaluates the attractiveness of a position according to all considerations</summary>
+		/// <summary>Evaluates the attractiveness of a position according to all considerations.</summary>
 		public int GetAttractiveness(WPos pos, Player firedBy)
 		{
 			var answer = 0;
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 			return answer;
 		}
 
-		/// <summary>Evaluates the attractiveness of a group of actors according to all considerations</summary>
+		/// <summary>Evaluates the attractiveness of a group of actors according to all considerations.</summary>
 		public int GetAttractiveness(IEnumerable<Actor> actors, Player firedBy)
 		{
 			var answer = 0;
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Traits
 				FieldLoader.Load(this, yaml);
 			}
 
-			/// <summary>Evaluates a single actor according to the rules defined in this consideration</summary>
+			/// <summary>Evaluates a single actor according to the rules defined in this consideration.</summary>
 			public int GetAttractiveness(Actor a, PlayerRelationship stance, Player firedBy)
 			{
 				if (stance != Against)

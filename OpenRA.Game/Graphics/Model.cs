@@ -26,7 +26,7 @@ namespace OpenRA.Graphics
 		float[] Bounds(uint frame);
 		ModelRenderData RenderData(uint section);
 
-		/// <summary>Returns the smallest rectangle that covers all rotations of all frames in a model</summary>
+		/// <summary>Returns the smallest rectangle that covers all rotations of all frames in a model.</summary>
 		Rectangle AggregateBounds { get; }
 	}
 

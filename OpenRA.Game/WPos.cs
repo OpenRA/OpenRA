@@ -37,12 +37,12 @@ namespace OpenRA
 		public static bool operator !=(in WPos me, in WPos other) { return !(me == other); }
 
 		/// <summary>
-		/// Returns the linear interpolation between points 'a' and 'b'
+		/// Returns the linear interpolation between points 'a' and 'b'.
 		/// </summary>
 		public static WPos Lerp(in WPos a, in WPos b, int mul, int div) { return a + (b - a) * mul / div; }
 
 		/// <summary>
-		/// Returns the linear interpolation between points 'a' and 'b'
+		/// Returns the linear interpolation between points 'a' and 'b'.
 		/// </summary>
 		public static WPos Lerp(in WPos a, in WPos b, long mul, long div)
 		{

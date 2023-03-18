@@ -78,7 +78,7 @@ namespace OpenRA.Graphics
 		/// <summary>
 		/// Calculate the 2D intersection of two lines.
 		/// Will behave badly if the lines are parallel.
-		/// Z position is the average of a and b (ignores actual intersection point if it exists)
+		/// Z position is the average of a and b (ignores actual intersection point if it exists).
 		/// </summary>
 		float3 IntersectionOf(in float3 a, in float3 da, in float3 b, in float3 db)
 		{

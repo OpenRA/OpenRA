@@ -64,7 +64,7 @@ namespace OpenRA
 		public bool Hidden;
 	}
 
-	/// <summary> Describes what is to be loaded in order to run a mod. </summary>
+	/// <summary>Describes what is to be loaded in order to run a mod.</summary>
 	public class Manifest : IDisposable
 	{
 		public readonly string Id;
