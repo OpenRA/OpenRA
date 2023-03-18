@@ -32,10 +32,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		public override void ValidateMapFormat(int format)
 		{
 			if (format > 1)
-			{
 				Console.WriteLine($"ERROR: Detected NewINIFormat {format}. Are you trying to import a Red Alert map?");
-				return;
-			}
 		}
 
 		static readonly Dictionary<string, (byte Type, byte Index)> OverlayResourceMapping = new()
@@ -145,20 +142,20 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			string faction;
 			switch (section)
 			{
-			case "GoodGuy":
-				color = "gold";
-				faction = "gdi";
-				break;
-			case "BadGuy":
-				color = "red";
-				faction = "nod";
-				break;
-			case "Special":
-			case "Neutral":
-			default:
-				color = "neutral";
-				faction = "gdi";
-				break;
+				case "GoodGuy":
+					color = "gold";
+					faction = "gdi";
+					break;
+				case "BadGuy":
+					color = "red";
+					faction = "nod";
+					break;
+				case "Special":
+				case "Neutral":
+				default:
+					color = "neutral";
+					faction = "gdi";
+					break;
 			}
 
 			SetMapPlayers(section, faction, color, file, Players, MapPlayers);

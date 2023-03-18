@@ -570,7 +570,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			catch (Exception ex)
 			{
 				Log.Write("debug", ex.ToString());
-				return;
 			}
 		}
 

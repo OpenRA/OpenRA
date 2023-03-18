@@ -204,8 +204,6 @@ namespace OpenRA.Mods.Cnc.Traits
 					cursor = targetCursor;
 					return true;
 				}
-
-				return false;
 			}
 
 			return false;
@@ -252,7 +250,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (portableChrono.IsTraitDisabled || portableChrono.IsTraitPaused)
 			{
 				world.CancelInputMode();
-				return;
 			}
 		}
 

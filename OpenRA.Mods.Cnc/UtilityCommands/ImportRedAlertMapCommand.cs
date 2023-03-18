@@ -34,10 +34,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		public override void ValidateMapFormat(int format)
 		{
 			if (format < 2)
-			{
 				Console.WriteLine($"ERROR: Detected NewINIFormat {format}. Are you trying to import a Tiberian Dawn map?");
-				return;
-			}
 		}
 
 		// Mapping from RA95 overlay index to type string
@@ -146,46 +143,46 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			string faction;
 			switch (section)
 			{
-			case "Spain":
-				color = "gold";
-				faction = "allies";
-				break;
-			case "England":
-				color = "green";
-				faction = "allies";
-				break;
-			case "Ukraine":
-				color = "orange";
-				faction = "soviet";
-				break;
-			case "Germany":
-				color = "black";
-				faction = "allies";
-				break;
-			case "France":
-				color = "teal";
-				faction = "allies";
-				break;
-			case "Turkey":
-				color = "salmon";
-				faction = "allies";
-				break;
-			case "Greece":
-			case "GoodGuy":
-				color = "blue";
-				faction = "allies";
-				break;
-			case "USSR":
-			case "BadGuy":
-				color = "red";
-				faction = "soviet";
-				break;
-			case "Special":
-			case "Neutral":
-			default:
-				color = "neutral";
-				faction = "allies";
-				break;
+				case "Spain":
+					color = "gold";
+					faction = "allies";
+					break;
+				case "England":
+					color = "green";
+					faction = "allies";
+					break;
+				case "Ukraine":
+					color = "orange";
+					faction = "soviet";
+					break;
+				case "Germany":
+					color = "black";
+					faction = "allies";
+					break;
+				case "France":
+					color = "teal";
+					faction = "allies";
+					break;
+				case "Turkey":
+					color = "salmon";
+					faction = "allies";
+					break;
+				case "Greece":
+				case "GoodGuy":
+					color = "blue";
+					faction = "allies";
+					break;
+				case "USSR":
+				case "BadGuy":
+					color = "red";
+					faction = "soviet";
+					break;
+				case "Special":
+				case "Neutral":
+				default:
+					color = "neutral";
+					faction = "allies";
+					break;
 			}
 
 			SetMapPlayers(section, faction, color, file, Players, MapPlayers);

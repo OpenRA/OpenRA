@@ -313,7 +313,7 @@ namespace OpenRA.Mods.Common.Traits
 				Uncloak();
 		}
 
-		void INotifySupportPower.Charged(Actor self) { return; }
+		void INotifySupportPower.Charged(Actor self) { }
 
 		void INotifySupportPower.Activated(Actor self)
 		{

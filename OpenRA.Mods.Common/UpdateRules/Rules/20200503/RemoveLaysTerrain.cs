@@ -23,8 +23,6 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			if (actorNode.RemoveNodes("LaysTerrain") > 0)
 				yield return $"'LaysTerrain' was removed from {actorNode.Key} ({actorNode.Location.Filename}) without replacement.\n";
-
-			yield break;
 		}
 	}
 }
