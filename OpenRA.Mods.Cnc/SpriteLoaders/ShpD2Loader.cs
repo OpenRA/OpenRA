@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			public ShpD2Frame(Stream s)
 			{
 				var flags = (FormatFlags)s.ReadUInt16();
-				s.Position += 1;
+				s.Position++;
 				var width = s.ReadUInt16();
 				var height = s.ReadUInt8();
 				Size = new Size(width, height);

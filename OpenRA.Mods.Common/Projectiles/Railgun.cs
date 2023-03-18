@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 			CycleCount = SourceToTarget.Length / info.HelixPitch.Length;
 			if (SourceToTarget.Length % info.HelixPitch.Length != 0)
-				CycleCount += 1; // math.ceil, int version.
+				CycleCount++; // math.ceil, int version.
 
 			// Using ForwardStep * CycleCount, the helix and the main beam gets "out of sync"
 			// if drawn from source to target. Instead, the main beam is drawn from source to end point of helix.

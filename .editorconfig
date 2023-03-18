@@ -1004,6 +1004,9 @@ dotnet_diagnostic.RCS1080.severity = warning
 # Use coalesce expression instead of conditional expression.
 dotnet_diagnostic.RCS1084.severity = warning
 
+# Use --/++ operator instead of assignment.
+dotnet_diagnostic.RCS1089.severity = warning
+
 # Remove empty region.
 dotnet_diagnostic.RCS1091.severity = warning
 

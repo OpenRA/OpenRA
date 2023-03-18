@@ -302,9 +302,9 @@ namespace OpenRA
 
 			// Adjust for other rounding modes
 			if (round == ISqrtRoundMode.Nearest && remainder > root)
-				root += 1;
+				root++;
 			else if (round == ISqrtRoundMode.Ceiling && root * root < number)
-				root += 1;
+				root++;
 
 			return root;
 		}
@@ -343,9 +343,9 @@ namespace OpenRA
 
 			// Adjust for other rounding modes
 			if (round == ISqrtRoundMode.Nearest && remainder > root)
-				root += 1;
+				root++;
 			else if (round == ISqrtRoundMode.Ceiling && root * root < number)
-				root += 1;
+				root++;
 
 			return root;
 		}

@@ -611,7 +611,7 @@ namespace OpenRA
 
 			// Odd-height ramps get bumped up a level to the next even height layer
 			if ((height & 1) == 1 && Ramp[uv] != 0)
-				height += 1;
+				height++;
 
 			var candidates = new List<PPos>();
 

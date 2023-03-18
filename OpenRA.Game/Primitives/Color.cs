@@ -154,7 +154,7 @@ namespace OpenRA.Primitives
 
 			// Wrap negative values into [0-1)
 			if (h < 0)
-				h += 1;
+				h++;
 
 			var s = delta / rgbMax;
 			return (h, s, v);

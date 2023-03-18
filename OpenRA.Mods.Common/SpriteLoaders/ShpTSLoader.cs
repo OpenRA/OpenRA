@@ -41,10 +41,10 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 				var dataWidth = width;
 				var dataHeight = height;
 				if (dataWidth % 2 == 1)
-					dataWidth += 1;
+					dataWidth++;
 
 				if (dataHeight % 2 == 1)
-					dataHeight += 1;
+					dataHeight++;
 
 				Offset = new int2(x + (dataWidth - frameSize.Width) / 2, y + (dataHeight - frameSize.Height) / 2);
 				Size = new Size(dataWidth, dataHeight);
