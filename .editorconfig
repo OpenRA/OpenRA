@@ -1025,6 +1025,9 @@ dotnet_diagnostic.RCS1113.severity = warning
 # Bitwise operation on enum without Flags attribute.
 dotnet_diagnostic.RCS1130.severity = warning
 
+# Remove redundant overriding member.
+dotnet_diagnostic.RCS1132.severity = warning
+
 # Remove redundant Dispose/Close call.
 dotnet_diagnostic.RCS1133.severity = warning
 
