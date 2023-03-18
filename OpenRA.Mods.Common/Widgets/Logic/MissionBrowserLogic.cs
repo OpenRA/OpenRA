@@ -178,7 +178,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					missionList.ScrollToSelectedItem();
 				}
 				else
-					SelectMap(allPreviews.First());
+					SelectMap(allPreviews[0]);
 			}
 
 			// Preload map preview to reduce jank

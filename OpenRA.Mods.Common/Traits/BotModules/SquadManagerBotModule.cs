@@ -428,7 +428,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var allEnemyBaseBuilder = FindEnemies(
 				World.Actors.Where(a => Info.ConstructionYardTypes.Contains(a.Info.Name)),
-				ownUnits.First())
+				ownUnits[0])
 				.ToList();
 
 			if (allEnemyBaseBuilder.Count == 0 || ownUnits.Count < Info.SquadSize)
@@ -443,7 +443,7 @@ namespace OpenRA.Mods.Common.Traits
 							unit.Info.HasTraitInfo<AttackBaseInfo>()
 							&& !Info.AirUnitsTypes.Contains(unit.Info.Name)
 							&& !Info.NavalUnitsTypes.Contains(unit.Info.Name)),
-					ownUnits.First())
+					ownUnits[0])
 					.ToList();
 
 				if (AttackOrFleeFuzzy.Rush.CanAttack(ownUnits, enemies.ConvertAll(x => x.Actor)))

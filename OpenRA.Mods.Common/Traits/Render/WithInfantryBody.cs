@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Traits;
@@ -56,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				yield break;
 
 			var anim = new Animation(init.World, image, init.GetFacing());
-			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), StandSequences.First()));
+			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), StandSequences[0]));
 
 			if (IsPlayerPalette)
 				p = init.WorldRenderer.Palette(Palette + init.Get<OwnerInit>().InternalName);

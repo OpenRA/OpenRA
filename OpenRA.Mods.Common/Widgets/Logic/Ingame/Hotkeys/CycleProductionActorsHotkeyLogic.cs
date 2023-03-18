@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 			var facilities = world.ActorsHavingTrait<Production>()
 				.Where(a => a.Owner == player && a.OccupiesSpace != null && !a.Info.HasTraitInfo<BaseBuildingInfo>()
 					&& a.TraitsImplementing<Production>().Any(t => !t.IsTraitDisabled))
-				.OrderBy(f => f.TraitsImplementing<Production>().First(t => !t.IsTraitDisabled).Info.Produces.First())
+				.OrderBy(f => f.TraitsImplementing<Production>().First(t => !t.IsTraitDisabled).Info.Produces[0])
 				.ToList();
 
 			if (facilities.Count == 0)
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 				.Skip(1)
 				.FirstOrDefault();
 
-			next ??= facilities.First();
+			next ??= facilities[0];
 
 			Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", clickSound, null);
 

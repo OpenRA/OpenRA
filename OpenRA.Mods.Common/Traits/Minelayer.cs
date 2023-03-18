@@ -293,7 +293,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (mi.Button == Game.Settings.Game.MouseButtonPreference.Action)
 				{
-					minelayers.First().World.CancelInputMode();
+					minelayers[0].World.CancelInputMode();
 					foreach (var minelayer in minelayers)
 						yield return new Order("PlaceMinefield", minelayer, Target.FromCell(world, cell), queued) { ExtraLocation = minefieldStart };
 				}

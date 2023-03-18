@@ -226,7 +226,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					var vec = new CVec(Info.MineFieldRadius, Info.MineFieldRadius);
 					bot.QueueOrder(new Order("PlaceMinefield", null, Target.FromCell(world, minelayingPosition + vec), false, groupedActors: orderedActors.ToArray()) { ExtraLocation = minelayingPosition - vec });
-					bot.QueueOrder(new Order("Move", null, Target.FromCell(world, orderedActors.First().Location), true, groupedActors: orderedActors.ToArray()));
+					bot.QueueOrder(new Order("Move", null, Target.FromCell(world, orderedActors[0].Location), true, groupedActors: orderedActors.ToArray()));
 				}
 				else
 				{

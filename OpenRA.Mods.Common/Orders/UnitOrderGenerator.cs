@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Orders
 
 			// HACK: This is required by the hacky player actions-per-minute calculation
 			// TODO: Reimplement APM properly and then remove this
-			yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor, false, actorsInvolved);
+			yield return new Order("CreateGroup", actorsInvolved[0].Owner.PlayerActor, false, actorsInvolved);
 
 			foreach (var o in orders)
 				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));

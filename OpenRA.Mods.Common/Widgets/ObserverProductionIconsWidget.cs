@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Widgets
 					.ThenBy(q => q.RemainingTimeActual)
 					.ToList();
 
-				var current = queued.First();
+				var current = queued[0];
 				var queue = current.Queue;
 
 				var faction = queue.Actor.Owner.Faction.InternalName;
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var bold = Game.Renderer.Fonts["Small"];
 			foreach (var icon in productionIcons)
 			{
-				var current = icon.Queued.First();
+				var current = icon.Queued[0];
 				var text = GetOverlayForItem(current, world.Timestep);
 				tiny.DrawTextWithContrast(text,
 					icon.Pos + new float2(16, 12) - new float2(tiny.Measure(text).X / 2, 0),

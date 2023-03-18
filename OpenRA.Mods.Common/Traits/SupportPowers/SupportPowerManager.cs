@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Active)
 				return;
 
-			var power = Instances.First();
+			var power = Instances[0];
 			if (Manager.DevMode.FastCharge && remainingSubTicks > 2500)
 				remainingSubTicks = 2500;
 
