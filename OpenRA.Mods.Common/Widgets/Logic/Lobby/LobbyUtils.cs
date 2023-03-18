@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				foreach (var b in map.PlayerActorInfo.TraitInfos<IBotInfo>())
 				{
-					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
+					var botController = orderManager.LobbyInfo.Clients.Find(c => c.IsAdmin);
 					bots.Add(new SlotDropDownOption(b.Name,
 						$"slot_bot {slot.PlayerReference} {botController.Index} {b.Type}",
 						() => client != null && client.Bot == b.Type));
@@ -266,7 +266,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static void ClearPlayerSpawnPoint(OrderManager orderManager, MapPreviewWidget mapPreview, MapPreview preview, MouseInput mi)
 		{
 			var selectedSpawn = DetermineSelectedSpawnPoint(mapPreview, preview, mi);
-			if (Game.IsHost || orderManager.LobbyInfo.Clients.FirstOrDefault(cc => cc.SpawnPoint == selectedSpawn) == orderManager.LocalClient)
+			if (Game.IsHost || orderManager.LobbyInfo.Clients.Find(cc => cc.SpawnPoint == selectedSpawn) == orderManager.LocalClient)
 				orderManager.IssueOrder(Order.Command($"clear_spawn {selectedSpawn}"));
 		}
 

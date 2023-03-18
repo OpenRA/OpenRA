@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Server
 
 			var slot = server.LobbyInfo.FirstEmptyBotSlot();
 			var bot = server.Map.PlayerActorInfo.TraitInfos<IBotInfo>().Select(t => t.Type).FirstOrDefault();
-			var botController = server.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
+			var botController = server.LobbyInfo.Clients.Find(c => c.IsAdmin);
 			if (slot != null && bot != null)
 				server.InterpretCommand($"slot_bot {slot} {botController.Index} {bot}", conn);
 		}

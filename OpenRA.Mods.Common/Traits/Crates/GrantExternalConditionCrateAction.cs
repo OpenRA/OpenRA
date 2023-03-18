@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (external == null || !external.CanGrantCondition(self))
 				{
-					external = externals.FirstOrDefault(t => t.CanGrantCondition(self));
+					external = externals.Find(t => t.CanGrantCondition(self));
 					if (external == null)
 						break;
 				}

@@ -9,8 +9,8 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits
 			// TODO: This won't make sense for MP saves
 			var localPlayer = worldRenderer.World.LocalPlayer;
 			if ((localPlayer != null && localPlayer.PlayerActor != self) ||
-				(localPlayer == null && self.Owner != self.World.Players.FirstOrDefault(p => p.IsBot)))
+				(localPlayer == null && self.Owner != Array.Find(self.World.Players, p => p.IsBot)))
 				return null;
 
 			var nodes = new List<MiniYamlNode>()

@@ -222,7 +222,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Ready)
 				return;
 
-			var power = Instances.FirstOrDefault(i => !i.IsTraitPaused);
+			var power = Instances.Find(i => !i.IsTraitPaused);
 
 			if (power == null)
 				return;

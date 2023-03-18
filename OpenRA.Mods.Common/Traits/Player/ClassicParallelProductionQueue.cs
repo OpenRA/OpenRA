@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (allProductionPaused)
 				return;
 
-			var item = Queue.FirstOrDefault(i => !i.Paused);
+			var item = Queue.Find(i => !i.Paused);
 			if (item == null)
 				return;
 

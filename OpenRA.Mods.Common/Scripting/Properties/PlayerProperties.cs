@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			get
 			{
-				var c = Player.World.LobbyInfo.Clients.FirstOrDefault(i => i.Index == Player.ClientIndex);
+				var c = Player.World.LobbyInfo.Clients.Find(i => i.Index == Player.ClientIndex);
 				return c?.Team ?? 0;
 			}
 		}
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			get
 			{
-				var c = Player.World.LobbyInfo.Clients.FirstOrDefault(i => i.Index == Player.ClientIndex);
+				var c = Player.World.LobbyInfo.Clients.Find(i => i.Index == Player.ClientIndex);
 				return c?.Handicap ?? 0;
 			}
 		}

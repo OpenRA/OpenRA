@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var downloadYaml = MiniYaml.Load(modFileSystem, content.Downloads, null);
 				modFileSystem.UnmountAll();
 
-				var download = downloadYaml.FirstOrDefault(n => n.Key == content.QuickDownload);
+				var download = downloadYaml.Find(n => n.Key == content.QuickDownload);
 				if (download == null)
 					throw new InvalidOperationException($"Mod QuickDownload `{content.QuickDownload}` definition not found.");
 

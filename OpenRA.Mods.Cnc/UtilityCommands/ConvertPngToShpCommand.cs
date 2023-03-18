@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var inputFiles = GlobArgs(args).OrderBy(a => a).ToList();
 			var dest = inputFiles[0].Split('-').First() + ".shp";
 
-			var frames = inputFiles.Select(a => new Png(File.OpenRead(a))).ToList();
+			var frames = inputFiles.ConvertAll(a => new Png(File.OpenRead(a)));
 			if (frames.Any(f => f.Type != SpriteFrameType.Indexed8))
 				throw new InvalidOperationException("All frames must be paletted");
 

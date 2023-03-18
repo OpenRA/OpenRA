@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Warheads
 						falloffDistance = closestDistance;
 						break;
 					case DamageCalculationType.ClosestTargetablePosition:
-						falloffDistance = victim.GetTargetablePositions().Select(x => (x - pos).Length).Min();
+						falloffDistance = victim.GetTargetablePositions().Min(x => (x - pos).Length);
 						break;
 					case DamageCalculationType.CenterPosition:
 						falloffDistance = (victim.CenterPosition - pos).Length;

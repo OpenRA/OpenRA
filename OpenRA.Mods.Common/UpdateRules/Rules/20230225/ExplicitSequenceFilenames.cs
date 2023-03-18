@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			// Keep a resolved copy of the sequences so we can account for values imported through inheritance or Defaults.
 			// This will be modified during processing, so take a deep copy to avoid side-effects on other update rules.
-			this.resolvedImagesNodes = MiniYaml.FromString(resolvedImagesNodes.WriteToString()).Select(n => new MiniYamlNodeBuilder(n)).ToList();
+			this.resolvedImagesNodes = MiniYaml.FromString(resolvedImagesNodes.WriteToString()).ConvertAll(n => new MiniYamlNodeBuilder(n));
 
 			var requiredMetadata = new HashSet<string>();
 			foreach (var imageNode in resolvedImagesNodes)
@@ -213,7 +213,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					{
 						resolvedDefaultsNode.Value.Nodes.Select(n => n.Build()).ToArray(),
 						resolvedSequenceNode.Value.Nodes.Select(n => n.Build()).ToArray()
-					}).Select(n => new MiniYamlNodeBuilder(n)).ToList();
+					}).ConvertAll(n => new MiniYamlNodeBuilder(n));
 					resolvedSequenceNode.Value.Value ??= resolvedDefaultsNode.Value.Value;
 				}
 			}

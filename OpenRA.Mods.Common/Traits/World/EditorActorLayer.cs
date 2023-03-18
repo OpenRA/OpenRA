@@ -332,7 +332,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public EditorActorPreview this[string id]
 		{
-			get { return previews.FirstOrDefault(p => p.ID.Equals(id, StringComparison.OrdinalIgnoreCase)); }
+			get { return previews.Find(p => p.ID.Equals(id, StringComparison.OrdinalIgnoreCase)); }
 		}
 	}
 }

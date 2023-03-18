@@ -515,7 +515,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void PauseProduction(string itemName, bool paused)
 		{
-			Queue.FirstOrDefault(a => a.Item == itemName)?.Pause(paused);
+			Queue.Find(a => a.Item == itemName)?.Pause(paused);
 		}
 
 		protected virtual void CancelProduction(string itemName, uint numberToCancel)

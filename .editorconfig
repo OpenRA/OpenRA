@@ -1023,6 +1023,9 @@ dotnet_diagnostic.RCS1072.severity = warning
 # Remove redundant constructor.
 dotnet_diagnostic.RCS1074.severity = warning
 
+# Optimize LINQ method call.
+dotnet_diagnostic.RCS1077.severity = warning
+
 # Use 'Count' property instead of 'Any' method.
 dotnet_diagnostic.RCS1080.severity = warning
 

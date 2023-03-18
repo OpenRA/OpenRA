@@ -162,7 +162,7 @@ namespace OpenRA
 				throw new YamlException(exceptionString);
 			}
 
-			constructOrderCache = resolved.Select(r => r.Trait).ToList();
+			constructOrderCache = resolved.ConvertAll(r => r.Trait);
 			return constructOrderCache;
 		}
 

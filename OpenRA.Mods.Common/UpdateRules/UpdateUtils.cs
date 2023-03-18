@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 					continue;
 				}
 
-				yaml.Add(((IReadWritePackage)package, name, MiniYaml.FromStream(package.GetStream(name), name, false).Select(n => new MiniYamlNodeBuilder(n)).ToList()));
+				yaml.Add(((IReadWritePackage)package, name, MiniYaml.FromStream(package.GetStream(name), name, false).ConvertAll(n => new MiniYamlNodeBuilder(n))));
 			}
 
 			return yaml;
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			{
 				// Ignore any files that aren't in the map bundle
 				if (!filename.Contains('|') && mapPackage.Contains(filename))
-					fileSet.Add((mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename), filename, false).Select(n => new MiniYamlNodeBuilder(n)).ToList()));
+					fileSet.Add((mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename), filename, false).ConvertAll(n => new MiniYamlNodeBuilder(n))));
 				else if (modData.ModFiles.Exists(filename))
 					externalFilenames.Add(filename);
 			}
@@ -177,9 +177,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 			}
 
 			if (mapNode != null && mapNode.Nodes.Count > 0)
-				yaml.Add(mapNode.Nodes.Select(n => n.Build()).ToList());
+				yaml.Add(mapNode.Nodes.ConvertAll(n => n.Build()));
 
-			return MiniYaml.Merge(yaml).Select(n => new MiniYamlNodeBuilder(n)).ToList();
+			return MiniYaml.Merge(yaml).ConvertAll(n => new MiniYamlNodeBuilder(n));
 		}
 
 		static IEnumerable<string> FilterExternalModFiles(ModData modData, IEnumerable<string> files, HashSet<string> externalFilenames)
@@ -241,7 +241,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			if (rule is IBeforeUpdateActors beforeActors)
 			{
 				var resolvedActors = MiniYaml.Load(modData.DefaultFileSystem, modData.Manifest.Rules, null)
-					.Select(n => new MiniYamlNodeBuilder(n)).ToList();
+					.ConvertAll(n => new MiniYamlNodeBuilder(n));
 				manualSteps.AddRange(beforeActors.BeforeUpdateActors(modData, resolvedActors));
 			}
 
@@ -250,7 +250,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			if (rule is IBeforeUpdateWeapons beforeWeapons)
 			{
 				var resolvedWeapons = MiniYaml.Load(modData.DefaultFileSystem, modData.Manifest.Weapons, null)
-					.Select(n => new MiniYamlNodeBuilder(n)).ToList();
+					.ConvertAll(n => new MiniYamlNodeBuilder(n));
 				manualSteps.AddRange(beforeWeapons.BeforeUpdateWeapons(modData, resolvedWeapons));
 			}
 
@@ -259,7 +259,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			if (rule is IBeforeUpdateSequences beforeSequences)
 			{
 				var resolvedImages = MiniYaml.Load(modData.DefaultFileSystem, modData.Manifest.Sequences, null)
-					.Select(n => new MiniYamlNodeBuilder(n)).ToList();
+					.ConvertAll(n => new MiniYamlNodeBuilder(n));
 				manualSteps.AddRange(beforeSequences.BeforeUpdateSequences(modData, resolvedImages));
 			}
 

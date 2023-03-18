@@ -305,7 +305,7 @@ namespace OpenRA.Mods.Common.Traits
 		// HACK: Use of this function requires that there is one squad of this type.
 		Squad GetSquadOfType(SquadType type)
 		{
-			return Squads.FirstOrDefault(s => s.Type == type);
+			return Squads.Find(s => s.Type == type);
 		}
 
 		Squad RegisterNewSquad(IBot bot, SquadType type, (Actor Actor, WVec Offset) target = default)
@@ -446,7 +446,7 @@ namespace OpenRA.Mods.Common.Traits
 					ownUnits.First())
 					.ToList();
 
-				if (AttackOrFleeFuzzy.Rush.CanAttack(ownUnits, enemies.Select(x => x.Actor).ToList()))
+				if (AttackOrFleeFuzzy.Rush.CanAttack(ownUnits, enemies.ConvertAll(x => x.Actor)))
 				{
 					var target = enemies.Count > 0 ? enemies.Random(World.LocalRandom) : enemyBaseBuilder;
 					var rush = GetSquadOfType(SquadType.Rush);
@@ -508,7 +508,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			return new List<MiniYamlNode>()
 			{
-				new("Squads", "", Squads.Select(s => new MiniYamlNode("Squad", s.Serialize())).ToList()),
+				new("Squads", "", Squads.ConvertAll(s => new MiniYamlNode("Squad", s.Serialize()))),
 				new("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter)),
 				new("UnitsHangingAroundTheBase", FieldSaver.FormatValue(unitsHangingAroundTheBase
 					.Where(a => !unitCannotBeOrdered(a))

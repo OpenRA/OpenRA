@@ -670,7 +670,7 @@ namespace OpenRA
 		public MiniYamlBuilder(string value, List<MiniYamlNode> nodes)
 		{
 			Value = value;
-			Nodes = nodes == null ? new List<MiniYamlNodeBuilder>() : nodes.Select(x => new MiniYamlNodeBuilder(x)).ToList();
+			Nodes = nodes == null ? new List<MiniYamlNodeBuilder>() : nodes.ConvertAll(x => new MiniYamlNodeBuilder(x));
 		}
 
 		public MiniYaml Build()

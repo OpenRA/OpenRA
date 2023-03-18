@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -284,7 +283,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void ScrollToItem(string itemKey, bool smooth = false)
 		{
-			var item = Children.FirstOrDefault(c => c is ScrollItemWidget si && si.ItemKey == itemKey);
+			var item = Children.Find(c => c is ScrollItemWidget si && si.ItemKey == itemKey);
 
 			if (item != null)
 				ScrollToItem(item, smooth);
@@ -292,7 +291,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void ScrollToSelectedItem()
 		{
-			var item = Children.FirstOrDefault(c => c is ScrollItemWidget si && si.IsSelected());
+			var item = Children.Find(c => c is ScrollItemWidget si && si.IsSelected());
 
 			if (item != null)
 				ScrollToItem(item);
@@ -469,7 +468,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (collection != col)
 					return;
 
-				var widget = Children.FirstOrDefault(w => widgetItemEquals(w, item));
+				var widget = Children.Find(w => widgetItemEquals(w, item));
 				if (widget != null)
 					RemoveChild(widget);
 			});
