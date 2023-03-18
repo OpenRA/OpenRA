@@ -93,12 +93,12 @@ namespace OpenRA
 
 			public bool MoveNext()
 			{
-				u += 1;
+				u++;
 
 				// Check for column overflow
 				if (u > r.BottomRight.U)
 				{
-					v += 1;
+					v++;
 					u = r.TopLeft.U;
 
 					// Check for row overflow

@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Traits
 				currentTargetDelay = 0;
 			}
 			else
-				currentTargetDelay += 1;
+				currentTargetDelay++;
 
 			if (capturingToken == Actor.InvalidConditionToken)
 				capturingToken = self.GrantCondition(info.CapturingCondition);

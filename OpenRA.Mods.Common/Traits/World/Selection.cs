@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Not a real hash, but things checking this only care about checking when the selection has changed
 			// For this purpose, having a false positive (forcing a refresh when nothing changed) is much better
 			// than a false negative (selection state mismatch)
-			Hash += 1;
+			Hash++;
 		}
 
 		public virtual void Add(Actor a)

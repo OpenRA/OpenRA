@@ -135,12 +135,12 @@ namespace OpenRA
 
 			public bool MoveNext()
 			{
-				u += 1;
+				u++;
 
 				// Check for column overflow
 				if (u > r.mapBottomRight.U)
 				{
-					v += 1;
+					v++;
 					u = r.mapTopLeft.U;
 
 					// Check for row overflow

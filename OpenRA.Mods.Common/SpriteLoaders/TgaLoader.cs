@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			try
 			{
 				// Require true-color images
-				s.Position += 1;
+				s.Position++;
 				var colorMapType = s.ReadUInt8();
 				if (colorMapType != 0)
 					return false;

@@ -714,7 +714,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			RemainingCost -= costThisFrame;
-			RemainingTime -= 1;
+			RemainingTime--;
 			if (RemainingTime > 0)
 				return;
 

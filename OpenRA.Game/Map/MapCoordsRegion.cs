@@ -35,7 +35,7 @@ namespace OpenRA
 				// Check for column overflow
 				if (u > r.BottomRight.U)
 				{
-					v += 1;
+					v++;
 					u = r.TopLeft.U;
 
 					// Check for row overflow

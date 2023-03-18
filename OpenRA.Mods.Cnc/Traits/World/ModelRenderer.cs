@@ -250,9 +250,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			// Width and height must be even to avoid rendering glitches
 			if ((width & 1) == 1)
-				width += 1;
+				width++;
 			if ((height & 1) == 1)
-				height += 1;
+				height++;
 
 			size = new Size(width, height);
 		}
