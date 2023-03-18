@@ -974,6 +974,9 @@ dotnet_diagnostic.RCS1048.severity = warning
 # Simplify boolean comparison.
 dotnet_diagnostic.RCS1049.severity = warning
 
+# Use compound assignment.
+dotnet_diagnostic.RCS1058.severity = warning
+
 # Avoid locking on publicly accessible instance.
 dotnet_diagnostic.RCS1059.severity = warning
 
