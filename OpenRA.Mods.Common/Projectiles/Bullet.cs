@@ -377,9 +377,8 @@ namespace OpenRA.Mods.Common.Projectiles
 				// If the impact position is within any actor's HitShape, we have a direct hit
 				// PERF: Avoid using TraitsImplementing<HitShape> that needs to find the actor in the trait dictionary.
 				foreach (var targetPos in victim.EnabledTargetablePositions)
-					if (targetPos is HitShape h)
-						if (h.DistanceFromEdge(victim, pos).Length <= 0)
-							return true;
+					if (targetPos is HitShape h && h.DistanceFromEdge(victim, pos).Length <= 0)
+						return true;
 			}
 
 			return false;

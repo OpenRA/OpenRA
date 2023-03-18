@@ -980,6 +980,9 @@ dotnet_diagnostic.RCS1058.severity = warning
 # Avoid locking on publicly accessible instance.
 dotnet_diagnostic.RCS1059.severity = warning
 
+# Merge 'if' with nested 'if'.
+dotnet_diagnostic.RCS1061.severity = warning
+
 # Remove empty 'finally' clause.
 dotnet_diagnostic.RCS1066.severity = warning
 

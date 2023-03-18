@@ -60,14 +60,11 @@ namespace OpenRA.Mods.Cnc.Graphics
 				var tilesetNode = node.Value.NodeWithKeyOrDefault(tileset);
 				if (tilesetNode != null)
 				{
-					if (frames == null)
+					if (frames == null && LoadField<string>("Length", null, data) != "*")
 					{
-						if (LoadField<string>("Length", null, data) != "*")
-						{
-							var subStart = LoadField("Start", 0, data);
-							var subLength = LoadField("Length", 1, data);
-							frames = Exts.MakeArray(subLength, i => subStart + i);
-						}
+						var subStart = LoadField("Start", 0, data);
+						var subLength = LoadField("Length", 1, data);
+						frames = Exts.MakeArray(subLength, i => subStart + i);
 					}
 
 					return new[] { new ReservationInfo(tilesetNode.Value.Value, frames, frames, tilesetNode.Location) };

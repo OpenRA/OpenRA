@@ -75,11 +75,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Timed tokens do not count towards the source cap: the condition with the shortest
 			// remaining duration can always be revoked to make room.
-			if (Info.SourceCap > 0)
-				if (permanentTokens.TryGetValue(source, out var permanentTokensForSource) && permanentTokensForSource.Count >= Info.SourceCap)
-					return false;
+			if (Info.SourceCap > 0 &&
+				permanentTokens.TryGetValue(source, out var permanentTokensForSource) &&
+				permanentTokensForSource.Count >= Info.SourceCap)
+				return false;
 
-			if (Info.TotalCap > 0 && permanentTokens.Values.Sum(t => t.Count) >= Info.TotalCap)
+			if (Info.TotalCap > 0 &&
+				permanentTokens.Values.Sum(t => t.Count) >= Info.TotalCap)
 				return false;
 
 			return true;

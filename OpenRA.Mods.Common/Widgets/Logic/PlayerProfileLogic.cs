@@ -100,27 +100,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				badgesVisible = false;
 
-				if (localProfile.State == LocalPlayerProfile.LinkState.Linked)
+				if (localProfile.State == LocalPlayerProfile.LinkState.Linked && localProfile.ProfileData.Badges.Count > 0)
 				{
-					if (localProfile.ProfileData.Badges.Count > 0)
-					{
-						Func<int, int> negotiateWidth = _ => widget.Get("PROFILE_HEADER").Bounds.Width;
+					Func<int, int> negotiateWidth = _ => widget.Get("PROFILE_HEADER").Bounds.Width;
 
-						// Remove any stale badges that may be left over from a previous session
-						badgeContainer.RemoveChildren();
+					// Remove any stale badges that may be left over from a previous session
+					badgeContainer.RemoveChildren();
 
-						var badges = Ui.LoadWidget("PLAYER_PROFILE_BADGES_INSERT", badgeContainer, new WidgetArgs()
+					var badges = Ui.LoadWidget("PLAYER_PROFILE_BADGES_INSERT", badgeContainer, new WidgetArgs()
 						{
 							{ "worldRenderer", worldRenderer },
 							{ "profile", localProfile.ProfileData },
 							{ "negotiateWidth", negotiateWidth }
 						});
 
-						if (badges.Bounds.Height > 0)
-						{
-							badgeContainer.Bounds.Height = badges.Bounds.Height;
-							badgesVisible = true;
-						}
+					if (badges.Bounds.Height > 0)
+					{
+						badgeContainer.Bounds.Height = badges.Bounds.Height;
+						badgesVisible = true;
 					}
 				}
 

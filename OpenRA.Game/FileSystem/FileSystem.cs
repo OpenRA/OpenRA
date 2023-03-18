@@ -226,14 +226,11 @@ namespace OpenRA.FileSystem
 		public bool TryOpen(string filename, out Stream s)
 		{
 			var explicitSplit = filename.IndexOf('|');
-			if (explicitSplit > 0)
+			if (explicitSplit > 0 && explicitMounts.TryGetValue(filename[..explicitSplit], out var explicitPackage))
 			{
-				if (explicitMounts.TryGetValue(filename[..explicitSplit], out var explicitPackage))
-				{
-					s = explicitPackage.GetStream(filename[(explicitSplit + 1)..]);
-					if (s != null)
-						return true;
-				}
+				s = explicitPackage.GetStream(filename[(explicitSplit + 1)..]);
+				if (s != null)
+					return true;
 			}
 
 			s = GetFromCache(filename);
@@ -262,10 +259,10 @@ namespace OpenRA.FileSystem
 		public bool Exists(string filename)
 		{
 			var explicitSplit = filename.IndexOf('|');
-			if (explicitSplit > 0)
-				if (explicitMounts.TryGetValue(filename[..explicitSplit], out var explicitPackage))
-					if (explicitPackage.Contains(filename[(explicitSplit + 1)..]))
-						return true;
+			if (explicitSplit > 0 &&
+				explicitMounts.TryGetValue(filename[..explicitSplit], out var explicitPackage) &&
+				explicitPackage.Contains(filename[(explicitSplit + 1)..]))
+				return true;
 
 			return fileIndex.ContainsKey(filename);
 		}

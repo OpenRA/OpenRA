@@ -750,13 +750,11 @@ namespace OpenRA.Support
 			public void Push(Expression expression, ExpressionType type)
 			{
 				expressions.Add(expression);
-				if (type == ExpressionType.Int)
-					if (expression.Type != typeof(int))
-						throw new InvalidOperationException($"Expected System.Int type instead of {expression.Type} for {expression}");
+				if (type == ExpressionType.Int && expression.Type != typeof(int))
+					throw new InvalidOperationException($"Expected System.Int type instead of {expression.Type} for {expression}");
 
-				if (type == ExpressionType.Bool)
-					if (expression.Type != typeof(bool))
-						throw new InvalidOperationException($"Expected System.Boolean type instead of {expression.Type} for {expression}");
+				if (type == ExpressionType.Bool && expression.Type != typeof(bool))
+					throw new InvalidOperationException($"Expected System.Boolean type instead of {expression.Type} for {expression}");
 				types.Add(type);
 			}
 

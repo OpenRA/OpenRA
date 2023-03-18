@@ -235,10 +235,9 @@ namespace OpenRA.Mods.Cnc.FileSystem
 			}
 
 			// Load the global mix database
-			if (globalFilenames == null)
-				if (context.TryOpen("global mix database.dat", out var mixDatabase))
-					using (var db = new XccGlobalDatabase(mixDatabase))
-						globalFilenames = db.Entries.ToHashSet().ToArray();
+			if (globalFilenames == null && context.TryOpen("global mix database.dat", out var mixDatabase))
+				using (var db = new XccGlobalDatabase(mixDatabase))
+					globalFilenames = db.Entries.ToHashSet().ToArray();
 
 			package = new MixFile(s, filename, globalFilenames ?? Array.Empty<string>());
 			return true;

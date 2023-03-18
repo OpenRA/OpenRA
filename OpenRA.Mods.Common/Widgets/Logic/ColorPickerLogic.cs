@@ -97,15 +97,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var palettePresetRows = 2;
 			var paletteCustomRows = 1;
 
-			if (logicArgs.TryGetValue("PaletteColumns", out var yaml))
-				if (!int.TryParse(yaml.Value, out paletteCols))
-					throw new YamlException($"Invalid value for PaletteColumns: {yaml.Value}");
-			if (logicArgs.TryGetValue("PalettePresetRows", out yaml))
-				if (!int.TryParse(yaml.Value, out palettePresetRows))
-					throw new YamlException($"Invalid value for PalettePresetRows: {yaml.Value}");
-			if (logicArgs.TryGetValue("PaletteCustomRows", out yaml))
-				if (!int.TryParse(yaml.Value, out paletteCustomRows))
-					throw new YamlException($"Invalid value for PaletteCustomRows: {yaml.Value}");
+			if (logicArgs.TryGetValue("PaletteColumns", out var yaml) && !int.TryParse(yaml.Value, out paletteCols))
+				throw new YamlException($"Invalid value for PaletteColumns: {yaml.Value}");
+			if (logicArgs.TryGetValue("PalettePresetRows", out yaml) && !int.TryParse(yaml.Value, out palettePresetRows))
+				throw new YamlException($"Invalid value for PalettePresetRows: {yaml.Value}");
+			if (logicArgs.TryGetValue("PaletteCustomRows", out yaml) && !int.TryParse(yaml.Value, out paletteCustomRows))
+				throw new YamlException($"Invalid value for PaletteCustomRows: {yaml.Value}");
 
 			var presetColors = colorManager.PresetColors;
 			for (var j = 0; j < palettePresetRows; j++)

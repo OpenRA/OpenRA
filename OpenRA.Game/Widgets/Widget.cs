@@ -312,9 +312,8 @@ namespace OpenRA.Widgets
 				return true;
 
 			foreach (var child in Children)
-				if (child.IsVisible())
-					if (child.EventBoundsContains(location))
-						return true;
+				if (child.IsVisible() && child.EventBoundsContains(location))
+					return true;
 
 			return false;
 		}

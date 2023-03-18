@@ -48,17 +48,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDockHost.Docked(Actor self, Actor client)
 		{
-			if (info.Condition != null && (info.DockClientNames == null || info.DockClientNames.Contains(client.Info.Name)))
+			if (info.Condition != null &&
+				(info.DockClientNames == null || info.DockClientNames.Contains(client.Info.Name)) &&
+				token == Actor.InvalidConditionToken)
 			{
-				if (token == Actor.InvalidConditionToken)
+				if (delayedtoken == Actor.InvalidConditionToken)
+					token = self.GrantCondition(info.Condition);
+				else
 				{
-					if (delayedtoken == Actor.InvalidConditionToken)
-						token = self.GrantCondition(info.Condition);
-					else
-					{
-						token = delayedtoken;
-						delayedtoken = Actor.InvalidConditionToken;
-					}
+					token = delayedtoken;
+					delayedtoken = Actor.InvalidConditionToken;
 				}
 			}
 		}

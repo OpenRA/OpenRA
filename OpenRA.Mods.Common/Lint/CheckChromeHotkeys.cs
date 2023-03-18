@@ -109,9 +109,10 @@ namespace OpenRA.Mods.Common.Lint
 					}
 
 					foreach (var n in node.Value.Nodes)
-						if (checkArgKeys.Contains(n.Key))
-							if (!namedKeys.Contains(n.Value.Value) && !Hotkey.TryParse(n.Value.Value, out var unused))
-								emitError($"{filename} {node.Value.Value}:{n.Key} refers to a Key named `{n.Value.Value}` that does not exist.");
+						if (checkArgKeys.Contains(n.Key) &&
+							!namedKeys.Contains(n.Value.Value) &&
+							!Hotkey.TryParse(n.Value.Value, out var unused))
+							emitError($"{filename} {node.Value.Value}:{n.Key} refers to a Key named `{n.Value.Value}` that does not exist.");
 				}
 
 				if (node.Value.Nodes != null)
