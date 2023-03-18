@@ -1064,6 +1064,9 @@ dotnet_diagnostic.RCS1179.severity = warning
 # Use constant instead of field.
 dotnet_diagnostic.RCS1187.severity = warning
 
+# Join string expressions.
+dotnet_diagnostic.RCS1190.severity = warning
+
 # Overriding member should not change 'params' modifier.
 dotnet_diagnostic.RCS1193.severity = warning
 
