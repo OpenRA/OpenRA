@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Traits
 				var nowHasPrerequisites = !hasReachedLimit && HasPrerequisites(ownedPrerequisites);
 				var nowHidden = IsHidden(ownedPrerequisites);
 
-				if (initialized == false)
+				if (!initialized)
 				{
 					initialized = true;
 					hasPrerequisites = !nowHasPrerequisites;

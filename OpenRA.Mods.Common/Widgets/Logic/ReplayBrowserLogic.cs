@@ -688,7 +688,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var replay in replays)
 				replayState[replay].Visible = EvaluateReplayVisibility(replay);
 
-			if (selectedReplay == null || replayState[selectedReplay].Visible == false)
+			if (selectedReplay == null || !replayState[selectedReplay].Visible)
 				SelectFirstVisibleReplay();
 
 			replayList.Layout.AdjustChildren();

@@ -971,6 +971,9 @@ dotnet_diagnostic.RCS1043.severity = warning
 # Use lambda expression instead of anonymous method.
 dotnet_diagnostic.RCS1048.severity = warning
 
+# Simplify boolean comparison.
+dotnet_diagnostic.RCS1049.severity = warning
+
 # Avoid locking on publicly accessible instance.
 dotnet_diagnostic.RCS1059.severity = warning
 
