@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			void SelectTab(bool reverse)
 			{
-				palette.CurrentQueue = queues.FirstOrDefault(q => q.Enabled);
+				palette.CurrentQueue = Array.Find(queues, q => q.Enabled);
 
 				// When a tab is selected, scroll to the top because the current row position may be invalid for the new tab
 				palette.ScrollToTop();

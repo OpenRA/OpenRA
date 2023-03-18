@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				resourceType = value;
 				if (resourceType != null)
-					resourceRenderer = resourceRenderers.FirstOrDefault(r => r.ResourceTypes.Contains(resourceType));
+					resourceRenderer = Array.Find(resourceRenderers, r => r.ResourceTypes.Contains(resourceType));
 				else
 					resourceRenderer = null;
 			}

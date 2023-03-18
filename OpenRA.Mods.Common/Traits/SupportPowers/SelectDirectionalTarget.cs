@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Orders;
@@ -152,7 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		Arrow GetArrow(double degree)
 		{
-			var arrow = directionArrows.FirstOrDefault(d => d.EndAngle >= degree);
+			var arrow = Array.Find(directionArrows, d => d.EndAngle >= degree);
 			return arrow ?? directionArrows[0];
 		}
 

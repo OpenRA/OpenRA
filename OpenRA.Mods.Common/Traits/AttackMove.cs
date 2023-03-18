@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
@@ -162,7 +163,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (world.Map.Contains(cell))
 				{
 					var explored = subject.Actor.Owner.Shroud.IsExplored(cell);
-					var cannotMove = subjects.FirstOrDefault(a => !a.Trait.Info.MoveIntoShroud).Trait;
+					var cannotMove = Array.Find(subjects, a => !a.Trait.Info.MoveIntoShroud).Trait;
 					var blocked = !explored && cannotMove != null;
 
 					if (isAssaultMove)

@@ -1160,7 +1160,7 @@ namespace OpenRA.Server
 		}
 
 		public bool HasClientWonOrLost(Session.Client client) =>
-			worldPlayers.FirstOrDefault(p => p?.ClientIndex == client.Index)?.Outcome != WinState.Undefined;
+			worldPlayers.Find(p => p?.ClientIndex == client.Index)?.Outcome != WinState.Undefined;
 
 		public void DropClient(Connection toDrop)
 		{
@@ -1169,7 +1169,7 @@ namespace OpenRA.Server
 				orderBuffer?.RemovePlayer(toDrop.PlayerIndex);
 				Conns.Remove(toDrop);
 
-				var dropClient = LobbyInfo.Clients.FirstOrDefault(c => c.Index == toDrop.PlayerIndex);
+				var dropClient = LobbyInfo.Clients.Find(c => c.Index == toDrop.PlayerIndex);
 				if (dropClient == null)
 				{
 					toDrop.Dispose();
@@ -1251,7 +1251,7 @@ namespace OpenRA.Server
 			lock (LobbyInfo)
 			{
 				// TODO: Only need to sync the specific client that has changed to avoid conflicts!
-				var clientData = LobbyInfo.Clients.Select(client => client.Serialize()).ToList();
+				var clientData = LobbyInfo.Clients.ConvertAll(client => client.Serialize());
 
 				DispatchServerOrdersToClients(Order.FromTargetString("SyncLobbyClients", clientData.WriteToString(), true));
 

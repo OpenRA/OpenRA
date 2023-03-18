@@ -57,7 +57,9 @@ namespace OpenRA.Mods.Common.Traits
 				.ThenBy(e => (actor.World.Map.CenterOfCell(actor.Location + e.Info.ExitCell) - pos).LengthSquared)
 				.ToList();
 
+#pragma warning disable RCS1077 // Optimize LINQ method call.
 			return p != null ? all.FirstOrDefault(p) : all.FirstOrDefault();
+#pragma warning restore RCS1077 // Optimize LINQ method call.
 		}
 
 		public static IEnumerable<Exit> Exits(this Actor actor, string productionType = null)

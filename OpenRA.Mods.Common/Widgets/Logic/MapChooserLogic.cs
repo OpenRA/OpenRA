@@ -356,7 +356,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				gameModeDropdown.GetText = () =>
 				{
-					var item = categories.FirstOrDefault(m => m.Category == category);
+					var item = categories.Find(m => m.Category == category);
 					if (item == default((string, int)))
 						item.Category = TranslationProvider.GetString(NoMatches);
 

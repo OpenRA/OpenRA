@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using Eluant;
 using OpenRA.Mods.Cnc.Activities;
@@ -32,7 +33,7 @@ namespace OpenRA.Mods.Cnc.Scripting
 		[Desc("Infiltrate the target actor.")]
 		public void Infiltrate(Actor target)
 		{
-			var infiltrates = infiltratesTraits.FirstOrDefault(x => !x.IsTraitDisabled && x.Info.Types.Overlaps(target.GetEnabledTargetTypes()));
+			var infiltrates = Array.Find(infiltratesTraits, x => !x.IsTraitDisabled && x.Info.Types.Overlaps(target.GetEnabledTargetTypes()));
 
 			if (infiltrates == null)
 				throw new LuaException($"{Self} tried to infiltrate invalid target {target}!");

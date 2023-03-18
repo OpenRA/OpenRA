@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.UpdateRules.Rules;
@@ -98,7 +99,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			if (namedType != null && namedType.IsSubclassOf(typeof(UpdateRule)))
 				return new[] { (UpdateRule)objectCreator.CreateBasic(namedType) };
 
-			return Paths.FirstOrDefault(p => p.source == source)?.Rules(chain);
+			return Array.Find(Paths, p => p.source == source)?.Rules(chain);
 		}
 
 		public static IEnumerable<string> KnownPaths { get { return Paths.Select(p => p.source); } }

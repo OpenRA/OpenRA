@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					harvesters[actorNode.Key] = harvesterNode.ChildrenMatching("DeliveryBuildings", includeRemovals: false)
 						.FirstOrDefault()?.NodeValue<HashSet<string>>() ?? new HashSet<string>();
 
-				if (actorNode.ChildrenMatching("Refinery", includeRemovals: false).FirstOrDefault() != null)
+				if (actorNode.ChildrenMatching("Refinery", includeRemovals: false).Any())
 					refineries.Add(actorNode.Key.ToLowerInvariant());
 			}
 
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					refineryNode.RemoveNode(dockOffsetNode);
 				}
 
-				var buildingNode = actorNode.Value.Nodes.FirstOrDefault(n => buildings.Any(b => n.KeyMatches(b, includeRemovals: false)));
+				var buildingNode = actorNode.Value.Nodes.Find(n => buildings.Any(b => n.KeyMatches(b, includeRemovals: false)));
 				if (buildingNode != null)
 				{
 					var dimensions = buildingNode.ChildrenMatching("Dimensions", includeRemovals: false).FirstOrDefault()?.NodeValue<CVec>() ?? new CVec(1, 1);

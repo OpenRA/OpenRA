@@ -696,7 +696,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void SelectFirstVisibleReplay()
 		{
-			SelectReplay(replays.FirstOrDefault(r => replayState[r].Visible));
+			SelectReplay(replays.Find(r => replayState[r].Visible));
 		}
 
 		void SelectReplay(ReplayMetadata replay)
