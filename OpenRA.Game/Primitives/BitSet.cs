@@ -86,7 +86,7 @@ namespace OpenRA.Primitives
 
 		public static BitSet<T> FromStringsNoAlloc(string[] values)
 		{
-			return new BitSet<T>(BitSetAllocator<T>.GetBitsNoAlloc(values)) { };
+			return new BitSet<T>(BitSetAllocator<T>.GetBitsNoAlloc(values));
 		}
 
 		public override string ToString()

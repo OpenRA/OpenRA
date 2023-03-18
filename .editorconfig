@@ -959,6 +959,9 @@ dotnet_diagnostic.RCS1034.severity = warning
 # Remove argument list from attribute.
 dotnet_diagnostic.RCS1039.severity = warning
 
+# Remove empty initializer.
+dotnet_diagnostic.RCS1041.severity = warning
+
 # Remove enum default underlying type.
 dotnet_diagnostic.RCS1042.severity = warning
 
