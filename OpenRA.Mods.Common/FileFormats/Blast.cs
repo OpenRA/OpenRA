@@ -214,8 +214,7 @@ namespace OpenRA.Mods.Common.FileFormats
 		public int ReadBits(int count)
 		{
 			var ret = 0;
-			var filled = 0;
-			while (filled < count)
+			for (var filled = 0; filled < count; filled++)
 			{
 				if (bitCount == 0)
 				{
@@ -226,7 +225,6 @@ namespace OpenRA.Mods.Common.FileFormats
 				ret |= (bitBuffer & 1) << filled;
 				bitBuffer >>= 1;
 				bitCount--;
-				filled++;
 			}
 
 			return ret;
