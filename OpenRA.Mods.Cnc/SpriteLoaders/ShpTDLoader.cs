@@ -232,7 +232,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 				var eof = new ImageHeader { FileOffset = (uint)dataOffset };
 				eof.WriteTo(bw);
 
-				var allZeroes = new ImageHeader { };
+				var allZeroes = new ImageHeader();
 				allZeroes.WriteTo(bw);
 
 				foreach (var f in compressedFrames)

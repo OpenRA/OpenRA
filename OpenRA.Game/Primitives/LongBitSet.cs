@@ -99,7 +99,7 @@ namespace OpenRA.Primitives
 
 		public static LongBitSet<T> FromStringsNoAlloc(string[] values)
 		{
-			return new LongBitSet<T>(LongBitSetAllocator<T>.GetBitsNoAlloc(values)) { };
+			return new LongBitSet<T>(LongBitSetAllocator<T>.GetBitsNoAlloc(values));
 		}
 
 		public static void Reset()
