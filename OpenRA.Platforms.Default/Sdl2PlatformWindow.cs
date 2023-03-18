@@ -224,14 +224,14 @@ namespace OpenRA.Platforms.Default
 
 				Console.WriteLine($"Using resolution: {windowSize.Width}x{windowSize.Height}");
 
-				var windowFlags = SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL | SDL.SDL_WindowFlags.SDL_WINDOW_ALLOW_HIGHDPI;
+				const SDL.SDL_WindowFlags WindowFlags = SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL | SDL.SDL_WindowFlags.SDL_WINDOW_ALLOW_HIGHDPI;
 
 				// HiDPI doesn't work properly on OSX with (legacy) fullscreen mode
 				if (Platform.CurrentPlatform == PlatformType.OSX && windowMode == WindowMode.Fullscreen)
 					SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_HIGHDPI_DISABLED, "1");
 
 				window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay), SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay),
-					windowSize.Width, windowSize.Height, windowFlags);
+					windowSize.Width, windowSize.Height, WindowFlags);
 
 				if (Platform.CurrentPlatform == PlatformType.Linux)
 				{
@@ -551,8 +551,8 @@ namespace OpenRA.Platforms.Default
 
 			SetSDLAttributes(profile);
 
-			var flags = SDL.SDL_WindowFlags.SDL_WINDOW_HIDDEN | SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL;
-			var window = SDL.SDL_CreateWindow("", 0, 0, 1, 1, flags);
+			const SDL.SDL_WindowFlags Flags = SDL.SDL_WindowFlags.SDL_WINDOW_HIDDEN | SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL;
+			var window = SDL.SDL_CreateWindow("", 0, 0, 1, 1, Flags);
 			if (window == IntPtr.Zero || !string.IsNullOrEmpty(SDL.SDL_GetError()))
 			{
 				errorLog.Add($"{profile}: SDL window creation failed: {SDL.SDL_GetError()}");

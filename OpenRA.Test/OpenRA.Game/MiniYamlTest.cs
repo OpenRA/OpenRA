@@ -21,7 +21,7 @@ namespace OpenRA.Test
 		[TestCase(TestName = "Parse tree roundtrips")]
 		public void TestParseRoundtrip()
 		{
-			var yaml =
+			const string Yaml =
 @"1:
 2: Test
 3: # Test
@@ -44,15 +44,15 @@ namespace OpenRA.Test
 	9.1.2: Test
 	9.1.3: # Test
 ";
-			var serialized = MiniYaml.FromString(yaml, discardCommentsAndWhitespace: false).WriteToString();
+			var serialized = MiniYaml.FromString(Yaml, discardCommentsAndWhitespace: false).WriteToString();
 			Console.WriteLine();
-			Assert.That(serialized, Is.EqualTo(yaml));
+			Assert.That(serialized, Is.EqualTo(Yaml));
 		}
 
 		[TestCase(TestName = "Parse tree can handle empty lines")]
 		public void TestParseEmptyLines()
 		{
-			var yaml =
+			const string Yaml =
 @"1:
 
 2: Test
@@ -97,7 +97,7 @@ namespace OpenRA.Test
 
 ";
 
-			var expectedYaml =
+			const string ExpectedYaml =
 @"1:
 2: Test
 3:
@@ -120,14 +120,14 @@ namespace OpenRA.Test
 	9.1.2: Test
 	9.1.3:
 ";
-			var serialized = MiniYaml.FromString(yaml).WriteToString();
-			Assert.That(serialized, Is.EqualTo(expectedYaml));
+			var serialized = MiniYaml.FromString(Yaml).WriteToString();
+			Assert.That(serialized, Is.EqualTo(ExpectedYaml));
 		}
 
 		[TestCase(TestName = "Mixed tabs & spaces indents")]
 		public void TestIndents()
 		{
-			var yamlTabStyle = @"
+			const string YamlTabStyle = @"
 Root1:
 	Child1:
 		Attribute1: Test
@@ -140,7 +140,7 @@ Root2:
 		Attribute1: Test
 ";
 
-			var yamlMixedStyle = @"
+			const string YamlMixedStyle = @"
 Root1:
     Child1:
         Attribute1: Test
@@ -152,9 +152,9 @@ Root2:
     Child1:
 		Attribute1: Test
 ";
-			var tabs = MiniYaml.FromString(yamlTabStyle, "yamlTabStyle").WriteToString();
+			var tabs = MiniYaml.FromString(YamlTabStyle, "yamlTabStyle").WriteToString();
 			Console.WriteLine(tabs);
-			var mixed = MiniYaml.FromString(yamlMixedStyle, "yamlMixedStyle").WriteToString();
+			var mixed = MiniYaml.FromString(YamlMixedStyle, "yamlMixedStyle").WriteToString();
 			Console.WriteLine(mixed);
 			Assert.That(tabs, Is.EqualTo(mixed));
 		}
@@ -162,25 +162,25 @@ Root2:
 		[TestCase(TestName = "Inheritance and removal can be composed")]
 		public void InheritanceAndRemovalCanBeComposed()
 		{
-			var baseYaml = @"
+			const string BaseYaml = @"
 ^BaseA:
 	MockA2:
 ^BaseB:
 	Inherits@a: ^BaseA
 	MockB2:
 ";
-			var extendedYaml = @"
+			const string ExtendedYaml = @"
 Test:
 	Inherits@b: ^BaseB
 	-MockA2:
 ";
-			var mapYaml = @"
+			const string MapYaml = @"
 ^BaseC:
 	MockC2:
 Test:
 	Inherits@c: ^BaseC
 ";
-			var result = MiniYaml.Merge(new[] { baseYaml, extendedYaml, mapYaml }.Select(s => MiniYaml.FromString(s, "")))
+			var result = MiniYaml.Merge(new[] { BaseYaml, ExtendedYaml, MapYaml }.Select(s => MiniYaml.FromString(s, "")))
 				.First(n => n.Key == "Test").Value.Nodes;
 
 			Assert.IsFalse(result.Any(n => n.Key == "MockA2"), "Node should not have the MockA2 child, but does.");
@@ -191,19 +191,19 @@ Test:
 		[TestCase(TestName = "Child can be removed after multiple inheritance")]
 		public void ChildCanBeRemovedAfterMultipleInheritance()
 		{
-			var baseYaml = @"
+			const string BaseYaml = @"
 ^BaseA:
 	MockA2:
 Test:
 	Inherits: ^BaseA
 	MockA2:
 ";
-			var overrideYaml = @"
+			const string OverrideYaml = @"
 Test:
 	-MockA2
 ";
 
-			var result = MiniYaml.Merge(new[] { baseYaml, overrideYaml }.Select(s => MiniYaml.FromString(s, "")))
+			var result = MiniYaml.Merge(new[] { BaseYaml, OverrideYaml }.Select(s => MiniYaml.FromString(s, "")))
 				.First(n => n.Key == "Test").Value.Nodes;
 
 			Assert.IsFalse(result.Any(n => n.Key == "MockA2"), "Node should not have the MockA2 child, but does.");
@@ -212,7 +212,7 @@ Test:
 		[TestCase(TestName = "Child can be immediately removed")]
 		public void ChildCanBeImmediatelyRemoved()
 		{
-			var baseYaml = @"
+			const string BaseYaml = @"
 ^BaseA:
     MockString:
         AString: Base
@@ -223,7 +223,7 @@ Test:
     -MockString:
 ";
 
-			var result = MiniYaml.Merge(new[] { baseYaml }.Select(s => MiniYaml.FromString(s, "")))
+			var result = MiniYaml.Merge(new[] { BaseYaml }.Select(s => MiniYaml.FromString(s, "")))
 				 .First(n => n.Key == "Test").Value.Nodes;
 
 			Assert.IsFalse(result.Any(n => n.Key == "MockString"), "Node should not have the MockString child, but does.");
@@ -232,7 +232,7 @@ Test:
 		[TestCase(TestName = "Child can be removed and immediately overridden")]
 		public void ChildCanBeRemovedAndImmediatelyOverridden()
 		{
-			var baseYaml = @"
+			const string BaseYaml = @"
 ^BaseA:
     MockString:
         AString: Base
@@ -243,7 +243,7 @@ Test:
         AString: Override
 ";
 
-			var result = MiniYaml.Merge(new[] { baseYaml }.Select(s => MiniYaml.FromString(s, "")))
+			var result = MiniYaml.Merge(new[] { BaseYaml }.Select(s => MiniYaml.FromString(s, "")))
 				 .First(n => n.Key == "Test").Value.Nodes;
 
 			Assert.IsTrue(result.Any(n => n.Key == "MockString"), "Node should have the MockString child, but does not.");
@@ -254,7 +254,7 @@ Test:
 		[TestCase(TestName = "Child can be removed and later overridden")]
 		public void ChildCanBeRemovedAndLaterOverridden()
 		{
-			var baseYaml = @"
+			const string BaseYaml = @"
 ^BaseA:
     MockString:
         AString: Base
@@ -262,13 +262,13 @@ Test:
     Inherits: ^BaseA
     -MockString:
 ";
-			var overrideYaml = @"
+			const string OverrideYaml = @"
 Test:
     MockString:
         AString: Override
 ";
 
-			var result = MiniYaml.Merge(new[] { baseYaml, overrideYaml }.Select(s => MiniYaml.FromString(s, "")))
+			var result = MiniYaml.Merge(new[] { BaseYaml, OverrideYaml }.Select(s => MiniYaml.FromString(s, "")))
 				.First(n => n.Key == "Test").Value.Nodes;
 
 			Assert.IsTrue(result.Any(n => n.Key == "MockString"), "Node should have the MockString child, but does not.");
@@ -279,7 +279,7 @@ Test:
 		[TestCase(TestName = "Child can be removed from intermediate parent")]
 		public void ChildCanBeOverriddenThenRemoved()
 		{
-			var baseYaml = @"
+			const string BaseYaml = @"
 ^BaseA:
     MockString:
         AString: Base
@@ -288,14 +288,14 @@ Test:
     MockString:
         AString: Override
 ";
-			var overrideYaml = @"
+			const string OverrideYaml = @"
 Test:
     Inherits: ^BaseB
     MockString:
     	-AString:
 ";
 
-			var result = MiniYaml.Merge(new[] { baseYaml, overrideYaml }.Select(s => MiniYaml.FromString(s, "")))
+			var result = MiniYaml.Merge(new[] { BaseYaml, OverrideYaml }.Select(s => MiniYaml.FromString(s, "")))
 				.First(n => n.Key == "Test").Value.Nodes;
 			Assert.IsTrue(result.Any(n => n.Key == "MockString"), "Node should have the MockString child, but does not.");
 			Assert.IsFalse(result.First(n => n.Key == "MockString").Value.Nodes.Any(n => n.Key == "AString"),
@@ -305,7 +305,7 @@ Test:
 		[TestCase(TestName = "Child subnode can be removed and immediately overridden")]
 		public void ChildSubNodeCanBeRemovedAndImmediatelyOverridden()
 		{
-			var baseYaml = @"
+			const string BaseYaml = @"
 ^BaseA:
 	MockString:
 		CollectionOfStrings:
@@ -319,7 +319,7 @@ Test:
 			StringC: C
 ";
 
-			var merged = MiniYaml.Merge(new[] { baseYaml }.Select(s => MiniYaml.FromString(s, "")))
+			var merged = MiniYaml.Merge(new[] { BaseYaml }.Select(s => MiniYaml.FromString(s, "")))
 				.First(n => n.Key == "Test");
 
 			var traitNode = merged.Value.Nodes.Single();
@@ -334,7 +334,7 @@ Test:
 		[TestCase(TestName = "Child subnode can be removed and later overridden")]
 		public void ChildSubNodeCanBeRemovedAndLaterOverridden()
 		{
-			var baseYaml = @"
+			const string BaseYaml = @"
 ^BaseA:
 	MockString:
 		CollectionOfStrings:
@@ -346,14 +346,14 @@ Test:
 		-CollectionOfStrings:
 ";
 
-			var overrideYaml = @"
+			const string OverrideYaml = @"
 Test:
     MockString:
 		CollectionOfStrings:
 			StringC: C
 ";
 
-			var merged = MiniYaml.Merge(new[] { baseYaml, overrideYaml }.Select(s => MiniYaml.FromString(s, "")))
+			var merged = MiniYaml.Merge(new[] { BaseYaml, OverrideYaml }.Select(s => MiniYaml.FromString(s, "")))
 				.First(n => n.Key == "Test");
 
 			var traitNode = merged.Value.Nodes.Single();
@@ -368,7 +368,7 @@ Test:
 		[TestCase(TestName = "Empty lines should count toward line numbers")]
 		public void EmptyLinesShouldCountTowardLineNumbers()
 		{
-			var yaml = @"
+			const string Yaml = @"
 TestA:
 	Nothing:
 
@@ -376,14 +376,14 @@ TestB:
 	Nothing:
 ";
 
-			var result = MiniYaml.FromString(yaml).First(n => n.Key == "TestB");
+			var result = MiniYaml.FromString(Yaml).First(n => n.Key == "TestB");
 			Assert.AreEqual(5, result.Location.Line);
 		}
 
 		[TestCase(TestName = "Duplicated nodes are correctly merged")]
 		public void TestSelfMerging()
 		{
-			var baseYaml = @"
+			const string BaseYaml = @"
 Test:
 	Merge: original
 		Child: original
@@ -394,7 +394,7 @@ Test:
 	Override:
 ";
 
-			var result = MiniYaml.Merge(new[] { baseYaml }.Select(s => MiniYaml.FromString(s, "")));
+			var result = MiniYaml.Merge(new[] { BaseYaml }.Select(s => MiniYaml.FromString(s, "")));
 			Assert.That(result.Count(n => n.Key == "Test"), Is.EqualTo(1), "Result should have exactly one Test node.");
 
 			var testNodes = result.First(n => n.Key == "Test").Value.Nodes;
@@ -408,13 +408,13 @@ Test:
 		[TestCase(TestName = "Duplicated nodes across multiple sources are correctly merged")]
 		public void TestSelfMergingMultiSource()
 		{
-			var firstYaml = @"
+			const string FirstYaml = @"
 Test:
 	Merge: original
 		Child: original
 	Original:
 ";
-			var secondYaml = @"
+			const string SecondYaml = @"
 Test:
 	Merge: original
 		Child: original
@@ -425,7 +425,7 @@ Test:
 	Override:
 ";
 
-			var result = MiniYaml.Merge(new[] { firstYaml, secondYaml }.Select(s => MiniYaml.FromString(s, "")));
+			var result = MiniYaml.Merge(new[] { FirstYaml, SecondYaml }.Select(s => MiniYaml.FromString(s, "")));
 			Assert.That(result.Count(n => n.Key == "Test"), Is.EqualTo(1), "Result should have exactly one Test node.");
 
 			var testNodes = result.First(n => n.Key == "Test").Value.Nodes;
@@ -439,14 +439,14 @@ Test:
 		[TestCase(TestName = "Duplicated child nodes do not throw if parent does not require merging")]
 		public void TestMergeConflictsNoMerge()
 		{
-			var baseYaml = @"
+			const string BaseYaml = @"
 Test:
 	Merge:
 		Child:
 		Child:
 ";
 
-			var result = MiniYaml.Merge(new[] { baseYaml }.Select(s => MiniYaml.FromString(s, "")));
+			var result = MiniYaml.Merge(new[] { BaseYaml }.Select(s => MiniYaml.FromString(s, "")));
 			var testNodes = result.First(n => n.Key == "Test").Value.Nodes;
 			var mergeNode = testNodes.First(n => n.Key == "Merge").Value;
 			Assert.That(mergeNode.Nodes.Count, Is.EqualTo(2));
@@ -455,7 +455,7 @@ Test:
 		[TestCase(TestName = "Duplicated child nodes throw merge error if first parent requires merging")]
 		public void TestMergeConflictsFirstParent()
 		{
-			var baseYaml = @"
+			const string BaseYaml = @"
 Test:
 	Merge:
 		Child1:
@@ -463,7 +463,8 @@ Test:
 	Merge:
 ";
 
-			void Merge() => MiniYaml.Merge(new[] { baseYaml }.Select(s => MiniYaml.FromString(s, "test-filename")));
+			static void Merge() => MiniYaml.Merge(new[] { BaseYaml }.Select(s => MiniYaml.FromString(s, "test-filename")));
+
 			Assert.That(Merge, Throws.Exception.TypeOf<ArgumentException>().And.Message.EqualTo(
 				"MiniYaml.Merge, duplicate values found for the following keys: Child1: [Child1 (at test-filename:4),Child1 (at test-filename:5)]"));
 		}
@@ -471,14 +472,16 @@ Test:
 		[TestCase(TestName = "Duplicated child nodes throw merge error if second parent requires merging")]
 		public void TestMergeConflictsSecondParent()
 		{
-			var baseYaml = @"
+			const string BaseYaml = @"
 Test:
 	Merge:
 	Merge:
 		Child2:
 		Child2:
 ";
-			void Merge() => MiniYaml.Merge(new[] { baseYaml }.Select(s => MiniYaml.FromString(s, "test-filename")));
+
+			static void Merge() => MiniYaml.Merge(new[] { BaseYaml }.Select(s => MiniYaml.FromString(s, "test-filename")));
+
 			Assert.That(Merge, Throws.Exception.TypeOf<ArgumentException>().And.Message.EqualTo(
 				"MiniYaml.Merge, duplicate values found for the following keys: Child2: [Child2 (at test-filename:5),Child2 (at test-filename:6)]"));
 		}
@@ -486,18 +489,18 @@ Test:
 		[TestCase(TestName = "Duplicated child nodes across multiple sources do not throw")]
 		public void TestMergeConflictsMultiSourceMerge()
 		{
-			var firstYaml = @"
+			const string FirstYaml = @"
 Test:
 	Merge:
 		Child:
 ";
-			var secondYaml = @"
+			const string SecondYaml = @"
 Test:
 	Merge:
 		Child:
 ";
 
-			var result = MiniYaml.Merge(new[] { firstYaml, secondYaml }.Select(s => MiniYaml.FromString(s, "")));
+			var result = MiniYaml.Merge(new[] { FirstYaml, SecondYaml }.Select(s => MiniYaml.FromString(s, "")));
 			var testNodes = result.First(n => n.Key == "Test").Value.Nodes;
 			var mergeNode = testNodes.First(n => n.Key == "Merge").Value;
 			Assert.That(mergeNode.Nodes.Count, Is.EqualTo(1));
@@ -506,18 +509,19 @@ Test:
 		[TestCase(TestName = "Duplicated child nodes across multiple sources throw merge error if first parent requires merging")]
 		public void TestMergeConflictsMultiSourceFirstParent()
 		{
-			var firstYaml = @"
+			const string FirstYaml = @"
 Test:
 	Merge:
 		Child1:
 		Child1:
 ";
-			var secondYaml = @"
+			const string SecondYaml = @"
 Test:
 	Merge:
 ";
 
-			void Merge() => MiniYaml.Merge(new[] { firstYaml, secondYaml }.Select(s => MiniYaml.FromString(s, "test-filename")));
+			static void Merge() => MiniYaml.Merge(new[] { FirstYaml, SecondYaml }.Select(s => MiniYaml.FromString(s, "test-filename")));
+
 			Assert.That(Merge, Throws.Exception.TypeOf<ArgumentException>().And.Message.EqualTo(
 				"MiniYaml.Merge, duplicate values found for the following keys: Child1: [Child1 (at test-filename:4),Child1 (at test-filename:5)]"));
 		}
@@ -525,18 +529,19 @@ Test:
 		[TestCase(TestName = "Duplicated child nodes across multiple sources throw merge error if second parent requires merging")]
 		public void TestMergeConflictsMultiSourceSecondParent()
 		{
-			var firstYaml = @"
+			const string FirstYaml = @"
 Test:
 	Merge:
 ";
-			var secondYaml = @"
+			const string SecondYaml = @"
 Test:
 	Merge:
 		Child2:
 		Child2:
 ";
 
-			void Merge() => MiniYaml.Merge(new[] { firstYaml, secondYaml }.Select(s => MiniYaml.FromString(s, "test-filename")));
+			static void Merge() => MiniYaml.Merge(new[] { FirstYaml, SecondYaml }.Select(s => MiniYaml.FromString(s, "test-filename")));
+
 			Assert.That(Merge, Throws.Exception.TypeOf<ArgumentException>().And.Message.EqualTo(
 				"MiniYaml.Merge, duplicate values found for the following keys: Child2: [Child2 (at test-filename:4),Child2 (at test-filename:5)]"));
 		}
@@ -573,15 +578,15 @@ Test:
 		[TestCase(TestName = "Leading and trailing whitespace can be guarded using a backslash")]
 		public void TestGuardedWhitespace()
 		{
-			var testYaml = @"key:   \      test value    \   ";
-			var nodes = MiniYaml.FromString(testYaml, "testYaml");
+			const string TestYaml = @"key:   \      test value    \   ";
+			var nodes = MiniYaml.FromString(TestYaml, "testYaml");
 			Assert.AreEqual("      test value    ", nodes[0].Value.Value);
 		}
 
 		[TestCase(TestName = "Comments should count toward line numbers")]
 		public void CommentsShouldCountTowardLineNumbers()
 		{
-			var yaml = @"
+			const string Yaml = @"
 TestA:
 	Nothing:
 
@@ -589,12 +594,12 @@ TestA:
 TestB:
 	Nothing:
 ";
-			var resultDiscard = MiniYaml.FromString(yaml);
+			var resultDiscard = MiniYaml.FromString(Yaml);
 			var resultDiscardLine = resultDiscard.First(n => n.Key == "TestB").Location.Line;
 			Assert.That(resultDiscardLine, Is.EqualTo(6), "Node TestB should report its location as line 6, but is not (discarding comments)");
 			Assert.That(resultDiscard[1].Key, Is.EqualTo("TestB"), "Node TestB should be the second child of the root node, but is not (discarding comments)");
 
-			var resultKeep = MiniYaml.FromString(yaml, discardCommentsAndWhitespace: false);
+			var resultKeep = MiniYaml.FromString(Yaml, discardCommentsAndWhitespace: false);
 			var resultKeepLine = resultKeep.First(n => n.Key == "TestB").Location.Line;
 			Assert.That(resultKeepLine, Is.EqualTo(6), "Node TestB should report its location as line 6, but is not (parsing comments)");
 			Assert.That(resultKeep[4].Key, Is.EqualTo("TestB"), "Node TestB should be the fifth child of the root node, but is not (parsing comments)");
@@ -621,7 +626,7 @@ Parent: # comment without value
 		[TestCase(TestName = "Comments should be removed when discardCommentsAndWhitespace is false")]
 		public void CommentsShouldntSurviveRoundTrip()
 		{
-			var yaml = @"
+			const string Yaml = @"
 # Top level comment node
 Parent: # comment without value
 	# Indented comment node
@@ -634,7 +639,7 @@ Parent: # comment without value
 	Second: value
 ".Replace("\r\n", "\n");
 
-			var result = MiniYaml.FromString(yaml).WriteToString();
+			var result = MiniYaml.FromString(Yaml).WriteToString();
 			Assert.AreEqual(strippedYaml, result);
 		}
 	}

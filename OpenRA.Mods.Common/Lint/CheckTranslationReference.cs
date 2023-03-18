@@ -70,40 +70,40 @@ namespace OpenRA.Mods.Common.Lint
 				return;
 
 			// TODO: Check all available languages.
-			var language = "en";
-			var modTranslation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem, _ => { });
-			var mapTranslation = new Translation(language, FieldLoader.GetValue<string[]>("value", map.TranslationDefinitions.Value), map, error => emitError(error.ToString()));
+			const string Language = "en";
+			var modTranslation = new Translation(Language, modData.Manifest.Translations, modData.DefaultFileSystem, _ => { });
+			var mapTranslation = new Translation(Language, FieldLoader.GetValue<string[]>("value", map.TranslationDefinitions.Value), map, error => emitError(error.ToString()));
 
 			TestTraits(map.Rules, emitError, key =>
 			{
 				if (modTranslation.HasMessage(key))
 				{
 					if (mapTranslation.HasMessage(key))
-						emitWarning($"Map translation key `{key}` already exists in `{language}` mod translations and will not be used.");
+						emitWarning($"Map translation key `{key}` already exists in `{Language}` mod translations and will not be used.");
 				}
 				else if (!mapTranslation.HasMessage(key))
-					emitWarning($"`{key}` is not present in `{language}` translation.");
+					emitWarning($"`{key}` is not present in `{Language}` translation.");
 			});
 		}
 
 		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{
 			// TODO: Check all available languages.
-			var language = "en";
-			Console.WriteLine($"Testing translation: {language}");
-			var translation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem, error => emitError(error.ToString()));
+			const string Language = "en";
+			Console.WriteLine($"Testing translation: {Language}");
+			var translation = new Translation(Language, modData.Manifest.Translations, modData.DefaultFileSystem, error => emitError(error.ToString()));
 
 			TestTraits(modData.DefaultRules, emitError, key =>
 			{
 				if (!translation.HasMessage(key))
-					emitWarning($"`{key}` is not present in `{language}` translation.");
+					emitWarning($"`{key}` is not present in `{Language}` translation.");
 			});
 
 			var gameSpeeds = modData.Manifest.Get<GameSpeeds>();
 			foreach (var speed in gameSpeeds.Speeds.Values)
 			{
 				if (!translation.HasMessage(speed.Name))
-					emitWarning($"`{speed.Name}` is not present in `{language}` translation.");
+					emitWarning($"`{speed.Name}` is not present in `{Language}` translation.");
 
 				referencedKeys.Add(speed.Name);
 			}
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Lint
 						continue;
 
 					if (!translation.HasMessage(key))
-						emitWarning($"`{key}` is not present in `{language}` translation.");
+						emitWarning($"`{key}` is not present in `{Language}` translation.");
 
 					var translationReference = Utility.GetCustomAttributes<TranslationReferenceAttribute>(fieldInfo, true)[0];
 					if (translationReference.RequiredVariableNames != null && translationReference.RequiredVariableNames.Length > 0)
@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				var nodes = MiniYaml.FromStream(modData.DefaultFileSystem.Open(filename));
 				foreach (var node in nodes)
-					CheckChrome(node, translation, language, emitError, emitWarning, translatableFields);
+					CheckChrome(node, translation, Language, emitError, emitWarning, translatableFields);
 			}
 
 			foreach (var file in modData.Manifest.Translations)

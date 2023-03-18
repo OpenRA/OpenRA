@@ -42,11 +42,11 @@ namespace OpenRA.Graphics
 			// in rendering a line of texels that sample outside the sprite rectangle.
 			// Insetting the texture coordinates by a small fraction of a pixel avoids this
 			// with negligible impact on the 1:1 rendering case.
-			var inset = 1 / 128f;
-			Left = (Math.Min(bounds.Left, bounds.Right) + inset) / sheet.Size.Width;
-			Top = (Math.Min(bounds.Top, bounds.Bottom) + inset) / sheet.Size.Height;
-			Right = (Math.Max(bounds.Left, bounds.Right) - inset) / sheet.Size.Width;
-			Bottom = (Math.Max(bounds.Top, bounds.Bottom) - inset) / sheet.Size.Height;
+			const float Inset = 1 / 128f;
+			Left = (Math.Min(bounds.Left, bounds.Right) + Inset) / sheet.Size.Width;
+			Top = (Math.Min(bounds.Top, bounds.Bottom) + Inset) / sheet.Size.Height;
+			Right = (Math.Max(bounds.Left, bounds.Right) - Inset) / sheet.Size.Width;
+			Bottom = (Math.Max(bounds.Top, bounds.Bottom) - Inset) / sheet.Size.Height;
 		}
 	}
 

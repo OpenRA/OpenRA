@@ -282,11 +282,11 @@ namespace OpenRA
 			Log.Write("debug", "MapCache.LoadAsyncInternal started");
 
 			// Milliseconds to wait on one loop when nothing to do
-			var emptyDelay = 50;
+			const int EmptyDelay = 50;
 
 			// Keep the thread alive for at least 5 seconds after the last minimap generation
-			var maxKeepAlive = 5000 / emptyDelay;
-			var keepAlive = maxKeepAlive;
+			const int MaxKeepAlive = 5000 / EmptyDelay;
+			var keepAlive = MaxKeepAlive;
 
 			while (true)
 			{
@@ -306,11 +306,11 @@ namespace OpenRA
 
 				if (todo.Count == 0)
 				{
-					Thread.Sleep(emptyDelay);
+					Thread.Sleep(EmptyDelay);
 					continue;
 				}
 				else
-					keepAlive = maxKeepAlive;
+					keepAlive = MaxKeepAlive;
 
 				// Render the minimap into the shared sheet
 				foreach (var p in todo)

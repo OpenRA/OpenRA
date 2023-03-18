@@ -125,8 +125,8 @@ namespace OpenRA.Scripting
 		public static IEnumerable<MemberInfo> WrappableMembers(Type t)
 		{
 			// Only expose defined public non-static methods that were explicitly declared by the author
-			var flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
-			foreach (var mi in t.GetMembers(flags))
+			const BindingFlags Flags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+			foreach (var mi in t.GetMembers(Flags))
 			{
 				// Properties are always wrappable
 				if (mi is PropertyInfo)

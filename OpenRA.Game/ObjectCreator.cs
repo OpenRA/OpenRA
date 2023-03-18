@@ -133,8 +133,8 @@ namespace OpenRA
 
 		public ConstructorInfo GetCtor(Type type)
 		{
-			var flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
-			var ctors = type.GetConstructors(flags).Where(x => x.HasAttribute<UseCtorAttribute>()).ToList();
+			const BindingFlags Flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
+			var ctors = type.GetConstructors(Flags).Where(x => x.HasAttribute<UseCtorAttribute>()).ToList();
 			if (ctors.Count > 1)
 				throw new InvalidOperationException("ObjectCreator: UseCtor on multiple constructors; invalid.");
 			return ctors.FirstOrDefault();
