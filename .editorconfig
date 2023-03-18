@@ -1016,6 +1016,9 @@ dotnet_diagnostic.RCS1107.severity = warning
 # Add 'static' modifier to all partial class declarations.
 dotnet_diagnostic.RCS1108.severity = warning
 
+# Combine 'Enumerable.Where' method chain.
+dotnet_diagnostic.RCS1112.severity = warning
+
 # Use 'string.IsNullOrEmpty' method.
 dotnet_diagnostic.RCS1113.severity = warning
 

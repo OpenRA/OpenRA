@@ -323,11 +323,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				playerCountFilter = -1;
 
 			var maps = tabMaps[tab]
-				.Where(m => category == null || m.Categories.Contains(category))
-				.Where(m => mapFilter == null ||
+				.Where(m => (category == null || m.Categories.Contains(category)) &&
+					(mapFilter == null ||
 					(m.Title != null && m.Title.Contains(mapFilter, StringComparison.CurrentCultureIgnoreCase)) ||
 					(m.Author != null && m.Author.Contains(mapFilter, StringComparison.CurrentCultureIgnoreCase)) ||
-					m.PlayerCount == playerCountFilter);
+					m.PlayerCount == playerCountFilter));
 
 			if (orderByFunc == null)
 				maps = maps.OrderBy(m => m.Title);
