@@ -175,8 +175,7 @@ namespace OpenRA
 		protected CompositeActorInit(TraitInfo info)
 			: base(info.InstanceName) { }
 
-		protected CompositeActorInit()
-			: base() { }
+		protected CompositeActorInit() { }
 
 		public virtual void Initialize(MiniYaml yaml)
 		{
