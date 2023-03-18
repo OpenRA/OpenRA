@@ -26,8 +26,5 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AcceptsDeliveredExperience(); }
 	}
 
-	public class AcceptsDeliveredExperience
-	{
-		public AcceptsDeliveredExperience() { }
-	}
+	public class AcceptsDeliveredExperience { }
 }
