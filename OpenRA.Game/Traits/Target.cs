@@ -120,8 +120,8 @@ namespace OpenRA.Traits
 					return FrozenActor.IsValid && FrozenActor.Visible && !FrozenActor.Hidden;
 				case TargetType.Invalid:
 					return false;
-				default:
 				case TargetType.Terrain:
+				default:
 					return true;
 			}
 		}
@@ -164,8 +164,8 @@ namespace OpenRA.Traits
 						return FrozenActor.CenterPosition;
 					case TargetType.Terrain:
 						return terrainCenterPosition;
-					default:
 					case TargetType.Invalid:
+					default:
 						throw new InvalidOperationException("Attempting to query the position of an invalid Target");
 				}
 			}
@@ -186,8 +186,8 @@ namespace OpenRA.Traits
 						return FrozenActor.TargetablePositions ?? NoPositions;
 					case TargetType.Terrain:
 						return terrainPositions;
-					default:
 					case TargetType.Invalid:
+					default:
 						return NoPositions;
 				}
 			}
@@ -215,8 +215,8 @@ namespace OpenRA.Traits
 				case TargetType.Terrain:
 					return terrainCenterPosition.ToString();
 
-				default:
 				case TargetType.Invalid:
+				default:
 					return "Invalid";
 			}
 		}
@@ -239,8 +239,8 @@ namespace OpenRA.Traits
 				case TargetType.FrozenActor:
 					return me.FrozenActor == other.FrozenActor;
 
-				default:
 				case TargetType.Invalid:
+				default:
 					return false;
 			}
 		}
@@ -270,8 +270,8 @@ namespace OpenRA.Traits
 				case TargetType.FrozenActor:
 					return FrozenActor.GetHashCode();
 
-				default:
 				case TargetType.Invalid:
+				default:
 					return 0;
 			}
 		}
