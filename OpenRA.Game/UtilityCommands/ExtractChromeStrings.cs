@@ -38,7 +38,7 @@ namespace OpenRA.UtilityCommands
 				.ToDictionary(
 					t => t.Name[..^6],
 					t => t.GetFields().Where(f => f.HasAttribute<TranslationReferenceAttribute>()).Select(f => f.Name).ToArray())
-				.Where(t => t.Value.Any())
+				.Where(t => t.Value.Length > 0)
 				.ToDictionary(t => t.Key, t => t.Value);
 
 			var chromeLayouts = modData.Manifest.ChromeLayout.GroupBy(c => c.Split('/')[0].Split('|')[0], c => c);
