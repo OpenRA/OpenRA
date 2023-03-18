@@ -110,10 +110,10 @@ namespace OpenRA
 
 				return result;
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
-				Log.Write("debug", $"Translation of {key} failed:");
-				Log.Write("debug", e);
+				Log.Write("debug", $"Failed translation: {key}");
+
 				value = null;
 				return false;
 			}
