@@ -102,7 +102,7 @@ namespace OpenRA.Scripting
 			if (names.Length != 1)
 				throw new InvalidOperationException($"[ScriptGlobal] attribute not found for global table '{type}'");
 
-			Name = names.First().Name;
+			Name = names[0].Name;
 			Bind(new[] { this });
 		}
 
@@ -114,7 +114,7 @@ namespace OpenRA.Scripting
 				{
 					using (var luaObject = a.ToLuaValue(Context))
 					using (var filterResult = filter.Call(luaObject))
-					using (var result = filterResult.First())
+					using (var result = filterResult[0])
 						return result.ToBoolean();
 				});
 			}
@@ -214,7 +214,7 @@ namespace OpenRA.Scripting
 				var ctor = Array.Find(b.GetConstructors(BindingFlags.Public | BindingFlags.Instance), c =>
 				{
 					var p = c.GetParameters();
-					return p.Length == 1 && p.First().ParameterType == typeof(ScriptContext);
+					return p.Length == 1 && p[0].ParameterType == typeof(ScriptContext);
 				});
 
 				if (ctor == null)

@@ -423,7 +423,7 @@ namespace OpenRA
 
 				// Sanitize input from platform-specific launchers
 				// Process.Start requires paths to not be quoted, even if they contain spaces
-				if (launchPath != null && launchPath.First() == '"' && launchPath.Last() == '"')
+				if (launchPath != null && launchPath[0] == '"' && launchPath.Last() == '"')
 					launchPath = launchPath[1..^1];
 
 				// Metadata registration requires an explicit launch path

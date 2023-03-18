@@ -380,7 +380,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (resourceType != info.ResourceType)
 				yield break;
 
-			var sprite = veinSequence.GetSprite(HeavyIndices.First());
+			var sprite = veinSequence.GetSprite(HeavyIndices[0]);
 			var palette = wr.Palette(info.Palette);
 
 			yield return new UISpriteRenderable(sprite, WPos.Zero, origin, 0, palette, scale);
@@ -391,7 +391,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (resourceType != info.ResourceType)
 				yield break;
 
-			var frame = HeavyIndices.First();
+			var frame = HeavyIndices[0];
 			var sprite = veinSequence.GetSprite(frame);
 			var alpha = veinSequence.GetAlpha(frame);
 			var palette = wr.Palette(info.Palette);

@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.Terrain
 				if (onMissingImage != null && variants.Count == 0)
 					continue;
 
-				templates.Add(t.Value.Id, new TheaterTemplate(allSprites.ToArray(), variants.First().Length, templateInfo.Images.Length));
+				templates.Add(t.Value.Id, new TheaterTemplate(allSprites.ToArray(), variants[0].Length, templateInfo.Images.Length));
 			}
 
 			// 1x1px transparent tile

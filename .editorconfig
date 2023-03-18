@@ -1170,3 +1170,5 @@ dotnet_diagnostic.RCS1236.severity = warning
 # Use 'for' statement instead of 'while' statement.
 dotnet_diagnostic.RCS1239.severity = warning
 
+# Use element access.
+dotnet_diagnostic.RCS1246.severity = warning
