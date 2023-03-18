@@ -1094,6 +1094,9 @@ dotnet_diagnostic.RCS1214.severity = warning
 # Expression is always equal to 'true'.
 dotnet_diagnostic.RCS1215.severity = warning
 
+# Unnecessary unsafe context.
+dotnet_diagnostic.RCS1216.severity = warning
+
 # Use pattern matching instead of combination of 'is' operator and cast operator.
 dotnet_diagnostic.RCS1220.severity = warning
 
