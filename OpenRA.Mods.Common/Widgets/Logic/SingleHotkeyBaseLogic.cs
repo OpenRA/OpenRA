@@ -25,9 +25,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var keyhandler = widget.Get<LogicKeyListenerWidget>(parentName);
 			keyhandler.AddHandler(e =>
 			{
-				if (e.Event == KeyInputEvent.Down)
-					if (namedKey.IsActivatedBy(e))
-						return OnHotkeyActivated(e);
+				if (e.Event == KeyInputEvent.Down && namedKey.IsActivatedBy(e))
+					return OnHotkeyActivated(e);
 
 				return false;
 			});

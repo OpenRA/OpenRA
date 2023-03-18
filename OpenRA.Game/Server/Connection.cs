@@ -153,9 +153,8 @@ namespace OpenRA.Server
 						return;
 
 					// Regularly check player ping
-					if (lastPingSent.ElapsedMilliseconds > 1000)
-						if (TrySendData(CreatePingFrame()))
-							lastPingSent.Restart();
+					if (lastPingSent.ElapsedMilliseconds > 1000 && TrySendData(CreatePingFrame()))
+						lastPingSent.Restart();
 
 					// Send all data immediately, we will block again on read
 					while (sendQueue.TryTake(out var data, 0))

@@ -169,9 +169,8 @@ namespace OpenRA.Network
 			}
 
 			// Games advertised using the old API calculated the play time locally
-			if (State == 2 && PlayTime < 0)
-				if (DateTime.TryParse(Started, out var startTime))
-					PlayTime = (int)(DateTime.UtcNow - startTime).TotalSeconds;
+			if (State == 2 && PlayTime < 0 && DateTime.TryParse(Started, out var startTime))
+				PlayTime = (int)(DateTime.UtcNow - startTime).TotalSeconds;
 
 			var externalKey = ExternalMod.MakeKey(Mod, Version);
 			if (Game.ExternalMods.TryGetValue(externalKey, out var external) && external.Version == Version)

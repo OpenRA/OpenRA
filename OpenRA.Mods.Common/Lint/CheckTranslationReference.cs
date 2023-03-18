@@ -256,9 +256,9 @@ namespace OpenRA.Mods.Common.Lint
 				if (element is Placeable placeable)
 				{
 					var expression = placeable.Expression;
-					if (expression is IInlineExpression inlineExpression)
-						if (inlineExpression is VariableReference variableReference)
-							CheckVariableReference(variableReference.Id.Name.ToString(), key, attribute, emitWarning, file);
+					if (expression is IInlineExpression inlineExpression &&
+						inlineExpression is VariableReference variableReference)
+						CheckVariableReference(variableReference.Id.Name.ToString(), key, attribute, emitWarning, file);
 
 					if (expression is SelectExpression selectExpression)
 					{
@@ -269,9 +269,9 @@ namespace OpenRA.Mods.Common.Lint
 								if (variantElement is Placeable variantPlaceable)
 								{
 									var variantExpression = variantPlaceable.Expression;
-									if (variantExpression is IInlineExpression variantInlineExpression)
-										if (variantInlineExpression is VariableReference variantVariableReference)
-											CheckVariableReference(variantVariableReference.Id.Name.ToString(), key, attribute, emitWarning, file);
+									if (variantExpression is IInlineExpression variantInlineExpression &&
+										variantInlineExpression is VariableReference variantVariableReference)
+										CheckVariableReference(variantVariableReference.Id.Name.ToString(), key, attribute, emitWarning, file);
 								}
 							}
 						}

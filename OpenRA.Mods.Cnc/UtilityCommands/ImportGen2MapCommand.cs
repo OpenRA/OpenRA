@@ -441,14 +441,12 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				// Only import the top-left cell of multi-celled overlays
 				// Returning true here means this is a part of a bigger overlay that has already been handled.
 				var aboveType = overlayPack[overlayIndex[cell - new CVec(1, 0)]];
-				if (shape.Width > 1 && aboveType != 0xFF)
-					if (OverlayToActor.TryGetValue(aboveType, out var a) && a == actorType)
-						return true;
+				if (shape.Width > 1 && aboveType != 0xFF && OverlayToActor.TryGetValue(aboveType, out var a) && a == actorType)
+					return true;
 
 				var leftType = overlayPack[overlayIndex[cell - new CVec(0, 1)]];
-				if (shape.Height > 1 && leftType != 0xFF)
-					if (OverlayToActor.TryGetValue(leftType, out var a) && a == actorType)
-						return true;
+				if (shape.Height > 1 && leftType != 0xFF && OverlayToActor.TryGetValue(leftType, out var l) && l == actorType)
+					return true;
 			}
 
 			actorReference = new ActorReference(actorType)

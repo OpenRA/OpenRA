@@ -140,15 +140,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				// Check for duplicate actor ID
-				if (!CurrentActor.ID.Equals(actorId, StringComparison.OrdinalIgnoreCase))
+				if (!CurrentActor.ID.Equals(actorId, StringComparison.OrdinalIgnoreCase) && editorActorLayer[actorId] != null)
 				{
-					if (editorActorLayer[actorId] != null)
-					{
-						nextActorIDStatus = ActorIDStatus.Duplicate;
-						actorIDErrorLabel.Text = TranslationProvider.GetString(DuplicateActorId);
-						actorIDErrorLabel.Visible = true;
-						return;
-					}
+					nextActorIDStatus = ActorIDStatus.Duplicate;
+					actorIDErrorLabel.Text = TranslationProvider.GetString(DuplicateActorId);
+					actorIDErrorLabel.Visible = true;
+					return;
 				}
 
 				SetActorID(actorId);

@@ -203,13 +203,10 @@ namespace OpenRA.Mods.Cnc.Traits
 					mad.initiated = true;
 				}
 
-				if (++ticks % mad.info.ThumpInterval == 0)
+				if (++ticks % mad.info.ThumpInterval == 0 && mad.info.ThumpDamageWeapon != null)
 				{
-					if (mad.info.ThumpDamageWeapon != null)
-					{
-						// Use .FromPos since this weapon needs to affect more than just the MadTank actor
-						mad.info.ThumpDamageWeaponInfo.Impact(Target.FromPos(self.CenterPosition), self);
-					}
+					// Use .FromPos since this weapon needs to affect more than just the MadTank actor
+					mad.info.ThumpDamageWeaponInfo.Impact(Target.FromPos(self.CenterPosition), self);
 				}
 
 				if (ticks == mad.info.ChargeDelay)

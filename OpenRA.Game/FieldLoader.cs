@@ -195,11 +195,11 @@ namespace OpenRA
 			if (value != null)
 			{
 				var parts = value.Split(SplitComma);
-				if (parts.Length == 3)
-				{
-					if (WDist.TryParse(parts[0], out var rx) && WDist.TryParse(parts[1], out var ry) && WDist.TryParse(parts[2], out var rz))
-						return new WVec(rx, ry, rz);
-				}
+				if (parts.Length == 3
+					&& WDist.TryParse(parts[0], out var rx)
+					&& WDist.TryParse(parts[1], out var ry)
+					&& WDist.TryParse(parts[2], out var rz))
+					return new WVec(rx, ry, rz);
 			}
 
 			return InvalidValueAction(value, fieldType, fieldName);
@@ -219,8 +219,8 @@ namespace OpenRA
 				for (var i = 0; i < vecs.Length; ++i)
 				{
 					if (WDist.TryParse(parts[3 * i], out var rx)
-							&& WDist.TryParse(parts[3 * i + 1], out var ry)
-							&& WDist.TryParse(parts[3 * i + 2], out var rz))
+						&& WDist.TryParse(parts[3 * i + 1], out var ry)
+						&& WDist.TryParse(parts[3 * i + 2], out var rz))
 						vecs[i] = new WVec(rx, ry, rz);
 				}
 
@@ -235,13 +235,11 @@ namespace OpenRA
 			if (value != null)
 			{
 				var parts = value.Split(SplitComma);
-				if (parts.Length == 3)
-				{
-					if (WDist.TryParse(parts[0], out var rx)
-						&& WDist.TryParse(parts[1], out var ry)
-						&& WDist.TryParse(parts[2], out var rz))
-						return new WPos(rx, ry, rz);
-				}
+				if (parts.Length == 3
+					&& WDist.TryParse(parts[0], out var rx)
+					&& WDist.TryParse(parts[1], out var ry)
+					&& WDist.TryParse(parts[2], out var rz))
+					return new WPos(rx, ry, rz);
 			}
 
 			return InvalidValueAction(value, fieldType, fieldName);
@@ -259,13 +257,11 @@ namespace OpenRA
 			if (value != null)
 			{
 				var parts = value.Split(SplitComma);
-				if (parts.Length == 3)
-				{
-					if (Exts.TryParseInt32Invariant(parts[0], out var rr)
-							&& Exts.TryParseInt32Invariant(parts[1], out var rp)
-							&& Exts.TryParseInt32Invariant(parts[2], out var ry))
-						return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
-				}
+				if (parts.Length == 3
+					&& Exts.TryParseInt32Invariant(parts[0], out var rr)
+					&& Exts.TryParseInt32Invariant(parts[1], out var rp)
+					&& Exts.TryParseInt32Invariant(parts[2], out var ry))
+					return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
 			}
 
 			return InvalidValueAction(value, fieldType, fieldName);

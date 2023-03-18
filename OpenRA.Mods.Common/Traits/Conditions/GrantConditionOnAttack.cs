@@ -93,29 +93,34 @@ namespace OpenRA.Mods.Common.Traits
 		static bool TargetChanged(in Target lastTarget, in Target target)
 		{
 			// Invalidate reveal changing the target.
-			if (lastTarget.Type == TargetType.FrozenActor && target.Type == TargetType.Actor)
-				if (lastTarget.FrozenActor.Actor == target.Actor)
-					return false;
+			if (lastTarget.Type == TargetType.FrozenActor &&
+				target.Type == TargetType.Actor &&
+				lastTarget.FrozenActor.Actor == target.Actor)
+				return false;
 
-			if (lastTarget.Type == TargetType.Actor && target.Type == TargetType.FrozenActor)
-				if (target.FrozenActor.Actor == lastTarget.Actor)
-					return false;
+			if (lastTarget.Type == TargetType.Actor &&
+				target.Type == TargetType.FrozenActor &&
+				target.FrozenActor.Actor == lastTarget.Actor)
+				return false;
 
 			if (lastTarget.Type != target.Type)
 				return true;
 
 			// Invalidate attacking different targets with shared target types.
-			if (lastTarget.Type == TargetType.Actor && target.Type == TargetType.Actor)
-				if (lastTarget.Actor != target.Actor)
-					return true;
+			if (lastTarget.Type == TargetType.Actor &&
+				target.Type == TargetType.Actor &&
+				lastTarget.Actor != target.Actor)
+				return true;
 
-			if (lastTarget.Type == TargetType.FrozenActor && target.Type == TargetType.FrozenActor)
-				if (lastTarget.FrozenActor != target.FrozenActor)
-					return true;
+			if (lastTarget.Type == TargetType.FrozenActor &&
+				target.Type == TargetType.FrozenActor &&
+				lastTarget.FrozenActor != target.FrozenActor)
+				return true;
 
-			if (lastTarget.Type == TargetType.Terrain && target.Type == TargetType.Terrain)
-				if (lastTarget.CenterPosition != target.CenterPosition)
-					return true;
+			if (lastTarget.Type == TargetType.Terrain &&
+				target.Type == TargetType.Terrain &&
+				lastTarget.CenterPosition != target.CenterPosition)
+				return true;
 
 			return false;
 		}

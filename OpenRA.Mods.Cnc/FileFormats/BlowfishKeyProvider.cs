@@ -378,11 +378,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 							if (tmp > 0)
 							{
 								MulBignumWord(esi, globOne, tmp, 2 * len);
-								if ((*edi & 0x8000) == 0)
-								{
-									if (SubBigNum((uint*)esi, (uint*)esi, g1, 0, (int)len) != 0)
-										(*edi)--;
-								}
+								if ((*edi & 0x8000) == 0 && SubBigNum((uint*)esi, (uint*)esi, g1, 0, (int)len) != 0)
+									(*edi)--;
 							}
 						}
 

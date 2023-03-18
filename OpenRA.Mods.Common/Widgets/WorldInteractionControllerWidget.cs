@@ -107,16 +107,15 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
-				if (useClassicMouseStyle && HasMouseFocus)
+				if (useClassicMouseStyle && HasMouseFocus &&
+					!IsValidDragbox && World.Selection.Actors.Count != 0 &&
+					!multiClick && uog.InputOverridesSelection(World, mousePos, mi))
 				{
-					if (!IsValidDragbox && World.Selection.Actors.Count != 0 && !multiClick && uog.InputOverridesSelection(World, mousePos, mi))
-					{
-						// Order units instead of selecting
-						ApplyOrders(World, mi);
-						isDragging = false;
-						YieldMouseFocus(mi);
-						return true;
-					}
+					// Order units instead of selecting
+					ApplyOrders(World, mi);
+					isDragging = false;
+					YieldMouseFocus(mi);
+					return true;
 				}
 
 				if (multiClick)
