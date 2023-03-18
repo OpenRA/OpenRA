@@ -3,6 +3,7 @@
     <OutputType>winexe</OutputType>
     <ApplicationIcon>$(LauncherIcon)</ApplicationIcon>
     <AssemblyName>$(LauncherName)</AssemblyName>
+    <Copyright>(c) The OpenRA Developers and Contributors</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
