@@ -250,13 +250,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ConfirmationDialogs.ButtonPrompt(modData,
 						title: OverwriteMapFailedTitle,
 						text: OverwriteMapFailedPrompt,
-						confirmText: OverwriteMapFailedConfirm,
 						onConfirm: () =>
 						{
 							saveMap(combinedPath);
 							if (actionManager != null)
 								actionManager.SaveFailed = false;
 						},
+						confirmText: OverwriteMapFailedConfirm,
 						onCancel: () =>
 						{
 							if (actionManager != null)
@@ -278,13 +278,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ConfirmationDialogs.ButtonPrompt(modData,
 						title: OverwriteMapOutsideEditTitle,
 						text: OverwriteMapOutsideEditPrompt,
-						confirmText: SaveMapMapOutsideConfirm,
 						onConfirm: () =>
 						{
 							saveMap(combinedPath);
 							if (actionManager != null)
 								actionManager.SaveFailed = false;
 						},
+						confirmText: SaveMapMapOutsideConfirm,
 						onCancel: () =>
 						{
 							if (actionManager != null)

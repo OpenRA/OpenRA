@@ -158,8 +158,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						ConfirmationDialogs.ButtonPrompt(modData,
 							title: VoteKickTitle,
-							titleArguments: Translation.Arguments("player", client.Name),
 							text: botsCount > 0 ? VoteKickPromptBreakBots : VoteKickPrompt,
+							titleArguments: Translation.Arguments("player", client.Name),
 							textArguments: Translation.Arguments("bots", botsCount),
 							onConfirm: () =>
 							{
@@ -174,8 +174,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					ConfirmationDialogs.ButtonPrompt(modData,
 						title: VoteKickTitle,
-						titleArguments: Translation.Arguments("player", client.Name),
 						text: botsCount > 0 ? VoteKickPromptBreakBots : VoteKickPrompt,
+						titleArguments: Translation.Arguments("player", client.Name),
 						textArguments: Translation.Arguments("bots", botsCount),
 						onConfirm: () =>
 						{
@@ -184,6 +184,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							closeMenu();
 						},
 						confirmText: VoteKickVoteFor,
+						onCancel: () => hideMenu(false),
+						cancelText: VoteKickVoteCancel,
 						onOther: () =>
 						{
 							Ui.CloseWindow();
@@ -191,16 +193,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							hideMenu(false);
 							closeMenu();
 						},
-						otherText: VoteKickVoteAgainst,
-						onCancel: () => hideMenu(false),
-						cancelText: VoteKickVoteCancel);
+						otherText: VoteKickVoteAgainst);
 				}
 				else
 				{
 					ConfirmationDialogs.ButtonPrompt(modData,
 						title: KickTitle,
-						titleArguments: Translation.Arguments("player", client.Name),
 						text: KickPrompt,
+						titleArguments: Translation.Arguments("player", client.Name),
 						onConfirm: () =>
 						{
 							orderManager.IssueOrder(Order.Command($"kick {client.Index} {false}"));

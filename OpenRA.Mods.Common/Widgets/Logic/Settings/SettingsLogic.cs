@@ -124,8 +124,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						title: RestartTitle,
 						text: RestartPrompt,
 						onConfirm: () => Game.SwitchToExternalMod(external, null, NoRestart),
-						onCancel: CloseAndExit,
 						confirmText: RestartAccept,
+						onCancel: CloseAndExit,
 						cancelText: RestartCancel);
 				}
 				else
@@ -142,11 +142,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: ResetTitle,
-					titleArguments: Translation.Arguments("panel", panels[activePanel]),
 					text: ResetPrompt,
+					titleArguments: Translation.Arguments("panel", panels[activePanel]),
 					onConfirm: Reset,
-					onCancel: () => { },
 					confirmText: ResetAccept,
+					onCancel: () => { },
 					cancelText: ResetCancel);
 			};
 		}

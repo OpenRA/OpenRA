@@ -438,8 +438,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: NoVideoTitle,
 					text: NoVideoPrompt,
-					cancelText: NoVideoCancel,
-					onCancel: () => { });
+					onCancel: () => { },
+					cancelText: NoVideoCancel);
 			}
 			else
 			{
@@ -455,8 +455,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ConfirmationDialogs.ButtonPrompt(modData,
 						title: CantPlayTitle,
 						text: CantPlayPrompt,
-						cancelText: CantPlayCancel,
-						onCancel: () => { });
+						onCancel: () => { },
+						cancelText: CantPlayCancel);
 				}
 				else
 				{
