@@ -676,7 +676,7 @@ namespace OpenRA.Support
 				else if (t.Closes != Grouping.None)
 				{
 					Token temp;
-					while (!((temp = s.Pop()).Opens != Grouping.None))
+					while ((temp = s.Pop()).Opens == Grouping.None)
 						yield return temp;
 				}
 				else if (t.OperandSides == Sides.None)

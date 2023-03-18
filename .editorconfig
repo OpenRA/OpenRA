@@ -983,6 +983,9 @@ dotnet_diagnostic.RCS1059.severity = warning
 # Remove empty 'finally' clause.
 dotnet_diagnostic.RCS1066.severity = warning
 
+# Simplify logical negation.
+dotnet_diagnostic.RCS1068.severity = warning
+
 # Remove empty namespace declaration.
 dotnet_diagnostic.RCS1072.severity = warning
 
