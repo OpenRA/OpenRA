@@ -39,7 +39,7 @@ namespace OpenRA.Mods.D2k.Traits
 			BottomLeft = 0x40,
 			BottomRight = 0x80,
 
-			All = 0xFF
+			All = Left | Top | Right | Bottom | TopLeft | TopRight | BottomLeft | BottomRight
 		}
 
 		public static readonly Dictionary<ClearSides, int> SpriteMap = new()
