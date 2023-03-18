@@ -219,9 +219,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		/// <summary>
 		/// This function analyzes the neighbors of the most promising node in the pathfinding graph
-		/// using the A* algorithm (A-star) and returns that node
+		/// using the A* algorithm (A-star) and returns that node.
 		/// </summary>
-		/// <returns>The most promising node of the iteration</returns>
+		/// <returns>The most promising node of the iteration.</returns>
 		CPos Expand()
 		{
 			var currentMinNode = openQueue.Pop().Destination;

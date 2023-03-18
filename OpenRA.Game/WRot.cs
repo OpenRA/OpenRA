@@ -53,7 +53,7 @@ namespace OpenRA
 
 		/// <summary>
 		/// Construct a rotation from an axis and angle.
-		/// The axis is expected to be normalized to length 1024
+		/// The axis is expected to be normalized to length 1024.
 		/// </summary>
 		public WRot(WVec axis, WAngle angle)
 		{

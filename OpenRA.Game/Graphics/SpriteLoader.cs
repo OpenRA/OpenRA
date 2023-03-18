@@ -18,7 +18,7 @@ namespace OpenRA.Graphics
 	/// <summary>
 	/// Describes the format of the pixel data in a ISpriteFrame.
 	/// Note that the channel order is defined for little-endian bytes, so BGRA corresponds
-	/// to a 32bit ARGB value, such as that returned by Color.ToArgb()!
+	/// to a 32bit ARGB value, such as that returned by Color.ToArgb().
 	/// </summary>
 	public enum SpriteFrameType
 	{

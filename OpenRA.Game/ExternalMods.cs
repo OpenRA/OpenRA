@@ -181,10 +181,12 @@ namespace OpenRA
 
 		/// <summary>
 		/// Removes invalid mod registrations:
-		/// * LaunchPath no longer exists
-		/// * LaunchPath and mod id matches the active mod, but the version is different
-		/// * Filename doesn't match internal key
-		/// * Fails to parse as a mod registration
+		/// <list type="bullet">
+		/// <item>LaunchPath no longer exists.</item>
+		/// <item>LaunchPath and mod id matches the active mod, but the version is different.</item>
+		/// <item>Filename doesn't match internal key.</item>
+		/// <item>Fails to parse as a mod registration.</item>
+		/// </list>
 		/// </summary>
 		internal void ClearInvalidRegistrations(ModRegistration registration)
 		{

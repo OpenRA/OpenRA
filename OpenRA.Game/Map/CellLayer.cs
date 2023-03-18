@@ -72,7 +72,7 @@ namespace OpenRA
 			return uv.V * Size.Width + uv.U;
 		}
 
-		/// <summary>Gets or sets the <see cref="CellLayer"/> using cell coordinates</summary>
+		/// <summary>Gets or sets the <see cref="CellLayer"/> using cell coordinates.</summary>
 		public T this[CPos cell]
 		{
 			get => Entries[Index(cell)];
@@ -85,7 +85,7 @@ namespace OpenRA
 			}
 		}
 
-		/// <summary>Gets or sets the layer contents using raw map coordinates (not CPos!)</summary>
+		/// <summary>Gets or sets the layer contents using raw map coordinates (not CPos!).</summary>
 		public T this[MPos uv]
 		{
 			get => Entries[Index(uv)];

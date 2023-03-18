@@ -587,7 +587,7 @@ namespace OpenRA
 			return InvalidConditionToken;
 		}
 
-		/// <summary>Returns whether the specified token is valid for RevokeCondition</summary>
+		/// <summary>Returns whether the specified token is valid for RevokeCondition.</summary>
 		public bool TokenValid(int token)
 		{
 			return conditionTokens.ContainsKey(token);

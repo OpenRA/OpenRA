@@ -43,7 +43,7 @@ namespace OpenRA
 		readonly List<MapDirectoryTracker> mapDirectoryTrackers = new List<MapDirectoryTracker>();
 
 		/// <summary>
-		/// The most recently modified or loaded map at runtime
+		/// The most recently modified or loaded map at runtime.
 		/// </summary>
 		public string LastModifiedMap { get; private set; } = null;
 		readonly Dictionary<string, string> mapUpdates = new Dictionary<string, string>();
@@ -51,7 +51,7 @@ namespace OpenRA
 		string lastLoadedLastModifiedMap;
 
 		/// <summary>
-		/// If LastModifiedMap was picked already, returns a null
+		/// If LastModifiedMap was picked already, returns a null.
 		/// </summary>
 		public string PickLastModifiedMap(MapVisibility visibility)
 		{

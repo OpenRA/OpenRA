@@ -278,7 +278,7 @@ namespace OpenRA.Graphics
 			return worldRenderer.World.Map.CellContaining(worldRenderer.ProjectedPosition(ViewToWorldPx(view)));
 		}
 
-		/// <summary> Returns an unfiltered list of all cells that could potentially contain the mouse cursor</summary>
+		/// <summary>Returns an unfiltered list of all cells that could potentially contain the mouse cursor.</summary>
 		IEnumerable<MPos> CandidateMouseoverCells(int2 world)
 		{
 			var map = worldRenderer.World.Map;

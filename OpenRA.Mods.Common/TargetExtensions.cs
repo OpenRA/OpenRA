@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common
 		/// <summary>
 		/// Update (Frozen)Actor targets to account for visibility changes or actor replacement.
 		/// If the target actor becomes hidden without a FrozenActor, the target is invalidated.
-		/// /// </summary>
+		/// </summary>
 		public static Target RecalculateInvalidatingHiddenTargets(this Target t, Player viewer)
 		{
 			var updated = t.Recalculate(viewer, out var targetIsHiddenActor);

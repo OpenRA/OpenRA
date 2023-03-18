@@ -131,7 +131,7 @@ namespace OpenRA.GameRules
 		public readonly List<IWarhead> Warheads = new List<IWarhead>();
 
 		/// <summary>
-		/// This constructor is used solely for documentation generation!
+		/// This constructor is used solely for documentation generation.
 		/// </summary>
 		public WeaponInfo() { }
 

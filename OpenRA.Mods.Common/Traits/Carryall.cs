@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 		int carryConditionToken = Actor.InvalidConditionToken;
 		int carryableConditionToken = Actor.InvalidConditionToken;
 
-		/// <summary>Offset between the carryall's and the carried actor's CenterPositions</summary>
+		/// <summary>Offset between the carryall's and the carried actor's CenterPositions.</summary>
 		public WVec CarryableOffset { get; private set; }
 
 		public Carryall(Actor self, CarryallInfo info)

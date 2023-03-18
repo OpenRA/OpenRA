@@ -43,13 +43,13 @@ namespace OpenRA
 			Array.Copy(anotherLayer.Entries, Entries, Entries.Length);
 		}
 
-		/// <summary>Clears the layer contents with their default value</summary>
+		/// <summary>Clears the layer contents with their default value.</summary>
 		public virtual void Clear()
 		{
 			Array.Clear(Entries, 0, Entries.Length);
 		}
 
-		/// <summary>Clears the layer contents with a known value</summary>
+		/// <summary>Clears the layer contents with a known value.</summary>
 		public virtual void Clear(T clearValue)
 		{
 			Array.Fill(Entries, clearValue);

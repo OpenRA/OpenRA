@@ -64,7 +64,7 @@ namespace OpenRA
 	}
 
 	/// <summary>
-	/// Projected map position
+	/// Projected map position.
 	/// </summary>
 	public readonly struct PPos : IEquatable<PPos>
 	{

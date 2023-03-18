@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common
 		/// <summary>
 		/// Adds step angle units to facing in the direction that takes it closer to desiredFacing.
 		/// If facing is already within step of desiredFacing then desiredFacing is returned.
-		/// Step is given as an integer to allow negative values (step away from the desired facing)
+		/// Step is given as an integer to allow negative values (step away from the desired facing).
 		/// </summary>
 		public static WAngle TickFacing(WAngle facing, WAngle desiredFacing, WAngle step)
 		{
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common
 
 		/// <summary>
 		/// Determines whether desiredFacing is clockwise (-1) or anticlockwise (+1) of facing.
-		/// If desiredFacing is equal to facing or directly behind facing we treat it as being anticlockwise
+		/// If desiredFacing is equal to facing or directly behind facing we treat it as being anticlockwise.
 		/// </summary>
 		public static int GetTurnDirection(WAngle facing, WAngle desiredFacing)
 		{
@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common
 		}
 
 		/// <summary>
-		/// Returns the remainder angle after rounding to the nearest whole step / facing
+		/// Returns the remainder angle after rounding to the nearest whole step / facing.
 		/// </summary>
 		public static WAngle AngleDiffToStep(WAngle facing, int numFrames)
 		{
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common
 			return new WAngle(IndexFacing(facing, facings) * (1024 / facings));
 		}
 
-		/// <summary>Wraps an arbitrary integer facing value into the range 0 - 255</summary>
+		/// <summary>Wraps an arbitrary integer facing value into the range 0 - 255.</summary>
 		public static int NormalizeFacing(int f)
 		{
 			if (f >= 0)
