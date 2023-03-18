@@ -24,10 +24,10 @@ namespace OpenRA.Mods.Common.Widgets
 			Dictionary<string, object> titleArguments = null,
 			Dictionary<string, object> textArguments = null,
 			Action onConfirm = null,
-			Action onCancel = null,
-			Action onOther = null,
 			string confirmText = null,
+			Action onCancel = null,
 			string cancelText = null,
+			Action onOther = null,
 			string otherText = null)
 		{
 			var promptName = onOther != null ? "THREEBUTTON_PROMPT" : "TWOBUTTON_PROMPT";

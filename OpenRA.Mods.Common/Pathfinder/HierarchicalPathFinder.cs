@@ -936,8 +936,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 					using (var fromDest = GetLocalPathSearch(
 						self, new[] { target }, source, customCost, ignoreActor, check, laneBias, null, heuristicWeightPercentage,
 						heuristic: Heuristic(forwardAbstractSearch, estimatedSearchSize, null, null),
-						recorder: pathFinderOverlay?.RecordLocalEdges(self),
-						inReverse: true))
+						inReverse: true,
+						recorder: pathFinderOverlay?.RecordLocalEdges(self)))
 						return PathSearch.FindBidiPath(fromDest, fromSrc);
 				}
 			}

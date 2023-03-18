@@ -322,8 +322,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					title: LeaveMissionTitle,
 					text: LeaveMissionPrompt,
 					onConfirm: () => { OnQuit(world); leaving = true; },
-					onCancel: ShowMenu,
 					confirmText: LeaveMissionAccept,
+					onCancel: ShowMenu,
 					cancelText: LeaveMissionCancel);
 			};
 		}
@@ -358,8 +358,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					title: RestartMissionTitle,
 					text: RestartMissionPrompt,
 					onConfirm: OnRestart,
-					onCancel: ShowMenu,
 					confirmText: RestartMissionAccept,
+					onCancel: ShowMenu,
 					cancelText: RestartMissionCancel);
 			};
 		}
@@ -384,8 +384,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					title: SurrenderTitle,
 					text: SurrenderPrompt,
 					onConfirm: OnSurrender,
-					onCancel: ShowMenu,
 					confirmText: SurrenderAccept,
+					onCancel: ShowMenu,
 					cancelText: SurrenderCancel);
 			};
 		}
@@ -591,8 +591,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						title: ExitToMapEditorTitle,
 						text: ExitToMapEditorPrompt,
 						onConfirm: OnConfirm,
-						onCancel: ShowMenu,
 						confirmText: ExitToMapEditorConfirm,
+						onCancel: ShowMenu,
 						cancelText: ExitToMapEditorCancel);
 				};
 		}
@@ -617,8 +617,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: ExitMapEditorTitle,
 					text: deletedOrUnavailable ? ExitMapEditorPromptDeleted : ExitMapEditorPromptUnsaved,
-					confirmText: deletedOrUnavailable ? ExitMapEditorAnywayConfirm : ExitMapEditorConfirm,
 					onConfirm: () => { onSuccess(); leaving = true; },
+					confirmText: deletedOrUnavailable ? ExitMapEditorAnywayConfirm : ExitMapEditorConfirm,
 					onCancel: ShowMenu);
 			}
 			else
