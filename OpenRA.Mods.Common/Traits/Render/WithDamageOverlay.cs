@@ -9,8 +9,10 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -32,6 +34,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Position relative to the body orientation.")]
 		public readonly WVec Offset = WVec.Zero;
 
+		[Desc("How many times should " + nameof(LoopSequence) + " be played? A range can be provided to be randomly chosen from.")]
+		public readonly int[] LoopCount = { 2 };
+
 		[PaletteReference(nameof(IsPlayerPalette))]
 		[Desc("Custom palette name.")]
 		public readonly string Palette = null;
@@ -47,6 +52,22 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly DamageState MinimumDamageState = DamageState.Heavy;
 		public readonly DamageState MaximumDamageState = DamageState.Dead;
 
+		public IEnumerable<string> GetSequences(MersenneTwister random)
+		{
+			if (!string.IsNullOrEmpty(IdleSequence))
+				yield return IdleSequence;
+
+			if (!string.IsNullOrEmpty(LoopSequence))
+			{
+				var loopCount = LoopCount.Length == 2 ? random.Next(LoopCount[0], LoopCount[1] + 1) : LoopCount[0];
+				for (var i = 0; i < loopCount; i++)
+					yield return LoopSequence;
+			}
+
+			if (!string.IsNullOrEmpty(EndSequence))
+				yield return EndSequence;
+		}
+
 		public override object Create(ActorInitializer init) { return new WithDamageOverlay(init.Self, this); }
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo info)
@@ -61,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly WithDamageOverlayInfo info;
 		readonly Animation anim;
 
-		bool isSmoking;
+		bool isPlayingAnimation;
 
 		public WithDamageOverlay(Actor self, WithDamageOverlayInfo info)
 		{
@@ -75,8 +96,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var body = self.TraitOrDefault<BodyOrientation>();
 
 			WVec AnimationOffset() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self.Orientation)));
-			rs.Add(new AnimationWithOffset(anim, info.Offset == WVec.Zero || body == null ? null : AnimationOffset, () => !isSmoking),
-				info.Palette, info.IsPlayerPalette);
+			rs.Add(new AnimationWithOffset(anim, info.Offset == WVec.Zero || body == null ? null : AnimationOffset, () => !isPlayingAnimation));
 		}
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
@@ -84,16 +104,23 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!info.DamageTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(info.DamageTypes))
 				return;
 
-			if (isSmoking) return;
+			if (isPlayingAnimation) return;
 			if (e.Damage.Value < 0) return; /* getting healed */
 			if (e.DamageState < info.MinimumDamageState) return;
 			if (e.DamageState > info.MaximumDamageState) return;
 
-			isSmoking = true;
-			anim.PlayThen(info.IdleSequence,
-				() => anim.PlayThen(info.LoopSequence,
-					() => anim.PlayThen(info.EndSequence,
-						() => isSmoking = false)));
+			PlayAnimation(info.GetSequences(self.World.LocalRandom).GetEnumerator());
+		}
+
+		void PlayAnimation(IEnumerator<string> sequences)
+		{
+			if (sequences.MoveNext())
+			{
+				isPlayingAnimation = true;
+				anim.PlayThen(sequences.Current, () => PlayAnimation(sequences));
+			}
+			else
+				isPlayingAnimation = false;
 		}
 	}
 }
