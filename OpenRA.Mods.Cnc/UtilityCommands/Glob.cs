@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			if (parts.Count == 0
 				|| (parts[0][0] != Path.DirectorySeparatorChar
 				&& parts[0][0] != Path.AltDirectorySeparatorChar
-				&& parts[0].Contains(':') == false
+				&& !parts[0].Contains(':')
 				&& parts[0] != "." + Path.DirectorySeparatorChar
 				&& parts[0] != "." + Path.AltDirectorySeparatorChar
 				&& parts[0] != ".." + Path.DirectorySeparatorChar
