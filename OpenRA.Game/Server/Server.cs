@@ -876,13 +876,13 @@ namespace OpenRA.Server
 
 		public void DispatchServerOrdersToClients(byte[] data, int frame = 0)
 		{
-			var from = 0;
-			var frameData = CreateFrame(from, frame, data);
+			const int From = 0;
+			var frameData = CreateFrame(From, frame, data);
 			foreach (var c in Conns.ToList())
 				if (c.Validated)
-					DispatchFrameToClient(c, from, frameData);
+					DispatchFrameToClient(c, From, frameData);
 
-			RecordOrder(frame, data, from);
+			RecordOrder(frame, data, From);
 		}
 
 		public void ReceiveOrders(Connection conn, int frame, byte[] data)

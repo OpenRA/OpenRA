@@ -685,16 +685,16 @@ namespace OpenRA
 				writer.Write((ushort)MapSize.Y);
 
 				// Data offsets
-				var tilesOffset = 17;
+				const int TilesOffset = 17;
 				var heightsOffset = Grid.MaximumTerrainHeight > 0 ? 3 * MapSize.X * MapSize.Y + 17 : 0;
 				var resourcesOffset = (Grid.MaximumTerrainHeight > 0 ? 4 : 3) * MapSize.X * MapSize.Y + 17;
 
-				writer.Write((uint)tilesOffset);
+				writer.Write((uint)TilesOffset);
 				writer.Write((uint)heightsOffset);
 				writer.Write((uint)resourcesOffset);
 
 				// Tile data
-				if (tilesOffset != 0)
+				if (TilesOffset != 0)
 				{
 					for (var i = 0; i < MapSize.X; i++)
 					{
@@ -805,7 +805,7 @@ namespace OpenRA
 				bitmapWidth = 2 * bitmapWidth - 1;
 
 			var stride = bitmapWidth * 4;
-			var pxStride = 4;
+			const int PxStride = 4;
 			var minimapData = new byte[stride * height];
 			(Color Left, Color Right) terrainColor = default;
 
@@ -827,10 +827,10 @@ namespace OpenRA
 					{
 						// Odd rows are shifted right by 1px
 						var dx = uv.V & 1;
-						var xOffset = pxStride * (2 * x + dx);
+						var xOffset = PxStride * (2 * x + dx);
 						if (x + dx > 0)
 						{
-							var z = y * stride + xOffset - pxStride;
+							var z = y * stride + xOffset - PxStride;
 							var c = actorColor.A == 0 ? terrainColor.Left : actorColor;
 							minimapData[z++] = c.R;
 							minimapData[z++] = c.G;
@@ -850,7 +850,7 @@ namespace OpenRA
 					}
 					else
 					{
-						var z = y * stride + pxStride * x;
+						var z = y * stride + PxStride * x;
 						var c = actorColor.A == 0 ? terrainColor.Left : actorColor;
 						minimapData[z++] = c.R;
 						minimapData[z++] = c.G;
