@@ -1088,6 +1088,9 @@ dotnet_diagnostic.RCS1204.severity = warning
 # Order type parameter constraints.
 dotnet_diagnostic.RCS1209.severity = warning
 
+# Unnecessary interpolated string.
+dotnet_diagnostic.RCS1214.severity = warning
+
 # Expression is always equal to 'true'.
 dotnet_diagnostic.RCS1215.severity = warning
 
