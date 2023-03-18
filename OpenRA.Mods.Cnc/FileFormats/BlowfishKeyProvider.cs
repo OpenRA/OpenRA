@@ -284,24 +284,21 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		static unsafe void MulBignumWord(ushort* pn1, uint[] n2, uint mul, uint len)
 		{
 			uint i, tmp;
-			unsafe
+			fixed (uint* tempPn2 = &n2[0])
 			{
-				fixed (uint* tempPn2 = &n2[0])
+				var pn2 = (ushort*)tempPn2;
+
+				tmp = 0;
+				for (i = 0; i < len; i++)
 				{
-					var pn2 = (ushort*)tempPn2;
-
-					tmp = 0;
-					for (i = 0; i < len; i++)
-					{
-						tmp = mul * *pn2 + *pn1 + tmp;
-						*pn1 = (ushort)tmp;
-						pn1++;
-						pn2++;
-						tmp >>= 16;
-					}
-
-					*pn1 += (ushort)tmp;
+					tmp = mul * *pn2 + *pn1 + tmp;
+					*pn1 = (ushort)tmp;
+					pn1++;
+					pn2++;
+					tmp >>= 16;
 				}
+
+				*pn1 += (ushort)tmp;
 			}
 		}
 
