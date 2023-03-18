@@ -986,6 +986,9 @@ dotnet_diagnostic.RCS1066.severity = warning
 # Simplify logical negation.
 dotnet_diagnostic.RCS1068.severity = warning
 
+# Remove redundant base constructor call.
+dotnet_diagnostic.RCS1071.severity = warning
+
 # Remove empty namespace declaration.
 dotnet_diagnostic.RCS1072.severity = warning
 
