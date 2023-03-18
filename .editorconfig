@@ -992,6 +992,9 @@ dotnet_diagnostic.RCS1071.severity = warning
 # Remove empty namespace declaration.
 dotnet_diagnostic.RCS1072.severity = warning
 
+# Remove redundant constructor.
+dotnet_diagnostic.RCS1074.severity = warning
+
 # Remove empty region.
 dotnet_diagnostic.RCS1091.severity = warning
 
