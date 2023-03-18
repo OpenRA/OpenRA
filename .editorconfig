@@ -1061,6 +1061,9 @@ dotnet_diagnostic.RCS1159.severity = warning
 # Unused type parameter.
 dotnet_diagnostic.RCS1164.severity = warning
 
+# Use read-only auto-implemented property.
+dotnet_diagnostic.RCS1170.severity = warning
+
 # Use 'is' operator instead of 'as' operator.
 dotnet_diagnostic.RCS1172.severity = warning
 

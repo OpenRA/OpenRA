@@ -71,7 +71,7 @@ namespace OpenRA
 		public IEffectiveOwner EffectiveOwner { get; }
 		public IOccupySpace OccupiesSpace { get; }
 		public ITargetable[] Targetables { get; }
-		public IEnumerable<ITargetablePositions> EnabledTargetablePositions { get; private set; }
+		public IEnumerable<ITargetablePositions> EnabledTargetablePositions { get; }
 
 		public bool IsIdle => CurrentActivity == null;
 		public bool IsDead => Disposed || (health != null && health.IsDead);
