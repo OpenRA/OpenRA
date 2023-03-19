@@ -507,19 +507,19 @@ namespace OpenRA.Mods.Common.Traits
 			return Util.ApplyPercentageModifiers(valued.Cost, modifiers);
 		}
 
-		protected void PauseProduction(string itemName, bool paused)
+		protected virtual void PauseProduction(string itemName, bool paused)
 		{
 			Queue.FirstOrDefault(a => a.Item == itemName)?.Pause(paused);
 		}
 
-		protected void CancelProduction(string itemName, uint numberToCancel)
+		protected virtual void CancelProduction(string itemName, uint numberToCancel)
 		{
 			for (var i = 0; i < numberToCancel; i++)
 				if (!CancelProductionInner(itemName))
 					break;
 		}
 
-		bool CancelProductionInner(string itemName)
+		protected bool CancelProductionInner(string itemName)
 		{
 			var item = Queue.LastOrDefault(a => a.Item == itemName);
 
