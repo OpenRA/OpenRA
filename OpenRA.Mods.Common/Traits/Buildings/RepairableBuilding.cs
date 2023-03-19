@@ -47,9 +47,18 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string RepairCondition = null;
 
 		[NotificationReference("Speech")]
+		[Desc("Speech notification to play when the repair process is started.")]
 		public readonly string RepairingNotification = null;
 
+		[Desc("Text notification to display when the repair process is started.")]
 		public readonly string RepairingTextNotification = null;
+
+		[NotificationReference("Speech")]
+		[Desc("Speech notification to play when the repair process is aborted.")]
+		public readonly string RepairingStoppedNotification = null;
+
+		[Desc("Text notification to display when the repair process is aborted.")]
+		public readonly string RepairingStoppedTextNotification = null;
 
 		public override object Create(ActorInitializer init) { return new RepairableBuilding(init.Self, this); }
 	}
@@ -105,6 +114,12 @@ namespace OpenRA.Mods.Common.Traits
 			if (Repairers.Remove(player))
 			{
 				UpdateCondition(self);
+				if (!Repairers.Any())
+				{
+					Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", Info.RepairingStoppedNotification, player.Faction.InternalName);
+					TextNotificationsManager.AddTransientLine(Info.RepairingStoppedTextNotification, self.Owner);
+				}
+
 				return;
 			}
 
