@@ -33,15 +33,15 @@ namespace OpenRA.Mods.D2k.Traits
 		[Desc("Sprite image to use for the overlay.")]
 		public readonly string Image = "overlay";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		[Desc("Sprite overlay to use for valid cells.")]
 		public readonly string TileValidName = "build-valid";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		[Desc("Sprite overlay to use for invalid cells.")]
 		public readonly string TileInvalidName = "build-invalid";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		[Desc("Sprite overlay to use for blocked cells.")]
 		public readonly string TileUnsafeName = "build-unsafe";
 
