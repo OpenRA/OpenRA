@@ -69,9 +69,10 @@ namespace OpenRA.Mods.Common.Lint
 			// TODO: Check all available languages.
 			var language = "en";
 			Console.WriteLine($"Testing translation: {language}");
-			var translation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem);
 
-			TestTraits(emitError, modData.DefaultRules, translation, language);
+			TestTraits(emitError, modData.DefaultRules, new Translation(language, modData.Manifest.RulesetTranslations, modData.DefaultFileSystem), language);
+
+			var translation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem);
 
 			var gameSpeeds = modData.Manifest.Get<GameSpeeds>();
 			foreach (var speed in gameSpeeds.Speeds.Values)

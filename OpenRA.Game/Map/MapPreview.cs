@@ -124,8 +124,8 @@ namespace OpenRA
 
 				Translation = new Translation(Game.Settings.Player.Language,
 					yaml.TryGetValue("Translations", out var node) && node != null
-					? modData.Manifest.Translations.Append(FieldLoader.GetValue<string[]>("value", node.Value)).ToArray()
-					: modData.Manifest.Translations, fileSystem);
+					? modData.Manifest.RulesetTranslations.Append(FieldLoader.GetValue<string[]>("value", node.Value)).ToArray()
+					: modData.Manifest.RulesetTranslations, fileSystem);
 
 				try
 				{

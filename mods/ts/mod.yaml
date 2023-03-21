@@ -186,6 +186,8 @@ ChromeLayout:
 
 Translations:
 	common|languages/en.ftl
+
+RulesetTranslations:
 	common|languages/rules/en.ftl
 	ts|languages/rules/en.ftl
 

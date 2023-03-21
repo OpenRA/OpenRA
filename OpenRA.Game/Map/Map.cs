@@ -452,8 +452,8 @@ namespace OpenRA
 
 			Translation = new Translation(Game.Settings.Player.Language,
 				TranslationDefinitions != null
-				? modData.Manifest.Translations.Append(FieldLoader.GetValue<string[]>("value", TranslationDefinitions.Value)).ToArray()
-				: modData.Manifest.Translations, this);
+				? modData.Manifest.RulesetTranslations.Append(FieldLoader.GetValue<string[]>("value", TranslationDefinitions.Value)).ToArray()
+				: modData.Manifest.RulesetTranslations, this);
 
 			var tl = new MPos(0, 0).ToCPos(this);
 			var br = new MPos(MapSize.X - 1, MapSize.Y - 1).ToCPos(this);
