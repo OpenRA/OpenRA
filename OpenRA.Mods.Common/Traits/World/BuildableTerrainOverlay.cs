@@ -47,6 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly BuildableTerrainOverlayInfo info;
 		readonly World world;
 		readonly Sprite disabledSprite;
+		readonly float disabledSpriteScale;
 
 		public bool Enabled = false;
 		TerrainSpriteLayer render;
@@ -59,7 +60,9 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 			world = self.World;
 
-			disabledSprite = self.World.Map.Sequences.GetSequence(info.Image, info.Sequence).GetSprite(0);
+			var spriteSequence = self.World.Map.Sequences.GetSequence(info.Image, info.Sequence);
+			disabledSprite = spriteSequence.GetSprite(0);
+			disabledSpriteScale = spriteSequence.Scale;
 		}
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
@@ -85,7 +88,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var buildableSprite = !info.AllowedTerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type) || world.Map.Ramp[cell] != 0 ? disabledSprite : null;
-			render.Update(cell, buildableSprite, palette, 1f, info.Alpha);
+			render.Update(cell, buildableSprite, palette, disabledSpriteScale, info.Alpha);
 		}
 
 		void IRenderAboveWorld.RenderAboveWorld(Actor self, WorldRenderer wr)
