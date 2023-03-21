@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sprite definition.")]
 		public readonly string Image = "overlay";
 
-		[SequenceReference("Image")]
+		[SequenceReference(nameof(Image))]
 		[Desc("Sequence to use for unbuildable area.")]
 		public readonly string Sequence = "build-invalid";
 
