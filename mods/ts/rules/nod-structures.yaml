@@ -593,7 +593,7 @@ NAWAST:
 		Type: UnloadWeed
 		DockAngle: 640
 		DockOffset: 724,724,0
-	StoresResources:
+	StoresPlayerResources:
 		Capacity: 56
 	Power:
 		Amount: -40

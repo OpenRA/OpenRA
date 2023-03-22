@@ -109,6 +109,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			{
 				// bleed only changes here.
 				new RemoveValidRelationsFromCapturable(),
+				new ExtractResourceStorageFromHarvester(),
 
 				// Execute these rules last to avoid premature yaml merge crashes.
 				new AbstractDocking(),

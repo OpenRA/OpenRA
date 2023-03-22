@@ -59,7 +59,6 @@ HARV:
 		Bounds: 1086, 2172
 		DecorationBounds: 1086, 2172
 	Harvester:
-		Capacity: 28
 		Resources: Tiberium, BlueTiberium
 		BaleLoadDelay: 15
 		BaleUnloadDelay: 15
@@ -68,6 +67,9 @@ HARV:
 		SearchFromHarvesterRadius: 18
 		HarvestVoice: Attack
 		EmptyCondition: no-tiberium
+	StoresResources:
+		Capacity: 28
+		Resources: Tiberium, BlueTiberium
 	DockClientManager:
 		Voice: Move
 	Mobile:
@@ -100,7 +102,7 @@ HARV:
 			nod: harv.nod
 	-DamagedByTerrain@VEINS:
 	-LeavesTrails@VEINS:
-	WithHarvesterPipsDecoration:
+	WithStoresResourcesPipsDecoration:
 		Position: BottomLeft
 		RequiresSelection: true
 		Margin: 5, 2

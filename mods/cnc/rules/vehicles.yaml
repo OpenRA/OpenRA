@@ -56,13 +56,15 @@ HARV:
 		DecorationBounds: 1536, 1536
 	Harvester:
 		Resources: Tiberium, BlueTiberium
-		Capacity: 20
 		BaleLoadDelay: 12
 		BaleUnloadDelay: 6
 		SearchFromProcRadius: 15
 		SearchFromHarvesterRadius: 8
 		HarvestFacings: 8
 		EmptyCondition: no-tiberium
+	StoresResources:
+		Capacity: 20
+		Resources: Tiberium, BlueTiberium
 	DockClientManager:
 	Mobile:
 		Speed: 72
@@ -89,7 +91,7 @@ HARV:
 	Explodes:
 		RequiresCondition: !no-tiberium
 		Weapon: TiberiumExplosion
-	WithHarvesterPipsDecoration:
+	WithStoresResourcesPipsDecoration:
 		Position: BottomLeft
 		Margin: 4, 3
 		RequiresSelection: true

@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
@@ -19,16 +18,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class HarvesterInfo : DockClientBaseInfo, Requires<MobileInfo>
+	public class HarvesterInfo : DockClientBaseInfo, Requires<MobileInfo>, Requires<IStoresResourcesInfo>, IRulesetLoaded
 	{
 		[Desc("Docking type")]
 		public readonly BitSet<DockType> Type = new("Unload");
 
 		[Desc("Cell to move to when automatically unblocking DeliveryBuilding.")]
 		public readonly CVec UnblockCell = new(0, 4);
-
-		[Desc("How much resources it can carry.")]
-		public readonly int Capacity = 28;
 
 		public readonly int BaleLoadDelay = 4;
 
@@ -41,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int HarvestFacings = 0;
 
 		[Desc("Which resources it can harvest.")]
-		public readonly HashSet<string> Resources = new();
+		public readonly string[] Resources = Array.Empty<string>();
 
 		[Desc("Percentage of maximum speed when fully loaded.")]
 		public readonly int FullyLoadedSpeed = 85;
@@ -79,17 +75,25 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string HarvestCursor = "harvest";
 
 		public override object Create(ActorInitializer init) { return new Harvester(init.Self, this); }
+
+		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)
+		{
+			if (Resources.Length == 0)
+				throw new YamlException($"Harvester.{nameof(Resources)} is empty.");
+
+			var resourceTypes = Resources.Except(info.TraitInfos<IStoresResourcesInfo>().SelectMany(sr => sr.ResourceTypes)).ToArray();
+			if (resourceTypes.Length != 0)
+				throw new YamlException($"Invalid Harvester.{nameof(Resources)} types: {string.Join(',', resourceTypes)}.");
+		}
 	}
 
 	public class Harvester : DockClientBase<HarvesterInfo>, IIssueOrder, IResolveOrder, IOrderVoice,
 		ISpeedModifier, ISync, INotifyCreated
 	{
-		public readonly IReadOnlyDictionary<string, int> Contents;
-
 		readonly Mobile mobile;
 		readonly IResourceLayer resourceLayer;
 		readonly ResourceClaimLayer claimLayer;
-		readonly Dictionary<string, int> contents = new();
+		readonly IStoresResources[] storesResources;
 		int conditionToken = Actor.InvalidConditionToken;
 
 		public override BitSet<DockType> GetDockType => Info.Type;
@@ -97,23 +101,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		int currentUnloadTicks;
 
-		[Sync]
-		public int ContentHash
-		{
-			get
-			{
-				var value = 0;
-				foreach (var c in contents)
-					value += c.Value << c.Key.Length;
-				return value;
-			}
-		}
-
 		public Harvester(Actor self, HarvesterInfo info)
 			: base(self, info)
 		{
-			Contents = new ReadOnlyDictionary<string, int>(contents);
 			mobile = self.Trait<Mobile>();
+			storesResources = self.TraitsImplementing<IStoresResources>().Where(sr => info.Resources.Any(r => sr.HasType(r))).ToArray();
 			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 		}
@@ -129,9 +121,9 @@ namespace OpenRA.Mods.Common.Traits
 			base.Created(self);
 		}
 
-		public bool IsFull => contents.Values.Sum() == Info.Capacity;
-		public bool IsEmpty => contents.Values.Sum() == 0;
-		public int Fullness => contents.Values.Sum() * 100 / Info.Capacity;
+		public bool IsFull => storesResources.All(sr => sr.ContentsSum >= sr.Capacity);
+		public bool IsEmpty => storesResources.All(sr => sr.ContentsSum == 0);
+		public int Fullness => storesResources.Sum(sr => sr.ContentsSum * 100 / sr.Capacity) / storesResources.Length;
 
 		protected override bool CanDock()
 		{
@@ -151,12 +143,11 @@ namespace OpenRA.Mods.Common.Traits
 				conditionToken = self.RevokeCondition(conditionToken);
 		}
 
-		public void AcceptResource(Actor self, string resourceType)
+		public void AddResource(Actor self, string resourceType)
 		{
-			if (!contents.ContainsKey(resourceType))
-				contents[resourceType] = 1;
-			else
-				contents[resourceType]++;
+			foreach (var sr in storesResources)
+				if (sr.AddResource(resourceType, 1) == 0)
+					break;
 
 			UpdateCondition(self);
 		}
@@ -177,27 +168,23 @@ namespace OpenRA.Mods.Common.Traits
 			if (--currentUnloadTicks > 0)
 				return false;
 
-			if (contents.Keys.Count > 0)
+			foreach (var sr in storesResources)
 			{
-				foreach (var c in contents)
+				foreach (var c in sr.Contents)
 				{
-					var resourceType = c.Key;
 					var count = Math.Min(c.Value, Info.BaleUnloadAmount);
-					var accepted = acceptResources.AcceptResources(hostActor, resourceType, count);
+					var accepted = acceptResources.AcceptResources(hostActor, c.Key, count);
 					if (accepted == 0)
 						continue;
 
-					contents[resourceType] -= accepted;
-					if (contents[resourceType] <= 0)
-						contents.Remove(resourceType);
-
+					sr.RemoveResource(c.Key, accepted);
 					currentUnloadTicks = Info.BaleUnloadDelay;
 					UpdateCondition(self);
 					return false;
 				}
 			}
 
-			return contents.Count == 0;
+			return IsEmpty;
 		}
 
 		public override void OnDockCompleted(Actor self, Actor hostActor, IDockHost dock)
@@ -279,13 +266,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		int ISpeedModifier.GetSpeedModifier()
 		{
-			return 100 - (100 - Info.FullyLoadedSpeed) * contents.Values.Sum() / Info.Capacity;
+			return 100 - (100 - Info.FullyLoadedSpeed) * Fullness / 100;
 		}
 
 		protected override void TraitDisabled(Actor self)
 		{
 			base.TraitDisabled(self);
-			contents.Clear();
 
 			if (conditionToken != Actor.InvalidConditionToken)
 				conditionToken = self.RevokeCondition(conditionToken);

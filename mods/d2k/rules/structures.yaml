@@ -287,7 +287,7 @@ refinery:
 		Type: Unload
 		DockAngle: 640
 		DockOffset: 1c0,512,0
-	StoresResources:
+	StoresPlayerResources:
 		Capacity: 2000
 	CustomSellValue:
 		Value: 500
@@ -357,7 +357,7 @@ silo:
 	-WithSpriteBody:
 	WithResourceLevelSpriteBody:
 		Sequence: stages
-	StoresResources:
+	StoresPlayerResources:
 		Capacity: 2000
 	-SpawnActorsOnSell:
 	Power:

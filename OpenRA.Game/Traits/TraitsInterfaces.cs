@@ -173,7 +173,31 @@ namespace OpenRA.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface IStoreResources { int Capacity { get; } }
+	public interface IStoresResourcesInfo : ITraitInfoInterface
+	{
+		string[] ResourceTypes { get; }
+	}
+
+	public interface IStoresResources
+	{
+		bool HasType(string resourceType);
+
+		/// <summary>The amount of resources that can be stored.</summary>
+		int Capacity { get; }
+
+		/// <summary>Stored resources.</summary>
+		/// <remarks>Dictionary key refers to resourceType, value refers to resource amount.</remarks>
+		IReadOnlyDictionary<string, int> Contents { get; }
+
+		/// <summary>A performance cheap method of getting the total sum of contents.</summary>
+		int ContentsSum { get; }
+
+		/// <summary>Returns the amount of <paramref name="value"/> that was not added.</summary>
+		int AddResource(string resourceType, int value);
+
+		/// <summary>Returns the amount of <paramref name="value"/> that was not removed.</summary>
+		int RemoveResource(string resourceType, int value);
+	}
 
 	public interface IEffectiveOwner
 	{

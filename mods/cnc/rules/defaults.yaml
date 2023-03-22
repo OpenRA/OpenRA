@@ -219,7 +219,7 @@
 			red: pip-red
 
 ^StoresResources:
-	StoresResources:
+	StoresPlayerResources:
 	WithResourceStoragePipsDecoration:
 		Position: BottomLeft
 		Margin: 4, 3
