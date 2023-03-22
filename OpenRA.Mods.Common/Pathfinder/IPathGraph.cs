@@ -77,12 +77,8 @@ namespace OpenRA.Mods.Common.Pathfinder
 	/// </summary>
 	public readonly struct GraphConnection
 	{
-		public static readonly CostComparer ConnectionCostComparer = CostComparer.Instance;
-
-		public sealed class CostComparer : IComparer<GraphConnection>
+		public readonly struct CostComparer : IComparer<GraphConnection>
 		{
-			public static readonly CostComparer Instance = new CostComparer();
-			CostComparer() { }
 			public int Compare(GraphConnection x, GraphConnection y)
 			{
 				return x.Cost.CompareTo(y.Cost);

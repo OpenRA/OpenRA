@@ -10,10 +10,10 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using OpenRA.Mods.Common;
-using OpenRA.Primitives;
 using OpenRA.Support;
 
 namespace OpenRA.Test
@@ -21,6 +21,11 @@ namespace OpenRA.Test
 	[TestFixture]
 	class PriorityQueueTest
 	{
+		readonly struct Int32Comparer : IComparer<int>
+		{
+			public int Compare(int x, int y) => x.CompareTo(y);
+		}
+
 		[TestCase(1, 123)]
 		[TestCase(1, 1234)]
 		[TestCase(1, 12345)]
@@ -51,7 +56,7 @@ namespace OpenRA.Test
 			var values = Enumerable.Range(0, count);
 			var shuffledValues = values.Shuffle(mt).ToArray();
 
-			var queue = new PriorityQueue<int>();
+			var queue = new Primitives.PriorityQueue<int, Int32Comparer>(default);
 
 			Assert.IsTrue(queue.Empty, "New queue should start out empty.");
 			Assert.Throws<InvalidOperationException>(() => queue.Peek(), "Peeking at an empty queue should throw.");
@@ -95,7 +100,7 @@ namespace OpenRA.Test
 			var mt = new MersenneTwister(seed);
 			var shuffledValues = Enumerable.Range(0, count).Shuffle(mt).ToArray();
 
-			var queue = new PriorityQueue<int>();
+			var queue = new Primitives.PriorityQueue<int, Int32Comparer>(default);
 
 			Assert.IsTrue(queue.Empty, "New queue should start out empty.");
 			Assert.Throws<InvalidOperationException>(() => queue.Peek(), "Peeking at an empty queue should throw.");
