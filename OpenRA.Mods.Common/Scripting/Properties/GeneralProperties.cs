@@ -175,7 +175,6 @@ namespace OpenRA.Mods.Common.Scripting
 				if (!Enum<UnitStance>.TryParse(value, true, out var stance))
 					throw new LuaException($"Unknown stance type '{value}'");
 
-				autotarget.PredictedStance = stance;
 				autotarget.SetStance(Self, stance);
 			}
 		}
