@@ -320,13 +320,15 @@ HARV:
 	Selectable:
 		DecorationBounds: 1792, 1792
 	Harvester:
-		Capacity: 20
 		Resources: Ore,Gems
 		BaleUnloadDelay: 1
 		SearchFromProcRadius: 15
 		SearchFromHarvesterRadius: 8
 		HarvestFacings: 8
 		EmptyCondition: no-ore
+	StoresResources:
+		Capacity: 20
+		Resources: Ore,Gems
 	DockClientManager:
 	Health:
 		HP: 60000
@@ -357,7 +359,7 @@ HARV:
 	WithHarvesterSpriteBody:
 		ImageByFullness: harvempty, harvhalf, harv
 	-WithFacingSpriteBody:
-	WithHarvesterPipsDecoration:
+	WithStoresResourcesPipsDecoration:
 		Position: BottomLeft
 		Margin: 4, 3
 		RequiresSelection: true

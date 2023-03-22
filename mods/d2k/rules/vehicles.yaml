@@ -70,12 +70,14 @@ harvester:
 		Class: harvester
 		DecorationBounds: 1344, 1344
 	Harvester:
-		Capacity: 28
 		HarvestFacings: 8
 		Resources: Spice
 		BaleUnloadDelay: 5
 		SearchFromProcRadius: 30
 		SearchFromHarvesterRadius: 15
+	StoresResources:
+		Capacity: 28
+		Resources: Spice
 	DockClientManager:
 	CarryableHarvester:
 	Health:
@@ -107,7 +109,7 @@ harvester:
 		Delay: 3
 		StartIfBelow: 50
 	-RevealOnFire:
-	WithHarvesterPipsDecoration:
+	WithStoresResourcesPipsDecoration:
 		Position: BottomLeft
 		Margin: 1, 4
 		RequiresSelection: true

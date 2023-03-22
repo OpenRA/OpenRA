@@ -1290,7 +1290,7 @@ PROC:
 		Type: Unload
 		DockAngle: 256
 		DockOffset: 0, 1c0, 0
-	StoresResources:
+	StoresPlayerResources:
 		Capacity: 2000
 	CustomSellValue:
 		Value: 300
@@ -1375,7 +1375,7 @@ SILO:
 	-WithSpriteBody:
 	WithResourceLevelSpriteBody:
 		Sequence: stages
-	StoresResources:
+	StoresPlayerResources:
 		Capacity: 3000
 	-SpawnActorsOnSell:
 	Power:

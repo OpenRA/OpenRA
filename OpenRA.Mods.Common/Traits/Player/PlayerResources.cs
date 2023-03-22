@@ -206,12 +206,12 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public void AddStorage(int capacity)
+		public void AddStorageCapacity(int capacity)
 		{
 			ResourceCapacity += capacity;
 		}
 
-		public void RemoveStorage(int capacity)
+		public void RemoveStorageCapacity(int capacity)
 		{
 			ResourceCapacity -= capacity;
 

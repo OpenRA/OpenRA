@@ -125,7 +125,7 @@ PROC:
 		Type: Unload
 		DockAngle: 640
 		DockOffset: 362,362,0
-	StoresResources:
+	StoresPlayerResources:
 		Capacity: 2000
 	CustomSellValue:
 		Value: 600
@@ -211,7 +211,7 @@ GASILO:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-lights-bright
 		Palette: bright
-	StoresResources:
+	StoresPlayerResources:
 		Capacity: 1500
 	Power:
 		Amount: -10

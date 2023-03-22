@@ -352,13 +352,15 @@ WEED:
 		Description: Collects veins for processing.\n  Unarmed
 	Harvester:
 		Type: UnloadWeed
-		Capacity: 7
 		Resources: Veins
 		BaleUnloadDelay: 20
 		BaleLoadDelay: 40
 		SearchFromProcRadius: 72
 		SearchFromHarvesterRadius: 36
 		HarvestVoice: Attack
+	StoresResources:
+		Capacity: 7
+		Resources: Veins
 	DockClientManager:
 		Voice: Move
 	Mobile:
@@ -381,7 +383,7 @@ WEED:
 	WithVoxelUnloadBody:
 	-DamagedByTerrain@VEINS:
 	-LeavesTrails@VEINS:
-	WithHarvesterPipsDecoration:
+	WithStoresResourcesPipsDecoration:
 		Position: BottomLeft
 		RequiresSelection: true
 		Margin: 5, 2

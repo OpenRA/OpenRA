@@ -10,12 +10,13 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
-	public class WithHarvesterPipsDecorationInfo : WithDecorationBaseInfo, Requires<HarvesterInfo>
+	public class WithStoresResourcesPipsDecorationInfo : WithDecorationBaseInfo, Requires<IStoresResourcesInfo>
 	{
 		[FieldLoader.Require]
 		[Desc("Number of pips to display how filled unit is.")]
@@ -42,26 +43,27 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[PaletteReference]
 		public readonly string Palette = "chrome";
 
-		public override object Create(ActorInitializer init) { return new WithHarvesterPipsDecoration(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new WithStoresResourcesPipsDecoration(init.Self, this); }
 	}
 
-	public class WithHarvesterPipsDecoration : WithDecorationBase<WithHarvesterPipsDecorationInfo>
+	public class WithStoresResourcesPipsDecoration : WithDecorationBase<WithStoresResourcesPipsDecorationInfo>
 	{
-		readonly Harvester harvester;
+		readonly IStoresResources storesResources;
 		readonly Animation pips;
 
-		public WithHarvesterPipsDecoration(Actor self, WithHarvesterPipsDecorationInfo info)
+		public WithStoresResourcesPipsDecoration(Actor self, WithStoresResourcesPipsDecorationInfo info)
 			: base(self, info)
 		{
-			harvester = self.Trait<Harvester>();
+			// TODO: allow to choose which stores resources trait to target.
+			storesResources = self.TraitsImplementing<IStoresResources>().First();
 			pips = new Animation(self.World, info.Image);
 		}
 
 		string GetPipSequence(int i)
 		{
-			var n = i * harvester.Info.Capacity / Info.PipCount;
+			var n = i * storesResources.Capacity / Info.PipCount;
 
-			foreach (var rt in harvester.Contents)
+			foreach (var rt in storesResources.Contents)
 			{
 				if (n < rt.Value)
 				{

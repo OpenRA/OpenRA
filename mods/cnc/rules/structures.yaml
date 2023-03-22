@@ -247,7 +247,7 @@ PROC:
 		IsDragRequired: True
 		DragOffset: -554,512,0
 		DragLength: 12
-	StoresResources:
+	StoresPlayerResources:
 		Capacity: 1000
 	Selectable:
 		Bounds: 3072, 2389
@@ -291,7 +291,7 @@ SILO:
 	-WithSpriteBody:
 	WithResourceLevelSpriteBody:
 		Sequence: stages
-	StoresResources:
+	StoresPlayerResources:
 		Capacity: 3000
 	-SpawnActorsOnSell:
 	Power:

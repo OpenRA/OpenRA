@@ -9,62 +9,100 @@
  */
 #endregion
 
-using OpenRA.Primitives;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Adds capacity to a player's harvested resource limit.")]
-	public class StoresResourcesInfo : TraitInfo
+	[Desc("Allows the storage of resources.")]
+	public class StoresResourcesInfo : TraitInfo, IStoresResourcesInfo
 	{
 		[FieldLoader.Require]
-		public readonly int Capacity = 0;
+		[Desc("The amounts of resources that can be stored.")]
+		public readonly int Capacity = 28;
+
+		[Desc("Which resources can be stored.")]
+		public readonly string[] Resources = Array.Empty<string>();
+
+		string[] IStoresResourcesInfo.ResourceTypes => Resources;
 
 		public override object Create(ActorInitializer init) { return new StoresResources(init.Self, this); }
 	}
 
-	public class StoresResources : INotifyOwnerChanged, INotifyCapture, IStoreResources, ISync, INotifyKilled, INotifyAddedToWorld, INotifyRemovedFromWorld
+	public class StoresResources : IStoresResources, ISync
 	{
+		readonly Dictionary<string, int> contents = new();
 		readonly StoresResourcesInfo info;
-		PlayerResources player;
 
 		[Sync]
-		public int Stored => player.ResourceCapacity == 0 ? 0 : (int)((long)info.Capacity * player.Resources / player.ResourceCapacity);
+		public int ContentHash
+		{
+			get
+			{
+				var value = 0;
+				foreach (var c in contents)
+					value += c.Value << c.Key.Length;
+
+				return value;
+			}
+		}
+
+		public int ContentsSum { get; private set; } = 0;
+		public IReadOnlyDictionary<string, int> Contents { get; }
+		int IStoresResources.Capacity => info.Capacity;
 
 		public StoresResources(Actor self, StoresResourcesInfo info)
 		{
 			this.info = info;
-			player = self.Owner.PlayerActor.Trait<PlayerResources>();
+
+			foreach (var r in info.Resources)
+				contents[r] = 0;
+
+			Contents = new ReadOnlyDictionary<string, int>(contents);
 		}
 
-		int IStoreResources.Capacity => info.Capacity;
-
-		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+		public bool HasType(string resourceType)
 		{
-			player = newOwner.PlayerActor.Trait<PlayerResources>();
+			return info.Resources.Contains(resourceType);
 		}
 
-		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes)
+		int IStoresResources.AddResource(string resourceType, int value)
 		{
-			var resources = Stored;
-			oldOwner.PlayerActor.Trait<PlayerResources>().TakeResources(resources);
-			newOwner.PlayerActor.Trait<PlayerResources>().GiveResources(resources);
+			if (!HasType(resourceType))
+				return value;
+
+			if (ContentsSum + value > info.Capacity)
+			{
+				var added = info.Capacity - ContentsSum;
+				contents[resourceType] += added;
+				ContentsSum = info.Capacity;
+				return value - added;
+			}
+
+			contents[resourceType] += value;
+			ContentsSum += value;
+			return 0;
 		}
 
-		void INotifyKilled.Killed(Actor self, AttackInfo e)
+		int IStoresResources.RemoveResource(string resourceType, int value)
 		{
-			// Lose the stored resources
-			player.TakeResources(Stored);
-		}
+			if (!HasType(resourceType))
+				return value;
 
-		void INotifyAddedToWorld.AddedToWorld(Actor self)
-		{
-			player.AddStorage(info.Capacity);
-		}
+			if (contents[resourceType] < value)
+			{
+				var leftover = value - contents[resourceType];
+				ContentsSum -= contents[resourceType];
+				contents[resourceType] = 0;
+				return leftover;
+			}
 
-		void INotifyRemovedFromWorld.RemovedFromWorld(Actor self)
-		{
-			player.RemoveStorage(info.Capacity);
+			contents[resourceType] -= value;
+			ContentsSum -= value;
+			return 0;
 		}
 	}
 }
