@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			this.heuristicWeightPercentage = heuristicWeightPercentage;
 			TargetPredicate = targetPredicate;
 			this.recorder = recorder;
-			openQueue = new PriorityQueue<GraphConnection>(GraphConnection.ConnectionCostComparer);
+			openQueue = new Primitives.PriorityQueue<GraphConnection, GraphConnection.CostComparer>(default);
 		}
 
 		void AddInitialCell(CPos location, Func<CPos, int> customCost)
