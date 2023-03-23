@@ -233,6 +233,31 @@ namespace OpenRA.Mods.Common
 				: t.Name;
 		}
 
+		public static WDist RandomDistance(MersenneTwister random, WDist[] distance)
+		{
+			if (distance.Length == 0)
+				return WDist.Zero;
+
+			if (distance.Length == 1)
+				return distance[0];
+
+			return new WDist(random.Next(distance[0].Length, distance[1].Length));
+		}
+
+		public static WVec RandomVector(MersenneTwister random, WVec[] vector)
+		{
+			if (vector.Length == 0)
+				return WVec.Zero;
+
+			if (vector.Length == 1)
+				return vector[0];
+
+			var x = random.Next(vector[0].X, vector[1].X);
+			var y = random.Next(vector[0].Y, vector[1].Y);
+			var z = random.Next(vector[0].Z, vector[1].Z);
+			return new WVec(x, y, z);
+		}
+
 		public static string FriendlyTypeName(Type t)
 		{
 			if (t.IsEnum)

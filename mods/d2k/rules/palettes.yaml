@@ -49,6 +49,10 @@
 		Name: shroud
 		Filename: DATA.R8
 		Frame: 38
+	PaletteFromEmbeddedSpritePalette@smoke3:
+		Name: smoke3
+		Filename: DATA.R8
+		Frame: 3747
 	D2kFogPalette@fog:
 		Name: fog
 		BasePalette: shroud

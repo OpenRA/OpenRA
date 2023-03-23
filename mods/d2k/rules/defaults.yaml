@@ -256,6 +256,19 @@
 	SpeedMultiplier@HEAVYDAMAGE:
 		RequiresCondition: heavy-damage
 		Modifier: 75
+	FloatingSpriteEmitter@SMOKE:
+		RequiresCondition: heavy-damage
+		Palette: smoke3
+		Image: smoke3
+		Lifetime: 15, 20
+		Speed: 3
+		Gravity: 50
+		SpawnFrequency: 5, 10
+		RandomFacing: true
+		RandomRate: 4
+		Offset: 0, 0, 200
+		TurnRate: 3
+		Duration: 500
 
 ^Tank:
 	Inherits: ^Vehicle
