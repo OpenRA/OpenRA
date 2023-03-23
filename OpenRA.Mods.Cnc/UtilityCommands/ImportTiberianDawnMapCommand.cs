@@ -14,14 +14,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.Mods.Common.FileFormats;
-using OpenRA.Mods.Common.UtilityCommands;
 
 namespace OpenRA.Mods.Cnc.UtilityCommands
 {
-	class ImportTiberianDawnLegacyMapCommand : ImportLegacyMapCommand, IUtilityCommand
+	class ImportTiberianDawnMapCommand : ImportGen1MapCommand, IUtilityCommand
 	{
 		// NOTE: 64x64 map size is a C&C95 engine limitation
-		public ImportTiberianDawnLegacyMapCommand()
+		public ImportTiberianDawnMapCommand()
 			: base(64) { }
 
 		string IUtilityCommand.Name => "--import-td-map";
