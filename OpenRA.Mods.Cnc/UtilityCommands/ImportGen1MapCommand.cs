@@ -15,19 +15,20 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using OpenRA.FileSystem;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.UtilityCommands
+namespace OpenRA.Mods.Cnc.UtilityCommands
 {
-	public abstract class ImportLegacyMapCommand
+	public abstract class ImportGen1MapCommand
 	{
 		public readonly int MapSize;
 
-		protected ImportLegacyMapCommand(int mapSize)
+		protected ImportGen1MapCommand(int mapSize)
 		{
 			MapSize = mapSize;
 		}
@@ -451,4 +452,22 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 		}
 	}
+
+#if !NET6_0_OR_GREATER
+	public static class Extensions
+	{
+		/// <summary>
+		/// Only used for Mono builds. .NET 6 added the exact same thing.
+		/// </summary>
+		public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
+		{
+			var knownKeys = new HashSet<TKey>();
+			foreach (var element in source)
+			{
+				if (knownKeys.Add(keySelector(element)))
+					yield return element;
+			}
+		}
+	}
+#endif
 }

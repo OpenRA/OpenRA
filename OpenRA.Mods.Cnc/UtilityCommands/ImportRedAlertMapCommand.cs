@@ -16,14 +16,13 @@ using System.Linq;
 using System.Text;
 using OpenRA.Mods.Cnc.FileFormats;
 using OpenRA.Mods.Common.FileFormats;
-using OpenRA.Mods.Common.UtilityCommands;
 
 namespace OpenRA.Mods.Cnc.UtilityCommands
 {
-	class ImportRedAlertLegacyMapCommand : ImportLegacyMapCommand, IUtilityCommand
+	class ImportRedAlertMapCommand : ImportGen1MapCommand, IUtilityCommand
 	{
 		// TODO: 128x128 is probably not true for "mega maps" from the expansions.
-		public ImportRedAlertLegacyMapCommand()
+		public ImportRedAlertMapCommand()
 			: base(128) { }
 
 		string IUtilityCommand.Name => "--import-ra-map";
