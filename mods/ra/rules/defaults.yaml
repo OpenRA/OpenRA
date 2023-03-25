@@ -565,6 +565,8 @@
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
 	-MustBeDestroyed:
+	WithDamageOverlay:
+		MinimumDamageState: Critical
 
 ^NeutralPlane:
 	Inherits@1: ^ExistsInWorld
