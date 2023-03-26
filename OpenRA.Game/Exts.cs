@@ -144,7 +144,7 @@ namespace OpenRA
 		static T Random<T>(IEnumerable<T> ts, MersenneTwister r, bool throws)
 		{
 			var xs = ts as ICollection<T>;
-			xs = xs ?? ts.ToList();
+			xs ??= ts.ToList();
 			if (xs.Count == 0)
 			{
 				if (throws)
@@ -391,8 +391,8 @@ namespace OpenRA
 			string debugName, Func<TKey, string> logKey = null, Func<TElement, string> logValue = null)
 		{
 			// Fall back on ToString() if null functions are provided:
-			logKey = logKey ?? (s => s.ToString());
-			logValue = logValue ?? (s => s.ToString());
+			logKey ??= s => s.ToString();
+			logValue ??= s => s.ToString();
 
 			// Try to build a dictionary and log all duplicates found (if any):
 			var dupKeys = new Dictionary<TKey, List<string>>();

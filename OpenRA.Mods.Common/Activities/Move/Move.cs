@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (evaluateNearestMovableCell && destination.HasValue)
 			{
 				var movableDestination = mobile.NearestMoveableCell(destination.Value);
-				destination = mobile.CanEnterCell(movableDestination, check: BlockedByActor.Immovable) ? movableDestination : (CPos?)null;
+				destination = mobile.CanEnterCell(movableDestination, check: BlockedByActor.Immovable) ? movableDestination : null;
 			}
 
 			// TODO: Change this to BlockedByActor.Stationary after improving the local avoidance behaviour

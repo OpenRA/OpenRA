@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 						continue;
 
 					resolvedSequenceNode.Value.Nodes = MiniYaml.Merge(new[] { resolvedDefaultsNode.Value.Nodes, resolvedSequenceNode.Value.Nodes });
-					resolvedSequenceNode.Value.Value = resolvedSequenceNode.Value.Value ?? resolvedDefaultsNode.Value.Value;
+					resolvedSequenceNode.Value.Value ??= resolvedDefaultsNode.Value.Value;
 				}
 			}
 

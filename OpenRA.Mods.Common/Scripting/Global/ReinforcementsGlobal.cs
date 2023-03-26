@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Scripting
 			for (var i = 0; i < actorTypes.Length; i++)
 			{
 				var af = actionFunc != null ? (LuaFunction)actionFunc.CopyReference() : null;
-				var actor = CreateActor(owner, actorTypes[i], false, entryPath[0], entryPath.Length > 1 ? entryPath[1] : (CPos?)null);
+				var actor = CreateActor(owner, actorTypes[i], false, entryPath[0], entryPath.Length > 1 ? entryPath[1] : null);
 				actors.Add(actor);
 
 				var actionDelay = i * interval;
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public LuaTable ReinforceWithTransport(Player owner, string actorType, string[] cargoTypes, CPos[] entryPath, CPos[] exitPath = null,
 			LuaFunction actionFunc = null, LuaFunction exitFunc = null, int dropRange = 3)
 		{
-			var transport = CreateActor(owner, actorType, true, entryPath[0], entryPath.Length > 1 ? entryPath[1] : (CPos?)null);
+			var transport = CreateActor(owner, actorType, true, entryPath[0], entryPath.Length > 1 ? entryPath[1] : null);
 			var cargo = transport.TraitOrDefault<Cargo>();
 
 			var passengers = new List<Actor>();

@@ -5,7 +5,7 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>9</LangVersion>
     <DebugSymbols>true</DebugSymbols>
     <EngineRootPath Condition="'$(EngineRootPath)' == ''">..</EngineRootPath>
     <OutputPath>$(EngineRootPath)/bin</OutputPath>
@@ -51,7 +51,6 @@
 
   <!-- StyleCop -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="All" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435" PrivateAssets="All" />
   </ItemGroup>
 </Project>

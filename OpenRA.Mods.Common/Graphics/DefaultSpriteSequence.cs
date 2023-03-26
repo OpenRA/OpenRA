@@ -492,7 +492,7 @@ namespace OpenRA.Mods.Common.Graphics
 				});
 			}).ToArray();
 
-			length = length ?? allSprites.Length - start;
+			length ??= allSprites.Length - start;
 
 			if (alpha != null)
 			{

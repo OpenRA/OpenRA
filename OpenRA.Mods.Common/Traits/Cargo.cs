@@ -331,7 +331,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Actor Unload(Actor self, Actor passenger = null)
 		{
-			passenger = passenger ?? cargo.Last();
+			passenger ??= cargo.Last();
 			if (!cargo.Remove(passenger))
 				throw new ArgumentException("Attempted to unload an actor that is not a passenger.");
 
