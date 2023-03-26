@@ -18,7 +18,7 @@
 #include <dlfcn.h>
 
 #define SYSTEM_MONO_PATH "/Library/Frameworks/Mono.framework/Versions/Current/"
-#define SYSTEM_MONO_MIN_VERSION "6.4"
+#define SYSTEM_MONO_MIN_VERSION "6.12"
 
 typedef char *(* mono_get_runtime_build_info)(void);
 

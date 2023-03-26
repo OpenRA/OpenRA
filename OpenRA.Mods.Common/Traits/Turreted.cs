@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (turretFacingInit != null)
 			{
 				var facing = turretFacingInit.Value;
-				return bodyFacing != null ? (Func<WAngle>)(() => bodyFacing() + facing) : () => facing;
+				return bodyFacing != null ? () => bodyFacing() + facing : () => facing;
 			}
 
 			var dynamicFacingInit = init.GetOrDefault<DynamicTurretFacingInit>(info);

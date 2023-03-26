@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			else
 				graph = new MapPathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, laneBias, inReverse);
 
-			heuristic = heuristic ?? DefaultCostEstimator(locomotor, target);
+			heuristic ??= DefaultCostEstimator(locomotor, target);
 			var search = new PathSearch(graph, heuristic, heuristicWeightPercentage, loc => loc == target, recorder);
 
 			AddInitialCells(world, locomotor, froms, customCost, search);

@@ -63,7 +63,7 @@ dotnet_diagnostic.IDE0044.severity = warning
 
 # IDE0062 Make local function static
 #csharp_prefer_static_local_function = true
-dotnet_diagnostic.IDE0062.severity = silent # Requires C# 8
+dotnet_diagnostic.IDE0062.severity = silent # Requires C# 8 - TODO Consider enabling
 
 # IDE0064 Make struct fields writable
 # No options
@@ -137,15 +137,15 @@ dotnet_diagnostic.IDE0050.severity = silent
 # IDE0054/IDE0074 Use compound assignment/Use coalesce compound assignment
 #dotnet_style_prefer_compound_assignment = true
 dotnet_diagnostic.IDE0054.severity = warning
-dotnet_diagnostic.IDE0074.severity = silent # Requires C# 8
+dotnet_diagnostic.IDE0074.severity = silent # Requires C# 8 - TODO Consider enabling
 
 # IDE0056 Use index operator
 #csharp_style_prefer_index_operator = true
-dotnet_diagnostic.IDE0056.severity = silent # Requires C# 8
+dotnet_diagnostic.IDE0056.severity = silent # Requires C# 8 - TODO Consider enabling
 
 # IDE0057 Use range operator
 #csharp_style_prefer_range_operator = true
-dotnet_diagnostic.IDE0057.severity = silent # Requires C# 8
+dotnet_diagnostic.IDE0057.severity = silent # Requires C# 8 - TODO Consider enabling
 
 # IDE0070 Use 'System.HashCode.Combine'
 # No options
@@ -169,7 +169,7 @@ dotnet_diagnostic.IDE0082.severity = warning
 
 # IDE0090 Simplify 'new' expression
 #csharp_style_implicit_object_creation_when_type_is_apparent = true
-dotnet_diagnostic.IDE0090.severity = silent # Requires C# 9
+dotnet_diagnostic.IDE0090.severity = silent # Requires C# 9 - TODO Consider enabling
 
 # IDE0180 Use tuple to swap values
 #csharp_style_prefer_tuple_swap = true
@@ -204,7 +204,7 @@ dotnet_diagnostic.IDE0041.severity = warning
 
 # IDE0150 Prefer 'null' check over type check
 #csharp_style_prefer_null_check_over_type_check = true
-dotnet_diagnostic.IDE0150.severity = silent # Requires C# 9
+dotnet_diagnostic.IDE0150.severity = silent # Requires C# 9 - TODO Consider enabling
 
 # IDE1005 Use conditional delegate call
 csharp_style_conditional_delegate_call = true # true is the default, but the rule is not triggered if this is not specified.
@@ -272,11 +272,11 @@ dotnet_diagnostic.IDE0066.severity = silent
 
 # IDE0078 Use pattern matching
 #csharp_style_prefer_pattern_matching = true
-dotnet_diagnostic.IDE0078.severity = silent # Requires C# 9
+dotnet_diagnostic.IDE0078.severity = silent # Requires C# 9 - TODO Consider enabling
 
 # IDE0083 Use pattern matching ('not' operator)
 #csharp_style_prefer_not_pattern = true
-dotnet_diagnostic.IDE0083.severity = silent # Requires C# 9
+dotnet_diagnostic.IDE0083.severity = silent # Requires C# 9 - TODO Consider enabling
 
 # IDE0170 Simplify property pattern
 #csharp_style_prefer_extended_property_pattern = true
@@ -291,7 +291,7 @@ dotnet_diagnostic.IDE0011.severity = none
 
 # IDE0063 Use simple 'using' statement
 #csharp_prefer_simple_using_statement = true
-dotnet_diagnostic.IDE0063.severity = silent # Requires C# 8
+dotnet_diagnostic.IDE0063.severity = silent # Requires C# 8 - TODO Consider enabling
 
 ## 'using' directive preferences
 
@@ -375,7 +375,7 @@ dotnet_diagnostic.IDE0100.severity = warning
 
 # IDE0110 Remove unnecessary discard
 # No options
-dotnet_diagnostic.IDE0110.severity = silent # Requires C# 9
+dotnet_diagnostic.IDE0110.severity = silent # Requires C# 9 - TODO Consider enabling
 
 ### Miscellaneous Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/miscellaneous-rules
@@ -598,6 +598,11 @@ dotnet_diagnostic.SA1633.severity = none # FileMustHaveHeader
 dotnet_diagnostic.SA1642.severity = none # ConstructorSummaryDocumentationShouldBeginWithStandardText
 dotnet_diagnostic.SA1649.severity = none # FileNameMustMatchTypeName
 
+# Requires C# 8/9 - TODO Consider enabling
+dotnet_diagnostic.SA1141.severity = none # UseTupleSyntax
+dotnet_diagnostic.SA1316.severity = none # TupleElementNamesShouldUseCorrectCasing
+dotnet_diagnostic.SA1414.severity = none # TupleTypesInSignaturesShouldHaveElementNames
+
 #### Code Quality Rules
 #### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
 
@@ -615,8 +620,8 @@ dotnet_diagnostic.CA1827.severity = warning
 # Use Length/Count property instead of Enumerable.Count method.
 dotnet_diagnostic.CA1829.severity = warning
 
-# Use span-based 'string.Concat' (incompatible with mono builds).
-dotnet_diagnostic.CA1845.severity = none
+# Use span-based 'string.Concat'.
+dotnet_diagnostic.CA1845.severity = silent # TODO Consider enabling
 
 # Use string.Contains(char) instead of string.Contains(string) with single characters.
 dotnet_diagnostic.CA1847.severity = warning

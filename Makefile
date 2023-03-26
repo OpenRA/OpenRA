@@ -3,7 +3,7 @@
 # to compile, run:
 #   make
 #
-# to compile using Mono (version 6.4 or greater) instead of .NET 6, run:
+# to compile using Mono (version 6.12 or greater) instead of .NET 6, run:
 #   make RUNTIME=mono
 #
 # to compile using system libraries for native dependencies, run:
@@ -92,7 +92,7 @@ endif
 all:
 	@echo "Compiling in ${CONFIGURATION} mode..."
 ifeq ($(RUNTIME), mono)
-	@command -v $(firstword $(MSBUILD)) >/dev/null || (echo "OpenRA requires the '$(MSBUILD)' tool provided by Mono >= 6.4."; exit 1)
+	@command -v $(firstword $(MSBUILD)) >/dev/null || (echo "OpenRA requires the '$(MSBUILD)' tool provided by Mono >= 6.12."; exit 1)
 	@$(MSBUILD) -t:Build -restore -p:Configuration=${CONFIGURATION} -p:TargetPlatform=$(TARGETPLATFORM)
 else
 	@$(DOTNET) build -c ${CONFIGURATION} -nologo -p:TargetPlatform=$(TARGETPLATFORM)
@@ -173,7 +173,7 @@ help:
 	@echo 'to compile, run:'
 	@echo '  make'
 	@echo
-	@echo 'to compile using Mono (version 6.4 or greater) instead of .NET 6, run:'
+	@echo 'to compile using Mono (version 6.12 or greater) instead of .NET 6, run:'
 	@echo '  make RUNTIME=mono'
 	@echo
 	@echo 'to compile using system libraries for native dependencies, run:'
