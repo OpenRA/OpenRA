@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class Barrel
 	{
 		public WVec Offset;
+		public WVec MuzzleOverlayOffset;
 		public WAngle Yaw;
 	}
 
@@ -60,6 +61,11 @@ namespace OpenRA.Mods.Common.Traits
 		[PaletteReference]
 		[Desc("Palette to render Muzzle flash sequence in")]
 		public readonly string MuzzlePalette = "effect";
+
+		[Desc("Custom offsets used as base for calculating muzzle overlay position that are independent from " + nameof(LocalOffsets) + ".",
+			"Each offset is used for corresponding barrel defined by " + nameof(LocalOffsets) + ".",
+			"If no custom offset is defined, offsets defined by " + nameof(LocalOffsets) + " are used for calculating muzzle overlay position.")]
+		public readonly WVec[] MuzzleOverlayOffsets = Array.Empty<WVec>();
 
 		[GrantedConditionReference]
 		[Desc("Condition to grant while reloading.")]
@@ -146,6 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 				barrels.Add(new Barrel
 				{
 					Offset = info.LocalOffsets[i],
+					MuzzleOverlayOffset = info.MuzzleOverlayOffsets.Length > i ? info.MuzzleOverlayOffsets[i] : info.LocalOffsets[i],
 					Yaw = info.LocalYaw.Length > i ? info.LocalYaw[i] : WAngle.Zero
 				});
 			}
@@ -370,13 +377,18 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WVec MuzzleOffset(Actor self, Barrel b)
 		{
-			return CalculateMuzzleOffset(self, b);
+			return CalculateMuzzleOffset(self, b.Offset);
 		}
 
-		protected virtual WVec CalculateMuzzleOffset(Actor self, Barrel b)
+		public WVec MuzzleOverlayOffset(Actor self, Barrel b)
+		{
+			return CalculateMuzzleOffset(self, b.MuzzleOverlayOffset);
+		}
+
+		protected virtual WVec CalculateMuzzleOffset(Actor self, WVec baseOffset)
 		{
 			// Weapon offset in turret coordinates
-			var localOffset = b.Offset + new WVec(-Recoil, WDist.Zero, WDist.Zero);
+			var localOffset = baseOffset + new WVec(-Recoil, WDist.Zero, WDist.Zero);
 
 			// Turret coordinates to body coordinates
 			var bodyOrientation = coords.QuantizeOrientation(self.Orientation);

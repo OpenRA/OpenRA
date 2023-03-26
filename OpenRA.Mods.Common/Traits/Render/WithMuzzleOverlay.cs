@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					visible.Add(barrel, false);
 					anims.Add(barrel,
 						new AnimationWithOffset(muzzleFlash,
-							() => info.IgnoreOffset ? WVec.Zero : arm.MuzzleOffset(self, barrel),
+							() => info.IgnoreOffset ? WVec.Zero : arm.MuzzleOverlayOffset(self, barrel),
 							() => IsTraitDisabled || !visible[barrel],
 							p => RenderUtils.ZOffsetFromCenter(self, p, 2)));
 				}
