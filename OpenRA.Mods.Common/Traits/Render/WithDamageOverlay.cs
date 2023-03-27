@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string Image = "smoke_m";
 
 		[SequenceReference(nameof(Image))]
-		public readonly string IdleSequence = "idle";
+		public readonly string StartSequence = "start";
 
 		[SequenceReference(nameof(Image))]
 		public readonly string LoopSequence = "loop";
@@ -54,8 +54,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public IEnumerable<string> GetSequences(MersenneTwister random)
 		{
-			if (!string.IsNullOrEmpty(IdleSequence))
-				yield return IdleSequence;
+			if (!string.IsNullOrEmpty(StartSequence))
+				yield return StartSequence;
 
 			if (!string.IsNullOrEmpty(LoopSequence))
 			{

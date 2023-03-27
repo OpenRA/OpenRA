@@ -89,6 +89,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				// Execute these rules last to avoid premature yaml merge crashes.
 				new ReplaceCloakPalette(),
 				new AbstractDocking(),
+				new WithDamageOverlayPropertyRename(),
 			}),
 		};
 
