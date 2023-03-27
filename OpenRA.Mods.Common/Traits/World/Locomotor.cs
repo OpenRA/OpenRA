@@ -204,30 +204,30 @@ namespace OpenRA.Mods.Common.Traits
 			return terrainInfos[index].Speed;
 		}
 
-		public short MovementCostToEnterCell(Actor actor, CPos destNode, BlockedByActor check, Actor ignoreActor, SubCell subCell = SubCell.FullCell)
+		public short MovementCostToEnterCell(Actor actor, CPos destNode, BlockedByActor check, Actor ignoreActor, bool ignoreSelf = false, SubCell subCell = SubCell.FullCell)
 		{
 			var cellCost = MovementCostForCell(destNode);
 
 			if (cellCost == PathGraph.MovementCostForUnreachableCell ||
-				!CanMoveFreelyInto(actor, destNode, subCell, check, ignoreActor))
+				!CanMoveFreelyInto(actor, destNode, subCell, check, ignoreActor, ignoreSelf))
 				return PathGraph.MovementCostForUnreachableCell;
 
 			return cellCost;
 		}
 
-		public short MovementCostToEnterCell(Actor actor, CPos srcNode, CPos destNode, BlockedByActor check, Actor ignoreActor)
+		public short MovementCostToEnterCell(Actor actor, CPos srcNode, CPos destNode, BlockedByActor check, Actor ignoreActor, bool ignoreSelf = false)
 		{
 			var cellCost = MovementCostForCell(destNode, srcNode);
 
 			if (cellCost == PathGraph.MovementCostForUnreachableCell ||
-				!CanMoveFreelyInto(actor, destNode, SubCell.FullCell, check, ignoreActor))
+				!CanMoveFreelyInto(actor, destNode, SubCell.FullCell, check, ignoreActor, ignoreSelf))
 				return PathGraph.MovementCostForUnreachableCell;
 
 			return cellCost;
 		}
 
 		// Determines whether the actor is blocked by other Actors
-		bool CanMoveFreelyInto(Actor actor, CPos cell, SubCell subCell, BlockedByActor check, Actor ignoreActor)
+		bool CanMoveFreelyInto(Actor actor, CPos cell, SubCell subCell, BlockedByActor check, Actor ignoreActor, bool ignoreSelf)
 		{
 			// If the check allows: We are not blocked by other actors.
 			if (check == BlockedByActor.None)
@@ -260,7 +260,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Cache doesn't account for ignored actors, subcells, temporary blockers or transit only actors.
 			// These must use the slow path.
-			if (ignoreActor == null && subCell == SubCell.FullCell &&
+			if (ignoreActor == null && !ignoreSelf && subCell == SubCell.FullCell &&
 				!cellFlag.HasCellFlag(CellFlag.HasTemporaryBlocker) && !cellFlag.HasCellFlag(CellFlag.HasTransitOnlyActor))
 			{
 				// We already know there are uncrushable actors in the cell so we are always blocked.
@@ -282,7 +282,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var otherActors = subCell == SubCell.FullCell ? world.ActorMap.GetActorsAt(cell) : world.ActorMap.GetActorsAt(cell, subCell);
 			foreach (var otherActor in otherActors)
-				if (IsBlockedBy(actor, otherActor, ignoreActor, cell, check, cellFlag))
+				if (IsBlockedBy(actor, otherActor, ignoreActor, ignoreSelf, cell, check, cellFlag))
 					return false;
 
 			return true;
@@ -303,7 +303,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (check > BlockedByActor.None)
 			{
-				bool CheckTransient(Actor otherActor) => IsBlockedBy(self, otherActor, ignoreActor, cell, check, GetCache(cell).CellFlag);
+				bool CheckTransient(Actor otherActor) => IsBlockedBy(self, otherActor, ignoreActor, false, cell, check, GetCache(cell).CellFlag);
 
 				if (!sharesCell)
 					return world.ActorMap.AnyActorsAt(cell, SubCell.FullCell, CheckTransient) ? SubCell.Invalid : SubCell.FullCell;
@@ -320,9 +320,9 @@ namespace OpenRA.Mods.Common.Traits
 		/// <remarks>This logic is replicated in <see cref="HierarchicalPathFinder.ActorIsBlocking"/> and
 		/// <see cref="HierarchicalPathFinder.ActorCellIsBlocking"/>. If this method is updated please update those as
 		/// well.</remarks>
-		bool IsBlockedBy(Actor actor, Actor otherActor, Actor ignoreActor, CPos cell, BlockedByActor check, CellFlag cellFlag)
+		bool IsBlockedBy(Actor actor, Actor otherActor, Actor ignoreActor, bool ignoreSelf, CPos cell, BlockedByActor check, CellFlag cellFlag)
 		{
-			if (otherActor == ignoreActor)
+			if (otherActor == ignoreActor || (ignoreSelf && otherActor == actor))
 				return false;
 
 			var otherMobile = otherActor.OccupiesSpace as Mobile;
