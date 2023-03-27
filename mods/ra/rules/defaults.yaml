@@ -274,6 +274,7 @@
 	GpsDot:
 		String: Vehicle
 	WithDamageOverlay:
+		EndSequence:
 	Guard:
 	Guardable:
 	Tooltip:
@@ -531,6 +532,7 @@
 	GpsDot:
 		String: Ship
 	WithDamageOverlay:
+		EndSequence:
 	Explodes:
 		Weapon: UnitExplodeShip
 		EmptyWeapon: UnitExplodeShip
@@ -570,6 +572,7 @@
 	-MustBeDestroyed:
 	WithDamageOverlay:
 		MinimumDamageState: Critical
+		EndSequence:
 
 ^NeutralPlane:
 	Inherits@1: ^ExistsInWorld

@@ -252,6 +252,7 @@
 	HiddenUnderFog:
 	AttackMove:
 	WithDamageOverlay:
+		EndSequence:
 	WithFacingSpriteBody:
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -660,6 +661,7 @@
 		TextNotification: notification-unit-lost
 	AttackMove:
 	WithDamageOverlay:
+		EndSequence:
 	Explodes:
 		Weapon: UnitExplodeShip
 		EmptyWeapon: UnitExplodeShip
