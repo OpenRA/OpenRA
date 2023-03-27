@@ -1163,7 +1163,7 @@ namespace OpenRA.Server
 			return LobbyInfo.ClientWithIndex(conn.PlayerIndex);
 		}
 
-		/// <Remarks> Does not check if client is admin </Remarks>
+		/// <summary>Does not check if client is admin.</summary>
 		public bool CanKickClient(Session.Client kickee)
 		{
 			if (State != ServerState.GameStarted || kickee.IsObserver)
