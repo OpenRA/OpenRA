@@ -37,15 +37,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference("author")]
 		const string CreatedBy = "label-created-by";
 
+		readonly List<int> selectedSpawnPoints = new List<int>();
 		readonly int blinkTickLength = 10;
+		readonly Func<bool> isHost;
 		bool installHighlighted;
 		int blinkTick;
+		MapPreviewWidget mapPreviewWidget;
+		readonly OrderManager orderManager;
 
 		[ObjectCreator.UseCtor]
 		internal MapPreviewLogic(Widget widget, ModData modData, OrderManager orderManager, Func<(MapPreview Map, Session.MapStatus Status)> getMap,
 			Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown, Func<Dictionary<int, SpawnOccupant>> getSpawnOccupants,
-			Func<HashSet<int>> getDisabledSpawnPoints, bool showUnoccupiedSpawnpoints)
+			Func<HashSet<int>> getDisabledSpawnPoints, bool showUnoccupiedSpawnpoints, Func<Dictionary<int, Session.SpawnPointInfo>> getSpawnPointInfos, Func<bool> isHost)
 		{
+			this.orderManager = orderManager;
+			this.isHost = isHost;
+
 			var mapRepository = modData.Manifest.Get<WebServices>().MapRepository;
 
 			var available = widget.GetOrNull("MAP_AVAILABLE");
@@ -58,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return map.Status == MapStatus.Available && isPlayable;
 				};
 
-				SetupWidgets(available, modData, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints);
+				SetupWidgets(available, modData, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints, getSpawnPointInfos);
 			}
 
 			var invalid = widget.GetOrNull("MAP_INVALID");
@@ -70,7 +77,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return map.Status == MapStatus.Available && (serverStatus & Session.MapStatus.Incompatible) != 0;
 				};
 
-				SetupWidgets(invalid, modData, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints);
+				SetupWidgets(invalid, modData, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints, getSpawnPointInfos);
 			}
 
 			var validating = widget.GetOrNull("MAP_VALIDATING");
@@ -82,7 +89,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return map.Status == MapStatus.Available && (serverStatus & Session.MapStatus.Validating) != 0;
 				};
 
-				SetupWidgets(validating, modData, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints);
+				SetupWidgets(validating, modData, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints, getSpawnPointInfos);
 			}
 
 			var download = widget.GetOrNull("MAP_DOWNLOADABLE");
@@ -90,7 +97,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				download.IsVisible = () => getMap().Map.Status == MapStatus.DownloadAvailable;
 
-				SetupWidgets(download, modData, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints);
+				SetupWidgets(download, modData, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints, getSpawnPointInfos);
 
 				var install = download.GetOrNull<ButtonWidget>("MAP_INSTALL");
 				if (install != null)
@@ -117,7 +124,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return map.Status != MapStatus.Available && map.Status != MapStatus.DownloadAvailable;
 				};
 
-				SetupWidgets(progress, modData, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints);
+				SetupWidgets(progress, modData, getMap, onMouseDown, getSpawnOccupants, getDisabledSpawnPoints, showUnoccupiedSpawnpoints, getSpawnPointInfos);
 
 				var statusSearching = progress.GetOrNull("MAP_STATUS_SEARCHING");
 				if (statusSearching != null)
@@ -209,21 +216,124 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				installHighlighted ^= true;
 				blinkTick = 0;
 			}
+
+			// Ensure the previous host is not stuck in team view.
+			if (mapPreviewWidget?.View == MapPreviewWidget.ViewMode.Team && !isHost())
+				mapPreviewWidget.View = MapPreviewWidget.ViewMode.SpawnPoint;
 		}
 
-		static void SetupWidgets(Widget parent, ModData modData,
+		void SetupWidgets(Widget parent, ModData modData,
 			Func<(MapPreview Map, Session.MapStatus Status)> getMap,
 			Action<MapPreviewWidget, MapPreview, MouseInput> onMouseDown,
 			Func<Dictionary<int, SpawnOccupant>> getSpawnOccupants,
 			Func<HashSet<int>> getDisabledSpawnPoints,
-			bool showUnoccupiedSpawnpoints)
+			bool showUnoccupiedSpawnpoints,
+			Func<Dictionary<int, Session.SpawnPointInfo>> getSpawnPointInfos)
 		{
-			var preview = parent.Get<MapPreviewWidget>("MAP_PREVIEW");
+			mapPreviewWidget = parent.Get<MapPreviewWidget>("MAP_PREVIEW");
+			var preview = mapPreviewWidget;
 			preview.Preview = () => getMap().Map;
-			preview.OnMouseDown = mi => onMouseDown(preview, getMap().Map, mi);
+			preview.OnMouseDown = mi =>
+			{
+				if (preview.View == MapPreviewWidget.ViewMode.Team && isHost())
+				{
+					if (mi.Event == MouseInputEvent.Down)
+					{
+						var spawnPoint = LobbyUtils.DetermineSelectedSpawnPoint(preview, getMap().Map, mi);
+						if (spawnPoint > 0)
+						{
+							if (mi.Modifiers.HasFlag(Modifiers.Shift))
+							{
+								var wasSelected = selectedSpawnPoints.Remove(spawnPoint);
+								if (!wasSelected)
+									selectedSpawnPoints.Add(spawnPoint);
+							}
+							else
+							{
+								selectedSpawnPoints.Clear();
+								selectedSpawnPoints.Add(spawnPoint);
+							}
+						}
+						else if (!mi.Modifiers.HasFlag(Modifiers.Shift))
+							selectedSpawnPoints.Clear();
+					}
+				}
+				else
+					onMouseDown(preview, getMap().Map, mi);
+			};
+
+			preview.OnKeyDown = e =>
+			{
+				if (!isHost())
+					return false;
+
+				if (e.Event != KeyInputEvent.Up)
+					return false;
+
+				if (e.Key == Keycode.TAB)
+				{
+					preview.View = preview.View == MapPreviewWidget.ViewMode.SpawnPoint ? MapPreviewWidget.ViewMode.Team : MapPreviewWidget.ViewMode.SpawnPoint;
+					if (preview.View != MapPreviewWidget.ViewMode.Team)
+						selectedSpawnPoints.Clear();
+
+					return true;
+				}
+
+				if (selectedSpawnPoints.Count > 0)
+				{
+					var team = 0;
+					var numberKey = true;
+					switch (e.Key)
+					{
+					case Keycode.NUMBER_1:
+						team = 1;
+						break;
+					case Keycode.NUMBER_2:
+						team = 2;
+						break;
+					case Keycode.NUMBER_3:
+						team = 3;
+						break;
+					case Keycode.NUMBER_4:
+						team = 4;
+						break;
+					case Keycode.NUMBER_5:
+						team = 5;
+						break;
+					case Keycode.NUMBER_6:
+						team = 6;
+						break;
+					case Keycode.NUMBER_7:
+						team = 7;
+						break;
+					case Keycode.NUMBER_8:
+						team = 8;
+						break;
+					case Keycode.NUMBER_9:
+						team = 9;
+						break;
+					case Keycode.NUMBER_0:
+						break;
+					default:
+						numberKey = false;
+						break;
+					}
+
+					if (numberKey)
+					{
+						var strSpawnPoints = string.Join(" ", selectedSpawnPoints.ToArray());
+						Game.RunAfterTick(() => orderManager.IssueOrder(Order.Command($"team_set_spawn_points {team} {strSpawnPoints}")));
+					}
+				}
+
+				return false;
+			};
+
 			preview.SpawnOccupants = getSpawnOccupants;
 			preview.DisabledSpawnPoints = getDisabledSpawnPoints;
 			preview.ShowUnoccupiedSpawnpoints = showUnoccupiedSpawnpoints;
+			preview.SpawnPointInfos = getSpawnPointInfos;
+			preview.SelectedSpawnPoints = () => selectedSpawnPoints;
 
 			var titleLabel = parent.GetOrNull<LabelWithTooltipWidget>("MAP_TITLE");
 			if (titleLabel != null)

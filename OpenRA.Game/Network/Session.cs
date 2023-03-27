@@ -22,10 +22,13 @@ namespace OpenRA.Network
 	{
 		public List<Client> Clients = new List<Client>();
 
-		// Keyed by the PlayerReference id that the slot corresponds to
+		/// <summary>Keyed by the PlayerReference id that the slot corresponds to</summary>
 		public Dictionary<string, Slot> Slots = new Dictionary<string, Slot>();
 
 		public HashSet<int> DisabledSpawnPoints = new HashSet<int>();
+
+		/// <summary>Optional assignment of spawn point to a team number by admin. Keyed by SpawnPoint index.</summary>
+		public Dictionary<int, SpawnPointInfo> SpawnPointInfos = new Dictionary<int, SpawnPointInfo>();
 
 		public Global GlobalSettings = new Global();
 
@@ -57,17 +60,19 @@ namespace OpenRA.Network
 						case "Client":
 							session.Clients.Add(Client.Deserialize(node.Value));
 							break;
-
 						case "GlobalSettings":
 							session.GlobalSettings = Global.Deserialize(node.Value);
 							break;
-
 						case "Slot":
 							var s = Slot.Deserialize(node.Value);
 							session.Slots.Add(s.PlayerReference, s);
 							break;
 						case "DisabledSpawnPoints":
 							session.DisabledSpawnPoints = FieldLoader.GetValue<HashSet<int>>("DisabledSpawnPoints", node.Value.Value);
+							break;
+						case "SpawnPointInfo":
+							var si = SpawnPointInfo.Deserialize(node.Value);
+							session.SpawnPointInfos.Add(si.SpawnPoint, si);
 							break;
 					}
 				}
@@ -185,6 +190,32 @@ namespace OpenRA.Network
 			}
 		}
 
+		public class SpawnPointInfo
+		{
+			public int SpawnPoint;
+			public int Team;
+
+			public SpawnPointInfo()
+			{
+			}
+
+			public SpawnPointInfo(int spawnPoint, int team = 0)
+			{
+				SpawnPoint = spawnPoint;
+				Team = team;
+			}
+
+			public static SpawnPointInfo Deserialize(MiniYaml data)
+			{
+				return FieldLoader.Load<SpawnPointInfo>(data);
+			}
+
+			public MiniYamlNode Serialize()
+			{
+				return new MiniYamlNode($"SpawnPointInfo@{SpawnPoint}", FieldSaver.Save(this));
+			}
+		}
+
 		public class LobbyOptionState
 		{
 			public string Value;
@@ -272,6 +303,9 @@ namespace OpenRA.Network
 
 			foreach (var slot in Slots)
 				sessionData.Add(slot.Value.Serialize());
+
+			foreach (var si in SpawnPointInfos)
+				sessionData.Add(si.Value.Serialize());
 
 			sessionData.Add(GlobalSettings.Serialize());
 

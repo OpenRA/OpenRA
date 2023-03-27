@@ -177,6 +177,7 @@ namespace OpenRA.Mods.Common.Server
 			{ "team", Team },
 			{ "handicap", Handicap },
 			{ "spawn", Spawn },
+			{ "team_set_spawn_points", TeamSetSpawnPoints },
 			{ "clear_spawn", ClearPlayerSpawn },
 			{ "color", PlayerColor },
 			{ "sync_lobby", SyncLobby }
@@ -965,10 +966,17 @@ namespace OpenRA.Mods.Common.Server
 				if (server.LobbyInfo.Slots[targetClient.Slot].LockTeam)
 					return true;
 
-				if (!Exts.TryParseIntegerInvariant(parts[1], out var team))
+				var team = 0;
+				if (client.SpawnPoint > 0 && server.LobbyInfo.SpawnPointInfos.TryGetValue(client.SpawnPoint, out var si) && si.Team > 0)
+					team = si.Team;
+
+				if (team == 0)
 				{
-					Log.Write("server", "Invalid team: {0}", s);
-					return false;
+					if (!Exts.TryParseIntegerInvariant(parts[1], out team))
+					{
+						Log.Write("server", "Invalid team: {0}", s);
+						return false;
+					}
 				}
 
 				targetClient.Team = team;
@@ -1099,10 +1107,53 @@ namespace OpenRA.Mods.Common.Server
 						server.SendLocalizedMessageTo(conn, SpawnLocked);
 						return true;
 					}
+
+					if (server.LobbyInfo.SpawnPointInfos.TryGetValue(spawnPoint, out var si) && si.Team > 0)
+						targetClient.Team = si.Team;
 				}
 
 				targetClient.SpawnPoint = spawnPoint;
 				server.SyncLobbyClients();
+
+				return true;
+			}
+		}
+
+		static bool TeamSetSpawnPoints(S server, Connection conn, Session.Client client, string s)
+		{
+			lock (server.LobbyInfo)
+			{
+				if (!client.IsAdmin)
+				{
+					server.SendLocalizedMessageTo(conn, AdminLobbyInfo);
+					return true;
+				}
+
+				try
+				{
+					// Format: <team> [<spawnPoint>...]
+					var parts = s.Split(' ');
+					if (Exts.TryParseIntegerInvariant(parts[0], out var team) && team >= 0)
+					{
+						for (var i = 1; i < parts.Length; i++)
+						{
+							if (Exts.TryParseIntegerInvariant(parts[i], out var spawnPoint) && spawnPoint > 0)
+							{
+								server.LobbyInfo.SpawnPointInfos[spawnPoint] = new Session.SpawnPointInfo(spawnPoint, team);
+
+								var targetClient = server.LobbyInfo.Clients.FirstOrDefault(cc => cc.SpawnPoint == spawnPoint);
+								if (targetClient != null)
+									targetClient.Team = team;
+							}
+						}
+					}
+
+					server.SyncLobbyInfo();
+				}
+				catch (Exception)
+				{
+					server.SendLocalizedMessageTo(conn, InvalidLobbyInfo);
+				}
 
 				return true;
 			}

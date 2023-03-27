@@ -294,7 +294,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				orderManager.IssueOrder(Order.Command($"clear_spawn {selectedSpawn}"));
 		}
 
-		static int DetermineSelectedSpawnPoint(MapPreviewWidget mapPreview, MapPreview preview, MouseInput mi)
+		public static int DetermineSelectedSpawnPoint(MapPreviewWidget mapPreview, MapPreview preview, MouseInput mi)
 		{
 			var spawnSize = ChromeProvider.GetImage("lobby-bits", "spawn-unclaimed").Size.XY;
 			var selectedSpawn = preview.SpawnPoints
@@ -586,11 +586,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			factionFlag.GetImageCollection = () => "flags";
 		}
 
-		public static void SetupEditableTeamWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, MapPreview map)
+		public static void SetupEditableTeamWidget(Widget parent, Session.Slot s, Session.Client c, Session.SpawnPointInfo si, OrderManager orderManager, MapPreview map)
 		{
 			var dropdown = parent.Get<DropDownButtonWidget>("TEAM_DROPDOWN");
 			dropdown.IsVisible = () => true;
-			dropdown.IsDisabled = () => s.LockTeam || orderManager.LocalClient.IsReady;
+			dropdown.IsDisabled = () => s.LockTeam || orderManager.LocalClient.IsReady || (si != null && si.Team > 0);
 			dropdown.OnMouseDown = _ => ShowTeamDropDown(dropdown, c, orderManager, map.PlayerCount);
 			dropdown.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 
