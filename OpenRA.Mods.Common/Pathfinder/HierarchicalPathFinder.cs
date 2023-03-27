@@ -73,13 +73,13 @@ namespace OpenRA.Mods.Common.Pathfinder
 	/// nodes, but uses a heuristic informed from the previous level to guide the search in the right direction.</para>
 	///
 	/// <para>This implementation is aware of movement costs over terrain given by
-	/// <see cref="Locomotor.MovementCostToEnterCell(Actor, CPos, CPos, BlockedByActor, Actor)"/>. It is aware of
+	/// <see cref="Locomotor.MovementCostToEnterCell(Actor, CPos, CPos, BlockedByActor, Actor, bool)"/>. It is aware of
 	/// changes to the costs in terrain and able to update the abstract graph when this occurs. It is able to search
 	/// the abstract graph as if <see cref="BlockedByActor.None"/> had been specified. If
 	/// <see cref="BlockedByActor.Immovable"/> is given in the constructor, the abstract graph will additionally
 	/// account for a subset of immovable actors using the same rules as
-	/// <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, SubCell, BlockedByActor, Actor)"/>. It will be aware of
-	/// changes to actors on the map and update the abstract graph when this occurs. Other types of blocking actors
+	/// <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, SubCell, BlockedByActor, Actor, bool)"/>. It will be aware
+	/// of changes to actors on the map and update the abstract graph when this occurs. Other types of blocking actors
 	/// will not be accounted for in the heuristic.</para>
 	///
 	/// <para>If the obstacle on the map is from terrain (e.g. a cliff or lake) the heuristic will work well. If the
@@ -633,14 +633,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		/// <summary>
 		/// <see cref="BlockedByActor.Immovable"/> defines immovability based on the mobile trait. The blocking rules
-		/// in <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, SubCell, BlockedByActor, Actor)"/> allow units to
-		/// pass these immovable actors if they are temporary blockers (e.g. gates) or crushable by the locomotor.
+		/// in <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, SubCell, BlockedByActor, Actor, bool)"/> allow units
+		/// to pass these immovable actors if they are temporary blockers (e.g. gates) or crushable by the locomotor.
 		/// Since our abstract graph must work for any actor, we have to be conservative and can only consider a subset
 		/// of the immovable actors in the graph - ones we know cannot be passed by some actors due to these rules.
 		/// Both this and <see cref="ActorCellIsBlocking"/> must be true for a cell to be blocked.
 		///
 		/// This method is dependant on the logic in
-		/// <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, SubCell, BlockedByActor, Actor)"/> and
+		/// <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, SubCell, BlockedByActor, Actor, bool)"/> and
 		/// <see cref="Locomotor.UpdateCellBlocking"/>. This method must be kept in sync with changes in the locomotor
 		/// rules.
 		/// </summary>

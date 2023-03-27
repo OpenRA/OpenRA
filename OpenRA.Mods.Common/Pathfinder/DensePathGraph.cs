@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			CVec.Directions.Exclude(new CVec(-1, -1)).ToArray(), // BR
 		};
 
-		public List<GraphConnection> GetConnections(CPos position)
+		public List<GraphConnection> GetConnections(CPos position, Func<CPos, bool> targetPredicate)
 		{
 			var layer = position.Layer;
 			var info = this[position];
@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				if (!IsValidNeighbor(neighbor))
 					continue;
 
-				var pathCost = GetPathCostToNode(position, neighbor, dir);
+				var pathCost = GetPathCostToNode(position, neighbor, dir, targetPredicate);
 				if (pathCost != PathGraph.PathCostForInvalidPath &&
 					this[neighbor].Status != CellStatus.Closed)
 					validNeighbors.Add(new GraphConnection(neighbor, pathCost));
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 					var entryCost = cml.EntryMovementCost(locomotor.Info, layerPosition);
 					if (entryCost != PathGraph.MovementCostForUnreachableCell &&
-						CanEnterNode(position, layerPosition) &&
+						CanEnterNode(position, layerPosition, targetPredicate) &&
 						this[layerPosition].Status != CellStatus.Closed)
 						validNeighbors.Add(new GraphConnection(layerPosition, entryCost));
 				}
@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				{
 					var exitCost = CustomMovementLayers[layer].ExitMovementCost(locomotor.Info, groundPosition);
 					if (exitCost != PathGraph.MovementCostForUnreachableCell &&
-						CanEnterNode(position, groundPosition) &&
+						CanEnterNode(position, groundPosition, targetPredicate) &&
 						this[groundPosition].Status != CellStatus.Closed)
 						validNeighbors.Add(new GraphConnection(groundPosition, exitCost));
 				}
@@ -168,16 +168,23 @@ namespace OpenRA.Mods.Common.Pathfinder
 			return validNeighbors;
 		}
 
-		bool CanEnterNode(CPos srcNode, CPos destNode)
+		bool CanEnterNode(CPos srcNode, CPos destNode, Func<CPos, bool> targetPredicate)
 		{
 			return
 				locomotor.MovementCostToEnterCell(actor, srcNode, destNode, check, ignoreActor)
-				!= PathGraph.MovementCostForUnreachableCell;
+				!= PathGraph.MovementCostForUnreachableCell ||
+				(inReverse && targetPredicate(destNode));
 		}
 
-		int GetPathCostToNode(CPos srcNode, CPos destNode, CVec direction)
+		int GetPathCostToNode(CPos srcNode, CPos destNode, CVec direction, Func<CPos, bool> targetPredicate)
 		{
 			var movementCost = locomotor.MovementCostToEnterCell(actor, srcNode, destNode, check, ignoreActor);
+
+			// When doing searches in reverse, we must allow movement onto an inaccessible target location.
+			// Because when reversed this is actually the source, and it is allowed to move out from an inaccessible source.
+			if (movementCost == PathGraph.MovementCostForUnreachableCell && inReverse && targetPredicate(destNode))
+				movementCost = 0;
+
 			if (movementCost != PathGraph.MovementCostForUnreachableCell)
 				return CalculateCellPathCost(destNode, direction, movementCost);
 

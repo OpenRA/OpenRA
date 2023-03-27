@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			info = new Dictionary<CPos, CellInfo>(estimatedSearchSize);
 		}
 
-		public List<GraphConnection> GetConnections(CPos position)
+		public List<GraphConnection> GetConnections(CPos position, Func<CPos, bool> targetPredicate)
 		{
 			return edges(position) ?? new List<GraphConnection>();
 		}

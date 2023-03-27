@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.Traits
 				   .SingleOrDefault(l => l.Info.Name == Locomotor);
 
 			return locomotor.MovementCostToEnterCell(
-				self, cell, check, ignoreActor, subCell) != PathGraph.MovementCostForUnreachableCell;
+				self, cell, check, ignoreActor, false, subCell) != PathGraph.MovementCostForUnreachableCell;
 		}
 
 		public bool CanStayInCell(World world, CPos cell)

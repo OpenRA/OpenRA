@@ -76,15 +76,99 @@ namespace OpenRA.Mods.Common.Traits
 		/// The shortest path between a source and the target is returned.
 		/// </summary>
 		/// <remarks>
-		/// Searches that provide a multiple source cells are slower than those than provide only a single source cell,
+		/// <para>
+		/// It is allowed for an actor to occupy an inaccessible space and move out of it if another adjacent cell is
+		/// accessible, but it is not allowed to move into an inaccessible target space. Therefore it is vitally
+		/// important to not mix up the source and target locations. A path can exist from an inaccessible source space
+		/// to an accessible target space, but if those parameters as swapped then no path can exist.
+		/// </para>
+		/// <para>
+		/// Searches that provide multiple source cells are slower than those than provide only a single source cell,
 		/// as optimizations are possible for the single source case. Use searches from multiple source cells
 		/// sparingly.
+		/// </para>
 		/// </remarks>
 		public List<CPos> FindPathToTargetCell(
 			Actor self, IEnumerable<CPos> sources, CPos target, BlockedByActor check,
 			Func<CPos, int> customCost = null,
 			Actor ignoreActor = null,
 			bool laneBias = true)
+		{
+			return FindPathToTarget(self, sources, target, check, customCost, ignoreActor, laneBias);
+		}
+
+		/// <summary>
+		/// Calculates a path for the actor from source to multiple possible targets.
+		/// Returned path is *reversed* and given target to source.
+		/// The shortest path between the source and a target is returned.
+		/// </summary>
+		/// <remarks>
+		/// <para>
+		/// It is allowed for an actor to occupy an inaccessible space and move out of it if another adjacent cell is
+		/// accessible, but it is not allowed to move into an inaccessible target space. Therefore it is vitally
+		/// important to not mix up the source and target locations. A path can exist from an inaccessible source space
+		/// to an accessible target space, but if those parameters as swapped then no path can exist.
+		/// </para>
+		/// <para>
+		/// Searches that provide multiple target cells are slower than those than provide only a single target cell,
+		/// as optimizations are possible for the single target case. Use searches to multiple target cells
+		/// sparingly.
+		/// </para>
+		/// </remarks>
+		public List<CPos> FindPathToTargetCells(
+			Actor self, CPos source, IEnumerable<CPos> targets, BlockedByActor check,
+			Func<CPos, int> customCost = null,
+			Actor ignoreActor = null,
+			bool laneBias = true)
+		{
+			// We can reuse existing search infrastructure by swapping the single source and multiple targets,
+			// and calling the existing methods that allow multiple sources and one target.
+			// However there is a case of asymmetry we must handle, an actor may move out of a inaccessible source,
+			// but may not move onto a inaccessible target. We must account for this when performing the swap.
+
+			// As targets must be accessible, determine accessible targets in advance so when they becomes the sources
+			// we don't accidentally allow an inaccessible position to become viable.
+			var locomotor = GetActorLocomotor(self);
+			var accessibleTargets = targets
+				.Where(target =>
+					PathSearch.CellAllowsMovement(self.World, locomotor, target, customCost)
+					&& locomotor.MovementCostToEnterCell(self, target, check, ignoreActor, true) != PathGraph.MovementCostForUnreachableCell)
+				.ToList();
+			if (accessibleTargets.Count == 0)
+				return NoPath;
+
+			// When checking if the source location is accessible, we must also ignore self.
+			// So that when it becomes a target, we don't consider the location blocked by ourselves!
+			List<CPos> path;
+			var sourceIsAccessible =
+				PathSearch.CellAllowsMovement(self.World, locomotor, source, customCost)
+				&& locomotor.MovementCostToEnterCell(self, source, check, ignoreActor, true) != PathGraph.MovementCostForUnreachableCell;
+			if (sourceIsAccessible)
+			{
+				// As both ends are accessible, we can freely swap them.
+				path = FindPathToTarget(self, targets, source, check, customCost, ignoreActor, laneBias);
+			}
+			else
+			{
+				// When we treat the source as a target, we need to be able to path to it.
+				// We know this would fail as it is inaccessible but we need an exception to be made.
+				// A hierarchical path search doesn't support this ability,
+				// but the local pathfinder can deal with it when doing reverse searches.
+				pathFinderOverlay?.NewRecording(self, accessibleTargets, source);
+				using (var search = PathSearch.ToTargetCell(
+					world, locomotor, self, accessibleTargets, source, check, DefaultHeuristicWeightPercentage,
+					customCost, ignoreActor, laneBias, inReverse: true, recorder: pathFinderOverlay?.RecordLocalEdges(self)))
+					path = search.FindPath();
+			}
+
+			// Since we swapped the positions, we need to reverse the path to swap it back.
+			path.Reverse();
+			return path;
+		}
+
+		List<CPos> FindPathToTarget(
+			Actor self, IEnumerable<CPos> sources, CPos target, BlockedByActor check,
+			Func<CPos, int> customCost, Actor ignoreActor, bool laneBias)
 		{
 			var sourcesList = sources.ToList();
 			if (sourcesList.Count == 0)
@@ -161,6 +245,12 @@ namespace OpenRA.Mods.Common.Traits
 		/// Only terrain is taken into account, i.e. as if <see cref="BlockedByActor.None"/> was given.
 		/// This would apply for any actor using the given <see cref="Locomotor"/>.
 		/// </summary>
+		/// <remarks>
+		/// It is allowed for an actor to occupy an inaccessible space and move out of it if another adjacent cell is
+		/// accessible, but it is not allowed to move into an inaccessible target space. Therefore it is vitally
+		/// important to not mix up the source and target locations. A path can exist from an inaccessible source space
+		/// to an accessible target space, but if those parameters as swapped then no path can exist.
+		/// </remarks>
 		public bool PathExistsForLocomotor(Locomotor locomotor, CPos source, CPos target)
 		{
 			return hierarchicalPathFindersBlockedByNoneByLocomotor[locomotor].PathExists(source, target);

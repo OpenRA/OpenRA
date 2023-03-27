@@ -198,8 +198,8 @@ namespace OpenRA.Mods.Common.Traits
 				return null;
 
 			// Start a search from each refinery's delivery location:
-			var path = mobile.PathFinder.FindPathToTargetCell(
-				self, refineries.Select(r => r.Key), self.Location, BlockedByActor.None,
+			var path = mobile.PathFinder.FindPathToTargetCells(
+				self, self.Location, refineries.Select(r => r.Key), BlockedByActor.None,
 				location =>
 				{
 					if (!refineries.ContainsKey(location))
@@ -211,7 +211,7 @@ namespace OpenRA.Mods.Common.Traits
 				});
 
 			if (path.Count > 0)
-				return refineries[path.Last()].Actor;
+				return refineries[path[0]].Actor;
 
 			return null;
 		}
