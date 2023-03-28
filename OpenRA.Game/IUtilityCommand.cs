@@ -9,12 +9,43 @@
  */
 #endregion
 
+using System;
+using System.Reflection;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA
 {
 	public class Utility
 	{
+		static readonly ConcurrentCache<Type, FieldInfo[]> TypeFields =
+			new ConcurrentCache<Type, FieldInfo[]>(type => type.GetFields());
+
+		static readonly ConcurrentCache<(MemberInfo Member, Type AttributeType), bool> MemberHasAttribute =
+			new ConcurrentCache<(MemberInfo Member, Type AttributeType), bool>(
+				x => Attribute.IsDefined(x.Member, x.AttributeType));
+
+		static readonly ConcurrentCache<(MemberInfo Member, Type AttributeType, bool Inherit), object[]> MemberCustomAttributes =
+			new ConcurrentCache<(MemberInfo Member, Type AttributeType, bool Inherit), object[]>(
+				x => x.Member.GetCustomAttributes(x.AttributeType, x.Inherit));
+
+		public static FieldInfo[] GetFields(Type type)
+		{
+			return TypeFields[type];
+		}
+
+		public static bool HasAttribute<TAttribute>(MemberInfo member)
+			where TAttribute : Attribute
+		{
+			return MemberHasAttribute[(member, typeof(TAttribute))];
+		}
+
+		public static TAttribute[] GetCustomAttributes<TAttribute>(MemberInfo member, bool inherit)
+			where TAttribute : Attribute
+		{
+			return (TAttribute[])MemberCustomAttributes[(member, typeof(TAttribute), inherit)];
+		}
+
 		public readonly ModData ModData;
 		public readonly InstalledMods Mods;
 

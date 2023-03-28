@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Lint
 			const BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 			while (type != null)
 			{
-				if (((MemberInfo[])type.GetFields(Flags)).Concat(type.GetProperties(Flags)).Any(x => x.HasAttribute<SyncAttribute>()))
+				if (((MemberInfo[])type.GetFields(Flags)).Concat(type.GetProperties(Flags)).Any(x => Utility.HasAttribute<SyncAttribute>(x)))
 					return true;
 				type = type.BaseType;
 			}

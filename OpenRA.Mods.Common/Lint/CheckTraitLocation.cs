@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
-					var traitLocation = traitInfo.GetType().GetCustomAttributes<TraitLocationAttribute>(true).FirstOrDefault();
+					var traitLocation = Utility.GetCustomAttributes<TraitLocationAttribute>(traitInfo.GetType(), true).FirstOrDefault();
 					if (traitLocation == null)
 						continue;
 

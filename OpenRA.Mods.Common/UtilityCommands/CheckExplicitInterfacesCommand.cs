@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var interfaces = implementingType.GetInterfaces();
 				foreach (var interfaceType in interfaces)
 				{
-					if (!interfaceType.HasAttribute<RequireExplicitImplementationAttribute>())
+					if (!Utility.HasAttribute<RequireExplicitImplementationAttribute>(interfaceType))
 						continue;
 
 					var interfaceMembers = interfaceType.GetMembers();

@@ -45,10 +45,10 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
-					var fields = traitInfo.GetType().GetFields();
+					var fields = Utility.GetFields(traitInfo.GetType());
 					foreach (var field in fields)
 					{
-						var cursorReference = field.GetCustomAttributes<CursorReferenceAttribute>(true).FirstOrDefault();
+						var cursorReference = Utility.GetCustomAttributes<CursorReferenceAttribute>(field, true).FirstOrDefault();
 						if (cursorReference == null)
 							continue;
 

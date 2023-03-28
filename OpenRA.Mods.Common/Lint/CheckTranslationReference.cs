@@ -39,10 +39,10 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
-					var fields = traitInfo.GetType().GetFields();
+					var fields = Utility.GetFields(traitInfo.GetType());
 					foreach (var field in fields)
 					{
-						var translationReference = field.GetCustomAttributes<TranslationReferenceAttribute>(true).FirstOrDefault();
+						var translationReference = Utility.GetCustomAttributes<TranslationReferenceAttribute>(field, true).FirstOrDefault();
 						if (translationReference == null)
 							continue;
 
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Lint
 
 			foreach (var modType in modData.ObjectCreator.GetTypes())
 			{
-				foreach (var fieldInfo in modType.GetFields(Binding).Where(m => m.HasAttribute<TranslationReferenceAttribute>()))
+				foreach (var fieldInfo in modType.GetFields(Binding).Where(m => Utility.HasAttribute<TranslationReferenceAttribute>(m)))
 				{
 					if (fieldInfo.FieldType != typeof(string))
 						emitError($"Translation attribute on non string field {fieldInfo.Name}.");
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Lint
 					if (!translation.HasMessage(key))
 						emitError($"{key} not present in {language} translation.");
 
-					var translationReference = fieldInfo.GetCustomAttributes<TranslationReferenceAttribute>(true)[0];
+					var translationReference = Utility.GetCustomAttributes<TranslationReferenceAttribute>(fieldInfo, true)[0];
 					if (translationReference.RequiredVariableNames != null && translationReference.RequiredVariableNames.Length > 0)
 						referencedVariablesPerKey.GetOrAdd(key, translationReference.RequiredVariableNames);
 

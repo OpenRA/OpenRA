@@ -47,10 +47,10 @@ namespace OpenRA.Mods.Common.Lint
 						var traitName = traitInfo.GetType().Name;
 						traitName = traitName.Remove(traitName.Length - 4);
 
-						var fields = traitInfo.GetType().GetFields();
+						var fields = Utility.GetFields(traitInfo.GetType());
 						foreach (var field in fields)
 						{
-							var sequenceReference = field.GetCustomAttributes<SequenceReferenceAttribute>(true).FirstOrDefault();
+							var sequenceReference = Utility.GetCustomAttributes<SequenceReferenceAttribute>(field, true).FirstOrDefault();
 							if (sequenceReference == null)
 								continue;
 
@@ -103,10 +103,10 @@ namespace OpenRA.Mods.Common.Lint
 				if (projectileInfo == null)
 					continue;
 
-				var fields = projectileInfo.GetType().GetFields();
+				var fields = Utility.GetFields(projectileInfo.GetType());
 				foreach (var field in fields)
 				{
-					var sequenceReference = field.GetCustomAttributes<SequenceReferenceAttribute>(true).FirstOrDefault();
+					var sequenceReference = Utility.GetCustomAttributes<SequenceReferenceAttribute>(field, true).FirstOrDefault();
 					if (sequenceReference == null)
 						continue;
 
