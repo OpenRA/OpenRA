@@ -26,6 +26,19 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 {
 	public abstract class ImportGen2MapCommand
 	{
+		// The top few map rows on the original games are visible but not part of the interactable map area.
+		// These are imported as being outside the map bounds but within the shroud visible margin,
+		// which requires some extra padding to make the PPos calculations work.
+		// The first value is added to the left, right, and bottom edges. The second value is added to the top.
+		// There are 6 tiles in the top uninteractable region (3 in og TS, double for OpenRA).
+		// So far testing hasn't shown the need for a left/right/bottom uninteractable margin except in cases of odd elevation, which affects us but not the original games.
+		protected virtual int2 UninteractableMargin { get; } = new int2(0, 6);
+
+		// Having the top cordon equal the maximum possible elevation for the mod is important!
+		// It needs to be equal to the top row's maximum elevation because there may be an actor there that will later crash the game.
+		// But since we need to create the map's canvas before importing tile data (like elevation), we opt for the maximum possible elevation to be safe.
+		protected virtual (int Left, int Top, int Right, int Bottom) Cordon { get; } = (1, 16, 1, 4);
+
 		protected abstract Dictionary<byte, string> OverlayToActor { get; }
 
 		protected abstract Dictionary<byte, Size> OverlayShapes { get; }
@@ -52,16 +65,17 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var tileset = mapSection.GetValue("Theater", "");
 			var iniSize = mapSection.GetValue("Size", "0, 0, 0, 0").Split(',').Select(int.Parse).ToArray();
 			var iniBounds = mapSection.GetValue("LocalSize", "0, 0, 0, 0").Split(',').Select(int.Parse).ToArray();
-			var size = new Size(iniSize[2], 2 * iniSize[3]);
 
 			if (!utility.ModData.DefaultTerrainInfo.TryGetValue(tileset, out var terrainInfo))
 				throw new InvalidDataException($"Unknown tileset {tileset}");
 
-			var map = new Map(Game.ModData, terrainInfo, size.Width, size.Height)
+			var usedAreaSize = new Size(iniSize[2], 2 * iniSize[3]);
+			var mapCanvasSize = new Size(usedAreaSize.Width + Cordon.Left + Cordon.Right, usedAreaSize.Height + Cordon.Top + Cordon.Bottom);
+
+			var map = new Map(Game.ModData, terrainInfo, mapCanvasSize.Width, mapCanvasSize.Height)
 			{
 				Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
 				Author = "Westwood Studios",
-				Bounds = new Rectangle(iniBounds[0], iniBounds[1], iniBounds[2], 2 * iniBounds[3] + 2 * iniBounds[1]),
 				RequiresMod = utility.ModData.Manifest.Id
 			};
 
@@ -79,6 +93,9 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var spawnCount = map.ActorDefinitions.Count(n => n.Value.Value == "mpspawn");
 			var mapPlayers = new MapPlayers(map.Rules, spawnCount);
 			map.PlayerDefinitions = mapPlayers.ToMiniYaml();
+
+			// This needs to be called after ReadTiles because it depends on terrain elevation.
+			SetInteractableBounds(map, iniBounds);
 
 			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
 			map.Save(ZipFileLoader.Create(dest));
@@ -107,18 +124,15 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var z = mf.ReadUInt8();
 				/*var zero2 = */mf.ReadUInt8();
 
-				var dx = rx - ry + fullSize.X - 1;
-				var dy = rx + ry - fullSize.X - 1;
-				var mapCell = new MPos(dx / 2, dy);
-				var cell = mapCell.ToCPos(map);
+				var uv = ToMPos(rx, ry, fullSize.X);
 
-				if (map.Tiles.Contains(cell))
+				if (map.Tiles.Contains(uv))
 				{
 					if (!terrainInfo.Templates.ContainsKey(tilenum))
 						tilenum = subtile = 0;
 
-					map.Tiles[cell] = new TerrainTile(tilenum, subtile);
-					map.Height[cell] = z;
+					map.Tiles[uv] = new TerrainTile(tilenum, subtile);
+					map.Height[uv] = z;
 				}
 			}
 		}
@@ -146,7 +160,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					var dx = (ushort)x;
 					var dy = (ushort)(y * 2 + x % 2);
 
-					var uv = new MPos(dx / 2, dy);
+					var uv = ToMPos(dx, dy);
 					var rx = (ushort)((dx + dy) / 2 + 1);
 					var ry = (ushort)(dy - rx + fullSize.X + 1);
 
@@ -192,9 +206,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var pos = int.Parse(kv.Value);
 				var ry = pos / 1000;
 				var rx = pos - ry * 1000;
-				var dx = rx - ry + fullSize.X - 1;
-				var dy = rx + ry - fullSize.X - 1;
-				var cell = new MPos(dx / 2, dy).ToCPos(map);
+				var cell = ToMPos(rx, ry, fullSize.X).ToCPos(map);
 
 				var ar = new ActorReference((!int.TryParse(kv.Key, out var wpindex) || wpindex > 7) ? "waypoint" : "mpspawn")
 				{
@@ -214,9 +226,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var pos = int.Parse(kv.Key);
 				var ry = pos / 1000;
 				var rx = pos - ry * 1000;
-				var dx = rx - ry + fullSize.X - 1;
-				var dy = rx + ry - fullSize.X - 1;
-				var cell = new MPos(dx / 2, dy).ToCPos(map);
+				var cell = ToMPos(rx, ry, fullSize.X).ToCPos(map);
 				var name = kv.Value.ToLowerInvariant();
 
 				var ar = new ActorReference(name)
@@ -253,9 +263,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var ry = int.Parse(entries[4]);
 				var facing = (byte)(224 - byte.Parse(entries[type == "Infantry" ? 7 : 5]));
 
-				var dx = rx - ry + fullSize.X - 1;
-				var dy = rx + ry - fullSize.X - 1;
-				var cell = new MPos(dx / 2, dy).ToCPos(map);
+				var cell = ToMPos(rx, ry, fullSize.X).ToCPos(map);
 
 				var ar = new ActorReference(name)
 				{
@@ -380,6 +388,26 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			}
 		}
 
+		protected virtual void SetInteractableBounds(Map map, int[] iniBounds)
+		{
+			// Apply cordon cells + the ini-specified map margin.
+			var left = Cordon.Left + iniBounds[0];
+			var top = Cordon.Top + 2 * iniBounds[1];
+
+			var playableAreaWidth = iniBounds[2];
+			var playableAreaHeight = 2 * iniBounds[3] - UninteractableMargin.Y;
+
+			// Black magic, don't ask. Non-flat maps seen to require additional height padding.
+			var unknownHeightPadding = map.Height.Max() == 0 ? 0 : 8;
+
+			// Calculate Bounds edge tile coordinates.
+			// Reduce bottom and right by 1 because map.SetBounds() increases them.
+			var topLeft = new PPos(left, top);
+			var bottomRight = new PPos(playableAreaWidth + left - 1, playableAreaHeight + unknownHeightPadding + top - 1);
+
+			map.SetBounds(topLeft, bottomRight);
+		}
+
 		protected virtual bool TryHandleOverlayToActorInner(CPos cell, byte[] overlayPack, CellLayer<int> overlayIndex, byte overlayType, out ActorReference actorReference)
 		{
 			actorReference = null;
@@ -484,6 +512,24 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				srcOffset += srcLength;
 				destOffset += destLength;
 			}
+		}
+
+		/// <summary>
+		/// Convert TS relative position to OpenRA MPos, accounting for map cordons.
+		/// </summary>
+		protected MPos ToMPos(int dx, int dy)
+		{
+			return new MPos(Cordon.Left + (dx + Cordon.Top % 2) / 2, Cordon.Top + dy);
+		}
+
+		/// <summary>
+		/// Convert TS relative position to OpenRA MPos, accounting for map cordons.
+		/// </summary>
+		protected MPos ToMPos(int rx, int ry, int mapWidthWithoutCordon)
+		{
+			var dx = rx - ry + mapWidthWithoutCordon - 1;
+			var dy = rx + ry - mapWidthWithoutCordon - 1;
+			return ToMPos(dx, dy);
 		}
 
 		#endregion
