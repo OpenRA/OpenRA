@@ -45,21 +45,16 @@ namespace OpenRA
 			return a.GetTypes().Select(t => t.Namespace).Distinct().Where(n => n != null);
 		}
 
-		public static bool HasAttribute<T>(this MemberInfo mi)
+		public static bool HasAttribute<TAttribute>(this MemberInfo mi)
+			where TAttribute : Attribute
 		{
-			return Attribute.IsDefined(mi, typeof(T));
+			return Attribute.IsDefined(mi, typeof(TAttribute));
 		}
 
-		public static T[] GetCustomAttributes<T>(this MemberInfo mi, bool inherit)
-			where T : class
+		public static TAttribute[] GetCustomAttributes<TAttribute>(this MemberInfo mi, bool inherit)
+			where TAttribute : Attribute
 		{
-			return (T[])mi.GetCustomAttributes(typeof(T), inherit);
-		}
-
-		public static T[] GetCustomAttributes<T>(this ParameterInfo mi)
-			where T : class
-		{
-			return (T[])mi.GetCustomAttributes(typeof(T), true);
+			return (TAttribute[])mi.GetCustomAttributes(typeof(TAttribute), inherit);
 		}
 
 		public static T Clamp<T>(this T val, T min, T max) where T : IComparable<T>

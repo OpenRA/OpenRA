@@ -59,8 +59,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			sections.Add("Launch", new LaunchArguments(new Arguments(Array.Empty<string>())));
 			foreach (var section in sections.OrderBy(s => s.Key))
 			{
-				var fields = section.Value.GetType().GetFields();
-				if (fields.Any(field => field.GetCustomAttributes<DescAttribute>(false).Length > 0))
+				var fields = Utility.GetFields(section.Value.GetType());
+				if (fields.Any(field => Utility.GetCustomAttributes<DescAttribute>(field, false).Length > 0))
 				{
 					Console.WriteLine($"## {section.Key}");
 					if (section.Key == "Launch")
@@ -72,11 +72,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				foreach (var field in fields)
 				{
-					if (!field.HasAttribute<DescAttribute>())
+					if (!Utility.HasAttribute<DescAttribute>(field))
 						continue;
 
 					Console.WriteLine($"### {field.Name}");
-					var lines = field.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines);
+					var lines = Utility.GetCustomAttributes<DescAttribute>(field, false).SelectMany(d => d.Lines);
 					foreach (var line in lines)
 					{
 						Console.WriteLine(line);

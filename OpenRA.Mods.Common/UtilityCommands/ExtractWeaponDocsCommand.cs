@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					type.Namespace,
 					Name = type.Name.EndsWith("Info") ? type.Name.Substring(0, type.Name.Length - 4) : type.Name,
-					Description = string.Join(" ", type.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines)),
+					Description = string.Join(" ", Utility.GetCustomAttributes<DescAttribute>(type, false).SelectMany(d => d.Lines)),
 					InheritedTypes = type.BaseTypes()
 						.Select(y => y.Name)
 						.Where(y => y != type.Name && y != $"{type.Name}Info" && y != "Object"),
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 								DefaultValue = FieldSaver.SaveField(objectCreator.CreateBasic(type), fi.Field.Name).Value.Value,
 								InternalType = Util.InternalTypeName(fi.Field.FieldType),
 								UserFriendlyType = Util.FriendlyTypeName(fi.Field.FieldType),
-								Description = string.Join(" ", fi.Field.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines)),
+								Description = string.Join(" ", Utility.GetCustomAttributes<DescAttribute>(fi.Field, true).SelectMany(d => d.Lines)),
 								OtherAttributes = fi.Field.CustomAttributes
 									.Where(a => a.AttributeType.Name != nameof(DescAttribute) && a.AttributeType.Name != nameof(FieldLoader.LoadUsingAttribute))
 									.Select(a =>

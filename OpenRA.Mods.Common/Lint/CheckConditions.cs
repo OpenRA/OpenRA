@@ -38,20 +38,23 @@ namespace OpenRA.Mods.Common.Lint
 
 				foreach (var trait in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
-					var fieldConsumed = trait.GetType().GetFields()
-						.Where(x => x.HasAttribute<ConsumedConditionReferenceAttribute>())
+					var fields = Utility.GetFields(trait.GetType());
+					var properties = trait.GetType().GetProperties();
+
+					var fieldConsumed = fields
+						.Where(x => Utility.HasAttribute<ConsumedConditionReferenceAttribute>(x))
 						.SelectMany(f => LintExts.GetFieldValues(trait, f));
 
-					var propertyConsumed = trait.GetType().GetProperties()
-						.Where(x => x.HasAttribute<ConsumedConditionReferenceAttribute>())
+					var propertyConsumed = properties
+						.Where(x => Utility.HasAttribute<ConsumedConditionReferenceAttribute>(x))
 						.SelectMany(p => LintExts.GetPropertyValues(trait, p));
 
-					var fieldGranted = trait.GetType().GetFields()
-						.Where(x => x.HasAttribute<GrantedConditionReferenceAttribute>())
+					var fieldGranted = fields
+						.Where(x => Utility.HasAttribute<GrantedConditionReferenceAttribute>(x))
 						.SelectMany(f => LintExts.GetFieldValues(trait, f));
 
-					var propertyGranted = trait.GetType().GetProperties()
-						.Where(x => x.HasAttribute<GrantedConditionReferenceAttribute>())
+					var propertyGranted = properties
+						.Where(x => Utility.HasAttribute<GrantedConditionReferenceAttribute>(x))
 						.SelectMany(f => LintExts.GetPropertyValues(trait, f));
 
 					foreach (var c in fieldConsumed.Concat(propertyConsumed))

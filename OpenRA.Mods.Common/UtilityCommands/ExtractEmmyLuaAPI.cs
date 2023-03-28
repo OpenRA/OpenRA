@@ -173,7 +173,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			foreach (var t in globalTables)
 			{
-				var name = t.GetCustomAttributes<ScriptGlobalAttribute>(true).First().Name;
+				var name = Utility.GetCustomAttributes<ScriptGlobalAttribute>(t, true).First().Name;
 				Console.WriteLine("---Global variable provided by the game scripting engine.");
 
 				foreach (var obsolete in t.GetCustomAttributes(false).OfType<ObsoleteAttribute>())
@@ -191,9 +191,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					var body = "";
 
-					if (member.HasAttribute<DescAttribute>())
+					if (Utility.HasAttribute<DescAttribute>(member))
 					{
-						var lines = member.GetCustomAttributes<DescAttribute>(true).First().Lines;
+						var lines = Utility.GetCustomAttributes<DescAttribute>(member, true).First().Lines;
 						foreach (var line in lines)
 							Console.WriteLine($"    --- {line}");
 					}
@@ -258,11 +258,11 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			{
 				Console.WriteLine();
 
-				var isActivity = memberInfo.HasAttribute<ScriptActorPropertyActivityAttribute>();
+				var isActivity = Utility.HasAttribute<ScriptActorPropertyActivityAttribute>(memberInfo);
 
-				if (memberInfo.HasAttribute<DescAttribute>())
+				if (Utility.HasAttribute<DescAttribute>(memberInfo))
 				{
-					var lines = memberInfo.GetCustomAttributes<DescAttribute>(true).First().Lines;
+					var lines = Utility.GetCustomAttributes<DescAttribute>(memberInfo, true).First().Lines;
 					foreach (var line in lines)
 						Console.WriteLine($"    --- {line}");
 				}

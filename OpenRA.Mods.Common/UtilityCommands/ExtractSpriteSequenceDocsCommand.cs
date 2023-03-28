@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				{
 					type.Namespace,
 					type.Name,
-					Description = string.Join(" ", type.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines)),
+					Description = string.Join(" ", Utility.GetCustomAttributes<DescAttribute>(type, false).SelectMany(d => d.Lines)),
 					InheritedTypes = type.BaseTypes()
 						.Select(y => y.Name)
 						.Where(y => y != type.Name && y != "Object"),
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						.Where(fi => fi.FieldType.IsGenericType && fi.FieldType.GetGenericTypeDefinition() == typeof(SpriteSequenceField<>))
 						.Select(fi =>
 						{
-							var description = string.Join(" ", fi.GetCustomAttributes<DescAttribute>(false)
+							var description = string.Join(" ", Utility.GetCustomAttributes<DescAttribute>(fi, false)
 								.SelectMany(d => d.Lines));
 
 							var valueType = fi.FieldType.GetGenericArguments()[0];

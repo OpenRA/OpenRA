@@ -39,10 +39,10 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
-					var fields = traitInfo.GetType().GetFields();
+					var fields = Utility.GetFields(traitInfo.GetType());
 					foreach (var field in fields)
 					{
-						var paletteReference = field.GetCustomAttributes<PaletteReferenceAttribute>(true).FirstOrDefault();
+						var paletteReference = Utility.GetCustomAttributes<PaletteReferenceAttribute>(field, true).FirstOrDefault();
 						if (paletteReference == null)
 							continue;
 
@@ -82,10 +82,10 @@ namespace OpenRA.Mods.Common.Lint
 				if (projectileInfo == null)
 					continue;
 
-				var fields = projectileInfo.GetType().GetFields();
+				var fields = Utility.GetFields(projectileInfo.GetType());
 				foreach (var field in fields)
 				{
-					var paletteReference = field.GetCustomAttributes<PaletteReferenceAttribute>(true).FirstOrDefault();
+					var paletteReference = Utility.GetCustomAttributes<PaletteReferenceAttribute>(field, true).FirstOrDefault();
 					if (paletteReference == null)
 						continue;
 
@@ -126,10 +126,10 @@ namespace OpenRA.Mods.Common.Lint
 			var tilesetPalettes = new List<(string Tileset, string PaletteName)>();
 			foreach (var traitInfo in worldActorInfo.TraitInfos<TraitInfo>())
 			{
-				var fields = traitInfo.GetType().GetFields();
+				var fields = Utility.GetFields(traitInfo.GetType());
 				foreach (var field in fields)
 				{
-					var paletteDefinition = field.GetCustomAttributes<PaletteDefinitionAttribute>(true).FirstOrDefault();
+					var paletteDefinition = Utility.GetCustomAttributes<PaletteDefinitionAttribute>(field, true).FirstOrDefault();
 					if (paletteDefinition == null)
 						continue;
 
