@@ -590,7 +590,7 @@
 		Name: Visceroid
 	Armament:
 		Weapon: Chemspray
-		LocalOffset: 384,0,0
+		LocalOffsets: 384,0,0
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		Voice: Attack

@@ -586,7 +586,7 @@ TSLA:
 	WithTeslaChargeAnimation:
 	Armament:
 		Weapon: TeslaZap
-		LocalOffset: 0,0,896
+		LocalOffsets: 0,0,896
 	AttackTesla:
 		PauseOnCondition: disabled || build-incomplete
 		ChargeAudio: tslachg2.aud
@@ -637,7 +637,7 @@ AGUN:
 		Recoils: false
 	Armament:
 		Weapon: ZSU-23
-		LocalOffset: 520,100,450, 520,-150,450
+		LocalOffsets: 520,100,450, 520,-150,450
 		MuzzleSequence: muzzle
 	AttackTurreted:
 		PauseOnCondition: disabled || build-incomplete
@@ -855,7 +855,7 @@ GUN:
 		Sequence: recoil
 	Armament:
 		Weapon: TurretGun
-		LocalOffset: 512,0,112
+		LocalOffsets: 512,0,112
 		MuzzleSequence: muzzle
 	AttackTurreted:
 		PauseOnCondition: build-incomplete
@@ -897,7 +897,7 @@ FTUR:
 		Offset: 0,0,112
 	Armament:
 		Weapon: FireballLauncher
-		LocalOffset: 512,0,0
+		LocalOffsets: 512,0,0
 	AttackTurreted:
 		PauseOnCondition: build-incomplete
 	-QuantizeFacingsFromSequence:
@@ -957,7 +957,7 @@ SAM:
 		Recoils: false
 	Armament:
 		Weapon: Nike
-		LocalOffset: 0,0,320
+		LocalOffsets: 0,0,320
 		MuzzleSequence: muzzle
 	AttackTurreted:
 		PauseOnCondition: disabled || build-incomplete

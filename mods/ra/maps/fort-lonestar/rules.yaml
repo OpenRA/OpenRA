@@ -354,7 +354,7 @@ FTRK:
 	Armament:
 		Weapon: FLAK-23
 		Recoil: 85
-		LocalOffset: 512,0,192
+		LocalOffsets: 512,0,192
 		MuzzleSequence: muzzle
 
 ARTY:

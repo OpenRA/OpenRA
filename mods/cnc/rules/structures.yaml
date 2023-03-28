@@ -922,7 +922,7 @@ GUN:
 		Sequence: recoil
 	Armament:
 		Weapon: TurretGun
-		LocalOffset: 512,0,112
+		LocalOffsets: 512,0,112
 		MuzzleSequence: muzzle
 	AttackTurreted:
 		PauseOnCondition: build-incomplete
@@ -1018,7 +1018,7 @@ OBLI:
 		Sequence: active
 	Armament:
 		Weapon: Laser
-		LocalOffset: 0,-85,1280
+		LocalOffsets: 0,-85,1280
 	AttackCharges:
 		PauseOnCondition: lowpower || build-incomplete
 		ChargeLevel: 50
@@ -1060,7 +1060,7 @@ GTWR:
 		HasMinibib: true
 	Armament:
 		Weapon: HighV
-		LocalOffset: 256,0,256
+		LocalOffsets: 256,0,256
 		MuzzleSequence: muzzle
 	AttackTurreted:
 		PauseOnCondition: build-incomplete
@@ -1108,11 +1108,11 @@ ATWR:
 		Offset: 128,128,384
 	Armament@PRIMARY:
 		Weapon: TowerMissile
-		LocalOffset: 256,128,0, 256,-128,0
+		LocalOffsets: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	Armament@SECONDARY:
 		Weapon: TowerAAMissile
-		LocalOffset: 256,128,0, 256,-128,0
+		LocalOffsets: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	AttackTurreted:
 		PauseOnCondition: lowpower || build-incomplete

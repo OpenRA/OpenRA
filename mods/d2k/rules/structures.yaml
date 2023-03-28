@@ -808,7 +808,7 @@ medium_gun_turret:
 		RealignDelay: -1
 	Armament:
 		Weapon: 110mm_Gun
-		LocalOffset: 512,0,432
+		LocalOffsets: 512,0,432
 		MuzzleSequence: muzzle
 	Power:
 		Amount: -50
@@ -851,7 +851,7 @@ large_gun_turret:
 		QuantizedFacings: 32
 	Armament:
 		Weapon: TowerMissile
-		LocalOffset: 256,384,768, 256,-384,768
+		LocalOffsets: 256,384,768, 256,-384,768
 	Turreted:
 		TurnSpeed: 32
 		InitialFacing: 512

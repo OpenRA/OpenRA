@@ -85,7 +85,7 @@ trooper:
 		Speed: 31
 	Armament:
 		Weapon: Bazooka
-		LocalOffset: 128,0,256
+		LocalOffsets: 128,0,256
 	Encyclopedia:
 		Description: Armed with missile launchers, Troopers fire wire guided armor-piercing warheads. These units are particularly effective against vehicles (especially armored ones) and buildings. However, this unit is largely useless against infantry.\n\nTroopers are resistant to anti-tank weaponry but very vulnerable to high-explosives, fire and bullet weapons.
 		Order: 10
@@ -217,7 +217,7 @@ grenadier:
 		Speed: 43
 	Armament:
 		Weapon: grenade
-		LocalOffset: 192,0,224
+		LocalOffsets: 192,0,224
 		FireDelay: 3
 	Encyclopedia:
 		Description: Grenadiers are an infantry artillery unit which are strong against buildings. They have a chance to explode on death, so don't group them together.

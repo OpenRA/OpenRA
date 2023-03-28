@@ -23,7 +23,7 @@ BOAT:
 		Offset: 0,896,171
 	Armament:
 		Weapon: BoatMissile
-		LocalOffset: 85,-85,0, 85,85,0
+		LocalOffsets: 85,-85,0, 85,85,0
 	AttackMove:
 		Voice: Attack
 	AttackTDGunboatTurreted:

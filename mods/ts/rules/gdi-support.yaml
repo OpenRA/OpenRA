@@ -94,22 +94,22 @@ GACTWR:
 	Armament@VULCPRIMARY:
 		RequiresCondition: tower.vulcan
 		Weapon: VulcanTower
-		LocalOffset: 588,120,1358
+		LocalOffsets: 588,120,1358
 		MuzzleSequence: muzzle
 	Armament@VULCSECONDARY:
 		RequiresCondition: tower.vulcan
 		Name: secondary
 		Weapon: VulcanTower
-		LocalOffset: 588,-120,1358
+		LocalOffsets: 588,-120,1358
 		MuzzleSequence: muzzle
 	Armament@ROCKET:
 		RequiresCondition: tower.rocket
 		Weapon: RPGTower
-		LocalOffset: 272,-92,1493
+		LocalOffsets: 272,-92,1493
 	Armament@SAM:
 		RequiresCondition: tower.sam
 		Weapon: RedEye2
-		LocalOffset: 543,0,1697
+		LocalOffsets: 543,0,1697
 	WithMuzzleOverlay:
 		RequiresCondition: !build-incomplete && tower.vulcan
 	WithIdleOverlay@LIGHTS:

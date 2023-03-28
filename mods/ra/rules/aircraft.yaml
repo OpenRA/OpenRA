@@ -88,7 +88,7 @@ MIG:
 		Type: GroundPosition
 	Armament:
 		Weapon: Maverick
-		LocalOffset: 0,-640,0, 0,640,0
+		LocalOffsets: 0,-640,0, 0,640,0
 		LocalYaw: -40, 24
 		PauseOnCondition: !ammo
 	AttackAircraft:
@@ -166,13 +166,13 @@ YAK:
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: ChainGun.Yak
-		LocalOffset: 256,-213,0
+		LocalOffsets: 256,-213,0
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: ChainGun.Yak
-		LocalOffset: 256,213,0
+		LocalOffsets: 256,213,0
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	AttackAircraft:
@@ -303,11 +303,11 @@ HELI:
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: HellfireAA
-		LocalOffset: 0,-213,-85, 0,213,-85
+		LocalOffsets: 0,-213,-85, 0,213,-85
 		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Weapon: HellfireAG
-		LocalOffset: 0,213,-85, 0,-213,-85
+		LocalOffsets: 0,213,-85, 0,-213,-85
 		PauseOnCondition: !ammo
 	AttackAircraft:
 		FacingTolerance: 80
@@ -385,13 +385,13 @@ HIND:
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: ChainGun
-		LocalOffset: 85,-213,-85, 85,213,-85
+		LocalOffsets: 85,-213,-85, 85,213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: ChainGun
-		LocalOffset: 85,213,-85, 85,-213,-85
+		LocalOffsets: 85,213,-85, 85,-213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	AttackAircraft:
@@ -509,13 +509,13 @@ MH60:
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: ChainGun
-		LocalOffset: 85,-213,-85, 85,213,-85
+		LocalOffsets: 85,-213,-85, 85,213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: ChainGun
-		LocalOffset: 85,213,-85, 85,-213,-85
+		LocalOffsets: 85,213,-85, 85,-213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	AttackAircraft:

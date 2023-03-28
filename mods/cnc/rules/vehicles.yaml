@@ -135,7 +135,7 @@ APC:
 		Weapon: APCGun
 		Recoil: 48
 		RecoilRecovery: 18
-		LocalOffset: 255,100,189, 255,-100,189
+		LocalOffsets: 255,100,189, 255,-100,189
 		MuzzleSequence: muzzle
 		PauseOnCondition: reload-air
 		ReloadingCondition: reload-ground
@@ -144,7 +144,7 @@ APC:
 		Weapon: APCGun.AA
 		Recoil: 48
 		RecoilRecovery: 18
-		LocalOffset: 175,100,299, 175,-100,299
+		LocalOffsets: 175,100,299, 175,-100,299
 		MuzzleSequence: muzzle-air
 		PauseOnCondition: reload-ground
 		ReloadingCondition: reload-air
@@ -206,7 +206,7 @@ ARTY:
 		Range: 5c0
 	Armament:
 		Weapon: ArtilleryShell
-		LocalOffset: 624,0,208
+		LocalOffsets: 624,0,208
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		TargetFrozenActors: True
@@ -255,7 +255,7 @@ FTNK:
 		Range: 6c0
 	Armament:
 		Weapon: BigFlamer
-		LocalOffset: 512,128,42, 512,-128,42
+		LocalOffsets: 512,128,42, 512,-128,42
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		Voice: Attack
@@ -303,7 +303,7 @@ BGGY:
 		Offset: -43,0,128
 	Armament:
 		Weapon: MachineGun
-		LocalOffset: 171,0,43
+		LocalOffsets: 171,0,43
 		MuzzleSequence: muzzle
 	AttackMove:
 		Voice: Attack
@@ -346,7 +346,7 @@ BIKE:
 		Range: 8c0
 	Armament:
 		Weapon: BikeRockets
-		LocalOffset: -128, -170, 170, -128, 170, 170
+		LocalOffsets: -128, -170, 170, -128, 170, 170
 		LocalYaw: 100, -100
 	AttackFrontal:
 		Voice: Attack
@@ -390,7 +390,7 @@ JEEP:
 		Offset: -85,0,128
 	Armament:
 		Weapon: MachineGunH
-		LocalOffset: 171,0,85
+		LocalOffsets: 171,0,85
 		MuzzleSequence: muzzle
 	AttackMove:
 		Voice: Attack
@@ -436,7 +436,7 @@ LTNK:
 		Weapon: 70mm
 		Recoil: 85
 		RecoilRecovery: 17
-		LocalOffset: 720,0,90
+		LocalOffsets: 720,0,90
 		MuzzleSequence: muzzle
 	AttackMove:
 		Voice: Attack
@@ -481,7 +481,7 @@ MTNK:
 		Weapon: 120mm
 		Recoil: 128
 		RecoilRecovery: 26
-		LocalOffset: 768,0,90
+		LocalOffsets: 768,0,90
 		MuzzleSequence: muzzle
 	AttackMove:
 		Voice: Attack
@@ -532,14 +532,14 @@ HTNK:
 		TurnSpeed: 14
 	Armament@PRIMARY:
 		Weapon: 120mmDual
-		LocalOffset: 900,180,340, 900,-180,340
+		LocalOffsets: 900,180,340, 900,-180,340
 		Recoil: 170
 		RecoilRecovery: 42
 		MuzzleSequence: muzzle
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: MammothMissiles
-		LocalOffset: -85,384,340, -85,-384,340
+		LocalOffsets: -85,384,340, -85,-384,340
 		LocalYaw: -100, 100
 		Recoil: 10
 		MuzzleSequence: muzzle
@@ -595,11 +595,11 @@ MSAM:
 		Offset: -256,0,128
 	Armament@PRIMARY:
 		Weapon: 227mm
-		LocalOffset: 213,128,0, 213,-128,0
+		LocalOffsets: 213,128,0, 213,-128,0
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: 227mm
-		LocalOffset: 213,-128,0, 213,128,0
+		LocalOffsets: 213,-128,0, 213,128,0
 	AttackFrontal:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
@@ -651,7 +651,7 @@ MLRS:
 		RealignDelay: 0
 	Armament:
 		Weapon: Patriot
-		LocalOffset: 0,-171,0, 0,171,0
+		LocalOffsets: 0,-171,0, 0,171,0
 	AmmoPool:
 		Ammo: 2
 		AmmoCondition: ammo
@@ -716,10 +716,10 @@ STNK:
 		ValidDamageStates: Critical
 	Armament@PRIMARY:
 		Weapon: 227mm.stnk
-		LocalOffset: 213,43,128, 213,-43,128
+		LocalOffsets: 213,43,128, 213,-43,128
 	Armament@SECONDARY:
 		Weapon: 227mm.stnkAA
-		LocalOffset: 213,43,128, 213,-43,128
+		LocalOffsets: 213,43,128, 213,-43,128
 	AttackFrontal:
 		Voice: Attack
 		FacingTolerance: 0

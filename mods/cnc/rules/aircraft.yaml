@@ -76,13 +76,13 @@ HELI:
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: HeliAGGun
-		LocalOffset: 128,-213,-85, 128,213,-85
+		LocalOffsets: 128,-213,-85, 128,213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: HeliAAGun
-		LocalOffset: 128,-213,-85, 128,213,-85
+		LocalOffsets: 128,-213,-85, 128,213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
 	AttackMove:
@@ -147,11 +147,11 @@ ORCA:
 		Type: GroundPosition
 	Armament@PRIMARY:
 		Weapon: OrcaAGMissiles
-		LocalOffset: 427,-171,-213, 427,171,-213
+		LocalOffsets: 427,-171,-213, 427,171,-213
 		PauseOnCondition: !ammo
 	Armament@SECONDARY:
 		Weapon: OrcaAAMissiles
-		LocalOffset: 427,-171,-213, 427,171,-213
+		LocalOffsets: 427,-171,-213, 427,171,-213
 		PauseOnCondition: !ammo
 	AttackMove:
 		Voice: Attack
@@ -247,12 +247,12 @@ A10:
 	Armament@GUNS:
 		Name: gun
 		Weapon: Vulcan
-		LocalOffset: 1024,0,-85
+		LocalOffsets: 1024,0,-85
 	WithMuzzleOverlay:
 	Armament@BOMBS:
 		Name: bombs
 		Weapon: Napalm
-		LocalOffset: 0,-256,-43, 0,256,-43
+		LocalOffsets: 0,-256,-43, 0,256,-43
 	Contrail@1:
 		Offset: -640,171,0
 		TrailLength: 15

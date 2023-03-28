@@ -85,7 +85,7 @@ V2RL:
 		Weapon: 25mm
 		Recoil: 85
 		RecoilRecovery: 25
-		LocalOffset: 768,0,90
+		LocalOffsets: 768,0,90
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
@@ -130,7 +130,7 @@ V2RL:
 		Weapon: 90mm
 		Recoil: 128
 		RecoilRecovery: 38
-		LocalOffset: 720,0,80
+		LocalOffsets: 720,0,80
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
@@ -179,7 +179,7 @@ V2RL:
 		Weapon: 105mm
 		Recoil: 128
 		RecoilRecovery: 38
-		LocalOffset: 768,85,90, 768,-85,90
+		LocalOffsets: 768,85,90, 768,-85,90
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
@@ -227,14 +227,14 @@ V2RL:
 		TurnSpeed: 8
 	Armament@PRIMARY:
 		Weapon: 120mm
-		LocalOffset: 900,180,340, 900,-180,340
+		LocalOffsets: 900,180,340, 900,-180,340
 		Recoil: 171
 		RecoilRecovery: 30
 		MuzzleSequence: muzzle
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: MammothTusk
-		LocalOffset: -85,384,340, -85,-384,340
+		LocalOffsets: -85,384,340, -85,-384,340
 		LocalYaw: -100,100
 		Recoil: 43
 		MuzzleSequence: muzzle
@@ -287,7 +287,7 @@ ARTY:
 		Range: 4c0
 	Armament:
 		Weapon: 155mm
-		LocalOffset: 624,0,208
+		LocalOffsets: 624,0,208
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		TargetFrozenActors: True
@@ -440,7 +440,7 @@ JEEP:
 	Armament:
 		Weapon: M60mg
 		MuzzleSequence: muzzle
-		LocalOffset: 128,0,43
+		LocalOffsets: 128,0,43
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
@@ -485,7 +485,7 @@ APC:
 		Range: 4c0
 	Armament:
 		Weapon: M60mg
-		LocalOffset: 85,0,171
+		LocalOffsets: 85,0,171
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		FacingTolerance: 0
@@ -678,7 +678,7 @@ TTNK:
 		Range: 6c0
 	Armament:
 		Weapon: TTankZap
-		LocalOffset: 0,0,213
+		LocalOffsets: 0,0,213
 	AttackTurreted:
 	Turreted:
 	WithIdleOverlay@SPINNER:
@@ -725,12 +725,12 @@ FTRK:
 	Armament@AA:
 		Weapon: FLAK-23-AA
 		Recoil: 85
-		LocalOffset: 512,0,192
+		LocalOffsets: 512,0,192
 		MuzzleSequence: muzzle
 	Armament@AG:
 		Weapon: FLAK-23-AG
 		Recoil: 85
-		LocalOffset: 512,0,192
+		LocalOffsets: 512,0,192
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:
@@ -813,11 +813,11 @@ CTNK:
 		Range: 4c0
 	Armament@PRIMARY:
 		Weapon: APTusk
-		LocalOffset: -160,-276,232
+		LocalOffsets: -160,-276,232
 		LocalYaw: 60
 	Armament@SECONDARY:
 		Weapon: APTusk
-		LocalOffset: -160,276,232
+		LocalOffsets: -160,276,232
 		LocalYaw: -60
 	AttackFrontal:
 		FacingTolerance: 0
@@ -906,7 +906,7 @@ STNK:
 		InitialStanceAI: ReturnFire
 	Armament:
 		Weapon: APTusk.stnk
-		LocalOffset: 192,0,176
+		LocalOffsets: 192,0,176
 	Turreted:
 		TurnSpeed: 20
 	AttackTurreted:

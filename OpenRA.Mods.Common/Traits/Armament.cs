@@ -40,8 +40,9 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int FireDelay = 0;
 
 		[Desc("Muzzle position relative to turret or body, (forward, right, up) triples.",
-			"If weapon Burst = 1, it cycles through all listed offsets, otherwise the offset corresponding to current burst is used.")]
-		public readonly WVec[] LocalOffset = Array.Empty<WVec>();
+			"Each offset defines one barrel of the armament. If none is specified, defaults to 1 barrel (with offset 0,0,0).",
+			"If weapon " + nameof(GameRules.WeaponInfo.Burst) + " = 1, it cycles through all listed offsets, otherwise the offset corresponding to current burst is used.")]
+		public readonly WVec[] LocalOffsets = Array.Empty<WVec>();
 
 		[Desc("Muzzle yaw relative to turret or body.")]
 		public readonly WAngle[] LocalYaw = Array.Empty<WAngle>();
@@ -140,11 +141,11 @@ namespace OpenRA.Mods.Common.Traits
 			Burst = Weapon.Burst;
 
 			var barrels = new List<Barrel>();
-			for (var i = 0; i < info.LocalOffset.Length; i++)
+			for (var i = 0; i < info.LocalOffsets.Length; i++)
 			{
 				barrels.Add(new Barrel
 				{
-					Offset = info.LocalOffset[i],
+					Offset = info.LocalOffsets[i],
 					Yaw = info.LocalYaw.Length > i ? info.LocalYaw[i] : WAngle.Zero
 				});
 			}

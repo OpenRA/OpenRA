@@ -55,7 +55,7 @@ E2:
 		ScanRadius: 4
 	Armament:
 		Weapon: Grenade
-		LocalOffset: 0,0,427
+		LocalOffsets: 0,0,427
 		FireDelay: 15
 	AttackFrontal:
 		Voice: Attack
@@ -95,7 +95,7 @@ E3:
 		ScanRadius: 6
 	Armament:
 		Weapon: Rockets
-		LocalOffset: 256,43,341
+		LocalOffsets: 256,43,341
 		FireDelay: 5
 	AttackFrontal:
 		Voice: Attack
@@ -131,7 +131,7 @@ E4:
 		ScanRadius: 4
 	Armament:
 		Weapon: Flamethrower
-		LocalOffset: 341,0,256
+		LocalOffsets: 341,0,256
 		FireDelay: 3
 		MuzzleSequence: muzzle
 	AttackFrontal:
@@ -170,7 +170,7 @@ E5:
 		ScanRadius: 4
 	Armament:
 		Weapon: Chemspray
-		LocalOffset: 341,0,256
+		LocalOffsets: 341,0,256
 		FireDelay: 3
 		MuzzleSequence: muzzle
 	AttackFrontal:

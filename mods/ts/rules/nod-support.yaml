@@ -197,7 +197,7 @@ NALASR:
 		PauseOnCondition: empdisable || disabled || build-incomplete
 	Armament:
 		Weapon: TurretLaserFire
-		LocalOffset: 498,0,317
+		LocalOffsets: 498,0,317
 	RenderVoxels:
 	WithVoxelTurret:
 		RequiresCondition: !build-incomplete
@@ -231,7 +231,7 @@ NAOBEL:
 		Range: 8c0
 	Armament:
 		Weapon: ObeliskLaserFire
-		LocalOffset: 1980,297,1131
+		LocalOffsets: 1980,297,1131
 	AttackCharges:
 		PauseOnCondition: empdisable || disabled || build-incomplete
 		ChargeLevel: 65
@@ -282,6 +282,6 @@ NASAM:
 		Recoils: false
 	Armament:
 		Weapon: RedEye2
-		LocalOffset: 543,0,815
+		LocalOffsets: 543,0,815
 	Power:
 		Amount: -30

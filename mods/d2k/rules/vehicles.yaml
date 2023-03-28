@@ -148,10 +148,10 @@ trike:
 	WithMuzzleOverlay:
 	Armament@damage:
 		Weapon: HMG
-		LocalOffset: 180,0,110
+		LocalOffsets: 180,0,110
 	Armament@muzzle:
 		Weapon: HMG_muzzle
-		LocalOffset: -544,0,0
+		LocalOffsets: -544,0,0
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		FacingTolerance: 0
@@ -189,7 +189,7 @@ quad:
 		Range: 4c768
 	Armament:
 		Weapon: Rocket
-		LocalOffset: 128,64,64, 128,-64,64
+		LocalOffsets: 128,64,64, 128,-64,64
 	Encyclopedia:
 		Description: Stronger than the Trike in both armor and firepower, the Quad is a four-wheeled vehicle firing armor-piercing rockets. The Quad is effective against most vehicles.\n\nQuads are resistant to bullets and explosives, to a lesser degree. However, Quads are vulnerable to missiles and high-caliber guns.
 		Order: 110
@@ -241,7 +241,7 @@ siege_tank:
 		Weapon: 155mm
 		Recoil: 150
 		RecoilRecovery: 19
-		LocalOffset: 512,0,320
+		LocalOffsets: 512,0,320
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		FacingTolerance: 0
@@ -293,7 +293,7 @@ missile_tank:
 		Range: 6c768
 	Armament:
 		Weapon: mtank_pri
-		LocalOffset: -128,128,171, -128,-128,171
+		LocalOffsets: -128,128,171, -128,-128,171
 	AttackFrontal:
 		FacingTolerance: 0
 	AutoTarget:
@@ -338,7 +338,7 @@ sonic_tank:
 		Range: 5c768
 	Armament:
 		Weapon: Sound
-		LocalOffset: 600,0,427
+		LocalOffsets: 600,0,427
 	Encyclopedia:
 		Description: The Sonic Tank is most effective against infantry and lightly armored vehicles - but weaker against armored targets.\n\nThe Sonic Tank will damage all units in its firing path.\n\nThey are very resistant to bullets and small-explosives, but vulnerable to missiles and high-caliber guns.
 		Order: 200
@@ -388,7 +388,7 @@ devastator:
 		Range: 4c768
 	Armament:
 		Weapon: DevBullet
-		LocalOffset: 640,0,32
+		LocalOffsets: 640,0,32
 		MuzzleSequence: muzzle
 	Encyclopedia:
 		Description: The Devastator is the most powerful tank on Dune - powerfully effective against most units, but slow - and slow to fire. Nuclear powered, the Devastator fires dual plasma charges and may be ordered to self-destruct, damaging surrounding units and structures.\n\nThe Devastator is very resistant to bullet and high-explosives, but vulnerable to missiles and high-caliber guns.
@@ -465,10 +465,10 @@ raider:
 	WithMuzzleOverlay:
 	Armament@damage:
 		Weapon: HMGo
-		LocalOffset: 170,0,0
+		LocalOffsets: 170,0,0
 	Armament@muzzle:
 		Weapon: HMGo_muzzle
-		LocalOffset: 170,0,0
+		LocalOffsets: 170,0,0
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		FacingTolerance: 0
@@ -542,7 +542,7 @@ deviator:
 		Range: 4c768
 	Armament:
 		Weapon: DeviatorMissile
-		LocalOffset: -299,0,85
+		LocalOffsets: -299,0,85
 	AttackFrontal:
 		FacingTolerance: 0
 	AutoTarget:
@@ -589,7 +589,7 @@ deviator:
 		Weapon: 80mm_A
 		Recoil: 128
 		RecoilRecovery: 32
-		LocalOffset: 256,0,0
+		LocalOffsets: 256,0,0
 		MuzzleSequence: muzzle
 	AttackTurreted:
 	WithMuzzleOverlay:

@@ -20,7 +20,7 @@ E2:
 		Speed: 56
 	Armament:
 		Weapon: Grenade
-		LocalOffset: 0,0,785
+		LocalOffsets: 0,0,785
 		FireDelay: 5
 	TakeCover:
 		ProneOffset: 160,128,-555
@@ -244,7 +244,7 @@ GHOST:
 		Range: 6c0
 	Armament:
 		Weapon: LtRail
-		LocalOffset: 120,0,543
+		LocalOffsets: 120,0,543
 	TakeCover:
 		ProneOffset: 256,32,-384
 	Crushable:

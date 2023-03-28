@@ -141,14 +141,14 @@ PBOX:
 		TurnSpeed: 4
 	Armament@PRIMARY:
 		Weapon: SuperTankPrimary
-		LocalOffset: 900,180,340, 900,-180,340
+		LocalOffsets: 900,180,340, 900,-180,340
 		Recoil: 171
 		RecoilRecovery: 30
 		MuzzleSequence: muzzle
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: MammothTusk
-		LocalOffset: -85,384,340, -85,-384,340
+		LocalOffsets: -85,384,340, -85,-384,340
 		LocalYaw: -100,100
 		Recoil: 43
 		MuzzleSequence: muzzle

@@ -80,7 +80,7 @@ HVR:
 		MaxHeightDelta: 3
 	Armament:
 		Weapon: HoverMissile
-		LocalOffset: 0,242,543, 0,-242,543
+		LocalOffsets: 0,242,543, 0,-242,543
 	Turreted:
 		TurnSpeed: 28
 		Offset: -128,0,85
@@ -208,7 +208,7 @@ MMCH:
 		MuzzleSequence: muzzle
 		Recoil: 128
 		RecoilRecovery: 32
-		LocalOffset: 1024,272,1216
+		LocalOffsets: 1024,272,1216
 	DetectCloaked:
 		Range: 1c768
 		RequiresCondition: rank-elite
@@ -258,10 +258,10 @@ HMEC:
 		FacingTolerance: 0
 	Armament@MISSILES:
 		Weapon: MammothTusk
-		LocalOffset: -243,-368,1208, -243,368,1208
+		LocalOffsets: -243,-368,1208, -243,368,1208
 	Armament@RAILGUN:
 		Weapon: MechRailgun
-		LocalOffset: 368,-311,1030, 368,311,1030
+		LocalOffsets: 368,-311,1030, 368,311,1030
 	-WithVoxelBody:
 	WithVoxelWalkerBody:
 		TickRate: 1
@@ -301,7 +301,7 @@ SONIC:
 		MaxHeightDelta: 3
 	Armament:
 		Weapon: SonicZap
-		LocalOffset: -71,0,580
+		LocalOffsets: -71,0,580
 	AttackTurreted:
 		Voice: Attack
 		PauseOnCondition: empdisable
@@ -415,7 +415,7 @@ JUGG:
 		Name: deployed
 		Turret: deployed
 		Weapon: Jugg90mm
-		LocalOffset: 820,203,1386, 820,0,1386, 820,-203,1386
+		LocalOffsets: 820,203,1386, 820,0,1386, 820,-203,1386
 		RequiresCondition: deployed
 		MuzzleSequence: muzzle
 	WithMuzzleOverlay:

@@ -27,7 +27,7 @@ BGGY:
 		MaxHeightDelta: 3
 	Armament:
 		Weapon: RaiderCannon
-		LocalOffset: 0,-61,543, 0,61,543
+		LocalOffsets: 0,-61,543, 0,61,543
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		Voice: Attack
@@ -67,11 +67,11 @@ BIKE:
 	Armament@PRIMARY:
 		Weapon: BikeMissile
 		RequiresCondition: !rank-elite
-		LocalOffset: -153,-204,509, -153,204,509
+		LocalOffsets: -153,-204,509, -153,204,509
 	Armament@ELITE:
 		Weapon: HoverMissile
 		RequiresCondition: rank-elite
-		LocalOffset: -153,-204,509, -153,204,509
+		LocalOffsets: -153,-204,509, -153,204,509
 	AttackFrontal:
 		Voice: Attack
 		PauseOnCondition: empdisable
@@ -113,12 +113,12 @@ TTNK:
 		RequiresCondition: undeployed
 	Armament@PRIMARY:
 		Weapon: 90mm
-		LocalOffset: 407,0,362
+		LocalOffsets: 407,0,362
 		RequiresCondition: !rank-elite
 		MuzzleSequence: muzzle
 	Armament@ELITE:
 		Weapon: 120mmx
-		LocalOffset: 407,0,362
+		LocalOffsets: 407,0,362
 		RequiresCondition: rank-elite
 		MuzzleSequence: muzzle
 	WithMuzzleOverlay:
@@ -181,14 +181,14 @@ TTNK:
 		Name: deployed
 		Turret: deployed
 		Weapon: 90mm
-		LocalOffset: 543,0,362
+		LocalOffsets: 543,0,362
 		RequiresCondition: !rank-elite
 		MuzzleSequence: muzzle
 	Armament@deployedElite:
 		Name: deployed
 		Turret: deployed
 		Weapon: 120mmx
-		LocalOffset: 543,0,362
+		LocalOffsets: 543,0,362
 		RequiresCondition: rank-elite
 		MuzzleSequence: muzzle
 	Armor@deployed:
@@ -291,7 +291,7 @@ ART2:
 		Name: deployed
 		Turret: deployed
 		Weapon: 155mm
-		LocalOffset: 820,0,1386
+		LocalOffsets: 820,0,1386
 		RequiresCondition: deployed
 		MuzzleSequence: muzzle
 	WithMuzzleOverlay:
@@ -532,7 +532,7 @@ STNK:
 		ValidDamageStates: Critical
 	Armament:
 		Weapon: Dragon
-		LocalOffset: 301,61,421, 301,-61,421
+		LocalOffsets: 301,61,421, 301,-61,421
 	AttackFrontal:
 		Voice: Attack
 		PauseOnCondition: empdisable

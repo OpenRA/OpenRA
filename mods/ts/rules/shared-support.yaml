@@ -28,7 +28,7 @@ NAPULS:
 		RequiresCondition: !build-incomplete && !empdisable && !disabled
 	Armament:
 		Weapon: EMPulseCannon
-		LocalOffset: 212,0,1768
+		LocalOffsets: 212,0,1768
 		LocalYaw: 0,100
 	WithSpriteTurret:
 		RequiresCondition: !build-incomplete
