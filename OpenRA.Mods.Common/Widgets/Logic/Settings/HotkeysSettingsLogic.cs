@@ -161,7 +161,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var hd in modData.Hotkeys.Definitions)
 				{
 					modData.Hotkeys.Set(hd.Name, hd.Default);
-					WidgetUtils.TruncateButtonToTooltip(panel.Get(hd.Name).Get<ButtonWidget>("HOTKEY"), hd.Default.DisplayString());
+					var hotkeyButton = panel.GetOrNull(hd.Name)?.Get<ButtonWidget>("HOTKEY");
+					if (hotkeyButton != null)
+						WidgetUtils.TruncateButtonToTooltip(hotkeyButton, hd.Default.DisplayString());
 				}
 			};
 		}
@@ -302,8 +304,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void OverrideHotkey()
 		{
-			var duplicateHotkeyButton = hotkeyList.Get<ContainerWidget>(duplicateHotkeyDefinition.Name).Get<ButtonWidget>("HOTKEY");
-			WidgetUtils.TruncateButtonToTooltip(duplicateHotkeyButton, Hotkey.Invalid.DisplayString());
+			var duplicateHotkeyButton = hotkeyList.GetOrNull<ContainerWidget>(duplicateHotkeyDefinition.Name)?.Get<ButtonWidget>("HOTKEY");
+			if (duplicateHotkeyButton != null)
+				WidgetUtils.TruncateButtonToTooltip(duplicateHotkeyButton, Hotkey.Invalid.DisplayString());
 			modData.Hotkeys.Set(duplicateHotkeyDefinition.Name, Hotkey.Invalid);
 			Game.Settings.Save();
 			hotkeyEntryWidget.YieldKeyboardFocus();
