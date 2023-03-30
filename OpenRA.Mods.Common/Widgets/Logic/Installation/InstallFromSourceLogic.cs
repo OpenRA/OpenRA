@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public const string Extracing = "label-extracting-filename";
 
 		[TranslationReference("filename", "progress")]
-		public const string ExtracingProgress = "label-extracting-filename-progress";
+		public const string ExtractingProgress = "label-extracting-filename-progress";
 
 		[TranslationReference]
 		public const string Continue = "button-continue";
