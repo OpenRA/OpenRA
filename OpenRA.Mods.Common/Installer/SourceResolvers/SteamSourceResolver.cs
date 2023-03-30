@@ -43,8 +43,13 @@ namespace OpenRA.Mods.Common.Installer
 				if (!data.TryGetValue("installdir", out var installDir))
 					continue;
 
-				if (installDir != null)
-					return Path.Combine(steamDirectory, "steamapps", "common", installDir);
+				if (installDir == null)
+					continue;
+
+				var path = Path.Combine(steamDirectory, "steamapps", "common", installDir);
+
+				if (InstallerUtils.IsValidSourcePath(path, modSource))
+					return path;
 			}
 
 			return null;
