@@ -34,8 +34,13 @@ namespace OpenRA.Mods.Common.Installer
 			var prefixes = new[] { "HKEY_LOCAL_MACHINE\\Software\\", "HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\" };
 
 			foreach (var prefix in prefixes)
-				if (Registry.GetValue($"{prefix}GOG.com\\Games\\{appId.Value}", "path", null) is string installDir)
+			{
+				if (!(Registry.GetValue($"{prefix}GOG.com\\Games\\{appId.Value}", "path", null) is string installDir))
+					continue;
+
+				if (InstallerUtils.IsValidSourcePath(installDir, modSource))
 					return installDir;
+			}
 
 			return null;
 		}
