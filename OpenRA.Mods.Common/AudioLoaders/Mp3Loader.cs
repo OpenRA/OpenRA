@@ -18,12 +18,37 @@ namespace OpenRA.Mods.Common.AudioLoaders
 {
 	public class Mp3Loader : ISoundLoader
 	{
+		bool IsMp3(Stream s)
+		{
+			var start = s.Position;
+
+			// First try: MP3 may have ID3 meta data in front.
+			var idTag = s.ReadASCII(3);
+			s.Position = start;
+
+			if (idTag == "ID3")
+				return true;
+
+			// Second try: MP3 without metadata, starts with MPEG chunk.
+			var frameSync = s.ReadUInt16();
+			s.Position = start;
+
+			if (frameSync == 0xfbff)
+				return true;
+
+			// Neither found, not an MP3!
+			return false;
+		}
+
 		bool ISoundLoader.TryParseSound(Stream stream, out ISoundFormat sound)
 		{
 			try
 			{
-				sound = new Mp3Format(stream);
-				return true;
+				if (IsMp3(stream))
+				{
+					sound = new Mp3Format(stream);
+					return true;
+				}
 			}
 			catch
 			{
