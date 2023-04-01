@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckTranslationReference : ILintPass
+	class CheckTranslationReference : ILintPass, ILintMapPass
 	{
 		const BindingFlags Binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
 
@@ -28,14 +28,9 @@ namespace OpenRA.Mods.Common.Lint
 		readonly Dictionary<string, string[]> referencedVariablesPerKey = new Dictionary<string, string[]>();
 		readonly List<string> variableReferences = new List<string>();
 
-		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
+		void TestTraits(Action<string> emitError, Ruleset rules, Translation translation, string language)
 		{
-			// TODO: Check all available languages
-			var language = "en";
-			Console.WriteLine($"Testing translation: {language}");
-			var translation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem);
-
-			foreach (var actorInfo in modData.DefaultRules.Actors)
+			foreach (var actorInfo in rules.Actors)
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
@@ -60,6 +55,23 @@ namespace OpenRA.Mods.Common.Lint
 					}
 				}
 			}
+		}
+
+		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
+		{
+			// TODO: Check all available languages.
+			var language = "en";
+			TestTraits(emitError, map.Rules, map.Translation, language);
+		}
+
+		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
+		{
+			// TODO: Check all available languages.
+			var language = "en";
+			Console.WriteLine($"Testing translation: {language}");
+			var translation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem);
+
+			TestTraits(emitError, modData.DefaultRules, translation, language);
 
 			var gameSpeeds = modData.Manifest.Get<GameSpeeds>();
 			foreach (var speed in gameSpeeds.Speeds.Values)
