@@ -17,6 +17,7 @@ fi
 
 Name="${Name:-"Dedicated Server"}"
 Mod="${Mod:-"ra"}"
+Map="${Map:-""}"
 ListenPort="${ListenPort:-"1234"}"
 AdvertiseOnline="${AdvertiseOnline:-"True"}"
 Password="${Password:-""}"
@@ -39,6 +40,7 @@ SupportDir="${SupportDir:-""}"
 while true; do
      ${RUNTIME_LAUNCHER} "${ENGINEDIR}/bin/OpenRA.Server.dll" Engine.EngineDir=".." Game.Mod="$Mod" \
      Server.Name="$Name" \
+     Server.Map="$Map" \
      Server.ListenPort="$ListenPort" \
      Server.AdvertiseOnline="$AdvertiseOnline" \
      Server.EnableSingleplayer="$EnableSingleplayer" \
