@@ -1,5 +1,5 @@
 #!/bin/sh
-# example launch script, see https://github.com/OpenRA/OpenRA/wiki/Dedicated for details
+# example launch script, see https://github.com/OpenRA/OpenRA/wiki/Dedicated-Server for details
 
 # Usage:
 #  $ ./launch-dedicated.sh # Launch a dedicated server with default settings
