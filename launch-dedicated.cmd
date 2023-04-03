@@ -1,4 +1,4 @@
-:: example launch script, see https://github.com/OpenRA/OpenRA/wiki/Dedicated for details
+:: example launch script, see https://github.com/OpenRA/OpenRA/wiki/Dedicated-Server for details
 
 @echo on
 
