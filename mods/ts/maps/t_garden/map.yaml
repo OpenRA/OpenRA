@@ -8,9 +8,9 @@ Author: Westwood Studios
 
 Tileset: TEMPERATE
 
-MapSize: 90,190
+MapSize: 92,210
 
-Bounds: 2,4,86,176
+Bounds: 3,24,86,170
 
 Visibility: Lobby
 
@@ -55,842 +55,847 @@ Players:
 
 Actors:
 	Actor0: gaoldcc1
-		Location: 65,54
+		Location: 74,61
 		Owner: Neutral
 		Facing: 896
 	Actor1: gaoldcc4
-		Location: 67,53
+		Location: 76,60
 		Owner: Neutral
 		Facing: 896
 	Actor2: gaoldcc1
-		Location: 138,-22
+		Location: 147,-15
 		Owner: Neutral
 		Facing: 896
 	Actor3: gaoldcc2
-		Location: 142,-21
+		Location: 151,-14
 		Owner: Neutral
 		Facing: 896
 	Actor4: gaoldcc3
-		Location: 99,83
+		Location: 108,90
 		Owner: Neutral
 		Facing: 896
 	Actor5: gaoldcc4
-		Location: 165,10
+		Location: 174,17
 		Owner: Neutral
 		Facing: 896
 	Actor6: gaoldcc6
-		Location: 167,12
+		Location: 176,19
 		Owner: Neutral
 		Facing: 896
 	Actor7: gaoldcc5
-		Location: 169,12
+		Location: 178,19
 		Owner: Neutral
 		Facing: 896
 	Actor8: gaoldcc4
-		Location: 76,-42
+		Location: 85,-35
 		Owner: Neutral
 		Facing: 896
 	Actor9: gaoldcc6
-		Location: 79,-39
+		Location: 88,-32
 		Owner: Neutral
 		Facing: 896
 	Actor10: cacrsh01
-		Location: 73,25
+		Location: 82,32
 		Owner: Neutral
 		Facing: 896
 	Actor11: cacrsh02
-		Location: 102,69
+		Location: 111,76
 		Owner: Neutral
 		Facing: 896
 	Actor12: cacrsh05
-		Location: 124,-26
+		Location: 133,-19
 		Owner: Neutral
 		Facing: 896
 	Actor13: cacrsh05
-		Location: 100,1
+		Location: 109,8
 		Owner: Neutral
 		Facing: 896
 	Actor14: ingrnlmp
-		Location: 77,5
+		Location: 86,12
 		Owner: Neutral
 		Health: 99
 		Facing: 896
 	Actor15: ingrnlmp
-		Location: 99,29
+		Location: 108,36
 		Owner: Neutral
 		Health: 99
 		Facing: 896
 	Actor16: ingrnlmp
-		Location: 98,-13
+		Location: 107,-6
 		Owner: Neutral
 		Health: 99
 		Facing: 896
 	Actor17: ingrnlmp
-		Location: 109,-3
+		Location: 118,4
 		Owner: Neutral
 		Health: 99
 		Facing: 896
 	Actor18: ingrnlmp
-		Location: 120,-3
+		Location: 129,4
 		Owner: Neutral
 		Health: 99
 		Facing: 896
 	Actor19: ingrnlmp
-		Location: 79,23
+		Location: 88,30
 		Owner: Neutral
 		Health: 99
 		Facing: 896
 	Actor20: ingrnlmp
-		Location: 23,8
+		Location: 32,15
 		Owner: Neutral
 		Health: 99
 		Facing: 896
 	Actor21: ingrnlmp
-		Location: 36,11
+		Location: 45,18
 		Owner: Neutral
 		Health: 99
 		Facing: 896
 	Actor22: ingrnlmp
-		Location: 62,-33
+		Location: 71,-26
 		Owner: Neutral
 		Health: 99
 		Facing: 896
 	Actor23: ingrnlmp
-		Location: 71,-42
+		Location: 80,-35
 		Owner: Neutral
 		Health: 99
 		Facing: 896
 	Actor24: ingrnlmp
-		Location: 87,-61
+		Location: 96,-54
 		Owner: Neutral
 		Health: 99
 		Facing: 896
 	Actor25: ingrnlmp
-		Location: 111,-56
+		Location: 120,-49
 		Owner: Neutral
 		Health: 99
 		Facing: 896
 	Actor26: ingrnlmp
-		Location: 174,6
+		Location: 183,13
 		Owner: Neutral
 		Health: 99
 		Facing: 896
 	Actor27: ingrnlmp
-		Location: 160,18
+		Location: 169,25
 		Owner: Neutral
 		Health: 99
 		Facing: 896
 	Actor28: ingrnlmp
-		Location: 125,54
+		Location: 134,61
 		Owner: Neutral
 		Health: 99
 		Facing: 896
 	Actor29: ingrnlmp
-		Location: 107,56
+		Location: 116,63
 		Owner: Neutral
 		Health: 99
 		Facing: 896
 	Actor30: inblulmp
-		Location: 91,1
+		Location: 100,8
 		Owner: Neutral
 		Facing: 896
 	Actor31: visc_lrg
-		Location: 81,22
+		Location: 90,29
 		Owner: Creeps
 		Health: 62
 		Facing: 256
 	Actor32: visc_lrg
-		Location: 102,2
+		Location: 111,9
 		Owner: Creeps
 		Health: 77
 		Facing: 768
 	Actor33: visc_lrg
-		Location: 35,-6
+		Location: 44,1
 		Owner: Creeps
 		Facing: 256
 	Actor34: visc_lrg
-		Location: 148,-2
+		Location: 157,5
 		Owner: Creeps
 		Facing: 768
 	Actor35: doggie
-		Location: 141,-23
+		Location: 150,-16
 		Owner: Creeps
-		Facing: 880
+		SubCell: 2
+		Facing: 640
 	Actor36: doggie
-		Location: 167,11
+		Location: 176,18
 		Owner: Creeps
-		Facing: 880
+		SubCell: 2
+		Facing: 640
 	Actor37: doggie
-		Location: 99,81
+		Location: 108,88
 		Owner: Creeps
-		Facing: 884
+		SubCell: 1
+		Facing: 640
 	Actor38: doggie
-		Location: 70,53
+		Location: 79,60
 		Owner: Creeps
-		Facing: 884
+		SubCell: 1
+		Facing: 768
 	Actor39: doggie
-		Location: 79,-41
+		Location: 88,-34
 		Owner: Creeps
-		Facing: 884
+		SubCell: 1
+		Facing: 640
 	Actor40: tibtre01
-		Location: 63,-32
+		Location: 72,-25
 		Owner: Neutral
 	Actor41: tibtre02
-		Location: 72,-41
+		Location: 81,-34
 		Owner: Neutral
 	Actor42: tibtre02
-		Location: 88,-60
+		Location: 97,-53
 		Owner: Neutral
 	Actor43: tibtre01
-		Location: 112,-55
+		Location: 121,-48
 		Owner: Neutral
 	Actor44: tibtre02
-		Location: 172,4
+		Location: 181,11
 		Owner: Neutral
 	Actor45: tibtre03
-		Location: 158,16
+		Location: 167,23
 		Owner: Neutral
 	Actor46: tibtre03
-		Location: 105,54
+		Location: 114,61
 		Owner: Neutral
 	Actor47: tibtre01
-		Location: 123,52
+		Location: 132,59
 		Owner: Neutral
 	Actor48: tree01
-		Location: 85,43
+		Location: 94,50
 		Owner: Neutral
 	Actor49: tree05
-		Location: 85,45
+		Location: 94,52
 		Owner: Neutral
 	Actor50: tree06
-		Location: 83,44
+		Location: 92,51
 		Owner: Neutral
 	Actor51: tree07
-		Location: 81,43
+		Location: 90,50
 		Owner: Neutral
 	Actor52: tree08
-		Location: 79,43
+		Location: 88,50
 		Owner: Neutral
 	Actor53: tree09
-		Location: 86,51
+		Location: 95,58
 		Owner: Neutral
 	Actor54: tree10
-		Location: 86,50
+		Location: 95,57
 		Owner: Neutral
 	Actor55: tree08
-		Location: 85,52
+		Location: 94,59
 		Owner: Neutral
 	Actor56: tree11
-		Location: 84,52
+		Location: 93,59
 		Owner: Neutral
 	Actor57: tree12
-		Location: 84,54
+		Location: 93,61
 		Owner: Neutral
 	Actor58: tree13
-		Location: 83,54
+		Location: 92,61
 		Owner: Neutral
 	Actor59: tree14
-		Location: 82,53
+		Location: 91,60
 		Owner: Neutral
 	Actor60: tree15
-		Location: 81,53
+		Location: 90,60
 		Owner: Neutral
 	Actor61: tree17
-		Location: 76,42
+		Location: 85,49
 		Owner: Neutral
 	Actor62: tree18
-		Location: 77,43
+		Location: 86,50
 		Owner: Neutral
 	Actor63: tree19
-		Location: 77,42
+		Location: 86,49
 		Owner: Neutral
 	Actor64: tree20
-		Location: 26,-8
+		Location: 35,-1
 		Owner: Neutral
 	Actor65: tree02
-		Location: 27,-8
+		Location: 36,-1
 		Owner: Neutral
 	Actor66: tree03
-		Location: 28,-8
+		Location: 37,-1
 		Owner: Neutral
 	Actor67: tree04
-		Location: 28,-7
+		Location: 37,0
 		Owner: Neutral
 	Actor68: tree06
-		Location: 29,-8
+		Location: 38,-1
 		Owner: Neutral
 	Actor69: tree06
-		Location: 31,-7
+		Location: 40,0
 		Owner: Neutral
 	Actor70: tree08
-		Location: 29,-7
+		Location: 38,0
 		Owner: Neutral
 	Actor71: tree09
-		Location: 30,-7
+		Location: 39,0
 		Owner: Neutral
 	Actor72: tree10
-		Location: 31,-6
+		Location: 40,1
 		Owner: Neutral
 	Actor73: tree11
-		Location: 31,-4
+		Location: 40,3
 		Owner: Neutral
 	Actor74: tree12
-		Location: 31,-5
+		Location: 40,2
 		Owner: Neutral
 	Actor75: tree13
-		Location: 31,-3
+		Location: 40,4
 		Owner: Neutral
 	Actor76: tree14
-		Location: 54,23
+		Location: 63,30
 		Owner: Neutral
 	Actor77: tree15
-		Location: 55,22
+		Location: 64,29
 		Owner: Neutral
 	Actor78: tree16
-		Location: 56,23
+		Location: 65,30
 		Owner: Neutral
 	Actor79: tree17
-		Location: 56,24
+		Location: 65,31
 		Owner: Neutral
 	Actor80: tree18
-		Location: 57,26
+		Location: 66,33
 		Owner: Neutral
 	Actor81: tree19
-		Location: 57,24
+		Location: 66,31
 		Owner: Neutral
 	Actor82: tree20
-		Location: 54,21
+		Location: 63,28
 		Owner: Neutral
 	Actor83: tree21
-		Location: 53,21
+		Location: 62,28
 		Owner: Neutral
 	Actor84: tree22
-		Location: 57,23
+		Location: 66,30
 		Owner: Neutral
 	Actor85: tree01
-		Location: 52,-4
+		Location: 61,3
 		Owner: Neutral
 	Actor86: tree02
-		Location: 52,-3
+		Location: 61,4
 		Owner: Neutral
 	Actor87: tree03
-		Location: 53,-3
+		Location: 62,4
 		Owner: Neutral
 	Actor88: tree05
-		Location: 54,-2
+		Location: 63,5
 		Owner: Neutral
 	Actor89: tree06
-		Location: 55,-3
+		Location: 64,4
 		Owner: Neutral
 	Actor90: tree07
-		Location: 54,-3
+		Location: 63,4
 		Owner: Neutral
 	Actor91: tree08
-		Location: 52,-6
+		Location: 61,1
 		Owner: Neutral
 	Actor92: tree09
-		Location: 53,-5
+		Location: 62,2
 		Owner: Neutral
 	Actor93: tree10
-		Location: 55,-4
+		Location: 64,3
 		Owner: Neutral
 	Actor94: tree11
-		Location: 56,-4
+		Location: 65,3
 		Owner: Neutral
 	Actor95: tree12
-		Location: 82,-38
+		Location: 91,-31
 		Owner: Neutral
 	Actor96: tree13
-		Location: 82,-39
+		Location: 91,-32
 		Owner: Neutral
 	Actor97: tree14
-		Location: 82,-40
+		Location: 91,-33
 		Owner: Neutral
 	Actor98: tree14
-		Location: 78,-44
+		Location: 87,-37
 		Owner: Neutral
 	Actor99: tree15
-		Location: 79,-44
+		Location: 88,-37
 		Owner: Neutral
 	Actor100: tree16
-		Location: 80,-44
+		Location: 89,-37
 		Owner: Neutral
 	Actor101: tree17
-		Location: 80,-43
+		Location: 89,-36
 		Owner: Neutral
 	Actor102: tree18
-		Location: 81,-42
+		Location: 90,-35
 		Owner: Neutral
 	Actor103: tree19
-		Location: 80,-40
+		Location: 89,-33
 		Owner: Neutral
 	Actor104: tree20
-		Location: 79,-42
+		Location: 88,-35
 		Owner: Neutral
 	Actor105: tree21
-		Location: 94,71
+		Location: 103,78
 		Owner: Neutral
 	Actor106: tree22
-		Location: 96,72
+		Location: 105,79
 		Owner: Neutral
 	Actor107: tree23
-		Location: 95,72
+		Location: 104,79
 		Owner: Neutral
 	Actor108: tree24
-		Location: 95,71
+		Location: 104,78
 		Owner: Neutral
 	Actor109: tree25
-		Location: 97,72
+		Location: 106,79
 		Owner: Neutral
 	Actor110: tree01
-		Location: 140,47
+		Location: 149,54
 		Owner: Neutral
 	Actor111: tree02
-		Location: 139,46
+		Location: 148,53
 		Owner: Neutral
 	Actor112: tree03
-		Location: 141,47
+		Location: 150,54
 		Owner: Neutral
 	Actor113: tree04
-		Location: 139,44
+		Location: 148,51
 		Owner: Neutral
 	Actor114: tree05
-		Location: 140,44
+		Location: 149,51
 		Owner: Neutral
 	Actor115: tree06
-		Location: 140,43
+		Location: 149,50
 		Owner: Neutral
 	Actor116: tree07
-		Location: 140,42
+		Location: 149,49
 		Owner: Neutral
 	Actor117: tree08
-		Location: 140,41
+		Location: 149,48
 		Owner: Neutral
 	Actor118: tree09
-		Location: 142,39
+		Location: 151,46
 		Owner: Neutral
 	Actor119: tree10
-		Location: 141,40
+		Location: 150,47
 		Owner: Neutral
 	Actor120: tree11
-		Location: 142,38
+		Location: 151,45
 		Owner: Neutral
 	Actor121: tree12
-		Location: 143,45
+		Location: 152,52
 		Owner: Neutral
 	Actor122: tree12
-		Location: 142,44
+		Location: 151,51
 		Owner: Neutral
 	Actor123: tree13
-		Location: 142,43
+		Location: 151,50
 		Owner: Neutral
 	Actor124: tree14
-		Location: 141,42
+		Location: 150,49
 		Owner: Neutral
 	Actor125: tree16
-		Location: 142,45
+		Location: 151,52
 		Owner: Neutral
 	Actor126: tree16
-		Location: 76,-56
+		Location: 85,-49
 		Owner: Neutral
 	Actor127: tree17
-		Location: 75,-57
+		Location: 84,-50
 		Owner: Neutral
 	Actor128: tree18
-		Location: 76,-58
+		Location: 85,-51
 		Owner: Neutral
 	Actor129: tree19
-		Location: 75,-58
+		Location: 84,-51
 		Owner: Neutral
 	Actor130: tree20
-		Location: 77,-57
+		Location: 86,-50
 		Owner: Neutral
 	Actor131: tree22
-		Location: 79,-56
+		Location: 88,-49
 		Owner: Neutral
 	Actor132: tree24
-		Location: 79,-57
+		Location: 88,-50
 		Owner: Neutral
 	Actor133: tree25
-		Location: 78,-59
+		Location: 87,-52
 		Owner: Neutral
 	Actor134: tree01
-		Location: 78,-58
+		Location: 87,-51
 		Owner: Neutral
 	Actor135: tree03
-		Location: 80,-59
+		Location: 89,-52
 		Owner: Neutral
 	Actor136: tree04
-		Location: 81,-60
+		Location: 90,-53
 		Owner: Neutral
 	Actor137: tree05
-		Location: 80,-61
+		Location: 89,-54
 		Owner: Neutral
 	Actor138: tree06
-		Location: 80,-62
+		Location: 89,-55
 		Owner: Neutral
 	Actor139: tree09
-		Location: 82,-62
+		Location: 91,-55
 		Owner: Neutral
 	Actor140: tree11
-		Location: 82,-55
+		Location: 91,-48
 		Owner: Neutral
 	Actor141: tree12
-		Location: 85,-50
+		Location: 94,-43
 		Owner: Neutral
 	Actor142: tree13
-		Location: 86,-49
+		Location: 95,-42
 		Owner: Neutral
 	Actor143: tree14
-		Location: 84,-52
+		Location: 93,-45
 		Owner: Neutral
 	Actor144: tree01
-		Location: 151,-14
+		Location: 160,-7
 		Owner: Neutral
 	Actor145: tree03
-		Location: 152,-15
+		Location: 161,-8
 		Owner: Neutral
 	Actor146: tree04
-		Location: 151,-13
+		Location: 160,-6
 		Owner: Neutral
 	Actor147: tree05
-		Location: 149,-14
+		Location: 158,-7
 		Owner: Neutral
 	Actor148: tree06
-		Location: 149,-15
+		Location: 158,-8
 		Owner: Neutral
 	Actor149: tree07
-		Location: 149,-16
+		Location: 158,-9
 		Owner: Neutral
 	Actor150: tree08
-		Location: 152,-19
+		Location: 161,-12
 		Owner: Neutral
 	Actor151: tree09
-		Location: 151,-20
+		Location: 160,-13
 		Owner: Neutral
 	Actor152: tree10
-		Location: 149,-21
+		Location: 158,-14
 		Owner: Neutral
 	Actor153: tree11
-		Location: 151,-17
+		Location: 160,-10
 		Owner: Neutral
 	Actor154: tree12
-		Location: 145,-13
+		Location: 154,-6
 		Owner: Neutral
 	Actor155: tree13
-		Location: 145,-12
+		Location: 154,-5
 		Owner: Neutral
 	Actor156: tree14
-		Location: 144,-13
+		Location: 153,-6
 		Owner: Neutral
 	Actor157: tree15
-		Location: 144,-12
+		Location: 153,-5
 		Owner: Neutral
 	Actor158: tree16
-		Location: 143,-14
+		Location: 152,-7
 		Owner: Neutral
 	Actor159: tree17
-		Location: 140,-13
+		Location: 149,-6
 		Owner: Neutral
 	Actor160: tree19
-		Location: 141,-13
+		Location: 150,-6
 		Owner: Neutral
 	Actor161: tibtre01
-		Location: 21,7
+		Location: 30,14
 		Owner: Neutral
 	Actor162: tibtre03
-		Location: 35,10
+		Location: 44,17
 		Owner: Neutral
 	Actor163: tree02
-		Location: 66,53
+		Location: 75,60
 		Owner: Neutral
 	Actor164: tree03
-		Location: 67,56
+		Location: 76,63
 		Owner: Neutral
 	Actor165: tree04
-		Location: 68,56
+		Location: 77,63
 		Owner: Neutral
 	Actor166: tree05
-		Location: 69,53
+		Location: 78,60
 		Owner: Neutral
 	Actor167: tree07
-		Location: 70,55
+		Location: 79,62
 		Owner: Neutral
 	Actor168: tree08
-		Location: 69,57
+		Location: 78,64
 		Owner: Neutral
 	Actor169: tree08
-		Location: 65,41
+		Location: 74,48
 		Owner: Neutral
 	Actor170: tibtre01
-		Location: 78,22
+		Location: 87,29
 		Owner: Neutral
 	Actor171: tibtre02
-		Location: 75,5
+		Location: 84,12
 		Owner: Neutral
 	Actor172: tibtre03
-		Location: 107,-4
+		Location: 116,3
 		Owner: Neutral
 	Actor173: tibtre01
-		Location: 97,-13
+		Location: 106,-6
 		Owner: Neutral
 	Actor174: tibtre03
-		Location: 98,28
+		Location: 107,35
 		Owner: Neutral
 	Actor175: tibtre02
-		Location: 118,-4
+		Location: 127,3
 		Owner: Neutral
 	Actor176: tree03
-		Location: 140,-20
+		Location: 149,-13
 		Owner: Neutral
 	Actor177: tree04
-		Location: 144,-21
+		Location: 153,-14
 		Owner: Neutral
 	Actor178: tree05
-		Location: 141,-22
+		Location: 150,-15
 		Owner: Neutral
 	Actor179: tree06
-		Location: 143,-19
+		Location: 152,-12
 		Owner: Neutral
 	Actor180: tree07
-		Location: 138,-23
+		Location: 147,-16
 		Owner: Neutral
 	Actor181: tree08
-		Location: 138,-24
+		Location: 147,-17
 		Owner: Neutral
 	Actor182: tree09
-		Location: 139,-25
+		Location: 148,-18
 		Owner: Neutral
 	Actor183: tree10
-		Location: 142,-19
+		Location: 151,-12
 		Owner: Neutral
 	Actor184: tree11
-		Location: 141,-19
+		Location: 150,-12
 		Owner: Neutral
 	Actor185: tree03
-		Location: 98,-50
+		Location: 107,-43
 		Owner: Neutral
 	Actor186: tree04
-		Location: 98,-51
+		Location: 107,-44
 		Owner: Neutral
 	Actor187: tree05
-		Location: 99,-51
+		Location: 108,-44
 		Owner: Neutral
 	Actor188: tree06
-		Location: 99,-50
+		Location: 108,-43
 		Owner: Neutral
 	Actor189: tree07
-		Location: 100,-50
+		Location: 109,-43
 		Owner: Neutral
 	Actor190: tree08
-		Location: 101,-50
+		Location: 110,-43
 		Owner: Neutral
 	Actor191: tree09
-		Location: 102,-49
+		Location: 111,-42
 		Owner: Neutral
 	Actor192: tree03
-		Location: 72,-24
+		Location: 81,-17
 		Owner: Neutral
 	Actor193: tree04
-		Location: 72,-26
+		Location: 81,-19
 		Owner: Neutral
 	Actor194: tree05
-		Location: 72,-30
+		Location: 81,-23
 		Owner: Neutral
 	Actor195: tree06
-		Location: 74,-30
+		Location: 83,-23
 		Owner: Neutral
 	Actor196: tree07
-		Location: 75,-32
+		Location: 84,-25
 		Owner: Neutral
 	Actor197: tree08
-		Location: 75,-33
+		Location: 84,-26
 		Owner: Neutral
 	Actor198: tree09
-		Location: 74,-33
+		Location: 83,-26
 		Owner: Neutral
 	Actor199: tree04
-		Location: 121,35
+		Location: 130,42
 		Owner: Neutral
 	Actor200: tree05
-		Location: 120,35
+		Location: 129,42
 		Owner: Neutral
 	Actor201: tree06
-		Location: 120,34
+		Location: 129,41
 		Owner: Neutral
 	Actor202: tree06
-		Location: 113,35
+		Location: 122,42
 		Owner: Neutral
 	Actor203: tree07
-		Location: 113,34
+		Location: 122,41
 		Owner: Neutral
 	Actor204: tree08
-		Location: 114,34
+		Location: 123,41
 		Owner: Neutral
 	Actor205: tree09
-		Location: 115,34
+		Location: 124,41
 		Owner: Neutral
 	Actor206: tree10
-		Location: 117,34
+		Location: 126,41
 		Owner: Neutral
 	Actor207: tree11
-		Location: 121,37
+		Location: 130,44
 		Owner: Neutral
 	Actor208: tree12
-		Location: 121,40
+		Location: 130,47
 		Owner: Neutral
 	Actor209: tree23
-		Location: 101,80
+		Location: 110,87
 		Owner: Neutral
 	Actor210: tree24
-		Location: 104,81
+		Location: 113,88
 		Owner: Neutral
 	Actor211: tree25
-		Location: 96,79
+		Location: 105,86
 		Owner: Neutral
 	Actor212: tree21
-		Location: 102,84
+		Location: 111,91
 		Owner: Neutral
 	Actor213: tree20
-		Location: 98,84
+		Location: 107,91
 		Owner: Neutral
 	Actor214: tree18
-		Location: 100,82
+		Location: 109,89
 		Owner: Neutral
 	Actor215: tree16
-		Location: 97,76
+		Location: 106,83
 		Owner: Neutral
 	Actor216: tree15
-		Location: 97,75
+		Location: 106,82
 		Owner: Neutral
 	Actor217: tree04
-		Location: 168,11
+		Location: 177,18
 		Owner: Neutral
 	Actor218: tree05
-		Location: 167,10
+		Location: 176,17
 		Owner: Neutral
 	Actor219: tree06
-		Location: 169,15
+		Location: 178,22
 		Owner: Neutral
 	Actor220: tree07
-		Location: 169,16
+		Location: 178,23
 		Owner: Neutral
 	Actor221: tree08
-		Location: 170,17
+		Location: 179,24
 		Owner: Neutral
 	Actor222: tree09
-		Location: 163,9
+		Location: 172,16
 		Owner: Neutral
 	Actor223: tree10
-		Location: 162,10
+		Location: 171,17
 		Owner: Neutral
 	Actor224: tree11
-		Location: 165,7
+		Location: 174,14
 		Owner: Neutral
 	Actor225: tree12
-		Location: 166,7
+		Location: 175,14
 		Owner: Neutral
 	Actor226: tree14
-		Location: 166,8
+		Location: 175,15
 		Owner: Neutral
 	Actor227: mpspawn
-		Location: 115,60
+		Location: 124,67
 		Owner: Neutral
 	Actor228: mpspawn
-		Location: 56,43
+		Location: 65,50
 		Owner: Neutral
 	Actor229: mpspawn
-		Location: 53,-19
+		Location: 62,-12
 		Owner: Neutral
 	Actor230: mpspawn
-		Location: 112,-46
+		Location: 121,-39
 		Owner: Neutral
 	Actor231: mpspawn
-		Location: 151,20
+		Location: 160,27
 		Owner: Neutral
 	Actor232: waypoint
-		Location: 91,21
+		Location: 100,28
 		Owner: Neutral
 	Actor233: waypoint
-		Location: 82,8
+		Location: 91,15
 		Owner: Neutral
 	Actor234: waypoint
-		Location: 86,-7
+		Location: 95,0
 		Owner: Neutral
 	Actor235: waypoint
-		Location: 93,-18
+		Location: 102,-11
 		Owner: Neutral
 	Actor236: waypoint
-		Location: 109,-11
+		Location: 118,-4
 		Owner: Neutral
 	Actor237: waypoint
-		Location: 116,0
+		Location: 125,7
 		Owner: Neutral
 	Actor238: waypoint
-		Location: 104,7
+		Location: 113,14
 		Owner: Neutral
 	Actor239: waypoint
-		Location: 97,14
+		Location: 106,21
 		Owner: Neutral
 	Actor240: waypoint
-		Location: 92,41
+		Location: 101,48
 		Owner: Neutral
 	Actor241: waypoint
-		Location: 70,24
+		Location: 79,31
 		Owner: Neutral
 	Actor242: waypoint
-		Location: 54,3
+		Location: 63,10
 		Owner: Neutral
 	Actor243: waypoint
-		Location: 87,-33
+		Location: 96,-26
 		Owner: Neutral
 	Actor244: waypoint
-		Location: 119,-12
+		Location: 128,-5
 		Owner: Neutral
 	Actor245: waypoint
-		Location: 112,26
+		Location: 121,33
 		Owner: Neutral
 	Actor246: waypoint
-		Location: 92,4
+		Location: 101,11
 		Owner: Neutral
 	Actor247: waypoint
-		Location: 92,4
+		Location: 101,11
 		Owner: Neutral
 	Actor248: trock02
-		Location: 35,4
+		Location: 44,11
 		Owner: Neutral
 	Actor249: trock04
-		Location: 100,-48
+		Location: 109,-41
 		Owner: Neutral
 	Actor250: trock05
-		Location: 89,-34
+		Location: 98,-27
 		Owner: Neutral
 	Actor251: trock01
-		Location: 62,-6
+		Location: 71,1
 		Owner: Neutral
 	Actor252: trock03
-		Location: 129,-36
+		Location: 138,-29
 		Owner: Neutral
 	Actor253: veinhole
-		Location: 100,-7
+		Location: 109,0
 		Owner: Neutral
 	Actor254: veinhole
-		Location: 85,17
+		Location: 94,24
 		Owner: Neutral
 	Actor255: trock03
-		Location: 80,60
+		Location: 89,67
 		Owner: Neutral
 	Actor256: trock02
-		Location: 156,0
+		Location: 165,7
 		Owner: Neutral
 	Actor257: trock01
-		Location: 153,4
+		Location: 162,11
 		Owner: Neutral
 	Actor258: trock05
-		Location: 139,33
+		Location: 148,40
 		Owner: Neutral
 	Actor259: trock04
-		Location: 99,74
+		Location: 108,81
 		Owner: Neutral
 
 Rules:

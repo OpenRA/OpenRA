@@ -1,12 +1,12 @@
 World:
 	ElevatedBridgeLayer:
 	ElevatedBridgePlaceholder@1:
-		Location: 60, -26
+		Location: 69, -19
 		Height: 5
 		Orientation: Y
 		Length: 8
 	ElevatedBridgePlaceholder@2:
-		Location: 139, -10
+		Location: 148, -3
 		Height: 5
 		Orientation: Y
 		Length: 19
