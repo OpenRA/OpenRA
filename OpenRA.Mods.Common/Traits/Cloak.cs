@@ -31,7 +31,8 @@ namespace OpenRA.Mods.Common.Traits
 		Damage = 32,
 		Heal = 64,
 		SelfHeal = 128,
-		Dock = 256
+		Dock = 256,
+		SupportPower = 512,
 	}
 
 	// Type tag for DetectionTypes
@@ -46,8 +47,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Measured in game ticks.")]
 		public readonly int CloakDelay = 30;
 
-		[Desc("Events leading to the actor getting uncloaked. Possible values are: Attack, Move, Unload, Infiltrate, Demolish, Dock, Damage, Heal and SelfHeal.",
-			"'Dock' is triggered when docking to a refinery or resupplying.")]
+		[Desc("Events leading to the actor getting uncloaked. Possible values are: Attack, Move, Unload, Infiltrate, Demolish, Dock, Damage, Heal, SelfHeal and SupportPower.",
+			"'Dock' is triggered when docking to a refinery or resupplying.",
+			"'SupportPower' is triggered when using a support power.")]
 		public readonly UncloakType UncloakOn = UncloakType.Attack
 			| UncloakType.Unload | UncloakType.Infiltrate | UncloakType.Demolish | UncloakType.Dock;
 
@@ -92,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Cloak : PausableConditionalTrait<CloakInfo>, IRenderModifier, INotifyDamage, INotifyUnload, INotifyDemolition, INotifyInfiltration,
-		INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated, INotifyDockClient
+		INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated, INotifyDockClient, INotifySupportPower
 	{
 		[Sync]
 		int remainingTime;
@@ -300,6 +302,14 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyInfiltration.Infiltrating(Actor self)
 		{
 			if (Info.UncloakOn.HasFlag(UncloakType.Infiltrate))
+				Uncloak();
+		}
+
+		void INotifySupportPower.Charged(Actor self) { return; }
+
+		void INotifySupportPower.Activated(Actor self)
+		{
+			if (Info.UncloakOn.HasFlag(UncloakType.SupportPower))
 				Uncloak();
 		}
 	}
