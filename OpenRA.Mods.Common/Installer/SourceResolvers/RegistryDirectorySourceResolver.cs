@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace OpenRA.Mods.Common.Installer
@@ -32,6 +33,9 @@ namespace OpenRA.Mods.Common.Installer
 			{
 				if (!(Microsoft.Win32.Registry.GetValue(prefix + source.RegistryKey, source.RegistryValue, null) is string path))
 					continue;
+
+				// Resolve 8.3 format (DOS-style) paths to the full path.
+				path = Path.GetFullPath(path);
 
 				return InstallerUtils.IsValidSourcePath(path, source) ? path : null;
 			}
