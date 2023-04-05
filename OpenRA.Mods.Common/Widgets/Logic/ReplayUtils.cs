@@ -45,8 +45,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		public static bool PromptConfirmReplayCompatibility(ReplayMetadata replayMeta, ModData modData, Action onCancel = null)
 		{
-			if (onCancel == null)
-				onCancel = DoNothing;
+			onCancel ??= DoNothing;
 
 			if (replayMeta == null)
 				return IncompatibleReplayDialog(IncompatibleReplayPrompt, null, modData, onCancel);

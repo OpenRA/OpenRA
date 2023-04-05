@@ -58,8 +58,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 				.Skip(1)
 				.FirstOrDefault();
 
-			if (next == null)
-				next = facilities.First();
+			next ??= facilities.First();
 
 			Game.Sound.PlayNotification(world.Map.Rules, null, "Sounds", clickSound, null);
 

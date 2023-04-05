@@ -84,8 +84,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyLineBuildSegmentsChanged.SegmentAdded(Actor self, Actor segment)
 		{
-			if (segments == null)
-				segments = new HashSet<Actor>();
+			segments ??= new HashSet<Actor>();
 
 			segments.Add(segment);
 		}

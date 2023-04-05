@@ -272,16 +272,14 @@ namespace OpenRA.Mods.Common.Traits
 				if (Info.AirUnitsTypes.Contains(a.Info.Name))
 				{
 					var air = GetSquadOfType(SquadType.Air);
-					if (air == null)
-						air = RegisterNewSquad(bot, SquadType.Air);
+					air ??= RegisterNewSquad(bot, SquadType.Air);
 
 					air.Units.Add(a);
 				}
 				else if (Info.NavalUnitsTypes.Contains(a.Info.Name))
 				{
 					var ships = GetSquadOfType(SquadType.Naval);
-					if (ships == null)
-						ships = RegisterNewSquad(bot, SquadType.Naval);
+					ships ??= RegisterNewSquad(bot, SquadType.Naval);
 
 					ships.Units.Add(a);
 				}
@@ -336,8 +334,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					var target = enemies.Count > 0 ? enemies.Random(World.LocalRandom) : b;
 					var rush = GetSquadOfType(SquadType.Rush);
-					if (rush == null)
-						rush = RegisterNewSquad(bot, SquadType.Rush, target);
+					rush ??= RegisterNewSquad(bot, SquadType.Rush, target);
 
 					foreach (var a3 in ownUnits)
 						rush.Units.Add(a3);
@@ -350,8 +347,7 @@ namespace OpenRA.Mods.Common.Traits
 		void ProtectOwn(IBot bot, Actor attacker)
 		{
 			var protectSq = GetSquadOfType(SquadType.Protection);
-			if (protectSq == null)
-				protectSq = RegisterNewSquad(bot, SquadType.Protection, attacker);
+			protectSq ??= RegisterNewSquad(bot, SquadType.Protection, attacker);
 
 			if (!protectSq.IsTargetValid)
 				protectSq.TargetActor = attacker;

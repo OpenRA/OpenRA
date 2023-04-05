@@ -55,8 +55,7 @@ namespace OpenRA.Support
 				Write();
 			else if (ElapsedMs > thresholdMs)
 			{
-				if (parent.children == null)
-					parent.children = new List<PerfTimer>();
+				parent.children ??= new List<PerfTimer>();
 				parent.children.Add(this);
 			}
 		}

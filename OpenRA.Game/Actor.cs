@@ -600,8 +600,7 @@ namespace OpenRA
 		Lazy<ScriptActorInterface> luaInterface;
 		public void OnScriptBind(ScriptContext context)
 		{
-			if (luaInterface == null)
-				luaInterface = Exts.Lazy(() => new ScriptActorInterface(context, this));
+			luaInterface ??= Exts.Lazy(() => new ScriptActorInterface(context, this));
 		}
 
 		public LuaValue this[LuaRuntime runtime, LuaValue keyValue]

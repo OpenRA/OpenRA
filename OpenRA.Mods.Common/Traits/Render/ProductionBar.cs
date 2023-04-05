@@ -29,9 +29,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			// Per-actor queue
 			var queue = ai.TraitInfos<ProductionQueueInfo>().FirstOrDefault(q => ProductionType == q.Type);
 
-			// No queues available - check for classic production queues
-			if (queue == null)
-				queue = rules.Actors[SystemActors.Player].TraitInfos<ProductionQueueInfo>().FirstOrDefault(q => ProductionType == q.Type);
+			// If no queues available - check for classic production queues
+			queue ??= rules.Actors[SystemActors.Player].TraitInfos<ProductionQueueInfo>().FirstOrDefault(q => ProductionType == q.Type);
 
 			if (queue == null)
 				throw new YamlException($"Can't find a queue with ProductionType '{ProductionType}'");
@@ -67,12 +66,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 			queue = self.TraitsImplementing<ProductionQueue>()
 				.FirstOrDefault(q => Info.ProductionType == q.Info.Type);
 
-			if (queue == null)
-			{
-				// No queues available - check for classic production queues
-				queue = self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>()
-					.FirstOrDefault(q => Info.ProductionType == q.Info.Type);
-			}
+			// If no queues available - check for classic production queues
+			queue ??= self.Owner.PlayerActor.TraitsImplementing<ProductionQueue>()
+				.FirstOrDefault(q => Info.ProductionType == q.Info.Type);
 		}
 
 		void ITick.Tick(Actor self)

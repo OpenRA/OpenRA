@@ -57,8 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 				mo.MarkFailed(self.Owner, objectiveID);
 
 			// Players, NonCombatants, and IsAlliedWith are all fixed once the game starts, so we can cache the result.
-			if (otherPlayers == null)
-				otherPlayers = self.World.Players.Where(p => !p.NonCombatant && !p.IsAlliedWith(self.Owner)).ToArray();
+			otherPlayers ??= self.World.Players.Where(p => !p.NonCombatant && !p.IsAlliedWith(self.Owner)).ToArray();
 
 			if (otherPlayers.Length == 0) return;
 

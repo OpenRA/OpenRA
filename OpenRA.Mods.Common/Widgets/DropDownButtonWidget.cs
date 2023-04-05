@@ -56,14 +56,12 @@ namespace OpenRA.Mods.Common.Widgets
 			var isDisabled = IsDisabled();
 			var isHover = Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget);
 
-			if (getMarkerImage == null)
-				getMarkerImage = WidgetUtils.GetCachedStatefulImage(Decorations, DecorationMarker);
+			getMarkerImage ??= WidgetUtils.GetCachedStatefulImage(Decorations, DecorationMarker);
 
 			var arrowImage = getMarkerImage.Update((isDisabled, Depressed, isHover, false, IsHighlighted()));
 			WidgetUtils.DrawSprite(arrowImage, stateOffset + new float2(rb.Right - (int)((rb.Height + arrowImage.Size.X) / 2), rb.Top + (int)((rb.Height - arrowImage.Size.Y) / 2)));
 
-			if (getSeparatorImage == null)
-				getSeparatorImage = WidgetUtils.GetCachedStatefulImage(Separators, SeparatorImage);
+			getSeparatorImage ??= WidgetUtils.GetCachedStatefulImage(Separators, SeparatorImage);
 
 			var separatorImage = getSeparatorImage.Update((isDisabled, Depressed, isHover, false, IsHighlighted()));
 			if (separatorImage != null)

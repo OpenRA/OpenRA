@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 				count -= count % format.reader.Channels;
 
 				// Get the buffer, creating a new one if none exists or the existing one is too small.
-				var floatBuffer = conversionBuffer ?? (conversionBuffer = new float[count]);
+				var floatBuffer = conversionBuffer ??= new float[count];
 				if (floatBuffer.Length < count)
 					floatBuffer = conversionBuffer = new float[count];
 

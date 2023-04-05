@@ -307,8 +307,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 
 			var worldNode = Map.RuleDefinitions.Nodes.FirstOrDefault(n => n.Key == "World");
-			if (worldNode == null)
-				worldNode = new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()));
+			worldNode ??= new MiniYamlNode("World", new MiniYaml("", new List<MiniYamlNode>()));
 
 			if (scorches.Count > 0)
 			{

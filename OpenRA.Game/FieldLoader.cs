@@ -535,8 +535,7 @@ namespace OpenRA
 			{
 				object val;
 
-				if (md == null)
-					md = my.ToDictionary();
+				md ??= my.ToDictionary();
 				if (fli.Loader != null)
 				{
 					if (!fli.Attribute.Required || md.ContainsKey(fli.YamlName))
