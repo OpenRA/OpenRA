@@ -375,7 +375,7 @@ dotnet_diagnostic.IDE0100.severity = warning
 
 # IDE0110 Remove unnecessary discard
 # No options
-dotnet_diagnostic.IDE0110.severity = silent # Requires C# 9 - TODO Consider enabling
+dotnet_diagnostic.IDE0110.severity = warning
 
 ### Miscellaneous Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/miscellaneous-rules
