@@ -141,7 +141,7 @@ dotnet_diagnostic.IDE0074.severity = silent # Requires C# 8 - TODO Consider enab
 
 # IDE0056 Use index operator
 #csharp_style_prefer_index_operator = true
-dotnet_diagnostic.IDE0056.severity = silent # Requires C# 8 - TODO Consider enabling
+dotnet_diagnostic.IDE0056.severity = warning
 
 # IDE0057 Use range operator
 #csharp_style_prefer_range_operator = true

@@ -138,7 +138,7 @@ namespace OpenRA.Graphics
 			// Segment is part of closed loop
 			if (closed)
 			{
-				var prev = points[points.Length - 1];
+				var prev = points[^1];
 				var prevDir = (start - prev) / (start - prev).XY.Length;
 				var prevCorner = width / 2 * new float3(-prevDir.Y, prevDir.X, prevDir.Z);
 				ca = IntersectionOf(start - prevCorner, prevDir, start - corner, dir);

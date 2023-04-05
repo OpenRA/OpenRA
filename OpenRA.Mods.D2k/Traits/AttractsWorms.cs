@@ -68,7 +68,7 @@ namespace OpenRA.Mods.D2k.Traits
 			var length = distance.Length;
 
 			// Actor is too far to hear anything.
-			if (length > effectiveRange[effectiveRange.Length - 1].Length)
+			if (length > effectiveRange[^1].Length)
 				return WVec.Zero;
 
 			var direction = 1024 * distance / length;

@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common
 			}
 
 			if (items.Length > 0)
-				yield return items[items.Length - 1];
+				yield return items[^1];
 		}
 
 		static IEnumerable<CPos> Neighbours(CPos c, bool allowDiagonal)

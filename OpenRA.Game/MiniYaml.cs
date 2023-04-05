@@ -209,7 +209,7 @@ namespace OpenRA
 
 					while (levels.Count > level + 1)
 					{
-						levels[levels.Count - 1].TrimExcess();
+						levels[^1].TrimExcess();
 						levels.RemoveAt(levels.Count - 1);
 					}
 
@@ -260,7 +260,7 @@ namespace OpenRA
 					{
 						// Remove leading/trailing whitespace guards
 						var trimLeading = value[0] == '\\' && (value[1] == ' ' || value[1] == '\t') ? 1 : 0;
-						var trimTrailing = value[value.Length - 1] == '\\' && (value[value.Length - 2] == ' ' || value[value.Length - 2] == '\t') ? 1 : 0;
+						var trimTrailing = value[^1] == '\\' && (value[^2] == ' ' || value[^2] == '\t') ? 1 : 0;
 						if (trimLeading + trimTrailing > 0)
 							value = value.Slice(trimLeading, value.Length - trimLeading - trimTrailing);
 

@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (!IsVisible() || Children.Count == 0)
 				return;
 
-			var mostRecentMessageOverflows = Bounds.Height < Children[Children.Count - 1].Bounds.Height;
+			var mostRecentMessageOverflows = Bounds.Height < Children[^1].Bounds.Height;
 
 			if (mostRecentMessageOverflows && HideOverflow)
 				Game.Renderer.EnableScissor(overflowDrawBounds);
@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Widgets
 				foreach (var line in Children)
 					line.Bounds.Y -= notificationWidget.Bounds.Height + ItemSpacing;
 
-				var lastLine = Children[Children.Count - 1];
+				var lastLine = Children[^1];
 				notificationWidget.Bounds.Y = lastLine.Bounds.Bottom + ItemSpacing;
 			}
 
@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (Children.Count == 0)
 				return;
 
-			var mostRecentChild = Children[Children.Count - 1];
+			var mostRecentChild = Children[^1];
 
 			RemoveChild(mostRecentChild);
 			expirations.RemoveAt(expirations.Count - 1);
