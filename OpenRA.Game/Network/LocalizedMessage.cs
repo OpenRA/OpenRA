@@ -42,7 +42,7 @@ namespace OpenRA.Network
 		{
 			switch (value.ToFluentType())
 			{
-				case FluentNumber _:
+				case FluentNumber:
 					return FluentArgumentType.Number;
 				default:
 					return FluentArgumentType.String;
