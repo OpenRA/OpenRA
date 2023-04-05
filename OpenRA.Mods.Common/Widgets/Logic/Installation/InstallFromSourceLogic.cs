@@ -76,6 +76,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string Retry = "button-retry";
 
 		[TranslationReference]
+		const string Locate = "button-locate";
+
+		[TranslationReference]
 		const string Back = "button-back";
 
 		// Hide percentage indicators for files smaller than 25 MB
@@ -91,6 +94,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly LabelWidget titleLabel;
 		readonly ButtonWidget primaryButton;
 		readonly ButtonWidget secondaryButton;
+		readonly ButtonWidget selectPathButton;
 
 		// Progress panel
 		readonly Widget progressContainer;
@@ -129,6 +133,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			primaryButton = panel.Get<ButtonWidget>("PRIMARY_BUTTON");
 			secondaryButton = panel.Get<ButtonWidget>("SECONDARY_BUTTON");
+			selectPathButton = panel.Get<ButtonWidget>("SELECT_PATH_BUTTON");
 
 			// Progress view
 			progressContainer = panel.Get("PROGRESS");
@@ -159,6 +164,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void DetectContentSources()
 		{
+			DetectContentSources(null);
+		}
+
+		void DetectContentSources(string path)
+		{
 			var message = modData.Translation.GetString(DetectingSources);
 			ShowProgressbar(modData.Translation.GetString(CheckingSources), () => message);
 			ShowBackRetry(DetectContentSources);
@@ -169,67 +179,85 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					message = modData.Translation.GetString(SearchingSourceFor, Translation.Arguments("title", kv.Value.Title));
 
-					var sourceResolver = kv.Value.ObjectCreator.CreateObject<ISourceResolver>($"{kv.Value.Type.Value}SourceResolver");
-
-					var path = sourceResolver.FindSourcePath(kv.Value);
-					if (path != null)
+					if (path == null)
 					{
-						Log.Write("install", $"Using installer `{kv.Key}: {kv.Value.Title}` of type `{kv.Value.Type.Value}`:");
+						var sourceResolver = kv.Value.ObjectCreator.CreateObject<ISourceResolver>($"{kv.Value.Type.Value}SourceResolver");
 
-						availablePackages = content.Packages.Values
-							.Where(p => p.Sources.Contains(kv.Key) && !p.IsInstalled())
-							.ToArray();
-
-						selectedPackages = availablePackages.ToDictionary(x => x.Identifier, y => y.Required);
-
-						// Ignore source if content is already installed
-						if (availablePackages.Any())
-						{
-							Game.RunAfterTick(() =>
-							{
-								ShowList(kv.Value, modData.Translation.GetString(ContentPackageInstallation));
-								ShowContinueCancel(() => InstallFromSource(path, kv.Value));
-							});
-
-							return;
-						}
+						path = sourceResolver.FindSourcePath(kv.Value);
+						if (path == null)
+							continue;
 					}
+					else if (!InstallerUtils.IsValidSourcePath(path, kv.Value))
+						path = null;
+
+					if (TryUseSource(kv, path))
+						return;
 				}
 
-				var missingSources = content.Packages.Values
-					.Where(p => !p.IsInstalled())
-					.SelectMany(p => p.Sources)
-					.Select(d => sources[d]);
+				ShowMissing();
+			}).Start();
+		}
 
-				var gameSources = new HashSet<string>();
-				var digitalInstalls = new HashSet<string>();
+		bool TryUseSource(KeyValuePair<string, ModContent.ModSource> kv, string path)
+		{
+			Log.Write("install", $"Using installer `{kv.Key}: {kv.Value.Title}` of type `{kv.Value.Type.Value}`:");
 
-				foreach (var source in missingSources)
-				{
-					var sourceResolver = source.ObjectCreator.CreateObject<ISourceResolver>($"{source.Type.Value}SourceResolver");
+			availablePackages = content.Packages.Values
+				.Where(p => p.Sources.Contains(kv.Key) && !p.IsInstalled())
+				.ToArray();
 
-					var availability = sourceResolver.GetAvailability();
+			selectedPackages = availablePackages.ToDictionary(x => x.Identifier, y => y.Required);
 
-					if (availability == Availability.GameSource)
-						gameSources.Add(source.Title);
-					else if (availability == Availability.DigitalInstall)
-						digitalInstalls.Add(source.Title);
-				}
-
-				var options = new Dictionary<string, IEnumerable<string>>();
-
-				if (gameSources.Any())
-					options.Add(modData.Translation.GetString(GameSources), gameSources);
-
-				if (digitalInstalls.Any())
-					options.Add(modData.Translation.GetString(DigitalInstalls), digitalInstalls);
-
+			// Ignore source if content is already installed
+			if (availablePackages.Any())
+			{
 				Game.RunAfterTick(() =>
 				{
-					ShowList(modData.Translation.GetString(GameContentNotFound), modData.Translation.GetString(AlternativeContentSources), options);
-					ShowBackRetry(DetectContentSources);
+					ShowList(kv.Value, modData.Translation.GetString(ContentPackageInstallation));
+					ShowContinueCancel(() => InstallFromSource(path, kv.Value));
 				});
-			}).Start();
+
+				return true;
+			}
+
+			return false;
+		}
+
+		void ShowMissing()
+		{
+			var missingSources = content.Packages.Values
+				.Where(p => !p.IsInstalled())
+				.SelectMany(p => p.Sources)
+				.Select(d => sources[d]);
+
+			var gameSources = new HashSet<string>();
+			var digitalInstalls = new HashSet<string>();
+
+			foreach (var source in missingSources)
+			{
+				var sourceResolver = source.ObjectCreator.CreateObject<ISourceResolver>($"{source.Type.Value}SourceResolver");
+
+				var availability = sourceResolver.GetAvailability();
+
+				if (availability == Availability.GameSource)
+					gameSources.Add(source.Title);
+				else if (availability == Availability.DigitalInstall)
+					digitalInstalls.Add(source.Title);
+			}
+
+			var options = new Dictionary<string, IEnumerable<string>>();
+
+			if (gameSources.Any())
+				options.Add(modData.Translation.GetString(GameSources), gameSources);
+
+			if (digitalInstalls.Any())
+				options.Add(modData.Translation.GetString(DigitalInstalls), digitalInstalls);
+
+			Game.RunAfterTick(() =>
+			{
+				ShowList(modData.Translation.GetString(GameContentNotFound), modData.Translation.GetString(AlternativeContentSources), options);
+				ShowBackRetry(DetectContentSources);
+			});
 		}
 
 		void InstallFromSource(string path, ModContent.ModSource modSource)
@@ -301,6 +329,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			primaryButton.Bounds.Y += messageContainer.Bounds.Height - panel.Bounds.Height;
 			secondaryButton.Bounds.Y += messageContainer.Bounds.Height - panel.Bounds.Height;
+			selectPathButton.Bounds.Y += messageContainer.Bounds.Height - panel.Bounds.Height;
 			panel.Bounds.Y -= (messageContainer.Bounds.Height - panel.Bounds.Height) / 2;
 			panel.Bounds.Height = messageContainer.Bounds.Height;
 		}
@@ -317,6 +346,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			primaryButton.Bounds.Y += progressContainer.Bounds.Height - panel.Bounds.Height;
 			secondaryButton.Bounds.Y += progressContainer.Bounds.Height - panel.Bounds.Height;
+			selectPathButton.Bounds.Y += progressContainer.Bounds.Height - panel.Bounds.Height;
 			panel.Bounds.Y -= (progressContainer.Bounds.Height - panel.Bounds.Height) / 2;
 			panel.Bounds.Height = progressContainer.Bounds.Height;
 		}
@@ -350,6 +380,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			primaryButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
 			secondaryButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
+			selectPathButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
 			panel.Bounds.Y -= (listContainer.Bounds.Height - panel.Bounds.Height) / 2;
 			panel.Bounds.Height = listContainer.Bounds.Height;
 		}
@@ -384,6 +415,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			primaryButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
 			secondaryButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
+			selectPathButton.Bounds.Y += listContainer.Bounds.Height - panel.Bounds.Height;
 			panel.Bounds.Y -= (listContainer.Bounds.Height - panel.Bounds.Height) / 2;
 			panel.Bounds.Height = listContainer.Bounds.Height;
 		}
@@ -398,6 +430,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			secondaryButton.Text = modData.Translation.GetString(Cancel);
 			secondaryButton.Visible = true;
 			secondaryButton.Disabled = false;
+
+			selectPathButton.Visible = false;
+
 			Game.RunAfterTick(Ui.ResetTooltips);
 		}
 
@@ -411,6 +446,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			secondaryButton.Text = modData.Translation.GetString(Back);
 			secondaryButton.Visible = true;
 			secondaryButton.Disabled = false;
+
+			selectPathButton.Visible = true;
+			selectPathButton.OnClick = TryLocate;
+			selectPathButton.Text = modData.Translation.GetString(Locate);
+
 			Game.RunAfterTick(Ui.ResetTooltips);
 		}
 
@@ -418,7 +458,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			primaryButton.Visible = false;
 			secondaryButton.Disabled = true;
+			selectPathButton.Visible = false;
 			Game.RunAfterTick(Ui.ResetTooltips);
+		}
+
+		void TryLocate()
+		{
+			if (!Platform.TryPickPath(out var path))
+				return;
+
+			DetectContentSources(path);
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ## Buttons
 button-cancel = Cancel
 button-retry = Retry
+button-locate = Locate
 button-back = Back
 button-continue = Continue
 button-quit = Quit
