@@ -543,7 +543,7 @@ namespace OpenRA.Mods.Common.Graphics
 			return GetSprite(frame, WAngle.Zero);
 		}
 
-		public (Sprite, WAngle) GetSpriteWithRotation(int frame, WAngle facing)
+		public (Sprite Sprite, WAngle Rotation) GetSpriteWithRotation(int frame, WAngle facing)
 		{
 			var rotation = WAngle.Zero;
 			if (interpolatedFacings != null)

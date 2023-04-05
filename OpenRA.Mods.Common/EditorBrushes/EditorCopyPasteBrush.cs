@@ -192,7 +192,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Queue<EditorActorPreview> addedActorPreviews = new();
 
 		public CopyPasteEditorAction(MapCopyFilters copyFilters, Map map,
-			Dictionary<CPos, (TerrainTile, ResourceTile, byte)> tiles, Dictionary<string, ActorReference> previews,
+			Dictionary<CPos, (TerrainTile Tile, ResourceTile Resource, byte Height)> tiles, Dictionary<string, ActorReference> previews,
 			EditorActorLayer editorLayer, CellRegion dest)
 		{
 			this.copyFilters = copyFilters;

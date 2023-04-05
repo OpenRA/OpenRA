@@ -76,7 +76,7 @@ namespace OpenRA
 			(Roll, Pitch, Yaw) = QuaternionToEuler(x, y, z, w);
 		}
 
-		static (WAngle, WAngle, WAngle) QuaternionToEuler(int x, int y, int z, int w)
+		static (WAngle Roll, WAngle Pitch, WAngle Yaw) QuaternionToEuler(int x, int y, int z, int w)
 		{
 			// Theoretically 1024 squared, but may differ slightly due to rounding
 			var lsq = x * x + y * y + z * z + w * w;

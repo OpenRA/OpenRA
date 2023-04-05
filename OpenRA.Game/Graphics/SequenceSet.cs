@@ -30,7 +30,7 @@ namespace OpenRA.Graphics
 		void ResolveSprites(SpriteCache cache);
 		Sprite GetSprite(int frame);
 		Sprite GetSprite(int frame, WAngle facing);
-		(Sprite, WAngle) GetSpriteWithRotation(int frame, WAngle facing);
+		(Sprite Sprite, WAngle Rotation) GetSpriteWithRotation(int frame, WAngle facing);
 		Sprite GetShadow(int frame, WAngle facing);
 		float GetAlpha(int frame);
 	}
