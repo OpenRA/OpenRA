@@ -599,7 +599,6 @@ dotnet_diagnostic.SA1642.severity = none # ConstructorSummaryDocumentationShould
 dotnet_diagnostic.SA1649.severity = none # FileNameMustMatchTypeName
 
 # Requires C# 8/9 - TODO Consider enabling
-dotnet_diagnostic.SA1141.severity = none # UseTupleSyntax
 dotnet_diagnostic.SA1316.severity = none # TupleElementNamesShouldUseCorrectCasing
 dotnet_diagnostic.SA1414.severity = none # TupleTypesInSignaturesShouldHaveElementNames
 

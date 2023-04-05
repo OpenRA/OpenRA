@@ -70,7 +70,7 @@ namespace OpenRA.Server
 
 		void SendReceiveLoop(object s)
 		{
-			var (server, socket) = (ValueTuple<Server, Socket>)s;
+			var (server, socket) = ((Server, Socket))s;
 			socket.Blocking = false;
 			socket.NoDelay = true;
 
