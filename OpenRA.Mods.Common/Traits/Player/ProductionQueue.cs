@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Group = null;
 
 		[Desc("Only enable this queue for certain factions.")]
-		public readonly HashSet<string> Factions = new HashSet<string>();
+		public readonly HashSet<string> Factions = new();
 
 		[Desc("Should the prerequisite remain enabled if the owner changes?")]
 		public readonly bool Sticky = true;
@@ -128,8 +128,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly ProductionQueueInfo Info;
 
 		// A list of things we could possibly build
-		protected readonly Dictionary<ActorInfo, ProductionState> Producible = new Dictionary<ActorInfo, ProductionState>();
-		protected readonly List<ProductionItem> Queue = new List<ProductionItem>();
+		protected readonly Dictionary<ActorInfo, ProductionState> Producible = new();
+		protected readonly List<ProductionItem> Queue = new();
 		readonly IEnumerable<ActorInfo> allProducibles;
 		readonly IEnumerable<ActorInfo> buildableProducibles;
 

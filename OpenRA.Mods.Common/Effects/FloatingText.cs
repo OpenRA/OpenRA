@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Effects
 {
 	public class FloatingText : IEffect, IEffectAnnotation
 	{
-		static readonly WVec Velocity = new WVec(0, 0, 86);
+		static readonly WVec Velocity = new(0, 0, 86);
 
 		readonly SpriteFont font;
 		readonly string text;

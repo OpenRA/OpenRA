@@ -32,7 +32,7 @@ namespace OpenRA
 		/// You can remove inherited traits by adding a - in front of them as in -TraitName: to inherit everything, but this trait.
 		/// </summary>
 		public readonly string Name;
-		readonly TypeDictionary traits = new TypeDictionary();
+		readonly TypeDictionary traits = new();
 		List<TraitInfo> constructOrderCache = null;
 
 		public ActorInfo(ObjectCreator creator, string name, MiniYaml node)

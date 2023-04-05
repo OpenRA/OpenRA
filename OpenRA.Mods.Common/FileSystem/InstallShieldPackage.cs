@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.FileSystem
 			public string Name { get; }
 			public IEnumerable<string> Contents => index.Keys;
 
-			readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
+			readonly Dictionary<string, Entry> index = new();
 			readonly Stream s;
 			readonly long dataStart = 255;
 

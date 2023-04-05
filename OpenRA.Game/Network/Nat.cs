@@ -39,7 +39,7 @@ namespace OpenRA.Network
 			initialized = true;
 		}
 
-		static readonly SemaphoreSlim Locker = new SemaphoreSlim(1, 1);
+		static readonly SemaphoreSlim Locker = new(1, 1);
 
 		static async void DeviceFound(object sender, DeviceEventArgs args)
 		{

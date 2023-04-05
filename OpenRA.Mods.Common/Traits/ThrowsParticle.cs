@@ -25,10 +25,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WVec Offset = WVec.Zero;
 
 		[Desc("Minimum distance to throw the particle")]
-		public readonly WDist MinThrowRange = new WDist(256);
+		public readonly WDist MinThrowRange = new(256);
 
 		[Desc("Maximum distance to throw the particle")]
-		public readonly WDist MaxThrowRange = new WDist(768);
+		public readonly WDist MaxThrowRange = new(768);
 
 		[Desc("Minimum angle to throw the particle")]
 		public readonly WAngle MinThrowAngle = WAngle.FromDegrees(30);
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Velocity = 75;
 
 		[Desc("Speed at which the particle turns.")]
-		public readonly WAngle TurnSpeed = new WAngle(60);
+		public readonly WAngle TurnSpeed = new(60);
 
 		public override object Create(ActorInitializer init) { return new ThrowsParticle(init, this); }
 	}

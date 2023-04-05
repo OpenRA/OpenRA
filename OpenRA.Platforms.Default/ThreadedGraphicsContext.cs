@@ -25,12 +25,12 @@ namespace OpenRA.Platforms.Default
 	sealed class ThreadedGraphicsContext : IGraphicsContext
 	{
 		// PERF: Maintain several object pools to reduce allocations.
-		readonly Stack<Vertex[]> verticesPool = new Stack<Vertex[]>();
-		readonly Stack<Message> messagePool = new Stack<Message>();
-		readonly Queue<Message> messages = new Queue<Message>();
+		readonly Stack<Vertex[]> verticesPool = new();
+		readonly Stack<Message> messagePool = new();
+		readonly Queue<Message> messages = new();
 
 		public readonly int BatchSize;
-		readonly object syncObject = new object();
+		readonly object syncObject = new();
 		readonly Thread renderThread;
 		volatile ExceptionDispatchInfo messageException;
 
@@ -162,7 +162,7 @@ namespace OpenRA.Platforms.Default
 				this.device = device;
 			}
 
-			readonly AutoResetEvent completed = new AutoResetEvent(false);
+			readonly AutoResetEvent completed = new(false);
 			readonly ThreadedGraphicsContext device;
 			volatile Action action;
 			volatile Action<object> actionWithParam;

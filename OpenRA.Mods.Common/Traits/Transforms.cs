@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly CVec Offset = CVec.Zero;
 
 		[Desc("Facing that the actor must face before transforming.")]
-		public readonly WAngle Facing = new WAngle(384);
+		public readonly WAngle Facing = new(384);
 
 		[Desc("Sounds to play when transforming.")]
 		public readonly string[] TransformSounds = Array.Empty<string>();

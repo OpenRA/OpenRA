@@ -169,7 +169,7 @@ dotnet_diagnostic.IDE0082.severity = warning
 
 # IDE0090 Simplify 'new' expression
 #csharp_style_implicit_object_creation_when_type_is_apparent = true
-dotnet_diagnostic.IDE0090.severity = silent # Requires C# 9 - TODO Consider enabling
+dotnet_diagnostic.IDE0090.severity = warning
 
 # IDE0180 Use tuple to swap values
 #csharp_style_prefer_tuple_swap = true

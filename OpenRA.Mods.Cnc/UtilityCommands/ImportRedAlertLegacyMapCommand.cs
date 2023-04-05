@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			"fpls", "wcrate", "scrate", "barb", "sbag",
 		};
 
-		static readonly Dictionary<string, (byte Type, byte Index)> OverlayResourceMapping = new Dictionary<string, (byte, byte)>()
+		static readonly Dictionary<string, (byte Type, byte Index)> OverlayResourceMapping = new()
 		{
 			// RA ore & crystals
 			{ "gold01", (1, 0) },

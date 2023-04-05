@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.LoadUsing(nameof(LoadConsiderations))]
 		[Desc("The decisions associated with this power")]
-		public readonly List<Consideration> Considerations = new List<Consideration>();
+		public readonly List<Consideration> Considerations = new();
 
 		[Desc("Minimum ticks to wait until next Decision scan attempt.")]
 		public readonly int MinimumScanTimeInterval = 250;
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly PlayerRelationship Against = PlayerRelationship.Enemy;
 
 			[Desc("What types should the desired targets of this power be?")]
-			public readonly BitSet<TargetableType> Types = new BitSet<TargetableType>("Air", "Ground", "Water");
+			public readonly BitSet<TargetableType> Types = new("Air", "Ground", "Water");
 
 			[Desc("How attractive are these types of targets?")]
 			public readonly int Attractiveness = 100;

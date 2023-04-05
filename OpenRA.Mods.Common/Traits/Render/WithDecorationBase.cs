@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[Desc("Screen-space offsets to apply when defined conditions are enabled.",
 			"A dictionary of [condition string]: [x, y offset].")]
-		public readonly Dictionary<BooleanExpression, int2> Offsets = new Dictionary<BooleanExpression, int2>();
+		public readonly Dictionary<BooleanExpression, int2> Offsets = new();
 
 		[Desc("The number of ticks that each step in the blink pattern in active.")]
 		public readonly int BlinkInterval = 5;
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[Desc("Override blink conditions to use when defined conditions are enabled.",
 			"A dictionary of [condition string]: [pattern].")]
-		public readonly Dictionary<BooleanExpression, BlinkState[]> BlinkPatterns = new Dictionary<BooleanExpression, BlinkState[]>();
+		public readonly Dictionary<BooleanExpression, BlinkState[]> BlinkPatterns = new();
 
 		[ConsumedConditionReference]
 		public IEnumerable<string> ConsumedConditions

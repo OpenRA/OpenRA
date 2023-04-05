@@ -46,8 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		sealed class Record : PathSearch.IRecorder, IEnumerable<(CPos Source, CPos Destination, int CostSoFar, int EstimatedRemainingCost)>
 		{
-			readonly Dictionary<CPos, (CPos Source, int CostSoFar, int EstimatedRemainingCost)> edges
-				= new Dictionary<CPos, (CPos Source, int CostSoFar, int EstimatedRemainingCost)>();
+			readonly Dictionary<CPos, (CPos Source, int CostSoFar, int EstimatedRemainingCost)> edges = new();
 
 			public void Add(CPos source, CPos destination, int costSoFar, int estimatedRemainingCost)
 			{

@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int MaxMoveDelay = 0;
 
 		[Desc("The terrain types that this actor should avoid wandering on to.")]
-		public readonly HashSet<string> AvoidTerrainTypes = new HashSet<string>();
+		public readonly HashSet<string> AvoidTerrainTypes = new();
 
 		public override object Create(ActorInitializer init) { return new Wanders(init.Self, this); }
 	}

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class VideoPlayerWidget : Widget
 	{
-		public Hotkey CancelKey = new Hotkey(Keycode.ESCAPE, Modifiers.None);
+		public Hotkey CancelKey = new(Keycode.ESCAPE, Modifiers.None);
 		public float AspectRatio = 1.2f;
 		public bool DrawOverlay = true;
 		public bool Skippable = true;

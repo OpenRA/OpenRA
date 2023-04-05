@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "BUTTON_TOOLTIP";
 
-		public HotkeyReference Key = new HotkeyReference();
+		public HotkeyReference Key = new();
 		public bool DisableKeyRepeat = false;
 		public bool DisableKeySound = false;
 

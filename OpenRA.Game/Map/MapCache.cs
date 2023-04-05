@@ -25,9 +25,9 @@ namespace OpenRA
 {
 	public sealed class MapCache : IEnumerable<MapPreview>, IDisposable
 	{
-		public static readonly MapPreview UnknownMap = new MapPreview(null, null, MapGridType.Rectangular, null);
+		public static readonly MapPreview UnknownMap = new(null, null, MapGridType.Rectangular, null);
 		public IReadOnlyDictionary<IReadOnlyPackage, MapClassification> MapLocations => mapLocations;
-		readonly Dictionary<IReadOnlyPackage, MapClassification> mapLocations = new Dictionary<IReadOnlyPackage, MapClassification>();
+		readonly Dictionary<IReadOnlyPackage, MapClassification> mapLocations = new();
 		public bool LoadPreviewImages = true;
 
 		readonly Cache<string, MapPreview> previews;
@@ -35,18 +35,18 @@ namespace OpenRA
 		readonly SheetBuilder sheetBuilder;
 		Thread previewLoaderThread;
 		bool previewLoaderThreadShutDown = true;
-		readonly object syncRoot = new object();
-		readonly Queue<MapPreview> generateMinimap = new Queue<MapPreview>();
+		readonly object syncRoot = new();
+		readonly Queue<MapPreview> generateMinimap = new();
 
 		public Dictionary<string, string> StringPool { get; } = new Dictionary<string, string>();
 
-		readonly List<MapDirectoryTracker> mapDirectoryTrackers = new List<MapDirectoryTracker>();
+		readonly List<MapDirectoryTracker> mapDirectoryTrackers = new();
 
 		/// <summary>
 		/// The most recently modified or loaded map at runtime.
 		/// </summary>
 		public string LastModifiedMap { get; private set; } = null;
-		readonly Dictionary<string, string> mapUpdates = new Dictionary<string, string>();
+		readonly Dictionary<string, string> mapUpdates = new();
 
 		string lastLoadedLastModifiedMap;
 

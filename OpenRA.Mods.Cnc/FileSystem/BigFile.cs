@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 			public string Name { get; }
 			public IEnumerable<string> Contents => index.Keys;
 
-			readonly Dictionary<string, Entry> index = new Dictionary<string, Entry>();
+			readonly Dictionary<string, Entry> index = new();
 			readonly Stream s;
 
 			public BigFile(Stream s, string filename)

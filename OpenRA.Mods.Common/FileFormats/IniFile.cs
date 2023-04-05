@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.FileFormats
 {
 	public class IniFile
 	{
-		readonly Dictionary<string, IniSection> sections = new Dictionary<string, IniSection>();
+		readonly Dictionary<string, IniSection> sections = new();
 
 		public IniFile(Stream s)
 		{
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 		}
 
-		readonly Regex sectionPattern = new Regex(@"^\[([^]]*)\]");
+		readonly Regex sectionPattern = new(@"^\[([^]]*)\]");
 
 		IniSection ProcessSection(string line)
 		{
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.FileFormats
 	public class IniSection : IEnumerable<KeyValuePair<string, string>>
 	{
 		public string Name { get; }
-		readonly Dictionary<string, string> values = new Dictionary<string, string>();
+		readonly Dictionary<string, string> values = new();
 
 		public IniSection(string name)
 		{

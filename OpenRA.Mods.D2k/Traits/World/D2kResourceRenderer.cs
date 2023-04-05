@@ -42,7 +42,7 @@ namespace OpenRA.Mods.D2k.Traits
 			All = 0xFF
 		}
 
-		public static readonly Dictionary<ClearSides, int> SpriteMap = new Dictionary<ClearSides, int>()
+		public static readonly Dictionary<ClearSides, int> SpriteMap = new()
 		{
 			{ ClearSides.Left | ClearSides.Top | ClearSides.TopLeft | ClearSides.TopRight | ClearSides.BottomLeft | ClearSides.BottomRight, 2 },
 			{ ClearSides.Top | ClearSides.Right | ClearSides.TopLeft | ClearSides.TopRight | ClearSides.BottomLeft | ClearSides.BottomRight, 3 },

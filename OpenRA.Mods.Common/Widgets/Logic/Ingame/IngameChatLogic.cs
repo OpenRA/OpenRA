@@ -46,9 +46,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly TextFieldWidget chatText;
 		readonly CachedTransform<int, string> chatAvailableIn;
 		readonly string chatDisabled;
-		readonly Dictionary<TextNotificationPool, Widget> templates = new Dictionary<TextNotificationPool, Widget>();
+		readonly Dictionary<TextNotificationPool, Widget> templates = new();
 
-		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
+		readonly TabCompletionLogic tabCompletion = new();
 
 		readonly string chatLineSound = ChromeMetrics.Get<string>("ChatLineSound");
 

@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Warheads
 		public readonly int ResourceAmount = 0;
 
 		[Desc("Resource types to remove with this warhead.", "If empty, all resource types will be removed.")]
-		public readonly HashSet<string> ResourceTypes = new HashSet<string>();
+		public readonly HashSet<string> ResourceTypes = new();
 
 		public override void DoImpact(in Target target, WarheadArgs args)
 		{

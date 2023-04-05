@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Sound to play when being crushed.")]
 		public readonly string CrushSound = null;
 		[Desc("Which crush classes does this actor belong to.")]
-		public readonly BitSet<CrushClass> CrushClasses = new BitSet<CrushClass>("infantry");
+		public readonly BitSet<CrushClass> CrushClasses = new("infantry");
 		[Desc("Probability of mobile actors noticing and evading a crush attempt.")]
 		public readonly int WarnProbability = 75;
 		[Desc("Will friendly units just crush me instead of pathing around.")]

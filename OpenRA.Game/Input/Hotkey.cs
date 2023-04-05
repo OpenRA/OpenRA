@@ -15,7 +15,7 @@ namespace OpenRA
 {
 	public readonly struct Hotkey : IEquatable<Hotkey>
 	{
-		public static Hotkey Invalid = new Hotkey(Keycode.UNKNOWN, Modifiers.None);
+		public static Hotkey Invalid = new(Keycode.UNKNOWN, Modifiers.None);
 		public bool IsValid()
 		{
 			return Key != Keycode.UNKNOWN;

@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Attack sequence to use for each armament.",
 			"A dictionary of [armament name]: [sequence name(s)].",
 			"Multiple sequence names can be defined to specify per-burst animations.")]
-		public readonly Dictionary<string, string[]> AttackSequences = new Dictionary<string, string[]>();
+		public readonly Dictionary<string, string[]> AttackSequences = new();
 
 		[SequenceReference]
 		public readonly string[] IdleSequences = Array.Empty<string>();

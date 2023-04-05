@@ -31,11 +31,11 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly bool Blockable = false;
 
 		[Desc("The width of the projectile.")]
-		public readonly WDist Width = new WDist(1);
+		public readonly WDist Width = new(1);
 
 		[Desc("Scan radius for actors with projectile-blocking trait. If set to a negative value (default), it will automatically scale",
 			"to the blocker with the largest health shape. Only set custom values if you know what you're doing.")]
-		public readonly WDist BlockerScanRadius = new WDist(-1);
+		public readonly WDist BlockerScanRadius = new(-1);
 
 		public IProjectile Create(ProjectileArgs args) { return new InstantHit(this, args); }
 	}

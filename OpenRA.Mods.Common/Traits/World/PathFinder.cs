@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class PathFinder : IPathFinder, IWorldLoaded
 	{
-		public static readonly List<CPos> NoPath = new List<CPos>(0);
+		public static readonly List<CPos> NoPath = new(0);
 
 		/// <summary>
 		/// When searching for paths, use a default weight of 125% to reduce

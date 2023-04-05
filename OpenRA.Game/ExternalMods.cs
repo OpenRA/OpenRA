@@ -41,7 +41,7 @@ namespace OpenRA
 
 	public class ExternalMods : IReadOnlyDictionary<string, ExternalMod>
 	{
-		readonly Dictionary<string, ExternalMod> mods = new Dictionary<string, ExternalMod>();
+		readonly Dictionary<string, ExternalMod> mods = new();
 		readonly SheetBuilder sheetBuilder;
 
 		Sheet CreateSheet()

@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	class InfiltrateForDecoration : WithDecoration, INotifyInfiltrated
 	{
-		readonly HashSet<Player> infiltrators = new HashSet<Player>();
+		readonly HashSet<Player> infiltrators = new();
 		readonly InfiltrateForDecorationInfo info;
 
 		public InfiltrateForDecoration(Actor self, InfiltrateForDecorationInfo info)

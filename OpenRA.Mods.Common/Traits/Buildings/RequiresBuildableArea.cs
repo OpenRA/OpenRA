@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("Types of buildable are this actor requires.")]
-		public readonly HashSet<string> AreaTypes = new HashSet<string>();
+		public readonly HashSet<string> AreaTypes = new();
 
 		[Desc("Maximum range from the actor with 'GivesBuildableArea' this can be placed at.")]
 		public readonly int Adjacent = 2;

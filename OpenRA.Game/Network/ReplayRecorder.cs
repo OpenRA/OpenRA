@@ -24,7 +24,7 @@ namespace OpenRA.Network
 		public ReplayMetadata Metadata;
 		BinaryWriter writer;
 		readonly Func<string> chooseFilename;
-		MemoryStream preStartBuffer = new MemoryStream();
+		MemoryStream preStartBuffer = new();
 
 		static bool IsGameStart(byte[] data)
 		{

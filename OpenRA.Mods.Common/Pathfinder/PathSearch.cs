@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		// PERF: Maintain a pool of layers used for paths searches for each world. These searches are performed often
 		// so we wish to avoid the high cost of initializing a new search space every time by reusing the old ones.
-		static readonly ConditionalWeakTable<World, CellInfoLayerPool> LayerPoolTable = new ConditionalWeakTable<World, CellInfoLayerPool>();
+		static readonly ConditionalWeakTable<World, CellInfoLayerPool> LayerPoolTable = new();
 		static readonly ConditionalWeakTable<World, CellInfoLayerPool>.CreateValueCallback CreateLayerPool = world => new CellInfoLayerPool(world.Map);
 
 		static CellInfoLayerPool LayerPoolForWorld(World world)

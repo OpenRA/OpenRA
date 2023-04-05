@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference(dictionaryReference: LintDictionaryReference.Keys)]
 		[Desc("Conditions to grant when a specified actor is being carried.",
 			"A dictionary of [actor name]: [condition].")]
-		public readonly Dictionary<string, string> CarryableConditions = new Dictionary<string, string>();
+		public readonly Dictionary<string, string> CarryableConditions = new();
 
 		[VoiceReference]
 		public readonly string Voice = "Action";

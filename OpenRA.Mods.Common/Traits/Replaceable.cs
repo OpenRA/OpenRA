@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("Replacement types this Replaceable actor accepts.")]
-		public readonly HashSet<string> Types = new HashSet<string>();
+		public readonly HashSet<string> Types = new();
 
 		public override object Create(ActorInitializer init) { return new Replaceable(this); }
 	}

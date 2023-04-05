@@ -37,7 +37,7 @@ namespace OpenRA.Graphics
 		// Static constants
 		static readonly float[] ShadowDiffuse = new float[] { 0, 0, 0 };
 		static readonly float[] ShadowAmbient = new float[] { 1, 1, 1 };
-		static readonly float2 SpritePadding = new float2(2, 2);
+		static readonly float2 SpritePadding = new(2, 2);
 		static readonly float[] ZeroVector = new float[] { 0, 0, 0, 1 };
 		static readonly float[] ZVector = new float[] { 0, 0, 1, 1 };
 		static readonly float[] FlipMtx = Util.ScaleMatrix(1, -1, 1);
@@ -47,9 +47,9 @@ namespace OpenRA.Graphics
 		readonly Renderer renderer;
 		readonly IShader shader;
 
-		readonly Dictionary<Sheet, IFrameBuffer> mappedBuffers = new Dictionary<Sheet, IFrameBuffer>();
-		readonly Stack<KeyValuePair<Sheet, IFrameBuffer>> unmappedBuffers = new Stack<KeyValuePair<Sheet, IFrameBuffer>>();
-		readonly List<(Sheet Sheet, Action Func)> doRender = new List<(Sheet, Action)>();
+		readonly Dictionary<Sheet, IFrameBuffer> mappedBuffers = new();
+		readonly Stack<KeyValuePair<Sheet, IFrameBuffer>> unmappedBuffers = new();
+		readonly List<(Sheet Sheet, Action Func)> doRender = new();
 
 		SheetBuilder sheetBuilderForFrame;
 		bool isInFrame;

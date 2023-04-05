@@ -19,7 +19,7 @@ namespace OpenRA.Primitives
 	/// </summary>
 	public class ActionQueue
 	{
-		readonly List<DelayedAction> actions = new List<DelayedAction>();
+		readonly List<DelayedAction> actions = new();
 
 		public void Add(Action a, long desiredTime)
 		{

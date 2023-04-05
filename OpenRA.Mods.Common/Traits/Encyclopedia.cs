@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Encyclopedia
 	{
-		public static readonly Encyclopedia Instance = new Encyclopedia();
+		public static readonly Encyclopedia Instance = new();
 		Encyclopedia() { }
 	}
 }

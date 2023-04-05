@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int MaxHeightDelta = -1;
 
 		[Desc("If > 0, force visibility to be recalculated if the unit moves within a cell by more than this distance.")]
-		public readonly WDist MoveRecalculationThreshold = new WDist(256);
+		public readonly WDist MoveRecalculationThreshold = new(256);
 
 		[Desc("Possible values are CenterPosition (measure range from the center) and ",
 			"Footprint (measure range from the footprint)")]

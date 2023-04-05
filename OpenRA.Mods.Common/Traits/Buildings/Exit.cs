@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WAngle? Facing = null;
 
 		[Desc("Type tags on this exit.")]
-		public readonly HashSet<string> ProductionTypes = new HashSet<string>();
+		public readonly HashSet<string> ProductionTypes = new();
 
 		[Desc("Number of ticks to wait before moving into the world.")]
 		public readonly int ExitDelay = 0;

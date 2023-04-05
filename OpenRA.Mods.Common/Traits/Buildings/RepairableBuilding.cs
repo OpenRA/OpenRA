@@ -67,10 +67,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly IHealth health;
 		readonly Predicate<Player> isNotActiveAlly;
-		readonly Stack<int> repairTokens = new Stack<int>();
+		readonly Stack<int> repairTokens = new();
 		int remainingTicks;
 
-		public readonly List<Player> Repairers = new List<Player>();
+		public readonly List<Player> Repairers = new();
 		public bool RepairActive { get; private set; }
 
 		public RepairableBuilding(Actor self, RepairableBuildingInfo info)

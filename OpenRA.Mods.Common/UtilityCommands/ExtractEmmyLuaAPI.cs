@@ -318,7 +318,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 	public static class EmmyLuaExts
 	{
-		static readonly Dictionary<string, string> LuaTypeNameReplacements = new Dictionary<string, string>()
+		static readonly Dictionary<string, string> LuaTypeNameReplacements = new()
 		{
 			{ "UInt32", "integer" },
 			{ "Int32", "integer" },

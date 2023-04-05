@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WDist Recoil = WDist.Zero;
 
 		[Desc("Recoil recovery per-frame")]
-		public readonly WDist RecoilRecovery = new WDist(9);
+		public readonly WDist RecoilRecovery = new(9);
 
 		[SequenceReference]
 		[Desc("Muzzle flash sequence to render")]
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.Traits
 		int currentBarrel;
 		readonly int barrelCount;
 
-		readonly List<(int Ticks, int Burst, Action<int> Func)> delayedActions = new List<(int, int, Action<int>)>();
+		readonly List<(int Ticks, int Burst, Action<int> Func)> delayedActions = new();
 
 		public WDist Recoil;
 		public int FireDelay { get; protected set; }

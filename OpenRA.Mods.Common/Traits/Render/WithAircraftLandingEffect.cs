@@ -32,10 +32,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly bool VisibleThroughFog = false;
 
 		[Desc("Height at which to play the animation when descending.")]
-		public readonly WDist DistanceAboveTerrain = new WDist(756);
+		public readonly WDist DistanceAboveTerrain = new(756);
 
 		[Desc("Only play on these terrain types.")]
-		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
+		public readonly HashSet<string> TerrainTypes = new();
 
 		public override object Create(ActorInitializer init) { return new WithAircraftLandingEffect(this); }
 	}

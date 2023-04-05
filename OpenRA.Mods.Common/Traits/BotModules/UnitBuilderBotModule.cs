@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int IdleBaseUnitsMaximum = 12;
 
 		[Desc("Production queues AI uses for producing units.")]
-		public readonly HashSet<string> UnitQueues = new HashSet<string> { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
+		public readonly HashSet<string> UnitQueues = new() { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
 
 		[Desc("What units to the AI should build.", "What relative share of the total army must be this type of unit.")]
 		public readonly Dictionary<string, int> UnitsToBuild = null;
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly World world;
 		readonly Player player;
 
-		readonly List<string> queuedBuildRequests = new List<string>();
+		readonly List<string> queuedBuildRequests = new();
 
 		IBotRequestPauseUnitProduction[] requestPause;
 		int idleUnitCount;

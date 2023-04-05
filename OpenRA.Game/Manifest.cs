@@ -95,7 +95,7 @@ namespace OpenRA
 			"RequiresMods", "PackageFormats"
 		};
 
-		readonly TypeDictionary modules = new TypeDictionary();
+		readonly TypeDictionary modules = new();
 		readonly Dictionary<string, MiniYaml> yaml;
 
 		bool customDataLoaded;

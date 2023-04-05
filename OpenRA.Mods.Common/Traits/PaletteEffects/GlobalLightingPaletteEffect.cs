@@ -21,10 +21,10 @@ namespace OpenRA.Mods.Common.Traits
 	public class GlobalLightingPaletteEffectInfo : TraitInfo, ILobbyCustomRulesIgnore
 	{
 		[Desc("Do not modify graphics that use any palette in this list.")]
-		public readonly HashSet<string> ExcludePalettes = new HashSet<string> { "cursor", "chrome", "colorpicker", "fog", "shroud", "alpha" };
+		public readonly HashSet<string> ExcludePalettes = new() { "cursor", "chrome", "colorpicker", "fog", "shroud", "alpha" };
 
 		[Desc("Do not modify graphics that start with these letters.")]
-		public readonly HashSet<string> ExcludePalettePrefixes = new HashSet<string>();
+		public readonly HashSet<string> ExcludePalettePrefixes = new();
 
 		public readonly float Red = 1f;
 		public readonly float Green = 1f;

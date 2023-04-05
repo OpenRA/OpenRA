@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference(dictionaryReference: LintDictionaryReference.Values)]
 		[Desc("Actor type to show in the color picker for specific factions. Overrides PreviewActor.",
 			"A dictionary of [faction name]: [actor name].")]
-		public readonly Dictionary<string, string> FactionPreviewActors = new Dictionary<string, string>();
+		public readonly Dictionary<string, string> FactionPreviewActors = new();
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{

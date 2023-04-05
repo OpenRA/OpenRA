@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		enum PlaybackSpeed { Regular, Slow, Fast, Maximum }
 
-		readonly Dictionary<PlaybackSpeed, float> multipliers = new Dictionary<PlaybackSpeed, float>()
+		readonly Dictionary<PlaybackSpeed, float> multipliers = new()
 		{
 			{ PlaybackSpeed.Regular, 1 },
 			{ PlaybackSpeed.Slow, 2 },

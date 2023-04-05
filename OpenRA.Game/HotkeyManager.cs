@@ -18,8 +18,8 @@ namespace OpenRA
 	public sealed class HotkeyManager
 	{
 		readonly Dictionary<string, Hotkey> settings;
-		readonly Dictionary<string, HotkeyDefinition> definitions = new Dictionary<string, HotkeyDefinition>();
-		readonly Dictionary<string, Hotkey> keys = new Dictionary<string, Hotkey>();
+		readonly Dictionary<string, HotkeyDefinition> definitions = new();
+		readonly Dictionary<string, Hotkey> keys = new();
 
 		public HotkeyManager(IReadOnlyFileSystem fileSystem, Dictionary<string, Hotkey> settings, Manifest manifest)
 		{
@@ -102,7 +102,7 @@ namespace OpenRA
 			return null;
 		}
 
-		public HotkeyReference this[string name] => new HotkeyReference(GetHotkeyReference(name));
+		public HotkeyReference this[string name] => new(GetHotkeyReference(name));
 
 		public IEnumerable<HotkeyDefinition> Definitions => definitions.Values;
 	}

@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets
 		static readonly Action Nothing = () => { };
 		readonly GraphicSettings graphicSettings;
 
-		public int2 CursorOffset = new int2(0, 20);
+		public int2 CursorOffset = new(0, 20);
 		public int BottomEdgeYOffset = -5;
 
 		public Action BeforeRender = Nothing;

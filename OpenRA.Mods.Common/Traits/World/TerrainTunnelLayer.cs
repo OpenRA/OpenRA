@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Map map;
 		readonly CellLayer<WPos> cellCenters;
 		readonly CellLayer<byte> terrainIndices;
-		readonly HashSet<CPos> portals = new HashSet<CPos>();
+		readonly HashSet<CPos> portals = new();
 		bool enabled;
 
 		public TerrainTunnelLayer(Actor self, TerrainTunnelLayerInfo info)

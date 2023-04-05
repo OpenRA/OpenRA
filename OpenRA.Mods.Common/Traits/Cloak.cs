@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Palette = "cloak";
 		public readonly bool IsPlayerPalette = false;
 
-		public readonly BitSet<DetectionType> DetectionTypes = new BitSet<DetectionType>("Cloak");
+		public readonly BitSet<DetectionType> DetectionTypes = new("Cloak");
 
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self while cloaked.")]

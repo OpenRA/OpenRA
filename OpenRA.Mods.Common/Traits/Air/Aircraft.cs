@@ -37,13 +37,13 @@ namespace OpenRA.Mods.Common.Traits
 			"'Land' will behave like 'None' (hover or circle) if a suitable landing site is not available.")]
 		public readonly IdleBehaviorType IdleBehavior = IdleBehaviorType.None;
 
-		public readonly WDist CruiseAltitude = new WDist(1280);
+		public readonly WDist CruiseAltitude = new(1280);
 
 		[Desc("Whether the aircraft can be repulsed.")]
 		public readonly bool Repulsable = true;
 
 		[Desc("The distance it tries to maintain from other aircraft if repulsable.")]
-		public readonly WDist IdealSeparation = new WDist(1706);
+		public readonly WDist IdealSeparation = new(1706);
 
 		[Desc("The speed at which the aircraft is repulsed from other aircraft. Specify -1 for normal movement speed.")]
 		public readonly int RepulsionSpeed = -1;
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WAngle InitialFacing = WAngle.Zero;
 
 		[Desc("Speed at which the actor turns.")]
-		public readonly WAngle TurnSpeed = new WAngle(512);
+		public readonly WAngle TurnSpeed = new(512);
 
 		[Desc("Turn speed to apply when aircraft flies in circles while idle. Defaults to TurnSpeed if undefined.")]
 		public readonly WAngle? IdleTurnSpeed = null;
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Minimum altitude where this aircraft is considered airborne.")]
 		public readonly int MinAirborneAltitude = 1;
 
-		public readonly HashSet<string> LandableTerrainTypes = new HashSet<string>();
+		public readonly HashSet<string> LandableTerrainTypes = new();
 
 		[Desc("Can the actor be ordered to move in to shroud?")]
 		public readonly bool MoveIntoShroud = true;
@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WAngle MaximumPitch = WAngle.FromDegrees(10);
 
 		[Desc("How fast this actor ascends or descends when moving vertically only (vertical take off/landing or hovering towards CruiseAltitude).")]
-		public readonly WDist AltitudeVelocity = new WDist(43);
+		public readonly WDist AltitudeVelocity = new(43);
 
 		[Desc("Sounds to play when the actor is taking off.")]
 		public readonly string[] TakeoffSounds = Array.Empty<string>();
@@ -145,13 +145,13 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] LandingSounds = Array.Empty<string>();
 
 		[Desc("The distance of the resupply base that the aircraft will wait for its turn.")]
-		public readonly WDist WaitDistanceFromResupplyBase = new WDist(3072);
+		public readonly WDist WaitDistanceFromResupplyBase = new(3072);
 
 		[Desc("The number of ticks that a airplane will wait to make a new search for an available airport.")]
 		public readonly int NumberOfTicksToVerifyAvailableAirport = 150;
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
-		public readonly WAngle PreviewFacing = new WAngle(384);
+		public readonly WAngle PreviewFacing = new(384);
 
 		[Desc("Display order for the facing slider in the map editor")]
 		public readonly int EditorFacingDisplayOrder = 3;

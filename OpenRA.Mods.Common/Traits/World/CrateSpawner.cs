@@ -54,10 +54,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int InitialSpawnDelay = 0;
 
 		[Desc("Which terrain types can we drop on?")]
-		public readonly HashSet<string> ValidGround = new HashSet<string> { "Clear", "Rough", "Road", "Ore", "Beach" };
+		public readonly HashSet<string> ValidGround = new() { "Clear", "Rough", "Road", "Ore", "Beach" };
 
 		[Desc("Which terrain types count as water?")]
-		public readonly HashSet<string> ValidWater = new HashSet<string> { "Water" };
+		public readonly HashSet<string> ValidWater = new() { "Water" };
 
 		[Desc("Chance of generating a water crate instead of a land crate.")]
 		public readonly int WaterChance = 20;
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int QuantizedFacings = 32;
 
 		[Desc("Spawn and remove the plane this far outside the map.")]
-		public readonly WDist Cordon = new WDist(5120);
+		public readonly WDist Cordon = new(5120);
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{

@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly float ActorFlashOverlayAlpha = 0.5f;
 
 		[Desc("The tint to apply when ActorFlashType is Tint.")]
-		public readonly float3 ActorFlashTint = new float3(1.4f, 1.4f, 1.4f);
+		public readonly float3 ActorFlashTint = new(1.4f, 1.4f, 1.4f);
 
 		[Desc("Number of times to flash (frozen) actors.")]
 		public readonly int ActorFlashCount = 2;

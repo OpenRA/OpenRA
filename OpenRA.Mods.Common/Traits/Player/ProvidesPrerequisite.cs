@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] RequiresPrerequisites = Array.Empty<string>();
 
 		[Desc("Only grant this prerequisite for certain factions.")]
-		public readonly HashSet<string> Factions = new HashSet<string>();
+		public readonly HashSet<string> Factions = new();
 
 		[Desc("Should it recheck everything when it is captured?")]
 		public readonly bool ResetOnOwnerChange = false;

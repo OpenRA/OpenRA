@@ -29,7 +29,7 @@ namespace OpenRA.Platforms.Default
 		readonly IntPtr window;
 		bool disposed;
 
-		readonly object syncObject = new object();
+		readonly object syncObject = new();
 		readonly Size windowSize;
 		Size surfaceSize;
 		float windowScale = 1f;

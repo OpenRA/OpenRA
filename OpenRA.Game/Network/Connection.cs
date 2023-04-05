@@ -42,9 +42,9 @@ namespace OpenRA.Network
 	public sealed class EchoConnection : IConnection
 	{
 		const int LocalClientId = 1;
-		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> sync = new Queue<(int, int, ulong)>();
-		readonly Queue<(int Frame, OrderPacket Orders)> orders = new Queue<(int, OrderPacket)>();
-		readonly Queue<OrderPacket> immediateOrders = new Queue<OrderPacket>();
+		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> sync = new();
+		readonly Queue<(int Frame, OrderPacket Orders)> orders = new();
+		readonly Queue<OrderPacket> immediateOrders = new();
 		bool disposed;
 
 		int IConnection.LocalClientId => LocalClientId;
@@ -100,12 +100,12 @@ namespace OpenRA.Network
 	{
 		public readonly ConnectionTarget Target;
 		internal ReplayRecorder Recorder { get; private set; }
-		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> sentSync = new Queue<(int, int, ulong)>();
-		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> queuedSyncPackets = new Queue<(int, int, ulong)>();
+		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> sentSync = new();
+		readonly Queue<(int Frame, int SyncHash, ulong DefeatState)> queuedSyncPackets = new();
 
-		readonly Queue<(int Frame, OrderPacket Orders)> sentOrders = new Queue<(int, OrderPacket)>();
-		readonly Queue<OrderPacket> sentImmediateOrders = new Queue<OrderPacket>();
-		readonly ConcurrentQueue<(int FromClient, byte[] Data)> receivedPackets = new ConcurrentQueue<(int, byte[])>();
+		readonly Queue<(int Frame, OrderPacket Orders)> sentOrders = new();
+		readonly Queue<OrderPacket> sentImmediateOrders = new();
+		readonly ConcurrentQueue<(int FromClient, byte[] Data)> receivedPackets = new();
 		TcpClient tcp;
 		volatile ConnectionState connectionState = ConnectionState.Connecting;
 		volatile int clientId;

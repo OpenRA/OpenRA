@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Duration = 0;
 
 		[Desc("Allowed to land on.")]
-		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
+		public readonly HashSet<string> TerrainTypes = new();
 
 		[Desc("Define actors that can collect crates by setting this into the Crushes field from the Mobile trait.")]
 		public readonly string CrushClass = "crate";

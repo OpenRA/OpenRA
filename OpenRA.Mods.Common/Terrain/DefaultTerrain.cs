@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Terrain
 
 		[FieldLoader.Ignore]
 		public readonly TerrainTypeInfo[] TerrainInfo;
-		readonly Dictionary<string, byte> terrainIndexByType = new Dictionary<string, byte>();
+		readonly Dictionary<string, byte> terrainIndexByType = new();
 		readonly byte defaultWalkableTerrainIndex;
 
 		public DefaultTerrain(IReadOnlyFileSystem fileSystem, string filepath)
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Common.Terrain
 		IEnumerable<Color> ITerrainInfo.RestrictedPlayerColors { get { return TerrainInfo.Where(ti => ti.RestrictPlayerColor).Select(ti => ti.Color); } }
 		float ITerrainInfo.MinHeightColorBrightness => MinHeightColorBrightness;
 		float ITerrainInfo.MaxHeightColorBrightness => MaxHeightColorBrightness;
-		TerrainTile ITerrainInfo.DefaultTerrainTile => new TerrainTile(Templates.First().Key, 0);
+		TerrainTile ITerrainInfo.DefaultTerrainTile => new(Templates.First().Key, 0);
 
 		string[] ITemplatedTerrainInfo.EditorTemplateOrder => EditorTemplateOrder;
 		IReadOnlyDictionary<ushort, TerrainTemplateInfo> ITemplatedTerrainInfo.Templates => Templates;

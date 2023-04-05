@@ -25,15 +25,15 @@ namespace OpenRA.Widgets
 
 		public static Widget Root = new ContainerWidget();
 
-		public static TickTime LastTickTime = new TickTime(() => Timestep, Game.RunTime);
+		public static TickTime LastTickTime = new(() => Timestep, Game.RunTime);
 
-		static readonly Stack<Widget> WindowList = new Stack<Widget>();
+		static readonly Stack<Widget> WindowList = new();
 
 		public static Widget MouseFocusWidget;
 		public static Widget KeyboardFocusWidget;
 		public static Widget MouseOverWidget;
 
-		static readonly Mediator Mediator = new Mediator();
+		static readonly Mediator Mediator = new();
 
 		public static void CloseWindow()
 		{
@@ -185,7 +185,7 @@ namespace OpenRA.Widgets
 	{
 		string defaultCursor = null;
 
-		public readonly List<Widget> Children = new List<Widget>();
+		public readonly List<Widget> Children = new();
 
 		// Info defined in YAML
 		public string Id = null;
@@ -644,7 +644,7 @@ namespace OpenRA.Widgets
 
 	public sealed class Mediator
 	{
-		readonly TypeDictionary types = new TypeDictionary();
+		readonly TypeDictionary types = new();
 
 		public void Subscribe<T>(T instance)
 		{

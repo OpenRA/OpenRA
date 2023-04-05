@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 	class AmbientSound : ConditionalTrait<AmbientSoundInfo>, ITick, INotifyRemovedFromWorld
 	{
 		readonly bool loop;
-		readonly HashSet<ISound> currentSounds = new HashSet<ISound>();
+		readonly HashSet<ISound> currentSounds = new();
 		WPos cachedPosition;
 		int delay;
 

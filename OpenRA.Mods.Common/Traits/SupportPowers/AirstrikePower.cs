@@ -24,10 +24,10 @@ namespace OpenRA.Mods.Common.Traits
 		[ActorReference(typeof(AircraftInfo))]
 		public readonly string UnitType = "badr.bomber";
 		public readonly int SquadSize = 1;
-		public readonly WVec SquadOffset = new WVec(-1536, 1536, 0);
+		public readonly WVec SquadOffset = new(-1536, 1536, 0);
 
 		public readonly int QuantizedFacings = 32;
-		public readonly WDist Cordon = new WDist(5120);
+		public readonly WDist Cordon = new(5120);
 
 		[ActorReference]
 		[Desc("Actor to spawn when the aircraft start attacking")]

@@ -59,9 +59,9 @@ namespace OpenRA.Mods.Common.FileFormats
 			3, 4, 5, 6, 7, 8
 		};
 
-		static readonly Huffman LitCode = new Huffman(LitLen, 256);
-		static readonly Huffman LenCode = new Huffman(LenLen, 16);
-		static readonly Huffman DistCode = new Huffman(DistLen, 64);
+		static readonly Huffman LitCode = new(LitLen, 256);
+		static readonly Huffman LenCode = new(LenLen, 16);
+		static readonly Huffman DistCode = new(DistLen, 64);
 
 		/// <summary>PKWare Compression Library stream.</summary>
 		/// <param name="input">Compressed input stream.</param>

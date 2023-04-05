@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[Desc("Tells the AI how to use its support powers.")]
 		[FieldLoader.LoadUsing(nameof(LoadDecisions))]
-		public readonly List<SupportPowerDecision> Decisions = new List<SupportPowerDecision>();
+		public readonly List<SupportPowerDecision> Decisions = new();
 
 		static object LoadDecisions(MiniYaml yaml)
 		{
@@ -40,9 +40,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly World world;
 		readonly Player player;
-		readonly Dictionary<SupportPowerInstance, int> waitingPowers = new Dictionary<SupportPowerInstance, int>();
-		readonly Dictionary<string, SupportPowerDecision> powerDecisions = new Dictionary<string, SupportPowerDecision>();
-		readonly List<SupportPowerInstance> stalePowers = new List<SupportPowerInstance>();
+		readonly Dictionary<SupportPowerInstance, int> waitingPowers = new();
+		readonly Dictionary<string, SupportPowerDecision> powerDecisions = new();
+		readonly List<SupportPowerInstance> stalePowers = new();
 		SupportPowerManager supportPowerManager;
 
 		public SupportPowerBotModule(Actor self, SupportPowerBotModuleInfo info)

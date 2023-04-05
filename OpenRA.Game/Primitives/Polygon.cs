@@ -16,7 +16,7 @@ namespace OpenRA.Primitives
 {
 	public readonly struct Polygon
 	{
-		public static readonly Polygon Empty = new Polygon(Rectangle.Empty);
+		public static readonly Polygon Empty = new(Rectangle.Empty);
 
 		public readonly Rectangle BoundingRect;
 		public readonly int2[] Vertices;

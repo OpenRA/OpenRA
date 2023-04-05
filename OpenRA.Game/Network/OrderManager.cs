@@ -23,10 +23,10 @@ namespace OpenRA.Network
 		const OrderPacket ClientDisconnected = null;
 
 		readonly SyncReport syncReport;
-		readonly Dictionary<int, Queue<(int Frame, OrderPacket Orders)>> pendingOrders = new Dictionary<int, Queue<(int, OrderPacket)>>();
-		readonly Dictionary<int, (int SyncHash, ulong DefeatState)> syncForFrame = new Dictionary<int, (int, ulong)>();
+		readonly Dictionary<int, Queue<(int Frame, OrderPacket Orders)>> pendingOrders = new();
+		readonly Dictionary<int, (int SyncHash, ulong DefeatState)> syncForFrame = new();
 
-		public Session LobbyInfo = new Session();
+		public Session LobbyInfo = new();
 
 		/// <summary>Null when watching a replay.</summary>
 		public Session.Client LocalClient => LobbyInfo.ClientWithIndex(Connection.LocalClientId);
@@ -47,11 +47,11 @@ namespace OpenRA.Network
 		internal int GameSaveLastFrame = -1;
 		internal int GameSaveLastSyncFrame = -1;
 
-		readonly List<Order> localOrders = new List<Order>();
-		readonly List<Order> localImmediateOrders = new List<Order>();
+		readonly List<Order> localOrders = new();
+		readonly List<Order> localImmediateOrders = new();
 
-		readonly List<ClientOrder> processClientOrders = new List<ClientOrder>();
-		readonly List<int> processClientsToRemove = new List<int>();
+		readonly List<ClientOrder> processClientOrders = new();
+		readonly List<int> processClientsToRemove = new();
 
 		bool disposed;
 		bool generateSyncReport = false;

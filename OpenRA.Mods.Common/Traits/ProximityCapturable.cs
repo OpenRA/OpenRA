@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WDist Range = WDist.FromCells(5);
 
 		[Desc("Allowed ProximityCaptor actors to capture this actor.")]
-		public readonly BitSet<CaptureType> CaptorTypes = new BitSet<CaptureType>("Player", "Vehicle", "Tank", "Infantry");
+		public readonly BitSet<CaptureType> CaptorTypes = new("Player", "Vehicle", "Tank", "Infantry");
 
 		[Desc("If set, the capturing process stops immediately after another player comes into Range.")]
 		public readonly bool MustBeClear = false;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		public ProximityCapturableInfo Info;
 		public Actor Self;
 
-		readonly List<Actor> actorsInRange = new List<Actor>();
+		readonly List<Actor> actorsInRange = new();
 		int proximityTrigger;
 		WPos prevPosition;
 		bool skipTriggerUpdate;

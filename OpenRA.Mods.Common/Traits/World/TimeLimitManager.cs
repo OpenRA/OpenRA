@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int[] TimeLimitOptions = { 0, 10, 20, 30, 40, 60, 90 };
 
 		[Desc("List of remaining minutes of game time when a text and optional speech notification should be made to players.")]
-		public readonly Dictionary<int, string> TimeLimitWarnings = new Dictionary<int, string>
+		public readonly Dictionary<int, string> TimeLimitWarnings = new()
 		{
 			{ 1, null },
 			{ 2, null },

@@ -29,16 +29,16 @@ namespace OpenRA.FileSystem
 	public class FileSystem : IReadOnlyFileSystem
 	{
 		public IEnumerable<IReadOnlyPackage> MountedPackages => mountedPackages.Keys;
-		readonly Dictionary<IReadOnlyPackage, int> mountedPackages = new Dictionary<IReadOnlyPackage, int>();
-		readonly Dictionary<string, IReadOnlyPackage> explicitMounts = new Dictionary<string, IReadOnlyPackage>();
+		readonly Dictionary<IReadOnlyPackage, int> mountedPackages = new();
+		readonly Dictionary<string, IReadOnlyPackage> explicitMounts = new();
 		readonly string modID;
 
 		// Mod packages that should not be disposed
-		readonly List<IReadOnlyPackage> modPackages = new List<IReadOnlyPackage>();
+		readonly List<IReadOnlyPackage> modPackages = new();
 		readonly IReadOnlyDictionary<string, Manifest> installedMods;
 		readonly IPackageLoader[] packageLoaders;
 
-		Cache<string, List<IReadOnlyPackage>> fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
+		Cache<string, List<IReadOnlyPackage>> fileIndex = new(_ => new List<IReadOnlyPackage>());
 
 		public FileSystem(string modID, IReadOnlyDictionary<string, Manifest> installedMods, IPackageLoader[] packageLoaders)
 		{

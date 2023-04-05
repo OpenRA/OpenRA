@@ -28,15 +28,15 @@ namespace OpenRA
 
 	public sealed class World : IDisposable
 	{
-		internal readonly TraitDictionary TraitDict = new TraitDictionary();
-		readonly SortedDictionary<uint, Actor> actors = new SortedDictionary<uint, Actor>();
-		readonly List<IEffect> effects = new List<IEffect>();
-		readonly List<IEffect> unpartitionedEffects = new List<IEffect>();
-		readonly List<ISync> syncedEffects = new List<ISync>();
+		internal readonly TraitDictionary TraitDict = new();
+		readonly SortedDictionary<uint, Actor> actors = new();
+		readonly List<IEffect> effects = new();
+		readonly List<IEffect> unpartitionedEffects = new();
+		readonly List<ISync> syncedEffects = new();
 		readonly GameSettings gameSettings;
 		readonly ModData modData;
 
-		readonly Queue<Action<World>> frameEndActions = new Queue<Action<World>>();
+		readonly Queue<Action<World>> frameEndActions = new();
 
 		public readonly GameSpeed GameSpeed;
 
@@ -390,7 +390,7 @@ namespace OpenRA
 
 		public int WorldTick { get; private set; }
 
-		readonly Dictionary<int, MiniYaml> gameSaveTraitData = new Dictionary<int, MiniYaml>();
+		readonly Dictionary<int, MiniYaml> gameSaveTraitData = new();
 		internal void AddGameSaveTraitData(int traitIndex, MiniYaml yaml)
 		{
 			gameSaveTraitData[traitIndex] = yaml;

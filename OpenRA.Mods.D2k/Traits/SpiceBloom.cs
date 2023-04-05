@@ -35,7 +35,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly string ResourceType = "Spice";
 
 		[Desc("Spice blooms only grow on these terrain types.")]
-		public readonly HashSet<string> GrowthTerrainTypes = new HashSet<string>();
+		public readonly HashSet<string> GrowthTerrainTypes = new();
 
 		[Desc("The weapon to use for spice creation.")]
 		[WeaponReference]

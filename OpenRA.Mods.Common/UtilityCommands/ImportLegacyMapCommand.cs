@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		public ModData ModData;
 		public Map Map;
-		public List<string> Players = new List<string>();
+		public List<string> Players = new();
 		public MapPlayers MapPlayers;
 		bool singlePlayer;
 		int spawnCount;
@@ -328,7 +328,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		}
 
 		// TODO: fix this -- will have bitrotted pretty badly.
-		static readonly Dictionary<string, Color> NamedColorMapping = new Dictionary<string, Color>()
+		static readonly Dictionary<string, Color> NamedColorMapping = new()
 		{
 			{ "gold", Color.FromArgb(246, 214, 121) },
 			{ "blue", Color.FromArgb(226, 230, 246) },

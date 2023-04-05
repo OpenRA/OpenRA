@@ -17,9 +17,9 @@ namespace OpenRA.Platforms.Default
 	static class MultiTapDetection
 	{
 		static readonly Cache<(Keycode Key, Modifiers Mods), TapHistory> KeyHistoryCache =
-			new Cache<(Keycode, Modifiers), TapHistory>(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
+			new(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
 		static readonly Cache<byte, TapHistory> ClickHistoryCache =
-			new Cache<byte, TapHistory>(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
+			new(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
 
 		public static int DetectFromMouse(byte button, int2 xy)
 		{

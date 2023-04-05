@@ -41,8 +41,8 @@ namespace OpenRA.Server
 
 		long lastReceivedTime = 0;
 
-		readonly BlockingCollection<byte[]> sendQueue = new BlockingCollection<byte[]>();
-		readonly Queue<int> pingHistory = new Queue<int>();
+		readonly BlockingCollection<byte[]> sendQueue = new();
+		readonly Queue<int> pingHistory = new();
 
 		public Connection(Server server, Socket socket, string authToken)
 		{

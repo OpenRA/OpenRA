@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string AttackAnythingCondition = null;
 
 		[FieldLoader.Ignore]
-		public readonly Dictionary<UnitStance, string> ConditionByStance = new Dictionary<UnitStance, string>();
+		public readonly Dictionary<UnitStance, string> ConditionByStance = new();
 
 		[Desc("Allow the player to change the unit stance.")]
 		public readonly bool EnableStances = true;

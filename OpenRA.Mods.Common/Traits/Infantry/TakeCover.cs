@@ -31,10 +31,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BitSet<DamageType> DamageTriggers = default;
 
 		[Desc("Damage modifiers for each damage type (defined on the warheads) while the unit is prone.")]
-		public readonly Dictionary<string, int> DamageModifiers = new Dictionary<string, int>();
+		public readonly Dictionary<string, int> DamageModifiers = new();
 
 		[Desc("Muzzle offset modifier to apply while prone.")]
-		public readonly WVec ProneOffset = new WVec(500, 0, 0);
+		public readonly WVec ProneOffset = new(500, 0, 0);
 
 		[SequenceReference(prefix: true)]
 		[Desc("Sequence prefix to apply while prone.")]

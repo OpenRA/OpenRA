@@ -44,11 +44,11 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly Color TextColor = Color.White;
 		public readonly Color ReadyTextAltColor = Color.Gold;
 		public readonly int Columns = 3;
-		public readonly int2 IconSize = new int2(64, 48);
+		public readonly int2 IconSize = new(64, 48);
 		public readonly int2 IconMargin = int2.Zero;
 		public readonly int2 IconSpriteOffset = int2.Zero;
 
-		public readonly float2 QueuedOffset = new float2(4, 2);
+		public readonly float2 QueuedOffset = new(4, 2);
 		public readonly TextAlign QueuedTextAlign = TextAlign.Left;
 
 		public readonly string ClickSound = ChromeMetrics.Get<string>("ClickSound");
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Widgets
 		// Note: LinterHotkeyNames assumes that these are disabled by default
 		public readonly string HotkeyPrefix = null;
 		public readonly int HotkeyCount = 0;
-		public readonly HotkeyReference SelectProductionBuildingHotkey = new HotkeyReference();
+		public readonly HotkeyReference SelectProductionBuildingHotkey = new();
 
 		public readonly string ClockAnimation = "clock";
 		public readonly string ClockSequence = "idle";
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public override Rectangle EventBounds => eventBounds;
-		Dictionary<Rectangle, ProductionIcon> icons = new Dictionary<Rectangle, ProductionIcon>();
+		Dictionary<Rectangle, ProductionIcon> icons = new();
 		Animation cantBuild;
 		Animation clock;
 		Rectangle eventBounds = Rectangle.Empty;

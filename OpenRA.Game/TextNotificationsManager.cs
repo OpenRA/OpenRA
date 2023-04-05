@@ -21,9 +21,9 @@ namespace OpenRA
 		static readonly string SystemMessageLabel;
 
 		public static long ChatDisabledUntil { get; internal set; }
-		public static readonly Dictionary<int, bool> MutedPlayers = new Dictionary<int, bool>();
+		public static readonly Dictionary<int, bool> MutedPlayers = new();
 
-		static readonly List<TextNotification> NotificationsCache = new List<TextNotification>();
+		static readonly List<TextNotification> NotificationsCache = new();
 		public static IReadOnlyList<TextNotification> Notifications => NotificationsCache;
 
 		static TextNotificationsManager()

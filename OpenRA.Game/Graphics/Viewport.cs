@@ -53,7 +53,7 @@ namespace OpenRA.Graphics
 
 		public WPos CenterPosition => worldRenderer.ProjectedPosition(CenterLocation);
 
-		public Rectangle Rectangle => new Rectangle(TopLeft, new Size(viewportSize.X, viewportSize.Y));
+		public Rectangle Rectangle => new(TopLeft, new Size(viewportSize.X, viewportSize.Y));
 		public int2 TopLeft => CenterLocation - viewportSize / 2;
 		public int2 BottomRight => CenterLocation + viewportSize / 2;
 		int2 viewportSize;

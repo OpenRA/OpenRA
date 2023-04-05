@@ -45,8 +45,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly IOrderedEnumerable<IGrouping<int, CameraOption>> teams;
 		readonly bool limitViews;
 
-		readonly HotkeyReference combinedViewKey = new HotkeyReference();
-		readonly HotkeyReference worldViewKey = new HotkeyReference();
+		readonly HotkeyReference combinedViewKey = new();
+		readonly HotkeyReference worldViewKey = new();
 
 		readonly World world;
 

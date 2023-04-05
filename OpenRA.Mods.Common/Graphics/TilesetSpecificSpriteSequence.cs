@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Graphics
 	public class TilesetSpecificSpriteSequence : DefaultSpriteSequence
 	{
 		[Desc("Dictionary of <tileset name>: filename to override the Filename key.")]
-		static readonly SpriteSequenceField<Dictionary<string, string>> TilesetFilenames = new SpriteSequenceField<Dictionary<string, string>>(nameof(TilesetFilenames), null);
+		static readonly SpriteSequenceField<Dictionary<string, string>> TilesetFilenames = new(nameof(TilesetFilenames), null);
 
 		public TilesetSpecificSpriteSequence(SpriteCache cache, ISpriteSequenceLoader loader, string image, string sequence, MiniYaml data, MiniYaml defaults)
 			: base(cache, loader, image, sequence, data, defaults) { }

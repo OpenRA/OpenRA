@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public readonly int BgraSheetSize = 2048;
 		public readonly int IndexedSheetSize = 2048;
 
-		static readonly MiniYaml NoData = new MiniYaml(null);
+		static readonly MiniYaml NoData = new(null);
 
 		public DefaultSpriteSequenceLoader(ModData modData)
 		{
@@ -118,91 +118,91 @@ namespace OpenRA.Mods.Common.Graphics
 		}
 
 		[Desc("File name of the sprite to use for this sequence.")]
-		protected static readonly SpriteSequenceField<string> Filename = new SpriteSequenceField<string>(nameof(Filename), null);
+		protected static readonly SpriteSequenceField<string> Filename = new(nameof(Filename), null);
 
 		[Desc("Frame index to start from.")]
-		protected static readonly SpriteSequenceField<int> Start = new SpriteSequenceField<int>(nameof(Start), 0);
+		protected static readonly SpriteSequenceField<int> Start = new(nameof(Start), 0);
 
 		[Desc("Number of frames to use. Does not have to be the total amount the sprite sheet has.")]
-		protected static readonly SpriteSequenceField<int> Length = new SpriteSequenceField<int>(nameof(Length), 1);
+		protected static readonly SpriteSequenceField<int> Length = new(nameof(Length), 1);
 
 		[Desc("Overrides Length if a different number of frames is defined between facings.")]
-		protected static readonly SpriteSequenceField<int> Stride = new SpriteSequenceField<int>(nameof(Stride), -1);
+		protected static readonly SpriteSequenceField<int> Stride = new(nameof(Stride), -1);
 
 		[Desc("The number of facings that are provided by sprite frames. Use negative values to rotate counter-clockwise.")]
-		protected static readonly SpriteSequenceField<int> Facings = new SpriteSequenceField<int>(nameof(Facings), 1);
+		protected static readonly SpriteSequenceField<int> Facings = new(nameof(Facings), 1);
 
 		[Desc("The total number of facings for the sequence. If >Facings, the closest facing sprite will be rotated to match. Use negative values to rotate counter-clockwise.")]
-		protected static readonly SpriteSequenceField<int?> InterpolatedFacings = new SpriteSequenceField<int?>(nameof(InterpolatedFacings), null);
+		protected static readonly SpriteSequenceField<int?> InterpolatedFacings = new(nameof(InterpolatedFacings), null);
 
 		[Desc("Time (in milliseconds at default game speed) to wait until playing the next frame in the animation.")]
-		protected static readonly SpriteSequenceField<int> Tick = new SpriteSequenceField<int>(nameof(Tick), 40);
+		protected static readonly SpriteSequenceField<int> Tick = new(nameof(Tick), 40);
 
 		[Desc("Value controlling the Z-order. A higher values means rendering on top of other sprites at the same position. " +
 		      "Use power of 2 values to avoid glitches.")]
-		protected static readonly SpriteSequenceField<WDist> ZOffset = new SpriteSequenceField<WDist>(nameof(ZOffset), WDist.Zero);
+		protected static readonly SpriteSequenceField<WDist> ZOffset = new(nameof(ZOffset), WDist.Zero);
 
 		[Desc("Additional sprite depth Z offset to apply as a function of sprite Y (0: vertical, 1: flat on terrain)")]
-		protected static readonly SpriteSequenceField<int> ZRamp = new SpriteSequenceField<int>(nameof(ZRamp), 0);
+		protected static readonly SpriteSequenceField<int> ZRamp = new(nameof(ZRamp), 0);
 
 		[Desc("If the shadow is not part of the sprite, but baked into the same sprite sheet at a fixed offset, " +
 			"set this to the frame index where it starts.")]
-		protected static readonly SpriteSequenceField<int> ShadowStart = new SpriteSequenceField<int>(nameof(ShadowStart), -1);
+		protected static readonly SpriteSequenceField<int> ShadowStart = new(nameof(ShadowStart), -1);
 
 		[Desc("Set Z-Offset for the separate shadow. Used by the later Westwood 2.5D titles.")]
-		protected static readonly SpriteSequenceField<WDist> ShadowZOffset = new SpriteSequenceField<WDist>(nameof(ShadowZOffset), new WDist(-5));
+		protected static readonly SpriteSequenceField<WDist> ShadowZOffset = new(nameof(ShadowZOffset), new WDist(-5));
 
 		[Desc("The individual frames to play instead of going through them sequentially from the `Start`.")]
-		protected static readonly SpriteSequenceField<int[]> Frames = new SpriteSequenceField<int[]>(nameof(Frames), null);
+		protected static readonly SpriteSequenceField<int[]> Frames = new(nameof(Frames), null);
 
 		[Desc("Don't apply terrain lighting or colored overlays.")]
-		protected static readonly SpriteSequenceField<bool> IgnoreWorldTint = new SpriteSequenceField<bool>(nameof(IgnoreWorldTint), false);
+		protected static readonly SpriteSequenceField<bool> IgnoreWorldTint = new(nameof(IgnoreWorldTint), false);
 
 		[Desc("Adjusts the rendered size of the sprite")]
-		protected static readonly SpriteSequenceField<float> Scale = new SpriteSequenceField<float>(nameof(Scale), 1);
+		protected static readonly SpriteSequenceField<float> Scale = new(nameof(Scale), 1);
 
 		[Desc("Play the sprite sequence back and forth.")]
-		protected static readonly SpriteSequenceField<bool> Reverses = new SpriteSequenceField<bool>(nameof(Reverses), false);
+		protected static readonly SpriteSequenceField<bool> Reverses = new(nameof(Reverses), false);
 
 		[Desc("Support a frame order where each animation step is split per each direction.")]
-		protected static readonly SpriteSequenceField<bool> Transpose = new SpriteSequenceField<bool>(nameof(Transpose), false);
+		protected static readonly SpriteSequenceField<bool> Transpose = new(nameof(Transpose), false);
 
 		[Desc("Mirror on the X axis.")]
-		protected static readonly SpriteSequenceField<bool> FlipX = new SpriteSequenceField<bool>(nameof(FlipX), false);
+		protected static readonly SpriteSequenceField<bool> FlipX = new(nameof(FlipX), false);
 
 		[Desc("Mirror on the Y axis.")]
-		protected static readonly SpriteSequenceField<bool> FlipY = new SpriteSequenceField<bool>(nameof(FlipY), false);
+		protected static readonly SpriteSequenceField<bool> FlipY = new(nameof(FlipY), false);
 
 		[Desc("Change the position in-game on X, Y, Z.")]
-		protected static readonly SpriteSequenceField<float3> Offset = new SpriteSequenceField<float3>(nameof(Offset), float3.Zero);
+		protected static readonly SpriteSequenceField<float3> Offset = new(nameof(Offset), float3.Zero);
 
 		[Desc("Apply an OpenGL/Photoshop inspired blend mode.")]
-		protected static readonly SpriteSequenceField<BlendMode> BlendMode = new SpriteSequenceField<BlendMode>(nameof(BlendMode), OpenRA.BlendMode.Alpha);
+		protected static readonly SpriteSequenceField<BlendMode> BlendMode = new(nameof(BlendMode), OpenRA.BlendMode.Alpha);
 
 		[Desc("Create a virtual sprite file by concatenating one or more frames from multiple files, with optional transformations applied. " +
 			"All defined frames will be loaded into memory, even if unused, so use this property with care.")]
-		protected static readonly SpriteSequenceField<MiniYaml> Combine = new SpriteSequenceField<MiniYaml>(nameof(Combine), null);
+		protected static readonly SpriteSequenceField<MiniYaml> Combine = new(nameof(Combine), null);
 
 		[Desc("Sets transparency - use one value to set for all frames or provide a value for each frame.")]
-		protected static readonly SpriteSequenceField<float[]> Alpha = new SpriteSequenceField<float[]>(nameof(Alpha), null);
+		protected static readonly SpriteSequenceField<float[]> Alpha = new(nameof(Alpha), null);
 
 		[Desc("Fade the animation from fully opaque on the first frame to fully transparent after the last frame.")]
-		protected static readonly SpriteSequenceField<bool> AlphaFade = new SpriteSequenceField<bool>(nameof(AlphaFade), false);
+		protected static readonly SpriteSequenceField<bool> AlphaFade = new(nameof(AlphaFade), false);
 
 		[Desc("Name of the file containing the depth data sprite.")]
-		protected static readonly SpriteSequenceField<string> DepthSprite = new SpriteSequenceField<string>(nameof(DepthSprite), null);
+		protected static readonly SpriteSequenceField<string> DepthSprite = new(nameof(DepthSprite), null);
 
 		[Desc("Frame index containing the depth data.")]
-		protected static readonly SpriteSequenceField<int> DepthSpriteFrame = new SpriteSequenceField<int>(nameof(DepthSpriteFrame), 0);
+		protected static readonly SpriteSequenceField<int> DepthSpriteFrame = new(nameof(DepthSpriteFrame), 0);
 
 		[Desc("X, Y offset to apply to the depth sprite.")]
-		protected static readonly SpriteSequenceField<float2> DepthSpriteOffset = new SpriteSequenceField<float2>(nameof(DepthSpriteOffset), float2.Zero);
+		protected static readonly SpriteSequenceField<float2> DepthSpriteOffset = new(nameof(DepthSpriteOffset), float2.Zero);
 
-		protected static readonly MiniYaml NoData = new MiniYaml(null);
+		protected static readonly MiniYaml NoData = new(null);
 		protected readonly ISpriteSequenceLoader Loader;
 
 		protected string image;
-		protected List<SpriteReservation> spritesToLoad = new List<SpriteReservation>();
+		protected List<SpriteReservation> spritesToLoad = new();
 		protected Sprite[] sprites;
 		protected Sprite[] shadowSprites;
 		protected bool reverseFacings;

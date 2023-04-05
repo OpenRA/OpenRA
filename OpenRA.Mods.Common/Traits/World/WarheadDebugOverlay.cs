@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		readonly WarheadDebugOverlayInfo info;
-		readonly List<WHImpact> impacts = new List<WHImpact>();
+		readonly List<WHImpact> impacts = new();
 
 		public WarheadDebugOverlay(WarheadDebugOverlayInfo info)
 		{

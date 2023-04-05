@@ -35,11 +35,11 @@ namespace OpenRA.Mods.Common.Traits
 		public int Experience => experience != null ? experience.Experience : 0;
 
 		// Low resolution (every 30 seconds) record of earnings, covering the entire game
-		public List<int> IncomeSamples = new List<int>(100);
+		public List<int> IncomeSamples = new(100);
 		public int Income;
 		public int DisplayIncome;
 
-		public List<int> ArmySamples = new List<int>(100);
+		public List<int> ArmySamples = new(100);
 
 		public int KillsCost;
 		public int DeathsCost;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int AssetsValue;
 
 		// High resolution (every second) record of earnings, limited to the last minute
-		readonly Queue<int> earnedSeconds = new Queue<int>(60);
+		readonly Queue<int> earnedSeconds = new(60);
 
 		int lastIncome;
 		int lastIncomeTick;

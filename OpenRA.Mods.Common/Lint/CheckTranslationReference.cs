@@ -24,9 +24,9 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		const BindingFlags Binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
 
-		readonly List<string> referencedKeys = new List<string>();
-		readonly Dictionary<string, string[]> referencedVariablesPerKey = new Dictionary<string, string[]>();
-		readonly List<string> variableReferences = new List<string>();
+		readonly List<string> referencedKeys = new();
+		readonly Dictionary<string, string[]> referencedVariablesPerKey = new();
+		readonly List<string> variableReferences = new();
 
 		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{
