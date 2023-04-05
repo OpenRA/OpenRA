@@ -590,8 +590,8 @@ namespace OpenRA
 				return true;
 			}
 
-			Current = span.Slice(0, index);
-			str = span.Slice(index + 1);
+			Current = span[..index];
+			str = span[(index + 1)..];
 			return true;
 		}
 

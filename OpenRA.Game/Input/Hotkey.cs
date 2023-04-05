@@ -42,7 +42,7 @@ namespace OpenRA
 			var mods = Modifiers.None;
 			if (parts.Length >= 2)
 			{
-				var modString = s.Substring(s.IndexOf(' '));
+				var modString = s[s.IndexOf(' ')..];
 				if (!Enum<Modifiers>.TryParse(modString, true, out mods))
 					return false;
 			}

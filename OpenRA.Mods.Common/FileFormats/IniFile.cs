@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.FileFormats
 		{
 			var comment = line.IndexOf(';');
 			if (comment >= 0)
-				line = line.Substring(0, comment);
+				line = line[..comment];
 
 			line = line.Trim();
 			if (line.Length == 0)
@@ -78,8 +78,8 @@ namespace OpenRA.Mods.Common.FileFormats
 			var eq = line.IndexOf('=');
 			if (eq >= 0)
 			{
-				key = line.Substring(0, eq).Trim();
-				value = line.Substring(eq + 1, line.Length - eq - 1).Trim();
+				key = line[..eq].Trim();
+				value = line[(eq + 1)..].Trim();
 			}
 
 			if (currentSection == null)

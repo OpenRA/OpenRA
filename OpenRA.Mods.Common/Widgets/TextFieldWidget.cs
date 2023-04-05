@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var minValue = int.MaxValue;
 			for (var i = 0; i <= apparentText.Length; i++)
 			{
-				var dist = Math.Abs(start + font.Measure(apparentText.Substring(0, i)).X - x);
+				var dist = Math.Abs(start + font.Measure(apparentText[..i]).X - x);
 				if (dist > minValue)
 					break;
 				minValue = dist;
@@ -168,12 +168,12 @@ namespace OpenRA.Mods.Common.Widgets
 
 		int GetPrevWhitespaceIndex()
 		{
-			return Text.Substring(0, CursorPosition).TrimEnd().LastIndexOf(' ') + 1;
+			return Text[..CursorPosition].TrimEnd().LastIndexOf(' ') + 1;
 		}
 
 		int GetNextWhitespaceIndex()
 		{
-			var substr = Text.Substring(CursorPosition);
+			var substr = Text[CursorPosition..];
 			var substrTrimmed = substr.TrimStart();
 			var trimmedSpaces = substr.Length - substrTrimmed.Length;
 			var nextWhitespace = substrTrimmed.IndexOf(' ');
@@ -335,7 +335,7 @@ namespace OpenRA.Mods.Common.Widgets
 					if (!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl) && CursorPosition > 0)
 					{
 						// Write directly to the Text backing field to avoid unnecessary validation
-						text = text.Substring(CursorPosition);
+						text = text[CursorPosition..];
 						CursorPosition = 0;
 						ClearSelection();
 						OnTextEdited();
@@ -350,7 +350,7 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						var lowestIndex = selectionStartIndex < selectionEndIndex ? selectionStartIndex : selectionEndIndex;
 						var highestIndex = selectionStartIndex < selectionEndIndex ? selectionEndIndex : selectionStartIndex;
-						Game.Renderer.SetClipboardText(Text.Substring(lowestIndex, highestIndex - lowestIndex));
+						Game.Renderer.SetClipboardText(Text[lowestIndex..highestIndex]);
 
 						RemoveSelectedText();
 					}
@@ -363,7 +363,7 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						var lowestIndex = selectionStartIndex < selectionEndIndex ? selectionStartIndex : selectionEndIndex;
 						var highestIndex = selectionStartIndex < selectionEndIndex ? selectionEndIndex : selectionStartIndex;
-						Game.Renderer.SetClipboardText(Text.Substring(lowestIndex, highestIndex - lowestIndex));
+						Game.Renderer.SetClipboardText(Text[lowestIndex..highestIndex]);
 					}
 
 					break;
@@ -377,7 +377,7 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						// Write directly to the Text backing field to avoid unnecessary validation
 						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
-							text = text.Substring(0, CursorPosition) + text.Substring(GetNextWhitespaceIndex());
+							text = text[..CursorPosition] + text[GetNextWhitespaceIndex()..];
 						else if (isOSX && e.Modifiers.HasModifier(Modifiers.Meta))
 							text = text.Remove(CursorPosition);
 						else
@@ -400,12 +400,12 @@ namespace OpenRA.Mods.Common.Widgets
 						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
 						{
 							var prevWhitespace = GetPrevWhitespaceIndex();
-							text = text.Substring(0, prevWhitespace) + text.Substring(CursorPosition);
+							text = text[..prevWhitespace] + text[CursorPosition..];
 							CursorPosition = prevWhitespace;
 						}
 						else if (isOSX && e.Modifiers.HasModifier(Modifiers.Meta))
 						{
-							text = text.Substring(CursorPosition);
+							text = text[CursorPosition..];
 							CursorPosition = 0;
 						}
 						else
@@ -432,7 +432,7 @@ namespace OpenRA.Mods.Common.Widgets
 						// Take only the first line of the clipboard contents
 						var nl = clipboardText.IndexOf('\n');
 						if (nl > 0)
-							clipboardText = clipboardText.Substring(0, nl);
+							clipboardText = clipboardText[..nl];
 
 						clipboardText = clipboardText.Trim();
 						if (clipboardText.Length > 0)
@@ -479,7 +479,7 @@ namespace OpenRA.Mods.Common.Widgets
 				pasteLength = Math.Min(input.Length, MaxLength - Text.Length);
 
 			// Write directly to the Text backing field to avoid repeating the invalid character validation
-			text = text.Insert(CursorPosition, input.Substring(0, pasteLength));
+			text = text.Insert(CursorPosition, input[..pasteLength]);
 			CursorPosition += pasteLength;
 			ClearSelection();
 			OnTextEdited();
@@ -551,7 +551,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var pos = RenderOrigin;
 
 			var textSize = font.Measure(apparentText);
-			var cursorPosition = font.Measure(apparentText.Substring(0, CursorPosition));
+			var cursorPosition = font.Measure(apparentText[..CursorPosition]);
 
 			var disabled = IsDisabled();
 			var hover = Ui.MouseOverWidget == this || Children.Any(c => c == Ui.MouseOverWidget);
@@ -580,8 +580,8 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var visualSelectionStartIndex = selectionStartIndex < selectionEndIndex ? selectionStartIndex : selectionEndIndex;
 				var visualSelectionEndIndex = selectionStartIndex < selectionEndIndex ? selectionEndIndex : selectionStartIndex;
-				var highlightStartX = font.Measure(apparentText.Substring(0, visualSelectionStartIndex)).X;
-				var highlightEndX = font.Measure(apparentText.Substring(0, visualSelectionEndIndex)).X;
+				var highlightStartX = font.Measure(apparentText[..visualSelectionStartIndex]).X;
+				var highlightEndX = font.Measure(apparentText[..visualSelectionEndIndex]).X;
 
 				WidgetUtils.FillRectWithColor(
 					new Rectangle(textPos.X + highlightStartX, textPos.Y, highlightEndX - highlightStartX, Bounds.Height - verticalMargin * 2), TextColorHighlight);

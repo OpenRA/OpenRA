@@ -28,7 +28,7 @@ namespace OpenRA
 			foreach (var file in modData.Manifest.ChromeLayout.Select(a => MiniYaml.FromStream(modData.DefaultFileSystem.Open(a), a)))
 				foreach (var w in file)
 				{
-					var key = w.Key.Substring(w.Key.IndexOf('@') + 1);
+					var key = w.Key[(w.Key.IndexOf('@') + 1)..];
 					if (widgets.ContainsKey(key))
 						throw new InvalidDataException($"Widget has duplicate Key `{w.Key}` at {w.Location}");
 					widgets.Add(key, w);

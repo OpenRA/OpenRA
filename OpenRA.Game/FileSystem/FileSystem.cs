@@ -85,14 +85,14 @@ namespace OpenRA.FileSystem
 		{
 			var optional = name.StartsWith("~", StringComparison.Ordinal);
 			if (optional)
-				name = name.Substring(1);
+				name = name[1..];
 
 			try
 			{
 				IReadOnlyPackage package;
 				if (name.StartsWith("$", StringComparison.Ordinal))
 				{
-					name = name.Substring(1);
+					name = name[1..];
 
 					if (!installedMods.TryGetValue(name, out var mod))
 						throw new InvalidOperationException($"Could not load mod '{name}'. Available mods: {installedMods.Keys.JoinWith(", ")}");
@@ -211,9 +211,9 @@ namespace OpenRA.FileSystem
 		public bool TryGetPackageContaining(string path, out IReadOnlyPackage package, out string filename)
 		{
 			var explicitSplit = path.IndexOf('|');
-			if (explicitSplit > 0 && explicitMounts.TryGetValue(path.Substring(0, explicitSplit), out package))
+			if (explicitSplit > 0 && explicitMounts.TryGetValue(path[..explicitSplit], out package))
 			{
-				filename = path.Substring(explicitSplit + 1);
+				filename = path[(explicitSplit + 1)..];
 				return true;
 			}
 
@@ -228,9 +228,9 @@ namespace OpenRA.FileSystem
 			var explicitSplit = filename.IndexOf('|');
 			if (explicitSplit > 0)
 			{
-				if (explicitMounts.TryGetValue(filename.Substring(0, explicitSplit), out var explicitPackage))
+				if (explicitMounts.TryGetValue(filename[..explicitSplit], out var explicitPackage))
 				{
-					s = explicitPackage.GetStream(filename.Substring(explicitSplit + 1));
+					s = explicitPackage.GetStream(filename[(explicitSplit + 1)..]);
 					if (s != null)
 						return true;
 				}
@@ -263,8 +263,8 @@ namespace OpenRA.FileSystem
 		{
 			var explicitSplit = filename.IndexOf('|');
 			if (explicitSplit > 0)
-				if (explicitMounts.TryGetValue(filename.Substring(0, explicitSplit), out var explicitPackage))
-					if (explicitPackage.Contains(filename.Substring(explicitSplit + 1)))
+				if (explicitMounts.TryGetValue(filename[..explicitSplit], out var explicitPackage))
+					if (explicitPackage.Contains(filename[(explicitSplit + 1)..]))
 						return true;
 
 			return fileIndex.ContainsKey(filename);
@@ -279,7 +279,7 @@ namespace OpenRA.FileSystem
 			if (explicitSplit < 0)
 				return false;
 
-			if (!explicitMounts.TryGetValue(filename.Substring(0, explicitSplit), out var explicitPackage))
+			if (!explicitMounts.TryGetValue(filename[..explicitSplit], out var explicitPackage))
 				return false;
 
 			if (installedMods[modID].Package == explicitPackage)
@@ -297,8 +297,8 @@ namespace OpenRA.FileSystem
 			var explicitSplit = path.IndexOf('|');
 			if (explicitSplit > 0 && !path.StartsWith("^"))
 			{
-				var parent = path.Substring(0, explicitSplit);
-				var filename = path.Substring(explicitSplit + 1);
+				var parent = path[..explicitSplit];
+				var filename = path[(explicitSplit + 1)..];
 
 				var parentPath = manifest.Packages.FirstOrDefault(kv => kv.Value == parent).Key;
 				if (parentPath == null)
@@ -306,7 +306,7 @@ namespace OpenRA.FileSystem
 
 				if (parentPath.StartsWith("$", StringComparison.Ordinal))
 				{
-					if (!installedMods.TryGetValue(parentPath.Substring(1), out var mod))
+					if (!installedMods.TryGetValue(parentPath[1..], out var mod))
 						return null;
 
 					if (!(mod.Package is Folder))
@@ -329,7 +329,7 @@ namespace OpenRA.FileSystem
 			if (resolved == null)
 				return null;
 
-			foreach (var name in path.Substring(resolved.Length).Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar))
+			foreach (var name in path[resolved.Length..].Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar))
 			{
 				// Filter out paths of the form /foo/bar/./baz
 				if (name == ".")

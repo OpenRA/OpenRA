@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var localEnums = new List<Type>();
 			foreach (var init in actorInits)
 			{
-				var name = init.Name.Substring(0, init.Name.Length - 4);
+				var name = init.Name[..^4];
 				var parameters = init.GetConstructors().Select(ci => ci.GetParameters());
 				var parameterString = string.Join(" | ",
 					parameters

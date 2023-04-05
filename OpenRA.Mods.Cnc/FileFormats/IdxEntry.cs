@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			var name = s.ReadASCII(16);
 			var pos = name.IndexOf('\0');
 			if (pos != 0)
-				name = name.Substring(0, pos);
+				name = name[..pos];
 
 			Filename = string.Concat(name, ".wav");
 			Offset = s.ReadUInt32();

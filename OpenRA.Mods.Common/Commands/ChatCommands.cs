@@ -36,11 +36,11 @@ namespace OpenRA.Mods.Common.Commands
 		{
 			if (message.StartsWith("/"))
 			{
-				var name = message.Substring(1).Split(' ')[0].ToLowerInvariant();
+				var name = message[1..].Split(' ')[0].ToLowerInvariant();
 				var command = Commands.FirstOrDefault(x => x.Key == name);
 
 				if (command.Value != null)
-					command.Value.InvokeCommand(name.ToLowerInvariant(), message.Substring(1 + name.Length).Trim());
+					command.Value.InvokeCommand(name.ToLowerInvariant(), message[(1 + name.Length)..].Trim());
 				else
 					TextNotificationsManager.Debug(Game.ModData.Translation.GetString(InvalidCommand, Translation.Arguments("name", name)));
 

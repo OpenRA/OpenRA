@@ -99,7 +99,7 @@ namespace OpenRA
 				IReadOnlyPackage package;
 				var optional = name.StartsWith("~", StringComparison.Ordinal);
 				if (optional)
-					name = name.Substring(1);
+					name = name[1..];
 
 				try
 				{
@@ -183,7 +183,7 @@ namespace OpenRA
 				var name = kv.Key;
 				var optional = name.StartsWith("~", StringComparison.Ordinal);
 				if (optional)
-					name = name.Substring(1);
+					name = name[1..];
 
 				// Don't try to open the map directory in the support directory if it doesn't exist
 				var resolved = Platform.ResolvePath(name);

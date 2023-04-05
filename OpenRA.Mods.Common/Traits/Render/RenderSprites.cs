@@ -240,7 +240,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			{
 				if (sequence.StartsWith(s.Prefix, StringComparison.Ordinal))
 				{
-					sequence = sequence.Substring(s.Prefix.Length);
+					sequence = sequence[s.Prefix.Length..];
 					break;
 				}
 			}

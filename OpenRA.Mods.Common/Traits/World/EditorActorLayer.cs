@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var kv in mp)
 			{
 				var name = kv.Key;
-				var index = int.Parse(name.Substring(5));
+				var index = int.Parse(name[5..]);
 
 				if (index >= newCount)
 				{

@@ -148,7 +148,7 @@ namespace OpenRA.FileSystem
 			public ZipFolder(ReadOnlyZipFile parent, string path)
 			{
 				if (path.EndsWith("/", StringComparison.Ordinal))
-					path = path.Substring(0, path.Length - 1);
+					path = path[..^1];
 
 				Name = path;
 				Parent = parent;
@@ -168,7 +168,7 @@ namespace OpenRA.FileSystem
 					{
 						if (entry.StartsWith(Name, StringComparison.Ordinal) && entry != Name)
 						{
-							var filename = entry.Substring(Name.Length + 1);
+							var filename = entry[(Name.Length + 1)..];
 							var dirLevels = filename.Split('/').Count(c => !string.IsNullOrEmpty(c));
 							if (dirLevels == 1)
 								yield return filename;

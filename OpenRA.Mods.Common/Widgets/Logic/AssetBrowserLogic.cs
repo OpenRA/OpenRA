@@ -676,15 +676,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				name = source.Name;
 				var compare = Platform.CurrentPlatform == PlatformType.Windows ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
 				if (name.StartsWith(modData.Manifest.Package.Name, compare))
-					name = "$" + modData.Manifest.Id + "/" + name.Substring(modData.Manifest.Package.Name.Length + 1);
+					name = "$" + modData.Manifest.Id + "/" + name[(modData.Manifest.Package.Name.Length + 1)..];
 				else if (name.StartsWith(Platform.EngineDir, compare))
-					name = "./" + name.Substring(Platform.EngineDir.Length);
+					name = "./" + name[Platform.EngineDir.Length..];
 				else if (name.StartsWith(Platform.SupportDir, compare))
-					name = "^" + name.Substring(Platform.SupportDir.Length);
+					name = "^" + name[Platform.SupportDir.Length..];
 			}
 
 			if (name.Length > 18)
-				name = "..." + name.Substring(name.Length - 15);
+				name = "..." + name[^15..];
 
 			return name;
 		}
