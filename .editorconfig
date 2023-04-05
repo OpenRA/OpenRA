@@ -204,7 +204,7 @@ dotnet_diagnostic.IDE0041.severity = warning
 
 # IDE0150 Prefer 'null' check over type check
 #csharp_style_prefer_null_check_over_type_check = true
-dotnet_diagnostic.IDE0150.severity = silent # Requires C# 9 - TODO Consider enabling
+dotnet_diagnostic.IDE0150.severity = warning
 
 # IDE1005 Use conditional delegate call
 csharp_style_conditional_delegate_call = true # true is the default, but the rule is not triggered if this is not specified.
@@ -616,7 +616,7 @@ dotnet_diagnostic.CA1827.severity = warning
 dotnet_diagnostic.CA1829.severity = warning
 
 # Use span-based 'string.Concat'.
-dotnet_diagnostic.CA1845.severity = silent # TODO Consider enabling
+dotnet_diagnostic.CA1845.severity = warning
 
 # Use string.Contains(char) instead of string.Contains(string) with single characters.
 dotnet_diagnostic.CA1847.severity = warning
