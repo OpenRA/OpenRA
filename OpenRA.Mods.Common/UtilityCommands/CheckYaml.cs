@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				ObjectCreator.MissingTypeAction = s => EmitError($"Missing Type: {s}");
 				FieldLoader.UnknownFieldAction = (s, f) => EmitError($"FieldLoader: Missing field `{s}` on `{f.Name}`");
 
-				var maps = new List<(IReadWritePackage package, string map)>();
+				var maps = new List<(IReadWritePackage Package, string Map)>();
 				if (args.Length < 2)
 				{
 					Console.WriteLine($"Testing mod: {modData.Manifest.Metadata.Title}");
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				foreach (var map in maps)
 				{
-					var package = map.package.OpenPackage(map.map, modData.ModFiles);
+					var package = map.Package.OpenPackage(map.Map, modData.ModFiles);
 					if (package == null)
 						continue;
 
