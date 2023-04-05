@@ -510,7 +510,7 @@ namespace OpenRA
 
 		public static bool IsTraitEnabled<T>(this T trait)
 		{
-			return !(trait is IDisabledTrait disabledTrait) || !disabledTrait.IsTraitDisabled;
+			return trait is not IDisabledTrait disabledTrait || !disabledTrait.IsTraitDisabled;
 		}
 
 		public static T FirstEnabledTraitOrDefault<T>(this IEnumerable<T> ts)

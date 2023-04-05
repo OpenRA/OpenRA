@@ -481,7 +481,7 @@ namespace OpenRA
 
 			innerData.Status = MapStatus.Downloading;
 			var installLocation = cache.MapLocations.FirstOrDefault(p => p.Value == MapClassification.User);
-			if (!(installLocation.Key is IReadWritePackage mapInstallPackage))
+			if (installLocation.Key is not IReadWritePackage mapInstallPackage)
 			{
 				Log.Write("debug", "Map install directory not found");
 				innerData.Status = MapStatus.DownloadError;

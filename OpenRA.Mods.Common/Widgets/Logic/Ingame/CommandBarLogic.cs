@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				forceAttackButton.IsDisabled = () => { UpdateStateIfNecessary(); return forceAttackDisabled; };
 				forceAttackButton.IsHighlighted = () => !forceAttackButton.IsDisabled() && IsForceModifiersActive(Modifiers.Ctrl)
-					&& !(world.OrderGenerator is AttackMoveOrderGenerator);
+					&& world.OrderGenerator is not AttackMoveOrderGenerator;
 
 				forceAttackButton.OnClick = () =>
 				{

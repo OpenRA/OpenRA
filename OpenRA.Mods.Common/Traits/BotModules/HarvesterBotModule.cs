@@ -112,7 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!h.Key.IsIdle)
 				{
 					// Ignore this actor if FindAndDeliverResources is working fine or it is performing a different activity
-					if (!(h.Key.CurrentActivity is FindAndDeliverResources act) || !act.LastSearchFailed)
+					if (h.Key.CurrentActivity is not FindAndDeliverResources act || !act.LastSearchFailed)
 						continue;
 				}
 

@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Installer
 
 			foreach (var prefix in source.RegistryPrefixes)
 			{
-				if (!(Microsoft.Win32.Registry.GetValue(prefix + source.RegistryKey, source.RegistryValue, null) is string path))
+				if (Microsoft.Win32.Registry.GetValue(prefix + source.RegistryKey, source.RegistryValue, null) is not string path)
 					continue;
 
 				// Resolve 8.3 format (DOS-style) paths to the full path.

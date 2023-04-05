@@ -122,7 +122,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 
-			foreach (var option in allOptions.Where(o => !(o is LobbyBooleanOption)))
+			foreach (var option in allOptions.Where(o => o is not LobbyBooleanOption))
 			{
 				if (dropdownColumns.Count == 0)
 				{

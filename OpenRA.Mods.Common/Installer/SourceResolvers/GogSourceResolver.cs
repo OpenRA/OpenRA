@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Installer
 
 			foreach (var prefix in prefixes)
 			{
-				if (!(Registry.GetValue($"{prefix}GOG.com\\Games\\{appId.Value}", "path", null) is string installDir))
+				if (Registry.GetValue($"{prefix}GOG.com\\Games\\{appId.Value}", "path", null) is not string installDir)
 					continue;
 
 				if (InstallerUtils.IsValidSourcePath(installDir, modSource))

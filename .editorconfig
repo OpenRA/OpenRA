@@ -276,7 +276,7 @@ dotnet_diagnostic.IDE0078.severity = silent # Requires C# 9 - TODO Consider enab
 
 # IDE0083 Use pattern matching ('not' operator)
 #csharp_style_prefer_not_pattern = true
-dotnet_diagnostic.IDE0083.severity = silent # Requires C# 9 - TODO Consider enabling
+dotnet_diagnostic.IDE0083.severity = warning
 
 # IDE0170 Simplify property pattern
 #csharp_style_prefer_extended_property_pattern = true

@@ -413,7 +413,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Add takeoff activity if Aircraft trait is not paused and the actor should not land when idle.
-			if (ForceLanding && !IsTraitPaused && !cruising && !(self.CurrentActivity is TakeOff))
+			if (ForceLanding && !IsTraitPaused && !cruising && self.CurrentActivity is not TakeOff)
 			{
 				ForceLanding = false;
 

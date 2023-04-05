@@ -276,7 +276,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				games[games.IndexOf(oldPath)] = newPath;
 				foreach (var c in gameList.Children)
 				{
-					if (!(c is ScrollItemWidget item) || item.ItemKey != oldPath)
+					if (c is not ScrollItemWidget item || item.ItemKey != oldPath)
 						continue;
 
 					item.ItemKey = newPath;

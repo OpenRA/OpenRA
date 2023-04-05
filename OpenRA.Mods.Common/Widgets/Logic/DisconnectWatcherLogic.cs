@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var disconnected = false;
 			widget.Get<LogicTickerWidget>("DISCONNECT_WATCHER").OnTick = () =>
 			{
-				if (!(orderManager.Connection is NetworkConnection connection))
+				if (orderManager.Connection is not NetworkConnection connection)
 					return;
 
 				if (disconnected || connection.ConnectionState != ConnectionState.NotConnected)

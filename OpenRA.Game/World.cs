@@ -355,7 +355,7 @@ namespace OpenRA
 		{
 			effects.Add(e);
 
-			if (!(e is ISpatiallyPartitionable))
+			if (e is not ISpatiallyPartitionable)
 				unpartitionedEffects.Add(e);
 
 			if (e is ISync se)
@@ -366,7 +366,7 @@ namespace OpenRA
 		{
 			effects.Remove(e);
 
-			if (!(e is ISpatiallyPartitionable))
+			if (e is not ISpatiallyPartitionable)
 				unpartitionedEffects.Remove(e);
 
 			if (e is ISync se)

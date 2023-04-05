@@ -125,7 +125,7 @@ namespace OpenRA.Scripting
 						else
 						{
 							var elementHasClrValue = kv.Value.TryGetClrValue(innerType, out element);
-							if (!elementHasClrValue || !(element is LuaValue))
+							if (!elementHasClrValue || element is not LuaValue)
 								kv.Value.Dispose();
 							if (!elementHasClrValue)
 								throw new LuaException($"Unable to convert table value of type {kv.Value.WrappedClrType()} to type {innerType}");

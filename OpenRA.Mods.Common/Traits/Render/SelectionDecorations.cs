@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		protected override IEnumerable<IRenderable> RenderSelectionBars(Actor self, WorldRenderer wr, bool displayHealth, bool displayExtra)
 		{
 			// Don't render the selection bars for non-selectable actors
-			if (!(interactable is Selectable) || (!displayHealth && !displayExtra))
+			if (interactable is not Selectable || (!displayHealth && !displayExtra))
 				yield break;
 
 			var bounds = interactable.DecorationBounds(self, wr);

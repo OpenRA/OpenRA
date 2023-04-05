@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			var yaml = new YamlFileSet();
 			foreach (var filename in files)
 			{
-				if (!modData.ModFiles.TryGetPackageContaining(filename, out var package, out var name) || !(package is IReadWritePackage))
+				if (!modData.ModFiles.TryGetPackageContaining(filename, out var package, out var name) || package is not IReadWritePackage)
 				{
 					Console.WriteLine("Failed to load file `{0}` for writing. It will not be updated.", filename);
 					continue;

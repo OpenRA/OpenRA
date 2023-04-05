@@ -177,7 +177,7 @@ namespace OpenRA.Graphics
 
 			foreach (var e in World.Effects)
 			{
-				if (!(e is IEffectAboveShroud ea))
+				if (e is not IEffectAboveShroud ea)
 					continue;
 
 				foreach (var renderable in ea.RenderAboveShroud(this))
@@ -218,7 +218,7 @@ namespace OpenRA.Graphics
 
 			foreach (var e in World.Effects)
 			{
-				if (!(e is IEffectAnnotation ea))
+				if (e is not IEffectAnnotation ea)
 					continue;
 
 				foreach (var renderAnnotation in ea.RenderAnnotation(this))

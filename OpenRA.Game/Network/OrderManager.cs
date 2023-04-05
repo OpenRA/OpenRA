@@ -99,7 +99,7 @@ namespace OpenRA.Network
 
 			// Generating sync reports is expensive, so only do it if we have
 			// other players to compare against if a desync did occur
-			generateSyncReport = !(Connection is ReplayConnection) && LobbyInfo.GlobalSettings.EnableSyncReports;
+			generateSyncReport = Connection is not ReplayConnection && LobbyInfo.GlobalSettings.EnableSyncReports;
 
 			NetFrameNumber = 1;
 			LocalFrameNumber = 0;

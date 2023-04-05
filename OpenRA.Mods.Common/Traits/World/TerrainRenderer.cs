@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> ITiledTerrainRenderer.RenderUIPreview(WorldRenderer wr, TerrainTemplateInfo t, int2 origin, float scale)
 		{
-			if (!(t is DefaultTerrainTemplateInfo template))
+			if (t is not DefaultTerrainTemplateInfo template)
 				yield break;
 
 			var ts = map.Grid.TileSize;
@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> ITiledTerrainRenderer.RenderPreview(WorldRenderer wr, TerrainTemplateInfo t, WPos origin)
 		{
-			if (!(t is DefaultTerrainTemplateInfo template))
+			if (t is not DefaultTerrainTemplateInfo template)
 				yield break;
 
 			var i = 0;

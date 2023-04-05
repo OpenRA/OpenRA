@@ -97,7 +97,7 @@ namespace OpenRA
 
 		public int CompareTo(object obj)
 		{
-			if (!(obj is WDist))
+			if (obj is not WDist)
 				return 1;
 			return Length.CompareTo(((WDist)obj).Length);
 		}

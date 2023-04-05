@@ -210,7 +210,7 @@ namespace OpenRA.Primitives
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Color))
+			if (obj is not Color)
 				return false;
 
 			return this == (Color)obj;
