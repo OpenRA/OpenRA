@@ -74,11 +74,11 @@ namespace OpenRA.Mods.Common.Traits
 		ITargetableCells targetableCells;
 		Turreted turret;
 
-		((CPos Cell, SubCell SubCell)[] targetableCells,
-			WPos? selfCenterPosition,
-			WRot? selfOrientation,
-			WRot? turretLocalOrientation,
-			WVec? turretOffset) cacheInput;
+		((CPos Cell, SubCell SubCell)[] TargetableCells,
+			WPos? SelfCenterPosition,
+			WRot? SelfOrientation,
+			WRot? TurretLocalOrientation,
+			WVec? TurretOffset) cacheInput;
 
 		WPos[] cachedTargetablePositions;
 

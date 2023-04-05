@@ -195,7 +195,7 @@ namespace OpenRA
 			}
 		}
 
-		public IEnumerable<(IReadWritePackage package, string map)> EnumerateMapDirPackagesAndNames(MapClassification classification = MapClassification.System)
+		public IEnumerable<(IReadWritePackage Package, string Map)> EnumerateMapDirPackagesAndNames(MapClassification classification = MapClassification.System)
 		{
 			var mapDirPackages = EnumerateMapDirPackages(classification);
 
