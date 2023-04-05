@@ -94,7 +94,7 @@ namespace OpenRA
 					continue;
 
 				var initTypeName = init.GetType().Name;
-				var initName = initTypeName.Substring(0, initTypeName.Length - 4);
+				var initName = initTypeName[..^4];
 				if (!string.IsNullOrEmpty(init.InstanceName))
 					initName += ActorInfo.TraitInstanceSeparator + init.InstanceName;
 

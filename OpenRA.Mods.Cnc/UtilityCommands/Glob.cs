@@ -46,11 +46,11 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var index = filePath.IndexOfAny(DirectorySeparators, startIndex);
 				if (index == -1)
 				{
-					parts.Add(filePath.Substring(startIndex));
+					parts.Add(filePath[startIndex..]);
 					break;
 				}
 
-				parts.Add(filePath.Substring(startIndex, index - startIndex + 1));
+				parts.Add(filePath[startIndex..index]);
 				startIndex = index + 1;
 			}
 
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				else
 				{
 					if (dir[^1] == Path.DirectorySeparatorChar || dir[^1] == Path.AltDirectorySeparatorChar)
-						dir = dir.Substring(0, dir.Length - 1);
+						dir = dir[..^1];
 					foreach (var subDir in Directory.EnumerateDirectories(basePath, dir, SearchOption.TopDirectoryOnly))
 						foreach (var s in Expand(subDir, dirs, dirIndex + 1, file))
 							yield return s;

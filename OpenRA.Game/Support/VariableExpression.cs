@@ -354,7 +354,7 @@ namespace OpenRA.Support
 						if (cc != CharClass.Digit)
 						{
 							if (cc != CharClass.Whitespace && cc != CharClass.Operator && cc != CharClass.Mixed)
-								throw new InvalidDataException($"Number {int.Parse(expression.Substring(start, i - start))} and variable merged at index {start}");
+								throw new InvalidDataException($"Number {int.Parse(expression[start..i])} and variable merged at index {start}");
 
 							return true;
 						}
@@ -369,7 +369,7 @@ namespace OpenRA.Support
 			static TokenType VariableOrKeyword(string expression, int start, ref int i)
 			{
 				if (CharClassOf(expression[i - 1]) == CharClass.Mixed)
-					throw new InvalidDataException($"Invalid identifier end character at index {i - 1} for `{expression.Substring(start, i - start)}`");
+					throw new InvalidDataException($"Invalid identifier end character at index {i - 1} for `{expression[start..i]}`");
 
 				return VariableOrKeyword(expression, start, i - start);
 			}
@@ -540,10 +540,10 @@ namespace OpenRA.Support
 				switch (type)
 				{
 					case TokenType.Number:
-						return new NumberToken(start, expression.Substring(start, i - start));
+						return new NumberToken(start, expression[start..i]);
 
 					case TokenType.Variable:
-						return new VariableToken(start, expression.Substring(start, i - start));
+						return new VariableToken(start, expression[start..i]);
 
 					default:
 						return new Token(type, start);

@@ -359,7 +359,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			// Replace removals with masking
 			foreach (var node in sequenceNode.Value.Nodes)
 				if (node.Key?.StartsWith("-") ?? false)
-					node.Key = node.Key.Substring(1);
+					node.Key = node.Key[1..];
 
 			var combineNode = sequenceNode.LastChildMatching("Combine");
 			if (combineNode != null)
@@ -389,8 +389,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 					var overrideFilename = filename;
 					if (useTilesetCode)
-						overrideFilename = filename.Substring(0, 1) + tilesetCodes[sequenceTileset] +
-						                   filename.Substring(2, filename.Length - 2);
+						overrideFilename = filename[..1] + tilesetCodes[sequenceTileset] +
+						                   filename[2..];
 
 					if (addExtension)
 						overrideFilename += useTilesetExtension ? tilesetExtensions[sequenceTileset] : defaultSpriteExtension;

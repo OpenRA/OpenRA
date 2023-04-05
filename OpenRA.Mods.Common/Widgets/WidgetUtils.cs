@@ -249,7 +249,7 @@ namespace OpenRA.Mods.Common.Widgets
 						if (spaceIndex == -1)
 							break;
 
-						var fragmentWidth = font.Measure(line.Substring(0, spaceIndex)).X;
+						var fragmentWidth = font.Measure(line[..spaceIndex]).X;
 						if (fragmentWidth > width)
 							break;
 
@@ -258,8 +258,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 					if (start > 0)
 					{
-						lines[i] = line.Substring(0, start - 1);
-						lines.Insert(i + 1, line.Substring(start));
+						lines[i] = line[..(start - 1)];
+						lines.Insert(i + 1, line[start..]);
 					}
 				}
 
@@ -278,7 +278,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var trimmed = text;
 			while (trimmedWidth > width && trimmed.Length > 3)
 			{
-				trimmed = text.Substring(0, trimmed.Length - 4) + "...";
+				trimmed = text[..(trimmed.Length - 4)] + "...";
 				trimmedWidth = font.Measure(trimmed).X;
 			}
 

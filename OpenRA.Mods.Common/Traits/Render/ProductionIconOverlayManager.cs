@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		string GetName(string key)
 		{
-			return key.Substring(prefix.Length);
+			return key[prefix.Length..];
 		}
 
 		public void PrerequisitesAvailable(string key)

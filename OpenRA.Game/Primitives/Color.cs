@@ -168,13 +168,13 @@ namespace OpenRA.Primitives
 				return false;
 
 			byte alpha = 255;
-			if (!byte.TryParse(value.Substring(0, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var red)
-			    || !byte.TryParse(value.Substring(2, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var green)
-			    || !byte.TryParse(value.Substring(4, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var blue))
+			if (!byte.TryParse(value[0..2], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var red)
+			    || !byte.TryParse(value[2..4], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var green)
+			    || !byte.TryParse(value[4..6], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var blue))
 				return false;
 
 			if (value.Length == 8
-			    && !byte.TryParse(value.Substring(6, 2), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out alpha))
+			    && !byte.TryParse(value[6..8], NumberStyles.HexNumber, CultureInfo.InvariantCulture, out alpha))
 				return false;
 
 			color = FromArgb(alpha, red, green, blue);

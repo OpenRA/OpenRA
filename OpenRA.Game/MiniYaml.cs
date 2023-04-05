@@ -254,7 +254,7 @@ namespace OpenRA
 					}
 
 					if (commentStart >= 0 && !discardCommentsAndWhitespace)
-						comment = line.Slice(commentStart);
+						comment = line[commentStart..];
 
 					if (value.Length > 1)
 					{
@@ -376,7 +376,7 @@ namespace OpenRA
 				}
 				else if (n.Key.StartsWith("-", StringComparison.Ordinal))
 				{
-					var removed = n.Key.Substring(1);
+					var removed = n.Key[1..];
 					if (resolved.RemoveAll(r => r.Key == removed) == 0)
 						throw new YamlException($"{n.Location}: There are no elements with key `{removed}` to remove");
 				}

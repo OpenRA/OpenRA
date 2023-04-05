@@ -327,7 +327,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			var prefix = includeRemovals && node.IsRemoval() ? "-" : "";
 			var split = node.Key.IndexOf("@", StringComparison.Ordinal);
 			if (preserveSuffix && split > -1)
-				node.Key = prefix + newKey + node.Key.Substring(split);
+				node.Key = prefix + newKey + node.Key[split..];
 			else
 				node.Key = prefix + newKey;
 		}
@@ -391,7 +391,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				return false;
 
 			var atPosition = node.Key.IndexOf('@');
-			return atPosition > 0 && node.Key.Substring(0, atPosition) == prefix + match;
+			return atPosition > 0 && node.Key[..atPosition] == prefix + match;
 		}
 
 		/// <summary>Returns true if the node is of the form [match], [match]@[arbitrary suffix] or [arbitrary suffix]@[match].</summary>
@@ -401,7 +401,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				return false;
 
 			var atPosition = node.Key.IndexOf('@');
-			var relevantPart = ignoreSuffix && atPosition > 0 ? node.Key.Substring(0, atPosition) : node.Key;
+			var relevantPart = ignoreSuffix && atPosition > 0 ? node.Key[..atPosition] : node.Key;
 
 			if (relevantPart.Contains(match) && (includeRemovals || !node.IsRemoval()))
 				return true;

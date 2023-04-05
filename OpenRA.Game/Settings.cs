@@ -443,7 +443,7 @@ namespace OpenRA
 
 			// avoid UI glitches
 			if (clean.Length > 16)
-				clean = clean.Substring(0, 16);
+				clean = clean[..16];
 
 			return clean;
 		}

@@ -75,7 +75,7 @@ namespace OpenRA.Network
 						// Cut chat messages to the hard limit to avoid exploits
 						var message = order.TargetString;
 						if (message.Length > ChatMessageMaxLength)
-							message = order.TargetString.Substring(0, ChatMessageMaxLength);
+							message = order.TargetString[..ChatMessageMaxLength];
 
 						// ExtraData 0 means this is a normal chat order, everything else is team chat
 						if (order.ExtraData == 0)

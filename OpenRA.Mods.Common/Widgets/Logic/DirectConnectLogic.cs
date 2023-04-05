@@ -35,8 +35,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			else
 			{
-				ipField.Text = text.Substring(0, last);
-				portField.Text = text.Substring(last + 1);
+				ipField.Text = text[..last];
+				portField.Text = text[(last + 1)..];
 			}
 
 			var joinButton = panel.Get<ButtonWidget>("JOIN_BUTTON");

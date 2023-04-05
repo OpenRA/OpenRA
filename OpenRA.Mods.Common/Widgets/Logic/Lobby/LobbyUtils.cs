@@ -205,8 +205,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return (null, null);
 
 			var split = input.IndexOf(token, StringComparison.Ordinal);
-			var first = split > 0 ? input.Substring(0, split) : input;
-			var second = split > 0 ? input.Substring(split + token.Length) : null;
+			var first = split > 0 ? input[..split] : input;
+			var second = split > 0 ? input[(split + token.Length)..] : null;
 			return (first, second);
 		}
 

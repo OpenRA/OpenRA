@@ -229,7 +229,7 @@ namespace OpenRA.Mods.Common
 		public static string InternalTypeName(Type t)
 		{
 			return t.IsGenericType
-				? $"{t.Name.Substring(0, t.Name.IndexOf('`'))}<{string.Join(", ", t.GenericTypeArguments.Select(arg => arg.Name))}>"
+				? $"{t.Name[..t.Name.IndexOf('`')]}<{string.Join(", ", t.GenericTypeArguments.Select(arg => arg.Name))}>"
 				: t.Name;
 		}
 

@@ -231,7 +231,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		static string Truncate(string s, int maxLength)
 		{
-			return s.Length <= maxLength ? s : s.Substring(0, maxLength);
+			return s.Length <= maxLength ? s : s[..maxLength];
 		}
 
 		static string GetTileset(IniSection mapSection)
