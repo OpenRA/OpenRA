@@ -53,7 +53,7 @@ namespace OpenRA.Primitives
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Size))
+			if (obj is not Size)
 				return false;
 
 			return this == (Size)obj;

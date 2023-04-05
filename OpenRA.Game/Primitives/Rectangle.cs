@@ -88,7 +88,7 @@ namespace OpenRA.Primitives
 
 		public override bool Equals(object obj)
 		{
-			if (!(obj is Rectangle))
+			if (obj is not Rectangle)
 				return false;
 
 			return this == (Rectangle)obj;

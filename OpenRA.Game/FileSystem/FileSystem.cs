@@ -309,7 +309,7 @@ namespace OpenRA.FileSystem
 					if (!installedMods.TryGetValue(parentPath[1..], out var mod))
 						return null;
 
-					if (!(mod.Package is Folder))
+					if (mod.Package is not Folder)
 						return null;
 
 					path = Path.Combine(mod.Package.Name, filename);

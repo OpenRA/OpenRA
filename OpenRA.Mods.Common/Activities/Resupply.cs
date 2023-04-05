@@ -242,7 +242,7 @@ namespace OpenRA.Mods.Common.Activities
 					else if (repairableNear == null)
 						QueueChild(move.MoveToTarget(self, host));
 				}
-				else if (repairableNear == null && !(self.CurrentActivity.NextActivity is Move))
+				else if (repairableNear == null && self.CurrentActivity.NextActivity is not Move)
 					QueueChild(move.MoveToTarget(self, host));
 			}
 

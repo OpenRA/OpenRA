@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				foreach (var kv in modData.MapCache.MapLocations)
 				{
-					if (!(kv.Key is Folder folder))
+					if (kv.Key is not Folder folder)
 						continue;
 
 					try
@@ -209,7 +209,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				try
 				{
-					if (!(map.Package is IReadWritePackage package) || package.Name != combinedPath)
+					if (map.Package is not IReadWritePackage package || package.Name != combinedPath)
 					{
 						selectedDirectory.Folder.Delete(combinedPath);
 						if (fileType == MapFileType.OraMap)

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			var mobileInfo = ai.TraitInfoOrDefault<MobileInfo>();
-			if (mobileInfo == null || !(mobileInfo.LocomotorInfo is SubterraneanLocomotorInfo))
+			if (mobileInfo == null || mobileInfo.LocomotorInfo is not SubterraneanLocomotorInfo)
 				throw new YamlException("GrantConditionOnSubterraneanLayer requires Mobile to be linked to a SubterraneanLocomotor!");
 
 			base.RulesetLoaded(rules, ai);
