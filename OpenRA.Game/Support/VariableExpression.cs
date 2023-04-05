@@ -719,12 +719,12 @@ namespace OpenRA.Support
 			readonly List<Expression> expressions = new List<Expression>();
 			readonly List<ExpressionType> types = new List<ExpressionType>();
 
-			public ExpressionType PeekType() { return types[types.Count - 1]; }
+			public ExpressionType PeekType() { return types[^1]; }
 
 			public Expression Peek(ExpressionType toType)
 			{
-				var fromType = types[types.Count - 1];
-				var expression = expressions[expressions.Count - 1];
+				var fromType = types[^1];
+				var expression = expressions[^1];
 				if (toType == fromType)
 					return expression;
 

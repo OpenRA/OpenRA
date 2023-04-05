@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 			shotsFired++;
 			var requiredShots = tokens.Count < Info.RequiredShotsPerInstance.Length
 				? Info.RequiredShotsPerInstance[tokens.Count]
-				: Info.RequiredShotsPerInstance[Info.RequiredShotsPerInstance.Length - 1];
+				: Info.RequiredShotsPerInstance[^1];
 
 			if (shotsFired >= requiredShots)
 			{

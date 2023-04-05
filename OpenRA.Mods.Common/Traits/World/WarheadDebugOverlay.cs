@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly Color Color;
 			public int Time;
 
-			public WDist OuterRange => Range[Range.Length - 1];
+			public WDist OuterRange => Range[^1];
 
 			public WHImpact(WPos pos, WDist[] range, int time, Color color)
 			{

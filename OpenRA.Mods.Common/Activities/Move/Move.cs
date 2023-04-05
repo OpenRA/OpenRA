@@ -202,7 +202,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (path.Count == 0)
 				return null;
 
-			var nextCell = path[path.Count - 1];
+			var nextCell = path[^1];
 
 			// Something else might have moved us, so the path is no longer valid.
 			if (!Util.AreAdjacentCells(mobile.ToCell, nextCell))
@@ -280,7 +280,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (newPath.Count != 0)
 				{
 					path = newPath;
-					var newCell = path[path.Count - 1];
+					var newCell = path[^1];
 					path.RemoveAt(path.Count - 1);
 
 					return (newCell, mobile.GetAvailableSubCell(nextCell, mobile.FromSubCell, ignoreActor));
