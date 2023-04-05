@@ -307,7 +307,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </summary>
 		void BuildGrids()
 		{
-			Grid GetCPosBounds(Map map)
+			static Grid GetCPosBounds(Map map)
 			{
 				if (map.Grid.Type == MapGridType.RectangularIsometric)
 				{
@@ -369,7 +369,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 					}
 				}
 
-				CPos AbstractCellForLocalCells(List<CPos> cells, byte layer)
+				static CPos AbstractCellForLocalCells(List<CPos> cells, byte layer)
 				{
 					var minX = int.MaxValue;
 					var minY = int.MaxValue;

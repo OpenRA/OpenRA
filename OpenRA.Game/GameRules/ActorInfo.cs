@@ -118,7 +118,7 @@ namespace OpenRA
 			var unresolved = source.ToHashSet();
 			unresolved.ExceptWith(resolved);
 
-			bool AreResolvable(Type a, Type b) => a.IsAssignableFrom(b);
+			static bool AreResolvable(Type a, Type b) => a.IsAssignableFrom(b);
 
 			// This query detects which unresolved traits can be immediately resolved as all their direct dependencies are met.
 			var more = unresolved.Where(u =>

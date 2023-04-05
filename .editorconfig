@@ -63,7 +63,7 @@ dotnet_diagnostic.IDE0044.severity = warning
 
 # IDE0062 Make local function static
 #csharp_prefer_static_local_function = true
-dotnet_diagnostic.IDE0062.severity = silent # Requires C# 8 - TODO Consider enabling
+dotnet_diagnostic.IDE0062.severity = warning
 
 # IDE0064 Make struct fields writable
 # No options

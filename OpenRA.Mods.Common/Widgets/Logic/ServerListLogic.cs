@@ -692,7 +692,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				header.Get<LabelWidget>("LABEL").GetText = () => headerTitle;
 				rows.Add(header);
 
-				int ListOrder(GameServer g)
+				static int ListOrder(GameServer g)
 				{
 					// Servers waiting for players are always first
 					if (g.State == (int)ServerState.WaitingPlayers && g.Players > 0)
