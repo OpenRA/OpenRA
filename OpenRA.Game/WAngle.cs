@@ -31,7 +31,7 @@ namespace OpenRA
 				Angle += 1024;
 		}
 
-		public static readonly WAngle Zero = new WAngle(0);
+		public static readonly WAngle Zero = new(0);
 		public static WAngle FromFacing(int facing) { return new WAngle(facing * 4); }
 		public static WAngle FromDegrees(int degrees) { return new WAngle(degrees * 1024 / 360); }
 		public static WAngle operator +(WAngle a, WAngle b) { return new WAngle(a.Angle + b.Angle); }

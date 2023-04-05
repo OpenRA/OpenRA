@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly IResourceLayer resourceLayer;
 		readonly string resourceType;
-		readonly List<CellResource> cellResources = new List<CellResource>();
+		readonly List<CellResource> cellResources = new();
 
 		public AddResourcesEditorAction(string resourceType, IResourceLayer resourceLayer)
 		{

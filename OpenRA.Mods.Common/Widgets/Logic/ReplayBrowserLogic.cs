@@ -103,13 +103,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string Defeat = "options-winstate.defeat";
 
-		static Filter filter = new Filter();
+		static Filter filter = new();
 
 		readonly Widget panel;
 		readonly ScrollPanelWidget replayList, playerList;
 		readonly ScrollItemWidget playerTemplate, playerHeader;
-		readonly List<ReplayMetadata> replays = new List<ReplayMetadata>();
-		readonly Dictionary<ReplayMetadata, ReplayState> replayState = new Dictionary<ReplayMetadata, ReplayState>();
+		readonly List<ReplayMetadata> replays = new();
+		readonly Dictionary<ReplayMetadata, ReplayState> replayState = new();
 		readonly Action onStart;
 		readonly ModData modData;
 		readonly WebServices services;

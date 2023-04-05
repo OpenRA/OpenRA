@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			public CPos[] SpawnLocations;
 			public List<int> AvailableSpawnPoints;
-			public readonly Dictionary<int, Session.Client> OccupiedSpawnPoints = new Dictionary<int, Session.Client>();
+			public readonly Dictionary<int, Session.Client> OccupiedSpawnPoints = new();
 		}
 
 		object IAssignSpawnPointsInfo.InitializeState(MapPreview map, Session lobbyInfo)
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class MapStartingLocations : IWorldLoaded, INotifyCreated, IAssignSpawnPoints
 	{
 		readonly MapStartingLocationsInfo info;
-		readonly Dictionary<int, Session.Client> occupiedSpawnPoints = new Dictionary<int, Session.Client>();
+		readonly Dictionary<int, Session.Client> occupiedSpawnPoints = new();
 		bool separateTeamSpawns;
 		CPos[] spawnLocations;
 		List<int> availableSpawnPoints;

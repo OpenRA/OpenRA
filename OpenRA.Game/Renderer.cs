@@ -44,7 +44,7 @@ namespace OpenRA
 		internal int TempBufferSize { get; }
 
 		readonly IVertexBuffer<Vertex> tempBuffer;
-		readonly Stack<Rectangle> scissorState = new Stack<Rectangle>();
+		readonly Stack<Rectangle> scissorState = new();
 
 		IFrameBuffer screenBuffer;
 		Sprite screenSprite;
@@ -63,7 +63,7 @@ namespace OpenRA
 
 		float depthMargin;
 
-		Size lastBufferSize = new Size(-1, -1);
+		Size lastBufferSize = new(-1, -1);
 
 		Rectangle lastWorldViewport = Rectangle.Empty;
 		ITexture currentPaletteTexture;

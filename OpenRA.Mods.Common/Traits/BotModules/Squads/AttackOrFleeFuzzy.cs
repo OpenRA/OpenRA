@@ -95,8 +95,8 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			"then AttackOrFlee is Flee"
 		};
 
-		public static readonly AttackOrFleeFuzzy Default = new AttackOrFleeFuzzy(null, null, null);
-		public static readonly AttackOrFleeFuzzy Rush = new AttackOrFleeFuzzy(new[]
+		public static readonly AttackOrFleeFuzzy Default = new(null, null, null);
+		public static readonly AttackOrFleeFuzzy Rush = new(new[]
 		{
 			"if ((OwnHealth is Normal) " +
 			"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			"then AttackOrFlee is Flee"
 		}, null, null);
 
-		readonly MamdaniFuzzySystem fuzzyEngine = new MamdaniFuzzySystem();
+		readonly MamdaniFuzzySystem fuzzyEngine = new();
 
 		public AttackOrFleeFuzzy(
 			IEnumerable<string> rulesForNormalOwnHealth,

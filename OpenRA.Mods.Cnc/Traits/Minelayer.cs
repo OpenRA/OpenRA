@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public readonly string AmmoPoolName = "primary";
 
-		public readonly WDist MinefieldDepth = new WDist(1536);
+		public readonly WDist MinefieldDepth = new(1536);
 
 		[VoiceReference]
 		[Desc("Voice to use when ordered to lay a minefield.")]
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string TileUnknownName = "build-unknown";
 
 		[Desc("Only allow laying mines on listed terrain types. Leave empty to allow all terrain types.")]
-		public readonly HashSet<string> TerrainTypes = new HashSet<string>();
+		public readonly HashSet<string> TerrainTypes = new();
 
 		[CursorReference]
 		[Desc("Cursor to display when able to lay a mine.")]

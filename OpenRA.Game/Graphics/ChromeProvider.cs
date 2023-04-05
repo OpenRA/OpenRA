@@ -49,7 +49,7 @@ namespace OpenRA.Graphics
 
 			public readonly int[] PanelRegion = null;
 			public readonly PanelSides PanelSides = PanelSides.All;
-			public readonly Dictionary<string, Rectangle> Regions = new Dictionary<string, Rectangle>();
+			public readonly Dictionary<string, Rectangle> Regions = new();
 		}
 
 		public static IReadOnlyDictionary<string, Collection> Collections => collections;

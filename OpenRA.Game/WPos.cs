@@ -25,7 +25,7 @@ namespace OpenRA
 		public WPos(int x, int y, int z) { X = x; Y = y; Z = z; }
 		public WPos(WDist x, WDist y, WDist z) { X = x.Length; Y = y.Length; Z = z.Length; }
 
-		public static readonly WPos Zero = new WPos(0, 0, 0);
+		public static readonly WPos Zero = new(0, 0, 0);
 
 		public static explicit operator WVec(in WPos a) { return new WVec(a.X, a.Y, a.Z); }
 

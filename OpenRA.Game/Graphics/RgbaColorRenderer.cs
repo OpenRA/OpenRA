@@ -18,7 +18,7 @@ namespace OpenRA.Graphics
 {
 	public class RgbaColorRenderer
 	{
-		static readonly float3 Offset = new float3(0.5f, 0.5f, 0f);
+		static readonly float3 Offset = new(0.5f, 0.5f, 0f);
 
 		readonly SpriteRenderer parent;
 		readonly Vertex[] vertices = new Vertex[6];

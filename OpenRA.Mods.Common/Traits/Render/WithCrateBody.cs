@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly string[] XmasImages = Array.Empty<string>();
 
 		[Desc("Terrain types on which to display WaterSequence.")]
-		public readonly HashSet<string> WaterTerrainTypes = new HashSet<string> { "Water" };
+		public readonly HashSet<string> WaterTerrainTypes = new() { "Water" };
 
 		[SequenceReference]
 		public readonly string IdleSequence = "idle";

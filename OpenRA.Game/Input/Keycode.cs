@@ -256,7 +256,7 @@ namespace OpenRA
 
 	public static class KeycodeExts
 	{
-		static readonly Dictionary<Keycode, string> KeyNames = new Dictionary<Keycode, string>
+		static readonly Dictionary<Keycode, string> KeyNames = new()
 		{
 			{ Keycode.UNKNOWN, "Undefined" },
 			{ Keycode.RETURN, "Return" },

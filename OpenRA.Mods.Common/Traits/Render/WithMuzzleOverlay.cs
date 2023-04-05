@@ -29,8 +29,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 	class WithMuzzleOverlay : ConditionalTrait<WithMuzzleOverlayInfo>, INotifyAttack, IRender, ITick
 	{
-		readonly Dictionary<Barrel, bool> visible = new Dictionary<Barrel, bool>();
-		readonly Dictionary<Barrel, AnimationWithOffset> anims = new Dictionary<Barrel, AnimationWithOffset>();
+		readonly Dictionary<Barrel, bool> visible = new();
+		readonly Dictionary<Barrel, AnimationWithOffset> anims = new();
 		readonly Func<WAngle> getFacing;
 		readonly Armament[] armaments;
 

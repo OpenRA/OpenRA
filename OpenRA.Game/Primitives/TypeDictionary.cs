@@ -19,7 +19,7 @@ namespace OpenRA.Primitives
 	public class TypeDictionary : IEnumerable
 	{
 		static readonly Func<Type, List<object>> CreateList = type => new List<object>();
-		readonly Dictionary<Type, List<object>> data = new Dictionary<Type, List<object>>();
+		readonly Dictionary<Type, List<object>> data = new();
 
 		public void Add(object val)
 		{

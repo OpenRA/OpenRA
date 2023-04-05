@@ -21,8 +21,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public sealed class ResourceClaimLayer
 	{
-		readonly Dictionary<CPos, List<Actor>> claimByCell = new Dictionary<CPos, List<Actor>>(32);
-		readonly Dictionary<Actor, CPos> claimByActor = new Dictionary<Actor, CPos>(32);
+		readonly Dictionary<CPos, List<Actor>> claimByCell = new(32);
+		readonly Dictionary<Actor, CPos> claimByActor = new(32);
 
 		/// <summary>
 		/// Attempt to reserve the resource in a cell for the given actor.

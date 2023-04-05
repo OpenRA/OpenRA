@@ -105,8 +105,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public readonly RenderVoxelsInfo Info;
 
-		readonly List<ModelAnimation> components = new List<ModelAnimation>();
-		readonly Dictionary<ModelAnimation, AnimationWrapper> wrappers = new Dictionary<ModelAnimation, AnimationWrapper>();
+		readonly List<ModelAnimation> components = new();
+		readonly Dictionary<ModelAnimation, AnimationWrapper> wrappers = new();
 
 		readonly Actor self;
 		readonly BodyOrientation body;

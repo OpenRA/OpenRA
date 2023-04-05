@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget panel;
 		readonly ScrollPanelWidget gameList;
 		readonly TextFieldWidget saveTextField;
-		readonly List<string> games = new List<string>();
+		readonly List<string> games = new();
 		readonly Action onStart;
 		readonly Action onExit;
 		readonly ModData modData;

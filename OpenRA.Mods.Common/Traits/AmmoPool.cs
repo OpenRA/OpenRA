@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class AmmoPool : INotifyCreated, INotifyAttack, ISync
 	{
 		public readonly AmmoPoolInfo Info;
-		readonly Stack<int> tokens = new Stack<int>();
+		readonly Stack<int> tokens = new();
 
 		// HACK: Temporarily needed until Rearm activity is gone for good
 		[Sync]

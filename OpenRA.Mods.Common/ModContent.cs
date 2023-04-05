@@ -105,7 +105,7 @@ namespace OpenRA
 		public readonly string ContentInstallerMod = "modcontent";
 
 		[FieldLoader.LoadUsing(nameof(LoadPackages))]
-		public readonly Dictionary<string, ModPackage> Packages = new Dictionary<string, ModPackage>();
+		public readonly Dictionary<string, ModPackage> Packages = new();
 
 		static object LoadPackages(MiniYaml yaml)
 		{

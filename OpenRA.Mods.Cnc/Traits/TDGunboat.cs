@@ -24,10 +24,10 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly int Speed = 28;
 
 		[Desc("Facing to use when actor spawns. Only 256 and 768 supported.")]
-		public readonly WAngle InitialFacing = new WAngle(256);
+		public readonly WAngle InitialFacing = new(256);
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc). Only 256 and 768 supported.")]
-		public readonly WAngle PreviewFacing = new WAngle(256);
+		public readonly WAngle PreviewFacing = new(256);
 
 		public override object Create(ActorInitializer init) { return new TDGunboat(init, this); }
 
@@ -58,8 +58,8 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		public readonly TDGunboatInfo Info;
 		readonly Actor self;
-		static readonly WAngle Left = new WAngle(256);
-		static readonly WAngle Right = new WAngle(768);
+		static readonly WAngle Left = new(256);
+		static readonly WAngle Right = new(768);
 
 		IEnumerable<int> speedModifiers;
 		INotifyCenterPositionChanged[] notifyCenterPositionChanged;

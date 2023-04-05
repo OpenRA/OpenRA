@@ -105,7 +105,7 @@ namespace OpenRA
 			Yaw = yaw;
 		}
 
-		public static readonly WRot None = new WRot(WAngle.Zero, WAngle.Zero, WAngle.Zero);
+		public static readonly WRot None = new(WAngle.Zero, WAngle.Zero, WAngle.Zero);
 
 		public static WRot FromFacing(int facing) { return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing)); }
 		public static WRot FromYaw(WAngle yaw) { return new WRot(WAngle.Zero, WAngle.Zero, yaw); }

@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			}
 		}
 
-		static readonly Dictionary<string, (byte Type, byte Index)> OverlayResourceMapping = new Dictionary<string, (byte, byte)>()
+		static readonly Dictionary<string, (byte Type, byte Index)> OverlayResourceMapping = new()
 		{
 			// Tiberium
 			{ "ti1", (1, 0) },

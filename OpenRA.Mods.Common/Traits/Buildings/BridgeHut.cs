@@ -47,11 +47,11 @@ namespace OpenRA.Mods.Common.Traits
 		readonly BridgeLayer bridgeLayer;
 
 		// Fixed at map load
-		readonly List<CPos[]> segmentLocations = new List<CPos[]>();
+		readonly List<CPos[]> segmentLocations = new();
 
 		// Changes as segments are killed and repaired
-		readonly Dictionary<CPos, IBridgeSegment> segments = new Dictionary<CPos, IBridgeSegment>();
-		readonly HashSet<CPos> dirtyLocations = new HashSet<CPos>();
+		readonly Dictionary<CPos, IBridgeSegment> segments = new();
+		readonly HashSet<CPos> dirtyLocations = new();
 
 		// Enabled during a repair action
 		int repairStep;

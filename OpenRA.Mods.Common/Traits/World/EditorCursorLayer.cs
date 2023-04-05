@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Required for the map editor to work. Attach this to the world actor.")]
 	public class EditorCursorLayerInfo : TraitInfo, Requires<EditorActorLayerInfo>, Requires<ITiledTerrainRendererInfo>
 	{
-		public readonly WAngle PreviewFacing = new WAngle(384);
+		public readonly WAngle PreviewFacing = new(384);
 
 		public override object Create(ActorInitializer init) { return new EditorCursorLayer(init.Self, this); }
 	}
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		public string ResourceType { get; private set; }
 		CPos terrainOrResourceCell;
 		bool terrainOrResourceDirty;
-		readonly List<IRenderable> terrainOrResourcePreview = new List<IRenderable>();
+		readonly List<IRenderable> terrainOrResourcePreview = new();
 
 		public EditorCursorLayer(Actor self, EditorCursorLayerInfo info)
 		{

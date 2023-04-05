@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		public Func<string> GetTooltipText;
 
-		readonly CachedTransform<(string, string), Sprite> getImageCache = new CachedTransform<(string, string), Sprite>(
+		readonly CachedTransform<(string, string), Sprite> getImageCache = new(
 			((string collection, string image) args) => ChromeProvider.GetImage(args.collection, args.image));
 
 		public ImageWidget()

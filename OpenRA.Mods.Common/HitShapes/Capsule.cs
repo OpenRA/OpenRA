@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.HitShapes
 		[FieldLoader.Require]
 		public readonly int2 PointB;
 
-		public readonly WDist Radius = new WDist(426);
+		public readonly WDist Radius = new(426);
 
 		[Desc("Defines the top offset relative to the actor's center.")]
 		public readonly int VerticalTopOffset = 0;

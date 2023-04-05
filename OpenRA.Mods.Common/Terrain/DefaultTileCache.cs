@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Terrain
 
 	public sealed class DefaultTileCache : IDisposable
 	{
-		readonly Dictionary<ushort, TheaterTemplate> templates = new Dictionary<ushort, TheaterTemplate>();
+		readonly Dictionary<ushort, TheaterTemplate> templates = new();
 		readonly Cache<SheetType, SheetBuilder> sheetBuilders;
 		readonly MersenneTwister random;
 

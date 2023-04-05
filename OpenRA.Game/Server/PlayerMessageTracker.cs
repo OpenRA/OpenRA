@@ -19,7 +19,7 @@ namespace OpenRA.Server
 		[TranslationReference("remaining")]
 		const string ChatTemporaryDisabled = "notification-chat-temp-disabled";
 
-		readonly Dictionary<int, List<long>> messageTracker = new Dictionary<int, List<long>>();
+		readonly Dictionary<int, List<long>> messageTracker = new();
 		readonly Server server;
 		readonly Action<Connection, int, int, byte[]> dispatchOrdersToClient;
 		readonly Action<Connection, string, Dictionary<string, object>> sendLocalizedMessageTo;

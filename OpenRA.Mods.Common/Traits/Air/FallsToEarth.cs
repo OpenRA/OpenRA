@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly bool Moves = false;
 
 		[Desc("Velocity (per tick) at which aircraft falls to ground.")]
-		public readonly WDist Velocity = new WDist(43);
+		public readonly WDist Velocity = new(43);
 
 		public WeaponInfo ExplosionWeapon { get; private set; }
 

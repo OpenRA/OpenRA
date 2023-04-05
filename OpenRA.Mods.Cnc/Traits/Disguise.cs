@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
 
 		[Desc("Target types of actors that this actor disguise as.")]
-		public readonly BitSet<TargetableType> TargetTypes = new BitSet<TargetableType>("Disguise");
+		public readonly BitSet<TargetableType> TargetTypes = new("Disguise");
 
 		[Desc("Triggers which cause the actor to drop it's disguise. Possible values: None, Attack, Damaged,",
 			"Unload, Infiltrate, Demolish, Move.")]
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[ActorReference(dictionaryReference: LintDictionaryReference.Keys)]
 		[Desc("Conditions to grant when disguised as specified actor.",
 			"A dictionary of [actor id]: [condition].")]
-		public readonly Dictionary<string, string> DisguisedAsConditions = new Dictionary<string, string>();
+		public readonly Dictionary<string, string> DisguisedAsConditions = new();
 
 		[CursorReference]
 		[Desc("Cursor to display when hovering over a valid actor to disguise as.")]

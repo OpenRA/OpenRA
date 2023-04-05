@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class SupportPowerManager : ITick, IResolveOrder, ITechTreeElement
 	{
 		public readonly Actor Self;
-		public readonly Dictionary<string, SupportPowerInstance> Powers = new Dictionary<string, SupportPowerInstance>();
+		public readonly Dictionary<string, SupportPowerInstance> Powers = new();
 
 		public readonly DeveloperMode DevMode;
 		public readonly TechTree TechTree;
@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly string Key;
 
-		public readonly List<SupportPower> Instances = new List<SupportPower>();
+		public readonly List<SupportPower> Instances = new();
 		public readonly int TotalTicks;
 
 		protected int remainingSubTicks;

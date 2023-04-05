@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	class ReplaceFacingAngles : UpdateRule
 	{
-		static readonly Dictionary<string, string[]> TraitFields = new Dictionary<string, string[]>()
+		static readonly Dictionary<string, string[]> TraitFields = new()
 		{
 			{ "Aircraft", new[] { "InitialFacing", "PreviewFacing", "TurnSpeed", "IdleTurnSpeed" } },
 			{ "Mobile", new[] { "InitialFacing", "PreviewFacing", "TurnSpeed" } },
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			{ "AttackTesla", new[] { "FacingTolerance" } },
 		};
 
-		static readonly Dictionary<string, string[]> ProjectileFields = new Dictionary<string, string[]>()
+		static readonly Dictionary<string, string[]> ProjectileFields = new()
 		{
 			{ "Missile", new[] { "HorizontalRateOfTurn", "VerticalRateOfTurn" } }
 		};

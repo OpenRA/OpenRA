@@ -177,10 +177,10 @@ namespace OpenRA
 		public bool VSync = true;
 
 		[Desc("Screen resolution in fullscreen mode.")]
-		public int2 FullscreenSize = new int2(0, 0);
+		public int2 FullscreenSize = new(0, 0);
 
 		[Desc("Screen resolution in windowed mode.")]
-		public int2 WindowedSize = new int2(1024, 768);
+		public int2 WindowedSize = new(1024, 768);
 
 		public bool CursorDouble = false;
 		public WorldViewport ViewportDistance = WorldViewport.Medium;
@@ -253,7 +253,7 @@ namespace OpenRA
 
 		public bool LockMouseWindow = false;
 		public MouseScrollType MouseScroll = MouseScrollType.Joystick;
-		public MouseButtonPreference MouseButtonPreference = new MouseButtonPreference();
+		public MouseButtonPreference MouseButtonPreference = new();
 		public float ViewportEdgeScrollStep = 30f;
 		public float UIScrollSpeed = 50f;
 		public float ZoomSpeed = 0.04f;
@@ -295,20 +295,20 @@ namespace OpenRA
 	{
 		readonly string settingsFile;
 
-		public readonly PlayerSettings Player = new PlayerSettings();
-		public readonly GameSettings Game = new GameSettings();
-		public readonly SoundSettings Sound = new SoundSettings();
-		public readonly GraphicSettings Graphics = new GraphicSettings();
-		public readonly ServerSettings Server = new ServerSettings();
-		public readonly DebugSettings Debug = new DebugSettings();
-		internal Dictionary<string, Hotkey> Keys = new Dictionary<string, Hotkey>();
+		public readonly PlayerSettings Player = new();
+		public readonly GameSettings Game = new();
+		public readonly SoundSettings Sound = new();
+		public readonly GraphicSettings Graphics = new();
+		public readonly ServerSettings Server = new();
+		public readonly DebugSettings Debug = new();
+		internal Dictionary<string, Hotkey> Keys = new();
 
 		public readonly Dictionary<string, object> Sections;
 
 		// A direct clone of the file loaded from disk.
 		// Any changed settings will be merged over this on save,
 		// allowing us to persist any unknown configuration keys
-		readonly List<MiniYamlNode> yamlCache = new List<MiniYamlNode>();
+		readonly List<MiniYamlNode> yamlCache = new();
 
 		public Settings(string file, Arguments args)
 		{

@@ -31,8 +31,8 @@ namespace OpenRA.Server
 		Stopwatch gameTimer;
 		long nextUpdate = 0;
 
-		readonly ConcurrentDictionary<int, long> timestamps = new ConcurrentDictionary<int, long>();
-		readonly ConcurrentDictionary<int, Queue<long>> deltas = new ConcurrentDictionary<int, Queue<long>>();
+		readonly ConcurrentDictionary<int, long> timestamps = new();
+		readonly ConcurrentDictionary<int, Queue<long>> deltas = new();
 
 		int timestep;
 		int ticksPerInterval;

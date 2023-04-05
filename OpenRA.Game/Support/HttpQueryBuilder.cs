@@ -19,7 +19,7 @@ namespace OpenRA.Support
 	public class HttpQueryBuilder : IEnumerable
 	{
 		readonly string url;
-		readonly List<Parameter> parameters = new List<Parameter>();
+		readonly List<Parameter> parameters = new();
 
 		public HttpQueryBuilder(string url)
 		{

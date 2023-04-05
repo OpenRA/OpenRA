@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class ScriptTags
 	{
-		readonly HashSet<string> tags = new HashSet<string>();
+		readonly HashSet<string> tags = new();
 
 		public ScriptTags(ActorInitializer init, ScriptTagsInfo info)
 		{

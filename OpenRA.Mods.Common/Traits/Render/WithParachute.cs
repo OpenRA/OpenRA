@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly bool IsPlayerPalette = true;
 
 		[Desc("Parachute position relative to the paradropped unit.")]
-		public readonly WVec Offset = new WVec(0, 0, 384);
+		public readonly WVec Offset = new(0, 0, 384);
 
 		[Desc("The image that contains the shadow sequence for the paradropped unit.")]
 		public readonly string ShadowImage = null;
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly Color ShadowColor = Color.FromArgb(140, 0, 0, 0);
 
 		[Desc("Shadow position relative to the paradropped unit's intended landing position.")]
-		public readonly WVec ShadowOffset = new WVec(0, 128, 0);
+		public readonly WVec ShadowOffset = new(0, 128, 0);
 
 		[Desc("Z-offset to apply on the shadow sequence.")]
 		public readonly int ShadowZOffset = 0;

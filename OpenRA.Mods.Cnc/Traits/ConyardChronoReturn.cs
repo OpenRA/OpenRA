@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string OriginalActor = "mcv";
 
 		[Desc("Facing of the returned actor.")]
-		public readonly WAngle Facing = new WAngle(384);
+		public readonly WAngle Facing = new(384);
 
 		public readonly string ChronoshiftSound = "chrono2.aud";
 

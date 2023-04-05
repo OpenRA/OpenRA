@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class ActorSpawnerInfo : ConditionalTraitInfo
 	{
 		[Desc("Type of ActorSpawner with which it connects.")]
-		public readonly HashSet<string> Types = new HashSet<string>() { };
+		public readonly HashSet<string> Types = new() { };
 
 		public override object Create(ActorInitializer init) { return new ActorSpawner(this); }
 	}

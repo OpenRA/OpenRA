@@ -430,7 +430,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				currentFrame = currentSprites.Length - 1;
 		}
 
-		readonly Dictionary<string, bool> assetVisByName = new Dictionary<string, bool>();
+		readonly Dictionary<string, bool> assetVisByName = new();
 
 		bool FilterAsset(string filename)
 		{

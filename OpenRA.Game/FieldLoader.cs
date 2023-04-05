@@ -62,14 +62,14 @@ namespace OpenRA
 			throw new NotImplementedException($"FieldLoader: Missing field `{s}` on `{f.Name}`");
 
 		static readonly ConcurrentCache<Type, FieldLoadInfo[]> TypeLoadInfo =
-			new ConcurrentCache<Type, FieldLoadInfo[]>(BuildTypeLoadInfo);
+			new(BuildTypeLoadInfo);
 		static readonly ConcurrentCache<string, BooleanExpression> BooleanExpressionCache =
-			new ConcurrentCache<string, BooleanExpression>(expression => new BooleanExpression(expression));
+			new(expression => new BooleanExpression(expression));
 		static readonly ConcurrentCache<string, IntegerExpression> IntegerExpressionCache =
-			new ConcurrentCache<string, IntegerExpression>(expression => new IntegerExpression(expression));
+			new(expression => new IntegerExpression(expression));
 
 		static readonly Dictionary<Type, Func<string, Type, string, MemberInfo, object>> TypeParsers =
-			new Dictionary<Type, Func<string, Type, string, MemberInfo, object>>()
+			new()
 			{
 				{ typeof(int), ParseInt },
 				{ typeof(ushort), ParseUShort },
@@ -103,7 +103,7 @@ namespace OpenRA
 			};
 
 		static readonly Dictionary<Type, Func<string, Type, string, MiniYaml, MemberInfo, object>> GenericTypeParsers =
-			new Dictionary<Type, Func<string, Type, string, MiniYaml, MemberInfo, object>>()
+			new()
 			{
 				{ typeof(HashSet<>), ParseHashSetOrList },
 				{ typeof(List<>), ParseHashSetOrList },
@@ -749,7 +749,7 @@ namespace OpenRA
 		[AttributeUsage(AttributeTargets.Field)]
 		public class SerializeAttribute : Attribute
 		{
-			public static readonly SerializeAttribute Default = new SerializeAttribute(true);
+			public static readonly SerializeAttribute Default = new(true);
 
 			public bool IsDefault => this == Default;
 

@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public class TerrainInfo
 		{
-			public static readonly TerrainInfo Impassable = new TerrainInfo();
+			public static readonly TerrainInfo Impassable = new();
 
 			public readonly short Cost;
 			public readonly int Speed;
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly LocomotorInfo.TerrainInfo[] terrainInfos;
 		readonly World world;
-		readonly HashSet<CPos> dirtyCells = new HashSet<CPos>();
+		readonly HashSet<CPos> dirtyCells = new();
 		readonly bool sharesCell;
 
 		CellLayer<short>[] cellsCost;

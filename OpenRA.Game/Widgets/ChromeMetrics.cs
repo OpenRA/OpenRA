@@ -16,7 +16,7 @@ namespace OpenRA.Widgets
 {
 	public static class ChromeMetrics
 	{
-		static Dictionary<string, string> data = new Dictionary<string, string>();
+		static Dictionary<string, string> data = new();
 
 		public static void Initialize(ModData modData)
 		{

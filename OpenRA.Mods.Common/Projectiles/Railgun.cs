@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly int ZOffset = 0;
 
 		[Desc("The width of the main trajectory. (\"beam\").")]
-		public readonly WDist BeamWidth = new WDist(86);
+		public readonly WDist BeamWidth = new(86);
 
 		[Desc("The shape of the beam.  Accepts values Cylindrical or Flat.")]
 		public readonly BeamRenderableShape BeamShape = BeamRenderableShape.Cylindrical;
@@ -57,13 +57,13 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly int BeamAlphaDeltaPerTick = -8;
 
 		[Desc("Thickness of the helix")]
-		public readonly WDist HelixThickness = new WDist(32);
+		public readonly WDist HelixThickness = new(32);
 
 		[Desc("The radius of the spiral effect. (WDist)")]
-		public readonly WDist HelixRadius = new WDist(64);
+		public readonly WDist HelixRadius = new(64);
 
 		[Desc("Height of one complete helix turn, measured parallel to the axis of the helix (WDist)")]
-		public readonly WDist HelixPitch = new WDist(512);
+		public readonly WDist HelixPitch = new(512);
 
 		[Desc("Helix radius gets + this value per tick during drawing")]
 		public readonly int HelixRadiusDeltaPerTick = 8;
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly int HelixAlphaDeltaPerTick = -8;
 
 		[Desc("Helix spins by this much over time each tick.")]
-		public readonly WAngle HelixAngleDeltaPerTick = new WAngle(16);
+		public readonly WAngle HelixAngleDeltaPerTick = new(16);
 
 		[Desc("Draw each cycle of helix with this many quantization steps")]
 		public readonly int QuantizationCount = 16;

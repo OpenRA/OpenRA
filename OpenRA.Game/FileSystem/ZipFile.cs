@@ -95,7 +95,7 @@ namespace OpenRA.FileSystem
 
 		sealed class ReadWriteZipFile : ReadOnlyZipFile, IReadWritePackage
 		{
-			readonly MemoryStream pkgStream = new MemoryStream();
+			readonly MemoryStream pkgStream = new();
 
 			public ReadWriteZipFile(string filename, bool create = false)
 			{

@@ -36,7 +36,7 @@ namespace OpenRA
 		public TimeSpan Duration => EndTimeUtc > StartTimeUtc ? EndTimeUtc - StartTimeUtc : TimeSpan.Zero;
 
 		public IList<Player> Players { get; }
-		public HashSet<int> DisabledSpawnPoints = new HashSet<int>();
+		public HashSet<int> DisabledSpawnPoints = new();
 		public MapPreview MapPreview => Game.ModData.MapCache[MapUid];
 		public IEnumerable<Player> HumanPlayers { get { return Players.Where(p => p.IsHuman); } }
 		public bool IsSinglePlayer => HumanPlayers.Count() == 1;

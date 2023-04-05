@@ -81,7 +81,7 @@ namespace OpenRA.Network
 		public const int MetadataMarker = -1;
 		public const int TraitDataMarker = -3;
 
-		readonly MemoryStream ordersStream = new MemoryStream();
+		readonly MemoryStream ordersStream = new();
 
 		// Loaded from file and updated during gameplay
 		public int LastOrdersFrame { get; private set; }
@@ -92,7 +92,7 @@ namespace OpenRA.Network
 		public Session.Global GlobalSettings { get; private set; }
 		public Dictionary<string, Session.Slot> Slots { get; private set; }
 		public Dictionary<string, SlotClient> SlotClients { get; private set; }
-		public Dictionary<int, MiniYaml> TraitData = new Dictionary<int, MiniYaml>();
+		public Dictionary<int, MiniYaml> TraitData = new();
 
 		// Set on game start
 		int[] clientsBySlotIndex = Array.Empty<int>();

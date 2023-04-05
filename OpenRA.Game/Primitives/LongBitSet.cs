@@ -17,7 +17,7 @@ namespace OpenRA.Primitives
 {
 	static class LongBitSetAllocator<T> where T : class
 	{
-		static readonly Cache<string, long> Bits = new Cache<string, long>(Allocate);
+		static readonly Cache<string, long> Bits = new(Allocate);
 		static long nextBits = 1;
 
 		static long Allocate(string value)

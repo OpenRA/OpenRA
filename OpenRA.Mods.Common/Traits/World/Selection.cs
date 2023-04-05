@@ -26,8 +26,8 @@ namespace OpenRA.Mods.Common.Traits
 		public int Hash { get; private set; }
 		public IEnumerable<Actor> Actors => actors;
 
-		readonly HashSet<Actor> actors = new HashSet<Actor>();
-		readonly List<Actor> rolloverActors = new List<Actor>();
+		readonly HashSet<Actor> actors = new();
+		readonly List<Actor> rolloverActors = new();
 		World world;
 
 		INotifySelection[] worldNotifySelection;

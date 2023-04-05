@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string[] Prerequisites = Array.Empty<string>();
 
 		[Desc("Queues that this cost will apply.")]
-		public readonly HashSet<string> Queue = new HashSet<string>();
+		public readonly HashSet<string> Queue = new();
 
 		int IProductionCostModifierInfo.GetProductionCostModifier(TechTree techTree, string queue)
 		{

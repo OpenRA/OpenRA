@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class AutoTargetPriorityInfo : ConditionalTraitInfo, Requires<AutoTargetInfo>
 	{
 		[Desc("Target types that can be AutoTargeted.")]
-		public readonly BitSet<TargetableType> ValidTargets = new BitSet<TargetableType>("Ground", "Water", "Air");
+		public readonly BitSet<TargetableType> ValidTargets = new("Ground", "Water", "Air");
 
 		[Desc("Target types that can't be AutoTargeted.", "Overrules ValidTargets.")]
 		public readonly BitSet<TargetableType> InvalidTargets;

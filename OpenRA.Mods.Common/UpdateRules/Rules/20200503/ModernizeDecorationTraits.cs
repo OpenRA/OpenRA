@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			Right = 8,
 		}
 
-		static readonly Dictionary<LegacyReferencePoints, string> PositionMap = new Dictionary<LegacyReferencePoints, string>()
+		static readonly Dictionary<LegacyReferencePoints, string> PositionMap = new()
 		{
 			{ LegacyReferencePoints.Center, "Center" },
 			{ LegacyReferencePoints.Top, "Top" },
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			{ LegacyReferencePoints.Bottom | LegacyReferencePoints.Right, "BottomRight" }
 		};
 
-		readonly Dictionary<string, List<string>> locations = new Dictionary<string, List<string>>();
+		readonly Dictionary<string, List<string>> locations = new();
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{

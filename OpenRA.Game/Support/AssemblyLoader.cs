@@ -53,8 +53,8 @@ namespace OpenRA.Support
 
 	public class AssemblyLoadContextBuilder
 	{
-		readonly Dictionary<string, ManagedLibrary> managedLibraries = new Dictionary<string, ManagedLibrary>(StringComparer.Ordinal);
-		readonly Dictionary<string, NativeLibrary> nativeLibraries = new Dictionary<string, NativeLibrary>(StringComparer.Ordinal);
+		readonly Dictionary<string, ManagedLibrary> managedLibraries = new(StringComparer.Ordinal);
+		readonly Dictionary<string, NativeLibrary> nativeLibraries = new(StringComparer.Ordinal);
 		string basePath;
 
 		public AssemblyLoadContext Build()

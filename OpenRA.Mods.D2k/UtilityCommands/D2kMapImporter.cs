@@ -24,7 +24,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 
 		// PlayerReference colors in D2k missions only affect chat text and minimap colors because actors use specific palette colors.
 		// So using the colors from the original game's minimap.
-		public static Dictionary<string, (string Faction, Color Color)> PlayerReferenceDataByPlayerName = new Dictionary<string, (string, Color)>
+		public static Dictionary<string, (string Faction, Color Color)> PlayerReferenceDataByPlayerName = new()
 		{
 			{ "Neutral", ("Random", Color.White) },
 			{ "Atreides", ("atreides", Color.FromArgb(90, 115, 148)) },
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			{ "Mercenaries", ("mercenary", Color.FromArgb(156, 132, 8)) }
 		};
 
-		public static Dictionary<int, (string Actor, string Owner)> ActorDataByActorCode = new Dictionary<int, (string, string)>
+		public static Dictionary<int, (string Actor, string Owner)> ActorDataByActorCode = new()
 		{
 			{ 20, ("wormspawner", "Creeps") },
 			{ 23, ("mpspawn", "Neutral") },

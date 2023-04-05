@@ -27,8 +27,8 @@ namespace OpenRA
 		public long LengthSquared => (long)Length * Length;
 
 		public WDist(int r) { Length = r; }
-		public static readonly WDist Zero = new WDist(0);
-		public static readonly WDist MaxValue = new WDist(int.MaxValue);
+		public static readonly WDist Zero = new(0);
+		public static readonly WDist MaxValue = new(int.MaxValue);
 		public static WDist FromCells(int cells) { return new WDist(1024 * cells); }
 
 		public static WDist operator +(WDist a, WDist b) { return new WDist(a.Length + b.Length); }

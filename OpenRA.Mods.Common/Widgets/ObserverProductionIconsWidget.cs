@@ -41,8 +41,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly Dictionary<ProductionQueue, Animation> clocks;
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
-		readonly List<ProductionIcon> productionIcons = new List<ProductionIcon>();
-		readonly List<Rectangle> productionIconsBounds = new List<Rectangle>();
+		readonly List<ProductionIcon> productionIcons = new();
+		readonly List<Rectangle> productionIconsBounds = new();
 
 		readonly float2 iconSize;
 		int lastIconIdx;

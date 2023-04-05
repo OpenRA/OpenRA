@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Levels = 1;
 
 		[Desc("The range to search for extra collectors in.", "Extra collectors will also be granted the crate action.")]
-		public readonly WDist Range = new WDist(3);
+		public readonly WDist Range = new(3);
 
 		[Desc("The maximum number of extra collectors to grant the crate action to.")]
 		public readonly int MaxExtraCollectors = 4;

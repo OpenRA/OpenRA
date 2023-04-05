@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Warheads
 	public class SpreadDamageWarhead : DamageWarhead, IRulesetLoaded<WeaponInfo>
 	{
 		[Desc("Range between falloff steps.")]
-		public readonly WDist Spread = new WDist(43);
+		public readonly WDist Spread = new(43);
 
 		[Desc("Damage percentage at each range step")]
 		public readonly int[] Falloff = { 100, 37, 14, 5, 0 };

@@ -18,7 +18,7 @@ namespace OpenRA.Primitives
 {
 	static class BitSetAllocator<T> where T : class
 	{
-		static readonly Cache<string, BitSetIndex> Bits = new Cache<string, BitSetIndex>(Allocate);
+		static readonly Cache<string, BitSetIndex> Bits = new(Allocate);
 		static BitSetIndex nextBits = 1;
 
 		static BitSetIndex Allocate(string value)

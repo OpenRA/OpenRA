@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			power.AddNode(new MiniYamlNode("Footprint", footprint));
 		}
 
-		readonly List<string> locations = new List<string>();
+		readonly List<string> locations = new();
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{

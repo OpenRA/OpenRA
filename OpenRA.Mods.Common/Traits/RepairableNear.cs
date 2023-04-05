@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[ActorReference]
 		[FieldLoader.Require]
-		public readonly HashSet<string> RepairActors = new HashSet<string> { };
+		public readonly HashSet<string> RepairActors = new() { };
 
 		public readonly WDist CloseEnough = WDist.FromCells(4);
 

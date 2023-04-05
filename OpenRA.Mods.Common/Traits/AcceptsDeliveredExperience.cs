@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class AcceptsDeliveredExperienceInfo : TraitInfo, Requires<GainsExperienceInfo>
 	{
 		[Desc("Accepted `DeliversExperience` types. Leave empty to accept all types.")]
-		public readonly HashSet<string> ValidTypes = new HashSet<string>();
+		public readonly HashSet<string> ValidTypes = new();
 
 		[Desc("Player relationships the owner of the delivering actor needs.")]
 		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally;

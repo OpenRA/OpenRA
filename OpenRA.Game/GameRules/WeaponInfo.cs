@@ -103,16 +103,16 @@ namespace OpenRA.GameRules
 		public readonly bool CanTargetSelf = false;
 
 		[Desc("What types of targets are affected.")]
-		public readonly BitSet<TargetableType> ValidTargets = new BitSet<TargetableType>("Ground", "Water");
+		public readonly BitSet<TargetableType> ValidTargets = new("Ground", "Water");
 
 		[Desc("What types of targets are unaffected.", "Overrules ValidTargets.")]
 		public readonly BitSet<TargetableType> InvalidTargets;
 
-		static readonly BitSet<TargetableType> TargetTypeAir = new BitSet<TargetableType>("Air");
+		static readonly BitSet<TargetableType> TargetTypeAir = new("Air");
 
 		[Desc("If weapon is not directly targeting an actor and targeted position is above this altitude,",
 			"the weapon will ignore terrain target types and only check TargetTypeAir for validity.")]
-		public readonly WDist AirThreshold = new WDist(128);
+		public readonly WDist AirThreshold = new(128);
 
 		[Desc("Delay in ticks between firing shots from the same ammo magazine. If one entry, it will be used for all bursts.",
 			"If multiple entries, their number needs to match Burst - 1.")]
@@ -128,7 +128,7 @@ namespace OpenRA.GameRules
 		public readonly IProjectileInfo Projectile;
 
 		[FieldLoader.LoadUsing(nameof(LoadWarheads))]
-		public readonly List<IWarhead> Warheads = new List<IWarhead>();
+		public readonly List<IWarhead> Warheads = new();
 
 		/// <summary>
 		/// This constructor is used solely for documentation generation.

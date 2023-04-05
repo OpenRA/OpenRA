@@ -59,7 +59,7 @@ namespace OpenRA
 		/// this does not validate whether individual map cells are actually
 		/// projected inside the region.
 		/// </summary>
-		public MapCoordsRegion CandidateMapCoords => new MapCoordsRegion(mapTopLeft, mapBottomRight);
+		public MapCoordsRegion CandidateMapCoords => new(mapTopLeft, mapBottomRight);
 
 		public ProjectedCellRegionEnumerator GetEnumerator()
 		{

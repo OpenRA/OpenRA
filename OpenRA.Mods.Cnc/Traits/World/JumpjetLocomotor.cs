@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly short JumpjetTransitionCost = 0;
 
 		[Desc("The terrain types that this actor can transition on. Leave empty to allow any.")]
-		public readonly HashSet<string> JumpjetTransitionTerrainTypes = new HashSet<string>();
+		public readonly HashSet<string> JumpjetTransitionTerrainTypes = new();
 
 		[Desc("Can this actor transition on slopes?")]
 		public readonly bool JumpjetTransitionOnRamps = true;

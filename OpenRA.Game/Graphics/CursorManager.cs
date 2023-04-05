@@ -28,7 +28,7 @@ namespace OpenRA.Graphics
 			public IHardwareCursor[] Cursors;
 		}
 
-		readonly Dictionary<string, Cursor> cursors = new Dictionary<string, Cursor>();
+		readonly Dictionary<string, Cursor> cursors = new();
 		readonly SheetBuilder sheetBuilder;
 		readonly GraphicSettings graphicSettings;
 

@@ -43,8 +43,8 @@ namespace OpenRA
 		ISoundSource videoSource;
 		ISound music;
 		ISound video;
-		readonly Dictionary<uint, ISound> currentSounds = new Dictionary<uint, ISound>();
-		readonly Dictionary<string, ISound> currentNotifications = new Dictionary<string, ISound>();
+		readonly Dictionary<uint, ISound> currentSounds = new();
+		readonly Dictionary<string, ISound> currentNotifications = new();
 		public bool DummyEngine { get; }
 
 		public Sound(IPlatform platform, SoundSettings soundSettings)

@@ -27,7 +27,7 @@ namespace OpenRA.Graphics
 		readonly IVertexBuffer<Vertex> vertexBuffer;
 		readonly Vertex[] vertices;
 		readonly bool[] ignoreTint;
-		readonly HashSet<int> dirtyRows = new HashSet<int>();
+		readonly HashSet<int> dirtyRows = new();
 		readonly int rowStride;
 		readonly bool restrictToBounds;
 

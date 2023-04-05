@@ -16,7 +16,7 @@ namespace OpenRA.Support
 	class Benchmark
 	{
 		readonly string prefix;
-		readonly Dictionary<string, List<BenchmarkPoint>> samples = new Dictionary<string, List<BenchmarkPoint>>();
+		readonly Dictionary<string, List<BenchmarkPoint>> samples = new();
 
 		public Benchmark(string prefix)
 		{

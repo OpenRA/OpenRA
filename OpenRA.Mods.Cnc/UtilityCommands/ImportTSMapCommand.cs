@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		string IUtilityCommand.Name => "--import-ts-map";
 		bool IUtilityCommand.ValidateArguments(string[] args) { return args.Length >= 2; }
 
-		static readonly Dictionary<byte, string> OverlayToActor = new Dictionary<byte, string>()
+		static readonly Dictionary<byte, string> OverlayToActor = new()
 		{
 			{ 0x00, "gasand" },
 			{ 0x01, "gasand" },
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0xB3, "crate" }
 		};
 
-		static readonly Dictionary<byte, Size> OverlayShapes = new Dictionary<byte, Size>()
+		static readonly Dictionary<byte, Size> OverlayShapes = new()
 		{
 			{ 0x4A, new Size(1, 3) },
 			{ 0x4B, new Size(1, 3) },
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0x7D, new Size(3, 1) },
 		};
 
-		static readonly Dictionary<byte, DamageState> OverlayToHealth = new Dictionary<byte, DamageState>()
+		static readonly Dictionary<byte, DamageState> OverlayToHealth = new()
 		{
 			// 1,3 bridge tiles
 			{ 0x4A, DamageState.Undamaged },
@@ -208,7 +208,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0x65, DamageState.Undamaged },
 		};
 
-		static readonly Dictionary<byte, byte[]> ResourceFromOverlay = new Dictionary<byte, byte[]>()
+		static readonly Dictionary<byte, byte[]> ResourceFromOverlay = new()
 		{
 			// "tib" - Regular Tiberium
 			{
@@ -239,7 +239,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{ 0x03, new byte[] { 0x7E } }
 		};
 
-		static readonly Dictionary<string, string> DeployableActors = new Dictionary<string, string>()
+		static readonly Dictionary<string, string> DeployableActors = new()
 		{
 			{ "gadpsa", "lpst" },
 			{ "gatick", "ttnk" }

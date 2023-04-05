@@ -20,13 +20,13 @@ namespace OpenRA.Mods.Common.Scripting.Global
 			: base(context) { }
 
 		public WAngle North => WAngle.Zero;
-		public WAngle NorthWest => new WAngle(128);
-		public WAngle West => new WAngle(256);
-		public WAngle SouthWest => new WAngle(384);
-		public WAngle South => new WAngle(512);
-		public WAngle SouthEast => new WAngle(640);
-		public WAngle East => new WAngle(768);
-		public WAngle NorthEast => new WAngle(896);
+		public WAngle NorthWest => new(128);
+		public WAngle West => new(256);
+		public WAngle SouthWest => new(384);
+		public WAngle South => new(512);
+		public WAngle SouthEast => new(640);
+		public WAngle East => new(768);
+		public WAngle NorthEast => new(896);
 
 		[Desc("Create an arbitrary angle.")]
 		public WAngle New(int a) { return new WAngle(a); }

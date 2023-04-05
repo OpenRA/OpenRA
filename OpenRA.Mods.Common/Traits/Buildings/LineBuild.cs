@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int Range = 5;
 
 		[Desc("LineBuildNode 'Types' to attach to.")]
-		public readonly HashSet<string> NodeTypes = new HashSet<string> { "wall" };
+		public readonly HashSet<string> NodeTypes = new() { "wall" };
 
 		[ActorReference(typeof(LineBuildInfo))]
 		[Desc("Actor type for line-built segments (defaults to same actor).")]

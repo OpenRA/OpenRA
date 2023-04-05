@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		static readonly string[] SourceFiles = { "art.ini", "artfs.ini", "artmd.ini" };
 
-		readonly Dictionary<string, int> selectionHeight = new Dictionary<string, int>();
+		readonly Dictionary<string, int> selectionHeight = new();
 
 		bool complete;
 

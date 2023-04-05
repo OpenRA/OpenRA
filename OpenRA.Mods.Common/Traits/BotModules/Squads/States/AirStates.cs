@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 {
 	abstract class AirStateBase : StateBase
 	{
-		static readonly BitSet<TargetableType> AirTargetTypes = new BitSet<TargetableType>("Air");
+		static readonly BitSet<TargetableType> AirTargetTypes = new("Air");
 
 		protected const int MissileUnitMultiplier = 3;
 

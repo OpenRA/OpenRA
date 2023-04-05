@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Turret = "primary";
 
 		[Desc("Speed at which the turret turns.")]
-		public readonly WAngle TurnSpeed = new WAngle(512);
+		public readonly WAngle TurnSpeed = new(512);
 
 		public readonly WAngle InitialFacing = WAngle.Zero;
 

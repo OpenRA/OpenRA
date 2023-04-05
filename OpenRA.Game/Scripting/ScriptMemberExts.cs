@@ -18,7 +18,7 @@ namespace OpenRA.Scripting
 {
 	public static class ScriptMemberExts
 	{
-		static readonly Dictionary<string, string> LuaTypeNameReplacements = new Dictionary<string, string>()
+		static readonly Dictionary<string, string> LuaTypeNameReplacements = new()
 		{
 			{ "Void", "void" },
 			{ "Int32", "int" },

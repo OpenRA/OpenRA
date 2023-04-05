@@ -115,15 +115,15 @@ namespace OpenRA.Server
 		[TranslationReference]
 		const string GameStarted = "notification-game-started";
 
-		public readonly MersenneTwister Random = new MersenneTwister();
+		public readonly MersenneTwister Random = new();
 		public readonly ServerType Type;
 
-		public readonly List<Connection> Conns = new List<Connection>();
+		public readonly List<Connection> Conns = new();
 
 		public Session LobbyInfo;
 		public ServerSettings Settings;
 		public ModData ModData;
-		public List<string> TempBans = new List<string>();
+		public List<string> TempBans = new();
 
 		// Managed by LobbyCommands
 		public MapPreview Map;
@@ -134,19 +134,19 @@ namespace OpenRA.Server
 		public int OrderLatency = 1;
 
 		readonly int randomSeed;
-		readonly List<TcpListener> listeners = new List<TcpListener>();
-		readonly TypeDictionary serverTraits = new TypeDictionary();
+		readonly List<TcpListener> listeners = new();
+		readonly TypeDictionary serverTraits = new();
 		readonly PlayerDatabase playerDatabase;
 
 		OrderBuffer orderBuffer;
 
 		volatile ServerState internalState = ServerState.WaitingPlayers;
 
-		readonly BlockingCollection<IServerEvent> events = new BlockingCollection<IServerEvent>();
+		readonly BlockingCollection<IServerEvent> events = new();
 
 		ReplayRecorder recorder;
 		GameInformation gameInfo;
-		readonly List<GameInformation.Player> worldPlayers = new List<GameInformation.Player>();
+		readonly List<GameInformation.Player> worldPlayers = new();
 		readonly Stopwatch pingUpdated = Stopwatch.StartNew();
 		readonly PlayerMessageTracker playerMessageTracker;
 
@@ -802,7 +802,7 @@ namespace OpenRA.Server
 			recorder = null;
 		}
 
-		readonly Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
+		readonly Dictionary<int, byte[]> syncForFrame = new();
 		int lastDefeatStateFrame;
 		ulong lastDefeatState;
 

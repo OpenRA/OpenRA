@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		// This makes sure that the keys are unique with respect to the registering ITechTreeElement.
 		readonly string prefix;
 
-		readonly Dictionary<ActorInfo, bool> overlayActive = new Dictionary<ActorInfo, bool>();
+		readonly Dictionary<ActorInfo, bool> overlayActive = new();
 
 		public ProductionIconOverlayManager(ActorInitializer init, ProductionIconOverlayManagerInfo info)
 		{

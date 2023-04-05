@@ -27,8 +27,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class LineBuildSegmentExternalCondition : ConditionalTrait<LineBuildSegmentExternalConditionInfo>, INotifyLineBuildSegmentsChanged
 	{
-		readonly HashSet<Actor> segments = new HashSet<Actor>();
-		readonly Dictionary<Actor, int> tokens = new Dictionary<Actor, int>();
+		readonly HashSet<Actor> segments = new();
+		readonly Dictionary<Actor, int> tokens = new();
 
 		public LineBuildSegmentExternalCondition(LineBuildSegmentExternalConditionInfo info)
 			: base(info) { }

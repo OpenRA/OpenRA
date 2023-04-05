@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string Voice = "Action";
 
 		[Desc("Tolerance for attack angle. Range [0, 512], 512 covers 360 degrees.")]
-		public readonly WAngle FacingTolerance = new WAngle(512);
+		public readonly WAngle FacingTolerance = new(512);
 
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{

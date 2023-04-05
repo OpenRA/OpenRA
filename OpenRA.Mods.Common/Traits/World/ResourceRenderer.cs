@@ -98,11 +98,11 @@ namespace OpenRA.Mods.Common.Traits
 		protected readonly ResourceRendererInfo Info;
 		protected readonly IResourceLayer ResourceLayer;
 		protected readonly CellLayer<RendererCellContents> RenderContents;
-		protected readonly Dictionary<string, Dictionary<string, ISpriteSequence>> Variants = new Dictionary<string, Dictionary<string, ISpriteSequence>>();
+		protected readonly Dictionary<string, Dictionary<string, ISpriteSequence>> Variants = new();
 		protected readonly World World;
 
-		readonly HashSet<CPos> dirty = new HashSet<CPos>();
-		readonly Queue<CPos> cleanDirty = new Queue<CPos>();
+		readonly HashSet<CPos> dirty = new();
+		readonly Queue<CPos> cleanDirty = new();
 		TerrainSpriteLayer shadowLayer;
 		TerrainSpriteLayer spriteLayer;
 		bool disposed;

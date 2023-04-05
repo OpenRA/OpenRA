@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("Replacement type (matched against Types in Replaceable).")]
-		public readonly HashSet<string> ReplaceableTypes = new HashSet<string>();
+		public readonly HashSet<string> ReplaceableTypes = new();
 	}
 
 	public class Replacement { }

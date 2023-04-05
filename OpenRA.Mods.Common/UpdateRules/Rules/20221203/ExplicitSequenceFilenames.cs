@@ -27,8 +27,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		string defaultSpriteExtension = ".shp";
 		List<MiniYamlNode> resolvedImagesNodes;
-		readonly Dictionary<string, string> tilesetExtensions = new Dictionary<string, string>();
-		readonly Dictionary<string, string> tilesetCodes = new Dictionary<string, string>();
+		readonly Dictionary<string, string> tilesetExtensions = new();
+		readonly Dictionary<string, string> tilesetCodes = new();
 		bool parseModYaml = true;
 		bool reportModYamlChanges;
 		bool disabled;

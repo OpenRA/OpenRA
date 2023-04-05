@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class DrawLineToTarget : IRenderAboveShroud, IRenderAnnotationsWhenSelected, INotifySelected
 	{
 		readonly DrawLineToTargetInfo info;
-		readonly List<IRenderable> renderableCache = new List<IRenderable>();
+		readonly List<IRenderable> renderableCache = new();
 		long lifetime;
 
 		public DrawLineToTarget(DrawLineToTargetInfo info)

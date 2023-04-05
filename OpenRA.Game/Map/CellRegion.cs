@@ -102,7 +102,7 @@ namespace OpenRA
 			return uv.U >= mapTopLeft.U && uv.U <= mapBottomRight.U && uv.V >= mapTopLeft.V && uv.V <= mapBottomRight.V;
 		}
 
-		public MapCoordsRegion MapCoords => new MapCoordsRegion(mapTopLeft, mapBottomRight);
+		public MapCoordsRegion MapCoords => new(mapTopLeft, mapBottomRight);
 
 		public CellRegionEnumerator GetEnumerator()
 		{

@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget buttonContainer;
 		readonly ButtonWidget buttonTemplate;
 		readonly int2 buttonStride;
-		readonly List<ButtonWidget> buttons = new List<ButtonWidget>();
+		readonly List<ButtonWidget> buttons = new();
 
 		readonly ModData modData;
 		readonly Action onExit;

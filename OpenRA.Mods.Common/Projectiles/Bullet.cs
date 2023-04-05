@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly bool Blockable = true;
 
 		[Desc("Width of projectile (used for finding blocking actors).")]
-		public readonly WDist Width = new WDist(1);
+		public readonly WDist Width = new(1);
 
 		[Desc("Arc in WAngles, two values indicate variable arc.")]
 		public readonly WAngle[] LaunchAngle = { WAngle.Zero };
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly string BounceSound = null;
 
 		[Desc("Terrain where the projectile explodes instead of bouncing.")]
-		public readonly HashSet<string> InvalidBounceTerrain = new HashSet<string>();
+		public readonly HashSet<string> InvalidBounceTerrain = new();
 
 		[Desc("Trigger the explosion if the projectile touches an actor thats owner has these player relationships.")]
 		public readonly PlayerRelationship ValidBounceBlockerRelationships = PlayerRelationship.Enemy | PlayerRelationship.Neutral;
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		public readonly int ContrailZOffset = 2047;
 
 		[Desc("Thickness of the emitted line.")]
-		public readonly WDist ContrailWidth = new WDist(64);
+		public readonly WDist ContrailWidth = new(64);
 
 		[Desc("RGB color at the contrail start.")]
 		public readonly Color ContrailStartColor = Color.White;

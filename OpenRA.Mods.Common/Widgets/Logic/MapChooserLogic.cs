@@ -77,9 +77,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		MapClassification currentTab;
 
-		readonly Dictionary<MapClassification, ScrollPanelWidget> scrollpanels = new Dictionary<MapClassification, ScrollPanelWidget>();
+		readonly Dictionary<MapClassification, ScrollPanelWidget> scrollpanels = new();
 
-		readonly Dictionary<MapClassification, MapPreview[]> tabMaps = new Dictionary<MapClassification, MapPreview[]>();
+		readonly Dictionary<MapClassification, MapPreview[]> tabMaps = new();
 		string[] visibleMaps;
 
 		string selectedUid;

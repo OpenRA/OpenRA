@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			public uint Len;
 		}
 
-		readonly PublicKey pubkey = new PublicKey();
+		readonly PublicKey pubkey = new();
 
 		readonly uint[] globOne = new uint[64];
 		uint globOneBitLen, globOneLenXTwo;

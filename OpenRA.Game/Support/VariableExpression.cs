@@ -24,7 +24,7 @@ namespace OpenRA.Support
 		public static readonly IReadOnlyDictionary<string, int> NoVariables = new ReadOnlyDictionary<string, int>(new Dictionary<string, int>());
 
 		public readonly string Expression;
-		readonly HashSet<string> variables = new HashSet<string>();
+		readonly HashSet<string> variables = new();
 		public IEnumerable<string> Variables => variables;
 
 		enum CharClass { Whitespace, Operator, Mixed, Id, Digit }
@@ -716,8 +716,8 @@ namespace OpenRA.Support
 
 		class AstStack
 		{
-			readonly List<Expression> expressions = new List<Expression>();
-			readonly List<ExpressionType> types = new List<ExpressionType>();
+			readonly List<Expression> expressions = new();
+			readonly List<ExpressionType> types = new();
 
 			public ExpressionType PeekType() { return types[^1]; }
 
@@ -774,7 +774,7 @@ namespace OpenRA.Support
 
 		class Compiler
 		{
-			readonly AstStack ast = new AstStack();
+			readonly AstStack ast = new();
 
 			public Expression Build(Token[] postfix, ExpressionType resultType)
 			{

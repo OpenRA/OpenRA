@@ -81,18 +81,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget newSpectatorTemplate;
 
 		readonly ScrollPanelWidget lobbyChatPanel;
-		readonly Dictionary<TextNotificationPool, Widget> chatTemplates = new Dictionary<TextNotificationPool, Widget>();
+		readonly Dictionary<TextNotificationPool, Widget> chatTemplates = new();
 		readonly TextFieldWidget chatTextField;
 		readonly CachedTransform<int, string> chatAvailableIn;
 		readonly string chatDisabled;
 
 		readonly ScrollPanelWidget players;
 
-		readonly Dictionary<string, LobbyFaction> factions = new Dictionary<string, LobbyFaction>();
+		readonly Dictionary<string, LobbyFaction> factions = new();
 
 		readonly ColorPickerManagerInfo colorManager;
 
-		readonly TabCompletionLogic tabCompletion = new TabCompletionLogic();
+		readonly TabCompletionLogic tabCompletion = new();
 
 		MapPreview map;
 		Session.MapStatus mapStatus;
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool insufficientPlayerSpawns;
 		bool teamChat;
 		bool updateDiscordStatus = true;
-		Dictionary<int, SpawnOccupant> spawnOccupants = new Dictionary<int, SpawnOccupant>();
+		Dictionary<int, SpawnOccupant> spawnOccupants = new();
 
 		readonly string chatLineSound = ChromeMetrics.Get<string>("ChatLineSound");
 

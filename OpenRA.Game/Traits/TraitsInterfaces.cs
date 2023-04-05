@@ -563,7 +563,7 @@ namespace OpenRA.Traits
 
 	public class LobbyBooleanOption : LobbyOption
 	{
-		static readonly Dictionary<string, string> BoolValues = new Dictionary<string, string>()
+		static readonly Dictionary<string, string> BoolValues = new()
 		{
 			{ true.ToString(), "Enabled" },
 			{ false.ToString(), "Disabled" }

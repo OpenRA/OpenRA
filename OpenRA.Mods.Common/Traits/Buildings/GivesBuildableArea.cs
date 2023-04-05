@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[FieldLoader.Require]
 		[Desc("Types of buildable area this actor gives.")]
-		public readonly HashSet<string> AreaTypes = new HashSet<string>();
+		public readonly HashSet<string> AreaTypes = new();
 
 		public override object Create(ActorInitializer init) { return new GivesBuildableArea(this); }
 	}
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public GivesBuildableArea(GivesBuildableAreaInfo info)
 			: base(info) { }
 
-		readonly HashSet<string> noAreaTypes = new HashSet<string>();
+		readonly HashSet<string> noAreaTypes = new();
 
 		public HashSet<string> AreaTypes => !IsTraitDisabled ? Info.AreaTypes : noAreaTypes;
 	}

@@ -38,8 +38,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		class Bin
 		{
-			public readonly List<Actor> Actors = new List<Actor>();
-			public readonly List<ProximityTrigger> ProximityTriggers = new List<ProximityTrigger>();
+			public readonly List<Actor> Actors = new();
+			public readonly List<ProximityTrigger> ProximityTriggers = new();
 		}
 
 		class CellTrigger
@@ -49,8 +49,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			readonly Action<Actor> onActorEntered;
 			readonly Action<Actor> onActorExited;
-			readonly HashSet<Actor> oldActors = new HashSet<Actor>();
-			readonly HashSet<Actor> currentActors = new HashSet<Actor>();
+			readonly HashSet<Actor> oldActors = new();
+			readonly HashSet<Actor> currentActors = new();
 
 			public CellTrigger(CPos[] footprint, Action<Actor> onActorEntered, Action<Actor> onActorExited)
 			{
@@ -98,8 +98,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			readonly Action<Actor> onActorEntered;
 			readonly Action<Actor> onActorExited;
-			readonly HashSet<Actor> oldActors = new HashSet<Actor>();
-			readonly HashSet<Actor> currentActors = new HashSet<Actor>();
+			readonly HashSet<Actor> oldActors = new();
+			readonly HashSet<Actor> currentActors = new();
 
 			WPos position;
 			WDist range;
@@ -166,9 +166,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly ActorMapInfo info;
 		readonly Map map;
-		readonly Dictionary<int, CellTrigger> cellTriggers = new Dictionary<int, CellTrigger>();
-		readonly Dictionary<CPos, List<CellTrigger>> cellTriggerInfluence = new Dictionary<CPos, List<CellTrigger>>();
-		readonly Dictionary<int, ProximityTrigger> proximityTriggers = new Dictionary<int, ProximityTrigger>();
+		readonly Dictionary<int, CellTrigger> cellTriggers = new();
+		readonly Dictionary<CPos, List<CellTrigger>> cellTriggerInfluence = new();
+		readonly Dictionary<int, ProximityTrigger> proximityTriggers = new();
 		int nextTriggerId;
 
 		CellLayer<InfluenceNode>[] influence;
@@ -181,8 +181,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		// Position updates are done in one pass
 		// to ensure consistency during a tick
-		readonly HashSet<Actor> addActorPosition = new HashSet<Actor>();
-		readonly HashSet<Actor> removeActorPosition = new HashSet<Actor>();
+		readonly HashSet<Actor> addActorPosition = new();
+		readonly HashSet<Actor> removeActorPosition = new();
 		readonly Predicate<Actor> actorShouldBeRemoved;
 
 		public WDist LargestActorRadius { get; }

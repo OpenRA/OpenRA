@@ -28,7 +28,7 @@ namespace OpenRA
 	public static class Sync
 	{
 		static readonly ConcurrentCache<Type, Func<object, int>> HashFunctions =
-			new ConcurrentCache<Type, Func<object, int>>(GenerateHashFunc);
+			new(GenerateHashFunc);
 
 		internal static Func<object, int> GetHashFunction(ISync sync)
 		{
@@ -40,7 +40,7 @@ namespace OpenRA
 			return GetHashFunction(sync)(sync);
 		}
 
-		static readonly Dictionary<Type, MethodInfo> CustomHashFunctions = new Dictionary<Type, MethodInfo>()
+		static readonly Dictionary<Type, MethodInfo> CustomHashFunctions = new()
 		{
 			{ typeof(int2), ((Func<int2, int>)HashInt2).Method },
 			{ typeof(CPos), ((Func<CPos, int>)HashCPos).Method },

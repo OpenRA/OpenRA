@@ -29,9 +29,9 @@ namespace OpenRA.Mods.Common.Widgets
 		public string MissionTemplate = "CHAT_LINE_TEMPLATE";
 		public string FeedbackTemplate = "TRANSIENT_LINE_TEMPLATE";
 		public string TransientsTemplate = "TRANSIENT_LINE_TEMPLATE";
-		readonly Dictionary<TextNotificationPool, Widget> templates = new Dictionary<TextNotificationPool, Widget>();
+		readonly Dictionary<TextNotificationPool, Widget> templates = new();
 
-		readonly List<long> expirations = new List<long>();
+		readonly List<long> expirations = new();
 
 		Rectangle overflowDrawBounds = Rectangle.Empty;
 		public override Rectangle EventBounds => Rectangle.Empty;

@@ -33,10 +33,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int MaxRadius = 4;
 
 		[Desc("The list of unit target types we are allowed to duplicate.")]
-		public readonly BitSet<TargetableType> ValidTargets = new BitSet<TargetableType>("Ground", "Water");
+		public readonly BitSet<TargetableType> ValidTargets = new("Ground", "Water");
 
 		[Desc("Which factions this crate action can occur for.")]
-		public readonly HashSet<string> ValidFactions = new HashSet<string>();
+		public readonly HashSet<string> ValidFactions = new();
 
 		[Desc("Is the new duplicates given to a specific owner, regardless of whom collected it?")]
 		public readonly string Owner = null;

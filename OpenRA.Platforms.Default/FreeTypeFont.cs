@@ -53,7 +53,7 @@ namespace OpenRA.Platforms.Default
 
 	public sealed class FreeTypeFont : IFont
 	{
-		static readonly FontGlyph EmptyGlyph = new FontGlyph
+		static readonly FontGlyph EmptyGlyph = new()
 		{
 			Offset = int2.Zero,
 			Size = new Size(0, 0),

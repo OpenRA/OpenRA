@@ -17,9 +17,9 @@ namespace OpenRA.Mods.Common.Graphics
 {
 	public class IsometricSelectionBoxAnnotationRenderable : IRenderable, IFinalizedRenderable
 	{
-		static readonly float2 TLOffset = new float2(-12, -6);
-		static readonly float2 TROffset = new float2(12, -6);
-		static readonly float2 TOffset = new float2(0, -13);
+		static readonly float2 TLOffset = new(-12, -6);
+		static readonly float2 TROffset = new(12, -6);
+		static readonly float2 TOffset = new(0, -13);
 		static readonly float2[] Offsets =
 		{
 			-TROffset, -TLOffset, -TOffset,

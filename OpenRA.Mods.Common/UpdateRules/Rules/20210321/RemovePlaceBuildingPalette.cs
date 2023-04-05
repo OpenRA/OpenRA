@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"SequencePlaceBuildingPreview, and D2kActorPreviewPlaceBuildingPreview traits have been removed.\n" +
 			"New Alpha and LineBuildSegmentAlpha properties have been added in their place.";
 
-		readonly List<string> locations = new List<string>();
+		readonly List<string> locations = new();
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{

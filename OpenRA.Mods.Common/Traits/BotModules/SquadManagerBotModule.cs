@@ -23,27 +23,27 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[ActorReference]
 		[Desc("Actor types that are valid for naval squads.")]
-		public readonly HashSet<string> NavalUnitsTypes = new HashSet<string>();
+		public readonly HashSet<string> NavalUnitsTypes = new();
 
 		[ActorReference]
 		[Desc("Actor types that are excluded from ground attacks.")]
-		public readonly HashSet<string> AirUnitsTypes = new HashSet<string>();
+		public readonly HashSet<string> AirUnitsTypes = new();
 
 		[ActorReference]
 		[Desc("Actor types that should generally be excluded from attack squads.")]
-		public readonly HashSet<string> ExcludeFromSquadsTypes = new HashSet<string>();
+		public readonly HashSet<string> ExcludeFromSquadsTypes = new();
 
 		[ActorReference]
 		[Desc("Actor types that are considered construction yards (base builders).")]
-		public readonly HashSet<string> ConstructionYardTypes = new HashSet<string>();
+		public readonly HashSet<string> ConstructionYardTypes = new();
 
 		[ActorReference]
 		[Desc("Enemy building types around which to scan for targets for naval squads.")]
-		public readonly HashSet<string> NavalProductionTypes = new HashSet<string>();
+		public readonly HashSet<string> NavalProductionTypes = new();
 
 		[ActorReference]
 		[Desc("Own actor types that are prioritized when defending.")]
-		public readonly HashSet<string> ProtectionTypes = new HashSet<string>();
+		public readonly HashSet<string> ProtectionTypes = new();
 
 		[Desc("Minimum number of units AI must have before attacking.")]
 		public readonly int SquadSize = 8;
@@ -114,12 +114,12 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Player Player;
 
 		readonly Predicate<Actor> unitCannotBeOrdered;
-		readonly List<Actor> unitsHangingAroundTheBase = new List<Actor>();
+		readonly List<Actor> unitsHangingAroundTheBase = new();
 
 		// Units that the bot already knows about. Any unit not on this list needs to be given a role.
-		readonly List<Actor> activeUnits = new List<Actor>();
+		readonly List<Actor> activeUnits = new();
 
-		public List<Squad> Squads = new List<Squad>();
+		public List<Squad> Squads = new();
 
 		IBot bot;
 		IBotPositionsUpdated[] notifyPositionsUpdated;

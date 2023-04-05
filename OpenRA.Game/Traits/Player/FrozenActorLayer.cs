@@ -39,7 +39,7 @@ namespace OpenRA.Traits
 		readonly Actor actor;
 		readonly ICreatesFrozenActors frozenTrait;
 		readonly Shroud shroud;
-		readonly List<WPos> targetablePositions = new List<WPos>();
+		readonly List<WPos> targetablePositions = new();
 
 		public Player Viewer { get; }
 		public Player Owner { get; private set; }
@@ -253,7 +253,7 @@ namespace OpenRA.Traits
 		readonly Player owner;
 		readonly Dictionary<uint, FrozenActor> frozenActorsById;
 		readonly SpatiallyPartitioned<uint> partitionedFrozenActorIds;
-		readonly HashSet<uint> dirtyFrozenActorIds = new HashSet<uint>();
+		readonly HashSet<uint> dirtyFrozenActorIds = new();
 
 		public FrozenActorLayer(Actor self, FrozenActorLayerInfo info)
 		{

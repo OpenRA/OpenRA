@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WAngle InitialFacing = WAngle.Zero;
 
 		[Desc("Speed at which the actor turns.")]
-		public readonly WAngle TurnSpeed = new WAngle(512);
+		public readonly WAngle TurnSpeed = new(512);
 
 		public readonly int Speed = 1;
 
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		[CursorReference(dictionaryReference: LintDictionaryReference.Values)]
 		[Desc("Cursor overrides to display for specific terrain types.",
 			"A dictionary of [terrain type]: [cursor name].")]
-		public readonly Dictionary<string, string> TerrainCursors = new Dictionary<string, string>();
+		public readonly Dictionary<string, string> TerrainCursors = new();
 
 		[CursorReference]
 		[Desc("Cursor to display when a move order cannot be issued at target location.")]
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly Color TargetLineColor = Color.Green;
 
 		[Desc("Facing to use for actor previews (map editor, color picker, etc)")]
-		public readonly WAngle PreviewFacing = new WAngle(384);
+		public readonly WAngle PreviewFacing = new(384);
 
 		[Desc("Display order for the facing slider in the map editor")]
 		public readonly int EditorFacingDisplayOrder = 3;
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("The distance from the edge of a cell over which the actor will adjust its tilt when moving between cells with different ramp types.",
 			"-1 means that the actor does not tilt on slopes.")]
-		public readonly WDist TerrainOrientationAdjustmentMargin = new WDist(-1);
+		public readonly WDist TerrainOrientationAdjustmentMargin = new(-1);
 
 		IEnumerable<ActorInit> IActorPreviewInitInfo.ActorPreviewInits(ActorInfo ai, ActorPreviewType type)
 		{

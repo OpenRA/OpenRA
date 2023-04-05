@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		[ActorReference]
 		[FieldLoader.Require]
-		public readonly HashSet<string> RepairActors = new HashSet<string> { };
+		public readonly HashSet<string> RepairActors = new() { };
 
 		[VoiceReference]
 		public readonly string Voice = "Action";

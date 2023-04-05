@@ -19,15 +19,13 @@ namespace OpenRA
 	public class Utility
 	{
 		static readonly ConcurrentCache<Type, FieldInfo[]> TypeFields =
-			new ConcurrentCache<Type, FieldInfo[]>(type => type.GetFields());
+			new(type => type.GetFields());
 
 		static readonly ConcurrentCache<(MemberInfo Member, Type AttributeType), bool> MemberHasAttribute =
-			new ConcurrentCache<(MemberInfo Member, Type AttributeType), bool>(
-				x => Attribute.IsDefined(x.Member, x.AttributeType));
+			new(x => Attribute.IsDefined(x.Member, x.AttributeType));
 
 		static readonly ConcurrentCache<(MemberInfo Member, Type AttributeType, bool Inherit), object[]> MemberCustomAttributes =
-			new ConcurrentCache<(MemberInfo Member, Type AttributeType, bool Inherit), object[]>(
-				x => x.Member.GetCustomAttributes(x.AttributeType, x.Inherit));
+			new(x => x.Member.GetCustomAttributes(x.AttributeType, x.Inherit));
 
 		public static FieldInfo[] GetFields(Type type)
 		{

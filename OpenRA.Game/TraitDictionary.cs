@@ -44,7 +44,7 @@ namespace OpenRA
 		static readonly Func<Type, ITraitContainer> CreateTraitContainer = t =>
 			(ITraitContainer)typeof(TraitContainer<>).MakeGenericType(t).GetConstructor(Type.EmptyTypes).Invoke(null);
 
-		readonly Dictionary<Type, ITraitContainer> traits = new Dictionary<Type, ITraitContainer>();
+		readonly Dictionary<Type, ITraitContainer> traits = new();
 
 		ITraitContainer InnerGet(Type t)
 		{
@@ -143,9 +143,9 @@ namespace OpenRA
 
 		class TraitContainer<T> : ITraitContainer
 		{
-			readonly List<Actor> actors = new List<Actor>();
-			readonly List<T> traits = new List<T>();
-			readonly PerfTickLogger perfLogger = new PerfTickLogger();
+			readonly List<Actor> actors = new();
+			readonly List<T> traits = new();
+			readonly PerfTickLogger perfLogger = new();
 
 			public int Queries { get; private set; }
 
@@ -277,7 +277,7 @@ namespace OpenRA
 
 				public void Reset() { index = -1; }
 				public bool MoveNext() { return ++index < actors.Count; }
-				public TraitPair<T> Current => new TraitPair<T>(actors[index], traits[index]);
+				public TraitPair<T> Current => new(actors[index], traits[index]);
 				object System.Collections.IEnumerator.Current => Current;
 				public void Dispose() { }
 			}

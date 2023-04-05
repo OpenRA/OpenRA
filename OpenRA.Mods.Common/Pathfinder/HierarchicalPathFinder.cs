@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		readonly Locomotor locomotor;
 		readonly IActorMap actorMap;
 		readonly Func<CPos, CPos, int> costEstimator;
-		readonly HashSet<int> dirtyGridIndexes = new HashSet<int>();
+		readonly HashSet<int> dirtyGridIndexes = new();
 		readonly HashSet<CPos> cellsWithBlockingActor;
 		Grid mapBounds;
 		int gridXs;
