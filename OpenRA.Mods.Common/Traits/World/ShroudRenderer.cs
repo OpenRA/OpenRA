@@ -275,7 +275,7 @@ namespace OpenRA.Mods.Common.Traits
 			return info.UseExtendedIndex ? edges ^ ucorner : edges & Edges.AllCorners;
 		}
 
-		(Edges, Edges) GetEdges(PPos puv)
+		(Edges EdgesShroud, Edges EdgesFog) GetEdges(PPos puv)
 		{
 			var cv = cellVisibility(puv);
 
