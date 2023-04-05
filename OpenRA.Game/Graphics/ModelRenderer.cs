@@ -167,8 +167,7 @@ namespace OpenRA.Graphics
 			CalculateSpriteGeometry(tl, br, 1, out var spriteSize, out var spriteOffset);
 			CalculateSpriteGeometry(stl, sbr, 2, out var shadowSpriteSize, out var shadowSpriteOffset);
 
-			if (sheetBuilderForFrame == null)
-				sheetBuilderForFrame = new SheetBuilder(SheetType.BGRA, AllocateSheet);
+			sheetBuilderForFrame ??= new SheetBuilder(SheetType.BGRA, AllocateSheet);
 
 			var sprite = sheetBuilderForFrame.Allocate(spriteSize, 0, spriteOffset);
 			var shadowSprite = sheetBuilderForFrame.Allocate(shadowSpriteSize, 0, shadowSpriteOffset);

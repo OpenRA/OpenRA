@@ -41,8 +41,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 				return;
 
 			// Start the timer on the first render
-			if (lastUpdate == null)
-				lastUpdate = Stopwatch.StartNew();
+			lastUpdate ??= Stopwatch.StartNew();
 
 			// Check for window DPI changes
 			// We can't trust notifications to be working during initialization, so must do this manually

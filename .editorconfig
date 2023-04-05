@@ -137,7 +137,7 @@ dotnet_diagnostic.IDE0050.severity = silent
 # IDE0054/IDE0074 Use compound assignment/Use coalesce compound assignment
 #dotnet_style_prefer_compound_assignment = true
 dotnet_diagnostic.IDE0054.severity = warning
-dotnet_diagnostic.IDE0074.severity = silent # Requires C# 8 - TODO Consider enabling
+dotnet_diagnostic.IDE0074.severity = warning
 
 # IDE0056 Use index operator
 #csharp_style_prefer_index_operator = true

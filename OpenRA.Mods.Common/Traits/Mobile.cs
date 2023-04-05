@@ -120,8 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
 		{
 			// PERF: Avoid repeated trait queries on the hot path
-			if (locomotor == null)
-				locomotor = world.WorldActor.TraitsImplementing<Locomotor>()
+			locomotor ??= world.WorldActor.TraitsImplementing<Locomotor>()
 				   .SingleOrDefault(l => l.Info.Name == Locomotor);
 
 			return locomotor.MovementCostToEnterCell(
@@ -131,8 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool CanStayInCell(World world, CPos cell)
 		{
 			// PERF: Avoid repeated trait queries on the hot path
-			if (locomotor == null)
-				locomotor = world.WorldActor.TraitsImplementing<Locomotor>()
+			locomotor ??= world.WorldActor.TraitsImplementing<Locomotor>()
 				   .SingleOrDefault(l => l.Info.Name == Locomotor);
 
 			if (cell.Layer == CustomMovementLayerType.Tunnel)

@@ -155,8 +155,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var panel = panelContainer.Get(panelID);
 
-			if (activePanel == null)
-				activePanel = panelID;
+			activePanel ??= panelID;
 
 			panel.IsVisible = () => activePanel == panelID;
 

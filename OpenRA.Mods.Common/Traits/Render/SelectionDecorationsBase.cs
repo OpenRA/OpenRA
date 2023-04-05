@@ -101,8 +101,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			if (selected && self.World.LocalPlayer != null)
 			{
-				if (developerMode == null)
-					developerMode = self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
+				developerMode ??= self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
 
 				if (developerMode.PathDebug)
 					yield return new TargetLineRenderable(ActivityTargetPath(self), Color.Green, 1, 2);

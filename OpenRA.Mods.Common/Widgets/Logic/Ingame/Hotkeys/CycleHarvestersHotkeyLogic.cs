@@ -51,8 +51,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 				.Skip(1)
 				.FirstOrDefault();
 
-			if (next == null)
-				next = harvesters.First();
+			next ??= harvesters.First();
 
 			selection.Combine(world, new Actor[] { next }, false, true);
 			viewport.Center(selection.Actors);

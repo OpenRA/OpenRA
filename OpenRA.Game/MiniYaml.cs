@@ -151,8 +151,7 @@ namespace OpenRA
 
 		static List<MiniYamlNode> FromLines(IEnumerable<ReadOnlyMemory<char>> lines, string filename, bool discardCommentsAndWhitespace, Dictionary<string, string> stringPool)
 		{
-			if (stringPool == null)
-				stringPool = new Dictionary<string, string>();
+			stringPool ??= new Dictionary<string, string>();
 
 			var levels = new List<List<MiniYamlNode>>
 			{

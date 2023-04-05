@@ -194,8 +194,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						if (added.Add(hd))
 						{
-							if (selectedHotkeyDefinition == null)
-								selectedHotkeyDefinition = hd;
+							selectedHotkeyDefinition ??= hd;
 
 							BindHotkeyPref(hd, template);
 						}

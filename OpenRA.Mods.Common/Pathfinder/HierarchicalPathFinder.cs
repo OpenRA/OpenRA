@@ -802,8 +802,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 							sourcesWithPathableNodes.Add(source);
 						else
 						{
-							if (unpathableNodes == null)
-								unpathableNodes = new List<CPos>();
+							unpathableNodes ??= new List<CPos>();
 							unpathableNodes.Add(adjacentSource);
 						}
 					}
@@ -814,8 +813,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 							sourcesWithPathableNodes.Add(source);
 						else
 						{
-							if (unpathableNodes == null)
-								unpathableNodes = new List<CPos>();
+							unpathableNodes ??= new List<CPos>();
 							unpathableNodes.Add(adjacentSource);
 						}
 					}

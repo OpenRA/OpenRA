@@ -71,8 +71,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 					continue;
 
 				var prefix = match.Groups["prefix"].Value;
-				if (framePrefix == null)
-					framePrefix = prefix;
+				framePrefix ??= prefix;
 
 				if (prefix != framePrefix)
 					throw new InvalidDataException($"Frame prefix mismatch: `{prefix}` != `{framePrefix}`");

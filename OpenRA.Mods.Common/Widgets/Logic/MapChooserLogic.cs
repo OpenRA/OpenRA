@@ -292,8 +292,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ orderByDate, m => -m.ModifiedDate.Ticks }
 			};
 
-			if (orderByFunc == null)
-				orderByFunc = orderByDict[orderByPlayer];
+			orderByFunc ??= orderByDict[orderByPlayer];
 
 			ScrollItemWidget SetupItem(string o, ScrollItemWidget template)
 			{
