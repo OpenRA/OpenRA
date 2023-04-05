@@ -51,10 +51,10 @@ namespace OpenRA.Mods.Common.Scripting.Global
 					}
 				}
 
-				return Context.World.Map.Translate(text, argumentDictionary);
+				return Context.World.Map.Translation.GetString(text, argumentDictionary);
 			}
 
-			return Context.World.Map.Translate(text);
+			return Context.World.Map.Translation.GetString(text);
 		}
 	}
 }

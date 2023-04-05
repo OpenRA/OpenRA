@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
-			yield return new LobbyBooleanOption(ID, Label, Description,
+			yield return new LobbyBooleanOption(map, ID, Label, Description,
 				Visible, DisplayOrder, Enabled, Locked);
 		}
 

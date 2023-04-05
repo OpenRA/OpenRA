@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 					return Game.ModData.Translation.GetString(TimeLimitOption, Translation.Arguments("minutes", m));
 			});
 
-			yield return new LobbyOption("timelimit", TimeLimitLabel, TimeLimitDescription, TimeLimitDropdownVisible, TimeLimitDisplayOrder,
+			yield return new LobbyOption(map, "timelimit", TimeLimitLabel, TimeLimitDescription, TimeLimitDropdownVisible, TimeLimitDisplayOrder,
 				timelimits, TimeLimitDefault.ToString(), TimeLimitLocked);
 		}
 

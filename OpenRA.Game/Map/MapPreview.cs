@@ -90,6 +90,8 @@ namespace OpenRA
 			public MiniYaml SequenceDefinitions;
 			public MiniYaml ModelSequenceDefinitions;
 
+			public Translation Translation;
+
 			public ActorInfo WorldActorInfo { get; private set; }
 			public ActorInfo PlayerActorInfo { get; private set; }
 
@@ -119,6 +121,11 @@ namespace OpenRA
 				NotificationDefinitions = LoadRuleSection(yaml, "Notifications");
 				SequenceDefinitions = LoadRuleSection(yaml, "Sequences");
 				ModelSequenceDefinitions = LoadRuleSection(yaml, "ModelSequences");
+
+				Translation = new Translation(Game.Settings.Player.Language,
+					yaml.TryGetValue("Translations", out var node) && node != null
+					? modData.Manifest.Translations.Append(FieldLoader.GetValue<string[]>("value", node.Value)).ToArray()
+					: modData.Manifest.Translations, fileSystem);
 
 				try
 				{
@@ -185,6 +192,7 @@ namespace OpenRA
 
 		public MiniYaml RuleDefinitions => innerData.RuleDefinitions;
 		public MiniYaml WeaponDefinitions => innerData.WeaponDefinitions;
+		public Translation Translation => innerData.Translation;
 
 		public ActorInfo WorldActorInfo => innerData.WorldActorInfo;
 		public ActorInfo PlayerActorInfo => innerData.PlayerActorInfo;
@@ -292,6 +300,7 @@ namespace OpenRA
 			innerData.SetCustomRules(modData, this, new Dictionary<string, MiniYaml>()
 			{
 				{ "Rules", map.RuleDefinitions },
+				{ "Translations", map.TranslationDefinitions },
 				{ "Weapons", map.WeaponDefinitions },
 				{ "Voices", map.VoiceDefinitions },
 				{ "Music", map.MusicDefinitions },
