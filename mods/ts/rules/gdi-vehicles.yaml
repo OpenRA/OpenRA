@@ -68,6 +68,8 @@ HVR:
 		Speed: 99
 		Locomotor: hover
 		TerrainOrientationAdjustmentMargin: -1
+		TurnsWhileMoving: true
+		TurnSpeed: 24
 	Selectable:
 		Bounds: 1206, 1448, 0, -603
 	Health:
