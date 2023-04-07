@@ -272,7 +272,7 @@ dotnet_diagnostic.IDE0066.severity = silent
 
 # IDE0078 Use pattern matching
 #csharp_style_prefer_pattern_matching = true
-dotnet_diagnostic.IDE0078.severity = silent # Requires C# 9 - TODO Consider enabling
+dotnet_diagnostic.IDE0078.severity = silent
 
 # IDE0083 Use pattern matching ('not' operator)
 #csharp_style_prefer_not_pattern = true
@@ -291,7 +291,7 @@ dotnet_diagnostic.IDE0011.severity = none
 
 # IDE0063 Use simple 'using' statement
 #csharp_prefer_simple_using_statement = true
-dotnet_diagnostic.IDE0063.severity = silent # Requires C# 8 - TODO Consider enabling
+dotnet_diagnostic.IDE0063.severity = silent
 
 ## 'using' directive preferences
 
