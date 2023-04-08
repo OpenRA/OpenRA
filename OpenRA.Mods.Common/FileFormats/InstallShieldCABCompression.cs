@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 
+#nullable enable
 namespace OpenRA.Mods.Common.FileFormats
 {
 	public sealed class InstallShieldCABCompression
@@ -250,7 +251,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			uint toExtract;
 
 			int currentVolumeID;
-			Stream currentVolume;
+			Stream? currentVolume;
 
 			public CabExtracter(FileDescriptor file, Dictionary<int, Stream> volumes)
 			{
@@ -263,10 +264,13 @@ namespace OpenRA.Mods.Common.FileFormats
 				SetVolume(file.Volume);
 			}
 
-			public void CopyTo(Stream output, Action<int> onProgress)
+			public void CopyTo(Stream output, Action<int>? onProgress)
 			{
 				if (file.Flags.HasFlag(CABFlags.FileCompressed))
 				{
+					if (currentVolume == null)
+						throw new FileNotFoundException($"Volume {currentVolumeID} is not available");
+
 					var inf = new Inflater(true);
 					var buffer = new byte[165535];
 					do
@@ -303,6 +307,9 @@ namespace OpenRA.Mods.Common.FileFormats
 
 			public byte[] GetBytes(uint count)
 			{
+				if (currentVolume == null)
+					throw new FileNotFoundException($"Volume {currentVolumeID} is not available");
+
 				if (count < remainingInArchive)
 				{
 					remainingInArchive -= count;
@@ -446,7 +453,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			}
 		}
 
-		public void ExtractFile(string filename, Stream output, Action<int> onProgress = null)
+		public void ExtractFile(string filename, Stream output, Action<int>? onProgress = null)
 		{
 			if (!index.TryGetValue(filename, out var file))
 				throw new FileNotFoundException(filename);
@@ -454,7 +461,7 @@ namespace OpenRA.Mods.Common.FileFormats
 			ExtractFile(file, output, onProgress);
 		}
 
-		void ExtractFile(FileDescriptor file, Stream output, Action<int> onProgress = null)
+		void ExtractFile(FileDescriptor file, Stream output, Action<int>? onProgress = null)
 		{
 			if (file.Flags.HasFlag(CABFlags.FileInvalid))
 				throw new InvalidDataException("File Invalid");

@@ -15,7 +15,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Test
 {
+#nullable enable
 	interface IMock : ITraitInfoInterface { }
+#nullable disable
 	class MockTraitInfo : TraitInfo { public override object Create(ActorInitializer init) { return null; } }
 	class MockInheritInfo : MockTraitInfo { }
 

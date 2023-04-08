@@ -11,16 +11,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using OpenRA.Primitives;
 
+#nullable enable
 namespace OpenRA.Mods.Common.FileFormats
 {
 	public static class WavReader
 	{
 		enum WaveType { Pcm = 0x1, MsAdpcm = 0x2, ImaAdpcm = 0x11 }
 
-		public static bool LoadSound(Stream s, out Func<Stream> result, out short channels, out int sampleBits, out int sampleRate, out float lengthInSeconds)
+		public static bool LoadSound(Stream s, [MaybeNullWhen(false)] out Func<Stream> result,
+			out short channels, out int sampleBits, out int sampleRate, out float lengthInSeconds)
 		{
 			result = null;
 			channels = -1;

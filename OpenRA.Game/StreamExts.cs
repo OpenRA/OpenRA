@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+#nullable enable
 namespace OpenRA
 {
 	public static class StreamExts
@@ -146,7 +147,7 @@ namespace OpenRA
 
 		public static IEnumerable<string> ReadAllLines(this Stream s)
 		{
-			string line;
+			string? line;
 			using (var sr = new StreamReader(s))
 				while ((line = sr.ReadLine()) != null)
 					yield return line;
@@ -222,7 +223,7 @@ namespace OpenRA
 
 		// Writes a length-prefixed string using the specified encoding and returns
 		// the number of bytes written.
-		public static int WriteString(this Stream s, Encoding encoding, string text)
+		public static int WriteString(this Stream s, Encoding encoding, string? text)
 		{
 			byte[] bytes;
 

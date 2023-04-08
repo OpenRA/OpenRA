@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 
+#nullable enable
 namespace OpenRA.Primitives
 {
 	/// <summary>
@@ -23,9 +24,6 @@ namespace OpenRA.Primitives
 
 		public void Add(Action a, long desiredTime)
 		{
-			if (a == null)
-				throw new ArgumentNullException(nameof(a));
-
 			lock (actions)
 			{
 				var action = new DelayedAction(a, desiredTime);
@@ -39,7 +37,7 @@ namespace OpenRA.Primitives
 			DelayedAction[] pendingActions;
 			lock (actions)
 			{
-				var dummyAction = new DelayedAction(null, currentTime);
+				var dummyAction = new DelayedAction(() => { }, currentTime);
 				var index = Index(dummyAction);
 				if (index <= 0)
 					return;

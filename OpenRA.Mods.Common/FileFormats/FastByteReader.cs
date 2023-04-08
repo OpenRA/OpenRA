@@ -11,6 +11,7 @@
 
 using System;
 
+#nullable enable
 namespace OpenRA.Mods.Common.FileFormats
 {
 	public class FastByteReader

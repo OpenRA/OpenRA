@@ -13,6 +13,7 @@ using System;
 using System.IO;
 using OpenRA.Mods.Common.FileFormats;
 
+#nullable enable
 namespace OpenRA.Mods.Cnc.FileFormats
 {
 	// Lempel - Castle - Welch algorithm (aka Format80)

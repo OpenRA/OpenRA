@@ -439,7 +439,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var queryURL = new HttpQueryBuilder(services.ServerList)
 			{
-				{ "protocol", GameServer.ProtocolVersion },
+				{ "protocol", GameServer.ProtocolVersion.ToString() },
 				{ "engine", Game.EngineVersion },
 				{ "mod", Game.ModData.Manifest.Id },
 				{ "version", Game.ModData.Manifest.Metadata.Version }

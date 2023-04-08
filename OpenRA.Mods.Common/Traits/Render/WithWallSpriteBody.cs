@@ -18,11 +18,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
 {
+#nullable enable
 	[RequireExplicitImplementation]
 	interface IWallConnectorInfo : ITraitInfoInterface
 	{
 		string GetWallConnectionType();
 	}
+#nullable disable
 
 	[Desc("Render trait for actors that change sprites if neighbors with the same trait are present.")]
 	class WithWallSpriteBodyInfo : WithSpriteBodyInfo, IWallConnectorInfo, Requires<BuildingInfo>

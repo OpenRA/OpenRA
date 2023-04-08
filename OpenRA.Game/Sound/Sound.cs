@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using OpenRA.FileSystem;
 using OpenRA.GameRules;
@@ -18,10 +19,12 @@ using OpenRA.Primitives;
 
 namespace OpenRA
 {
+#nullable enable
 	public interface ISoundLoader
 	{
-		bool TryParseSound(Stream stream, out ISoundFormat sound);
+		bool TryParseSound(Stream stream, [MaybeNullWhen(false)] out ISoundFormat sound);
 	}
+#nullable disable
 
 	public interface ISoundFormat : IDisposable
 	{

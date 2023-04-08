@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common
 			{
 				var queryURL = new HttpQueryBuilder(VersionCheck)
 				{
-					{ "protocol", VersionCheckProtocol },
+					{ "protocol", VersionCheckProtocol.ToString() },
 					{ "engine", Game.EngineVersion },
 					{ "mod", Game.ModData.Manifest.Id },
 					{ "version", Game.ModData.Manifest.Metadata.Version }

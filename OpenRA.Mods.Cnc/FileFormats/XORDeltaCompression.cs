@@ -11,6 +11,7 @@
 
 using OpenRA.Mods.Common.FileFormats;
 
+#nullable enable
 namespace OpenRA.Mods.Cnc.FileFormats
 {
 	// Data that is to be XORed against another set of data (aka Format40)

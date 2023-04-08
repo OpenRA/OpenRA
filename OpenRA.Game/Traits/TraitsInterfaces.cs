@@ -23,6 +23,7 @@ using OpenRA.Support;
 
 namespace OpenRA.Traits
 {
+#nullable enable
 	public sealed class RequireExplicitImplementationAttribute : Attribute { }
 
 	[Flags]
@@ -45,6 +46,7 @@ namespace OpenRA.Traits
 	{
 		int MaxHP { get; }
 	}
+#nullable disable
 
 	public interface IHealth
 	{
@@ -113,7 +115,9 @@ namespace OpenRA.Traits
 	}
 
 	public interface IMouseBounds { Polygon MouseoverBounds(Actor self, WorldRenderer wr); }
+#nullable enable
 	public interface IMouseBoundsInfo : ITraitInfoInterface { }
+#nullable disable
 	public interface IAutoMouseBounds { Rectangle AutoMouseoverBounds(Actor self, WorldRenderer wr); }
 
 	public interface IIssueOrder
@@ -170,8 +174,10 @@ namespace OpenRA.Traits
 		bool HasVoice(Actor self, string voice);
 	}
 
+#nullable enable
 	[RequireExplicitImplementation]
 	public interface IStoreResources { int Capacity { get; } }
+#nullable disable
 
 	public interface IEffectiveOwner
 	{
@@ -199,9 +205,11 @@ namespace OpenRA.Traits
 
 	public interface IDisabledTrait { bool IsTraitDisabled { get; } }
 
+#nullable enable
 	public interface IDefaultVisibilityInfo : ITraitInfoInterface { }
-	public interface IDefaultVisibility { bool IsVisible(Actor self, Player byPlayer); }
-	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
+	public interface IDefaultVisibility { bool IsVisible(Actor self, Player? byPlayer); }
+	public interface IVisibilityModifier { bool IsVisible(Actor self, Player? byPlayer); }
+#nullable disable
 
 	public interface IActorMap
 	{
@@ -244,18 +252,20 @@ namespace OpenRA.Traits
 		IEnumerable<Rectangle> ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> r);
 	}
 
+#nullable enable
 	[RequireExplicitImplementation]
 	public interface ITilesetSpecificPaletteInfo : ITraitInfoInterface
 	{
-		string Tileset { get; }
+		string? Tileset { get; }
 	}
 
 	[RequireExplicitImplementation]
 	public interface IProvidesCursorPaletteInfo : ITraitInfoInterface
 	{
-		string Palette { get; }
+		string? Palette { get; }
 		ImmutablePalette ReadPalette(IReadOnlyFileSystem fileSystem);
 	}
+#nullable disable
 
 	public interface ILoadsPalettes { void LoadPalettes(WorldRenderer wr); }
 	public interface ILoadsPlayerPalettes { void LoadPlayerPalettes(WorldRenderer wr, string playerName, Color playerColor, bool replaceExisting); }
@@ -290,7 +300,9 @@ namespace OpenRA.Traits
 
 	public enum SubCell : byte { Invalid = byte.MaxValue, Any = byte.MaxValue - 1, FullCell = 0, First = 1 }
 
+#nullable enable
 	public interface ITemporaryBlockerInfo : ITraitInfoInterface { }
+#nullable disable
 
 	[RequireExplicitImplementation]
 	public interface ITemporaryBlocker
@@ -308,7 +320,9 @@ namespace OpenRA.Traits
 
 	public interface IFacingInfo : ITraitInfoInterface { WAngle GetInitialFacing(); }
 
+#nullable enable
 	public interface ITraitInfoInterface { }
+#nullable disable
 
 	public abstract class TraitInfo : ITraitInfoInterface
 	{
@@ -326,6 +340,7 @@ namespace OpenRA.Traits
 
 	public interface ILobbyCustomRulesIgnore { }
 
+#nullable enable
 	[SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Not a real interface, but more like a tag.")]
 	public interface Requires<T> where T : class, ITraitInfoInterface { }
 
@@ -338,6 +353,7 @@ namespace OpenRA.Traits
 	public interface INotifySelected { void Selected(Actor self); }
 	[RequireExplicitImplementation]
 	public interface INotifySelection { void SelectionChanged(); }
+#nullable disable
 
 	public interface IWorldLoaded { void WorldLoaded(World w, WorldRenderer wr); }
 	public interface INotifyGameLoading { void GameLoading(World w); }
@@ -373,11 +389,13 @@ namespace OpenRA.Traits
 		int AssignSpawnPoint(object state, Session lobbyInfo, Session.Client client, MersenneTwister playerRandom);
 	}
 
+#nullable enable
 	public interface IBotInfo : ITraitInfoInterface
 	{
 		string Type { get; }
-		string Name { get; }
+		string? Name { get; }
 	}
+#nullable disable
 
 	public interface IBot
 	{
@@ -463,10 +481,12 @@ namespace OpenRA.Traits
 		void SetRollover(IEnumerable<Actor> actors);
 	}
 
+#nullable enable
 	public interface IControlGroupsInfo : ITraitInfoInterface
 	{
 		string[] Groups { get; }
 	}
+#nullable disable
 
 	public interface IControlGroups
 	{
@@ -578,14 +598,16 @@ namespace OpenRA.Traits
 		}
 	}
 
+#nullable enable
 	[RequireExplicitImplementation]
 	public interface IUnlocksRenderPlayer { bool RenderPlayerUnlocked { get; } }
 
 	[RequireExplicitImplementation]
-	public interface ICreationActivity { Activity GetCreationActivity(); }
+	public interface ICreationActivity { Activity? GetCreationActivity(); }
 
 	[RequireExplicitImplementation]
 	public interface IObservesVariablesInfo : ITraitInfoInterface { }
+#nullable disable
 
 	public delegate void VariableObserverNotifier(Actor self, IReadOnlyDictionary<string, int> variables);
 	public struct VariableObserver

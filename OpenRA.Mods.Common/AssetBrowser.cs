@@ -11,6 +11,7 @@
 
 using System;
 
+#nullable enable
 namespace OpenRA
 {
 	public class AssetBrowser : IGlobalModData

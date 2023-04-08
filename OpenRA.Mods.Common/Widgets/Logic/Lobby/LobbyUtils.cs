@@ -692,17 +692,4 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				widget.IsVisible = () => false;
 		}
 	}
-
-	class ShowPlayerActionDropDownOption
-	{
-		public Action Click { get; set; }
-		public string Title;
-		public Func<bool> Selected = () => false;
-
-		public ShowPlayerActionDropDownOption(string title, Action click)
-		{
-			Click = click;
-			Title = title;
-		}
-	}
 }

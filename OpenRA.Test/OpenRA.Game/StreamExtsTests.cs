@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
+#nullable enable
 namespace OpenRA.Test
 {
 	[TestFixture]

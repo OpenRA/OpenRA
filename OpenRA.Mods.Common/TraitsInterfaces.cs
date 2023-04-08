@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
@@ -51,8 +52,10 @@ namespace OpenRA.Mods.Common.Traits
 		PlayerRelationship ValidRelationships { get; }
 	}
 
+#nullable enable
 	[RequireExplicitImplementation]
 	public interface IBlocksProjectilesInfo : ITraitInfoInterface { }
+#nullable disable
 
 	[RequireExplicitImplementation]
 	public interface INotifyOrderIssued
@@ -264,7 +267,9 @@ namespace OpenRA.Mods.Common.Traits
 		void Undeploy(Actor self, bool skipMakeAnim);
 	}
 
+#nullable enable
 	public interface IAcceptResourcesInfo : ITraitInfoInterface { }
+#nullable disable
 	public interface IAcceptResources
 	{
 		void OnDock(Actor harv, DeliverResources dockOrder);
@@ -279,6 +284,7 @@ namespace OpenRA.Mods.Common.Traits
 		void PlayReverseDockAnimation(Actor self, Action after);
 	}
 
+#nullable enable
 	public interface IProvidesAssetBrowserPalettes
 	{
 		IEnumerable<string> PaletteNames { get; }
@@ -289,6 +295,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		IEnumerable<string> ColorPickerPaletteNames { get; }
 	}
+#nullable disable
 
 	public interface ICallForTransport
 	{
@@ -333,12 +340,14 @@ namespace OpenRA.Mods.Common.Traits
 		void ModifyActorPreviewInit(Actor self, TypeDictionary inits);
 	}
 
+#nullable enable
 	[RequireExplicitImplementation]
 	public interface IRenderInfantrySequenceModifier
 	{
 		bool IsModifyingSequence { get; }
 		string SequencePrefix { get; }
 	}
+#nullable disable
 
 	[RequireExplicitImplementation]
 	public interface IProductionCostModifierInfo : ITraitInfoInterface { int GetProductionCostModifier(TechTree techTree, string queue); }
@@ -346,12 +355,15 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface IProductionTimeModifierInfo : ITraitInfoInterface { int GetProductionTimeModifier(TechTree techTree, string queue); }
 
+#nullable enable
 	[RequireExplicitImplementation]
 	public interface ICashTricklerModifier { int GetCashTricklerModifier(); }
+#nullable disable
 
 	[RequireExplicitImplementation]
 	public interface IDamageModifier { int GetDamageModifier(Actor attacker, Damage damage); }
 
+#nullable enable
 	[RequireExplicitImplementation]
 	public interface ISpeedModifier { int GetSpeedModifier(); }
 
@@ -410,6 +422,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public interface ICustomMovementLayerInfo : ITraitInfoInterface { }
+#nullable disable
 
 	// For traits that want to be exposed to the "Deploy" UI button / hotkey
 	[RequireExplicitImplementation]
@@ -535,11 +548,13 @@ namespace OpenRA.Mods.Common.Traits
 		int RequestedProductionCount(IBot bot, string requestedActor);
 	}
 
+#nullable enable
 	[RequireExplicitImplementation]
 	public interface IBotRequestPauseUnitProduction
 	{
 		bool PauseUnitProduction { get; }
 	}
+#nullable disable
 
 	[RequireExplicitImplementation]
 	public interface IEditorActorOptions : ITraitInfoInterface
@@ -648,11 +663,13 @@ namespace OpenRA.Mods.Common.Traits
 		void NotifyTimerExpired(Actor self);
 	}
 
+#nullable enable
 	[RequireExplicitImplementation]
 	public interface ISelectable
 	{
 		string Class { get; }
 	}
+#nullable disable
 
 	public interface IDecoration
 	{
@@ -677,11 +694,13 @@ namespace OpenRA.Mods.Common.Traits
 		IEnumerable<IRenderable> RenderPreview(WorldRenderer wr, TerrainTemplateInfo template, WPos origin);
 	}
 
+#nullable enable
 	public interface IResourceLayerInfo : ITraitInfoInterface
 	{
-		bool TryGetTerrainType(string resourceType, out string terrainType);
-		bool TryGetResourceIndex(string resourceType, out byte index);
+		bool TryGetTerrainType(string? resourceType, [MaybeNullWhen(false)] out string terrainType);
+		bool TryGetResourceIndex(string? resourceType, out byte index);
 	}
+#nullable disable
 
 	[RequireExplicitImplementation]
 	public interface IResourceLayer

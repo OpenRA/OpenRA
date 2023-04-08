@@ -13,6 +13,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 
+#nullable enable
 namespace OpenRA.Primitives
 {
 	public class SegmentStream : Stream
@@ -32,8 +33,6 @@ namespace OpenRA.Primitives
 		/// <param name="count">The length of the segment.</param>
 		public SegmentStream(Stream stream, long offset, long count)
 		{
-			if (stream == null)
-				throw new ArgumentNullException(nameof(stream));
 			if (!stream.CanSeek)
 				throw new ArgumentException("stream must be seekable.", nameof(stream));
 			if (offset < 0)

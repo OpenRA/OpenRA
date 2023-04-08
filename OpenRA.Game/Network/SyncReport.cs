@@ -17,6 +17,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using OpenRA.Primitives;
 
+#nullable enable
 namespace OpenRA.Network
 {
 	class SyncReport
@@ -195,7 +196,7 @@ namespace OpenRA.Network
 			static readonly ConstantExpression TrueString = Expression.Constant(bool.TrueString, typeof(string));
 			static readonly ConstantExpression FalseString = Expression.Constant(bool.FalseString, typeof(string));
 
-			public readonly Func<ISync, object>[] SerializableCopyOfMemberFunctions;
+			public readonly Func<ISync, object?>[] SerializableCopyOfMemberFunctions;
 			public readonly string[] Names;
 
 			public TypeInfo(Type type)
@@ -208,7 +209,7 @@ namespace OpenRA.Network
 					if (!prop.CanRead || prop.GetIndexParameters().Length > 0)
 						throw new InvalidOperationException(
 							"Properties using the Sync attribute must be readable and must not use index parameters.\n" +
-							"Invalid Property: " + prop.DeclaringType.FullName + "." + prop.Name);
+							"Invalid Property: " + prop.DeclaringTypeUnforgiving().FullName + "." + prop.Name);
 
 				var sync = Expression.Convert(SyncParam, type);
 				SerializableCopyOfMemberFunctions = fields
@@ -219,7 +220,7 @@ namespace OpenRA.Network
 				Names = fields.Select(fi => fi.Name).Concat(properties.Select(pi => pi.Name)).ToArray();
 			}
 
-			static Func<ISync, object> SerializableCopyOfMember(MemberExpression getMember, Type memberType, string name)
+			static Func<ISync, object?> SerializableCopyOfMember(MemberExpression getMember, Type memberType, string name)
 			{
 				// We need to serialize a copy of the current value so if the sync report is generated, the values can
 				// be dumped as strings.
@@ -246,11 +247,11 @@ namespace OpenRA.Network
 				return MemberToString(getMember, memberType, name);
 			}
 
-			static Func<ISync, string> MemberToString(MemberExpression getMember, Type memberType, string name)
+			static Func<ISync, string?> MemberToString(MemberExpression getMember, Type memberType, string name)
 			{
 				// The lambda generated is shown below.
 				// TSync is actual type of the ISync object. Foo is a field or property with the Sync attribute applied.
-				var toString = memberType.GetMethod(nameof(object.ToString), Type.EmptyTypes);
+				var toString = memberType.GetMethodUnforgiving(nameof(object.ToString), Type.EmptyTypes);
 				Expression getString;
 				if (memberType.IsValueType)
 				{
@@ -268,7 +269,7 @@ namespace OpenRA.Network
 					getString = Expression.Condition(Expression.Equal(member, nullMember), NullString, getString);
 				}
 
-				return Expression.Lambda<Func<ISync, string>>(getString, name, new[] { SyncParam }).Compile();
+				return Expression.Lambda<Func<ISync, string?>>(getString, name, new[] { SyncParam }).Compile();
 			}
 		}
 
@@ -280,10 +281,10 @@ namespace OpenRA.Network
 		{
 			static readonly object Sentinel = new();
 
-			object item1OrArray;
-			object item2OrSentinel;
-			object item3;
-			object item4;
+			object? item1OrArray;
+			object? item2OrSentinel;
+			object? item3;
+			object? item4;
 
 			public Values(int size)
 			{
@@ -298,12 +299,12 @@ namespace OpenRA.Network
 				}
 			}
 
-			public object this[int index]
+			public object? this[int index]
 			{
 				get
 				{
 					if (item2OrSentinel == Sentinel)
-						return ((object[])item1OrArray)[index];
+						return ((object?[])item1OrArray!)[index];
 
 					switch (index)
 					{
@@ -319,7 +320,7 @@ namespace OpenRA.Network
 				{
 					if (item2OrSentinel == Sentinel)
 					{
-						((object[])item1OrArray)[index] = value;
+						((object?[])item1OrArray!)[index] = value;
 						return;
 					}
 

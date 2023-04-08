@@ -9,17 +9,21 @@
  */
 #endregion
 
+extern alias OpenRAGame;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using OpenRA.Primitives;
+using MemberNotNullAttribute = OpenRAGame::System.Diagnostics.CodeAnalysis.MemberNotNullAttribute;
 
+#nullable enable
 namespace OpenRA.Mods.Cnc.AudioLoaders
 {
 	public class VocLoader : ISoundLoader
 	{
-		bool ISoundLoader.TryParseSound(Stream stream, out ISoundFormat sound)
+		bool ISoundLoader.TryParseSound(Stream stream, [MaybeNullWhen(false)] out ISoundFormat sound)
 		{
 			try
 			{
@@ -269,6 +273,7 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 			blocks = blockList.ToArray();
 		}
 
+		[MemberNotNull(nameof(currentBlock))]
 		void Rewind()
 		{
 			currentBlock = ((IEnumerable<VocBlock>)blocks).GetEnumerator();

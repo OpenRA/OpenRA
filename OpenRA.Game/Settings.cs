@@ -16,6 +16,7 @@ using System.Linq;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
+#nullable enable
 namespace OpenRA
 {
 	public enum MouseScrollType { Disabled, Standard, Inverted, Joystick }
@@ -64,7 +65,7 @@ namespace OpenRA
 		public int NatPortMappingLifetime = 36000;
 
 		[Desc("Starts the game with a default map. Input as hash that can be obtained by the utility.")]
-		public string Map = null;
+		public string? Map = null;
 
 		[Desc("Takes a comma separated list of IP addresses that are not allowed to join.")]
 		public string[] Ban = Array.Empty<string>();
@@ -227,7 +228,7 @@ namespace OpenRA
 		public bool Shuffle = false;
 		public bool Repeat = false;
 
-		public string Device = null;
+		public string? Device = null;
 
 		public bool CashTicks = true;
 		public bool Mute = false;
@@ -407,7 +408,7 @@ namespace OpenRA
 			yamlCache.WriteToFile(settingsFile);
 		}
 
-		static string SanitizedName(string dirty)
+		static string? SanitizedName(string? dirty)
 		{
 			if (string.IsNullOrEmpty(dirty))
 				return null;
@@ -422,7 +423,7 @@ namespace OpenRA
 			return clean;
 		}
 
-		public string SanitizedServerName(string dirty)
+		public string SanitizedServerName(string? dirty)
 		{
 			var clean = SanitizedName(dirty);
 			if (string.IsNullOrWhiteSpace(clean))
@@ -431,7 +432,7 @@ namespace OpenRA
 				return clean;
 		}
 
-		public static string SanitizedPlayerName(string dirty)
+		public static string SanitizedPlayerName(string? dirty)
 		{
 			var forbiddenNames = new string[] { "Open", "Closed" };
 			var botNames = OpenRA.Game.ModData.DefaultRules.Actors[SystemActors.Player].TraitInfos<IBotInfo>().Select(t => t.Name);
@@ -450,10 +451,10 @@ namespace OpenRA
 
 		static void LoadSectionYaml(MiniYaml yaml, object section)
 		{
-			var defaults = Activator.CreateInstance(section.GetType());
+			var defaults = Unforgiving.Activator.CreateInstance(section.GetType());
 			FieldLoader.InvalidValueAction = (s, t, f) =>
 			{
-				var ret = defaults.GetType().GetField(f).GetValue(defaults);
+				var ret = defaults.GetType().GetFieldUnforgiving(f).GetValue(defaults);
 				Console.WriteLine($"FieldLoader: Cannot parse `{s}` into `{f}:{t.Name}`; substituting default `{ret}`");
 				return ret;
 			};

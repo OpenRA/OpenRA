@@ -429,7 +429,7 @@ namespace OpenRA.Server
 
 			// Validate player identity by asking them to sign a random blob of data
 			// which we can then verify against the player public key database
-			var token = Convert.ToBase64String(OpenRA.Exts.MakeArray(256, _ => (byte)Random.Next()));
+			var token = Convert.ToBase64String(Exts.MakeArray(256, _ => (byte)Random.Next()));
 
 			var newConn = new Connection(this, socket, token);
 			try

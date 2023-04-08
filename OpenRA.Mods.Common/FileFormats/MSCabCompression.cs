@@ -16,6 +16,7 @@ using System.Linq;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
+#nullable enable
 namespace OpenRA.Mods.Common.FileFormats
 {
 	public sealed class MSCabCompression
@@ -87,7 +88,7 @@ namespace OpenRA.Mods.Common.FileFormats
 				files[i] = new CabFile(stream);
 		}
 
-		public void ExtractFile(string filename, Stream output, Action<int> onProgress = null)
+		public void ExtractFile(string filename, Stream output, Action<int>? onProgress = null)
 		{
 			var file = files.FirstOrDefault(f => f.FileName == filename);
 			if (file == null)

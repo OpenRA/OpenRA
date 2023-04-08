@@ -19,7 +19,9 @@ using OpenRA.Primitives;
 
 namespace OpenRA
 {
+#nullable enable
 	public interface IGlobalModData { }
+#nullable disable
 
 	public sealed class TerrainFormat : IGlobalModData
 	{

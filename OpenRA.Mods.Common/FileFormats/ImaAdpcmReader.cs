@@ -11,6 +11,7 @@
 
 using System.IO;
 
+#nullable enable
 namespace OpenRA.Mods.Common.FileFormats
 {
 	public class ImaAdpcmReader

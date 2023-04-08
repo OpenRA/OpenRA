@@ -9,14 +9,15 @@
  */
 #endregion
 
+#nullable enable
 namespace OpenRA
 {
 	public class ModCredits : IGlobalModData
 	{
-		public readonly string ModTabTitle = "Game";
+		public readonly string? ModTabTitle = "Game";
 
-		public readonly string ModCreditsFile = null;
+		public readonly string? ModCreditsFile = null;
 
-		public readonly string EngineCreditsFile = "^EngineDir|AUTHORS";
+		public readonly string? EngineCreditsFile = "^EngineDir|AUTHORS";
 	}
 }

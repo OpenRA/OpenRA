@@ -9,6 +9,7 @@
  */
 #endregion
 
+#nullable enable
 namespace OpenRA.Mods.Common.FileFormats
 {
 	// Run length encoded sequences of zeros (aka Format2)

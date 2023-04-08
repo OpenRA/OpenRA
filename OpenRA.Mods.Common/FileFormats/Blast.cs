@@ -18,6 +18,7 @@
 using System;
 using System.IO;
 
+#nullable enable
 namespace OpenRA.Mods.Common.FileFormats
 {
 	public static class Blast
@@ -67,7 +68,7 @@ namespace OpenRA.Mods.Common.FileFormats
 		/// <param name="input">Compressed input stream.</param>
 		/// <param name="output">Stream to write the decompressed output.</param>
 		/// <param name="onProgress">Progress callback, invoked with (read bytes, written bytes).</param>
-		public static void Decompress(Stream input, Stream output, Action<long, long> onProgress = null)
+		public static void Decompress(Stream input, Stream output, Action<long, long>? onProgress = null)
 		{
 			var br = new BitReader(input);
 
@@ -271,7 +272,7 @@ namespace OpenRA.Mods.Common.FileFormats
 
 			// no codes!
 			if (Count[0] == n)
-				return;
+				throw new InvalidDataException("No codes for this input");
 
 			// check for an over-subscribed or incomplete set of lengths
 			var left = 1; // one possible code of zero length

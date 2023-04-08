@@ -11,10 +11,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Primitives;
 
+#nullable enable
 namespace OpenRA.Mods.Cnc.FileFormats
 {
 	[Flags]
@@ -50,7 +52,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 	public static class AudReader
 	{
-		public static bool LoadSound(Stream s, out Func<Stream> result, out int sampleRate, out int sampleBits, out int channels, out float lengthInSeconds)
+		public static bool LoadSound(Stream s, [MaybeNullWhen(false)] out Func<Stream> result,
+			out int sampleRate, out int sampleBits, out int channels, out float lengthInSeconds)
 		{
 			result = null;
 			var startPosition = s.Position;
