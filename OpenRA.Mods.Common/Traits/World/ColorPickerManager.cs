@@ -136,8 +136,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public event Action<Color> OnColorPickerColorUpdate;
 
-		(float sMin, float sMax) IColorPickerManagerInfo.SaturationRange => (HsvSaturationRange[0], HsvSaturationRange[1]);
-		(float vMin, float vMax) IColorPickerManagerInfo.ValueRange => (HsvValueRange[0], HsvValueRange[1]);
+		(float SMin, float SMax) IColorPickerManagerInfo.SaturationRange => (HsvSaturationRange[0], HsvSaturationRange[1]);
+		(float VMin, float VMax) IColorPickerManagerInfo.ValueRange => (HsvValueRange[0], HsvValueRange[1]);
 
 		Color[] IColorPickerManagerInfo.PresetColors => PresetColors;
 

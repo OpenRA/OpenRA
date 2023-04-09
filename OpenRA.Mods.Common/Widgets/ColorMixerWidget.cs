@@ -61,9 +61,7 @@ namespace OpenRA.Mods.Common.Widgets
 			minVal = minValue;
 			maxVal = maxValue;
 
-			if (newHue == null)
-				newHue = H;
-
+			newHue ??= H;
 			var buffer = new byte[4 * 256 * 256];
 			unsafe
 			{
