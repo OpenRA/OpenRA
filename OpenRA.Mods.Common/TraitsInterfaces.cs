@@ -294,8 +294,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public interface IColorPickerManagerInfo : ITraitInfoInterface
 	{
-		(float sMin, float sMax) SaturationRange { get; }
-		(float vMin, float vMax) ValueRange { get; }
+		(float SMin, float SMax) SaturationRange { get; }
+		(float VMin, float VMax) ValueRange { get; }
 		event Action<Color> OnColorPickerColorUpdate;
 		Color[] PresetColors { get; }
 		Color RandomPresetColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors);
