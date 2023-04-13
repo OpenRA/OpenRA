@@ -167,11 +167,11 @@ namespace OpenRA
 			new MapField("Bounds"),
 			new MapField("Visibility"),
 			new MapField("Categories"),
-			new MapField("Translations", required: false, ignoreIfValue: ""),
 			new MapField("LockPreview", required: false, ignoreIfValue: "False"),
 			new MapField("Players", "PlayerDefinitions"),
 			new MapField("Actors", "ActorDefinitions"),
 			new MapField("Rules", "RuleDefinitions", required: false),
+			new MapField("Translations", "TranslationDefinitions", required: false),
 			new MapField("Sequences", "SequenceDefinitions", required: false),
 			new MapField("ModelSequences", "ModelSequenceDefinitions", required: false),
 			new MapField("Weapons", "WeaponDefinitions", required: false),
@@ -193,7 +193,6 @@ namespace OpenRA
 		public Rectangle Bounds;
 		public MapVisibility Visibility = MapVisibility.Lobby;
 		public string[] Categories = { "Conquest" };
-		public string[] Translations;
 
 		public int2 MapSize { get; private set; }
 
@@ -203,6 +202,7 @@ namespace OpenRA
 
 		// Custom map yaml. Public for access by the map importers and lint checks
 		public readonly MiniYaml RuleDefinitions;
+		public readonly MiniYaml TranslationDefinitions;
 		public readonly MiniYaml SequenceDefinitions;
 		public readonly MiniYaml ModelSequenceDefinitions;
 		public readonly MiniYaml WeaponDefinitions;
@@ -450,7 +450,8 @@ namespace OpenRA
 			}
 
 			Sequences = new SequenceSet(this, modData, Tileset, SequenceDefinitions);
-			Translation = new Translation(Game.Settings.Player.Language, Translations, this);
+			Translation = TranslationDefinitions == null ? null
+				: new Translation(Game.Settings.Player.Language, FieldLoader.GetValue<string[]>("value", TranslationDefinitions.Value), this);
 
 			var tl = new MPos(0, 0).ToCPos(this);
 			var br = new MPos(MapSize.X - 1, MapSize.Y - 1).ToCPos(this);
@@ -1412,7 +1413,7 @@ namespace OpenRA
 
 		public string Translate(string key, IDictionary<string, object> args = null)
 		{
-			if (Translation.TryGetString(key, out var message, args))
+			if (Translation != null && Translation.TryGetString(key, out var message, args))
 				return message;
 
 			return modData.Translation.GetString(key, args);
