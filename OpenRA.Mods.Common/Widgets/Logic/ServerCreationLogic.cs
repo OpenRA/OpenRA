@@ -189,13 +189,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (advertiseOnline)
 			{
-				noticesLabelA.Text = modData.Translation.GetString(InternetServerNatA) + " ";
+				noticesLabelA.Text = TranslationProvider.GetString(InternetServerNatA) + " ";
 				var aWidth = Game.Renderer.Fonts[noticesLabelA.Font].Measure(noticesLabelA.Text).X;
 				noticesLabelA.Bounds.Width = aWidth;
 
-				noticesLabelB.Text = Nat.Status == NatStatus.Enabled ? modData.Translation.GetString(InternetServerNatBenabled) :
-					Nat.Status == NatStatus.NotSupported ? modData.Translation.GetString(InternetServerNatBnotSupported)
-						: modData.Translation.GetString(InternetServerNatBdisabled);
+				noticesLabelB.Text = Nat.Status == NatStatus.Enabled ? TranslationProvider.GetString(InternetServerNatBenabled) :
+					Nat.Status == NatStatus.NotSupported ? TranslationProvider.GetString(InternetServerNatBnotSupported)
+						: TranslationProvider.GetString(InternetServerNatBdisabled);
 
 				noticesLabelB.TextColor = Nat.Status == NatStatus.Enabled ? ChromeMetrics.Get<Color>("NoticeSuccessColor") :
 					Nat.Status == NatStatus.NotSupported ? ChromeMetrics.Get<Color>("NoticeErrorColor") :
@@ -206,13 +206,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				noticesLabelB.Bounds.Width = bWidth;
 				noticesLabelB.Visible = true;
 
-				noticesLabelC.Text = modData.Translation.GetString(InternetServerNatC);
+				noticesLabelC.Text = TranslationProvider.GetString(InternetServerNatC);
 				noticesLabelC.Bounds.X = noticesLabelB.Bounds.Right;
 				noticesLabelC.Visible = true;
 			}
 			else
 			{
-				noticesLabelA.Text = modData.Translation.GetString(LocalServer);
+				noticesLabelA.Text = TranslationProvider.GetString(LocalServer);
 				noticesLabelB.Visible = false;
 				noticesLabelC.Visible = false;
 			}
@@ -248,13 +248,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (System.Net.Sockets.SocketException e)
 			{
-				var message = modData.Translation.GetString(ServerCreationFailedPrompt, Translation.Arguments("port", Game.Settings.Server.ListenPort));
+				var message = TranslationProvider.GetString(ServerCreationFailedPrompt, Translation.Arguments("port", Game.Settings.Server.ListenPort));
 
 				// AddressAlreadyInUse (WSAEADDRINUSE)
 				if (e.ErrorCode == 10048)
-					message += "\n" + modData.Translation.GetString(ServerCreationFailedPortUsed);
+					message += "\n" + TranslationProvider.GetString(ServerCreationFailedPortUsed);
 				else
-					message += $"\n" + modData.Translation.GetString(ServerCreationFailedError,
+					message += $"\n" + TranslationProvider.GetString(ServerCreationFailedError,
 						Translation.Arguments("message", e.Message, "code", e.ErrorCode));
 
 				ConfirmationDialogs.ButtonPrompt(modData, ServerCreationFailedTitle, message,

@@ -221,7 +221,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				newsPanel.RemoveChild(newsTemplate);
 
 				newsStatus = newsPanel.Get<LabelWidget>("NEWS_STATUS");
-				SetNewsStatus(modData.Translation.GetString(LoadingNews));
+				SetNewsStatus(TranslationProvider.GetString(LoadingNews));
 			}
 
 			Game.OnRemoteDirectConnect += OnRemoteDirectConnect;
@@ -333,7 +333,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							catch (Exception e)
 							{
 								Game.RunAfterTick(() => // run on the main thread
-									SetNewsStatus(modData.Translation.GetString(NewsRetrivalFailed, Translation.Arguments("message", e.Message))));
+									SetNewsStatus(TranslationProvider.GetString(NewsRetrivalFailed, Translation.Arguments("message", e.Message))));
 							}
 						});
 					}
@@ -404,7 +404,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				SetNewsStatus(modData.Translation.GetString(NewsParsingFailed, Translation.Arguments("message", ex.Message)));
+				SetNewsStatus(TranslationProvider.GetString(NewsParsingFailed, Translation.Arguments("message", ex.Message)));
 			}
 
 			return null;

@@ -24,14 +24,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string AudioUnmuted = "label-audio-unmuted";
 
-		readonly ModData modData;
-
 		[ObjectCreator.UseCtor]
 		public MuteHotkeyLogic(Widget widget, ModData modData, Dictionary<string, MiniYaml> logicArgs)
-			: base(widget, modData, "MuteAudioKey", "GLOBAL_KEYHANDLER", logicArgs)
-		{
-			this.modData = modData;
-		}
+			: base(widget, modData, "MuteAudioKey", "GLOBAL_KEYHANDLER", logicArgs) { }
 
 		protected override bool OnHotkeyActivated(KeyInput e)
 		{
@@ -40,12 +35,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (Game.Settings.Sound.Mute)
 			{
 				Game.Sound.MuteAudio();
-				TextNotificationsManager.AddFeedbackLine(modData.Translation.GetString(AudioMuted));
+				TextNotificationsManager.AddFeedbackLine(TranslationProvider.GetString(AudioMuted));
 			}
 			else
 			{
 				Game.Sound.UnmuteAudio();
-				TextNotificationsManager.AddFeedbackLine(modData.Translation.GetString(AudioUnmuted));
+				TextNotificationsManager.AddFeedbackLine(TranslationProvider.GetString(AudioUnmuted));
 			}
 
 			return true;

@@ -581,7 +581,7 @@ namespace OpenRA
 				Log.Write("debug", "Taking screenshot " + path);
 
 				Renderer.SaveScreenshot(path);
-				TextNotificationsManager.Debug(ModData.Translation.GetString(SavedScreenshot, Translation.Arguments("filename", filename)));
+				TextNotificationsManager.Debug(TranslationProvider.GetString(SavedScreenshot, Translation.Arguments("filename", filename)));
 			}
 		}
 

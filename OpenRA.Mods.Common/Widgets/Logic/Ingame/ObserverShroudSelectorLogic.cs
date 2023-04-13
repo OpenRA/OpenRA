@@ -104,10 +104,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var groups = new Dictionary<string, IEnumerable<CameraOption>>();
 
-			combined = new CameraOption(this, world, modData.Translation.GetString(CameraOptionAllPlayers), world.Players.First(p => p.InternalName == "Everyone"));
-			disableShroud = new CameraOption(this, world, modData.Translation.GetString(CameraOptionDisableShroud), null);
+			combined = new CameraOption(this, world, TranslationProvider.GetString(CameraOptionAllPlayers), world.Players.First(p => p.InternalName == "Everyone"));
+			disableShroud = new CameraOption(this, world, TranslationProvider.GetString(CameraOptionDisableShroud), null);
 			if (!limitViews)
-				groups.Add(modData.Translation.GetString(CameraOptionOther), new List<CameraOption>() { combined, disableShroud });
+				groups.Add(TranslationProvider.GetString(CameraOptionOther), new List<CameraOption>() { combined, disableShroud });
 
 			teams = world.Players.Where(p => !p.NonCombatant && p.Playable)
 				.Select(p => new CameraOption(this, p))
@@ -119,9 +119,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var t in teams)
 			{
 				totalPlayers += t.Count();
-				var label = noTeams ? modData.Translation.GetString(Players) : t.Key > 0
-					? modData.Translation.GetString(TeamNumber, Translation.Arguments("team", t.Key))
-					: modData.Translation.GetString(NoTeam);
+				var label = noTeams ? TranslationProvider.GetString(Players) : t.Key > 0
+					? TranslationProvider.GetString(TeamNumber, Translation.Arguments("team", t.Key))
+					: TranslationProvider.GetString(NoTeam);
 
 				groups.Add(label, t);
 			}

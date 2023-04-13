@@ -35,8 +35,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.content = content;
 			CheckRequiredContentInstalled();
 
-			var continueMessage = modData.Translation.GetString(Continue);
-			var quitMessage = modData.Translation.GetString(Quit);
+			var continueMessage = TranslationProvider.GetString(Continue);
+			var quitMessage = TranslationProvider.GetString(Quit);
 
 			var panel = widget.Get("CONTENT_PROMPT_PANEL");
 			var headerTemplate = panel.Get<LabelWidget>("HEADER_TEMPLATE");

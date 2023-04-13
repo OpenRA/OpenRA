@@ -34,7 +34,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		enum ActorIDStatus { Normal = 0, Duplicate = 1, Empty = 3 }
 
 		readonly WorldRenderer worldRenderer;
-		readonly ModData modData;
 		readonly EditorActorLayer editorActorLayer;
 		readonly EditorActionManager editorActionManager;
 		readonly EditorViewportControllerWidget editor;
@@ -86,9 +85,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public ActorEditLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
+		public ActorEditLogic(Widget widget, World world, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
 		{
-			this.modData = modData;
 			this.worldRenderer = worldRenderer;
 
 			editorActorLayer = world.WorldActor.Trait<EditorActorLayer>();
@@ -115,8 +113,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			actorIDErrorLabel = actorEditPanel.Get<LabelWidget>("ACTOR_ID_ERROR_LABEL");
 			actorIDErrorLabel.IsVisible = () => actorIDStatus != ActorIDStatus.Normal;
 			actorIDErrorLabel.GetText = () => actorIDStatus == ActorIDStatus.Duplicate ?
-				modData.Translation.GetString(DuplicateActorId)
-					: modData.Translation.GetString(EnterActorId);
+				TranslationProvider.GetString(DuplicateActorId)
+					: TranslationProvider.GetString(EnterActorId);
 
 			if (logicArgs.TryGetValue("EditPanelPadding", out var yaml))
 				editPanelPadding = FieldLoader.GetValue<int>("EditPanelPadding", yaml.Value);
@@ -146,7 +144,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (editorActorLayer[actorId] != null)
 					{
 						nextActorIDStatus = ActorIDStatus.Duplicate;
-						actorIDErrorLabel.Text = modData.Translation.GetString(DuplicateActorId);
+						actorIDErrorLabel.Text = TranslationProvider.GetString(DuplicateActorId);
 						actorIDErrorLabel.Visible = true;
 						return;
 					}
@@ -230,7 +228,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					// Add owner dropdown
 					var ownerContainer = dropdownOptionTemplate.Clone();
-					var owner = modData.Translation.GetString(Owner);
+					var owner = TranslationProvider.GetString(Owner);
 					ownerContainer.Get<LabelWidget>("LABEL").GetText = () => owner;
 					var ownerDropdown = ownerContainer.Get<DropDownButtonWidget>("OPTION");
 					var selectedOwner = actor.Owner;

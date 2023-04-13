@@ -23,7 +23,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string NotAvailable = "label-not-available";
 
-		readonly ModData modData;
 		readonly ScrollPanelWidget panel;
 		readonly Widget optionsContainer;
 		readonly Widget checkboxRowTemplate;
@@ -36,9 +35,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		MapPreview mapPreview;
 
 		[ObjectCreator.UseCtor]
-		internal LobbyOptionsLogic(ModData modData, Widget widget, OrderManager orderManager, Func<MapPreview> getMap, Func<bool> configurationDisabled)
+		internal LobbyOptionsLogic(Widget widget, OrderManager orderManager, Func<MapPreview> getMap, Func<bool> configurationDisabled)
 		{
-			this.modData = modData;
 			this.getMap = getMap;
 			this.orderManager = orderManager;
 			this.configurationDisabled = configurationDisabled;
@@ -143,7 +141,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var getOptionLabel = new CachedTransform<string, string>(id =>
 				{
 					if (id == null || !option.Values.TryGetValue(id, out var value))
-						return modData.Translation.GetString(NotAvailable);
+						return TranslationProvider.GetString(NotAvailable);
 
 					return value;
 				});

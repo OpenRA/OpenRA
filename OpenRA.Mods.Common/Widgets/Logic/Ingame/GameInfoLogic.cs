@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (tabButton != null)
 				{
-					tabButton.Text = modData.Translation.GetString(label);
+					tabButton.Text = TranslationProvider.GetString(label);
 					tabButton.OnClick = () =>
 					{
 						if (activePanel == IngameInfoPanel.Chat)

@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (tooltip != null)
 					searchTerms.Add(tooltip.Name);
 
-				var actorType = modData.Translation.GetString(ActorTypeTooltip, Translation.Arguments("actorType", a.Name));
+				var actorType = TranslationProvider.GetString(ActorTypeTooltip, Translation.Arguments("actorType", a.Name));
 				var tooltipText = tooltip == null ? actorType : tooltip.Name + $"\n{actorType}";
 				allActorsTemp.Add(new ActorSelectorActor(a, editorData.Categories, searchTerms.ToArray(), tooltipText));
 			}

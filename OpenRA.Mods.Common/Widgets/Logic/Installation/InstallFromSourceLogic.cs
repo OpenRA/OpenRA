@@ -159,15 +159,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void DetectContentSources()
 		{
-			var message = modData.Translation.GetString(DetectingSources);
-			ShowProgressbar(modData.Translation.GetString(CheckingSources), () => message);
+			var message = TranslationProvider.GetString(DetectingSources);
+			ShowProgressbar(TranslationProvider.GetString(CheckingSources), () => message);
 			ShowBackRetry(DetectContentSources);
 
 			new Task(() =>
 			{
 				foreach (var kv in sources)
 				{
-					message = modData.Translation.GetString(SearchingSourceFor, Translation.Arguments("title", kv.Value.Title));
+					message = TranslationProvider.GetString(SearchingSourceFor, Translation.Arguments("title", kv.Value.Title));
 
 					var sourceResolver = kv.Value.ObjectCreator.CreateObject<ISourceResolver>($"{kv.Value.Type.Value}SourceResolver");
 
@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							Game.RunAfterTick(() =>
 							{
-								ShowList(kv.Value, modData.Translation.GetString(ContentPackageInstallation));
+								ShowList(kv.Value, TranslationProvider.GetString(ContentPackageInstallation));
 								ShowContinueCancel(() => InstallFromSource(path, kv.Value));
 							});
 
@@ -219,14 +219,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var options = new Dictionary<string, IEnumerable<string>>();
 
 				if (gameSources.Any())
-					options.Add(modData.Translation.GetString(GameSources), gameSources);
+					options.Add(TranslationProvider.GetString(GameSources), gameSources);
 
 				if (digitalInstalls.Any())
-					options.Add(modData.Translation.GetString(DigitalInstalls), digitalInstalls);
+					options.Add(TranslationProvider.GetString(DigitalInstalls), digitalInstalls);
 
 				Game.RunAfterTick(() =>
 				{
-					ShowList(modData.Translation.GetString(GameContentNotFound), modData.Translation.GetString(AlternativeContentSources), options);
+					ShowList(TranslationProvider.GetString(GameContentNotFound), TranslationProvider.GetString(AlternativeContentSources), options);
 					ShowBackRetry(DetectContentSources);
 				});
 			}).Start();
@@ -235,7 +235,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void InstallFromSource(string path, ModContent.ModSource modSource)
 		{
 			var message = "";
-			ShowProgressbar(modData.Translation.GetString(InstallingContent), () => message);
+			ShowProgressbar(TranslationProvider.GetString(InstallingContent), () => message);
 			ShowDisabledCancel();
 
 			new Task(() =>
@@ -286,7 +286,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					Game.RunAfterTick(() =>
 					{
-						ShowMessage(modData.Translation.GetString(InstallationFailed), modData.Translation.GetString(CheckInstallLog));
+						ShowMessage(TranslationProvider.GetString(InstallationFailed), TranslationProvider.GetString(CheckInstallLog));
 						ShowBackRetry(() => InstallFromSource(path, modSource));
 					});
 				}
@@ -391,11 +391,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void ShowContinueCancel(Action continueAction)
 		{
 			primaryButton.OnClick = continueAction;
-			primaryButton.Text = modData.Translation.GetString(Continue);
+			primaryButton.Text = TranslationProvider.GetString(Continue);
 			primaryButton.Visible = true;
 
 			secondaryButton.OnClick = Ui.CloseWindow;
-			secondaryButton.Text = modData.Translation.GetString(Cancel);
+			secondaryButton.Text = TranslationProvider.GetString(Cancel);
 			secondaryButton.Visible = true;
 			secondaryButton.Disabled = false;
 			Game.RunAfterTick(Ui.ResetTooltips);
@@ -404,11 +404,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void ShowBackRetry(Action retryAction)
 		{
 			primaryButton.OnClick = retryAction;
-			primaryButton.Text = modData.Translation.GetString(Retry);
+			primaryButton.Text = TranslationProvider.GetString(Retry);
 			primaryButton.Visible = true;
 
 			secondaryButton.OnClick = Ui.CloseWindow;
-			secondaryButton.Text = modData.Translation.GetString(Back);
+			secondaryButton.Text = TranslationProvider.GetString(Back);
 			secondaryButton.Visible = true;
 			secondaryButton.Disabled = false;
 			Game.RunAfterTick(Ui.ResetTooltips);

@@ -76,7 +76,7 @@ namespace OpenRA.Network
 			return arguments.ToArray();
 		}
 
-		public LocalizedMessage(ModData modData, MiniYaml yaml)
+		public LocalizedMessage(MiniYaml yaml)
 		{
 			// Let the FieldLoader do the dirty work of loading the public fields.
 			FieldLoader.Load(this, yaml);
@@ -95,7 +95,7 @@ namespace OpenRA.Network
 					argumentDictionary.Add(argument.Key, argument.Value);
 			}
 
-			TranslatedText = modData.Translation.GetString(Key, argumentDictionary);
+			TranslatedText = TranslationProvider.GetString(Key, argumentDictionary);
 		}
 
 		public static string Serialize(string key, Dictionary<string, object> arguments = null)

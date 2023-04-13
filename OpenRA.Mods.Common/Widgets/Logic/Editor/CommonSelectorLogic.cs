@@ -71,10 +71,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
-			var none = ModData.Translation.GetString(None);
-			var searchResults = ModData.Translation.GetString(SearchResults);
-			var all = ModData.Translation.GetString(All);
-			var multiple = ModData.Translation.GetString(Multiple);
+			var none = TranslationProvider.GetString(None);
+			var searchResults = TranslationProvider.GetString(SearchResults);
+			var all = TranslationProvider.GetString(All);
+			var multiple = TranslationProvider.GetString(Multiple);
 
 			var categorySelector = widget.Get<DropDownButtonWidget>("CATEGORIES_DROPDOWN");
 			categorySelector.GetText = () =>

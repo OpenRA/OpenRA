@@ -23,7 +23,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string ManualInstall = "button-manual-install";
 
-		readonly ModData modData;
 		readonly ModContent content;
 		readonly ScrollPanelWidget scrollPanel;
 		readonly Widget template;
@@ -34,9 +33,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool sourceAvailable;
 
 		[ObjectCreator.UseCtor]
-		public ModContentLogic(ModData modData, Widget widget, Manifest mod, ModContent content, Action onCancel)
+		public ModContentLogic(Widget widget, Manifest mod, ModContent content, Action onCancel)
 		{
-			this.modData = modData;
 			this.content = content;
 
 			var panel = widget.Get("CONTENT_PANEL");
@@ -143,7 +141,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				requiresSourceWidget.IsVisible = () => !installed && !downloadEnabled;
 				if (!isSourceAvailable)
 				{
-					var manualInstall = modData.Translation.GetString(ManualInstall);
+					var manualInstall = TranslationProvider.GetString(ManualInstall);
 					requiresSourceWidget.GetText = () => manualInstall;
 				}
 

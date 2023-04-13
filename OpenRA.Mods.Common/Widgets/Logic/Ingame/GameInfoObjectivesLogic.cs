@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ContainerWidget template;
 
 		[ObjectCreator.UseCtor]
-		public GameInfoObjectivesLogic(Widget widget, World world, ModData modData)
+		public GameInfoObjectivesLogic(Widget widget, World world)
 		{
 			var player = world.RenderPlayer ?? world.LocalPlayer;
 
@@ -51,9 +51,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var missionStatus = widget.Get<LabelWidget>("MISSION_STATUS");
-			var inProgress = modData.Translation.GetString(InProgress);
-			var accomplished = modData.Translation.GetString(Accomplished);
-			var failed = modData.Translation.GetString(Failed);
+			var inProgress = TranslationProvider.GetString(InProgress);
+			var accomplished = TranslationProvider.GetString(Accomplished);
+			var failed = TranslationProvider.GetString(Failed);
 			missionStatus.GetText = () => player.WinState == WinState.Undefined ? inProgress :
 				player.WinState == WinState.Won ? accomplished : failed;
 			missionStatus.GetColor = () => player.WinState == WinState.Undefined ? Color.White :

@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			siloBar.GetUsed = () => playerResources.Resources;
 			siloBar.TooltipTextCached = new CachedTransform<(float Current, float Capacity), string>(usage =>
 			{
-				return modData.Translation.GetString(
+				return TranslationProvider.GetString(
 					SiloUsage,
 					Translation.Arguments("usage", usage.Current, "capacity", usage.Capacity));
 			});

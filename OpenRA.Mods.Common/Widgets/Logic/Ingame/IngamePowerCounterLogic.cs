@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var powerManager = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
 			var power = widget.Get<LabelWithTooltipWidget>("POWER");
 			var powerIcon = widget.Get<ImageWidget>("POWER_ICON");
-			var unlimitedCapacity = modData.Translation.GetString(Infinite);
+			var unlimitedCapacity = TranslationProvider.GetString(Infinite);
 
 			powerIcon.GetImageName = () => powerManager.ExcessPower < 0 ? "power-critical" : "power-normal";
 			power.GetColor = () => powerManager.ExcessPower < 0 ? Color.Red : Color.White;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var tooltipTextCached = new CachedTransform<(string, string), string>(((string Usage, string Capacity) args) =>
 			{
-				return modData.Translation.GetString(
+				return TranslationProvider.GetString(
 					PowerUsage,
 					Translation.Arguments("usage", args.Usage, "capacity", args.Capacity));
 			});

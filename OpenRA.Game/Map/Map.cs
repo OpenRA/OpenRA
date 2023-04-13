@@ -256,8 +256,6 @@ namespace OpenRA
 		CellLayer<byte> projectedHeight;
 		Rectangle projectionSafeBounds;
 
-		internal Translation Translation;
-
 		public static string ComputeUID(IReadOnlyPackage package)
 		{
 			return ComputeUID(package, GetMapFormat(package));
@@ -450,8 +448,6 @@ namespace OpenRA
 			}
 
 			Sequences = new SequenceSet(this, modData, Tileset, SequenceDefinitions);
-			Translation = TranslationDefinitions == null ? null
-				: new Translation(Game.Settings.Player.Language, FieldLoader.GetValue<string[]>("value", TranslationDefinitions.Value), this);
 
 			var tl = new MPos(0, 0).ToCPos(this);
 			var br = new MPos(MapSize.X - 1, MapSize.Y - 1).ToCPos(this);
@@ -1409,14 +1405,6 @@ namespace OpenRA
 				return modData.DefaultFileSystem.IsExternalModFile(filename);
 
 			return false;
-		}
-
-		public string Translate(string key, IDictionary<string, object> args = null)
-		{
-			if (Translation != null && Translation.TryGetString(key, out var message, args))
-				return message;
-
-			return modData.Translation.GetString(key, args);
 		}
 
 		public void Dispose()

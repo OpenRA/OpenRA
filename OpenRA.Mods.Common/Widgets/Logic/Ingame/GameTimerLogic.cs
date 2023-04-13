@@ -43,10 +43,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			bool Paused() => world.Paused || world.ReplayTimestep == 0;
 
-			var pausedText = modData.Translation.GetString(GameTimerLogic.Paused);
-			var maxSpeedText = modData.Translation.GetString(MaxSpeed);
+			var pausedText = TranslationProvider.GetString(GameTimerLogic.Paused);
+			var maxSpeedText = TranslationProvider.GetString(MaxSpeed);
 			var speedText = new CachedTransform<int, string>(p =>
-					modData.Translation.GetString(Speed, Translation.Arguments("percentage", p)));
+					TranslationProvider.GetString(Speed, Translation.Arguments("percentage", p)));
 
 			if (timer != null)
 			{
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var timerText = new CachedTransform<int, string>(p =>
-				modData.Translation.GetString(Complete, Translation.Arguments("percentage", p)));
+				TranslationProvider.GetString(Complete, Translation.Arguments("percentage", p)));
 			if (timer is LabelWithTooltipWidget timerTooltip)
 			{
 				var connection = orderManager.Connection as ReplayConnection;

@@ -101,17 +101,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.modData = modData;
 			viewportSizes = modData.Manifest.Get<WorldViewportSizes>();
 
-			legacyFullscreen = modData.Translation.GetString(LegacyFullscreen);
-			fullscreen = modData.Translation.GetString(Fullscreen);
+			legacyFullscreen = TranslationProvider.GetString(LegacyFullscreen);
+			fullscreen = TranslationProvider.GetString(Fullscreen);
 
 			registerPanel(panelID, label, InitPanel, ResetPanel);
 
-			showOnDamage = modData.Translation.GetString(ShowOnDamage);
-			alwaysShow = modData.Translation.GetString(AlwaysShow);
+			showOnDamage = TranslationProvider.GetString(ShowOnDamage);
+			alwaysShow = TranslationProvider.GetString(AlwaysShow);
 
-			automatic = modData.Translation.GetString(Automatic);
-			manual = modData.Translation.GetString(Manual);
-			disabled = modData.Translation.GetString(Disabled);
+			automatic = TranslationProvider.GetString(Automatic);
+			manual = TranslationProvider.GetString(Manual);
+			disabled = TranslationProvider.GetString(Disabled);
 		}
 
 		public static string GetViewportSizeName(ModData modData, WorldViewport worldViewport)
@@ -119,13 +119,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			switch (worldViewport)
 			{
 				case WorldViewport.Close:
-					return modData.Translation.GetString(Close);
+					return TranslationProvider.GetString(Close);
 				case WorldViewport.Medium:
-					return modData.Translation.GetString(Medium);
+					return TranslationProvider.GetString(Medium);
 				case WorldViewport.Far:
-					return modData.Translation.GetString(Far);
+					return TranslationProvider.GetString(Far);
 				case WorldViewport.Native:
-					return modData.Translation.GetString(Furthest);
+					return TranslationProvider.GetString(Furthest);
 				default:
 					return "";
 			}
@@ -149,14 +149,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SettingsUtils.BindCheckboxPref(panel, "HIDE_REPLAY_CHAT_CHECKBOX", gs, "HideReplayChat");
 
 			var windowModeDropdown = panel.Get<DropDownButtonWidget>("MODE_DROPDOWN");
-			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(modData, windowModeDropdown, ds, scrollPanel);
+			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, ds, scrollPanel);
 			windowModeDropdown.GetText = () => ds.Mode == WindowMode.Windowed
-				? modData.Translation.GetString(Windowed)
+				? TranslationProvider.GetString(Windowed)
 				: ds.Mode == WindowMode.Fullscreen ? legacyFullscreen : fullscreen;
 
 			var displaySelectionDropDown = panel.Get<DropDownButtonWidget>("DISPLAY_SELECTION_DROPDOWN");
 			displaySelectionDropDown.OnMouseDown = _ => ShowDisplaySelectionDropdown(displaySelectionDropDown, ds);
-			var displaySelectionLabel = new CachedTransform<int, string>(i => modData.Translation.GetString(Display, Translation.Arguments("number", i + 1)));
+			var displaySelectionLabel = new CachedTransform<int, string>(i => TranslationProvider.GetString(Display, Translation.Arguments("number", i + 1)));
 			displaySelectionDropDown.GetText = () => displaySelectionLabel.Update(ds.VideoDisplay);
 			displaySelectionDropDown.IsDisabled = () => Game.Renderer.DisplayCount < 2;
 
@@ -168,15 +168,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			glProfileDropdown.IsDisabled = () => disableProfile;
 
 			var statusBarsDropDown = panel.Get<DropDownButtonWidget>("STATUS_BAR_DROPDOWN");
-			statusBarsDropDown.OnMouseDown = _ => ShowStatusBarsDropdown(modData, statusBarsDropDown, gs);
+			statusBarsDropDown.OnMouseDown = _ => ShowStatusBarsDropdown(statusBarsDropDown, gs);
 			statusBarsDropDown.GetText = () => gs.StatusBars == StatusBarsType.Standard
-				? modData.Translation.GetString(Standard)
+				? TranslationProvider.GetString(Standard)
 				: gs.StatusBars == StatusBarsType.DamageShow
 					? showOnDamage
 					: alwaysShow;
 
 			var targetLinesDropDown = panel.Get<DropDownButtonWidget>("TARGET_LINES_DROPDOWN");
-			targetLinesDropDown.OnMouseDown = _ => ShowTargetLinesDropdown(modData, targetLinesDropDown, gs);
+			targetLinesDropDown.OnMouseDown = _ => ShowTargetLinesDropdown(targetLinesDropDown, gs);
 			targetLinesDropDown.GetText = () => gs.TargetLines == TargetLinesType.Automatic
 				? automatic
 				: gs.TargetLines == TargetLinesType.Manual
@@ -332,13 +332,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
-		static void ShowWindowModeDropdown(ModData modData, DropDownButtonWidget dropdown, GraphicSettings s, ScrollPanelWidget scrollPanel)
+		static void ShowWindowModeDropdown(DropDownButtonWidget dropdown, GraphicSettings s, ScrollPanelWidget scrollPanel)
 		{
 			var options = new Dictionary<string, WindowMode>()
 			{
-				{ modData.Translation.GetString(Fullscreen), WindowMode.PseudoFullscreen },
-				{ modData.Translation.GetString(LegacyFullscreen), WindowMode.Fullscreen },
-				{ modData.Translation.GetString(Windowed), WindowMode.Windowed },
+				{ TranslationProvider.GetString(Fullscreen), WindowMode.PseudoFullscreen },
+				{ TranslationProvider.GetString(LegacyFullscreen), WindowMode.Fullscreen },
+				{ TranslationProvider.GetString(Windowed), WindowMode.Windowed },
 			};
 
 			ScrollItemWidget SetupItem(string o, ScrollItemWidget itemTemplate)
@@ -381,13 +381,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		static void ShowStatusBarsDropdown(ModData modData, DropDownButtonWidget dropdown, GameSettings s)
+		static void ShowStatusBarsDropdown(DropDownButtonWidget dropdown, GameSettings s)
 		{
 			var options = new Dictionary<string, StatusBarsType>()
 			{
-				{ modData.Translation.GetString(Standard), StatusBarsType.Standard },
-				{ modData.Translation.GetString(ShowOnDamage), StatusBarsType.DamageShow },
-				{ modData.Translation.GetString(AlwaysShow), StatusBarsType.AlwaysShow },
+				{ TranslationProvider.GetString(Standard), StatusBarsType.Standard },
+				{ TranslationProvider.GetString(ShowOnDamage), StatusBarsType.DamageShow },
+				{ TranslationProvider.GetString(AlwaysShow), StatusBarsType.AlwaysShow },
 			};
 
 			ScrollItemWidget SetupItem(string o, ScrollItemWidget itemTemplate)
@@ -436,13 +436,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, profiles, SetupItem);
 		}
 
-		static void ShowTargetLinesDropdown(ModData modData, DropDownButtonWidget dropdown, GameSettings s)
+		static void ShowTargetLinesDropdown(DropDownButtonWidget dropdown, GameSettings s)
 		{
 			var options = new Dictionary<string, TargetLinesType>()
 			{
-				{ modData.Translation.GetString(Automatic), TargetLinesType.Automatic },
-				{ modData.Translation.GetString(Manual), TargetLinesType.Manual },
-				{ modData.Translation.GetString(Disabled), TargetLinesType.Disabled },
+				{ TranslationProvider.GetString(Automatic), TargetLinesType.Automatic },
+				{ TranslationProvider.GetString(Manual), TargetLinesType.Manual },
+				{ TranslationProvider.GetString(Disabled), TargetLinesType.Disabled },
 			};
 
 			ScrollItemWidget SetupItem(string o, ScrollItemWidget itemTemplate)

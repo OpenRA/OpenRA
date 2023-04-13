@@ -20,9 +20,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string KickSpectators = "dialog-kick-spectators.prompt";
 
 		[ObjectCreator.UseCtor]
-		public KickSpectatorsLogic(ModData modData, Widget widget, int clientCount, Action okPressed, Action cancelPressed)
+		public KickSpectatorsLogic(Widget widget, int clientCount, Action okPressed, Action cancelPressed)
 		{
-			var kickMessage = modData.Translation.GetString(KickSpectators, Translation.Arguments("count", clientCount));
+			var kickMessage = TranslationProvider.GetString(KickSpectators, Translation.Arguments("count", clientCount));
 			widget.Get<LabelWidget>("TEXT").GetText = () => kickMessage;
 
 			widget.Get<ButtonWidget>("OK_BUTTON").OnClick = () =>

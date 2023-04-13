@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.modData = modData;
 			panel = widget;
 
-			allPackages = modData.Translation.GetString(AllPackages);
+			allPackages = TranslationProvider.GetString(AllPackages);
 
 			var colorPickerPalettes = world.WorldActor.TraitsImplementing<IProvidesAssetBrowserColorPickerPalettes>()
 				.SelectMany(p => p.ColorPickerPaletteNames)
@@ -238,7 +238,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (frameText != null)
 			{
 				var soundLength = new CachedTransform<double, string>(p =>
-					modData.Translation.GetString(LengthInSeconds, Translation.Arguments("length", Math.Round(p, 3))));
+					TranslationProvider.GetString(LengthInSeconds, Translation.Arguments("length", Math.Round(p, 3))));
 
 				frameText.GetText = () =>
 				{

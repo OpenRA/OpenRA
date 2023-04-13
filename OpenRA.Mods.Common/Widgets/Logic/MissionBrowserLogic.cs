@@ -314,13 +314,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var speeds = modData.Manifest.Get<GameSpeeds>().Speeds;
 				gameSpeed = "default";
 
-				var speedText = new CachedTransform<string, string>(s => modData.Translation.GetString(speeds[s].Name));
+				var speedText = new CachedTransform<string, string>(s => TranslationProvider.GetString(speeds[s].Name));
 				gameSpeedButton.GetText = () => speedText.Update(gameSpeed);
 				gameSpeedButton.OnMouseDown = _ =>
 				{
 					var options = speeds.Select(s => new DropDownOption
 					{
-						Title = modData.Translation.GetString(s.Value.Name),
+						Title = TranslationProvider.GetString(s.Value.Name),
 						IsSelected = () => gameSpeed == s.Key,
 						OnClick = () => gameSpeed = s.Key
 					});

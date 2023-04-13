@@ -36,7 +36,6 @@ namespace OpenRA
 		public readonly IModelSequenceLoader ModelSequenceLoader;
 		public readonly IVideoLoader[] VideoLoaders;
 		public readonly HotkeyManager Hotkeys;
-		public readonly Translation Translation;
 		public ILoadScreen LoadScreen { get; }
 		public CursorProvider CursorProvider { get; private set; }
 		public FS ModFiles;
@@ -102,8 +101,6 @@ namespace OpenRA
 
 			Hotkeys = new HotkeyManager(ModFiles, Game.Settings.Keys, Manifest);
 
-			Translation = new Translation(Game.Settings.Player.Language, Manifest.Translations, DefaultFileSystem);
-
 			defaultRules = Exts.Lazy(() => Ruleset.LoadDefaults(this));
 			defaultTerrainInfo = Exts.Lazy(() =>
 			{
@@ -137,6 +134,7 @@ namespace OpenRA
 			// horribly when you use ModData in unexpected ways.
 			ChromeMetrics.Initialize(this);
 			ChromeProvider.Initialize(this);
+			TranslationProvider.Initialize(this, fileSystem);
 
 			Game.Sound.Initialize(SoundLoaders, fileSystem);
 
