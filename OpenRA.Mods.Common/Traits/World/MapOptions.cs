@@ -81,22 +81,24 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
-			yield return new LobbyBooleanOption("shortgame", ShortGameCheckboxLabel, ShortGameCheckboxDescription,
+			yield return new LobbyBooleanOption(map, "shortgame", ShortGameCheckboxLabel, ShortGameCheckboxDescription,
 				ShortGameCheckboxVisible, ShortGameCheckboxDisplayOrder, ShortGameCheckboxEnabled, ShortGameCheckboxLocked);
 
 			var techLevels = map.PlayerActorInfo.TraitInfos<ProvidesTechPrerequisiteInfo>()
-				.ToDictionary(t => t.Id, t => Game.ModData.Translation.GetString(t.Name));
+				.ToDictionary(t => t.Id, t => map.GetLocalisedString(t.Name));
 
 			if (techLevels.Count > 0)
-				yield return new LobbyOption("techlevel", TechLevelDropdownLabel, TechLevelDropdownDescription, TechLevelDropdownVisible, TechLevelDropdownDisplayOrder,
+				yield return new LobbyOption(map, "techlevel", TechLevelDropdownLabel, TechLevelDropdownDescription, TechLevelDropdownVisible, TechLevelDropdownDisplayOrder,
 					techLevels, TechLevel, TechLevelDropdownLocked);
 
 			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
 			var speeds = gameSpeeds.Speeds.ToDictionary(s => s.Key, s => Game.ModData.Translation.GetString(s.Value.Name));
 
-			// NOTE: This is just exposing the UI, the backend logic for this option is hardcoded in World
-			yield return new LobbyOption("gamespeed", GameSpeedDropdownLabel, GameSpeedDropdownDescription, GameSpeedDropdownVisible, GameSpeedDropdownDisplayOrder,
-				speeds, GameSpeed ?? gameSpeeds.DefaultSpeed, GameSpeedDropdownLocked);
+			// NOTE: This is just exposing the UI, the backend logic for this option is hardcoded in World.
+			yield return new LobbyOption(map, "gamespeed",
+				GameSpeedDropdownLabel, GameSpeedDropdownDescription,
+				GameSpeedDropdownVisible, GameSpeedDropdownDisplayOrder, speeds,
+				GameSpeed ?? gameSpeeds.DefaultSpeed, GameSpeedDropdownLocked);
 		}
 
 		void IRulesetLoaded<ActorInfo>.RulesetLoaded(Ruleset rules, ActorInfo info)

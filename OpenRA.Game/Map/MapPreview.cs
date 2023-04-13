@@ -199,6 +199,15 @@ namespace OpenRA
 		public long DownloadBytes { get; private set; }
 		public int DownloadPercentage { get; private set; }
 
+		public string GetLocalisedString(string key, IDictionary<string, object> args = null)
+		{
+			// PERF: instead of loading mod level Translation for each MapPreview, reuse the already loaded one in modData.
+			if (modData.Translation.TryGetString(key, out var message, args))
+				return message;
+
+			return innerData.Translation?.GetString(key, args) ?? key;
+		}
+
 		Sprite minimap;
 		bool generatingMinimap;
 		public Sprite GetMinimap()
