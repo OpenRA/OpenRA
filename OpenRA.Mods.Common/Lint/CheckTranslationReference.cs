@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckTranslationReference : ILintPass
+	class CheckTranslationReference : ILintPass, ILintMapPass
 	{
 		const BindingFlags Binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
 
@@ -28,14 +28,9 @@ namespace OpenRA.Mods.Common.Lint
 		readonly Dictionary<string, string[]> referencedVariablesPerKey = new();
 		readonly List<string> variableReferences = new();
 
-		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
+		void TestTraits(Ruleset rules, Action<string> testKey)
 		{
-			// TODO: Check all available languages
-			var language = "en";
-			Console.WriteLine($"Testing translation: {language}");
-			var translation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem);
-
-			foreach (var actorInfo in modData.DefaultRules.Actors)
+			foreach (var actorInfo in rules.Actors)
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
@@ -52,20 +47,54 @@ namespace OpenRA.Mods.Common.Lint
 							if (referencedKeys.Contains(key))
 								continue;
 
-							if (!translation.HasMessage(key))
-								emitError($"{key} not present in {language} translation.");
-
+							testKey(key);
 							referencedKeys.Add(key);
 						}
 					}
 				}
 			}
+		}
+
+		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
+		{
+			if (map.TranslationDefinitions == null)
+				return;
+
+			// TODO: Check all available languages.
+			var language = "en";
+			var modTranslation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem);
+			var mapTranslation = new Translation(language, FieldLoader.GetValue<string[]>("value", map.TranslationDefinitions.Value), map);
+
+			TestTraits(map.Rules, key =>
+			{
+				if (modTranslation.HasMessage(key))
+				{
+					if (mapTranslation.HasMessage(key))
+						emitError($"Map level `{language}` translation key `{key}` will not be used.");
+				}
+				else if (!mapTranslation.HasMessage(key))
+					emitError($"`{key}` is not present in `{language}` translation.");
+			});
+		}
+
+		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
+		{
+			// TODO: Check all available languages.
+			var language = "en";
+			Console.WriteLine($"Testing translation: {language}");
+			var translation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem);
+
+			TestTraits(modData.DefaultRules, key =>
+			{
+				if (!translation.HasMessage(key))
+					emitError($"{key} not present in `{language}` translation.");
+			});
 
 			var gameSpeeds = modData.Manifest.Get<GameSpeeds>();
 			foreach (var speed in gameSpeeds.Speeds.Values)
 			{
 				if (!translation.HasMessage(speed.Name))
-					emitError($"{speed.Name} not present in {language} translation.");
+					emitError($"`{speed.Name}` not present in `{language}` translation.");
 
 				referencedKeys.Add(speed.Name);
 			}
@@ -85,7 +114,7 @@ namespace OpenRA.Mods.Common.Lint
 						continue;
 
 					if (!translation.HasMessage(key))
-						emitError($"{key} not present in {language} translation.");
+						emitError($"`{key}` not present in `{language}` translation.");
 
 					var translationReference = Utility.GetCustomAttributes<TranslationReferenceAttribute>(fieldInfo, true)[0];
 					if (translationReference.RequiredVariableNames != null && translationReference.RequiredVariableNames.Length > 0)
