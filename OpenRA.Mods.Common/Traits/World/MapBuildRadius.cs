@@ -60,10 +60,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
-			yield return new LobbyBooleanOption("allybuild", AllyBuildRadiusCheckboxLabel, AllyBuildRadiusCheckboxDescription,
+			yield return new LobbyBooleanOption(map, "allybuild", AllyBuildRadiusCheckboxLabel, AllyBuildRadiusCheckboxDescription,
 				AllyBuildRadiusCheckboxVisible, AllyBuildRadiusCheckboxDisplayOrder, AllyBuildRadiusCheckboxEnabled, AllyBuildRadiusCheckboxLocked);
 
-			yield return new LobbyBooleanOption("buildradius", BuildRadiusCheckboxLabel, BuildRadiusCheckboxDescription,
+			yield return new LobbyBooleanOption(map, "buildradius", BuildRadiusCheckboxLabel, BuildRadiusCheckboxDescription,
 				BuildRadiusCheckboxVisible, BuildRadiusCheckboxDisplayOrder, BuildRadiusCheckboxEnabled, BuildRadiusCheckboxLocked);
 		}
 

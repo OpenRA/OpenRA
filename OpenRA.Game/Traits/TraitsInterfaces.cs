@@ -543,12 +543,12 @@ namespace OpenRA.Traits
 		public readonly bool IsVisible;
 		public readonly int DisplayOrder;
 
-		public LobbyOption(string id, string name, string description, bool visible, int displayorder,
+		public LobbyOption(MapPreview map, string id, string name, string description, bool visible, int displayorder,
 			IReadOnlyDictionary<string, string> values, string defaultValue, bool locked)
 		{
 			Id = id;
-			Name = Game.ModData.Translation.GetString(name);
-			Description = Game.ModData.Translation.GetString(description);
+			Name = map.GetLocalisedString(name);
+			Description = map.GetLocalisedString(description);
 			IsVisible = visible;
 			DisplayOrder = displayorder;
 			Values = values;
@@ -570,8 +570,8 @@ namespace OpenRA.Traits
 			{ false.ToString(), "Disabled" }
 		};
 
-		public LobbyBooleanOption(string id, string name, string description, bool visible, int displayorder, bool defaultValue, bool locked)
-			: base(id, name, description, visible, displayorder, new ReadOnlyDictionary<string, string>(BoolValues), defaultValue.ToString(), locked) { }
+		public LobbyBooleanOption(MapPreview map, string id, string name, string description, bool visible, int displayorder, bool defaultValue, bool locked)
+			: base(map, id, name, description, visible, displayorder, new ReadOnlyDictionary<string, string>(BoolValues), defaultValue.ToString(), locked) { }
 
 		public override string Label(string newValue)
 		{

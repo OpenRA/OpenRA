@@ -60,11 +60,9 @@ namespace OpenRA.Traits
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
-			yield return new LobbyBooleanOption("explored", Game.ModData.Translation.GetString(ExploredMapCheckboxLabel),
-				Game.ModData.Translation.GetString(ExploredMapCheckboxDescription),
+			yield return new LobbyBooleanOption(map, "explored", ExploredMapCheckboxLabel, ExploredMapCheckboxDescription,
 				ExploredMapCheckboxVisible, ExploredMapCheckboxDisplayOrder, ExploredMapCheckboxEnabled, ExploredMapCheckboxLocked);
-			yield return new LobbyBooleanOption("fog", Game.ModData.Translation.GetString(FogCheckboxLabel),
-				Game.ModData.Translation.GetString(FogCheckboxDescription),
+			yield return new LobbyBooleanOption(map, "fog", FogCheckboxLabel, FogCheckboxDescription,
 				FogCheckboxVisible, FogCheckboxDisplayOrder, FogCheckboxEnabled, FogCheckboxLocked);
 		}
 
