@@ -70,10 +70,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var disableTeamChat = alwaysDisabled || (world.LocalPlayer != null && !players.Any(p => p.IsAlliedWith(world.LocalPlayer)));
 			var teamChat = !disableTeamChat;
 
-			var teamMessage = modData.Translation.GetString(TeamChat);
-			var allMessage = modData.Translation.GetString(GeneralChat);
+			var teamMessage = TranslationProvider.GetString(TeamChat);
+			var allMessage = TranslationProvider.GetString(GeneralChat);
 
-			chatDisabled = modData.Translation.GetString(ChatDisabled);
+			chatDisabled = TranslationProvider.GetString(ChatDisabled);
 
 			// Only execute this once, the first time this widget is loaded
 			if (TextNotificationsManager.MutedPlayers.Count == 0)
@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
-			chatAvailableIn = new CachedTransform<int, string>(x => modData.Translation.GetString(ChatAvailability, Translation.Arguments("seconds", x)));
+			chatAvailableIn = new CachedTransform<int, string>(x => TranslationProvider.GetString(ChatAvailability, Translation.Arguments("seconds", x)));
 
 			if (!isMenuChat)
 			{

@@ -20,9 +20,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string KickClient = "dialog-kick-client.prompt";
 
 		[ObjectCreator.UseCtor]
-		public KickClientLogic(ModData modData, Widget widget, string clientName, Action<bool> okPressed, Action cancelPressed)
+		public KickClientLogic(Widget widget, string clientName, Action<bool> okPressed, Action cancelPressed)
 		{
-			var kickMessage = modData.Translation.GetString(KickClient, Translation.Arguments("player", clientName));
+			var kickMessage = TranslationProvider.GetString(KickClient, Translation.Arguments("player", clientName));
 			widget.Get<LabelWidget>("TITLE").GetText = () => kickMessage;
 
 			var tempBan = false;

@@ -51,12 +51,12 @@ namespace OpenRA.Mods.Common.Commands
 
 		public void InvokeCommand(string name, string arg)
 		{
-			TextNotificationsManager.Debug(Game.ModData.Translation.GetString(AvailableCommands));
+			TextNotificationsManager.Debug(TranslationProvider.GetString(AvailableCommands));
 
 			foreach (var key in console.Commands.Keys)
 			{
 				if (!helpDescriptions.TryGetValue(key, out var description))
-					description = Game.ModData.Translation.GetString(NoDescription);
+					description = TranslationProvider.GetString(NoDescription);
 
 				TextNotificationsManager.Debug($"{key}: {description}");
 			}
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Commands
 
 		public void RegisterHelp(string name, string description)
 		{
-			helpDescriptions[name] = Game.ModData.Translation.GetString(description);
+			helpDescriptions[name] = TranslationProvider.GetString(description);
 		}
 	}
 }

@@ -261,7 +261,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							new DropDownOption()
 							{
-								Title = modData.Translation.GetString(Add),
+								Title = TranslationProvider.GetString(Add),
 								IsSelected = () => false,
 								OnClick = () =>
 								{
@@ -280,7 +280,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							botOptions.Add(new DropDownOption()
 							{
-								Title = modData.Translation.GetString(Remove),
+								Title = TranslationProvider.GetString(Remove),
 								IsSelected = () => false,
 								OnClick = () =>
 								{
@@ -294,7 +294,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							});
 						}
 
-						options.Add(modData.Translation.GetString(ConfigureBots), botOptions);
+						options.Add(TranslationProvider.GetString(ConfigureBots), botOptions);
 					}
 
 					var teamCount = (orderManager.LobbyInfo.Slots.Count(s => !s.Value.LockTeam && orderManager.LobbyInfo.ClientInSlot(s.Key) != null) + 1) / 2;
@@ -302,7 +302,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var teamOptions = Enumerable.Range(2, teamCount - 1).Reverse().Select(d => new DropDownOption
 						{
-							Title = modData.Translation.GetString(NumberTeams, Translation.Arguments("count", d)),
+							Title = TranslationProvider.GetString(NumberTeams, Translation.Arguments("count", d)),
 							IsSelected = () => false,
 							OnClick = () => orderManager.IssueOrder(Order.Command($"assignteams {d}"))
 						}).ToList();
@@ -311,7 +311,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							teamOptions.Add(new DropDownOption
 							{
-								Title = modData.Translation.GetString(HumanVsBots),
+								Title = TranslationProvider.GetString(HumanVsBots),
 								IsSelected = () => false,
 								OnClick = () => orderManager.IssueOrder(Order.Command("assignteams 1"))
 							});
@@ -319,12 +319,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						teamOptions.Add(new DropDownOption
 						{
-							Title = modData.Translation.GetString(FreeForAll),
+							Title = TranslationProvider.GetString(FreeForAll),
 							IsSelected = () => false,
 							OnClick = () => orderManager.IssueOrder(Order.Command("assignteams 0"))
 						});
 
-						options.Add(modData.Translation.GetString(ConfigureTeams), teamOptions);
+						options.Add(TranslationProvider.GetString(ConfigureTeams), teamOptions);
 					}
 
 					ScrollItemWidget SetupItem(DropDownOption option, ScrollItemWidget template)
@@ -443,7 +443,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			disconnectButton.OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			if (skirmishMode)
-				disconnectButton.Text = modData.Translation.GetString(Back);
+				disconnectButton.Text = TranslationProvider.GetString(Back);
 
 			if (logicArgs.TryGetValue("ChatTemplates", out var templateIds))
 			{
@@ -455,8 +455,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var chatMode = lobby.Get<ButtonWidget>("CHAT_MODE");
-			var team = modData.Translation.GetString(TeamChat);
-			var all = modData.Translation.GetString(GeneralChat);
+			var team = TranslationProvider.GetString(TeamChat);
+			var all = TranslationProvider.GetString(GeneralChat);
 			chatMode.GetText = () => teamChat ? team : all;
 			chatMode.OnClick = () => teamChat ^= true;
 			chatMode.IsDisabled = () => disableTeamChat || !chatEnabled;
@@ -497,8 +497,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			chatTextField.OnEscKey = _ => chatTextField.YieldKeyboardFocus();
 
-			chatAvailableIn = new CachedTransform<int, string>(x => modData.Translation.GetString(ChatAvailability, Translation.Arguments("seconds", x)));
-			chatDisabled = modData.Translation.GetString(ChatDisabled);
+			chatAvailableIn = new CachedTransform<int, string>(x => TranslationProvider.GetString(ChatAvailability, Translation.Arguments("seconds", x)));
+			chatDisabled = TranslationProvider.GetString(ChatDisabled);
 
 			lobbyChatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");
 			lobbyChatPanel.RemoveChildren();

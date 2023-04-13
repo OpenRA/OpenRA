@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var panel = widget;
 			panel.Get<ButtonWidget>("ABORT_BUTTON").OnClick = () => { CloseWindow(); onAbort(); };
 
-			var connectingDesc = modData.Translation.GetString(ConnectingToEndpoint, Translation.Arguments("endpoint", endpoint));
+			var connectingDesc = TranslationProvider.GetString(ConnectingToEndpoint, Translation.Arguments("endpoint", endpoint));
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => connectingDesc;
 		}
 
@@ -129,15 +129,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				onRetry(pass);
 			};
 
-			var connectingDescText = modData.Translation.GetString(CouldNotConnectToTarget, Translation.Arguments("target", connection.Target));
+			var connectingDescText = TranslationProvider.GetString(CouldNotConnectToTarget, Translation.Arguments("target", connection.Target));
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => connectingDescText;
 
 			var connectionError = widget.Get<LabelWidget>("CONNECTION_ERROR");
-			var connectionErrorText = orderManager.ServerError != null ? modData.Translation.GetString(orderManager.ServerError) : connection.ErrorMessage ?? modData.Translation.GetString(UnknownError);
+			var connectionErrorText = orderManager.ServerError != null ? TranslationProvider.GetString(orderManager.ServerError) : connection.ErrorMessage ?? TranslationProvider.GetString(UnknownError);
 			connectionError.GetText = () => connectionErrorText;
 
 			var panelTitle = widget.Get<LabelWidget>("TITLE");
-			var panelTitleText = orderManager.AuthenticationFailed ? modData.Translation.GetString(PasswordRequired) : modData.Translation.GetString(ConnectionFailed);
+			var panelTitleText = orderManager.AuthenticationFailed ? TranslationProvider.GetString(PasswordRequired) : TranslationProvider.GetString(ConnectionFailed);
 			panelTitle.GetText = () => panelTitleText;
 
 			passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");

@@ -79,9 +79,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					checkbox.GetText = () => mo.Objectives[0].Description;
 				}
 
-				var failed = modData.Translation.GetString(Failed);
-				var inProgress = modData.Translation.GetString(InProgress);
-				var accomplished = modData.Translation.GetString(Accomplished);
+				var failed = TranslationProvider.GetString(Failed);
+				var inProgress = TranslationProvider.GetString(InProgress);
+				var accomplished = TranslationProvider.GetString(Accomplished);
 				statusLabel.GetText = () => player.WinState == WinState.Won ? accomplished :
 					player.WinState == WinState.Lost ? failed : inProgress;
 				statusLabel.GetColor = () => player.WinState == WinState.Won ? Color.LimeGreen :
@@ -104,8 +104,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var teamTemplate = playerPanel.Get<ScrollItemWidget>("TEAM_TEMPLATE");
 			var playerTemplate = playerPanel.Get("PLAYER_TEMPLATE");
 			var spectatorTemplate = playerPanel.Get("SPECTATOR_TEMPLATE");
-			var unmuteTooltip = modData.Translation.GetString(Unmute);
-			var muteTooltip = modData.Translation.GetString(Mute);
+			var unmuteTooltip = TranslationProvider.GetString(Unmute);
+			var muteTooltip = TranslationProvider.GetString(Mute);
 			playerPanel.RemoveChildren();
 
 			var teams = world.Players.Where(p => !p.NonCombatant && p.Playable)
@@ -136,8 +136,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var teamHeader = ScrollItemWidget.Setup(teamTemplate, () => false, () => { });
 					var team = t.Key > 0
-						? modData.Translation.GetString(TeamNumber, Translation.Arguments("team", t.Key))
-						: modData.Translation.GetString(NoTeam);
+						? TranslationProvider.GetString(TeamNumber, Translation.Arguments("team", t.Key))
+						: TranslationProvider.GetString(NoTeam);
 					teamHeader.Get<LabelWidget>("TEAM").GetText = () => team;
 					var teamRating = teamHeader.Get<LabelWidget>("TEAM_SCORE");
 					var scoreCache = new CachedTransform<int, string>(s => s.ToString());
@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (spectators.Count > 0)
 			{
 				var spectatorHeader = ScrollItemWidget.Setup(teamTemplate, () => false, () => { });
-				var spectatorTeam = modData.Translation.GetString(Spectators);
+				var spectatorTeam = TranslationProvider.GetString(Spectators);
 				spectatorHeader.Get<LabelWidget>("TEAM").GetText = () => spectatorTeam;
 
 				playerPanel.AddChild(spectatorHeader);
@@ -212,7 +212,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					nameLabel.GetText = () =>
 					{
-						var suffix = client.State == Session.ClientState.Disconnected ? $" ({modData.Translation.GetString(Gone)})" : "";
+						var suffix = client.State == Session.ClientState.Disconnected ? $" ({TranslationProvider.GetString(Gone)})" : "";
 						return name.Update((client.Name, suffix));
 					};
 

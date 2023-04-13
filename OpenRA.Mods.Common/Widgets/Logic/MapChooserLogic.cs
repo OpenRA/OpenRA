@@ -100,9 +100,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.modData = modData;
 			this.onSelect = onSelect;
 
-			allMaps = modData.Translation.GetString(AllMaps);
-			orderByPlayer = modData.Translation.GetString(OrderMapsByPlayers);
-			orderByDate = modData.Translation.GetString(OrderMapsByDate);
+			allMaps = TranslationProvider.GetString(AllMaps);
+			orderByPlayer = TranslationProvider.GetString(OrderMapsByPlayers);
+			orderByDate = TranslationProvider.GetString(OrderMapsByDate);
 
 			var approving = new Action(() =>
 			{
@@ -273,7 +273,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var item = categories.FirstOrDefault(m => m.Category == category);
 					if (item == default((string, int)))
-						item.Category = modData.Translation.GetString(NoMatches);
+						item.Category = TranslationProvider.GetString(NoMatches);
 
 					return ShowItem(item);
 				};
@@ -363,23 +363,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (type != null)
 						details = type + " ";
 
-					details += modData.Translation.GetString(Players, Translation.Arguments("players", preview.PlayerCount));
+					details += TranslationProvider.GetString(Players, Translation.Arguments("players", preview.PlayerCount));
 					detailsWidget.GetText = () => details;
 				}
 
 				var authorWidget = item.GetOrNull<LabelWithTooltipWidget>("AUTHOR");
 				if (authorWidget != null && !string.IsNullOrEmpty(preview.Author))
-					WidgetUtils.TruncateLabelToTooltip(authorWidget, modData.Translation.GetString(CreatedBy, Translation.Arguments("author", preview.Author)));
+					WidgetUtils.TruncateLabelToTooltip(authorWidget, TranslationProvider.GetString(CreatedBy, Translation.Arguments("author", preview.Author)));
 
 				var sizeWidget = item.GetOrNull<LabelWidget>("SIZE");
 				if (sizeWidget != null)
 				{
 					var size = preview.Bounds.Width + "x" + preview.Bounds.Height;
 					var numberPlayableCells = preview.Bounds.Width * preview.Bounds.Height;
-					if (numberPlayableCells >= 120 * 120) size += " " + modData.Translation.GetString(MapSizeHuge);
-					else if (numberPlayableCells >= 90 * 90) size += " " + modData.Translation.GetString(MapSizeLarge);
-					else if (numberPlayableCells >= 60 * 60) size += " " + modData.Translation.GetString(MapSizeMedium);
-					else size += " " + modData.Translation.GetString(MapSizeSmall);
+					if (numberPlayableCells >= 120 * 120) size += " " + TranslationProvider.GetString(MapSizeHuge);
+					else if (numberPlayableCells >= 90 * 90) size += " " + TranslationProvider.GetString(MapSizeLarge);
+					else if (numberPlayableCells >= 60 * 60) size += " " + TranslationProvider.GetString(MapSizeMedium);
+					else size += " " + TranslationProvider.GetString(MapSizeSmall);
 					sizeWidget.GetText = () => size;
 				}
 
@@ -407,7 +407,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				TextNotificationsManager.Debug(modData.Translation.GetString(MapDeletionFailed, Translation.Arguments("map", map)));
+				TextNotificationsManager.Debug(TranslationProvider.GetString(MapDeletionFailed, Translation.Arguments("map", map)));
 				Log.Write("debug", ex.ToString());
 			}
 

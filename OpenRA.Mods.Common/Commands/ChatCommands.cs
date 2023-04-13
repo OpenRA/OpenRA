@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Commands
 				if (command.Value != null)
 					command.Value.InvokeCommand(name.ToLowerInvariant(), message[(1 + name.Length)..].Trim());
 				else
-					TextNotificationsManager.Debug(Game.ModData.Translation.GetString(InvalidCommand, Translation.Arguments("name", name)));
+					TextNotificationsManager.Debug(TranslationProvider.GetString(InvalidCommand, Translation.Arguments("name", name)));
 
 				return false;
 			}

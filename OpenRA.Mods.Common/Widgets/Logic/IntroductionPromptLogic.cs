@@ -42,8 +42,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var ds = Game.Settings.Graphics;
 			var gs = Game.Settings.Game;
 
-			classic = modData.Translation.GetString(Classic);
-			modern = modData.Translation.GetString(Modern);
+			classic = TranslationProvider.GetString(Classic);
+			modern = TranslationProvider.GetString(Modern);
 
 			var escPressed = false;
 			var nameTextfield = widget.Get<TextFieldWidget>("PLAYERNAME");
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mouseControlDescModern.IsVisible = () => !gs.UseClassicMouseStyle;
 
 			var mouseControlDropdown = widget.Get<DropDownButtonWidget>("MOUSE_CONTROL_DROPDOWN");
-			mouseControlDropdown.OnMouseDown = _ => InputSettingsLogic.ShowMouseControlDropdown(modData, mouseControlDropdown, gs);
+			mouseControlDropdown.OnMouseDown = _ => InputSettingsLogic.ShowMouseControlDropdown(mouseControlDropdown, gs);
 			mouseControlDropdown.GetText = () => gs.UseClassicMouseStyle ? classic : modern;
 
 			foreach (var container in new[] { mouseControlDescClassic, mouseControlDescModern })

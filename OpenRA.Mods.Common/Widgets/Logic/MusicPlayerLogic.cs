@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				panel.Get<LabelWidget>("MUTE_LABEL").GetText = () =>
 				{
 					if (Game.Settings.Sound.Mute)
-						return modData.Translation.GetString(SoundMuted);
+						return TranslationProvider.GetString(SoundMuted);
 
 					return "";
 				};
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return $"{minutes:D2}:{seconds:D2} / {totalMinutes:D2}:{totalSeconds:D2}";
 			};
 
-			var noSongPlaying = modData.Translation.GetString(NoSongPlaying);
+			var noSongPlaying = TranslationProvider.GetString(NoSongPlaying);
 			var musicTitle = panel.GetOrNull<LabelWidget>("TITLE_LABEL");
 			if (musicTitle != null)
 				musicTitle.GetText = () => currentSong != null ? currentSong.Title : noSongPlaying;

@@ -35,10 +35,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			powerBar.TooltipTextCached = new CachedTransform<(float Current, float Capacity), string>(usage =>
 			{
 				var capacity = developerMode.UnlimitedPower ?
-					modData.Translation.GetString(Infinite) :
+					TranslationProvider.GetString(Infinite) :
 					powerManager.PowerProvided.ToString();
 
-				return modData.Translation.GetString(
+				return TranslationProvider.GetString(
 					PowerUsage,
 					Translation.Arguments("usage", usage.Current, "capacity", capacity));
 			});

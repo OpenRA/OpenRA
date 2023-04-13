@@ -301,7 +301,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				TextNotificationsManager.Debug(modData.Translation.GetString(SaveDeletionFailed, Translation.Arguments("savePath", savePath)));
+				TextNotificationsManager.Debug(TranslationProvider.GetString(SaveDeletionFailed, Translation.Arguments("savePath", savePath)));
 				Log.Write("debug", ex.ToString());
 				return;
 			}

@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			displayResources = playerResources.Cash + playerResources.Resources;
 
 			siloUsageTooltipCache = new CachedTransform<(int Resources, int Capacity), string>(x =>
-				modData.Translation.GetString(SiloUsage, Translation.Arguments("usage", x.Resources, "capacity", x.Capacity)));
+				TranslationProvider.GetString(SiloUsage, Translation.Arguments("usage", x.Resources, "capacity", x.Capacity)));
 			cashLabel = widget.Get<LabelWithTooltipWidget>("CASH");
 			cashLabel.GetTooltipText = () => siloUsageTooltip;
 

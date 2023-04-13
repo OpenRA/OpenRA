@@ -47,9 +47,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var labelText = "";
 			string playerFaction = null;
 			var playerTeam = -1;
-			teamMessage = new CachedTransform<int, string>(t => modData.Translation.GetString(TeamNumber, Translation.Arguments("team", t)));
-			var disabledSpawn = modData.Translation.GetString(DisabledSpawn);
-			var availableSpawn = modData.Translation.GetString(AvailableSpawn);
+			teamMessage = new CachedTransform<int, string>(t => TranslationProvider.GetString(TeamNumber, Translation.Arguments("team", t)));
+			var disabledSpawn = TranslationProvider.GetString(DisabledSpawn);
+			var availableSpawn = TranslationProvider.GetString(AvailableSpawn);
 
 			tooltipContainer.BeforeRender = () =>
 			{

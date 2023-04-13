@@ -55,12 +55,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public static void ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot,
 			Session.Client client, OrderManager orderManager, MapPreview map, ModData modData)
 		{
-			var open = modData.Translation.GetString(Open);
-			var closed = modData.Translation.GetString(Closed);
+			var open = TranslationProvider.GetString(Open);
+			var closed = TranslationProvider.GetString(Closed);
 			var options = new Dictionary<string, IEnumerable<SlotDropDownOption>>
 			{
 				{
-					modData.Translation.GetString(Slot), new List<SlotDropDownOption>
+					TranslationProvider.GetString(Slot), new List<SlotDropDownOption>
 					{
 						new SlotDropDownOption(open, "slot_open " + slot.PlayerReference, () => !slot.Closed && client == null),
 						new SlotDropDownOption(closed, "slot_close " + slot.PlayerReference, () => slot.Closed)
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 			}
 
-			options.Add(bots.Count > 0 ? modData.Translation.GetString(Bots) : modData.Translation.GetString(BotsDisabled), bots);
+			options.Add(bots.Count > 0 ? TranslationProvider.GetString(Bots) : TranslationProvider.GetString(BotsDisabled), bots);
 
 			ScrollItemWidget SetupItem(SlotDropDownOption o, ScrollItemWidget itemTemplate)
 			{
@@ -438,8 +438,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				WidgetUtils.TruncateText(name, slot.Bounds.Width - slot.Bounds.Height - slot.LeftMargin - slot.RightMargin,
 				Game.Renderer.Fonts[slot.Font]));
 
-			var closed = modData.Translation.GetString(Closed);
-			var open = modData.Translation.GetString(Open);
+			var closed = TranslationProvider.GetString(Closed);
+			var open = TranslationProvider.GetString(Open);
 			slot.GetText = () => truncated.Update(c != null ? c.Name : s.Closed ? closed : open);
 			slot.OnMouseDown = _ => ShowSlotDropDown(slot, s, c, orderManager, map, modData);
 
@@ -452,8 +452,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var name = parent.Get<LabelWidget>("NAME");
 			name.IsVisible = () => true;
 			name.GetText = () => c != null ? c.Name : s.Closed
-				? modData.Translation.GetString(Closed)
-				: modData.Translation.GetString(Open);
+				? TranslationProvider.GetString(Closed)
+				: TranslationProvider.GetString(Open);
 
 			// Ensure Slot selector (if present) is hidden
 			HideChildWidget(parent, "SLOT_OPTIONS");

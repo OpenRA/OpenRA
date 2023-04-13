@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var status = new CachedTransform<string, string>(s => WidgetUtils.TruncateText(s, statusLabel.Bounds.Width, statusFont));
 			statusLabel.GetText = () => status.Update(getStatusText());
 
-			var text = modData.Translation.GetString(Downloading, Translation.Arguments("title", download.Title));
+			var text = TranslationProvider.GetString(Downloading, Translation.Arguments("title", download.Title));
 			panel.Get<LabelWidget>("TITLE").Text = text;
 
 			ShowDownloadDialog();
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void ShowDownloadDialog()
 		{
-			getStatusText = () => modData.Translation.GetString(FetchingMirrorList);
+			getStatusText = () => TranslationProvider.GetString(FetchingMirrorList);
 			progressBar.Indeterminate = true;
 
 			var retryButton = panel.Get<ButtonWidget>("RETRY_BUTTON");
@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var dataTotal = 0.0f;
 				var mag = 0;
 				var dataSuffix = "";
-				var host = downloadHost ?? modData.Translation.GetString(UnknownHost);
+				var host = downloadHost ?? TranslationProvider.GetString(UnknownHost);
 
 				if (total < 0)
 				{
@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					dataReceived = read / (float)(1L << (mag * 10));
 					dataSuffix = SizeSuffixes[mag];
 
-					getStatusText = () => modData.Translation.GetString(DownloadingFrom,
+					getStatusText = () => TranslationProvider.GetString(DownloadingFrom,
 						Translation.Arguments("host", host, "received", $"{dataReceived:0.00}", "suffix", dataSuffix));
 					progressBar.Indeterminate = true;
 				}
@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					dataReceived = read / (float)(1L << (mag * 10));
 					dataSuffix = SizeSuffixes[mag];
 
-					getStatusText = () => modData.Translation.GetString(DownloadingFromProgress,
+					getStatusText = () => TranslationProvider.GetString(DownloadingFromProgress,
 						Translation.Arguments("host", host, "received", $"{dataReceived:0.00}", "total", $"{dataTotal:0.00}",
 							"suffix", dataSuffix, "progress", progressPercentage));
 					progressBar.Indeterminate = false;
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			void OnError(string s) => Game.RunAfterTick(() =>
 			{
-				var host = downloadHost ?? modData.Translation.GetString(UnknownHost);
+				var host = downloadHost ?? TranslationProvider.GetString(UnknownHost);
 				Log.Write("install", $"Download from {host} failed: " + s);
 
 				progressBar.Indeterminate = false;
@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						// Validate integrity
 						if (!string.IsNullOrEmpty(download.SHA1))
 						{
-							getStatusText = () => modData.Translation.GetString(VerifyingArchive);
+							getStatusText = () => TranslationProvider.GetString(VerifyingArchive);
 							progressBar.Indeterminate = true;
 
 							var archiveValid = false;
@@ -205,13 +205,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 							if (!archiveValid)
 							{
-								OnError(modData.Translation.GetString(ArchiveValidationFailed));
+								OnError(TranslationProvider.GetString(ArchiveValidationFailed));
 								return;
 							}
 						}
 
 						// Automatically extract
-						getStatusText = () => modData.Translation.GetString(Extracting);
+						getStatusText = () => TranslationProvider.GetString(Extracting);
 						progressBar.Indeterminate = true;
 
 						var extracted = new List<string>();
@@ -231,7 +231,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 											continue;
 										}
 
-										OnExtractProgress(modData.Translation.GetString(ExtractingEntry, Translation.Arguments("entry", kv.Value)));
+										OnExtractProgress(TranslationProvider.GetString(ExtractingEntry, Translation.Arguments("entry", kv.Value)));
 										Log.Write("install", "Extracting " + kv.Value);
 										var targetPath = Platform.ResolvePath(kv.Key);
 										Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
@@ -262,7 +262,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								File.Delete(f);
 							}
 
-							OnError(modData.Translation.GetString(ArchiveExtractionFailed));
+							OnError(TranslationProvider.GetString(ArchiveExtractionFailed));
 						}
 					}
 					catch (Exception e)
@@ -295,7 +295,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						Log.Write("install", "Mirror selection failed with error:");
 						Log.Write("install", e.ToString());
-						OnError(modData.Translation.GetString(MirrorSelectionFailed));
+						OnError(TranslationProvider.GetString(MirrorSelectionFailed));
 					}
 				});
 			}

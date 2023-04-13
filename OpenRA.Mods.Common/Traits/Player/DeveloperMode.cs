@@ -279,7 +279,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var arguments = Translation.Arguments("cheat", order.OrderString, "player", self.Owner.PlayerName, "suffix", debugSuffix);
-			TextNotificationsManager.Debug(Game.ModData.Translation.GetString(CheatUsed, arguments));
+			TextNotificationsManager.Debug(TranslationProvider.GetString(CheatUsed, arguments));
 		}
 
 		bool IUnlocksRenderPlayer.RenderPlayerUnlocked => Enabled;

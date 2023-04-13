@@ -199,10 +199,14 @@ namespace OpenRA
 		public long DownloadBytes { get; private set; }
 		public int DownloadPercentage { get; private set; }
 
+		/// <summary>
+		/// Functionality mirrors <see cref="TranslationProvider.GetString"/>, except instead of using
+		/// loaded <see cref="Map"/>'s translations as backup, we use this <see cref="MapPreview"/>'s.
+		/// </summary>
 		public string GetLocalisedString(string key, IDictionary<string, object> args = null)
 		{
-			// PERF: instead of loading mod level Translation for each MapPreview, reuse the already loaded one in modData.
-			if (modData.Translation.TryGetString(key, out var message, args))
+			// PERF: instead of loading mod level Translation per each MapPreview, reuse the already loaded one in TranslationProvider.
+			if (TranslationProvider.TryGetModString(key, out var message, args))
 				return message;
 
 			return innerData.Translation?.GetString(key, args) ?? key;

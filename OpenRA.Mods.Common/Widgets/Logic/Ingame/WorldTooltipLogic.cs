@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var extraHeightOnDouble = extras.Bounds.Y;
 			var extraHeightOnSingle = extraHeightOnDouble - (doubleHeight - singleHeight);
 
-			var unrevealedTerrain = modData.Translation.GetString(UnrevealedTerrain);
+			var unrevealedTerrain = TranslationProvider.GetString(UnrevealedTerrain);
 
 			tooltipContainer.BeforeRender = () =>
 			{

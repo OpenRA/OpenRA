@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 
 			var replayDuration = new CachedTransform<ReplayMetadata, string>(r =>
-				modData.Translation.GetString(Duration, Translation.Arguments("time", WidgetUtils.FormatTimeSeconds((int)selectedReplay.GameInfo.Duration.TotalSeconds))));
+				TranslationProvider.GetString(Duration, Translation.Arguments("time", WidgetUtils.FormatTimeSeconds((int)selectedReplay.GameInfo.Duration.TotalSeconds))));
 			panel.Get<LabelWidget>("DURATION").GetText = () => replayDuration.Update(selectedReplay);
 
 			SetupFilters();
@@ -231,8 +231,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var options = new List<(GameType GameType, string Text)>
 					{
 						(GameType.Any, ddb.GetText()),
-						(GameType.Singleplayer, modData.Translation.GetString(Singleplayer)),
-						(GameType.Multiplayer, modData.Translation.GetString(Multiplayer))
+						(GameType.Singleplayer, TranslationProvider.GetString(Singleplayer)),
+						(GameType.Multiplayer, TranslationProvider.GetString(Multiplayer))
 					};
 
 					var lookup = options.ToDictionary(kvp => kvp.GameType, kvp => kvp.Text);
@@ -264,10 +264,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var options = new List<(DateType DateType, string Text)>
 					{
 						(DateType.Any, ddb.GetText()),
-						(DateType.Today, modData.Translation.GetString(Today)),
-						(DateType.LastWeek, modData.Translation.GetString(LastWeek)),
-						(DateType.LastFortnight, modData.Translation.GetString(LastFortnight)),
-						(DateType.LastMonth, modData.Translation.GetString(LastMonth))
+						(DateType.Today, TranslationProvider.GetString(Today)),
+						(DateType.LastWeek, TranslationProvider.GetString(LastWeek)),
+						(DateType.LastFortnight, TranslationProvider.GetString(LastFortnight)),
+						(DateType.LastMonth, TranslationProvider.GetString(LastMonth))
 					};
 
 					var lookup = options.ToDictionary(kvp => kvp.DateType, kvp => kvp.Text);
@@ -300,10 +300,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var options = new List<(DurationType DurationType, string Text)>
 					{
 						(DurationType.Any, ddb.GetText()),
-						(DurationType.VeryShort, modData.Translation.GetString(ReplayDurationVeryShort)),
-						(DurationType.Short, modData.Translation.GetString(ReplayDurationShort)),
-						(DurationType.Medium, modData.Translation.GetString(ReplayDurationMedium)),
-						(DurationType.Long, modData.Translation.GetString(ReplayDurationLong))
+						(DurationType.VeryShort, TranslationProvider.GetString(ReplayDurationVeryShort)),
+						(DurationType.Short, TranslationProvider.GetString(ReplayDurationShort)),
+						(DurationType.Medium, TranslationProvider.GetString(ReplayDurationMedium)),
+						(DurationType.Long, TranslationProvider.GetString(ReplayDurationLong))
 					};
 
 					var lookup = options.ToDictionary(kvp => kvp.DurationType, kvp => kvp.Text);
@@ -337,8 +337,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var options = new List<(WinState WinState, string Text)>
 					{
 						(WinState.Undefined, ddb.GetText()),
-						(WinState.Lost, modData.Translation.GetString(Defeat)),
-						(WinState.Won, modData.Translation.GetString(Victory))
+						(WinState.Lost, TranslationProvider.GetString(Defeat)),
+						(WinState.Won, TranslationProvider.GetString(Victory))
 					};
 
 					var lookup = options.ToDictionary(kvp => kvp.WinState, kvp => kvp.Text);
@@ -580,7 +580,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				TextNotificationsManager.Debug(modData.Translation.GetString(ReplayDeletionFailed, Translation.Arguments("file", replay.FilePath)));
+				TextNotificationsManager.Debug(TranslationProvider.GetString(ReplayDeletionFailed, Translation.Arguments("file", replay.FilePath)));
 				Log.Write("debug", ex.ToString());
 				return;
 			}
@@ -716,9 +716,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var noTeams = players.Count() == 1;
 				foreach (var p in players)
 				{
-					var label = noTeams ? modData.Translation.GetString(Players) : p.Key > 0
-						? modData.Translation.GetString(TeamNumber, Translation.Arguments("team", p.Key))
-						: modData.Translation.GetString(NoTeam);
+					var label = noTeams ? TranslationProvider.GetString(Players) : p.Key > 0
+						? TranslationProvider.GetString(TeamNumber, Translation.Arguments("team", p.Key))
+						: TranslationProvider.GetString(NoTeam);
 
 					teams.Add(label, p);
 				}

@@ -43,7 +43,7 @@ namespace OpenRA.Network
 						var yaml = MiniYaml.FromString(order.TargetString);
 						foreach (var node in yaml)
 						{
-							var localizedMessage = new LocalizedMessage(Game.ModData, node.Value);
+							var localizedMessage = new LocalizedMessage(node.Value);
 							TextNotificationsManager.AddSystemLine(localizedMessage.TranslatedText);
 						}
 

@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var fileTypes = new Dictionary<MapFileType, MapFileTypeInfo>()
 			{
 				{ MapFileType.OraMap, new MapFileTypeInfo { Extension = ".oramap", UiLabel = ".oramap" } },
-				{ MapFileType.Unpacked, new MapFileTypeInfo { Extension = "", UiLabel = $"({modData.Translation.GetString(Unpacked)})" } }
+				{ MapFileType.Unpacked, new MapFileTypeInfo { Extension = "", UiLabel = $"({TranslationProvider.GetString(Unpacked)})" } }
 			};
 
 			var typeDropdown = widget.Get<DropDownButtonWidget>("TYPE_DROPDOWN");
@@ -316,7 +316,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (actionManager != null)
 					actionManager.Modified = false;
 
-				TextNotificationsManager.AddTransientLine(modData.Translation.GetString(SaveCurrentMap), world.LocalPlayer);
+				TextNotificationsManager.AddTransientLine(TranslationProvider.GetString(SaveCurrentMap), world.LocalPlayer);
 			}
 			catch (Exception e)
 			{
