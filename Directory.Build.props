@@ -13,6 +13,8 @@
     <ExternalConsole>false</ExternalConsole>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <Nullable>disable</Nullable>
+    <Product>OpenRA</Product>
+    <Copyright>Copyright (c) The OpenRA Developers and Contributors</Copyright>
   </PropertyGroup>
 
   <PropertyGroup>
