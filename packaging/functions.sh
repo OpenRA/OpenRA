@@ -153,9 +153,16 @@ install_windows_launcher() (
 	LAUNCHER_NAME="${5}"
 	MOD_NAME="${6}"
 	FAQ_URL="${7}"
+	VERSION="${8}"
 
 	rm -rf "${SRC_PATH}/OpenRA.WindowsLauncher/obj" || :
-	dotnet publish "${SRC_PATH}/OpenRA.WindowsLauncher/OpenRA.WindowsLauncher.csproj" -c Release -r "${TARGETPLATFORM}" -p:LauncherName="${LAUNCHER_NAME}" -p:TargetPlatform="${TARGETPLATFORM}" -p:ModID="${MOD_ID}" -p:DisplayName="${MOD_NAME}" -p:FaqUrl="${FAQ_URL}" -p:PublishDir="${DEST_PATH}" --self-contained true
+
+	# See https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-publish for details.
+	# Unfortunately there doesn't seem to be a way to set FileDescription and it uses the value of -p:LauncherName.
+	# -p:Product sets the "Product name" field.
+	# -p:InformationalVersion seems to set the "Product version" field.
+	# -p:DisplayName doesn't seem to have a visible effect?
+	dotnet publish "${SRC_PATH}/OpenRA.WindowsLauncher/OpenRA.WindowsLauncher.csproj" -c Release -r "${TARGETPLATFORM}" -p:LauncherName="${LAUNCHER_NAME}",TargetPlatform="${TARGETPLATFORM}",ModID="${MOD_ID}",PublishDir="${DEST_PATH}",FaqUrl="${FAQ_URL}",InformationalVersion="${VERSION}" --self-contained true
 
 	# NET 6 is unable to customize the application host for windows when compiling from Linux,
 	# so we must patch the properties we need in the PE header.
