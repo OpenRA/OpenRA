@@ -65,6 +65,7 @@
 		Image: rank
 		Sequence: veteran
 		Palette: ra
+		ValidRelationships: Ally, Enemy, Neutral
 	WithDecoration@ELITE:
 		RequiresCondition: rank-elite
 		Position: BottomRight
@@ -72,6 +73,7 @@
 		Image: rank
 		Sequence: elite
 		Palette: ra
+		ValidRelationships: Ally, Enemy, Neutral
 
 ^InfantryExperienceHospitalOverrides:
 	WithDecoration@VETERAN:
