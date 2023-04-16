@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.Cnc.Effects;
@@ -80,6 +82,8 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		readonly DropPodsPowerInfo info;
 		readonly string[] unitTypes;
+		readonly Dictionary<string, Func<CPos, WPos>> getLaunchLocation = new();
+		readonly Dictionary<string, HashSet<string>> landableTerrainTypes = new();
 
 		public DropPodsPower(Actor self, DropPodsPowerInfo info)
 			: base(self, info)
@@ -87,31 +91,40 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.info = info;
 
 			unitTypes = info.UnitTypes.Select(unit => unit.ToLowerInvariant()).ToArray();
+			foreach (var actorInfo in self.World.Map.Rules.Actors.Where(a => unitTypes.Contains(a.Key)))
+			{
+				var aircraftInfo = actorInfo.Value.TraitInfo<AircraftInfo>();
+				var altitude = aircraftInfo.CruiseAltitude.Length;
+
+				var delta =
+					new WVec(0, -altitude * aircraftInfo.Speed / actorInfo.Value.TraitInfo<FallsToEarthInfo>().Velocity.Length, 0)
+					.Rotate(WRot.FromYaw(info.PodFacing));
+
+				// PERF: Cache constant values.
+				getLaunchLocation[actorInfo.Key] = pos => self.World.Map.CenterOfCell(pos) - delta + new WVec(0, 0, altitude);
+				landableTerrainTypes[actorInfo.Key] = aircraftInfo.LandableTerrainTypes;
+			}
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
 			base.Activate(self, order, manager);
 
-			SendDropPods(self, self.World.Map.CellContaining(order.Target.CenterPosition), info.PodFacing);
+			SendDropPods(self, self.World.Map.CellContaining(order.Target.CenterPosition));
 		}
 
-		public void SendDropPods(Actor self, CPos targetCell, WAngle facing)
+		public bool CanActivate(World world, CPos cell)
 		{
-			var actorInfo = self.World.Map.Rules.Actors[unitTypes.First()];
-			var aircraftInfo = actorInfo.TraitInfo<AircraftInfo>();
-			var altitude = aircraftInfo.CruiseAltitude.Length;
-			var approachRotation = WRot.FromYaw(facing);
-			var fallsToEarthInfo = actorInfo.TraitInfo<FallsToEarthInfo>();
-			var delta = new WVec(0, -altitude * aircraftInfo.Speed / fallsToEarthInfo.Velocity.Length, 0).Rotate(approachRotation);
+			return world.Map.Contains(cell) && world.Map.FindTilesInCircle(cell, info.PodScatter)
+				.Any(c => landableTerrainTypes.Any(ltr => ltr.Value.Contains(world.Map.GetTerrainInfo(c).Type))
+					&& !world.ActorMap.GetActorsAt(c).Any());
+		}
 
+		public void SendDropPods(Actor self, CPos targetCell)
+		{
 			self.World.AddFrameEndTask(world =>
 			{
-				var dropLocations = self.World.Map.FindTilesInCircle(targetCell, info.PodScatter)
-					.Where(c => aircraftInfo.LandableTerrainTypes.Contains(world.Map.GetTerrainInfo(c).Type)
-						&& !self.World.ActorMap.GetActorsAt(c).Any());
-
-				if (!dropLocations.Any())
+				if (!CanActivate(self.World, targetCell))
 					return;
 
 				if (info.CameraActor != null)
@@ -128,19 +141,33 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				PlayLaunchSounds();
 
-				var drops = self.World.SharedRandom.Next(info.Drops.X, info.Drops.Y);
-				for (var i = 0; i < drops; i++)
+				var dropAmount = world.SharedRandom.Next(info.Drops.X, info.Drops.Y);
+				var validUnitTypes = unitTypes.ToList();
+				for (var i = 0; i < dropAmount; i++)
 				{
-					var unitType = info.UnitTypes.Random(self.World.SharedRandom);
-					var dropLocation = dropLocations.Random(self.World.SharedRandom);
-					var podTarget = Target.FromCell(world, dropLocation);
-					var launchLocation = self.World.Map.CenterOfCell(dropLocation) - delta + new WVec(0, 0, altitude);
+					if (validUnitTypes.Count == 0)
+						return;
+
+					var unitType = validUnitTypes.Random(world.SharedRandom);
+					var validDropLocations = world.Map.FindTilesInCircle(targetCell, info.PodScatter)
+						.Where(c => landableTerrainTypes[unitType].Contains(world.Map.GetTerrainInfo(c).Type)
+							&& !world.ActorMap.GetActorsAt(c).Any());
+
+					if (!validDropLocations.Any())
+					{
+						validUnitTypes.Remove(unitType);
+						i--;
+						continue;
+					}
+
+					var dropLocation = validDropLocations.Random(world.SharedRandom);
+					var launchLocation = getLaunchLocation[unitType](dropLocation);
 
 					var pod = world.CreateActor(false, unitType, new TypeDictionary
 					{
 						new CenterPositionInit(launchLocation),
 						new OwnerInit(self.Owner),
-						new FacingInit(facing)
+						new FacingInit(info.PodFacing)
 					});
 
 					var aircraft = pod.Trait<Aircraft>();
@@ -148,8 +175,9 @@ namespace OpenRA.Mods.Cnc.Traits
 						pod.Dispose();
 					else
 					{
-						world.Add(new DropPodImpact(self.Owner, info.WeaponInfo, world, launchLocation, podTarget, info.WeaponDelay,
-							info.EntryEffect, info.EntryEffectSequence, info.EntryEffectPalette));
+						world.Add(new DropPodImpact(self.Owner, info.WeaponInfo, world, launchLocation, Target.FromCell(world, dropLocation),
+							info.WeaponDelay, info.EntryEffect, info.EntryEffectSequence, info.EntryEffectPalette));
+
 						world.Add(pod);
 					}
 				}
