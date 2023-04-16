@@ -248,6 +248,12 @@ ORCAB:
 		FullSequence: pip-ammo
 		EmptySequence: pip-ammoempty
 		Palette: pips
+	AppearsOnRadar:
+		ValidRelationships: Ally
+	AppearsOnRadar@ENEMY:
+		UseLocation: true
+		ValidRelationships: Neutral, Enemy
+		RequiresCondition: !rank-elite
 
 ORCATRAN:
 	Inherits: ^EMPableAircraft
@@ -403,6 +409,12 @@ SCRIN:
 		FullSequence: pip-ammo
 		EmptySequence: pip-ammoempty
 		Palette: pips
+	AppearsOnRadar:
+		ValidRelationships: Ally
+	AppearsOnRadar@ENEMY:
+		UseLocation: true
+		ValidRelationships: Neutral, Enemy
+		RequiresCondition: !rank-elite
 
 APACHE:
 	Inherits: ^EMPableAircraft
