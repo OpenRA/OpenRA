@@ -108,9 +108,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
 		{
-			base.Activate(self, order, manager);
-
-			SendDropPods(self, self.World.Map.CellContaining(order.Target.CenterPosition));
+			SendDropPods(self, self.World.Map.CellContaining(order.Target.CenterPosition), () => base.Activate(self, order, manager));
 		}
 
 		public bool CanActivate(World world, CPos cell)
@@ -120,12 +118,15 @@ namespace OpenRA.Mods.Cnc.Traits
 					&& !world.ActorMap.GetActorsAt(c).Any());
 		}
 
-		public void SendDropPods(Actor self, CPos targetCell)
+		public void SendDropPods(Actor self, CPos targetCell, Action onSuccess)
 		{
 			self.World.AddFrameEndTask(world =>
 			{
 				if (!CanActivate(self.World, targetCell))
 					return;
+
+				PlayLaunchSounds();
+				onSuccess();
 
 				if (info.CameraActor != null)
 				{
@@ -138,8 +139,6 @@ namespace OpenRA.Mods.Cnc.Traits
 					camera.QueueActivity(new Wait(info.CameraRemoveDelay));
 					camera.QueueActivity(new RemoveSelf());
 				}
-
-				PlayLaunchSounds();
 
 				var dropAmount = world.SharedRandom.Next(info.Drops.X, info.Drops.Y);
 				var validUnitTypes = unitTypes.ToList();
