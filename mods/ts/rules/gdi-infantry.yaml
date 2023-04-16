@@ -138,6 +138,11 @@ JUMPJET:
 		StandSequences: flying-muzzle
 		MoveSequence: flying-muzzle
 		Palette: muzzle
+	AppearsOnRadar:
+		ValidRelationships: Ally
+	AppearsOnRadar@ENEMY:
+		ValidRelationships: Neutral, Enemy
+		RequiresCondition: !rank-elite
 	-TakeCover:
 	Hovers:
 		RequiresCondition: airborne
