@@ -62,8 +62,8 @@ namespace OpenRA.Mods.Common.Lint
 
 			// TODO: Check all available languages.
 			var language = "en";
-			var modTranslation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem);
-			var mapTranslation = new Translation(language, FieldLoader.GetValue<string[]>("value", map.TranslationDefinitions.Value), map);
+			var modTranslation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem, _ => { });
+			var mapTranslation = new Translation(language, FieldLoader.GetValue<string[]>("value", map.TranslationDefinitions.Value), map, error => emitError(error.ToString()));
 
 			TestTraits(map.Rules, key =>
 			{
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Lint
 			// TODO: Check all available languages.
 			var language = "en";
 			Console.WriteLine($"Testing translation: {language}");
-			var translation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem);
+			var translation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem, error => emitError(error.ToString()));
 
 			TestTraits(modData.DefaultRules, key =>
 			{

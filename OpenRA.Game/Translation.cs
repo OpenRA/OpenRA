@@ -18,6 +18,7 @@ using Linguini.Bundle;
 using Linguini.Bundle.Builder;
 using Linguini.Shared.Types.Bundle;
 using Linguini.Syntax.Parser;
+using Linguini.Syntax.Parser.Error;
 using OpenRA.FileSystem;
 
 namespace OpenRA
@@ -40,6 +41,9 @@ namespace OpenRA
 		readonly FluentBundle bundle;
 
 		public Translation(string language, string[] translations, IReadOnlyFileSystem fileSystem)
+			: this(language, translations, fileSystem, error => Log.Write("debug", error.ToString())) { }
+
+		public Translation(string language, string[] translations, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
 		{
 			if (translations == null || translations.Length == 0)
 				return;
@@ -51,10 +55,10 @@ namespace OpenRA
 				.UseConcurrent()
 				.UncheckedBuild();
 
-			ParseTranslations(language, translations, fileSystem);
+			ParseTranslations(language, translations, fileSystem, onError);
 		}
 
-		void ParseTranslations(string language, string[] translations, IReadOnlyFileSystem fileSystem)
+		void ParseTranslations(string language, string[] translations, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
 		{
 			// Always load english strings to provide a fallback for missing translations.
 			// It is important to load the english files first so the chosen language's files can override them.
@@ -71,7 +75,7 @@ namespace OpenRA
 					var parser = new LinguiniParser(reader);
 					var resource = parser.Parse();
 					foreach (var error in resource.Errors)
-						Log.Write("debug", error.ToString());
+						onError(error);
 
 					bundle.AddResourceOverriding(resource);
 				}
