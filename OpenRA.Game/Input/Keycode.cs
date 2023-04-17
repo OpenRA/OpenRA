@@ -13,7 +13,8 @@ using System.Collections.Generic;
 
 namespace OpenRA
 {
-	// List of keycodes, duplicated from SDL 2.0.1
+	// List of keycodes. Duplicated from SDL 2.0.1, with the addition
+	// of MOUSE4 and MOUSE5.
 	public enum Keycode
 	{
 		UNKNOWN = 0,
@@ -252,6 +253,8 @@ namespace OpenRA
 		KBDILLUMUP = 280 | (1 << 30),
 		EJECT = 281 | (1 << 30),
 		SLEEP = 282 | (1 << 30),
+		MOUSE4 = 283 | (1 << 30),
+		MOUSE5 = 284 | (1 << 30)
 	}
 
 	public static class KeycodeExts
@@ -494,6 +497,8 @@ namespace OpenRA
 			{ Keycode.KBDILLUMUP, "KBDIllumUp" },
 			{ Keycode.EJECT, "Eject" },
 			{ Keycode.SLEEP, "Sleep" },
+			{ Keycode.MOUSE4, "Mouse 4" },
+			{ Keycode.MOUSE5, "Mouse 5" },
 		};
 
 		public static string DisplayString(Keycode k)
