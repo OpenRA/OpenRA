@@ -94,7 +94,8 @@ ActivateAI = function()
 	Trigger.AfterDelay(DateTime.Minutes(1), ProduceUSSRVehicles)
 	Trigger.AfterDelay(DateTime.Minutes(2), ProduceAircraft)
 
-	Trigger.OnAllKilled(SovietProduction, function()
+	local intactProduction = Utils.Where(SovietProduction, function(self) return not self.IsDead end)
+	Trigger.OnAllKilled(intactProduction, function()
 		Utils.Do(USSR.GetGroundAttackers(), IdleHunt)
 	end)
 end
