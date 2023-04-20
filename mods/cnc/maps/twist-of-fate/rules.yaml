@@ -1,0 +1,107 @@
+World:
+	MissionData:
+		StartVideo: airstrk.vqa
+		LossVideo: obel.vqa
+		WinVideo: paratrop.vqa
+		Briefing: We had set up a small recon post in Nod territory, but they captured and reinforced it.\n\nGetting that post back would be a major coup.\n\nAn MCV and armed convoy are on their way to aid you in establishing a new base.\n\nOnce established, eliminate all Nod forces in the area.
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, twist-of-fate.lua, twist-of-fate-AI.lua
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+Player:
+	PlayerResources:
+		DefaultCash: 0
+
+CAMERA.mini:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 1c512
+		Type: CenterPosition
+	RenderSpritesEditorOnly:
+		Image: camera
+
+FLARE:
+	RevealsShroud:
+		Range: 7c0
+
+PROC:
+	GrantConditionOnPrerequisite@AIN:
+		Condition: ain
+		Prerequisites: diffnorm
+	GrantConditionOnPrerequisite@AIH:
+		Condition: aih
+		Prerequisites: diffhard
+	ResourceValueMultiplier@AIN:
+		Modifier: 150
+		RequiresCondition: ain
+	ResourceValueMultiplier@AIH:
+		Modifier: 200
+		RequiresCondition: aih
+
+AIHProcUpgrade:
+	ProvidesPrerequisite:
+		Prerequisite: diffhard
+	StoresResources:
+		Capacity: 25000
+	Interactable:
+	AlwaysVisible:
+
+AINProcUpgrade:
+	ProvidesPrerequisite:
+		Prerequisite: diffnorm
+	StoresResources:
+		Capacity: 15000
+	Interactable:
+	AlwaysVisible:
+
+AiAnyhqPrerequisite:
+	ProvidesPrerequisite:
+		Prerequisite: anyhq
+	Interactable:
+	AlwaysVisible:
+
+AiTmplPrerequisite:
+	ProvidesPrerequisite:
+		Prerequisite: tmpl
+	Interactable:
+	AlwaysVisible:
+
+Astk.proxy:
+	AlwaysVisible:
+	AirstrikePower:
+		StartFullyCharged: True
+		Prerequisites: ~techlevel.superweapons
+		Icon: airstrike
+		ChargeInterval: 5250
+		SquadSize: 3
+		QuantizedFacings: 8
+		Name: Air Strike
+		Description: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
+		EndChargeSpeechNotification: AirstrikeReady
+		SelectTargetSpeechNotification: SelectTarget
+		InsufficientPowerSpeechNotification: InsufficientPower
+		IncomingSpeechNotification: EnemyPlanesApproaching
+		EndChargeTextNotification: Airstrike ready.
+		SelectTargetTextNotification: Select target.
+		InsufficientPowerTextNotification: Insufficient power.
+		IncomingTextNotification: Enemy planes approaching.
+		UnitType: a10
+		DisplayBeacon: True
+		BeaconPoster: airstrike
+		BeaconPosterPalette: beaconposter
+		DisplayRadarPing: True
+		CameraActor: camera
+		ArrowSequence: arrow
+		ClockSequence: clock
+		CircleSequence: circles
+		UseDirectionalTarget: True
+		DirectionArrowAnimation: airstrikedirection
+		SupportPowerPaletteOrder: 10
