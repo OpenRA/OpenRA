@@ -16,8 +16,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Radar
 {
+	[Desc("Provides a signature on the minimap.")]
 	public class AppearsOnRadarInfo : ConditionalTraitInfo
 	{
+		[Desc("Use center position instead of occupied cells.")]
 		public readonly bool UseLocation = false;
 
 		[Desc("Player relationships who can view this actor on radar.")]
