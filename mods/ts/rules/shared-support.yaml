@@ -53,3 +53,32 @@ NAPULS:
 		SelectTargetSpeechNotification: SelectTarget
 		EndChargeTextNotification: EMP cannon ready.
 		SelectTargetTextNotification: Select target.
+
+GAPAVE:
+	AlwaysVisible:
+	Interactable:
+	Tooltip:
+		Name: Pavement
+	Valued:
+		Cost: 75
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 30
+		Prerequisites: barracks
+	Building:
+		TerrainTypes: Clear, DirtRoad, Rough
+		BuildSounds: place2.aud
+		AllowInvalidPlacement: true
+		Footprint: xxxx xxxx xxxx xxxx
+		Dimensions: 4,4
+	FootprintPlaceBuildingPreview:
+		Palette: ra
+		FootprintAlpha: 0.5
+	RequiresBuildableArea:
+		AreaTypes: building
+		Adjacent: 4
+	KillsSelf:
+		RemoveInstead: true
+	LaysPavement:
+		TerrainTypes: Clear, DirtRoad, Rough
+	RenderSprites:

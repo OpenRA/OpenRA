@@ -288,6 +288,9 @@ World:
 				AllowedTerrainTypes: Clear, Rough, DirtRoad
 				MaxDensity: 2
 	BridgeLayer:
+	PavementLayer:
+		TerrainType: Road
+	PavementRenderer:
 	CustomTerrainDebugOverlay:
 	ResourceClaimLayer:
 	WarheadDebugOverlay:
