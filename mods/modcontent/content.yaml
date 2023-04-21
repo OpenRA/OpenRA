@@ -317,6 +317,13 @@ Background@SOURCE_INSTALL_PANEL:
 			Height: 32
 			Font: Bold
 			Key: escape
+		Button@SELECT_PATH_BUTTON:
+			X: PARENT_RIGHT / 2 - 55
+			Y: PARENT_BOTTOM - 52
+			Background: button-highlighted
+			Width: 110
+			Height: 32
+			Font: Bold
 		TooltipContainer@TOOLTIP_CONTAINER:
 
 Background@CONTENT_PROMPT_PANEL:

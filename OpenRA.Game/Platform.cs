@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using NativeFileDialogSharp;
 
 namespace OpenRA
 {
@@ -253,6 +254,21 @@ namespace OpenRA
 				path = BinDir + path[8..];
 
 			return path;
+		}
+
+		/// <summary>Allow the user to pick a path.</summary>
+		public static bool TryPickPath(out string path)
+		{
+			var result = Dialog.FolderPicker();
+
+			if (result.IsCancelled || result.IsError)
+			{
+				path = null;
+				return false;
+			}
+
+			path = result.Path;
+			return true;
 		}
 	}
 }
