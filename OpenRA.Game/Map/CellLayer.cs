@@ -19,7 +19,7 @@ namespace OpenRA
 	{
 		public event Action<CPos> CellEntryChanged = null;
 
-		public CellLayer(Map map)
+		public CellLayer(IMap map)
 			: base(map) { }
 
 		public CellLayer(MapGridType gridType, Size size)

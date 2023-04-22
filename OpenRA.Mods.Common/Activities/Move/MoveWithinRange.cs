@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly WDist maxRange;
 		readonly WDist minRange;
-		readonly Map map;
+		readonly IMap map;
 		readonly int maxCells;
 		readonly int minCells;
 

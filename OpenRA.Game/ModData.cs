@@ -34,6 +34,7 @@ namespace OpenRA
 		public readonly ITerrainLoader TerrainLoader;
 		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
 		public readonly IModelSequenceLoader ModelSequenceLoader;
+		public readonly IMapLoader MapLoader;
 		public readonly IVideoLoader[] VideoLoaders;
 		public readonly HotkeyManager Hotkeys;
 		public readonly Translation Translation;
@@ -100,6 +101,8 @@ namespace OpenRA
 			ModelSequenceLoader = (IModelSequenceLoader)modelCtor.Invoke(new[] { this });
 			ModelSequenceLoader.OnMissingModelError = s => Log.Write("debug", s);
 
+			MapLoader = Manifest.Get<IMapLoader>();
+
 			Hotkeys = new HotkeyManager(ModFiles, Game.Settings.Keys, Manifest);
 
 			Translation = new Translation(Game.Settings.Player.Language, Manifest.Translations, DefaultFileSystem);
@@ -152,17 +155,18 @@ namespace OpenRA
 			if (MapCache[uid].Status != MapStatus.Available)
 				throw new InvalidDataException($"Invalid map uid: {uid}");
 
+			// TODO: Make loader use IMap interface instead of Map
 			Map map;
 			using (new Support.PerfTimer("Map"))
-				map = new Map(this, MapCache[uid].Package);
+				map = MapLoader.Load(this, MapCache[uid].Package);
 
 			// Reinitialize all our assets
 			InitializeLoaders(map);
-			map.Sequences.LoadSprites();
+			((IMap)map).Sequences.LoadSprites();
 
 			// Load music with map assets mounted
 			using (new Support.PerfTimer("Map.Music"))
-				foreach (var entry in map.Rules.Music)
+				foreach (var entry in ((IMap)map).Rules.Music)
 					entry.Value.Load(map);
 
 			return map;

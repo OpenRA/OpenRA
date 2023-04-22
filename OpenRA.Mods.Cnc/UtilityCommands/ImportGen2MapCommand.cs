@@ -17,6 +17,7 @@ using OpenRA.FileSystem;
 using OpenRA.Mods.Cnc.FileFormats;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.FileFormats;
+using OpenRA.Mods.Common.MapFormats;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -72,7 +73,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var usedAreaSize = new Size(iniSize[2], 2 * iniSize[3]);
 			var mapCanvasSize = new Size(usedAreaSize.Width + Cordon.Left + Cordon.Right, usedAreaSize.Height + Cordon.Top + Cordon.Bottom);
 
-			var map = new Map(Game.ModData, terrainInfo, mapCanvasSize.Width, mapCanvasSize.Height)
+			var map = new DefaultMap(Game.ModData, terrainInfo, mapCanvasSize.Width, mapCanvasSize.Height)
 			{
 				Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
 				Author = "Westwood Studios",
@@ -102,7 +103,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			Console.WriteLine(dest + " saved.");
 		}
 
-		protected virtual void ReadTiles(Map map, IniFile file, int2 fullSize)
+		protected virtual void ReadTiles(IMapTiles map, IniFile file, int2 fullSize)
 		{
 			var terrainInfo = (ITemplatedTerrainInfo)Game.ModData.DefaultTerrainInfo[map.Tileset];
 			var mapSection = file.GetSection("IsoMapPack5");
@@ -132,12 +133,12 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 						tilenum = subtile = 0;
 
 					map.Tiles[uv] = new TerrainTile(tilenum, subtile);
-					map.Height[uv] = z;
+					((IMapElevation)map).Height[uv] = z;
 				}
 			}
 		}
 
-		protected virtual void ReadOverlay(Map map, IniFile file, int2 fullSize)
+		protected virtual void ReadOverlay(IMap map, IniFile file, int2 fullSize)
 		{
 			var overlaySection = file.GetSection("OverlayPack");
 			var overlayCompressed = Convert.FromBase64String(string.Concat(overlaySection.Select(kvp => kvp.Value)));
@@ -164,7 +165,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					var rx = (ushort)((dx + dy) / 2 + 1);
 					var ry = (ushort)(dy - rx + fullSize.X + 1);
 
-					if (!map.Resources.Contains(uv))
+					if (!((IMapResource)map).Resources.Contains(uv))
 						continue;
 
 					overlayIndex[uv] = rx + 512 * ry;
@@ -180,25 +181,25 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				if (TryHandleOverlayToActorInner(cell, overlayPack, overlayIndex, overlayType, out var ar))
 				{
 					if (ar != null)
-						map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, ar.Save()));
+						((Map)map).ActorDefinitions.Add(new MiniYamlNode("Actor" + ((Map)map).ActorDefinitions.Count, ar.Save()));
 
 					continue;
 				}
 
 				if (TryHandleResourceFromOverlayInner(overlayType, overlayDataPack[overlayIndex[cell]], out var resourceTile))
 				{
-					map.Resources[cell] = resourceTile;
+					((IMapResource)map).Resources[cell] = resourceTile;
 					continue;
 				}
 
-				if (TryHandleOtherOverlayInner(map, cell, overlayDataPack, overlayIndex, overlayType))
+				if (TryHandleOtherOverlayInner((Map)map, cell, overlayDataPack, overlayIndex, overlayType))
 					continue;
 
 				Console.WriteLine($"Cell {cell}: unknown overlay {overlayType}");
 			}
 		}
 
-		protected virtual void ReadWaypoints(Map map, IniFile file, int2 fullSize)
+		protected virtual void ReadWaypoints(IMap map, IniFile file, int2 fullSize)
 		{
 			var waypointsSection = file.GetSection("Waypoints", true);
 			foreach (var kv in waypointsSection)
@@ -214,7 +215,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					new OwnerInit("Neutral")
 				};
 
-				map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, ar.Save()));
+				((Map)map).ActorDefinitions.Add(new MiniYamlNode("Actor" + ((Map)map).ActorDefinitions.Count, ar.Save()));
 			}
 		}
 
@@ -226,7 +227,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var pos = int.Parse(kv.Key);
 				var ry = pos / 1000;
 				var rx = pos - ry * 1000;
-				var cell = ToMPos(rx, ry, fullSize.X).ToCPos(map);
+				var cell = ToMPos(rx, ry, fullSize.X).ToCPos((IMap)map);
 				var name = kv.Value.ToLowerInvariant();
 
 				var ar = new ActorReference(name)
@@ -235,7 +236,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 					new OwnerInit("Neutral")
 				};
 
-				if (!map.Rules.Actors.ContainsKey(name))
+				if (!((IMap)map).Rules.Actors.ContainsKey(name))
 					Console.WriteLine($"Ignoring unknown actor type: `{name}`");
 				else
 					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, ar.Save()));
@@ -263,7 +264,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var ry = int.Parse(entries[4]);
 				var facing = (byte)(224 - byte.Parse(entries[type == "Infantry" ? 7 : 5]));
 
-				var cell = ToMPos(rx, ry, fullSize.X).ToCPos(map);
+				var cell = ToMPos(rx, ry, fullSize.X).ToCPos((IMap)map);
 
 				var ar = new ActorReference(name)
 				{
@@ -293,7 +294,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				if (isDeployed)
 					ar.Add(new DeployStateInit(DeployState.Deployed));
 
-				if (!map.Rules.Actors.ContainsKey(name))
+				if (!((IMap)map).Rules.Actors.ContainsKey(name))
 					Console.WriteLine($"Ignoring unknown actor type: `{name}`");
 				else
 					map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, ar.Save()));
@@ -398,14 +399,14 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var playableAreaHeight = 2 * iniBounds[3] - UninteractableMargin.Y;
 
 			// Black magic, don't ask. Non-flat maps seen to require additional height padding.
-			var unknownHeightPadding = map.Height.Max() == 0 ? 0 : 8;
+			var unknownHeightPadding = ((IMapElevation)map).Height.Max() == 0 ? 0 : 8;
 
 			// Calculate Bounds edge tile coordinates.
 			// Reduce bottom and right by 1 because map.SetBounds() increases them.
 			var topLeft = new PPos(left, top);
 			var bottomRight = new PPos(playableAreaWidth + left - 1, playableAreaHeight + unknownHeightPadding + top - 1);
 
-			map.SetBounds(topLeft, bottomRight);
+			((IMap)map).SetBounds(topLeft, bottomRight);
 		}
 
 		protected virtual bool TryHandleOverlayToActorInner(CPos cell, byte[] overlayPack, CellLayer<int> overlayIndex, byte overlayType, out ActorReference actorReference)

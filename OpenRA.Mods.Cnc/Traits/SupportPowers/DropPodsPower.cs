@@ -101,12 +101,13 @@ namespace OpenRA.Mods.Cnc.Traits
 			var approachRotation = WRot.FromYaw(facing);
 			var fallsToEarthInfo = actorInfo.TraitInfo<FallsToEarthInfo>();
 			var delta = new WVec(0, -altitude * aircraftInfo.Speed / fallsToEarthInfo.Velocity.Length, 0).Rotate(approachRotation);
+			var map = self.World.Map;
 
 			self.World.AddFrameEndTask(w =>
 			{
 				var target = order.Target.CenterPosition;
-				var targetCell = self.World.Map.CellContaining(target);
-				var podLocations = self.World.Map.FindTilesInCircle(targetCell, info.PodScatter)
+				var targetCell = map.CellContaining(target);
+				var podLocations = map.FindTilesInCircle(targetCell, info.PodScatter)
 					.Where(c => aircraftInfo.LandableTerrainTypes.Contains(w.Map.GetTerrainInfo(c).Type)
 						&& !self.World.ActorMap.GetActorsAt(c).Any());
 
@@ -133,7 +134,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					var unitType = info.UnitTypes.Random(self.World.SharedRandom);
 					var podLocation = podLocations.Random(self.World.SharedRandom);
 					var podTarget = Target.FromCell(w, podLocation);
-					var location = self.World.Map.CenterOfCell(podLocation) - delta + new WVec(0, 0, altitude);
+					var location = map.CenterOfCell(podLocation) - delta + new WVec(0, 0, altitude);
 
 					var pod = w.CreateActor(false, unitType, new TypeDictionary
 					{

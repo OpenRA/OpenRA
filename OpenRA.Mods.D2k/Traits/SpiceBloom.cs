@@ -90,10 +90,12 @@ namespace OpenRA.Mods.D2k.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (!self.World.Map.Contains(self.Location))
+			var map = self.World.Map;
+
+			if (!map.Contains(self.Location))
 				return;
 
-			if (info.GrowthTerrainTypes.Count > 0 && !info.GrowthTerrainTypes.Contains(self.World.Map.GetTerrainInfo(self.Location).Type))
+			if (info.GrowthTerrainTypes.Count > 0 && !info.GrowthTerrainTypes.Contains(map.GetTerrainInfo(self.Location).Type))
 				return;
 
 			ticks++;
@@ -116,11 +118,12 @@ namespace OpenRA.Mods.D2k.Traits
 
 		void SeedResources(Actor self)
 		{
+			var map = self.World.Map;
 			var pieces = self.World.SharedRandom.Next(info.Pieces[0], info.Pieces[1]) * ticks / growTicks;
 			if (pieces < info.Pieces[0])
 				pieces = info.Pieces[0];
 
-			var cells = self.World.Map.FindTilesInAnnulus(self.Location, 1, info.Range);
+			var cells = map.FindTilesInAnnulus(self.Location, 1, info.Range);
 
 			for (var i = 0; i < pieces; i++)
 			{
@@ -150,7 +153,7 @@ namespace OpenRA.Mods.D2k.Traits
 					Source = self.CenterPosition,
 					CurrentSource = () => self.CenterPosition,
 					SourceActor = self,
-					PassiveTarget = self.World.Map.CenterOfCell(cell.Value)
+					PassiveTarget = map.CenterOfCell(cell.Value)
 				};
 
 				self.World.AddFrameEndTask(_ =>

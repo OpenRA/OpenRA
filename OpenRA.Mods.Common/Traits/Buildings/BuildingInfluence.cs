@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 			public Actor Actor;
 		}
 
-		readonly Map map;
+		readonly IMap map;
 		readonly CellLayer<InfluenceNode> influence;
 
 		public BuildingInfluence(World world)

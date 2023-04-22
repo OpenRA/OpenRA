@@ -37,7 +37,7 @@ namespace OpenRA
 
 		public override string ToString() { return U + "," + V; }
 
-		public CPos ToCPos(Map map)
+		public CPos ToCPos(IMap map)
 		{
 			return ToCPos(map.Grid.Type);
 		}

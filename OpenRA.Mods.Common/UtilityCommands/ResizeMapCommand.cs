@@ -48,9 +48,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			var modData = Game.ModData = utility.ModData;
-			map = new Map(modData, new Folder(Platform.EngineDir).OpenPackage(args[1], modData.ModFiles));
-			Console.WriteLine("Resizing map {0} from {1} to {2},{3}", map.Title, map.MapSize, width, height);
-			map.Resize(width, height);
+			map = modData.MapLoader.Load(modData, new Folder(Platform.EngineDir).OpenPackage(args[1], modData.ModFiles));
+			var imap = (IMap)map;
+			Console.WriteLine("Resizing map {0} from {1} to {2},{3}", map.Title, imap.MapSize, width, height);
+			imap.Resize(width, height);
 
 			var forRemoval = new List<MiniYamlNode>();
 
@@ -61,7 +62,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (locationInit == null)
 					continue;
 
-				if (!map.Contains(locationInit.Value))
+				if (!((IMap)map).Contains(locationInit.Value))
 				{
 					Console.WriteLine($"Removing actor {actor.Type} located at {locationInit.Value} due being outside of the new map boundaries.");
 					forRemoval.Add(kv);

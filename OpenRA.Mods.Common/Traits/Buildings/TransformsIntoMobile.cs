@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (order.OrderString == "Move")
 			{
-				var cell = self.World.Map.Clamp(this.self.World.Map.CellContaining(order.Target.CenterPosition));
+				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
 				if (!Info.LocomotorInfo.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
@@ -194,16 +194,17 @@ namespace OpenRA.Mods.Common.Traits
 				if (rejectMove || target.Type != TargetType.Terrain || (mobile.Info.RequiresForceMove && !modifiers.HasModifier(TargetModifiers.ForceMove)))
 					return false;
 
-				var location = self.World.Map.CellContaining(target.CenterPosition);
+				var map = self.World.Map;
+				var location = map.CellContaining(target.CenterPosition);
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 				var explored = self.Owner.Shroud.IsExplored(location);
-				if (!self.World.Map.Contains(location) ||
+				if (!map.Contains(location) ||
 				    !(self.CurrentActivity is Transform || mobile.transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused))
 				    || (!explored && !mobile.locomotor.Info.MoveIntoShroud)
 				    || (explored && !CanEnterCell(self, location)))
 					cursor = mobile.Info.BlockedCursor;
-				else if (!explored || !mobile.Info.TerrainCursors.TryGetValue(self.World.Map.GetTerrainInfo(location).Type, out cursor))
+				else if (!explored || !mobile.Info.TerrainCursors.TryGetValue(map.GetTerrainInfo(location).Type, out cursor))
 					cursor = mobile.Info.Cursor;
 
 				return true;

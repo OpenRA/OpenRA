@@ -130,6 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var inWater = self.World.SharedRandom.Next(100) < info.WaterChance;
 			var pp = ChooseDropCell(self, inWater, 100);
+			var map = self.World.Map;
 
 			if (pp == null)
 				return;
@@ -146,9 +147,9 @@ namespace OpenRA.Mods.Common.Traits
 					var delta = new WVec(0, -1024, 0).Rotate(WRot.FromYaw(dropFacing));
 
 					var altitude = self.World.Map.Rules.Actors[info.DeliveryAircraft].TraitInfo<AircraftInfo>().CruiseAltitude.Length;
-					var target = self.World.Map.CenterOfCell(p) + new WVec(0, 0, altitude);
-					var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Length * delta / 1024;
-					var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Length * delta / 1024;
+					var target = map.CenterOfCell(p) + new WVec(0, 0, altitude);
+					var startEdge = target - (map.DistanceToEdge(target, -delta) + info.Cordon).Length * delta / 1024;
+					var finishEdge = target + (map.DistanceToEdge(target, delta) + info.Cordon).Length * delta / 1024;
 
 					var plane = w.CreateActor(info.DeliveryAircraft, new TypeDictionary
 					{
@@ -173,10 +174,11 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			for (var n = 0; n < maxTries; n++)
 			{
-				var p = self.World.Map.ChooseRandomCell(self.World.SharedRandom);
+				var map = self.World.Map;
+				var p = map.ChooseRandomCell(self.World.SharedRandom);
 
 				// Is this valid terrain?
-				var terrainType = self.World.Map.GetTerrainInfo(p).Type;
+				var terrainType = map.GetTerrainInfo(p).Type;
 				if (!(inWater ? info.ValidWater : info.ValidGround).Contains(terrainType))
 					continue;
 

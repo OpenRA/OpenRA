@@ -128,9 +128,9 @@ namespace OpenRA.Mods.Cnc.Activities
 			// to avoid continuous facing adjustments as the target moves
 			var targetMobile = target.Actor.TraitOrDefault<Mobile>();
 			var targetSubcell = targetMobile != null ? targetMobile.ToSubCell : SubCell.Any;
-
-			var destination = self.World.Map.CenterOfSubCell(target.Actor.Location, targetSubcell);
-			var origin = self.World.Map.CenterOfSubCell(self.Location, mobile.FromSubCell);
+			var map = self.World.Map;
+			var destination = map.CenterOfSubCell(target.Actor.Location, targetSubcell);
+			var origin = map.CenterOfSubCell(self.Location, mobile.FromSubCell);
 			var desiredFacing = (destination - origin).Yaw;
 			if (mobile.Facing != desiredFacing)
 			{

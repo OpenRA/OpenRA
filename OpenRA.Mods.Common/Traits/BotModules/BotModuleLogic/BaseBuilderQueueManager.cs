@@ -383,6 +383,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var actorInfo = world.Map.Rules.Actors[actorType];
 			var bi = actorInfo.TraitInfoOrDefault<BuildingInfo>();
+			var map = world.Map;
 
 			if (bi == null)
 				return (null, 0);
@@ -395,7 +396,7 @@ namespace OpenRA.Mods.Common.Traits
 				var variantActorInfo = actorInfo;
 				var vbi = bi;
 
-				var cells = world.Map.FindTilesInAnnulus(center, minRange, maxRange);
+				var cells = map.FindTilesInAnnulus(center, minRange, maxRange);
 
 				// Sort by distance to target if we have one
 				if (center != target)
@@ -408,7 +409,7 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						if (buildingVariantInfo.Facings != null)
 						{
-							var vector = world.Map.CenterOfCell(target) - world.Map.CenterOfCell(center);
+							var vector = map.CenterOfCell(target) - map.CenterOfCell(center);
 
 							// The rotation Y point to upside vertically, so -Y = Y(rotation)
 							var desireFacing = new WAngle(WAngle.ArcSin((int)((long)Math.Abs(vector.X) * 1024 / vector.Length)).Angle);
@@ -469,7 +470,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					// Build near the closest enemy structure
 					var closestEnemy = world.ActorsHavingTrait<Building>().Where(a => !a.Disposed && player.RelationshipWith(a.Owner) == PlayerRelationship.Enemy)
-						.ClosestTo(world.Map.CenterOfCell(baseBuilder.DefenseCenter));
+						.ClosestTo(map.CenterOfCell(baseBuilder.DefenseCenter));
 
 					var targetCell = closestEnemy != null ? closestEnemy.Location : baseCenter;
 
@@ -480,7 +481,7 @@ namespace OpenRA.Mods.Common.Traits
 					// Try and place the refinery near a resource field
 					if (resourceLayer != null)
 					{
-						var nearbyResources = world.Map.FindTilesInAnnulus(baseCenter, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius)
+						var nearbyResources = map.FindTilesInAnnulus(baseCenter, baseBuilder.Info.MinBaseRadius, baseBuilder.Info.MaxBaseRadius)
 							.Where(a => resourceLayer.GetResource(a).Type != null)
 							.Shuffle(world.LocalRandom).Take(baseBuilder.Info.MaxResourceCellsToCheck);
 

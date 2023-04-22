@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 				.Concat(world.WorldActor.Owner.PlayerActor.TraitsImplementing<IPreventMapSpawn>())
 				.ToArray();
 
-			foreach (var kv in world.Map.ActorDefinitions)
+			foreach (var kv in ((Map)world.Map).ActorDefinitions)
 			{
 				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
 

@@ -37,26 +37,27 @@ namespace OpenRA.Mods.Common.Warheads
 
 			var firedBy = args.SourceActor;
 			var world = firedBy.World;
+			var map = world.Map;
 
 			if (Chance < world.LocalRandom.Next(100))
 				return;
 
 			var pos = target.CenterPosition;
-			var dat = world.Map.DistanceAboveTerrain(pos);
+			var dat = map.DistanceAboveTerrain(pos);
 
 			if (dat > AirThreshold)
 				return;
 
-			var targetTile = world.Map.CellContaining(pos);
+			var targetTile = map.CellContaining(pos);
 			var smudgeLayers = world.WorldActor.TraitsImplementing<SmudgeLayer>().ToDictionary(x => x.Info.Type);
 
 			var minRange = (Size.Length > 1 && Size[1] > 0) ? Size[1] : 0;
-			var allCells = world.Map.FindTilesInAnnulus(targetTile, minRange, Size[0]);
+			var allCells = map.FindTilesInAnnulus(targetTile, minRange, Size[0]);
 
 			// Draw the smudges:
 			foreach (var sc in allCells)
 			{
-				var smudgeType = world.Map.GetTerrainInfo(sc).AcceptsSmudgeType.FirstOrDefault(SmudgeType.Contains);
+				var smudgeType = map.GetTerrainInfo(sc).AcceptsSmudgeType.FirstOrDefault(SmudgeType.Contains);
 				if (smudgeType == null)
 					continue;
 

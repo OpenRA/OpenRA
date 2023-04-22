@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 	// For now this is mostly copies TerrainTunnelLayer. This will change once bridge destruction is implemented
 	public class ElevatedBridgeLayer : ICustomMovementLayer, IWorldLoaded
 	{
-		readonly Map map;
+		readonly IMap map;
 		readonly CellLayer<WPos> cellCenters;
 		readonly CellLayer<byte> terrainIndices;
 		readonly HashSet<CPos> ends = new();

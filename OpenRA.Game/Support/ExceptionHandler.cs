@@ -37,7 +37,7 @@ namespace OpenRA
 
 			if (Game.OrderManager != null && Game.OrderManager.World != null && Game.OrderManager.World.Map != null)
 			{
-				var map = Game.OrderManager.World.Map;
+				var map = (Map)Game.OrderManager.World.Map;
 				Log.Write("exception", $"on map {map.Uid} ({map.Title} by {map.Author}).");
 			}
 

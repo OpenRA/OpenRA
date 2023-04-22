@@ -48,8 +48,9 @@ namespace OpenRA.Graphics
 		internal WorldRenderer(ModData modData, World world)
 		{
 			World = world;
-			TileSize = World.Map.Grid.TileSize;
-			TileScale = World.Map.Grid.Type == MapGridType.RectangularIsometric ? 1448 : 1024;
+			var map = World.Map;
+			TileSize = map.Grid.TileSize;
+			TileScale = map.Grid.Type == MapGridType.RectangularIsometric ? 1448 : 1024;
 			Viewport = new Viewport(this, world.Map);
 
 			createPaletteReference = CreatePaletteReference;

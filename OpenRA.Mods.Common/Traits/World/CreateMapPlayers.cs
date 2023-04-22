@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		void ICreatePlayers.CreatePlayers(World w, MersenneTwister playerRandom)
 		{
-			var players = new MapPlayers(w.Map.PlayerDefinitions).Players;
+			var players = new MapPlayers(((Map)w.Map).PlayerDefinitions).Players;
 			var worldPlayers = new List<Player>();
 			var worldOwnerFound = false;
 
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			if (!worldOwnerFound)
-				throw new InvalidOperationException($"Map {w.Map.Title} does not define a player actor owning the world.");
+				throw new InvalidOperationException($"Map {((Map)w.Map).Title} does not define a player actor owning the world.");
 
 			Player localPlayer = null;
 

@@ -123,7 +123,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void LoadPalettes(WorldRenderer wr)
 		{
-			wr.AddPalette(info.Name, ((IProvidesCursorPaletteInfo)info).ReadPalette(world.Map), info.AllowModifiers);
+			// TO DO: Make this use IMap instead of Map
+			wr.AddPalette(info.Name, ((IProvidesCursorPaletteInfo)info).ReadPalette((Map)world.Map), info.AllowModifiers);
 		}
 
 		public IEnumerable<string> PaletteNames

@@ -109,9 +109,10 @@ namespace OpenRA.Mods.D2k.Traits
 			if (noiseDirection == WVec.Zero)
 				return;
 
-			var moveTo = self.World.Map.CellContaining(self.CenterPosition + noiseDirection);
+			var map = self.World.Map;
+			var moveTo = map.CellContaining(self.CenterPosition + noiseDirection);
 
-			while (!self.World.Map.Contains(moveTo) || !mobile.CanEnterCell(moveTo, null, BlockedByActor.None))
+			while (!map.Contains(moveTo) || !mobile.CanEnterCell(moveTo, null, BlockedByActor.None))
 			{
 				// without this check, this while can be infinity loop
 				if (moveTo == self.Location)
@@ -121,7 +122,7 @@ namespace OpenRA.Mods.D2k.Traits
 				}
 
 				noiseDirection /= 2;
-				moveTo = self.World.Map.CellContaining(self.CenterPosition + noiseDirection);
+				moveTo = map.CellContaining(self.CenterPosition + noiseDirection);
 			}
 
 			// Don't get stuck when the noise is distributed evenly! This will make the worm wander instead of trying to move to where it already is

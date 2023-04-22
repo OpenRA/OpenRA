@@ -156,7 +156,7 @@ namespace OpenRA
 			InternalName = pr.Name;
 			PlayerReference = pr;
 
-			inMissionMap = world.Map.Visibility.HasFlag(MapVisibility.MissionSelector);
+			inMissionMap = ((Map)world.Map).Visibility.HasFlag(MapVisibility.MissionSelector);
 
 			// Real player or host-created bot
 			if (client != null)

@@ -47,8 +47,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				coordinateLabel.GetText = () =>
 				{
 					var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
-					var map = worldRenderer.World.Map;
-					return map.Height.Contains(cell) ? $"{cell},{map.Height[cell]} ({map.Tiles[cell].Type})" : "";
+					var mapHeight = ((IMapElevation)worldRenderer.World.Map).Height;
+					var mapTiles = ((IMapTiles)worldRenderer.World.Map).Tiles;
+					return mapHeight.Contains(cell) ? $"{cell},{mapHeight[cell]} ({mapTiles[cell].Type})" : "";
 				};
 			}
 

@@ -168,19 +168,21 @@ namespace OpenRA.Mods.Common.Terrain
 		string[] ITemplatedTerrainInfo.EditorTemplateOrder => EditorTemplateOrder;
 		IReadOnlyDictionary<ushort, TerrainTemplateInfo> ITemplatedTerrainInfo.Templates => Templates;
 
-		void ITerrainInfoNotifyMapCreated.MapCreated(Map map)
+		void ITerrainInfoNotifyMapCreated.MapCreated(IMap imap)
 		{
+			var mapTiles = ((IMapTiles)imap).Tiles;
+
 			// Randomize PickAny tile variants
 			var r = new MersenneTwister();
-			for (var j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
+			for (var j = imap.Bounds.Top; j < imap.Bounds.Bottom; j++)
 			{
-				for (var i = map.Bounds.Left; i < map.Bounds.Right; i++)
+				for (var i = imap.Bounds.Left; i < imap.Bounds.Right; i++)
 				{
-					var type = map.Tiles[new MPos(i, j)].Type;
+					var type = mapTiles[new MPos(i, j)].Type;
 					if (!Templates.TryGetValue(type, out var template) || !template.PickAny)
 						continue;
 
-					map.Tiles[new MPos(i, j)] = new TerrainTile(type, (byte)r.Next(0, template.TilesCount));
+					mapTiles[new MPos(i, j)] = new TerrainTile(type, (byte)r.Next(0, template.TilesCount));
 				}
 			}
 		}

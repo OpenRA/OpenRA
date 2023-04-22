@@ -72,16 +72,18 @@ namespace OpenRA.Mods.Common.Traits
 
 			var triggerPositions = wr.World.ActorMap.TriggerPositions().ToHashSet();
 
+			var map = wr.World.Map;
+
 			foreach (var uv in wr.Viewport.VisibleCellsInsideBounds.CandidateMapCoords)
 			{
 				if (self.World.ShroudObscures(uv))
 					continue;
 
-				var cell = uv.ToCPos(wr.World.Map);
+				var cell = uv.ToCPos(map);
 				if (!triggerPositions.Contains(cell))
 					continue;
 
-				var center = wr.World.Map.CenterOfCell(cell);
+				var center = map.CenterOfCell(cell);
 				yield return new TextAnnotationRenderable(font, center, 1024, color, "T");
 			}
 		}

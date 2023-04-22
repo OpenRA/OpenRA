@@ -29,9 +29,9 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, nodes);
 		}
 
-		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
+		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, IMap map)
 		{
-			CheckMapYaml(emitError, modData, map, map.RuleDefinitions);
+			CheckMapYaml(emitError, modData, (Map)map, ((Map)map).RuleDefinitions);
 		}
 
 		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)

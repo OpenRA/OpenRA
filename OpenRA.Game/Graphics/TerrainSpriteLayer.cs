@@ -32,7 +32,7 @@ namespace OpenRA.Graphics
 		readonly bool restrictToBounds;
 
 		readonly WorldRenderer worldRenderer;
-		readonly Map map;
+		readonly IMap map;
 
 		readonly PaletteReference[] palettes;
 
@@ -88,7 +88,7 @@ namespace OpenRA.Graphics
 			var xyz = float3.Zero;
 			if (sprite != null)
 			{
-				var cellOrigin = map.CenterOfCell(cell) - new WVec(0, 0, map.Grid.Ramps[map.Ramp[cell]].CenterHeightOffset);
+				var cellOrigin = map.CenterOfCell(cell) - new WVec(0, 0, map.Grid.Ramps[((IMapElevation)map).Ramp[cell]].CenterHeightOffset);
 				xyz = worldRenderer.Screen3DPosition(cellOrigin) + scale * (sprite.Offset - 0.5f * sprite.Size);
 			}
 
@@ -177,7 +177,7 @@ namespace OpenRA.Graphics
 			}
 
 			// The vertex buffer does not have geometry for cells outside the map
-			if (!map.Tiles.Contains(uv))
+			if (!((IMapTiles)map).Tiles.Contains(uv))
 				return;
 
 			var offset = rowStride * uv.V + 6 * uv.U;

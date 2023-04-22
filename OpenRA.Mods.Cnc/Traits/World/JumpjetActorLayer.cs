@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	public class JumpjetActorLayer : ICustomMovementLayer
 	{
-		readonly Map map;
+		readonly IMap map;
 
 		readonly byte terrainIndex;
 		readonly CellLayer<int> height;
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			map = self.World.Map;
 			terrainIndex = self.World.Map.Rules.TerrainInfo.GetTerrainIndex(info.TerrainType);
 			height = new CellLayer<int>(map);
-			var cellHeight = self.World.Map.CellHeightStep.Length;
+			var cellHeight = map.CellHeightStep.Length;
 			foreach (var c in map.AllCells)
 			{
 				var neighbourCount = 0;
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Cnc.Traits
 							continue;
 
 						neighbourCount++;
-						neighbourHeight += map.Height[neighbour];
+						neighbourHeight += ((IMapElevation)map).Height[neighbour];
 					}
 				}
 
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (jli.JumpjetTransitionOnRamps)
 				return true;
 
-			return map.Ramp[cell] == 0;
+			return ((IMapElevation)map).Ramp[cell] == 0;
 		}
 
 		short ICustomMovementLayer.EntryMovementCost(LocomotorInfo li, CPos cell)

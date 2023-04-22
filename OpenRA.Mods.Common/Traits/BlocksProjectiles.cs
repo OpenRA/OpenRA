@@ -36,9 +36,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public static bool AnyBlockingActorAt(World world, WPos pos)
 		{
-			var dat = world.Map.DistanceAboveTerrain(pos);
+			var map = world.Map;
 
-			return world.ActorMap.GetActorsAt(world.Map.CellContaining(pos))
+			var dat = map.DistanceAboveTerrain(pos);
+
+			return world.ActorMap.GetActorsAt(map.CellContaining(pos))
 				.Any(a => a.TraitsImplementing<IBlocksProjectiles>()
 					.Where(t => t.BlockingHeight > dat)
 					.Any(Exts.IsTraitEnabled));

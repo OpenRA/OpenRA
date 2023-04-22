@@ -17,9 +17,9 @@ namespace OpenRA.Mods.Common.Lint
 {
 	public class CheckOwners : ILintMapPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
+		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, IMap map)
 		{
-			var playerNames = new MapPlayers(map.PlayerDefinitions).Players.Values
+			var playerNames = new MapPlayers(((Map)map).PlayerDefinitions).Players.Values
 				.Select(p => p.Name)
 				.ToHashSet();
 
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Lint
 				.Where(a => a.Value.HasTraitInfo<RequiresSpecificOwnersInfo>())
 				.ToDictionary(a => a.Key, a => a.Value.TraitInfo<RequiresSpecificOwnersInfo>());
 
-			foreach (var kv in map.ActorDefinitions)
+			foreach (var kv in ((Map)map).ActorDefinitions)
 			{
 				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
 				var ownerInit = actorReference.GetOrDefault<OwnerInit>();

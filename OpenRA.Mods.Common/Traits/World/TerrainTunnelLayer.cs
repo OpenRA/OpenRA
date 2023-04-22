@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class TerrainTunnelLayer : ICustomMovementLayer, IWorldLoaded
 	{
-		readonly Map map;
+		readonly IMap map;
 		readonly CellLayer<WPos> cellCenters;
 		readonly CellLayer<byte> terrainIndices;
 		readonly HashSet<CPos> portals = new();

@@ -73,3 +73,5 @@ TerrainFormat: DefaultTerrain
 SpriteSequenceFormat: DefaultSpriteSequence
 
 ModelSequenceFormat: PlaceholderModelSequence
+
+DefaultMapLoader:

@@ -52,9 +52,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override bool CanAttack(Actor self, in Target target)
 		{
+			var map = self.World.Map;
+
 			// Don't fire while landed or when outside the map.
-			if (self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length < aircraftInfo.MinAirborneAltitude
-				|| !self.World.Map.Contains(self.Location))
+			if (map.DistanceAboveTerrain(self.CenterPosition).Length < aircraftInfo.MinAirborneAltitude
+				|| !map.Contains(self.Location))
 				return false;
 
 			if (!base.CanAttack(self, target))

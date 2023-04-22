@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class SubterraneanActorLayer : ICustomMovementLayer
 	{
-		readonly Map map;
+		readonly IMap map;
 
 		readonly byte terrainIndex;
 		readonly CellLayer<int> height;
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 							continue;
 
 						neighbourCount++;
-						neighbourHeight += map.Height[neighbour];
+						neighbourHeight += ((IMapElevation)map).Height[neighbour];
 					}
 				}
 
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (sli.SubterraneanTransitionOnRamps)
 				return true;
 
-			return map.Ramp[cell] == 0;
+			return ((IMapElevation)map).Ramp[cell] == 0;
 		}
 
 		short ICustomMovementLayer.EntryMovementCost(LocomotorInfo li, CPos cell)

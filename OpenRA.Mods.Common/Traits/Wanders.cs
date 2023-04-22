@@ -84,10 +84,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		CPos? PickTargetLocation(Actor self)
 		{
+			var map = self.World.Map;
 			var target = self.CenterPosition + new WVec(0, -1024 * effectiveMoveRadius, 0).Rotate(WRot.FromFacing(self.World.SharedRandom.Next(255)));
-			var targetCell = self.World.Map.CellContaining(target);
+			var targetCell = map.CellContaining(target);
 
-			if (!self.World.Map.Contains(targetCell))
+			if (!map.Contains(targetCell))
 			{
 				// If MoveRadius is too big there might not be a valid cell to order the attack to (if actor is on a small island and can't leave)
 				if (++ticksIdle % info.ReduceMoveRadiusDelay == 0)
@@ -99,7 +100,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (info.AvoidTerrainTypes.Count > 0)
 			{
-				var terrainType = self.World.Map.GetTerrainInfo(targetCell).Type;
+				var terrainType = map.GetTerrainInfo(targetCell).Type;
 				if (Info.AvoidTerrainTypes.Contains(terrainType))
 					return null;
 			}

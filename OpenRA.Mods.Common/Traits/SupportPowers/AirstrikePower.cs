@@ -79,6 +79,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Actor[] SendAirstrike(Actor self, WPos target, WAngle? facing = null)
 		{
+			var map = self.World.Map;
+
 			var aircraft = new List<Actor>();
 			if (!facing.HasValue)
 				facing = new WAngle(1024 * self.World.SharedRandom.Next(info.QuantizedFacings) / info.QuantizedFacings);
@@ -87,8 +89,8 @@ namespace OpenRA.Mods.Common.Traits
 			var attackRotation = WRot.FromYaw(facing.Value);
 			var delta = new WVec(0, -1024, 0).Rotate(attackRotation);
 			target += new WVec(0, 0, altitude);
-			var startEdge = target - (self.World.Map.DistanceToEdge(target, -delta) + info.Cordon).Length * delta / 1024;
-			var finishEdge = target + (self.World.Map.DistanceToEdge(target, delta) + info.Cordon).Length * delta / 1024;
+			var startEdge = target - (map.DistanceToEdge(target, -delta) + info.Cordon).Length * delta / 1024;
+			var finishEdge = target + (map.DistanceToEdge(target, delta) + info.Cordon).Length * delta / 1024;
 
 			Actor camera = null;
 			Beacon beacon = null;

@@ -148,8 +148,8 @@ namespace OpenRA.Mods.Common.Traits
 					var region = new CellRegion(map.Grid.Type, tl, br);
 
 					// HACK: The AI code should not be messing with raw coordinate transformations
-					var wtl = world.Map.CenterOfCell(tl.ToCPos(map));
-					var wbr = world.Map.CenterOfCell(br.ToCPos(map));
+					var wtl = map.CenterOfCell(tl.ToCPos(map));
+					var wbr = map.CenterOfCell(br.ToCPos(map));
 					var targets = world.ActorMap.ActorsInBox(wtl, wbr);
 
 					var frozenTargets = player.FrozenActorLayer != null ? player.FrozenActorLayer.FrozenActorsInRegion(region) : Enumerable.Empty<FrozenActor>();

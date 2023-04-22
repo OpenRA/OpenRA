@@ -17,10 +17,10 @@ namespace OpenRA.Mods.Common.Pathfinder
 	sealed class CellInfoLayerPool
 	{
 		const int MaxPoolSize = 4;
-		readonly Stack<CellLayer<CellInfo>> pool = new(MaxPoolSize);
-		readonly Map map;
+		readonly Stack<CellLayer<CellInfo>> pool = new Stack<CellLayer<CellInfo>>(MaxPoolSize);
+		readonly IMap map;
 
-		public CellInfoLayerPool(Map map)
+		public CellInfoLayerPool(IMap map)
 		{
 			this.map = map;
 		}

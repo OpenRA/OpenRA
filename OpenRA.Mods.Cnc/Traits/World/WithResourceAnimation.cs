@@ -77,16 +77,18 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void ITick.Tick(Actor self)
 		{
+			var map = world.Map;
+
 			if (--ticks > 0)
 				return;
 
 			var cells = new HashSet<CPos>();
 			foreach (var uv in worldRenderer.Viewport.AllVisibleCells.CandidateMapCoords)
 			{
-				if (!world.Map.Contains(uv))
+				if (!map.Contains(uv))
 					return;
 
-				var cell = uv.ToCPos(world.Map);
+				var cell = uv.ToCPos(map);
 				var type = resourceRenderer.GetRenderedResourceType(cell);
 				if (type != null && info.Types.Contains(type))
 					cells.Add(cell);
@@ -95,7 +97,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var ratio = Common.Util.RandomInRange(world.LocalRandom, info.Ratio);
 			var positions = cells.Shuffle(world.LocalRandom)
 				.Take(Math.Max(1, cells.Count * ratio / 100))
-				.Select(x => world.Map.CenterOfCell(x));
+				.Select(x => map.CenterOfCell(x));
 
 			foreach (var position in positions)
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(position, w, info.Image, info.Sequences.Random(w.LocalRandom), info.Palette)));

@@ -341,7 +341,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (order.OrderString == "DeliverUnit")
 			{
-				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
+				var map = self.World.Map;
+				var cell = map.Clamp(map.CellContaining(order.Target.CenterPosition));
 				if (!aircraftInfo.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
@@ -440,9 +441,10 @@ namespace OpenRA.Mods.Common.Traits
 					return true;
 				}
 
-				var location = self.World.Map.CellContaining(target.CenterPosition);
+				var map = self.World.Map;
+				var location = map.CellContaining(target.CenterPosition);
 				var explored = self.Owner.Shroud.IsExplored(location);
-				cursor = self.World.Map.Contains(location) ? info.DropOffCursor : info.DropOffBlockedCursor;
+				cursor = map.Contains(location) ? info.DropOffCursor : info.DropOffBlockedCursor;
 
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 

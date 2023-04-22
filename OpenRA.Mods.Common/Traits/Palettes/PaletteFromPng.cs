@@ -79,7 +79,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.Tileset != null && !string.Equals(info.Tileset, world.Map.Tileset, StringComparison.InvariantCultureIgnoreCase))
 				return;
 
-			wr.AddPalette(info.Name, ((IProvidesCursorPaletteInfo)info).ReadPalette(world.Map), info.AllowModifiers);
+			// TO DO: Make this use IMap instead of Map
+			wr.AddPalette(info.Name, ((IProvidesCursorPaletteInfo)info).ReadPalette((Map)world.Map), info.AllowModifiers);
 		}
 
 		public IEnumerable<string> PaletteNames

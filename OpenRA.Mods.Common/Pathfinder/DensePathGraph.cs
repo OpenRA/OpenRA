@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var dy = position.Y - previousNode.Y;
 			var index = dy * 3 + dx + 4;
 
-			var heightLayer = world.Map.Height;
+			var heightLayer = ((IMapElevation)world.Map).Height;
 			var directions =
 				(checkTerrainHeight && layer == 0 && previousNode.Layer == 0 && heightLayer[position] != heightLayer[previousNode]
 				? DirectedNeighborsConservative

@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		string IUtilityCommand.Name => "--map-rules";
 		bool IUtilityCommand.ValidateArguments(string[] args) { return args.Length == 2; }
 
-		void MergeAndPrint(Map map, string key, MiniYaml value)
+		void MergeAndPrint(IMap map, string key, MiniYaml value)
 		{
 			var nodes = new List<MiniYamlNode>();
 			var includes = new List<string>();
@@ -32,9 +32,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var files = FieldLoader.GetValue<string[]>("value", value.Value);
 				foreach (var f in files)
 				{
-					include |= map.Package.Contains(f);
+					include |= ((Map)map).Package.Contains(f);
 					if (include)
-						nodes.AddRange(MiniYaml.FromStream(map.Open(f), f, false));
+						nodes.AddRange(MiniYaml.FromStream(((Map)map).Open(f), f, false));
 					else
 						includes.Add(f);
 				}
@@ -52,14 +52,15 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		{
 			var modData = Game.ModData = utility.ModData;
 
-			var map = new Map(modData, new Folder(Platform.EngineDir).OpenPackage(args[1], modData.ModFiles));
-			MergeAndPrint(map, "Rules", map.RuleDefinitions);
-			MergeAndPrint(map, "Sequences", map.SequenceDefinitions);
-			MergeAndPrint(map, "ModelSequences", map.ModelSequenceDefinitions);
-			MergeAndPrint(map, "Weapons", map.WeaponDefinitions);
-			MergeAndPrint(map, "Voices", map.VoiceDefinitions);
-			MergeAndPrint(map, "Music", map.MusicDefinitions);
-			MergeAndPrint(map, "Notifications", map.NotificationDefinitions);
+			var map = modData.MapLoader.Load(modData, new Folder(Platform.EngineDir).OpenPackage(args[1], modData.ModFiles));
+			var imap = (IMap)map;
+			MergeAndPrint(imap, "Rules", map.RuleDefinitions);
+			MergeAndPrint(imap, "Sequences", map.SequenceDefinitions);
+			MergeAndPrint(imap, "ModelSequences", map.ModelSequenceDefinitions);
+			MergeAndPrint(imap, "Weapons", map.WeaponDefinitions);
+			MergeAndPrint(imap, "Voices", map.VoiceDefinitions);
+			MergeAndPrint(imap, "Music", map.MusicDefinitions);
+			MergeAndPrint(imap, "Notifications", map.NotificationDefinitions);
 		}
 	}
 }

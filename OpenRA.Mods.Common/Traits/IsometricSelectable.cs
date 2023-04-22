@@ -109,10 +109,11 @@ namespace OpenRA.Mods.Common.Traits
 					yMax = Math.Max(yMax, c.Y);
 				}
 
-				left = wr.ScreenPxPosition(self.World.Map.CenterOfCell(new CPos(xMin, yMax)) - new WVec(768, 0, 0));
-				right = wr.ScreenPxPosition(self.World.Map.CenterOfCell(new CPos(xMax, yMin)) + new WVec(768, 0, 0));
-				top = wr.ScreenPxPosition(self.World.Map.CenterOfCell(new CPos(xMin, yMin)) - new WVec(0, 768, 0));
-				bottom = wr.ScreenPxPosition(self.World.Map.CenterOfCell(new CPos(xMax, yMax)) + new WVec(0, 768, 0));
+				var map = self.World.Map;
+				left = wr.ScreenPxPosition(map.CenterOfCell(new CPos(xMin, yMax)) - new WVec(768, 0, 0));
+				right = wr.ScreenPxPosition(map.CenterOfCell(new CPos(xMax, yMin)) + new WVec(768, 0, 0));
+				top = wr.ScreenPxPosition(map.CenterOfCell(new CPos(xMin, yMin)) - new WVec(0, 768, 0));
+				bottom = wr.ScreenPxPosition(map.CenterOfCell(new CPos(xMax, yMax)) + new WVec(0, 768, 0));
 			}
 
 			if (height == 0)

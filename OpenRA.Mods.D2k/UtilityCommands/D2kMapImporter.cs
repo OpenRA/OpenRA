@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using OpenRA.Mods.Common.MapFormats;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Primitives;
 
@@ -326,7 +327,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			if (terrainInfo == null)
 				throw new InvalidDataException("The D2k map importer requires the DefaultTerrain parser.");
 
-			map = new Map(Game.ModData, terrainInfo, mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth)
+			map = new DefaultMap(Game.ModData, terrainInfo, mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth)
 			{
 				Title = Path.GetFileNameWithoutExtension(mapFile),
 				Author = "Westwood Studios"
@@ -334,7 +335,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 
 			var tl = new PPos(MapCordonWidth, MapCordonWidth);
 			var br = new PPos(MapCordonWidth + mapSize.Width - 1, MapCordonWidth + mapSize.Height - 1);
-			map.SetBounds(tl, br);
+			((IMap)map).SetBounds(tl, br);
 
 			// Get all templates from the tileset YAML file that have at least one frame and an Image property corresponding to the requested tileset
 			// Each frame is a tile from the Dune 2000 tileset files, with the Frame ID being the index of the tile in the original file
@@ -344,7 +345,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 				return templateInfo.Frames != null && string.Equals(templateInfo.Images[0], tilesetName, StringComparison.InvariantCultureIgnoreCase);
 			}).Select(ts => ts.Value).ToList();
 
-			var players = new MapPlayers(map.Rules, playerCount);
+			var players = new MapPlayers(((IMap)map).Rules, playerCount);
 			map.PlayerDefinitions = players.ToMiniYaml();
 		}
 
@@ -355,16 +356,17 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 				var tileInfo = stream.ReadUInt16();
 				var tileSpecialInfo = stream.ReadUInt16();
 				var tile = GetTile(tileInfo);
+				var mapResources = ((IMapResource)map).Resources;
 
 				var locationOnMap = GetCurrentTilePositionOnMap();
 
-				map.Tiles[locationOnMap] = tile;
+				((IMapTiles)map).Tiles[locationOnMap] = tile;
 
 				// Spice
 				if (tileSpecialInfo == 1)
-					map.Resources[locationOnMap] = new ResourceTile(1, 1);
+					mapResources[locationOnMap] = new ResourceTile(1, 1);
 				if (tileSpecialInfo == 2)
-					map.Resources[locationOnMap] = new ResourceTile(1, 2);
+					mapResources[locationOnMap] = new ResourceTile(1, 2);
 
 				// Actors
 				if (ActorDataByActorCode.ContainsKey(tileSpecialInfo))

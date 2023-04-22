@@ -38,6 +38,8 @@ Packages:
 	common|scripts
 	ra|uibits
 
+DefaultMapLoader:
+
 MapFolders:
 	ra|maps: System
 	~^SupportDir|maps/ra/{DEV_VERSION}: User

@@ -95,7 +95,7 @@ namespace OpenRA.Traits
 		public enum CellVisibility : byte { Hidden = 0x0, Explored = 0x1, Visible = 0x2 }
 
 		readonly ShroudInfo info;
-		readonly Map map;
+		readonly IMap map;
 
 		// Individual shroud modifier sources (type and area)
 		readonly Dictionary<object, ShroudSource> sources = new();
@@ -233,7 +233,7 @@ namespace OpenRA.Traits
 			disabledChanged = false;
 		}
 
-		public static IEnumerable<PPos> ProjectedCellsInRange(Map map, WPos pos, WDist minRange, WDist maxRange, int maxHeightDelta = -1)
+		public static IEnumerable<PPos> ProjectedCellsInRange(IMap map, WPos pos, WDist minRange, WDist maxRange, int maxHeightDelta = -1)
 		{
 			// Account for potential extra half-cell from odd-height terrain
 			var r = (maxRange.Length + 1023 + 512) / 1024;
@@ -257,7 +257,7 @@ namespace OpenRA.Traits
 			}
 		}
 
-		public static IEnumerable<PPos> ProjectedCellsInRange(Map map, CPos cell, WDist range, int maxHeightDelta = -1)
+		public static IEnumerable<PPos> ProjectedCellsInRange(IMap map, CPos cell, WDist range, int maxHeightDelta = -1)
 		{
 			return ProjectedCellsInRange(map, map.CenterOfCell(cell), WDist.Zero, range, maxHeightDelta);
 		}

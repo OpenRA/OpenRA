@@ -194,13 +194,15 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public bool IsCellAcceptable(Actor self, CPos cell)
 		{
-			if (!self.World.Map.Contains(cell))
+			var map = self.World.Map;
+
+			if (!map.Contains(cell))
 				return false;
 
 			if (Info.TerrainTypes.Count == 0)
 				return true;
 
-			var terrainType = self.World.Map.GetTerrainInfo(cell).Type;
+			var terrainType = map.GetTerrainInfo(cell).Type;
 			return Info.TerrainTypes.Contains(terrainType);
 		}
 
@@ -297,6 +299,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 			protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
 			{
+				var map = world.Map;
 				var minelayer = minelayers.FirstOrDefault(m => m.IsInWorld && !m.IsDead);
 				if (minelayer == null)
 					yield break;
@@ -309,11 +312,12 @@ namespace OpenRA.Mods.Cnc.Traits
 				var movement = minelayer.Trait<IPositionable>();
 				var mobile = movement as Mobile;
 				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
+
 				foreach (var c in minefield)
 				{
 					var tile = validTile;
 					var alpha = validAlpha;
-					if (!world.Map.Contains(c))
+					if (!map.Contains(c))
 					{
 						tile = blockedTile;
 						alpha = blockedAlpha;
@@ -335,7 +339,7 @@ namespace OpenRA.Mods.Cnc.Traits
 						alpha = blockedAlpha;
 					}
 
-					yield return new SpriteRenderable(tile, world.Map.CenterOfCell(c), WVec.Zero, -511, pal, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+					yield return new SpriteRenderable(tile, map.CenterOfCell(c), WVec.Zero, -511, pal, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 				}
 			}
 
@@ -363,11 +367,13 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
 			{
+				var map = self.World.Map;
+
 				if (target.Type != TargetType.Terrain)
 					return false;
 
-				var location = self.World.Map.CellContaining(target.CenterPosition);
-				if (!self.World.Map.Contains(location))
+				var location = map.CellContaining(target.CenterPosition);
+				if (!map.Contains(location))
 					return false;
 
 				cursor = this.cursor;

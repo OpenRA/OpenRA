@@ -25,9 +25,9 @@ namespace OpenRA.Mods.Common.Lint
 				CheckWeapons(MiniYaml.FromStream(modData.DefaultFileSystem.Open(f), f), emitError, emitWarning, modData);
 		}
 
-		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
+		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, IMap map)
 		{
-			CheckMapYaml(emitError, emitWarning, modData, map, map.WeaponDefinitions);
+			CheckMapYaml(emitError, emitWarning, modData, (Map)map, ((Map)map).WeaponDefinitions);
 		}
 
 		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)

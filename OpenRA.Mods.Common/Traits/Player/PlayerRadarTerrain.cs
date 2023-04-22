@@ -70,13 +70,15 @@ namespace OpenRA.Mods.Common.Traits
 
 			w.AddFrameEndTask(_ =>
 			{
+				var map = world.Map;
+
 				// Set initial terrain data
-				foreach (var uv in world.Map.AllCells.MapCoords)
+				foreach (var uv in map.AllCells.MapCoords)
 					UpdateTerrainCellColor(uv);
 
-				world.Map.Tiles.CellEntryChanged += cell => UpdateTerrainCell(cell.ToMPos(world.Map));
+				((IMapTiles)map).Tiles.CellEntryChanged += cell => UpdateTerrainCell(cell.ToMPos(map));
 				foreach (var rtl in radarTerrainLayers)
-					rtl.CellEntryChanged += cell => UpdateTerrainCell(cell.ToMPos(world.Map));
+					rtl.CellEntryChanged += cell => UpdateTerrainCell(cell.ToMPos(map));
 
 				IsInitialized = true;
 			});
@@ -84,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public (int Left, int Right) this[MPos uv] => terrainColor[uv];
 
-		public static (int Left, int Right) GetColor(Map map, IRadarTerrainLayer[] radarTerrainLayers, MPos uv)
+		public static (int Left, int Right) GetColor(IMap map, IRadarTerrainLayer[] radarTerrainLayers, MPos uv)
 		{
 			foreach (var rtl in radarTerrainLayers)
 				if (rtl.TryGetTerrainColorPair(uv, out var c))

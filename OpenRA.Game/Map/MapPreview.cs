@@ -64,7 +64,7 @@ namespace OpenRA
 	public class MapPreview : IDisposable, IReadOnlyFileSystem
 	{
 		/// <summary>Wrapper that enables map data to be replaced in an atomic fashion.</summary>
-		class InnerData
+		public class InnerData
 		{
 			public int MapFormat;
 			public string Title;
@@ -159,7 +159,7 @@ namespace OpenRA
 		}
 
 		static readonly CPos[] NoSpawns = Array.Empty<CPos>();
-		readonly MapCache cache;
+		public readonly MapCache Cache;
 		readonly ModData modData;
 
 		public readonly string Uid;
@@ -204,7 +204,7 @@ namespace OpenRA
 			if (!generatingMinimap && Status == MapStatus.Available)
 			{
 				generatingMinimap = true;
-				cache.CacheMinimap(this);
+				Cache.CacheMinimap(this);
 			}
 
 			return null;
@@ -232,7 +232,7 @@ namespace OpenRA
 
 		public MapPreview(ModData modData, string uid, MapGridType gridType, MapCache cache)
 		{
-			this.cache = cache;
+			Cache = cache;
 			this.modData = modData;
 
 			Uid = uid;
@@ -259,7 +259,7 @@ namespace OpenRA
 		public MapPreview(Map map, ModData modData)
 		{
 			this.modData = modData;
-			cache = modData.MapCache;
+			Cache = modData.MapCache;
 
 			Uid = map.Uid;
 			Package = map.Package;
@@ -274,16 +274,16 @@ namespace OpenRA
 
 			innerData = new InnerData
 			{
-				MapFormat = map.MapFormat,
+				MapFormat = ((IMap)map).MapFormat,
 				Title = map.Title,
 				Categories = map.Categories,
 				Author = map.Author,
-				TileSet = map.Tileset,
+				TileSet = ((IMap)map).Tileset,
 				Players = mapPlayers,
 				PlayerCount = mapPlayers.Players.Count(x => x.Value.Playable),
 				SpawnPoints = spawns.ToArray(),
-				GridType = map.Grid.Type,
-				Bounds = map.Bounds,
+				GridType = ((IMap)map).Grid.Type,
+				Bounds = ((IMap)map).Bounds,
 				Preview = null,
 				Status = MapStatus.Available,
 				Class = MapClassification.Unknown,
@@ -302,106 +302,11 @@ namespace OpenRA
 			});
 		}
 
-		public void UpdateFromMap(IReadOnlyPackage p, IReadOnlyPackage parent, MapClassification classification, string[] mapCompatibility, MapGridType gridType)
+		public InnerData Init(IReadOnlyPackage p, IReadOnlyPackage parent)
 		{
-			Dictionary<string, MiniYaml> yaml;
-			using (var yamlStream = p.GetStream("map.yaml"))
-			{
-				if (yamlStream == null)
-					throw new FileNotFoundException("Required file map.yaml not present in this map");
-
-				yaml = new MiniYaml(null, MiniYaml.FromStream(yamlStream, "map.yaml", stringPool: cache.StringPool)).ToDictionary();
-			}
-
 			Package = p;
 			parentPackage = parent;
-
-			var newData = innerData.Clone();
-			newData.GridType = gridType;
-			newData.Class = classification;
-
-			if (yaml.TryGetValue("MapFormat", out var temp))
-			{
-				var format = FieldLoader.GetValue<int>("MapFormat", temp.Value);
-				if (format < Map.SupportedMapFormat)
-					throw new InvalidDataException($"Map format {format} is not supported.");
-			}
-
-			if (yaml.TryGetValue("Title", out temp))
-				newData.Title = temp.Value;
-
-			if (yaml.TryGetValue("Categories", out temp))
-				newData.Categories = FieldLoader.GetValue<string[]>("Categories", temp.Value);
-
-			if (yaml.TryGetValue("Tileset", out temp))
-				newData.TileSet = temp.Value;
-
-			if (yaml.TryGetValue("Author", out temp))
-				newData.Author = temp.Value;
-
-			if (yaml.TryGetValue("Bounds", out temp))
-				newData.Bounds = FieldLoader.GetValue<Rectangle>("Bounds", temp.Value);
-
-			if (yaml.TryGetValue("Visibility", out temp))
-				newData.Visibility = FieldLoader.GetValue<MapVisibility>("Visibility", temp.Value);
-
-			var requiresMod = string.Empty;
-			if (yaml.TryGetValue("RequiresMod", out temp))
-				requiresMod = temp.Value;
-
-			if (yaml.TryGetValue("MapFormat", out temp))
-				newData.MapFormat = FieldLoader.GetValue<int>("MapFormat", temp.Value);
-
-			newData.Status = mapCompatibility == null || mapCompatibility.Contains(requiresMod) ?
-				MapStatus.Available : MapStatus.Unavailable;
-
-			try
-			{
-				// Actor definitions may change if the map format changes
-				if (yaml.TryGetValue("Actors", out var actorDefinitions))
-				{
-					var spawns = new List<CPos>();
-					foreach (var kv in actorDefinitions.Nodes.Where(d => d.Value.Value == "mpspawn"))
-					{
-						var s = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
-						spawns.Add(s.Get<LocationInit>().Value);
-					}
-
-					newData.SpawnPoints = spawns.ToArray();
-				}
-				else
-					newData.SpawnPoints = Array.Empty<CPos>();
-			}
-			catch (Exception)
-			{
-				newData.SpawnPoints = Array.Empty<CPos>();
-				newData.Status = MapStatus.Unavailable;
-			}
-
-			try
-			{
-				// Player definitions may change if the map format changes
-				if (yaml.TryGetValue("Players", out var playerDefinitions))
-				{
-					newData.Players = new MapPlayers(playerDefinitions.Nodes);
-					newData.PlayerCount = newData.Players.Players.Count(x => x.Value.Playable);
-				}
-			}
-			catch (Exception)
-			{
-				newData.Status = MapStatus.Unavailable;
-			}
-
-			newData.SetCustomRules(modData, this, yaml);
-
-			if (cache.LoadPreviewImages && p.Contains("map.png"))
-				using (var dataStream = p.GetStream("map.png"))
-					newData.Preview = new Png(dataStream);
-
-			newData.ModifiedDate = File.GetLastWriteTime(p.Name);
-
-			// Assign the new data atomically
-			innerData = newData;
+			return innerData = innerData.Clone();
 		}
 
 		public void UpdateRemoteSearch(MapStatus status, MiniYaml yaml, Action<MapPreview> parseMetadata = null)
@@ -436,7 +341,7 @@ namespace OpenRA
 						spawns[j / 2] = new CPos(r.spawnpoints[j], r.spawnpoints[j + 1]);
 					newData.SpawnPoints = spawns;
 					newData.GridType = r.map_grid_type;
-					if (cache.LoadPreviewImages)
+					if (Cache.LoadPreviewImages)
 					{
 						try
 						{
@@ -465,7 +370,7 @@ namespace OpenRA
 				innerData = newData;
 
 				if (innerData.Preview != null)
-					cache.CacheMinimap(this);
+					Cache.CacheMinimap(this);
 
 				parseMetadata?.Invoke(this);
 			}
@@ -480,7 +385,7 @@ namespace OpenRA
 				return;
 
 			innerData.Status = MapStatus.Downloading;
-			var installLocation = cache.MapLocations.FirstOrDefault(p => p.Value == MapClassification.User);
+			var installLocation = Cache.MapLocations.FirstOrDefault(p => p.Value == MapClassification.User);
 			if (installLocation.Key is not IReadWritePackage mapInstallPackage)
 			{
 				Log.Write("debug", "Map install directory not found");
@@ -532,7 +437,7 @@ namespace OpenRA
 						innerData.Status = MapStatus.DownloadError;
 					else
 					{
-						UpdateFromMap(package, mapInstallPackage, MapClassification.User, null, GridType);
+						modData.MapLoader.UpdatePreview(modData, this, package, mapInstallPackage, MapClassification.User, null, GridType);
 						Game.RunAfterTick(onSuccess);
 					}
 				}

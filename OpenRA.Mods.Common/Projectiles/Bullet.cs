@@ -265,20 +265,22 @@ namespace OpenRA.Mods.Common.Projectiles
 			var flightLengthReached = ticks++ >= length;
 			var shouldBounce = remainingBounces > 0;
 
+			var map = world.Map;
+
 			if (flightLengthReached && shouldBounce)
 			{
-				var cell = world.Map.CellContaining(pos);
-				if (!world.Map.Contains(cell))
+				var cell = map.CellContaining(pos);
+				if (!map.Contains(cell))
 					return true;
 
-				if (info.InvalidBounceTerrain.Contains(world.Map.GetTerrainInfo(cell).Type))
+				if (info.InvalidBounceTerrain.Contains(map.GetTerrainInfo(cell).Type))
 					return true;
 
 				if (AnyValidTargetsInRadius(world, pos, info.Width, args.SourceActor, true))
 					return true;
 
 				target += (pos - source) * info.BounceRangeModifier / 100;
-				var dat = world.Map.DistanceAboveTerrain(target);
+				var dat = map.DistanceAboveTerrain(target);
 				target += new WVec(0, 0, -dat.Length);
 				length = Math.Max((target - pos).Length / speed.Length, 1);
 
@@ -293,7 +295,7 @@ namespace OpenRA.Mods.Common.Projectiles
 				return true;
 
 			// Driving into cell with higher height level
-			if (world.Map.DistanceAboveTerrain(pos).Length < 0)
+			if (map.DistanceAboveTerrain(pos).Length < 0)
 				return true;
 
 			// After first bounce, check for targets each tick

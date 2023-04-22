@@ -57,20 +57,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var maxTerrainHeight = world.Map.Grid.MaximumTerrainHeight;
 				var tileset = modData.DefaultTerrainInfo[tilesetDropDown.Text];
-				var map = new Map(Game.ModData, tileset, width + 2, height + maxTerrainHeight + 2);
+				var map = modData.MapLoader.Create(modData, tileset, width + 2, height + maxTerrainHeight + 2);
+				var imap = (IMap)map;
 
 				var tl = new PPos(1, 1 + maxTerrainHeight);
 				var br = new PPos(width, height + maxTerrainHeight);
-				map.SetBounds(tl, br);
+				imap.SetBounds(tl, br);
 
-				map.PlayerDefinitions = new MapPlayers(map.Rules, 0).ToMiniYaml();
+				map.PlayerDefinitions = new MapPlayers(imap.Rules, 0).ToMiniYaml();
 
-				if (map.Rules.TerrainInfo is ITerrainInfoNotifyMapCreated notifyMapCreated)
-					notifyMapCreated.MapCreated(map);
+				if (imap.Rules.TerrainInfo is ITerrainInfoNotifyMapCreated notifyMapCreated)
+					notifyMapCreated.MapCreated(imap);
 
 				Action<string> afterSave = uid =>
 				{
-					map.Dispose();
+					((IMap)map).Dispose();
 					Game.LoadEditor(uid);
 
 					Ui.CloseWindow();

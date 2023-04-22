@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly ResourceLayerInfo info;
 		readonly World world;
-		protected readonly Map Map;
+		protected readonly IMap Map;
 		protected readonly BuildingInfluence BuildingInfluence;
 		protected readonly CellLayer<ResourceLayerContents> Content;
 		protected readonly Dictionary<byte, string> ResourceTypesByIndex;
@@ -129,9 +129,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void WorldLoaded(World w, WorldRenderer wr)
 		{
-			foreach (var cell in w.Map.AllCells)
+			var map = w.Map;
+
+			foreach (var cell in map.AllCells)
 			{
-				var resource = world.Map.Resources[cell];
+				var resource = ((IMapResource)world.Map).Resources[cell];
 				if (!ResourceTypesByIndex.TryGetValue(resource.Type, out var resourceType))
 					continue;
 
@@ -145,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Set initial density based on the number of neighboring resources
-			foreach (var cell in w.Map.AllCells)
+			foreach (var cell in map.AllCells)
 			{
 				var resource = Content[cell];
 				if (resource.Type == null || !info.ResourceTypes.TryGetValue(resource.Type, out var resourceInfo))
@@ -170,7 +172,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual bool AllowResourceAt(string resourceType, CPos cell)
 		{
-			if (!Map.Contains(cell) || Map.Ramp[cell] != 0)
+			if (!Map.Contains(cell) || ((IMapElevation)Map).Ramp[cell] != 0)
 				return false;
 
 			if (resourceType == null || !info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))

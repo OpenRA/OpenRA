@@ -34,14 +34,15 @@ namespace OpenRA.Mods.Common.Warheads
 			var firedBy = args.SourceActor;
 			var pos = target.CenterPosition;
 			var world = firedBy.World;
-			var dat = world.Map.DistanceAboveTerrain(pos);
+			var map = world.Map;
+			var dat = map.DistanceAboveTerrain(pos);
 			if (dat > AirThreshold)
 				return;
 
-			var targetTile = world.Map.CellContaining(pos);
+			var targetTile = map.CellContaining(pos);
 
 			var minRange = (Size.Length > 1 && Size[1] > 0) ? Size[1] : 0;
-			var allCells = world.Map.FindTilesInAnnulus(targetTile, minRange, Size[0]);
+			var allCells = map.FindTilesInAnnulus(targetTile, minRange, Size[0]);
 
 			var resourceLayer = world.WorldActor.Trait<IResourceLayer>();
 			var maxDensity = resourceLayer.GetMaxDensity(AddsResourceType);

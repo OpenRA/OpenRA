@@ -101,14 +101,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				panel.Get("SAVE_TITLE").IsVisible = () => true;
 
-				defaultSaveFilename = world.Map.Title;
+				defaultSaveFilename = ((Map)world.Map).Title;
 				var filenameAttempt = 0;
 				while (true)
 				{
 					if (!File.Exists(Path.Combine(baseSavePath, defaultSaveFilename + ".orasav")))
 						break;
 
-					defaultSaveFilename = world.Map.Title + $" ({++filenameAttempt})";
+					defaultSaveFilename = ((Map)world.Map).Title + $" ({++filenameAttempt})";
 				}
 
 				var saveButton = panel.Get<ButtonWidget>("SAVE_BUTTON");

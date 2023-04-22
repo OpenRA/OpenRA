@@ -149,7 +149,8 @@ namespace OpenRA.Mods.Common.Graphics
 				// HACK: The previous hack isn't sufficient for the ramp type that is half flat and half
 				// sloped towards the camera. Offset it by another half cell to avoid clipping.
 				var cell = map.CellContaining(model.Pos);
-				if (map.Ramp.Contains(cell) && map.Ramp[cell] == 7)
+				var mapRamp = ((IMapElevation)map).Ramp;
+				if (mapRamp.Contains(cell) && mapRamp[cell] == 7)
 					pxOrigin += new float3(0, 0, 0.5f * map.Grid.TileSize.Height);
 
 				var shadowOrigin = pxOrigin - groundZ * new float2(renderProxy.ShadowDirection, 1);
@@ -176,8 +177,9 @@ namespace OpenRA.Mods.Common.Graphics
 
 			public void RenderDebugGeometry(WorldRenderer wr)
 			{
-				var groundPos = model.Pos - new WVec(0, 0, wr.World.Map.DistanceAboveTerrain(model.Pos).Length);
-				var groundZ = wr.World.Map.Grid.TileSize.Height * (groundPos.Z - model.Pos.Z) / 1024f;
+				var map = wr.World.Map;
+				var groundPos = model.Pos - new WVec(0, 0, map.DistanceAboveTerrain(model.Pos).Length);
+				var groundZ = map.Grid.TileSize.Height * (groundPos.Z - model.Pos.Z) / 1024f;
 				var pxOrigin = wr.Screen3DPosition(model.Pos);
 				var shadowOrigin = pxOrigin - groundZ * new float2(renderProxy.ShadowDirection, 1);
 

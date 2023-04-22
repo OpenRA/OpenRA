@@ -143,8 +143,8 @@ namespace OpenRA
 					mapPackage = package.OpenPackage(map, modData.ModFiles);
 					if (mapPackage != null)
 					{
-						var uid = Map.ComputeUID(mapPackage);
-						previews[uid].UpdateFromMap(mapPackage, package, classification, modData.Manifest.MapCompatibility, mapGrid.Type);
+						var uid = modData.MapLoader.ComputeUID(modData, mapPackage);
+						modData.MapLoader.UpdatePreview(modData, previews[uid], mapPackage, package, classification, modData.Manifest.MapCompatibility, mapGrid.Type);
 
 						if (oldMap != uid)
 						{

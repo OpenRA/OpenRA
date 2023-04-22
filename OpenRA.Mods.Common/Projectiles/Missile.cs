@@ -511,11 +511,13 @@ namespace OpenRA.Mods.Common.Projectiles
 			// TODO: Make sure cell on map!!!
 			for (var tick = 0; tick <= tickLimit; tick++)
 			{
+				var map = world.Map;
+
 				posProbe += step;
-				if (!world.Map.Contains(world.Map.CellContaining(posProbe)))
+				if (!map.Contains(map.CellContaining(posProbe)))
 					break;
 
-				var ht = world.Map.Height[world.Map.CellContaining(posProbe)] * 512;
+				var ht = ((IMapElevation)map).Height[map.CellContaining(posProbe)] * 512;
 
 				curDist += stepSize;
 				if (ht > predClfHgt)
@@ -900,13 +902,14 @@ namespace OpenRA.Mods.Common.Projectiles
 				contrail.Update(pos);
 
 			distanceCovered += new WDist(speed);
-			var cell = world.Map.CellContaining(pos);
-			var height = world.Map.DistanceAboveTerrain(pos);
+			var map = world.Map;
+			var cell = map.CellContaining(pos);
+			var height = map.DistanceAboveTerrain(pos);
 			shouldExplode |= height.Length < 0 // Hit the ground
 				|| relTarDist < info.CloseEnough.Length // Within range
 				|| (info.ExplodeWhenEmpty && rangeLimit >= WDist.Zero && distanceCovered > rangeLimit) // Ran out of fuel
-				|| !world.Map.Contains(cell) // This also avoids an IndexOutOfRangeException in GetTerrainInfo below.
-				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && world.Map.GetTerrainInfo(cell).Type != info.BoundToTerrainType) // Hit incompatible terrain
+				|| !map.Contains(cell) // This also avoids an IndexOutOfRangeException in GetTerrainInfo below.
+				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && map.GetTerrainInfo(cell).Type != info.BoundToTerrainType) // Hit incompatible terrain
 				|| (height.Length < info.AirburstAltitude.Length && relTarHorDist < info.CloseEnough.Length); // Airburst
 
 			if (shouldExplode)

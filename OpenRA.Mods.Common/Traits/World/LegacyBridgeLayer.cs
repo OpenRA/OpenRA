@@ -46,7 +46,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void WorldLoaded(World w, WorldRenderer wr)
 		{
-			bridges = new CellLayer<Bridge>(w.Map);
+			var map = w.Map;
+
+			bridges = new CellLayer<Bridge>(map);
 
 			// Build a list of templates that should be overlaid with bridges
 			foreach (var bridge in info.Bridges)
@@ -57,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Take all templates to overlay from the map
-			foreach (var cell in w.Map.AllCells.Where(cell => bridgeTypes.ContainsKey(w.Map.Tiles[cell].Type)))
+			foreach (var cell in map.AllCells.Where(cell => bridgeTypes.ContainsKey(((IMapTiles)map).Tiles[cell].Type)))
 				ConvertBridgeToActor(w, cell);
 
 			// Link adjacent (long)-bridges so that artwork is updated correctly
@@ -67,12 +69,14 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ConvertBridgeToActor(World w, CPos cell)
 		{
+			var mapTiles = ((IMapTiles)w.Map).Tiles;
+
 			// This cell already has a bridge overlaying it from a previous iteration
 			if (bridges[cell] != null)
 				return;
 
 			// Correlate the tile "image" aka subtile with its position to find the template origin
-			var ti = w.Map.Tiles[cell];
+			var ti = mapTiles[cell];
 			var tile = ti.Type;
 			var index = ti.Index;
 			var template = terrainInfo.Templates[tile];
@@ -88,7 +92,6 @@ namespace OpenRA.Mods.Common.Traits
 			}).Trait<Bridge>();
 
 			var subTiles = new Dictionary<CPos, byte>();
-			var mapTiles = w.Map.Tiles;
 
 			// For each subtile in the template
 			for (byte ind = 0; ind < template.Size.X * template.Size.Y; ind++)

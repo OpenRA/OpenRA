@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Warheads
 			}
 		}
 
-		void FireProjectileAtCell(Map map, Actor firedBy, Target target, CPos targetCell, WarheadArgs args)
+		void FireProjectileAtCell(IMap map, Actor firedBy, Target target, CPos targetCell, WarheadArgs args)
 		{
 			var tc = Target.FromCell(firedBy.World, targetCell);
 

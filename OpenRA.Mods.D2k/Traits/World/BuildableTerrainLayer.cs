@@ -49,8 +49,9 @@ namespace OpenRA.Mods.D2k.Traits
 		{
 			this.info = info;
 			world = self.World;
-			strength = new CellLayer<int>(world.Map);
-			radarColor = new CellLayer<(Color, Color)>(world.Map);
+			var map = world.Map;
+			strength = new CellLayer<int>(map);
+			radarColor = new CellLayer<(Color, Color)>(map);
 			terrainRenderer = self.Trait<ITiledTerrainRenderer>();
 		}
 

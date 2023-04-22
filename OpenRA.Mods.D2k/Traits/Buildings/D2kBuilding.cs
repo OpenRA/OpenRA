@@ -79,11 +79,10 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 		protected override void AddedToWorld(Actor self)
 		{
 			base.AddedToWorld(self);
+			var map = self.World.Map;
 
 			if (layer != null && (info.ConcretePrerequisites.Length == 0 || techTree == null || techTree.HasPrerequisites(info.ConcretePrerequisites)))
 			{
-				var map = self.World.Map;
-
 				if (self.World.Map.Rules.TerrainInfo is not ITemplatedTerrainInfo terrainInfo)
 					throw new InvalidDataException("D2kBuilding requires a template-based tileset.");
 
@@ -130,7 +129,7 @@ namespace OpenRA.Mods.D2k.Traits.Buildings
 			foreach (var kv in self.OccupiesSpace.OccupiedCells())
 			{
 				totalTiles++;
-				if (!info.DamageTerrainTypes.Contains(self.World.Map.GetTerrainInfo(kv.Cell).Type))
+				if (!info.DamageTerrainTypes.Contains(map.GetTerrainInfo(kv.Cell).Type))
 					safeTiles++;
 			}
 

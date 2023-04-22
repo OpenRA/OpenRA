@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (!map.Contains(cell))
 				return;
 
-			var mapTiles = map.Tiles;
+			var mapTiles = ((IMapTiles)map).Tiles;
 			var replace = mapTiles[cell];
 
 			if (replace.Type == Template)
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Widgets
 		bool PlacementOverlapsSameTemplate(TerrainTemplateInfo template, CPos cell)
 		{
 			var map = world.Map;
-			var mapTiles = map.Tiles;
+			var mapTiles = ((IMapTiles)map).Tiles;
 			var i = 0;
 			for (var y = 0; y < template.Size.Y; y++)
 			{
@@ -158,13 +158,13 @@ namespace OpenRA.Mods.Common.Widgets
 		public string Text { get; }
 
 		readonly ushort template;
-		readonly Map map;
+		readonly IMap map;
 		readonly CPos cell;
 
 		readonly Queue<UndoTile> undoTiles = new();
 		readonly TerrainTemplateInfo terrainTemplate;
 
-		public PaintTileEditorAction(ushort template, Map map, CPos cell)
+		public PaintTileEditorAction(ushort template, IMap map, CPos cell)
 		{
 			this.template = template;
 			this.map = map;
@@ -182,8 +182,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Do()
 		{
-			var mapTiles = map.Tiles;
-			var mapHeight = map.Height;
+			var mapTiles = ((IMapTiles)map).Tiles;
+			var mapHeight = ((IMapElevation)map).Height;
 			var baseHeight = mapHeight.Contains(cell) ? mapHeight[cell] : (byte)0;
 
 			var i = 0;
@@ -209,8 +209,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Undo()
 		{
-			var mapTiles = map.Tiles;
-			var mapHeight = map.Height;
+			var mapTiles = ((IMapTiles)map).Tiles;
+			var mapHeight = ((IMapElevation)map).Height;
 
 			while (undoTiles.Count > 0)
 			{
@@ -227,13 +227,13 @@ namespace OpenRA.Mods.Common.Widgets
 		public string Text { get; }
 
 		readonly ushort template;
-		readonly Map map;
+		readonly IMap map;
 		readonly CPos cell;
 
 		readonly Queue<UndoTile> undoTiles = new();
 		readonly TerrainTemplateInfo terrainTemplate;
 
-		public FloodFillEditorAction(ushort template, Map map, CPos cell)
+		public FloodFillEditorAction(ushort template, IMap map, CPos cell)
 		{
 			this.template = template;
 			this.map = map;
@@ -253,7 +253,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var queue = new Queue<CPos>();
 			var touched = new CellLayer<bool>(map);
-			var mapTiles = map.Tiles;
+			var mapTiles = ((IMapTiles)map).Tiles;
 			var replace = mapTiles[cell];
 
 			void MaybeEnqueue(CPos newCell)
@@ -317,8 +317,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Undo()
 		{
-			var mapTiles = map.Tiles;
-			var mapHeight = map.Height;
+			var mapTiles = ((IMapTiles)map).Tiles;
+			var mapHeight = ((IMapElevation)map).Height;
 
 			while (undoTiles.Count > 0)
 			{
@@ -331,8 +331,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void PaintSingleCell(CPos cellToPaint)
 		{
-			var mapTiles = map.Tiles;
-			var mapHeight = map.Height;
+			var mapTiles = ((IMapTiles)map).Tiles;
+			var mapHeight = ((IMapElevation)map).Height;
 			var baseHeight = mapHeight.Contains(cellToPaint) ? mapHeight[cellToPaint] : (byte)0;
 
 			var i = 0;

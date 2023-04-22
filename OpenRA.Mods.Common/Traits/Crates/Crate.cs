@@ -47,10 +47,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public bool CanExistInCell(World world, CPos cell)
 		{
-			if (!world.Map.Contains(cell))
+			var map = world.Map;
+
+			if (!map.Contains(cell))
 				return false;
 
-			var type = world.Map.GetTerrainInfo(cell).Type;
+			var type = map.GetTerrainInfo(cell).Type;
 			if (!TerrainTypes.Contains(type))
 				return false;
 
@@ -182,7 +184,8 @@ namespace OpenRA.Mods.Common.Traits
 		// Sets the location (Location) and position (CenterPosition)
 		public void SetPosition(Actor self, WPos pos)
 		{
-			var cell = self.World.Map.CellContaining(pos);
+			var map = self.World.Map;
+			var cell = map.CellContaining(pos);
 			SetLocation(self, cell);
 			SetCenterPosition(self, self.World.Map.CenterOfCell(cell) + new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(pos)));
 		}

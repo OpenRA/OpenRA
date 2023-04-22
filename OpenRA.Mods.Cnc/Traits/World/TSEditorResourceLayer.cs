@@ -42,6 +42,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		bool IsValidVeinNeighbour(CPos cell, CPos neighbour)
 		{
+			var mapRamp = ((IMapElevation)Map).Ramp;
+
 			if (!Map.Contains(neighbour))
 				return false;
 
@@ -50,22 +52,22 @@ namespace OpenRA.Mods.Cnc.Traits
 				return true;
 
 			// Neighbour must be flat or a cardinal slope, unless the resource cell itself is a slope
-			if (Map.Ramp[cell] == 0 && Map.Ramp[neighbour] > 4)
+			if (mapRamp[cell] == 0 && mapRamp[neighbour] > 4)
 				return false;
 
 			var terrainInfo = Map.Rules.TerrainInfo;
-			var terrainType = terrainInfo.TerrainTypes[terrainInfo.GetTerrainInfo(Map.Tiles[neighbour]).TerrainType].Type;
+			var terrainType = terrainInfo.TerrainTypes[terrainInfo.GetTerrainInfo(((IMapTiles)Map).Tiles[neighbour]).TerrainType].Type;
 			return info.ResourceTypes[info.VeinType].AllowedTerrainTypes.Contains(terrainType);
 		}
 
 		protected override bool AllowResourceAt(string resourceType, CPos cell)
 		{
-			var mapResources = Map.Resources;
+			var mapResources = ((IMapResource)Map).Resources;
 			if (!mapResources.Contains(cell))
 				return false;
 
 			// Resources are allowed on flat terrain and cardinal slopes
-			if (Map.Ramp[cell] > 4)
+			if (((IMapElevation)Map).Ramp[cell] > 4)
 				return false;
 
 			if (!info.ResourceTypes.TryGetValue(resourceType, out var resourceInfo))
@@ -73,7 +75,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			// Ignore custom terrain types when spawning resources in the editor
 			var terrainInfo = Map.Rules.TerrainInfo;
-			var terrainType = terrainInfo.TerrainTypes[terrainInfo.GetTerrainInfo(Map.Tiles[cell]).TerrainType].Type;
+			var terrainType = terrainInfo.TerrainTypes[terrainInfo.GetTerrainInfo(((IMapTiles)Map).Tiles[cell]).TerrainType].Type;
 			if (!resourceInfo.AllowedTerrainTypes.Contains(terrainType))
 				return false;
 
@@ -93,16 +95,17 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		protected override int AddResource(string resourceType, CPos cell, int amount = 1)
 		{
+			var mapResource = (IMapResource)Map;
 			var added = base.AddResource(resourceType, cell, amount);
 
 			// Update neighbouring cells if needed to provide space for vein borders
 			var resourceIsVeins = resourceType == info.VeinType;
 			foreach (var c in Common.Util.ExpandFootprint(cell, false))
 			{
-				if (!Map.Resources.Contains(c))
+				if (!mapResource.Resources.Contains(c))
 					continue;
 
-				var resourceIndex = Map.Resources[c].Type;
+				var resourceIndex = mapResource.Resources[c].Type;
 				if (resourceIndex == 0 || !ResourceTypesByIndex.TryGetValue(resourceIndex, out var neighourResourceType))
 					neighourResourceType = null;
 

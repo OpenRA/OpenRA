@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		readonly ActorMapInfo info;
-		readonly Map map;
+		readonly IMap map;
 		readonly Dictionary<int, CellTrigger> cellTriggers = new();
 		readonly Dictionary<CPos, List<CellTrigger>> cellTriggerInfluence = new();
 		readonly Dictionary<int, ProximityTrigger> proximityTriggers = new();

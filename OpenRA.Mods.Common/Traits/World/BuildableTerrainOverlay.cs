@@ -67,14 +67,19 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
+			var map = world.Map;
+			var mapTiles = ((IMapTiles)world.Map).Tiles;
+			var mapRamp = ((IMapElevation)world.Map).Ramp;
+			var m = w.Map;
+
 			render = new TerrainSpriteLayer(w, wr, disabledSprite, BlendMode.Alpha, wr.World.Type != WorldType.Editor);
 
-			world.Map.Tiles.CellEntryChanged += UpdateTerrainCell;
-			world.Map.CustomTerrain.CellEntryChanged += UpdateTerrainCell;
+			mapTiles.CellEntryChanged += UpdateTerrainCell;
+			map.CustomTerrain.CellEntryChanged += UpdateTerrainCell;
 
-			var cells = w.Map.AllCells.Where(c => w.Map.Contains(c) &&
-				(!info.AllowedTerrainTypes.Contains(w.Map.GetTerrainInfo(c).Type) ||
-				world.Map.Ramp[c] != 0)).ToHashSet();
+			var cells = m.AllCells.Where(c => m.Contains(c) &&
+				(!info.AllowedTerrainTypes.Contains(m.GetTerrainInfo(c).Type) ||
+				mapRamp[c] != 0)).ToHashSet();
 
 			palette = wr.Palette(info.Palette);
 
@@ -84,10 +89,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		void UpdateTerrainCell(CPos cell)
 		{
-			if (!world.Map.Contains(cell))
+			var map = world.Map;
+
+			if (!map.Contains(cell))
 				return;
 
-			var buildableSprite = !info.AllowedTerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type) || world.Map.Ramp[cell] != 0 ? disabledSprite : null;
+			var buildableSprite = !info.AllowedTerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type) ||
+				((IMapElevation)map).Ramp[cell] != 0 ? disabledSprite : null;
 			render.Update(cell, buildableSprite, palette, disabledSpriteScale, info.Alpha);
 		}
 

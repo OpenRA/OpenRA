@@ -89,8 +89,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var targetDelta = self.World.Map.CellContaining(order.Target.CenterPosition) - order.ExtraLocation;
 			foreach (var target in UnitsInRange(order.ExtraLocation))
 			{
-				var cs = target.TraitsImplementing<Chronoshiftable>()
-					.FirstEnabledConditionalTraitOrDefault();
+				var cs = target.TraitsImplementing<Chronoshiftable>().FirstEnabledConditionalTraitOrDefault();
 
 				if (cs == null)
 					continue;
@@ -129,11 +128,12 @@ namespace OpenRA.Mods.Cnc.Traits
 				{
 					var a = se.Current;
 					var b = de.Current;
+					var map = Self.World.Map;
 
 					if (!Self.Owner.Shroud.IsExplored(a) || !Self.Owner.Shroud.IsExplored(b))
 						return false;
 
-					if (Self.World.Map.GetTerrainIndex(a) != Self.World.Map.GetTerrainIndex(b))
+					if (map.GetTerrainIndex(a) != map.GetTerrainIndex(b))
 						return false;
 				}
 
@@ -302,6 +302,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
 				var palette = wr.Palette(power.Info.IconPalette);
+				var wrMapCell = wr.World.Map;
 
 				// Destination tiles
 				var delta = xy - sourceLocation;
@@ -310,7 +311,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					var isValid = manager.Self.Owner.Shroud.IsExplored(t + delta);
 					var tile = isValid ? validTile : invalidTile;
 					var alpha = isValid ? validAlpha : invalidAlpha;
-					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t + delta), WVec.Zero, -511, palette, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+					yield return new SpriteRenderable(tile, wrMapCell.CenterOfCell(t + delta), WVec.Zero, -511, palette, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 				}
 
 				// Unit previews
@@ -323,10 +324,11 @@ namespace OpenRA.Mods.Cnc.Traits
 							unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell);
 						var tile = canEnter ? validTile : invalidTile;
 						var alpha = canEnter ? validAlpha : invalidAlpha;
-						yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(targetCell), WVec.Zero, -511, palette, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
+						yield return new SpriteRenderable(tile, wrMapCell.CenterOfCell(targetCell), WVec.Zero, -511, palette, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
 					}
 
-					var offset = world.Map.CenterOfCell(xy) - world.Map.CenterOfCell(sourceLocation);
+					var map = world.Map;
+					var offset = map.CenterOfCell(xy) - map.CenterOfCell(sourceLocation);
 					if (unit.CanBeViewedByPlayer(manager.Self.Owner))
 						foreach (var r in unit.Render(wr))
 							yield return r.OffsetBy(offset);

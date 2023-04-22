@@ -150,7 +150,9 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Display a text message at the specified location.")]
 		public void FloatingText(string text, WPos position, int duration = 30, Color? color = null)
 		{
-			if (string.IsNullOrEmpty(text) || !world.Map.Contains(world.Map.CellContaining(position)))
+			var map = world.Map;
+
+			if (string.IsNullOrEmpty(text) || !map.Contains(map.CellContaining(position)))
 				return;
 
 			var c = color ?? Color.White;

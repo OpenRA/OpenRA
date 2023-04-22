@@ -15,7 +15,7 @@ using OpenRA.Graphics;
 namespace OpenRA.Mods.Common.Lint
 {
 	public interface ILintPass { void Run(Action<string> emitError, Action<string> emitWarning, ModData modData); }
-	public interface ILintMapPass { void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map); }
+	public interface ILintMapPass { void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, IMap map); }
 	public interface ILintRulesPass { void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules); }
 	public interface ILintSequencesPass { void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Ruleset rules, SequenceSet sequences); }
 }

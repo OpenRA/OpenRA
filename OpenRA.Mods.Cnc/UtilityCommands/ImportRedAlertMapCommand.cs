@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 			for (var j = 0; j < MapSize; j++)
 				for (var i = 0; i < MapSize; i++)
-					Map.Tiles[new CPos(i, j)] = new TerrainTile(types[i, j], ms.ReadUInt8());
+					((IMapTiles)Map).Tiles[new CPos(i, j)] = new TerrainTile(types[i, j], ms.ReadUInt8());
 		}
 
 		static readonly string[] OverlayActors = new string[]
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 						res = OverlayResourceMapping[RedAlertOverlayNames[o]];
 
 					var cell = new CPos(i, j);
-					Map.Resources[cell] = new ResourceTile(res.Type, res.Index);
+					((IMapResource)Map).Resources[cell] = new ResourceTile(res.Type, res.Index);
 
 					if (o != 255 && OverlayActors.Contains(RedAlertOverlayNames[o]))
 					{
@@ -238,7 +238,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		public override void ReadActors(IniFile file)
 		{
 			base.ReadActors(file);
-			LoadActors(file, "SHIPS", Players, Map);
+			LoadActors(file, "SHIPS", Players, (IMap)Map);
 		}
 
 		public override void SaveWaypoint(int waypointNumber, ActorReference waypointReference)

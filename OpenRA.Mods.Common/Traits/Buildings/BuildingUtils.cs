@@ -18,7 +18,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public static bool IsCellBuildable(this World world, CPos cell, ActorInfo ai, BuildingInfo bi, Actor toIgnore = null)
 		{
-			if (!world.Map.Contains(cell))
+			var map = world.Map;
+
+			if (!map.Contains(cell))
 				return false;
 
 			if (!bi.AllowInvalidPlacement)
@@ -76,7 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Buildings can never be placed on ramps
-			return world.Map.Ramp[cell] == 0 && bi.TerrainTypes.Contains(world.Map.GetTerrainInfo(cell).Type);
+			return ((IMapElevation)map).Ramp[cell] == 0 && bi.TerrainTypes.Contains(map.GetTerrainInfo(cell).Type);
 		}
 
 		public static bool CanPlaceBuilding(this World world, CPos cell, ActorInfo ai, BuildingInfo bi, Actor toIgnore)
