@@ -7,12 +7,12 @@ World:
 		Briefing: The last of the Soviet's Siberian forces have wandered out onto the ice wastes, where they've established a base. Finish off their fortifications so our Allied forces will have no trouble moving through this area on their way to Moscow.\n\nThe mission is complete when all Soviet forces and structures are destroyed.
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
-		Description: The difficulty of the mission
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 
 Player:

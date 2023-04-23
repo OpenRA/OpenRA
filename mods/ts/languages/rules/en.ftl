@@ -19,3 +19,6 @@ options-starting-units =
 dropdown-map-creeps =
     .label = Creep Actors
     .description = Hostile forces spawn on the battlefield
+
+options-difficulty =
+    .normal = Normal

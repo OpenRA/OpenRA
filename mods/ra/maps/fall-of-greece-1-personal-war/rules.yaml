@@ -7,11 +7,11 @@ World:
 		Briefing: With the fighting fast approaching Athens, Stavros has insisted that he be allowed to survey the damage in his own hometown in Greece.\n\nYou must escort Stavros through the town and to a nearby friendly outpost. Once you reach it, evacuate Stavros to safety.\n\nIf anything should happen, get Stavros to safety any way possible. He must be kept alive.
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
-		Description: The difficulty of the mission
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			normal: Normal
-			hard: Hard
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 
 INSERTIONDROP:

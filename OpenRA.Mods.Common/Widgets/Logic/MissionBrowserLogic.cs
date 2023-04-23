@@ -43,6 +43,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string CantPlayCancel = "dialog-cant-play-video.cancel";
 
+		[TranslationReference]
+		const string DifficultyNormal = "options-difficulty.normal";
+
 		readonly ModData modData;
 		readonly Action onStart;
 		readonly ScrollPanelWidget descriptionPanel;
@@ -286,14 +289,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (difficultyButton != null)
 			{
-				var difficultyName = new CachedTransform<string, string>(id => id == null || !difficulties.ContainsKey(id) ? "Normal" : difficulties[id]);
+				var difficultyName = new CachedTransform<string, string>(id => preview.GetLocalisedString(
+					id == null || !difficulties.ContainsKey(id) ? DifficultyNormal : difficulties[id]));
+
 				difficultyButton.IsDisabled = () => difficultyDisabled;
 				difficultyButton.GetText = () => difficultyName.Update(difficulty);
 				difficultyButton.OnMouseDown = _ =>
 				{
 					var options = difficulties.Select(kv => new DropDownOption
 					{
-						Title = kv.Value,
+						Title = preview.GetLocalisedString(kv.Value),
 						IsSelected = () => difficulty == kv.Key,
 						OnClick = () => difficulty = kv.Key
 					});
