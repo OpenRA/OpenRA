@@ -150,7 +150,8 @@ namespace OpenRA
 				}
 				catch (Exception e)
 				{
-					Log.Write("debug", "Failed to load rules for `{0}` with error: {1}", Title, e.Message);
+					Log.Write("debug", $"Failed to load rules for `{Title}` with error:");
+					Log.Write("debug", e);
 				}
 
 				WorldActorInfo = modData.DefaultRules.Actors[SystemActors.World];
@@ -463,7 +464,8 @@ namespace OpenRA
 						}
 						catch (Exception e)
 						{
-							Log.Write("debug", "Failed parsing mapserver minimap response: {0}", e);
+							Log.Write("debug", "Failed parsing mapserver minimap response:");
+							Log.Write("debug", e);
 							newData.Preview = null;
 						}
 					}
@@ -477,7 +479,8 @@ namespace OpenRA
 				}
 				catch (Exception e)
 				{
-					Log.Write("debug", "Failed parsing mapserver response: {0}", e);
+					Log.Write("debug", "Failed parsing mapserver response:");
+					Log.Write("debug", e);
 				}
 
 				// Commit updated data before running the callbacks
@@ -544,7 +547,7 @@ namespace OpenRA
 					await response.ReadAsStreamWithProgress(fileStream, OnDownloadProgress, CancellationToken.None);
 
 					mapInstallPackage.Update(mapFilename, fileStream.ToArray());
-					Log.Write("debug", "Downloaded map to '{0}'", mapFilename);
+					Log.Write("debug", $"Downloaded map to '{mapFilename}'");
 
 					var package = mapInstallPackage.OpenPackage(mapFilename, modData.ModFiles);
 					if (package == null)
@@ -557,7 +560,8 @@ namespace OpenRA
 				}
 				catch (Exception e)
 				{
-					Log.Write("debug", "Map installation failed with error: {0}", e);
+					Log.Write("debug", "Map installation failed with error:");
+					Log.Write("debug", e);
 					innerData.Status = MapStatus.DownloadError;
 				}
 			});
