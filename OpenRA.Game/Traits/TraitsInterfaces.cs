@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.FileSystem;
 using OpenRA.GameRules;
@@ -551,7 +552,7 @@ namespace OpenRA.Traits
 			Description = map.GetLocalisedString(description);
 			IsVisible = visible;
 			DisplayOrder = displayorder;
-			Values = values;
+			Values = values.ToDictionary(v => v.Key, v => map.GetLocalisedString(v.Value));
 			DefaultValue = defaultValue;
 			IsLocked = locked;
 		}

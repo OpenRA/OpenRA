@@ -469,4 +469,4 @@ Sequences: sequences.yaml
 
 Music: music.yaml
 
-Translations: ra|languages/lua/en.ftl
+Translations: ra|languages/lua/en.ftl, languages/en.ftl

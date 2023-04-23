@@ -7,12 +7,12 @@ World:
 		Briefing: Soviet activity in Siberia is increasing. A large shipment of atomic material is on its way through this area, and we need it stopped. Destroy all of the Soviet convoy trucks and prevent the Soviets from furthering their atomic testing.\n\nBe careful of the convoy truck cargo -- atomic material is highly unstable.\n\nThe mission is complete when all the convoy trucks from each convoy have been destroyed.
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
-		Description: The difficulty of the mission
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 
 Player:

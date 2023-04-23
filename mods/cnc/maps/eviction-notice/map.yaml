@@ -646,4 +646,4 @@ Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|r
 
 Weapons: weapons.yaml
 
-Translations: cnc|languages/lua/en.ftl
+Translations: cnc|languages/lua/en.ftl, cnc|languages/difficulties/en.ftl

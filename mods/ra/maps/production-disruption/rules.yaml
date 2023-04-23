@@ -7,11 +7,12 @@ World:
 		Briefing: The Soviets are beginning construction of a new class of submarine capable of launching sea-to-ground missiles. We don't have to tell you the amount of devestation these could cause.\n\nTake a small squad of troops and infiltrate their power grid. When it is down, additional reinforcements will be sent in.  When ready, head north and destroy their Sub pen, preventing further construction of these subs.\n\nIf any are built, they must not be allowed to escape!
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
-		Description: The difficulty of the mission
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 
 CHALK1:

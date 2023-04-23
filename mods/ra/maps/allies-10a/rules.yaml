@@ -8,11 +8,12 @@ World:
 		Briefing: Kosygin has indicated that this is the site of Stalin's main atomic weapons plant. Use extreme care in approaching the Soviet base -- we don't know if any atomic bombs are armed yet. Take the facility off-line and then destroy any atomic weapons that exist.
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 	TimeLimitManager:
 		SkipTimerExpiredNotification: true

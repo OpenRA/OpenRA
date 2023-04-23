@@ -23,3 +23,6 @@ options-starting-units =
     .mcv-only = MCV Only
     .light-support = Light Support
     .heavy-support = Heavy Support
+
+options-difficulty =
+    .normal = Normal

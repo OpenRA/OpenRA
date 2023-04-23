@@ -11,12 +11,12 @@ World:
 		Briefing: Soviet forces are moving into rural Athens, threatening the civilian population. Evacuate civilians from each of the four towns to the island in the northeast. \n\nThe civilians are hiding in the town churches, and will only come out when you enter the town. Get in, get them out of the town, and to the island.\n\nThe civilians are your primary objective here -- removing the Soviet threat is optional.
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
-		Label: Difficulty
-		Description: The difficulty of the mission
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
 		Values:
-			easy: Easy
-			normal: Normal
-			hard: Hard
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
 		Default: normal
 
 PARADROP:

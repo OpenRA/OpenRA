@@ -1212,4 +1212,4 @@ Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/c
 
 Weapons: weapons.yaml
 
-Translations: ra|languages/lua/en.ftl
+Translations: ra|languages/lua/en.ftl, ra|languages/difficulties/en.ftl
