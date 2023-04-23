@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns true if this is a shellmap and the player has paused animations.")]
 		public bool IsPausedShellmap => Context.World.Type == WorldType.Shellmap && gameSettings.PauseShellmap;
 
-		[Desc("Returns the value of a `ScriptLobbyDropdown` selected in the game lobby.")]
+		[Desc("Returns the value of a `" + nameof(ScriptLobbyDropdown) + "` selected in the game lobby.")]
 		public LuaValue LobbyOption(string id)
 		{
 			var option = Context.World.WorldActor.TraitsImplementing<ScriptLobbyDropdown>()
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 			if (option == null)
 			{
-				Log.Write("lua", "A ScriptLobbyDropdown with ID `" + id + "` was not found.");
+				Log.Write("lua", $"A {nameof(ScriptLobbyDropdown)} with ID `{id}` was not found.");
 				return null;
 			}
 
