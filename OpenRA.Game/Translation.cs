@@ -20,6 +20,7 @@ using Linguini.Shared.Types.Bundle;
 using Linguini.Syntax.Parser;
 using Linguini.Syntax.Parser.Error;
 using OpenRA.FileSystem;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -27,12 +28,18 @@ namespace OpenRA
 	public sealed class TranslationReferenceAttribute : Attribute
 	{
 		public readonly string[] RequiredVariableNames;
+		public readonly LintDictionaryReference DictionaryReference;
 
 		public TranslationReferenceAttribute() { }
 
 		public TranslationReferenceAttribute(params string[] requiredVariableNames)
 		{
 			RequiredVariableNames = requiredVariableNames;
+		}
+
+		public TranslationReferenceAttribute(LintDictionaryReference dictionaryReference = LintDictionaryReference.None)
+		{
+			DictionaryReference = dictionaryReference;
 		}
 	}
 

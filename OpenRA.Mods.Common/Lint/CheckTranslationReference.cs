@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Lint
 						if (translationReference == null)
 							continue;
 
-						var keys = LintExts.GetFieldValues(traitInfo, field);
+						var keys = LintExts.GetFieldValues(traitInfo, field, translationReference.DictionaryReference);
 						foreach (var key in keys)
 						{
 							if (referencedKeys.Contains(key))
@@ -103,11 +103,14 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var fieldInfo in modType.GetFields(Binding).Where(m => Utility.HasAttribute<TranslationReferenceAttribute>(m)))
 				{
-					if (fieldInfo.FieldType != typeof(string))
-						emitError($"Translation attribute on non string field {fieldInfo.Name}.");
-
 					if (fieldInfo.IsInitOnly)
 						continue;
+
+					if (fieldInfo.FieldType != typeof(string))
+					{
+						emitError($"Translation attribute on non string field {fieldInfo.Name}.");
+						continue;
+					}
 
 					var key = (string)fieldInfo.GetValue(string.Empty);
 					if (referencedKeys.Contains(key))
