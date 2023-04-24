@@ -25,7 +25,6 @@ Background@CONNECTIONFAILED_PANEL:
 			Y: 76
 			Width: PARENT_RIGHT
 			Height: 25
-			Text: ServerError
 			Align: Center
 			Font: Bold
 		Label@PASSWORD_LABEL:
