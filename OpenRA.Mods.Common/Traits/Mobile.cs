@@ -177,6 +177,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly bool returnToCellOnCreation;
 		readonly bool returnToCellOnCreationRecalculateSubCell = true;
 		readonly int creationActivityDelay;
+		readonly CPos[] creationRallypoint;
 
 		#region IMove CurrentMovementTypes
 		MovementType movementTypes;
@@ -298,6 +299,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			creationActivityDelay = init.GetValue<CreationActivityDelayInit, int>(0);
+			creationRallypoint = init.GetOrDefault<RallyPointInit>()?.Value;
 		}
 
 		protected override void Created(Actor self)
@@ -967,9 +969,38 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		public class LeaveProductionActivity : Activity
+		{
+			readonly Mobile mobile;
+			readonly int delay;
+			readonly CPos[] rallyPoint;
+			readonly ReturnToCellActivity returnToCell;
+
+			public LeaveProductionActivity(Actor self, int delay, CPos[] rallyPoint, ReturnToCellActivity returnToCell)
+			{
+				mobile = self.Trait<Mobile>();
+				IsInterruptible = false;
+				this.delay = delay;
+				this.rallyPoint = rallyPoint;
+				this.returnToCell = returnToCell;
+			}
+
+			protected override void OnFirstRun(Actor self)
+			{
+				if (returnToCell != null)
+					self.QueueActivity(returnToCell);
+				else if (delay > 0)
+					self.QueueActivity(new Wait(delay));
+
+				if (rallyPoint != null)
+					foreach (var cell in rallyPoint)
+						self.QueueActivity(new AttackMoveActivity(self, () => mobile.MoveTo(cell, 1, evaluateNearestMovableCell: true, targetLineColor: Color.OrangeRed)));
+			}
+		}
+
 		Activity ICreationActivity.GetCreationActivity()
 		{
-			return returnToCellOnCreation ? new ReturnToCellActivity(self, creationActivityDelay, returnToCellOnCreationRecalculateSubCell) : null;
+			return new LeaveProductionActivity(self, creationActivityDelay, creationRallypoint, returnToCellOnCreation ? new ReturnToCellActivity(self, creationActivityDelay, returnToCellOnCreationRecalculateSubCell) : null);
 		}
 
 		sealed class MoveOrderTargeter : IOrderTargeter

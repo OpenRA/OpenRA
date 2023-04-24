@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using OpenRA.Mods.Common.Activities;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -82,18 +81,15 @@ namespace OpenRA.Mods.Common.Traits
 				td.Add(new CenterPositionInit(spawn));
 				td.Add(new FacingInit(initialFacing));
 				if (exitinfo != null)
+				{
 					td.Add(new CreationActivityDelayInit(exitinfo.ExitDelay));
+					td.Add(new RallyPointInit(exitLocations.ToArray()));
+				}
 			}
 
 			self.World.AddFrameEndTask(w =>
 			{
 				var newUnit = self.World.CreateActor(producee.Name, td);
-
-				var move = newUnit.TraitOrDefault<IMove>();
-				if (exitinfo != null && move != null)
-					foreach (var cell in exitLocations)
-						newUnit.QueueActivity(new AttackMoveActivity(newUnit, () => move.MoveTo(cell, 1, evaluateNearestMovableCell: true, targetLineColor: Color.OrangeRed)));
-
 				if (!self.IsDead)
 					foreach (var t in self.TraitsImplementing<INotifyProduction>())
 						t.UnitProduced(self, newUnit, exit);
@@ -142,5 +138,11 @@ namespace OpenRA.Mods.Common.Traits
 			return mobileInfo == null ||
 				mobileInfo.CanEnterCell(self.World, self, self.Location + s.ExitCell, ignoreActor: self);
 		}
+	}
+
+	public class RallyPointInit : ValueActorInit<CPos[]>, ISingleInstanceInit
+	{
+		public RallyPointInit(CPos[] value)
+			: base(value) { }
 	}
 }
