@@ -425,3 +425,37 @@ JUGG:
 		ArmamentNames: deployed
 	Selectable:
 		DecorationBounds: 1448, 2413, 0, -482
+
+MOBILEMP:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@selection: ^SelectableSupportUnit
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 130
+		Prerequisites: ~gaweap, napuls, ~techlevel.superweapons
+		Description: Fires a pulse blast which disables\nall mechanical units in the area.
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Mobile EMP Cannon
+	Health:
+		HP: 80000
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 85
+	WithVoxelBody:
+		Offset: 0,0,-256
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 6c0
+		MaxHeightDelta: 3
+	GrantConditionOnDeployWithCharge:
+		Voice: Move
+		ChargeDuration: 750
+		DeployedCondition: deployed
+		PauseOnCondition: empdisable
+	FireWarheads:
+		Weapons: MEMPulse
+		RequiresCondition: deployed && !empdisable

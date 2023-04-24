@@ -42,6 +42,9 @@ NAPULS:
 			nod: napuls.nod
 	ProvidesPrerequisite@gdi:
 		ResetOnOwnerChange: true
+	ProvidesPrerequisite@gdi:
+		Factions: gdi
+		Prerequisite: napuls
 	AttackOrderPower:
 		PauseOnCondition: empdisable || disabled
 		Cursor: emp

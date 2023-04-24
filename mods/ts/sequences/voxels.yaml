@@ -120,6 +120,9 @@ sonic:
 	idle:
 	turret: sonictur
 
+mobilemp:
+	idle: m_emp
+
 #truk: # TODO: unused
 #	idle:
 

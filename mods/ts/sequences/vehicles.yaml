@@ -338,6 +338,11 @@ smech:
 	icon:
 		Filename: smchicon.shp
 
+mobilemp:
+	Inherits: ^VehicleOverlays
+	icon:
+		Filename: mempicon.shp
+
 trucka:
 	Inherits: ^VehicleOverlays
 
