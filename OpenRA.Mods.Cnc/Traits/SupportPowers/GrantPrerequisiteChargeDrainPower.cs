@@ -183,19 +183,20 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			public override string IconOverlayTextOverride()
 			{
-				if (!Active)
-					return null;
-
-				var info = (GrantPrerequisiteChargeDrainPowerInfo)Info;
-				return active ? info.ActiveText : available ? info.AvailableText : null;
+				return GetTextOverride();
 			}
 
 			public override string TooltipTimeTextOverride()
 			{
-				if (!Active)
+				return GetTextOverride();
+			}
+
+			string GetTextOverride()
+			{
+				// NB: Info might return null if there are no instances
+				if (!Active || Info is not GrantPrerequisiteChargeDrainPowerInfo info)
 					return null;
 
-				var info = (GrantPrerequisiteChargeDrainPowerInfo)Info;
 				return active ? info.ActiveText : available ? info.AvailableText : null;
 			}
 		}
