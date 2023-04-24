@@ -1200,7 +1200,7 @@ palace:
 		SupportPowerPaletteOrder: 20
 	ProduceActorPower@saboteur:
 		Name: Recruit Saboteur
-		Description: Sneaky infantry, armed with explosives\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
+		Description: Sneaky infantry, armed with explosives.\nCan be deployed to become invisible for a limited time.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
 		Icon: saboteur
 		PauseOnCondition: disabled
 		RequiresCondition: ordos
