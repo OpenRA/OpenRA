@@ -127,3 +127,14 @@ EMPulseCannon:
 		Duration: 250
 		Condition: empdisable
 		ValidTargets: Ground, Water, Air, Underground
+
+MEMPulse:
+	Report: mobemp1.aud
+	Warhead@1Eff: CreateEffect
+		Explosions: pulse_explosion_small
+		ImpactActors: false
+	Warhead@emp: GrantExternalCondition
+		Range: 6c0
+		Duration: 250
+		Condition: empdisable
+		ValidTargets: Ground, Water, Air, Underground

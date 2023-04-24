@@ -212,6 +212,11 @@ explosion:
 		BlendMode: Additive
 		ZRamp: 1
 		Tick: 80
+	pulse_explosion_small:
+		Filename: mempfx.shp
+		BlendMode: Additive
+		ZRamp: 1
+		Tick: 11
 	small_watersplash:
 		Filename: h2o_exp2.shp
 		IgnoreWorldTint: False
