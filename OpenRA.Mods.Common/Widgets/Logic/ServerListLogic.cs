@@ -331,12 +331,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (mapTitle != null)
 			{
 				var font = Game.Renderer.Fonts[mapTitle.Font];
-				var title = new CachedTransform<MapPreview, string>(m =>
+				var title = new CachedTransform<IMapCredentials, string>(credentials =>
 				{
-					var truncated = WidgetUtils.TruncateText(m.Title, mapTitle.Bounds.Width, font);
+					var truncated = WidgetUtils.TruncateText(credentials.Title, mapTitle.Bounds.Width, font);
 
-					if (m.Title != truncated)
-						mapTitle.GetTooltipText = () => m.Title;
+					if (credentials.Title != truncated)
+						mapTitle.GetTooltipText = () => credentials.Title;
 					else
 						mapTitle.GetTooltipText = null;
 

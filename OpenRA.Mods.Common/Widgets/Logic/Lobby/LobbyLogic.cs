@@ -830,7 +830,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (numberOfPlayers == slots && orderManager.LobbyInfo.GlobalSettings.AllowSpectators)
 				slots = numberOfPlayers + 1;
 
-			var details = map.Title + " - " + orderManager.LobbyInfo.GlobalSettings.ServerName;
+			var details = $"{(map as IMapCredentials)?.Title} - {orderManager.LobbyInfo.GlobalSettings.ServerName}";
 			if (updateDiscordStatus)
 			{
 				string secret = null;
@@ -866,7 +866,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Ui.CloseWindow();
 
 			var state = skirmishMode ? DiscordState.PlayingSkirmish : DiscordState.PlayingMultiplayer;
-			var details = map.Title + " - " + orderManager.LobbyInfo.GlobalSettings.ServerName;
+			var details = $"{(map as IMapCredentials)?.Title} - {orderManager.LobbyInfo.GlobalSettings.ServerName}";
 			DiscordService.UpdateStatus(state, details);
 
 			onStart();

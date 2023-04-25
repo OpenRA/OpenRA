@@ -61,7 +61,7 @@ namespace OpenRA
 		public readonly int mapformat;
 	}
 
-	public class MapPreview : IDisposable, IReadOnlyFileSystem
+	public class MapPreview : IDisposable, IMapCredentials, IReadOnlyFileSystem
 	{
 		/// <summary>Wrapper that enables map data to be replaced in an atomic fashion.</summary>
 		class InnerData
@@ -212,6 +212,12 @@ namespace OpenRA
 			return innerData.Translation?.GetString(key, args) ?? key;
 		}
 
+		public void SetCredentials(string title, string author)
+		{
+			innerData.Title = title;
+			innerData.Author = author;
+		}
+
 		Sprite minimap;
 		bool generatingMinimap;
 		public Sprite GetMinimap()
@@ -257,9 +263,7 @@ namespace OpenRA
 			innerData = new InnerData
 			{
 				MapFormat = 0,
-				Title = "Unknown Map",
 				Categories = new[] { "Unknown" },
-				Author = "Unknown Author",
 				TileSet = "unknown",
 				Players = null,
 				PlayerCount = 0,
@@ -271,6 +275,8 @@ namespace OpenRA
 				Class = MapClassification.Unknown,
 				Visibility = MapVisibility.Lobby,
 			};
+
+			SetCredentials("Unknown Map", "Unknown Author");
 		}
 
 		// For linting purposes only!
@@ -293,9 +299,7 @@ namespace OpenRA
 			innerData = new InnerData
 			{
 				MapFormat = map.MapFormat,
-				Title = map.Title,
 				Categories = map.Categories,
-				Author = map.Author,
 				TileSet = map.Tileset,
 				Players = mapPlayers,
 				PlayerCount = mapPlayers.Players.Count(x => x.Value.Playable),
@@ -307,6 +311,9 @@ namespace OpenRA
 				Class = MapClassification.Unknown,
 				Visibility = map.Visibility,
 			};
+
+			if (map is IMapCredentials credentials)
+				SetCredentials(credentials.Title, credentials.Author);
 
 			innerData.SetCustomRules(modData, this, new Dictionary<string, MiniYaml>()
 			{
@@ -346,17 +353,11 @@ namespace OpenRA
 					throw new InvalidDataException($"Map format {format} is not supported.");
 			}
 
-			if (yaml.TryGetValue("Title", out temp))
-				newData.Title = temp.Value;
-
 			if (yaml.TryGetValue("Categories", out temp))
 				newData.Categories = FieldLoader.GetValue<string[]>("Categories", temp.Value);
 
 			if (yaml.TryGetValue("Tileset", out temp))
 				newData.TileSet = temp.Value;
-
-			if (yaml.TryGetValue("Author", out temp))
-				newData.Author = temp.Value;
 
 			if (yaml.TryGetValue("Bounds", out temp))
 				newData.Bounds = FieldLoader.GetValue<Rectangle>("Bounds", temp.Value);
@@ -421,6 +422,10 @@ namespace OpenRA
 
 			// Assign the new data atomically
 			innerData = newData;
+
+			yaml.TryGetValue(nameof(IMapCredentials.Title), out var title);
+			yaml.TryGetValue(nameof(IMapCredentials.Author), out var author);
+			SetCredentials(title?.Value, author?.Value);
 		}
 
 		public void UpdateRemoteSearch(MapStatus status, MiniYaml yaml, Action<MapPreview> parseMetadata = null)
@@ -442,13 +447,13 @@ namespace OpenRA
 						return;
 					}
 
-					newData.Title = r.title;
 					newData.Categories = r.categories;
-					newData.Author = r.author;
 					newData.PlayerCount = r.players;
 					newData.Bounds = r.bounds;
 					newData.TileSet = r.tileset;
 					newData.MapFormat = r.mapformat;
+
+					SetCredentials(r.title, r.author);
 
 					var spawns = new CPos[r.spawnpoints.Length / 2];
 					for (var j = 0; j < r.spawnpoints.Length; j += 2)

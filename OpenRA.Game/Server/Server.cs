@@ -1338,7 +1338,7 @@ namespace OpenRA.Server
 					Mod = Game.ModData.Manifest.Id,
 					Version = Game.ModData.Manifest.Metadata.Version,
 					MapUid = Map.Uid,
-					MapTitle = Map.Title,
+					MapTitle = (Map as IMapCredentials)?.Title,
 					StartTimeUtc = DateTime.UtcNow,
 				};
 

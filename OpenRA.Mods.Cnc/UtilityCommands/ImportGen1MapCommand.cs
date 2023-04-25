@@ -72,10 +72,10 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 				Map = new Map(ModData, terrainInfo, MapSize, MapSize)
 				{
-					Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
-					Author = "Westwood Studios",
 					RequiresMod = ModData.Manifest.Id
 				};
+
+				(Map as IMapCredentials)?.SetCredentials(basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)), "Westwood Studios");
 
 				SetBounds(Map, mapSection);
 

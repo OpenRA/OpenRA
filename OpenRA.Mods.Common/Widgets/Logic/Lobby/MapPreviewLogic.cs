@@ -230,12 +230,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				titleLabel.IsVisible = () => getMap().Map != MapCache.UnknownMap;
 				var font = Game.Renderer.Fonts[titleLabel.Font];
-				var title = new CachedTransform<MapPreview, string>(m =>
+				var title = new CachedTransform<IMapCredentials, string>(credentials =>
 				{
-					var truncated = WidgetUtils.TruncateText(m.Title, titleLabel.Bounds.Width, font);
+					var truncated = WidgetUtils.TruncateText(credentials.Title, titleLabel.Bounds.Width, font);
 
-					if (m.Title != truncated)
-						titleLabel.GetTooltipText = () => m.Title;
+					if (credentials.Title != truncated)
+						titleLabel.GetTooltipText = () => credentials.Title;
 					else
 						titleLabel.GetTooltipText = null;
 
@@ -255,8 +255,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (authorLabel != null)
 			{
 				var font = Game.Renderer.Fonts[authorLabel.Font];
-				var author = new CachedTransform<MapPreview, string>(
-					m => WidgetUtils.TruncateText(TranslationProvider.GetString(CreatedBy, Translation.Arguments("author", m.Author)), authorLabel.Bounds.Width, font));
+				var author = new CachedTransform<IMapCredentials, string>(
+					credentials => WidgetUtils.TruncateText(TranslationProvider.GetString(CreatedBy, Translation.Arguments("author", credentials?.Author)), authorLabel.Bounds.Width, font));
 				authorLabel.GetText = () => author.Update(getMap().Map);
 			}
 		}

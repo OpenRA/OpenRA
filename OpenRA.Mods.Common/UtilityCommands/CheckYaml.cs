@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 		void TestMap(Map map, ModData modData)
 		{
-			Console.WriteLine($"Testing map: {map.Title}");
+			Console.WriteLine($"Testing map: {(map as IMapCredentials)?.Title}");
 
 			// Lint tests can't be trusted if the map rules are bogus
 			// so report that problem then skip the tests

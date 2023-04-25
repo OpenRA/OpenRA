@@ -74,10 +74,10 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 			var map = new Map(Game.ModData, terrainInfo, mapCanvasSize.Width, mapCanvasSize.Height)
 			{
-				Title = basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)),
-				Author = "Westwood Studios",
 				RequiresMod = utility.ModData.Manifest.Id
 			};
+
+			(map as IMapCredentials)?.SetCredentials(basic.GetValue("Name", Path.GetFileNameWithoutExtension(filename)), "Westwood Studios");
 
 			var fullSize = new int2(iniSize[2], iniSize[3]);
 			ReadTiles(map, file, fullSize);

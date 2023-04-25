@@ -318,12 +318,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var maps = tabMaps[tab]
 				.Where(m => category == null || m.Categories.Contains(category))
-				.Where(m => mapFilter == null ||
-					(m.Title != null && m.Title.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0) ||
-					(m.Author != null && m.Author.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0) ||
-					m.PlayerCount == playerCountFilter)
+				.Where(m => mapFilter == null || m.PlayerCount == playerCountFilter || (m is IMapCredentials credentials &&
+					((credentials.Title != null && credentials.Title.Contains(mapFilter, StringComparison.OrdinalIgnoreCase)) ||
+					(credentials.Author != null && credentials.Author.Contains(mapFilter, StringComparison.OrdinalIgnoreCase)))))
 				.OrderBy(orderByFunc)
-				.ThenBy(m => m.Title);
+				.ThenBy(m => (m as IMapCredentials)?.Author);
 
 			scrollpanels[tab].RemoveChildren();
 			foreach (var loop in maps)
@@ -349,7 +348,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var titleLabel = item.Get<LabelWithTooltipWidget>("TITLE");
 				if (titleLabel != null)
 				{
-					WidgetUtils.TruncateLabelToTooltip(titleLabel, preview.Title);
+					WidgetUtils.TruncateLabelToTooltip(titleLabel, (preview as IMapCredentials)?.Title);
 				}
 
 				var previewWidget = item.Get<MapPreviewWidget>("PREVIEW");
@@ -368,8 +367,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				var authorWidget = item.GetOrNull<LabelWithTooltipWidget>("AUTHOR");
-				if (authorWidget != null && !string.IsNullOrEmpty(preview.Author))
-					WidgetUtils.TruncateLabelToTooltip(authorWidget, TranslationProvider.GetString(CreatedBy, Translation.Arguments("author", preview.Author)));
+				if (authorWidget != null && preview is IMapCredentials credentials && !string.IsNullOrEmpty(credentials.Author))
+					WidgetUtils.TruncateLabelToTooltip(authorWidget, TranslationProvider.GetString(CreatedBy, Translation.Arguments("author", credentials.Author)));
 
 				var sizeWidget = item.GetOrNull<LabelWidget>("SIZE");
 				if (sizeWidget != null)
@@ -419,7 +418,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ConfirmationDialogs.ButtonPrompt(modData,
 				title: DeleteMapTitle,
 				text: DeleteMapPrompt,
-				textArguments: Translation.Arguments("title", modData.MapCache[map].Title),
+				textArguments: Translation.Arguments("title", (modData.MapCache[map] as IMapCredentials)?.Title),
 				onConfirm: () =>
 				{
 					var newUid = DeleteMap(map);
