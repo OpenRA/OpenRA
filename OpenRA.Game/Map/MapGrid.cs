@@ -128,9 +128,13 @@ namespace OpenRA
 
 		internal readonly CVec[][] TilesByDistance;
 
+		public int TileScale { get; }
+
 		public MapGrid(MiniYaml yaml)
 		{
 			FieldLoader.Load(this, yaml);
+
+			TileScale = Type == MapGridType.RectangularIsometric ? 1448 : 1024;
 
 			// The default subcell index defaults to the middle entry
 			var defaultSubCellIndex = (byte)DefaultSubCell;

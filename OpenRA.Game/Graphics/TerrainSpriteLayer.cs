@@ -114,7 +114,7 @@ namespace OpenRA.Graphics
 			// transparent for isometric tiles
 			var tl = worldRenderer.TerrainLighting;
 			var pos = map.CenterOfCell(uv.ToCPos(map));
-			var step = map.Grid.Type == MapGridType.RectangularIsometric ? 724 : 512;
+			var step = map.Grid.TileScale / 2;
 			var weights = new[]
 			{
 				tl.TintAt(pos + new WVec(-step, -step, 0)),

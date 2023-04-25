@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			var grid = modData.Manifest.Get<MapGrid>();
 			var tileSize = grid.TileSize;
-			var tileScale = grid.Type == MapGridType.RectangularIsometric ? 1448 : 1024;
+			var tileScale = grid.TileScale;
 
 			foreach (var trait in traits)
 			{
