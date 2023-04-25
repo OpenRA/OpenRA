@@ -19,6 +19,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ServerCreationLogic : ChromeLogic
 	{
+		[TranslationReference("author")]
+		const string CreatedBy = "label-created-by";
+
 		[TranslationReference]
 		const string InternetServerNatA = "label-internet-server-nat-A";
 
@@ -122,7 +125,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var font = Game.Renderer.Fonts[authorLabel.Font];
 					var author = new CachedTransform<MapPreview, string>(
-						m => WidgetUtils.TruncateText($"Created by {m.Author}", authorLabel.Bounds.Width, font));
+						m => WidgetUtils.TruncateText(TranslationProvider.GetString(CreatedBy, Translation.Arguments("author", m.Author)), authorLabel.Bounds.Width, font));
 					authorLabel.GetText = () => author.Update(preview);
 				}
 			}
