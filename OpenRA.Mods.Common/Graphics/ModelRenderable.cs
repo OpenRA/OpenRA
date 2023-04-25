@@ -137,9 +137,7 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				var map = wr.World.Map;
 				var groundPos = model.Pos - new WVec(0, 0, map.DistanceAboveTerrain(model.Pos).Length);
-				var tileScale = map.Grid.Type == MapGridType.RectangularIsometric ? 1448f : 1024f;
-
-				var groundZ = map.Grid.TileSize.Height * (groundPos.Z - model.Pos.Z) / tileScale;
+				var groundZ = (float)map.Grid.TileSize.Height * (groundPos.Z - model.Pos.Z) / map.Grid.TileScale;
 				var pxOrigin = wr.Screen3DPosition(model.Pos);
 
 				// HACK: We don't have enough texture channels to pass the depth data to the shader

@@ -68,11 +68,11 @@ namespace OpenRA.Mods.Common.Traits
 			map = world.Map;
 			globalTint = new float3(info.RedTint, info.GreenTint, info.BlueTint);
 
-			var cellSize = map.Grid.Type == MapGridType.RectangularIsometric ? 1448 : 1024;
+			var tileScale = map.Grid.TileScale;
 			partitionedLightSources = new SpatiallyPartitioned<LightSource>(
-				(map.MapSize.X + 1) * cellSize,
-				(map.MapSize.Y + 1) * cellSize,
-				info.BinSize * cellSize);
+				(map.MapSize.X + 1) * tileScale,
+				(map.MapSize.Y + 1) * tileScale,
+				info.BinSize * tileScale);
 		}
 
 		Rectangle Bounds(LightSource source)

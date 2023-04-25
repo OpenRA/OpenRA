@@ -32,8 +32,6 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			// As the map has not been created we need to get MapGrid info directly from manifest.
 			var grid = modData.Manifest.Get<MapGrid>();
-			var tileScale = grid.Type == MapGridType.RectangularIsometric ? 1448 : 1024;
-
 			foreach (var actorInfo in rules.Actors)
 			{
 				// Catch TypeDictionary errors.
@@ -43,10 +41,10 @@ namespace OpenRA.Mods.Common.Lint
 					if (interactable == null)
 						continue;
 
-					if (HasInvalidBounds(interactable.Bounds, grid.TileSize, tileScale))
+					if (HasInvalidBounds(interactable.Bounds, grid.TileSize, grid.TileScale))
 						emitError($"{nameof(interactable.Bounds)} of actor {actorInfo.Key} are empty or negative.");
 
-					if (HasInvalidBounds(interactable.DecorationBounds, grid.TileSize, tileScale))
+					if (HasInvalidBounds(interactable.DecorationBounds, grid.TileSize, grid.TileScale))
 						emitError($"{nameof(interactable.DecorationBounds)} of actor {actorInfo.Key} are empty or negative.");
 				}
 				catch (InvalidOperationException e)
