@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var li in locomotorInfos)
 				foreach (var otherLocomotor in locomotorInfos)
 					if (li != otherLocomotor && li.Name == otherLocomotor.Name)
-						emitError($"There is more than one Locomotor with name `{li.Name}`.");
+						emitError($"More than one Locomotor exists with the name `{li.Name}`.");
 
 			foreach (var actorInfo in rules.Actors)
 			{

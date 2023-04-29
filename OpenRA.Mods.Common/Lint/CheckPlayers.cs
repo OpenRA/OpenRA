@@ -50,11 +50,11 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var ally in player.Allies)
 					if (!playerNames.Contains(ally))
-						emitError($"Allies contains player `{ally}` that is not in list.");
+						emitError($"The player `{player.Name}` allies list contains an invalid player `{ally}`.");
 
 				foreach (var enemy in player.Enemies)
 					if (!playerNames.Contains(enemy))
-						emitError($"Enemies contains player `{enemy}` that is not in list.");
+						emitError($"The player `{player.Name}` enemy list contains an invalid player `{enemy}`.");
 
 				if (player.Playable)
 					playablePlayerFound = true;
