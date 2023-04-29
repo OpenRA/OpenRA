@@ -32,10 +32,10 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			var providedPrereqs = rules.Actors.SelectMany(a => a.Value.TraitInfos<ITechTreePrerequisiteInfo>().SelectMany(p => p.Prerequisites(a.Value)));
 
-			// TODO: this check is case insensitive while the real check in-game is not
+			// TODO: this check is case insensitive while the real check in-game is not.
 			foreach (var actorInfo in rules.Actors)
 			{
-				// Catch TypeDictionary errors
+				// Catch TypeDictionary errors.
 				try
 				{
 					var bi = actorInfo.Value.TraitInfoOrDefault<BuildableInfo>();

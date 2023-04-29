@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Lint
 
 		void Run(Action<string> emitError, List<MiniYamlNode> nodes)
 		{
-			// Build a list of all inheritance relationships
+			// Build a list of all inheritance relationships.
 			var inheritsMap = new Dictionary<string, List<string>>();
 			foreach (var actorNode in nodes)
 			{
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Lint
 			var toResolve = new Queue<string>(inheritsMap.Keys.Where(k => string.Equals(k, actor, StringComparison.InvariantCultureIgnoreCase)));
 			while (toResolve.TryDequeue(out var key))
 			{
-				// Missing keys are a fatal merge error, so will have already been reported by other lint checks
+				// Missing keys are a fatal merge error, so will have already been reported by other lint checks.
 				if (!inheritsMap.TryGetValue(key, out var inherits))
 					continue;
 
