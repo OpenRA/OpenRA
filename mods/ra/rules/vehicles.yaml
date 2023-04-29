@@ -426,7 +426,7 @@ JEEP:
 		Type: Light
 	Mobile:
 		TurnSpeed: 40
-		Speed: 160
+		Speed: 164
 		PauseOnCondition: notmobile || being-captured
 	RevealsShroud:
 		MinRange: 4c0

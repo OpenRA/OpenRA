@@ -77,7 +77,7 @@ MIG:
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 10000
+		HP: 8000
 	RevealsShroud:
 		MinRange: 11c0
 		Range: 13c0
