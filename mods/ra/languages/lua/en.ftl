@@ -164,10 +164,12 @@ medic = Medic
 get-scientists-evacuation-point = Commander, we're detecting Soviet transports headed your way. Get those scientists back to the extraction point in the southeast!
 landcom-16-capitalized = LANDCOM 16
 scientists-killed-in-command-center = The scientists were in the Command Center!
-too-late = We're too late!
 chronosphere-explodes-in = Chronosphere explodes in { $time }
 rescue-scientists-extraction-point = Rescue the scientists and escort them back to the
     extraction point.
+
+## in-the-nick-of-time, situation-critical
+too-late = We're too late!
 
 ## infiltration
 secure-laboratory-guards = Secure the laboratory by eliminating its guards.
@@ -196,7 +198,7 @@ super-tanks-destroyed = The super tanks are destroyed!
 eliminate-super-tanks = Eliminate these super tanks.
 steal-money-outpost = Steal money from the nearby outpost with the Thief.
 cross-river = Secure transport to the mainland.
-find-outpost = Find our outpost and start repairs on it.
+find-outpost-and-repair = Find our outpost and start repairs on it.
 evacuate-civilian-hospital = Evacuate all civilians from the hospital.
 demitri-extracted-super-tanks-destroyed = Dr. Demitri has been extracted and the super tanks have been dealt with.
 
@@ -268,7 +270,6 @@ plans-stolen-erase-data = Plans stolen; erasing all data.
 software-update-failed-manual-targets = IFF software update failed. Require manual target input.
 volkov = Volkov
 missiles-launch-in = Missiles launch in { $time }
-too-late = We're too late!
 kill-power = Bring the base to low power. Volkov will arrive
     once the defenses are down.
 infiltrate-bio-weapons-lab-scientist = Infiltrate the bio-weapons lab with the scientist.
