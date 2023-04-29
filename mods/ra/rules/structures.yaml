@@ -396,7 +396,7 @@ SYRD:
 IRON:
 	Inherits: ^ScienceBuilding
 	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
-	Inherits@shape: ^2x1Shape
+	Inherits@shape: ^2x2Shape
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 130
@@ -408,11 +408,10 @@ IRON:
 	Tooltip:
 		Name: Iron Curtain
 	Building:
-		Footprint: xx
-		Dimensions: 2,1
+		Footprint: ++ xx
+		Dimensions: 2,2
 	Selectable:
-		Bounds: 2048, 1194, 0, 85
-		DecorationBounds: 2133, 2133, 0, -512
+		Bounds: 2048, 2133, 0, -170
 	Health:
 		HP: 100000
 	Armor:

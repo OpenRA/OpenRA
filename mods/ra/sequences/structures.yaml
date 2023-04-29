@@ -759,21 +759,21 @@ iron:
 	Defaults:
 		Filename: iron.shp
 	idle:
-		Offset: 0,-12
+		Offset: 0,-4
 	active:
 		Length: 11
-		Offset: 0,-12
+		Offset: 0,-4
 	damaged-idle:
 		Start: 11
-		Offset: 0,-12
+		Offset: 0,-4
 	damaged-active:
 		Start: 11
 		Length: 11
-		Offset: 0,-12
+		Offset: 0,-4
 	make:
 		Filename: ironmake.shp
 		Length: *
-		Offset: 0,-12
+		Offset: 0,-4
 	bib:
 		TilesetFilenames:
 			SNOW: mbIRON.sno
@@ -781,7 +781,7 @@ iron:
 			TEMPERAT: mbIRON.tem
 			DESERT: mbIRON.des
 		Length: *
-		Offset: 0,2
+		Offset: 0,-2
 	icon:
 		Filename: ironicon.shp
 
