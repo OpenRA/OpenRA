@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Lint
 			TestTraits(modData.DefaultRules, emitError, key =>
 			{
 				if (!translation.HasMessage(key))
-					emitError($"{key} not present in `{language}` translation.");
+					emitError($"`{key}` not present in `{language}` translation.");
 			});
 
 			var gameSpeeds = modData.Manifest.Get<GameSpeeds>();
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Lint
 
 					if (fieldInfo.FieldType != typeof(string))
 					{
-						emitError($"Translation attribute on non string field {fieldInfo.Name}.");
+						emitError($"Translation attribute on non string field `{fieldInfo.Name}`.");
 						continue;
 					}
 

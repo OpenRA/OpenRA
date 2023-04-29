@@ -64,12 +64,12 @@ namespace OpenRA.Mods.Common.Lint
 							if (isPlayerPalette)
 							{
 								if (!playerPalettes.Contains(reference))
-									emitError($"Undefined player palette reference {reference} detected at {traitInfo} for {actorInfo.Key}");
+									emitError($"Undefined player palette reference `{reference}` detected at `{traitInfo}` for `{actorInfo.Key}`");
 							}
 							else
 							{
 								if (!palettes.Contains(reference))
-									emitError($"Undefined palette reference {reference} detected at {traitInfo} for {actorInfo.Key}");
+									emitError($"Undefined palette reference `{reference}` detected at `{traitInfo}` for `{actorInfo.Key}`");
 							}
 						}
 					}
@@ -107,12 +107,12 @@ namespace OpenRA.Mods.Common.Lint
 						if (isPlayerPalette)
 						{
 							if (!playerPalettes.Contains(reference))
-								emitError($"Undefined player palette reference {reference} detected at weapon {weaponInfo.Key}.");
+								emitError($"Undefined player palette reference `{reference}` detected at weapon `{weaponInfo.Key}`.");
 						}
 						else
 						{
 							if (!palettes.Contains(reference))
-								emitError($"Undefined palette reference {reference} detected at weapon {weaponInfo.Key}.");
+								emitError($"Undefined palette reference `{reference}` detected at weapon `{weaponInfo.Key}`.");
 						}
 					}
 				}
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Lint
 
 		void GetPalettes(Ruleset rules, List<string> palettes, List<string> playerPalettes, Action<string> emitError)
 		{
-			// Palettes are only defined on the world actor
+			// Palettes are only defined on the world actor.
 			var worldActorInfo = rules.Actors[SystemActors.World];
 			var tilesetPalettes = new List<(string Tileset, string PaletteName)>();
 			foreach (var traitInfo in worldActorInfo.TraitInfos<TraitInfo>())
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Lint
 						if (paletteDefinition.IsPlayerPalette)
 						{
 							if (playerPalettes.Contains(value))
-								emitError($"Duplicate player palette definition for palette name {value}");
+								emitError($"Duplicate player palette definition for palette name `{value}`.");
 
 							playerPalettes.Add(value);
 						}
@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Lint
 							{
 								var tilesetPalette = (tilesetSpecificPaletteInfo.Tileset, value);
 								if (tilesetPalettes.Contains(tilesetPalette))
-									emitError($"Duplicate palette definition for palette name {value}");
+									emitError($"Duplicate palette definition for palette name `{value}`.");
 								else
 								{
 									tilesetPalettes.Add(tilesetPalette);
@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Common.Lint
 							else
 							{
 								if (palettes.Contains(value))
-									emitError($"Duplicate palette definition for palette name {value}");
+									emitError($"Duplicate palette definition for palette name `{value}`.");
 
 								palettes.Add(value);
 							}

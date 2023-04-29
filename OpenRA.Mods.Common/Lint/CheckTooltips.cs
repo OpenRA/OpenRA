@@ -41,11 +41,11 @@ namespace OpenRA.Mods.Common.Lint
 
 					var tooltip = actorInfo.Value.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
 					if (tooltip == null)
-						emitError("The following buildable actor has no (enabled) Tooltip: " + actorInfo.Key);
+						emitError($"The following buildable actor has no (enabled) Tooltip: `{actorInfo.Key}`.");
 				}
 				catch (InvalidOperationException e)
 				{
-					emitError($"{e.Message} (Actor type `{actorInfo.Key}`)");
+					emitError($"{e.Message} (Actor type `{actorInfo.Key}`).");
 				}
 			}
 		}

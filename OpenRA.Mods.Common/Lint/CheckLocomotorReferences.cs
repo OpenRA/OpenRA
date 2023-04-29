@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var li in locomotorInfos)
 				foreach (var otherLocomotor in locomotorInfos)
 					if (li != otherLocomotor && li.Name == otherLocomotor.Name)
-						emitError($"There is more than one Locomotor with name {li.Name}!");
+						emitError($"There is more than one Locomotor with name `{li.Name}`.");
 
 			foreach (var actorInfo in rules.Actors)
 			{
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Lint
 		void CheckLocomotors(ActorInfo actorInfo, Action<string> emitError, LocomotorInfo[] locomotorInfos, string locomotor)
 		{
 			if (!locomotorInfos.Any(l => l.Name == locomotor))
-				emitError($"Actor {actorInfo.Name} defines Locomotor {locomotor} not found on World actor.");
+				emitError($"Actor `{actorInfo.Name}` defines Locomotor `{locomotor}` not found on World actor.");
 		}
 	}
 }

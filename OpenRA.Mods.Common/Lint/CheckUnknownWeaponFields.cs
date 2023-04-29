@@ -55,10 +55,10 @@ namespace OpenRA.Mods.Common.Lint
 					if (field.Key.StartsWith("-", StringComparison.Ordinal))
 					{
 						if (field.Value.Nodes.Count > 0)
-							emitError($"{field.Location} {field.Key} defines child nodes, which is not valid for removals.");
+							emitError($"{field.Location} `{field.Key}` defines child nodes, which is not valid for removals.");
 
 						if (!string.IsNullOrEmpty(field.Value.Value))
-							emitError($"{field.Location} {field.Key} defines a value, which is not valid for removals.");
+							emitError($"{field.Location} `{field.Key}` defines a value, which is not valid for removals.");
 
 						continue;
 					}

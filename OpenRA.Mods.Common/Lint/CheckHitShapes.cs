@@ -42,11 +42,11 @@ namespace OpenRA.Mods.Common.Lint
 
 					var hitShapes = actorInfo.Value.TraitInfos<HitShapeInfo>();
 					if (!hitShapes.Any())
-						emitError($"Actor type `{actorInfo.Key}` has a Health trait but no HitShape trait!");
+						emitError($"Actor type `{actorInfo.Key}` has a Health trait but no HitShape trait.");
 				}
 				catch (InvalidOperationException e)
 				{
-					emitError($"{e.Message} (Actor type `{actorInfo.Key}`)");
+					emitError($"{e.Message} (Actor type `{actorInfo.Key}`).");
 				}
 			}
 		}
