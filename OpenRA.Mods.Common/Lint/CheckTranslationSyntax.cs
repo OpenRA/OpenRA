@@ -14,16 +14,30 @@ using System.Collections.Generic;
 using System.IO;
 using Linguini.Syntax.Ast;
 using Linguini.Syntax.Parser;
+using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckTranslationSyntax : ILintPass
+	class CheckTranslationSyntax : ILintPass, ILintMapPass
 	{
-		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
+		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
-			foreach (var file in modData.Manifest.Translations)
+			if (map.TranslationDefinitions == null)
+				return;
+
+			Run(emitError, emitWarning, map, FieldLoader.GetValue<string[]>("value", map.TranslationDefinitions.Value));
+		}
+
+		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
+		{
+			Run(emitError, emitWarning, modData.DefaultFileSystem, modData.Manifest.Translations);
+		}
+
+		static void Run(Action<string> emitError, Action<string> emitWarning, IReadOnlyFileSystem fileSystem, string[] translations)
+		{
+			foreach (var file in translations)
 			{
-				var stream = modData.DefaultFileSystem.Open(file);
+				var stream = fileSystem.Open(file);
 				using (var reader = new StreamReader(stream))
 				{
 					var ids = new List<string>();
