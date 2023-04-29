@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Lint
 
 							if (string.IsNullOrEmpty(type) || !rules.Notifications.TryGetValue(type.ToLowerInvariant(), out var soundInfo) ||
 								!soundInfo.Notifications.ContainsKey(notification))
-								emitError($"Undefined notification reference {type ?? "(null)"}.{notification} detected at {traitInfo.GetType().Name} for {actorInfo.Key}");
+								emitError($"Undefined notification reference `{type ?? "(null)"}.{notification}` detected at `{traitInfo.GetType().Name}` for `{actorInfo.Key}`.");
 						}
 					}
 				}

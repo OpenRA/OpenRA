@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Lint
 				"BooleanExpression", "IntegerExpression"
 			};
 
-			throw new InvalidOperationException($"Bad type for reference on {ruleInfo.GetType().Name}.{fieldInfo.Name}. Supported types: {supportedTypes.JoinWith(", ")}");
+			throw new InvalidOperationException($"Bad type for reference on `{ruleInfo.GetType().Name}.{fieldInfo.Name}`. Supported types: {supportedTypes.JoinWith(", ")}.");
 		}
 
 		public static IEnumerable<string> GetPropertyValues(object ruleInfo, PropertyInfo propertyInfo,
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Lint
 				"BooleanExpression", "IntegerExpression"
 			};
 
-			throw new InvalidOperationException($"Bad type for reference on {ruleInfo.GetType().Name}.{propertyInfo.Name}. Supported types: {supportedTypes.JoinWith(", ")}");
+			throw new InvalidOperationException($"Bad type for reference on `{ruleInfo.GetType().Name}.{propertyInfo.Name}`. Supported types: {supportedTypes.JoinWith(", ")}.");
 		}
 	}
 }

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Lint
 				var wsbs = actorInfo.Value.TraitInfos<WithSpriteBodyInfo>();
 				foreach (var wsb in wsbs)
 					if (wsbs.Any(w => w != wsb && w.Name == wsb.Name))
-						emitError($"Actor type `{actorInfo.Key}` has more than one *SpriteBody with Name: {wsb.Name}!");
+						emitError($"Actor type `{actorInfo.Key}` has more than one *SpriteBody with Name: {wsb.Name}.");
 			}
 		}
 	}

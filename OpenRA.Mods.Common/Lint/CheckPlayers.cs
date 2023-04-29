@@ -50,11 +50,11 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var ally in player.Allies)
 					if (!playerNames.Contains(ally))
-						emitError($"Allies contains player {ally} that is not in list.");
+						emitError($"Allies contains player `{ally}` that is not in list.");
 
 				foreach (var enemy in player.Enemies)
 					if (!playerNames.Contains(enemy))
-						emitError($"Enemies contains player {enemy} that is not in list.");
+						emitError($"Enemies contains player `{enemy}` that is not in list.");
 
 				if (player.Playable)
 					playablePlayerFound = true;
@@ -63,15 +63,15 @@ namespace OpenRA.Mods.Common.Lint
 				{
 					worldOwnerFound = true;
 					if (player.Enemies.Length > 0 || player.Allies.Length > 0)
-						emitWarning($"The player {player.Name} owning the world should not have any allies or enemies.");
+						emitWarning($"The player `{player.Name}` owning the world should not have any allies or enemies.");
 
 					if (player.Playable)
-						emitError($"The player {player.Name} owning the world can't be playable.");
+						emitError($"The player `{player.Name}` owning the world can't be playable.");
 				}
 				else if (visibility == MapVisibility.MissionSelector && player.Playable && !player.LockFaction)
 				{
 					// Missions must lock the faction of the player to force the server to override the default Random faction
-					emitError($"The player {player.Name} must specify LockFaction: True.");
+					emitError($"The player `{player.Name}` must specify LockFaction: True.");
 				}
 			}
 
@@ -84,13 +84,13 @@ namespace OpenRA.Mods.Common.Lint
 			var factions = worldActorInfo.TraitInfos<FactionInfo>().Select(f => f.InternalName).ToHashSet();
 			foreach (var player in players.Players.Values)
 				if (!string.IsNullOrWhiteSpace(player.Faction) && !factions.Contains(player.Faction))
-					emitError($"Invalid faction {player.Faction} chosen for player {player.Name}.");
+					emitError($"Invalid faction `{player.Faction}` chosen for player `{player.Name}`.");
 
 			if (worldActorInfo.HasTraitInfo<MapStartingLocationsInfo>())
 			{
 				var playerCount = players.Players.Count(p => p.Value.Playable);
 				if (playerCount > spawnPoints.Length)
-					emitError($"The map allows {playerCount} possible players, but defines only {spawnPoints.Length} spawn points");
+					emitError($"The map allows {playerCount} possible players, but defines only {spawnPoints.Length} spawn points.");
 
 				if (spawnPoints.Distinct().Count() != spawnPoints.Length)
 					emitError("Duplicate spawn point locations detected.");

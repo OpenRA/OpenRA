@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Lint
 			var actorTypes = map.ActorDefinitions.Select(a => a.Value.Value);
 			foreach (var actor in actorTypes)
 				if (!map.Rules.Actors.Keys.Contains(actor.ToLowerInvariant()))
-					emitError($"Actor {actor} is not defined by any rule.");
+					emitError($"Actor `{actor}` is not defined by any rule.");
 		}
 	}
 }

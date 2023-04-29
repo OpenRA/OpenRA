@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Lint
 								if (string.IsNullOrEmpty(imageOverride))
 								{
 									if (!sequenceReference.AllowNullImage)
-										emitError($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` must define a value for `{sequenceReference.ImageReference}`");
+										emitError($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` must define a value for `{sequenceReference.ImageReference}`.");
 
 									continue;
 								}
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Lint
 					if (string.IsNullOrEmpty(image))
 					{
 						if (!sequenceReference.AllowNullImage)
-							emitError($"Weapon type `{weaponInfo.Key}` projectile field `{sequenceReference.ImageReference}` must define a value");
+							emitError($"Weapon type `{weaponInfo.Key}` projectile field `{sequenceReference.ImageReference}` must define a value.");
 
 						continue;
 					}

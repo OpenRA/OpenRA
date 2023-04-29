@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Lint
 					foreach (var entry in resource.Entries)
 					{
 						if (entry is Junk junk)
-							emitError($"{junk.GetId()}: {junk.AsStr()} in {file} {junk.Content}");
+							emitError($"{junk.GetId()}: {junk.AsStr()} in {file} {junk.Content}.");
 
 						if (entry is AstMessage message)
 						{

@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Lint
 		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
 			foreach (var kv in map.ReplacedInvalidTerrainTiles)
-				emitError($"Cell {kv.Key} references invalid terrain tile {kv.Value}.");
+				emitError($"Cell `{kv.Key}` references invalid terrain tile `{kv.Value}`.");
 		}
 	}
 }

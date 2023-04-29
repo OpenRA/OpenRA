@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.Lint
 					{
 						// Keys are valid if they refer to a named key or can be parsed as a regular Hotkey.
 						if (!namedKeys.Contains(node.Value.Value) && !Hotkey.TryParse(node.Value.Value, out var unused))
-							emitError($"{node.Location} refers to a Key named `{node.Value.Value}` that does not exist");
+							emitError($"{node.Location} refers to a Key named `{node.Value.Value}` that does not exist.");
 					}
 				}
 
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Lint
 
 					foreach (var name in keyNames)
 						if (!namedKeys.Contains(name) && !Hotkey.TryParse(name, out var unused))
-							emitError($"{node.Location} refers to a Key named `{name}` that does not exist");
+							emitError($"{node.Location} refers to a Key named `{name}` that does not exist.");
 				}
 
 				// Logic classes can declare the data key names that specify hotkeys.
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.Common.Lint
 					foreach (var n in node.Value.Nodes)
 						if (checkArgKeys.Contains(n.Key))
 							if (!namedKeys.Contains(n.Value.Value) && !Hotkey.TryParse(n.Value.Value, out var unused))
-								emitError($"{filename} {node.Value.Value}:{n.Key} refers to a Key named `{n.Value.Value}` that does not exist");
+								emitError($"{filename} {node.Value.Value}:{n.Key} refers to a Key named `{n.Value.Value}` that does not exist.");
 				}
 
 				if (node.Value.Nodes != null)

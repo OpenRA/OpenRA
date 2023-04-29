@@ -53,8 +53,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Log.AddChannel("perf", null);
 
 				// bind some nonfatal error handling into FieldLoader, so we don't just *explode*.
-				ObjectCreator.MissingTypeAction = s => EmitError($"Missing Type: {s}");
-				FieldLoader.UnknownFieldAction = (s, f) => EmitError($"FieldLoader: Missing field `{s}` on `{f.Name}`");
+				ObjectCreator.MissingTypeAction = s => EmitError($"Missing Type: {s}.");
+				FieldLoader.UnknownFieldAction = (s, f) => EmitError($"FieldLoader: Missing field `{s}` on `{f.Name}`.");
 
 				var maps = new List<(IReadWritePackage Package, string Map)>();
 				if (args.Length < 2)

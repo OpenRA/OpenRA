@@ -42,14 +42,14 @@ namespace OpenRA.Mods.Common.Lint
 						continue;
 
 					if (HasInvalidBounds(interactable.Bounds, grid.TileSize, grid.TileScale))
-						emitError($"{nameof(interactable.Bounds)} of actor {actorInfo.Key} are empty or negative.");
+						emitError($"{nameof(interactable.Bounds)} of actor `{actorInfo.Key}` are empty or negative.");
 
 					if (HasInvalidBounds(interactable.DecorationBounds, grid.TileSize, grid.TileScale))
-						emitError($"{nameof(interactable.DecorationBounds)} of actor {actorInfo.Key} are empty or negative.");
+						emitError($"{nameof(interactable.DecorationBounds)} of actor `{actorInfo.Key}` are empty or negative.");
 				}
 				catch (InvalidOperationException e)
 				{
-					emitError($"{e.Message} (Actor type `{actorInfo.Key}`)");
+					emitError($"{e.Message} (Actor type `{actorInfo.Key}`).");
 				}
 			}
 		}

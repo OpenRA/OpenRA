@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Lint
 				var selectable = actorInfo.Value.TraitInfos<SelectableInfo>().Count();
 				var interactable = actorInfo.Value.TraitInfos<InteractableInfo>().Count();
 				if (selectable > 0 && selectable != interactable)
-					emitWarning($"Actor {actorInfo.Value.Name} defines both Interactable and Selectable traits. This may cause unexpected results.");
+					emitWarning($"Actor `{actorInfo.Value.Name}` defines both Interactable and Selectable traits. This may cause unexpected results.");
 			}
 		}
 	}

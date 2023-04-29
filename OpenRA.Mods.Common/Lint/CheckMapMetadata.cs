@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Lint
 		void Run(Action<string> emitError, int mapFormat, string author, string title, string[] categories)
 		{
 			if (mapFormat < Map.SupportedMapFormat)
-				emitError($"Map format {mapFormat} does not match the supported version {Map.CurrentMapFormat}.");
+				emitError($"Map format `{mapFormat}` does not match the supported version `{Map.CurrentMapFormat}`.");
 
 			if (author == null)
 				emitError("Map does not define a valid author.");

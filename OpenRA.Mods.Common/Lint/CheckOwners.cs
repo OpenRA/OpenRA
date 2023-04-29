@@ -33,16 +33,16 @@ namespace OpenRA.Mods.Common.Lint
 				var actorReference = new ActorReference(kv.Value.Value, kv.Value.ToDictionary());
 				var ownerInit = actorReference.GetOrDefault<OwnerInit>();
 				if (ownerInit == null)
-					emitError($"Actor {kv.Key} is not owned by any player.");
+					emitError($"Actor `{kv.Key}` is not owned by any player.");
 				else
 				{
 					var ownerName = ownerInit.InternalName;
 					if (!playerNames.Contains(ownerName))
-						emitError($"Actor {kv.Key} is owned by unknown player {ownerName}.");
+						emitError($"Actor `{kv.Key}` is owned by unknown player `{ownerName}`.");
 
 					if (actorsWithRequiredOwner.TryGetValue(kv.Value.Value, out var info))
 						if (!info.ValidOwnerNames.Contains(ownerName))
-							emitError($"Actor {kv.Key} owner {ownerName} is not one of ValidOwnerNames: {info.ValidOwnerNames.JoinWith(", ")}");
+							emitError($"Actor `{kv.Key}` owner `{ownerName}` is not one of ValidOwnerNames: {info.ValidOwnerNames.JoinWith(", ")}");
 				}
 			}
 		}

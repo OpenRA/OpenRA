@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Lint
 							continue;
 
 						if (!soundInfo.Voices.ContainsKey(voice))
-							emitError($"Actor {actorInfo.Name} using voice set {voiceSet} does not define {voice} voice required by {traitInfo}.");
+							emitError($"Actor `{actorInfo.Name}` using voice set `{voiceSet}` does not define `{voice}` voice required by `{traitInfo}`.");
 					}
 				}
 			}
