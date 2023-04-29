@@ -36,12 +36,13 @@ namespace OpenRA.Mods.Common.Lint
 				// Catch TypeDictionary errors.
 				try
 				{
-					var count = actorInfo.Value.TraitInfos<IDefaultVisibilityInfo>().Count();
+					var visibilityTypes = actorInfo.Value.TraitInfos<IDefaultVisibilityInfo>();
+					var count = visibilityTypes.Count();
 
 					if (count == 0)
 						emitError($"Actor type `{actorInfo.Key}` does not define a default visibility type.");
 					else if (count > 1)
-						emitError($"Actor type `{actorInfo.Key}` defines multiple default visibility types.");
+						emitError($"Actor type `{actorInfo.Key}` defines multiple default visibility types: {string.Join(", ", visibilityTypes.Select(vis => vis.GetType().Name))}.");
 					else
 					{
 						var vis = actorInfo.Value.TraitInfoOrDefault<HiddenUnderShroudInfo>();
@@ -49,9 +50,9 @@ namespace OpenRA.Mods.Common.Lint
 						{
 							var ios = actorInfo.Value.TraitInfoOrDefault<IOccupySpaceInfo>();
 							if (ios == null)
-								emitError($"Actor type `{actorInfo.Key}` defines VisibilityType.Footprint in `{vis.GetType()}` but has no IOccupySpace traits.");
+								emitError($"Actor type `{actorInfo.Key}` defines VisibilityType.Footprint in `{vis.GetType().Name}` but has no IOccupySpace traits.");
 							else if (ios.OccupiedCells(actorInfo.Value, CPos.Zero).Count == 0)
-								emitError($"Actor type `{actorInfo.Key}` defines VisibilityType.Footprint in `{vis.GetType()}` but does not have any footprint cells.");
+								emitError($"Actor type `{actorInfo.Key}` defines VisibilityType.Footprint in `{vis.GetType().Name}` but does not have any footprint cells.");
 						}
 					}
 				}
