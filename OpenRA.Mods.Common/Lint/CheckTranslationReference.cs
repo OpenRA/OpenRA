@@ -76,10 +76,10 @@ namespace OpenRA.Mods.Common.Lint
 				if (modTranslation.HasMessage(key))
 				{
 					if (mapTranslation.HasMessage(key))
-						emitError($"Map translation key `{key}` already exists in `{language}` mod translations and will not be used.");
+						emitWarning($"Map translation key `{key}` already exists in `{language}` mod translations and will not be used.");
 				}
 				else if (!mapTranslation.HasMessage(key))
-					emitError($"`{key}` is not present in `{language}` translation.");
+					emitWarning($"`{key}` is not present in `{language}` translation.");
 			});
 		}
 
@@ -93,14 +93,14 @@ namespace OpenRA.Mods.Common.Lint
 			TestTraits(modData.DefaultRules, emitError, key =>
 			{
 				if (!translation.HasMessage(key))
-					emitError($"`{key}` is not present in `{language}` translation.");
+					emitWarning($"`{key}` is not present in `{language}` translation.");
 			});
 
 			var gameSpeeds = modData.Manifest.Get<GameSpeeds>();
 			foreach (var speed in gameSpeeds.Speeds.Values)
 			{
 				if (!translation.HasMessage(speed.Name))
-					emitError($"`{speed.Name}` is not present in `{language}` translation.");
+					emitWarning($"`{speed.Name}` is not present in `{language}` translation.");
 
 				referencedKeys.Add(speed.Name);
 			}
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Lint
 						continue;
 
 					if (!translation.HasMessage(key))
-						emitError($"`{key}` is not present in `{language}` translation.");
+						emitWarning($"`{key}` is not present in `{language}` translation.");
 
 					var translationReference = Utility.GetCustomAttributes<TranslationReferenceAttribute>(fieldInfo, true)[0];
 					if (translationReference.RequiredVariableNames != null && translationReference.RequiredVariableNames.Length > 0)
