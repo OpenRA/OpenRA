@@ -156,7 +156,7 @@ namespace OpenRA.Mods.Common.Lint
 								{
 									tilesetPalettes.Add(tilesetPalette);
 
-									// Only add the basic palette name once
+									// Only add the basic palette name once.
 									if (!palettes.Contains(value))
 										palettes.Add(value);
 								}

@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Lint
 
 			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
 			{
-				// Use an intermediate list to cover the unlikely case where both keys and values are lintable
+				// Use an intermediate list to cover the unlikely case where both keys and values are lintable.
 				var dictionaryValues = new List<string>();
 				if (dictionaryReference.HasFlag(LintDictionaryReference.Keys) && type.GenericTypeArguments[0] == typeof(string))
 					dictionaryValues.AddRange((IEnumerable<string>)((IDictionary)fieldInfo.GetValue(ruleInfo)).Keys);
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Lint
 
 			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>))
 			{
-				// Use an intermediate list to cover the unlikely case where both keys and values are lintable
+				// Use an intermediate list to cover the unlikely case where both keys and values are lintable.
 				var dictionaryValues = new List<string>();
 				if (dictionaryReference.HasFlag(LintDictionaryReference.Keys) && type.GenericTypeArguments[0] == typeof(string))
 					dictionaryValues.AddRange((IEnumerable<string>)((IDictionary)propertyInfo.GetValue(ruleInfo)).Keys);

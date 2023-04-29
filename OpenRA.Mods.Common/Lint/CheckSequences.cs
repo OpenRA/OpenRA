@@ -39,25 +39,25 @@ namespace OpenRA.Mods.Common.Lint
 			var factions = rules.Actors[SystemActors.World].TraitInfos<FactionInfo>().Select(f => f.InternalName).ToArray();
 			foreach (var actorInfo in rules.Actors)
 			{
-				// Catch TypeDictionary errors
+				// Catch TypeDictionary errors.
 				try
 				{
 					var images = new HashSet<string>();
 
-					// Actors may have 0 or 1 RenderSprites traits
+					// Actors may have 0 or 1 RenderSprites traits.
 					var renderInfo = actorInfo.Value.TraitInfoOrDefault<RenderSpritesInfo>();
 					if (renderInfo != null)
 					{
 						images.Add(renderInfo.GetImage(actorInfo.Value, null).ToLowerInvariant());
 
-						// Some actors define faction-specific artwork
+						// Some actors define faction-specific artwork.
 						foreach (var faction in factions)
 							images.Add(renderInfo.GetImage(actorInfo.Value, faction).ToLowerInvariant());
 					}
 
 					foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 					{
-						// Remove the "Info" suffix
+						// Remove the "Info" suffix.
 						var traitName = traitInfo.GetType().Name;
 						traitName = traitName.Remove(traitName.Length - 4);
 
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Lint
 							if (sequenceReference == null)
 								continue;
 
-							// Some sequences may specify their own Image override
+							// Some sequences may specify their own Image override.
 							IEnumerable<string> sequenceImages = images;
 							if (!string.IsNullOrEmpty(sequenceReference.ImageReference))
 							{
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Lint
 								{
 									if (sequenceReference.Prefix)
 									{
-										// TODO: Remove prefixed sequence references and instead use explicit lists of lintable references
+										// TODO: Remove prefixed sequence references and instead use explicit lists of lintable references.
 										if (!sequences.Sequences(i).Any(s => s.StartsWith(sequence)))
 											emitWarning($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` field `{field.Name}` defines a prefix `{sequence}` that does not match any sequences on image `{i}`.");
 									}
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Lint
 					if (sequenceReference == null)
 						continue;
 
-					// All weapon sequences must specify their corresponding image
+					// All weapon sequences must specify their corresponding image.
 					var image = (string)fields.First(f => f.Name == sequenceReference.ImageReference).GetValue(projectileInfo);
 					if (string.IsNullOrEmpty(image))
 					{
@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Common.Lint
 
 						if (sequenceReference.Prefix)
 						{
-							// TODO: Remove prefixed sequence references and instead use explicit lists of lintable references
+							// TODO: Remove prefixed sequence references and instead use explicit lists of lintable references.
 							if (!sequences.Sequences(image).Any(s => s.StartsWith(sequence)))
 								emitWarning($"Weapon type `{weaponInfo.Key}` projectile field `{field.Name}` defines a prefix `{sequence}` that does not match any sequences on image `{image}`.");
 						}

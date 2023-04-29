@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Lint
 
 					foreach (var entry in result.Entries)
 					{
-						// Don't flag definitions referenced (only) within the .ftl definitions as unused
+						// Don't flag definitions referenced (only) within the .ftl definitions as unused.
 						if (entry.GetType() == typeof(AstTerm))
 							continue;
 

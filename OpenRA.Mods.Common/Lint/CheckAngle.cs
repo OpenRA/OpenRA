@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Lint
 					var minAngle = missile.MinimumLaunchAngle.Angle;
 					var maxAngle = missile.MaximumLaunchAngle.Angle;
 
-					// If both angles are identical, we only need to test one of them
+					// If both angles are identical, we only need to test one of them.
 					var testMaxAngle = minAngle != maxAngle;
 					CheckLaunchAngles(weaponInfo.Key, minAngle, testMaxAngle, maxAngle, emitError);
 				}
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Lint
 					var minAngle = bullet.LaunchAngle[0].Angle;
 					var maxAngle = bullet.LaunchAngle.Length > 1 ? bullet.LaunchAngle[1].Angle : minAngle;
 
-					// If both angles are identical, we only need to test one of them
+					// If both angles are identical, we only need to test one of them.
 					var testMaxAngle = minAngle != maxAngle;
 					CheckLaunchAngles(weaponInfo.Key, minAngle, testMaxAngle, maxAngle, emitError);
 				}

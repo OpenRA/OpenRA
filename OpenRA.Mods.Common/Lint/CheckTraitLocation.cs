@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Lint
 
 					if (!Enum.TryParse(actorInfo.Key, true, out SystemActors systemActor) || !traitLocation.SystemActors.HasFlag(systemActor))
 					{
-						// Remove the "Info" suffix
+						// Remove the "Info" suffix.
 						var traitName = traitInfo.GetType().Name;
 						traitName = traitName.Remove(traitName.Length - 4);
 						var locations = traitLocation.SystemActors.ToString().Replace(", ", " or ");

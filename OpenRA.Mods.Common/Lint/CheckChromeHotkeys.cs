@@ -33,10 +33,10 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{
-			// Build the list of valid hotkey names
+			// Build the list of valid hotkey names.
 			var namedKeys = modData.Hotkeys.Definitions.Select(d => d.Name).ToArray();
 
-			// Build the list of widget keys to validate
+			// Build the list of widget keys to validate.
 			var checkWidgetFields = modData.ObjectCreator.GetTypesImplementing<Widget>()
 				.SelectMany(w => Utility.GetFields(w)
 					.Where(f => f.FieldType == typeof(HotkeyReference))
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Lint
 					}
 				}
 
-				// Check runtime-defined hotkey names
+				// Check runtime-defined hotkey names.
 				var widgetType = node.Key.Split('@')[0];
 				if (customLintMethods.TryGetValue(widgetType, out var checkMethods))
 				{
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Lint
 							emitError($"{node.Location} refers to a Key named `{name}` that does not exist");
 				}
 
-				// Logic classes can declare the data key names that specify hotkeys
+				// Logic classes can declare the data key names that specify hotkeys.
 				if (node.Key == "Logic" && node.Value.Nodes.Count > 0)
 				{
 					var typeNames = FieldLoader.GetValue<string[]>(node.Key, node.Value.Value);

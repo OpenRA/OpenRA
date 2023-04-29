@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
-				// Catch TypeDictionary errors
+				// Catch TypeDictionary errors.
 				try
 				{
 					var health = actorInfo.Value.TraitInfoOrDefault<IHealthInfo>();

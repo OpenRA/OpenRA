@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var t in actor.Value.Nodes)
 				{
-					// Removals can never define children or values
+					// Removals can never define children or values.
 					if (t.Key.StartsWith("-", StringComparison.Ordinal))
 					{
 						if (t.Value.Nodes.Count > 0)
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Lint
 
 					var traitName = NormalizeName(t.Key);
 
-					// Inherits can never define children
+					// Inherits can never define children.
 					if (traitName == "Inherits")
 					{
 						if (t.Value.Nodes.Count > 0)
