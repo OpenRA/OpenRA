@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Grants a condition on the collector.")]
+	[Desc("Grants a condition to the collector and nearby units.")]
 	public class GrantExternalConditionCrateActionInfo : CrateActionInfo
 	{
 		[FieldLoader.Require]
@@ -60,38 +60,36 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override void Activate(Actor collector)
 		{
+			if (collector.IsInWorld && !collector.IsDead)
+				GrantCondition(collector);
+
 			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, info.Range)
-				.Where(a => a != self && a != collector && a.Owner == collector.Owner && AcceptsCondition(a));
+				.Where(a => a != self && a != collector && a.IsInWorld && !a.IsDead && a.Owner == collector.Owner && AcceptsCondition(a))
+				.OrderBy(a => (a.CenterPosition - self.CenterPosition).LengthSquared);
 
-			if (info.MaxExtraCollectors > -1)
-				actorsInRange = actorsInRange.Take(info.MaxExtraCollectors);
-
-			collector.World.AddFrameEndTask(w =>
-			{
-				foreach (var a in actorsInRange.Append(collector))
-				{
-					if (!a.IsInWorld || a.IsDead)
-						continue;
-
-					var externals = a.TraitsImplementing<ExternalCondition>()
-						.Where(t => t.Info.Condition == info.Condition);
-
-					ExternalCondition external = null;
-					for (var n = 0; n < info.Levels; n++)
-					{
-						if (external == null || !external.CanGrantCondition(self))
-						{
-							external = externals.FirstOrDefault(t => t.CanGrantCondition(self));
-							if (external == null)
-								break;
-						}
-
-						external.GrantCondition(a, self, info.Duration);
-					}
-				}
-			});
+			foreach (var a in info.MaxExtraCollectors > -1 ? actorsInRange.Take(info.MaxExtraCollectors) : actorsInRange)
+				GrantCondition(a);
 
 			base.Activate(collector);
+		}
+
+		void GrantCondition(Actor actor)
+		{
+			var externals = actor.TraitsImplementing<ExternalCondition>()
+				.Where(t => t.Info.Condition == info.Condition);
+
+			ExternalCondition external = null;
+			for (var n = 0; n < info.Levels; n++)
+			{
+				if (external == null || !external.CanGrantCondition(self))
+				{
+					external = externals.FirstOrDefault(t => t.CanGrantCondition(self));
+					if (external == null)
+						break;
+				}
+
+				external.GrantCondition(actor, self, info.Duration);
+			}
 		}
 	}
 }
