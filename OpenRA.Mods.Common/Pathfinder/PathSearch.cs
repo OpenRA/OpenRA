@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			IRecorder recorder = null)
 		{
 			var graph = new MapPathGraph(LayerPoolForWorld(world), locomotor, self, world, check, customCost, ignoreActor, laneBias, false);
-			var search = new PathSearch(graph, loc => 0, 0, targetPredicate, recorder);
+			var search = new PathSearch(graph, (_, _) => 0, 0, targetPredicate, recorder);
 
 			AddInitialCells(world, locomotor, self, froms, check, customCost, ignoreActor, false, search);
 
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			Actor ignoreActor = null,
 			bool laneBias = true,
 			bool inReverse = false,
-			Func<CPos, int> heuristic = null,
+			Func<CPos, bool, int> heuristic = null,
 			Grid? grid = null,
 			IRecorder recorder = null)
 		{
@@ -129,10 +129,10 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// <param name="locomotor">Locomotor used to provide terrain costs.</param>
 		/// <param name="destination">The cell for which costs are to be given by the estimation function.</param>
 		/// <returns>A delegate that calculates the cost estimation between the <paramref name="destination"/> and the given cell.</returns>
-		public static Func<CPos, int> DefaultCostEstimator(Locomotor locomotor, CPos destination)
+		public static Func<CPos, bool, int> DefaultCostEstimator(Locomotor locomotor, CPos destination)
 		{
 			var estimator = DefaultCostEstimator(locomotor);
-			return here => estimator(here, destination);
+			return (here, _) => estimator(here, destination);
 		}
 
 		/// <summary>
@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		public IPathGraph Graph { get; }
 		public Func<CPos, bool> TargetPredicate { get; set; }
-		readonly Func<CPos, int> heuristic;
+		readonly Func<CPos, bool, int> heuristic;
 		readonly int heuristicWeightPercentage;
 		readonly IRecorder recorder;
 		readonly IPriorityQueue<GraphConnection> openQueue;
@@ -171,7 +171,10 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// Initialize a new search.
 		/// </summary>
 		/// <param name="graph">Graph over which the search is conducted.</param>
-		/// <param name="heuristic">Provides an estimation of the distance between the given cell and the target.</param>
+		/// <param name="heuristic">Provides an estimation of the distance between the given cell and the target.
+		/// The Boolean parameter indicates if the cell is known to be accessible.
+		/// When true, it is known accessible as it is being explored by the search.
+		/// When false, the cell is being considered as a starting location and might not be accessible.</param>
 		/// <param name="heuristicWeightPercentage">
 		/// The search will aim for the shortest path when given a weight of 100%.
 		/// We can allow the search to find paths that aren't optimal by changing the weight.
@@ -182,7 +185,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// </param>
 		/// <param name="targetPredicate">Determines if the given cell is the target.</param>
 		/// <param name="recorder">If provided, will record all nodes explored by searches performed.</param>
-		PathSearch(IPathGraph graph, Func<CPos, int> heuristic, int heuristicWeightPercentage, Func<CPos, bool> targetPredicate, IRecorder recorder)
+		PathSearch(IPathGraph graph, Func<CPos, bool, int> heuristic, int heuristicWeightPercentage, Func<CPos, bool> targetPredicate, IRecorder recorder)
 		{
 			Graph = graph;
 			this.heuristic = heuristic;
@@ -202,7 +205,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 					return;
 			}
 
-			var heuristicCost = heuristic(location);
+			var heuristicCost = heuristic(location, false);
 			if (heuristicCost == PathGraph.PathCostForInvalidPath)
 				return;
 
@@ -272,7 +275,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				else
 				{
 					// If the heuristic reports the cell is unreachable, we won't consider it.
-					var heuristicCost = heuristic(neighbor);
+					var heuristicCost = heuristic(neighbor, true);
 					if (heuristicCost == PathGraph.PathCostForInvalidPath)
 						continue;
 					estimatedRemainingCostToTarget = heuristicCost * heuristicWeightPercentage / 100;
