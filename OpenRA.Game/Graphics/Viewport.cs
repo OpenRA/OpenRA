@@ -286,8 +286,19 @@ namespace OpenRA.Graphics
 			var minPos = worldRenderer.ProjectedPosition(world);
 
 			// Find all the cells that could potentially have been clicked.
-			var a = map.CellContaining(minPos - new WVec(tileScale, 0, 0)).ToMPos(map.Grid.Type);
-			var b = map.CellContaining(minPos + new WVec(tileScale, tileScale * map.Grid.MaximumTerrainHeight, 0)).ToMPos(map.Grid.Type);
+			MPos a;
+			MPos b;
+			if (map.Grid.Type == MapGridType.RectangularIsometric)
+			{
+				// TODO: this generates too many cells.
+				a = map.CellContaining(minPos - new WVec(tileScale, 0, 0)).ToMPos(map.Grid.Type);
+				b = map.CellContaining(minPos + new WVec(tileScale, tileScale * map.Grid.MaximumTerrainHeight, 0)).ToMPos(map.Grid.Type);
+			}
+			else
+			{
+				a = map.CellContaining(minPos).ToMPos(map.Grid.Type);
+				b = map.CellContaining(minPos + new WVec(0, tileScale * map.Grid.MaximumTerrainHeight, 0)).ToMPos(map.Grid.Type);
+			}
 
 			for (var v = b.V; v >= a.V; v--)
 				for (var u = b.U; u >= a.U; u--)
