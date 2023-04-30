@@ -763,7 +763,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				foreach (var dir in CVec.Directions)
 				{
 					var adjacentSource = source + dir;
-					if (!world.Map.Contains(adjacentSource))
+					if (!MovementAllowedBetweenCells(source, adjacentSource))
 						continue;
 
 					var adjacentSourceAbstractCell = AbstractCellForLocalCell(adjacentSource);
@@ -959,7 +959,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			foreach (var dir in CVec.Directions)
 			{
 				var adjacentSource = source + dir;
-				if (!world.Map.Contains(adjacentSource))
+				if (!MovementAllowedBetweenCells(source, adjacentSource))
 					continue;
 
 				var abstractAdjacentSource = AbstractCellForLocalCell(adjacentSource);
@@ -1118,12 +1118,12 @@ namespace OpenRA.Mods.Common.Pathfinder
 		/// (the heuristic) for a local path search. The abstract search must run in the opposite direction to the
 		/// local search. So when searching from source to target, the abstract search must be from target to source.
 		/// </summary>
-		Func<CPos, int> Heuristic(PathSearch abstractSearch, int estimatedSearchSize,
+		Func<CPos, bool, int> Heuristic(PathSearch abstractSearch, int estimatedSearchSize,
 			HashSet<CPos> sources, List<CPos> unpathableNodes)
 		{
 			var nodeForCostLookup = new Dictionary<CPos, CPos>(estimatedSearchSize);
 			var graph = (SparsePathGraph)abstractSearch.Graph;
-			return cell =>
+			return (cell, knownAccessible) =>
 			{
 				// When dealing with an unreachable source cell, the path search will check adjacent locations.
 				// These cells may be reachable, but may represent jumping into an area cut off from the target.
@@ -1131,14 +1131,19 @@ namespace OpenRA.Mods.Common.Pathfinder
 				if (unpathableNodes != null && unpathableNodes.Contains(cell))
 					return PathGraph.PathCostForInvalidPath;
 
-				// All other cells searched by the heuristic are guaranteed to be reachable.
+				// During a search, all other cells searched by the heuristic are guaranteed to be reachable.
 				// So we don't need to handle an abstract cell lookup failing, or the search failing to expand.
-				// Cells added as initial starting points for the search are filtered out if they aren't reachable.
-				// The search only explores accessible cells from then on.
+				// Cells added as initial starting points for the search might not be reachable,
+				// so for those we need to perform accessibility checks.
 				// If the exceptions here do fire, they indicate a bug. The abstract graph is considering a cell to be
 				// unreachable, but the local pathfinder thinks it is reachable. We must fix the abstract graph to also
 				// consider the cell to be reachable.
-				var maybeAbstractCell = AbstractCellForLocalCellNoAccessibleCheck(cell);
+				CPos? maybeAbstractCell;
+				if (knownAccessible)
+					maybeAbstractCell = AbstractCellForLocalCellNoAccessibleCheck(cell);
+				else
+					maybeAbstractCell = AbstractCellForLocalCell(cell);
+
 				if (maybeAbstractCell == null)
 				{
 					// If the source cell is unreachable, use one of the adjacent reachable cells instead.
@@ -1146,14 +1151,14 @@ namespace OpenRA.Mods.Common.Pathfinder
 					{
 						foreach (var dir in CVec.Directions)
 						{
-							var adjacentSource = cell + dir;
-							if (!world.Map.Contains(adjacentSource) ||
-								(unpathableNodes != null && unpathableNodes.Contains(adjacentSource)))
+							var adjacentCell = cell + dir;
+							if (!MovementAllowedBetweenCells(cell, adjacentCell) ||
+								(unpathableNodes != null && unpathableNodes.Contains(adjacentCell)))
 								continue;
 
 							// Ideally we'd choose the cheapest cell rather than just any one of them,
 							// but we're lazy and this is an edge case.
-							maybeAbstractCell = AbstractCellForLocalCell(adjacentSource);
+							maybeAbstractCell = AbstractCellForLocalCell(adjacentCell);
 							if (maybeAbstractCell != null)
 								break;
 						}
@@ -1258,7 +1263,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 		PathSearch GetLocalPathSearch(
 			Actor self, IEnumerable<CPos> srcs, CPos dst, Func<CPos, int> customCost,
 			Actor ignoreActor, BlockedByActor check, bool laneBias, Grid? grid, int heuristicWeightPercentage,
-			Func<CPos, int> heuristic = null,
+			Func<CPos, bool, int> heuristic = null,
 			bool inReverse = false,
 			PathSearch.IRecorder recorder = null)
 		{
