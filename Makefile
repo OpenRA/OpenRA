@@ -180,7 +180,7 @@ help:
 	@echo '  make [RUNTIME=net6] TARGETPLATFORM=unix-generic'
 	@echo
 	@echo 'to check the official mods for erroneous yaml files, run:'
-	@echo '  make [RUNTIME=net6] test'
+	@echo '  make [RUNTIME=net6] [TREAT_WARNINGS_AS_ERRORS=false] test'
 	@echo
 	@echo 'to check the engine and official mod dlls for code style violations, run:'
 	@echo '  make [RUNTIME=net6] check'
