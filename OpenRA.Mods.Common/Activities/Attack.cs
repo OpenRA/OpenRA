@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IEnumerable<AttackFrontal> attackTraits;
 		readonly RevealsShroud[] revealsShroud;
 		readonly IMove move;
+		readonly Mobile mobile;
 		readonly IFacing facing;
 		readonly IPositionable positionable;
 		readonly bool forceAttack;
@@ -56,7 +57,9 @@ namespace OpenRA.Mods.Common.Activities
 			facing = self.Trait<IFacing>();
 			positionable = self.Trait<IPositionable>();
 
-			move = allowMovement ? self.TraitOrDefault<IMove>() : null;
+			var iMove = self.TraitOrDefault<IMove>();
+			mobile = iMove as Mobile;
+			move = allowMovement ? iMove : null;
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -208,7 +211,7 @@ namespace OpenRA.Mods.Common.Activities
 			var pos = self.CenterPosition;
 			if (!target.IsInRange(pos, maxRange)
 				|| (minRange.Length != 0 && target.IsInRange(pos, minRange))
-				|| (move is Mobile mobile && !mobile.CanInteractWithGroundLayer(self)))
+				|| (mobile != null && !mobile.CanInteractWithGroundLayer(self)))
 			{
 				// Try to move within range, drop the target otherwise
 				if (move == null)
@@ -222,13 +225,20 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (!attack.TargetInFiringArc(self, target, attack.Info.FacingTolerance))
 			{
-				var desiredFacing = (attack.GetTargetPosition(pos, target) - pos).Yaw;
+				// Mirror Turn activity checks.
+				if (mobile == null || (!mobile.IsTraitDisabled && !mobile.IsTraitPaused))
+				{
+					// Don't queue a Turn activity: Executing a child takes an additional tick during which the target may have moved again.
+					facing.Facing = Util.TickFacing(facing.Facing, (attack.GetTargetPosition(pos, target) - pos).Yaw, facing.TurnSpeed);
 
-				// Don't queue a turn activity: Executing a child takes an additional tick during which the target may have moved again
-				facing.Facing = Util.TickFacing(facing.Facing, desiredFacing, facing.TurnSpeed);
-
-				// Check again if we turned enough and directly continue attacking if we did
-				if (!attack.TargetInFiringArc(self, target, attack.Info.FacingTolerance))
+					// Check again if we turned enough and directly continue attacking if we did.
+					if (!attack.TargetInFiringArc(self, target, attack.Info.FacingTolerance))
+					{
+						attackStatus |= AttackStatus.NeedsToTurn;
+						return AttackStatus.NeedsToTurn;
+					}
+				}
+				else
 				{
 					attackStatus |= AttackStatus.NeedsToTurn;
 					return AttackStatus.NeedsToTurn;
