@@ -30,7 +30,7 @@ jobs:
         run: |
           sudo apt-get install lua5.1
           make check-scripts
-          make test
+          make TREAT_WARNINGS_AS_ERRORS=true test
 
   linux-mono:
     name: Linux (mono)
@@ -48,7 +48,7 @@ jobs:
       - name: Check Mods
         run: |
           # check-scripts does not depend on .net/mono, so is not needed here
-          make RUNTIME=mono test
+          make RUNTIME=mono TREAT_WARNINGS_AS_ERRORS=true test
 
   windows:
     name: Windows (.NET 6.0)
@@ -76,5 +76,6 @@ jobs:
         run: |
           chocolatey install lua --version 5.1.5.52
           $ENV:Path = $ENV:Path + ";C:\Program Files (x86)\Lua\5.1\"
+          $ENV:TREAT_WARNINGS_AS_ERRORS = "true"
           .\make.ps1 check-scripts
           .\make.ps1 test
