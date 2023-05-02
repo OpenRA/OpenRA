@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Lint
 		readonly Dictionary<string, string[]> referencedVariablesPerKey = new();
 		readonly List<string> variableReferences = new();
 
-		void TestTraits(Ruleset rules, Action<string> testKey)
+		void TestTraits(Ruleset rules, Action<string> emitError, Action<string> testKey)
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
@@ -44,6 +44,12 @@ namespace OpenRA.Mods.Common.Lint
 						var keys = LintExts.GetFieldValues(traitInfo, field, translationReference.DictionaryReference);
 						foreach (var key in keys)
 						{
+							if (key == null)
+							{
+								emitError($"Trait `{traitInfo.InstanceName}` on field `{field.Name}` has an empty translation reference.");
+								continue;
+							}
+
 							if (referencedKeys.Contains(key))
 								continue;
 
@@ -65,7 +71,7 @@ namespace OpenRA.Mods.Common.Lint
 			var modTranslation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem, _ => { });
 			var mapTranslation = new Translation(language, FieldLoader.GetValue<string[]>("value", map.TranslationDefinitions.Value), map, error => emitError(error.ToString()));
 
-			TestTraits(map.Rules, key =>
+			TestTraits(map.Rules, emitError, key =>
 			{
 				if (modTranslation.HasMessage(key))
 				{
@@ -84,7 +90,7 @@ namespace OpenRA.Mods.Common.Lint
 			Console.WriteLine($"Testing translation: {language}");
 			var translation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem, error => emitError(error.ToString()));
 
-			TestTraits(modData.DefaultRules, key =>
+			TestTraits(modData.DefaultRules, emitError, key =>
 			{
 				if (!translation.HasMessage(key))
 					emitError($"{key} not present in `{language}` translation.");
