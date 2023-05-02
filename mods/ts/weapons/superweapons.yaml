@@ -122,6 +122,7 @@ EMPulseCannon:
 		Explosions: pulse_explosion
 		ImpactActors: false
 	Warhead@emp: GrantExternalCondition
+		AffectsParent: true
 		Range: 6c0
 		Duration: 250
 		Condition: empdisable
