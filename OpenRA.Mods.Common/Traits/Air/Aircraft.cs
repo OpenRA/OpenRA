@@ -56,6 +56,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Turn speed to apply when aircraft flies in circles while idle. Defaults to TurnSpeed if undefined.")]
 		public readonly WAngle? IdleTurnSpeed = null;
 
+		[Desc("When flying if the difference between current facing and desired facing is less than this value, don't turn. This prevents visual jitter.")]
+		public readonly WAngle TurnDeadzone = new(2);
+
 		[Desc("Maximum flight speed when cruising.")]
 		public readonly int Speed = 1;
 
