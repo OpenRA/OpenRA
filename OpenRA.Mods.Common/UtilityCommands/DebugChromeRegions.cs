@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 			}
 
-			var output = HtmlTemplate.JoinWith("\n").F(zoom, Convert.ToBase64String(modData.ModFiles.Open(image).ReadAllBytes()), "[" + regions.JoinWith(",") + "]");
+			var output = string.Format(HtmlTemplate.JoinWith("\n"), zoom, Convert.ToBase64String(modData.ModFiles.Open(image).ReadAllBytes()), "[" + regions.JoinWith(",") + "]");
 			var outputPath = Path.ChangeExtension(image, ".html");
 			File.WriteAllLines(outputPath, new[] { output });
 			Console.WriteLine("Saved {0}", outputPath);

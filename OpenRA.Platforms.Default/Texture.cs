@@ -96,7 +96,7 @@ namespace OpenRA.Platforms.Default
 		{
 			VerifyThreadAffinity();
 			if (!Exts.IsPowerOf2(width) || !Exts.IsPowerOf2(height))
-				throw new InvalidDataException("Non-power-of-two array {0}x{1}".F(width, height));
+				throw new InvalidDataException($"Non-power-of-two array {width}x{height}");
 
 			Size = new Size(width, height);
 			unsafe

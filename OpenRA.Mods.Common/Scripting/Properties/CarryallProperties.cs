@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			var carryable = target.TraitOrDefault<Carryable>();
 			if (carryable == null)
-				throw new LuaException("Actor '{0}' cannot carry actor '{1}'!".F(Self, target));
+				throw new LuaException($"Actor '{Self}' cannot carry actor '{target}'!");
 
 			Self.QueueActivity(new PickupUnit(Self, target, carryall.Info.BeforeLoadDelay, null));
 		}

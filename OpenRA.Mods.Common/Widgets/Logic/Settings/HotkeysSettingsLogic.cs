@@ -220,14 +220,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			duplicateNotice.IsVisible = () => !isHotkeyValid;
 			var duplicateNoticeText = new CachedTransform<HotkeyDefinition, string>(hd =>
 				hd != null ?
-				duplicateNotice.Text.F(hd.Description, hd.Contexts.First(c => selectedHotkeyDefinition.Contexts.Contains(c))) :
+				string.Format(duplicateNotice.Text, hd.Description, hd.Contexts.First(c => selectedHotkeyDefinition.Contexts.Contains(c))) :
 				"");
 			duplicateNotice.GetText = () => duplicateNoticeText.Update(duplicateHotkeyDefinition);
 
 			var originalNotice = panel.Get<LabelWidget>("ORIGINAL_NOTICE");
 			originalNotice.TextColor = ChromeMetrics.Get<Color>("NoticeInfoColor");
 			originalNotice.IsVisible = () => isHotkeyValid && !isHotkeyDefault;
-			var originalNoticeText = new CachedTransform<HotkeyDefinition, string>(hd => originalNotice.Text.F(hd?.Default.DisplayString()));
+			var originalNoticeText = new CachedTransform<HotkeyDefinition, string>(hd => string.Format(originalNotice.Text, hd?.Default.DisplayString()));
 			originalNotice.GetText = () => originalNoticeText.Update(selectedHotkeyDefinition);
 
 			var readonlyNotice = panel.Get<LabelWidget>("READONLY_NOTICE");
