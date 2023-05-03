@@ -425,7 +425,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				titleLabel.GetText = () => item.Title;
 
 				var authorDateTimeLabel = newsItem.Get<LabelWidget>("AUTHOR_DATETIME");
-				var authorDateTime = authorDateTimeLabel.Text.F(item.Author, item.DateTime.ToLocalTime());
+				var authorDateTime = string.Format(authorDateTimeLabel.Text, item.Author, item.DateTime.ToLocalTime());
 				authorDateTimeLabel.GetText = () => authorDateTime;
 
 				var contentLabel = newsItem.Get<LabelWidget>("CONTENT");

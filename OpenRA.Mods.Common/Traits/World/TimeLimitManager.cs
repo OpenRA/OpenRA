@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (countdownLabel != null)
 			{
 				countdown = new CachedTransform<int, string>(t =>
-					info.CountdownText.F(WidgetUtils.FormatTime(t, w.Timestep)));
+					string.Format(info.CountdownText, WidgetUtils.FormatTime(t, w.Timestep)));
 				countdownLabel.GetText = () => TimeLimit > 0 ? countdown.Update(ticksRemaining) : "";
 			}
 		}
@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (ticksRemaining == m * 60 * ticksPerSecond)
 				{
-					TextNotificationsManager.AddSystemLine(Notification.F(m, m > 1 ? "s" : null));
+					TextNotificationsManager.AddSystemLine(string.Format(Notification, m, m > 1 ? "s" : null));
 
 					var faction = self.World.LocalPlayer?.Faction.InternalName;
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.World.LocalPlayer, "Speech", info.TimeLimitWarnings[m], faction);

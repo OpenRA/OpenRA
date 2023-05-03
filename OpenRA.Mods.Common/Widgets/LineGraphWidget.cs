@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var scale = 200 / Math.Max(5000, (float)Math.Ceiling(maxValue / 1000) * 1000);
 
-			var widthMaxValue = labelFont.Measure(GetYAxisValueFormat().F(height / scale)).X;
+			var widthMaxValue = labelFont.Measure(string.Format(GetYAxisValueFormat(), height / scale)).X;
 			var widthLongestName = labelFont.Measure(longestName).X;
 
 			// y axis label
@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Common.Widgets
 						}), 1, color);
 
 					if (lastPoint != 0f)
-						labelFont.DrawTextWithShadow(GetValueFormat().F(lastPoint), graphOrigin + new float2(lastX * xStep, -lastPoint * scale - 2),
+						labelFont.DrawTextWithShadow(string.Format(GetValueFormat(), lastPoint), graphOrigin + new float2(lastX * xStep, -lastPoint * scale - 2),
 							color, BackgroundColorDark, BackgroundColorLight, 1);
 				}
 
@@ -185,7 +185,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (n % XAxisTicksPerLabel != 0)
 					continue;
 
-				var xAxisText = GetXAxisValueFormat().F(n / XAxisTicksPerLabel);
+				var xAxisText = string.Format(GetXAxisValueFormat(), n / XAxisTicksPerLabel);
 				var xAxisTickTextWidth = labelFont.Measure(xAxisText).X;
 				var xLocation = x - xAxisTickTextWidth / 2;
 				labelFont.DrawTextWithShadow(xAxisText,
@@ -202,7 +202,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				var yValue = y / scale;
 				cr.DrawLine(graphOrigin + new float2(0, -y), graphOrigin + new float2(5, -y), 1, Color.White);
-				var text = GetYAxisValueFormat().F(yValue);
+				var text = string.Format(GetYAxisValueFormat(), yValue);
 
 				var textWidth = labelFont.Measure(text);
 

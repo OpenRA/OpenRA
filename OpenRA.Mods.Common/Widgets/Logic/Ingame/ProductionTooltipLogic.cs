@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var requiresSize = int2.Zero;
 				if (prereqs.Any())
 				{
-					requiresLabel.Text = requiresFormat.F(prereqs.JoinWith(", "));
+					requiresLabel.Text = string.Format(requiresFormat, prereqs.JoinWith(", "));
 					requiresSize = requiresFont.Measure(requiresLabel.Text);
 					requiresLabel.Visible = true;
 					descLabel.Bounds.Y = descLabelY + requiresLabel.Bounds.Height;
