@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
@@ -175,7 +176,19 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 
 			var isSlider = aircraft.Info.CanSlide;
-			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : aircraft.Facing;
+
+			var desiredFacing = aircraft.Facing;
+			if (delta.HorizontalLengthSquared != 0)
+			{
+				var facing = delta.Yaw;
+
+				// Prevent jittering.
+				var diff = Math.Abs(facing.Angle - desiredFacing.Angle);
+				var deadzone = aircraft.Info.TurnDeadzone.Angle;
+				if (diff > deadzone && diff < 1024 - deadzone)
+					desiredFacing = facing;
+			}
+
 			var move = isSlider ? aircraft.FlyStep(desiredFacing) : aircraft.FlyStep(aircraft.Facing);
 
 			// Inside the minimum range, so reverse if we CanSlide, otherwise face away from the target.
@@ -184,9 +197,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (isSlider)
 					FlyTick(self, aircraft, desiredFacing, aircraft.Info.CruiseAltitude, -move);
 				else
-				{
 					FlyTick(self, aircraft, desiredFacing + new WAngle(512), aircraft.Info.CruiseAltitude, move);
-				}
 
 				return false;
 			}
