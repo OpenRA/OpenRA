@@ -34,11 +34,17 @@ namespace OpenRA.Mods.Common.Effects
 
 			if (rp.Info.Image != null)
 			{
-				flag = new Animation(building.World, rp.Info.Image);
-				flag.PlayRepeating(rp.Info.FlagSequence);
+				if (rp.Info.FlagSequence != null)
+				{
+					flag = new Animation(building.World, rp.Info.Image);
+					flag.PlayRepeating(rp.Info.FlagSequence);
+				}
 
-				circles = new Animation(building.World, rp.Info.Image);
-				circles.Play(rp.Info.CirclesSequence);
+				if (rp.Info.CirclesSequence != null)
+				{
+					circles = new Animation(building.World, rp.Info.Image);
+					circles.Play(rp.Info.CirclesSequence);
+				}
 			}
 
 			UpdateTargetLineNodes(building.World);
