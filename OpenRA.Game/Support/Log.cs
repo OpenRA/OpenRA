@@ -176,11 +176,6 @@ namespace OpenRA
 			ChannelWriter.TryWrite(new ChannelData(channelName, $"{e.Message}{Environment.NewLine}{e.StackTrace}"));
 		}
 
-		public static void Write(string channelName, string format, params object[] args)
-		{
-			ChannelWriter.TryWrite(new ChannelData(channelName, format.F(args)));
-		}
-
 		public static void Dispose()
 		{
 			CancellationToken.Cancel();

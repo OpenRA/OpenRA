@@ -60,7 +60,7 @@ namespace OpenRA
 		{
 			Log.AddChannel("traitreport", "traitreport.log");
 			foreach (var t in traits.OrderByDescending(t => t.Value.Queries).TakeWhile(t => t.Value.Queries > 0))
-				Log.Write("traitreport", "{0}: {1}", t.Key.Name, t.Value.Queries);
+				Log.Write("traitreport", $"{t.Key.Name}: {t.Value.Queries}");
 		}
 
 		public void AddTrait(Actor actor, object val)

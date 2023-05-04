@@ -67,10 +67,10 @@ namespace OpenRA.Support
 				Log.Write("perf", GetHeader(Indentation, name));
 				foreach (var child in children)
 					child.Write();
-				Log.Write("perf", FormatString, ElapsedMs, GetFooter(Indentation));
+				Log.Write("perf", string.Format(FormatString, ElapsedMs, GetFooter(Indentation)));
 			}
 			else if (ElapsedMs >= thresholdMs)
-				Log.Write("perf", FormatString, ElapsedMs, Indentation + name);
+				Log.Write("perf", string.Format(FormatString, ElapsedMs, Indentation + name));
 		}
 
 		float ElapsedMs => 1000f * ticks / Stopwatch.Frequency;
@@ -79,9 +79,9 @@ namespace OpenRA.Support
 		{
 			var type = item.GetType();
 			var label = type == typeof(string) || type.IsGenericType ? item.ToString() : type.Name;
-			Log.Write("perf", FormatString,
+			Log.Write("perf", string.Format(FormatString,
 				1000f * (endStopwatchTicks - startStopwatchTicks) / Stopwatch.Frequency,
-				"[" + Game.LocalTick + "] " + name + ": " + label);
+				"[" + Game.LocalTick + "] " + name + ": " + label));
 		}
 
 		public static long LongTickThresholdInStopwatchTicks => (long)(Stopwatch.Frequency * Game.Settings.Debug.LongTickThresholdMs / 1000f);

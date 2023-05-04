@@ -39,7 +39,7 @@ namespace OpenRA.Server
 
 			void OnLintFailure(string message)
 			{
-				Log.Write("server", "Map {0} failed lint with error: {1}", map.Title, message);
+				Log.Write("server", $"Map {map.Title} failed lint with error: {message}");
 				failed = true;
 			}
 
@@ -84,13 +84,13 @@ namespace OpenRA.Server
 				}
 				catch (Exception e)
 				{
-					Log.Write("server", "Failed to load rules for `{0}` with error :{1}", map.Title, e.Message);
+					Log.Write("server", $"Failed to load rules for `{map.Title}` with error: {e.Message}");
 					status = Session.MapStatus.Incompatible;
 				}
 
 				if (map.Players.Players.Count > MapPlayers.MaximumPlayerCount)
 				{
-					Log.Write("server", "Failed to load `{0}`: Player count exceeds maximum ({1}/{2}).", map.Title, map.Players.Players.Count, MapPlayers.MaximumPlayerCount);
+					Log.Write("server", $"Failed to load `{map.Title}`: Player count exceeds maximum ({map.Players.Players.Count}/{MapPlayers.MaximumPlayerCount}).");
 					status = Session.MapStatus.Incompatible;
 				}
 

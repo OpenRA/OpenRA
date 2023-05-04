@@ -65,7 +65,7 @@ namespace OpenRA.Platforms.Default
 			var devicesPtr = ALC10.alcGetString(IntPtr.Zero, type);
 			if (devicesPtr == IntPtr.Zero || AL10.alGetError() != AL10.AL_NO_ERROR)
 			{
-				Log.Write("sound", "Failed to query OpenAL device list using {0}", label);
+				Log.Write("sound", $"Failed to query OpenAL device list using {label}");
 				return Array.Empty<string>();
 			}
 
@@ -140,7 +140,7 @@ namespace OpenRA.Platforms.Default
 				AL10.alGenSources(1, out var source);
 				if (AL10.alGetError() != AL10.AL_NO_ERROR)
 				{
-					Log.Write("sound", "Failed generating OpenAL source {0}", i);
+					Log.Write("sound", $"Failed generating OpenAL source {i}");
 					return;
 				}
 

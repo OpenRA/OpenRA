@@ -209,7 +209,7 @@ namespace OpenRA
 
 					default:
 					{
-						Log.Write("debug", "Received unknown order with type {0}", type);
+						Log.Write("debug", $"Received unknown order with type {type}");
 						return null;
 					}
 				}
@@ -217,7 +217,7 @@ namespace OpenRA
 			catch (Exception e)
 			{
 				Log.Write("debug", "Caught exception while processing order");
-				Log.Write("debug", e.ToString());
+				Log.Write("debug", e);
 
 				// HACK: this can hopefully go away in the future
 				TextNotificationsManager.Debug("Ignoring malformed order that would have crashed the game");

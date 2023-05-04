@@ -158,10 +158,12 @@ namespace OpenRA
 			catch (Exception e)
 			{
 				mapPackage?.Dispose();
-				Console.WriteLine("Failed to load map: {0}", map);
-				Console.WriteLine("Details: {0}", e);
-				Log.Write("debug", "Failed to load map: {0}", map);
-				Log.Write("debug", "Details: {0}", e);
+				Console.WriteLine($"Failed to load map: {map}");
+				Console.WriteLine("Details:");
+				Console.WriteLine(e);
+				Log.Write("debug", $"Failed to load map: {map}");
+				Log.Write("debug", "Details:");
+				Log.Write("debug", e);
 			}
 		}
 
@@ -253,8 +255,9 @@ namespace OpenRA
 					}
 					catch (Exception e)
 					{
-						Log.Write("debug", "Remote map query failed with error: {0}", e);
-						Log.Write("debug", "URL was: {0}", url);
+						Log.Write("debug", "Remote map query failed with error:");
+						Log.Write("debug", e);
+						Log.Write("debug", $"URL was: {url}");
 
 						foreach (var uid in batchUids)
 						{
@@ -315,7 +318,8 @@ namespace OpenRA
 							}
 							catch (Exception e)
 							{
-								Log.Write("debug", "Failed to load minimap with exception: {0}", e);
+								Log.Write("debug", "Failed to load minimap with exception:");
+								Log.Write("debug", e);
 							}
 						});
 					}

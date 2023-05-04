@@ -968,7 +968,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (!Exts.TryParseIntegerInvariant(parts[1], out var team))
 				{
-					Log.Write("server", "Invalid team: {0}", s);
+					Log.Write("server", $"Invalid team: {s}");
 					return false;
 				}
 
@@ -996,7 +996,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (!Exts.TryParseIntegerInvariant(parts[1], out var handicap))
 				{
-					Log.Write("server", "Invalid handicap: {0}", s);
+					Log.Write("server", $"Invalid handicap: {s}");
 					return false;
 				}
 
@@ -1004,7 +1004,7 @@ namespace OpenRA.Mods.Common.Server
 				var options = Enumerable.Range(0, 20).Select(i => 5 * i);
 				if (!options.Contains(handicap))
 				{
-					Log.Write("server", "Invalid handicap: {0}", s);
+					Log.Write("server", $"Invalid handicap: {s}");
 					return false;
 				}
 
