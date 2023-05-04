@@ -716,7 +716,7 @@ namespace OpenRA.Platforms.Default
 			Log.Write("graphics", "");
 			Log.Write("graphics", "OpenGL Information:");
 			var vendor = glGetString(GL_VENDOR);
-			Log.Write("graphics", "Vendor: {0}", vendor);
+			Log.Write("graphics", $"Vendor: {vendor}");
 			if (vendor.Contains("Microsoft"))
 			{
 				var msg = "";
@@ -725,9 +725,9 @@ namespace OpenRA.Platforms.Default
 				Log.Write("graphics", msg);
 			}
 
-			Log.Write("graphics", "Renderer: {0}", glGetString(GL_RENDERER));
-			Log.Write("graphics", "GL Version: {0}", glGetString(GL_VERSION));
-			Log.Write("graphics", "Shader Version: {0}", glGetString(GL_SHADING_LANGUAGE_VERSION));
+			Log.Write("graphics", $"Renderer: {glGetString(GL_RENDERER)}");
+			Log.Write("graphics", $"GL Version: {glGetString(GL_VERSION)}");
+			Log.Write("graphics", $"Shader Version: {glGetString(GL_SHADING_LANGUAGE_VERSION)}");
 			Log.Write("graphics", "Available extensions:");
 
 			if (Profile != GLProfile.Legacy)

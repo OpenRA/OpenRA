@@ -60,7 +60,7 @@ namespace OpenRA
 			}
 			catch (Exception ex)
 			{
-				Log.Write("client", "Failed to parse Launch.URI or Launch.Connect: {0}", ex.Message);
+				Log.Write("client", $"Failed to parse Launch.URI or Launch.Connect: {ex.Message}");
 				return null;
 			}
 		}

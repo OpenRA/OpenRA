@@ -263,13 +263,13 @@ namespace OpenRA.Graphics
 
 			if (!collections.TryGetValue(collectionName, out var collection))
 			{
-				Log.Write("debug", "Could not find collection '{0}'", collectionName);
+				Log.Write("debug", $"Could not find collection '{collectionName}'");
 				return new Size(0, 0);
 			}
 
 			if (collection.PanelRegion == null || collection.PanelRegion.Length != 8)
 			{
-				Log.Write("debug", "Collection '{0}' does not define a valid PanelRegion", collectionName);
+				Log.Write("debug", $"Collection '{collectionName}' does not define a valid PanelRegion");
 				return new Size(0, 0);
 			}
 

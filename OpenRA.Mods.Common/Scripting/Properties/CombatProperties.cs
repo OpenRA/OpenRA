@@ -91,10 +91,10 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			var target = Target.FromActor(targetActor);
 			if (!target.IsValidFor(Self))
-				Log.Write("lua", "{1} is an invalid target for {0}!", Self, targetActor);
+				Log.Write("lua", $"{targetActor} is an invalid target for {Self}!");
 
 			if (!targetActor.Info.HasTraitInfo<FrozenUnderFogInfo>() && !targetActor.CanBeViewedByPlayer(Self.Owner))
-				Log.Write("lua", "{1} is not revealed for player {0}!", Self.Owner, targetActor);
+				Log.Write("lua", $"{targetActor} is not revealed for player {Self.Owner}!");
 
 			foreach (var attack in attackBases)
 				attack.AttackTarget(target, AttackSource.Default, true, allowMove, forceAttack);

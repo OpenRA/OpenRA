@@ -216,7 +216,7 @@ namespace OpenRA
 			{
 				var logic = PlayerActor.TraitsImplementing<IBot>().FirstOrDefault(b => b.Info.Type == BotType);
 				if (logic == null)
-					Log.Write("debug", "Invalid bot type: {0}", BotType);
+					Log.Write("debug", $"Invalid bot type: {BotType}");
 				else
 					logic.Activate(this);
 			}

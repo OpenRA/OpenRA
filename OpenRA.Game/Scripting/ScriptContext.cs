@@ -219,10 +219,10 @@ namespace OpenRA.Scripting
 		public void FatalError(string message)
 		{
 			var stacktrace = new StackTrace().ToString();
-			Console.WriteLine("Fatal Lua Error: {0}", message);
+			Console.WriteLine($"Fatal Lua Error: {message}");
 			Console.WriteLine(stacktrace);
 
-			Log.Write("lua", "Fatal Lua Error: {0}", message);
+			Log.Write("lua", $"Fatal Lua Error: {message}");
 			Log.Write("lua", stacktrace);
 
 			FatalErrorOccurred = true;

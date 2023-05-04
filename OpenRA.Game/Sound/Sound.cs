@@ -60,7 +60,7 @@ namespace OpenRA
 		{
 			if (!fileSystem.Exists(filename))
 			{
-				Log.Write("sound", "LoadSound, file does not exist: {0}", filename);
+				Log.Write("sound", $"LoadSound, file does not exist: {filename}");
 				return default;
 			}
 

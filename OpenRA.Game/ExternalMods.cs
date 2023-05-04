@@ -81,8 +81,8 @@ namespace OpenRA
 					}
 					catch (Exception e)
 					{
-						Log.Write("debug", "Failed to parse mod metadata file '{0}'", path);
-						Log.Write("debug", e.ToString());
+						Log.Write("debug", $"Failed to parse mod metadata file '{path}'");
+						Log.Write("debug", e);
 					}
 				}
 			}
@@ -174,7 +174,7 @@ namespace OpenRA
 				catch (Exception e)
 				{
 					Log.Write("debug", "Failed to register current mod metadata");
-					Log.Write("debug", e.ToString());
+					Log.Write("debug", e);
 				}
 			}
 		}
@@ -213,8 +213,8 @@ namespace OpenRA
 					}
 					catch (Exception e)
 					{
-						Log.Write("debug", "Failed to parse mod metadata file '{0}'", path);
-						Log.Write("debug", e.ToString());
+						Log.Write("debug", $"Failed to parse mod metadata file '{path}'");
+						Log.Write("debug", e);
 					}
 
 					// Remove from the ingame mod switcher
@@ -225,12 +225,12 @@ namespace OpenRA
 					try
 					{
 						File.Delete(path);
-						Log.Write("debug", "Removed invalid mod metadata file '{0}'", path);
+						Log.Write("debug", $"Removed invalid mod metadata file '{path}'");
 					}
 					catch (Exception e)
 					{
-						Log.Write("debug", "Failed to remove mod metadata file '{0}'", path);
-						Log.Write("debug", e.ToString());
+						Log.Write("debug", $"Failed to remove mod metadata file '{path}'");
+						Log.Write("debug", e);
 					}
 				}
 			}
@@ -251,8 +251,8 @@ namespace OpenRA
 				}
 				catch (Exception e)
 				{
-					Log.Write("debug", "Failed to remove mod metadata file '{0}'", path);
-					Log.Write("debug", e.ToString());
+					Log.Write("debug", $"Failed to remove mod metadata file '{path}'");
+					Log.Write("debug", e);
 				}
 			}
 		}

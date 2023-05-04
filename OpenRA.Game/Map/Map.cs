@@ -441,7 +441,8 @@ namespace OpenRA
 			}
 			catch (Exception e)
 			{
-				Log.Write("debug", "Failed to load rules for {0} with error {1}", Title, e);
+				Log.Write("debug", $"Failed to load rules for {Title} with error");
+				Log.Write("debug", e);
 				InvalidCustomRules = true;
 				InvalidCustomRulesException = e;
 				Rules = Ruleset.LoadDefaultsForTileSet(modData, Tileset);
@@ -1204,7 +1205,7 @@ namespace OpenRA
 				// This shouldn't happen.  But if it does, return the original value and hope the caller doesn't explode.
 				if (unProjected.Count == 0)
 				{
-					Log.Write("debug", "Failed to clamp map cell {0} to map bounds", uv);
+					Log.Write("debug", $"Failed to clamp map cell {uv} to map bounds");
 					return uv;
 				}
 			}
@@ -1276,7 +1277,7 @@ namespace OpenRA
 				// This shouldn't happen.  But if it does, return the original value and hope the caller doesn't explode.
 				if (unProjected.Count == 0)
 				{
-					Log.Write("debug", "Failed to find closest edge for map cell {0}", uv);
+					Log.Write("debug", $"Failed to find closest edge for map cell {uv}");
 					return uv;
 				}
 			}

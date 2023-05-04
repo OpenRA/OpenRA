@@ -128,7 +128,8 @@ namespace OpenRA.Network
 			}
 			catch (Exception e)
 			{
-				Log.Write("geoip", "DatabaseReader failed: {0}", e);
+				Log.Write("geoip", "DatabaseReader failed:");
+				Log.Write("geoip", e);
 			}
 		}
 
@@ -142,7 +143,8 @@ namespace OpenRA.Network
 				}
 				catch (Exception e)
 				{
-					Log.Write("geoip", "LookupCountry failed: {0}", e);
+					Log.Write("geoip", "LookupCountry failed:");
+					Log.Write("geoip", e);
 				}
 			}
 

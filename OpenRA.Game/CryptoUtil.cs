@@ -187,8 +187,10 @@ namespace OpenRA
 			}
 			catch (Exception e)
 			{
-				Log.Write("debug", "Failed to decrypt string with exception: {0}", e);
-				Console.WriteLine("String decryption failed: {0}", e);
+				Log.Write("debug", "Failed to decrypt string with exception:");
+				Log.Write("debug", e);
+				Console.WriteLine("String decryption failed:");
+				Console.WriteLine(e);
 				return null;
 			}
 		}
@@ -211,8 +213,10 @@ namespace OpenRA
 			}
 			catch (Exception e)
 			{
-				Log.Write("debug", "Failed to sign string with exception: {0}", e);
-				Console.WriteLine("String signing failed: {0}", e);
+				Log.Write("debug", "Failed to sign string with exception");
+				Log.Write("debug", e);
+				Console.WriteLine("String signing failed:");
+				Console.WriteLine(e);
 				return null;
 			}
 		}
@@ -235,8 +239,10 @@ namespace OpenRA
 			}
 			catch (Exception e)
 			{
-				Log.Write("debug", "Failed to verify signature with exception: {0}", e);
-				Console.WriteLine("Signature validation failed: {0}", e);
+				Log.Write("debug", "Failed to verify signature with exception:");
+				Log.Write("debug", e);
+				Console.WriteLine("Signature validation failed:");
+				Console.WriteLine(e);
 				return false;
 			}
 		}
