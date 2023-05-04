@@ -38,8 +38,6 @@ rallypoint:
 		Start: 221
 		Length: 8
 		ZOffset: 3072
-	circles:
-		Filename: null.shp
 
 beacon:
 	idle:

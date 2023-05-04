@@ -160,6 +160,7 @@ NAHAND:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Infantry
+		CirclesSequence:
 	CommandBarBlacklist:
 		DisableStop: false
 	Production:
@@ -209,6 +210,7 @@ NAWEAP:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Vehicle
+		CirclesSequence:
 	CommandBarBlacklist:
 		DisableStop: false
 	Exit@1:
@@ -271,6 +273,7 @@ NAHPAD:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Air
+		CirclesSequence:
 	CommandBarBlacklist:
 		DisableStop: false
 	Production:

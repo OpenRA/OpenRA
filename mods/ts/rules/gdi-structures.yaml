@@ -134,6 +134,7 @@ GAPILE:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Infantry
+		CirclesSequence:
 	CommandBarBlacklist:
 		DisableStop: false
 	Exit@1:
@@ -230,6 +231,7 @@ GAWEAP:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Vehicle
+		CirclesSequence:
 	CommandBarBlacklist:
 		DisableStop: false
 	Exit@1:
@@ -307,6 +309,7 @@ GAHPAD:
 		IsPlayerPalette: false
 		LineWidth: 2
 		ForceSetType: Air
+		CirclesSequence:
 	CommandBarBlacklist:
 		DisableStop: false
 	Production:
@@ -375,6 +378,7 @@ GADEPT:
 		Palette: mouse
 		IsPlayerPalette: false
 		LineWidth: 2
+		CirclesSequence:
 	CommandBarBlacklist:
 		DisableStop: false
 	WithIdleOverlay@LIGHT:
