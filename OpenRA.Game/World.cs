@@ -240,7 +240,7 @@ namespace OpenRA
 				Version = Game.ModData.Manifest.Metadata.Version,
 
 				MapUid = Map.Uid,
-				MapTitle = Map.Title
+				MapTitle = (Map as IMapCredentials)?.Title
 			};
 
 			RulesContainTemporaryBlocker = Map.Rules.Actors.Any(a => a.Value.HasTraitInfo<ITemporaryBlockerInfo>());

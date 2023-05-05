@@ -149,7 +149,7 @@ namespace OpenRA
 		}
 	}
 
-	public class Map : IReadOnlyFileSystem, IDisposable
+	public class Map : IReadOnlyFileSystem, IMapCredentials, IDisposable
 	{
 		public const int SupportedMapFormat = 11;
 		public const int CurrentMapFormat = 12;
@@ -160,8 +160,8 @@ namespace OpenRA
 		{
 			new MapField("MapFormat"),
 			new MapField("RequiresMod"),
-			new MapField("Title"),
-			new MapField("Author"),
+			new MapField(nameof(IMapCredentials.Title)),
+			new MapField(nameof(IMapCredentials.Author)),
 			new MapField("Tileset"),
 			new MapField("MapSize"),
 			new MapField("Bounds"),
@@ -186,8 +186,8 @@ namespace OpenRA
 
 		// Standard yaml metadata
 		public string RequiresMod;
-		public string Title;
-		public string Author;
+		public string Title { get; private set; }
+		public string Author { get; private set; }
 		public string Tileset;
 		public bool LockPreview;
 		public Rectangle Bounds;
@@ -323,8 +323,7 @@ namespace OpenRA
 			var size = new Size(width, height);
 			Grid = modData.Manifest.Get<MapGrid>();
 
-			Title = "Name your map here";
-			Author = "Your name here";
+			SetCredentials("Name your map here", "Your name here");
 
 			MapSize = new int2(size);
 			Tileset = terrainInfo.Id;
@@ -430,6 +429,12 @@ namespace OpenRA
 			PostInit();
 
 			Uid = ComputeUID(Package, MapFormat);
+		}
+
+		public void SetCredentials(string title, string author)
+		{
+			Title = title;
+			Author = author;
 		}
 
 		void PostInit()

@@ -103,7 +103,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			if (!worldOwnerFound)
-				throw new InvalidOperationException($"Map {w.Map.Title} does not define a player actor owning the world.");
+				throw new InvalidOperationException($"Map {(w.Map as IMapCredentials)?.Title} does not define a player actor owning the world.");
 
 			Player localPlayer = null;
 

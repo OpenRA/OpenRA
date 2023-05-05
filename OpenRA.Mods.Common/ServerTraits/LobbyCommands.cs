@@ -636,7 +636,7 @@ namespace OpenRA.Mods.Common.Server
 
 						server.SyncLobbyInfo();
 
-						server.SendLocalizedMessage(ChangedMap, Translation.Arguments("player", client.Name, "map", server.Map.Title));
+						server.SendLocalizedMessage(ChangedMap, Translation.Arguments("player", client.Name, "map", (server.Map as IMapCredentials)?.Title));
 
 						if ((server.LobbyInfo.GlobalSettings.MapStatus & Session.MapStatus.UnsafeCustomRules) != 0)
 							server.SendLocalizedMessage(CustomRules);

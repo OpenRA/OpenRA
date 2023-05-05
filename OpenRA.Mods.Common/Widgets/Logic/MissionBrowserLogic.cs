@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var title = widget.GetOrNull<LabelWidget>("MISSIONBROWSER_TITLE");
 			if (title != null)
-				title.GetText = () => playingVideo != PlayingVideo.None ? selectedMap.Title : title.Text;
+				title.GetText = () => playingVideo != PlayingVideo.None ? (selectedMap as IMapCredentials)?.Title : title.Text;
 
 			widget.Get("MISSION_INFO").IsVisible = () => selectedMap != null;
 
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					() => StartMissionClicked(onExit));
 
 				var label = item.Get<LabelWithTooltipWidget>("TITLE");
-				WidgetUtils.TruncateLabelToTooltip(label, preview.Title);
+				WidgetUtils.TruncateLabelToTooltip(label, (preview as IMapCredentials)?.Title);
 
 				missionList.AddChild(item);
 			}

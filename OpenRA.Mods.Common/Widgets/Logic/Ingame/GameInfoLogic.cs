@@ -127,7 +127,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var titleText = widget.Get<LabelWidget>("TITLE");
 
-			var mapTitle = world.Map.Title;
+			var mapTitle = (world.Map as IMapCredentials)?.Title ?? "";
 			var firstCategory = world.Map.Categories.FirstOrDefault();
 			if (firstCategory != null)
 				mapTitle = firstCategory + ": " + mapTitle;

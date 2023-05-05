@@ -80,11 +80,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public SaveMapLogic(Widget widget, ModData modData, Map map, Action<string> onSave, Action onExit,
 			World world, List<MiniYamlNode> playerDefinitions, List<MiniYamlNode> actorDefinitions)
 		{
+			var credentials = map as IMapCredentials;
 			var title = widget.Get<TextFieldWidget>("TITLE");
-			title.Text = map.Title;
+			title.Text = credentials?.Title;
 
 			var author = widget.Get<TextFieldWidget>("AUTHOR");
-			author.Text = map.Author;
+			author.Text = credentials?.Author;
 
 			var visibilityPanel = Ui.LoadWidget("MAP_SAVE_VISIBILITY_PANEL", null, new WidgetArgs());
 			var visOptionTemplate = visibilityPanel.Get<CheckboxWidget>("VISIBILITY_TEMPLATE");
@@ -195,8 +196,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			void SaveMap(string combinedPath)
 			{
-				map.Title = title.Text;
-				map.Author = author.Text;
+				(map as IMapCredentials)?.SetCredentials(title.Text, author.Text);
 
 				if (actorDefinitions != null)
 					map.ActorDefinitions = actorDefinitions;

@@ -320,7 +320,7 @@ label-downloading-map = Downloading { $size } kB
 label-downloading-map-progress = Downloading { $size } kB ({ $progress }%)
 button-retry-install = Retry Install
 button-retry-search = Retry Search
-## also MapChooserLogic
+## also MapChooserLogic, ServerCreationLogic
 label-created-by = Created by { $author }
 
 ## SpawnSelectorTooltipLogic

@@ -18,12 +18,14 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
-			Run(emitError, map.MapFormat, map.Author, map.Title, map.Categories);
+			var credentials = map as IMapCredentials;
+			Run(emitError, map.MapFormat, credentials?.Author, credentials?.Title, map.Categories);
 		}
 
 		void ILintServerMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, MapPreview map, Ruleset mapRules)
 		{
-			Run(emitError, map.MapFormat, map.Author, map.Title, map.Categories);
+			var credentials = map as IMapCredentials;
+			Run(emitError, map.MapFormat, credentials?.Author, credentials?.Title, map.Categories);
 		}
 
 		void Run(Action<string> emitError, int mapFormat, string author, string title, string[] categories)

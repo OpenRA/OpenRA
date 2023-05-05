@@ -326,11 +326,8 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			if (terrainInfo == null)
 				throw new InvalidDataException("The D2k map importer requires the DefaultTerrain parser.");
 
-			map = new Map(Game.ModData, terrainInfo, mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth)
-			{
-				Title = Path.GetFileNameWithoutExtension(mapFile),
-				Author = "Westwood Studios"
-			};
+			map = new Map(Game.ModData, terrainInfo, mapSize.Width + 2 * MapCordonWidth, mapSize.Height + 2 * MapCordonWidth);
+			(map as IMapCredentials)?.SetCredentials(Path.GetFileNameWithoutExtension(mapFile), "Westwood Studios");
 
 			var tl = new PPos(MapCordonWidth, MapCordonWidth);
 			var br = new PPos(MapCordonWidth + mapSize.Width - 1, MapCordonWidth + mapSize.Height - 1);
