@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -38,11 +39,9 @@ namespace OpenRA.Mods.Common.Traits
 		readonly ProvidesTechPrerequisiteInfo info;
 		readonly bool enabled;
 
-		static readonly string[] NoPrerequisites = Array.Empty<string>();
-
 		public string Name => info.Name;
 
-		public IEnumerable<string> ProvidesPrerequisites => enabled ? info.Prerequisites : NoPrerequisites;
+		public IEnumerable<string> ProvidesPrerequisites => enabled ? info.Prerequisites : Enumerable.Empty<string>();
 
 		public ProvidesTechPrerequisite(ProvidesTechPrerequisiteInfo info, ActorInitializer init)
 		{
