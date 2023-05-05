@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -71,9 +70,9 @@ namespace OpenRA.Mods.Common.Traits
 					^ !ownedPrereqs.ContainsKey(p.Replace("!", "").Replace("~", ""))));
 		}
 
-		static Cache<string, List<Actor>> GatherOwnedPrerequisites(Player player)
+		static Dictionary<string, int> GatherOwnedPrerequisites(Player player)
 		{
-			var ret = new Cache<string, List<Actor>>(x => new List<Actor>());
+			var ret = new Dictionary<string, int>();
 			if (player == null)
 				return ret;
 
@@ -89,7 +88,8 @@ namespace OpenRA.Mods.Common.Traits
 					if (p == null)
 						continue;
 
-					ret[p].Add(b.Actor);
+					ret.TryGetValue(p, out var count);
+					ret[p] = count + 1;
 				}
 			}
 
@@ -103,7 +103,11 @@ namespace OpenRA.Mods.Common.Traits
 					a.Actor.Info.TraitInfo<BuildableInfo>().BuildLimit > 0);
 
 			foreach (var buildable in buildables)
-				ret[buildable.Actor.Info.Name].Add(buildable.Actor);
+			{
+				var name = buildable.Actor.Info.Name;
+				ret.TryGetValue(name, out var count);
+				ret[name] = count + 1;
+			}
 
 			return ret;
 		}
@@ -132,7 +136,7 @@ namespace OpenRA.Mods.Common.Traits
 				hidden = false;
 			}
 
-			bool HasPrerequisites(Cache<string, List<Actor>> ownedPrerequisites)
+			bool HasPrerequisites(Dictionary<string, int> ownedPrerequisites)
 			{
 				// PERF: Avoid LINQ.
 				foreach (var prereq in prerequisites)
@@ -145,7 +149,7 @@ namespace OpenRA.Mods.Common.Traits
 				return true;
 			}
 
-			bool IsHidden(Cache<string, List<Actor>> ownedPrerequisites)
+			bool IsHidden(Dictionary<string, int> ownedPrerequisites)
 			{
 				// PERF: Avoid LINQ.
 				foreach (var prereq in prerequisites)
@@ -160,12 +164,12 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 			}
 
-			public void Update(Cache<string, List<Actor>> ownedPrerequisites)
+			public void Update(Dictionary<string, int> ownedPrerequisites)
 			{
-				var hasReachedLimit = limit > 0 && ownedPrerequisites.ContainsKey(Key) && ownedPrerequisites[Key].Count >= limit;
+				var hasReachedLimit = limit > 0 && ownedPrerequisites.TryGetValue(Key, out var count) && count >= limit;
 
 				// The '!' annotation inverts prerequisites: "I'm buildable if this prerequisite *isn't* met"
-				var nowHasPrerequisites = HasPrerequisites(ownedPrerequisites) && !hasReachedLimit;
+				var nowHasPrerequisites = !hasReachedLimit && HasPrerequisites(ownedPrerequisites);
 				var nowHidden = IsHidden(ownedPrerequisites);
 
 				if (initialized == false)

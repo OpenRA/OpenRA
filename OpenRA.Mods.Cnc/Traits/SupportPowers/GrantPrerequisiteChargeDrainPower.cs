@@ -43,6 +43,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	public class GrantPrerequisiteChargeDrainPower : SupportPower, ITechTreePrerequisite, INotifyOwnerChanged
 	{
 		readonly GrantPrerequisiteChargeDrainPowerInfo info;
+		readonly string[] prerequisites;
 		TechTree techTree;
 		bool active;
 
@@ -50,6 +51,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			: base(self, info)
 		{
 			this.info = info;
+			prerequisites = new[] { info.Prerequisite };
 		}
 
 		protected override void Created(Actor self)
@@ -82,16 +84,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			techTree.ActorChanged(self);
 		}
 
-		IEnumerable<string> ITechTreePrerequisite.ProvidesPrerequisites
-		{
-			get
-			{
-				if (!active)
-					yield break;
-
-				yield return info.Prerequisite;
-			}
-		}
+		IEnumerable<string> ITechTreePrerequisite.ProvidesPrerequisites => active ? prerequisites : Enumerable.Empty<string>();
 
 		public class DischargeableSupportPowerInstance : SupportPowerInstance
 		{
