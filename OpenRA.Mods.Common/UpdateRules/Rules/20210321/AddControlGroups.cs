@@ -20,11 +20,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "A new trait ControlGroups was added, splitting logic away from Selection.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			if (actorNode.ChildrenMatching("Selection").Any(x => !x.IsRemoval())
 			    && !actorNode.ChildrenMatching("ControlGroups").Any())
-				actorNode.AddNode(new MiniYamlNode("ControlGroups", ""));
+				actorNode.AddNode(new MiniYamlNodeBuilder("ControlGroups", ""));
 
 			yield break;
 		}

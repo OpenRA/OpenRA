@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "The 'HealUnitsCrateAction' has been renamed to 'HealActorsCrateAction'.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var huca in actorNode.ChildrenMatching("HealUnitsCrateAction"))
 				huca.RenameKey("HealActorsCrateAction");

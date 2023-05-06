@@ -251,10 +251,8 @@ namespace OpenRA.Network
 				root.Add(new MiniYamlNode("Mods", Mod + "@" + Version));
 			}
 
-			var clientsNode = new MiniYaml("");
-			var i = 0;
-			foreach (var c in Clients)
-				clientsNode.Nodes.Add(new MiniYamlNode("Client@" + i++.ToString(), FieldSaver.Save(c)));
+			var clientsNode = new MiniYaml("", Clients.Select((c, i) =>
+				new MiniYamlNode("Client@" + i, FieldSaver.Save(c))));
 
 			root.Add(new MiniYamlNode("Clients", clientsNode));
 			return new MiniYaml("", root)

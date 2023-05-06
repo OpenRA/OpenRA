@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "The InfiltrateForCash Notification has been renamed to be in line with new notification properties added.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var rp in actorNode.ChildrenMatching("InfiltrateForCash"))
 				rp.RenameChildrenMatching("Notification", "InfiltratedNotification");

@@ -500,7 +500,7 @@ namespace OpenRA
 			if (yaml == null)
 				return Activator.CreateInstance(fieldType);
 
-			var dict = Activator.CreateInstance(fieldType, yaml.Nodes.Count);
+			var dict = Activator.CreateInstance(fieldType, yaml.Nodes.Length);
 			var arguments = fieldType.GetGenericArguments();
 			var addMethod = fieldType.GetMethod(nameof(Dictionary<object, object>.Add), arguments);
 			var addArgs = new object[2];

@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			locations.Clear();
 		}
 
-		public override IEnumerable<string> UpdateWeaponNode(ModData modData, MiniYamlNode weaponNode)
+		public override IEnumerable<string> UpdateWeaponNode(ModData modData, MiniYamlNodeBuilder weaponNode)
 		{
 			foreach (var projectileNode in weaponNode.ChildrenMatching("Projectile"))
 				if (projectileNode.RemoveNodes("ShadowPalette") > 0)
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			yield break;
 		}
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var node in actorNode.ChildrenMatching("WithShadow"))
 				if (node.RemoveNodes("Palette") > 0)

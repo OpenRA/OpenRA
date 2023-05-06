@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Widgets;
 
@@ -64,7 +65,7 @@ namespace OpenRA.Mods.Common.Lint
 		}
 
 		void CheckInner(ModData modData, string[] namedKeys, (string Widget, string Field)[] checkWidgetFields, Dictionary<string, List<string>> customLintMethods,
-			List<MiniYamlNode> nodes, string filename, MiniYamlNode parent, Action<string> emitError)
+			IEnumerable<MiniYamlNode> nodes, string filename, MiniYamlNode parent, Action<string> emitError)
 		{
 			foreach (var node in nodes)
 			{
@@ -94,7 +95,7 @@ namespace OpenRA.Mods.Common.Lint
 				}
 
 				// Logic classes can declare the data key names that specify hotkeys.
-				if (node.Key == "Logic" && node.Value.Nodes.Count > 0)
+				if (node.Key == "Logic" && node.Value.Nodes.Length > 0)
 				{
 					var typeNames = FieldLoader.GetValue<string[]>(node.Key, node.Value.Value);
 					var checkArgKeys = new List<string>();

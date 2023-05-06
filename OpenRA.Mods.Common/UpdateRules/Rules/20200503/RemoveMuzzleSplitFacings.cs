@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"The same result can be created by using `Combine` in the sequence definitions to\n" +
 			"assemble the different facings sprites into a single sequence.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var a in actorNode.ChildrenMatching("Armament"))
 			{

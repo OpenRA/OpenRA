@@ -18,7 +18,7 @@ using OpenRA.Mods.Common.UpdateRules;
 
 namespace OpenRA.Mods.Common.UtilityCommands
 {
-	using YamlFileSet = List<(IReadWritePackage, string, List<MiniYamlNode>)>;
+	using YamlFileSet = List<(IReadWritePackage, string, List<MiniYamlNodeBuilder>)>;
 
 	sealed class UpdateModCommand : IUtilityCommand
 	{

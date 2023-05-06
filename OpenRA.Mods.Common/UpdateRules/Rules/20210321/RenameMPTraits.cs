@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"'SpawnMPUnits' was renamed to 'SpawnStartingUnits', 'MPStartUnits' to 'StartingUnits', 'MPStartLocations' to " +
 			"'MapStartingLocations', and 'CreateMPPlayers' to 'CreateMapPlayers'.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			actorNode.RenameChildrenMatching("SpawnMPUnits", "SpawnStartingUnits");
 			actorNode.RenameChildrenMatching("MPStartUnits", "StartingUnits");

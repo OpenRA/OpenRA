@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override string Description =>
 			"Each preset color can now have their brightness specified. SimilarityThreshold range was changed.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			var manager = actorNode.LastChildMatching("ColorPickerManager");
 			if (manager == null)

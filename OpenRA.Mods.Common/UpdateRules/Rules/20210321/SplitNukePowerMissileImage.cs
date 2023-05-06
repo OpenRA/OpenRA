@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"NukePower used MissileWeapon field for as the name for missile image too.\n" +
 			"This function has been moved to its own MissileImage field.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var nukePowerNode in actorNode.ChildrenMatching("NukePower"))
 			{
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				if (missileWeaponNode != null)
 				{
 					var weapon = missileWeaponNode.NodeValue<string>();
-					nukePowerNode.AddNode(new MiniYamlNode("MissileImage", weapon));
+					nukePowerNode.AddNode(new MiniYamlNodeBuilder("MissileImage", weapon));
 				}
 			}
 

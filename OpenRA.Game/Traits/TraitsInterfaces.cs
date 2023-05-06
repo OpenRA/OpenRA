@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -349,7 +350,7 @@ namespace OpenRA.Traits
 	public interface IGameSaveTraitData
 	{
 		List<MiniYamlNode> IssueTraitData(Actor self);
-		void ResolveTraitData(Actor self, List<MiniYamlNode> data);
+		void ResolveTraitData(Actor self, ImmutableArray<MiniYamlNode> data);
 	}
 
 	[RequireExplicitImplementation]

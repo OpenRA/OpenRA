@@ -21,9 +21,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "Negative sequence length is no longer allowed, define individual frames in reverse instead.";
 
-		List<MiniYamlNode> resolvedImagesNodes;
+		List<MiniYamlNodeBuilder> resolvedImagesNodes;
 
-		public IEnumerable<string> BeforeUpdateSequences(ModData modData, List<MiniYamlNode> resolvedImagesNodes)
+		public IEnumerable<string> BeforeUpdateSequences(ModData modData, List<MiniYamlNodeBuilder> resolvedImagesNodes)
 		{
 			this.resolvedImagesNodes = resolvedImagesNodes;
 			yield break;
@@ -31,12 +31,12 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		readonly Queue<Action> actionQueue = new();
 
-		static MiniYamlNode GetNode(string key, MiniYamlNode node, MiniYamlNode defaultNode)
+		static MiniYamlNodeBuilder GetNode(string key, MiniYamlNodeBuilder node, MiniYamlNodeBuilder defaultNode)
 		{
 			return node.LastChildMatching(key, includeRemovals: false) ?? defaultNode?.LastChildMatching(key, includeRemovals: false);
 		}
 
-		public override IEnumerable<string> UpdateSequenceNode(ModData modData, MiniYamlNode sequenceNode)
+		public override IEnumerable<string> UpdateSequenceNode(ModData modData, MiniYamlNodeBuilder sequenceNode)
 		{
 			var defaultNode = sequenceNode.LastChildMatching("Defaults");
 			var defaultLengthNode = defaultNode == null ? null : GetNode("Length", defaultNode, null);

@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "The 'GiveMcvCrateAction' has been renamed to 'GiveBaseBuilderCrateAction'.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var node in actorNode.ChildrenMatching("GiveMcvCrateAction"))
 				node.RenameKey("GiveBaseBuilderCrateAction");

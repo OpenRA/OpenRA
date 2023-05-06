@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Terrain
 			}
 			else
 			{
-				tileInfo = new TerrainTileInfo[nodes.Count];
+				tileInfo = new TerrainTileInfo[nodes.Length];
 
 				var i = 0;
 				foreach (var node in nodes)

@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			locations.Clear();
 		}
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			var locationKey = $"{actorNode.Key} ({actorNode.Location.Filename})";
 			var anyConditionalSmokeTrail = false;
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 			if (anyConditionalSmokeTrail)
 			{
-				var grantCondition = new MiniYamlNode("GrantConditionOnDamageState@SmokeTrail", "");
+				var grantCondition = new MiniYamlNodeBuilder("GrantConditionOnDamageState@SmokeTrail", "");
 				grantCondition.AddNode("Condition", FieldSaver.FormatValue("enable-smoke"));
 				actorNode.AddNode(grantCondition);
 			}

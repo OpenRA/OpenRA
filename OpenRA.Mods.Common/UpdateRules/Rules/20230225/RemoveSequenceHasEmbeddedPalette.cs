@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			locations.Clear();
 		}
 
-		public override IEnumerable<string> UpdateSequenceNode(ModData modData, MiniYamlNode imageNode)
+		public override IEnumerable<string> UpdateSequenceNode(ModData modData, MiniYamlNodeBuilder imageNode)
 		{
 			foreach (var sequenceNode in imageNode.Value.Nodes)
 				sequenceNode.RemoveNodes("HasEmbeddedPalette");
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			yield break;
 		}
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var traitNode in actorNode.ChildrenMatching("PaletteFromEmbeddedSpritePalette"))
 			{

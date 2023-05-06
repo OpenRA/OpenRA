@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override string Description =>
 			"Change the field name from RemoveTime to DisplayDurationMs and convert the value from ticks to milliseconds";
 
-		public override IEnumerable<string> UpdateChromeNode(ModData modData, MiniYamlNode chromeNode)
+		public override IEnumerable<string> UpdateChromeNode(ModData modData, MiniYamlNodeBuilder chromeNode)
 		{
 			if (!chromeNode.KeyMatches("TextNotificationsDisplay"))
 				yield break;

@@ -32,12 +32,12 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			locations.Clear();
 		}
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var veteranProductionIconOverlay in actorNode.ChildrenMatching("VeteranProductionIconOverlay"))
 			{
 				veteranProductionIconOverlay.RenameKey("ProductionIconOverlayManager");
-				veteranProductionIconOverlay.AddNode(new MiniYamlNode("Type", "Veterancy"));
+				veteranProductionIconOverlay.AddNode(new MiniYamlNodeBuilder("Type", "Veterancy"));
 			}
 
 			foreach (var producibleWithLevel in actorNode.ChildrenMatching("ProducibleWithLevel"))

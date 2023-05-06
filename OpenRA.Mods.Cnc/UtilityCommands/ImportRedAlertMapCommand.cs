@@ -94,6 +94,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 		void UnpackOverlayData(MemoryStream ms)
 		{
+			var nodes = new List<MiniYamlNode>();
 			for (var j = 0; j < MapSize; j++)
 			{
 				for (var i = 0; i < MapSize; i++)
@@ -115,11 +116,12 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 							new OwnerInit("Neutral")
 						};
 
-						var actorCount = Map.ActorDefinitions.Count;
-						Map.ActorDefinitions.Add(new MiniYamlNode("Actor" + actorCount++, ar.Save()));
+						nodes.Add(new MiniYamlNode("Actor" + (Map.ActorDefinitions.Count + nodes.Count), ar.Save()));
 					}
 				}
 			}
+
+			Map.ActorDefinitions = Map.ActorDefinitions.Concat(nodes).ToArray();
 		}
 
 		public override string ParseTreeActor(string input)
@@ -241,12 +243,12 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			LoadActors(file, "SHIPS", Players, Map);
 		}
 
-		public override void SaveWaypoint(int waypointNumber, ActorReference waypointReference)
+		public override MiniYamlNode SaveWaypoint(int waypointNumber, ActorReference waypointReference)
 		{
 			var waypointName = "waypoint" + waypointNumber;
 			if (waypointNumber == 98)
 				waypointName = "DefaultCameraPosition";
-			Map.ActorDefinitions.Add(new MiniYamlNode(waypointName, waypointReference.Save()));
+			return new MiniYamlNode(waypointName, waypointReference.Save());
 		}
 	}
 }

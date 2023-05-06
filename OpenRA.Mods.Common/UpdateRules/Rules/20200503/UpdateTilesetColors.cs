@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "The LeftColor and RightColor keys in tilesets have been renamed to MinColor and MaxColor to reflect their proper usage.";
 
-		public override IEnumerable<string> UpdateTilesetNode(ModData modData, MiniYamlNode tilesetNode)
+		public override IEnumerable<string> UpdateTilesetNode(ModData modData, MiniYamlNodeBuilder tilesetNode)
 		{
 			if (tilesetNode.Key == "Templates")
 			{

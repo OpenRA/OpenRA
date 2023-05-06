@@ -486,7 +486,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (string.IsNullOrEmpty(bl.Data))
 							continue;
 
-						var game = MiniYaml.FromString(bl.Data)[0].Value;
+						var game = new MiniYamlBuilder(MiniYaml.FromString(bl.Data)[0].Value);
 						var idNode = game.Nodes.FirstOrDefault(n => n.Key == "Id");
 
 						// Skip beacons created by this instance and replace Id by expected int value
@@ -499,9 +499,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							if (addressNode != null)
 								addressNode.Value.Value = bl.Address.ToString().Split(':')[0] + ":" + addressNode.Value.Value.Split(':')[1];
 
-							game.Nodes.Add(new MiniYamlNode("Location", "Local Network"));
+							game.Nodes.Add(new MiniYamlNodeBuilder("Location", "Local Network"));
 
-							lanGames.Add(new GameServer(game));
+							lanGames.Add(new GameServer(game.Build()));
 						}
 					}
 					catch

@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		[ObjectCreator.UseCtor]
 		public SaveMapLogic(Widget widget, ModData modData, Map map, Action<string> onSave, Action onExit,
-			World world, List<MiniYamlNode> playerDefinitions, List<MiniYamlNode> actorDefinitions)
+			World world, IReadOnlyCollection<MiniYamlNode> playerDefinitions, IReadOnlyCollection<MiniYamlNode> actorDefinitions)
 		{
 			var title = widget.Get<TextFieldWidget>("TITLE");
 			title.Text = map.Title;

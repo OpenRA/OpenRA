@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override string Description =>
 			"Change the field name from Button to TabButton and add ArrowButton, if Button field was set.";
 
-		public override IEnumerable<string> UpdateChromeNode(ModData modData, MiniYamlNode chromeNode)
+		public override IEnumerable<string> UpdateChromeNode(ModData modData, MiniYamlNodeBuilder chromeNode)
 		{
 			if (!chromeNode.KeyMatches("ProductionTabs"))
 				yield break;
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}
 
 			if (buttonCollection != null)
-				chromeNode.AddNode(new MiniYamlNode("ArrowButton", buttonCollection));
+				chromeNode.AddNode(new MiniYamlNodeBuilder("ArrowButton", buttonCollection));
 		}
 	}
 }

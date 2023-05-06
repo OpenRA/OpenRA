@@ -72,9 +72,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			harvesterPipLocations.Clear();
 		}
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
-			var addNodes = new List<MiniYamlNode>();
+			var addNodes = new List<MiniYamlNodeBuilder>();
 
 			foreach (var selectionDecorations in actorNode.ChildrenMatching("SelectionDecorations"))
 			{
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 			foreach (var ammoPool in actorNode.ChildrenMatching("AmmoPool"))
 			{
-				var ammoPips = new MiniYamlNode("WithAmmoPipsDecoration", "");
+				var ammoPips = new MiniYamlNodeBuilder("WithAmmoPipsDecoration", "");
 				ammoPips.AddNode("Position", "BottomLeft");
 				ammoPips.AddNode("RequiresSelection", "true");
 
@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					var pipCount = pipCountNode.NodeValue<int>();
 					if (pipCount == 0)
 					{
-						addNodes.Add(new MiniYamlNode("-" + ammoPips.Key, ""));
+						addNodes.Add(new MiniYamlNodeBuilder("-" + ammoPips.Key, ""));
 						continue;
 					}
 
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 			foreach (var cargo in actorNode.ChildrenMatching("Cargo"))
 			{
-				var cargoPips = new MiniYamlNode("WithCargoPipsDecoration", "");
+				var cargoPips = new MiniYamlNodeBuilder("WithCargoPipsDecoration", "");
 				cargoPips.AddNode("Position", "BottomLeft");
 				cargoPips.AddNode("RequiresSelection", "true");
 
@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					var pipCount = pipCountNode.NodeValue<int>();
 					if (pipCount == 0)
 					{
-						addNodes.Add(new MiniYamlNode("-" + cargoPips.Key, ""));
+						addNodes.Add(new MiniYamlNodeBuilder("-" + cargoPips.Key, ""));
 						continue;
 					}
 
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 			foreach (var harvester in actorNode.ChildrenMatching("Harvester"))
 			{
-				var harvesterPips = new MiniYamlNode("WithHarvesterPipsDecoration", "");
+				var harvesterPips = new MiniYamlNodeBuilder("WithHarvesterPipsDecoration", "");
 				harvesterPips.AddNode("Position", "BottomLeft");
 				harvesterPips.AddNode("RequiresSelection", "true");
 
@@ -189,7 +189,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					var pipCount = pipCountNode.NodeValue<int>();
 					if (pipCount == 0)
 					{
-						addNodes.Add(new MiniYamlNode("-" + harvesterPips.Key, ""));
+						addNodes.Add(new MiniYamlNodeBuilder("-" + harvesterPips.Key, ""));
 						continue;
 					}
 
@@ -220,7 +220,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 			foreach (var storesResources in actorNode.ChildrenMatching("StoresResources"))
 			{
-				var storagePips = new MiniYamlNode("WithResourceStoragePipsDecoration", "");
+				var storagePips = new MiniYamlNodeBuilder("WithResourceStoragePipsDecoration", "");
 				storagePips.AddNode("Position", "BottomLeft");
 				storagePips.AddNode("RequiresSelection", "true");
 
@@ -231,7 +231,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					var pipCount = pipCountNode.NodeValue<int>();
 					if (pipCount == 0)
 					{
-						addNodes.Add(new MiniYamlNode("-" + storagePips.Key, ""));
+						addNodes.Add(new MiniYamlNodeBuilder("-" + storagePips.Key, ""));
 						continue;
 					}
 

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 
@@ -56,7 +57,7 @@ namespace OpenRA
 			public readonly MiniYaml IDFiles;
 
 			[FieldLoader.Ignore]
-			public readonly List<MiniYamlNode> Install;
+			public readonly ImmutableArray<MiniYamlNode> Install;
 
 			public readonly string TooltipText;
 

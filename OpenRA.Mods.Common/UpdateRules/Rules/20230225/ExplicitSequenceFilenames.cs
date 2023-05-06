@@ -26,18 +26,18 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"Tileset specific overrides can be defined as children of the TilesetFilenames field.";
 
 		string defaultSpriteExtension = ".shp";
-		List<MiniYamlNode> resolvedImagesNodes;
+		List<MiniYamlNodeBuilder> resolvedImagesNodes;
 		readonly Dictionary<string, string> tilesetExtensions = new();
 		readonly Dictionary<string, string> tilesetCodes = new();
 		bool parseModYaml = true;
 		bool reportModYamlChanges;
 		bool disabled;
 
-		public IEnumerable<string> BeforeUpdateSequences(ModData modData, List<MiniYamlNode> resolvedImagesNodes)
+		public IEnumerable<string> BeforeUpdateSequences(ModData modData, List<MiniYamlNodeBuilder> resolvedImagesNodes)
 		{
 			// Keep a resolved copy of the sequences so we can account for values imported through inheritance or Defaults.
 			// This will be modified during processing, so take a deep copy to avoid side-effects on other update rules.
-			this.resolvedImagesNodes = MiniYaml.FromString(resolvedImagesNodes.WriteToString());
+			this.resolvedImagesNodes = MiniYaml.FromString(resolvedImagesNodes.WriteToString()).Select(n => new MiniYamlNodeBuilder(n)).ToList();
 
 			var requiredMetadata = new HashSet<string>();
 			foreach (var imageNode in resolvedImagesNodes)
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					yield break;
 				}
 
-				var spriteSequenceFormatNode = new MiniYamlNode("", spriteSequenceFormatYaml);
+				var spriteSequenceFormatNode = new MiniYamlNodeBuilder("", new MiniYamlBuilder(spriteSequenceFormatYaml));
 				var defaultSpriteExtensionNode = spriteSequenceFormatNode.LastChildMatching("DefaultSpriteExtension");
 				if (defaultSpriteExtensionNode != null)
 				{
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			reportModYamlChanges = false;
 		}
 
-		public override IEnumerable<string> UpdateSequenceNode(ModData modData, MiniYamlNode imageNode)
+		public override IEnumerable<string> UpdateSequenceNode(ModData modData, MiniYamlNodeBuilder imageNode)
 		{
 			if (disabled)
 				yield break;
@@ -154,7 +154,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					if (resolvedSequenceNode == resolvedDefaultsNode)
 						continue;
 
-					resolvedSequenceNode.Value.Nodes = MiniYaml.Merge(new[] { resolvedDefaultsNode.Value.Nodes, resolvedSequenceNode.Value.Nodes });
+					resolvedSequenceNode.Value.Nodes = MiniYaml.Merge(new[]
+					{
+						resolvedDefaultsNode.Value.Nodes.Select(n => n.Build()).ToArray(),
+						resolvedSequenceNode.Value.Nodes.Select(n => n.Build()).ToArray()
+					}).Select(n => new MiniYamlNodeBuilder(n)).ToList();
 					resolvedSequenceNode.Value.Value ??= resolvedDefaultsNode.Value.Value;
 				}
 			}
@@ -180,8 +184,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}
 
 			// Identify a suitable default for deduplication
-			MiniYamlNode defaultFilenameNode = null;
-			MiniYamlNode defaultTilesetFilenamesNode = null;
+			MiniYamlNodeBuilder defaultFilenameNode = null;
+			MiniYamlNodeBuilder defaultTilesetFilenamesNode = null;
 			foreach (var defaultsNode in imageNode.ChildrenMatching("Defaults"))
 			{
 				defaultFilenameNode = defaultsNode.LastChildMatching("Filename") ?? defaultFilenameNode;
@@ -222,12 +226,12 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					var defaultsNode = imageNode.LastChildMatching("Defaults");
 					if (defaultsNode == null)
 					{
-						defaultsNode = new MiniYamlNode("Defaults", "");
+						defaultsNode = new MiniYamlNodeBuilder("Defaults", "");
 						imageNode.Value.Nodes.Insert(inheritsNodeIndex, defaultsNode);
 					}
 
 					var nodes = MiniYaml.FromString(duplicateTilesetCount.First(kv => kv.Value == maxDuplicateTilesetCount).Key);
-					defaultTilesetFilenamesNode = new MiniYamlNode("TilesetFilenames", "", nodes);
+					defaultTilesetFilenamesNode = new MiniYamlNodeBuilder("TilesetFilenames", "", nodes);
 					defaultsNode.Value.Nodes.Insert(0, defaultTilesetFilenamesNode);
 				}
 
@@ -237,11 +241,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					var defaultsNode = imageNode.LastChildMatching("Defaults");
 					if (defaultsNode == null)
 					{
-						defaultsNode = new MiniYamlNode("Defaults", "");
+						defaultsNode = new MiniYamlNodeBuilder("Defaults", "");
 						imageNode.Value.Nodes.Insert(inheritsNodeIndex, defaultsNode);
 					}
 
-					defaultFilenameNode = new MiniYamlNode("Filename", duplicateCount.First(kv => kv.Value == maxDuplicateCount).Key);
+					defaultFilenameNode = new MiniYamlNodeBuilder("Filename", duplicateCount.First(kv => kv.Value == maxDuplicateCount).Key);
 					defaultsNode.Value.Nodes.Insert(0, defaultFilenameNode);
 				}
 			}
@@ -257,15 +261,15 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				var tilesetFilenamesNode = sequenceNode.LastChildMatching("TilesetFilenames");
 
 				if (defaultTilesetFilenamesNode != null && combineNode != null)
-					sequenceNode.Value.Nodes.Insert(0, new MiniYamlNode("TilesetFilenames", ""));
+					sequenceNode.Value.Nodes.Insert(0, new MiniYamlNodeBuilder("TilesetFilenames", ""));
 
 				if (defaultFilenameNode != null && combineNode != null)
-					sequenceNode.Value.Nodes.Insert(0, new MiniYamlNode("Filename", ""));
+					sequenceNode.Value.Nodes.Insert(0, new MiniYamlNodeBuilder("Filename", ""));
 
 				if (defaultTilesetFilenamesNode != null && tilesetFilenamesNode == null && filenameNode != null)
 				{
 					var index = sequenceNode.Value.Nodes.IndexOf(filenameNode) + 1;
-					sequenceNode.Value.Nodes.Insert(index, new MiniYamlNode("TilesetFilenames", ""));
+					sequenceNode.Value.Nodes.Insert(index, new MiniYamlNodeBuilder("TilesetFilenames", ""));
 				}
 
 				// Remove redundant overrides
@@ -334,7 +338,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					imageNode.RemoveNode(sequenceNode);
 		}
 
-		void ProcessNode(ModData modData, MiniYamlNode sequenceNode, MiniYamlNode resolvedSequenceNode, string imageName)
+		void ProcessNode(ModData modData, MiniYamlNodeBuilder sequenceNode, MiniYamlNodeBuilder resolvedSequenceNode, string imageName)
 		{
 			// "Filename" was introduced with this update rule, so that means this node was already processed and can be skipped
 			if (sequenceNode.LastChildMatching("Filename") != null)
@@ -390,7 +394,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 			if (useTilesetExtension || useTilesetCode)
 			{
-				var tilesetFilenamesNode = new MiniYamlNode("TilesetFilenames", "");
+				var tilesetFilenamesNode = new MiniYamlNodeBuilder("TilesetFilenames", "");
 				var duplicateCount = new Dictionary<string, int>();
 				foreach (var tileset in modData.DefaultTerrainInfo.Keys)
 				{
@@ -415,7 +419,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				var maxDuplicateCount = duplicateCount.MaxByOrDefault(kv => kv.Value).Value;
 				if (maxDuplicateCount > 1)
 				{
-					var filenameNode = new MiniYamlNode("Filename", duplicateCount.First(kv => kv.Value == maxDuplicateCount).Key);
+					var filenameNode = new MiniYamlNodeBuilder("Filename", duplicateCount.First(kv => kv.Value == maxDuplicateCount).Key);
 					foreach (var overrideNode in tilesetFilenamesNode.Value.Nodes.ToList())
 						if (overrideNode.Value.Value == filenameNode.Value.Value)
 							tilesetFilenamesNode.Value.Nodes.Remove(overrideNode);
@@ -431,7 +435,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				if (addExtension)
 					filename += defaultSpriteExtension;
 
-				sequenceNode.Value.Nodes.Insert(0, new MiniYamlNode("Filename", filename));
+				sequenceNode.Value.Nodes.Insert(0, new MiniYamlNodeBuilder("Filename", filename));
 			}
 
 			sequenceNode.ReplaceValue("");

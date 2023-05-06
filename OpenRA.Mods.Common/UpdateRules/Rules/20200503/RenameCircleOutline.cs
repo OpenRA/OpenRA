@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "RenderDetectionCircle and RenderShroudCircle ContrastColor have been renamed to BorderColor for consistency.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var rdc in actorNode.ChildrenMatching("RenderDetectionCircle"))
 				rdc.RenameChildrenMatching("ContrastColor", "BorderColor");

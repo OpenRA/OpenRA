@@ -21,15 +21,15 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"The ResourceType trait has been removed, and resource definitions moved to the\n" +
 			"ResourceLayer, EditorResourceLayer, ResourceRenderer, and PlayerResources traits.";
 
-		MiniYaml resourceLayer;
-		MiniYaml resourceRenderer;
-		MiniYaml values;
+		MiniYamlBuilder resourceLayer;
+		MiniYamlBuilder resourceRenderer;
+		MiniYamlBuilder values;
 
 		public override IEnumerable<string> BeforeUpdate(ModData modData)
 		{
-			resourceLayer = new MiniYaml("");
-			resourceRenderer = new MiniYaml("");
-			values = new MiniYaml("");
+			resourceLayer = new MiniYamlBuilder("");
+			resourceRenderer = new MiniYamlBuilder("");
+			values = new MiniYamlBuilder("");
 			yield break;
 		}
 
@@ -54,17 +54,17 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					"You must define a custom ResourceLayer subclass if you want to customize the default behaviour.";
 		}
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var resourceNode in actorNode.ChildrenMatching("ResourceType"))
 			{
 				var typeNode = resourceNode.LastChildMatching("Type");
 				if (typeNode != null)
 				{
-					var resourceLayerNode = new MiniYamlNode(typeNode.Value.Value, "");
+					var resourceLayerNode = new MiniYamlNodeBuilder(new MiniYamlNode(typeNode.Value.Value, ""));
 					resourceLayer.Nodes.Add(resourceLayerNode);
 
-					var resourceRendererNode = new MiniYamlNode(typeNode.Value.Value, "");
+					var resourceRendererNode = new MiniYamlNodeBuilder(new MiniYamlNode(typeNode.Value.Value, ""));
 					resourceRenderer.Nodes.Add(resourceRendererNode);
 
 					var indexNode = resourceNode.LastChildMatching("ResourceType");
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 					var valueNode = resourceNode.LastChildMatching("ValuePerUnit");
 					if (valueNode != null)
-						values.Nodes.Add(new MiniYamlNode(typeNode.Value.Value, valueNode.Value.Value));
+						values.Nodes.Add(new MiniYamlNodeBuilder(typeNode.Value.Value, valueNode.Value.Value));
 
 					var imageNode = resourceNode.LastChildMatching("Image");
 					if (imageNode != null)

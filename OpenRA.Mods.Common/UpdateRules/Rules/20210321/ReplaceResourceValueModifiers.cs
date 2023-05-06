@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override string Description => "The HarvesterResourceMultiplier trait has been removed, and the RefineryResourceMultiplier trait renamed to ResourceValueMultiplier.";
 
 		bool notified;
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			if (actorNode.RemoveNodes("HarvesterResourceModifier") > 0 && !notified)
 			{

@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "'LaysTerrain' was removed.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			if (actorNode.RemoveNodes("LaysTerrain") > 0)
 				yield return $"'LaysTerrain' was removed from {actorNode.Key} ({actorNode.Location.Filename}) without replacement.\n";

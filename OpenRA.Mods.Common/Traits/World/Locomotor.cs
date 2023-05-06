@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected static object LoadSpeeds(MiniYaml y)
 		{
 			var speeds = y.ToDictionary()["TerrainSpeeds"].Nodes;
-			var ret = new Dictionary<string, TerrainInfo>(speeds.Count);
+			var ret = new Dictionary<string, TerrainInfo>(speeds.Length);
 			foreach (var t in speeds)
 			{
 				var speed = FieldLoader.GetValue<int>("speed", t.Value.Value);

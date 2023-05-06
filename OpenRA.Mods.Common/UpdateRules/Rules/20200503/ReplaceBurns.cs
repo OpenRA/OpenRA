@@ -19,9 +19,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "Burns can be replaced using WithIdleOverlay and ChangesHealth.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
-			var addNodes = new List<MiniYamlNode>();
+			var addNodes = new List<MiniYamlNodeBuilder>();
 
 			foreach (var burns in actorNode.ChildrenMatching("Burns"))
 			{
@@ -34,13 +34,13 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				var interval = burns.LastChildMatching("Interval");
 				var intervalValue = interval != null ? interval.NodeValue<int>() : 8;
 
-				var overlay = new MiniYamlNode("WithIdleOverlay@Burns", "");
+				var overlay = new MiniYamlNodeBuilder("WithIdleOverlay@Burns", "");
 				overlay.AddNode("Image", FieldSaver.FormatValue("fire"));
 				overlay.AddNode("Sequence", FieldSaver.FormatValue(animValue));
 				overlay.AddNode("IsDecoration", FieldSaver.FormatValue(true));
 				addNodes.Add(overlay);
 
-				var changesHealth = new MiniYamlNode("ChangesHealth", "");
+				var changesHealth = new MiniYamlNodeBuilder("ChangesHealth", "");
 				changesHealth.AddNode("Step", FieldSaver.FormatValue(-damageValue));
 				changesHealth.AddNode("StartIfBelow", FieldSaver.FormatValue(101));
 				changesHealth.AddNode("Delay", FieldSaver.FormatValue(intervalValue));

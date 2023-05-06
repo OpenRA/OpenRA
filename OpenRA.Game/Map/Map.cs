@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -90,11 +91,11 @@ namespace OpenRA
 				throw new InvalidOperationException("Map does not have a field/property " + fieldName);
 
 			var t = field != null ? field.FieldType : property.PropertyType;
-			type = t == typeof(List<MiniYamlNode>) ? Type.NodeList :
+			type = t == typeof(IReadOnlyCollection<MiniYamlNode>) ? Type.NodeList :
 				t == typeof(MiniYaml) ? Type.MiniYaml : Type.Normal;
 		}
 
-		public void Deserialize(Map map, List<MiniYamlNode> nodes)
+		public void Deserialize(Map map, ImmutableArray<MiniYamlNode> nodes)
 		{
 			var node = nodes.FirstOrDefault(n => n.Key == key);
 			if (node == null)
@@ -130,14 +131,14 @@ namespace OpenRA
 			var value = field != null ? field.GetValue(map) : property.GetValue(map, null);
 			if (type == Type.NodeList)
 			{
-				var listValue = (List<MiniYamlNode>)value;
+				var listValue = (IReadOnlyCollection<MiniYamlNode>)value;
 				if (required || listValue.Count > 0)
 					nodes.Add(new MiniYamlNode(key, null, listValue));
 			}
 			else if (type == Type.MiniYaml)
 			{
 				var yamlValue = (MiniYaml)value;
-				if (required || (yamlValue != null && (yamlValue.Value != null || yamlValue.Nodes.Count > 0)))
+				if (required || (yamlValue != null && (yamlValue.Value != null || yamlValue.Nodes.Length > 0)))
 					nodes.Add(new MiniYamlNode(key, yamlValue));
 			}
 			else
@@ -197,18 +198,18 @@ namespace OpenRA
 		public int2 MapSize { get; private set; }
 
 		// Player and actor yaml. Public for access by the map importers and lint checks.
-		public List<MiniYamlNode> PlayerDefinitions = new();
-		public List<MiniYamlNode> ActorDefinitions = new();
+		public IReadOnlyCollection<MiniYamlNode> PlayerDefinitions = ImmutableArray<MiniYamlNode>.Empty;
+		public IReadOnlyCollection<MiniYamlNode> ActorDefinitions = ImmutableArray<MiniYamlNode>.Empty;
 
 		// Custom map yaml. Public for access by the map importers and lint checks
-		public readonly MiniYaml RuleDefinitions;
-		public readonly MiniYaml TranslationDefinitions;
-		public readonly MiniYaml SequenceDefinitions;
-		public readonly MiniYaml ModelSequenceDefinitions;
-		public readonly MiniYaml WeaponDefinitions;
-		public readonly MiniYaml VoiceDefinitions;
-		public readonly MiniYaml MusicDefinitions;
-		public readonly MiniYaml NotificationDefinitions;
+		public MiniYaml RuleDefinitions;
+		public MiniYaml TranslationDefinitions;
+		public MiniYaml SequenceDefinitions;
+		public MiniYaml ModelSequenceDefinitions;
+		public MiniYaml WeaponDefinitions;
+		public MiniYaml VoiceDefinitions;
+		public MiniYaml MusicDefinitions;
+		public MiniYaml NotificationDefinitions;
 
 		public readonly Dictionary<CPos, TerrainTile> ReplacedInvalidTerrainTiles = new();
 
