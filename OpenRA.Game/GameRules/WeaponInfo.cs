@@ -139,7 +139,7 @@ namespace OpenRA.GameRules
 		{
 			// Resolve any weapon-level yaml inheritance or removals
 			// HACK: The "Defaults" sequence syntax prevents us from doing this generally during yaml parsing
-			content.Nodes = MiniYaml.Merge(new[] { content.Nodes });
+			content = content.WithNodes(MiniYaml.Merge(new IReadOnlyCollection<MiniYamlNode>[] { content.Nodes }));
 			FieldLoader.Load(this, content);
 		}
 

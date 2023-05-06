@@ -238,8 +238,9 @@ namespace OpenRA.Network
 			public MiniYamlNode Serialize()
 			{
 				var data = new MiniYamlNode("GlobalSettings", FieldSaver.Save(this));
-				var options = LobbyOptions.Select(kv => new MiniYamlNode(kv.Key, FieldSaver.Save(kv.Value))).ToList();
-				data.Value.Nodes.Add(new MiniYamlNode("Options", new MiniYaml(null, options)));
+				var options = LobbyOptions.Select(kv => new MiniYamlNode(kv.Key, FieldSaver.Save(kv.Value)));
+				data = data.WithValue(data.Value.WithNodesAppended(
+					new[] { new MiniYamlNode("Options", new MiniYaml(null, options)) }));
 				return data;
 			}
 

@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "`WithNukeLaunchAnimation` has been renamed to `WithSupportPowerActivationAnimation` and `WithNukeLaunchOverlay` to `WithSupportPowerActivationOverlay`.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			actorNode.RenameChildrenMatching("WithNukeLaunchAnimation", "WithSupportPowerActivationAnimation", true);
 			actorNode.RenameChildrenMatching("WithNukeLaunchOverlay", "WithSupportPowerActivationOverlay", true);

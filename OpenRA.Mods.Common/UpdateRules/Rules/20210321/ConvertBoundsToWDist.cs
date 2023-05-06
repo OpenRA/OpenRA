@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		readonly string[] traits = { "Interactable", "Selectable", "IsometricSelectable" };
 		readonly string[] fields = { "Bounds", "DecorationBounds" };
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			var grid = modData.Manifest.Get<MapGrid>();
 			var tileSize = grid.TileSize;

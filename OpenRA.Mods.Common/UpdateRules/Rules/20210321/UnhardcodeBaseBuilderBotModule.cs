@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class UnhardcodeBaseBuilderBotModule : UpdateRule, IBeforeUpdateActors
 	{
-		MiniYamlNode defences;
+		MiniYamlNodeBuilder defences;
 
 		// Excludes AttackBomber and AttackTDGunboatTurreted as actors with these AttackBase traits aren't supposed to be controlled.
 		readonly string[] attackBase = { "AttackLeap", "AttackPopupTurreted", "AttackAircraft", "AttackTesla", "AttackCharges", "AttackFollow", "AttackTurreted", "AttackFrontal", "AttackGarrisoned", "AttackOmni", "AttackSwallow" };
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "DefenseTypes were added.";
 
-		public IEnumerable<string> BeforeUpdateActors(ModData modData, List<MiniYamlNode> resolvedActors)
+		public IEnumerable<string> BeforeUpdateActors(ModData modData, List<MiniYamlNodeBuilder> resolvedActors)
 		{
 			var defences = new List<string>();
 
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				}
 			}
 
-			this.defences = new MiniYamlNode("DefenseTypes", FieldSaver.FormatValue(defences));
+			this.defences = new MiniYamlNodeBuilder("DefenseTypes", FieldSaver.FormatValue(defences));
 
 			yield break;
 		}
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			anyAdded = false;
 		}
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var squadManager in actorNode.ChildrenMatching("BaseBuilderBotModule", includeRemovals: false))
 			{

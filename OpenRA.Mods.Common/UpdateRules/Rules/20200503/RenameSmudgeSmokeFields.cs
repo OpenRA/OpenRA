@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"Renamed smoke-related properties on SmudgeLayer to be in line with comparable properties.\n" +
 			"Additionally, set the *Chance, *Image and *Sequences defaults to null.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var layer in actorNode.ChildrenMatching("SmudgeLayer"))
 			{

@@ -350,6 +350,8 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 
 		void FillMap()
 		{
+			var actorNodes = new List<MiniYamlNode>();
+			var playerNodes = new List<MiniYamlNode>();
 			while (stream.Position < stream.Length)
 			{
 				var tileInfo = stream.ReadUInt16();
@@ -379,9 +381,10 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 							new OwnerInit(kvp.Owner)
 						};
 
-						map.ActorDefinitions.Add(new MiniYamlNode("Actor" + map.ActorDefinitions.Count, a.Save()));
+						actorNodes.Add(new MiniYamlNode("Actor" + (map.ActorDefinitions.Count + actorNodes.Count), a.Save()));
 
-						if (map.PlayerDefinitions.All(x => x.Value.Nodes.Single(y => y.Key == "Name").Value.Value != kvp.Owner))
+						if (map.PlayerDefinitions.Concat(playerNodes).All(
+							x => x.Value.Nodes.Single(y => y.Key == "Name").Value.Value != kvp.Owner))
 						{
 							var playerInfo = PlayerReferenceDataByPlayerName[kvp.Owner];
 							var playerReference = new PlayerReference
@@ -394,7 +397,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 							};
 
 							var node = new MiniYamlNode($"{nameof(PlayerReference)}@{kvp.Owner}", FieldSaver.SaveDifferences(playerReference, new PlayerReference()));
-							map.PlayerDefinitions.Add(node);
+							playerNodes.Add(node);
 						}
 
 						if (kvp.Actor == "mpspawn")
@@ -402,6 +405,9 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 					}
 				}
 			}
+
+			map.ActorDefinitions = map.ActorDefinitions.Concat(actorNodes).ToArray();
+			map.PlayerDefinitions = map.PlayerDefinitions.Concat(playerNodes).ToArray();
 		}
 
 		CPos GetCurrentTilePositionOnMap()

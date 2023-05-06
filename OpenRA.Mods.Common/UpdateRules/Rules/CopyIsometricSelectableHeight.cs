@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			yield break;
 		}
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			if (complete || actorNode.LastChildMatching("IsometricSelectable") != null)
 				yield break;
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			if (height == 24)
 				yield break;
 
-			var selection = new MiniYamlNode("IsometricSelectable", "");
+			var selection = new MiniYamlNodeBuilder("IsometricSelectable", "");
 			selection.AddNode("Height", FieldSaver.FormatValue(height));
 
 			actorNode.AddNode(selection);

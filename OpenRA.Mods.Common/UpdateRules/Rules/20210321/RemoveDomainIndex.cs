@@ -19,12 +19,12 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "The DomainIndex trait was removed from World. Two overlay traits were added at the same time.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			if (actorNode.RemoveNodes("DomainIndex") > 0)
 			{
-				actorNode.AddNode(new MiniYamlNode("PathFinderOverlay", ""));
-				actorNode.AddNode(new MiniYamlNode("HierarchicalPathFinderOverlay", ""));
+				actorNode.AddNode(new MiniYamlNodeBuilder("PathFinderOverlay", ""));
+				actorNode.AddNode(new MiniYamlNodeBuilder("HierarchicalPathFinderOverlay", ""));
 			}
 
 			yield break;

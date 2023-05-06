@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"SelfHealing was renamed to ChangesHealth\n" +
 			"HealIfBelow was renamed to StartIfBelow.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var sh in actorNode.ChildrenMatching("SelfHealing"))
 			{

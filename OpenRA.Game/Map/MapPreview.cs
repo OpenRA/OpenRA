@@ -142,7 +142,7 @@ namespace OpenRA
 						var sources =
 							modDataRules.Select(x => x.Where(IsLoadableRuleDefinition).ToList())
 							.Concat(files.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s).Where(IsLoadableRuleDefinition).ToList()));
-						if (RuleDefinitions.Nodes.Count > 0)
+						if (RuleDefinitions.Nodes.Length > 0)
 							sources = sources.Append(RuleDefinitions.Nodes.Where(IsLoadableRuleDefinition).ToList());
 
 						var yamlNodes = MiniYaml.Merge(sources);

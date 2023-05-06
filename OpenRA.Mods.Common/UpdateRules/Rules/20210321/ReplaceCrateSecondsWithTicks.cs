@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"by multiplying with 25 internally. Converted to use ticks like everything else.\n" +
 			"Also renamed Lifetime to Duration and ScaredyCat.PanicLength to PanicDuration to match other places.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var crateNode in actorNode.ChildrenMatching("Crate"))
 			{

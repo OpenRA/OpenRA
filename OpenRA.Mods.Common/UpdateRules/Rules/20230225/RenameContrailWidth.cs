@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "Rename contrail `TrailWidth` to `StartWidth` in traits and weapons to acount for added `EndWidth` functionality";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var traitNode in actorNode.ChildrenMatching("Contrail"))
 				traitNode.RenameChildrenMatching("TrailWidth", "StartWidth");
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			yield break;
 		}
 
-		public override IEnumerable<string> UpdateWeaponNode(ModData modData, MiniYamlNode weaponNode)
+		public override IEnumerable<string> UpdateWeaponNode(ModData modData, MiniYamlNodeBuilder weaponNode)
 		{
 			foreach (var traitNode in weaponNode.ChildrenMatching("Projectile").Where(n => n.Value.Value == "Missile"))
 				traitNode.RenameChildrenMatching("ContrailWidth", "ContrailStartWidth");

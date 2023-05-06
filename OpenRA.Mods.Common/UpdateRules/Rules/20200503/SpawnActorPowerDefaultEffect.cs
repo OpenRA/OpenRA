@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "The 'EffectSequence' of 'SpawnActorPower' is unset by default.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var spawnActorPower in actorNode.ChildrenMatching("SpawnActorPower"))
 			{

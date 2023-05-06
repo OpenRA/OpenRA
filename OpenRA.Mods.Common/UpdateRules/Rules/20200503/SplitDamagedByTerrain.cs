@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "'DamageThreshold' and 'StartOnThreshold' are no longer supported and removed from 'DamagedByTerrain'.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var damaged in actorNode.ChildrenMatching("DamagedByTerrain", includeRemovals: false))
 			{

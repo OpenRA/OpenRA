@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "The EmbeddedPalette sequence option was replaced with a boolean HasEmbeddedPalette.";
 
-		public override IEnumerable<string> UpdateSequenceNode(ModData modData, MiniYamlNode sequenceNode)
+		public override IEnumerable<string> UpdateSequenceNode(ModData modData, MiniYamlNodeBuilder sequenceNode)
 		{
 			foreach (var sequence in sequenceNode.Value.Nodes)
 				if (sequence.RemoveNodes("EmbeddedPalette") > 0)

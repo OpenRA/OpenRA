@@ -18,6 +18,112 @@ namespace OpenRA.Test
 	[TestFixture]
 	public class MiniYamlTest
 	{
+		[TestCase(TestName = "Parse tree roundtrips")]
+		public void TestParseRoundtrip()
+		{
+			var yaml =
+@"1:
+2: Test
+3: # Test
+4:
+	4.1:
+5: Test
+	5.1:
+6: # Test
+	6.1:
+7:
+	7.1.1:
+	7.1.2: Test
+	7.1.3: # Test
+8: Test
+	8.1.1:
+	8.1.2: Test
+	8.1.3: # Test
+9: # Test
+	9.1.1:
+	9.1.2: Test
+	9.1.3: # Test
+";
+			var serialized = MiniYaml.FromString(yaml, discardCommentsAndWhitespace: false).WriteToString();
+			Console.WriteLine();
+			Assert.That(serialized, Is.EqualTo(yaml));
+		}
+
+		[TestCase(TestName = "Parse tree can handle empty lines")]
+		public void TestParseEmptyLines()
+		{
+			var yaml =
+@"1:
+
+2: Test
+
+3: # Test
+
+4:
+
+	4.1:
+
+5: Test
+
+	5.1:
+
+6: # Test
+
+	6.1:
+
+7:
+
+	7.1.1:
+
+	7.1.2: Test
+
+	7.1.3: # Test
+
+8: Test
+
+	8.1.1:
+
+	8.1.2: Test
+
+	8.1.3: # Test
+
+9: # Test
+
+	9.1.1:
+
+	9.1.2: Test
+
+	9.1.3: # Test
+
+";
+
+			var expectedYaml =
+@"1:
+2: Test
+3:
+4:
+	4.1:
+5: Test
+	5.1:
+6:
+	6.1:
+7:
+	7.1.1:
+	7.1.2: Test
+	7.1.3:
+8: Test
+	8.1.1:
+	8.1.2: Test
+	8.1.3:
+9:
+	9.1.1:
+	9.1.2: Test
+	9.1.3:
+";
+			var serialized = MiniYaml.FromString(yaml).WriteToString();
+			Assert.That(serialized, Is.EqualTo(expectedYaml));
+		}
+
 		[TestCase(TestName = "Mixed tabs & spaces indents")]
 		public void TestIndents()
 		{
@@ -220,7 +326,7 @@ Test:
 			var fieldNodes = traitNode.Value.Nodes;
 			var fieldSubNodes = fieldNodes.Single().Value.Nodes;
 
-			Assert.IsTrue(fieldSubNodes.Count == 1, "Collection of strings should only contain the overriding subnode.");
+			Assert.IsTrue(fieldSubNodes.Length == 1, "Collection of strings should only contain the overriding subnode.");
 			Assert.IsTrue(fieldSubNodes.Single(n => n.Key == "StringC").Value.Value == "C",
 				"CollectionOfStrings value has not been set with the correct override value for StringC.");
 		}
@@ -254,7 +360,7 @@ Test:
 			var fieldNodes = traitNode.Value.Nodes;
 			var fieldSubNodes = fieldNodes.Single().Value.Nodes;
 
-			Assert.IsTrue(fieldSubNodes.Count == 1, "Collection of strings should only contain the overriding subnode.");
+			Assert.IsTrue(fieldSubNodes.Length == 1, "Collection of strings should only contain the overriding subnode.");
 			Assert.IsTrue(fieldSubNodes.Single(n => n.Key == "StringC").Value.Value == "C",
 				"CollectionOfStrings value has not been set with the correct override value for StringC.");
 		}

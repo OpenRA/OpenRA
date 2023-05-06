@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"'EngineerRepair' was renamed to 'InstantlyRepairs' " +
 			"and 'EngineerRepairable' to 'InstantlyRepairable'.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			actorNode.RenameChildrenMatching("EngineerRepair", "InstantlyRepairs");
 			actorNode.RenameChildrenMatching("EngineerRepairable", "InstantlyRepairable");

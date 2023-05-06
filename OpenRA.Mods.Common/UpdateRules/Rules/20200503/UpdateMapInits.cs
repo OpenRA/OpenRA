@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}
 		}
 
-		public override IEnumerable<string> UpdateMapActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateMapActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			if (actorNode.RemoveNodes("Plugs") > 0)
 				yield return $"Initial plugs for actor {actorNode.Key} will need to be reconfigured using the map editor.";
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				facing.ReplaceValue(FieldSaver.FormatValue(bodyFacing));
 			}
 
-			var removeNodes = new List<MiniYamlNode>();
+			var removeNodes = new List<MiniYamlNodeBuilder>();
 			foreach (var facing in actorNode.ChildrenMatching("TurretFacing"))
 			{
 				var turretFacing = WAngle.FromFacing(facing.NodeValue<int>()) - bodyFacing;
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				actorNode.Value.Nodes.Remove(node);
 		}
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var turret in actorNode.ChildrenMatching("Turreted"))
 				turret.RemoveNodes("PreviewFacing");

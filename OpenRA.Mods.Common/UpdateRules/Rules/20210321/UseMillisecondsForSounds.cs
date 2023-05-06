@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"PowerManager.AdviceInterval and PlayerResources.InsufficientFundsNotificationDelay were using ticks.\n" +
 			"Converted all of those to use real milliseconds instead.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var announce in actorNode.ChildrenMatching("AnnounceOnKill"))
 			{

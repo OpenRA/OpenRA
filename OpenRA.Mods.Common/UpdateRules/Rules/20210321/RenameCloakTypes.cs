@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "Rename 'CloakTypes' to 'DetectionTypes' in order to make it clearer as well as make space for 'CloakType' in Cloak";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var traitNode in actorNode.ChildrenMatching("Cloak"))
 				traitNode.RenameChildrenMatching("CloakTypes", "DetectionTypes");

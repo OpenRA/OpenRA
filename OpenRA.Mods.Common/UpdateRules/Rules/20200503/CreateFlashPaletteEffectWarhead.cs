@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		readonly List<Tuple<string, string, string>> weaponsToUpdate = new();
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			var nukePowerTraits = actorNode.ChildrenMatching("NukePower");
 			foreach (var nukePowerTrait in nukePowerTraits)

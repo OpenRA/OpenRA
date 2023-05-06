@@ -226,10 +226,10 @@ namespace OpenRA
 
 		static bool AnyCustomYaml(MiniYaml yaml)
 		{
-			return yaml != null && (yaml.Value != null || yaml.Nodes.Count > 0);
+			return yaml != null && (yaml.Value != null || yaml.Nodes.Length > 0);
 		}
 
-		static bool AnyFlaggedTraits(ModData modData, List<MiniYamlNode> actors)
+		static bool AnyFlaggedTraits(ModData modData, IEnumerable<MiniYamlNode> actors)
 		{
 			foreach (var actorNode in actors)
 			{

@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "The tolerance for attack angle was defined twice on AttackBomber. This override has to be defined in the rules now.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var attackBomber in actorNode.ChildrenMatching("AttackBomber", includeRemovals: false))
 			{
@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				if (facingTolerance != null)
 					continue;
 
-				var facingToleranceNode = new MiniYamlNode("FacingTolerance", FieldSaver.FormatValue(new WAngle(8)));
+				var facingToleranceNode = new MiniYamlNodeBuilder("FacingTolerance", FieldSaver.FormatValue(new WAngle(8)));
 				attackBomber.AddNode(facingToleranceNode);
 			}
 

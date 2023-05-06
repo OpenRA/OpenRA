@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}
 		}
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var kv in TraitFields)
 			{
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			yield break;
 		}
 
-		public override IEnumerable<string> UpdateWeaponNode(ModData modData, MiniYamlNode weaponNode)
+		public override IEnumerable<string> UpdateWeaponNode(ModData modData, MiniYamlNodeBuilder weaponNode)
 		{
 			foreach (var projectileNode in weaponNode.ChildrenMatching("Projectile"))
 			{

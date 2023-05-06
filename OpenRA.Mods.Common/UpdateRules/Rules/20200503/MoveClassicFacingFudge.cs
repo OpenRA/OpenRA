@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			locations.Clear();
 		}
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var bo in actorNode.ChildrenMatching("BodyOrientation"))
 			{
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			yield break;
 		}
 
-		public override IEnumerable<string> UpdateSequenceNode(ModData modData, MiniYamlNode sequenceNode)
+		public override IEnumerable<string> UpdateSequenceNode(ModData modData, MiniYamlNodeBuilder sequenceNode)
 		{
 			foreach (var sequence in sequenceNode.Value.Nodes)
 			{

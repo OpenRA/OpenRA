@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override string Name => "Support powers now use 'Name' and 'Description' fields like units.";
 		public override string Description => "'Description' was renamed to 'Name' and 'LongDesc' was renamed to 'Description'.";
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var traitNode in actorNode.ChildrenContaining("Power"))
 			{

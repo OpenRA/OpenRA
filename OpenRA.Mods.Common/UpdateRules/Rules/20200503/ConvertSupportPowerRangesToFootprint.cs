@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		static readonly string[] AffectedTraits = new string[] { "GrantExternalConditionPower", "ChronoshiftPower" };
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var at in AffectedTraits)
 				foreach (var trait in actorNode.ChildrenMatching(at))
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			yield break;
 		}
 
-		void UpdatePower(MiniYamlNode power)
+		void UpdatePower(MiniYamlNodeBuilder power)
 		{
 			var range = 1;
 			var rangeNode = power.LastChildMatching("Range");
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}
 
 			var size = 2 * range + 1;
-			power.AddNode(new MiniYamlNode("Dimensions", size.ToString() + ", " + size.ToString()));
+			power.AddNode(new MiniYamlNodeBuilder("Dimensions", size.ToString() + ", " + size.ToString()));
 
 			var footprint = string.Empty;
 
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				footprint += ' ';
 			}
 
-			power.AddNode(new MiniYamlNode("Footprint", footprint));
+			power.AddNode(new MiniYamlNodeBuilder("Footprint", footprint));
 		}
 
 		readonly List<string> locations = new();

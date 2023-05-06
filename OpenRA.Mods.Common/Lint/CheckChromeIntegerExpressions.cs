@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Lint
 				CheckInner(MiniYaml.FromStream(modData.DefaultFileSystem.Open(filename), filename), filename, emitError);
 		}
 
-		void CheckInner(List<MiniYamlNode> nodes, string filename, Action<string> emitError)
+		void CheckInner(IEnumerable<MiniYamlNode> nodes, string filename, Action<string> emitError)
 		{
 			var substitutions = new Dictionary<string, int>();
 			var readOnlySubstitutions = new ReadOnlyDictionary<string, int>(substitutions);

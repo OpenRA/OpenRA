@@ -77,7 +77,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			("TooltipDescription", "ValidStances", "ValidRelationships")
 		};
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var (traitName, oldName, newName) in traits)
 				foreach (var traitNode in actorNode.ChildrenMatching(traitName))
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			yield break;
 		}
 
-		public override IEnumerable<string> UpdateWeaponNode(ModData modData, MiniYamlNode weaponNode)
+		public override IEnumerable<string> UpdateWeaponNode(ModData modData, MiniYamlNodeBuilder weaponNode)
 		{
 			foreach (var projectileNode in weaponNode.ChildrenMatching("Projectile"))
 				projectileNode.RenameChildrenMatching("ValidBounceBlockerStances", "ValidBounceBlockerRelationships");

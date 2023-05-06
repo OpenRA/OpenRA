@@ -122,7 +122,7 @@ namespace OpenRA
 				return;
 
 			var key = ExternalMod.MakeKey(mod);
-			var yaml = new MiniYamlNode("Registration", new MiniYaml("", new List<MiniYamlNode>()
+			var yaml = new MiniYamlNode("Registration", new MiniYaml("", new[]
 			{
 				new MiniYamlNode("Id", mod.Id),
 				new MiniYamlNode("Version", mod.Metadata.Version),
@@ -131,17 +131,21 @@ namespace OpenRA
 				new MiniYamlNode("LaunchArgs", new[] { "Game.Mod=" + mod.Id }.Concat(launchArgs).JoinWith(", "))
 			}));
 
+			var iconNodes = new List<MiniYamlNode>();
+
 			using (var stream = mod.Package.GetStream("icon.png"))
 				if (stream != null)
-					yaml.Value.Nodes.Add(new MiniYamlNode("Icon", Convert.ToBase64String(stream.ReadAllBytes())));
+					iconNodes.Add(new MiniYamlNode("Icon", Convert.ToBase64String(stream.ReadAllBytes())));
 
 			using (var stream = mod.Package.GetStream("icon-2x.png"))
 				if (stream != null)
-					yaml.Value.Nodes.Add(new MiniYamlNode("Icon2x", Convert.ToBase64String(stream.ReadAllBytes())));
+					iconNodes.Add(new MiniYamlNode("Icon2x", Convert.ToBase64String(stream.ReadAllBytes())));
 
 			using (var stream = mod.Package.GetStream("icon-3x.png"))
 				if (stream != null)
-					yaml.Value.Nodes.Add(new MiniYamlNode("Icon3x", Convert.ToBase64String(stream.ReadAllBytes())));
+					iconNodes.Add(new MiniYamlNode("Icon3x", Convert.ToBase64String(stream.ReadAllBytes())));
+
+			yaml = yaml.WithValue(yaml.Value.WithNodesAppended(iconNodes));
 
 			var sources = new HashSet<string>();
 			if (registration.HasFlag(ModRegistration.System))

@@ -361,13 +361,14 @@ namespace OpenRA
 
 		public void Save()
 		{
+			var yamlCacheBuilder = yamlCache.Select(n => new MiniYamlNodeBuilder(n)).ToList();
 			foreach (var kv in Sections)
 			{
-				var sectionYaml = yamlCache.FirstOrDefault(x => x.Key == kv.Key);
+				var sectionYaml = yamlCacheBuilder.FirstOrDefault(x => x.Key == kv.Key);
 				if (sectionYaml == null)
 				{
-					sectionYaml = new MiniYamlNode(kv.Key, new MiniYaml(""));
-					yamlCache.Add(sectionYaml);
+					sectionYaml = new MiniYamlNodeBuilder(kv.Key, new MiniYamlBuilder(""));
+					yamlCacheBuilder.Add(sectionYaml);
 				}
 
 				var defaultValues = Activator.CreateInstance(kv.Value.GetType());
@@ -388,23 +389,25 @@ namespace OpenRA
 						if (fieldYaml != null)
 							fieldYaml.Value.Value = serialized;
 						else
-							sectionYaml.Value.Nodes.Add(new MiniYamlNode(fli.YamlName, new MiniYaml(serialized)));
+							sectionYaml.Value.Nodes.Add(new MiniYamlNodeBuilder(fli.YamlName, new MiniYamlBuilder(serialized)));
 					}
 				}
 			}
 
-			var keysYaml = yamlCache.FirstOrDefault(x => x.Key == "Keys");
+			var keysYaml = yamlCacheBuilder.FirstOrDefault(x => x.Key == "Keys");
 			if (keysYaml == null)
 			{
-				keysYaml = new MiniYamlNode("Keys", new MiniYaml(""));
-				yamlCache.Add(keysYaml);
+				keysYaml = new MiniYamlNodeBuilder("Keys", new MiniYamlBuilder(""));
+				yamlCacheBuilder.Add(keysYaml);
 			}
 
 			keysYaml.Value.Nodes.Clear();
 			foreach (var kv in Keys)
-				keysYaml.Value.Nodes.Add(new MiniYamlNode(kv.Key, FieldSaver.FormatValue(kv.Value)));
+				keysYaml.Value.Nodes.Add(new MiniYamlNodeBuilder(kv.Key, FieldSaver.FormatValue(kv.Value)));
 
-			yamlCache.WriteToFile(settingsFile);
+			yamlCacheBuilder.WriteToFile(settingsFile);
+			yamlCache.Clear();
+			yamlCache.AddRange(yamlCacheBuilder.Select(n => n.Build()));
 		}
 
 		static string SanitizedName(string dirty)

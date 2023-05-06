@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			turningAircraft.Clear();
 		}
 
-		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
+		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			var aircraft = actorNode.LastChildMatching("Aircraft");
 			if (aircraft != null)
