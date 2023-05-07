@@ -83,11 +83,15 @@ namespace OpenRA.Mods.Common.Traits
 					var location = ChooseEmptyCellNear(collector, unit);
 					if (location != null)
 					{
-						w.CreateActor(unit, new TypeDictionary
+						var actor = w.CreateActor(unit, new TypeDictionary
 						{
 							new LocationInit(location.Value),
 							new OwnerInit(info.Owner ?? collector.Owner.InternalName)
 						});
+
+						// Set the subcell and make sure to crush actors beneath.
+						var positionable = actor.OccupiesSpace as IPositionable;
+						positionable.SetPosition(actor, location.Value, positionable.GetAvailableSubCell(location.Value, ignoreActor: actor));
 					}
 				}
 			});
