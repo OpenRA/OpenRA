@@ -101,11 +101,15 @@ namespace OpenRA.Mods.Common.Traits
 
 				for (var i = 0; i < duplicates; i++)
 				{
-					w.CreateActor(collector.Info.Name, new TypeDictionary
+					var actor = w.CreateActor(collector.Info.Name, new TypeDictionary
 					{
 						new LocationInit(candidateCells[i]),
 						new OwnerInit(info.Owner ?? collector.Owner.InternalName)
 					});
+
+					// Set the subcell and make sure to crush actors beneath.
+					var positionable = actor.OccupiesSpace as IPositionable;
+					positionable.SetPosition(actor, actor.Location, positionable.GetAvailableSubCell(actor.Location, ignoreActor: actor));
 				}
 			});
 
