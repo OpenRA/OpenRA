@@ -83,29 +83,31 @@ namespace OpenRA.Mods.Common.Traits
 		public override void Activate(Actor collector)
 		{
 			var positionable = collector.OccupiesSpace as IPositionable;
-			var candidateCells = collector.World.Map.FindTilesInCircle(collector.Location, info.MaxRadius)
-				.Where(c => positionable.CanEnterCell(c)).Shuffle(collector.World.SharedRandom)
-				.ToArray();
-
-			var duplicates = Math.Min(candidateCells.Length, info.MaxAmount);
-
-			// Restrict duplicate count to a maximum value
-			if (info.MaxDuplicateValue > 0)
+			collector.World.AddFrameEndTask(w =>
 			{
-				var vi = collector.Info.TraitInfoOrDefault<ValuedInfo>();
-				if (vi != null && vi.Cost > 0)
-					duplicates = Math.Min(duplicates, info.MaxDuplicateValue / vi.Cost);
-			}
+				var candidateCells = collector.World.Map.FindTilesInCircle(collector.Location, info.MaxRadius)
+					.Where(c => positionable.CanEnterCell(c)).Shuffle(collector.World.SharedRandom)
+					.ToArray();
 
-			for (var i = 0; i < duplicates; i++)
-			{
-				var cell = candidateCells[i]; // Avoid modified closure bug
-				collector.World.AddFrameEndTask(w => w.CreateActor(collector.Info.Name, new TypeDictionary
+				var duplicates = Math.Min(candidateCells.Length, info.MaxAmount);
+
+				// Restrict duplicate count to a maximum value
+				if (info.MaxDuplicateValue > 0)
 				{
-					new LocationInit(cell),
-					new OwnerInit(info.Owner ?? collector.Owner.InternalName)
-				}));
-			}
+					var vi = collector.Info.TraitInfoOrDefault<ValuedInfo>();
+					if (vi != null && vi.Cost > 0)
+						duplicates = Math.Min(duplicates, info.MaxDuplicateValue / vi.Cost);
+				}
+
+				for (var i = 0; i < duplicates; i++)
+				{
+					w.CreateActor(collector.Info.Name, new TypeDictionary
+					{
+						new LocationInit(candidateCells[i]),
+						new OwnerInit(info.Owner ?? collector.Owner.InternalName)
+					});
+				}
+			});
 
 			base.Activate(collector);
 		}

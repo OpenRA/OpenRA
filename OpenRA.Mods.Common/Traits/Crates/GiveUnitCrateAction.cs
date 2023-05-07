@@ -38,7 +38,6 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly Actor self;
 		readonly GiveUnitCrateActionInfo info;
-		readonly List<CPos> usedCells = new();
 
 		public GiveUnitCrateAction(Actor self, GiveUnitCrateActionInfo info)
 			: base(self, info)
@@ -77,22 +76,21 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override void Activate(Actor collector)
 		{
-			foreach (var u in info.Units)
+			collector.World.AddFrameEndTask(w =>
 			{
-				var unit = u; // avoiding access to modified closure
-
-				var location = ChooseEmptyCellNear(collector, unit);
-				if (location != null)
+				foreach (var unit in info.Units)
 				{
-					usedCells.Add(location.Value);
-					collector.World.AddFrameEndTask(
-					w => w.CreateActor(unit, new TypeDictionary
+					var location = ChooseEmptyCellNear(collector, unit);
+					if (location != null)
 					{
-						new LocationInit(location.Value),
-						new OwnerInit(info.Owner ?? collector.Owner.InternalName)
-					}));
+						w.CreateActor(unit, new TypeDictionary
+						{
+							new LocationInit(location.Value),
+							new OwnerInit(info.Owner ?? collector.Owner.InternalName)
+						});
+					}
 				}
-			}
+			});
 
 			base.Activate(collector);
 		}
@@ -109,8 +107,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		CPos? ChooseEmptyCellNear(Actor a, string unit)
 		{
-			var possibleCells = GetSuitableCells(a.Location, unit).Where(c => !usedCells.Contains(c)).ToList();
-			if (possibleCells.Count == 0)
+			var possibleCells = GetSuitableCells(a.Location, unit);
+			if (!possibleCells.Any())
 				return null;
 
 			return possibleCells.Random(self.World.SharedRandom);
