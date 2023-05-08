@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 				catch (Exception e)
 				{
-					Context.FatalError(e.Message);
+					Context.FatalError(e);
 				}
 			}
 
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 				catch (Exception e)
 				{
-					Context.FatalError(e.Message);
+					Context.FatalError(e);
 				}
 			}
 
@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 				catch (Exception e)
 				{
-					Context.FatalError(e.Message);
+					Context.FatalError(e);
 				}
 			}
 
@@ -228,7 +228,7 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 				catch (Exception e)
 				{
-					Context.FatalError(e.Message);
+					Context.FatalError(e);
 				}
 			}
 
@@ -243,7 +243,7 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 				catch (Exception e)
 				{
-					Context.FatalError(e.Message);
+					Context.FatalError(e);
 				}
 			}
 
@@ -282,7 +282,7 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 				catch (Exception e)
 				{
-					Context.FatalError(e.Message);
+					Context.FatalError(e);
 				}
 			}
 
@@ -310,7 +310,7 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 				catch (Exception e)
 				{
-					Context.FatalError(e.Message);
+					Context.FatalError(e);
 				}
 			}
 
@@ -339,7 +339,7 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 				catch (Exception e)
 				{
-					Context.FatalError(e.Message);
+					Context.FatalError(e);
 				}
 			}
 
@@ -366,7 +366,7 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 				catch (Exception e)
 				{
-					Context.FatalError(e.Message);
+					Context.FatalError(e);
 				}
 			}
 
@@ -399,7 +399,7 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 				catch (Exception e)
 				{
-					Context.FatalError(e.Message);
+					Context.FatalError(e);
 				}
 			}
 
@@ -426,7 +426,7 @@ namespace OpenRA.Mods.Common.Scripting
 				}
 				catch (Exception e)
 				{
-					Context.FatalError(e.Message);
+					Context.FatalError(e);
 				}
 			}
 

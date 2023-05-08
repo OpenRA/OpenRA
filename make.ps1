@@ -141,10 +141,6 @@ function Check-Scripts-Command
 		{
 			luac -p $script
 		}
-		foreach ($script in ls "lua/*.lua")
-		{
-			luac -p $script
-		}
 		foreach ($script in ls "mods/*/scripts/*.lua")
 		{
 			luac -p $script
