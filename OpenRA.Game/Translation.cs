@@ -27,6 +27,7 @@ namespace OpenRA
 	[AttributeUsage(AttributeTargets.Field)]
 	public sealed class TranslationReferenceAttribute : Attribute
 	{
+		public readonly bool Optional;
 		public readonly string[] RequiredVariableNames;
 		public readonly LintDictionaryReference DictionaryReference;
 
@@ -40,6 +41,11 @@ namespace OpenRA
 		public TranslationReferenceAttribute(LintDictionaryReference dictionaryReference = LintDictionaryReference.None)
 		{
 			DictionaryReference = dictionaryReference;
+		}
+
+		public TranslationReferenceAttribute(bool optional)
+		{
+			Optional = optional;
 		}
 	}
 
