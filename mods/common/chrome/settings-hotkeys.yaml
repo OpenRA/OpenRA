@@ -125,12 +125,10 @@ Container@HOTKEYS_PANEL:
 									Width: PARENT_RIGHT
 									Height: PARENT_BOTTOM
 									Font: Tiny
-									Text: The default is "{0}"
 								Label@DUPLICATE_NOTICE:
 									Width: PARENT_RIGHT
 									Height: PARENT_BOTTOM
 									Font: Tiny
-									Text: This is already used for "{0}" in the {1} context
 								Label@READONLY_NOTICE:
 									Width: PARENT_RIGHT
 									Height: PARENT_BOTTOM

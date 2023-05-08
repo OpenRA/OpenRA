@@ -31,6 +31,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference("message")]
 		const string NewsParsingFailed = "label-news-parsing-failed";
 
+		[TranslationReference("author", "datetime")]
+		const string AuthorDateTime = "label-author-datetime";
+
 		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, StartupPrompts, None }
 
 		protected enum MenuPanel { None, Missions, Skirmish, Multiplayer, MapEditor, Replays, GameSaves }
@@ -425,7 +428,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				titleLabel.GetText = () => item.Title;
 
 				var authorDateTimeLabel = newsItem.Get<LabelWidget>("AUTHOR_DATETIME");
-				var authorDateTime = string.Format(authorDateTimeLabel.Text, item.Author, item.DateTime.ToLocalTime());
+				var authorDateTime = TranslationProvider.GetString(AuthorDateTime, Translation.Arguments(
+					"author", item.Author,
+					"datetime", item.DateTime.ToLocalTime().ToString()));
+
 				authorDateTimeLabel.GetText = () => authorDateTime;
 
 				var contentLabel = newsItem.Get<LabelWidget>("CONTENT");

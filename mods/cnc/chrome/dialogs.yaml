@@ -301,7 +301,6 @@ ScrollPanel@NEWS_PANEL:
 					Width: PARENT_RIGHT
 					Height: 15
 					Align: Center
-					Text: by {0} at {1}
 					Font: TinyBold
 				Label@CONTENT:
 					Y: 46

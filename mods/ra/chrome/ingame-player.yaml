@@ -623,7 +623,6 @@ Container@PLAYER_WIDGETS:
 					Width: 50
 					Height: 23
 					Font: Bold
-					Text: {0}
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
 					Children:
@@ -640,7 +639,6 @@ Container@PLAYER_WIDGETS:
 					Height: 23
 					Align: Right
 					Font: Bold
-					Text: {0}
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP
 					Children:

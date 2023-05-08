@@ -351,6 +351,10 @@ options-target-lines =
     .manual = Manual
     .disabled = Disabled
 
+## HotkeysSettingsLogic
+label-original-notice = The default is "{ $key }"
+label-duplicate-notice = This is already used for "{ $key }" in the { $context } context
+
 ## InputSettingsLogic
 options-mouse-scroll-type =
     .disabled = Disabled
@@ -434,6 +438,7 @@ dialog-overwrite-save =
 label-loading-news = Loading news
 label-news-retrieval-failed = Failed to retrieve news: { $message }
 label-news-parsing-failed = Failed to parse news: { $message }
+label-author-datetime = by { $author } at { $datetime }
 
 ## MapChooserLogic
 label-all-maps = All Maps
@@ -487,6 +492,9 @@ label-audio-unmuted = Audio unmuted.
 ## PlayerProfileLogic
 label-loading-player-profile = Loading player profile...
 label-loading-player-profile-failed = Failed to load player profile.
+
+## ProductionTooltipLogic
+label-requires = Requires { $prequisites }
 
 ## ReplayBrowserLogic
 label-duration = Duration: { $time }

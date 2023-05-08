@@ -200,7 +200,6 @@ Background@PRODUCTION_TOOLTIP:
 			Y: 20
 			Height: 15
 			Font: TinyBold
-			Text: Requires {0}
 		Label@DESC:
 			X: 5
 			Y: 20
@@ -262,7 +261,6 @@ Background@PRODUCTION_TOOLTIP_FACTIONSUFFIX:
 			Y: 20
 			Height: 15
 			Font: TinyBold
-			Text: Requires {0}
 		Label@DESC:
 			X: 5
 			Y: 20

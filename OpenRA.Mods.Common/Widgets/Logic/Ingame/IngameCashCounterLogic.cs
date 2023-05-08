@@ -28,7 +28,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly PlayerResources playerResources;
 		readonly LabelWithTooltipWidget cashLabel;
 		readonly CachedTransform<(int Resources, int Capacity), string> siloUsageTooltipCache;
-		readonly string cashTemplate;
 
 		int nextCashTickTime = 0;
 		int displayResources;
@@ -47,8 +46,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				TranslationProvider.GetString(SiloUsage, Translation.Arguments("usage", x.Resources, "capacity", x.Capacity)));
 			cashLabel = widget.Get<LabelWithTooltipWidget>("CASH");
 			cashLabel.GetTooltipText = () => siloUsageTooltip;
-
-			cashTemplate = cashLabel.Text;
 		}
 
 		public override void Tick()
@@ -80,7 +77,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			siloUsageTooltip = siloUsageTooltipCache.Update((playerResources.Resources, playerResources.ResourceCapacity));
-			cashLabel.Text = string.Format(cashTemplate, displayResources);
+			cashLabel.Text = displayResources.ToString();
 		}
 	}
 }
