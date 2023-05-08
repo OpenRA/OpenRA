@@ -46,7 +46,9 @@ namespace OpenRA.Mods.Common.Lint
 						{
 							if (key == null)
 							{
-								emitError($"Trait `{traitInfo.InstanceName}` on field `{field.Name}` has an empty translation reference.");
+								if (!translationReference.Optional)
+									emitError($"Trait `{traitInfo.InstanceName}` on field `{field.Name}` has an empty translation reference.");
+
 								continue;
 							}
 
