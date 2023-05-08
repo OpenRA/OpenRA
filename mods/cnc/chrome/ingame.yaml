@@ -1720,7 +1720,6 @@ Container@PLAYER_WIDGETS:
 					Width: 50
 					Height: 22
 					Font: Bold
-					Text: {0}
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP_FACTIONSUFFIX
 					Children:
@@ -1737,7 +1736,6 @@ Container@PLAYER_WIDGETS:
 					Height: 22
 					Align: Right
 					Font: Bold
-					Text: {0}
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SIMPLE_TOOLTIP_FACTIONSUFFIX
 					Children:

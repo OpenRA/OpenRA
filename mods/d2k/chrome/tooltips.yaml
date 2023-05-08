@@ -256,7 +256,6 @@ Background@PRODUCTION_TOOLTIP:
 			Y: 22
 			Height: 15
 			Font: TinyBold
-			Text: Requires {0}
 		Label@DESC:
 			X: 7
 			Y: 23

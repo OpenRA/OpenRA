@@ -19,6 +19,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class HotkeysSettingsLogic : ChromeLogic
 	{
+		[TranslationReference("key")]
+		const string OriginalNotice = "label-original-notice";
+
+		[TranslationReference("key", "context")]
+		const string DuplicateNotice = "label-duplicate-notice";
+
 		readonly ModData modData;
 		readonly Dictionary<string, MiniYaml> logicArgs;
 
@@ -220,14 +226,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			duplicateNotice.IsVisible = () => !isHotkeyValid;
 			var duplicateNoticeText = new CachedTransform<HotkeyDefinition, string>(hd =>
 				hd != null ?
-				string.Format(duplicateNotice.Text, hd.Description, hd.Contexts.First(c => selectedHotkeyDefinition.Contexts.Contains(c))) :
+				TranslationProvider.GetString(DuplicateNotice, Translation.Arguments("key", hd.Description,
+					"context", hd.Contexts.First(c => selectedHotkeyDefinition.Contexts.Contains(c)))) :
 				"");
 			duplicateNotice.GetText = () => duplicateNoticeText.Update(duplicateHotkeyDefinition);
 
 			var originalNotice = panel.Get<LabelWidget>("ORIGINAL_NOTICE");
 			originalNotice.TextColor = ChromeMetrics.Get<Color>("NoticeInfoColor");
 			originalNotice.IsVisible = () => isHotkeyValid && !isHotkeyDefault;
-			var originalNoticeText = new CachedTransform<HotkeyDefinition, string>(hd => string.Format(originalNotice.Text, hd?.Default.DisplayString()));
+			var originalNoticeText = new CachedTransform<HotkeyDefinition, string>(hd =>
+				TranslationProvider.GetString(OriginalNotice, Translation.Arguments("key", hd?.Default.DisplayString())));
 			originalNotice.GetText = () => originalNoticeText.Update(selectedHotkeyDefinition);
 
 			var readonlyNotice = panel.Get<LabelWidget>("READONLY_NOTICE");
