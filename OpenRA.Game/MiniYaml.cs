@@ -338,22 +338,24 @@ namespace OpenRA
 			return ResolveInherits(nodes, tree, new Dictionary<string, MiniYamlNode.SourceLocation>());
 		}
 
-		static void MergeIntoResolved(MiniYamlNode overrideNode, List<MiniYamlNode> existingNodes,
+		static void MergeIntoResolved(MiniYamlNode overrideNode, List<MiniYamlNode> existingNodes, HashSet<string> existingNodeKeys,
 			Dictionary<string, MiniYaml> tree, Dictionary<string, MiniYamlNode.SourceLocation> inherited)
 		{
-			var existingNode = existingNodes.Find(n => n.Key == overrideNode.Key);
-			if (existingNode != null)
+			if (existingNodeKeys.Add(overrideNode.Key))
 			{
-				existingNode.Value = MergePartial(existingNode.Value, overrideNode.Value);
-				existingNode.Value.Nodes = ResolveInherits(existingNode.Value, tree, inherited);
-			}
-			else
 				existingNodes.Add(overrideNode.Clone());
+				return;
+			}
+
+			var existingNode = existingNodes.Find(n => n.Key == overrideNode.Key);
+			existingNode.Value = MergePartial(existingNode.Value, overrideNode.Value);
+			existingNode.Value.Nodes = ResolveInherits(existingNode.Value, tree, inherited);
 		}
 
 		static List<MiniYamlNode> ResolveInherits(MiniYaml node, Dictionary<string, MiniYaml> tree, Dictionary<string, MiniYamlNode.SourceLocation> inherited)
 		{
 			var resolved = new List<MiniYamlNode>(node.Nodes.Count);
+			var resolvedKeys = new HashSet<string>(node.Nodes.Count);
 
 			// Inheritance is tracked from parent->child, but not from child->parentsiblings.
 			inherited = new Dictionary<string, MiniYamlNode.SourceLocation>(inherited);
@@ -371,16 +373,17 @@ namespace OpenRA
 
 					inherited.Add(n.Value.Value, n.Location);
 					foreach (var r in ResolveInherits(parent, tree, inherited))
-						MergeIntoResolved(r, resolved, tree, inherited);
+						MergeIntoResolved(r, resolved, resolvedKeys, tree, inherited);
 				}
 				else if (n.Key.StartsWith("-", StringComparison.Ordinal))
 				{
 					var removed = n.Key[1..];
 					if (resolved.RemoveAll(r => r.Key == removed) == 0)
 						throw new YamlException($"{n.Location}: There are no elements with key `{removed}` to remove");
+					resolvedKeys.Remove(removed);
 				}
 				else
-					MergeIntoResolved(n, resolved, tree, inherited);
+					MergeIntoResolved(n, resolved, resolvedKeys, tree, inherited);
 			}
 
 			resolved.TrimExcess();
