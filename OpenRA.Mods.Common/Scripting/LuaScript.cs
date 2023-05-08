@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Scripting
 	public class LuaScript : ITick, IWorldLoaded, INotifyActorDisposing
 	{
 		readonly LuaScriptInfo info;
-		ScriptContext context;
+		public ScriptContext Context;
 		bool disposed;
 
 		public LuaScript(LuaScriptInfo info)
@@ -40,13 +40,13 @@ namespace OpenRA.Mods.Common.Scripting
 		void IWorldLoaded.WorldLoaded(World world, WorldRenderer worldRenderer)
 		{
 			var scripts = info.Scripts ?? Enumerable.Empty<string>();
-			context = new ScriptContext(world, worldRenderer, scripts);
-			context.WorldLoaded();
+			Context = new ScriptContext(world, worldRenderer, scripts);
+			Context.WorldLoaded();
 		}
 
 		void ITick.Tick(Actor self)
 		{
-			context.Tick();
+			Context.Tick();
 		}
 
 		void INotifyActorDisposing.Disposing(Actor self)
@@ -54,11 +54,11 @@ namespace OpenRA.Mods.Common.Scripting
 			if (disposed)
 				return;
 
-			context?.Dispose();
+			Context?.Dispose();
 
 			disposed = true;
 		}
 
-		public bool FatalErrorOccurred => context.FatalErrorOccurred;
+		public bool FatalErrorOccurred => Context.FatalErrorOccurred;
 	}
 }

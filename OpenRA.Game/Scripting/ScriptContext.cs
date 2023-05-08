@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using Eluant;
@@ -143,6 +142,8 @@ namespace OpenRA.Scripting
 		public readonly Cache<ActorInfo, Type[]> ActorCommands;
 		public readonly Type[] PlayerCommands;
 
+		public string ErrorMessage;
+
 		bool disposed;
 
 		public ScriptContext(World world, WorldRenderer worldRenderer,
@@ -165,64 +166,110 @@ namespace OpenRA.Scripting
 				.ToArray();
 			PlayerCommands = FilterCommands(world.Map.Rules.Actors[SystemActors.Player], knownPlayerCommands);
 
-			runtime.Globals["EngineDir"] = Platform.EngineDir;
-			runtime.DoBuffer(File.Open(Path.Combine(Platform.EngineDir, "lua", "scriptwrapper.lua"), FileMode.Open, FileAccess.Read).ReadAllText(), "scriptwrapper.lua").Dispose();
-			tick = (LuaFunction)runtime.Globals["Tick"];
+			// Safe functions for http://lua-users.org/wiki/SandBoxes
+			// assert, error have been removed as well as albeit safe
+			var allowedGlobals = new string[]
+			{
+				"ipairs", "next", "pairs",
+				"pcall", "select", "tonumber", "tostring", "type", "unpack", "xpcall",
+				"math", "string", "table"
+			};
+
+			foreach (var fieldName in runtime.Globals.Keys)
+			{
+				if (!allowedGlobals.Contains(fieldName.ToString()))
+					runtime.Globals[fieldName] = null;
+			}
+
+			var forbiddenMath = new string[]
+			{
+				"random", // not desync safe, unsuitable
+				"randomseed" // maybe unsafe as it affects the host RNG
+			};
+
+			var mathGlobal = (LuaTable)runtime.Globals["math"];
+			foreach (var mathFunction in mathGlobal.Keys)
+			{
+				if (forbiddenMath.Contains(mathFunction.ToString()))
+					mathGlobal[mathFunction] = null;
+			}
 
 			// Register globals
+			runtime.Globals["EngineDir"] = Platform.EngineDir;
+
 			using (var fn = runtime.CreateFunctionFromDelegate((Action<string>)FatalError))
 				runtime.Globals["FatalError"] = fn;
 
 			runtime.Globals["MaxUserScriptInstructions"] = MaxUserScriptInstructions;
 
-			using (var registerGlobal = (LuaFunction)runtime.Globals["RegisterSandboxedGlobal"])
+			using (var fn = runtime.CreateFunctionFromDelegate((Action<string>)LogDebugMessage))
+				runtime.Globals["print"] = fn;
+
+			// Register global tables
+			var bindings = Game.ModData.ObjectCreator.GetTypesImplementing<ScriptGlobal>();
+			foreach (var b in bindings)
 			{
-				using (var fn = runtime.CreateFunctionFromDelegate((Action<string>)LogDebugMessage))
-					registerGlobal.Call("print", fn).Dispose();
-
-				// Register global tables
-				var bindings = Game.ModData.ObjectCreator.GetTypesImplementing<ScriptGlobal>();
-				foreach (var b in bindings)
+				var ctor = b.GetConstructors(BindingFlags.Public | BindingFlags.Instance).FirstOrDefault(c =>
 				{
-					var ctor = b.GetConstructors(BindingFlags.Public | BindingFlags.Instance).FirstOrDefault(c =>
-					{
-						var p = c.GetParameters();
-						return p.Length == 1 && p.First().ParameterType == typeof(ScriptContext);
-					});
+					var p = c.GetParameters();
+					return p.Length == 1 && p.First().ParameterType == typeof(ScriptContext);
+				});
 
-					if (ctor == null)
-						throw new InvalidOperationException($"{b.Name} must define a constructor that takes a ScriptContext context parameter");
+				if (ctor == null)
+					throw new InvalidOperationException($"{b.Name} must define a constructor that takes a {nameof(ScriptContext)} context parameter");
 
-					var binding = (ScriptGlobal)ctor.Invoke(new[] { this });
-					using (var obj = binding.ToLuaValue(this))
-						registerGlobal.Call(binding.Name, obj).Dispose();
-				}
+				var binding = (ScriptGlobal)ctor.Invoke(new[] { this });
+				using (var obj = binding.ToLuaValue(this))
+					runtime.Globals.Add(binding.Name, obj);
 			}
 
 			// System functions do not count towards the memory limit
 			runtime.MaxMemoryUse = runtime.MemoryUse + MaxUserScriptMemory;
 
-			using (var loadScript = (LuaFunction)runtime.Globals["ExecuteSandboxedScript"])
+			try
 			{
-				foreach (var s in scripts)
-					loadScript.Call(s, world.Map.Open(s).ReadAllText()).Dispose();
+				foreach (var script in scripts)
+					runtime.DoBuffer(world.Map.Open(script).ReadAllText(), script).Dispose();
 			}
+			catch (Exception e)
+			{
+				FatalError(e);
+				return;
+			}
+
+			tick = (LuaFunction)runtime.Globals["Tick"];
 		}
 
 		void LogDebugMessage(string message)
 		{
-			Console.WriteLine("Lua debug: {0}", message);
+			Console.WriteLine($"Lua debug: {message}");
 			Log.Write("lua", message);
 		}
 
 		public bool FatalErrorOccurred { get; private set; }
-		public void FatalError(string message)
+		public void FatalError(Exception e)
+		{
+			ErrorMessage = e.Message;
+
+			Console.WriteLine($"Fatal Lua Error: {e.Message}");
+			Console.WriteLine(e.StackTrace);
+
+			Log.Write("lua", $"Fatal Lua Error: {e.Message}");
+			Log.Write("lua", e.StackTrace);
+
+			FatalErrorOccurred = true;
+
+			World.AddFrameEndTask(w => World.EndGame());
+		}
+
+		void FatalError(string message)
 		{
 			var stacktrace = new StackTrace().ToString();
+
 			Console.WriteLine($"Fatal Lua Error: {message}");
 			Console.WriteLine(stacktrace);
 
-			Log.Write("lua", $"Fatal Lua Error: {message}");
+			Log.Write("lua", message);
 			Log.Write("lua", stacktrace);
 
 			FatalErrorOccurred = true;
@@ -232,14 +279,11 @@ namespace OpenRA.Scripting
 
 		public void RegisterMapActor(string name, Actor a)
 		{
-			using (var registerGlobal = (LuaFunction)runtime.Globals["RegisterSandboxedGlobal"])
-			{
-				if (runtime.Globals.ContainsKey(name))
-					throw new LuaException($"The global name '{name}' is reserved, and may not be used by a map actor");
+			if (runtime.Globals.ContainsKey(name))
+				throw new LuaException($"The global name '{name}' is reserved, and may not be used by a map actor");
 
-				using (var obj = a.ToLuaValue(this))
-					registerGlobal.Call(name, obj).Dispose();
-			}
+			using (var obj = a.ToLuaValue(this))
+				runtime.Globals.Add(name, obj);
 		}
 
 		public void WorldLoaded()
@@ -247,8 +291,15 @@ namespace OpenRA.Scripting
 			if (FatalErrorOccurred)
 				return;
 
-			using (var worldLoaded = (LuaFunction)runtime.Globals["WorldLoaded"])
-				worldLoaded.Call().Dispose();
+			try
+			{
+				using (var worldLoaded = (LuaFunction)runtime.Globals["WorldLoaded"])
+					worldLoaded.Call().Dispose();
+			}
+			catch (LuaException e)
+			{
+				FatalError(e);
+			}
 		}
 
 		public void Tick()
@@ -256,8 +307,15 @@ namespace OpenRA.Scripting
 			if (FatalErrorOccurred || disposed)
 				return;
 
-			using (new PerfSample("tick_lua"))
-				tick.Call().Dispose();
+			try
+			{
+				using (new PerfSample("tick_lua"))
+					tick.Call().Dispose();
+			}
+			catch (LuaException e)
+			{
+				FatalError(e);
+			}
 		}
 
 		public void Dispose()

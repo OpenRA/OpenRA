@@ -1,6 +1,7 @@
 Container@SCRIPT_ERROR_PANEL:
 	Height: PARENT_BOTTOM
 	Width: PARENT_RIGHT
+	Logic: ScriptErrorLogic
 	Children:
 		Label@DESCA:
 			X: 15
@@ -16,7 +17,7 @@ Container@SCRIPT_ERROR_PANEL:
 			Width: PARENT_RIGHT - 30
 			Height: 20
 			Font: Regular
-			WordWrap: true
+			Align: Center
 			Text: The details of the error have been saved to lua.log in the logs directory.
 		Label@DESCC:
 			X: 15
@@ -24,4 +25,15 @@ Container@SCRIPT_ERROR_PANEL:
 			Width: PARENT_RIGHT - 30
 			Height: 20
 			Font: Regular
+			Align: Center
 			Text: Please send this file to the map author so that they can fix this issue.
+		ScrollPanel@SCRIPT_ERROR_MESSAGE_PANEL:
+			X: 20
+			Y: 96
+			Width: PARENT_RIGHT - 40
+			Height: 300
+			Children:
+				Label@SCRIPT_ERROR_MESSAGE:
+					X: 4
+					Y: 2
+					Width: PARENT_RIGHT - 32

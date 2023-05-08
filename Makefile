@@ -130,7 +130,7 @@ endif
 check-scripts:
 	@echo
 	@echo "Checking for Lua syntax errors..."
-	@find lua/ mods/*/{maps,scripts}/ -iname "*.lua" -print0 | xargs -0n1 luac -p
+	@find mods/*/maps/ mods/*/scripts/ -iname "*.lua" -print0 | xargs -0n1 luac -p
 
 test: all
 	@echo

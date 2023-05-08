@@ -123,7 +123,7 @@ ChromeLayout:
 	cnc|chrome/ingame-infochat.yaml
 	cnc|chrome/ingame-info.yaml
 	cnc|chrome/ingame-infobriefing.yaml
-	cnc|chrome/ingame-infoscripterror.yaml
+	common|chrome/ingame-infoscripterror.yaml
 	cnc|chrome/ingame-infoobjectives.yaml
 	cnc|chrome/ingame-infostats.yaml
 	cnc|chrome/ingame-info-lobby-options.yaml
