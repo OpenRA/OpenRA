@@ -111,7 +111,7 @@ namespace OpenRA
 				return key == "world" || key == "player";
 			}
 
-			public void SetCustomRules(ModData modData, IReadOnlyFileSystem fileSystem, Dictionary<string, MiniYaml> yaml)
+			public void SetCustomRules(ModData modData, IReadOnlyFileSystem fileSystem, Dictionary<string, MiniYaml> yaml, IEnumerable<List<MiniYamlNode>> modDataRules)
 			{
 				RuleDefinitions = LoadRuleSection(yaml, "Rules");
 				WeaponDefinitions = LoadRuleSection(yaml, "Weapons");
@@ -131,14 +131,17 @@ namespace OpenRA
 					// This assumes/enforces that these actor types can only inherit abstract definitions (starting with ^)
 					if (RuleDefinitions != null)
 					{
-						var files = modData.Manifest.Rules.AsEnumerable();
+						modDataRules ??= modData.GetRulesYaml();
+						var files = Enumerable.Empty<string>();
 						if (RuleDefinitions.Value != null)
 						{
 							var mapFiles = FieldLoader.GetValue<string[]>("value", RuleDefinitions.Value);
 							files = files.Append(mapFiles);
 						}
 
-						var sources = files.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s).Where(IsLoadableRuleDefinition).ToList());
+						var sources =
+							modDataRules.Select(x => x.Where(IsLoadableRuleDefinition).ToList())
+							.Concat(files.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s).Where(IsLoadableRuleDefinition).ToList()));
 						if (RuleDefinitions.Nodes.Count > 0)
 							sources = sources.Append(RuleDefinitions.Nodes.Where(IsLoadableRuleDefinition).ToList());
 
@@ -319,10 +322,10 @@ namespace OpenRA
 				{ "Notifications", map.NotificationDefinitions },
 				{ "Sequences", map.SequenceDefinitions },
 				{ "ModelSequences", map.ModelSequenceDefinitions }
-			});
+			}, null);
 		}
 
-		public void UpdateFromMap(IReadOnlyPackage p, IReadOnlyPackage parent, MapClassification classification, string[] mapCompatibility, MapGridType gridType)
+		public void UpdateFromMap(IReadOnlyPackage p, IReadOnlyPackage parent, MapClassification classification, string[] mapCompatibility, MapGridType gridType, IEnumerable<List<MiniYamlNode>> modDataRules)
 		{
 			Dictionary<string, MiniYaml> yaml;
 			using (var yamlStream = p.GetStream("map.yaml"))
@@ -412,7 +415,7 @@ namespace OpenRA
 				newData.Status = MapStatus.Unavailable;
 			}
 
-			newData.SetCustomRules(modData, this, yaml);
+			newData.SetCustomRules(modData, this, yaml, modDataRules);
 
 			if (cache.LoadPreviewImages && p.Contains("map.png"))
 				using (var dataStream = p.GetStream("map.png"))
@@ -475,7 +478,7 @@ namespace OpenRA
 
 					var rulesString = Encoding.UTF8.GetString(Convert.FromBase64String(r.rules));
 					var rulesYaml = new MiniYaml("", MiniYaml.FromString(rulesString)).ToDictionary();
-					newData.SetCustomRules(modData, this, rulesYaml);
+					newData.SetCustomRules(modData, this, rulesYaml, null);
 				}
 				catch (Exception e)
 				{
@@ -554,7 +557,7 @@ namespace OpenRA
 						innerData.Status = MapStatus.DownloadError;
 					else
 					{
-						UpdateFromMap(package, mapInstallPackage, MapClassification.User, null, GridType);
+						UpdateFromMap(package, mapInstallPackage, MapClassification.User, null, GridType, null);
 						Game.RunAfterTick(onSuccess);
 					}
 				}

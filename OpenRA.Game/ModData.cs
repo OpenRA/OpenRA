@@ -166,6 +166,11 @@ namespace OpenRA
 			return map;
 		}
 
+		public List<MiniYamlNode>[] GetRulesYaml()
+		{
+			return Manifest.Rules.Select(s => MiniYaml.FromStream(DefaultFileSystem.Open(s), s)).ToArray();
+		}
+
 		public void Dispose()
 		{
 			LoadScreen?.Dispose();
