@@ -123,10 +123,12 @@ namespace OpenRA
 				mapDirectoryTrackers.Add(new MapDirectoryTracker(mapGrid, package, classification));
 			}
 
+			// PERF: Load the mod YAML once outside the loop, and reuse it when resolving each maps custom YAML.
+			var modDataRules = modData.GetRulesYaml();
 			foreach (var kv in MapLocations)
 			{
 				foreach (var map in kv.Key.Contents)
-					LoadMap(map, kv.Key, kv.Value, mapGrid, null);
+					LoadMapInternal(map, kv.Key, kv.Value, mapGrid, null, modDataRules);
 			}
 
 			// We only want to track maps in runtime, not at loadtime
@@ -134,6 +136,11 @@ namespace OpenRA
 		}
 
 		public void LoadMap(string map, IReadOnlyPackage package, MapClassification classification, MapGrid mapGrid, string oldMap)
+		{
+			LoadMapInternal(map, package, classification, mapGrid, oldMap, null);
+		}
+
+		void LoadMapInternal(string map, IReadOnlyPackage package, MapClassification classification, MapGrid mapGrid, string oldMap, IEnumerable<List<MiniYamlNode>> modDataRules)
 		{
 			IReadOnlyPackage mapPackage = null;
 			try
@@ -144,7 +151,7 @@ namespace OpenRA
 					if (mapPackage != null)
 					{
 						var uid = Map.ComputeUID(mapPackage);
-						previews[uid].UpdateFromMap(mapPackage, package, classification, modData.Manifest.MapCompatibility, mapGrid.Type);
+						previews[uid].UpdateFromMap(mapPackage, package, classification, modData.Manifest.MapCompatibility, mapGrid.Type, modDataRules);
 
 						if (oldMap != uid)
 						{
