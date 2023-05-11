@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class Move : Activity
 	{
-		public WAngle ActorFacingModifier;
+		public WAngle ActorFacingModifier { get; private set; }
 		readonly Mobile mobile;
 		readonly WDist nearEnough;
 		readonly Func<BlockedByActor, List<CPos>> getPath;
