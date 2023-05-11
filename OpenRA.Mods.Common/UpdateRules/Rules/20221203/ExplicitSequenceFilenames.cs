@@ -336,6 +336,10 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		void ProcessNode(ModData modData, MiniYamlNode sequenceNode, MiniYamlNode resolvedSequenceNode, string imageName)
 		{
+			// "Filename" was introduced with this update rule, so that means this node was already processed and can be skipped
+			if (sequenceNode.LastChildMatching("Filename") != null)
+				return;
+
 			var addExtension = true;
 			var addExtensionNode = resolvedSequenceNode.LastChildMatching("AddExtension");
 			if (addExtensionNode != null)
