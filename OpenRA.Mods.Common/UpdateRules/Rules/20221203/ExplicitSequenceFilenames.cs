@@ -132,8 +132,14 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			var implicitInheritedSequences = new List<string>();
 			foreach (var resolvedSequenceNode in resolvedImageNode.Value.Nodes)
 			{
-				if (resolvedSequenceNode.Key != "Defaults" && string.IsNullOrEmpty(resolvedSequenceNode.Value.Value) &&
-				    imageNode.LastChildMatching(resolvedSequenceNode.Key) == null)
+				if (resolvedSequenceNode.Key == "Defaults")
+					continue;
+
+				// Ignore nodes that are not implicitly named or already processed
+				if (!string.IsNullOrEmpty(resolvedSequenceNode.Value.Value) || resolvedSequenceNode.LastChildMatching("Filename") != null)
+					continue;
+
+				if (imageNode.LastChildMatching(resolvedSequenceNode.Key) == null)
 				{
 					imageNode.AddNode(resolvedSequenceNode.Key, "");
 					implicitInheritedSequences.Add(resolvedSequenceNode.Key);
