@@ -516,7 +516,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var fileExtension = Path.GetExtension(filename.ToLowerInvariant());
 				if (allowedSpriteExtensions.Contains(fileExtension))
 				{
-					currentSprites = spriteCache[filename];
+					currentSprites = spriteCache[prefix + filename];
 					currentFrame = 0;
 
 					if (frameSlider != null && currentSprites?.Length > 0)
@@ -530,7 +530,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				else if (allowedModelExtensions.Contains(fileExtension))
 				{
 					var voxelName = Path.GetFileNameWithoutExtension(filename);
-					currentVoxel = world.ModelCache.GetModel(voxelName);
+					currentVoxel = world.ModelCache.GetModel(prefix + voxelName);
 					currentSprites = null;
 				}
 				else if (allowedAudioExtensions.Contains(fileExtension))
@@ -558,7 +558,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					// Mute music so it doesn't interfere with the current asset.
 					MuteSounds();
 
-					var video = VideoLoader.GetVideo(Game.ModData.DefaultFileSystem.Open(filename), true, Game.ModData.VideoLoaders);
+					var video = VideoLoader.GetVideo(Game.ModData.DefaultFileSystem.Open(prefix + filename), true, Game.ModData.VideoLoaders);
 					if (video != null)
 					{
 						player = panel.Get<VideoPlayerWidget>("PLAYER");
