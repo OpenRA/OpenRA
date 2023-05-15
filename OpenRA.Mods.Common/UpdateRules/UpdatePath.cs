@@ -72,34 +72,38 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveSmokeTrailWhenDamaged(),
 				new ReplaceCrateSecondsWithTicks(),
 				new UseMillisecondsForSounds(),
-				new UnhardcodeSquadManager(),
 				new RenameSupportPowerDescription(),
 				new AttackBomberFacingTolerance(),
 				new AttackFrontalFacingTolerance(),
 				new RenameCloakTypes(),
 				new SplitNukePowerMissileImage(),
 				new ReplaceSequenceEmbeddedPalette(),
-				new UnhardcodeBaseBuilderBotModule(),
 				new UnhardcodeVeteranProductionIconOverlay(),
 				new RenameContrailProperties(),
 				new RemoveDomainIndex(),
 				new AddControlGroups(),
+
+				// Execute these rules last to avoid premature yaml merge crashes.
+				new UnhardcodeSquadManager(),
+				new UnhardcodeBaseBuilderBotModule(),
 			}),
 
 			new UpdatePath("release-20230225", new UpdateRule[]
 			{
 				// bleed only changes here
 				new TextNotificationsDisplayWidgetRemoveTime(),
-				new ExplicitSequenceFilenames(),
 				new RenameEngineerRepair(),
 				new ProductionTabsWidgetAddTabButtonCollection(),
 				new RemoveTSRefinery(),
 				new RenameMcvCrateAction(),
-				new RemoveSequenceHasEmbeddedPalette(),
 				new RenameContrailWidth(),
-				new RemoveNegativeSequenceLength(),
 				new RemoveExperienceFromInfiltrates(),
 				new AddColorPickerValueRange(),
+
+				// Execute these rules last to avoid premature yaml merge crashes.
+				new ExplicitSequenceFilenames(),
+				new RemoveSequenceHasEmbeddedPalette(),
+				new RemoveNegativeSequenceLength(),
 			})
 		};
 

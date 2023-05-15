@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
-	public class RemoveNegativeSequenceLength : UpdateRule
+	public class RemoveNegativeSequenceLength : UpdateRule, IBeforeUpdateSequences
 	{
 		public override string Name => "Negative sequence length is no longer allowed.";
 
@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		List<MiniYamlNode> resolvedImagesNodes;
 
-		public override IEnumerable<string> BeforeUpdateSequences(ModData modData, List<MiniYamlNode> resolvedImagesNodes)
+		public IEnumerable<string> BeforeUpdateSequences(ModData modData, List<MiniYamlNode> resolvedImagesNodes)
 		{
 			this.resolvedImagesNodes = resolvedImagesNodes;
 			yield break;
