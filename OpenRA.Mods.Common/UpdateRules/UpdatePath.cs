@@ -97,6 +97,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RenameMcvCrateAction(),
 				new RemoveSequenceHasEmbeddedPalette(),
 				new RenameContrailWidth(),
+				new RemoveNegativeSequenceLength(),
 			})
 		};
 
