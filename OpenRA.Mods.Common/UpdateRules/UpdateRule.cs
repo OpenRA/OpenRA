@@ -36,9 +36,21 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 		public virtual IEnumerable<string> BeforeUpdate(ModData modData) { yield break; }
 		public virtual IEnumerable<string> AfterUpdate(ModData modData) { yield break; }
+	}
 
-		public virtual IEnumerable<string> BeforeUpdateActors(ModData modData, List<MiniYamlNode> resolvedActors) { yield break; }
-		public virtual IEnumerable<string> BeforeUpdateWeapons(ModData modData, List<MiniYamlNode> resolvedWeapons) { yield break; }
-		public virtual IEnumerable<string> BeforeUpdateSequences(ModData modData, List<MiniYamlNode> resolvedImages) { yield break; }
+	// These aren't part of the UpdateRule class as to avoid premature yaml merge crashes when updating maps.
+	public interface IBeforeUpdateActors
+	{
+		IEnumerable<string> BeforeUpdateActors(ModData modData, List<MiniYamlNode> resolvedActors) { yield break; }
+	}
+
+	public interface IBeforeUpdateWeapons
+	{
+		IEnumerable<string> BeforeUpdateWeapons(ModData modData, List<MiniYamlNode> resolvedWeapons) { yield break; }
+	}
+
+	public interface IBeforeUpdateSequences
+	{
+		IEnumerable<string> BeforeUpdateSequences(ModData modData, List<MiniYamlNode> resolvedImages) { yield break; }
 	}
 }

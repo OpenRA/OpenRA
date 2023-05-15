@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
-	public class UnhardcodeSquadManager : UpdateRule
+	public class UnhardcodeSquadManager : UpdateRule, IBeforeUpdateActors
 	{
 		readonly List<MiniYamlNode> addNodes = new();
 
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "AirUnitsTypes and ProtectionTypes were added.";
 
-		public override IEnumerable<string> BeforeUpdateActors(ModData modData, List<MiniYamlNode> resolvedActors)
+		public IEnumerable<string> BeforeUpdateActors(ModData modData, List<MiniYamlNode> resolvedActors)
 		{
 			var aircraft = new List<string>();
 			var vips = new List<string>();

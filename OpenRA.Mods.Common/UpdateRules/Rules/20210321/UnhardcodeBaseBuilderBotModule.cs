@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
-	public class UnhardcodeBaseBuilderBotModule : UpdateRule
+	public class UnhardcodeBaseBuilderBotModule : UpdateRule, IBeforeUpdateActors
 	{
 		MiniYamlNode defences;
 
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override string Description => "DefenseTypes were added.";
 
-		public override IEnumerable<string> BeforeUpdateActors(ModData modData, List<MiniYamlNode> resolvedActors)
+		public IEnumerable<string> BeforeUpdateActors(ModData modData, List<MiniYamlNode> resolvedActors)
 		{
 			var defences = new List<string>();
 

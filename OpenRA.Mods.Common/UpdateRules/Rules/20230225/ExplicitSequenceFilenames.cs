@@ -15,7 +15,7 @@ using System.Reflection;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
-	public class ExplicitSequenceFilenames : UpdateRule
+	public class ExplicitSequenceFilenames : UpdateRule, IBeforeUpdateSequences
 	{
 		public override string Name => "Sequence filenames must be specified explicitly.";
 
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		bool reportModYamlChanges;
 		bool disabled;
 
-		public override IEnumerable<string> BeforeUpdateSequences(ModData modData, List<MiniYamlNode> resolvedImagesNodes)
+		public IEnumerable<string> BeforeUpdateSequences(ModData modData, List<MiniYamlNode> resolvedImagesNodes)
 		{
 			// Keep a resolved copy of the sequences so we can account for values imported through inheritance or Defaults.
 			// This will be modified during processing, so take a deep copy to avoid side-effects on other update rules.

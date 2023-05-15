@@ -114,8 +114,11 @@ namespace OpenRA.Mods.Common.UpdateRules
 				var mapRulesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Rules");
 				if (mapRulesNode != null)
 				{
-					var resolvedActors = LoadMapYaml(modData.DefaultFileSystem, mapPackage, modData.Manifest.Rules, mapRulesNode.Value);
-					manualSteps.AddRange(rule.BeforeUpdateActors(modData, resolvedActors));
+					if (rule is IBeforeUpdateActors before)
+					{
+						var resolvedActors = LoadMapYaml(modData.DefaultFileSystem, mapPackage, modData.Manifest.Rules, mapRulesNode.Value);
+						manualSteps.AddRange(before.BeforeUpdateActors(modData, resolvedActors));
+					}
 
 					var mapRules = LoadInternalMapYaml(modData, mapPackage, mapRulesNode.Value, externalFilenames);
 					manualSteps.AddRange(ApplyTopLevelTransform(modData, mapRules, rule.UpdateActorNode));
@@ -125,8 +128,11 @@ namespace OpenRA.Mods.Common.UpdateRules
 				var mapWeaponsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Weapons");
 				if (mapWeaponsNode != null)
 				{
-					var resolvedWeapons = LoadMapYaml(modData.DefaultFileSystem, mapPackage, modData.Manifest.Weapons, mapWeaponsNode.Value);
-					manualSteps.AddRange(rule.BeforeUpdateWeapons(modData, resolvedWeapons));
+					if (rule is IBeforeUpdateWeapons before)
+					{
+						var resolvedWeapons = LoadMapYaml(modData.DefaultFileSystem, mapPackage, modData.Manifest.Weapons, mapWeaponsNode.Value);
+						manualSteps.AddRange(before.BeforeUpdateWeapons(modData, resolvedWeapons));
+					}
 
 					var mapWeapons = LoadInternalMapYaml(modData, mapPackage, mapWeaponsNode.Value, externalFilenames);
 					manualSteps.AddRange(ApplyTopLevelTransform(modData, mapWeapons, rule.UpdateWeaponNode));
@@ -136,8 +142,11 @@ namespace OpenRA.Mods.Common.UpdateRules
 				var mapSequencesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Sequences");
 				if (mapSequencesNode != null)
 				{
-					var resolvedImages = LoadMapYaml(modData.DefaultFileSystem, mapPackage, modData.Manifest.Sequences, mapSequencesNode.Value);
-					manualSteps.AddRange(rule.BeforeUpdateSequences(modData, resolvedImages));
+					if (rule is IBeforeUpdateSequences before)
+					{
+						var resolvedImages = LoadMapYaml(modData.DefaultFileSystem, mapPackage, modData.Manifest.Sequences, mapSequencesNode.Value);
+						manualSteps.AddRange(before.BeforeUpdateSequences(modData, resolvedImages));
+					}
 
 					var mapSequences = LoadInternalMapYaml(modData, mapPackage, mapSequencesNode.Value, externalFilenames);
 					manualSteps.AddRange(ApplyTopLevelTransform(modData, mapSequences, rule.UpdateSequenceNode));
@@ -229,16 +238,28 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 			manualSteps.AddRange(rule.BeforeUpdate(modData));
 
-			var resolvedActors = MiniYaml.Load(modData.DefaultFileSystem, modData.Manifest.Rules, null);
-			manualSteps.AddRange(rule.BeforeUpdateActors(modData, resolvedActors));
+			if (rule is IBeforeUpdateActors beforeActors)
+			{
+				var resolvedActors = MiniYaml.Load(modData.DefaultFileSystem, modData.Manifest.Rules, null);
+				manualSteps.AddRange(beforeActors.BeforeUpdateActors(modData, resolvedActors));
+			}
+
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modRules, rule.UpdateActorNode));
 
-			var resolvedWeapons = MiniYaml.Load(modData.DefaultFileSystem, modData.Manifest.Weapons, null);
-			manualSteps.AddRange(rule.BeforeUpdateWeapons(modData, resolvedWeapons));
+			if (rule is IBeforeUpdateWeapons beforeWeapons)
+			{
+				var resolvedWeapons = MiniYaml.Load(modData.DefaultFileSystem, modData.Manifest.Weapons, null);
+				manualSteps.AddRange(beforeWeapons.BeforeUpdateWeapons(modData, resolvedWeapons));
+			}
+
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modWeapons, rule.UpdateWeaponNode));
 
-			var resolvedSequences = MiniYaml.Load(modData.DefaultFileSystem, modData.Manifest.Sequences, null);
-			manualSteps.AddRange(rule.BeforeUpdateSequences(modData, resolvedSequences));
+			if (rule is IBeforeUpdateSequences beforeSequences)
+			{
+				var resolvedImages = MiniYaml.Load(modData.DefaultFileSystem, modData.Manifest.Sequences, null);
+				manualSteps.AddRange(beforeSequences.BeforeUpdateSequences(modData, resolvedImages));
+			}
+
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modSequences, rule.UpdateSequenceNode));
 
 			manualSteps.AddRange(ApplyTopLevelTransform(modData, modTilesets, rule.UpdateTilesetNode));
