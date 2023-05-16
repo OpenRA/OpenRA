@@ -512,7 +512,7 @@ namespace OpenRA.Mods.Common.Graphics
 				length = 2 * length - 2;
 			}
 
-			if (!index.Any())
+			if (index.Count == 0)
 				throw new YamlException($"Sequence {image}.{Name} does not define any frames.");
 
 			var minIndex = index.Min();
