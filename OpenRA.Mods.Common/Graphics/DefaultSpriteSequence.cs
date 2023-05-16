@@ -318,7 +318,12 @@ namespace OpenRA.Mods.Common.Graphics
 			}
 
 			if (shadowStart >= 0)
-				usedFrames.AddRange(usedFrames.ToList().Select(i => i + shadowStart - start));
+			{
+				var shadowOffset = shadowStart - start;
+				var frameCount = usedFrames.Count;
+				for (var i = 0; i < frameCount; i++)
+					usedFrames.Add(usedFrames[i] + shadowOffset);
+			}
 
 			return usedFrames;
 		}
