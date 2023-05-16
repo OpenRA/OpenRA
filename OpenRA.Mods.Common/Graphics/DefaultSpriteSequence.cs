@@ -334,14 +334,11 @@ namespace OpenRA.Mods.Common.Graphics
 		protected virtual IEnumerable<ReservationInfo> ParseCombineFilenames(ModData modData, string tileset, int[] frames, MiniYaml data)
 		{
 			var filename = LoadField(Filename, data, null, out var location);
-			if (frames == null)
+			if (frames == null && LoadField<string>(Length.Key, null, data) != "*")
 			{
-				if (LoadField<string>(Length.Key, null, data) != "*")
-				{
-					var subStart = LoadField("Start", 0, data);
-					var subLength = LoadField("Length", 1, data);
-					frames = Exts.MakeArray(subLength, i => subStart + i);
-				}
+				var subStart = LoadField("Start", 0, data);
+				var subLength = LoadField("Length", 1, data);
+				frames = Exts.MakeArray(subLength, i => subStart + i);
 			}
 
 			yield return new ReservationInfo(filename, frames, frames, location);
