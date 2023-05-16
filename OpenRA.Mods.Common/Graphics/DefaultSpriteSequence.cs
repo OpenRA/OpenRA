@@ -262,7 +262,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		protected static T LoadField<T>(string key, T fallback, MiniYaml data, MiniYaml defaults = null)
 		{
-			var node = data.Nodes.FirstOrDefault(n => n.Key == key) ?? defaults?.Nodes.FirstOrDefault(n => n.Key == key);
+			var node = data.Nodes.Find(n => n.Key == key) ?? defaults?.Nodes.Find(n => n.Key == key);
 			if (node == null)
 				return fallback;
 
@@ -276,7 +276,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		protected static T LoadField<T>(SpriteSequenceField<T> field, MiniYaml data, MiniYaml defaults, out MiniYamlNode.SourceLocation location)
 		{
-			var node = data.Nodes.FirstOrDefault(n => n.Key == field.Key) ?? defaults?.Nodes.FirstOrDefault(n => n.Key == field.Key);
+			var node = data.Nodes.Find(n => n.Key == field.Key) ?? defaults?.Nodes.Find(n => n.Key == field.Key);
 			if (node == null)
 			{
 				location = default;
@@ -412,7 +412,7 @@ namespace OpenRA.Mods.Common.Graphics
 			var offset = LoadField(Offset, data, defaults);
 			var blendMode = LoadField(BlendMode, data, defaults);
 
-			var combineNode = data.Nodes.FirstOrDefault(n => n.Key == Combine.Key);
+			var combineNode = data.Nodes.Find(n => n.Key == Combine.Key);
 			if (combineNode != null)
 			{
 				for (var i = 0; i < combineNode.Value.Nodes.Count; i++)
