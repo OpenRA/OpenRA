@@ -310,8 +310,8 @@ namespace OpenRA.Mods.Common.Graphics
 				var facingInner = reverseFacings ? (facings - facing) % facings : facing;
 				for (var frame = 0; frame < length.Value; frame++)
 				{
-					var i = transpose ? frame % length.Value * facings + facingInner :
-						facingInner * stride + frame % length.Value;
+					var i = transpose ? frame * facings + facingInner :
+						facingInner * stride + frame;
 
 					usedFrames.Add(frames?[i] ?? start + i);
 				}
