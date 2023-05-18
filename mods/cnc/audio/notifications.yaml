@@ -74,8 +74,6 @@ Sounds:
 		Construction: constru2
 		Country1: country1
 		Country4: country4
-		DisablePower: bleep11
-		EnablePower: bleep12
 		HeavyDoor: hvydoor1
 		Keystroke: keystrok
 		LevelUp: text2
@@ -83,11 +81,6 @@ Sounds:
 		RadarDown: powrdn1
 		RadarUp: comcntr1
 		Sell: cashturn
-		SignalFlare: flare1
-		SignalFlareEast: flaree1
-		SignalFlareNorth: flaren1
-		SignalFlareSouth: flares1
-		SignalFlareWest: flarew1
 		Target1: target1
 		Target2: target2
 		Target3: target3
