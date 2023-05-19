@@ -50,7 +50,7 @@ namespace OpenRA.Scripting
 			try
 			{
 				if (!IsMethod)
-					throw new LuaException("Trying to invoke a ScriptMemberWrapper that isn't a method!");
+					throw new LuaException($"Trying to invoke a {nameof(ScriptMemberWrapper)} that isn't a method!");
 
 				var mi = (MethodInfo)Member;
 				var pi = mi.GetParameters();
