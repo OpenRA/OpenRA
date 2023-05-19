@@ -43,6 +43,13 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			pm.TriggerPowerOutage(ticks);
 		}
+
+		[Desc("Whether the player should receive a notification when low on power.")]
+		public bool PlayLowPowerNotification
+		{
+			get => pm.PlayLowPowerNotification;
+			set => pm.PlayLowPowerNotification = value;
+		}
 	}
 
 	[ScriptPropertyGroup("Power")]

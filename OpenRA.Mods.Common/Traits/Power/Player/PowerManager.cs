@@ -22,9 +22,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Interval (in milliseconds) at which to warn the player of low power.")]
 		public readonly int AdviceInterval = 10000;
 
+		[Desc("The speech notification to play when the player is low power.")]
 		[NotificationReference("Speech")]
 		public readonly string SpeechNotification = null;
 
+		[Desc("The text notification to display when the player is low power.")]
 		public readonly string TextNotification = null;
 
 		public override object Create(ActorInitializer init) { return new PowerManager(init.Self, this); }
@@ -52,10 +54,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public int PowerOutageRemainingTicks { get; private set; }
 		public int PowerOutageTotalTicks { get; private set; }
+		public bool PlayLowPowerNotification { get; set; }
 
 		long lastPowerAdviceTime;
-		bool isLowPower = false;
-		bool wasLowPower = false;
+		bool isLowPower;
+		bool wasLowPower;
 		bool wasHackEnabled;
 
 		public PowerManager(Actor self, PowerManagerInfo info)
@@ -72,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Map placed actors will query an inconsistent power state when they are created
 			// (it will depend on the order that they are spawned by the world)
 			// Tell them to query the correct state once the world has been fully created
-			self.World.AddFrameEndTask(w => UpdatePowerRequiringActors());
+			self.World.AddFrameEndTask(_ => UpdatePowerRequiringActors());
 		}
 
 		public void UpdateActor(Actor a)
@@ -160,7 +163,7 @@ namespace OpenRA.Mods.Common.Traits
 				UpdatePowerState();
 			}
 
-			if (isLowPower && Game.RunTime > lastPowerAdviceTime + info.AdviceInterval)
+			if (PlayLowPowerNotification && isLowPower && Game.RunTime > lastPowerAdviceTime + info.AdviceInterval)
 			{
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.SpeechNotification, self.Owner.Faction.InternalName);
 				TextNotificationsManager.AddTransientLine(info.TextNotification, self.Owner);
