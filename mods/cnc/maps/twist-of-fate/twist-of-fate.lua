@@ -22,6 +22,7 @@ GoDemolitionMan = function(rmbo)
 	if rmbo.IsDead then
 		return
 	end
+
 	local structures = Utils.Where(Map.ActorsInCircle(rmbo.CenterPosition , WDist.FromCells(6)), function(u) return u.HasProperty("StartBuildingRepairs") and u.Owner == GDI end)
 	if #structures > 0 then
 		rmbo.Stop()
@@ -53,6 +54,7 @@ CaptureStructures = function(actor)
 			captst = st
 		end
 	end)
+
 	if captst then
 		actor.Capture(captst)
 	end
@@ -62,14 +64,17 @@ LaunchNuke = function(loop)
 	if NukeDelay == 0 then
 		return
 	end
+
 	local targets = GDI.GetActorsByTypes({ "nuk2", "atwr", "weap", "proc" })
 	if #targets < 1 then
 		targets = GDI.GetGroundAttackers()
 	end
+
 	if not NodTmpl.IsDead then
 		Media.PlaySpeechNotification(GDI, "NuclearWarheadApproaching")
 		NodTmpl.ActivateNukePower(Utils.Random(targets).Location)
 	end
+
 	if loop then
 		Trigger.AfterDelay(DateTime.Seconds(NukeDelay), function() LaunchNuke(true) end)
 	end
@@ -79,6 +84,7 @@ SendNodAirstrike = function(loop)
 	if AstkDelay == 0 then
 		return
 	end
+
 	local target = GetAirstrikeTarget(GDI)
 	if target then
 		NodAirSupport.TargetAirstrike(target, Angle.SouthEast)
@@ -97,12 +103,14 @@ SendEasyReinforcements = function(i)
 	else
 		team = ReinforceTeams[Utils.RandomInteger(1, 4)]
 	end
+
 	Media.PlaySpeechNotification(GDI, "Reinforce")
 	Reinforcements.Reinforce(GDI, team, { CPos.New(56,2), waypoint0.Location }, 25, function(a)
 		a.Move(waypoint1.Location, 2)
 		a.Move(waypoint2.Location, 2)
 		a.Move(CPos.New(49,44), 2)
 	end)
+
 	Trigger.AfterDelay(DateTime.Seconds(ReinforceDelay), function()
 		SendEasyReinforcements(i + 1)
 	end)
@@ -123,6 +131,7 @@ CompleteCaptureCommCenterObjective = function()
 			NodCYard.StartBuildingRepairs()
 		end)
 	end
+
 	Media.DisplayMessage(UserInterface.Translate("communications-center-captured-sams-located"))
 	local activeSams = Nod.GetActorsByType("sam")
 	local miniCams = { }
@@ -131,6 +140,7 @@ CompleteCaptureCommCenterObjective = function()
 			table.insert(miniCams, Actor.Create("camera.mini", true, { Owner = GDI, Location = s.Location }))
 			table.insert(miniCams, Actor.Create("camera.mini", true, { Owner = GDI, Location = CPos.New(s.Location.X + 1, s.Location.Y) }))
 		end)
+
 		Trigger.AfterDelay(1, function()
 			Utils.Do(miniCams, function(c)
 				c.Destroy()
@@ -140,7 +150,6 @@ CompleteCaptureCommCenterObjective = function()
 end
 
 WorldLoaded = function()
-
 	Camera.Position = DefaultCameraPosition.CenterPosition
 	GDI = Player.GetPlayer("GDI")
 	Nod = Player.GetPlayer("Nod")
@@ -190,6 +199,8 @@ WorldLoaded = function()
 		Actor203.Destroy()
 	end
 
+	GDI.PlayLowPowerNotification = false
+
 	InitObjectives(GDI)
 	ClearPath = AddPrimaryObjective(GDI, "clear-path")
 	Trigger.AfterDelay(DateTime.Seconds(5), function()
@@ -201,14 +212,16 @@ WorldLoaded = function()
 
 	Flare = Actor.Create("flare", true, { Owner = GDI, Location = DefaultFlareLocation.Location })
 
-	Trigger.AfterDelay(1,function()
+	Trigger.AfterDelay(1, function()
 		AmbushTeam = Map.ActorsInBox(Map.CenterOfCell(CPos.New(46,5)), Map.CenterOfCell(CPos.New(60,53)), function(a) return a.Owner == Nod and a.Type ~= "stnk" end)
 		Trigger.OnAllKilled(AmbushTeam, function()
 			GDI.MarkCompletedObjective(ClearPath)
+
 			Trigger.AfterDelay(DateTime.Seconds(2), function()
 				Trigger.AfterDelay(DateTime.Seconds(30), function()
 					Flare.Destroy()
 				end)
+
 				Media.PlaySpeechNotification(GDI, "Reinforce")
 				Reinforcements.Reinforce(GDI, MCVReinf, { CPos.New(56,2), waypoint0.Location }, 25, function(a)
 					a.Move(waypoint1.Location, 2)
@@ -217,11 +230,19 @@ WorldLoaded = function()
 					if a.HasProperty("Deploy") then
 						a.Move(CPos.New(48,51))
 						a.Deploy()
+
+						Trigger.OnRemovedFromWorld(a, function()
+							if not a.IsDead then
+								GDI.PlayLowPowerNotification = true
+							end
+						end)
 					end
 				end)
+
 				Utils.Do(ClearPathCameras, function(c)
 					c.Destroy()
 				end)
+
 				if Difficulty == "easy" then
 					Trigger.AfterDelay(DateTime.Seconds(ReinforceDelay), function()
 						SendEasyReinforcements(1)
@@ -246,6 +267,7 @@ WorldLoaded = function()
 						GDI.MarkFailedObjective(CaptureCommCenter)
 						return
 					end
+
 					if NodAstkHq.Owner == GDI then
 						Trigger.AfterDelay(DateTime.Seconds(4), CompleteCaptureCommCenterObjective)
 					end
@@ -269,6 +291,7 @@ WorldLoaded = function()
 				building.Owner = GDI
 			end
 		end)
+
 		GDI.MarkCompletedObjective(RecoverOldBase)
 		table.insert(SneakPaths, SP2)
 		table.insert(SneakPaths, SP1)
