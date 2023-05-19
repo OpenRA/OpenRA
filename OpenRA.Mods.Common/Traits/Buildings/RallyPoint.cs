@@ -45,6 +45,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("A list of 0 or more offsets defining the initial rally point path.")]
 		public readonly CVec[] Path = Array.Empty<CVec>();
 
+		[Desc("Override offset at which the first point of rally point path is drawn relative relative to the center of the producing actor.",
+			"If not specified, " + nameof(ExitInfo.SpawnOffset) + " from " + nameof(Exit) + " trait with nearest " + nameof(ExitInfo.ExitCell) + " is used.")]
+		public readonly WVec? InitialOffset = null;
+
 		[NotificationReference("Speech")]
 		[Desc("Speech notification to play when setting a new rallypoint.")]
 		public readonly string Notification = null;
