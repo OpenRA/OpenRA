@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common.Traits;
@@ -49,13 +50,15 @@ namespace OpenRA.Mods.Common.Scripting
 			return FilteredObjects(actors, filter).ToArray();
 		}
 
-		// HACK: This api method abuses the coordinate system, and should be removed
+		// HACK: This API method abuses the coordinate system, and should be removed
 		// in favour of proper actor queries.  See #8549.
+		[Obsolete("This function will be removed in future versions. Use Map.ActorsInWorld instead.")]
 		[Desc("Returns the location of the top-left corner of the map (assuming zero terrain height).")]
 		public WPos TopLeft => Context.World.Map.ProjectedTopLeft;
 
-		// HACK: This api method abuses the coordinate system, and should be removed
+		// HACK: This API method abuses the coordinate system, and should be removed
 		// in favour of proper actor queries.  See #8549.
+		[Obsolete("This function will be removed in future versions. Use Map.ActorsInWorld instead.")]
 		[Desc("Returns the location of the bottom-right corner of the map (assuming zero terrain height).")]
 		public WPos BottomRight => Context.World.Map.ProjectedBottomRight;
 

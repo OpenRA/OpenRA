@@ -558,8 +558,11 @@ Actors:
 	USSRlstPoint: waypoint
 		Location: 48,83
 		Owner: Neutral
-	CFBPoint: waypoint
+	BaseRectBR: waypoint
 		Location: 42,90
+		Owner: Neutral
+	BaseRectTL: waypoint
+		Location: 20,42
 		Owner: Neutral
 	GreeceBasePoint: waypoint
 		Location: 69,46

@@ -8,8 +8,8 @@
 ]]
 
 CheckForBase = function()
-	local baseBuildings = Map.ActorsInBox(Map.TopLeft, CFBPoint.CenterPosition, function(actor)
-		return actor.Type == "fact" or actor.Type == "powr"
+	local baseBuildings = Map.ActorsInBox(BaseRectTL.CenterPosition, BaseRectBR.CenterPosition, function(actor)
+		return (actor.Type == "fact" or actor.Type == "powr") and actor.Owner == player
 	end)
 
 	return #baseBuildings >= 2
