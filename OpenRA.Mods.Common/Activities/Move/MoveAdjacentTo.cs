@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Cancel the current path if the activity asks to stop.
 			if (ShouldStop(self) || noTarget)
-				Cancel(self);
+				Cancel(self, true);
 			else if (!IsCanceling && targetIsValid && ShouldRepath(self, oldTargetLocation))
 			{
 				// Target has moved, but is still valid.
