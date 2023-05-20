@@ -244,7 +244,7 @@ namespace OpenRA
 					}
 					catch (Exception ex)
 					{
-						Log.Write("debug", "Error in AnyFlaggedTraits\r\n" + ex.ToString());
+						Log.Write("debug", "Error in AnyFlaggedTraits\n" + ex.ToString());
 					}
 				}
 			}

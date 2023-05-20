@@ -141,20 +141,20 @@ namespace OpenRA
 
 			if (unresolved.Count != 0)
 			{
-				var exceptionString = "ActorInfo(\"" + Name + "\") failed to initialize because of the following:\r\n";
+				var exceptionString = "ActorInfo(\"" + Name + "\") failed to initialize because of the following:\n";
 				var missing = unresolved.SelectMany(u => u.Dependencies.Where(d => !source.Any(s => AreResolvable(d, s.Type)))).Distinct();
 
-				exceptionString += "Missing:\r\n";
+				exceptionString += "Missing:\n";
 				foreach (var m in missing)
-					exceptionString += m + " \r\n";
+					exceptionString += m + " \n";
 
-				exceptionString += "Unresolved:\r\n";
+				exceptionString += "Unresolved:\n";
 				foreach (var u in unresolved)
 				{
 					var deps = u.Dependencies.Where(d => !resolved.Exists(r => r.Type == d));
 					var optDeps = u.OptionalDependencies.Where(d => !resolved.Exists(r => r.Type == d));
 					var allDeps = string.Join(", ", deps.Select(o => o.ToString()).Concat(optDeps.Select(o => $"[{o}]")));
-					exceptionString += $"{u.Type}: {{ {allDeps} }}\r\n";
+					exceptionString += $"{u.Type}: {{ {allDeps} }}\n";
 				}
 
 				throw new YamlException(exceptionString);
