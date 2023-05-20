@@ -26,7 +26,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var luaScript = world.WorldActor.TraitOrDefault<LuaScript>();
 			if (luaScript != null)
 			{
-				var text = WidgetUtils.WrapText(luaScript.Context.ErrorMessage, label.Bounds.Width, font);
+				// Native exceptions have OS-dependend line endings, so strip these away as WrapText doesn't handle them
+				var errorMessage = luaScript.Context.ErrorMessage.Replace("\r\n", "\n");
+
+				var text = WidgetUtils.WrapText(errorMessage, label.Bounds.Width, font);
 				label.Text = text;
 				label.Bounds.Height = font.Measure(text).Y;
 				panel.ScrollToTop();
