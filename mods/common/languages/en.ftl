@@ -717,3 +717,34 @@ options-time-limit =
         }
 
 notification-time-limit-expired = Time limit has expired.
+
+## EditorActorBrush
+notification-added-actor = Added { $name } ({ $id })
+
+## EditorCopyPasteBrush
+notification-copied-tiles =
+    { $amount ->
+       [one] Copied one tile
+      *[other] Copied { $amount } tiles
+    }
+
+## EditorDefaultBrush
+notification-removed-actor = Removed { $name } ({ $id })
+notification-removed-resource = Removed { $type }
+
+## EditorResourceBrush
+notification-added-resource =
+    { $amount ->
+       [one] Added one cell of { $type }
+      *[other] Added { $amount } cells of { $type }
+    }
+
+## EditorTileBrush
+notification-added-tile = Added tile { $id }
+notification-filled-tile = Filled with tile { $id }
+
+## EditorActionManager
+notification-opened = Opened
+
+## ActorEditLogic
+notification-edited-actor = Edited { $name } ({ $id })

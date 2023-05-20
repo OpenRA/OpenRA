@@ -463,6 +463,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	class EditActorEditorAction : IEditorAction
 	{
+		[TranslationReference("name", "id")]
+		const string EditedActor = "notification-edited-actor";
+
 		public string Text { get; }
 
 		readonly IEnumerable<IEditActorHandle> handles;
@@ -476,7 +479,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			actorId = actor.ID;
 			this.actor = actor;
 			this.handles = handles;
-			Text = $"Edited {actor.Info.Name} ({actor.ID})";
+			Text = TranslationProvider.GetString(EditedActor, Translation.Arguments("name", actor.Info.Name, "id", actor.ID));
 		}
 
 		public void Execute()

@@ -176,6 +176,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 	class CopyPasteEditorAction : IEditorAction
 	{
+		[TranslationReference("amount")]
+		const string CopiedTiles = "notification-copied-tiles";
+
 		public string Text { get; }
 
 		readonly MapCopyFilters copyFilters;
@@ -205,7 +208,7 @@ namespace OpenRA.Mods.Common.Widgets
 			mapHeight = map.Height;
 			mapResources = map.Resources;
 
-			Text = $"Copied {tiles.Count} tiles";
+			Text = TranslationProvider.GetString(CopiedTiles, Translation.Arguments("amount", tiles.Count));
 		}
 
 		public void Execute()

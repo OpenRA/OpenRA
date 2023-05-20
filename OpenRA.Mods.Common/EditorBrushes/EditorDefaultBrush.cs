@@ -110,6 +110,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 	class RemoveActorAction : IEditorAction
 	{
+		[TranslationReference("name", "id")]
+		const string RemovedActor = "notification-removed-actor";
+
 		public string Text { get; }
 
 		readonly EditorActorLayer editorActorLayer;
@@ -120,7 +123,8 @@ namespace OpenRA.Mods.Common.Widgets
 			this.editorActorLayer = editorActorLayer;
 			this.actor = actor;
 
-			Text = $"Removed {actor.Info.Name} ({actor.ID})";
+			Text = TranslationProvider.GetString(RemovedActor,
+				Translation.Arguments("name", actor.Info.Name, "id", actor.ID));
 		}
 
 		public void Execute()
@@ -141,6 +145,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 	class RemoveResourceAction : IEditorAction
 	{
+		[TranslationReference("type")]
+		const string RemovedResource = "notification-removed-resource";
+
 		public string Text { get; }
 
 		readonly IResourceLayer resourceLayer;
@@ -153,7 +160,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.resourceLayer = resourceLayer;
 			this.cell = cell;
 
-			Text = $"Removed {resourceType}";
+			Text = TranslationProvider.GetString(RemovedResource, Translation.Arguments("type", resourceType));
 		}
 
 		public void Execute()
