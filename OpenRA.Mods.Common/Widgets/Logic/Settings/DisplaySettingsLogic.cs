@@ -67,6 +67,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		[TranslationReference("fps")]
 		const string FrameLimiter = "checkbox-frame-limiter";
+
 		static readonly int OriginalVideoDisplay;
 		static readonly WindowMode OriginalGraphicsMode;
 		static readonly int2 OriginalGraphicsWindowedSize;

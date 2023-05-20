@@ -186,7 +186,9 @@ ChromeLayout:
 
 Translations:
 	common|languages/en.ftl
+	common|languages/chrome/en.ftl
 	common|languages/rules/en.ftl
+	ts|languages/chrome/en.ftl
 	ts|languages/rules/en.ftl
 
 Voices:

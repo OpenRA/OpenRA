@@ -17,6 +17,7 @@ using System.Reflection;
 using Linguini.Syntax.Ast;
 using Linguini.Syntax.Parser;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Lint
 {
@@ -107,7 +108,7 @@ namespace OpenRA.Mods.Common.Lint
 				referencedKeys.Add(speed.Name);
 			}
 
-			foreach (var modType in modData.ObjectCreator.GetTypes())
+			foreach (var modType in modData.ObjectCreator.GetTypes().Where(t => !t.IsSubclassOf(typeof(Widget))))
 			{
 				foreach (var fieldInfo in modType.GetFields(Binding).Where(m => Utility.HasAttribute<TranslationReferenceAttribute>(m)))
 				{
@@ -133,6 +134,13 @@ namespace OpenRA.Mods.Common.Lint
 
 					referencedKeys.Add(key);
 				}
+			}
+
+			var chromeFields = new[] { "Text", "TooltipText", "TooltipDesc" };
+			foreach (var filename in modData.Manifest.ChromeLayout)
+			{
+				var nodes = MiniYaml.FromStream(modData.DefaultFileSystem.Open(filename));
+				CheckChrome(nodes, chromeFields, translation, language, emitError);
 			}
 
 			foreach (var file in modData.Manifest.Translations)
@@ -176,6 +184,39 @@ namespace OpenRA.Mods.Common.Lint
 						}
 					}
 				}
+			}
+		}
+
+		void CheckChrome(IEnumerable<MiniYamlNode> nodes, string[] fields, Translation translation, string language, Action<string> emitError)
+		{
+			foreach (var node in nodes)
+			{
+				if (node.Value == null)
+					continue;
+
+				if (fields.Contains(node.Key))
+				{
+					var key = FieldLoader.GetValue<string>(node.Key, node.Value.Value);
+					if (referencedKeys.Contains(key))
+						continue;
+
+					if (key.Length == 1)
+						continue;
+
+					if (key.All(c => char.IsDigit(c) || c == '%'))
+						continue;
+
+					if (!key.Any(char.IsLetterOrDigit))
+						continue;
+
+					if (!translation.HasMessage(key))
+						emitError($"{key} not present in {language} translation.");
+
+					referencedKeys.Add(key);
+				}
+
+				if (node.Value.Nodes != null)
+					CheckChrome(node.Value.Nodes, fields, translation, language, emitError);
 			}
 		}
 
