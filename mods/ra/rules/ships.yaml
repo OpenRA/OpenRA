@@ -39,7 +39,7 @@ SS:
 		ValidTargets: WaterActor, Underwater
 	DetectCloaked:
 		DetectionTypes: Underwater
-		Range: 4c0
+		Range: 5c0
 	RenderDetectionCircle:
 	Explodes:
 		Weapon: UnitExplodeSubmarine
