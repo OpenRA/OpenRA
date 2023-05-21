@@ -353,6 +353,8 @@ options-target-lines =
     .manual = Manual
     .disabled = Disabled
 
+checkbox-frame-limiter = Enable Frame Limiter ({ $fps } FPS)
+
 ## HotkeysSettingsLogic
 label-original-notice = The default is "{ $key }"
 label-duplicate-notice = This is already used for "{ $key }" in the { $context } context
