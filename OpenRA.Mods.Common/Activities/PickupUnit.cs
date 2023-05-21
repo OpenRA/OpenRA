@@ -160,7 +160,7 @@ namespace OpenRA.Mods.Common.Activities
 			protected override void OnFirstRun(Actor self)
 			{
 				// The cargo might have become invalid while we were moving towards it.
-				if (cargo == null || cargo.IsDead || carryable.IsTraitDisabled || !cargo.AppearsFriendlyTo(self))
+				if (cargo == null || cargo.IsDead || carryable.IsTraitDisabled || carryall.Carryable != cargo || !cargo.AppearsFriendlyTo(self))
 					return;
 
 				self.World.AddFrameEndTask(w =>
