@@ -156,9 +156,8 @@ TurretGun:
 	Range: 5c512
 	Report: cannon2.aud
 	InvalidTargets: Underwater
-	Projectile: Bullet
-		Speed: 426
 	Warhead@1Dam: SpreadDamage
+		Spread: 256
 		Damage: 2500
 		Versus:
 			None: 28

@@ -191,7 +191,7 @@ Stinger:
 		Versus:
 			None: 36
 			Wood: 88
-			Light: 88
+			Light: 66
 			Heavy: 120
 			Concrete: 60
 
@@ -277,9 +277,9 @@ TorpTube:
 		Damage: 2500
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		Versus:
-			None: 40
+			None: 80
 			Wood: 50
-			Light: 30
+			Light: 48
 			Heavy: 30
 			Concrete: 100
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
@@ -296,7 +296,7 @@ SubMissile:
 	TargetActorCenter: true
 	-Projectile:
 	Projectile: Bullet
-		Speed: 162
+		Speed: 215
 		Blockable: false
 		LaunchAngle: 120
 		Inaccuracy: 0c614
@@ -311,6 +311,8 @@ SubMissileAA:
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: AirborneActor
 		Damage: 1500
+		Versus:
+			Light: 30
 
 SCUD:
 	Inherits: ^AntiGroundMissile
