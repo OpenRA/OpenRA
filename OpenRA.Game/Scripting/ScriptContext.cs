@@ -284,17 +284,20 @@ namespace OpenRA.Scripting
 
 		public void WorldLoaded()
 		{
-			if (FatalErrorOccurred)
+			if (FatalErrorOccurred || runtime.Globals["WorldLoaded"] is not LuaFunction worldLoaded)
 				return;
 
 			try
 			{
-				using (var worldLoaded = (LuaFunction)runtime.Globals["WorldLoaded"])
-					worldLoaded.Call().Dispose();
+				worldLoaded.Call().Dispose();
 			}
 			catch (LuaException e)
 			{
 				FatalError(e);
+			}
+			finally
+			{
+				worldLoaded?.Dispose();
 			}
 		}
 
