@@ -1,15 +1,7 @@
-## common|chrome/ingame.yaml
-## common|chrome/ingame-chat.yaml
-button-chat-chrome-chat-mode = Team
-button-tooltip-chat-chrome-chat-mode = Toggle chat mode
-## common|chrome/ingame-transients.yaml
-## common|chrome/ingame-fmvplayer.yaml
-## common|chrome/ingame-info.yaml
 ## common|chrome/ingame-infoscripterror.yaml
 label-script-error-panel-desca = The map script has encountered a fatal error
 label-script-error-panel-descb = The details of the error have been saved to lua.log in the logs directory.
 label-script-error-panel-descc = Please send this file to the map author so that they can fix this issue.
-## common|chrome/ingame-infobriefing.yaml
 ## common|chrome/ingame-infoobjectives.yaml
 label-mission-objectives-mission = Mission:
 ## common|chrome/ingame-infostats.yaml
@@ -21,10 +13,8 @@ label-stats-headers-score = Score
 label-stats-headers-actions = Actions
 button-tooltip-player-template-kick = Kick this player
 button-tooltip-spectator-template-kick = Kick this player
-## common|chrome/ingame-info-lobby-options.yaml
 ## common|chrome/ingame-menu.yaml
 label-menu-buttons-label-title = Options
-## common|chrome/ingame-perf.yaml
 ## common|chrome/ingame-debug.yaml
 label-debug-panel-title = Debug Options
 checkbox-debug-panel-instant-build = Instant Build Speed
@@ -48,7 +38,6 @@ checkbox-debug-panel-show-screenmap = Show Screen Map
 ## common|chrome/ingame-debug-hpf.yaml
 dropdown-hpf-overlay-hpf-overlay-locomotor = Select Locomotor
 dropdown-hpf-overlay-hpf-overlay-check = Select BlockedByActor
-## common|chrome/ingame-debuginfo.yaml
 ## common|chrome/ingame-infochat.yaml
 button-chat-chrome-chat-mode = Team
 button-tooltip-chat-chrome-chat-mode = Toggle chat mode
@@ -83,35 +72,6 @@ label-update-notice-b = Download the latest version from www.openra.net
 label-mainmenu-introduction-prompt-prompt-title = Establishing Battlefield Control
 label-mainmenu-introduction-prompt-desc-a = Welcome back Commander! Initialize combat parameters using the options below.
 label-mainmenu-introduction-prompt-desc-b = Additional options can be configured later from the Settings menu.
-label-profile-section-header-label = Profile
-label-player-container-player = Player Name:
-textfield-player-container-playername = Name
-label-playercolor-container-color = Preferred Color:
-label-control-section-header-label = Input
-label-mouse-control-container-mouse-control-label = Control Scheme:
-label-mouse-control-desc-classic-desc-selection = - Select units using the <Left> mouse button
-label-mouse-control-desc-classic-desc-commands = - Command units using the <Left> mouse button
-label-mouse-control-desc-classic-desc-buildigs = - Place structures using the <Left> mouse button
-label-mouse-control-desc-classic-desc-support = - Target support powers using the <Left> mouse button
-label-mouse-control-desc-classic-desc-zoom = - Zoom the battlefield using the <Scroll Wheel>
-label-mouse-control-desc-classic-desc-zoom-modifier = - Zoom the battlefield using <MODIFIER + Scroll Wheel>
-label-mouse-control-desc-classic-desc-scroll-right = - Pan the battlefield using the <Right> mouse button
-label-mouse-control-desc-classic-desc-scroll-middle = - Pan the battlefield using the <Middle> mouse button
-label-mouse-control-desc-classic-desc-edgescroll = or by moving the cursor to the edge of the screen
-label-mouse-control-desc-modern-desc-selection = - Select units using the <Left> mouse button
-label-mouse-control-desc-modern-desc-commands = - Command units using the <Right> mouse button
-label-mouse-control-desc-modern-desc-buildigs = - Place structures using the <Left> mouse button
-label-mouse-control-desc-modern-desc-support = - Target support powers using the <Left> mouse button
-label-mouse-control-desc-modern-desc-zoom = - Zoom the battlefield using the <Scroll Wheel>
-label-mouse-control-desc-modern-desc-zoom-modifier = - Zoom the battlefield using <MODIFIER + Scroll Wheel>
-label-mouse-control-desc-modern-desc-scroll-right = - Pan the battlefield using the <Right> mouse button
-label-mouse-control-desc-modern-desc-scroll-middle = - Pan the battlefield using the <Middle> mouse button
-label-mouse-control-desc-modern-desc-edgescroll = or by moving the cursor to the edge of the screen
-checkbox-edgescroll-checkbox-container-edgescroll-checkbox = Screen Edge Panning
-label-display-section-header-label = Display
-label-battlefield-camera-dropdown-container-battlefield-camera = Battlefield Camera:
-label-ui-scale-dropdown-container-ui-scale = UI Scale:
-checkbox-cursordouble-checkbox-container-cursordouble-checkbox = Increase Cursor Size
 button-mainmenu-introduction-prompt-continue-button = Continue
 label-mainmenu-system-info-prompt-prompt-title = Establishing Battlefield Control
 label-mainmenu-system-info-prompt-prompt-text-a = We would like to collect some system details that will help us optimize OpenRA.
@@ -283,14 +243,10 @@ button-template-new-spectator-spectate = Spectate
 label-lobby-options-bin-title = Map Options
 ## common|chrome/lobby-music.yaml
 label-label-container-music = Music
-label-label-container-title = Track
 label-label-container-length = Length
 checkbox-controls-shuffle = Shuffle
 checkbox-controls-repeat = Loop
 label-controls-volume-label = Volume:
-label-no-music-label-title = Music Not Installed
-label-no-music-label-desca = The game music can be installed
-label-no-music-label-descb = from the "Manage Content" menu.
 ## common|chrome/lobby-servers.yaml
 label-label-container-name = Server
 label-label-container-players = Players
@@ -339,13 +295,6 @@ button-mapchooser-panel-button-ok = Ok
 button-mapchooser-panel-button-cancel = Back
 ## common|chrome/multiplayer-browser.yaml
 label-multiplayer-panel-title = Multiplayer
-label-label-container-name = Server
-label-label-container-players = Players
-label-label-container-location = Location
-label-label-container-status = Status
-label-notice-container-outdated-version-label = You are running an outdated version of OpenRA. Download the latest version from www.openra.net
-label-notice-container-unknown-version-label = You are running an unrecognized version of OpenRA. Download the latest version from www.openra.net
-label-notice-container-playtest-available-label = A preview of the next OpenRA release is available for testing. Download the playtest from www.openra.net
 image-tooltip-multiplayer-panel-password-protected = Requires Password
 image-tooltip-multiplayer-panel-requires-authentication = Requires OpenRA forum account
 button-selected-server-join-button = Join
@@ -436,7 +385,6 @@ button-gamesave-browser-panel-delete-button = Delete
 button-gamesave-browser-panel-rename-button = Rename
 button-gamesave-browser-panel-load-button = Load
 button-gamesave-browser-panel-save-button = Save
-## common|chrome/dropdowns.yaml
 ## common|chrome/musicplayer.yaml
 label-label-container-title = Track
 label-label-container-type = Length
@@ -449,7 +397,6 @@ button-music-panel-back-button = Close
 ## common|chrome/tooltips.yaml
 label-latency-tooltip-latency-prefix = Latency:
 label-anonymous-player-tooltip-name = Anonymous Player
-label-game-admin-label = Game Admin
 label-game-admin-label = Game Admin
 ## common|chrome/assetbrowser.yaml
 label-assetbrowser-panel-assetbrowser-title = Asset Browser
@@ -549,99 +496,6 @@ button-fingerprint-not-found-fingerprint-not-found-continue = Back
 label-connection-error-desc-a = Failed to connect to the OpenRA forum.
 label-connection-error-desc-b = Please check your internet connection.
 button-connection-error-connection-error-retry = Retry
-## common|chrome/text-notifications.yaml
-## common|chrome/ingame.yaml
-## common|chrome/ingame-chat.yaml
-## common|chrome/ingame-transients.yaml
-## common|chrome/ingame-fmvplayer.yaml
-## common|chrome/ingame-info.yaml
-## common|chrome/ingame-infoscripterror.yaml
-## common|chrome/ingame-infobriefing.yaml
-## common|chrome/ingame-infoobjectives.yaml
-## common|chrome/ingame-info-lobby-options.yaml
-## common|chrome/ingame-perf.yaml
-## common|chrome/ingame-debug.yaml
-## common|chrome/ingame-debug-hpf.yaml
-## common|chrome/ingame-debuginfo.yaml
-## common|chrome/ingame-infochat.yaml
-## common|chrome/mainmenu-prompts.yaml
-## common|chrome/settings.yaml
-## common|chrome/settings-display.yaml
-## common|chrome/settings-audio.yaml
-## common|chrome/settings-input.yaml
-## common|chrome/settings-hotkeys.yaml
-## common|chrome/settings-advanced.yaml
-## common|chrome/credits.yaml
-## common|chrome/lobby.yaml
-## common|chrome/lobby-mappreview.yaml
-## common|chrome/playerprofile.yaml
-## common|chrome/lobby-options.yaml
-## common|chrome/lobby-music.yaml
-## common|chrome/lobby-servers.yaml
-## common|chrome/lobby-kickdialogs.yaml
-## common|chrome/color-picker.yaml
-## common|chrome/map-chooser.yaml
-## common|chrome/multiplayer-browser.yaml
-## common|chrome/multiplayer-createserver.yaml
-## common|chrome/multiplayer-directconnect.yaml
-## common|chrome/connection.yaml
-## common|chrome/musicplayer.yaml
-## common|chrome/assetbrowser.yaml
-## common|chrome/confirmation-dialogs.yaml
-## common|chrome/editor.yaml
-## common|chrome/replaybrowser.yaml
-## common|chrome/gamesave-browser.yaml
 ## common|chrome/gamesave-loading.yaml
 label-gamesave-loading-screen-title = Loading Saved Game
 label-gamesave-loading-screen-desc = Press Escape to cancel loading and return to the main menu
-## common|chrome/text-notifications.yaml
-## common|chrome/ingame.yaml
-## common|chrome/ingame-chat.yaml
-## common|chrome/ingame-fmvplayer.yaml
-## common|chrome/ingame-menu.yaml
-## common|chrome/ingame-info.yaml
-## common|chrome/ingame-infoscripterror.yaml
-## common|chrome/ingame-infobriefing.yaml
-## common|chrome/ingame-infoobjectives.yaml
-## common|chrome/ingame-infostats.yaml
-## common|chrome/ingame-info-lobby-options.yaml
-## common|chrome/ingame-perf.yaml
-## common|chrome/ingame-debug-hpf.yaml
-## common|chrome/ingame-debuginfo.yaml
-## common|chrome/ingame-infochat.yaml
-## common|chrome/mainmenu.yaml
-## common|chrome/mainmenu-prompts.yaml
-## common|chrome/settings.yaml
-## common|chrome/settings-display.yaml
-## common|chrome/settings-audio.yaml
-## common|chrome/settings-input.yaml
-## common|chrome/settings-advanced.yaml
-## common|chrome/credits.yaml
-## common|chrome/lobby.yaml
-## common|chrome/lobby-mappreview.yaml
-## common|chrome/lobby-players.yaml
-## common|chrome/lobby-options.yaml
-## common|chrome/lobby-music.yaml
-## common|chrome/lobby-servers.yaml
-## common|chrome/lobby-kickdialogs.yaml
-## common|chrome/playerprofile.yaml
-## common|chrome/map-chooser.yaml
-## common|chrome/multiplayer-browser.yaml
-## common|chrome/multiplayer-browserpanels.yaml
-## common|chrome/multiplayer-createserver.yaml
-## common|chrome/multiplayer-directconnect.yaml
-## common|chrome/connection.yaml
-## common|chrome/replaybrowser.yaml
-## common|chrome/gamesave-browser.yaml
-## common|chrome/gamesave-loading.yaml
-## common|chrome/musicplayer.yaml
-## common|chrome/tooltips.yaml
-## common|chrome/assetbrowser.yaml
-## common|chrome/missionbrowser.yaml
-## common|chrome/confirmation-dialogs.yaml
-## common|chrome/editor.yaml
-## common|chrome/text-notifications.yaml
-## common|chrome/ingame-transients.yaml
-## common|chrome/ingame-debug-hpf.yaml
-## common|chrome/ingame-infoscripterror.yaml
-## common|chrome/text-notifications.yaml

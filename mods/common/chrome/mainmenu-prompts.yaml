@@ -100,7 +100,7 @@ Background@MAINMENU_INTRODUCTION_PROMPT:
 							Height: PARENT_BOTTOM
 							Font: TinyBold
 							Align: Center
-							Text: label-control-section-header-label
+							Text: label-input-section-header-label
 				Container@ROW:
 					Width: PARENT_RIGHT
 					Height: 50

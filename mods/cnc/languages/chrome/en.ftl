@@ -29,35 +29,6 @@ label-update-notice-b = Download the latest version from www.openra.net
 label-mainmenu-introduction-prompt-prompt-title = Establishing Battlefield Control
 label-mainmenu-introduction-prompt-desc-a = Welcome back Commander! Initialize combat parameters using the options below.
 label-mainmenu-introduction-prompt-desc-b = Additional options can be configured later from the Settings menu.
-label-profile-section-header-label = Profile
-label-player-container-player = Player Name:
-textfield-player-container-playername = Name
-label-playercolor-container-color = Preferred Color:
-label-input-section-header-label = Input
-label-mouse-control-container-mouse-control-label = Control Scheme:
-label-mouse-control-desc-classic-desc-selection = - Select units using the <Left> mouse button
-label-mouse-control-desc-classic-desc-commands = - Command units using the <Left> mouse button
-label-mouse-control-desc-classic-desc-buildigs = - Place structures using the <Left> mouse button
-label-mouse-control-desc-classic-desc-support = - Target support powers using the <Left> mouse button
-label-mouse-control-desc-classic-desc-zoom = - Zoom the battlefield using the <Scroll Wheel>
-label-mouse-control-desc-classic-desc-zoom-modifier = - Zoom the battlefield using <MODIFIER + Scroll Wheel>
-label-mouse-control-desc-classic-desc-scroll-right = - Pan the battlefield using the <Right> mouse button
-label-mouse-control-desc-classic-desc-scroll-middle = - Pan the battlefield using the <Middle> mouse button
-label-mouse-control-desc-classic-desc-edgescroll = or by moving the cursor to the edge of the screen
-label-mouse-control-desc-modern-desc-selection = - Select units using the <Left> mouse button
-label-mouse-control-desc-modern-desc-commands = - Command units using the <Right> mouse button
-label-mouse-control-desc-modern-desc-buildigs = - Place structures using the <Left> mouse button
-label-mouse-control-desc-modern-desc-support = - Target support powers using the <Left> mouse button
-label-mouse-control-desc-modern-desc-zoom = - Zoom the battlefield using the <Scroll Wheel>
-label-mouse-control-desc-modern-desc-zoom-modifier = - Zoom the battlefield using <MODIFIER + Scroll Wheel>
-label-mouse-control-desc-modern-desc-scroll-right = - Pan the battlefield using the <Right> mouse button
-label-mouse-control-desc-modern-desc-scroll-middle = - Pan the battlefield using the <Middle> mouse button
-label-mouse-control-desc-modern-desc-edgescroll = or by moving the cursor to the edge of the screen
-checkbox-edgescroll-checkbox-container-edgescroll-checkbox = Screen Edge Panning
-label-display-section-header-label = Display
-label-battlefield-camera-dropdown-container-battlefield-camera = Battlefield Camera:
-label-ui-scale-dropdown-container-ui-scale = UI Scale:
-checkbox-cursordouble-checkbox-container-cursordouble-checkbox = Increase Cursor Size
 button-mainmenu-introduction-prompt-continue-button = Continue
 label-mainmenu-system-info-prompt-prompt-title = Establishing Battlefield Control
 label-mainmenu-system-info-prompt-prompt-text-a = We would like to collect some details that will help us optimize OpenRA.
@@ -86,16 +57,13 @@ label-connection-error-desc-a = Failed to connect to the OpenRA forum.
 label-connection-error-desc-b = Please check your internet connection.
 button-connection-error-connection-error-retry = Retry
 ## cnc|chrome/multiplayer-browser.yaml
+image-tooltip-multiplayer-panel-password-protected = Requires Password
+image-tooltip-multiplayer-panel-requires-authentication = Requires OpenRA forum account
 label-multiplayer-panel-title = Multiplayer
 label-label-container-name = Server
 label-label-container-players = Players
 label-label-container-location = Location
 label-label-container-status = Status
-label-notice-container-outdated-version-label = You are running an outdated version of OpenRA. Download the latest version from www.openra.net
-label-notice-container-unknown-version-label = You are running an unrecognized version of OpenRA. Download the latest version from www.openra.net
-label-notice-container-playtest-available-label = A preview of the next OpenRA release is available for testing. Download the playtest from www.openra.net
-image-tooltip-multiplayer-panel-password-protected = Requires Password
-image-tooltip-multiplayer-panel-requires-authentication = Requires OpenRA forum account
 button-selected-server-join-button = Join
 dropdown-multiplayer-panel-filters-dropdownbutton = Filter Games
 button-multiplayer-panel-directconnect-button = Direct IP
@@ -190,19 +158,11 @@ button-template-new-spectator-spectate = Spectate
 label-lobby-options-bin-title = Map Options
 ## cnc|chrome/lobby-music.yaml
 label-label-container-music = Music
-label-label-container-title = Track
 label-label-container-length = Length
 checkbox-controls-shuffle = Shuffle
 checkbox-controls-repeat = Loop
 label-controls-volume-label = Volume:
-label-no-music-label-title = Music Not Installed
-label-no-music-label-desca = The game music can be installed
-label-no-music-label-descb = from the "Manage Content" menu.
 ## cnc|chrome/lobby-servers.yaml
-label-label-container-name = Server
-label-label-container-players = Players
-label-label-container-location = Location
-label-label-container-status = Status
 label-notice-container-outdated-version-label = You are running an outdated version of OpenRA. Download the latest version from www.openra.net
 label-notice-container-unknown-version-label = You are running an unrecognized version of OpenRA. Download the latest version from www.openra.net
 label-notice-container-playtest-available-label = A preview of the next OpenRA release is available for testing. Download the playtest from www.openra.net
@@ -341,17 +301,17 @@ label-combat-stats-headers-vision-header = Vision
 button-tooltip-command-bar-attack-move = Attack Move
 button-tooltipdesc-command-bar-attack-move = Selected units will move to the desired location
     and attack any enemies they encounter en route.
-    
+
     Hold <(Ctrl)> while targeting to order an Assault Move
     that attacks any units or structures encountered en route.
-    
+
     Left-click icon then right-click on target location.
 button-tooltip-command-bar-force-move = Force Move
 button-tooltipdesc-command-bar-force-move = Selected units will move to the desired location
      - Default activity for the target is suppressed
      - Vehicles will attempt to crush enemies at the target location
      - Helicopters will land at the target location
-    
+
     Left-click icon then right-click on target.
     Hold <(Alt)> to activate temporarily while commanding units.
 button-tooltip-command-bar-force-attack = Force Attack
@@ -360,35 +320,35 @@ button-tooltipdesc-command-bar-force-attack = Selected units will attack the tar
      - Allows targeting of own or ally forces
      - Long-range artillery units will always target the
        location, ignoring units and buildings
-    
+
     Left-click icon then right-click on target.
     Hold <(Ctrl)> to activate temporarily while commanding units.
 button-tooltip-command-bar-guard = Guard
 button-tooltipdesc-command-bar-guard = Selected units will follow the targeted unit.
-    
+
     Left-click icon then right-click on target unit.
 button-tooltip-command-bar-deploy = Deploy
 button-tooltipdesc-command-bar-deploy = Selected units will perform their default deploy activity
      - MCVs will unpack into a Construction Yard
      - Construction Yards will re-pack into a MCV
      - Transports will unload their passengers
-    
+
     Acts immediately on selected units.
 button-tooltip-command-bar-scatter = Scatter
 button-tooltipdesc-command-bar-scatter = Selected units will stop their current activity
     and move to a nearby location.
-    
+
     Acts immediately on selected units.
 button-tooltip-command-bar-stop = Stop
 button-tooltipdesc-command-bar-stop = Selected units will stop their current activity.
     Selected buildings will reset their rally point.
-    
+
     Acts immediately on selected targets.
 button-tooltip-command-bar-queue-orders = Waypoint Mode
 button-tooltipdesc-command-bar-queue-orders = Use Waypoint Mode to give multiple linking commands
     to the selected units. Units will execute the commands
     immediately upon receiving them.
-    
+
     Left-click icon then give commands in the game world.
     Hold <(Shift)> to activate temporarily while commanding units.
 button-tooltip-stance-bar-stance-attackanything = Attack Anything Stance
@@ -407,7 +367,6 @@ button-tooltip-stance-bar-stance-holdfire = Hold Fire Stance
 button-tooltipdesc-stance-bar-stance-holdfire = Set the selected units to Hold Fire stance:
      - Units will not fire upon enemies
      - Units will not move or pursue enemies
-label-mute-indicator-label = Audio Muted
 button-tooltip-top-buttons-sell-button = Sell
 button-tooltip-top-buttons-repair-button = Repair
 button-tooltip-top-buttons-beacon-button = Place Beacon
@@ -417,10 +376,6 @@ button-tooltip-production-types-defence = Support
 button-tooltip-production-types-infantry = Infantry
 button-tooltip-production-types-vehicle = Vehicles
 button-tooltip-production-types-aircraft = Aircraft
-## cnc|chrome/ingame-chat.yaml
-button-chat-chrome-chat-mode = Team
-button-tooltip-chat-chrome-chat-mode = Toggle chat mode
-## cnc|chrome/ingame-menu.yaml
 ## cnc|chrome/ingame-debug.yaml
 label-debug-panel-title = Debug Options
 checkbox-debug-panel-instant-build = Instant Build Speed
@@ -446,7 +401,6 @@ button-chat-chrome-chat-mode = Team
 button-tooltip-chat-chrome-chat-mode = Toggle chat mode
 ## cnc|chrome/ingame-info.yaml
 label-game-info-panel-title = Game Information
-## cnc|chrome/ingame-infobriefing.yaml
 ## cnc|chrome/ingame-infoobjectives.yaml
 label-mission-objectives-mission = Mission:
 ## cnc|chrome/ingame-infostats.yaml
@@ -458,8 +412,6 @@ label-stats-headers-score = Score
 label-stats-headers-actions = Actions
 button-tooltip-player-template-kick = Kick this player
 button-tooltip-spectator-template-kick = Kick this player
-## cnc|chrome/ingame-info-lobby-options.yaml
-## cnc|chrome/ingame-debuginfo.yaml
 ## cnc|chrome/music.yaml
 label-music-panel-title = Music Player
 label-label-container-title = Track
@@ -588,7 +540,6 @@ button-text-input-prompt-cancel-button = Cancel
 label-latency-tooltip-latency-prefix = Latency:
 label-anonymous-player-tooltip-name = Anonymous Player
 label-game-admin-label = Game Admin
-label-game-admin-label = Game Admin
 ## cnc|chrome/assetbrowser.yaml
 label-assetbrowser-panel-assetbrowser-title = Asset Browser
 label-assetbrowser-panel-source-selector-desc = Select asset source
@@ -653,3 +604,10 @@ dropdown-editor-world-root-copyfilter-button = Copy Filters
 dropdown-editor-world-root-overlay-button = Overlays
 button-select-categories-buttons-select-all = All
 button-select-categories-buttons-select-none = None
+## common|chrome/ingame-debug-hpf.yaml
+dropdown-hpf-overlay-hpf-overlay-locomotor = Select Locomotor
+dropdown-hpf-overlay-hpf-overlay-check = Select BlockedByActor
+## common|chrome/ingame-infoscripterror.yaml
+label-script-error-panel-desca = The map script has encountered a fatal error
+label-script-error-panel-descb = The details of the error have been saved to lua.log in the logs directory.
+label-script-error-panel-descc = Please send this file to the map author so that they can fix this issue.

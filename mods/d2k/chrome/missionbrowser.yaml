@@ -47,7 +47,7 @@ Background@MISSIONBROWSER_PANEL:
 			Y: 468
 			Width: 56
 			Height: 25
-			Text: label-missionbrowser-panel-difficulty-desc
+			Text: label-mission-info-difficulty-desc
 			Align: Right
 		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
 			X: 210 - WIDTH
@@ -60,7 +60,7 @@ Background@MISSIONBROWSER_PANEL:
 			Y: 508
 			Width: 120
 			Height: 25
-			Text: label-missionbrowser-panel-gamespeed-desc
+			Text: label-mission-info-gamespeed-desc
 			Align: Right
 		DropDownButton@GAMESPEED_DROPDOWNBUTTON:
 			X: 210 - WIDTH
