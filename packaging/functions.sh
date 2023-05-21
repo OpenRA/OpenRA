@@ -113,7 +113,6 @@ install_data() (
 	done
 
 	cp -r "${SRC_PATH}/glsl" "${DEST_PATH}"
-	cp -r "${SRC_PATH}/lua" "${DEST_PATH}"
 
 	echo "Installing common mod files to ${DEST_PATH}"
 	install -d "${DEST_PATH}/mods"
