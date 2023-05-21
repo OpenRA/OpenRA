@@ -142,13 +142,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			// Cargo may be killed in the same tick as, but after they are attached
-			if (Carryable != null && Carryable.IsDead)
+			// Cargo may be killed in the same tick as, but after they are attached.
+			if (State == CarryallState.Carrying && (Carryable == null || Carryable.IsDead))
 				DetachCarryable(self);
 
 			// HACK: We don't have an efficient way to know when the preview
 			// bounds change, so assume that we need to update the screen map
-			// (only) when the facing changes
+			// (only) when the facing changes.
 			if (facing.Facing != cachedFacing && carryablePreview != null)
 			{
 				self.World.ScreenMap.AddOrUpdate(self);
