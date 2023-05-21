@@ -65,6 +65,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string Disabled = "options-target-lines.disabled";
 
+		[TranslationReference("fps")]
+		const string FrameLimiter = "checkbox-frame-limiter";
 		static readonly int OriginalVideoDisplay;
 		static readonly WindowMode OriginalGraphicsMode;
 		static readonly int2 OriginalGraphicsWindowedSize;
@@ -229,7 +231,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var frameLimitGamespeedCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_GAMESPEED_CHECKBOX");
 			var frameLimitCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_CHECKBOX");
 			var frameLimitOrigLabel = frameLimitCheckbox.Text;
-			var frameLimitLabel = new CachedTransform<int, string>(fps => frameLimitOrigLabel + $" ({fps} FPS)");
+			var frameLimitLabel = new CachedTransform<int, string>(fps => TranslationProvider.GetString(FrameLimiter, Translation.Arguments("fps", fps)));
 			frameLimitCheckbox.GetText = () => frameLimitLabel.Update(ds.MaxFramerate);
 			frameLimitCheckbox.IsDisabled = () => ds.CapFramerateToGameFps;
 
