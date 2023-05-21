@@ -150,9 +150,6 @@ Section "Game" GAME
 			"$OUTDIR\Dune2000.exe" "" "" "" ""
 	!insertmacro MUI_STARTMENU_WRITE_END
 
-	SetOutPath "$INSTDIR\lua"
-	File "${SRCDIR}\lua\*.lua"
-
 	SetOutPath "$INSTDIR\glsl"
 	File "${SRCDIR}\glsl\*.frag"
 	File "${SRCDIR}\glsl\*.vert"
@@ -211,7 +208,6 @@ Function ${UN}Clean
 	RMDir /r $INSTDIR\mods
 	RMDir /r $INSTDIR\maps
 	RMDir /r $INSTDIR\glsl
-	RMDir /r $INSTDIR\lua
 	Delete $INSTDIR\*.exe
 	Delete $INSTDIR\*.dll
 	Delete $INSTDIR\*.ico
