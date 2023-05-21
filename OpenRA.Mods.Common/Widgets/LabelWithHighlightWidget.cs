@@ -45,8 +45,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 				while (line.Length > 0)
 				{
-					var highlightStart = line.IndexOf('{');
-					var highlightEnd = line.IndexOf('}', 0);
+					var highlightStart = line.IndexOf('<');
+					var highlightEnd = line.IndexOf('>', 0);
 
 					if (highlightStart > 0 && highlightEnd > highlightStart)
 					{

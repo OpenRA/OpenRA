@@ -418,7 +418,7 @@ namespace OpenRA
 			var clean = dirty;
 
 			// reserved characters for MiniYAML and JSON
-			var disallowedChars = new char[] { '#', '@', ':', '\n', '\t', '[', ']', '{', '}', '"', '`' };
+			var disallowedChars = new char[] { '#', '@', ':', '\n', '\t', '[', ']', '{', '}', '<', '>', '"', '`' };
 			foreach (var disallowedChar in disallowedChars)
 				clean = clean.Replace(disallowedChar.ToString(), string.Empty);
 

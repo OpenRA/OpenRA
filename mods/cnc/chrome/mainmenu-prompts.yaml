@@ -131,42 +131,42 @@ Container@MAINMENU_INTRODUCTION_PROMPT:
 										LabelWithHighlight@DESC_SELECTION:
 											Height: 16
 											Font: Small
-											Text: - Select units using the {Left} mouse button
+											Text: - Select units using the <Left> mouse button
 										LabelWithHighlight@DESC_COMMANDS:
 											Y: 17
 											Height: 16
 											Font: Small
-											Text: - Command units using the {Left} mouse button
+											Text: - Command units using the <Left> mouse button
 										LabelWithHighlight@DESC_BUILDIGS:
 											Y: 34
 											Height: 16
 											Font: Small
-											Text: - Place structures using the {Left} mouse button
+											Text: - Place structures using the <Left> mouse button
 										LabelWithHighlight@DESC_SUPPORT:
 											Y: 51
 											Height: 16
 											Font: Small
-											Text: - Target support powers using the {Left} mouse button
+											Text: - Target support powers using the <Left> mouse button
 										LabelWithHighlight@DESC_ZOOM:
 											Y: 68
 											Height: 16
 											Font: Small
-											Text: - Zoom the battlefield using the {Scroll Wheel}
+											Text: - Zoom the battlefield using the <Scroll Wheel>
 										LabelWithHighlight@DESC_ZOOM_MODIFIER:
 											Y: 68
 											Height: 16
 											Font: Small
-											Text: - Zoom the battlefield using {MODIFIER + Scroll Wheel}
+											Text: - Zoom the battlefield using <MODIFIER + Scroll Wheel>
 										LabelWithHighlight@DESC_SCROLL_RIGHT:
 											Y: 85
 											Height: 16
 											Font: Small
-											Text: - Pan the battlefield using the {Right} mouse button
+											Text: - Pan the battlefield using the <Right> mouse button
 										LabelWithHighlight@DESC_SCROLL_MIDDLE:
 											Y: 85
 											Height: 16
 											Font: Small
-											Text: - Pan the battlefield using the {Middle} mouse button
+											Text: - Pan the battlefield using the <Middle> mouse button
 										Label@DESC_EDGESCROLL:
 											X: 9
 											Y: 102
@@ -180,42 +180,42 @@ Container@MAINMENU_INTRODUCTION_PROMPT:
 										LabelWithHighlight@DESC_SELECTION:
 											Height: 16
 											Font: Small
-											Text: - Select units using the {Left} mouse button
+											Text: - Select units using the <Left> mouse button
 										LabelWithHighlight@DESC_COMMANDS:
 											Y: 17
 											Height: 16
 											Font: Small
-											Text: - Command units using the {Right} mouse button
+											Text: - Command units using the <Right> mouse button
 										LabelWithHighlight@DESC_BUILDIGS:
 											Y: 34
 											Height: 16
 											Font: Small
-											Text: - Place structures using the {Left} mouse button
+											Text: - Place structures using the <Left> mouse button
 										LabelWithHighlight@DESC_SUPPORT:
 											Y: 51
 											Height: 16
 											Font: Small
-											Text: - Target support powers using the {Left} mouse button
+											Text: - Target support powers using the <Left> mouse button
 										LabelWithHighlight@DESC_ZOOM:
 											Y: 68
 											Height: 16
 											Font: Small
-											Text: - Zoom the battlefield using the {Scroll Wheel}
+											Text: - Zoom the battlefield using the <Scroll Wheel>
 										LabelWithHighlight@DESC_ZOOM_MODIFIER:
 											Y: 68
 											Height: 16
 											Font: Small
-											Text: - Zoom the battlefield using {MODIFIER + Scroll Wheel}
+											Text: - Zoom the battlefield using <MODIFIER + Scroll Wheel>
 										LabelWithHighlight@DESC_SCROLL_RIGHT:
 											Y: 85
 											Height: 16
 											Font: Small
-											Text: - Pan the battlefield using the {Right} mouse button
+											Text: - Pan the battlefield using the <Right> mouse button
 										LabelWithHighlight@DESC_SCROLL_MIDDLE:
 											Y: 85
 											Height: 16
 											Font: Small
-											Text: - Pan the battlefield using the {Middle} mouse button
+											Text: - Pan the battlefield using the <Middle> mouse button
 										Label@DESC_EDGESCROLL:
 											X: 9
 											Y: 102
