@@ -176,10 +176,8 @@ namespace OpenRA.Scripting
 			};
 
 			foreach (var fieldName in runtime.Globals.Keys)
-			{
 				if (!allowedGlobals.Contains(fieldName.ToString()))
 					runtime.Globals[fieldName] = null;
-			}
 
 			var forbiddenMath = new string[]
 			{
@@ -189,10 +187,8 @@ namespace OpenRA.Scripting
 
 			var mathGlobal = (LuaTable)runtime.Globals["math"];
 			foreach (var mathFunction in mathGlobal.Keys)
-			{
 				if (forbiddenMath.Contains(mathFunction.ToString()))
 					mathGlobal[mathFunction] = null;
-			}
 
 			// Register globals
 			runtime.Globals["EngineDir"] = Platform.EngineDir;
@@ -237,7 +233,7 @@ namespace OpenRA.Scripting
 				return;
 			}
 
-			tick = (LuaFunction)runtime.Globals["Tick"];
+			tick = runtime.Globals["Tick"] as LuaFunction;
 		}
 
 		void LogDebugMessage(string message)
@@ -304,7 +300,7 @@ namespace OpenRA.Scripting
 
 		public void Tick()
 		{
-			if (FatalErrorOccurred || disposed)
+			if (FatalErrorOccurred || disposed || tick == null)
 				return;
 
 			try
