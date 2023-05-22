@@ -56,7 +56,7 @@ namespace OpenRA
 				return;
 
 			bundle = LinguiniBuilder.Builder()
-				.CultureInfo(CultureInfo.InvariantCulture)
+				.CultureInfo(new CultureInfo(language))
 				.SkipResources()
 				.SetUseIsolating(false)
 				.UseConcurrent()
@@ -65,7 +65,7 @@ namespace OpenRA
 			ParseTranslations(language, translations, fileSystem, onError);
 		}
 
-		public Translation(string text, Action<ParseError> onError)
+		public Translation(string language, string text, Action<ParseError> onError)
 		{
 			var parser = new LinguiniParser(text);
 			var resource = parser.Parse();
@@ -73,7 +73,7 @@ namespace OpenRA
 				onError(error);
 
 			bundle = LinguiniBuilder.Builder()
-				.CultureInfo(CultureInfo.InvariantCulture)
+				.CultureInfo(new CultureInfo(language))
 				.SkipResources()
 				.SetUseIsolating(false)
 				.UseConcurrent()
