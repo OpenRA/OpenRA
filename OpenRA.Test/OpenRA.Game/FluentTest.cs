@@ -27,7 +27,7 @@ label-players = {$player ->
 		[TestCase(TestName = "Fluent Plural Terms")]
 		public void TestOne()
 		{
-			var translation = new Translation(pluralForms, e => Console.WriteLine(e.Message));
+			var translation = new Translation("en", pluralForms, e => Console.WriteLine(e.Message));
 			var label = translation.GetString("label-players", Translation.Arguments("player", 1));
 			Assert.That("One player", Is.EqualTo(label));
 			label = translation.GetString("label-players", Translation.Arguments("player", 2));
