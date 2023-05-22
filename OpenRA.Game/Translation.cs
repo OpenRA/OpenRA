@@ -65,6 +65,23 @@ namespace OpenRA
 			ParseTranslations(language, translations, fileSystem, onError);
 		}
 
+		public Translation(string text, Action<ParseError> onError)
+		{
+			var parser = new LinguiniParser(text);
+			var resource = parser.Parse();
+			foreach (var error in resource.Errors)
+				onError(error);
+
+			bundle = LinguiniBuilder.Builder()
+				.CultureInfo(CultureInfo.InvariantCulture)
+				.SkipResources()
+				.SetUseIsolating(false)
+				.UseConcurrent()
+				.UncheckedBuild();
+
+			bundle.AddResourceOverriding(resource);
+		}
+
 		void ParseTranslations(string language, string[] translations, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
 		{
 			// Always load english strings to provide a fallback for missing translations.
