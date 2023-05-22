@@ -25,6 +25,7 @@ jobs:
       - name: Check Code
         run: |
           make check
+          make tests
 
       - name: Check Mods
         run: |
