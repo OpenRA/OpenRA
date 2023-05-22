@@ -146,6 +146,11 @@ test: all
 	@echo "Testing Red Alert mod MiniYAML..."
 	@./utility.sh ra --check-yaml
 
+tests:
+	@dotnet build OpenRA.Test/OpenRA.Test.csproj -c Debug --nologo -p:TargetPlatform=$(TARGETPLATFORM)
+	@echo
+	@dotnet test bin/OpenRA.Test.dll --test-adapter-path:.
+
 ############# LOCAL INSTALLATION AND DOWNSTREAM PACKAGING ##############
 #
 version: VERSION mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml mods/ts/mod.yaml mods/modcontent/mod.yaml mods/all/mod.yaml
