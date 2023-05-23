@@ -110,6 +110,13 @@ function Test-Command
 	InvokeCommand "$utilityPath ra --check-yaml"
 }
 
+function Tests-Command
+{
+	Write-Host "Running unit tests..." -ForegroundColor Cyan
+	dotnet build OpenRA.Test\OpenRA.Test.csproj -c Debug --nologo -p:TargetPlatform=win-x64
+	dotnet test bin\OpenRA.Test.dll --test-adapter-path:.
+}
+
 function Check-Command
 {
 	Write-Host "Compiling in Debug configuration..." -ForegroundColor Cyan
@@ -253,6 +260,7 @@ switch ($execute)
 	{"version",       "v"  -contains $_} { Version-Command }
 	{"clean",         "c"  -contains $_} { Clean-Command }
 	{"test",          "t"  -contains $_} { Test-Command }
+	{"tests",         "ut" -contains $_} { Tests-Command }
 	{"check",         "ck" -contains $_} { Check-Command }
 	{"check-scripts", "cs" -contains $_} { Check-Scripts-Command }
 	Default { Write-Host ("Invalid command '{0}'" -f $command) }
