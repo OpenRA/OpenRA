@@ -70,8 +70,7 @@ jobs:
           # Work around runtime failures on the GH Actions runner
           dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
           .\make.ps1 check
-          dotnet build OpenRA.Test\OpenRA.Test.csproj -c Debug --nologo -p:TargetPlatform=win-x64
-          dotnet test bin\OpenRA.Test.dll --test-adapter-path:.
+          .\make.ps1 tests
 
       - name: Check Mods
         run: |
