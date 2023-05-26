@@ -110,8 +110,9 @@ OrcaAAMissiles:
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air
+		Damage: 2100
 		Versus:
-			Light: 84
+			Light: 100
 	-Warhead@2Smu:
 
 MammothMissiles:
@@ -273,8 +274,9 @@ TowerAAMissile:
 	Warhead@1Dam: SpreadDamage
 		Spread: 682
 		ValidTargets: Air
+		Damage: 3500
 		Versus:
-			Light: 140
+			Light: 100
 	-Warhead@2Smu:
 	Warhead@4EffAir: CreateEffect
 		Explosions: small_building
@@ -297,11 +299,7 @@ Patriot:
 		Damage: 5000
 		ValidTargets: Air
 		Versus:
-			None: 20
-			Wood: 84
 			Light: 100
-			Heavy: 74
-			Concrete: 74
 	-Warhead@2Smu:
 	Warhead@4EffAir: CreateEffect
 		Explosions: poof
