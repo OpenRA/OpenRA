@@ -85,8 +85,9 @@ HeliAAGun:
 	ValidTargets: Air
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air
+		Damage: 1100
 		Versus:
-			Light: 55
+			Light: 100
 
 ^LightMG:
 	Inherits: ^HeavyMG
@@ -180,7 +181,8 @@ APCGun.AA:
 		Blockable: false
 	Warhead@1Dam: SpreadDamage
 		ValidTargets: Air
+		Damage: 1250
 		Versus:
-			Light: 125
+			Light: 100
 	Warhead@2Eff: CreateEffect
 		Explosions: small_poof
