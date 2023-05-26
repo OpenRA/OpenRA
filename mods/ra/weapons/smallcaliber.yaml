@@ -6,14 +6,8 @@
 	Projectile: InstantHit
 	Warhead@1Dam: SpreadDamage
 		Spread: 213
-		Damage: 2000
+		Damage: 900
 		ValidTargets: AirborneActor
-		Versus:
-			None: 40
-			Wood: 10
-			Light: 60
-			Heavy: 10
-			Concrete: 20
 		DamageTypes: Prone50Percent, TriggerProne, DefaultDeath
 	Warhead@2Eff: CreateEffect
 		Explosions: small_explosion_air
@@ -25,19 +19,11 @@ ZSU-23:
 	BurstDelays: 0
 	ReloadDelay: 6
 	Range: 10c0
-	Warhead@1Dam: SpreadDamage
-		Damage: 1200
-		Versus:
-			None: 25
-			Wood: 75
-			Light: 75
-			Heavy: 100
-			Concrete: 50
 
 FLAK-23-AA:
 	Inherits: ^AACannon
 	Warhead@1Dam: SpreadDamage
-		ValidTargets: AirborneActor, GroundActor, WaterActor
+		Damage: 1200
 
 FLAK-23-AG:
 	Inherits: ^AACannon
@@ -46,7 +32,14 @@ FLAK-23-AG:
 	Projectile: InstantHit
 		Blockable: true
 	Warhead@1Dam: SpreadDamage
+		Damage: 2000
 		ValidTargets: AirborneActor, GroundActor, WaterActor
+		Versus:
+			None: 40
+			Wood: 10
+			Light: 60
+			Heavy: 10
+			Concrete: 20
 	Warhead@2Eff: CreateEffect
 		Explosions: flak_explosion_ground
 		ValidTargets: Ground, GroundActor, Air, AirborneActor, WaterActor, Trees
