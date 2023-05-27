@@ -355,8 +355,8 @@ namespace OpenRA.Mods.Common.Traits
 					if (checkTransient)
 						return true;
 
-					var pos = i.Actor.TraitOrDefault<IPositionable>();
-					if (pos == null || !pos.IsLeavingCell(a, i.SubCell))
+					// PERF: Avoid trait lookup
+					if (i.Actor.OccupiesSpace is not IPositionable pos || !pos.IsLeavingCell(a, i.SubCell))
 						return true;
 				}
 			}

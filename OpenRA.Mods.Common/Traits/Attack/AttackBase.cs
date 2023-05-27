@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			facing = self.TraitOrDefault<IFacing>();
-			positionable = self.TraitOrDefault<IPositionable>();
+			positionable = self.OccupiesSpace as IPositionable;
 			notifyAiming = self.TraitsImplementing<INotifyAiming>().ToArray();
 
 			getArmaments = InitializeGetArmaments(self);

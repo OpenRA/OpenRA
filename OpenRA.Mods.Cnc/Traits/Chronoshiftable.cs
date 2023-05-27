@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		protected override void Created(Actor self)
 		{
-			iPositionable = self.TraitOrDefault<IPositionable>();
+			iPositionable = self.OccupiesSpace as IPositionable;
 			base.Created(self);
 		}
 
