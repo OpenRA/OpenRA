@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace OpenRA.Support
 {
@@ -50,7 +51,7 @@ namespace OpenRA.Support
 				Log.Write(name, "tick,time [ms]");
 
 				foreach (var point in sample.Value)
-					Log.Write(name, $"{point.Tick},{point.Value}");
+					Log.Write(name, $"{point.Tick},{point.Value.ToString(CultureInfo.InvariantCulture)}");
 			}
 		}
 
