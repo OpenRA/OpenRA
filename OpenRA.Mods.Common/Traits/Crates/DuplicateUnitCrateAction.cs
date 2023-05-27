@@ -65,8 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!info.ValidTargets.Overlaps(collector.GetEnabledTargetTypes()))
 				return false;
 
-			var positionable = collector.TraitOrDefault<IPositionable>();
-			if (positionable == null)
+			if (collector.OccupiesSpace is not IPositionable positionable)
 				return false;
 
 			return collector.World.Map.FindTilesInCircle(collector.Location, info.MaxRadius)
@@ -83,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override void Activate(Actor collector)
 		{
-			var positionable = collector.Trait<IPositionable>();
+			var positionable = collector.OccupiesSpace as IPositionable;
 			var candidateCells = collector.World.Map.FindTilesInCircle(collector.Location, info.MaxRadius)
 				.Where(c => positionable.CanEnterCell(c)).Shuffle(collector.World.SharedRandom)
 				.ToArray();
