@@ -22,8 +22,9 @@ namespace OpenRA.Mods.Common.Traits
 		// TODO: Investigate whether this might the (or at least one) reason why bots occasionally get into a state of doing nothing.
 		// Reason: If this is less than SquadSize, the bot might get stuck between not producing more units due to this,
 		// but also not creating squads since there aren't enough idle units.
-		[Desc("Only produce units as long as there are less than this amount of units idling inside the base.")]
-		public readonly int IdleBaseUnitsMaximum = 12;
+		[Desc("If > 0, only produce units as long as there are less than this amount of units idling inside the base.",
+			"Beware: if it is less than squad size, e.g. the `SquadSize` from `SquadManagerBotModule`, the bot might get stuck as there aren't enough idle units to create squad.")]
+		public readonly int IdleBaseUnitsMaximum = -1;
 
 		[Desc("Production queues AI uses for producing units.")]
 		public readonly string[] UnitQueues = { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
@@ -94,17 +95,20 @@ namespace OpenRA.Mods.Common.Traits
 					queuedBuildRequests.Remove(buildRequest);
 				}
 
-				for (var i = 0; i < Info.UnitQueues.Length; i++)
+				if (Info.IdleBaseUnitsMaximum <= 0 || Info.IdleBaseUnitsMaximum > idleUnitCount)
 				{
-					if (++currentQueueIndex >= Info.UnitQueues.Length)
-						currentQueueIndex = 0;
-
-					if (AIUtils.FindQueues(player, Info.UnitQueues[currentQueueIndex]).Any())
+					for (var i = 0; i < Info.UnitQueues.Length; i++)
 					{
-						// PERF: We tick only one type of valid queue at a time
-						// if AI gets enough cash, it can fill all of its queues with enough ticks
-						BuildUnit(bot, Info.UnitQueues[currentQueueIndex], idleUnitCount < Info.IdleBaseUnitsMaximum);
-						break;
+						if (++currentQueueIndex >= Info.UnitQueues.Length)
+							currentQueueIndex = 0;
+
+						if (AIUtils.FindQueues(player, Info.UnitQueues[currentQueueIndex]).Any())
+						{
+							// PERF: We tick only one type of valid queue at a time
+							// if AI gets enough cash, it can fill all of its queues with enough ticks
+							BuildRandomUnit(bot, Info.UnitQueues[currentQueueIndex]);
+							break;
+						}
 					}
 				}
 			}
@@ -120,36 +124,22 @@ namespace OpenRA.Mods.Common.Traits
 			return queuedBuildRequests.Count(r => r == requestedActor);
 		}
 
-		void BuildUnit(IBot bot, string category, bool buildRandom)
+		void BuildRandomUnit(IBot bot, string category)
 		{
+			if (Info.UnitsToBuild.Count == 0)
+				return;
+
 			// Pick a free queue
 			var queue = AIUtils.FindQueues(player, category).FirstOrDefault(q => !q.AllQueued().Any());
 			if (queue == null)
 				return;
 
-			var unit = buildRandom ?
-				ChooseRandomUnitToBuild(queue) :
-				ChooseUnitToBuild(queue);
+			var unit = ChooseRandomUnitToBuild(queue);
 
 			if (unit == null)
 				return;
 
-			var name = unit.Name;
-
-			if (Info.UnitsToBuild != null && !Info.UnitsToBuild.ContainsKey(name))
-				return;
-
-			if (Info.UnitDelays != null &&
-				Info.UnitDelays.TryGetValue(name, out var delay) &&
-				delay > world.WorldTick)
-				return;
-
-			if (Info.UnitLimits != null &&
-				Info.UnitLimits.TryGetValue(name, out var limit) &&
-				world.Actors.Count(a => a.Owner == player && a.Info.Name == name) >= limit)
-				return;
-
-			bot.QueueOrder(Order.StartProduction(queue.Actor, name, 1));
+			bot.QueueOrder(Order.StartProduction(queue.Actor, unit.Name, 1));
 		}
 
 		// In cases where we want to build a specific unit but don't know the queue name (because there's more than one possibility)
@@ -180,30 +170,35 @@ namespace OpenRA.Mods.Common.Traits
 
 		ActorInfo ChooseRandomUnitToBuild(ProductionQueue queue)
 		{
-			var buildableThings = queue.BuildableItems();
-			var unit = buildableThings.RandomOrDefault(world.LocalRandom);
-			return unit != null && HasAdequateAirUnitReloadBuildings(unit) ? unit : null;
-		}
-
-		ActorInfo ChooseUnitToBuild(ProductionQueue queue)
-		{
-			var buildableThings = queue.BuildableItems().Select(b => b.Name).ToHashSet();
-			if (buildableThings.Count == 0)
+			var buildableThings = queue.BuildableItems().Shuffle(world.LocalRandom).ToArray();
+			if (buildableThings.Length == 0)
 				return null;
 
-			var myUnits = player.World
-				.ActorsHavingTrait<IPositionable>()
-				.Where(a => a.Owner == player)
-				.Select(a => a.Info.Name)
-				.ToList();
+			var allUnits = world.Actors.Where(a => a.Owner == player && Info.UnitsToBuild.ContainsKey(a.Info.Name) && !a.IsDead).ToArray();
 
-			foreach (var unit in Info.UnitsToBuild.Shuffle(world.LocalRandom))
-				if (buildableThings.Contains(unit.Key))
-					if (myUnits.Count(a => a == unit.Key) * 100 < unit.Value * myUnits.Count)
-						if (HasAdequateAirUnitReloadBuildings(world.Map.Rules.Actors[unit.Key]))
-							return world.Map.Rules.Actors[unit.Key];
+			ActorInfo desiredUnit = null;
+			var desiredError = int.MaxValue;
+			foreach (var unit in buildableThings)
+			{
+				if (!Info.UnitsToBuild.ContainsKey(unit.Name) || (Info.UnitDelays != null && Info.UnitDelays.TryGetValue(unit.Name, out var delay) && delay > world.WorldTick))
+					continue;
 
-			return null;
+				var unitCount = allUnits.Count(a => a.Info.Name == unit.Name);
+				if (Info.UnitLimits != null && Info.UnitLimits.TryGetValue(unit.Name, out var count) && unitCount >= count)
+					continue;
+
+				var error = allUnits.Length > 0 ? unitCount * 100 / allUnits.Length - Info.UnitsToBuild[unit.Name] : -1;
+				if (error < 0)
+					return HasAdequateAirUnitReloadBuildings(unit) ? unit : null;
+
+				if (error < desiredError)
+				{
+					desiredError = error;
+					desiredUnit = unit;
+				}
+			}
+
+			return desiredUnit != null ? (HasAdequateAirUnitReloadBuildings(desiredUnit) ? desiredUnit : null) : null;
 		}
 
 		// For mods like RA (number of RearmActors must match the number of aircraft)
