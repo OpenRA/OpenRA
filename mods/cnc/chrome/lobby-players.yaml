@@ -29,7 +29,7 @@ Container@LOBBY_PLAYER_BIN:
 					Align: Center
 					Font: Bold
 				Label@TEAM:
-					X: 460-25
+					X: 460 - 25
 					Width: 50
 					Height: 25
 					Text: Team
