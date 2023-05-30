@@ -1289,6 +1289,7 @@
 		Condition: power-outage
 	InfiltrateForPowerOutage:
 		Types: SpyInfiltrate
+		PlayerExperience: 10
 	Power:
 		RequiresCondition: !disabled
 

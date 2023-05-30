@@ -457,6 +457,7 @@ GARADR:
 	ProvidesRadar:
 		RequiresCondition: !disabled && !empdisable
 	InfiltrateForExploration:
+		PlayerExperience: 10
 	DetectCloaked:
 		Range: 10c0
 	RenderDetectionCircle:

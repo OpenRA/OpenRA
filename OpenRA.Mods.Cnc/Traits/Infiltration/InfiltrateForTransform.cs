@@ -28,6 +28,9 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public readonly bool SkipMakeAnims = true;
 
+		[Desc("Experience to grant to the infiltrating player.")]
+		public readonly int PlayerExperience = 0;
+
 		[Desc("The `TargetTypes` from `Targetable` that are allowed to enter.")]
 		public readonly BitSet<TargetableType> Types = default;
 
@@ -60,6 +63,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			var facing = self.TraitOrDefault<IFacing>();
 			if (facing != null)
 				transform.Facing = facing.Facing;
+
+			infiltrator.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(info.PlayerExperience);
 
 			self.QueueActivity(false, transform);
 		}

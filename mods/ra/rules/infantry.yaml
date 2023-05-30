@@ -351,7 +351,6 @@ SPY:
 		Types: SpyInfiltrate
 		Notification: BuildingInfiltrated
 		TextNotification: Building infiltrated.
-		PlayerExperience: 10
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: HoldFire
@@ -542,7 +541,6 @@ MECH:
 		Types: Husk
 		ValidRelationships: Ally
 		EnterCursor: goldwrench
-		PlayerExperience: 10
 	WithInfantryBody:
 		IdleSequences: idle
 		DefaultAttackSequence: repair
@@ -648,7 +646,6 @@ THF:
 		Types: ThiefInfiltrate
 		Notification: BuildingInfiltrated
 		TextNotification: Building infiltrated.
-		PlayerExperience: 10
 	Voiced:
 		VoiceSet: ThiefVoice
 	-TakeCover:
