@@ -44,21 +44,21 @@ Container@LOBBY_SERVERS_BIN:
 					Children:
 						Label@OUTDATED_VERSION_LABEL:
 							X: 5
-							Width: PARENT_RIGHT-10
+							Width: PARENT_RIGHT - 10
 							Height: 18
 							Align: Center
 							Text: You are running an outdated version of OpenRA. Download the latest version from www.openra.net
 							Font: TinyBold
 						Label@UNKNOWN_VERSION_LABEL:
 							X: 5
-							Width: PARENT_RIGHT-10
+							Width: PARENT_RIGHT - 10
 							Height: 18
 							Align: Center
 							Text: You are running an unrecognized version of OpenRA. Download the latest version from www.openra.net
 							Font: TinyBold
 						Label@PLAYTEST_AVAILABLE_LABEL:
 							X: 5
-							Width: PARENT_RIGHT-10
+							Width: PARENT_RIGHT - 10
 							Height: 18
 							Align: Center
 							Text: A preview of the next OpenRA release is available for testing. Download the playtest from www.openra.net

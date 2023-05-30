@@ -1,7 +1,7 @@
 Container@DIRECTCONNECT_PANEL:
 	Logic: DirectConnectLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - 90)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - 90) / 2
 	Width: 370
 	Height: 125
 	Children:

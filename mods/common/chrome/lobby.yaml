@@ -47,7 +47,7 @@ Background@SERVER_LOBBY:
 					Font: Bold
 					Text: Options
 				Button@MUSIC_TAB:
-					X: 2*162
+					X: 2 * 162
 					Y: 285
 					Width: 162
 					Height: 31

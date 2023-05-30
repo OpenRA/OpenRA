@@ -1,7 +1,7 @@
 Background@MULTIPLAYER_CREATESERVER_PANEL:
 	Logic: ServerCreationLogic
-	X: (WINDOW_RIGHT - WIDTH)/2
-	Y: (WINDOW_BOTTOM - HEIGHT)/2
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 530
 	Height: 315
 	Children:
@@ -252,7 +252,7 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 			Key: escape
 		Button@CREATE_BUTTON:
 			Key: return
-			X: PARENT_RIGHT - 2*WIDTH - 30
+			X: PARENT_RIGHT - 2 * WIDTH - 30
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25

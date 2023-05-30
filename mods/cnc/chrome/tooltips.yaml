@@ -511,6 +511,6 @@ Container@REGISTERED_PLAYER_TOOLTIP:
 							Font: Bold
 		Background@BADGES_CONTAINER:
 			Width: PARENT_RIGHT
-			Y: 0-1
+			Y: -1
 			Visible: false
 			Background: panel-black

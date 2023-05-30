@@ -329,7 +329,7 @@ Background@MAINMENU_SYSTEM_INFO_PROMPT:
 			X: 20
 			Y: 98
 			Width: PARENT_RIGHT - 40
-			Height: 355-98-10
+			Height: 355 - 98 - 10
 			TopBottomSpacing: 4
 			ItemSpacing: 4
 			Children:
