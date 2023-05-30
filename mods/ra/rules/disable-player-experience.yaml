@@ -10,18 +10,8 @@ E6:
 	Captures:
 		PlayerExperience: 0
 
-SPY:
-	Infiltrates:
-		PlayerExperience: 0
-
-MECH:
-	Captures:
-		PlayerExperience: 0
-
 THF:
 	Captures:
-		PlayerExperience: 0
-	Infiltrates:
 		PlayerExperience: 0
 
 SPEN:
@@ -38,4 +28,65 @@ FIX:
 
 TRUK:
 	DeliversCash:
+		PlayerExperience: 0
+
+^InfiltratableFake:
+	InfiltrateForDecoration:
+		PlayerExperience: 0
+
+MSLO:
+	InfiltrateForSupportPowerReset:
+		PlayerExperience: 0
+
+SPEN:
+	InfiltrateForSupportPower:
+		PlayerExperience: 0
+
+SYRD:
+	InfiltrateForSupportPower:
+		PlayerExperience: 0
+
+IRON:
+	InfiltrateForSupportPowerReset:
+		PlayerExperience: 0
+
+DOME:
+	InfiltrateForExploration:
+		PlayerExperience: 0
+
+ATEK:
+	InfiltrateForSupportPowerReset:
+		PlayerExperience: 0
+
+WEAP:
+	InfiltrateForSupportPower:
+		PlayerExperience: 0
+
+PROC:
+	InfiltrateForCash:
+		PlayerExperience: 0
+		PlayerExperiencePercentage: 0
+
+HPAD:
+	InfiltrateForSupportPower:
+		PlayerExperience: 0
+
+AFLD:
+	InfiltrateForSupportPower:
+		PlayerExperience: 0
+
+POWR:
+	InfiltrateForPowerOutage:
+		PlayerExperience: 0
+
+APWR:
+	InfiltrateForPowerOutage:
+		PlayerExperience: 0
+
+BARR:
+	InfiltrateForSupportPower:
+		PlayerExperience: 0
+
+TENT:
+	InfiltrateForSupportPower:
 		PlayerExperience: 0

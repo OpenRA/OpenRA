@@ -25,6 +25,9 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Sound the victim will hear when they get sabotaged.")]
 		public readonly string InfiltratedNotification = null;
 
+		[Desc("Experience to grant to the infiltrating player.")]
+		public readonly int PlayerExperience = 0;
+
 		[Desc("Text notification the victim will see when they get sabotaged.")]
 		public readonly string InfiltratedTextNotification = null;
 
@@ -60,6 +63,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			TextNotificationsManager.AddTransientLine(info.InfiltratedTextNotification, self.Owner);
 			TextNotificationsManager.AddTransientLine(info.InfiltrationTextNotification, infiltrator.Owner);
+
+			infiltrator.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(info.PlayerExperience);
 
 			var manager = self.Owner.PlayerActor.Trait<SupportPowerManager>();
 			var powers = manager.GetPowersForActor(self).Where(sp => !sp.Disabled);
