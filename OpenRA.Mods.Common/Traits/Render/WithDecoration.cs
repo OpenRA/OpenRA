@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		protected virtual PaletteReference GetPalette(Actor self, WorldRenderer wr)
 		{
-			return wr.Palette(Info.Palette + (Info.IsPlayerPalette ? self.Owner.InternalName : ""));
+			return wr.Palette(Info.IsPlayerPalette ? Info.Palette + self.Owner.InternalName : Info.Palette);
 		}
 
 		protected override IEnumerable<IRenderable> RenderDecoration(Actor self, WorldRenderer wr, int2 screenPos)
