@@ -162,7 +162,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Cloaked && IsVisible(self, self.World.RenderPlayer))
 			{
-				var palette = string.IsNullOrEmpty(Info.Palette) ? null : Info.IsPlayerPalette ? wr.Palette(Info.Palette + self.Owner.InternalName) : wr.Palette(Info.Palette);
+				var palette = wr.Palette(Info.IsPlayerPalette ? Info.Palette + self.Owner.InternalName : Info.Palette);
+
 				if (palette == null)
 					return r;
 				else
