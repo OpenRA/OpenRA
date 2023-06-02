@@ -87,7 +87,7 @@ namespace OpenRA.Graphics
 		{
 			// HACK: This is working around the fact that palettes are defined on traits rather than sequences
 			// and can be removed once this has been fixed.
-			return name == null ? null : palettes.GetOrAdd(name, createPaletteReference);
+			return string.IsNullOrEmpty(name) ? null : palettes.GetOrAdd(name, createPaletteReference);
 		}
 
 		public void AddPalette(string name, ImmutablePalette pal, bool allowModifiers = false, bool allowOverwrite = false)

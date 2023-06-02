@@ -51,10 +51,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				yield break;
 
 			if (Palette != null)
-			{
-				var ownerName = init.Get<OwnerInit>().InternalName;
-				p = init.WorldRenderer.Palette(IsPlayerPalette ? Palette + ownerName : Palette);
-			}
+				p = init.WorldRenderer.Palette(IsPlayerPalette ? Palette + init.Get<OwnerInit>().InternalName : Palette);
 
 			Func<WAngle> facing;
 			var dynamicfacingInit = init.GetOrDefault<DynamicFacingInit>();
