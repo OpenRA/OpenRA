@@ -18,9 +18,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Scripting
 {
+	[TraitLocation(SystemActors.World)]
 	[Desc("Part of the new Lua API.")]
 	public class LuaScriptInfo : TraitInfo, Requires<SpawnMapActorsInfo>
 	{
+		[Desc("File names with location relative to the map.")]
 		public readonly HashSet<string> Scripts = new();
 
 		public override object Create(ActorInitializer init) { return new LuaScript(this); }
