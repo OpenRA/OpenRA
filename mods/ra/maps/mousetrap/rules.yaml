@@ -1,0 +1,142 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, mousetrap.lua
+	MissionData:
+		Briefing: A longtime thorn in our side, the Greek commander Stavros, has finally been cornered. He has taken refuge in an underground bunker full of his Chronosphere technology. Prove to him that no Allied tricks can stop the wrath of the Soviet Union. Track him down, and eliminate him.\n\nReturn with results -- we do not want to hear of his escape... only the creative manner of his demise.\n\nWe have provided you with engineers that, given the opportunity, can use Chronosphere technology. Do not squander them.
+		BackgroundVideo: sovexp1.vqa
+		WinVideo: sovexp1w.vqa
+		LossVideo: apcescpe.vqa
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+	# Stavros' opening line makes this feel redundant.
+	-StartGameNotification:
+	# Give our Chrono dummy the ability to move (and be shifted) within the void.
+	Locomotor@TRACKED:
+		TerrainSpeeds:
+			ClearNoSmudges: 100
+		
+^Palettes:
+	-ChronoshiftPaletteEffect:
+
+# Used in ChronoEffect.
+1TNK:
+	Chronoshiftable:
+		ChronoshiftSound:
+
+^Soldier:
+	ScriptTags:
+	Inherits@IronCurtain: ^IronCurtainable
+	ExternalCondition@GAS:
+		Condition: gassed
+		TotalCap: 1
+	DamagedByTerrain:
+		RequiresCondition: gassed
+		Damage: 300
+		DamageInterval: 1
+		DamageTypes: ExplosionDeath
+		Terrain: Clear
+
+FLARE:
+	ProximityExternalCondition@GAS:
+		Condition: gassed
+		Range: 1c512
+		ValidRelationships: Neutral, Enemy
+	RevealsShroud:
+		Range: 1c512
+		ValidRelationships: Ally, Neutral, Enemy
+	Tooltip:
+		Name: Gas
+		
+IRONCRATE:
+	Inherits: ^Crate
+	GrantExternalConditionCrateAction:
+		SelectionShares: 1
+		Sequence: invuln
+		Sound: ironcur9.aud
+		Condition: invulnerability
+		Duration: 600
+		Range: 2c512
+	RenderSprites:
+		Image: wcrate
+
+CAMERA:
+	ScriptTags:
+
+CAMERA.tiny:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 2c0
+
+CAMERA.small:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 4c0
+
+PBOX:
+	# Reduced vision to avoid shooting beyond the hallway.
+	RevealsShroudMultiplier:
+		Modifier: 50
+
+PDOX:
+	DamageMultiplier:
+		Modifier: 0
+	Power:
+		Amount: 0
+
+# Couldn't avoid engineers falsely reporting they could capture chronospheres under fog. Made a new type.
+PDOX.capturable:
+	Inherits: PDOX
+	RenderSprites:
+		Image: PDOX
+	Capturable:
+		Types: predamaged
+	-ChronoshiftPower@chronoshift:
+	-SpawnActorsOnSell:
+
+E6:
+	Captures:
+		CaptureTypes: predamaged
+
+STAVROS:
+	Inherits: GNRL
+	Inherits@IronCurtain: ^IronCurtainable
+	-WithColoredOverlay@IRONCURTAIN:
+	RenderSprites:
+		Image: GNRL
+	Tooltip:
+		Name: Stavros
+	Infiltrates:
+		Types: SpyInfiltrate
+		Voice: Move
+		ValidRelationships: Ally, Neutral
+	SpeedMultiplier:
+		# Original is 8 speed v. E1's 4 speed.
+		Modifier: 200
+	Valued:
+		Cost: 2000
+
+STAVROS.hard:
+	Inherits: STAVROS
+	RenderSprites:
+		Image: GNRL
+	Armament:
+		Weapon: Colt45
+	AutoTarget:
+		InitialStanceAI: ReturnFire
+	RevealsShroud:
+		Range: 4c0
+
+STAVROS.start:
+	Inherits: STAVROS
+	RenderSprites:
+		Image: GNRL
+	-Targetable:
+
+BARB:
+	-Tooltip:

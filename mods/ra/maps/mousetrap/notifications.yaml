@@ -1,0 +1,12 @@
+Sounds:
+	Notifications:
+		ConsoleBeep: rabeep1
+		ConsoleBuzz: buzzy1
+		GasHiss: hydrod1
+		Chronoshift: chrono2
+
+Speech:
+	Notifications:
+		SpyCommander: scomnd1
+		StavrosMoveOut: stavmov
+		StavrosCommander: stavcmdr
