@@ -209,6 +209,11 @@ find-outpost-and-repair = Find our outpost and start repairs on it.
 evacuate-civilian-hospital = Evacuate all civilians from the hospital.
 demitri-extracted-super-tanks-destroyed = Dr. Demitri has been extracted and the super tanks have been dealt with.
 
+## mousetrap
+all-engineers-killed = All engineers were killed.
+kill-stavros = Kill Stavros.
+sabotage-facility = Sabotage the facility with our engineers.
+
 ## production-disruption, shock-therapy
 capture-enemy-radar-dome = Capture the enemy radar dome.
 
