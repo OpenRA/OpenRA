@@ -392,7 +392,10 @@ namespace OpenRA.Mods.Common.Traits
 			var initialDamage = health.DamageState;
 			self.World.AddFrameEndTask(w =>
 			{
-				// Use .FromPos since this actor is killed. Cannot use Target.FromActor
+				if (self.IsDead)
+					return;
+
+				// Use .FromPos since this actor is dead. Cannot use Target.FromActor.
 				info.DemolishWeaponInfo.Impact(Target.FromPos(self.CenterPosition), saboteur);
 
 				self.Kill(saboteur, damageTypes);
