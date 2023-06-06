@@ -191,9 +191,19 @@ namespace OpenRA.Mods.Common.Activities
 			if (armaments.Count == 0)
 				return AttackStatus.UnableToAttack;
 
-			// Update ranges
-			minRange = armaments.Max(a => a.Weapon.MinRange);
-			maxRange = armaments.Min(a => a.MaxRange());
+			// Update ranges. Exclude paused armaments except when ALL weapons are paused
+			// (e.g. out of ammo), in which case use the paused, valid weapon with highest range.
+			var activeArmaments = armaments.Where(x => !x.IsTraitPaused);
+			if (activeArmaments.Any())
+			{
+				minRange = activeArmaments.Max(a => a.Weapon.MinRange);
+				maxRange = activeArmaments.Min(a => a.MaxRange());
+			}
+			else
+			{
+				minRange = WDist.Zero;
+				maxRange = armaments.Max(a => a.MaxRange());
+			}
 
 			var pos = self.CenterPosition;
 			if (!target.IsInRange(pos, maxRange)
