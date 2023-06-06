@@ -16,7 +16,7 @@ using OpenRA.Support;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	class CheckChromeIntegerExpressions : ILintPass
+	sealed class CheckChromeIntegerExpressions : ILintPass
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{
