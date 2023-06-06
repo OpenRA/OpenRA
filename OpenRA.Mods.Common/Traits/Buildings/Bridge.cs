@@ -273,14 +273,8 @@ namespace OpenRA.Mods.Common.Traits
 		bool LongBridgeSegmentIsDead()
 		{
 			// The long bridge artwork requires a hack to display correctly
-			// if the adjacent shore piece is dead
-			if (!info.Long)
-				return health.IsDead;
-
-			if (NeighbourIsDeadShore(neighbours[0]) || NeighbourIsDeadShore(neighbours[1]))
-				return true;
-
-			return health.IsDead;
+			// if the adjacent shore piece is dead.
+			return health.IsDead || (info.Long && (NeighbourIsDeadShore(neighbours[0]) || NeighbourIsDeadShore(neighbours[1])));
 		}
 
 		ushort ChooseTemplate()
