@@ -281,15 +281,26 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (info.Long && LongBridgeSegmentIsDead())
 			{
-				// Long bridges have custom art for multiple segments being destroyed
-				var previousIsDead = neighbours[0] != null && neighbours[0].LongBridgeSegmentIsDead();
-				var nextIsDead = neighbours[1] != null && neighbours[1].LongBridgeSegmentIsDead();
-				if (previousIsDead && nextIsDead)
+				// Long bridges have custom art for multiple segments being destroyed.
+				var neighbour1Dead = neighbours[0] != null && neighbours[0].LongBridgeSegmentIsDead();
+				var neighbour2Dead = neighbours[1] != null && neighbours[1].LongBridgeSegmentIsDead();
+				if (neighbour1Dead && neighbour2Dead)
 					return info.DestroyedPlusBothTemplate;
-				if (previousIsDead)
-					return info.DestroyedPlusNorthTemplate;
-				if (nextIsDead)
+
+				if (neighbour1Dead || neighbour2Dead)
+				{
+					var deadNeighbourPos = (neighbour1Dead ? neighbours[0] : neighbours[1]).self.Location;
+					if (deadNeighbourPos.Y == self.Location.Y)
+					{
+						// Support horizontal bridges.
+						if (deadNeighbourPos.X < self.Location.X)
+							return info.DestroyedPlusNorthTemplate;
+					}
+					else if (deadNeighbourPos.Y < self.Location.Y)
+						return info.DestroyedPlusNorthTemplate;
+
 					return info.DestroyedPlusSouthTemplate;
+				}
 
 				return info.DestroyedTemplate;
 			}
