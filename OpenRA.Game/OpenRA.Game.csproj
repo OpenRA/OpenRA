@@ -8,7 +8,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Linguini.Bundle" Version="0.4.0" />
-    <PackageReference Include="OpenRA-Eluant" Version="1.0.20" />
+    <PackageReference Include="OpenRA-Eluant" Version="1.0.21" />
     <PackageReference Include="Mono.NAT" Version="3.0.4" />
     <PackageReference Include="SharpZipLib" Version="1.4.2" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
