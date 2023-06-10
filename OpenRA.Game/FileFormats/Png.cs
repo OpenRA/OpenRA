@@ -67,7 +67,7 @@ namespace OpenRA.FileFormats
 							Height = IPAddress.NetworkToHostOrder(ms.ReadInt32());
 
 							var bitDepth = ms.ReadUInt8();
-							var colorType = (PngColorType)ms.ReadByte();
+							var colorType = (PngColorType)ms.ReadUInt8();
 							if (IsPaletted(bitDepth, colorType))
 								Type = SpriteFrameType.Indexed8;
 							else if (colorType == PngColorType.Color)
@@ -75,9 +75,9 @@ namespace OpenRA.FileFormats
 
 							Data = new byte[Width * Height * PixelStride];
 
-							var compression = ms.ReadByte();
-							/*var filter = */ms.ReadByte();
-							var interlace = ms.ReadByte();
+							var compression = ms.ReadUInt8();
+							/*var filter = */ms.ReadUInt8();
+							var interlace = ms.ReadUInt8();
 
 							if (compression != 0)
 								throw new InvalidDataException("Compression method not supported");
@@ -95,7 +95,7 @@ namespace OpenRA.FileFormats
 							Palette = new Color[256];
 							for (var i = 0; i < length / 3; i++)
 							{
-								var r = ms.ReadByte(); var g = ms.ReadByte(); var b = ms.ReadByte();
+								var r = ms.ReadUInt8(); var g = ms.ReadUInt8(); var b = ms.ReadUInt8();
 								Palette[i] = Color.FromArgb(r, g, b);
 							}
 
@@ -108,7 +108,7 @@ namespace OpenRA.FileFormats
 								throw new InvalidDataException("Non-Palette indexed PNG are not supported.");
 
 							for (var i = 0; i < length; i++)
-								Palette[i] = Color.FromArgb(ms.ReadByte(), Palette[i]);
+								Palette[i] = Color.FromArgb(ms.ReadUInt8(), Palette[i]);
 
 							break;
 						}
@@ -137,20 +137,55 @@ namespace OpenRA.FileFormats
 									var pxStride = PixelStride;
 									var rowStride = Width * pxStride;
 
-									var prevLine = new byte[rowStride];
+									var prevLine = Span<byte>.Empty;
 									for (var y = 0; y < Height; y++)
 									{
-										var filter = (PngFilter)ds.ReadByte();
-										var line = ds.ReadBytes(rowStride);
+										var filter = (PngFilter)ds.ReadUInt8();
+										ds.ReadBytes(Data, y * rowStride, rowStride);
+										var line = Data.AsSpan(y * rowStride, rowStride);
 
-										for (var i = 0; i < rowStride; i++)
-											line[i] = i < pxStride
-												? UnapplyFilter(filter, line[i], 0, prevLine[i], 0)
-												: UnapplyFilter(filter, line[i], line[i - pxStride], prevLine[i], prevLine[i - pxStride]);
-
-										Array.Copy(line, 0, Data, y * rowStride, rowStride);
+										switch (filter)
+										{
+											case PngFilter.None:
+												break;
+											case PngFilter.Sub:
+												for (var i = pxStride; i < rowStride; i++)
+													line[i] += line[i - pxStride];
+												break;
+											case PngFilter.Up:
+												for (var i = 0; i < rowStride; i++)
+													line[i] += prevLine[i];
+												break;
+											case PngFilter.Average:
+												for (var i = 0; i < pxStride; i++)
+													line[i] += Average(0, prevLine[i]);
+												for (var i = pxStride; i < rowStride; i++)
+													line[i] += Average(line[i - pxStride], prevLine[i]);
+												break;
+											case PngFilter.Paeth:
+												for (var i = 0; i < pxStride; i++)
+													line[i] += Paeth(0, prevLine[i], 0);
+												for (var i = pxStride; i < rowStride; i++)
+													line[i] += Paeth(line[i - pxStride], prevLine[i], prevLine[i - pxStride]);
+												break;
+											default:
+												throw new InvalidOperationException("Unsupported Filter");
+										}
 
 										prevLine = line;
+									}
+
+									static byte Average(byte a, byte b) => (byte)((a + b) / 2);
+
+									static byte Paeth(byte a, byte b, byte c)
+									{
+										var p = a + b - c;
+										var pa = Math.Abs(p - a);
+										var pb = Math.Abs(p - b);
+										var pc = Math.Abs(p - c);
+
+										return (pa <= pb && pa <= pc) ? a :
+											(pb <= pc) ? b : c;
 									}
 								}
 							}
@@ -228,34 +263,9 @@ namespace OpenRA.FileFormats
 			return isPng;
 		}
 
-		static byte UnapplyFilter(PngFilter f, byte x, byte a, byte b, byte c)
-		{
-			switch (f)
-			{
-				case PngFilter.None: return x;
-				case PngFilter.Sub: return (byte)(x + a);
-				case PngFilter.Up: return (byte)(x + b);
-				case PngFilter.Average: return (byte)(x + (a + b) / 2);
-				case PngFilter.Paeth: return (byte)(x + Paeth(a, b, c));
-				default:
-					throw new InvalidOperationException("Unsupported Filter");
-			}
-		}
-
-		static byte Paeth(byte a, byte b, byte c)
-		{
-			var p = a + b - c;
-			var pa = Math.Abs(p - a);
-			var pb = Math.Abs(p - b);
-			var pc = Math.Abs(p - c);
-
-			return (pa <= pb && pa <= pc) ? a :
-				(pb <= pc) ? b : c;
-		}
-
 		[Flags]
-		enum PngColorType { Indexed = 1, Color = 2, Alpha = 4 }
-		enum PngFilter { None, Sub, Up, Average, Paeth }
+		enum PngColorType : byte { Indexed = 1, Color = 2, Alpha = 4 }
+		enum PngFilter : byte { None, Sub, Up, Average, Paeth }
 
 		static bool IsPaletted(byte bitDepth, PngColorType colorType)
 		{
