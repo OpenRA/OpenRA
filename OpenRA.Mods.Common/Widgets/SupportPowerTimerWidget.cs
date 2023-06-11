@@ -61,11 +61,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var time = WidgetUtils.FormatTime(p.RemainingTicks, false, self.World.Timestep);
 				var text = TranslationProvider.GetString(Format, Translation.Arguments("player", self.Owner.PlayerName, "support-power", p.Name, "time", time));
 
-				var playerColor = self.Owner.Color;
-
-				if (Game.Settings.Game.UsePlayerStanceColors)
-					playerColor = self.Owner.PlayerRelationshipColor(self);
-
+				var playerColor = Game.Settings.Game.UsePlayerStanceColors ? Player.PlayerRelationshipColor(self) : self.Owner.Color;
 				var color = !p.Ready || Game.LocalTick % 50 < 25 ? playerColor : Color.White;
 
 				return (text, color);
