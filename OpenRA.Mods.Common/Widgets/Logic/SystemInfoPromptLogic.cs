@@ -20,17 +20,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class SystemInfoPromptLogic : ChromeLogic
 	{
 		// Increment the version number when adding new stats
-		const int SystemInformationVersion = 5;
+		const int SystemInformationVersion = 6;
 
 		static Dictionary<string, (string Label, string Value)> GetSystemInformation()
 		{
-			var lang = CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
-			return new Dictionary<string, (string, string)>()
+			return new Dictionary<string, (string, string)>
 			{
 				{ "id", ("Anonymous ID", Game.Settings.Debug.UUID) },
 				{ "platform", ("OS Type", Platform.CurrentPlatform.ToString()) },
+				{ "os", ("OS Version", Platform.OperatingSystem) },
 				{ "arch", ("Architecture", Platform.CurrentArchitecture.ToString()) },
-				{ "os", ("OS Version", Environment.OSVersion.ToString()) },
 				{ "x64", ("OS is 64 bit", Environment.Is64BitOperatingSystem.ToString()) },
 				{ "x64process", ("Process is 64 bit", Environment.Is64BitProcess.ToString()) },
 				{ "runtime", (".NET Runtime", Platform.RuntimeVersion) },
@@ -38,7 +37,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "windowsize", ("Window Size", $"{Game.Renderer.NativeResolution.Width}x{Game.Renderer.NativeResolution.Height}") },
 				{ "windowscale", ("Window Scale", Game.Renderer.NativeWindowScale.ToString("F2", CultureInfo.InvariantCulture)) },
 				{ "uiscale", ("UI Scale", Game.Settings.Graphics.UIScale.ToString("F2", CultureInfo.InvariantCulture)) },
-				{ "lang", ("System Language", lang) }
+				{ "lang", ("System Language", CultureInfo.InstalledUICulture.TwoLetterISOLanguageName) }
 			};
 		}
 

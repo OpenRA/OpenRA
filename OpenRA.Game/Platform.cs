@@ -79,6 +79,65 @@ namespace OpenRA
 			}
 		}
 
+		public static string OperatingSystem
+		{
+			get
+			{
+				if (CurrentPlatform == PlatformType.Linux)
+				{
+					var sessionType = Environment.GetEnvironmentVariable("XDG_SESSION_TYPE");
+					if (!string.IsNullOrEmpty(sessionType))
+						sessionType = $" ({sessionType})";
+					else
+						sessionType = "";
+
+					try
+					{
+						var psi = new ProcessStartInfo("hostnamectl", "status")
+						{
+							UseShellExecute = false,
+							RedirectStandardOutput = true
+						};
+
+						var p = Process.Start(psi);
+						string line;
+						while ((line = p.StandardOutput.ReadLine()) != null)
+							if (line.StartsWith("Operating System: "))
+								return line[18..] + sessionType;
+					}
+					catch { }
+
+					if (File.Exists("/etc/os-release"))
+						foreach (var line in File.ReadLines("/etc/os-release"))
+							if (line.StartsWith("PRETTY_NAME="))
+								return line[13..^1] + sessionType;
+				}
+				else if (CurrentPlatform == PlatformType.OSX)
+				{
+					try
+					{
+						var psi = new ProcessStartInfo("system_profiler", "SPSoftwareDataType")
+						{
+							UseShellExecute = false,
+							RedirectStandardOutput = true
+						};
+
+						var p = Process.Start(psi);
+						string line;
+						while ((line = p.StandardOutput.ReadLine()) != null)
+						{
+							line = line.Trim();
+							if (line.StartsWith("System Version: "))
+								return line[16..];
+						}
+					}
+					catch { }
+				}
+
+				return Environment.OSVersion.ToString();
+			}
+		}
+
 		/// <summary>
 		/// Directory containing user-specific support files (settings, maps, replays, game data, etc).
 		/// </summary>
