@@ -101,6 +101,7 @@ namespace OpenRA.Primitives
 
 		public void TrimExcess()
 		{
+			data.TrimExcess();
 			foreach (var objs in data.Values)
 				objs.TrimExcess();
 		}
