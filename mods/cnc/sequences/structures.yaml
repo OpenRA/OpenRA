@@ -637,14 +637,8 @@ gtwr:
 		Start: 2
 		Tick: 800
 	make:
-		Filename:
-		Combine:
-			0:
-				Filename: gtwrmake.shp
-				Length: 17
-			1:
-				Filename: gtwrmake.shp
-				Start: 19
+		Filename: gtwrmake.shp
+		Frames: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 19
 		Length: 18
 		Tick: 80
 	muzzle:
