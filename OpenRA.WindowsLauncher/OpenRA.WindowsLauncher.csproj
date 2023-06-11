@@ -21,7 +21,7 @@
     </AssemblyAttribute>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="OpenRA-SDL2-CS" Version="1.0.39" />
+    <PackageReference Include="OpenRA-SDL2-CS" Version="1.0.40" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj" />
