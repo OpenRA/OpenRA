@@ -350,6 +350,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 				? (Func<CPos, int>)null
 				: c => cellsWithBlockingActor.Contains(c) ? PathGraph.PathCostForInvalidPath : 0;
 
+			var accessibleCells = new HashSet<CPos>(GridSize * GridSize);
 			for (byte gridLayer = 0; gridLayer < customMovementLayers.Length; gridLayer++)
 			{
 				if (gridLayer != 0 &&
@@ -358,7 +359,6 @@ namespace OpenRA.Mods.Common.Pathfinder
 					continue;
 
 				var grid = GetGrid(new CPos(gridX, gridY, gridLayer), mapBounds);
-				var accessibleCells = new HashSet<CPos>();
 				for (var y = gridY; y < grid.BottomRight.Y; y++)
 				{
 					for (var x = gridX; x < grid.BottomRight.X; x++)
