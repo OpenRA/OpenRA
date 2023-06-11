@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Primitives;
@@ -29,7 +30,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[ActorReference]
 		[Desc("Actors to spawn on sell. Be sure to use lowercase.")]
-		public readonly string[] GuaranteedActorTypes = null;
+		public readonly string[] GuaranteedActorTypes = Array.Empty<string>();
 
 		[Desc("Spawns actors only if the selling player's faction is in this list. " +
 			"Leave empty to allow all factions by default.")]
@@ -80,18 +81,18 @@ namespace OpenRA.Mods.Common.Traits
 			if (eligibleLocations.Count == 0)
 				return;
 
-			var guaranteedActorTypes = Info.GuaranteedActorTypes?.Select(a =>
+			if (Info.GuaranteedActorTypes.Length > 0)
 			{
-				var av = self.World.Map.Rules.Actors[a].TraitInfoOrDefault<ValuedInfo>();
-				return new
+				var guaranteedActorTypes = Info.GuaranteedActorTypes.Select(a =>
 				{
-					Name = a,
-					Cost = av?.Cost ?? 0
-				};
-			}).ToList();
+					var av = self.World.Map.Rules.Actors[a].TraitInfoOrDefault<ValuedInfo>();
+					return new
+					{
+						Name = a,
+						Cost = av?.Cost ?? 0
+					};
+				}).ToList();
 
-			if (guaranteedActorTypes != null)
-			{
 				while (eligibleLocations.Count > 0 && guaranteedActorTypes.Count > 0)
 				{
 					var at = guaranteedActorTypes.Random(self.World.SharedRandom);
@@ -107,10 +108,10 @@ namespace OpenRA.Mods.Common.Traits
 						new OwnerInit(self.Owner),
 					}));
 				}
-			}
 
-			if (eligibleLocations.Count == 0)
-				return;
+				if (eligibleLocations.Count == 0)
+					return;
+			}
 
 			var actorTypes = Info.ActorTypes.Select(a =>
 			{
