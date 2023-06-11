@@ -57,6 +57,9 @@ namespace OpenRA.Mods.Common.Lint
 			FieldInfo fieldInfo, IReadOnlyDictionary<string, ActorInfo> dict, ActorReferenceAttribute attribute)
 		{
 			var values = LintExts.GetFieldValues(traitInfo, fieldInfo, attribute.DictionaryReference);
+			if (values == null)
+				return;
+
 			foreach (var value in values)
 			{
 				if (value == null)
