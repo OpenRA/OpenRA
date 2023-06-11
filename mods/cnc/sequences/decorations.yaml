@@ -81,10 +81,6 @@ tc04.husk:
 			JUNGLE: tc04.jun
 	idle:
 		Start: 2
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 tc05:
 	Defaults:
@@ -106,10 +102,6 @@ tc05.husk:
 			JUNGLE: tc05.jun
 	idle:
 		Start: 2
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 tc03:
 	Defaults:
@@ -129,10 +121,6 @@ tc03.husk:
 			JUNGLE: tc03.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 tc02:
 	Defaults:
@@ -152,10 +140,6 @@ tc02.husk:
 			JUNGLE: tc02.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 tc01:
 	Defaults:
@@ -175,10 +159,6 @@ tc01.husk:
 			JUNGLE: tc01.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t18:
 	idle:
@@ -188,11 +168,6 @@ t18.husk:
 	idle:
 		Filename: t18.des
 		Start: 1
-	dead:
-		Filename: t18.des
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t17:
 	Defaults:
@@ -212,10 +187,6 @@ t17.husk:
 			JUNGLE: t17.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t16:
 	Defaults:
@@ -235,10 +206,6 @@ t16.husk:
 			JUNGLE: t16.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t15:
 	Defaults:
@@ -258,10 +225,6 @@ t15.husk:
 			JUNGLE: t15.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t14:
 	Defaults:
@@ -281,10 +244,6 @@ t14.husk:
 			JUNGLE: t14.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t13:
 	Defaults:
@@ -304,10 +263,6 @@ t13.husk:
 			JUNGLE: t13.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t12:
 	Defaults:
@@ -327,10 +282,6 @@ t12.husk:
 			JUNGLE: t12.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t11:
 	Defaults:
@@ -350,10 +301,6 @@ t11.husk:
 			JUNGLE: t11.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t10:
 	Defaults:
@@ -373,10 +320,6 @@ t10.husk:
 			JUNGLE: t10.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t09:
 	idle:
@@ -386,11 +329,6 @@ t09.husk:
 	idle:
 		Filename: t09.des
 		Start: 1
-	dead:
-		Filename: t09.des
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t08:
 	Defaults:
@@ -412,10 +350,6 @@ t08.husk:
 			JUNGLE: t08.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t07:
 	Defaults:
@@ -435,10 +369,6 @@ t07.husk:
 			JUNGLE: t07.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t06:
 	Defaults:
@@ -458,10 +388,6 @@ t06.husk:
 			JUNGLE: t06.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t05:
 	Defaults:
@@ -481,10 +407,6 @@ t05.husk:
 			JUNGLE: t05.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t04:
 	idle:
@@ -494,11 +416,6 @@ t04.husk:
 	idle:
 		Filename: t04.des
 		Start: 1
-	dead:
-		Filename: t04.des
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t03:
 	Defaults:
@@ -518,10 +435,6 @@ t03.husk:
 			JUNGLE: t03.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t02:
 	Defaults:
@@ -541,10 +454,6 @@ t02.husk:
 			JUNGLE: t02.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 t01:
 	Defaults:
@@ -564,10 +473,6 @@ t01.husk:
 			JUNGLE: t01.jun
 	idle:
 		Start: 1
-	dead:
-		Start: 2
-		Length: 8
-		Tick: 80
 
 v01:
 	Defaults:
