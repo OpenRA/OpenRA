@@ -30,8 +30,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "platform", ("OS Type", Platform.CurrentPlatform.ToString()) },
 				{ "os", ("OS Version", Platform.OperatingSystem) },
 				{ "arch", ("Architecture", Platform.CurrentArchitecture.ToString()) },
-				{ "x64", ("OS is 64 bit", Environment.Is64BitOperatingSystem.ToString()) },
-				{ "x64process", ("Process is 64 bit", Environment.Is64BitProcess.ToString()) },
 				{ "runtime", (".NET Runtime", Platform.RuntimeVersion) },
 				{ "gl", ("OpenGL Version", Game.Renderer.GLVersion) },
 				{ "windowsize", ("Window Size", $"{Game.Renderer.NativeResolution.Width}x{Game.Renderer.NativeResolution.Height}") },
