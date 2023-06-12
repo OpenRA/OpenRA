@@ -137,7 +137,7 @@ namespace OpenRA.FileFormats
 									var pxStride = PixelStride;
 									var rowStride = Width * pxStride;
 
-									var prevLine = Span<byte>.Empty;
+									Span<byte> prevLine = new byte[rowStride];
 									for (var y = 0; y < Height; y++)
 									{
 										var filter = (PngFilter)ds.ReadUInt8();
