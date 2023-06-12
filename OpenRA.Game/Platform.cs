@@ -85,11 +85,18 @@ namespace OpenRA
 			{
 				if (CurrentPlatform == PlatformType.Linux)
 				{
+					var desktopType = Environment.GetEnvironmentVariable("XDG_CURRENT_DESKTOP");
 					var sessionType = Environment.GetEnvironmentVariable("XDG_SESSION_TYPE");
-					if (!string.IsNullOrEmpty(sessionType))
-						sessionType = $" ({sessionType})";
+
+					string suffix;
+					if (!string.IsNullOrEmpty(desktopType) && !string.IsNullOrEmpty(sessionType))
+						suffix = $" ({desktopType};{sessionType})";
+					else if (!string.IsNullOrEmpty(desktopType))
+						suffix = $" ({desktopType})";
+					else if (!string.IsNullOrEmpty(sessionType))
+						suffix = $" ({sessionType})";
 					else
-						sessionType = "";
+						suffix = "";
 
 					try
 					{
@@ -103,14 +110,14 @@ namespace OpenRA
 						string line;
 						while ((line = p.StandardOutput.ReadLine()) != null)
 							if (line.StartsWith("Operating System: "))
-								return line[18..] + sessionType;
+								return line[18..] + suffix;
 					}
 					catch { }
 
 					if (File.Exists("/etc/os-release"))
 						foreach (var line in File.ReadLines("/etc/os-release"))
 							if (line.StartsWith("PRETTY_NAME="))
-								return line[13..^1] + sessionType;
+								return line[13..^1] + suffix;
 				}
 				else if (CurrentPlatform == PlatformType.OSX)
 				{
