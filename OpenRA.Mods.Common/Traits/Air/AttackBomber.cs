@@ -17,6 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("Trait used for scripted actors or actors spawned by a support power.")]
 	public class AttackBomberInfo : AttackBaseInfo
 	{
 		public override object Create(ActorInitializer init) { return new AttackBomber(init.Self, this); }
