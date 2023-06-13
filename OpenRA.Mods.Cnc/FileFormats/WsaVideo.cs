@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 	public class WsaVideo : IVideo
 	{
 		public ushort FrameCount { get; }
-		public byte Framerate => 1;
+		public byte Framerate => 15;
 		public ushort Width { get; }
 		public ushort Height { get; }
 
