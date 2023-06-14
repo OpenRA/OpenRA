@@ -23,7 +23,6 @@ notification-requires-host = Only the host can do that.
 notification-invalid-bot-slot = Can't add bots to a slot with another client.
 notification-invalid-bot-type = Invalid bot type.
 notification-admin-change-map = Only the host can change the map.
-notification-lobby-disconnected = { $player } has left.
 notification-player-disconnected = { $player } has disconnected.
 notification-team-player-disconnected = { $player } (Team { $team }) has disconnected.
 notification-observer-disconnected = { $player } (Spectator) has disconnected.
@@ -57,7 +56,6 @@ notification-incompatible-protocol = Server is running an incompatible protocol.
 notification-you-were-banned = You have been banned from the server.
 notification-you-were-temp-banned = You have been temporarily banned from the server.
 notification-game-full = The game is full.
-notification-joined = { $player } has joined the game.
 notification-new-admin = { $player } is now the admin.
 notification-option-locked = { $option } cannot be changed.
 notification-invalid-configuration-command = Invalid configuration command.
@@ -84,6 +82,10 @@ notification-blacklisted-server-name = Server name contains a blacklisted word.
 notification-requires-authentication = Server requires players to have an OpenRA forum account.
 notification-no-permission-to-join = You do not have permission to join this server.
 notification-slot-closed = Your slot was closed by the host.
+
+## ServerOrders, UnitOrders
+notification-joined = { $player } has joined the game.
+notification-lobby-disconnected = { $player } has left.
 
 ## Server
 notification-game-started = Game started

@@ -106,6 +106,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Dictionary<int, SpawnOccupant> spawnOccupants = new();
 
 		readonly string chatLineSound = ChromeMetrics.Get<string>("ChatLineSound");
+		readonly string playerJoinedSound = ChromeMetrics.Get<string>("PlayerJoinedSound");
+		readonly string playerLeftSound = ChromeMetrics.Get<string>("PlayerLeftSound");
+		readonly string lobbyOptionChangedSound = ChromeMetrics.Get<string>("LobbyOptionChangedSound");
 
 		bool MapIsPlayable => (mapStatus & Session.MapStatus.Playable) == Session.MapStatus.Playable;
 
@@ -440,7 +443,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			forceStartBin.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => panel = PanelType.Players;
 
 			var disconnectButton = lobby.Get<ButtonWidget>("DISCONNECT_BUTTON");
-			disconnectButton.OnClick = () => { Ui.CloseWindow(); onExit(); };
+			disconnectButton.OnClick = () =>
+			{
+				Ui.CloseWindow();
+				onExit();
+				Game.Sound.PlayNotification(modRules, null, "Sounds", playerLeftSound, null);
+			};
 
 			if (skirmishMode)
 				disconnectButton.Text = TranslationProvider.GetString(Back);
@@ -519,6 +527,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (logicArgs.TryGetValue("ChatLineSound", out var yaml))
 				chatLineSound = yaml.Value;
+			if (logicArgs.TryGetValue("PlayerJoinedSound", out yaml))
+				playerJoinedSound = yaml.Value;
+			if (logicArgs.TryGetValue("PlayerLeftSound", out yaml))
+				playerLeftSound = yaml.Value;
+			if (logicArgs.TryGetValue("LobbyOptionChangedSound", out yaml))
+				lobbyOptionChangedSound = yaml.Value;
 		}
 
 		bool disposed;
@@ -577,7 +591,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (scrolledToBottom)
 				lobbyChatPanel.ScrollToBottom(smooth: true);
 
-			Game.Sound.PlayNotification(modRules, null, "Sounds", chatLineSound, null);
+			switch (notification.Pool)
+			{
+				case TextNotificationPool.Chat:
+					Game.Sound.PlayNotification(modRules, null, "Sounds", chatLineSound, null);
+					break;
+				case TextNotificationPool.System:
+					Game.Sound.PlayNotification(modRules, null, "Sounds", lobbyOptionChangedSound, null);
+					break;
+				case TextNotificationPool.Join:
+					Game.Sound.PlayNotification(modRules, null, "Sounds", playerJoinedSound, null);
+					break;
+				case TextNotificationPool.Leave:
+					Game.Sound.PlayNotification(modRules, null, "Sounds", playerLeftSound, null);
+					break;
+			}
 		}
 
 		void UpdateCurrentMap()

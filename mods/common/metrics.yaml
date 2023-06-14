@@ -47,6 +47,9 @@ Metrics:
 	NoticeSuccessColor: 00FF00
 	NoticeErrorColor: FF0000
 	ChatLineSound: ChatLine
+	PlayerJoinedSound: ChatLine
+	LobbyOptionChangedSound: ChatLine
+	PlayerLeftSound: ChatLine
 	ClickDisabledSound: ClickDisabledSound
 	ClickSound: ClickSound
 	NormalSelectionColor: FFFFFF

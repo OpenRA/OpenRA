@@ -14,7 +14,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA
 {
-	public enum TextNotificationPool { System, Chat, Mission, Feedback, Transients }
+	public enum TextNotificationPool { System, Join, Leave, Chat, Mission, Feedback, Transients }
 
 	public class TextNotification : IEquatable<TextNotification>
 	{
