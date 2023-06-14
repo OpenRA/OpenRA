@@ -2,6 +2,8 @@ Background@SERVER_LOBBY:
 	Logic: LobbyLogic
 		ChatTemplates:
 			Chat: CHAT_LINE_TEMPLATE
+			Join: SYSTEM_LINE_TEMPLATE
+			Leave: SYSTEM_LINE_TEMPLATE
 			System: SYSTEM_LINE_TEMPLATE
 			Mission: CHAT_LINE_TEMPLATE
 			Feedback: TRANSIENT_LINE_TEMPLATE
