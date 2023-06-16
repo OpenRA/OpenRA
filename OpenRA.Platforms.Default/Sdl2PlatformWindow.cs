@@ -23,6 +23,7 @@ namespace OpenRA.Platforms.Default
 	sealed class Sdl2PlatformWindow : ThreadAffine, IPlatformWindow
 	{
 		readonly Sdl2Input input;
+		public readonly bool UseDeviceIndependentPixels;
 
 		public IGraphicsContext Context { get; }
 
@@ -175,11 +176,14 @@ namespace OpenRA.Platforms.Default
 				if (videoDisplay < 0 || videoDisplay >= DisplayCount)
 					videoDisplay = 0;
 
+				var videoDriver = SDL.SDL_GetCurrentVideoDriver();
+				UseDeviceIndependentPixels = videoDriver == "cocoa" || videoDriver == "wayland";
+
 				SDL.SDL_GetCurrentDisplayMode(videoDisplay, out var display);
 
-				// Windows and Linux define window sizes in native pixel units.
+				// Windows and Linux (X11) define window sizes in native pixel units.
 				// Query the display/dpi scale so we can convert our requested effective size to pixels.
-				// This is not necessary on macOS, which defines window sizes in effective units ("points").
+				// This is not necessary on platforms that define window sizes in device-independent coordinates (e.g. "points").
 				if (Platform.CurrentPlatform == PlatformType.Windows)
 				{
 					// Launch the game with OPENRA_DISPLAY_SCALE to force a specific scaling factor
@@ -189,7 +193,7 @@ namespace OpenRA.Platforms.Default
 						if (SDL.SDL_GetDisplayDPI(videoDisplay, out var ddpi, out _, out _) == 0)
 							windowScale = ddpi / 96;
 				}
-				else if (Platform.CurrentPlatform == PlatformType.Linux)
+				else if (Platform.CurrentPlatform == PlatformType.Linux && !UseDeviceIndependentPixels)
 				{
 					// Launch the game with OPENRA_DISPLAY_SCALE to force a specific scaling factor
 					// Otherwise fall back to GDK_SCALE or parsing the x11 DPI configuration
@@ -229,14 +233,14 @@ namespace OpenRA.Platforms.Default
 
 				var windowFlags = SDL.SDL_WindowFlags.SDL_WINDOW_OPENGL | SDL.SDL_WindowFlags.SDL_WINDOW_ALLOW_HIGHDPI;
 
-				// HiDPI doesn't work properly on OSX with (legacy) fullscreen mode
+				// HiDPI doesn't work properly on macOS with (legacy) fullscreen mode
 				if (Platform.CurrentPlatform == PlatformType.OSX && windowMode == WindowMode.Fullscreen)
 					SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_HIGHDPI_DISABLED, "1");
 
 				window = SDL.SDL_CreateWindow("OpenRA", SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay), SDL.SDL_WINDOWPOS_CENTERED_DISPLAY(videoDisplay),
 					windowSize.Width, windowSize.Height, windowFlags);
 
-				if (Platform.CurrentPlatform == PlatformType.Linux)
+				if (Platform.CurrentPlatform == PlatformType.Linux && videoDriver != "wayland")
 				{
 					// The KDE task switcher limits itself to the 128px icon unless we
 					// set an X11 _KDE_NET_WM_DESKTOP_FILE property on the window
@@ -267,9 +271,8 @@ namespace OpenRA.Platforms.Default
 				}
 
 				// Enable high resolution rendering for Retina displays
-				if (Platform.CurrentPlatform == PlatformType.OSX)
+				if (UseDeviceIndependentPixels)
 				{
-					// OSX defines the window size in "points", with a device-dependent number of pixels per point.
 					// The window scale is simply the ratio of GL pixels / window points.
 					SDL.SDL_GL_GetDrawableSize(Window, out var width, out var height);
 					surfaceSize = new Size(width, height);
@@ -287,7 +290,7 @@ namespace OpenRA.Platforms.Default
 				{
 					SDL.SDL_SetWindowFullscreen(Window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN);
 
-					// Fullscreen mode on OSX will ignore the configured display resolution
+					// Fullscreen mode on macOS will ignore the configured display resolution
 					// and instead always picks an arbitrary scaled resolution choice that may
 					// not match the window size, leading to graphical and input issues.
 					// We work around this by force disabling HiDPI and resetting the window and
@@ -379,9 +382,9 @@ namespace OpenRA.Platforms.Default
 			VerifyThreadAffinity();
 			try
 			{
-				// Pixel double the cursor on non-OSX if the window scale is large enough
-				// OSX does this for us automatically
-				if (Platform.CurrentPlatform != PlatformType.OSX && NativeWindowScale > 1.5f)
+				// Pixel double the cursor if the window scale is large enough
+				// This is not necessary if the platform uses device-independent pixels
+				if (!UseDeviceIndependentPixels && NativeWindowScale > 1.5f)
 				{
 					data = DoublePixelData(data, size);
 					size = new Size(2 * size.Width, 2 * size.Height);
@@ -443,9 +446,9 @@ namespace OpenRA.Platforms.Default
 
 		internal void WindowSizeChanged()
 		{
-			// The ratio between pixels and points can change when moving between displays in OSX
+			// The ratio between pixels and points can change when moving between displays
 			// We need to recalculate our scale to account for the potential change in the actual rendered area
-			if (Platform.CurrentPlatform == PlatformType.OSX)
+			if (UseDeviceIndependentPixels)
 			{
 				SDL.SDL_GL_GetDrawableSize(Window, out var width, out var height);
 

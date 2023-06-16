@@ -42,17 +42,17 @@ namespace OpenRA.Platforms.Default
 
 		static int2 EventPosition(Sdl2PlatformWindow device, int x, int y)
 		{
-			// On Windows and Linux (X11) events are given in surface coordinates
+			// On Windows and Linux (X11), events are given in surface coordinates
 			// These must be scaled to our effective window coordinates
 			// Round fractional components up to avoid rounding small deltas to 0
-			if (Platform.CurrentPlatform != PlatformType.OSX && device.EffectiveWindowSize != device.SurfaceSize)
+			if (!device.UseDeviceIndependentPixels && device.EffectiveWindowSize != device.SurfaceSize)
 			{
 				var s = 1 / device.EffectiveWindowScale;
 				return new int2((int)(Math.Sign(x) / 2f + x * s), (int)(Math.Sign(x) / 2f + y * s));
 			}
 
-			// On macOS we must still account for the user-requested scale modifier
-			if (Platform.CurrentPlatform == PlatformType.OSX && device.EffectiveWindowScale != device.NativeWindowScale)
+			// Otherwise, we must still account for the user-requested scale modifier
+			if (device.UseDeviceIndependentPixels && device.EffectiveWindowScale != device.NativeWindowScale)
 			{
 				var s = device.NativeWindowScale / device.EffectiveWindowScale;
 				return new int2((int)(Math.Sign(x) / 2f + x * s), (int)(Math.Sign(x) / 2f + y * s));
