@@ -302,6 +302,11 @@ namespace OpenRA.Platforms.Default
 				}
 				else if (windowMode == WindowMode.PseudoFullscreen)
 				{
+					// Gnome >= 44 does not consider SDL_WINDOW_FULLSCREEN_DESKTOP to be borderless!
+					// This must be called before SetWindowFullscreen for the workaround to function.
+					if (Platform.CurrentPlatform == PlatformType.Linux)
+						SDL.SDL_SetWindowBordered(Window, SDL.SDL_bool.SDL_FALSE);
+
 					SDL.SDL_SetWindowFullscreen(Window, (uint)SDL.SDL_WindowFlags.SDL_WINDOW_FULLSCREEN_DESKTOP);
 					SDL.SDL_SetHint(SDL.SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS, "0");
 
