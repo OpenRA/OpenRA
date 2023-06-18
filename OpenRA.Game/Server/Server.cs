@@ -580,8 +580,7 @@ namespace OpenRA.Server
 
 						Log.Write("server", $"{client.Name} ({newConn.EndPoint}) has joined the game.");
 
-						if (Type != ServerType.Local)
-							SendLocalizedMessage(Joined, Translation.Arguments("player", client.Name));
+						SendLocalizedMessage(Joined, Translation.Arguments("player", client.Name));
 
 						if (Type == ServerType.Dedicated)
 						{
