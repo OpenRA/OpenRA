@@ -227,7 +227,7 @@ TorpTube:
 	Report: torpedo1.aud
 	ValidTargets: Water, WaterActor, Underwater, Bridge
 	Burst: 2
-	BurstDelays: 20
+	BurstDelays: 15
 	Projectile: Missile
 		Image: torpedo
 		Arm: 3
