@@ -18,7 +18,7 @@ SS:
 	Armor:
 		Type: Light
 	Mobile:
-		TurnSpeed: 16
+		TurnSpeed: 20
 		Speed: 78
 	RevealsShroud:
 		MinRange: 5c0
@@ -125,11 +125,11 @@ DD:
 		TurnSpeed: 28
 		Speed: 92
 	RevealsShroud:
-		MinRange: 5c0
-		Range: 6c0
+		MinRange: 4c0
+		Range: 5c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
-		Range: 5c0
+		Range: 4c0
 	Turreted:
 		TurnSpeed: 28
 		Offset: 469,0,128
@@ -279,11 +279,11 @@ PT:
 		TurnSpeed: 28
 		Speed: 142
 	RevealsShroud:
-		MinRange: 5c0
-		Range: 7c0
+		MinRange: 6c0
+		Range: 8c0
 		RevealGeneratedShroud: False
 	RevealsShroud@GAPGEN:
-		Range: 5c0
+		Range: 6c0
 	Turreted:
 		TurnSpeed: 28
 		Offset: 512,0,0
