@@ -20,8 +20,8 @@ Player:
 		Visible: False
 	LobbyPrerequisiteCheckbox@GLOBALFACTUNDEPLOY:
 		Enabled: True
-		Locked: True
-		Visible: False
+		Locked: False
+		Visible: True
 	LobbyPrerequisiteCheckbox@REUSABLEENGINEERS:
 		Enabled: False
 		Locked: True
@@ -45,8 +45,8 @@ World:
 		AllyBuildRadiusCheckboxVisible: False
 		AllyBuildRadiusCheckboxLocked: True
 		AllyBuildRadiusCheckboxEnabled: False
-		BuildRadiusCheckboxVisible: False
-		BuildRadiusCheckboxLocked: True
+		BuildRadiusCheckboxVisible: True
+		BuildRadiusCheckboxLocked: False
 		BuildRadiusCheckboxEnabled: True
 	MapOptions:
 		ShortGameCheckboxVisible: False

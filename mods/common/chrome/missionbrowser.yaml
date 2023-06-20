@@ -3,17 +3,17 @@ Background@MISSIONBROWSER_PANEL:
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
 	Width: 700
-	Height: 500
+	Height: 540
 	Children:
 		Label@MISSIONBROWSER_TITLE:
-			Y: 21
+			Y: 11
 			Width: PARENT_RIGHT
 			Height: 25
 			Text: Missions
 			Align: Center
 			Font: Bold
 		ScrollPanel@MISSION_LIST:
-			X: 20
+			X: 10
 			Y: 50
 			Width: 288
 			Height: PARENT_BOTTOM - 110
@@ -46,7 +46,7 @@ Background@MISSIONBROWSER_PANEL:
 			X: 318
 			Y: 50
 			Width: 362
-			Height: PARENT_BOTTOM - 110
+			Height: PARENT_BOTTOM - 80
 			Children:
 				Background@MISSION_BG:
 					Width: PARENT_RIGHT
@@ -73,27 +73,27 @@ Background@MISSIONBROWSER_PANEL:
 							VAlign: Top
 							Font: Small
 				Label@DIFFICULTY_DESC:
-					Y: PARENT_BOTTOM - HEIGHT
+					Y: PARENT_BOTTOM - HEIGHT - 60 
 					Width: 56
 					Height: 25
 					Text: Difficulty:
 					Align: Right
 				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
 					X: 61
-					Y: PARENT_BOTTOM - HEIGHT
+					Y: PARENT_BOTTOM - HEIGHT - 60
 					Width: 135
 					Height: 25
 					Font: Regular
 				Label@GAMESPEED_DESC:
 					X: PARENT_RIGHT - WIDTH - 115
-					Y: PARENT_BOTTOM - HEIGHT
+					Y: PARENT_BOTTOM - HEIGHT - 60
 					Width: 120
 					Height: 25
 					Text: Speed:
 					Align: Right
 				DropDownButton@GAMESPEED_DROPDOWNBUTTON:
 					X: PARENT_RIGHT - WIDTH
-					Y: PARENT_BOTTOM - HEIGHT
+					Y: PARENT_BOTTOM - HEIGHT - 60
 					Width: 110
 					Height: 25
 					Font: Regular
