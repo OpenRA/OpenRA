@@ -31,7 +31,7 @@ World:
 			normal: options-difficulty.normal
 			hard: options-difficulty.hard
 		Default: normal
-	-LegacyBridgeLayer:
+	-BridgeLayer:
 
 ^CivBuilding:
 	AnnounceOnSeen:

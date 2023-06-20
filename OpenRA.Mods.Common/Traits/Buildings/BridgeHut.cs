@@ -75,9 +75,6 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self.World.AddFrameEndTask(w =>
 			{
-				// Bridge segments and huts are expected to be placed in the map
-				// editor or spawned during the normal actor loading
-				//
 				// The number and location of bridge segments are calculated here,
 				// and assumed to not change for the remaining lifetime of the world
 				//
@@ -100,6 +97,22 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				repairStep = demolishStep = segmentLocations.Count;
+
+				if (repairStep > 1)
+				{
+					var seg = segments.ToList();
+					for (var i = 0; i < repairStep; i++)
+					{
+						var neighbours = new List<IBridgeSegment>();
+						if (i > 0)
+							neighbours.Add(seg[i - 1].Value);
+
+						if (i + 1 < repairStep)
+							neighbours.Add(seg[i + 1].Value);
+
+						seg[i].Value.SetNeighbours(neighbours);
+					}
+				}
 			});
 		}
 

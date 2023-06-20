@@ -71,11 +71,8 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		void IBridgeSegment.Demolish(Actor saboteur, BitSet<DamageType> damageTypes)
-		{
-			// Do nothing
-		}
-
+		void IBridgeSegment.Demolish(Actor saboteur, BitSet<DamageType> damageTypes) { }
+		void IBridgeSegment.SetNeighbours(IEnumerable<IBridgeSegment> neighbours) { }
 		string IBridgeSegment.Type => Info.Type;
 		DamageState IBridgeSegment.DamageState => Info.DamageState;
 		bool IBridgeSegment.Valid => self.IsInWorld;

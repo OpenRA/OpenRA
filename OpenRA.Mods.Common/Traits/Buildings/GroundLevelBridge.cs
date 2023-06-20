@@ -113,6 +113,7 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
+		void IBridgeSegment.SetNeighbours(IEnumerable<IBridgeSegment> neighbours) { }
 		string IBridgeSegment.Type => Info.Type;
 		DamageState IBridgeSegment.DamageState => self.GetDamageState();
 		bool IBridgeSegment.Valid => self.IsInWorld;

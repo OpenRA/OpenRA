@@ -458,7 +458,9 @@ BRIDGEHUT:
 	Building:
 		Footprint: __ __
 		Dimensions: 2,2
-	LegacyBridgeHut:
+	BridgeHut:
+		BridgeOffsets: 0,0, 0,-2, -2,0
+		DemolishPropagationDelay: 20
 	Targetable:
 		TargetTypes: BridgeHut, C4
 	Interactable:

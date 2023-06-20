@@ -15,11 +15,15 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class RefactorBridges : UpdateRule
 	{
-		public override string Name => "`GroundLevelBridge` and `BridgePlaceHolder segments are now automatically joined";
+		public override string Name => "Refactor all bridge traits";
 
 		public override string Description =>
-			"`NeighbourOffsets` was removed from `GroundLevelBridge` and `BridgePlaceHolder.\n" +
-			"`BridgeHut`'s `NeighbourOffsets` renamed to `BridgeOffsets`";
+			"`NeighbourOffsets` field was removed from `GroundLevelBridge` and `BridgePlaceHolder. \n" +
+			"`NorthOffset` and`SouthOffset` fields were removed from `Bridge`.\n" +
+			"`RepairPropagationDelay` field was removed from `Bridge as it exists on `BridgeHut`.\n" +
+			"`BridgeHut`'s `NeighbourOffsets` field renamed to `BridgeOffsets`.\n" +
+			"`LegacyBridgeHut` and `LegacyBridgeLayer` were removed, use `BridgeHut`\n" +
+			"and `BridgeLayer` instead.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
@@ -31,6 +35,28 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 			foreach (var trait in actorNode.ChildrenMatching("BridgeHut"))
 				trait.RenameChildrenMatching("NeighbourOffsets", "BridgeOffsets");
+
+			foreach (var trait in actorNode.ChildrenMatching("LegacyBridgeLayer"))
+			{
+				trait.RenameKey("BridgeLayer");
+
+				if (trait.LastChildMatching("Bridges", false) == null)
+					trait.AddNode("Bridges", new string[] { "bridge1", "bridge2" });
+			}
+
+			foreach (var trait in actorNode.ChildrenMatching("LegacyBridgeHut"))
+			{
+				trait.RenameKey("BridgeHut");
+				trait.AddNode("BridgeOffsets", new CPos[] { new CPos(0, 0) });
+				trait.AddNode("DemolishPropagationDelay", 20);
+			}
+
+			foreach (var trait in actorNode.ChildrenMatching("Bridge"))
+			{
+				trait.RemoveNodes("NorthOffset");
+				trait.RemoveNodes("SouthOffset");
+				trait.RemoveNodes("RepairPropagationDelay");
+			}
 
 			yield break;
 		}

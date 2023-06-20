@@ -23,7 +23,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		Actor enterActor;
 		BridgeHut enterHut;
-		LegacyBridgeHut enterLegacyHut;
 
 		public RepairBridge(Actor self, in Target target, EnterBehaviour enterBehaviour, string speechNotification, string textNotification, Color targetLineColor)
 			: base(self, target, targetLineColor)
@@ -35,10 +34,6 @@ namespace OpenRA.Mods.Common.Activities
 
 		bool CanEnterHut()
 		{
-			if (enterLegacyHut != null)
-				return enterLegacyHut.BridgeDamageState != DamageState.Undamaged && !enterLegacyHut.Repairing &&
-					enterLegacyHut.Bridge.GetHut(0) != null && enterLegacyHut.Bridge.GetHut(1) != null;
-
 			if (enterHut != null)
 				return enterHut.BridgeDamageState != DamageState.Undamaged && !enterHut.Repairing;
 
@@ -48,7 +43,6 @@ namespace OpenRA.Mods.Common.Activities
 		protected override bool TryStartEnter(Actor self, Actor targetActor)
 		{
 			enterActor = targetActor;
-			enterLegacyHut = enterActor.TraitOrDefault<LegacyBridgeHut>();
 			enterHut = enterActor.TraitOrDefault<BridgeHut>();
 
 			// Make sure we can still repair the target before entering
@@ -72,10 +66,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (!CanEnterHut())
 				return;
 
-			if (enterLegacyHut != null)
-				enterLegacyHut.Repair(self);
-			else
-				enterHut?.Repair(self);
+			enterHut?.Repair(self);
 
 			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", speechNotification, self.Owner.Faction.InternalName);
 			TextNotificationsManager.AddTransientLine(self.Owner, textNotification);
