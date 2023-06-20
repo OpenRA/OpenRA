@@ -13,10 +13,6 @@ label-voxel-selector-pitch = Pitch
 label-voxel-selector-yaw = Yaw
 button-assetbrowser-panel-close = Close
 
-## missionbrowser.yaml
-label-mission-info-difficulty-desc = Difficulty:
-label-mission-info-gamespeed-desc = Speed:
-
 ## color-picker.yaml
 button-color-chooser-random = Random
 button-color-chooser-store = Store

@@ -245,8 +245,6 @@ label-update-notice-b = Download the latest version from www.openra.net
 
 ## missionbrowser.yaml
 label-missionbrowser-panel-title = Missions
-label-missionbrowser-panel-difficulty-desc = Difficulty:
-label-missionbrowser-panel-gamespeed-desc = Speed:
 button-missionbrowser-panel-start-briefing-video = Watch Briefing
 button-missionbrowser-panel-stop-briefing-video = Stop Briefing
 button-missionbrowser-panel-start-info-video = Watch Info Video

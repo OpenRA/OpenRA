@@ -368,6 +368,8 @@ button-missionbrowser-panel-start-info-video = Watch Info Video
 button-missionbrowser-panel-stop-info-video = Stop Info Video
 button-missionbrowser-panel-startgame = Play
 button-missionbrowser-panel-back = Back
+button-missionbrowser-panel-mission-info = Mission Info
+button-missionbrowser-panel-mission-options = Options
 
 ## multiplayer-browser.yaml
 label-multiplayer-panel-title = Multiplayer

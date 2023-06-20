@@ -2,10 +2,6 @@
 label-gamesave-loading-screen-title = Loading Saved Game
 label-gamesave-loading-screen-desc = Press Escape to cancel loading and return to the main menu
 
-## missionbrowser.yaml
-label-mission-info-difficulty-desc = Difficulty:
-label-mission-info-gamespeed-desc = Speed:
-
 ## ingame-observer.yaml
 button-observer-widgets-pause-tooltip = Pause
 button-observer-widgets-play-tooltip = Play

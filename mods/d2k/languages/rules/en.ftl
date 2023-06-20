@@ -31,9 +31,6 @@ options-starting-units =
     .light-support = Light Support
     .heavy-support = Heavy Support
 
-options-difficulty =
-    .normal = Normal
-
 ## Arrakis
 notification-worm-attack = Worm attack.
 notification-worm-sign = Worm sign.
