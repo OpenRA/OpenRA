@@ -98,6 +98,26 @@ Background@MISSIONBROWSER_PANEL:
 							Width: PARENT_RIGHT - 32
 							VAlign: Top
 							Font: Small
+				Container@PLAYER_OPTIONS:
+					Width: PARENT_RIGHT
+					Y: PARENT_BOTTOM - 50
+					Children:
+						Container@CHECKBOX_ROW_TEMPLATE:
+							Width: PARENT_RIGHT
+							Height: 25
+							Children:
+								Checkbox@A:
+									X: 10
+									Width: PARENT_RIGHT / 2 - 20
+									Height: 20
+									Visible: False
+									TooltipContainer: TOOLTIP_CONTAINER
+								Checkbox@B:
+									X: PARENT_RIGHT / 2 + 10
+									Width: PARENT_RIGHT / 2 - 20
+									Height: 20
+									Visible: False
+									TooltipContainer: TOOLTIP_CONTAINER
 		Button@START_BRIEFING_VIDEO_BUTTON:
 			X: 220
 			Y: PARENT_BOTTOM - 45

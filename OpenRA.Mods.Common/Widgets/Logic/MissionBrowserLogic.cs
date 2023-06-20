@@ -17,6 +17,7 @@ using System.Threading;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -64,11 +65,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ScrollItemWidget headerTemplate;
 		readonly ScrollItemWidget template;
 
+		readonly Widget optionsContainer;
+		readonly Widget checkboxRowTemplate;
+
 		MapPreview selectedMap;
 		PlayingVideo playingVideo;
-
 		string difficulty;
 		string gameSpeed;
+		readonly Dictionary<string, bool> playerOptions = new();
 
 		[ObjectCreator.UseCtor]
 		public MissionBrowserLogic(Widget widget, ModData modData, World world, Action onStart, Action onExit, string initialMap)
@@ -113,6 +117,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			stopInfoVideoButton = widget.Get<ButtonWidget>("STOP_INFO_VIDEO_BUTTON");
 			stopInfoVideoButton.IsVisible = () => playingVideo == PlayingVideo.Info;
 			stopInfoVideoButton.OnClick = () => StopVideo(videoPlayer);
+
+			optionsContainer = widget.Get("MISSION_INFO").Get("PLAYER_OPTIONS");
+			checkboxRowTemplate = optionsContainer.Get("CHECKBOX_ROW_TEMPLATE");
 
 			var allPreviews = new List<MapPreview>();
 			missionList.RemoveChildren();
@@ -340,6 +347,55 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					gameSpeedButton.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, SetupItem);
 				};
 			}
+
+			RebuildOptions();
+		}
+
+		void RebuildOptions()
+		{
+			if (selectedMap == null || selectedMap.WorldActorInfo == null)
+				return;
+
+			playerOptions.Clear();
+			optionsContainer.RemoveChildren();
+			optionsContainer.Bounds.Height = 0;
+
+			var allOptions = selectedMap.PlayerActorInfo.TraitInfos<ILobbyOptions>()
+					.Concat(selectedMap.WorldActorInfo.TraitInfos<ILobbyOptions>())
+					.SelectMany(t => t.LobbyOptions(selectedMap))
+					.Where(o => o.IsVisible && o is LobbyBooleanOption)
+					.OrderBy(o => o.DisplayOrder).ToArray();
+
+			Widget row = null;
+			var checkboxColumns = new Queue<CheckboxWidget>();
+
+			foreach (var option in allOptions)
+			{
+				playerOptions[option.Id] = option.DefaultValue == "True";
+
+				if (checkboxColumns.Count == 0)
+				{
+					row = checkboxRowTemplate.Clone();
+					row.Bounds.Y = optionsContainer.Bounds.Height;
+					optionsContainer.Bounds.Height += row.Bounds.Height;
+					foreach (var child in row.Children)
+						if (child is CheckboxWidget childCheckbox)
+							checkboxColumns.Enqueue(childCheckbox);
+
+					optionsContainer.AddChild(row);
+				}
+
+				var checkbox = checkboxColumns.Dequeue();
+
+				checkbox.GetText = () => option.Name;
+				if (option.Description != null)
+					checkbox.GetTooltipText = () => option.Description;
+
+				checkbox.IsVisible = () => true;
+				checkbox.IsChecked = () => playerOptions[option.Id];
+				checkbox.IsDisabled = () => option.IsLocked;
+				checkbox.OnClick = () => playerOptions[option.Id] = !playerOptions[option.Id];
+			}
 		}
 
 		float cachedSoundVolume;
@@ -432,6 +488,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				orders.Add(Order.Command($"option difficulty {difficulty}"));
 
 			orders.Add(Order.Command($"option gamespeed {gameSpeed}"));
+
+			foreach (var option in playerOptions)
+				orders.Add(Order.Command($"option {option.Key} {option.Value}"));
+
 			orders.Add(Order.Command($"state {Session.ClientState.Ready}"));
 
 			var missionData = selectedMap.WorldActorInfo.TraitInfoOrDefault<MissionDataInfo>();
