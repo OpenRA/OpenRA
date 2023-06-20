@@ -84,9 +84,10 @@ namespace OpenRA.Mods.Common.Traits
 				// the same when a segment is destroyed or repaired.
 				var seed = Info.NeighbourOffsets.Select(v => self.Location + v);
 				var processed = new HashSet<CPos>();
+				var map = self.World.Map;
 				while (true)
 				{
-					var step = NextNeighbourStep(seed, processed).ToList();
+					var step = NextNeighbourStep(map, seed, processed).ToList();
 					if (step.Count == 0)
 						break;
 
@@ -119,10 +120,13 @@ namespace OpenRA.Mods.Common.Traits
 				DemolishStep();
 		}
 
-		IEnumerable<IBridgeSegment> NextNeighbourStep(IEnumerable<CPos> seed, HashSet<CPos> processed)
+		IEnumerable<IBridgeSegment> NextNeighbourStep(Map map, IEnumerable<CPos> seed, HashSet<CPos> processed)
 		{
 			foreach (var c in seed)
 			{
+				if (!map.Contains(c))
+					continue;
+
 				var bridge = bridgeLayer[c];
 				if (bridge == null)
 					continue;
