@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		string Type { get; }
 		DamageState DamageState { get; }
-		CVec[] NeighbourOffsets { get; }
+		IEnumerable<CPos> Footprint { get; }
 		bool Valid { get; }
 		CPos Location { get; }
 	}

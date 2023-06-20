@@ -112,6 +112,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ExtractResourceStorageFromHarvester(),
 				new ReplacePaletteModifiers(),
 				new RemoveConyardChronoReturnAnimation(),
+				new RefactorBridges(),
 
 				// Execute these rules last to avoid premature yaml merge crashes.
 				new AbstractDocking(),

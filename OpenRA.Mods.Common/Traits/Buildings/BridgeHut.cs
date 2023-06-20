@@ -24,8 +24,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Bridge types to act on")]
 		public readonly string[] Types = { "GroundLevelBridge" };
 
+		[FieldLoader.Require]
 		[Desc("Offsets to look for adjacent bridges to act on")]
-		public readonly CVec[] NeighbourOffsets = Array.Empty<CVec>();
+		public readonly CVec[] BridgeOffsets;
 
 		[Desc("Delay between each segment repair step")]
 		public readonly int RepairPropagationDelay = 20;
@@ -82,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits
 				//
 				// Bridge segment footprints and neighbour offsets are assumed to remain
 				// the same when a segment is destroyed or repaired.
-				var seed = Info.NeighbourOffsets.Select(v => self.Location + v);
+				var seed = Info.BridgeOffsets.Select(v => self.Location + v);
 				var processed = new HashSet<CPos>();
 				var map = self.World.Map;
 				while (true)
@@ -95,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 						segments[s.Location] = s;
 
 					segmentLocations.Add(step.Select(s => s.Location).ToArray());
-					seed = step.SelectMany(s => s.NeighbourOffsets.Select(n => s.Location + n)).ToList();
+					seed = step.SelectMany(s => Util.ExpandFootprint(s.Footprint, true));
 				}
 
 				repairStep = demolishStep = segmentLocations.Count;
