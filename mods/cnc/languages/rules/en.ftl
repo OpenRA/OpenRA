@@ -30,9 +30,6 @@ dropdown-map-creeps =
     .label = Creep Actors
     .description = Hostile forces spawn on the battlefield
 
-options-difficulty =
-    .normal = Normal
-
 ## Structures
 notification-construction-complete = Construction complete.
 notification-unit-ready = Unit ready.

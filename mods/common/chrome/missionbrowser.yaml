@@ -61,42 +61,89 @@ Background@MISSIONBROWSER_PANEL:
 							IgnoreMouseOver: True
 							IgnoreMouseInput: True
 							ShowSpawnPoints: False
-				ScrollPanel@MISSION_DESCRIPTION_PANEL:
+				Container@MISSION_DETAIL:
 					Y: 212
 					Width: PARENT_RIGHT
-					Height: 143
-					TopBottomSpacing: 5
+					Height: 155
 					Children:
-						Label@MISSION_DESCRIPTION:
-							X: 4
-							Width: PARENT_RIGHT - 32
-							VAlign: Top
-							Font: Small
-				Label@DIFFICULTY_DESC:
-					Y: PARENT_BOTTOM - HEIGHT
-					Width: 56
-					Height: 25
-					Text: label-mission-info-difficulty-desc
-					Align: Right
-				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
-					X: 61
-					Y: PARENT_BOTTOM - HEIGHT
-					Width: 135
-					Height: 25
-					Font: Regular
-				Label@GAMESPEED_DESC:
-					X: PARENT_RIGHT - WIDTH - 115
-					Y: PARENT_BOTTOM - HEIGHT
-					Width: 120
-					Height: 25
-					Text: label-mission-info-gamespeed-desc
-					Align: Right
-				DropDownButton@GAMESPEED_DROPDOWNBUTTON:
-					X: PARENT_RIGHT - WIDTH
-					Y: PARENT_BOTTOM - HEIGHT
-					Width: 110
-					Height: 25
-					Font: Regular
+						ScrollPanel@MISSION_DESCRIPTION_PANEL:
+							Height: PARENT_BOTTOM
+							Width: PARENT_RIGHT
+							TopBottomSpacing: 5
+							Children:
+								Label@MISSION_DESCRIPTION:
+									X: 4
+									Width: PARENT_RIGHT - 32
+									VAlign: Top
+									Font: Small
+						ScrollPanel@MISSION_OPTIONS:
+							Height: PARENT_BOTTOM
+							Width: PARENT_RIGHT
+							TopBottomSpacing: 5
+							Children:
+								Container@CHECKBOX_ROW_TEMPLATE:
+									Width: PARENT_RIGHT
+									Height: 30
+									Children:
+										Checkbox@A:
+											X: 10
+											Width: PARENT_RIGHT / 2 - 25
+											Height: 20
+											Visible: False
+											TooltipContainer: TOOLTIP_CONTAINER
+										Checkbox@B:
+											X: PARENT_RIGHT / 2 + 5
+											Width: PARENT_RIGHT / 2 - 25
+											Height: 20
+											Visible: False
+											TooltipContainer: TOOLTIP_CONTAINER
+								Container@DROPDOWN_ROW_TEMPLATE:
+									Height: 60
+									Width: PARENT_RIGHT
+									Children:
+										LabelForInput@A_DESC:
+											X: 10
+											Width: PARENT_RIGHT / 2 - 35
+											Height: 20
+											Visible: False
+											For: A
+										DropDownButton@A:
+											X: 10
+											Width: PARENT_RIGHT / 2 - 35
+											Y: 25
+											Height: 25
+											Visible: False
+											TooltipContainer: TOOLTIP_CONTAINER
+										LabelForInput@B_DESC:
+											X: PARENT_RIGHT / 2 + 5
+											Width: PARENT_RIGHT / 2 - 35
+											Height: 20
+											Visible: False
+											For: B
+										DropDownButton@B:
+											X: PARENT_RIGHT / 2 + 5
+											Width: PARENT_RIGHT / 2 - 35
+											Y: 25
+											Height: 25
+											Visible: False
+											TooltipContainer: TOOLTIP_CONTAINER
+				Container@MISSION_TABS:
+					Width: PARENT_RIGHT
+					Y: PARENT_BOTTOM - 50
+					Children:
+						Button@MISSIONINFO_TAB:
+							Width: PARENT_RIGHT / 2
+							Y: 25
+							Height: 28
+							Font: Bold
+							Text: button-missionbrowser-panel-mission-info
+						Button@OPTIONS_TAB:
+							X: PARENT_RIGHT / 2
+							Width: PARENT_RIGHT / 2
+							Y: 25
+							Height: 28
+							Font: Bold
+							Text: button-missionbrowser-panel-mission-options
 		Button@START_BRIEFING_VIDEO_BUTTON:
 			X: 20
 			Y: PARENT_BOTTOM - 45

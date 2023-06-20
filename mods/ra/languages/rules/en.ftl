@@ -32,9 +32,6 @@ options-starting-units =
     .light-support = Light Support
     .heavy-support = Heavy Support
 
-options-difficulty =
-    .normal = Normal
-
 ## Structures
 notification-construction-complete = Construction complete.
 notification-unit-ready = Unit ready.

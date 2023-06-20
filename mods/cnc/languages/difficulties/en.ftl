@@ -4,4 +4,5 @@ dropdown-difficulty =
 
 options-difficulty =
     .easy = Easy
+    .normal = Normal
     .hard = Hard

@@ -17,6 +17,7 @@ using System.Threading;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Network;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -24,6 +25,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class MissionBrowserLogic : ChromeLogic
 	{
 		enum PlayingVideo { None, Info, Briefing, GameStart }
+		enum PanelType { MissionInfo, Options }
 
 		[TranslationReference]
 		const string NoVideoTitle = "dialog-no-video.title";
@@ -43,16 +45,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string CantPlayCancel = "dialog-cant-play-video.cancel";
 
-		[TranslationReference]
-		const string DifficultyNormal = "options-difficulty.normal";
-
 		readonly ModData modData;
 		readonly Action onStart;
+		readonly Widget missionDetail;
+		readonly Widget optionsContainer;
+		readonly Widget checkboxRowTemplate;
+		readonly Widget dropdownRowTemplate;
 		readonly ScrollPanelWidget descriptionPanel;
 		readonly LabelWidget description;
 		readonly SpriteFont descriptionFont;
-		readonly DropDownButtonWidget difficultyButton;
-		readonly DropDownButtonWidget gameSpeedButton;
 		readonly ButtonWidget startBriefingVideoButton;
 		readonly ButtonWidget stopBriefingVideoButton;
 		readonly ButtonWidget startInfoVideoButton;
@@ -66,9 +67,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		MapPreview selectedMap;
 		PlayingVideo playingVideo;
-
-		string difficulty;
-		string gameSpeed;
+		readonly Dictionary<string, string> missionOptions = new();
+		PanelType panel = PanelType.MissionInfo;
 
 		[ObjectCreator.UseCtor]
 		public MissionBrowserLogic(Widget widget, ModData modData, World world, Action onStart, Action onExit, string initialMap)
@@ -96,13 +96,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widget.Get("MISSION_BIN").IsVisible = () => playingVideo != PlayingVideo.None;
 			fullscreenVideoPlayer = Ui.LoadWidget<BackgroundWidget>("FULLSCREEN_PLAYER", Ui.Root, new WidgetArgs { { "world", world } });
 
-			descriptionPanel = widget.Get<ScrollPanelWidget>("MISSION_DESCRIPTION_PANEL");
+			missionDetail = widget.Get("MISSION_DETAIL");
+
+			descriptionPanel = missionDetail.Get<ScrollPanelWidget>("MISSION_DESCRIPTION_PANEL");
+			descriptionPanel.IsVisible = () => panel == PanelType.MissionInfo;
 
 			description = descriptionPanel.Get<LabelWidget>("MISSION_DESCRIPTION");
 			descriptionFont = Game.Renderer.Fonts[description.Font];
 
-			difficultyButton = widget.Get<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
-			gameSpeedButton = widget.GetOrNull<DropDownButtonWidget>("GAMESPEED_DROPDOWNBUTTON");
+			optionsContainer = missionDetail.Get("MISSION_OPTIONS");
+			optionsContainer.IsVisible = () => panel == PanelType.Options;
+			checkboxRowTemplate = optionsContainer.Get("CHECKBOX_ROW_TEMPLATE");
+			dropdownRowTemplate = optionsContainer.Get("DROPDOWN_ROW_TEMPLATE");
 
 			startBriefingVideoButton = widget.Get<ButtonWidget>("START_BRIEFING_VIDEO_BUTTON");
 			stopBriefingVideoButton = widget.Get<ButtonWidget>("STOP_BRIEFING_VIDEO_BUTTON");
@@ -191,6 +196,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Ui.CloseWindow();
 				onExit();
 			};
+
+			var tabContainer = widget.Get("MISSION_TABS");
+			tabContainer.IsVisible = () => true;
+
+			var optionsTab = tabContainer.Get<ButtonWidget>("OPTIONS_TAB");
+			optionsTab.IsHighlighted = () => panel == PanelType.Options;
+			optionsTab.IsDisabled = () => false;
+			optionsTab.OnClick = () => panel = PanelType.Options;
+
+			var missionTab = tabContainer.Get<ButtonWidget>("MISSIONINFO_TAB");
+			missionTab.IsHighlighted = () => panel == PanelType.MissionInfo;
+			missionTab.IsDisabled = () => false;
+			missionTab.OnClick = () => panel = PanelType.MissionInfo;
 		}
 
 		void OnGameStart()
@@ -238,28 +256,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			selectedMap = preview;
 
-			// Cache the rules on a background thread to avoid jank
-			var difficultyDisabled = true;
-			var difficulties = new Dictionary<string, string>();
-
 			var briefingVideo = "";
 			var briefingVideoVisible = false;
 
 			var infoVideo = "";
 			var infoVideoVisible = false;
 
+			panel = PanelType.MissionInfo;
+
 			new Thread(() =>
 			{
-				var mapDifficulty = preview.WorldActorInfo.TraitInfos<ScriptLobbyDropdownInfo>()
-					.FirstOrDefault(sld => sld.ID == "difficulty");
-
-				if (mapDifficulty != null)
-				{
-					difficulty = mapDifficulty.Default;
-					difficulties = mapDifficulty.Values;
-					difficultyDisabled = mapDifficulty.Locked;
-				}
-
 				var missionData = preview.WorldActorInfo.TraitInfoOrDefault<MissionDataInfo>();
 				if (missionData != null)
 				{
@@ -291,58 +297,107 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			descriptionPanel.ScrollToTop();
 
-			if (difficultyButton != null)
+			RebuildOptions();
+		}
+
+		void RebuildOptions()
+		{
+			if (selectedMap == null || selectedMap.WorldActorInfo == null)
+				return;
+
+			missionOptions.Clear();
+			optionsContainer.RemoveChildren();
+
+			var allOptions = selectedMap.PlayerActorInfo.TraitInfos<ILobbyOptions>()
+					.Concat(selectedMap.WorldActorInfo.TraitInfos<ILobbyOptions>())
+					.SelectMany(t => t.LobbyOptions(selectedMap))
+					.Where(o => o.IsVisible)
+					.OrderBy(o => o.DisplayOrder).ToArray();
+
+			Widget row = null;
+			var checkboxColumns = new Queue<CheckboxWidget>();
+			var dropdownColumns = new Queue<DropDownButtonWidget>();
+
+			var yOffset = 0;
+			foreach (var option in allOptions.Where(o => o is LobbyBooleanOption))
 			{
-				var difficultyName = new CachedTransform<string, string>(id => preview.GetLocalisedString(
-					id == null || !difficulties.ContainsKey(id) ? DifficultyNormal : difficulties[id]));
+				missionOptions[option.Id] = option.DefaultValue;
 
-				difficultyButton.IsDisabled = () => difficultyDisabled;
-				difficultyButton.GetText = () => difficultyName.Update(difficulty);
-				difficultyButton.OnMouseDown = _ =>
+				if (checkboxColumns.Count == 0)
 				{
-					var options = difficulties.Select(kv => new DropDownOption
-					{
-						Title = preview.GetLocalisedString(kv.Value),
-						IsSelected = () => difficulty == kv.Key,
-						OnClick = () => difficulty = kv.Key
-					});
+					row = checkboxRowTemplate.Clone();
+					row.Bounds.Y = yOffset;
+					yOffset += row.Bounds.Height;
+					foreach (var child in row.Children)
+						if (child is CheckboxWidget childCheckbox)
+							checkboxColumns.Enqueue(childCheckbox);
 
-					ScrollItemWidget SetupItem(DropDownOption option, ScrollItemWidget template)
-					{
-						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
-						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
-						return item;
-					}
+					optionsContainer.AddChild(row);
+				}
 
-					difficultyButton.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, SetupItem);
+				var checkbox = checkboxColumns.Dequeue();
+
+				checkbox.GetText = () => option.Name;
+				if (option.Description != null)
+					checkbox.GetTooltipText = () => option.Description;
+
+				checkbox.IsVisible = () => true;
+				checkbox.IsChecked = () => missionOptions[option.Id] == "True";
+				checkbox.IsDisabled = () => option.IsLocked;
+				checkbox.OnClick = () =>
+				{
+					if (missionOptions[option.Id] == "True")
+						missionOptions[option.Id] = "False";
+					else
+						missionOptions[option.Id] = "True";
 				};
 			}
 
-			if (gameSpeedButton != null)
+			foreach (var option in allOptions.Where(o => o is not LobbyBooleanOption))
 			{
-				var speeds = modData.Manifest.Get<GameSpeeds>().Speeds;
-				gameSpeed = "default";
+				missionOptions[option.Id] = option.DefaultValue;
 
-				var speedText = new CachedTransform<string, string>(s => TranslationProvider.GetString(speeds[s].Name));
-				gameSpeedButton.GetText = () => speedText.Update(gameSpeed);
-				gameSpeedButton.OnMouseDown = _ =>
+				if (dropdownColumns.Count == 0)
 				{
-					var options = speeds.Select(s => new DropDownOption
-					{
-						Title = TranslationProvider.GetString(s.Value.Name),
-						IsSelected = () => gameSpeed == s.Key,
-						OnClick = () => gameSpeed = s.Key
-					});
+					row = dropdownRowTemplate.Clone();
+					row.Bounds.Y = yOffset;
+					yOffset += row.Bounds.Height;
+					foreach (var child in row.Children)
+						if (child is DropDownButtonWidget dropDown)
+							dropdownColumns.Enqueue(dropDown);
 
-					ScrollItemWidget SetupItem(DropDownOption option, ScrollItemWidget template)
+					optionsContainer.AddChild(row);
+				}
+
+				var dropdown = dropdownColumns.Dequeue();
+
+				dropdown.GetText = () => option.Values[missionOptions[option.Id]];
+				if (option.Description != null)
+					dropdown.GetTooltipText = () => option.Description;
+				dropdown.IsVisible = () => true;
+				dropdown.IsDisabled = () => option.IsLocked;
+
+				dropdown.OnMouseDown = _ =>
+				{
+					ScrollItemWidget SetupItem(KeyValuePair<string, string> c, ScrollItemWidget template)
 					{
-						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
-						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
+						bool IsSelected() => missionOptions[option.Id] == c.Key;
+						void OnClick() => missionOptions[option.Id] = c.Key;
+
+						var item = ScrollItemWidget.Setup(template, IsSelected, OnClick);
+						item.Get<LabelWidget>("LABEL").GetText = () => c.Value;
 						return item;
 					}
 
-					gameSpeedButton.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, SetupItem);
+					dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", option.Values.Count * 30, option.Values, SetupItem);
 				};
+
+				var label = row.GetOrNull<LabelWidget>(dropdown.Id + "_DESC");
+				if (label != null)
+				{
+					label.GetText = () => option.Name + ":";
+					label.IsVisible = () => true;
+				}
 			}
 		}
 
@@ -432,10 +487,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			selectedMap = modData.MapCache[map];
 			var orders = new List<Order>();
-			if (difficulty != null)
-				orders.Add(Order.Command($"option difficulty {difficulty}"));
 
-			orders.Add(Order.Command($"option gamespeed {gameSpeed}"));
+			foreach (var option in missionOptions)
+				orders.Add(Order.Command($"option {option.Key} {option.Value}"));
+
 			orders.Add(Order.Command($"state {Session.ClientState.Ready}"));
 
 			var missionData = selectedMap.WorldActorInfo.TraitInfoOrDefault<MissionDataInfo>();
@@ -448,13 +503,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			else
 				Game.CreateAndStartLocalServer(selectedMap.Uid, orders);
-		}
-
-		sealed class DropDownOption
-		{
-			public string Title;
-			public Func<bool> IsSelected;
-			public Action OnClick;
 		}
 	}
 }
