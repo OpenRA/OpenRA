@@ -56,6 +56,10 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference(nameof(FootprintImage))]
 		public readonly string FootprintSequence = "target-select";
 
+		[PaletteReference]
+		[Desc("Palette used for rendering sprites.")]
+		public readonly string Palette = TileSet.TerrainPaletteInternalName;
+
 		public override object Create(ActorInitializer init) { return new GrantExternalConditionPower(init.Self, this); }
 	}
 
@@ -168,7 +172,7 @@ namespace OpenRA.Mods.Common.Traits
 			protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
 				var xy = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
-				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
+				var pal = wr.Palette(power.info.Palette);
 
 				foreach (var t in power.CellsMatching(xy, footprint, dimensions))
 					yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(t), WVec.Zero, -511, pal, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);

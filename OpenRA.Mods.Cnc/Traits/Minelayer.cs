@@ -64,6 +64,10 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Ammo the minelayer consumes per mine.")]
 		public readonly int AmmoUsage = 1;
 
+		[PaletteReference]
+		[Desc("Palette used for rendering sprites.")]
+		public readonly string Palette = TileSet.TerrainPaletteInternalName;
+
 		public override object Create(ActorInitializer init) { return new Minelayer(init.Self, this); }
 	}
 
@@ -308,7 +312,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 				var movement = minelayer.Trait<IPositionable>();
 				var mobile = movement as Mobile;
-				var pal = wr.Palette(TileSet.TerrainPaletteInternalName);
+				var pal = wr.Palette(this.minelayer.Info.Palette);
 				foreach (var c in minefield)
 				{
 					var tile = validTile;

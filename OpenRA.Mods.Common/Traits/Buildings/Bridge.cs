@@ -51,6 +51,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Types of damage that this bridge causes to units over/in path of it while being destroyed/repaired. Leave empty for no damage types.")]
 		public readonly BitSet<DamageType> DamageTypes = default;
 
+		[PaletteReference]
+		[Desc("Palette used for rendering sprites.")]
+		public readonly string Palette = TileSet.TerrainPaletteInternalName;
+
 		public override object Create(ActorInitializer init) { return new Bridge(init.Self, this); }
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
@@ -227,7 +231,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!initialized)
 			{
-				var palette = wr.Palette(TileSet.TerrainPaletteInternalName);
+				var palette = wr.Palette(info.Palette);
 				renderables = new Dictionary<ushort, IRenderable[]>();
 				foreach (var t in info.Templates)
 					renderables.Add(t.Template, TemplateRenderables(wr, palette, t.Template));
