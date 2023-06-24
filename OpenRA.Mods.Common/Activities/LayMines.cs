@@ -147,11 +147,20 @@ namespace OpenRA.Mods.Common.Activities
 				pool.TakeAmmo(self, minelayer.Info.AmmoUsage);
 			}
 
-			self.World.AddFrameEndTask(w => w.CreateActor(minelayer.Info.Mine, new TypeDictionary
+			foreach (var t in self.TraitsImplementing<INotifyMineLaying>())
+				t.MineLaying(self, self.Location);
+
+			self.World.AddFrameEndTask(w =>
 			{
-				new LocationInit(self.Location),
-				new OwnerInit(self.Owner),
-			}));
+				var mine = w.CreateActor(minelayer.Info.Mine, new TypeDictionary
+				{
+					new LocationInit(self.Location),
+					new OwnerInit(self.Owner),
+				});
+
+				foreach (var t in self.TraitsImplementing<INotifyMineLaying>())
+					t.MineLaid(self, mine);
+			});
 		}
 	}
 }

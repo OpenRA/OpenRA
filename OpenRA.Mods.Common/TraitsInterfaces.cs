@@ -159,6 +159,9 @@ namespace OpenRA.Mods.Common.Traits
 	public interface INotifyDelivery { void IncomingDelivery(Actor self); void Delivered(Actor self); }
 
 	[RequireExplicitImplementation]
+	public interface INotifyMineLaying { void MineLaying(Actor self, CPos location); void MineLaid(Actor self, Actor mine); }
+
+	[RequireExplicitImplementation]
 	public interface INotifyDockHost { void Docked(Actor self, Actor client); void Undocked(Actor self, Actor client); }
 	[RequireExplicitImplementation]
 	public interface INotifyDockClient { void Docked(Actor self, Actor host); void Undocked(Actor self, Actor host); }
