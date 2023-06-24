@@ -12,13 +12,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
-using OpenRA.Mods.Cnc.Traits;
-using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc.Activities
+namespace OpenRA.Mods.Common.Activities
 {
 	// Assumes you have Minelayer on that unit
 	public class LayMines : Activity

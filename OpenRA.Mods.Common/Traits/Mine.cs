@@ -9,11 +9,10 @@
  */
 #endregion
 
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc.Traits
+namespace OpenRA.Mods.Common.Traits
 {
 	sealed class MineInfo : TraitInfo
 	{
