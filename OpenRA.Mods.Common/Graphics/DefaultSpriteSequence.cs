@@ -423,7 +423,7 @@ namespace OpenRA.Mods.Common.Graphics
 					var subOffset = LoadField(Offset, subData, NoData);
 					var subFlipX = LoadField(FlipX, subData, NoData);
 					var subFlipY = LoadField(FlipY, subData, NoData);
-					var subFrames = LoadField(Frames, data);
+					var subFrames = LoadField(Frames, subData);
 
 					foreach (var f in ParseCombineFilenames(modData, tileset, subFrames, subData))
 					{
