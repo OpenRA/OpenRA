@@ -748,7 +748,7 @@ namespace OpenRA
 		{
 			var actorTypes = Rules.Actors.Values.Where(a => a.HasTraitInfo<IMapPreviewSignatureInfo>());
 			var actors = ActorDefinitions.Where(a => actorTypes.Any(ai => ai.Name == a.Value.Value));
-			var positions = new List<(MPos Position, Color Color)>();
+			var positions = new List<(MPos Uv, Color Color)>();
 			foreach (var actor in actors)
 			{
 				var s = new ActorReference(actor.Value.Value, actor.Value.ToDictionary());
@@ -805,14 +805,17 @@ namespace OpenRA
 			var minimapData = new byte[stride * height];
 			(Color Left, Color Right) terrainColor = default;
 
+			var colorsByPosition = positions
+				.GroupBy(p => p.Uv)
+				.ToDictionary(g => g.Key, g => g.First().Color);
 			for (var y = 0; y < height; y++)
 			{
 				for (var x = 0; x < width; x++)
 				{
 					var uv = new MPos(x + Bounds.Left, y + top);
 
-					// FirstOrDefault will return a (MPos.Zero, Color.Transparent) if positions is empty
-					var actorColor = positions.FirstOrDefault(ap => ap.Position == uv).Color;
+					// TryGetValue will return Color.Transparent if not found
+					colorsByPosition.TryGetValue(uv, out var actorColor);
 					if (actorColor.A == 0)
 						terrainColor = GetTerrainColorPair(uv);
 
