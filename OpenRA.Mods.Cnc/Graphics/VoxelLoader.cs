@@ -108,10 +108,10 @@ namespace OpenRA.Mods.Cnc.Graphics
 					return null;
 
 				var v = l.VoxelMap[(byte)x, (byte)y];
-				if (v == null || !v.ContainsKey((byte)z))
+				if (v == null || !v.TryGetValue((byte)z, out var element))
 					return null;
 
-				return l.VoxelMap[(byte)x, (byte)y][(byte)z];
+				return element;
 			}
 
 			// Cull slices without any visible faces

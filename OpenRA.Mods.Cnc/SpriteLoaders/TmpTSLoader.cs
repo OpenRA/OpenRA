@@ -120,8 +120,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			for (var j = 0; j < size.Height; j++)
 			{
 				var start = (j - frameBounds.Y) * frameBounds.Width + (size.Width - width) / 2 - frameBounds.X;
-				for (var i = 0; i < width; i++)
-					data[start + i] = s.ReadUInt8();
+				s.ReadBytes(data, start, width);
 
 				width += (j < size.Height / 2 - 1 ? 1 : -1) * 4;
 			}

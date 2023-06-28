@@ -332,7 +332,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				if (!cbpIsCompressed)
 					cbf = (byte[])cbp.Clone();
 				else
-					LCWDecodeInto(cbp, cbf);
+					LCWCompression.DecodeInto(cbp, cbf);
 
 				chunkBufferOffset = currentChunkBuffer = 0;
 			}
@@ -352,7 +352,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						s.ReadBytes(fileBuffer, 0, subchunkLength);
 						Array.Clear(cbf, 0, cbf.Length);
 						Array.Clear(cbfBuffer, 0, cbfBuffer.Length);
-						var decodeCount = LCWDecodeInto(fileBuffer, cbfBuffer, decodeMode ? 1 : 0, decodeMode);
+						var decodeCount = LCWCompression.DecodeInto(fileBuffer, cbfBuffer, decodeMode ? 1 : 0, decodeMode);
 						if ((videoFlags & 0x10) == 16)
 						{
 							var p = 0;
@@ -406,7 +406,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 					// Frame data
 					case "VPTZ":
-						LCWDecodeInto(s.ReadBytes(subchunkLength), origData);
+						LCWCompression.DecodeInto(s.ReadBytes(subchunkLength), origData);
 
 						// This is the last subchunk
 						return;
@@ -414,9 +414,9 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						Array.Clear(origData, 0, origData.Length);
 						s.ReadBytes(fileBuffer, 0, subchunkLength);
 						if (fileBuffer[0] != 0)
-							vtprSize = LCWDecodeInto(fileBuffer, origData);
+							vtprSize = LCWCompression.DecodeInto(fileBuffer, origData);
 						else
-							LCWDecodeInto(fileBuffer, origData, 1, true);
+							LCWCompression.DecodeInto(fileBuffer, origData, 1, true);
 						return;
 					case "VPTR":
 						Array.Clear(origData, 0, origData.Length);
@@ -538,76 +538,6 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					y++;
 					if (y >= blocks.Y && i != count - 1)
 						throw new IndexOutOfRangeException();
-				}
-			}
-		}
-
-		// TODO: Maybe replace this with LCWCompression.DecodeInto again later
-		public static int LCWDecodeInto(byte[] src, byte[] dest, int srcOffset = 0, bool reverse = false)
-		{
-			var ctx = new FastByteReader(src, srcOffset);
-			var destIndex = 0;
-			while (true)
-			{
-				var i = ctx.ReadByte();
-				if ((i & 0x80) == 0)
-				{
-					// case 2
-					var secondByte = ctx.ReadByte();
-					var count = ((i & 0x70) >> 4) + 3;
-					var rpos = ((i & 0xf) << 8) + secondByte;
-
-					if (destIndex + count > dest.Length)
-						return destIndex;
-
-					// Replicate previous
-					var srcIndex = destIndex - rpos;
-					if (srcIndex > destIndex)
-						throw new NotImplementedException($"srcIndex > destIndex {srcIndex} {destIndex}");
-
-					for (var j = 0; j < count; j++)
-					{
-						if (destIndex - srcIndex == 1)
-							dest[destIndex + j] = dest[destIndex - 1];
-						else
-							dest[destIndex + j] = dest[srcIndex + j];
-					}
-
-					destIndex += count;
-				}
-				else if ((i & 0x40) == 0)
-				{
-					// case 1
-					var count = i & 0x3F;
-					if (count == 0)
-						return destIndex;
-
-					ctx.CopyTo(dest, destIndex, count);
-					destIndex += count;
-				}
-				else
-				{
-					var count3 = i & 0x3F;
-					if (count3 == 0x3E)
-					{
-						// case 4
-						var count = ctx.ReadWord();
-						var color = ctx.ReadByte();
-
-						for (var end = destIndex + count; destIndex < end; destIndex++)
-							dest[destIndex] = color;
-					}
-					else
-					{
-						// If count3 == 0x3F it's case 5, else case 3
-						var count = count3 == 0x3F ? ctx.ReadWord() : count3 + 3;
-						var srcIndex = reverse ? destIndex - ctx.ReadWord() : ctx.ReadWord();
-						if (srcIndex >= destIndex)
-							throw new NotImplementedException($"srcIndex >= destIndex {srcIndex} {destIndex}");
-
-						for (var end = destIndex + count; destIndex < end; destIndex++)
-							dest[destIndex] = dest[srcIndex++];
-					}
 				}
 			}
 		}

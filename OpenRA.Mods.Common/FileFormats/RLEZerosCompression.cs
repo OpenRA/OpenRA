@@ -9,6 +9,8 @@
  */
 #endregion
 
+using System;
+
 namespace OpenRA.Mods.Common.FileFormats
 {
 	// Run length encoded sequences of zeros (aka Format2)
@@ -24,8 +26,8 @@ namespace OpenRA.Mods.Common.FileFormats
 				if (cmd == 0)
 				{
 					var count = r.ReadByte();
-					while (count-- > 0)
-						dest[destIndex++] = 0;
+					Array.Clear(dest, destIndex, count);
+					destIndex += count;
 				}
 				else
 					dest[destIndex++] = cmd;
