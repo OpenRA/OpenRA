@@ -23,7 +23,7 @@ namespace OpenRA.Network
 		const OrderPacket ClientDisconnected = null;
 
 		readonly SyncReport syncReport;
-		readonly Dictionary<int, Queue<(int Frame, OrderPacket Orders)>> pendingOrders = new();
+		readonly Dictionary<int, Dictionary<int, OrderPacket>> pendingOrders = new();
 		readonly Dictionary<int, (int SyncHash, ulong DefeatState)> syncForFrame = new();
 
 		public Session LobbyInfo = new();
@@ -95,7 +95,7 @@ namespace OpenRA.Network
 
 			foreach (var client in LobbyInfo.Clients)
 				if (!client.IsBot)
-					pendingOrders.Add(client.Index, new Queue<(int, OrderPacket)>());
+					pendingOrders.Add(client.Index, new Dictionary<int, OrderPacket>());
 
 			// Generating sync reports is expensive, so only do it if we have
 			// other players to compare against if a desync did occur
@@ -182,7 +182,7 @@ namespace OpenRA.Network
 		public void ReceiveOrders(int clientId, (int Frame, OrderPacket Orders) orders)
 		{
 			if (pendingOrders.TryGetValue(clientId, out var queue))
-				queue.Enqueue((orders.Frame, orders.Orders));
+				queue.Add(orders.Frame, orders.Orders);
 			else
 				throw new InvalidDataException($"Received packet from disconnected client '{clientId}'");
 		}
@@ -192,7 +192,7 @@ namespace OpenRA.Network
 			Connection.Receive(this);
 		}
 
-		bool IsReadyForNextFrame => GameStarted && pendingOrders.All(p => p.Value.Count > 0);
+		bool IsReadyForNextFrame => GameStarted && pendingOrders.All(p => p.Value.ContainsKey(NetFrameNumber));
 
 		public int SuggestedTimestep
 		{
@@ -229,14 +229,7 @@ namespace OpenRA.Network
 			foreach (var (clientId, frameOrders) in pendingOrders)
 			{
 				// The IsReadyForNextFrame check above guarantees that all clients have sent a packet
-				var (frameNumber, orders) = frameOrders.Dequeue();
-
-				// We expect every frame to have a queued order packet, even if it contains no orders, as this
-				// controls the pacing of the game simulation.
-				// Sanity check that we are processing the frame that we expect, so we can crash early instead of desyncing.
-				if (frameNumber != NetFrameNumber)
-					throw new InvalidDataException($"Attempted to process orders from client {clientId} for frame {frameNumber} on frame {NetFrameNumber}");
-
+				var orders = frameOrders[NetFrameNumber];
 				if (orders == ClientDisconnected)
 				{
 					processClientsToRemove.Add(clientId);
@@ -254,6 +247,10 @@ namespace OpenRA.Network
 
 			foreach (var clientId in processClientsToRemove)
 				pendingOrders.Remove(clientId);
+
+			// Remove pending orders for current frame once all processed.
+			foreach (var (_, frameOrders) in pendingOrders)
+				frameOrders.Remove(NetFrameNumber);
 
 			if (NetFrameNumber >= GameSaveLastSyncFrame)
 			{
@@ -298,7 +295,7 @@ namespace OpenRA.Network
 			{
 				// Check whether or not we will be ready for a tick next frame
 				// We don't need to include ourselves in the equation because we can always generate orders this frame
-				shouldTick = pendingOrders.All(p => p.Key == Connection.LocalClientId || p.Value.Count > 0);
+				shouldTick = pendingOrders.All(p => p.Key == Connection.LocalClientId || p.Value.ContainsKey(NetFrameNumber));
 
 				// Send orders only if we are currently ready, this prevents us sending orders too soon if we are
 				// stalling
