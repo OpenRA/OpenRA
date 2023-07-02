@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 			sheetBuilder = CreateSheetBuilder();
 		}
 
-		Vertex[] GenerateSlicePlane(int su, int sv, Func<int, int, VxlElement> first, Func<int, int, VxlElement> second, Func<int, int, float3> coord)
+		Vertex[] GenerateSlicePlane(int su, int sv, Func<int, int, VxlElement?> first, Func<int, int, VxlElement?> second, Func<int, int, float3> coord)
 		{
 			var colors = new byte[su * sv];
 			var normals = new byte[su * sv];
@@ -68,8 +68,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 				for (var u = 0; u < su; u++)
 				{
 					var voxel = first(u, v) ?? second(u, v);
-					colors[c] = voxel == null ? (byte)0 : voxel.Color;
-					normals[c] = voxel == null ? (byte)0 : voxel.Normal;
+					colors[c] = voxel == null ? (byte)0 : voxel.Value.Color;
+					normals[c] = voxel == null ? (byte)0 : voxel.Value.Normal;
 					c++;
 				}
 			}
@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 		IEnumerable<Vertex[]> GenerateSlicePlanes(VxlLimb l)
 		{
-			VxlElement Get(int x, int y, int z)
+			VxlElement? Get(int x, int y, int z)
 			{
 				if (x < 0 || y < 0 || z < 0)
 					return null;

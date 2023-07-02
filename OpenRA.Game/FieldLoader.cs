@@ -112,10 +112,19 @@ namespace OpenRA
 				{ typeof(Nullable<>), ParseNullable },
 			};
 
+		static readonly object BoxedTrue = true;
+		static readonly object BoxedFalse = false;
+		static readonly object[] BoxedInts = Exts.MakeArray(33, i => (object)i);
+
 		static object ParseInt(string fieldName, Type fieldType, string value, MemberInfo field)
 		{
 			if (Exts.TryParseIntegerInvariant(value, out var res))
+			{
+				if (res >= 0 && res < BoxedInts.Length)
+					return BoxedInts[res];
 				return res;
+			}
+
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
 
@@ -361,7 +370,7 @@ namespace OpenRA
 		static object ParseBool(string fieldName, Type fieldType, string value, MemberInfo field)
 		{
 			if (bool.TryParse(value.ToLowerInvariant(), out var result))
-				return result;
+				return result ? BoxedTrue : BoxedFalse;
 
 			return InvalidValueAction(value, fieldType, fieldName);
 		}
@@ -469,11 +478,11 @@ namespace OpenRA
 
 		static object ParseHashSetOrList(string fieldName, Type fieldType, string value, MiniYaml yaml, MemberInfo field)
 		{
-			var set = Activator.CreateInstance(fieldType);
 			if (value == null)
-				return set;
+				return Activator.CreateInstance(fieldType);
 
 			var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
+			var set = Activator.CreateInstance(fieldType, parts.Length);
 			var arguments = fieldType.GetGenericArguments();
 			var addMethod = fieldType.GetMethod(nameof(List<object>.Add), arguments);
 			var addArgs = new object[1];
@@ -488,7 +497,10 @@ namespace OpenRA
 
 		static object ParseDictionary(string fieldName, Type fieldType, string value, MiniYaml yaml, MemberInfo field)
 		{
-			var dict = Activator.CreateInstance(fieldType);
+			if (yaml == null)
+				return Activator.CreateInstance(fieldType);
+
+			var dict = Activator.CreateInstance(fieldType, yaml.Nodes.Count);
 			var arguments = fieldType.GetGenericArguments();
 			var addMethod = fieldType.GetMethod(nameof(Dictionary<object, object>.Add), arguments);
 			var addArgs = new object[2];
@@ -527,7 +539,7 @@ namespace OpenRA
 		public static void Load(object self, MiniYaml my)
 		{
 			var loadInfo = TypeLoadInfo[self.GetType()];
-			var missing = new List<string>();
+			List<string> missing = null;
 
 			Dictionary<string, MiniYaml> md = null;
 
@@ -542,6 +554,7 @@ namespace OpenRA
 						val = fli.Loader(my);
 					else
 					{
+						missing ??= new List<string>();
 						missing.Add(fli.YamlName);
 						continue;
 					}
@@ -551,7 +564,11 @@ namespace OpenRA
 					if (!TryGetValueFromYaml(fli.YamlName, fli.Field, md, out val))
 					{
 						if (fli.Attribute.Required)
+						{
+							missing ??= new List<string>();
 							missing.Add(fli.YamlName);
+						}
+
 						continue;
 					}
 				}
@@ -559,7 +576,7 @@ namespace OpenRA
 				fli.Field.SetValue(self, val);
 			}
 
-			if (missing.Count > 0)
+			if (missing != null)
 				throw new MissingFieldsException(missing.ToArray());
 		}
 
@@ -620,12 +637,17 @@ namespace OpenRA
 
 		public static object GetValue(string fieldName, Type fieldType, string value, MemberInfo field)
 		{
-			return GetValue(fieldName, fieldType, new MiniYaml(value), field);
+			return GetValue(fieldName, fieldType, value, null, field);
 		}
 
 		public static object GetValue(string fieldName, Type fieldType, MiniYaml yaml, MemberInfo field)
 		{
-			var value = yaml.Value?.Trim();
+			return GetValue(fieldName, fieldType, yaml.Value, yaml, field);
+		}
+
+		static object GetValue(string fieldName, Type fieldType, string value, MiniYaml yaml, MemberInfo field)
+		{
+			value = value?.Trim();
 			if (fieldType.IsGenericType)
 			{
 				if (GenericTypeParsers.TryGetValue(fieldType.GetGenericTypeDefinition(), out var parseFuncGeneric))

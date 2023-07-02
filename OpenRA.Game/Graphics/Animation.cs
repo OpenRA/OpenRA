@@ -30,7 +30,7 @@ namespace OpenRA.Graphics
 		bool backwards;
 		bool tickAlways;
 		int timeUntilNextFrame;
-		Action tickFunc = () => { };
+		Action tickFunc;
 
 		public Animation(World world, string name)
 			: this(world, name, () => WAngle.Zero) { }
@@ -164,7 +164,7 @@ namespace OpenRA.Graphics
 				if (frame >= CurrentSequence.Length)
 				{
 					frame = CurrentSequence.Length - 1;
-					tickFunc = () => { };
+					tickFunc = null;
 					after?.Invoke();
 				}
 			};
@@ -212,13 +212,13 @@ namespace OpenRA.Graphics
 		public void Tick(int t)
 		{
 			if (tickAlways)
-				tickFunc();
+				tickFunc?.Invoke();
 			else
 			{
 				timeUntilNextFrame -= t;
 				while (timeUntilNextFrame <= 0)
 				{
-					tickFunc();
+					tickFunc?.Invoke();
 					timeUntilNextFrame += CurrentSequenceTickOrDefault();
 				}
 			}

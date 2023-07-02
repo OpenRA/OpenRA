@@ -84,8 +84,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected static object LoadSpeeds(MiniYaml y)
 		{
-			var ret = new Dictionary<string, TerrainInfo>();
-			foreach (var t in y.ToDictionary()["TerrainSpeeds"].Nodes)
+			var speeds = y.ToDictionary()["TerrainSpeeds"].Nodes;
+			var ret = new Dictionary<string, TerrainInfo>(speeds.Count);
+			foreach (var t in speeds)
 			{
 				var speed = FieldLoader.GetValue<int>("speed", t.Value.Value);
 				if (speed > 0)
@@ -98,6 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
+			ret.TrimExcess();
 			return ret;
 		}
 
