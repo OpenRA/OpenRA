@@ -15,10 +15,15 @@ using System.IO;
 namespace OpenRA.Mods.Cnc.FileFormats
 {
 	public enum NormalType { TiberianSun = 2, RedAlert2 = 4 }
-	public class VxlElement
+	public readonly struct VxlElement
 	{
-		public byte Color;
-		public byte Normal;
+		public readonly byte Color;
+		public readonly byte Normal;
+		public VxlElement(byte color, byte normal)
+		{
+			Color = color;
+			Normal = normal;
+		}
 	}
 
 	public class VxlLimb
@@ -83,20 +88,17 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				var x = (byte)(i % l.Size[0]);
 				var y = (byte)(i / l.Size[0]);
 				byte z = 0;
-				l.VoxelMap[x, y] = new Dictionary<byte, VxlElement>();
+				var voxelMap = new Dictionary<byte, VxlElement>();
+				l.VoxelMap[x, y] = voxelMap;
 				do
 				{
 					z += s.ReadUInt8();
 					var count = s.ReadUInt8();
+					voxelMap.EnsureCapacity(voxelMap.Count + count);
 					for (var j = 0; j < count; j++)
 					{
-						var v = new VxlElement
-						{
-							Color = s.ReadUInt8(),
-							Normal = s.ReadUInt8()
-						};
-
-						l.VoxelMap[x, y].Add(z, v);
+						var v = new VxlElement(s.ReadUInt8(), s.ReadUInt8());
+						voxelMap.Add(z, v);
 						z++;
 					}
 
