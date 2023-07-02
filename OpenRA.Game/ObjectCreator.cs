@@ -55,7 +55,9 @@ namespace OpenRA
 			//   (a) loading duplicate data into the application domain, breaking the world.
 			//   (b) crashing if the assembly has already been loaded.
 			// We can't check the internal name of the assembly, so we'll work off the data instead
-			var hash = CryptoUtil.SHA1Hash(File.ReadAllBytes(resolvedPath));
+			string hash;
+			using (var stream = File.OpenRead(resolvedPath))
+				hash = CryptoUtil.SHA1Hash(stream);
 
 			if (!ResolvedAssemblies.TryGetValue(hash, out var assembly))
 			{
