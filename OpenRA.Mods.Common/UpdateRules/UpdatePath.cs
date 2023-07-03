@@ -99,6 +99,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RenameContrailWidth(),
 				new RemoveNegativeSequenceLength(),
 				new RemoveExperienceFromInfiltrates(),
+				new AddColorPickerValueRange(),
 			})
 		};
 
