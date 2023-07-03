@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
@@ -41,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly float[] HsvValueRange = { 0.3f, 0.95f };
 
 		[Desc("Perceptual color threshold for determining whether two colors are too similar.")]
-		public readonly float SimilarityThreshold = 0.314f;
+		public readonly int SimilarityThreshold = 0x50;
 
 		[Desc("List of colors to be displayed in the palette tab.")]
 		public readonly Color[] PresetColors = Array.Empty<Color>();
@@ -55,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 			"A dictionary of [faction name]: [actor name].")]
 		public readonly Dictionary<string, string> FactionPreviewActors = new();
 
-		public bool TryGetBlockingColor((float R, float G, float B) color, List<(float R, float G, float B)> candidateBlockers, out (float R, float G, float B) closestBlocker)
+		public bool TryGetBlockingColor(Color color, IEnumerable<Color> candidateBlockers, out Color closestBlocker)
 		{
 			var closestDistance = SimilarityThreshold;
 			closestBlocker = default;
@@ -63,16 +62,23 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var candidate in candidateBlockers)
 			{
 				// Uses the perceptually based color metric explained by https://www.compuphase.com/cmetric.htm
-				// Input colors are expected to be in the linear (non-gamma corrected) color space
-				var rmean = (color.R + candidate.R) / 2.0;
-				var r = color.R - candidate.R;
-				var g = color.G - candidate.G;
-				var b = color.B - candidate.B;
-				var weightR = 2.0 + rmean;
-				var weightG = 4.0;
-				var weightB = 3.0 - rmean;
+				// HACK: We provide gamma space colors to a linear space metric. This is not ideal, but
+				// it works much better in gamma space. In linear space the metric is too small for dark colors
+				// and too large for bright colors. By using gamma we shift the metric to be more uniform.
+				// This hack doesn't fully fix bright colors, i.e. it still allows for very similar pinks,
+				// greens and reports colors with slightly different saturations as significantly different.
+				// TODO: Replace with a model which has image hue remapping in mind.
+				var rmean = (color.R + candidate.R) >> 1;
 
-				var distance = (float)Math.Sqrt(weightR * r * r + weightG * g * g + weightB * b * b);
+				var rdelta = color.R - candidate.R;
+				var gdelta = color.G - candidate.G;
+				var bdelta = color.B - candidate.B;
+
+				var weightR = ((512 + rmean) * rdelta * rdelta) >> 8;
+				var weightG = 4 * gdelta * gdelta;
+				var weightB = ((767 - rmean) * bdelta * bdelta) >> 8;
+
+				var distance = (int)Math.Sqrt(weightR + weightG + weightB);
 				if (distance < closestDistance)
 				{
 					closestBlocker = candidate;
@@ -85,14 +91,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		Color MakeValid(float hue, float sat, float val, MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, Action<string> onError)
 		{
-			var terrainLinear = terrainColors.Select(c => c.ToLinear()).ToList();
-			var playerLinear = playerColors.Select(c => c.ToLinear()).ToList();
-
-			return MakeValid(hue, sat, val, random, terrainLinear, playerLinear, onError);
-		}
-
-		Color MakeValid(float hue, float sat, float val, MersenneTwister random, List<(float R, float G, float B)> terrainLinear, List<(float R, float G, float B)> playerLinear, Action<string> onError)
-		{
 			// Clamp saturation without triggering a warning
 			// This can only happen due to rounding errors (common) or modified clients (rare)
 			sat = sat.Clamp(HsvSaturationRange[0], HsvSaturationRange[1]);
@@ -103,17 +101,17 @@ namespace OpenRA.Mods.Common.Traits
 			var stepSign = 0;
 			for (var i = 0; i < 101; i++)
 			{
-				var linear = Color.FromAhsv(hue, sat, val).ToLinear();
-				if (TryGetBlockingColor(linear, terrainLinear, out var blocker))
+				var color = Color.FromAhsv(hue, sat, val);
+				if (TryGetBlockingColor(color, terrainColors, out var blocker))
 					errorMessage = PlayerColorTerrain;
-				else if (TryGetBlockingColor(linear, playerLinear, out blocker))
+				else if (TryGetBlockingColor(color, playerColors, out blocker))
 					errorMessage = PlayerColorPlayer;
 				else
 				{
 					if (errorMessage != null)
 						onError?.Invoke(errorMessage);
 
-					return Color.FromAhsv(hue, sat, val);
+					return color;
 				}
 
 				// Pick a direction based on the first blocking color and step in hue
@@ -143,14 +141,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		Color IColorPickerManagerInfo.RandomPresetColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors)
 		{
-			var terrainLinear = terrainColors.Select(c => c.ToLinear()).ToList();
-			var playerLinear = playerColors.Select(c => c.ToLinear()).ToList();
-
 			foreach (var color in PresetColors.Shuffle(random))
 			{
 				// Color may already be taken
-				var linear = color.ToLinear();
-				if (!TryGetBlockingColor(linear, terrainLinear, out _) && !TryGetBlockingColor(linear, playerLinear, out _))
+				if (!TryGetBlockingColor(color, terrainColors, out _) && !TryGetBlockingColor(color, playerColors, out _))
 					return color;
 			}
 
@@ -158,7 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 			var randomHue = random.NextFloat();
 			var randomSat = float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
 			var randomVal = float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat());
-			return MakeValid(randomHue, randomSat, randomVal, random, terrainLinear, playerLinear, null);
+			return MakeValid(randomHue, randomSat, randomVal, random, terrainColors, playerColors, null);
 		}
 
 		Color IColorPickerManagerInfo.MakeValid(Color color, MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, Action<string> onError)
