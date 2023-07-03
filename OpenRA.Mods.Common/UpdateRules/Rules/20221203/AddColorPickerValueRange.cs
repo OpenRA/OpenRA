@@ -19,13 +19,15 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override string Name => "ColorPickerManager's PresetHues, PresetSaturations and V were replaced with PresetColors.";
 
 		public override string Description =>
-			"Each preset color can now have their brightness specified.";
+			"Each preset color can now have their brightness specified. SimilarityThreshold range was changed.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNode actorNode)
 		{
 			var manager = actorNode.LastChildMatching("ColorPickerManager");
 			if (manager == null)
 				yield break;
+
+			manager.RemoveNodes("SimilarityThreshold");
 
 			var v = manager.LastChildMatching("V")?.NodeValue<float>() ?? 0.95f;
 			var hues = manager.LastChildMatching("PresetHues")?.NodeValue<float[]>();
