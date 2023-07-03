@@ -54,11 +54,8 @@ namespace OpenRA.Mods.Common.Traits
 			"A dictionary of [faction name]: [actor name].")]
 		public readonly Dictionary<string, string> FactionPreviewActors = new();
 
-		public bool TryGetBlockingColor(Color color, IEnumerable<Color> candidateBlockers, out Color closestBlocker)
+		public bool IsInvalidColor(Color color, IEnumerable<Color> candidateBlockers)
 		{
-			var closestDistance = SimilarityThreshold;
-			closestBlocker = default;
-
 			foreach (var candidate in candidateBlockers)
 			{
 				// Uses the perceptually based color metric explained by https://www.compuphase.com/cmetric.htm
@@ -78,15 +75,11 @@ namespace OpenRA.Mods.Common.Traits
 				var weightG = 4 * gdelta * gdelta;
 				var weightB = ((767 - rmean) * bdelta * bdelta) >> 8;
 
-				var distance = (int)Math.Sqrt(weightR + weightG + weightB);
-				if (distance < closestDistance)
-				{
-					closestBlocker = candidate;
-					closestDistance = distance;
-				}
+				if (Math.Sqrt(weightR + weightG + weightB) < SimilarityThreshold)
+					return true;
 			}
 
-			return closestDistance < SimilarityThreshold;
+			return false;
 		}
 
 		Color MakeValid(float hue, float sat, float val, MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, Action<string> onError)
@@ -96,31 +89,31 @@ namespace OpenRA.Mods.Common.Traits
 			sat = sat.Clamp(HsvSaturationRange[0], HsvSaturationRange[1]);
 			val = val.Clamp(HsvValueRange[0], HsvValueRange[1]);
 
-			// Limit to 100 attempts, which is enough to move all the way around the hue range
-			string errorMessage = null;
-			var stepSign = 0;
-			for (var i = 0; i < 101; i++)
-			{
-				var color = Color.FromAhsv(hue, sat, val);
-				if (TryGetBlockingColor(color, terrainColors, out var blocker))
-					errorMessage = PlayerColorTerrain;
-				else if (TryGetBlockingColor(color, playerColors, out blocker))
-					errorMessage = PlayerColorPlayer;
-				else
-				{
-					if (errorMessage != null)
-						onError?.Invoke(errorMessage);
+			string errorMessage;
+			var color = Color.FromAhsv(hue, sat, val);
+			if (IsInvalidColor(color, terrainColors))
+				errorMessage = PlayerColorTerrain;
+			else if (IsInvalidColor(color, playerColors))
+				errorMessage = PlayerColorPlayer;
+			else
+				return color;
 
+			// Move by expanding from the selected color in both directions by a limited amount circling
+			// around the hue a bunch of times. This method usually returns a color similar to the selected
+			// color and controls the randomness.
+			// Exit after 400 iterations to avoid infinite loops.
+			for (var i = 2; i < 402; i++)
+			{
+				color = Color.FromAhsv(
+					hue + (i % 2 == 0 ? -1 : 1) * (i / 2) * 0.1f * (0.2f + random.NextFloat()),
+					float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat()),
+					float2.Lerp(HsvValueRange[0], HsvValueRange[1], random.NextFloat()));
+
+				if (!IsInvalidColor(color, terrainColors) && !IsInvalidColor(color, playerColors))
+				{
+					onError?.Invoke(errorMessage);
 					return color;
 				}
-
-				// Pick a direction based on the first blocking color and step in hue
-				// until we either find a suitable color or loop back to where we started.
-				// This is a simple way to avoid being trapped between two blocking colors.
-				if (stepSign == 0)
-					stepSign = Color.FromLinear(255, blocker.R, blocker.G, blocker.B).ToAhsv().H > hue ? -1 : 1;
-
-				hue += stepSign * 0.01f;
 			}
 
 			// Failed to find a solution within a reasonable time: return a random color without any validation
@@ -144,7 +137,7 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var color in PresetColors.Shuffle(random))
 			{
 				// Color may already be taken
-				if (!TryGetBlockingColor(color, terrainColors, out _) && !TryGetBlockingColor(color, playerColors, out _))
+				if (!IsInvalidColor(color, terrainColors) && !IsInvalidColor(color, playerColors))
 					return color;
 			}
 
