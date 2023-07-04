@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly PowerManager playerPower;
 		readonly PlayerResources playerResources;
 		readonly IResourceLayer resourceLayer;
+		readonly BuildingInfluence buildingInfluence;
 
 		int waitTicks;
 		Actor[] playerBuildings;
@@ -39,7 +40,7 @@ namespace OpenRA.Mods.Common.Traits
 		WaterCheck waterState = WaterCheck.NotChecked;
 
 		public BaseBuilderQueueManager(BaseBuilderBotModule baseBuilder, string category, Player p, PowerManager pm,
-			PlayerResources pr, IResourceLayer rl)
+			PlayerResources pr, IResourceLayer rl, BuildingInfluence bf)
 		{
 			this.baseBuilder = baseBuilder;
 			world = p.World;
@@ -47,6 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 			playerPower = pm;
 			playerResources = pr;
 			resourceLayer = rl;
+			buildingInfluence = bf;
 			this.category = category;
 			failRetryTicks = baseBuilder.Info.StructureProductionResumeDelay;
 			minimumExcessPower = baseBuilder.Info.MinimumExcessPower;
@@ -449,7 +451,11 @@ namespace OpenRA.Mods.Common.Traits
 
 				foreach (var cell in cells)
 				{
-					if (!world.CanPlaceBuilding(cell, variantActorInfo, vbi, null))
+					var spacingDist = baseBuilder.Info.DefaultBuildingSpacing;
+					if (baseBuilder.Info.BuildingSpacings != null)
+						spacingDist = baseBuilder.Info.BuildingSpacings.TryGetValue(variantActorInfo.Name, out var space) ? space : spacingDist;
+
+					if (!CanPlaceBuildingWithSpaceAround(world, cell, variantActorInfo, vbi, null, spacingDist))
 						continue;
 
 					if (distanceToBaseIsImportant && !vbi.IsCloseEnoughToBase(world, player, variantActorInfo, cell))
@@ -502,6 +508,51 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Can't find a build location
 			return (null, 0);
+		}
+
+		bool CanPlaceBuildingWithSpaceAround(World world, CPos location, ActorInfo ai, BuildingInfo bi, Actor toIgnore, int spacingDist)
+		{
+			var checkCellDist = baseBuilder.MaxBuildingSpacing;
+			var checkLeft = -checkCellDist;
+			var checkRight = bi.Dimensions.X + checkCellDist - 1;
+			var checkTop = -checkCellDist;
+			var checkBottom = bi.Dimensions.Y + checkCellDist - 1;
+
+			var buildLeft = 0;
+			var buildRight = bi.Dimensions.X - 1;
+			var buildTop = 0;
+			var buildBottom = bi.Dimensions.Y - 1;
+
+			for (var rowOffset = checkLeft; rowOffset <= checkRight; rowOffset++)
+			{
+				var rowSpaceDist = rowOffset < buildLeft || rowOffset > buildRight ? Math.Min(Math.Abs(rowOffset - buildLeft), Math.Abs(rowOffset - buildRight)) : 0;
+				for (var colOffest = checkTop; colOffest <= checkBottom; colOffest++)
+				{
+					var colSpaceDist = colOffest < buildTop || colOffest > buildBottom ? Math.Min(Math.Abs(colOffest - buildTop), Math.Abs(colOffest - buildBottom)) : 0;
+
+					// If current cell is one of the cells to build, skip.
+					if (rowSpaceDist == 0 && colSpaceDist == 0)
+						continue;
+
+					var cell = location + new CVec(rowOffset, colOffest);
+					if (!world.Map.Contains(cell))
+						continue;
+
+					foreach (var otherBuilding in buildingInfluence.GetBuildingsAt(cell))
+					{
+						var otherSpacingDist = baseBuilder.Info.DefaultBuildingSpacing;
+						if (baseBuilder.Info.BuildingSpacings != null)
+							otherSpacingDist = baseBuilder.Info.BuildingSpacings.TryGetValue(otherBuilding.Info.Name, out var space) ? space : otherSpacingDist;
+
+						// We use "Math.Max(rowSpaceDist, colSpaceDist)" here because we have plan for AI to use walls on buildings:
+						// the LineBuild require TopLeft, TopRight, BottomLeft and BottomRight of the spacing to be clear.
+						if (Math.Max(otherSpacingDist, spacingDist) >= Math.Max(rowSpaceDist, colSpaceDist))
+							return false;
+					}
+				}
+			}
+
+			return world.CanPlaceBuilding(location, ai, bi, toIgnore);
 		}
 	}
 }
