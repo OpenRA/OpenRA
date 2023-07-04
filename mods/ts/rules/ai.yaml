@@ -66,6 +66,8 @@ Player:
 			gactwr: 18
 			nasam: 6
 			naobel: 3
+		BuildingSpacings:
+			gacnst: 2
 	BuildingRepairBotModule:
 		RequiresCondition: enable-test-ai
 	SquadManagerBotModule@test:
