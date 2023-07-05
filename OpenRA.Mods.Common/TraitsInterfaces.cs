@@ -653,6 +653,13 @@ namespace OpenRA.Mods.Common.Traits
 		Turn = 4
 	}
 
+	[Flags]
+	public enum MoveResult
+	{
+		SoFarSoGood = 0,
+		StuckByImmovable = 1,
+	}
+
 	[RequireExplicitImplementation]
 	public interface INotifyMoving
 	{

@@ -113,6 +113,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected override void OnFirstRun(Actor self)
 		{
 			startTicks = self.World.WorldTick;
+			mobile.MoveResult = MoveResult.SoFarSoGood;
 
 			if (evaluateNearestMovableCell && destination.HasValue)
 			{
@@ -249,6 +250,11 @@ namespace OpenRA.Mods.Common.Activities
 				if (!mobile.CanEnterCell(nextCell, ignoreActor, BlockedByActor.Immovable))
 				{
 					path = EvalPath(BlockedByActor.Immovable);
+
+					// If actor is blocked by immovable actors, suggest parent activiy to give up
+					if (path.Count == 0)
+						mobile.MoveResult = MoveResult.StuckByImmovable;
+
 					return null;
 				}
 
