@@ -56,15 +56,16 @@ namespace OpenRA.Mods.Common.Activities
 			revealsShroud = self.TraitsImplementing<RevealsShroud>().ToArray();
 			facing = self.Trait<IFacing>();
 			positionable = self.Trait<IPositionable>();
-
-			var iMove = self.TraitOrDefault<IMove>();
-			mobile = iMove as Mobile;
-			move = allowMovement ? iMove : null;
+			move = allowMovement ? self.TraitOrDefault<IMove>() : null;
+			if (move != null)
+				mobile = move as Mobile;
+			if (mobile != null)
+				mobile.MoveResult = MoveResult.SoFarSoGood;
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
 			if ((target.Type == TargetType.Actor && target.Actor.CanBeViewedByPlayer(self.Owner))
-			    || target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
+				|| target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
 			{
 				lastVisibleTarget = Target.FromPos(target.CenterPosition);
 
@@ -114,16 +115,24 @@ namespace OpenRA.Mods.Common.Activities
 
 			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
 
-			// If we are ticking again after previously sequencing a MoveWithRange then that move must have completed
-			// Either we are in range and can see the target, or we've lost track of it and should give up
-			if (wasMovingWithinRange && targetIsHiddenActor)
-				return true;
+			// If we are ticking again after previously sequencing a MoveWithRange then that move must have completed, and there is 3 situation:
+			// 1. we are in range and can see the target.
+			// 2. we've lost track of it and should give up.
+			// 3. we are stuck by immovable actors, we should give up.
+			// 4. we cannot reach the location to attack target, but we can retry.
+			if (wasMovingWithinRange)
+			{
+				if (targetIsHiddenActor)
+					return true;
+				else if (mobile != null && mobile.MoveResult == MoveResult.StuckByImmovable)
+					return true;
+				wasMovingWithinRange = false;
+			}
 
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
 				return true;
 
-			wasMovingWithinRange = false;
 			var pos = self.CenterPosition;
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 

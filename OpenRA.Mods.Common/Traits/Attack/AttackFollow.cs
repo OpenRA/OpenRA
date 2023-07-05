@@ -236,6 +236,7 @@ namespace OpenRA.Mods.Common.Traits
 			readonly Rearmable rearmable;
 			readonly AttackSource source;
 			readonly bool isAircraft;
+			readonly Mobile mobile;
 
 			Target target;
 			Target lastVisibleTarget;
@@ -260,6 +261,11 @@ namespace OpenRA.Mods.Common.Traits
 				this.targetLineColor = targetLineColor;
 				this.source = source;
 				isAircraft = self.Info.HasTraitInfo<AircraftInfo>();
+				if (!isAircraft && move != null)
+				{
+					mobile = move as Mobile;
+					mobile.MoveResult = MoveResult.SoFarSoGood;
+				}
 
 				// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 				// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -347,10 +353,19 @@ namespace OpenRA.Mods.Common.Traits
 						maxRange = sightRange;
 				}
 
-				// If we are ticking again after previously sequencing a MoveWithRange then that move must have completed
-				// Either we are in range and can see the target, or we've lost track of it and should give up
-				if (wasMovingWithinRange && targetIsHiddenActor)
-					return true;
+				// If we are ticking again after previously sequencing a MoveWithRange then that move must have completed, and there is 3 situation:
+				// 1. we are in range and can see the target.
+				// 2. we've lost track of it and should give up.
+				// 3. we are stuck by immovable actors, we should give up.
+				// 4. we cannot reach the location to attack target, but we can retry.
+				if (wasMovingWithinRange)
+				{
+					if (targetIsHiddenActor)
+						return true;
+					else if (!isAircraft && mobile.MoveResult == MoveResult.StuckByImmovable)
+						return true;
+					wasMovingWithinRange = false;
+				}
 
 				// Target is hidden or dead, and we don't have a fallback position to move towards
 				if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))

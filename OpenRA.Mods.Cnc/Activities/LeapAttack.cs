@@ -37,6 +37,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		WDist lastVisibleMaxRange;
 		BitSet<TargetableType> lastVisibleTargetTypes;
 		Player lastVisibleOwner;
+		bool wasMovingWithinRange;
 
 		public LeapAttack(Actor self, in Target target, bool allowMovement, bool forceAttack, AttackLeap attack, AttackLeapInfo info, Color? targetLineColor = null)
 		{
@@ -47,6 +48,8 @@ namespace OpenRA.Mods.Cnc.Activities
 			this.allowMovement = allowMovement;
 			this.forceAttack = forceAttack;
 			mobile = self.Trait<Mobile>();
+			if (mobile != null)
+				mobile.MoveResult = MoveResult.SoFarSoGood;
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -92,6 +95,19 @@ namespace OpenRA.Mods.Cnc.Activities
 
 			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
 
+			// If we are ticking again after previously sequencing a MoveWithRange then that move must have completed, and there is 3 situation:
+			// 1. we are in range and can see the target.
+			// 2. we've lost track of it and should give up.
+			// 3. we are stuck by immovable actors, we should give up.
+			// 4. we cannot reach the location to attack target, but we can retry.
+			if (wasMovingWithinRange)
+			{
+				if (mobile != null && mobile.MoveResult == MoveResult.StuckByImmovable)
+					return true;
+				else
+					wasMovingWithinRange = false;
+			}
+
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
 				return true;
@@ -104,6 +120,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				if (!allowMovement || lastVisibleMaxRange == WDist.Zero || lastVisibleMaxRange < lastVisibleMinRange)
 					return true;
 
+				wasMovingWithinRange = true;
 				QueueChild(mobile.MoveWithinRange(target, lastVisibleMinRange, lastVisibleMaxRange, checkTarget.CenterPosition, Color.Red));
 				return false;
 			}
