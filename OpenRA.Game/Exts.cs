@@ -32,12 +32,6 @@ namespace OpenRA
 			return string.Format(CultureInfo.CurrentCulture, format, args);
 		}
 
-		public static T WithDefault<T>(T def, Func<T> f)
-		{
-			try { return f(); }
-			catch { return def; }
-		}
-
 		public static Lazy<T> Lazy<T>(Func<T> p) { return new Lazy<T>(p); }
 
 		public static IEnumerable<string> GetNamespaces(this Assembly a)

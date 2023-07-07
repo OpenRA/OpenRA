@@ -46,7 +46,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			joinButton.OnClick = () =>
 			{
-				var port = Exts.WithDefault(1234, () => int.Parse(portField.Text, NumberFormatInfo.CurrentInfo));
+				if (!int.TryParse(portField.Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var port))
+					port = 1234;
 
 				Game.Settings.Player.LastServer = $"{ipField.Text}:{port}";
 				Game.Settings.Save();
