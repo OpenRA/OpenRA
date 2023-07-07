@@ -437,34 +437,40 @@ namespace OpenRA
 				return existingNodes;
 
 			var ret = new List<MiniYamlNode>(existingNodes.Count + overrideNodes.Count);
+			var plainKeys = new HashSet<string>(existingNodes.Count + overrideNodes.Count);
 
-			foreach (var node in existingNodes.Concat(overrideNodes))
+			foreach (var node in existingNodes)
+				MergeNode(node);
+			foreach (var node in overrideNodes)
+				MergeNode(node);
+
+			void MergeNode(MiniYamlNode node)
 			{
 				// Append Removal nodes to the result.
-				// Therefore: we know the remainder of the loop deals with plain nodes.
+				// Therefore: we know the remainder of the method deals with a plain node.
 				if (node.Key.StartsWith("-", StringComparison.Ordinal))
 				{
 					ret.Add(node);
-					continue;
+					return;
 				}
 
 				// If no previous node with this key is present, it is new and can just be appended.
-				var previousNodeIndex = ret.FindLastIndex(n => n.Key == node.Key);
-				if (previousNodeIndex == -1)
+				if (plainKeys.Add(node.Key))
 				{
 					ret.Add(node);
-					continue;
+					return;
 				}
 
 				// A Removal node is closer than the previous node.
 				// We should not merge the new node, as the data being merged will jump before the Removal.
 				// Instead, append it so the previous node is applied, then removed, then the new node is applied.
 				var removalKey = $"-{node.Key}";
+				var previousNodeIndex = ret.FindLastIndex(n => n.Key == node.Key);
 				var previousRemovalNodeIndex = ret.FindLastIndex(n => n.Key == removalKey);
 				if (previousRemovalNodeIndex != -1 && previousRemovalNodeIndex > previousNodeIndex)
 				{
 					ret.Add(node);
-					continue;
+					return;
 				}
 
 				// A previous node is present with no intervening Removal.
