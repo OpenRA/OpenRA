@@ -39,11 +39,19 @@ namespace OpenRA
 		}
 	}
 
-	public class MiniYamlNode
+	public sealed class MiniYamlNode
 	{
-		public struct SourceLocation
+		public readonly struct SourceLocation
 		{
-			public string Filename; public int Line;
+			public readonly string Filename;
+			public readonly int Line;
+
+			public SourceLocation(string filename, int line)
+			{
+				Filename = filename;
+				Line = line;
+			}
+
 			public override string ToString() { return $"{Filename}:{Line}"; }
 		}
 
@@ -88,7 +96,7 @@ namespace OpenRA
 		}
 	}
 
-	public class MiniYaml
+	public sealed class MiniYaml
 	{
 		const int SpacesPerLevel = 4;
 		static readonly Func<string, string> StringIdentity = s => s;
@@ -122,14 +130,8 @@ namespace OpenRA
 			{
 				var key = keySelector(y.Key);
 				var element = elementSelector(y.Value);
-				try
-				{
-					ret.Add(key, element);
-				}
-				catch (ArgumentException ex)
-				{
-					throw new InvalidDataException($"Duplicate key '{y.Key}' in {y.Location}", ex);
-				}
+				if (!ret.TryAdd(key, element))
+					throw new InvalidDataException($"Duplicate key '{y.Key}' in {y.Location}");
 			}
 
 			return ret;
@@ -173,7 +175,7 @@ namespace OpenRA
 				ReadOnlySpan<char> key = default;
 				ReadOnlySpan<char> value = default;
 				ReadOnlySpan<char> comment = default;
-				var location = new MiniYamlNode.SourceLocation { Filename = filename, Line = lineNo };
+				var location = new MiniYamlNode.SourceLocation(filename, lineNo);
 
 				if (line.Length > 0)
 				{
@@ -313,10 +315,12 @@ namespace OpenRA
 
 		public static List<MiniYamlNode> Merge(IEnumerable<List<MiniYamlNode>> sources)
 		{
-			if (!sources.Any())
+			var sourcesList = sources.ToList();
+			if (sourcesList.Count == 0)
 				return new List<MiniYamlNode>();
 
-			var tree = sources.Where(s => s != null)
+			var tree = sourcesList
+				.Where(s => s != null)
 				.Select(MergeSelfPartial)
 				.Aggregate(MergePartial)
 				.Where(n => n.Key != null)
