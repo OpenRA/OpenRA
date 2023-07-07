@@ -416,6 +416,9 @@ namespace OpenRA
 
 		static MiniYaml MergePartial(MiniYaml existingNodes, MiniYaml overrideNodes)
 		{
+			existingNodes?.Nodes.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => $"{x.Key} (at {x.Location})");
+			overrideNodes?.Nodes.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => $"{x.Key} (at {x.Location})");
+
 			if (existingNodes == null)
 				return overrideNodes;
 
@@ -434,9 +437,6 @@ namespace OpenRA
 				return existingNodes;
 
 			var ret = new List<MiniYamlNode>(existingNodes.Count + overrideNodes.Count);
-
-			var existingDict = existingNodes.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => $"{x.Key} (at {x.Location})");
-			var overrideDict = overrideNodes.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => $"{x.Key} (at {x.Location})");
 
 			foreach (var node in existingNodes.Concat(overrideNodes))
 			{
