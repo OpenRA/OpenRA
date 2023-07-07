@@ -796,7 +796,7 @@ namespace OpenRA.Mods.Common.Traits
 			CrushAction(self, (notifyCrushed) => notifyCrushed.WarnCrush);
 		}
 
-		public Activity MoveTo(Func<BlockedByActor, List<CPos>> pathFunc) { return new Move(self, pathFunc); }
+		public Activity MoveTo(Func<BlockedByActor, (List<CPos> Path, bool DestinationIsStartpoint)> pathFunc) { return new Move(self, pathFunc); }
 
 		Activity LocalMove(Actor self, WPos fromPos, WPos toPos, CPos cell)
 		{

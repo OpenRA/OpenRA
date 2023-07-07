@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 		public WAngle ActorFacingModifier { get; private set; }
 		readonly Mobile mobile;
 		readonly WDist nearEnough;
-		readonly Func<BlockedByActor, List<CPos>> getPath;
+		readonly Func<BlockedByActor, (List<CPos> Path, bool DestinationIsStartpoint)> getPath;
 		readonly Actor ignoreActor;
 		readonly Color? targetLineColor;
 
@@ -59,8 +59,8 @@ namespace OpenRA.Mods.Common.Activities
 
 			getPath = check =>
 			{
-				return mobile.PathFinder.FindPathToTargetCell(
-					self, new[] { mobile.ToCell }, destination, check, laneBias: false);
+				return (mobile.PathFinder.FindPathToTargetCell(
+					self, new[] { mobile.ToCell }, destination, check, laneBias: false), destination == self.Location);
 			};
 
 			this.destination = destination;
@@ -77,10 +77,10 @@ namespace OpenRA.Mods.Common.Activities
 			getPath = check =>
 			{
 				if (!this.destination.HasValue)
-					return PathFinder.NoPath;
+					return (PathFinder.NoPath, false);
 
-				return mobile.PathFinder.FindPathToTargetCell(
-					self, new[] { mobile.ToCell }, this.destination.Value, check, ignoreActor: ignoreActor);
+				return (mobile.PathFinder.FindPathToTargetCell(
+					self, new[] { mobile.ToCell }, this.destination.Value, check, ignoreActor: ignoreActor), this.destination.Value == self.Location);
 			};
 
 			// Note: Will be recalculated from OnFirstRun if evaluateNearestMovableCell is true
@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.targetLineColor = targetLineColor;
 		}
 
-		public Move(Actor self, Func<BlockedByActor, List<CPos>> getPath, Color? targetLineColor = null)
+		public Move(Actor self, Func<BlockedByActor, (List<CPos> Path, bool DestinationIsStartpoint)> getPath, Color? targetLineColor = null)
 		{
 			// PERF: Because we can be sure that OccupiesSpace is Mobile here, we can save some performance by avoiding querying for the trait.
 			mobile = (Mobile)self.OccupiesSpace;
@@ -104,10 +104,11 @@ namespace OpenRA.Mods.Common.Activities
 			this.targetLineColor = targetLineColor;
 		}
 
-		List<CPos> EvalPath(BlockedByActor check)
+		(List<CPos> Path, bool DestinationIsStartpoint) EvalPath(BlockedByActor check)
 		{
-			var path = getPath(check).TakeWhile(a => a != mobile.ToCell).ToList();
-			return path;
+			var (pathing, destinationIsStartpoint) = getPath(check);
+			var p = pathing.TakeWhile(a => a != mobile.ToCell).ToList();
+			return (p, destinationIsStartpoint);
 		}
 
 		protected override void OnFirstRun(Actor self)
@@ -124,9 +125,16 @@ namespace OpenRA.Mods.Common.Activities
 			// TODO: Change this to BlockedByActor.Stationary after improving the local avoidance behaviour
 			foreach (var check in PathSearchOrder)
 			{
-				path = EvalPath(check);
+				var (pathing, destinationIsStartpoint) = EvalPath(check);
+				path = pathing;
+
 				if (path.Count > 0)
 					return;
+
+				// If the terrain is not even reachable, suggest parent activity to give up
+				// HACK: see "MoveAdjacentTo.cs" -> "CalculatePathToTarget(...)" comments on why we need "destinationIsStartpoint"
+				if (check == BlockedByActor.None && !destinationIsStartpoint)
+					mobile.MoveResult = MoveResult.StuckByImmovable;
 			}
 		}
 
@@ -208,7 +216,7 @@ namespace OpenRA.Mods.Common.Activities
 			// Something else might have moved us, so the path is no longer valid.
 			if (!Util.AreAdjacentCells(mobile.ToCell, nextCell))
 			{
-				path = EvalPath(BlockedByActor.Immovable);
+				path = EvalPath(BlockedByActor.Immovable).Path;
 				return null;
 			}
 
@@ -249,7 +257,7 @@ namespace OpenRA.Mods.Common.Activities
 				// There is no point in waiting for the other actor to move if it is incapable of moving.
 				if (!mobile.CanEnterCell(nextCell, ignoreActor, BlockedByActor.Immovable))
 				{
-					path = EvalPath(BlockedByActor.Immovable);
+					path = EvalPath(BlockedByActor.Immovable).Path;
 
 					// If actor is blocked by immovable actors, suggest parent activiy to give up
 					if (path.Count == 0)
@@ -280,7 +288,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				// Calculate a new path
 				mobile.RemoveInfluence();
-				var newPath = EvalPath(BlockedByActor.All);
+				var newPath = EvalPath(BlockedByActor.All).Path;
 				mobile.AddInfluence();
 
 				if (newPath.Count != 0)
