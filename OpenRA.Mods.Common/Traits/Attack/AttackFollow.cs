@@ -362,7 +362,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					if (targetIsHiddenActor)
 						return true;
-					else if (!isAircraft && mobile.MoveResult == MoveResult.StuckByImmovable)
+					else if (!isAircraft && mobile.MoveResult == MoveResult.MovementStuck)
 						return true;
 					wasMovingWithinRange = false;
 				}

@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling || harv.IsTraitDisabled)
 				return true;
 
-			if (wasMobileMoved && mobile != null && mobile.MoveResult == MoveResult.StuckByImmovable)
+			if (wasMobileMoved && mobile != null && mobile.MoveResult == MoveResult.MovementStuck)
 				return true;
 			else
 				wasMobileMoved = false;

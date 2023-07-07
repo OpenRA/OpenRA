@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				if (targetIsHiddenActor)
 					return true;
-				else if (mobile != null && mobile.MoveResult == MoveResult.StuckByImmovable)
+				else if (mobile != null && mobile.MoveResult == MoveResult.MovementStuck)
 					return true;
 				wasMovingWithinRange = false;
 			}

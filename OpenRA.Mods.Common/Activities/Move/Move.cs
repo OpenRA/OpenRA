@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Activities
 				// If the terrain is not even reachable, suggest parent activity to give up
 				// HACK: see "MoveAdjacentTo.cs" -> "CalculatePathToTarget(...)" comments on why we need "destinationIsStartpoint"
 				if (check == BlockedByActor.None && !destinationIsStartpoint)
-					mobile.MoveResult = MoveResult.StuckByImmovable;
+					mobile.MoveResult = MoveResult.MovementStuck;
 			}
 		}
 
@@ -261,7 +261,7 @@ namespace OpenRA.Mods.Common.Activities
 
 					// If actor is blocked by immovable actors, suggest parent activiy to give up
 					if (path.Count == 0)
-						mobile.MoveResult = MoveResult.StuckByImmovable;
+						mobile.MoveResult = MoveResult.MovementStuck;
 
 					return null;
 				}

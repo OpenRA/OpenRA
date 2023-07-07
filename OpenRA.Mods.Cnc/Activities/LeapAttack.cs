@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			// 4. we cannot reach the location to attack target, but we can retry.
 			if (wasMovingWithinRange)
 			{
-				if (mobile != null && mobile.MoveResult == MoveResult.StuckByImmovable)
+				if (mobile != null && mobile.MoveResult == MoveResult.MovementStuck)
 					return true;
 				else
 					wasMovingWithinRange = false;

@@ -119,7 +119,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (!IsCanceling && isHostInvalid)
 				Cancel(self, true);
 
-			if (wasMobileMoved && mobile != null && mobile.MoveResult == MoveResult.StuckByImmovable)
+			if (wasMobileMoved && mobile != null && mobile.MoveResult == MoveResult.MovementStuck)
 				Cancel(self, true);
 			else
 				wasMobileMoved = false;

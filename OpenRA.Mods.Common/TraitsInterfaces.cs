@@ -660,7 +660,7 @@ namespace OpenRA.Mods.Common.Traits
 	public enum MoveResult
 	{
 		SoFarSoGood = 0,
-		StuckByImmovable = 1,
+		MovementStuck = 1,
 	}
 
 	[RequireExplicitImplementation]
