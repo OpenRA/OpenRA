@@ -20,15 +20,20 @@ namespace OpenRA.Mods.Common.Activities
 	public class DeliverResources : Activity
 	{
 		readonly IMove movement;
+		readonly Mobile mobile;
 		readonly Harvester harv;
 		readonly Actor targetActor;
 		readonly INotifyHarvesterAction[] notifyHarvesterActions;
 
 		Actor proc;
+		bool wasMobileMoved = false;
 
 		public DeliverResources(Actor self, Actor targetActor = null)
 		{
 			movement = self.Trait<IMove>();
+			mobile = movement as Mobile;
+			if (mobile != null)
+				mobile.MoveResult = MoveResult.SoFarSoGood;
 			harv = self.Trait<Harvester>();
 			this.targetActor = targetActor;
 			notifyHarvesterActions = self.TraitsImplementing<INotifyHarvesterAction>().ToArray();
@@ -47,6 +52,11 @@ namespace OpenRA.Mods.Common.Activities
 
 			if (IsCanceling)
 				return true;
+
+			if (wasMobileMoved && mobile != null && mobile.MoveResult == MoveResult.StuckByImmovable)
+				return true;
+			else
+				wasMobileMoved = false;
 
 			// Find the nearest best refinery if not explicitly ordered to a specific refinery:
 			if (harv.LinkedProc == null || !harv.LinkedProc.IsInWorld)
@@ -68,6 +78,7 @@ namespace OpenRA.Mods.Common.Activities
 					n.MovingToRefinery(self, proc);
 
 				var target = Target.FromActor(proc);
+				wasMobileMoved = true;
 				QueueChild(movement.MoveOntoTarget(self, target, iao.DeliveryPosition - proc.CenterPosition, iao.DeliveryAngle));
 				return false;
 			}

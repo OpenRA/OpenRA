@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.Activities
 		bool hasDeliveredLoad;
 		bool hasHarvestedCell;
 		bool hasWaited;
+		bool wasMobileMoved = false;
 
 		public bool LastSearchFailed { get; private set; }
 
@@ -39,6 +40,8 @@ namespace OpenRA.Mods.Common.Activities
 			harv = self.Trait<Harvester>();
 			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
 			mobile = self.Trait<Mobile>();
+			if (mobile != null)
+				mobile.MoveResult = MoveResult.SoFarSoGood;
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 			this.deliverActor = deliverActor;
 		}
@@ -61,13 +64,17 @@ namespace OpenRA.Mods.Common.Activities
 				// We have to make sure the actual "harvest" order is not skipped if a third order is queued,
 				// so we keep deliveredLoad false.
 				if (harv.IsFull)
+				{
+					wasMobileMoved = true;
 					QueueChild(new DeliverResources(self));
+				}
 			}
 
 			// If an explicit "deliver" order is given, the harvester goes immediately to the refinery.
 			if (deliverActor != null)
 			{
 				QueueChild(new DeliverResources(self, deliverActor));
+				wasMobileMoved = true;
 				hasDeliveredLoad = true;
 				deliverActor = null;
 			}
@@ -77,6 +84,11 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (IsCanceling || harv.IsTraitDisabled)
 				return true;
+
+			if (wasMobileMoved && mobile != null && mobile.MoveResult == MoveResult.StuckByImmovable)
+				return true;
+			else
+				wasMobileMoved = false;
 
 			if (NextActivity != null)
 			{
@@ -94,6 +106,7 @@ namespace OpenRA.Mods.Common.Activities
 			{
 				QueueChild(new DeliverResources(self));
 				hasDeliveredLoad = true;
+				wasMobileMoved = true;
 				return false;
 			}
 
@@ -136,6 +149,7 @@ namespace OpenRA.Mods.Common.Activities
 					{
 						var unblockCell = self.World.Map.CellContaining(deliveryLoc) + harv.Info.UnblockCell;
 						var moveTo = mobile.NearestMoveableCell(unblockCell, 1, 5);
+						wasMobileMoved = true;
 						QueueChild(mobile.MoveTo(moveTo, 1));
 					}
 				}
@@ -145,6 +159,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// If we get here, our search for resources was successful. Commence harvesting.
 			QueueChild(new HarvestResource(self, closestHarvestableCell.Value));
+			wasMobileMoved = true;
 			lastHarvestedCell = closestHarvestableCell.Value;
 			hasHarvestedCell = true;
 			return false;

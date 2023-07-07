@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly ICallForTransport[] transportCallers;
 		readonly IMove move;
 		readonly Aircraft aircraft;
+		readonly Mobile mobile;
 		readonly IMoveInfo moveInfo;
 		readonly bool stayOnResupplier;
 		readonly bool wasRepaired;
@@ -42,6 +43,7 @@ namespace OpenRA.Mods.Common.Activities
 		int remainingTicks;
 		bool played;
 		bool actualResupplyStarted;
+		bool wasMobileMoved = false;
 		ResupplyType activeResupplyTypes = ResupplyType.None;
 
 		public Resupply(Actor self, Actor host, WDist closeEnough, bool stayOnResupplier = false)
@@ -60,6 +62,9 @@ namespace OpenRA.Mods.Common.Activities
 			transportCallers = self.TraitsImplementing<ICallForTransport>().ToArray();
 			move = self.Trait<IMove>();
 			aircraft = move as Aircraft;
+			mobile = move as Mobile;
+			if (mobile != null)
+				mobile.MoveResult = MoveResult.SoFarSoGood;
 			moveInfo = self.Info.TraitInfo<IMoveInfo>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 
@@ -114,6 +119,11 @@ namespace OpenRA.Mods.Common.Activities
 			if (!IsCanceling && isHostInvalid)
 				Cancel(self, true);
 
+			if (wasMobileMoved && mobile != null && mobile.MoveResult == MoveResult.StuckByImmovable)
+				Cancel(self, true);
+			else
+				wasMobileMoved = false;
+
 			if (IsCanceling || isHostInvalid)
 			{
 				// Only tick host INotifyResupply traits one last time if host is still alive
@@ -140,6 +150,7 @@ namespace OpenRA.Mods.Common.Activities
 				else
 					QueueChild(move.MoveWithinRange(host, closeEnough, targetLineColor: moveInfo.GetTargetLineColor()));
 
+				wasMobileMoved = true;
 				var delta = (self.CenterPosition - host.CenterPosition).LengthSquared;
 				transportCallers.FirstOrDefault(t => t.MinimumDistance.LengthSquared < delta)?.RequestTransport(self, targetCell);
 
@@ -235,6 +246,7 @@ namespace OpenRA.Mods.Common.Activities
 				// If there's no next activity, move to rallypoint if available, else just leave host if Repairable.
 				// Do nothing if RepairableNear (RepairableNear actors don't enter their host and will likely remain within closeEnough).
 				// If there's a next activity and we're not RepairableNear, first leave host if the next activity is not a Move.
+				wasMobileMoved = true;
 				if (self.CurrentActivity.NextActivity == null)
 				{
 					if (rp != null && rp.Path.Count > 0)
