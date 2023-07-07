@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -186,9 +185,9 @@ namespace OpenRA.Mods.Common.Traits
 			};
 		}
 
-		void IGameSaveTraitData.ResolveTraitData(Actor self, ImmutableArray<MiniYamlNode> data)
+		void IGameSaveTraitData.ResolveTraitData(Actor self, MiniYaml data)
 		{
-			var selectionNode = data.FirstOrDefault(n => n.Key == "Selection");
+			var selectionNode = data.NodeWithKeyOrDefault("Selection");
 			if (selectionNode != null)
 			{
 				var selected = FieldLoader.GetValue<uint[]>("Selection", selectionNode.Value.Value)

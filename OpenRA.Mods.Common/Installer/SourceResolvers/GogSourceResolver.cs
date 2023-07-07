@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Installer
 	{
 		public string FindSourcePath(ModContent.ModSource modSource)
 		{
-			modSource.Type.ToDictionary().TryGetValue("AppId", out var appId);
+			var appId = modSource.Type.NodeWithKeyOrDefault("AppId");
 
 			if (appId == null)
 				return null;
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Installer
 
 			foreach (var prefix in prefixes)
 			{
-				if (Registry.GetValue($"{prefix}GOG.com\\Games\\{appId.Value}", "path", null) is not string installDir)
+				if (Registry.GetValue($"{prefix}GOG.com\\Games\\{appId.Value.Value}", "path", null) is not string installDir)
 					continue;
 
 				if (InstallerUtils.IsValidSourcePath(installDir, modSource))

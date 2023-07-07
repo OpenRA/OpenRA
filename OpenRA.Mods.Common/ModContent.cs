@@ -66,15 +66,15 @@ namespace OpenRA
 				ObjectCreator = objectCreator;
 				Title = yaml.Value;
 
-				var type = yaml.Nodes.FirstOrDefault(n => n.Key == "Type");
+				var type = yaml.NodeWithKeyOrDefault("Type");
 				if (type != null)
 					Type = type.Value;
 
-				var idFiles = yaml.Nodes.FirstOrDefault(n => n.Key == "IDFiles");
+				var idFiles = yaml.NodeWithKeyOrDefault("IDFiles");
 				if (idFiles != null)
 					IDFiles = idFiles.Value;
 
-				var installNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Install");
+				var installNode = yaml.NodeWithKeyOrDefault("Install");
 				if (installNode != null)
 					Install = installNode.Value.Nodes;
 
@@ -111,7 +111,7 @@ namespace OpenRA
 		static object LoadPackages(MiniYaml yaml)
 		{
 			var packages = new Dictionary<string, ModPackage>();
-			var packageNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Packages");
+			var packageNode = yaml.NodeWithKeyOrDefault("Packages");
 			if (packageNode != null)
 				foreach (var node in packageNode.Value.Nodes)
 					packages.Add(node.Key, new ModPackage(node.Value));
@@ -124,7 +124,7 @@ namespace OpenRA
 
 		static object LoadDownloads(MiniYaml yaml)
 		{
-			var downloadNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Downloads");
+			var downloadNode = yaml.NodeWithKeyOrDefault("Downloads");
 			return downloadNode != null ? downloadNode.Value.Nodes.Select(n => n.Key).ToArray() : Array.Empty<string>();
 		}
 
@@ -133,7 +133,7 @@ namespace OpenRA
 
 		static object LoadSources(MiniYaml yaml)
 		{
-			var sourceNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Sources");
+			var sourceNode = yaml.NodeWithKeyOrDefault("Sources");
 			return sourceNode != null ? sourceNode.Value.Nodes.Select(n => n.Key).ToArray() : Array.Empty<string>();
 		}
 	}

@@ -423,7 +423,7 @@ namespace OpenRA
 					if (tp.Actor == null)
 						break;
 
-					tp.Trait.ResolveTraitData(tp.Actor, kv.Value.Nodes);
+					tp.Trait.ResolveTraitData(tp.Actor, kv.Value);
 				}
 
 				gameSaveTraitData.Clear();

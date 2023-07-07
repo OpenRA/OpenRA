@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Terrain
 		{
 			FieldLoader.Load(this, my);
 
-			var nodes = my.ToDictionary()["Tiles"].Nodes;
+			var nodes = my.NodeWithKey("Tiles").Value.Nodes;
 
 			if (!PickAny)
 			{

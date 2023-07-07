@@ -23,14 +23,14 @@ namespace OpenRA.Mods.Common.Installer
 	{
 		public string FindSourcePath(ModContent.ModSource modSource)
 		{
-			modSource.Type.ToDictionary().TryGetValue("AppId", out var appId);
+			var appId = modSource.Type.NodeWithKeyOrDefault("AppId");
 
 			if (appId == null)
 				return null;
 
 			foreach (var steamDirectory in SteamDirectory())
 			{
-				var manifestPath = Path.Combine(steamDirectory, "steamapps", $"appmanifest_{appId.Value}.acf");
+				var manifestPath = Path.Combine(steamDirectory, "steamapps", $"appmanifest_{appId.Value.Value}.acf");
 
 				if (!File.Exists(manifestPath))
 					continue;

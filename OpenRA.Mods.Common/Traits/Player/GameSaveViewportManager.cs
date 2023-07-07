@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -50,13 +49,13 @@ namespace OpenRA.Mods.Common.Traits
 			return nodes;
 		}
 
-		void IGameSaveTraitData.ResolveTraitData(Actor self, ImmutableArray<MiniYamlNode> data)
+		void IGameSaveTraitData.ResolveTraitData(Actor self, MiniYaml data)
 		{
-			var viewportNode = data.FirstOrDefault(n => n.Key == "Viewport");
+			var viewportNode = data.NodeWithKeyOrDefault("Viewport");
 			if (viewportNode != null)
 				worldRenderer.Viewport.Center(FieldLoader.GetValue<WPos>("Viewport", viewportNode.Value.Value));
 
-			var renderPlayerNode = data.FirstOrDefault(n => n.Key == "RenderPlayer");
+			var renderPlayerNode = data.NodeWithKeyOrDefault("RenderPlayer");
 			if (renderPlayerNode != null)
 			{
 				var renderPlayerActorID = FieldLoader.GetValue<uint>("RenderPlayer", renderPlayerNode.Value.Value);

@@ -214,7 +214,7 @@ namespace OpenRA
 			if (!yaml.ContainsKey(key))
 				return Array.Empty<string>();
 
-			return yaml[key].ToDictionary().Keys.ToArray();
+			return yaml[key].Nodes.Select(n => n.Key).ToArray();
 		}
 
 		static IReadOnlyDictionary<string, string> YamlDictionary(Dictionary<string, MiniYaml> yaml, string key)

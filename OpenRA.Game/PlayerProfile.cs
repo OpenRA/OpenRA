@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA
 {
@@ -31,7 +30,7 @@ namespace OpenRA
 		{
 			var badges = new List<PlayerBadge>();
 
-			var badgesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Badges");
+			var badgesNode = yaml.NodeWithKeyOrDefault("Badges");
 			if (badgesNode != null)
 			{
 				var playerDatabase = Game.ModData.Manifest.Get<PlayerDatabase>();

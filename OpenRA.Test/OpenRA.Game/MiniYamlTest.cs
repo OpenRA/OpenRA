@@ -247,7 +247,7 @@ Test:
 				 .First(n => n.Key == "Test").Value.Nodes;
 
 			Assert.IsTrue(result.Any(n => n.Key == "MockString"), "Node should have the MockString child, but does not.");
-			Assert.IsTrue(result.First(n => n.Key == "MockString").Value.ToDictionary()["AString"].Value == "Override",
+			Assert.IsTrue(result.First(n => n.Key == "MockString").Value.NodeWithKey("AString").Value.Value == "Override",
 				"MockString value has not been set with the correct override value for AString.");
 		}
 
@@ -272,7 +272,7 @@ Test:
 				.First(n => n.Key == "Test").Value.Nodes;
 
 			Assert.IsTrue(result.Any(n => n.Key == "MockString"), "Node should have the MockString child, but does not.");
-			Assert.IsTrue(result.First(n => n.Key == "MockString").Value.ToDictionary()["AString"].Value == "Override",
+			Assert.IsTrue(result.First(n => n.Key == "MockString").Value.NodeWithKey("AString").Value.Value == "Override",
 				"MockString value has not been set with the correct override value for AString.");
 		}
 

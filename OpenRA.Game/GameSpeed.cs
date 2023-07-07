@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA
 {
@@ -38,7 +37,7 @@ namespace OpenRA
 		static object LoadSpeeds(MiniYaml y)
 		{
 			var ret = new Dictionary<string, GameSpeed>();
-			var speedsNode = y.Nodes.FirstOrDefault(n => n.Key == "Speeds");
+			var speedsNode = y.NodeWithKeyOrDefault("Speeds");
 			if (speedsNode == null)
 				throw new YamlException("Error parsing GameSpeeds: Missing Speeds node!");
 

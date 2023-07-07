@@ -246,7 +246,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					void RunSourceActions(MiniYamlNode contentPackageYaml)
 					{
-						var sourceActionListYaml = contentPackageYaml.Value.Nodes.FirstOrDefault(x => x.Key == "Actions");
+						var sourceActionListYaml = contentPackageYaml.Value.NodeWithKeyOrDefault("Actions");
 						if (sourceActionListYaml == null)
 							return;
 
@@ -263,7 +263,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					foreach (var packageInstallationNode in modSource.Install.Where(x => x.Key == "ContentPackage"))
 					{
-						var packageName = packageInstallationNode.Value.Nodes.SingleOrDefault(x => x.Key == "Name")?.Value.Value;
+						var packageName = packageInstallationNode.Value.NodeWithKeyOrDefault("Name")?.Value.Value;
 						if (!string.IsNullOrEmpty(packageName) && selectedPackages.TryGetValue(packageName, out var required) && required)
 							RunSourceActions(packageInstallationNode);
 					}
@@ -338,9 +338,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				checkboxWidget.OnClick = () => selectedPackages[package.Identifier] = !selectedPackages[package.Identifier];
 
 				var contentPackageNode = source.Install.FirstOrDefault(x =>
-					x.Value.Nodes.FirstOrDefault(y => y.Key == "Name")?.Value.Value == package.Identifier);
+					x.Value.NodeWithKeyOrDefault("Name")?.Value.Value == package.Identifier);
 
-				var tooltipText = contentPackageNode?.Value.Nodes.FirstOrDefault(x => x.Key == nameof(ModContent.ModSource.TooltipText))?.Value.Value;
+				var tooltipText = contentPackageNode?.Value.NodeWithKeyOrDefault(nameof(ModContent.ModSource.TooltipText))?.Value.Value;
 				var tooltipIcon = containerWidget.Get<ImageWidget>("PACKAGE_INFO");
 				tooltipIcon.IsVisible = () => !string.IsNullOrWhiteSpace(tooltipText);
 				tooltipIcon.GetTooltipText = () => tooltipText;

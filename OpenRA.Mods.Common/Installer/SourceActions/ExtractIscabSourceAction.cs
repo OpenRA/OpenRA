@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using OpenRA.Mods.Common.FileFormats;
 using OpenRA.Mods.Common.Widgets.Logic;
 using FS = OpenRA.FileSystem.FileSystem;
@@ -26,11 +25,11 @@ namespace OpenRA.Mods.Common.Installer
 			// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected source path
 			var sourcePath = actionYaml.Value.StartsWith('^') ? Platform.ResolvePath(actionYaml.Value) : FS.ResolveCaseInsensitivePath(Path.Combine(path, actionYaml.Value));
 
-			var volumeNode = actionYaml.Nodes.FirstOrDefault(n => n.Key == "Volumes");
+			var volumeNode = actionYaml.NodeWithKeyOrDefault("Volumes");
 			if (volumeNode == null)
 				throw new InvalidDataException("extract-iscab entry doesn't define a Volumes node");
 
-			var extractNode = actionYaml.Nodes.FirstOrDefault(n => n.Key == "Extract");
+			var extractNode = actionYaml.NodeWithKeyOrDefault("Extract");
 			if (extractNode == null)
 				throw new InvalidDataException("extract-iscab entry doesn't define an Extract node");
 

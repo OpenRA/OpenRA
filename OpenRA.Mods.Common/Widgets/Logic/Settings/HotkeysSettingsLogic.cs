@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				foreach (var hg in hotkeyGroupsYaml.Nodes)
 				{
-					var typesNode = hg.Value.Nodes.FirstOrDefault(n => n.Key == "Types");
+					var typesNode = hg.Value.NodeWithKeyOrDefault("Types");
 					if (typesNode != null)
 						hotkeyGroups.Add(hg.Key, FieldLoader.GetValue<HashSet<string>>("Types", typesNode.Value.Value));
 				}

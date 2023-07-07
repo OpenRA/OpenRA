@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA
 {
@@ -31,29 +30,26 @@ namespace OpenRA
 			if (!string.IsNullOrEmpty(node.Value))
 				Default = FieldLoader.GetValue<Hotkey>("value", node.Value);
 
-			var descriptionNode = node.Nodes.FirstOrDefault(n => n.Key == "Description");
-			if (descriptionNode != null)
-				Description = descriptionNode.Value.Value;
+			var nodeDict = node.ToDictionary();
 
-			var typesNode = node.Nodes.FirstOrDefault(n => n.Key == "Types");
-			if (typesNode != null)
-				Types = FieldLoader.GetValue<HashSet<string>>("Types", typesNode.Value.Value);
+			if (nodeDict.TryGetValue("Description", out var descriptionYaml))
+				Description = descriptionYaml.Value;
 
-			var contextsNode = node.Nodes.FirstOrDefault(n => n.Key == "Contexts");
-			if (contextsNode != null)
-				Contexts = FieldLoader.GetValue<HashSet<string>>("Contexts", contextsNode.Value.Value);
+			if (nodeDict.TryGetValue("Types", out var typesYaml))
+				Types = FieldLoader.GetValue<HashSet<string>>("Types", typesYaml.Value);
 
-			var platformNode = node.Nodes.FirstOrDefault(n => n.Key == "Platform");
-			if (platformNode != null)
+			if (nodeDict.TryGetValue("Contexts", out var contextYaml))
+				Contexts = FieldLoader.GetValue<HashSet<string>>("Contexts", contextYaml.Value);
+
+			if (nodeDict.TryGetValue("Platform", out var platformYaml))
 			{
-				var platformOverride = platformNode.Value.Nodes.FirstOrDefault(n => n.Key == Platform.CurrentPlatform.ToString());
+				var platformOverride = platformYaml.NodeWithKeyOrDefault(Platform.CurrentPlatform.ToString());
 				if (platformOverride != null)
 					Default = FieldLoader.GetValue<Hotkey>("value", platformOverride.Value.Value);
 			}
 
-			var readonlyNode = node.Nodes.FirstOrDefault(n => n.Key == "Readonly");
-			if (readonlyNode != null)
-				Readonly = FieldLoader.GetValue<bool>("Readonly", readonlyNode.Value.Value);
+			if (nodeDict.TryGetValue("Readonly", out var readonlyYaml))
+				Readonly = FieldLoader.GetValue<bool>("Readonly", readonlyYaml.Value);
 		}
 	}
 }

@@ -132,12 +132,12 @@ namespace OpenRA.Mods.Common.Widgets
 		public static IEnumerable<string> LinterHotkeyNames(MiniYamlNode widgetNode, Action<string> emitError)
 		{
 			var prefix = "";
-			var prefixNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "HotkeyPrefix");
+			var prefixNode = widgetNode.Value.NodeWithKeyOrDefault("HotkeyPrefix");
 			if (prefixNode != null)
 				prefix = prefixNode.Value.Value;
 
 			var count = 0;
-			var countNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "HotkeyCount");
+			var countNode = widgetNode.Value.NodeWithKeyOrDefault("HotkeyCount");
 			if (countNode != null)
 				count = FieldLoader.GetValue<int>("HotkeyCount", countNode.Value.Value);
 

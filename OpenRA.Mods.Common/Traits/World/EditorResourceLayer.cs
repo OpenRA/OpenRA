@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected static object LoadResourceTypes(MiniYaml yaml)
 		{
 			var ret = new Dictionary<string, ResourceLayerInfo.ResourceTypeInfo>();
-			var resources = yaml.Nodes.FirstOrDefault(n => n.Key == "ResourceTypes");
+			var resources = yaml.NodeWithKeyOrDefault("ResourceTypes");
 			if (resources != null)
 				foreach (var r in resources.Value.Nodes)
 					ret[r.Key] = new ResourceLayerInfo.ResourceTypeInfo(r.Value);
