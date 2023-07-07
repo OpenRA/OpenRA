@@ -26,8 +26,11 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IResourceLayer resourceLayer;
 		readonly BodyOrientation body;
 		readonly IMove move;
+		readonly Mobile mobile;
 		readonly CPos targetCell;
 		readonly INotifyHarvesterAction[] notifyHarvesterActions;
+
+		bool wasMobileMoved = false;
 
 		public HarvestResource(Actor self, CPos targetCell)
 		{
@@ -36,6 +39,9 @@ namespace OpenRA.Mods.Common.Activities
 			facing = self.Trait<IFacing>();
 			body = self.Trait<BodyOrientation>();
 			move = self.Trait<IMove>();
+			mobile = move as Mobile;
+			if (mobile != null)
+				mobile.MoveResult = MoveResult.SoFarSoGood;
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 			this.targetCell = targetCell;
@@ -58,6 +64,11 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling || harv.IsFull)
 				return true;
 
+			if (wasMobileMoved && mobile != null && mobile.MoveResult == MoveResult.StuckByImmovable)
+				return true;
+			else
+				wasMobileMoved = false;
+
 			// Move towards the target cell
 			if (self.Location != targetCell)
 			{
@@ -65,6 +76,7 @@ namespace OpenRA.Mods.Common.Activities
 					n.MovingToResources(self, targetCell);
 
 				QueueChild(move.MoveTo(targetCell, 0));
+				wasMobileMoved = true;
 				return false;
 			}
 
