@@ -6,6 +6,9 @@
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="6.0.0" />
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
+  <ItemGroup Condition="'$(MSBuildRuntimeType)'=='Mono'">
+    <PackageReference Include="System.Collections.Immutable" Version="6.0.0" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Linguini.Bundle" Version="0.5.0" />
     <PackageReference Include="OpenRA-Eluant" Version="1.0.21" />

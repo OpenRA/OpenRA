@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
@@ -324,22 +325,19 @@ namespace OpenRA
 			var resolved = new Dictionary<string, MiniYaml>(tree.Count);
 			foreach (var kv in tree)
 			{
-				var inherited = new Dictionary<string, MiniYamlNode.SourceLocation>
-				{
-					{ kv.Key, default }
-				};
-
+				// Inheritance is tracked from parent->child, but not from child->parentsiblings.
+				var inherited = ImmutableDictionary<string, MiniYamlNode.SourceLocation>.Empty.Add(kv.Key, default);
 				var children = ResolveInherits(kv.Value, tree, inherited);
 				resolved.Add(kv.Key, new MiniYaml(kv.Value.Value, children));
 			}
 
 			// Resolve any top-level removals (e.g. removing whole actor blocks)
 			var nodes = new MiniYaml("", resolved.Select(kv => new MiniYamlNode(kv.Key, kv.Value)).ToList());
-			return ResolveInherits(nodes, tree, new Dictionary<string, MiniYamlNode.SourceLocation>());
+			return ResolveInherits(nodes, tree, ImmutableDictionary<string, MiniYamlNode.SourceLocation>.Empty);
 		}
 
 		static void MergeIntoResolved(MiniYamlNode overrideNode, List<MiniYamlNode> existingNodes, HashSet<string> existingNodeKeys,
-			Dictionary<string, MiniYaml> tree, Dictionary<string, MiniYamlNode.SourceLocation> inherited)
+			Dictionary<string, MiniYaml> tree, ImmutableDictionary<string, MiniYamlNode.SourceLocation> inherited)
 		{
 			if (existingNodeKeys.Add(overrideNode.Key))
 			{
@@ -352,13 +350,10 @@ namespace OpenRA
 			existingNode.Value.Nodes = ResolveInherits(existingNode.Value, tree, inherited);
 		}
 
-		static List<MiniYamlNode> ResolveInherits(MiniYaml node, Dictionary<string, MiniYaml> tree, Dictionary<string, MiniYamlNode.SourceLocation> inherited)
+		static List<MiniYamlNode> ResolveInherits(MiniYaml node, Dictionary<string, MiniYaml> tree, ImmutableDictionary<string, MiniYamlNode.SourceLocation> inherited)
 		{
 			var resolved = new List<MiniYamlNode>(node.Nodes.Count);
 			var resolvedKeys = new HashSet<string>(node.Nodes.Count);
-
-			// Inheritance is tracked from parent->child, but not from child->parentsiblings.
-			inherited = new Dictionary<string, MiniYamlNode.SourceLocation>(inherited);
 
 			foreach (var n in node.Nodes)
 			{
@@ -368,10 +363,15 @@ namespace OpenRA
 						throw new YamlException(
 							$"{n.Location}: Parent type `{n.Value.Value}` not found");
 
-					if (inherited.TryGetValue(n.Value.Value, out var location))
-						throw new YamlException($"{n.Location}: Parent type `{n.Value.Value}` was already inherited by this yaml tree at {location} (note: may be from a derived tree)");
+					try
+					{
+						inherited = inherited.Add(n.Value.Value, n.Location);
+					}
+					catch (ArgumentException)
+					{
+						throw new YamlException($"{n.Location}: Parent type `{n.Value.Value}` was already inherited by this yaml tree at {inherited[n.Value.Value]} (note: may be from a derived tree)");
+					}
 
-					inherited.Add(n.Value.Value, n.Location);
 					foreach (var r in ResolveInherits(parent, tree, inherited))
 						MergeIntoResolved(r, resolved, resolvedKeys, tree, inherited);
 				}
