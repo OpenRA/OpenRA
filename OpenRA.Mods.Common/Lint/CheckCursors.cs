@@ -33,11 +33,11 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			var fileSystem = modData.DefaultFileSystem;
 			var sequenceYaml = MiniYaml.Merge(modData.Manifest.Cursors.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s)));
-			var nodesDict = new MiniYaml(null, sequenceYaml).ToDictionary();
+			var cursorsYaml = new MiniYaml(null, sequenceYaml).NodeWithKey("Cursors").Value;
 
 			// Avoid using CursorProvider as it attempts to load palettes from the file system.
 			var cursors = new List<string>();
-			foreach (var s in nodesDict["Cursors"].Nodes)
+			foreach (var s in cursorsYaml.Nodes)
 				foreach (var sequence in s.Value.Nodes)
 					cursors.Add(sequence.Key);
 

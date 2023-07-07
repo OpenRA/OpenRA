@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 
 namespace OpenRA.Mods.Common.Graphics
@@ -37,10 +36,10 @@ namespace OpenRA.Mods.Common.Graphics
 
 		protected override IEnumerable<ReservationInfo> ParseFilenames(ModData modData, string tileset, int[] frames, MiniYaml data, MiniYaml defaults)
 		{
-			var node = data.Nodes.FirstOrDefault(n => n.Key == TilesetFilenames.Key) ?? defaults.Nodes.FirstOrDefault(n => n.Key == TilesetFilenames.Key);
+			var node = data.NodeWithKeyOrDefault(TilesetFilenames.Key) ?? defaults.NodeWithKeyOrDefault(TilesetFilenames.Key);
 			if (node != null)
 			{
-				var tilesetNode = node.Value.Nodes.FirstOrDefault(n => n.Key == tileset);
+				var tilesetNode = node.Value.NodeWithKeyOrDefault(tileset);
 				if (tilesetNode != null)
 				{
 					var loadFrames = CalculateFrameIndices(start, length, stride ?? length ?? 0, facings, frames, transpose, reverseFacings, shadowStart);
@@ -53,10 +52,10 @@ namespace OpenRA.Mods.Common.Graphics
 
 		protected override IEnumerable<ReservationInfo> ParseCombineFilenames(ModData modData, string tileset, int[] frames, MiniYaml data)
 		{
-			var node = data.Nodes.FirstOrDefault(n => n.Key == TilesetFilenames.Key);
+			var node = data.NodeWithKeyOrDefault(TilesetFilenames.Key);
 			if (node != null)
 			{
-				var tilesetNode = node.Value.Nodes.FirstOrDefault(n => n.Key == tileset);
+				var tilesetNode = node.Value.NodeWithKeyOrDefault(tileset);
 				if (tilesetNode != null)
 				{
 					if (frames == null)

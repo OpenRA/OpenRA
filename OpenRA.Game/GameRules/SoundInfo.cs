@@ -40,16 +40,16 @@ namespace OpenRA.GameRules
 		static Dictionary<string, SoundPool> ParseSoundPool(MiniYaml y, string key)
 		{
 			var ret = new Dictionary<string, SoundPool>();
-			var classifiction = y.Nodes.First(x => x.Key == key);
+			var classifiction = y.NodeWithKey(key);
 			foreach (var t in classifiction.Value.Nodes)
 			{
 				var volumeModifier = 1f;
-				var volumeModifierNode = t.Value.Nodes.FirstOrDefault(x => x.Key == nameof(SoundPool.VolumeModifier));
+				var volumeModifierNode = t.Value.NodeWithKeyOrDefault(nameof(SoundPool.VolumeModifier));
 				if (volumeModifierNode != null)
 					volumeModifier = FieldLoader.GetValue<float>(volumeModifierNode.Key, volumeModifierNode.Value.Value);
 
 				var interruptType = SoundPool.DefaultInterruptType;
-				var interruptTypeNode = t.Value.Nodes.FirstOrDefault(x => x.Key == nameof(SoundPool.InterruptType));
+				var interruptTypeNode = t.Value.NodeWithKeyOrDefault(nameof(SoundPool.InterruptType));
 				if (interruptTypeNode != null)
 					interruptType = FieldLoader.GetValue<SoundPool.InterruptType>(interruptTypeNode.Key, interruptTypeNode.Value.Value);
 

@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 
 				manualSteps.AddRange(rule.BeforeUpdate(modData));
 
-				var mapActorsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Actors");
+				var mapActorsNode = yaml.NodeWithKeyOrDefault("Actors");
 				if (mapActorsNode != null)
 				{
 					var mapActors = new YamlFileSet()
@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 					files.AddRange(mapActors);
 				}
 
-				var mapRulesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Rules");
+				var mapRulesNode = yaml.NodeWithKeyOrDefault("Rules");
 				if (mapRulesNode != null)
 				{
 					if (rule is IBeforeUpdateActors before)
@@ -125,7 +125,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 					files.AddRange(mapRules);
 				}
 
-				var mapWeaponsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Weapons");
+				var mapWeaponsNode = yaml.NodeWithKeyOrDefault("Weapons");
 				if (mapWeaponsNode != null)
 				{
 					if (rule is IBeforeUpdateWeapons before)
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 					files.AddRange(mapWeapons);
 				}
 
-				var mapSequencesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Sequences");
+				var mapSequencesNode = yaml.NodeWithKeyOrDefault("Sequences");
 				if (mapSequencesNode != null)
 				{
 					if (rule is IBeforeUpdateSequences before)
@@ -216,19 +216,19 @@ namespace OpenRA.Mods.Common.UpdateRules
 						continue;
 
 					var yaml = new MiniYamlBuilder(new MiniYaml(null, MiniYaml.FromStream(mapStream, package.Name, false)));
-					var mapRulesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Rules");
+					var mapRulesNode = yaml.NodeWithKeyOrDefault("Rules");
 					if (mapRulesNode != null)
 						foreach (var f in LoadExternalMapYaml(modData, mapRulesNode.Value, externalFilenames))
 							if (!modRules.Any(m => m.Item1 == f.Item1 && m.Item2 == f.Item2))
 								modRules.Add(f);
 
-					var mapWeaponsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Weapons");
+					var mapWeaponsNode = yaml.NodeWithKeyOrDefault("Weapons");
 					if (mapWeaponsNode != null)
 						foreach (var f in LoadExternalMapYaml(modData, mapWeaponsNode.Value, externalFilenames))
 							if (!modWeapons.Any(m => m.Item1 == f.Item1 && m.Item2 == f.Item2))
 								modWeapons.Add(f);
 
-					var mapSequencesNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Sequences");
+					var mapSequencesNode = yaml.NodeWithKeyOrDefault("Sequences");
 					if (mapSequencesNode != null)
 						foreach (var f in LoadExternalMapYaml(modData, mapSequencesNode.Value, externalFilenames))
 							if (!modSequences.Any(m => m.Item1 == f.Item1 && m.Item2 == f.Item2))
@@ -285,7 +285,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			foreach (var manualStep in transform(modData, current))
 				yield return manualStep;
 
-			var childrenNode = current.Value.Nodes.FirstOrDefault(n => n.Key == "Children");
+			var childrenNode = current.Value.NodeWithKeyOrDefault("Children");
 			if (childrenNode != null)
 				foreach (var node in childrenNode.Value.Nodes)
 					if (node.Key != null)

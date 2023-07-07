@@ -230,7 +230,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				if (!string.IsNullOrEmpty(sequenceNode.Value.Value))
 					explicitlyNamedSequences.Add(sequenceNode.Key);
 
-				var resolvedSequenceNode = resolvedImageNode.Value.Nodes.SingleOrDefault(n => n.Key == sequenceNode.Key);
+				var resolvedSequenceNode = resolvedImageNode.Value.NodeWithKeyOrDefault(sequenceNode.Key);
 				if (resolvedSequenceNode == null)
 					continue;
 

@@ -60,7 +60,7 @@ namespace OpenRA.Network
 		static object LoadArguments(MiniYaml yaml)
 		{
 			var arguments = new Dictionary<string, object>();
-			var argumentsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Arguments");
+			var argumentsNode = yaml.NodeWithKeyOrDefault("Arguments");
 			if (argumentsNode != null)
 			{
 				foreach (var argumentNode in argumentsNode.Value.Nodes)

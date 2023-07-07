@@ -141,6 +141,34 @@ namespace OpenRA
 			return new MiniYaml(Value, newNodes);
 		}
 
+		public MiniYamlNode NodeWithKey(string key)
+		{
+			var result = NodeWithKeyOrDefault(key);
+			if (result == null)
+				throw new InvalidDataException($"No node with key '{key}'");
+			return result;
+		}
+
+		public MiniYamlNode NodeWithKeyOrDefault(string key)
+		{
+			// PERF: Avoid LINQ.
+			var first = true;
+			MiniYamlNode result = null;
+			foreach (var node in Nodes)
+			{
+				if (node.Key != key)
+					continue;
+
+				if (!first)
+					throw new InvalidDataException($"Duplicate key '{node.Key}' in {node.Location}");
+
+				first = false;
+				result = node;
+			}
+
+			return result;
+		}
+
 		public Dictionary<string, MiniYaml> ToDictionary()
 		{
 			return ToDictionary(MiniYamlIdentity);
@@ -173,11 +201,6 @@ namespace OpenRA
 		{
 			Value = value;
 			Nodes = ImmutableArray.CreateRange(nodes);
-		}
-
-		public static ImmutableArray<MiniYamlNode> NodesOrEmpty(MiniYaml y, string s)
-		{
-			return y.Nodes.FirstOrDefault(n => n.Key == s)?.Value.Nodes ?? ImmutableArray<MiniYamlNode>.Empty;
 		}
 
 		static List<MiniYamlNode> FromLines(IEnumerable<ReadOnlyMemory<char>> lines, string filename, bool discardCommentsAndWhitespace, Dictionary<string, string> stringPool)
@@ -667,6 +690,11 @@ namespace OpenRA
 			if (Nodes != null)
 				foreach (var line in Nodes.ToLines())
 					yield return "\t" + line;
+		}
+
+		public MiniYamlNodeBuilder NodeWithKeyOrDefault(string key)
+		{
+			return Nodes.SingleOrDefault(n => n.Key == key);
 		}
 	}
 

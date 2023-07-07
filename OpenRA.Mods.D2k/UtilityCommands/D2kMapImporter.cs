@@ -384,7 +384,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 						actorNodes.Add(new MiniYamlNode("Actor" + (map.ActorDefinitions.Count + actorNodes.Count), a.Save()));
 
 						if (map.PlayerDefinitions.Concat(playerNodes).All(
-							x => x.Value.Nodes.Single(y => y.Key == "Name").Value.Value != kvp.Owner))
+							x => x.Value.NodeWithKey("Name").Value.Value != kvp.Owner))
 						{
 							var playerInfo = PlayerReferenceDataByPlayerName[kvp.Owner];
 							var playerReference = new PlayerReference

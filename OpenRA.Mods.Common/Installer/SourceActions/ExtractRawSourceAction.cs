@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using OpenRA.Mods.Common.Widgets.Logic;
 using FS = OpenRA.FileSystem.FileSystem;
 
@@ -37,14 +36,14 @@ namespace OpenRA.Mods.Common.Installer
 						continue;
 					}
 
-					var offsetNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Offset");
+					var offsetNode = node.Value.NodeWithKeyOrDefault("Offset");
 					if (offsetNode == null)
 					{
 						Log.Write("install", "Skipping entry with missing Offset definition " + targetPath);
 						continue;
 					}
 
-					var lengthNode = node.Value.Nodes.FirstOrDefault(n => n.Key == "Length");
+					var lengthNode = node.Value.NodeWithKeyOrDefault("Length");
 					if (lengthNode == null)
 					{
 						Log.Write("install", "Skipping entry with missing Length definition " + targetPath);

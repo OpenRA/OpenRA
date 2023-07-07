@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Traits;
 
@@ -27,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		static object LoadDecisions(MiniYaml yaml)
 		{
 			var ret = new List<SupportPowerDecision>();
-			var decisions = yaml.Nodes.FirstOrDefault(n => n.Key == "Decisions");
+			var decisions = yaml.NodeWithKeyOrDefault("Decisions");
 			if (decisions != null)
 				foreach (var d in decisions.Value.Nodes)
 					ret.Add(new SupportPowerDecision(d.Value));
@@ -224,12 +223,12 @@ namespace OpenRA.Mods.Common.Traits
 			};
 		}
 
-		void IGameSaveTraitData.ResolveTraitData(Actor self, ImmutableArray<MiniYamlNode> data)
+		void IGameSaveTraitData.ResolveTraitData(Actor self, MiniYaml data)
 		{
 			if (self.World.IsReplay)
 				return;
 
-			var waitingPowersNode = data.FirstOrDefault(n => n.Key == "WaitingPowers");
+			var waitingPowersNode = data.NodeWithKeyOrDefault("WaitingPowers");
 			if (waitingPowersNode != null)
 			{
 				foreach (var n in waitingPowersNode.Value.Nodes)

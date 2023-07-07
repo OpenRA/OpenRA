@@ -94,17 +94,17 @@ namespace OpenRA
 
 			if (sheetBuilder != null)
 			{
-				var iconNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Icon");
+				var iconNode = yaml.NodeWithKeyOrDefault("Icon");
 				if (iconNode != null && !string.IsNullOrEmpty(iconNode.Value.Value))
 					using (var stream = new MemoryStream(Convert.FromBase64String(iconNode.Value.Value)))
 						mod.Icon = sheetBuilder.Add(new Png(stream));
 
-				var icon2xNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Icon2x");
+				var icon2xNode = yaml.NodeWithKeyOrDefault("Icon2x");
 				if (icon2xNode != null && !string.IsNullOrEmpty(icon2xNode.Value.Value))
 					using (var stream = new MemoryStream(Convert.FromBase64String(icon2xNode.Value.Value)))
 						mod.Icon2x = sheetBuilder.Add(new Png(stream), 1f / 2);
 
-				var icon3xNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Icon3x");
+				var icon3xNode = yaml.NodeWithKeyOrDefault("Icon3x");
 				if (icon3xNode != null && !string.IsNullOrEmpty(icon3xNode.Value.Value))
 					using (var stream = new MemoryStream(Convert.FromBase64String(icon3xNode.Value.Value)))
 						mod.Icon3x = sheetBuilder.Add(new Png(stream), 1f / 3);

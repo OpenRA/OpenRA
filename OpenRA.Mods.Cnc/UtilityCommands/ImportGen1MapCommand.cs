@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 		protected MiniYamlNodeBuilder GetWorldNodeBuilderFromRules()
 		{
-			var worldNode = Map.RuleDefinitions.Nodes.FirstOrDefault(n => n.Key == "World");
+			var worldNode = Map.RuleDefinitions.NodeWithKeyOrDefault("World");
 			var worldNodeBuilder = worldNode != null
 				? new MiniYamlNodeBuilder(worldNode)
 				: new MiniYamlNodeBuilder("World", new MiniYamlBuilder("", new List<MiniYamlNode>()));
@@ -166,7 +166,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 			var worldNodeBuilder = GetWorldNodeBuilderFromRules();
 
-			var missionData = worldNodeBuilder.Value.Nodes.FirstOrDefault(n => n.Key == "MissionData");
+			var missionData = worldNodeBuilder.Value.NodeWithKeyOrDefault("MissionData");
 			if (missionData == null)
 			{
 				missionData = new MiniYamlNodeBuilder("MissionData", new MiniYamlBuilder("", new List<MiniYamlNode>()));
@@ -237,7 +237,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			{
 				var worldNodeBuilder = GetWorldNodeBuilderFromRules();
 
-				var missionData = worldNodeBuilder.Value.Nodes.FirstOrDefault(n => n.Key == "MissionData");
+				var missionData = worldNodeBuilder.Value.NodeWithKeyOrDefault("MissionData");
 				if (missionData == null)
 				{
 					missionData = new MiniYamlNodeBuilder("MissionData", new MiniYamlBuilder("", new List<MiniYamlNode>()));

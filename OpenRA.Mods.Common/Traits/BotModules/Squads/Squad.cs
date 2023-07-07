@@ -155,12 +155,12 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			var type = SquadType.Rush;
 			var target = ((Actor)null, WVec.Zero);
 
-			var typeNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Type");
+			var typeNode = yaml.NodeWithKeyOrDefault("Type");
 			if (typeNode != null)
 				type = FieldLoader.GetValue<SquadType>("Type", typeNode.Value.Value);
 
-			var actorToTargetNode = yaml.Nodes.FirstOrDefault(n => n.Key == "ActorToTarget");
-			var targetOffsetNode = yaml.Nodes.FirstOrDefault(n => n.Key == "TargetOffset");
+			var actorToTargetNode = yaml.NodeWithKeyOrDefault("ActorToTarget");
+			var targetOffsetNode = yaml.NodeWithKeyOrDefault("TargetOffset");
 			if (actorToTargetNode != null && targetOffsetNode != null)
 			{
 				var actorToTarget = squadManager.World.GetActorById(FieldLoader.GetValue<uint>("ActorToTarget", actorToTargetNode.Value.Value));
@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			var squad = new Squad(bot, squadManager, type, target);
 
-			var unitsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Units");
+			var unitsNode = yaml.NodeWithKeyOrDefault("Units");
 			if (unitsNode != null)
 				squad.Units.UnionWith(FieldLoader.GetValue<uint[]>("Units", unitsNode.Value.Value)
 					.Select(a => squadManager.World.GetActorById(a)));

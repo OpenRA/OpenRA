@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Graphics
 		IReadOnlyDictionary<string, ISpriteSequence> ISpriteSequenceLoader.ParseSequences(ModData modData, string tileset, SpriteCache cache, MiniYamlNode imageNode)
 		{
 			var sequences = new Dictionary<string, ISpriteSequence>();
-			var node = imageNode.Value.Nodes.SingleOrDefault(n => n.Key == "Defaults");
+			var node = imageNode.Value.NodeWithKeyOrDefault("Defaults");
 			var defaults = node?.Value ?? NoData;
 			imageNode = imageNode.WithValue(imageNode.Value.WithNodes(imageNode.Value.Nodes.Remove(node)));
 
@@ -262,7 +262,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		protected static T LoadField<T>(string key, T fallback, MiniYaml data, MiniYaml defaults = null)
 		{
-			var node = data.Nodes.FirstOrDefault(n => n.Key == key) ?? defaults?.Nodes.FirstOrDefault(n => n.Key == key);
+			var node = data.NodeWithKeyOrDefault(key) ?? defaults?.NodeWithKeyOrDefault(key);
 			if (node == null)
 				return fallback;
 
@@ -276,7 +276,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		protected static T LoadField<T>(SpriteSequenceField<T> field, MiniYaml data, MiniYaml defaults, out MiniYamlNode.SourceLocation location)
 		{
-			var node = data.Nodes.FirstOrDefault(n => n.Key == field.Key) ?? defaults?.Nodes.FirstOrDefault(n => n.Key == field.Key);
+			var node = data.NodeWithKeyOrDefault(field.Key) ?? defaults?.NodeWithKeyOrDefault(field.Key);
 			if (node == null)
 			{
 				location = default;
@@ -414,7 +414,7 @@ namespace OpenRA.Mods.Common.Graphics
 			var offset = LoadField(Offset, data, defaults);
 			var blendMode = LoadField(BlendMode, data, defaults);
 
-			var combineNode = data.Nodes.FirstOrDefault(n => n.Key == Combine.Key);
+			var combineNode = data.NodeWithKeyOrDefault(Combine.Key);
 			if (combineNode != null)
 			{
 				for (var i = 0; i < combineNode.Value.Nodes.Length; i++)

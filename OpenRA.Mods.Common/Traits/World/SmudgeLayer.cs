@@ -56,11 +56,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		public static object LoadInitialSmudges(MiniYaml yaml)
 		{
-			var nd = yaml.ToDictionary();
 			var smudges = new Dictionary<CPos, MapSmudge>();
-			if (nd.TryGetValue("InitialSmudges", out var smudgeYaml))
+			var smudgeYaml = yaml.NodeWithKeyOrDefault("InitialSmudges");
+			if (smudgeYaml != null)
 			{
-				foreach (var node in smudgeYaml.Nodes)
+				foreach (var node in smudgeYaml.Value.Nodes)
 				{
 					try
 					{

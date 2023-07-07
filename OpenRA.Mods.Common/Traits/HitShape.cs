@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			IHitShape ret;
 
-			var shapeNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Type");
+			var shapeNode = yaml.NodeWithKeyOrDefault("Type");
 			var shape = shapeNode != null ? shapeNode.Value.Value : string.Empty;
 
 			if (!string.IsNullOrEmpty(shape))

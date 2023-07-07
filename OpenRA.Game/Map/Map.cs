@@ -95,9 +95,9 @@ namespace OpenRA
 				t == typeof(MiniYaml) ? Type.MiniYaml : Type.Normal;
 		}
 
-		public void Deserialize(Map map, ImmutableArray<MiniYamlNode> nodes)
+		public void Deserialize(Map map, MiniYaml yaml)
 		{
-			var node = nodes.FirstOrDefault(n => n.Key == key);
+			var node = yaml.NodeWithKeyOrDefault(key);
 			if (node == null)
 			{
 				if (required)
@@ -363,13 +363,13 @@ namespace OpenRA
 
 			var yaml = new MiniYaml(null, MiniYaml.FromStream(Package.GetStream("map.yaml"), package.Name));
 			foreach (var field in YamlFields)
-				field.Deserialize(this, yaml.Nodes);
+				field.Deserialize(this, yaml);
 
 			if (MapFormat < SupportedMapFormat)
 				throw new InvalidDataException($"Map format {MapFormat} is not supported.\n File: {package.Name}");
 
-			PlayerDefinitions = MiniYaml.NodesOrEmpty(yaml, "Players");
-			ActorDefinitions = MiniYaml.NodesOrEmpty(yaml, "Actors");
+			PlayerDefinitions = yaml.NodeWithKeyOrDefault("Players")?.Value.Nodes ?? ImmutableArray<MiniYamlNode>.Empty;
+			ActorDefinitions = yaml.NodeWithKeyOrDefault("Actors")?.Value.Nodes ?? ImmutableArray<MiniYamlNode>.Empty;
 
 			Grid = modData.Manifest.Get<MapGrid>();
 

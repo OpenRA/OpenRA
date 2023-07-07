@@ -779,7 +779,6 @@ ctdam:
 	damaged-idle-water-b:
 		Filename: ctdam_b.shp
 		Start: 24
-		Start: 8
 		Length: 8
 		Tick: 200
 

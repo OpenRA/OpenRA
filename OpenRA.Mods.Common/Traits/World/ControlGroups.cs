@@ -133,9 +133,9 @@ namespace OpenRA.Mods.Common.Traits
 			};
 		}
 
-		void IGameSaveTraitData.ResolveTraitData(Actor self, ImmutableArray<MiniYamlNode> data)
+		void IGameSaveTraitData.ResolveTraitData(Actor self, MiniYaml data)
 		{
-			var groupsNode = data.FirstOrDefault(n => n.Key == "Groups");
+			var groupsNode = data.NodeWithKeyOrDefault("Groups");
 			if (groupsNode != null)
 			{
 				foreach (var n in groupsNode.Value.Nodes)

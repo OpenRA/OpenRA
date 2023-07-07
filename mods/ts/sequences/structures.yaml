@@ -1667,7 +1667,6 @@ napuls.nod:
 		ZOffset: 512
 		BlendMode: Additive
 		IgnoreWorldTint: True
-		IgnoreWorldTint: True
 		DepthSprite:
 	icon:
 		Filename: sidebar-nod|empicon.shp

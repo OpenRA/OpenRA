@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using OpenRA.Mods.Common.Traits.BotModules.Squads;
 using OpenRA.Primitives;
@@ -526,52 +525,46 @@ namespace OpenRA.Mods.Common.Traits
 			};
 		}
 
-		void IGameSaveTraitData.ResolveTraitData(Actor self, ImmutableArray<MiniYamlNode> data)
+		void IGameSaveTraitData.ResolveTraitData(Actor self, MiniYaml data)
 		{
 			if (self.World.IsReplay)
 				return;
 
-			var initialBaseCenterNode = data.FirstOrDefault(n => n.Key == "InitialBaseCenter");
-			if (initialBaseCenterNode != null)
-				initialBaseCenter = FieldLoader.GetValue<CPos>("InitialBaseCenter", initialBaseCenterNode.Value.Value);
+			var nodes = data.ToDictionary();
 
-			var unitsHangingAroundTheBaseNode = data.FirstOrDefault(n => n.Key == "UnitsHangingAroundTheBase");
-			if (unitsHangingAroundTheBaseNode != null)
+			if (nodes.TryGetValue("InitialBaseCenter", out var initialBaseCenterNode))
+				initialBaseCenter = FieldLoader.GetValue<CPos>("InitialBaseCenter", initialBaseCenterNode.Value);
+
+			if (nodes.TryGetValue("UnitsHangingAroundTheBase", out var unitsHangingAroundTheBaseNode))
 			{
 				unitsHangingAroundTheBase.Clear();
-				unitsHangingAroundTheBase.AddRange(FieldLoader.GetValue<uint[]>("UnitsHangingAroundTheBase", unitsHangingAroundTheBaseNode.Value.Value)
+				unitsHangingAroundTheBase.AddRange(FieldLoader.GetValue<uint[]>("UnitsHangingAroundTheBase", unitsHangingAroundTheBaseNode.Value)
 					.Select(a => self.World.GetActorById(a)).Where(a => a != null));
 			}
 
-			var activeUnitsNode = data.FirstOrDefault(n => n.Key == "ActiveUnits");
-			if (activeUnitsNode != null)
+			if (nodes.TryGetValue("ActiveUnits", out var activeUnitsNode))
 			{
 				activeUnits.Clear();
-				activeUnits.UnionWith(FieldLoader.GetValue<uint[]>("ActiveUnits", activeUnitsNode.Value.Value)
+				activeUnits.UnionWith(FieldLoader.GetValue<uint[]>("ActiveUnits", activeUnitsNode.Value)
 					.Select(a => self.World.GetActorById(a)).Where(a => a != null));
 			}
 
-			var rushTicksNode = data.FirstOrDefault(n => n.Key == "RushTicks");
-			if (rushTicksNode != null)
-				rushTicks = FieldLoader.GetValue<int>("RushTicks", rushTicksNode.Value.Value);
+			if (nodes.TryGetValue("RushTicks", out var rushTicksNode))
+				rushTicks = FieldLoader.GetValue<int>("RushTicks", rushTicksNode.Value);
 
-			var assignRolesTicksNode = data.FirstOrDefault(n => n.Key == "AssignRolesTicks");
-			if (assignRolesTicksNode != null)
-				assignRolesTicks = FieldLoader.GetValue<int>("AssignRolesTicks", assignRolesTicksNode.Value.Value);
+			if (nodes.TryGetValue("AssignRolesTicks", out var assignRolesTicksNode))
+				assignRolesTicks = FieldLoader.GetValue<int>("AssignRolesTicks", assignRolesTicksNode.Value);
 
-			var attackForceTicksNode = data.FirstOrDefault(n => n.Key == "AttackForceTicks");
-			if (attackForceTicksNode != null)
-				attackForceTicks = FieldLoader.GetValue<int>("AttackForceTicks", attackForceTicksNode.Value.Value);
+			if (nodes.TryGetValue("AttackForceTicks", out var attackForceTicksNode))
+				attackForceTicks = FieldLoader.GetValue<int>("AttackForceTicks", attackForceTicksNode.Value);
 
-			var minAttackForceDelayTicksNode = data.FirstOrDefault(n => n.Key == "MinAttackForceDelayTicks");
-			if (minAttackForceDelayTicksNode != null)
-				minAttackForceDelayTicks = FieldLoader.GetValue<int>("MinAttackForceDelayTicks", minAttackForceDelayTicksNode.Value.Value);
+			if (nodes.TryGetValue("MinAttackForceDelayTicks", out var minAttackForceDelayTicksNode))
+				minAttackForceDelayTicks = FieldLoader.GetValue<int>("MinAttackForceDelayTicks", minAttackForceDelayTicksNode.Value);
 
-			var squadsNode = data.FirstOrDefault(n => n.Key == "Squads");
-			if (squadsNode != null)
+			if (nodes.TryGetValue("Squads", out var squadsNode))
 			{
 				Squads.Clear();
-				foreach (var n in squadsNode.Value.Nodes)
+				foreach (var n in squadsNode.Nodes)
 					Squads.Add(Squad.Deserialize(bot, this, n.Value));
 			}
 		}

@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Lint;
 using OpenRA.Traits;
@@ -47,27 +46,27 @@ namespace OpenRA.Mods.Common.Widgets
 				yield break;
 
 			var selectPrefix = "";
-			var selectPrefixNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "SelectGroupKeyPrefix");
+			var selectPrefixNode = widgetNode.Value.NodeWithKeyOrDefault("SelectGroupKeyPrefix");
 			if (selectPrefixNode != null)
 				selectPrefix = selectPrefixNode.Value.Value;
 
 			var createPrefix = "";
-			var createPrefixNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "CreateGroupKeyPrefix");
+			var createPrefixNode = widgetNode.Value.NodeWithKeyOrDefault("CreateGroupKeyPrefix");
 			if (createPrefixNode != null)
 				createPrefix = createPrefixNode.Value.Value;
 
 			var addToPrefix = "";
-			var addToPrefixNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "AddToGroupKeyPrefix");
+			var addToPrefixNode = widgetNode.Value.NodeWithKeyOrDefault("AddToGroupKeyPrefix");
 			if (addToPrefixNode != null)
 				addToPrefix = addToPrefixNode.Value.Value;
 
 			var combineWithPrefix = "";
-			var combineWithPrefixNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "CombineWithGroupKeyPrefix");
+			var combineWithPrefixNode = widgetNode.Value.NodeWithKeyOrDefault("CombineWithGroupKeyPrefix");
 			if (combineWithPrefixNode != null)
 				combineWithPrefix = combineWithPrefixNode.Value.Value;
 
 			var jumpToPrefix = "";
-			var jumpToPrefixNode = widgetNode.Value.Nodes.FirstOrDefault(n => n.Key == "JumpToGroupKeyPrefix");
+			var jumpToPrefixNode = widgetNode.Value.NodeWithKeyOrDefault("JumpToGroupKeyPrefix");
 			if (jumpToPrefixNode != null)
 				jumpToPrefix = jumpToPrefixNode.Value.Value;
 

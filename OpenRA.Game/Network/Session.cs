@@ -227,7 +227,7 @@ namespace OpenRA.Network
 			{
 				var gs = FieldLoader.Load<Global>(data);
 
-				var optionsNode = data.Nodes.FirstOrDefault(n => n.Key == "Options");
+				var optionsNode = data.NodeWithKeyOrDefault("Options");
 				if (optionsNode != null)
 					foreach (var n in optionsNode.Value.Nodes)
 						gs.LobbyOptions[n.Key] = FieldLoader.Load<LobbyOptionState>(n.Value);

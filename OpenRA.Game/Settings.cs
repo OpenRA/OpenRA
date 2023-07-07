@@ -385,7 +385,7 @@ namespace OpenRA
 					else
 					{
 						// Update or add the custom value
-						var fieldYaml = sectionYaml.Value.Nodes.FirstOrDefault(n => n.Key == fli.YamlName);
+						var fieldYaml = sectionYaml.Value.NodeWithKeyOrDefault(fli.YamlName);
 						if (fieldYaml != null)
 							fieldYaml.Value.Value = serialized;
 						else

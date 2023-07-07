@@ -140,7 +140,7 @@ namespace OpenRA.Network
 		static object LoadClients(MiniYaml yaml)
 		{
 			var clients = new List<GameClient>();
-			var clientsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Clients");
+			var clientsNode = yaml.NodeWithKeyOrDefault("Clients");
 			if (clientsNode != null)
 			{
 				var regex = new Regex(@"Client@\d+");
@@ -159,7 +159,7 @@ namespace OpenRA.Network
 			// Games advertised using the old API used a single Mods field
 			if (Mod == null || Version == null)
 			{
-				var modsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Mods");
+				var modsNode = yaml.NodeWithKeyOrDefault("Mods");
 				if (modsNode != null)
 				{
 					var modVersion = modsNode.Value.Value.Split('@');

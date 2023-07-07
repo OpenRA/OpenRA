@@ -11,7 +11,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using FS = OpenRA.FileSystem.FileSystem;
 
 namespace OpenRA.Mods.Common.Installer
@@ -33,8 +32,8 @@ namespace OpenRA.Mods.Common.Installer
 
 					using (var fileStream = File.OpenRead(filePath))
 					{
-						var offsetNode = kv.Value.Nodes.FirstOrDefault(n => n.Key == "Offset");
-						var lengthNode = kv.Value.Nodes.FirstOrDefault(n => n.Key == "Length");
+						var offsetNode = kv.Value.NodeWithKeyOrDefault("Offset");
+						var lengthNode = kv.Value.NodeWithKeyOrDefault("Length");
 						if (offsetNode != null || lengthNode != null)
 						{
 							var offset = 0L;

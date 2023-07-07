@@ -84,16 +84,16 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected static object LoadSpeeds(MiniYaml y)
 		{
-			var speeds = y.ToDictionary()["TerrainSpeeds"].Nodes;
+			var speeds = y.NodeWithKey("TerrainSpeeds").Value.Nodes;
 			var ret = new Dictionary<string, TerrainInfo>(speeds.Length);
 			foreach (var t in speeds)
 			{
 				var speed = FieldLoader.GetValue<int>("speed", t.Value.Value);
 				if (speed > 0)
 				{
-					var nodesDict = t.Value.ToDictionary();
-					var cost = nodesDict.TryGetValue("PathingCost", out var entry)
-						? FieldLoader.GetValue<short>("cost", entry.Value)
+					var pathingCost = t.Value.NodeWithKeyOrDefault("PathingCost");
+					var cost = pathingCost != null
+						? FieldLoader.GetValue<short>("cost", pathingCost.Value.Value)
 						: 10000 / speed;
 					ret.Add(t.Key, new TerrainInfo(speed, (short)cost));
 				}
