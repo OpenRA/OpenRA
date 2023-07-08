@@ -109,18 +109,23 @@ namespace OpenRA.Mods.Common.Traits
 			switch (order.OrderID)
 			{
 				case "BeginMinefield":
-					var start = self.World.Map.CellContaining(target.CenterPosition);
-					if (self.World.OrderGenerator is MinefieldOrderGenerator generator)
-						generator.AddMinelayer(self);
-					else
-						self.World.OrderGenerator = new MinefieldOrderGenerator(self, start, queued);
-
-					return new Order("BeginMinefield", self, Target.FromCell(self.World, start), queued);
+					return BeginMinefield(self, target, queued);
 				case "PlaceMine":
 					return new Order("PlaceMine", self, Target.FromCell(self.World, self.Location), queued);
 				default:
 					return null;
 			}
+		}
+
+		public static Order BeginMinefield(Actor self, Target target, bool queued)
+		{
+			var start = self.World.Map.CellContaining(target.CenterPosition);
+			if (self.World.OrderGenerator is MinefieldOrderGenerator generator)
+				generator.AddMinelayer(self);
+			else
+				self.World.OrderGenerator = new MinefieldOrderGenerator(self, start, queued);
+
+			return new Order("BeginMinefield", self, Target.FromCell(self.World, start), queued);
 		}
 
 		Order IIssueDeployOrder.IssueDeployOrder(Actor self, bool queued)
