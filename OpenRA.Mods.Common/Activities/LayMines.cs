@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.Activities
 		List<CPos> minefield;
 		bool returnToBase;
 		Actor rearmTarget;
+		bool layingMine;
 
 		public LayMines(Actor self, List<CPos> minefield = null)
 		{
@@ -61,7 +62,26 @@ namespace OpenRA.Mods.Common.Activities
 			returnToBase = false;
 
 			if (IsCanceling)
+			{
+				if (layingMine)
+					foreach (var t in self.TraitsImplementing<INotifyMineLaying>())
+						t.MineLayingCanceled(self, self.Location);
+
 				return true;
+			}
+
+			if (layingMine)
+			{
+				layingMine = false;
+				if (LayMine(self))
+				{
+					if (minelayer.Info.AfterLayingDelay > 0)
+					{
+						QueueChild(new Wait(minelayer.Info.AfterLayingDelay));
+						return false;
+					}
+				}
+			}
 
 			if ((minefield == null || minefield.Contains(self.Location)) && CanLayMine(self, self.Location))
 			{
@@ -82,9 +102,20 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 				}
 
-				LayMine(self);
-				QueueChild(new Wait(20)); // A little wait after placing each mine, for show
-				minefield.Remove(self.Location);
+				if (!StartLayingMine(self))
+					return false;
+
+				if (minelayer.Info.PreLayDelay == 0)
+				{
+					if (LayMine(self) && minelayer.Info.AfterLayingDelay > 0)
+						QueueChild(new Wait(minelayer.Info.AfterLayingDelay));
+				}
+				else
+				{
+					layingMine = true;
+					QueueChild(new Wait(minelayer.Info.PreLayDelay));
+				}
+
 				return false;
 			}
 
@@ -136,19 +167,37 @@ namespace OpenRA.Mods.Common.Activities
 			return self.World.ActorMap.GetActorsAt(p).All(a => a == self);
 		}
 
-		void LayMine(Actor self)
+		bool StartLayingMine(Actor self)
 		{
 			if (ammoPools != null)
 			{
 				var pool = ammoPools.FirstOrDefault(x => x.Info.Name == minelayer.Info.AmmoPoolName);
 				if (pool == null)
-					return;
+					return false;
 
-				pool.TakeAmmo(self, minelayer.Info.AmmoUsage);
+				if (pool.CurrentAmmoCount < minelayer.Info.AmmoUsage)
+					return false;
 			}
 
 			foreach (var t in self.TraitsImplementing<INotifyMineLaying>())
 				t.MineLaying(self, self.Location);
+
+			return true;
+		}
+
+		bool LayMine(Actor self)
+		{
+			if (ammoPools != null)
+			{
+				var pool = ammoPools.FirstOrDefault(x => x.Info.Name == minelayer.Info.AmmoPoolName);
+				if (pool == null)
+					return false;
+
+				if (!pool.TakeAmmo(self, minelayer.Info.AmmoUsage))
+					return false;
+			}
+
+			minefield.Remove(self.Location);
 
 			self.World.AddFrameEndTask(w =>
 			{
@@ -161,6 +210,8 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var t in self.TraitsImplementing<INotifyMineLaying>())
 					t.MineLaid(self, mine);
 			});
+
+			return true;
 		}
 	}
 }
