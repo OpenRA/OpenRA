@@ -63,6 +63,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Ammo the minelayer consumes per mine.")]
 		public readonly int AmmoUsage = 1;
 
+		[Desc("Number of ticks it takes to lay a mine.")]
+		public readonly int PreLayDelay = 0;
+
+		[Desc("Number of ticks for the minelayer to wait after laying a mine. The wait can be interrupted by a player order.")]
+		public readonly int AfterLayingDelay = 20;
+
 		public override object Create(ActorInitializer init) { return new Minelayer(init.Self, this); }
 	}
 
