@@ -467,7 +467,8 @@ dialog-delete-all-maps =
 
 options-order-maps =
     .player-count = Players
-    .date = Map Date
+    .title = Title
+    .date = Date
 
 ## MissionBrowserLogic
 dialog-no-video =
