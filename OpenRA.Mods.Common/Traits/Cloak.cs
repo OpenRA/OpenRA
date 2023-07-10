@@ -25,14 +25,15 @@ namespace OpenRA.Mods.Common.Traits
 		None = 0,
 		Attack = 1,
 		Move = 2,
-		Unload = 4,
-		Infiltrate = 8,
-		Demolish = 16,
-		Damage = 32,
-		Heal = 64,
-		SelfHeal = 128,
-		Dock = 256,
-		SupportPower = 512,
+		Load = 4,
+		Unload = 8,
+		Infiltrate = 16,
+		Demolish = 32,
+		Damage = 64,
+		Heal = 128,
+		SelfHeal = 256,
+		Dock = 512,
+		SupportPower = 1024,
 	}
 
 	// Type tag for DetectionTypes
@@ -93,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Cloak(this); }
 	}
 
-	public class Cloak : PausableConditionalTrait<CloakInfo>, IRenderModifier, INotifyDamage, INotifyUnload, INotifyDemolition, INotifyInfiltration,
+	public class Cloak : PausableConditionalTrait<CloakInfo>, IRenderModifier, INotifyDamage, INotifyUnloadCargo, INotifyLoadCargo, INotifyDemolition, INotifyInfiltration,
 		INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyCreated, INotifyDockClient, INotifySupportPower
 	{
 		[Sync]
@@ -287,7 +288,13 @@ namespace OpenRA.Mods.Common.Traits
 				isDocking = false;
 		}
 
-		void INotifyUnload.Unloading(Actor self)
+		void INotifyLoadCargo.Loading(Actor self)
+		{
+			if (Info.UncloakOn.HasFlag(UncloakType.Load))
+				Uncloak();
+		}
+
+		void INotifyUnloadCargo.Unloading(Actor self)
 		{
 			if (Info.UncloakOn.HasFlag(UncloakType.Unload))
 				Uncloak();

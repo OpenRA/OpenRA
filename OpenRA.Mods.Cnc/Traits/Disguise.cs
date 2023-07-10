@@ -57,10 +57,11 @@ namespace OpenRA.Mods.Cnc.Traits
 		None = 0,
 		Attack = 1,
 		Damaged = 2,
-		Unload = 4,
-		Infiltrate = 8,
-		Demolish = 16,
-		Move = 32
+		Load = 4,
+		Unload = 8,
+		Infiltrate = 16,
+		Demolish = 32,
+		Move = 64,
 	}
 
 	[Desc("Provides access to the disguise command, which makes the actor appear to be another player's actor.")]
@@ -99,7 +100,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	}
 
 	sealed class Disguise : IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack,
-		INotifyDamage, INotifyUnload, INotifyDemolition, INotifyInfiltration, ITick
+		INotifyDamage, INotifyLoadCargo, INotifyUnloadCargo, INotifyDemolition, INotifyInfiltration, ITick
 	{
 		public ActorInfo AsActor { get; private set; }
 		public Player AsPlayer { get; private set; }
@@ -253,7 +254,13 @@ namespace OpenRA.Mods.Cnc.Traits
 				DisguiseAs(null);
 		}
 
-		void INotifyUnload.Unloading(Actor self)
+		void INotifyLoadCargo.Loading(Actor self)
+		{
+			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Load))
+				DisguiseAs(null);
+		}
+
+		void INotifyUnloadCargo.Unloading(Actor self)
 		{
 			if (info.RevealDisguiseOn.HasFlag(RevealDisguiseType.Unload))
 				DisguiseAs(null);

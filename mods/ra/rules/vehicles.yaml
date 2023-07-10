@@ -922,7 +922,7 @@ STNK:
 		UncloakSound: appear1.aud
 		IsPlayerPalette: true
 		PauseOnCondition: cloak-force-disabled
-		UncloakOn: Attack, Unload, Heal, Dock
+		UncloakOn: Attack, Load, Unload, Heal, Dock
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical

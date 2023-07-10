@@ -207,7 +207,13 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface INotifyUnload
+	public interface INotifyLoadCargo
+	{
+		void Loading(Actor self);
+	}
+
+	[RequireExplicitImplementation]
+	public interface INotifyUnloadCargo
 	{
 		void Unloading(Actor self);
 	}
