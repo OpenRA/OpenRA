@@ -469,6 +469,7 @@ options-order-maps =
     .player-count = Players
     .title = Title
     .date = Date
+    .size = Size
 
 ## MissionBrowserLogic
 dialog-no-video =

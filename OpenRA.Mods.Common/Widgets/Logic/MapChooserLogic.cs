@@ -72,6 +72,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string OrderMapsByDate = "options-order-maps.date";
 
+		[TranslationReference]
+		const string OrderMapsBySize = "options-order-maps.size";
+
 		readonly string allMaps;
 
 		readonly Widget widget;
@@ -292,6 +295,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ orderByPlayer, m => m.PlayerCount },
 				{ TranslationProvider.GetString(OrderMapsByTitle), null },
 				{ TranslationProvider.GetString(OrderMapsByDate), m => -m.ModifiedDate.Ticks },
+				{ TranslationProvider.GetString(OrderMapsBySize), m => m.Bounds.Width * m.Bounds.Height },
 			};
 
 			orderByFunc = orderByDict[orderByPlayer];
