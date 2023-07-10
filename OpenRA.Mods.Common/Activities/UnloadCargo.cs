@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		readonly Actor self;
 		readonly Cargo cargo;
-		readonly INotifyUnload[] notifiers;
+		readonly INotifyUnloadCargo[] notifiers;
 		readonly bool unloadAll;
 		readonly Aircraft aircraft;
 		readonly Mobile mobile;
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			this.self = self;
 			cargo = self.Trait<Cargo>();
-			notifiers = self.TraitsImplementing<INotifyUnload>().ToArray();
+			notifiers = self.TraitsImplementing<INotifyUnloadCargo>().ToArray();
 			this.unloadAll = unloadAll;
 			aircraft = self.TraitOrDefault<Aircraft>();
 			mobile = self.TraitOrDefault<Mobile>();
