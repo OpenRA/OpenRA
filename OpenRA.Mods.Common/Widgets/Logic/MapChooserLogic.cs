@@ -67,6 +67,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string OrderMapsByPlayers = "options-order-maps.player-count";
 
 		[TranslationReference]
+		const string OrderMapsByTitle = "options-order-maps.title";
+
+		[TranslationReference]
 		const string OrderMapsByDate = "options-order-maps.date";
 
 		readonly string allMaps;
@@ -89,8 +92,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		string mapFilter;
 
 		Func<MapPreview, long> orderByFunc;
-		readonly string orderByPlayer;
-		readonly string orderByDate;
 
 		[ObjectCreator.UseCtor]
 		internal MapChooserLogic(Widget widget, ModData modData, string initialMap,
@@ -101,8 +102,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.onSelect = onSelect;
 
 			allMaps = TranslationProvider.GetString(AllMaps);
-			orderByPlayer = TranslationProvider.GetString(OrderMapsByPlayers);
-			orderByDate = TranslationProvider.GetString(OrderMapsByDate);
 
 			var approving = new Action(() =>
 			{
@@ -286,13 +285,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (orderByDropdown == null)
 				return;
 
+			var orderByPlayer = TranslationProvider.GetString(OrderMapsByPlayers);
+
 			var orderByDict = new Dictionary<string, Func<MapPreview, long>>()
 			{
 				{ orderByPlayer, m => m.PlayerCount },
-				{ orderByDate, m => -m.ModifiedDate.Ticks }
+				{ TranslationProvider.GetString(OrderMapsByTitle), null },
+				{ TranslationProvider.GetString(OrderMapsByDate), m => -m.ModifiedDate.Ticks },
 			};
 
-			orderByFunc ??= orderByDict[orderByPlayer];
+			orderByFunc = orderByDict[orderByPlayer];
 
 			ScrollItemWidget SetupItem(string o, ScrollItemWidget template)
 			{
@@ -316,14 +318,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (!int.TryParse(mapFilter, out var playerCountFilter))
 				playerCountFilter = -1;
 
-			var maps = tabMaps[tab]
+			var validMaps = tabMaps[tab]
 				.Where(m => category == null || m.Categories.Contains(category))
 				.Where(m => mapFilter == null ||
 					(m.Title != null && m.Title.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0) ||
 					(m.Author != null && m.Author.IndexOf(mapFilter, StringComparison.OrdinalIgnoreCase) >= 0) ||
-					m.PlayerCount == playerCountFilter)
-				.OrderBy(orderByFunc)
-				.ThenBy(m => m.Title);
+					m.PlayerCount == playerCountFilter);
+
+			IOrderedEnumerable<MapPreview> maps;
+			if (orderByFunc == null)
+				maps = validMaps.OrderBy(m => m.Title);
+			else
+				maps = validMaps.OrderBy(orderByFunc).ThenBy(m => m.Title);
 
 			scrollpanels[tab].RemoveChildren();
 			foreach (var loop in maps)
