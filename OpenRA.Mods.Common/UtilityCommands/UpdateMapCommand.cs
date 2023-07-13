@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			if (folder.OpenPackage(args[1], modData.ModFiles) is not IReadWritePackage package)
 				throw new FileNotFoundException(args[1]);
 
-			IEnumerable<UpdateRule> rules = null;
+			IReadOnlyCollection<UpdateRule> rules = null;
 			if (args.Length > 2)
 				rules = UpdatePath.FromSource(modData.ObjectCreator, args[2]);
 
@@ -77,9 +77,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				var other = UpdatePath.KnownRules(modData.ObjectCreator)
-					.Where(r => !ruleGroups.Values.Any(g => g.Contains(r)));
+					.Where(r => !ruleGroups.Values.Any(g => g.Contains(r)))
+					.ToList();
 
-				if (other.Any())
+				if (other.Count != 0)
 				{
 					Console.WriteLine("      Other:");
 					foreach (var r in other)

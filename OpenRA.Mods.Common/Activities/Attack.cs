@@ -196,8 +196,8 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Update ranges. Exclude paused armaments except when ALL weapons are paused
 			// (e.g. out of ammo), in which case use the paused, valid weapon with highest range.
-			var activeArmaments = armaments.Where(x => !x.IsTraitPaused);
-			if (activeArmaments.Any())
+			var activeArmaments = armaments.Where(x => !x.IsTraitPaused).ToList();
+			if (activeArmaments.Count != 0)
 			{
 				minRange = activeArmaments.Max(a => a.Weapon.MinRange);
 				maxRange = activeArmaments.Min(a => a.MaxRange());

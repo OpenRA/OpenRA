@@ -234,7 +234,7 @@ namespace OpenRA.Graphics
 			{
 				// PERF: We don't need to search for images if there are no definitions.
 				// PERF: It's more efficient to send an empty array rather than an array of 9 nulls.
-				if (!collection.Regions.Any())
+				if (collection.Regions.Count == 0)
 					return Array.Empty<Sprite>();
 
 				// Support manual definitions for unusual dialog layouts

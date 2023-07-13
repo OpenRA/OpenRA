@@ -12,14 +12,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA.Primitives
 {
 	public class TypeDictionary : IEnumerable<object>
 	{
-		static readonly Func<Type, List<object>> CreateList = type => new List<object>();
-		readonly Dictionary<Type, List<object>> data = new();
+		static readonly Func<Type, ITypeContainer> CreateTypeContainer = t =>
+			(ITypeContainer)typeof(TypeContainer<>).MakeGenericType(t).GetConstructor(Type.EmptyTypes).Invoke(null);
+
+		readonly Dictionary<Type, ITypeContainer> data = new();
+
+		ITypeContainer InnerGet(Type t)
+		{
+			return data.GetOrAdd(t, CreateTypeContainer);
+		}
 
 		public void Add(object val)
 		{
@@ -33,7 +39,7 @@ namespace OpenRA.Primitives
 
 		void InnerAdd(Type t, object val)
 		{
-			data.GetOrAdd(t, CreateList).Add(val);
+			InnerGet(t).Add(val);
 		}
 
 		public bool Contains<T>()
@@ -48,35 +54,33 @@ namespace OpenRA.Primitives
 
 		public T Get<T>()
 		{
-			return (T)Get(typeof(T), true);
+			return Get<T>(true);
 		}
 
 		public T GetOrDefault<T>()
 		{
-			var result = Get(typeof(T), false);
-			if (result == null)
-				return default;
-			return (T)result;
+			return Get<T>(false);
 		}
 
-		object Get(Type t, bool throwsIfMissing)
+		T Get<T>(bool throwsIfMissing)
 		{
-			if (!data.TryGetValue(t, out var ret))
+			if (!data.TryGetValue(typeof(T), out var container))
 			{
 				if (throwsIfMissing)
-					throw new InvalidOperationException($"TypeDictionary does not contain instance of type `{t}`");
-				return null;
+					throw new InvalidOperationException($"TypeDictionary does not contain instance of type `{typeof(T)}`");
+				return default;
 			}
 
-			if (ret.Count > 1)
-				throw new InvalidOperationException($"TypeDictionary contains multiple instances of type `{t}`");
-			return ret[0];
+			var list = ((TypeContainer<T>)container).Objects;
+			if (list.Count > 1)
+				throw new InvalidOperationException($"TypeDictionary contains multiple instances of type `{typeof(T)}`");
+			return list[0];
 		}
 
-		public IEnumerable<T> WithInterface<T>()
+		public IReadOnlyCollection<T> WithInterface<T>()
 		{
-			if (data.TryGetValue(typeof(T), out var objs))
-				return objs.Cast<T>();
+			if (data.TryGetValue(typeof(T), out var container))
+				return ((TypeContainer<T>)container).Objects;
 			return Array.Empty<T>();
 		}
 
@@ -92,18 +96,19 @@ namespace OpenRA.Primitives
 
 		void InnerRemove(Type t, object val)
 		{
-			if (!data.TryGetValue(t, out var objs))
+			if (!data.TryGetValue(t, out var container))
 				return;
-			objs.Remove(val);
-			if (objs.Count == 0)
+
+			container.Remove(val);
+			if (container.Count == 0)
 				data.Remove(t);
 		}
 
 		public void TrimExcess()
 		{
 			data.TrimExcess();
-			foreach (var objs in data.Values)
-				objs.TrimExcess();
+			foreach (var t in data.Keys)
+				InnerGet(t).TrimExcess();
 		}
 
 		public IEnumerator<object> GetEnumerator()
@@ -114,6 +119,36 @@ namespace OpenRA.Primitives
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
+		}
+
+		interface ITypeContainer
+		{
+			int Count { get; }
+			void Add(object value);
+			void Remove(object value);
+			void TrimExcess();
+		}
+
+		sealed class TypeContainer<T> : ITypeContainer
+		{
+			public List<T> Objects { get; } = new List<T>();
+
+			public int Count => Objects.Count;
+
+			public void Add(object value)
+			{
+				Objects.Add((T)value);
+			}
+
+			public void Remove(object value)
+			{
+				Objects.Remove((T)value);
+			}
+
+			public void TrimExcess()
+			{
+				Objects.TrimExcess();
+			}
 		}
 	}
 

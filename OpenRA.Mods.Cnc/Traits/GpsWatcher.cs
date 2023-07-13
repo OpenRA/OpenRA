@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			var wasGranted = Granted;
 			var wasGrantedAllies = GrantedAllies;
-			var allyWatchers = owner.World.ActorsWithTrait<GpsWatcher>().Where(kv => kv.Actor.Owner.IsAlliedWith(owner));
+			var allyWatchers = owner.World.ActorsWithTrait<GpsWatcher>().Where(kv => kv.Actor.Owner.IsAlliedWith(owner)).ToList();
 
 			Granted = actors.Count > 0 && Launched;
 			GrantedAllies = allyWatchers.Any(w => w.Trait.Granted);

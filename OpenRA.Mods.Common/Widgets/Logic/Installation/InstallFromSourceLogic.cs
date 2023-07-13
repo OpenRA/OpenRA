@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						selectedPackages = availablePackages.ToDictionary(x => x.Identifier, y => y.Required);
 
 						// Ignore source if content is already installed
-						if (availablePackages.Any())
+						if (availablePackages.Length != 0)
 						{
 							Game.RunAfterTick(() =>
 							{
@@ -218,10 +218,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var options = new Dictionary<string, IEnumerable<string>>();
 
-				if (gameSources.Any())
+				if (gameSources.Count != 0)
 					options.Add(TranslationProvider.GetString(GameSources), gameSources);
 
-				if (digitalInstalls.Any())
+				if (digitalInstalls.Count != 0)
 					options.Add(TranslationProvider.GetString(DigitalInstalls), digitalInstalls);
 
 				Game.RunAfterTick(() =>

@@ -12,7 +12,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA
 {
@@ -64,9 +63,9 @@ namespace OpenRA
 		}
 
 		/// <summary>Returns the minimal region that covers at least the specified cells.</summary>
-		public static CellRegion BoundingRegion(MapGridType shape, IEnumerable<CPos> cells)
+		public static CellRegion BoundingRegion(MapGridType shape, IReadOnlyCollection<CPos> cells)
 		{
-			if (cells == null || !cells.Any())
+			if (cells == null || cells.Count == 0)
 				throw new ArgumentException("cells must not be null or empty.", nameof(cells));
 
 			var minU = int.MaxValue;

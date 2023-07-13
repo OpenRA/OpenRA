@@ -44,10 +44,19 @@ namespace OpenRA.Mods.Common.Traits
 			if (rejectsOrdersTraits.Length == 0)
 				return true;
 
-			var reject = rejectsOrdersTraits.SelectMany(t => t.Reject);
-			var except = rejectsOrdersTraits.SelectMany(t => t.Except);
+			foreach (var rejectsOrdersTrait in rejectsOrdersTraits)
+				if (rejectsOrdersTrait.Except.Contains(orderString))
+					return true;
 
-			return except.Contains(orderString) || (reject.Any() && !reject.Contains(orderString));
+			var anyRejects = false;
+			foreach (var rejectsOrdersTrait in rejectsOrdersTraits)
+			{
+				anyRejects = anyRejects || rejectsOrdersTrait.Reject.Count > 0;
+				if (rejectsOrdersTrait.Reject.Contains(orderString))
+					return false;
+			}
+
+			return anyRejects;
 		}
 	}
 }

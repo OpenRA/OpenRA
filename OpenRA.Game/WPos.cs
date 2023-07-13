@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Eluant;
 using Eluant.ObjectBinding;
 using OpenRA.Scripting;
@@ -139,19 +138,20 @@ namespace OpenRA
 	{
 		public static WPos Average(this IEnumerable<WPos> source)
 		{
-			var length = source.Count();
-			if (length == 0)
-				return WPos.Zero;
-
+			var length = 0;
 			var x = 0L;
 			var y = 0L;
 			var z = 0L;
 			foreach (var pos in source)
 			{
+				length++;
 				x += pos.X;
 				y += pos.Y;
 				z += pos.Z;
 			}
+
+			if (length == 0)
+				return WPos.Zero;
 
 			x /= length;
 			y /= length;

@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
@@ -24,7 +23,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
-			if (locations.Any())
+			if (locations.Count != 0)
 				yield return "Icon overlay logic has been split from ProducibleWithLevel to WithProductionIconOverlay trait.\n" +
 					"If you have been using VeteranProductionIconOverlay trait, add WithProductionIconOverlay to following actors:\n" +
 					UpdateUtils.FormatMessageList(locations);

@@ -201,8 +201,12 @@ namespace OpenRA.Network
 			public TypeInfo(Type type)
 			{
 				const BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-				var fields = type.GetFields(Flags).Where(fi => !fi.IsLiteral && !fi.IsStatic && fi.HasAttribute<SyncAttribute>());
-				var properties = type.GetProperties(Flags).Where(pi => pi.HasAttribute<SyncAttribute>());
+				var fields = type.GetFields(Flags)
+					.Where(fi => !fi.IsLiteral && !fi.IsStatic && fi.HasAttribute<SyncAttribute>())
+					.ToList();
+				var properties = type.GetProperties(Flags)
+					.Where(pi => pi.HasAttribute<SyncAttribute>())
+					.ToList();
 
 				foreach (var prop in properties)
 					if (!prop.CanRead || prop.GetIndexParameters().Length > 0)

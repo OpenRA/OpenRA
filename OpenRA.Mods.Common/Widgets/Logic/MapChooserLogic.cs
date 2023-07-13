@@ -322,18 +322,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (!int.TryParse(mapFilter, out var playerCountFilter))
 				playerCountFilter = -1;
 
-			var validMaps = tabMaps[tab]
+			var maps = tabMaps[tab]
 				.Where(m => category == null || m.Categories.Contains(category))
 				.Where(m => mapFilter == null ||
 					(m.Title != null && m.Title.Contains(mapFilter, StringComparison.CurrentCultureIgnoreCase)) ||
 					(m.Author != null && m.Author.Contains(mapFilter, StringComparison.CurrentCultureIgnoreCase)) ||
 					m.PlayerCount == playerCountFilter);
 
-			IOrderedEnumerable<MapPreview> maps;
 			if (orderByFunc == null)
-				maps = validMaps.OrderBy(m => m.Title);
+				maps = maps.OrderBy(m => m.Title);
 			else
-				maps = validMaps.OrderBy(orderByFunc).ThenBy(m => m.Title);
+				maps = maps.OrderBy(orderByFunc).ThenBy(m => m.Title);
+
+			maps = maps.ToList();
 
 			scrollpanels[tab].RemoveChildren();
 			foreach (var loop in maps)

@@ -594,9 +594,11 @@ namespace OpenRA.Mods.Common.Traits
 		// Returns the actor/trait that is most likely (but not necessarily guaranteed) to produce something in this queue
 		public virtual TraitPair<Production> MostLikelyProducer()
 		{
-			var traits = productionTraits.Where(p => !p.IsTraitDisabled && p.Info.Produces.Contains(Info.Type));
-			var unpaused = traits.FirstOrDefault(a => !a.IsTraitPaused);
-			return new TraitPair<Production>(Actor, unpaused ?? traits.FirstOrDefault());
+			var trait = productionTraits
+				.Where(p => !p.IsTraitDisabled && p.Info.Produces.Contains(Info.Type))
+				.OrderBy(p => p.IsTraitPaused)
+				.FirstOrDefault();
+			return new TraitPair<Production>(Actor, trait);
 		}
 
 		// Builds a unit from the actor that holds this queue (1 queue per building)

@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			}),
 		};
 
-		public static IEnumerable<UpdateRule> FromSource(ObjectCreator objectCreator, string source, bool chain = true)
+		public static IReadOnlyCollection<UpdateRule> FromSource(ObjectCreator objectCreator, string source, bool chain = true)
 		{
 			// Use reflection to identify types
 			var namedType = objectCreator.FindType(source);
@@ -143,12 +143,12 @@ namespace OpenRA.Mods.Common.UpdateRules
 			this.chainToSource = chainToSource;
 		}
 
-		IEnumerable<UpdateRule> Rules(bool chain = true)
+		IReadOnlyCollection<UpdateRule> Rules(bool chain = true)
 		{
 			if (chainToSource != null && chain)
 			{
 				var child = Paths.First(p => p.source == chainToSource);
-				return rules.Concat(child.Rules(chain));
+				return rules.Concat(child.Rules(chain)).ToList();
 			}
 
 			return rules;

@@ -60,9 +60,9 @@ namespace OpenRA.Mods.Common.Warheads
 
 			if (RandomClusterCount != 0)
 			{
-				var randomTargetCells = CellsMatching(targetCell, true);
-				var clusterCount = RandomClusterCount < 0 ? randomTargetCells.Count() : RandomClusterCount;
-				if (randomTargetCells.Any())
+				var randomTargetCells = CellsMatching(targetCell, true).ToList();
+				var clusterCount = RandomClusterCount < 0 ? randomTargetCells.Count : RandomClusterCount;
+				if (randomTargetCells.Count != 0)
 					for (var i = 0; i < clusterCount; i++)
 						FireProjectileAtCell(map, firedBy, target, randomTargetCells.Random(firedBy.World.SharedRandom), args);
 			}

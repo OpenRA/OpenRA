@@ -139,7 +139,7 @@ namespace OpenRA
 			return removed;
 		}
 
-		public IEnumerable<T> GetAll<T>() where T : ActorInit
+		public IReadOnlyCollection<T> GetAll<T>() where T : ActorInit
 		{
 			return initDict.Value.WithInterface<T>();
 		}

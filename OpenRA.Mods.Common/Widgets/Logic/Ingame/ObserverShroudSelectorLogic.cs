@@ -114,9 +114,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.Player.ClientIndex) ?? new Session.Client()).Team)
 				.OrderBy(g => g.Key);
 
-			var noTeams = teams.Count() == 1;
+			var teamsList = teams.ToList();
+			var noTeams = teamsList.Count == 1;
 			var totalPlayers = 0;
-			foreach (var t in teams)
+			foreach (var t in teamsList)
 			{
 				totalPlayers += t.Count();
 				var label = noTeams ? TranslationProvider.GetString(Players) : t.Key > 0
@@ -209,12 +210,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (e.Key >= Keycode.NUMBER_0 && e.Key <= Keycode.NUMBER_9)
 				{
 					var key = (int)e.Key - (int)Keycode.NUMBER_0;
-					var team = teams.Where(t => t.Key == key).SelectMany(s => s);
-					if (!team.Any())
+					var team = teams.Where(t => t.Key == key).SelectMany(s => s).ToList();
+					if (team.Count == 0)
 						return false;
 
 					if (e.Modifiers == Modifiers.Shift)
-						team = team.Reverse();
+						team.Reverse();
 
 					selected = team.SkipWhile(t => t.Player != selected.Player).Skip(1).FirstOrDefault() ?? team.FirstOrDefault();
 					selected.OnClick();
