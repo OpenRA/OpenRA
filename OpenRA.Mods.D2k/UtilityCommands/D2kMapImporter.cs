@@ -509,17 +509,12 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 
 			// HACK: The arrakis.yaml tileset file seems to be missing some tiles, so just get a replacement for them
 			// Also used for duplicate tiles that are taken from only tileset
-			if (template == null)
+			// Just get a template that contains a tile with the same ID as requested
+			template ??= terrainInfo.Templates.FirstOrDefault(t =>
 			{
-				// Just get a template that contains a tile with the same ID as requested
-				var templates = terrainInfo.Templates.Where(t =>
-				{
-					var templateInfo = (DefaultTerrainTemplateInfo)t.Value;
-					return templateInfo.Frames != null && templateInfo.Frames.Contains(tileIndex);
-				});
-				if (templates.Any())
-					template = templates.First().Value;
-			}
+				var templateInfo = (DefaultTerrainTemplateInfo)t.Value;
+				return templateInfo.Frames != null && templateInfo.Frames.Contains(tileIndex);
+			}).Value;
 
 			if (template == null)
 			{

@@ -22,9 +22,9 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 		protected const int MissileUnitMultiplier = 3;
 
-		protected static int CountAntiAirUnits(IEnumerable<Actor> units)
+		protected static int CountAntiAirUnits(IReadOnlyCollection<Actor> units)
 		{
-			if (!units.Any())
+			if (units.Count == 0)
 				return 0;
 
 			var missileUnitsCount = 0;

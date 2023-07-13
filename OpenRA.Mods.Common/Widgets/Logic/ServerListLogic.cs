@@ -572,10 +572,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var players = server.Clients
 				.Where(c => !c.IsSpectator)
 				.GroupBy(p => p.Team)
-				.OrderBy(g => g.Key);
+				.OrderBy(g => g.Key)
+				.ToList();
 
 			var teams = new Dictionary<string, IEnumerable<GameClient>>();
-			var noTeams = players.Count() == 1;
+			var noTeams = players.Count == 1;
 			foreach (var p in players)
 			{
 				var label = noTeams ? TranslationProvider.GetString(Players) : p.Key > 0

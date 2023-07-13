@@ -834,6 +834,12 @@ dotnet_diagnostic.CA1849.severity = warning
 # Prefer static HashData method over ComputeHash. (Not available on mono)
 dotnet_diagnostic.CA1850.severity = none
 
+# Possible multiple enumerations of IEnumerable collection.
+#dotnet_code_quality.CA1851.enumeration_methods =
+#dotnet_code_quality.CA1851.linq_chain_methods =
+#dotnet_code_quality.CA1851.assume_method_enumerates_parameters = false
+dotnet_diagnostic.CA1851.severity = warning
+
 # Seal internal types.
 dotnet_diagnostic.CA1852.severity = warning
 

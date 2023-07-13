@@ -113,7 +113,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				.Select(p => (Player: p, PlayerStatistics: p.PlayerActor.TraitOrDefault<PlayerStatistics>()))
 				.OrderByDescending(p => p.PlayerStatistics?.Experience ?? 0)
 				.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.Player.ClientIndex) ?? new Session.Client()).Team)
-				.OrderByDescending(g => g.Sum(gg => gg.PlayerStatistics?.Experience ?? 0));
+				.OrderByDescending(g => g.Sum(gg => gg.PlayerStatistics?.Experience ?? 0))
+				.ToList();
 
 			void KickAction(Session.Client client)
 			{
@@ -133,7 +134,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			foreach (var t in teams)
 			{
-				if (teams.Count() > 1)
+				if (teams.Count > 1)
 				{
 					var teamHeader = ScrollItemWidget.Setup(teamTemplate, () => false, () => { });
 					var team = t.Key > 0

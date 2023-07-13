@@ -133,7 +133,7 @@ namespace OpenRA
 
 		static FactionInfo ResolveDisplayFaction(World world, string factionName)
 		{
-			var factions = world.Map.Rules.Actors[SystemActors.World].TraitInfos<FactionInfo>().ToArray();
+			var factions = world.Map.Rules.Actors[SystemActors.World].TraitInfos<FactionInfo>();
 
 			return factions.FirstOrDefault(f => f.InternalName == factionName) ?? factions.First();
 		}

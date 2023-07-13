@@ -748,10 +748,11 @@ namespace OpenRA.Mods.Common.Server
 				teamCount = teamCount.Clamp(0, maxTeams);
 				var clients = server.LobbyInfo.Slots
 					.Select(slot => server.LobbyInfo.ClientInSlot(slot.Key))
-					.Where(c => c != null && !server.LobbyInfo.Slots[c.Slot].LockTeam);
+					.Where(c => c != null && !server.LobbyInfo.Slots[c.Slot].LockTeam)
+					.ToList();
 
 				var assigned = 0;
-				var clientCount = clients.Count();
+				var clientCount = clients.Count;
 				foreach (var player in clients)
 				{
 					// Free for all

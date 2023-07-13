@@ -41,8 +41,8 @@ namespace OpenRA.Mods.Common.Traits
 			else
 			{
 				var owner = map.PlayerDefinitions.Single(p => s.Get<OwnerInit>().InternalName == p.Value.Nodes.Last(k => k.Key == "Name").Value.Value);
-				var colorValue = owner.Value.Nodes.Where(n => n.Key == "Color");
-				var ownerColor = colorValue.Any() ? colorValue.First().Value.Value : "FFFFFF";
+				var colorValue = owner.Value.Nodes.FirstOrDefault(n => n.Key == "Color");
+				var ownerColor = colorValue?.Value.Value ?? "FFFFFF";
 				Color.TryParse(ownerColor, out color);
 			}
 

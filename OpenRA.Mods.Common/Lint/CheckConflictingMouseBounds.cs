@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Lint
@@ -21,8 +20,8 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
-				var selectable = actorInfo.Value.TraitInfos<SelectableInfo>().Count();
-				var interactable = actorInfo.Value.TraitInfos<InteractableInfo>().Count();
+				var selectable = actorInfo.Value.TraitInfos<SelectableInfo>().Count;
+				var interactable = actorInfo.Value.TraitInfos<InteractableInfo>().Count;
 				if (selectable > 0 && selectable != interactable)
 					emitWarning($"Actor `{actorInfo.Value.Name}` defines both Interactable and Selectable traits. This may cause unexpected results.");
 			}

@@ -113,23 +113,32 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyParachute.OnLanded(Actor self)
 		{
 			// Check whether the crate landed on anything
-			var landedOn = self.World.ActorMap.GetActorsAt(self.Location)
-				.Where(a => a != self);
-
-			if (!landedOn.Any())
-				return;
-
-			var collector = landedOn.FirstOrDefault(a =>
+			var anyOtherActors = false;
+			Actor collector = null;
+			foreach (var otherActor in self.World.ActorMap.GetActorsAt(self.Location))
 			{
+				if (self == otherActor)
+					continue;
+
+				anyOtherActors = true;
+
 				// Mobile is (currently) the only trait that supports crushing
-				var mi = a.Info.TraitInfoOrDefault<MobileInfo>();
+				var mi = otherActor.Info.TraitInfoOrDefault<MobileInfo>();
 				if (mi == null)
-					return false;
+					continue;
 
 				// Make sure that the actor can collect this crate type
 				// Crate can only be crushed if it is not in the air.
-				return self.IsAtGroundLevel() && mi.LocomotorInfo.Crushes.Contains(info.CrushClass);
-			});
+				if (self.IsAtGroundLevel() && mi.LocomotorInfo.Crushes.Contains(info.CrushClass))
+				{
+					collector = otherActor;
+					break;
+				}
+			}
+
+			// The crate can land unhindered.
+			if (!anyOtherActors)
+				return;
 
 			// Destroy the crate if none of the units in the cell are valid collectors
 			if (collector != null)
@@ -148,10 +157,11 @@ namespace OpenRA.Mods.Common.Traits
 			self.Dispose();
 			collected = true;
 
-			if (crateActions.Any())
+			var shares = crateActions
+				.Select(a => (Action: a, Shares: a.GetSelectionSharesOuter(crusher)))
+				.ToList();
+			if (shares.Count != 0)
 			{
-				var shares = crateActions.Select(a => (Action: a, Shares: a.GetSelectionSharesOuter(crusher)));
-
 				var totalShares = shares.Sum(a => a.Shares);
 				var n = self.World.SharedRandom.Next(totalShares);
 

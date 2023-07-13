@@ -32,10 +32,12 @@ namespace OpenRA.Mods.Common.Lint
 		{
 			foreach (var actorInfo in rules.Actors)
 			{
-				var wsbs = actorInfo.Value.TraitInfos<WithSpriteBodyInfo>();
-				foreach (var wsb in wsbs)
-					if (wsbs.Any(w => w != wsb && w.Name == wsb.Name))
-						emitError($"Actor type `{actorInfo.Key}` has more than one *SpriteBody with Name: {wsb.Name}.");
+				var duplicateNames = actorInfo.Value.TraitInfos<WithSpriteBodyInfo>()
+					.GroupBy(wsb => wsb.Name)
+					.Where(g => g.Count() > 1)
+					.Select(g => g.Key);
+				foreach (var duplicateName in duplicateNames)
+					emitError($"Actor type `{actorInfo.Key}` has more than one *SpriteBody with Name: {duplicateName}.");
 			}
 		}
 	}

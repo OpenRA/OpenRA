@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			// HACK: The engine code assumes that Game.modData is set.
 			var modData = Game.ModData = utility.ModData;
 
-			IEnumerable<UpdateRule> rules = null;
+			IReadOnlyCollection<UpdateRule> rules = null;
 			if (args.Length > 1)
 				rules = UpdatePath.FromSource(modData.ObjectCreator, args[1]);
 
@@ -71,9 +71,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				var other = UpdatePath.KnownRules(modData.ObjectCreator)
-					.Where(r => !ruleGroups.Values.Any(g => g.Contains(r)));
+					.Where(r => !ruleGroups.Values.Any(g => g.Contains(r)))
+					.ToList();
 
-				if (other.Any())
+				if (other.Count != 0)
 				{
 					Console.WriteLine("      Other:");
 					foreach (var r in other)
@@ -111,9 +112,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				PrintSummary(rules, args.Contains("--detailed"));
 		}
 
-		public static void PrintSummary(IEnumerable<UpdateRule> rules, bool detailed)
+		public static void PrintSummary(IReadOnlyCollection<UpdateRule> rules, bool detailed)
 		{
-			var count = rules.Count();
+			var count = rules.Count;
 			if (count == 1)
 				Console.WriteLine("Found 1 API change:");
 			else

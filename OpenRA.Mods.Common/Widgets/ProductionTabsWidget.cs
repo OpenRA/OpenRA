@@ -183,9 +183,9 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override void Draw()
 		{
-			var tabs = Groups[queueGroup].Tabs.Where(t => t.Queue.BuildableItems().Any());
+			var tabs = Groups[queueGroup].Tabs.Where(t => t.Queue.BuildableItems().Any()).ToList();
 
-			if (!tabs.Any())
+			if (tabs.Count == 0)
 				return;
 
 			var rb = RenderBounds;

@@ -271,7 +271,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (isActivity)
 					Console.WriteLine("    --- *Queued Activity*");
 
-				if (requiredTraits.Any())
+				if (requiredTraits.Length != 0)
 					Console.WriteLine($"    --- **Requires {(requiredTraits.Length == 1 ? "Trait" : "Traits")}:** {requiredTraits.Select(GetDocumentationUrl).JoinWith(", ")}");
 
 				if (memberInfo is MethodInfo methodInfo)

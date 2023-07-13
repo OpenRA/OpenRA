@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Server;
@@ -32,12 +33,15 @@ namespace OpenRA.Mods.Common.Lint
 		static void Run(Action<string> emitError, Ruleset rules)
 		{
 			var worldActor = rules.Actors[SystemActors.World];
-			var locomotorInfos = worldActor.TraitInfos<LocomotorInfo>().ToArray();
-			foreach (var li in locomotorInfos)
-				foreach (var otherLocomotor in locomotorInfos)
-					if (li != otherLocomotor && li.Name == otherLocomotor.Name)
-						emitError($"More than one Locomotor exists with the name `{li.Name}`.");
+			var locomotorNames = worldActor.TraitInfos<LocomotorInfo>().Select(li => li.Name).ToList();
+			var duplicateNames = locomotorNames
+				.GroupBy(name => name)
+				.Where(g => g.Count() > 1)
+				.Select(g => g.Key);
+			foreach (var duplicateName in duplicateNames)
+				emitError($"More than one Locomotor exists with the name `{duplicateName}`.");
 
+			var locomotorNamesSet = locomotorNames.ToHashSet();
 			foreach (var actorInfo in rules.Actors)
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
@@ -51,16 +55,16 @@ namespace OpenRA.Mods.Common.Lint
 							if (string.IsNullOrEmpty(locomotor))
 								continue;
 
-							CheckLocomotors(actorInfo.Value, emitError, locomotorInfos, locomotor);
+							CheckLocomotors(actorInfo.Value, emitError, locomotorNamesSet, locomotor);
 						}
 					}
 				}
 			}
 		}
 
-		static void CheckLocomotors(ActorInfo actorInfo, Action<string> emitError, LocomotorInfo[] locomotorInfos, string locomotor)
+		static void CheckLocomotors(ActorInfo actorInfo, Action<string> emitError, HashSet<string> locomotorNames, string locomotor)
 		{
-			if (!locomotorInfos.Any(l => l.Name == locomotor))
+			if (!locomotorNames.Contains(locomotor))
 				emitError($"Actor `{actorInfo.Name}` defines Locomotor `{locomotor}` not found on World actor.");
 		}
 	}

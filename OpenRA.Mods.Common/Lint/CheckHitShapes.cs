@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Server;
 using OpenRA.Traits;
@@ -41,7 +40,7 @@ namespace OpenRA.Mods.Common.Lint
 						continue;
 
 					var hitShapes = actorInfo.Value.TraitInfos<HitShapeInfo>();
-					if (!hitShapes.Any())
+					if (hitShapes.Count == 0)
 						emitError($"Actor type `{actorInfo.Key}` has a Health trait but no HitShape trait.");
 				}
 				catch (InvalidOperationException e)

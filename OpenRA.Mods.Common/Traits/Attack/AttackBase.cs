@@ -445,15 +445,15 @@ namespace OpenRA.Mods.Common.Traits
 					modifiers |= TargetModifiers.ForceAttack;
 
 				var forceAttack = modifiers.HasModifier(TargetModifiers.ForceAttack);
-				var armaments = ab.ChooseArmamentsForTarget(target, forceAttack);
-				if (!armaments.Any())
-					return false;
 
 				// Use valid armament with highest range out of those that have ammo
 				// If all are out of ammo, just use valid armament with highest range
-				armaments = armaments.OrderByDescending(x => x.MaxRange());
-				var a = armaments.FirstOrDefault(x => !x.IsTraitPaused);
-				a ??= armaments.First();
+				var a = ab.ChooseArmamentsForTarget(target, forceAttack)
+					.OrderBy(x => x.IsTraitPaused)
+					.ThenByDescending(x => x.MaxRange())
+					.FirstOrDefault();
+				if (a == null)
+					return false;
 
 				var outOfRange = !target.IsInRange(self.CenterPosition, a.MaxRange()) ||
 					(!forceAttack && target.Type == TargetType.FrozenActor && !ab.Info.TargetFrozenActors);
@@ -482,15 +482,15 @@ namespace OpenRA.Mods.Common.Traits
 					return false;
 
 				var target = Target.FromCell(self.World, location);
-				var armaments = ab.ChooseArmamentsForTarget(target, true);
-				if (!armaments.Any())
-					return false;
 
 				// Use valid armament with highest range out of those that have ammo
 				// If all are out of ammo, just use valid armament with highest range
-				armaments = armaments.OrderByDescending(x => x.MaxRange());
-				var a = armaments.FirstOrDefault(x => !x.IsTraitPaused);
-				a ??= armaments.First();
+				var a = ab.ChooseArmamentsForTarget(target, true)
+					.OrderBy(x => x.IsTraitPaused)
+					.ThenByDescending(x => x.MaxRange())
+					.FirstOrDefault();
+				if (a == null)
+					return false;
 
 				cursor = !target.IsInRange(self.CenterPosition, a.MaxRange())
 					? ab.Info.OutsideRangeCursor ?? a.Info.OutsideRangeCursor

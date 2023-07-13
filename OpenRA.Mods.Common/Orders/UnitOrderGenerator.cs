@@ -50,13 +50,13 @@ namespace OpenRA.Mods.Common.Orders
 				.Where(o => o != null)
 				.ToList();
 
-			var actorsInvolved = orders.Select(o => o.Actor).Distinct();
-			if (!actorsInvolved.Any())
+			var actorsInvolved = orders.Select(o => o.Actor).Distinct().ToArray();
+			if (actorsInvolved.Length == 0)
 				yield break;
 
 			// HACK: This is required by the hacky player actions-per-minute calculation
 			// TODO: Reimplement APM properly and then remove this
-			yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor, false, actorsInvolved.ToArray());
+			yield return new Order("CreateGroup", actorsInvolved.First().Owner.PlayerActor, false, actorsInvolved);
 
 			foreach (var o in orders)
 				yield return CheckSameOrder(o.Order, o.Trait.IssueOrder(o.Actor, o.Order, o.Target, mi.Modifiers.HasModifier(Modifiers.Shift)));
@@ -165,7 +165,8 @@ namespace OpenRA.Mods.Common.Orders
 			var orders = self.TraitsImplementing<IIssueOrder>()
 				.SelectMany(trait => trait.Orders.Select(x => new { Trait = trait, Order = x }))
 				.Select(x => x)
-				.OrderByDescending(x => x.Order.OrderPriority);
+				.OrderByDescending(x => x.Order.OrderPriority)
+				.ToList();
 
 			for (var i = 0; i < 2; i++)
 			{

@@ -172,17 +172,18 @@ namespace OpenRA.Mods.Common.Traits
 
 		ActorInfo ChooseUnitToBuild(ProductionQueue queue)
 		{
-			var buildableThings = queue.BuildableItems();
-			if (!buildableThings.Any())
+			var buildableThings = queue.BuildableItems().Select(b => b.Name).ToHashSet();
+			if (buildableThings.Count == 0)
 				return null;
 
 			var myUnits = player.World
 				.ActorsHavingTrait<IPositionable>()
 				.Where(a => a.Owner == player)
-				.Select(a => a.Info.Name).ToList();
+				.Select(a => a.Info.Name)
+				.ToList();
 
 			foreach (var unit in Info.UnitsToBuild.Shuffle(world.LocalRandom))
-				if (buildableThings.Any(b => b.Name == unit.Key))
+				if (buildableThings.Contains(unit.Key))
 					if (myUnits.Count(a => a == unit.Key) * 100 < unit.Value * myUnits.Count)
 						if (HasAdequateAirUnitReloadBuildings(world.Map.Rules.Actors[unit.Key]))
 							return world.Map.Rules.Actors[unit.Key];

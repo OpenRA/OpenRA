@@ -45,16 +45,16 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				foreach (var sequenceNode in imageNode.Value.Nodes)
 				{
 					var useTilesetExtensionNode = sequenceNode.LastChildMatching("UseTilesetExtension");
-					if (useTilesetExtensionNode != null && !tilesetExtensions.Any())
+					if (useTilesetExtensionNode != null && tilesetExtensions.Count == 0)
 						requiredMetadata.Add("TilesetExtensions");
 
 					var useTilesetCodeNode = sequenceNode.LastChildMatching("UseTilesetCode");
-					if (useTilesetCodeNode != null && !tilesetCodes.Any())
+					if (useTilesetCodeNode != null && tilesetCodes.Count == 0)
 						requiredMetadata.Add("TilesetCodes");
 				}
 			}
 
-			if (requiredMetadata.Any())
+			if (requiredMetadata.Count != 0)
 			{
 				yield return $"The ExplicitSequenceFilenames rule requires {requiredMetadata.JoinWith(", ")}\n" +
 				             "to be defined under the SpriteSequenceFormat definition in mod.yaml.\n" +
@@ -317,7 +317,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 						if (allSequencesHaveTilesetFilenames)
 							sequenceNode.RemoveNodes("TilesetFilenames");
 
-						if (!sequenceNode.Value.Nodes.Any())
+						if (sequenceNode.Value.Nodes.Count == 0)
 							imageNode.RemoveNode(sequenceNode);
 					}
 
@@ -328,13 +328,13 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 						sequenceNode.RemoveNodes("TilesetFilenames");
 
 					var tilesetFilenamesNode = sequenceNode.LastChildMatching("TilesetFilenames");
-					if (allSequencesHaveTilesetFilenames && tilesetFilenamesNode != null && !tilesetFilenamesNode.Value.Nodes.Any())
+					if (allSequencesHaveTilesetFilenames && tilesetFilenamesNode != null && tilesetFilenamesNode.Value.Nodes.Count == 0)
 						sequenceNode.RemoveNode(tilesetFilenamesNode);
 				}
 			}
 
 			foreach (var sequenceNode in imageNode.Value.Nodes.ToList())
-				if (implicitInheritedSequences.Contains(sequenceNode.Key) && !sequenceNode.Value.Nodes.Any())
+				if (implicitInheritedSequences.Contains(sequenceNode.Key) && sequenceNode.Value.Nodes.Count == 0)
 					imageNode.RemoveNode(sequenceNode);
 		}
 
@@ -424,7 +424,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 						if (overrideNode.Value.Value == filenameNode.Value.Value)
 							tilesetFilenamesNode.Value.Nodes.Remove(overrideNode);
 
-					if (!tilesetFilenamesNode.Value.Nodes.Any())
+					if (tilesetFilenamesNode.Value.Nodes.Count == 0)
 						sequenceNode.RemoveNode(tilesetFilenamesNode);
 
 					sequenceNode.Value.Nodes.Insert(0, filenameNode);

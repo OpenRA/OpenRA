@@ -51,29 +51,27 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (IsTraitDisabled)
 				return r;
 
+			var renderables = r.ToList();
 			var height = self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length;
-			var shadowSprites = r.Where(s => !s.IsDecoration && s is IModifyableRenderable)
+			var shadowSprites = renderables.Where(s => !s.IsDecoration && s is IModifyableRenderable)
 				.Select(ma => ((IModifyableRenderable)ma).WithTint(shadowColor, ((IModifyableRenderable)ma).TintModifiers | TintModifiers.ReplaceColor)
 					.WithAlpha(shadowAlpha)
 					.OffsetBy(info.Offset - new WVec(0, 0, height))
 					.WithZOffset(ma.ZOffset + height + info.ZOffset)
 					.AsDecoration());
 
-			return shadowSprites.Concat(r);
+			return shadowSprites.Concat(renderables);
 		}
 
 		IEnumerable<Rectangle> IRenderModifier.ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> bounds)
 		{
-			foreach (var r in bounds)
-				yield return r;
-
 			if (IsTraitDisabled)
-				yield break;
+				return bounds;
 
+			var boundsList = bounds.ToList();
 			var height = self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length;
 			var offset = wr.ScreenPxOffset(info.Offset - new WVec(0, 0, height));
-			foreach (var r in bounds)
-				yield return new Rectangle(r.X + offset.X, r.Y + offset.Y, r.Width, r.Height);
+			return boundsList.Concat(boundsList.Select(r => new Rectangle(r.X + offset.X, r.Y + offset.Y, r.Width, r.Height)));
 		}
 	}
 }

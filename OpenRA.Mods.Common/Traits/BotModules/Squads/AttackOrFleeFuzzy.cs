@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			fuzzyEngine.Rules.Add(fuzzyEngine.ParseRule(rule));
 		}
 
-		public bool CanAttack(IEnumerable<Actor> ownUnits, IEnumerable<Actor> enemyUnits)
+		public bool CanAttack(IReadOnlyCollection<Actor> ownUnits, IReadOnlyCollection<Actor> enemyUnits)
 		{
 			double attackChance;
 			var inputValues = new Dictionary<FuzzyVariable, double>();
@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			return (int)((long)sumOfHp * normalizeByValue / sumOfMaxHp);
 		}
 
-		static float RelativePower(IEnumerable<Actor> own, IEnumerable<Actor> enemy)
+		static float RelativePower(IReadOnlyCollection<Actor> own, IReadOnlyCollection<Actor> enemy)
 		{
 			return RelativeValue(own, enemy, 100, SumOfValues<AttackBaseInfo>, a =>
 			{
@@ -225,18 +225,18 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			});
 		}
 
-		static float RelativeSpeed(IEnumerable<Actor> own, IEnumerable<Actor> enemy)
+		static float RelativeSpeed(IReadOnlyCollection<Actor> own, IReadOnlyCollection<Actor> enemy)
 		{
 			return RelativeValue(own, enemy, 100, Average<MobileInfo>, (Actor a) => a.Info.TraitInfo<MobileInfo>().Speed);
 		}
 
-		static float RelativeValue(IEnumerable<Actor> own, IEnumerable<Actor> enemy, float normalizeByValue,
-					Func<IEnumerable<Actor>, Func<Actor, int>, float> relativeFunc, Func<Actor, int> getValue)
+		static float RelativeValue(IReadOnlyCollection<Actor> own, IReadOnlyCollection<Actor> enemy, float normalizeByValue,
+					Func<IReadOnlyCollection<Actor>, Func<Actor, int>, float> relativeFunc, Func<Actor, int> getValue)
 		{
-			if (!enemy.Any())
+			if (enemy.Count == 0)
 				return 999.0f;
 
-			if (!own.Any())
+			if (own.Count == 0)
 				return 0.0f;
 
 			var relative = relativeFunc(own, getValue) / relativeFunc(enemy, getValue) * normalizeByValue;

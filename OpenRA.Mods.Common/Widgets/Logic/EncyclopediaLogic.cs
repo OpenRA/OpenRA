@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var actors = new List<KeyValuePair<ActorInfo, EncyclopediaInfo>>();
 			foreach (var actor in modData.DefaultRules.Actors.Values)
 			{
-				if (!actor.TraitInfos<IRenderActorPreviewSpritesInfo>().Any())
+				if (actor.TraitInfos<IRenderActorPreviewSpritesInfo>().Count == 0)
 					continue;
 
 				var statistics = actor.TraitInfoOrDefault<UpdatesPlayerStatisticsInfo>();

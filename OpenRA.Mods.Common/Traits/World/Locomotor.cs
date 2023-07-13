@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly LongBitSet<PlayerBitMask> Crushable;
 			public readonly CellFlag CellFlag;
 
-			public CellCache(LongBitSet<PlayerBitMask> immovable, CellFlag cellFlag, LongBitSet<PlayerBitMask> crushable = default)
+			public CellCache(LongBitSet<PlayerBitMask> immovable, CellFlag cellFlag, LongBitSet<PlayerBitMask> crushable)
 			{
 				Immovable = immovable;
 				Crushable = crushable;
@@ -459,26 +459,17 @@ namespace OpenRA.Mods.Common.Traits
 			using (new PerfSample("locomotor_cache"))
 			{
 				var cache = blockingCache[cell.Layer];
-
-				var actors = actorMap.GetActorsAt(cell);
 				var cellFlag = CellFlag.HasFreeSpace;
-
-				if (!actors.Any())
-				{
-					cache[cell] = new CellCache(default, cellFlag);
-					return;
-				}
-
-				if (sharesCell && actorMap.HasFreeSubCell(cell))
-				{
-					cache[cell] = new CellCache(default, cellFlag);
-					return;
-				}
-
 				var cellImmovablePlayers = default(LongBitSet<PlayerBitMask>);
 				var cellCrushablePlayers = world.AllPlayersMask;
 
-				foreach (var actor in actors)
+				if (sharesCell && actorMap.HasFreeSubCell(cell))
+				{
+					cache[cell] = new CellCache(cellImmovablePlayers, cellFlag, cellCrushablePlayers);
+					return;
+				}
+
+				foreach (var actor in actorMap.GetActorsAt(cell))
 				{
 					var actorImmovablePlayers = world.AllPlayersMask;
 					var actorCrushablePlayers = world.NoPlayersMask;
@@ -493,11 +484,10 @@ namespace OpenRA.Mods.Common.Traits
 					if (isTransitOnly)
 						cellFlag |= CellFlag.HasTransitOnlyActor;
 
-					if (crushables.Any())
+					foreach (var crushable in crushables)
 					{
 						cellFlag |= CellFlag.HasCrushableActor;
-						foreach (var crushable in crushables)
-							actorCrushablePlayers = actorCrushablePlayers.Union(crushable.CrushableBy(actor, Info.Crushes));
+						actorCrushablePlayers = actorCrushablePlayers.Union(crushable.CrushableBy(actor, Info.Crushes));
 					}
 
 					if (isMoving)

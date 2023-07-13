@@ -245,7 +245,7 @@ namespace OpenRA.Mods.Common.Scripting
 			foreach (var actorType in actorTypes.Distinct())
 				typeToQueueMap.Add(actorType, GetBuildableInfo(actorType).Queue.First());
 
-			var queueTypes = typeToQueueMap.Values.Distinct();
+			var queueTypes = typeToQueueMap.Values.Distinct().ToList();
 
 			if (queueTypes.Any(t => !queues.ContainsKey(t) || productionHandlers.ContainsKey(t)))
 				return false;

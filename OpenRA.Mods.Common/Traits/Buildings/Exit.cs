@@ -80,9 +80,6 @@ namespace OpenRA.Mods.Common.Traits
 				return null;
 
 			var allOfType = Exits(actor, productionType);
-			if (!allOfType.Any())
-				return null;
-
 			foreach (var g in allOfType.GroupBy(e => e.Info.Priority))
 			{
 				var shuffled = g.Shuffle(world.SharedRandom);

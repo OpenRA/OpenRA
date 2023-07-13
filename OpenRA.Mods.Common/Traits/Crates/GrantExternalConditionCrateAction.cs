@@ -76,7 +76,8 @@ namespace OpenRA.Mods.Common.Traits
 		void GrantCondition(Actor actor)
 		{
 			var externals = actor.TraitsImplementing<ExternalCondition>()
-				.Where(t => t.Info.Condition == info.Condition);
+				.Where(t => t.Info.Condition == info.Condition)
+				.ToList();
 
 			ExternalCondition external = null;
 			for (var n = 0; n < info.Levels; n++)

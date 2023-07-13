@@ -183,9 +183,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var typesInGroup = hg.Value;
 				var keysInGroup = modData.Hotkeys.Definitions
-					.Where(hd => IsHotkeyVisibleInFilter(hd) && hd.Types.Overlaps(typesInGroup));
+					.Where(hd => IsHotkeyVisibleInFilter(hd) && hd.Types.Overlaps(typesInGroup))
+					.ToList();
 
-				if (!keysInGroup.Any())
+				if (keysInGroup.Count == 0)
 					continue;
 
 				var header = headerTemplate.Clone();

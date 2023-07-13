@@ -178,7 +178,7 @@ namespace OpenRA.Mods.Common.Traits
 			return reference.GetOrDefault<T>(info);
 		}
 
-		public IEnumerable<T> GetInits<T>() where T : ActorInit
+		public IReadOnlyCollection<T> GetInits<T>() where T : ActorInit
 		{
 			return reference.GetAll<T>();
 		}
