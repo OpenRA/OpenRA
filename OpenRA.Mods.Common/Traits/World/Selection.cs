@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class Selection : ISelection, INotifyCreated, INotifyOwnerChanged, ITick, IGameSaveTraitData
 	{
 		public int Hash { get; private set; }
-		public IEnumerable<Actor> Actors => actors;
+		public IReadOnlyCollection<Actor> Actors => actors;
 
 		readonly HashSet<Actor> actors = new();
 		readonly List<Actor> rolloverActors = new();
@@ -91,10 +91,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void Combine(World world, IEnumerable<Actor> newSelection, bool isCombine, bool isClick)
 		{
+			var newSelectionCollection = newSelection as IReadOnlyCollection<Actor>;
+			newSelectionCollection ??= newSelection.ToList();
+
 			if (isClick)
 			{
 				// TODO: select BEST, not FIRST
-				var adjNewSelection = newSelection.Take(1);
+				var adjNewSelection = newSelectionCollection.Take(1);
 				if (isCombine)
 					actors.SymmetricExceptWith(adjNewSelection);
 				else
@@ -106,17 +109,17 @@ namespace OpenRA.Mods.Common.Traits
 			else
 			{
 				if (isCombine)
-					actors.UnionWith(newSelection);
+					actors.UnionWith(newSelectionCollection);
 				else
 				{
 					actors.Clear();
-					actors.UnionWith(newSelection);
+					actors.UnionWith(newSelectionCollection);
 				}
 			}
 
 			UpdateHash();
 
-			foreach (var a in newSelection)
+			foreach (var a in newSelectionCollection)
 				foreach (var sel in a.TraitsImplementing<INotifySelected>())
 					sel.Selected(a);
 

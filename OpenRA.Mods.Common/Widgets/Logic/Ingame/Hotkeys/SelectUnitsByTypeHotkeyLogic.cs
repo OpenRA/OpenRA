@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 			if (world.IsGameOver)
 				return false;
 
-			if (!selection.Actors.Any())
+			if (selection.Actors.Count == 0)
 			{
 				TextNotificationsManager.AddFeedbackLine(NothingSelected);
 				Game.Sound.PlayNotification(world.Map.Rules, world.LocalPlayer, "Sounds", ClickDisabledSound, null);
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 			var newSelection = SelectionUtils.SelectActorsOnScreen(world, worldRenderer, selectedClasses, eligiblePlayers).ToList();
 
 			// Check if selecting actors on the screen has selected new units
-			if (newSelection.Count > selection.Actors.Count())
+			if (newSelection.Count > selection.Actors.Count)
 				TextNotificationsManager.AddFeedbackLine(SelectedUnitsAcrossScreen, Translation.Arguments("units", newSelection.Count));
 			else
 			{

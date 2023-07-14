@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 			var newSelection = SelectionUtils.SelectActorsOnScreen(world, worldRenderer, null, eligiblePlayers).SubsetWithHighestSelectionPriority(e.Modifiers).ToList();
 
 			// Check if selecting actors on the screen has selected new units
-			if (newSelection.Count > selection.Actors.Count())
+			if (newSelection.Count > selection.Actors.Count)
 				TextNotificationsManager.AddFeedbackLine(SelectedUnitsAcrossScreen, Translation.Arguments("units", newSelection.Count));
 			else
 			{

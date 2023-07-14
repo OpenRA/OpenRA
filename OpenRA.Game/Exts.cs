@@ -147,7 +147,7 @@ namespace OpenRA
 
 		static T Random<T>(IEnumerable<T> ts, MersenneTwister r, bool throws)
 		{
-			var xs = ts as ICollection<T>;
+			var xs = ts as IReadOnlyCollection<T>;
 			xs ??= ts.ToList();
 			if (xs.Count == 0)
 			{

@@ -299,10 +299,13 @@ namespace OpenRA.Graphics
 
 		public void Center(IEnumerable<Actor> actors)
 		{
-			if (!actors.Any())
+			var actorsCollection = actors as IReadOnlyCollection<Actor>;
+			actorsCollection ??= actors.ToList();
+
+			if (actorsCollection.Count == 0)
 				return;
 
-			Center(actors.Select(a => a.CenterPosition).Average());
+			Center(actorsCollection.Select(a => a.CenterPosition).Average());
 		}
 
 		public void Center(WPos pos)

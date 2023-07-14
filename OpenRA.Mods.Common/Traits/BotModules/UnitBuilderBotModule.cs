@@ -163,11 +163,8 @@ namespace OpenRA.Mods.Common.Traits
 		ActorInfo ChooseRandomUnitToBuild(ProductionQueue queue)
 		{
 			var buildableThings = queue.BuildableItems();
-			if (!buildableThings.Any())
-				return null;
-
-			var unit = buildableThings.Random(world.LocalRandom);
-			return HasAdequateAirUnitReloadBuildings(unit) ? unit : null;
+			var unit = buildableThings.RandomOrDefault(world.LocalRandom);
+			return unit != null && HasAdequateAirUnitReloadBuildings(unit) ? unit : null;
 		}
 
 		ActorInfo ChooseUnitToBuild(ProductionQueue queue)

@@ -229,7 +229,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		ActorInfo ChooseBuildingToBuild(ProductionQueue queue)
 		{
-			var buildableThings = queue.BuildableItems();
+			var buildableThings = queue.BuildableItems().ToList();
 
 			// This gets used quite a bit, so let's cache it here
 			var power = GetProducibleBuilding(baseBuilder.Info.PowerTypes, buildableThings,

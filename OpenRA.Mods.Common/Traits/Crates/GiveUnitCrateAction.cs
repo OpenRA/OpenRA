@@ -111,11 +111,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		CPos? ChooseEmptyCellNear(Actor a, string unit)
 		{
-			var possibleCells = GetSuitableCells(a.Location, unit);
-			if (!possibleCells.Any())
-				return null;
-
-			return possibleCells.Random(self.World.SharedRandom);
+			return GetSuitableCells(a.Location, unit)
+				.Cast<CPos?>()
+				.RandomOrDefault(self.World.SharedRandom);
 		}
 	}
 }

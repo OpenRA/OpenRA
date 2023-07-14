@@ -530,9 +530,9 @@ namespace OpenRA.Mods.Common.Server
 
 					// Pick a random color for the bot
 					var colorManager = server.ModData.DefaultRules.Actors[SystemActors.World].TraitInfo<IColorPickerManagerInfo>();
-					var terrainColors = server.ModData.DefaultTerrainInfo[server.Map.TileSet].RestrictedPlayerColors;
+					var terrainColors = server.ModData.DefaultTerrainInfo[server.Map.TileSet].RestrictedPlayerColors.ToList();
 					var playerColors = server.LobbyInfo.Clients.Select(c => c.Color)
-						.Concat(server.Map.Players.Players.Values.Select(p => p.Color));
+						.Concat(server.Map.Players.Players.Values.Select(p => p.Color)).ToList();
 
 					bot.Color = bot.PreferredColor = colorManager.RandomPresetColor(server.Random, terrainColors, playerColors);
 
@@ -935,7 +935,8 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 
 				var factions = server.Map.WorldActorInfo.TraitInfos<FactionInfo>()
-					.Where(f => f.Selectable).Select(f => f.InternalName);
+					.Where(f => f.Selectable).Select(f => f.InternalName)
+					.ToList();
 
 				var faction = parts[1];
 				if (!factions.Contains(faction))
@@ -1250,7 +1251,7 @@ namespace OpenRA.Mods.Common.Server
 						server.SendLocalizedMessageTo(connectionToEcho, message);
 				}
 
-				var terrainColors = server.ModData.DefaultTerrainInfo[server.Map.TileSet].RestrictedPlayerColors;
+				var terrainColors = server.ModData.DefaultTerrainInfo[server.Map.TileSet].RestrictedPlayerColors.ToList();
 				var playerColors = server.LobbyInfo.Clients.Where(c => c.Index != playerIndex).Select(c => c.Color)
 					.Concat(server.Map.Players.Players.Values.Select(p => p.Color)).ToList();
 

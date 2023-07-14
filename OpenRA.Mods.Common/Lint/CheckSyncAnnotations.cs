@@ -21,8 +21,7 @@ namespace OpenRA.Mods.Common.Lint
 		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
 		{
 			var modTypes = modData.ObjectCreator.GetTypes();
-			CheckTypesWithSyncableMembersImplementSyncInterface(modTypes, emitWarning);
-			CheckTypesImplementingSyncInterfaceHaveSyncableMembers(modTypes, emitWarning);
+			CheckTypes(modTypes, emitWarning);
 		}
 
 		static readonly Type SyncInterface = typeof(ISync);
@@ -45,18 +44,18 @@ namespace OpenRA.Mods.Common.Lint
 			return false;
 		}
 
-		static void CheckTypesWithSyncableMembersImplementSyncInterface(IEnumerable<Type> types, Action<string> emitWarning)
+		static void CheckTypes(IEnumerable<Type> types, Action<string> emitWarning)
 		{
 			foreach (var type in types)
-				if (!TypeImplementsSync(type) && AnyTypeMemberIsSynced(type))
-					emitWarning($"{type.FullName} has members with the Sync attribute but does not implement ISync.");
-		}
+			{
+				var typeImplementsSync = TypeImplementsSync(type);
+				var anyTypeMemberIsSynced = AnyTypeMemberIsSynced(type);
 
-		static void CheckTypesImplementingSyncInterfaceHaveSyncableMembers(IEnumerable<Type> types, Action<string> emitWarning)
-		{
-			foreach (var type in types)
-				if (TypeImplementsSync(type) && !AnyTypeMemberIsSynced(type))
+				if (!typeImplementsSync && anyTypeMemberIsSynced)
+					emitWarning($"{type.FullName} has members with the Sync attribute but does not implement ISync.");
+				else if (typeImplementsSync && !anyTypeMemberIsSynced)
 					emitWarning($"{type.FullName} implements ISync but does not use the Sync attribute on any members.");
+			}
 		}
 	}
 }

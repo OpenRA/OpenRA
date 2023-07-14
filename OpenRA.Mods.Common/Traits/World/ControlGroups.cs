@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void CreateControlGroup(int group)
 		{
-			if (!world.Selection.Actors.Any())
+			if (world.Selection.Actors.Count == 0)
 				return;
 
 			controlGroups[group].Clear();
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void AddSelectionToControlGroup(int group)
 		{
-			if (!world.Selection.Actors.Any())
+			if (world.Selection.Actors.Count == 0)
 				return;
 
 			RemoveActorsFromAllControlGroups(world.Selection.Actors);

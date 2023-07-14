@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Repairers.Remove(player))
 			{
 				UpdateCondition(self);
-				if (!Repairers.Any())
+				if (Repairers.Count == 0)
 				{
 					Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", Info.RepairingStoppedNotification, player.Faction.InternalName);
 					TextNotificationsManager.AddTransientLine(self.Owner, Info.RepairingStoppedTextNotification);

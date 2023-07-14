@@ -154,12 +154,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.CapturableActorTypes.Count > 0)
 				capturableTargetOptions = capturableTargetOptions.Where(target => Info.CapturableActorTypes.Contains(target.Info.Name.ToLowerInvariant()));
 
-			if (!capturableTargetOptions.Any())
+			var capturableTargetOptionsList = capturableTargetOptions.ToList();
+			if (capturableTargetOptionsList.Count == 0)
 				return;
 
 			foreach (var capturer in capturers)
 			{
-				var targetActor = capturableTargetOptions.MinByOrDefault(target => (target.CenterPosition - capturer.Actor.CenterPosition).LengthSquared);
+				var targetActor = capturableTargetOptionsList.MinByOrDefault(target => (target.CenterPosition - capturer.Actor.CenterPosition).LengthSquared);
 				if (targetActor == null)
 					continue;
 

@@ -443,7 +443,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (facility == null || facility.OccupiesSpace == null)
 				return true;
 
-			if (selection.Actors.Count() == 1 && selection.Contains(facility))
+			if (selection.Actors.Count == 1 && selection.Contains(facility))
 				viewport.Center(selection.Actors);
 			else
 				selection.Combine(World, new[] { facility }, false, true);

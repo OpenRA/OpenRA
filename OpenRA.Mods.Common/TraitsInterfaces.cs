@@ -380,9 +380,9 @@ namespace OpenRA.Mods.Common.Traits
 		(float VMin, float VMax) ValueRange { get; }
 		event Action<Color> OnColorPickerColorUpdate;
 		Color[] PresetColors { get; }
-		Color RandomPresetColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors);
-		Color RandomValidColor(MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors);
-		Color MakeValid(Color color, MersenneTwister random, IEnumerable<Color> terrainColors, IEnumerable<Color> playerColors, Action<string> onError = null);
+		Color RandomPresetColor(MersenneTwister random, IReadOnlyCollection<Color> terrainColors, IReadOnlyCollection<Color> playerColors);
+		Color RandomValidColor(MersenneTwister random, IReadOnlyCollection<Color> terrainColors, IReadOnlyCollection<Color> playerColors);
+		Color MakeValid(Color color, MersenneTwister random, IReadOnlyCollection<Color> terrainColors, IReadOnlyCollection<Color> playerColors, Action<string> onError = null);
 		void ShowColorDropDown(DropDownButtonWidget dropdownButton, Color initialColor, string initialFaction, WorldRenderer worldRenderer, Action<Color> onExit);
 	}
 

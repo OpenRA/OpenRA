@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		internal Actor FindClosestEnemy(WPos pos)
 		{
-			var units = World.Actors.Where(IsPreferredEnemyUnit);
+			var units = World.Actors.Where(IsPreferredEnemyUnit).ToList();
 			return units.Where(IsNotHiddenUnit).ClosestTo(pos) ?? units.ClosestTo(pos);
 		}
 

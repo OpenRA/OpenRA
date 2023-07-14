@@ -53,7 +53,7 @@ namespace OpenRA.Test
 		public void PriorityQueueAddThenRemoveTest(int count, int seed)
 		{
 			var mt = new MersenneTwister(seed);
-			var values = Enumerable.Range(0, count);
+			var values = Enumerable.Range(0, count).ToList();
 			var shuffledValues = values.Shuffle(mt).ToArray();
 
 			var queue = new Primitives.PriorityQueue<int, Int32Comparer>(default);
