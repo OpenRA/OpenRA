@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 			Actor ignoreActor = null,
 			bool laneBias = true)
 		{
-			return FindPathToTarget(self, sources, target, check, customCost, ignoreActor, laneBias);
+			return FindPathToTarget(self, sources.ToList(), target, check, customCost, ignoreActor, laneBias);
 		}
 
 		/// <summary>
@@ -125,11 +125,14 @@ namespace OpenRA.Mods.Common.Traits
 			// and calling the existing methods that allow multiple sources and one target.
 			// However there is a case of asymmetry we must handle, an actor may move out of a inaccessible source,
 			// but may not move onto a inaccessible target. We must account for this when performing the swap.
+			var targetsList = targets.ToList();
+			if (targetsList.Count == 0)
+				return NoPath;
 
 			// As targets must be accessible, determine accessible targets in advance so when they becomes the sources
 			// we don't accidentally allow an inaccessible position to become viable.
 			var locomotor = GetActorLocomotor(self);
-			var accessibleTargets = targets
+			var accessibleTargets = targetsList
 				.Where(target =>
 					PathSearch.CellAllowsMovement(self.World, locomotor, target, customCost)
 					&& locomotor.MovementCostToEnterCell(self, target, check, ignoreActor, true) != PathGraph.MovementCostForUnreachableCell)
@@ -146,7 +149,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (sourceIsAccessible)
 			{
 				// As both ends are accessible, we can freely swap them.
-				path = FindPathToTarget(self, targets, source, check, customCost, ignoreActor, laneBias);
+				path = FindPathToTarget(self, targetsList, source, check, customCost, ignoreActor, laneBias);
 			}
 			else
 			{
@@ -167,11 +170,10 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		List<CPos> FindPathToTarget(
-			Actor self, IEnumerable<CPos> sources, CPos target, BlockedByActor check,
+			Actor self, List<CPos> sources, CPos target, BlockedByActor check,
 			Func<CPos, int> customCost, Actor ignoreActor, bool laneBias)
 		{
-			var sourcesList = sources.ToList();
-			if (sourcesList.Count == 0)
+			if (sources.Count == 0)
 				return NoPath;
 
 			var locomotor = GetActorLocomotor(self);
@@ -183,9 +185,9 @@ namespace OpenRA.Mods.Common.Traits
 				return NoPath;
 
 			// When searching from only one source cell, some optimizations are possible.
-			if (sourcesList.Count == 1)
+			if (sources.Count == 1)
 			{
-				var source = sourcesList[0];
+				var source = sources[0];
 
 				// For adjacent cells on the same layer, we can return the path without invoking a full search.
 				if (source.Layer == target.Layer && (source - target).LengthSquared < 3)
@@ -204,7 +206,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Use a hierarchical path search, which performs a guided unidirectional search.
 			return GetHierarchicalPathFinder(locomotor, check, ignoreActor).FindPath(
-				self, sourcesList, target, check, DefaultHeuristicWeightPercentage, customCost, ignoreActor, laneBias, pathFinderOverlay);
+				self, sources, target, check, DefaultHeuristicWeightPercentage, customCost, ignoreActor, laneBias, pathFinderOverlay);
 		}
 
 		HierarchicalPathFinder GetHierarchicalPathFinder(Locomotor locomotor, BlockedByActor check, Actor ignoreActor)

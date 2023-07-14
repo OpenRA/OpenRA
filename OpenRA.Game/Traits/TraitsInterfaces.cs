@@ -455,7 +455,7 @@ namespace OpenRA.Traits
 	public interface ISelection
 	{
 		int Hash { get; }
-		IEnumerable<Actor> Actors { get; }
+		IReadOnlyCollection<Actor> Actors { get; }
 
 		void Add(Actor a);
 		void Remove(Actor a);

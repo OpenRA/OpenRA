@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					.SelectMany(t => t.Value.RestrictedPlayerColors)
 					.Distinct()
 					.ToList();
-				var playerColors = Enumerable.Empty<Color>();
+				var playerColors = Array.Empty<Color>();
 				randomButton.OnClick = () =>
 				{
 					var randomColor = colorManager.RandomValidColor(world.LocalRandom, terrainColors, playerColors);
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var colorIndex = j * paletteCols + i;
 
 					var newSwatch = (ColorBlockWidget)customColorTemplate.Clone();
-					var getColor = new CachedTransform<Color, Color>(c => colorManager.MakeValid(c, world.LocalRandom, Enumerable.Empty<Color>(), Enumerable.Empty<Color>()));
+					var getColor = new CachedTransform<Color, Color>(c => colorManager.MakeValid(c, world.LocalRandom, Array.Empty<Color>(), Array.Empty<Color>()));
 
 					newSwatch.GetColor = () => getColor.Update(Game.Settings.Player.CustomColors[colorIndex]);
 					newSwatch.IsVisible = () => Game.Settings.Player.CustomColors.Length > colorIndex;

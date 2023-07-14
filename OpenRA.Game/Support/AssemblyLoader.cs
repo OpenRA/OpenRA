@@ -349,7 +349,7 @@ namespace OpenRA.Support
 			return Enumerable.Concat(new[] { runtimeGraph.Runtime }, runtimeGraph?.Fallbacks ?? Enumerable.Empty<string>());
 		}
 
-		static IEnumerable<string> SelectAssets(IEnumerable<string> rids, IEnumerable<RuntimeAssetGroup> groups)
+		static IEnumerable<string> SelectAssets(IEnumerable<string> rids, IReadOnlyCollection<RuntimeAssetGroup> groups)
 		{
 			foreach (var rid in rids)
 			{

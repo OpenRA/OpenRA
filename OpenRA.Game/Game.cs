@@ -523,10 +523,11 @@ namespace OpenRA
 				.Where(m => m.Status == MapStatus.Available && m.Visibility.HasFlag(MapVisibility.Shellmap))
 				.Select(m => m.Uid);
 
-			if (!shellmaps.Any())
+			var shellmap = shellmaps.RandomOrDefault(CosmeticRandom);
+			if (shellmap == null)
 				throw new InvalidDataException("No valid shellmaps available");
 
-			return shellmaps.Random(CosmeticRandom);
+			return shellmap;
 		}
 
 		public static void SwitchToExternalMod(ExternalMod mod, string[] launchArguments = null, Action onFailed = null)

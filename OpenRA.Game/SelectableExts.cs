@@ -62,10 +62,7 @@ namespace OpenRA.Traits
 
 		public static Actor WithHighestSelectionPriority(this IEnumerable<ActorBoundsPair> actors, int2 selectionPixel, Modifiers modifiers)
 		{
-			if (!actors.Any())
-				return null;
-
-			return actors.MaxBy(a => CalculateActorSelectionPriority(a.Actor.Info, a.Bounds, selectionPixel, modifiers)).Actor;
+			return actors.MaxByOrDefault(a => CalculateActorSelectionPriority(a.Actor.Info, a.Bounds, selectionPixel, modifiers)).Actor;
 		}
 
 		public static FrozenActor WithHighestSelectionPriority(this IEnumerable<FrozenActor> actors, int2 selectionPixel, Modifiers modifiers)

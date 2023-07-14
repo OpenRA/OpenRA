@@ -836,8 +836,8 @@ dotnet_diagnostic.CA1850.severity = none
 
 # Possible multiple enumerations of IEnumerable collection.
 #dotnet_code_quality.CA1851.enumeration_methods =
-#dotnet_code_quality.CA1851.linq_chain_methods =
-#dotnet_code_quality.CA1851.assume_method_enumerates_parameters = false
+dotnet_code_quality.CA1851.linq_chain_methods = M:OpenRA.Traits.IRenderModifier.Modify*
+dotnet_code_quality.CA1851.assume_method_enumerates_parameters = true
 dotnet_diagnostic.CA1851.severity = warning
 
 # Seal internal types.

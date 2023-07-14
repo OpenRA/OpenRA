@@ -136,9 +136,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						})
 						.Where(x => x.Index != -1)
 						.OrderBy(x => x.Index)
-						.Select(x => x.Preview);
+						.Select(x => x.Preview)
+						.ToList();
 
-					if (previews.Any())
+					if (previews.Count != 0)
 					{
 						CreateMissionGroup(kv.Key, previews, onExit);
 						allPreviews.AddRange(previews);
@@ -148,9 +149,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			// Add an additional group for loose missions
 			var loosePreviews = modData.MapCache
-				.Where(p => p.Status == MapStatus.Available && p.Visibility.HasFlag(MapVisibility.MissionSelector) && !allPreviews.Any(a => a.Uid == p.Uid));
+				.Where(p => p.Status == MapStatus.Available &&
+					p.Visibility.HasFlag(MapVisibility.MissionSelector) &&
+					!allPreviews.Any(a => a.Uid == p.Uid))
+				.ToList();
 
-			if (loosePreviews.Any())
+			if (loosePreviews.Count != 0)
 			{
 				CreateMissionGroup("Missions", loosePreviews, onExit);
 				allPreviews.AddRange(loosePreviews);

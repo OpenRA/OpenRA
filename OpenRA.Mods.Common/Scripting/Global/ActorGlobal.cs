@@ -72,7 +72,8 @@ namespace OpenRA.Mods.Common.Scripting
 			}
 
 			var initializers = initType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-				.Where(m => m.Name == "Initialize" && m.GetParameters().Length == 1);
+				.Where(m => m.Name == "Initialize" && m.GetParameters().Length == 1)
+				.ToList();
 
 			foreach (var initializer in initializers)
 			{

@@ -239,9 +239,10 @@ namespace OpenRA.Mods.Common.Traits
 		CPos ChooseRallyLocationNear(Actor producer)
 		{
 			var possibleRallyPoints = world.Map.FindTilesInCircle(producer.Location, Info.RallyPointScanRadius)
-				.Where(c => IsRallyPointValid(c, producer.Info.TraitInfoOrDefault<BuildingInfo>()));
+				.Where(c => IsRallyPointValid(c, producer.Info.TraitInfoOrDefault<BuildingInfo>()))
+				.ToList();
 
-			if (!possibleRallyPoints.Any())
+			if (possibleRallyPoints.Count == 0)
 			{
 				AIUtils.BotDebug("{0} has no possible rallypoint near {1}", producer.Owner, producer.Location);
 				return producer.Location;

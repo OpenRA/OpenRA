@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Orders
 					return cursorOrder.Cursor;
 
 				useSelect = target.Type == TargetType.Actor && target.Actor.Info.HasTraitInfo<ISelectableInfo>() &&
-					(mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any());
+					(mi.Modifiers.HasModifier(Modifiers.Shift) || world.Selection.Actors.Count == 0);
 			}
 
 			return useSelect ? worldSelectCursor : worldDefaultCursor;

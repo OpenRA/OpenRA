@@ -112,9 +112,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				requiredWidget.IsVisible = () => p.Value.Required;
 
 				var sourceWidget = container.Get<ImageWidget>("SOURCE");
-				var sourceTitles = p.Value.Sources.Select(s => sources[s].Title).Distinct();
+				var sourceTitles = p.Value.Sources.Select(s => sources[s].Title).Distinct().ToList();
 				var sourceList = sourceTitles.JoinWith("\n");
-				var isSourceAvailable = sourceTitles.Any();
+				var isSourceAvailable = sourceTitles.Count != 0;
 				sourceWidget.GetTooltipText = () => sourceList;
 				sourceWidget.IsVisible = () => isSourceAvailable;
 

@@ -66,12 +66,12 @@ namespace OpenRA.Mods.Common.Lint
 							granted.Add(g);
 				}
 
-				var unconsumed = granted.Except(consumed);
-				if (unconsumed.Any())
+				var unconsumed = granted.Except(consumed).ToList();
+				if (unconsumed.Count != 0)
 					emitWarning($"Actor type `{actorInfo.Key}` grants conditions that are not consumed: {unconsumed.JoinWith(", ")}.");
 
-				var ungranted = consumed.Except(granted);
-				if (ungranted.Any())
+				var ungranted = consumed.Except(granted).ToList();
+				if (ungranted.Count != 0)
 					emitError($"Actor type `{actorInfo.Key}` consumes conditions that are not granted: {ungranted.JoinWith(", ")}.");
 			}
 		}

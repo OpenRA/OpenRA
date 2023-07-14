@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
-		IEnumerable<KeyValuePair<ActorInfo, EncyclopediaInfo>> GetFilteredActorEncyclopediaPairs()
+		IReadOnlyCollection<KeyValuePair<ActorInfo, EncyclopediaInfo>> GetFilteredActorEncyclopediaPairs()
 		{
 			var actors = new List<KeyValuePair<ActorInfo, EncyclopediaInfo>>();
 			foreach (var actor in modData.DefaultRules.Actors.Values)
@@ -149,9 +149,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var buildable = actor.TraitInfoOrDefault<BuildableInfo>();
 			if (buildable != null)
 			{
-				var prerequisites = buildable.Prerequisites.Select(a => ActorName(modData.DefaultRules, a))
-					.Where(s => !s.StartsWith('~') && !s.StartsWith('!'));
-				if (prerequisites.Any())
+				var prerequisites = buildable.Prerequisites
+					.Select(a => ActorName(modData.DefaultRules, a))
+					.Where(s => !s.StartsWith('~') && !s.StartsWith('!'))
+					.ToList();
+				if (prerequisites.Count != 0)
 					text += $"Requires {prerequisites.JoinWith(", ")}\n\n";
 			}
 

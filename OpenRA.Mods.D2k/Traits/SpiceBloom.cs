@@ -120,7 +120,7 @@ namespace OpenRA.Mods.D2k.Traits
 			if (pieces < info.Pieces[0])
 				pieces = info.Pieces[0];
 
-			var cells = self.World.Map.FindTilesInAnnulus(self.Location, 1, info.Range);
+			var cells = self.World.Map.FindTilesInAnnulus(self.Location, 1, info.Range).ToList();
 
 			for (var i = 0; i < pieces; i++)
 			{
