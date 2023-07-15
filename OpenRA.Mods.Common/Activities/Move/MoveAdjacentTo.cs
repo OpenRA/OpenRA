@@ -107,24 +107,35 @@ namespace OpenRA.Mods.Common.Activities
 		protected readonly List<CPos> SearchCells = new();
 
 		protected int searchCellsTick = -1;
+		protected bool destinationIsStartpoint;
 
-		protected virtual List<CPos> CalculatePathToTarget(Actor self, BlockedByActor check)
+		protected virtual (List<CPos> Path, bool DestinationIsStartpoint) CalculatePathToTarget(Actor self, BlockedByActor check)
 		{
 			// PERF: Assume that candidate cells don't change within a tick to avoid repeated queries
 			// when Move enumerates different BlockedByActor values.
 			if (searchCellsTick != self.World.WorldTick)
 			{
 				SearchCells.Clear();
+				destinationIsStartpoint = false;
 				searchCellsTick = self.World.WorldTick;
 				foreach (var cell in Util.AdjacentCells(self.World, Target))
-					if (Mobile.CanStayInCell(cell) && Mobile.CanEnterCell(cell))
-						SearchCells.Add(cell);
+				{
+					if (Mobile.CanStayInCell(cell))
+					{
+						// HACK: When Pathfinder returns an empty path, there is possibility that, the destination is the location of actor,
+						// which means the parent activity should not stop on this. We need to pick out this specific situation for "Move".
+						if (cell == self.Location)
+							destinationIsStartpoint = true;
+						if (Mobile.CanEnterCell(cell))
+							SearchCells.Add(cell);
+					}
+				}
 			}
 
 			if (SearchCells.Count == 0)
-				return PathFinder.NoPath;
+				return (PathFinder.NoPath, destinationIsStartpoint);
 
-			return Mobile.PathFinder.FindPathToTargetCells(self, self.Location, SearchCells, check);
+			return (Mobile.PathFinder.FindPathToTargetCells(self, self.Location, SearchCells, check), destinationIsStartpoint);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
