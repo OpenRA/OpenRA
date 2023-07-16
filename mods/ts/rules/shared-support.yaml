@@ -11,6 +11,7 @@ NAPULS:
 		BuildPaletteOrder: 110
 		Prerequisites: radar, ~techlevel.superweapons
 		Description: Disables mechanical units in an area.\nRequires power to operate.
+		AddIconFactionSuffix: true
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -35,11 +36,6 @@ NAPULS:
 		Sequence: turret
 	Power:
 		Amount: -150
-	RenderSprites:
-		Image: napuls.gdi
-		FactionImages:
-			gdi: napuls.gdi
-			nod: napuls.nod
 	ProvidesPrerequisite@gdi:
 		ResetOnOwnerChange: true
 	ProvidesPrerequisite@gdi:

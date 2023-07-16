@@ -32,6 +32,8 @@ harv.colorpicker:
 	Inherits: HARV
 	-Buildable:
 	-MapEditorData:
+	RenderSprites:
+		Image: harv
 	RenderVoxels:
 		Image: harv
 		Palette: colorpicker

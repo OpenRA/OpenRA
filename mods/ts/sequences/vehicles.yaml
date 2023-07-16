@@ -6,14 +6,11 @@
 		BlendMode: Additive
 		IgnoreWorldTint: True
 
-mcv.gdi:
+mcv:
 	Inherits: ^VehicleOverlays
 	icon:
 		Filename: sidebar-gdi|mcvicon.shp
-
-mcv.nod:
-	Inherits: ^VehicleOverlays
-	icon:
+	icon.nod:
 		Filename: sidebar-nod|mcvicon.shp
 
 apc:
@@ -21,7 +18,7 @@ apc:
 	icon:
 		Filename: apcicon.shp
 
-harv.gdi:
+harv:
 	Inherits: ^VehicleOverlays
 	harvest:
 		Filename: harvestr.shp
@@ -30,15 +27,7 @@ harv.gdi:
 		Offset: 0, 0, 1
 	icon:
 		Filename: sidebar-gdi|harvicon.shp
-
-harv.nod:
-	Inherits: ^VehicleOverlays
-	harvest:
-		Filename: harvestr.shp
-		Length: *
-		ZRamp: 1
-		Offset: 0, 0, 1
-	icon:
+	icon.nod:
 		Filename: sidebar-nod|harvicon.shp
 
 hvr:
@@ -53,7 +42,7 @@ hvr:
 		Length: *
 		IgnoreWorldTint: True
 
-lpst.gdi:
+lpst:
 	Inherits: ^VehicleOverlays
 	idle:
 		TilesetFilenames:
@@ -93,10 +82,7 @@ lpst.gdi:
 		IgnoreWorldTint: True
 	icon:
 		Filename: sidebar-gdi|lpsticon.shp
-
-lpst.nod:
-	Inherits: lpst.gdi
-	icon:
+	icon.nod:
 		Filename: sidebar-nod|lpsticon.shp
 
 repair:

@@ -357,6 +357,7 @@ GADEPT:
 		Prerequisites: factory, ~structures.gdi, ~techlevel.medium
 		Queue: Building
 		Description: Repairs or sells vehicles and aircraft.
+		AddIconFactionSuffix: true
 	Building:
 		Footprint: =+= x++ x+=
 		Dimensions: 3,3
@@ -426,11 +427,6 @@ GADEPT:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
-	RenderSprites:
-		Image: gadept.gdi
-		FactionImages:
-			gdi: gadept.gdi
-			nod: gadept.nod
 	GrantConditionOnHostDock:
 		Condition: serving
 		AfterDockDuration: 20

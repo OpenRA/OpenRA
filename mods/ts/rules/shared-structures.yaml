@@ -111,6 +111,7 @@ PROC:
 		BuildPaletteOrder: 30
 		Prerequisites: anypower, ~techlevel.low
 		Description: Processes raw Tiberium\ninto useable resources.
+		AddIconFactionSuffix: true
 	Building:
 		Footprint: xxX+ xx++ xxX+
 		Dimensions: 4,3
@@ -154,11 +155,6 @@ PROC:
 	Power:
 		Amount: -30
 	ProvidesPrerequisite@buildingname:
-	RenderSprites:
-		Image: proc.gdi
-		FactionImages:
-			gdi: proc.gdi
-			nod: proc.nod
 	GrantConditionOnPlayerResources:
 		Condition: contains-tiberium
 	Explodes:
@@ -182,6 +178,7 @@ GASILO:
 		BuildPaletteOrder: 60
 		Prerequisites: proc, ~techlevel.low
 		Description: Stores excess Tiberium.
+		AddIconFactionSuffix: true
 	Valued:
 		Cost: 150
 	Tooltip:
@@ -197,11 +194,6 @@ GASILO:
 	RevealsShroud:
 		Range: 4c0
 		MaxHeightDelta: 3
-	RenderSprites:
-		Image: gasilo.gdi
-		FactionImages:
-			gdi: gasilo.gdi
-			nod: gasilo.nod
 	WithResourceLevelOverlay@FILLSTAGE:
 		RequiresCondition: !build-incomplete
 		Sequence: stages

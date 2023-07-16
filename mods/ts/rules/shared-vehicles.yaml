@@ -7,6 +7,7 @@ MCV:
 		BuildPaletteOrder: 160
 		Prerequisites: ~factory, tech, ~techlevel.medium
 		Description: Deploys into another Construction Yard.\n  Unarmed
+		AddIconFactionSuffix: true
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -36,11 +37,6 @@ MCV:
 		Voice: Move
 		NoTransformNotification: BuildingCannotPlaceAudio
 		NoTransformTextNotification: notification-cannot-deploy-here
-	RenderSprites:
-		Image: mcv.gdi
-		FactionImages:
-			gdi: mcv.gdi
-			nod: mcv.nod
 
 HARV:
 	Inherits: ^Tank
@@ -55,6 +51,7 @@ HARV:
 		BuildPaletteOrder: 10
 		Prerequisites: ~factory, proc, ~techlevel.low
 		Description: Collects Tiberium for processing.\n  Unarmed
+		AddIconFactionSuffix: true
 	Selectable:
 		Bounds: 1086, 2172
 		DecorationBounds: 1086, 2172
@@ -95,11 +92,6 @@ HARV:
 	WithHarvestOverlay:
 		LocalOffset: 543,0,0
 		Palette: effect
-	RenderSprites:
-		Image: harv.gdi
-		FactionImages:
-			gdi: harv.gdi
-			nod: harv.nod
 	-DamagedByTerrain@VEINS:
 	-LeavesTrails@VEINS:
 	WithStoresResourcesPipsDecoration:
@@ -124,6 +116,7 @@ LPST:
 		BuildPaletteOrder: 90
 		Prerequisites: ~factory, radar, ~techlevel.medium
 		Description: Can detect cloaked and subterranean\nunits when deployed.\n  Unarmed
+		AddIconFactionSuffix: true
 	Valued:
 		Cost: 950
 	Tooltip:
@@ -153,11 +146,7 @@ LPST:
 	GrantCondition@PREVIEWWORKAROUND:
 		Condition: real-actor
 	RenderSprites:
-		Image: lpst.gdi
 		PlayerPalette: playertem
-		FactionImages:
-			gdi: lpst.gdi
-			nod: lpst.nod
 	GrantConditionOnDeploy:
 		PauseOnCondition: empdisable || being-captured
 		DeployedCondition: deployed

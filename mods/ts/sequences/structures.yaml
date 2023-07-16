@@ -1591,48 +1591,7 @@ nasam:
 		TilesetFilenames:
 		Offset: 0, 0
 
-napuls.gdi:
-	Defaults:
-		TilesetFilenames:
-			TEMPERATE: ntpuls.shp
-			SNOW: napuls.shp
-		Offset: 0, -24, 24
-		DepthSprite: isodepth.shp
-	idle:
-		ShadowStart: 3
-	damaged-idle:
-		Start: 1
-		ShadowStart: 4
-	dead:
-		Start: 2
-		ShadowStart: 5
-		Tick: 400
-	turret:
-		TilesetFilenames:
-			TEMPERATE: ntpuls_a.shp
-			SNOW: napuls_a.shp
-		Facings: 32
-	make:
-		TilesetFilenames:
-			TEMPERATE: ntpulsmk.shp
-			SNOW: napulsmk.shp
-		Length: 20
-		ShadowStart: 20
-	emp-overlay:
-		Filename: emp_fx01.shp
-		TilesetFilenames:
-		Length: *
-		Offset: 0, 0, 25
-		ZOffset: 512
-		BlendMode: Additive
-		DepthSprite:
-	icon:
-		Filename: sidebar-gdi|empicon.shp
-		TilesetFilenames:
-		Offset: 0, 0
-		DepthSprite:
-
-napuls.nod:
+napuls:
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ntpuls.shp
@@ -1668,7 +1627,12 @@ napuls.nod:
 		BlendMode: Additive
 		IgnoreWorldTint: True
 		DepthSprite:
-	icon:
+	icon.gdi:
+		Filename: sidebar-gdi|empicon.shp
+		TilesetFilenames:
+		Offset: 0, 0
+		DepthSprite:
+	icon.nod:
 		Filename: sidebar-nod|empicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
@@ -2079,7 +2043,7 @@ nahpad:
 		TilesetFilenames:
 		Offset: 0, 0
 
-proc.gdi:
+proc:
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: ntrefn.shp
@@ -2170,94 +2134,7 @@ proc.gdi:
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
-
-proc.nod:
-	Defaults:
-		TilesetFilenames:
-			TEMPERATE: ntrefn.shp
-			SNOW: narefn.shp
-		Offset: -12, -42, 20
-		DepthSpriteOffset: 22, 0
-		DepthSprite: isodepth.shp
-	idle:
-		ShadowStart: 3
-	damaged-idle:
-		Start: 1
-		ShadowStart: 4
-	dead:
-		Start: 2
-		ShadowStart: 5
-		Tick: 400
-	make:
-		TilesetFilenames:
-			TEMPERATE: ntrefnmk.shp
-			SNOW: narefnmk.shp
-		Length: 20
-		ShadowStart: 20
-		Offset: -12, -42, 43
-		DepthSpriteOffset: -12, 0
-	flame:
-		TilesetFilenames:
-			TEMPERATE: ntrefn_b.shp
-			SNOW: narefn_b.shp
-		Length: *
-		IgnoreWorldTint: True
-	unload-overlay:
-		TilesetFilenames:
-			TEMPERATE: ntrefn_a.shp
-			SNOW: narefn_a.shp
-		Length: *
-		ZOffset: 1024
-	idle-lights:
-		TilesetFilenames:
-			TEMPERATE: ntrefn_c.shp
-			SNOW: narefn_c.shp
-		Length: 16
-		Tick: 120
-	idle-lights-bright:
-		TilesetFilenames:
-			TEMPERATE: ntrefn_c.shp
-			SNOW: narefn_c.shp
-		Length: 16
-		Tick: 120
-		IgnoreWorldTint: True
-	bib:
-		TilesetFilenames:
-			TEMPERATE: ntrefnbb.shp
-			SNOW: narefnbb.shp
-		Length: 1
-		ZOffset: -1024
-		Offset: -12, -42, 1
-		ZRamp: 1
-		DepthSprite:
-	damaged-bib:
-		TilesetFilenames:
-			TEMPERATE: ntrefnbb.shp
-			SNOW: narefnbb.shp
-		Start: 1
-		ZOffset: -1024
-		Offset: -12, -42, 1
-		ZRamp: 1
-		DepthSprite:
-	dead-bib:
-		TilesetFilenames:
-			TEMPERATE: ntrefnbb.shp
-			SNOW: narefnbb.shp
-		Start: 2
-		ZOffset: -1024
-		Offset: -12, -42, 1
-		ZRamp: 1
-		DepthSprite:
-	emp-overlay:
-		Filename: emp_fx01.shp
-		TilesetFilenames:
-		Length: *
-		Offset: 0, 0, 21
-		ZOffset: 512
-		BlendMode: Additive
-		IgnoreWorldTint: True
-		DepthSprite:
-	icon:
+	icon.nod:
 		Filename: sidebar-nod|reficon.shp
 		TilesetFilenames:
 		Offset: 0, 0
@@ -2359,7 +2236,7 @@ nawast:
 		Offset: 0, 0
 		DepthSprite:
 
-gasilo.gdi:
+gasilo:
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: gtsilo.shp
@@ -2433,83 +2310,13 @@ gasilo.gdi:
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
-
-gasilo.nod:
-	Defaults:
-		TilesetFilenames:
-			TEMPERATE: gtsilo.shp
-			SNOW: gasilo.shp
-		Offset: 0, -24, 24
-		DepthSprite: isodepth.shp
-	idle:
-		TilesetFilenames:
-			TEMPERATE: gtsilo_a.shp
-			SNOW: gasilo_a.shp
-	damaged-idle:
-		TilesetFilenames:
-			TEMPERATE: gtsilo_a.shp
-			SNOW: gasilo_a.shp
-		Start: 4
-	stages:
-		TilesetFilenames:
-			TEMPERATE: gtsilo_a.shp
-			SNOW: gasilo_a.shp
-		Length: 4
-	damaged-stages:
-		TilesetFilenames:
-			TEMPERATE: gtsilo_a.shp
-			SNOW: gasilo_a.shp
-		Start: 4
-		Length: 4
-	idle-underlay:
-		ShadowStart: 3
-		ZOffset: -512
-	damaged-idle-underlay:
-		Start: 1
-		ShadowStart: 4
-		ZOffset: -512
-	dead:
-		Start: 2
-		ShadowStart: 5
-		ZOffset: -512
-		Tick: 400
-	idle-lights-bright:
-		TilesetFilenames:
-			TEMPERATE: gtsilo_b.shp
-			SNOW: gasilo_b.shp
-		Length: 16
-		Tick: 120
-		IgnoreWorldTint: True
-	damaged-idle-lights-bright:
-		TilesetFilenames:
-			TEMPERATE: gtsilo_b.shp
-			SNOW: gasilo_b.shp
-		Start: 16
-		Length: 16
-		Tick: 120
-		IgnoreWorldTint: True
-	make:
-		TilesetFilenames:
-			TEMPERATE: gtsilomk.shp
-			SNOW: gasilomk.shp
-		Length: 18
-		ShadowStart: 20
-	emp-overlay:
-		Filename: emp_fx01.shp
-		TilesetFilenames:
-		Length: *
-		Offset: 0, 0, 25
-		ZOffset: 512
-		BlendMode: Additive
-		IgnoreWorldTint: True
-		DepthSprite:
-	icon:
+	icon.nod:
 		Filename: sidebar-nod|siloicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
 		DepthSprite:
 
-gadept.gdi:
+gadept:
 	Defaults:
 		TilesetFilenames:
 			TEMPERATE: gtdept.shp
@@ -2680,175 +2487,7 @@ gadept.gdi:
 		Filename: sidebar-gdi|fixicon.shp
 		TilesetFilenames:
 		Offset: 0, 0
-
-gadept.nod:
-	Defaults:
-		TilesetFilenames:
-			TEMPERATE: gtdept.shp
-			SNOW: gadept.shp
-		Offset: 0, -36, 1
-		DepthSpriteOffset: 36, 0
-	idle:
-		ShadowStart: 3
-		Offset: 0, -36, 12
-		DepthSprite: isodepth.shp
-	damaged-idle:
-		Start: 1
-		ShadowStart: 4
-		Offset: 0, -36, 12
-		DepthSprite: isodepth.shp
-	dead:
-		Start: 2
-		ShadowStart: 5
-		Tick: 400
-		Offset: 0, -36, 12
-		DepthSprite: isodepth.shp
-	ground:
-		TilesetFilenames:
-			TEMPERATE: gtdeptbb.shp
-			SNOW: gadeptbb.shp
-		ShadowStart: 3
-		ZOffset: -1c611
-		ZRamp: 1
-	damaged-ground:
-		TilesetFilenames:
-			TEMPERATE: gtdeptbb.shp
-			SNOW: gadeptbb.shp
-		Start: 1
-		ShadowStart: 4
-		ZOffset: -1c611
-		ZRamp: 1
-	dead-ground:
-		TilesetFilenames:
-			TEMPERATE: gtdeptbb.shp
-			SNOW: gadeptbb.shp
-		Start: 2
-		ShadowStart: 5
-		ZOffset: -1c611
-		Tick: 400
-		ZRamp: 1
-	idle-light:
-		TilesetFilenames:
-			TEMPERATE: gtdept_b.shp
-			SNOW: gadept_b.shp
-		Offset: 0, -36, 13
-		Length: 7
-		Tick: 120
-		ZRamp: 1
-	idle-light-bright:
-		TilesetFilenames:
-			TEMPERATE: gtdept_b.shp
-			SNOW: gadept_b.shp
-		Offset: 0, -36, 13
-		Length: 7
-		Tick: 120
-		ZRamp: 1
-		IgnoreWorldTint: True
-	circuits:
-		TilesetFilenames:
-			TEMPERATE: gtdept_a.shp
-			SNOW: gadept_a.shp
-		Length: 5
-		ZOffset: -1c511
-		Tick: 120
-		ZRamp: 1
-	circuits-bright:
-		TilesetFilenames:
-			TEMPERATE: gtdept_a.shp
-			SNOW: gadept_a.shp
-		Length: 5
-		ZOffset: -1c511
-		Tick: 120
-		ZRamp: 1
-		IgnoreWorldTint: True
-	damaged-circuits:
-		TilesetFilenames:
-			TEMPERATE: gtdept_a.shp
-			SNOW: gadept_a.shp
-		Start: 5
-		Length: 5
-		ZOffset: -1c511
-		Tick: 120
-		ZRamp: 1
-	damaged-circuits-bright:
-		TilesetFilenames:
-			TEMPERATE: gtdept_a.shp
-			SNOW: gadept_a.shp
-		Start: 5
-		Length: 5
-		ZOffset: -1c511
-		Tick: 120
-		ZRamp: 1
-		IgnoreWorldTint: True
-	crane-start:
-		TilesetFilenames:
-			TEMPERATE: gtdept_c.shp
-			SNOW: gadept_c.shp
-		Length: 6
-		Offset: 0, -36, 12
-		Tick: 60
-		DepthSprite: isodepth.shp
-	crane-loop:
-		TilesetFilenames:
-			TEMPERATE: gtdept_c.shp
-			SNOW: gadept_c.shp
-		Start: 6
-		Length: 5
-		Offset: 0, -36, 12
-		Tick: 60
-		DepthSprite: isodepth.shp
-	crane-loop-bright:
-		TilesetFilenames:
-			TEMPERATE: gtdept_c.shp
-			SNOW: gadept_c.shp
-		Start: 6
-		Length: 5
-		Offset: 0, -36, 12
-		Tick: 60
-		DepthSprite: isodepth.shp
-		IgnoreWorldTint: True
-	crane-end:
-		TilesetFilenames:
-			TEMPERATE: gtdept_c.shp
-			SNOW: gadept_c.shp
-		Start: 10
-		Length: 6
-		Offset: 0, -36, 12
-		DepthSprite: isodepth.shp
-		Tick: 60
-	platform:
-		TilesetFilenames:
-			TEMPERATE: gtdept_d.shp
-			SNOW: gadept_d.shp
-		Length: 7
-		ZOffset: -1c511
-		ZRamp: 1
-	damaged-platform:
-		TilesetFilenames:
-			TEMPERATE: gtdept_d.shp
-			SNOW: gadept_d.shp
-		Start: 7
-		Length: 7
-		ZOffset: -1c511
-		ZRamp: 1
-	make:
-		TilesetFilenames:
-			TEMPERATE: gtdeptmk.shp
-			SNOW: gadeptmk.shp
-		Length: 10
-		Tick: 60
-		ShadowStart: 10
-		Offset: 0, -36, 36
-		ZRamp: 1
-	emp-overlay:
-		Filename: emp_fx01.shp
-		TilesetFilenames:
-		Length: *
-		Offset: 0, 0, 8
-		ZOffset: 512
-		BlendMode: Additive
-		IgnoreWorldTint: True
-	icon:
+	icon.nod:
 		Filename: sidebar-nod|fixicon.shp
 		TilesetFilenames:
 		Offset: 76, 66

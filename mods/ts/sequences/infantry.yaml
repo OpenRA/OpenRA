@@ -77,20 +77,14 @@
 		Facings: 8
 		IgnoreWorldTint: True
 
-e1.gdi:
+e1:
 	Inherits: ^BasicInfantry
 	Inherits@attack: ^BasicInfantryAttack
 	Defaults:
 		Filename: e1.shp
 	icon:
 		Filename: sidebar-gdi|e1icon.shp
-
-e1.nod:
-	Inherits: ^BasicInfantry
-	Inherits@attack: ^BasicInfantryAttack
-	Defaults:
-		Filename: e1.shp
-	icon:
+	icon.nod:
 		Filename: sidebar-nod|e1icon.shp
 
 e2:
@@ -109,18 +103,13 @@ e3:
 	icon:
 		Filename: e4icon.shp
 
-engineer.gdi:
+engineer:
 	Inherits: ^BasicInfantry
 	Defaults:
 		Filename: engineer.shp
 	icon:
 		Filename: sidebar-gdi|engnicon.shp
-
-engineer.nod:
-	Inherits: ^BasicInfantry
-	Defaults:
-		Filename: engineer.shp
-	icon:
+	icon.nod:
 		Filename: sidebar-nod|engnicon.shp
 
 umagon:
