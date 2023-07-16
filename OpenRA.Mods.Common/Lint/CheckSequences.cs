@@ -36,7 +36,11 @@ namespace OpenRA.Mods.Common.Lint
 
 		static void Run(Action<string> emitError, Action<string> emitWarning, Ruleset rules, SequenceSet sequences)
 		{
-			var factions = rules.Actors[SystemActors.World].TraitInfos<FactionInfo>().Select(f => f.InternalName).ToArray();
+			var worldInfo = rules.Actors[SystemActors.World];
+			var factions = worldInfo.TraitInfos<FactionInfo>().Select(f => f.InternalName).ToArray();
+			var selectableFactions = worldInfo.TraitInfos<FactionInfo>()
+				.Where(f => f.Selectable && f.RandomFactionMembers.Count == 0)
+				.Select(f => f.InternalName).ToArray();
 			foreach (var actorInfo in rules.Actors)
 			{
 				// Catch TypeDictionary errors.
@@ -97,6 +101,30 @@ namespace OpenRA.Mods.Common.Lint
 										// TODO: Remove prefixed sequence references and instead use explicit lists of lintable references.
 										if (!sequences.Sequences(i).Any(s => s.StartsWith(sequence, StringComparison.Ordinal)))
 											emitWarning($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` field `{field.Name}` defines a prefix `{sequence}` that does not match any sequences on image `{i}`.");
+									}
+									else if (sequenceReference.HasFactionSuffix)
+									{
+										var hasFallback = sequences.HasSequence(i, sequence);
+										var sequencesWithPrefix = sequences.Sequences(i).Where(s => s.StartsWith(sequence, StringComparison.Ordinal) && s != sequence).ToHashSet();
+										if (sequencesWithPrefix.Count > 0)
+										{
+											foreach (var faction in selectableFactions)
+											{
+												var fullSequence = $"{sequence}.{faction}";
+												if (sequences.HasSequence(i, fullSequence))
+													sequencesWithPrefix.Remove(fullSequence);
+												else if (!hasFallback)
+													emitError($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` field `{field.Name}` references faction specific sequence `{fullSequence}` on image `{i}`, which does not exist.");
+											}
+
+											foreach (var unknownSequence in sequencesWithPrefix)
+											{
+												var faction = unknownSequence[(sequence.Length + 1)..];
+												emitWarning($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` field `{field.Name}` has invalid faction specific sequence `{unknownSequence}` on image `{i}`, faction '{faction}' is not a selectable faction.");
+											}
+										}
+										else if (!hasFallback)
+											emitError($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` field `{field.Name}` references an undefined sequence `{sequence}` on image `{i}`.");
 									}
 									else if (!sequences.HasSequence(i, sequence))
 										emitError($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` field `{field.Name}` references an undefined sequence `{sequence}` on image `{i}`.");

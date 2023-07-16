@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Force a specific faction variant, overriding the faction of the producing actor.")]
 		public readonly string ForceFaction = null;
 
-		[SequenceReference]
+		[SequenceReference(hasFactionSuffix: true)]
 		[Desc("Sequence of the actor that contains the icon.")]
 		public readonly string Icon = "icon";
 

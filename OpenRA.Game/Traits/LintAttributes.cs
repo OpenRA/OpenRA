@@ -53,14 +53,16 @@ namespace OpenRA.Traits
 		public readonly bool Prefix;
 		public readonly bool AllowNullImage;
 		public readonly LintDictionaryReference DictionaryReference;
+		public readonly bool HasFactionSuffix;
 
 		public SequenceReferenceAttribute(string imageReference = null, bool prefix = false, bool allowNullImage = false,
-			LintDictionaryReference dictionaryReference = LintDictionaryReference.None)
+			bool hasFactionSuffix = false, LintDictionaryReference dictionaryReference = LintDictionaryReference.None)
 		{
 			ImageReference = imageReference;
 			Prefix = prefix;
 			AllowNullImage = allowNullImage;
 			DictionaryReference = dictionaryReference;
+			HasFactionSuffix = hasFactionSuffix;
 		}
 	}
 
