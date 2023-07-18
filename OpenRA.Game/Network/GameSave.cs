@@ -284,39 +284,40 @@ namespace OpenRA.Network
 			// - File offset of metadata start marker
 			// - File offset of custom trait data
 			// - Metadata end marker
-			var file = File.Create(path);
+			using (var file = File.Create(path))
+			{
+				ordersStream.Seek(0, SeekOrigin.Begin);
+				ordersStream.CopyTo(file);
+				file.Write(BitConverter.GetBytes(MetadataMarker), 0, 4);
+				file.Write(BitConverter.GetBytes(LastOrdersFrame), 0, 4);
+				file.Write(BitConverter.GetBytes(LastSyncFrame), 0, 4);
+				file.Write(lastSyncPacket, 0, Order.SyncHashOrderLength);
 
-			ordersStream.Seek(0, SeekOrigin.Begin);
-			ordersStream.CopyTo(file);
-			file.Write(BitConverter.GetBytes(MetadataMarker), 0, 4);
-			file.Write(BitConverter.GetBytes(LastOrdersFrame), 0, 4);
-			file.Write(BitConverter.GetBytes(LastSyncFrame), 0, 4);
-			file.Write(lastSyncPacket, 0, Order.SyncHashOrderLength);
+				var globalSettingsNodes = new List<MiniYamlNode>() { GlobalSettings.Serialize() };
+				file.WriteString(Encoding.UTF8, globalSettingsNodes.WriteToString());
 
-			var globalSettingsNodes = new List<MiniYamlNode>() { GlobalSettings.Serialize() };
-			file.WriteString(Encoding.UTF8, globalSettingsNodes.WriteToString());
+				var slotNodes = Slots
+					.Select(s => s.Value.Serialize())
+					.ToList();
+				file.WriteString(Encoding.UTF8, slotNodes.WriteToString());
 
-			var slotNodes = Slots
-				.Select(s => s.Value.Serialize())
-				.ToList();
-			file.WriteString(Encoding.UTF8, slotNodes.WriteToString());
+				var slotClientNodes = SlotClients
+					.Select(s => s.Value.Serialize(s.Key))
+					.ToList();
+				file.WriteString(Encoding.UTF8, slotClientNodes.WriteToString());
 
-			var slotClientNodes = SlotClients
-				.Select(s => s.Value.Serialize(s.Key))
-				.ToList();
-			file.WriteString(Encoding.UTF8, slotClientNodes.WriteToString());
+				var traitDataOffset = file.Length;
+				file.Write(BitConverter.GetBytes(TraitDataMarker), 0, 4);
 
-			var traitDataOffset = file.Length;
-			file.Write(BitConverter.GetBytes(TraitDataMarker), 0, 4);
+				var traitDataNodes = TraitData
+					.Select(kv => new MiniYamlNode(kv.Key.ToString(), kv.Value))
+					.ToList();
+				file.WriteString(Encoding.UTF8, traitDataNodes.WriteToString());
 
-			var traitDataNodes = TraitData
-				.Select(kv => new MiniYamlNode(kv.Key.ToString(), kv.Value))
-				.ToList();
-			file.WriteString(Encoding.UTF8, traitDataNodes.WriteToString());
-
-			file.Write(BitConverter.GetBytes(ordersStream.Length), 0, 4);
-			file.Write(BitConverter.GetBytes(traitDataOffset), 0, 4);
-			file.Write(BitConverter.GetBytes(EOFMarker), 0, 4);
+				file.Write(BitConverter.GetBytes(ordersStream.Length), 0, 4);
+				file.Write(BitConverter.GetBytes(traitDataOffset), 0, 4);
+				file.Write(BitConverter.GetBytes(EOFMarker), 0, 4);
+			}
 		}
 	}
 }
