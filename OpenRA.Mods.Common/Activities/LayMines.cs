@@ -76,10 +76,10 @@ namespace OpenRA.Mods.Common.Activities
 				if (LayMine(self))
 				{
 					if (minelayer.Info.AfterLayingDelay > 0)
-					{
 						QueueChild(new Wait(minelayer.Info.AfterLayingDelay));
-						return false;
-					}
+
+					// The tick has to end now, because otherwise a next cell is picked and Move activity is queued (which will change minelayer's location in current tick).
+					return false;
 				}
 			}
 
@@ -201,6 +201,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			self.World.AddFrameEndTask(w =>
 			{
+				if (!CanLayMine(self, self.Location))
+					return;
+
 				var mine = w.CreateActor(minelayer.Info.Mine, new TypeDictionary
 				{
 					new LocationInit(self.Location),
