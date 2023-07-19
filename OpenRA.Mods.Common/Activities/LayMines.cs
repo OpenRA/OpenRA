@@ -157,8 +157,9 @@ namespace OpenRA.Mods.Common.Activities
 			if (nextCell != null)
 				yield return new TargetLineNode(Target.FromCell(self.World, nextCell.Value), minelayer.Info.TargetLineColor);
 
-			foreach (var c in minefield)
-				yield return new TargetLineNode(Target.FromCell(self.World, c), minelayer.Info.TargetLineColor, tile: minelayer.Tile);
+			if (minefield.Count > 1)
+				foreach (var c in minefield)
+					yield return new TargetLineNode(Target.FromCell(self.World, c), minelayer.Info.TargetLineColor, tile: minelayer.Tile);
 		}
 
 		static bool CanLayMine(Actor self, CPos p)
