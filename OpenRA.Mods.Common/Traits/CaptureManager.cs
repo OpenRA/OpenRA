@@ -226,7 +226,7 @@ namespace OpenRA.Mods.Common.Traits
 				currentTargetTotal = captures.Info.CaptureDelay;
 				if (move != null && captures.Info.ConsumedByCapture)
 				{
-					var pos = target.GetTargetablePositions().PositionClosestTo(self.CenterPosition);
+					var pos = target.GetTargetablePositions().ClosestToIgnoringPath(self.CenterPosition);
 					currentTargetTotal += move.EstimatedMoveDuration(self, self.CenterPosition, pos);
 				}
 

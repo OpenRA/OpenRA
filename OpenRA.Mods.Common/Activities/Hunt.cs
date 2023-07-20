@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling)
 				return true;
 
-			var targetActor = targets.ClosestTo(self);
+			var targetActor = targets.ClosestToWithPathFrom(self);
 			if (targetActor == null)
 				return false;
 

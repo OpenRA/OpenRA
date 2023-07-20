@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (e == null)
 				return;
 
-			owner.TargetActor = e;
+			owner.SetActorToTarget((e, WVec.Zero));
 			owner.FuzzyStateMachine.ChangeState(owner, new AirAttackState(), true);
 		}
 
@@ -150,20 +150,19 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (!owner.IsValid)
 				return;
 
-			if (!owner.IsTargetValid)
+			if (!owner.IsTargetValid())
 			{
 				var a = owner.Units.Random(owner.Random);
-				var closestEnemy = owner.SquadManager.FindClosestEnemy(a.CenterPosition);
-				if (closestEnemy != null)
-					owner.TargetActor = closestEnemy;
-				else
+				var closestEnemy = owner.SquadManager.FindClosestEnemy(a);
+				owner.SetActorToTarget(closestEnemy);
+				if (closestEnemy.Actor == null)
 				{
 					owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState(), true);
 					return;
 				}
 			}
 
-			if (!NearToPosSafely(owner, owner.TargetActor.CenterPosition))
+			if (!NearToPosSafely(owner, owner.Target.CenterPosition))
 			{
 				owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState(), true);
 				return;
@@ -188,7 +187,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				}
 
 				if (CanAttackTarget(a, owner.TargetActor))
-					owner.Bot.QueueOrder(new Order("Attack", a, Target.FromActor(owner.TargetActor), false));
+					owner.Bot.QueueOrder(new Order("Attack", a, owner.Target, false));
 			}
 		}
 

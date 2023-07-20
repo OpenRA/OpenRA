@@ -10,6 +10,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -83,6 +84,7 @@ namespace OpenRA.Mods.D2k.Traits
 
 			// If close enough, we don't care about other actors.
 			var target = self.World.FindActorsInCircle(self.CenterPosition, WormInfo.IgnoreNoiseAttackRange)
+				.WithPathFrom(self)
 				.Select(t => Target.FromActor(t))
 				.FirstOrDefault(t => attackTrait.HasAnyValidWeapons(t));
 
@@ -101,6 +103,7 @@ namespace OpenRA.Mods.D2k.Traits
 			}
 
 			var actorsInRange = self.World.FindActorsInCircle(self.CenterPosition, WormInfo.MaxSearchRadius)
+				.WithPathFrom(self)
 				.Where(IsValidTarget).SelectMany(a => a.TraitsImplementing<AttractsWorms>());
 
 			var noiseDirection = actorsInRange.Aggregate(WVec.Zero, (a, b) => a + b.AttractionAtPosition(self.CenterPosition));
