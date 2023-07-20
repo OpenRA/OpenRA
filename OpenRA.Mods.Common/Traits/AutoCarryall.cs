@@ -104,7 +104,7 @@ namespace OpenRA.Mods.Common.Traits
 			var carriers = self.World.ActorsHavingTrait<AutoCarryall>(c => !Busy(self) && c.EnableAutoCarry)
 				.Where(a => a.Owner == self.Owner && a.IsInWorld);
 
-			return carriers.ClosestTo(candidateCargo) == self;
+			return carriers.ClosestToWithPathTo(candidateCargo) == self;
 		}
 
 		void FindCarryableForTransport(Actor self)

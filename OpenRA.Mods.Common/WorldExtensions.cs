@@ -11,12 +11,191 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common
 {
 	public static class WorldExtensions
 	{
+		/// <summary>
+		/// Filters <paramref name="actors"/> by only returning those that can be reached as the target of a path from
+		/// <paramref name="sourceActor"/>. Only terrain is taken into account, i.e. as if
+		/// <see cref="BlockedByActor.None"/> was given.
+		/// <paramref name="targetOffsets"/> is used to define locations around each actor in <paramref name="actors"/>
+		/// of which one must be reachable.
+		/// </summary>
+		public static IEnumerable<(Actor Actor, WVec[] ReachableOffsets)> WithPathFrom(this IEnumerable<Actor> actors, Actor sourceActor, Func<Actor, WVec[]> targetOffsets)
+		{
+			if (sourceActor.Info.HasTraitInfo<AircraftInfo>())
+				return actors.Select<Actor, (Actor Actor, WVec[] ReachableOffsets)>(a => (a, targetOffsets(a)));
+			var mobile = sourceActor.TraitOrDefault<Mobile>();
+			if (mobile == null)
+				return Enumerable.Empty<(Actor Actor, WVec[] ReachableOffsets)>();
+
+			var pathFinder = sourceActor.World.WorldActor.Trait<PathFinder>();
+			var locomotor = mobile.Locomotor;
+			var map = sourceActor.World.Map;
+			return actors
+				.Select<Actor, (Actor Actor, WVec[] ReachableOffsets)>(a =>
+				{
+					return (a, targetOffsets(a).Where(offset =>
+						pathFinder.PathExistsForLocomotor(
+							mobile.Locomotor,
+							map.CellContaining(sourceActor.CenterPosition),
+							map.CellContaining(a.CenterPosition + offset)))
+						.ToArray());
+				})
+				.Where(x => x.ReachableOffsets.Length > 0);
+		}
+
+		/// <summary>
+		/// Filters <paramref name="actors"/> by only returning those that can be reached as the target of a path from
+		/// <paramref name="sourceActor"/>. Only terrain is taken into account, i.e. as if
+		/// <see cref="BlockedByActor.None"/> was given.
+		/// </summary>
+		public static IEnumerable<Actor> WithPathFrom(this IEnumerable<Actor> actors, Actor sourceActor)
+		{
+			return actors.WithPathFrom(sourceActor, _ => new[] { WVec.Zero }).Select(x => x.Actor);
+		}
+
+		/// <summary>
+		/// Of <paramref name="actors"/> that can be reached as the target of a path from
+		/// <paramref name="sourceActor"/>, returns the nearest by comparing their <see cref="Actor.CenterPosition"/>.
+		/// Only terrain is taken into account, i.e. as if <see cref="BlockedByActor.None"/> was given.
+		/// <paramref name="targetOffsets"/> is used to define locations around each actor in <paramref name="actors"/>
+		/// of which one must be reachable.
+		/// </summary>
+		public static Actor ClosestToWithPathFrom(this IEnumerable<Actor> actors, Actor sourceActor, Func<Actor, WVec[]> targetOffsets = null)
+		{
+			return actors
+				.WithPathFrom(sourceActor, targetOffsets ?? (_ => new[] { WVec.Zero }))
+				.Select(x => x.Actor)
+				.ClosestToIgnoringPath(sourceActor);
+		}
+
+		/// <summary>
+		/// Of <paramref name="positions"/> that can be reached as the target of a path from
+		/// <paramref name="sourceActor"/>, returns the nearest by comparing the <see cref="Actor.CenterPosition"/>.
+		/// Only terrain is taken into account, i.e. as if <see cref="BlockedByActor.None"/> was given.
+		/// </summary>
+		public static WPos? ClosestToWithPathFrom(this IEnumerable<WPos> positions, Actor sourceActor)
+		{
+			if (sourceActor.Info.HasTraitInfo<AircraftInfo>())
+				return positions.ClosestToIgnoringPath(sourceActor.CenterPosition);
+			var mobile = sourceActor.TraitOrDefault<Mobile>();
+			if (mobile == null)
+				return null;
+
+			var pathFinder = sourceActor.World.WorldActor.Trait<PathFinder>();
+			var locomotor = mobile.Locomotor;
+			var map = sourceActor.World.Map;
+			return positions
+				.Where(p => pathFinder.PathExistsForLocomotor(
+					locomotor,
+					map.CellContaining(sourceActor.CenterPosition),
+					map.CellContaining(p)))
+				.ClosestToIgnoringPath(sourceActor.CenterPosition);
+		}
+
+		/// <summary>
+		/// Filters <paramref name="actors"/> by only returning those where the <paramref name="targetPosition"/> can
+		/// be reached as the target of a path from the actor. Only terrain is taken into account, i.e. as if
+		/// <see cref="BlockedByActor.None"/> was given.
+		/// </summary>
+		public static IEnumerable<Actor> WithPathTo(this IEnumerable<Actor> actors, World world, WPos targetPosition)
+		{
+			var pathFinder = world.WorldActor.Trait<PathFinder>();
+			var map = world.Map;
+			return actors
+				.Where(a =>
+				{
+					if (a.Info.HasTraitInfo<AircraftInfo>())
+						return true;
+					var mobile = a.TraitOrDefault<Mobile>();
+					if (mobile == null)
+						return false;
+					return pathFinder.PathExistsForLocomotor(
+						mobile.Locomotor,
+						map.CellContaining(targetPosition),
+						map.CellContaining(a.CenterPosition));
+				});
+		}
+
+		/// <summary>
+		/// Filters <paramref name="actors"/> by only returning those where any of the
+		/// <paramref name="targetPositions"/> can be reached as the target of a path from the actor.
+		/// Returns the reachable target positions for each actor.
+		/// Only terrain is taken into account, i.e. as if <see cref="BlockedByActor.None"/> was given.
+		/// </summary>
+		public static IEnumerable<(Actor Actor, WPos[] ReachablePositions)> WithPathToAny(
+			this IEnumerable<Actor> actors, World world, Func<Actor, WPos[]> targetPositions)
+		{
+			var pathFinder = world.WorldActor.Trait<PathFinder>();
+			var map = world.Map;
+			return actors
+				.Select<Actor, (Actor Actor, WPos[] ReachablePositions)>(a =>
+				{
+					if (a.Info.HasTraitInfo<AircraftInfo>())
+						return (a, targetPositions(a).ToArray());
+					var mobile = a.TraitOrDefault<Mobile>();
+					if (mobile == null)
+						return (a, Array.Empty<WPos>());
+					return (a, targetPositions(a).Where(targetPosition =>
+						pathFinder.PathExistsForLocomotor(
+							mobile.Locomotor,
+							map.CellContaining(targetPosition),
+							map.CellContaining(a.CenterPosition)))
+						.ToArray());
+				})
+				.Where(x => x.ReachablePositions.Length > 0);
+		}
+
+		/// <summary>
+		/// Filters <paramref name="actors"/> by only returning those where the <paramref name="targetActor"/> can be
+		/// reached as the target of a path from the actor. Only terrain is taken into account, i.e. as if
+		/// <see cref="BlockedByActor.None"/> was given.
+		/// </summary>
+		public static IEnumerable<Actor> WithPathTo(this IEnumerable<Actor> actors, Actor targetActor)
+		{
+			return actors.WithPathTo(targetActor.World, targetActor.CenterPosition);
+		}
+
+		/// <summary>
+		/// Of <paramref name="actors"/> where the <paramref name="targetPosition"/> can be reached as the target of a
+		/// path from the actor, returns the nearest by comparing the <see cref="Actor.CenterPosition"/>.
+		/// Only terrain is taken into account, i.e. as if <see cref="BlockedByActor.None"/> was given.
+		/// </summary>
+		public static Actor ClosestToWithPathTo(this IEnumerable<Actor> actors, World world, WPos targetPosition)
+		{
+			return actors
+				.WithPathTo(world, targetPosition)
+				.ClosestToIgnoringPath(targetPosition);
+		}
+
+		/// <summary>
+		/// Of <paramref name="actors"/> where any of the <paramref name="targetPositions"/> can be reached as the
+		/// target of a path from the actor, returns the nearest by comparing the <see cref="Actor.CenterPosition"/>.
+		/// Only terrain is taken into account, i.e. as if <see cref="BlockedByActor.None"/> was given.
+		/// </summary>
+		public static Actor ClosestToWithPathToAny(this IEnumerable<Actor> actors, World world, Func<Actor, WPos[]> targetPositions)
+		{
+			return actors
+				.WithPathToAny(world, targetPositions)
+				.MinByOrDefault(x => x.ReachablePositions.Min(pos => (x.Actor.CenterPosition - pos).LengthSquared))
+				.Actor;
+		}
+
+		/// <summary>
+		/// Of <paramref name="actors"/> where the <paramref name="targetActor"/> can be reached as the target of a
+		/// path from the actor, returns the nearest by comparing their <see cref="Actor.CenterPosition"/>.
+		/// Only terrain is taken into account, i.e. as if <see cref="BlockedByActor.None"/> was given.
+		/// </summary>
+		public static Actor ClosestToWithPathTo(this IEnumerable<Actor> actors, Actor targetActor)
+		{
+			return actors.ClosestToWithPathTo(targetActor.World, targetActor.CenterPosition);
+		}
+
 		/// <summary>
 		/// Finds all the actors of which their health radius is intersected by a line (with a definable width) between two points.
 		/// </summary>

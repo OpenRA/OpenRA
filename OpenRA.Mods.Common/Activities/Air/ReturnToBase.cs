@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Activities
 					&& a.Owner == self.Owner
 					&& rearmInfo.RearmActors.Contains(a.Info.Name)
 					&& (!unreservedOnly || Reservable.IsAvailableFor(a, self)))
-				.ClosestTo(self);
+				.ClosestToWithPathFrom(self);
 		}
 
 		bool ShouldLandAtBuilding(Actor self, Actor dest)

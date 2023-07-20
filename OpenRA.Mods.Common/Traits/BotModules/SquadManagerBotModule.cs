@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly List<Actor> unitsHangingAroundTheBase = new();
 
 		// Units that the bot already knows about. Any unit not on this list needs to be given a role.
-		readonly List<Actor> activeUnits = new();
+		readonly HashSet<Actor> activeUnits = new();
 
 		public List<Squad> Squads = new();
 
@@ -195,22 +195,105 @@ namespace OpenRA.Mods.Common.Traits
 			AssignRolesToIdleUnits(bot);
 		}
 
-		internal Actor FindClosestEnemy(WPos pos)
+		internal static Actor ClosestTo(IEnumerable<Actor> ownActors, Actor targetActor)
 		{
-			var units = World.Actors.Where(IsPreferredEnemyUnit).ToList();
-			return units.Where(IsNotHiddenUnit).ClosestTo(pos) ?? units.ClosestTo(pos);
+			// Return actors that can get within weapons range of the target.
+			// First, let's determine the max weapons range for each of the actors.
+			var target = Target.FromActor(targetActor);
+			var ownActorsAndTheirAttackRanges = ownActors
+				.Select(a => (Actor: a, AttackBases: a.TraitsImplementing<AttackBase>().Where(Exts.IsTraitEnabled)
+					.Where(ab => ab.HasAnyValidWeapons(target)).ToList()))
+				.Where(x => x.AttackBases.Count > 0)
+				.Select(x => (x.Actor, Range: x.AttackBases.Max(ab => ab.GetMaximumRangeVersusTarget(target))))
+				.ToDictionary(x => x.Actor, x => x.Range);
+
+			// Now determine if each actor can either path directly to the target,
+			// or if it can path to a nearby location at the edge of its weapon range to the target
+			// A thorough check would check each position within the circle, but for performance
+			// we'll only check 8 positions around the edge of the circle.
+			// We need to account for the weapons range here to account for units such as boats.
+			// They can't path directly to a land target,
+			// but might be able to get close enough to shore to attack the target from range.
+			return ownActorsAndTheirAttackRanges.Keys
+				.ClosestToWithPathToAny(targetActor.World, a =>
+				{
+					var range = ownActorsAndTheirAttackRanges[a].Length;
+					var rangeDiag = Exts.MultiplyBySqrtTwoOverTwo(range);
+					return new[]
+					{
+						targetActor.CenterPosition,
+						targetActor.CenterPosition + new WVec(range, 0, 0),
+						targetActor.CenterPosition + new WVec(-range, 0, 0),
+						targetActor.CenterPosition + new WVec(0, range, 0),
+						targetActor.CenterPosition + new WVec(0, -range, 0),
+						targetActor.CenterPosition + new WVec(rangeDiag, rangeDiag, 0),
+						targetActor.CenterPosition + new WVec(-rangeDiag, rangeDiag, 0),
+						targetActor.CenterPosition + new WVec(-rangeDiag, -rangeDiag, 0),
+						targetActor.CenterPosition + new WVec(rangeDiag, -rangeDiag, 0),
+					};
+				});
 		}
 
-		internal Actor FindClosestEnemy(WPos pos, WDist radius)
+		internal IEnumerable<(Actor Actor, WVec Offset)> FindEnemies(IEnumerable<Actor> actors, Actor sourceActor)
 		{
-			return World.FindActorsInCircle(pos, radius).Where(a => IsPreferredEnemyUnit(a) && IsNotHiddenUnit(a)).ClosestTo(pos);
+			// Check units are in fact enemies and not hidden.
+			// Then check which are in weapons range of the source.
+			var activeAttackBases = sourceActor.TraitsImplementing<AttackBase>().Where(Exts.IsTraitEnabled).ToArray();
+			var enemiesAndSourceAttackRanges = actors
+				.Where(a => IsPreferredEnemyUnit(a) && IsNotHiddenUnit(a))
+				.Select(a => (Actor: a, AttackBases: activeAttackBases.Where(ab => ab.HasAnyValidWeapons(Target.FromActor(a))).ToList()))
+				.Where(x => x.AttackBases.Count > 0)
+				.Select(x => (x.Actor, Range: x.AttackBases.Max(ab => ab.GetMaximumRangeVersusTarget(Target.FromActor(x.Actor)))))
+				.ToDictionary(x => x.Actor, x => x.Range);
+
+			// Now determine if the source actor can path directly to the target,
+			// or if it can path to a nearby location at the edge of its weapon range to the target
+			// A thorough check would check each position within the circle, but for performance
+			// we'll only check 8 positions around the edge of the circle.
+			// We need to account for the weapons range here to account for units such as boats.
+			// They can't path directly to a land target,
+			// but might be able to get close enough to shore to attack the target from range.
+			return enemiesAndSourceAttackRanges.Keys
+				.WithPathFrom(sourceActor, a =>
+				{
+					var range = enemiesAndSourceAttackRanges[a].Length;
+					var rangeDiag = Exts.MultiplyBySqrtTwoOverTwo(range);
+					return new[]
+					{
+						WVec.Zero,
+						new WVec(range, 0, 0),
+						new WVec(-range, 0, 0),
+						new WVec(0, range, 0),
+						new WVec(0, -range, 0),
+						new WVec(rangeDiag, rangeDiag, 0),
+						new WVec(-rangeDiag, rangeDiag, 0),
+						new WVec(-rangeDiag, -rangeDiag, 0),
+						new WVec(rangeDiag, -rangeDiag, 0),
+					};
+				})
+				.Select(x => (x.Actor, x.ReachableOffsets.MinBy(o => o.LengthSquared)));
+		}
+
+		internal (Actor Actor, WVec Offset) FindClosestEnemy(Actor sourceActor)
+		{
+			return FindClosestEnemy(World.Actors, sourceActor);
+		}
+
+		internal (Actor Actor, WVec Offset) FindClosestEnemy(Actor sourceActor, WDist radius)
+		{
+			return FindClosestEnemy(World.FindActorsInCircle(sourceActor.CenterPosition, radius), sourceActor);
+		}
+
+		(Actor Actor, WVec Offset) FindClosestEnemy(IEnumerable<Actor> actors, Actor sourceActor)
+		{
+			return WorldUtils.ClosestToIgnoringPath(FindEnemies(actors, sourceActor), x => x.Actor, sourceActor);
 		}
 
 		void CleanSquads()
 		{
-			Squads.RemoveAll(s => !s.IsValid);
 			foreach (var s in Squads)
-				s.Units.RemoveAll(unitCannotBeOrdered);
+				s.Units.RemoveWhere(unitCannotBeOrdered);
+			Squads.RemoveAll(s => !s.IsValid);
 		}
 
 		// HACK: Use of this function requires that there is one squad of this type.
@@ -219,18 +302,28 @@ namespace OpenRA.Mods.Common.Traits
 			return Squads.FirstOrDefault(s => s.Type == type);
 		}
 
-		Squad RegisterNewSquad(IBot bot, SquadType type, Actor target = null)
+		Squad RegisterNewSquad(IBot bot, SquadType type, (Actor Actor, WVec Offset) target = default)
 		{
 			var ret = new Squad(bot, this, type, target);
 			Squads.Add(ret);
 			return ret;
 		}
 
+		internal void UnregisterSquad(Squad squad)
+		{
+			activeUnits.ExceptWith(squad.Units);
+			squad.Units.Clear();
+
+			// CleanSquads will remove the squad from the Squads list.
+			// We can't do that here as this is designed to be called from within Squad.Update
+			// and thus would mutate the Squads list we are iterating over.
+		}
+
 		void AssignRolesToIdleUnits(IBot bot)
 		{
 			CleanSquads();
 
-			activeUnits.RemoveAll(unitCannotBeOrdered);
+			activeUnits.RemoveWhere(unitCannotBeOrdered);
 			unitsHangingAroundTheBase.RemoveAll(unitCannotBeOrdered);
 			foreach (var n in notifyIdleBaseUnits)
 				n.UpdatedIdleBaseUnits(unitsHangingAroundTheBase);
@@ -305,8 +398,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var attackForce = RegisterNewSquad(bot, SquadType.Assault);
 
-				foreach (var a in unitsHangingAroundTheBase)
-					attackForce.Units.Add(a);
+				attackForce.Units.UnionWith(unitsHangingAroundTheBase);
 
 				unitsHangingAroundTheBase.Clear();
 				foreach (var n in notifyIdleBaseUnits)
@@ -316,29 +408,45 @@ namespace OpenRA.Mods.Common.Traits
 
 		void TryToRushAttack(IBot bot)
 		{
-			var allEnemyBaseBuilder = AIUtils.FindEnemiesByCommonName(Info.ConstructionYardTypes, Player);
-
 			var ownUnits = activeUnits
-				.Where(unit => unit.IsIdle && unit.Info.HasTraitInfo<AttackBaseInfo>()
-					&& !Info.AirUnitsTypes.Contains(unit.Info.Name) && !Info.NavalUnitsTypes.Contains(unit.Info.Name) && !Info.ExcludeFromSquadsTypes.Contains(unit.Info.Name)).ToList();
+				.Where(unit =>
+					unit.IsIdle
+					&& unit.Info.HasTraitInfo<AttackBaseInfo>()
+					&& !Info.AirUnitsTypes.Contains(unit.Info.Name)
+					&& !Info.NavalUnitsTypes.Contains(unit.Info.Name)
+					&& !Info.ExcludeFromSquadsTypes.Contains(unit.Info.Name))
+				.ToList();
+
+			if (ownUnits.Count < Info.SquadSize)
+				return;
+
+			var allEnemyBaseBuilder = FindEnemies(
+				World.Actors.Where(a => Info.ConstructionYardTypes.Contains(a.Info.Name)),
+				ownUnits.First())
+				.ToList();
 
 			if (allEnemyBaseBuilder.Count == 0 || ownUnits.Count < Info.SquadSize)
 				return;
 
-			foreach (var b in allEnemyBaseBuilder)
+			foreach (var enemyBaseBuilder in allEnemyBaseBuilder)
 			{
 				// Don't rush enemy aircraft!
-				var enemies = World.FindActorsInCircle(b.CenterPosition, WDist.FromCells(Info.RushAttackScanRadius))
-					.Where(unit => IsPreferredEnemyUnit(unit) && unit.Info.HasTraitInfo<AttackBaseInfo>() && !Info.AirUnitsTypes.Contains(unit.Info.Name) && !Info.NavalUnitsTypes.Contains(unit.Info.Name)).ToList();
+				var enemies = FindEnemies(
+					World.FindActorsInCircle(enemyBaseBuilder.Actor.CenterPosition, WDist.FromCells(Info.RushAttackScanRadius))
+						.Where(unit =>
+							unit.Info.HasTraitInfo<AttackBaseInfo>()
+							&& !Info.AirUnitsTypes.Contains(unit.Info.Name)
+							&& !Info.NavalUnitsTypes.Contains(unit.Info.Name)),
+					ownUnits.First())
+					.ToList();
 
-				if (AttackOrFleeFuzzy.Rush.CanAttack(ownUnits, enemies))
+				if (AttackOrFleeFuzzy.Rush.CanAttack(ownUnits, enemies.Select(x => x.Actor).ToList()))
 				{
-					var target = enemies.Count > 0 ? enemies.Random(World.LocalRandom) : b;
+					var target = enemies.Count > 0 ? enemies.Random(World.LocalRandom) : enemyBaseBuilder;
 					var rush = GetSquadOfType(SquadType.Rush);
 					rush ??= RegisterNewSquad(bot, SquadType.Rush, target);
 
-					foreach (var a3 in ownUnits)
-						rush.Units.Add(a3);
+					rush.Units.UnionWith(ownUnits);
 
 					return;
 				}
@@ -348,18 +456,21 @@ namespace OpenRA.Mods.Common.Traits
 		void ProtectOwn(IBot bot, Actor attacker)
 		{
 			var protectSq = GetSquadOfType(SquadType.Protection);
-			protectSq ??= RegisterNewSquad(bot, SquadType.Protection, attacker);
+			protectSq ??= RegisterNewSquad(bot, SquadType.Protection, (attacker, WVec.Zero));
 
-			if (!protectSq.IsTargetValid)
-				protectSq.TargetActor = attacker;
+			if (protectSq.IsValid && !protectSq.IsTargetValid())
+				protectSq.SetActorToTarget((attacker, WVec.Zero));
 
 			if (!protectSq.IsValid)
 			{
 				var ownUnits = World.FindActorsInCircle(World.Map.CenterOfCell(GetRandomBaseCenter()), WDist.FromCells(Info.ProtectUnitScanRadius))
-					.Where(unit => unit.Owner == Player && !Info.ProtectionTypes.Contains(unit.Info.Name) && unit.Info.HasTraitInfo<AttackBaseInfo>());
+					.Where(unit =>
+						unit.Owner == Player
+						&& !Info.ProtectionTypes.Contains(unit.Info.Name)
+						&& unit.Info.HasTraitInfo<AttackBaseInfo>())
+					.WithPathTo(World, attacker.CenterPosition);
 
-				foreach (var a in ownUnits)
-					protectSq.Units.Add(a);
+				protectSq.Units.UnionWith(ownUnits);
 			}
 		}
 
@@ -429,7 +540,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (activeUnitsNode != null)
 			{
 				activeUnits.Clear();
-				activeUnits.AddRange(FieldLoader.GetValue<uint[]>("ActiveUnits", activeUnitsNode.Value.Value)
+				activeUnits.UnionWith(FieldLoader.GetValue<uint[]>("ActiveUnits", activeUnitsNode.Value.Value)
 					.Select(a => self.World.GetActorById(a)).Where(a => a != null));
 			}
 

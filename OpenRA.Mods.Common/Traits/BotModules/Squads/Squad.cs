@@ -20,34 +20,44 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 	public class Squad
 	{
-		public List<Actor> Units = new();
+		public HashSet<Actor> Units = new();
 		public SquadType Type;
 
 		internal IBot Bot;
 		internal World World;
 		internal SquadManagerBotModule SquadManager;
 		internal MersenneTwister Random;
-
-		internal Target Target;
 		internal StateMachine FuzzyStateMachine;
 
-		public Squad(IBot bot, SquadManagerBotModule squadManager, SquadType type)
-			: this(bot, squadManager, type, null) { }
+		/// <summary>
+		/// Target location to attack. This will be either the targeted actor,
+		/// or a position close to that actor sufficient to get within weapons range.
+		/// </summary>
+		internal Target Target { get; set; }
 
-		public Squad(IBot bot, SquadManagerBotModule squadManager, SquadType type, Actor target)
+		/// <summary>
+		/// Actor that is targeted, for any actor based checks. Use <see cref="Target"/> for a targeting location.
+		/// </summary>
+		internal Actor TargetActor;
+
+		public Squad(IBot bot, SquadManagerBotModule squadManager, SquadType type)
+			: this(bot, squadManager, type, default) { }
+
+		public Squad(IBot bot, SquadManagerBotModule squadManager, SquadType type, (Actor Actor, WVec Offset) target)
 		{
 			Bot = bot;
 			SquadManager = squadManager;
 			World = bot.Player.PlayerActor.World;
 			Random = World.LocalRandom;
 			Type = type;
-			Target = Target.FromActor(target);
+			SetActorToTarget(target);
 			FuzzyStateMachine = new StateMachine();
 
 			switch (type)
 			{
 				case SquadType.Assault:
 				case SquadType.Rush:
+				case SquadType.Naval:
 					FuzzyStateMachine.ChangeState(this, new GroundUnitsIdleState(), true);
 					break;
 				case SquadType.Air:
@@ -55,9 +65,6 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 					break;
 				case SquadType.Protection:
 					FuzzyStateMachine.ChangeState(this, new UnitsForProtectionIdleState(), true);
-					break;
-				case SquadType.Naval:
-					FuzzyStateMachine.ChangeState(this, new NavyUnitsIdleState(), true);
 					break;
 			}
 		}
@@ -70,15 +77,50 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 		public bool IsValid => Units.Count > 0;
 
-		public Actor TargetActor
+		public void SetActorToTarget((Actor Actor, WVec Offset) target)
 		{
-			get => Target.Actor;
-			set => Target = Target.FromActor(value);
+			TargetActor = target.Actor;
+			if (TargetActor == null)
+			{
+				Target = Target.Invalid;
+				return;
+			}
+
+			if (target.Offset == WVec.Zero)
+				Target = Target.FromActor(TargetActor);
+			else
+				Target = Target.FromPos(TargetActor.CenterPosition + target.Offset);
 		}
 
-		public bool IsTargetValid => Target.IsValidFor(Units.FirstOrDefault()) && !Target.Actor.Info.HasTraitInfo<HuskInfo>();
+		/// <summary>
+		/// Checks the target is still valid, and updates the <see cref="Target"/> location if it is still valid.
+		/// </summary>
+		public bool IsTargetValid()
+		{
+			var valid =
+				TargetActor != null &&
+				TargetActor.IsInWorld &&
+				TargetActor.IsTargetableBy(Units.FirstOrDefault()) &&
+				!TargetActor.Info.HasTraitInfo<HuskInfo>();
+			if (!valid)
+				return false;
 
-		public bool IsTargetVisible => TargetActor.CanBeViewedByPlayer(Bot.Player);
+			// Refresh the target location.
+			// If the actor moved out of reach then we'll mark it invalid.
+			// e.g. a ship targeting a land unit that moves inland out of weapons range.
+			// or the target crossed a bridge which is then destroyed.
+			// If it is still in range but we have to target a nearby location, we can update that location.
+			// e.g. a ship targeting a land unit, but the land unit moved north.
+			// We need to update our location to move north as well.
+			// If we can reach the actor directly, we'll just target it directly.
+			var target = SquadManager.FindEnemies(new[] { TargetActor }, Units.First()).FirstOrDefault();
+			SetActorToTarget(target);
+			return target.Actor != null;
+		}
+
+		public bool IsTargetVisible =>
+			TargetActor != null &&
+			TargetActor.CanBeViewedByPlayer(Bot.Player);
 
 		public WPos CenterPosition { get { return Units.Select(u => u.CenterPosition).Average(); } }
 
@@ -87,10 +129,14 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			var nodes = new List<MiniYamlNode>()
 			{
 				new MiniYamlNode("Type", FieldSaver.FormatValue(Type)),
-				new MiniYamlNode("Units", FieldSaver.FormatValue(Units.Select(a => a.ActorID).ToArray())),
+				new MiniYamlNode("Units", FieldSaver.FormatValue(Units.Select(a => a.ActorID).ToArray()))
 			};
-			if (Target.Type == TargetType.Actor)
-				nodes.Add(new MiniYamlNode("Target", FieldSaver.FormatValue(Target.Actor.ActorID)));
+
+			if (Target != Target.Invalid)
+			{
+				nodes.Add(new MiniYamlNode("ActorToTarget", FieldSaver.FormatValue(TargetActor.ActorID)));
+				nodes.Add(new MiniYamlNode("TargetOffset", FieldSaver.FormatValue(Target.CenterPosition - TargetActor.CenterPosition)));
+			}
 
 			return new MiniYaml("", nodes);
 		}
@@ -98,21 +144,26 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		public static Squad Deserialize(IBot bot, SquadManagerBotModule squadManager, MiniYaml yaml)
 		{
 			var type = SquadType.Rush;
-			Actor targetActor = null;
+			var target = ((Actor)null, WVec.Zero);
 
 			var typeNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Type");
 			if (typeNode != null)
 				type = FieldLoader.GetValue<SquadType>("Type", typeNode.Value.Value);
 
-			var targetNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Target");
-			if (targetNode != null)
-				targetActor = squadManager.World.GetActorById(FieldLoader.GetValue<uint>("ActiveUnits", targetNode.Value.Value));
+			var actorToTargetNode = yaml.Nodes.FirstOrDefault(n => n.Key == "ActorToTarget");
+			var targetOffsetNode = yaml.Nodes.FirstOrDefault(n => n.Key == "TargetOffset");
+			if (actorToTargetNode != null && targetOffsetNode != null)
+			{
+				var actorToTarget = squadManager.World.GetActorById(FieldLoader.GetValue<uint>("ActorToTarget", actorToTargetNode.Value.Value));
+				var targetOffset = FieldLoader.GetValue<WVec>("TargetOffset", targetOffsetNode.Value.Value);
+				target = (actorToTarget, targetOffset);
+			}
 
-			var squad = new Squad(bot, squadManager, type, targetActor);
+			var squad = new Squad(bot, squadManager, type, target);
 
 			var unitsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Units");
 			if (unitsNode != null)
-				squad.Units.AddRange(FieldLoader.GetValue<uint[]>("Units", unitsNode.Value.Value)
+				squad.Units.UnionWith(FieldLoader.GetValue<uint[]>("Units", unitsNode.Value.Value)
 					.Select(a => squadManager.World.GetActorById(a)));
 
 			return squad;

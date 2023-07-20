@@ -63,12 +63,6 @@ namespace OpenRA.Mods.Common
 				.Count(a => a.Owner == owner && buildings.Contains(a.Info.Name));
 		}
 
-		public static List<Actor> FindEnemiesByCommonName(HashSet<string> commonNames, Player player)
-		{
-			return player.World.Actors.Where(a => !a.IsDead && player.RelationshipWith(a.Owner) == PlayerRelationship.Enemy &&
-				commonNames.Contains(a.Info.Name)).ToList();
-		}
-
 		public static ActorInfo GetInfoByCommonName(HashSet<string> names, Player owner)
 		{
 			return owner.World.Map.Rules.Actors.Where(k => names.Contains(k.Key)).Random(owner.World.LocalRandom).Value;
