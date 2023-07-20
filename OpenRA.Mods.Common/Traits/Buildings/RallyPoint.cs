@@ -128,6 +128,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != OrderID)
 				return;
 
+			if (!order.Target.IsValidFor(self))
+				return;
+
 			if (!order.Queued)
 				Path.Clear();
 
