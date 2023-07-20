@@ -143,6 +143,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "BeginMinefield" && order.OrderString != "PlaceMinefield" && order.OrderString != "PlaceMine")
 				return;
 
+			if (!order.Target.IsValidFor(self))
+				return;
+
 			var cell = self.World.Map.CellContaining(order.Target.CenterPosition);
 			if (order.OrderString == "BeginMinefield")
 				minefieldStart = cell;

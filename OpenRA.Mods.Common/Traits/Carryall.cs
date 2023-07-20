@@ -348,6 +348,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (order.OrderString == "DeliverUnit")
 			{
+				if (!order.Target.IsValidFor(self))
+					return;
+
 				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
 				if (!aircraftInfo.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
