@@ -149,10 +149,13 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			var targetTypes = a.GetEnabledTargetTypes();
-			return !targetTypes.IsEmpty && !targetTypes.Overlaps(Info.IgnoredEnemyTargetTypes);
+			if (targetTypes.IsEmpty || targetTypes.Overlaps(Info.IgnoredEnemyTargetTypes))
+				return false;
+
+			return IsNotHiddenUnit(a);
 		}
 
-		public bool IsNotHiddenUnit(Actor a)
+		bool IsNotHiddenUnit(Actor a)
 		{
 			var hasModifier = false;
 			var visModifiers = a.TraitsImplementing<IVisibilityModifier>();
@@ -240,7 +243,7 @@ namespace OpenRA.Mods.Common.Traits
 			// Then check which are in weapons range of the source.
 			var activeAttackBases = sourceActor.TraitsImplementing<AttackBase>().Where(Exts.IsTraitEnabled).ToArray();
 			var enemiesAndSourceAttackRanges = actors
-				.Where(a => IsPreferredEnemyUnit(a) && IsNotHiddenUnit(a))
+				.Where(IsPreferredEnemyUnit)
 				.Select(a => (Actor: a, AttackBases: activeAttackBases.Where(ab => ab.HasAnyValidWeapons(Target.FromActor(a))).ToList()))
 				.Where(x => x.AttackBases.Count > 0)
 				.Select(x => (x.Actor, Range: x.AttackBases.Max(ab => ab.GetMaximumRangeVersusTarget(Target.FromActor(x.Actor)))))
@@ -458,7 +461,7 @@ namespace OpenRA.Mods.Common.Traits
 			var protectSq = GetSquadOfType(SquadType.Protection);
 			protectSq ??= RegisterNewSquad(bot, SquadType.Protection, (attacker, WVec.Zero));
 
-			if (protectSq.IsValid && !protectSq.IsTargetValid())
+			if (protectSq.IsValid && !protectSq.IsTargetValid(protectSq.CenterUnit()))
 				protectSq.SetActorToTarget((attacker, WVec.Zero));
 
 			if (!protectSq.IsValid)

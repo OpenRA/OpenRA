@@ -95,12 +95,12 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		/// <summary>
 		/// Checks the target is still valid, and updates the <see cref="Target"/> location if it is still valid.
 		/// </summary>
-		public bool IsTargetValid()
+		public bool IsTargetValid(Actor squadUnit)
 		{
 			var valid =
 				TargetActor != null &&
 				TargetActor.IsInWorld &&
-				TargetActor.IsTargetableBy(Units.FirstOrDefault()) &&
+				Units.Any(Target.IsValidFor) &&
 				!TargetActor.Info.HasTraitInfo<HuskInfo>();
 			if (!valid)
 				return false;
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			// e.g. a ship targeting a land unit, but the land unit moved north.
 			// We need to update our location to move north as well.
 			// If we can reach the actor directly, we'll just target it directly.
-			var target = SquadManager.FindEnemies(new[] { TargetActor }, Units.First()).FirstOrDefault();
+			var target = SquadManager.FindEnemies(new[] { TargetActor }, squadUnit).FirstOrDefault();
 			SetActorToTarget(target);
 			return target.Actor != null;
 		}
@@ -122,7 +122,16 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			TargetActor != null &&
 			TargetActor.CanBeViewedByPlayer(Bot.Player);
 
-		public WPos CenterPosition { get { return Units.Select(u => u.CenterPosition).Average(); } }
+		public WPos CenterPosition()
+		{
+			return Units.Select(a => a.CenterPosition).Average();
+		}
+
+		public Actor CenterUnit()
+		{
+			var centerPosition = CenterPosition();
+			return Units.MinByOrDefault(a => (a.CenterPosition - centerPosition).LengthSquared);
+		}
 
 		public MiniYaml Serialize()
 		{
