@@ -222,7 +222,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var origHeightText = windowHeight.Text = ds.WindowedSize.Y.ToString(NumberFormatInfo.CurrentInfo);
 			windowHeight.Text = ds.WindowedSize.Y.ToString(NumberFormatInfo.CurrentInfo);
 
-			var restartDesc = panel.Get("RESTART_REQUIRED_DESC");
+			var restartDesc = panel.Get("VIDEO_RESTART_REQUIRED_DESC");
 			restartDesc.IsVisible = () => ds.Mode != OriginalGraphicsMode || ds.VideoDisplay != OriginalVideoDisplay || ds.GLProfile != OriginalGLProfile ||
 				(ds.Mode == WindowMode.Windowed && (origWidthText != windowWidth.Text || origHeightText != windowHeight.Text));
 

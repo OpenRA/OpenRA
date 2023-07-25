@@ -5,7 +5,7 @@ Container@DIRECTCONNECT_PANEL:
 	Width: 370
 	Height: 125
 	Children:
-		Label@TITLE:
+		Label@DIRECTCONNECT_LABEL_TITLE:
 			Width: PARENT_RIGHT
 			Y: 0 - 22
 			Font: BigBold

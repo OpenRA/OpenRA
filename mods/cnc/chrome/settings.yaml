@@ -12,7 +12,7 @@ Container@SETTINGS_PANEL:
 	Width: 640
 	Height: 435
 	Children:
-		Label@TITLE:
+		Label@SETTINGS_LABEL_TITLE:
 			Width: PARENT_RIGHT
 			Y: 0 - 22
 			Font: BigBold

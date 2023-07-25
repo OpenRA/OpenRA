@@ -5,7 +5,7 @@ Container@CONNECTING_PANEL:
 	Width: 370
 	Height: 125
 	Children:
-		Label@TITLE:
+		Label@CONNECTING_TITLE:
 			Width: PARENT_RIGHT
 			Y: 0 - 22
 			Font: BigBold

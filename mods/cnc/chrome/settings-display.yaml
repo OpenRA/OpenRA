@@ -10,7 +10,7 @@ Container@DISPLAY_PANEL:
 			TopBottomSpacing: 5
 			ItemSpacing: 10
 			Children:
-				Background@SECTION_HEADER:
+				Background@PROFILE_SECTION_HEADER:
 					X: 5
 					Width: PARENT_RIGHT - 24 - 10
 					Height: 13
@@ -64,7 +64,7 @@ Container@DISPLAY_PANEL:
 											Width: PARENT_RIGHT - 35
 											Height: PARENT_BOTTOM - 12
 				Container@SPACER:
-				Background@SECTION_HEADER:
+				Background@DISPLAY_SECTION_HEADER:
 					X: 5
 					Width: PARENT_RIGHT - 24 - 10
 					Height: 13
@@ -202,7 +202,7 @@ Container@DISPLAY_PANEL:
 									Font: Regular
 									Text: Hide Chat in Replays
 				Container@SPACER:
-				Background@SECTION_HEADER:
+				Background@VIDEO_SECTION_HEADER:
 					X: 5
 					Width: PARENT_RIGHT - 24 - 10
 					Height: 13
@@ -344,7 +344,7 @@ Container@DISPLAY_PANEL:
 							X: 10
 							Width: PARENT_RIGHT - 20
 							Children:
-								Label@RESTART_REQUIRED_DESC:
+								Label@VIDEO_RESTART_REQUIRED_DESC:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Tiny

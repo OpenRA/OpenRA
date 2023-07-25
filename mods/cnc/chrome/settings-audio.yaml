@@ -10,7 +10,7 @@ Container@AUDIO_PANEL:
 			TopBottomSpacing: 5
 			ItemSpacing: 10
 			Children:
-				Background@SECTION_HEADER:
+				Background@AUDIO_SECTION_HEADER:
 					X: 5
 					Width: PARENT_RIGHT - 24 - 10
 					Height: 13
@@ -137,7 +137,7 @@ Container@AUDIO_PANEL:
 							X: 10
 							Width: PARENT_RIGHT - 10
 							Children:
-								Label@RESTART_REQUIRED_DESC:
+								Label@AUDIO_RESTART_REQUIRED_DESC:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Tiny

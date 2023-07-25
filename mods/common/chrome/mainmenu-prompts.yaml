@@ -36,7 +36,7 @@ Background@MAINMENU_INTRODUCTION_PROMPT:
 			ItemSpacing: 10
 			ScrollBar: Hidden
 			Children:
-				Background@SECTION_HEADER:
+				Background@PROFILE_SECTION_HEADER:
 					X: 5
 					Width: PARENT_RIGHT - 10
 					Height: 13
@@ -88,7 +88,7 @@ Background@MAINMENU_INTRODUCTION_PROMPT:
 											Width: PARENT_RIGHT - 35
 											Height: PARENT_BOTTOM - 12
 				Container@SPACER:
-				Background@SECTION_HEADER:
+				Background@INPUT_SECTION_HEADER:
 					X: 5
 					Width: PARENT_RIGHT - 10
 					Height: 13
@@ -232,7 +232,7 @@ Background@MAINMENU_INTRODUCTION_PROMPT:
 									Text: Screen Edge Panning
 				Container@SPACER:
 					Height: 30
-				Background@SECTION_HEADER:
+				Background@DISPLAY_SECTION_HEADER:
 					X: 5
 					Width: PARENT_RIGHT - 10
 					Height: 13

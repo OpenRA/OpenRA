@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				s => WidgetUtils.TruncateText(s.Label, audioDeviceDropdown.UsableWidth, deviceFont));
 			audioDeviceDropdown.GetText = () => deviceLabel.Update(soundDevice);
 
-			var restartDesc = panel.Get("RESTART_REQUIRED_DESC");
+			var restartDesc = panel.Get("AUDIO_RESTART_REQUIRED_DESC");
 			restartDesc.IsVisible = () => soundDevice.Device != OriginalSoundDevice;
 
 			SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);

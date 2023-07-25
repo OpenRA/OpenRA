@@ -10,7 +10,7 @@ Container@INPUT_PANEL:
 			TopBottomSpacing: 5
 			ItemSpacing: 10
 			Children:
-				Background@SECTION_HEADER:
+				Background@INPUT_SECTION_HEADER:
 					X: 5
 					Width: PARENT_RIGHT - 24 - 10
 					Height: 13
