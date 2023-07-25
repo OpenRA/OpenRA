@@ -21,7 +21,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Transports actors with the `" + nameof(Carryable) + "` trait.")]
-	public class CarryallInfo : TraitInfo, Requires<BodyOrientationInfo>, Requires<AircraftInfo>
+	public class CarryallInfo : ConditionalTraitInfo, Requires<BodyOrientationInfo>, Requires<AircraftInfo>
 	{
 		[ActorReference(typeof(CarryableInfo))]
 		[Desc("Actor type that is initially spawned into this actor.")]
@@ -83,8 +83,9 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Carryall(init.Self, this); }
 	}
 
-	public class Carryall : INotifyKilled, ISync, ITick, IRender, INotifyActorDisposing, IIssueOrder, IResolveOrder,
-		IOrderVoice, IIssueDeployOrder, IAircraftCenterPositionOffset, IOverrideAircraftLanding
+	public class Carryall : ConditionalTrait<CarryallInfo>, INotifyKilled, ISync, ITick, IRender,
+		INotifyActorDisposing, IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder,
+		IAircraftCenterPositionOffset, IOverrideAircraftLanding
 	{
 		public enum CarryallState
 		{
@@ -93,7 +94,6 @@ namespace OpenRA.Mods.Common.Traits
 			Carrying
 		}
 
-		public readonly CarryallInfo Info;
 		readonly AircraftInfo aircraftInfo;
 		readonly Aircraft aircraft;
 		readonly BodyOrientation body;
@@ -115,9 +115,8 @@ namespace OpenRA.Mods.Common.Traits
 		public WVec CarryableOffset { get; private set; }
 
 		public Carryall(Actor self, CarryallInfo info)
+			: base(info)
 		{
-			Info = info;
-
 			Carryable = null;
 			State = CarryallState.Idle;
 
@@ -311,6 +310,9 @@ namespace OpenRA.Mods.Common.Traits
 		// Check if we can drop the unit at our current location.
 		public bool CanUnload()
 		{
+			if (IsTraitDisabled)
+				return false;
+
 			var targetCell = self.World.Map.CellContaining(aircraft.GetPosition());
 			return Carryable != null && aircraft.CanLand(targetCell, blockedByMobile: false);
 		}
@@ -319,6 +321,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
+				if (IsTraitDisabled)
+					yield break;
+
 				yield return new CarryallPickupOrderTargeter(Info);
 				yield return new DeployOrderTargeter("Unload", 10,
 				() => CanUnload() ? Info.UnloadCursor : Info.UnloadBlockedCursor);
@@ -339,7 +344,10 @@ namespace OpenRA.Mods.Common.Traits
 			return new Order("Unload", self, queued);
 		}
 
-		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued) { return true; }
+		bool IIssueDeployOrder.CanIssueDeployOrder(Actor self, bool queued)
+		{
+			return !IsTraitDisabled;
+		}
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
