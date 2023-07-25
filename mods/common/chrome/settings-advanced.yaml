@@ -10,7 +10,7 @@ Container@ADVANCED_PANEL:
 			TopBottomSpacing: 5
 			ItemSpacing: 10
 			Children:
-				Background@SECTION_HEADER:
+				Background@NETWORK_SECTION_HEADER:
 					X: 5
 					Width: PARENT_RIGHT - 24 - 10
 					Height: 13
@@ -97,7 +97,7 @@ Container@ADVANCED_PANEL:
 									WordWrap: True
 									Text: Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development.
 				Container@SPACER:
-				Background@SECTION_HEADER:
+				Background@DEBUG_SECTION_HEADER:
 					X: 5
 					Width: PARENT_RIGHT - 24 - 10
 					Height: 13
