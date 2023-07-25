@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		// A carryable notifying us that he'd like to be carried
 		public override bool RequestTransportNotify(Actor self, Actor carryable, CPos destination)
 		{
-			if (busy)
+			if (busy || IsTraitDisabled)
 				return false;
 
 			if (ReserveCarryable(self, carryable))
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void FindCarryableForTransport(Actor self)
 		{
-			if (!self.IsInWorld)
+			if (!self.IsInWorld || IsTraitDisabled)
 				return;
 
 			// Get all carryables who want transport
@@ -117,14 +117,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			protected override void OnFirstRun(Actor self)
 			{
-				if (!cargo.IsDead)
+				if (!cargo.IsDead && !carryall.IsTraitDisabled)
 					QueueChild(new PickupUnit(self, cargo, 0, carryall.Info.TargetLineColor));
 			}
 
 			public override bool Tick(Actor self)
 			{
 				// Cargo may have become invalid or PickupUnit cancelled.
-				if (carryall.Carryable == null || carryall.Carryable.IsDead)
+				if (carryall.IsTraitDisabled || carryall.Carryable == null || carryall.Carryable.IsDead)
 					return true;
 
 				var dropRange = carryall.Info.DropRange;

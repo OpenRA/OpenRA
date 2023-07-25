@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected override void OnFirstRun(Actor self)
 		{
 			// The cargo might have become invalid while we were moving towards it.
-			if (cargo.IsDead || carryable.IsTraitDisabled || !cargo.AppearsFriendlyTo(self))
+			if (cargo.IsDead || carryable.IsTraitDisabled || carryall.IsTraitDisabled || !cargo.AppearsFriendlyTo(self))
 				return;
 
 			if (carryall.ReserveCarryable(self, cargo))
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling)
 				return true;
 
-			if (cargo.IsDead || carryable.IsTraitDisabled || !cargo.AppearsFriendlyTo(self) || cargo != carryall.Carryable)
+			if (cargo.IsDead || carryable.IsTraitDisabled || carryall.IsTraitDisabled || !cargo.AppearsFriendlyTo(self) || cargo != carryall.Carryable)
 			{
 				Cancel(self, true);
 				return false;
@@ -160,7 +160,7 @@ namespace OpenRA.Mods.Common.Activities
 			protected override void OnFirstRun(Actor self)
 			{
 				// The cargo might have become invalid while we were moving towards it.
-				if (cargo == null || cargo.IsDead || carryable.IsTraitDisabled || carryall.Carryable != cargo || !cargo.AppearsFriendlyTo(self))
+				if (cargo == null || cargo.IsDead || carryable.IsTraitDisabled || carryall.IsTraitDisabled || carryall.Carryable != cargo || !cargo.AppearsFriendlyTo(self))
 					return;
 
 				self.World.AddFrameEndTask(w =>
