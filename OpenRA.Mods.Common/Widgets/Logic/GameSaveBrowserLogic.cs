@@ -83,7 +83,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.isSavePanel = isSavePanel;
 			Game.BeforeGameStart += OnGameStart;
 
-			panel.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
+			var cancelButton = panel.Get<ButtonWidget>("CANCEL_BUTTON");
+			cancelButton.OnClick = () =>
 			{
 				Ui.CloseWindow();
 				onExit();
@@ -122,6 +123,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				saveTextField = saveWidgets.Get<TextFieldWidget>("SAVE_TEXTFIELD");
 				saveTextField.OnEnterKey = input => saveButton.HandleKeyPress(input);
+				saveTextField.OnEscKey = input => cancelButton.HandleKeyPress(input);
 			}
 			else
 			{
