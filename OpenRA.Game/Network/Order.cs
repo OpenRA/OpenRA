@@ -272,6 +272,11 @@ namespace OpenRA
 			return new Order("StartProduction", subject, queued) { ExtraData = (uint)count, TargetString = item };
 		}
 
+		public static Order StartProductionAI(Actor subject, string item, int count, bool queued = true)
+		{
+			return new Order("StartProductionAI", subject, queued) { ExtraData = (uint)count, TargetString = item };
+		}
+
 		public static Order PauseProduction(Actor subject, string item, bool pause)
 		{
 			return new Order("PauseProduction", subject, false) { ExtraData = pause ? 1u : 0u, TargetString = item };

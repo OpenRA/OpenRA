@@ -392,85 +392,94 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
+		void StartProduction(Actor self, Order order)
+		{
+			var rules = self.World.Map.Rules;
+			var unit = rules.Actors[order.TargetString];
+			var bi = unit.TraitInfo<BuildableInfo>();
+
+			// Not built by this queue
+			if (!bi.Queue.Contains(Info.Type))
+				return;
+
+			// You can't build that
+			if (BuildableItems().All(b => b.Name != order.TargetString))
+				return;
+
+			// Check if the player is trying to build more units that they are allowed
+			var fromLimit = int.MaxValue;
+			if (!developerMode.AllTech)
+			{
+				if (Info.QueueLimit > 0)
+					fromLimit = Info.QueueLimit - Queue.Count;
+
+				if (Info.ItemLimit > 0)
+					fromLimit = Math.Min(fromLimit, Info.ItemLimit - Queue.Count(i => i.Item == order.TargetString));
+
+				if (bi.BuildLimit > 0)
+				{
+					var inQueue = Queue.Count(pi => pi.Item == order.TargetString);
+					var owned = self.Owner.World.ActorsHavingTrait<Buildable>().Count(a => a.Info.Name == order.TargetString && a.Owner == self.Owner);
+					fromLimit = Math.Min(fromLimit, bi.BuildLimit - (inQueue + owned));
+				}
+
+				if (fromLimit <= 0)
+					return;
+			}
+
+			var cost = GetProductionCost(unit);
+			var time = GetBuildTime(unit, bi);
+			var amountToBuild = Math.Min(fromLimit, order.ExtraData);
+			for (var n = 0; n < amountToBuild; n++)
+			{
+				var hasPlayedSound = false;
+				BeginProduction(new ProductionItem(this, order.TargetString, cost, playerPower, () => self.World.AddFrameEndTask(_ =>
+				{
+					// Make sure the item hasn't been invalidated between the ProductionItem ticking and this FrameEndTask running
+					if (!Queue.Any(i => i.Done && i.Item == unit.Name))
+						return;
+
+					var isBuilding = unit.HasTraitInfo<BuildingInfo>();
+					if (isBuilding && !hasPlayedSound)
+					{
+						hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
+						TextNotificationsManager.AddTransientLine(Info.ReadyTextNotification, self.Owner);
+					}
+					else if (!isBuilding)
+					{
+						if (BuildUnit(unit))
+						{
+							Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
+							TextNotificationsManager.AddTransientLine(Info.ReadyTextNotification, self.Owner);
+						}
+						else if (!hasPlayedSound && time > 0)
+						{
+							hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Faction.InternalName);
+							TextNotificationsManager.AddTransientLine(Info.BlockedTextNotification, self.Owner);
+						}
+					}
+				})), !order.Queued);
+			}
+		}
+
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (!Enabled)
 				return;
 
-			var rules = self.World.Map.Rules;
 			switch (order.OrderString)
 			{
 				case "StartProduction":
-					var unit = rules.Actors[order.TargetString];
-					var bi = unit.TraitInfo<BuildableInfo>();
-
-					// Not built by this queue
-					if (!bi.Queue.Contains(Info.Type))
-						return;
-
-					// You can't build that
-					if (BuildableItems().All(b => b.Name != order.TargetString))
-						return;
-
-					// Check if the player is trying to build more units that they are allowed
-					var fromLimit = int.MaxValue;
-					if (!developerMode.AllTech)
-					{
-						if (Info.QueueLimit > 0)
-							fromLimit = Info.QueueLimit - Queue.Count;
-
-						if (Info.ItemLimit > 0)
-							fromLimit = Math.Min(fromLimit, Info.ItemLimit - Queue.Count(i => i.Item == order.TargetString));
-
-						if (bi.BuildLimit > 0)
-						{
-							var inQueue = Queue.Count(pi => pi.Item == order.TargetString);
-							var owned = self.Owner.World.ActorsHavingTrait<Buildable>().Count(a => a.Info.Name == order.TargetString && a.Owner == self.Owner);
-							fromLimit = Math.Min(fromLimit, bi.BuildLimit - (inQueue + owned));
-						}
-
-						if (fromLimit <= 0)
-							return;
-					}
-
-					var cost = GetProductionCost(unit);
-					var time = GetBuildTime(unit, bi);
-					var amountToBuild = Math.Min(fromLimit, order.ExtraData);
-					for (var n = 0; n < amountToBuild; n++)
-					{
-						var hasPlayedSound = false;
-						BeginProduction(new ProductionItem(this, order.TargetString, cost, playerPower, () => self.World.AddFrameEndTask(_ =>
-						{
-							// Make sure the item hasn't been invalidated between the ProductionItem ticking and this FrameEndTask running
-							if (!Queue.Any(i => i.Done && i.Item == unit.Name))
-								return;
-
-							var isBuilding = unit.HasTraitInfo<BuildingInfo>();
-							if (isBuilding && !hasPlayedSound)
-							{
-								hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
-								TextNotificationsManager.AddTransientLine(Info.ReadyTextNotification, self.Owner);
-							}
-							else if (!isBuilding)
-							{
-								if (BuildUnit(unit))
-								{
-									Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
-									TextNotificationsManager.AddTransientLine(Info.ReadyTextNotification, self.Owner);
-								}
-								else if (!hasPlayedSound && time > 0)
-								{
-									hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Faction.InternalName);
-									TextNotificationsManager.AddTransientLine(Info.BlockedTextNotification, self.Owner);
-								}
-							}
-						})), !order.Queued);
-					}
-
+					StartProduction(self, order);
+					break;
+				case "StartProductionAI":
+					// Hack: AI production modules won't produce on queue that is producing
+					// to avoid duplicated production due to order latency or network lags.
+					if (!AllQueued().Any())
+						StartProduction(self, order);
 					break;
 				case "PauseProduction":
 					PauseProduction(order.TargetString, order.ExtraData != 0);
-
 					break;
 				case "CancelProduction":
 					CancelProduction(order.TargetString, order.ExtraData);
