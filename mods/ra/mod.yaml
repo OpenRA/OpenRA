@@ -256,27 +256,27 @@ GameSpeeds:
 		slowest:
 			Name: options-game-speed.slowest
 			Timestep: 80
-			OrderLatency: 2
+			OrderLatency: 10
 		slower:
 			Name: options-game-speed.slower
 			Timestep: 50
-			OrderLatency: 3
+			OrderLatency: 15
 		default:
 			Name: options-game-speed.normal
 			Timestep: 40
-			OrderLatency: 3
+			OrderLatency: 15
 		fast:
 			Name: options-game-speed.fast
 			Timestep: 35
-			OrderLatency: 4
+			OrderLatency: 18
 		faster:
 			Name: options-game-speed.faster
 			Timestep: 30
-			OrderLatency: 4
+			OrderLatency: 18
 		fastest:
 			Name: options-game-speed.fastest
 			Timestep: 20
-			OrderLatency: 6
+			OrderLatency: 20
 
 ModContent:
 	InstallPromptMessage: Red Alert requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without music\nor videos) from a mirror of the 2008 Red Alert freeware release.\n\nAdvanced Install includes options for copying the music, videos, and\nother content from an original game disc or digital installation.
