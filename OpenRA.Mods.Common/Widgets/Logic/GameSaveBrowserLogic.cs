@@ -117,17 +117,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				saveButton.IsVisible = () => true;
 
 				var saveWidgets = panel.Get("SAVE_WIDGETS");
-				saveTextField = saveWidgets.Get<TextFieldWidget>("SAVE_TEXTFIELD");
 				gameList.Bounds.Height -= saveWidgets.Bounds.Height;
 				saveWidgets.IsVisible = () => true;
 
-				saveTextField.OnEnterKey = _ =>
-				{
-					if (!string.IsNullOrWhiteSpace(saveTextField.Text))
-						Save(world);
-
-					return true;
-				};
+				saveTextField = saveWidgets.Get<TextFieldWidget>("SAVE_TEXTFIELD");
+				saveTextField.OnEnterKey = input => saveButton.HandleKeyPress(input);
 			}
 			else
 			{
