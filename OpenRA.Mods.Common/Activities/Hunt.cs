@@ -40,14 +40,8 @@ namespace OpenRA.Mods.Common.Activities
 			if (targetActor == null)
 				return false;
 
-			var target = Target.FromActor(targetActor);
-			var range = self.TraitsImplementing<AttackBase>().Max(ab => ab.GetMaximumRangeVersusTarget(target));
-
-			// We want to keep at least 2 cells of distance from the target to prevent the pathfinder from thinking the target position is blocked.
-			if (range.Length < 2048)
-				range = WDist.FromCells(2);
-
-			QueueChild(new AttackMoveActivity(self, () => move.MoveWithinRange(Target.FromCell(self.World, targetActor.Location), range)));
+			// We want to keep 2 cells of distance from the target to prevent the pathfinder from thinking the target position is blocked.
+			QueueChild(new AttackMoveActivity(self, () => move.MoveWithinRange(Target.FromCell(self.World, targetActor.Location), WDist.FromCells(2))));
 			QueueChild(new Wait(25));
 			return false;
 		}
