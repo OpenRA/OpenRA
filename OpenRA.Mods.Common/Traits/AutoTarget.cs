@@ -387,6 +387,12 @@ namespace OpenRA.Mods.Common.Traits
 					if (attackStances == PlayerRelationship.Enemy && self.Owner.RelationshipWith(target.FrozenActor.Owner) == PlayerRelationship.Ally)
 						continue;
 
+					// Bot-controlled units aren't yet capable of understanding visibility changes
+					// Prevent that bot-controlled units endlessly fire at frozen actors.
+					// TODO: Teach the AI to support long range artillery units with units that provide line of sight
+					if (self.Owner.IsBot && target.FrozenActor.Actor == null)
+						continue;
+
 					targetTypes = target.FrozenActor.TargetTypes;
 					owner = target.FrozenActor.Owner;
 				}
