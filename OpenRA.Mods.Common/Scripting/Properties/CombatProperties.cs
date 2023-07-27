@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[ScriptActorPropertyActivity]
-		[Desc("Seek out and attack nearby targets.")]
+		[Desc("Ignoring visibility, find the closest hostile target and attack move to within 2 cells of it.")]
 		public void Hunt()
 		{
 			Self.QueueActivity(new Hunt(Self));
