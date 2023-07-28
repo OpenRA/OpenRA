@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != "InstantRepair" || !IsValidOrder(order))
 				return;
 
-			self.QueueActivity(order.Queued, new InstantRepair(self, order.Target, Info));
+			self.QueueActivity(order.Queued, new InstantRepair(self, order.Target, Info, Info.TargetLineColor));
 			self.ShowTargetLines();
 		}
 

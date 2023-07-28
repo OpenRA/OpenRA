@@ -10,6 +10,7 @@
 #endregion
 
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
@@ -22,8 +23,8 @@ namespace OpenRA.Mods.Common.Activities
 		IHealth enterHealth;
 		InstantlyRepairable enterInstantlyRepariable;
 
-		public InstantRepair(Actor self, in Target target, InstantlyRepairsInfo info)
-			: base(self, target, info.TargetLineColor)
+		public InstantRepair(Actor self, in Target target, InstantlyRepairsInfo info, Color? targetLineColor)
+			: base(self, target, targetLineColor)
 		{
 			this.info = info;
 		}
