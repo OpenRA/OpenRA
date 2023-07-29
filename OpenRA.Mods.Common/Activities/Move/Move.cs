@@ -160,7 +160,10 @@ namespace OpenRA.Mods.Common.Activities
 
 			var firstFacing = self.World.Map.FacingBetween(mobile.FromCell, nextCell.Value.Cell, mobile.Facing);
 
-			if (mobile.Info.CanMoveBackward && path.Count < mobile.Info.MaxBackwardCells && self.World.WorldTick - startTicks < mobile.Info.BackwardDuration && Math.Abs(firstFacing.Angle - mobile.Facing.Angle) > 256)
+			if (mobile.Info.CanMoveBackward
+				&& (mobile.Info.MaxBackwardCells < 0 || path.Count < mobile.Info.MaxBackwardCells)
+				&& (mobile.Info.BackwardDuration < 0 || self.World.WorldTick - startTicks < mobile.Info.BackwardDuration)
+				&& Math.Abs(firstFacing.Angle - mobile.Facing.Angle) > 256)
 			{
 				ActorFacingModifier = new WAngle(512);
 				firstFacing += ActorFacingModifier;
