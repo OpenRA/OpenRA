@@ -71,10 +71,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Can move backward if possible")]
 		public readonly bool CanMoveBackward = false;
 
-		[Desc("After how many ticks the actor will turn forward during backoff")]
+		[Desc("After how many ticks the actor will turn forward during backoff.",
+			"If set to -1 the unit will be allowed to move backwards without time limit.")]
 		public readonly int BackwardDuration = 40;
 
-		[Desc("Actor will try to move backward if the number of the cells in path lower than this")]
+		[Desc("Actor will only try to move backwards when the path (in cells) is shorter than this value.",
+			"If set to -1 the unit will be allowed to move backwards without range limit.")]
 		public readonly int MaxBackwardCells = 15;
 
 		[ConsumedConditionReference]
