@@ -85,8 +85,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var line in modCredits ? modLines : engineLines)
 			{
 				var label = template.Clone() as LabelWidget;
-				label.GetText = () => line;
-				scrollPanel.AddChild(label);
+				var content = line.Replace("\\n", "\n");
+				content = WidgetUtils.WrapText(content, label.Bounds.Width, Game.Renderer.Fonts[label.Font]);
+				label.GetText = () => content;
+				label.Bounds.Height += Game.Renderer.Fonts[label.Font].Measure(content).Y;
 			}
 		}
 
