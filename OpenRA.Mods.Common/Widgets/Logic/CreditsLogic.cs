@@ -89,6 +89,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				content = WidgetUtils.WrapText(content, label.Bounds.Width, Game.Renderer.Fonts[label.Font]);
 				label.GetText = () => content;
 				label.Bounds.Height += Game.Renderer.Fonts[label.Font].Measure(content).Y;
+				scrollPanel.AddChild(label);
 			}
 		}
 
