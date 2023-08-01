@@ -3,7 +3,6 @@ cncr-steam: C&C Remastered Collection (Steam version, English)
 		AppId: 1213210
 	IDFiles:
 		Data/CNCDATA/RED_ALERT/CD1/REDALERT.MIX: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
-			Length: 4096
 	# The Remastered Collection doesn't include the RA Soviet CD unfortunately, so we can't install Soviet campaign briefings.
 	Install:
 		# Base game files:
