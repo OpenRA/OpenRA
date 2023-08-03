@@ -1093,14 +1093,14 @@ Container@OBSERVER_WIDGETS:
 									Align: Right
 									Shadow: True
 								Label@ARMY_VALUE:
-									X: 605
+									X: 610
 									Y: 0
-									Width: 85
+									Width: 90
 									Height: PARENT_BOTTOM
 									Align: Right
 									Shadow: True
 								Label@VISION:
-									X: 690
+									X: 700
 									Y: 0
 									Width: 60
 									Height: PARENT_BOTTOM
