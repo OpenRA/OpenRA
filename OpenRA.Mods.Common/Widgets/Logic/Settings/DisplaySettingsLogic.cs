@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -510,8 +511,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "PARENT_BOTTOM", parentBounds.Height }
 			};
 
-			var width = w.Width.Evaluate(substitutions);
-			var height = w.Height.Evaluate(substitutions);
+			var readOnlySubstitutions = new ReadOnlyDictionary<string, int>(substitutions);
+			var width = w.Width != null ? w.Width.Evaluate(readOnlySubstitutions) : 0;
+			var height = w.Height != null ? w.Height.Evaluate(readOnlySubstitutions) : 0;
 
 			substitutions.Add("WIDTH", width);
 			substitutions.Add("HEIGHT", height);
@@ -520,8 +522,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				w.Bounds = new Rectangle(w.Bounds.X, w.Bounds.Y, width, w.Bounds.Height);
 			else
 				w.Bounds = new Rectangle(
-					w.X.Evaluate(substitutions),
-					w.Y.Evaluate(substitutions),
+					w.X != null ? w.X.Evaluate(readOnlySubstitutions) : 0,
+					w.Y != null ? w.Y.Evaluate(readOnlySubstitutions) : 0,
 					width,
 					height);
 
