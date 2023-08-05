@@ -59,9 +59,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var preview = parent.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Preview = () => getMap().Map;
-				preview.OnMouseDown = mi => onMouseDown(preview, getMap().Map, mi);
-				preview.SpawnOccupants = getSpawnOccupants;
-				preview.DisabledSpawnPoints = getDisabledSpawnPoints;
+				if (onMouseDown != null)
+					preview.OnMouseDown = mi => onMouseDown(preview, getMap().Map, mi);
+
+				if (getSpawnOccupants != null)
+					preview.SpawnOccupants = getSpawnOccupants;
+
+				if (getDisabledSpawnPoints != null)
+					preview.DisabledSpawnPoints = getDisabledSpawnPoints;
+
 				preview.ShowUnoccupiedSpawnpoints = showUnoccupiedSpawnpoints;
 
 				var titleLabel = parent.Get<LabelWithTooltipWidget>("MAP_TITLE");
