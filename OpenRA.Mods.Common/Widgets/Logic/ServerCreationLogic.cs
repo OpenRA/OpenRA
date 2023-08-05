@@ -11,7 +11,6 @@
 
 using System;
 using System.Globalization;
-using System.Linq;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Widgets;
@@ -58,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly LabelWidget noticesLabelA, noticesLabelB, noticesLabelC;
 		readonly Action onCreate;
 		readonly Action onExit;
-		MapPreview preview = MapCache.UnknownMap;
+		MapPreview map = MapCache.UnknownMap;
 		bool advertiseOnline;
 
 		[ObjectCreator.UseCtor]
@@ -70,7 +69,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.onExit = onExit;
 
 			var settings = Game.Settings;
-			preview = modData.MapCache[modData.MapCache.ChooseInitialMap(modData.MapCache.PickLastModifiedMap(MapVisibility.Lobby) ?? Game.Settings.Server.Map, Game.CosmeticRandom)];
+
+			map = modData.MapCache[modData.MapCache.ChooseInitialMap(modData.MapCache.PickLastModifiedMap(MapVisibility.Lobby) ?? Game.Settings.Server.Map, Game.CosmeticRandom)];
+
+			Ui.LoadWidget("MAP_PREVIEW", panel.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
+			{
+				{ "orderManager", null },
+				{ "getMap", (Func<(MapPreview, Session.MapStatus)>)(() => (map, Session.MapStatus.Playable)) },
+				{ "onMouseDown", null },
+				{ "getSpawnOccupants", null },
+				{ "getDisabledSpawnPoints", null },
+				{ "showUnoccupiedSpawnpoints", false },
+				{ "mapUpdatesEnabled", true },
+				{ "onMapUpdate", (Action<string>)(uid => map = modData.MapCache[uid]) },
+			});
 
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
@@ -82,50 +94,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 					{
-						{ "initialMap", preview.Uid },
+						{ "initialMap", map.Uid },
 						{ "initialTab", MapClassification.System },
-						{ "onExit", () => { } },
-						{ "onSelect", (Action<string>)(uid => preview = modData.MapCache[uid]) },
+						{ "onExit", () => modData.MapCache.UpdateMaps() },
+						{ "onSelect", (Action<string>)(uid => map = modData.MapCache[uid]) },
 						{ "filter", MapVisibility.Lobby },
 						{ "onStart", () => { } }
 					});
 				};
-
-				panel.Get<MapPreviewWidget>("MAP_PREVIEW").Preview = () => preview;
-
-				var titleLabel = panel.GetOrNull<LabelWithTooltipWidget>("MAP_TITLE");
-				if (titleLabel != null)
-				{
-					var font = Game.Renderer.Fonts[titleLabel.Font];
-					var title = new CachedTransform<MapPreview, string>(m =>
-					{
-						var truncated = WidgetUtils.TruncateText(m.Title, titleLabel.Bounds.Width, font);
-
-						if (m.Title != truncated)
-							titleLabel.GetTooltipText = () => m.Title;
-						else
-							titleLabel.GetTooltipText = null;
-
-						return truncated;
-					});
-					titleLabel.GetText = () => title.Update(preview);
-				}
-
-				var typeLabel = panel.GetOrNull<LabelWidget>("MAP_TYPE");
-				if (typeLabel != null)
-				{
-					var type = new CachedTransform<MapPreview, string>(m => m.Categories.FirstOrDefault() ?? "");
-					typeLabel.GetText = () => type.Update(preview);
-				}
-
-				var authorLabel = panel.GetOrNull<LabelWidget>("MAP_AUTHOR");
-				if (authorLabel != null)
-				{
-					var font = Game.Renderer.Fonts[authorLabel.Font];
-					var author = new CachedTransform<MapPreview, string>(
-						m => WidgetUtils.TruncateText($"Created by {m.Author}", authorLabel.Bounds.Width, font));
-					authorLabel.GetText = () => author.Update(preview);
-				}
 			}
 
 			var serverName = panel.Get<TextFieldWidget>("SERVER_NAME");
@@ -221,6 +197,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void CreateAndJoin()
 		{
+			// Refresh MapCache.
+			if (modData.MapCache[map.Uid].Status != MapStatus.Available)
+				return;
+
 			var name = Game.Settings.SanitizedServerName(panel.Get<TextFieldWidget>("SERVER_NAME").Text);
 			if (!int.TryParse(panel.Get<TextFieldWidget>("LISTEN_PORT").Text, NumberStyles.Integer, NumberFormatInfo.CurrentInfo, out var listenPort))
 				listenPort = 1234;
@@ -228,18 +208,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");
 			var password = passwordField != null ? passwordField.Text : "";
 
-			// Save new settings
+			// Save new settings.
 			Game.Settings.Server.Name = name;
 			Game.Settings.Server.ListenPort = listenPort;
 			Game.Settings.Server.AdvertiseOnline = advertiseOnline;
-			Game.Settings.Server.Map = preview.Uid;
+			Game.Settings.Server.Map = map.Uid;
 			Game.Settings.Server.Password = password;
 			Game.Settings.Save();
 
-			// Take a copy so that subsequent changes don't affect the server
+			// Take a copy so that subsequent changes don't affect the server.
 			var settings = Game.Settings.Server.Clone();
 
-			// Create and join the server
+			// Create and join the server.
 			try
 			{
 				var endpoint = Game.CreateServer(settings);
