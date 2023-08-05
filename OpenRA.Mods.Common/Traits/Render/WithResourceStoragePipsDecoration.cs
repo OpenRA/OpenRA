@@ -17,6 +17,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 {
 	public class WithResourceStoragePipsDecorationInfo : WithDecorationBaseInfo
 	{
+		[Desc("Resource Type to display, null for money.")]
+		public readonly string ResourceType = null;
+
 		[FieldLoader.Require]
 		[Desc("Number of pips to display how filled unit is.")]
 		public readonly int PipCount = 0;
@@ -64,8 +67,18 @@ namespace OpenRA.Mods.Common.Traits.Render
 			screenPos -= pipSize / 2;
 			for (var i = 0; i < Info.PipCount; i++)
 			{
-				pips.PlayRepeating(player.Resources * Info.PipCount > i * player.ResourceCapacity ? Info.FullSequence : Info.EmptySequence);
-				yield return new UISpriteRenderable(pips.Image, self.CenterPosition, screenPos, 0, palette);
+				if (Info.ResourceType == null)
+				{
+					pips.PlayRepeating(player.Resources * Info.PipCount > i * player.ResourceCapacity ? Info.FullSequence : Info.EmptySequence);
+					yield return new UISpriteRenderable(pips.Image, self.CenterPosition, screenPos, 0, palette);
+				}
+				else
+				{
+					var rs = player.HasSpecialResources(Info.ResourceType);
+					var rsc = player.SpecialResourcesCapacity[Info.ResourceType];
+					pips.PlayRepeating(rs * Info.PipCount > i * rsc ? Info.FullSequence : Info.EmptySequence);
+					yield return new UISpriteRenderable(pips.Image, self.CenterPosition, screenPos, 0, palette);
+				}
 
 				screenPos += pipStride;
 			}

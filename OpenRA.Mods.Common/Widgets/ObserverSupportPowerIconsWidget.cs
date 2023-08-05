@@ -128,8 +128,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				var clock = clocks[power.a.Key];
 				clock.PlayFetchIndex(ClockSequence,
-					() => item.TotalTicks == 0 ? 0 : ((item.TotalTicks - item.RemainingTicks)
-						* (clock.CurrentSequence.Length - 1) / item.TotalTicks));
+					() => item.TotalTicks == 0 ? 0 : (int)(item.PowerProgress() * (clock.CurrentSequence.Length - 1)));
 				clock.Tick();
 				WidgetUtils.DrawSpriteCentered(clock.Image, worldRenderer.Palette(ClockPalette), location + 0.5f * iconSize, 0.5f);
 			}

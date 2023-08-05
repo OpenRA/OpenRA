@@ -46,9 +46,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes)
 		{
-			var resources = Stored;
-			oldOwner.PlayerActor.Trait<PlayerResources>().TakeResources(resources);
-			newOwner.PlayerActor.Trait<PlayerResources>().GiveResources(resources);
+			oldOwner.PlayerActor.Trait<PlayerResources>()?.TakeResources(Stored);
+			newOwner.PlayerActor.Trait<PlayerResources>()?.GiveResources(Stored);
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)

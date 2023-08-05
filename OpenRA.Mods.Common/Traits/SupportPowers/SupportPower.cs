@@ -20,6 +20,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Measured in ticks.")]
 		public readonly int ChargeInterval = 0;
 
+		[Desc("Special Resources Using.")]
+		public readonly Dictionary<string, int> SpecialResourcesUsing = null;
+
 		public readonly string IconImage = "icon";
 
 		[SequenceReference(nameof(IconImage))]

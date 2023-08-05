@@ -97,14 +97,37 @@ namespace OpenRA.Mods.Common.Traits
 
 		int IAcceptResources.AcceptResources(string resourceType, int count)
 		{
-			if (!playerResources.Info.ResourceValues.TryGetValue(resourceType, out var resourceValue))
+			var canAcceptRawResources = playerResources.CanAcceptSpecialRawResources(resourceType);
+			if (!playerResources.Info.ResourceValues.TryGetValue(resourceType, out var resourceValue) && !canAcceptRawResources)
 				return 0;
+
+			// limit the count
+			if (canAcceptRawResources && info.UseStorage)
+			{
+				foreach (var rsv in playerResources.Info.SpecialResourceValues[resourceType])
+				{
+					var limitedCount = count;
+					var capacity = playerResources.SpecialResourcesCapacity[rsv.Key];
+					var had = playerResources.HasSpecialResources(rsv.Key);
+					var limit = Math.Max(capacity - had, 0);
+					var v = limitedCount * rsv.Value;
+					if (!info.DiscardExcessResources)
+					{
+						// Reduce amount if needed until it will fit the available storage
+						while (v > limit)
+							v = --limitedCount * rsv.Value;
+					}
+
+					count = Math.Min(count, limitedCount);
+				}
+			}
 
 			var value = Util.ApplyPercentageModifiers(count * resourceValue, resourceValueModifiers);
 
 			if (info.UseStorage)
 			{
 				var storageLimit = Math.Max(playerResources.ResourceCapacity - playerResources.Resources, 0);
+
 				if (!info.DiscardExcessResources)
 				{
 					// Reduce amount if needed until it will fit the available storage
@@ -118,6 +141,8 @@ namespace OpenRA.Mods.Common.Traits
 			}
 			else
 				value = playerResources.ChangeCash(value);
+
+			playerResources.GiveSpecialRawResources(count, resourceType);
 
 			foreach (var notify in self.World.ActorsWithTrait<INotifyResourceAccepted>())
 			{

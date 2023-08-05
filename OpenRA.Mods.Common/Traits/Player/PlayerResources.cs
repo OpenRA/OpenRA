@@ -59,6 +59,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Monetary value of each resource type.", "Dictionary of [resource type]: [value per unit].")]
 		public readonly Dictionary<string, int> ResourceValues = new();
 
+		[Desc("Special value of each resource type.", "Dictionary of [resource type]: [usage1 type : value type], [usage2 type : value type]...  .")]
+		public readonly Dictionary<string, Dictionary<string, int>> SpecialResourceValues = new Dictionary<string, Dictionary<string, int>>();
+
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
 		{
 			var startingCash = SelectableCash.ToDictionary(c => c.ToString(), c => "$" + c.ToString());
@@ -76,6 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly PlayerResourcesInfo Info;
 		readonly Player owner;
 
+		public readonly string[] SpecialResourcesTypes;
 		public PlayerResources(Actor self, PlayerResourcesInfo info)
 		{
 			Info = info;
@@ -88,6 +92,26 @@ namespace OpenRA.Mods.Common.Traits
 				Cash = info.DefaultCash;
 
 			lastNotificationTime = -Info.InsufficientFundsNotificationInterval;
+
+			foreach (var resUsages in info.SpecialResourceValues)
+			{
+				foreach (var usage in resUsages.Value)
+				{
+					if (!specialResources.ContainsKey(usage.Key))
+					{
+						specialResources.Add(usage.Key, 0);
+						SpecialResourcesCapacity.Add(usage.Key, 0);
+					}
+				}
+			}
+
+			SpecialResourcesTypes = new string[specialResources.Count];
+			var i = 0;
+			foreach (var kv in specialResources)
+			{
+				SpecialResourcesTypes[i] = kv.Key;
+				i++;
+			}
 		}
 
 		[Sync]
@@ -99,10 +123,72 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		public int ResourceCapacity;
 
+		readonly Dictionary<string, int> specialResources = new Dictionary<string, int>();
+		public readonly Dictionary<string, int> SpecialResourcesCapacity = new Dictionary<string, int>();
+
 		public int Earned;
 		public int Spent;
 
 		long lastNotificationTime;
+
+		public void GiveSpecialRawResources(int count, string resourceValue)
+		{
+			Dictionary<string, int> allUsage;
+			if (Info.SpecialResourceValues.TryGetValue(resourceValue, out allUsage))
+			{
+				foreach (var u in allUsage)
+				{
+					GiveSpecialResources(u.Value * count, u.Key);
+				}
+			}
+		}
+
+		public bool CanAcceptSpecialRawResources(string resourceValue)
+		{
+			return Info.SpecialResourceValues.ContainsKey(resourceValue);
+		}
+
+		public void GiveSpecialResources(int num, string type)
+		{
+			if (specialResources.ContainsKey(type))
+			{
+				specialResources[type] += num;
+			}
+		}
+
+		public int HasSpecialResources(string type)
+		{
+			if (specialResources.ContainsKey(type))
+			{
+				return specialResources[type];
+			}
+
+			return 0;
+		}
+
+		public bool HasSpecialResourcesType(string type)
+		{
+			if (specialResources.ContainsKey(type))
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		public bool TakeSpecialResources(int num, string type)
+		{
+			if (specialResources.ContainsKey(type))
+			{
+				if (specialResources[type] < num)
+					return false;
+				specialResources[type] -= num;
+			}
+			else
+				return false;
+
+			return true;
+		}
 
 		public int ChangeCash(int amount)
 		{
@@ -215,6 +301,21 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Resources > ResourceCapacity)
 				Resources = ResourceCapacity;
+		}
+
+		public void AddSpecialStorage(int capacity, string type)
+		{
+			if (SpecialResourcesCapacity.ContainsKey(type))
+				SpecialResourcesCapacity[type] += capacity;
+		}
+
+		public void RemoveSpecialStorage(int capacity, string type)
+		{
+			if (SpecialResourcesCapacity.ContainsKey(type))
+				SpecialResourcesCapacity[type] -= capacity;
+
+			if (specialResources[type] > SpecialResourcesCapacity[type])
+				specialResources[type] = SpecialResourcesCapacity[type];
 		}
 	}
 }
