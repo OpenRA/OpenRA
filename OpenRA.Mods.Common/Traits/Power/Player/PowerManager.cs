@@ -68,6 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			devMode = self.Trait<DeveloperMode>();
 			wasHackEnabled = devMode.UnlimitedPower;
+			PlayLowPowerNotification = info.AdviceInterval > 0;
 		}
 
 		void INotifyCreated.Created(Actor self)
