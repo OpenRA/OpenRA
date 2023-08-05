@@ -204,42 +204,11 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 							Font: Tiny
 							Align: Left
 							Text: - You can disable UPnP/NAT-PMP in the settings menu.
-				Background@MAP_BG:
+				Container@MAP_PREVIEW_ROOT:
 					X: PARENT_RIGHT - 189
 					Y: 15
 					Width: 174
-					Height: 174
-					Background: panel-gray
-					Children:
-						MapPreview@MAP_PREVIEW:
-							X: 1
-							Y: 1
-							Width: PARENT_RIGHT - 2
-							Height: PARENT_RIGHT - 2
-				LabelWithTooltip@MAP_TITLE:
-					X: PARENT_RIGHT - 189
-					Y: 187
-					Width: 174
-					Height: 25
-					Font: Bold
-					Align: Center
-					TooltipContainer: TOOLTIP_CONTAINER
-					TooltipTemplate: SIMPLE_TOOLTIP
-				Label@MAP_TYPE:
-					X: PARENT_RIGHT - 189
-					Y: 202
-					Width: 174
-					Height: 25
-					Font: TinyBold
-					Align: Center
-					IgnoreMouseOver: true
-				Label@MAP_AUTHOR:
-					X: PARENT_RIGHT - 189
-					Y: 215
-					Width: 174
-					Height: 25
-					Font: Tiny
-					Align: Center
+					Height: 250
 		Button@BACK_BUTTON:
 			Key: return
 			Y: PARENT_BOTTOM - 1
