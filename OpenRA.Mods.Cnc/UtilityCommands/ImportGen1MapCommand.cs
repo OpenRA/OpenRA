@@ -103,6 +103,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			if (Map.Rules.TerrainInfo is ITerrainInfoNotifyMapCreated notifyMapCreated)
 				notifyMapCreated.MapCreated(Map);
 
+			ReplaceInvalidTerrainTiles(Map);
+
 			var dest = Path.GetFileNameWithoutExtension(args[1]) + ".oramap";
 
 			Map.Save(ZipFileLoader.Create(dest));
@@ -157,6 +159,19 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			}
 
 			missionData.Value.Nodes.Add(new MiniYamlNode("Briefing", briefing.Replace("\n", " ").ToString()));
+		}
+
+		static void ReplaceInvalidTerrainTiles(Map map)
+		{
+			var terrainInfo = map.Rules.TerrainInfo;
+			foreach (var uv in map.AllCells.MapCoords)
+			{
+				if (!terrainInfo.TryGetTerrainInfo(map.Tiles[uv], out _))
+				{
+					map.Tiles[uv] = terrainInfo.DefaultTerrainTile;
+					Console.WriteLine($"Replaced invalid terrain tile at {uv}");
+				}
+			}
 		}
 
 		static void SetBounds(Map map, IniSection mapSection)
