@@ -170,18 +170,15 @@ namespace OpenRA.Mods.Common.Terrain
 
 		void ITerrainInfoNotifyMapCreated.MapCreated(Map map)
 		{
-			// Randomize PickAny tile variants
+			// Randomize PickAny tile variants.
 			var r = new MersenneTwister();
-			for (var j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
+			foreach (var uv in map.AllCells.MapCoords)
 			{
-				for (var i = map.Bounds.Left; i < map.Bounds.Right; i++)
-				{
-					var type = map.Tiles[new MPos(i, j)].Type;
-					if (!Templates.TryGetValue(type, out var template) || !template.PickAny)
-						continue;
+				var type = map.Tiles[uv].Type;
+				if (!Templates.TryGetValue(type, out var template) || !template.PickAny)
+					continue;
 
-					map.Tiles[new MPos(i, j)] = new TerrainTile(type, (byte)r.Next(0, template.TilesCount));
-				}
+				map.Tiles[uv] = new TerrainTile(type, (byte)r.Next(0, template.TilesCount));
 			}
 		}
 	}
