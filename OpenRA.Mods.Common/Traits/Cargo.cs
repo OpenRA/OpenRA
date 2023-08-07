@@ -107,9 +107,9 @@ namespace OpenRA.Mods.Common.Traits
 		bool takeOffAfterLoad;
 		bool initialised;
 
-		readonly CachedTransform<CPos, IEnumerable<CPos>> currentAdjacentCells;
+		readonly CachedTransform<CPos, CPos[]> currentAdjacentCells;
 
-		public IEnumerable<CPos> CurrentAdjacentCells => currentAdjacentCells.Update(self.Location);
+		public CPos[] CurrentAdjacentCells => currentAdjacentCells.Update(self.Location);
 
 		public IEnumerable<Actor> Passengers => cargo;
 		public int PassengerCount => cargo.Count;
@@ -123,8 +123,8 @@ namespace OpenRA.Mods.Common.Traits
 			self = init.Self;
 			checkTerrainType = info.UnloadTerrainTypes.Count > 0;
 
-			currentAdjacentCells = new CachedTransform<CPos, IEnumerable<CPos>>(loc =>
-				Util.AdjacentCells(self.World, Target.FromActor(self)).Where(c => loc != c));
+			currentAdjacentCells = new CachedTransform<CPos, CPos[]>(loc =>
+				Util.AdjacentCells(self.World, Target.FromActor(self)).Where(c => loc != c).ToArray());
 
 			var runtimeCargoInit = init.GetOrDefault<RuntimeCargoInit>(info);
 			var cargoInit = init.GetOrDefault<CargoInit>(info);
