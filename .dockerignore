@@ -1,0 +1,27 @@
+# non-visible files
+.git
+.github
+.vscode
+.gitignore
+.dockerignore
+.editorconfig
+.gitattributes
+.kateproject
+
+# files that are not related to dotnet restore
+COPYING
+AUTHORS
+VERSION
+Dockerfile
+omnisharp.json
+*.md
+*.sh
+*.cmd
+*.ps1
+*.dat
+*.log
+
+# previous builds' files
+/bin
+IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
+/in-container-config

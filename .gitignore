@@ -54,3 +54,6 @@ update.log
 
 # IntelliJ files
 .idea
+
+# Docker volume directories
+/in-container-config
