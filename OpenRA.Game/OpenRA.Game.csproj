@@ -14,7 +14,6 @@
     <PackageReference Include="OpenRA-Eluant" Version="1.0.21" />
     <PackageReference Include="Mono.NAT" Version="3.0.4" />
     <PackageReference Include="SharpZipLib" Version="1.4.2" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Threading.Channels" Version="6.0.0" />
   </ItemGroup>
 </Project>
