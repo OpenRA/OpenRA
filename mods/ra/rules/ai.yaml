@@ -408,7 +408,7 @@ Player:
 			ftrk: 4
 			mnly: 2
 	MinelayerBotModule@turtle:
-		Minelayers: mnly
+		MinelayingActorTypes: mnly
 		IgnoredEnemyTargetTypes: Building, Defence, Air
 		UseEnemyLocationTargetTypes: Building, Defence
 		AwayFromAlliedTargetTypes: Building, Defence
