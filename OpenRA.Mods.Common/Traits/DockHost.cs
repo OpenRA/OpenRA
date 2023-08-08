@@ -45,6 +45,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("In how many steps to perform the dragging?")]
 		public readonly int DragLength = 0;
 
+		[GrantedConditionReference]
+		[Desc("Condition to grant while an actor is docked.")]
+		public readonly string DockedCondition = null;
+
 		public override object Create(ActorInitializer init) { return new DockHost(init.Self, this); }
 	}
 
@@ -72,6 +76,8 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		protected Actor dockedClientActor = null;
 		protected DockClientManager dockedClient = null;
+
+		int conditionToken = Actor.InvalidConditionToken;
 
 		public DockHost(Actor self, DockHostInfo info)
 			: base(info)
@@ -115,12 +121,14 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			dockedClientActor = clientActor;
 			dockedClient = client;
+			UpdateCondition(self, true);
 		}
 
 		public virtual void OnDockCompleted(Actor self, Actor clientActor, DockClientManager client)
 		{
 			dockedClientActor = null;
 			dockedClient = null;
+			UpdateCondition(self, false);
 		}
 
 		void ITick.Tick(Actor self)
@@ -154,6 +162,17 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual void QueueDockActivity(Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client)
 		{
 			moveToDockActivity.QueueChild(new GenericDockSequence(clientActor, client, self, this));
+		}
+
+		void UpdateCondition(Actor self, bool enabled)
+		{
+			if (string.IsNullOrEmpty(Info.DockedCondition))
+				return;
+
+			if (enabled && conditionToken == Actor.InvalidConditionToken)
+				conditionToken = self.GrantCondition(Info.DockedCondition);
+			else if (!enabled && conditionToken != Actor.InvalidConditionToken)
+				conditionToken = self.RevokeCondition(conditionToken);
 		}
 
 		protected override void TraitDisabled(Actor self) { UnreserveAll(); }

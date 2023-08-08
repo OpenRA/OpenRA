@@ -125,6 +125,7 @@ PROC:
 		Type: Unload
 		DockAngle: 640
 		DockOffset: 362,362,0
+		DockedCondition: docked
 	StoresResources:
 		Capacity: 2000
 	CustomSellValue:
@@ -145,8 +146,8 @@ PROC:
 	WithIdleOverlay@BIB:
 		RequiresCondition: !build-incomplete
 		Sequence: bib
-	WithDockedOverlay@FLAME:
-		RequiresCondition: !build-incomplete
+	WithIdleOverlay@FLAME:
+		RequiresCondition: !build-incomplete && docked
 		Sequence: flame
 		Palette: effect
 	WithDockingOverlay@UNLOAD:
