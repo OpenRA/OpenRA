@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2022 The OpenRA Developers (see AUTHORS)
+ * Copyright (c) The OpenRA Developers and Contributors
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation, either version 3 of
@@ -12,17 +12,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Mods.Common;
-using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc.Traits
+namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Manages AI minelayer unit related with Minelayer traits.",
+	[Desc("Manages AI minelayer unit related with " + nameof(Minelayer) + " traits.",
 		"When enemy damage AI's actors, the location of conflict will be recorded,",
-		"If a location is confirmed as can lay mine, it will add/merge to favorite location for usage later")]
+		"If a location is a valid spot, it will add/merge to favorite location for usage later")]
 	public class MinelayerBotModuleInfo : ConditionalTraitInfo
 	{
 		[Desc("Enemy target types to ignore when add the minefield location to conflict location.")]
@@ -31,16 +28,17 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Victim target types that considering conflict location as enemy location instead of victim location.")]
 		public readonly BitSet<TargetableType> UseEnemyLocationTargetTypes = default;
 
-		[Desc("Actor types that used for mine laying, must have Minelayer.")]
-		public readonly HashSet<string> Minelayers = default;
+		[ActorReference(typeof(MinelayerInfo))]
+		[Desc("Actors with " + nameof(Minelayer) + "trait.")]
+		public readonly HashSet<string> MinelayingActorTypes = default;
 
 		[Desc("Find this amount of suitable actors and lay mine to a location.")]
-		public readonly int MaxMinelayersPerAssign = 1;
+		public readonly int MaxPerAssign = 1;
 
 		[Desc("Scan suitable actors and target in this interval.")]
-		public readonly int ScanTick = 331;
+		public readonly int ScanTick = 320;
 
-		[Desc("Minelayer radius.")]
+		[Desc("Radius per mine laying order.")]
 		public readonly int MineFieldRadius = 1;
 
 		[Desc("Minefield location is cancelled if those whose target type belong to allied nearby.")]
@@ -87,7 +85,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			world = self.World;
 			player = self.Owner;
 			unitCannotBeOrdered = a => a == null || a.IsDead || !a.IsInWorld || a.Owner != player;
-			unitCannotBeOrderedOrIsBusy = a => unitCannotBeOrdered(a) || (!a.IsIdle && !(a.CurrentActivity is FlyIdle));
+			unitCannotBeOrderedOrIsBusy = a => unitCannotBeOrdered(a) || !a.IsIdle;
 			conflictPositionQueue = new CPos?[MaxPositionCacheLength] { null, null, null, null, null };
 			favoritePositions = new CPos?[MaxPositionCacheLength] { null, null, null, null, null };
 		}
@@ -119,17 +117,17 @@ namespace OpenRA.Mods.Cnc.Traits
 				while (conflictPositionLength > 0)
 				{
 					minelayingPosition = conflictPositionQueue[0].Value;
-					var check = HasInvalidActorInCircle(world.Map.CenterOfCell(minelayingPosition), WDist.FromCells(Info.AwayFromCellDistance));
-					if (check.hasInvalidActors)
+					var (hasInvalidActors, hasEnemyNearby) = HasInvalidActorInCircle(world.Map.CenterOfCell(minelayingPosition), WDist.FromCells(Info.AwayFromCellDistance));
+					if (hasInvalidActors)
 						DequeueFirstConflictPosition();
 					else
 					{
-						layMineOnHalfway = check.hasEnemyNearby;
+						layMineOnHalfway = hasEnemyNearby;
 						break;
 					}
 				}
 
-				TraitPair<Minelayer>[] ats = null;
+				TraitPair<Minelayer>[] minelayers = null;
 
 				if (conflictPositionLength == 0)
 				{
@@ -137,8 +135,8 @@ namespace OpenRA.Mods.Cnc.Traits
 					// we will try find a location that at the middle of pathfinding cells
 					if (favoritePositionsLength == 0)
 					{
-						ats = world.ActorsWithTrait<Minelayer>().Where(at => !unitCannotBeOrderedOrIsBusy(at.Actor)).ToArray();
-						if (ats.Length == 0)
+						minelayers = world.ActorsWithTrait<Minelayer>().Where(at => !unitCannotBeOrderedOrIsBusy(at.Actor)).ToArray();
+						if (minelayers.Length == 0)
 							return;
 
 						var enemies = world.Actors.Where(a => IsPreferredEnemyUnit(a)).ToArray();
@@ -147,12 +145,12 @@ namespace OpenRA.Mods.Cnc.Traits
 
 						var enemy = enemies.Random(world.LocalRandom);
 
-						foreach (var at in ats)
+						foreach (var minelayer in minelayers)
 						{
-							var cells = pathFinder.FindPathToTargetCell(at.Actor, new[] { at.Actor.Location }, enemy.Location, BlockedByActor.Immovable, laneBias: false);
+							var cells = pathFinder.FindPathToTargetCell(minelayer.Actor, new[] { minelayer.Actor.Location }, enemy.Location, BlockedByActor.Immovable, laneBias: false);
 							if (cells != null && !(cells.Count == 0))
 							{
-								AIUtils.BotDebug("AI ({0}): try find a location to lay mine.", player.ClientIndex);
+								AIUtils.BotDebug($"{player}: try find a location to lay mine.");
 								EnqueueConflictPosition(cells[cells.Count / 2]);
 
 								// We don't do other things in this tick, just find new location and abort
@@ -167,8 +165,8 @@ namespace OpenRA.Mods.Cnc.Traits
 						while (favoritePositionsLength > 0)
 						{
 							minelayingPosition = favoritePositions[currentFavoritePositionIndex].Value;
-							var check = HasInvalidActorInCircle(world.Map.CenterOfCell(minelayingPosition), WDist.FromCells(Info.AwayFromCellDistance));
-							if (check.hasInvalidActors)
+							var (hasInvalidActors, hasEnemyNearby) = HasInvalidActorInCircle(world.Map.CenterOfCell(minelayingPosition), WDist.FromCells(Info.AwayFromCellDistance));
+							if (hasInvalidActors)
 							{
 								DeleteCurrentFavoritePosition();
 								if (favoritePositionsLength == 0)
@@ -176,7 +174,7 @@ namespace OpenRA.Mods.Cnc.Traits
 							}
 							else
 							{
-								layMineOnHalfway = check.hasEnemyNearby;
+								layMineOnHalfway = hasEnemyNearby;
 								useFavoritePosition = true;
 								break;
 							}
@@ -184,30 +182,29 @@ namespace OpenRA.Mods.Cnc.Traits
 					}
 				}
 
-				if (ats == null)
-					ats = world.ActorsWithTrait<Minelayer>().Where(at => !unitCannotBeOrderedOrIsBusy(at.Actor)).ToArray();
+				minelayers ??= world.ActorsWithTrait<Minelayer>().Where(at => !unitCannotBeOrderedOrIsBusy(at.Actor)).ToArray();
 
-				if (ats.Length == 0)
+				if (minelayers.Length == 0)
 					return;
 
 				var orderedActors = new List<Actor>();
 
-				foreach (var at in ats)
+				foreach (var minelayer in minelayers)
 				{
-					var cells = pathFinder.FindPathToTargetCell(at.Actor, new[] { at.Actor.Location }, minelayingPosition, BlockedByActor.Immovable, laneBias: false);
+					var cells = pathFinder.FindPathToTargetCell(minelayer.Actor, new[] { minelayer.Actor.Location }, minelayingPosition, BlockedByActor.Immovable, laneBias: false);
 					if (cells != null && !(cells.Count == 0))
 					{
-						orderedActors.Add(at.Actor);
+						orderedActors.Add(minelayer.Actor);
 
 						// if there is enemy actor nearby, we will try to lay mine on
-						//  3/4 distance to desired position (the path cell is reversed)
+						// 3/4 distance to desired position (the path cell is reversed)
 						if (layMineOnHalfway)
 						{
 							minelayingPosition = cells[cells.Count * 1 / 4];
 							layMineOnHalfway = false;
 						}
 
-						if (orderedActors.Count >= Info.MaxMinelayersPerAssign)
+						if (orderedActors.Count >= Info.MaxPerAssign)
 							break;
 					}
 				}
@@ -216,14 +213,14 @@ namespace OpenRA.Mods.Cnc.Traits
 				{
 					if (useFavoritePosition)
 					{
-						AIUtils.BotDebug("AI ({0}): Use favorite position {1} at index {2}", player.ClientIndex, minelayingPosition, currentFavoritePositionIndex);
+						AIUtils.BotDebug($"{player}: Use favorite position {minelayingPosition} at index {currentFavoritePositionIndex}");
 						NextFavoritePositionIndex();
 					}
 					else
 					{
 						DequeueFirstConflictPosition();
 						AddPositionToFavoritePositions(minelayingPosition);
-						AIUtils.BotDebug("AI ({0}): Use in time conflict position {1}", player.ClientIndex, minelayingPosition);
+						AIUtils.BotDebug($"{player}: Use in time conflict position {minelayingPosition}");
 					}
 
 					var vec = new CVec(Info.MineFieldRadius, Info.MineFieldRadius);
@@ -244,6 +241,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			for (var i = 1; i < conflictPositionLength; i++)
 				conflictPositionQueue[i - 1] = conflictPositionQueue[i];
+
 			conflictPositionQueue[conflictPositionLength - 1] = null;
 			conflictPositionLength--;
 		}
@@ -255,7 +253,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			favoritePositions[favoritePositionsLength - 1] = null;
 
 			if (--favoritePositionsLength > 0)
-				currentFavoritePositionIndex = currentFavoritePositionIndex % favoritePositionsLength;
+				currentFavoritePositionIndex %= favoritePositionsLength;
 		}
 
 		void AddPositionToFavoritePositions(CPos cpos)
@@ -291,31 +289,31 @@ namespace OpenRA.Mods.Cnc.Traits
 			currentFavoritePositionIndex = (currentFavoritePositionIndex + 1) % favoritePositionsLength;
 		}
 
-		bool IsPreferredEnemyUnit(Actor a)
+		bool IsPreferredEnemyUnit(Actor actor)
 		{
-			if (a == null || a.IsDead || player.RelationshipWith(a.Owner) != PlayerRelationship.Enemy || a.Info.HasTraitInfo<HuskInfo>())
+			if (actor == null || actor.IsDead || player.RelationshipWith(actor.Owner) != PlayerRelationship.Enemy || actor.Info.HasTraitInfo<HuskInfo>())
 				return false;
 
-			var targetTypes = a.GetEnabledTargetTypes();
+			var targetTypes = actor.GetEnabledTargetTypes();
 			return !targetTypes.IsEmpty && !targetTypes.Overlaps(Info.IgnoredEnemyTargetTypes);
 		}
 
-		(bool hasInvalidActors, bool hasEnemyNearby) HasInvalidActorInCircle(WPos pos, WDist dist)
+		(bool HasInvalidActors, bool HasEnemyNearby) HasInvalidActorInCircle(WPos pos, WDist dist)
 		{
 			var hasInvalidActor = false;
 			var hasEnemyActor = false;
-			hasInvalidActor = world.FindActorsInCircle(pos, dist).Any(a =>
+			hasInvalidActor = world.FindActorsInCircle(pos, dist).Any(actor =>
 			{
-				if (a.Owner.RelationshipWith(player) == PlayerRelationship.Ally)
+				if (actor.Owner.RelationshipWith(player) == PlayerRelationship.Ally)
 				{
-					var targetTypes = a.GetEnabledTargetTypes();
+					var targetTypes = actor.GetEnabledTargetTypes();
 					return !targetTypes.IsEmpty && targetTypes.Overlaps(Info.AwayFromAlliedTargetTypes);
 				}
 
-				if (a.Owner.RelationshipWith(player) == PlayerRelationship.Enemy)
+				if (actor.Owner.RelationshipWith(player) == PlayerRelationship.Enemy)
 				{
 					hasEnemyActor = true;
-					var targetTypes = a.GetEnabledTargetTypes();
+					var targetTypes = actor.GetEnabledTargetTypes();
 					return !targetTypes.IsEmpty && targetTypes.Overlaps(Info.AwayFromEnemyTargetTypes);
 				}
 
@@ -325,15 +323,15 @@ namespace OpenRA.Mods.Cnc.Traits
 			return (hasInvalidActor, hasEnemyActor);
 		}
 
-		void EnqueueConflictPosition(CPos cPos)
+		void EnqueueConflictPosition(CPos cell)
 		{
 			if (conflictPositionLength < MaxPositionCacheLength)
 			{
-				conflictPositionQueue[conflictPositionLength] = cPos;
+				conflictPositionQueue[conflictPositionLength] = cell;
 				conflictPositionLength++;
 			}
 			else
-				conflictPositionQueue[MaxPositionCacheLength - 1] = cPos;
+				conflictPositionQueue[MaxPositionCacheLength - 1] = cell;
 		}
 
 		void IBotRespondToAttack.RespondToAttack(IBot bot, Actor self, AttackInfo e)
@@ -343,8 +341,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			alertedTicks = RepeatedAltertTicks;
 
-			var hasInvalidActor = HasInvalidActorInCircle(self.CenterPosition, WDist.FromCells(Info.AwayFromCellDistance)).hasInvalidActors;
-
+			var hasInvalidActor = HasInvalidActorInCircle(self.CenterPosition, WDist.FromCells(Info.AwayFromCellDistance)).HasInvalidActors;
 			if (hasInvalidActor)
 				return;
 
