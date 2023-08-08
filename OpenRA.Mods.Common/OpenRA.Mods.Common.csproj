@@ -11,6 +11,5 @@
     <PackageReference Include="TagLibSharp" Version="2.3.0" />
     <PackageReference Include="rix0rrr.BeaconLib" Version="1.0.2" />
     <PackageReference Include="Pfim" Version="0.11.2" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
 </Project>
