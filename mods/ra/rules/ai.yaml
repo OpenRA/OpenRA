@@ -120,6 +120,8 @@ Player:
 			fix: 1
 			dome: 10
 			mslo: 1
+		BuildingDelays:
+			dome: 4500
 	BaseBuilderBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		MinimumExcessPower: 60
@@ -172,6 +174,8 @@ Player:
 			atek: 1
 			stek: 1
 			mslo: 1
+		BuildingDelays:
+			dome: 3000
 	BaseBuilderBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
 		MinimumExcessPower: 60
@@ -225,6 +229,8 @@ Player:
 			atek: 1
 			stek: 1
 			mslo: 1
+		BuildingDelays:
+			dome: 3000
 	BaseBuilderBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		MinimumExcessPower: 60
@@ -273,6 +279,8 @@ Player:
 			agun: 5
 			sam: 5
 			mslo: 1
+		BuildingDelays:
+			dome: 3000
 	BuildingRepairBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
 	SquadManagerBotModule@rush:
