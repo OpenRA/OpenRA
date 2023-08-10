@@ -17,10 +17,10 @@ Container@CHAT_CONTAINER:
 					Y: PARENT_BOTTOM - HEIGHT
 					Width: 50
 					Height: 25
-					Text: Team
+					Text: button-chat-chrome-chat-mode
 					Font: Bold
 					Key: ToggleChatMode
-					TooltipText: Toggle chat mode
+					TooltipText: button-tooltip-chat-chrome-chat-mode
 					TooltipContainer: TOOLTIP_CONTAINER
 				TextField@CHAT_TEXTFIELD:
 					X: 55
@@ -32,3 +32,4 @@ Container@CHAT_CONTAINER:
 					Height: PARENT_BOTTOM - 30
 					TopBottomSpacing: 3
 					ItemSpacing: 2
+

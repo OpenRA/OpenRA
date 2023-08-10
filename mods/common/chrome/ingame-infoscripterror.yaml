@@ -10,7 +10,7 @@ Container@SCRIPT_ERROR_PANEL:
 			Height: 20
 			Font: Bold
 			Align: Center
-			Text: The map script has encountered a fatal error
+			Text: label-script-error-panel-desca
 		Label@DESCB:
 			X: 15
 			Y: 46
@@ -18,7 +18,7 @@ Container@SCRIPT_ERROR_PANEL:
 			Height: 20
 			Font: Regular
 			Align: Center
-			Text: The details of the error have been saved to lua.log in the logs directory.
+			Text: label-script-error-panel-descb
 		Label@DESCC:
 			X: 15
 			Y: 66
@@ -26,7 +26,7 @@ Container@SCRIPT_ERROR_PANEL:
 			Height: 20
 			Font: Regular
 			Align: Center
-			Text: Please send this file to the map author so that they can fix this issue.
+			Text: label-script-error-panel-descc
 		ScrollPanel@SCRIPT_ERROR_MESSAGE_PANEL:
 			X: 20
 			Y: 96
@@ -37,3 +37,4 @@ Container@SCRIPT_ERROR_PANEL:
 					X: 4
 					Y: 2
 					Width: PARENT_RIGHT - 32
+

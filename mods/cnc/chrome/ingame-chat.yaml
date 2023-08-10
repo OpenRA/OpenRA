@@ -30,10 +30,10 @@ Container@CHAT_PANEL:
 					Y: PARENT_BOTTOM - HEIGHT
 					Width: 50
 					Height: 25
-					Text: Team
+					Text: button-chat-chrome-chat-mode
 					Font: Bold
 					Key: ToggleChatMode
-					TooltipText: Toggle chat mode
+					TooltipText: button-tooltip-chat-chrome-chat-mode
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					TooltipContainer: TOOLTIP_CONTAINER
 				TextField@CHAT_TEXTFIELD:
@@ -63,3 +63,4 @@ Container@CHAT_PANEL:
 					TopBottomSpacing: 3
 					ItemSpacing: 4
 					Align: Bottom
+

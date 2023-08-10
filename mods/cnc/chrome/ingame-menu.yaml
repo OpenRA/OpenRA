@@ -32,3 +32,4 @@ Container@INGAME_MENU:
 				Button@BUTTON_TEMPLATE:
 					Width: 120
 					Height: 35
+
