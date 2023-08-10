@@ -65,6 +65,15 @@ dotnet_diagnostic.IDE0063.severity = silent
 dotnet_diagnostic.IDE0160.severity = warning
 dotnet_diagnostic.IDE0161.severity = warning
 
+# IDE0200 Remove unnecessary lambda expression
+#csharp_style_prefer_method_group_conversion = true
+dotnet_diagnostic.IDE0200.severity = silent # Requires C# 11
+
+# IDE0210 Convert to top-level statements/IDE0211 Convert to 'Program.Main' style program
+csharp_style_prefer_top_level_statements = false
+dotnet_diagnostic.IDE0210.severity = warning
+dotnet_diagnostic.IDE0211.severity = warning
+
 ## Expression-bodied members
 
 # IDE0021 Use expression body for constructors
@@ -212,6 +221,10 @@ dotnet_diagnostic.IDE0082.severity = warning
 # No options
 dotnet_diagnostic.IDE0100.severity = warning
 
+# IDE0120 Simplify LINQ expression
+# No options
+dotnet_diagnostic.IDE0120.severity = warning
+
 # IDE0130 Namespace does not match folder structure
 #dotnet_style_namespace_match_folder = true
 # This rule doesn't appear to work (never reports violations)
@@ -269,6 +282,22 @@ dotnet_diagnostic.IDE0150.severity = warning
 #csharp_style_prefer_tuple_swap = true
 dotnet_diagnostic.IDE0180.severity = warning
 
+# IDE0220 Add explicit cast in foreach loop
+#dotnet_style_prefer_foreach_explicit_cast_in_source = when_strongly_typed
+dotnet_diagnostic.IDE0220.severity = warning
+
+# IDE0230 Use UTF-8 string literal
+#csharp_style_prefer_utf8_string_literals = true
+dotnet_diagnostic.IDE0230.severity = silent # Requires C# 11
+
+# IDE0240 Nullable directive is redundant
+# No options
+dotnet_diagnostic.IDE0240.severity = warning
+
+# IDE0241 Nullable directive is unnecessary
+# No options
+dotnet_diagnostic.IDE0241.severity = warning
+
 ## Field preferences
 
 # IDE0044 Add readonly modifier
@@ -300,6 +329,10 @@ dotnet_diagnostic.IDE0062.severity = warning
 # No options
 dotnet_diagnostic.IDE0064.severity = warning
 
+# IDE0250 Struct can be made 'readonly'
+#csharp_style_prefer_readonly_struct = true
+dotnet_diagnostic.IDE0250.severity = warning
+
 ## Null-checking preferences
 
 # IDE1005 Use conditional delegate call
@@ -311,6 +344,10 @@ dotnet_diagnostic.IDE1005.severity = warning
 # IDE0060 Remove unused parameter
 dotnet_code_quality_unused_parameters = non_public
 dotnet_diagnostic.IDE0060.severity = warning
+
+# IDE0280 Use 'nameof'
+# No options
+dotnet_diagnostic.IDE0280.severity = silent # Requires C# 11
 
 ## Parentheses preferences
 
@@ -337,9 +374,11 @@ dotnet_diagnostic.IDE0038.severity = warning
 #csharp_style_prefer_switch_expression = true
 dotnet_diagnostic.IDE0066.severity = silent
 
-# IDE0078 Use pattern matching
+# IDE0078/IDE0260 Use pattern matching
 #csharp_style_prefer_pattern_matching = true
+#csharp_style_pattern_matching_over_as_with_null_check = true
 dotnet_diagnostic.IDE0078.severity = silent
+dotnet_diagnostic.IDE0260.severity = silent
 
 # IDE0083 Use pattern matching ('not' operator)
 #csharp_style_prefer_not_pattern = true
