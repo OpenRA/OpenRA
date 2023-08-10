@@ -600,7 +600,7 @@ namespace OpenRA
 			Current = default;
 		}
 
-		public LineSplitEnumerator GetEnumerator() => this;
+		public readonly LineSplitEnumerator GetEnumerator() => this;
 
 		public bool MoveNext()
 		{

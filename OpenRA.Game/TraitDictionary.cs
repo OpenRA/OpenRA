@@ -210,9 +210,9 @@ namespace OpenRA
 
 				public void Reset() { index = actors.BinarySearchMany(actor) - 1; }
 				public bool MoveNext() { return ++index < actors.Count && actors[index].ActorID == actor; }
-				public T Current => traits[index];
-				object System.Collections.IEnumerator.Current => Current;
-				public void Dispose() { }
+				public readonly T Current => traits[index];
+				readonly object System.Collections.IEnumerator.Current => Current;
+				public readonly void Dispose() { }
 			}
 
 			public IEnumerable<TraitPair<T>> All()
@@ -276,9 +276,9 @@ namespace OpenRA
 
 				public void Reset() { index = -1; }
 				public bool MoveNext() { return ++index < actors.Count; }
-				public TraitPair<T> Current => new(actors[index], traits[index]);
-				object System.Collections.IEnumerator.Current => Current;
-				public void Dispose() { }
+				public readonly TraitPair<T> Current => new(actors[index], traits[index]);
+				readonly object System.Collections.IEnumerator.Current => Current;
+				public readonly void Dispose() { }
 			}
 
 			public void RemoveActor(uint actor)

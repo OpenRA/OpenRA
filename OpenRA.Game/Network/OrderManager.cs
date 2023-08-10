@@ -70,7 +70,7 @@ namespace OpenRA.Network
 			public int Client;
 			public Order Order;
 
-			public override string ToString()
+			public override readonly string ToString()
 			{
 				return $"ClientId: {Client} {Order}";
 			}

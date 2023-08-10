@@ -300,7 +300,7 @@ namespace OpenRA.Network
 
 			public object this[int index]
 			{
-				get
+				readonly get
 				{
 					if (item2OrSentinel == Sentinel)
 						return ((object[])item1OrArray)[index];
