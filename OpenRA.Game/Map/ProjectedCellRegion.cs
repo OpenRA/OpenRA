@@ -118,8 +118,8 @@ namespace OpenRA
 			}
 
 			public PPos Current { get; private set; }
-			object IEnumerator.Current => Current;
-			public void Dispose() { }
+			readonly object IEnumerator.Current => Current;
+			public readonly void Dispose() { }
 		}
 	}
 }

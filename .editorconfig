@@ -333,6 +333,10 @@ dotnet_diagnostic.IDE0064.severity = warning
 #csharp_style_prefer_readonly_struct = true
 dotnet_diagnostic.IDE0250.severity = warning
 
+# IDE0251 Member can be made 'readonly'
+#csharp_style_prefer_readonly_struct_member = true
+dotnet_diagnostic.IDE0251.severity = warning
+
 ## Null-checking preferences
 
 # IDE1005 Use conditional delegate call

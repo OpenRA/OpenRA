@@ -53,8 +53,8 @@ namespace OpenRA
 			}
 
 			public MPos Current { get; private set; }
-			object IEnumerator.Current => Current;
-			public void Dispose() { }
+			readonly object IEnumerator.Current => Current;
+			public readonly void Dispose() { }
 		}
 
 		public MapCoordsRegion(MPos mapTopLeft, MPos mapBottomRight)

@@ -239,8 +239,8 @@ namespace OpenRA.Mods.Common.Traits
 			public void Reset() { throw new NotSupportedException(); }
 			public Actor Current { get; private set; }
 
-			object IEnumerator.Current => Current;
-			public void Dispose() { }
+			readonly object IEnumerator.Current => Current;
+			public readonly void Dispose() { }
 			public bool MoveNext()
 			{
 				while (node != null)
