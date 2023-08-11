@@ -632,17 +632,20 @@ namespace OpenRA.Mods.Common.Pathfinder
 		}
 
 		/// <summary>
+		/// <para>
 		/// <see cref="BlockedByActor.Immovable"/> defines immovability based on the mobile trait. The blocking rules
 		/// in <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, SubCell, BlockedByActor, Actor, bool)"/> allow units
 		/// to pass these immovable actors if they are temporary blockers (e.g. gates) or crushable by the locomotor.
 		/// Since our abstract graph must work for any actor, we have to be conservative and can only consider a subset
 		/// of the immovable actors in the graph - ones we know cannot be passed by some actors due to these rules.
 		/// Both this and <see cref="ActorCellIsBlocking"/> must be true for a cell to be blocked.
-		///
+		/// </para>
+		/// <para>
 		/// This method is dependant on the logic in
 		/// <see cref="Locomotor.CanMoveFreelyInto(Actor, CPos, SubCell, BlockedByActor, Actor, bool)"/> and
 		/// <see cref="Locomotor.UpdateCellBlocking"/>. This method must be kept in sync with changes in the locomotor
 		/// rules.
+		/// </para>
 		/// </summary>
 		bool ActorIsBlocking(Actor actor)
 		{
