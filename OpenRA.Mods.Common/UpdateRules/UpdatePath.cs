@@ -15,7 +15,7 @@ using OpenRA.Mods.Common.UpdateRules.Rules;
 
 namespace OpenRA.Mods.Common.UpdateRules
 {
-	public class UpdatePath
+	public sealed class UpdatePath
 	{
 		// Define known update paths from stable tags to the current bleed tip
 		//

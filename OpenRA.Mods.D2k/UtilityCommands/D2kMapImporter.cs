@@ -18,7 +18,7 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.D2k.UtilityCommands
 {
-	public class D2kMapImporter
+	public sealed class D2kMapImporter
 	{
 		const int MapCordonWidth = 2;
 
