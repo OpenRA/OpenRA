@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			if (pos.CanEnterCell(destination) && teleporter.Owner.Shroud.IsExplored(destination))
 				return destination;
 
-			var max = maximumDistance != null ? maximumDistance.Value : teleporter.World.Map.Grid.MaximumTileSearchRange;
+			var max = maximumDistance ?? teleporter.World.Map.Grid.MaximumTileSearchRange;
 			foreach (var tile in self.World.Map.FindTilesInCircle(destination, max))
 			{
 				if (teleporter.Owner.Shroud.IsExplored(tile)
