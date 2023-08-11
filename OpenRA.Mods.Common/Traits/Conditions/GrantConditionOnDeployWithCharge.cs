@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "DeployWithCharge" && CanDeploy())
+			if (order.OrderString == "DeployWithCharge")
 				self.QueueActivity(order.Queued, new DeployForGrantedConditionWithCharge(self, this));
 		}
 
