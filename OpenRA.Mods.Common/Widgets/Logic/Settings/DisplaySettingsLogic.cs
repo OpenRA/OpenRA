@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			cb.OnClick = () =>
 			{
 				gs.UsePlayerStanceColors = cb.IsChecked() ^ true;
-				Player.SetupRelationshipColors(world.Players, world.LocalPlayer);
+				Player.SetupRelationshipColors(world.Players, world.LocalPlayer, worldRenderer, false);
 			};
 
 			if (panel.GetOrNull<CheckboxWidget>("PAUSE_SHELLMAP_CHECKBOX") != null)
