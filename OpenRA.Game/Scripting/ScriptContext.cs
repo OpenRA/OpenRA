@@ -74,14 +74,17 @@ namespace OpenRA.Scripting
 	/// Provides global bindings in Lua code.
 	/// </summary>
 	/// <remarks>
+	/// <para>
 	/// Instance methods and properties declared in derived classes will be made available in Lua. Use
 	/// <see cref="ScriptGlobalAttribute"/> on your derived class to specify the name exposed in Lua. It is recommended
 	/// to apply <see cref="DescAttribute"/> against each method or property to provide a description of what it does.
-	///
+	/// </para>
+	/// <para>
 	/// Any parameters to your method that are <see cref="LuaValue"/>s will be disposed automatically when your method
 	/// completes. If you need to return any of these values, or need them to live longer than your method, you must
 	/// use <see cref="LuaValue.CopyReference"/> to get your own copy of the value. Any copied values you return will
 	/// be disposed automatically, but you assume responsibility for disposing any other copies.
+	/// </para>
 	/// </remarks>
 	public abstract class ScriptGlobal : ScriptObjectWrapper
 	{

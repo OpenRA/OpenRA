@@ -146,18 +146,22 @@ namespace OpenRA.Activities
 		}
 
 		/// <summary>
+		/// <para>
 		/// Called every tick to run activity logic. Returns false if the activity should
 		/// remain active, or true if it is complete. Cancelled activities must ensure they
 		/// return the actor to a consistent state before returning true.
-		///
+		/// </para>
+		/// <para>
 		/// Child activities can be queued using QueueChild, and these will be ticked
 		/// instead of the parent while they are active. Activities that need to run logic
 		/// in parallel with child activities should set ChildHasPriority to false and
 		/// manually call TickChildren.
-		///
+		/// </para>
+		/// <para>
 		/// Queuing one or more child activities and returning true is valid, and causes
 		/// the activity to be completed immediately (without ticking again) once the
 		/// children have completed.
+		/// </para>
 		/// </summary>
 		public virtual bool Tick(Actor self)
 		{
@@ -222,10 +226,11 @@ namespace OpenRA.Activities
 		}
 
 		/// <summary>
-		/// Prints the activity tree, starting from the top or optionally from a given origin.
-		///
+		/// <para>Prints the activity tree, starting from the top or optionally from a given origin.</para>
+		/// <para>
 		/// Call this method from any place that's called during a tick, such as the Tick() method itself or
 		/// the Before(First|Last)Run() methods. The origin activity will be marked in the output.
+		/// </para>
 		/// </summary>
 		/// <param name="self">The actor performing this activity.</param>
 		/// <param name="origin">Activity from which to start traversing, and which to mark. If null, mark the calling activity, and start traversal from the top.</param>
