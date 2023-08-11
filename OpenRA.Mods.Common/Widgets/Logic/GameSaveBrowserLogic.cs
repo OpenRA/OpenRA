@@ -105,13 +105,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				defaultSaveFilename = world.Map.Title;
 				var filenameAttempt = 0;
-				while (true)
-				{
-					if (!File.Exists(Path.Combine(baseSavePath, defaultSaveFilename + ".orasav")))
-						break;
-
+				while (File.Exists(Path.Combine(baseSavePath, defaultSaveFilename + ".orasav")))
 					defaultSaveFilename = world.Map.Title + $" ({++filenameAttempt})";
-				}
 
 				var saveButton = panel.Get<ButtonWidget>("SAVE_BUTTON");
 				saveButton.IsDisabled = () => string.IsNullOrWhiteSpace(saveTextField.Text);
