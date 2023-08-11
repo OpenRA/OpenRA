@@ -73,7 +73,7 @@ namespace OpenRA.Platforms.Default
 			var buffer = new List<byte>();
 			var offset = 0;
 
-			while (true)
+			do
 			{
 				var b = Marshal.ReadByte(devicesPtr, offset++);
 				if (b != 0)
@@ -85,11 +85,8 @@ namespace OpenRA.Platforms.Default
 				// A null indicates termination of that string, so add that to our list.
 				devices.Add(Encoding.UTF8.GetString(buffer.ToArray()));
 				buffer.Clear();
-
-				// Two successive nulls indicates the end of the list.
-				if (Marshal.ReadByte(devicesPtr, offset) == 0)
-					break;
 			}
+			while (Marshal.ReadByte(devicesPtr, offset) != 0); // Two successive nulls indicates the end of the list.
 
 			return devices.ToArray();
 		}

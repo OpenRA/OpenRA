@@ -1097,6 +1097,9 @@ dotnet_diagnostic.RCS1215.severity = warning
 # Unnecessary unsafe context.
 dotnet_diagnostic.RCS1216.severity = warning
 
+# Simplify code branching.
+dotnet_diagnostic.RCS1218.severity = warning
+
 # Use pattern matching instead of combination of 'is' operator and cast operator.
 dotnet_diagnostic.RCS1220.severity = warning
 
