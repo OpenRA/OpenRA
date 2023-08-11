@@ -109,10 +109,8 @@ namespace OpenRA.FileSystem
 
 				Mount(package, explicitName);
 			}
-			catch
+			catch when (optional)
 			{
-				if (!optional)
-					throw;
 			}
 		}
 

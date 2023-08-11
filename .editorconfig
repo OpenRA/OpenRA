@@ -1136,5 +1136,9 @@ dotnet_diagnostic.RCS1233.severity = warning
 # Optimize method call.
 dotnet_diagnostic.RCS1235.severity = warning
 
+# Use exception filter.
+dotnet_diagnostic.RCS1236.severity = warning
+
 # Use 'for' statement instead of 'while' statement.
 dotnet_diagnostic.RCS1239.severity = warning
+
