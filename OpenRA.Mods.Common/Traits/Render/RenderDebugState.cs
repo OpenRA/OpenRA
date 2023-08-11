@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits.Render
@@ -26,14 +25,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new RenderDebugState(init.Self, this); }
 	}
 
-	sealed class RenderDebugState : INotifyAddedToWorld, INotifyOwnerChanged, INotifyCreated, IRenderAnnotationsWhenSelected
+	sealed class RenderDebugState : INotifyAddedToWorld, INotifyCreated, IRenderAnnotationsWhenSelected
 	{
 		readonly DebugVisualizations debugVis;
 		readonly SpriteFont font;
 		readonly WVec offset;
 		SquadManagerBotModule[] squadManagerModules;
 
-		Color color;
 		string tagString;
 
 		public RenderDebugState(Actor self, RenderDebugStateInfo info)
@@ -42,7 +40,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var yOffset = buildingInfo?.Dimensions.Y ?? 1;
 			offset = new WVec(0, 512 * yOffset, 0);
 
-			color = self.OwnerColor();
 			font = Game.Renderer.Fonts[info.Font];
 
 			debugVis = self.World.WorldActor.TraitOrDefault<DebugVisualizations>();
@@ -58,13 +55,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			tagString = self.ToString();
 		}
 
-		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) => color = self.OwnerColor();
-
 		IEnumerable<IRenderable> IRenderAnnotationsWhenSelected.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
 			if (debugVis == null || !debugVis.ActorTags)
 				yield break;
 
+			var color = self.OwnerColor();
 			yield return new TextAnnotationRenderable(font, self.CenterPosition - offset, 0, color, tagString);
 
 			// Get the actor's activity.
