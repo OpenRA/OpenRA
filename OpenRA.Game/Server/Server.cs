@@ -248,12 +248,9 @@ namespace OpenRA.Server
 					{
 						listener.Server.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, 1);
 					}
-					catch (Exception ex)
+					catch (Exception ex) when (ex is SocketException || ex is ArgumentException)
 					{
-						if (ex is SocketException || ex is ArgumentException)
-							Log.Write("server", $"Failed to set socket option on {endpoint}: {ex.Message}");
-						else
-							throw;
+						Log.Write("server", $"Failed to set socket option on {endpoint}: {ex.Message}");
 					}
 
 					listener.Start();
