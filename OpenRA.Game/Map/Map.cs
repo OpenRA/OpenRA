@@ -1353,13 +1353,18 @@ namespace OpenRA
 				throw new ArgumentOutOfRangeException(nameof(maxRange),
 					$"The requested range ({maxRange}) cannot exceed the value of MaximumTileSearchRange ({Grid.MaximumTileSearchRange})");
 
-			for (var i = minRange; i <= maxRange; i++)
+			return FindTilesInAnnulus();
+
+			IEnumerable<CPos> FindTilesInAnnulus()
 			{
-				foreach (var offset in Grid.TilesByDistance[i])
+				for (var i = minRange; i <= maxRange; i++)
 				{
-					var t = offset + center;
-					if (allowOutsideBounds ? Tiles.Contains(t) : Contains(t))
-						yield return t;
+					foreach (var offset in Grid.TilesByDistance[i])
+					{
+						var t = offset + center;
+						if (allowOutsideBounds ? Tiles.Contains(t) : Contains(t))
+							yield return t;
+					}
 				}
 			}
 		}
