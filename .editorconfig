@@ -998,6 +998,9 @@ dotnet_diagnostic.RCS1074.severity = warning
 # Use 'Count' property instead of 'Any' method.
 dotnet_diagnostic.RCS1080.severity = warning
 
+# Use coalesce expression instead of conditional expression.
+dotnet_diagnostic.RCS1084.severity = warning
+
 # Remove empty region.
 dotnet_diagnostic.RCS1091.severity = warning
 
