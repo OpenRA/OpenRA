@@ -85,7 +85,10 @@ namespace OpenRA.Graphics
 		public void ReplacePalette(string name, IPalette p)
 		{
 			if (mutablePalettes.ContainsKey(name))
+			{
+				palettes[name] = new ImmutablePalette(p);
 				CopyPaletteToBuffer(indices[name], mutablePalettes[name] = new MutablePalette(p));
+			}
 			else if (palettes.ContainsKey(name))
 				CopyPaletteToBuffer(indices[name], palettes[name] = new ImmutablePalette(p));
 			else

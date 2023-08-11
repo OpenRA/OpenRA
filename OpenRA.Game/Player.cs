@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Eluant;
 using Eluant.ObjectBinding;
+using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Scripting;
@@ -252,10 +253,13 @@ namespace OpenRA
 		/// <summary>Returns <see cref="color"/>, ignoring player relationship colors.</summary>
 		public static Color GetColor(Player p) => p.color;
 
-		public static void SetupRelationshipColors(Player[] players, Player viewer)
+		public static void SetupRelationshipColors(Player[] players, Player viewer, WorldRenderer worldRenderer, bool firstRun)
 		{
 			foreach (var p in players)
+			{
 				p.Color = PlayerRelationshipColor(p, viewer);
+				worldRenderer.UpdatePalettesForPlayer(p.InternalName, p.Color, !firstRun);
+			}
 		}
 
 		public static Color PlayerRelationshipColor(Player player, Player viewer)
