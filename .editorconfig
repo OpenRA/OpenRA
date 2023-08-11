@@ -1103,6 +1103,9 @@ dotnet_diagnostic.RCS1218.severity = warning
 # Use pattern matching instead of combination of 'is' operator and cast operator.
 dotnet_diagnostic.RCS1220.severity = warning
 
+# Make class sealed.
+dotnet_diagnostic.RCS1225.severity = warning
+
 # Unnecessary explicit use of enumerator.
 dotnet_diagnostic.RCS1230.severity = warning
 
