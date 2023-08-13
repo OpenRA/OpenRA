@@ -38,10 +38,14 @@ namespace OpenRA.Network
 		[TranslationReference("player")]
 		const string GameUnpaused = "notification-game-unpaused";
 
+		public static int? KickVoteTarget { get; internal set; }
+
 		static Player FindPlayerByClient(this World world, Session.Client c)
 		{
 			return world.Players.FirstOrDefault(p => p.ClientIndex == c.Index && p.PlayerReference.Playable);
 		}
+
+		static bool OrderNotFromServerOrWorldIsReplay(int clientId, World world) => clientId != 0 || (world != null && world.IsReplay);
 
 		internal static void ProcessOrder(OrderManager orderManager, World world, int clientId, Order order)
 		{
@@ -75,9 +79,7 @@ namespace OpenRA.Network
 
 				case "DisableChatEntry":
 					{
-						// Order must originate from the server
-						// Don't disable chat in replays
-						if (clientId != 0 || (world != null && world.IsReplay))
+						if (OrderNotFromServerOrWorldIsReplay(clientId, world))
 							break;
 
 						// Server may send MaxValue to indicate that it is disabled until further notice
@@ -85,6 +87,26 @@ namespace OpenRA.Network
 							TextNotificationsManager.ChatDisabledUntil = uint.MaxValue;
 						else
 							TextNotificationsManager.ChatDisabledUntil = Game.RunTime + order.ExtraData;
+
+						break;
+					}
+
+				case "StartKickVote":
+					{
+						if (OrderNotFromServerOrWorldIsReplay(clientId, world))
+							break;
+
+						KickVoteTarget = (int)order.ExtraData;
+						break;
+					}
+
+				case "EndKickVote":
+					{
+						if (OrderNotFromServerOrWorldIsReplay(clientId, world))
+							break;
+
+						if (KickVoteTarget == (int)order.ExtraData)
+							KickVoteTarget = null;
 
 						break;
 					}
@@ -384,6 +406,11 @@ namespace OpenRA.Network
 
 			if (world.OrderValidators.All(vo => vo.OrderValidation(orderManager, world, clientId, order)))
 				order.Subject.ResolveOrder(order);
+		}
+
+		public static void Clear()
+		{
+			KickVoteTarget = null;
 		}
 	}
 }

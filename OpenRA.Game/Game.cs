@@ -86,8 +86,9 @@ namespace OpenRA
 
 		static void JoinInner(OrderManager om)
 		{
-			// Refresh TextNotificationsManager before the game starts.
+			// Refresh static classes before the game starts.
 			TextNotificationsManager.Clear();
+			UnitOrders.Clear();
 
 			// HACK: The shellmap World and OrderManager are owned by the main menu's WorldRenderer instead of Game.
 			// This allows us to switch Game.OrderManager from the shellmap to the new network connection when joining

@@ -136,7 +136,6 @@ Container@SKIRMISH_STATS:
 							Height: 25
 							Background: checkbox-toggle
 							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipText: Kick this player
 							Children:
 								Image:
 									ImageCollection: lobby-bits
@@ -179,7 +178,6 @@ Container@SKIRMISH_STATS:
 							Height: 25
 							Background: checkbox-toggle
 							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipText: Kick this player
 							Children:
 								Image:
 									ImageCollection: lobby-bits

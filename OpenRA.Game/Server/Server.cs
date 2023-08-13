@@ -148,6 +148,8 @@ namespace OpenRA.Server
 		GameInformation gameInfo;
 		readonly List<GameInformation.Player> worldPlayers = new();
 		readonly Stopwatch pingUpdated = Stopwatch.StartNew();
+
+		public readonly VoteKickTracker VoteKickTracker;
 		readonly PlayerMessageTracker playerMessageTracker;
 
 		public ServerState State
@@ -318,6 +320,7 @@ namespace OpenRA.Server
 			MapStatusCache = new MapStatusCache(modData, MapStatusChanged, type == ServerType.Dedicated && settings.EnableLintChecks);
 
 			playerMessageTracker = new PlayerMessageTracker(this, DispatchOrdersToClient, SendLocalizedMessageTo);
+			VoteKickTracker = new VoteKickTracker(this);
 
 			LobbyInfo = new Session
 			{
@@ -1162,15 +1165,8 @@ namespace OpenRA.Server
 			return LobbyInfo.ClientWithIndex(conn.PlayerIndex);
 		}
 
-		/// <summary>Does not check if client is admin.</summary>
-		public bool CanKickClient(Session.Client kickee)
-		{
-			if (State != ServerState.GameStarted || kickee.IsObserver)
-				return true;
-
-			var player = worldPlayers.FirstOrDefault(p => p?.ClientIndex == kickee.Index);
-			return player != null && player.Outcome != WinState.Undefined;
-		}
+		public bool HasClientWonOrLost(Session.Client client) =>
+			worldPlayers.FirstOrDefault(p => p?.ClientIndex == client.Index)?.Outcome != WinState.Undefined;
 
 		public void DropClient(Connection toDrop)
 		{
