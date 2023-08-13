@@ -32,7 +32,8 @@ notification-admin-change-configuration = Only the host can change the configura
 notification-changed-map = { $player } changed the map to { $map }
 notification-option-changed = { $player } changed { $name } to { $value }.
 notification-you-were-kicked = You have been kicked from the server.
-notification-kicked = { $admin } kicked { $player } from the server.
+notification-admin-kicked = { $admin } kicked { $player } from the server.
+notification-kicked = { $player } was kicked from the server.
 notification-temp-ban = { $admin } temporarily banned { $player } from the server.
 notification-admin-transfer-admin = Only admins can transfer admin to another player.
 notification-admin-move-spectators = Only the host can move players to spectators.
@@ -103,6 +104,14 @@ notification-chat-temp-disabled =
        *[other] Chat is disabled. Please try again in { $remaining } seconds.
     }
 
+## VoteKickTracker
+notification-unable-to-start-a-vote = Unable to start a vote.
+notification-insufficient-votes-to-kick = Insufficient votes to kick player { $kickee }.
+notification-kick-already-voted = You have already voted.
+notification-vote-kick-started = Player { $kicker } has started a vote to kick player { $kickee }.
+notification-vote-kick-in-progress = { $percentage }% of players have voted to kick player { $kickee }.
+notification-vote-kick-ended = Vote to kick player { $kickee } has failed.
+
 ## ActorEditLogic
 label-duplicate-actor-id = Duplicate Actor ID
 label-actor-id = Enter an Actor ID
@@ -157,11 +166,28 @@ label-mission-failed = Failed
 label-client-state-disconnected = Gone
 label-mute-player = Mute this player
 label-unmute-player = Unmute this player
+button-kick-player = Kick this player
+button-vote-kick-player = Vote to kick this player
 
 dialog-kick =
     .title = Kick { $player }?
-    .prompt = They will not be able to rejoin this game.
+    .prompt = This player will not be able to rejoin the game.
     .confirm = Kick
+
+dialog-vote-kick =
+    .title = Vote to kick { $player }?
+    .prompt = This player will not be able to rejoin the game.
+    .prompt-break-bots =
+    { $bots ->
+        [one] Kicking the game admin will also kick 1 bot.
+       *[other] Kicking the game admin will also kick { $bots } bots.
+    }
+    .vote-start = Start Vote
+    .vote-for = Vote For
+    .vote-against = Vote Against
+    .vote-cancel = Abstain
+
+notification-vote-kick-disabled = Vote kick is disabled on this server.
 
 ## GameTimerLogic
 label-paused = Paused

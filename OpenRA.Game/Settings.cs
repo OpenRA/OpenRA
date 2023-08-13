@@ -114,6 +114,15 @@ namespace OpenRA
 		[Desc("Delay in milliseconds before players can send chat messages after flood was detected.")]
 		public int FloodLimitCooldown = 15000;
 
+		[Desc("Can players vote to kick other players?")]
+		public bool EnableVoteKick = true;
+
+		[Desc("After how much time in miliseconds should the vote kick fail after idling?")]
+		public int VoteKickTimer = 30000;
+
+		[Desc("If a vote kick was unsuccessful for how long should the player who started the vote not be able to start new votes?")]
+		public int VoteKickerCooldown = 120000;
+
 		public ServerSettings Clone()
 		{
 			return (ServerSettings)MemberwiseClone();
