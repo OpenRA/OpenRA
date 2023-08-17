@@ -41,7 +41,11 @@ namespace OpenRA.FileSystem
 
 		public Stream GetStream(string filename)
 		{
-			try { return File.OpenRead(Path.Combine(Name, filename)); }
+			var combined = Path.Combine(Name, filename);
+			if (!File.Exists(combined))
+				return null;
+
+			try { return File.OpenRead(combined); }
 			catch { return null; }
 		}
 
