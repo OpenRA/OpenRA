@@ -305,6 +305,12 @@ gapile:
 		Offset: 0, 0
 		DepthSprite:
 
+gapave:
+	icon:
+		Filename: paveicon.shp
+		Offset: 0, 0
+		UseTilesetCode: false
+
 gaweap:
 	Defaults:
 		Offset: -12, -42, 22

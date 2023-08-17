@@ -110,33 +110,23 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	public class TSVeinsRenderer : IResourceRenderer, IWorldLoaded, IRenderOverlay, ITickRender, INotifyActorDisposing, IRadarTerrainLayer
 	{
-		[Flags]
-		enum Adjacency : byte
+		static readonly Dictionary<LAT.Adjacency, int[]> BorderIndices = new()
 		{
-			None = 0x0,
-			MinusX = 0x1,
-			PlusX = 0x2,
-			MinusY = 0x4,
-			PlusY = 0x8,
-		}
-
-		static readonly Dictionary<Adjacency, int[]> BorderIndices = new()
-		{
-			{ Adjacency.MinusY, new[] { 3, 4, 5 } },
-			{ Adjacency.PlusX, new[] { 6, 7, 8 } },
-			{ Adjacency.MinusY | Adjacency.PlusX, new[] { 9, 10, 11 } },
-			{ Adjacency.PlusY, new[] { 12, 13, 14 } },
-			{ Adjacency.MinusY | Adjacency.PlusY, new[] { 15, 16, 17 } },
-			{ Adjacency.PlusY | Adjacency.PlusX, new[] { 18, 19, 20 } },
-			{ Adjacency.MinusY | Adjacency.PlusY | Adjacency.PlusX, new[] { 21, 22, 23 } },
-			{ Adjacency.MinusX, new[] { 24, 25, 26 } },
-			{ Adjacency.MinusX | Adjacency.MinusY, new[] { 27, 28, 29 } },
-			{ Adjacency.MinusX | Adjacency.PlusX, new[] { 30, 31, 32 } },
-			{ Adjacency.MinusX | Adjacency.PlusX | Adjacency.MinusY, new[] { 33, 34, 35 } },
-			{ Adjacency.MinusX | Adjacency.PlusY, new[] { 36, 37, 38 } },
-			{ Adjacency.MinusX | Adjacency.MinusY | Adjacency.PlusY, new[] { 39, 40, 41 } },
-			{ Adjacency.MinusX | Adjacency.PlusX | Adjacency.PlusY, new[] { 42, 43, 44 } },
-			{ Adjacency.MinusX | Adjacency.PlusX | Adjacency.MinusY | Adjacency.PlusY, new[] { 45, 46, 47 } },
+			{ LAT.Adjacency.MinusY, new[] { 3, 4, 5 } },
+			{ LAT.Adjacency.PlusX, new[] { 6, 7, 8 } },
+			{ LAT.Adjacency.MinusY | LAT.Adjacency.PlusX, new[] { 9, 10, 11 } },
+			{ LAT.Adjacency.PlusY, new[] { 12, 13, 14 } },
+			{ LAT.Adjacency.MinusY | LAT.Adjacency.PlusY, new[] { 15, 16, 17 } },
+			{ LAT.Adjacency.PlusY | LAT.Adjacency.PlusX, new[] { 18, 19, 20 } },
+			{ LAT.Adjacency.MinusY | LAT.Adjacency.PlusY | LAT.Adjacency.PlusX, new[] { 21, 22, 23 } },
+			{ LAT.Adjacency.MinusX, new[] { 24, 25, 26 } },
+			{ LAT.Adjacency.MinusX | LAT.Adjacency.MinusY, new[] { 27, 28, 29 } },
+			{ LAT.Adjacency.MinusX | LAT.Adjacency.PlusX, new[] { 30, 31, 32 } },
+			{ LAT.Adjacency.MinusX | LAT.Adjacency.PlusX | LAT.Adjacency.MinusY, new[] { 33, 34, 35 } },
+			{ LAT.Adjacency.MinusX | LAT.Adjacency.PlusY, new[] { 36, 37, 38 } },
+			{ LAT.Adjacency.MinusX | LAT.Adjacency.MinusY | LAT.Adjacency.PlusY, new[] { 39, 40, 41 } },
+			{ LAT.Adjacency.MinusX | LAT.Adjacency.PlusX | LAT.Adjacency.PlusY, new[] { 42, 43, 44 } },
+			{ LAT.Adjacency.MinusX | LAT.Adjacency.PlusX | LAT.Adjacency.MinusY | LAT.Adjacency.PlusY, new[] { 45, 46, 47 } },
 		};
 
 		static readonly int[] HeavyIndices = { 48, 49, 50, 51 };
@@ -150,7 +140,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly World world;
 		readonly IResourceLayer resourceLayer;
 		readonly CellLayer<int[]> renderIndices;
-		readonly CellLayer<Adjacency> borders;
+		readonly CellLayer<LAT.Adjacency> borders;
 		readonly HashSet<CPos> dirty = new();
 		readonly Queue<CPos> cleanDirty = new();
 		readonly HashSet<CPos> veinholeCells = new();
@@ -175,7 +165,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			veinRadarColor = terrainInfo.TerrainTypes[terrainInfo.GetTerrainIndex(terrainType)].Color;
 
 			renderIndices = new CellLayer<int[]>(world.Map);
-			borders = new CellLayer<Adjacency>(world.Map);
+			borders = new CellLayer<LAT.Adjacency>(world.Map);
 		}
 
 		void AddDirtyCell(CPos cell, string resourceType)
@@ -266,31 +256,31 @@ namespace OpenRA.Mods.Cnc.Traits
 			return (world.Map.Ramp[cell] == 0 && renderIndices[cell] != null) || veinholeCells.Contains(cell);
 		}
 
-		Adjacency CalculateBorders(CPos cell)
+		LAT.Adjacency CalculateBorders(CPos cell)
 		{
 			// Borders are only valid on flat cells
 			if (world.Map.Ramp[cell] != 0)
-				return Adjacency.None;
+				return LAT.Adjacency.None;
 
-			var ret = Adjacency.None;
+			var ret = LAT.Adjacency.None;
 			if (HasBorder(cell + new CVec(0, -1)))
-				ret |= Adjacency.MinusY;
+				ret |= LAT.Adjacency.MinusY;
 
 			if (HasBorder(cell + new CVec(-1, 0)))
-				ret |= Adjacency.MinusX;
+				ret |= LAT.Adjacency.MinusX;
 
 			if (HasBorder(cell + new CVec(1, 0)))
-				ret |= Adjacency.PlusX;
+				ret |= LAT.Adjacency.PlusX;
 
 			if (HasBorder(cell + new CVec(0, 1)))
-				ret |= Adjacency.PlusY;
+				ret |= LAT.Adjacency.PlusY;
 
 			return ret;
 		}
 
 		void UpdateRenderedSprite(CPos cell, int[] indices)
 		{
-			borders[cell] = Adjacency.None;
+			borders[cell] = LAT.Adjacency.None;
 			UpdateSpriteLayers(cell, indices);
 
 			foreach (var c in Common.Util.ExpandFootprint(cell, false))
@@ -309,7 +299,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			borders[cell] = adjacency;
 
-			if (adjacency == Adjacency.None)
+			if (adjacency == LAT.Adjacency.None)
 				UpdateSpriteLayers(cell, null);
 			else if (BorderIndices.TryGetValue(adjacency, out var indices))
 				UpdateSpriteLayers(cell, indices);
@@ -364,7 +354,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				return info.ResourceType;
 
 			// This makes sure harvesters will get a harvest cursor but then move to the next actual resource cell to start harvesting
-			return borders[cell] != Adjacency.None ? info.ResourceType : null;
+			return borders[cell] != LAT.Adjacency.None ? info.ResourceType : null;
 		}
 
 		string IResourceRenderer.GetRenderedResourceTooltip(CPos cell)
@@ -372,7 +362,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (renderIndices[cell] != null)
 				return info.Name;
 
-			return borders[cell] != Adjacency.None ? info.Name : null;
+			return borders[cell] != LAT.Adjacency.None ? info.Name : null;
 		}
 
 		IEnumerable<IRenderable> IResourceRenderer.RenderUIPreview(WorldRenderer wr, string resourceType, int2 origin, float scale)
@@ -418,7 +408,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			value = default;
 
-			if (borders[uv] == Adjacency.None && renderIndices[uv] == null)
+			if (borders[uv] == LAT.Adjacency.None && renderIndices[uv] == null)
 				return false;
 
 			value = (veinRadarColor, veinRadarColor);
