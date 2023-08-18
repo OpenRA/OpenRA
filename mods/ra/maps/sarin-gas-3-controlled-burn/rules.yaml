@@ -19,6 +19,9 @@ Player:
 	PlayerResources:
 		DefaultCash: 7500
 
+HARV:
+	-MustBeDestroyed:
+
 APC:
 	Buildable:
 		Prerequisites: ~vehicles.allies

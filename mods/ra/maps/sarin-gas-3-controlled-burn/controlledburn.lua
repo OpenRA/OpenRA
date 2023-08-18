@@ -66,14 +66,21 @@ SetupTriggers = function()
 	Trigger.OnAllKilledOrCaptured(SarinPlants, function()
 		Greece.MarkCompletedObjective(CaptureSarin)
 	end)
+
+	Trigger.OnEnteredProximityTrigger(AlliesMove.CenterPosition, WDist.FromCells(3), function(actor, id)
+		if actor.Owner == Greece then
+			Trigger.RemoveProximityTrigger(id)
+			Media.PlaySpeechNotification(Greece, "SignalFlareSouth")
+		end
+	end)
 end
 
 MCVArrived = false
 MCVArrivedTick = false
 PowerDownTeslas = function()
 	if not MCVArrived then
-		CaptureSarin = Greece.AddObjective("capture-sarin-plants-intact")
-		KillBase = Greece.AddObjective("destroy-enemy-compound")
+		CaptureSarin = AddPrimaryObjective(Greece, "capture-sarin-plants-intact")
+		KillBase = AddPrimaryObjective(Greece, "destroy-enemy-compound")
 		Greece.MarkCompletedObjective(TakeOutPower)
 		Media.PlaySpeechNotification(Greece, "ReinforcementsArrived")
 		Reinforcements.Reinforce(Greece, MCVReinforcements[Difficulty], { AlliesSpawn.Location, AlliesMove.Location })
@@ -85,6 +92,7 @@ PowerDownTeslas = function()
 
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			MCVArrivedTick = true
+			PrepareFinishingHunt(USSR)
 		end)
 
 		Trigger.AfterDelay(DateTime.Seconds(60), function()
@@ -97,6 +105,25 @@ PowerDownTeslas = function()
 			ActivateAI()
 		end)
 	end
+end
+
+PrepareFinishingHunt = function(player)
+	local buildings = GetBaseBuildings(player)
+
+	Trigger.OnAllKilledOrCaptured(buildings, function()
+		Utils.Do(player.GetGroundAttackers(), function(actor)
+			actor.Stop()
+			IdleHunt(actor)
+		end)
+	end)
+end
+
+GetBaseBuildings = function(player)
+	-- Excludes the unrepairable sarin plants, which is desired anyway.
+	local buildings = Utils.Where(player.GetActors(), function(actor)
+		return actor.HasProperty("StartBuildingRepairs")
+	end)
+	return buildings
 end
 
 Tick = function()
