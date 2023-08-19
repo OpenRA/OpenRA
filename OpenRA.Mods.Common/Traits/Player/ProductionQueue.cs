@@ -449,19 +449,19 @@ namespace OpenRA.Mods.Common.Traits
 							if (isBuilding && !hasPlayedSound)
 							{
 								hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
-								TextNotificationsManager.AddTransientLine(Info.ReadyTextNotification, self.Owner);
+								TextNotificationsManager.AddTransientLine(self.Owner, Info.ReadyTextNotification);
 							}
 							else if (!isBuilding)
 							{
 								if (BuildUnit(unit))
 								{
 									Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.ReadyAudio, self.Owner.Faction.InternalName);
-									TextNotificationsManager.AddTransientLine(Info.ReadyTextNotification, self.Owner);
+									TextNotificationsManager.AddTransientLine(self.Owner, Info.ReadyTextNotification);
 								}
 								else if (!hasPlayedSound && time > 0)
 								{
 									hasPlayedSound = Game.Sound.PlayNotification(rules, self.Owner, "Speech", Info.BlockedAudio, self.Owner.Faction.InternalName);
-									TextNotificationsManager.AddTransientLine(Info.BlockedTextNotification, self.Owner);
+									TextNotificationsManager.AddTransientLine(self.Owner, Info.BlockedTextNotification);
 								}
 							}
 						})), !order.Queued);

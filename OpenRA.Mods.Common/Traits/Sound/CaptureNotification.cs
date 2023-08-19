@@ -51,11 +51,11 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		{
 			var faction = info.NewOwnerVoice ? newOwner.Faction.InternalName : oldOwner.Faction.InternalName;
 			Game.Sound.PlayNotification(self.World.Map.Rules, newOwner, "Speech", info.Notification, faction);
-			TextNotificationsManager.AddTransientLine(info.TextNotification, newOwner);
+			TextNotificationsManager.AddTransientLine(newOwner, info.TextNotification);
 
 			var loseFaction = info.LoseNewOwnerVoice ? newOwner.Faction.InternalName : oldOwner.Faction.InternalName;
 			Game.Sound.PlayNotification(self.World.Map.Rules, oldOwner, "Speech", info.LoseNotification, loseFaction);
-			TextNotificationsManager.AddTransientLine(info.LoseTextNotification, oldOwner);
+			TextNotificationsManager.AddTransientLine(oldOwner, info.LoseTextNotification);
 		}
 	}
 }

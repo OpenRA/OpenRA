@@ -88,8 +88,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (info.InfiltrationNotification != null)
 				Game.Sound.PlayNotification(self.World.Map.Rules, infiltrator.Owner, "Speech", info.InfiltrationNotification, infiltrator.Owner.Faction.InternalName);
 
-			TextNotificationsManager.AddTransientLine(info.InfiltratedTextNotification, self.Owner);
-			TextNotificationsManager.AddTransientLine(info.InfiltrationTextNotification, infiltrator.Owner);
+			TextNotificationsManager.AddTransientLine(self.Owner, info.InfiltratedTextNotification);
+			TextNotificationsManager.AddTransientLine(infiltrator.Owner, info.InfiltrationTextNotification);
 
 			if (info.ShowTicks)
 				self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, infiltrator.Owner.Color, FloatingText.FormatCashTick(toGive), 30)));

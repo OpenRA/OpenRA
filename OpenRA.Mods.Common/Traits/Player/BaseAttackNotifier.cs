@@ -89,12 +89,12 @@ namespace OpenRA.Mods.Common.Traits
 				if (self.Owner == localPlayer)
 				{
 					Game.Sound.PlayNotification(rules, self.Owner, "Speech", info.Notification, self.Owner.Faction.InternalName);
-					TextNotificationsManager.AddTransientLine(info.TextNotification, self.Owner);
+					TextNotificationsManager.AddTransientLine(self.Owner, info.TextNotification);
 				}
 				else if (localPlayer.IsAlliedWith(self.Owner) && localPlayer != e.Attacker.Owner)
 				{
 					Game.Sound.PlayNotification(rules, localPlayer, "Speech", info.AllyNotification, localPlayer.Faction.InternalName);
-					TextNotificationsManager.AddTransientLine(info.AllyTextNotification, localPlayer);
+					TextNotificationsManager.AddTransientLine(localPlayer, info.AllyTextNotification);
 				}
 
 				radarPings?.Add(() => self.Owner.IsAlliedWith(self.World.RenderPlayer), self.CenterPosition, info.RadarPingColor, info.RadarPingDuration);

@@ -46,6 +46,12 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class StrategicVictoryConditions : ITick, ISync, INotifyWinStateChanged, INotifyTimeLimit
 	{
+		[TranslationReference("player")]
+		const string PlayerIsVictorious = "notification-player-is-victorious";
+
+		[TranslationReference("player")]
+		const string PlayerIsDefeated = "notification-player-is-defeated";
+
 		readonly StrategicVictoryConditionsInfo info;
 
 		[Sync]
@@ -136,13 +142,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.SuppressNotifications)
 				return;
 
-			TextNotificationsManager.AddSystemLine(player.PlayerName + " is defeated.");
+			TextNotificationsManager.AddSystemLine(PlayerIsDefeated, Translation.Arguments("player", player.PlayerName));
 			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
 				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
 				{
 					Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", mo.Info.LoseNotification, player.Faction.InternalName);
-					TextNotificationsManager.AddTransientLine(mo.Info.LoseTextNotification, player);
+					TextNotificationsManager.AddTransientLine(player, mo.Info.LoseTextNotification);
 				}
 			});
 		}
@@ -152,13 +158,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.SuppressNotifications)
 				return;
 
-			TextNotificationsManager.AddSystemLine(player.PlayerName + " is victorious.");
+			TextNotificationsManager.AddSystemLine(PlayerIsVictorious, Translation.Arguments("player", player.PlayerName));
 			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
 				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
 				{
 					Game.Sound.PlayNotification(player.World.Map.Rules, player, "Speech", mo.Info.WinNotification, player.Faction.InternalName);
-					TextNotificationsManager.AddTransientLine(mo.Info.WinTextNotification, player);
+					TextNotificationsManager.AddTransientLine(player, mo.Info.WinTextNotification);
 				}
 			});
 		}

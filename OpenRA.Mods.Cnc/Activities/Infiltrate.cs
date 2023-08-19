@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
 					infiltrates.Info.Notification, self.Owner.Faction.InternalName);
 
-			TextNotificationsManager.AddTransientLine(infiltrates.Info.TextNotification, self.Owner);
+			TextNotificationsManager.AddTransientLine(self.Owner, infiltrates.Info.TextNotification);
 
 			if (infiltrates.Info.EnterBehaviour == EnterBehaviour.Dispose)
 				self.Dispose();
