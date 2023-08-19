@@ -44,11 +44,11 @@ MSLO:
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSpeechNotification: InsufficientPower
 		IncomingSpeechNotification: AbombLaunchDetected
-		SelectTargetTextNotification: Select target.
-		InsufficientPowerTextNotification: Insufficient power.
-		BeginChargeTextNotification: A-bomb prepping.
-		EndChargeTextNotification: A-bomb ready.
-		IncomingTextNotification: A-bomb launch detected.
+		SelectTargetTextNotification: notification-select-target
+		InsufficientPowerTextNotification: notification-insufficient-power
+		BeginChargeTextNotification: notification-abomb-prepping
+		EndChargeTextNotification: notification-abomb-ready
+		IncomingTextNotification: notification-abomb-launch-detected
 		MissileWeapon: atomic
 		MissileImage: atomic
 		MissileDelay: 5
@@ -213,9 +213,9 @@ SPEN:
 	RepairsUnits:
 		HpPerStep: 1000
 		StartRepairingNotification: Repairing
-		StartRepairingTextNotification: Repairing.
+		StartRepairingTextNotification: notification-repairing
 		FinishRepairingNotification: UnitRepaired
-		FinishRepairingTextNotification: Unit repaired.
+		FinishRepairingTextNotification: notification-unit-repaired
 		PlayerExperience: 5
 	RallyPoint:
 		ForceSetType: Ship
@@ -333,9 +333,9 @@ SYRD:
 	RepairsUnits:
 		HpPerStep: 1000
 		StartRepairingNotification: Repairing
-		StartRepairingTextNotification: Repairing.
+		StartRepairingTextNotification: notification-repairing
 		FinishRepairingNotification: UnitRepaired
-		FinishRepairingTextNotification: Unit repaired.
+		FinishRepairingTextNotification: notification-unit-repaired
 		PlayerExperience: 5
 	RallyPoint:
 		ForceSetType: Ship
@@ -441,10 +441,10 @@ IRON:
 		InsufficientPowerSpeechNotification: InsufficientPower
 		BeginChargeSpeechNotification: IronCurtainCharging
 		EndChargeSpeechNotification: IronCurtainReady
-		SelectTargetTextNotification: Select target.
-		InsufficientPowerTextNotification: Insufficient power.
-		BeginChargeTextNotification: Iron curtain charging.
-		EndChargeTextNotification: Iron curtain ready.
+		SelectTargetTextNotification: notification-select-target
+		InsufficientPowerTextNotification: notification-insufficient-power
+		BeginChargeTextNotification: notification-iron-curtain-charging
+		EndChargeTextNotification: notification-iron-curtain-ready
 		DisplayRadarPing: True
 		Condition: invulnerability
 		OnFireSound: ironcur9.aud
@@ -516,10 +516,10 @@ PDOX:
 		InsufficientPowerSpeechNotification: InsufficientPower
 		BeginChargeSpeechNotification: ChronosphereCharging
 		EndChargeSpeechNotification: ChronosphereReady
-		SelectTargetTextNotification: Select target.
-		InsufficientPowerTextNotification: Insufficient power.
-		BeginChargeTextNotification: Chronosphere charging.
-		EndChargeTextNotification: Chronosphere ready.
+		SelectTargetTextNotification: notification-select-target
+		InsufficientPowerTextNotification: notification-insufficient-power
+		BeginChargeTextNotification: notification-chronosphere-charging
+		EndChargeTextNotification: notification-chronosphere-ready
 		Duration: 400
 		KillCargo: true
 		DisplayRadarPing: True
@@ -538,10 +538,10 @@ PDOX:
 		InsufficientPowerSpeechNotification: InsufficientPower
 		BeginChargeSpeechNotification: ChronosphereCharging
 		EndChargeSpeechNotification: ChronosphereReady
-		SelectTargetTextNotification: Select target.
-		InsufficientPowerTextNotification: Insufficient power.
-		BeginChargeTextNotification: Chronosphere charging.
-		EndChargeTextNotification: Chronosphere ready.
+		SelectTargetTextNotification: notification-select-target
+		InsufficientPowerTextNotification: notification-insufficient-power
+		BeginChargeTextNotification: notification-chronosphere-charging
+		EndChargeTextNotification: notification-chronosphere-charging
 		Duration: 400
 		KillCargo: true
 		DisplayRadarPing: True
@@ -1016,7 +1016,7 @@ ATEK:
 		Description: Reveals map terrain and provides tactical\ninformation. Requires power and active radar.
 		RevealDelay: 375
 		LaunchSpeechNotification: SatelliteLaunched
-		LaunchTextNotification: Satellite launched.
+		LaunchTextNotification: notification-satellite-launched
 		DisplayTimerRelationships: Ally, Neutral, Enemy
 		SupportPowerPaletteOrder: 90
 	SupportPowerChargeBar:
@@ -1305,7 +1305,7 @@ PROC:
 		PlayerExperiencePercentage: 1
 		Types: SpyInfiltrate, ThiefInfiltrate
 		InfiltratedNotification: CreditsStolen
-		InfiltratedTextNotification: Credits stolen.
+		InfiltratedTextNotification: notification-credits-stolen
 	WithBuildingBib:
 	WithIdleOverlay@TOP:
 		RequiresCondition: !build-incomplete
@@ -1370,7 +1370,7 @@ SILO:
 		PlayerExperiencePercentage: 1
 		Types: ThiefInfiltrate
 		InfiltratedNotification: CreditsStolen
-		InfiltratedTextNotification: Credits stolen.
+		InfiltratedTextNotification: notification-credits-stolen
 	WithBuildingBib:
 		HasMinibib: true
 	-WithSpriteBody:
@@ -1556,8 +1556,8 @@ AFLD:
 		Description: Reveals an area of the map.
 		SelectTargetSpeechNotification: SelectTarget
 		EndChargeSpeechNotification: SpyPlaneReady
-		SelectTargetTextNotification: Select target.
-		EndChargeTextNotification: Spy plane ready.
+		SelectTargetTextNotification: notification-select-target
+		EndChargeTextNotification: notifcation-spy-plane-ready
 		CameraActor: camera.spyplane
 		CameraRemoveDelay: 150
 		UnitType: u2
@@ -1580,8 +1580,8 @@ AFLD:
 		DropItems: E1R1,E1R1,E1R1,E3R1,E3R1
 		ReinforcementsArrivedSpeechNotification: ReinforcementsArrived
 		SelectTargetSpeechNotification: SelectTarget
-		ReinforcementsArrivedTextNotification: Reinforcements have arrived.
-		SelectTargetTextNotification: Select target.
+		ReinforcementsArrivedTextNotification: notification-reinforcements-have-arrived
+		SelectTargetTextNotification: notification-select-target
 		AllowImpassableCells: false
 		QuantizedFacings: 8
 		CameraActor: camera.paradrop
@@ -1601,7 +1601,7 @@ AFLD:
 		Name: Parabombs
 		Description: A Badger drops a load of parachuted bombs\nat the selected location.
 		SelectTargetSpeechNotification: SelectTarget
-		SelectTargetTextNotification: Select target.
+		SelectTargetTextNotification: notification-select-target
 		CameraActor: camera
 		CameraRemoveDelay: 150
 		UnitType: badr.bomber
@@ -2055,9 +2055,9 @@ FIX:
 		HpPerStep: 1000
 		Interval: 7
 		StartRepairingNotification: Repairing
-		StartRepairingTextNotification: Repairing.
+		StartRepairingTextNotification: notification-repairing
 		FinishRepairingNotification: UnitRepaired
-		FinishRepairingTextNotification: Unit repaired.
+		FinishRepairingTextNotification: notification-unit-repaired
 		PlayerExperience: 5
 	WithBuildingBib:
 		HasMinibib: true

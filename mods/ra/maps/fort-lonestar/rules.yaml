@@ -164,7 +164,7 @@ MOBILETENT:
 		Facing: 384
 		TransformSounds: placbldg.aud, build5.aud
 		NoTransformNotification: BuildingCannotPlaceAudio
-		NoTransformTextNotification: Cannot deploy here.
+		NoTransformTextNotification: notification-cannot-deploy-here
 	RenderSprites:
 		Image: TRUK
 

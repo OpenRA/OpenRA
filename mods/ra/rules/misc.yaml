@@ -352,7 +352,7 @@ powerproxy.parabombs:
 		AllowMultiple: true
 		UnitType: badr.bomber
 		SelectTargetSpeechNotification: SelectTarget
-		SelectTargetTextNotification: Select target.
+		SelectTargetTextNotification: notification-select-target
 		QuantizedFacings: 8
 		DisplayBeacon: True
 		BeaconPoster: pbmbicon
@@ -371,8 +371,8 @@ powerproxy.sonarpulse:
 		ChargeInterval: 750
 		EndChargeSpeechNotification: SonarPulseReady
 		SelectTargetSpeechNotification: SelectTarget
-		EndChargeTextNotification: Sonar pulse ready.
-		SelectTargetTextNotification: Select target.
+		EndChargeTextNotification: notification-sonar-pulse-ready
+		SelectTargetTextNotification: notification-select-target
 		Actor: sonar
 		Terrain: Water
 		AllowUnderShroud: false
@@ -391,7 +391,7 @@ powerproxy.paratroopers:
 		Description: A Badger drops a squad of infantry\nanywhere on the map.
 		DropItems: E1,E1,E1,E3,E3
 		SelectTargetSpeechNotification: SelectTarget
-		SelectTargetTextNotification: Select target.
+		SelectTargetTextNotification: notification-select-target
 		AllowImpassableCells: false
 		QuantizedFacings: 8
 		CameraActor: camera.paradrop

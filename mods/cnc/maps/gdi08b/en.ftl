@@ -1,0 +1,1 @@
+civilian-killed = Civilian killed.

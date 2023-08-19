@@ -35,7 +35,7 @@ MCV:
 		NoTransformSounds:
 		Voice: Move
 		NoTransformNotification: BuildingCannotPlaceAudio
-		NoTransformTextNotification: Cannot deploy here.
+		NoTransformTextNotification: notification-cannot-deploy-here
 	RenderSprites:
 		Image: mcv.gdi
 		FactionImages:

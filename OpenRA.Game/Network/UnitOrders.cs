@@ -26,6 +26,18 @@ namespace OpenRA.Network
 		[TranslationReference("player")]
 		const string Left = "notification-lobby-disconnected";
 
+		[TranslationReference]
+		const string GameStarted = "notification-game-has-started";
+
+		[TranslationReference]
+		const string GameSaved = "notification-game-saved";
+
+		[TranslationReference("player")]
+		const string GamePaused = "notification-game-paused";
+
+		[TranslationReference("player")]
+		const string GameUnpaused = "notification-game-unpaused";
+
 		static Player FindPlayerByClient(this World world, Session.Client c)
 		{
 			return world.Players.FirstOrDefault(p => p.ClientIndex == c.Index && p.PlayerReference.Playable);
@@ -161,7 +173,7 @@ namespace OpenRA.Network
 									FieldLoader.GetValue<int>("SaveSyncFrame", saveSyncFrame.Value.Value);
 						}
 						else
-							TextNotificationsManager.AddSystemLine("The game has started.");
+							TextNotificationsManager.AddSystemLine(GameStarted);
 
 						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, WorldType.Regular);
 						break;
@@ -179,7 +191,7 @@ namespace OpenRA.Network
 
 				case "GameSaved":
 					if (!orderManager.World.IsReplay)
-						TextNotificationsManager.AddSystemLine("Game saved");
+						TextNotificationsManager.AddSystemLine(GameSaved);
 
 					foreach (var nsr in orderManager.World.WorldActor.TraitsImplementing<INotifyGameSaved>())
 						nsr.GameSaved(orderManager.World);
@@ -197,10 +209,7 @@ namespace OpenRA.Network
 								break;
 
 							if (orderManager.World.Paused != pause && world != null && world.LobbyInfo.NonBotClients.Count() > 1)
-							{
-								var pausetext = $"The game is {(pause ? "paused" : "un-paused")} by {client.Name}";
-								TextNotificationsManager.AddSystemLine(pausetext);
-							}
+								TextNotificationsManager.AddSystemLine(pause ? GamePaused : GameUnpaused, Translation.Arguments("player", client.Name));
 
 							orderManager.World.Paused = pause;
 							orderManager.World.PredictedPaused = pause;

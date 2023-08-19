@@ -28,7 +28,7 @@ MCV:
 		Facing: 432
 		TransformSounds: constru2.aud, hvydoor1.aud
 		NoTransformNotification: BuildingCannotPlaceAudio
-		NoTransformTextNotification: Cannot deploy here.
+		NoTransformTextNotification: notification-cannot-deploy-here
 		Voice: Unload
 	MustBeDestroyed:
 		RequiredForShortGame: true
@@ -76,7 +76,7 @@ HARV:
 		Range: 4c0
 	ActorLostNotification:
 		Notification: HarvesterLost
-		TextNotification: Harvester lost.
+		TextNotification: notification-harvester-lost
 	SpawnActorOnDeath:
 		Actor: HARV.Husk
 		OwnerType: InternalName

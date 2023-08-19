@@ -661,7 +661,7 @@ starport:
 	ProductionAirdrop:
 		Produces: Starport
 		ActorType: frigate
-		ReadyTextNotification: Reinforcements have arrived.
+		ReadyTextNotification: notification-reinforcements-have-arrived
 	RenderSprites:
 		Image: starport.ordos
 		FactionImages:
@@ -907,9 +907,9 @@ repair_pad:
 		Interval: 10
 		HpPerStep: 800
 		StartRepairingNotification: Repairing
-		StartRepairingTextNotification: Repairing.
+		StartRepairingTextNotification: notification-repairing
 		FinishRepairingNotification: UnitRepaired
-		FinishRepairingTextNotification: Unit repaired.
+		FinishRepairingTextNotification: notification-unit-repaired
 		PlayerExperience: 10
 	RallyPoint:
 	CommandBarBlacklist:
@@ -1011,8 +1011,8 @@ high_tech_factory:
 		UseDirectionalTarget: True
 		DirectionArrowAnimation: ornidirection
 		SupportPowerPaletteOrder: 10
-		EndChargeTextNotification: Airstrike ready.
-		SelectTargetTextNotification: Select target.
+		EndChargeTextNotification: notification-airstrike-ready
+		SelectTargetTextNotification: notification-select-target
 	Power:
 		Amount: -75
 	GrantConditionOnPrerequisite@UPGRADEABLE:
@@ -1160,10 +1160,10 @@ palace:
 		BeginChargeSpeechNotification: DeathHandMissilePrepping
 		EndChargeSpeechNotification: DeathHandMissileReady
 		IncomingSpeechNotification: MissileLaunchDetected
-		BeginChargeTextNotification: Death Hand missile prepping.
-		EndChargeTextNotification: Death Hand missile ready.
-		IncomingTextNotification: Missile launch detected.
-		SelectTargetTextNotification: Select target.
+		BeginChargeTextNotification: notification-death-hand-missile-prepping
+		EndChargeTextNotification: notification-death-hand-missile-ready
+		IncomingTextNotification: notifciation-missile-launch-detected
+		SelectTargetTextNotification: notification-select-target
 		MissileWeapon: deathhand
 		MissileImage: deathhand
 		MissileDelay: 18
@@ -1191,11 +1191,11 @@ palace:
 		Actors: fremen, fremen
 		Type: Fremen
 		ChargeInterval: 2250
-		EndChargeTextNotification: Fremen ready.
+		EndChargeTextNotification: notification-fremen-ready
 		ReadyAudio: Reinforce
-		ReadyTextNotification: Reinforcements have arrived.
+		ReadyTextNotification: notification-reinforcements-have-arrived
 		BlockedAudio: NoRoom
-		BlockedTextNotification: No room for new unit.
+		BlockedTextNotification: notification-no-room-for-new-units
 		OrderName: ProduceActorPower.Fremen
 		SupportPowerPaletteOrder: 20
 	ProduceActorPower@saboteur:
@@ -1208,11 +1208,11 @@ palace:
 		Actors: saboteur
 		Type: Saboteur
 		ChargeInterval: 2250
-		EndChargeTextNotification: Saboteur ready.
+		EndChargeTextNotification: notification-saboteur-ready
 		ReadyAudio: Reinforce
-		ReadyTextNotification: Reinforcements have arrived.
+		ReadyTextNotification: notification-reinforcements-have-arrived
 		BlockedAudio: NoRoom
-		BlockedTextNotification: No room for new unit.
+		BlockedTextNotification: notification-no-room-for-new-units
 		OrderName: ProduceActorPower.Saboteur
 		SupportPowerPaletteOrder: 30
 	Exit@1:

@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Experience to grant to the infiltrating player.")]
 		public readonly int PlayerExperience = 0;
 
+		[TranslationReference(optional: true)]
 		[Desc("Text notification the victim will see when they get sabotaged.")]
 		public readonly string InfiltratedTextNotification = null;
 
@@ -35,6 +36,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Sound the perpetrator will hear after successful infiltration.")]
 		public readonly string InfiltrationNotification = null;
 
+		[TranslationReference(optional: true)]
 		[Desc("Text notification the perpetrator will see after successful infiltration.")]
 		public readonly string InfiltrationTextNotification = null;
 

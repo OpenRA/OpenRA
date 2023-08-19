@@ -49,11 +49,11 @@ FACT:
 		Group: Building
 		LowPowerModifier: 150
 		ReadyAudio: ConstructionComplete
-		ReadyTextNotification: Construction complete.
+		ReadyTextNotification: notification-construction-complete
 		BlockedAudio: NoBuild
-		BlockedTextNotification: Unable to build more.
+		BlockedTextNotification: notification-unable-to-build-more
 		LimitedAudio: BuildingInProgress
-		LimitedTextNotification: Unable to comply. Building in progress.
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -64,11 +64,11 @@ FACT:
 		Group: Building
 		LowPowerModifier: 150
 		ReadyAudio: ConstructionComplete
-		ReadyTextNotification: Construction complete.
+		ReadyTextNotification: notification-construction-complete
 		BlockedAudio: NoBuild
-		BlockedTextNotification: Unable to build more.
+		BlockedTextNotification: notification-unable-to-build-more
 		LimitedAudio: BuildingInProgress
-		LimitedTextNotification: Unable to comply. Building in progress.
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -79,11 +79,11 @@ FACT:
 		Group: Defence
 		LowPowerModifier: 150
 		ReadyAudio: ConstructionComplete
-		ReadyTextNotification: Construction complete.
+		ReadyTextNotification: notification-construction-complete
 		BlockedAudio: NoBuild
-		BlockedTextNotification: Unable to build more.
+		BlockedTextNotification: notification-unable-to-build-more
 		LimitedAudio: BuildingInProgress
-		LimitedTextNotification: Unable to comply. Building in progress.
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -94,11 +94,11 @@ FACT:
 		Group: Defence
 		LowPowerModifier: 150
 		ReadyAudio: ConstructionComplete
-		ReadyTextNotification: Construction complete.
+		ReadyTextNotification: notification-construction-complete
 		BlockedAudio: NoBuild
-		BlockedTextNotification: Unable to build more.
+		BlockedTextNotification: notification-unable-to-build-more
 		LimitedAudio: BuildingInProgress
-		LimitedTextNotification: Unable to comply. Building in progress.
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -350,11 +350,11 @@ PYLE:
 		Group: Infantry
 		LowPowerModifier: 150
 		ReadyAudio: UnitReady
-		ReadyTextNotification: Unit ready.
+		ReadyTextNotification: notification-unit-ready
 		BlockedAudio: NoBuild
-		BlockedTextNotification: Unable to build more.
+		BlockedTextNotification: notification-unable-to-build-more
 		LimitedAudio: BuildingInProgress
-		LimitedTextNotification: Unable to comply. Building in progress.
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
 		QueuedAudio: Training
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -410,11 +410,11 @@ HAND:
 		Group: Infantry
 		LowPowerModifier: 150
 		ReadyAudio: UnitReady
-		ReadyTextNotification: Unit ready.
+		ReadyTextNotification: notification-unit-ready
 		BlockedAudio: NoBuild
-		BlockedTextNotification: Unable to build more.
+		BlockedTextNotification: notification-unable-to-build-more
 		LimitedAudio: BuildingInProgress
-		LimitedTextNotification: Unable to comply. Building in progress.
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
 		QueuedAudio: Training
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -464,7 +464,7 @@ AFLD:
 	ProductionAirdrop:
 		Produces: Vehicle.Nod
 		ActorType: c17
-		ReadyTextNotification: Reinforcements have arrived.
+		ReadyTextNotification: notification-reinforcements-have-arrived
 	WithBuildingBib:
 	WithIdleOverlay@DISH:
 		RequiresCondition: !build-incomplete
@@ -477,9 +477,9 @@ AFLD:
 		Group: Vehicle
 		LowPowerModifier: 150
 		BlockedAudio: NoBuild
-		BlockedTextNotification: Unable to build more.
+		BlockedTextNotification: notification-unable-to-build-more
 		LimitedAudio: BuildingInProgress
-		LimitedTextNotification: Unable to comply. Building in progress.
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
 		QueuedAudio: Training
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -538,11 +538,11 @@ WEAP:
 		Group: Vehicle
 		LowPowerModifier: 150
 		ReadyAudio: UnitReady
-		ReadyTextNotification: Unit ready.
+		ReadyTextNotification: notification-unit-ready
 		BlockedAudio: NoBuild
-		BlockedTextNotification: Unable to build more.
+		BlockedTextNotification: notification-unable-to-build-more
 		LimitedAudio: BuildingInProgress
-		LimitedTextNotification: Unable to comply. Building in progress.
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
 		QueuedAudio: Training
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -590,7 +590,7 @@ HPAD:
 		HpPerStep: 1000
 		PlayerExperience: 5
 		StartRepairingNotification: Repairing
-		StartRepairingTextNotification: Repairing.
+		StartRepairingTextNotification: notification-repairing
 	WithResupplyAnimation:
 		RequiresCondition: !build-incomplete
 	RallyPoint:
@@ -603,11 +603,11 @@ HPAD:
 		Group: Aircraft
 		LowPowerModifier: 150
 		ReadyAudio: UnitReady
-		ReadyTextNotification: Unit ready.
+		ReadyTextNotification: notification-unit-ready
 		BlockedAudio: NoBuild
-		BlockedTextNotification: Unable to build more.
+		BlockedTextNotification: notification-unable-to-build-more
 		LimitedAudio: BuildingInProgress
-		LimitedTextNotification: Unable to comply. Building in progress.
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
 		QueuedAudio: Training
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -618,11 +618,11 @@ HPAD:
 		Group: Aircraft
 		LowPowerModifier: 150
 		ReadyAudio: UnitReady
-		ReadyTextNotification: Unit ready.
+		ReadyTextNotification: notification-unit-ready
 		BlockedAudio: NoBuild
-		BlockedTextNotification: Unable to build more.
+		BlockedTextNotification: notification-unable-to-build-more
 		LimitedAudio: BuildingInProgress
-		LimitedTextNotification: Unable to comply. Building in progress.
+		LimitedTextNotification: notification-unable-to-comply-building-in-progress
 		QueuedAudio: Training
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -686,10 +686,10 @@ HQ:
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSpeechNotification: InsufficientPower
 		IncomingSpeechNotification: EnemyPlanesApproaching
-		EndChargeTextNotification: Airstrike ready.
-		SelectTargetTextNotification: Select target.
-		InsufficientPowerTextNotification: Insufficient power.
-		IncomingTextNotification: Enemy planes approaching.
+		EndChargeTextNotification: notification-airstrike-ready
+		SelectTargetTextNotification: notification-select-target
+		InsufficientPowerTextNotification: notification-insufficient-power
+		IncomingTextNotification: notification-enemy-planes-approaching
 		UnitType: a10
 		DisplayBeacon: True
 		BeaconPoster: airstrike
@@ -741,7 +741,7 @@ FIX:
 		Interval: 15
 		PlayerExperience: 5
 		StartRepairingNotification: Repairing
-		StartRepairingTextNotification: Repairing.
+		StartRepairingTextNotification: notification-repairing
 	RallyPoint:
 	CommandBarBlacklist:
 		DisableStop: false
@@ -800,10 +800,10 @@ EYE:
 		EndChargeSpeechNotification: IonCannonReady
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSpeechNotification: InsufficientPower
-		BeginChargeTextNotification: Ion cannon charging.
-		EndChargeTextNotification: Ion cannon ready.
-		SelectTargetTextNotification: Select target.
-		InsufficientPowerTextNotification: Insufficient power.
+		BeginChargeTextNotification: notification-ion-cannon-charging
+		EndChargeTextNotification: notification-ion-cannon-ready
+		SelectTargetTextNotification: notification-select-target
+		InsufficientPowerTextNotification: notification-insufficient-power
 		OnFireSound: ion1.aud
 		DisplayRadarPing: True
 		CameraActor: camera.small
@@ -859,11 +859,11 @@ TMPL:
 		InsufficientPowerSpeechNotification: InsufficientPower
 		LaunchSpeechNotification: NuclearWeaponLaunched
 		IncomingSpeechNotification: NuclearWarheadApproaching
-		SelectTargetTextNotification: Select target.
-		EndChargeTextNotification: Nuclear weapon available.
-		InsufficientPowerTextNotification: Insufficient power.
-		LaunchTextNotification: Nuclear weapon launched.
-		IncomingTextNotification: Nuclear warhead approaching.
+		SelectTargetTextNotification: notification-select-target
+		EndChargeTextNotification: notification-nuclear-weapon-available
+		InsufficientPowerTextNotification: notification-insufficient-power
+		LaunchTextNotification: notification-nuclear-weapon-launched
+		IncomingTextNotification: notification-nuclear-warhead-approaching
 		MissileWeapon: atomic
 		MissileImage: atomic
 		MissileDelay: 11

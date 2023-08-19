@@ -316,7 +316,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (actionManager != null)
 					actionManager.Modified = false;
 
-				TextNotificationsManager.AddTransientLine(world.LocalPlayer, TranslationProvider.GetString(SaveCurrentMap));
+				TextNotificationsManager.AddTransientLine(world.LocalPlayer, SaveCurrentMap);
 			}
 			catch (Exception e)
 			{

@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Speech to play for the warning.")]
 		public readonly string Notification = "SilosNeeded";
 
+		[TranslationReference(optional: true)]
 		[Desc("Text to display for the warning.")]
 		public readonly string TextNotification = null;
 
