@@ -51,11 +51,11 @@ namespace OpenRA.Network
 						{
 							var localizedMessage = new LocalizedMessage(node.Value);
 							if (localizedMessage.Key == Joined)
-								TextNotificationsManager.AddPlayerJoinedLine(localizedMessage.TranslatedText);
+								TextNotificationsManager.AddPlayerJoinedLine(localizedMessage.Key, localizedMessage.Arguments);
 							else if (localizedMessage.Key == Left)
-								TextNotificationsManager.AddPlayerLeftLine(localizedMessage.TranslatedText);
+								TextNotificationsManager.AddPlayerLeftLine(localizedMessage.Key, localizedMessage.Arguments);
 							else
-								TextNotificationsManager.AddSystemLine(localizedMessage.TranslatedText);
+								TextNotificationsManager.AddSystemLine(localizedMessage.Key, localizedMessage.Arguments);
 						}
 
 						break;

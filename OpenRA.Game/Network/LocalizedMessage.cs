@@ -9,10 +9,8 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Linguini.Shared.Types.Bundle;
 
 namespace OpenRA.Network
@@ -57,45 +55,36 @@ namespace OpenRA.Network
 		public readonly string Key = string.Empty;
 
 		[FieldLoader.LoadUsing(nameof(LoadArguments))]
-		public readonly FluentArgument[] Arguments = Array.Empty<FluentArgument>();
-
-		public string TranslatedText { get; }
+		public readonly Dictionary<string, object> Arguments;
 
 		static object LoadArguments(MiniYaml yaml)
 		{
-			var arguments = new List<FluentArgument>();
+			var arguments = new Dictionary<string, object>();
 			var argumentsNode = yaml.Nodes.FirstOrDefault(n => n.Key == "Arguments");
 			if (argumentsNode != null)
 			{
-				var regex = new Regex(@"Argument@\d+");
-				foreach (var argument in argumentsNode.Value.Nodes)
-					if (regex.IsMatch(argument.Key))
-						arguments.Add(FieldLoader.Load<FluentArgument>(argument.Value));
+				foreach (var argumentNode in argumentsNode.Value.Nodes)
+				{
+					var argument = FieldLoader.Load<FluentArgument>(argumentNode.Value);
+					if (argument.Type == FluentArgument.FluentArgumentType.Number)
+					{
+						if (!double.TryParse(argument.Value, out var number))
+							Log.Write("debug", $"Failed to parse {argument.Value}");
+
+						arguments.Add(argument.Key, number);
+					}
+					else
+						arguments.Add(argument.Key, argument.Value);
+				}
 			}
 
-			return arguments.ToArray();
+			return arguments;
 		}
 
 		public LocalizedMessage(MiniYaml yaml)
 		{
 			// Let the FieldLoader do the dirty work of loading the public fields.
 			FieldLoader.Load(this, yaml);
-
-			var argumentDictionary = new Dictionary<string, object>();
-			foreach (var argument in Arguments)
-			{
-				if (argument.Type == FluentArgument.FluentArgumentType.Number)
-				{
-					if (!double.TryParse(argument.Value, out var number))
-						Log.Write("debug", $"Failed to parse {argument.Value}");
-
-					argumentDictionary.Add(argument.Key, number);
-				}
-				else
-					argumentDictionary.Add(argument.Key, argument.Value);
-			}
-
-			TranslatedText = TranslationProvider.GetString(Key, argumentDictionary);
 		}
 
 		public static string Serialize(string key, Dictionary<string, object> arguments = null)
