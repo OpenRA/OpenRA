@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 			Carrying
 		}
 
-		protected readonly AircraftInfo AircraftInfo;
+		readonly AircraftInfo aircraftInfo;
 		readonly Aircraft aircraft;
 		readonly BodyOrientation body;
 		readonly IFacing facing;
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Traits
 			Carryable = null;
 			State = CarryallState.Idle;
 
-			AircraftInfo = self.Info.TraitInfoOrDefault<AircraftInfo>();
+			aircraftInfo = self.Info.TraitInfoOrDefault<AircraftInfo>();
 			aircraft = self.Trait<Aircraft>();
 			body = self.Trait<BodyOrientation>();
 			facing = self.Trait<IFacing>();
@@ -322,7 +322,7 @@ namespace OpenRA.Mods.Common.Traits
 				yield return new CarryallPickupOrderTargeter(Info);
 				yield return new DeployOrderTargeter("Unload", 10,
 				() => CanUnload() ? Info.UnloadCursor : Info.UnloadBlockedCursor);
-				yield return new CarryallDeliverUnitTargeter(AircraftInfo, Info);
+				yield return new CarryallDeliverUnitTargeter(aircraftInfo, Info);
 			}
 		}
 
@@ -349,7 +349,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString == "DeliverUnit")
 			{
 				var cell = self.World.Map.Clamp(self.World.Map.CellContaining(order.Target.CenterPosition));
-				if (!AircraftInfo.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
+				if (!aircraftInfo.MoveIntoShroud && !self.Owner.Shroud.IsExplored(cell))
 					return;
 
 				self.QueueActivity(order.Queued, new DeliverUnit(self, order.Target, Info.DropRange, Info.TargetLineColor));
