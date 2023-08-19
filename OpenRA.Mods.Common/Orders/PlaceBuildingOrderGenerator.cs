@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Orders
 					if (!AcceptsPlug(topLeft, plugInfo))
 					{
 						Game.Sound.PlayNotification(world.Map.Rules, owner, "Speech", notification, owner.Faction.InternalName);
-						TextNotificationsManager.AddTransientLine(placeBuildingInfo.CannotPlaceTextNotification, owner);
+						TextNotificationsManager.AddTransientLine(owner, placeBuildingInfo.CannotPlaceTextNotification);
 
 						yield break;
 					}
@@ -196,7 +196,7 @@ namespace OpenRA.Mods.Common.Orders
 							yield return order;
 
 						Game.Sound.PlayNotification(world.Map.Rules, owner, "Speech", notification, owner.Faction.InternalName);
-						TextNotificationsManager.AddTransientLine(placeBuildingInfo.CannotPlaceTextNotification, owner);
+						TextNotificationsManager.AddTransientLine(owner, placeBuildingInfo.CannotPlaceTextNotification);
 
 						yield break;
 					}

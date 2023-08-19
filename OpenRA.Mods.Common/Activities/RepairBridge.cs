@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Activities
 				enterHut?.Repair(self);
 
 			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", speechNotification, self.Owner.Faction.InternalName);
-			TextNotificationsManager.AddTransientLine(textNotification, self.Owner);
+			TextNotificationsManager.AddTransientLine(self.Owner, textNotification);
 
 			if (enterBehaviour == EnterBehaviour.Dispose)
 				self.Dispose();

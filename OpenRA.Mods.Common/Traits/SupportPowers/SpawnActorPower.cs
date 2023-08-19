@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 			Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
 				Info.SelectTargetSpeechNotification, self.Owner.Faction.InternalName);
 
-			TextNotificationsManager.AddTransientLine(Info.SelectTargetTextNotification, manager.Self.Owner);
+			TextNotificationsManager.AddTransientLine(manager.Self.Owner, Info.SelectTargetTextNotification);
 
 			self.World.OrderGenerator = new SelectSpawnActorPowerTarget(order, manager, this, MouseButton.Left);
 		}

@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (resources.Resources > info.Threshold * resources.ResourceCapacity / 100)
 				{
 					Game.Sound.PlayNotification(self.World.Map.Rules, owner, "Speech", info.Notification, owner.Faction.InternalName);
-					TextNotificationsManager.AddTransientLine(info.TextNotification, owner);
+					TextNotificationsManager.AddTransientLine(owner, info.TextNotification);
 				}
 
 				lastSiloAdviceTime = Game.RunTime;

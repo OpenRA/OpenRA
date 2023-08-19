@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 					Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech",
 						info.ReinforcementsArrivedSpeechNotification, self.Owner.Faction.InternalName);
 
-					TextNotificationsManager.AddTransientLine(info.ReinforcementsArrivedTextNotification, self.Owner);
+					TextNotificationsManager.AddTransientLine(self.Owner, info.ReinforcementsArrivedTextNotification);
 				}
 
 				aircraftInRange[a] = true;

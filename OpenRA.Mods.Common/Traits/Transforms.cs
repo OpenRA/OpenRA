@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 					Game.Sound.PlayToPlayer(SoundType.World, self.Owner, s);
 
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", Info.NoTransformNotification, self.Owner.Faction.InternalName);
-				TextNotificationsManager.AddTransientLine(Info.NoTransformTextNotification, self.Owner);
+				TextNotificationsManager.AddTransientLine(self.Owner, Info.NoTransformTextNotification);
 
 				return;
 			}

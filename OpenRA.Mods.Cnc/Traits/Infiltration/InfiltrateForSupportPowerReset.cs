@@ -61,8 +61,8 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (info.InfiltrationNotification != null)
 				Game.Sound.PlayNotification(self.World.Map.Rules, infiltrator.Owner, "Speech", info.InfiltrationNotification, infiltrator.Owner.Faction.InternalName);
 
-			TextNotificationsManager.AddTransientLine(info.InfiltratedTextNotification, self.Owner);
-			TextNotificationsManager.AddTransientLine(info.InfiltrationTextNotification, infiltrator.Owner);
+			TextNotificationsManager.AddTransientLine(self.Owner, info.InfiltratedTextNotification);
+			TextNotificationsManager.AddTransientLine(infiltrator.Owner, info.InfiltrationTextNotification);
 
 			infiltrator.Owner.PlayerActor.TraitOrDefault<PlayerExperience>()?.GiveExperience(info.PlayerExperience);
 

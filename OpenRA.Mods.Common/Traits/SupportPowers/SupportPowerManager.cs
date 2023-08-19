@@ -231,7 +231,7 @@ namespace OpenRA.Mods.Common.Traits
 			Game.Sound.PlayNotification(power.Self.World.Map.Rules, power.Self.Owner, "Speech",
 				Info.SelectTargetSpeechNotification, power.Self.Owner.Faction.InternalName);
 
-			TextNotificationsManager.AddTransientLine(Info.SelectTargetTextNotification, power.Self.Owner);
+			TextNotificationsManager.AddTransientLine(power.Self.Owner, Info.SelectTargetTextNotification);
 
 			power.SelectTarget(power.Self, Key, Manager);
 		}

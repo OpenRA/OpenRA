@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (Game.RunTime > lastAttackTime + info.NotifyInterval)
 			{
 				Game.Sound.PlayNotification(self.World.Map.Rules, self.Owner, "Speech", info.Notification, self.Owner.Faction.InternalName);
-				TextNotificationsManager.AddTransientLine(info.TextNotification, self.Owner);
+				TextNotificationsManager.AddTransientLine(self.Owner, info.TextNotification);
 
 				radarPings?.Add(() => self.Owner.IsAlliedWith(self.World.RenderPlayer), self.CenterPosition, info.RadarPingColor, info.RadarPingDuration);
 

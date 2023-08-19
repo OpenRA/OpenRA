@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 				Game.Sound.PlayNotification(self.World.Map.Rules, discoverer, "Speech", Info.Notification, discoverer.Faction.InternalName);
 
 			if (discoverer != null)
-				TextNotificationsManager.AddTransientLine(Info.TextNotification, discoverer);
+				TextNotificationsManager.AddTransientLine(discoverer, Info.TextNotification);
 
 			// Radar notification
 			if (Info.PingRadar)

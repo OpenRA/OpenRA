@@ -32,18 +32,18 @@ namespace OpenRA
 				SystemMessageLabel = "Battlefield Control";
 		}
 
-		public static void AddTransientLine(string text, Player player)
+		public static void AddTransientLine(Player player, string text)
 		{
 			if (string.IsNullOrEmpty(text))
 				return;
 
 			if (player == null || player == player.World.LocalPlayer)
-				AddTextNotification(TextNotificationPool.Transients, SystemClientId, SystemMessageLabel, text);
+				AddTextNotification(TextNotificationPool.Transients, SystemClientId, SystemMessageLabel, TranslationProvider.GetString(text));
 		}
 
-		public static void AddFeedbackLine(string text)
+		public static void AddFeedbackLine(string text, Dictionary<string, object> arguments = null)
 		{
-			AddTextNotification(TextNotificationPool.Feedback, SystemClientId, SystemMessageLabel, text);
+			AddTextNotification(TextNotificationPool.Feedback, SystemClientId, SystemMessageLabel, TranslationProvider.GetString(text, arguments));
 		}
 
 		public static void AddMissionLine(string prefix, string text, Color? prefixColor = null)
@@ -51,19 +51,19 @@ namespace OpenRA
 			AddTextNotification(TextNotificationPool.Mission, SystemClientId, prefix, text, prefixColor);
 		}
 
-		public static void AddPlayerJoinedLine(string text)
+		public static void AddPlayerJoinedLine(string text, Dictionary<string, object> arguments = null)
 		{
-			AddTextNotification(TextNotificationPool.Join, SystemClientId, SystemMessageLabel, text);
+			AddTextNotification(TextNotificationPool.Join, SystemClientId, SystemMessageLabel, TranslationProvider.GetString(text, arguments));
 		}
 
-		public static void AddPlayerLeftLine(string text)
+		public static void AddPlayerLeftLine(string text, Dictionary<string, object> arguments = null)
 		{
-			AddTextNotification(TextNotificationPool.Leave, SystemClientId, SystemMessageLabel, text);
+			AddTextNotification(TextNotificationPool.Leave, SystemClientId, SystemMessageLabel, TranslationProvider.GetString(text, arguments));
 		}
 
-		public static void AddSystemLine(string text)
+		public static void AddSystemLine(string text, Dictionary<string, object> arguments = null)
 		{
-			AddSystemLine(SystemMessageLabel, text);
+			AddSystemLine(SystemMessageLabel, TranslationProvider.GetString(text, arguments));
 		}
 
 		public static void AddSystemLine(string prefix, string text)

@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!Repairers.Any())
 				{
 					Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", Info.RepairingStoppedNotification, player.Faction.InternalName);
-					TextNotificationsManager.AddTransientLine(Info.RepairingStoppedTextNotification, self.Owner);
+					TextNotificationsManager.AddTransientLine(self.Owner, Info.RepairingStoppedTextNotification);
 				}
 
 				return;
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 			Repairers.Add(player);
 
 			Game.Sound.PlayNotification(self.World.Map.Rules, player, "Speech", Info.RepairingNotification, player.Faction.InternalName);
-			TextNotificationsManager.AddTransientLine(Info.RepairingTextNotification, self.Owner);
+			TextNotificationsManager.AddTransientLine(self.Owner, Info.RepairingTextNotification);
 
 			UpdateCondition(self);
 		}
