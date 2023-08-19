@@ -128,10 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 					return true;
 
 				var dropRange = carryall.Info.DropRange;
-				var destination = carryable.Destination;
-				if (destination != null)
-					self.QueueActivity(true, new DeliverUnit(self, Target.FromCell(self.World, destination.Value), dropRange, carryall.Info.TargetLineColor));
-
+				self.QueueActivity(true, new DeliverUnit(self, Target.FromCell(self.World, carryable.Destination ?? self.Location), dropRange, carryall.Info.TargetLineColor));
 				return true;
 			}
 		}
