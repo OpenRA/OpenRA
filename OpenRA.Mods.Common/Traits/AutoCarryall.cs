@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			protected override void OnFirstRun(Actor self)
 			{
-				if (!carryall.IsTraitDisabled && carryall.Carryable != null && !carryall.Carryable.IsDead)
+				if (!carryable.IsTraitDisabled && !carryall.IsTraitDisabled && carryall.Carryable != null && !carryall.Carryable.IsDead)
 					QueueChild(new PickupUnit(self, cargo, 0, carryall.Info.TargetLineColor));
 			}
 
@@ -188,11 +188,11 @@ namespace OpenRA.Mods.Common.Traits
 			public override bool Tick(Actor self)
 			{
 				// Cargo may have become invalid or PickupUnit cancelled.
-				if (IsCanceling || carryall.IsTraitDisabled || carryall.Carryable == null || carryall.Carryable.IsDead)
+				if (IsCanceling || carryall.Carryable == null || carryall.Carryable.IsDead)
 					return true;
 
 				var dropRange = carryall.Info.DropRange;
-				QueueChild(new DeliverUnit(self, Target.FromCell(self.World, carryable.Destination ?? self.Location), dropRange, carryall.Info.TargetLineColor));
+				QueueChild(new DeliverUnit(self, Target.FromCell(self.World, carryall.IsTraitDisabled || carryable.IsTraitDisabled ? self.Location : carryable.Destination ?? self.Location), dropRange, carryall.Info.TargetLineColor));
 
 				return true;
 			}
