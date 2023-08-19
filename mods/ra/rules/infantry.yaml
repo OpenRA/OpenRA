@@ -350,7 +350,7 @@ SPY:
 	Infiltrates:
 		Types: SpyInfiltrate
 		Notification: BuildingInfiltrated
-		TextNotification: Building infiltrated.
+		TextNotification: notification-building-infiltrated
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: HoldFire
@@ -645,7 +645,7 @@ THF:
 	Infiltrates:
 		Types: ThiefInfiltrate
 		Notification: BuildingInfiltrated
-		TextNotification: Building infiltrated.
+		TextNotification: notification-building-infiltrated
 	Voiced:
 		VoiceSet: ThiefVoice
 	-TakeCover:

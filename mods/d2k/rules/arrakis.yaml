@@ -113,7 +113,7 @@ sandworm:
 	IgnoresCloak:
 	AnnounceOnSeen:
 		Notification: WormSign
-		TextNotification: Worm sign.
+		TextNotification: notification-worm-sign
 		PingRadar: True
 	RevealsShroud:
 		Range: 5c0

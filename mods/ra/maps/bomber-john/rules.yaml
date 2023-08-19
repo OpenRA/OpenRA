@@ -101,8 +101,8 @@ Player:
 		InsufficientPowerSpeechNotification: InsufficientPower
 		BeginChargeSpeechNotification: IronCurtainCharging
 		EndChargeSpeechNotification: IronCurtainReady
-		SelectTargetTextNotification: Select target.
-		InsufficientPowerTextNotification: Insufficient power.
+		SelectTargetTextNotification: notification-select-target
+		InsufficientPowerTextNotification: notification-insufficient-power
 		BeginChargeTextNotification: Iron curtain charging.
 		EndChargeTextNotification: Iron curtain ready.
 		Condition: invulnerability

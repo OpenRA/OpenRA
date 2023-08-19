@@ -27,6 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly string SpeechNotification = null;
 
 		[Desc("The text notification to display when the player is low power.")]
+		[TranslationReference(optional: true)]
 		public readonly string TextNotification = null;
 
 		public override object Create(ActorInitializer init) { return new PowerManager(init.Self, this); }

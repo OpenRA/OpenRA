@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string ReadyAudio = null;
 
+		[TranslationReference(optional: true)]
 		[Desc("Text notification displayed when production is activated.")]
 		public readonly string ReadyTextNotification = null;
 
@@ -40,6 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string BlockedAudio = null;
 
+		[TranslationReference(optional: true)]
 		[Desc("Text notification displayed when the exit is jammed.")]
 		public readonly string BlockedTextNotification = null;
 

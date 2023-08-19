@@ -87,6 +87,12 @@ notification-slot-closed = Your slot was closed by the host.
 notification-joined = { $player } has joined the game.
 notification-lobby-disconnected = { $player } has left.
 
+## UnitOrders
+notification-game-has-started = The game has started.
+notification-game-saved = Game saved.
+notification-game-paused = The game is paused by { $player }
+notification-game-unpaused = The game is un-paused by { $player }
+
 ## Server
 notification-game-started = Game started
 
@@ -561,6 +567,22 @@ dialog-incompatible-replay =
     .prompt-unavailable-map = { -incompatible-replay-recorded } an unavailable map:
     { $map }.
 
+# SelectUnitsByTypeHotkeyLogic
+nothing-selected = Nothing selected.
+
+## SelectUnitsByTypeHotkeyLogic, SelectAllUnitsHotkeyLogic
+selected-units-across-screen =
+    { $units ->
+        [one] Selected one unit across screen.
+       *[other] Selected { $units } units across screen.
+    }
+
+selected-units-across-map =
+    { $units ->
+        [one] Selected one unit across map.
+       *[other] Selected { $units } units across map.
+    }
+
 ## ServerCreationLogic
 label-internet-server-nat-A = Internet Server (UPnP/NAT-PMP
 label-internet-server-nat-B-enabled = Enabled
@@ -754,3 +776,11 @@ notification-opened = Opened
 
 ## ActorEditLogic
 notification-edited-actor = Edited { $name } ({ $id })
+
+## ConquestVictoryConditions, StrategicVictoryConditions
+notification-player-is-victorious = { $player } is victorious.
+notification-player-is-defeated = { $player } is defeated.
+
+## OrderManager
+notification-desync-compare-logs = Out of sync in frame { $frame }.
+    Compare syncreport.log with other players.

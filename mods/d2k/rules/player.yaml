@@ -16,9 +16,9 @@ Player:
 		DisplayOrder: 0
 		LowPowerModifier: 300
 		ReadyAudio: BuildingReady
-		ReadyTextNotification: Construction complete.
+		ReadyTextNotification: notification-construction-complete
 		BlockedAudio: NoRoom
-		BlockedTextNotification: No room for new unit.
+		BlockedTextNotification: notification-no-room-for-new-units
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -29,9 +29,9 @@ Player:
 		DisplayOrder: 1
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
-		ReadyTextNotification: Unit ready.
+		ReadyTextNotification: notification-unit-ready
 		BlockedAudio: NoRoom
-		BlockedTextNotification: No room for new unit.
+		BlockedTextNotification: notification-no-room-for-new-units
 		QueuedAudio: Training
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -42,9 +42,9 @@ Player:
 		DisplayOrder: 2
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
-		ReadyTextNotification: Unit ready.
+		ReadyTextNotification: notification-unit-ready
 		BlockedAudio: NoRoom
-		BlockedTextNotification: No room for new unit.
+		BlockedTextNotification: notification-no-room-for-new-units
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -55,9 +55,9 @@ Player:
 		DisplayOrder: 3
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
-		ReadyTextNotification: Unit ready.
+		ReadyTextNotification: notification-unit-ready
 		BlockedAudio: NoRoom
-		BlockedTextNotification: No room for new unit.
+		BlockedTextNotification: notification-no-room-for-new-units
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -68,7 +68,7 @@ Player:
 		DisplayOrder: 4
 		BuildDurationModifier: 212
 		BlockedAudio: NoRoom
-		BlockedTextNotification: No room for new unit.
+		BlockedTextNotification: notification-no-room-for-new-units
 		QueuedAudio: OrderPlaced
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -77,9 +77,9 @@ Player:
 		DisplayOrder: 5
 		LowPowerModifier: 300
 		ReadyAudio: UnitReady
-		ReadyTextNotification: Unit ready.
+		ReadyTextNotification: notification-unit-ready
 		BlockedAudio: NoRoom
-		BlockedTextNotification: No room for new unit.
+		BlockedTextNotification: notification-no-room-for-new-units
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
@@ -88,17 +88,17 @@ Player:
 	ClassicProductionQueue@Upgrade: # Upgrade is defined after others so it won't be automatically selected by ProductionQueueFromSelection.
 		Type: Upgrade
 		ReadyAudio: NewOptions
-		ReadyTextNotification: New construction options.
+		ReadyTextNotification: notification-new-construction-options
 		BlockedAudio: NoRoom
-		BlockedTextNotification: No room for new unit.
+		BlockedTextNotification: notification-no-room-for-new-units
 		QueuedAudio: Upgrading
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 	PlaceBuilding:
 		NewOptionsNotification: NewOptions
 		CannotPlaceNotification: BuildingCannotPlaceAudio
-		NewOptionsTextNotification: New construction options.
-		CannotPlaceTextNotification: Cannot build here.
+		NewOptionsTextNotification: notification-new-construction-options
+		CannotPlaceTextNotification: notification-cannot-build-here
 	SupportPowerManager:
 	ScriptTriggers:
 	MissionObjectives:
@@ -109,19 +109,19 @@ Player:
 	PowerManager:
 		AdviceInterval: 26000
 		SpeechNotification: LowPower
-		TextNotification: Low power.
+		TextNotification: notification-low-power
 	AllyRepair:
 	PlayerResources:
 		SelectableCash: 2500, 5000, 7000, 10000, 20000
 		InsufficientFundsNotification: InsufficientFunds
-		InsufficientFundsTextNotification: Insufficient funds.
+		InsufficientFundsTextNotification: notification-insufficient-funds
 		CashTickUpNotification: CashTickUp
 		CashTickDownNotification: CashTickDown
 	DeveloperMode:
 		CheckboxDisplayOrder: 8
 	BaseAttackNotifier:
-		TextNotification: Base under attack.
-		AllyTextNotification: Our ally is under attack.
+		TextNotification: notification-base-under-attack
+		AllyTextNotification: notification-ally-under-attack
 	Shroud:
 		FogCheckboxDisplayOrder: 3
 	LobbyPrerequisiteCheckbox@AUTOCONCRETE:
@@ -133,7 +133,7 @@ Player:
 		Prerequisites: global-auto-concrete
 	FrozenActorLayer:
 	HarvesterAttackNotifier:
-		TextNotification: Harvester under attack.
+		TextNotification: notification-harvester-under-attack
 	PlayerStatistics:
 	PlaceBeacon:
 	ProvidesPrerequisite@atreides:
@@ -178,7 +178,7 @@ Player:
 	GrantConditionOnPrerequisiteManager:
 	ResourceStorageWarning:
 		AdviceInterval: 26000
-		TextNotification: Silos needed.
+		TextNotification: notification-silos-needed
 	PlayerExperience:
 	GameSaveViewportManager:
 	PlayerRadarTerrain:

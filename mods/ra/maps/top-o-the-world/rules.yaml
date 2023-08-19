@@ -59,8 +59,8 @@ powerproxy.spyplane:
 		OneShot: true
 		SelectTargetSpeechNotification: SelectTarget
 		EndChargeSpeechNotification: SpyPlaneReady
-		SelectTargetTextNotification: Select target.
-		EndChargeTextNotification: Spy plane ready.
+		SelectTargetTextNotification: notification-select-target
+		EndChargeTextNotification: notifcation-spy-plane-ready
 		CameraActor: camera.spyplane
 		CameraRemoveDelay: 150
 		UnitType: u2

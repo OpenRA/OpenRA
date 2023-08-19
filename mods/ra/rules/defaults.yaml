@@ -47,7 +47,7 @@
 ^GainsExperience:
 	GainsExperience:
 		LevelUpNotification: LevelUp
-		LevelUpTextNotification: Unit promoted.
+		LevelUpTextNotification: notification-unit-promoted
 		Conditions:
 			200: rank-veteran
 			400: rank-veteran
@@ -268,7 +268,7 @@
 	AttackMove:
 	HiddenUnderFog:
 	ActorLostNotification:
-		TextNotification: Unit lost.
+		TextNotification: notification-unit-lost
 	ProximityCaptor:
 		Types: Vehicle
 	GpsDot:
@@ -285,9 +285,9 @@
 		CancelActivity: True
 	CaptureNotification:
 		Notification: UnitStolen
-		TextNotification: Unit stolen.
+		TextNotification: notification-unit-stolen
 		LoseNotification: UnitLost
-		LoseTextNotification: Unit lost.
+		LoseTextNotification: notification-unit-lost
 	MustBeDestroyed:
 	Voiced:
 		VoiceSet: VehicleVoice
@@ -371,7 +371,7 @@
 		RequiresCondition: disable-experience
 	HiddenUnderFog:
 	ActorLostNotification:
-		TextNotification: Unit lost.
+		TextNotification: notification-unit-lost
 	GpsDot:
 		String: Infantry
 	Crushable:
@@ -519,7 +519,7 @@
 	AttackMove:
 	ActorLostNotification:
 		Notification: NavalUnitLost
-		TextNotification: Naval unit lost.
+		TextNotification: notification-naval-unit-lost
 	ProximityCaptor:
 		Types: Ship
 	Chronoshiftable:
@@ -604,7 +604,7 @@
 	Guardable:
 	ActorLostNotification:
 		Notification: AirUnitLost
-		TextNotification: Airborne unit lost.
+		TextNotification: notification-airborne-unit-lost
 	ProximityCaptor:
 		Types: Plane
 	EjectOnDeath:
@@ -639,9 +639,9 @@
 		RequiresCondition: !airborne
 	CaptureNotification:
 		Notification: UnitStolen
-		TextNotification: Unit stolen.
+		TextNotification: notification-unit-stolen
 		LoseNotification: UnitLost
-		LoseTextNotification: Unit lost.
+		LoseTextNotification: notification-unit-lost
 
 ^Plane:
 	Inherits: ^NeutralPlane
@@ -700,7 +700,7 @@
 		Weapon: BuildingExplode
 		EmptyWeapon: BuildingExplode
 	CaptureNotification:
-		TextNotification: Structure captured.
+		TextNotification: notification-structure-captured
 	ShakeOnDeath:
 	ProximityCaptor:
 		Types: Building
@@ -1344,7 +1344,7 @@
 	PrimaryBuilding:
 		PrimaryCondition: primary
 		SelectionNotification: PrimaryBuildingSelected
-		SelectionTextNotification: Primary building selected.
+		SelectionTextNotification: notification-primary-building-selected
 	WithDecoration@primary:
 		RequiresCondition: primary
 		Position: Top

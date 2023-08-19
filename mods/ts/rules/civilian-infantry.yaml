@@ -82,7 +82,7 @@ CHAMSPY:
 	Infiltrates:
 		Types: SpyInfiltrate
 		Notification: BuildingInfiltrated
-		TextNotification: Building infiltrated.
+		TextNotification: notification-building-infiltrated
 	-WithSplitAttackPaletteInfantryBody:
 	WithDisguisingInfantryBody:
 		IdleSequences: idle1, idle2

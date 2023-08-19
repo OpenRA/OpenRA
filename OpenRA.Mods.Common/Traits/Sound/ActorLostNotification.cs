@@ -20,6 +20,7 @@ namespace OpenRA.Mods.Common.Traits.Sound
 		public readonly string Notification = "UnitLost";
 
 		[Desc("Text notification to display.")]
+		[TranslationReference(optional: true)]
 		public readonly string TextNotification = null;
 
 		public readonly bool NotifyAll = false;
