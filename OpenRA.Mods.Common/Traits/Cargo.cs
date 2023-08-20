@@ -241,9 +241,10 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (checkTerrainType)
 			{
-				var terrainType = self.World.Map.GetTerrainInfo(self.Location).Type;
+				if (!self.World.Map.Contains(self.Location))
+					return false;
 
-				if (!Info.UnloadTerrainTypes.Contains(terrainType))
+				if (!Info.UnloadTerrainTypes.Contains(self.World.Map.GetTerrainInfo(self.Location).Type))
 					return false;
 			}
 
@@ -409,6 +410,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
  		{
+			// IsAtGroundLevel contains Map.Contains(self.Location) check.
 			if (Info.EjectOnDeath && self.IsAtGroundLevel() && (!checkTerrainType || Info.UnloadTerrainTypes.Contains(self.World.Map.GetTerrainInfo(self.Location).Type)))
 			{
 				while (!IsEmpty())
