@@ -45,16 +45,23 @@ namespace OpenRA.Mods.Common.Widgets
 			var headerLines = textMessage.Split('\n');
 			var headerHeight = 0;
 			var maxWidth = 0;
+			var headerLabels = new List<LabelWidget>(headerLines.Length);
 			foreach (var l in headerLines)
 			{
 				var line = (LabelWidget)headerTemplate.Clone();
 				line.GetText = () => l;
 				line.Bounds.Y += headerHeight;
-				maxWidth = Math.Max(maxWidth, line.Bounds.Width / 2);
-				line.Bounds.X += maxWidth / 2;
 
 				prompt.AddChild(line);
+				headerLabels.Add(line);
+
 				headerHeight += headerTemplate.Bounds.Height;
+				maxWidth = Math.Max(maxWidth, line.Bounds.Width / 2);
+			}
+
+			foreach (var label in headerLabels)
+			{
+				label.Bounds.X += maxWidth / 2;
 			}
 
 			titleLabel.Bounds.X += maxWidth / 2;
