@@ -23,6 +23,10 @@ TRAN:
 	RevealsShroud:
 		Range: 10c0
 		Type: GroundPosition
+	Encyclopedia:
+		Description: The chinook can hold 10 infantry but is slow and vulnerable. Generally used to transport commandos or engineers for backline-destruction.\n\nCan also be handy in a pinch to crush a commando by landing! (alt)
+		Order: 230
+		Category: Units
 	WithIdleOverlay@ROTOR1AIR:
 		Offset: 597,0,85
 		Sequence: rotor
@@ -85,6 +89,10 @@ HELI:
 		LocalOffset: 128,-213,-85, 128,213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
+	Encyclopedia:
+		Description: The apache has more health than the orca and acts as a support unit. Can kill light vehicles, infantry, and aircraft. Works great with artillery, as it can kill any approaching light vehicles.\n\nAmmo is automatically reloaded in the air.
+		Order: 240
+		Category: Units
 	AttackMove:
 		Voice: Attack
 	AutoTarget:
@@ -153,6 +161,10 @@ ORCA:
 		Weapon: OrcaAAMissiles
 		LocalOffset: 427,-171,-213, 427,171,-213
 		PauseOnCondition: !ammo
+	Encyclopedia: 
+		Description: Fast but fragile, the orca harasses enemy vehicles and air with AT missiles. It is best used opportunistically, as it can be kept alive for a long time if used well. The AA missiles are effective but have a hard time hitting fleeing air targets.\n\nAmmo is automatically reloaded in the air.
+		Order: 250
+		Category: Units
 	AttackMove:
 		Voice: Attack
 	AutoTarget:

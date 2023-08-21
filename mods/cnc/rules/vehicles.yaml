@@ -16,6 +16,10 @@ MCV:
 		Locomotor: heavywheeled
 	Health:
 		HP: 120000
+	Encyclopedia:
+		Description: Deploying a MCV will change to its construction yard form. The MCV has more health in its deployed form, but undeploying it can be helpful to avoid infantry.\n\nIf you have a teammate, your teammate can “gift” you an MCV by killing an undeployed MCV near your base, which you can then reclaim with an engineer.
+		Order: 80
+		Category: Units
 	Repairable:
 		HpPerStep: 1819
 	Armor:
@@ -68,6 +72,10 @@ HARV:
 		Speed: 72
 	Health:
 		HP: 62500
+	Encyclopedia:
+		Description: Harvesters slowly mine Tiberium and deposit it in your Tiberium refinery, where it is converted into credits.\n\nCan be sent to allied refineries to give income.
+		Order: 90
+		Category: Units
 	Repairable:
 		HpPerStep: 2584
 	Armor:
@@ -121,6 +129,10 @@ APC:
 		PauseOnCondition: notmobile
 	Health:
 		HP: 19000
+	Encyclopedia:
+		Description:  The APC can transport infantry, which can come in handy when capturing civilian structures. While the flak gun doesn't do much damage to enemy vehicles, the APC can resist enemy shots while your hum-vees deal the damage. It also functions as your primary AA unit when facing air units.\n\nThe APC prioritizes air targets, if you hit the stop command it’ll retarget onto any nearby enemy air units.
+		Order: 100
+		Category: Units
 	Repairable:
 		HpPerStep: 1440
 	Armor:
@@ -209,6 +221,10 @@ ARTY:
 		Weapon: ArtilleryShell
 		LocalOffset: 624,0,208
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: Nod artillery is a glass cannon, having little health but doing large amounts of damage at long range. Particularly strong vs structures and infantry, but can kill tanks if they stand still.\n\nHighly vulnerable when clumped due to death explosion. 
+		Order: 110
+		Category: Units
 	AttackFrontal:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
@@ -258,6 +274,10 @@ FTNK:
 		Weapon: BigFlamer
 		LocalOffset: 512,128,42, 512,-128,42
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: Flame tanks roast infantry and structures alike. They are also great for suprise attacks.\n\nBe wary of their splash damage on death, but don’t forget it can also be used to your advantage.
+		Order: 120
+		Category: Units
 	AttackFrontal:
 		Voice: Attack
 		FacingTolerance: 0
@@ -306,6 +326,10 @@ BGGY:
 		Weapon: MachineGun
 		LocalOffset: 171,0,43
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: Strong versus light vehicles and infantry, buggies are great at scouting and eliminating isolated infantry.\n\nIs a little cheaper, faster, and fragile compared to the GDI hum-vee.
+		Order: 130
+		Category: Units
 	AttackMove:
 		Voice: Attack
 	AttackTurreted:
@@ -349,6 +373,10 @@ BIKE:
 		Weapon: BikeRockets
 		LocalOffset: -128, -170, 170, -128, 170, 170
 		LocalYaw: 100, -100
+	Encyclopedia:
+		Description: The Nod bike is a very fast vehicle armed with armor piercing rockets, which makes it great for hit and run and harvester harassment.\n\nBe wary that the rockets are slow and have a hard time hitting fast targets.
+		Order: 140
+		Category: Units
 	AttackFrontal:
 		Voice: Attack
 		FacingTolerance: 0
@@ -393,6 +421,10 @@ JEEP:
 		Weapon: MachineGunH
 		LocalOffset: 171,0,85
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: Strong versus light vehicles and infantry, hum-vees are great at scouting and eliminating isolated infantry. They’re excellent for dealing with Nod bike spam and should be built instead of tanks when fighting them.\n\nIt is a little slower than the Nod buggy but has more health.
+		Order: 150
+		Category: Units
 	AttackMove:
 		Voice: Attack
 	AttackTurreted:
@@ -439,6 +471,10 @@ LTNK:
 		RecoilRecovery: 17
 		LocalOffset: 720,0,90
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: Fast with a high health pool, the light tank isn’t particularly good at doing damage, but works great as a frontline in a variety of compositions.\n\nShould be combined with bikes, stealth tanks, or infantry when facing medium tanks.
+		Order: 160
+		Category: Units
 	AttackMove:
 		Voice: Attack
 	AttackTurreted:
@@ -484,6 +520,10 @@ MTNK:
 		RecoilRecovery: 26
 		LocalOffset: 768,0,90
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: The medium tank is the workhorse of GDI. It has a good balance of speed, health, and damage. It will easily destroy Nod light tanks and can tear through structures if it sneaks into a base.\n\nIt is recommended to mix minigunners with your medium tank armies to deal with enemy infantry.
+		Order: 170
+		Category: Units
 	AttackMove:
 		Voice: Attack
 	AttackTurreted:
@@ -544,6 +584,10 @@ HTNK:
 		LocalYaw: -100, 100
 		Recoil: 10
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: The Mammoth Tank is a crawling battle station, capable of self repair and engaging any threat. It is particularly effective vs enemy armor, but can also destroy small amounts of infantry or aircraft.\n\nWhen in an enemy base, put it on aggressive stance to have it carve a path of destruction as it moves.
+		Order: 180
+		Category: Units
 	AttackMove:
 		Voice: Attack
 	AttackTurreted:
@@ -601,6 +645,10 @@ MSAM:
 		Name: secondary
 		Weapon: 227mm
 		LocalOffset: 213,-128,0, 213,128,0
+	Encyclopedia:
+		Description: Referred to as “MLRS” by players, this artillery platform fires volleys of rockets at distant targets. It is particularly effective vs light vehicles, and does moderate damage vs infantry, buildings, and heavy armor.\n\nA strong unit to build vs enemy artillery, as its high bullet velocity and damage to light vehicles makes it the perfect counter to Nod artillery.
+		Order: 190
+		Category: Units
 	AttackFrontal:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
@@ -653,6 +701,10 @@ MLRS:
 	Armament:
 		Weapon: Patriot
 		LocalOffset: 0,-171,0, 0,171,0
+	Encyclopedia:
+		Description: Generally referred to as MSAM, this is a dedicated anti-air vehicle for Nod when bikes don’t cut it. Has a slow missile but with a strong splash.
+		Order: 200
+		Category: Units
 	AmmoPool:
 		Ammo: 2
 		AmmoCondition: ammo
@@ -721,6 +773,10 @@ STNK:
 	Armament@SECONDARY:
 		Weapon: 227mm.stnkAA
 		LocalOffset: 213,43,128, 213,-43,128
+	Encyclopedia:
+		Description: Stealth tanks cloak and uncloak when taking damage or when firing their weapons. They can also be detected by defenses in a small radius or infantry in a one cell radius. Their long range AP missiles are excellent for dealing with enemy armor or air.\n\nCan crush infantry in a pinch.
+		Order: 210
+		Category: Units
 	AttackFrontal:
 		Voice: Attack
 		FacingTolerance: 0
@@ -779,6 +835,10 @@ TRUCK:
 		Speed: 113
 	RevealsShroud:
 		Range: 4c0
+	Encyclopedia:
+		Description: Supply trucks are a convenient way to share cash when your ally is out of money, or you can’t spend yours fast enough. Costs and delivers 1k money but builds 2x as fast.
+		Order: 220
+		Category: Units
 	DeliversCash:
 		Payload: 1000
 		PlayerExperience: 10
