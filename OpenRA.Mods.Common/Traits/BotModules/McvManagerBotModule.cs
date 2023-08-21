@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.Player)]
 	[Desc("Manages AI MCVs.")]
 	public class McvManagerBotModuleInfo : ConditionalTraitInfo
 	{

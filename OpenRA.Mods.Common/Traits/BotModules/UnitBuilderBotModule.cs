@@ -16,6 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[TraitLocation(SystemActors.Player)]
 	[Desc("Controls AI unit production.")]
 	public class UnitBuilderBotModuleInfo : ConditionalTraitInfo
 	{
