@@ -37,22 +37,29 @@ namespace OpenRA.Mods.Common.Widgets
 			var otherButton = prompt.GetOrNull<ButtonWidget>("OTHER_BUTTON");
 
 			var titleMessage = TranslationProvider.GetString(title, titleArguments);
-			prompt.Get<LabelWidget>("PROMPT_TITLE").GetText = () => titleMessage;
+			var titleLabel = prompt.Get<LabelWidget>("PROMPT_TITLE");
+			titleLabel.GetText = () => titleMessage;
 
 			var headerTemplate = prompt.Get<LabelWidget>("PROMPT_TEXT");
 			var textMessage = TranslationProvider.GetString(text, textArguments);
 			var headerLines = textMessage.Split('\n');
 			var headerHeight = 0;
+			var maxWidth = 0;
 			foreach (var l in headerLines)
 			{
 				var line = (LabelWidget)headerTemplate.Clone();
 				line.GetText = () => l;
 				line.Bounds.Y += headerHeight;
-				prompt.AddChild(line);
+				maxWidth = Math.Max(maxWidth, line.Bounds.Width / 2);
+				line.Bounds.X += maxWidth / 2;
 
+				prompt.AddChild(line);
 				headerHeight += headerTemplate.Bounds.Height;
 			}
 
+			titleLabel.Bounds.X += maxWidth / 2;
+			prompt.Bounds.Width += maxWidth;
+			prompt.Bounds.X -= maxWidth / 2;
 			prompt.Bounds.Height += headerHeight;
 			prompt.Bounds.Y -= headerHeight / 2;
 
@@ -60,6 +67,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				confirmButton.Visible = true;
 				confirmButton.Bounds.Y += headerHeight;
+				confirmButton.Bounds.X += maxWidth;
 				confirmButton.OnClick = () =>
 				{
 					Ui.CloseWindow();
@@ -94,6 +102,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				otherButton.Visible = true;
 				otherButton.Bounds.Y += headerHeight;
+				otherButton.Bounds.X += maxWidth;
 				otherButton.OnClick = onOther;
 
 				if (!string.IsNullOrEmpty(otherText))
