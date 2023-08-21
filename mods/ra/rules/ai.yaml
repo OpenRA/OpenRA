@@ -289,7 +289,7 @@ Player:
 		RequiresCondition: enable-rush-ai
 		SquadSize: 20
 		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
-		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, dtrk, qtnk
 		ConstructionYardTypes: fact
 		AirUnitsTypes: mig, yak, heli, hind, mh60
 		AircraftTargetType: AirborneActor
@@ -321,16 +321,20 @@ Player:
 			4tnk: 25
 			ttnk: 25
 			stnk: 5
+			dtrk: 1
+			qtnk: 1
 		UnitLimits:
 			dog: 4
 			harv: 8
 			jeep: 4
 			ftrk: 4
+			dtrk: 1
+			qtnk: 1
 	SquadManagerBotModule@normal:
 		RequiresCondition: enable-normal-ai
 		SquadSize: 40
 		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
-		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, dtrk, qtnk
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen, syrd
 		AirUnitsTypes: mig, yak, heli, hind, mh60
@@ -367,16 +371,20 @@ Player:
 			dd: 10
 			ca: 10
 			pt: 10
+			dtrk: 1
+			qtnk: 1
 		UnitLimits:
 			dog: 4
 			harv: 8
 			jeep: 4
 			ftrk: 4
+			dtrk: 1
+			qtnk: 1
 	SquadManagerBotModule@turtle:
 		RequiresCondition: enable-turtle-ai
 		SquadSize: 10
 		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
-		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, mnly
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, mnly, dtrk, qtnk
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen, syrd
 		AirUnitsTypes: mig, yak, heli, hind, mh60
@@ -414,12 +422,16 @@ Player:
 			ca: 10
 			pt: 10
 			mnly: 2
+			dtrk: 1
+			qtnk: 1
 		UnitLimits:
 			dog: 4
 			harv: 8
 			jeep: 4
 			ftrk: 4
 			mnly: 2
+			dtrk: 1
+			qtnk: 1
 	MinelayerBotModule@turtle:
 		MinelayingActorTypes: mnly
 		IgnoredEnemyTargetTypes: Structure, Defense, AirborneActor
@@ -429,7 +441,7 @@ Player:
 	SquadManagerBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		SquadSize: 1
-		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, dtrk, qtnk
 		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen, syrd
@@ -462,3 +474,18 @@ Player:
 			jeep: 1
 		UnitDelays:
 			harv: 10000
+	SendUnitToAttackBotModule@truck:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		ActorTypesAndAttackDesire: 
+			dtrk: 100
+		ValidTargets: Structure
+		InvalidTargets: WaterActor
+		AttackDistance: Furthest
+	SendUnitToAttackBotModule@Mad:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		ActorTypesAndAttackDesire: 
+			qtnk: 100
+		ValidTargets: Structure
+		InvalidTargets: WaterActor
+		AttackDistance: Closest
+		AttackOrderName: DetonateAttack
