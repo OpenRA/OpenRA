@@ -419,10 +419,10 @@ Player:
 			mnly: 2
 	MinelayerBotModule@turtle:
 		MinelayingActorTypes: mnly
-		IgnoredEnemyTargetTypes: Building, Defence, Air
-		UseEnemyLocationTargetTypes: Building, Defence
-		AwayFromAlliedTargetTypes: Building, Defence
-		AwayFromEnemyTargetTypes: Building, Defence
+		IgnoredEnemyTargetTypes: Structure, Defense, AirborneActor
+		UseEnemyLocationTargetTypes: Structure, Defense, AirborneActor
+		AwayFromAlliedTargetTypes: Structure, Defense
+		AwayFromEnemyTargetTypes: Structure, Defense
 	SquadManagerBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		SquadSize: 1
