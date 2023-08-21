@@ -526,7 +526,7 @@ Container@EDITOR_WORLD_ROOT:
 							Width: 30
 							Height: 25
 							Align: Left
-							Text: 85
+							Text: label-tools-widgets-alpha-value
 						Label@MODE_LABEL:
 							X: 6
 							Y: 102
@@ -558,7 +558,7 @@ Container@EDITOR_WORLD_ROOT:
 							Width: 30
 							Height: 25
 							Align: Left
-							Text: 2
+							Text: label-tools-widgets-rotate-num-sides-value
 							Visible: false
 						DropDownButton@FLIP_NUM_SIDES_DROPDOWN:
 							X: 129
@@ -585,7 +585,7 @@ Container@EDITOR_WORLD_ROOT:
 							Width: 30
 							Height: 25
 							Align: Left
-							Text: 0
+							Text: label-tools-widgets-axis-angle-value
 							Visible: false
 		Container@HISTORY_WIDGETS:
 			Logic: HistoryLogLogic

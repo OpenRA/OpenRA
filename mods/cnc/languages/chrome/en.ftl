@@ -698,3 +698,15 @@ label-latency-tooltip-prefix = Latency:
 label-anonymous-player-tooltip-name = Anonymous Player
 label-game-admin = Game Admin
 
+
+## editor.yaml
+label-tools-widgets-alpha-value = 85
+label-tools-widgets-rotate-num-sides-value = 2
+label-tools-widgets-axis-angle-value = 0
+
+## encyclopedia.yaml
+label-encyclopedia-content-title = Database
+button-encyclopedia-panel-back = Back
+
+## mainmenu.yaml
+button-singleplayer-menu-encyclopedia = Database

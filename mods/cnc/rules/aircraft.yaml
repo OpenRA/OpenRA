@@ -23,6 +23,10 @@ TRAN:
 	RevealsShroud:
 		Range: 10c0
 		Type: GroundPosition
+	Encyclopedia:
+		Description: actor-tran-encyclopedia
+		Order: 230
+		Category: Units
 	WithIdleOverlay@ROTOR1AIR:
 		Offset: 597,0,85
 		Sequence: rotor
@@ -85,6 +89,10 @@ HELI:
 		LocalOffset: 128,-213,-85, 128,213,-85
 		MuzzleSequence: muzzle
 		PauseOnCondition: !ammo
+	Encyclopedia:
+		Description: actor-heli-encyclopedia
+		Order: 240
+		Category: Units
 	AttackMove:
 		Voice: Attack
 	AutoTarget:
@@ -153,6 +161,10 @@ ORCA:
 		Weapon: OrcaAAMissiles
 		LocalOffset: 427,-171,-213, 427,171,-213
 		PauseOnCondition: !ammo
+	Encyclopedia:
+		Description: actor-orca-encyclopedia
+		Order: 250
+		Category: Units
 	AttackMove:
 		Voice: Attack
 	AutoTarget:
