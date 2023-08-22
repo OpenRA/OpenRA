@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Orders;
@@ -97,6 +98,11 @@ namespace OpenRA.Mods.Common.Traits
 			return buildingInfo == null || self.World.CanPlaceBuilding(self.Location + Info.Offset, actorInfo, buildingInfo, self);
 		}
 
+		IEnumerable<Order> ClearBlockersOrders(CPos topLeft)
+		{
+			return AIUtils.ClearBlockersOrders(buildingInfo.Tiles(topLeft).ToList(), self.Owner, self);
+		}
+
 		public Activity GetTransformActivity()
 		{
 			return new Transform(Info.IntoActor)
@@ -139,6 +145,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!queued && !CanDeploy())
 			{
+				foreach (var order in ClearBlockersOrders(self.Location + Info.Offset))
+					self.World.IssueOrder(order);
+
 				// Only play the "Cannot deploy here" audio
 				// for non-queued orders
 				foreach (var s in Info.NoTransformSounds)

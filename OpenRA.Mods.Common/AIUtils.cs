@@ -79,5 +79,39 @@ namespace OpenRA.Mods.Common
 			if (Game.Settings.Debug.BotDebug)
 				TextNotificationsManager.Debug(format, args);
 		}
+
+		public static IEnumerable<Order> ClearBlockersOrders(IEnumerable<CPos> tiles, Player owner, Actor ignoreActor = null)
+		{
+			var world = owner.World;
+			var adjacentTiles = Util.ExpandFootprint(tiles, true).Except(tiles)
+				.Where(world.Map.Contains).ToList();
+
+			var blockers = tiles.SelectMany(world.ActorMap.GetActorsAt)
+				.Where(a => a.Owner == owner && a.IsIdle && (ignoreActor == null || a != ignoreActor))
+				.Select(a => new TraitPair<IMove>(a, a.TraitOrDefault<IMove>()))
+				.Where(x => x.Trait != null);
+
+			foreach (var blocker in blockers)
+			{
+				CPos moveCell;
+				if (blocker.Trait is Mobile mobile)
+				{
+					var availableCells = adjacentTiles.Where(t => mobile.CanEnterCell(t)).ToList();
+					if (availableCells.Count == 0)
+						continue;
+
+					moveCell = blocker.Actor.ClosestCell(availableCells);
+				}
+				else if (blocker.Trait is Aircraft)
+					moveCell = blocker.Actor.Location;
+				else
+					continue;
+
+				yield return new Order("Move", blocker.Actor, Target.FromCell(world, moveCell), false)
+				{
+					SuppressVisualFeedback = true
+				};
+			}
+		}
 	}
 }

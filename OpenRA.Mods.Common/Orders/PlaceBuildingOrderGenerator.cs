@@ -192,7 +192,7 @@ namespace OpenRA.Mods.Common.Orders
 					if (!world.CanPlaceBuilding(topLeft, ai, bi, null)
 						|| !bi.IsCloseEnoughToBase(world, owner, ai, topLeft))
 					{
-						foreach (var order in ClearBlockersOrders(world, topLeft))
+						foreach (var order in ClearBlockersOrders(topLeft))
 							yield return order;
 
 						Game.Sound.PlayNotification(world.Map.Rules, owner, "Speech", notification, owner.Faction.InternalName);
@@ -326,38 +326,9 @@ namespace OpenRA.Mods.Common.Orders
 
 		void IOrderGenerator.Deactivate() { }
 
-		IEnumerable<Order> ClearBlockersOrders(World world, CPos topLeft)
+		IEnumerable<Order> ClearBlockersOrders(CPos topLeft)
 		{
-			var allTiles = variants[variant].BuildingInfo.Tiles(topLeft).ToArray();
-			var adjacentTiles = Util.ExpandFootprint(allTiles, true).Except(allTiles)
-				.Where(world.Map.Contains).ToList();
-
-			var blockers = allTiles.SelectMany(world.ActorMap.GetActorsAt)
-				.Where(a => a.Owner == Queue.Actor.Owner && a.IsIdle)
-				.Select(a => new TraitPair<IMove>(a, a.TraitOrDefault<IMove>()))
-				.Where(x => x.Trait != null);
-
-			foreach (var blocker in blockers)
-			{
-				CPos moveCell;
-				if (blocker.Trait is Mobile mobile)
-				{
-					var availableCells = adjacentTiles.Where(t => mobile.CanEnterCell(t)).ToList();
-					if (availableCells.Count == 0)
-						continue;
-
-					moveCell = blocker.Actor.ClosestCell(availableCells);
-				}
-				else if (blocker.Trait is Aircraft)
-					moveCell = blocker.Actor.Location;
-				else
-					continue;
-
-				yield return new Order("Move", blocker.Actor, Target.FromCell(world, moveCell), false)
-				{
-					SuppressVisualFeedback = true
-				};
-			}
+			return AIUtils.ClearBlockersOrders(variants[variant].BuildingInfo.Tiles(topLeft).ToList(), Queue.Actor.Owner);
 		}
 	}
 }
