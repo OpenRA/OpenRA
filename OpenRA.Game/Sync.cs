@@ -172,7 +172,7 @@ namespace OpenRA
 			RunUnsynced(checkSyncHash, world, () => { fn(); return true; });
 		}
 
-		static bool inUnsyncedCode = false;
+		static int unsyncCount = 0;
 
 		public static T RunUnsynced<T>(World world, Func<T> fn)
 		{
@@ -181,32 +181,30 @@ namespace OpenRA
 
 		public static T RunUnsynced<T>(bool checkSyncHash, World world, Func<T> fn)
 		{
-			// PERF: Detect sync changes in top level entry point only. Do not recalculate sync hash during reentry.
-			if (inUnsyncedCode || world == null)
-				return fn();
+			unsyncCount++;
 
-			var sync = checkSyncHash ? world.SyncHash() : 0;
-			inUnsyncedCode = true;
+			// Detect sync changes in top level entry point only. Do not recalculate sync hash during reentry.
+			var sync = unsyncCount == 1 && checkSyncHash && world != null ? world.SyncHash() : 0;
 
-			// Running this inside a try with a finally statement means isUnsyncedCode is set to false again as soon as fn completes
+			// Running this inside a try with a finally statement means unsyncCount is decremented as soon as fn completes
 			try
 			{
 				return fn();
 			}
 			finally
 			{
-				inUnsyncedCode = false;
+				unsyncCount--;
 
 				// When the world is disposing all actors and effects have been removed
 				// So do not check the hash for a disposing world since it definitively has changed
-				if (checkSyncHash && !world.Disposing && sync != world.SyncHash())
+				if (unsyncCount == 0 && checkSyncHash && world != null && !world.Disposing && sync != world.SyncHash())
 					throw new InvalidOperationException("RunUnsynced: sync-changing code may not run here");
 			}
 		}
 
 		public static void AssertUnsynced(string message)
 		{
-			if (!inUnsyncedCode)
+			if (unsyncCount == 0)
 				throw new InvalidOperationException(message);
 		}
 	}
