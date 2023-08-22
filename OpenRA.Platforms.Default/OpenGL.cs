@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using SDL2;
@@ -750,15 +751,20 @@ namespace OpenRA.Platforms.Default
 			if (type == GL_NO_ERROR)
 				return;
 
-			string errorText;
-			errorText = ErrorToText.TryGetValue(type, out errorText) ? errorText : type.ToStringInvariant("X");
-			var error = $"GL Error: {errorText}\n{new StackTrace()}";
+			var errors = new List<int>();
+			do
+			{
+				errors.Add(type);
+				type = glGetError();
+			}
+			while (type != GL_NO_ERROR);
 
-			WriteGraphicsLog(error);
+			var stringErrors = string.Join(',', errors.Select(error => ErrorToText.TryGetValue(error, out var errorText) ? errorText : error.ToStringInvariant("X")));
+			WriteGraphicsLog($"GL Errors: {stringErrors}\n{new StackTrace()}");
 
 			const string exceptionMessage = "OpenGL Error: See graphics.log for details.";
 
-			if (type == GL_OUT_OF_MEMORY)
+			if (errors.Contains(GL_OUT_OF_MEMORY))
 				throw new OutOfMemoryException(exceptionMessage);
 
 			throw new InvalidOperationException(exceptionMessage);
