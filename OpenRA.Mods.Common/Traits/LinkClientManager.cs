@@ -252,7 +252,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// <remarks>If <paramref name="type"/> is not set, scans all clients. Does not check if <see cref="LinkClientManager"/> is enabled.</remarks>
 		public TraitPair<ILinkHost>? ClosestLinkHost(ILinkHost ignore, BitSet<LinkType> type = default, bool forceEnter = false, bool ignoreOccupancy = false)
 		{
-			var clients = type.IsEmpty ? linkClients : AvailableLinkClients(type);
+			var clients = type.IsEmpty ? linkClients : AvailableLinkClients(type, forceEnter);
 			return self.World.ActorsWithTrait<ILinkHost>()
 				.Where(host => host.Trait != ignore && clients.Any(client => client.CanLinkTo(host.Actor, host.Trait, forceEnter, ignoreOccupancy)))
 				.ClosestLinkHost(self, this);
@@ -269,9 +269,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		/// <summary>Get clients of matching <paramref name="type"/>.</summary>
 		/// <remarks>Does not check if <see cref="LinkClientManager"/> is enabled.</remarks>
-		public IEnumerable<ILinkClient> AvailableLinkClients(BitSet<LinkType> type)
+		public IEnumerable<ILinkClient> AvailableLinkClients(BitSet<LinkType> type, bool forceEnter = false)
 		{
-			return linkClients.Where(client => client.IsLinkingPossible(type));
+			return linkClients.Where(client => client.IsLinkingPossible(type, forceEnter));
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e) { UnreserveHost(); }
