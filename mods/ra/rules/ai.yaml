@@ -234,7 +234,7 @@ Player:
 	BaseBuilderBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		MinimumExcessPower: 60
-		MaximumExcessPower: 200
+		MaximumExcessPower: 400
 		ExcessPowerIncrement: 40
 		ExcessPowerIncreaseThreshold: 4
 		ConstructionYardTypes: fact
@@ -247,7 +247,7 @@ Player:
 		SiloTypes: silo
 		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
 		BuildingLimits:
-			proc: 4
+			proc: 3
 			dome: 1
 			barr: 1
 			tent: 1
@@ -261,26 +261,28 @@ Player:
 			stek: 1
 			fix: 1
 		BuildingFractions:
-			proc: 30
+			proc: 25
 			dome: 1
 			weap: 1
-			hpad: 20
-			afld: 20
-			afld.ukraine: 20
+			hpad: 15
+			afld: 15
+			afld.ukraine: 15
 			atek: 1
 			stek: 1
 			spen: 1
 			syrd: 1
 			fix: 1
-			pbox: 12
-			gun: 12
-			ftur: 12
-			tsla: 12
+			pbox: 2
+			gun: 2
+			ftur: 2
+			tsla: 1
 			agun: 5
 			sam: 5
 			mslo: 1
 		BuildingDelays:
 			dome: 3000
+			fix: 20000
+			tsla: 21000
 	BuildingRepairBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
 	SquadManagerBotModule@rush:
@@ -435,14 +437,24 @@ Player:
 		RequiresCondition: enable-naval-ai
 		UnitsToBuild:
 			harv: 1
+			ftrk: 40
+			arty: 40
+			v2rl: 40
+			jeep: 40
 			heli: 30
 			mh60: 30
-			mig: 30
-			yak: 30
+			mig: 15
+			yak: 60
 			ss: 10
 			msub: 30
 			dd: 30
 			ca: 20
 			pt: 10
 		UnitLimits:
-			harv: 8
+			harv: 4
+			ftrk: 3
+			arty: 1
+			v2rl: 1
+			jeep: 1
+		UnitDelays:
+			harv: 10000
