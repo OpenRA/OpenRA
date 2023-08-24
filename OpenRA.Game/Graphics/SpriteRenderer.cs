@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
@@ -19,6 +20,7 @@ namespace OpenRA.Graphics
 	{
 		public const int SheetCount = 8;
 		static readonly string[] SheetIndexToTextureName = Exts.MakeArray(SheetCount, i => $"Texture{i}");
+		static readonly int UintSize = Marshal.SizeOf(typeof(uint));
 
 		readonly Renderer renderer;
 		readonly IShader shader;
@@ -171,7 +173,7 @@ namespace OpenRA.Graphics
 			nv += 6;
 		}
 
-		public void DrawVertexBuffer(IVertexBuffer<Vertex> buffer, int start, int length, PrimitiveType type, IEnumerable<Sheet> sheets, BlendMode blendMode)
+		public void DrawVertexBuffer(IVertexBuffer<Vertex> buffer, IIndexBuffer indices, int start, int length, IEnumerable<Sheet> sheets, BlendMode blendMode)
 		{
 			var i = 0;
 			foreach (var s in sheets)
@@ -185,7 +187,7 @@ namespace OpenRA.Graphics
 
 			renderer.Context.SetBlendMode(blendMode);
 			shader.PrepareRender();
-			renderer.DrawBatch(buffer, start, length, type);
+			renderer.DrawBatch(buffer, indices, length, UintSize * start);
 			renderer.Context.SetBlendMode(BlendMode.None);
 		}
 
