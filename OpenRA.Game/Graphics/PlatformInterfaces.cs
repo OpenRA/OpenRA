@@ -84,6 +84,7 @@ namespace OpenRA
 	public interface IGraphicsContext : IDisposable
 	{
 		IVertexBuffer<Vertex> CreateVertexBuffer(int size);
+		IIndexBuffer CreateIndexBuffer(uint[] indices);
 		Vertex[] CreateVertices(int size);
 		ITexture CreateTexture();
 		IFrameBuffer CreateFrameBuffer(Size s);
@@ -112,6 +113,11 @@ namespace OpenRA
 		/// </summary>
 		void SetData(ref T[] vertices, int length);
 		void SetData(T[] vertices, int offset, int start, int length);
+	}
+
+	public interface IIndexBuffer : IDisposable
+	{
+		void Bind();
 	}
 
 	public interface IShader

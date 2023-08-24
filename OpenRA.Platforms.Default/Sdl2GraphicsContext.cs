@@ -68,6 +68,12 @@ namespace OpenRA.Platforms.Default
 			return new VertexBuffer<Vertex>(size);
 		}
 
+		public IIndexBuffer CreateIndexBuffer(uint[] indices)
+		{
+			VerifyThreadAffinity();
+			return new StaticIndexBuffer(indices);
+		}
+
 		public Vertex[] CreateVertices(int size)
 		{
 			VerifyThreadAffinity();

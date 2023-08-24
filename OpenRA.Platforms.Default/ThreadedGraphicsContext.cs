@@ -46,6 +46,7 @@ namespace OpenRA.Platforms.Default
 		Func<object, IFrameBuffer> getCreateFrameBuffer;
 		Func<object, IShader> getCreateShader;
 		Func<object, IVertexBuffer<Vertex>> getCreateVertexBuffer;
+		Func<object, IIndexBuffer> getCreateIndexBuffer;
 		Action<object> doDrawPrimitives;
 		Action<object> doEnableScissor;
 		Action<object> doSetBlendMode;
@@ -94,6 +95,7 @@ namespace OpenRA.Platforms.Default
 						};
 					getCreateShader = name => new ThreadedShader(this, context.CreateShader((string)name));
 					getCreateVertexBuffer = length => new ThreadedVertexBuffer(this, context.CreateVertexBuffer((int)length));
+					getCreateIndexBuffer = indices => new ThreadedIndexBuffer(this, context.CreateIndexBuffer((uint[])indices));
 					doDrawPrimitives =
 						tuple =>
 						{
@@ -404,6 +406,11 @@ namespace OpenRA.Platforms.Default
 			return Send(getCreateVertexBuffer, length);
 		}
 
+		public IIndexBuffer CreateIndexBuffer(uint[] indices)
+		{
+			return Send(getCreateIndexBuffer, indices);
+		}
+
 		public Vertex[] CreateVertices(int size)
 		{
 			return GetVertices(size);
@@ -555,6 +562,30 @@ namespace OpenRA.Platforms.Default
 				// If the length is too large for a buffer, send a message and block to avoid allocations.
 				device.Send(setData3, (vertices, offset, start, length));
 			}
+		}
+
+		public void Dispose()
+		{
+			device.Post(dispose);
+		}
+	}
+
+	sealed class ThreadedIndexBuffer : IIndexBuffer
+	{
+		readonly ThreadedGraphicsContext device;
+		readonly Action bind;
+		readonly Action dispose;
+
+		public ThreadedIndexBuffer(ThreadedGraphicsContext device, IIndexBuffer indexBuffer)
+		{
+			this.device = device;
+			bind = indexBuffer.Bind;
+			dispose = indexBuffer.Dispose;
+		}
+
+		public void Bind()
+		{
+			device.Post(bind);
 		}
 
 		public void Dispose()

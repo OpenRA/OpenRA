@@ -20,6 +20,16 @@ namespace OpenRA.Graphics
 		// yes, our channel order is nuts.
 		static readonly int[] ChannelMasks = { 2, 1, 0, 3 };
 
+		public static uint[] CreateQuadIndices(int quads)
+		{
+			var indices = new uint[quads * 6];
+			ReadOnlySpan<uint> cornerVertexMap = stackalloc uint[] { 0, 1, 2, 2, 3, 0 };
+			for (var i = 0; i < indices.Length; i++)
+				indices[i] = cornerVertexMap[i % 6] + (uint)(4 * (i / 6));
+
+			return indices;
+		}
+
 		public static void FastCreateQuad(Vertex[] vertices, in float3 o, Sprite r, int2 samplers, float paletteTextureIndex, int nv,
 			in float3 size, in float3 tint, float alpha, float rotation = 0f)
 		{
