@@ -170,6 +170,13 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 		}
 
+		public void DrawElements(int numIndices, int offset)
+		{
+			VerifyThreadAffinity();
+			OpenGL.glDrawElements(OpenGL.GL_TRIANGLES, numIndices, OpenGL.GL_UNSIGNED_INT, new IntPtr(offset));
+			OpenGL.CheckGLError();
+		}
+
 		public void Clear()
 		{
 			VerifyThreadAffinity();
