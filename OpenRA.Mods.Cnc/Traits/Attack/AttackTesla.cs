@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					Game.Sound.Play(SoundType.World, attack.info.ChargeAudio, self.CenterPosition);
 
 				QueueChild(new Wait(attack.info.InitialChargeDelay));
-				QueueChild(new ChargeFire(attack, target));
+				QueueChild(new ChargeFire(attack, target, forceAttack));
 				return false;
 			}
 
@@ -148,11 +148,13 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			readonly AttackTesla attack;
 			readonly Target target;
+			readonly bool forceAttack;
 
-			public ChargeFire(AttackTesla attack, in Target target)
+			public ChargeFire(AttackTesla attack, in Target target, bool forceAttack)
 			{
 				this.attack = attack;
 				this.target = target;
+				this.forceAttack = forceAttack;
 			}
 
 			public override bool Tick(Actor self)
@@ -163,7 +165,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				if (attack.charges == 0)
 					return true;
 
-				attack.DoAttack(self, target);
+				attack.DoAttack(self, target, forceAttack);
 
 				QueueChild(new Wait(attack.info.ChargeDelay));
 				return false;
