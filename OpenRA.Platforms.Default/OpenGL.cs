@@ -131,6 +131,8 @@ namespace OpenRA.Platforms.Default
 		public const int GL_TEXTURE_MAX_LEVEL = 0x813D;
 
 		public const int GL_ARRAY_BUFFER = 0x8892;
+		public const int GL_ELEMENT_ARRAY_BUFFER = 0x8893;
+		public const int GL_STATIC_DRAW = 0x88E4;
 		public const int GL_DYNAMIC_DRAW = 0x88E8;
 
 		public const int GL_TEXTURE0 = 0x84C0;
