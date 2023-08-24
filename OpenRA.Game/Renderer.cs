@@ -347,6 +347,15 @@ namespace OpenRA
 			PerfHistory.Increment("batches", 1);
 		}
 
+		public void DrawBatch<T>(IVertexBuffer<T> vertices, IIndexBuffer indices, int numIndices, int start)
+			where T : struct
+		{
+			vertices.Bind();
+			indices.Bind();
+			Context.DrawElements(numIndices, start);
+			PerfHistory.Increment("batches", 1);
+		}
+
 		public void Flush()
 		{
 			CurrentBatchRenderer = null;
