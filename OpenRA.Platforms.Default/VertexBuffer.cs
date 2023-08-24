@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 
 namespace OpenRA.Platforms.Default
 {
-	sealed class VertexBuffer<T> : ThreadAffine, IVertexBuffer<T>
+	sealed class VertexBuffer<T> : ThreadAffine, IDisposable, IVertexBuffer<T>
 			where T : struct
 	{
 		static readonly int VertexSize = Marshal.SizeOf(typeof(T));
