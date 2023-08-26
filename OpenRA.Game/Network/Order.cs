@@ -157,8 +157,8 @@ namespace OpenRA
 									{
 										var pos = new WPos(r.ReadInt32(), r.ReadInt32(), r.ReadInt32());
 
-										var numberOfTerrainPositions = r.ReadByte();
-										if (numberOfTerrainPositions == 0)
+										var numberOfTerrainPositions = r.ReadInt16();
+										if (numberOfTerrainPositions == -1)
 											target = Target.FromPos(pos);
 										else
 										{
@@ -403,10 +403,10 @@ namespace OpenRA
 									// Don't send extra data over the network that will be restored by the Target ctor
 									var terrainPositions = targetState.TerrainPositions.Length;
 									if (terrainPositions == 1 && targetState.TerrainPositions[0] == targetState.Pos)
-										w.Write((byte)0);
+										w.Write((short)-1);
 									else
 									{
-										w.Write((byte)terrainPositions);
+										w.Write((short)terrainPositions);
 										foreach (var position in targetState.TerrainPositions)
 										{
 											w.Write(position.X);
