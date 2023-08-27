@@ -25,6 +25,7 @@ namespace OpenRA.Platforms.Default
 
 		readonly Dictionary<string, int> samplers = new();
 		readonly Dictionary<int, int> legacySizeUniforms = new();
+		readonly Dictionary<string, int> uniformCache = new();
 		readonly Dictionary<int, ITexture> textures = new();
 		readonly Queue<int> unbindTextures = new();
 		readonly uint program;
@@ -121,15 +122,17 @@ namespace OpenRA.Platforms.Default
 			{
 				var sb = new StringBuilder(128);
 				OpenGL.glGetActiveUniform(program, i, 128, out _, out _, out var type, sb);
-				var sampler = sb.ToString();
 				OpenGL.CheckGLError();
+
+				var sampler = sb.ToString();
+				var loc = OpenGL.glGetUniformLocation(program, sampler);
+				OpenGL.CheckGLError();
+				uniformCache[sampler] = loc;
 
 				if (type == OpenGL.GL_SAMPLER_2D)
 				{
 					samplers.Add(sampler, nextTexUnit);
 
-					var loc = OpenGL.glGetUniformLocation(program, sampler);
-					OpenGL.CheckGLError();
 					OpenGL.glUniform1i(loc, nextTexUnit);
 					OpenGL.CheckGLError();
 
@@ -194,9 +197,7 @@ namespace OpenRA.Platforms.Default
 			VerifyThreadAffinity();
 			OpenGL.glUseProgram(program);
 			OpenGL.CheckGLError();
-			var param = OpenGL.glGetUniformLocation(program, name);
-			OpenGL.CheckGLError();
-			OpenGL.glUniform1i(param, value ? 1 : 0);
+			OpenGL.glUniform1i(uniformCache[name], value ? 1 : 0);
 			OpenGL.CheckGLError();
 		}
 
@@ -205,9 +206,7 @@ namespace OpenRA.Platforms.Default
 			VerifyThreadAffinity();
 			OpenGL.glUseProgram(program);
 			OpenGL.CheckGLError();
-			var param = OpenGL.glGetUniformLocation(program, name);
-			OpenGL.CheckGLError();
-			OpenGL.glUniform1f(param, x);
+			OpenGL.glUniform1f(uniformCache[name], x);
 			OpenGL.CheckGLError();
 		}
 
@@ -216,9 +215,7 @@ namespace OpenRA.Platforms.Default
 			VerifyThreadAffinity();
 			OpenGL.glUseProgram(program);
 			OpenGL.CheckGLError();
-			var param = OpenGL.glGetUniformLocation(program, name);
-			OpenGL.CheckGLError();
-			OpenGL.glUniform2f(param, x, y);
+			OpenGL.glUniform2f(uniformCache[name], x, y);
 			OpenGL.CheckGLError();
 		}
 
@@ -227,17 +224,14 @@ namespace OpenRA.Platforms.Default
 			VerifyThreadAffinity();
 			OpenGL.glUseProgram(program);
 			OpenGL.CheckGLError();
-			var param = OpenGL.glGetUniformLocation(program, name);
-			OpenGL.CheckGLError();
-			OpenGL.glUniform3f(param, x, y, z);
+			OpenGL.glUniform3f(uniformCache[name], x, y, z);
 			OpenGL.CheckGLError();
 		}
 
 		public void SetVec(string name, float[] vec, int length)
 		{
 			VerifyThreadAffinity();
-			var param = OpenGL.glGetUniformLocation(program, name);
-			OpenGL.CheckGLError();
+			var param = uniformCache[name];
 			unsafe
 			{
 				fixed (float* pVec = vec)
@@ -265,13 +259,11 @@ namespace OpenRA.Platforms.Default
 
 			OpenGL.glUseProgram(program);
 			OpenGL.CheckGLError();
-			var param = OpenGL.glGetUniformLocation(program, name);
-			OpenGL.CheckGLError();
 
 			unsafe
 			{
 				fixed (float* pMtx = mtx)
-					OpenGL.glUniformMatrix4fv(param, 1, false, new IntPtr(pMtx));
+					OpenGL.glUniformMatrix4fv(uniformCache[name], 1, false, new IntPtr(pMtx));
 			}
 
 			OpenGL.CheckGLError();
