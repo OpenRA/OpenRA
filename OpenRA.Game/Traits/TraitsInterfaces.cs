@@ -550,7 +550,7 @@ namespace OpenRA.Traits
 		{
 			Id = id;
 			Name = map.GetLocalisedString(name);
-			Description = map.GetLocalisedString(description);
+			Description = description != null ? map.GetLocalisedString(description) : null;
 			IsVisible = visible;
 			DisplayOrder = displayorder;
 			Values = values.ToDictionary(v => v.Key, v => map.GetLocalisedString(v.Value));
