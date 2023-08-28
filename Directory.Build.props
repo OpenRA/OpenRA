@@ -44,13 +44,6 @@
     <Compile Include="**/*.cs" Exclude="$(DefaultItemExcludes)" />
   </ItemGroup>
 
-  <Target Name="DisableAnalyzers" BeforeTargets="CoreCompile" Condition="'$(Configuration)'=='Release'">
-    <!-- Disable code style analysis on Release builds to improve compile-time performance -->
-    <ItemGroup Condition="'$(Configuration)'=='Release'">
-      <Analyzer Remove="@(Analyzer)" />
-    </ItemGroup>
-  </Target>
-
   <!-- StyleCop/Roslynator -->
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435" PrivateAssets="All" />

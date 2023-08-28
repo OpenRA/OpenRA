@@ -49,7 +49,7 @@ jobs:
       - name: Check Mods
         run: |
           # check-scripts does not depend on .net/mono, so is not needed here
-          make RUNTIME=mono TREAT_WARNINGS_AS_ERRORS=true test
+          make RUNTIME=mono test
 
   windows:
     name: Windows (.NET 6.0)

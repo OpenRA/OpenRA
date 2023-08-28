@@ -52,6 +52,7 @@ namespace OpenRA
 
 		static void Run(string[] args)
 		{
+			Console.WriteLine(GeneratedCode.GeneratedMessage);
 			var engineDir = Environment.GetEnvironmentVariable("ENGINE_DIR");
 			if (!string.IsNullOrEmpty(engineDir))
 				Platform.OverrideEngineDir(engineDir);
