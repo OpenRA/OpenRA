@@ -29,7 +29,8 @@ namespace OpenRA.Platforms.Default
 		readonly Stack<Message> messagePool = new();
 		readonly Queue<Message> messages = new();
 
-		public readonly int BatchSize;
+		public readonly int VertexBatchSize;
+		public readonly int IndexBatchSize;
 		readonly object syncObject = new();
 		readonly Thread renderThread;
 		volatile ExceptionDispatchInfo messageException;
@@ -53,9 +54,10 @@ namespace OpenRA.Platforms.Default
 		Action<object> doSetBlendMode;
 		Action<object> doSetVSync;
 
-		public ThreadedGraphicsContext(Sdl2GraphicsContext context, int batchSize)
+		public ThreadedGraphicsContext(Sdl2GraphicsContext context, int vertexBatchSize, int indexBatchSize)
 		{
-			BatchSize = batchSize;
+			VertexBatchSize = vertexBatchSize;
+			IndexBatchSize = indexBatchSize;
 			renderThread = new Thread(RenderThread)
 			{
 				Name = "ThreadedGraphicsContext RenderThread",
@@ -151,15 +153,15 @@ namespace OpenRA.Platforms.Default
 		internal Vertex[] GetVertices(int size)
 		{
 			lock (verticesPool)
-				if (size <= BatchSize && verticesPool.Count > 0)
+				if (size <= VertexBatchSize && verticesPool.Count > 0)
 					return verticesPool.Pop();
 
-			return new Vertex[size < BatchSize ? BatchSize : size];
+			return new Vertex[size < VertexBatchSize ? VertexBatchSize : size];
 		}
 
 		internal void ReturnVertices(Vertex[] vertices)
 		{
-			if (vertices.Length == BatchSize)
+			if (vertices.Length == VertexBatchSize)
 				lock (verticesPool)
 					verticesPool.Push(vertices);
 		}
@@ -562,7 +564,7 @@ namespace OpenRA.Platforms.Default
 
 		public void SetData(Vertex[] vertices, int offset, int start, int length)
 		{
-			if (length <= device.BatchSize)
+			if (length <= device.VertexBatchSize)
 			{
 				// If we are able to use a buffer without allocation, post a message to avoid blocking.
 				var buffer = device.GetVertices(length);

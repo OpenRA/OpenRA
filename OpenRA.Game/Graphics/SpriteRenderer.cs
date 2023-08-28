@@ -36,7 +36,7 @@ namespace OpenRA.Graphics
 		{
 			this.renderer = renderer;
 			this.shader = shader;
-			vertices = renderer.Context.CreateVertices(renderer.TempBufferSize);
+			vertices = renderer.Context.CreateVertices(renderer.TempVertexBufferSize);
 		}
 
 		public void Flush()
@@ -65,7 +65,7 @@ namespace OpenRA.Graphics
 		{
 			renderer.CurrentBatchRenderer = this;
 
-			if (s.BlendMode != currentBlend || nv + 6 > renderer.TempBufferSize)
+			if (s.BlendMode != currentBlend || nv + 6 > renderer.TempVertexBufferSize)
 				Flush();
 
 			currentBlend = s.BlendMode;
@@ -202,7 +202,7 @@ namespace OpenRA.Graphics
 		{
 			renderer.CurrentBatchRenderer = this;
 
-			if (currentBlend != blendMode || nv + v.Length > renderer.TempBufferSize)
+			if (currentBlend != blendMode || nv + v.Length > renderer.TempVertexBufferSize)
 				Flush();
 
 			currentBlend = blendMode;

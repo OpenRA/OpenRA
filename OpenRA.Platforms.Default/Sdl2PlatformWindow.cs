@@ -133,7 +133,7 @@ namespace OpenRA.Platforms.Default
 		static extern IntPtr XFlush(IntPtr display);
 
 		public Sdl2PlatformWindow(Size requestEffectiveWindowSize, WindowMode windowMode,
-			float scaleModifier, int batchSize, int videoDisplay, GLProfile requestProfile, bool enableLegacyGL)
+			float scaleModifier, int vertexBatchSize, int indexBatchSize, int videoDisplay, GLProfile requestProfile, bool enableLegacyGL)
 		{
 			// Lock the Window/Surface properties until initialization is complete
 			lock (syncObject)
@@ -348,7 +348,7 @@ namespace OpenRA.Platforms.Default
 				Context = ctx;
 			}
 			else
-				Context = new ThreadedGraphicsContext(new Sdl2GraphicsContext(this), batchSize);
+				Context = new ThreadedGraphicsContext(new Sdl2GraphicsContext(this), vertexBatchSize, indexBatchSize);
 
 			Context.SetVSyncEnabled(Game.Settings.Graphics.VSync);
 
