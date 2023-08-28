@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		[FieldLoader.Require]
 		[TranslationReference(dictionaryReference: LintDictionaryReference.Values)]
-		[Desc("Difficulty levels supported by the map.")]
+		[Desc("Options to choose from.")]
 		public readonly Dictionary<string, string> Values = null;
 
 		[Desc("Prevent the option from being changed from its default value.")]
