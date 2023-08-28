@@ -21,7 +21,7 @@ namespace OpenRA.Graphics
 		static readonly float3 Offset = new(0.5f, 0.5f, 0f);
 
 		readonly SpriteRenderer parent;
-		readonly Vertex[] vertices = new Vertex[6];
+		readonly Vertex[] vertices = new Vertex[4];
 
 		public RgbaColorRenderer(SpriteRenderer parent)
 		{
@@ -48,11 +48,9 @@ namespace OpenRA.Graphics
 			vertices[0] = new Vertex(start - corner + Offset, sr, sg, sb, sa, 0, 0);
 			vertices[1] = new Vertex(start + corner + Offset, sr, sg, sb, sa, 0, 0);
 			vertices[2] = new Vertex(end + corner + Offset, er, eg, eb, ea, 0, 0);
-			vertices[3] = new Vertex(end + corner + Offset, er, eg, eb, ea, 0, 0);
-			vertices[4] = new Vertex(end - corner + Offset, er, eg, eb, ea, 0, 0);
-			vertices[5] = new Vertex(start - corner + Offset, sr, sg, sb, sa, 0, 0);
+			vertices[3] = new Vertex(end - corner + Offset, er, eg, eb, ea, 0, 0);
 
-			parent.DrawRGBAVertices(vertices, blendMode);
+			parent.DrawRGBAQuad(vertices, blendMode);
 		}
 
 		public void DrawLine(in float3 start, in float3 end, float width, Color color, BlendMode blendMode = BlendMode.Alpha)
@@ -69,10 +67,8 @@ namespace OpenRA.Graphics
 			vertices[0] = new Vertex(start - corner + Offset, r, g, b, a, 0, 0);
 			vertices[1] = new Vertex(start + corner + Offset, r, g, b, a, 0, 0);
 			vertices[2] = new Vertex(end + corner + Offset, r, g, b, a, 0, 0);
-			vertices[3] = new Vertex(end + corner + Offset, r, g, b, a, 0, 0);
-			vertices[4] = new Vertex(end - corner + Offset, r, g, b, a, 0, 0);
-			vertices[5] = new Vertex(start - corner + Offset, r, g, b, a, 0, 0);
-			parent.DrawRGBAVertices(vertices, blendMode);
+			vertices[3] = new Vertex(end - corner + Offset, r, g, b, a, 0, 0);
+			parent.DrawRGBAQuad(vertices, blendMode);
 		}
 
 		/// <summary>
@@ -160,10 +156,8 @@ namespace OpenRA.Graphics
 				vertices[0] = new Vertex(ca + Offset, r, g, b, a, 0, 0);
 				vertices[1] = new Vertex(cb + Offset, r, g, b, a, 0, 0);
 				vertices[2] = new Vertex(cc + Offset, r, g, b, a, 0, 0);
-				vertices[3] = new Vertex(cc + Offset, r, g, b, a, 0, 0);
-				vertices[4] = new Vertex(cd + Offset, r, g, b, a, 0, 0);
-				vertices[5] = new Vertex(ca + Offset, r, g, b, a, 0, 0);
-				parent.DrawRGBAVertices(vertices, blendMode);
+				vertices[3] = new Vertex(cd + Offset, r, g, b, a, 0, 0);
+				parent.DrawRGBAQuad(vertices, blendMode);
 
 				// Advance line segment
 				end = next;
@@ -200,20 +194,6 @@ namespace OpenRA.Graphics
 			DrawPolygon(new[] { tl, tr, br, bl }, width, color, blendMode);
 		}
 
-		public void FillTriangle(in float3 a, in float3 b, in float3 c, Color color, BlendMode blendMode = BlendMode.Alpha)
-		{
-			color = Util.PremultiplyAlpha(color);
-			var cr = color.R / 255.0f;
-			var cg = color.G / 255.0f;
-			var cb = color.B / 255.0f;
-			var ca = color.A / 255.0f;
-
-			vertices[0] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[1] = new Vertex(b + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[2] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
-			parent.DrawRGBAVertices(vertices, blendMode);
-		}
-
 		public void FillRect(in float3 tl, in float3 br, Color color, BlendMode blendMode = BlendMode.Alpha)
 		{
 			var tr = new float3(br.X, tl.Y, tl.Z);
@@ -232,10 +212,8 @@ namespace OpenRA.Graphics
 			vertices[0] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
 			vertices[1] = new Vertex(b + Offset, cr, cg, cb, ca, 0, 0);
 			vertices[2] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[3] = new Vertex(c + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[4] = new Vertex(d + Offset, cr, cg, cb, ca, 0, 0);
-			vertices[5] = new Vertex(a + Offset, cr, cg, cb, ca, 0, 0);
-			parent.DrawRGBAVertices(vertices, blendMode);
+			vertices[3] = new Vertex(d + Offset, cr, cg, cb, ca, 0, 0);
+			parent.DrawRGBAQuad(vertices, blendMode);
 		}
 
 		public void FillRect(in float3 a, in float3 b, in float3 c, in float3 d, Color topLeftColor, Color topRightColor, Color bottomRightColor, Color bottomLeftColor, BlendMode blendMode = BlendMode.Alpha)
@@ -243,11 +221,9 @@ namespace OpenRA.Graphics
 			vertices[0] = VertexWithColor(a + Offset, topLeftColor);
 			vertices[1] = VertexWithColor(b + Offset, topRightColor);
 			vertices[2] = VertexWithColor(c + Offset, bottomRightColor);
-			vertices[3] = VertexWithColor(c + Offset, bottomRightColor);
-			vertices[4] = VertexWithColor(d + Offset, bottomLeftColor);
-			vertices[5] = VertexWithColor(a + Offset, topLeftColor);
+			vertices[3] = VertexWithColor(d + Offset, bottomLeftColor);
 
-			parent.DrawRGBAVertices(vertices, blendMode);
+			parent.DrawRGBAQuad(vertices, blendMode);
 		}
 
 		static Vertex VertexWithColor(in float3 xyz, Color color)

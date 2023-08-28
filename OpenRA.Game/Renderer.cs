@@ -97,7 +97,7 @@ namespace OpenRA
 			RgbaColorRenderer = new RgbaColorRenderer(SpriteRenderer);
 
 			tempVertexBuffer = Context.CreateVertexBuffer(TempVertexBufferSize);
-			quadIndexBuffer = Context.CreateQuadIndexBuffer(TempIndexBufferSize);
+			quadIndexBuffer = Context.CreateIndexBuffer(Util.CreateQuadIndices(TempIndexBufferSize / 6));
 		}
 
 		static Size GetResolution(GraphicSettings graphicsSettings)
@@ -331,18 +331,6 @@ namespace OpenRA
 			renderType = RenderType.None;
 		}
 
-		public void DrawBatch(Vertex[] vertices, int numVertices, PrimitiveType type)
-		{
-			tempBuffer.SetData(vertices, numVertices);
-			DrawBatch(tempBuffer, 0, numVertices, type);
-		}
-
-		public void DrawBatch(ref Vertex[] vertices, int numVertices, PrimitiveType type)
-		{
-			tempBuffer.SetData(ref vertices, numVertices);
-			DrawBatch(tempBuffer, 0, numVertices, type);
-		}
-
 		public void DrawBatch<T>(IVertexBuffer<T> vertices,
 			int firstVertex, int numVertices, PrimitiveType type)
 			where T : struct
@@ -352,7 +340,13 @@ namespace OpenRA
 			PerfHistory.Increment("batches", 1);
 		}
 
-		public void DrawBatch<T>(IVertexBuffer<T> vertices, IIndexBuffer indices, int numIndices, int start)
+		public void DrawQuadBatch(ref Vertex[] vertices, int numVertices)
+		{
+			tempVertexBuffer.SetData(ref vertices, numVertices);
+			DrawQuadBatch(tempVertexBuffer, quadIndexBuffer, numVertices / 4 * 6, 0);
+		}
+
+		public void DrawQuadBatch<T>(IVertexBuffer<T> vertices, IIndexBuffer indices, int numIndices, int start)
 			where T : struct
 		{
 			vertices.Bind();

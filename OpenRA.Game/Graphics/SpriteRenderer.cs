@@ -29,8 +29,8 @@ namespace OpenRA.Graphics
 		readonly Sheet[] sheets = new Sheet[SheetCount];
 
 		BlendMode currentBlend = BlendMode.Alpha;
-		int nv = 0;
-		int ns = 0;
+		int vertexCount = 0;
+		int sheetCount = 0;
 
 		public SpriteRenderer(Renderer renderer, IShader shader)
 		{
@@ -41,9 +41,9 @@ namespace OpenRA.Graphics
 
 		public void Flush()
 		{
-			if (nv > 0)
+			if (vertexCount > 0)
 			{
-				for (var i = 0; i < ns; i++)
+				for (var i = 0; i < sheetCount; i++)
 				{
 					shader.SetTexture(SheetIndexToTextureName[i], sheets[i].GetTexture());
 					sheets[i] = null;
@@ -52,12 +52,11 @@ namespace OpenRA.Graphics
 				renderer.Context.SetBlendMode(currentBlend);
 				shader.PrepareRender();
 
-				// PERF: The renderer may choose to replace vertices with a different temporary buffer.
-				renderer.DrawBatch(ref vertices, nv, PrimitiveType.TriangleList);
+				renderer.DrawQuadBatch(ref vertices, vertexCount);
 				renderer.Context.SetBlendMode(BlendMode.None);
 
-				nv = 0;
-				ns = 0;
+				vertexCount = 0;
+				sheetCount = 0;
 			}
 		}
 
@@ -65,7 +64,7 @@ namespace OpenRA.Graphics
 		{
 			renderer.CurrentBatchRenderer = this;
 
-			if (s.BlendMode != currentBlend || nv + 6 > renderer.TempVertexBufferSize)
+			if (s.BlendMode != currentBlend || vertexCount + 4 > renderer.TempVertexBufferSize)
 				Flush();
 
 			currentBlend = s.BlendMode;
@@ -73,7 +72,7 @@ namespace OpenRA.Graphics
 			// Check if the sheet (or secondary data sheet) have already been mapped
 			var sheet = s.Sheet;
 			var sheetIndex = 0;
-			for (; sheetIndex < ns; sheetIndex++)
+			for (; sheetIndex < sheetCount; sheetIndex++)
 				if (sheets[sheetIndex] == sheet)
 					break;
 
@@ -82,7 +81,7 @@ namespace OpenRA.Graphics
 			if (ss != null)
 			{
 				var secondarySheet = ss.SecondarySheet;
-				for (; secondarySheetIndex < ns; secondarySheetIndex++)
+				for (; secondarySheetIndex < sheetCount; secondarySheetIndex++)
 					if (sheets[secondarySheetIndex] == secondarySheet)
 						break;
 
@@ -101,16 +100,16 @@ namespace OpenRA.Graphics
 				secondarySheetIndex = ss != null && ss.SecondarySheet != sheet ? 1 : 0;
 			}
 
-			if (sheetIndex >= ns)
+			if (sheetIndex >= sheetCount)
 			{
 				sheets[sheetIndex] = sheet;
-				ns++;
+				sheetCount++;
 			}
 
-			if (secondarySheetIndex >= ns && ss != null)
+			if (secondarySheetIndex >= sheetCount && ss != null)
 			{
 				sheets[secondarySheetIndex] = ss.SecondarySheet;
-				ns++;
+				sheetCount++;
 			}
 
 			return new int2(sheetIndex, secondarySheetIndex);
@@ -133,17 +132,17 @@ namespace OpenRA.Graphics
 		internal void DrawSprite(Sprite s, float paletteTextureIndex, in float3 location, in float3 scale, float rotation = 0f)
 		{
 			var samplers = SetRenderStateForSprite(s);
-			Util.FastCreateQuad(vertices, location + scale * s.Offset, s, samplers, paletteTextureIndex, nv, scale * s.Size, float3.Ones,
+			Util.FastCreateQuad(vertices, location + scale * s.Offset, s, samplers, paletteTextureIndex, vertexCount, scale * s.Size, float3.Ones,
 								1f, rotation);
-			nv += 6;
+			vertexCount += 4;
 		}
 
 		internal void DrawSprite(Sprite s, float paletteTextureIndex, in float3 location, float scale, float rotation = 0f)
 		{
 			var samplers = SetRenderStateForSprite(s);
-			Util.FastCreateQuad(vertices, location + scale * s.Offset, s, samplers, paletteTextureIndex, nv, scale * s.Size, float3.Ones,
+			Util.FastCreateQuad(vertices, location + scale * s.Offset, s, samplers, paletteTextureIndex, vertexCount, scale * s.Size, float3.Ones,
 								1f, rotation);
-			nv += 6;
+			vertexCount += 4;
 		}
 
 		public void DrawSprite(Sprite s, PaletteReference pal, in float3 location, float scale = 1f, float rotation = 0f)
@@ -155,9 +154,9 @@ namespace OpenRA.Graphics
 			float rotation = 0f)
 		{
 			var samplers = SetRenderStateForSprite(s);
-			Util.FastCreateQuad(vertices, location + scale * s.Offset, s, samplers, paletteTextureIndex, nv, scale * s.Size, tint, alpha,
+			Util.FastCreateQuad(vertices, location + scale * s.Offset, s, samplers, paletteTextureIndex, vertexCount, scale * s.Size, tint, alpha,
 								rotation);
-			nv += 6;
+			vertexCount += 4;
 		}
 
 		public void DrawSprite(Sprite s, PaletteReference pal, in float3 location, float scale, in float3 tint, float alpha,
@@ -169,8 +168,8 @@ namespace OpenRA.Graphics
 		internal void DrawSprite(Sprite s, float paletteTextureIndex, in float3 a, in float3 b, in float3 c, in float3 d, in float3 tint, float alpha)
 		{
 			var samplers = SetRenderStateForSprite(s);
-			Util.FastCreateQuad(vertices, a, b, c, d, s, samplers, paletteTextureIndex, tint, alpha, nv);
-			nv += 6;
+			Util.FastCreateQuad(vertices, a, b, c, d, s, samplers, paletteTextureIndex, tint, alpha, vertexCount);
+			vertexCount += 4;
 		}
 
 		public void DrawVertexBuffer(IVertexBuffer<Vertex> buffer, IIndexBuffer indices, int start, int length, IEnumerable<Sheet> sheets, BlendMode blendMode)
@@ -187,7 +186,7 @@ namespace OpenRA.Graphics
 
 			renderer.Context.SetBlendMode(blendMode);
 			shader.PrepareRender();
-			renderer.DrawBatch(buffer, indices, length, UintSize * start);
+			renderer.DrawQuadBatch(buffer, indices, length, UintSize * start);
 			renderer.Context.SetBlendMode(BlendMode.None);
 		}
 
@@ -198,16 +197,17 @@ namespace OpenRA.Graphics
 		}
 
 		// For RGBAColorRenderer
-		internal void DrawRGBAVertices(Vertex[] v, BlendMode blendMode)
+		internal void DrawRGBAQuad(Vertex[] v, BlendMode blendMode)
 		{
 			renderer.CurrentBatchRenderer = this;
 
-			if (currentBlend != blendMode || nv + v.Length > renderer.TempVertexBufferSize)
+			if (currentBlend != blendMode || vertexCount + 4 > renderer.TempVertexBufferSize)
 				Flush();
 
 			currentBlend = blendMode;
-			Array.Copy(v, 0, vertices, nv, v.Length);
-			nv += v.Length;
+
+			Array.Copy(v, 0, vertices, vertexCount, v.Length);
+			vertexCount += 4;
 		}
 
 		public void SetPalette(ITexture palette, ITexture colorShifts)
