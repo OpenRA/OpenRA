@@ -92,19 +92,73 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					defaultSpriteExtension = defaultSpriteExtensionNode.Value.Value;
 				}
 
-				var tilesetExtensionsNode = spriteSequenceFormatNode.LastChildMatching("TilesetExtensions");
+				var fromBackup = false;
+
+				var tilesetExtensionsNode = spriteSequenceFormatNode.LastChildMatching("TilesetExtensions")?.Value?.Nodes;
+				if (tilesetExtensionsNode == null)
+				{
+					switch (modData.Manifest.Id)
+					{
+						case "cnc":
+							fromBackup = true;
+							tilesetExtensionsNode = new List<MiniYamlNode>()
+							{
+								new MiniYamlNode("TEMPERAT", ".tem"),
+								new MiniYamlNode("SNOW", ".sno"),
+								new MiniYamlNode("INTERIOR", ".int"),
+								new MiniYamlNode("DESERT", ".des"),
+								new MiniYamlNode("JUNGLE", ".jun"),
+							};
+							break;
+						case "ra":
+							fromBackup = true;
+							tilesetExtensionsNode = new List<MiniYamlNode>()
+							{
+								new MiniYamlNode("TEMPERAT", ".tem"),
+								new MiniYamlNode("SNOW", ".sno"),
+								new MiniYamlNode("INTERIOR", ".int"),
+								new MiniYamlNode("DESERT", ".des"),
+							};
+							break;
+						case "ts":
+							fromBackup = true;
+							tilesetExtensionsNode = new List<MiniYamlNode>()
+							{
+								new MiniYamlNode("TEMPERATE", ".tem"),
+								new MiniYamlNode("SNOW", ".sno"),
+							};
+							break;
+					}
+				}
+
 				if (tilesetExtensionsNode != null)
 				{
-					reportModYamlChanges = true;
-					foreach (var n in tilesetExtensionsNode.Value.Nodes)
+					if (!fromBackup)
+						reportModYamlChanges = true;
+
+					foreach (var n in tilesetExtensionsNode)
 						tilesetExtensions[n.Key] = n.Value.Value;
 				}
 
-				var tilesetCodesNode = spriteSequenceFormatNode.LastChildMatching("TilesetCodes");
+				fromBackup = false;
+
+				var tilesetCodesNode = spriteSequenceFormatNode.LastChildMatching("TilesetCodes")?.Value?.Nodes;
+				if (tilesetCodesNode == null && modData.Manifest.Id == "ts")
+				{
+					fromBackup = true;
+					tilesetCodesNode = new List<MiniYamlNode>()
+					{
+						new MiniYamlNode("TEMPERATE", "t"),
+						new MiniYamlNode("SNOW", "a"),
+					};
+				}
+
 				if (tilesetCodesNode != null)
 				{
-					reportModYamlChanges = true;
-					foreach (var n in tilesetCodesNode.Value.Nodes)
+					if (!fromBackup)
+						reportModYamlChanges = true;
+
+					foreach (var n in tilesetCodesNode)
 						tilesetCodes[n.Key] = n.Value.Value;
 				}
 			}
