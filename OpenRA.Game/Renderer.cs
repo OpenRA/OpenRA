@@ -41,9 +41,11 @@ namespace OpenRA
 		internal IGraphicsContext Context { get; }
 
 		internal int SheetSize { get; }
-		internal int TempBufferSize { get; }
+		internal int TempVertexBufferSize { get; }
+		internal int TempIndexBufferSize { get; }
 
-		readonly IVertexBuffer<Vertex> tempBuffer;
+		readonly IVertexBuffer<Vertex> tempVertexBuffer;
+		readonly IIndexBuffer quadIndexBuffer;
 		readonly Stack<Rectangle> scissorState = new();
 
 		IFrameBuffer screenBuffer;
@@ -75,13 +77,15 @@ namespace OpenRA
 			this.platform = platform;
 			var resolution = GetResolution(graphicSettings);
 
+			TempVertexBufferSize = graphicSettings.BatchSize - graphicSettings.BatchSize % 4;
+			TempIndexBufferSize = TempVertexBufferSize / 4 * 6;
+
 			Window = platform.CreateWindow(new Size(resolution.Width, resolution.Height),
-				graphicSettings.Mode, graphicSettings.UIScale, graphicSettings.BatchSize,
+				graphicSettings.Mode, graphicSettings.UIScale, TempVertexBufferSize, TempIndexBufferSize,
 				graphicSettings.VideoDisplay, graphicSettings.GLProfile, !graphicSettings.DisableLegacyGL);
 
 			Context = Window.Context;
 
-			TempBufferSize = graphicSettings.BatchSize;
 			SheetSize = graphicSettings.SheetSize;
 
 			WorldSpriteRenderer = new SpriteRenderer(this, Context.CreateShader("combined"));
@@ -92,7 +96,8 @@ namespace OpenRA
 			RgbaSpriteRenderer = new RgbaSpriteRenderer(SpriteRenderer);
 			RgbaColorRenderer = new RgbaColorRenderer(SpriteRenderer);
 
-			tempBuffer = Context.CreateVertexBuffer(TempBufferSize);
+			tempVertexBuffer = Context.CreateVertexBuffer(TempVertexBufferSize);
+			quadIndexBuffer = Context.CreateQuadIndexBuffer(TempIndexBufferSize);
 		}
 
 		static Size GetResolution(GraphicSettings graphicsSettings)
@@ -513,7 +518,8 @@ namespace OpenRA
 		public void Dispose()
 		{
 			WorldModelRenderer.Dispose();
-			tempBuffer.Dispose();
+			tempVertexBuffer.Dispose();
+			quadIndexBuffer.Dispose();
 			fontSheetBuilder?.Dispose();
 			if (Fonts != null)
 				foreach (var font in Fonts.Values)
