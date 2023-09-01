@@ -258,7 +258,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var autoTarget = ScanForTarget(self, AllowMove, true);
 
-				if (autoTarget != Target.Invalid)
+				if (autoTarget.Type != TargetType.Invalid)
 					attacker = autoTarget.Actor;
 			}
 
