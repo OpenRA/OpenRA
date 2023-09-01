@@ -546,7 +546,12 @@ namespace OpenRA.Server
 					lock (LobbyInfo)
 					{
 						client.Slot = LobbyInfo.FirstEmptySlot();
-						client.IsAdmin = !LobbyInfo.Clients.Any(c => c.IsAdmin);
+
+						// Give admin access 
+						if (Type == ServerType.Dedicated && Settings.AdminNamesList.Length > 0)
+							client.IsAdmin = Settings.AdminNamesList.Contains(client.Name);
+						else
+							client.IsAdmin = !LobbyInfo.Clients.Any(c => c.IsAdmin);
 
 						if (client.IsObserver && !LobbyInfo.GlobalSettings.AllowSpectators)
 						{

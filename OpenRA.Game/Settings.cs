@@ -72,6 +72,9 @@ namespace OpenRA
 		[Desc("For dedicated servers only, allow anonymous clients to join.")]
 		public bool RequireAuthentication = false;
 
+		[Desc("For dedicated servers only, if non-empty, give admin permissions on join only for players in this list.")]
+		public string[] AdminNamesList = Array.Empty<string>();
+
 		[Desc("For dedicated servers only, if non-empty, only allow authenticated players with these profile IDs to join.")]
 		public int[] ProfileIDWhitelist = Array.Empty<int>();
 
