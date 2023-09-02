@@ -288,6 +288,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly int creationActivityDelay;
 
 		bool notify = true;
+		bool repulseEnabled = true;
 
 		public static WPos GroundPosition(Actor self)
 		{
@@ -451,8 +452,12 @@ namespace OpenRA.Mods.Common.Traits
 					Pitch = Util.TickFacing(Pitch, WAngle.Zero, Info.PitchSpeed);
 			}
 
-			Repulse();
+			if (repulseEnabled)
+				Repulse();
 		}
+
+		public void EnableRepulse() { repulseEnabled = true; }
+		public void DisableRepulse() { repulseEnabled = false; }
 
 		public void Repulse()
 		{
