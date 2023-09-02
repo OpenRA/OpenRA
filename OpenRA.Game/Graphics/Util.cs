@@ -308,25 +308,35 @@ namespace OpenRA.Graphics
 
 		public static float[] IdentityMatrix()
 		{
-			return Exts.MakeArray(16, j => (j % 5 == 0) ? 1.0f : 0);
+			return new float[]
+			{
+				1, 0, 0, 0,
+				0, 1, 0, 0,
+				0, 0, 1, 0,
+				0, 0, 0, 1,
+			};
 		}
 
 		public static float[] ScaleMatrix(float sx, float sy, float sz)
 		{
-			var mtx = IdentityMatrix();
-			mtx[0] = sx;
-			mtx[5] = sy;
-			mtx[10] = sz;
-			return mtx;
+			return new float[]
+			{
+				sx, 0, 0, 0,
+				0, sy, 0, 0,
+				0, 0, sz, 0,
+				0, 0, 0, 1,
+			};
 		}
 
 		public static float[] TranslationMatrix(float x, float y, float z)
 		{
-			var mtx = IdentityMatrix();
-			mtx[12] = x;
-			mtx[13] = y;
-			mtx[14] = z;
-			return mtx;
+			return new float[]
+			{
+				1, 0, 0, 0,
+				0, 1, 0, 0,
+				0, 0, 1, 0,
+				x, y, z, 1,
+			};
 		}
 
 		public static float[] MatrixMultiply(float[] lhs, float[] rhs)
