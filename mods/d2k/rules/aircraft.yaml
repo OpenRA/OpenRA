@@ -63,6 +63,7 @@ carryall:
 		Category: Units
 	Aircraft:
 		MinAirborneAltitude: 400
+		Repulsable: True
 	RevealsShroud@lifting_low:
 		Range: 2c512
 		Type: GroundPosition
