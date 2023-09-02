@@ -154,16 +154,20 @@ namespace OpenRA.Mods.Common.Traits
 			readonly Actor cargo;
 			readonly AutoCarryable carryable;
 			readonly AutoCarryall carryall;
+			readonly Aircraft aircraft;
+			bool delivered;
 
 			public FerryUnit(Actor self, Actor cargo)
 			{
 				this.cargo = cargo;
 				carryable = cargo.Trait<AutoCarryable>();
 				carryall = self.Trait<AutoCarryall>();
+				aircraft = self.Trait<Aircraft>();
 			}
 
 			protected override void OnFirstRun(Actor self)
 			{
+				aircraft.DisableRepulse();
 				if (!carryall.IsTraitDisabled && carryall.Carryable != null && !carryall.Carryable.IsDead)
 					QueueChild(new PickupUnit(self, cargo, 0, carryall.Info.TargetLineColor));
 			}
@@ -187,12 +191,20 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool Tick(Actor self)
 			{
+				aircraft.EnableRepulse();
+
 				// Cargo may have become invalid or PickupUnit cancelled.
 				if (IsCanceling || carryall.IsTraitDisabled || carryall.Carryable == null || carryall.Carryable.IsDead)
 					return true;
 
-				var dropRange = carryall.Info.DropRange;
-				QueueChild(new DeliverUnit(self, Target.FromCell(self.World, carryable.Destination ?? self.Location), dropRange, carryall.Info.TargetLineColor));
+				if (!delivered)
+				{
+					delivered = true;
+					aircraft.DisableRepulse();
+					var dropRange = carryall.Info.DropRange;
+					QueueChild(new DeliverUnit(self, Target.FromCell(self.World, carryable.Destination ?? self.Location), dropRange, carryall.Info.TargetLineColor));
+					return false;
+				}
 
 				return true;
 			}
