@@ -132,6 +132,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("When should the AI start building specific buildings.")]
 		public readonly Dictionary<string, int> BuildingDelays = null;
 
+		[Desc("The default spacing bettween other buildings when AI find a place for all buildings in cell, default to 1.",
+			"Beware: check the building place with 1 cell spaicng can avoid enclosing the units!")]
+		public readonly int DefaultBuildingSpacing = 1;
+
+		[Desc("The spacing in cells bettween other buildings when AI find a place for specific buildings in cell.")]
+		public readonly Dictionary<string, int> BuildingSpacings = null;
+
 		public override object Create(ActorInitializer init) { return new BaseBuilderBotModule(init.Self, this); }
 	}
 
@@ -151,8 +158,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly World world;
 		readonly Player player;
+		public readonly int MaxBuildingSpacing;
 		PowerManager playerPower;
 		PlayerResources playerResources;
+		BuildingInfluence buildingInfluence;
 		IResourceLayer resourceLayer;
 		IBotPositionsUpdated[] positionsUpdatedModules;
 		CPos initialBaseCenter;
@@ -163,6 +172,12 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			world = self.World;
 			player = self.Owner;
+
+			MaxBuildingSpacing = info.DefaultBuildingSpacing;
+
+			if (info.BuildingSpacings != null)
+				foreach (var spacing in info.BuildingSpacings.Values)
+					MaxBuildingSpacing = MaxBuildingSpacing < spacing ? spacing : MaxBuildingSpacing;
 		}
 
 		protected override void Created(Actor self)
@@ -170,15 +185,16 @@ namespace OpenRA.Mods.Common.Traits
 			playerPower = self.Owner.PlayerActor.TraitOrDefault<PowerManager>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			resourceLayer = self.World.WorldActor.TraitOrDefault<IResourceLayer>();
+			buildingInfluence = self.World.WorldActor.Trait<BuildingInfluence>();
 			positionsUpdatedModules = self.Owner.PlayerActor.TraitsImplementing<IBotPositionsUpdated>().ToArray();
 		}
 
 		protected override void TraitEnabled(Actor self)
 		{
 			foreach (var building in Info.BuildingQueues)
-				builders.Add(new BaseBuilderQueueManager(this, building, player, playerPower, playerResources, resourceLayer));
+				builders.Add(new BaseBuilderQueueManager(this, building, player, playerPower, playerResources, resourceLayer, buildingInfluence));
 			foreach (var defense in Info.DefenseQueues)
-				builders.Add(new BaseBuilderQueueManager(this, defense, player, playerPower, playerResources, resourceLayer));
+				builders.Add(new BaseBuilderQueueManager(this, defense, player, playerPower, playerResources, resourceLayer, buildingInfluence));
 		}
 
 		void IBotPositionsUpdated.UpdatedBaseCenter(CPos newLocation)

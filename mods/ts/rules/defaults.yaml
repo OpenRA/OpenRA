@@ -410,6 +410,9 @@
 		Sequence: repair
 		Position: Center
 		Palette: mouse
+	ProductionCostMultiplier@test:
+		Multiplier: 20
+	
 
 ^CivBuilding:
 	Inherits: ^BasicBuilding
