@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public bool CanCapture(Actor target)
 		{
 			var targetManager = target.TraitOrDefault<CaptureManager>();
-			return targetManager != null && targetManager.CanBeTargetedBy(target, Self, captureManager);
+			return targetManager != null && captureManager.CanTarget(targetManager);
 		}
 	}
 }

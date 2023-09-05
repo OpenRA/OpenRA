@@ -1062,7 +1062,6 @@
 	CaptureManager:
 	Capturable:
 		Types: husk
-		ValidRelationships: Enemy, Neutral
 	TransformOnCapture:
 		ForceHealthPercentage: 15
 	InfiltrateForTransform:

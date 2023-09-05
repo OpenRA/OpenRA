@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			if (!targetIsDeadOrHiddenActor && target.Type != TargetType.FrozenActor &&
-				(enterCaptureManager == null || !enterCaptureManager.CanBeTargetedBy(enterActor, self, manager)))
+				(enterCaptureManager == null || !manager.CanTarget(enterCaptureManager)))
 				Cancel(self, true);
 		}
 
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Make sure we can still capture the target before entering
 			// (but not before, because this may stop the actor in the middle of nowhere)
-			if (enterCaptureManager == null || !enterCaptureManager.CanBeTargetedBy(enterActor, self, manager))
+			if (enterCaptureManager == null || !manager.CanTarget(enterCaptureManager))
 			{
 				Cancel(self, true);
 				return false;
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			// StartCapture returns false when a capture delay is enabled
 			// We wait until it returns true before allowing entering the target
-			if (!manager.StartCapture(self, enterActor, enterCaptureManager, out var captures))
+			if (!manager.StartCapture(enterCaptureManager, out var captures))
 				return false;
 
 			if (!captures.Info.ConsumedByCapture)
@@ -80,11 +80,11 @@ namespace OpenRA.Mods.Common.Activities
 			if (enterActor != targetActor)
 				return;
 
-			if (enterCaptureManager.BeingCaptured || !enterCaptureManager.CanBeTargetedBy(enterActor, self, manager))
+			if (enterCaptureManager.BeingCaptured || !manager.CanTarget(enterCaptureManager))
 				return;
 
 			// Prioritize capturing over sabotaging
-			var captures = manager.ValidCapturesWithLowestSabotageThreshold(self, enterActor, enterCaptureManager);
+			var captures = manager.ValidCapturesWithLowestSabotageThreshold(enterCaptureManager);
 			if (captures == null)
 				return;
 
@@ -134,25 +134,25 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected override void OnLastRun(Actor self)
 		{
-			CancelCapture(self);
+			CancelCapture();
 			base.OnLastRun(self);
 		}
 
 		protected override void OnActorDispose(Actor self)
 		{
-			CancelCapture(self);
+			CancelCapture();
 			base.OnActorDispose(self);
 		}
 
 		public override void Cancel(Actor self, bool keepQueue = false)
 		{
-			CancelCapture(self);
+			CancelCapture();
 			base.Cancel(self, keepQueue);
 		}
 
-		void CancelCapture(Actor self)
+		void CancelCapture()
 		{
-			manager.CancelCapture(self, enterActor, enterCaptureManager);
+			manager.CancelCapture(enterCaptureManager);
 		}
 	}
 }
