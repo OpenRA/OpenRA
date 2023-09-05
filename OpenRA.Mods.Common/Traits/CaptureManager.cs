@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (captee.IsDead)
 				return null;
 
-			foreach (var c in enabledCaptures.OrderBy(c => c.Info.SabotageThreshold))
+			foreach (var c in enabledCaptures.OrderBy(c => c.Info.SabotageThreshold).ThenBy(c => c.Info.CaptureDelay))
 				if (capteeManager.CanBeTargetedBy(captee, self, c))
 					return c;
 
@@ -209,10 +209,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (targetManager.beingCapturedToken == Actor.InvalidConditionToken)
 				targetManager.beingCapturedToken = target.GrantCondition(targetManager.info.BeingCapturedCondition);
 
-			captures = enabledCaptures
-				.OrderBy(c => c.Info.CaptureDelay)
-				.FirstOrDefault(c => targetManager.CanBeTargetedBy(target, self, c));
-
+			captures = ValidCapturesWithLowestSabotageThreshold(self, target, targetManager);
 			if (captures == null)
 				return false;
 
