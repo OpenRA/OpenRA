@@ -108,6 +108,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			new UpdatePath("playtest-20230801", new UpdateRule[]
 			{
 				// bleed only changes here.
+				new RemoveValidRelationsFromCapturable(),
 
 				// Execute these rules last to avoid premature yaml merge crashes.
 				new AbstractDocking(),

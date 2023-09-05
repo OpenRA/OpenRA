@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (captureManager == null)
 						return false;
 
-					return capturers.Any(tp => captureManager.CanBeTargetedBy(target, tp.Actor, tp.Trait));
+					return capturers.Any(tp => tp.Trait.CanTarget(captureManager));
 				})
 				.OrderByDescending(target => target.GetSellValue())
 				.Take(maximumCaptureTargetOptions);

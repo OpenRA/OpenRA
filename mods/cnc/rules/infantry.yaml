@@ -213,8 +213,12 @@ E6:
 		SabotageThreshold: 55
 		PlayerExperience: 10
 	Captures@CAPTURES:
-		CaptureTypes: building, husk
+		CaptureTypes: building
 		PlayerExperience: 10
+	Captures@CATURESHUSK:
+		CaptureTypes: husk
+		PlayerExperience: 10
+		ValidRelationships: Enemy, Neutral, Ally
 	-AttackFrontal:
 
 RMBO:

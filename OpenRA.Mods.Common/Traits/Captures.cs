@@ -43,6 +43,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Experience granted to the capturing player.")]
 		public readonly int PlayerExperience = 0;
 
+		[Desc("What player relationships the target's owner needs to be captured by this actor.")]
+		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Neutral | PlayerRelationship.Enemy;
+
 		[Desc("Relationships that the structure's previous owner needs to have for the capturing player to receive Experience.")]
 		public readonly PlayerRelationship PlayerExperienceRelationships = PlayerRelationship.Enemy;
 
@@ -69,12 +72,12 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class Captures : ConditionalTrait<CapturesInfo>, IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		readonly CaptureManager captureManager;
+		public readonly CaptureManager CaptureManager;
 
 		public Captures(Actor self, CapturesInfo info)
 			: base(info)
 		{
-			captureManager = self.Trait<CaptureManager>();
+			CaptureManager = self.Trait<CaptureManager>();
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -110,8 +113,8 @@ namespace OpenRA.Mods.Common.Traits
 			self.ShowTargetLines();
 		}
 
-		protected override void TraitEnabled(Actor self) { captureManager.RefreshCaptures(); }
-		protected override void TraitDisabled(Actor self) { captureManager.RefreshCaptures(); }
+		protected override void TraitEnabled(Actor self) { CaptureManager.RefreshCaptures(); }
+		protected override void TraitDisabled(Actor self) { CaptureManager.RefreshCaptures(); }
 
 		sealed class CaptureOrderTargeter : UnitOrderTargeter
 		{
@@ -125,8 +128,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				var captureManager = target.TraitOrDefault<CaptureManager>();
-				if (captureManager == null || !captureManager.CanBeTargetedBy(target, self, captures))
+				var targetManager = target.TraitOrDefault<CaptureManager>();
+				if (targetManager == null || !captures.CaptureManager.CanTarget(targetManager))
 				{
 					cursor = captures.Info.EnterBlockedCursor;
 					return false;
@@ -147,8 +150,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
-				var captureManagerInfo = target.Info.TraitInfoOrDefault<CaptureManagerInfo>();
-				if (captureManagerInfo == null || !captureManagerInfo.CanBeTargetedBy(target, self, captures))
+				if (!captures.CaptureManager.CanTarget(target))
 				{
 					cursor = captures.Info.EnterBlockedCursor;
 					return false;

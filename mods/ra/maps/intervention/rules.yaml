@@ -25,7 +25,6 @@ MISS:
 		Name: Soviet Air Force HQ
 	Capturable:
 		Types: building
-		ValidRelationships: Enemy
 	CaptureManager:
 
 TENT:
