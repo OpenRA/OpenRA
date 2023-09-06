@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.world = world;
 			player = world.LocalPlayer;
 			playerResources = player.PlayerActor.Trait<PlayerResources>();
-			displayResources = playerResources.Cash + playerResources.Resources;
+			displayResources = playerResources.GetCashAndResources();
 
 			siloUsageTooltipCache = new CachedTransform<(int Resources, int Capacity), string>(x =>
 				TranslationProvider.GetString(SiloUsage, Translation.Arguments("usage", x.Resources, "capacity", x.Capacity)));
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (nextCashTickTime > 0)
 				nextCashTickTime--;
 
-			var actual = playerResources.Cash + playerResources.Resources;
+			var actual = playerResources.GetCashAndResources();
 
 			var diff = Math.Abs(actual - displayResources);
 			var move = Math.Min(Math.Max((int)(diff * DisplayFracPerFrame), DisplayDeltaPerFrame), diff);

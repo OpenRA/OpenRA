@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var timeSize = font.Measure(timeLabel.Text);
 
 				costLabel.Text = cost.ToString(NumberFormatInfo.CurrentInfo);
-				costLabel.GetColor = () => pr.Cash + pr.Resources >= cost ? Color.White : Color.Red;
+				costLabel.GetColor = () => pr.GetCashAndResources() >= cost ? Color.White : Color.Red;
 				var costSize = font.Measure(costLabel.Text);
 
 				descLabel.Text = buildable.Description.Replace("\\n", "\n");
