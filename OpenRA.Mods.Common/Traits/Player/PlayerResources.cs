@@ -218,5 +218,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (Resources > ResourceCapacity)
 				Resources = ResourceCapacity;
 		}
+
+		public int GetCashAndResources()
+		{
+			return Cash + Resources;
+		}
 	}
 }
