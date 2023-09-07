@@ -267,7 +267,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			var inaccuracy = lockOn && info.LockOnInaccuracy.Length > -1 ? info.LockOnInaccuracy.Length : info.Inaccuracy.Length;
 			if (inaccuracy > 0)
 			{
-				var maxInaccuracyOffset = Util.GetProjectileInaccuracy(info.Inaccuracy.Length, info.InaccuracyType, args);
+				var maxInaccuracyOffset = Util.GetProjectileInaccuracy(inaccuracy, info.InaccuracyType, args);
 				offset = WVec.FromPDF(world.SharedRandom, 2) * maxInaccuracyOffset / 1024;
 			}
 
