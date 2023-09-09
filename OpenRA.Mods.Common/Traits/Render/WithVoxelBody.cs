@@ -22,6 +22,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithVoxelBodyInfo : ConditionalTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>
 	{
 		public readonly string Sequence = "idle";
+		public readonly WVec Offset;
 
 		[Desc("Defines if the Voxel should have a shadow.")]
 		public readonly bool ShowShadow = true;
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var model = init.World.ModelCache.GetModelSequence(image, Sequence);
-			yield return new ModelAnimation(model, () => WVec.Zero,
+			yield return new ModelAnimation(model, () => Offset,
 				() => body.QuantizeOrientation(orientation(), facings),
 				() => false, () => 0, ShowShadow);
 		}
@@ -51,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			rv = self.Trait<RenderVoxels>();
 
 			var model = self.World.ModelCache.GetModelSequence(rv.Image, info.Sequence);
-			modelAnimation = new ModelAnimation(model, () => WVec.Zero,
+			modelAnimation = new ModelAnimation(model, () => info.Offset,
 				() => body.QuantizeOrientation(self.Orientation),
 				() => IsTraitDisabled, () => 0, info.ShowShadow);
 
