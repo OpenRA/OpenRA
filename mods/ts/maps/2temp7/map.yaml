@@ -590,23 +590,11 @@ Actors:
 	Actor177: lobrdg_a
 		Location: 138,-7
 		Owner: Neutral
-	Actor178: lobrdg_r_nw
-		Location: 125,7
-		Owner: Neutral
 	Actor179: lobrdg_a
 		Location: 138,-6
 		Owner: Neutral
-	Actor180: lobrdg_b
-		Location: 126,7
-		Owner: Neutral
 	Actor181: lobrdg_a
 		Location: 138,-5
-		Owner: Neutral
-	Actor182: lobrdg_r_nw
-		Location: 125,9
-		Owner: Neutral
-	Actor183: lobrdg_b
-		Location: 127,7
 		Owner: Neutral
 	Actor184: lobrdg_a
 		Location: 138,-4
