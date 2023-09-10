@@ -153,7 +153,10 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			{
 				var (target, lead) = FindDefenselessTarget(owner);
 				if (target == null)
+				{
+					Retreat(owner, flee: false, rearm: true, repair: true);
 					return;
+				}
 
 				leader = lead;
 				owner.SetActorToTarget((target, WVec.Zero));
@@ -229,21 +232,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			if (!owner.IsValid)
 				return;
 
-			foreach (var a in owner.Units)
-			{
-				var ammoPools = a.TraitsImplementing<AmmoPool>().ToArray();
-
-				if (IsRearming(a))
-					continue;
-
-				if (!ReloadsAutomatically(ammoPools, a.TraitOrDefault<Rearmable>()) && !FullAmmo(ammoPools))
-				{
-					owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));
-					continue;
-				}
-
-				owner.Bot.QueueOrder(new Order("Move", a, Target.FromCell(owner.World, RandomBuildingLocation(owner)), false));
-			}
+			Retreat(owner, flee: true, rearm: true, repair: true);
 
 			owner.FuzzyStateMachine.ChangeState(owner, new AirIdleState());
 		}
