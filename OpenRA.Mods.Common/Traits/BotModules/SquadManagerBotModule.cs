@@ -47,6 +47,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Own actor types that are prioritized when defending.")]
 		public readonly HashSet<string> ProtectionTypes = new();
 
+		[Desc("Target types are used for identifying aircraft.")]
+		public readonly BitSet<TargetableType> AircraftTargetType = new("Air");
+
 		[Desc("Minimum number of units AI must have before attacking.")]
 		public readonly int SquadSize = 8;
 
