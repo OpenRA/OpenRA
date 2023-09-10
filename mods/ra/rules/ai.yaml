@@ -289,7 +289,7 @@ Player:
 		RequiresCondition: enable-rush-ai
 		SquadSize: 20
 		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
-		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, dtrk, qtnk
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, dtrk, qtnk, spy, spy.england
 		ConstructionYardTypes: fact
 		AirUnitsTypes: mig, yak, heli, hind, mh60
 		AircraftTargetType: AirborneActor
@@ -309,6 +309,8 @@ Player:
 			e4: 15
 			dog: 15
 			shok: 15
+			spy: 2
+			spy.england: 2
 			harv: 10
 			apc: 30
 			jeep: 20
@@ -334,7 +336,7 @@ Player:
 		RequiresCondition: enable-normal-ai
 		SquadSize: 40
 		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
-		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, dtrk, qtnk
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, dtrk, qtnk, spy, spy.england
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen, syrd
 		AirUnitsTypes: mig, yak, heli, hind, mh60
@@ -351,6 +353,8 @@ Player:
 			dog: 15
 			shok: 15
 			harv: 15
+			spy: 2
+			spy.england: 2
 			apc: 30
 			jeep: 20
 			arty: 15
@@ -384,7 +388,7 @@ Player:
 		RequiresCondition: enable-turtle-ai
 		SquadSize: 10
 		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
-		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, mnly, dtrk, qtnk
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, mnly, dtrk, qtnk, spy, spy.england
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen, syrd
 		AirUnitsTypes: mig, yak, heli, hind, mh60
@@ -400,6 +404,8 @@ Player:
 			e4: 15
 			dog: 15
 			shok: 15
+			spy: 2
+			spy.england: 2
 			harv: 15
 			apc: 30
 			jeep: 20
@@ -441,7 +447,7 @@ Player:
 	SquadManagerBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		SquadSize: 1
-		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, dtrk, qtnk
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, dtrk, qtnk, spy, spy.england
 		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
 		ConstructionYardTypes: fact
 		NavalProductionTypes: spen, syrd
@@ -452,6 +458,8 @@ Player:
 	UnitBuilderBotModule@naval:
 		RequiresCondition: enable-naval-ai
 		UnitsToBuild:
+			spy: 2
+			spy.england: 2
 			harv: 1
 			ftrk: 40
 			arty: 40
@@ -489,3 +497,24 @@ Player:
 		InvalidTargets: WaterActor
 		AttackDistance: Closest
 		AttackOrderName: DetonateAttack
+	GrantConditionOnPrerequisite@DisguiseSpy:
+		Condition: disguise-first
+		Prerequisites: disguise.first
+	SendUnitToAttackBotModule@DisguiseSpy:
+		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai) && disguise-first
+		ActorTypesAndAttackDesire: 
+			spy: 100
+			spy.england: 100
+		AttackOrderName: Disguise
+		ValidTargets: Disguise
+		AttackDistance: Random
+	SendUnitToAttackBotModule@SendSpy:
+		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai) && !disguise-first
+		ActorTypesAndAttackDesire: 
+			spy: 100
+			spy.england: 100
+		AttackOrderName: Infiltrate
+		ValidTargets: SpyInfiltrate
+		InvalidTargets: WaterActor
+		AttackDistance: Random
+
