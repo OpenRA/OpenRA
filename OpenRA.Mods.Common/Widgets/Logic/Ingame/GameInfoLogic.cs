@@ -40,12 +40,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly World world;
 		readonly ModData modData;
 		readonly Action<bool> hideMenu;
+		readonly Action closeMenu;
 		readonly IObjectivesPanel iop;
 		IngameInfoPanel activePanel;
 		readonly bool hasError;
 
 		[ObjectCreator.UseCtor]
-		public GameInfoLogic(Widget widget, ModData modData, World world, IngameInfoPanel initialPanel, Action<bool> hideMenu)
+		public GameInfoLogic(Widget widget, ModData modData, World world, IngameInfoPanel initialPanel, Action<bool> hideMenu, Action closeMenu)
 		{
 			var panels = new Dictionary<IngameInfoPanel, (string Panel, string Label, Action<ButtonWidget, Widget> Setup)>()
 			{
@@ -59,6 +60,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.world = world;
 			this.modData = modData;
 			this.hideMenu = hideMenu;
+			this.closeMenu = closeMenu;
 			activePanel = initialPanel;
 
 			var visiblePanels = new List<IngameInfoPanel>();
@@ -140,7 +142,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var panel = hasError ? "SCRIPT_ERROR_PANEL" : iop.PanelName;
 			Game.LoadWidget(world, panel, objectivesPanelContainer, new WidgetArgs()
 			{
-				{ "hideMenu", hideMenu }
+				{ "hideMenu", hideMenu },
+				{ "closeMenu", closeMenu },
 			});
 		}
 
