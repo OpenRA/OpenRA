@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string VoteKickVoteCancel = "dialog-vote-kick.vote-cancel";
 
 		[ObjectCreator.UseCtor]
-		public GameInfoStatsLogic(Widget widget, ModData modData, World world, OrderManager orderManager, WorldRenderer worldRenderer, Action<bool> hideMenu)
+		public GameInfoStatsLogic(Widget widget, ModData modData, World world, OrderManager orderManager, WorldRenderer worldRenderer, Action<bool> hideMenu, Action closeMenu)
 		{
 			var player = world.LocalPlayer;
 			var playerPanel = widget.Get<ScrollPanelWidget>("PLAYER_LIST");
@@ -165,6 +165,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							{
 								orderManager.IssueOrder(Order.Command($"vote_kick {client.Index} {true}"));
 								hideMenu(false);
+								closeMenu();
 							},
 							confirmText: VoteKickVoteStart,
 							onCancel: () => hideMenu(false));
@@ -180,6 +181,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{
 							orderManager.IssueOrder(Order.Command($"vote_kick {client.Index} {true}"));
 							hideMenu(false);
+							closeMenu();
 						},
 						confirmText: VoteKickVoteFor,
 						onOther: () =>
@@ -187,6 +189,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							Ui.CloseWindow();
 							orderManager.IssueOrder(Order.Command($"vote_kick {client.Index} {false}"));
 							hideMenu(false);
+							closeMenu();
 						},
 						otherText: VoteKickVoteAgainst,
 						onCancel: () => hideMenu(false),
