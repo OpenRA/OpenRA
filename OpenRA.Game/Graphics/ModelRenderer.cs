@@ -277,7 +277,7 @@ namespace OpenRA.Graphics
 			shader.SetVec("DiffuseLight", diffuseLight, 3);
 
 			shader.PrepareRender();
-			renderer.DrawBatch(cache.VertexBuffer, renderData.Start, renderData.Count, PrimitiveType.TriangleList);
+			renderer.DrawBatch(cache.VertexBuffer, shader, renderData.Start, renderData.Count, PrimitiveType.TriangleList);
 		}
 
 		public void BeginFrame()

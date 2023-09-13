@@ -50,15 +50,6 @@ namespace OpenRA.Platforms.Default
 				OpenGL.glBindVertexArray(vao);
 				OpenGL.CheckGLError();
 			}
-
-			OpenGL.glEnableVertexAttribArray(Shader.VertexPosAttributeIndex);
-			OpenGL.CheckGLError();
-			OpenGL.glEnableVertexAttribArray(Shader.TexCoordAttributeIndex);
-			OpenGL.CheckGLError();
-			OpenGL.glEnableVertexAttribArray(Shader.TexMetadataAttributeIndex);
-			OpenGL.CheckGLError();
-			OpenGL.glEnableVertexAttribArray(Shader.TintAttributeIndex);
-			OpenGL.CheckGLError();
 		}
 
 		public IVertexBuffer<T> CreateVertexBuffer<T>(int size) where T : struct
@@ -103,10 +94,10 @@ namespace OpenRA.Platforms.Default
 			return new FrameBuffer(s, texture, clearColor);
 		}
 
-		public IShader CreateShader(string name)
+		public IShader CreateShader(IShaderBindings bindings)
 		{
 			VerifyThreadAffinity();
-			return new Shader(name);
+			return new Shader(bindings);
 		}
 
 		public void EnableScissor(int x, int y, int width, int height)

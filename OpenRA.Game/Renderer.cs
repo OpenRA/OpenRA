@@ -88,11 +88,12 @@ namespace OpenRA
 
 			SheetSize = graphicSettings.SheetSize;
 
-			WorldSpriteRenderer = new SpriteRenderer(this, Context.CreateShader("combined"));
+			var combinedBindings = new CombinedShaderBindings();
+			WorldSpriteRenderer = new SpriteRenderer(this, Context.CreateShader(combinedBindings));
 			WorldRgbaSpriteRenderer = new RgbaSpriteRenderer(WorldSpriteRenderer);
 			WorldRgbaColorRenderer = new RgbaColorRenderer(WorldSpriteRenderer);
-			WorldModelRenderer = new ModelRenderer(this, Context.CreateShader("model"));
-			SpriteRenderer = new SpriteRenderer(this, Context.CreateShader("combined"));
+			WorldModelRenderer = new ModelRenderer(this, Context.CreateShader(new ModelShaderBindings()));
+			SpriteRenderer = new SpriteRenderer(this, Context.CreateShader(combinedBindings));
 			RgbaSpriteRenderer = new RgbaSpriteRenderer(SpriteRenderer);
 			RgbaColorRenderer = new RgbaColorRenderer(SpriteRenderer);
 
@@ -331,26 +332,28 @@ namespace OpenRA
 			renderType = RenderType.None;
 		}
 
-		public void DrawBatch<T>(IVertexBuffer<T> vertices,
+		public void DrawBatch<T>(IVertexBuffer<T> vertices, IShader shader,
 			int firstVertex, int numVertices, PrimitiveType type)
 			where T : struct
 		{
 			vertices.Bind();
+			shader.Bind();
 			Context.DrawPrimitives(type, firstVertex, numVertices);
 			PerfHistory.Increment("batches", 1);
 		}
 
-		public void DrawQuadBatch(ref Vertex[] vertices, int numVertices)
+		public void DrawQuadBatch(ref Vertex[] vertices, IShader shader, int numVertices)
 		{
 			tempVertexBuffer.SetData(ref vertices, numVertices);
-			DrawQuadBatch(tempVertexBuffer, quadIndexBuffer, numVertices / 4 * 6, 0);
+			DrawQuadBatch(tempVertexBuffer, quadIndexBuffer, shader, numVertices / 4 * 6, 0);
 		}
 
-		public void DrawQuadBatch<T>(IVertexBuffer<T> vertices, IIndexBuffer indices, int numIndices, int start)
+		public void DrawQuadBatch<T>(IVertexBuffer<T> vertices, IIndexBuffer indices, IShader shader, int numIndices, int start)
 			where T : struct
 		{
 			vertices.Bind();
 			indices.Bind();
+			shader.Bind();
 			Context.DrawElements(numIndices, start);
 			PerfHistory.Increment("batches", 1);
 		}

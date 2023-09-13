@@ -95,7 +95,7 @@ namespace OpenRA.Platforms.Default
 							return new ThreadedFrameBuffer(this,
 								context.CreateFrameBuffer(t.Item1, (ITextureInternal)CreateTexture(), t.Item2));
 						};
-					getCreateShader = name => new ThreadedShader(this, context.CreateShader((string)name));
+					getCreateShader = bindings => new ThreadedShader(this, context.CreateShader((IShaderBindings)bindings));
 					getCreateVertexBuffer =
 						tuple =>
 						{
@@ -416,9 +416,9 @@ namespace OpenRA.Platforms.Default
 			return Send(getCreateFrameBuffer, (s, clearColor));
 		}
 
-		public IShader CreateShader(string name)
+		public IShader CreateShader(IShaderBindings bindings)
 		{
-			return Send(getCreateShader, name);
+			return Send(getCreateShader, bindings);
 		}
 
 		public ITexture CreateTexture()
@@ -742,10 +742,12 @@ namespace OpenRA.Platforms.Default
 		readonly Action<object> setVec2;
 		readonly Action<object> setVec3;
 		readonly Action<object> setVec4;
+		readonly Action bind;
 
 		public ThreadedShader(ThreadedGraphicsContext device, IShader shader)
 		{
 			this.device = device;
+			bind = shader.Bind;
 			prepareRender = shader.PrepareRender;
 			setBool = tuple => { var t = ((string, bool))tuple; shader.SetBool(t.Item1, t.Item2); };
 			setMatrix = tuple => { var t = ((string, float[]))tuple; shader.SetMatrix(t.Item1, t.Item2); };
@@ -754,6 +756,11 @@ namespace OpenRA.Platforms.Default
 			setVec2 = tuple => { var t = ((string, float[], int))tuple; shader.SetVec(t.Item1, t.Item2, t.Item3); };
 			setVec3 = tuple => { var t = ((string, float, float))tuple; shader.SetVec(t.Item1, t.Item2, t.Item3); };
 			setVec4 = tuple => { var t = ((string, float, float, float))tuple; shader.SetVec(t.Item1, t.Item2, t.Item3, t.Item4); };
+		}
+
+		public void Bind()
+		{
+			device.Post(bind);
 		}
 
 		public void PrepareRender()

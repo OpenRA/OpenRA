@@ -52,7 +52,7 @@ namespace OpenRA.Graphics
 				renderer.Context.SetBlendMode(currentBlend);
 				shader.PrepareRender();
 
-				renderer.DrawQuadBatch(ref vertices, vertexCount);
+				renderer.DrawQuadBatch(ref vertices, shader, vertexCount);
 				renderer.Context.SetBlendMode(BlendMode.None);
 
 				vertexCount = 0;
@@ -186,7 +186,7 @@ namespace OpenRA.Graphics
 
 			renderer.Context.SetBlendMode(blendMode);
 			shader.PrepareRender();
-			renderer.DrawQuadBatch(buffer, indices, length, UintSize * start);
+			renderer.DrawQuadBatch(buffer, indices, shader, length, UintSize * start);
 			renderer.Context.SetBlendMode(BlendMode.None);
 		}
 
