@@ -51,7 +51,7 @@ namespace OpenRA.Graphics
 
 			vertexRowStride = 4 * map.MapSize.X;
 			vertices = new Vertex[vertexRowStride * map.MapSize.Y];
-			vertexBuffer = Game.Renderer.Context.CreateVertexBuffer(vertices.Length);
+			vertexBuffer = Game.Renderer.Context.CreateVertexBuffer<Vertex>(vertices.Length);
 
 			indexRowStride = 6 * map.MapSize.X;
 			lock (IndexBuffers)
