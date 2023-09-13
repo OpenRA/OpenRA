@@ -22,6 +22,24 @@ namespace OpenRA.Mods.Common
 
 	public static class AIUtils
 	{
+		public static bool PathExist(Actor unit, CPos destination, Actor ignoreActor, BlockedByActor blockedByActor = BlockedByActor.Immovable)
+		{
+			var mobile = unit.TraitOrDefault<Mobile>();
+			if (mobile == null)
+			{
+				// We consider other IMove ignore all blockers
+				if (unit.TraitsImplementing<IMove>().Any())
+					return true;
+				else
+					return false;
+			}
+
+			if (mobile.PathFinder.FindPathToTargetCell(unit, new List<CPos> { unit.Location }, destination, blockedByActor, ignoreActor: ignoreActor, laneBias: false).Count > 0)
+				return true;
+			else
+				return false;
+		}
+
 		public static bool IsAreaAvailable<T>(World world, Player player, Map map, int radius, HashSet<string> terrainTypes)
 		{
 			var cells = world.ActorsHavingTrait<T>().Where(a => a.Owner == player);
