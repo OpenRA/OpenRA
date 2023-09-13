@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 namespace OpenRA.Graphics
 {
 	[StructLayout(LayoutKind.Sequential)]
-	public readonly struct Vertex
+	public readonly struct ModelVertex
 	{
 		// 3d position
 		public readonly float X, Y, Z;
@@ -25,32 +25,22 @@ namespace OpenRA.Graphics
 		// Palette and channel flags
 		public readonly float P, C;
 
-		// Color tint
-		public readonly float R, G, B, A;
+		public ModelVertex(in float3 xyz, float s, float t, float u, float v, float p, float c)
+			: this(xyz.X, xyz.Y, xyz.Z, s, t, u, v, p, c) { }
 
-		public Vertex(in float3 xyz, float s, float t, float u, float v, float p, float c)
-			: this(xyz.X, xyz.Y, xyz.Z, s, t, u, v, p, c, float3.Ones, 1f) { }
-
-		public Vertex(in float3 xyz, float s, float t, float u, float v, float p, float c, in float3 tint, float a)
-			: this(xyz.X, xyz.Y, xyz.Z, s, t, u, v, p, c, tint.X, tint.Y, tint.Z, a) { }
-
-		public Vertex(float x, float y, float z, float s, float t, float u, float v, float p, float c, in float3 tint, float a)
-			: this(x, y, z, s, t, u, v, p, c, tint.X, tint.Y, tint.Z, a) { }
-
-		public Vertex(float x, float y, float z, float s, float t, float u, float v, float p, float c, float r, float g, float b, float a)
+		public ModelVertex(float x, float y, float z, float s, float t, float u, float v, float p, float c)
 		{
 			X = x; Y = y; Z = z;
 			S = s; T = t;
 			U = u; V = v;
 			P = p; C = c;
-			R = r; G = g; B = b; A = a;
 		}
 	}
 
-	public sealed class CombinedShaderBindings : ShaderBindings
+	public sealed class ModelShaderBindings : ShaderBindings
 	{
-		public CombinedShaderBindings()
-			: base("combined")
+		public ModelShaderBindings()
+			: base("model")
 		{ }
 
 		public override ShaderVertexAttribute[] Attributes { get; }	= new[]
@@ -58,7 +48,6 @@ namespace OpenRA.Graphics
 			new ShaderVertexAttribute("aVertexPosition", 3, 0),
 			new ShaderVertexAttribute("aVertexTexCoord", 4, 12),
 			new ShaderVertexAttribute("aVertexTexMetadata", 2, 28),
-			new ShaderVertexAttribute("aVertexTint", 4, 36)
 		};
 	}
 }

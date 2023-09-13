@@ -23,10 +23,10 @@ namespace OpenRA.Mods.Cnc.Graphics
 	{
 		static readonly float[] ChannelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
 
-		readonly List<Vertex[]> vertices = new();
+		readonly List<ModelVertex[]> vertices = new();
 		readonly Cache<(string, string), Voxel> voxels;
 		readonly IReadOnlyFileSystem fileSystem;
-		IVertexBuffer<Vertex> vertexBuffer;
+		IVertexBuffer<ModelVertex> vertexBuffer;
 		int totalVertexCount;
 		int cachedVertexCount;
 
@@ -50,14 +50,14 @@ namespace OpenRA.Mods.Cnc.Graphics
 		{
 			this.fileSystem = fileSystem;
 			voxels = new Cache<(string, string), Voxel>(LoadFile);
-			vertices = new List<Vertex[]>();
+			vertices = new List<ModelVertex[]>();
 			totalVertexCount = 0;
 			cachedVertexCount = 0;
 
 			sheetBuilder = CreateSheetBuilder();
 		}
 
-		Vertex[] GenerateSlicePlane(int su, int sv, Func<int, int, VxlElement?> first, Func<int, int, VxlElement?> second, Func<int, int, float3> coord)
+		ModelVertex[] GenerateSlicePlane(int su, int sv, Func<int, int, VxlElement?> first, Func<int, int, VxlElement?> second, Func<int, int, float3> coord)
 		{
 			var colors = new byte[su * sv];
 			var normals = new byte[su * sv];
@@ -86,18 +86,18 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 			var channelP = ChannelSelect[(int)s.Channel];
 			var channelC = ChannelSelect[(int)t.Channel];
-			return new Vertex[6]
+			return new ModelVertex[6]
 			{
-				new Vertex(coord(0, 0), s.Left, s.Top, t.Left, t.Top, channelP, channelC),
-				new Vertex(coord(su, 0), s.Right, s.Top, t.Right, t.Top, channelP, channelC),
-				new Vertex(coord(su, sv), s.Right, s.Bottom, t.Right, t.Bottom, channelP, channelC),
-				new Vertex(coord(su, sv), s.Right, s.Bottom, t.Right, t.Bottom, channelP, channelC),
-				new Vertex(coord(0, sv), s.Left, s.Bottom, t.Left, t.Bottom, channelP, channelC),
-				new Vertex(coord(0, 0), s.Left, s.Top, t.Left, t.Top, channelP, channelC)
+				new ModelVertex(coord(0, 0), s.Left, s.Top, t.Left, t.Top, channelP, channelC),
+				new ModelVertex(coord(su, 0), s.Right, s.Top, t.Right, t.Top, channelP, channelC),
+				new ModelVertex(coord(su, sv), s.Right, s.Bottom, t.Right, t.Bottom, channelP, channelC),
+				new ModelVertex(coord(su, sv), s.Right, s.Bottom, t.Right, t.Bottom, channelP, channelC),
+				new ModelVertex(coord(0, sv), s.Left, s.Bottom, t.Left, t.Bottom, channelP, channelC),
+				new ModelVertex(coord(0, 0), s.Left, s.Top, t.Left, t.Top, channelP, channelC)
 			};
 		}
 
-		IEnumerable<Vertex[]> GenerateSlicePlanes(VxlLimb l)
+		IEnumerable<ModelVertex[]> GenerateSlicePlanes(VxlLimb l)
 		{
 			VxlElement? Get(int x, int y, int z)
 			{
@@ -170,7 +170,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 		public ModelRenderData GenerateRenderData(VxlLimb l)
 		{
-			Vertex[] v;
+			ModelVertex[] v;
 			try
 			{
 				v = GenerateSlicePlanes(l).SelectMany(x => x).ToArray();
@@ -195,12 +195,12 @@ namespace OpenRA.Mods.Cnc.Graphics
 		public void RefreshBuffer()
 		{
 			vertexBuffer?.Dispose();
-			vertexBuffer = Game.Renderer.CreateVertexBuffer<Vertex>(totalVertexCount);
+			vertexBuffer = Game.Renderer.CreateVertexBuffer<ModelVertex>(totalVertexCount);
 			vertexBuffer.SetData(vertices.SelectMany(v => v).ToArray(), totalVertexCount);
 			cachedVertexCount = totalVertexCount;
 		}
 
-		public IVertexBuffer<Vertex> VertexBuffer
+		public IVertexBuffer<ModelVertex> VertexBuffer
 		{
 			get
 			{
