@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using OpenRA.Graphics;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -88,7 +89,7 @@ namespace OpenRA
 		ITexture CreateTexture();
 		IFrameBuffer CreateFrameBuffer(Size s);
 		IFrameBuffer CreateFrameBuffer(Size s, Color clearColor);
-		IShader CreateShader(string name);
+		IShader CreateShader(IShaderBindings shaderBindings);
 		void EnableScissor(int x, int y, int width, int height);
 		void DisableScissor();
 		void Present();
@@ -130,6 +131,17 @@ namespace OpenRA
 		void SetTexture(string param, ITexture texture);
 		void SetMatrix(string param, float[] mtx);
 		void PrepareRender();
+		void Bind();
+	}
+
+	public interface IShaderBindings
+	{
+		string VertexShaderName { get; }
+		string VertexShaderCode { get; }
+		string FragmentShaderName { get; }
+		string FragmentShaderCode { get; }
+		int Stride { get; }
+		ShaderVertexAttribute[] Attributes { get; }
 	}
 
 	public enum TextureScaleFilter { Nearest, Linear }

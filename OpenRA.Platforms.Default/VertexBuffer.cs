@@ -89,15 +89,6 @@ namespace OpenRA.Platforms.Default
 		{
 			VerifyThreadAffinity();
 			OpenGL.glBindBuffer(OpenGL.GL_ARRAY_BUFFER, buffer);
-			OpenGL.CheckGLError();
-			OpenGL.glVertexAttribPointer(Shader.VertexPosAttributeIndex, 3, OpenGL.GL_FLOAT, false, VertexSize, IntPtr.Zero);
-			OpenGL.CheckGLError();
-			OpenGL.glVertexAttribPointer(Shader.TexCoordAttributeIndex, 4, OpenGL.GL_FLOAT, false, VertexSize, new IntPtr(12));
-			OpenGL.CheckGLError();
-			OpenGL.glVertexAttribPointer(Shader.TexMetadataAttributeIndex, 2, OpenGL.GL_FLOAT, false, VertexSize, new IntPtr(28));
-			OpenGL.CheckGLError();
-			OpenGL.glVertexAttribPointer(Shader.TintAttributeIndex, 4, OpenGL.GL_FLOAT, false, VertexSize, new IntPtr(36));
-			OpenGL.CheckGLError();
 		}
 
 		public void Dispose()
