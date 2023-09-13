@@ -49,7 +49,7 @@ namespace OpenRA.Graphics
 		IModel GetModel(string model);
 		IModel GetModelSequence(string model, string sequence);
 		bool HasModelSequence(string model, string sequence);
-		IVertexBuffer<Vertex> VertexBuffer { get; }
+		IVertexBuffer<ModelVertex> VertexBuffer { get; }
 	}
 
 	public interface IModelSequenceLoader
@@ -64,7 +64,7 @@ namespace OpenRA.Graphics
 
 		sealed class PlaceholderModelCache : IModelCache
 		{
-			public IVertexBuffer<Vertex> VertexBuffer => throw new NotImplementedException();
+			public IVertexBuffer<ModelVertex> VertexBuffer => throw new NotImplementedException();
 
 			public void Dispose() { }
 
