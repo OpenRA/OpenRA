@@ -23,6 +23,18 @@ Player:
 	GrantConditionOnBotOwner@naval:
 		Condition: enable-naval-ai
 		Bots: naval
+	ExternalBotOrdersManager:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+	LoadCargoBotModule:
+		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
+		TransportTypesAndLoadRequirement:
+			jeep: IdleUnit
+			apc: IdleUnit
+			stnk: IdleUnit
+			hbox: All
+			pbox: All
+		ValidTransportOwner: AlliedBot
+		PassengerTypes: e1, e1r1, e2, e3, e3r1, e4, e7, shok
 	SupportPowerBotModule:
 		RequiresCondition: enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai
 		Decisions:
