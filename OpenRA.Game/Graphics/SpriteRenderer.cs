@@ -218,9 +218,10 @@ namespace OpenRA.Graphics
 
 		public void SetViewportParams(Size sheetSize, int downscale, float depthMargin, int2 scroll)
 		{
-			// Calculate the scale (r1) and offset (r2) that convert from OpenRA viewport pixels
-			// to OpenGL normalized device coordinates (NDC). OpenGL expects coordinates to vary from [-1, 1],
-			// so we rescale viewport pixels to the range [0, 2] using r1 then subtract 1 using r2.
+			// OpenGL only renders x and y coordinates inside [-1, 1] range. We project world coordinates
+			// using p1 to values [0, 2] and then subtract by 1 using p2, where p stands for projection. It's
+			// standard practice for shaders to use a projection matrix, but as we project orthographically
+			// we are able to send less data to the GPU.
 			var width = 2f / (downscale * sheetSize.Width);
 			var height = 2f / (downscale * sheetSize.Height);
 
@@ -241,8 +242,8 @@ namespace OpenRA.Graphics
 			var depth = depthMargin != 0f ? 2f / (downscale * (sheetSize.Height + depthMargin)) : 0;
 			shader.SetVec("DepthTextureScale", 128 * depth);
 			shader.SetVec("Scroll", scroll.X, scroll.Y, depthMargin != 0f ? scroll.Y : 0);
-			shader.SetVec("r1", width, height, -depth);
-			shader.SetVec("r2", -1, -1, depthMargin != 0f ? 1 : 0);
+			shader.SetVec("p1", width, height, -depth);
+			shader.SetVec("p2", -1, -1, depthMargin != 0f ? 1 : 0);
 		}
 
 		public void SetDepthPreview(bool enabled, float contrast, float offset)
