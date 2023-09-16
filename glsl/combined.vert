@@ -1,7 +1,7 @@
 #version {VERSION}
 
 uniform vec3 Scroll;
-uniform vec3 r1, r2;
+uniform vec3 p1, p2;
 
 #if __VERSION__ == 120
 attribute vec3 aVertexPosition;
@@ -116,7 +116,7 @@ vec4 SelectPalettedFraction(float x)
 
 void main()
 {
-	gl_Position = vec4((aVertexPosition - Scroll) * r1 + r2, 1);
+	gl_Position = vec4((aVertexPosition - Scroll) * p1 + p2, 1);
 	vTexCoord = aVertexTexCoord;
 	vTexMetadata = aVertexTexMetadata;
 
