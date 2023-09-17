@@ -224,9 +224,9 @@ namespace OpenRA.Primitives
 		public override string ToString()
 		{
 			if (A == 255)
-				return R.ToStringInvariant("X2") + G.ToStringInvariant("X2") + B.ToStringInvariant("X2");
+				return CryptoUtil.ToHex(stackalloc byte[3] { R, G, B });
 
-			return R.ToStringInvariant("X2") + G.ToStringInvariant("X2") + B.ToStringInvariant("X2") + A.ToStringInvariant("X2");
+			return CryptoUtil.ToHex(stackalloc byte[4] { R, G, B, A });
 		}
 
 		public static Color Transparent => FromArgb(0x00FFFFFF);
