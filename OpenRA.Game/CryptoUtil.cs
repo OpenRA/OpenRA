@@ -22,6 +22,9 @@ namespace OpenRA
 		// Fixed byte pattern for the OID header
 		static readonly byte[] OIDHeader = { 0x30, 0xD, 0x6, 0x9, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0xD, 0x1, 0x1, 0x1, 0x5, 0x0 };
 
+		static readonly char[] HexUpperAlphabet = "0123456789ABCDEF".ToArray();
+		static readonly char[] HexLowerAlphabet = "0123456789abcdef".ToArray();
+
 		public static string PublicKeyFingerprint(RSAParameters parameters)
 		{
 			// Public key fingerprint is defined as the SHA1 of the modulus + exponent bytes
@@ -249,19 +252,44 @@ namespace OpenRA
 
 		public static string SHA1Hash(Stream data)
 		{
-			using (var csp = SHA1.Create())
-				return new string(csp.ComputeHash(data).SelectMany(a => a.ToStringInvariant("x2")).ToArray());
+			using var csp = SHA1.Create();
+			return ToHex(csp.ComputeHash(data), true);
 		}
 
 		public static string SHA1Hash(byte[] data)
 		{
-			using (var csp = SHA1.Create())
-				return new string(csp.ComputeHash(data).SelectMany(a => a.ToStringInvariant("x2")).ToArray());
+			using var csp = SHA1.Create();
+			return ToHex(csp.ComputeHash(data), true);
 		}
 
 		public static string SHA1Hash(string data)
 		{
 			return SHA1Hash(Encoding.UTF8.GetBytes(data));
+		}
+
+		public static string ToHex(ReadOnlySpan<byte> source, bool lowerCase = false)
+		{
+			if (source.Length == 0)
+				return string.Empty;
+
+			// excessively avoid stack overflow if source is too large (considering that we're allocating a new string)
+			var buffer = source.Length <= 256 ? stackalloc char[source.Length * 2] : new char[source.Length * 2];
+			return ToHexInternal(source, buffer, lowerCase);
+		}
+
+		static string ToHexInternal(ReadOnlySpan<byte> source, Span<char> buffer, bool lowerCase)
+		{
+			var sourceIndex = 0;
+			var alphabet = lowerCase ? HexLowerAlphabet : HexUpperAlphabet;
+
+			for (var i = 0; i < buffer.Length; i += 2)
+			{
+				var b = source[sourceIndex++];
+				buffer[i] = alphabet[b >> 4];
+				buffer[i + 1] = alphabet[b & 0xF];
+			}
+
+			return new string(buffer);
 		}
 	}
 }
