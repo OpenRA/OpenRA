@@ -104,6 +104,13 @@ namespace OpenRA
 		string GLVersion { get; }
 	}
 
+	public interface IRenderer
+	{
+		void BeginFrame();
+		void EndFrame();
+		void SetPalette(ITexture palette);
+	}
+
 	public interface IVertexBuffer<T> : IDisposable where T : struct
 	{
 		void Bind();

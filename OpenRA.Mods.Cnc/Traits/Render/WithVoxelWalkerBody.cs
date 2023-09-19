@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -31,10 +30,10 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		public readonly bool ShowShadow = true;
 		public override object Create(ActorInitializer init) { return new WithVoxelWalkerBody(init.Self, this); }
 
-		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
+		public IEnumerable<ModelAnimation> RenderPreviewVoxels(IModelCache cache,
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
-			var model = init.World.ModelCache.GetModelSequence(image, Sequence);
+			var model = cache.GetModelSequence(image, Sequence);
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var frame = init.GetValue<BodyAnimationFrameInit, uint>(this, 0);
 
@@ -61,7 +60,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			var body = self.Trait<BodyOrientation>();
 			rv = self.Trait<RenderVoxels>();
 
-			var model = self.World.ModelCache.GetModelSequence(rv.Image, info.Sequence);
+			var model = rv.Renderer.ModelCache.GetModelSequence(rv.Image, info.Sequence);
 			frames = model.Frames;
 			modelAnimation = new ModelAnimation(model, () => WVec.Zero,
 				() => body.QuantizeOrientation(self.Orientation),

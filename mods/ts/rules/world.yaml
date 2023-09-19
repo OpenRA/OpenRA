@@ -8,6 +8,8 @@
 	MusicPlaylist:
 		VictoryMusic: score
 		DefeatMusic: fsmap
+	VoxelCache:
+	ModelRenderer:
 	TerrainRenderer:
 	TerrainLighting:
 	ShroudRenderer:

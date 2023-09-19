@@ -13,12 +13,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Cnc.Traits;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.Common.Graphics
+namespace OpenRA.Mods.Cnc.Graphics
 {
 	public class ModelRenderable : IPalettedRenderable, IModifyableRenderable
 	{
+		readonly ModelRenderer renderer;
 		readonly IEnumerable<ModelAnimation> models;
 		readonly WRot camera;
 		readonly WRot lightSource;
@@ -29,20 +31,21 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly float scale;
 
 		public ModelRenderable(
-			IEnumerable<ModelAnimation> models, WPos pos, int zOffset, in WRot camera, float scale,
+			ModelRenderer renderer, IEnumerable<ModelAnimation> models, WPos pos, int zOffset, in WRot camera, float scale,
 			in WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadow)
-			: this(models, pos, zOffset, camera, scale,
+			: this(renderer, models, pos, zOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				color, normals, shadow, 1f,
 				float3.Ones, TintModifiers.None) { }
 
 		public ModelRenderable(
-			IEnumerable<ModelAnimation> models, WPos pos, int zOffset, in WRot camera, float scale,
+			ModelRenderer renderer, IEnumerable<ModelAnimation> models, WPos pos, int zOffset, in WRot camera, float scale,
 			in WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadow,
 			float alpha, in float3 tint, TintModifiers tintModifiers)
 		{
+			this.renderer = renderer;
 			this.models = models;
 			Pos = pos;
 			ZOffset = zOffset;
@@ -71,7 +74,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public IPalettedRenderable WithPalette(PaletteReference newPalette)
 		{
 			return new ModelRenderable(
-				models, Pos, ZOffset, camera, scale,
+				renderer, models, Pos, ZOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				newPalette, normalsPalette, shadowPalette, Alpha, Tint, TintModifiers);
 		}
@@ -79,7 +82,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public IRenderable WithZOffset(int newOffset)
 		{
 			return new ModelRenderable(
-				models, Pos, newOffset, camera, scale,
+				renderer, models, Pos, newOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				Palette, normalsPalette, shadowPalette, Alpha, Tint, TintModifiers);
 		}
@@ -87,7 +90,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public IRenderable OffsetBy(in WVec vec)
 		{
 			return new ModelRenderable(
-				models, Pos + vec, ZOffset, camera, scale,
+				renderer, models, Pos + vec, ZOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				Palette, normalsPalette, shadowPalette, Alpha, Tint, TintModifiers);
 		}
@@ -97,7 +100,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public IModifyableRenderable WithAlpha(float newAlpha)
 		{
 			return new ModelRenderable(
-				models, Pos, ZOffset, camera, scale,
+				renderer, models, Pos, ZOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				Palette, normalsPalette, shadowPalette, newAlpha, Tint, TintModifiers);
 		}
@@ -105,7 +108,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public IModifyableRenderable WithTint(in float3 newTint, TintModifiers newTintModifiers)
 		{
 			return new ModelRenderable(
-				models, Pos, ZOffset, camera, scale,
+				renderer, models, Pos, ZOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				Palette, normalsPalette, shadowPalette, Alpha, newTint, newTintModifiers);
 		}
@@ -127,7 +130,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 				var map = wr.World.Map;
 				var groundOrientation = map.TerrainOrientation(map.CellContaining(model.Pos));
-				renderProxy = Game.Renderer.WorldModelRenderer.RenderAsync(
+				renderProxy = model.renderer.RenderAsync(
 					wr, draw, model.camera, model.scale, groundOrientation, model.lightSource,
 					model.lightAmbientColor, model.lightDiffuseColor,
 					model.Palette, model.normalsPalette, model.shadowPalette);
@@ -199,17 +202,17 @@ namespace OpenRA.Mods.Common.Graphics
 
 				// Draw bounding box
 				var draw = model.models.Where(v => v.IsVisible);
-				var scaleTransform = OpenRA.Graphics.Util.ScaleMatrix(model.scale, model.scale, model.scale);
-				var cameraTransform = OpenRA.Graphics.Util.MakeFloatMatrix(model.camera.AsMatrix());
+				var scaleTransform = Util.ScaleMatrix(model.scale, model.scale, model.scale);
+				var cameraTransform = Util.MakeFloatMatrix(model.camera.AsMatrix());
 
 				foreach (var v in draw)
 				{
 					var bounds = v.Model.Bounds(v.FrameFunc());
-					var rotation = OpenRA.Graphics.Util.MakeFloatMatrix(v.RotationFunc().AsMatrix());
-					var worldTransform = OpenRA.Graphics.Util.MatrixMultiply(scaleTransform, rotation);
+					var rotation = Util.MakeFloatMatrix(v.RotationFunc().AsMatrix());
+					var worldTransform = Util.MatrixMultiply(scaleTransform, rotation);
 
 					var pxPos = pxOrigin + wr.ScreenVectorComponents(v.OffsetFunc());
-					var screenTransform = OpenRA.Graphics.Util.MatrixMultiply(cameraTransform, worldTransform);
+					var screenTransform = Util.MatrixMultiply(cameraTransform, worldTransform);
 					DrawBoundsBox(wr, pxPos, screenTransform, bounds, 1, Color.Yellow);
 				}
 			}
@@ -224,7 +227,7 @@ namespace OpenRA.Mods.Common.Graphics
 				for (var i = 0; i < 8; i++)
 				{
 					var vec = new[] { bounds[CornerXIndex[i]], bounds[CornerYIndex[i]], bounds[CornerZIndex[i]], 1 };
-					var screen = OpenRA.Graphics.Util.MatrixVectorMultiply(transform, vec);
+					var screen = Util.MatrixVectorMultiply(transform, vec);
 					corners[i] = wr.Viewport.WorldToViewPx(pxPos + new float3(screen[0], screen[1], screen[2]));
 				}
 
@@ -250,8 +253,8 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				var pxOrigin = wr.ScreenPosition(model.Pos);
 				var draw = model.models.Where(v => v.IsVisible);
-				var scaleTransform = OpenRA.Graphics.Util.ScaleMatrix(model.scale, model.scale, model.scale);
-				var cameraTransform = OpenRA.Graphics.Util.MakeFloatMatrix(model.camera.AsMatrix());
+				var scaleTransform = Util.ScaleMatrix(model.scale, model.scale, model.scale);
+				var cameraTransform = Util.MakeFloatMatrix(model.camera.AsMatrix());
 
 				var minX = float.MaxValue;
 				var minY = float.MaxValue;
@@ -263,16 +266,16 @@ namespace OpenRA.Mods.Common.Graphics
 				foreach (var v in draw)
 				{
 					var bounds = v.Model.Bounds(v.FrameFunc());
-					var rotation = OpenRA.Graphics.Util.MakeFloatMatrix(v.RotationFunc().AsMatrix());
-					var worldTransform = OpenRA.Graphics.Util.MatrixMultiply(scaleTransform, rotation);
+					var rotation = Util.MakeFloatMatrix(v.RotationFunc().AsMatrix());
+					var worldTransform = Util.MatrixMultiply(scaleTransform, rotation);
 
 					var pxPos = pxOrigin + wr.ScreenVectorComponents(v.OffsetFunc());
-					var screenTransform = OpenRA.Graphics.Util.MatrixMultiply(cameraTransform, worldTransform);
+					var screenTransform = Util.MatrixMultiply(cameraTransform, worldTransform);
 
 					for (var i = 0; i < 8; i++)
 					{
 						var vec = new float[] { bounds[CornerXIndex[i]], bounds[CornerYIndex[i]], bounds[CornerZIndex[i]], 1 };
-						var screen = OpenRA.Graphics.Util.MatrixVectorMultiply(screenTransform, vec);
+						var screen = Util.MatrixVectorMultiply(screenTransform, vec);
 						minX = Math.Min(minX, pxPos.X + screen[0]);
 						minY = Math.Min(minY, pxPos.Y + screen[1]);
 						minZ = Math.Min(minZ, pxPos.Z + screen[2]);

@@ -151,17 +151,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (playerWidget != null)
 				playerWidget.IsVisible = () => isVideoLoaded && !isLoadError;
 
-			var modelWidget = panel.GetOrNull<ModelWidget>("VOXEL");
-			if (modelWidget != null)
+			if (panel.GetOrNull<Widget>("VOXEL") is IModelWidget modelWidget)
 			{
-				modelWidget.GetVoxel = () => currentVoxel;
 				currentPalette = modelWidget.Palette;
 				modelScale = modelWidget.Scale;
-				modelWidget.GetPalette = () => currentPalette;
-				modelWidget.GetPlayerPalette = () => currentPalette;
-				modelWidget.GetRotation = () => modelOrientation;
-				modelWidget.IsVisible = () => !isVideoLoaded && !isLoadError && currentVoxel != null;
-				modelWidget.GetScale = () => modelScale;
+				modelWidget.Setup(
+					() => !isVideoLoaded && !isLoadError && currentVoxel != null,
+					() => currentPalette,
+					() => currentPalette,
+					() => modelScale,
+					() => currentVoxel,
+					() => modelOrientation);
 			}
 
 			var errorLabelWidget = panel.GetOrNull("ERROR");
@@ -530,7 +530,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				else if (allowedModelExtensions.Contains(fileExtension))
 				{
 					var voxelName = Path.GetFileNameWithoutExtension(filename);
-					currentVoxel = world.ModelCache.GetModel(prefix + voxelName);
+					currentVoxel = world.WorldActor.Trait<IModelCache>().GetModel(prefix + voxelName);
 					currentSprites = null;
 				}
 				else if (allowedAudioExtensions.Contains(fileExtension))
