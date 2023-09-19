@@ -48,7 +48,7 @@ namespace OpenRA.FileFormats
 			while (true)
 			{
 				var length = IPAddress.NetworkToHostOrder(s.ReadInt32());
-				var type = Encoding.UTF8.GetString(s.ReadBytes(4));
+				var type = s.ReadASCII(4);
 				var content = s.ReadBytes(length);
 				/*var crc = */s.ReadInt32();
 
@@ -287,10 +287,10 @@ namespace OpenRA.FileFormats
 
 			var typeBytes = Encoding.ASCII.GetBytes(type);
 			output.Write(IPAddress.HostToNetworkOrder((int)input.Length));
-			output.WriteArray(typeBytes);
+			output.Write(typeBytes);
 
 			var data = input.ReadAllBytes();
-			output.WriteArray(data);
+			output.Write(data);
 
 			var crc32 = new Crc32();
 			crc32.Update(typeBytes);
@@ -302,7 +302,7 @@ namespace OpenRA.FileFormats
 		{
 			using (var output = new MemoryStream())
 			{
-				output.WriteArray(Signature);
+				output.Write(Signature);
 				using (var header = new MemoryStream())
 				{
 					header.Write(IPAddress.HostToNetworkOrder(Width));
@@ -371,7 +371,7 @@ namespace OpenRA.FileFormats
 				{
 					using (var text = new MemoryStream())
 					{
-						text.WriteArray(Encoding.ASCII.GetBytes(kv.Key + (char)0 + kv.Value));
+						text.Write(Encoding.ASCII.GetBytes(kv.Key + (char)0 + kv.Value));
 						WritePngChunk(output, "tEXt", text);
 					}
 				}

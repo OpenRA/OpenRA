@@ -165,9 +165,9 @@ namespace OpenRA
 			if (length < 0x80)
 				return length;
 
-			var data = new byte[4];
-			s.ReadBytes(data, 0, Math.Min(length & 0x7F, 4));
-			return BitConverter.ToInt32(data.ToArray(), 0);
+			Span<byte> data = stackalloc byte[4];
+			s.ReadBytes(data[..Math.Min(length & 0x7F, 4)]);
+			return BitConverter.ToInt32(data);
 		}
 
 		static int TripletFullLength(int dataLength)

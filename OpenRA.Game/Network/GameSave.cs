@@ -122,10 +122,10 @@ namespace OpenRA.Network
 				LastSyncFrame = rs.ReadInt32();
 				lastSyncPacket = rs.ReadBytes(Order.SyncHashOrderLength);
 
-				var globalSettings = MiniYaml.FromString(rs.ReadString(Encoding.UTF8, Connection.MaxOrderLength));
+				var globalSettings = MiniYaml.FromString(rs.ReadLengthPrefixedString(Encoding.UTF8, Connection.MaxOrderLength));
 				GlobalSettings = Session.Global.Deserialize(globalSettings[0].Value);
 
-				var slots = MiniYaml.FromString(rs.ReadString(Encoding.UTF8, Connection.MaxOrderLength));
+				var slots = MiniYaml.FromString(rs.ReadLengthPrefixedString(Encoding.UTF8, Connection.MaxOrderLength));
 				Slots = new Dictionary<string, Session.Slot>();
 				foreach (var s in slots)
 				{
@@ -133,7 +133,7 @@ namespace OpenRA.Network
 					Slots.Add(slot.PlayerReference, slot);
 				}
 
-				var slotClients = MiniYaml.FromString(rs.ReadString(Encoding.UTF8, Connection.MaxOrderLength));
+				var slotClients = MiniYaml.FromString(rs.ReadLengthPrefixedString(Encoding.UTF8, Connection.MaxOrderLength));
 				SlotClients = new Dictionary<string, SlotClient>();
 				foreach (var s in slotClients)
 				{
@@ -144,7 +144,7 @@ namespace OpenRA.Network
 				if (rs.Position != traitDataOffset || rs.ReadInt32() != TraitDataMarker)
 					throw new InvalidDataException("Invalid orasav file");
 
-				var traitData = MiniYaml.FromString(rs.ReadString(Encoding.UTF8, Connection.MaxOrderLength));
+				var traitData = MiniYaml.FromString(rs.ReadLengthPrefixedString(Encoding.UTF8, Connection.MaxOrderLength));
 				foreach (var td in traitData)
 					TraitData.Add(Exts.ParseInt32Invariant(td.Key), td.Value);
 
@@ -229,7 +229,7 @@ namespace OpenRA.Network
 			ordersStream.Write(data.Length + 8);
 			ordersStream.Write(frame);
 			ordersStream.Write(clientSlot);
-			ordersStream.WriteArray(data);
+			ordersStream.Write(data);
 			LastOrdersFrame = frame;
 		}
 
@@ -294,17 +294,17 @@ namespace OpenRA.Network
 				file.Write(lastSyncPacket, 0, Order.SyncHashOrderLength);
 
 				var globalSettingsNodes = new List<MiniYamlNode>() { GlobalSettings.Serialize() };
-				file.WriteString(Encoding.UTF8, globalSettingsNodes.WriteToString());
+				file.WriteLengthPrefixedString(Encoding.UTF8, globalSettingsNodes.WriteToString());
 
 				var slotNodes = Slots
 					.Select(s => s.Value.Serialize())
 					.ToList();
-				file.WriteString(Encoding.UTF8, slotNodes.WriteToString());
+				file.WriteLengthPrefixedString(Encoding.UTF8, slotNodes.WriteToString());
 
 				var slotClientNodes = SlotClients
 					.Select(s => s.Value.Serialize(s.Key))
 					.ToList();
-				file.WriteString(Encoding.UTF8, slotClientNodes.WriteToString());
+				file.WriteLengthPrefixedString(Encoding.UTF8, slotClientNodes.WriteToString());
 
 				var traitDataOffset = file.Length;
 				file.Write(TraitDataMarker);
@@ -312,7 +312,7 @@ namespace OpenRA.Network
 				var traitDataNodes = TraitData
 					.Select(kv => new MiniYamlNode(kv.Key.ToStringInvariant(), kv.Value))
 					.ToList();
-				file.WriteString(Encoding.UTF8, traitDataNodes.WriteToString());
+				file.WriteLengthPrefixedString(Encoding.UTF8, traitDataNodes.WriteToString());
 
 				file.Write((int)ordersStream.Length);
 				file.Write((int)traitDataOffset);

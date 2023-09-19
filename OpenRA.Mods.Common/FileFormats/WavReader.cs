@@ -67,12 +67,12 @@ namespace OpenRA.Mods.Common.FileFormats
 						blockAlign = s.ReadInt16();
 						sampleBits = s.ReadInt16();
 						lengthInSeconds = (float)(s.Length * 8) / (channels * sampleRate * sampleBits);
-						s.ReadBytes(fmtChunkSize - 16);
+						s.Position += fmtChunkSize - 16;
 						break;
 					case "fact":
 						var chunkSize = s.ReadInt32();
 						uncompressedSize = s.ReadInt32();
-						s.ReadBytes(chunkSize - 4);
+						s.Position += chunkSize - 4;
 						break;
 					case "data":
 						dataSize = s.ReadInt32();
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.FileFormats
 					case "LIST":
 					case "cue ":
 						var listCueChunkSize = s.ReadInt32();
-						s.ReadBytes(listCueChunkSize);
+						s.Position += listCueChunkSize;
 						break;
 					default:
 						s.Position = s.Length; // Skip to end of stream
@@ -156,12 +156,13 @@ namespace OpenRA.Mods.Common.FileFormats
 
 				// Decode and output remaining data in this block
 				var blockOffset = 0;
+				Span<byte> chunk = stackalloc byte[4];
 				while (blockOffset < blockDataSize)
 				{
 					for (var c = 0; c < channels; c++)
 					{
 						// Decode 4 bytes (to 16 bytes of output) per channel
-						var chunk = baseStream.ReadBytes(4);
+						baseStream.ReadBytes(chunk);
 						var decoded = ImaAdpcmReader.LoadImaAdpcmSound(chunk, ref index[c], ref predictor[c]);
 
 						// Interleave output, one sample per channel

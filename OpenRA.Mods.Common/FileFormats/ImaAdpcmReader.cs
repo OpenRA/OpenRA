@@ -9,7 +9,7 @@
  */
 #endregion
 
-using System.IO;
+using System;
 
 namespace OpenRA.Mods.Common.FileFormats
 {
@@ -56,15 +56,14 @@ namespace OpenRA.Mods.Common.FileFormats
 			return (short)current;
 		}
 
-		public static byte[] LoadImaAdpcmSound(byte[] raw, ref int index)
+		public static byte[] LoadImaAdpcmSound(ReadOnlySpan<byte> raw, ref int index)
 		{
 			var currentSample = 0;
 			return LoadImaAdpcmSound(raw, ref index, ref currentSample);
 		}
 
-		public static byte[] LoadImaAdpcmSound(byte[] raw, ref int index, ref int currentSample)
+		public static byte[] LoadImaAdpcmSound(ReadOnlySpan<byte> raw, ref int index, ref int currentSample)
 		{
-			var s = new MemoryStream(raw);
 			var dataSize = raw.Length;
 			var outputSize = raw.Length * 4;
 
@@ -73,7 +72,7 @@ namespace OpenRA.Mods.Common.FileFormats
 
 			while (dataSize-- > 0)
 			{
-				var b = s.ReadUInt8();
+				var b = raw[offset / 4];
 
 				var t = DecodeImaAdpcmSample(b, ref index, ref currentSample);
 				output[offset++] = (byte)t;

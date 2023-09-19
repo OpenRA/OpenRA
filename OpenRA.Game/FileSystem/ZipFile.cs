@@ -117,10 +117,7 @@ namespace OpenRA.FileSystem
 
 			void Commit()
 			{
-				var pos = pkgStream.Position;
-				pkgStream.Position = 0;
-				File.WriteAllBytes(Name, pkgStream.ReadBytes((int)pkgStream.Length));
-				pkgStream.Position = pos;
+				File.WriteAllBytes(Name, pkgStream.ToArray());
 			}
 
 			public void Update(string filename, byte[] contents)

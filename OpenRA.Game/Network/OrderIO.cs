@@ -27,7 +27,7 @@ namespace OpenRA.Network
 			// the Order objects directly on the local client.
 			data = new MemoryStream();
 			foreach (var o in orders)
-				data.WriteArray(o.Serialize());
+				data.Write(o.Serialize());
 		}
 
 		public OrderPacket(MemoryStream data)
@@ -86,7 +86,7 @@ namespace OpenRA.Network
 			ms.Write(data.Frame);
 			ms.WriteByte((byte)OrderType.SyncHash);
 			ms.Write(data.SyncHash);
-			ms.WriteArray(BitConverter.GetBytes(data.DefeatState));
+			ms.Write(data.DefeatState);
 			return ms.GetBuffer();
 		}
 
@@ -95,7 +95,7 @@ namespace OpenRA.Network
 			var ms = new MemoryStream(14);
 			ms.Write(0);
 			ms.WriteByte((byte)OrderType.Ping);
-			ms.WriteArray(BitConverter.GetBytes(timestamp));
+			ms.Write(timestamp);
 			ms.WriteByte(queueLength);
 			return ms.GetBuffer();
 		}

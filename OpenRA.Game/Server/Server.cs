@@ -707,7 +707,7 @@ namespace OpenRA.Server
 			ms.Write(data.Length + 4);
 			ms.Write(client);
 			ms.Write(frame);
-			ms.WriteArray(data);
+			ms.Write(data);
 			return ms.GetBuffer();
 		}
 

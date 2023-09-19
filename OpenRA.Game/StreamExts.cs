@@ -20,10 +20,23 @@ namespace OpenRA
 {
 	public static class StreamExts
 	{
+		public static void ReadBytes(this Stream s, Span<byte> dest)
+		{
+			while (dest.Length > 0)
+			{
+				var bytesRead = s.Read(dest);
+				if (bytesRead == 0)
+					throw new EndOfStreamException();
+
+				dest = dest[bytesRead..];
+			}
+		}
+
 		public static byte[] ReadBytes(this Stream s, int count)
 		{
 			if (count < 0)
 				throw new ArgumentOutOfRangeException(nameof(count), "Non-negative number required.");
+
 			var buffer = new byte[count];
 			s.ReadBytes(buffer, 0, count);
 			return buffer;
@@ -33,10 +46,11 @@ namespace OpenRA
 		{
 			if (count < 0)
 				throw new ArgumentOutOfRangeException(nameof(count), "Non-negative number required.");
+
 			while (count > 0)
 			{
-				int bytesRead;
-				if ((bytesRead = s.Read(buffer, offset, count)) == 0)
+				var bytesRead = s.Read(buffer, offset, count);
+				if (bytesRead == 0)
 					throw new EndOfStreamException();
 				offset += bytesRead;
 				count -= bytesRead;
@@ -48,6 +62,7 @@ namespace OpenRA
 			var b = s.ReadByte();
 			if (b == -1)
 				return -1;
+
 			s.Seek(-1, SeekOrigin.Current);
 			return (byte)b;
 		}
@@ -57,52 +72,85 @@ namespace OpenRA
 			var b = s.ReadByte();
 			if (b == -1)
 				throw new EndOfStreamException();
+
 			return (byte)b;
 		}
 
 		public static ushort ReadUInt16(this Stream s)
 		{
-			return (ushort)(s.ReadUInt8() | s.ReadUInt8() << 8);
+			Span<byte> buffer = stackalloc byte[2];
+			s.ReadBytes(buffer);
+			return BitConverter.ToUInt16(buffer);
 		}
 
 		public static short ReadInt16(this Stream s)
 		{
-			return (short)(s.ReadUInt8() | s.ReadUInt8() << 8);
+			Span<byte> buffer = stackalloc byte[2];
+			s.ReadBytes(buffer);
+			return BitConverter.ToInt16(buffer);
 		}
 
 		public static uint ReadUInt32(this Stream s)
 		{
-			return (uint)(s.ReadUInt8() | s.ReadUInt8() << 8 | s.ReadUInt8() << 16 | s.ReadUInt8() << 24);
+			Span<byte> buffer = stackalloc byte[4];
+			s.ReadBytes(buffer);
+			return BitConverter.ToUInt32(buffer);
 		}
 
 		public static int ReadInt32(this Stream s)
 		{
-			return s.ReadUInt8() | s.ReadUInt8() << 8 | s.ReadUInt8() << 16 | s.ReadUInt8() << 24;
+			Span<byte> buffer = stackalloc byte[4];
+			s.ReadBytes(buffer);
+			return BitConverter.ToInt32(buffer);
 		}
 
 		public static void Write(this Stream s, int value)
 		{
-			s.WriteArray(BitConverter.GetBytes(value));
+			Span<byte> buffer = stackalloc byte[4];
+			BitConverter.TryWriteBytes(buffer, value);
+			s.Write(buffer);
+		}
+
+		public static void Write(this Stream s, long value)
+		{
+			Span<byte> buffer = stackalloc byte[8];
+			BitConverter.TryWriteBytes(buffer, value);
+			s.Write(buffer);
+		}
+
+		public static void Write(this Stream s, ulong value)
+		{
+			Span<byte> buffer = stackalloc byte[8];
+			BitConverter.TryWriteBytes(buffer, value);
+			s.Write(buffer);
 		}
 
 		public static void Write(this Stream s, float value)
 		{
-			s.WriteArray(BitConverter.GetBytes(value));
+			Span<byte> buffer = stackalloc byte[4];
+			BitConverter.TryWriteBytes(buffer, value);
+			s.Write(buffer);
 		}
 
-		public static float ReadFloat(this Stream s)
+		public static float ReadSingle(this Stream s)
 		{
-			return BitConverter.ToSingle(s.ReadBytes(4), 0);
+			Span<byte> buffer = stackalloc byte[4];
+			s.ReadBytes(buffer);
+			return BitConverter.ToSingle(buffer);
 		}
 
 		public static double ReadDouble(this Stream s)
 		{
-			return BitConverter.ToDouble(s.ReadBytes(8), 0);
+			Span<byte> buffer = stackalloc byte[8];
+			s.ReadBytes(buffer);
+			return BitConverter.ToDouble(buffer);
 		}
 
 		public static string ReadASCII(this Stream s, int length)
 		{
-			return new string(Encoding.ASCII.GetChars(s.ReadBytes(length)));
+			Span<byte> buffer = length < 128 ? stackalloc byte[length] : new byte[length];
+			s.ReadBytes(buffer);
+			return Encoding.ASCII.GetString(buffer);
 		}
 
 		public static string ReadASCIIZ(this Stream s)
@@ -111,7 +159,12 @@ namespace OpenRA
 			byte b;
 			while ((b = s.ReadUInt8()) != 0)
 				bytes.Add(b);
-			return new string(Encoding.ASCII.GetChars(bytes.ToArray()));
+
+#if NET5_0_OR_GREATER
+			return Encoding.ASCII.GetString(System.Runtime.InteropServices.CollectionsMarshal.AsSpan(bytes));
+#else
+			return Encoding.ASCII.GetString(bytes.ToArray());
+#endif
 		}
 
 		public static string ReadAllText(this Stream s)
@@ -133,15 +186,9 @@ namespace OpenRA
 				int count;
 				while ((count = s.Read(buffer, 0, buffer.Length)) > 0)
 					bytes.AddRange(buffer.Take(count));
+
 				return bytes.ToArray();
 			}
-		}
-
-		// Note: renamed from Write() to avoid being aliased by
-		// System.IO.Stream.Write(System.ReadOnlySpan) (which is not implemented in Mono)
-		public static void WriteArray(this Stream s, byte[] data)
-		{
-			s.Write(data, 0, data.Length);
 		}
 
 		public static IEnumerable<string> ReadAllLines(this Stream s)
@@ -210,19 +257,24 @@ namespace OpenRA
 			}
 		}
 
-		// The string is assumed to be length-prefixed, as written by WriteString()
-		public static string ReadString(this Stream s, Encoding encoding, int maxLength)
+		/// <summary>
+		/// The string is assumed to be length-prefixed, as written by <see cref="WriteLengthPrefixedString"/>.
+		/// </summary>
+		public static string ReadLengthPrefixedString(this Stream s, Encoding encoding, int maxLength)
 		{
 			var length = s.ReadInt32();
 			if (length > maxLength)
 				throw new InvalidOperationException($"The length of the string ({length}) is longer than the maximum allowed ({maxLength}).");
 
-			return encoding.GetString(s.ReadBytes(length));
+			Span<byte> buffer = length < 128 ? stackalloc byte[length] : new byte[length];
+			s.ReadBytes(buffer);
+			return encoding.GetString(buffer);
 		}
 
-		// Writes a length-prefixed string using the specified encoding and returns
-		// the number of bytes written.
-		public static int WriteString(this Stream s, Encoding encoding, string text)
+		/// <summary>
+		/// Writes a length-prefixed string using the specified encoding and returns the number of bytes written.
+		/// </summary>
+		public static int WriteLengthPrefixedString(this Stream s, Encoding encoding, string text)
 		{
 			byte[] bytes;
 
@@ -232,7 +284,7 @@ namespace OpenRA
 				bytes = Array.Empty<byte>();
 
 			s.Write(bytes.Length);
-			s.WriteArray(bytes);
+			s.Write(bytes);
 
 			return 4 + bytes.Length;
 		}

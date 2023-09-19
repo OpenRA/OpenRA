@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.FileSystem
 						var dirName = s.ReadASCII(nameLength);
 
 						// Skip to the end of the chunk
-						s.ReadBytes(chunkSize - nameLength - 6);
+						s.Position += chunkSize - nameLength - 6;
 						directories.Add(dirName, fileCount);
 					}
 
