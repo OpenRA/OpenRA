@@ -14,9 +14,10 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits.Render
+namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	public class WithVoxelTurretInfo : ConditionalTraitInfo, IRenderActorPreviewVoxelsInfo, Requires<RenderVoxelsInfo>, Requires<TurretedInfo>
 	{
@@ -31,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public override object Create(ActorInitializer init) { return new WithVoxelTurret(init.Self, this); }
 
-		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
+		public IEnumerable<ModelAnimation> RenderPreviewVoxels(IModelCache cache,
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			if (!EnabledByDefault)
@@ -40,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var t = init.Actor.TraitInfos<TurretedInfo>()
 				.First(tt => tt.Turret == Turret);
 
-			var model = init.World.ModelCache.GetModelSequence(image, Sequence);
+			var model = cache.GetModelSequence(image, Sequence);
 			var turretOffset = t.PreviewPosition(init, orientation);
 			var turretOrientation = t.PreviewOrientation(init, orientation, facings);
 			yield return new ModelAnimation(model, turretOffset, turretOrientation, () => false, () => 0, ShowShadow);
@@ -58,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				.First(tt => tt.Name == Info.Turret);
 
 			var rv = self.Trait<RenderVoxels>();
-			rv.Add(new ModelAnimation(self.World.ModelCache.GetModelSequence(rv.Image, Info.Sequence),
+			rv.Add(new ModelAnimation(rv.Renderer.ModelCache.GetModelSequence(rv.Image, Info.Sequence),
 				() => turreted.Position(self), () => turreted.WorldOrientation,
 				() => IsTraitDisabled, () => 0, info.ShowShadow));
 		}

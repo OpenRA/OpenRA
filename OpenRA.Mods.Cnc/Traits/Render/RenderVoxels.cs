@@ -13,15 +13,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Cnc.Graphics;
+using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.Common.Traits.Render
+namespace OpenRA.Mods.Cnc.Traits.Render
 {
 	public interface IRenderActorPreviewVoxelsInfo : ITraitInfoInterface
 	{
-		IEnumerable<ModelAnimation> RenderPreviewVoxels(
+		IEnumerable<ModelAnimation> RenderPreviewVoxels(IModelCache cache,
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p);
 	}
 
@@ -56,6 +59,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public virtual IEnumerable<IActorPreview> RenderPreview(ActorPreviewInitializer init)
 		{
+			var renderer = init.World.WorldActor.Trait<ModelRenderer>();
+			var cache = init.World.WorldActor.Trait<IModelCache>();
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
 			var faction = init.GetValue<FactionInit, string>(this);
 			var ownerName = init.Get<OwnerInit>().InternalName;
@@ -67,10 +72,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var palette = init.WorldRenderer.Palette(Palette ?? PlayerPalette + ownerName);
 
 			var components = init.Actor.TraitInfos<IRenderActorPreviewVoxelsInfo>()
-				.SelectMany(rvpi => rvpi.RenderPreviewVoxels(init, this, image, init.GetOrientation(), facings, palette))
+				.SelectMany(rvpi => rvpi.RenderPreviewVoxels(cache, init, this, image, init.GetOrientation(), facings, palette))
 				.ToArray();
 
-			yield return new ModelPreview(components, WVec.Zero, 0, Scale, LightPitch,
+			yield return new ModelPreview(renderer, components, WVec.Zero, 0, Scale, LightPitch,
 				LightYaw, LightAmbientColor, LightDiffuseColor, body.CameraPitch,
 				palette, init.WorldRenderer.Palette(NormalsPalette), init.WorldRenderer.Palette(ShadowPalette));
 		}
@@ -104,6 +109,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		public readonly RenderVoxelsInfo Info;
+		public readonly ModelRenderer Renderer;
 
 		readonly List<ModelAnimation> components = new();
 		readonly Dictionary<ModelAnimation, AnimationWrapper> wrappers = new();
@@ -116,6 +122,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public RenderVoxels(Actor self, RenderVoxelsInfo info)
 		{
 			this.self = self;
+			Renderer = self.World.WorldActor.Trait<ModelRenderer>();
 			Info = info;
 			body = self.Trait<BodyOrientation>();
 			camera = new WRot(WAngle.Zero, body.CameraPitch - new WAngle(256), new WAngle(256));
@@ -150,7 +157,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			return new IRenderable[]
 			{
 				new ModelRenderable(
-					components, self.CenterPosition, 0, camera, Info.Scale,
+					Renderer, components, self.CenterPosition, 0, camera, Info.Scale,
 					lightSource, Info.LightAmbientColor, Info.LightDiffuseColor,
 					colorPalette, normalsPalette, shadowPalette)
 			};

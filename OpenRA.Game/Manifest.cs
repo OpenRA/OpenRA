@@ -43,17 +43,6 @@ namespace OpenRA
 		}
 	}
 
-	public sealed class ModelSequenceFormat : IGlobalModData
-	{
-		public readonly string Type;
-		public readonly IReadOnlyDictionary<string, MiniYaml> Metadata;
-		public ModelSequenceFormat(MiniYaml yaml)
-		{
-			Type = yaml.Value;
-			Metadata = new ReadOnlyDictionary<string, MiniYaml>(yaml.ToDictionary());
-		}
-	}
-
 	public class ModMetadata
 	{
 		public string Title;

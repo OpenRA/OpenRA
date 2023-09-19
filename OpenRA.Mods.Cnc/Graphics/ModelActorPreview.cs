@@ -11,12 +11,15 @@
 
 using System.Collections.Generic;
 using OpenRA.Graphics;
+using OpenRA.Mods.Cnc.Traits;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.Common.Graphics
+namespace OpenRA.Mods.Cnc.Graphics
 {
 	public class ModelPreview : IActorPreview
 	{
+		readonly ModelRenderer renderer;
 		readonly ModelAnimation[] components;
 		readonly float scale;
 		readonly float[] lightAmbientColor;
@@ -29,10 +32,11 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly WVec offset;
 		readonly int zOffset;
 
-		public ModelPreview(ModelAnimation[] components, in WVec offset, int zOffset, float scale, WAngle lightPitch, WAngle lightYaw,
+		public ModelPreview(ModelRenderer renderer, ModelAnimation[] components, in WVec offset, int zOffset, float scale, WAngle lightPitch, WAngle lightYaw,
 			float[] lightAmbientColor, float[] lightDiffuseColor, WAngle cameraPitch,
 			PaletteReference colorPalette, PaletteReference normalsPalette, PaletteReference shadowPalette)
 		{
+			this.renderer = renderer;
 			this.components = components;
 			this.scale = scale;
 			this.lightAmbientColor = lightAmbientColor;
@@ -53,14 +57,14 @@ namespace OpenRA.Mods.Common.Graphics
 
 		IEnumerable<IRenderable> IActorPreview.RenderUI(WorldRenderer wr, int2 pos, float scale)
 		{
-			yield return new UIModelRenderable(components, WPos.Zero + offset, pos, zOffset, camera, scale * this.scale,
+			yield return new UIModelRenderable(renderer, components, WPos.Zero + offset, pos, zOffset, camera, scale * this.scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				colorPalette, normalsPalette, shadowPalette);
 		}
 
 		IEnumerable<IRenderable> IActorPreview.Render(WorldRenderer wr, WPos pos)
 		{
-			yield return new ModelRenderable(components, pos + offset, zOffset, camera, scale,
+			yield return new ModelRenderable(renderer, components, pos + offset, zOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				colorPalette, normalsPalette, shadowPalette);
 		}

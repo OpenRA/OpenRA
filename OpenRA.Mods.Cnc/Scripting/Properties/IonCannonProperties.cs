@@ -14,7 +14,7 @@ using OpenRA.Mods.Cnc.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
-namespace OpenRA.Mods.CnC.Scripting
+namespace OpenRA.Mods.Cnc.Scripting
 {
 	[ScriptPropertyGroup("Support Powers")]
 	public class IonCannonProperties : ScriptActorProperties, Requires<IonCannonPowerInfo>

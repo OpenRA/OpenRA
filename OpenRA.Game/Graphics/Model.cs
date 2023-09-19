@@ -10,9 +10,8 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using OpenRA.FileSystem;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
@@ -30,6 +29,14 @@ namespace OpenRA.Graphics
 		Rectangle AggregateBounds { get; }
 	}
 
+	public interface IModelWidget
+	{
+		public string Palette { get; }
+		public float Scale { get; }
+		public void Setup(Func<bool> isVisible, Func<string> getPalette, Func<string> getPlayerPalette,
+			Func<float> getScale, Func<IModel> getVoxel, Func<WRot> getRotation);
+	}
+
 	public readonly struct ModelRenderData
 	{
 		public readonly int Start;
@@ -44,51 +51,13 @@ namespace OpenRA.Graphics
 		}
 	}
 
-	public interface IModelCache : IDisposable
+	public interface IModelCacheInfo : ITraitInfoInterface { }
+
+	public interface IModelCache
 	{
 		IModel GetModel(string model);
 		IModel GetModelSequence(string model, string sequence);
 		bool HasModelSequence(string model, string sequence);
 		IVertexBuffer<ModelVertex> VertexBuffer { get; }
-	}
-
-	public interface IModelSequenceLoader
-	{
-		Action<string> OnMissingModelError { get; set; }
-		IModelCache CacheModels(IReadOnlyFileSystem fileSystem, ModData modData, IReadOnlyDictionary<string, MiniYamlNode> modelDefinitions);
-	}
-
-	public class PlaceholderModelSequenceLoader : IModelSequenceLoader
-	{
-		public Action<string> OnMissingModelError { get; set; }
-
-		sealed class PlaceholderModelCache : IModelCache
-		{
-			public IVertexBuffer<ModelVertex> VertexBuffer => throw new NotImplementedException();
-
-			public void Dispose() { }
-
-			public IModel GetModel(string model)
-			{
-				throw new NotImplementedException();
-			}
-
-			public IModel GetModelSequence(string model, string sequence)
-			{
-				throw new NotImplementedException();
-			}
-
-			public bool HasModelSequence(string model, string sequence)
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public PlaceholderModelSequenceLoader(ModData modData) { }
-
-		public IModelCache CacheModels(IReadOnlyFileSystem fileSystem, ModData modData, IReadOnlyDictionary<string, MiniYamlNode> modelDefinitions)
-		{
-			return new PlaceholderModelCache();
-		}
 	}
 }

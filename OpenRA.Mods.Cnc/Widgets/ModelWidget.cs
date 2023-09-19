@@ -11,12 +11,13 @@
 
 using System;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Cnc.Graphics;
+using OpenRA.Mods.Cnc.Traits;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Common.Widgets
+namespace OpenRA.Mods.Cnc.Widgets
 {
-	public class ModelWidget : Widget
+	public class ModelWidget : Widget, IModelWidget
 	{
 		public string Palette = "terrain";
 		public string PlayerPalette = "player";
@@ -73,6 +74,20 @@ namespace OpenRA.Mods.Common.Widgets
 			GetVoxel = other.GetVoxel;
 
 			WorldRenderer = other.WorldRenderer;
+		}
+
+		string IModelWidget.Palette => GetPalette();
+		float IModelWidget.Scale => GetScale();
+
+		void IModelWidget.Setup(Func<bool> isVisible, Func<string> getPalette, Func<string> getPlayerPalette,
+			Func<float> getScale, Func<IModel> getVoxel, Func<WRot> getRotation)
+		{
+			IsVisible = isVisible;
+			GetPalette = getPalette;
+			GetPlayerPalette = getPlayerPalette;
+			GetScale = getScale;
+			GetVoxel = getVoxel;
+			GetRotation = getRotation;
 		}
 
 		public override Widget Clone()
@@ -188,7 +203,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var animations = new ModelAnimation[] { animation };
 
+			var renderer = WorldRenderer.World.WorldActor.Trait<ModelRenderer>();
+
 			var preview = new ModelPreview(
+				renderer,
 				new ModelAnimation[] { animation }, WVec.Zero, 0,
 				cachedScale,
 				new WAngle(cachedLightPitch),
@@ -206,6 +224,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var camera = new WRot(WAngle.Zero, cachedCameraAngle - new WAngle(256), new WAngle(256));
 			var modelRenderable = new UIModelRenderable(
+				renderer,
 				animations, WPos.Zero, origin, 0, camera, scale,
 				WRot.None, cachedLightAmbientColor, cachedLightDiffuseColor,
 				paletteReferencePlayer, paletteReferenceNormals, paletteReferenceShadow);

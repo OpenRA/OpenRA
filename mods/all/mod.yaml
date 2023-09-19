@@ -33,7 +33,5 @@ TerrainFormat: DefaultTerrain
 
 SpriteSequenceFormat: DefaultSpriteSequence
 
-ModelSequenceFormat: PlaceholderModelSequence
-
 DiscordService:
 	ApplicationId: 699222659766026240

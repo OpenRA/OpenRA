@@ -12,61 +12,50 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using OpenRA.FileSystem;
 using OpenRA.Graphics;
+using OpenRA.Mods.Cnc.Graphics;
+using OpenRA.Traits;
 
-namespace OpenRA.Mods.Cnc.Graphics
+namespace OpenRA.Mods.Cnc.Traits
 {
-	public class VoxelModelSequenceLoader : IModelSequenceLoader
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
+	[Desc("Loads voxel models.")]
+	public sealed class VoxelCacheInfo : TraitInfo, IModelCacheInfo
 	{
-		public Action<string> OnMissingModelError { get; set; }
-
-		public VoxelModelSequenceLoader(ModData modData) { }
-
-		public IModelCache CacheModels(IReadOnlyFileSystem fileSystem, ModData modData, IReadOnlyDictionary<string, MiniYamlNode> modelSequences)
-		{
-			var cache = new VoxelModelCache(fileSystem);
-			foreach (var kv in modelSequences)
-			{
-				modData.LoadScreen.Display();
-				try
-				{
-					cache.CacheModel(kv.Key, kv.Value.Value);
-				}
-				catch (FileNotFoundException ex)
-				{
-					Console.WriteLine(ex);
-
-					// Eat the FileNotFound exceptions from missing sprites
-					OnMissingModelError(ex.Message);
-				}
-			}
-
-			cache.LoadComplete();
-
-			return cache;
-		}
+		public override object Create(ActorInitializer init) { return new VoxelCache(this, init.Self); }
 	}
 
-	public sealed class VoxelModelCache : IModelCache
+	public sealed class VoxelCache : IModelCache, INotifyActorDisposing, IDisposable
 	{
 		readonly VoxelLoader loader;
 		readonly Dictionary<string, Dictionary<string, IModel>> models = new();
 
-		public VoxelModelCache(IReadOnlyFileSystem fileSystem)
+		public VoxelCache(VoxelCacheInfo info, Actor self)
 		{
-			loader = new VoxelLoader(fileSystem);
+			var map = self.World.Map;
+			loader = new VoxelLoader(map);
+			foreach (var kv in map.Rules.ModelSequences)
+			{
+				Game.ModData.LoadScreen.Display();
+				try
+				{
+					CacheModel(kv.Key, kv.Value.Value);
+				}
+				catch (FileNotFoundException ex)
+				{
+					// Eat the FileNotFound exceptions from missing sprites.
+					Console.WriteLine(ex);
+					Log.Write("debug", ex.Message);
+				}
+			}
+
+			loader.RefreshBuffer();
+			loader.Finish();
 		}
 
 		public void CacheModel(string model, MiniYaml definition)
 		{
 			models.Add(model, definition.ToDictionary(my => LoadVoxel(model, my)));
-		}
-
-		public void LoadComplete()
-		{
-			loader.RefreshBuffer();
-			loader.Finish();
 		}
 
 		IModel LoadVoxel(string unit, MiniYaml info)
@@ -119,6 +108,11 @@ namespace OpenRA.Mods.Cnc.Graphics
 		public void Dispose()
 		{
 			loader.Dispose();
+		}
+
+		void INotifyActorDisposing.Disposing(Actor a)
+		{
+			Dispose();
 		}
 	}
 }

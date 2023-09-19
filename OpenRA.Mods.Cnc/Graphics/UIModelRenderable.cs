@@ -13,12 +13,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Cnc.Traits;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.Common.Graphics
+namespace OpenRA.Mods.Cnc.Graphics
 {
 	public class UIModelRenderable : IRenderable, IPalettedRenderable
 	{
+		readonly ModelRenderer renderer;
 		readonly IEnumerable<ModelAnimation> models;
 		readonly int2 screenPos;
 		readonly WRot camera;
@@ -30,10 +32,11 @@ namespace OpenRA.Mods.Common.Graphics
 		readonly float scale;
 
 		public UIModelRenderable(
-			IEnumerable<ModelAnimation> models, WPos effectiveWorldPos, int2 screenPos, int zOffset,
+			ModelRenderer renderer, IEnumerable<ModelAnimation> models, WPos effectiveWorldPos, int2 screenPos, int zOffset,
 			in WRot camera, float scale, in WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 			PaletteReference color, PaletteReference normals, PaletteReference shadow)
 		{
+			this.renderer = renderer;
 			this.models = models;
 			Pos = effectiveWorldPos;
 			this.screenPos = screenPos;
@@ -56,7 +59,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public IPalettedRenderable WithPalette(PaletteReference newPalette)
 		{
 			return new UIModelRenderable(
-				models, Pos, screenPos, ZOffset, camera, scale,
+				renderer, models, Pos, screenPos, ZOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				newPalette, normalsPalette, shadowPalette);
 		}
@@ -80,7 +83,7 @@ namespace OpenRA.Mods.Common.Graphics
 				this.model = model;
 				var draw = model.models.Where(v => v.IsVisible);
 
-				renderProxy = Game.Renderer.WorldModelRenderer.RenderAsync(
+				renderProxy = model.renderer.RenderAsync(
 					wr, draw, model.camera, model.scale, WRot.None, model.lightSource,
 					model.lightAmbientColor, model.lightDiffuseColor,
 					model.Palette, model.normalsPalette, model.shadowPalette);
@@ -112,8 +115,8 @@ namespace OpenRA.Mods.Common.Graphics
 			{
 				var pxOrigin = model.screenPos;
 				var draw = model.models.Where(v => v.IsVisible);
-				var scaleTransform = OpenRA.Graphics.Util.ScaleMatrix(model.scale, model.scale, model.scale);
-				var cameraTransform = OpenRA.Graphics.Util.MakeFloatMatrix(model.camera.AsMatrix());
+				var scaleTransform = Util.ScaleMatrix(model.scale, model.scale, model.scale);
+				var cameraTransform = Util.MakeFloatMatrix(model.camera.AsMatrix());
 
 				var minX = float.MaxValue;
 				var minY = float.MaxValue;
@@ -125,16 +128,16 @@ namespace OpenRA.Mods.Common.Graphics
 				foreach (var v in draw)
 				{
 					var bounds = v.Model.Bounds(v.FrameFunc());
-					var rotation = OpenRA.Graphics.Util.MakeFloatMatrix(v.RotationFunc().AsMatrix());
-					var worldTransform = OpenRA.Graphics.Util.MatrixMultiply(scaleTransform, rotation);
+					var rotation = Util.MakeFloatMatrix(v.RotationFunc().AsMatrix());
+					var worldTransform = Util.MatrixMultiply(scaleTransform, rotation);
 
 					var pxPos = pxOrigin + wr.ScreenVectorComponents(v.OffsetFunc());
-					var screenTransform = OpenRA.Graphics.Util.MatrixMultiply(cameraTransform, worldTransform);
+					var screenTransform = Util.MatrixMultiply(cameraTransform, worldTransform);
 
 					for (var i = 0; i < 8; i++)
 					{
 						var vec = new float[] { bounds[CornerXIndex[i]], bounds[CornerYIndex[i]], bounds[CornerZIndex[i]], 1 };
-						var screen = OpenRA.Graphics.Util.MatrixVectorMultiply(screenTransform, vec);
+						var screen = Util.MatrixVectorMultiply(screenTransform, vec);
 						minX = Math.Min(minX, pxPos.X + screen[0]);
 						minY = Math.Min(minY, pxPos.Y + screen[1]);
 						minZ = Math.Min(minZ, pxPos.Z + screen[2]);

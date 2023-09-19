@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -34,11 +33,11 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 		public override object Create(ActorInitializer init) { return new WithVoxelUnloadBody(init.Self, this); }
 
-		public IEnumerable<ModelAnimation> RenderPreviewVoxels(
+		public IEnumerable<ModelAnimation> RenderPreviewVoxels(IModelCache cache,
 			ActorPreviewInitializer init, RenderVoxelsInfo rv, string image, Func<WRot> orientation, int facings, PaletteReference p)
 		{
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();
-			var model = init.World.ModelCache.GetModelSequence(image, IdleSequence);
+			var model = cache.GetModelSequence(image, IdleSequence);
 			yield return new ModelAnimation(model, () => WVec.Zero,
 				() => body.QuantizeOrientation(orientation(), facings),
 				() => false, () => 0, ShowShadow);
@@ -57,7 +56,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			var body = self.Trait<BodyOrientation>();
 			rv = self.Trait<RenderVoxels>();
 
-			var idleModel = self.World.ModelCache.GetModelSequence(rv.Image, info.IdleSequence);
+			var idleModel = rv.Renderer.ModelCache.GetModelSequence(rv.Image, info.IdleSequence);
 			modelAnimation = new ModelAnimation(idleModel, () => WVec.Zero,
 				() => body.QuantizeOrientation(self.Orientation),
 				() => docked,
@@ -65,7 +64,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 
 			rv.Add(modelAnimation);
 
-			var unloadModel = self.World.ModelCache.GetModelSequence(rv.Image, info.UnloadSequence);
+			var unloadModel = rv.Renderer.ModelCache.GetModelSequence(rv.Image, info.UnloadSequence);
 			rv.Add(new ModelAnimation(unloadModel, () => WVec.Zero,
 				() => body.QuantizeOrientation(self.Orientation),
 				() => !docked,

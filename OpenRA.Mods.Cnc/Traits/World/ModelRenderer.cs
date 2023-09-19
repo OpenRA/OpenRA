@@ -12,9 +12,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
-namespace OpenRA.Graphics
+namespace OpenRA.Mods.Cnc.Traits
 {
 	public class ModelRenderProxy
 	{
@@ -32,7 +34,14 @@ namespace OpenRA.Graphics
 		}
 	}
 
-	public sealed class ModelRenderer : IDisposable
+	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
+	[Desc("Render voxels")]
+	public class ModelRendererInfo : TraitInfo, Requires<IModelCacheInfo>
+	{
+		public override object Create(ActorInitializer init) { return new ModelRenderer(this, init.Self); }
+	}
+
+	public sealed class ModelRenderer : IDisposable, IRenderer, INotifyActorDisposing
 	{
 		// Static constants
 		static readonly float[] ShadowDiffuse = new float[] { 0, 0, 0 };
@@ -46,28 +55,31 @@ namespace OpenRA.Graphics
 
 		readonly Renderer renderer;
 		readonly IShader shader;
+		public readonly IModelCache ModelCache;
 
 		readonly Dictionary<Sheet, IFrameBuffer> mappedBuffers = new();
 		readonly Stack<KeyValuePair<Sheet, IFrameBuffer>> unmappedBuffers = new();
 		readonly List<(Sheet Sheet, Action Func)> doRender = new();
+		readonly int sheetSize;
 
 		SheetBuilder sheetBuilderForFrame;
 		bool isInFrame;
-
-		public ModelRenderer(Renderer renderer, IShader shader)
-		{
-			this.renderer = renderer;
-			this.shader = shader;
-		}
 
 		public void SetPalette(ITexture palette)
 		{
 			shader.SetTexture("Palette", palette);
 		}
 
-		public void SetViewportParams()
+		public ModelRenderer(ModelRendererInfo info, Actor self)
 		{
-			var a = 2f / renderer.SheetSize;
+			renderer = Game.Renderer;
+			shader = renderer.CreateShader(new ModelShaderBindings());
+			renderer.WorldRenderers = renderer.WorldRenderers.Append(this).ToArray();
+
+			ModelCache = self.Trait<IModelCache>();
+
+			sheetSize = Game.Settings.Graphics.SheetSize;
+			var a = 2f / sheetSize;
 			var view = new[]
 			{
 				a, 0, 0, 0,
@@ -176,8 +188,8 @@ namespace OpenRA.Graphics
 			var spriteCenter = new float2(sb.Left + sb.Width / 2, sb.Top + sb.Height / 2);
 			var shadowCenter = new float2(ssb.Left + ssb.Width / 2, ssb.Top + ssb.Height / 2);
 
-			var translateMtx = Util.TranslationMatrix(spriteCenter.X - spriteOffset.X, renderer.SheetSize - (spriteCenter.Y - spriteOffset.Y), 0);
-			var shadowTranslateMtx = Util.TranslationMatrix(shadowCenter.X - shadowSpriteOffset.X, renderer.SheetSize - (shadowCenter.Y - shadowSpriteOffset.Y), 0);
+			var translateMtx = Util.TranslationMatrix(spriteCenter.X - spriteOffset.X, sheetSize - (spriteCenter.Y - spriteOffset.Y), 0);
+			var shadowTranslateMtx = Util.TranslationMatrix(shadowCenter.X - shadowSpriteOffset.X, sheetSize - (shadowCenter.Y - shadowSpriteOffset.Y), 0);
 			var correctionTransform = Util.MatrixMultiply(translateMtx, FlipMtx);
 			var shadowCorrectionTransform = Util.MatrixMultiply(shadowTranslateMtx, ShadowScaleFlipMtx);
 
@@ -213,12 +225,12 @@ namespace OpenRA.Graphics
 						// Transform light vector from shadow -> world -> limb coords
 						var lightDirection = ExtractRotationVector(Util.MatrixMultiply(it, lightTransform));
 
-						Render(rd, wr.World.ModelCache, Util.MatrixMultiply(transform, t), lightDirection,
+						Render(rd, ModelCache, Util.MatrixMultiply(transform, t), lightDirection,
 							lightAmbientColor, lightDiffuseColor, color.TextureMidIndex, normals.TextureMidIndex);
 
 						// Disable shadow normals by forcing zero diffuse and identity ambient light
 						if (m.ShowShadow)
-							Render(rd, wr.World.ModelCache, Util.MatrixMultiply(shadow, t), lightDirection,
+							Render(rd, ModelCache, Util.MatrixMultiply(shadow, t), lightDirection,
 								ShadowAmbient, ShadowDiffuse, shadowPalette.TextureMidIndex, normals.TextureMidIndex);
 					}
 				}
@@ -298,14 +310,14 @@ namespace OpenRA.Graphics
 			Game.Renderer.Flush();
 			fbo.Bind();
 
-			Game.Renderer.Context.EnableDepthBuffer();
+			Game.Renderer.EnableDepthBuffer();
 			return fbo;
 		}
 
 		static void DisableFrameBuffer(IFrameBuffer fbo)
 		{
 			Game.Renderer.Flush();
-			Game.Renderer.Context.DisableDepthBuffer();
+			Game.Renderer.DisableDepthBuffer();
 			fbo.Unbind();
 		}
 
@@ -353,8 +365,7 @@ namespace OpenRA.Graphics
 				return kv.Key;
 			}
 
-			var size = new Size(renderer.SheetSize, renderer.SheetSize);
-			var framebuffer = renderer.Context.CreateFrameBuffer(size);
+			var framebuffer = renderer.CreateFrameBuffer(new Size(sheetSize, sheetSize));
 			var sheet = new Sheet(SheetType.BGRA, framebuffer.Texture);
 			mappedBuffers.Add(sheet, framebuffer);
 
@@ -371,6 +382,12 @@ namespace OpenRA.Graphics
 
 			mappedBuffers.Clear();
 			unmappedBuffers.Clear();
+			renderer.WorldRenderers = renderer.WorldRenderers.Where(r => r != this).ToArray();
+		}
+
+		void INotifyActorDisposing.Disposing(Actor a)
+		{
+			Dispose();
 		}
 	}
 }

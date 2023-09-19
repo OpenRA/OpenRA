@@ -222,8 +222,6 @@ TerrainFormat: DefaultTerrain
 
 SpriteSequenceFormat: DefaultSpriteSequence
 
-ModelSequenceFormat: PlaceholderModelSequence
-
 AssetBrowser:
 	SpriteExtensions: .shp, .r8, .tmp
 	AudioExtensions: .aud, .wav
