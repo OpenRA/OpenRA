@@ -261,14 +261,14 @@ namespace OpenRA.Network
 			{
 				var ms = new MemoryStream();
 				ms.Write(packet.Length);
-				ms.WriteArray(packet);
+				ms.Write(packet);
 
 				foreach (var s in queuedSyncPackets)
 				{
 					var q = OrderIO.SerializeSync(s);
 
 					ms.Write(q.Length);
-					ms.WriteArray(q);
+					ms.Write(q);
 
 					sentSync.Enqueue(s);
 				}

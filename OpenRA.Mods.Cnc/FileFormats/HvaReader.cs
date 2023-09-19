@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					Transforms[c + 15] = 1;
 
 					for (var k = 0; k < 12; k++)
-						Transforms[c + ids[k]] = s.ReadFloat();
+						Transforms[c + ids[k]] = s.ReadSingle();
 
 					Array.Copy(Transforms, 16 * (LimbCount * j + i), testMatrix, 0, 16);
 					if (Util.MatrixInverse(testMatrix) == null)

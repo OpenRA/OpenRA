@@ -199,16 +199,16 @@ namespace OpenRA.Mods.Cnc.FileFormats
 							else if (AudioChannels == 1)
 							{
 								var rawAudio = stream.ReadBytes((int)length);
-								audio1.WriteArray(rawAudio);
+								audio1.Write(rawAudio);
 							}
 							else
 							{
 								var rawAudio = stream.ReadBytes((int)length / 2);
-								audio1.WriteArray(rawAudio);
+								audio1.Write(rawAudio);
 								rawAudio = stream.ReadBytes((int)length / 2);
-								audio2.WriteArray(rawAudio);
+								audio2.Write(rawAudio);
 								if (length % 2 != 0)
-									stream.ReadBytes(2);
+									stream.Position += 2;
 							}
 
 							compressed = type == "SND2";
@@ -216,7 +216,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						default:
 							if (length + stream.Position > stream.Length)
 								throw new NotSupportedException($"Vqa uses unknown Subtype: {type}");
-							stream.ReadBytes((int)length);
+							stream.Position += length;
 							break;
 					}
 
@@ -308,7 +308,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						break;
 					default:
 						// Don't parse sound here.
-						stream.ReadBytes((int)length);
+						stream.Position += length;
 						break;
 				}
 
@@ -382,8 +382,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					// frame-modifier chunk
 					case "CBP0":
 					case "CBPZ":
-						var bytes = s.ReadBytes(subchunkLength);
-						bytes.CopyTo(cbp, chunkBufferOffset);
+						s.ReadBytes(cbp, chunkBufferOffset, subchunkLength);
 						chunkBufferOffset += subchunkLength;
 						currentChunkBuffer++;
 						cbpIsCompressed = type == "CBPZ";

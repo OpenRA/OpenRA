@@ -64,7 +64,7 @@ namespace OpenRA.Server
 			ms.Write(0);
 			ms.Write(0);
 			ms.WriteByte((byte)OrderType.Ping);
-			ms.WriteArray(BitConverter.GetBytes(Game.RunTime));
+			ms.Write(Game.RunTime);
 			return ms.GetBuffer();
 		}
 

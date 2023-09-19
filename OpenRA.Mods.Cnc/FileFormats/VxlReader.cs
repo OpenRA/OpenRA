@@ -141,12 +141,12 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			{
 				limbDataOffset[i] = s.ReadUInt32();
 				s.Seek(8, SeekOrigin.Current);
-				Limbs[i].Scale = s.ReadFloat();
+				Limbs[i].Scale = s.ReadSingle();
 				s.Seek(48, SeekOrigin.Current);
 
 				Limbs[i].Bounds = new float[6];
 				for (var j = 0; j < 6; j++)
-					Limbs[i].Bounds[j] = s.ReadFloat();
+					Limbs[i].Bounds[j] = s.ReadSingle();
 				Limbs[i].Size = s.ReadBytes(3);
 				Limbs[i].Type = (NormalType)s.ReadUInt8();
 			}

@@ -150,6 +150,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		{
 			readonly int outputSize;
 			int dataSize;
+			byte[] inputBuffer;
+			byte[] outputBuffer;
 
 			public WestwoodCompressedAudStream(Stream stream, int outputSize, int dataSize)
 				: base(stream)
@@ -167,8 +169,10 @@ namespace OpenRA.Mods.Cnc.FileFormats
 
 				var chunk = AudChunk.Read(baseStream);
 
-				var input = baseStream.ReadBytes(chunk.CompressedSize);
-				var output = new byte[chunk.OutputSize];
+				var input = EnsureArraySize(ref inputBuffer, chunk.CompressedSize);
+				var output = EnsureArraySize(ref outputBuffer, chunk.OutputSize);
+
+				baseStream.ReadBytes(input);
 				WestwoodCompressedReader.DecodeWestwoodCompressedSample(input, output);
 
 				foreach (var b in output)
@@ -177,6 +181,13 @@ namespace OpenRA.Mods.Cnc.FileFormats
 				dataSize -= 8 + chunk.CompressedSize;
 
 				return dataSize <= 0;
+			}
+
+			static Span<byte> EnsureArraySize(ref byte[] array, int desiredSize)
+			{
+				if (array == null || array.Length < desiredSize)
+					array = new byte[desiredSize];
+				return array.AsSpan(..desiredSize);
 			}
 		}
 	}

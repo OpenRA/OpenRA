@@ -76,9 +76,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 		{
 			readonly OggFormat format;
 
-			// This buffer can be static because it can only be used by 1 instance per thread.
-			[ThreadStatic]
-			static float[] conversionBuffer;
+			float[] conversionBuffer;
 
 			public OggStream(OggFormat format)
 			{
@@ -105,13 +103,10 @@ namespace OpenRA.Mods.Common.AudioLoaders
 				// Make sure we don't have an odd count.
 				count -= count % format.reader.Channels;
 
-				// Get the buffer, creating a new one if none exists or the existing one is too small.
-				var floatBuffer = conversionBuffer ??= new float[count];
-				if (floatBuffer.Length < count)
-					floatBuffer = conversionBuffer = new float[count];
+				var floatBuffer = EnsureArraySize(ref conversionBuffer, count);
 
 				// Let NVorbis do the actual reading.
-				var samples = format.reader.ReadSamples(floatBuffer, offset, count);
+				var samples = format.reader.ReadSamples(floatBuffer);
 
 				// Move the data back to the request buffer and convert to 16-bit signed samples for OpenAL.
 				for (var i = 0; i < samples; i++)
@@ -136,6 +131,13 @@ namespace OpenRA.Mods.Common.AudioLoaders
 					format.reader.Dispose();
 
 				base.Dispose(disposing);
+			}
+
+			static Span<float> EnsureArraySize(ref float[] array, int desiredSize)
+			{
+				if (array == null || array.Length < desiredSize)
+					array = new float[desiredSize];
+				return array.AsSpan(..desiredSize);
 			}
 		}
 	}

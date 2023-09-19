@@ -20,11 +20,11 @@ namespace OpenRA.Mods.Common.FileFormats
 		static readonly int[] AudWsStepTable2 = { -2, -1, 0, 1 };
 		static readonly int[] AudWsStepTable4 = { -9, -8, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 8 };
 
-		public static void DecodeWestwoodCompressedSample(byte[] input, byte[] output)
+		public static void DecodeWestwoodCompressedSample(ReadOnlySpan<byte> input, Span<byte> output)
 		{
 			if (input.Length == output.Length)
 			{
-				Array.Copy(input, output, output.Length);
+				input.CopyTo(output);
 
 				return;
 			}
