@@ -5,6 +5,8 @@ Player:
 	GrantConditionOnBotOwner@test:
 		Condition: enable-test-ai
 		Bots: test
+	ExternalBotOrdersManager:
+		RequiresCondition: enable-test-ai
 	HarvesterBotModule:
 		RequiresCondition: enable-test-ai
 		HarvesterTypes: harv

@@ -86,6 +86,7 @@ TTNK:
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@BOT: ^BotOwner
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -105,7 +106,7 @@ TTNK:
 		TurnSpeed: 20
 		Speed: 85
 		ImmovableCondition: !undeployed
-		RequireForceMoveCondition: !undeployed
+		RequireForceMoveCondition: !undeployed && !bot-owner
 	Health:
 		HP: 35000
 	Armor:
@@ -202,6 +203,12 @@ TTNK:
 		ArmamentNames: primary, deployed
 	RenderVoxels:
 		Scale: 11.5
+	IssueOrderToBot@AI:
+		RequiresCondition: undeployed
+		OrderName: GrantConditionOnDeploy
+		OrderChance: 100
+		OrderTrigger: Attack
+		OrderInterval: 35
 
 ART2:
 	Inherits: ^Tank
