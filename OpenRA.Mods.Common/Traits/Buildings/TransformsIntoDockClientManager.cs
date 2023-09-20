@@ -66,14 +66,14 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<DockHostInfo>(
+				yield return new EnterActorTargeter<DockHostInfo>(
 					"ForceDock",
 					6,
 					Info.EnterCursor,
 					Info.EnterBlockedCursor,
 					ForceDockingPossible,
 					target => CanDockAt(target, true));
-				yield return new EnterAlliedActorTargeter<DockHostInfo>(
+				yield return new EnterActorTargeter<DockHostInfo>(
 					"Dock",
 					5,
 					Info.EnterCursor,
@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Traits
 			return !IsTraitDisabled && target.TraitsImplementing<DockHost>().Any(host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType, forceEnter)));
 		}
 
-		/// <summary>Clone of <see cref="DockClientManager.CanDockAt(Actor, bool, bool)"/>.</summary>
+		/// <summary>Clone of <see cref="DockClientManager.CanDockAt(Actor, bool?, bool)"/>.</summary>
 		public bool CanDockAt(Actor target, bool forceEnter = false)
 		{
 			if (!(self.CurrentActivity is Transform || transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused)))

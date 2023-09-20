@@ -149,14 +149,14 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<IDockHostInfo>(
+				yield return new EnterActorTargeter<IDockHostInfo>(
 					"ForceDock",
 					6,
 					Info.EnterCursor,
 					Info.EnterBlockedCursor,
 					DockingPossible,
 					target => CanDockAt(target, true, true));
-				yield return new EnterAlliedActorTargeter<IDockHostInfo>(
+				yield return new EnterActorTargeter<IDockHostInfo>(
 					"Dock",
 					5,
 					Info.EnterCursor,
@@ -232,7 +232,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		/// <summary>Do we have an enabled client with matching <paramref name="type"/>.</summary>
-		public bool DockingPossible(BitSet<DockType> type, bool forceEnter = false)
+		public bool DockingPossible(BitSet<DockType> type, bool? forceEnter = false)
 		{
 			return !IsTraitDisabled && dockClients.Any(client => client.IsDockingPossible(type, forceEnter));
 		}
@@ -251,20 +251,20 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		/// <summary>Can we dock to this <paramref name="host"/>.</summary>
-		public bool CanDockAt(Actor hostActor, IDockHost host, bool forceEnter = false, bool ignoreOccupancy = false)
+		public bool CanDockAt(Actor hostActor, IDockHost host, bool? forceEnter = false, bool ignoreOccupancy = false)
 		{
 			return !IsTraitDisabled && dockClients.Any(client => client.CanDockAt(hostActor, host, forceEnter, ignoreOccupancy));
 		}
 
 		/// <summary>Can we dock to this <paramref name="target"/>.</summary>
-		public bool CanDockAt(Actor target, bool forceEnter = false, bool ignoreOccupancy = false)
+		public bool CanDockAt(Actor target, bool? forceEnter = false, bool ignoreOccupancy = false)
 		{
 			return !IsTraitDisabled && target.TraitsImplementing<IDockHost>().Any(host => dockClients.Any(client => client.CanDockAt(target, host, forceEnter, ignoreOccupancy)));
 		}
 
 		/// <summary>Find the closest viable <see cref="IDockHost"/>.</summary>
 		/// <remarks>If <paramref name="type"/> is not set, scans all clients. Does not check if <see cref="DockClientManager"/> is enabled.</remarks>
-		public TraitPair<IDockHost>? ClosestDock(IDockHost ignore, BitSet<DockType> type = default, bool forceEnter = false, bool ignoreOccupancy = false)
+		public TraitPair<IDockHost>? ClosestDock(IDockHost ignore, BitSet<DockType> type = default, bool? forceEnter = false, bool ignoreOccupancy = false)
 		{
 			var clients = type.IsEmpty ? dockClients : AvailableDockClients(type);
 			return self.World.ActorsWithTrait<IDockHost>()
@@ -274,7 +274,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		/// <summary>Get viable <see cref="IDockHost"/>'s on the <paramref name="target"/>.</summary>
 		/// <remarks>Does not check if <see cref="DockClientManager"/> is enabled.</remarks>
-		public IEnumerable<TraitPair<IDockHost>> AvailableDockHosts(Actor target, bool forceEnter = false, bool ignoreOccupancy = false)
+		public IEnumerable<TraitPair<IDockHost>> AvailableDockHosts(Actor target, bool? forceEnter = false, bool ignoreOccupancy = false)
 		{
 			return target.TraitsImplementing<IDockHost>()
 				.Where(host => dockClients.Any(client => client.CanDockAt(target, host, forceEnter, ignoreOccupancy)))

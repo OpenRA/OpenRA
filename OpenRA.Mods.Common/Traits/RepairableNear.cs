@@ -60,13 +60,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<BuildingInfo>(
+				yield return new EnterActorTargeter<BuildingInfo>(
 					"RepairNear",
 					5,
 					Info.EnterCursor,
 					Info.EnterBlockedCursor,
 					CanRepairAt,
-					_ => ShouldRepair());
+					target => self.Owner.IsAlliedWith(target.Owner) && ShouldRepair());
 			}
 		}
 

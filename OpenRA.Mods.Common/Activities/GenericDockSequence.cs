@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Drag:
-					if (IsCanceling || DockHostActor.IsDead || !DockHostActor.IsInWorld || !DockClient.CanDockAt(DockHostActor, DockHost, false, true))
+					if (IsCanceling || DockHostActor.IsDead || !DockHostActor.IsInWorld || !DockClient.CanDockAt(DockHostActor, DockHost, null, true))
 					{
 						DockClient.UnreserveHost();
 						return true;
@@ -88,7 +88,7 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Dock:
-					if (!IsCanceling && !DockHostActor.IsDead && DockHostActor.IsInWorld && DockClient.CanDockAt(DockHostActor, DockHost, false, true))
+					if (!IsCanceling && !DockHostActor.IsDead && DockHostActor.IsInWorld && DockClient.CanDockAt(DockHostActor, DockHost, null, true))
 					{
 						dockInitiated = true;
 						PlayDockAnimations(self);

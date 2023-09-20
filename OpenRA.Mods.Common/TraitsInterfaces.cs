@@ -224,14 +224,14 @@ namespace OpenRA.Mods.Common.Traits
 		/// Does not check if <see cref="Traits.DockClientManager"/> is enabled.
 		/// Function should only be called from within <see cref="IDockClient"/> or <see cref="Traits.DockClientManager"/>.
 		/// </remarks>
-		bool IsDockingPossible(BitSet<DockType> type, bool forceEnter = false);
+		bool IsDockingPossible(BitSet<DockType> type, bool? forceEnter = false);
 
 		/// <summary>Is this client allowed to dock to <paramref name="host"/>.</summary>
 		/// <remarks>
 		/// Does not check if <see cref="Traits.DockClientManager"/> is enabled.
 		/// Function should only be called from within <see cref="IDockClient"/> or <see cref="Traits.DockClientManager"/>.
 		/// </remarks>
-		bool CanDockAt(Actor hostActor, IDockHost host, bool forceEnter = false, bool ignoreOccupancy = false);
+		bool CanDockAt(Actor hostActor, IDockHost host, bool? forceEnter = false, bool ignoreOccupancy = false);
 	}
 
 	public interface IDockHostInfo : ITraitInfoInterface { }
