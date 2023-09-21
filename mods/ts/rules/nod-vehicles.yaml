@@ -215,6 +215,7 @@ ART2:
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@BOT: ^BotOwner
 	Valued:
 		Cost: 975
 	Tooltip:
@@ -238,7 +239,7 @@ ART2:
 		Speed: 71
 		TurnSpeed: 8
 		ImmovableCondition: !undeployed
-		RequireForceMoveCondition: !undeployed
+		RequireForceMoveCondition: !undeployed && !bot-owner
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
 		Range: 9c0
@@ -304,6 +305,12 @@ ART2:
 	WithMuzzleOverlay:
 	RevealOnFire:
 		ArmamentNames: deployed
+	IssueOrderToBot@AI:
+		OrderTrigger: BecomingIdle, Periodically
+		OrderName: GrantConditionOnDeploy
+		OrderChance: 100
+		OrderInterval: 40
+		RequiresCondition: undeployed
 
 REPAIR:
 	Inherits: ^Tank
