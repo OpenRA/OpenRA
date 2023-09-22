@@ -11,6 +11,10 @@ FACT:
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: The construction yard is the core of any base. It produces buildings and defenses while also providing a build radius. It has a large health pool, but is difficult to replace and should be defended.\n\nCan be unpacked into a mobile version using the deploy key, but takes a small amount of time to do so.
+		Category: Buildings
+		Order: 0
 	Health:
 		HP: 210000
 	Armor:
@@ -135,6 +139,7 @@ FACT.GDI:
 		ForceFaction: gdi
 	Tooltip:
 		Name: Construction Yard (GDI)
+	-Encyclopedia:
 
 FACT.NOD:
 	Inherits: FACT
@@ -147,6 +152,7 @@ FACT.NOD:
 		ForceFaction: nod
 	Tooltip:
 		Name: Construction Yard (Nod)
+	-Encyclopedia:
 
 NUKE:
 	Inherits: ^BaseBuilding
@@ -170,6 +176,10 @@ NUKE:
 		Footprint: xX xx ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: Provides 100 power to the structures in your base. Power output is directly related to the power plant's condition, so protect it during battles.
+		Category: Buildings
+		Order: 40
 	Health:
 		HP: 55000
 	RevealsShroud:
@@ -201,6 +211,10 @@ NUK2:
 		Footprint: xX xx ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: Provides 200 power to the structures in your base. More cost effective than the power plant. Power output is directly related to the advanced power plant's condition, so protect it during battle.
+		Category: Buildings
+		Order: 190
 	Health:
 		HP: 70000
 	RevealsShroud:
@@ -234,6 +248,10 @@ PROC:
 		Footprint: _x_ xxx +++ ===
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: The refinery stores and processes the alien material and resource, Tiberium. Harvesters collect Tiberium in the field and deposit it at the refinery, where it is converted into credits.\n\nThe refinery stores 1000 credits worth of Tiberium and immediately deploys a harvester once constructed. Can act as a drop off for 3 harvesters.
+		Category: Buildings
+		Order: 80
 	Health:
 		HP: 100000
 	RevealsShroud:
@@ -281,6 +299,10 @@ SILO:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
+	Encyclopedia:
+		Description: Stores an additional 3000 credits worth of Tiberium. When you can store no more Tiberium, harvesters will wait until the Tiberium is spent. Can be useful when harvesting the more valuable blue Tiberium, as a single refinery can not hold a full load.
+		Category: Buildings
+		Order: 90
 	-GivesBuildableArea:
 	Health:
 		HP: 50000
@@ -326,6 +348,10 @@ PYLE:
 		Footprint: xx ++ ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: Produces infantry for GDI. Once unlocked, advanced GDI infantry are hard hitting and fast.
+		Category: Buildings
+		Order: 50
 	Health:
 		HP: 60000
 	RevealsShroud:
@@ -387,6 +413,10 @@ HAND:
 		Footprint: xx xx ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: Produces infantry for Nod. Once unlocked, advanced Nod infantry are slow but have high health pools.
+		Category: Buildings
+		Order: 60
 	Health:
 		HP: 60000
 	RevealsShroud:
@@ -451,6 +481,10 @@ AFLD:
 		Footprint: XXX+ xxx+ ====
 		Dimensions: 4,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: Delivers vehicles by plane for Nod. Nod vehicles are fast but fragile. Produce additional harvesters at the start to jumpstart your economy.
+		Category: Buildings
+		Order: 110
 	Health:
 		HP: 110000
 	RevealsShroud:
@@ -515,6 +549,10 @@ WEAP:
 	Selectable:
 		Bounds: 3072, 2048
 		DecorationBounds: 3072, 2730, 0, -682
+	Encyclopedia:
+		Description: Produces vehicles for GDI. GDI vehicles tend to be slow but hard hitting. Produce additional harvesters at the start to jumpstart your economy.
+		Category: Buildings
+		Order: 100
 	Health:
 		HP: 110000
 	RevealsShroud:
@@ -576,6 +614,10 @@ HPAD:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	Encyclopedia:
+		Description: Produces and repairs helicopters. Requires a communication center to build advanced attack helicopters.
+		Category: Buildings
+		Order: 120
 	Health:
 		HP: 60000
 	RevealsShroud:
@@ -662,6 +704,10 @@ HQ:
 		DecorationBounds: 2048, 2261, 0, -170
 	WithSpriteBody:
 		PauseOnCondition: lowpower
+	Encyclopedia:
+		Description: Allows the player access to the minimap (top right) when there is sufficient power. Unlocks new units for production while also granting access to the airstrike support power.
+		Category: Buildings
+		Order: 130
 	Health:
 		HP: 80000
 	RevealsShroud:
@@ -724,6 +770,10 @@ FIX:
 	Building:
 		Footprint: _+_ +++ _+_
 		Dimensions: 3,3
+	Encyclopedia:
+		Description: Repairs vehicles. The repair command can be used on units to send them to the closest repair facility.
+		Category: Buildings
+		Order: 180
 	Selectable:
 		Bounds: 2730, 1450, 0, 128
 		DecorationBounds: 3072, 2048
@@ -772,6 +822,10 @@ EYE:
 		Footprint: X_ xx ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: Unlocks advanced units and the ion cannon support power. Provides unit unlocks and minimap if the communication center has been lost.
+		Category: Buildings
+		Order: 200
 	Selectable:
 		Bounds: 2048, 1706, 0, 384
 		DecorationBounds: 2048, 2261, 0, -170
@@ -838,6 +892,10 @@ TMPL:
 	Selectable:
 		Bounds: 3072, 2048
 		DecorationBounds: 3072, 2901, 0, -512
+	Encyclopedia:
+		Description: Unlocks advanced units and the Nuke support power. Provides unit unlocks if the communication center has been lost.
+		Category: Buildings
+		Order: 210
 	Health:
 		HP: 210000
 	RevealsShroud:
@@ -904,6 +962,10 @@ GUN:
 		BuildDuration: 960
 		Description: Basic Anti-Tank base defense.\n  Strong vs Tanks, vehicles\n  Weak vs Infantry
 	Building:
+	Encyclopedia:
+		Description: Base defense. Armed with an armor piercing cannon, it deals significant damage to vehicles in range.
+		Category: Buildings
+		Order: 160
 	Health:
 		HP: 41000
 	Armor:
@@ -961,6 +1023,10 @@ SAM:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
+	Encyclopedia:
+		Description: Nod base defense. Has a damage resistant closed state. Opens to fire at incoming aircraft.
+		Category: Buildings
+		Order: 161
 	Health:
 		HP: 40000
 	Armor:
@@ -1007,6 +1073,10 @@ OBLI:
 	Selectable:
 		Bounds: 1024, 1024
 		DecorationBounds: 938, 1877, 0, -426
+	Encyclopedia:
+		Description: Advanced defense for Nod. Destroys ground targets quickly with a strong laser.
+		Category: Buildings
+		Order: 220
 	Health:
 		HP: 75000
 	Armor:
@@ -1052,6 +1122,10 @@ GTWR:
 		BuildDuration: 960
 		Description: Basic defensive structure.\n  Strong vs Infantry\n  Weak vs Tanks
 	Building:
+	Encyclopedia:
+		Description: Base defense. Armed with a high velocity machine gun, it shreds infantry and light vehicles within range with a large area of effect. 
+		Category: Buildings
+		Order: 150
 	Health:
 		HP: 40000
 	Armor:
@@ -1093,6 +1167,10 @@ ATWR:
 	Selectable:
 		Bounds: 1024, 1024
 		DecorationBounds: 938, 2048, 0, -512
+	Encyclopedia:
+		Description: Advanced defense for GDI. Fires volleys of high explosive missiles at both ground and air targets. Effective versus everything.
+		Category: Buildings
+		Order: 170
 	Health:
 		HP: 55000
 	Armor:
@@ -1139,6 +1217,10 @@ SBAG:
 		Prerequisites: fact
 		Queue: Defence.GDI
 		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
+	Encyclopedia:
+		Description: Base defense for GDI. Blocks movement of infantry and light vehicles, but can be crushed by tanks. Immune to small arms fire.\n\nCan be built in multiple segments once an initial sandbag has been placed.
+		Category: Buildings
+		Order: 10
 	Armor:
 		Type: Light
 	LineBuild:
@@ -1161,6 +1243,10 @@ CYCL:
 		Prerequisites: fact
 		Queue: Defence.Nod
 		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
+	Encyclopedia:
+		Description: Base defense for Nod. Blocks movement of infantry and light vehicles, but can be crushed by tanks. Immune to small arms fire.\n\nCan be built in multiple segments once an initial chain link has been placed.
+		Category: Buildings
+		Order: 20
 	Armor:
 		Type: Light
 	LineBuild:
@@ -1184,6 +1270,10 @@ BRIK:
 		Queue: Defence.GDI, Defence.Nod
 		BuildDuration: 230
 		Description: Stops infantry and most tanks.\nBlocks some projectiles.
+	Encyclopedia:
+		Description: Base defense. Blocks movement for all units, except for Mammoth Tanks which can crush it. Immune to small arms.\n\nCan be built in multiple segments once an initial wall has been placed.
+		Category: Buildings
+		Order: 30
 	Health:
 		HP: 20000
 	Armor:

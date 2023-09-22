@@ -10,6 +10,10 @@ V19:
 		Dimensions: 1,1
 	Health:
 		HP: 80000
+	Encyclopedia:
+		Description: The Oil Derrick produces 10 credits every 2 seconds when captured. Economically less efficient to capture than building a harvester, but never mines out.
+		Order: 0
+		Category: Civilian
 	Tooltip:
 		Name: Oil Derrick
 	TooltipDescription@ally:
@@ -48,6 +52,10 @@ HOSP:
 		Dimensions: 2,2
 	Health:
 		HP: 250000
+	Encyclopedia:
+		Description: Heals friendly infantry over time when captured.
+		Order: 10
+		Category: Civilian
 	Tooltip:
 		Name: Hospital
 	TooltipDescription@ally:
@@ -84,6 +92,10 @@ BIO:
 		Dimensions: 2,2
 	Health:
 		HP: 250000
+	Encyclopedia:
+		Description: Gives friendly infantry tiberium immunity when captured.
+		Order: 10
+		Category: Civilian
 	Tooltip:
 		Name: Biological Lab
 	TooltipDescription@ally:
@@ -127,6 +139,10 @@ MISS:
 		Cost: 0
 	Health:
 		HP: 80000
+	Encyclopedia:
+		Description: Provides vision in a large radius when captured.
+		Order: 20
+		Category: Civilian
 	RevealsShroud:
 		Range: 13c0
 	TooltipDescription@ally:

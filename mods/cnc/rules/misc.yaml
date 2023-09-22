@@ -82,6 +82,7 @@ fact.colorpicker:
 	-Buildable:
 	-MapEditorData:
 	-BaseBuilding:
+	-Encyclopedia:
 	RenderSprites:
 		Image: fact
 		Palette: colorpicker
