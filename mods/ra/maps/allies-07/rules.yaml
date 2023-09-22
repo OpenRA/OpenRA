@@ -33,6 +33,10 @@ powerproxy.paratroopers:
 	ParatroopersPower:
 		DropItems: E1,E1,E1,E2,E2
 
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
 MCV:
 	Buildable:
 		Prerequisites: ~disabled

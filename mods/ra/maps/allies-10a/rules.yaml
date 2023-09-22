@@ -42,6 +42,10 @@ MSLO:
 	Capturable:
 		Types: ~disabled
 
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
 MCV:
 	Buildable:
 		Prerequisites: ~disabled
