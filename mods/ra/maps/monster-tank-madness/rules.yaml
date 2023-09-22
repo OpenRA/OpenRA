@@ -282,6 +282,10 @@ STEK:
 	Buildable:
 		Prerequisites: ~disabled
 
+FTRK:
+	Buildable:
+		Prerequisites: ~disabled
+
 MCV:
 	Buildable:
 		Prerequisites: ~disabled
