@@ -126,7 +126,7 @@ namespace OpenRA.Mods.Common.Activities
 				case EnterState.Entering:
 				{
 					// Check that we reached the requested position
-					var targetPos = target.Positions.ClosestToWithPathFrom(self);
+					var targetPos = target.Positions.ClosestToIgnoringPath(self.CenterPosition);
 					if (!IsCanceling && self.CenterPosition == targetPos && target.Type == TargetType.Actor)
 						OnEnterComplete(self, target.Actor);
 
