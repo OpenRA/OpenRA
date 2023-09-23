@@ -356,7 +356,7 @@ GADEPT:
 		BuildPaletteOrder: 70
 		Prerequisites: factory, ~structures.gdi, ~techlevel.medium
 		Queue: Building
-		Description: Repairs vehicles.
+		Description: Repairs or sells vehicles and aircraft.
 	Building:
 		Footprint: =+= x++ x+=
 		Dimensions: 3,3
@@ -431,6 +431,11 @@ GADEPT:
 		FactionImages:
 			gdi: gadept.gdi
 			nod: gadept.nod
+	GrantConditionOnHostDock:
+		Condition: serving
+		AfterDockDuration: 20
+	Sellable:
+		RequiresCondition: !serving && !build-incomplete && !being-demolished
 
 GARADR:
 	Inherits: ^Building
