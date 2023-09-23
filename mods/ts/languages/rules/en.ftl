@@ -38,6 +38,7 @@ notification-unit-ready = Unit ready.
 notification-unable-to-comply-building-in-progress = Unable to comply. Building in progress.
 notification-repairing = Repairing.
 notification-unit-repaired = Unit repaired.
+notification-unit-sold = Unit sold.
 notification-ion-cannon-ready = Ion cannon ready.
 notification-select-target = Select target.
 notification-cluster-missile-ready = Cluster missile ready.

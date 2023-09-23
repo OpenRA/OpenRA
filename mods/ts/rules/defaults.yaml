@@ -862,6 +862,16 @@
 		Sequence: vehicle
 		Palette: player
 		IsPlayerPalette: true
+	Sellable:
+		SellSounds: cashturn.aud
+		Cursor: sell2
+		Notification: UnitSold
+		TextNotification: notification-unit-sold
+		RequiresCondition: unit.sellable
+	GrantConditionOnClientDock@Sellable:
+		Condition: unit.sellable
+		AfterDockDuration: 20
+		DockHostNames: gadept
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -949,6 +959,16 @@
 		RequiresCondition: cruising
 		BobDistance: -64
 		InitialHeight: 64
+	Sellable:
+		SellSounds: cashturn.aud
+		Cursor: sell2
+		Notification: UnitSold
+		TextNotification: notification-unit-sold
+		RequiresCondition: unit.sellable
+	GrantConditionOnClientDock@Sellable:
+		Condition: unit.sellable
+		AfterDockDuration: 20
+		DockHostNames: gadept
 
 ^EMPableAircraft:
 	Inherits: ^Aircraft
