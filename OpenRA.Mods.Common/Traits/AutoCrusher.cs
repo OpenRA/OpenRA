@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 					self.Location != a.Location && a.IsAtGroundLevel() &&
 					Info.TargetRelationships.HasRelationship(self.Owner.RelationshipWith(a.Owner)) &&
 					a.TraitsImplementing<ICrushable>().Any(c => c.CrushableBy(a, self, Info.CrushClasses)))
-				.ClosestToWithPathFrom(self); // TODO: Make it use shortest pathfinding distance instead
+				.ClosestToWithPathFrom(self);
 
 			if (crushableActor == null)
 				return;
