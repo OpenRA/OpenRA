@@ -364,6 +364,9 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				var modifiers = reloadModifiers.ToArray();
 				FireDelay = Util.ApplyPercentageModifiers(Weapon.ReloadDelay, modifiers);
+				if (FireDelay <= 0)
+					FireDelay = 1;
+
 				Burst = Weapon.Burst;
 
 				if (Weapon.AfterFireSound != null && Weapon.AfterFireSound.Length > 0)
