@@ -207,6 +207,19 @@ namespace OpenRA.Mods.Common.Traits
 			ReservedCargo = null;
 		}
 
+		public virtual void OnBeforeAddedToWorld(Actor actor)
+		{
+			actor.CancelActivity();
+		}
+
+		public virtual void OnEjectedFromKilledCargo(Actor self)
+		{
+			// Cancel all other activities to keep consistent behavior with the one in UnloadCargo.
+			self.CurrentActivity?.Cancel(self);
+
+			self.QueueActivity(new Nudge(self));
+		}
+
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			if (Transport == null)
