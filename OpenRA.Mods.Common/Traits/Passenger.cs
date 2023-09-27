@@ -58,6 +58,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when unable to enter target actor.")]
 		public readonly string EnterBlockedCursor = "enter-blocked";
 
+		[Desc("When unloading, cancel all other activies.")]
+		public readonly bool CancelActivitiesOnExit = true;
+
 		public override object Create(ActorInitializer init) { return new Passenger(this); }
 	}
 

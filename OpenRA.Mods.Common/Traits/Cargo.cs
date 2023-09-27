@@ -429,7 +429,7 @@ namespace OpenRA.Mods.Common.Traits
 								nbm.OnNotifyBlockingMove(passenger, passenger);
 
 							// For show.
-							passenger.QueueActivity(new Nudge(passenger));
+							passenger.CurrentActivity.QueueChild(new Nudge(passenger));
 						}
 						else
 							passenger.Kill(e.Attacker);
