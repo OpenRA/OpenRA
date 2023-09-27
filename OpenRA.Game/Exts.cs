@@ -562,6 +562,11 @@ namespace OpenRA
 		{
 			return new LineSplitEnumerator(str.AsSpan(), separator);
 		}
+
+		public static bool TryParseInt32Invariant(string s, out int i)
+		{
+			return int.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out i);
+		}
 	}
 
 	public ref struct LineSplitEnumerator
