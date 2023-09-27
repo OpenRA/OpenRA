@@ -119,11 +119,12 @@ namespace OpenRA.Mods.Common.Activities
 
 					var move = actor.Trait<IMove>();
 					var pos = actor.Trait<IPositionable>();
+					var passenger = actor.Trait<Passenger>();
 
 					pos.SetPosition(actor, exitSubCell.Value.Cell, exitSubCell.Value.SubCell);
 					pos.SetCenterPosition(actor, spawn);
 
-					actor.CancelActivity();
+					passenger.OnBeforeAddedToWorld(actor);
 					w.Add(actor);
 				});
 			}
