@@ -72,6 +72,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
+				if (self.IsDead)
+					return;
+
 				w.CreateActor(Info.Actor, new TypeDictionary
 				{
 					new ParentActorInit(self),
