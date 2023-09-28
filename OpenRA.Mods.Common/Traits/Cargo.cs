@@ -138,7 +138,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var u in cargoInit.Value)
 				{
 					var unit = self.World.CreateActor(false, u.ToLowerInvariant(),
-						new TypeDictionary { new OwnerInit(self.Owner) });
+						new TypeDictionary { new OwnerInit(self.Owner), new LocationInit(self.Location) });
 
 					cargo.Add(unit);
 				}
@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var u in info.InitialUnits)
 				{
 					var unit = self.World.CreateActor(false, u.ToLowerInvariant(),
-						new TypeDictionary { new OwnerInit(self.Owner) });
+						new TypeDictionary { new OwnerInit(self.Owner), new LocationInit(self.Location) });
 
 					cargo.Add(unit);
 				}
