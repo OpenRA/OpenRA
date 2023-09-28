@@ -312,7 +312,7 @@ WorldLoaded = function()
 	Trigger.AfterDelay(1, function() Build(Utils.Random(GroundPatrolUnits), SendGroundPatrol) end)
 
 	Reinforcements.Reinforce(Allies, { "mcv" }, { MCVInsertLocation.Location, MCVDeployLocation.Location }, 0, function(mcv)
-		mcv.Deploy()
+		mcv.Transform()
 	end)
 
 	Camera.Position = CameraSpot.CenterPosition

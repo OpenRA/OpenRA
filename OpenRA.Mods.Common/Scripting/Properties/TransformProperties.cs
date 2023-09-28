@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 using OpenRA.Traits;
@@ -26,9 +27,18 @@ namespace OpenRA.Mods.Common.Scripting
 			transforms = self.Trait<Transforms>();
 		}
 
+		[Obsolete("This function will be removed in future versions. Use Transform instead.")]
 		[ScriptActorPropertyActivity]
 		[Desc("Queue a new transformation.")]
 		public void Deploy()
+		{
+			TextNotificationsManager.Debug("Deploy is deprecated. Use Transform instead.");
+			transforms.DeployTransform(true);
+		}
+
+		[ScriptActorPropertyActivity]
+		[Desc("Queue a new transformation.")]
+		public void Transform()
 		{
 			transforms.DeployTransform(true);
 		}
