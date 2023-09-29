@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write  #  for release creation (svenstaro/upload-release-action)
+  pull-requests: write  # for winget release publishing (vedantmgoyal2009/winget-releaser)
 
 jobs:
   source:
@@ -131,3 +132,13 @@ jobs:
           overwrite: true
           file_glob: true
           file: build/windows/*
+
+      - name: Publish to WinGet
+        uses: vedantmgoyal2009/winget-releaser@v2
+        if: contains( github.ref_name, "release" )
+        with:
+           identifier: OpenRA.OpenRA
+           installers-regex: '\.exe$'
+           max-versions-to-keep: 5 # keep only latest 5 versions
+           release-tag: ${{ _name }}
+           token: ${{ secrets.GITHUB_TOKEN }}
