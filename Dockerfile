@@ -1,5 +1,5 @@
-# This file is for building on Windows: it is not used by the devcontainer.
-# Build from the repository root by running:
+# This file permits OpenRA to be built on Windows without the need to install
+# any local development tools or SDKs. From the repository root, build using:
 #
 # docker build -t openra .
 # 
