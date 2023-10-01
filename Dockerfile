@@ -3,11 +3,15 @@
 #
 # docker build -t openra .
 # 
-# Then open the container using:
+# You can then open the container and build interactively using:
 #
 # docker run -it -v .:C:\OpenRA openra
 #
 # You can now run `./make.cmd`: output will be shared to the host.
+#
+# Alternatively, build directly from the host by running:
+# 
+# docker run -it -v .:C:\OpenRA openra ./make.ps1 a
 
 FROM mcr.microsoft.com/windows/servercore:ltsc2022
 
