@@ -41,6 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 		int nextScanTime;
 		readonly IMoveInfo moveInfo;
 		readonly bool isAircraft;
+		readonly bool ignoresDisguise;
 		readonly IMove move;
 
 		public AutoCrusher(Actor self, AutoCrusherInfo info)
@@ -50,6 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 			moveInfo = self.Info.TraitInfo<IMoveInfo>();
 			nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
 			isAircraft = move is Aircraft;
+			ignoresDisguise = self.Info.HasTraitInfo<IgnoresDisguiseInfo>();
 		}
 
 		void INotifyIdle.TickIdle(Actor self)
@@ -57,12 +59,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (nextScanTime-- > 0)
 				return;
 
-			// TODO: Add a proper Cloak and Disguise detection here.
 			var crushableActor = self.World.FindActorsInCircle(self.CenterPosition, Info.ScanRadius)
-				.Where(a => a != self && !a.IsDead && a.IsInWorld &&
-					self.Location != a.Location && a.IsAtGroundLevel() &&
-					Info.TargetRelationships.HasRelationship(self.Owner.RelationshipWith(a.Owner)) &&
-					a.TraitsImplementing<ICrushable>().Any(c => c.CrushableBy(a, self, Info.CrushClasses)))
+				.Where(a => IsValidCrushTarget(self, a))
 				.ClosestToWithPathFrom(self);
 
 			if (crushableActor == null)
@@ -74,6 +72,28 @@ namespace OpenRA.Mods.Common.Traits
 				self.QueueActivity(move.MoveTo(crushableActor.Location, targetLineColor: moveInfo.GetTargetLineColor()));
 
 			nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
+		}
+
+		bool IsValidCrushTarget(Actor self, Actor target)
+		{
+			if (target == self || target.IsDead || !target.IsInWorld || self.Location != target.Location || !target.IsAtGroundLevel())
+				return false;
+
+			var targetRelationship = self.Owner.RelationshipWith(target.Owner);
+			var effectiveOwner = target.EffectiveOwner?.Owner;
+			if (effectiveOwner != null && !ignoresDisguise && targetRelationship != PlayerRelationship.Ally)
+			{
+				// Check effective relationships if the target is disguised and we cannot see through the disguise. (By ignoring it or by being an ally.)
+				if (!Info.TargetRelationships.HasRelationship(self.Owner.RelationshipWith(effectiveOwner)))
+					return false;
+			}
+			else if (!Info.TargetRelationships.HasRelationship(targetRelationship))
+				return false;
+
+			if (target.TraitsImplementing<Cloak>().Any(c => !c.IsTraitDisabled && !c.IsVisible(target, self.Owner)))
+				return false;
+
+			return target.TraitsImplementing<ICrushable>().Any(c => c.CrushableBy(target, self, Info.CrushClasses));
 		}
 	}
 }
