@@ -18,7 +18,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Allow deploying on specified charge to grant a condition for a specified duration.")]
-	public class GrantConditionOnDeployWithChargeInfo : PausableConditionalTraitInfo, Requires<IMoveInfo>, IRulesetLoaded
+	public class GrantConditionOnDeployWithChargeInfo : PausableConditionalTraitInfo, IRulesetLoaded
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
