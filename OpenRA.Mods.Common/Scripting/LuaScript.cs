@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Scripting
 {
 	[TraitLocation(SystemActors.World)]
 	[Desc("Part of the new Lua API.")]
-	public class LuaScriptInfo : TraitInfo, Requires<SpawnMapActorsInfo>
+	public class LuaScriptInfo : TraitInfo, Requires<SpawnMapActorsInfo>, NotBefore<SpawnStartingUnitsInfo>
 	{
 		[Desc("File names with location relative to the map.")]
 		public readonly HashSet<string> Scripts = new();
