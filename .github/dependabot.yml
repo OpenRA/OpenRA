@@ -6,3 +6,159 @@ updates:
     schedule:
       day: saturday
       interval: weekly
+
+  # Directory.Build.props
+  - package-ecosystem: nuget
+    directory: /
+    open-pull-requests-limit: 5
+    schedule:
+      interval: daily
+    groups:
+      directory.build.props-development-dependencies:
+        dependency-type: development
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+      directory.build.props-production-dependencies:
+        dependency-type: production
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
+
+  # OpenRA.Game
+  - package-ecosystem: nuget
+    directory: /OpenRA.Game
+    open-pull-requests-limit: 5
+    schedule:
+      interval: daily
+    groups:
+      open_ra.game-development-dependencies:
+        dependency-type: development
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+      open_ra.game-production-dependencies:
+        dependency-type: production
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
+
+    # OpenRA.Mods.Common
+  - package-ecosystem: nuget
+    directory: /OpenRA.Mods.Common
+    open-pull-requests-limit: 5
+    schedule:
+      interval: daily
+    groups:
+      open_ra.mods.common-development-dependencies:
+        dependency-type: development
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+      open_ra.mods.common-shellroduction-dependencies:
+        dependency-type: production
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
+
+    # OpenRA.Platforms.Default
+  - package-ecosystem: nuget
+    directory: /OpenRA.Platforms.Default
+    open-pull-requests-limit: 5
+    schedule:
+      interval: daily
+    groups:
+      open_ra.platforms.default-development-dependencies:
+        dependency-type: development
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+      open_ra.platforms.default-production-dependencies:
+        dependency-type: production
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
+
+    # OpenRA.Test
+  - package-ecosystem: nuget
+    directory: /OpenRA.Test
+    open-pull-requests-limit: 5
+    schedule:
+      interval: daily
+    groups:
+      open_ra.test-development-dependencies:
+        dependency-type: development
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+      open_ra.test-production-dependencies:
+        dependency-type: production
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
+
+    # OpenRA.WindowsLauncher
+  - package-ecosystem: nuget
+    directory: /OpenRA.WindowsLauncher
+    open-pull-requests-limit: 5
+    schedule:
+      interval: daily
+    groups:
+      open_ra.windows_launcher-development-dependencies:
+        dependency-type: development
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+      open_ra.windows_launcher-production-dependencies:
+        dependency-type: production
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - version-update:semver-major
