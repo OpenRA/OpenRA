@@ -69,8 +69,10 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		static void WriteDiagnosticsDisabling()
 		{
 			Console.WriteLine("--- This file only lists function \"signatures\", causing Lua Diagnostics errors: \"Annotations specify that a return value is required here.\"");
-			Console.WriteLine("--- Disable that specific error for the entire file.");
+			Console.WriteLine("--- and Lua Diagnostics warnings \"Unused local\" for the functions' parameters.");
+			Console.WriteLine("--- Disable those specific errors for the entire file.");
 			Console.WriteLine("---@diagnostic disable: missing-return");
+			Console.WriteLine("---@diagnostic disable: unused-local");
 		}
 
 		static void WriteManual()
