@@ -149,7 +149,13 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						.Distinct());
 
 				if (!string.IsNullOrEmpty(parameterString))
+				{
+					// OwnerInit is special as it is the only "required" init. All others are optional.
+					if (init.Name != nameof(OwnerInit))
+						parameterString += '?';
+
 					Console.WriteLine($"---@field {name} {parameterString}");
+				}
 			}
 
 			usedEnums = localEnums.Distinct();
