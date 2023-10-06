@@ -14,24 +14,12 @@ updates:
     schedule:
       interval: daily
     groups:
-      directory.build.props-development-dependencies:
-        dependency-type: development
+      root-nuget-dependencies:
         patterns:
           - "*"
         update-types:
           - minor
           - patch
-      directory.build.props-production-dependencies:
-        dependency-type: production
-        patterns:
-          - "*"
-        update-types:
-          - minor
-          - patch
-    ignore:
-      - dependency-name: "*"
-        update-types:
-          - version-update:semver-major
 
   # OpenRA.Game
   - package-ecosystem: nuget
@@ -40,24 +28,12 @@ updates:
     schedule:
       interval: daily
     groups:
-      open_ra.game-development-dependencies:
-        dependency-type: development
+      open_ra.game-nuget-dependencies:
         patterns:
           - "*"
         update-types:
           - minor
           - patch
-      open_ra.game-production-dependencies:
-        dependency-type: production
-        patterns:
-          - "*"
-        update-types:
-          - minor
-          - patch
-    ignore:
-      - dependency-name: "*"
-        update-types:
-          - version-update:semver-major
 
     # OpenRA.Mods.Common
   - package-ecosystem: nuget
@@ -66,24 +42,12 @@ updates:
     schedule:
       interval: daily
     groups:
-      open_ra.mods.common-development-dependencies:
-        dependency-type: development
+      open_ra.mods.common-nuget-dependencies:
         patterns:
           - "*"
         update-types:
           - minor
           - patch
-      open_ra.mods.common-shellroduction-dependencies:
-        dependency-type: production
-        patterns:
-          - "*"
-        update-types:
-          - minor
-          - patch
-    ignore:
-      - dependency-name: "*"
-        update-types:
-          - version-update:semver-major
 
     # OpenRA.Platforms.Default
   - package-ecosystem: nuget
@@ -92,24 +56,12 @@ updates:
     schedule:
       interval: daily
     groups:
-      open_ra.platforms.default-development-dependencies:
-        dependency-type: development
+      open_ra.platforms.default-nuget-dependencies:
         patterns:
           - "*"
         update-types:
           - minor
           - patch
-      open_ra.platforms.default-production-dependencies:
-        dependency-type: production
-        patterns:
-          - "*"
-        update-types:
-          - minor
-          - patch
-    ignore:
-      - dependency-name: "*"
-        update-types:
-          - version-update:semver-major
 
     # OpenRA.Test
   - package-ecosystem: nuget
@@ -118,24 +70,12 @@ updates:
     schedule:
       interval: daily
     groups:
-      open_ra.test-development-dependencies:
-        dependency-type: development
+      open_ra.test-nuget-dependencies:
         patterns:
           - "*"
         update-types:
           - minor
           - patch
-      open_ra.test-production-dependencies:
-        dependency-type: production
-        patterns:
-          - "*"
-        update-types:
-          - minor
-          - patch
-    ignore:
-      - dependency-name: "*"
-        update-types:
-          - version-update:semver-major
 
     # OpenRA.WindowsLauncher
   - package-ecosystem: nuget
@@ -144,21 +84,9 @@ updates:
     schedule:
       interval: daily
     groups:
-      open_ra.windows_launcher-development-dependencies:
-        dependency-type: development
+      open_ra.windows_launcher-nuget-dependencies:
         patterns:
           - "*"
         update-types:
           - minor
           - patch
-      open_ra.windows_launcher-production-dependencies:
-        dependency-type: production
-        patterns:
-          - "*"
-        update-types:
-          - minor
-          - patch
-    ignore:
-      - dependency-name: "*"
-        update-types:
-          - version-update:semver-major
