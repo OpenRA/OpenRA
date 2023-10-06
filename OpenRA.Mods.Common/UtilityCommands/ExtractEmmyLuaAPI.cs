@@ -58,7 +58,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine();
 			var globalTables = utility.ModData.ObjectCreator.GetTypesImplementing<ScriptGlobal>().OrderBy(t => t.Name);
 			WriteGlobals(globalTables);
-			Console.WriteLine();
 
 			var actorProperties = utility.ModData.ObjectCreator.GetTypesImplementing<ScriptActorProperties>();
 			WriteScriptProperties(typeof(Actor), actorProperties);
@@ -245,43 +244,60 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		static void WriteScriptProperties(Type type, IEnumerable<Type> implementingTypes)
 		{
 			var className = type.Name.ToLowerInvariant();
-			var tableName = $"__{type.Name.ToLowerInvariant()}";
+			var tableName = $"__{className}";
 			Console.WriteLine($"---@class {className}");
-			Console.WriteLine("local " + tableName + " = {");
 
-			var properties = implementingTypes.SelectMany(t =>
+			var members = implementingTypes.SelectMany(t =>
 			{
 				var requiredTraits = ScriptMemberWrapper.RequiredTraitNames(t);
 				return ScriptMemberWrapper.WrappableMembers(t).Select(memberInfo => (memberInfo, requiredTraits));
 			});
 
-			var duplicateProperties = properties
+			var duplicateMembers = members
 				.GroupBy(x => x.memberInfo.Name)
 				.Where(x => x.Count() > 1)
 				.Select(x => x.Key)
 				.ToHashSet();
 
-			foreach (var (memberInfo, requiredTraits) in properties)
+			foreach (var (memberInfo, requiredTraits) in members)
 			{
-				Console.WriteLine();
-
-				var isActivity = Utility.HasAttribute<ScriptActorPropertyActivityAttribute>(memberInfo);
-
-				if (Utility.HasAttribute<DescAttribute>(memberInfo))
+				// Properties are supposed to be defined as @fields on the class.
+				// They can be defined as keys inside the tables, but then are treated as readonly by the Lua extension.
+				if (memberInfo is PropertyInfo propertyInfo && propertyInfo.CanWrite)
 				{
-					var lines = Utility.GetCustomAttributes<DescAttribute>(memberInfo, true).First().Lines;
-					foreach (var line in lines)
-						Console.WriteLine($"    --- {line}");
+					WriteMemberDescription(memberInfo, requiredTraits, 0);
+
+					if (duplicateMembers.Contains(memberInfo.Name))
+						Console.WriteLine("    ---@diagnostic disable-next-line: duplicate-index");
+
+					Console.WriteLine($"---@field {propertyInfo.Name} {propertyInfo.PropertyType.EmmyLuaString()}");
+				}
+			}
+
+			Console.WriteLine("local " + tableName + " = {");
+
+			foreach (var (memberInfo, requiredTraits) in members)
+			{
+				// Properties are supposed to be defined as @fields on the class,
+				// but if they are defined as keys inside the table, they are treated as readonly by the Lua extension.
+				if (memberInfo is PropertyInfo propertyInfo && !propertyInfo.CanWrite)
+				{
+					Console.WriteLine();
+					WriteMemberDescription(memberInfo, requiredTraits, 1);
+
+					if (duplicateMembers.Contains(memberInfo.Name))
+						Console.WriteLine("    ---@diagnostic disable-next-line: duplicate-index");
+
+					Console.WriteLine($"    ---@type {propertyInfo.PropertyType.EmmyLuaString()}");
+					Console.WriteLine($"    {propertyInfo.Name} = nil;");
 				}
 
-				if (isActivity)
-					Console.WriteLine("    --- *Queued Activity*");
-
-				if (requiredTraits.Length != 0)
-					Console.WriteLine($"    --- **Requires {(requiredTraits.Length == 1 ? "Trait" : "Traits")}:** {requiredTraits.Select(GetDocumentationUrl).JoinWith(", ")}");
-
+				// Functions are defined as keys inside the table.
 				if (memberInfo is MethodInfo methodInfo)
 				{
+					Console.WriteLine();
+					WriteMemberDescription(memberInfo, requiredTraits, 1);
+
 					var attributes = methodInfo.GetCustomAttributes(false);
 					foreach (var obsolete in attributes.OfType<ObsoleteAttribute>())
 						Console.WriteLine($"    ---@deprecated {obsolete.Message}");
@@ -296,25 +312,33 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (returnType != "Void")
 						Console.WriteLine($"    ---@return {returnType}");
 
-					if (duplicateProperties.Contains(methodInfo.Name))
+					if (duplicateMembers.Contains(methodInfo.Name))
 						Console.WriteLine("    ---@diagnostic disable-next-line: duplicate-index");
 
 					Console.WriteLine($"    {methodInfo.Name} = function({parameterString}) end;");
-				}
-
-				if (memberInfo is PropertyInfo propertyInfo)
-				{
-					Console.WriteLine($"    ---@type {propertyInfo.PropertyType.EmmyLuaString()}");
-
-					if (duplicateProperties.Contains(propertyInfo.Name))
-						Console.WriteLine("    ---@diagnostic disable-next-line: duplicate-index");
-
-					Console.WriteLine("    " + propertyInfo.Name + " = nil;");
 				}
 			}
 
 			Console.WriteLine("}");
 			Console.WriteLine();
+
+			static void WriteMemberDescription(MemberInfo memberInfo, string[] requiredTraits, int indentation)
+			{
+				var isActivity = Utility.HasAttribute<ScriptActorPropertyActivityAttribute>(memberInfo);
+
+				if (Utility.HasAttribute<DescAttribute>(memberInfo))
+				{
+					var lines = Utility.GetCustomAttributes<DescAttribute>(memberInfo, true).First().Lines;
+					foreach (var line in lines)
+						Console.WriteLine($"{new string(' ', indentation * 4)}--- {line}");
+				}
+
+				if (isActivity)
+					Console.WriteLine($"{new string(' ', indentation * 4)}--- *Queued Activity*");
+
+				if (requiredTraits.Length != 0)
+					Console.WriteLine($"{new string(' ', indentation * 4)}--- **Requires {(requiredTraits.Length == 1 ? "Trait" : "Traits")}:** {requiredTraits.Select(GetDocumentationUrl).JoinWith(", ")}");
+			}
 		}
 
 		static string GetDocumentationUrl(string trait)
