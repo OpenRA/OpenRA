@@ -1,0 +1,19 @@
+name: Dependabot validate
+
+on:
+  pull_request:
+    paths:
+      - '.github/dependabot.yml'
+      - '.github/workflows/dependabot-validate.yml'
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: marocchino/validate-dependabot@v2
+        id: validate
+      - uses: marocchino/sticky-pull-request-comment@v2
+        if: always()
+        with:
+          header: validate-dependabot
+          message: ${{ steps.validate.outputs.markdown }}
