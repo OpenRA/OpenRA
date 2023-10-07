@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Detonate defined warheads at the current location at a set interval.")]
-	public class FireWarheadsInfo : PausableConditionalTraitInfo, Requires<IMoveInfo>, IRulesetLoaded
+	public class FireWarheadsInfo : PausableConditionalTraitInfo, Requires<IOccupySpaceInfo>, IRulesetLoaded
 	{
 		[WeaponReference]
 		[FieldLoader.Require]
