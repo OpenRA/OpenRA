@@ -1,0 +1,32 @@
+{
+	"name": "C# (.NET)",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"EditorConfig.EditorConfig",
+				"foxundermoon.shell-format",
+				"GitHub.vscode-github-actions",
+				"idleberg.nsis",
+				"macabeus.vscode-fluent",
+				"ms-dotnettools.csdevkit",
+				"ms-dotnettools.csharp",
+				"ms-python.python",
+				"ms-vscode.cpptools-extension-pack",
+				"ms-vscode.makefile-tools",
+				"ms-vscode.powershell",
+				"nico-castell.linux-desktop-file",
+				"openra.oraide-vscode",
+				"openra.vscode-openra-lua",
+				"tamasfe.even-better-toml",
+				"timonwong.shellcheck"
+			]
+		}
+	},
+	"features": {},
+	"postAttachCommand": {
+		"safe-dir": "git config --global --add safe.directory ${containerWorkspaceFolder}"
+	}
+}
