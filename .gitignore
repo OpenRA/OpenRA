@@ -54,3 +54,6 @@ update.log
 
 # IntelliJ files
 .idea
+
+# Default output directory
+build/

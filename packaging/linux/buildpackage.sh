@@ -8,18 +8,20 @@ command -v curl >/dev/null 2>&1 || command -v wget > /dev/null 2>&1 || { echo >&
 
 DEPENDENCIES_TAG="20201222"
 
-if [ $# -eq "0" ]; then
-	echo "Usage: $(basename "$0") version [outputdir]"
-	exit 1
-fi
-
 # Set the working dir to the location of this script
 HERE=$(dirname "$0")
 cd "${HERE}"
 . ../functions.sh
 
-TAG="$1"
-OUTPUTDIR="$2"
+TAG="${1:-HEAD}"
+
+if [ -z ${2:-} ]; then
+OUTPUTDIR=$(pwd)/../../build/linux
+mkdir -p $OUTPUTDIR
+else
+OUTPUTDIR="${2}"
+fi
+
 SRCDIR="$(pwd)/../.."
 ARTWORK_DIR="$(pwd)/../artwork/"
 
@@ -112,10 +114,10 @@ build_appimage() {
 
 	# Embed update metadata if (and only if) compiled on GitHub Actions
 	if [ -n "${GITHUB_REPOSITORY}" ]; then
-		ARCH=x86_64 ./appimagetool-x86_64.AppImage --no-appstream -u "zsync|https://master.openra.net/appimagecheck.zsync?mod=${MOD_ID}&channel=${UPDATE_CHANNEL}" "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
+		ARCH=x86_64 ./appimagetool-x86_64.AppImage --appimage-extract-and-run --no-appstream -u "zsync|https://master.openra.net/appimagecheck.zsync?mod=${MOD_ID}&channel=${UPDATE_CHANNEL}" "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
 		zsyncmake -u "https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}/${APPIMAGE}" -o "${OUTPUTDIR}/${APPIMAGE}.zsync" "${OUTPUTDIR}/${APPIMAGE}"
 	else
-		ARCH=x86_64 ./appimagetool-x86_64.AppImage --no-appstream "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
+		ARCH=x86_64 ./appimagetool-x86_64.AppImage --appimage-extract-and-run --no-appstream "${APPDIR}" "${OUTPUTDIR}/${APPIMAGE}"
 	fi
 
 	rm -rf "${APPDIR}"
