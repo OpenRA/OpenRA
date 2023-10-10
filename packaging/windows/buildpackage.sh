@@ -9,18 +9,20 @@ command -v convert >/dev/null 2>&1 || { echo >&2 "Windows packaging requires Ima
 command -v python3 >/dev/null 2>&1 || { echo >&2 "Windows packaging requires python 3."; exit 1; }
 command -v wine64 >/dev/null 2>&1 || { echo >&2 "Windows packaging requires wine64."; exit 1; }
 
-if [ $# -ne "2" ]; then
-	echo "Usage: $(basename "$0") tag outputdir"
-	exit 1
-fi
-
 # Set the working dir to the location of this script
 HERE=$(dirname "$0")
 cd "${HERE}"
 . ../functions.sh
 
-TAG="$1"
-OUTPUTDIR="$2"
+TAG="${1:-devtest-19700101}"
+
+if [ -z ${2:-} ]; then
+OUTPUTDIR=$(pwd)/../../build/windows
+mkdir -p $OUTPUTDIR
+else
+OUTPUTDIR="${2}"
+fi
+
 SRCDIR="$(pwd)/../.."
 BUILTDIR="$(pwd)/build"
 ARTWORK_DIR="$(pwd)/../artwork/"

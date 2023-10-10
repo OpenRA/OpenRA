@@ -13,7 +13,7 @@ HERE=$(dirname "$0")
 cd "${HERE}"
 . ../functions.sh
 
-TAG="${1:-HEAD}"
+TAG="${1:-devtest-19700101}"
 
 if [ -z ${2:-} ]; then
 OUTPUTDIR=$(pwd)/../../build/linux
