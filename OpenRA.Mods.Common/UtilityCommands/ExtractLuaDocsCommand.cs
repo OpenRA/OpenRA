@@ -74,10 +74,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				Console.WriteLine();
 				Console.WriteLine("| Function | Description |");
 				Console.WriteLine("|---------:|-------------|");
+
 				foreach (var m in members.OrderBy(m => m.Name))
 				{
+					var memberString = m.LuaDocString();
 					var desc = Utility.HasAttribute<DescAttribute>(m) ? Utility.GetCustomAttributes<DescAttribute>(m, true).First().Lines.JoinWith("<br />") : "";
-					Console.WriteLine($"| **{m.LuaDocString()}** | {desc} |");
+					if (Utility.HasAttribute<ObsoleteAttribute>(m))
+					{
+						memberString = $"<s>{memberString}</s>";
+						desc += $"<br />**Deprecated: {Utility.GetCustomAttributes<ObsoleteAttribute>(m, true).First().Message}**";
+					}
+
+					Console.WriteLine($"| **{memberString}** | {desc} |");
 				}
 			}
 
@@ -105,12 +113,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				foreach (var property in kv.OrderBy(p => p.mi.Name))
 				{
 					var mi = property.mi;
+					var memberString = mi.LuaDocString();
 					var required = property.required;
 					var hasDesc = Utility.HasAttribute<DescAttribute>(mi);
 					var hasRequires = required.Length > 0;
 					var isActivity = Utility.HasAttribute<ScriptActorPropertyActivityAttribute>(mi);
+					var isDeprecated = Utility.HasAttribute<ObsoleteAttribute>(mi);
 
-					Console.Write($"| **{mi.LuaDocString()}**");
+					if (isDeprecated)
+						Console.Write($"| **<s>{memberString}</s>**");
+					else
+						Console.Write($"| **{memberString}**");
 
 					if (isActivity)
 						Console.Write("<br />*Queued Activity*");
@@ -125,6 +138,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					if (hasRequires)
 						Console.Write($"**Requires {(required.Length == 1 ? "Trait" : "Traits")}:** {required.JoinWith(", ")}");
+
+					if (isDeprecated)
+						Console.Write($"**Deprecated: {Utility.GetCustomAttributes<ObsoleteAttribute>(mi, true).First().Message}**");
 
 					Console.WriteLine(" |");
 				}
@@ -154,12 +170,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				foreach (var property in kv.OrderBy(p => p.mi.Name))
 				{
 					var mi = property.mi;
+					var memberString = mi.LuaDocString();
 					var required = property.required;
 					var hasDesc = Utility.HasAttribute<DescAttribute>(mi);
 					var hasRequires = required.Length > 0;
 					var isActivity = Utility.HasAttribute<ScriptActorPropertyActivityAttribute>(mi);
+					var isDeprecated = Utility.HasAttribute<ObsoleteAttribute>(mi);
 
-					Console.Write($"| **{mi.LuaDocString()}**");
+					if (isDeprecated)
+						Console.Write($"| **<s>{memberString}</s>**");
+					else
+						Console.Write($"| **{memberString}**");
 
 					if (isActivity)
 						Console.Write("<br />*Queued Activity*");
@@ -174,6 +195,9 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					if (hasRequires)
 						Console.Write($"**Requires {(required.Length == 1 ? "Trait" : "Traits")}:** {required.JoinWith(", ")}");
+
+					if (isDeprecated)
+						Console.Write($"**Deprecated: {Utility.GetCustomAttributes<ObsoleteAttribute>(mi, true).First().Message}**");
 
 					Console.WriteLine(" |");
 				}
