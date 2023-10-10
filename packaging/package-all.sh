@@ -3,13 +3,8 @@
 
 set -o errexit -o pipefail || exit $?
 
-if [ $# -ne "2" ]; then
-	echo "Usage: $(basename "$0") version outputdir."
-	exit 1
-fi
-
-export GIT_TAG="$1"
-export BUILD_OUTPUT_DIR="$2"
+export GIT_TAG="${1:-}"
+export BUILD_OUTPUT_DIR="${2:-}"
 
 # Set the working dir to the location of this script
 HERE=$(dirname "$0")

@@ -3,17 +3,19 @@
 
 set -o errexit -o pipefail || exit $?
 
-if [ $# -ne "2" ]; then
-	echo "Usage: $(basename "$0") tag outputdir"
-	exit 1
-fi
-
 # Set the working dir to the location of this script
 HERE=$(dirname "$0")
 cd "${HERE}"
 
-TAG="$1"
-OUTPUTDIR="$2"
+TAG="${1:-devtest-19700101}"
+
+if [ -z ${2:-} ]; then
+OUTPUTDIR=$(pwd)/../../build/source
+mkdir -p $OUTPUTDIR
+else
+OUTPUTDIR="${2}"
+fi
+
 SRCDIR="$(pwd)/../.."
 
 pushd "${SRCDIR}" > /dev/null
@@ -25,5 +27,7 @@ make version VERSION="${TAG}"
 rm "${OUTPUTDIR}/OpenRA-${TAG}-source.tar" || :
 git ls-tree HEAD --name-only -r -z | xargs -0 tar vrf "${OUTPUTDIR}/OpenRA-${TAG}-source.tar"
 bzip2 "${OUTPUTDIR}/OpenRA-${TAG}-source.tar"
+
+make version VERSION='{DEV_VERSION}'
 
 popd > /dev/null
