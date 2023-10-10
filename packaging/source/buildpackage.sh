@@ -26,7 +26,7 @@ make version VERSION="${TAG}"
 # Use the amend flag (r) to prevent each call erasing the output from earlier calls.
 rm "${OUTPUTDIR}/OpenRA-${TAG}-source.tar" || :
 git ls-tree HEAD --name-only -r -z | xargs -0 tar vrf "${OUTPUTDIR}/OpenRA-${TAG}-source.tar"
-bzip2 "${OUTPUTDIR}/OpenRA-${TAG}-source.tar"
+bzip2 -f "${OUTPUTDIR}/OpenRA-${TAG}-source.tar"
 
 make version VERSION='{DEV_VERSION}'
 

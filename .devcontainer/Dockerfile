@@ -26,13 +26,20 @@ RUN apt-get update && sudo apt-get install -y --no-install-recommends \
   curl/bullseye-backports \
   wine64/bullseye-backports
 
-# Install AppImageTool.
-RUN curl -SLO https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage \
-  && install appimagetool-x86_64.AppImage /usr/local/bin \
-  && rm appimagetool-x86_64.AppImage
-
-
-# Download rcdedit.
+# Add wine to $PATH.
 USER vscode
-RUN curl -SLo /home/vscode/rcedit-x64.exe https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x64.exe
 ENV PATH=/usr/lib/wine/:$PATH
+
+# The following obviate the need to download binaries during the build process.
+# # Install AppImageTool.
+# RUN curl -SLO https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage \
+#   && install appimagetool-x86_64.AppImage $HOME/.local/bin/ \
+#   && rm appimagetool-x86_64.AppImage
+
+# # Download rcdedit.
+# RUN curl -SLo /home/vscode/rcedit-x64.exe https://github.com/electron/rcedit/releases/download/v1.1.1/rcedit-x64.exe
+
+# Add an entrypoint to permit package-all to be run directly.
+# Build with `docker build -t builder .devcontainer`.
+# Run with `docker run -v $(pwd):/workspaces/OpenRA builder`.
+ENTRYPOINT [ "/workspaces/OpenRA/packaging/package-all.sh" ]
