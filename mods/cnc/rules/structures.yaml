@@ -464,6 +464,7 @@ AFLD:
 	ProductionAirdrop:
 		Produces: Vehicle.Nod
 		ActorType: c17
+		LandOffset: -1024,0,0
 		ReadyTextNotification: notification-reinforcements-have-arrived
 	WithBuildingBib:
 	WithIdleOverlay@DISH:
