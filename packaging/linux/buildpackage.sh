@@ -53,7 +53,7 @@ else
 	wget -cq -O $HOME/appimagetool-x86_64.AppImage https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
 fi
 
-chmod a+x appimagetool-x86_64.AppImage
+chmod a+x $HOME/appimagetool-x86_64.AppImage
 
 echo "Building AppImages"
 
