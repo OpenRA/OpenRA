@@ -45,6 +45,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Tick that aircraft should wait after producing.")]
 		public readonly int WaitTickAfterProduce = 0;
 
+		[Desc("Offset the aircraft used for landing.")]
+		public readonly WVec LandOffset = WVec.Zero;
+
 		public override object Create(ActorInitializer init) { return new ProductionAirdrop(init, this); }
 	}
 
@@ -109,7 +112,7 @@ namespace OpenRA.Mods.Common.Traits
 				});
 
 				var exitCell = self.Location + exit.ExitCell;
-				actor.QueueActivity(new Land(actor, Target.FromActor(self), WDist.Zero, WVec.Zero, info.Facing, clearCells: new CPos[1] { exitCell }));
+				actor.QueueActivity(new Land(actor, Target.FromActor(self), WDist.Zero, info.LandOffset, info.Facing, clearCells: new CPos[1] { exitCell }));
 				if (info.WaitTickBeforeProduce > 0)
 					actor.QueueActivity(new Wait(info.WaitTickBeforeProduce));
 				actor.QueueActivity(new CallFunc(() =>
