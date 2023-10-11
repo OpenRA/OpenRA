@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Detonate defined warheads at the current location at a set interval.")]
-	public class FireWarheadsInfo : PausableConditionalTraitInfo, Requires<IMoveInfo>, IRulesetLoaded
+	public class FireWarheadsInfo : PausableConditionalTraitInfo, Requires<IOccupySpaceInfo>, IRulesetLoaded
 	{
 		[WeaponReference]
 		[FieldLoader.Require]
@@ -72,11 +72,8 @@ namespace OpenRA.Mods.Common.Traits
 				foreach (var wep in Info.WeaponInfos)
 				{
 					wep.Impact(Target.FromPos(self.CenterPosition), self);
-					self.World.AddFrameEndTask(world =>
-					{
-						if (wep.Report != null && wep.Report.Length > 0)
-							Game.Sound.Play(SoundType.World, wep.Report, world, self.CenterPosition);
-					});
+					if (wep.Report != null && wep.Report.Length > 0)
+						Game.Sound.Play(SoundType.World, wep.Report, self.World, self.CenterPosition);
 				}
 			}
 		}
