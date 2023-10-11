@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public enum ExplosionType { Footprint, CenterPosition }
 
-	public enum DamageSource { Self, Killer }
+	public enum DamageSource { Self, Parent, Killer }
 
 	[Desc("This actor explodes when killed.")]
 	public class ExplodesInfo : ConditionalTraitInfo, Requires<IHealthInfo>
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BitSet<DamageType> DeathTypes = default;
 
 		[Desc("Who is counted as source of damage for explosion.",
-			"Possible values are Self and Killer.")]
+			"Possible values are Self, Parent and Killer.")]
 		public readonly DamageSource DamageSource = DamageSource.Self;
 
 		[Desc("Possible values are CenterPosition (explosion at the actors' center) and ",
@@ -116,7 +116,22 @@ namespace OpenRA.Mods.Common.Traits
 			if (weapon == null)
 				return;
 
-			var source = Info.DamageSource == DamageSource.Self ? self : e.Attacker;
+			Actor source;
+			switch (Info.DamageSource)
+			{
+				case DamageSource.Parent:
+					source = self.TraitOrDefault<HasParent>()?.Parent;
+					if (source == null || source.IsDead)
+						source = self;
+					break;
+				case DamageSource.Killer:
+					source = e.Attacker;
+					break;
+				default:
+					source = self;
+					break;
+			}
+
 			if (weapon.Report != null && weapon.Report.Length > 0)
 				Game.Sound.Play(SoundType.World, weapon.Report, self.World, self.CenterPosition);
 
@@ -157,7 +172,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Cast to long to avoid overflow when multiplying by the health
-			var source = Info.DamageSource == DamageSource.Self ? self : e.Attacker;
+			var source = Info.DamageSource == DamageSource.Killer ? e.Attacker : self;
 			if (health.HP * 100L < Info.DamageThreshold * (long)health.MaxHP)
 				self.World.AddFrameEndTask(w => self.Kill(source, e.Damage.DamageTypes));
 		}
