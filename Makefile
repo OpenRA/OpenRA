@@ -105,7 +105,7 @@ endif
 # dotnet clean and msbuild -t:Clean leave files that cause problems when switching between mono/dotnet
 # Deleting the intermediate / output directories ensures the build directory is actually clean
 clean:
-	@-$(RM_RF) ./bin ./*/obj
+	@-$(RM_RF) ./bin ./*/obj ./build
 	@-$(RM_F) IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
 
 check:
