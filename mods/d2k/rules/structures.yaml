@@ -659,6 +659,9 @@ starport:
 		SpawnOffset: 0,-480,0
 		ExitCell: 0,2
 	ProductionAirdrop:
+		WaitTickBeforeProduce: 10
+		WaitTickAfterProduce: 15
+		LandOffset: 0, -256, 0
 		Produces: Starport
 		ActorType: frigate
 		ReadyTextNotification: notification-reinforcements-have-arrived
