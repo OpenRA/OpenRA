@@ -382,6 +382,8 @@ World:
 	LoadWidgetAtGameStart:
 		ShellmapRoot: MAINMENU_PRERELEASE_NOTIFICATION
 	ScriptTriggers:
+	LuaScript:
+		Scripts: deploytest.lua
 	CellTriggerOverlay:
 	TimeLimitManager:
 		TimeLimitDisplayOrder: 2
