@@ -7,6 +7,7 @@ MINV:
 			russia: minp
 			ukraine: minp
 	Explodes:
+		DamageSource: Parent
 		Weapon: ATMine
 
 # Only kept for backwards-compatibility with existing and imported maps, use MINV instead

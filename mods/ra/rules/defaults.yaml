@@ -1214,6 +1214,7 @@
 		Bounds: 1024, 1024
 	WithSpriteBody:
 	HiddenUnderFog:
+	HasParent:
 	Mine:
 		CrushClasses: mine
 		DetonateClasses: mine
