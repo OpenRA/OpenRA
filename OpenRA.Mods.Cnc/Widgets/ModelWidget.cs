@@ -95,20 +95,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 			return new ModelWidget(this);
 		}
 
-		IModel cachedVoxel;
 		string cachedPalette;
 		string cachedPlayerPalette;
 		string cachedNormalsPalette;
 		string cachedShadowPalette;
-		float cachedScale;
-		WRot cachedRotation;
-		float[] cachedLightAmbientColor = new float[] { 0, 0, 0 };
-		float[] cachedLightDiffuseColor = new float[] { 0, 0, 0 };
 		int cachedLightPitch;
 		int cachedLightYaw;
 		WRot cachedLightSource;
 		WAngle cachedCameraAngle;
 		PaletteReference paletteReference;
+		WRot cachedCameraRotation;
 		PaletteReference paletteReferencePlayer;
 		PaletteReference paletteReferenceNormals;
 		PaletteReference paletteReferenceShadow;
@@ -124,8 +120,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public override void PrepareRenderables()
 		{
 			var voxel = GetVoxel();
+			if (voxel == null)
+				return;
+
 			var palette = GetPalette();
 			var playerPalette = GetPlayerPalette();
+			if (string.IsNullOrEmpty(palette) && string.IsNullOrEmpty(playerPalette))
+				return;
+
 			var normalsPalette = GetNormalsPalette();
 			var shadowPalette = GetShadowPalette();
 			var scale = GetScale();
@@ -136,20 +138,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var lightYaw = GetLightYaw();
 			var cameraAngle = GetCameraAngle();
 
-			if (voxel == null || palette == null)
-				return;
-
-			if (voxel != cachedVoxel)
-				cachedVoxel = voxel;
-
 			if (palette != cachedPalette)
 			{
-				if (string.IsNullOrEmpty(palette) && string.IsNullOrEmpty(playerPalette))
-					return;
-
-				var paletteName = string.IsNullOrEmpty(palette) ? playerPalette : palette;
-				paletteReference = WorldRenderer.Palette(paletteName);
-				cachedPalette = paletteName;
+				paletteReference = WorldRenderer.Palette(playerPalette);
+				cachedPalette = palette;
 			}
 
 			if (playerPalette != cachedPlayerPalette)
@@ -170,12 +162,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 				cachedShadowPalette = shadowPalette;
 			}
 
-			if (scale != cachedScale)
-				cachedScale = scale;
-
-			if (rotation != cachedRotation)
-				cachedRotation = rotation;
-
 			if (lightPitch != cachedLightPitch || lightYaw != cachedLightYaw)
 			{
 				cachedLightPitch = lightPitch;
@@ -183,19 +169,16 @@ namespace OpenRA.Mods.Cnc.Widgets
 				cachedLightSource = new WRot(WAngle.Zero, new WAngle(256 - lightPitch), new WAngle(lightYaw));
 			}
 
-			if (cachedLightAmbientColor[0] != lightAmbientColor[0] || cachedLightAmbientColor[1] != lightAmbientColor[1] || cachedLightAmbientColor[2] != lightAmbientColor[2])
-				cachedLightAmbientColor = lightAmbientColor;
-
-			if (cachedLightDiffuseColor[0] != lightDiffuseColor[0] || cachedLightDiffuseColor[1] != lightDiffuseColor[1] || cachedLightDiffuseColor[2] != lightDiffuseColor[2])
-				cachedLightDiffuseColor = lightDiffuseColor;
-
 			if (cameraAngle != cachedCameraAngle)
+			{
 				cachedCameraAngle = cameraAngle;
+				cachedCameraRotation = new WRot(WAngle.Zero, cameraAngle - new WAngle(256), new WAngle(256));
+			}
 
 			var animation = new ModelAnimation(
-				cachedVoxel,
+				voxel,
 				() => WVec.Zero,
-				() => cachedRotation,
+				() => rotation,
 				() => false,
 				() => 0,
 				true);
@@ -207,11 +190,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var origin = RenderOrigin + new int2(RenderBounds.Size.Width / 2, RenderBounds.Size.Height / 2);
 
 			var renderer = WorldRenderer.World.WorldActor.Trait<ModelRenderer>();
-			var camera = new WRot(WAngle.Zero, cachedCameraAngle - new WAngle(256), new WAngle(256));
 			var modelRenderable = new UIModelRenderable(
 				renderer,
-				animations, WPos.Zero, origin, 0, camera, scale,
-				cachedLightSource, cachedLightAmbientColor, cachedLightDiffuseColor,
+				animations, WPos.Zero, origin, 0, cachedCameraRotation, scale,
+				cachedLightSource, lightAmbientColor, lightDiffuseColor,
 				paletteReferencePlayer, paletteReferenceNormals, paletteReferenceShadow);
 
 			renderable = modelRenderable.PrepareRender(WorldRenderer);
