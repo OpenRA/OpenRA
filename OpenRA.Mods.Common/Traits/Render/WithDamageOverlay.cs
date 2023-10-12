@@ -16,7 +16,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders an overlay when the actor is taking heavy damage.")]
-	public class WithDamageOverlayInfo : TraitInfo, Requires<RenderSpritesInfo>
+	public class WithDamageOverlayInfo : TraitInfo, Requires<RenderSpritesInfo>, IRulesetLoaded
 	{
 		public readonly string Image = "smoke_m";
 
@@ -28,6 +28,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[SequenceReference(nameof(Image))]
 		public readonly string EndSequence = "end";
+
+		[Desc("Position relative to the body orientation.")]
+		public readonly WVec Offset = WVec.Zero;
 
 		[PaletteReference(nameof(IsPlayerPalette))]
 		[Desc("Custom palette name.")]
@@ -45,9 +48,15 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public readonly DamageState MaximumDamageState = DamageState.Dead;
 
 		public override object Create(ActorInitializer init) { return new WithDamageOverlay(init.Self, this); }
+
+		public void RulesetLoaded(Ruleset rules, ActorInfo info)
+		{
+			if (Offset != WVec.Zero && !info.HasTraitInfo<BodyOrientationInfo>())
+				throw new YamlException("Specifying WithDamageOverlay.Offset requires the BodyOrientation trait on the actor.");
+		}
 	}
 
-	public class WithDamageOverlay : INotifyDamage
+	public class WithDamageOverlay : INotifyDamage, INotifyCreated
 	{
 		readonly WithDamageOverlayInfo info;
 		readonly Animation anim;
@@ -57,11 +66,16 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public WithDamageOverlay(Actor self, WithDamageOverlayInfo info)
 		{
 			this.info = info;
-
-			var rs = self.Trait<RenderSprites>();
-
 			anim = new Animation(self.World, info.Image);
-			rs.Add(new AnimationWithOffset(anim, null, () => !isSmoking),
+		}
+
+		void INotifyCreated.Created(Actor self)
+		{
+			var rs = self.Trait<RenderSprites>();
+			var body = self.TraitOrDefault<BodyOrientation>();
+
+			WVec AnimationOffset() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self.Orientation)));
+			rs.Add(new AnimationWithOffset(anim, info.Offset == WVec.Zero || body == null ? null : AnimationOffset, () => !isSmoking),
 				info.Palette, info.IsPlayerPalette);
 		}
 
