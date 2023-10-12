@@ -106,6 +106,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		float[] cachedLightDiffuseColor = new float[] { 0, 0, 0 };
 		int cachedLightPitch;
 		int cachedLightYaw;
+		WRot cachedLightSource;
 		WAngle cachedCameraAngle;
 		PaletteReference paletteReference;
 		PaletteReference paletteReferencePlayer;
@@ -175,11 +176,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (rotation != cachedRotation)
 				cachedRotation = rotation;
 
-			if (lightPitch != cachedLightPitch)
+			if (lightPitch != cachedLightPitch || lightYaw != cachedLightYaw)
+			{
 				cachedLightPitch = lightPitch;
-
-			if (lightYaw != cachedLightYaw)
 				cachedLightYaw = lightYaw;
+				cachedLightSource = new WRot(WAngle.Zero, new WAngle(256 - lightPitch), new WAngle(lightYaw));
+			}
 
 			if (cachedLightAmbientColor[0] != lightAmbientColor[0] || cachedLightAmbientColor[1] != lightAmbientColor[1] || cachedLightAmbientColor[2] != lightAmbientColor[2])
 				cachedLightAmbientColor = lightAmbientColor;
@@ -209,7 +211,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var modelRenderable = new UIModelRenderable(
 				renderer,
 				animations, WPos.Zero, origin, 0, camera, scale,
-				WRot.None, cachedLightAmbientColor, cachedLightDiffuseColor,
+				cachedLightSource, cachedLightAmbientColor, cachedLightDiffuseColor,
 				paletteReferencePlayer, paletteReferenceNormals, paletteReferenceShadow);
 
 			renderable = modelRenderable.PrepareRender(WorldRenderer);
