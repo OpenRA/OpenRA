@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AutoCrusher(init.Self, this); }
 	}
 
-	sealed class AutoCrusher : PausableConditionalTrait<AutoCrusherInfo>, INotifyIdle
+	sealed class AutoCrusher : ConditionalTrait<AutoCrusherInfo>, INotifyIdle
 	{
 		int nextScanTime;
 		readonly IMoveInfo moveInfo;
@@ -49,14 +49,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			move = self.Trait<IMove>();
 			moveInfo = self.Info.TraitInfo<IMoveInfo>();
-			nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
 			isAircraft = move is Aircraft;
 			ignoresDisguise = self.Info.HasTraitInfo<IgnoresDisguiseInfo>();
 		}
 
 		void INotifyIdle.TickIdle(Actor self)
 		{
-			if (nextScanTime-- > 0)
+			if (IsTraitDisabled || nextScanTime-- > 0)
 				return;
 
 			var crushableActor = self.World.FindActorsInCircle(self.CenterPosition, Info.ScanRadius)
@@ -94,6 +93,11 @@ namespace OpenRA.Mods.Common.Traits
 				return false;
 
 			return target.TraitsImplementing<ICrushable>().Any(c => c.CrushableBy(target, self, Info.CrushClasses));
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
 		}
 	}
 }
