@@ -260,18 +260,18 @@ namespace OpenRA
 				return true;
 
 			// Any trait overrides that aren't explicitly whitelisted are flagged
-			if (mapRules != null)
-			{
-				if (AnyFlaggedTraits(modData, mapRules.Nodes))
-					return true;
+			if (mapRules == null)
+				return false;
 
-				if (mapRules.Value != null)
-				{
-					var mapFiles = FieldLoader.GetValue<string[]>("value", mapRules.Value);
-					foreach (var f in mapFiles)
-						if (AnyFlaggedTraits(modData, MiniYaml.FromStream(fileSystem.Open(f), f)))
-							return true;
-				}
+			if (AnyFlaggedTraits(modData, mapRules.Nodes))
+				return true;
+
+			if (mapRules.Value != null)
+			{
+				var mapFiles = FieldLoader.GetValue<string[]>("value", mapRules.Value);
+				foreach (var f in mapFiles)
+					if (AnyFlaggedTraits(modData, MiniYaml.FromStream(fileSystem.Open(f), f)))
+						return true;
 			}
 
 			return false;
