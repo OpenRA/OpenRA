@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var crushableActor = self.World.FindActorsInCircle(self.CenterPosition, Info.ScanRadius)
 				.Where(a => IsValidCrushTarget(self, a))
-				.ClosestToWithPathFrom(self);
+				.ClosestToWithPathFrom(self); // TODO: Make it use shortest pathfinding distance instead
 
 			if (crushableActor == null)
 				return;
