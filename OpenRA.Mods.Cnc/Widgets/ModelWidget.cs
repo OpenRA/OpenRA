@@ -200,25 +200,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			var animations = new ModelAnimation[] { animation };
 
-			var renderer = WorldRenderer.World.WorldActor.Trait<ModelRenderer>();
-
-			var preview = new ModelPreview(
-				renderer,
-				new ModelAnimation[] { animation }, WVec.Zero, 0,
-				cachedScale,
-				new WAngle(cachedLightPitch),
-				new WAngle(cachedLightYaw),
-				cachedLightAmbientColor,
-				cachedLightDiffuseColor,
-				cachedCameraAngle,
-				paletteReference,
-				paletteReferenceNormals,
-				paletteReferenceShadow);
-
 			var screenBounds = animation.ScreenBounds(WPos.Zero, WorldRenderer, scale);
 			IdealPreviewSize = new int2(screenBounds.Width, screenBounds.Height);
 			var origin = RenderOrigin + new int2(RenderBounds.Size.Width / 2, RenderBounds.Size.Height / 2);
 
+			var renderer = WorldRenderer.World.WorldActor.Trait<ModelRenderer>();
 			var camera = new WRot(WAngle.Zero, cachedCameraAngle - new WAngle(256), new WAngle(256));
 			var modelRenderable = new UIModelRenderable(
 				renderer,
