@@ -190,9 +190,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (cameraAngle != cachedCameraAngle)
 				cachedCameraAngle = cameraAngle;
 
-			if (cachedVoxel == null)
-				return;
-
 			var animation = new ModelAnimation(
 				cachedVoxel,
 				() => WVec.Zero,
