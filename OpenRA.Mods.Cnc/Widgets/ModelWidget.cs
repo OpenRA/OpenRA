@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				renderer,
 				animations, WPos.Zero, origin, 0, cachedCameraRotation, scale,
 				cachedLightSource, lightAmbientColor, lightDiffuseColor,
-				paletteReferencePlayer, paletteReferenceNormals, paletteReferenceShadow);
+				paletteReferencePlayer ?? paletteReference, paletteReferenceNormals, paletteReferenceShadow);
 
 			renderable = modelRenderable.PrepareRender(WorldRenderer);
 		}
