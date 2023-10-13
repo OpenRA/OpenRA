@@ -143,6 +143,8 @@ Background@ASSETBROWSER_PANEL:
 					Height: PARENT_BOTTOM
 					Palette: colorpicker
 					PlayerPalette: colorpicker
+					LightPitch: 256
+					LightYaw: 0
 				Label@ERROR:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
