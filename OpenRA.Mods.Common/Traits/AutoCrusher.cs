@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool IsValidCrushTarget(Actor self, Actor target)
 		{
-			if (target == self || target.IsDead || !target.IsInWorld || self.Location != target.Location || !target.IsAtGroundLevel())
+			if (target == self || target.IsDead || !target.IsInWorld || self.Location == target.Location || !target.IsAtGroundLevel())
 				return false;
 
 			var targetRelationship = self.Owner.RelationshipWith(target.Owner);
