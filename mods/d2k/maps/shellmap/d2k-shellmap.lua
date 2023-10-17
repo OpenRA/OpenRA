@@ -64,25 +64,25 @@ CorCarryHarvWaypoints = { cor_harvcarry_2.Location, cor_harvcarry_1.Location }
 SmgCarryHarvWaypoints = { smg_harvcarry_2.Location, smg_harvcarry_1.Location }
 
 Produce = function(house, units)
-    if HoldProduction[house.Name] then
-        Trigger.AfterDelay(DateTime.Minutes(1), function() Produce(house, units) end)
-        return
-    end
+	if HoldProduction[house.Name] then
+		Trigger.AfterDelay(DateTime.Minutes(1), function() Produce(house, units) end)
+		return
+	end
 
-    local delay = Utils.RandomInteger(AttackDelay[1], AttackDelay[2])
-    local toBuild = { Utils.Random(units) }
-    house.Build(toBuild, function(unit)
+	local delay = Utils.RandomInteger(AttackDelay[1], AttackDelay[2])
+	local toBuild = { Utils.Random(units) }
+	house.Build(toBuild, function(unit)
 		local unitCount = 1
 		if IdlingUnits[house.Name] then
 			unitCount = 1 + #IdlingUnits[house.Name]
 		end
 		IdlingUnits[house.Name][unitCount] = unit[1]
-        Trigger.AfterDelay(delay, function() Produce(house, units) end)
+		Trigger.AfterDelay(delay, function() Produce(house, units) end)
 
-        if unitCount >= (AttackGroupSize[1] * 2) then
-            SendAttack(house)
-        end
-    end)
+		if unitCount >= (AttackGroupSize[1] * 2) then
+		    SendAttack(house)
+		end
+	end)
 end
 
 SetupAttackGroup = function(house)

@@ -35,7 +35,7 @@ namespace OpenRA
 		public static string GetString(string key, IDictionary<string, object> args = null)
 		{
 			lock (SyncObject)
-    		{
+			{
 				// By prioritizing mod-level translations we prevent maps from overwriting translation keys. We do not want to
 				// allow maps to change the UI nor any other strings not exposed to the map.
 				if (modTranslation.TryGetString(key, out var message, args))
@@ -51,7 +51,7 @@ namespace OpenRA
 		public static bool TryGetString(string key, out string message, IDictionary<string, object> args = null)
 		{
 			lock (SyncObject)
-    		{
+			{
 				// By prioritizing mod-level translations we prevent maps from overwriting translation keys. We do not want to
 				// allow maps to change the UI nor any other strings not exposed to the map.
 				if (modTranslation.TryGetString(key, out message, args))

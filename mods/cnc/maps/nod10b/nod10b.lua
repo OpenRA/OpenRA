@@ -36,9 +36,9 @@ DeliverCommando = function()
 	end)
 
 	Trigger.OnPlayerWon(Nod, function(Nod)
-        if not rambo.IsDead then
-            Nod.MarkCompletedObjective(KeepRamboAliveObjective)
-        end
+		if not rambo.IsDead then
+		    Nod.MarkCompletedObjective(KeepRamboAliveObjective)
+		end
 	end)
 end
 
@@ -69,7 +69,7 @@ WorldLoaded = function()
 
 	Utils.Do(Mammoths, function(mammoth)
 		mammoth.Stance = "HoldFire"
-    end)
+	end)
 
 	Utils.Do(MediumTanks, function(tank)
 		Trigger.OnDamaged(tank, function()
@@ -84,7 +84,7 @@ WorldLoaded = function()
 				end
 			end)
 		end)
-    end)
+	end)
 
 	Utils.Do(Grenadiers, function(grenadier)
 		Trigger.OnDamaged(grenadier, function()
@@ -99,11 +99,11 @@ WorldLoaded = function()
 				end
 			end)
 		end)
-    end)
+	end)
 
 	Utils.Do(GDIBuildings, function(building)
 		RepairBuilding(GDI, building, 0.75)
-    end)
+	end)
 
 	Trigger.OnEnteredFootprint({ NorthEntrance.Location }, function(a, id)
 		if a.Owner == Nod then
@@ -125,7 +125,7 @@ WorldLoaded = function()
 
 	Utils.Do(Riflemen, function(rifleman)
 		rifleman.Patrol(RiflemenPatrolPath)
-    end)
+	end)
 
 	PatrollingMammoth.Patrol(MammothPatrolPath)
 end
