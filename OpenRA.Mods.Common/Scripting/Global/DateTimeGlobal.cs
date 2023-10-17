@@ -32,6 +32,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("True on the 31st of October.")]
+		[Obsolete("Use CurrentMonth and CurrentDay instead.")]
 		public bool IsHalloween => DateTime.Today.Month == 10 && DateTime.Today.Day == 31;
 
 		[Desc("Get the current game time (in ticks).")]
