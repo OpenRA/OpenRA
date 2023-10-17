@@ -9,15 +9,11 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 
 ; 4-column tab indentation
-[*.yaml]
+[*.{cs,csproj,yaml,lua,sh,ps1}]
 indent_style = tab
 indent_size = 4
 
-; 4-column tab indentation and .NET coding conventions
-[*.cs]
-indent_style = tab
-indent_size = 4
-
+; .NET coding conventions
 #### Code Style Rules
 #### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/
 
