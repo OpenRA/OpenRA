@@ -6,7 +6,9 @@
    the License, or (at your option) any later version. For more
    information, see COPYING.
 ]]
-if DateTime.IsHalloween then
+
+-- Halloween easter egg
+if DateTime.CurrentMonth == 10 and DateTime.CurrentDay == 31 then
 	UnitTypes = { "ant", "ant", "ant" }
 	BeachUnitTypes = { "ant", "ant" }
 	ProxyType = "powerproxy.parazombies"
