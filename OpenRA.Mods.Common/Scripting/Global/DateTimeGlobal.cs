@@ -43,6 +43,13 @@ namespace OpenRA.Mods.Common.Scripting
 			return seconds * ticksPerSecond;
 		}
 
+		public int CurrentYear => DateTime.Now.Year;
+		public int CurrentMonth => DateTime.Now.Month;
+		public int CurrentDay => DateTime.Now.Day;
+		public int CurrentHour => DateTime.Now.Hour;
+		public int CurrentMinute => DateTime.Now.Minute;
+		public int CurrentSecond => DateTime.Now.Second;
+
 		[Desc("Converts the number of minutes into game time (ticks).")]
 		public int Minutes(int minutes)
 		{
