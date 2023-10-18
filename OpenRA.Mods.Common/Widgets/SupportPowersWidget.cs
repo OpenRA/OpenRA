@@ -22,9 +22,11 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class SupportPowersWidget : Widget
 	{
-		public readonly string ReadyText = "";
+		[TranslationReference]
+		public string ReadyText = "";
 
-		public readonly string HoldText = "";
+		[TranslationReference]
+		public string HoldText = "";
 
 		public readonly string OverlayFont = "TinyBold";
 
@@ -109,7 +111,10 @@ namespace OpenRA.Mods.Common.Widgets
 			overlayFont = Game.Renderer.Fonts[OverlayFont];
 
 			iconOffset = 0.5f * IconSize.ToFloat2() + IconSpriteOffset;
+
+			HoldText = TranslationProvider.GetString(HoldText);
 			holdOffset = iconOffset - overlayFont.Measure(HoldText) / 2;
+			ReadyText = TranslationProvider.GetString(ReadyText);
 			readyOffset = iconOffset - overlayFont.Measure(ReadyText) / 2;
 
 			clock = new Animation(worldRenderer.World, ClockAnimation);

@@ -18,8 +18,8 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly World world;
 
 		[ObjectCreator.UseCtor]
-		public WorldLabelWithTooltipWidget(World world)
-			: base()
+		public WorldLabelWithTooltipWidget(ModData modData, World world)
+			: base(modData)
 		{
 			this.world = world;
 		}

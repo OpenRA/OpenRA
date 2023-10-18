@@ -125,7 +125,9 @@ ChromeLayout:
 
 Translations:
 	common|languages/en.ftl
+	common|languages/chrome/en.ftl
 	common|languages/rules/en.ftl
+	d2k|languages/chrome/en.ftl
 	d2k|languages/rules/en.ftl
 
 Weapons:
