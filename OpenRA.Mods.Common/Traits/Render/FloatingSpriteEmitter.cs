@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (IsTraitDisabled)
+			if (!self.IsInWorld || IsTraitDisabled)
 				return;
 
 			if (Info.Duration > 0 && --duration < 0)
