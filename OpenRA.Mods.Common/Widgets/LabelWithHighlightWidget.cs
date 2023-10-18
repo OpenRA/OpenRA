@@ -23,8 +23,8 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly CachedTransform<string, (string Text, bool Highlighted)[]> textComponents;
 
 		[ObjectCreator.UseCtor]
-		public LabelWithHighlightWidget()
-			: base()
+		public LabelWithHighlightWidget(ModData modData)
+			: base(modData)
 		{
 			textComponents = new CachedTransform<string, (string, bool)[]>(MakeComponents);
 		}

@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public bool DisableKeyRepeat = false;
 		public bool DisableKeySound = false;
 
+		[TranslationReference]
 		public string Text = "";
 		public TextAlign Align = TextAlign.Center;
 		public int LeftMargin = 5;
@@ -54,9 +55,11 @@ namespace OpenRA.Mods.Common.Widgets
 
 		protected Lazy<TooltipContainerWidget> tooltipContainer;
 
+		[TranslationReference]
 		public string TooltipText;
 		public Func<string> GetTooltipText;
 
+		[TranslationReference]
 		public string TooltipDesc;
 		public Func<string> GetTooltipDesc;
 
@@ -74,7 +77,8 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			ModRules = modData.DefaultRules;
 
-			GetText = () => Text;
+			var tooltipCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? TranslationProvider.GetString(s) : "");
+			GetText = () => tooltipCache.Update(Text);
 			GetColor = () => TextColor;
 			GetColorDisabled = () => TextColorDisabled;
 			GetContrastColorDark = () => ContrastColorDark;
@@ -82,8 +86,10 @@ namespace OpenRA.Mods.Common.Widgets
 			OnMouseUp = _ => OnClick();
 			OnKeyPress = _ => OnClick();
 			IsHighlighted = () => Highlighted;
-			GetTooltipText = () => TooltipText;
-			GetTooltipDesc = () => TooltipDesc;
+			var tooltipDescCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? TranslationProvider.GetString(s) : "");
+			GetTooltipText = () => tooltipDescCache.Update(TooltipText);
+			var textCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? TranslationProvider.GetString(s) : "");
+			GetTooltipDesc = () => tooltipDescCache.Update(TooltipDesc);
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
