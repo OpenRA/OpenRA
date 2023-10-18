@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var fieldInfo in modType.GetFields(Binding).Where(m => Utility.HasAttribute<TranslationReferenceAttribute>(m)))
 				{
-					if (fieldInfo.IsInitOnly)
+					if (fieldInfo.IsInitOnly || !fieldInfo.IsStatic)
 						continue;
 
 					if (fieldInfo.FieldType != typeof(string))
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Lint
 						continue;
 					}
 
-					var key = (string)fieldInfo.GetValue(string.Empty);
+					var key = (string)fieldInfo.GetValue(null);
 					if (referencedKeys.Contains(key))
 						continue;
 
