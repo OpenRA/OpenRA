@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public override object Create(ActorInitializer init) { return new LeavesTrails(this); }
 	}
 
-	public class LeavesTrails : ConditionalTrait<LeavesTrailsInfo>, ITick
+	public class LeavesTrails : ConditionalTrait<LeavesTrailsInfo>, ITick, INotifyAddedToWorld
 	{
 		BodyOrientation body;
 		IFacing facing;
@@ -153,6 +153,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 		}
 
 		protected override void TraitEnabled(Actor self)
+		{
+			cachedPosition = self.CenterPosition;
+		}
+
+		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
 			cachedPosition = self.CenterPosition;
 		}
