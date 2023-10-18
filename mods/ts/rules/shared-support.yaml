@@ -25,7 +25,7 @@ NAPULS:
 		InitialFacing: 896
 		RealignDelay: -1
 	AttackTurreted:
-		RequiresCondition: !build-incomplete && !empdisable && !disabled
+		RequiresCondition: !build-incomplete && !empdisable && !disabled && ( support-targeting || support-attacking )
 	Armament:
 		Weapon: EMPulseCannon
 		LocalOffset: 212,0,1768
