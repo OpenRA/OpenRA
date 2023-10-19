@@ -84,21 +84,6 @@ Background@ASSETBROWSER_PANEL:
 			Height: 20
 			MinimumValue: 0.5
 			MaximumValue: 4
-		Label@MODEL_SCALE:
-			X: PARENT_RIGHT - WIDTH - 440
-			Y: 60
-			Width: 40
-			Height: 25
-			Font: Bold
-			Align: Left
-			Text: Scale:
-		Slider@MODEL_SCALE_SLIDER:
-			X: PARENT_RIGHT - WIDTH - 330
-			Y: 62
-			Width: 100
-			Height: 20
-			MinimumValue: 10
-			MaximumValue: 64
 		Label@PALETTE_DESC:
 			X: PARENT_RIGHT - WIDTH - 270
 			Y: 60
