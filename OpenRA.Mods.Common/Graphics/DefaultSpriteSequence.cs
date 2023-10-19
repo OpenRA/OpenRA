@@ -392,6 +392,11 @@ namespace OpenRA.Mods.Common.Graphics
 				facings = -facings;
 			}
 
+			// Facings must be an integer factor of 1024 (i.e. 1024 / facings is an integer) to allow the frames to be
+			// mapped uniformly over the full rotation range. This implies that it is a power of 2.
+			if (facings == 0 || facings > 1024 || !Exts.IsPowerOf2(facings))
+				throw new YamlException($"{facingsLocation}: {Facings.Key} must be within the (positive or negative) range of 1 to 1024, and a power of 2.");
+
 			if (interpolatedFacings != null && (interpolatedFacings < 2 || interpolatedFacings <= facings || interpolatedFacings > 1024 || !Exts.IsPowerOf2(interpolatedFacings.Value)))
 				throw new YamlException($"{interpolatedFacingsLocation}: {InterpolatedFacings.Key} must be greater than {Facings.Key}, within the range of 2 to 1024, and a power of 2.");
 
