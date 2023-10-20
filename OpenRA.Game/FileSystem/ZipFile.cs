@@ -21,7 +21,7 @@ namespace OpenRA.FileSystem
 	{
 		const uint ZipSignature = 0x04034b50;
 
-		class ReadOnlyZipFile : IReadOnlyPackage
+		public class ReadOnlyZipFile : IReadOnlyPackage
 		{
 			public string Name { get; protected set; }
 			protected ZipFile pkg;
@@ -68,6 +68,7 @@ namespace OpenRA.FileSystem
 			public void Dispose()
 			{
 				pkg?.Close();
+				GC.SuppressFinalize(this);
 			}
 
 			public IReadOnlyPackage OpenPackage(string filename, FileSystem context)
@@ -93,7 +94,7 @@ namespace OpenRA.FileSystem
 			}
 		}
 
-		sealed class ReadWriteZipFile : ReadOnlyZipFile, IReadWritePackage
+		public sealed class ReadWriteZipFile : ReadOnlyZipFile, IReadWritePackage
 		{
 			readonly MemoryStream pkgStream = new();
 
