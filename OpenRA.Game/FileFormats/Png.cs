@@ -45,6 +45,7 @@ namespace OpenRA.FileFormats
 			var data = new List<byte>();
 			Type = SpriteFrameType.Rgba32;
 
+			byte bitDepth = 8;
 			while (true)
 			{
 				var length = IPAddress.NetworkToHostOrder(s.ReadInt32());
@@ -66,7 +67,7 @@ namespace OpenRA.FileFormats
 							Width = IPAddress.NetworkToHostOrder(ms.ReadInt32());
 							Height = IPAddress.NetworkToHostOrder(ms.ReadInt32());
 
-							var bitDepth = ms.ReadUInt8();
+							bitDepth = ms.ReadUInt8();
 							var colorType = (PngColorType)ms.ReadUInt8();
 							if (IsPaletted(bitDepth, colorType))
 								Type = SpriteFrameType.Indexed8;
@@ -136,13 +137,33 @@ namespace OpenRA.FileFormats
 								{
 									var pxStride = PixelStride;
 									var rowStride = Width * pxStride;
+									var pixelsPerByte = 8 / bitDepth;
+									var sourceRowStride = Exts.IntegerDivisionRoundingAwayFromZero(rowStride, pixelsPerByte);
 
 									Span<byte> prevLine = new byte[rowStride];
 									for (var y = 0; y < Height; y++)
 									{
 										var filter = (PngFilter)ds.ReadUInt8();
-										ds.ReadBytes(Data, y * rowStride, rowStride);
+										ds.ReadBytes(Data, y * rowStride, sourceRowStride);
 										var line = Data.AsSpan(y * rowStride, rowStride);
+
+										// If the source has a bit depth of 1, 2 or 4 it packs multiple pixels per byte.
+										// Unpack to bit depth of 8, yielding 1 pixel per byte.
+										// This makes life easier for consumers of palleted data.
+										if (bitDepth < 8)
+										{
+											var mask = 0xFF >> (8 - bitDepth);
+											for (var i = sourceRowStride - 1; i >= 0; i--)
+											{
+												var packed = line[i];
+												for (var j = 0; j < pixelsPerByte; j++)
+												{
+													var dest = i * pixelsPerByte + j;
+													if (dest < line.Length) // Guard against last byte being only partially packed
+														line[dest] = (byte)(packed >> (8 - (j + 1) * bitDepth) & mask);
+												}
+											}
+										}
 
 										switch (filter)
 										{
@@ -269,7 +290,7 @@ namespace OpenRA.FileFormats
 
 		static bool IsPaletted(byte bitDepth, PngColorType colorType)
 		{
-			if (bitDepth == 8 && colorType == (PngColorType.Indexed | PngColorType.Color))
+			if (bitDepth <= 8 && colorType == (PngColorType.Indexed | PngColorType.Color))
 				return true;
 
 			if (bitDepth == 8 && colorType == (PngColorType.Color | PngColorType.Alpha))
