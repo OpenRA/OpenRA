@@ -9,7 +9,7 @@ Container@MISSION_OBJECTIVES:
 			Width: 80
 			Height: 25
 			Font: MediumBold
-			Text: Mission:
+			Text: label-mission-objectives
 		Label@MISSION_STATUS:
 			X: 100
 			Y: 21
@@ -41,3 +41,4 @@ Container@MISSION_OBJECTIVES:
 							Height: PARENT_BOTTOM
 							Disabled: True
 							TextColorDisabled: FFFFFF
+

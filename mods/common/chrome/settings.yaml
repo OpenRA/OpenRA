@@ -16,7 +16,7 @@ Background@SETTINGS_PANEL:
 			Y: 20
 			Width: PARENT_RIGHT
 			Height: 25
-			Text: Settings
+			Text: label-settings-panel-title
 			Align: Center
 			Font: Bold
 		Button@RESET_BUTTON:
@@ -24,7 +24,7 @@ Background@SETTINGS_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Reset
+			Text: button-settings-panel-reset
 			Font: Bold
 		Button@BACK_BUTTON:
 			Key: escape
@@ -32,7 +32,7 @@ Background@SETTINGS_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Back
+			Text: button-settings-panel-back
 			Font: Bold
 		Container@SETTINGS_TAB_CONTAINER:
 			X: 20
@@ -54,3 +54,4 @@ Background@SETTINGS_PANEL:
 					Width: PARENT_RIGHT - 190 - 20
 					Height: PARENT_BOTTOM - 105
 		TooltipContainer@SETTINGS_TOOLTIP_CONTAINER:
+

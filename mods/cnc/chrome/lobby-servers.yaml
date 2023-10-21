@@ -11,26 +11,26 @@ Container@LOBBY_SERVERS_BIN:
 					X: 5
 					Width: 355
 					Height: 25
-					Text: Server
+					Text: label-container-name
 					Align: Center
 					Font: Bold
 				Label@PLAYERS:
 					X: 390
 					Width: 85
 					Height: 25
-					Text: Players
+					Text: label-container-players
 					Font: Bold
 				Label@LOCATION:
 					X: 480
 					Width: 110
 					Height: 25
-					Text: Location
+					Text: label-container-location
 					Font: Bold
 				Label@STATUS:
 					X: 595
 					Width: 50
 					Height: 25
-					Text: Status
+					Text: label-container-status
 					Font: Bold
 		LogicTicker@NOTICE_WATCHER:
 		Container@NOTICE_CONTAINER:
@@ -47,21 +47,21 @@ Container@LOBBY_SERVERS_BIN:
 							Width: PARENT_RIGHT - 10
 							Height: 18
 							Align: Center
-							Text: You are running an outdated version of OpenRA. Download the latest version from www.openra.net
+							Text: label-bg-outdated-version
 							Font: TinyBold
 						Label@UNKNOWN_VERSION_LABEL:
 							X: 5
 							Width: PARENT_RIGHT - 10
 							Height: 18
 							Align: Center
-							Text: You are running an unrecognized version of OpenRA. Download the latest version from www.openra.net
+							Text: label-bg-unknown-version
 							Font: TinyBold
 						Label@PLAYTEST_AVAILABLE_LABEL:
 							X: 5
 							Width: PARENT_RIGHT - 10
 							Height: 18
 							Align: Center
-							Text: A preview of the next OpenRA release is available for testing. Download the playtest from www.openra.net
+							Text: label-bg-playtest-available
 							Font: TinyBold
 		ScrollPanel@SERVER_LIST:
 			Width: PARENT_RIGHT
@@ -100,7 +100,7 @@ Container@LOBBY_SERVERS_BIN:
 							ImageCollection: lobby-bits
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
-							TooltipText: Requires Password
+							TooltipText: image-lobby-servers-bin-password-protected-tooltip
 						Image@REQUIRES_AUTHENTICATION:
 							X: 372
 							Y: 6
@@ -109,7 +109,7 @@ Container@LOBBY_SERVERS_BIN:
 							ImageCollection: lobby-bits
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
-							TooltipText: Requires OpenRA forum account
+							TooltipText: image-lobby-servers-bin-requires-authentication-tooltip
 						LabelWithTooltip@PLAYERS:
 							X: 390
 							Width: 85
@@ -135,7 +135,7 @@ Container@LOBBY_SERVERS_BIN:
 			Y: PARENT_BOTTOM + 5
 			Width: 180
 			Height: 25
-			Text: Filter Games
+			Text: dropdownbutton-lobby-servers-bin-filters
 			Font: Bold
 		Button@RELOAD_BUTTON:
 			X: 185
@@ -201,3 +201,4 @@ Container@LOBBY_SERVERS_BIN:
 					Height: 25
 					Font: TinyBold
 					Align: Center
+

@@ -22,7 +22,7 @@ Container@AUDIO_PANEL:
 							Height: PARENT_BOTTOM
 							Font: TinyBold
 							Align: Center
-							Text: Audio
+							Text: label-audio-section-header
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
 					Height: 20
@@ -35,7 +35,7 @@ Container@AUDIO_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Align: Center
-									Text: Audio controls require an active sound device
+									Text: label-no-audio-device-container
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
 					Height: 50
@@ -48,7 +48,7 @@ Container@AUDIO_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Cash Ticks
+									Text: checkbox-cash-ticks-container
 						Container@MUTE_SOUND_CONTAINER:
 							X: 10
 							Y: 30
@@ -58,7 +58,7 @@ Container@AUDIO_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Mute Sound
+									Text: checkbox-mute-sound-container
 						Container@SOUND_VOLUME_CONTAINER:
 							X: PARENT_RIGHT / 2 + 10
 							Width: PARENT_RIGHT / 2 - 20
@@ -66,7 +66,7 @@ Container@AUDIO_PANEL:
 								Label@SOUND_LABEL:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: Sound Volume:
+									Text: label-sound-volume-container
 								ExponentialSlider@SOUND_VOLUME:
 									Y: 30
 									Width: PARENT_RIGHT
@@ -84,8 +84,8 @@ Container@AUDIO_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Mute Menu Music
-									TooltipText: Mute background music when no specific track is playing
+									Text: checkbox-mute-background-music-container.label
+									TooltipText: checkbox-mute-background-music-container.tooltip
 									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 						Container@MUSIC_VOLUME_CONTAINER:
 							X: PARENT_RIGHT / 2 + 10
@@ -94,7 +94,7 @@ Container@AUDIO_PANEL:
 								Label@MUSIC_LABEL:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: Music Volume:
+									Text: label-music-volume-container
 								ExponentialSlider@MUSIC_VOLUME:
 									Y: 25
 									Width: PARENT_RIGHT
@@ -111,7 +111,7 @@ Container@AUDIO_PANEL:
 								Label@AUDIO_DEVICE_LABEL:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: Audio Device:
+									Text: label-audio-device-container
 								DropDownButton@AUDIO_DEVICE:
 									Y: 25
 									Width: PARENT_RIGHT
@@ -123,7 +123,7 @@ Container@AUDIO_PANEL:
 								Label@VIDEO_LABEL:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: Video Volume:
+									Text: label-video-volume-container
 								ExponentialSlider@VIDEO_VOLUME:
 									Y: 25
 									Width: PARENT_RIGHT
@@ -142,4 +142,5 @@ Container@AUDIO_PANEL:
 									Height: 20
 									Font: Tiny
 									Align: Center
-									Text: Device changes will be applied after the game is restarted
+									Text: label-restart-required-container-audio-desc
+

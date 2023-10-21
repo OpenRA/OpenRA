@@ -20,7 +20,7 @@ Container@GAMESAVE_LOADING_SCREEN:
 			Height: 25
 			Font: Bold
 			Align: Center
-			Text: Loading Saved Game
+			Text: label-gamesave-loading-screen-title
 		ProgressBar@PROGRESS:
 			X: (WINDOW_RIGHT - 500) / 2
 			Y: 3 * WINDOW_BOTTOM / 4
@@ -32,4 +32,5 @@ Container@GAMESAVE_LOADING_SCREEN:
 			Height: 25
 			Font: Regular
 			Align: Center
-			Text: Press Escape to cancel loading and return to the main menu
+			Text: label-gamesave-loading-screen-desc
+

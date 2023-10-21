@@ -11,7 +11,7 @@ Background@GAMESAVE_BROWSER_PANEL:
 			Height: 25
 			Font: Bold
 			Align: Center
-			Text: Load game
+			Text: label-gamesave-browser-panel-load-title
 			Visible: False
 		Label@SAVE_TITLE:
 			Width: PARENT_RIGHT
@@ -19,7 +19,7 @@ Background@GAMESAVE_BROWSER_PANEL:
 			Height: 25
 			Font: Bold
 			Align: Center
-			Text: Save game
+			Text: label-gamesave-browser-panel-save-title
 			Visible: False
 		ScrollPanel@GAME_LIST:
 			X: 20
@@ -37,7 +37,7 @@ Background@GAMESAVE_BROWSER_PANEL:
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM
 							Align: Center
-							Text: [CREATE NEW FILE]
+							Text: label-gamesave-browser-panel-title
 				ScrollItem@GAME_TEMPLATE:
 					Width: PARENT_RIGHT - 27
 					Height: 25
@@ -73,21 +73,21 @@ Background@GAMESAVE_BROWSER_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 100
 			Height: 25
-			Text: Back
+			Text: button-gamesave-browser-panel-cancel
 			Font: Bold
 		Button@DELETE_ALL_BUTTON:
 			X: PARENT_RIGHT - 350 - WIDTH
 			Y: PARENT_BOTTOM - 45
 			Width: 100
 			Height: 25
-			Text: Delete All
+			Text: button-gamesave-browser-panel-delete-all
 			Font: Bold
 		Button@DELETE_BUTTON:
 			X: PARENT_RIGHT - 240 - WIDTH
 			Y: PARENT_BOTTOM - 45
 			Width: 100
 			Height: 25
-			Text: Delete
+			Text: button-gamesave-browser-panel-delete
 			Font: Bold
 			Key: Delete
 		Button@RENAME_BUTTON:
@@ -95,7 +95,7 @@ Background@GAMESAVE_BROWSER_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 100
 			Height: 25
-			Text: Rename
+			Text: button-gamesave-browser-panel-rename
 			Font: Bold
 			Key: F2
 		Button@LOAD_BUTTON:
@@ -104,7 +104,7 @@ Background@GAMESAVE_BROWSER_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 100
 			Height: 25
-			Text: Load
+			Text: button-gamesave-browser-panel-load
 			Font: Bold
 			Visible: False
 		Button@SAVE_BUTTON:
@@ -113,7 +113,8 @@ Background@GAMESAVE_BROWSER_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 100
 			Height: 25
-			Text: Save
+			Text: button-gamesave-browser-panel-save
 			Font: Bold
 			Visible: False
 		TooltipContainer@GAMESAVE_TOOLTIP_CONTAINER:
+

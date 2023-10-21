@@ -49,7 +49,7 @@ ScrollPanel@MULTIPLAYER_FILTER_PANEL:
 			Y: 5
 			Width: PARENT_RIGHT - 29
 			Height: 20
-			Text: Waiting
+			Text: checkbox-multiplayer-filter-panel-waiting-for-players
 			TextColor: 32CD32
 			Font: Regular
 		Checkbox@EMPTY:
@@ -57,14 +57,14 @@ ScrollPanel@MULTIPLAYER_FILTER_PANEL:
 			Y: 30
 			Width: PARENT_RIGHT - 29
 			Height: 20
-			Text: Empty
+			Text: checkbox-multiplayer-filter-panel-empty
 			Font: Regular
 		Checkbox@PASSWORD_PROTECTED:
 			X: 5
 			Y: 55
 			Width: PARENT_RIGHT - 29
 			Height: 20
-			Text: Protected
+			Text: checkbox-multiplayer-filter-panel-password-protected
 			TextColor: FF0000
 			Font: Regular
 		Checkbox@ALREADY_STARTED:
@@ -72,7 +72,7 @@ ScrollPanel@MULTIPLAYER_FILTER_PANEL:
 			Y: 80
 			Width: PARENT_RIGHT - 29
 			Height: 20
-			Text: Started
+			Text: checkbox-multiplayer-filter-panel-already-started
 			TextColor: FFA500
 			Font: Regular
 		Checkbox@INCOMPATIBLE_VERSION:
@@ -80,6 +80,7 @@ ScrollPanel@MULTIPLAYER_FILTER_PANEL:
 			Y: 105
 			Width: PARENT_RIGHT - 29
 			Height: 20
-			Text: Incompatible
+			Text: checkbox-multiplayer-filter-panel-incompatible-version
 			TextColor: BEBEBE
 			Font: Regular
+

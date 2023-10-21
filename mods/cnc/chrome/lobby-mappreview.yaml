@@ -76,7 +76,7 @@ Container@MAP_PREVIEW:
 					Height: 25
 					Font: Tiny
 					Align: Center
-					Text: This map is not compatible
+					Text: label-map-incompatible-status-a
 					IgnoreMouseOver: true
 				Label@MAP_STATUS_B:
 					Y: 201
@@ -84,7 +84,7 @@ Container@MAP_PREVIEW:
 					Height: 25
 					Font: Tiny
 					Align: Center
-					Text: with this version of OpenRA
+					Text: label-map-incompatible-status-b
 		Container@MAP_VALIDATING:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
@@ -95,7 +95,7 @@ Container@MAP_PREVIEW:
 					Height: 25
 					Font: Tiny
 					Align: Center
-					Text: Validating...
+					Text: label-map-validating-status
 					IgnoreMouseOver: true
 				ProgressBar@MAP_VALIDATING_BAR:
 					Y: 194
@@ -123,12 +123,12 @@ Container@MAP_PREVIEW:
 					Y: 194
 					Width: PARENT_RIGHT
 					Height: 25
-					Text: Install Map
+					Text: button-map-download-available-install
 		Button@MAP_UPDATE:
 			Y: 195
 			Width: PARENT_RIGHT
 			Height: 25
-			Text: Update Map
+			Text: button-map-preview-update
 		Container@MAP_UPDATE_DOWNLOAD_AVAILABLE:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
@@ -137,14 +137,14 @@ Container@MAP_PREVIEW:
 					Y: 166
 					Width: PARENT_RIGHT
 					Height: 25
-					Text: Install Map
+					Text: button-map-update-download-available-install
 		Label@MAP_SEARCHING:
 			Y: 158
 			Width: PARENT_RIGHT
 			Height: 25
 			Font: Tiny
 			Align: Center
-			Text: Searching OpenRA Resource Center...
+			Text: label-map-preview-searching
 			IgnoreMouseOver: true
 		Container@MAP_UNAVAILABLE:
 			Width: PARENT_RIGHT
@@ -155,21 +155,21 @@ Container@MAP_PREVIEW:
 					Height: 25
 					Font: Tiny
 					Align: Center
-					Text: This map was not found on the
+					Text: label-map-unavailable-a
 				Label@b:
 					Y: 171
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
 					Align: Center
-					Text: OpenRA Resource Center
+					Text: label-map-unavailable-b
 		Label@MAP_ERROR:
 			Y: 158
 			Width: PARENT_RIGHT
 			Height: 25
 			Font: Tiny
 			Align: Center
-			Text: An error occurred during installation
+			Text: label-map-preview-error
 		Container@MAP_DOWNLOADING:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
@@ -198,11 +198,12 @@ Container@MAP_PREVIEW:
 					Height: 25
 					Font: Tiny
 					Align: Center
-					Text: A new version of the map
+					Text: label-map-update-available-a
 				Label@b:
 					Y: 171
 					Width: PARENT_RIGHT
 					Height: 25
 					Font: Tiny
 					Align: Center
-					Text: was found on your computer
+					Text: label-map-update-available-b
+

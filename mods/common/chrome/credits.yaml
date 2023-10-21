@@ -11,7 +11,7 @@ Background@CREDITS_PANEL:
 			Height: 25
 			Font: Bold
 			Align: Center
-			Text: Credits
+			Text: label-credits-panel-title
 		Container@TAB_CONTAINER:
 			Visible: False
 			X: 20
@@ -27,7 +27,7 @@ Background@CREDITS_PANEL:
 					X: 140
 					Width: 140
 					Height: 31
-					Text: OpenRA
+					Text: button-tab-container-engine
 					Font: Bold
 		ScrollPanel@CREDITS_DISPLAY:
 			X: 20
@@ -46,6 +46,7 @@ Background@CREDITS_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Close
+			Text: button-credits-panel-back
 			Font: Bold
 			Key: escape
+

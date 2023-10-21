@@ -21,7 +21,7 @@ Background@THREEBUTTON_PROMPT:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Confirm
+			Text: button-threebutton-prompt-confirm
 			Font: Bold
 			Key: return
 			Visible: false
@@ -30,7 +30,7 @@ Background@THREEBUTTON_PROMPT:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Restart
+			Text: button-threebutton-prompt-other
 			Font: Bold
 			Visible: false
 		Button@CANCEL_BUTTON:
@@ -38,7 +38,7 @@ Background@THREEBUTTON_PROMPT:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Cancel
+			Text: button-threebutton-prompt-cancel
 			Font: Bold
 			Key: escape
 			Visible: false
@@ -66,7 +66,7 @@ Background@TWOBUTTON_PROMPT:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Confirm
+			Text: button-twobutton-prompt-confirm
 			Font: Bold
 			Key: return
 			Visible: false
@@ -75,7 +75,7 @@ Background@TWOBUTTON_PROMPT:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Cancel
+			Text: button-twobutton-prompt-cancel
 			Font: Bold
 			Key: escape
 			Visible: false
@@ -108,7 +108,7 @@ Background@TEXT_INPUT_PROMPT:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: OK
+			Text: button-text-input-prompt-accept
 			Font: Bold
 			Key: return
 		Button@CANCEL_BUTTON:
@@ -116,6 +116,7 @@ Background@TEXT_INPUT_PROMPT:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: Cancel
+			Text: button-text-input-prompt-cancel
 			Font: Bold
 			Key: escape
+

@@ -135,7 +135,7 @@ Container@OBSERVER_WIDGETS:
 					Width: PARENT_RIGHT - 30
 					Height: 25
 					Align: Right
-					Text: Audio Muted
+					Text: label-mute-indicator
 					Contrast: true
 		LogicKeyListener@OBSERVER_KEY_LISTENER:
 		MenuButton@OPTIONS_BUTTON:
@@ -144,7 +144,7 @@ Container@OBSERVER_WIDGETS:
 			Y: 5
 			Width: 30
 			Height: 25
-			TooltipText: Menu
+			TooltipText: button-observer-widgets-options-tooltip
 			TooltipContainer: TOOLTIP_CONTAINER
 			DisableWorldSounds: true
 			Children:
@@ -186,7 +186,7 @@ Container@OBSERVER_WIDGETS:
 					Width: 26
 					Height: 26
 					Key: Pause
-					TooltipText: Pause
+					TooltipText: button-replay-player-pause-tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					IgnoreChildMouseOver: true
 					Children:
@@ -203,7 +203,7 @@ Container@OBSERVER_WIDGETS:
 					Width: 26
 					Height: 26
 					Key: Pause
-					TooltipText: Play
+					TooltipText: button-replay-player-play-tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					IgnoreChildMouseOver: true
 					Children:
@@ -220,10 +220,10 @@ Container@OBSERVER_WIDGETS:
 					Width: 36
 					Height: 20
 					Key: ReplaySpeedSlow
-					TooltipText: Slow speed
+					TooltipText: button-replay-player-slow.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
-					Text: 50%
+					Text: button-replay-player-slow.label
 					Font: TinyBold
 				Button@BUTTON_REGULAR:
 					X: 57 + 48
@@ -231,10 +231,10 @@ Container@OBSERVER_WIDGETS:
 					Width: 38
 					Height: 20
 					Key: ReplaySpeedRegular
-					TooltipText: Regular speed
+					TooltipText: button-replay-player-regular.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
-					Text: 100%
+					Text: button-replay-player-regular.label
 					Font: TinyBold
 				Button@BUTTON_FAST:
 					X: 57 + 48 * 2
@@ -242,10 +242,10 @@ Container@OBSERVER_WIDGETS:
 					Width: 38
 					Height: 20
 					Key: ReplaySpeedFast
-					TooltipText: Fast speed
+					TooltipText: button-replay-player-fast.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
-					Text: 200%
+					Text: button-replay-player-fast.label
 					Font: TinyBold
 				Button@BUTTON_MAXIMUM:
 					X: 57 + 48 * 3
@@ -253,10 +253,10 @@ Container@OBSERVER_WIDGETS:
 					Width: 38
 					Height: 20
 					Key: ReplaySpeedMax
-					TooltipText: Maximum speed
+					TooltipText: button-replay-player-maximum.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					VisualHeight: 0
-					Text: MAX
+					Text: button-replay-player-maximum.label
 					Font: TinyBold
 		DropDownButton@SHROUD_SELECTOR:
 			Logic: ObserverShroudSelectorLogic
@@ -339,7 +339,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 120
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Player
+									Text: label-basic-stats-player-header
 									Align: Left
 									Shadow: True
 								Label@CASH_HEADER:
@@ -348,7 +348,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Cash
+									Text: label-basic-stats-cash-header
 									Align: Right
 									Shadow: True
 								Label@POWER_HEADER:
@@ -357,7 +357,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Power
+									Text: label-basic-stats-power-header
 									Align: Center
 									Shadow: True
 								Label@KILLS_HEADER:
@@ -366,7 +366,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 40
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Kills
+									Text: label-basic-stats-kills-header
 									Align: Right
 									Shadow: True
 								Label@DEATHS_HEADER:
@@ -375,7 +375,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 60
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Deaths
+									Text: label-basic-stats-deaths-header
 									Align: Right
 									Shadow: True
 								Label@ASSETS_DESTROYED_HEADER:
@@ -384,7 +384,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Destroyed
+									Text: label-basic-stats-assets-destroyed-header
 									Align: Right
 									Shadow: True
 								Label@ASSETS_LOST_HEADER:
@@ -393,7 +393,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Lost
+									Text: label-basic-stats-assets-lost-header
 									Align: Right
 									Shadow: True
 								Label@EXPERIENCE_HEADER:
@@ -402,7 +402,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 60
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Score
+									Text: label-basic-stats-experience-header
 									Align: Right
 									Shadow: True
 								Label@ACTIONS_MIN_HEADER:
@@ -411,7 +411,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 60
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: APM
+									Text: label-basic-stats-actions-min-header
 									Align: Right
 									Shadow: True
 						Container@ECONOMY_STATS_HEADERS:
@@ -438,14 +438,14 @@ Container@OBSERVER_WIDGETS:
 									Width: 120
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Player
+									Text: label-economy-stats-player-header
 									Shadow: True
 								Label@CASH_HEADER:
 									X: 160
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Cash
+									Text: label-economy-stats-cash-header
 									Align: Right
 									Shadow: True
 								Label@INCOME_HEADER:
@@ -453,7 +453,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Income
+									Text: label-economy-stats-income-header
 									Align: Right
 									Shadow: True
 								Label@ASSETS_HEADER:
@@ -461,7 +461,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Assets
+									Text: label-economy-stats-assets-header
 									Align: Right
 									Shadow: True
 								Label@EARNED_HEADER:
@@ -469,7 +469,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Earned
+									Text: label-economy-stats-earned-header
 									Align: Right
 									Shadow: True
 								Label@SPENT_HEADER:
@@ -477,7 +477,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Spent
+									Text: label-economy-stats-spent-header
 									Align: Right
 									Shadow: True
 								Label@HARVESTERS_HEADER:
@@ -485,7 +485,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Harvesters
+									Text: label-economy-stats-harvesters-header
 									Align: Right
 									Shadow: True
 								Label@DERRICKS_HEADER:
@@ -493,7 +493,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 75
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Oil Derricks
+									Text: label-economy-stats-derricks-header
 									Align: Right
 									Shadow: True
 						Container@PRODUCTION_STATS_HEADERS:
@@ -521,7 +521,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 120
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Player
+									Text: label-production-stats-player-header
 									Align: Left
 									Shadow: True
 								Label@PRODUCTION_HEADER:
@@ -530,7 +530,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 100
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Production
+									Text: label-production-stats-header
 									Shadow: True
 						Container@SUPPORT_POWERS_HEADERS:
 							X: 0
@@ -557,7 +557,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 120
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Player
+									Text: label-support-powers-player-header
 									Align: Left
 									Shadow: True
 								Label@SUPPORT_POWERS_HEADER:
@@ -566,7 +566,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 100
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Support Powers
+									Text: label-support-powers-header
 									Shadow: True
 						Container@ARMY_HEADERS:
 							X: 0
@@ -593,7 +593,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 120
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Player
+									Text: label-army-player-header
 									Align: Left
 									Shadow: True
 								Label@ARMY_HEADER:
@@ -602,7 +602,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 100
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Army
+									Text: label-army-header
 									Shadow: True
 						Container@COMBAT_STATS_HEADERS:
 							X: 0
@@ -629,7 +629,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 120
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Player
+									Text: label-combat-stats-player-header
 									Align: Left
 									Shadow: True
 								Label@ASSETS_DESTROYED_HEADER:
@@ -638,7 +638,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 75
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Destroyed
+									Text: label-combat-stats-assets-destroyed-header
 									Align: Right
 									Shadow: True
 								Label@ASSETS_LOST_HEADER:
@@ -647,7 +647,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 75
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Lost
+									Text: label-combat-stats-assets-lost-header
 									Align: Right
 									Shadow: True
 								Label@UNITS_KILLED_HEADER:
@@ -656,7 +656,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 75
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: U. Killed
+									Text: label-combat-stats-units-killed-header
 									Align: Right
 									Shadow: True
 								Label@UNITS_DEAD_HEADER:
@@ -665,7 +665,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 75
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Units Lost
+									Text: label-combat-stats-units-dead-header
 									Align: Right
 									Shadow: True
 								Label@BUILDINGS_KILLED_HEADER:
@@ -674,7 +674,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 75
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: B. Killed
+									Text: label-combat-stats-buildings-killed-header
 									Align: Right
 									Shadow: True
 								Label@BUILDINGS_DEAD_HEADER:
@@ -683,7 +683,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 75
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: B. Lost
+									Text: label-combat-stats-buildings-dead-header
 									Align: Right
 									Shadow: True
 								Label@ARMY_VALUE_HEADER:
@@ -692,7 +692,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 90
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Army Value
+									Text: label-combat-stats-army-value-header
 									Align: Right
 									Shadow: True
 								Label@VISION_HEADER:
@@ -701,7 +701,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 60
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Vision
+									Text: label-combat-stats-vision-header
 									Align: Right
 									Shadow: True
 				ScrollPanel@PLAYER_STATS_PANEL:
@@ -1215,8 +1215,8 @@ Container@PLAYER_WIDGETS:
 					Y: 1
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: SUPPORT_POWER_TOOLTIP_FACTIONSUFFIX
-					ReadyText: Ready
-					HoldText: On Hold
+					ReadyText: supportpowers-support-powers-palette.ready
+					HoldText: supportpowers-support-powers-palette.hold
 					HotkeyPrefix: SupportPower
 					HotkeyCount: 6
 		Image@COMMAND_BAR_BACKGROUND:
@@ -1245,8 +1245,8 @@ Container@PLAYER_WIDGETS:
 					Background: chrome-button-background
 					Key: AttackMove
 					DisableKeySound: true
-					TooltipText: Attack Move
-					TooltipDesc: Selected units will move to the desired location\nand attack any enemies they encounter en route.\n\nHold <(Ctrl)> while targeting to order an Assault Move\nthat attacks any units or structures encountered en route.\n\nLeft-click icon then right-click on target location.
+					TooltipText: button-command-bar-attack-move.tooltip
+					TooltipDesc: button-command-bar-attack-move.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX
 					Children:
@@ -1269,8 +1269,8 @@ Container@PLAYER_WIDGETS:
 					Height: 26
 					Background: chrome-button-background
 					DisableKeySound: true
-					TooltipText: Force Move
-					TooltipDesc: Selected units will move to the desired location\n - Default activity for the target is suppressed\n - Vehicles will attempt to crush enemies at the target location\n - Helicopters will land at the target location\n\nLeft-click icon then right-click on target.\nHold <(Alt)> to activate temporarily while commanding units.
+					TooltipText: button-command-bar-force-move.tooltip
+					TooltipDesc: button-command-bar-force-move.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX
 					Children:
@@ -1293,8 +1293,8 @@ Container@PLAYER_WIDGETS:
 					Height: 26
 					Background: chrome-button-background
 					DisableKeySound: true
-					TooltipText: Force Attack
-					TooltipDesc: Selected units will attack the targeted unit or location\n - Default activity for the target is suppressed\n - Allows targeting of own or ally forces\n - Long-range artillery units will always target the\n   location, ignoring units and buildings\n\nLeft-click icon then right-click on target.\nHold <(Ctrl)> to activate temporarily while commanding units.
+					TooltipText: button-command-bar-force-attack.tooltip
+					TooltipDesc: button-command-bar-force-attack.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX
 					Children:
@@ -1318,8 +1318,8 @@ Container@PLAYER_WIDGETS:
 					Background: chrome-button-background
 					Key: Guard
 					DisableKeySound: true
-					TooltipText: Guard
-					TooltipDesc: Selected units will follow the targeted unit.\n\nLeft-click icon then right-click on target unit.
+					TooltipText: button-command-bar-guard.tooltip
+					TooltipDesc: button-command-bar-guard.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
@@ -1344,8 +1344,8 @@ Container@PLAYER_WIDGETS:
 					Key: Deploy
 					DisableKeyRepeat: true
 					DisableKeySound: true
-					TooltipText: Deploy
-					TooltipDesc: Selected units will perform their default deploy activity\n - MCVs will unpack into a Construction Yard\n - Construction Yards will re-pack into a MCV\n - Transports will unload their passengers\n\nActs immediately on selected units.
+					TooltipText: button-command-bar-deploy.tooltip
+					TooltipDesc: button-command-bar-deploy.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
@@ -1370,8 +1370,8 @@ Container@PLAYER_WIDGETS:
 					Key: Scatter
 					DisableKeyRepeat: true
 					DisableKeySound: true
-					TooltipText: Scatter
-					TooltipDesc: Selected units will stop their current activity\nand move to a nearby location.\n\nActs immediately on selected units.
+					TooltipText: button-command-bar-scatter.tooltip
+					TooltipDesc: button-command-bar-scatter.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
@@ -1396,8 +1396,8 @@ Container@PLAYER_WIDGETS:
 					Key: Stop
 					DisableKeyRepeat: true
 					DisableKeySound: true
-					TooltipText: Stop
-					TooltipDesc: Selected units will stop their current activity.\nSelected buildings will reset their rally point.\n\nActs immediately on selected targets.
+					TooltipText: button-command-bar-stop.tooltip
+					TooltipDesc: button-command-bar-stop.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
@@ -1420,8 +1420,8 @@ Container@PLAYER_WIDGETS:
 					Height: 26
 					Background: chrome-button-background
 					DisableKeySound: true
-					TooltipText: Waypoint Mode
-					TooltipDesc: Use Waypoint Mode to give multiple linking commands\nto the selected units. Units will execute the commands\nimmediately upon receiving them.\n\nLeft-click icon then give commands in the game world.\nHold <(Shift)> to activate temporarily while commanding units.
+					TooltipText: button-command-bar-queue-orders.tooltip
+					TooltipDesc: button-command-bar-queue-orders.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX
 					Children:
@@ -1447,8 +1447,8 @@ Container@PLAYER_WIDGETS:
 					Key: StanceAttackAnything
 					DisableKeyRepeat: true
 					DisableKeySound: true
-					TooltipText: Attack Anything Stance
-					TooltipDesc: Set the selected units to Attack Anything stance:\n - Units will attack enemy units and structures on sight\n - Units will pursue attackers across the battlefield
+					TooltipText: button-stance-bar-attackanything.tooltip
+					TooltipDesc: button-stance-bar-attackanything.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
@@ -1473,8 +1473,8 @@ Container@PLAYER_WIDGETS:
 					Key: StanceDefend
 					DisableKeyRepeat: true
 					DisableKeySound: true
-					TooltipText: Defend Stance
-					TooltipDesc: Set the selected units to Defend stance:\n - Units will attack enemy units on sight\n - Units will not move or pursue enemies
+					TooltipText: button-stance-bar-defend.tooltip
+					TooltipDesc: button-stance-bar-defend.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
@@ -1499,8 +1499,8 @@ Container@PLAYER_WIDGETS:
 					Key: StanceReturnFire
 					DisableKeyRepeat: true
 					DisableKeySound: true
-					TooltipText: Return Fire Stance
-					TooltipDesc: Set the selected units to Return Fire stance:\n - Units will retaliate against enemies that attack them\n - Units will not move or pursue enemies
+					TooltipText: button-stance-bar-returnfire.tooltip
+					TooltipDesc: button-stance-bar-returnfire.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
@@ -1525,8 +1525,8 @@ Container@PLAYER_WIDGETS:
 					Key: StanceHoldFire
 					DisableKeyRepeat: true
 					DisableKeySound: true
-					TooltipText: Hold Fire Stance
-					TooltipDesc: Set the selected units to Hold Fire stance:\n - Units will not fire upon enemies\n - Units will not move or pursue enemies
+					TooltipText: button-stance-bar-holdfire.tooltip
+					TooltipDesc: button-stance-bar-holdfire.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:
@@ -1553,7 +1553,7 @@ Container@PLAYER_WIDGETS:
 					Width: PARENT_RIGHT - 30
 					Height: 25
 					Align: Right
-					Text: Audio Muted
+					Text: label-mute-indicator
 					Contrast: true
 		Image@SIDEBAR_BACKGROUND:
 			X: WINDOW_RIGHT - WIDTH - 5
@@ -1576,7 +1576,7 @@ Container@PLAYER_WIDGETS:
 							Height: 26
 							Background: chrome-button-background
 							Key: Sell
-							TooltipText: Sell
+							TooltipText: button-top-buttons-sell-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							VisualHeight: 0
@@ -1598,7 +1598,7 @@ Container@PLAYER_WIDGETS:
 							Height: 26
 							Background: chrome-button-background
 							Key: Repair
-							TooltipText: Repair
+							TooltipText: button-top-buttons-repair-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							VisualHeight: 0
@@ -1620,7 +1620,7 @@ Container@PLAYER_WIDGETS:
 							Height: 26
 							Background: chrome-button-background
 							Key: PlaceBeacon
-							TooltipText: Place Beacon
+							TooltipText: button-top-buttons-beacon-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							VisualHeight: 0
@@ -1636,7 +1636,7 @@ Container@PLAYER_WIDGETS:
 							Width: 38
 							Height: 26
 							Background: chrome-button-background
-							TooltipText: Options
+							TooltipText: button-top-buttons-options-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							DisableWorldSounds: true
@@ -1755,7 +1755,7 @@ Container@PLAYER_WIDGETS:
 							Width: 38
 							Height: 26
 							Background: chrome-button-background
-							TooltipText: Buildings
+							TooltipText: button-production-types-building-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							ProductionGroup: Building
@@ -1777,7 +1777,7 @@ Container@PLAYER_WIDGETS:
 							Width: 38
 							Height: 26
 							Background: chrome-button-background
-							TooltipText: Support
+							TooltipText: button-production-types-defence-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							ProductionGroup: Defence
@@ -1799,7 +1799,7 @@ Container@PLAYER_WIDGETS:
 							Width: 38
 							Height: 26
 							Background: chrome-button-background
-							TooltipText: Infantry
+							TooltipText: button-production-types-infantry-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							ProductionGroup: Infantry
@@ -1821,7 +1821,7 @@ Container@PLAYER_WIDGETS:
 							Width: 38
 							Height: 26
 							Background: chrome-button-background
-							TooltipText: Vehicles
+							TooltipText: button-production-types-vehicle-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							ProductionGroup: Vehicle
@@ -1843,7 +1843,7 @@ Container@PLAYER_WIDGETS:
 							Width: 38
 							Height: 26
 							Background: chrome-button-background
-							TooltipText: Aircraft
+							TooltipText: button-production-types-aircraft-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 							ProductionGroup: Aircraft
@@ -1868,8 +1868,8 @@ Container@PLAYER_WIDGETS:
 			Width: 192
 			TooltipContainer: TOOLTIP_CONTAINER
 			TooltipTemplate: PRODUCTION_TOOLTIP_FACTIONSUFFIX
-			ReadyText: Ready
-			HoldText: On Hold
+			ReadyText: productionpalette-player-widgets-production-palette.ready
+			HoldText: productionpalette-player-widgets-production-palette.hold
 			HotkeyPrefix: Production
 			HotkeyCount: 24
 			SelectProductionBuildingHotkey: SelectProductionBuilding
@@ -1895,3 +1895,4 @@ Background@FMVPLAYER:
 			Y: 0
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
+

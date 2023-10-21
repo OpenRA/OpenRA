@@ -21,14 +21,14 @@ Container@OBSERVER_WIDGETS:
 					Width: PARENT_RIGHT - 30
 					Height: 25
 					Align: Right
-					Text: Audio Muted
+					Text: label-mute-indicator
 					Contrast: true
 		MenuButton@OPTIONS_BUTTON:
 			X: 5
 			Y: 5
 			Width: 160
 			Height: 25
-			Text: Options (Esc)
+			Text: button-observer-widgets-options
 			Font: Bold
 			Key: escape
 			DisableWorldSounds: true
@@ -116,7 +116,7 @@ Container@OBSERVER_WIDGETS:
 							Width: 26
 							Height: 26
 							Key: Pause
-							TooltipText: Pause
+							TooltipText: button-replay-player-pause-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							IgnoreChildMouseOver: true
 							Children:
@@ -132,7 +132,7 @@ Container@OBSERVER_WIDGETS:
 							Height: 26
 							Key: Pause
 							IgnoreChildMouseOver: true
-							TooltipText: Play
+							TooltipText: button-replay-player-play-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							Children:
 								Image@IMAGE_PLAY:
@@ -146,9 +146,9 @@ Container@OBSERVER_WIDGETS:
 							Width: 36
 							Height: 20
 							Key: ReplaySpeedSlow
-							TooltipText: Slow speed
+							TooltipText: button-replay-player-slow.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
-							Text: 50%
+							Text: button-replay-player-slow.label
 							Font: TinyBold
 						Button@BUTTON_REGULAR:
 							X: 55 + 45
@@ -156,9 +156,9 @@ Container@OBSERVER_WIDGETS:
 							Width: 38
 							Height: 20
 							Key: ReplaySpeedRegular
-							TooltipText: Regular speed
+							TooltipText: button-replay-player-regular.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
-							Text: 100%
+							Text: button-replay-player-regular.label
 							Font: TinyBold
 						Button@BUTTON_FAST:
 							X: 55 + 45 * 2
@@ -166,9 +166,9 @@ Container@OBSERVER_WIDGETS:
 							Width: 38
 							Height: 20
 							Key: ReplaySpeedFast
-							TooltipText: Fast speed
+							TooltipText: button-replay-player-fast.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
-							Text: 200%
+							Text: button-replay-player-fast.label
 							Font: TinyBold
 						Button@BUTTON_MAXIMUM:
 							X: 55 + 45 * 3
@@ -176,9 +176,9 @@ Container@OBSERVER_WIDGETS:
 							Width: 38
 							Height: 20
 							Key: ReplaySpeedMax
-							TooltipText: Maximum speed
+							TooltipText: button-replay-player-maximum.tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
-							Text: MAX
+							Text: button-replay-player-maximum.label
 							Font: TinyBold
 		Container@INGAME_OBSERVERSTATS_BG:
 			Logic: ObserverStatsLogic
@@ -235,7 +235,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 120
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Player
+									Text: label-basic-stats-player-header
 									Align: Left
 									Shadow: True
 								Label@CASH_HEADER:
@@ -244,7 +244,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Cash
+									Text: label-basic-stats-cash-header
 									Align: Right
 									Shadow: True
 								Label@POWER_HEADER:
@@ -253,7 +253,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Power
+									Text: label-basic-stats-power-header
 									Align: Center
 									Shadow: True
 								Label@KILLS_HEADER:
@@ -262,7 +262,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 40
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Kills
+									Text: label-basic-stats-kills-header
 									Align: Right
 									Shadow: True
 								Label@DEATHS_HEADER:
@@ -271,7 +271,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 60
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Deaths
+									Text: label-basic-stats-deaths-header
 									Align: Right
 									Shadow: True
 								Label@ASSETS_DESTROYED_HEADER:
@@ -280,7 +280,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Destroyed
+									Text: label-basic-stats-assets-destroyed-header
 									Align: Right
 									Shadow: True
 								Label@ASSETS_LOST_HEADER:
@@ -289,7 +289,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Lost
+									Text: label-basic-stats-assets-lost-header
 									Align: Right
 									Shadow: True
 								Label@EXPERIENCE_HEADER:
@@ -298,7 +298,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 60
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Score
+									Text: label-basic-stats-experience-header
 									Align: Right
 									Shadow: True
 								Label@ACTIONS_MIN_HEADER:
@@ -307,7 +307,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 60
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: APM
+									Text: label-basic-stats-actions-min-header
 									Align: Right
 									Shadow: True
 						Container@ECONOMY_STATS_HEADERS:
@@ -334,14 +334,14 @@ Container@OBSERVER_WIDGETS:
 									Width: 120
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Player
+									Text: label-economy-stats-player-header
 									Shadow: True
 								Label@CASH_HEADER:
 									X: 155
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Cash
+									Text: label-economy-stats-cash-header
 									Align: Right
 									Shadow: True
 								Label@INCOME_HEADER:
@@ -349,7 +349,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Income
+									Text: label-economy-stats-income-header
 									Align: Right
 									Shadow: True
 								Label@ASSETS_HEADER:
@@ -357,7 +357,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Assets
+									Text: label-economy-stats-assets-header
 									Align: Right
 									Shadow: True
 								Label@EARNED_HEADER:
@@ -365,7 +365,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Earned
+									Text: label-economy-stats-earned-header
 									Align: Right
 									Shadow: True
 								Label@SPENT_HEADER:
@@ -373,7 +373,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Spent
+									Text: label-economy-stats-spent-header
 									Align: Right
 									Shadow: True
 								Label@HARVESTERS_HEADER:
@@ -381,7 +381,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Harvesters
+									Text: label-economy-stats-harvesters-header
 									Align: Right
 									Shadow: True
 								Label@CARRYALLS_HEADER:
@@ -389,7 +389,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Carryalls
+									Text: label-economy-stats-carryalls-header
 									Align: Right
 									Shadow: True
 						Container@PRODUCTION_STATS_HEADERS:
@@ -417,7 +417,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 120
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Player
+									Text: label-production-stats-player-header
 									Align: Left
 									Shadow: True
 								Label@PRODUCTION_HEADER:
@@ -426,7 +426,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 100
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Production
+									Text: label-production-stats-header
 									Shadow: True
 						Container@SUPPORT_POWERS_HEADERS:
 							X: 0
@@ -453,7 +453,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 120
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Player
+									Text: label-support-powers-player-header
 									Align: Left
 									Shadow: True
 								Label@SUPPORT_POWERS_HEADER:
@@ -462,7 +462,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 100
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Support Powers
+									Text: label-support-powers-header
 									Shadow: True
 						Container@ARMY_HEADERS:
 							X: 0
@@ -489,7 +489,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 120
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Player
+									Text: label-army-player-header
 									Align: Left
 									Shadow: True
 								Label@ARMY_HEADER:
@@ -498,7 +498,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 100
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Army
+									Text: label-army-header
 									Shadow: True
 						Container@COMBAT_STATS_HEADERS:
 							X: 0
@@ -525,7 +525,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 120
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Player
+									Text: label-combat-stats-player-header
 									Align: Left
 									Shadow: True
 								Label@ASSETS_DESTROYED_HEADER:
@@ -534,7 +534,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 75
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Destroyed
+									Text: label-combat-stats-assets-destroyed-header
 									Align: Right
 									Shadow: True
 								Label@ASSETS_LOST_HEADER:
@@ -543,7 +543,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 75
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Lost
+									Text: label-combat-stats-assets-lost-header
 									Align: Right
 									Shadow: True
 								Label@UNITS_KILLED_HEADER:
@@ -552,7 +552,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 75
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: U. Killed
+									Text: label-combat-stats-units-killed-header
 									Align: Right
 									Shadow: True
 								Label@UNITS_DEAD_HEADER:
@@ -561,7 +561,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 75
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: U. Lost
+									Text: label-combat-stats-units-dead-header
 									Align: Right
 									Shadow: True
 								Label@BUILDINGS_KILLED_HEADER:
@@ -570,7 +570,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 75
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: B. Killed
+									Text: label-combat-stats-buildings-killed-header
 									Align: Right
 									Shadow: True
 								Label@BUILDINGS_DEAD_HEADER:
@@ -579,7 +579,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 75
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: B. Lost
+									Text: label-combat-stats-buildings-dead-header
 									Align: Right
 									Shadow: True
 								Label@ARMY_VALUE_HEADER:
@@ -588,7 +588,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 90
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Army Value
+									Text: label-combat-stats-army-value-header
 									Align: Right
 									Shadow: True
 								Label@VISION_HEADER:
@@ -597,7 +597,7 @@ Container@OBSERVER_WIDGETS:
 									Width: 60
 									Height: PARENT_BOTTOM
 									Font: Bold
-									Text: Vision
+									Text: label-combat-stats-vision-header
 									Align: Right
 									Shadow: True
 				ScrollPanel@PLAYER_STATS_PANEL:
@@ -1052,3 +1052,4 @@ Container@OBSERVER_WIDGETS:
 			X: WINDOW_RIGHT - WIDTH - 260
 			Y: 40
 			Width: 175
+

@@ -11,49 +11,49 @@ Container@LOBBY_PLAYER_BIN:
 				Label@LABEL_LOBBY_NAME:
 					Width: 200
 					Height: 25
-					Text: Player
+					Text: label-container-lobby-name
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_COLOR:
 					X: 210
 					Width: 94
 					Height: 25
-					Text: Color
+					Text: label-container-lobby-color
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_FACTION:
 					X: 309
 					Width: 120
 					Height: 25
-					Text: Faction
+					Text: label-container-lobby-faction
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_TEAM:
 					X: 460 - 25
 					Width: 50
 					Height: 25
-					Text: Team
+					Text: label-container-lobby-team
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_HANDICAP:
 					X: 491
 					Width: 75
 					Height: 25
-					Text: Handicap
+					Text: label-container-lobby-handicap
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_SPAWN:
 					X: 571
 					Width: 50
 					Height: 25
-					Text: Spawn
+					Text: label-container-lobby-spawn
 					Align: Left
 					Font: Bold
 				Label@LABEL_LOBBY_STATUS:
 					X: 627
 					Width: 20
 					Height: 25
-					Text: Ready
+					Text: label-container-lobby-status
 					Align: Left
 					Font: Bold
 		ScrollPanel@LOBBY_PLAYERS:
@@ -110,7 +110,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 15
 							Width: 190
 							Height: 25
-							Text: Name
+							Text: dropdownbutton-template-editable-player-slot-options
 							Font: Regular
 							Visible: false
 						DropDownButton@COLOR:
@@ -143,7 +143,7 @@ Container@LOBBY_PLAYER_BIN:
 									X: 40
 									Width: 50
 									Height: 25
-									Text: Faction
+									Text: label-template-editable-player-factionname
 						DropDownButton@TEAM_DROPDOWN:
 							X: 435
 							Width: 50
@@ -155,7 +155,7 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							Font: Regular
 							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipText: A handicap decreases the combat effectiveness of the player's forces
+							TooltipText: dropdownbutton-template-editable-player-handicap-dropdown-tooltip
 						DropDownButton@SPAWN_DROPDOWN:
 							X: 571
 							Width: 50
@@ -254,7 +254,7 @@ Container@LOBBY_PLAYER_BIN:
 									X: 40
 									Width: 50
 									Height: 25
-									Text: Faction
+									Text: label-faction-factionname
 						Label@TEAM:
 							X: 435
 							Width: 25
@@ -277,7 +277,7 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							Font: Regular
 							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipText: A handicap decreases the combat effectiveness of the player's forces
+							TooltipText: dropdownbutton-template-noneditable-player-handicap-dropdown-tooltip
 						Label@SPAWN:
 							X: 571
 							Width: 25
@@ -307,7 +307,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 15
 							Width: 190
 							Height: 25
-							Text: Name
+							Text: dropdownbutton-template-empty-slot-options
 							Font: Regular
 							Visible: false
 						Label@NAME:
@@ -319,7 +319,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 210
 							Width: 438
 							Height: 25
-							Text: Play in this slot
+							Text: button-template-empty-join
 							Font: Regular
 				Container@TEMPLATE_EDITABLE_SPECTATOR:
 					X: 5
@@ -368,7 +368,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 210
 							Width: 441
 							Height: 25
-							Text: Spectator
+							Text: label-template-editable-spectator
 							Align: Center
 							Font: Bold
 						Image@STATUS_IMAGE:
@@ -449,7 +449,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 210
 							Width: 441
 							Height: 25
-							Text: Spectator
+							Text: label-template-noneditable-spectator
 							Align: Center
 							Font: Bold
 						Image@STATUS_IMAGE:
@@ -471,10 +471,11 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 190
 							Height: 20
 							Font: Regular
-							Text: Allow Spectators?
+							Text: checkbox-template-new-spectator-toggle-spectators
 						Button@SPECTATE:
 							X: 210
 							Width: 438
 							Height: 25
-							Text: Spectate
+							Text: button-template-new-spectator-spectate
 							Font: Regular
+

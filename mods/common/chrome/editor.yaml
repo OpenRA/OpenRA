@@ -10,7 +10,7 @@ Background@NEW_MAP_BG:
 			Y: 21
 			Width: 300
 			Height: 25
-			Text: New Map
+			Text: label-new-map-bg-title
 			Align: Center
 			Font: Bold
 		Label@TILESET_LABEL:
@@ -19,7 +19,7 @@ Background@NEW_MAP_BG:
 			Width: 95
 			Height: 25
 			Align: Right
-			Text: Tileset:
+			Text: label-new-map-bg-tileset
 		DropDownButton@TILESET:
 			X: 120
 			Y: 60
@@ -31,7 +31,7 @@ Background@NEW_MAP_BG:
 			Width: 95
 			Height: 25
 			Align: Right
-			Text: Width:
+			Text: label-new-map-bg-width
 		TextField@WIDTH:
 			X: 120
 			Y: 95
@@ -46,7 +46,7 @@ Background@NEW_MAP_BG:
 			Width: 95
 			Height: 25
 			Align: Right
-			Text: Height:
+			Text: label-new-map-bg-height
 		TextField@HEIGHT:
 			X: 230
 			Y: 95
@@ -60,7 +60,7 @@ Background@NEW_MAP_BG:
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Create
+			Text: button-new-map-bg-create
 			Font: Bold
 			Key: return
 		Button@CANCEL_BUTTON:
@@ -68,7 +68,7 @@ Background@NEW_MAP_BG:
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Cancel
+			Text: button-new-map-bg-cancel
 			Font: Bold
 			Key: escape
 
@@ -84,7 +84,7 @@ Background@SAVE_MAP_PANEL:
 			Y: 21
 			Width: 250
 			Height: 25
-			Text: Save Map
+			Text: label-save-map-panel-title.label
 			Align: Center
 			Font: Bold
 		Label@TITLE_LABEL:
@@ -93,7 +93,7 @@ Background@SAVE_MAP_PANEL:
 			Width: 95
 			Height: 25
 			Align: Right
-			Text: Title:
+			Text: label-save-map-panel-title.label
 		TextField@TITLE:
 			X: 110
 			Y: 60
@@ -106,7 +106,7 @@ Background@SAVE_MAP_PANEL:
 			Width: 95
 			Height: 25
 			Align: Right
-			Text: Author:
+			Text: label-save-map-panel-author
 		TextField@AUTHOR:
 			X: 110
 			Y: 95
@@ -119,20 +119,20 @@ Background@SAVE_MAP_PANEL:
 			Width: 95
 			Height: 25
 			Align: Right
-			Text: Visibility:
+			Text: label-save-map-panel-visibility
 		DropDownButton@VISIBILITY_DROPDOWN:
 			X: 110
 			Y: 130
 			Width: 220
 			Height: 25
-			Text: Map Visibility
+			Text: dropdownbutton-save-map-panel-visibility-dropdown
 		Label@DIRECTORY_LABEL:
 			X: 10
 			Y: 165
 			Width: 95
 			Height: 25
 			Align: Right
-			Text: Directory:
+			Text: label-save-map-panel-directory
 		DropDownButton@DIRECTORY_DROPDOWN:
 			X: 110
 			Y: 165
@@ -144,7 +144,7 @@ Background@SAVE_MAP_PANEL:
 			Width: 95
 			Height: 25
 			Align: Right
-			Text: Filename:
+			Text: label-save-map-panel-filename
 		TextField@FILENAME:
 			X: 110
 			Y: 200
@@ -161,14 +161,14 @@ Background@SAVE_MAP_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Save
+			Text: button-save-map-panel
 			Font: Bold
 		Button@BACK_BUTTON:
 			X: 210
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Cancel
+			Text: button-save-map-panel-back
 			Font: Bold
 			Key: escape
 
@@ -234,7 +234,7 @@ Container@EDITOR_WORLD_ROOT:
 							Y: 45
 							Width: 55
 							Height: 25
-							Text: ID
+							Text: label-actor-edit-panel-id
 							Align: Right
 						TextField@ACTOR_ID:
 							X: 84
@@ -305,19 +305,19 @@ Container@EDITOR_WORLD_ROOT:
 									X: 15
 									Width: 75
 									Height: 25
-									Text: Delete
+									Text: button-container-delete
 									Font: Bold
 								Button@CANCEL_BUTTON:
 									X: 125
 									Width: 75
 									Height: 25
-									Text: Cancel
+									Text: button-container-cancel
 									Font: Bold
 								Button@OK_BUTTON:
 									X: 205
 									Width: 75
 									Height: 25
-									Text: OK
+									Text: button-container-ok
 									Font: Bold
 		ViewportController:
 			Width: WINDOW_RIGHT
@@ -360,7 +360,7 @@ Container@EDITOR_WORLD_ROOT:
 							Y: 12
 							Width: 55
 							Height: 25
-							Text: Search:
+							Text: label-tiles-bg-search
 							Align: Right
 							Font: TinyBold
 						TextField@SEARCH_TEXTFIELD:
@@ -372,7 +372,7 @@ Container@EDITOR_WORLD_ROOT:
 							Y: 36
 							Width: 55
 							Height: 25
-							Text: Filter:
+							Text: label-tiles-bg-categories
 							Align: Right
 							Font: TinyBold
 						DropDownButton@CATEGORIES_DROPDOWN:
@@ -438,7 +438,7 @@ Container@EDITOR_WORLD_ROOT:
 							Y: 12
 							Width: 55
 							Height: 25
-							Text: Search:
+							Text: label-actors-bg-search
 							Align: Right
 							Font: TinyBold
 						TextField@SEARCH_TEXTFIELD:
@@ -450,7 +450,7 @@ Container@EDITOR_WORLD_ROOT:
 							Y: 36
 							Width: 55
 							Height: 25
-							Text: Filter:
+							Text: label-actors-bg-categories
 							Align: Right
 							Font: TinyBold
 						DropDownButton@CATEGORIES_DROPDOWN:
@@ -463,7 +463,7 @@ Container@EDITOR_WORLD_ROOT:
 							Y: 60
 							Width: 55
 							Height: 25
-							Text: Owner:
+							Text: label-actors-bg-owners
 							Align: Right
 							Font: TinyBold
 						DropDownButton@OWNERS_DROPDOWN:
@@ -535,41 +535,41 @@ Container@EDITOR_WORLD_ROOT:
 					X: 0
 					Width: 70
 					Height: 25
-					Text: Tiles
+					Text: button-map-editor-tab-container-tiles.label
 					Font: Bold
 					Key: EditorTilesTab
 					TooltipTemplate: BUTTON_TOOLTIP
-					TooltipText: Tiles
+					TooltipText: button-map-editor-tab-container-tiles.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 				Button@OVERLAYS_TAB:
 					X: 70
 					Width: 90
 					Height: 25
-					Text: Overlays
+					Text: button-map-editor-tab-container-overlays.label
 					Font: Bold
 					Key: EditorOverlaysTab
 					TooltipTemplate: BUTTON_TOOLTIP
-					TooltipText: Overlays
+					TooltipText: button-map-editor-tab-container-overlays.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 				Button@ACTORS_TAB:
 					X: 160
 					Width: 70
 					Height: 25
-					Text: Actors
+					Text: button-map-editor-tab-container-actors.label
 					Font: Bold
 					Key: EditorActorsTab
 					TooltipTemplate: BUTTON_TOOLTIP
-					TooltipText: Actors
+					TooltipText: button-map-editor-tab-container-actors.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 				Button@HISTORY_TAB:
 					X: 230
 					Width: 70
 					Height: 25
-					Text: History
+					Text: button-map-editor-tab-container-history.label
 					Font: Bold
 					Key: EditorHistoryTab
 					TooltipTemplate: BUTTON_TOOLTIP
-					TooltipText: History
+					TooltipText: button-map-editor-tab-container-history.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 		MenuButton@OPTIONS_BUTTON:
 			Logic: MenuButtonsChromeLogic
@@ -578,8 +578,8 @@ Container@EDITOR_WORLD_ROOT:
 			Pause: true
 			Width: 60
 			Height: 25
-			Text: Menu
-			TooltipText: Menu
+			Text: button-editor-world-root-options.label
+			TooltipText: button-editor-world-root-options.tooltip
 			TooltipContainer: TOOLTIP_CONTAINER
 			Font: Bold
 			Key: escape
@@ -587,9 +587,9 @@ Container@EDITOR_WORLD_ROOT:
 			X: 70
 			Width: 90
 			Height: 25
-			Text: Copy/Paste
+			Text: button-editor-world-root-copypaste.label
 			TooltipTemplate: BUTTON_TOOLTIP
-			TooltipText: Copy
+			TooltipText: button-editor-world-root-copypaste.tooltip
 			TooltipContainer: TOOLTIP_CONTAINER
 			Font: Bold
 			Key: EditorCopy
@@ -597,33 +597,33 @@ Container@EDITOR_WORLD_ROOT:
 			X: 170
 			Width: 140
 			Height: 25
-			Text: Copy Filters
+			Text: dropdownbutton-editor-world-root-copyfilter-button
 			Font: Bold
 		Button@UNDO_BUTTON:
 			X: 320
 			Height: 25
 			Width: 70
-			Text: Undo
+			Text: button-editor-world-root-undo.label
 			Font: Bold
 			Key: EditorUndo
 			TooltipTemplate: BUTTON_TOOLTIP
-			TooltipText: Undo last step
+			TooltipText: button-editor-world-root-undo.tooltip
 			TooltipContainer: TOOLTIP_CONTAINER
 		Button@REDO_BUTTON:
 			X: 400
 			Height: 25
 			Width: 70
-			Text: Redo
+			Text: button-editor-world-root-redo.label
 			Font: Bold
 			Key: EditorRedo
 			TooltipTemplate: BUTTON_TOOLTIP
-			TooltipText: Redo last step
+			TooltipText: button-editor-world-root-redo.tooltip
 			TooltipContainer: TOOLTIP_CONTAINER
 		DropDownButton@OVERLAY_BUTTON:
 			X: 480
 			Width: 140
 			Height: 25
-			Text: Overlays
+			Text: dropdownbutton-editor-world-root-overlay-button
 			Font: Bold
 		Label@COORDINATE_LABEL:
 			X: 630
@@ -654,14 +654,14 @@ ScrollPanel@CATEGORY_FILTER_PANEL:
 					Y: 0 - 5
 					Width: 93
 					Height: 25
-					Text: All
+					Text: button-select-categories-buttons-all
 					Font: Bold
 				Button@SELECT_NONE:
 					X: 10 + 93 + 10
 					Y: 0 - 5
 					Width: 93
 					Height: 25
-					Text: None
+					Text: button-select-categories-buttons-none
 					Font: Bold
 		Checkbox@CATEGORY_TEMPLATE:
 			X: 5
@@ -694,3 +694,4 @@ ScrollPanel@OVERLAY_PANEL:
 			Width: PARENT_RIGHT - 29
 			Height: 20
 			Visible: false
+

@@ -11,7 +11,7 @@ Container@CONNECTING_PANEL:
 			Font: BigBold
 			Contrast: true
 			Align: Center
-			Text: Connecting
+			Text: label-connecting-panel-title
 		Background@bg:
 			Width: 370
 			Height: 90
@@ -21,7 +21,7 @@ Container@CONNECTING_PANEL:
 					Y: (PARENT_BOTTOM - HEIGHT) / 2
 					Width: PARENT_RIGHT
 					Height: 25
-					Text: Connecting...
+					Text: label-bg-connecting-desc
 					Font: Bold
 					Align: Center
 		Button@ABORT_BUTTON:
@@ -29,7 +29,7 @@ Container@CONNECTING_PANEL:
 			Y: 89
 			Width: 140
 			Height: 35
-			Text: Abort
+			Text: button-connecting-panel-abort
 
 Container@CONNECTIONFAILED_PANEL:
 	Logic: ConnectionFailedLogic
@@ -54,7 +54,7 @@ Container@CONNECTIONFAILED_PANEL:
 					Y: 16
 					Width: PARENT_RIGHT
 					Height: 25
-					Text: Failed to connect
+					Text: label-connection-background-connecting-desc
 					Font: Bold
 					Align: Center
 				Label@CONNECTION_ERROR:
@@ -69,7 +69,7 @@ Container@CONNECTIONFAILED_PANEL:
 					Width: 95
 					Height: 25
 					Align: Right
-					Text: Password:
+					Text: label-connection-background-password
 					Font: Bold
 				PasswordField@PASSWORD:
 					X: 140
@@ -82,20 +82,20 @@ Container@CONNECTIONFAILED_PANEL:
 			Y: 84
 			Width: 140
 			Height: 35
-			Text: Abort
+			Text: button-connectionfailed-panel-abort
 		Button@QUIT_BUTTON:
 			Key: escape
 			Y: 84
 			Width: 140
 			Height: 35
-			Text: Quit
+			Text: button-connectionfailed-panel-quit
 		Button@RETRY_BUTTON:
 			Key: return
 			X: 230
 			Y: 84
 			Width: 140
 			Height: 35
-			Text: Retry
+			Text: button-connectionfailed-panel-retry
 
 Container@CONNECTION_SWITCHMOD_PANEL:
 	Logic: ConnectionSwitchModLogic
@@ -110,7 +110,7 @@ Container@CONNECTION_SWITCHMOD_PANEL:
 			Font: BigBold
 			Contrast: true
 			Align: Center
-			Text: Switch Mod
+			Text: label-connection-switchmod-panel-title
 		Background@CONNECTION_BACKGROUND:
 			Width: 370
 			Height: 120
@@ -120,7 +120,7 @@ Container@CONNECTION_SWITCHMOD_PANEL:
 					Y: 16
 					Width: PARENT_RIGHT
 					Height: 25
-					Text: This server is running a different mod:
+					Text: label-connection-background-desc
 					Font: Bold
 					Align: Center
 				Container@MOD_CONTAINER:
@@ -150,7 +150,7 @@ Container@CONNECTION_SWITCHMOD_PANEL:
 					Y: 81
 					Width: PARENT_RIGHT
 					Height: 25
-					Text: Switch mods and join server?
+					Text: label-connection-background-desc2
 					Font: Bold
 					Align: Center
 		Button@ABORT_BUTTON:
@@ -158,11 +158,12 @@ Container@CONNECTION_SWITCHMOD_PANEL:
 			Y: 119
 			Width: 140
 			Height: 35
-			Text: Abort
+			Text: button-connection-switchmod-panel-abort
 		Button@SWITCH_BUTTON:
 			Key: return
 			X: 230
 			Y: 119
 			Width: 140
 			Height: 35
-			Text: Switch
+			Text: button-connection-switchmod-panel-switch
+
