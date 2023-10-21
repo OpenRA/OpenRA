@@ -195,3 +195,36 @@ LPST:
 		TrailCount: 3
 	RenderVoxels:
 		Scale: 11.5
+
+TRUCKT:
+	Inherits: ^CivilianVoxelVehicle
+	Inherits@selection: ^SelectableSupportUnit
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Critical Goods
+	Health:
+		HP: 20000
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 56
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel
+		Range: 5c0
+		MaxHeightDelta: 3
+	MustBeDestroyed:
+		RequiredForShortGame: true
+	GrantConditionOnShortGame:
+		Condition: shortgame-enabled
+	TooltipDescription@Enemy:
+		Description: Destroy it to checkmate!
+		ValidRelationships: Enemy
+		RequiresCondition: shortgame-enabled
+	TooltipDescription@Ally:
+		Description: Protect it at all cost!
+		ValidRelationships: Ally
+		RequiresCondition: shortgame-enabled
+	KillsSelf:
+		RemoveInstead: true
+		RequiresCondition: !shortgame-enabled

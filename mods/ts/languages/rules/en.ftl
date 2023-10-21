@@ -24,6 +24,7 @@ options-starting-units =
     .light = Light
     .medium = Medium
     .heavy = Heavy
+    .nobase = No Base
 
 dropdown-map-creeps =
     .label = Creep Actors

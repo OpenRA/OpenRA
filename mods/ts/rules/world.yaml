@@ -308,7 +308,7 @@ World:
 		GameSpeedDropdownDisplayOrder: 1
 	CreateMapPlayers:
 	StartingUnits@MCV:
-		Class: none
+		Class: mcv
 		ClassName: options-starting-units.mcv-only
 		Factions: gdi, nod
 		BaseActor: mcv
@@ -360,9 +360,22 @@ World:
 		SupportActors: e1,e1,e3,e3,cyborg,bggy,bike,ttnk
 		InnerSupportRadius: 3
 		OuterSupportRadius: 5
+	StartingUnits@nobase.gdi:
+		Class: none
+		ClassName: options-starting-units.nobase
+		Factions: gdi
+		BaseActor: truckt
+		SupportActors: e1,e1,e2,e2,jumpjet,smech,smech,mmch
+	StartingUnits@nobase.nod:
+		Class: none
+		ClassName: options-starting-units.nobase
+		Factions: nod
+		BaseActor: truckt
+		SupportActors: e1,e1,e3,e3,cyborg,bggy,bike,ttnk
 	MapStartingLocations:
 		SeparateTeamSpawnsCheckboxDisplayOrder: 6
 	SpawnStartingUnits:
+		StartingUnitsClass: mcv
 	CrateSpawner:
 		Minimum: 1
 		Maximum: 6
