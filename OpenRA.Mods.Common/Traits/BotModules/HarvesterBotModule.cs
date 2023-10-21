@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 				Actor = actor;
 				Harvester = actor.Trait<Harvester>();
 				Parachutable = actor.TraitOrDefault<Parachutable>();
-				Mobile = actor.Trait<Mobile>();
+				Mobile = actor.TraitOrDefault<Mobile>();
 			}
 		}
 
@@ -110,6 +110,9 @@ namespace OpenRA.Mods.Common.Traits
 			// Find idle harvesters and give them orders:
 			foreach (var h in harvesters)
 			{
+				if (h.Value.Mobile == null)
+					continue;
+
 				if (!h.Key.IsIdle)
 				{
 					// Ignore this actor if FindAndDeliverResources is working fine or it is performing a different activity
