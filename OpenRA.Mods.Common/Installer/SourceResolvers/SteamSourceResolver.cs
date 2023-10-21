@@ -109,8 +109,13 @@ namespace OpenRA.Mods.Common.Installer
 					continue;
 
 				foreach (var e in ParseLibraryManifest(libraryFoldersPath).Where(e => e.Item1 == "path"))
-					yield return e.Item2;
+					yield return Unescape(e.Item2);
 			}
+		}
+
+		static string Unescape(string path)
+		{
+			return path.Replace(@"\\", @"\");
 		}
 
 		static Dictionary<string, string> ParseGameManifest(string path)
