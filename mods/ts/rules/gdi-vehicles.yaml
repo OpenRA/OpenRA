@@ -94,10 +94,8 @@ HVR:
 		RequiresCondition: !empdisable
 		BobDistance: -64
 		InitialHeight: 384
-	Carryable:
-		CarriedCondition: carried
 	LeavesTrails:
-		RequiresCondition: !inside-tunnel && !carried
+		RequiresCondition: !inside-tunnel
 		Image: wake
 		Palette: effect
 		TerrainTypes: Water
