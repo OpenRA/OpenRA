@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class HarvesterInfo : DockClientBaseInfo, Requires<MobileInfo>, Requires<IStoresResourcesInfo>, IRulesetLoaded
+	public class HarvesterInfo : DockClientBaseInfo, Requires<IStoresResourcesInfo>, IRulesetLoaded
 	{
 		[Desc("Docking type")]
 		public readonly BitSet<DockType> Type = new("Unload");
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class Harvester : DockClientBase<HarvesterInfo>, IIssueOrder, IResolveOrder, IOrderVoice,
 		ISpeedModifier, ISync, INotifyCreated
 	{
-		readonly Mobile mobile;
+		Mobile mobile;
 		readonly IResourceLayer resourceLayer;
 		readonly ResourceClaimLayer claimLayer;
 		readonly IStoresResources[] storesResources;
@@ -104,7 +104,6 @@ namespace OpenRA.Mods.Common.Traits
 		public Harvester(Actor self, HarvesterInfo info)
 			: base(self, info)
 		{
-			mobile = self.Trait<Mobile>();
 			storesResources = self.TraitsImplementing<IStoresResources>().Where(sr => info.Resources.Any(r => sr.HasType(r))).ToArray();
 			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
@@ -112,10 +111,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected override void Created(Actor self)
 		{
+			mobile = self.TraitOrDefault<Mobile>();
 			UpdateCondition(self);
 
 			// Note: This is queued in a FrameEndTask because otherwise the activity is dropped/overridden while moving out of a factory.
-			if (Info.SearchOnCreation)
+			if (Info.SearchOnCreation && mobile != null)
 				self.World.AddFrameEndTask(w => self.QueueActivity(new FindAndDeliverResources(self)));
 
 			base.Created(self);
@@ -218,7 +218,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				if (IsTraitDisabled)
+				if (IsTraitDisabled || mobile == null)
 					yield break;
 
 				yield return new HarvestOrderTargeter();
@@ -235,7 +235,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Harvest")
+			if (order.OrderString == "Harvest" && mobile != null)
 				return Info.HarvestVoice;
 
 			return null;
@@ -243,7 +243,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Harvest")
+			if (order.OrderString == "Harvest" && mobile != null)
 			{
 				CPos loc;
 				if (order.Target.Type != TargetType.Invalid)
