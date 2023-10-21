@@ -979,7 +979,6 @@ namespace OpenRA.Mods.Common.Traits
 			public LeaveProductionActivity(Actor self, int delay, CPos[] rallyPoint, ReturnToCellActivity returnToCell)
 			{
 				mobile = self.Trait<Mobile>();
-				IsInterruptible = false;
 				this.delay = delay;
 				this.rallyPoint = rallyPoint;
 				this.returnToCell = returnToCell;
@@ -987,14 +986,15 @@ namespace OpenRA.Mods.Common.Traits
 
 			protected override void OnFirstRun(Actor self)
 			{
+				// It is vital that ReturnToCell is queued first as it needs the power to intercept a possible cancellation of this activity.
 				if (returnToCell != null)
-					self.QueueActivity(returnToCell);
+					QueueChild(returnToCell);
 				else if (delay > 0)
-					self.QueueActivity(new Wait(delay));
+					QueueChild(new Wait(delay));
 
 				if (rallyPoint != null)
 					foreach (var cell in rallyPoint)
-						self.QueueActivity(new AttackMoveActivity(self, () => mobile.MoveTo(cell, 1, evaluateNearestMovableCell: true, targetLineColor: Color.OrangeRed)));
+						QueueChild(new AttackMoveActivity(self, () => mobile.MoveTo(cell, 1, evaluateNearestMovableCell: true, targetLineColor: Color.OrangeRed)));
 			}
 		}
 
