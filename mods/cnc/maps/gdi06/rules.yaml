@@ -16,7 +16,7 @@ World:
 		ParticleColors: 304074, 28386C, 202C60, 182C54
 		LineTailAlphaValue: 150
 		ParticleSize: 1, 1
-	GlobalLightingPaletteEffect:
+	TintPostProcessEffect:
 		Red: 0.75
 		Green: 0.85
 		Blue: 1.5

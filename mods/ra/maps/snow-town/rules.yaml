@@ -5,7 +5,7 @@ World:
 		UseSquares: true
 		ParticleColors: ECECEC, E4E4E4, D0D0D0, BCBCBC
 		LineTailAlphaValue: 0
-	GlobalLightingPaletteEffect:
+	TintPostProcessEffect:
 		Red: 0.9
 		Green: 0.9
 		Blue: 1.0

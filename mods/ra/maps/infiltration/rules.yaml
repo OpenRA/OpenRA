@@ -1,5 +1,5 @@
 World:
-	GlobalLightingPaletteEffect@HAZE:
+	TintPostProcessEffect@HAZE:
 		Red: 1
 		Green: 0.55
 		Blue: 0
