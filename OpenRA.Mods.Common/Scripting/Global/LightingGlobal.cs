@@ -19,15 +19,13 @@ namespace OpenRA.Mods.Common.Scripting
 	public class LightingGlobal : ScriptGlobal
 	{
 		readonly IEnumerable<FlashPostProcessEffect> flashEffects;
-		readonly GlobalLightingPaletteEffect lighting;
-		readonly bool hasLighting;
+		readonly TintPostProcessEffect tintEffect;
 
 		public LightingGlobal(ScriptContext context)
 			: base(context)
 		{
 			flashEffects = context.World.WorldActor.TraitsImplementing<FlashPostProcessEffect>();
-			lighting = context.World.WorldActor.TraitOrDefault<GlobalLightingPaletteEffect>();
-			hasLighting = lighting != null;
+			tintEffect = context.World.WorldActor.TraitOrDefault<TintPostProcessEffect>();
 		}
 
 		[Desc("Controls the `" + nameof(FlashPostProcessEffect) + "` trait.")]
@@ -40,26 +38,26 @@ namespace OpenRA.Mods.Common.Scripting
 
 		public double Red
 		{
-			get => hasLighting ? lighting.Red : 1d;
-			set { if (hasLighting) lighting.Red = (float)value; }
+			get => tintEffect?.Red ?? 1;
+			set { if (tintEffect != null) tintEffect.Red = (float)value; }
 		}
 
 		public double Green
 		{
-			get => hasLighting ? lighting.Green : 1d;
-			set { if (hasLighting) lighting.Green = (float)value; }
+			get => tintEffect?.Green ?? 1;
+			set { if (tintEffect != null) tintEffect.Green = (float)value; }
 		}
 
 		public double Blue
 		{
-			get => hasLighting ? lighting.Blue : 1d;
-			set { if (hasLighting) lighting.Blue = (float)value; }
+			get => tintEffect?.Blue ?? 1;
+			set { if (tintEffect != null) tintEffect.Blue = (float)value; }
 		}
 
 		public double Ambient
 		{
-			get => hasLighting ? lighting.Ambient : 1d;
-			set { if (hasLighting) lighting.Ambient = (float)value; }
+			get => tintEffect?.Ambient ?? 1;
+			set { if (tintEffect != null) tintEffect.Ambient = (float)value; }
 		}
 	}
 }
