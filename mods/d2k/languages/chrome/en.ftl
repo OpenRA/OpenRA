@@ -81,10 +81,10 @@ button-command-bar-attack-move =
    .tooltip = Attack Move
    .tooltipdesc = Selected units will move to the desired location
     and attack any enemies they encounter en route.
-    
+
     Hold <(Ctrl)> while targeting to order an Assault Move
     that attacks any units or structures encountered en route.
-    
+
     Left-click icon then right-click on target location.
 
 button-command-bar-force-move =
@@ -93,7 +93,7 @@ button-command-bar-force-move =
      - Default activity for the target is suppressed
      - Vehicles will attempt to crush enemies at the target location
      - Deployed thumpers will undeploy and move to the target location
-    
+
     Left-click icon then right-click on target.
     Hold <(Alt)> to activate temporarily while commanding units.
 
@@ -102,14 +102,14 @@ button-command-bar-force-attack =
    .tooltipdesc = Selected units will attack the targeted unit or location
      - Default activity for the target is suppressed
      - Allows targeting of own or ally forces
-    
+
     Left-click icon then right-click on target.
     Hold <(Ctrl)> to activate temporarily while commanding units.
 
 button-command-bar-guard =
    .tooltip = Guard
    .tooltipdesc = Selected units will follow the targeted unit.
-    
+
     Left-click icon then right-click on target unit.
 
 button-command-bar-deploy =
@@ -118,21 +118,21 @@ button-command-bar-deploy =
      - MCVs will unpack into a Construction Yard
      - Thumpers will start or stop attracting worms
      - Devastators will become immobilized and explode
-    
+
     Acts immediately on selected units.
 
 button-command-bar-scatter =
    .tooltip = Scatter
    .tooltipdesc = Selected units will stop their current activity
     and move to a nearby location.
-    
+
     Acts immediately on selected units.
 
 button-command-bar-stop =
    .tooltip = Stop
    .tooltipdesc = Selected units will stop their current activity.
     Selected buildings will reset their rally point.
-    
+
     Acts immediately on selected targets.
 
 button-command-bar-queue-orders =
@@ -140,7 +140,7 @@ button-command-bar-queue-orders =
    .tooltipdesc = Use Waypoint Mode to give multiple linking commands
     to the selected units. Units will execute the commands
     immediately upon receiving them.
-    
+
     Left-click icon then give commands in the game world.
     Hold <(Shift)> to activate temporarily while commanding units.
 

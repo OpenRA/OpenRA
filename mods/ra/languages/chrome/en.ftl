@@ -2,6 +2,10 @@
 label-gamesave-loading-screen-title = Loading Saved Game
 label-gamesave-loading-screen-desc = Press Escape to cancel loading and return to the main menu
 
+## missionbrowser.yaml
+label-mission-info-difficulty-desc = Difficulty:
+label-mission-info-gamespeed-desc = Speed:
+
 ## ingame-observer.yaml
 button-observer-widgets-pause-tooltip = Pause
 button-observer-widgets-play-tooltip = Play
@@ -68,10 +72,10 @@ button-command-bar-attack-move =
    .tooltip = Attack Move
    .tooltipdesc = Selected units will move to the desired location
     and attack any enemies they encounter en route.
-    
+
     Hold <(Ctrl)> while targeting to order an Assault Move
     that attacks any units or structures encountered en route.
-    
+
     Left-click icon then right-click on target location.
 
 button-command-bar-force-move =
@@ -81,7 +85,7 @@ button-command-bar-force-move =
      - Vehicles will attempt to crush enemies at the target location
      - Helicopters will land at the target location
      - Chrono Tanks will teleport towards the target location
-    
+
     Left-click icon then right-click on target.
     Hold <(Alt)> to activate temporarily while commanding units.
 
@@ -92,14 +96,14 @@ button-command-bar-force-attack =
      - Allows targeting of own or ally forces
      - Long-range artillery units will always target the
        location, ignoring units and buildings
-    
+
     Left-click icon then right-click on target.
     Hold <(Ctrl)> to activate temporarily while commanding units.
 
 button-command-bar-guard =
    .tooltip = Guard
    .tooltipdesc = Selected units will follow the targeted unit.
-    
+
     Left-click icon then right-click on target unit.
 
 button-command-bar-deploy =
@@ -111,21 +115,21 @@ button-command-bar-deploy =
      - Demolition Trucks and MAD Tanks will self-destruct
      - Minelayers will deploy a mine
      - Aircraft will return to base
-    
+
     Acts immediately on selected units.
 
 button-command-bar-scatter =
    .tooltip = Scatter
    .tooltipdesc = Selected units will stop their current activity
     and move to a nearby location.
-    
+
     Acts immediately on selected units.
 
 button-command-bar-stop =
    .tooltip = Stop
    .tooltipdesc = Selected units will stop their current activity.
     Selected buildings will reset their rally point.
-    
+
     Acts immediately on selected targets.
 
 button-command-bar-queue-orders =
@@ -133,7 +137,7 @@ button-command-bar-queue-orders =
    .tooltipdesc = Use Waypoint Mode to give multiple linking commands
     to the selected units. Units will execute the commands
     immediately upon receiving them.
-    
+
     Left-click icon then give commands in the game world.
     Hold <(Shift)> to activate temporarily while commanding units.
 
