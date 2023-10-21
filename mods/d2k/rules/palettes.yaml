@@ -64,6 +64,7 @@
 		BasePalette: player
 		Alpha: 0.68
 		Premultiply: false
+	MenuPostProcessEffect:
 	FlashPaletteEffect:
 	PaletteFromPlayerPaletteWithAlpha@cloak:
 		BaseName: cloak
