@@ -362,8 +362,6 @@ button-mapchooser-panel-cancel = Back
 
 ## missionbrowser.yaml
 label-missionbrowser-panel-title = Missions
-label-mission-info-difficulty-desc = Difficulty:
-label-mission-info-gamespeed-desc = Speed:
 button-missionbrowser-panel-start-briefing-video = Watch Briefing
 button-missionbrowser-panel-stop-briefing-video = Stop Briefing
 button-missionbrowser-panel-start-info-video = Watch Info Video

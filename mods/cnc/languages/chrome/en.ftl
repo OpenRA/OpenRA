@@ -146,11 +146,20 @@ checkbox-debug-panel-show-geometry = Show Render Geometry
 checkbox-debug-panel-show-terrain-overlay = Show Terrain Geometry
 checkbox-debug-panel-show-screenmap = Show Screen Map
 
+## ingame-debug-hpf.yaml
+dropdownbutton-hpf-overlay-locomotor = Select Locomotor
+dropdownbutton-hpf-overlay-check = Select BlockedByActor
+
 ## ingame-info.yaml
 label-game-info-panel-title = Game Information
 
 ## ingame-infoobjectives.yaml
 label-mission-objectives = Mission:
+
+## ingame-infoscripterror.yaml
+label-script-error-panel-desca = The map script has encountered a fatal error
+label-script-error-panel-descb = The details of the error have been saved to lua.log in the logs directory.
+label-script-error-panel-descc = Please send this file to the map author so that they can fix this issue.
 
 ## ingame-infostats.yaml
 label-objective-mission = Mission:
@@ -222,10 +231,10 @@ button-command-bar-attack-move =
    .tooltip = Attack Move
    .tooltipdesc = Selected units will move to the desired location
     and attack any enemies they encounter en route.
-    
+
     Hold <(Ctrl)> while targeting to order an Assault Move
     that attacks any units or structures encountered en route.
-    
+
     Left-click icon then right-click on target location.
 
 button-command-bar-force-move =
@@ -234,7 +243,7 @@ button-command-bar-force-move =
      - Default activity for the target is suppressed
      - Vehicles will attempt to crush enemies at the target location
      - Helicopters will land at the target location
-    
+
     Left-click icon then right-click on target.
     Hold <(Alt)> to activate temporarily while commanding units.
 
@@ -245,14 +254,14 @@ button-command-bar-force-attack =
      - Allows targeting of own or ally forces
      - Long-range artillery units will always target the
        location, ignoring units and buildings
-    
+
     Left-click icon then right-click on target.
     Hold <(Ctrl)> to activate temporarily while commanding units.
 
 button-command-bar-guard =
    .tooltip = Guard
    .tooltipdesc = Selected units will follow the targeted unit.
-    
+
     Left-click icon then right-click on target unit.
 
 button-command-bar-deploy =
@@ -261,21 +270,21 @@ button-command-bar-deploy =
      - MCVs will unpack into a Construction Yard
      - Construction Yards will re-pack into a MCV
      - Transports will unload their passengers
-    
+
     Acts immediately on selected units.
 
 button-command-bar-scatter =
    .tooltip = Scatter
    .tooltipdesc = Selected units will stop their current activity
     and move to a nearby location.
-    
+
     Acts immediately on selected units.
 
 button-command-bar-stop =
    .tooltip = Stop
    .tooltipdesc = Selected units will stop their current activity.
     Selected buildings will reset their rally point.
-    
+
     Acts immediately on selected targets.
 
 button-command-bar-queue-orders =
@@ -283,7 +292,7 @@ button-command-bar-queue-orders =
    .tooltipdesc = Use Waypoint Mode to give multiple linking commands
     to the selected units. Units will execute the commands
     immediately upon receiving them.
-    
+
     Left-click icon then give commands in the game world.
     Hold <(Shift)> to activate temporarily while commanding units.
 
