@@ -29,7 +29,7 @@ Background@SERVER_LOBBY:
 			Width: 185
 			Height: 25
 			Font: Bold
-			Text: Slot Admin
+			Text: dropdownbutton-server-lobby-slots
 		Container@SKIRMISH_TABS:
 			X: 695 - WIDTH
 			Width: 486
@@ -40,21 +40,21 @@ Background@SERVER_LOBBY:
 					Width: 162
 					Height: 31
 					Font: Bold
-					Text: Players
+					Text: button-skirmish-tabs-players-tab
 				Button@OPTIONS_TAB:
 					X: 162
 					Y: 285
 					Width: 162
 					Height: 31
 					Font: Bold
-					Text: Options
+					Text: button-skirmish-tabs-options-tab
 				Button@MUSIC_TAB:
 					X: 2 * 162
 					Y: 285
 					Width: 162
 					Height: 31
 					Font: Bold
-					Text: Music
+					Text: button-skirmish-tabs-music-tab
 		Container@MULTIPLAYER_TABS:
 			X: 695 - WIDTH
 			Width: 486
@@ -65,28 +65,28 @@ Background@SERVER_LOBBY:
 					Width: 121
 					Height: 31
 					Font: Bold
-					Text: Players
+					Text: button-multiplayer-tabs-players-tab
 				Button@OPTIONS_TAB:
 					X: 121
 					Y: 285
 					Width: 122
 					Height: 31
 					Font: Bold
-					Text: Options
+					Text: button-multiplayer-tabs-options-tab
 				Button@MUSIC_TAB:
 					X: 243
 					Y: 285
 					Width: 121
 					Height: 31
 					Font: Bold
-					Text: Music
+					Text: button-multiplayer-tabs-music-tab
 				Button@SERVERS_TAB:
 					X: 364
 					Y: 285
 					Width: 122
 					Height: 31
 					Font: Bold
-					Text: Servers
+					Text: button-multiplayer-tabs-servers-tab
 		Container@TOP_PANELS_ROOT:
 			X: 20
 			Y: 67
@@ -97,7 +97,7 @@ Background@SERVER_LOBBY:
 			Y: 291
 			Width: 174
 			Height: 25
-			Text: Change Map
+			Text: button-server-lobby-changemap
 			Font: Bold
 		Container@LOBBYCHAT:
 			X: 20
@@ -114,10 +114,10 @@ Background@SERVER_LOBBY:
 					Y: PARENT_BOTTOM - HEIGHT
 					Width: 50
 					Height: 25
-					Text: Team
+					Text: button-lobbychat-chat-mode.label
 					Font: Bold
 					Key: ToggleChatMode
-					TooltipText: Toggle chat mode
+					TooltipText: button-lobbychat-chat-mode.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 				TextField@CHAT_TEXTFIELD:
 					X: 55
@@ -129,14 +129,15 @@ Background@SERVER_LOBBY:
 			Y: PARENT_BOTTOM - HEIGHT - 20
 			Width: 120
 			Height: 25
-			Text: Start Game
+			Text: button-server-lobby-start-game
 			Font: Bold
 		Button@DISCONNECT_BUTTON:
 			X: PARENT_RIGHT - WIDTH - 20
 			Y: PARENT_BOTTOM - HEIGHT - 20
 			Width: 120
 			Height: 25
-			Text: Leave Game
+			Text: button-server-lobby-disconnect
 			Font: Bold
 		Container@FACTION_DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
+

@@ -9,7 +9,7 @@ Background@REPLAYBROWSER_PANEL:
 			Y: 16
 			Width: PARENT_RIGHT
 			Height: 25
-			Text: Replay Viewer
+			Text: label-replaybrowser-panel-title
 			Align: Center
 			Font: Bold
 		Container@FILTER_AND_MANAGE_CONTAINER:
@@ -29,104 +29,104 @@ Background@REPLAYBROWSER_PANEL:
 							Height: 25
 							Font: Bold
 							Align: Center
-							Text: Filter
+							Text: label-filters-title
 						Label@FLT_GAMETYPE_DESC:
 							X: 0
 							Y: 30
 							Width: 80
 							Height: 25
-							Text: Type:
+							Text: label-filters-flt-gametype-desc
 							Align: Right
 						DropDownButton@FLT_GAMETYPE_DROPDOWNBUTTON:
 							X: 85
 							Y: 30
 							Width: PARENT_RIGHT - 85
 							Height: 25
-							Text: Any
+							Text: dropdownbutton-filters-flt-gametype
 						Label@FLT_DATE_DESC:
 							X: 0
 							Y: 60
 							Width: 80
 							Height: 25
-							Text: Date:
+							Text: label-filters-flt-date-desc
 							Align: Right
 						DropDownButton@FLT_DATE_DROPDOWNBUTTON:
 							X: 85
 							Y: 60
 							Width: PARENT_RIGHT - 85
 							Height: 25
-							Text: Any
+							Text: dropdownbutton-filters-flt-date
 						Label@FLT_DURATION_DESC:
 							X: 0
 							Y: 90
 							Width: 80
 							Height: 25
-							Text: Duration:
+							Text: label-filters-flt-duration-desc
 							Align: Right
 						DropDownButton@FLT_DURATION_DROPDOWNBUTTON:
 							X: 85
 							Y: 90
 							Width: PARENT_RIGHT - 85
 							Height: 25
-							Text: Any
+							Text: dropdownbutton-filters-flt-duration
 						Label@FLT_MAPNAME_DESC:
 							X: 0
 							Y: 120
 							Width: 80
 							Height: 25
-							Text: Map:
+							Text: label-filters-flt-mapname-desc
 							Align: Right
 						DropDownButton@FLT_MAPNAME_DROPDOWNBUTTON:
 							X: 85
 							Y: 120
 							Width: PARENT_RIGHT - 85
 							Height: 25
-							Text: Any
+							Text: dropdownbutton-filters-flt-mapname
 						Label@FLT_PLAYER_DESC:
 							X: 0
 							Y: 150
 							Width: 80
 							Height: 25
-							Text: Player:
+							Text: label-filters-flt-player-desc
 							Align: Right
 						DropDownButton@FLT_PLAYER_DROPDOWNBUTTON:
 							X: 85
 							Y: 150
 							Width: PARENT_RIGHT - 85
 							Height: 25
-							Text: Anyone
+							Text: dropdownbutton-filters-flt-player
 						Label@FLT_OUTCOME_DESC:
 							X: 0
 							Y: 180
 							Width: 80
 							Height: 25
-							Text: Outcome:
+							Text: label-filters-flt-outcome-desc
 							Align: Right
 						DropDownButton@FLT_OUTCOME_DROPDOWNBUTTON:
 							X: 85
 							Y: 180
 							Width: PARENT_RIGHT - 85
 							Height: 25
-							Text: Any
+							Text: dropdownbutton-filters-flt-outcome
 						Label@FLT_FACTION_DESC:
 							X: 0
 							Y: 210
 							Width: 80
 							Height: 25
-							Text: Faction:
+							Text: label-filters-flt-faction-desc
 							Align: Right
 						DropDownButton@FLT_FACTION_DROPDOWNBUTTON:
 							X: 85
 							Y: 210
 							Width: PARENT_RIGHT - 85
 							Height: 25
-							Text: Any
+							Text: dropdownbutton-filters-flt-faction
 						Button@FLT_RESET_BUTTON:
 							X: 85
 							Y: 250
 							Width: PARENT_RIGHT - 85
 							Height: 25
-							Text: Reset Filters
+							Text: button-filters-flt-reset
 							Font: Bold
 				Container@MANAGEMENT:
 					X: 85
@@ -139,26 +139,26 @@ Background@REPLAYBROWSER_PANEL:
 							Height: 25
 							Font: Bold
 							Align: Center
-							Text: Manage
+							Text: label-management-manage-title
 						Button@MNG_RENSEL_BUTTON:
 							Y: 30
 							Width: PARENT_RIGHT
 							Height: 25
-							Text: Rename
+							Text: button-management-mng-rensel
 							Font: Bold
 							Key: F2
 						Button@MNG_DELSEL_BUTTON:
 							Y: 60
 							Width: PARENT_RIGHT
 							Height: 25
-							Text: Delete
+							Text: button-management-mng-delsel
 							Font: Bold
 							Key: Delete
 						Button@MNG_DELALL_BUTTON:
 							Y: 90
 							Width: PARENT_RIGHT
 							Height: 25
-							Text: Delete All
+							Text: button-management-mng-delall
 							Font: Bold
 		Container@REPLAY_LIST_CONTAINER:
 			X: 311
@@ -170,7 +170,7 @@ Background@REPLAYBROWSER_PANEL:
 					Y: 6
 					Width: PARENT_RIGHT
 					Height: 25
-					Text: Choose Replay
+					Text: label-replay-list-container-replaybrowser-title
 					Align: Center
 					Font: Bold
 				ScrollPanel@REPLAY_LIST:
@@ -255,7 +255,7 @@ Background@REPLAYBROWSER_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Watch
+			Text: button-replaybrowser-panel-watch
 			Font: Bold
 			Key: return
 		Button@CANCEL_BUTTON:
@@ -263,7 +263,8 @@ Background@REPLAYBROWSER_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: Back
+			Text: button-replaybrowser-panel-cancel
 			Font: Bold
 			Key: escape
 		TooltipContainer@TOOLTIP_CONTAINER:
+

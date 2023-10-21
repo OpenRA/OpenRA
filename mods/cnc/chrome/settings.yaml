@@ -18,19 +18,19 @@ Container@SETTINGS_PANEL:
 			Font: BigBold
 			Contrast: true
 			Align: Center
-			Text: Settings
+			Text: label-settings-panel-title
 		Button@BACK_BUTTON:
 			Key: escape
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: Back
+			Text: button-settings-panel-back
 		Button@RESET_BUTTON:
 			X: 150
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: Reset
+			Text: button-settings-panel-reset
 		Container@SETTINGS_TAB_CONTAINER:
 			X: 0 - 140 + 1
 			Children:
@@ -48,3 +48,4 @@ Container@SETTINGS_PANEL:
 					Width: PARENT_RIGHT - 30
 					Height: PARENT_BOTTOM - 30
 		TooltipContainer@SETTINGS_TOOLTIP_CONTAINER:
+

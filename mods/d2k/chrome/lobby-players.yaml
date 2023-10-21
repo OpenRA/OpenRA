@@ -11,49 +11,49 @@ Container@LOBBY_PLAYER_BIN:
 				Label@LABEL_LOBBY_NAME:
 					Width: 180
 					Height: 25
-					Text: Name
+					Text: label-container-lobby-name
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_COLOR:
 					X: 190
 					Width: 70
 					Height: 25
-					Text: Color
+					Text: label-container-lobby-color
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_FACTION:
 					X: 270
 					Width: 140
 					Height: 25
-					Text: Faction
+					Text: label-container-lobby-faction
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_TEAM:
 					X: 420
 					Width: 48
 					Height: 25
-					Text: Team
+					Text: label-container-lobby-team
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_HANDICAP:
 					X: 478
 					Width: 72
 					Height: 25
-					Text: Handicap
+					Text: label-container-lobby-handicap
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_SPAWN:
 					X: 560
 					Width: 48
 					Height: 25
-					Text: Spawn
+					Text: label-container-lobby-spawn
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_STATUS:
 					X: 617
 					Width: 20
 					Height: 25
-					Text: Ready
+					Text: label-container-lobby-status
 					Align: Left
 					Font: Bold
 		ScrollPanel@LOBBY_PLAYERS:
@@ -109,7 +109,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 15
 							Width: 165
 							Height: 25
-							Text: Name
+							Text: dropdownbutton-template-editable-player-slot-options
 							Font: Regular
 							Visible: false
 						DropDownButton@COLOR:
@@ -140,23 +140,23 @@ Container@LOBBY_PLAYER_BIN:
 									X: 34
 									Width: 80
 									Height: 25
-									Text: Faction
+									Text: label-template-editable-player-factionname
 						DropDownButton@TEAM_DROPDOWN:
 							X: 420
 							Width: 48
 							Height: 25
-							Text: Team
+							Text: dropdownbutton-template-editable-player-team-dropdown
 						DropDownButton@HANDICAP_DROPDOWN:
 							X: 478
 							Width: 72
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipText: A handicap decreases the combat effectiveness of the player's forces
+							TooltipText: dropdownbutton-template-editable-player-handicap-dropdown-tooltip
 						DropDownButton@SPAWN_DROPDOWN:
 							X: 560
 							Width: 48
 							Height: 25
-							Text: Spawn
+							Text: dropdownbutton-template-editable-player-spawn-dropdown
 						Checkbox@STATUS_CHECKBOX:
 							X: 617
 							Y: 2
@@ -209,7 +209,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 39
 							Width: 146
 							Height: 25
-							Text: Name
+							Text: label-template-noneditable-player-name
 						DropDownButton@PLAYER_ACTION:
 							X: 15
 							Width: 165
@@ -250,13 +250,13 @@ Container@LOBBY_PLAYER_BIN:
 									X: 34
 									Width: 80
 									Height: 25
-									Text: Faction
+									Text: label-faction-factionname
 						Label@TEAM:
 							X: 420
 							Width: 23
 							Height: 25
 							Align: Center
-							Text: Team
+							Text: label-template-noneditable-player-team
 						DropDownButton@TEAM_DROPDOWN:
 							X: 420
 							Width: 48
@@ -272,7 +272,7 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 72
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipText: A handicap decreases the combat effectiveness of the player's forces
+							TooltipText: dropdownbutton-template-noneditable-player-handicap-dropdown-tooltip
 						Label@SPAWN:
 							X: 560
 							Width: 23
@@ -301,18 +301,18 @@ Container@LOBBY_PLAYER_BIN:
 							X: 20
 							Width: 165
 							Height: 25
-							Text: Name
+							Text: label-template-empty-name
 						DropDownButton@SLOT_OPTIONS:
 							X: 15
 							Width: 165
 							Height: 25
-							Text: Name
+							Text: dropdownbutton-template-empty-slot-options
 							Visible: false
 						Button@JOIN:
 							X: 190
 							Width: 418
 							Height: 25
-							Text: Play in this slot
+							Text: button-template-empty-join
 				Container@TEMPLATE_EDITABLE_SPECTATOR:
 					X: 5
 					Width: 475
@@ -359,7 +359,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 190
 							Width: 418
 							Height: 25
-							Text: Spectator
+							Text: label-template-editable-spectator
 							Align: Center
 							Font: Bold
 						Checkbox@STATUS_CHECKBOX:
@@ -414,7 +414,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 39
 							Width: 160
 							Height: 25
-							Text: Name
+							Text: label-template-noneditable-spectator-name
 						DropDownButton@PLAYER_ACTION:
 							X: 15
 							Width: 165
@@ -440,7 +440,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 190
 							Width: 418
 							Height: 25
-							Text: Spectator
+							Text: label-template-noneditable-spectator
 							Align: Center
 							Font: Bold
 						Image@STATUS_IMAGE:
@@ -461,13 +461,13 @@ Container@LOBBY_PLAYER_BIN:
 							X: 15
 							Width: 165
 							Height: 20
-							Text: Allow Spectators?
+							Text: checkbox-template-new-spectator-toggle-spectators
 							Font: Regular
 						Button@SPECTATE:
 							X: 190
 							Width: 418
 							Height: 25
-							Text: Spectate
+							Text: button-template-new-spectator-spectate
 							Font: Regular
 
 ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
@@ -503,3 +503,4 @@ ScrollPanel@FACTION_DROPDOWN_TEMPLATE:
 					X: 30
 					Width: 80
 					Height: 25
+

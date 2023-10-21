@@ -22,7 +22,7 @@ Container@DISPLAY_PANEL:
 							Height: PARENT_BOTTOM
 							Font: TinyBold
 							Align: Center
-							Text: Profile
+							Text: label-profile-section-header
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
 					Height: 50
@@ -34,7 +34,7 @@ Container@DISPLAY_PANEL:
 								LabelForInput@PLAYER:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: Player Name:
+									Text: label-player-container
 									For: PLAYERNAME
 								TextField@PLAYERNAME:
 									Y: 25
@@ -49,7 +49,7 @@ Container@DISPLAY_PANEL:
 								LabelForInput@COLOR:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: Preferred Color:
+									Text: label-playercolor-container-color
 									For: PLAYERCOLOR
 								DropDownButton@PLAYERCOLOR:
 									Y: 25
@@ -76,7 +76,7 @@ Container@DISPLAY_PANEL:
 							Height: PARENT_BOTTOM
 							Font: TinyBold
 							Align: Center
-							Text: Display
+							Text: label-display-section-header
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
 					Height: 50
@@ -88,7 +88,7 @@ Container@DISPLAY_PANEL:
 								Label@BATTLEFIELD_CAMERA:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: Battlefield Camera:
+									Text: label-battlefield-camera-dropdown-container
 								DropDownButton@BATTLEFIELD_CAMERA_DROPDOWN:
 									Y: 25
 									Width: PARENT_RIGHT
@@ -101,7 +101,7 @@ Container@DISPLAY_PANEL:
 								Label@TARGET_LINES:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: Target Lines:
+									Text: label-target-lines-dropdown-container
 								DropDownButton@TARGET_LINES_DROPDOWN:
 									Y: 25
 									Width: PARENT_RIGHT
@@ -118,7 +118,7 @@ Container@DISPLAY_PANEL:
 								LabelForInput@UI_SCALE:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: UI Scale:
+									Text: label-ui-scale-dropdown-container
 									For: UI_SCALE_DROPDOWN
 								DropDownButton@UI_SCALE_DROPDOWN:
 									Y: 25
@@ -132,7 +132,7 @@ Container@DISPLAY_PANEL:
 								Label@STATUS_BARS:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: Status Bars:
+									Text: label-status-bar-dropdown-container-bars
 								DropDownButton@STATUS_BAR_DROPDOWN:
 									Y: 25
 									Width: PARENT_RIGHT
@@ -150,7 +150,7 @@ Container@DISPLAY_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Increase Cursor Size
+									Text: checkbox-cursordouble-container
 						Container@PLAYER_STANCE_COLORS_CHECKBOX_CONTAINER:
 							X: PARENT_RIGHT / 2 + 10
 							Width: PARENT_RIGHT / 2 - 20
@@ -159,8 +159,8 @@ Container@DISPLAY_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Player Relationship Colors
-									TooltipText: Change minimap and health bar colors based on relationship (own, enemy, ally, neutral)
+									Text: checkbox-player-stance-colors-container.label
+									TooltipText: checkbox-player-stance-colors-container.tooltip
 									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
@@ -174,8 +174,8 @@ Container@DISPLAY_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Show UI Feedback Notifications
-									TooltipText: Show transient text notifications for UI events
+									Text: checkbox-ui-feedback-container.label
+									TooltipText: checkbox-ui-feedback-container.tooltip
 									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 						Container@TRANSIENTS_CHECKBOX_CONTAINER:
 							X: PARENT_RIGHT / 2 + 10
@@ -185,8 +185,8 @@ Container@DISPLAY_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Show Game Event Notifications
-									TooltipText: Show transient text notifications for game events
+									Text: checkbox-transients-container.label
+									TooltipText: checkbox-transients-container.tooltip
 									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
@@ -200,7 +200,7 @@ Container@DISPLAY_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Hide Chat in Replays
+									Text: checkbox-hide-replay-chat-container
 				Container@SPACER:
 				Background@VIDEO_SECTION_HEADER:
 					X: 5
@@ -214,7 +214,7 @@ Container@DISPLAY_PANEL:
 							Height: PARENT_BOTTOM
 							Font: TinyBold
 							Align: Center
-							Text: Video
+							Text: label-video-section-header
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
 					Height: 50
@@ -226,13 +226,13 @@ Container@DISPLAY_PANEL:
 								Label@VIDEO_MODE:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: Video Mode:
+									Text: label-video-mode-dropdown-container
 								DropDownButton@MODE_DROPDOWN:
 									Y: 25
 									Width: PARENT_RIGHT
 									Height: 25
 									Font: Regular
-									Text: Windowed
+									Text: dropdownbutton-video-mode-dropdown-container
 						Container@WINDOW_RESOLUTION_CONTAINER:
 							X: PARENT_RIGHT / 2 + 10
 							Width: PARENT_RIGHT / 2 - 20
@@ -240,7 +240,7 @@ Container@DISPLAY_PANEL:
 								Label@WINDOW_SIZE:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: Window Size:
+									Text: label-window-resolution-container-size
 								TextField@WINDOW_WIDTH:
 									Y: 25
 									Width: 55
@@ -250,7 +250,7 @@ Container@DISPLAY_PANEL:
 								Label@X:
 									X: 55
 									Y: 25
-									Text: x
+									Text: label-window-resolution-container-x
 									Font: Bold
 									Height: 25
 									Width: 15
@@ -269,13 +269,13 @@ Container@DISPLAY_PANEL:
 								Label@DISPLAY_SELECTION_LABEL:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: Select Display:
+									Text: label-display-selection-container
 								DropDownButton@DISPLAY_SELECTION_DROPDOWN:
 									Y: 25
 									Width: PARENT_RIGHT
 									Height: 25
 									Font: Regular
-									Text: Standard
+									Text: dropdownbutton-display-selection-container-dropdown
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
 					Height: 50
@@ -307,7 +307,7 @@ Container@DISPLAY_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Enable VSync
+									Text: checkbox-vsync-container
 						Container@FRAME_LIMIT_GAMESPEED_CHECKBOX_CONTAINER:
 							X: PARENT_RIGHT / 2 + 10
 							Y: 25
@@ -317,7 +317,7 @@ Container@DISPLAY_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Limit framerate to game tick rate
+									Text: checkbox-frame-limit-gamespeed-container
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
 					Height: 50
@@ -329,7 +329,7 @@ Container@DISPLAY_PANEL:
 								Label@GL_PROFILE:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: OpenGL Profile:
+									Text: label-gl-profile-dropdown-container
 								DropDownButton@GL_PROFILE_DROPDOWN:
 									Y: 25
 									Width: PARENT_RIGHT
@@ -347,5 +347,6 @@ Container@DISPLAY_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Tiny
-									Text: Display and OpenGL changes require restart
+									Text: label-restart-required-container-video-desc
 									Align: Center
+

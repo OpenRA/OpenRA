@@ -178,7 +178,7 @@ Background@THREEBUTTON_PROMPT:
 			Y: 40
 			Width: 140
 			Height: 35
-			Text: Confirm
+			Text: button-threebutton-prompt-confirm
 			Visible: false
 		Button@OTHER_BUTTON:
 			Key: r
@@ -186,14 +186,14 @@ Background@THREEBUTTON_PROMPT:
 			Y: 40
 			Width: 140
 			Height: 35
-			Text: Restart
+			Text: button-threebutton-prompt-other
 			Visible: false
 		Button@CANCEL_BUTTON:
 			Key: escape
 			Y: 40
 			Width: 140
 			Height: 35
-			Text: Cancel
+			Text: button-threebutton-prompt-cancel
 			Visible: false
 
 Background@TWOBUTTON_PROMPT:
@@ -220,7 +220,7 @@ Background@TWOBUTTON_PROMPT:
 			Y: 30
 			Width: 140
 			Height: 35
-			Text: Cancel
+			Text: button-twobutton-prompt-cancel
 			Visible: false
 		Button@CONFIRM_BUTTON:
 			Key: return
@@ -228,7 +228,7 @@ Background@TWOBUTTON_PROMPT:
 			Y: 30
 			Width: 140
 			Height: 35
-			Text: Confirm
+			Text: button-twobutton-prompt-confirm
 			Visible: false
 
 Container@TEXT_INPUT_PROMPT:
@@ -265,7 +265,7 @@ Container@TEXT_INPUT_PROMPT:
 			Y: PARENT_BOTTOM - 1
 			Width: 160
 			Height: 34
-			Text: OK
+			Text: button-text-input-prompt-accept
 			Font: Bold
 			Key: return
 		Button@CANCEL_BUTTON:
@@ -273,7 +273,7 @@ Container@TEXT_INPUT_PROMPT:
 			Y: PARENT_BOTTOM - 1
 			Width: 160
 			Height: 35
-			Text: Cancel
+			Text: button-text-input-prompt-cancel
 			Font: Bold
 			Key: escape
 
@@ -312,3 +312,4 @@ ScrollPanel@NEWS_PANEL:
 			Height: PARENT_BOTTOM
 			Align: Center
 			VAlign: Middle
+

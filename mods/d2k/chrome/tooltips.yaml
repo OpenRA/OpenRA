@@ -124,7 +124,7 @@ Background@LATENCY_TOOLTIP:
 			Y: 4
 			Height: 23
 			Font: Bold
-			Text: Latency:
+			Text: label-latency-tooltip-prefix
 		Label@LATENCY:
 			Y: 4
 			Height: 23
@@ -139,7 +139,7 @@ Background@ANONYMOUS_PLAYER_TOOLTIP:
 		Label@NAME:
 			X: 7
 			Y: 3
-			Text: Anonymous Player
+			Text: label-anonymous-player-tooltip-name
 			Height: 24
 			Font: MediumBold
 		Label@LOCATION:
@@ -170,7 +170,7 @@ Background@ANONYMOUS_PLAYER_TOOLTIP:
 				Label@LABEL:
 					X: 10
 					Height: 12
-					Text: Game Admin
+					Text: label-game-admin
 					Font: TinyBold
 
 Background@REGISTERED_PLAYER_TOOLTIP:
@@ -213,7 +213,7 @@ Background@REGISTERED_PLAYER_TOOLTIP:
 									X: 10
 									Y: 1
 									Height: 12
-									Text: Game Admin
+									Text: label-game-admin
 									Font: TinyBold
 				Container@MESSAGE_HEADER:
 					Height: 31
@@ -338,3 +338,4 @@ Background@ARMY_TOOLTIP:
 			Height: 3
 			Font: TinyBold
 			VAlign: Top
+

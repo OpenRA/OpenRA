@@ -22,7 +22,7 @@ Container@ADVANCED_PANEL:
 							Height: PARENT_BOTTOM
 							Font: TinyBold
 							Align: Center
-							Text: Advanced
+							Text: label-network-section-header
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
 					Height: 20
@@ -35,7 +35,7 @@ Container@ADVANCED_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Enable UPnP/NAT-PMP Discovery
+									Text: checkbox-nat-discovery-container
 						Container@FETCH_NEWS_CHECKBOX_CONTAINER:
 							X: PARENT_RIGHT / 2 + 10
 							Width: PARENT_RIGHT / 2 - 20
@@ -44,7 +44,7 @@ Container@ADVANCED_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Fetch Community News
+									Text: checkbox-fetch-news-container
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
 					Height: 20
@@ -57,7 +57,7 @@ Container@ADVANCED_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Show Performance Graph
+									Text: checkbox-perfgraph-container
 						Container@CHECK_VERSION_CHECKBOX_CONTAINER:
 							X: PARENT_RIGHT / 2 + 10
 							Width: PARENT_RIGHT / 2 - 20
@@ -66,7 +66,7 @@ Container@ADVANCED_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Check for Updates
+									Text: checkbox-check-version-container
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
 					Height: 50
@@ -79,7 +79,7 @@ Container@ADVANCED_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Show Performance Text
+									Text: checkbox-perftext-container
 						Container@SENDSYSINFO_CHECKBOX_CONTAINER:
 							X: PARENT_RIGHT / 2 + 10
 							Width: PARENT_RIGHT / 2 - 20
@@ -88,14 +88,14 @@ Container@ADVANCED_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Send System Information
+									Text: checkbox-sendsysinfo-container
 								Label@SENDSYSINFO_DESC:
 									Y: 15
 									Width: PARENT_RIGHT
 									Height: 30
 									Font: Tiny
 									WordWrap: True
-									Text: Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development.
+									Text: label-sendsysinfo-checkbox-container-desc
 				Container@SPACER:
 				Background@DEBUG_SECTION_HEADER:
 					X: 5
@@ -109,7 +109,7 @@ Container@ADVANCED_PANEL:
 							Height: PARENT_BOTTOM
 							Font: TinyBold
 							Align: Center
-							Text: Developer
+							Text: label-debug-section-header
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
 					Height: 40
@@ -121,13 +121,13 @@ Container@ADVANCED_PANEL:
 								Label@A:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: Additional developer-specific options can be enabled via the
+									Text: label-debug-hidden-container-a
 									Align: Center
 								Label@B:
 									Y: 20
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: Debug.DisplayDeveloperSettings setting or launch flag
+									Text: label-debug-hidden-container-b
 									Align: Center
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
@@ -141,7 +141,7 @@ Container@ADVANCED_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Show Bot Debug Messages
+									Text: checkbox-botdebug-container
 						Container@CHECKBOTSYNC_CHECKBOX_CONTAINER:
 							X: PARENT_RIGHT / 2 + 10
 							Width: PARENT_RIGHT / 2 - 20
@@ -150,7 +150,7 @@ Container@ADVANCED_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Check Sync around BotModule Code
+									Text: checkbox-checkbotsync-container
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
 					Height: 20
@@ -163,7 +163,7 @@ Container@ADVANCED_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Show Map Debug Messages
+									Text: checkbox-luadebug-container
 						Container@CHECKUNSYNCED_CHECKBOX_CONTAINER:
 							X: PARENT_RIGHT / 2 + 10
 							Width: PARENT_RIGHT / 2 - 20
@@ -172,7 +172,7 @@ Container@ADVANCED_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Check Sync around Unsynced Code
+									Text: checkbox-checkunsynced-container
 				Container@ROW:
 					Width: PARENT_RIGHT - 24
 					Height: 20
@@ -185,7 +185,7 @@ Container@ADVANCED_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Enable Debug Commands in Replays
+									Text: checkbox-replay-commands-container
 						Container@PERFLOGGING_CHECKBOX_CONTAINER:
 							X: PARENT_RIGHT / 2 + 10
 							Width: PARENT_RIGHT / 2 - 20
@@ -194,4 +194,5 @@ Container@ADVANCED_PANEL:
 									Width: PARENT_RIGHT
 									Height: 20
 									Font: Regular
-									Text: Enable Tick Performance Logging
+									Text: checkbox-perflogging-container
+

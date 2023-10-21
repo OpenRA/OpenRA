@@ -8,7 +8,7 @@ Container@LOBBY_OPTIONS_BIN:
 			Height: 25
 			Font: Bold
 			Align: Center
-			Text: Map Options
+			Text: label-lobby-options-bin-title
 		ScrollPanel:
 			Logic: LobbyOptionsLogic
 			Width: PARENT_RIGHT
@@ -83,3 +83,4 @@ Container@LOBBY_OPTIONS_BIN:
 									Height: 25
 									Visible: False
 									TooltipContainer: TOOLTIP_CONTAINER
+

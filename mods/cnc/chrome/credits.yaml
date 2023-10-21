@@ -11,7 +11,7 @@ Container@CREDITS_PANEL:
 			Font: BigBold
 			Contrast: true
 			Align: Center
-			Text: Credits
+			Text: label-credits-panel-title
 		Background@bg:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
@@ -31,7 +31,7 @@ Container@CREDITS_PANEL:
 							X: 150
 							Width: 140
 							Height: 35
-							Text: OpenRA
+							Text: button-tab-container-engine
 				ScrollPanel@CREDITS_DISPLAY:
 					X: 15
 					Y: 15
@@ -48,5 +48,6 @@ Container@CREDITS_PANEL:
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: Back
+			Text: button-credits-panel-back
 			Key: escape
+

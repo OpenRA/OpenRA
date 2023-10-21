@@ -8,7 +8,7 @@ Container@MISSIONBROWSER_PANEL:
 		Label@MISSIONBROWSER_TITLE:
 			Y: 0 - 22
 			Width: PARENT_RIGHT
-			Text: Missions
+			Text: label-missionbrowser-panel-title
 			Align: Center
 			Contrast: true
 			Font: BigBold
@@ -82,7 +82,7 @@ Container@MISSIONBROWSER_PANEL:
 							Y: PARENT_BOTTOM - HEIGHT
 							Width: 56
 							Height: 25
-							Text: Difficulty:
+							Text: label-mission-info-difficulty-desc
 							Align: Right
 						DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
 							X: 61
@@ -95,7 +95,7 @@ Container@MISSIONBROWSER_PANEL:
 							Y: PARENT_BOTTOM - HEIGHT
 							Width: 120
 							Height: 25
-							Text: Speed:
+							Text: label-mission-info-gamespeed-desc
 							Align: Right
 						DropDownButton@GAMESPEED_DROPDOWNBUTTON:
 							X: PARENT_RIGHT - WIDTH
@@ -107,7 +107,7 @@ Container@MISSIONBROWSER_PANEL:
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: Back
+			Text: button-missionbrowser-panel-back
 			Font: Bold
 			Key: escape
 		Button@START_BRIEFING_VIDEO_BUTTON:
@@ -115,35 +115,35 @@ Container@MISSIONBROWSER_PANEL:
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: Watch Briefing
+			Text: button-missionbrowser-panel-start-briefing-video
 			Font: Bold
 		Button@STOP_BRIEFING_VIDEO_BUTTON:
 			X: PARENT_RIGHT - 290
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: Stop Briefing
+			Text: button-missionbrowser-panel-stop-briefing-video
 			Font: Bold
 		Button@START_INFO_VIDEO_BUTTON:
 			X: PARENT_RIGHT - 440
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: Watch Info Video
+			Text: button-missionbrowser-panel-start-info-video
 			Font: Bold
 		Button@STOP_INFO_VIDEO_BUTTON:
 			X: PARENT_RIGHT - 440
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: Stop Info Video
+			Text: button-missionbrowser-panel-stop-info-video
 			Font: Bold
 		Button@STARTGAME_BUTTON:
 			X: PARENT_RIGHT - 140
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: Play
+			Text: button-missionbrowser-panel-startgame
 			Font: Bold
 		Background@MISSION_BIN:
 			X: 15
@@ -170,3 +170,4 @@ Background@FULLSCREEN_PLAYER:
 			Y: 0
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
+

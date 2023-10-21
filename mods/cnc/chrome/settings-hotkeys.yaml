@@ -30,7 +30,7 @@ Container@HOTKEYS_PANEL:
 			Width: 100
 			Height: 25
 			Font: Bold
-			Text: Filter by name:
+			Text: label-hotkeys-panel-filter-input
 		TextField@FILTER_INPUT:
 			X: 108
 			Width: 180
@@ -40,7 +40,7 @@ Container@HOTKEYS_PANEL:
 			Width: 100
 			Height: 25
 			Font: Bold
-			Text: Context:
+			Text: label-hotkeys-panel-context-dropdown
 			Align: Right
 		DropDownButton@CONTEXT_DROPDOWN:
 			X: PARENT_RIGHT - WIDTH
@@ -92,7 +92,7 @@ Container@HOTKEYS_PANEL:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					Align: Center
-					Text: No hotkeys match the filter criteria.
+					Text: label-hotkey-empty-list-message
 		Background@HOTKEY_REMAP_BGND:
 			Y: PARENT_BOTTOM - HEIGHT - 1
 			Width: PARENT_RIGHT
@@ -133,22 +133,22 @@ Container@HOTKEYS_PANEL:
 									Width: PARENT_RIGHT
 									Height: PARENT_BOTTOM
 									Font: Tiny
-									Text: This hotkey cannot be modified
+									Text: label-notices-readonly-notice
 						Button@OVERRIDE_HOTKEY_BUTTON:
 							X: PARENT_RIGHT - 3 * WIDTH - 30
 							Y: 20
 							Width: 70
 							Height: 25
-							Text: Override
+							Text: button-hotkey-remap-dialog-override
 							Font: Bold
 						Button@CLEAR_HOTKEY_BUTTON:
 							X: PARENT_RIGHT - 2 * WIDTH - 30
 							Y: 20
 							Width: 65
 							Height: 25
-							Text: Clear
+							Text: button-hotkey-remap-dialog-clear.label
 							Font: Bold
-							TooltipText: Unbind the hotkey
+							TooltipText: button-hotkey-remap-dialog-clear.tooltip
 							TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 						Button@RESET_HOTKEY_BUTTON:
@@ -156,8 +156,9 @@ Container@HOTKEYS_PANEL:
 							Y: 20
 							Width: 65
 							Height: 25
-							Text: Reset
+							Text: button-hotkey-remap-dialog-reset.label
 							Font: Bold
-							TooltipText: Reset to default
+							TooltipText: button-hotkey-remap-dialog-reset.tooltip
 							TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
+
