@@ -15,19 +15,19 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Warheads
 {
-	[Desc("Used to trigger a FlashPaletteEffect trait on the world actor.")]
-	public class FlashPaletteEffectWarhead : Warhead
+	[Desc("Used to trigger a FlashPostProcessEffect trait on the world actor.")]
+	public class FlashEffectWarhead : Warhead
 	{
-		[Desc("Corresponds to `Type` from `FlashPaletteEffect` on the world actor.")]
+		[Desc("Corresponds to `Type` from `FlashPostProcessEffect` on the world actor.")]
 		public readonly string FlashType = null;
 
 		[FieldLoader.Require]
-		[Desc("Duration of the flashing, measured in ticks. Set to -1 to default to the `Length` of the `FlashPaletteEffect`.")]
+		[Desc("Duration of the flashing, measured in ticks. Set to -1 to default to the `Length` of the `FlashPostProcessEffect`.")]
 		public readonly int Duration = 0;
 
 		public override void DoImpact(in Target target, WarheadArgs args)
 		{
-			foreach (var flash in args.SourceActor.World.WorldActor.TraitsImplementing<FlashPaletteEffect>())
+			foreach (var flash in args.SourceActor.World.WorldActor.TraitsImplementing<FlashPostProcessEffect>())
 				if (flash.Info.Type == FlashType)
 					flash.Enable(Duration);
 		}

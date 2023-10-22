@@ -100,7 +100,7 @@
 	MenuPostProcessEffect:
 		MenuEffect: Desaturated
 	CloakPaletteEffect:
-	FlashPaletteEffect:
+	FlashPostProcessEffect:
 	RotationPaletteEffect@water:
 		ExcludePalettes: effect, chrome
 		RotationBase: 32

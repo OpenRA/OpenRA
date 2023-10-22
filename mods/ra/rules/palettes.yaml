@@ -100,7 +100,7 @@
 	LightPaletteRotator:
 		ExcludePalettes: terrain, effect, desert
 	ChronoshiftPostProcessEffect:
-	FlashPaletteEffect@NUKE:
+	FlashPostProcessEffect@NUKE:
 		Type: Nuke
 	IndexedPalette@CIV2:
 		Name: civilian2

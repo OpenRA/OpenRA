@@ -18,22 +18,22 @@ namespace OpenRA.Mods.Common.Scripting
 	[ScriptGlobal("Lighting")]
 	public class LightingGlobal : ScriptGlobal
 	{
-		readonly IEnumerable<FlashPaletteEffect> flashPaletteEffects;
+		readonly IEnumerable<FlashPostProcessEffect> flashEffects;
 		readonly GlobalLightingPaletteEffect lighting;
 		readonly bool hasLighting;
 
 		public LightingGlobal(ScriptContext context)
 			: base(context)
 		{
-			flashPaletteEffects = context.World.WorldActor.TraitsImplementing<FlashPaletteEffect>();
+			flashEffects = context.World.WorldActor.TraitsImplementing<FlashPostProcessEffect>();
 			lighting = context.World.WorldActor.TraitOrDefault<GlobalLightingPaletteEffect>();
 			hasLighting = lighting != null;
 		}
 
-		[Desc("Controls the `" + nameof(FlashPaletteEffect) + "` trait.")]
+		[Desc("Controls the `" + nameof(FlashPostProcessEffect) + "` trait.")]
 		public void Flash(string type = null, int ticks = -1)
 		{
-			foreach (var effect in flashPaletteEffects)
+			foreach (var effect in flashEffects)
 				if (effect.Info.Type == type)
 					effect.Enable(ticks);
 		}

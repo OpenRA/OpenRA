@@ -271,7 +271,7 @@ CrateNuke:
 		ValidTargets: Ground, Infantry
 		Size: 4
 		Delay: 5
-	Warhead@7FlashEffect: FlashPaletteEffect
+	Warhead@7FlashEffect: FlashEffect
 		Duration: 20
 		FlashType: Nuke
 
@@ -345,6 +345,6 @@ MiniNuke:
 		ValidTargets: Ground, Infantry
 		Size: 4
 		Delay: 15
-	Warhead@14FlashEffect: FlashPaletteEffect
+	Warhead@14FlashEffect: FlashEffect
 		Duration: 20
 		FlashType: Nuke
