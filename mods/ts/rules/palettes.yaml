@@ -160,4 +160,4 @@
 		BasePalette: terraindecoration
 		Name: terrainalpha
 		Alpha: 0.55
-	MenuPaletteEffect:
+	MenuPostProcessEffect:

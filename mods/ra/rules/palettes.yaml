@@ -84,7 +84,7 @@
 		BaseName: cloak
 		BasePalette: player
 		Alpha: 0.55
-	MenuPaletteEffect:
+	MenuPostProcessEffect:
 	RotationPaletteEffect@defaultwater:
 		Palettes: terrain
 		ExcludeTilesets: DESERT
