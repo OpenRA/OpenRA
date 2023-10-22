@@ -3,23 +3,6 @@
 uniform vec3 Scroll;
 uniform vec3 p1, p2;
 
-#if __VERSION__ == 120
-attribute vec3 aVertexPosition;
-attribute vec4 aVertexTexCoord;
-attribute vec2 aVertexTexMetadata;
-attribute vec4 aVertexTint;
-
-varying vec4 vTexCoord;
-varying vec2 vTexMetadata;
-varying vec4 vChannelMask;
-varying vec4 vDepthMask;
-varying vec2 vTexSampler;
-
-varying vec4 vColorFraction;
-varying vec4 vRGBAFraction;
-varying vec4 vPalettedFraction;
-varying vec4 vTint;
-#else
 in vec3 aVertexPosition;
 in vec4 aVertexTexCoord;
 in vec2 aVertexTexMetadata;
@@ -35,7 +18,6 @@ out vec4 vColorFraction;
 out vec4 vRGBAFraction;
 out vec4 vPalettedFraction;
 out vec4 vTint;
-#endif
 
 vec4 UnpackChannelAttributes(float x)
 {

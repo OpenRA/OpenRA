@@ -40,16 +40,13 @@ namespace OpenRA.Platforms.Default
 			if (SDL.SDL_GL_MakeCurrent(window.Window, context) < 0)
 				throw new InvalidOperationException($"Can not bind OpenGL context. (Error: {SDL.SDL_GetError()})");
 
-			OpenGL.Initialize(window.GLProfile == GLProfile.Legacy);
+			OpenGL.Initialize();
 			OpenGL.CheckGLError();
 
-			if (OpenGL.Profile != GLProfile.Legacy)
-			{
-				OpenGL.glGenVertexArrays(1, out var vao);
-				OpenGL.CheckGLError();
-				OpenGL.glBindVertexArray(vao);
-				OpenGL.CheckGLError();
-			}
+			OpenGL.glGenVertexArrays(1, out var vao);
+			OpenGL.CheckGLError();
+			OpenGL.glBindVertexArray(vao);
+			OpenGL.CheckGLError();
 		}
 
 		public IVertexBuffer<T> CreateVertexBuffer<T>(int size) where T : struct
