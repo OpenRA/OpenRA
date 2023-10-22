@@ -18,11 +18,13 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override string Name => "Replace palette modifiers with post-processing shaders.";
 
 		public override string Description =>
-			"MenuPaletteEffect is renamed to MenuPostProcessEffect.";
+			"MenuPaletteEffect is renamed to MenuPostProcessEffect.\n" +
+			"ChronoshiftPaletteEffect is renamed to ChronoshiftPostProcessEffect.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			actorNode.RenameChildrenMatching("MenuPaletteEffect", "MenuPostProcessEffect");
+			actorNode.RenameChildrenMatching("ChronoshiftPaletteEffect", "ChronoshiftPostProcessEffect");
 
 			yield break;
 		}

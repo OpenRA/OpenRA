@@ -22,7 +22,7 @@ World:
 			ClearNoSmudges: 100
 		
 ^Palettes:
-	-ChronoshiftPaletteEffect:
+	-ChronoshiftPostProcessEffect:
 
 # Used in ChronoEffect.
 1TNK:

@@ -99,7 +99,7 @@
 		RotationBase: 32
 	LightPaletteRotator:
 		ExcludePalettes: terrain, effect, desert
-	ChronoshiftPaletteEffect:
+	ChronoshiftPostProcessEffect:
 	FlashPaletteEffect@NUKE:
 		Type: Nuke
 	IndexedPalette@CIV2:
