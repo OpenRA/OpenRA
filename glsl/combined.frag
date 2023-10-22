@@ -19,27 +19,6 @@ uniform vec2 DepthPreviewParams;
 uniform float DepthTextureScale;
 uniform float AntialiasPixelsPerTexel;
 
-#if __VERSION__ == 120
-varying vec4 vTexCoord;
-varying vec2 vTexMetadata;
-varying vec4 vChannelMask;
-varying vec4 vDepthMask;
-varying vec2 vTexSampler;
-
-varying vec4 vColorFraction;
-varying vec4 vRGBAFraction;
-varying vec4 vPalettedFraction;
-varying vec4 vTint;
-
-uniform vec2 Texture0Size;
-uniform vec2 Texture1Size;
-uniform vec2 Texture2Size;
-uniform vec2 Texture3Size;
-uniform vec2 Texture4Size;
-uniform vec2 Texture5Size;
-uniform vec2 Texture6Size;
-uniform vec2 Texture7Size;
-#else
 in vec4 vColor;
 
 in vec4 vTexCoord;
@@ -54,7 +33,6 @@ in vec4 vPalettedFraction;
 in vec4 vTint;
 
 out vec4 fragColor;
-#endif
 
 vec3 rgb2hsv(vec3 c)
 {
@@ -99,47 +77,6 @@ vec4 linear2srgb(vec4 c)
 	return c.a * vec4(linear2srgb(c.r / c.a), linear2srgb(c.g / c.a), linear2srgb(c.b / c.a), 1.0f);
 }
 
-#if __VERSION__ == 120
-vec2 Size(float samplerIndex)
-{
-	if (samplerIndex < 0.5)
-		return Texture0Size;
-	else if (samplerIndex < 1.5)
-		return Texture1Size;
-	else if (samplerIndex < 2.5)
-		return Texture2Size;
-	else if (samplerIndex < 3.5)
-		return Texture3Size;
-	else if (samplerIndex < 4.5)
-		return Texture4Size;
-	else if (samplerIndex < 5.5)
-		return Texture5Size;
-	else if (samplerIndex < 6.5)
-		return Texture6Size;
-
-	return Texture7Size;
-}
-
-vec4 Sample(float samplerIndex, vec2 pos)
-{
-	if (samplerIndex < 0.5)
-		return texture2D(Texture0, pos);
-	else if (samplerIndex < 1.5)
-		return texture2D(Texture1, pos);
-	else if (samplerIndex < 2.5)
-		return texture2D(Texture2, pos);
-	else if (samplerIndex < 3.5)
-		return texture2D(Texture3, pos);
-	else if (samplerIndex < 4.5)
-		return texture2D(Texture4, pos);
-	else if (samplerIndex < 5.5)
-		return texture2D(Texture5, pos);
-	else if (samplerIndex < 6.5)
-		return texture2D(Texture6, pos);
-
-	return texture2D(Texture7, pos);
-}
-#else
 ivec2 Size(float samplerIndex)
 {
 	if (samplerIndex < 0.5)
@@ -179,7 +116,6 @@ vec4 Sample(float samplerIndex, vec2 pos)
 
 	return texture(Texture7, pos);
 }
-#endif
 
 vec4 SamplePalettedBilinear(float samplerIndex, vec2 coords, vec2 textureSize)
 {
@@ -193,30 +129,18 @@ vec4 SamplePalettedBilinear(float samplerIndex, vec2 coords, vec2 textureSize)
 	vec4 x3 = Sample(samplerIndex, tl + vec2(0., px.y));
 	vec4 x4 = Sample(samplerIndex, tl + px);
 
-	#if __VERSION__ == 120
-	vec4 c1 = texture2D(Palette, vec2(dot(x1, vChannelMask), vTexMetadata.s));
-	vec4 c2 = texture2D(Palette, vec2(dot(x2, vChannelMask), vTexMetadata.s));
-	vec4 c3 = texture2D(Palette, vec2(dot(x3, vChannelMask), vTexMetadata.s));
-	vec4 c4 = texture2D(Palette, vec2(dot(x4, vChannelMask), vTexMetadata.s));
-	#else
 	vec4 c1 = texture(Palette, vec2(dot(x1, vChannelMask), vTexMetadata.s));
 	vec4 c2 = texture(Palette, vec2(dot(x2, vChannelMask), vTexMetadata.s));
 	vec4 c3 = texture(Palette, vec2(dot(x3, vChannelMask), vTexMetadata.s));
 	vec4 c4 = texture(Palette, vec2(dot(x4, vChannelMask), vTexMetadata.s));
-	#endif
 
 	return mix(mix(c1, c2, interp.x), mix(c3, c4, interp.x), interp.y);
 }
 
 vec4 ColorShift(vec4 c, float p)
 {
-	#if __VERSION__ == 120
-	vec4 range = texture2D(ColorShifts, vec2(0.25, p));
- 	vec4 shift = texture2D(ColorShifts, vec2(0.75, p));
-	#else
 	vec4 range = texture(ColorShifts, vec2(0.25, p));
  	vec4 shift = texture(ColorShifts, vec2(0.75, p));
-	#endif
 
 	vec3 hsv = rgb2hsv(srgb2linear(c).rgb);
 	if (hsv.r > range.r && range.g >= hsv.r)
@@ -251,11 +175,7 @@ void main()
 	{
 		vec4 x = Sample(vTexSampler.s, coords);
 		vec2 p = vec2(dot(x, vChannelMask), vTexMetadata.s);
-		#if __VERSION__ == 120
-		c = vPalettedFraction * texture2D(Palette, p) + vRGBAFraction * x + vColorFraction * vTexCoord;
-		#else
 		c = vPalettedFraction * texture(Palette, p) + vRGBAFraction * x + vColorFraction * vTexCoord;
-		#endif
 	}
 
 	// Discard any transparent fragments (both color and depth)
@@ -277,12 +197,7 @@ void main()
 	if (EnableDepthPreview)
 	{
 		float intensity = 1.0 - clamp(DepthPreviewParams.x * depth - 0.5 * DepthPreviewParams.x - DepthPreviewParams.y + 0.5, 0.0, 1.0);
-
-		#if __VERSION__ == 120
-		gl_FragColor = vec4(vec3(intensity), 1.0);
-		#else
 		fragColor = vec4(vec3(intensity), 1.0);
-		#endif
 	}
 	else
 	{
@@ -292,10 +207,6 @@ void main()
 		else
 			c *= vTint;
 
-		#if __VERSION__ == 120
-		gl_FragColor = c;
-		#else
 		fragColor = c;
-		#endif
 	}
 }

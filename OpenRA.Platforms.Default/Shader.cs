@@ -19,7 +19,6 @@ namespace OpenRA.Platforms.Default
 	sealed class Shader : ThreadAffine, IShader
 	{
 		readonly Dictionary<string, int> samplers = new();
-		readonly Dictionary<int, int> legacySizeUniforms = new();
 		readonly Dictionary<string, int> uniformCache = new();
 		readonly Dictionary<int, ITexture> textures = new();
 		readonly Queue<int> unbindTextures = new();
@@ -28,8 +27,7 @@ namespace OpenRA.Platforms.Default
 
 		static uint CompileShaderObject(int type, string code, string name)
 		{
-			var version = OpenGL.Profile == GLProfile.Embedded ? "300 es" :
-				OpenGL.Profile == GLProfile.Legacy ? "120" : "140";
+			var version = OpenGL.Profile == GLProfile.Embedded ? "300 es" : "140";
 
 			code = code.Replace("{VERSION}", version);
 
@@ -127,14 +125,6 @@ namespace OpenRA.Platforms.Default
 
 					OpenGL.glUniform1i(loc, nextTexUnit);
 					OpenGL.CheckGLError();
-
-					if (OpenGL.Profile == GLProfile.Legacy)
-					{
-						var sizeLoc = OpenGL.glGetUniformLocation(program, sampler + "Size");
-						if (sizeLoc >= 0)
-							legacySizeUniforms.Add(nextTexUnit, sizeLoc);
-					}
-
 					nextTexUnit++;
 				}
 			}
@@ -166,13 +156,6 @@ namespace OpenRA.Platforms.Default
 				{
 					OpenGL.glActiveTexture(OpenGL.GL_TEXTURE0 + kv.Key);
 					OpenGL.glBindTexture(OpenGL.GL_TEXTURE_2D, texture.ID);
-
-					// Work around missing textureSize GLSL function by explicitly tracking sizes in a uniform
-					if (OpenGL.Profile == GLProfile.Legacy && legacySizeUniforms.TryGetValue(kv.Key, out var param))
-					{
-						OpenGL.glUniform2f(param, texture.Size.Width, texture.Size.Height);
-						OpenGL.CheckGLError();
-					}
 				}
 				else
 					unbindTextures.Enqueue(kv.Key);

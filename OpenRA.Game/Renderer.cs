@@ -82,7 +82,7 @@ namespace OpenRA
 
 			Window = platform.CreateWindow(new Size(resolution.Width, resolution.Height),
 				graphicSettings.Mode, graphicSettings.UIScale, TempVertexBufferSize, TempIndexBufferSize,
-				graphicSettings.VideoDisplay, graphicSettings.GLProfile, !graphicSettings.DisableLegacyGL);
+				graphicSettings.VideoDisplay, graphicSettings.GLProfile);
 
 			Context = Window.Context;
 

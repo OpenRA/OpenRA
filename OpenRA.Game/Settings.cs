@@ -210,9 +210,6 @@ namespace OpenRA
 		[Desc("Disable operating-system provided cursor rendering.")]
 		public bool DisableHardwareCursors = false;
 
-		[Desc("Disable legacy OpenGL 2.1 support.")]
-		public bool DisableLegacyGL = true;
-
 		[Desc("Display index to use in a multi-monitor fullscreen setup.")]
 		public int VideoDisplay = 0;
 

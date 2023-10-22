@@ -133,7 +133,7 @@ namespace OpenRA.Platforms.Default
 		static extern IntPtr XFlush(IntPtr display);
 
 		public Sdl2PlatformWindow(Size requestEffectiveWindowSize, WindowMode windowMode,
-			float scaleModifier, int vertexBatchSize, int indexBatchSize, int videoDisplay, GLProfile requestProfile, bool enableLegacyGL)
+			float scaleModifier, int vertexBatchSize, int indexBatchSize, int videoDisplay, GLProfile requestProfile)
 		{
 			// Lock the Window/Surface properties until initialization is complete
 			lock (syncObject)
@@ -147,9 +147,6 @@ namespace OpenRA.Platforms.Default
 				// Decide which OpenGL profile to use.
 				// Prefer standard GL over GLES provided by the native driver
 				var testProfiles = new List<GLProfile> { GLProfile.ANGLE, GLProfile.Modern, GLProfile.Embedded };
-				if (enableLegacyGL)
-					testProfiles.Add(GLProfile.Legacy);
-
 				var errorLog = new List<string>();
 				supportedProfiles = testProfiles
 					.Where(profile => CanCreateGLWindow(profile, errorLog))
@@ -536,10 +533,6 @@ namespace OpenRA.Platforms.Default
 					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MINOR_VERSION, 0);
 					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_PROFILE_MASK, (int)SDL.SDL_GLprofile.SDL_GL_CONTEXT_PROFILE_ES);
-					break;
-				case GLProfile.Legacy:
-					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-					SDL.SDL_GL_SetAttribute(SDL.SDL_GLattr.SDL_GL_CONTEXT_MINOR_VERSION, 1);
 					break;
 			}
 		}

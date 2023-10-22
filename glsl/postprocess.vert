@@ -1,10 +1,6 @@
 #version {VERSION}
 
-#if __VERSION__ == 120
-attribute vec2 aVertexPosition;
-#else
 in vec2 aVertexPosition;
-#endif
 
 void main()
 {
