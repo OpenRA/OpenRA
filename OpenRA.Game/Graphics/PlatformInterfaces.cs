@@ -157,6 +157,7 @@ namespace OpenRA
 	{
 		void SetData(byte[] colors, int width, int height);
 		void SetFloatData(float[] data, int width, int height);
+		void SetDataFromReadBuffer(Rectangle rect);
 		byte[] GetData();
 		Size Size { get; }
 		TextureScaleFilter ScaleFilter { get; set; }

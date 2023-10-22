@@ -459,6 +459,16 @@ namespace OpenRA.Traits
 		bool SpatiallyPartitionable { get; }
 	}
 
+	public enum PostProcessPassType { AfterShroud, AfterWorld, AfterActors }
+
+	[RequireExplicitImplementation]
+	public interface IRenderPostProcessPass
+	{
+		PostProcessPassType Type { get; }
+		bool Enabled { get; }
+		void Draw(WorldRenderer wr, ITexture worldTexture);
+	}
+
 	[Flags]
 	public enum SelectionPriorityModifiers
 	{

@@ -648,6 +648,7 @@ namespace OpenRA.Platforms.Default
 		readonly Func<object, object> setData2;
 		readonly Action<object> setData3;
 		readonly Func<object, object> setData4;
+		readonly Action<object> setData5;
 		readonly Action dispose;
 
 		public ThreadedTexture(ThreadedGraphicsContext device, ITextureInternal texture)
@@ -663,6 +664,7 @@ namespace OpenRA.Platforms.Default
 			setData2 = tuple => { setData1(tuple); return null; };
 			setData3 = tuple => { var t = ((float[], int, int))tuple; texture.SetFloatData(t.Item1, t.Item2, t.Item3); };
 			setData4 = tuple => { setData3(tuple); return null; };
+			setData5 = rect => texture.SetDataFromReadBuffer((Rectangle)rect);
 			dispose = texture.Dispose;
 		}
 
@@ -723,6 +725,11 @@ namespace OpenRA.Platforms.Default
 				// send a message and block to avoid LOH allocation as this requires a Gen2 collection.
 				device.Send(setData4, (data, width, height));
 			}
+		}
+
+		public void SetDataFromReadBuffer(Rectangle rect)
+		{
+			device.Post(setData5, rect);
 		}
 
 		public void Dispose()

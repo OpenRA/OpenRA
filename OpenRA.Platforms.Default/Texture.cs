@@ -111,6 +111,19 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
+		public void SetDataFromReadBuffer(Rectangle rect)
+		{
+			VerifyThreadAffinity();
+			if (!Exts.IsPowerOf2(rect.Width) || !Exts.IsPowerOf2(rect.Height))
+				throw new InvalidDataException($"Non-power-of-two rectangle {rect.Width}x{rect.Height}");
+
+			PrepareTexture();
+
+			var glInternalFormat = OpenGL.Profile == GLProfile.Embedded ? OpenGL.GL_BGRA : OpenGL.GL_RGBA8;
+			OpenGL.glCopyTexImage2D(OpenGL.GL_TEXTURE_2D, 0, glInternalFormat, rect.X, rect.Y, rect.Width, rect.Height, 0);
+			OpenGL.CheckGLError();
+		}
+
 		public byte[] GetData()
 		{
 			VerifyThreadAffinity();
