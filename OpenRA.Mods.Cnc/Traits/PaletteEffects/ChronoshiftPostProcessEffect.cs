@@ -9,29 +9,29 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using OpenRA.Graphics;
-using OpenRA.Primitives;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
 	[TraitLocation(SystemActors.World | SystemActors.EditorWorld)]
 	[Desc("Apply palette full screen rotations during chronoshifts. Add this to the world actor.")]
-	public class ChronoshiftPaletteEffectInfo : TraitInfo
+	public class ChronoshiftPostProcessEffectInfo : TraitInfo
 	{
 		[Desc("Measured in ticks.")]
 		public readonly int ChronoEffectLength = 60;
 
-		public override object Create(ActorInitializer init) { return new ChronoshiftPaletteEffect(this); }
+		public override object Create(ActorInitializer init) { return new ChronoshiftPostProcessEffect(this); }
 	}
 
-	public class ChronoshiftPaletteEffect : IPaletteModifier, ITick
+	public class ChronoshiftPostProcessEffect : RenderPostProcessPassBase, ITick
 	{
-		readonly ChronoshiftPaletteEffectInfo info;
+		readonly ChronoshiftPostProcessEffectInfo info;
 		int remainingFrames;
 
-		public ChronoshiftPaletteEffect(ChronoshiftPaletteEffectInfo info)
+		public ChronoshiftPostProcessEffect(ChronoshiftPostProcessEffectInfo info)
+			: base("chronoshift", PostProcessPassType.AfterWorld)
 		{
 			this.info = info;
 		}
@@ -47,23 +47,10 @@ namespace OpenRA.Mods.Cnc.Traits
 				remainingFrames--;
 		}
 
-		void IPaletteModifier.AdjustPalette(IReadOnlyDictionary<string, MutablePalette> palettes)
+		protected override bool Enabled => remainingFrames > 0;
+		protected override void PrepareRender(WorldRenderer wr, IShader shader)
 		{
-			if (remainingFrames == 0)
-				return;
-
-			var frac = (float)remainingFrames / info.ChronoEffectLength;
-
-			foreach (var pal in palettes)
-			{
-				for (var x = 0; x < Palette.Size; x++)
-				{
-					var orig = pal.Value.GetColor(x);
-					var lum = (int)(255 * orig.GetBrightness());
-					var desat = Color.FromArgb(orig.A, lum, lum, lum);
-					pal.Value.SetColor(x, Exts.ColorLerp(frac, orig, desat));
-				}
-			}
+			shader.SetVec("Blend", (float)remainingFrames / info.ChronoEffectLength);
 		}
 	}
 }
