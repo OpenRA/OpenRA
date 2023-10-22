@@ -92,7 +92,7 @@ Atomic:
 		Duration: 20
 		Intensity: 5
 		Multiplier: 1,1
-	Warhead@14FlashEffect: FlashPaletteEffect
+	Warhead@14FlashEffect: FlashEffect
 		Duration: 20
 
 IonCannon:

@@ -24,7 +24,7 @@ World:
 		Ambient: 0.45
 	MusicPlaylist:
 		BackgroundMusic: rain
-	FlashPaletteEffect@LIGHTNINGSTRIKE:
+	FlashPostProcessEffect@LIGHTNINGSTRIKE:
 		Type: LightningStrike
 	LuaScript:
 		Scripts: campaign.lua, fort-lonestar.lua, fort-lonestar-AI.lua
