@@ -39,11 +39,14 @@ namespace OpenRA.Graphics
 		public abstract ShaderVertexAttribute[] Attributes { get; }
 
 		protected ShaderBindings(string name)
+			: this(name, name) { }
+
+		protected ShaderBindings(string vertexName, string fragmentName)
 		{
 			Stride = Attributes.Sum(a => a.Components * 4);
-			VertexShaderName = name;
+			VertexShaderName = vertexName;
 			VertexShaderCode = GetShaderCode(VertexShaderName + ".vert");
-			FragmentShaderName = name;
+			FragmentShaderName = fragmentName;
 			FragmentShaderCode = GetShaderCode(FragmentShaderName + ".frag");
 		}
 

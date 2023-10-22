@@ -45,6 +45,8 @@ namespace OpenRA.Graphics
 
 		readonly List<IRenderable> renderablesBuffer = new();
 		readonly IRenderer[] renderers;
+		readonly IRenderPostProcessPass[] postProcessPasses;
+		readonly ITexture postProcessTexture;
 
 		internal WorldRenderer(ModData modData, World world)
 		{
@@ -71,6 +73,10 @@ namespace OpenRA.Graphics
 			terrainRenderer = world.WorldActor.TraitOrDefault<IRenderTerrain>();
 
 			debugVis = Exts.Lazy(() => world.WorldActor.TraitOrDefault<DebugVisualizations>());
+
+			postProcessPasses = world.WorldActor.TraitsImplementing<IRenderPostProcessPass>().ToArray();
+			if (postProcessPasses.Length > 0)
+				postProcessTexture = Game.Renderer.Context.CreateTexture();
 		}
 
 		public void BeginFrame()
@@ -284,6 +290,8 @@ namespace OpenRA.Graphics
 			if (enableDepthBuffer)
 				Game.Renderer.ClearDepthBuffer();
 
+			ApplyPostProcessing(PostProcessPassType.AfterActors);
+
 			World.ApplyToActorsWithTrait<IRenderAboveWorld>((actor, trait) =>
 			{
 				if (actor.IsInWorld && !actor.Disposed)
@@ -292,6 +300,8 @@ namespace OpenRA.Graphics
 
 			if (enableDepthBuffer)
 				Game.Renderer.ClearDepthBuffer();
+
+			ApplyPostProcessing(PostProcessPassType.AfterWorld);
 
 			World.ApplyToActorsWithTrait<IRenderShroud>((actor, trait) => trait.RenderShroud(this));
 
@@ -306,7 +316,25 @@ namespace OpenRA.Graphics
 				foreach (var r in g)
 					r.Render(this);
 
+			ApplyPostProcessing(PostProcessPassType.AfterShroud);
+
 			Game.Renderer.Flush();
+		}
+
+		void ApplyPostProcessing(PostProcessPassType type)
+		{
+			var size = Game.Renderer.WorldFrameBufferSize;
+			var rect = new Rectangle(0, 0, size.Width, size.Height);
+			foreach (var pass in postProcessPasses)
+			{
+				if (pass.Type != type || !pass.Enabled)
+					continue;
+
+				// Make a copy of the world texture to avoid reading and writing on the same buffer
+				Game.Renderer.Flush();
+				postProcessTexture.SetDataFromReadBuffer(rect);
+				pass.Draw(this, postProcessTexture);
+			}
 		}
 
 		public void DrawAnnotations()
