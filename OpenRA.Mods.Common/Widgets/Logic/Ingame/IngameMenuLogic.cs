@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Action onExit;
 		readonly World world;
 		readonly WorldRenderer worldRenderer;
-		readonly MenuPaletteEffect mpe;
+		readonly MenuPostProcessEffect mpe;
 		readonly bool isSinglePlayer;
 		readonly bool hasError;
 		bool leaving;
@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			isSinglePlayer = !world.LobbyInfo.GlobalSettings.Dedicated && world.LobbyInfo.NonBotClients.Count() == 1;
 
 			menu = widget.Get("INGAME_MENU");
-			mpe = world.WorldActor.TraitOrDefault<MenuPaletteEffect>();
+			mpe = world.WorldActor.TraitOrDefault<MenuPostProcessEffect>();
 			mpe?.Fade(mpe.Info.MenuEffect);
 
 			menu.Get<LabelWidget>("VERSION_LABEL").Text = modData.Manifest.Metadata.Version;
@@ -249,13 +249,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
 			var exitDelay = iop?.ExitDelay ?? 0;
-			var mpe = world.WorldActor.TraitOrDefault<MenuPaletteEffect>();
+			var mpe = world.WorldActor.TraitOrDefault<MenuPostProcessEffect>();
 			if (mpe != null)
 			{
 				Game.RunAfterDelay(exitDelay, () =>
 				{
 					if (Game.IsCurrentWorld(world))
-						mpe.Fade(MenuPaletteEffect.EffectType.Black);
+						mpe.Fade(MenuPostProcessEffect.EffectType.Black);
 				});
 				exitDelay += 40 * mpe.Info.FadeLength;
 			}
@@ -280,7 +280,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void CloseMenu()
 		{
 			Ui.CloseWindow();
-			mpe?.Fade(MenuPaletteEffect.EffectType.None);
+			mpe?.Fade(MenuPostProcessEffect.EffectType.None);
 			onExit();
 			Ui.ResetTooltips();
 		}
@@ -342,7 +342,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (mpe != null)
 				{
 					if (Game.IsCurrentWorld(world))
-						mpe.Fade(MenuPaletteEffect.EffectType.Black);
+						mpe.Fade(MenuPostProcessEffect.EffectType.Black);
 					exitDelay += 40 * mpe.Info.FadeLength;
 				}
 
@@ -536,7 +536,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						Ui.ResetTooltips();
 						void CloseMenu()
 						{
-							mpe?.Fade(MenuPaletteEffect.EffectType.None);
+							mpe?.Fade(MenuPostProcessEffect.EffectType.None);
 							onExit();
 						}
 
