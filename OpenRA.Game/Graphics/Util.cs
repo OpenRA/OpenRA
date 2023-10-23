@@ -94,11 +94,13 @@ namespace OpenRA.Graphics
 				attribC |= samplers.Y << 9;
 			}
 
-			var fAttribC = (float)attribC;
-			vertices[nv] = new Vertex(a, r.Left, r.Top, sl, st, paletteTextureIndex, fAttribC, tint, alpha);
-			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, sr, st, paletteTextureIndex, fAttribC, tint, alpha);
-			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, sr, sb, paletteTextureIndex, fAttribC, tint, alpha);
-			vertices[nv + 3] = new Vertex(d, r.Left, r.Bottom, sl, sb, paletteTextureIndex, fAttribC, tint, alpha);
+			attribC |= (paletteTextureIndex & 0xFFFF) << 16;
+
+			var uAttribC = (uint)attribC;
+			vertices[nv] = new Vertex(a, r.Left, r.Top, sl, st, uAttribC, tint, alpha);
+			vertices[nv + 1] = new Vertex(b, r.Right, r.Top, sr, st, uAttribC, tint, alpha);
+			vertices[nv + 2] = new Vertex(c, r.Right, r.Bottom, sr, sb, uAttribC, tint, alpha);
+			vertices[nv + 3] = new Vertex(d, r.Left, r.Bottom, sl, sb, uAttribC, tint, alpha);
 		}
 
 		public static void FastCopyIntoChannel(Sprite dest, byte[] src, SpriteFrameType srcType)

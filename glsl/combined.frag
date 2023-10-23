@@ -19,17 +19,13 @@ uniform vec2 DepthPreviewParams;
 uniform float DepthTextureScale;
 uniform float AntialiasPixelsPerTexel;
 
-in vec4 vColor;
-
 in vec4 vTexCoord;
-in float vTexPalette;
-in vec4 vChannelMask;
-in vec4 vDepthMask;
-in vec2 vTexSampler;
-
-in vec4 vColorFraction;
-in vec4 vRGBAFraction;
-in vec4 vPalettedFraction;
+flat in float vTexPalette;
+flat in vec4 vChannelMask;
+flat in uint vChannelSampler;
+flat in uint vChannelType;
+flat in vec4 vDepthMask;
+flat in uint vDepthSampler;
 in vec4 vTint;
 
 out vec4 fragColor;
@@ -77,47 +73,53 @@ vec4 linear2srgb(vec4 c)
 	return c.a * vec4(linear2srgb(c.r / c.a), linear2srgb(c.g / c.a), linear2srgb(c.b / c.a), 1.0f);
 }
 
-ivec2 Size(float samplerIndex)
+ivec2 Size(uint samplerIndex)
 {
-	if (samplerIndex < 0.5)
-		return textureSize(Texture0, 0);
-	else if (samplerIndex < 1.5)
-		return textureSize(Texture1, 0);
-	else if (samplerIndex < 2.5)
-		return textureSize(Texture2, 0);
-	else if (samplerIndex < 3.5)
-		return textureSize(Texture3, 0);
-	else if (samplerIndex < 4.5)
-		return textureSize(Texture4, 0);
-	else if (samplerIndex < 5.5)
-		return textureSize(Texture5, 0);
-	else if (samplerIndex < 6.5)
-		return textureSize(Texture6, 0);
-
-	return textureSize(Texture7, 0);
+	switch (samplerIndex)
+	{
+		case 7u:
+			return textureSize(Texture7, 0);
+		case 6u:
+			return textureSize(Texture6, 0);
+		case 5u:
+			return textureSize(Texture5, 0);
+		case 4u:
+			return textureSize(Texture4, 0);
+		case 3u:
+			return textureSize(Texture3, 0);
+		case 2u:
+			return textureSize(Texture2, 0);
+		case 1u:
+			return textureSize(Texture1, 0);
+		default:
+			return textureSize(Texture0, 0);
+	}
 }
 
-vec4 Sample(float samplerIndex, vec2 pos)
+vec4 Sample(uint samplerIndex, vec2 pos)
 {
-	if (samplerIndex < 0.5)
-		return texture(Texture0, pos);
-	else if (samplerIndex < 1.5)
-		return texture(Texture1, pos);
-	else if (samplerIndex < 2.5)
-		return texture(Texture2, pos);
-	else if (samplerIndex < 3.5)
-		return texture(Texture3, pos);
-	else if (samplerIndex < 4.5)
-		return texture(Texture4, pos);
-	else if (samplerIndex < 5.5)
-		return texture(Texture5, pos);
-	else if (samplerIndex < 6.5)
-		return texture(Texture6, pos);
-
-	return texture(Texture7, pos);
+	switch (samplerIndex)
+	{
+		case 7u:
+			return texture(Texture7, pos);
+		case 6u:
+			return texture(Texture6, pos);
+		case 5u:
+			return texture(Texture5, pos);
+		case 4u:
+			return texture(Texture4, pos);
+		case 3u:
+			return texture(Texture3, pos);
+		case 2u:
+			return texture(Texture2, pos);
+		case 1u:
+			return texture(Texture1, pos);
+		default:
+			return texture(Texture0, pos);
+	}
 }
 
-vec4 SamplePalettedBilinear(float samplerIndex, vec2 coords, vec2 textureSize)
+vec4 SamplePalettedBilinear(uint samplerIndex, vec2 coords, vec2 textureSize)
 {
 	vec2 texPos = (coords * textureSize) - vec2(0.5);
 	vec2 interp = fract(texPos);
@@ -152,11 +154,13 @@ vec4 ColorShift(vec4 c, float p)
 void main()
 {
 	vec2 coords = vTexCoord.st;
+	bool isPaletted = (vChannelType & 0x01u) != 0u;
+	bool isColor = vChannelType == 0u;
 
 	vec4 c;
 	if (AntialiasPixelsPerTexel > 0.0)
 	{
-		vec2 textureSize = vec2(Size(vTexSampler.s));
+		vec2 textureSize = vec2(Size(vChannelSampler));
 		vec2 offset = fract(coords.st * textureSize);
 
 		// Offset the sampling point to simulate bilinear intepolation in window coordinates instead of texture coordinates
@@ -167,28 +171,33 @@ void main()
 		vec2 interp = clamp(offset * ik * AntialiasPixelsPerTexel, 0.0, .5) + clamp((offset - 1.0) * ik * AntialiasPixelsPerTexel + .5, 0.0, .5);
 		coords = (floor(coords.st * textureSize) + interp) / textureSize;
 
-		if (vPalettedFraction.x > 0.0)
-			c = SamplePalettedBilinear(vTexSampler.s, coords, textureSize);
+		if (isPaletted)
+			c = SamplePalettedBilinear(vChannelSampler, coords, textureSize);
 	}
 
-	if (!(AntialiasPixelsPerTexel > 0.0 && vPalettedFraction.x > 0.0))
+	if (!(AntialiasPixelsPerTexel > 0.0 && isPaletted))
 	{
-		vec4 x = Sample(vTexSampler.s, coords);
+		vec4 x = Sample(vChannelSampler, coords);
 		vec2 p = vec2(dot(x, vChannelMask), vTexPalette);
-		c = vPalettedFraction * texture(Palette, p) + vRGBAFraction * x + vColorFraction * vTexCoord;
+		if (isPaletted)
+			c = texture(Palette, p);
+		else if (isColor)
+			c = vTexCoord;
+		else
+			c = x;
 	}
 
 	// Discard any transparent fragments (both color and depth)
 	if (c.a == 0.0)
 		discard;
 
-	if (vRGBAFraction.r > 0.0 && vTexPalette > 0.0)
+	if (!isPaletted && vTexPalette > 0.0)
 		c = ColorShift(c, vTexPalette);
 
 	float depth = gl_FragCoord.z;
 	if (length(vDepthMask) > 0.0)
 	{
-		vec4 y = Sample(vTexSampler.t, vTexCoord.pq);
+		vec4 y = Sample(vDepthSampler, vTexCoord.pq);
 		depth = depth + DepthTextureScale * dot(y, vDepthMask);
 	}
 
