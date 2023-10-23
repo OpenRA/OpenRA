@@ -333,6 +333,7 @@ namespace OpenRA.Graphics
 				// Make a copy of the world texture to avoid reading and writing on the same buffer
 				Game.Renderer.Flush();
 				postProcessTexture.SetDataFromReadBuffer(rect);
+				Game.Renderer.Flush();
 				pass.Draw(this, postProcessTexture);
 			}
 		}
