@@ -386,6 +386,10 @@ namespace OpenRA.Platforms.Default
 			int stride, IntPtr pointer);
 		public static VertexAttribPointer glVertexAttribPointer { get; private set; }
 
+		public delegate void VertexAttribIPointer(int index, int size, int type,
+			int stride, IntPtr pointer);
+		public static VertexAttribIPointer glVertexAttribIPointer { get; private set; }
+
 		public delegate void EnableVertexAttribArray(int index);
 		public static EnableVertexAttribArray glEnableVertexAttribArray { get; private set; }
 
@@ -595,6 +599,7 @@ namespace OpenRA.Platforms.Default
 				glDeleteBuffers = Bind<DeleteBuffers>("glDeleteBuffers");
 				glBindAttribLocation = Bind<BindAttribLocation>("glBindAttribLocation");
 				glVertexAttribPointer = Bind<VertexAttribPointer>("glVertexAttribPointer");
+				glVertexAttribIPointer = Bind<VertexAttribIPointer>("glVertexAttribIPointer");
 				glEnableVertexAttribArray = Bind<EnableVertexAttribArray>("glEnableVertexAttribArray");
 				glDisableVertexAttribArray = Bind<DisableVertexAttribArray>("glDisableVertexAttribArray");
 				glDrawArrays = Bind<DrawArrays>("glDrawArrays");

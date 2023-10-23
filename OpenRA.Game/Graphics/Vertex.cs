@@ -55,10 +55,10 @@ namespace OpenRA.Graphics
 
 		public override ShaderVertexAttribute[] Attributes { get; }	= new[]
 		{
-			new ShaderVertexAttribute("aVertexPosition", 3, 0),
-			new ShaderVertexAttribute("aVertexTexCoord", 4, 12),
-			new ShaderVertexAttribute("aVertexTexMetadata", 2, 28),
-			new ShaderVertexAttribute("aVertexTint", 4, 36)
+			new ShaderVertexAttribute("aVertexPosition", ShaderVertexAttributeType.Float, 3, 0),
+			new ShaderVertexAttribute("aVertexTexCoord", ShaderVertexAttributeType.Float, 4, 12),
+			new ShaderVertexAttribute("aVertexTexMetadata", ShaderVertexAttributeType.Float, 2, 28),
+			new ShaderVertexAttribute("aVertexTint", ShaderVertexAttributeType.Float, 4, 36)
 		};
 	}
 }

@@ -31,7 +31,7 @@ namespace OpenRA.Graphics
 
 		public override ShaderVertexAttribute[] Attributes { get; } = new[]
 		{
-			new ShaderVertexAttribute("aVertexPosition", 2, 0)
+			new ShaderVertexAttribute("aVertexPosition", ShaderVertexAttributeType.Float, 2, 0)
 		};
 	}
 }
