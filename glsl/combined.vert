@@ -2,6 +2,7 @@
 
 uniform vec3 Scroll;
 uniform vec3 p1, p2;
+uniform float PaletteRows;
 
 in vec3 aVertexPosition;
 in vec4 aVertexTexCoord;
@@ -9,7 +10,7 @@ in vec2 aVertexTexMetadata;
 in vec4 aVertexTint;
 
 out vec4 vTexCoord;
-out vec2 vTexMetadata;
+out float vTexPalette;
 out vec4 vChannelMask;
 out vec4 vDepthMask;
 out vec2 vTexSampler;
@@ -100,7 +101,7 @@ void main()
 {
 	gl_Position = vec4((aVertexPosition - Scroll) * p1 + p2, 1);
 	vTexCoord = aVertexTexCoord;
-	vTexMetadata = aVertexTexMetadata;
+	vTexPalette = aVertexTexMetadata.s / PaletteRows;
 
 	vec4 attrib = UnpackChannelAttributes(aVertexTexMetadata.t);
 	vChannelMask = SelectChannelMask(attrib.s);

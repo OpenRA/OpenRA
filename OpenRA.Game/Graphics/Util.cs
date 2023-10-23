@@ -30,7 +30,7 @@ namespace OpenRA.Graphics
 			return indices;
 		}
 
-		public static void FastCreateQuad(Vertex[] vertices, in float3 o, Sprite r, int2 samplers, float paletteTextureIndex, int nv,
+		public static void FastCreateQuad(Vertex[] vertices, in float3 o, Sprite r, int2 samplers, int paletteTextureIndex, int nv,
 			in float3 size, in float3 tint, float alpha, float rotation = 0f)
 		{
 			float3 a, b, c, d;
@@ -72,7 +72,7 @@ namespace OpenRA.Graphics
 
 		public static void FastCreateQuad(Vertex[] vertices,
 			in float3 a, in float3 b, in float3 c, in float3 d,
-			Sprite r, int2 samplers, float paletteTextureIndex,
+			Sprite r, int2 samplers, int paletteTextureIndex,
 			in float3 tint, float alpha, int nv)
 		{
 			float sl = 0;

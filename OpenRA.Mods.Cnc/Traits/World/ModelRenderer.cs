@@ -65,9 +65,10 @@ namespace OpenRA.Mods.Cnc.Traits
 		SheetBuilder sheetBuilderForFrame;
 		bool isInFrame;
 
-		public void SetPalette(ITexture palette)
+		public void SetPalette(HardwarePalette palette)
 		{
-			shader.SetTexture("Palette", palette);
+			shader.SetTexture("Palette", palette.Texture);
+			shader.SetVec("PaletteRows", palette.Height);
 		}
 
 		public ModelRenderer(ModelRendererInfo info, Actor self)
@@ -226,12 +227,12 @@ namespace OpenRA.Mods.Cnc.Traits
 						var lightDirection = ExtractRotationVector(Util.MatrixMultiply(it, lightTransform));
 
 						Render(rd, ModelCache, Util.MatrixMultiply(transform, t), lightDirection,
-							lightAmbientColor, lightDiffuseColor, color.TextureMidIndex, normals.TextureMidIndex);
+							lightAmbientColor, lightDiffuseColor, color.TextureIndex, normals.TextureIndex);
 
 						// Disable shadow normals by forcing zero diffuse and identity ambient light
 						if (m.ShowShadow)
 							Render(rd, ModelCache, Util.MatrixMultiply(shadow, t), lightDirection,
-								ShadowAmbient, ShadowDiffuse, shadowPalette.TextureMidIndex, normals.TextureMidIndex);
+								ShadowAmbient, ShadowDiffuse, shadowPalette.TextureIndex, normals.TextureIndex);
 					}
 				}
 			}));
@@ -279,10 +280,10 @@ namespace OpenRA.Mods.Cnc.Traits
 			IModelCache cache,
 			float[] t, float[] lightDirection,
 			float[] ambientLight, float[] diffuseLight,
-			float colorPaletteTextureMidIndex, float normalsPaletteTextureMidIndex)
+			float colorPaletteTextureIndex, float normalsPaletteTextureIndex)
 		{
 			shader.SetTexture("DiffuseTexture", renderData.Sheet.GetTexture());
-			shader.SetVec("PaletteRows", colorPaletteTextureMidIndex, normalsPaletteTextureMidIndex);
+			shader.SetVec("Palettes", colorPaletteTextureIndex, normalsPaletteTextureIndex);
 			shader.SetMatrix("TransformMatrix", t);
 			shader.SetVec("LightDirection", lightDirection, 4);
 			shader.SetVec("AmbientLight", ambientLight, 3);
