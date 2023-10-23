@@ -776,19 +776,10 @@ namespace OpenRA
 
 			if (Grid.MaximumTerrainHeight > 0)
 			{
-				// The minimap is drawn in cell space, so we need to
-				// unproject the PPos bounds to find the MPos boundaries.
-				// This matches the calculation in RadarWidget that is used ingame
-				for (var x = Bounds.Left; x < Bounds.Right; x++)
-				{
-					var allTop = Unproject(new PPos(x, Bounds.Top));
-					var allBottom = Unproject(new PPos(x, Bounds.Bottom));
-					if (allTop.Count > 0)
-						top = Math.Min(top, allTop.MinBy(uv => uv.V).V);
+				(top, bottom) = GetCellSpaceBounds();
 
-					if (allBottom.Count > 0)
-						bottom = Math.Max(bottom, allBottom.MaxBy(uv => uv.V).V);
-				}
+				if (top == int.MaxValue || bottom == int.MinValue)
+					throw new InvalidDataException("The map has invalid boundaries");
 			}
 			else
 			{
@@ -862,6 +853,28 @@ namespace OpenRA
 
 			var png = new Png(minimapData, SpriteFrameType.Rgba32, bitmapWidth, height);
 			return png.Save();
+		}
+
+		public (int Top, int Bottom) GetCellSpaceBounds()
+		{
+			var top = int.MaxValue;
+			var bottom = int.MinValue;
+
+			// The minimap is drawn in cell space, so we need to
+			// unproject the PPos bounds to find the MPos boundaries.
+			// This matches the calculation in RadarWidget that is used ingame
+			for (var x = Bounds.Left; x < Bounds.Right; x++)
+			{
+				var allTop = Unproject(new PPos(x, Bounds.Top));
+				var allBottom = Unproject(new PPos(x, Bounds.Bottom));
+				if (allTop.Count > 0)
+					top = Math.Min(top, allTop.MinBy(uv => uv.V).V);
+
+				if (allBottom.Count > 0)
+					bottom = Math.Max(bottom, allBottom.MaxBy(uv => uv.V).V);
+			}
+
+			return (top, bottom);
 		}
 
 		public bool Contains(CPos cell)
