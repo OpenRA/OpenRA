@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using OpenRA.Graphics;
 
 namespace OpenRA.Platforms.Default
 {
@@ -135,7 +136,10 @@ namespace OpenRA.Platforms.Default
 			for (ushort i = 0; i < bindings.Attributes.Length; i++)
 			{
 				var attribute = bindings.Attributes[i];
-				OpenGL.glVertexAttribPointer(i, attribute.Components, OpenGL.GL_FLOAT, false, bindings.Stride, new IntPtr(attribute.Offset));
+				if (attribute.Type == ShaderVertexAttributeType.Float)
+					OpenGL.glVertexAttribPointer(i, attribute.Components, OpenGL.GL_FLOAT, false, bindings.Stride, new IntPtr(attribute.Offset));
+				else
+					OpenGL.glVertexAttribIPointer(i, attribute.Components, (int)attribute.Type, bindings.Stride, new IntPtr(attribute.Offset));
 				OpenGL.CheckGLError();
 			}
 		}

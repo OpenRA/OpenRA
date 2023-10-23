@@ -14,15 +14,26 @@ using System.Linq;
 
 namespace OpenRA.Graphics
 {
+	public enum ShaderVertexAttributeType
+	{
+		// Assign the underlying OpenGL type values
+		// to simplify enum use in the shader
+		Float = 0x1406, // GL_FLOAT
+		Int = 0x1404, // GL_INT
+		UInt = 0x1405 // GL_UNSIGNED_INT
+	}
+
 	public readonly struct ShaderVertexAttribute
 	{
 		public readonly string Name;
+		public readonly ShaderVertexAttributeType Type;
 		public readonly int Components;
 		public readonly int Offset;
 
-		public ShaderVertexAttribute(string name, int components, int offset)
+		public ShaderVertexAttribute(string name, ShaderVertexAttributeType type, int components, int offset)
 		{
 			Name = name;
+			Type = type;
 			Components = components;
 			Offset = offset;
 		}
