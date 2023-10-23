@@ -23,26 +23,26 @@ namespace OpenRA.Graphics
 		public readonly float S, T, U, V;
 
 		// Palette and channel flags
-		public readonly float P, C;
+		public readonly uint C;
 
 		// Color tint
 		public readonly float R, G, B, A;
 
-		public Vertex(in float3 xyz, float s, float t, float u, float v, float p, float c)
-			: this(xyz.X, xyz.Y, xyz.Z, s, t, u, v, p, c, float3.Ones, 1f) { }
+		public Vertex(in float3 xyz, float s, float t, float u, float v, uint c)
+			: this(xyz.X, xyz.Y, xyz.Z, s, t, u, v, c, float3.Ones, 1f) { }
 
-		public Vertex(in float3 xyz, float s, float t, float u, float v, float p, float c, in float3 tint, float a)
-			: this(xyz.X, xyz.Y, xyz.Z, s, t, u, v, p, c, tint.X, tint.Y, tint.Z, a) { }
+		public Vertex(in float3 xyz, float s, float t, float u, float v, uint c, in float3 tint, float a)
+			: this(xyz.X, xyz.Y, xyz.Z, s, t, u, v, c, tint.X, tint.Y, tint.Z, a) { }
 
-		public Vertex(float x, float y, float z, float s, float t, float u, float v, float p, float c, in float3 tint, float a)
-			: this(x, y, z, s, t, u, v, p, c, tint.X, tint.Y, tint.Z, a) { }
+		public Vertex(float x, float y, float z, float s, float t, float u, float v, uint c, in float3 tint, float a)
+			: this(x, y, z, s, t, u, v, c, tint.X, tint.Y, tint.Z, a) { }
 
-		public Vertex(float x, float y, float z, float s, float t, float u, float v, float p, float c, float r, float g, float b, float a)
+		public Vertex(float x, float y, float z, float s, float t, float u, float v, uint c, float r, float g, float b, float a)
 		{
 			X = x; Y = y; Z = z;
 			S = s; T = t;
 			U = u; V = v;
-			P = p; C = c;
+			C = c;
 			R = r; G = g; B = b; A = a;
 		}
 	}
@@ -57,8 +57,8 @@ namespace OpenRA.Graphics
 		{
 			new ShaderVertexAttribute("aVertexPosition", ShaderVertexAttributeType.Float, 3, 0),
 			new ShaderVertexAttribute("aVertexTexCoord", ShaderVertexAttributeType.Float, 4, 12),
-			new ShaderVertexAttribute("aVertexTexMetadata", ShaderVertexAttributeType.Float, 2, 28),
-			new ShaderVertexAttribute("aVertexTint", ShaderVertexAttributeType.Float, 4, 36)
+			new ShaderVertexAttribute("aVertexAttributes", ShaderVertexAttributeType.UInt, 1, 28),
+			new ShaderVertexAttribute("aVertexTint", ShaderVertexAttributeType.Float, 4, 32)
 		};
 	}
 }
