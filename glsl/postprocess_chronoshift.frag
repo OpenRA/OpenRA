@@ -9,7 +9,7 @@ out vec4 fragColor;
 
 void main()
 {
-	vec4 c = texture(WorldTexture, gl_FragCoord.xy / textureSize(WorldTexture, 0));
+	vec4 c = texelFetch(WorldTexture, ivec2(gl_FragCoord.xy), 0);
 	float lum = 0.5 * (min(c.r, min(c.g, c.b)) + max(c.r, max(c.g, c.b)));
-	fragColor = vec4(lum, lum, lum, c.a) * Blend + c * (1.0 - Blend);
+	fragColor = mix(c, vec4(lum, lum, lum, c.a), Blend);
 }
