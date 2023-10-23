@@ -44,7 +44,12 @@ namespace OpenRA.Mods.Common.FileFormats
 				{
 					case ';': break;
 					case '[': currentSection = ProcessSection(line); break;
-					default: ProcessEntry(line, currentSection); break;
+					default:
+						// Skip everything before the first section
+						if (currentSection != null)
+							ProcessEntry(line, currentSection);
+
+						break;
 				}
 			}
 		}
