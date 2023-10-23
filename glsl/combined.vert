@@ -58,7 +58,7 @@ void main()
 	vDepthMask = SelectChannelMask((aVertexAttributes >> 3) & 0x07u);
 	vChannelSampler = (aVertexAttributes >> 6) & 0x07u;
 	vDepthSampler = (aVertexAttributes >> 9) & 0x07u;
-	vTexPalette = (aVertexAttributes >> 16) / PaletteRows;
+	vTexPalette = float(aVertexAttributes >> 16) / PaletteRows;
 
 	vTint = aVertexTint;
 }
