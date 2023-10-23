@@ -22,7 +22,7 @@ uniform float AntialiasPixelsPerTexel;
 in vec4 vColor;
 
 in vec4 vTexCoord;
-in vec2 vTexMetadata;
+in float vTexPalette;
 in vec4 vChannelMask;
 in vec4 vDepthMask;
 in vec2 vTexSampler;
@@ -129,10 +129,10 @@ vec4 SamplePalettedBilinear(float samplerIndex, vec2 coords, vec2 textureSize)
 	vec4 x3 = Sample(samplerIndex, tl + vec2(0., px.y));
 	vec4 x4 = Sample(samplerIndex, tl + px);
 
-	vec4 c1 = texture(Palette, vec2(dot(x1, vChannelMask), vTexMetadata.s));
-	vec4 c2 = texture(Palette, vec2(dot(x2, vChannelMask), vTexMetadata.s));
-	vec4 c3 = texture(Palette, vec2(dot(x3, vChannelMask), vTexMetadata.s));
-	vec4 c4 = texture(Palette, vec2(dot(x4, vChannelMask), vTexMetadata.s));
+	vec4 c1 = texture(Palette, vec2(dot(x1, vChannelMask), vTexPalette));
+	vec4 c2 = texture(Palette, vec2(dot(x2, vChannelMask), vTexPalette));
+	vec4 c3 = texture(Palette, vec2(dot(x3, vChannelMask), vTexPalette));
+	vec4 c4 = texture(Palette, vec2(dot(x4, vChannelMask), vTexPalette));
 
 	return mix(mix(c1, c2, interp.x), mix(c3, c4, interp.x), interp.y);
 }
@@ -174,7 +174,7 @@ void main()
 	if (!(AntialiasPixelsPerTexel > 0.0 && vPalettedFraction.x > 0.0))
 	{
 		vec4 x = Sample(vTexSampler.s, coords);
-		vec2 p = vec2(dot(x, vChannelMask), vTexMetadata.s);
+		vec2 p = vec2(dot(x, vChannelMask), vTexPalette);
 		c = vPalettedFraction * texture(Palette, p) + vRGBAFraction * x + vColorFraction * vTexCoord;
 	}
 
@@ -182,8 +182,8 @@ void main()
 	if (c.a == 0.0)
 		discard;
 
-	if (vRGBAFraction.r > 0.0 && vTexMetadata.s > 0.0)
-		c = ColorShift(c, vTexMetadata.s);
+	if (vRGBAFraction.r > 0.0 && vTexPalette > 0.0)
+		c = ColorShift(c, vTexPalette);
 
 	float depth = gl_FragCoord.z;
 	if (length(vDepthMask) > 0.0)

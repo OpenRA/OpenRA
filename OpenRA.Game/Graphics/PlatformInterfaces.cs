@@ -107,7 +107,7 @@ namespace OpenRA
 	{
 		void BeginFrame();
 		void EndFrame();
-		void SetPalette(ITexture palette);
+		void SetPalette(HardwarePalette palette);
 	}
 
 	public interface IVertexBuffer<T> : IDisposable where T : struct

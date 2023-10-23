@@ -13,19 +13,17 @@ namespace OpenRA.Graphics
 {
 	public sealed class PaletteReference
 	{
-		readonly float index;
 		readonly HardwarePalette hardwarePalette;
 
 		public readonly string Name;
 		public IPalette Palette { get; internal set; }
-		public float TextureIndex => index / hardwarePalette.Height;
-		public float TextureMidIndex => (index + 0.5f) / hardwarePalette.Height;
+		public int TextureIndex { get; }
 
 		public PaletteReference(string name, int index, IPalette palette, HardwarePalette hardwarePalette)
 		{
 			Name = name;
 			Palette = palette;
-			this.index = index;
+			TextureIndex = index;
 			this.hardwarePalette = hardwarePalette;
 		}
 
