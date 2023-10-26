@@ -10,7 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
+using OpenRA.Mods.Cnc.Effects;
 using OpenRA.Mods.Common;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Traits.Render;
@@ -25,13 +25,6 @@ namespace OpenRA.Mods.Cnc.Traits
 		"Otherwise, a vortex animation is played and damage is dealt each tick, ignoring modifiers.")]
 	public class ConyardChronoReturnInfo : TraitInfo, Requires<HealthInfo>, Requires<WithSpriteBodyInfo>, IObservesVariablesInfo
 	{
-		[SequenceReference]
-		[Desc("Sequence name with the baked-in vortex animation")]
-		public readonly string Sequence = "pdox";
-
-		[Desc("Sprite body to play the vortex animation on.")]
-		public readonly string Body = "body";
-
 		[GrantedConditionReference]
 		[Desc("Condition to grant while the vortex animation plays.")]
 		public readonly string Condition = null;
@@ -65,7 +58,6 @@ namespace OpenRA.Mods.Cnc.Traits
 		IDeathActorInitModifier, ITransformActorInitModifier
 	{
 		readonly ConyardChronoReturnInfo info;
-		readonly WithSpriteBody wsb;
 		readonly Health health;
 		readonly Actor self;
 		readonly string faction;
@@ -92,8 +84,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			self = init.Self;
 
 			health = self.Trait<Health>();
-
-			wsb = self.TraitsImplementing<WithSpriteBody>().Single(w => w.Info.Name == info.Body);
 			faction = init.GetValue<FactionInit, string>(self.Owner.Faction.InternalName);
 
 			var returnInit = init.GetOrDefault<ChronoshiftReturnInit>();
@@ -127,16 +117,12 @@ namespace OpenRA.Mods.Cnc.Traits
 
 			triggered = true;
 
-			// Don't override the selling animation
-			if (selling)
-				return;
-
-			wsb.PlayCustomAnimation(self, info.Sequence, () =>
+			self.World.AddFrameEndTask(w => w.Add(new ConyardChronoVortex(self, () =>
 			{
 				triggered = false;
-				if (conditionToken != Actor.InvalidConditionToken)
+				if (conditionToken != Actor.InvalidConditionToken && !self.Disposed)
 					conditionToken = self.RevokeCondition(conditionToken);
-			});
+			})));
 		}
 
 		CPos? ChooseBestDestinationCell(MobileInfo mobileInfo, CPos destination)
