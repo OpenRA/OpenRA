@@ -111,6 +111,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveValidRelationsFromCapturable(),
 				new ExtractResourceStorageFromHarvester(),
 				new ReplacePaletteModifiers(),
+				new RemoveConyardChronoReturnAnimation(),
 
 				// Execute these rules last to avoid premature yaml merge crashes.
 				new AbstractDocking(),

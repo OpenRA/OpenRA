@@ -79,18 +79,11 @@ fact:
 	build:
 		Start: 1
 		Length: 25
-	pdox:
-		Filename: factpdox.shp
-		Length: 80
 	damaged-idle:
 		Start: 26
 	damaged-build:
 		Start: 27
 		Length: 25
-	damaged-pdox:
-		Filename: factpdox.shp
-		Start: 80
-		Length: 80
 	dead:
 		Filename: factdead.shp
 		Tick: 800
