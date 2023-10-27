@@ -82,16 +82,16 @@ namespace OpenRA.Graphics
 			this.margin = margin;
 		}
 
-		public Sprite Add(ISpriteFrame frame) { return Add(frame.Data, frame.Type, frame.Size, 0, frame.Offset); }
-		public Sprite Add(byte[] src, SpriteFrameType type, Size size) { return Add(src, type, size, 0, float3.Zero); }
-		public Sprite Add(byte[] src, SpriteFrameType type, Size size, float zRamp, in float3 spriteOffset)
+		public Sprite Add(ISpriteFrame frame, bool premultiplied = false) { return Add(frame.Data, frame.Type, frame.Size, 0, frame.Offset, premultiplied); }
+		public Sprite Add(byte[] src, SpriteFrameType type, Size size, bool premultiplied = false) { return Add(src, type, size, 0, float3.Zero, premultiplied); }
+		public Sprite Add(byte[] src, SpriteFrameType type, Size size, float zRamp, in float3 spriteOffset, bool premultiplied = false)
 		{
 			// Don't bother allocating empty sprites
 			if (size.Width == 0 || size.Height == 0)
 				return new Sprite(Current, Rectangle.Empty, 0, spriteOffset, CurrentChannel, BlendMode.Alpha);
 
 			var rect = Allocate(size, zRamp, spriteOffset);
-			Util.FastCopyIntoChannel(rect, src, type);
+			Util.FastCopyIntoChannel(rect, src, type, premultiplied);
 			Current.CommitBufferedData();
 			return rect;
 		}
