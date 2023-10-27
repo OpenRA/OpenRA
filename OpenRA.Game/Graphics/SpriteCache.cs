@@ -24,7 +24,7 @@ namespace OpenRA.Graphics
 		readonly ISpriteLoader[] loaders;
 		readonly IReadOnlyFileSystem fileSystem;
 
-		readonly Dictionary<int, (int[] Frames, MiniYamlNode.SourceLocation Location)> spriteReservations = new();
+		readonly Dictionary<int, (int[] Frames, MiniYamlNode.SourceLocation Location, bool Premultiplied)> spriteReservations = new();
 		readonly Dictionary<int, (int[] Frames, MiniYamlNode.SourceLocation Location)> frameReservations = new();
 		readonly Dictionary<string, List<int>> reservationsByFilename = new();
 
@@ -47,10 +47,10 @@ namespace OpenRA.Graphics
 			this.loaders = loaders;
 		}
 
-		public int ReserveSprites(string filename, IEnumerable<int> frames, MiniYamlNode.SourceLocation location)
+		public int ReserveSprites(string filename, IEnumerable<int> frames, MiniYamlNode.SourceLocation location, bool premultiplied = false)
 		{
 			var token = nextReservationToken++;
-			spriteReservations[token] = (frames?.ToArray(), location);
+			spriteReservations[token] = (frames?.ToArray(), location, premultiplied);
 			reservationsByFilename.GetOrAdd(filename, _ => new List<int>()).Add(token);
 			return token;
 		}
@@ -91,14 +91,14 @@ namespace OpenRA.Graphics
 				var loadedFrames = GetFrames(fileSystem, filename, loaders, out _);
 				foreach (var token in tokens)
 				{
-					if (frameReservations.TryGetValue(token, out var r))
+					if (frameReservations.TryGetValue(token, out var rf))
 					{
 						if (loadedFrames != null)
 						{
-							if (r.Frames != null)
+							if (rf.Frames != null)
 							{
 								var resolved = new ISpriteFrame[loadedFrames.Length];
-								foreach (var i in r.Frames)
+								foreach (var i in rf.Frames)
 									resolved[i] = loadedFrames[i];
 								resolvedFrames[token] = resolved;
 							}
@@ -108,26 +108,32 @@ namespace OpenRA.Graphics
 						else
 						{
 							resolvedFrames[token] = null;
-							missingFiles[token] = (filename, r.Location);
+							missingFiles[token] = (filename, rf.Location);
 						}
 					}
 
-					if (spriteReservations.TryGetValue(token, out r))
+					if (spriteReservations.TryGetValue(token, out var rs))
 					{
 						if (loadedFrames != null)
 						{
 							var resolved = new Sprite[loadedFrames.Length];
-							var frames = r.Frames ?? Enumerable.Range(0, loadedFrames.Length);
+							var frames = rs.Frames ?? Enumerable.Range(0, loadedFrames.Length);
+
+							// Premultiplied and non-premultiplied sprites must be cached separately
+							// to cover the case where the same image is requested in both versions.
+							// The premultiplied sprites are stored with an index offset for efficiency
+							// rather than allocating a second dictionary.
+							var di = rs.Premultiplied ? loadedFrames.Length : 0;
 							foreach (var i in frames)
-								resolved[i] = spriteCache.GetOrAdd(i,
-									f => SheetBuilders[SheetBuilder.FrameTypeToSheetType(loadedFrames[f].Type)].Add(loadedFrames[f]));
+								resolved[i] = spriteCache.GetOrAdd(i + di,
+									f => SheetBuilders[SheetBuilder.FrameTypeToSheetType(loadedFrames[f - di].Type)].Add(loadedFrames[f - di], rs.Premultiplied));
 
 							resolvedSprites[token] = resolved;
 						}
 						else
 						{
 							resolvedSprites[token] = null;
-							missingFiles[token] = (filename, r.Location);
+							missingFiles[token] = (filename, rs.Location);
 						}
 					}
 				}
