@@ -159,11 +159,10 @@ namespace OpenRA.Mods.Common.Scripting
 
 		Action WrapOnPlayComplete(LuaFunction onPlayComplete)
 		{
-			Action onComplete;
 			if (onPlayComplete != null)
 			{
 				var f = (LuaFunction)onPlayComplete.CopyReference();
-				onComplete = () =>
+				return () =>
 				{
 					try
 					{
@@ -177,9 +176,7 @@ namespace OpenRA.Mods.Common.Scripting
 				};
 			}
 			else
-				onComplete = () => { };
-
-			return onComplete;
+				return () => { };
 		}
 	}
 }

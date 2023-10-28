@@ -1058,6 +1058,9 @@ dotnet_diagnostic.RCS1172.severity = warning
 # Unused 'this' parameter.
 dotnet_diagnostic.RCS1175.severity = warning
 
+# Unnecessary assignment.
+dotnet_diagnostic.RCS1179.severity = warning
+
 # Use constant instead of field.
 dotnet_diagnostic.RCS1187.severity = warning
 
