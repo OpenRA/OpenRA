@@ -742,6 +742,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 			if (targetAbstractCell == null)
 				return PathFinder.NoPath;
 
+			RebuildDomains();
+			var targetDomain = abstractDomains[targetAbstractCell.Value];
+
 			// Unlike the target cell, the source cell is allowed to be an unreachable location.
 			// Instead, what matters is whether any cell adjacent to the source cell can be reached.
 			var sourcesWithReachableNodes = new List<(CPos Source, CPos AdjacentSource)>(sources.Count);
@@ -755,6 +758,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 				var sourceAbstractCell = AbstractCellForLocalCell(source);
 				if (sourceAbstractCell != null)
 				{
+					// If the source and target belong to different domains, there is no path.
+					var sourceDomain = abstractDomains[sourceAbstractCell.Value];
+					if (sourceDomain != targetDomain)
+						continue;
+
 					sourcesWithReachableNodes.Add((source, source));
 					var sourceEdge = EdgeFromLocalToAbstract(source, sourceAbstractCell.Value);
 					if (sourceEdge != null)
@@ -771,6 +779,11 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 					var adjacentSourceAbstractCell = AbstractCellForLocalCell(adjacentSource);
 					if (adjacentSourceAbstractCell == null)
+						continue;
+
+					// If the source and target belong to different domains, there is no path.
+					var adjacentSourceDomain = abstractDomains[adjacentSourceAbstractCell.Value];
+					if (adjacentSourceDomain != targetDomain)
 						continue;
 
 					sourcesWithReachableNodes.Add((source, adjacentSource));
@@ -888,6 +901,13 @@ namespace OpenRA.Mods.Common.Pathfinder
 			var sourceAbstractCell = AbstractCellForLocalCell(source);
 			if (sourceAbstractCell == null)
 				return FindPath(self, new[] { source }, target, check, heuristicWeightPercentage, customCost, ignoreActor, laneBias, pathFinderOverlay);
+
+			// If the source and target belong to different domains, there is no path.
+			RebuildDomains();
+			var targetDomain = abstractDomains[targetAbstractCell.Value];
+			var sourceDomain = abstractDomains[sourceAbstractCell.Value];
+			if (sourceDomain != targetDomain)
+				return PathFinder.NoPath;
 
 			var targetEdge = EdgeFromLocalToAbstract(target, targetAbstractCell.Value);
 			var sourceEdge = EdgeFromLocalToAbstract(source, sourceAbstractCell.Value);
