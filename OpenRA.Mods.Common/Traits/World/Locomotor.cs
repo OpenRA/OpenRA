@@ -283,11 +283,30 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var otherActors = subCell == SubCell.FullCell ? world.ActorMap.GetActorsAt(cell) : world.ActorMap.GetActorsAt(cell, subCell);
-			foreach (var otherActor in otherActors)
-				if (IsBlockedBy(actor, otherActor, ignoreActor, ignoreSelf, cell, check, cellFlag))
-					return false;
 
-			return true;
+			if (ignoreSelf)
+			{
+				// Any actor blocking us will prevent our movement, *unless* we are one of those actors.
+				var isBlocked = false;
+				foreach (var otherActor in otherActors)
+				{
+					if (actor == otherActor)
+						return true;
+
+					isBlocked = isBlocked || IsBlockedBy(actor, otherActor, ignoreActor, cell, check, cellFlag);
+				}
+
+				return !isBlocked;
+			}
+			else
+			{
+				// Any actor blocking us will prevent our movement.
+				foreach (var otherActor in otherActors)
+					if (IsBlockedBy(actor, otherActor, ignoreActor, cell, check, cellFlag))
+						return false;
+
+				return true;
+			}
 		}
 
 		public bool CanStayInCell(CPos cell)
@@ -305,7 +324,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (check > BlockedByActor.None)
 			{
-				bool CheckTransient(Actor otherActor) => IsBlockedBy(self, otherActor, ignoreActor, false, cell, check, GetCache(cell).CellFlag);
+				bool CheckTransient(Actor otherActor) => IsBlockedBy(self, otherActor, ignoreActor, cell, check, GetCache(cell).CellFlag);
 
 				if (!sharesCell)
 					return world.ActorMap.AnyActorsAt(cell, SubCell.FullCell, CheckTransient) ? SubCell.Invalid : SubCell.FullCell;
@@ -322,9 +341,9 @@ namespace OpenRA.Mods.Common.Traits
 		/// <remarks>This logic is replicated in <see cref="HierarchicalPathFinder.ActorIsBlocking"/> and
 		/// <see cref="HierarchicalPathFinder.ActorCellIsBlocking"/>. If this method is updated please update those as
 		/// well.</remarks>
-		bool IsBlockedBy(Actor actor, Actor otherActor, Actor ignoreActor, bool ignoreSelf, CPos cell, BlockedByActor check, CellFlag cellFlag)
+		bool IsBlockedBy(Actor actor, Actor otherActor, Actor ignoreActor, CPos cell, BlockedByActor check, CellFlag cellFlag)
 		{
-			if (otherActor == ignoreActor || (ignoreSelf && otherActor == actor))
+			if (otherActor == ignoreActor)
 				return false;
 
 			var otherMobile = otherActor.OccupiesSpace as Mobile;
