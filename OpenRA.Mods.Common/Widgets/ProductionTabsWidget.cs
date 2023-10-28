@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Update(IEnumerable<ProductionQueue> allQueues)
 		{
-			var queues = allQueues.Where(q => q.Info.Group == Group).ToList();
+			var queues = allQueues.Where(q => q.Enabled && q.Info.Group == Group).ToList();
 			var tabs = new List<ProductionTab>();
 			var largestUsedName = 0;
 
@@ -104,6 +104,8 @@ namespace OpenRA.Mods.Common.Widgets
 		Rectangle rightButtonRect;
 		readonly Lazy<ProductionPaletteWidget> paletteWidget;
 		string queueGroup;
+
+		readonly List<(ProductionQueue Queue, bool Enabled)> cachedProductionQueueEnabledStates = new();
 
 		[ObjectCreator.UseCtor]
 		public ProductionTabsWidget(World world)
@@ -243,12 +245,16 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (a.Info.HasTraitInfo<ProductionQueueInfo>())
 			{
-				var allQueues = a.World.ActorsWithTrait<ProductionQueue>()
-					.Where(p => p.Actor.Owner == p.Actor.World.LocalPlayer && p.Actor.IsInWorld && p.Trait.Enabled)
-					.Select(p => p.Trait).ToList();
+				var queues = a.World.ActorsWithTrait<ProductionQueue>()
+					.Where(p => p.Actor.Owner == p.Actor.World.LocalPlayer && p.Actor.IsInWorld)
+					.Select(p => p.Trait);
+
+				cachedProductionQueueEnabledStates.Clear();
+				foreach (var queue in queues)
+					cachedProductionQueueEnabledStates.Add((queue, queue.Enabled));
 
 				foreach (var g in Groups.Values)
-					g.Update(allQueues);
+					g.Update(cachedProductionQueueEnabledStates.Select(t => t.Queue));
 
 				if (queueGroup == null)
 					return;
@@ -268,6 +274,22 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			if (leftPressed) Scroll(1);
 			if (rightPressed) Scroll(-1);
+
+			// It is possible that production queues get enabled/disabled during their lifetime.
+			// This makes sure every enabled production queue always has its tab associated with it.
+			var shouldUpdateQueues = false;
+			foreach (var (queue, enabled) in cachedProductionQueueEnabledStates)
+			{
+				if (queue.Enabled != enabled)
+				{
+					shouldUpdateQueues = true;
+					break;
+				}
+			}
+
+			if (shouldUpdateQueues)
+				foreach (var g in Groups.Values)
+					g.Update(cachedProductionQueueEnabledStates.Select(t => t.Queue));
 		}
 
 		public override bool YieldMouseFocus(MouseInput mi)
