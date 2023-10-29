@@ -24,8 +24,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		readonly World world;
 		readonly ModData modData;
+		readonly Dictionary<ActorInfo, EncyclopediaInfo> info = new();
 
 		readonly ScrollPanelWidget descriptionPanel;
+		readonly LabelWidget titleLabel;
 		readonly LabelWidget descriptionLabel;
 		readonly SpriteFont descriptionFont;
 
@@ -54,34 +56,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			previewWidget.IsVisible = () => selectedActor != null;
 
 			descriptionPanel = widget.Get<ScrollPanelWidget>("ACTOR_DESCRIPTION_PANEL");
-
+			titleLabel = descriptionPanel.Get<LabelWidget>("ACTOR_TITLE");
 			descriptionLabel = descriptionPanel.Get<LabelWidget>("ACTOR_DESCRIPTION");
 			descriptionFont = Game.Renderer.Fonts[descriptionLabel.Font];
 
 			actorList.RemoveChildren();
 
-			var actorEncyclopediaPair = GetFilteredActorEncyclopediaPairs();
-			var categories = actorEncyclopediaPair.Select(a => a.Value.Category).Distinct().
-				OrderBy(string.IsNullOrWhiteSpace).ThenBy(s => s);
-			foreach (var category in categories)
-			{
-				CreateActorGroup(category, actorEncyclopediaPair
-					.Where(a => a.Value.Category == category)
-					.OrderBy(a => a.Value.Order)
-					.Select(a => a.Key));
-			}
-
-			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
-			{
-				Game.Disconnect();
-				Ui.CloseWindow();
-				onExit();
-			};
-		}
-
-		IReadOnlyCollection<KeyValuePair<ActorInfo, EncyclopediaInfo>> GetFilteredActorEncyclopediaPairs()
-		{
-			var actors = new List<KeyValuePair<ActorInfo, EncyclopediaInfo>>();
 			foreach (var actor in modData.DefaultRules.Actors.Values)
 			{
 				if (actor.TraitInfos<IRenderActorPreviewSpritesInfo>().Count == 0)
@@ -95,10 +75,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (encyclopedia == null)
 					continue;
 
-				actors.Add(new KeyValuePair<ActorInfo, EncyclopediaInfo>(actor, encyclopedia));
+				info.Add(actor, encyclopedia);
 			}
 
-			return actors;
+			var categories = info.Select(a => a.Value.Category).Distinct().
+				OrderBy(string.IsNullOrWhiteSpace).ThenBy(s => s);
+
+			foreach (var category in categories)
+			{
+				CreateActorGroup(category, info
+					.Where(a => a.Value.Category == category)
+					.OrderBy(a => a.Value.Order)
+					.Select(a => a.Key));
+			}
+
+			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
+			{
+				Game.Disconnect();
+				Ui.CloseWindow();
+				onExit();
+			};
 		}
 
 		void CreateActorGroup(string title, IEnumerable<ActorInfo> actors)
@@ -130,6 +126,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void SelectActor(ActorInfo actor)
 		{
+			var selectedInfo = info[actor];
 			selectedActor = actor;
 
 			var typeDictionary = new TypeDictionary()
@@ -143,6 +140,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					typeDictionary.Add(inits);
 
 			previewWidget.SetPreview(actor, typeDictionary);
+			previewWidget.GetScale = () => selectedInfo.Scale;
 
 			var text = "";
 
@@ -154,14 +152,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					.Where(s => !s.StartsWith('~') && !s.StartsWith('!'))
 					.ToList();
 				if (prerequisites.Count != 0)
-					text += $"Requires {prerequisites.JoinWith(", ")}\n\n";
+					text += WidgetUtils.WrapText($"Requires {prerequisites.JoinWith(", ")}\n\n", descriptionLabel.Bounds.Width, descriptionFont);
 			}
 
-			var info = actor.TraitInfoOrDefault<EncyclopediaInfo>();
-			if (info != null && !string.IsNullOrEmpty(info.Description))
-				text += WidgetUtils.WrapText(info.Description.Replace("\\n", "\n") + "\n\n", descriptionLabel.Bounds.Width, descriptionFont);
+			if (!string.IsNullOrEmpty(selectedInfo.Description))
+				text += WidgetUtils.WrapText(selectedInfo.Description.Replace("\\n", "\n") + "\n\n", descriptionLabel.Bounds.Width, descriptionFont);
 
 			var height = descriptionFont.Measure(text).Y;
+			titleLabel.Text = ActorName(modData.DefaultRules, actor.Name);
 			descriptionLabel.Text = text;
 			descriptionLabel.Bounds.Height = height;
 			descriptionPanel.Layout.AdjustChildren();

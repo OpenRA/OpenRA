@@ -113,6 +113,7 @@ ornithopter:
 		Description: The fastest aircraft on Dune, the Ornithopther is lightly armored and capable of dropping 500lb bombs. This unit is most effective against infantry and lightly armored targets, but also damages armored targets.
 		Order: 240
 		Category: Units
+		Scale: 2
 	Aircraft:
 		Speed: 224
 		TurnSpeed: 8

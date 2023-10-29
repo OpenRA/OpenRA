@@ -23,6 +23,7 @@ light_inf:
 		Description: Light Infantry are lightly armored foot soldiers, equipped with 9mm RP assault rifles. Light Infantry are effective against other infantry and lightly armored vehicles.\n\nLight Infantry are resistant to missiles and large-caliber guns, but very vulnerable to high-explosives, fire and bullet weapons.
 		Order: 0
 		Category: Units
+		Scale: 2
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 
@@ -56,6 +57,7 @@ engineer:
 		Description: Engineers can be used to capture enemy buildings.\n\nEngineers are resistant to anti-tank weaponry but very vulnerable to high-explosives, fire and bullet weapons.
 		Order: 30
 		Category: Units
+		Scale: 2
 	-RevealOnFire:
 	Voiced:
 		VoiceSet: EngineerVoice
@@ -90,6 +92,7 @@ trooper:
 		Description: Armed with missile launchers, Troopers fire wire guided armor-piercing warheads. These units are particularly effective against vehicles (especially armored ones) and buildings. However, this unit is largely useless against infantry.\n\nTroopers are resistant to anti-tank weaponry but very vulnerable to high-explosives, fire and bullet weapons.
 		Order: 10
 		Category: Units
+		Scale: 2
 	TakeCover:
 		ProneOffset: 324,0,-204
 	WithInfantryBody:
@@ -128,6 +131,7 @@ thumper:
 		Description: Deploys a noisy hammering device which will attract sand worms to this area.
 		Order: 40
 		Category: Units
+		Scale: 2
 	WithInfantryBody:
 		RequiresCondition: undeployed
 	WithSpriteBody@DEPLOYED:
@@ -180,6 +184,7 @@ fremen:
 		Description: Fremen are the native desert warriors of Dune. Fremen ground units carry 10mm Assault Rifles and Rockets. Their firepower is equally effective against infantry and vehicles.\n\nFremen units are very vulnerable to high-explosive and bullet weapons.
 		Order: 70
 		Category: Units
+		Scale: 2
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 	Cloak:
@@ -223,6 +228,7 @@ grenadier:
 		Description: Grenadiers are an infantry artillery unit which are strong against buildings. They have a chance to explode on death, so don't group them together.
 		Order: 50
 		Category: Units
+		Scale: 2
 	TakeCover:
 		ProneOffset: 96,100,-64
 	WithInfantryBody:
@@ -263,6 +269,7 @@ sardaukar:
 		Description: These powerful heavy troopers have a machine gun that's effective against infantry, and a rocket launcher for vehicles.
 		Order: 60
 		Category: Units
+		Scale: 2
 	Voiced:
 		VoiceSet: GenericVoice
 	Explodes:
@@ -309,6 +316,7 @@ saboteur:
 		Description: The Saboteur is a special military unit acquired by House Ordos. A single Saboteur can destroy any enemy building once he moves into it, though also destroys himself! A Saboteur can be stealthed by deploying itself.\n\nThe Saboteur is resistant to anti-tank weaponry, but very vulnerable to high-explosives, fire, and bullet weapons.
 		Order: 80
 		Category: Units
+		Scale: 2
 	Mobile:
 		Speed: 43
 	Demolition:

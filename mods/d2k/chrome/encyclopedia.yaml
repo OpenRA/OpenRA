@@ -2,8 +2,8 @@ Background@ENCYCLOPEDIA_PANEL:
 	Logic: EncyclopediaLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 900
-	Height: 600
+	Width: 682
+	Height: 591
 	Children:
 		Container@ENCYCLOPEDIA_CONTENT:
 			Width: PARENT_RIGHT - 40
@@ -49,31 +49,35 @@ Background@ENCYCLOPEDIA_PANEL:
 				Container@ACTOR_INFO:
 					X: PARENT_RIGHT - WIDTH
 					Y: 30
-					Width: PARENT_RIGHT - 190 - 10
+					Width: PARENT_RIGHT - 190
 					Height: PARENT_BOTTOM - 25
 					Children:
-						Background@ACTOR_BG:
-							Width: 150
-							Height: 170
-							Background: dialog3
-							Children:
-								ActorPreview@ACTOR_PREVIEW:
-									X: 1
-									Y: 1
-									Width: PARENT_RIGHT - 2
-									Height: PARENT_BOTTOM - 2
 						ScrollPanel@ACTOR_DESCRIPTION_PANEL:
-							X: 150 + 10
-							Width: PARENT_RIGHT - 150 - 10
-							Height: 170
+							X: 10
+							Width: PARENT_RIGHT - 10
+							Height: PARENT_BOTTOM
 							TopBottomSpacing: 8
 							Children:
-								Label@ACTOR_DESCRIPTION:
+								Label@ACTOR_TITLE:
 									X: 8
 									Y: 8
 									Width: PARENT_RIGHT - 40
+									Height: 25
+									VAlign: Top
+									Align: Center
+									Font: Bold
+								Label@ACTOR_DESCRIPTION:
+									X: 148
+									Y: 20
+									Width: PARENT_RIGHT - 180
 									VAlign: Top
 									Font: Regular
+						ActorPreview@ACTOR_PREVIEW:
+							X: 14
+							Y: 16
+							Width: 140
+							Height: 140
+							Animate: true
 		Button@BACK_BUTTON:
 			X: PARENT_RIGHT - 180
 			Y: PARENT_BOTTOM - 45
@@ -82,5 +86,6 @@ Background@ENCYCLOPEDIA_PANEL:
 			Text: button-encyclopedia-panel-back
 			Font: Bold
 			Key: escape
+		Container@FACTION_DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 

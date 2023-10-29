@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Group under this heading.")]
 		public readonly string Category;
 
+		[Desc("Scale the actor preview.")]
+		public readonly float Scale = 1f;
+
 		public override object Create(ActorInitializer init) { return Encyclopedia.Instance; }
 	}
 

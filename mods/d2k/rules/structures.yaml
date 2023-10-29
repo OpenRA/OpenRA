@@ -13,6 +13,7 @@
 		Name: Concrete
 		GenericName: Structure
 	RenderSprites:
+		Palette: terrain
 	KillsSelf:
 		RemoveInstead: true
 	Buildable:
