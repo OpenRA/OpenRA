@@ -87,11 +87,14 @@ Container@GAME_INFO_PANEL:
 			Background: panel-black
 			Children:
 				Container@STATS_PANEL:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 				Container@MAP_PANEL:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 				Container@OBJECTIVES_PANEL:
 					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
 				Container@DEBUG_PANEL:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM

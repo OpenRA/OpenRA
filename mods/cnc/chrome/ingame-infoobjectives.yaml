@@ -19,8 +19,8 @@ Container@MISSION_OBJECTIVES:
 		ScrollPanel@OBJECTIVES_PANEL:
 			X: 15
 			Y: 50
-			Width: 482
-			Height: 340
+			Width: PARENT_RIGHT - 30
+			Height: PARENT_BOTTOM - 65
 			TopBottomSpacing: 15
 			ItemSpacing: 15
 			Children:
