@@ -544,11 +544,11 @@ Test:
 		[TestCase(TestName = "Comments are correctly separated from values")]
 		public void TestEscapedHashInValues()
 		{
-			var trailingWhitespace = MiniYaml.FromString(@"key: value # comment", "trailingWhitespace", discardCommentsAndWhitespace: false)[0];
+			var trailingWhitespace = MiniYaml.FromString("key: value # comment", "trailingWhitespace", discardCommentsAndWhitespace: false)[0];
 			Assert.AreEqual("value", trailingWhitespace.Value.Value);
 			Assert.AreEqual(" comment", trailingWhitespace.Comment);
 
-			var noWhitespace = MiniYaml.FromString(@"key:value# comment", "noWhitespace", discardCommentsAndWhitespace: false)[0];
+			var noWhitespace = MiniYaml.FromString("key:value# comment", "noWhitespace", discardCommentsAndWhitespace: false)[0];
 			Assert.AreEqual("value", noWhitespace.Value.Value);
 			Assert.AreEqual(" comment", noWhitespace.Comment);
 
@@ -556,15 +556,15 @@ Test:
 			Assert.AreEqual("before # after", escapedHashInValue.Value.Value);
 			Assert.AreEqual(" comment", escapedHashInValue.Comment);
 
-			var emptyValueAndComment = MiniYaml.FromString(@"key:#", "emptyValueAndComment", discardCommentsAndWhitespace: false)[0];
+			var emptyValueAndComment = MiniYaml.FromString("key:#", "emptyValueAndComment", discardCommentsAndWhitespace: false)[0];
 			Assert.AreEqual(null, emptyValueAndComment.Value.Value);
 			Assert.AreEqual("", emptyValueAndComment.Comment);
 
-			var noValue = MiniYaml.FromString(@"key:", "noValue", discardCommentsAndWhitespace: false)[0];
+			var noValue = MiniYaml.FromString("key:", "noValue", discardCommentsAndWhitespace: false)[0];
 			Assert.AreEqual(null, noValue.Value.Value);
 			Assert.AreEqual(null, noValue.Comment);
 
-			var emptyKey = MiniYaml.FromString(@" : value", "emptyKey", discardCommentsAndWhitespace: false)[0];
+			var emptyKey = MiniYaml.FromString(" : value", "emptyKey", discardCommentsAndWhitespace: false)[0];
 			Assert.AreEqual(null, emptyKey.Key);
 			Assert.AreEqual("value", emptyKey.Value.Value);
 			Assert.AreEqual(null, emptyKey.Comment);
