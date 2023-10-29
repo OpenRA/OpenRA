@@ -77,8 +77,11 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			ModRules = modData.DefaultRules;
 
-			var tooltipCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? TranslationProvider.GetString(s) : "");
-			GetText = () => tooltipCache.Update(Text);
+			var textCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? TranslationProvider.GetString(s) : "");
+			var tooltipTextCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? TranslationProvider.GetString(s) : "");
+			var tooltipDescCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? TranslationProvider.GetString(s) : "");
+
+			GetText = () => textCache.Update(Text);
 			GetColor = () => TextColor;
 			GetColorDisabled = () => TextColorDisabled;
 			GetContrastColorDark = () => ContrastColorDark;
@@ -86,9 +89,7 @@ namespace OpenRA.Mods.Common.Widgets
 			OnMouseUp = _ => OnClick();
 			OnKeyPress = _ => OnClick();
 			IsHighlighted = () => Highlighted;
-			var tooltipDescCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? TranslationProvider.GetString(s) : "");
-			GetTooltipText = () => tooltipDescCache.Update(TooltipText);
-			var textCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? TranslationProvider.GetString(s) : "");
+			GetTooltipText = () => tooltipTextCache.Update(TooltipText);
 			GetTooltipDesc = () => tooltipDescCache.Update(TooltipDesc);
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
