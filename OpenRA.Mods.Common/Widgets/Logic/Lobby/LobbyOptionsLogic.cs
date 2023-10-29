@@ -107,7 +107,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				checkbox.GetText = () => option.Name;
 				if (option.Description != null)
-					checkbox.GetTooltipText = () => option.Description;
+				{
+					var (text, desc) = LobbyUtils.SplitOnFirstToken(option.Description);
+					checkbox.GetTooltipText = () => text;
+					checkbox.GetTooltipDesc = () => desc;
+				}
 
 				checkbox.IsVisible = () => true;
 				checkbox.IsChecked = () => optionEnabled.Update(orderManager.LobbyInfo.GlobalSettings);
@@ -148,7 +152,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				dropdown.GetText = () => getOptionLabel.Update(optionValue.Update(orderManager.LobbyInfo.GlobalSettings).Value);
 				if (option.Description != null)
-					dropdown.GetTooltipText = () => option.Description;
+				{
+					var (text, desc) = LobbyUtils.SplitOnFirstToken(option.Description);
+					dropdown.GetTooltipText = () => text;
+					dropdown.GetTooltipDesc = () => desc;
+				}
+
 				dropdown.IsVisible = () => true;
 				dropdown.IsDisabled = () => configurationDisabled() ||
 					optionValue.Update(orderManager.LobbyInfo.GlobalSettings).IsLocked;
