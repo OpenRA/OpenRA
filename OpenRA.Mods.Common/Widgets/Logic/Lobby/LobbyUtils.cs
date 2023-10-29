@@ -200,7 +200,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		/// <summary>Splits a string into two parts on the first instance of a given token.</summary>
-		static (string First, string Second) SplitOnFirstToken(string input, string token = "\n")
+		public static (string First, string Second) SplitOnFirstToken(string input, string token = "\n")
 		{
 			if (string.IsNullOrEmpty(input))
 				return (null, null);
