@@ -17,11 +17,11 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Mods.D2k.SpriteLoaders
 {
-	public class R8Loader : ISpriteLoader
+	public class R816Loader : ISpriteLoader
 	{
-		sealed class R8Frame : ISpriteFrame
+		sealed class R816Frame : ISpriteFrame
 		{
-			public SpriteFrameType Type => SpriteFrameType.Indexed8;
+			public SpriteFrameType Type { get; }
 			public Size Size { get; }
 			public Size FrameSize { get; }
 			public float2 Offset { get; }
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 
 			public readonly uint[] Palette = null;
 
-			public R8Frame(Stream s)
+			public R816Frame(Stream s)
 			{
 				// Scan forward until we find some data
 				var type = s.ReadUInt8();
@@ -49,8 +49,13 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 				s.ReadInt32();
 				var paletteOffset = s.ReadInt32();
 				var bpp = s.ReadUInt8();
-				if (bpp != 8)
-					throw new InvalidDataException($"Error: {bpp} bits per pixel are not supported.");
+
+				Type = bpp switch
+				{
+					8 => SpriteFrameType.Indexed8,
+					16 => SpriteFrameType.Rgb24,
+					_ => throw new InvalidDataException($"Error: {bpp} bits per pixel are not supported.")
+				};
 
 				var frameHeight = s.ReadUInt8();
 				var frameWidth = s.ReadUInt8();
@@ -59,7 +64,21 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 				// Skip alignment byte
 				s.ReadUInt8();
 
-				Data = s.ReadBytes(width * height);
+				if (bpp == 8)
+					Data = s.ReadBytes(width * height);
+				else
+				{
+					Data = new byte[width * height * 3];
+
+					for (var i = 0; i < Data.Length;)
+					{
+						var color16 = s.ReadUInt16();
+
+						Data[i++] = (byte)(((color16 >> 7) & 0xf8) | ((color16 >> 12) & 0x07));
+						Data[i++] = (byte)(((color16 >> 2) & 0xf8) | ((color16 >> 7) & 0x07));
+						Data[i++] = (byte)(((color16 << 3) & 0xf8) | ((color16 >> 2) & 0x07));
+					}
+				}
 
 				// Read palette
 				if (type == 1 && paletteOffset != 0)
@@ -78,7 +97,7 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 			}
 		}
 
-		static bool IsR8(Stream s)
+		static bool IsR816(Stream s)
 		{
 			var start = s.Position;
 
@@ -94,24 +113,24 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 			var d = s.ReadUInt8();
 
 			s.Position = start;
-			return d == 8;
+			return d == 8 || d == 16;
 		}
 
 		public bool TryParseSprite(Stream s, string filename, out ISpriteFrame[] frames, out TypeDictionary metadata)
 		{
 			metadata = null;
-			if (!IsR8(s))
+			if (!IsR816(s))
 			{
 				frames = null;
 				return false;
 			}
 
 			var start = s.Position;
-			var tmp = new List<R8Frame>();
+			var tmp = new List<R816Frame>();
 			var palettes = new Dictionary<int, uint[]>();
 			while (s.Position < s.Length)
 			{
-				var f = new R8Frame(s);
+				var f = new R816Frame(s);
 				if (f.Palette != null)
 					palettes.Add(tmp.Count, f.Palette);
 				tmp.Add(f);

@@ -216,7 +216,7 @@ SupportsMapsFrom: d2k
 
 SoundFormats: Aud, Wav
 
-SpriteFormats: R8, ShpTD, TmpRA
+SpriteFormats: R816, ShpTD, TmpRA
 
 VideoFormats: Vqa
 
@@ -225,7 +225,7 @@ TerrainFormat: DefaultTerrain
 SpriteSequenceFormat: DefaultSpriteSequence
 
 AssetBrowser:
-	SpriteExtensions: .shp, .r8, .tmp
+	SpriteExtensions: .shp, .r8, .r16, .tmp
 	AudioExtensions: .aud, .wav
 	VideoExtensions: .vqa
 
