@@ -22,7 +22,7 @@ namespace OpenRA
 		public readonly MapGridType GridType;
 
 		protected readonly T[] Entries;
-		protected readonly Rectangle Bounds;
+		protected readonly ReadOnlyRectangle Bounds;
 
 		protected CellLayerBase(Map map)
 			: this(map.Grid.Type, new Size(map.MapSize.X, map.MapSize.Y)) { }
@@ -30,7 +30,7 @@ namespace OpenRA
 		protected CellLayerBase(MapGridType gridType, Size size)
 		{
 			Size = size;
-			Bounds = new Rectangle(0, 0, Size.Width, Size.Height);
+			Bounds = new ReadOnlyRectangle(0, 0, Size.Width, Size.Height);
 			GridType = gridType;
 			Entries = new T[size.Width * size.Height];
 		}

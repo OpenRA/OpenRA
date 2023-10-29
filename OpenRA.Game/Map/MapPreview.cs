@@ -50,7 +50,7 @@ namespace OpenRA
 		public readonly string author;
 		public readonly string[] categories;
 		public readonly int players;
-		public readonly Rectangle bounds;
+		public readonly ReadOnlyRectangle bounds;
 		public readonly short[] spawnpoints = Array.Empty<short>();
 		public readonly MapGridType map_grid_type;
 		public readonly string minimap;
@@ -75,7 +75,7 @@ namespace OpenRA
 			public int PlayerCount;
 			public CPos[] SpawnPoints;
 			public MapGridType GridType;
-			public Rectangle Bounds;
+			public ReadOnlyRectangle Bounds;
 			public Png Preview;
 			public MapStatus Status;
 			public MapClassification Class;
@@ -186,7 +186,7 @@ namespace OpenRA
 		public int PlayerCount => innerData.PlayerCount;
 		public CPos[] SpawnPoints => innerData.SpawnPoints;
 		public MapGridType GridType => innerData.GridType;
-		public Rectangle Bounds => innerData.Bounds;
+		public ReadOnlyRectangle Bounds => innerData.Bounds;
 		public Png Preview => innerData.Preview;
 		public MapStatus Status => innerData.Status;
 		public MapClassification Class => innerData.Class;
@@ -269,7 +269,7 @@ namespace OpenRA
 				PlayerCount = 0,
 				SpawnPoints = NoSpawns,
 				GridType = gridType,
-				Bounds = Rectangle.Empty,
+				Bounds = ReadOnlyRectangle.Empty,
 				Preview = null,
 				Status = MapStatus.Unavailable,
 				Class = MapClassification.Unknown,
@@ -363,7 +363,7 @@ namespace OpenRA
 				newData.Author = temp.Value;
 
 			if (yaml.TryGetValue("Bounds", out temp))
-				newData.Bounds = FieldLoader.GetValue<Rectangle>("Bounds", temp.Value);
+				newData.Bounds = FieldLoader.GetValue<ReadOnlyRectangle>("Bounds", temp.Value);
 
 			if (yaml.TryGetValue("Visibility", out temp))
 				newData.Visibility = FieldLoader.GetValue<MapVisibility>("Visibility", temp.Value);

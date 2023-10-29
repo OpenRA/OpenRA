@@ -99,6 +99,7 @@ namespace OpenRA
 				{ typeof(float2), ParseFloat2 },
 				{ typeof(float3), ParseFloat3 },
 				{ typeof(Rectangle), ParseRectangle },
+				{ typeof(ReadOnlyRectangle), ParseReadOnlyRectangle },
 				{ typeof(DateTime), ParseDateTime }
 			};
 
@@ -460,6 +461,21 @@ namespace OpenRA
 			{
 				var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
 				return new Rectangle(
+					Exts.ParseInt32Invariant(parts[0]),
+					Exts.ParseInt32Invariant(parts[1]),
+					Exts.ParseInt32Invariant(parts[2]),
+					Exts.ParseInt32Invariant(parts[3]));
+			}
+
+			return InvalidValueAction(value, fieldType, fieldName);
+		}
+
+		static object ParseReadOnlyRectangle(string fieldName, Type fieldType, string value, MemberInfo field)
+		{
+			if (value != null)
+			{
+				var parts = value.Split(SplitComma, StringSplitOptions.RemoveEmptyEntries);
+				return new ReadOnlyRectangle(
 					Exts.ParseInt32Invariant(parts[0]),
 					Exts.ParseInt32Invariant(parts[1]),
 					Exts.ParseInt32Invariant(parts[2]),

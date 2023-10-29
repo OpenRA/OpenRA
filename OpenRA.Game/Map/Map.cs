@@ -191,7 +191,7 @@ namespace OpenRA
 		public string Author;
 		public string Tileset;
 		public bool LockPreview;
-		public Rectangle Bounds;
+		public ReadOnlyRectangle Bounds;
 		public MapVisibility Visibility = MapVisibility.Lobby;
 		public string[] Categories = { "Conquest" };
 
@@ -255,7 +255,7 @@ namespace OpenRA
 		CellLayer<PPos[]> cellProjection;
 		CellLayer<List<MPos>> inverseCellProjection;
 		CellLayer<byte> projectedHeight;
-		Rectangle projectionSafeBounds;
+		ReadOnlyRectangle projectionSafeBounds;
 
 		public static string ComputeUID(IReadOnlyPackage package)
 		{
@@ -1091,7 +1091,7 @@ namespace OpenRA
 		{
 			// The tl and br coordinates are inclusive, but the Rectangle
 			// is exclusive.  Pad the right and bottom edges to match.
-			Bounds = Rectangle.FromLTRB(tl.U, tl.V, br.U + 1, br.V + 1);
+			Bounds = ReadOnlyRectangle.FromLTRB(tl.U, tl.V, br.U + 1, br.V + 1);
 
 			// See ProjectCellInner to see how any given position may be projected.
 			// U: May gain or lose 1, so bring in the left and right edge by 1.
@@ -1103,7 +1103,7 @@ namespace OpenRA
 			var maxHeight = Grid.MaximumTerrainHeight;
 			if ((maxHeight & 1) == 1)
 				maxHeight += 2;
-			projectionSafeBounds = Rectangle.FromLTRB(
+			projectionSafeBounds = ReadOnlyRectangle.FromLTRB(
 				Bounds.Left + 1,
 				Bounds.Top + maxHeight,
 				Bounds.Right - 1,

@@ -15,7 +15,7 @@ namespace OpenRA.Primitives
 {
 	public struct Rectangle : IEquatable<Rectangle>
 	{
-		// TODO: Make these readonly: this will require a lot of changes to the UI logic
+		// TODO: Replace all usage of this struct with ReadOnlyRectangle. This will require a lot of changes to the UI logic
 		public int X;
 		public int Y;
 		public int Width;

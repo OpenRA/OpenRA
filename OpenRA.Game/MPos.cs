@@ -29,7 +29,7 @@ namespace OpenRA
 		public bool Equals(MPos other) { return other == this; }
 		public override bool Equals(object obj) { return obj is MPos uv && Equals(uv); }
 
-		public MPos Clamp(Rectangle r)
+		public MPos Clamp(ReadOnlyRectangle r)
 		{
 			return new MPos(Math.Min(r.Right, Math.Max(U, r.Left)),
 							Math.Min(r.Bottom, Math.Max(V, r.Top)));

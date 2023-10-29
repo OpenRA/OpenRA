@@ -143,7 +143,7 @@ namespace OpenRA
 
 		public MPos Clamp(MPos uv)
 		{
-			return uv.Clamp(new Rectangle(0, 0, Size.Width - 1, Size.Height - 1));
+			return uv.Clamp(new ReadOnlyRectangle(0, 0, Size.Width - 1, Size.Height - 1));
 		}
 	}
 
