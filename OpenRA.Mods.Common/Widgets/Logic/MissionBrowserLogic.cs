@@ -84,7 +84,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var title = widget.GetOrNull<LabelWidget>("MISSIONBROWSER_TITLE");
 			if (title != null)
-				title.GetText = () => playingVideo != PlayingVideo.None ? selectedMap.Title : title.Text;
+			{
+				var label = TranslationProvider.GetString(title.Text);
+				title.GetText = () => playingVideo != PlayingVideo.None ? selectedMap.Title : label;
+			}
 
 			widget.Get("MISSION_INFO").IsVisible = () => selectedMap != null;
 
