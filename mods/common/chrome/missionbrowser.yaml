@@ -61,13 +61,28 @@ Background@MISSIONBROWSER_PANEL:
 							IgnoreMouseOver: True
 							IgnoreMouseInput: True
 							ShowSpawnPoints: False
+				Container@MISSION_TABS:
+					Width: PARENT_RIGHT
+					Y: PARENT_BOTTOM - 31
+					Children:
+						Button@MISSIONINFO_TAB:
+							Width: PARENT_RIGHT / 2
+							Height: 31
+							Font: Bold
+							Text: button-missionbrowser-panel-mission-info
+						Button@OPTIONS_TAB:
+							X: PARENT_RIGHT / 2
+							Width: PARENT_RIGHT / 2
+							Height: 31
+							Font: Bold
+							Text: button-missionbrowser-panel-mission-options
 				Container@MISSION_DETAIL:
 					Y: 212
 					Width: PARENT_RIGHT
-					Height: 155
+					Height: PARENT_BOTTOM - 212
 					Children:
 						ScrollPanel@MISSION_DESCRIPTION_PANEL:
-							Height: PARENT_BOTTOM
+							Height: PARENT_BOTTOM - 30
 							Width: PARENT_RIGHT
 							TopBottomSpacing: 5
 							Children:
@@ -77,7 +92,7 @@ Background@MISSIONBROWSER_PANEL:
 									VAlign: Top
 									Font: Small
 						ScrollPanel@MISSION_OPTIONS:
-							Height: PARENT_BOTTOM
+							Height: PARENT_BOTTOM - 30
 							Width: PARENT_RIGHT
 							TopBottomSpacing: 5
 							Children:
@@ -113,6 +128,7 @@ Background@MISSIONBROWSER_PANEL:
 											Y: 25
 											Height: 25
 											Visible: False
+											PanelRoot: MISSION_DROPDOWN_PANEL_ROOT
 											TooltipContainer: TOOLTIP_CONTAINER
 										LabelForInput@B_DESC:
 											X: PARENT_RIGHT / 2 + 5
@@ -126,24 +142,8 @@ Background@MISSIONBROWSER_PANEL:
 											Y: 25
 											Height: 25
 											Visible: False
+											PanelRoot: MISSION_DROPDOWN_PANEL_ROOT
 											TooltipContainer: TOOLTIP_CONTAINER
-				Container@MISSION_TABS:
-					Width: PARENT_RIGHT
-					Y: PARENT_BOTTOM - 50
-					Children:
-						Button@MISSIONINFO_TAB:
-							Width: PARENT_RIGHT / 2
-							Y: 25
-							Height: 28
-							Font: Bold
-							Text: button-missionbrowser-panel-mission-info
-						Button@OPTIONS_TAB:
-							X: PARENT_RIGHT / 2
-							Width: PARENT_RIGHT / 2
-							Y: 25
-							Height: 28
-							Font: Bold
-							Text: button-missionbrowser-panel-mission-options
 		Button@START_BRIEFING_VIDEO_BUTTON:
 			X: 20
 			Y: PARENT_BOTTOM - 45
@@ -199,6 +199,7 @@ Background@MISSIONBROWSER_PANEL:
 					Y: 1
 					Width: PARENT_RIGHT - 2
 					Height: PARENT_BOTTOM - 2
+		Container@MISSION_DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 
 Background@FULLSCREEN_PLAYER:

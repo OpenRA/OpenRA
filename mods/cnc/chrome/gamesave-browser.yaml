@@ -2,7 +2,7 @@ Container@GAMESAVE_BROWSER_PANEL:
 	Logic: GameSaveBrowserLogic
 	X: (WINDOW_RIGHT - WIDTH) / 2
 	Y: (WINDOW_BOTTOM - HEIGHT) / 2
-	Width: 714
+	Width: 716
 	Height: 435
 	Children:
 		Label@LOAD_TITLE:
