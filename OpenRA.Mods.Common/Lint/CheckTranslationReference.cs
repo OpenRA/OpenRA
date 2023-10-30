@@ -206,7 +206,7 @@ namespace OpenRA.Mods.Common.Lint
 				if (translatables.ContainsKey(nodeType))
 				{
 					var childType = childNode.Key.Split('@')[0];
-					var field = translatables[nodeType].FirstOrDefault(t => t.Name == childType);
+					var field = Array.Find(translatables[nodeType], t => t.Name == childType);
 					if (field.Name == null)
 						continue;
 
