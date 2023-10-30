@@ -52,7 +52,7 @@ namespace OpenRA.WindowsLauncher
 				}
 			}
 
-			if (args.Any(x => x.StartsWith("Engine.LaunchPath=", StringComparison.Ordinal)))
+			if (Array.Exists(args, x => x.StartsWith("Engine.LaunchPath=", StringComparison.Ordinal)))
 				return RunGame(args);
 
 			return RunInnerLauncher(args);
@@ -89,10 +89,10 @@ namespace OpenRA.WindowsLauncher
 			var launcherPath = Environment.ProcessPath;
 			var launcherArgs = args.ToList();
 
-			if (!launcherArgs.Any(x => x.StartsWith("Engine.LaunchPath=", StringComparison.Ordinal)))
+			if (!launcherArgs.Exists(x => x.StartsWith("Engine.LaunchPath=", StringComparison.Ordinal)))
 				launcherArgs.Add("Engine.LaunchPath=\"" + launcherPath + "\"");
 
-			if (!launcherArgs.Any(x => x.StartsWith("Game.Mod=", StringComparison.Ordinal)))
+			if (!launcherArgs.Exists(x => x.StartsWith("Game.Mod=", StringComparison.Ordinal)))
 				launcherArgs.Add("Game.Mod=" + modID);
 
 			var psi = new ProcessStartInfo(launcherPath, string.Join(" ", launcherArgs));
