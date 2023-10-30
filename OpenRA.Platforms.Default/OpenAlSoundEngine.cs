@@ -49,7 +49,10 @@ namespace OpenRA.Platforms.Default
 		const int MaxInstancesPerFrame = 3;
 		const int GroupDistance = 2730;
 		const int GroupDistanceSqr = GroupDistance * GroupDistance;
-		const int PoolSize = 32;
+
+		// https://github.com/kcat/openal-soft/issues/580
+		// https://github.com/kcat/openal-soft/blob/b6aa73b26004afe63d83097f2f91ecda9bc25cb9/alc/alc.cpp#L3191-L3203
+		const int PoolSize = 256;
 
 		readonly Dictionary<uint, PoolSlot> sourcePool = new(PoolSize);
 		float volume = 1f;
