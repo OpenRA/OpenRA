@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Lint
 				.Where(t => t.Value.Length > 0)
 				.ToDictionary(
 					t => t.Key,
-					t => t.Value.Select(f => (f.Name, f, Utility.GetCustomAttributes<TranslationReferenceAttribute>(f, true).First())).ToArray());
+					t => t.Value.Select(f => (f.Name, f, Utility.GetCustomAttributes<TranslationReferenceAttribute>(f, true)[0])).ToArray());
 
 			foreach (var filename in modData.Manifest.ChromeLayout)
 			{
