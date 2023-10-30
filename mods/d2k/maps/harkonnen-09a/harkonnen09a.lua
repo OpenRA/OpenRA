@@ -8,8 +8,8 @@
 ]]
 
 AtreidesMainBase = { AConYard1, AOutpost1, APalace, ARefinery1, ARefinery2, ARefinery3, AHeavyFactory1, ALightFactory1, AStarport, AHiTechFactory, AResearch, AGunt1, AGunt2, AGunt3, AGunt4, AGunt5, ARock1, ARock2, ARock3, ARock4, ABarracks1, ABarracks2, APower1, APower2, APower3, APower4, APower5, APower6, APower7, APower8, APower9, APower10, APower11, APower12, APower13, APower14 }
-AtreidesSmall1Base = { AConYard2, ARefinery4, ABarracks3, AHeavyFactory2, ALightFactory2, ARepair, ARock5, ARock6, ARock7, ARock8, ARock9, APower15, APower16, APower17, APower18, APower19, APower20 }
-AtreidesSmall2Base = { AOutpost2, ABarracks3, AGunt6, AGunt7, AGunt8, ARock10, APower21, APower22 }
+AtreidesSmall1Base = { AConYard2, ARefinery4, ABarracks3, AHeavyFactory2, ALightFactory2, ARepair, ARock5, ARock6, ARock7, ARock8, ARock9, APower15, APower16, APower17, APower18, APower19, APower20, APower21 }
+AtreidesSmall2Base = { AOutpost2, ABarracks4, AGunt6, AGunt7, AGunt8, ARock10, APower22, APower23 }
 CorrinoMainBase = { COutpost, CPalace, CRefinery1, CHeavyFactory1, CLightFactory1, CStarport, CResearch, CGunt1, CGunt2, CRock1, CRock2, CBarracks1, CPower1, CPower2, CPower3, CPower4, CPower5, CPower6, CPower7 }
 CorrinoSmallBase = { CConYard, CRefinery2, CHeavyFactory2, CLightFactory2, CRock3, CRock4, CBarracks2, CPower8, CPower9, CPower10, CPower11 }
 
