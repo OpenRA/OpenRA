@@ -203,33 +203,33 @@ namespace OpenRA.Mods.Common.Lint
 			var nodeType = node.Key.Split('@')[0];
 			foreach (var childNode in node.Value.Nodes)
 			{
-				if (translatables.ContainsKey(nodeType))
+				if (!translatables.TryGetValue(nodeType, out var translationNodes))
+					continue;
+
+				var childType = childNode.Key.Split('@')[0];
+				var field = Array.Find(translationNodes, t => t.Name == childType);
+				if (field.Name == null)
+					continue;
+
+				var key = childNode.Value.Value;
+				if (key == null)
 				{
-					var childType = childNode.Key.Split('@')[0];
-					var field = Array.Find(translatables[nodeType], t => t.Name == childType);
-					if (field.Name == null)
-						continue;
+					if (!field.Attribute.Optional)
+						emitError($"Widget `{node.Key}` in field `{childType}` has an empty translation reference.");
 
-					var key = childNode.Value.Value;
-					if (key == null)
-					{
-						if (!field.Attribute.Optional)
-							emitError($"Widget `{node.Key}` in field `{childType}` has an empty translation reference.");
-
-						continue;
-					}
-
-					if (referencedKeys.Contains(key))
-						continue;
-
-					if (!key.Any(char.IsLetter))
-						continue;
-
-					if (!translation.HasMessage(key))
-						emitWarning($"`{key}` defined by `{node.Key}` is not present in `{language}` translation.");
-
-					referencedKeys.Add(key);
+					continue;
 				}
+
+				if (referencedKeys.Contains(key))
+					continue;
+
+				if (!key.Any(char.IsLetter))
+					continue;
+
+				if (!translation.HasMessage(key))
+					emitWarning($"`{key}` defined by `{node.Key}` is not present in `{language}` translation.");
+
+				referencedKeys.Add(key);
 			}
 
 			foreach (var childNode in node.Value.Nodes)
