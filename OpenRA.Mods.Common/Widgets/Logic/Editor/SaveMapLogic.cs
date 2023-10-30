@@ -326,7 +326,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static void SaveMapFailed(Exception e, ModData modData, World world)
 		{
-			Log.Write("debug", $"Failed to save map.");
+			Log.Write("debug", "Failed to save map.");
 			Log.Write("debug", e);
 
 			var actionManager = world.WorldActor.TraitOrDefault<EditorActionManager>();

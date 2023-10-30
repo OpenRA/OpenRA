@@ -235,7 +235,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (e.ErrorCode == 10048)
 					message += "\n" + TranslationProvider.GetString(ServerCreationFailedPortUsed);
 				else
-					message += $"\n" + TranslationProvider.GetString(ServerCreationFailedError,
+					message += "\n" + TranslationProvider.GetString(ServerCreationFailedError,
 						Translation.Arguments("message", e.Message, "code", e.ErrorCode));
 
 				ConfirmationDialogs.ButtonPrompt(modData, ServerCreationFailedTitle, message,
