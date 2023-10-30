@@ -160,7 +160,7 @@ namespace OpenRA.Platforms.Default
 					throw new InvalidOperationException("No supported OpenGL profiles were found.");
 				}
 
-				profile = supportedProfiles.Contains(requestProfile) ? requestProfile : supportedProfiles.First();
+				profile = supportedProfiles.Contains(requestProfile) ? requestProfile : supportedProfiles[0];
 
 				// Note: This must be called after the CanCreateGLWindow checks above,
 				// which needs to create and destroy its own SDL contexts as a workaround for specific buggy drivers
