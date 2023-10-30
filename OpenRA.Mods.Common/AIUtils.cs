@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common
 				TextNotificationsManager.Debug(format, args);
 		}
 
-		public static IEnumerable<Order> ClearBlockersOrders(IEnumerable<CPos> tiles, Player owner, Actor ignoreActor = null)
+		public static IEnumerable<Order> ClearBlockersOrders(List<CPos> tiles, Player owner, Actor ignoreActor = null)
 		{
 			var world = owner.World;
 			var adjacentTiles = Util.ExpandFootprint(tiles, true).Except(tiles)
