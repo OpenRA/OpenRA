@@ -33,8 +33,8 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			if (!EnabledByDefault)
 				yield break;
 
-			var t = init.Actor.TraitInfos<TurretedInfo>().FirstOrDefault();
-			var wsb = init.Actor.TraitInfos<WithSpriteBodyInfo>().FirstOrDefault();
+			var t = init.Actor.TraitInfos<TurretedInfo>().First();
+			var wsb = init.Actor.TraitInfos<WithSpriteBodyInfo>().First();
 
 			// Show the correct turret facing
 			var anim = new Animation(init.World, image, t.WorldFacingFromInit(init));
@@ -52,15 +52,15 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		static Func<WAngle> MakeTurretFacingFunc(Actor self)
 		{
 			// Turret artwork is baked into the sprite, so only the first turret makes sense.
-			var turreted = self.TraitsImplementing<Turreted>().FirstOrDefault();
-			return () => turreted.WorldOrientation.Yaw;
+			var firstTurret = self.TraitsImplementing<Turreted>().First();
+			return () => firstTurret.WorldOrientation.Yaw;
 		}
 
 		public WithEmbeddedTurretSpriteBody(ActorInitializer init, WithEmbeddedTurretSpriteBodyInfo info)
 			: base(init, info, MakeTurretFacingFunc(init.Self))
 		{
 			this.info = info;
-			turreted = init.Self.TraitsImplementing<Turreted>().FirstOrDefault();
+			turreted = init.Self.TraitsImplementing<Turreted>().First();
 		}
 
 		protected override void TraitEnabled(Actor self)
