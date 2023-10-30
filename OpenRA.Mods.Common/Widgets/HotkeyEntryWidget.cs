@@ -44,11 +44,6 @@ namespace OpenRA.Mods.Common.Widgets
 			VisualHeight = widget.VisualHeight;
 		}
 
-		public override bool TakeKeyboardFocus()
-		{
-			return base.TakeKeyboardFocus();
-		}
-
 		public override bool YieldKeyboardFocus()
 		{
 			OnLoseFocus();
