@@ -500,6 +500,16 @@ label-map-size-huge = (Huge)
 label-map-size-large = (Large)
 label-map-size-medium = (Medium)
 label-map-size-small = (Small)
+label-map-searching-count =
+    { $count ->
+        [one] Searching the OpenRA Resource Center for { $count } map...
+       *[other] Searching the OpenRA Resource Center for { $count } maps...
+    }
+label-map-unavailable-count =
+    { $count ->
+        [one] { $count } map was not found on the OpenRA Resource Center
+       *[other] { $count } maps were not found on the OpenRA Resource Center
+    }
 
 notification-map-deletion-failed = Failed to delete map '{ $map }'. See the debug.log file for details.
 

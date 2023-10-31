@@ -383,6 +383,12 @@ namespace OpenRA.Network
 						break;
 					}
 
+				case "SyncMapPool":
+					{
+						orderManager.ServerMapPool = FieldLoader.GetValue<HashSet<string>>("SyncMapPool", order.TargetString);
+						break;
+					}
+
 				default:
 					{
 						if (world == null)
