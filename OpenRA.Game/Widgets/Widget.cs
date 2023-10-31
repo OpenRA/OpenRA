@@ -182,6 +182,28 @@ namespace OpenRA.Widgets
 		protected virtual void Dispose(bool disposing) { }
 	}
 
+	public struct WidgetBounds
+	{
+		public int X, Y, Width, Height;
+		public readonly int Left => X;
+		public readonly int Right => X + Width;
+		public readonly int Top => Y;
+		public readonly int Bottom => Y + Height;
+
+		public WidgetBounds(int x, int y, int width, int height)
+		{
+			X = x;
+			Y = y;
+			Width = width;
+			Height = height;
+		}
+
+		public readonly Rectangle ToRectangle()
+		{
+			return new Rectangle(X, Y, Width, Height);
+		}
+	}
+
 	public abstract class Widget
 	{
 		string defaultCursor = null;
@@ -201,7 +223,7 @@ namespace OpenRA.Widgets
 		public bool IgnoreChildMouseOver;
 
 		// Calculated internally
-		public Rectangle Bounds;
+		public WidgetBounds Bounds;
 		public Widget Parent = null;
 		public Func<bool> IsVisible;
 
@@ -261,7 +283,7 @@ namespace OpenRA.Widgets
 
 			// Parse the YAML equations to find the widget bounds
 			var parentBounds = (Parent == null)
-				? new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
+				? new WidgetBounds(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
 				: Parent.Bounds;
 
 			var substitutions = args.TryGetValue("substitutions", out var subs) ?
@@ -276,15 +298,15 @@ namespace OpenRA.Widgets
 			substitutions.Add("PARENT_BOTTOM", parentBounds.Height);
 
 			var readOnlySubstitutions = new ReadOnlyDictionary<string, int>(substitutions);
-			var width = Width != null ? Width.Evaluate(readOnlySubstitutions) : 0;
-			var height = Height != null ? Height.Evaluate(readOnlySubstitutions) : 0;
+			var width = Width?.Evaluate(readOnlySubstitutions) ?? 0;
+			var height = Height?.Evaluate(readOnlySubstitutions) ?? 0;
 
 			substitutions.Add("WIDTH", width);
 			substitutions.Add("HEIGHT", height);
 
-			var x = X != null ? X.Evaluate(readOnlySubstitutions) : 0;
-			var y = Y != null ? Y.Evaluate(readOnlySubstitutions) : 0;
-			Bounds = new Rectangle(x, y, width, height);
+			var x = X?.Evaluate(readOnlySubstitutions) ?? 0;
+			var y = Y?.Evaluate(readOnlySubstitutions) ?? 0;
+			Bounds = new WidgetBounds(x, y, width, height);
 		}
 
 		public void PostInit(WidgetArgs args)

@@ -51,9 +51,8 @@ namespace OpenRA.Mods.Common.Widgets
 			var wholeLines = (int)Math.Floor((double)((Bounds.Height - BottomSpacing) / lineHeight));
 			var visibleChildrenHeight = wholeLines * lineHeight;
 
-			overflowDrawBounds = new Rectangle(RenderOrigin.X, RenderOrigin.Y, Bounds.Width, Bounds.Height);
-			overflowDrawBounds.Y += Bounds.Height - visibleChildrenHeight;
-			overflowDrawBounds.Height = visibleChildrenHeight;
+			var y = RenderOrigin.Y + Bounds.Height - visibleChildrenHeight;
+			overflowDrawBounds = new Rectangle(RenderOrigin.X, y, Bounds.Width, visibleChildrenHeight);
 		}
 
 		public override void DrawOuter()
@@ -66,9 +65,10 @@ namespace OpenRA.Mods.Common.Widgets
 			if (mostRecentMessageOverflows && HideOverflow)
 				Game.Renderer.EnableScissor(overflowDrawBounds);
 
+			var bounds = Bounds.ToRectangle();
 			for (var i = Children.Count - 1; i >= 0; i--)
 			{
-				if (Bounds.Contains(Children[i].Bounds) || !HideOverflow || mostRecentMessageOverflows)
+				if (!HideOverflow || mostRecentMessageOverflows || bounds.Contains(Children[i].Bounds.ToRectangle()))
 					Children[i].DrawOuter();
 
 				if (mostRecentMessageOverflows)

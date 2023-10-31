@@ -16,7 +16,6 @@ using System.Globalization;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
-using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -501,7 +500,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			var parentBounds = w.Parent == null
-				? new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
+				? new WidgetBounds(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
 				: w.Parent.Bounds;
 
 			var substitutions = new Dictionary<string, int>
@@ -515,18 +514,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var readOnlySubstitutions = new ReadOnlyDictionary<string, int>(substitutions);
-			var width = w.Width != null ? w.Width.Evaluate(readOnlySubstitutions) : 0;
-			var height = w.Height != null ? w.Height.Evaluate(readOnlySubstitutions) : 0;
+			var width = w.Width?.Evaluate(readOnlySubstitutions) ?? 0;
+			var height = w.Height?.Evaluate(readOnlySubstitutions) ?? 0;
 
 			substitutions.Add("WIDTH", width);
 			substitutions.Add("HEIGHT", height);
 
 			if (insideScrollPanel)
-				w.Bounds = new Rectangle(w.Bounds.X, w.Bounds.Y, width, w.Bounds.Height);
+				w.Bounds = new WidgetBounds(w.Bounds.X, w.Bounds.Y, width, w.Bounds.Height);
 			else
-				w.Bounds = new Rectangle(
-					w.X != null ? w.X.Evaluate(readOnlySubstitutions) : 0,
-					w.Y != null ? w.Y.Evaluate(readOnlySubstitutions) : 0,
+				w.Bounds = new WidgetBounds(
+					w.X?.Evaluate(readOnlySubstitutions) ?? 0,
+					w.Y?.Evaluate(readOnlySubstitutions) ?? 0,
 					width,
 					height);
 
