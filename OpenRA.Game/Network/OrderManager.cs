@@ -39,6 +39,9 @@ namespace OpenRA.Network
 		public string ServerError = null;
 		public bool AuthenticationFailed = false;
 
+		// The default null means "no map restriction" while an empty set means "all maps restricted"
+		public HashSet<string> ServerMapPool = null;
+
 		public int NetFrameNumber { get; private set; }
 		public int LocalFrameNumber;
 

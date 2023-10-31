@@ -23,6 +23,12 @@ Container@MAPCHOOSER_PANEL:
 					Height: 31
 					Width: 135
 					Text: button-bg-system-maps-tab
+				Button@REMOTE_MAPS_TAB_BUTTON:
+					X: 15
+					Y: 15
+					Height: 31
+					Width: 135
+					Text: button-bg-remote-maps-tab
 				Button@USER_MAPS_TAB_BUTTON:
 					X: 155
 					Y: 15
@@ -36,6 +42,14 @@ Container@MAPCHOOSER_PANEL:
 					Y: 45
 					Children:
 						Container@SYSTEM_MAPS_TAB:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Children:
+								ScrollPanel@MAP_LIST:
+									Width: PARENT_RIGHT
+									Height: PARENT_BOTTOM
+									ItemSpacing: 1
+						Container@REMOTE_MAPS_TAB:
 							Width: PARENT_RIGHT
 							Height: PARENT_BOTTOM
 							Children:
@@ -134,6 +148,13 @@ Container@MAPCHOOSER_PANEL:
 							X: PARENT_RIGHT - WIDTH
 							Width: 200
 							Height: 25
+				Label@REMOTE_MAP_LABEL:
+					X: 140
+					Y: 539
+					Width: PARENT_RIGHT - 430
+					Height: 35
+					Align: Center
+					Font: Bold
 				Button@BUTTON_CANCEL:
 					Key: escape
 					Y: PARENT_BOTTOM - 1

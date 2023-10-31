@@ -19,6 +19,13 @@ Background@MAPCHOOSER_PANEL:
 			Width: 140
 			Text: button-mapchooser-panel-system-maps-tab
 			Font: Bold
+		Button@REMOTE_MAPS_TAB_BUTTON:
+			X: 20
+			Y: 48
+			Height: 31
+			Width: 140
+			Text: button-mapchooser-panel-remote-maps-tab
+			Font: Bold
 		Button@USER_MAPS_TAB_BUTTON:
 			X: 160
 			Y: 48
@@ -33,6 +40,13 @@ Background@MAPCHOOSER_PANEL:
 			Y: 77
 			Children:
 				Container@SYSTEM_MAPS_TAB:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Children:
+						ScrollPanel@MAP_LIST:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+				Container@REMOTE_MAPS_TAB:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
 					Children:
@@ -149,6 +163,13 @@ Background@MAPCHOOSER_PANEL:
 			Width: 120
 			Height: 25
 			Text: button-mapchooser-panel-delete-all-maps
+			Font: Bold
+		Label@REMOTE_MAP_LABEL:
+			X: 140
+			Y: PARENT_BOTTOM - HEIGHT - 20
+			Width: PARENT_RIGHT - 410
+			Height: 25
+			Align: Center
 			Font: Bold
 		Button@BUTTON_OK:
 			X: PARENT_RIGHT - 270

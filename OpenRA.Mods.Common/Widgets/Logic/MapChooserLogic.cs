@@ -42,6 +42,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string MapSizeSmall = "label-map-size-small";
 
+		[TranslationReference("count")]
+		const string MapSearchingCount = "label-map-searching-count";
+
+		[TranslationReference("count")]
+		const string MapUnavailableCount = "label-map-unavailable-count";
+
 		[TranslationReference("map")]
 		const string MapDeletionFailed = "notification-map-deletion-failed";
 
@@ -80,8 +86,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget widget;
 		readonly DropDownButtonWidget gameModeDropdown;
 		readonly ModData modData;
+		readonly HashSet<string> remoteMapPool;
+		readonly ScrollItemWidget itemTemplate;
 
 		MapClassification currentTab;
+		bool disposed;
+		int remoteSearching = 0;
+		int remoteUnavailable = 0;
 
 		readonly Dictionary<MapClassification, ScrollPanelWidget> scrollpanels = new();
 
@@ -97,12 +108,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Func<MapPreview, long> orderByFunc;
 
 		[ObjectCreator.UseCtor]
-		internal MapChooserLogic(Widget widget, ModData modData, string initialMap,
+		internal MapChooserLogic(Widget widget, ModData modData, string initialMap, HashSet<string> remoteMapPool,
 			MapClassification initialTab, Action onExit, Action<string> onSelect, MapVisibility filter)
 		{
 			this.widget = widget;
 			this.modData = modData;
 			this.onSelect = onSelect;
+			this.remoteMapPool = remoteMapPool;
 
 			allMaps = TranslationProvider.GetString(AllMaps);
 
@@ -121,10 +133,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			gameModeDropdown = widget.GetOrNull<DropDownButtonWidget>("GAMEMODE_FILTER");
 
-			var itemTemplate = widget.Get<ScrollItemWidget>("MAP_TEMPLATE");
+			itemTemplate = widget.Get<ScrollItemWidget>("MAP_TEMPLATE");
 			widget.RemoveChild(itemTemplate);
 
-			SetupOrderByDropdown(itemTemplate);
+			SetupOrderByDropdown();
 
 			var mapFilterInput = widget.GetOrNull<TextFieldWidget>("MAPFILTER_INPUT");
 			if (mapFilterInput != null)
@@ -137,7 +149,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					else
 					{
 						mapFilter = mapFilterInput.Text = null;
-						EnumerateMaps(currentTab, itemTemplate);
+						EnumerateMaps(currentTab);
 					}
 
 					return true;
@@ -146,7 +158,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				mapFilterInput.OnTextEdited = () =>
 				{
 					mapFilter = mapFilterInput.Text;
-					EnumerateMaps(currentTab, itemTemplate);
+					EnumerateMaps(currentTab);
 				};
 			}
 
@@ -167,12 +179,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			deleteMapButton.IsVisible = () => currentTab == MapClassification.User;
 			deleteMapButton.OnClick = () =>
 			{
-				DeleteOneMap(selectedUid, (string newUid) =>
+				DeleteOneMap(selectedUid, newUid =>
 				{
 					RefreshMaps(currentTab, filter);
-					EnumerateMaps(currentTab, itemTemplate);
+					EnumerateMaps(currentTab);
 					if (tabMaps[currentTab].Length == 0)
-						SwitchTab(modData.MapCache[newUid].Class, itemTemplate);
+						SwitchTab(modData.MapCache[newUid].Class);
 				});
 			};
 
@@ -183,15 +195,41 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				DeleteAllMaps(visibleMaps, (string newUid) =>
 				{
 					RefreshMaps(currentTab, filter);
-					EnumerateMaps(currentTab, itemTemplate);
-					SwitchTab(modData.MapCache[newUid].Class, itemTemplate);
+					EnumerateMaps(currentTab);
+					SwitchTab(modData.MapCache[newUid].Class);
 				});
 			};
 
-			SetupMapTab(MapClassification.User, filter, "USER_MAPS_TAB_BUTTON", "USER_MAPS_TAB", itemTemplate);
-			SetupMapTab(MapClassification.System, filter, "SYSTEM_MAPS_TAB_BUTTON", "SYSTEM_MAPS_TAB", itemTemplate);
+			var remoteMapLabel = widget.Get<LabelWidget>("REMOTE_MAP_LABEL");
+			var remoteMapText = new CachedTransform<(int Searching, int Unavailable), string>(counts =>
+			{
+				if (counts.Searching > 0)
+					return TranslationProvider.GetString(MapSearchingCount, Translation.Arguments("count", counts.Searching));
 
-			if (initialMap == null && tabMaps.TryGetValue(initialTab, out var map) && map.Length > 0)
+				return TranslationProvider.GetString(MapUnavailableCount, Translation.Arguments("count", counts.Unavailable));
+			});
+
+			remoteMapLabel.IsVisible = () => remoteMapPool != null && (remoteSearching > 0 || remoteUnavailable > 0);
+			remoteMapLabel.GetText = () => remoteMapText.Update((remoteSearching, remoteUnavailable));
+
+			// SetupMapTab (through RefreshMap) depends on the map search having already started
+			if (remoteMapPool != null && Game.Settings.Game.AllowDownloading)
+			{
+				var services = modData.Manifest.Get<WebServices>();
+				modData.MapCache.QueryRemoteMapDetails(services.MapRepository, remoteMapPool);
+			}
+
+			SetupMapTab(MapClassification.User, filter, "USER_MAPS_TAB_BUTTON", "USER_MAPS_TAB");
+			SetupMapTab(MapClassification.System, filter, "SYSTEM_MAPS_TAB_BUTTON", "SYSTEM_MAPS_TAB");
+			SetupMapTab(MapClassification.Remote, filter, "REMOTE_MAPS_TAB_BUTTON", "REMOTE_MAPS_TAB");
+
+			// System and user map tabs are hidden when the server forces a restricted pool
+			if (remoteMapPool != null)
+			{
+				currentTab = MapClassification.Remote;
+				selectedUid = initialMap;
+			}
+			else if (initialMap == null && tabMaps.TryGetValue(initialTab, out var map) && map.Length > 0)
 			{
 				selectedUid = Game.ModData.MapCache.ChooseInitialMap(map.Select(mp => mp.Uid).First(),
 					Game.CosmeticRandom);
@@ -203,22 +241,59 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				currentTab = tabMaps.Keys.FirstOrDefault(k => tabMaps[k].Select(mp => mp.Uid).Contains(selectedUid));
 			}
 
-			SwitchTab(currentTab, itemTemplate);
+			EnumerateMaps(currentTab);
 		}
 
-		void SwitchTab(MapClassification tab, ScrollItemWidget itemTemplate)
+		void SwitchTab(MapClassification tab)
 		{
 			currentTab = tab;
-			EnumerateMaps(tab, itemTemplate);
+			EnumerateMaps(tab);
 		}
 
 		void RefreshMaps(MapClassification tab, MapVisibility filter)
 		{
-			tabMaps[tab] = modData.MapCache.Where(m => m.Status == MapStatus.Available &&
-				m.Class == tab && (m.Visibility & filter) != 0).ToArray();
+			if (tab != MapClassification.Remote)
+				tabMaps[tab] = modData.MapCache.Where(m => m.Status == MapStatus.Available &&
+					m.Class == tab && (m.Visibility & filter) != 0).ToArray();
+			else if (remoteMapPool != null)
+			{
+				var loaded = new List<MapPreview>();
+				remoteSearching = 0;
+				remoteUnavailable = 0;
+				foreach (var uid in remoteMapPool)
+				{
+					var preview = modData.MapCache[uid];
+					var status = preview.Status;
+					if (status == MapStatus.Searching)
+						remoteSearching++;
+					else if (status == MapStatus.Unavailable)
+						remoteUnavailable++;
+					else
+						loaded.Add(preview);
+				}
+
+				tabMaps[tab] = loaded.ToArray();
+
+				if (remoteSearching > 0)
+				{
+					Game.RunAfterDelay(1000, () =>
+					{
+						if (disposed)
+							return;
+
+						var missingBefore = remoteSearching + remoteUnavailable;
+						RefreshMaps(MapClassification.Remote, filter);
+						var missingAfter = remoteSearching + remoteUnavailable;
+						if (currentTab == MapClassification.Remote && missingBefore != missingAfter)
+							EnumerateMaps(MapClassification.Remote);
+					});
+				}
+			}
+			else
+				tabMaps[tab] = Array.Empty<MapPreview>();
 		}
 
-		void SetupMapTab(MapClassification tab, MapVisibility filter, string tabButtonName, string tabContainerName, ScrollItemWidget itemTemplate)
+		void SetupMapTab(MapClassification tab, MapVisibility filter, string tabButtonName, string tabContainerName)
 		{
 			var tabContainer = widget.Get<ContainerWidget>(tabContainerName);
 			tabContainer.IsVisible = () => currentTab == tab;
@@ -228,13 +303,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var tabButton = widget.Get<ButtonWidget>(tabButtonName);
 			tabButton.IsHighlighted = () => currentTab == tab;
-			tabButton.IsVisible = () => tabMaps[tab].Length > 0;
-			tabButton.OnClick = () => SwitchTab(tab, itemTemplate);
+
+			if (remoteMapPool != null)
+			{
+				var isRemoteTab = tab == MapClassification.Remote;
+				tabButton.IsVisible = () => isRemoteTab;
+			}
+			else
+				tabButton.IsVisible = () => tabMaps[tab].Length > 0;
+
+			tabButton.OnClick = () => SwitchTab(tab);
 
 			RefreshMaps(tab, filter);
 		}
 
-		void SetupGameModeDropdown(MapClassification tab, DropDownButtonWidget gameModeDropdown, ScrollItemWidget itemTemplate)
+		void SetupGameModeDropdown(MapClassification tab, DropDownButtonWidget gameModeDropdown)
 		{
 			if (gameModeDropdown != null)
 			{
@@ -263,7 +346,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var item = ScrollItemWidget.Setup(template,
 						() => category == ii.Category,
-						() => { category = ii.Category; EnumerateMaps(tab, itemTemplate); });
+						() => { category = ii.Category; EnumerateMaps(tab); });
 					item.Get<LabelWidget>("LABEL").GetText = () => ShowItem(ii);
 					return item;
 				}
@@ -282,7 +365,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		void SetupOrderByDropdown(ScrollItemWidget itemTemplate)
+		void SetupOrderByDropdown()
 		{
 			var orderByDropdown = widget.GetOrNull<DropDownButtonWidget>("ORDERBY");
 			if (orderByDropdown == null)
@@ -304,7 +387,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var item = ScrollItemWidget.Setup(template,
 					() => orderByFunc == orderByDict[o],
-					() => { orderByFunc = orderByDict[o]; EnumerateMaps(currentTab, itemTemplate); });
+					() => { orderByFunc = orderByDict[o]; EnumerateMaps(currentTab); });
 				item.Get<LabelWidget>("LABEL").GetText = () => o;
 
 				return item;
@@ -317,7 +400,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				orderByDict.FirstOrDefault(m => m.Value == orderByFunc).Key;
 		}
 
-		void EnumerateMaps(MapClassification tab, ScrollItemWidget template)
+		void EnumerateMaps(MapClassification tab)
 		{
 			if (!int.TryParse(mapFilter, out var playerCountFilter))
 				playerCountFilter = -1;
@@ -353,7 +436,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 				}
 
-				var item = ScrollItemWidget.Setup(preview.Uid, template, () => selectedUid == preview.Uid,
+				var item = ScrollItemWidget.Setup(preview.Uid, itemTemplate, () => selectedUid == preview.Uid,
 					() => selectedUid = preview.Uid, DblClick);
 				item.IsVisible = () => item.RenderBounds.IntersectsWith(scrollpanels[tab].RenderBounds);
 
@@ -400,7 +483,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (tab == currentTab)
 			{
 				visibleMaps = maps.Select(m => m.Uid).ToArray();
-				SetupGameModeDropdown(currentTab, gameModeDropdown, template);
+				SetupGameModeDropdown(currentTab, gameModeDropdown);
 			}
 
 			if (visibleMaps.Contains(selectedUid))
@@ -454,6 +537,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				},
 				confirmText: DeleteAllMapsAccept,
 				onCancel: () => { });
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			disposed = true;
+			base.Dispose(disposing);
 		}
 	}
 }
