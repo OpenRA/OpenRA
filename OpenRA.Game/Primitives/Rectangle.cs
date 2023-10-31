@@ -13,13 +13,12 @@ using System;
 
 namespace OpenRA.Primitives
 {
-	public struct Rectangle : IEquatable<Rectangle>
+	public readonly struct Rectangle : IEquatable<Rectangle>
 	{
-		// TODO: Make these readonly: this will require a lot of changes to the UI logic
-		public int X;
-		public int Y;
-		public int Width;
-		public int Height;
+		public readonly int X;
+		public readonly int Y;
+		public readonly int Width;
+		public readonly int Height;
 		public static readonly Rectangle Empty;
 
 		public static Rectangle FromLTRB(int left, int top, int right, int bottom)
