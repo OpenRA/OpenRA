@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -107,7 +106,7 @@ namespace OpenRA.Mods.Common.Widgets
 			// Mask to prevent any clicks from being sent to other widgets
 			fullscreenMask = new MaskWidget
 			{
-				Bounds = new Rectangle(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
+				Bounds = new WidgetBounds(0, 0, Game.Renderer.Resolution.Width, Game.Renderer.Resolution.Height)
 			};
 
 			fullscreenMask.OnMouseDown += mi => { Game.Sound.PlayNotification(ModRules, null, "Sounds", ClickSound, null); RemovePanel(); };
@@ -129,7 +128,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (panelY + oldBounds.Height > Game.Renderer.Resolution.Height)
 				panelY -= Bounds.Height + oldBounds.Height;
 
-			panel.Bounds = new Rectangle(
+			panel.Bounds = new WidgetBounds(
 				panelX,
 				panelY,
 				oldBounds.Width,

@@ -9,7 +9,6 @@
  */
 #endregion
 
-using OpenRA.Primitives;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -50,11 +49,11 @@ namespace OpenRA.Mods.Common.Widgets
 					break;
 				case MouseInputEvent.Down:
 					moving = true;
-					Bounds = new Rectangle(Bounds.X + vec.X, Bounds.Y + vec.Y, Bounds.Width, Bounds.Height);
+					Bounds = new WidgetBounds(Bounds.X + vec.X, Bounds.Y + vec.Y, Bounds.Width, Bounds.Height);
 					break;
 				case MouseInputEvent.Move:
 					if (moving)
-						Bounds = new Rectangle(Bounds.X + vec.X, Bounds.Y + vec.Y, Bounds.Width, Bounds.Height);
+						Bounds = new WidgetBounds(Bounds.X + vec.X, Bounds.Y + vec.Y, Bounds.Width, Bounds.Height);
 					break;
 			}
 

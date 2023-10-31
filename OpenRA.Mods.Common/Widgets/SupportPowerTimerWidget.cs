@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets
 			foreach (var t in texts)
 			{
 				var textSize = font.Measure(t.Text);
-				var location = new float2(Bounds.Location) + new float2(0, y);
+				var location = new float2(Bounds.X, Bounds.Y + y);
 
 				if (Align == TextAlign.Center)
 					location += new int2((Bounds.Width - textSize.X) / 2, 0);
