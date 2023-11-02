@@ -59,6 +59,7 @@ namespace OpenRA
 		public readonly string rules;
 		public readonly string players_block;
 		public readonly int mapformat;
+		public readonly string game_mod;
 	}
 
 	public sealed class MapPreview : IDisposable, IReadOnlyFileSystem
@@ -427,7 +428,7 @@ namespace OpenRA
 			innerData = newData;
 		}
 
-		public void UpdateRemoteSearch(MapStatus status, MiniYaml yaml, Action<MapPreview> parseMetadata = null)
+		public void UpdateRemoteSearch(MapStatus status, MiniYaml yaml, string[] mapCompatibility, Action<MapPreview> parseMetadata = null)
 		{
 			var newData = innerData.Clone();
 			newData.Status = status;
@@ -479,6 +480,12 @@ namespace OpenRA
 					var rulesString = Encoding.UTF8.GetString(Convert.FromBase64String(r.rules));
 					var rulesYaml = new MiniYaml("", MiniYaml.FromString(rulesString)).ToDictionary();
 					newData.SetCustomRules(modData, this, rulesYaml, null);
+
+					// Map is for a different mod: update its information so it can be displayed
+					// in the cross-mod server browser UI, but mark it as unavailable so it can't
+					// be selected in a server for the current mod.
+					if (!mapCompatibility.Contains(r.game_mod))
+						newData.Status = MapStatus.Unavailable;
 				}
 				catch (Exception e)
 				{

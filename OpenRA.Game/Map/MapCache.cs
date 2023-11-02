@@ -233,7 +233,7 @@ namespace OpenRA
 				.ToList();
 
 			foreach (var uid in queryUids)
-				previews[uid].UpdateRemoteSearch(MapStatus.Searching, null);
+				previews[uid].UpdateRemoteSearch(MapStatus.Searching, null, null);
 
 			Task.Run(async () =>
 			{
@@ -251,13 +251,13 @@ namespace OpenRA
 
 						var yaml = MiniYaml.FromStream(result);
 						foreach (var kv in yaml)
-							previews[kv.Key].UpdateRemoteSearch(MapStatus.DownloadAvailable, kv.Value, mapDetailsReceived);
+							previews[kv.Key].UpdateRemoteSearch(MapStatus.DownloadAvailable, kv.Value, modData.Manifest.MapCompatibility, mapDetailsReceived);
 
 						foreach (var uid in batchUids)
 						{
 							var p = previews[uid];
 							if (p.Status != MapStatus.DownloadAvailable)
-								p.UpdateRemoteSearch(MapStatus.Unavailable, null);
+								p.UpdateRemoteSearch(MapStatus.Unavailable, null, null);
 						}
 					}
 					catch (Exception e)
@@ -269,7 +269,7 @@ namespace OpenRA
 						foreach (var uid in batchUids)
 						{
 							var p = previews[uid];
-							p.UpdateRemoteSearch(MapStatus.Unavailable, null);
+							p.UpdateRemoteSearch(MapStatus.Unavailable, null, null);
 							mapQueryFailed?.Invoke(p);
 						}
 					}
