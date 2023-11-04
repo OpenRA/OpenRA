@@ -52,6 +52,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Production queues AI uses for defenses.")]
 		public readonly HashSet<string> DefenseQueues = new() { "Defense" };
 
+		[Desc("Tells the AI what building types are considered barriers.")]
+		public readonly HashSet<string> WallTypes = new HashSet<string>();
+
+		[Desc("Buildings that should be walled off, if any.")]
+		public readonly HashSet<string> WalledStructures = new HashSet<string>();
+
 		[Desc("Minimum distance in cells from center of the base when checking for building placement.")]
 		public readonly int MinBaseRadius = 2;
 
@@ -292,7 +298,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (possibleRallyPoints.Count == 0)
 			{
-				AIUtils.BotDebug("{0} has no possible rallypoint near {1}", producer.Owner, producer.Location);
+				AIUtils.BotDebug($"{producer.Owner} has no possible rallypoint near {producer.Location}");
 				return producer.Location;
 			}
 

@@ -98,6 +98,8 @@ Player:
 		ProductionTypes: pyle, hand, weap, afld, hpad
 		SiloTypes: silo
 		DefenseTypes: gtwr,gun,atwr,obli,sam
+		WallTypes: brik
+		WalledStructures: fact
 		BuildingLimits:
 			proc: 4
 			pyle: 3
@@ -142,6 +144,8 @@ Player:
 		ProductionTypes: pyle,hand,weap,afld,hpad
 		SiloTypes: silo
 		DefenseTypes: gtwr,gun,atwr,obli,sam
+		WallTypes: brik
+		WalledStructures: fact
 		BuildingLimits:
 			proc: 4
 			pyle: 3
@@ -186,6 +190,8 @@ Player:
 		ProductionTypes: pyle,hand,weap,afld,hpad
 		SiloTypes: silo
 		DefenseTypes: gtwr,gun,atwr,obli,sam
+		WallTypes: brik
+		WalledStructures: fact
 		BuildingLimits:
 			proc: 4
 			pyle: 4

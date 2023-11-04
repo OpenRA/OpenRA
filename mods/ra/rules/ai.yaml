@@ -92,6 +92,8 @@ Player:
 		ProductionTypes: barr,tent,weap
 		SiloTypes: silo
 		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		WallTypes: brik
+		WalledStructures: fact
 		BuildingLimits:
 			proc: 4
 			barr: 1
@@ -137,6 +139,8 @@ Player:
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
 		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		WallTypes: brik
+		WalledStructures: fact
 		BuildingLimits:
 			proc: 4
 			barr: 1
@@ -191,6 +195,8 @@ Player:
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
 		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		WallTypes: brik
+		WalledStructures: fact
 		BuildingLimits:
 			proc: 4
 			barr: 1
@@ -246,6 +252,8 @@ Player:
 		NavalProductionTypes: spen, syrd
 		SiloTypes: silo
 		DefenseTypes: hbox,pbox,gun,ftur,tsla,agun,sam
+		WallTypes: brik
+		WalledStructures: fact
 		BuildingLimits:
 			proc: 3
 			dome: 1
