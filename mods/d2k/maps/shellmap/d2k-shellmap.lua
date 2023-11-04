@@ -158,6 +158,10 @@ WorldLoaded = function()
 	Corrino = Player.GetPlayer("Corrino")
 	Smugglers = Player.GetPlayer("Smugglers")
 
+	Reinforcements.Reinforce(Atreides, { "carryall" }, { atr_carry_1.Location })
+	Reinforcements.Reinforce(Atreides, { "carryall" }, { atr_carry_2.Location })
+	Reinforcements.Reinforce(Atreides, { "carryall" }, { atr_carry_3.Location })
+
 	ViewportOrigin = Camera.Position
 
 	Utils.Do(Utils.Take(4, Upgrades), function(upgrade)
