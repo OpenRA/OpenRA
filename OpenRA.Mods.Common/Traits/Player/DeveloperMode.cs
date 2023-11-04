@@ -143,13 +143,9 @@ namespace OpenRA.Mods.Common.Traits
 
 					if (enableAll)
 					{
-						self.Owner.Shroud.ExploreAll();
-
 						var amount = order.ExtraData != 0 ? (int)order.ExtraData : info.Cash;
 						self.Trait<PlayerResources>().ChangeCash(amount);
 					}
-					else
-						self.Owner.Shroud.ResetExploration();
 
 					self.Owner.Shroud.Disabled = DisableShroud;
 					if (self.World.LocalPlayer == self.Owner)
