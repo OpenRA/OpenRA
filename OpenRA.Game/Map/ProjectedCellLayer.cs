@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Primitives;
 
 namespace OpenRA
@@ -52,6 +53,16 @@ namespace OpenRA
 		public bool Contains(PPos uv)
 		{
 			return Bounds.Contains(uv.U, uv.V);
+		}
+
+		public int IndexOf(T value, int startIndex)
+		{
+			return Array.IndexOf(Entries, value, startIndex);
+		}
+
+		public void SetAll(T value)
+		{
+			Array.Fill(Entries, value);
 		}
 	}
 }

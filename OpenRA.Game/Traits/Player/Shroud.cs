@@ -182,53 +182,65 @@ namespace OpenRA.Traits
 			// We loop over the direct index that represents the PPos in
 			// the ProjectedCellLayers, converting to a PPos only if
 			// it is needed (which is the uncommon case.)
-			var maxIndex = touched.MaxIndex;
-			for (var index = 0; index < maxIndex; index++)
+			if (disabledChanged)
 			{
-				// PERF: Most cells are not touched
-				if (!touched[index] && !disabledChanged)
-					continue;
-
-				touched[index] = false;
-
-				var type = ShroudCellType.Shroud;
-
-				if (explored[index])
+				touched.SetAll(false);
+				var maxIndex = touched.MaxIndex;
+				for (var index = 0; index < maxIndex; index++)
+					UpdateCell(index, self);
+			}
+			else
+			{
+				// PERF: Most cells are unchanged, use IndexOf for fast vectorized search.
+				var index = touched.IndexOf(true, 0);
+				while (index != -1)
 				{
-					var count = visibleCount[index];
-					if (!shroudGenerationEnabled || count > 0 || generatedShroudCount[index] == 0)
-					{
-						if (passiveVisibilityEnabled)
-							count += passiveVisibleCount[index];
-
-						type = count > 0 ? ShroudCellType.Visible : ShroudCellType.Fog;
-					}
-				}
-
-				// PERF: Most cells are unchanged
-				var oldResolvedType = resolvedType[index];
-				if (type != oldResolvedType || disabledChanged)
-				{
-					resolvedType[index] = type;
-					var puv = touched.PPosFromIndex(index);
-					if (map.Contains(puv))
-						OnShroudChanged(puv);
-
-					if (!disabledChanged && (fogEnabled || !ExploreMapEnabled))
-					{
-						if (type == ShroudCellType.Visible)
-							RevealedCells++;
-						else if (fogEnabled && oldResolvedType == ShroudCellType.Visible)
-							RevealedCells--;
-					}
-
-					if (self.Owner.WinState == WinState.Lost)
-						RevealedCells = 0;
+					touched[index] = false;
+					UpdateCell(index, self);
+					index = touched.IndexOf(true, index + 1);
 				}
 			}
 
 			Hash = Sync.HashPlayer(self.Owner) + self.World.WorldTick;
 			disabledChanged = false;
+		}
+
+		void UpdateCell(int index, Actor self)
+		{
+			var type = ShroudCellType.Shroud;
+
+			if (explored[index])
+			{
+				var count = visibleCount[index];
+				if (!shroudGenerationEnabled || count > 0 || generatedShroudCount[index] == 0)
+				{
+					if (passiveVisibilityEnabled)
+						count += passiveVisibleCount[index];
+
+					type = count > 0 ? ShroudCellType.Visible : ShroudCellType.Fog;
+				}
+			}
+
+			// PERF: Most cells are unchanged
+			var oldResolvedType = resolvedType[index];
+			if (type != oldResolvedType || disabledChanged)
+			{
+				resolvedType[index] = type;
+				var puv = touched.PPosFromIndex(index);
+				if (map.Contains(puv))
+					OnShroudChanged(puv);
+
+				if (!disabledChanged && (fogEnabled || !ExploreMapEnabled))
+				{
+					if (type == ShroudCellType.Visible)
+						RevealedCells++;
+					else if (fogEnabled && oldResolvedType == ShroudCellType.Visible)
+						RevealedCells--;
+				}
+
+				if (self.Owner.WinState == WinState.Lost)
+					RevealedCells = 0;
+			}
 		}
 
 		public static IEnumerable<PPos> ProjectedCellsInRange(Map map, WPos pos, WDist minRange, WDist maxRange, int maxHeightDelta = -1)
