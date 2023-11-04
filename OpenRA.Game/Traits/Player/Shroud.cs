@@ -274,10 +274,8 @@ namespace OpenRA.Traits
 
 		public void AddSource(object key, SourceType type, PPos[] projectedCells)
 		{
-			if (sources.ContainsKey(key))
+			if (!sources.TryAdd(key, new ShroudSource(type, projectedCells)))
 				throw new InvalidOperationException("Attempting to add duplicate shroud source");
-
-			sources[key] = new ShroudSource(type, projectedCells);
 
 			foreach (var puv in projectedCells)
 			{
@@ -309,7 +307,7 @@ namespace OpenRA.Traits
 
 		public void RemoveSource(object key)
 		{
-			if (!sources.TryGetValue(key, out var state))
+			if (!sources.Remove(key, out var state))
 				return;
 
 			foreach (var puv in state.ProjectedCells)
@@ -334,8 +332,6 @@ namespace OpenRA.Traits
 					}
 				}
 			}
-
-			sources.Remove(key);
 		}
 
 		public void ExploreProjectedCells(IEnumerable<PPos> cells)
