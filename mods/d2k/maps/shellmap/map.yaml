@@ -676,18 +676,6 @@ Actors:
 		Owner: Atreides
 		Location: 71,86
 		Facing: 384
-	atr_carry1: carryall
-		Owner: Atreides
-		Location: 94,86
-		Facing: 0
-	atr_carry2: carryall
-		Owner: Atreides
-		Location: 94,88
-		Facing: 0
-	atr_carry3: carryall
-		Owner: Atreides
-		Location: 94,90
-		Facing: 0
 	atr_trike: trike
 		Owner: Atreides
 		Location: 92,82
@@ -976,5 +964,14 @@ Actors:
 	Actor267: spicebloom.spawnpoint
 		Owner: Neutral
 		Location: 50,65
+	atr_carry_3: waypoint
+		Owner: Atreides
+		Location: 96,90
+	atr_carry_2: waypoint
+		Owner: Atreides
+		Location: 88,98
+	atr_carry_1: waypoint
+		Owner: Atreides
+		Location: 80,98
 
 Rules: d2k|rules/campaign-palettes.yaml, rules.yaml
