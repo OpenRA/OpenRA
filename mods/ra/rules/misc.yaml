@@ -8,6 +8,8 @@ MINV:
 			ukraine: minp
 	MineExplodes:
 		Weapon: ATMine
+		SweepedWeapon: MineSweeped
+		SweeperTypes: mnly
 
 # Only kept for backwards-compatibility with existing and imported maps, use MINV instead
 MINP:
