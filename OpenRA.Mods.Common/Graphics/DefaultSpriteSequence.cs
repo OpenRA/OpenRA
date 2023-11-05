@@ -120,6 +120,9 @@ namespace OpenRA.Mods.Common.Graphics
 		[Desc("File name of the sprite to use for this sequence.")]
 		protected static readonly SpriteSequenceField<string> Filename = new(nameof(Filename), null);
 
+		[Desc("File name pattern to build the sprite to use for this sequence.")]
+		protected static readonly SpriteSequenceField<string> FilenamePattern = new(nameof(FilenamePattern), null);
+
 		[Desc("Frame index to start from.")]
 		protected static readonly SpriteSequenceField<int> Start = new(nameof(Start), 0);
 
@@ -199,6 +202,8 @@ namespace OpenRA.Mods.Common.Graphics
 		protected static readonly SpriteSequenceField<float2> DepthSpriteOffset = new(nameof(DepthSpriteOffset), float2.Zero);
 
 		protected static readonly MiniYaml NoData = new(null);
+		protected static readonly int[] FirstFrame = { 0 };
+
 		protected readonly ISpriteSequenceLoader Loader;
 
 		protected string image;
@@ -330,10 +335,21 @@ namespace OpenRA.Mods.Common.Graphics
 
 		protected virtual IEnumerable<ReservationInfo> ParseFilenames(ModData modData, string tileset, int[] frames, MiniYaml data, MiniYaml defaults)
 		{
+			var filenamePatternNode = data.NodeWithKeyOrDefault(FilenamePattern.Key) ?? defaults.NodeWithKeyOrDefault(FilenamePattern.Key);
+			if (!string.IsNullOrEmpty(filenamePatternNode?.Value.Value))
+			{
+				var patternStart = LoadField("Start", 0, filenamePatternNode.Value);
+				var patternCount = LoadField("Count", 1, filenamePatternNode.Value);
+
+				return Enumerable.Range(patternStart, patternCount).Select(i =>
+					new ReservationInfo(filenamePatternNode.Value.Value.FormatInvariant(i),
+						FirstFrame, FirstFrame, filenamePatternNode.Location));
+			}
+
 			var filename = LoadField(Filename, data, defaults, out var location);
 
 			var loadFrames = CalculateFrameIndices(start, length, stride ?? length ?? 0, facings, frames, transpose, reverseFacings, shadowStart);
-			yield return new ReservationInfo(filename, loadFrames, frames, location);
+			return new[] { new ReservationInfo(filename, loadFrames, frames, location) };
 		}
 
 		protected virtual IEnumerable<ReservationInfo> ParseCombineFilenames(ModData modData, string tileset, int[] frames, MiniYaml data)
