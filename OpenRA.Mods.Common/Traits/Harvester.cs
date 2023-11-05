@@ -114,9 +114,8 @@ namespace OpenRA.Mods.Common.Traits
 			mobile = self.TraitOrDefault<Mobile>();
 			UpdateCondition(self);
 
-			// Note: This is queued in a FrameEndTask because otherwise the activity is dropped/overridden while moving out of a factory.
 			if (Info.SearchOnCreation && mobile != null)
-				self.World.AddFrameEndTask(w => self.QueueActivity(new FindAndDeliverResources(self)));
+				self.QueueActivity(new FindAndDeliverResources(self));
 
 			base.Created(self);
 		}
