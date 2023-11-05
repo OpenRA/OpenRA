@@ -40,7 +40,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (!info.CrushClasses.Overlaps(crushClasses))
 				return;
 
-			if (crusher.Info.HasTraitInfo<MineImmuneInfo>() || (self.Owner.RelationshipWith(crusher.Owner) == PlayerRelationship.Ally && info.AvoidFriendly))
+			if (self.Owner.RelationshipWith(crusher.Owner) == PlayerRelationship.Ally && info.AvoidFriendly)
+				return;
+
+			var mineimmune = crusher.Info.TraitInfoOrDefault<MineImmuneInfo>();
+			if (mineimmune != null && mineimmune.ImmuneRelationships.HasRelationship(self.Owner.RelationshipWith(crusher.Owner)))
 				return;
 
 			var mobile = crusher.TraitOrDefault<Mobile>();
@@ -52,7 +56,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool ICrushable.CrushableBy(Actor self, Actor crusher, BitSet<CrushClass> crushClasses)
 		{
-			if (info.BlockFriendly && !crusher.Info.HasTraitInfo<MineImmuneInfo>() && self.Owner.RelationshipWith(crusher.Owner) == PlayerRelationship.Ally)
+			if (info.BlockFriendly && self.Owner.RelationshipWith(crusher.Owner) == PlayerRelationship.Ally)
+				return false;
+
+			var mineimmune = crusher.Info.TraitInfoOrDefault<MineImmuneInfo>();
+			if (mineimmune != null && mineimmune.ImmuneRelationships.HasRelationship(self.Owner.RelationshipWith(crusher.Owner)))
 				return false;
 
 			return info.CrushClasses.Overlaps(crushClasses);
@@ -69,6 +77,10 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[Desc("Tag trait for stuff that should not trigger mines.")]
-	public sealed class MineImmuneInfo : TraitInfo<MineImmune> { }
+	public sealed class MineImmuneInfo : TraitInfo<MineImmune>
+	{
+		public readonly PlayerRelationship ImmuneRelationships = PlayerRelationship.Enemy | PlayerRelationship.Neutral | PlayerRelationship.Ally;
+	}
+
 	public sealed class MineImmune { }
 }
