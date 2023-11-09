@@ -274,7 +274,7 @@ namespace OpenRA
 				throw new DirectoryNotFoundException(path);
 
 			if (!path.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal) &&
-			    !path.EndsWith(Path.AltDirectorySeparatorChar.ToString(), StringComparison.Ordinal))
+				!path.EndsWith(Path.AltDirectorySeparatorChar.ToString(), StringComparison.Ordinal))
 				path += Path.DirectorySeparatorChar;
 
 			engineDirAccessed = true;

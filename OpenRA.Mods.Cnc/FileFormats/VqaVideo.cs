@@ -68,13 +68,13 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			// Decode FORM chunk
 			if (stream.ReadASCII(4) != "FORM")
 				throw new InvalidDataException("Invalid vqa (invalid FORM section)");
-			/*var length = */stream.ReadUInt32();
+			stream.ReadUInt32(); // length
 
 			if (stream.ReadASCII(8) != "WVQAVQHD")
 				throw new InvalidDataException("Invalid vqa (not WVQAVQHD)");
-			/*var length2 = */stream.ReadUInt32();
+			stream.ReadUInt32(); // length2
 
-			/*var version = */stream.ReadUInt16();
+			stream.ReadUInt16(); // version
 			videoFlags = stream.ReadUInt16();
 			FrameCount = stream.ReadUInt16();
 			Width = stream.ReadUInt16();
@@ -87,20 +87,20 @@ namespace OpenRA.Mods.Cnc.FileFormats
 			blocks = new int2(Width / blockWidth, Height / blockHeight);
 
 			numColors = stream.ReadUInt16();
-			/*var maxBlocks = */stream.ReadUInt16();
-			/*var unknown1 = */stream.ReadUInt16();
-			/*var unknown2 = */stream.ReadUInt32();
+			stream.ReadUInt16(); // maxBlocks
+			stream.ReadUInt16(); // unknown1
+			stream.ReadUInt32(); // unknown2
 
 			// Audio
 			SampleRate = stream.ReadUInt16();
 			AudioChannels = stream.ReadUInt8();
 			SampleBits = stream.ReadUInt8();
 
-			/*var unknown3 =*/stream.ReadUInt32();
-			/*var unknown4 =*/stream.ReadUInt16();
-			/*maxCbfzSize =*/stream.ReadUInt32(); // Unreliable
+			stream.ReadUInt32(); // unknown3
+			stream.ReadUInt16(); // unknown4
+			stream.ReadUInt32(); // maxCbfzSize, unreliable
 
-			/*var unknown5 =*/stream.ReadUInt32();
+			stream.ReadUInt32(); // unknown5
 
 			if (IsHqVqa)
 			{
@@ -131,8 +131,8 @@ namespace OpenRA.Mods.Cnc.FileFormats
 					throw new NotSupportedException($"Vqa uses unknown Subtype: {type}");
 			}
 
-			/*var length = */stream.ReadUInt16();
-			/*var unknown4 = */stream.ReadUInt16();
+			stream.ReadUInt16(); // length
+			stream.ReadUInt16(); // unknown4
 
 			// Frame offsets
 			offsets = new uint[FrameCount];

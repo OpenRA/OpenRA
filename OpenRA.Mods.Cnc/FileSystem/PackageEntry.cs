@@ -69,37 +69,37 @@ namespace OpenRA.Mods.Cnc.FileSystem
 			switch (type)
 			{
 				case PackageHashType.Classic:
-					{
-						for (var p = 0; p < padding; p++)
-							upperPaddedName[paddedLength - 1 - p] = '\0';
+				{
+					for (var p = 0; p < padding; p++)
+						upperPaddedName[paddedLength - 1 - p] = '\0';
 
-						var asciiBytes = paddedLength < 64 ? stackalloc byte[paddedLength] : new byte[paddedLength];
-						Encoding.ASCII.GetBytes(upperPaddedName, asciiBytes);
+					var asciiBytes = paddedLength < 64 ? stackalloc byte[paddedLength] : new byte[paddedLength];
+					Encoding.ASCII.GetBytes(upperPaddedName, asciiBytes);
 
-						var data = MemoryMarshal.Cast<byte, uint>(asciiBytes);
-						var result = 0u;
-						foreach (var next in data)
-							result = ((result << 1) | (result >> 31)) + next;
+					var data = MemoryMarshal.Cast<byte, uint>(asciiBytes);
+					var result = 0u;
+					foreach (var next in data)
+						result = ((result << 1) | (result >> 31)) + next;
 
-						return result;
-					}
+					return result;
+				}
 
 				case PackageHashType.CRC32:
+				{
+					var length = name.Length;
+					var lengthRoundedDownToFour = length / 4 * 4;
+					if (length != lengthRoundedDownToFour)
 					{
-						var length = name.Length;
-						var lengthRoundedDownToFour = length / 4 * 4;
-						if (length != lengthRoundedDownToFour)
-						{
-							upperPaddedName[length] = (char)(length - lengthRoundedDownToFour);
-							for (var p = 1; p < padding; p++)
-								upperPaddedName[length + p] = upperPaddedName[lengthRoundedDownToFour];
-						}
-
-						var asciiBytes = paddedLength < 64 ? stackalloc byte[paddedLength] : new byte[paddedLength];
-						Encoding.ASCII.GetBytes(upperPaddedName, asciiBytes);
-
-						return CRC32.Calculate(asciiBytes);
+						upperPaddedName[length] = (char)(length - lengthRoundedDownToFour);
+						for (var p = 1; p < padding; p++)
+							upperPaddedName[length + p] = upperPaddedName[lengthRoundedDownToFour];
 					}
+
+					var asciiBytes = paddedLength < 64 ? stackalloc byte[paddedLength] : new byte[paddedLength];
+					Encoding.ASCII.GetBytes(upperPaddedName, asciiBytes);
+
+					return CRC32.Calculate(asciiBytes);
+				}
 
 				default: throw new NotImplementedException($"Unknown hash type `{type}`");
 			}

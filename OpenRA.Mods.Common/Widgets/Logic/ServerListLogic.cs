@@ -749,8 +749,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						var players = item.GetOrNull<LabelWithTooltipWidget>("PLAYERS");
 						if (players != null)
 						{
-							var label = $"{game.Players + game.Bots} / {game.MaxPlayers + game.Bots}"
-							            + (game.Spectators > 0 ? $" + {game.Spectators}" : "");
+							var label =
+								$"{game.Players + game.Bots} / {game.MaxPlayers + game.Bots}"
+								+ (game.Spectators > 0 ? $" + {game.Spectators}" : "");
 
 							var color = canJoin ? players.TextColor : incompatibleGameColor;
 							players.GetText = () => label;

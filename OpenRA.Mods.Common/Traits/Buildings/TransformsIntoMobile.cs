@@ -204,9 +204,9 @@ namespace OpenRA.Mods.Common.Traits
 
 				var explored = self.Owner.Shroud.IsExplored(location);
 				if (!self.World.Map.Contains(location) ||
-				    !(self.CurrentActivity is Transform || mobile.transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused))
-				    || (!explored && !mobile.locomotor.Info.MoveIntoShroud)
-				    || (explored && !CanEnterCell(self, location)))
+					!(self.CurrentActivity is Transform || mobile.transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused))
+					|| (!explored && !mobile.locomotor.Info.MoveIntoShroud)
+					|| (explored && !CanEnterCell(self, location)))
 					cursor = mobile.Info.BlockedCursor;
 				else if (!explored || !mobile.Info.TerrainCursors.TryGetValue(self.World.Map.GetTerrainInfo(location).Type, out cursor))
 					cursor = mobile.Info.Cursor;

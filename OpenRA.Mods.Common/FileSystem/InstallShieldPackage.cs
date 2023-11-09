@@ -49,11 +49,11 @@ namespace OpenRA.Mods.Common.FileSystem
 				try
 				{
 					// Parse package header
-					/*var signature = */s.ReadUInt32();
+					s.ReadUInt32(); // signature
 					s.Position += 8;
-					/*var FileCount = */s.ReadUInt16();
+					s.ReadUInt16(); // FileCount
 					s.Position += 4;
-					/*var ArchiveSize = */s.ReadUInt32();
+					s.ReadUInt32(); // ArchiveSize
 					s.Position += 19;
 					var tocAddress = s.ReadInt32();
 					s.Position += 4;

@@ -24,8 +24,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
 			if (locations.Count > 0)
-				yield return "You must define new Color fields on the following traits:\n" +
-				             UpdateUtils.FormatMessageList(locations);
+				yield return
+					"You must define new Color fields on the following traits:\n" +
+					UpdateUtils.FormatMessageList(locations);
 
 			locations.Clear();
 		}

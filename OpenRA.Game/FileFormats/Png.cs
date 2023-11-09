@@ -50,7 +50,7 @@ namespace OpenRA.FileFormats
 				var length = IPAddress.NetworkToHostOrder(s.ReadInt32());
 				var type = s.ReadASCII(4);
 				var content = s.ReadBytes(length);
-				/*var crc = */s.ReadInt32();
+				s.ReadInt32(); // crc
 
 				if (!headerParsed && type != "IHDR")
 					throw new InvalidDataException("Invalid PNG file - header does not appear first.");
@@ -76,7 +76,7 @@ namespace OpenRA.FileFormats
 							Data = new byte[Width * Height * PixelStride];
 
 							var compression = ms.ReadUInt8();
-							/*var filter = */ms.ReadUInt8();
+							ms.ReadUInt8(); // filter
 							var interlace = ms.ReadUInt8();
 
 							if (compression != 0)

@@ -119,10 +119,10 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 				var rx = mf.ReadUInt16();
 				var ry = mf.ReadUInt16();
 				var tilenum = mf.ReadUInt16();
-				/*var zero1 = */mf.ReadInt16();
+				mf.ReadInt16(); // zero1
 				var subtile = mf.ReadUInt8();
 				var z = mf.ReadUInt8();
-				/*var zero2 = */mf.ReadUInt8();
+				mf.ReadUInt8(); // zero2
 
 				var uv = ToMPos(rx, ry, fullSize.X);
 

@@ -251,9 +251,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 						*op++ = *ip++;
 						if (t > 2)
 						{
-							#pragma warning disable IDE0047
-							(*op++) = *ip++;
-							#pragma warning restore IDE0047
+							*op++ = *ip++;
 						}
 					}
 

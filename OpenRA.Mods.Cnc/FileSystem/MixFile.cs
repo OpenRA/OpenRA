@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 			{
 				s.Seek(offset, SeekOrigin.Begin);
 				var numFiles = s.ReadUInt16();
-				/*uint dataSize = */s.ReadUInt32();
+				s.ReadUInt32(); // dataSize
 
 				var items = new List<PackageEntry>();
 				for (var i = 0; i < numFiles; i++)

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 
 				try
 				{
-					/* var signature = */ s.ReadASCII(4);
+					s.ReadASCII(4); // signature
 
 					// Total archive size.
 					s.ReadUInt32();

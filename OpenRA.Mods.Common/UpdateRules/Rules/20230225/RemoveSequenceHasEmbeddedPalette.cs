@@ -26,9 +26,10 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override IEnumerable<string> AfterUpdate(ModData modData)
 		{
 			if (locations.Count > 0)
-				yield return "The PaletteFromEmbeddedSpritePalette trait no longer references a sequence.\n" +
-				             "You must manually define Filename (and Frame if needed) on the following actors:\n" +
-							UpdateUtils.FormatMessageList(locations);
+				yield return
+					"The PaletteFromEmbeddedSpritePalette trait no longer references a sequence.\n" +
+					"You must manually define Filename (and Frame if needed) on the following actors:\n" +
+					UpdateUtils.FormatMessageList(locations);
 
 			locations.Clear();
 		}

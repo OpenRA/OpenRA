@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			var correctionTransform = Util.MatrixMultiply(translateMtx, FlipMtx);
 			var shadowCorrectionTransform = Util.MatrixMultiply(shadowTranslateMtx, ShadowScaleFlipMtx);
 
-			doRender.Add((sprite.Sheet, () =>
+			void RenderFunc()
 			{
 				foreach (var m in models)
 				{
@@ -235,7 +235,9 @@ namespace OpenRA.Mods.Cnc.Traits
 								ShadowAmbient, ShadowDiffuse, shadowPalette.TextureIndex, normals.TextureIndex);
 					}
 				}
-			}));
+			}
+
+			doRender.Add((sprite.Sheet, RenderFunc));
 
 			var screenLightVector = Util.MatrixVectorMultiply(invShadowTransform, ZVector);
 			screenLightVector = Util.MatrixVectorMultiply(cameraTransform, screenLightVector);
