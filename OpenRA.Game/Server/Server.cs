@@ -280,7 +280,8 @@ namespace OpenRA.Server
 								}
 							}
 						}
-					}) { Name = $"Connection listener ({listener.LocalEndpoint})", IsBackground = true }.Start();
+					})
+					{ Name = $"Connection listener ({listener.LocalEndpoint})", IsBackground = true }.Start();
 				}
 				catch (SocketException ex)
 				{
@@ -990,70 +991,42 @@ namespace OpenRA.Server
 				switch (o.OrderString)
 				{
 					case "Command":
+					{
+						var handledBy = serverTraits.WithInterface<IInterpretCommand>()
+							.FirstOrDefault(t => t.InterpretCommand(this, conn, GetClient(conn), o.TargetString));
+
+						if (handledBy == null)
 						{
-							var handledBy = serverTraits.WithInterface<IInterpretCommand>()
-								.FirstOrDefault(t => t.InterpretCommand(this, conn, GetClient(conn), o.TargetString));
-
-							if (handledBy == null)
-							{
-								Log.Write("server", $"Unknown server command: {o.TargetString}");
-								SendLocalizedMessageTo(conn, UnknownServerCommand, Translation.Arguments("command", o.TargetString));
-							}
-
-							break;
+							Log.Write("server", $"Unknown server command: {o.TargetString}");
+							SendLocalizedMessageTo(conn, UnknownServerCommand, Translation.Arguments("command", o.TargetString));
 						}
+
+						break;
+					}
 
 					case "Chat":
-						{
-							if (Type == ServerType.Local || !playerMessageTracker.IsPlayerAtFloodLimit(conn))
-								DispatchOrdersToClients(conn, 0, o.Serialize());
+					{
+						if (Type == ServerType.Local || !playerMessageTracker.IsPlayerAtFloodLimit(conn))
+							DispatchOrdersToClients(conn, 0, o.Serialize());
 
-							break;
-						}
+						break;
+					}
 
 					case "GameSaveTraitData":
+					{
+						if (GameSave != null)
 						{
-							if (GameSave != null)
-							{
-								var data = MiniYaml.FromString(o.TargetString)[0];
-								GameSave.AddTraitData(OpenRA.Exts.ParseInt32Invariant(data.Key), data.Value);
-							}
-
-							break;
+							var data = MiniYaml.FromString(o.TargetString)[0];
+							GameSave.AddTraitData(OpenRA.Exts.ParseInt32Invariant(data.Key), data.Value);
 						}
+
+						break;
+					}
 
 					case "CreateGameSave":
+					{
+						if (GameSave != null)
 						{
-							if (GameSave != null)
-							{
-								// Sanitize potentially malicious input
-								var filename = o.TargetString;
-								var invalidIndex = -1;
-								var invalidChars = Path.GetInvalidFileNameChars();
-								while ((invalidIndex = filename.IndexOfAny(invalidChars)) != -1)
-									filename = filename.Remove(invalidIndex, 1);
-
-								var baseSavePath = Path.Combine(
-									Platform.SupportDir,
-									"Saves",
-									ModData.Manifest.Id,
-									ModData.Manifest.Metadata.Version);
-
-								if (!Directory.Exists(baseSavePath))
-									Directory.CreateDirectory(baseSavePath);
-
-								GameSave.Save(Path.Combine(baseSavePath, filename));
-								DispatchServerOrdersToClients(Order.FromTargetString("GameSaved", filename, true));
-							}
-
-							break;
-						}
-
-					case "LoadGameSave":
-						{
-							if (Type == ServerType.Dedicated || State >= ServerState.GameStarted)
-								break;
-
 							// Sanitize potentially malicious input
 							var filename = o.TargetString;
 							var invalidIndex = -1;
@@ -1061,62 +1034,90 @@ namespace OpenRA.Server
 							while ((invalidIndex = filename.IndexOfAny(invalidChars)) != -1)
 								filename = filename.Remove(invalidIndex, 1);
 
-							var savePath = Path.Combine(
+							var baseSavePath = Path.Combine(
 								Platform.SupportDir,
 								"Saves",
 								ModData.Manifest.Id,
-								ModData.Manifest.Metadata.Version,
-								filename);
+								ModData.Manifest.Metadata.Version);
 
-							GameSave = new GameSave(savePath);
-							LobbyInfo.GlobalSettings = GameSave.GlobalSettings;
-							LobbyInfo.Slots = GameSave.Slots;
+							if (!Directory.Exists(baseSavePath))
+								Directory.CreateDirectory(baseSavePath);
 
-							// Reassign clients to slots
-							//  - Bot ordering is preserved
-							//  - Humans are assigned on a first-come-first-serve basis
-							//  - Leftover humans become spectators
-
-							// Start by removing all bots and assigning all players as spectators
-							foreach (var c in LobbyInfo.Clients)
-							{
-								if (c.Bot != null)
-									LobbyInfo.Clients.Remove(c);
-								else
-									c.Slot = null;
-							}
-
-							// Rebuild/remap the saved client state
-							// TODO: Multiplayer saves should leave all humans as spectators so they can manually pick slots
-							var adminClientIndex = LobbyInfo.Clients.First(c => c.IsAdmin).Index;
-							foreach (var kv in GameSave.SlotClients)
-							{
-								if (kv.Value.Bot != null)
-								{
-									var bot = new Session.Client()
-									{
-										Index = ChooseFreePlayerIndex(),
-										State = Session.ClientState.NotReady,
-										BotControllerClientIndex = adminClientIndex
-									};
-
-									kv.Value.ApplyTo(bot);
-									LobbyInfo.Clients.Add(bot);
-								}
-								else
-								{
-									// This will throw if the server doesn't have enough human clients to fill all player slots
-									// See TODO above - this isn't a problem in practice because MP saves won't use this
-									var client = LobbyInfo.Clients.First(c => c.Slot == null);
-									kv.Value.ApplyTo(client);
-								}
-							}
-
-							SyncLobbyInfo();
-							SyncLobbyClients();
-
-							break;
+							GameSave.Save(Path.Combine(baseSavePath, filename));
+							DispatchServerOrdersToClients(Order.FromTargetString("GameSaved", filename, true));
 						}
+
+						break;
+					}
+
+					case "LoadGameSave":
+					{
+						if (Type == ServerType.Dedicated || State >= ServerState.GameStarted)
+							break;
+
+						// Sanitize potentially malicious input
+						var filename = o.TargetString;
+						var invalidIndex = -1;
+						var invalidChars = Path.GetInvalidFileNameChars();
+						while ((invalidIndex = filename.IndexOfAny(invalidChars)) != -1)
+							filename = filename.Remove(invalidIndex, 1);
+
+						var savePath = Path.Combine(
+							Platform.SupportDir,
+							"Saves",
+							ModData.Manifest.Id,
+							ModData.Manifest.Metadata.Version,
+							filename);
+
+						GameSave = new GameSave(savePath);
+						LobbyInfo.GlobalSettings = GameSave.GlobalSettings;
+						LobbyInfo.Slots = GameSave.Slots;
+
+						// Reassign clients to slots
+						//  - Bot ordering is preserved
+						//  - Humans are assigned on a first-come-first-serve basis
+						//  - Leftover humans become spectators
+
+						// Start by removing all bots and assigning all players as spectators
+						foreach (var c in LobbyInfo.Clients)
+						{
+							if (c.Bot != null)
+								LobbyInfo.Clients.Remove(c);
+							else
+								c.Slot = null;
+						}
+
+						// Rebuild/remap the saved client state
+						// TODO: Multiplayer saves should leave all humans as spectators so they can manually pick slots
+						var adminClientIndex = LobbyInfo.Clients.First(c => c.IsAdmin).Index;
+						foreach (var kv in GameSave.SlotClients)
+						{
+							if (kv.Value.Bot != null)
+							{
+								var bot = new Session.Client()
+								{
+									Index = ChooseFreePlayerIndex(),
+									State = Session.ClientState.NotReady,
+									BotControllerClientIndex = adminClientIndex
+								};
+
+								kv.Value.ApplyTo(bot);
+								LobbyInfo.Clients.Add(bot);
+							}
+							else
+							{
+								// This will throw if the server doesn't have enough human clients to fill all player slots
+								// See TODO above - this isn't a problem in practice because MP saves won't use this
+								var client = LobbyInfo.Clients.First(c => c.Slot == null);
+								kv.Value.ApplyTo(client);
+							}
+						}
+
+						SyncLobbyInfo();
+						SyncLobbyClients();
+
+						break;
+					}
 				}
 			}
 		}
@@ -1504,9 +1505,9 @@ namespace OpenRA.Server
 			readonly int[] pingHistory;
 
 			// TODO: future net code changes
-			#pragma warning disable IDE0052
+#pragma warning disable IDE0052
 			readonly byte queueLength;
-			#pragma warning restore IDE0052
+#pragma warning restore IDE0052
 
 			public ConnectionPingEvent(Connection connection, int[] pingHistory, byte queueLength)
 			{

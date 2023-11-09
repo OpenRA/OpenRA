@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			if (actorNode.ChildrenMatching("Selection").Any(x => !x.IsRemoval())
-			    && !actorNode.ChildrenMatching("ControlGroups").Any())
+				&& !actorNode.ChildrenMatching("ControlGroups").Any())
 				actorNode.AddNode(new MiniYamlNodeBuilder("ControlGroups", ""));
 
 			yield break;

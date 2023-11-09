@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 	}
 
 	[Desc("A sprite sequence that can have tileset-specific variants and has the oddities " +
-	      "that come with first-generation Westwood titles.")]
+		"that come with first-generation Westwood titles.")]
 	public class ClassicTilesetSpecificSpriteSequence : ClassicSpriteSequence
 	{
 		[Desc("Dictionary of <tileset name>: filename to override the Filename key.")]

@@ -136,7 +136,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public Actor[] NamedActors => sma.Actors.Values.ToArray();
 
 		[Desc("Returns the actor that was specified with a given name in " +
-		      "the map file (or nil, if the actor is dead or not found).")]
+			"the map file (or nil, if the actor is dead or not found).")]
 		public Actor NamedActor(string actorName)
 		{
 			if (!sma.Actors.TryGetValue(actorName, out var ret))

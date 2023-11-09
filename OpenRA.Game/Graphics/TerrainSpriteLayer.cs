@@ -55,7 +55,7 @@ namespace OpenRA.Graphics
 
 			indexRowStride = 6 * map.MapSize.X;
 			lock (IndexBuffers)
-    		{
+			{
 				indexBufferWrapper = IndexBuffers.GetValue(world, world => new IndexBufferRc(world));
 				indexBufferWrapper.AddRef();
 			}

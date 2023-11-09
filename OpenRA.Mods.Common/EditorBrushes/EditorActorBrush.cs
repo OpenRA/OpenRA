@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			editorActorPreview = editorLayer.Add(actor);
 			Text = TranslationProvider.GetString(AddedActor,
-				Translation.Arguments("name", editorActorPreview.Info.Name,	"id", editorActorPreview.ID));
+				Translation.Arguments("name", editorActorPreview.Info.Name, "id", editorActorPreview.ID));
 		}
 
 		public void Undo()

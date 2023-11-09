@@ -37,7 +37,8 @@ namespace OpenRA.Mods.Cnc.Graphics
 			: this(renderer, models, pos, zOffset, camera, scale,
 				lightSource, lightAmbientColor, lightDiffuseColor,
 				color, normals, shadow, 1f,
-				float3.Ones, TintModifiers.None) { }
+				float3.Ones, TintModifiers.None)
+		{ }
 
 		public ModelRenderable(
 			ModelRenderer renderer, IEnumerable<ModelAnimation> models, WPos pos, int zOffset, in WRot camera, float scale,

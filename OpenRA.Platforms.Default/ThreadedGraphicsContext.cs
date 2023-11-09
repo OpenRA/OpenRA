@@ -99,7 +99,7 @@ namespace OpenRA.Platforms.Default
 					getCreateVertexBuffer =
 						tuple =>
 						{
-							(object t,  var type) = ((int, Type))tuple;
+							(object t, var type) = ((int, Type))tuple;
 							var vertexBuffer = context.GetType().GetMethod(nameof(CreateVertexBuffer)).MakeGenericMethod(type).Invoke(context, new[] { t });
 							return typeof(ThreadedVertexBuffer<>).MakeGenericType(type).GetConstructors()[0].Invoke(new[] { this, vertexBuffer });
 						};

@@ -1262,9 +1262,8 @@ namespace OpenRA.Mods.Common.Traits
 					foreach (var cell in rallyPoint)
 						self.QueueActivity(new AttackMoveActivity(self, () => aircraft.MoveTo(cell, 1, evaluateNearestMovableCell: true, targetLineColor: Color.OrangeRed)));
 				}
-				else
-					if (self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length <= aircraft.LandAltitude.Length)
-						QueueChild(new TakeOff(self));
+				else if (self.World.Map.DistanceAboveTerrain(aircraft.CenterPosition).Length <= aircraft.LandAltitude.Length)
+					QueueChild(new TakeOff(self));
 
 				aircraft.UnReserve();
 				return true;

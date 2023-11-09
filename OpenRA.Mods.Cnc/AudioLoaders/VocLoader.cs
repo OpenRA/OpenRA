@@ -171,53 +171,53 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 				{
 					// Sound data
 					case 1:
+					{
+						if (block.Length < 2)
+							throw new InvalidDataException("Invalid sound data block length in voc file");
+						var freqDiv = stream.ReadUInt8();
+						block.SampleBlock.Rate = GetSampleRateFromVocRate(freqDiv);
+						var codec = stream.ReadUInt8();
+						if (codec != 0)
+							throw new InvalidDataException("Unhandled codec used in voc file");
+						skip = block.Length - 2;
+						block.SampleBlock.Samples = skip;
+						block.SampleBlock.Offset = stream.Position;
+
+						// See if last block contained additional information
+						if (blockList.Count > 0)
 						{
-							if (block.Length < 2)
-								throw new InvalidDataException("Invalid sound data block length in voc file");
-							var freqDiv = stream.ReadUInt8();
-							block.SampleBlock.Rate = GetSampleRateFromVocRate(freqDiv);
-							var codec = stream.ReadUInt8();
-							if (codec != 0)
-								throw new InvalidDataException("Unhandled codec used in voc file");
-							skip = block.Length - 2;
-							block.SampleBlock.Samples = skip;
-							block.SampleBlock.Offset = stream.Position;
-
-							// See if last block contained additional information
-							if (blockList.Count > 0)
+							var b = blockList.Last();
+							if (b.Code == 8)
 							{
-								var b = blockList.Last();
-								if (b.Code == 8)
-								{
-									block.SampleBlock.Rate = b.SampleBlock.Rate;
-									blockList.Remove(b);
-								}
+								block.SampleBlock.Rate = b.SampleBlock.Rate;
+								blockList.Remove(b);
 							}
-
-							sampleRate = Math.Max(sampleRate, block.SampleBlock.Rate);
-							break;
 						}
+
+						sampleRate = Math.Max(sampleRate, block.SampleBlock.Rate);
+						break;
+					}
 
 					// Silence
 					case 3:
-						{
-							if (block.Length != 3)
-								throw new InvalidDataException("Invalid silence block length in voc file");
-							block.SampleBlock.Offset = 0;
-							block.SampleBlock.Samples = stream.ReadUInt16() + 1;
-							var freqDiv = stream.ReadUInt8();
-							block.SampleBlock.Rate = GetSampleRateFromVocRate(freqDiv);
-							break;
-						}
+					{
+						if (block.Length != 3)
+							throw new InvalidDataException("Invalid silence block length in voc file");
+						block.SampleBlock.Offset = 0;
+						block.SampleBlock.Samples = stream.ReadUInt16() + 1;
+						var freqDiv = stream.ReadUInt8();
+						block.SampleBlock.Rate = GetSampleRateFromVocRate(freqDiv);
+						break;
+					}
 
 					// Repeat start
 					case 6:
-						{
-							if (block.Length != 2)
-								throw new InvalidDataException("Invalid repeat start block length in voc file");
-							block.LoopBlock.Count = stream.ReadUInt16() + 1;
-							break;
-						}
+					{
+						if (block.Length != 2)
+							throw new InvalidDataException("Invalid repeat start block length in voc file");
+						block.LoopBlock.Count = stream.ReadUInt16() + 1;
+						break;
+					}
 
 					// Repeat end
 					case 7:
@@ -225,23 +225,23 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 
 					// Extra info
 					case 8:
-						{
-							if (block.Length != 4)
-								throw new InvalidDataException("Invalid info block length in voc file");
-							int freqDiv = stream.ReadUInt16();
-							if (freqDiv == 65536)
-								throw new InvalidDataException("Invalid frequency divisor 65536 in voc file");
-							var codec = stream.ReadUInt8();
-							if (codec != 0)
-								throw new InvalidDataException("Unhandled codec used in voc file");
-							var channels = stream.ReadUInt8() + 1;
-							if (channels != 1)
-								throw new InvalidDataException("Unhandled number of channels in voc file");
-							block.SampleBlock.Offset = 0;
-							block.SampleBlock.Samples = 0;
-							block.SampleBlock.Rate = (int)(256000000L / (65536L - freqDiv));
-							break;
-						}
+					{
+						if (block.Length != 4)
+							throw new InvalidDataException("Invalid info block length in voc file");
+						int freqDiv = stream.ReadUInt16();
+						if (freqDiv == 65536)
+							throw new InvalidDataException("Invalid frequency divisor 65536 in voc file");
+						var codec = stream.ReadUInt8();
+						if (codec != 0)
+							throw new InvalidDataException("Unhandled codec used in voc file");
+						var channels = stream.ReadUInt8() + 1;
+						if (channels != 1)
+							throw new InvalidDataException("Unhandled number of channels in voc file");
+						block.SampleBlock.Offset = 0;
+						block.SampleBlock.Samples = 0;
+						block.SampleBlock.Rate = (int)(256000000L / (65536L - freqDiv));
+						break;
+					}
 
 					// Sound data (New format)
 					case 9:

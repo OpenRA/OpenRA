@@ -217,8 +217,10 @@ namespace OpenRA.Mods.Common.Traits
 						chargedToken = self.RevokeCondition(chargedToken);
 				}
 				else
+				{
 					if (chargedToken == Actor.InvalidConditionToken)
 						chargedToken = self.GrantCondition(Info.ChargedCondition);
+				}
 			}
 		}
 

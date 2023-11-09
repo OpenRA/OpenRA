@@ -56,9 +56,10 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 			if (requiredMetadata.Count != 0)
 			{
-				yield return $"The ExplicitSequenceFilenames rule requires {requiredMetadata.JoinWith(", ")}\n" +
-				             "to be defined under the SpriteSequenceFormat definition in mod.yaml.\n" +
-				             "Add these definitions back and run the update rule again.";
+				yield return
+					$"The ExplicitSequenceFilenames rule requires {requiredMetadata.JoinWith(", ")}\n" +
+					"to be defined under the SpriteSequenceFormat definition in mod.yaml.\n" +
+					"Add these definitions back and run the update rule again.";
 				disabled = true;
 			}
 		}
@@ -457,8 +458,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 					var overrideFilename = filename;
 					if (useTilesetCode)
-						overrideFilename = filename[..1] + tilesetCodes[sequenceTileset] +
-						                   filename[2..];
+						overrideFilename = filename[..1] + tilesetCodes[sequenceTileset] + filename[2..];
 
 					if (addExtension)
 						overrideFilename += useTilesetExtension ? tilesetExtensions[sequenceTileset] : defaultSpriteExtension;

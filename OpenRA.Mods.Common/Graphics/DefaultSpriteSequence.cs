@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Graphics
 		protected static readonly SpriteSequenceField<int> Tick = new(nameof(Tick), 40);
 
 		[Desc("Value controlling the Z-order. A higher values means rendering on top of other sprites at the same position. " +
-		      "Use power of 2 values to avoid glitches.")]
+			"Use power of 2 values to avoid glitches.")]
 		protected static readonly SpriteSequenceField<WDist> ZOffset = new(nameof(ZOffset), WDist.Zero);
 
 		[Desc("Additional sprite depth Z offset to apply as a function of sprite Y (0: vertical, 1: flat on terrain)")]

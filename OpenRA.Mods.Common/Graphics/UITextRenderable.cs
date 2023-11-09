@@ -40,7 +40,8 @@ namespace OpenRA.Mods.Common.Graphics
 			: this(font, effectiveWorldPos, screenPos, zOffset, color,
 				ChromeMetrics.Get<Color>("TextContrastColorDark"),
 				ChromeMetrics.Get<Color>("TextContrastColorLight"),
-				text) { }
+				text)
+		{ }
 
 		public WPos Pos { get; }
 		public int ZOffset { get; }

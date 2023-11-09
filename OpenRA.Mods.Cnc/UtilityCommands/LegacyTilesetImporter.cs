@@ -115,8 +115,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 							var templateWidth = s.ReadUInt32();
 							var templateHeight = s.ReadUInt32();
-							/* var tileWidth = */s.ReadInt32();
-							/* var tileHeight = */s.ReadInt32();
+							s.ReadInt32(); // tileWidth
+							s.ReadInt32(); // tileHeight
 							var offsets = new uint[templateWidth * templateHeight];
 							for (var j = 0; j < offsets.Length; j++)
 								offsets[j] = s.ReadUInt32();

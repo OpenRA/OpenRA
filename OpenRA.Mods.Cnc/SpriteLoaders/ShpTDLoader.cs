@@ -172,26 +172,26 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			{
 				case Format.XORPrev:
 				case Format.XORLCW:
+				{
+					if (h.RefImage.Data == null)
 					{
-						if (h.RefImage.Data == null)
-						{
-							++recurseDepth;
-							Decompress(h.RefImage);
-							--recurseDepth;
-						}
-
-						h.Data = CopyImageData(h.RefImage.Data);
-						XORDeltaCompression.DecodeInto(shpBytes, h.Data, (int)(h.FileOffset - shpBytesFileOffset));
-						break;
+						++recurseDepth;
+						Decompress(h.RefImage);
+						--recurseDepth;
 					}
+
+					h.Data = CopyImageData(h.RefImage.Data);
+					XORDeltaCompression.DecodeInto(shpBytes, h.Data, (int)(h.FileOffset - shpBytesFileOffset));
+					break;
+				}
 
 				case Format.LCW:
-					{
-						var imageBytes = new byte[Size.Width * Size.Height];
-						LCWCompression.DecodeInto(shpBytes, imageBytes, (int)(h.FileOffset - shpBytesFileOffset));
-						h.Data = imageBytes;
-						break;
-					}
+				{
+					var imageBytes = new byte[Size.Width * Size.Height];
+					LCWCompression.DecodeInto(shpBytes, imageBytes, (int)(h.FileOffset - shpBytesFileOffset));
+					h.Data = imageBytes;
+					break;
+				}
 
 				default:
 					throw new InvalidDataException();
