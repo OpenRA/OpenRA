@@ -14,10 +14,14 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using OpenRA.FileSystem;
+using OpenRA.Mods.Common.UpdateRules;
 using OpenRA.Widgets;
 
-namespace OpenRA.UtilityCommands
+namespace OpenRA.Mods.Common.UtilityCommands
 {
+	using YamlFileSet = List<(IReadWritePackage Package, string File, List<MiniYamlNodeBuilder> Nodes)>;
+
 	sealed class ExtractChromeStringsCommand : IUtilityCommand
 	{
 		string IUtilityCommand.Name { get { return "--extract-chrome-strings"; } }
@@ -51,7 +55,8 @@ namespace OpenRA.UtilityCommands
 
 				var unsortedCandidates = new List<TranslationCandidate>();
 				var groupedCandidates = new Dictionary<HashSet<string>, List<TranslationCandidate>>();
-				var chromeFiles = new List<(string Path, List<MiniYamlNodeBuilder> Nodes)>();
+
+				var yamlSet = new YamlFileSet();
 
 				// Get all translations.
 				foreach (var chrome in layout)
@@ -60,7 +65,7 @@ namespace OpenRA.UtilityCommands
 					var chromePath = Path.Combine(chromePackage.Name, chromeName);
 
 					var yaml = MiniYaml.FromFile(chromePath, false).ConvertAll(n => new MiniYamlNodeBuilder(n));
-					chromeFiles.Add((chromePath, yaml));
+					yamlSet.Add(((IReadWritePackage)chromePackage, chromeName, yaml));
 
 					var translationCandidates = new List<TranslationCandidate>();
 					foreach (var node in yaml)
@@ -125,7 +130,7 @@ namespace OpenRA.UtilityCommands
 						groupedCandidates[newHash] = new List<TranslationCandidate>() { candidate };
 				}
 
-				// Write to translation and yaml files.
+				// Write to translation files.
 				Directory.CreateDirectory(Path.GetDirectoryName(fluentPath));
 				using (var fluentWriter = new StreamWriter(fluentPath, append: true))
 				{
@@ -184,11 +189,7 @@ namespace OpenRA.UtilityCommands
 					}
 				}
 
-				foreach (var chromeFile in chromeFiles)
-				{
-					using (var chromeLayoutWriter = new StreamWriter(chromeFile.Path))
-						chromeLayoutWriter.WriteLine(chromeFile.Nodes.WriteToString());
-				}
+				yamlSet.Save();
 			}
 		}
 

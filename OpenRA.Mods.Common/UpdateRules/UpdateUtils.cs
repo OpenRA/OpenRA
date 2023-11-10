@@ -17,7 +17,7 @@ using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.UpdateRules
 {
-	using YamlFileSet = List<(IReadWritePackage, string, List<MiniYamlNodeBuilder>)>;
+	using YamlFileSet = List<(IReadWritePackage Package, string File, List<MiniYamlNodeBuilder> Nodes)>;
 
 	public static class UpdateUtils
 	{
@@ -219,19 +219,19 @@ namespace OpenRA.Mods.Common.UpdateRules
 					var mapRulesNode = yaml.NodeWithKeyOrDefault("Rules");
 					if (mapRulesNode != null)
 						foreach (var f in LoadExternalMapYaml(modData, mapRulesNode.Value, externalFilenames))
-							if (!modRules.Any(m => m.Item1 == f.Item1 && m.Item2 == f.Item2))
+							if (!modRules.Any(m => m.Package == f.Package && m.File == f.File))
 								modRules.Add(f);
 
 					var mapWeaponsNode = yaml.NodeWithKeyOrDefault("Weapons");
 					if (mapWeaponsNode != null)
 						foreach (var f in LoadExternalMapYaml(modData, mapWeaponsNode.Value, externalFilenames))
-							if (!modWeapons.Any(m => m.Item1 == f.Item1 && m.Item2 == f.Item2))
+							if (!modWeapons.Any(m => m.Package == f.Package && m.File == f.File))
 								modWeapons.Add(f);
 
 					var mapSequencesNode = yaml.NodeWithKeyOrDefault("Sequences");
 					if (mapSequencesNode != null)
 						foreach (var f in LoadExternalMapYaml(modData, mapSequencesNode.Value, externalFilenames))
-							if (!modSequences.Any(m => m.Item1 == f.Item1 && m.Item2 == f.Item2))
+							if (!modSequences.Any(m => m.Package == f.Package && m.File == f.File))
 								modSequences.Add(f);
 				}
 			}
@@ -298,8 +298,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 			if (transform == null)
 				yield break;
 
-			foreach (var file in files)
-				foreach (var node in file.Item3)
+			foreach (var (_, _, nodes) in files)
+				foreach (var node in nodes)
 					if (node.Key != null)
 						foreach (var manualStep in ApplyChromeTransformInner(modData, node, transform))
 							yield return manualStep;
@@ -310,8 +310,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 			if (transform == null)
 				yield break;
 
-			foreach (var file in files)
-				foreach (var node in file.Item3)
+			foreach (var (_, _, nodes) in files)
+				foreach (var node in nodes)
 					if (node.Key != null)
 						foreach (var manualStep in transform(modData, node))
 							yield return manualStep;
@@ -328,14 +328,14 @@ namespace OpenRA.Mods.Common.UpdateRules
 	{
 		public static void Save(this YamlFileSet files)
 		{
-			foreach (var file in files)
+			foreach (var (package, file, nodes) in files)
 			{
-				if (file.Item1 == null)
+				if (package == null)
 					continue;
 
-				var textData = Encoding.UTF8.GetBytes(file.Item3.WriteToString());
-				if (!Enumerable.SequenceEqual(textData, file.Item1.GetStream(file.Item2).ReadAllBytes()))
-					file.Item1.Update(file.Item2, textData);
+				var textData = Encoding.UTF8.GetBytes(nodes.WriteToString());
+				if (!Enumerable.SequenceEqual(textData, package.GetStream(file).ReadAllBytes()))
+					package.Update(file, textData);
 			}
 		}
 
