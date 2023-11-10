@@ -97,8 +97,13 @@ namespace OpenRA.Mods.Common.AudioLoaders
 
 			public override int Read(byte[] buffer, int offset, int count)
 			{
+				return Read(buffer.AsSpan(offset, count));
+			}
+
+			public override int Read(Span<byte> buffer)
+			{
 				// Adjust count so it is in 16-bit samples instead of bytes.
-				count /= 2;
+				var count = buffer.Length / 2;
 
 				// Make sure we don't have an odd count.
 				count -= count % format.reader.Channels;
@@ -112,8 +117,8 @@ namespace OpenRA.Mods.Common.AudioLoaders
 				for (var i = 0; i < samples; i++)
 				{
 					var conversion = (short)(floatBuffer[i] * 32767);
-					buffer[offset++] = (byte)(conversion & 255);
-					buffer[offset++] = (byte)(conversion >> 8);
+					buffer[i * 2 + 0] = (byte)(conversion & 255);
+					buffer[i * 2 + 1] = (byte)(conversion >> 8);
 				}
 
 				// Adjust count back to bytes.
@@ -124,6 +129,7 @@ namespace OpenRA.Mods.Common.AudioLoaders
 			public override long Seek(long offset, SeekOrigin origin) { throw new NotImplementedException(); }
 			public override void SetLength(long value) { throw new NotImplementedException(); }
 			public override void Write(byte[] buffer, int offset, int count) { throw new NotImplementedException(); }
+			public override void Write(ReadOnlySpan<byte> buffer) { throw new NotImplementedException(); }
 
 			protected override void Dispose(bool disposing)
 			{
