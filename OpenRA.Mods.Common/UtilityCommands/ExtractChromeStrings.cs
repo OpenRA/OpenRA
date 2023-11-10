@@ -203,17 +203,6 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 		}
 
-		static bool IsAlreadyTranslated(string translation)
-		{
-			if (translation == translation.ToLowerInvariant() && translation.Any(c => c == '-'))
-			{
-				Console.WriteLine("Skipping " + translation + " because it is already translated.");
-				return true;
-			}
-
-			return false;
-		}
-
 		struct TranslationCandidate
 		{
 			public string Chrome;
@@ -273,7 +262,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var childType = childNode.Key.Split('@')[0];
 					if (fieldName.Contains(childType)
 						&& !string.IsNullOrEmpty(childNode.Value.Value)
-						&& !IsAlreadyTranslated(childNode.Value.Value)
+						&& !UpdateUtils.IsAlreadyTranslated(childNode.Value.Value)
 						&& childNode.Value.Value.Any(char.IsLetterOrDigit))
 					{
 						var translationValue = childNode.Value.Value

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		/// <summary>
 		/// Loads a YamlFileSet from a list of mod files.
 		/// </summary>
-		static YamlFileSet LoadModYaml(ModData modData, IEnumerable<string> files)
+		public static YamlFileSet LoadModYaml(ModData modData, IEnumerable<string> files)
 		{
 			var yaml = new YamlFileSet();
 			foreach (var filename in files)
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		/// <summary>
 		/// Loads a YamlFileSet containing any external yaml definitions referenced by a map yaml block.
 		/// </summary>
-		static YamlFileSet LoadExternalMapYaml(ModData modData, MiniYamlBuilder yaml, HashSet<string> externalFilenames)
+		public static YamlFileSet LoadExternalMapYaml(ModData modData, MiniYamlBuilder yaml, HashSet<string> externalFilenames)
 		{
 			return FieldLoader.GetValue<string[]>("value", yaml.Value)
 				.Where(f => f.Contains('|'))
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		/// Loads a YamlFileSet containing any internal definitions yaml referenced by a map yaml block.
 		/// External references or internal references to missing files are ignored.
 		/// </summary>
-		static YamlFileSet LoadInternalMapYaml(ModData modData, IReadWritePackage mapPackage, MiniYamlBuilder yaml, HashSet<string> externalFilenames)
+		public static YamlFileSet LoadInternalMapYaml(ModData modData, IReadWritePackage mapPackage, MiniYamlBuilder yaml, HashSet<string> externalFilenames)
 		{
 			var fileSet = new YamlFileSet()
 			{
@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			return MiniYaml.Merge(yaml).ConvertAll(n => new MiniYamlNodeBuilder(n));
 		}
 
-		static IEnumerable<string> FilterExternalModFiles(ModData modData, IEnumerable<string> files, HashSet<string> externalFilenames)
+		public static IEnumerable<string> FilterExternalModFiles(ModData modData, IEnumerable<string> files, HashSet<string> externalFilenames)
 		{
 			foreach (var f in files)
 			{
@@ -321,6 +321,17 @@ namespace OpenRA.Mods.Common.UpdateRules
 		{
 			var prefix = string.Concat(Enumerable.Repeat("   ", indent));
 			return string.Join("\n", messages.Select(m => prefix + $" {separator} {m.Replace("\n", "\n   " + prefix)}"));
+		}
+
+		public static bool IsAlreadyTranslated(string translation)
+		{
+			if (translation == translation.ToLowerInvariant() && translation.Any(c => c == '-') && translation.All(c => c != ' '))
+			{
+				Console.WriteLine($"Skipping {translation} because it is already translated.");
+				return true;
+			}
+
+			return false;
 		}
 	}
 
