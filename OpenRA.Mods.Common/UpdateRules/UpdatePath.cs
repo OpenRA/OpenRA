@@ -31,33 +31,6 @@ namespace OpenRA.Mods.Common.UpdateRules
 		// release-to-bleed path.
 		static readonly UpdatePath[] Paths =
 		{
-			new UpdatePath("release-20200503", "release-20210321", new UpdateRule[]
-			{
-				new AddPipDecorationTraits(),
-				new ModernizeDecorationTraits(),
-				new RenameHealCrateAction(),
-				new RenameInfiltrationNotifications(),
-				new MoveClassicFacingFudge(),
-				new RenameWithNukeLaunch(),
-				new SpawnActorPowerDefaultEffect(),
-				new RemoveConditionManager(),
-				new ConvertSupportPowerRangesToFootprint(),
-				new UpdateTilesetColors(),
-				new UpdateMapInits(),
-				new CreateFlashPaletteEffectWarhead(),
-				new ChangeTargetLineDelayToMilliseconds(),
-				new ReplaceFacingAngles(),
-				new RenameSelfHealing(),
-				new ReplaceBurns(),
-				new RemoveMuzzleSplitFacings(),
-				new RenameStances(),
-				new RemoveTurnToDock(),
-				new RenameSmudgeSmokeFields(),
-				new RenameCircleContrast(),
-				new SplitDamagedByTerrain(),
-				new RemoveLaysTerrain(),
-			}),
-
 			new UpdatePath("release-20210321", "release-20230225", new UpdateRule[]
 			{
 				new RenameMPTraits(),
@@ -88,7 +61,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new UnhardcodeBaseBuilderBotModule(),
 			}),
 
-			new UpdatePath("release-20230225", "playtest-20230801", new UpdateRule[]
+			new UpdatePath("release-20230225", "release-20231010", new UpdateRule[]
 			{
 				new TextNotificationsDisplayWidgetRemoveTime(),
 				new RenameEngineerRepair(),
@@ -105,7 +78,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveNegativeSequenceLength(),
 			}),
 
-			new UpdatePath("playtest-20230801", new UpdateRule[]
+			new UpdatePath("release-20231010", new UpdateRule[]
 			{
 				// bleed only changes here.
 				new RemoveValidRelationsFromCapturable(),
