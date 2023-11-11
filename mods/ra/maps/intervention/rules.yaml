@@ -22,7 +22,7 @@ CAMERA:
 
 MISS:
 	Tooltip:
-		Name: Soviet Air Force HQ
+		Name: actor-miss-name
 	Capturable:
 		Types: building
 	CaptureManager:
@@ -45,7 +45,7 @@ MAINLAND:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Reach the mainland
+		Name: actor-mainland-name
 	ProvidesPrerequisite:
 		Prerequisite: mainland
 
@@ -61,7 +61,7 @@ GIVEFIX:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Weapons Factory or Helipad
+		Name: actor-givefix-name
 
 MIG.SCRIPTED:
 	Inherits: MIG

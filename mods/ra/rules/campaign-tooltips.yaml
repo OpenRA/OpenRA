@@ -86,7 +86,7 @@ FCOM:
 
 MISS:
 	Tooltip:
-		Name: Technology Center
+		Name: actor-miss-name
 	-TooltipDescription@ally:
 	-TooltipDescription@other:
 

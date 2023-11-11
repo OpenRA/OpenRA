@@ -6,11 +6,11 @@ MCV:
 		Queue: Vehicle
 		BuildPaletteOrder: 160
 		Prerequisites: ~factory, tech, ~techlevel.medium
-		Description: Deploys into another Construction Yard.\n  Unarmed
+		Description: actor-mcv.description
 	Valued:
 		Cost: 2500
 	Tooltip:
-		Name: Mobile Construction Vehicle
+		Name: actor-mcv.name
 	Selectable:
 		DecorationBounds: 1267, 2534
 	Health:
@@ -49,12 +49,12 @@ HARV:
 	Valued:
 		Cost: 1400
 	Tooltip:
-		Name: Harvester
+		Name: actor-harv.name
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Prerequisites: ~factory, proc, ~techlevel.low
-		Description: Collects Tiberium for processing.\n  Unarmed
+		Description: actor-harv.description
 	Selectable:
 		Bounds: 1086, 2172
 		DecorationBounds: 1086, 2172
@@ -123,14 +123,14 @@ LPST:
 		Queue: Vehicle
 		BuildPaletteOrder: 90
 		Prerequisites: ~factory, radar, ~techlevel.medium
-		Description: Can detect cloaked and subterranean\nunits when deployed.\n  Unarmed
+		Description: actor-lpst.description
 	Valued:
 		Cost: 950
 	Tooltip:
-		Name: Mobile Sensor Array
+		Name: actor-lpst.name
 		RequiresCondition: !deployed
 	Tooltip@DEPLOYED:
-		Name: Mobile Sensor Array (deployed)
+		Name: actor-lpst.deployed--name
 		RequiresCondition: deployed
 	Health:
 		HP: 60000

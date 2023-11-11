@@ -149,7 +149,7 @@ CRATE:
 MONEYCRATE:
 	Inherits: ^Crate
 	Tooltip:
-		Name: Money Crate
+		Name: actor-moneycrate-name
 	GiveCashCrateAction:
 		Amount: 500
 		SelectionShares: 1
@@ -160,7 +160,7 @@ MONEYCRATE:
 HEALCRATE:
 	Inherits: ^Crate
 	Tooltip:
-		Name: Heal Crate
+		Name: actor-healcrate-name
 	HealActorsCrateAction:
 		Sound: heal2.aud
 		SelectionShares: 1
@@ -169,19 +169,19 @@ HEALCRATE:
 WCRATE:
 	Inherits: ^Crate
 	Tooltip:
-		Name: Wooden Crate
+		Name: actor-wcrate-name
 	RenderSprites:
 		Image: wcrate
 
 SCRATE:
 	Inherits: ^Crate
 	Tooltip:
-		Name: Steel Crate
+		Name: actor-scrate-name
 
 CAMERA:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (reveals area to owner)
+		Name: actor-camera-name
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
@@ -199,19 +199,19 @@ CAMERA:
 camera.paradrop:
 	Inherits: CAMERA
 	EditorOnlyTooltip:
-		Name: (support power proxy camera)
+		Name: actor-camera-paradrop-name
 	RevealsShroud:
 		Range: 6c0
 
 camera.spyplane:
 	Inherits: CAMERA
 	EditorOnlyTooltip:
-		Name: (support power proxy camera)
+		Name: actor-camera-spyplane-name
 
 SONAR:
 	Inherits: camera.spyplane
 	EditorOnlyTooltip:
-		Name: (support power proxy camera)
+		Name: actor-sonar-name
 	-RevealsShroud:
 	DetectCloaked:
 		DetectionTypes: Underwater
@@ -233,7 +233,7 @@ FLARE:
 		Type: CenterPosition
 	Interactable:
 	Tooltip:
-		Name: Flare
+		Name: actor-flare-name
 		ShowOwnerRow: false
 	MapEditorData:
 		Categories: Decoration
@@ -243,7 +243,7 @@ MINE:
 	Interactable:
 	HiddenUnderShroud:
 	Tooltip:
-		Name: Ore Mine
+		Name: actor-mine-name
 	RenderSprites:
 		Palette: terrain
 	WithSpriteBody:
@@ -266,7 +266,7 @@ GMINE:
 	Interactable:
 	HiddenUnderShroud:
 	Tooltip:
-		Name: Gem Mine
+		Name: actor-gmine-name
 	RenderSprites:
 		Palette: player
 	WithSpriteBody:
@@ -290,7 +290,7 @@ RAILMINE:
 	Interactable:
 	HiddenUnderShroud:
 	Tooltip:
-		Name: Abandoned Mine
+		Name: actor-railmine-name
 	RenderSprites:
 		Palette: player
 	WithSpriteBody:
@@ -309,7 +309,7 @@ QUEE:
 	Interactable:
 	HiddenUnderShroud:
 	Tooltip:
-		Name: Queen Ant
+		Name: actor-quee-name
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -325,7 +325,7 @@ LAR1:
 	Interactable:
 	HiddenUnderShroud:
 	Tooltip:
-		Name: Ant Larva
+		Name: actor-lar1-name
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -340,7 +340,7 @@ LAR1:
 LAR2:
 	Inherits@1: LAR1
 	Tooltip:
-		Name: Ant Larvae
+		Name: actor-lar2-name
 
 powerproxy.parabombs:
 	AlwaysVisible:
@@ -416,7 +416,7 @@ aircraft.upgraded:
 mpspawn:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (multiplayer player starting point)
+		Name: actor-mpspawn-name
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
@@ -432,7 +432,7 @@ mpspawn:
 waypoint:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (waypoint for scripted behavior)
+		Name: actor-waypoint-name
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
@@ -458,7 +458,7 @@ CTFLAG:
 		Footprint: x
 		Dimensions: 1,1
 	Tooltip:
-		Name: Flag
+		Name: actor-ctflag-name
 	WithBuildingBib:
 		HasMinibib: true
 	-HitShape:

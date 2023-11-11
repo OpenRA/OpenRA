@@ -56,7 +56,7 @@ ATEK:
 
 BIO:
 	Tooltip:
-		Name: Sarin Processing Plant
+		Name: actor-bio-name
 
 E7:
 	Buildable:

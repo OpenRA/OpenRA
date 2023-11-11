@@ -19,7 +19,7 @@ HQ:
 	AirstrikePower:
 		Prerequisites: ~disabled
 	Buildable:
-		Description: Provides an overview of the battlefield.\nRequires power to operate.
+		Description: actor-hq-description
 
 CYCL:
 	Buildable:
@@ -95,7 +95,7 @@ RMBO:
 
 MISS:
 	Tooltip:
-		Name: Prison
+		Name: actor-miss-name
 	CaptureManager:
 	Capturable:
 		Types: building

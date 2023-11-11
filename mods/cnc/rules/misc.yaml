@@ -38,19 +38,19 @@ CRATE:
 WCRATE:
 	Inherits: ^Crate
 	Tooltip:
-		Name: Wooden Crate
+		Name: actor-wcrate-name
 	RenderSprites:
 		Image: wcrate
 
 SCRATE:
 	Inherits: ^Crate
 	Tooltip:
-		Name: Steel Crate
+		Name: actor-scrate-name
 
 mpspawn:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (multiplayer player starting point)
+		Name: actor-mpspawn-name
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
@@ -66,7 +66,7 @@ mpspawn:
 waypoint:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (waypoint for scripted behavior)
+		Name: actor-waypoint-name
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
@@ -89,7 +89,7 @@ fact.colorpicker:
 CAMERA:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (reveals area to owner)
+		Name: actor-camera-name
 	AlwaysVisible:
 	WithSpriteBody:
 	RenderSpritesEditorOnly:
@@ -106,7 +106,7 @@ CAMERA:
 CAMERA.small:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (reveals small area to owner)
+		Name: actor-camera-small-name
 	AlwaysVisible:
 	WithSpriteBody:
 	RenderSpritesEditorOnly:
@@ -138,7 +138,7 @@ FLARE:
 	HiddenUnderFog:
 		Type: CenterPosition
 	Tooltip:
-		Name: Flare
+		Name: actor-flare-name
 		ShowOwnerRow: false
 	BodyOrientation:
 		QuantizedFacings: 1

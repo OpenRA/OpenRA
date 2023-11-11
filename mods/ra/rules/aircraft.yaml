@@ -17,7 +17,7 @@ BADR:
 	Interactable:
 	-Voiced:
 	Tooltip:
-		Name: Badger
+		Name: actor-badr-name
 	Contrail@1:
 		Offset: -432,560,0
 		StartColorAlpha: 128
@@ -69,11 +69,11 @@ MIG:
 		BuildAtProductionType: Plane
 		BuildPaletteOrder: 50
 		Prerequisites: ~afld, stek, ~techlevel.high
-		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
+		Description: actor-mig.description
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: MiG Attack Plane
+		Name: actor-mig.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -147,11 +147,11 @@ YAK:
 		BuildAtProductionType: Plane
 		BuildPaletteOrder: 30
 		Prerequisites: ~afld, ~techlevel.medium
-		Description: Attack Plane armed with\ndual machine guns.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
+		Description: actor-yak.description
 	Valued:
 		Cost: 1350
 	Tooltip:
-		Name: Yak Attack Plane
+		Name: actor-yak.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -224,11 +224,11 @@ TRAN:
 		BuildAtProductionType: Helicopter
 		BuildPaletteOrder: 10
 		Prerequisites: ~hpad, ~techlevel.medium
-		Description: Fast Infantry Transport Helicopter.\n  Unarmed
+		Description: actor-tran.description
 	Valued:
 		Cost: 900
 	Tooltip:
-		Name: Chinook
+		Name: actor-tran.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -278,11 +278,11 @@ HELI:
 		BuildAtProductionType: Helicopter
 		BuildPaletteOrder: 40
 		Prerequisites: ~hpad, atek, ~techlevel.high
-		Description: Helicopter gunship armed\nwith multi-purpose missiles.\n  Strong vs Buildings, Vehicles, Aircraft\n  Weak vs Infantry
+		Description: actor-heli.description
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Longbow
+		Name: actor-heli.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -360,11 +360,11 @@ HIND:
 		BuildAtProductionType: Helicopter
 		BuildPaletteOrder: 20
 		Prerequisites: ~disabled, ~hpad, ~techlevel.medium
-		Description: Helicopter gunship armed\nwith dual chainguns.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
+		Description: actor-hind.description
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Hind
+		Name: actor-hind.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -437,7 +437,7 @@ U2:
 	Health:
 		HP: 200000
 	Tooltip:
-		Name: Spy Plane
+		Name: actor-u2-name
 	Aircraft:
 		CruiseAltitude: 2560
 		TurnSpeed: 28
@@ -478,11 +478,11 @@ MH60:
 		BuildAtProductionType: Helicopter
 		BuildPaletteOrder: 20
 		Prerequisites: ~hpad, ~techlevel.medium
-		Description: Helicopter gunship armed\nwith dual chainguns.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
+		Description: actor-mh60.description
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Black Hawk
+		Name: actor-mh60.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:

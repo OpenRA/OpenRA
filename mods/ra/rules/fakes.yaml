@@ -11,11 +11,11 @@ FPWR:
 		BuildPaletteOrder: 870
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.infonly
-		Description: Looks like a Power Plant.
+		Description: actor-fpwr.description
 		Icon: fake-icon
 	Tooltip:
-		Name: Fake Power Plant
-		GenericName: Power Plant
+		Name: actor-fpwr.name
+		GenericName: actor-fpwr.generic-name
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
@@ -42,11 +42,11 @@ TENF:
 		BuildPaletteOrder: 880
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.infonly
-		Description: Looks like an Allied Barracks.
+		Description: actor-tenf.description
 		Icon: fake-icon
 	Tooltip:
-		Name: Fake Allied Barracks
-		GenericName: Allied Barracks
+		Name: actor-tenf.name
+		GenericName: actor-tenf.generic-name
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
@@ -75,11 +75,11 @@ SYRF:
 		BuildPaletteOrder: 890
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
-		Description: Looks like a Naval Yard.
+		Description: actor-syrf.description
 		Icon: fake-icon
 	Tooltip:
-		Name: Fake Naval Yard
-		GenericName: Naval Yard
+		Name: actor-syrf.name
+		GenericName: actor-syrf.generic-name
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Targetable:
@@ -122,11 +122,11 @@ SPEF:
 		BuildPaletteOrder: 890
 		Queue: Defense
 		Prerequisites: ~disabled
-		Description: Looks like a Sub Pen.
+		Description: actor-spef.description
 		Icon: fake-icon
 	Tooltip:
-		Name: Fake Sub Pen
-		GenericName: Sub Pen
+		Name: actor-spef.name
+		GenericName: actor-spef.generic-name
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
@@ -165,11 +165,11 @@ WEAF:
 		BuildPaletteOrder: 920
 		Prerequisites: ~structures.france, ~techlevel.medium
 		Queue: Defense
-		Description: Looks like a War Factory.
+		Description: actor-weaf.description
 		Icon: fake-icon
 	Tooltip:
-		Name: Fake War Factory
-		GenericName: War Factory
+		Name: actor-weaf.name
+		GenericName: actor-weaf.generic-name
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
@@ -204,15 +204,15 @@ DOMF:
 		UseTargetableCellsOffsets: false
 		TargetableOffsets: 0,0,0, 630,-384,0, 630,384,0, -700,-512,0, -700,512,0
 	Tooltip:
-		Name: Fake Radar Dome
-		GenericName: Radar Dome
+		Name: actor-domf.name
+		GenericName: actor-domf.generic-name
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Buildable:
 		BuildPaletteOrder: 930
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
-		Description: Looks like a Radar Dome.
+		Description: actor-domf.description
 		Icon: fake-icon
 	Building:
 		Footprint: xx xx ==
@@ -237,11 +237,11 @@ FIXF:
 		BuildPaletteOrder: 940
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
-		Description: Looks like a Service Depot.
+		Description: actor-fixf.description
 		Icon: fake-icon
 	Tooltip:
-		Name: Fake Service Depot
-		GenericName: Service Depot
+		Name: actor-fixf.name
+		GenericName: actor-fixf.generic-name
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
@@ -272,11 +272,11 @@ FAPW:
 		BuildPaletteOrder: 950
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
-		Description: Looks like an Advanced Power Plant.
+		Description: actor-fapw.description
 		Icon: fake-icon
 	Tooltip:
-		Name: Fake Advanced Power Plant
-		GenericName: Advanced Power Plant
+		Name: actor-fapw.name
+		GenericName: actor-fapw.generic-name
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:
@@ -304,15 +304,15 @@ ATEF:
 	Selectable:
 		Bounds: 2048, 2048
 	Tooltip:
-		Name: Fake Allied Tech Center
-		GenericName: Allied Tech Center
+		Name: actor-atef.name
+		GenericName: actor-atef.generic-name
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Buildable:
 		BuildPaletteOrder: 970
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.high
-		Description: Looks like an Allied Tech Center.
+		Description: actor-atef.description
 		Icon: fake-icon
 	Building:
 		Footprint: xx xx ==
@@ -336,8 +336,8 @@ PDOF:
 	Selectable:
 		Bounds: 2048, 2048
 	Tooltip:
-		Name: Fake Chronosphere
-		GenericName: Chronosphere
+		Name: actor-pdof.name
+		GenericName: actor-pdof.generic-name
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Buildable:
@@ -345,7 +345,7 @@ PDOF:
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.unrestricted
 		BuildLimit: 1
-		Description: Looks like a Chronosphere.\nMaximum 1 can be built.
+		Description: actor-pdof.description
 		Icon: fake-icon
 	Building:
 		Footprint: xx xx
@@ -371,8 +371,8 @@ MSLF:
 	Selectable:
 		Bounds: 2048, 1024
 	Tooltip:
-		Name: Fake Missile Silo
-		GenericName: Missile Silo
+		Name: actor-mslf.name
+		GenericName: actor-mslf.generic-name
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Buildable:
@@ -380,7 +380,7 @@ MSLF:
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.unrestricted
 		BuildLimit: 1
-		Description: Looks like a Missile Silo.\nMaximum 1 can be built.
+		Description: actor-mslf.description
 		Icon: fake-icon
 	Building:
 		Footprint: xx
@@ -404,11 +404,11 @@ FACF:
 		BuildPaletteOrder: 1000
 		Queue: Defense
 		Prerequisites: ~structures.france, ~techlevel.medium
-		Description: Looks like a Construction Yard.
+		Description: actor-facf.description
 		Icon: fake-icon
 	Tooltip:
-		Name: Fake Construction Yard
-		GenericName: Construction Yard
+		Name: actor-facf.name
+		GenericName: actor-facf.generic-name
 		GenericVisibility: Enemy
 		GenericStancePrefix: False
 	Building:

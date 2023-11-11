@@ -168,7 +168,7 @@ HQ:
 	Tooltip:
 	-AirstrikePower:
 	Buildable:
-		Description: Provides an overview of the battlefield.\n  Requires power to operate.
+		Description: actor-hq-description
 
 ^CivInfantry:
 	Health:

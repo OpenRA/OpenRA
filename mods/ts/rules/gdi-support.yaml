@@ -4,10 +4,10 @@ GAWALL:
 		Queue: Defense
 		BuildPaletteOrder: 10
 		Prerequisites: ~structures.gdi, ~techlevel.low
-		Description: Stops infantry and blocks enemy fire.\nCan NOT be crushed by tanks.
+		Description: actor-gawall.description
 	-SoundOnDamageTransition:
 	Tooltip:
-		Name: Concrete Wall
+		Name: actor-gawall.name
 	Health:
 		HP: 22500
 	Armor:
@@ -26,7 +26,7 @@ GAGATE_A:
 		BuildPaletteOrder: 30
 		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 	Tooltip:
-		Name: GDI Gate
+		Name: actor-gagate-a-name
 	Replacement:
 		ReplaceableTypes: GDIGate
 
@@ -37,7 +37,7 @@ GAGATE_B:
 		BuildPaletteOrder: 50
 		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 	Tooltip:
-		Name: GDI Gate
+		Name: actor-gagate-b-name
 	Replacement:
 		ReplaceableTypes: GDIGate
 
@@ -56,12 +56,12 @@ GACTWR:
 	Valued:
 		Cost: 200
 	Tooltip:
-		Name: Component Tower
+		Name: actor-gactwr.name
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 70
 		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
-		Description: Modular tower for base defenses.
+		Description: actor-gactwr.description
 	Health:
 		HP: 50000
 	Armor:
@@ -155,19 +155,19 @@ GACTWR.SOCKET:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Component Tower (unupgraded)
+		Name: actor-gactwr-socket-name
 
 GAVULC:
 	Inherits: ^BuildingPlug
 	Valued:
 		Cost: 150
 	Tooltip:
-		Name: Vulcan Tower
+		Name: actor-gavulc.name
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 80
 		Prerequisites: gactwr.socket, gapile, ~structures.gdi, ~techlevel.low
-		Description: Basic base defense.\nDoes not require power to operate.\n  Strong vs Infantry, Light armor\n  Weak vs Aircraft
+		Description: actor-gavulc.description
 	Plug:
 		Type: tower.vulcan
 	Power:
@@ -178,12 +178,12 @@ GAROCK:
 	Valued:
 		Cost: 600
 	Tooltip:
-		Name: RPG Upgrade
+		Name: actor-garock.name
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 90
 		Prerequisites: gactwr.socket, gapile, ~structures.gdi, ~techlevel.high
-		Description: GDI Advanced base defense.\nDoes not require power to operate.\n  Strong vs Armored ground units\n  Weak vs Aircraft
+		Description: actor-garock.description
 	Plug:
 		Type: tower.rocket
 	Power:
@@ -194,12 +194,12 @@ GACSAM:
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: SAM Upgrade
+		Name: actor-gacsam.name
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
 		Prerequisites: gactwr.socket, garadr, ~structures.gdi, ~techlevel.medium
-		Description: GDI Anti-Air base defense.\nDoes not require power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
+		Description: actor-gacsam.description
 	Plug:
 		Type: tower.sam
 	Power:

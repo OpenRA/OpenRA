@@ -204,7 +204,7 @@
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
 	Tooltip:
-		GenericName: Unit
+		GenericName: meta-vehicle-generic-name
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -286,7 +286,7 @@
 		Type: CenterPosition
 		AlwaysVisibleRelationships: None
 	Tooltip:
-		GenericName: Destroyed Unit
+		GenericName: meta-husk-generic-name
 	ScriptTriggers:
 	WithFacingSpriteBody:
 	HitShape:
@@ -320,7 +320,7 @@
 ^AircraftHusk:
 	Inherits: ^Husk
 	Tooltip:
-		GenericName: Unit
+		GenericName: meta-aircrafthusk-generic-name
 	WithShadow:
 	FallsToEarth:
 		MaximumSpinSpeed: 0
@@ -335,7 +335,7 @@
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
 	Tooltip:
-		GenericName: Unit
+		GenericName: meta-infantry-generic-name
 	Huntable:
 	OwnerLostAction:
 		Action: Kill
@@ -409,7 +409,7 @@
 	Inherits@handicaps: ^PlayerHandicaps
 	Interactable:
 	Tooltip:
-		GenericName: Unit
+		GenericName: meta-plane-generic-name
 	OwnerLostAction:
 		Action: Kill
 	AppearsOnRadar:
@@ -433,7 +433,7 @@
 	Inherits@selection: ^SelectableBuilding
 	Inherits@handicaps: ^PlayerHandicaps
 	Tooltip:
-		GenericName: Structure
+		GenericName: meta-building-generic-name
 	Huntable:
 	OwnerLostAction:
 		Action: Kill

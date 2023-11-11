@@ -7,11 +7,11 @@ E3:
 		Queue: Infantry
 		BuildPaletteOrder: 30
 		Prerequisites: ~nahand, ~techlevel.low
-		Description: Anti-tank infantry.\n  Strong vs Vehicles, Aircraft, Buildings\n  Weak vs Infantry
+		Description: actor-e3.description
 	Valued:
 		Cost: 250
 	Tooltip:
-		Name: Rocket Infantry
+		Name: actor-e3.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Voiced:
@@ -45,14 +45,14 @@ CYBORG:
 	Valued:
 		Cost: 650
 	Tooltip:
-		Name: Cyborg Infantry
+		Name: actor-cyborg.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
 		Prerequisites: ~nahand, ~techlevel.medium
-		Description: Cybernetic infantry unit.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
+		Description: actor-cyborg.description
 	Selectable:
 		Bounds: 482, 1870, 0, -603
 		DecorationBounds: 482, 1870, 0, -603
@@ -83,7 +83,7 @@ CYC2:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Cyborg Commando
+		Name: actor-cyc2.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
@@ -91,7 +91,7 @@ CYC2:
 		BuildPaletteOrder: 100
 		Prerequisites: ~nahand, natmpl, ~techlevel.high
 		BuildLimit: 1
-		Description: Elite cybernetic infantry unit.\n  Strong vs Infantry, Vehicles, Buildings\n  Weak vs Aircraft\nMaximum 1 can be trained.
+		Description: actor-cyc2.description
 	Selectable:
 		Bounds: 482, 1930, -30, -724
 		DecorationBounds: 482, 1930, -30, -724
@@ -121,11 +121,11 @@ MHIJACK:
 		BuildPaletteOrder: 80
 		Prerequisites: ~nahand, natmpl, ~techlevel.high
 		BuildLimit: 1
-		Description: Hijacks enemy vehicles.\n  Unarmed
+		Description: actor-mhijack.description
 	Valued:
 		Cost: 1850
 	Tooltip:
-		Name: Mutant Hijacker
+		Name: actor-mhijack.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Voiced:

@@ -1,7 +1,7 @@
 spicebloom.spawnpoint:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: Spice Bloom spawnpoint
+		Name: actor-spicebloom-spawnpoint-name
 	AlwaysVisible:
 	RenderSpritesEditorOnly:
 		Image: spicebloom.editor
@@ -36,7 +36,7 @@ spicebloom:
 	AppearsOnRadar:
 		UseLocation: true
 	Tooltip:
-		Name: Spice Bloom
+		Name: actor-spicebloom-name
 	SpiceBloom:
 		Weapon: SpiceExplosion
 	Explodes:
@@ -72,7 +72,7 @@ sandworm:
 	Inherits@1: ^SpriteActor
 	Interactable:
 	Tooltip:
-		Name: Sandworm
+		Name: actor-sandworm-name
 	Health:
 		HP: 100000
 	HitShape:
@@ -132,7 +132,7 @@ sandworm:
 sietch:
 	Inherits: ^Building
 	Tooltip:
-		Name: Fremen Sietch
+		Name: actor-sietch-name
 	-D2kBuilding:
 	Building:
 		Footprint: xx xx

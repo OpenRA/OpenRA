@@ -32,7 +32,7 @@ TSLA:
 
 GNRL:
 	Tooltip:
-		Name: Officer
+		Name: actor-gnrl-name
 
 C5:
 	-Wanders:

@@ -85,7 +85,7 @@ V19:
 DEMITRI:
 	Inherits: DELPHI
 	Tooltip:
-		Name: Dr. Demitri
+		Name: actor-demitri-name
 	Passenger:
 		CargoType: Demitri
 	RenderSprites:
@@ -120,8 +120,8 @@ PBOX:
 	Valued:
 		Cost: 10000
 	Tooltip:
-		Name: Super Tank
-		GenericName: Super Tank
+		Name: actor-5tnk.name
+		GenericName: actor-5tnk.generic-name
 	Health:
 		HP: 2000000
 	Armor:
@@ -173,7 +173,7 @@ PBOX:
 5TNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Husk (Super Tank)
+		Name: actor-5tnk-husk-name
 	ThrowsParticle@turret:
 		Anim: turret
 	Health:

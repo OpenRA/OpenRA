@@ -5,11 +5,11 @@ GAPOWR:
 		Queue: Building
 		BuildPaletteOrder: 10
 		Prerequisites: ~structures.gdi, ~techlevel.low
-		Description: Provides power for other structures.
+		Description: actor-gapowr.description
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: GDI Power Plant
+		Name: actor-gapowr.name
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -86,19 +86,19 @@ GAPOWR.SOCKET:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: GDI Power Plant socket
+		Name: actor-gapowr-socket-name
 
 GAPOWRUP:
 	Inherits: ^BuildingPlug
 	Valued:
 		Cost: 150
 	Tooltip:
-		Name: Power Turbine
+		Name: actor-gapowrup.name
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 100
 		Prerequisites: gapowr.socket, ~structures.gdi, ~techlevel.medium
-		Description: Provides extra power generation.
+		Description: actor-gapowrup.description
 	Plug:
 		Type: powrup
 	Power:
@@ -112,11 +112,11 @@ GAPILE:
 		Queue: Building
 		BuildPaletteOrder: 20
 		Prerequisites: anypower, ~structures.gdi, ~techlevel.low
-		Description: Produces infantry.
+		Description: actor-gapile.description
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: GDI Barracks
+		Name: actor-gapile.name
 	ProvidesPrerequisite:
 		Prerequisite: barracks
 	Building:
@@ -208,14 +208,14 @@ GAWEAP:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: GDI War Factory
+		Name: actor-gaweap.name
 	ProvidesPrerequisite:
 		Prerequisite: factory
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
 		Prerequisites: proc, ~structures.gdi, ~techlevel.low
-		Description: Produces vehicles.
+		Description: actor-gaweap.description
 	Building:
 		Footprint: xxX+ xxX+ xxX+
 		Dimensions: 4,3
@@ -286,12 +286,12 @@ GAHPAD:
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Helipad
+		Name: actor-gahpad.name
 	Buildable:
 		BuildPaletteOrder: 80
 		Queue: Building
 		Prerequisites: garadr, ~structures.gdi, ~techlevel.medium
-		Description: Produces, rearms and\nrepairs helicopters.
+		Description: actor-gahpad.description
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -351,12 +351,12 @@ GADEPT:
 	Valued:
 		Cost: 1200
 	Tooltip:
-		Name: Service Depot
+		Name: actor-gadept.name
 	Buildable:
 		BuildPaletteOrder: 70
 		Prerequisites: factory, ~structures.gdi, ~techlevel.medium
 		Queue: Building
-		Description: Repairs or sells vehicles and aircraft.
+		Description: actor-gadept.description
 	Building:
 		Footprint: =+= x++ x+=
 		Dimensions: 3,3
@@ -445,11 +445,11 @@ GARADR:
 		Queue: Building
 		BuildPaletteOrder: 40
 		Prerequisites: proc, ~structures.gdi, ~techlevel.low
-		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
+		Description: actor-garadr.description
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: GDI Radar
+		Name: actor-garadr.name
 	ProvidesPrerequisite:
 		Prerequisite: radar
 	Building:
@@ -489,11 +489,11 @@ GATECH:
 		Queue: Building
 		BuildPaletteOrder: 90
 		Prerequisites: gaweap, garadr, ~structures.gdi, ~techlevel.medium
-		Description: Provides access to advanced GDI technologies.
+		Description: actor-gatech.description
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: GDI Tech Center
+		Name: actor-gatech.name
 	ProvidesPrerequisite:
 		Prerequisite: tech
 	Building:
@@ -528,12 +528,12 @@ GAPLUG:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: GDI Upgrade Center
+		Name: actor-gaplug.name
 	Buildable:
 		BuildPaletteOrder: 110
 		Prerequisites: proc, gatech, ~structures.gdi, ~techlevel.superweapons
 		Queue: Building
-		Description: Can be upgraded for additional technology.
+		Description: actor-gaplug.description
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 2,3
@@ -705,25 +705,25 @@ GAPLUG.SOCKET.IONCANNON:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: GDI Upgrade Center socket
+		Name: actor-gaplug-socket-ioncannon-name
 
 GAPLUG.SOCKET.HUNTERSEEKER:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: GDI Upgrade Center socket
+		Name: actor-gaplug-socket-hunterseeker-name
 
 GAPLUG2:
 	Inherits: ^BuildingPlug
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Seeker Control
+		Name: actor-gaplug2.name
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 110
 		Prerequisites: gaplug.socket.hunterseeker, gatech, gaweap, ~structures.gdi, ~techlevel.superweapons
-		Description: Enables use of the hunter-seeker droid.
+		Description: actor-gaplug2.description
 	Plug:
 		Type: plug.hunterseeker
 	Power:
@@ -734,12 +734,12 @@ GAPLUG3:
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Ion Cannon Uplink
+		Name: actor-gaplug3.name
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 120
 		Prerequisites: gaplug.socket.ioncannon, gatech, ~structures.gdi, ~techlevel.superweapons
-		Description: Enables use of the Ion Cannon.
+		Description: actor-gaplug3.description
 	Plug:
 		Type: plug.ioncannon
 	Power:
@@ -750,12 +750,12 @@ GAPLUG4:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Drop Pod Node
+		Name: actor-gaplug4.name
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 180
 		Prerequisites: gaplug, gatech, ~structures.gdi, ~techlevel.superweapons
-		Description: Enables use of the Drop Pod Reinforcements.
+		Description: actor-gaplug4.description
 	Plug:
 		Type: plug.droppod
 	Power:

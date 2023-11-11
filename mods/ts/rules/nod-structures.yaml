@@ -5,11 +5,11 @@ NAPOWR:
 		Queue: Building
 		BuildPaletteOrder: 10
 		Prerequisites: ~structures.nod, ~techlevel.low
-		Description: Provides power for other structures.
+		Description: actor-napowr.description
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Nod Power Plant
+		Name: actor-napowr.name
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -48,11 +48,11 @@ NAAPWR:
 		Queue: Building
 		BuildPaletteOrder: 70
 		Prerequisites: factory, ~structures.nod, ~techlevel.medium
-		Description: Provides twice as much power as\nthe normal Power Plant.
+		Description: actor-naapwr.description
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Advanced Power Plant
+		Name: actor-naapwr.name
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -93,11 +93,11 @@ NAHAND:
 		Queue: Building
 		BuildPaletteOrder: 20
 		Prerequisites: anypower, ~structures.nod, ~techlevel.low
-		Description: Produces infantry.
+		Description: actor-nahand.description
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Hand of Nod
+		Name: actor-nahand.name
 	ProvidesPrerequisite:
 		Prerequisite: barracks
 	Building:
@@ -187,14 +187,14 @@ NAWEAP:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Nod War Factory
+		Name: actor-naweap.name
 	ProvidesPrerequisite:
 		Prerequisite: factory
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
 		Prerequisites: proc, ~structures.nod, ~techlevel.low
-		Description: Produces vehicles.
+		Description: actor-naweap.description
 	Building:
 		Footprint: xxX+ xxX+ xxX+
 		Dimensions: 4,3
@@ -250,12 +250,12 @@ NAHPAD:
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Helipad
+		Name: actor-nahpad.name
 	Buildable:
 		BuildPaletteOrder: 80
 		Queue: Building
 		Prerequisites: naradr, ~structures.nod, ~techlevel.medium
-		Description: Produces, rearms and\nrepairs helicopters.
+		Description: actor-nahpad.description
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -319,11 +319,11 @@ NARADR:
 		Queue: Building
 		BuildPaletteOrder: 40
 		Prerequisites: proc, ~structures.nod, ~techlevel.low
-		Description: Provides an overview of the battlefield.\nCan detect cloaked units.\nRequires power to operate.
+		Description: actor-naradr.description
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Nod Radar
+		Name: actor-naradr.name
 	ProvidesPrerequisite:
 		Prerequisite: radar
 	Building:
@@ -363,11 +363,11 @@ NATECH:
 		Queue: Building
 		BuildPaletteOrder: 90
 		Prerequisites: naweap, naradr, ~structures.nod, ~techlevel.medium
-		Description: Provides access to advanced Nod technologies.
+		Description: actor-natech.description
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Nod Tech Center
+		Name: actor-natech.name
 	ProvidesPrerequisite:
 		Prerequisite: tech
 	Building:
@@ -402,12 +402,12 @@ NASTLH:
 	Valued:
 		Cost: 2500
 	Tooltip:
-		Name: Stealth Generator
+		Name: actor-nastlh.name
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 100
 		Prerequisites: proc, natech, ~structures.nod, ~techlevel.high
-		Description: Generates a cloaking field\nto hide your forces from the enemy.
+		Description: actor-nastlh.description
 	Building:
 		Footprint: xxx XXX
 		Dimensions: 3,2
@@ -444,12 +444,12 @@ NATMPL:
 		Queue: Building
 		BuildPaletteOrder: 110
 		Prerequisites: natech, ~structures.nod, ~techlevel.high
-		Description: Provides access to advanced Nod technologies.
+		Description: actor-natmpl.description
 	ProvidesPrerequisite@buildingname:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Temple of Nod
+		Name: actor-natmpl.name
 	Building:
 		Footprint: xxxx xxxx xxxX
 		Dimensions: 4,3
@@ -499,11 +499,11 @@ NAMISL:
 		BuildPaletteOrder: 120
 		Prerequisites: natech, ~structures.nod, ~techlevel.superweapons
 		BuildLimit: 1
-		Description: Launches a devastating missile\nat a target location.\nRequires power to operate.\nMaximum 1 can be built.
+		Description: actor-namisl.description
 	Valued:
 		Cost: 1300
 	Tooltip:
-		Name: Nod Missile Silo
+		Name: actor-namisl.name
 	ProvidesPrerequisite:
 		Prerequisite: tech
 	Building:
@@ -573,13 +573,13 @@ NAWAST:
 	Valued:
 		Cost: 1600
 	Tooltip:
-		Name: Waste Refinery
+		Name: actor-nawast.name
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 130
 		Prerequisites: namisl, ~structures.nod, ~techlevel.superweapons
 		BuildLimit: 1
-		Description: Processes Veins\ninto useable resources.\nMaximum 1 can be built.
+		Description: actor-nawast.description
 	Building:
 		Footprint: Xx+ xx+ Xx+
 		Dimensions: 3,3

@@ -6,11 +6,11 @@ light_inf:
 		BuildPaletteOrder: 10
 		BuildDuration: 62
 		BuildDurationModifier: 100
-		Description: General-purpose infantry\n  Strong vs Infantry\n  Weak vs Vehicles, Artillery
+		Description: actor-light-inf.description
 	Valued:
 		Cost: 50
 	Tooltip:
-		Name: Light Infantry
+		Name: actor-light-inf.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -20,7 +20,7 @@ light_inf:
 	Armament:
 		Weapon: LMG
 	Encyclopedia:
-		Description: Light Infantry are lightly armored foot soldiers, equipped with 9mm RP assault rifles. Light Infantry are effective against other infantry and lightly armored vehicles.\n\nLight Infantry are resistant to missiles and large-caliber guns, but very vulnerable to high-explosives, fire and bullet weapons.
+		Description: actor-light-inf.encyclopedia
 		Order: 0
 		Category: Units
 	WithInfantryBody:
@@ -35,11 +35,11 @@ engineer:
 		Prerequisites: upgrade.barracks, ~techlevel.medium
 		BuildDuration: 125
 		BuildDurationModifier: 100
-		Description: Infiltrates and captures enemy structures\n  Strong vs Buildings\n  Weak vs Everything
+		Description: actor-engineer.description
 	Valued:
 		Cost: 400
 	Tooltip:
-		Name: Engineer
+		Name: actor-engineer.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -53,7 +53,7 @@ engineer:
 		CaptureTypes: building
 		PlayerExperience: 10
 	Encyclopedia:
-		Description: Engineers can be used to capture enemy buildings.\n\nEngineers are resistant to anti-tank weaponry but very vulnerable to high-explosives, fire and bullet weapons.
+		Description: actor-engineer.encyclopedia
 		Order: 30
 		Category: Units
 	-RevealOnFire:
@@ -70,11 +70,11 @@ trooper:
 		Prerequisites: upgrade.barracks, ~techlevel.medium
 		BuildDuration: 85
 		BuildDurationModifier: 100
-		Description: Anti-tank infantry\n  Strong vs Tanks\n  Weak vs Infantry, Artillery
+		Description: actor-trooper.description
 	Valued:
 		Cost: 90
 	Tooltip:
-		Name: Trooper
+		Name: actor-trooper.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -87,7 +87,7 @@ trooper:
 		Weapon: Bazooka
 		LocalOffset: 128,0,256
 	Encyclopedia:
-		Description: Armed with missile launchers, Troopers fire wire guided armor-piercing warheads. These units are particularly effective against vehicles (especially armored ones) and buildings. However, this unit is largely useless against infantry.\n\nTroopers are resistant to anti-tank weaponry but very vulnerable to high-explosives, fire and bullet weapons.
+		Description: actor-trooper.encyclopedia
 		Order: 10
 		Category: Units
 	TakeCover:
@@ -104,11 +104,11 @@ thumper:
 		Prerequisites: upgrade.barracks, ~techlevel.high
 		BuildDuration: 125
 		BuildDurationModifier: 100
-		Description: Attracts nearby worms when deployed\n  Unarmed
+		Description: actor-thumper.description
 	Valued:
 		Cost: 200
 	Tooltip:
-		Name: Thumper Infantry
+		Name: actor-thumper.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -125,7 +125,7 @@ thumper:
 		Facing: 512
 		AllowedTerrainTypes: Sand, Spice, Dune, SpiceSand
 	Encyclopedia:
-		Description: Deploys a noisy hammering device which will attract sand worms to this area.
+		Description: actor-thumper.encyclopedia
 		Order: 40
 		Category: Units
 	WithInfantryBody:
@@ -152,14 +152,14 @@ fremen:
 	Inherits: ^Infantry
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Tooltip:
-		Name: Fremen
+		Name: actor-fremen.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 80
 		Prerequisites: ~disabled
-		Description: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery\n  Special Ability: Invisibility
+		Description: actor-fremen.description
 	Mobile:
 		Speed: 43
 	Valued:
@@ -177,7 +177,7 @@ fremen:
 	Armament@SECONDARY:
 		Weapon: Fremen_L
 	Encyclopedia:
-		Description: Fremen are the native desert warriors of Dune. Fremen ground units carry 10mm Assault Rifles and Rockets. Their firepower is equally effective against infantry and vehicles.\n\nFremen units are very vulnerable to high-explosive and bullet weapons.
+		Description: actor-fremen.encyclopedia
 		Order: 70
 		Category: Units
 	WithInfantryBody:
@@ -204,11 +204,11 @@ grenadier:
 		Prerequisites: ~barracks.atreides, upgrade.barracks, high_tech_factory, ~techlevel.medium
 		BuildDuration: 94
 		BuildDurationModifier: 100
-		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
+		Description: actor-grenadier.description
 	Valued:
 		Cost: 80
 	Tooltip:
-		Name: Grenadier
+		Name: actor-grenadier.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -220,7 +220,7 @@ grenadier:
 		LocalOffset: 192,0,224
 		FireDelay: 3
 	Encyclopedia:
-		Description: Grenadiers are an infantry artillery unit which are strong against buildings. They have a chance to explode on death, so don't group them together.
+		Description: actor-grenadier.encyclopedia
 		Order: 50
 		Category: Units
 	TakeCover:
@@ -240,11 +240,11 @@ sardaukar:
 		Prerequisites: ~palace.sardaukar, ~techlevel.high
 		BuildDuration: 94
 		BuildDurationModifier: 100
-		Description: Elite assault infantry of Corrino\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
+		Description: actor-sardaukar.description
 	Valued:
 		Cost: 120
 	Tooltip:
-		Name: Sardaukar
+		Name: actor-sardaukar.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -260,7 +260,7 @@ sardaukar:
 	Armament@SECONDARY:
 		Weapon: M_HMG
 	Encyclopedia:
-		Description: These powerful heavy troopers have a machine gun that's effective against infantry, and a rocket launcher for vehicles.
+		Description: actor-sardaukar.encyclopedia
 		Order: 60
 		Category: Units
 	Voiced:
@@ -278,7 +278,7 @@ mpsardaukar:
 		Prerequisites: ~barracks.harkonnen, upgrade.barracks, high_tech_factory, ~techlevel.medium
 		BuildDuration: 160
 		BuildDurationModifier: 100
-		Description: Elite assault infantry of Harkonnen\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
+		Description: actor-mpsardaukar-description
 	Valued:
 		Cost: 200
 	Armament@PRIMARY:
@@ -296,17 +296,17 @@ saboteur:
 		Queue: Infantry
 		BuildPaletteOrder: 100
 		Prerequisites: ~disabled
-		Description: Sneaky infantry, armed with explosives.\nCan be deployed to become invisible for a limited time.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
+		Description: actor-saboteur.description
 	Valued:
 		Cost: 300 ## actually 0, but spawns from support power at Palace
 	Tooltip:
-		Name: Saboteur
+		Name: actor-saboteur.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
 		HP: 4000
 	Encyclopedia:
-		Description: The Saboteur is a special military unit acquired by House Ordos. A single Saboteur can destroy any enemy building once he moves into it, though also destroys himself! A Saboteur can be stealthed by deploying itself.\n\nThe Saboteur is resistant to anti-tank weaponry, but very vulnerable to high-explosives, fire, and bullet weapons.
+		Description: actor-saboteur.encyclopedia
 		Order: 80
 		Category: Units
 	Mobile:
@@ -343,7 +343,7 @@ nsfremen:
 	Buildable:
 		BuildPaletteOrder: 90
 		Prerequisites: ~disabled
-		Description: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
+		Description: actor-nsfremen-description
 	RenderSprites:
 		Image: fremen
 	-Cloak:

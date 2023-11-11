@@ -89,7 +89,7 @@ C10:
 	RenderSprites:
 		Image: C1
 	Tooltip:
-		Name: Scientist
+		Name: actor-c10-name
 	WithInfantryBody:
 		Palette: civilian10
 	WithDeathAnimation:
@@ -103,7 +103,7 @@ TECN:
 	Inherits@1: ^CivInfantry
 	Inherits@2: ^ArmedCivilian
 	Tooltip:
-		Name: Technician
+		Name: actor-tecn-name
 	Selectable:
 		Class: Technician
 	RenderSprites:
@@ -113,7 +113,7 @@ TECN2:
 	Inherits@1: ^CivInfantry
 	Inherits@2: ^ArmedCivilian
 	Tooltip:
-		Name: Technician
+		Name: actor-tecn2-name
 	Selectable:
 		Class: Technician
 	RenderSprites:
@@ -140,7 +140,7 @@ FCOM:
 	Armor:
 		Type: Wood
 	Tooltip:
-		Name: Forward Command
+		Name: actor-fcom-name
 	TooltipDescription@ally:
 		Description: Provides buildable area.
 		ValidRelationships: Ally
@@ -193,7 +193,7 @@ HOSP:
 	CapturableProgressBlink:
 	InstantlyRepairable:
 	Tooltip:
-		Name: Hospital
+		Name: actor-hosp-name
 	TooltipDescription@ally:
 		Description: Provides infantry with self-healing.
 		ValidRelationships: Ally
@@ -218,7 +218,7 @@ V01:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Tooltip:
-		Name: Church
+		Name: actor-v01-name
 	RevealsShroud:
 		Range: 10c0
 	MapEditorData:
@@ -355,7 +355,7 @@ V19:
 	RenderSprites:
 		Palette: player
 	Tooltip:
-		Name: Oil Pump
+		Name: actor-v19-name
 	SpawnActorOnDeath:
 		Actor: V19.Husk
 	Targetable:
@@ -366,7 +366,7 @@ V19.Husk:
 	RenderSprites:
 		Palette: player
 	Tooltip:
-		Name: Husk (Oil Pump)
+		Name: actor-v19-husk-name
 	WithSpriteBody:
 	WithIdleOverlay:
 		StartSequence: fire-start
@@ -388,7 +388,7 @@ BARL:
 	Explodes:
 		Weapon: BarrelExplode
 	Tooltip:
-		Name: Explosive Barrel
+		Name: actor-barl-name
 		ShowOwnerRow: False
 	Armor:
 		Type: None
@@ -410,7 +410,7 @@ BRL3:
 	Explodes:
 		Weapon: BarrelExplode
 	Tooltip:
-		Name: Explosive Barrel
+		Name: actor-brl3-name
 		ShowOwnerRow: False
 	Armor:
 		Type: None
@@ -459,7 +459,7 @@ MISS:
 	Armor:
 		Type: Wood
 	Tooltip:
-		Name: Communications Center
+		Name: actor-miss-name
 	TooltipDescription@ally:
 		Description: Provides range of vision.
 		ValidRelationships: Ally
@@ -500,7 +500,7 @@ BIO:
 	CapturableProgressBar:
 	InstantlyRepairable:
 	Tooltip:
-		Name: Biological Lab
+		Name: actor-bio-name
 	TooltipDescription@ally:
 		Description: Provides prerequisite for Bio-Lab units.
 		ValidRelationships: Ally
@@ -544,7 +544,7 @@ OILB:
 		Amount: 100
 		RequiresCondition: enabled
 	Tooltip:
-		Name: Oil Derrick
+		Name: actor-oilb-name
 	TooltipDescription@ally:
 		Description: Provides additional funds.
 		ValidRelationships: Ally
@@ -813,7 +813,7 @@ V25:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Tooltip:
-		Name: Church
+		Name: actor-v25-name
 	RevealsShroud:
 		Range: 10c0
 	HitShape:
@@ -925,7 +925,7 @@ LHUS:
 	Selectable:
 		Bounds: 1024, 2048, 0, -682
 	Tooltip:
-		Name: Lighthouse
+		Name: actor-lhus-name
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -938,7 +938,7 @@ WINDMILL:
 		Bounds: 1024, 1024, 0, -597
 		DecorationBounds: 1536, 1536, 0, -597
 	Tooltip:
-		Name: Windmill
+		Name: actor-windmill-name
 	Building:
 		Footprint: x
 		Dimensions: 1,1

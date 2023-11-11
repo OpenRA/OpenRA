@@ -6,7 +6,7 @@ FACT:
 	Valued:
 		Cost: 3000
 	Tooltip:
-		Name: Construction Yard
+		Name: actor-fact.name
 	Building:
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
@@ -122,7 +122,7 @@ FACT:
 		Amount: 0
 	ProvidesPrerequisite@buildingname:
 	Buildable:
-		Description: Builds structures
+		Description: actor-fact.description
 
 FACT.GDI:
 	Inherits: FACT
@@ -134,7 +134,7 @@ FACT.GDI:
 		Prerequisites: ~disabled
 		ForceFaction: gdi
 	Tooltip:
-		Name: Construction Yard (GDI)
+		Name: actor-fact-gdi-name
 
 FACT.NOD:
 	Inherits: FACT
@@ -146,7 +146,7 @@ FACT.NOD:
 		Prerequisites: ~disabled
 		ForceFaction: nod
 	Tooltip:
-		Name: Construction Yard (Nod)
+		Name: actor-fact-nod-name
 
 NUKE:
 	Inherits: ^BaseBuilding
@@ -158,14 +158,14 @@ NUKE:
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Power Plant
+		Name: actor-nuke.name
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: fact
 		Queue: Building.GDI, Building.Nod
-		Description: Generates power
+		Description: actor-nuke.description
 	Building:
 		Footprint: xX xx ==
 		Dimensions: 2,3
@@ -189,14 +189,14 @@ NUK2:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Advanced Power Plant
+		Name: actor-nuk2.name
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Buildable:
 		BuildPaletteOrder: 80
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Building.GDI, Building.Nod
-		Description: Provides more power, cheaper than the\nstandard Power Plant
+		Description: actor-nuk2.description
 	Building:
 		Footprint: xX xx ==
 		Dimensions: 2,3
@@ -224,12 +224,12 @@ PROC:
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Tiberium Refinery
+		Name: actor-proc.name
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: anypower
 		Queue: Building.GDI, Building.Nod
-		Description: Processes raw Tiberium\ninto useable resources
+		Description: actor-proc.description
 	Building:
 		Footprint: _x_ xxx +++ ===
 		Dimensions: 3,4
@@ -272,12 +272,12 @@ SILO:
 	Valued:
 		Cost: 100
 	Tooltip:
-		Name: Tiberium Silo
+		Name: actor-silo.name
 	Buildable:
 		BuildPaletteOrder: 35
 		Prerequisites: proc
 		Queue: Defence.GDI, Defence.Nod
-		Description: Stores processed Tiberium
+		Description: actor-silo.description
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -314,14 +314,14 @@ PYLE:
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Barracks
+		Name: actor-pyle.name
 	ProvidesPrerequisite:
 		Prerequisite: barracks
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: anypower
 		Queue: Building.GDI
-		Description: Trains infantry
+		Description: actor-pyle.description
 	Building:
 		Footprint: xx ++ ==
 		Dimensions: 2,3
@@ -375,14 +375,14 @@ HAND:
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Hand of Nod
+		Name: actor-hand.name
 	ProvidesPrerequisite:
 		Prerequisite: barracks
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: anypower
 		Queue: Building.Nod
-		Description: Trains infantry
+		Description: actor-hand.description
 	Building:
 		Footprint: xx xx ==
 		Dimensions: 2,3
@@ -439,14 +439,14 @@ AFLD:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Airstrip
+		Name: actor-afld.name
 	ProvidesPrerequisite:
 		Prerequisite: vehicleproduction
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: proc
 		Queue: Building.Nod
-		Description: Provides a dropzone\nfor vehicle reinforcements
+		Description: actor-afld.description
 	Building:
 		Footprint: XXX+ xxx+ ====
 		Dimensions: 4,3
@@ -501,14 +501,14 @@ WEAP:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Weapons Factory
+		Name: actor-weap.name
 	ProvidesPrerequisite:
 		Prerequisite: vehicleproduction
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: proc
 		Queue: Building.GDI
-		Description: Produces vehicles
+		Description: actor-weap.description
 	Building:
 		Footprint: xxx +++ ===
 		Dimensions: 3,3
@@ -568,12 +568,12 @@ HPAD:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Helipad
+		Name: actor-hpad.name
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: proc
 		Queue: Building.GDI, Building.Nod
-		Description: Produces and repairs helicopters
+		Description: actor-hpad.description
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -646,14 +646,14 @@ HQ:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Communications Center
+		Name: actor-hq.name
 	ProvidesPrerequisite:
 		Prerequisite: anyhq
 	Buildable:
 		BuildPaletteOrder: 70
 		Prerequisites: proc, ~techlevel.medium
 		Queue: Building.GDI, Building.Nod
-		Description: Provides radar and Air Strike support power.\nUnlocks higher-tech units and buildings.\nRequires power to operate.
+		Description: actor-hq.description
 	Building:
 		Footprint: X_ xx ==
 		Dimensions: 2,3
@@ -716,12 +716,12 @@ FIX:
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Repair Facility
+		Name: actor-fix.name
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: vehicleproduction
 		Queue: Building.GDI, Building.Nod
-		Description: Repairs vehicles
+		Description: actor-fix.description
 	Building:
 		Footprint: _+_ +++ _+_
 		Dimensions: 3,3
@@ -761,14 +761,14 @@ EYE:
 	Valued:
 		Cost: 1800
 	Tooltip:
-		Name: Advanced Communications Center
+		Name: actor-eye.name
 	ProvidesPrerequisite:
 		Prerequisite: anyhq
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: anyhq, ~techlevel.high
 		Queue: Building.GDI
-		Description: Provides radar and Orbital Ion Cannon support power.\nUnlocks Mammoth Tank and Commando.\nRequires power to operate.
+		Description: actor-eye.description
 	Building:
 		Footprint: X_ xx ==
 		Dimensions: 2,3
@@ -824,14 +824,14 @@ TMPL:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Temple of Nod
+		Name: actor-tmpl.name
 	ProvidesPrerequisite:
 		Prerequisite: anyhq
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: anyhq, ~techlevel.high
 		Queue: Building.Nod
-		Description: Provides Nuclear Strike support power.\nUnlocks Stealth Tank, Chem. Warrior and Obelisk of Light.\nRequires power to operate.
+		Description: actor-tmpl.description
 	Building:
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
@@ -897,13 +897,13 @@ GUN:
 	Valued:
 		Cost: 600
 	Tooltip:
-		Name: Turret
+		Name: actor-gun.name
 	Buildable:
 		BuildPaletteOrder: 45
 		Prerequisites: barracks
 		Queue: Defence.GDI, Defence.Nod
 		BuildDuration: 960
-		Description: Basic Anti-Tank base defense.\n  Strong vs Tanks, vehicles\n  Weak vs Infantry
+		Description: actor-gun.description
 	Building:
 	Health:
 		HP: 41000
@@ -952,13 +952,13 @@ SAM:
 	Valued:
 		Cost: 650
 	Tooltip:
-		Name: SAM Site
+		Name: actor-sam.name
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: hand
 		Queue: Defence.Nod
 		BuildDuration: 1130
-		Description: Anti-Aircraft base defense.\n  Strong vs Aircraft\n  Cannot target Ground units.
+		Description: actor-sam.description
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -998,13 +998,13 @@ OBLI:
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Obelisk of Light
+		Name: actor-obli.name
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: tmpl, ~techlevel.high
 		Queue: Defence.Nod
 		BuildDuration: 2080
-		Description: Advanced base defense.\nRequires power to operate.\n  Strong vs all Ground units\n  Cannot target Aircraft
+		Description: actor-obli.description
 	Selectable:
 		Bounds: 1024, 1024
 		DecorationBounds: 938, 1877, 0, -426
@@ -1045,13 +1045,13 @@ GTWR:
 	Valued:
 		Cost: 600
 	Tooltip:
-		Name: Guard Tower
+		Name: actor-gtwr.name
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: barracks
 		Queue: Defence.GDI, Defence.Nod
 		BuildDuration: 960
-		Description: Basic defensive structure.\n  Strong vs Infantry\n  Weak vs Tanks
+		Description: actor-gtwr.description
 	Building:
 	Health:
 		HP: 40000
@@ -1084,13 +1084,13 @@ ATWR:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Advanced Guard Tower
+		Name: actor-atwr.name
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Defence.GDI
 		BuildDuration: 1920
-		Description: All-purpose defensive structure.\n  Strong vs Aircraft, Infantry\n  Weak vs Tanks
+		Description: actor-atwr.description
 	Selectable:
 		Bounds: 1024, 1024
 		DecorationBounds: 938, 2048, 0, -512
@@ -1134,12 +1134,12 @@ SBAG:
 	CustomSellValue:
 		Value: 0
 	Tooltip:
-		Name: Sandbag Barrier
+		Name: actor-sbag.name
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: fact
 		Queue: Defence.GDI
-		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
+		Description: actor-sbag.description
 	Armor:
 		Type: Light
 	LineBuild:
@@ -1156,12 +1156,12 @@ CYCL:
 	CustomSellValue:
 		Value: 0
 	Tooltip:
-		Name: Chain Link Barrier
+		Name: actor-cycl.name
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: fact
 		Queue: Defence.Nod
-		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
+		Description: actor-cycl.description
 	Armor:
 		Type: Light
 	LineBuild:
@@ -1178,13 +1178,13 @@ BRIK:
 	CustomSellValue:
 		Value: 0
 	Tooltip:
-		Name: Concrete Barrier
+		Name: actor-brik.name
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: vehicleproduction
 		Queue: Defence.GDI, Defence.Nod
 		BuildDuration: 230
-		Description: Stops infantry and most tanks.\nBlocks some projectiles.
+		Description: actor-brik.description
 	Health:
 		HP: 20000
 	Armor:
@@ -1204,22 +1204,22 @@ BARRACKS:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Infantry Production
+		Name: actor-barracks-name
 
 VEHICLEPRODUCTION:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Vehicle Production
+		Name: actor-vehicleproduction-name
 
 ANYPOWER:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Any Power Generation
+		Name: actor-anypower-name
 
 ANYHQ:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: A Communications Center
+		Name: actor-anyhq-name

@@ -7,11 +7,11 @@ mcv:
 		BuildPaletteOrder: 110
 		BuildDuration: 750
 		BuildDurationModifier: 100
-		Description: Deploys into another Construction Yard\n  Unarmed
+		Description: actor-mcv.description
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Mobile Construction Vehicle
+		Name: actor-mcv.name
 	Selectable:
 		Class: mcv
 		DecorationBounds: 1344, 1344
@@ -20,7 +20,7 @@ mcv:
 	Armor:
 		Type: light
 	Encyclopedia:
-		Description: The Mobile Construction Vehicle must be driven to a suitable deployment area. After locating an appropriate area of rock, the MCV can be transformed into a Construction Yard.\n\nMCVs are resistant to bullets and light-explosives. They are vulnerable to missiles and high-caliber guns.
+		Description: actor-mcv.encyclopedia
 		Order: 180
 		Category: Units
 	Mobile:
@@ -61,11 +61,11 @@ harvester:
 		BuildPaletteOrder: 10
 		BuildDuration: 625
 		BuildDurationModifier: 100
-		Description: Collects Spice for processing\n  Unarmed
+		Description: actor-harvester.description
 	Valued:
 		Cost: 1200
 	Tooltip:
-		Name: Spice Harvester
+		Name: actor-harvester.name
 	Selectable:
 		Class: harvester
 		DecorationBounds: 1344, 1344
@@ -85,7 +85,7 @@ harvester:
 	Armor:
 		Type: harvester
 	Encyclopedia:
-		Description: Harvesters are resistant to bullets, and to some degree, high-explosives. These units are vulnerable to missiles and high-caliber guns.\n\nA Harvester is included with a Refinery.
+		Description: actor-harvester.encyclopedia
 		Order: 130
 		Category: Units
 	Mobile:
@@ -125,11 +125,11 @@ trike:
 		Prerequisites: ~light.trike
 		BuildDuration: 225
 		BuildDurationModifier: 100
-		Description: Fast scout\n  Strong vs Infantry\n  Weak vs Tanks
+		Description: actor-trike.description
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Trike
+		Name: actor-trike.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Selectable:
@@ -139,7 +139,7 @@ trike:
 	Armor:
 		Type: wood
 	Encyclopedia:
-		Description: Trikes are lightly armored, three-wheeled vehicles equipped with heavy machine guns, effective against infantry and lightly armored vehicles.\n\nTrikes are vulnerable to most weapons, though high-caliber guns are slightly less effective against them.
+		Description: actor-trike.encyclopedia
 		Order: 90
 		Category: Units
 	Mobile:
@@ -173,11 +173,11 @@ quad:
 		BuildPaletteOrder: 20
 		BuildDuration: 321
 		BuildDurationModifier: 100
-		Description: Missile Scout\n  Strong vs Vehicles\n  Weak vs Infantry
+		Description: actor-quad.description
 	Valued:
 		Cost: 400
 	Tooltip:
-		Name: Missile Quad
+		Name: actor-quad.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -193,7 +193,7 @@ quad:
 		Weapon: Rocket
 		LocalOffset: 128,64,64, 128,-64,64
 	Encyclopedia:
-		Description: Stronger than the Trike in both armor and firepower, the Quad is a four-wheeled vehicle firing armor-piercing rockets. The Quad is effective against most vehicles.\n\nQuads are resistant to bullets and explosives, to a lesser degree. However, Quads are vulnerable to missiles and high-caliber guns.
+		Description: actor-quad.encyclopedia
 		Order: 110
 		Category: Units
 	AttackFrontal:
@@ -216,11 +216,11 @@ siege_tank:
 		BuildPaletteOrder: 50
 		BuildDuration: 375
 		BuildDurationModifier: 100
-		Description: Siege Artillery\n  Strong vs Infantry, Buildings\n  Weak vs Tanks
+		Description: actor-siege-tank.description
 	Valued:
 		Cost: 700
 	Tooltip:
-		Name: Siege Tank
+		Name: actor-siege-tank.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -228,7 +228,7 @@ siege_tank:
 	Armor:
 		Type: light
 	Encyclopedia:
-		Description: Siege Tanks are very effective against infantry and lightly armored vehicles - but very weak against heavily armored targets. They fire over a long range.\n\nSiege Tanks are resistant to bullets, and to some degree, explosives. These units are vulnerable to missiles and high-caliber guns.
+		Description: actor-siege-tank.encyclopedia
 		Order: 170
 		Category: Units
 	Mobile:
@@ -268,7 +268,7 @@ missile_tank:
 	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetAllAssaultMove
 	Tooltip:
-		Name: Missile Tank
+		Name: actor-missile-tank.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
@@ -277,7 +277,7 @@ missile_tank:
 		BuildPaletteOrder: 60
 		BuildDuration: 512
 		BuildDurationModifier: 100
-		Description: Rocket Artillery\n  Strong vs Vehicles, Buildings, Aircraft\n  Weak vs Infantry
+		Description: actor-missile-tank.description
 	Valued:
 		Cost: 900
 	Mobile:
@@ -288,7 +288,7 @@ missile_tank:
 	Armor:
 		Type: wood
 	Encyclopedia:
-		Description: The Missile Tank is anti-aircraft capable and effective against most targets, except infantry units.\n\nMissile Tanks are vulnerable to most weapons, though high-caliber guns are slightly less effective.
+		Description: actor-missile-tank.encyclopedia
 		Order: 190
 		Category: Units
 	RevealsShroud:
@@ -322,11 +322,11 @@ sonic_tank:
 		Prerequisites: ~heavy.atreides, research_centre, ~techlevel.high
 		BuildDuration: 562
 		BuildDurationModifier: 100
-		Description: Fires sonic shocks\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
+		Description: actor-sonic-tank.description
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Sonic Tank
+		Name: actor-sonic-tank.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -342,7 +342,7 @@ sonic_tank:
 		Weapon: Sound
 		LocalOffset: 600,0,427
 	Encyclopedia:
-		Description: The Sonic Tank is most effective against infantry and lightly armored vehicles - but weaker against armored targets.\n\nThe Sonic Tank will damage all units in its firing path.\n\nThey are very resistant to bullets and small-explosives, but vulnerable to missiles and high-caliber guns.
+		Description: actor-sonic-tank.encyclopedia
 		Order: 200
 		Category: Units
 	AttackFrontal:
@@ -367,11 +367,11 @@ devastator:
 		Prerequisites: ~heavy.harkonnen, research_centre, ~techlevel.high
 		BuildDuration: 625
 		BuildDurationModifier: 100
-		Description: Super Heavy Tank\n  Strong vs Tanks\n  Weak vs Artillery
+		Description: actor-devastator.description
 	Valued:
 		Cost: 1050
 	Tooltip:
-		Name: Devastator
+		Name: actor-devastator.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -393,7 +393,7 @@ devastator:
 		LocalOffset: 640,0,32
 		MuzzleSequence: muzzle
 	Encyclopedia:
-		Description: The Devastator is the most powerful tank on Dune - powerfully effective against most units, but slow - and slow to fire. Nuclear powered, the Devastator fires dual plasma charges and may be ordered to self-destruct, damaging surrounding units and structures.\n\nThe Devastator is very resistant to bullet and high-explosives, but vulnerable to missiles and high-caliber guns.
+		Description: actor-devastator.encyclopedia
 		Order: 220
 		Category: Units
 	AttackFrontal:
@@ -444,13 +444,13 @@ raider:
 		Prerequisites: ~light.raider
 		BuildDuration: 225
 		BuildDurationModifier: 100
-		Description: Improved Scout\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks
+		Description: actor-raider.description
 	Valued:
 		Cost: 350
 	Tooltip:
-		Name: Raider Trike
+		Name: actor-raider.name
 	Encyclopedia:
-		Description: Raiders are similar to Trikes, but the Ordos have refined their fire power, speed and armor to create a powerful and maneuverable scout. With dual 20mm cannons, Raiders are most effective against infantry and lightly armored vehicles.\n\nRaiders are vulnerable to most types of weaponry, though high-caliber guns are slightly less effective.
+		Description: actor-raider.encyclopedia
 		Order: 100
 		Category: Units
 	UpdatesPlayerStatistics:
@@ -487,11 +487,11 @@ stealth_raider:
 		BuildPaletteOrder: 30
 		BuildDuration: 225
 		BuildDurationModifier: 100
-		Description: Invisible Raider Trike\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks
+		Description: actor-stealth-raider.description
 	Valued:
 		Cost: 400
 	Tooltip:
-		Name: Stealth Raider Trike
+		Name: actor-stealth-raider.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Cloak:
@@ -504,7 +504,7 @@ stealth_raider:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
 	Encyclopedia:
-		Description: A cloaked version of the raider, good for stealth attacks. Will uncloak when firing its machine guns.
+		Description: actor-stealth-raider.encyclopedia
 		Order: 120
 		Category: Units
 	AutoTarget:
@@ -519,7 +519,7 @@ deviator:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Deviator
+		Name: actor-deviator.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
@@ -528,7 +528,7 @@ deviator:
 		Prerequisites: ~heavy.ordos, research_centre, ~techlevel.high
 		BuildDuration: 562
 		BuildDurationModifier: 100
-		Description: Fires a warhead which changes\nthe allegiance of enemy vehicles
+		Description: actor-deviator.description
 	Mobile:
 		TurnSpeed: 12
 		Speed: 53
@@ -537,7 +537,7 @@ deviator:
 	Armor:
 		Type: wood
 	Encyclopedia:
-		Description: The Deviator's missiles discharge a silicon cloud that interferes with vehicle controls - temporarily changing the allegiance of the targeted unit. Personnel are not seriously effected by the cloud.\n\nThe Deviator is vulnerable to most types of weapon, though high-caliber guns are slightly less effective.
+		Description: actor-deviator.encyclopedia
 		Order: 210
 		Category: Units
 	RevealsShroud:
@@ -568,11 +568,11 @@ deviator:
 		BuildPaletteOrder: 40
 		BuildDuration: 432
 		BuildDurationModifier: 100
-		Description: Main Battle Tank\n  Strong vs Tanks\n  Weak vs Infantry
+		Description: meta-combat-tank.description
 	Valued:
 		Cost: 700
 	Tooltip:
-		Name: Combat Tank
+		Name: meta-combat-tank.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -610,9 +610,9 @@ deviator:
 combat_tank_a:
 	Inherits: ^combat_tank
 	Tooltip:
-		Name: Atreides Combat Tank
+		Name: actor-combat-tank-a.name
 	Encyclopedia:
-		Description: The Combat Tank is effective against most vehicles, less so against lightly armored vehicles.\n\nAtreides Combat Tanks are very resistant to bullet and heavy-explosives, but vulnerable to missiles and high-caliber guns.
+		Description: actor-combat-tank-a.encyclopedia
 		Order: 140
 		Category: Units
 	Buildable:
@@ -625,9 +625,9 @@ combat_tank_a:
 combat_tank_h:
 	Inherits: ^combat_tank
 	Tooltip:
-		Name: Harkonnen Combat Tank
+		Name: actor-combat-tank-h.name
 	Encyclopedia:
-		Description: The Combat Tank is effective against most vehicles, less so against lightly armored vehicles.\n\nThe Harkonnen Combat Tank is stronger than its counterparts, but also slower.
+		Description: actor-combat-tank-h.encyclopedia
 		Order: 160
 		Category: Units
 	Buildable:
@@ -644,13 +644,13 @@ combat_tank_h:
 combat_tank_o:
 	Inherits: ^combat_tank
 	Tooltip:
-		Name: Ordos Combat Tank
+		Name: actor-combat-tank-o.name
 	Buildable:
 		Prerequisites: ~heavy.ordos_combat
 	Turreted:
 		TurnSpeed: 20
 	Encyclopedia:
-		Description: The Combat Tank is effective against most vehicles, less so against lightly armored vehicles.\n\nThe Ordos Combat Tank is the fastest variant of the Combat Tank, but it is also the weakest.
+		Description: actor-combat-tank-o.encyclopedia
 		Order: 150
 		Category: Units
 	Armament:

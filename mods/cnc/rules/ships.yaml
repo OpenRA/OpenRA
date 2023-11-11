@@ -6,7 +6,7 @@ BOAT:
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Gunboat
+		Name: actor-boat-name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -58,7 +58,7 @@ LST:
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Landing Craft
+		Name: actor-lst-name
 	Mobile:
 		Locomotor: lcraft
 		InitialFacing: 0

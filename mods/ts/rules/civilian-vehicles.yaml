@@ -6,7 +6,7 @@
 	Valued:
 		Cost: 1700
 	Tooltip:
-		Name: Mammoth Tank
+		Name: actor-4tnk-name
 	Mobile:
 		Speed: 56
 		TurnSpeed: 20
@@ -45,7 +45,7 @@
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Truck
+		Name: meta-truck-name
 	Health:
 		HP: 20000
 	Armor:
@@ -69,7 +69,7 @@ ICBM:
 	Valued:
 		Cost: 1400
 	Tooltip:
-		Name: Ballistic Missile Launcher
+		Name: actor-icbm-name
 	Health:
 		HP: 50000
 	Armor:
@@ -95,7 +95,7 @@ BUS:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: School Bus
+		Name: actor-bus-name
 	Mobile:
 		TurnSpeed: 20
 		Speed: 113
@@ -121,7 +121,7 @@ PICK:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Pickup
+		Name: actor-pick-name
 	Mobile:
 		TurnSpeed: 20
 		Speed: 113
@@ -147,7 +147,7 @@ CAR:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Automobile
+		Name: actor-car-name
 	Mobile:
 		TurnSpeed: 20
 		Speed: 113
@@ -173,7 +173,7 @@ WINI:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Recreational Vehicle
+		Name: actor-wini-name
 	Mobile:
 		TurnSpeed: 20
 		Speed: 113
@@ -199,7 +199,7 @@ LOCOMOTIVE:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Train Locomotive
+		Name: actor-locomotive-name
 	Cargo:
 		MaxWeight: 2
 		EjectOnDeath: true
@@ -210,7 +210,7 @@ TRAINCAR:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Passenger Car
+		Name: actor-traincar-name
 	Cargo:
 		MaxWeight: 10
 		EjectOnDeath: true
@@ -221,7 +221,7 @@ CARGOCAR:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Cargo Car
+		Name: actor-cargocar-name
 	Cargo:
 		MaxWeight: 10
 		EjectOnDeath: true

@@ -85,7 +85,7 @@ airstrike.proxy:
 MoneyCrate:
 	Inherits: ^Crate
 	Tooltip:
-		Name: Money Crate
+		Name: actor-moneycrate-name
 	GiveCashCrateAction:
 		Amount: 2000
 		Sequence: dollar

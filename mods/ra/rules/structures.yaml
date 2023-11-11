@@ -7,13 +7,13 @@ MSLO:
 	Valued:
 		Cost: 2500
 	Tooltip:
-		Name: Missile Silo
+		Name: actor-mslo.name
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 140
 		Prerequisites: techcenter, ~techlevel.unrestricted
 		BuildLimit: 1
-		Description: Provides an atomic bomb.\nRequires power to operate.\nMaximum 1 can be built.\n  Special Ability: Atom Bomb
+		Description: actor-mslo.description
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -81,12 +81,12 @@ GAP:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Gap Generator
+		Name: actor-gap.name
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 110
 		Prerequisites: atek, ~structures.allies, ~techlevel.high
-		Description: Obscures the enemy's view with shroud.\nRequires power to operate.
+		Description: actor-gap.description
 	Selectable:
 		Bounds: 1024, 1024
 		DecorationBounds: 1024, 2048, 0, -512
@@ -133,12 +133,12 @@ SPEN:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Sub Pen
+		Name: actor-spen.name
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.low
-		Description: Produces and repairs\nsubmarines and transports.
+		Description: actor-spen.description
 	Targetable:
 		TargetTypes: WaterActor, Structure, C4, DetonateAttack, SpyInfiltrate
 	Building:
@@ -279,11 +279,11 @@ SYRD:
 		Queue: Building
 		BuildPaletteOrder: 40
 		Prerequisites: anypower, ~structures.allies, ~techlevel.low
-		Description: Produces and repairs\nships and transports.
+		Description: actor-syrd.description
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Naval Yard
+		Name: actor-syrd.name
 	Targetable:
 		TargetTypes: WaterActor, Structure, C4, DetonateAttack, SpyInfiltrate
 	Building:
@@ -402,11 +402,11 @@ IRON:
 		BuildPaletteOrder: 130
 		Prerequisites: stek, ~structures.soviet, ~techlevel.unrestricted
 		BuildLimit: 1
-		Description: Makes a group of units invulnerable\nfor a short time.\nRequires power to operate.\nMaximum 1 can be built.\n  Special Ability: Invulnerability
+		Description: actor-iron.description
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Iron Curtain
+		Name: actor-iron.name
 	Building:
 		Footprint: ++ xx
 		Dimensions: 2,2
@@ -472,11 +472,11 @@ PDOX:
 		BuildPaletteOrder: 120
 		Prerequisites: atek, ~structures.allies, ~techlevel.unrestricted
 		BuildLimit: 1
-		Description: Teleports a group of units across the\nmap for a short time.\nRequires power to operate.\nMaximum 1 can be built.\n  Special Ability: Chronoshift
+		Description: actor-pdox.description
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Chronosphere
+		Name: actor-pdox.name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -567,11 +567,11 @@ TSLA:
 		Queue: Defense
 		BuildPaletteOrder: 80
 		Prerequisites: weap, ~structures.soviet, ~techlevel.medium
-		Description: Advanced base defense.\nRequires power to operate.\nCan detect cloaked units.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft
+		Description: actor-tsla.description
 	Valued:
 		Cost: 1200
 	Tooltip:
-		Name: Tesla Coil
+		Name: actor-tsla.name
 	Selectable:
 		Bounds: 1024, 1024
 		DecorationBounds: 1024, 1706, 0, -341
@@ -611,11 +611,11 @@ AGUN:
 		Queue: Defense
 		BuildPaletteOrder: 90
 		Prerequisites: dome, ~structures.allies, ~techlevel.medium
-		Description: Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
+		Description: actor-agun.description
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: AA Gun
+		Name: actor-agun.name
 	Selectable:
 		Bounds: 1024, 1024
 		DecorationBounds: 1024, 1365, 0, -170
@@ -666,11 +666,11 @@ DOME:
 		Queue: Building
 		BuildPaletteOrder: 90
 		Prerequisites: proc, ~techlevel.medium
-		Description: Provides an overview\nof the battlefield.\nRequires power to operate.
+		Description: actor-dome.description
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Radar Dome
+		Name: actor-dome.name
 	Building:
 		Footprint: xx xx ==
 		Dimensions: 2,3
@@ -709,13 +709,13 @@ PBOX:
 	Inherits@AUTOTARGET: ^AutoTargetAll
 	Inherits@CARGOPIPS: ^CargoPips
 	Tooltip:
-		Name: Pillbox
+		Name: actor-pbox.name
 	Building:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
 		Prerequisites: tent, ~structures.allies, ~techlevel.low
-		Description: Static defense with a fireport for\na garrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
+		Description: actor-pbox.description
 	Valued:
 		Cost: 600
 	CustomSellValue:
@@ -771,13 +771,13 @@ HBOX:
 	Inherits@AUTOTARGET: ^AutoTargetAll
 	Inherits@CARGOPIPS: ^CargoPips
 	Tooltip:
-		Name: Camo Pillbox
+		Name: actor-hbox.name
 	Building:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 50
 		Prerequisites: tent, ~structures.allies, ~techlevel.medium
-		Description: Camouflaged static defense with a fireport\nfor a garrisoned soldier.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
+		Description: actor-hbox.description
 	Valued:
 		Cost: 750
 	CustomSellValue:
@@ -836,11 +836,11 @@ GUN:
 		Queue: Defense
 		BuildPaletteOrder: 70
 		Prerequisites: tent, ~structures.allies, ~techlevel.medium
-		Description: Anti-Armor base defense.\nCan detect cloaked units.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
+		Description: actor-gun.description
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Turret
+		Name: actor-gun.name
 	Building:
 	Health:
 		HP: 40000
@@ -885,11 +885,11 @@ FTUR:
 		Queue: Defense
 		BuildPaletteOrder: 60
 		Prerequisites: barr, ~structures.soviet, ~techlevel.low
-		Description: Anti-Infantry base defense.\nCan detect cloaked units.\n  Strong vs Infantry, Light armor\n  Weak vs Tanks, Aircraft
+		Description: actor-ftur.description
 	Valued:
 		Cost: 600
 	Tooltip:
-		Name: Flame Tower
+		Name: actor-ftur.name
 	Building:
 	Health:
 		HP: 40000
@@ -938,11 +938,11 @@ SAM:
 		Queue: Defense
 		BuildPaletteOrder: 100
 		Prerequisites: dome, ~structures.soviet, ~techlevel.medium
-		Description: Anti-Air base defense.\nRequires power to operate.\n  Strong vs Aircraft\n  Weak vs Ground units
+		Description: actor-sam.description
 	Valued:
 		Cost: 700
 	Tooltip:
-		Name: SAM Site
+		Name: actor-sam.name
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
@@ -990,11 +990,11 @@ ATEK:
 		Queue: Building
 		BuildPaletteOrder: 140
 		Prerequisites: weap, dome, ~structures.allies, ~techlevel.high
-		Description: Provides Allied advanced technologies.\n  Special Ability: GPS Satellite
+		Description: actor-atek.description
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Allied Tech Center
+		Name: actor-atek.name
 	ProvidesPrerequisite:
 		Prerequisite: techcenter
 	Building:
@@ -1044,11 +1044,11 @@ WEAP:
 		Queue: Building
 		BuildPaletteOrder: 80
 		Prerequisites: proc, ~techlevel.low
-		Description: Produces vehicles.
+		Description: actor-weap.description
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: War Factory
+		Name: actor-weap.name
 	Building:
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
@@ -1159,7 +1159,7 @@ FACT:
 		Queue: Building
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
-		Description: Produces structures.
+		Description: actor-fact.description
 	ProvidesPrerequisite@allies:
 		Factions: allies, england, france, germany
 		Prerequisite: structures.allies
@@ -1202,7 +1202,7 @@ FACT:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Construction Yard
+		Name: actor-fact.name
 	SpawnActorsOnSell:
 		ActorTypes: e1,e1,e1,tecn,tecn2
 		GuaranteedActorTypes: e1, e6
@@ -1267,11 +1267,11 @@ PROC:
 		Queue: Building
 		BuildPaletteOrder: 60
 		Prerequisites: anypower, ~techlevel.infonly
-		Description: Refines Ore and Gems\ninto credits.
+		Description: actor-proc.description
 	Valued:
 		Cost: 1400
 	Tooltip:
-		Name: Ore Refinery
+		Name: actor-proc.name
 	Building:
 		Footprint: _X_ xxx X== ===
 		Dimensions: 3,4
@@ -1354,13 +1354,13 @@ SILO:
 		Queue: Defense
 		BuildPaletteOrder: 35
 		Prerequisites: proc, ~techlevel.infonly
-		Description: Stores excess refined\nOre and Gems.
+		Description: actor-silo.description
 	Valued:
 		Cost: 150
 	Targetable:
 		TargetTypes: GroundActor, Structure, C4, DetonateAttack, ThiefInfiltrate
 	Tooltip:
-		Name: Silo
+		Name: actor-silo.name
 	-GivesBuildableArea:
 	-MustBeDestroyed:
 	Health:
@@ -1409,11 +1409,11 @@ HPAD:
 		Queue: Building
 		BuildPaletteOrder: 120
 		Prerequisites: dome, ~structures.allies, ~techlevel.medium
-		Description: Produces and reloads\nhelicopters.
+		Description: actor-hpad.description
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Helipad
+		Name: actor-hpad.name
 	Building:
 		Footprint: xx xx ==
 		Dimensions: 2,3
@@ -1496,11 +1496,11 @@ AFLD:
 		Queue: Building
 		BuildPaletteOrder: 130
 		Prerequisites: dome, ~structures.soviet, ~techlevel.medium, ~!structures.ukraine
-		Description: Produces and reloads aircraft.\n  Special Ability: Spy Plane\n  Special Ability: Paratroopers
+		Description: actor-afld.description
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Airfield
+		Name: actor-afld.name
 	Selectable:
 		Class: afld
 		Bounds: 3072, 2048
@@ -1641,7 +1641,7 @@ AFLD.Ukraine:
 	Inherits: AFLD
 	Buildable:
 		Prerequisites: dome, ~techlevel.medium, ~structures.ukraine
-		Description: Produces and reloads aircraft.\n  Special Ability: Spy Plane\n  Special Ability: Paratroopers\n  Special Ability: Parabombs
+		Description: actor-afld-ukraine-description
 	RenderSprites:
 		Image: afld
 
@@ -1658,11 +1658,11 @@ POWR:
 		Queue: Building
 		BuildPaletteOrder: 10
 		Prerequisites: ~techlevel.infonly
-		Description: Provides power for other structures.
+		Description: actor-powr.description
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Power Plant
+		Name: actor-powr.name
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -1695,11 +1695,11 @@ APWR:
 		Queue: Building
 		BuildPaletteOrder: 110
 		Prerequisites: dome, ~techlevel.medium
-		Description: Provides double the power of\na standard Power Plant.
+		Description: actor-apwr.description
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Advanced Power Plant
+		Name: actor-apwr.name
 	ProvidesPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -1736,11 +1736,11 @@ STEK:
 		Queue: Building
 		BuildPaletteOrder: 150
 		Prerequisites: weap, dome, ~structures.soviet, ~techlevel.high
-		Description: Provides Soviet advanced technologies.
+		Description: actor-stek.description
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Soviet Tech Center
+		Name: actor-stek.name
 	ProvidesPrerequisite:
 		Prerequisite: techcenter
 	Building:
@@ -1775,11 +1775,11 @@ BARR:
 		Queue: Building
 		BuildPaletteOrder: 30
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
-		Description: Trains infantry.
+		Description: actor-barr.description
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Soviet Barracks
+		Name: actor-barr.name
 	Building:
 		Footprint: xx xx ==
 		Dimensions: 2,3
@@ -1860,11 +1860,11 @@ KENN:
 		Queue: Building
 		BuildPaletteOrder: 175
 		Prerequisites: anypower, ~structures.soviet, ~techlevel.infonly
-		Description: Trains Attack Dogs.
+		Description: actor-kenn.description
 	Valued:
 		Cost: 200
 	Tooltip:
-		Name: Kennel
+		Name: actor-kenn.name
 	-GivesBuildableArea:
 	Health:
 		HP: 30000
@@ -1943,11 +1943,11 @@ TENT:
 		Queue: Building
 		BuildPaletteOrder: 20
 		Prerequisites: anypower, ~structures.allies, ~techlevel.infonly
-		Description: Trains infantry.
+		Description: actor-tent.description
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Allied Barracks
+		Name: actor-tent.name
 	Building:
 		Footprint: xx xx ==
 		Dimensions: 2,3
@@ -2031,11 +2031,11 @@ FIX:
 		Queue: Building
 		BuildPaletteOrder: 100
 		Prerequisites: weap, ~techlevel.medium
-		Description: Repairs vehicles for credits.
+		Description: actor-fix.description
 	Valued:
 		Cost: 1200
 	Tooltip:
-		Name: Service Depot
+		Name: actor-fix.name
 	Building:
 		Footprint: _+_ +++ _+_
 		Dimensions: 3,3
@@ -2082,13 +2082,13 @@ SBAG:
 		Queue: Defense
 		BuildPaletteOrder: 10
 		Prerequisites: fact, ~structures.allies, ~techlevel.low
-		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
+		Description: actor-sbag.description
 	Valued:
 		Cost: 30
 	CustomSellValue:
 		Value: 0
 	Tooltip:
-		Name: Sandbag Wall
+		Name: actor-sbag.name
 	Health:
 		HP: 15000
 	Armor:
@@ -2106,13 +2106,13 @@ FENC:
 		Queue: Defense
 		BuildPaletteOrder: 20
 		Prerequisites: fact, ~structures.soviet, ~techlevel.low
-		Description: Stops infantry and light vehicles.\nCan be crushed by tanks.
+		Description: actor-fenc.description
 	Valued:
 		Cost: 30
 	CustomSellValue:
 		Value: 0
 	Tooltip:
-		Name: Wire Fence
+		Name: actor-fenc.name
 	Health:
 		HP: 15000
 	Armor:
@@ -2130,13 +2130,13 @@ BRIK:
 		Queue: Defense
 		BuildPaletteOrder: 30
 		Prerequisites: fact, ~techlevel.medium
-		Description: Stop units and blocks enemy fire.
+		Description: actor-brik.description
 	Valued:
 		Cost: 200
 	CustomSellValue:
 		Value: 0
 	Tooltip:
-		Name: Concrete Wall
+		Name: actor-brik.name
 	SoundOnDamageTransition:
 		DamagedSounds: crmble2.aud
 		DestroyedSounds: kaboom30.aud
@@ -2157,7 +2157,7 @@ BRIK:
 CYCL:
 	Inherits: ^Wall
 	Tooltip:
-		Name: Chain-Link Barrier
+		Name: actor-cycl-name
 	Armor:
 		Type: Wood
 	LineBuild:
@@ -2170,7 +2170,7 @@ CYCL:
 BARB:
 	Inherits: ^Wall
 	Tooltip:
-		Name: Barbed-Wire Fence
+		Name: actor-barb-name
 	Armor:
 		Type: Wood
 	LineBuild:
@@ -2183,7 +2183,7 @@ BARB:
 WOOD:
 	Inherits: ^Wall
 	Tooltip:
-		Name: Wooden Fence
+		Name: actor-wood-name
 	Armor:
 		Type: Wood
 	LineBuild:
@@ -2197,16 +2197,16 @@ BARRACKS:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Infantry Production
+		Name: actor-barracks-name
 
 TECHCENTER:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Tech Center
+		Name: actor-techcenter-name
 
 ANYPOWER:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Any Power Generation
+		Name: actor-anypower-name

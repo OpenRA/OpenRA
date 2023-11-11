@@ -103,8 +103,8 @@ Player:
 		EndChargeSpeechNotification: IronCurtainReady
 		SelectTargetTextNotification: notification-select-target
 		InsufficientPowerTextNotification: notification-insufficient-power
-		BeginChargeTextNotification: Iron curtain charging.
-		EndChargeTextNotification: Iron curtain ready.
+		BeginChargeTextNotification: actor-player.grantexternalconditionpower-ironcurtain-begin-charge-text-notification
+		EndChargeTextNotification: actor-player.grantexternalconditionpower-ironcurtain-end-charge-text-notification
 		Condition: invulnerability
 		Sequence: idle
 		OnFireSound: ironcur9.aud
@@ -126,7 +126,7 @@ MNLYR:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Bomber
+		Name: actor-mnlyr-name
 	Health:
 		HP: 50000
 	Armor:
@@ -175,7 +175,7 @@ MINVV:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
-		Description: Bomb which explodes after 8 seconds
+		Description: actor-minvv.description
 	Valued:
 		Cost: 30
 	Health:
@@ -184,7 +184,7 @@ MINVV:
 		Image: miner
 	WithSpriteBody:
 	Tooltip:
-		Name: Bomb
+		Name: actor-minvv.name
 	ChangesHealth:
 		Step: -100
 		Delay: 1

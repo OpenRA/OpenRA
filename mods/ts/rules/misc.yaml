@@ -1,7 +1,7 @@
 mpspawn:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (multiplayer player starting point)
+		Name: actor-mpspawn-name
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
@@ -17,7 +17,7 @@ mpspawn:
 waypoint:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (waypoint for scripted behavior)
+		Name: actor-waypoint-name
 	AlwaysVisible:
 	Immobile:
 		OccupiesSpace: false
@@ -58,7 +58,7 @@ stnk.colorpicker:
 CAMERA:
 	Interactable:
 	EditorOnlyTooltip:
-		Name: (reveals area to owner)
+		Name: actor-camera-name
 	AlwaysVisible:
 	RenderSpritesEditorOnly:
 	WithSpriteBody:

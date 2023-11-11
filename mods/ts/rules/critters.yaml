@@ -6,7 +6,7 @@ DOGGIE:
 	MapEditorData:
 		Categories: Critter
 	Tooltip:
-		Name: Tiberian Fiend
+		Name: actor-doggie-name
 	Health:
 		HP: 25000
 	Selectable:
@@ -60,7 +60,7 @@ DOGGIE:
 VISC_SML:
 	Inherits: ^Visceroid
 	Tooltip:
-		Name: Baby Visceroid
+		Name: actor-visc-sml-name
 	Health:
 		HP: 20000
 	AttackWander:
@@ -86,7 +86,7 @@ VISC_LRG:
 	Inherits@CRATESTATS: ^CrateStatModifiers
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Tooltip:
-		Name: Adult Visceroid
+		Name: actor-visc-lrg-name
 	Health:
 		HP: 50000
 	Armor:
@@ -115,7 +115,7 @@ JFISH:
 	Inherits@CRATESTATS: ^CrateStatModifiers
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
 	Tooltip:
-		Name: Tiberium Floater
+		Name: actor-jfish-name
 	Health:
 		HP: 50000
 	RevealsShroud:

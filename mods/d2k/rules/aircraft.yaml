@@ -5,7 +5,7 @@ carryall.reinforce:
 	UpdatesPlayerStatistics:
 		AddToAssetsValue: false
 	Tooltip:
-		Name: Carryall
+		Name: actor-carryall-reinforce.name
 	Health:
 		HP: 48000
 	Armor:
@@ -46,7 +46,7 @@ carryall.reinforce:
 	Buildable:
 		BuildDuration: 750
 		BuildDurationModifier: 100
-		Description: Large winged, planet-bound ship\n  Automatically lifts harvesters from and to Spice.\n  Lifts vehicles to Repair Pads when ordered.
+		Description: actor-carryall-reinforce.description
 
 carryall:
 	Inherits: carryall.reinforce
@@ -58,7 +58,7 @@ carryall:
 		BeforeUnloadDelay: 15
 		LocalOffset: 0, 0, -128
 	Encyclopedia:
-		Description: Carryalls will automatically transport Harvesters back and forth from the Spice Fields to the Refineries. They will also pick up units and deliver them to the Repair Pad, when ordered to.\n\nThe Carryall is a lightly armored transport aircraft. They are vulnerable to missiles and can only be hit by anti-aircraft weapons.
+		Description: actor-carryall-encyclopedia
 		Order: 230
 		Category: Units
 	Aircraft:
@@ -81,7 +81,7 @@ frigate:
 		DropRange: 1c0
 	Interactable:
 	Tooltip:
-		Name: Frigate
+		Name: actor-frigate-name
 	Aircraft:
 		IdleBehavior: LeaveMap
 		Speed: 189
@@ -110,7 +110,7 @@ ornithopter:
 	Armor:
 		Type: light
 	Encyclopedia:
-		Description: The fastest aircraft on Dune, the Ornithopther is lightly armored and capable of dropping 500lb bombs. This unit is most effective against infantry and lightly armored targets, but also damages armored targets.
+		Description: actor-ornithopter.encyclopedia
 		Order: 240
 		Category: Units
 	Aircraft:
@@ -123,7 +123,7 @@ ornithopter:
 	AmmoPool:
 		Ammo: 5
 	Tooltip:
-		Name: Ornithopter
+		Name: actor-ornithopter.name
 	SpawnActorOnDeath:
 		Actor: ornithopter.husk
 	RejectsOrders:
@@ -133,7 +133,7 @@ ornithopter:
 ornithopter.husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
-		Name: Ornithopter
+		Name: actor-ornithopter-husk-name
 	Aircraft:
 		TurnSpeed: 20
 		Speed: 224
@@ -143,7 +143,7 @@ ornithopter.husk:
 carryall.husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
-		Name: Carryall
+		Name: actor-carryall-husk-name
 	Aircraft:
 		TurnSpeed: 16
 		Speed: 144
@@ -155,7 +155,7 @@ carryall.husk:
 carryall.huskVTOL:
 	Inherits: ^AircraftHusk
 	Tooltip:
-		Name: Carryall
+		Name: actor-carryall-huskvtol-name
 	FallsToEarth:
 		Moves: False
 		Velocity: 0c128

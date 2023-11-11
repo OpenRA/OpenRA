@@ -84,7 +84,7 @@ HARV:
 
 MONEYCRATE:
 	Tooltip:
-		Name: Crate
+		Name: actor-moneycrate-name
 	GiveCashCrateAction:
 		Amount: 2000
 

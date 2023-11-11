@@ -10,15 +10,15 @@
 		AreaTypes: building
 		Adjacent: 4
 	Tooltip:
-		Name: Concrete
-		GenericName: Structure
+		Name: meta-concrete.name
+		GenericName: meta-concrete.generic-name
 	RenderSprites:
 	KillsSelf:
 		RemoveInstead: true
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
-		Description: Provides a strong foundation that prevents\ndamage from the terrain.
+		Description: meta-concrete.description
 
 concretea:
 	Inherits: ^concrete
@@ -26,9 +26,9 @@ concretea:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Tooltip:
-		Name: Concrete Slab
+		Name: actor-concretea.name
 	Encyclopedia:
-		Description: If buildings are not placed on concrete, they will be damaged. Buildings can be repaired, but unless the building sits completely on concrete, the building will suffer continual weathering damage from the erosive desert environment.\n\nConcrete is vulnerable to most weapon types. Concrete cannot be repaired if damaged.
+		Description: actor-concretea.encyclopedia
 		Category: Buildings
 		Order: 10
 	Valued:
@@ -47,7 +47,7 @@ concreteb:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 	Tooltip:
-		Name: Large Concrete Slab
+		Name: actor-concreteb-name
 	Valued:
 		Cost: 50
 	Buildable:
@@ -61,14 +61,14 @@ construction_yard:
 	Inherits@PRIMARY: ^PrimaryBuilding
 	Inherits@UPGRADEABLE: ^Upgradeable
 	Buildable:
-		Description: Produces structures.
+		Description: actor-construction-yard.description
 	D2kBuilding:
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 		-ConcretePrerequisites:
 	Encyclopedia:
-		Description: The Construction Yard is the foundation of any base built on Arrakis. Construction Yards produce a small amount of power and are required for the building of any new structures. Protect this structure! It is critical to the success of your base.\n\nConstruction yards are fairly strong, but vulnerable in varying degrees to all types of weapons.
+		Description: actor-construction-yard.encyclopedia
 		Category: Buildings
 		Order: 0
 	WithBuildingBib:
@@ -89,7 +89,7 @@ construction_yard:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Construction Yard
+		Name: actor-construction-yard.name
 	CustomSellValue:
 		Value: 2000
 	SpawnActorsOnSell:
@@ -125,19 +125,19 @@ wind_trap:
 		BuildPaletteOrder: 120
 		BuildDuration: 208
 		BuildDurationModifier: 100
-		Description: Provides power for other structures.
+		Description: actor-wind-trap.description
 	Selectable:
 		Bounds: 2048, 2048
 	Valued:
 		Cost: 225
 	Tooltip:
-		Name: Wind Trap
+		Name: actor-wind-trap.name
 	D2kBuilding:
 		Footprint: xx xx ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
 	Encyclopedia:
-		Description: Wind Traps provide power and water to an installation. Large, above-ground ducts funnel wind currents underground into massive turbines which power generators and humidity extractors.\n\nWind Traps are vulnerable to most types of weapons.
+		Description: actor-wind-trap.encyclopedia
 		Category: Buildings
 		Order: 20
 	Health:
@@ -178,19 +178,19 @@ barracks:
 		BuildPaletteOrder: 220
 		BuildDuration: 268
 		BuildDurationModifier: 100
-		Description: Trains infantry.
+		Description: actor-barracks.description
 	Selectable:
 		Bounds: 2048, 2048
 	Valued:
 		Cost: 225
 	Tooltip:
-		Name: Barracks
+		Name: actor-barracks.name
 	D2kBuilding:
 		Footprint: xx xx ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
 	Encyclopedia:
-		Description: Barracks are required to produce and train light infantry units. Barracks can be upgraded for the production of more advanced infantry in later missions.\n\nBarracks are vulnerable to most types of weapons.
+		Description: actor-barracks.encyclopedia
 		Category: Buildings
 		Order: 30
 	Health:
@@ -252,19 +252,19 @@ refinery:
 		BuildPaletteOrder: 130
 		BuildDuration: 625
 		BuildDurationModifier: 100
-		Description: Harvesters unload Spice here for processing.
+		Description: actor-refinery.description
 	Selectable:
 		Bounds: 3072, 2048
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Spice Refinery
+		Name: actor-refinery.name
 	D2kBuilding:
 		Footprint: =xx xx= ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 	Encyclopedia:
-		Description: The Refinery is the basis of all Spice production on Dune. Harvesters transport mined Spice to the Refinery where it is converted into credits. Refined Spice is automatically distributed among the Silos and Refineries for storage. A refinery can store 2000 spice. A Spice Harvester is delivered via Carryall once a Refinery is built.\n\nRefineries are vulnerable to most types of weapons.
+		Description: actor-refinery.encyclopedia
 		Category: Buildings
 		Order: 40
 	Health:
@@ -327,17 +327,17 @@ silo:
 		BuildPaletteOrder: 310
 		BuildDuration: 156
 		BuildDurationModifier: 100
-		Description: Stores excess harvested Spice.
+		Description: actor-silo.description
 	Selectable:
 		Bounds: 1024, 1024
 	Encyclopedia:
-		Description: The Spice Silo allows the player to store 1500 harvested Spice. When a Refinery completes processing, excess Spice is automatically distributed evenly among the Silos and Refineries. When harvested Spice exceeds Silo capacity, the excess will be lost. When Spice Silos are destroyed or captured, the amount stored will be dispersed among other Silos and Refineries unless there is insufficient storage capacity.\n\nThe Spice Silo is vulnerable to most types of weapons.
+		Description: actor-silo.encyclopedia
 		Category: Buildings
 		Order: 50
 	Valued:
 		Cost: 120
 	Tooltip:
-		Name: Silo
+		Name: actor-silo.name
 	RequiresBuildableArea:
 		Adjacent: 4
 	-GivesBuildableArea:
@@ -386,19 +386,19 @@ light_factory:
 		BuildPaletteOrder: 230
 		BuildDuration: 321
 		BuildDurationModifier: 100
-		Description: Produces light vehicles.
+		Description: actor-light-factory.description
 	Selectable:
 		Bounds: 3072, 2048
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Light Factory
+		Name: actor-light-factory.name
 	D2kBuilding:
 		Footprint: xxx xx= ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 	Encyclopedia:
-		Description: The Light Factory is required for the production of small, lightly armored, combat vehicles. The Light Factory can be upgraded to produce more advanced light vehicles in later missions.\n\nA Light Factory is vulnerable to most types of weapons.
+		Description: actor-light-factory.encyclopedia
 		Category: Buildings
 		Order: 60
 	Health:
@@ -471,19 +471,19 @@ heavy_factory:
 		BuildPaletteOrder: 330
 		BuildDuration: 750
 		BuildDurationModifier: 100
-		Description: Produces heavy vehicles.
+		Description: actor-heavy-factory.description
 	Selectable:
 		Bounds: 3072, 3072
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Heavy Factory
+		Name: actor-heavy-factory.name
 	D2kBuilding:
 		Footprint: _x_ xxx =xX ===
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
 	Encyclopedia:
-		Description: The Heavy Factory allows the player to build heavy vehicles such as Harvesters and Combat Tanks. When upgraded, this facility allows the construction of advanced vehicles, though some vehicles also require other buildings.\n\nThe Heavy Factory is vulnerable to most types of weapons.
+		Description: actor-heavy-factory.encyclopedia
 		Category: Buildings
 		Order: 70
 	Health:
@@ -566,19 +566,19 @@ outpost:
 		BuildPaletteOrder: 320
 		BuildDuration: 312
 		BuildDurationModifier: 100
-		Description: Provides a radar map of the battlefield.\n  Requires power to operate.
+		Description: actor-outpost.description
 	Selectable:
 		Bounds: 3072, 2048
 	Valued:
 		Cost: 750
 	Tooltip:
-		Name: Outpost
+		Name: actor-outpost.name
 	D2kBuilding:
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
 	Encyclopedia:
-		Description: If the player has sufficient power, the Radar Outpost will generate a radar map. Radar is automatically activated when construction of the Outpost is complete.\n\nThe Radar Outpost is vulnerable to most types of weapons.
+		Description: actor-outpost.encyclopedia
 		Category: Buildings
 		Order: 80
 	Health:
@@ -615,21 +615,21 @@ starport:
 	Inherits: ^Building
 	Inherits@PRIMARY: ^PrimaryBuilding
 	Tooltip:
-		Name: Starport
+		Name: actor-starport.name
 	Buildable:
 		Prerequisites: heavy_factory, outpost, ~techlevel.high
 		Queue: Building
 		BuildPaletteOrder: 530
 		BuildDuration: 625
 		BuildDurationModifier: 100
-		Description: Dropzone for quick reinforcements, at a price.
+		Description: actor-starport.description
 	Valued:
 		Cost: 1500
 	D2kBuilding:
 		Footprint: xxx x=x =x=
 		Dimensions: 3,3
 	Encyclopedia:
-		Description: The Starport allows you to engage in intergalactic trading with the C.H.O.A.M. Merchants' Guild. The Starport provides a trading market for vehicles and airborne units at varying rates. You cannot purchase units from the Guild without this facility.\n\nArmor is heavy, but the Starport is vulnerable to most types of weapons.
+		Description: actor-starport.encyclopedia
 		Category: Buildings
 		Order: 90
 	Selectable:
@@ -715,20 +715,20 @@ wall:
 		BuildPaletteOrder: 410
 		BuildDuration: 62
 		BuildDurationModifier: 100
-		Description: Stop units and blocks enemy fire.
+		Description: actor-wall.description
 	Valued:
 		Cost: 20
 	CustomSellValue:
 		Value: 0
 	Tooltip:
-		Name: Concrete Wall
-		GenericName: Structure
+		Name: actor-wall.name
+		GenericName: actor-wall.generic-name
 	AppearsOnRadar:
 	D2kBuilding:
 		BuildSounds: CHUNG.WAV
 		TerrainTypes: Rock, Concrete
 	Encyclopedia:
-		Description: Base defense. Concrete walls are the most effective barriers on Dune. Concrete walls will block tank bullets and impede unit movement.\n\nWalls can only be damaged by explosive weapons, missiles and shells. Like concrete slabs, walls cannot be repaired if damaged.
+		Description: actor-wall.encyclopedia
 		Category: Buildings
 		Order: 15
 	FootprintPlaceBuildingPreview:
@@ -783,11 +783,11 @@ medium_gun_turret:
 		BuildPaletteOrder: 510
 		BuildDuration: 268
 		BuildDurationModifier: 100
-		Description: Defensive structure.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+		Description: actor-medium-gun-turret.description
 	Valued:
 		Cost: 550
 	Tooltip:
-		Name: Gun Turret
+		Name: actor-medium-gun-turret.name
 	RequiresBuildableArea:
 		Adjacent: 4
 	Selectable:
@@ -796,7 +796,7 @@ medium_gun_turret:
 	Health:
 		HP: 27000
 	Encyclopedia:
-		Description: The Gun Turret has a medium range gun which is effective against vehicles, especially heavily armored vehicles. The Gun Turret will fire on any enemy unit within range.\n\nThe Gun Turret is resistant to bullet and explosive weapons, but vulnerable to missiles and high-caliber guns.
+		Description: actor-medium-gun-turret.encyclopedia
 		Category: Buildings
 		Order: 100
 	Armor:
@@ -831,13 +831,13 @@ large_gun_turret:
 		BuildPaletteOrder: 610
 		BuildDuration: 312
 		BuildDurationModifier: 100
-		Description: Defensive structure.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate.
+		Description: actor-large-gun-turret.description
 	Valued:
 		Cost: 750
 	Tooltip:
-		Name: Rocket Turret
+		Name: actor-large-gun-turret.name
 	Encyclopedia:
-		Description: The substantially improved Rocket Turret has a longer range and a higher rate of fire than the Gun Turret. The Rocket Turret's advanced targeting equipment requires power to operate.\n\nThe Rocket Turret is resistant to bullet and explosive weapons, but vulnerable to missiles and high-caliber guns.
+		Description: actor-large-gun-turret.encyclopedia
 		Category: Buildings
 		Order: 110
 	RequiresBuildableArea:
@@ -875,16 +875,16 @@ repair_pad:
 		BuildPaletteOrder: 430
 		BuildDuration: 375
 		BuildDurationModifier: 100
-		Description: Repairs vehicles.\n Allows construction of MCVs
+		Description: actor-repair-pad.description
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Repair Pad
+		Name: actor-repair-pad.name
 	D2kBuilding:
 		Footprint: +++ +++ +++
 		Dimensions: 3,3
 	Encyclopedia:
-		Description: With a Repair Pad, vehicles can be repaired for a varying price.\n\nThe Repair Pad is vulnerable to most types of weapons.
+		Description: actor-repair-pad.encyclopedia
 		Category: Buildings
 		Order: 120
 	Health:
@@ -939,13 +939,13 @@ high_tech_factory:
 		BuildPaletteOrder: 420
 		BuildDuration: 468
 		BuildDurationModifier: 100
-		Description: Unlocks advanced technology.
+		Description: actor-high-tech-factory.description
 	Selectable:
 		Bounds: 3072, 3072
 	Valued:
 		Cost: 1150
 	Tooltip:
-		Name: High Tech Factory
+		Name: actor-high-tech-factory.name
 	ProductionFromMapEdge:
 		Produces: Aircraft, Upgrade
 	ProductionBar:
@@ -960,7 +960,7 @@ high_tech_factory:
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
 	Encyclopedia:
-		Description: The High Tech Factory produces airborne units, and is required for the production of Carryalls. House Atreides can upgrade the High Tech Factory to build Ornithopters for an air strike in later missions.\n\nThe High Tech Factory is vulnerable to most types of weapons.
+		Description: actor-high-tech-factory.encyclopedia
 		Category: Buildings
 		Order: 130
 	Health:
@@ -1027,19 +1027,19 @@ research_centre:
 		BuildPaletteOrder: 520
 		BuildDuration: 312
 		BuildDurationModifier: 100
-		Description: Unlocks advanced tanks.
+		Description: actor-research-centre.description
 	Selectable:
 		Bounds: 3072, 3072
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: IX Research Center
+		Name: actor-research-centre.name
 	D2kBuilding:
 		Footprint: _X_ xxx XXX ===
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
 	Encyclopedia:
-		Description: The IX Research Center provides technology upgrades for structures and vehicles. This facility is required for production of a number of advanced special weapons and prototypes.\n\nThe IX Research Center is vulnerable to most types of weapons.
+		Description: actor-research-centre.encyclopedia
 		Category: Buildings
 		Order: 140
 	Health:
@@ -1083,13 +1083,13 @@ palace:
 		BuildPaletteOrder: 620
 		BuildDuration: 937
 		BuildDurationModifier: 100
-		Description: Unlocks elite infantry and weapons.
+		Description: actor-palace.description
 	Selectable:
 		Bounds: 3072, 3072
 	Valued:
 		Cost: 1600
 	Tooltip:
-		Name: Palace
+		Name: actor-palace.name
 	RallyPoint:
 	CommandBarBlacklist:
 		DisableStop: false
@@ -1097,7 +1097,7 @@ palace:
 		Footprint: xx= xxx =xx
 		Dimensions: 3,3
 	Encyclopedia:
-		Description: The Palace serves as the command center once it is constructed. Palaces feature unique additional options, making available advanced special weapons.\n\nArmor is heavy, but the Palace is vulnerable to most types of weapons.
+		Description: actor-palace.encyclopedia
 		Category: Buildings
 		Order: 150
 	Health:
