@@ -111,13 +111,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var tooltip = a.TraitInfos<EditorOnlyTooltipInfo>().FirstOrDefault(ti => ti.EnabledByDefault) as TooltipInfoBase
 					?? a.TraitInfos<TooltipInfo>().FirstOrDefault(ti => ti.EnabledByDefault);
 
+				var actorType = TranslationProvider.GetString(ActorTypeTooltip, Translation.Arguments("actorType", a.Name));
+
 				var searchTerms = new List<string>() { a.Name };
 				if (tooltip != null)
-					searchTerms.Add(tooltip.Name);
-
-				var actorType = TranslationProvider.GetString(ActorTypeTooltip, Translation.Arguments("actorType", a.Name));
-				var tooltipText = tooltip == null ? actorType : tooltip.Name + $"\n{actorType}";
-				allActorsTemp.Add(new ActorSelectorActor(a, editorData.Categories, searchTerms.ToArray(), tooltipText));
+				{
+					var actorName = TranslationProvider.GetString(tooltip.Name);
+					searchTerms.Add(actorName);
+					allActorsTemp.Add(new ActorSelectorActor(a, editorData.Categories, searchTerms.ToArray(), actorName + $"\n{actorType}"));
+				}
+				else
+					allActorsTemp.Add(new ActorSelectorActor(a, editorData.Categories, searchTerms.ToArray(), actorType));
 			}
 
 			allActors = allActorsTemp.ToArray();

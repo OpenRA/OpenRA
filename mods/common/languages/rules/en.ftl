@@ -54,3 +54,8 @@ dropdown-starting-units =
 dropdown-time-limit =
     .label = Time Limit
     .description = Player or team with the highest score after this time wins
+
+## Tooltip
+label-tooltip-prefix =
+    .ally = Ally
+    .enemy = Enemy
