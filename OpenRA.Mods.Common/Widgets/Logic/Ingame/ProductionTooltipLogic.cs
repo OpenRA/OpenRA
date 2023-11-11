@@ -69,7 +69,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return;
 
 				var tooltip = actor.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
-				var name = tooltip?.Name ?? actor.Name;
+				var name = tooltip != null ? TranslationProvider.GetString(tooltip.Name) : actor.Name;
 				var buildable = actor.TraitInfo<BuildableInfo>();
 
 				var cost = 0;
@@ -137,8 +137,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				costLabel.GetColor = () => pr.GetCashAndResources() >= cost ? Color.White : Color.Red;
 				var costSize = font.Measure(costLabel.Text);
 
-				descLabel.Text = buildable.Description.Replace("\\n", "\n");
-				var descSize = descFont.Measure(descLabel.Text);
+				var desc = string.IsNullOrEmpty(buildable.Description) ? "" : TranslationProvider.GetString(buildable.Description);
+				descLabel.Text = desc;
+				var descSize = descFont.Measure(desc);
 				descLabel.Bounds.Width = descSize.X;
 				descLabel.Bounds.Height = descSize.Y + descLabelPadding;
 
@@ -170,7 +171,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var actorTooltip = ai.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
 				if (actorTooltip != null)
-					return actorTooltip.Name;
+					return TranslationProvider.GetString(actorTooltip.Name);
 			}
 
 			return a;

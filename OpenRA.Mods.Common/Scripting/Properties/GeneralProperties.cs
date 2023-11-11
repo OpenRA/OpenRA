@@ -185,8 +185,10 @@ namespace OpenRA.Mods.Common.Scripting
 			get
 			{
 				var tooltip = tooltips.FirstEnabledConditionalTraitOrDefault();
+				if (tooltip == null)
+					return null;
 
-				return tooltip?.Info.Name;
+				return TranslationProvider.GetString(tooltip.Info.Name);
 			}
 		}
 
