@@ -568,11 +568,9 @@ deviator:
 		BuildPaletteOrder: 40
 		BuildDuration: 432
 		BuildDurationModifier: 100
-		Description: meta-combat-tank.description
+		Description: meta-combat-tank-description
 	Valued:
 		Cost: 700
-	Tooltip:
-		Name: meta-combat-tank.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:

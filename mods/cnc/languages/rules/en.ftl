@@ -1,4 +1,4 @@
-## Player
+## player.yaml
 options-tech-level =
     .low = Low
     .medium = Medium
@@ -20,7 +20,7 @@ notification-base-under-attack = Base under attack.
 notification-ally-under-attack = Our ally is under attack.
 notification-silos-needed = Silos needed.
 
-## World
+## world.yaml
 options-starting-units =
     .mcv-only = MCV Only
     .light-support = Light Support
@@ -30,32 +30,12 @@ dropdown-map-creeps =
     .label = Creep Actors
     .description = Hostile forces spawn on the battlefield
 
-## Structures
-notification-construction-complete = Construction complete.
-notification-unit-ready = Unit ready.
-notification-reinforcements-have-arrived = Reinforcements have arrived.
-notification-unable-to-build-more = Unable to build more.
-notification-unable-to-comply-building-in-progress = Unable to comply. Building in progress.
-notification-repairing = Repairing.
-notification-ion-cannon-charging = Ion cannon charging.
-notification-ion-cannon-ready = Ion cannon ready.
-notification-select-target = Select target.
-notification-insufficient-power = Insufficient power.
-notification-airstrike-ready = Airstrike ready.
-notification-enemy-planes-approaching = Enemy planes approaching.
-notification-nuclear-weapon-available = Nuclear weapon available.
-notification-nuclear-weapon-launched = Nuclear weapon launched.
-notification-nuclear-warhead-approaching = Nuclear warhead approaching.
-
-## Defaults
+## defaults.yaml
 notification-unit-lost = Unit lost.
 notification-unit-promoted = Unit promoted.
 notification-building-captured = Building captured.
 notification-civilian-building-captured = Civilian Building captured.
 notification-structure-lost = Structure lost.
-
-## Vehicles
-notification-harvester-lost = Harvester lost.
 
 ## aircraft.yaml
 actor-tran =
@@ -81,9 +61,6 @@ actor-a10-name = A10 Bomber
 actor-tran-husk-name = Chinook Transport
 actor-heli-husk-name = Apache Longbow
 actor-orca-husk-name = Orca
-
-## campaign-maprules.yaml
-actor-moneycrate-name = Money Crate
 
 ## civilian-desert.yaml
 actor-v20-name = Sala's House
@@ -170,7 +147,6 @@ meta-tank-generic-name = Tank
 meta-helicopter-generic-name = Helicopter
 meta-soldier-generic-name = Soldier
 meta-civinfantry-name = Civilian
-meta-dino-name = Dinosaur
 meta-viceroid-name = Visceroid
 meta-ship-generic-name = Ship
 meta-building-generic-name = Structure
@@ -181,8 +157,6 @@ meta-civfield-generic-name = Field
 meta-civhaystackorigloo =
    .winter--name = Igloo
    .summer--name = Haystacks
-
-meta-civfieldhusk-name = Field (Destroyed)
 
 meta-civhaystackorigloohusk =
    .winter--name = Igloo (Destroyed)
@@ -226,12 +200,12 @@ actor-e1 =
 
 actor-e2 =
    .name = Grenadier
-   .description = Fast infantry armed with grenades. 
+   .description = Fast infantry armed with grenades.
       Strong vs Buildings, slow-moving targets
 
 actor-e3 =
    .name = Rocket Soldier
-   .description = Anti-tank/Anti-aircraft infantry. 
+   .description = Anti-tank/Anti-aircraft infantry.
       Strong vs Tanks, Aircraft
       Weak vs Infantry
 
@@ -292,6 +266,22 @@ actor-boat-name = Gunboat
 actor-lst-name = Landing Craft
 
 ## structures.yaml
+notification-construction-complete = Construction complete.
+notification-unit-ready = Unit ready.
+notification-reinforcements-have-arrived = Reinforcements have arrived.
+notification-unable-to-build-more = Unable to build more.
+notification-unable-to-comply-building-in-progress = Unable to comply. Building in progress.
+notification-repairing = Repairing.
+notification-ion-cannon-charging = Ion cannon charging.
+notification-ion-cannon-ready = Ion cannon ready.
+notification-select-target = Select target.
+notification-insufficient-power = Insufficient power.
+notification-airstrike-ready = Airstrike ready.
+notification-enemy-planes-approaching = Enemy planes approaching.
+notification-nuclear-weapon-available = Nuclear weapon available.
+notification-nuclear-weapon-launched = Nuclear weapon launched.
+notification-nuclear-warhead-approaching = Nuclear warhead approaching.
+
 actor-fact =
    .name = Construction Yard
    .description = Builds structures
@@ -436,6 +426,8 @@ actor-harv =
    .generic-name = Harvester
    .description = Collects Tiberium for processing.
       Unarmed
+
+notification-harvester-lost = Harvester lost.
 
 actor-apc =
    .name = APC

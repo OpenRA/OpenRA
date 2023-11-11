@@ -1,4 +1,3 @@
-## rules.yaml
 actor-mobiletent-name = Mobile Tent
 
 actor-sniper =
@@ -8,4 +7,4 @@ actor-sniper =
       Strong vs Infantry
       Weak vs Vehicles, Aircraft
 
-actor-badr-bomber-name = MiG Bomber
+actor-mig-bomber-name = MiG Bomber

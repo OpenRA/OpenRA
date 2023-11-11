@@ -10,7 +10,6 @@
 		AreaTypes: building
 		Adjacent: 4
 	Tooltip:
-		Name: meta-concrete.name
 		GenericName: meta-concrete.generic-name
 	RenderSprites:
 	KillsSelf:

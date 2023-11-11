@@ -22,7 +22,7 @@ CAMERA:
 
 MISS:
 	Tooltip:
-		Name: actor-miss-name
+		Name: actor-air-force-hq-name
 	Capturable:
 		Types: building
 	CaptureManager:

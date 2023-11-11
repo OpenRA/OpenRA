@@ -2099,4 +2099,4 @@ Weapons: weapons.yaml
 
 Voices: voices.yaml
 
-Translations: ra|languages/lua/en.ftl, en.ftl
+Translations: ra|languages/lua/en.ftl, ra|languages/campaign/en.ftl

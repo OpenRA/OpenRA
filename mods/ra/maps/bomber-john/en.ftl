@@ -1,7 +1,7 @@
 ## rules.yaml
-actor-player =
-   .grantexternalconditionpower-ironcurtain-begin-charge-text-notification = Iron curtain charging.
-   .grantexternalconditionpower-ironcurtain-end-charge-text-notification = Iron curtain ready.
+notification-ironcurtain =
+   .charging = Iron curtain charging.
+   .ready = Iron curtain ready.
 
 actor-mnlyr-name = Bomber
 

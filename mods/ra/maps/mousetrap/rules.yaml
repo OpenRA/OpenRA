@@ -20,7 +20,7 @@ World:
 	Locomotor@TRACKED:
 		TerrainSpeeds:
 			ClearNoSmudges: 100
-		
+
 ^Palettes:
 	-ChronoshiftPostProcessEffect:
 
@@ -51,8 +51,8 @@ FLARE:
 		Range: 1c512
 		ValidRelationships: Ally, Neutral, Enemy
 	Tooltip:
-		Name: actor-flare-name
-		
+		Name: actor-gas-name
+
 IRONCRATE:
 	Inherits: ^Crate
 	GrantExternalConditionCrateAction:
