@@ -103,8 +103,8 @@ Player:
 		EndChargeSpeechNotification: IronCurtainReady
 		SelectTargetTextNotification: notification-select-target
 		InsufficientPowerTextNotification: notification-insufficient-power
-		BeginChargeTextNotification: actor-player.grantexternalconditionpower-ironcurtain-begin-charge-text-notification
-		EndChargeTextNotification: actor-player.grantexternalconditionpower-ironcurtain-end-charge-text-notification
+		BeginChargeTextNotification: notification-ironcurtain.charging
+		EndChargeTextNotification: notification-ironcurtain.ready
 		Condition: invulnerability
 		Sequence: idle
 		OnFireSound: ironcur9.aud

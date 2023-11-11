@@ -1,4 +1,4 @@
-## Player
+## player.yaml
 options-tech-level =
     .infantry-only = Infantry Only
     .low = Low
@@ -26,47 +26,11 @@ notification-base-under-attack = Base under attack.
 notification-ally-under-attack = Our ally is under attack.
 notification-silos-needed = Silos needed.
 
-## World
+## world.yaml
 options-starting-units =
     .mcv-only = MCV Only
     .light-support = Light Support
     .heavy-support = Heavy Support
-
-## Structures
-notification-construction-complete = Construction complete.
-notification-unit-ready = Unit ready.
-notification-unable-to-build-more = Unable to build more.
-notification-unable-to-comply-building-in-progress = Unable to comply. Building in progress.
-notification-repairing = Repairing.
-notification-unit-repaired = Unit repaired.
-notification-select-target = Select target.
-notification-insufficient-power = Insufficient power.
-notification-reinforcements-have-arrived = Reinforcements have arrived.
-notification-abomb-prepping = A-bomb prepping.
-notification-abomb-ready = A-bomb ready.
-notification-abomb-launch-detected = A-bomb launch detected.
-notification-iron-curtain-charging = Iron curtain charging.
-notification-iron-curtain-ready = Iron curtain ready.
-notification-chronosphere-charging = Chronosphere charging.
-notification-chronosphere-ready = Chronosphere ready.
-notification-satellite-launched = Satellite launched.
-notification-credits-stolen = Credits stolen.
-notifcation-spy-plane-ready = Spy plane ready.
-
-## Defaults
-notification-unit-lost = Unit lost.
-notification-airborne-unit-lost = Airborne Unit lost.
-notification-naval-unit-lost = Naval Unit lost.
-notification-unit-promoted = Unit promoted.
-notification-primary-building-selected = Primary building selected.
-notification-structure-captured = Structure captured.
-notification-unit-stolen = Unit stolen.
-
-## Infantry
-notification-building-infiltrated = Building infiltrated.
-
-## Misc
-notification-sonar-pulse-ready = Sonar pulse ready.
 
 ## aircraft.yaml
 actor-badr-name = Badger
@@ -112,12 +76,6 @@ actor-mh60 =
       Weak vs Tanks, Aircraft
    .name = Black Hawk
 
-## campaign-rules.yaml
-actor-moneycrate-name = Crate
-
-## campaign-tooltips.yaml
-actor-miss-name = Technology Center
-
 ## civilian.yaml
 actor-c10-name = Scientist
 actor-tecn-name = Technician
@@ -148,6 +106,14 @@ actor-tanktrap1-name = Tank Trap
 actor-tanktrap2-name = Tank Trap
 
 ## defaults.yaml
+notification-unit-lost = Unit lost.
+notification-airborne-unit-lost = Airborne Unit lost.
+notification-naval-unit-lost = Naval Unit lost.
+notification-unit-promoted = Unit promoted.
+notification-primary-building-selected = Primary building selected.
+notification-structure-captured = Structure captured.
+notification-unit-stolen = Unit stolen.
+
 meta-vehicle-generic-name = Vehicle
 meta-infantry-generic-name = Soldier
 meta-civinfantry-name = Civilian
@@ -261,6 +227,8 @@ actor-u2-husk-name = Husk (Spy Plane)
 actor-mh60-husk-name = Black Hawk
 
 ## infantry.yaml
+notification-building-infiltrated = Building infiltrated.
+
 actor-dog =
    .description = Anti-infantry unit.
     Can detect spies.
@@ -364,6 +332,8 @@ actor-scoutant-name = Scout Ant
 actor-warriorant-name = Warrior Ant
 
 ## misc.yaml
+notification-sonar-pulse-ready = Sonar pulse ready.
+
 actor-moneycrate-name = Money Crate
 actor-healcrate-name = Heal Crate
 actor-wcrate-name = Wooden Crate
@@ -429,6 +399,26 @@ actor-pt =
    .name = Gunboat
 
 ## structures.yaml
+notification-construction-complete = Construction complete.
+notification-unit-ready = Unit ready.
+notification-unable-to-build-more = Unable to build more.
+notification-unable-to-comply-building-in-progress = Unable to comply. Building in progress.
+notification-repairing = Repairing.
+notification-unit-repaired = Unit repaired.
+notification-select-target = Select target.
+notification-insufficient-power = Insufficient power.
+notification-reinforcements-have-arrived = Reinforcements have arrived.
+notification-abomb-prepping = A-bomb prepping.
+notification-abomb-ready = A-bomb ready.
+notification-abomb-launch-detected = A-bomb launch detected.
+notification-iron-curtain-charging = Iron curtain charging.
+notification-iron-curtain-ready = Iron curtain ready.
+notification-chronosphere-charging = Chronosphere charging.
+notification-chronosphere-ready = Chronosphere ready.
+notification-satellite-launched = Satellite launched.
+notification-credits-stolen = Credits stolen.
+notifcation-spy-plane-ready = Spy plane ready.
+
 actor-mslo =
    .name = Missile Silo
    .description = Provides an atomic bomb.
@@ -693,7 +683,7 @@ actor-truk =
    .name = Supply Truck
 
 actor-mgg =
-   .description = Regenerates the shroud nearby, 
+   .description = Regenerates the shroud nearby,
     obscuring the area.
       Unarmed
    .name = Mobile Gap Generator

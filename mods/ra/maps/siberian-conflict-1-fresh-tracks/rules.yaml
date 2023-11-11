@@ -23,7 +23,7 @@ MONEYCRATE:
 	ExplodeCrateAction:
 		Weapon: MiniNuke
 	Tooltip:
-		Name: actor-moneycrate-name
+		Name: actor-atomic-material-name
 	RenderSprites:
 		Image: wcrate
 

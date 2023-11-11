@@ -64,7 +64,7 @@ BADR.Bomber:
 	Aircraft:
 		Speed: 373
 	Tooltip:
-		Name: actor-badr-bomber-name
+		Name: actor-strategic-bomber-name
 	RenderSprites:
 		Image: U2
 
@@ -74,7 +74,7 @@ powerproxy.parabombs:
 
 DELPHI:
 	Tooltip:
-		Name: actor-delphi-name
+		Name: actor-scientist-name
 	Infiltrates:
 		Types: ScientistInfiltrate
 

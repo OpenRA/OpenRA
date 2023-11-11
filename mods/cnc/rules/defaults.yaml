@@ -519,8 +519,6 @@
 		Prerequisites: ~disabled
 	Valued:
 		Cost: 1000
-	Tooltip:
-		Name: meta-dino-name
 	RevealsShroud:
 		Range: 6c0
 	Mobile:
@@ -861,7 +859,6 @@
 		Dimensions: 1,1
 		Footprint: =
 	Tooltip:
-		Name: meta-civfieldhusk-name
 		GenericVisibility: None
 		ShowOwnerRow: false
 	RenderSprites:

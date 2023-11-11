@@ -95,7 +95,7 @@ RMBO:
 
 MISS:
 	Tooltip:
-		Name: actor-miss-name
+		Name: actor-prison-name
 	CaptureManager:
 	Capturable:
 		Types: building

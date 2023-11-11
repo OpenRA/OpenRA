@@ -184,4 +184,5 @@ Rules: rules.yaml
 Sequences: sequences.yaml
 
 Weapons: weapons.yaml
+
 Translations: en.ftl

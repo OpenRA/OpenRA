@@ -404,7 +404,7 @@ BADR.Bomber:
 	AmmoPool:
 		Ammo: 30
 	Tooltip:
-		Name: actor-badr-bomber-name
+		Name: actor-mig-bomber-name
 	SpawnActorOnDeath:
 		Actor: MIG.Husk
 	RenderSprites:
