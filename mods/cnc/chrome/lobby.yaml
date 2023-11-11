@@ -34,6 +34,12 @@ Container@SERVER_LOBBY:
 					Width: 211
 					Height: 25
 					Text: dropdownbutton-bg-slots
+				Button@RESET_OPTIONS_BUTTON:
+					X: 15
+					Y: 254
+					Width: 211
+					Height: 25
+					Text: button-bg-reset-options
 				Container@SKIRMISH_TABS:
 					X: 697 - WIDTH
 					Width: 465

@@ -30,6 +30,13 @@ Background@SERVER_LOBBY:
 			Height: 25
 			Font: Bold
 			Text: dropdownbutton-server-lobby-slots
+		Button@RESET_OPTIONS_BUTTON:
+			X: 20
+			Y: 291
+			Width: 185
+			Height: 25
+			Font: Bold
+			Text: button-server-lobby-reset-options
 		Container@SKIRMISH_TABS:
 			X: 695 - WIDTH
 			Width: 486
