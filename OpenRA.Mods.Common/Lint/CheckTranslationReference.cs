@@ -245,8 +245,8 @@ namespace OpenRA.Mods.Common.Lint
 
 			if (!referencedKeys.Contains(keyWithAtrr))
 				emitWarning(isAttribute ?
-					$"Unused attribute `{attribute}` of key `{key}` in {file}." :
-					$"Unused key `{key}` in {file}.");
+					$"Unused attribute `{attribute}` of key `{key}` in {file}" :
+					$"Unused key `{key}` in {file}");
 		}
 
 		void CheckMessageValue(Pattern node, string key, string attribute, Action<string> emitWarning, string file)
@@ -291,8 +291,8 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var referencedVariable in referencedVariables)
 				if (!variableReferences.Contains(referencedVariable))
 					emitError(isAttribute ?
-						$"Missing variable `{referencedVariable}` for attribute `{attribute}` of key `{key}` in {file}." :
-						$"Missing variable `{referencedVariable}` for key `{key}` in {file}.");
+						$"Missing variable `{referencedVariable}` for attribute `{attribute}` of key `{key}` in {file}" :
+						$"Missing variable `{referencedVariable}` for key `{key}` in {file}");
 		}
 
 		void CheckVariableReference(string varName, string key, string attribute, Action<string> emitWarning, string file)
@@ -304,8 +304,8 @@ namespace OpenRA.Mods.Common.Lint
 
 			if (!referencedVariablesPerKey.TryGetValue(keyWithAtrr, out var referencedVariables) || !referencedVariables.Contains(varName))
 				emitWarning(isAttribute ?
-					$"Unused variable `{varName}` for attribute `{attribute}` of key `{key}` in {file}." :
-					$"Unused variable `{varName}` for key `{key}` in {file}.");
+					$"Unused variable `{varName}` for attribute `{attribute}` of key `{key}` in {file}" :
+					$"Unused variable `{varName}` for key `{key}` in {file}");
 		}
 	}
 }
