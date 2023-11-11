@@ -177,6 +177,7 @@ namespace OpenRA.Mods.Common.Server
 			{ "slot_bot", SlotBot },
 			{ "map", Map },
 			{ "option", Option },
+			{ "reset_options", ResetOptions },
 			{ "assignteams", AssignTeams },
 			{ "kick", Kick },
 			{ "vote_kick", VoteKick },
@@ -734,6 +735,49 @@ namespace OpenRA.Mods.Common.Server
 
 				server.SyncLobbyGlobalSettings();
 				server.SendLocalizedMessage(ValueChanged, Translation.Arguments("player", client.Name, "name", option.Name, "value", option.Label(split[1])));
+
+				foreach (var c in server.LobbyInfo.Clients)
+					c.State = Session.ClientState.NotReady;
+
+				server.SyncLobbyClients();
+
+				return true;
+			}
+		}
+
+		static bool ResetOptions(S server, Connection conn, Session.Client client, string s)
+		{
+			lock (server.LobbyInfo)
+			{
+				if (!client.IsAdmin)
+				{
+					server.SendLocalizedMessageTo(conn, NotAdmin);
+					return true;
+				}
+
+				var allOptions = server.Map.PlayerActorInfo.TraitInfos<ILobbyOptions>()
+					.Concat(server.Map.WorldActorInfo.TraitInfos<ILobbyOptions>())
+					.SelectMany(t => t.LobbyOptions(server.Map));
+
+				var options = new Dictionary<string, Session.LobbyOptionState>();
+				foreach (var o in allOptions)
+				{
+					if (o.DefaultValue != server.LobbyInfo.GlobalSettings.LobbyOptions[o.Id].Value)
+						server.SendLocalizedMessage(ValueChanged, Translation.Arguments(
+							"player", client.Name,
+							"name", o.Name,
+							"value", o.Label(o.DefaultValue)));
+
+					options[o.Id] = new Session.LobbyOptionState
+					{
+						IsLocked = o.IsLocked,
+						Value = o.DefaultValue,
+						PreferredValue = o.DefaultValue
+					};
+				}
+
+				server.LobbyInfo.GlobalSettings.LobbyOptions = options;
+				server.SyncLobbyGlobalSettings();
 
 				foreach (var c in server.LobbyInfo.Clients)
 					c.State = Session.ClientState.NotReady;

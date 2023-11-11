@@ -409,6 +409,7 @@ dropdownbutton-lobby-servers-bin-filters = Filter Games
 
 ## lobby.yaml
 dropdownbutton-bg-slots = Slot Admin
+button-bg-reset-options = Reset Defaults
 button-skirmish-tabs-players-tab = Players
 button-skirmish-tabs-options-tab = Options
 button-skirmish-tabs-music-tab = Music
