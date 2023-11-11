@@ -1,7 +1,7 @@
 DSHP.Husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
-		Name: Dropship
+		Name: actor-dshp-husk-name
 	Aircraft:
 		TurnSpeed: 20
 		Speed: 168
@@ -12,7 +12,7 @@ DSHP.Husk:
 ORCA.Husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
-		Name: Orca Fighter
+		Name: actor-orca-husk-name
 	Aircraft:
 		TurnSpeed: 20
 		Speed: 186
@@ -28,7 +28,7 @@ ORCA.Husk.EMP:
 ORCAB.Husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
-		Name: Orca Bomber
+		Name: actor-orcab-husk-name
 	Aircraft:
 		TurnSpeed: 12
 		Speed: 96
@@ -46,7 +46,7 @@ ORCAB.Husk.EMP:
 ORCATRAN.Husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
-		Name: Orca Transport
+		Name: actor-orcatran-husk-name
 	Aircraft:
 		TurnSpeed: 20
 		Speed: 84
@@ -62,7 +62,7 @@ ORCATRAN.Husk.EMP:
 TRNSPORT.Husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
-		Name: Carryall
+		Name: actor-trnsport-husk-name
 	Aircraft:
 		TurnSpeed: 20
 		Speed: 149
@@ -78,7 +78,7 @@ TRNSPORT.Husk.EMP:
 SCRIN.Husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
-		Name: Banshee Fighter
+		Name: actor-scrin-husk-name
 	Aircraft:
 		TurnSpeed: 12
 		Speed: 168
@@ -96,7 +96,7 @@ SCRIN.Husk.EMP:
 APACHE.Husk:
 	Inherits: ^AircraftHusk
 	Tooltip:
-		Name: Harpy
+		Name: actor-apache-husk-name
 	Aircraft:
 		TurnSpeed: 20
 		Speed: 130

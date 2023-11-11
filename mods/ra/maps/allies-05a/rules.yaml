@@ -96,7 +96,7 @@ WEAP.infiltratable:
 
 MISS:
 	Tooltip:
-		Name: Prison
+		Name: actor-miss-name
 	Targetable:
 		TargetTypes: GroundActor, C4, DetonateAttack, Structure, Mission Objectives
 	AttackOmni:

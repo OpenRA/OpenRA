@@ -160,3 +160,4 @@ Actors:
 Rules: rules.yaml
 
 Weapons: weapons.yaml
+Translations: en.ftl

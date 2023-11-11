@@ -40,7 +40,7 @@ outpost:
 	Tooltip:
 		RequiresCondition: !modified
 	Tooltip@Modified:
-		Name: Modified Outpost
+		Name: actor-outpost-modified--name
 		RequiresCondition: modified
 
 quad:

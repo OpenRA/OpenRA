@@ -125,7 +125,7 @@ GUN:
 
 C3:
 	Tooltip:
-		Name: Farmer Mike
+		Name: actor-c3-name
 
 SAM:
 	Buildable:
@@ -147,7 +147,7 @@ HQ:
 	Tooltip:
 	-AirstrikePower:
 	Buildable:
-		Description: Provides an overview of the battlefield.\n  Requires power to operate.
+		Description: actor-hq-description
 
 AFLD:
 	RallyPoint:

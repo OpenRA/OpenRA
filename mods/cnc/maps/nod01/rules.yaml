@@ -24,7 +24,7 @@ Player:
 
 C10:
 	Tooltip:
-		Name: Nikoomba
+		Name: actor-c10-name
 
 ^Bridge:
 	DamageMultiplier@INVULNERABLE:

@@ -142,7 +142,7 @@ MOBILETENT:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Mobile Tent
+		Name: actor-mobiletent-name
 	Selectable:
 		DecorationBounds: 896, 896
 	SelectionDecorations:
@@ -277,7 +277,7 @@ SNIPER:
 	Valued:
 		Cost: 200
 	Tooltip:
-		Name: Sniper
+		Name: actor-sniper.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
@@ -285,7 +285,7 @@ SNIPER:
 		BuildAtProductionType: Soldier
 		BuildPaletteOrder: 80
 		Prerequisites: barracks
-		Description: Elite sniper infantry unit.\nCan detect cloaked units.\n  Strong vs Infantry\n  Weak vs Vehicles, Aircraft
+		Description: actor-sniper.description
 	Health:
 		HP: 20000
 	Passenger:
@@ -404,7 +404,7 @@ BADR.Bomber:
 	AmmoPool:
 		Ammo: 30
 	Tooltip:
-		Name: MiG Bomber
+		Name: actor-badr-bomber-name
 	SpawnActorOnDeath:
 		Actor: MIG.Husk
 	RenderSprites:

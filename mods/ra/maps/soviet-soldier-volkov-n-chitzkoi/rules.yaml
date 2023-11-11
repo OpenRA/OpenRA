@@ -69,8 +69,8 @@ AFAC:
 	Health:
 		HP: 400000
 	Tooltip:
-		Name: Alloy Facility
-		GenericName: Alloy Facility
+		Name: actor-afac.name
+		GenericName: actor-afac.generic-name
 		GenericVisibility: Enemy, Ally, Neutral
 		GenericStancePrefix: false
 	RenderSprites:
@@ -79,8 +79,8 @@ AFAC:
 CCEN:
 	Inherits: ATEK
 	Tooltip:
-		Name: Control Center
-		GenericName: Control Center
+		Name: actor-ccen.name
+		GenericName: actor-ccen.generic-name
 		GenericVisibility: Enemy, Ally, Neutral
 		GenericStancePrefix: false
 	GpsPower:
@@ -95,7 +95,7 @@ HGUN:
 	Valued:
 		Cost: 2800
 	Tooltip:
-		Name: Heavy Turret Prototype
+		Name: actor-hgun-name
 	Health:
 		HP: 350000
 	Armor:
@@ -112,8 +112,8 @@ ZKOI:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Chitzkoi
-		GenericName: Cyborg Dog
+		Name: actor-zkoi.name
+		GenericName: actor-zkoi.generic-name
 	Health:
 		HP: 100000
 	-Crushable:
@@ -129,7 +129,7 @@ VOLK:
 	Valued:
 		Cost: 3000
 	Tooltip:
-		Name: Volkov
+		Name: actor-volk-name
 	Health:
 		HP: 250000
 	Armor:

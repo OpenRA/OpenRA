@@ -277,7 +277,7 @@
 	Guard:
 	Guardable:
 	Tooltip:
-		GenericName: Vehicle
+		GenericName: meta-vehicle-generic-name
 	CaptureManager:
 		BeingCapturedCondition: being-captured
 	Capturable:
@@ -379,7 +379,7 @@
 	Guard:
 	Guardable:
 	Tooltip:
-		GenericName: Soldier
+		GenericName: meta-infantry-generic-name
 	ChangesHealth@HOSPITAL:
 		Step: 500
 		Delay: 100
@@ -465,7 +465,7 @@
 	Valued:
 		Cost: 10
 	Tooltip:
-		Name: Civilian
+		Name: meta-civinfantry-name
 		GenericVisibility: None
 	RevealsShroud:
 		Range: 3c0
@@ -537,7 +537,7 @@
 	Guard:
 	Guardable:
 	Tooltip:
-		GenericName: Ship
+		GenericName: meta-ship-generic-name
 	MustBeDestroyed:
 	MapEditorData:
 		ExcludeTilesets: INTERIOR
@@ -620,7 +620,7 @@
 	GpsDot:
 		String: Plane
 	Tooltip:
-		GenericName: Plane
+		GenericName: meta-neutralplane-generic-name
 	WithShadow:
 		Offset: 43, 128, 0
 		ZOffset: -129
@@ -656,7 +656,7 @@
 ^Helicopter:
 	Inherits: ^Plane
 	Tooltip:
-		GenericName: Helicopter
+		GenericName: meta-helicopter-generic-name
 	Aircraft:
 		CanHover: True
 		CruisingCondition: cruising
@@ -712,7 +712,7 @@
 	FrozenUnderFog:
 	FrozenUnderFogUpdatedByGps:
 	Tooltip:
-		GenericName: Structure
+		GenericName: meta-basicbuilding-generic-name
 	Demolishable:
 	MapEditorData:
 		Categories: Building
@@ -843,7 +843,7 @@
 	Armor:
 		Type: Wood
 	Tooltip:
-		Name: Civilian Building
+		Name: meta-techbuilding-name
 		GenericVisibility: None
 	FrozenUnderFog:
 	MapEditorData:
@@ -892,7 +892,7 @@
 	Explodes:
 		Weapon: UnitExplode
 	Tooltip:
-		Name: Ammo Box
+		Name: meta-ammobox-name
 	Targetable:
 		TargetTypes: GroundActor, C4, DetonateAttack, Structure, NoAutoTarget
 	Armor:
@@ -923,7 +923,7 @@
 	-Selectable:
 	-ScriptTriggers:
 	Tooltip:
-		Name: Field
+		Name: meta-civfield-name
 	-Targetable:
 	-Demolishable:
 	MapEditorData:
@@ -939,12 +939,12 @@
 		Condition: winter
 		TileSets: SNOW
 	Tooltip@WINTER:
-		Name: Igloo
+		Name: meta-civhaystackorigloo.winter--name
 		RequiresCondition: winter
 		GenericVisibility: None
 		ShowOwnerRow: false
 	Tooltip@SUMMER:
-		Name: Haystacks
+		Name: meta-civhaystackorigloo.summer--name
 		RequiresCondition: !winter
 		GenericVisibility: None
 		ShowOwnerRow: false
@@ -954,7 +954,7 @@
 	Inherits@shape: ^1x1Shape
 	Interactable:
 	Tooltip:
-		Name: Tree
+		Name: meta-tree-name
 		ShowOwnerRow: false
 	RenderSprites:
 		Palette: terrain
@@ -1013,7 +1013,7 @@
 		Dimensions: 1,1
 	WithSpriteBody:
 	Tooltip:
-		Name: Tree (Burnt)
+		Name: meta-treehusk-name
 		ShowOwnerRow: false
 	HiddenUnderShroud:
 	MapEditorData:
@@ -1026,7 +1026,7 @@
 	RenderSprites:
 		Palette: player
 	Tooltip:
-		Name: Boxes
+		Name: meta-box-name
 	MapEditorData:
 		-ExcludeTilesets:
 		Categories: Decoration
@@ -1077,7 +1077,7 @@
 		RequiresForceFire: true
 	Chronoshiftable:
 	Tooltip:
-		GenericName: Destroyed Vehicle
+		GenericName: meta-husk-generic-name
 
 ^PlaneHusk:
 	Inherits: ^BasicHusk
@@ -1088,7 +1088,7 @@
 		Offset: 43, 128, 0
 		ZOffset: -129
 	Tooltip:
-		GenericName: Destroyed Plane
+		GenericName: meta-planehusk-generic-name
 	Aircraft:
 	FallsToEarth:
 		Moves: True
@@ -1109,7 +1109,7 @@
 		Offset: 43, 128, 0
 		ZOffset: -129
 	Tooltip:
-		GenericName: Destroyed Helicopter
+		GenericName: meta-helicopterhusk-generic-name
 	Aircraft:
 		CanHover: True
 		VTOL: true
@@ -1125,7 +1125,7 @@
 	Inherits@shape: ^1x1Shape
 	AlwaysVisible:
 	Tooltip:
-		Name: Bridge
+		Name: meta-bridge-name
 		ShowOwnerRow: false
 	Targetable:
 		TargetTypes: GroundActor, WaterActor, Bridge
@@ -1150,7 +1150,7 @@
 	Inherits@1: ^SpriteActor
 	Interactable:
 	Tooltip:
-		Name: Rock
+		Name: meta-rock-name
 		ShowOwnerRow: false
 	RenderSprites:
 		Palette: desert
@@ -1183,8 +1183,8 @@
 		Bounds: 1024, 1024
 	HiddenUnderFog:
 	Tooltip:
-		Name: Crate
-		GenericName: Crate
+		Name: meta-crate.name
+		GenericName: meta-crate.generic-name
 		ShowOwnerRow: false
 	Crate:
 		Duration: 4500
@@ -1234,7 +1234,7 @@
 		DetectionTypes: Mine
 		InitialDelay: 0
 	Tooltip:
-		Name: Mine
+		Name: meta-mine-name
 	Targetable:
 		TargetTypes: GroundActor, Mine
 	Immobile:

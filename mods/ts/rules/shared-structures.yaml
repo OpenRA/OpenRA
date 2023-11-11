@@ -9,7 +9,7 @@ GACNST:
 		Queue: Building
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
-		Description: Builds base structures.
+		Description: actor-gacnst.description
 	Health:
 		HP: 150000
 	Armor:
@@ -23,7 +23,7 @@ GACNST:
 	Valued:
 		Cost: 2500
 	Tooltip:
-		Name: Construction Yard
+		Name: actor-gacnst.name
 	CustomSellValue:
 		Value: 2500
 	BaseBuilding:
@@ -105,12 +105,12 @@ PROC:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Tiberium Refinery
+		Name: actor-proc.name
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
 		Prerequisites: anypower, ~techlevel.low
-		Description: Processes raw Tiberium\ninto useable resources.
+		Description: actor-proc.description
 	Building:
 		Footprint: xxX+ xx++ xxX+
 		Dimensions: 4,3
@@ -181,11 +181,11 @@ GASILO:
 		Queue: Building
 		BuildPaletteOrder: 60
 		Prerequisites: proc, ~techlevel.low
-		Description: Stores excess Tiberium.
+		Description: actor-gasilo.description
 	Valued:
 		Cost: 150
 	Tooltip:
-		Name: Silo
+		Name: actor-gasilo.name
 	Building:
 		Footprint: xx xx
 		Dimensions: 2, 2
@@ -234,28 +234,28 @@ ANYPOWER:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Any Power Generation
+		Name: actor-anypower-name
 
 BARRACKS:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Infantry Production
+		Name: actor-barracks-name
 
 FACTORY:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Vehicle Production
+		Name: actor-factory-name
 
 RADAR:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Radar
+		Name: actor-radar-name
 
 TECH:
 	AlwaysVisible:
 	Interactable:
 	Tooltip:
-		Name: Tech Center
+		Name: actor-tech-name

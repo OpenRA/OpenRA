@@ -5,7 +5,7 @@ DPOD:
 	Valued:
 		Cost: 10
 	Tooltip:
-		Name: Drop Pod
+		Name: actor-dpod-name
 	Aircraft:
 		IdleBehavior: Land
 		Pitch: 0
@@ -41,7 +41,7 @@ DPOD2:
 	Valued:
 		Cost: 10
 	Tooltip:
-		Name: Drop Pod
+		Name: actor-dpod2-name
 	Health:
 		HP: 6000
 	Armor:
@@ -90,7 +90,7 @@ DSHP:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Dropship
+		Name: actor-dshp-name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Aircraft:
@@ -127,14 +127,14 @@ ORCA:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Orca Fighter
+		Name: actor-orca.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
 		Prerequisites: ~gahpad
-		Description: Fast assault gunship with\ndual missile launchers.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
+		Description: actor-orca.description
 	Selectable:
 		Bounds: 905, 1448
 	Aircraft:
@@ -188,14 +188,14 @@ ORCAB:
 	Valued:
 		Cost: 1600
 	Tooltip:
-		Name: Orca Bomber
+		Name: actor-orcab.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 30
 		Prerequisites: ~gahpad, gatech
-		Description: Heavy bomber.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
+		Description: actor-orcab.description
 	Selectable:
 		Bounds: 905, 1448
 	Aircraft:
@@ -261,7 +261,7 @@ ORCATRAN:
 	Valued:
 		Cost: 1200
 	Tooltip:
-		Name: Orca Transport
+		Name: actor-orcatran-name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
@@ -304,14 +304,14 @@ TRNSPORT:
 	Valued:
 		Cost: 750
 	Tooltip:
-		Name: Carryall
+		Name: actor-trnsport.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 60
 		Prerequisites: ~gahpad, gadept
-		Description: VTOL aircraft capable of lifting\nand transporting vehicles.\n  Unarmed
+		Description: actor-trnsport.description
 	Aircraft:
 		TurnSpeed: 20
 		Speed: 149
@@ -350,14 +350,14 @@ SCRIN:
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Banshee Fighter
+		Name: actor-scrin.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 40
 		Prerequisites: ~nahpad, natech
-		Description: Advanced fighter-bomber craft\nwith twin plasma cannons.\n  Strong vs Buildings, Vehicles\n  Weak vs Infantry, Aircraft
+		Description: actor-scrin.description
 	Selectable:
 		Bounds: 905, 1448
 	Voiced:
@@ -423,14 +423,14 @@ APACHE:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Harpy
+		Name: actor-apache.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
 		Prerequisites: ~nahpad
-		Description: Anti-personnel support gunship\narmed with dual chain guns.\n  Strong vs Infantry, Light armor, Aircraft\n  Weak vs Vehicles
+		Description: actor-apache.description
 	Selectable:
 		Bounds: 905, 1448
 	Aircraft:
@@ -495,7 +495,7 @@ HUNTER:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Hunter-Seeker Droid
+		Name: actor-hunter-name
 	Health:
 		HP: 50000
 	Armor:

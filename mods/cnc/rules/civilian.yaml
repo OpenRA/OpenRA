@@ -10,7 +10,7 @@ V01:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Tooltip:
-		Name: Church
+		Name: actor-v01-name
 	SpawnActorOnDeath:
 		Actor: V01.Husk
 	MapEditorData:
@@ -22,7 +22,7 @@ V01.Husk:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Tooltip:
-		Name: Church (Destroyed)
+		Name: actor-v01-husk-name
 	MapEditorData:
 		ExcludeTilesets: DESERT
 
@@ -42,7 +42,7 @@ V02:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Han's and Gretel's
+		Name: actor-v02-name
 
 V02.Husk:
 	Inherits: ^CivBuildingHusk
@@ -52,7 +52,7 @@ V02.Husk:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Han's and Gretel's (Destroyed)
+		Name: actor-v02-husk-name
 
 V03:
 	Inherits: ^CivBuilding
@@ -70,7 +70,7 @@ V03:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Hewitt's House
+		Name: actor-v03-name
 
 V03.Husk:
 	Inherits: ^CivBuildingHusk
@@ -80,7 +80,7 @@ V03.Husk:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Hewitt's House (Destroyed)
+		Name: actor-v03-husk-name
 
 V04:
 	Inherits: ^CivBuilding
@@ -98,7 +98,7 @@ V04:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Ricktor's House
+		Name: actor-v04-name
 
 V04.Husk:
 	Inherits: ^CivBuildingHusk
@@ -108,7 +108,7 @@ V04.Husk:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Ricktor's House (Destroyed)
+		Name: actor-v04-husk-name
 
 V05:
 	Inherits: ^CivBuilding
@@ -121,7 +121,7 @@ V05:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Gretchkin's house
+		Name: actor-v05-name
 
 V05.Husk:
 	Inherits: ^CivBuildingHusk
@@ -131,7 +131,7 @@ V05.Husk:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Gretchkin's house (Destroyed)
+		Name: actor-v05-husk-name
 
 V06:
 	Inherits: ^CivBuilding
@@ -144,7 +144,7 @@ V06:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: The Barn
+		Name: actor-v06-name
 
 V06.Husk:
 	Inherits: ^CivBuildingHusk
@@ -154,7 +154,7 @@ V06.Husk:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: The Barn (Destroyed)
+		Name: actor-v06-husk-name
 
 V07:
 	Inherits: ^CivBuilding
@@ -167,7 +167,7 @@ V07:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Damon's Pub
+		Name: actor-v07-name
 
 V07.Husk:
 	Inherits: ^CivBuildingHusk
@@ -177,7 +177,7 @@ V07.Husk:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Damon's Pub (Destroyed)
+		Name: actor-v07-husk-name
 
 V08:
 	Inherits: ^CivBuilding
@@ -186,14 +186,14 @@ V08:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Fran's House
+		Name: actor-v08-name
 
 V08.Husk:
 	Inherits: ^CivBuildingHusk
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Fran's House (Destroyed)
+		Name: actor-v08-husk-name
 
 V09:
 	Inherits: ^CivBuilding
@@ -202,14 +202,14 @@ V09:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Music Factory
+		Name: actor-v09-name
 
 V09.Husk:
 	Inherits: ^CivBuildingHusk
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Music Factory (Destroyed)
+		Name: actor-v09-husk-name
 
 V10:
 	Inherits: ^CivBuilding
@@ -218,14 +218,14 @@ V10:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Toymaker's
+		Name: actor-v10-name
 
 V10.Husk:
 	Inherits: ^CivBuildingHusk
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Toymaker's (Destroyed)
+		Name: actor-v10-husk-name
 
 V11:
 	Inherits: ^CivBuilding
@@ -234,14 +234,14 @@ V11:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Ludwig's House
+		Name: actor-v11-name
 
 V11.Husk:
 	Inherits: ^CivBuildingHusk
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Ludwig's House (Destroyed)
+		Name: actor-v11-husk-name
 
 V12:
 	Inherits: ^CivHaystackOrIgloo
@@ -266,14 +266,14 @@ V14:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Wheat Field
+		Name: actor-v14-name
 
 V14.Husk:
 	Inherits: ^CivFieldHusk
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Wheat Field (Destroyed)
+		Name: actor-v14-husk-name
 
 V15:
 	Inherits: ^CivField
@@ -282,14 +282,14 @@ V15:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Fallow Field
+		Name: actor-v15-name
 
 V15.Husk:
 	Inherits: ^CivFieldHusk
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Fallow Field (Destroyed)
+		Name: actor-v15-husk-name
 
 V16:
 	Inherits: ^CivField
@@ -298,14 +298,14 @@ V16:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Corn Field
+		Name: actor-v16-name
 
 V16.Husk:
 	Inherits: ^CivFieldHusk
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Corn Field (Destroyed)
+		Name: actor-v16-husk-name
 
 V17:
 	Inherits: ^CivField
@@ -314,14 +314,14 @@ V17:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Celery Field
+		Name: actor-v17-name
 
 V17.Husk:
 	Inherits: ^CivFieldHusk
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Celery Field (Destroyed)
+		Name: actor-v17-husk-name
 
 V18:
 	Inherits: ^CivField
@@ -330,14 +330,14 @@ V18:
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Potato Field
+		Name: actor-v18-name
 
 V18.Husk:
 	Inherits: ^CivFieldHusk
 	MapEditorData:
 		ExcludeTilesets: DESERT
 	Tooltip:
-		Name: Potato Field (Destroyed)
+		Name: actor-v18-husk-name
 
 ARCO:
 	Inherits: ^CivBuilding
@@ -348,7 +348,7 @@ ARCO:
 	SpawnActorOnDeath:
 		Actor: ARCO.Husk
 	Tooltip:
-		Name: Oil Pump
+		Name: actor-arco-name
 		ShowOwnerRow: True
 
 ARCO.Husk:
@@ -357,14 +357,14 @@ ARCO.Husk:
 		Footprint: xx
 		Dimensions: 2,1
 	Tooltip:
-		Name: Oil Pump (Destroyed)
+		Name: actor-arco-husk-name
 
 BARB:
 	Inherits: ^Wall
 	Armor:
 		Type: Light
 	Tooltip:
-		Name: Barbwire Fence
+		Name: actor-barb-name
 	LineBuild:
 		NodeTypes: barbwire
 	LineBuildNode:
@@ -377,7 +377,7 @@ WOOD:
 	Armor:
 		Type: Wood
 	Tooltip:
-		Name: Wooden Fence
+		Name: actor-wood-name
 	LineBuild:
 		NodeTypes: woodfence
 	LineBuildNode:
@@ -515,12 +515,12 @@ DELPHI:
 	Inherits@armed: ^ArmedCivilian
 	-Wanders:
 	Tooltip:
-		Name: Agent Delphi
+		Name: actor-delphi-name
 
 CHAN:
 	Inherits: ^CivInfantry
 	Tooltip:
-		Name: Dr. Chan
+		Name: actor-chan-name
 
 MOEBIUS:
 	Inherits: ^CivInfantry
@@ -528,7 +528,7 @@ MOEBIUS:
 	Voiced:
 		VoiceSet: MoebiusVoice
 	Tooltip:
-		Name: Dr. Moebius
+		Name: actor-moebius-name
 
 VICE:
 	Inherits: ^Viceroid

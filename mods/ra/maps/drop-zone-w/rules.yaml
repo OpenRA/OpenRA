@@ -41,7 +41,7 @@ UNITCRATE:
 
 LST:
 	Tooltip:
-		Name: Naval Mobile HQ
+		Name: actor-lst-name
 	Health:
 		HP: 100000
 	Mobile:

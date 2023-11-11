@@ -11,7 +11,7 @@ V19:
 	Health:
 		HP: 80000
 	Tooltip:
-		Name: Oil Derrick
+		Name: actor-v19-name
 	TooltipDescription@ally:
 		Description: Provides additional funds.
 		ValidRelationships: Ally
@@ -36,7 +36,7 @@ V19.Husk:
 		Footprint: x
 		Dimensions: 1,1
 	Tooltip:
-		Name: Oil Derrick (Destroyed)
+		Name: actor-v19-husk-name
 
 HOSP:
 	Inherits: ^TechBuilding
@@ -49,7 +49,7 @@ HOSP:
 	Health:
 		HP: 250000
 	Tooltip:
-		Name: Hospital
+		Name: actor-hosp-name
 	TooltipDescription@ally:
 		Description: Provides infantry with self-healing.
 		ValidRelationships: Ally
@@ -70,7 +70,7 @@ HOSP.Husk:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Tooltip:
-		Name: Hospital (Destroyed)
+		Name: actor-hosp-husk-name
 	WithBuildingBib:
 		HasMinibib: true
 
@@ -85,7 +85,7 @@ BIO:
 	Health:
 		HP: 250000
 	Tooltip:
-		Name: Biological Lab
+		Name: actor-bio-name
 	TooltipDescription@ally:
 		Description: Provides infantry with Tiberium immunity.
 		ValidRelationships: Ally
@@ -104,7 +104,7 @@ BIO.Husk:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Tooltip:
-		Name: Biological Lab (Destroyed)
+		Name: actor-bio-husk-name
 
 MISS:
 	Inherits: ^TechBuilding
@@ -118,7 +118,7 @@ MISS:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Tooltip:
-		Name: Tech Center
+		Name: actor-miss-name
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000

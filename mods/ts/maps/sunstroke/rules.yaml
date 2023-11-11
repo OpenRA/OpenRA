@@ -38,16 +38,16 @@ GAOLDCC3:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
 		Prerequisites: ~gaoldcc3
-		Description: Heavy tank\nwith double barreled gun.
+		Description: actor-4tnk-description
 
 SLAV:
 	Tooltip:
-		Name: Black Hand Rifleman
+		Name: actor-slav.name
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 70
 		Prerequisites: ~gaoldcc2
-		Description: Religious loyalist\narmed with sniper rifle.
+		Description: actor-slav.description
 	AttackFrontal:
 		Voice: Attack
 		FacingTolerance: 0

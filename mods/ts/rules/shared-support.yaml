@@ -5,12 +5,12 @@ NAPULS:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: E.M. Pulse Cannon
+		Name: actor-napuls.name
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 110
 		Prerequisites: radar, ~techlevel.superweapons
-		Description: Disables mechanical units in an area.\nRequires power to operate.
+		Description: actor-napuls.description
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2

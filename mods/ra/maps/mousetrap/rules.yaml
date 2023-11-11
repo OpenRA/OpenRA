@@ -51,7 +51,7 @@ FLARE:
 		Range: 1c512
 		ValidRelationships: Ally, Neutral, Enemy
 	Tooltip:
-		Name: Gas
+		Name: actor-flare-name
 		
 IRONCRATE:
 	Inherits: ^Crate
@@ -110,7 +110,7 @@ STAVROS:
 	RenderSprites:
 		Image: GNRL
 	Tooltip:
-		Name: Stavros
+		Name: actor-stavros-name
 	Infiltrates:
 		Types: SpyInfiltrate
 		Voice: Move

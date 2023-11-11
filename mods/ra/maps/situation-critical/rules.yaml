@@ -16,7 +16,7 @@ VOLK:
 	Valued:
 		Cost: 1200
 	Tooltip:
-		Name: Volkov
+		Name: actor-volk-name
 	Health:
 		HP: 15000
 	Armor:
@@ -64,7 +64,7 @@ BADR.Bomber:
 	Aircraft:
 		Speed: 373
 	Tooltip:
-		Name: Strategic Bomber
+		Name: actor-badr-bomber-name
 	RenderSprites:
 		Image: U2
 
@@ -74,7 +74,7 @@ powerproxy.parabombs:
 
 DELPHI:
 	Tooltip:
-		Name: Scientist
+		Name: actor-delphi-name
 	Infiltrates:
 		Types: ScientistInfiltrate
 

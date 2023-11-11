@@ -755,3 +755,4 @@ Actors:
 Rules: rules.yaml
 
 Sequences: sequences.yaml
+Translations: en.ftl

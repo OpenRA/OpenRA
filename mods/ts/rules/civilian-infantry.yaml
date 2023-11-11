@@ -3,7 +3,7 @@ WEEDGUY:
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Chem Spray Infantry
+		Name: actor-weedguy-name
 	Voiced:
 		VoiceSet: Weed
 	Mobile:
@@ -35,7 +35,7 @@ UMAGON:
 	Valued:
 		Cost: 400
 	Tooltip:
-		Name: Umagon
+		Name: actor-umagon-name
 	Voiced:
 		VoiceSet: Umagon
 	Mobile:
@@ -60,7 +60,7 @@ CHAMSPY:
 	Valued:
 		Cost: 700
 	DisguiseTooltip:
-		Name: Chameleon Spy
+		Name: actor-chamspy-disguisetooltip-name
 	Voiced:
 		VoiceSet: Spy
 	Health:
@@ -96,7 +96,7 @@ MUTANT:
 	Valued:
 		Cost: 100
 	Tooltip:
-		Name: Mutant
+		Name: actor-mutant-name
 	Voiced:
 		VoiceSet: Mutant
 	Health:
@@ -124,7 +124,7 @@ MWMN:
 	Valued:
 		Cost: 100
 	Tooltip:
-		Name: Mutant Soldier
+		Name: actor-mwmn-name
 	Voiced:
 		VoiceSet: CivilianFemale
 	Health:
@@ -152,7 +152,7 @@ MUTANT3:
 	Valued:
 		Cost: 100
 	Tooltip:
-		Name: Mutant Sergeant
+		Name: actor-mutant3-name
 	Voiced:
 		VoiceSet: Mutant
 	Health:
@@ -180,7 +180,7 @@ TRATOS:
 	Valued:
 		Cost: 100
 	Tooltip:
-		Name: Tratos
+		Name: actor-tratos-name
 	Voiced:
 		VoiceSet: Tratos
 	Health:
@@ -195,7 +195,7 @@ OXANNA:
 	Valued:
 		Cost: 100
 	Tooltip:
-		Name: Oxanna
+		Name: actor-oxanna-name
 	Voiced:
 		VoiceSet: Oxanna
 	Health:
@@ -212,7 +212,7 @@ SLAV:
 	Valued:
 		Cost: 100
 	Tooltip:
-		Name: Slavick
+		Name: actor-slav-name
 	Voiced:
 		VoiceSet: Slavick
 	Health:

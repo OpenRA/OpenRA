@@ -45,7 +45,7 @@ GNRL:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Stavros
+		Name: actor-gnrl-name
 	Armament:
 		Weapon: SilencedPPK
 	Passenger:
@@ -86,7 +86,7 @@ BADR.Bomber:
 	Aircraft:
 		Speed: 373
 	Tooltip:
-		Name: Strategic Bomber
+		Name: actor-badr-bomber-name
 	RenderSprites:
 		Image: U2
 

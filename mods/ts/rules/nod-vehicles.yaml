@@ -6,14 +6,14 @@ BGGY:
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Attack Buggy
+		Name: actor-bggy.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Prerequisites: ~naweap, ~techlevel.low
-		Description: Fast scout and anti-infantry vehicle.\n  Strong vs Infantry, Light armor\n  Weak vs Vehicles, Aircraft
+		Description: actor-bggy.description
 	Mobile:
 		TurnSpeed: 32
 		Speed: 142
@@ -45,14 +45,14 @@ BIKE:
 	Valued:
 		Cost: 600
 	Tooltip:
-		Name: Attack Cycle
+		Name: actor-bike.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
 		Prerequisites: ~naweap, ~techlevel.low
-		Description: Fast scout vehicle, armed with\nrockets.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
+		Description: actor-bike.description
 	Mobile:
 		TurnSpeed: 32
 		Speed: 170
@@ -89,10 +89,10 @@ TTNK:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Tick Tank
+		Name: actor-ttnk.name
 		RequiresCondition: !deployed
 	Tooltip@DEPLOYED:
-		Name: Tick Tank (deployed)
+		Name: actor-ttnk.deployed--name
 		RequiresCondition: deployed
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
@@ -100,7 +100,7 @@ TTNK:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
 		Prerequisites: ~naweap, ~techlevel.medium
-		Description: Nod's main battle tank.\nCan deploy to gain extra protection.\n  Strong vs Vehicles\n  Weak vs Infantry, Aircraft
+		Description: actor-ttnk.description
 	Mobile:
 		TurnSpeed: 20
 		Speed: 85
@@ -211,10 +211,10 @@ ART2:
 	Valued:
 		Cost: 975
 	Tooltip:
-		Name: Artillery
+		Name: actor-art2.name
 		RequiresCondition: !deployed
 	Tooltip@DEPLOYED:
-		Name: Artillery (deployed)
+		Name: actor-art2.deployed--name
 		RequiresCondition: deployed
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
@@ -222,7 +222,7 @@ ART2:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
 		Prerequisites: ~naweap, naradr, ~techlevel.high
-		Description: Mobile Artillery.\nNeeds to deploy in order to shoot.\n  Strong vs Ground units\n  Weak vs Aircraft
+		Description: actor-art2.description
 	Health:
 		HP: 30000
 	Armor:
@@ -305,11 +305,11 @@ REPAIR:
 		Queue: Vehicle
 		BuildPaletteOrder: 70
 		Prerequisites: ~naweap, ~techlevel.medium
-		Description: Repairs nearby vehicles.\n  Unarmed
+		Description: actor-repair.description
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Mobile Repair Vehicle
+		Name: actor-repair.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
@@ -344,12 +344,12 @@ WEED:
 	Valued:
 		Cost: 1400
 	Tooltip:
-		Name: Weed Eater
+		Name: actor-weed.name
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 170
 		Prerequisites: ~naweap, nawast, ~techlevel.superweapons
-		Description: Collects veins for processing.\n  Unarmed
+		Description: actor-weed.description
 	Harvester:
 		Type: UnloadWeed
 		Resources: Veins
@@ -398,14 +398,14 @@ SAPC:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Subterranean APC
+		Name: actor-sapc.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
 		Prerequisites: ~naweap, natech, ~techlevel.medium
-		Description: Troop transport that can move\nunderground to avoid detection.\n  Unarmed
+		Description: actor-sapc.description
 	Mobile:
 		TurnSpeed: 20
 		Speed: 71
@@ -450,14 +450,14 @@ SUBTANK:
 	Valued:
 		Cost: 750
 	Tooltip:
-		Name: Devil's Tongue
+		Name: actor-subtank.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 130
 		Prerequisites: ~naweap, natech, ~techlevel.high
-		Description: Subterranean Flame Tank.\nIs able to move underground.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+		Description: actor-subtank.description
 	Mobile:
 		TurnSpeed: 24
 		Speed: 71
@@ -502,14 +502,14 @@ STNK:
 	Valued:
 		Cost: 1100
 	Tooltip:
-		Name: Stealth Tank
+		Name: actor-stnk.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 150
 		Prerequisites: ~naweap, natech, ~techlevel.high
 		Queue: Vehicle
-		Description: Lightly armoured tank equipped with a personal\nstealth generator. Armed with missiles.\nCan be spotted by infantry at close range.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
+		Description: actor-stnk.description
 	Mobile:
 		TurnSpeed: 20
 		Speed: 85

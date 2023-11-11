@@ -6,14 +6,14 @@ E1:
 	Valued:
 		Cost: 100
 	Tooltip:
-		Name: Minigunner
+		Name: actor-e1.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: barracks
 		Queue: Infantry.GDI, Infantry.Nod
-		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Description: actor-e1.description
 	Mobile:
 		Speed: 54
 	Health:
@@ -39,14 +39,14 @@ E2:
 	Valued:
 		Cost: 160
 	Tooltip:
-		Name: Grenadier
+		Name: actor-e2.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Infantry.GDI
-		Description: Fast infantry armed with grenades. \n  Strong vs Buildings, slow-moving targets
+		Description: actor-e2.description
 	Mobile:
 		Speed: 68
 	Health:
@@ -79,14 +79,14 @@ E3:
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Rocket Soldier
+		Name: actor-e3.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: barracks
 		Queue: Infantry.GDI, Infantry.Nod
-		Description: Anti-tank/Anti-aircraft infantry. \n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
+		Description: actor-e3.description
 	Mobile:
 		Speed: 39
 	Health:
@@ -115,14 +115,14 @@ E4:
 	Valued:
 		Cost: 200
 	Tooltip:
-		Name: Flamethrower
+		Name: actor-e4.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq, ~techlevel.medium
 		Queue: Infantry.Nod
-		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks
+		Description: actor-e4.description
 	Mobile:
 		Speed: 54
 	Health:
@@ -153,14 +153,14 @@ E5:
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Chemical Warrior
+		Name: actor-e5.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: tmpl, ~techlevel.high
 		Queue: Infantry.Nod
-		Description: Advanced general-purpose infantry.\n  Strong vs all Ground units
+		Description: actor-e5.description
 	Mobile:
 		Speed: 54
 		Locomotor: chem
@@ -191,14 +191,14 @@ E6:
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Engineer
+		Name: actor-e6.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: barracks
 		Queue: Infantry.GDI, Infantry.Nod
-		Description: Damages and captures enemy structures.\n  Repairs destroyed vehicles\n  Unarmed
+		Description: actor-e6.description
 	Mobile:
 		Speed: 46
 	Health:
@@ -229,14 +229,14 @@ RMBO:
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Commando
+		Name: actor-rmbo.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: eye, ~techlevel.high
 		Queue: Infantry.GDI
-		Description: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+		Description: actor-rmbo.description
 	Mobile:
 		Speed: 68
 	Health:
@@ -270,7 +270,7 @@ PVICE:
 		Queue: Infantry.GDI, Infantry.Nod
 		BuildPaletteOrder: 50
 		Prerequisites: ~disabled
-		Description: Mutated abomination that spits liquid Tiberium.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
+		Description: actor-pvice-description
 	Tooltip:
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
@@ -280,43 +280,43 @@ PVICE:
 STEG:
 	Inherits: ^DINO
 	Tooltip:
-		Name: Stegosaurus
+		Name: actor-steg.name
 	Armament:
 		Weapon: tail
 	WithDeathAnimation:
 		DeathSequencePalette: terrain
 		DeathPaletteIsPlayerPalette: false
 	Buildable:
-		Description: A large, heavily built, herbivorous quadruped
+		Description: actor-steg.description
 
 TREX:
 	Inherits: ^DINO
 	Tooltip:
-		Name: Tyrannosaurus rex
+		Name: actor-trex.name
 	Armament:
 		Weapon: teeth
 	Selectable:
 		Bounds: 2048, 1536, 85, 42
 		DecorationBounds: 2218, 1621
 	Buildable:
-		Description: Bipedal carnivore with a massive skull
+		Description: actor-trex.description
 
 TRIC:
 	Inherits: ^DINO
 	Tooltip:
-		Name: Triceratops
+		Name: actor-tric.name
 	Armament:
 		Weapon: horn
 	Buildable:
-		Description: Quadruped with large bony frill and three horns
+		Description: actor-tric.description
 	Selectable:
 		DecorationBounds: 1450, 1024, 0, 85
 
 RAPT:
 	Inherits: ^DINO
 	Tooltip:
-		Name: Velociraptor
+		Name: actor-rapt.name
 	Armament:
 		Weapon: claw
 	Buildable:
-		Description: Bipedal with enlarged sickle-shaped claw on each hindfoot
+		Description: actor-rapt.description

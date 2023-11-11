@@ -48,7 +48,7 @@ APC:
 
 DTRK:
 	Tooltip:
-		Name: Bomb Truck
+		Name: actor-dtrk-name
 	Health:
 		HP: 10000
 	Armor:

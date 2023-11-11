@@ -463,7 +463,7 @@
 ^Crate:
 	HiddenUnderFog:
 	Tooltip:
-		Name: Crate
+		Name: meta-crate-name
 	Crate:
 		Duration: 4500
 		TerrainTypes: Clear, Rough, Sand, Road, DirtRoad, Tiberium, BlueTiberium, Veins, Green, Pavement
@@ -764,7 +764,7 @@
 	Voiced:
 		VoiceSet: Civilian
 	Tooltip:
-		Name: Civilian
+		Name: meta-civilianinfantry-name
 	ScaredyCat:
 	Wanders:
 		MinMoveDelay: 150
@@ -996,7 +996,7 @@
 	ScriptTriggers:
 	Interactable:
 	Tooltip:
-		GenericName: Destroyed Aircraft
+		GenericName: meta-aircrafthusk-generic-name
 	FallsToEarth:
 		Moves: true
 		Velocity: 112
@@ -1041,7 +1041,7 @@
 	Inherits@1: ^SpriteActor
 	Interactable:
 	Tooltip:
-		Name: Blossom Tree
+		Name: meta-blossomtree-name
 	RenderSprites:
 		Palette: player
 	WithSpriteBody:
@@ -1074,7 +1074,7 @@
 		Footprint: x
 		Dimensions: 1, 1
 	Tooltip:
-		Name: Tree
+		Name: meta-tree-name
 	MapEditorData:
 		Categories: Tree
 	RequiresSpecificOwners:
@@ -1119,7 +1119,7 @@
 		Footprint: x
 		Dimensions: 1, 1
 	Tooltip:
-		Name: Rock
+		Name: meta-rock-name
 	MapEditorData:
 		Categories: Decoration
 	RequiresSpecificOwners:
@@ -1143,17 +1143,17 @@
 ^Box:
 	Inherits: ^Decoration
 	Tooltip:
-		Name: Box
+		Name: meta-box-name
 
 ^Drum:
 	Inherits: ^Decoration
 	Tooltip:
-		Name: Drum
+		Name: meta-drum-name
 
 ^Palette:
 	Inherits: ^Decoration
 	Tooltip:
-		Name: Palette
+		Name: meta-palette-name
 
 ^Defense:
 	Inherits: ^Building
@@ -1240,7 +1240,7 @@
 ^Railway:
 	Inherits: ^TerrainOverlay
 	EditorOnlyTooltip:
-		Name: Railway
+		Name: meta-railway-name
 	ChangesTerrain:
 		TerrainType: Rail
 	MapEditorData:
@@ -1286,7 +1286,7 @@
 		OpenSequence: open
 	Tooltip:
 	Buildable:
-		Description: Automated barrier that opens for allied units.
+		Description: meta-gate-description
 	HitShape:
 		Type: Rectangle
 			LocalYaw: -128

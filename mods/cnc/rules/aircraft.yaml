@@ -4,14 +4,14 @@ TRAN:
 	Valued:
 		Cost: 750
 	Tooltip:
-		Name: Chinook Transport
+		Name: actor-tran.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: hpad
 		Queue: Aircraft.GDI, Aircraft.Nod
-		Description: Fast Infantry Transport Helicopter.\n  Unarmed
+		Description: actor-tran.description
 	Aircraft:
 		TurnSpeed: 20
 		Speed: 150
@@ -56,14 +56,14 @@ HELI:
 	Valued:
 		Cost: 1200
 	Tooltip:
-		Name: Apache Longbow
+		Name: actor-heli.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq, ~techlevel.medium
 		Queue: Aircraft.Nod
-		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles and\n  Aircraft\n  Weak vs Tanks
+		Description: actor-heli.description
 	Aircraft:
 		TurnSpeed: 28
 		Speed: 180
@@ -127,14 +127,14 @@ ORCA:
 	Valued:
 		Cost: 1200
 	Tooltip:
-		Name: Orca
+		Name: actor-orca.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq, ~techlevel.medium
 		Queue: Aircraft.GDI
-		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+		Description: actor-orca.description
 	Aircraft:
 		TurnSpeed: 28
 		Speed: 186
@@ -185,7 +185,7 @@ C17:
 	Inherits@TRANSPORT: ^Transport
 	Interactable:
 	Tooltip:
-		Name: Supply Aircraft
+		Name: actor-c17-name
 	Valued:
 		Cost: 2000
 	UpdatesPlayerStatistics:
@@ -232,7 +232,7 @@ A10:
 	Inherits: ^Plane
 	Interactable:
 	Tooltip:
-		Name: A10 Bomber
+		Name: actor-a10-name
 	Valued:
 		Cost: 2000
 	UpdatesPlayerStatistics:
@@ -266,7 +266,7 @@ A10:
 TRAN.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
-		Name: Chinook Transport
+		Name: actor-tran-husk-name
 	Aircraft:
 		TurnSpeed: 20
 		Speed: 140
@@ -285,7 +285,7 @@ TRAN.Husk:
 HELI.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
-		Name: Apache Longbow
+		Name: actor-heli-husk-name
 	Aircraft:
 		TurnSpeed: 16
 		Speed: 186
@@ -301,7 +301,7 @@ HELI.Husk:
 ORCA.Husk:
 	Inherits: ^HelicopterHusk
 	Tooltip:
-		Name: Orca
+		Name: actor-orca-husk-name
 	Aircraft:
 		TurnSpeed: 16
 		Speed: 186
