@@ -35,8 +35,8 @@ namespace OpenRA.Mods.Common.Lint
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
 				{
-					var fields = Utility.GetFields(traitInfo.GetType());
-					foreach (var field in fields)
+					var traitType = traitInfo.GetType();
+					foreach (var field in Utility.GetFields(traitType))
 					{
 						var translationReference = Utility.GetCustomAttributes<TranslationReferenceAttribute>(field, true).FirstOrDefault();
 						if (translationReference == null)
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Lint
 							if (key == null)
 							{
 								if (!translationReference.Optional)
-									emitError($"Trait `{traitInfo.InstanceName}` on field `{field.Name}` has an empty translation reference.");
+									emitError($"Actor type `{actorInfo.Key}` has an empty translation reference in trait `{traitType.Name[..^4]}.{field.Name}`.");
 
 								continue;
 							}
