@@ -1410,7 +1410,7 @@ namespace OpenRA.Mods.Common.Server
 			}
 		}
 
-		static Color SanitizePlayerColor(S server, Color askedColor, int playerIndex, Connection connectionToEcho = null)
+		public static Color SanitizePlayerColor(S server, Color askedColor, int playerIndex, Connection connectionToEcho = null)
 		{
 			lock (server.LobbyInfo)
 			{
