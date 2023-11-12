@@ -72,5 +72,12 @@ namespace OpenRA.Support
 				return samples[n];
 			}
 		}
+
+		public void ResetSamples()
+		{
+			head = 1;
+			tail = 0;
+			Val = 0.0;
+		}
 	}
 }

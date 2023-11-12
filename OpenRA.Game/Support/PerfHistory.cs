@@ -47,5 +47,11 @@ namespace OpenRA.Support
 				if (item.HasNormalTick)
 					item.Tick();
 		}
+
+		public static void Reset()
+		{
+			foreach (var item in Items.Values)
+				item.ResetSamples();
+		}
 	}
 }
