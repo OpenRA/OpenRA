@@ -219,6 +219,7 @@ LoadScreen: LogoStripeLoadScreen
 
 ServerTraits:
 	LobbyCommands
+	SkirmishLogic
 	PlayerPinger
 	MasterServerPinger
 	LobbySettingsNotification

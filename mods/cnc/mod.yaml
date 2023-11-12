@@ -178,6 +178,7 @@ LoadScreen: CncLoadScreen
 
 ServerTraits:
 	LobbyCommands
+	SkirmishLogic
 	PlayerPinger
 	MasterServerPinger
 	LobbySettingsNotification
