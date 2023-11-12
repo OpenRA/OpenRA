@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Server
 
 		void INotifyServerStart.ServerStarted(S server)
 		{
-			if (server.Type != ServerType.Local && LanGameBeacon != null)
+			if (server.IsMultiplayer && LanGameBeacon != null)
 				LanGameBeacon.Start();
 		}
 
