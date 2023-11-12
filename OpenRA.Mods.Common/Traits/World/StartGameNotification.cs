@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new StartGameNotification(this); }
 	}
 
-	sealed class StartGameNotification : IWorldLoaded, INotifyGameLoaded, INotifyGameSaved
+	sealed class StartGameNotification : IPostWorldLoaded, INotifyGameLoaded, INotifyGameSaved
 	{
 		readonly StartGameNotificationInfo info;
 		public StartGameNotification(StartGameNotificationInfo info)
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
+		void IPostWorldLoaded.PostWorldLoaded(World world, WorldRenderer wr)
 		{
 			if (!world.IsLoadingGameSave)
 			{

@@ -223,6 +223,10 @@ namespace OpenRA
 			//   Much better to clean up now then to drop frames during gameplay for GC pauses.
 			GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
 			GC.Collect();
+
+			// PostLoadComplete is designed for anything that should trigger at the very end of loading.
+			// e.g. audio notifications that the game is starting.
+			OrderManager.World.PostLoadComplete(worldRenderer);
 		}
 
 		public static void RestartGame()
