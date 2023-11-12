@@ -602,7 +602,10 @@ namespace OpenRA
 
 			if (orderManager.LastTickTime.ShouldAdvance(tick))
 			{
-				using (new PerfSample("tick_time"))
+				if (orderManager.GameStarted && orderManager.LocalFrameNumber == 0)
+					PerfHistory.Reset(); // Remove history that occurred whilst the new game was loading.
+
+				using (var sample = new PerfSample("tick_time"))
 				{
 					orderManager.LastTickTime.AdvanceTickTime(tick);
 
@@ -611,7 +614,11 @@ namespace OpenRA
 					Sync.RunUnsynced(world, orderManager.TickImmediate);
 
 					if (world == null)
+					{
+						if (orderManager.GameStarted)
+							PerfHistory.Reset(); // Remove old history when a new game starts.
 						return;
+					}
 
 					if (orderManager.TryTick())
 					{
