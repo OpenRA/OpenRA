@@ -936,7 +936,7 @@ namespace OpenRA
 			return server.GetEndpointForLocalConnection();
 		}
 
-		public static ConnectionTarget CreateLocalServer(string map)
+		public static ConnectionTarget CreateLocalServer(string map, bool isSkirmish = false)
 		{
 			var settings = new ServerSettings()
 			{
@@ -952,7 +952,7 @@ namespace OpenRA
 			{
 				new(IPAddress.Loopback, 0)
 			};
-			server = new Server.Server(endpoints, settings, ModData, ServerType.Local);
+			server = new Server.Server(endpoints, settings, ModData, isSkirmish ? ServerType.Skirmish : ServerType.Local);
 
 			return server.GetEndpointForLocalConnection();
 		}

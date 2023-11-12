@@ -40,8 +40,9 @@ namespace OpenRA.Server
 	public enum ServerType
 	{
 		Local = 0,
-		Multiplayer = 1,
-		Dedicated = 2
+		Skirmish = 1,
+		Multiplayer = 2,
+		Dedicated = 3
 	}
 
 	public sealed class Server
@@ -117,6 +118,7 @@ namespace OpenRA.Server
 
 		public readonly MersenneTwister Random = new();
 		public readonly ServerType Type;
+		public bool IsMultiplayer => Type == ServerType.Dedicated || Type == ServerType.Multiplayer;
 
 		public readonly List<Connection> Conns = new();
 
@@ -304,10 +306,10 @@ namespace OpenRA.Server
 
 			randomSeed = (int)DateTime.Now.ToBinary();
 
-			if (type != ServerType.Local && settings.EnableGeoIP)
+			if (IsMultiplayer && settings.EnableGeoIP)
 				GeoIP.Initialize();
 
-			if (type != ServerType.Local)
+			if (IsMultiplayer)
 				Nat.TryForwardPort(Settings.ListenPort, Settings.ListenPort);
 
 			foreach (var trait in modData.Manifest.ServerTraits)
@@ -381,7 +383,7 @@ namespace OpenRA.Server
 					if (State == ServerState.ShuttingDown)
 					{
 						EndGame();
-						if (type != ServerType.Local)
+						if (IsMultiplayer)
 							Nat.TryRemovePortForward();
 						break;
 					}
@@ -489,7 +491,7 @@ namespace OpenRA.Server
 				{
 					Name = OpenRA.Settings.SanitizedPlayerName(handshake.Client.Name),
 					IPAddress = ipAddress.ToString(),
-					AnonymizedIPAddress = Type != ServerType.Local && Settings.ShareAnonymizedIPs ? Session.AnonymizeIP(ipAddress) : null,
+					AnonymizedIPAddress = IsMultiplayer && Settings.ShareAnonymizedIPs ? Session.AnonymizeIP(ipAddress) : null,
 					Location = GeoIP.LookupCountry(ipAddress),
 					Index = newConn.PlayerIndex,
 					PreferredColor = handshake.Client.PreferredColor,
@@ -601,7 +603,7 @@ namespace OpenRA.Server
 					}
 				}
 
-				if (Type == ServerType.Local)
+				if (!IsMultiplayer)
 				{
 					// Local servers can only be joined by the local client, so we can trust their identity without validation
 					client.Fingerprint = handshake.Fingerprint;
@@ -992,10 +994,7 @@ namespace OpenRA.Server
 				{
 					case "Command":
 					{
-						var handledBy = serverTraits.WithInterface<IInterpretCommand>()
-							.FirstOrDefault(t => t.InterpretCommand(this, conn, GetClient(conn), o.TargetString));
-
-						if (handledBy == null)
+						if (!InterpretCommand(o.TargetString, conn))
 						{
 							Log.Write("server", $"Unknown server command: {o.TargetString}");
 							SendLocalizedMessageTo(conn, UnknownServerCommand, Translation.Arguments("command", o.TargetString));
@@ -1006,7 +1005,7 @@ namespace OpenRA.Server
 
 					case "Chat":
 					{
-						if (Type == ServerType.Local || !playerMessageTracker.IsPlayerAtFloodLimit(conn))
+						if (!IsMultiplayer || !playerMessageTracker.IsPlayerAtFloodLimit(conn))
 							DispatchOrdersToClients(conn, 0, o.Serialize());
 
 						break;
@@ -1352,7 +1351,7 @@ namespace OpenRA.Server
 
 				State = ServerState.GameStarted;
 
-				if (Type != ServerType.Local)
+				if (IsMultiplayer)
 					OrderLatency = gameSpeed.OrderLatency;
 
 				if (GameSave == null && LobbyInfo.GlobalSettings.GameSavesEnabled)
@@ -1410,6 +1409,15 @@ namespace OpenRA.Server
 					}
 				}
 			}
+		}
+
+		public bool InterpretCommand(string command, Connection conn)
+		{
+			foreach (var t in serverTraits.WithInterface<IInterpretCommand>())
+				if (t.InterpretCommand(this, conn, GetClient(conn), command))
+					return true;
+
+			return false;
 		}
 
 		public ConnectionTarget GetEndpointForLocalConnection()
