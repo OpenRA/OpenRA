@@ -98,7 +98,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Session.MapStatus mapStatus;
 
 		bool chatEnabled;
-		bool addBotOnMapLoad;
 		bool disableTeamChat;
 		bool insufficientPlayerSpawns;
 		bool teamChat;
@@ -552,10 +551,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				});
 			}
 
-			// Add a bot on the first lobbyinfo update
-			if (skirmishMode)
-				addBotOnMapLoad = true;
-
 			if (logicArgs.TryGetValue("ChatLineSound", out var yaml))
 				chatLineSound = yaml.Value;
 			if (logicArgs.TryGetValue("PlayerJoinedSound", out yaml))
@@ -647,22 +642,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			map = modData.MapCache[uid];
+
+			// Tell the server that we have the map
 			if (map.Status == MapStatus.Available)
-			{
-				// Tell the server that we have the map
 				orderManager.IssueOrder(Order.Command($"state {Session.ClientState.NotReady}"));
 
-				if (addBotOnMapLoad)
-				{
-					var slot = orderManager.LobbyInfo.FirstEmptyBotSlot();
-					var bot = map.PlayerActorInfo.TraitInfos<IBotInfo>().Select(t => t.Type).FirstOrDefault();
-					var botController = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin);
-					if (slot != null && bot != null)
-						orderManager.IssueOrder(Order.Command($"slot_bot {slot} {botController.Index} {bot}"));
-
-					addBotOnMapLoad = false;
-				}
-			}
+			// We don't have the map
 			else if (map.Status != MapStatus.DownloadAvailable && Game.Settings.Game.AllowDownloading)
 				modData.MapCache.QueryRemoteMapDetails(services.MapRepository, new[] { uid });
 		}
