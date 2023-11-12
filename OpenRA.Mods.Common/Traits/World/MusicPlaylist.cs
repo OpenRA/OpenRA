@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new MusicPlaylist(init.World, this); }
 	}
 
-	public class MusicPlaylist : INotifyActorDisposing, IGameOver, IWorldLoaded, INotifyGameLoaded
+	public class MusicPlaylist : INotifyActorDisposing, IGameOver, IPostWorldLoaded, INotifyGameLoaded
 	{
 		readonly MusicPlaylistInfo info;
 		readonly World world;
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
+		void IPostWorldLoaded.PostWorldLoaded(World world, WorldRenderer wr)
 		{
 			// Reset any bogus pre-existing state
 			Game.Sound.DisableWorldSounds = info.DisableWorldSounds;
