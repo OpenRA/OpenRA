@@ -542,7 +542,7 @@ moveflsh:
 		Start: 3874
 		Length: 5
 		Tick: 80
-		BlendMode: Multiply
+		BlendMode: Subtractive
 		ZOffset: 2047
 
 resources:
