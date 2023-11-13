@@ -9,7 +9,6 @@
 		InaccuracyType: PerCellIncrement
 		Image: RPG
 		TrailImage: bazooka_trail2
-		TrailPalette: effect75alpha
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
 		Damage: 3000
@@ -103,7 +102,6 @@ Rocket:
 		Damage: 625
 	Warhead@3Eff: CreateEffect
 		Explosions: rocket_explosion
-		ExplosionPalette: effect75alpha
 
 TowerMissile:
 	Inherits: ^Missile

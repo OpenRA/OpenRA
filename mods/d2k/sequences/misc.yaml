@@ -7,6 +7,8 @@ explosion:
 		Filename: DATA.R8
 		Start: 3879
 		Length: 5
+		BlendMode: Alpha
+		Alpha: 0.5
 	piffs:
 		Filename: DATA.R8
 		Start: 3682
@@ -31,6 +33,7 @@ explosion:
 		Filename: DATA.R8
 		Start: 3686
 		Length: 15
+		BlendMode: Alpha
 	building:
 		Filename: DATA.R8
 		Start: 3701
@@ -121,6 +124,7 @@ bazooka_trail2:
 		Length: 4
 		Tick: 80
 		ZOffset: 1023
+		Alpha: 0.5
 
 deviator_trail:
 	idle:
@@ -283,6 +287,7 @@ crate-effects:
 		Filename: DATA.R8
 		Start: 4200
 		Length: 18
+		Alpha: 0.5
 	hide-map:
 		Filename: DATA.R8
 		Frames: 4217, 4216, 4215, 4214, 4213, 4212, 4211, 4210, 4209, 4208, 4207, 4206, 4205, 4204, 4203, 4202, 4201, 4200
@@ -537,6 +542,15 @@ spicebloom:
 		BlendMode: Additive
 		ZOffset: 511
 		Offset: 0, -16
+
+spicebloom.editor:
+	idle:
+		Filename: DATA.R8
+		Start: 109
+		Length: 1
+		ZOffset: -1023
+		Offset: -16,-16
+		Alpha: 0.5
 
 moveflsh:
 	idle:
