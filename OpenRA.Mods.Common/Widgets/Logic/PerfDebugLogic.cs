@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			perfText.IsVisible = () => Game.Settings.Debug.PerfText;
 
 			var fpsTimer = Stopwatch.StartNew();
-			var fpsReferenceFrame = 0;
+			var fpsReferenceFrame = Game.RenderFrame;
 			var fps = 0;
 			perfText.GetText = () =>
 			{
