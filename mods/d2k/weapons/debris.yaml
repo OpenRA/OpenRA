@@ -41,7 +41,6 @@ Debris2:
 	Projectile: Bullet
 		Image: shrapnel2
 		TrailImage: small_trail
-		TrailPalette: effect75alpha
 		TrailInterval: 1
 	Warhead@1Dam: SpreadDamage
 		Damage: 2500

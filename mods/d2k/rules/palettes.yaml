@@ -27,14 +27,6 @@
 		Filename: DATA.R8
 		Frame: 3874
 		AllowModifiers: false
-	PaletteFromPaletteWithAlpha@effect75alpha:
-		Name: effect75alpha
-		BasePalette: effect
-		Alpha: 0.75
-	PaletteFromPaletteWithAlpha@effect50alpha:
-		Name: effect50alpha
-		BasePalette: effect
-		Alpha: 0.5
 	PaletteFromEmbeddedSpritePalette@shroud:
 		Name: shroud
 		Filename: DATA.R8
