@@ -650,6 +650,7 @@ sandworm:
 		Start: 3818
 		Length: 20
 		Tick: 100
+		Alpha: 0.5
 	idle:
 		Filename: DATA.R8
 		Start: 39
