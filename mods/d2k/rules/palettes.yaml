@@ -22,15 +22,10 @@
 		BasePalette: d2k
 		RemapIndex: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
 		AllowModifiers: false
-	PaletteFromEmbeddedSpritePalette@moveflash-base:
-		Name: moveflash-base
+	PaletteFromEmbeddedSpritePalette@moveflash:
+		Name: moveflash
 		Filename: DATA.R8
 		Frame: 3874
-	PaletteFromScaledPalette@moveflash:
-		Name: moveflash
-		BasePalette: moveflash-base
-		Scale: -1
-		Offset: 255
 		AllowModifiers: false
 	PaletteFromPaletteWithAlpha@effect75alpha:
 		Name: effect75alpha
