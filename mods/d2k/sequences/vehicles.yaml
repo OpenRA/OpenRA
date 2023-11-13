@@ -27,7 +27,7 @@ harvester:
 		Facings: -8
 		Tick: 80
 		ZOffset: 1
-		BlendMode: Multiply
+		Alpha: 0.5
 	dock:
 		Filename: DATA.R8
 		Start: 3623

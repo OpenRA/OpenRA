@@ -100,7 +100,6 @@ harvester:
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
 	WithHarvestOverlay:
-		Palette: effect50alpha
 	WithDockingAnimation:
 	AttractsWorms:
 		Intensity: 700
