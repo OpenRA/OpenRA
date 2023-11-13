@@ -296,7 +296,6 @@ starport.atreides:
 		Length: 7
 		ZOffset: -1c511
 		Offset: -48,48
-		BlendMode: Additive
 		Tick: 200
 	damaged-active:
 		Filename: DATA.R8
@@ -304,7 +303,6 @@ starport.atreides:
 		Length: 7
 		ZOffset: -1c511
 		Offset: -48,48
-		BlendMode: Additive
 		Tick: 200
 	make:
 		Filename: DATA.R8
@@ -932,7 +930,6 @@ starport.harkonnen:
 		Length: 7
 		ZOffset: -1c511
 		Offset: -48,48
-		BlendMode: Additive
 		Tick: 200
 	damaged-active:
 		Filename: DATA.R8
@@ -940,7 +937,6 @@ starport.harkonnen:
 		Length: 7
 		ZOffset: -1c511
 		Offset: -48,48
-		BlendMode: Additive
 		Tick: 200
 	make:
 		Filename: DATA.R8
@@ -1436,7 +1432,6 @@ starport.ordos:
 		Length: 7
 		ZOffset: -1c511
 		Offset: -48,48
-		BlendMode: Additive
 		Tick: 200
 	damaged-active:
 		Filename: DATA.R8
@@ -1444,7 +1439,6 @@ starport.ordos:
 		Length: 7
 		ZOffset: -1c511
 		Offset: -48,48
-		BlendMode: Additive
 		Tick: 200
 	make:
 		Filename: DATA.R8
@@ -1922,7 +1916,6 @@ starport.smuggler:
 		Length: 7
 		ZOffset: -1c511
 		Offset: -48,48
-		BlendMode: Additive
 		Tick: 200
 	damaged-active:
 		Filename: DATA.R8
@@ -1930,7 +1923,6 @@ starport.smuggler:
 		Length: 7
 		ZOffset: -1c511
 		Offset: -48,48
-		BlendMode: Additive
 		Tick: 200
 	make:
 		Filename: DATA.R8

@@ -675,7 +675,6 @@ starport:
 			smuggler: starport.smuggler
 	WithDeliveryOverlay:
 		RequiresCondition: !build-incomplete
-		Palette: starportlights
 	ProductionBar:
 		ProductionType: Starport
 	PrimaryBuilding:
@@ -926,7 +925,6 @@ repair_pad:
 			corrino: repair_pad.harkonnen
 	WithRepairOverlay:
 		RequiresCondition: !build-incomplete
-		Palette: effect75alpha
 	Power:
 		Amount: -50
 	ProvidesPrerequisite@buildingname:
