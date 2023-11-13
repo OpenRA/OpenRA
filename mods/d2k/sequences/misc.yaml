@@ -57,6 +57,7 @@ explosion:
 		Filename: DATA.R8
 		Start: 3765
 		Length: 23
+		Alpha: 0.5
 		BlendMode: Alpha
 		Offset: 12, -10
 		Tick: 120
@@ -128,6 +129,7 @@ deviator_trail:
 		Length: 5
 		Tick: 80
 		ZOffset: 1023
+		Alpha: 0.5
 
 laserfire:
 	idle:

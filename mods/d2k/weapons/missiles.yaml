@@ -140,7 +140,7 @@ DeviatorMissile:
 		Inaccuracy: 96
 		Image: MISSILE
 		TrailImage: deviator_trail
-		TrailPalette: deviatorgas
+		TrailPalette: player
 		TrailUsePlayerPalette: true
 	Warhead@1Dam: SpreadDamage
 		Damage: 1000
@@ -158,7 +158,7 @@ DeviatorMissile:
 	-Warhead@2Smu:
 	Warhead@3Eff: CreateEffect
 		Explosions: deviator
-		ExplosionPalette: deviatorgas
+		ExplosionPalette: player
 		UsePlayerPalette: true
 		-ImpactSounds:
 	Warhead@5OwnerChange: ChangeOwner
