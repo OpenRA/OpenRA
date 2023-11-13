@@ -88,13 +88,14 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Harvester : DockClientBase<HarvesterInfo>, IIssueOrder, IResolveOrder, IOrderVoice,
-		ISpeedModifier, ISync, INotifyCreated
+		ISpeedModifier, ISync, INotifyCreated, INotifyIdle
 	{
 		readonly Mobile mobile;
 		readonly IResourceLayer resourceLayer;
 		readonly ResourceClaimLayer claimLayer;
 		readonly IStoresResources[] storesResources;
 		int conditionToken = Actor.InvalidConditionToken;
+		bool hasSearched;
 
 		public override BitSet<DockType> GetDockType => Info.Type;
 
@@ -108,16 +109,12 @@ namespace OpenRA.Mods.Common.Traits
 			storesResources = self.TraitsImplementing<IStoresResources>().Where(sr => info.Resources.Any(r => sr.HasType(r))).ToArray();
 			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
+			hasSearched = !Info.SearchOnCreation;
 		}
 
 		protected override void Created(Actor self)
 		{
 			UpdateCondition(self);
-
-			// Note: This is queued in a FrameEndTask because otherwise the activity is dropped/overridden while moving out of a factory.
-			if (Info.SearchOnCreation)
-				self.World.AddFrameEndTask(w => self.QueueActivity(new FindAndDeliverResources(self)));
-
 			base.Created(self);
 		}
 
@@ -275,6 +272,15 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (conditionToken != Actor.InvalidConditionToken)
 				conditionToken = self.RevokeCondition(conditionToken);
+		}
+
+		public void TickIdle(Actor self)
+		{
+			if (!hasSearched)
+			{
+				self.QueueActivity(new FindAndDeliverResources(self));
+				hasSearched = true;
+			}
 		}
 
 		sealed class HarvestOrderTargeter : IOrderTargeter
