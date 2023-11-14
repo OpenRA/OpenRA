@@ -172,10 +172,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.BeforeGameStart += OnGameStart;
 			Game.ConnectionStateChanged += ConnectionStateChanged;
 
-			ChromeMetrics.TryGet<string>("ChatLineSound", out chatLineSound);
-			ChromeMetrics.TryGet<string>("PlayerJoinedSound", out playerJoinedSound);
-			ChromeMetrics.TryGet<string>("PlayerLeftSound", out playerLeftSound);
-			ChromeMetrics.TryGet<string>("LobbyOptionChangedSound", out lobbyOptionChangedSound);
+			ChromeMetrics.TryGet("ChatLineSound", out chatLineSound);
+			ChromeMetrics.TryGet("PlayerJoinedSound", out playerJoinedSound);
+			ChromeMetrics.TryGet("PlayerLeftSound", out playerLeftSound);
+			ChromeMetrics.TryGet("LobbyOptionChangedSound", out lobbyOptionChangedSound);
 
 			var name = lobby.GetOrNull<LabelWidget>("SERVER_NAME");
 			if (name != null)
