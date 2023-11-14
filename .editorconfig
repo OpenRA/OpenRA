@@ -913,7 +913,7 @@ dotnet_diagnostic.CA2231.severity = warning
 
 # Provide correct arguments to formatting methods.
 #dotnet_code_quality.CA2241.additional_string_formatting_methods =
-dotnet_code_quality.CA2241.try_determine_additional_string_formatting_methods_automatically = true
+#dotnet_code_quality.CA2241.try_determine_additional_string_formatting_methods_automatically = false
 dotnet_diagnostic.CA2241.severity = warning
 
 # Test for NaN correctly.
