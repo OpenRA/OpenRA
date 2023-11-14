@@ -63,8 +63,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					TranslationProvider.GetString(Slot), new List<SlotDropDownOption>
 					{
-						new SlotDropDownOption(open, "slot_open " + slot.PlayerReference, () => !slot.Closed && client == null),
-						new SlotDropDownOption(closed, "slot_close " + slot.PlayerReference, () => slot.Closed)
+						new(open, "slot_open " + slot.PlayerReference, () => !slot.Closed && client == null),
+						new(closed, "slot_close " + slot.PlayerReference, () => slot.Closed)
 					}
 				}
 			};
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var options = new List<DropDownOption>
 			{
-				new DropDownOption
+				new()
 				{
 					Title = "Kick",
 					OnClick = onClick

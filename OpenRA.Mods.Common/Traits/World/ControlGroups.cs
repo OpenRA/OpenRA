@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			return new List<MiniYamlNode>()
 			{
-				new MiniYamlNode("Groups", new MiniYaml("", groups))
+				new("Groups", new MiniYaml("", groups))
 			};
 		}
 

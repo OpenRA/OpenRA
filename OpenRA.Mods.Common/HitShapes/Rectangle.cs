@@ -73,34 +73,34 @@ namespace OpenRA.Mods.Common.HitShapes
 
 			combatOverlayVertsTop = new WVec[]
 			{
-				new WVec(TopLeft.X, TopLeft.Y, VerticalTopOffset),
-				new WVec(BottomRight.X, TopLeft.Y, VerticalTopOffset),
-				new WVec(BottomRight.X, BottomRight.Y, VerticalTopOffset),
-				new WVec(TopLeft.X, BottomRight.Y, VerticalTopOffset),
+				new(TopLeft.X, TopLeft.Y, VerticalTopOffset),
+				new(BottomRight.X, TopLeft.Y, VerticalTopOffset),
+				new(BottomRight.X, BottomRight.Y, VerticalTopOffset),
+				new(TopLeft.X, BottomRight.Y, VerticalTopOffset),
 			};
 
 			combatOverlayVertsBottom = new WVec[]
 			{
-				new WVec(TopLeft.X, TopLeft.Y, VerticalBottomOffset),
-				new WVec(BottomRight.X, TopLeft.Y, VerticalBottomOffset),
-				new WVec(BottomRight.X, BottomRight.Y, VerticalBottomOffset),
-				new WVec(TopLeft.X, BottomRight.Y, VerticalBottomOffset),
+				new(TopLeft.X, TopLeft.Y, VerticalBottomOffset),
+				new(BottomRight.X, TopLeft.Y, VerticalBottomOffset),
+				new(BottomRight.X, BottomRight.Y, VerticalBottomOffset),
+				new(TopLeft.X, BottomRight.Y, VerticalBottomOffset),
 			};
 
 			combatOverlayVertsSide1 = new WVec[]
 			{
-				new WVec(TopLeft.X, TopLeft.Y, VerticalBottomOffset),
-				new WVec(TopLeft.X, TopLeft.Y, VerticalTopOffset),
-				new WVec(TopLeft.X, BottomRight.Y, VerticalTopOffset),
-				new WVec(TopLeft.X, BottomRight.Y, VerticalBottomOffset),
+				new(TopLeft.X, TopLeft.Y, VerticalBottomOffset),
+				new(TopLeft.X, TopLeft.Y, VerticalTopOffset),
+				new(TopLeft.X, BottomRight.Y, VerticalTopOffset),
+				new(TopLeft.X, BottomRight.Y, VerticalBottomOffset),
 			};
 
 			combatOverlayVertsSide2 = new WVec[]
 			{
-				new WVec(BottomRight.X, TopLeft.Y, VerticalBottomOffset),
-				new WVec(BottomRight.X, TopLeft.Y, VerticalTopOffset),
-				new WVec(BottomRight.X, BottomRight.Y, VerticalTopOffset),
-				new WVec(BottomRight.X, BottomRight.Y, VerticalBottomOffset),
+				new(BottomRight.X, TopLeft.Y, VerticalBottomOffset),
+				new(BottomRight.X, TopLeft.Y, VerticalTopOffset),
+				new(BottomRight.X, BottomRight.Y, VerticalTopOffset),
+				new(BottomRight.X, BottomRight.Y, VerticalBottomOffset),
 			};
 		}
 

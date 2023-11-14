@@ -228,8 +228,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			return new List<MiniYamlNode>()
 			{
-				new MiniYamlNode("QueuedBuildRequests", FieldSaver.FormatValue(queuedBuildRequests.ToArray())),
-				new MiniYamlNode("IdleUnitCount", FieldSaver.FormatValue(idleUnitCount))
+				new("QueuedBuildRequests", FieldSaver.FormatValue(queuedBuildRequests.ToArray())),
+				new("IdleUnitCount", FieldSaver.FormatValue(idleUnitCount))
 			};
 		}
 

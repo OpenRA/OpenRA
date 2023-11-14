@@ -233,7 +233,7 @@ namespace OpenRA.Network
 
 		public string ToPOSTData(bool lanGame)
 		{
-			var root = new List<MiniYamlNode>() { new MiniYamlNode("Protocol", ProtocolVersion.ToStringInvariant()) };
+			var root = new List<MiniYamlNode>() { new("Protocol", ProtocolVersion.ToStringInvariant()) };
 			foreach (var field in SerializeFields)
 				root.Add(FieldSaver.SaveField(this, field));
 

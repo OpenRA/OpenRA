@@ -583,7 +583,7 @@ namespace OpenRA
 				var data = tp.Trait.IssueTraitData(tp.Actor);
 				if (data != null)
 				{
-					var yaml = new List<MiniYamlNode>() { new MiniYamlNode(i.ToStringInvariant(), new MiniYaml("", data)) };
+					var yaml = new List<MiniYamlNode>() { new(i.ToStringInvariant(), new MiniYaml("", data)) };
 					IssueOrder(Order.FromTargetString("GameSaveTraitData", yaml.WriteToString(), true));
 				}
 

@@ -1365,8 +1365,8 @@ namespace OpenRA.Server
 					{
 						startGameData = new List<MiniYamlNode>()
 						{
-							new MiniYamlNode("SaveLastOrdersFrame", GameSave.LastOrdersFrame.ToStringInvariant()),
-							new MiniYamlNode("SaveSyncFrame", GameSave.LastSyncFrame.ToStringInvariant())
+							new("SaveLastOrdersFrame", GameSave.LastOrdersFrame.ToStringInvariant()),
+							new("SaveSyncFrame", GameSave.LastSyncFrame.ToStringInvariant())
 						}.WriteToString();
 					}
 				}

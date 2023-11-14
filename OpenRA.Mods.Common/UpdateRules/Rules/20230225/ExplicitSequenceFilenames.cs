@@ -103,29 +103,29 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 							fromBackup = true;
 							tilesetExtensionsNode = new List<MiniYamlNodeBuilder>()
 							{
-								new MiniYamlNodeBuilder("TEMPERAT", ".tem"),
-								new MiniYamlNodeBuilder("SNOW", ".sno"),
-								new MiniYamlNodeBuilder("INTERIOR", ".int"),
-								new MiniYamlNodeBuilder("DESERT", ".des"),
-								new MiniYamlNodeBuilder("JUNGLE", ".jun"),
+								new("TEMPERAT", ".tem"),
+								new("SNOW", ".sno"),
+								new("INTERIOR", ".int"),
+								new("DESERT", ".des"),
+								new("JUNGLE", ".jun"),
 							};
 							break;
 						case "ra":
 							fromBackup = true;
 							tilesetExtensionsNode = new List<MiniYamlNodeBuilder>()
 							{
-								new MiniYamlNodeBuilder("TEMPERAT", ".tem"),
-								new MiniYamlNodeBuilder("SNOW", ".sno"),
-								new MiniYamlNodeBuilder("INTERIOR", ".int"),
-								new MiniYamlNodeBuilder("DESERT", ".des"),
+								new("TEMPERAT", ".tem"),
+								new("SNOW", ".sno"),
+								new("INTERIOR", ".int"),
+								new("DESERT", ".des"),
 							};
 							break;
 						case "ts":
 							fromBackup = true;
 							tilesetExtensionsNode = new List<MiniYamlNodeBuilder>()
 							{
-								new MiniYamlNodeBuilder("TEMPERATE", ".tem"),
-								new MiniYamlNodeBuilder("SNOW", ".sno"),
+								new("TEMPERATE", ".tem"),
+								new("SNOW", ".sno"),
 							};
 							break;
 					}
@@ -148,8 +148,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					fromBackup = true;
 					tilesetCodesNode = new List<MiniYamlNodeBuilder>()
 					{
-						new MiniYamlNodeBuilder("TEMPERATE", "t"),
-						new MiniYamlNodeBuilder("SNOW", "a"),
+						new("TEMPERATE", "t"),
+						new("SNOW", "a"),
 					};
 				}
 

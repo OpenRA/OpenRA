@@ -265,7 +265,7 @@ namespace OpenRA.Network
 		{
 			var sessionData = new List<MiniYamlNode>()
 			{
-				new MiniYamlNode("DisabledSpawnPoints", FieldSaver.FormatValue(DisabledSpawnPoints))
+				new("DisabledSpawnPoints", FieldSaver.FormatValue(DisabledSpawnPoints))
 			};
 
 			foreach (var client in Clients)

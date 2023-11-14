@@ -107,7 +107,7 @@ namespace OpenRA.Mods.Common.Orders
 
 			var variants = new List<VariantWrapper>()
 			{
-				new VariantWrapper(worldRenderer, queue, world.Map.Rules.Actors[name])
+				new(worldRenderer, queue, world.Map.Rules.Actors[name])
 			};
 
 			foreach (var v in variants[0].ActorInfo.TraitInfos<PlaceBuildingVariantsInfo>())

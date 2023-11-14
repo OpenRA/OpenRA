@@ -29,7 +29,7 @@ namespace OpenRA.Network
 
 		public string Serialize()
 		{
-			var data = new List<MiniYamlNode> { new MiniYamlNode("Handshake", FieldSaver.Save(this)) };
+			var data = new List<MiniYamlNode> { new("Handshake", FieldSaver.Save(this)) };
 			return data.WriteToString();
 		}
 	}
@@ -79,9 +79,9 @@ namespace OpenRA.Network
 		{
 			var data = new List<MiniYamlNode>
 			{
-				new MiniYamlNode("Handshake", null,
+				new("Handshake", null,
 					new[] { "Mod", "Version", "Password", "Fingerprint", "AuthSignature", "OrdersProtocol" }.Select(p => FieldSaver.SaveField(this, p)).ToList()),
-				new MiniYamlNode("Client", FieldSaver.Save(Client))
+				new("Client", FieldSaver.Save(Client))
 			};
 
 			return data.WriteToString();

@@ -508,20 +508,20 @@ namespace OpenRA.Mods.Common.Traits
 
 			return new List<MiniYamlNode>()
 			{
-				new MiniYamlNode("Squads", "", Squads.Select(s => new MiniYamlNode("Squad", s.Serialize())).ToList()),
-				new MiniYamlNode("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter)),
-				new MiniYamlNode("UnitsHangingAroundTheBase", FieldSaver.FormatValue(unitsHangingAroundTheBase
+				new("Squads", "", Squads.Select(s => new MiniYamlNode("Squad", s.Serialize())).ToList()),
+				new("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter)),
+				new("UnitsHangingAroundTheBase", FieldSaver.FormatValue(unitsHangingAroundTheBase
 					.Where(a => !unitCannotBeOrdered(a))
 					.Select(a => a.ActorID)
 					.ToArray())),
-				new MiniYamlNode("ActiveUnits", FieldSaver.FormatValue(activeUnits
+				new("ActiveUnits", FieldSaver.FormatValue(activeUnits
 					.Where(a => !unitCannotBeOrdered(a))
 					.Select(a => a.ActorID)
 					.ToArray())),
-				new MiniYamlNode("RushTicks", FieldSaver.FormatValue(rushTicks)),
-				new MiniYamlNode("AssignRolesTicks", FieldSaver.FormatValue(assignRolesTicks)),
-				new MiniYamlNode("AttackForceTicks", FieldSaver.FormatValue(attackForceTicks)),
-				new MiniYamlNode("MinAttackForceDelayTicks", FieldSaver.FormatValue(minAttackForceDelayTicks)),
+				new("RushTicks", FieldSaver.FormatValue(rushTicks)),
+				new("AssignRolesTicks", FieldSaver.FormatValue(assignRolesTicks)),
+				new("AttackForceTicks", FieldSaver.FormatValue(attackForceTicks)),
+				new("MinAttackForceDelayTicks", FieldSaver.FormatValue(minAttackForceDelayTicks)),
 			};
 		}
 

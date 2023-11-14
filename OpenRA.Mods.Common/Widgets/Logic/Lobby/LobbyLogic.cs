@@ -280,7 +280,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var botOptions = new List<DropDownOption>()
 						{
-							new DropDownOption()
+							new()
 							{
 								Title = TranslationProvider.GetString(Add),
 								IsSelected = () => false,

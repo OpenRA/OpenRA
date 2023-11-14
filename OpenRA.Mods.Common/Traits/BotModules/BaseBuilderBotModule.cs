@@ -320,8 +320,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			return new List<MiniYamlNode>()
 			{
-				new MiniYamlNode("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter)),
-				new MiniYamlNode("DefenseCenter", FieldSaver.FormatValue(DefenseCenter))
+				new("InitialBaseCenter", FieldSaver.FormatValue(initialBaseCenter)),
+				new("DefenseCenter", FieldSaver.FormatValue(DefenseCenter))
 			};
 		}
 

@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var nodes = new List<MiniYamlNode>()
 			{
-				new MiniYamlNode("Viewport", FieldSaver.FormatValue(worldRenderer.Viewport.CenterPosition))
+				new("Viewport", FieldSaver.FormatValue(worldRenderer.Viewport.CenterPosition))
 			};
 
 			var renderPlayer = worldRenderer.World.RenderPlayer;

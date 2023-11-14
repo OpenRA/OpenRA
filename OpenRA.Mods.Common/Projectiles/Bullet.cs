@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Projectiles
 	public class BulletInfo : IProjectileInfo
 	{
 		[Desc("Projectile speed in WDist / tick, two values indicate variable velocity.")]
-		public readonly WDist[] Speed = { new WDist(17) };
+		public readonly WDist[] Speed = { new(17) };
 
 		[Desc("The maximum/constant/incremental inaccuracy used in conjunction with the InaccuracyType property.")]
 		public readonly WDist Inaccuracy = WDist.Zero;

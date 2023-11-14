@@ -88,12 +88,12 @@ namespace OpenRA.Mods.Cnc.Graphics
 			var channelC = ChannelSelect[(int)t.Channel];
 			return new ModelVertex[6]
 			{
-				new ModelVertex(coord(0, 0), s.Left, s.Top, t.Left, t.Top, channelP, channelC),
-				new ModelVertex(coord(su, 0), s.Right, s.Top, t.Right, t.Top, channelP, channelC),
-				new ModelVertex(coord(su, sv), s.Right, s.Bottom, t.Right, t.Bottom, channelP, channelC),
-				new ModelVertex(coord(su, sv), s.Right, s.Bottom, t.Right, t.Bottom, channelP, channelC),
-				new ModelVertex(coord(0, sv), s.Left, s.Bottom, t.Left, t.Bottom, channelP, channelC),
-				new ModelVertex(coord(0, 0), s.Left, s.Top, t.Left, t.Top, channelP, channelC)
+				new(coord(0, 0), s.Left, s.Top, t.Left, t.Top, channelP, channelC),
+				new(coord(su, 0), s.Right, s.Top, t.Right, t.Top, channelP, channelC),
+				new(coord(su, sv), s.Right, s.Bottom, t.Right, t.Bottom, channelP, channelC),
+				new(coord(su, sv), s.Right, s.Bottom, t.Right, t.Bottom, channelP, channelC),
+				new(coord(0, sv), s.Left, s.Bottom, t.Left, t.Bottom, channelP, channelC),
+				new(coord(0, 0), s.Left, s.Top, t.Left, t.Top, channelP, channelC)
 			};
 		}
 

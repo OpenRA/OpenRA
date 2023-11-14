@@ -209,7 +209,7 @@ namespace OpenRA
 
 			var result = new List<List<MiniYamlNode>>
 			{
-				new List<MiniYamlNode>()
+				new()
 			};
 			var parsedLines = new List<(int Level, string Key, string Value, string Comment, MiniYamlNode.SourceLocation Location)>();
 
