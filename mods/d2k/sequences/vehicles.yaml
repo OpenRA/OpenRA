@@ -60,7 +60,7 @@ trike:
 		BlendMode: Additive
 	icon:
 		Filename: DATA.R8
-		Start: 4305
+		Start: 4277
 		Offset: -30,-24
 
 quad:
