@@ -928,8 +928,8 @@ namespace OpenRA
 		{
 			var endpoints = new List<IPEndPoint>
 			{
-				new IPEndPoint(IPAddress.IPv6Any, settings.ListenPort),
-				new IPEndPoint(IPAddress.Any, settings.ListenPort)
+				new(IPAddress.IPv6Any, settings.ListenPort),
+				new(IPAddress.Any, settings.ListenPort)
 			};
 			server = new Server.Server(endpoints, settings, ModData, ServerType.Multiplayer);
 
@@ -950,7 +950,7 @@ namespace OpenRA
 			// This would break the Restart button, which relies on the PlayerIndex always being the same for local servers
 			var endpoints = new List<IPEndPoint>
 			{
-				new IPEndPoint(IPAddress.Loopback, 0)
+				new(IPAddress.Loopback, 0)
 			};
 			server = new Server.Server(endpoints, settings, ModData, ServerType.Local);
 

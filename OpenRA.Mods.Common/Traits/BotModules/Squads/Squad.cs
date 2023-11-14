@@ -137,8 +137,8 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 		{
 			var nodes = new List<MiniYamlNode>()
 			{
-				new MiniYamlNode("Type", FieldSaver.FormatValue(Type)),
-				new MiniYamlNode("Units", FieldSaver.FormatValue(Units.Select(a => a.ActorID).ToArray()))
+				new("Type", FieldSaver.FormatValue(Type)),
+				new("Units", FieldSaver.FormatValue(Units.Select(a => a.ActorID).ToArray()))
 			};
 
 			if (Target != Target.Invalid)

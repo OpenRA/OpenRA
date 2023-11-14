@@ -85,7 +85,7 @@ namespace OpenRA
 		{
 			var nodes = new List<MiniYamlNode>
 			{
-				new MiniYamlNode("Root", FieldSaver.Save(this))
+				new("Root", FieldSaver.Save(this))
 			};
 
 			for (var i = 0; i < Players.Count; i++)

@@ -238,7 +238,7 @@ namespace OpenRA.Network
 			// Send the trait data first to guarantee that it is available when needed
 			foreach (var kv in TraitData)
 			{
-				var data = new List<MiniYamlNode>() { new MiniYamlNode(kv.Key.ToStringInvariant(), kv.Value) }.WriteToString();
+				var data = new List<MiniYamlNode>() { new(kv.Key.ToStringInvariant(), kv.Value) }.WriteToString();
 				packetFn(0, 0, Order.FromTargetString("SaveTraitData", data, true).Serialize());
 			}
 

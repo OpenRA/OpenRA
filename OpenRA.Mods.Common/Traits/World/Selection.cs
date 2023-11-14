@@ -181,7 +181,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return new List<MiniYamlNode>()
 			{
-				new MiniYamlNode("Selection", FieldSaver.FormatValue(Actors.Select(a => a.ActorID).ToArray()))
+				new("Selection", FieldSaver.FormatValue(Actors.Select(a => a.ActorID).ToArray()))
 			};
 		}
 

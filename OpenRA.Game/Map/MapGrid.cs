@@ -116,12 +116,12 @@ namespace OpenRA
 
 		public readonly WVec[] SubCellOffsets =
 		{
-			new WVec(0, 0, 0),       // full cell - index 0
-			new WVec(-299, -256, 0), // top left - index 1
-			new WVec(256, -256, 0),  // top right - index 2
-			new WVec(0, 0, 0),       // center - index 3
-			new WVec(-299, 256, 0),  // bottom left - index 4
-			new WVec(256, 256, 0),   // bottom right - index 5
+			new(0, 0, 0),       // full cell - index 0
+			new(-299, -256, 0), // top left - index 1
+			new(256, -256, 0),  // top right - index 2
+			new(0, 0, 0),       // center - index 3
+			new(-299, 256, 0),  // bottom left - index 4
+			new(256, 256, 0),   // bottom right - index 5
 		};
 
 		public CellRamp[] Ramps { get; }

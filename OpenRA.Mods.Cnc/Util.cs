@@ -30,10 +30,10 @@ namespace OpenRA.Mods.Cnc
 		// The actual facing associated with each sprite frame.
 		static readonly WAngle[] SpriteFacings =
 		{
-			WAngle.Zero, new WAngle(40), new WAngle(74), new WAngle(112), new WAngle(146), new WAngle(172), new WAngle(200), new WAngle(228),
-			new WAngle(256), new WAngle(284), new WAngle(312), new WAngle(340), new WAngle(370), new WAngle(402), new WAngle(436), new WAngle(472),
-			new WAngle(512), new WAngle(552), new WAngle(588), new WAngle(626), new WAngle(658), new WAngle(684), new WAngle(712), new WAngle(740),
-			new WAngle(768), new WAngle(796), new WAngle(824), new WAngle(852), new WAngle(882), new WAngle(914), new WAngle(948), new WAngle(984)
+			WAngle.Zero, new(40), new(74), new(112), new(146), new(172), new(200), new(228),
+			new(256), new(284), new(312), new(340), new(370), new(402), new(436), new(472),
+			new(512), new(552), new(588), new(626), new(658), new(684), new(712), new(740),
+			new(768), new(796), new(824), new(852), new(882), new(914), new(948), new(984)
 		};
 
 		/// <summary>

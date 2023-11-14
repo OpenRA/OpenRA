@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		// release-to-bleed path.
 		static readonly UpdatePath[] Paths =
 		{
-			new UpdatePath("release-20210321", "release-20230225", new UpdateRule[]
+			new("release-20210321", "release-20230225", new UpdateRule[]
 			{
 				new RenameMPTraits(),
 				new RemovePlayerHighlightPalette(),
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new UnhardcodeBaseBuilderBotModule(),
 			}),
 
-			new UpdatePath("release-20230225", "release-20231010", new UpdateRule[]
+			new("release-20230225", "release-20231010", new UpdateRule[]
 			{
 				new TextNotificationsDisplayWidgetRemoveTime(),
 				new RenameEngineerRepair(),
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveNegativeSequenceLength(),
 			}),
 
-			new UpdatePath("release-20231010", new UpdateRule[]
+			new("release-20231010", new UpdateRule[]
 			{
 				// bleed only changes here.
 				new RemoveValidRelationsFromCapturable(),

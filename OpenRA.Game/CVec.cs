@@ -61,14 +61,14 @@ namespace OpenRA
 
 		public static readonly CVec[] Directions =
 		{
-			new CVec(-1, -1),
-			new CVec(-1,  0),
-			new CVec(-1,  1),
-			new CVec(0, -1),
-			new CVec(0,  1),
-			new CVec(1, -1),
-			new CVec(1,  0),
-			new CVec(1,  1),
+			new(-1, -1),
+			new(-1,  0),
+			new(-1,  1),
+			new(0, -1),
+			new(0,  1),
+			new(1, -1),
+			new(1,  0),
+			new(1,  1),
 		};
 
 		#region Scripting interface

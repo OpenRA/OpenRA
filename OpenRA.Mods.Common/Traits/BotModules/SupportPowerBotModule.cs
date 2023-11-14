@@ -219,7 +219,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			return new List<MiniYamlNode>()
 			{
-				new MiniYamlNode("WaitingPowers", "", waitingPowersNodes)
+				new("WaitingPowers", "", waitingPowersNodes)
 			};
 		}
 
