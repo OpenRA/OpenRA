@@ -180,6 +180,7 @@ namespace OpenRA
 		}
 
 		public static event Action BeforeGameStart = () => { };
+		public static event Action AfterGameStart = () => { };
 		internal static void StartGame(string mapUID, WorldType type)
 		{
 			// Dispose of the old world before creating a new one.
@@ -227,6 +228,8 @@ namespace OpenRA
 			// PostLoadComplete is designed for anything that should trigger at the very end of loading.
 			// e.g. audio notifications that the game is starting.
 			OrderManager.World.PostLoadComplete(worldRenderer);
+
+			AfterGameStart();
 		}
 
 		public static void RestartGame()

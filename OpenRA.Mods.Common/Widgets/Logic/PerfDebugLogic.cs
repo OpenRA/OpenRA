@@ -20,6 +20,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class PerfDebugLogic : ChromeLogic
 	{
+		readonly Stopwatch fpsTimer;
+		readonly List<(int Frame, TimeSpan Time)> frameTimings = new(32);
+
 		[ObjectCreator.UseCtor]
 		public PerfDebugLogic(Widget widget, WorldRenderer worldRenderer)
 		{
@@ -29,8 +32,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var perfText = widget.Get<LabelWidget>("PERF_TEXT");
 			perfText.IsVisible = () => Game.Settings.Debug.PerfText;
 
-			var fpsTimer = Stopwatch.StartNew();
-			var frameTimings = new List<(int Frame, TimeSpan Time)>(32) { (Game.RenderFrame, TimeSpan.Zero) };
+			fpsTimer = Stopwatch.StartNew();
+			frameTimings.Add((Game.RenderFrame, TimeSpan.Zero));
 			perfText.GetText = () =>
 			{
 				// Calculate FPS as a rolling average over the last ~1 second of frames.
@@ -51,6 +54,27 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					$"Viewport Size: {viewportSize.Width} x {viewportSize.Height} / {Game.Renderer.WorldDownscaleFactor}\n" +
 					$"WFB Size: {wfbSize.Width} x {wfbSize.Height}";
 			};
+
+			Game.AfterGameStart += OnGameStart;
+		}
+
+		void OnGameStart()
+		{
+			// Reset timings so our average doesn't include loading time.
+			frameTimings.Clear();
+			frameTimings.Add((Game.RenderFrame, fpsTimer.Elapsed));
+		}
+
+		bool disposed;
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && !disposed)
+			{
+				disposed = true;
+				Game.AfterGameStart -= OnGameStart;
+			}
+
+			base.Dispose(disposing);
 		}
 	}
 }
