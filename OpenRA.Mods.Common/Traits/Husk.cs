@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void CrushAction(Actor self, WPos position, Func<INotifyCrushed, Action<Actor, Actor, BitSet<CrushClass>>> action)
 		{
-			if (info == null || !info.Crushes.Any())
+			if (info == null || info.Crushes.IsEmpty)
 				return;
 
 			var crushables = self.World.ActorMap.GetActorsAt(self.World.Map.CellContaining(position)).Where(a => a != self)
