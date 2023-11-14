@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				{
 					var tooltip = target.TraitsImplementing<ITooltip>().FirstEnabledTraitOrDefault();
 					if (tooltip == null)
-						throw new ArgumentNullException("tooltip", "Missing tooltip or invalid target.");
+						throw new ArgumentException("Missing tooltip or invalid target.", nameof(target));
 
 					AsPlayer = tooltip.Owner;
 					AsActor = target.Info;
