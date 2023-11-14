@@ -371,7 +371,7 @@ namespace OpenRA.Mods.Common.Traits
 						neighbours[d].neighbours[d].UpdateState();
 		}
 
-		void AggregateDamageState(Bridge b, int d, ref DamageState damage)
+		static void AggregateDamageState(Bridge b, int d, ref DamageState damage)
 		{
 			if (b.health.DamageState > damage)
 				damage = b.health.DamageState;
