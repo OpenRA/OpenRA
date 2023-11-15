@@ -70,6 +70,10 @@ csharp_style_prefer_top_level_statements = false
 dotnet_diagnostic.IDE0210.severity = warning
 dotnet_diagnostic.IDE0211.severity = warning
 
+# IDE0290 Use primary constructor
+#csharp_style_prefer_primary_constructors = true
+dotnet_diagnostic.IDE0200.severity = silent # Requires C# 12
+
 ## Expression-bodied members
 
 # IDE0021 Use expression body for constructors
@@ -721,6 +725,9 @@ dotnet_diagnostic.CA1417.severity = warning
 # Use 'nameof' in place of string.
 dotnet_diagnostic.CA1507.severity = warning
 
+# Avoid redundant length argument.
+dotnet_diagnostic.CA1514.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
+
 ### Naming Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/naming-warnings
 
@@ -850,6 +857,12 @@ dotnet_diagnostic.CA1858.severity = warning
 
 # Avoid using 'Enumerable.Any()' extension method.
 dotnet_diagnostic.CA1860.severity = warning
+
+# Cache and reuse 'JsonSerializerOptions' instances.
+dotnet_diagnostic.CA1869.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
+
+# Use a cached 'SearchValues' instance.
+dotnet_diagnostic.CA1870.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
 
 ### Reliability Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/reliability-warnings
