@@ -866,6 +866,9 @@ dotnet_diagnostic.CA1865.severity = suggestion # TODO: Change to warning once us
 dotnet_diagnostic.CA1866.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
 dotnet_diagnostic.CA1867.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
 
+# Unnecessary call to 'Contains' for sets.
+dotnet_diagnostic.CA1868.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
+
 # Cache and reuse 'JsonSerializerOptions' instances.
 dotnet_diagnostic.CA1869.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
 
