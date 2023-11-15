@@ -21,7 +21,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"MenuPaletteEffect is renamed to MenuPostProcessEffect\n" +
 			"ChronoshiftPaletteEffect is renamed to ChronoshiftPostProcessEffect\n" +
 			"FlashPaletteEffect is renamed to FlashPostProcessEffect\n" +
-			"GlobalLightingPaletteEffect is renamed to TintPostProcessEffect";
+			"GlobalLightingPaletteEffect is renamed to TintPostProcessEffect\n" +
+			"D2kFogPalette is removed\n" +
+			"PaletteFromScaledPalette is removed";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
@@ -29,6 +31,8 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			actorNode.RenameChildrenMatching("ChronoshiftPaletteEffect", "ChronoshiftPostProcessEffect");
 			actorNode.RenameChildrenMatching("FlashPaletteEffect", "FlashPostProcessEffect");
 			actorNode.RenameChildrenMatching("GlobalLightingPaletteEffect", "TintPostProcessEffect");
+			actorNode.RemoveNodes("D2kFogPalette");
+			actorNode.RemoveNodes("PaletteFromScaledPalette");
 
 			yield break;
 		}
