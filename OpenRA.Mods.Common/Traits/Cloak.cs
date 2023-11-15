@@ -227,7 +227,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!(firstTick && Info.InitialDelay == 0) && (otherCloaks == null || !otherCloaks.Any(a => a.Cloaked)))
 				{
 					var pos = self.CenterPosition;
-					Game.Sound.Play(SoundType.World, Info.CloakSound, pos);
+					Game.Sound.Play(SoundType.World, Info.UncloakSound, pos);
 
 					Func<WPos> posfunc = () => self.CenterPosition + Info.EffectOffset;
 					if (!Info.EffectTracksActor)
