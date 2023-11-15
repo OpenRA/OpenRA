@@ -255,7 +255,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (!attack.IsTraitPaused)
 				foreach (var a in armaments)
-					a.CheckFire(self, facing, target, false);
+					a.CheckFire(self, facing, target);
 		}
 
 		void IActivityNotifyStanceChanged.StanceChanged(Actor self, AutoTarget autoTarget, UnitStance oldStance, UnitStance newStance)

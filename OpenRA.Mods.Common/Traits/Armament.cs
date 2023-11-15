@@ -268,7 +268,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		// Note: facing is only used by the legacy positioning code
 		// The world coordinate model uses Actor.Orientation
-		public virtual bool CheckFire(Actor self, IFacing facing, in Target target, bool notifyAttacking)
+		public virtual bool CheckFire(Actor self, IFacing facing, in Target target)
 		{
 			if (!CanFire(self, target))
 				return false;
@@ -286,10 +286,6 @@ namespace OpenRA.Mods.Common.Traits
 
 				FireBarrel(self, facing, target, barrel);
 				UpdateBurst(self, target);
-
-				if (notifyAttacking)
-					foreach (var (notifyActor, notify) in notifyAttacks)
-						notify.Attacking(notifyActor, target, this, barrel);
 			}
 			while (FireDelay == 0 && CanFire(self, target));
 
@@ -357,11 +353,11 @@ namespace OpenRA.Mods.Common.Traits
 					if (burst == args.Weapon.Burst && args.Weapon.StartBurstReport != null && args.Weapon.StartBurstReport.Length > 0)
 						Game.Sound.Play(SoundType.World, args.Weapon.StartBurstReport, self.World, self.CenterPosition);
 
-					foreach (var (notifyActor, notify) in notifyAttacks)
-						notify.Attacking(notifyActor, delayedTarget, this, barrel);
-
 					Recoil = Info.Recoil;
 				}
+
+				foreach (var (notifyActor, notify) in notifyAttacks)
+					notify.Attacking(notifyActor, delayedTarget, this, barrel);
 			});
 		}
 
