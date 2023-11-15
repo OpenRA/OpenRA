@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		BodyOrientation coords;
 		INotifyBurstComplete[] notifyBurstComplete;
-		INotifyAttack[] notifyAttacks;
+		List<(Actor NotifyActor, INotifyAttack Notify)> notifyAttacks;
 
 		int conditionToken = Actor.InvalidConditionToken;
 
@@ -174,7 +174,7 @@ namespace OpenRA.Mods.Common.Traits
 			hovers = self.TraitOrDefault<Hovers>();
 			coords = self.Trait<BodyOrientation>();
 			notifyBurstComplete = self.TraitsImplementing<INotifyBurstComplete>().ToArray();
-			notifyAttacks = self.TraitsImplementing<INotifyAttack>().ToArray();
+			notifyAttacks = self.TraitsImplementing<INotifyAttack>().Select(a => (self, a)).ToList();
 
 			rangeModifiers = self.TraitsImplementing<IRangeModifier>().ToArray().Select(m => m.GetRangeModifier());
 			reloadModifiers = self.TraitsImplementing<IReloadModifier>().ToArray().Select(m => m.GetReloadModifier());
@@ -182,6 +182,16 @@ namespace OpenRA.Mods.Common.Traits
 			inaccuracyModifiers = self.TraitsImplementing<IInaccuracyModifier>().ToArray().Select(m => m.GetInaccuracyModifier());
 
 			base.Created(self);
+		}
+
+		public void AddNotifyAttacks(Actor attacker, INotifyAttack[] notifyAttacks)
+		{
+			this.notifyAttacks.AddRange(notifyAttacks.Select(a => (attacker, a)));
+		}
+
+		public void RemoveNotifyAttacks(INotifyAttack[] notifyAttacks)
+		{
+			this.notifyAttacks.RemoveAll(pair => notifyAttacks.Any(notify => notify == pair.Notify));
 		}
 
 		void UpdateCondition(Actor self)
@@ -278,8 +288,8 @@ namespace OpenRA.Mods.Common.Traits
 				UpdateBurst(self, target);
 
 				if (notifyAttacking)
-					foreach (var notify in notifyAttacks)
-						notify.Attacking(self, target, this, barrel);
+					foreach (var (notifyActor, notify) in notifyAttacks)
+						notify.Attacking(notifyActor, target, this, barrel);
 			}
 			while (FireDelay == 0 && CanFire(self, target));
 
@@ -288,8 +298,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected virtual void FireBarrel(Actor self, IFacing facing, in Target target, Barrel barrel)
 		{
-			foreach (var na in notifyAttacks)
-				na.PreparingAttack(self, target, this, barrel);
+			foreach (var (notifyActor, notify) in notifyAttacks)
+				notify.PreparingAttack(notifyActor, target, this, barrel);
 
 			WPos MuzzlePosition() => self.CenterPosition + MuzzleOffset(self, barrel);
 			WAngle MuzzleFacing() => MuzzleOrientation(self, barrel).Yaw;
@@ -347,8 +357,8 @@ namespace OpenRA.Mods.Common.Traits
 					if (burst == args.Weapon.Burst && args.Weapon.StartBurstReport != null && args.Weapon.StartBurstReport.Length > 0)
 						Game.Sound.Play(SoundType.World, args.Weapon.StartBurstReport, self.World, self.CenterPosition);
 
-					foreach (var na in notifyAttacks)
-						na.Attacking(self, delayedTarget, this, barrel);
+					foreach (var (notifyActor, notify) in notifyAttacks)
+						notify.Attacking(notifyActor, delayedTarget, this, barrel);
 
 					Recoil = Info.Recoil;
 				}

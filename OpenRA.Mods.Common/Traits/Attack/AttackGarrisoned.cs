@@ -78,6 +78,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class AttackGarrisoned : AttackFollow, INotifyPassengerEntered, INotifyPassengerExited, IRender
 	{
 		public new readonly AttackGarrisonedInfo Info;
+		INotifyAttack[] notifyAttacks;
 		readonly Lazy<BodyOrientation> coords;
 		readonly List<Armament> armaments;
 		readonly List<AnimationWithOffset> muzzles;
@@ -97,6 +98,12 @@ namespace OpenRA.Mods.Common.Traits
 			paxRender = new Dictionary<Actor, RenderSprites>();
 		}
 
+		protected override void Created(Actor self)
+		{
+			notifyAttacks = self.TraitsImplementing<INotifyAttack>().ToArray();
+			base.Created(self);
+		}
+
 		protected override Func<IEnumerable<Armament>> InitializeGetArmaments(Actor self)
 		{
 			return () => armaments;
@@ -107,9 +114,15 @@ namespace OpenRA.Mods.Common.Traits
 			paxFacing.Add(passenger, passenger.Trait<IFacing>());
 			paxPos.Add(passenger, passenger.Trait<IPositionable>());
 			paxRender.Add(passenger, passenger.Trait<RenderSprites>());
-			armaments.AddRange(
-				passenger.TraitsImplementing<Armament>()
-				.Where(a => Info.Armaments.Contains(a.Info.Name)));
+
+			foreach (var a in passenger.TraitsImplementing<Armament>())
+			{
+				if (Info.Armaments.Contains(a.Info.Name))
+				{
+					a.AddNotifyAttacks(self, notifyAttacks);
+					armaments.Add(a);
+				}
+			}
 		}
 
 		void INotifyPassengerExited.OnPassengerExited(Actor self, Actor passenger)
@@ -117,7 +130,15 @@ namespace OpenRA.Mods.Common.Traits
 			paxFacing.Remove(passenger);
 			paxPos.Remove(passenger);
 			paxRender.Remove(passenger);
-			armaments.RemoveAll(a => a.Actor == passenger);
+
+			foreach (var a in armaments.ToList())
+			{
+				if (a.Actor == passenger)
+				{
+					a.RemoveNotifyAttacks(notifyAttacks);
+					armaments.Remove(a);
+				}
+			}
 		}
 
 		FirePort SelectFirePort(Actor self, WAngle targetYaw)
