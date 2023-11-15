@@ -43,8 +43,7 @@ namespace OpenRA.Mods.Common.Installer
 					source.Position += 13;
 
 					// This does not apply on game relevant data.
-					if (!entries.ContainsKey(key))
-						entries.Add(key, entry);
+					entries.TryAdd(key, entry);
 				}
 
 				foreach (var node in actionYaml.Nodes)
