@@ -348,8 +348,8 @@ namespace OpenRA
 
 			while (this[uid].Status != MapStatus.Available)
 			{
-				if (mapUpdates.ContainsKey(uid))
-					uid = mapUpdates[uid];
+				if (mapUpdates.TryGetValue(uid, out var newUid))
+					uid = newUid;
 				else
 					return null;
 			}

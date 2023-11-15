@@ -380,17 +380,17 @@ namespace OpenRA
 
 			if (voicedActor != null)
 			{
-				if (!rules.VoicePools.Value.ContainsKey(definition))
+				if (!rules.VoicePools.Value.TryGetValue(definition, out var p))
 					throw new InvalidOperationException($"Can't find {definition} in voice pool.");
 
-				pool = rules.VoicePools.Value[definition];
+				pool = p;
 			}
 			else
 			{
-				if (!rules.NotificationsPools.Value.ContainsKey(definition))
+				if (!rules.NotificationsPools.Value.TryGetValue(definition, out var p))
 					throw new InvalidOperationException($"Can't find {definition} in notification pool.");
 
-				pool = rules.NotificationsPools.Value[definition];
+				pool = p;
 			}
 
 			var clip = pool.GetNext();

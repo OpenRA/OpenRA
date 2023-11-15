@@ -107,11 +107,11 @@ namespace OpenRA
 			try
 			{
 				var command = args[0];
-				if (!actions.ContainsKey(command))
+				if (!actions.TryGetValue(command, out var kvp))
 					throw new NoSuchCommandException(command);
 
-				var action = actions[command].Key;
-				var validateActionArgs = actions[command].Value;
+				var action = kvp.Key;
+				var validateActionArgs = kvp.Value;
 
 				if (validateActionArgs.Invoke(args))
 				{

@@ -200,18 +200,18 @@ namespace OpenRA
 
 		static string[] YamlList(Dictionary<string, MiniYaml> yaml, string key)
 		{
-			if (!yaml.ContainsKey(key))
+			if (!yaml.TryGetValue(key, out var value))
 				return Array.Empty<string>();
 
-			return yaml[key].Nodes.Select(n => n.Key).ToArray();
+			return value.Nodes.Select(n => n.Key).ToArray();
 		}
 
 		static IReadOnlyDictionary<string, string> YamlDictionary(Dictionary<string, MiniYaml> yaml, string key)
 		{
-			if (!yaml.ContainsKey(key))
+			if (!yaml.TryGetValue(key, out var value))
 				return new Dictionary<string, string>();
 
-			return yaml[key].ToDictionary(my => my.Value);
+			return value.ToDictionary(my => my.Value);
 		}
 
 		public bool Contains<T>() where T : IGlobalModData
