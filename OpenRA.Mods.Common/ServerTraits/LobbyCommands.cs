@@ -1294,10 +1294,13 @@ namespace OpenRA.Mods.Common.Server
 			else
 				return;
 
-			var unknownMaps = server.MapPool.Where(server.MapIsUnknown);
-			if (server.Settings.QueryMapRepository && unknownMaps.Any())
+			var unknownMaps = server.MapPool.Where(server.MapIsUnknown).ToList();
+			if (unknownMaps.Count == 0)
+				return;
+
+			if (server.Settings.QueryMapRepository)
 			{
-				Log.Write("server", $"Querying Resource Center for information on {unknownMaps.Count()} maps...");
+				Log.Write("server", $"Querying Resource Center for information on {unknownMaps.Count} maps...");
 
 				// Query any missing maps and wait up to 10 seconds for a response
 				// Maps that have not resolved will not be valid for the initial map choice
@@ -1306,12 +1309,17 @@ namespace OpenRA.Mods.Common.Server
 
 				var searchingMaps = server.MapPool.Where(uid => mapCache[uid].Status == MapStatus.Searching);
 				var stopwatch = Stopwatch.StartNew();
+
+				// Each time we check, some map statuses may have updated.
+#pragma warning disable CA1851 // Possible multiple enumerations of 'IEnumerable' collection
 				while (searchingMaps.Any() && stopwatch.ElapsedMilliseconds < 10000)
 					Thread.Sleep(100);
+#pragma warning restore CA1851
 			}
 
-			if (unknownMaps.Any())
-				Log.Write("server", "Failed to resolve maps: " + unknownMaps.JoinWith(", "));
+			var stillUnknownMaps = server.MapPool.Where(server.MapIsUnknown).ToList();
+			if (stillUnknownMaps.Count != 0)
+				Log.Write("server", "Failed to resolve maps: " + stillUnknownMaps.JoinWith(", "));
 		}
 
 		static string ChooseInitialMap(S server)
