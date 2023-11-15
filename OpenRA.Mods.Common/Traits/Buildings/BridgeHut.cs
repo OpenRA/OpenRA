@@ -24,8 +24,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Bridge types to act on")]
 		public readonly string[] Types = { "GroundLevelBridge" };
 
+		[FieldLoader.Require]
 		[Desc("Offsets to look for adjacent bridges to act on")]
-		public readonly CVec[] NeighbourOffsets = Array.Empty<CVec>();
+		public readonly CVec[] BridgeOffsets;
 
 		[Desc("Delay between each segment repair step")]
 		public readonly int RepairPropagationDelay = 20;
@@ -74,19 +75,17 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			self.World.AddFrameEndTask(w =>
 			{
-				// Bridge segments and huts are expected to be placed in the map
-				// editor or spawned during the normal actor loading
-				//
 				// The number and location of bridge segments are calculated here,
 				// and assumed to not change for the remaining lifetime of the world
 				//
 				// Bridge segment footprints and neighbour offsets are assumed to remain
 				// the same when a segment is destroyed or repaired.
-				var seed = Info.NeighbourOffsets.Select(v => self.Location + v);
+				var seed = Info.BridgeOffsets.Select(v => self.Location + v);
 				var processed = new HashSet<CPos>();
+				var map = self.World.Map;
 				while (true)
 				{
-					var step = NextNeighbourStep(seed, processed).ToList();
+					var step = NextNeighbourStep(map, seed, processed).ToList();
 					if (step.Count == 0)
 						break;
 
@@ -94,10 +93,26 @@ namespace OpenRA.Mods.Common.Traits
 						segments[s.Location] = s;
 
 					segmentLocations.Add(step.Select(s => s.Location).ToArray());
-					seed = step.SelectMany(s => s.NeighbourOffsets.Select(n => s.Location + n)).ToList();
+					seed = step.SelectMany(s => Util.ExpandFootprint(s.Footprint, true));
 				}
 
 				repairStep = demolishStep = segmentLocations.Count;
+
+				if (repairStep > 1)
+				{
+					var seg = segments.ToList();
+					for (var i = 0; i < repairStep; i++)
+					{
+						var neighbours = new List<IBridgeSegment>();
+						if (i > 0)
+							neighbours.Add(seg[i - 1].Value);
+
+						if (i + 1 < repairStep)
+							neighbours.Add(seg[i + 1].Value);
+
+						seg[i].Value.SetNeighbours(neighbours);
+					}
+				}
 			});
 		}
 
@@ -119,10 +134,13 @@ namespace OpenRA.Mods.Common.Traits
 				DemolishStep();
 		}
 
-		IEnumerable<IBridgeSegment> NextNeighbourStep(IEnumerable<CPos> seed, HashSet<CPos> processed)
+		IEnumerable<IBridgeSegment> NextNeighbourStep(Map map, IEnumerable<CPos> seed, HashSet<CPos> processed)
 		{
 			foreach (var c in seed)
 			{
+				if (!map.Contains(c))
+					continue;
+
 				var bridge = bridgeLayer[c];
 				if (bridge == null)
 					continue;

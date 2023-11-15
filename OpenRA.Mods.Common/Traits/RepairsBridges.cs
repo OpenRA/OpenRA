@@ -78,9 +78,6 @@ namespace OpenRA.Mods.Common.Traits
 				return null;
 
 			var targetActor = order.Target.Actor;
-			var legacyHut = targetActor.TraitOrDefault<LegacyBridgeHut>();
-			if (legacyHut != null)
-				return legacyHut.BridgeDamageState == DamageState.Undamaged || legacyHut.Repairing || legacyHut.Bridge.IsDangling ? null : info.Voice;
 
 			var hut = targetActor.TraitOrDefault<BridgeHut>();
 			if (hut != null)
@@ -96,14 +93,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString == "RepairBridge" && order.Target.Type == TargetType.Actor)
 			{
 				var targetActor = order.Target.Actor;
-				var legacyHut = targetActor.TraitOrDefault<LegacyBridgeHut>();
 				var hut = targetActor.TraitOrDefault<BridgeHut>();
-				if (legacyHut != null)
-				{
-					if (legacyHut.BridgeDamageState == DamageState.Undamaged || legacyHut.Repairing || legacyHut.Bridge.IsDangling)
-						return;
-				}
-				else if (hut != null)
+				if (hut != null)
 				{
 					if (hut.BridgeDamageState == DamageState.Undamaged || hut.Repairing)
 						return;
@@ -132,20 +123,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (modifiers.HasModifier(TargetModifiers.ForceMove))
 					return false;
 
-				var legacyHut = target.TraitOrDefault<LegacyBridgeHut>();
 				var hut = target.TraitOrDefault<BridgeHut>();
-				if (legacyHut != null)
-				{
-					// Require force attack to heal partially damaged bridges to avoid unnecessary cursor noise
-					var damage = legacyHut.BridgeDamageState;
-					if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && damage != DamageState.Dead)
-						return false;
-
-					// Can't repair a bridge that is undamaged, already under repair, or dangling
-					if (damage == DamageState.Undamaged || legacyHut.Repairing || legacyHut.Bridge.IsDangling)
-						cursor = info.TargetBlockedCursor;
-				}
-				else if (hut != null)
+				if (hut != null)
 				{
 					// Require force attack to heal partially damaged bridges to avoid unnecessary cursor noise
 					var damage = hut.BridgeDamageState;

@@ -9,14 +9,14 @@
  */
 #endregion
 
-using System;
+using System.Collections.Generic;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Placeholder actor used for dead segments and bridge end ramps.")]
-	sealed class BridgePlaceholderInfo : TraitInfo
+	sealed class BridgePlaceholderInfo : TraitInfo, Requires<BuildingInfo>
 	{
 		public readonly string Type = "GroundLevelBridge";
 
@@ -26,8 +26,6 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Actor type to replace with on repair.")]
 		public readonly string ReplaceWithActor = null;
 
-		public readonly CVec[] NeighbourOffsets = Array.Empty<CVec>();
-
 		public override object Create(ActorInitializer init) { return new BridgePlaceholder(init.Self, this); }
 	}
 
@@ -36,12 +34,14 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BridgePlaceholderInfo Info;
 		readonly Actor self;
 		readonly BridgeLayer bridgeLayer;
+		readonly BuildingInfo buildingInfo;
 
 		public BridgePlaceholder(Actor self, BridgePlaceholderInfo info)
 		{
 			Info = info;
 			this.self = self;
 			bridgeLayer = self.World.WorldActor.Trait<BridgeLayer>();
+			buildingInfo = self.Info.TraitInfo<BuildingInfo>();
 		}
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
@@ -71,15 +71,12 @@ namespace OpenRA.Mods.Common.Traits
 			});
 		}
 
-		void IBridgeSegment.Demolish(Actor saboteur, BitSet<DamageType> damageTypes)
-		{
-			// Do nothing
-		}
-
+		void IBridgeSegment.Demolish(Actor saboteur, BitSet<DamageType> damageTypes) { }
+		void IBridgeSegment.SetNeighbours(IEnumerable<IBridgeSegment> neighbours) { }
 		string IBridgeSegment.Type => Info.Type;
 		DamageState IBridgeSegment.DamageState => Info.DamageState;
 		bool IBridgeSegment.Valid => self.IsInWorld;
-		CVec[] IBridgeSegment.NeighbourOffsets => Info.NeighbourOffsets;
+		IEnumerable<CPos> IBridgeSegment.Footprint => buildingInfo.PathableTiles(self.Location);
 		CPos IBridgeSegment.Location => self.Location;
 	}
 }

@@ -568,7 +568,6 @@ BR1:
 		Template: 235
 		DamagedTemplate: 236
 		DestroyedTemplate: 237
-		SouthOffset: 0,2
 	FreeActor:
 		Actor: bridgehut
 		SpawnOffset: 2,0
@@ -579,7 +578,6 @@ BR2:
 		Template: 238
 		DamagedTemplate: 239
 		DestroyedTemplate: 240
-		NorthOffset: 3,0
 	FreeActor:
 		Actor: bridgehut
 		SpawnOffset: 1,1
@@ -595,8 +593,6 @@ BR3:
 		DestroyedPlusNorthTemplate: 245
 		DestroyedPlusSouthTemplate: 244
 		DestroyedPlusBothTemplate: 246
-		NorthOffset: 2,0
-		SouthOffset: 0,1
 
 BRIDGE1:
 	Inherits: ^Bridge
@@ -740,7 +736,9 @@ BRIDGEHUT:
 	Selectable:
 		Bounds: 2048, 2048
 		Priority: 2
-	LegacyBridgeHut:
+	BridgeHut:
+		BridgeOffsets: -1,-1, 0,0, -1,0, -1,1, 0,-1, 0,1, 1,-1, 1,0, 1,1
+		DemolishPropagationDelay: 20
 	Targetable:
 		TargetTypes: BridgeHut, C4
 
@@ -752,7 +750,9 @@ BRIDGEHUT.small:
 	Selectable:
 		Bounds: 1024, 1024
 		Priority: 2
-	LegacyBridgeHut:
+	BridgeHut:
+		BridgeOffsets: 0,0
+		DemolishPropagationDelay: 20
 	Targetable:
 		TargetTypes: BridgeHut, C4
 
