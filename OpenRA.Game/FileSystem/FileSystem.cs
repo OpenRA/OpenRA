@@ -159,9 +159,7 @@ namespace OpenRA.FileSystem
 					explicitMounts.Remove(key);
 
 				// Mod packages aren't owned by us, so we shouldn't dispose them
-				if (modPackages.Contains(package))
-					modPackages.Remove(package);
-				else
+				if (!modPackages.Remove(package))
 					package.Dispose();
 			}
 			else

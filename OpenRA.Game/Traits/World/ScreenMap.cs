@@ -85,8 +85,7 @@ namespace OpenRA.Traits
 
 		public void AddOrUpdate(Player viewer, FrozenActor fa)
 		{
-			if (removeFrozenActors[viewer].Contains(fa))
-				removeFrozenActors[viewer].Remove(fa);
+			removeFrozenActors[viewer].Remove(fa);
 
 			addOrUpdateFrozenActors[viewer].Add(fa);
 		}
@@ -98,8 +97,7 @@ namespace OpenRA.Traits
 
 		public void AddOrUpdate(Actor a)
 		{
-			if (removeActors.Contains(a))
-				removeActors.Remove(a);
+			removeActors.Remove(a);
 
 			addOrUpdateActors.Add(a);
 		}

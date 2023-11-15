@@ -104,11 +104,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void Unreserve(DockClientManager client)
 		{
-			if (ReservedDockClients.Contains(client))
-			{
-				ReservedDockClients.Remove(client);
+			if (ReservedDockClients.Remove(client))
 				client.UnreserveHost();
-			}
 		}
 
 		public virtual void OnDockStarted(Actor self, Actor clientActor, DockClientManager client)

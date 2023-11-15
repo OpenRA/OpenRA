@@ -1163,9 +1163,7 @@ namespace OpenRA.Mods.Common.Server
 
 			// Clearing an empty spawn point prevents it from being selected
 			// Clearing a disabled spawn restores it for use
-			if (!server.LobbyInfo.DisabledSpawnPoints.Contains(spawnPoint))
-				server.LobbyInfo.DisabledSpawnPoints.Add(spawnPoint);
-			else
+			if (!server.LobbyInfo.DisabledSpawnPoints.Add(spawnPoint))
 				server.LobbyInfo.DisabledSpawnPoints.Remove(spawnPoint);
 
 			server.SyncLobbyInfo();
