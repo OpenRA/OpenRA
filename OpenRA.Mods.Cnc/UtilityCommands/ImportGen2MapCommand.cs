@@ -262,9 +262,9 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 				var name = entries[1].ToLowerInvariant();
 
-				if (DeployableActors.ContainsKey(name))
+				if (DeployableActors.TryGetValue(name, out var n))
 				{
-					name = DeployableActors[name];
+					name = n;
 					isDeployed = true;
 				}
 

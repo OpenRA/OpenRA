@@ -292,10 +292,10 @@ namespace OpenRA.Mods.Common.Scripting
 		{
 			var queue = GetBuildableInfo(actorType).Queue.First();
 
-			if (!queues.ContainsKey(queue))
+			if (!queues.TryGetValue(queue, out var cpq))
 				return true;
 
-			return productionHandlers.ContainsKey(queue) || queues[queue].AllQueued().Any();
+			return productionHandlers.ContainsKey(queue) || cpq.AllQueued().Any();
 		}
 
 		BuildableInfo GetBuildableInfo(string actorType)

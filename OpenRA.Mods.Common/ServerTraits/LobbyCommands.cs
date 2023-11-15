@@ -361,13 +361,11 @@ namespace OpenRA.Mods.Common.Server
 		{
 			lock (server.LobbyInfo)
 			{
-				if (!server.LobbyInfo.Slots.ContainsKey(s))
+				if (!server.LobbyInfo.Slots.TryGetValue(s, out var slot))
 				{
 					Log.Write("server", $"Invalid slot: {s}");
 					return false;
 				}
-
-				var slot = server.LobbyInfo.Slots[s];
 
 				if (slot.Closed || server.LobbyInfo.ClientInSlot(s) != null)
 					return false;

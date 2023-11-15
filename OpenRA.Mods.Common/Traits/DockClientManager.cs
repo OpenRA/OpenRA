@@ -308,10 +308,8 @@ namespace OpenRA.Mods.Common.Traits
 					clientActor, lookup.Keys, clientActor.Location, BlockedByActor.None,
 					location =>
 					{
-						if (!lookup.ContainsKey(location))
+						if (!lookup.TryGetValue(location, out var dock))
 							return 0;
-
-						var dock = lookup[location];
 
 						// Prefer docks with less occupancy (multiplier is to offset distance cost):
 						// TODO: add custom wieghts. E.g. owner vs allied.

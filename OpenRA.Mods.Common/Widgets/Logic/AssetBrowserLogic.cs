@@ -622,10 +622,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					foreach (var content in mountedPackage.Contents)
 					{
-						if (!files.ContainsKey(content))
+						if (!files.TryGetValue(content, out var list))
 							files.Add(content, new List<IReadOnlyPackage> { mountedPackage });
 						else
-							files[content].Add(mountedPackage);
+							list.Add(mountedPackage);
 					}
 				}
 			}

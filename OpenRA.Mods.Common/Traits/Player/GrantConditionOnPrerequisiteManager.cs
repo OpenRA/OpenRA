@@ -42,13 +42,13 @@ namespace OpenRA.Mods.Common.Traits
 		public void Register(Actor actor, GrantConditionOnPrerequisite u, string[] prerequisites)
 		{
 			var key = MakeKey(prerequisites);
-			if (!upgradables.ContainsKey(key))
+			if (!upgradables.TryGetValue(key, out var list))
 			{
-				upgradables.Add(key, new List<(Actor, GrantConditionOnPrerequisite)>());
+				upgradables.Add(key, list = new List<(Actor, GrantConditionOnPrerequisite)>());
 				techTree.Add(key, prerequisites, 0, this);
 			}
 
-			upgradables[key].Add((actor, u));
+			list.Add((actor, u));
 
 			// Notify the current state
 			u.PrerequisitesUpdated(actor, techTree.HasPrerequisites(prerequisites));

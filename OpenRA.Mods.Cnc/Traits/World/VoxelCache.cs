@@ -96,11 +96,11 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		public bool HasModelSequence(string model, string sequence)
 		{
-			if (!models.ContainsKey(model))
+			if (!models.TryGetValue(model, out var sequences))
 				throw new InvalidOperationException(
 					$"Model `{model}` does not have any sequences defined.");
 
-			return models[model].ContainsKey(sequence);
+			return sequences.ContainsKey(sequence);
 		}
 
 		public IVertexBuffer<ModelVertex> VertexBuffer => loader.VertexBuffer;

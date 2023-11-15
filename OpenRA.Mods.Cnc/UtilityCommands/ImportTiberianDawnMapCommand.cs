@@ -91,8 +91,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 				var res = (Type: (byte)0, Index: (byte)0);
 				var type = kv.Value.ToLowerInvariant();
-				if (OverlayResourceMapping.ContainsKey(type))
-					res = OverlayResourceMapping[type];
+				if (OverlayResourceMapping.TryGetValue(type, out var r))
+					res = r;
 
 				Map.Resources[cell] = new ResourceTile(res.Type, res.Index);
 				if (OverlayActors.Contains(type))
