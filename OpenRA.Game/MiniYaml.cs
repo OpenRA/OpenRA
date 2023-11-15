@@ -533,7 +533,7 @@ namespace OpenRA
 			{
 				// Append Removal nodes to the result.
 				// Therefore: we know the remainder of the method deals with a plain node.
-				if (node.Key.StartsWith("-", StringComparison.Ordinal))
+				if (node.Key.StartsWith('-'))
 				{
 					ret.Add(node);
 					return;

@@ -144,7 +144,7 @@ namespace OpenRA.FileSystem
 
 			public ZipFolder(ReadOnlyZipFile parent, string path)
 			{
-				if (path.EndsWith("/", StringComparison.Ordinal))
+				if (path.EndsWith('/'))
 					path = path[..^1];
 
 				Name = path;

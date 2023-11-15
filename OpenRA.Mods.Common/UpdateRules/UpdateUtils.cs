@@ -349,7 +349,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		public static void RenameKey(this MiniYamlNodeBuilder node, string newKey, bool preserveSuffix = true, bool includeRemovals = true)
 		{
 			var prefix = includeRemovals && node.IsRemoval() ? "-" : "";
-			var split = node.Key.IndexOf("@", StringComparison.Ordinal);
+			var split = node.Key.IndexOf('@');
 			if (preserveSuffix && split > -1)
 				node.Key = prefix + newKey + node.Key[split..];
 			else
