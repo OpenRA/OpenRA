@@ -729,6 +729,12 @@ namespace OpenRA.Mods.Common.Server
 				if (oo.Value == split[1])
 					return true;
 
+				if (!option.Values.ContainsKey(split[1]))
+				{
+					server.SendLocalizedMessageTo(conn, InvalidConfigurationCommand);
+					return true;
+				}
+
 				oo.Value = oo.PreferredValue = split[1];
 
 				server.SyncLobbyGlobalSettings();

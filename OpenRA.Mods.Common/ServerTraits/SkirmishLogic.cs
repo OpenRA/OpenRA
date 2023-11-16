@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.Server
 
 				foreach (var optionNode in optionsNode.Value.Nodes)
 				{
-					if (options.TryGetValue(optionNode.Key, out var option) && !option.IsLocked)
+					if (options.TryGetValue(optionNode.Key, out var option) && !option.IsLocked && option.Values.ContainsKey(optionNode.Value.Value))
 					{
 						var oo = server.LobbyInfo.GlobalSettings.LobbyOptions[option.Id];
 						oo.Value = oo.PreferredValue = optionNode.Value.Value;
