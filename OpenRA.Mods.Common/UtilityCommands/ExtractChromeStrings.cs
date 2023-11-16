@@ -130,14 +130,24 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						groupedCandidates[newHash] = new List<TranslationCandidate>() { candidate };
 				}
 
+				var startWithNewline = File.Exists(fluentPath);
+
+				// StreamWriter can't create new directories.
+				if (!startWithNewline)
+					Directory.CreateDirectory(Path.GetDirectoryName(fluentPath));
+
 				// Write to translation files.
-				Directory.CreateDirectory(Path.GetDirectoryName(fluentPath));
 				using (var fluentWriter = new StreamWriter(fluentPath, append: true))
 				{
 					foreach (var (chromeFilename, candidates) in groupedCandidates.OrderBy(t => string.Join(',', t.Key)))
 					{
 						if (candidates.Count == 0)
 							continue;
+
+						if (startWithNewline)
+							fluentWriter.WriteLine();
+						else
+							startWithNewline = true;
 
 						fluentWriter.WriteLine("## " + string.Join(", ", chromeFilename));
 
@@ -185,7 +195,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 							}
 						}
 
-						fluentWriter.WriteLine(build.Trim('\n') + '\n');
+						fluentWriter.WriteLine(build.Trim('\n'));
 					}
 				}
 
@@ -304,7 +314,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					translations.Add(new TranslationCandidate(translationKey, childType, translationValue.Trim().Trim('\n'), childNode));
 			}
 
-			// Recurse.
+			// Recursive.
 			foreach (var childNode in node.Value.Nodes)
 				if (childNode.Key == "Children")
 					foreach (var n in childNode.Value.Nodes)
