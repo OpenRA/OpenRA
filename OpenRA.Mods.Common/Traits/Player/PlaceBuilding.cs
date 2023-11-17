@@ -175,7 +175,7 @@ namespace OpenRA.Mods.Common.Traits
 							.Where(p => p.AcceptsPlug(plugInfo.Type))
 							.ToList();
 
-						var pluggable = pluggables.Find(p => a.Location + p.Info.Offset == targetLocation)
+						var pluggable = pluggables.FirstOrDefault(p => a.Location + p.Info.Offset == targetLocation)
 							?? pluggables.FirstOrDefault();
 
 						if (pluggable == null)

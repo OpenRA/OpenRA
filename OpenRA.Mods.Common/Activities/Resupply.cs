@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Common.Activities
 					QueueChild(move.MoveWithinRange(host, closeEnough, targetLineColor: moveInfo.GetTargetLineColor()));
 
 				var delta = (self.CenterPosition - host.CenterPosition).LengthSquared;
-				Array.Find(transportCallers, t => t.MinimumDistance.LengthSquared < delta)?.RequestTransport(self, targetCell);
+				transportCallers.FirstOrDefault(t => t.MinimumDistance.LengthSquared < delta)?.RequestTransport(self, targetCell);
 
 				return false;
 			}
@@ -256,7 +256,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		void RepairTick(Actor self)
 		{
-			var repairsUnits = Array.Find(allRepairsUnits, r => !r.IsTraitDisabled && !r.IsTraitPaused);
+			var repairsUnits = allRepairsUnits.FirstOrDefault(r => !r.IsTraitDisabled && !r.IsTraitPaused);
 			if (repairsUnits == null)
 			{
 				if (!allRepairsUnits.Any(r => r.IsTraitPaused))

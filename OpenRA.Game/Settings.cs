@@ -348,7 +348,7 @@ namespace OpenRA
 							LoadSectionYaml(yamlSection.Value, settingsSection);
 					}
 
-					var keysNode = yamlCache.Find(n => n.Key == "Keys");
+					var keysNode = yamlCache.FirstOrDefault(n => n.Key == "Keys");
 					if (keysNode != null)
 						foreach (var node in keysNode.Value.Nodes)
 							if (node.Key != null)
@@ -373,7 +373,7 @@ namespace OpenRA
 			var yamlCacheBuilder = yamlCache.ConvertAll(n => new MiniYamlNodeBuilder(n));
 			foreach (var kv in Sections)
 			{
-				var sectionYaml = yamlCacheBuilder.Find(x => x.Key == kv.Key);
+				var sectionYaml = yamlCacheBuilder.FirstOrDefault(x => x.Key == kv.Key);
 				if (sectionYaml == null)
 				{
 					sectionYaml = new MiniYamlNodeBuilder(kv.Key, new MiniYamlBuilder(""));
@@ -403,7 +403,7 @@ namespace OpenRA
 				}
 			}
 
-			var keysYaml = yamlCacheBuilder.Find(x => x.Key == "Keys");
+			var keysYaml = yamlCacheBuilder.FirstOrDefault(x => x.Key == "Keys");
 			if (keysYaml == null)
 			{
 				keysYaml = new MiniYamlNodeBuilder("Keys", new MiniYamlBuilder(""));

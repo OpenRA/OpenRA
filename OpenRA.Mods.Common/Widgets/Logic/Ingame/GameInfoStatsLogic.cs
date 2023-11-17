@@ -212,7 +212,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var localClient = orderManager.LocalClient;
-			var localPlayer = localClient == null ? null : Array.Find(world.Players, player => player.ClientIndex == localClient.Index);
+			var localPlayer = localClient == null ? null : world.Players.FirstOrDefault(player => player.ClientIndex == localClient.Index);
 			bool LocalPlayerCanKick() => localClient != null
 				&& (Game.IsHost || ((!orderManager.LocalClient.IsObserver) && localPlayer.WinState == WinState.Undefined));
 			bool CanClientBeKicked(Session.Client client, Func<bool> isVoteKick) =>

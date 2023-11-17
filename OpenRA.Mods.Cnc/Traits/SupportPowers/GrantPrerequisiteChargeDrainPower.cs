@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				if (!available || order.ExtraData != 1)
 					return;
 
-				var power = Instances.Find(i => !i.IsTraitPaused);
+				var power = Instances.FirstOrDefault(i => !i.IsTraitPaused);
 				if (power == null)
 					return;
 

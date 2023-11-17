@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
@@ -176,7 +175,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (ammoPools != null)
 			{
-				var pool = Array.Find(ammoPools, x => x.Info.Name == minelayer.Info.AmmoPoolName);
+				var pool = ammoPools.FirstOrDefault(x => x.Info.Name == minelayer.Info.AmmoPoolName);
 				if (pool == null)
 					return false;
 
@@ -194,7 +193,7 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			if (ammoPools != null)
 			{
-				var pool = Array.Find(ammoPools, x => x.Info.Name == minelayer.Info.AmmoPoolName);
+				var pool = ammoPools.FirstOrDefault(x => x.Info.Name == minelayer.Info.AmmoPoolName);
 				if (pool == null)
 					return false;
 

@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
@@ -143,7 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var currentTransform = self.CurrentActivity as Transform;
-			var transform = Array.Find(transforms, t => !t.IsTraitDisabled && !t.IsTraitPaused);
+			var transform = transforms.FirstOrDefault(t => !t.IsTraitDisabled && !t.IsTraitPaused);
 			if (transform == null && currentTransform == null)
 				return;
 

@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using Eluant;
 using OpenRA.Scripting;
@@ -25,7 +24,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns the player with the specified internal name, or nil if a match is not found.")]
 		public Player GetPlayer(string name)
 		{
-			return Array.Find(Context.World.Players, p => p.InternalName == name);
+			return Context.World.Players.FirstOrDefault(p => p.InternalName == name);
 		}
 
 		[Desc("Returns a table of players filtered by the specified function.")]

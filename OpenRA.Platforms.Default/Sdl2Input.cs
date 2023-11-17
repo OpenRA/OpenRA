@@ -208,7 +208,7 @@ namespace OpenRA.Platforms.Default
 					{
 						var rawBytes = new byte[SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE];
 						unsafe { Marshal.Copy((IntPtr)e.text.text, rawBytes, 0, SDL.SDL_TEXTINPUTEVENT_TEXT_SIZE); }
-						inputHandler.OnTextInput(Encoding.UTF8.GetString(rawBytes, 0, Array.IndexOf(rawBytes, (byte)0)));
+						inputHandler.OnTextInput(Encoding.UTF8.GetString(rawBytes, 0, rawBytes.IndexOf((byte)0)));
 						break;
 					}
 

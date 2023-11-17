@@ -505,7 +505,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			}
 
 			// Get the first tileset template that contains the Frame ID of the original map's tile with the requested index
-			var template = tileSetsFromYaml.Find(x => ((DefaultTerrainTemplateInfo)x).Frames.Contains(tileIndex));
+			var template = tileSetsFromYaml.FirstOrDefault(x => ((DefaultTerrainTemplateInfo)x).Frames.Contains(tileIndex));
 
 			// HACK: The arrakis.yaml tileset file seems to be missing some tiles, so just get a replacement for them
 			// Also used for duplicate tiles that are taken from only tileset
@@ -525,7 +525,7 @@ namespace OpenRA.Mods.D2k.UtilityCommands
 			}
 
 			var templateIndex = template.Id;
-			var frameIndex = Array.IndexOf(((DefaultTerrainTemplateInfo)template).Frames, tileIndex);
+			var frameIndex = ((DefaultTerrainTemplateInfo)template).Frames.IndexOf(tileIndex);
 
 			return new TerrainTile(templateIndex, (byte)((frameIndex == -1) ? 0 : frameIndex));
 		}

@@ -135,6 +135,16 @@ namespace OpenRA
 			return Array.IndexOf(array, value);
 		}
 
+		public static T FirstOrDefault<T>(this T[] array, Predicate<T> match)
+		{
+			return Array.Find(array, match);
+		}
+
+		public static T FirstOrDefault<T>(this List<T> list, Predicate<T> match)
+		{
+			return list.Find(match);
+		}
+
 		public static T Random<T>(this IEnumerable<T> ts, MersenneTwister r)
 		{
 			return Random(ts, r, true);
