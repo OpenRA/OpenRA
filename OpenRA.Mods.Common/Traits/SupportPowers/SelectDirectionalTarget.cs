@@ -151,7 +151,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		Arrow GetArrow(double degree)
 		{
-			var arrow = Array.Find(directionArrows, d => d.EndAngle >= degree);
+			var arrow = directionArrows.FirstOrDefault(d => d.EndAngle >= degree);
 			return arrow ?? directionArrows[0];
 		}
 

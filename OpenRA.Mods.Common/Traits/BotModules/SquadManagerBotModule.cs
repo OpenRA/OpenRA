@@ -305,7 +305,7 @@ namespace OpenRA.Mods.Common.Traits
 		// HACK: Use of this function requires that there is one squad of this type.
 		Squad GetSquadOfType(SquadType type)
 		{
-			return Squads.Find(s => s.Type == type);
+			return Squads.FirstOrDefault(s => s.Type == type);
 		}
 
 		Squad RegisterNewSquad(IBot bot, SquadType type, (Actor Actor, WVec Offset) target = default)

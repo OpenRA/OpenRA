@@ -310,7 +310,7 @@ namespace OpenRA.Mods.Common.Traits
 			protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 			protected override IEnumerable<IRenderable> RenderAboveShroud(WorldRenderer wr, World world)
 			{
-				var minelayer = minelayers.Find(m => m.IsInWorld && !m.IsDead);
+				var minelayer = minelayers.FirstOrDefault(m => m.IsInWorld && !m.IsDead);
 				if (minelayer == null)
 					yield break;
 

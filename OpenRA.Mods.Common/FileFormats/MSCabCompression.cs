@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Common.FileFormats
 
 		public void ExtractFile(string filename, Stream output, Action<int> onProgress = null)
 		{
-			var file = Array.Find(files, f => f.FileName == filename);
+			var file = files.FirstOrDefault(f => f.FileName == filename);
 			if (file == null)
 				throw new FileNotFoundException(filename);
 

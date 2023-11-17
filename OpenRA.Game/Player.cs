@@ -109,14 +109,14 @@ namespace OpenRA
 				.Where(f => !requireSelectable || f.Selectable)
 				.ToList();
 
-			var selected = selectableFactions.Find(f => f.InternalName == factionName)
+			var selected = selectableFactions.FirstOrDefault(f => f.InternalName == factionName)
 				?? selectableFactions.Random(playerRandom);
 
 			// Don't loop infinite
 			for (var i = 0; i <= 10 && selected.RandomFactionMembers.Count > 0; i++)
 			{
 				var faction = selected.RandomFactionMembers.Random(playerRandom);
-				selected = selectableFactions.Find(f => f.InternalName == faction);
+				selected = selectableFactions.FirstOrDefault(f => f.InternalName == faction);
 
 				if (selected == null)
 					throw new YamlException($"Unknown faction: {faction}");
@@ -179,7 +179,7 @@ namespace OpenRA
 			else
 			{
 				// Map player
-				ClientIndex = world.LobbyInfo.Clients.Find(c => c.IsAdmin)?.Index ?? 0; // Owned by the host (TODO: fix this)
+				ClientIndex = world.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin)?.Index ?? 0; // Owned by the host (TODO: fix this)
 				Color = pr.Color;
 				PlayerName = pr.Name;
 				NonCombatant = pr.NonCombatant;

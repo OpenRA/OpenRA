@@ -211,7 +211,7 @@ namespace OpenRA.Scripting
 			var bindings = Game.ModData.ObjectCreator.GetTypesImplementing<ScriptGlobal>();
 			foreach (var b in bindings)
 			{
-				var ctor = Array.Find(b.GetConstructors(BindingFlags.Public | BindingFlags.Instance), c =>
+				var ctor = b.GetConstructors(BindingFlags.Public | BindingFlags.Instance).FirstOrDefault(c =>
 				{
 					var p = c.GetParameters();
 					return p.Length == 1 && p[0].ParameterType == typeof(ScriptContext);

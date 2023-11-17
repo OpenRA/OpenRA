@@ -1160,7 +1160,7 @@ namespace OpenRA.Server
 		}
 
 		public bool HasClientWonOrLost(Session.Client client) =>
-			worldPlayers.Find(p => p?.ClientIndex == client.Index)?.Outcome != WinState.Undefined;
+			worldPlayers.FirstOrDefault(p => p?.ClientIndex == client.Index)?.Outcome != WinState.Undefined;
 
 		public void DropClient(Connection toDrop)
 		{
@@ -1169,7 +1169,7 @@ namespace OpenRA.Server
 				orderBuffer?.RemovePlayer(toDrop.PlayerIndex);
 				Conns.Remove(toDrop);
 
-				var dropClient = LobbyInfo.Clients.Find(c => c.Index == toDrop.PlayerIndex);
+				var dropClient = LobbyInfo.Clients.FirstOrDefault(c => c.Index == toDrop.PlayerIndex);
 				if (dropClient == null)
 				{
 					toDrop.Dispose();

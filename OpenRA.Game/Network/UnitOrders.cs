@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Server;
@@ -43,7 +42,7 @@ namespace OpenRA.Network
 
 		static Player FindPlayerByClient(this World world, Session.Client c)
 		{
-			return Array.Find(world.Players, p => p.ClientIndex == c.Index && p.PlayerReference.Playable);
+			return world.Players.FirstOrDefault(p => p.ClientIndex == c.Index && p.PlayerReference.Playable);
 		}
 
 		static bool OrderNotFromServerOrWorldIsReplay(int clientId, World world) => clientId != 0 || (world != null && world.IsReplay);
@@ -185,12 +184,12 @@ namespace OpenRA.Network
 					if (!string.IsNullOrEmpty(order.TargetString))
 					{
 						var data = MiniYaml.FromString(order.TargetString);
-						var saveLastOrdersFrame = data.Find(n => n.Key == "SaveLastOrdersFrame");
+						var saveLastOrdersFrame = data.FirstOrDefault(n => n.Key == "SaveLastOrdersFrame");
 						if (saveLastOrdersFrame != null)
 							orderManager.GameSaveLastFrame =
 								FieldLoader.GetValue<int>("saveLastOrdersFrame", saveLastOrdersFrame.Value.Value);
 
-						var saveSyncFrame = data.Find(n => n.Key == "SaveSyncFrame");
+						var saveSyncFrame = data.FirstOrDefault(n => n.Key == "SaveSyncFrame");
 						if (saveSyncFrame != null)
 							orderManager.GameSaveLastSyncFrame =
 								FieldLoader.GetValue<int>("SaveSyncFrame", saveSyncFrame.Value.Value);
@@ -375,7 +374,7 @@ namespace OpenRA.Network
 						var strings = node.Key.Split('@');
 						if (strings[0] == "ConnectionQuality")
 						{
-							var client = orderManager.LobbyInfo.Clients.Find(c => c.Index == Exts.ParseInt32Invariant(strings[1]));
+							var client = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.Index == Exts.ParseInt32Invariant(strings[1]));
 							if (client != null)
 								client.ConnectionQuality = FieldLoader.GetValue<Session.ConnectionQuality>("ConnectionQuality", node.Value.Value);
 						}

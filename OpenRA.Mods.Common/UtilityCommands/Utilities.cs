@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 			var fs = map ?? modData.DefaultFileSystem;
 			var topLevelNodes = MiniYaml.Load(fs, manifestNodes, mapProperty);
-			return topLevelNodes.Find(n => n.Key == key);
+			return topLevelNodes.FirstOrDefault(n => n.Key == key);
 		}
 	}
 }

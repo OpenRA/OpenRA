@@ -278,7 +278,7 @@ namespace OpenRA.Mods.Common.Server
 				{
 					// Client 0 will always be the Host
 					// In some cases client 0 doesn't exist, so we untick all players
-					var host = server.LobbyInfo.Clients.Find(c => c.Index == 0);
+					var host = server.LobbyInfo.Clients.FirstOrDefault(c => c.Index == 0);
 					if (host != null)
 						host.State = Session.ClientState.NotReady;
 					else
@@ -442,7 +442,7 @@ namespace OpenRA.Mods.Common.Server
 					}
 					else
 					{
-						var occupantConn = server.Conns.Find(c => c.PlayerIndex == occupant.Index);
+						var occupantConn = server.Conns.FirstOrDefault(c => c.PlayerIndex == occupant.Index);
 						if (occupantConn != null)
 						{
 							server.SendOrderTo(conn, "ServerError", SlotClosed);
@@ -1143,7 +1143,7 @@ namespace OpenRA.Mods.Common.Server
 			if (spawnPoint == 0)
 				return true;
 
-			var existingClient = server.LobbyInfo.Clients.Find(cc => cc.SpawnPoint == spawnPoint);
+			var existingClient = server.LobbyInfo.Clients.FirstOrDefault(cc => cc.SpawnPoint == spawnPoint);
 			if (client != existingClient && !client.IsAdmin)
 			{
 				server.SendLocalizedMessageTo(conn, AdminClearSpawn);

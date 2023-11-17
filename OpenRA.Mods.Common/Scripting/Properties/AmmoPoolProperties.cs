@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using System.Linq;
 using Eluant;
 using OpenRA.Mods.Common.Traits;
@@ -34,7 +33,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns the count of the actor's specified ammopool.")]
 		public int AmmoCount(string poolName = "primary")
 		{
-			var pool = Array.Find(ammoPools, a => a.Info.Name == poolName);
+			var pool = ammoPools.FirstOrDefault(a => a.Info.Name == poolName);
 			if (pool == null)
 				throw new LuaException($"Invalid ammopool name {poolName} queried on actor {self}.");
 
@@ -44,7 +43,7 @@ namespace OpenRA.Mods.Common.Scripting
 		[Desc("Returns the maximum count of ammo the actor can load.")]
 		public int MaximumAmmoCount(string poolName = "primary")
 		{
-			var pool = Array.Find(ammoPools, a => a.Info.Name == poolName);
+			var pool = ammoPools.FirstOrDefault(a => a.Info.Name == poolName);
 			if (pool == null)
 				throw new LuaException($"Invalid ammopool name {poolName} queried on actor {self}.");
 
@@ -55,7 +54,7 @@ namespace OpenRA.Mods.Common.Scripting
 			"(Use a negative amount to remove ammo.)")]
 		public void Reload(string poolName = "primary", int amount = 1)
 		{
-			var pool = Array.Find(ammoPools, a => a.Info.Name == poolName);
+			var pool = ammoPools.FirstOrDefault(a => a.Info.Name == poolName);
 			if (pool == null)
 				throw new LuaException($"Invalid ammopool name {poolName} queried on actor {self}.");
 

@@ -207,7 +207,7 @@ namespace OpenRA.Mods.Common.Lint
 					continue;
 
 				var childType = childNode.Key.Split('@')[0];
-				var field = Array.Find(translationNodes, t => t.Name == childType);
+				var field = translationNodes.FirstOrDefault(t => t.Name == childType);
 				if (field.Name == null)
 					continue;
 
