@@ -1,0 +1,167 @@
+^UndestroyableTile:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
+	FrozenUnderFog:
+	WithSpriteBody:
+	Building:
+		TerrainTypes: Rock, Concrete, Cliff, Sand, Rock, Transition, Spice, SpiceSand, Dune,
+	Health:
+		HP: 30000
+	Armor:
+		Type: invulnerable
+	HitShape:
+		UseTargetableCellsOffsets: false
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
+	MapEditorData:
+		Categories: Tile actors
+	Interactable:
+
+^DestroyableTile:
+	Inherits: ^UndestroyableTile
+	Targetable:
+		TargetTypes: Ground, Cliff
+		RequiresForceFire: true
+	Armor:
+		Type: wall
+	Health:
+		HP: 30000
+	OwnerLostAction:
+		Action: ChangeOwner
+		Owner: Neutral
+	HitShape:
+		UseTargetableCellsOffsets: true
+	Explodes:
+		Type: CenterPosition
+		Weapon: cliffExplode
+		EmptyWeapon: cliffExplode
+	MapEditorData:
+		Categories: Destroable Tiles
+	Tooltip:
+		GenericName: meta-DestroyableTile.generic-name
+		Name: meta-DestroyableTile.name
+
+^DestroyedTile:
+	Inherits: ^UndestroyableTile
+	CaptureManager:
+	Building:
+	OwnerLostAction:
+		Action: ChangeOwner
+		Owner: Neutral
+	Tooltip:
+		GenericName: meta-DestroyedTile.generic-name
+		Name: meta-DestroyedTile.name
+	CaptureManager:
+	CapturableProgressBar:
+	CapturableProgressBlink:
+		Interval: 30
+	Capturable:
+		Types: cliff
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1048, -1048
+			BottomRight: 1024, 1054
+	Targetable:
+		TargetTypes: Ground, Cliff
+		RequiresForceFire: true
+	MapEditorData:
+		Categories: Destroyed Tiles
+
+pass01_destroyable_bottom:
+	Inherits: ^DestroyableTile
+	RenderSprites:
+		Image: rockpass01_bottom
+	Building:
+		Dimensions: 3,3
+		Footprint: === X=X X=X
+	HitShape:
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 900
+	SpawnActorOnDeath:
+		Actor: pass01_destroyed_bottom
+
+pass01_destroyed_bottom:
+	Inherits: ^DestroyedTile
+	RenderSprites:
+		Image: rockpass01_destroyed_bottom
+	Building:
+		Dimensions: 3,3
+		Footprint: === xxx xxx
+	TransformOnCapture:
+		IntoActor: pass01_destroyable_bottom
+
+pass01_destroyable_left:
+	Inherits: ^DestroyableTile
+	RenderSprites:
+		Image: rockpass01_left
+	HitShape:
+		Type: Rectangle
+			TopLeft: -700, -512
+			BottomRight: 712, 512
+	Building:
+		Dimensions: 3,3
+		Footprint: XX= === XX=
+	SpawnActorOnDeath:
+		Actor: pass01_destroyed_left
+
+
+pass01_destroyed_left:
+	Inherits: ^DestroyedTile
+	RenderSprites:
+		Image: rockpass01_destroyed_left
+	Building:
+		Dimensions: 3,3
+		Footprint: xx= xx= xx=
+	TransformOnCapture:
+		IntoActor: pass01_destroyable_left
+
+pass01_destroyable_right:
+	Inherits: ^DestroyableTile
+	RenderSprites:
+		Image: rockpass01_right
+	HitShape:
+		Type: Rectangle
+			TopLeft: -700, -512
+			BottomRight: 700, 512
+	Building:
+		Dimensions: 3,3
+		Footprint: =XX === =XX
+	SpawnActorOnDeath:
+		Actor: pass01_destroyed_right
+
+pass01_destroyed_right:
+	Inherits: ^DestroyedTile
+	RenderSprites:
+		Image: rockpass01_destroyed_right
+	Building:
+		Dimensions: 3,3
+		Footprint: =xx =xx =xx
+	TransformOnCapture:
+		IntoActor: pass01_destroyable_right
+
+pass01_destroyable_top:
+	Inherits: ^DestroyableTile
+	RenderSprites:
+		Image: rockpass01_top
+	HitShape:
+		Type: Rectangle
+			TopLeft: -512, -900
+			BottomRight: 512, 512
+	Building:
+		Dimensions: 3,3
+		Footprint: X=X X=X ===
+	SpawnActorOnDeath:
+		Actor: pass01_destroyed_top
+
+pass01_destroyed_top:
+	Inherits: ^DestroyedTile
+	RenderSprites:
+		Image: rockpass01_destroyed_top
+	Building:
+		Dimensions: 3,3
+		Footprint: XxX xxx xxx
+	TransformOnCapture:
+		IntoActor: pass01_destroyable_top

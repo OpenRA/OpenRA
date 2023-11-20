@@ -52,6 +52,11 @@ engineer:
 	Captures:
 		CaptureTypes: building
 		PlayerExperience: 10
+	Captures@cliff:
+		CaptureTypes: cliff
+		ConsumedByCapture: false
+		CaptureDelay: 150
+		ValidRelationships: Enemy, Neutral, Ally
 	Encyclopedia:
 		Description: actor-engineer.encyclopedia
 		Order: 30

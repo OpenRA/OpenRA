@@ -198,11 +198,19 @@
 	HandicapDamageMultiplier:
 	HandicapProductionTimeMultiplier:
 
+^CliffAvalanche:
+	ExternalCondition@rockAvalanche:
+		Condition: rock_avalanche
+	KillsSelf@rockAvalanche:
+		RequiresCondition: rock_avalanche
+		DamageTypes: SmallExplosionDeath
+
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
+	Inherits@avalancheKill: ^CliffAvalanche
 	Tooltip:
 		GenericName: meta-vehicle-generic-name
 	Huntable:
@@ -333,6 +341,7 @@
 	Inherits@3: ^SpriteActor
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
+	Inherits@avalancheKill: ^CliffAvalanche
 	Tooltip:
 		GenericName: meta-infantry-generic-name
 	Huntable:

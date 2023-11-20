@@ -98,6 +98,7 @@ actor-engineer =
    .description = Infiltrates and captures enemy structures
       Strong vs Buildings
       Weak vs Everything
+      Can repair destroyed cliffs
    .name = Engineer
    .encyclopedia = Engineers can be used to capture enemy buildings.
 
@@ -472,3 +473,11 @@ actor-combat-tank-o =
    .encyclopedia = The Combat Tank is effective against most vehicles, less so against lightly armored vehicles.
 
     The Ordos Combat Tank is the fastest variant of the Combat Tank, but it is also the weakest.
+
+meta-DestroyableTile =
+   .generic-name = Passage (destroyable)
+   .name = Passage (destroyable)
+
+meta-DestroyedTile =
+   .generic-name = Passage (repairable)
+   .name = Passage (repairable)
