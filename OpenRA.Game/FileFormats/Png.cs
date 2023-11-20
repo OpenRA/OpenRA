@@ -16,6 +16,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using ICSharpCode.SharpZipLib.Checksum;
+using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
@@ -371,13 +372,14 @@ namespace OpenRA.FileFormats
 
 				using (var data = new MemoryStream())
 				{
-					using (var compressed = new DeflaterOutputStream(data))
+					using (var compressed = new DeflaterOutputStream(data, new Deflater(Deflater.BEST_COMPRESSION)))
 					{
 						var rowStride = Width * PixelStride;
 						for (var y = 0; y < Height; y++)
 						{
-							// Write uncompressed scanlines for simplicity
-							compressed.WriteByte(0);
+							// Assuming no filtering for simplicity
+							const byte FilterType = 0;
+							compressed.WriteByte(FilterType);
 							compressed.Write(Data, y * rowStride, rowStride);
 						}
 
