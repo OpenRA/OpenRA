@@ -64,6 +64,7 @@ DevBullet:
 		Image: doubleblastbullet
 	Warhead@1Dam: SpreadDamage
 		Damage: 6500
+		Spread: 1c0
 		Versus:
 			none: 65
 			wall: 100
