@@ -93,30 +93,19 @@ jobs:
 
   docs:
     name: Update docs.openra.net
+    needs: prepare
     if: github.repository == 'openra/openra'
     runs-on: ubuntu-22.04
     steps:
-      - name: Prepare environment variables
+      - name: Debug output
         run: |
-          if [ "${{ github.event_name }}" = "push" ]; then
-            if [ "${{ github.ref_type }}" = "tag" ]; then
-              VERSION=`echo "${GITHUB_REF#refs/tags/}" | cut -d"-" -f1`
-              echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
-              echo "VERSION=$VERSION" >> $GITHUB_ENV
-            else
-              echo "GIT_TAG=bleed" >> $GITHUB_ENV
-              echo "VERSION=bleed" >> $GITHUB_ENV
-            fi
-          else
-            VERSION=`echo "${{ github.event.inputs.tag }}" | cut -d"-" -f1`
-            echo "GIT_TAG=${{ github.event.inputs.tag }}" >> $GITHUB_ENV
-            echo "VERSION=$VERSION" >> $GITHUB_ENV
-          fi
+          echo ${{ needs.prepare.outputs.git_tag }}
+          echo ${{ needs.prepare.outputs.version_type }}
 
       - name: Clone Repository
         uses: actions/checkout@v3
         with:
-          ref: ${{ env.GIT_TAG }}
+          ref: ${{ needs.prepare.outputs.git_tag }}
 
       - name: Install .NET 6
         uses: actions/setup-dotnet@v3
@@ -127,21 +116,21 @@ jobs:
         run: |
           make all
 
-      # VERSION is release/playtest/bleed - the name of the target branch.
+      # version_type is release/playtest/bleed - the name of the target branch.
       - name: Clone docs.openra.net
         uses: actions/checkout@v3
         with:
           repository: openra/docs
           token: ${{ secrets.DOCS_TOKEN }}
           path: docs
-          ref: ${{ env.VERSION }}
+          ref: ${{ needs.prepare.outputs.version_type }}
 
       - name: Generate docs files
         run: |
-          ./utility.sh all --docs "${{ env.GIT_TAG }}" | python3 ./packaging/format-docs.py > "docs/api/traits.md"
-          ./utility.sh all --weapon-docs "${{ env.GIT_TAG }}" | python3 ./packaging/format-docs.py > "docs/api/weapons.md"
-          ./utility.sh all --sprite-sequence-docs "${{ env.GIT_TAG }}" | python3 ./packaging/format-docs.py > "docs/api/sprite-sequences.md"
-          ./utility.sh all --lua-docs "${{ env.GIT_TAG }}" > "docs/api/lua.md"
+          ./utility.sh all --docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/traits.md"
+          ./utility.sh all --weapon-docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/weapons.md"
+          ./utility.sh all --sprite-sequence-docs "${{ needs.prepare.outputs.git_tag }}" | python3 ./packaging/format-docs.py > "docs/api/sprite-sequences.md"
+          ./utility.sh all --lua-docs "${{ needs.prepare.outputs.git_tag }}" > "docs/api/lua.md"
 
       - name: Update docs.openra.net
         run: |
@@ -149,5 +138,5 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           git add api/*.md
-          git commit -m "Update auto-generated documentation for ${{ env.GIT_TAG }}"
-          git push origin ${{ env.VERSION }}
+          git commit -m "Update auto-generated documentation for ${{ needs.prepare.outputs.git_tag }}"
+          git push origin ${{ needs.prepare.outputs.version_type }}
