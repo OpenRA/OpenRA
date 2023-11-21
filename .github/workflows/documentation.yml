@@ -42,13 +42,19 @@ jobs:
 
   wiki:
     name: Update Wiki
-    if: github.repository == 'openra/openra'
+    needs: prepare
+    if: github.repository == 'openra/openra' && needs.prepare.outputs.version_type != 'bleed'
     runs-on: ubuntu-22.04
     steps:
+      - name: Debug output
+        run: |
+          echo ${{ needs.prepare.outputs.git_tag }}
+          echo ${{ needs.prepare.outputs.version_type }}
+
       - name: Clone Repository
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.inputs.tag }}
+          ref: ${{ needs.prepare.outputs.git_tag }}
 
       - name: Install .NET 6
         uses: actions/setup-dotnet@v3
@@ -67,28 +73,22 @@ jobs:
           path: wiki
 
       - name: Update Wiki (Playtest)
-        if: startsWith(github.event.inputs.tag, 'playtest-')
-        env:
-          GIT_TAG: ${{ github.event.inputs.tag }}
+        if: startsWith(needs.prepare.outputs.git_tag, 'playtest-')
         run: |
-          ./utility.sh all --settings-docs "${GIT_TAG}" > "wiki/Settings (playtest).md"
+          ./utility.sh all --settings-docs "${{ needs.prepare.outputs.git_tag }}" > "wiki/Settings (playtest).md"
 
       - name: Update Wiki (Release)
-        if: startsWith(github.event.inputs.tag, 'release-')
-        env:
-          GIT_TAG: ${{ github.event.inputs.tag }}
+        if: startsWith(needs.prepare.outputs.git_tag, 'release-')
         run: |
-          ./utility.sh all --settings-docs "${GIT_TAG}" > "wiki/Settings.md"
+          ./utility.sh all --settings-docs "${{ needs.prepare.outputs.git_tag }}" > "wiki/Settings.md"
 
       - name: Push Wiki
-        env:
-          GIT_TAG: ${{ github.event.inputs.tag }}
         run: |
           cd wiki
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           git add --all
-          git commit -m "Update auto-generated documentation for ${GIT_TAG}"
+          git commit -m "Update auto-generated documentation for ${{ needs.prepare.outputs.git_tag }}"
           git push origin master
 
   docs:
