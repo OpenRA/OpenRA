@@ -130,6 +130,7 @@ World:
 		ProductionPaletteWidget: PRODUCTION_PALETTE
 	ActorSpawnManager:
 		Actors: sandworm
+		InitialDelay: 9000
 	CrateSpawner:
 		Minimum: 0
 		Maximum: 2

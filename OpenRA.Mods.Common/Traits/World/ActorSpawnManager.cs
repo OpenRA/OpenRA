@@ -27,6 +27,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Maximum number of actors.")]
 		public readonly int Maximum = 4;
 
+		[Desc("Initial delay before first actor is spawn")]
+		public readonly int InitialDelay = 0;
+
 		[Desc("Time (in ticks) between actor spawn. Supports 1 or 2 values.",
 			"If 2 values are provided they are used as a range from which a value is randomly selected.")]
 		public readonly int[] SpawnInterval = { 6000 };
@@ -64,6 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		bool enabled;
 		int spawnCountdown;
+		int initialDelay;
 		int actorsPresent;
 
 		public ActorSpawnManager(ActorSpawnManagerInfo info)
@@ -78,9 +82,18 @@ namespace OpenRA.Mods.Common.Traits
 			base.Created(self);
 		}
 
+		protected override void TraitEnabled(Actor self)
+		{
+			initialDelay = info.InitialDelay;
+			spawnCountdown = 0;
+		}
+
 		void ITick.Tick(Actor self)
 		{
 			if (IsTraitDisabled || !enabled)
+				return;
+
+			if (--initialDelay > 0)
 				return;
 
 			if (info.Maximum < 1 || actorsPresent >= info.Maximum)
