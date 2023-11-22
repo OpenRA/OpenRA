@@ -17,6 +17,9 @@ Player:
 	GrantConditionOnBotOwner@gladius:
 		Condition: enable-gladius-ai
 		Bots: gladius
+	ProvidesPrerequisite@autoConreteForBots:
+		Prerequisite: global-auto-concrete
+		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
 	SupportPowerBotModule:
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
 		Decisions:
@@ -80,12 +83,12 @@ Player:
 		SiloTypes: silo
 		DefenseTypes: medium_gun_turret,large_gun_turret
 		BuildingLimits:
-			barracks: 1
+			barracks: 3
 			refinery: 4
 			outpost: 1
 			high_tech_factory: 1
-			light_factory: 1
-			heavy_factory: 1
+			light_factory: 2
+			heavy_factory: 2
 			starport: 1
 			repair_pad: 1
 			research_centre: 1
@@ -114,7 +117,15 @@ Player:
 			upgrade.heavy: 1
 			upgrade.hightech: 1
 		BuildingDelays:
-			upgrade.conyard: 3750
+			upgrade.conyard: 10000
+			repair_pad: 12000
+			outpost: 5000
+			research_centre: 15000
+			upgrade.barracks: 5000
+			upgrade.light: 5000
+			starport: 15000
+			upgrade.heavy: 15000
+			medium_gun_turret: 3000
 	BaseBuilderBotModule@vidious:
 		RequiresCondition: enable-vidious-ai
 		BuildingQueues: Building, Upgrade
@@ -131,12 +142,12 @@ Player:
 		SiloTypes: silo
 		DefenseTypes: medium_gun_turret,large_gun_turret
 		BuildingLimits:
-			barracks: 1
+			barracks: 3
 			refinery: 4
 			outpost: 1
 			high_tech_factory: 1
-			light_factory: 1
-			heavy_factory: 1
+			light_factory: 2
+			heavy_factory: 2
 			starport: 1
 			repair_pad: 1
 			research_centre: 1
@@ -165,7 +176,13 @@ Player:
 			upgrade.heavy: 1
 			upgrade.hightech: 1
 		BuildingDelays:
-			upgrade.conyard: 3750
+			upgrade.conyard: 12000
+			repair_pad: 10000
+			outpost: 11000
+			upgrade.barracks: 8000
+			upgrade.heavy: 10000
+			high_tech_factory: 13000
+			starport: 20000
 	BaseBuilderBotModule@gladius:
 		RequiresCondition: enable-gladius-ai
 		BuildingQueues: Building, Upgrade
@@ -182,12 +199,12 @@ Player:
 		SiloTypes: silo
 		DefenseTypes: medium_gun_turret,large_gun_turret
 		BuildingLimits:
-			barracks: 1
+			barracks: 3
 			refinery: 4
 			outpost: 1
 			high_tech_factory: 1
-			light_factory: 1
-			heavy_factory: 1
+			light_factory: 2
+			heavy_factory: 2
 			starport: 1
 			repair_pad: 1
 			research_centre: 1
@@ -215,7 +232,15 @@ Player:
 			upgrade.heavy: 1
 			upgrade.hightech: 1
 		BuildingDelays:
-			upgrade.conyard: 3750
+			upgrade.conyard: 10000
+			repair_pad: 10000
+			repair_pad.bot: 10000
+			upgrade.barracks: 3500
+			upgrade.heavy: 15000
+			outpost: 12000
+			starport: 15000
+			upgrade.light: 10000
+			medium_gun_turret: 5000
 	BuildingRepairBotModule:
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
 	SquadManagerBotModule@omnius:
@@ -256,8 +281,8 @@ Player:
 			combat_tank_h: 100
 			combat_tank_o: 100
 		UnitLimits:
-			harvester: 8
-			carryall: 4
+			harvester: 15
+			carryall: 8
 	McvManagerBotModule:
 		RequiresCondition: enable-omnius-ai || enable-vidious-ai || enable-gladius-ai
 		McvTypes: mcv
@@ -301,8 +326,8 @@ Player:
 			combat_tank_h: 100
 			combat_tank_o: 100
 		UnitLimits:
-			harvester: 8
-			carryall: 4
+			harvester: 15
+			carryall: 8
 	SquadManagerBotModule@gladius:
 		RequiresCondition: enable-gladius-ai
 		SquadSize: 10
@@ -341,5 +366,5 @@ Player:
 			combat_tank_h: 100
 			combat_tank_o: 100
 		UnitLimits:
-			harvester: 8
-			carryall: 4
+			harvester: 15
+			carryall: 8
