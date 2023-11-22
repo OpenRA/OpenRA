@@ -32,6 +32,7 @@ World:
 	ActorSpawnManager:
 		Minimum: 0
 		Maximum: 1
+		InitialDelay: 5000
 	MapCreeps:
 		CheckboxVisible: False
 		CheckboxLocked: True
