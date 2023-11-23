@@ -10,156 +10,66 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
-using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA
 {
+	[AttributeUsage(AttributeTargets.Class)]
+	public sealed class GenerateSyncCodeAttribute : Attribute { }
+
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 	public sealed class SyncMemberAttribute : Attribute { }
 
-	// Marker interface
-	public interface ISync { }
+	public interface ISync
+	{
+		int GetSyncHash();
+	}
 
 	public static class Sync
 	{
-		static readonly ConcurrentCache<Type, Func<object, int>> HashFunctions =
-			new(GenerateHashFunc);
+		public static int Hash(bool a) => a ? 0xaaa : 0x555;
 
-		internal static Func<object, int> GetHashFunction(ISync sync)
-		{
-			return HashFunctions[sync.GetType()];
-		}
+		public static int Hash(int a) => a;
 
-		internal static int Hash(ISync sync)
-		{
-			return GetHashFunction(sync)(sync);
-		}
+		public static int Hash(int2 a) => ((a.X * 5) ^ (a.Y * 3)) / 4;
 
-		static readonly Dictionary<Type, MethodInfo> CustomHashFunctions = new()
-		{
-			{ typeof(int2), ((Func<int2, int>)HashInt2).Method },
-			{ typeof(CPos), ((Func<CPos, int>)HashCPos).Method },
-			{ typeof(CVec), ((Func<CVec, int>)HashCVec).Method },
-			{ typeof(WDist), ((Func<WDist, int>)HashUsingHashCode).Method },
-			{ typeof(WPos), ((Func<WPos, int>)HashUsingHashCode).Method },
-			{ typeof(WVec), ((Func<WVec, int>)HashUsingHashCode).Method },
-			{ typeof(WAngle), ((Func<WAngle, int>)HashUsingHashCode).Method },
-			{ typeof(WRot), ((Func<WRot, int>)HashUsingHashCode).Method },
-			{ typeof(Actor), ((Func<Actor, int>)HashActor).Method },
-			{ typeof(Player), ((Func<Player, int>)HashPlayer).Method },
-			{ typeof(Target), ((Func<Target, int>)HashTarget).Method },
-		};
+		public static int Hash(CPos a) => a.Bits;
 
-		static void EmitSyncOpcodes(Type type, ILGenerator il)
-		{
-			if (CustomHashFunctions.TryGetValue(type, out var hashFunction))
-				il.EmitCall(OpCodes.Call, hashFunction, null);
-			else if (type == typeof(bool))
-			{
-				var l = il.DefineLabel();
-				il.Emit(OpCodes.Ldc_I4, 0xaaa);
-				il.Emit(OpCodes.Brtrue, l);
-				il.Emit(OpCodes.Pop);
-				il.Emit(OpCodes.Ldc_I4, 0x555);
-				il.MarkLabel(l);
-			}
-			else if (type != typeof(int))
-				throw new NotImplementedException($"SyncMemberAttribute on member of unhashable type: {type.FullName}");
+		public static int Hash(CVec a) => ((a.X * 5) ^ (a.Y * 3)) / 4;
 
-			il.Emit(OpCodes.Xor);
-		}
+		public static int Hash(WDist a) => a.Length;
 
-		static Func<object, int> GenerateHashFunc(Type t)
-		{
-			var d = new DynamicMethod($"hash_{t.Name}", typeof(int), new Type[] { typeof(object) }, t);
-			var il = d.GetILGenerator();
-			var this_ = il.DeclareLocal(t).LocalIndex;
-			il.Emit(OpCodes.Ldarg_0);
-			il.Emit(OpCodes.Castclass, t);
-			il.Emit(OpCodes.Stloc, this_);
-			il.Emit(OpCodes.Ldc_I4_0);
+		public static int Hash(WPos a) => a.X ^ a.Y ^ a.Z;
 
-			const BindingFlags Binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-			foreach (var field in t.GetFields(Binding).Where(x => x.HasAttribute<SyncMemberAttribute>()))
-			{
-				il.Emit(OpCodes.Ldloc, this_);
-				il.Emit(OpCodes.Ldfld, field);
+		public static int Hash(WVec a) => a.X ^ a.Y ^ a.Z;
 
-				EmitSyncOpcodes(field.FieldType, il);
-			}
+		public static int Hash(WAngle a) => a.Angle;
 
-			foreach (var prop in t.GetProperties(Binding).Where(x => x.HasAttribute<SyncMemberAttribute>()))
-			{
-				il.Emit(OpCodes.Ldloc, this_);
-				il.EmitCall(OpCodes.Call, prop.GetGetMethod(true), null);
+		public static int Hash(WRot a) => Hash(a.Roll) ^ Hash(a.Pitch.Angle) ^ Hash(a.Yaw.Angle);
 
-				EmitSyncOpcodes(prop.PropertyType, il);
-			}
+		public static int Hash(Actor a) => a == null ? 0 : (int)(a.ActorID << 16);
 
-			il.Emit(OpCodes.Ret);
-			return (Func<object, int>)d.CreateDelegate(typeof(Func<object, int>));
-		}
+		public static int Hash(Player p) => p == null ? 0 : (int)(p.PlayerActor.ActorID << 16) * 0x567;
 
-		public static int HashInt2(int2 i2)
-		{
-			return ((i2.X * 5) ^ (i2.Y * 3)) / 4;
-		}
+		public static int Hash(object o) => throw new NotSupportedException($"Type {o.GetType().FullName} is not supported for Sync hashing!");
 
-		public static int HashCPos(CPos i2)
-		{
-			return i2.Bits;
-		}
-
-		public static int HashCVec(CVec i2)
-		{
-			return ((i2.X * 5) ^ (i2.Y * 3)) / 4;
-		}
-
-		public static int HashActor(Actor a)
-		{
-			if (a != null)
-				return (int)(a.ActorID << 16);
-			return 0;
-		}
-
-		public static int HashPlayer(Player p)
-		{
-			if (p != null)
-				return (int)(p.PlayerActor.ActorID << 16) * 0x567;
-			return 0;
-		}
-
-		public static int HashTarget(Target t)
+		public static int Hash(Target t)
 		{
 			switch (t.Type)
 			{
 				case TargetType.Actor:
-					return (int)(t.Actor.ActorID << 16) * 0x567;
+					return Hash(t.Actor);
 
 				case TargetType.FrozenActor:
-					var actor = t.FrozenActor.Actor;
-					if (actor == null)
-						return 0;
-
-					return (int)(actor.ActorID << 16) * 0x567;
+					return Hash(t.FrozenActor.Actor);
 
 				case TargetType.Terrain:
-					return HashUsingHashCode(t.CenterPosition);
+					return Hash(t.CenterPosition);
 
 				case TargetType.Invalid:
 				default:
 					return 0;
 			}
-		}
-
-		public static int HashUsingHashCode<T>(T t)
-		{
-			return t.GetHashCode();
 		}
 
 		public static void RunUnsynced(World world, Action fn)

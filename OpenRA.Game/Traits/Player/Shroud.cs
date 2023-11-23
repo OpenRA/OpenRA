@@ -201,7 +201,7 @@ namespace OpenRA.Traits
 				}
 			}
 
-			Hash = Sync.HashPlayer(self.Owner) + self.World.WorldTick;
+			Hash = Sync.Hash(self.Owner) + self.World.WorldTick;
 			disabledChanged = false;
 		}
 
