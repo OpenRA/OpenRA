@@ -609,6 +609,7 @@ dotnet_diagnostic.SA1200.severity = none # UsingDirectivesMustBePlacedCorrectly
 dotnet_diagnostic.SA1201.severity = none # ElementsMustAppearInTheCorrectOrder
 dotnet_diagnostic.SA1202.severity = none # ElementsMustBeOrderedByAccess
 dotnet_diagnostic.SA1204.severity = none # StaticElementsMustAppearBeforeInstanceElements
+dotnet_diagnostic.SA1205.severity = none # PartialElementsMustDeclareAccess
 dotnet_diagnostic.SA1214.severity = none # ReadonlyElementsMustAppearBeforeNonReadonlyElements
 dotnet_diagnostic.SX1309.severity = none # FieldNamesMustBeginWithUnderscore
 dotnet_diagnostic.SX1309S.severity = none # StaticFieldNamesMustBeginWithUnderscore
