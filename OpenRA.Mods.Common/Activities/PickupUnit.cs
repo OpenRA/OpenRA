@@ -166,7 +166,7 @@ namespace OpenRA.Mods.Common.Activities
 				self.World.AddFrameEndTask(w =>
 				{
 					cargo.World.Remove(cargo);
-					carryable.Attached(cargo);
+					carryable.Attached(cargo, self);
 					carryall.AttachCarryable(self, cargo);
 				});
 			}

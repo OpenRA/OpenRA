@@ -128,14 +128,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (!string.IsNullOrEmpty(info.InitialActor))
 			{
-				var unit = self.World.CreateActor(false, info.InitialActor.ToLowerInvariant(), new TypeDictionary
+				var cargo = self.World.CreateActor(false, info.InitialActor.ToLowerInvariant(), new TypeDictionary
 				{
 					new ParentActorInit(self),
 					new OwnerInit(self.Owner)
 				});
 
-				unit.Trait<Carryable>().Attached(unit);
-				AttachCarryable(self, unit);
+				cargo.Trait<Carryable>().Attached(cargo, self);
+				AttachCarryable(self, cargo);
 			}
 		}
 

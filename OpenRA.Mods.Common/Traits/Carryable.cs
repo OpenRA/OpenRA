@@ -69,12 +69,13 @@ namespace OpenRA.Mods.Common.Traits
 			base.Created(self);
 		}
 
-		public virtual void Attached(Actor self)
+		public virtual void Attached(Actor self, Actor carrier)
 		{
 			if (attached)
 				return;
 
 			attached = true;
+			Carrier = carrier;
 
 			if (carriedToken == Actor.InvalidConditionToken)
 				carriedToken = self.GrantCondition(Info.CarriedCondition);
