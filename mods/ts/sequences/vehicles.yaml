@@ -372,3 +372,22 @@ traincar:
 
 cargocar:
 	Inherits: ^VehicleOverlays
+
+mstl:
+	Inherits: ^VehicleOverlays
+	icon:
+		Filename: mstlicon.shp
+	idle:
+		Filename: mstl.shp
+		ShadowStart: 3
+		Offset: 0, -15, 15
+	idle-lights:
+		Filename: mstl_a.shp
+		Length: 10
+		ShadowStart: 10
+		Offset: 0, -15, 15
+	make:
+		Filename: mstlmk.shp
+		Length: 20
+		ShadowStart: 20
+		Offset: 0, -15, 15
