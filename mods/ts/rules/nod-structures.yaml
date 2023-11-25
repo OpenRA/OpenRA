@@ -408,6 +408,7 @@ NASTLH:
 		BuildPaletteOrder: 100
 		Prerequisites: proc, natech, ~structures.nod, ~techlevel.high
 		Description: actor-nastlh.description
+	ProvidesPrerequisite@buildingname:
 	Building:
 		Footprint: xxx XXX
 		Dimensions: 3,2

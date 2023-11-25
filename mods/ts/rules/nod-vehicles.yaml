@@ -549,3 +549,88 @@ STNK:
 	Explodes@ELITE:
 		RequiresCondition: rank-elite
 		Weapon: UnitExplode
+
+SGEN:
+	Inherits: ^Tank
+	Inherits@VOXELS: ^VoxelActor
+	Inherits@selection: ^SelectableSupportUnit
+	-AppearsOnRadar:
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 130
+		Prerequisites: ~naweap, nastlh
+		Description: actor-sgen.description
+	Valued:
+		Cost: 1600
+	Tooltip:
+		Name: actor-sgen.name
+		RequiresCondition: !deployed
+	Tooltip@DEPLOYED:
+		Name: actor-sgen.deployed--name
+		RequiresCondition: deployed
+	Selectable:
+		Bounds: 1206, 1768, 0, -603
+	Health:
+		HP: 20000
+	Armor:
+		Type: Light
+	Voiced:
+		VoiceSet: Spy
+	Mobile:
+		Speed: 85
+		TurnSpeed: 20
+		ImmovableCondition: !undeployed
+		RequireForceMoveCondition: !undeployed
+	RevealsShroud:
+		RequiresCondition: !inside-tunnel && undeployed
+		Range: 5c0
+		MaxHeightDelta: 3
+	RevealsShroud@DEPLOYED:
+		RequiresCondition: inside-tunnel || deployed
+		Range: 6c0
+		MaxHeightDelta: 3
+	WithMakeAnimation:
+	GrantCondition@PREVIEWWORKAROUND:
+		Condition: real-actor
+	RenderSprites:
+		Image: mstl
+		PlayerPalette: playertem
+	GrantConditionOnDeploy:
+		PauseOnCondition: empdisable || being-captured
+		DeployedCondition: deployed
+		UndeployedCondition: undeployed
+		UndeployOnMove: true
+		UndeployOnPickup: true
+		Facing: 384
+		AllowedTerrainTypes: Clear, Road, DirtRoad, Rough
+		DeploySounds: place2.aud
+		UndeploySounds: clicky1.aud
+		Voice: Move
+	EntersTunnels:
+		RequireForceMoveCondition: !undeployed
+	Repairable:
+		RequireForceMoveCondition: !undeployed
+	Passenger:
+		RequireForceMoveCondition: !undeployed
+	WithVoxelBody:
+		RequiresCondition: undeployed
+	WithSpriteBody@deployed:
+		RequiresCondition: !undeployed && real-actor
+	WithIdleOverlay@LIGHTS:
+		RequiresCondition: deployed && real-actor && !empdisable
+		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: True
+	RenderVoxels:
+		Scale: 11.5
+	ProximityExternalCondition:
+		RequiresCondition: deployed && !empdisable
+		Condition: cloakgenerator
+		Range: 6c0
+		EnableSound: cloak5.aud
+		DisableSound: cloak5.aud
+		AffectsParent: true
+	WithRangeCircle:
+		Range: 6c0
+		Type: cloakgenerator
+		RequiresCondition: deployed && !empdisable

@@ -637,6 +637,12 @@ actor-stnk =
       Strong vs Vehicles, Aircraft
       Weak vs Infantry
 
+actor-sgen =
+   .name = Mobile Stealth Generator
+   .deployed--name = Mobile Stealth Generator (deployed)
+   .description = Can cloak units when deployed.
+      Unarmed
+
 ## shared-infantry.yaml
 actor-e1 =
    .description = General-purpose infantry.
