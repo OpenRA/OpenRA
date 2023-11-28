@@ -87,9 +87,12 @@ jobs:
           cd wiki
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          git add --all
-          git commit -m "Update auto-generated documentation for ${{ needs.prepare.outputs.git_tag }}"
-          git push origin master
+          git diff-index --quiet HEAD || \
+          (
+            git add --all && \
+            git commit -m "Update auto-generated documentation for ${{ needs.prepare.outputs.git_tag }}" && \
+            git push origin master
+          )
 
   docs:
     name: Update docs.openra.net
@@ -137,6 +140,9 @@ jobs:
           cd docs
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          git add api/*.md
-          git commit -m "Update auto-generated documentation for ${{ needs.prepare.outputs.git_tag }}"
-          git push origin ${{ needs.prepare.outputs.version_type }}
+          git diff-index --quiet HEAD || \
+          (
+            git add api/*.md && \
+            git commit -m "Update auto-generated documentation for ${{ needs.prepare.outputs.git_tag }}" && \
+            git push origin ${{ needs.prepare.outputs.version_type }}
+          )
