@@ -24,6 +24,9 @@ namespace OpenRA.Mods.Common.Traits
 			"Also overrides other instances of this trait's Reject fields.")]
 		public readonly HashSet<string> Except = new();
 
+		[Desc("Remove current and all queued orders from the actor when this trait is enabled.")]
+		public readonly bool RemoveOrders = false;
+
 		public override object Create(ActorInitializer init) { return new RejectsOrders(this); }
 	}
 
@@ -34,6 +37,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public RejectsOrders(RejectsOrdersInfo info)
 			: base(info) { }
+
+		protected override void TraitEnabled(Actor self)
+		{
+			if (Info.RemoveOrders)
+				self.CancelActivity();
+		}
 	}
 
 	public static class RejectsOrdersExts
