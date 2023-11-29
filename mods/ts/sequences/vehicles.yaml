@@ -343,6 +343,9 @@ mobilemp:
 	icon:
 		Filename: mempicon.shp
 
+truckt:
+	Inherits: ^VehicleOverlays
+
 trucka:
 	Inherits: ^VehicleOverlays
 

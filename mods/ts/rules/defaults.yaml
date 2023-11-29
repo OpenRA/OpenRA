@@ -790,7 +790,7 @@
 		Voice: Move
 		TerrainOrientationAdjustmentMargin: 256
 	Selectable:
-		Bounds: 1206, 1448
+		Bounds: 1206, 1448, 0, -512
 	Voiced:
 		VoiceSet: Vehicle
 	Targetable:
