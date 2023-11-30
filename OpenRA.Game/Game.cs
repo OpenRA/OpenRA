@@ -189,7 +189,7 @@ namespace OpenRA
 			Cursor.SetCursor(null);
 			BeforeGameStart();
 
-            Console.WriteLine(GeneratedCode.GeneratedMessage);
+			Console.WriteLine(GeneratedCode.GeneratedMessage);
 
 			using (new PerfTimer("NewWorld"))
 				OrderManager.World = new World(mapUID, ModData, OrderManager, type);
