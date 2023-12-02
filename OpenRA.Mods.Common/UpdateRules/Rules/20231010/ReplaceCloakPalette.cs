@@ -10,10 +10,11 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
-	public class ReplaceCloakPalette : UpdateRule
+	public class ReplaceCloakPalette : UpdateRule, IBeforeUpdateActors
 	{
 		public override string Name => "Change default Cloak style from Palette to Alpha.";
 
@@ -21,29 +22,43 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			"Cloak has gained several new rendering modes\n" +
 			"and its default behaviour has changed from using a palette to native alpha.";
 
-		readonly List<string> locations = new();
-
-		public override IEnumerable<string> AfterUpdate(ModData modData)
+		readonly List<(string, string)> actorsWithDefault = new();
+		IEnumerable<string> IBeforeUpdateActors.BeforeUpdateActors(ModData modData, List<MiniYamlNodeBuilder> resolvedActors)
 		{
-			if (locations.Count > 0)
-				yield return "Cloak no longer defaults to replacing the actor's palette.\n" +
-					"If you wish to keep the previous behavior you wish to change the\n" +
-					"Cloak definitions on the following actor definitions:\n" +
-					UpdateUtils.FormatMessageList(locations);
+			foreach (var actor in resolvedActors)
+				foreach (var cloak in actor.ChildrenMatching("Cloak"))
+					if (cloak.LastChildMatching("Palette", false) == null)
+						actorsWithDefault.Add((actor.Key, cloak.Key));
 
-			locations.Clear();
+			yield break;
 		}
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
 			foreach (var cloak in actorNode.ChildrenMatching("Cloak"))
 			{
-				cloak.RemoveNodes("Palette");
-				cloak.RemoveNodes("IsPlayerPalette");
-				locations.Add($"{actorNode.Key} ({actorNode.Location.Filename})");
-			}
+				if (actorsWithDefault.Any(pair => pair.Item1 == actorNode.Key && pair.Item2 == cloak.Key))
+				{
+					cloak.AddNode("CloakedPalette", "cloak");
+					cloak.AddNode("CloakStyle", "Palette");
+					yield break;
+				}
 
-			yield break;
+				var palette = cloak.LastChildMatching("Palette", false);
+				if (palette != null)
+				{
+					if (string.IsNullOrEmpty(palette.Value.Value))
+					{
+						cloak.RemoveNode(palette);
+						cloak.AddNode("CloakStyle", "None");
+					}
+					else
+					{
+						palette.RenameKey("CloakedPalette");
+						cloak.AddNode("CloakStyle", "Palette");
+					}
+				}
+			}
 		}
 	}
 }
