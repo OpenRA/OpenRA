@@ -85,9 +85,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ExtractResourceStorageFromHarvester(),
 				new ReplacePaletteModifiers(),
 				new RemoveConyardChronoReturnAnimation(),
-				new ReplaceCloakPalette(),
 
 				// Execute these rules last to avoid premature yaml merge crashes.
+				new ReplaceCloakPalette(),
 				new AbstractDocking(),
 			}),
 		};
