@@ -129,7 +129,6 @@
 		RequiresCondition: cloakgenerator || crate-cloak
 		InitialDelay: 0
 		CloakDelay: 90
-		IsPlayerPalette: true
 		CloakSound: cloak5.aud
 		UncloakSound: cloak5.aud
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal, SupportPower

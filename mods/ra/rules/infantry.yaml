@@ -664,7 +664,6 @@ THF:
 		CloakDelay: 120
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
 		DetectionTypes: Cloak
-		IsPlayerPalette: true
 		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled

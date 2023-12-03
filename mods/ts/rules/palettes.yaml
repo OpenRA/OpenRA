@@ -152,10 +152,6 @@
 		BaseName: player-nobright
 		BasePalette: player-nobright
 		RemapIndex: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
-	PaletteFromPlayerPaletteWithAlpha@cloak:
-		BaseName: cloak
-		BasePalette: player
-		Alpha: 0.55
 	PaletteFromPaletteWithAlpha@terrainalpha:
 		BasePalette: terraindecoration
 		Name: terrainalpha

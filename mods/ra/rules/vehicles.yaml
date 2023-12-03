@@ -919,7 +919,6 @@ STNK:
 		CloakDelay: 175
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
-		IsPlayerPalette: true
 		PauseOnCondition: cloak-force-disabled
 		UncloakOn: Attack, Load, Unload, Heal, Dock
 	GrantConditionOnDamageState@UNCLOAK:

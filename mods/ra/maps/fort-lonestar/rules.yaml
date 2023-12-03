@@ -316,7 +316,6 @@ SNIPER:
 		CloakSound:
 		UncloakSound:
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
-		IsPlayerPalette: true
 		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
