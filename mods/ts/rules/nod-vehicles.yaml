@@ -526,7 +526,6 @@ STNK:
 		CloakDelay: 90
 		CloakSound: cloak5.aud
 		UncloakSound: cloak5.aud
-		IsPlayerPalette: true
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
 		PauseOnCondition: cloak-force-disabled || empdisable
 		CloakType: nod-stealth

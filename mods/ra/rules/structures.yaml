@@ -795,7 +795,6 @@ HBOX:
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 60
-		IsPlayerPalette: true
 		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
