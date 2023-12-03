@@ -523,6 +523,8 @@ namespace OpenRA
 
 		public void Dispose()
 		{
+			worldBuffer.Dispose();
+			screenBuffer.Dispose();
 			tempVertexBuffer.Dispose();
 			quadIndexBuffer.Dispose();
 			fontSheetBuilder?.Dispose();
