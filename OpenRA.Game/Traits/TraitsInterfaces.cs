@@ -467,7 +467,7 @@ namespace OpenRA.Traits
 	{
 		PostProcessPassType Type { get; }
 		bool Enabled { get; }
-		void Draw(WorldRenderer wr, ITexture worldTexture);
+		void Draw(WorldRenderer wr);
 	}
 
 	[Flags]

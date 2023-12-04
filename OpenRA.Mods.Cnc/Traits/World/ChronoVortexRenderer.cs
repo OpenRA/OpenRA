@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		PostProcessPassType IRenderPostProcessPass.Type => PostProcessPassType.AfterWorld;
 		bool IRenderPostProcessPass.Enabled => vortices.Count > 0;
 
-		void IRenderPostProcessPass.Draw(WorldRenderer wr, ITexture worldTexture)
+		void IRenderPostProcessPass.Draw(WorldRenderer wr)
 		{
 			var scroll = wr.Viewport.TopLeft;
 			var size = renderer.WorldFrameBufferSize;
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			shader.SetVec("Scroll", scroll.X, scroll.Y);
 			shader.SetVec("p1", width, height);
 			shader.SetVec("p2", -1, -1);
-			shader.SetTexture("WorldTexture", worldTexture);
+			shader.SetTexture("WorldTexture", Game.Renderer.WorldBufferSnapshot());
 			shader.SetTexture("VortexTexture", vortexSheet.GetTexture());
 			shader.PrepareRender();
 			foreach (var (pos, frame) in vortices)

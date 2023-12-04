@@ -42,9 +42,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		PostProcessPassType IRenderPostProcessPass.Type => type;
 		bool IRenderPostProcessPass.Enabled => Enabled;
-		void IRenderPostProcessPass.Draw(WorldRenderer wr, ITexture worldTexture)
+		void IRenderPostProcessPass.Draw(WorldRenderer wr)
 		{
-			shader.SetTexture("WorldTexture", worldTexture);
+			shader.SetTexture("WorldTexture", Game.Renderer.WorldBufferSnapshot());
 			PrepareRender(wr, shader);
 			shader.PrepareRender();
 			renderer.DrawBatch(buffer, shader, 0, 6, PrimitiveType.TriangleList);
