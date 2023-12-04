@@ -47,6 +47,7 @@ namespace OpenRA
 		readonly IVertexBuffer<Vertex> tempVertexBuffer;
 		readonly IIndexBuffer quadIndexBuffer;
 		readonly Stack<Rectangle> scissorState = new();
+		readonly ITexture worldBufferSnapshot;
 
 		IFrameBuffer screenBuffer;
 		Sprite screenSprite;
@@ -59,6 +60,15 @@ namespace OpenRA
 
 		public Size WorldFrameBufferSize => worldSheet.Size;
 		public int WorldDownscaleFactor { get; private set; } = 1;
+
+		/// <summary>
+		/// Copies and returns the currently rendered world state as a temporary texture.
+		/// </summary>
+		public ITexture WorldBufferSnapshot()
+		{
+			worldBufferSnapshot.SetDataFromReadBuffer(new Rectangle(int2.Zero, worldSheet.Size));
+			return worldBufferSnapshot;
+		}
 
 		SheetBuilder fontSheetBuilder;
 		readonly IPlatform platform;
@@ -98,6 +108,7 @@ namespace OpenRA
 
 			tempVertexBuffer = Context.CreateVertexBuffer<Vertex>(TempVertexBufferSize);
 			quadIndexBuffer = Context.CreateIndexBuffer(Util.CreateQuadIndices(TempIndexBufferSize / 6));
+			worldBufferSnapshot = Context.CreateTexture();
 		}
 
 		static Size GetResolution(GraphicSettings graphicsSettings)
@@ -525,6 +536,7 @@ namespace OpenRA
 		{
 			worldBuffer.Dispose();
 			screenBuffer.Dispose();
+			worldBufferSnapshot.Dispose();
 			tempVertexBuffer.Dispose();
 			quadIndexBuffer.Dispose();
 			fontSheetBuilder?.Dispose();
