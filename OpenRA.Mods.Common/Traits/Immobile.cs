@@ -31,10 +31,10 @@ namespace OpenRA.Mods.Common.Traits
 
 	sealed class Immobile : IOccupySpace, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
-		[Sync]
+		[SyncMember]
 		readonly CPos location;
 
-		[Sync]
+		[SyncMember]
 		readonly WPos position;
 
 		readonly (CPos, SubCell)[] occupied;

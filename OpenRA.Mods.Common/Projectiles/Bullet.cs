@@ -152,7 +152,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		readonly ContrailRenderable contrail;
 
-		[Sync]
+		[SyncMember]
 		protected WPos pos, lastPos, target, source;
 
 		int length;

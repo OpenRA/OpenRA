@@ -115,10 +115,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		int interval;
 		bool showHitAnim;
 
-		[Sync]
+		[SyncMember]
 		WPos target;
 
-		[Sync]
+		[SyncMember]
 		WPos source;
 
 		public LaserZap(LaserZapInfo info, ProjectileArgs args, Color color)

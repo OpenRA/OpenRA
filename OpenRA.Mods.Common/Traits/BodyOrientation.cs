@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly BodyOrientationInfo info;
 		readonly Lazy<int> quantizedFacings;
 
-		[Sync]
+		[SyncMember]
 		public int QuantizedFacings => quantizedFacings.Value;
 
 		public BodyOrientation(ActorInitializer init, BodyOrientationInfo info)

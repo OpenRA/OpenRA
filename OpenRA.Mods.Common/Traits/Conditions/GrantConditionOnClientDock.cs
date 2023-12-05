@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		int token;
 		int delayedtoken;
 
-		[Sync]
+		[SyncMember]
 		public int Duration { get; private set; }
 
 		public GrantConditionOnClientDock(GrantConditionOnClientDockInfo info)

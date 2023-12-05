@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		int token = Actor.InvalidConditionToken;
 
-		[Sync]
+		[SyncMember]
 		int ticks;
 
 		public GrantConditionOnProduction(GrantConditionOnProductionInfo info)

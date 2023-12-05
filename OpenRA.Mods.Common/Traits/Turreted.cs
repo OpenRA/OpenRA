@@ -133,7 +133,7 @@ namespace OpenRA.Mods.Common.Traits
 		IFacing facing;
 		BodyOrientation body;
 
-		[Sync]
+		[SyncMember]
 		public int QuantizedFacings = 0;
 
 		WVec desiredDirection;

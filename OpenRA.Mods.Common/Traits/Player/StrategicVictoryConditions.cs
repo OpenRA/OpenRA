@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly StrategicVictoryConditionsInfo info;
 
-		[Sync]
+		[SyncMember]
 		public int TicksLeft;
 
 		readonly Player player;

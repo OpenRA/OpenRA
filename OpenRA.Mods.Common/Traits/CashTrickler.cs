@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly CashTricklerInfo info;
 		PlayerResources resources;
-		[Sync]
+		[SyncMember]
 		public int Ticks { get; private set; }
 
 		public CashTrickler(CashTricklerInfo info)

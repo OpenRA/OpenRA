@@ -43,10 +43,10 @@ namespace OpenRA.Mods.Cnc.Traits
 	{
 		readonly AttackTeslaInfo info;
 
-		[Sync]
+		[SyncMember]
 		int charges;
 
-		[Sync]
+		[SyncMember]
 		int timeToRecharge;
 
 		public AttackTesla(Actor self, AttackTeslaInfo info)

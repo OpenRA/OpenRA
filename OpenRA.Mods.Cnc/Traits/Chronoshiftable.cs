@@ -55,10 +55,10 @@ namespace OpenRA.Mods.Cnc.Traits
 		IPositionable iPositionable;
 
 		// Return-to-origin logic
-		[Sync]
+		[SyncMember]
 		public CPos Origin;
 
-		[Sync]
+		[SyncMember]
 		public int ReturnTicks = 0;
 
 		public Chronoshiftable(ActorInitializer init, ChronoshiftableInfo info)

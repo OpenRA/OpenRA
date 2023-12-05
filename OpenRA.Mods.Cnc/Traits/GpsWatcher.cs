@@ -27,17 +27,17 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	sealed class GpsWatcher : ISync, IPreventsShroudReset
 	{
-		[Sync]
+		[SyncMember]
 		public bool Launched { get; private set; }
 
-		[Sync]
+		[SyncMember]
 		public bool GrantedAllies { get; private set; }
 
-		[Sync]
+		[SyncMember]
 		public bool Granted { get; private set; }
 
 		// Whether this watcher has explored the terrain (by becoming Launched, or an ally becoming Launched)
-		[Sync]
+		[SyncMember]
 		bool explored;
 
 		readonly Player owner;

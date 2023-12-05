@@ -80,25 +80,25 @@ namespace OpenRA.Mods.Common.Traits
 		readonly DeveloperModeInfo info;
 		public bool Enabled { get; private set; }
 
-		[Sync]
+		[SyncMember]
 		bool fastCharge;
 
-		[Sync]
+		[SyncMember]
 		bool allTech;
 
-		[Sync]
+		[SyncMember]
 		bool fastBuild;
 
-		[Sync]
+		[SyncMember]
 		bool disableShroud;
 
-		[Sync]
+		[SyncMember]
 		bool pathDebug;
 
-		[Sync]
+		[SyncMember]
 		bool unlimitedPower;
 
-		[Sync]
+		[SyncMember]
 		bool buildAnywhere;
 
 		public bool FastCharge => Enabled && fastCharge;

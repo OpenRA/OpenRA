@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA
 {
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-	public sealed class SyncAttribute : Attribute { }
+	public sealed class SyncMemberAttribute : Attribute { }
 
 	// Marker interface
 	public interface ISync { }
@@ -69,7 +69,7 @@ namespace OpenRA
 				il.MarkLabel(l);
 			}
 			else if (type != typeof(int))
-				throw new NotImplementedException($"SyncAttribute on member of unhashable type: {type.FullName}");
+				throw new NotImplementedException($"SyncMemberAttribute on member of unhashable type: {type.FullName}");
 
 			il.Emit(OpCodes.Xor);
 		}
@@ -85,7 +85,7 @@ namespace OpenRA
 			il.Emit(OpCodes.Ldc_I4_0);
 
 			const BindingFlags Binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-			foreach (var field in t.GetFields(Binding).Where(x => x.HasAttribute<SyncAttribute>()))
+			foreach (var field in t.GetFields(Binding).Where(x => x.HasAttribute<SyncMemberAttribute>()))
 			{
 				il.Emit(OpCodes.Ldloc, this_);
 				il.Emit(OpCodes.Ldfld, field);
@@ -93,7 +93,7 @@ namespace OpenRA
 				EmitSyncOpcodes(field.FieldType, il);
 			}
 
-			foreach (var prop in t.GetProperties(Binding).Where(x => x.HasAttribute<SyncAttribute>()))
+			foreach (var prop in t.GetProperties(Binding).Where(x => x.HasAttribute<SyncMemberAttribute>()))
 			{
 				il.Emit(OpCodes.Ldloc, this_);
 				il.EmitCall(OpCodes.Call, prop.GetGetMethod(true), null);

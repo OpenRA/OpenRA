@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		WVec velocity;
 
-		[Sync]
+		[SyncMember]
 		WPos pos, lastPos;
 
 		public GravityBomb(GravityBombInfo info, ProjectileArgs args)

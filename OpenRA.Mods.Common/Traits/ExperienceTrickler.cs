@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly ExperienceTricklerInfo info;
 		readonly GainsExperience gainsExperience;
 
-		[Sync]
+		[SyncMember]
 		int ticks;
 
 		public ExperienceTrickler(Actor self, ExperienceTricklerInfo info)

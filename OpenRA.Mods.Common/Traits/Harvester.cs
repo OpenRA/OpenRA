@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override BitSet<DockType> GetDockType => Info.Type;
 
-		[Sync]
+		[SyncMember]
 		int currentUnloadTicks;
 
 		public Harvester(Actor self, HarvesterInfo info)

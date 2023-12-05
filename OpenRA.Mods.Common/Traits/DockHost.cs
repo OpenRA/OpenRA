@@ -66,10 +66,10 @@ namespace OpenRA.Mods.Common.Traits
 		WVec IDockHostDrag.DragOffset => Info.DragOffset;
 		int IDockHostDrag.DragLength => Info.DragLength;
 
-		[Sync]
+		[SyncMember]
 		bool preventDock = false;
 
-		[Sync]
+		[SyncMember]
 		protected Actor dockedClientActor = null;
 		protected DockClientManager dockedClient = null;
 

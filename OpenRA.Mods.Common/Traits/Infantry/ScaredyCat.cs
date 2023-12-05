@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 		readonly Func<CPos, bool> avoidTerrainFilter;
 
-		[Sync]
+		[SyncMember]
 		int panicStartedTick;
 		bool Panicking => panicStartedTick > 0;
 

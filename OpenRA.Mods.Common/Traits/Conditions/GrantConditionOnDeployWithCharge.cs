@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class GrantConditionOnDeployWithCharge : PausableConditionalTrait<GrantConditionOnDeployWithChargeInfo>, IIssueOrder, IResolveOrder, ITick, ISelectionBar, IOrderVoice, ISync, IIssueDeployOrder
 	{
-		[Sync]
+		[SyncMember]
 		int chargeTick = 0;
 
 		bool deployed = false;

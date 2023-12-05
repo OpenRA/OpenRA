@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int OpenPosition;
 
-		[Sync]
+		[SyncMember]
 		public int Position { get; private set; }
 
 		int desiredPosition;

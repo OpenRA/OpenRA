@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyKilled[] notifyKilled;
 		INotifyKilled[] notifyKilledPlayer;
 
-		[Sync]
+		[SyncMember]
 		int hp;
 
 		public int DisplayHP { get; private set; }

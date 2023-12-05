@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Traits
 			isNotActiveAlly = player => player.WinState != WinState.Undefined || self.Owner.RelationshipWith(player) != PlayerRelationship.Ally;
 		}
 
-		[Sync]
+		[SyncMember]
 		public int RepairersHash
 		{
 			get

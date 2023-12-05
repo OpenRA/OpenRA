@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Dictionary<string, int> contents = new();
 		readonly StoresResourcesInfo info;
 
-		[Sync]
+		[SyncMember]
 		public int ContentHash
 		{
 			get

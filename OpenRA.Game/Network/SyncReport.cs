@@ -202,10 +202,10 @@ namespace OpenRA.Network
 			{
 				const BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 				var fields = type.GetFields(Flags)
-					.Where(fi => !fi.IsLiteral && !fi.IsStatic && fi.HasAttribute<SyncAttribute>())
+					.Where(fi => !fi.IsLiteral && !fi.IsStatic && fi.HasAttribute<SyncMemberAttribute>())
 					.ToList();
 				var properties = type.GetProperties(Flags)
-					.Where(pi => pi.HasAttribute<SyncAttribute>())
+					.Where(pi => pi.HasAttribute<SyncMemberAttribute>())
 					.ToList();
 
 				foreach (var prop in properties)
