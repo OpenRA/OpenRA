@@ -613,14 +613,41 @@ TestB:
 #
 Parent: # comment without value
 	# Indented comment node
+	#
+		# Double Indented comment node
+		#
+			# Triple Indented comment node
+			#
 	First: value containing a \# character
 	Second: value # node with inline comment
 	Third: value #
 	Fourth: #
+	Fifth# embedded comment:
+	Sixth# embedded comment: still a comment
+	Seventh# embedded comment: still a comment # more comment
+".Replace("\r\n", "\n");
+
+			var canonicalYaml = @"
+# Top level comment node
+#
+Parent: # comment without value
+	# Indented comment node
+	#
+		# Double Indented comment node
+		#
+			# Triple Indented comment node
+			#
+	First: value containing a \# character
+	Second: value # node with inline comment
+	Third: value #
+	Fourth: #
+	Fifth: # embedded comment:
+	Sixth: # embedded comment: still a comment
+	Seventh: # embedded comment: still a comment # more comment
 ".Replace("\r\n", "\n");
 
 			var result = MiniYaml.FromString(yaml, discardCommentsAndWhitespace: false).WriteToString();
-			Assert.AreEqual(yaml, result);
+			Assert.AreEqual(canonicalYaml, result);
 		}
 
 		[TestCase(TestName = "Comments should be removed when discardCommentsAndWhitespace is false")]
@@ -628,15 +655,31 @@ Parent: # comment without value
 		{
 			const string Yaml = @"
 # Top level comment node
+#
 Parent: # comment without value
 	# Indented comment node
+	#
+		# Double Indented comment node
+		#
+			# Triple Indented comment node
+			#
 	First: value containing a \# character
 	Second: value # node with inline comment
+	Third: value #
+	Fourth: #
+	Fifth# embedded comment:
+	Sixth# embedded comment: still a comment
+	Seventh# embedded comment: still a comment # more comment
 ";
 
 			var strippedYaml = @"Parent:
 	First: value containing a \# character
 	Second: value
+	Third: value
+	Fourth:
+	Fifth:
+	Sixth:
+	Seventh:
 ".Replace("\r\n", "\n");
 
 			var result = MiniYaml.FromString(Yaml).WriteToString();
