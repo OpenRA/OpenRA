@@ -258,9 +258,6 @@ namespace OpenRA
 						}
 					}
 
-					if (parsedLines.Count > 0 && parsedLines[^1].Level < level - 1)
-						throw new YamlException($"Bad indent in miniyaml at {location}");
-
 					// Extract key, value, comment from line as `<key>: <value>#<comment>`
 					// The # character is allowed in the value if escaped (\#).
 					// Leading and trailing whitespace is always trimmed from keys.
@@ -282,7 +279,7 @@ namespace OpenRA
 						if (commentStart < 0 && line[i] == '#' && (i == 0 || line[i - 1] != '\\'))
 						{
 							commentStart = i + 1;
-							if (commentStart <= keyLength)
+							if (i <= keyStart + keyLength)
 								keyLength = i - keyStart;
 							else
 								valueLength = i - valueStart;
@@ -320,6 +317,9 @@ namespace OpenRA
 
 				if (!key.IsEmpty || !discardCommentsAndWhitespace)
 				{
+					if (parsedLines.Count > 0 && parsedLines[^1].Level < level - 1)
+						throw new YamlException($"Bad indent in miniyaml at {location}");
+
 					while (parsedLines.Count > 0 && parsedLines[^1].Level > level)
 						BuildCompletedSubNode(level);
 
