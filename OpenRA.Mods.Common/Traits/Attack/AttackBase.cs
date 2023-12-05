@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly string attackOrderName = "Attack";
 		readonly string forceAttackOrderName = "ForceAttack";
 
-		[Sync]
+		[VerifySync]
 		public bool IsAiming { get; set; }
 
 		public IEnumerable<Armament> Armaments => getArmaments();

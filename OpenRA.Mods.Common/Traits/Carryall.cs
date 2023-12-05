@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Actor self;
 
 		// The actor we are currently carrying.
-		[Sync]
+		[VerifySync]
 		public Actor Carryable { get; protected set; }
 		public CarryallState State { get; protected set; }
 

@@ -41,10 +41,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly Dictionary<Actor, int> powerDrain = [];
 
-		[Sync]
+		[VerifySync]
 		public int PowerProvided { get; private set; }
 
-		[Sync]
+		[VerifySync]
 		public int PowerDrained { get; private set; }
 
 		public int ExcessPower => PowerProvided - PowerDrained;

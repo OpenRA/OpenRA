@@ -78,13 +78,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		INotifyCenterPositionChanged[] notifyCenterPositionChanged;
 
-		[Sync]
+		[VerifySync]
 		public CPos TopLeft { get; private set; }
 
-		[Sync]
+		[VerifySync]
 		public WPos CenterPosition { get; private set; }
 
-		[Sync]
+		[VerifySync]
 		public WAngle Facing
 		{
 			get => Orientation.Yaw;

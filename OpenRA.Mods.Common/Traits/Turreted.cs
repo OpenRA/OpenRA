@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Traits
 		BodyOrientation body;
 		int quantizedFacings;
 
-		[Sync]
+		[VerifySync]
 		public int QuantizedFacings
 		{
 			get => quantizedFacings;

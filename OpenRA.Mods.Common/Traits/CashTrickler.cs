@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		PlayerResources resources;
 		Cloak[] cloaks;
 
-		[Sync]
+		[VerifySync]
 		public int Ticks { get; private set; }
 
 		public CashTrickler(CashTricklerInfo info)

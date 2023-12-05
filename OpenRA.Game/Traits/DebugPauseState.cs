@@ -21,8 +21,9 @@ namespace OpenRA.Traits
 	public class DebugPauseState : ISync
 	{
 		readonly World world;
-		[Sync]
-		public bool Paused => world.Paused;
+
+		[VerifySync]
+		public bool IsWorldPaused => world.Paused;
 
 		public DebugPauseState(World world) { this.world = world; }
 	}

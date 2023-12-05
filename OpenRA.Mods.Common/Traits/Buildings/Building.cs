@@ -267,6 +267,7 @@ namespace OpenRA.Mods.Common.Traits
 		INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		public readonly BuildingInfo Info;
+
 		readonly Actor self;
 		readonly BuildingInfluence influence;
 
@@ -274,7 +275,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly (CPos, SubCell)[] targetableCells;
 		readonly CPos[] transitOnlyCells;
 
-		[Sync]
+		[VerifySync]
 		public CPos TopLeft { get; }
 		public WPos CenterPosition { get; }
 

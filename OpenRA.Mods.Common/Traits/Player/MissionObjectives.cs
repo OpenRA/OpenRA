@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 		Player[] enemies;
 		Player[] allies;
 
-		[Sync]
+		[VerifySync]
 		public int ObjectivesHash
 		{
 			get

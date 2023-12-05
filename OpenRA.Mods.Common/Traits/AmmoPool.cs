@@ -53,10 +53,10 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Stack<int> tokens = [];
 
 		// HACK: Temporarily needed until Rearm activity is gone for good
-		[Sync]
+		[VerifySync]
 		public int RemainingTicks;
 
-		[Sync]
+		[VerifySync]
 		public int CurrentAmmoCount { get; private set; }
 
 		public bool HasAmmo => CurrentAmmoCount > 0;

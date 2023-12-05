@@ -65,10 +65,10 @@ namespace OpenRA.Mods.Common.Traits
 		readonly List<(int RequiredExperience, string Condition)> nextLevel = [];
 
 		// Stored as a percentage of our value
-		[Sync]
+		[VerifySync]
 		public int Experience { get; private set; }
 
-		[Sync]
+		[VerifySync]
 		public int Level { get; private set; }
 		public readonly int MaxLevel;
 

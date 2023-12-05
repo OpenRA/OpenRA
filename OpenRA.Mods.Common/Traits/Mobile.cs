@@ -223,7 +223,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		#region IFacing
 
-		[Sync]
+		[VerifySync]
 		public WAngle Facing
 		{
 			get => orientation.Yaw;
@@ -236,10 +236,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		#endregion
 
-		[Sync]
+		[VerifySync]
 		public CPos FromCell { get; private set; }
 
-		[Sync]
+		[VerifySync]
 		public CPos ToCell { get; private set; }
 
 		public Locomotor Locomotor { get; private set; }
@@ -248,7 +248,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		#region IOccupySpace
 
-		[Sync]
+		[VerifySync]
 		public WPos CenterPosition { get; private set; }
 
 		public CPos TopLeft => ToCell;

@@ -29,7 +29,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class FrozenUnderFog : ICreatesFrozenActors, IRenderModifier, IDefaultVisibility,
 		ITickRender, ISync, INotifyCreated, INotifyOwnerChanged, INotifyActorDisposing
 	{
-		[Sync]
+		[VerifySync]
 		public int VisibilityHash;
 
 		readonly FrozenUnderFogInfo info;

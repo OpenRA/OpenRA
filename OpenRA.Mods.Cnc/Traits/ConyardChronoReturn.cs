@@ -69,13 +69,13 @@ namespace OpenRA.Mods.Cnc.Traits
 		bool returnOriginal;
 		bool selling;
 
-		[Sync]
+		[VerifySync]
 		int returnTicks = 0;
 
-		[Sync]
+		[VerifySync]
 		readonly CPos origin;
 
-		[Sync]
+		[VerifySync]
 		bool triggered;
 
 		public ConyardChronoReturn(ActorInitializer init, ConyardChronoReturnInfo info)

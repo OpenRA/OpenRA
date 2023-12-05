@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly float3 cloakedColor;
 		readonly float cloakedColorAlpha;
 
-		[Sync]
+		[VerifySync]
 		int remainingTime;
 
 		bool isDocking;

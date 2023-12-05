@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits
 		AmmoPool ammoPool;
 		IReloadAmmoModifier[] modifiers;
 
-		[Sync]
+		[VerifySync]
 		int remainingTicks;
 
 		public ReloadAmmoPool(ReloadAmmoPoolInfo info)

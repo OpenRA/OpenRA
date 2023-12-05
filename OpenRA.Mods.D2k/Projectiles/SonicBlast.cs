@@ -69,7 +69,7 @@ namespace OpenRA.Mods.D2k.Projectiles
 		readonly WDist speed;
 		readonly SonicBlastRenderer renderer;
 
-		[Sync]
+		[VerifySync]
 		WPos pos, lastPos;
 		readonly WPos target;
 		int length;

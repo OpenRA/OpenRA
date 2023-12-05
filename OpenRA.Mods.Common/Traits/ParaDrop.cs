@@ -39,13 +39,13 @@ namespace OpenRA.Mods.Common.Traits
 		public event Action<Actor> OnEnteredDropRange = self => { };
 		public event Action<Actor> OnExitedDropRange = self => { };
 
-		[Sync]
+		[VerifySync]
 		bool inDropRange;
 
-		[Sync]
+		[VerifySync]
 		Target target;
 
-		[Sync]
+		[VerifySync]
 		int dropDelay;
 
 		bool checkForSuitableCell;

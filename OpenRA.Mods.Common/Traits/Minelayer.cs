@@ -80,7 +80,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly Actor self;
 
-		[Sync]
+		[VerifySync]
 		CPos minefieldStart;
 
 		public Minelayer(Actor self, MinelayerInfo info)

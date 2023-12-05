@@ -80,10 +80,10 @@ namespace OpenRA.Mods.Common.Traits
 		bool collected;
 		INotifyCenterPositionChanged[] notifyCenterPositionChanged;
 
-		[Sync]
+		[VerifySync]
 		int ticks;
 
-		[Sync]
+		[VerifySync]
 		public CPos Location;
 
 		public Crate(ActorInitializer init, CrateInfo info)

@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly TakeCoverInfo info;
 
-		[Sync]
+		[VerifySync]
 		int remainingDuration = 0;
 
 		bool isProne = false;

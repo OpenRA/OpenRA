@@ -95,13 +95,13 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly WDist speed;
 		readonly WDist weaponRange;
 
-		[Sync]
+		[VerifySync]
 		WPos headPos;
 
-		[Sync]
+		[VerifySync]
 		WPos tailPos;
 
-		[Sync]
+		[VerifySync]
 		WPos target;
 
 		int length;

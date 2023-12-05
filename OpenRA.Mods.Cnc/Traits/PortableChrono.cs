@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Cnc.Traits
 	sealed class PortableChrono : PausableConditionalTrait<PortableChronoInfo>, IIssueOrder, IResolveOrder, ITick, ISelectionBar, IOrderVoice, ISync
 	{
 		readonly IMove move;
-		[Sync]
+		[VerifySync]
 		int chargeTick = 0;
 
 		public PortableChrono(Actor self, PortableChronoInfo info)

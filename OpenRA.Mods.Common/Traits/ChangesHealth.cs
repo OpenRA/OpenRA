@@ -45,10 +45,10 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly IHealth health;
 
-		[Sync]
+		[VerifySync]
 		int ticks;
 
-		[Sync]
+		[VerifySync]
 		int damageTicks;
 
 		public ChangesHealth(Actor self, ChangesHealthInfo info)

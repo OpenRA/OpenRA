@@ -100,7 +100,8 @@ namespace OpenRA.Traits
 		readonly ProjectedCellLayer<ShroudCellType> resolvedType;
 
 		bool disabledChanged;
-		[Sync]
+
+		[VerifySync]
 		bool disabled;
 		public bool Disabled
 		{

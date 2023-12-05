@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class GrantChargedConditionOnToggle : PausableConditionalTrait<GrantChargedConditionOnToggleInfo>,
 		IIssueOrder, IResolveOrder, ITick, ISelectionBar, IOrderVoice, ISync, IIssueDeployOrder
 	{
-		[Sync]
+		[VerifySync]
 		int chargeTick = 0;
 
 		bool isActive = false;
