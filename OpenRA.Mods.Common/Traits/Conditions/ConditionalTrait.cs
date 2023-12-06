@@ -49,7 +49,6 @@ namespace OpenRA.Mods.Common.Traits
 				yield return new VariableObserver(RequiredConditionsChanged, Info.RequiresCondition.Variables);
 		}
 
-		[Sync]
 		public bool IsTraitDisabled { get; private set; }
 
 		protected ConditionalTrait(InfoType info)
