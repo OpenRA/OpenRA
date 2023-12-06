@@ -48,8 +48,9 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new DockHost(init.Self, this); }
 	}
 
-	public class DockHost : ConditionalTrait<DockHostInfo>,
-		IDockHost, ITick, INotifySold, INotifyCapture, INotifyOwnerChanged, ISync, INotifyKilled, INotifyActorDisposing
+	[GenerateSyncCode]
+	public partial class DockHost : ConditionalTrait<DockHostInfo>,
+		IDockHost, ITick, INotifySold, INotifyCapture, INotifyOwnerChanged, INotifyKilled, INotifyActorDisposing
 	{
 		readonly Actor self;
 

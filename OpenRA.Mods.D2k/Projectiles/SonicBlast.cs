@@ -61,7 +61,8 @@ namespace OpenRA.Mods.D2k.Projectiles
 		}
 	}
 
-	public class SonicBlast : IProjectile, ISync
+	[GenerateSyncCode]
+	public partial class SonicBlast : IProjectile
 	{
 		readonly SonicBlastInfo info;
 		readonly ProjectileArgs args;
