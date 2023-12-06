@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackAircraft(init.Self, this); }
 	}
 
-	public class AttackAircraft : AttackFollow
+	public partial class AttackAircraft : AttackFollow
 	{
 		public new readonly AttackAircraftInfo Info;
 		readonly AircraftInfo aircraftInfo;

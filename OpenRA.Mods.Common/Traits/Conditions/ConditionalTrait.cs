@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Traits
 	/// Requires basing *Info on ConditionalTraitInfo and using base(info) constructor.
 	/// TraitEnabled will be called at creation if the trait starts enabled or does not use conditions.
 	/// </summary>
-	public abstract class ConditionalTrait<InfoType> : IObservesVariables, IDisabledTrait, INotifyCreated, ISync where InfoType : ConditionalTraitInfo
+	public abstract class ConditionalTrait<InfoType> : IObservesVariables, IDisabledTrait, INotifyCreated where InfoType : ConditionalTraitInfo
 	{
 		public readonly InfoType Info;
 

@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class AttackGarrisoned : AttackFollow, INotifyPassengerEntered, INotifyPassengerExited, IRender
+	public partial class AttackGarrisoned : AttackFollow, INotifyPassengerEntered, INotifyPassengerExited, IRender
 	{
 		public new readonly AttackGarrisonedInfo Info;
 		readonly Lazy<BodyOrientation> coords;

@@ -25,7 +25,8 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	interface IOnGpsRefreshed { void OnGpsRefresh(Actor self, Player player); }
 
-	sealed class GpsWatcher : ISync, IPreventsShroudReset
+	[GenerateSyncCode]
+	sealed partial class GpsWatcher : IPreventsShroudReset
 	{
 		[SyncMember]
 		public bool Launched { get; private set; }

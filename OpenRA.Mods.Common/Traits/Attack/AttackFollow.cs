@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackFollow(init.Self, this); }
 	}
 
-	public class AttackFollow : AttackBase, INotifyOwnerChanged, IOverrideAutoTarget, INotifyStanceChanged
+	public partial class AttackFollow : AttackBase, INotifyOwnerChanged, IOverrideAutoTarget, INotifyStanceChanged
 	{
 		public new readonly AttackFollowInfo Info;
 		public Target RequestedTarget { get; private set; }

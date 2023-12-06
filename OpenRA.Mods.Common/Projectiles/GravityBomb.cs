@@ -52,7 +52,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		public IProjectile Create(ProjectileArgs args) { return new GravityBomb(this, args); }
 	}
 
-	public class GravityBomb : IProjectile, ISync
+	[GenerateSyncCode]
+	public partial class GravityBomb : IProjectile
 	{
 		readonly GravityBombInfo info;
 		readonly Animation anim;

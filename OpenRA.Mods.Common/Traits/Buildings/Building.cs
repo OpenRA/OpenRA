@@ -263,7 +263,8 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Building : IOccupySpace, ITargetableCells, INotifySold, INotifyTransform, ISync,
+	[GenerateSyncCode]
+	public partial class Building : IOccupySpace, ITargetableCells, INotifySold, INotifyTransform,
 		INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
 		public readonly BuildingInfo Info;

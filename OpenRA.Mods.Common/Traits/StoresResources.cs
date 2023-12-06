@@ -32,7 +32,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new StoresResources(init.Self, this); }
 	}
 
-	public class StoresResources : IStoresResources, ISync
+	[GenerateSyncCode]
+	public partial class StoresResources : IStoresResources
 	{
 		readonly Dictionary<string, int> contents = new();
 		readonly StoresResourcesInfo info;

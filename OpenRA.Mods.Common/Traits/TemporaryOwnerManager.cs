@@ -23,7 +23,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new TemporaryOwnerManager(init.Self, this); }
 	}
 
-	public class TemporaryOwnerManager : ISelectionBar, ITick, ISync, INotifyOwnerChanged
+	[GenerateSyncCode]
+	public partial class TemporaryOwnerManager : ISelectionBar, ITick, INotifyOwnerChanged
 	{
 		readonly TemporaryOwnerManagerInfo info;
 

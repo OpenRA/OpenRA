@@ -69,7 +69,8 @@ namespace OpenRA.Mods.Common.Traits
 		public abstract override object Create(ActorInitializer init);
 	}
 
-	public abstract class AttackBase : PausableConditionalTrait<AttackBaseInfo>, ITick, IIssueOrder, IResolveOrder, IOrderVoice, ISync
+	[GenerateSyncCode]
+	public abstract partial class AttackBase : PausableConditionalTrait<AttackBaseInfo>, ITick, IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		readonly string attackOrderName = "Attack";
 		readonly string forceAttackOrderName = "ForceAttack";

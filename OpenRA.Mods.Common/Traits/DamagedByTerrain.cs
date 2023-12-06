@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new DamagedByTerrain(this); }
 	}
 
-	public class DamagedByTerrain : ConditionalTrait<DamagedByTerrainInfo>, ITick, ISync
+	public class DamagedByTerrain : ConditionalTrait<DamagedByTerrainInfo>, ITick
 	{
 		int damageTicks;
 

@@ -53,7 +53,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		}
 	}
 
-	public class TDGunboat : ITick, ISync, IFacing, IPositionable, IMove, IDeathActorInitModifier,
+	[GenerateSyncCode]
+	public partial class TDGunboat : ITick, IFacing, IPositionable, IMove, IDeathActorInitModifier,
 		INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld, IActorPreviewInitModifier
 	{
 		public readonly TDGunboatInfo Info;

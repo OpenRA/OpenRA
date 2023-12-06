@@ -185,7 +185,8 @@ namespace OpenRA.Mods.Common.Projectiles
 	}
 
 	// TODO: double check square roots!!!
-	public class Missile : IProjectile, ISync
+	[GenerateSyncCode]
+	public partial class Missile : IProjectile
 	{
 		enum States
 		{

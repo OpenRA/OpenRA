@@ -64,7 +64,8 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Husk : IPositionable, IFacing, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld,
+	[GenerateSyncCode]
+	public partial class Husk : IPositionable, IFacing, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld,
 		IDeathActorInitModifier, IEffectiveOwner
 	{
 		readonly Actor self;

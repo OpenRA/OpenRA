@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new AttackPopupTurreted(init, this); }
 	}
 
-	sealed class AttackPopupTurreted : AttackTurreted, INotifyIdle, IDamageModifier
+	sealed partial class AttackPopupTurreted : AttackTurreted, INotifyIdle, IDamageModifier
 	{
 		enum PopupState { Open, Rotating, Transitioning, Closed }
 

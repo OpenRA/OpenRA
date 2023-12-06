@@ -55,7 +55,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new GainsExperience(init, this); }
 	}
 
-	public class GainsExperience : INotifyCreated, ISync, IResolveOrder, ITransformActorInitModifier
+	[GenerateSyncCode]
+	public partial class GainsExperience : INotifyCreated, IResolveOrder, ITransformActorInitModifier
 	{
 		readonly Actor self;
 		readonly GainsExperienceInfo info;

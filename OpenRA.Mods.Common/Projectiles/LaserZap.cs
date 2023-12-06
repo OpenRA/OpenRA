@@ -103,7 +103,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		}
 	}
 
-	public class LaserZap : IProjectile, ISync
+	[GenerateSyncCode]
+	public partial class LaserZap : IProjectile
 	{
 		readonly ProjectileArgs args;
 		readonly LaserZapInfo info;

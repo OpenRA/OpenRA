@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new AttackTDGunboatTurreted(init.Self, this); }
 	}
 
-	public class AttackTDGunboatTurreted : AttackTurreted
+	public partial class AttackTDGunboatTurreted : AttackTurreted
 	{
 		public AttackTDGunboatTurreted(Actor self, AttackTDGunboatTurretedInfo info)
 			: base(self, info) { }

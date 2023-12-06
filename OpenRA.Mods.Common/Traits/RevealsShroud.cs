@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new RevealsShroud(this); }
 	}
 
-	public class RevealsShroud : AffectsShroud
+	public partial class RevealsShroud : AffectsShroud
 	{
 		readonly RevealsShroudInfo info;
 		readonly Shroud.SourceType type;

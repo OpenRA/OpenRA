@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackOmni(init.Self, this); }
 	}
 
-	public class AttackOmni : AttackBase
+	public partial class AttackOmni : AttackBase
 	{
 		public AttackOmni(Actor self, AttackOmniInfo info)
 			: base(self, info) { }

@@ -39,7 +39,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ScaredyCat(init.Self, this); }
 	}
 
-	sealed class ScaredyCat : ITick, INotifyIdle, INotifyDamage, INotifyAttack, ISpeedModifier, ISync, IRenderInfantrySequenceModifier
+	[GenerateSyncCode]
+	sealed partial class ScaredyCat : ITick, INotifyIdle, INotifyDamage, INotifyAttack, ISpeedModifier, IRenderInfantrySequenceModifier
 	{
 		readonly ScaredyCatInfo info;
 		readonly Mobile mobile;

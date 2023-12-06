@@ -137,7 +137,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		public virtual IProjectile Create(ProjectileArgs args) { return new Bullet(this, args); }
 	}
 
-	public class Bullet : IProjectile, ISync
+	[GenerateSyncCode]
+	public partial class Bullet : IProjectile
 	{
 		readonly BulletInfo info;
 		protected readonly ProjectileArgs Args;

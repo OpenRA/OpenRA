@@ -46,7 +46,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ToggleConditionOnOrder(this); }
 	}
 
-	public class ToggleConditionOnOrder : PausableConditionalTrait<ToggleConditionOnOrderInfo>, IResolveOrder
+	[GenerateSyncCode]
+	public partial class ToggleConditionOnOrder : PausableConditionalTrait<ToggleConditionOnOrderInfo>, IResolveOrder
 	{
 		int conditionToken = Actor.InvalidConditionToken;
 

@@ -83,7 +83,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Carryall(init.Self, this); }
 	}
 
-	public class Carryall : ConditionalTrait<CarryallInfo>, INotifyKilled, ISync, ITick, IRender,
+	[GenerateSyncCode]
+	public partial class Carryall : ConditionalTrait<CarryallInfo>, INotifyKilled, ITick, IRender,
 		INotifyActorDisposing, IIssueOrder, IResolveOrder, IOrderVoice, IIssueDeployOrder,
 		IAircraftCenterPositionOffset, IOverrideAircraftLanding
 	{

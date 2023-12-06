@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackFrontal(init.Self, this); }
 	}
 
-	public class AttackFrontal : AttackBase
+	public partial class AttackFrontal : AttackBase
 	{
 		public new readonly AttackFrontalInfo Info;
 

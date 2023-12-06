@@ -69,7 +69,8 @@ namespace OpenRA.Traits
 		public override object Create(ActorInitializer init) { return new Shroud(init.Self, this); }
 	}
 
-	public class Shroud : ISync, INotifyCreated, ITick
+	[GenerateSyncCode]
+	public partial class Shroud : INotifyCreated, ITick
 	{
 		public enum SourceType : byte { PassiveVisibility, Shroud, Visibility }
 		public event Action<PPos> OnShroudChanged;

@@ -72,7 +72,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new DeveloperMode(this); }
 	}
 
-	public class DeveloperMode : IResolveOrder, ISync, INotifyCreated, IUnlocksRenderPlayer
+	[GenerateSyncCode]
+	public partial class DeveloperMode : IResolveOrder, INotifyCreated, IUnlocksRenderPlayer
 	{
 		[TranslationReference("cheat", "player", "suffix")]
 		const string CheatUsed = "notification-cheat-used";

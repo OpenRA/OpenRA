@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackCharges(init.Self, this); }
 	}
 
-	public class AttackCharges : AttackOmni, INotifyAttack, INotifySold
+	public partial class AttackCharges : AttackOmni, INotifyAttack, INotifySold
 	{
 		readonly AttackChargesInfo info;
 		int chargingToken = Actor.InvalidConditionToken;
