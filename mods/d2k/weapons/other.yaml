@@ -305,7 +305,7 @@ SpiceExplosion:
 			invulnerable: 0
 			cy: 20
 			harvester: 25
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageTypes: Prone50Percent, TriggerProne, SpiceExplosion
 		DamageCalculationType: ClosestTargetablePosition
 		AffectsParent: true
 	Warhead@2Res: CreateResource
@@ -333,7 +333,7 @@ BloomExplosion:
 			invulnerable: 0
 			cy: 20
 			harvester: 25
-		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
+		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath, SpiceExplosion
 		DamageCalculationType: ClosestTargetablePosition
 		AffectsParent: true
 
