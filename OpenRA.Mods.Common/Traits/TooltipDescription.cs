@@ -16,8 +16,10 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Additional info shown in the battlefield tooltip.")]
 	public class TooltipDescriptionInfo : ConditionalTraitInfo
 	{
+		[FieldLoader.Require]
+		[TranslationReference]
 		[Desc("Text shown in tooltip.")]
-		public readonly string Description = "";
+		public readonly string Description;
 
 		[Desc("Player relationships who can view the description.")]
 		public readonly PlayerRelationship ValidRelationships = PlayerRelationship.Ally | PlayerRelationship.Neutral | PlayerRelationship.Enemy;
@@ -35,6 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			this.self = self;
+			TooltipText = TranslationProvider.GetString(info.Description);
 		}
 
 		public bool IsTooltipVisible(Player forPlayer)
@@ -49,6 +52,6 @@ namespace OpenRA.Mods.Common.Traits
 			return Info.ValidRelationships.HasRelationship(Owner.RelationshipWith(forPlayer));
 		}
 
-		public string TooltipText => Info.Description;
+		public string TooltipText { get; }
 	}
 }
