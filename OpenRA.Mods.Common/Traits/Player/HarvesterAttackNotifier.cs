@@ -27,6 +27,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Length of time (in ticks) to display a location ping in the minimap.")]
 		public readonly int RadarPingDuration = 250;
 
+		[Desc("Exclude damage types (defined on the warheads) that trigger Notification.")]
+		public readonly BitSet<DamageType> ExludeDamageTypes = default;
+
 		[NotificationReference("Speech")]
 		[Desc("Speech notification type to play.")]
 		public readonly string Notification = "HarvesterAttack";
@@ -54,6 +57,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
+			if (!info.ExludeDamageTypes.IsEmpty && e.Damage.DamageTypes.Overlaps(info.ExludeDamageTypes))
+				return;
+
 			// Don't track self-damage
 			if (e.Attacker != null && e.Attacker.Owner == self.Owner)
 				return;
