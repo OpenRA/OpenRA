@@ -11,12 +11,12 @@ V19:
 	Health:
 		HP: 80000
 	Tooltip:
-		Name: actor-v19-name
+		Name: actor-v19.name
 	TooltipDescription@ally:
-		Description: Provides additional funds.
+		Description: actor-v19.captured-desc
 		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to receive additional funds.
+		Description: actor-v19.capturable-desc
 		ValidRelationships: Neutral, Enemy
 	SpawnActorOnDeath:
 		Actor: V19.Husk
@@ -49,12 +49,12 @@ HOSP:
 	Health:
 		HP: 250000
 	Tooltip:
-		Name: actor-hosp-name
+		Name: actor-hosp.name
 	TooltipDescription@ally:
-		Description: Provides infantry with self-healing.
+		Description: actor-hosp.captured-desc
 		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to enable self-healing for infantry.
+		Description: actor-hosp.capturable-desc
 		ValidRelationships: Neutral, Enemy
 	SpawnActorOnDeath:
 		Actor: HOSP.Husk
@@ -85,12 +85,12 @@ BIO:
 	Health:
 		HP: 250000
 	Tooltip:
-		Name: actor-bio-name
+		Name: actor-bio.name
 	TooltipDescription@ally:
-		Description: Provides infantry with Tiberium immunity.
+		Description: actor-bio.captured-desc
 		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to enable Tiberium immunity for infantry.
+		Description: actor-bio.capturable-desc
 		ValidRelationships: Neutral, Enemy
 	SpawnActorOnDeath:
 		Actor: BIO.Husk
@@ -118,7 +118,7 @@ MISS:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Tooltip:
-		Name: actor-miss-name
+		Name: actor-miss.name
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
@@ -130,10 +130,10 @@ MISS:
 	RevealsShroud:
 		Range: 13c0
 	TooltipDescription@ally:
-		Description: Provides range of vision.
+		Description: actor-miss.captured-desc
 		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to give visual range.
+		Description: actor-miss.capturable-desc
 		ValidRelationships: Neutral, Enemy
 	WithBuildingBib:
 		HasMinibib: true

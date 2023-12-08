@@ -176,7 +176,6 @@ actor-ca0021-name = Solar Panel
 actor-caaray-name = Civilian Array
 actor-caarmr-name = Civilian Armory
 actor-cacrsh01-name = Crash Site
-actor-cahosp-name = Civilian Hospital
 actor-capyr01-name = Pyramid
 actor-capyr02-name = Pyramid
 actor-capyr03-name = Pyramid
@@ -703,3 +702,9 @@ actor-lpst =
 actor-bigblue-name = Large Blue Tiberium Crystal
 actor-veinhole-name = Veinhole
 meta-tibflora-name = Tiberian Flora
+
+## Civilian Tech
+actor-cahosp =
+   .name = Civilian Hospital
+   .captured-desc = Provides infantry with self-healing.
+   .capturable-desc = Capture to enable self-healing for infantry.

@@ -80,16 +80,11 @@ actor-mh60 =
 actor-c10-name = Scientist
 actor-tecn-name = Technician
 actor-tecn2-name = Technician
-actor-fcom-name = Forward Command
-actor-hosp-name = Hospital
 actor-v01-name = Church
 actor-v19-name = Oil Pump
 actor-v19-husk-name = Husk (Oil Pump)
 actor-barl-name = Explosive Barrel
 actor-brl3-name = Explosive Barrel
-actor-miss-name = Communications Center
-actor-bio-name = Biological Lab
-actor-oilb-name = Oil Derrick
 actor-v25-name = Church
 actor-lhus-name = Lighthouse
 actor-windmill-name = Windmill
@@ -735,3 +730,29 @@ actor-stnk =
       Strong vs Light armor
       Weak vs Infantry, Tanks, Aircraft
    .name = Phase Transport
+
+## Civilian Tech
+actor-hosp =
+   .name = Hospital
+   .captured-desc = Provides infantry with self-healing.
+   .capturable-desc = Capture to enable self-healing for infantry.
+
+actor-fcom =
+   .name = Forward Command
+   .captured-desc = Provides buildable area.
+   .capturable-desc =Capture to give buildable area.
+
+actor-miss =
+   .name = Communications Center
+   .captured-desc = Provides range of vision.
+   .capturable-desc = Capture to give visual range.
+
+actor-bio =
+   .name = Biological Lab
+   .captured-desc = Provides prerequisite for Bio-Lab units.
+   .capturable-desc = Capture to produce Bio-Lab units.
+
+actor-oilb = 
+   .name = Oil Derrick
+   .captured-desc = Provides additional funds.
+   .capturable-desc =  Capture to receive additional funds.
