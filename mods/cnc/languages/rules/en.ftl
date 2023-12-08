@@ -401,14 +401,31 @@ actor-vehicleproduction-name = Vehicle Production
 actor-anypower-name = Any Power Generation
 actor-anyhq-name = A Communications Center
 
+
 ## tech.yaml
-actor-v19-name = Oil Derrick
 actor-v19-husk-name = Oil Derrick (Destroyed)
-actor-hosp-name = Hospital
 actor-hosp-husk-name = Hospital (Destroyed)
-actor-bio-name = Biological Lab
 actor-bio-husk-name = Biological Lab (Destroyed)
-actor-miss-name = Tech Center
+
+actor-hosp =
+   .name = Hospital
+   .captured-desc = Provides infantry with self-healing.
+   .capturable-desc = Capture to enable self-healing for infantry.
+
+actor-miss =
+   .name = Tech Center
+   .captured-desc = Provides range of vision.
+   .capturable-desc = Capture to give visual range.
+
+actor-bio =
+   .name = Biological Lab
+   .captured-desc = Provides infantry with Tiberium immunity.
+   .capturable-desc = Capture to enable Tiberium immunity for infantry.
+
+actor-v19 =
+   .name = Oil Derrick
+   .captured-desc = Provides additional funds.
+   .capturable-desc = Capture to receive additional funds.
 
 ## trees.yaml
 actor-splitblue-name = Blossom Tree (blue)
@@ -512,3 +529,4 @@ actor-truck =
       Builds fast
       Unarmed
    .name = Supply Truck
+

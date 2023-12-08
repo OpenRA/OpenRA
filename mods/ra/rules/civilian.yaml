@@ -140,12 +140,12 @@ FCOM:
 	Armor:
 		Type: Wood
 	Tooltip:
-		Name: actor-fcom-name
+		Name: actor-fcom.name
 	TooltipDescription@ally:
-		Description: Provides buildable area.
+		Description: actor-fcom.captured-desc
 		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to give buildable area.
+		Description: actor-fcom.capturable-desc
 		ValidRelationships: Neutral, Enemy
 	RevealsShroud:
 		MinRange: 4c0
@@ -193,12 +193,12 @@ HOSP:
 	CapturableProgressBlink:
 	InstantlyRepairable:
 	Tooltip:
-		Name: actor-hosp-name
+		Name: actor-hosp.name
 	TooltipDescription@ally:
-		Description: Provides infantry with self-healing.
+		Description: actor-hosp.captured-desc
 		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to enable self-healing for infantry.
+		Description: actor-hosp.capturable-desc
 		ValidRelationships: Neutral, Enemy
 	RevealsShroud:
 		Range: 4c0
@@ -459,12 +459,12 @@ MISS:
 	Armor:
 		Type: Wood
 	Tooltip:
-		Name: actor-miss-name
+		Name: actor-miss.name
 	TooltipDescription@ally:
-		Description: Provides range of vision.
+		Description: actor-miss.captured-desc
 		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to give visual range.
+		Description: actor-miss.capturable-desc
 		ValidRelationships: Neutral, Enemy
 	WithBuildingBib:
 	CaptureManager:
@@ -500,12 +500,12 @@ BIO:
 	CapturableProgressBar:
 	InstantlyRepairable:
 	Tooltip:
-		Name: actor-bio-name
+		Name: actor-bio.name
 	TooltipDescription@ally:
-		Description: Provides prerequisite for Bio-Lab units.
+		Description: actor-bio.captured-desc
 		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to produce Bio-Lab units.
+		Description: actor-bio.capturable-desc
 		ValidRelationships: Neutral, Enemy
 	WithDeathAnimation:
 		DeathSequence: dead
@@ -544,12 +544,12 @@ OILB:
 		Amount: 100
 		RequiresCondition: enabled
 	Tooltip:
-		Name: actor-oilb-name
+		Name: actor-oilb.name
 	TooltipDescription@ally:
-		Description: Provides additional funds.
+		Description: actor-oilb.captured-desc
 		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to receive additional funds.
+		Description: actor-oilb.capturable-desc
 		ValidRelationships: Neutral, Enemy
 	Explodes:
 		Weapon: BarrelExplode

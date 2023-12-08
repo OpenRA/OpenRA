@@ -807,12 +807,12 @@ CAHOSP:
 	Inherits: ^BasicBuilding
 	Inherits@shape: ^3x4Shape
 	Tooltip:
-		Name: actor-cahosp-name
+		Name: actor-cahosp.name
 	TooltipDescription@ally:
-		Description: Provides infantry with self-healing.
+		Description: actor-cahosp.captured-desc
 		ValidRelationships: Ally
 	TooltipDescription@other:
-		Description: Capture to enable self-healing for infantry.
+		Description: actor-cahosp.capturable-desc
 		ValidRelationships: Neutral, Enemy
 	Building:
 		Footprint: XxX xxx xxx xxx
