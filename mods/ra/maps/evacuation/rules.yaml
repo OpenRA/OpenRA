@@ -16,7 +16,6 @@ World:
 		Values:
 			easy: options-difficulty.easy
 			normal: options-difficulty.normal
-			hard: options-difficulty.hard
 		Default: normal
 	TimeLimitManager:
 		TimeLimitLocked: True
