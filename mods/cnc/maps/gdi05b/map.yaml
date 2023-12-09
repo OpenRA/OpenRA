@@ -567,7 +567,7 @@ Actors:
 	Fact1: fact
 		Location: 51,17
 		Owner: Nod
-	GdiNuke1: nuke
+	GdiNuke2: nuke
 		Location: 33,51
 		Owner: AbandonedBase
 		Health: 46
@@ -576,15 +576,11 @@ Actors:
 		Owner: AbandonedBase
 		Health: 48
 		FreeActor: False
-	GdiHarv: harv
-		Location: 27,55
-		Owner: AbandonedBase
-		Facing: 256
 	GdiWeap1: weap
 		Location: 35,52
 		Owner: AbandonedBase
 		Health: 41
-	GdiNuke2: nuke
+	GdiNuke1: nuke
 		Location: 31,51
 		Owner: AbandonedBase
 		Health: 39
@@ -611,6 +607,9 @@ Actors:
 	Sam4: sam
 		Location: 26,37
 		Owner: Nod
+	GDIBaseCenter: waypoint
+		Owner: Neutral
+		Location: 32,53
 
 Rules: cnc|rules/campaign-maprules.yaml, cnc|rules/campaign-tooltips.yaml, cnc|rules/campaign-palettes.yaml, rules.yaml
 
