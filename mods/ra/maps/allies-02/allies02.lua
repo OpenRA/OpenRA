@@ -58,16 +58,22 @@ RunInitialActivities = function()
 	Harvester.FindResources()
 	Trigger.OnKilled(Harvester, function() HarvesterKilled = true end)
 
+	ScheduleEarlyAttackers()
+
 	Trigger.OnAllKilled(PathGuards, function()
 		Greece.MarkCompletedObjective(SecureObjective)
 		SendTrucks()
 	end)
 
 	Trigger.OnAllKilled(SovietBase, function()
+		local livePathGuards = Utils.Where(PathGuards, function(pg) return not pg.IsDead end)
+
 		Utils.Do(USSR.GetGroundAttackers(), function(unit)
-			if not Utils.Any(PathGuards, function(pg) return pg == unit end) then
-				Trigger.OnIdle(unit, unit.Hunt)
+			if Utils.Any(livePathGuards, function(pg) return pg == unit end) then
+				return
 			end
+
+			Trigger.OnIdle(unit, unit.Hunt)
 		end)
 	end)
 
@@ -202,17 +208,51 @@ SendTrucks = function()
 					end
 				end
 			end)
-			Trigger.OnAnyKilled(trucks, ConvoyCasualites)
+			Trigger.OnAnyKilled(trucks, ConvoyCasualties)
 		end)
 	end
 end
 
-ConvoyCasualites = function()
+ConvoyCasualties = function()
 	Media.PlaySpeechNotification(Greece, "ConvoyUnitLost")
 	if ConvoyUnharmed then
 		ConvoyUnharmed = false
 		Trigger.AfterDelay(DateTime.Seconds(1), function() Greece.MarkFailedObjective(ConvoyObjective) end)
 	end
+end
+
+ScheduleEarlyAttackers = function()
+	if Difficulty == "tough" then
+		Trigger.AfterDelay(DateTime.Seconds(12), SendEarlyAttackers)
+		return
+	end
+
+	Trigger.AfterDelay(DateTime.Seconds(6), function()
+		if not Greece.HasPrerequisites({ "anypower" }) then
+			ScheduleEarlyAttackers()
+			return
+		end
+
+		SendEarlyAttackers()
+	end)
+end
+
+SendEarlyAttackers = function()
+	local team = { EarlyAttacker1, EarlyAttacker2, EarlyAttacker3, EarlyAttacker4 }
+	local dogTargets = Greece.GetActorsByType("e1")
+
+	Utils.Do(team, function(member)
+		if member.IsDead then
+			return
+		end
+
+		-- Get attack dogs sprinting.
+		if member.Type == "dog" and #dogTargets > 0 then
+			member.Attack(Utils.Random(dogTargets))
+		end
+
+		Trigger.OnIdle(member, member.Hunt)
+	end)
 end
 
 WorldLoaded = function()

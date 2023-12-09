@@ -66,10 +66,6 @@ HBOX:
 	Buildable:
 		Prerequisites: ~disabled
 
-PBOX:
-	Buildable:
-		Prerequisites: ~disabled
-
 GUN:
 	Buildable:
 		Prerequisites: ~disabled
