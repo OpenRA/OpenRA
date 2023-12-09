@@ -1600,7 +1600,7 @@ Actors:
 		Location: 26,100
 		Owner: Neutral
 	ParabombPoint1: waypoint
-		Location: 39,105
+		Location: 42,106
 		Owner: Neutral
 	ParabombPoint2: waypoint
 		Location: 39,108

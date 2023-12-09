@@ -126,7 +126,7 @@ keep-einstein-alive-at-all-costs = Keep Einstein alive at all costs.
 find-einstein-crashed-helicopter = Find Einstein's crashed helicopter.
 destroy-sam-sites = Destroy the SAM sites.
 hold-position-protect-base = Hold your position and protect the base.
-keep-civilians-alive = Do not lose more than { $units } units.
+do-not-lose-more-than = Do not lose more than { $units } units.
 take-out-the-soviet-power-grid = Take out the Soviet power grid.
 
 ## exodus

@@ -107,8 +107,7 @@ end
 
 SendParabombs = function()
 	local proxy = Actor.Create("powerproxy.parabombs", false, { Owner = Soviets })
-	proxy.TargetAirstrike(ParabombPoint1.CenterPosition, (BadgerEntryPoint2.CenterPosition - ParabombPoint1.CenterPosition).Facing)
-	proxy.TargetAirstrike(ParabombPoint2.CenterPosition, (Map.CenterOfCell(BadgerEntryPoint2.Location + CVec.New(0, 3)) - ParabombPoint2.CenterPosition).Facing)
+	proxy.TargetAirstrike(ParabombPoint1.CenterPosition, (ParabombPoint1.CenterPosition - BadgerEntryPoint2.CenterPosition).Facing)
 	proxy.Destroy()
 end
 
@@ -296,7 +295,7 @@ SpawnTanya = function()
 
 	if Difficulty ~= "easy" and Allies1.IsLocalPlayer then
 		Trigger.AfterDelay(DateTime.Seconds(2), function()
-			Media.DisplayMessage(UserInterface.Translate("tanya-rules-of-engagement"), UserInterface.Translate("tanya"))
+			Media.DisplayMessageToPlayer(Allies1, UserInterface.Translate("tanya-rules-of-engagement"), UserInterface.Translate("tanya"))
 		end)
 	end
 end
@@ -348,7 +347,7 @@ WorldLoaded = function()
 	DestroySamSitesObjective = AddPrimaryObjective(Allies1, "destroy-sam-sites")
 
 	HoldPositionObjective = AddPrimaryObjective(Allies2, "hold-position-protect-base")
-	local dontLoseMoreThan = UserInterface.Translate("keep-civilians-alive", { ["units"] = DeathThreshold[Difficulty] })
+	local dontLoseMoreThan = UserInterface.Translate("do-not-lose-more-than", { ["units"] = DeathThreshold[Difficulty] })
 	LimitLossesObjective = AddSecondaryObjective(Allies2, dontLoseMoreThan)
 	CutSovietPowerObjective = AddSecondaryObjective(Allies2, "take-out-the-soviet-power-grid")
 
