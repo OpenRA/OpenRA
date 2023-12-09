@@ -9,7 +9,7 @@
 
 Base =
 {
-	Harkonnen = { HConyard, HRefinery, HHeavyFactory, HLightFactory, HGunTurret1, HGunTurret2, HGunTurret3, HGunTurret4, HGunTurret5, HBarracks, HPower1, HPower2, HPower3, HPower4 },
+	Harkonnen = { HConyard, HRefinery, HHeavyFactory, HLightFactory, HGunTurret1, HGunTurret2, HGunTurret3, HGunTurret4, HBarracks, HPower1, HPower2, HPower3, HPower4 },
 	Smugglers = { SOutpost, SHeavyFactory, SLightFactory, SGunTurret1, SGunTurret2, SGunTurret3, SGunTurret4, SBarracks, SPower1, SPower2, SPower3 }
 }
 
@@ -139,8 +139,8 @@ WorldLoaded = function()
 			Smuggler.MarkFailedObjective(DefendOutpost)
 		end)
 	end)
-	Trigger.OnDamaged(SOutpost, function()
-		if SOutpost.Owner ~= Smuggler then
+	Trigger.OnDamaged(SOutpost, function(_, attacker)
+		if SOutpost.Owner ~= Smuggler or attacker.IsDead or attacker.Owner ~= Ordos then
 			return
 		end
 
