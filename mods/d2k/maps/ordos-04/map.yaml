@@ -318,16 +318,16 @@ Actors:
 	Actor92: spicebloom.spawnpoint
 		Location: 23,24
 		Owner: Neutral
-	HGunTurret3: wind_trap
+	HPower3: wind_trap
 		Location: 44,24
 		Owner: Harkonnen
-	HPower3: wind_trap
+	HPower4: wind_trap
 		Location: 46,24
 		Owner: Harkonnen
 	Actor95: wall
 		Location: 46,29
 		Owner: Harkonnen
-	HGunTurret4: medium_gun_turret
+	HGunTurret3: medium_gun_turret
 		Location: 47,29
 		Owner: Harkonnen
 	Actor97: wall
@@ -345,7 +345,7 @@ Actors:
 	Actor101: wall
 		Location: 10,32
 		Owner: Harkonnen
-	HGunTurret5: medium_gun_turret
+	HGunTurret4: medium_gun_turret
 		Location: 11,32
 		Owner: Harkonnen
 	Actor103: light_inf

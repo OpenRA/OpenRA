@@ -251,7 +251,7 @@ Tick = function()
 	end
 
 	if LastHarkonnenArrived and not Atreides.IsObjectiveCompleted(KillHarkonnen) and Harkonnen.HasNoRequiredUnits() then
-		Media.DisplayMessage(UserInterface.Translate("atreides-05"), Mentat)
+		Media.DisplayMessage(UserInterface.Translate("harkonnen-annihilated"), Mentat)
 		Atreides.MarkCompletedObjective(KillHarkonnen)
 	end
 
@@ -330,8 +330,8 @@ WorldLoaded = function()
 			Atreides.MarkFailedObjective(DefendStarport)
 		end
 	end)
-	Trigger.OnDamaged(Starport, function()
-		if Starport.Owner ~= Smuggler then
+	Trigger.OnDamaged(Starport, function(_, attacker)
+		if Starport.Owner ~= Smuggler or attacker.IsDead or attacker.Owner ~= Atreides then
 			return
 		end
 

@@ -81,7 +81,7 @@ WorldLoaded = function()
 
 	InitObjectives(Harkonnen)
 	KillHarkonnen = AddPrimaryObjective(Atreides, "")
-	KillAtreides = AddSecondaryObjective(Harkonnen, "destroy-atreides-forces")
+	KillAtreides = AddPrimaryObjective(Harkonnen, "destroy-atreides-forces")
 
 	Camera.Position = HConyard.CenterPosition
 
