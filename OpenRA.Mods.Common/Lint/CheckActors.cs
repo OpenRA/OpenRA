@@ -11,6 +11,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.Scripting;
 
 namespace OpenRA.Mods.Common.Lint
 {
@@ -18,10 +19,16 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
-			var actorTypes = map.ActorDefinitions.Select(a => a.Value.Value);
-			foreach (var actor in actorTypes)
-				if (!map.Rules.Actors.Keys.Contains(actor.ToLowerInvariant()))
-					emitError($"Actor `{actor}` is not defined by any rule.");
+			var scriptBindings = Game.ModData.ObjectCreator.GetTypesImplementing<ScriptGlobal>().Select(t => Utility.GetCustomAttributes<ScriptGlobalAttribute>(t, true)[0].Name).ToHashSet();
+			foreach (var actor in map.ActorDefinitions)
+			{
+				var name = actor.Value.Value;
+				if (!map.Rules.Actors.ContainsKey(name.ToLowerInvariant()))
+					emitError($"Actor `{name}` is not defined by any rule.");
+
+				if (scriptBindings.Contains(actor.Key))
+					emitError($"Named actor `{actor.Key}` conflicts with a script global of the same name. Consider renaming the actor.");
+			}
 		}
 	}
 }
