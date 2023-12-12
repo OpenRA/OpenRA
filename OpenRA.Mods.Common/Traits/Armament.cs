@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.GameRules;
+using OpenRA.Mods.Common.Traits.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -113,6 +114,8 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
 		Turreted turret;
+		Hovers hovers;
+
 		BodyOrientation coords;
 		INotifyBurstComplete[] notifyBurstComplete;
 		INotifyAttack[] notifyAttacks;
@@ -168,6 +171,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			turret = self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == Info.Turret);
+			hovers = self.TraitOrDefault<Hovers>();
 			coords = self.Trait<BodyOrientation>();
 			notifyBurstComplete = self.TraitsImplementing<INotifyBurstComplete>().ToArray();
 			notifyAttacks = self.TraitsImplementing<INotifyAttack>().ToArray();
@@ -388,6 +392,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Weapon offset in turret coordinates
 			var localOffset = b.Offset + new WVec(-Recoil, WDist.Zero, WDist.Zero);
+
+			if (hovers != null)
+				localOffset += hovers.WorldVisualOffset;
 
 			// Turret coordinates to body coordinates
 			var bodyOrientation = coords.QuantizeOrientation(self.Orientation);
