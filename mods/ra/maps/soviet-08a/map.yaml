@@ -578,7 +578,7 @@ Actors:
 	Actor174: gun
 		Location: 51,41
 		Owner: Greece
-	Radar: dome
+	GreeceRadar: dome
 		Location: 34,37
 		Owner: Greece
 	Actor176: agun
