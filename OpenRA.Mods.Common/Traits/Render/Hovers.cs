@@ -69,7 +69,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 		readonly int fallTickHeight;
 
 		int ticks;
-		WVec worldVisualOffset;
+
+		[Sync]
+		public WVec WorldVisualOffset { get; private set; }
 
 		public Hovers(HoversInfo info)
 			: base(info)
@@ -85,11 +87,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			if (IsTraitDisabled)
 			{
-				if (worldVisualOffset.Z < 0)
+				if (WorldVisualOffset.Z < 0)
 					return;
 
-				var fallTicks = worldVisualOffset.Z / fallTickHeight - 1;
-				worldVisualOffset = new WVec(0, 0, fallTickHeight * fallTicks);
+				var fallTicks = WorldVisualOffset.Z / fallTickHeight - 1;
+				WorldVisualOffset = new WVec(0, 0, fallTickHeight * fallTicks);
 			}
 			else
 				ticks++;
@@ -104,13 +106,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 				var currentHeight = info.BobDistance.Length * visualOffset / 1024 + info.InitialHeight.Length;
 
 				// This part rises the actor up from disabled state
-				if (worldVisualOffset.Z < currentHeight)
-					currentHeight = Math.Min(worldVisualOffset.Z + info.InitialHeight.Length / info.RiseTicks, currentHeight);
+				if (WorldVisualOffset.Z < currentHeight)
+					currentHeight = Math.Min(WorldVisualOffset.Z + info.InitialHeight.Length / info.RiseTicks, currentHeight);
 
-				worldVisualOffset = new WVec(0, 0, currentHeight);
+				WorldVisualOffset = new WVec(0, 0, currentHeight);
 			}
 
-			return r.Select(a => a.OffsetBy(worldVisualOffset));
+			return r.Select(a => a.OffsetBy(WorldVisualOffset));
 		}
 
 		IEnumerable<Rectangle> IRenderModifier.ModifyScreenBounds(Actor self, WorldRenderer wr, IEnumerable<Rectangle> bounds)
