@@ -43,6 +43,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly EditorActorLayer editorLayer;
 		readonly EditorActionManager editorActionManager;
 		readonly IResourceLayer resourceLayer;
+		readonly EditorCursorLayer cursorLayer;
 
 		public CellRegion CurrentDragBounds => selectionBounds ?? Selection.Area;
 
@@ -53,6 +54,8 @@ namespace OpenRA.Mods.Common.Widgets
 		int2? selectionStartLocation;
 		CPos? selectionStartCell;
 		int2 worldPixel;
+		bool draggingActor;
+		MoveActorAction moveAction;
 
 		public EditorDefaultBrush(EditorViewportControllerWidget editorWidget, WorldRenderer wr)
 		{
@@ -63,6 +66,7 @@ namespace OpenRA.Mods.Common.Widgets
 			editorLayer = world.WorldActor.Trait<EditorActorLayer>();
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 			resourceLayer = world.WorldActor.TraitOrDefault<IResourceLayer>();
+			cursorLayer = world.WorldActor.Trait<EditorCursorLayer>();
 		}
 
 		long CalculateActorSelectionPriority(EditorActorPreview actor)
@@ -126,16 +130,44 @@ namespace OpenRA.Mods.Common.Widgets
 			else
 				editorWidget.SetTooltip(null);
 
+			// Actor drag.
+			if (mi.Button == MouseButton.Left)
+			{
+				if (mi.Event == MouseInputEvent.Down && underCursor != null && (mi.Modifiers.HasModifier(Modifiers.Shift) || underCursor == Selection.Actor))
+				{
+					editorWidget.SetTooltip(null);
+					var cellViewPx = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPosition(world.Map.CenterOfCell(cell)));
+					var pixelOffset = cellViewPx - mi.Location;
+					var cellOffset = underCursor.Location - cell;
+					moveAction = new MoveActorAction(underCursor, cursorLayer, worldRenderer, pixelOffset, cellOffset);
+					draggingActor = true;
+					return false;
+				}
+				else if (mi.Event == MouseInputEvent.Up && draggingActor)
+				{
+					editorWidget.SetTooltip(null);
+					draggingActor = false;
+					editorActionManager.Add(moveAction);
+					moveAction = null;
+					return false;
+				}
+				else if (mi.Event == MouseInputEvent.Move && draggingActor)
+				{
+					editorWidget.SetTooltip(null);
+					moveAction.Move(mi.Location);
+					return false;
+				}
+			}
+
 			// Selection box drag.
-			if (selectionStartLocation != null &&
+			if (mi.Event == MouseInputEvent.Move &&
+				selectionStartLocation != null &&
 				(selectionBounds != null || (mi.Location - selectionStartLocation.Value).LengthSquared > MinMouseMoveBeforeDrag))
 			{
 				selectionStartCell ??= worldRenderer.Viewport.ViewToWorld(selectionStartLocation.Value);
 
 				var topLeft = new CPos(Math.Min(selectionStartCell.Value.X, cell.X), Math.Min(selectionStartCell.Value.Y, cell.Y));
 				var bottomRight = new CPos(Math.Max(selectionStartCell.Value.X, cell.X), Math.Max(selectionStartCell.Value.Y, cell.Y));
-				var width = bottomRight.X - topLeft.X;
-				var height = bottomRight.Y - topLeft.Y;
 				var gridType = worldRenderer.World.Map.Grid.Type;
 
 				// We've dragged enough to capture more than one cell, make a selection box.
@@ -211,7 +243,7 @@ namespace OpenRA.Mods.Common.Widgets
 					editorWidget.SetTooltip(null);
 
 					// Delete actor.
-					if (underCursor != null && underCursor != Selection.Actor)
+					if (underCursor != null && underCursor != Selection.Actor && !draggingActor)
 						editorActionManager.Add(new RemoveActorAction(editorLayer, underCursor));
 
 					// Or delete resource if found under cursor.
@@ -365,6 +397,59 @@ namespace OpenRA.Mods.Common.Widgets
 		public void Undo()
 		{
 			editorActorLayer.Add(actor);
+		}
+	}
+
+	sealed class MoveActorAction : IEditorAction
+	{
+		[TranslationReference("id", "x1", "y1", "x2", "y2")]
+		const string MovedActor = "notification-moved-actor";
+
+		public string Text { get; private set; }
+
+		readonly EditorActorPreview actor;
+		readonly EditorCursorLayer layer;
+		readonly WorldRenderer worldRenderer;
+		readonly int2 pixelOffset;
+		readonly CVec cellOffset;
+		readonly CPos from;
+
+		CPos to;
+
+		public MoveActorAction(
+			EditorActorPreview actor,
+			EditorCursorLayer layer,
+			WorldRenderer worldRenderer,
+			int2 pixelOffset,
+			CVec cellOffset)
+		{
+			this.actor = actor;
+			this.layer = layer;
+			this.worldRenderer = worldRenderer;
+			this.pixelOffset = pixelOffset;
+			this.cellOffset = cellOffset;
+
+			from = actor.Location;
+		}
+
+		public void Execute() { }
+
+		public void Do()
+		{
+			layer.MoveActor(actor, to);
+		}
+
+		public void Undo()
+		{
+			layer.MoveActor(actor, from);
+		}
+
+		public void Move(int2 pixelTo)
+		{
+			to = worldRenderer.Viewport.ViewToWorld(pixelTo + pixelOffset) + cellOffset;
+			layer.MoveActor(actor, to);
+
+			Text = TranslationProvider.GetString(MovedActor, Translation.Arguments("id", actor.ID, "x1", from.X, "y1", from.Y, "x2", to.X, "y2", to.Y));
 		}
 	}
 
