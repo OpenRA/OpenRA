@@ -138,6 +138,7 @@ namespace OpenRA
 		{
 			switch (t.Type)
 			{
+				case TargetType.ActorIgnoreVisibility:
 				case TargetType.Actor:
 					return (int)(t.Actor.ActorID << 16) * 0x567;
 

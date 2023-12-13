@@ -181,7 +181,7 @@ namespace OpenRA.GameRules
 		/// <summary>Checks if the weapon is valid against (can target) the target.</summary>
 		public bool IsValidAgainst(in Target target, World world, Actor firedBy)
 		{
-			if (target.Type == TargetType.Actor)
+			if (target.Type == TargetType.Actor || target.Type == TargetType.ActorIgnoreVisibility)
 				return IsValidAgainst(target.Actor, firedBy);
 
 			if (target.Type == TargetType.FrozenActor)

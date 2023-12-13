@@ -53,12 +53,12 @@ namespace OpenRA.Mods.Common.Activities
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
 			if ((target.Type == TargetType.Actor && target.Actor.CanBeViewedByPlayer(self.Owner))
-				|| target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain)
+				|| target.Type == TargetType.FrozenActor || target.Type == TargetType.Terrain || target.Type == TargetType.ActorIgnoreVisibility)
 			{
 				lastVisibleTarget = Target.FromPos(target.CenterPosition);
 				lastVisibleMaximumRange = attackAircraft.GetMaximumRangeVersusTarget(target);
 
-				if (target.Type == TargetType.Actor)
+				if (target.Type == TargetType.Actor || target.Type == TargetType.ActorIgnoreVisibility)
 				{
 					lastVisibleOwner = target.Actor.Owner;
 					lastVisibleTargetTypes = target.Actor.GetEnabledTargetTypes();
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Activities
 			attackAircraft.SetRequestedTarget(target, forceAttack);
 			hasTicked = true;
 
-			if (!targetIsHiddenActor && target.Type == TargetType.Actor)
+			if (target.Type == TargetType.ActorIgnoreVisibility || (!targetIsHiddenActor && (target.Type == TargetType.Actor)))
 			{
 				lastVisibleTarget = Target.FromTargetPositions(target);
 				lastVisibleMaximumRange = attackAircraft.GetMaximumRangeVersusTarget(target);
