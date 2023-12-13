@@ -87,6 +87,7 @@ jobs:
           cd wiki
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
+          git status
           git diff-index --quiet HEAD || \
           (
             git add --all && \
@@ -140,6 +141,7 @@ jobs:
           cd docs
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
+          git status
           git diff-index --quiet HEAD || \
           (
             git add api/*.md && \
