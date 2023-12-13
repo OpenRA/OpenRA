@@ -533,5 +533,6 @@ HUNTER:
 		UseLocation: true
 	Interactable:
 	HitShape:
+	HunterSeeker:
 	MapEditorData:
 		Categories: System
