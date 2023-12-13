@@ -810,6 +810,7 @@ notification-selected-actor = Selected actor { $id }
 notification-cleared-selection = Cleared selection
 notification-removed-actor = Removed { $name } ({ $id })
 notification-removed-resource = Removed { $type }
+notification-moved-actor = Moved { $id } from { $x1 },{ $y1 } to { $x2 },{ $y2 }
 
 ## EditorResourceBrush
 notification-added-resource =

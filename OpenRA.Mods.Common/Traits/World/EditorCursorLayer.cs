@@ -189,6 +189,22 @@ namespace OpenRA.Mods.Common.Traits
 			return ++CurrentToken;
 		}
 
+		public void MoveActor(EditorActorPreview preview, CPos location)
+		{
+			editorLayer.Remove(preview);
+			preview.ReplaceInit(new LocationInit(location));
+			var ios = preview.Info.TraitInfoOrDefault<IOccupySpaceInfo>();
+			if (ios != null && ios.SharesCell)
+			{
+				var actorSubCell = editorLayer.FreeSubCellAt(location);
+				if (actorSubCell != SubCell.Invalid)
+					preview.ReplaceInit(new SubCellInit(actorSubCell));
+			}
+
+			preview.UpdateFromMove();
+			editorLayer.Add(preview);
+		}
+
 		public int SetTerrainTemplate(WorldRenderer wr, TerrainTemplateInfo template)
 		{
 			terrainOrResourceCell = wr.Viewport.ViewToWorld(wr.Viewport.WorldToViewPx(Viewport.LastMousePos));
