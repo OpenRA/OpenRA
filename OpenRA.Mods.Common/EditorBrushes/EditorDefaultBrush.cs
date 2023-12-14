@@ -12,6 +12,7 @@
 using System;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
@@ -21,9 +22,17 @@ namespace OpenRA.Mods.Common.Widgets
 		void Tick();
 	}
 
+	public class EditorSelection
+	{
+		public CellRegion Area;
+		public EditorActorPreview Actor;
+	}
+
 	public sealed class EditorDefaultBrush : IEditorBrush
 	{
-		public readonly ActorInfo Actor;
+		const int MinMouseMoveBeforeDrag = 32;
+
+		public event Action SelectionChanged;
 
 		readonly WorldRenderer worldRenderer;
 		readonly World world;
@@ -32,7 +41,13 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly EditorActionManager editorActionManager;
 		readonly IResourceLayer resourceLayer;
 
-		public EditorActorPreview SelectedActor;
+		public CellRegion CurrentDragBounds => selectionBounds ?? Selection.Area;
+
+		public EditorSelection Selection = new();
+		EditorSelection previousSelection;
+		CellRegion selectionBounds;
+		int2? selectionStartLocation;
+		CPos? selectionStartCell;
 		int2 worldPixel;
 
 		public EditorDefaultBrush(EditorViewportControllerWidget editorWidget, WorldRenderer wr)
@@ -58,13 +73,23 @@ namespace OpenRA.Mods.Common.Widgets
 			return ((long)pixelDistance << 32) + worldZPosition;
 		}
 
+		public void ClearSelection()
+		{
+			if (Selection.Area != null || Selection.Actor != null)
+			{
+				previousSelection = Selection;
+				Selection = new EditorSelection();
+				editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
+				SelectionChanged?.Invoke();
+			}
+		}
+
 		public bool HandleMouseInput(MouseInput mi)
 		{
-			// Exclusively uses mouse wheel and both mouse buttons, but nothing else
-			// Mouse move events are important for tooltips, so we always allow these through
-			if ((mi.Button != MouseButton.Left && mi.Button != MouseButton.Right
-				&& mi.Event != MouseInputEvent.Move && mi.Event != MouseInputEvent.Scroll) ||
-				mi.Event == MouseInputEvent.Down)
+			// Exclusively uses mouse wheel and both mouse buttons, but nothing else.
+			// Mouse move events are important for tooltips, so we always allow these through.
+			if (mi.Button != MouseButton.Left && mi.Button != MouseButton.Right
+				&& mi.Event != MouseInputEvent.Move && mi.Event != MouseInputEvent.Scroll)
 				return false;
 
 			worldPixel = worldRenderer.Viewport.ViewToWorldPx(mi.Location);
@@ -80,25 +105,114 @@ namespace OpenRA.Mods.Common.Widgets
 			else
 				editorWidget.SetTooltip(null);
 
-			// Finished with mouse move events, so let them bubble up the widget tree
+			// Selection box drag.
+			if (selectionStartLocation != null &&
+				(selectionBounds != null || (mi.Location - selectionStartLocation.Value).LengthSquared > MinMouseMoveBeforeDrag))
+			{
+				selectionStartCell ??= worldRenderer.Viewport.ViewToWorld(selectionStartLocation.Value);
+
+				var topLeft = new CPos(Math.Min(selectionStartCell.Value.X, cell.X), Math.Min(selectionStartCell.Value.Y, cell.Y));
+				var bottomRight = new CPos(Math.Max(selectionStartCell.Value.X, cell.X), Math.Max(selectionStartCell.Value.Y, cell.Y));
+				var width = bottomRight.X - topLeft.X;
+				var height = bottomRight.Y - topLeft.Y;
+				var gridType = worldRenderer.World.Map.Grid.Type;
+
+				// We've dragged enough to capture more than one cell, make a selection box.
+				if (selectionBounds == null)
+				{
+					selectionBounds = new CellRegion(gridType, topLeft, bottomRight);
+
+					// Lose focus on any search boxes so we can always copy/paste.
+					Ui.KeyboardFocusWidget = null;
+				}
+				else
+				{
+					// We already have a drag box; resize it
+					selectionBounds = new CellRegion(gridType, topLeft, bottomRight);
+				}
+			}
+
+			// Finished with mouse move events, so let them bubble up the widget tree.
 			if (mi.Event == MouseInputEvent.Move)
 				return false;
 
-			if (mi.Button == MouseButton.Left)
+			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Left && selectionStartLocation == null)
 			{
-				editorWidget.SetTooltip(null);
-				SelectedActor = underCursor;
+				// Start area drag.
+				selectionStartLocation = mi.Location;
 			}
 
-			if (mi.Button == MouseButton.Right)
+			if (mi.Event == MouseInputEvent.Up)
 			{
-				editorWidget.SetTooltip(null);
+				if (mi.Button == MouseButton.Left)
+				{
+					editorWidget.SetTooltip(null);
+					selectionStartLocation = null;
+					selectionStartCell = null;
 
-				if (underCursor != null && underCursor != SelectedActor)
-					editorActionManager.Add(new RemoveActorAction(editorLayer, underCursor));
+					// If we've released a bounds drag.
+					if (selectionBounds != null)
+					{
+						// Set this as the editor selection.
+						previousSelection = Selection;
+						Selection = new EditorSelection
+						{
+							Area = selectionBounds
+						};
 
-				if (resourceUnderCursor != null)
-					editorActionManager.Add(new RemoveResourceAction(resourceLayer, cell, resourceUnderCursor));
+						editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
+						selectionBounds = null;
+						SelectionChanged?.Invoke();
+					}
+					else if (underCursor != null)
+					{
+						// We've clicked on an actor.
+						if (Selection.Actor != underCursor)
+						{
+							previousSelection = Selection;
+							Selection = new EditorSelection
+							{
+								Actor = underCursor,
+							};
+
+							editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
+							SelectionChanged?.Invoke();
+						}
+					}
+					else if (Selection.Area != null || Selection.Actor != null)
+					{
+						// Released left mouse without dragging or selecting an actor - deselect current.
+						previousSelection = Selection;
+						Selection = new EditorSelection();
+
+						editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
+						SelectionChanged?.Invoke();
+					}
+				}
+
+				if (mi.Button == MouseButton.Right)
+				{
+					editorWidget.SetTooltip(null);
+
+					if (Selection.Area != null)
+					{
+						// Release right mouse button with a selection - clear selection.
+						previousSelection = Selection;
+						Selection = new EditorSelection();
+
+						editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
+					}
+					else
+					{
+						// Release right mouse button with no selection and over an actor - delete actor.
+						if (underCursor != null && underCursor != Selection.Actor)
+							editorActionManager.Add(new RemoveActorAction(editorLayer, underCursor));
+
+						// Or delete resource if found under cursor.
+						if (resourceUnderCursor != null)
+							editorActionManager.Add(new RemoveResourceAction(resourceLayer, cell, resourceUnderCursor));
+					}
+				}
 			}
 
 			return true;
@@ -106,6 +220,64 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Tick() { }
 		public void Dispose() { }
+	}
+
+	sealed class ChangeSelectionAction : IEditorAction
+	{
+		[TranslationReference("x", "y", "width", "height")]
+		const string SelectedArea = "notification-selected-area";
+
+		[TranslationReference("id")]
+		const string SelectedActor = "notification-selected-actor";
+
+		[TranslationReference]
+		const string ClearedSelection = "notification-cleared-selection";
+
+		public string Text { get; }
+
+		readonly EditorSelection selection;
+		readonly EditorSelection previousSelection;
+		readonly EditorDefaultBrush defaultBrush;
+
+		public ChangeSelectionAction(
+			EditorDefaultBrush defaultBrush,
+			EditorSelection selection,
+			EditorSelection previousSelection)
+		{
+			this.defaultBrush = defaultBrush;
+			this.selection = selection;
+			this.previousSelection = new EditorSelection
+			{
+				Actor = previousSelection.Actor,
+				Area = previousSelection.Area
+			};
+
+			if (selection.Area != null)
+				Text = TranslationProvider.GetString(SelectedArea, Translation.Arguments(
+						"x", selection.Area.TopLeft.X,
+						"y", selection.Area.TopLeft.Y,
+						"width", selection.Area.BottomRight.X - selection.Area.TopLeft.X,
+						"height", selection.Area.BottomRight.Y - selection.Area.TopLeft.Y));
+			else if (selection.Actor != null)
+				Text = TranslationProvider.GetString(SelectedActor, Translation.Arguments("id", selection.Actor.ID));
+			else
+				Text = TranslationProvider.GetString(ClearedSelection);
+		}
+
+		public void Execute()
+		{
+			Do();
+		}
+
+		public void Do()
+		{
+			defaultBrush.Selection = selection;
+		}
+
+		public void Undo()
+		{
+			defaultBrush.Selection = previousSelection;
+		}
 	}
 
 	sealed class RemoveActorAction : IEditorAction

@@ -30,10 +30,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly TerrainGeometryOverlay terrainGeometryTrait;
 		readonly BuildableTerrainOverlay buildableTerrainTrait;
+		readonly Widget widget;
 
 		[ObjectCreator.UseCtor]
 		public MapOverlaysLogic(Widget widget, World world, ModData modData, Dictionary<string, MiniYaml> logicArgs)
 		{
+			this.widget = widget;
+
 			terrainGeometryTrait = world.WorldActor.Trait<TerrainGeometryOverlay>();
 			buildableTerrainTrait = world.WorldActor.Trait<BuildableTerrainOverlay>();
 
@@ -81,28 +84,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		Widget CreateOverlaysPanel()
 		{
-			var categoriesPanel = Ui.LoadWidget("OVERLAY_PANEL", null, new WidgetArgs());
-			var categoryTemplate = categoriesPanel.Get<CheckboxWidget>("CATEGORY_TEMPLATE");
+			var categoriesPanel = widget.Get<Widget>("TOOLS_WIDGETS");
+			var showGridCheckbox = categoriesPanel.Get<CheckboxWidget>("SHOW_TILE_GRID");
+			var showBuildableAreaCheckbox = categoriesPanel.Get<CheckboxWidget>("SHOW_BUILDABLE_AREA");
 
 			MapOverlays[] allCategories = { MapOverlays.Grid, MapOverlays.Buildable };
 			foreach (var cat in allCategories)
 			{
-				var category = (CheckboxWidget)categoryTemplate.Clone();
-				category.GetText = () => cat.ToString();
-				category.IsVisible = () => true;
-
 				if (cat.HasFlag(MapOverlays.Grid))
 				{
-					category.IsChecked = () => terrainGeometryTrait.Enabled;
-					category.OnClick = () => terrainGeometryTrait.Enabled ^= true;
+					showGridCheckbox.IsChecked = () => terrainGeometryTrait.Enabled;
+					showGridCheckbox.OnClick = () => terrainGeometryTrait.Enabled ^= true;
 				}
 				else if (cat.HasFlag(MapOverlays.Buildable))
 				{
-					category.IsChecked = () => buildableTerrainTrait.Enabled;
-					category.OnClick = () => buildableTerrainTrait.Enabled ^= true;
+					showBuildableAreaCheckbox.IsChecked = () => buildableTerrainTrait.Enabled;
+					showBuildableAreaCheckbox.OnClick = () => buildableTerrainTrait.Enabled ^= true;
 				}
-
-				categoriesPanel.AddChild(category);
 			}
 
 			return categoriesPanel;

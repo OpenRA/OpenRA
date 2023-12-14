@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ModData = modData;
 			World = world;
 			WorldRenderer = worldRenderer;
-			Editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
+			Editor = widget.Parent.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			Panel = widget.Get<ScrollPanelWidget>(templateListId);
 			ItemTemplate = Panel.Get<ScrollItemWidget>(previewTemplateId);
 			Panel.Layout = new GridLayout(Panel);
@@ -70,6 +70,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				return true;
 			};
+
+			Editor.DefaultBrush.SelectionChanged += HandleSelectionChanged;
 
 			var none = TranslationProvider.GetString(None);
 			var searchResults = TranslationProvider.GetString(SearchResults);
@@ -101,6 +103,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				categorySelector.RemovePanel();
 				categorySelector.AttachPanel(CreateCategoriesPanel(Panel));
 			};
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			Editor.DefaultBrush.SelectionChanged -= HandleSelectionChanged;
+
+			base.Dispose(disposing);
+		}
+
+		void HandleSelectionChanged()
+		{
+			SearchTextField.YieldKeyboardFocus();
 		}
 
 		protected Widget CreateCategoriesPanel(ScrollPanelWidget panel)

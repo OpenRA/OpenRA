@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.EditorBrushes;
 using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -29,29 +30,33 @@ namespace OpenRA.Mods.Common.Widgets
 
 	public sealed class EditorCopyPasteBrush : IEditorBrush
 	{
-		enum State { SelectFirst, SelectSecond, Paste }
-
 		readonly WorldRenderer worldRenderer;
 		readonly EditorViewportControllerWidget editorWidget;
-		readonly EditorSelectionLayer selectionLayer;
-		readonly EditorActorLayer editorLayer;
-		readonly Func<MapCopyFilters> getCopyFilters;
+		readonly EditorActorLayer editorActorLayer;
 		readonly EditorActionManager editorActionManager;
+		readonly EditorClipboard clipboard;
+		readonly IResourceLayer resourceLayer;
+		readonly Func<MapCopyFilters> getCopyFilters;
 
-		State state;
-		CPos start;
-		CPos end;
+		public CPos? PastePreviewPosition { get; private set; }
 
-		public EditorCopyPasteBrush(EditorViewportControllerWidget editorWidget, WorldRenderer wr, Func<MapCopyFilters> getCopyFilters)
+		public CellRegion Region => clipboard.CellRegion;
+
+		public EditorCopyPasteBrush(
+			EditorViewportControllerWidget editorWidget,
+			WorldRenderer wr,
+			EditorClipboard clipboard,
+			IResourceLayer resourceLayer,
+			Func<MapCopyFilters> getCopyFilters)
 		{
+			this.getCopyFilters = getCopyFilters;
 			this.editorWidget = editorWidget;
+			this.clipboard = clipboard;
+			this.resourceLayer = resourceLayer;
 			worldRenderer = wr;
 
 			editorActionManager = wr.World.WorldActor.Trait<EditorActionManager>();
-
-			selectionLayer = wr.World.WorldActor.Trait<EditorSelectionLayer>();
-			editorLayer = wr.World.WorldActor.Trait<EditorActorLayer>();
-			this.getCopyFilters = getCopyFilters;
+			editorActorLayer = wr.World.WorldActor.Trait<EditorActorLayer>();
 		}
 
 		public bool HandleMouseInput(MouseInput mi)
@@ -71,106 +76,31 @@ namespace OpenRA.Mods.Common.Widgets
 				return false;
 			}
 
-			if (mi.Button == MouseButton.Left && (mi.Event == MouseInputEvent.Up || mi.Event == MouseInputEvent.Down))
+			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
-				var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
-				switch (state)
-				{
-					case State.SelectFirst:
-						if (mi.Event != MouseInputEvent.Down)
-							break;
-						start = cell;
-						selectionLayer.SetCopyRegion(start, end);
-						state = State.SelectSecond;
-						break;
-					case State.SelectSecond:
-						if (mi.Event != MouseInputEvent.Up)
-							break;
-						end = cell;
-						selectionLayer.SetCopyRegion(start, end);
-						state = State.Paste;
-						break;
-					case State.Paste:
-					{
-						if (mi.Event != MouseInputEvent.Down)
-							break;
-						var gridType = worldRenderer.World.Map.Grid.Type;
-						var source = CellRegion.BoundingRegion(gridType, new[] { start, end });
-						Copy(source, cell - end);
-						break;
-					}
-				}
+				var pastePosition = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
+				var action = new CopyPasteEditorAction(
+					getCopyFilters(),
+					resourceLayer,
+					pastePosition,
+					worldRenderer.World.Map,
+					clipboard,
+					editorActorLayer);
 
+				editorActionManager.Add(action);
 				return true;
 			}
 
 			return false;
 		}
 
-		void Copy(CellRegion source, CVec offset)
-		{
-			var gridType = worldRenderer.World.Map.Grid.Type;
-			var mapTiles = worldRenderer.World.Map.Tiles;
-			var mapHeight = worldRenderer.World.Map.Height;
-			var mapResources = worldRenderer.World.Map.Resources;
-
-			var dest = new CellRegion(gridType, source.TopLeft + offset, source.BottomRight + offset);
-
-			var previews = new Dictionary<string, ActorReference>();
-			var tiles = new Dictionary<CPos, (TerrainTile, ResourceTile, byte)>();
-			var copyFilters = getCopyFilters();
-
-			foreach (var cell in source)
-			{
-				if (!mapTiles.Contains(cell) || !mapTiles.Contains(cell + offset))
-					continue;
-
-				tiles.Add(cell + offset, (mapTiles[cell], mapResources[cell], mapHeight[cell]));
-
-				if (copyFilters.HasFlag(MapCopyFilters.Actors))
-				{
-					foreach (var preview in editorLayer.PreviewsAt(cell))
-					{
-						if (previews.ContainsKey(preview.ID))
-							continue;
-
-						var copy = preview.Export();
-						var locationInit = copy.GetOrDefault<LocationInit>();
-						if (locationInit != null)
-						{
-							copy.RemoveAll<LocationInit>();
-							copy.Add(new LocationInit(locationInit.Value + offset));
-						}
-
-						previews.Add(preview.ID, copy);
-					}
-				}
-			}
-
-			var action = new CopyPasteEditorAction(copyFilters, worldRenderer.World.Map, tiles, previews, editorLayer, dest);
-			editorActionManager.Add(action);
-		}
-
 		public void Tick()
 		{
-			var cell = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
-			if (state == State.Paste)
-			{
-				selectionLayer.SetPasteRegion(cell + (start - end), cell);
-				return;
-			}
-
-			if (state == State.SelectFirst)
-				start = end = cell;
-			else if (state == State.SelectSecond)
-				end = cell;
-
-			selectionLayer.SetCopyRegion(start, end);
+			PastePreviewPosition = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
 		}
 
 		public void Dispose()
 		{
-			selectionLayer.Clear();
 		}
 	}
 
@@ -182,33 +112,64 @@ namespace OpenRA.Mods.Common.Widgets
 		public string Text { get; }
 
 		readonly MapCopyFilters copyFilters;
-		readonly Dictionary<CPos, (TerrainTile Tile, ResourceTile Resource, byte Height)> tiles;
-		readonly Dictionary<string, ActorReference> previews;
-		readonly EditorActorLayer editorLayer;
-		readonly CellRegion dest;
-		readonly CellLayer<TerrainTile> mapTiles;
-		readonly CellLayer<byte> mapHeight;
-		readonly CellLayer<ResourceTile> mapResources;
+		readonly IResourceLayer resourceLayer;
+		readonly EditorActorLayer editorActorLayer;
+		readonly EditorClipboard clipboard;
+		readonly EditorClipboard undoClipboard;
+		readonly CPos pastePosition;
+		readonly Map map;
 
-		readonly Queue<UndoCopyPaste> undoCopyPastes = new();
-		readonly Queue<EditorActorPreview> removedActors = new();
-		readonly Queue<EditorActorPreview> addedActorPreviews = new();
-
-		public CopyPasteEditorAction(MapCopyFilters copyFilters, Map map,
-			Dictionary<CPos, (TerrainTile Tile, ResourceTile Resource, byte Height)> tiles, Dictionary<string, ActorReference> previews,
-			EditorActorLayer editorLayer, CellRegion dest)
+		public CopyPasteEditorAction(
+			MapCopyFilters copyFilters,
+			IResourceLayer resourceLayer,
+			CPos pastePosition,
+			Map map,
+			EditorClipboard clipboard,
+			EditorActorLayer editorActorLayer)
 		{
 			this.copyFilters = copyFilters;
-			this.tiles = tiles;
-			this.previews = previews;
-			this.editorLayer = editorLayer;
-			this.dest = dest;
+			this.resourceLayer = resourceLayer;
+			this.clipboard = clipboard;
+			this.pastePosition = pastePosition;
+			this.editorActorLayer = editorActorLayer;
+			this.map = map;
 
-			mapTiles = map.Tiles;
-			mapHeight = map.Height;
-			mapResources = map.Resources;
+			undoClipboard = CopySelectionContents();
 
-			Text = TranslationProvider.GetString(CopiedTiles, Translation.Arguments("amount", tiles.Count));
+			Text = TranslationProvider.GetString(CopiedTiles, Translation.Arguments("amount", clipboard.Tiles.Count));
+		}
+
+		/// <summary>
+		/// TODO: This is pretty much repeated in MapEditorSelectionLogic.
+		/// </summary>
+		/// <returns>Clipboard containing map contents for this region.</returns>
+		EditorClipboard CopySelectionContents()
+		{
+			var selectionSize = clipboard.CellRegion.BottomRight - clipboard.CellRegion.TopLeft;
+			var source = new CellCoordsRegion(pastePosition, pastePosition + selectionSize);
+			var selection = new CellRegion(map.Grid.Type, pastePosition, pastePosition + selectionSize);
+
+			var mapTiles = map.Tiles;
+			var mapHeight = map.Height;
+			var mapResources = map.Resources;
+
+			var previews = new Dictionary<string, EditorActorPreview>();
+			var tiles = new Dictionary<CPos, ClipboardTile>();
+
+			foreach (var cell in source)
+			{
+				if (!mapTiles.Contains(cell))
+					continue;
+
+				var resourceLayerContents = resourceLayer.GetResource(cell);
+				tiles.Add(cell, new ClipboardTile(mapTiles[cell], mapResources[cell], resourceLayerContents, mapHeight[cell]));
+
+				if (copyFilters.HasFlag(MapCopyFilters.Actors))
+					foreach (var preview in selection.SelectMany(editorActorLayer.PreviewsAt).Distinct())
+						previews.TryAdd(preview.ID, preview);
+			}
+
+			return new EditorClipboard(selection, previews, tiles);
 		}
 
 		public void Execute()
@@ -218,72 +179,88 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Do()
 		{
-			foreach (var kv in tiles)
+			var sourcePos = clipboard.CellRegion.TopLeft;
+			var pasteVec = new CVec(pastePosition.X - sourcePos.X, pastePosition.Y - sourcePos.Y);
+
+			foreach (var tileKeyValuePair in clipboard.Tiles)
 			{
-				undoCopyPastes.Enqueue(new UndoCopyPaste(kv.Key, mapTiles[kv.Key], mapResources[kv.Key], mapHeight[kv.Key]));
+				var position = tileKeyValuePair.Key + pasteVec;
+				if (!map.Contains(position))
+					continue;
+
+				// Clear any existing resources.
+				if (copyFilters.HasFlag(MapCopyFilters.Resources))
+					resourceLayer.ClearResources(position);
+
+				var tile = tileKeyValuePair.Value;
+				var resourceLayerContents = tile.ResourceLayerContents;
 
 				if (copyFilters.HasFlag(MapCopyFilters.Terrain))
-					mapTiles[kv.Key] = kv.Value.Tile;
-
-				if (copyFilters.HasFlag(MapCopyFilters.Resources))
-					mapResources[kv.Key] = kv.Value.Resource;
-
-				mapHeight[kv.Key] = kv.Value.Height;
-			}
-
-			if (copyFilters.HasFlag(MapCopyFilters.Actors))
-			{
-				var removeActors = dest.SelectMany(editorLayer.PreviewsAt).Distinct().ToList();
-				foreach (var preview in removeActors)
 				{
-					removedActors.Enqueue(preview);
-					editorLayer.Remove(preview);
+					map.Tiles[position] = tile.TerrainTile;
+					map.Height[position] = tile.Height;
 				}
+
+				if (copyFilters.HasFlag(MapCopyFilters.Resources) && !string.IsNullOrWhiteSpace(resourceLayerContents.Type))
+					resourceLayer.AddResource(resourceLayerContents.Type, position, resourceLayerContents.Density);
 			}
 
-			foreach (var kv in previews)
-				addedActorPreviews.Enqueue(editorLayer.Add(kv.Value));
+			// Clear any existing actors in the paste cells.
+			var selectionSize = clipboard.CellRegion.BottomRight - clipboard.CellRegion.TopLeft;
+			var pasteRegion = new CellRegion(map.Grid.Type, pastePosition, pastePosition + selectionSize);
+			foreach (var regionActor in pasteRegion.SelectMany(editorActorLayer.PreviewsAt).ToHashSet())
+				editorActorLayer.Remove(regionActor);
+
+			// Now place actors.
+			foreach (var actorKeyValuePair in clipboard.Actors)
+			{
+				var selection = clipboard.CellRegion;
+				var copy = actorKeyValuePair.Value.Export();
+				var locationInit = copy.GetOrDefault<LocationInit>();
+				if (locationInit != null)
+				{
+					var actorPosition = locationInit.Value + new CVec(pastePosition.X - selection.TopLeft.X, pastePosition.Y - selection.TopLeft.Y);
+					if (!map.Contains(actorPosition))
+						continue;
+
+					copy.RemoveAll<LocationInit>();
+					copy.Add(new LocationInit(actorPosition));
+				}
+
+				editorActorLayer.Add(copy);
+			}
 		}
 
 		public void Undo()
 		{
-			while (undoCopyPastes.Count > 0)
+			foreach (var tileKeyValuePair in undoClipboard.Tiles)
 			{
-				var undoCopyPaste = undoCopyPastes.Dequeue();
+				var position = tileKeyValuePair.Key;
+				var tile = tileKeyValuePair.Value;
+				var resourceLayerContents = tile.ResourceLayerContents;
 
-				var cell = undoCopyPaste.Cell;
+				// Clear any existing resources.
+				if (copyFilters.HasFlag(MapCopyFilters.Resources))
+					resourceLayer.ClearResources(position);
 
 				if (copyFilters.HasFlag(MapCopyFilters.Terrain))
-					mapTiles[cell] = undoCopyPaste.MapTile;
+				{
+					map.Tiles[position] = tile.TerrainTile;
+					map.Height[position] = tile.Height;
+				}
 
-				if (copyFilters.HasFlag(MapCopyFilters.Resources))
-					mapResources[cell] = undoCopyPaste.ResourceTile;
-
-				mapHeight[cell] = undoCopyPaste.Height;
+				if (copyFilters.HasFlag(MapCopyFilters.Resources) && !string.IsNullOrWhiteSpace(resourceLayerContents.Type))
+					resourceLayer.AddResource(resourceLayerContents.Type, position, resourceLayerContents.Density);
 			}
 
-			while (addedActorPreviews.Count > 0)
-				editorLayer.Remove(addedActorPreviews.Dequeue());
+			// Clear existing actors.
+			foreach (var regionActor in undoClipboard.CellRegion.SelectMany(editorActorLayer.PreviewsAt).Distinct().ToList())
+				editorActorLayer.Remove(regionActor);
 
+			// Place actors back again.
 			if (copyFilters.HasFlag(MapCopyFilters.Actors))
-				while (removedActors.Count > 0)
-					editorLayer.Add(removedActors.Dequeue());
-		}
-	}
-
-	sealed class UndoCopyPaste
-	{
-		public CPos Cell { get; }
-		public TerrainTile MapTile { get; }
-		public ResourceTile ResourceTile { get; }
-		public byte Height { get; }
-
-		public UndoCopyPaste(CPos cell, TerrainTile mapTile, ResourceTile resourceTile, byte height)
-		{
-			Cell = cell;
-			MapTile = mapTile;
-			ResourceTile = resourceTile;
-			Height = height;
+				foreach (var actor in undoClipboard.Actors.Values)
+					editorActorLayer.Add(actor);
 		}
 	}
 }

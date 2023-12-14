@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public LayerSelectorLogic(Widget widget, WorldRenderer worldRenderer)
 		{
 			this.worldRenderer = worldRenderer;
-			editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
+			editor = widget.Parent.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			editorCursor = worldRenderer.World.WorldActor.Trait<EditorCursorLayer>();
 
 			layerTemplateList = widget.Get<ScrollPanelWidget>("LAYERTEMPLATE_LIST");

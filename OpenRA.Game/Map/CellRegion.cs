@@ -102,6 +102,7 @@ namespace OpenRA
 		}
 
 		public MapCoordsRegion MapCoords => new(mapTopLeft, mapBottomRight);
+		public CellCoordsRegion CellCoords => new(TopLeft, BottomRight);
 
 		public CellRegionEnumerator GetEnumerator()
 		{

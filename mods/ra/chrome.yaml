@@ -655,3 +655,10 @@ dropdown-separators:
 
 separator:
 	Inherits: button
+
+editor:
+	Inherits: ^Glyphs
+	Regions:
+		tiles: 0, 187, 16, 16
+		overlays: 17, 187, 16, 16
+		tools: 136, 68, 16, 16

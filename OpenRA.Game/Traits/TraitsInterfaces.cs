@@ -296,6 +296,9 @@ namespace OpenRA.Traits
 		int2 GetDecorationOrigin(Actor self, WorldRenderer wr, string pos, int2 margin);
 	}
 
+	public interface IEditorSelectionLayer : ITraitInfoInterface { }
+	public interface IEditorPasteLayer : ITraitInfoInterface { }
+
 	public interface IMapPreviewSignatureInfo : ITraitInfoInterface
 	{
 		void PopulateMapPreviewSignatureCells(Map map, ActorInfo ai, ActorReference s, List<(MPos Uv, Color Color)> destinationBuffer);

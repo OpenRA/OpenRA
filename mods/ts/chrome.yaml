@@ -786,3 +786,10 @@ loadscreen-stripe:
 	Inherits: ^LoadScreen
 	PanelRegion: 258, 0, 0, 0, 253, 256, 0, 0
 	PanelSides: Center
+
+editor:
+	Inherits: ^Glyphs
+	Regions:
+		tiles: 0, 144, 16, 16
+		overlays: 17, 144, 16, 16
+		tools: 34, 144, 16, 16

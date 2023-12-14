@@ -11,7 +11,6 @@
 
 using System;
 using OpenRA.Graphics;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -26,27 +25,18 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		readonly WorldRenderer worldRenderer;
-		readonly EditorActionManager editorActionManager;
 
 		bool enableTooltips;
 
 		[ObjectCreator.UseCtor]
-		public EditorViewportControllerWidget(World world, WorldRenderer worldRenderer)
+		public EditorViewportControllerWidget(WorldRenderer worldRenderer)
 		{
 			this.worldRenderer = worldRenderer;
 			tooltipContainer = Exts.Lazy(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 			CurrentBrush = DefaultBrush = new EditorDefaultBrush(this, worldRenderer);
-			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
-
-			editorActionManager.OnChange += EditorActionManagerOnChange;
 
 			// Allow zooming out to full map size
 			worldRenderer.Viewport.UnlockMinimumZoom(0.25f);
-		}
-
-		void EditorActionManagerOnChange()
-		{
-			DefaultBrush.SelectedActor = null;
 		}
 
 		public void ClearBrush() { SetBrush(null); }
@@ -105,12 +95,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 			cachedViewportPosition = worldRenderer.Viewport.CenterPosition;
 			CurrentBrush.Tick();
-		}
-
-		public override void Removed()
-		{
-			base.Removed();
-			editorActionManager.OnChange -= EditorActionManagerOnChange;
 		}
 	}
 }
