@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly EditorActorLayer editorActorLayer;
 		readonly EditorActionManager editorActionManager;
 		readonly EditorViewportControllerWidget editor;
-		readonly BackgroundWidget actorEditPanel;
+		readonly ContainerWidget actorEditPanel;
 		readonly LabelWidget typeLabel;
 		readonly TextFieldWidget actorIDField;
 		readonly HashSet<TextFieldWidget> typableFields = new();
@@ -50,12 +50,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Widget checkboxOptionTemplate;
 		readonly Widget sliderOptionTemplate;
 		readonly Widget dropdownOptionTemplate;
-
-		readonly int editPanelPadding; // Padding between right edge of actor and the edit panel.
-		readonly long scrollVisibleTimeout = 100; // Delay after scrolling map before edit widget becomes visible again.
-
-		long lastScrollTime = 0;
-		int2 lastScrollPosition = int2.Zero;
 
 		ActorIDStatus actorIDStatus = ActorIDStatus.Normal;
 		ActorIDStatus nextActorIDStatus = ActorIDStatus.Normal;
@@ -93,8 +87,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			editorActorLayer = world.WorldActor.Trait<EditorActorLayer>();
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 
-			editor = widget.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
-			actorEditPanel = editor.Get<BackgroundWidget>("ACTOR_EDIT_PANEL");
+			editor = widget.Parent.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
+			var selectTabContainer = widget.Parent.Parent.Get<ContainerWidget>("SELECT_WIDGETS");
+
+			actorEditPanel = selectTabContainer.Get<ContainerWidget>("ACTOR_EDIT_PANEL");
 
 			typeLabel = actorEditPanel.Get<LabelWidget>("ACTOR_TYPE_LABEL");
 			actorIDField = actorEditPanel.Get<TextFieldWidget>("ACTOR_ID");
@@ -118,16 +114,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					? TranslationProvider.GetString(DuplicateActorId)
 					: TranslationProvider.GetString(EnterActorId);
 
-			if (logicArgs.TryGetValue("EditPanelPadding", out var yaml))
-				editPanelPadding = FieldLoader.GetValue<int>("EditPanelPadding", yaml.Value);
-
-			okButton.IsDisabled = () => !IsValid() || !editActorPreview.IsDirty;
+			okButton.IsDisabled = () => !IsValid() || editActorPreview == null || !editActorPreview.IsDirty;
 			okButton.OnClick = Save;
 			cancelButton.OnClick = Cancel;
 			deleteButton.OnClick = Delete;
 			actorEditPanel.IsVisible = () => CurrentActor != null
-				&& editor.CurrentBrush == editor.DefaultBrush
-				&& Game.RunTime > lastScrollTime + scrollVisibleTimeout;
+				&& editor.CurrentBrush == editor.DefaultBrush;
 
 			actorIDField.OnEscKey = _ => actorIDField.YieldKeyboardFocus();
 
@@ -182,7 +174,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (nextActorIDStatus == ActorIDStatus.Normal)
 						offset *= -1;
 
-					actorEditPanel.Bounds.Height += offset;
 					initContainer.Bounds.Y += offset;
 					buttonContainer.Bounds.Y += offset;
 				}
@@ -190,22 +181,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				actorIDStatus = nextActorIDStatus;
 			}
 
-			var actor = editor.DefaultBrush.SelectedActor;
+			var actor = editor.DefaultBrush.Selection.Actor;
 			if (actor != null)
 			{
-				var origin = worldRenderer.Viewport.WorldToViewPx(new int2(actor.Bounds.Right, actor.Bounds.Top));
-
-				// If we scrolled, hide the edit box for a moment
-				if (lastScrollPosition.X != origin.X || lastScrollPosition.Y != origin.Y)
-				{
-					lastScrollTime = Game.RunTime;
-					lastScrollPosition = origin;
-				}
-
-				// If we changed actor, move widgets
+				// If we changed actor, update details
 				if (CurrentActor != actor)
 				{
-					lastScrollTime = 0; // Ensure visible
 					CurrentActor = actor;
 
 					editActorPreview = new EditActorPreview(CurrentActor);
@@ -365,13 +346,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						}
 					}
 
-					actorEditPanel.Bounds.Height += initContainer.Bounds.Height - oldInitHeight;
 					buttonContainer.Bounds.Y += initContainer.Bounds.Height - oldInitHeight;
 				}
-
-				// Set the edit panel to the right of the selection border.
-				actorEditPanel.Bounds.X = origin.X + editPanelPadding;
-				actorEditPanel.Bounds.Y = origin.Y;
 			}
 			else if (CurrentActor != null)
 			{
@@ -405,7 +381,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var f in typableFields)
 				f.YieldKeyboardFocus();
 
-			editor.DefaultBrush.SelectedActor = null;
+			editor.DefaultBrush.Selection.Actor = null;
 			CurrentActor = null;
 		}
 

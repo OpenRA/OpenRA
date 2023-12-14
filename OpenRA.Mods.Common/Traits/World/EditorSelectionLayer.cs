@@ -11,102 +11,67 @@
 
 using System.Collections.Generic;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Graphics;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Traits;
+using OpenRA.Widgets;
+using Color = OpenRA.Primitives.Color;
 
 namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.EditorWorld)]
-	[Desc("Required for the map editor to work. Attach this to the world actor.")]
-	public class EditorSelectionLayerInfo : TraitInfo
+	[Desc("Renders the selection grid in the editor.")]
+	public class EditorSelectionLayerInfo : TraitInfo, Requires<LoadWidgetAtGameStartInfo>, IEditorSelectionLayer
 	{
-		[PaletteReference]
-		[Desc("Palette to use for rendering the placement sprite.")]
-		public readonly string Palette = TileSet.TerrainPaletteInternalName;
+		[Desc("Main color of the selection grid.")]
+		public readonly Color MainColor = Color.White;
 
-		[Desc("Custom opacity to apply to the placement sprite.")]
-		public readonly float FootprintAlpha = 1f;
+		[Desc("Alternate color of the selection grid.")]
+		public readonly Color AltColor = Color.Black;
 
-		[Desc("Sequence image where the selection overlay types are defined.")]
-		public readonly string Image = "editor-overlay";
+		[Desc("Main color of the paste grid.")]
+		public readonly Color PasteColor = Color.FromArgb(0xFF4CFF00);
 
-		[SequenceReference(nameof(Image))]
-		[Desc("Sequence to use for the copy overlay.")]
-		public readonly string CopySequence = "copy";
+		[Desc("Thickness of the selection grid lines.")]
+		public readonly int LineThickness = 1;
 
-		[SequenceReference(nameof(Image))]
-		[Desc("Sequence to use for the paste overlay.")]
-		public readonly string PasteSequence = "paste";
+		[Desc("Render offset of the secondary grid lines.")]
+		public readonly int2 AltPixelOffset = new(1, 1);
 
-		public override object Create(ActorInitializer init) { return new EditorSelectionLayer(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new EditorSelectionLayer(this); }
 	}
 
-	public class EditorSelectionLayer : IWorldLoaded, IRenderAboveShroud
+	public class EditorSelectionLayer : IRenderAnnotations, IWorldLoaded
 	{
 		readonly EditorSelectionLayerInfo info;
-		readonly Map map;
-		readonly Sprite copyTile, pasteTile;
-		readonly float copyAlpha, pasteAlpha;
-		PaletteReference palette;
+		EditorViewportControllerWidget editor;
 
-		public CellRegion CopyRegion { get; private set; }
-		public CellRegion PasteRegion { get; private set; }
-
-		public EditorSelectionLayer(Actor self, EditorSelectionLayerInfo info)
+		public EditorSelectionLayer(EditorSelectionLayerInfo info)
 		{
-			if (self.World.Type != WorldType.Editor)
-				return;
-
 			this.info = info;
-			map = self.World.Map;
-
-			var copySequence = map.Sequences.GetSequence(info.Image, info.CopySequence);
-			copyTile = copySequence.GetSprite(0);
-			copyAlpha = copySequence.GetAlpha(0);
-
-			var pasteSequence = map.Sequences.GetSequence(info.Image, info.PasteSequence);
-			pasteTile = pasteSequence.GetSprite(0);
-			pasteAlpha = pasteSequence.GetAlpha(0);
 		}
 
 		void IWorldLoaded.WorldLoaded(World w, WorldRenderer wr)
 		{
-			if (w.Type != WorldType.Editor)
-				return;
-
-			palette = wr.Palette(info.Palette);
+			var worldRoot = Ui.Root.Get<ContainerWidget>("EDITOR_WORLD_ROOT");
+			editor = worldRoot.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 		}
 
-		public void SetCopyRegion(CPos start, CPos end)
+		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			CopyRegion = CellRegion.BoundingRegion(map.Grid.Type, new[] { start, end });
+			if (editor.CurrentBrush == editor.DefaultBrush && editor.DefaultBrush.CurrentDragBounds != null)
+			{
+				yield return new EditorSelectionAnnotationRenderable(editor.DefaultBrush.CurrentDragBounds, info.AltColor, info.AltPixelOffset, null);
+				yield return new EditorSelectionAnnotationRenderable(editor.DefaultBrush.CurrentDragBounds, info.MainColor, int2.Zero, null);
+			}
+
+			if (editor.CurrentBrush is EditorCopyPasteBrush pasteBrush && pasteBrush.PastePreviewPosition != null)
+			{
+				yield return new EditorSelectionAnnotationRenderable(pasteBrush.Region, info.AltColor, info.AltPixelOffset, pasteBrush.PastePreviewPosition);
+				yield return new EditorSelectionAnnotationRenderable(pasteBrush.Region, info.PasteColor, int2.Zero, pasteBrush.PastePreviewPosition);
+			}
 		}
 
-		public void SetPasteRegion(CPos start, CPos end)
-		{
-			PasteRegion = CellRegion.BoundingRegion(map.Grid.Type, new[] { start, end });
-		}
-
-		public void Clear()
-		{
-			CopyRegion = PasteRegion = null;
-		}
-
-		IEnumerable<IRenderable> IRenderAboveShroud.RenderAboveShroud(Actor self, WorldRenderer wr)
-		{
-			if (wr.World.Type != WorldType.Editor)
-				yield break;
-
-			if (CopyRegion != null)
-				foreach (var c in CopyRegion)
-					yield return new SpriteRenderable(copyTile, wr.World.Map.CenterOfCell(c),
-							WVec.Zero, -511, palette, 1f, copyAlpha * info.FootprintAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
-
-			if (PasteRegion != null)
-				foreach (var c in PasteRegion)
-					yield return new SpriteRenderable(pasteTile, wr.World.Map.CenterOfCell(c),
-						WVec.Zero, -511, palette, 1f, pasteAlpha * info.FootprintAlpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
-		}
-
-		bool IRenderAboveShroud.SpatiallyPartitionable => false;
+		bool IRenderAnnotations.SpatiallyPartitionable => false;
 	}
 }

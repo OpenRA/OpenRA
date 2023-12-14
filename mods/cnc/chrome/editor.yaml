@@ -215,7 +215,7 @@ Container@EDITOR_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 
 Container@EDITOR_WORLD_ROOT:
-	Logic: LoadIngamePerfLogic, MapEditorLogic, ActorEditLogic, MapOverlaysLogic
+	Logic: LoadIngamePerfLogic, MapEditorLogic, ActorEditLogic, MapOverlaysLogic, MapEditorSelectionLogic
 		ToggleGridOverlayKey: EditorToggleGridOverlay
 		ToggleBuildableOverlayKey: EditorToggleBuildableOverlay
 	Children:
@@ -226,106 +226,6 @@ Container@EDITOR_WORLD_ROOT:
 			Height: WINDOW_BOTTOM
 			TooltipContainer: TOOLTIP_CONTAINER
 			TooltipTemplate: SIMPLE_TOOLTIP
-			Children:
-				Background@ACTOR_EDIT_PANEL:
-					Background: panel-black
-					Width: 269
-					Height: 89
-					Children:
-						Label@ACTOR_TYPE_LABEL:
-							X: 2
-							Y: 2
-							Width: 265
-							Height: 24
-							Align: Center
-							Font: Bold
-						Label@ACTOR_ID_LABEL:
-							Y: 30
-							Width: 55
-							Height: 24
-							Text: label-actor-edit-panel-id
-							Align: Right
-						TextField@ACTOR_ID:
-							X: 67
-							Y: 29
-							Width: 189
-							Height: 25
-						Label@ACTOR_ID_ERROR_LABEL:
-							X: 67
-							Y: 55
-							Width: 189
-							Height: 15
-							Font: TinyBold
-							TextColor: FF0000
-						Container@ACTOR_INIT_CONTAINER:
-							Y: 57
-							Width: PARENT_RIGHT
-							Children:
-								Container@CHECKBOX_OPTION_TEMPLATE:
-									Width: PARENT_RIGHT
-									Height: 22
-									Children:
-										Checkbox@OPTION:
-											X: 67
-											Y: 1
-											Width: PARENT_RIGHT - 67
-											Height: 20
-								Container@SLIDER_OPTION_TEMPLATE:
-									Width: PARENT_RIGHT
-									Height: 22
-									Children:
-										Label@LABEL:
-											Y: 1
-											Width: 55
-											Height: 16
-											Align: Right
-										Slider@OPTION:
-											X: 58
-											Y: 1
-											Width: 146
-											Height: 20
-										TextField@VALUE:
-											X: 206
-											Y: 1
-											Width: 50
-											Height: 20
-											Type: Integer
-								Container@DROPDOWN_OPTION_TEMPLATE:
-									Width: PARENT_RIGHT
-									Height: 27
-									Children:
-										Label@LABEL:
-											Y: 2
-											Width: 55
-											Height: 24
-											Align: Right
-										DropDownButton@OPTION:
-											X: 67
-											Y: 1
-											Width: 189
-											Height: 25
-											Font: Bold
-						Container@BUTTON_CONTAINER:
-							Y: 60
-							Children:
-								Button@DELETE_BUTTON:
-									X: 4
-									Width: 75
-									Height: 25
-									Text: button-container-delete
-									Font: Bold
-								Button@CANCEL_BUTTON:
-									X: 110
-									Width: 75
-									Height: 25
-									Text: button-container-cancel
-									Font: Bold
-								Button@OK_BUTTON:
-									X: 190
-									Width: 75
-									Height: 25
-									Text: button-container-ok
-									Font: Bold
 		ViewportController:
 			Width: WINDOW_RIGHT
 			Height: WINDOW_BOTTOM
@@ -525,6 +425,31 @@ Container@EDITOR_WORLD_ROOT:
 											X: 4
 											Y: 4
 											Visible: true
+		Container@TOOLS_WIDGETS:
+			X: WINDOW_RIGHT - 295
+			Y: 318
+			Width: 290
+			Height: WINDOW_BOTTOM - 410
+			ClickThrough: false
+			Children:
+				Background@TOOLS_EDIT_PANEL:
+					X: 0
+					Y: 0
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Background: scrollpanel-bg
+				Checkbox@SHOW_TILE_GRID:
+					X: 6
+					Y: 7
+					Width: PARENT_RIGHT - 29
+					Height: 20
+					Text: label-show-tile-grid
+				Checkbox@SHOW_BUILDABLE_AREA:
+					X: 6
+					Y: 32
+					Width: PARENT_RIGHT - 29
+					Height: 20
+					Text: label-show-buildable-area
 		Container@HISTORY_WIDGETS:
 			Logic: HistoryLogLogic
 			X: WINDOW_RIGHT - 295
@@ -558,6 +483,171 @@ Container@EDITOR_WORLD_ROOT:
 											Width: PARENT_RIGHT
 											Height: 25
 											Align: Left
+		Container@SELECT_WIDGETS:
+			Visible: false
+			X: WINDOW_RIGHT - 295
+			Y: 318
+			Width: 290
+			Height: WINDOW_BOTTOM - 410
+			Children:
+				Background@SELECT_BG:
+					X: 0
+					Y: 0
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Background: scrollpanel-bg
+				Container@AREA_EDIT_PANEL:
+					X: 0
+					Y: 0
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					#Background: scrollpanel-bg
+					Children:
+						Label@AREA_EDIT_TITLE:
+							X: 6
+							Y: 7
+							Width: 265
+							Height: 24
+							Align: Center
+							Font: Bold
+							Text: label-area-selection
+						Label@AREA_FILTERS_LABEL:
+							X: 6
+							Y: 36
+							Width: 55
+							Height: 25
+							Font: Bold
+							Align: Left
+							Text: label-copy-filters
+						Checkbox@COPY_FILTER_TERRAIN_CHECKBOX:
+							X: 6
+							Y: 61
+							Width: PARENT_RIGHT - 29
+							Height: 20
+							Text: label-filter-terrain
+						Checkbox@COPY_FILTER_RESOURCES_CHECKBOX:
+							X: 6
+							Y: 86
+							Width: PARENT_RIGHT - 29
+							Height: 20
+							Text: label-filter-resources
+						Checkbox@COPY_FILTER_ACTORS_CHECKBOX:
+							X: 6
+							Y: 111
+							Width: PARENT_RIGHT - 29
+							Height: 20
+							Text: label-filter-actors
+						Button@SELECTION_CANCEL_BUTTON:
+							X: 209
+							Y: 136
+							Width: 75
+							Height: 25
+							Text: button-selection-cancel
+							Font: Bold
+				Container@ACTOR_EDIT_PANEL:
+					X: 0
+					Y: 0
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					#Background: scrollpanel-bg
+					Children:
+						Label@ACTOR_TYPE_LABEL:
+							X: 6
+							Y: 2
+							Width: 265
+							Height: 24
+							Align: Center
+							Font: Bold
+						Label@ACTOR_ID_LABEL:
+							X: 0
+							Y: 29
+							Width: 55
+							Height: 25
+							Text: label-actor-edit-panel-id
+							Align: Right
+						TextField@ACTOR_ID:
+							X: 67
+							Y: 29
+							Width: 210
+							Height: 25
+						Label@ACTOR_ID_ERROR_LABEL:
+							X: 67
+							Y: 45
+							Width: 210
+							Height: 15
+							Font: TinyBold
+							TextColor: FF0000
+						Container@ACTOR_INIT_CONTAINER:
+							Y: 57
+							Width: PARENT_RIGHT
+							Children:
+								Container@CHECKBOX_OPTION_TEMPLATE:
+									Width: PARENT_RIGHT
+									Height: 22
+									Children:
+										Checkbox@OPTION:
+											X: 84
+											Y: 1
+											Width: PARENT_RIGHT - 100
+											Height: 20
+								Container@SLIDER_OPTION_TEMPLATE:
+									Width: PARENT_RIGHT
+									Height: 22
+									Children:
+										Label@LABEL:
+											X: 0
+											Y: 1
+											Width: 55
+											Height: 16
+											Align: Right
+										Slider@OPTION:
+											X: 58
+											Y: 1
+											Width: 167
+											Height: 20
+										TextField@VALUE:
+											X: 227
+											Y: 1
+											Width: 50
+											Height: 20
+											Type: Integer
+								Container@DROPDOWN_OPTION_TEMPLATE:
+									Width: PARENT_RIGHT
+									Height: 27
+									Children:
+										Label@LABEL:
+											X: 0
+											Y: 2
+											Width: 55
+											Height: 24
+											Align: Right
+										DropDownButton@OPTION:
+											X: 67
+											Y: 1
+											Width: 210
+											Height: 25
+											Font: Bold
+						Container@BUTTON_CONTAINER:
+							Y: 60
+							Children:
+								Button@DELETE_BUTTON:
+									X: 4
+									Width: 75
+									Height: 25
+									Text: button-container-delete
+									Font: Bold
+								Button@CANCEL_BUTTON:
+									X: 131
+									Width: 75
+									Height: 25
+									Text: button-container-cancel
+									Font: Bold
+								Button@OK_BUTTON:
+									X: 211
+									Width: 75
+									Height: 25
+									Text: button-container-ok
+									Font: Bold
 		Container@MAP_EDITOR_TAB_CONTAINER:
 			Logic: MapEditorTabsLogic
 			X: WINDOW_RIGHT - 295
@@ -567,46 +657,76 @@ Container@EDITOR_WORLD_ROOT:
 			ClickThrough: false
 			Children:
 				Button@TILES_TAB:
-					Width: 71
+					Width: 59
 					Height: 25
-					Text: button-map-editor-tab-container-tiles.label
-					Font: Bold
 					Key: EditorTilesTab
 					TooltipTemplate: BUTTON_TOOLTIP
 					TooltipText: button-map-editor-tab-container-tiles.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 21
+							Y: 5
+							ImageCollection: editor
+							ImageName: tiles
 				Button@OVERLAYS_TAB:
-					X: 70
-					Width: 80
+					X: 58
+					Width: 59
 					Height: 25
-					Text: button-map-editor-tab-container-overlays.label
-					Font: Bold
 					Key: EditorOverlaysTab
 					TooltipTemplate: BUTTON_TOOLTIP
 					TooltipText: button-map-editor-tab-container-overlays.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 21
+							Y: 5
+							ImageCollection: editor
+							ImageName: overlays
 				Button@ACTORS_TAB:
-					X: 149
-					Width: 71
+					X: 116
+					Width: 58
 					Height: 25
-					Text: button-map-editor-tab-container-actors.label
-					Font: Bold
 					Key: EditorActorsTab
 					TooltipTemplate: BUTTON_TOOLTIP
 					TooltipText: button-map-editor-tab-container-actors.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
-				Button@HISTORY_TAB:
-					X: 219
-					Width: 71
+					Children:
+						Image@ICON:
+							X: 21
+							Y: 5
+							ImageCollection: production-icons
+							ImageName: infantry
+				Button@TOOLS_TAB:
+					X: 173
+					Width: 59
 					Height: 25
-					Text: button-map-editor-tab-container-history.label
-					Font: Bold
+					Key: EditorToolsTab
+					TooltipTemplate: BUTTON_TOOLTIP
+					TooltipText: button-map-editor-tab-container-tools.tooltip
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 21
+							Y: 5
+							ImageCollection: editor
+							ImageName: tools
+				Button@HISTORY_TAB:
+					X: 231
+					Width: 59
+					Height: 25
 					Key: EditorHistoryTab
 					TooltipTemplate: BUTTON_TOOLTIP
 					TooltipText: button-map-editor-tab-container-history.tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 21
+							Y: 5
+							ImageCollection: sidebar-bits
+							ImageName: production-tooltip-time
 		Button@UNDO_BUTTON:
-			X: WINDOW_RIGHT - 800
+			X: WINDOW_RIGHT - 764
 			Y: 5
 			Height: 25
 			Width: 100
@@ -617,7 +737,7 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipText: button-editor-world-root-undo.tooltip
 			TooltipContainer: TOOLTIP_CONTAINER
 		Button@REDO_BUTTON:
-			X: WINDOW_RIGHT - 690
+			X: WINDOW_RIGHT - 654
 			Y: 5
 			Height: 25
 			Width: 100
@@ -627,30 +747,28 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipTemplate: BUTTON_TOOLTIP
 			TooltipText: button-editor-world-root-redo.tooltip
 			TooltipContainer: TOOLTIP_CONTAINER
-		Button@COPYPASTE_BUTTON:
-			X: WINDOW_RIGHT - 580
+		Button@COPY_BUTTON:
+			X: WINDOW_RIGHT - 544
 			Y: 5
-			Width: 96
 			Height: 25
-			Text: button-editor-world-root-copypaste.label
+			Width: 100
+			Text: button-editor-world-root-copy.label
+			Font: Bold
 			Key: EditorCopy
 			TooltipTemplate: BUTTON_TOOLTIP
-			TooltipText: button-editor-world-root-copypaste.tooltip
+			TooltipText: button-editor-world-root-copy.tooltip
 			TooltipContainer: TOOLTIP_CONTAINER
-		DropDownButton@COPYFILTER_BUTTON:
-			X: WINDOW_RIGHT - 475
+		Button@PASTE_BUTTON:
+			X: WINDOW_RIGHT - 434
 			Y: 5
-			Width: 140
 			Height: 25
-			Text: dropdownbutton-editor-world-root-copyfilter-button
+			Width: 100
+			Text: button-editor-world-root-paste.label
 			Font: Bold
-		DropDownButton@OVERLAY_BUTTON:
-			X: WINDOW_RIGHT - 950
-			Y: 5
-			Width: 140
-			Height: 25
-			Text: dropdownbutton-editor-world-root-overlay-button
-			Font: Bold
+			Key: EditorPaste
+			TooltipTemplate: BUTTON_TOOLTIP
+			TooltipText: button-editor-world-root-paste.tooltip
+			TooltipContainer: TOOLTIP_CONTAINER
 		Label@COORDINATE_LABEL:
 			X: 10
 			Width: 50
@@ -689,19 +807,6 @@ ScrollPanel@CATEGORY_FILTER_PANEL:
 					Text: button-select-categories-buttons-none
 		Checkbox@CATEGORY_TEMPLATE:
 			X: 5
-			Width: PARENT_RIGHT - 29
-			Height: 20
-			Visible: false
-
-ScrollPanel@COPY_FILTER_PANEL:
-	Width: 140
-	Height: 80
-	ItemSpacing: 5
-	TopBottomSpacing: 0
-	Children:
-		Checkbox@CATEGORY_TEMPLATE:
-			X: 5
-			Y: 5
 			Width: PARENT_RIGHT - 29
 			Height: 20
 			Visible: false

@@ -805,6 +805,9 @@ notification-copied-tiles =
     }
 
 ## EditorDefaultBrush
+notification-selected-area = Selected area { $x },{ $y } ({ $width },{ $height })
+notification-selected-actor = Selected actor { $id }
+notification-cleared-selection = Cleared selection
 notification-removed-actor = Removed { $name } ({ $id })
 notification-removed-resource = Removed { $type }
 

@@ -749,3 +749,10 @@ chrome-radar-gdi:
 	Inherits: ^Chrome
 	Regions:
 		logo: 644, 320, 132, 132
+
+editor:
+	Inherits: ^Chrome
+	Regions:
+		tiles: 768, 170, 16, 16
+		overlays: 785, 170, 16, 16
+		tools: 904, 68, 16, 16

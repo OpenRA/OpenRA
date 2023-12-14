@@ -423,8 +423,7 @@ EditorWorld:
 				MaxDensity: 2
 		VeinholeActors: veinhole
 	EditorSelectionLayer:
-		Palette: ra
-		FootprintAlpha: 0.7
+		AltPixelOffset: 0,1
 	LoadWidgetAtGameStart:
 	EditorActionManager:
 	BuildableTerrainOverlay:
