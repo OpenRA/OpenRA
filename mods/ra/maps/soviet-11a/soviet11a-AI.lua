@@ -93,18 +93,15 @@ WesternBoatAttacks = function()
 	end
 
 	local boats = Reinforcements.Reinforce(Greece, DestroyerSquad, { ShipEntry.Location })
-	Utils.Do(boats, function(dd)
-		dd.Patrol(PatrolWay, false, 1)
-		IdleHunt(dd)
-	end)
+	SendPatrol(boats, PatrolWay, false)
 	Trigger.OnAllKilled(boats, function()
-		Trigger.AfterDelay(DateTime.Minutes(DestroyerDelays), WesternBoatAttacks)
+		Trigger.AfterDelay(DateTime.Minutes(DestroyerDelays[Difficulty]), WesternBoatAttacks)
 	end)
 end
 
 AlliedTransportReinforcements = function()
 	local way = Utils.Random(TransportWays)
-	local group = Utils.Random(TransportUnits)
+	local group = Utils.Random(TransportUnits[Difficulty])
 	local units = Reinforcements.ReinforceWithTransport(Greece, "lst", group,  way, { way[2], way[1] } )[2]
 	Utils.Do(units, function(a)
 		Trigger.OnAddedToWorld(a, function()
@@ -113,7 +110,7 @@ AlliedTransportReinforcements = function()
 		end)
 	end)
 
-	Trigger.AfterDelay(DateTime.Minutes(TransportDelays), AlliedTransportReinforcements)
+	Trigger.AfterDelay(DateTime.Minutes(TransportDelays[Difficulty]), AlliedTransportReinforcements)
 end
 
 BuildingsHealing = function()
@@ -128,21 +125,23 @@ BuildingsHealing = function()
 end
 
 StartPatrols = function()
-	Utils.Do(FirstPatrolActors, function(a)
-		if not a.IsDead then
-			a.Patrol(PatrolWay, false, 1)
-			IdleHunt(a)
-		end
-	end)
+	SendPatrol(FirstPatrolActors, PatrolWay, false)
+	SendPatrol(PatrolA, PatrolPathA, true, 20)
+	SendPatrol(PatrolB, PatrolPathB, true, 20)
+	SendPatrol(PatrolC, PatrolPathC, true, 20)
+end
 
-	Utils.Do(PatrolA, function(a)
-		a.Patrol(PatrolPathA, true, 20)
-	end)
-	Utils.Do(PatrolB, function(b)
-		b.Patrol(PatrolPathB, true, 20)
-	end)
-	Utils.Do(PatrolC, function(c)
-		c.Patrol(PatrolPathC, true, 20)
+SendPatrol = function(actors, path, loop, wait)
+	Utils.Do(actors, function(actor)
+		if actor.IsDead then
+			return
+		end
+
+		actor.Patrol(path, loop or false, wait or 0)
+
+		if not loop then
+			IdleHunt(actor)
+		end
 	end)
 end
 
@@ -151,14 +150,14 @@ ProduceShips = function()
 		return
 	end
 
-	Greece.Build(AlliedShips, function(ships)
+	Greece.Build(AlliedShips[Difficulty], function(ships)
 		Utils.Do(ships, function(a)
 			a.AttackMove(ShipWaypoint5.Location)
 			IdleHunt(a)
 		end)
 	end)
 
-	Trigger.AfterDelay(DateTime.Minutes(ProductionDelays), ProduceShips)
+	Trigger.AfterDelay(DateTime.Minutes(ProductionDelays[Difficulty]), ProduceShips)
 end
 
 ProduceHelicopters = function()
@@ -174,27 +173,27 @@ ProduceHelicopters = function()
 
 		local alive = Utils.Where(Helis, function(y) return not y.IsDead end)
 		if #alive < 2 then
-			Trigger.AfterDelay(DateTime.Minutes(ProductionDelays), ProduceHelicopters)
+			Trigger.AfterDelay(DateTime.Minutes(ProductionDelays[Difficulty]), ProduceHelicopters)
 		end
 
 		InitializeAttackAircraft(heli, USSR)
 	end)
 end
 
-AlliedTransportAmbush = function()
-	Trigger.OnEnteredProximityTrigger(AmbushTrigger.CenterPosition, WDist.New(1024 * 7), function(a, id)
-		if a.Owner == USSR then
-			Trigger.RemoveProximityTrigger(id)
-			local way = SurpriseTransportWay
-			local group = SurpriseTransportUnits
-			local units = Reinforcements.ReinforceWithTransport(Greece, "lst", group,  way, { way[2], way[1] } )[2]
-			Utils.Do(units, function(a)
-				Trigger.OnAddedToWorld(a, function()
-					a.AttackMove(PlayerBase.Location)
-					IdleHunt(a)
-				end)
-			end)
+AlliedTransportAmbush = function(cargo, path)
+	Trigger.OnEnteredProximityTrigger(AmbushTrigger.CenterPosition, WDist.FromCells(7), function(a, id)
+		if a.Owner ~= USSR or a.Type == "badr" or a.Type == "u2" or a.Type == "camera.spyplane" then
+			return
 		end
+
+		Trigger.RemoveProximityTrigger(id)
+		local units = Reinforcements.ReinforceWithTransport(Greece, "lst", cargo,  path, { path[2], path[1] } )[2]
+		Utils.Do(units, function(u)
+			Trigger.OnAddedToWorld(u, function()
+				u.AttackMove(PlayerBase.Location)
+				IdleHunt(u)
+			end)
+		end)
 	end)
 end
 
@@ -218,15 +217,8 @@ BridgeTrigger = function()
 end
 
 ActivateAI = function()
-	TransportDelays = TransportDelays[Difficulty]
-	DestroyerDelays = DestroyerDelays[Difficulty]
-	TransportUnits = TransportUnits[Difficulty]
-	ProductionDelays = ProductionDelays[Difficulty]
-	AlliedShips = AlliedShips[Difficulty]
-	SurpriseTransportUnits = SurpriseTransportUnits[Difficulty]
-
 	BuildingsHealing()
-	AlliedTransportAmbush()
+	AlliedTransportAmbush(SurpriseTransportUnits[Difficulty], SurpriseTransportWay)
 	BridgeTrigger()
 	NavalYard1.IsPrimaryBuilding = true
 
