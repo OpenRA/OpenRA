@@ -173,28 +173,28 @@ gapowr:
 			SNOW: gapowr_b.shp
 		Length: 12
 		Tick: 200
-		Offset: -48, -24, 24
+		Offset: -48, -24, 36
 	damaged-idle-powrupa:
 		TilesetFilenames:
 			TEMPERATE: gtpowr_b.shp
 			SNOW: gapowr_b.shp
 		Length: 12
 		Tick: 200
-		Offset: -48, -24, 24
+		Offset: -48, -24, 36
 	idle-powrupb:
 		TilesetFilenames:
 			TEMPERATE: gtpowr_b.shp
 			SNOW: gapowr_b.shp
 		Length: 12
 		Tick: 200
-		Offset: -24, -12, 24
+		Offset: -24, -12, 40
 	damaged-idle-powrupb:
 		TilesetFilenames:
 			TEMPERATE: gtpowr_b.shp
 			SNOW: gapowr_b.shp
 		Length: 12
 		Tick: 200
-		Offset: -24, -12, 24
+		Offset: -24, -12, 40
 	make:
 		TilesetFilenames:
 			TEMPERATE: gtpowrmk.shp
