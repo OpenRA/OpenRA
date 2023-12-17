@@ -27,6 +27,13 @@ World:
 			Neutral Atreides: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
 			Ordos Aligned Mercenaries: 239, 238, 237, 236, 235, 234, 233, 232, 231, 230, 229, 228, 227, 226, 225, 224
 			Harkonnen Aligned Mercenaries: 239, 238, 237, 236, 235, 234, 233, 232, 231, 230, 229, 228, 227, 226, 225, 224
+	FixedPlayerColorShift:
+		BasePalette: player
+		PlayerIndex:
+			Ordos Aligned Atreides: 0.274, -0.275, 1, 0.32, 0.34
+			Neutral Atreides: 0.274, -0.275, 1, 0.32, 0.34
+			Ordos Aligned Mercenaries: -0.219, 0.067, 1, 0.32, 0.34
+			Harkonnen Aligned Mercenaries: -0.219, 0.067, 1, 0.32, 0.34
 
 carryall.reinforce:
 	Cargo:

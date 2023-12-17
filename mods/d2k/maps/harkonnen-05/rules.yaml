@@ -25,6 +25,11 @@ World:
 		PlayerIndex:
 			Ordos Main Base: 175, 174, 173, 172, 171, 170, 169, 168, 167, 166, 165, 164, 163, 162, 161, 160
 			Ordos Small Base: 175, 174, 173, 172, 171, 170, 169, 168, 167, 166, 165, 164, 163, 162, 161, 160
+	FixedPlayerColorShift:
+		BasePalette: player
+		PlayerIndex:
+			Ordos Main Base: 0.060, -0.275, 1, 0.32, 0.34
+			Ordos Small Base: 0.060, -0.275, 1, 0.32, 0.34
 
 carryall.reinforce:
 	Cargo:

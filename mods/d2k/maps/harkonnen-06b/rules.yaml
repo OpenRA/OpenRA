@@ -29,6 +29,15 @@ World:
 			Smugglers - Enemy to Harkonnen: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
 			Smugglers - Enemy to Ordos: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
 			Smugglers - Enemy to Both: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
+	FixedPlayerColorShift:
+		BasePalette: player
+		PlayerIndex:
+			Ordos Main Base: 0.060, -0.275, 1, 0.32, 0.34
+			Ordos Small Base: 0.060, -0.275, 1, 0.32, 0.34
+			Smugglers - Neutral: -0.318, 0.047, 1, 0.32, 0.34
+			Smugglers - Enemy to Harkonnen: -0.318, 0.047, 1, 0.32, 0.34
+			Smugglers - Enemy to Ordos: -0.318, 0.047, 1, 0.32, 0.34
+			Smugglers - Enemy to Both: -0.318, 0.047, 1, 0.32, 0.34
 
 carryall.reinforce:
 	Cargo:

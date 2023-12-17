@@ -1,5 +1,5 @@
 Cursors:
-	MOUSE.R8: d2k
+	MOUSE.R16: d2k
 		scroll-t:
 			Start: 112
 			X: 24

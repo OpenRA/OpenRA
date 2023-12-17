@@ -22,25 +22,14 @@
 		BasePalette: d2k
 		RemapIndex: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
 		AllowModifiers: false
-	PaletteFromEmbeddedSpritePalette@moveflash:
-		Name: moveflash
-		Filename: DATA.R8
-		Frame: 3874
-		AllowModifiers: false
-	PaletteFromEmbeddedSpritePalette@shroud:
-		Name: shroud
-		Filename: DATA.R8
-		Frame: 38
-	PaletteFromEmbeddedSpritePalette@smoke3:
-		Name: smoke3
-		Filename: DATA.R8
-		Frame: 3747
-	PaletteFromFile@fog:
-		Name: fog
-		Filename: fog.pal
-		AllowModifiers: false
 	PlayerColorPalette:
 		BasePalette: d2k
 		RemapIndex: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
 	MenuPostProcessEffect:
 	FlashPostProcessEffect:
+	ColorPickerColorShift:
+		BasePalette: colorpicker
+		MinHue: 0.32
+		MaxHue: 0.34
+	PlayerColorShift:
+		BasePalette: player

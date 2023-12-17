@@ -28,6 +28,14 @@ World:
 			Atreides Small Base 2: 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128
 			Corrino Main Base: 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, 177, 176
 			Corrino Small Base: 191, 190, 189, 188, 187, 186, 185, 184, 183, 182, 181, 180, 179, 178, 177, 176
+	FixedPlayerColorShift:
+		BasePalette: player
+		PlayerIndex:
+			Atreides Main Base: 0.274, -0.275, 1, 0.32, 0.34
+			Atreides Small Base 1: 0.274, -0.275, 1, 0.32, 0.34
+			Atreides Small Base 2: 0.274, -0.275, 1, 0.32, 0.34
+			Corrino Main Base: 0.477, 0.075, 1, 0.32, 0.34
+			Corrino Small Base: 0.477, 0.075, 1, 0.32, 0.34
 
 carryall.reinforce:
 	Cargo:
