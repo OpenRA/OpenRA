@@ -39,7 +39,8 @@ namespace OpenRA.Mods.Common.Lint
 		static void CheckTrait(Action<string> emitError, ActorInfo actorInfo, TraitInfo traitInfo, Ruleset rules)
 		{
 			var actualType = traitInfo.GetType();
-			foreach (var field in Utility.GetFields(actualType))
+			var members = Utility.GetFields(actualType).Concat(Utility.GetProperties(actualType).Cast<MemberInfo>());
+			foreach (var field in members)
 			{
 				if (Utility.HasAttribute<ActorReferenceAttribute>(field))
 					CheckActorReference(emitError, actorInfo, traitInfo, field, rules.Actors,
@@ -51,20 +52,13 @@ namespace OpenRA.Mods.Common.Lint
 				if (Utility.HasAttribute<VoiceSetReferenceAttribute>(field))
 					CheckVoiceReference(emitError, actorInfo, traitInfo, field, rules.Voices);
 			}
-
-			foreach (var property in actualType.GetProperties())
-			{
-				if (property.HasAttribute<ActorReferenceAttribute>())
-					CheckActorReference(actorInfo, traitInfo, property, rules.Actors,
-						property.GetCustomAttributes<ActorReferenceAttribute>(true)[0]);
-			}
 		}
 
 		static void CheckActorReference(Action<string> emitError, ActorInfo actorInfo, TraitInfo traitInfo,
 			MemberInfo memberInfo, IReadOnlyDictionary<string, ActorInfo> dict, ActorReferenceAttribute attribute)
 		{
-			var values = memberInfo is PropertyInfo
-				? LintExts.GetPropertyValues(traitInfo, (PropertyInfo)memberInfo, attribute.DictionaryReference)
+			var values = memberInfo is PropertyInfo info
+				? LintExts.GetPropertyValues(traitInfo, info, attribute.DictionaryReference)
 				: LintExts.GetFieldValues(traitInfo, (FieldInfo)memberInfo, attribute.DictionaryReference);
 
 			foreach (var value in values)
@@ -90,30 +84,36 @@ namespace OpenRA.Mods.Common.Lint
 		}
 
 		static void CheckWeaponReference(Action<string> emitError, ActorInfo actorInfo, TraitInfo traitInfo,
-			FieldInfo fieldInfo, IReadOnlyDictionary<string, WeaponInfo> dict)
+			MemberInfo memberInfo, IReadOnlyDictionary<string, WeaponInfo> dict)
 		{
-			var values = LintExts.GetFieldValues(traitInfo, fieldInfo);
+			var values = memberInfo is PropertyInfo info
+				? LintExts.GetPropertyValues(traitInfo, info)
+				: LintExts.GetFieldValues(traitInfo, (FieldInfo)memberInfo);
+
 			foreach (var value in values)
 			{
 				if (value == null)
 					continue;
 
 				if (!dict.ContainsKey(value.ToLowerInvariant()))
-					emitError($"`{actorInfo.Name}.{traitInfo.GetType().Name}.{fieldInfo.Name}`: Missing weapon `{value}`.");
+					emitError($"`{actorInfo.Name}.{traitInfo.GetType().Name}.{memberInfo.Name}`: Missing weapon `{value}`.");
 			}
 		}
 
 		static void CheckVoiceReference(Action<string> emitError, ActorInfo actorInfo, TraitInfo traitInfo,
-			FieldInfo fieldInfo, IReadOnlyDictionary<string, SoundInfo> dict)
+			MemberInfo memberInfo, IReadOnlyDictionary<string, SoundInfo> dict)
 		{
-			var values = LintExts.GetFieldValues(traitInfo, fieldInfo);
+			var values = memberInfo is PropertyInfo info
+				? LintExts.GetPropertyValues(traitInfo, info)
+				: LintExts.GetFieldValues(traitInfo, (FieldInfo)memberInfo);
+
 			foreach (var value in values)
 			{
 				if (value == null)
 					continue;
 
 				if (!dict.ContainsKey(value.ToLowerInvariant()))
-					emitError($"`{actorInfo.Name}.{traitInfo.GetType().Name}.{fieldInfo.Name}`: Missing voice `{value}`.");
+					emitError($"`{actorInfo.Name}.{traitInfo.GetType().Name}.{memberInfo.Name}`: Missing voice `{value}`.");
 			}
 		}
 	}
