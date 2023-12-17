@@ -140,7 +140,7 @@ WorldLoaded = function()
 	AlliedObjective = AddPrimaryObjective(Greece, "")
 	SovietObjective = AddPrimaryObjective(USSR, "escort-convoy")
 	SovietObjective2 = AddSecondaryObjective(USSR, "destroy-capture-radar-dome-reinforcements")
-	SaveAllTrucks = AddSecondaryObjective(USSR, "Keep all trucks alive.")
+	SaveAllTrucks = AddSecondaryObjective(USSR, "keep-trucks-alive")
 end
 
 Tick = function()

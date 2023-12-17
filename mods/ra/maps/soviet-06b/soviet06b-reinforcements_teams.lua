@@ -44,8 +44,11 @@ EnemyPaths =
 }
 
 Wave = 0
-SendEnemies = function()
+SendReinforcements = function()
 	Trigger.AfterDelay(EnemyAttackDelay[Difficulty], function()
+		if Dome.IsDead or Dome.Owner ~= Greece then
+			return
+		end
 
 		Wave = Wave + 1
 		if Wave > 3 then
@@ -60,8 +63,6 @@ SendEnemies = function()
 			Utils.Do(units, IdleHunt)
 		end
 
-		if not Dome.IsDead then
-			SendEnemies()
-		end
+		SendReinforcements()
 	end)
 end
