@@ -1,27 +1,30 @@
 mcv:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1795
 		Facings: -32
+		Remap: 54F94B
 	icon:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4284
 		Offset: -30,-24
 
 mcv.husk:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1795
 		Facings: -32
 		ZOffset: -1023
+		Remap: 54F94B
 
 harvester:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1699
 		Facings: -32
+		Remap: 54F94B
 	harvest:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 3884
 		Length: 6
 		Facings: -8
@@ -29,291 +32,322 @@ harvester:
 		ZOffset: 1
 		Alpha: 0.5
 	dock:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 3623
 		Length: 10
+		Remap: 54F94B
 	dock-loop:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 3633
+		Remap: 54F94B
 	icon:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4280
 		Offset: -30,-24
 
 harvester.husk:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1699
 		Facings: -32
 		ZOffset: -512
+		Remap: 54F94B
 
 trike:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1635
 		Facings: -32
+		Remap: 54F94B
 	muzzle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4092
 		Tick: 50
 		Facings: -32
 		BlendMode: Additive
 	icon:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4277
 		Offset: -30,-24
 
 quad:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1667
 		Facings: -32
+		Remap: 54F94B
 	icon:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4279
 		Offset: -30,-24
 
 siege_tank:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1763
 		Facings: -32
+		Remap: 54F94B
 	turret:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1891
 		Facings: -32
+		Remap: 54F94B
 	muzzle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 3671
 		Length: 3
 		BlendMode: Additive
 	icon:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4287
 		Offset: -30,-24
 
 siege_tank.husk:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1763
 		Facings: -32
 		ZOffset: -512
+		Remap: 54F94B
 	turret:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1891
 		Facings: -32
 		ZOffset: -512
+		Remap: 54F94B
 
 missile_tank:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1603
 		Facings: -32
+		Remap: 54F94B
 	icon:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4285
 		Offset: -30,-24
 
 missile_tank.husk:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1603
 		Facings: -32
 		ZOffset: -512
+		Remap: 54F94B
 
 sonic_tank:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1827
 		Facings: -32
+		Remap: 54F94B
 	icon:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4288
 		Offset: -30,-24
 
 sonic_tank.husk:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1827
 		Facings: -32
 		ZOffset: -512
+		Remap: 54F94B
 
 combat_tank_a:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1731
 		Facings: -32
+		Remap: 54F94B
 	turret:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1859
 		Facings: -32
+		Remap: 54F94B
 	muzzle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4028
 		Tick: 60
 		Facings: -32
 		BlendMode: Additive
 	icon:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4281
 		Offset: -30,-24
 
 combat_tank_a.husk:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1731
 		Facings: -32
 		ZOffset: -512
+		Remap: 54F94B
 	turret:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 1859
 		Facings: -32
 		ZOffset: -512
+		Remap: 54F94B
 
 combat_tank_h:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 2051
 		Facings: -32
+		Remap: 54F94B
 	turret:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 2115
 		Facings: -32
+		Remap: 54F94B
 	muzzle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4028
 		Tick: 60
 		Facings: -32
 		BlendMode: Additive
 	icon:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4282
 		Offset: -30,-24
 
 combat_tank_h.husk:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 2051
 		Facings: -32
 		ZOffset: -512
+		Remap: 54F94B
 	turret:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 2115
 		Facings: -32
 		ZOffset: -512
+		Remap: 54F94B
 
 combat_tank_o:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 2453
 		Facings: -32
+		Remap: 54F94B
 	turret:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 2485
 		Facings: -32
+		Remap: 54F94B
 	muzzle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4028
 		Tick: 60
 		Facings: -32
 		BlendMode: Additive
 	icon:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4283
 		Offset: -30,-24
 
 combat_tank_o.husk:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 2453
 		Facings: -32
 		ZOffset: -512
+		Remap: 54F94B
 	turret:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 2485
 		Facings: -32
 		ZOffset: -512
+		Remap: 54F94B
 
 devastator:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 2083
 		Facings: -32
+		Remap: 54F94B
 	muzzle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4060
 		Tick: 80
 		Facings: -32
 		BlendMode: Additive
 	active:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 3839
 		Length: 14
 		Tick: 130
 		BlendMode: Additive
 	active-2:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4152
 		Length: 12
 		Tick: 110
 		BlendMode: Additive
 	icon:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4289
 		Offset: -30,-24
 
 devastator.husk:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 2083
 		Facings: -32
 		ZOffset: -512
+		Remap: 54F94B
 
 raider:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 2421
 		Facings: -32
+		Remap: 54F94B
 	muzzle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 3996
 		Tick: 50
 		Facings: -32
 		BlendMode: Additive
 	icon:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4278
 		Offset: -30,-24
 
 stealth_raider:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 2421
 		Facings: -32
+		Remap: 54F94B
 	muzzle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 3996
 		Tick: 50
 		Facings: -32
 		BlendMode: Additive
 	icon:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4298
 		Offset: -30,-24
 
 deviator:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 2389
 		Facings: -32
+		Remap: 54F94B
 	icon:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 4286
 		Offset: -30,-24
 
 deviator.husk:
 	idle:
-		Filename: DATA.R8
+		Filename: DATA.R16
 		Start: 2389
 		Facings: -32
 		ZOffset: -512
+		Remap: 54F94B

@@ -258,7 +258,6 @@
 		Modifier: 75
 	FloatingSpriteEmitter@SMOKE:
 		RequiresCondition: heavy-damage
-		Palette: smoke3
 		Image: smoke3
 		Lifetime: 15, 20
 		Speed: 3

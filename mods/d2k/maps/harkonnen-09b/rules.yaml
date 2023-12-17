@@ -31,6 +31,17 @@ World:
 			Smugglers - Enemy to Harkonnen: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
 			Smugglers - Enemy to AI: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
 			Smugglers - Enemy to Both: 223, 222, 221, 220, 219, 218, 217, 216, 215, 214, 213, 212, 211, 210, 209, 208
+	FixedPlayerColorShift:
+		BasePalette: player
+		PlayerIndex:
+			Atreides Main Base: 0.274, -0.275, 1, 0.32, 0.34
+			Atreides Small Base: 0.274, -0.275, 1, 0.32, 0.34
+			Corrino Main Base: 0.477, 0.075, 1, 0.32, 0.34
+			Corrino Small Base: 0.477, 0.075, 1, 0.32, 0.34
+			Smugglers - Neutral: -0.318, 0.047, 1, 0.32, 0.34
+			Smugglers - Enemy to Harkonnen: -0.318, 0.047, 1, 0.32, 0.34
+			Smugglers - Enemy to AI: -0.318, 0.047, 1, 0.32, 0.34
+			Smugglers - Enemy to Both: -0.318, 0.047, 1, 0.32, 0.34
 
 carryall.reinforce:
 	Cargo:
