@@ -93,16 +93,6 @@ namespace OpenRA.Mods.Common.Traits
 		void Demolish(Actor self, Actor saboteur, int delay, BitSet<DamageType> damageTypes);
 	}
 
-	// Type tag for crush class bits
-	public class CrushClass { }
-
-	[RequireExplicitImplementation]
-	public interface ICrushable
-	{
-		bool CrushableBy(Actor self, Actor crusher, BitSet<CrushClass> crushClasses);
-		LongBitSet<PlayerBitMask> CrushableBy(Actor self, BitSet<CrushClass> crushClasses);
-	}
-
 	[RequireExplicitImplementation]
 	public interface INotifyCrushed
 	{

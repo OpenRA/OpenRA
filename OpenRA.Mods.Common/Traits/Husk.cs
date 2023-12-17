@@ -219,7 +219,7 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			var crushables = self.World.ActorMap.GetActorsAt(self.World.Map.CellContaining(position)).Where(a => a != self)
-				.SelectMany(a => a.TraitsImplementing<ICrushable>().Select(t => new TraitPair<ICrushable>(a, t)));
+				.SelectMany(a => a.Crushables.Select(t => new TraitPair<ICrushable>(a, t)));
 
 			// Only crush actors that are on the ground level.
 			foreach (var crushable in crushables)

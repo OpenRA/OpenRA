@@ -92,7 +92,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (target.TraitsImplementing<Cloak>().Any(c => !c.IsTraitDisabled && !c.IsVisible(target, self.Owner)))
 				return false;
 
-			return target.TraitsImplementing<ICrushable>().Any(c => c.CrushableBy(target, self, Info.CrushClasses));
+			return target.Crushables.Any(c => c.CrushableBy(target, self, Info.CrushClasses));
 		}
 
 		protected override void TraitEnabled(Actor self)

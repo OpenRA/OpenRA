@@ -657,8 +657,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 			if (isTemporaryBlocker)
 				return false;
 
-			var crushables = actor.TraitsImplementing<ICrushable>();
-			foreach (var crushable in crushables)
+			foreach (var crushable in actor.Crushables)
 				if (world.NoPlayersMask != crushable.CrushableBy(actor, locomotor.Info.Crushes))
 					return false;
 

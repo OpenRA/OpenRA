@@ -380,7 +380,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If the other actor in our way cannot be crushed, we are blocked.
 			// PERF: Avoid LINQ.
-			var crushables = otherActor.TraitsImplementing<ICrushable>();
+			var crushables = otherActor.Crushables;
 			foreach (var crushable in crushables)
 				if (crushable.CrushableBy(otherActor, actor, Info.Crushes))
 					return false;
@@ -493,7 +493,7 @@ namespace OpenRA.Mods.Common.Traits
 					var actorImmovablePlayers = world.AllPlayersMask;
 					var actorCrushablePlayers = world.NoPlayersMask;
 
-					var crushables = actor.TraitsImplementing<ICrushable>();
+					var crushables = actor.Crushables;
 					var mobile = actor.OccupiesSpace as Mobile;
 					var isMovable = mobile != null && !mobile.IsTraitDisabled && !mobile.IsTraitPaused && !mobile.IsImmovable;
 					var isMoving = isMovable && mobile.CurrentMovementTypes.HasMovementType(MovementType.Horizontal);

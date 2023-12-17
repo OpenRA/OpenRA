@@ -713,8 +713,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			// If the other actor in our way cannot be crushed, we are blocked.
 			// PERF: Avoid LINQ.
-			var crushables = otherActor.TraitsImplementing<ICrushable>();
-			foreach (var crushable in crushables)
+			foreach (var crushable in otherActor.Crushables)
 				if (crushable.CrushableBy(otherActor, self, Info.Crushes))
 					return false;
 
@@ -857,7 +856,7 @@ namespace OpenRA.Mods.Common.Traits
 		void CrushAction(Actor self, Func<INotifyCrushed, Action<Actor, Actor, BitSet<CrushClass>>> action)
 		{
 			var crushables = self.World.ActorMap.GetActorsAt(TopLeft).Where(a => a != self)
-				.SelectMany(a => a.TraitsImplementing<ICrushable>().Select(t => new TraitPair<ICrushable>(a, t)));
+				.SelectMany(a => a.Crushables.Select(t => new TraitPair<ICrushable>(a, t)));
 
 			// Only crush actors that are on the ground level
 			foreach (var crushable in crushables)
