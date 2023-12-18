@@ -81,5 +81,5 @@ Sounds:
 			InterruptType: Overlap
 		ClickDisabledSound: ENDLIST1
 			InterruptType: Overlap
-		Beacon: CHAT1
+		Beacon: MULTI1
 			InterruptType: Interrupt
