@@ -61,7 +61,7 @@ trike:
 		Remap: 54F94B
 	muzzle:
 		Filename: DATA.R16
-		Start: 4092
+		Start: 3996
 		Tick: 50
 		Facings: -32
 		BlendMode: Additive

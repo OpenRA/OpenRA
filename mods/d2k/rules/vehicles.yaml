@@ -150,10 +150,10 @@ trike:
 	WithMuzzleOverlay:
 	Armament@damage:
 		Weapon: HMG
-		LocalOffset: 180,0,110
+		LocalOffset: 50,0,0
 	Armament@muzzle:
 		Weapon: HMG_muzzle
-		LocalOffset: -544,0,0
+		LocalOffset: 50,0,0
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		FacingTolerance: 0
@@ -467,10 +467,10 @@ raider:
 	WithMuzzleOverlay:
 	Armament@damage:
 		Weapon: HMGo
-		LocalOffset: 170,0,0
+		LocalOffset: 100,0,0
 	Armament@muzzle:
 		Weapon: HMGo_muzzle
-		LocalOffset: 170,0,0
+		LocalOffset: 100,0,0
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		FacingTolerance: 0
