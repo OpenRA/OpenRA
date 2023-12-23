@@ -128,7 +128,11 @@ Heal:
 	ValidTargets: Heal
 	Projectile: Bullet
 		Speed: 1c682
-	Warhead@1Dam: SpreadDamage
+	Warhead@1Eff: FlashTargetsInRadius
+		Radius: 1065
+		ValidRelationships: Ally
+		ValidTargets: Heal
+	Warhead@2Dam: SpreadDamage
 		Spread: 213
 		Damage: -5000
 		ValidRelationships: Ally
@@ -139,7 +143,9 @@ Repair:
 	Inherits: Heal
 	Report: fixit1.aud
 	ValidTargets: Repair
-	Warhead@1Dam: SpreadDamage
+	Warhead@1Eff: FlashTargetsInRadius
+		ValidTargets: Repair
+	Warhead@2Dam: SpreadDamage
 		Damage: -2000
 		ValidTargets: Repair
 
