@@ -67,20 +67,32 @@ namespace OpenRA.Mods.Common.Graphics
 			if (facingInfo == null)
 				return () => WRot.None;
 
+			WAngle facing;
+
 			// Dynamic facing takes priority
 			var dynamicInit = reference.GetOrDefault<DynamicFacingInit>();
 			if (dynamicInit != null)
 			{
-				// TODO: Account for terrain slope
 				var getFacing = dynamicInit.Value;
-				return () => WRot.FromYaw(getFacing());
+				facing = getFacing();
+			}
+			else
+			{
+				// Fall back to initial actor facing if an Init isn't available
+				var facingInit = reference.GetOrDefault<FacingInit>();
+				facing = facingInit != null ? facingInit.Value : facingInfo.GetInitialFacing();
 			}
 
-			// Fall back to initial actor facing if an Init isn't available
-			var facingInit = reference.GetOrDefault<FacingInit>();
-			var facing = facingInit != null ? facingInit.Value : facingInfo.GetInitialFacing();
-			var orientation = WRot.FromYaw(facing);
-			return () => orientation;
+			var mobileInfo = Actor.TraitInfoOrDefault<MobileInfo>();
+			var location = reference.GetOrDefault<LocationInit>();
+			if (location == null || mobileInfo == null || mobileInfo.TerrainOrientationAdjustmentMargin.Length < 0)
+				return () => WRot.FromYaw(facing);
+
+			var orientationInit = reference.GetOrDefault<TerrainOrientationInit>();
+			var terrainOrientation = orientationInit != null ? orientationInit.Value : World.Map.TerrainOrientation(location.Value);
+			var terrainAdjustedFacing = new WRot(new WVec(0, 0, 1024).Rotate(terrainOrientation), facing);
+
+			return () => terrainOrientation + terrainAdjustedFacing;
 		}
 
 		public Func<WAngle> GetFacing()

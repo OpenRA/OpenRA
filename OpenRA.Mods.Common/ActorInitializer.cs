@@ -23,6 +23,12 @@ namespace OpenRA.Mods.Common
 			: base(value) { }
 	}
 
+	public class TerrainOrientationInit : ValueActorInit<WRot>, ISingleInstanceInit
+	{
+		public TerrainOrientationInit(WRot value)
+			: base(value) { }
+	}
+
 	public class CreationActivityDelayInit : ValueActorInit<int>, ISingleInstanceInit
 	{
 		public CreationActivityDelayInit(int value)
