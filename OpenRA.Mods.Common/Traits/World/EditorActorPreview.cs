@@ -47,6 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly TooltipInfoBase tooltip;
 		IActorPreview[] previews;
 		readonly ActorReference reference;
+		readonly Action<CPos> onCellEntryChanged;
 		readonly Dictionary<INotifyEditorPlacementInfo, object> editorData = new();
 
 		public EditorActorPreview(WorldRenderer worldRenderer, string id, ActorReference reference, PlayerReference owner)
@@ -98,6 +99,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			SelectionBox = new SelectionBoxAnnotationRenderable(new WPos(CenterPosition.X, CenterPosition.Y, 8192),
 				new Rectangle(Bounds.X, Bounds.Y, Bounds.Width, Bounds.Height), Color.White);
+
+			// TODO: updating all actors on the map is not very efficient.
+			onCellEntryChanged = _ => GeneratePreviews();
 		}
 
 		public void Tick()
@@ -134,12 +138,17 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			foreach (var notify in Info.TraitInfos<INotifyEditorPlacementInfo>())
 				editorData[notify] = notify.AddedToEditor(this, worldRenderer.World);
+
+			// TODO: this should subscribe to ramp cell map as well.
+			worldRenderer.World.Map.Height.CellEntryChanged += onCellEntryChanged;
 		}
 
 		public void RemovedFromEditor()
 		{
 			foreach (var kv in editorData)
 				kv.Key.RemovedFromEditor(this, worldRenderer.World, kv.Value);
+
+			worldRenderer.World.Map.Height.CellEntryChanged -= onCellEntryChanged;
 		}
 
 		public void AddInit<T>(T init) where T : ActorInit
