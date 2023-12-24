@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
@@ -68,7 +69,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public RallyPointInfo Info;
 		public string PaletteName { get; private set; }
-		RallyPointIndicator effect;
+		IEffect effect;
 
 		public void ResetPath(Actor self)
 		{
@@ -84,7 +85,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			effect = new RallyPointIndicator(self, this);
+			effect = CreateRallyPointIndicator(self);
+		}
+
+		protected virtual IEffect CreateRallyPointIndicator(Actor self)
+		{
+			return new RallyPointIndicator(self, this);
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
