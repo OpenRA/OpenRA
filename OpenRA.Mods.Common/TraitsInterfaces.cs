@@ -692,17 +692,20 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class EditorActorDropdown : EditorActorOption
 	{
-		public readonly Dictionary<string, string> Labels;
-		public readonly Func<EditorActorPreview, string> GetValue;
+		public readonly Func<EditorActorPreview, Dictionary<string, string>> GetLabels;
+		public readonly Func<EditorActorPreview, Dictionary<string, string>, string> GetValue;
 		public readonly Action<EditorActorPreview, string> OnChange;
 
+		/// <summary>
+		/// Creates dropdown for editing actor's metadata with dynamically created items.
+		/// </summary>
 		public EditorActorDropdown(string name, int displayOrder,
-			Dictionary<string, string> labels,
-			Func<EditorActorPreview, string> getValue,
+			Func<EditorActorPreview, Dictionary<string, string>> getLabels,
+			Func<EditorActorPreview, Dictionary<string, string>, string> getValue,
 			Action<EditorActorPreview, string> onChange)
 			: base(name, displayOrder)
 		{
-			Labels = labels;
+			GetLabels = getLabels;
 			GetValue = getValue;
 			OnChange = onChange;
 		}

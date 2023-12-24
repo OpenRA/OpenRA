@@ -115,8 +115,8 @@ namespace OpenRA.Mods.Common.Traits
 				{ "attackanything", "Attack Anything" },
 			};
 
-			yield return new EditorActorDropdown("Stance", EditorStanceDisplayOrder, labels,
-				actor =>
+			yield return new EditorActorDropdown("Stance", EditorStanceDisplayOrder, _ => labels,
+				(actor, _) =>
 				{
 					var init = actor.GetInitOrDefault<StanceInit>(this);
 					var stance = init?.Value ?? InitialStance;

@@ -59,8 +59,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Make sure the no-plug option is always available
 			EditorOptions[""] = EmptyOption;
-			yield return new EditorActorDropdown("Plug", EditorDisplayOrder, EditorOptions,
-				actor =>
+			yield return new EditorActorDropdown("Plug", EditorDisplayOrder, _ => EditorOptions,
+				(actor, _) =>
 				{
 					var init = actor.GetInitOrDefault<PlugInit>(this);
 					return init?.Value ?? "";
