@@ -294,14 +294,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						initContainer.Bounds.Height += dropdownContainer.Bounds.Height;
 						dropdownContainer.Get<LabelWidget>("LABEL").GetText = () => ddo.Name;
 
-						var editorActionHandle = new EditorActorOptionActionHandle<string>(ddo.OnChange, ddo.GetValue(SelectedActor));
+						var labels = ddo.GetLabels(SelectedActor);
+
+						var editorActionHandle = new EditorActorOptionActionHandle<string>(ddo.OnChange, ddo.GetValue(SelectedActor, labels));
 						editActorPreview.Add(editorActionHandle);
 
 						var dropdown = dropdownContainer.Get<DropDownButtonWidget>("OPTION");
 						ScrollItemWidget DropdownSetup(KeyValuePair<string, string> option, ScrollItemWidget template)
 						{
 							var item = ScrollItemWidget.Setup(template,
-								() => ddo.GetValue(SelectedActor) == option.Key,
+								() => ddo.GetValue(SelectedActor, labels) == option.Key,
 								() =>
 								{
 									ddo.OnChange(SelectedActor, option.Key);
@@ -312,8 +314,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							return item;
 						}
 
-						dropdown.GetText = () => ddo.Labels[ddo.GetValue(SelectedActor)];
-						dropdown.OnClick = () => dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, ddo.Labels, DropdownSetup);
+						dropdown.GetText = () => labels[ddo.GetValue(SelectedActor, labels)];
+						dropdown.OnClick = () => dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, labels, DropdownSetup);
 
 						initContainer.AddChild(dropdownContainer);
 					}
