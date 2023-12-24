@@ -18,6 +18,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[RequireExplicitImplementation]
+	public interface IRallyPointValidator
+	{
+		bool CanPlaceRallyPoint(Actor self, in Target target);
+	}
+
 	[Desc("Used to waypoint units after production or repair is finished.")]
 	public class RallyPointInfo : TraitInfo
 	{
@@ -71,6 +77,8 @@ namespace OpenRA.Mods.Common.Traits
 		public string PaletteName { get; private set; }
 		IEffect effect;
 
+		IRallyPointValidator validator;
+
 		public void ResetPath(Actor self)
 		{
 			Path = Info.Path.Select(p => self.Location + p).ToList();
@@ -86,6 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyCreated.Created(Actor self)
 		{
 			effect = CreateRallyPointIndicator(self);
+			validator = self.TraitOrDefault<IRallyPointValidator>();
 		}
 
 		protected virtual IEffect CreateRallyPointIndicator(Actor self)
@@ -134,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != OrderID)
 				return;
 
-			if (!order.Target.IsValidFor(self))
+			if (!order.Target.IsValidFor(self) || validator?.CanPlaceRallyPoint(self, order.Target) == false)
 				return;
 
 			if (!order.Queued)
