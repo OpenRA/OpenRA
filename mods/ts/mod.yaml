@@ -47,6 +47,7 @@ Packages:
 	~e01vox01.mix
 	~e01vox02.mix
 	~ecache01.mix
+	common|scripts
 	ts|bits
 	ts|uibits
 

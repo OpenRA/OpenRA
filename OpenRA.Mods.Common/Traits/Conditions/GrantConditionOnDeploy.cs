@@ -144,7 +144,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.UndeployOnMove)
 				return moveInner;
 
-			var activity = new DeployForGrantedCondition(self, this, true);
+			var activity = new DeployForGrantedCondition(self, this, null, true);
 			activity.Queue(moveInner);
 			return activity;
 		}

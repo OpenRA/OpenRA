@@ -21,16 +21,24 @@ namespace OpenRA.Mods.Common.Activities
 		readonly GrantConditionOnDeploy deploy;
 		readonly bool canTurn;
 		readonly bool moving;
+		readonly bool shouldSwitch;
 
-		public DeployForGrantedCondition(Actor self, GrantConditionOnDeploy deploy, bool moving = false)
+		public DeployForGrantedCondition(Actor self, GrantConditionOnDeploy deploy, DeployState? tostate = null, bool moving = false)
 		{
 			this.deploy = deploy;
 			this.moving = moving;
 			canTurn = self.Info.HasTraitInfo<IFacingInfo>();
+			shouldSwitch = !tostate.HasValue || (tostate == DeployState.Undeployed && deploy.DeployState == DeployState.Deployed) || (tostate == DeployState.Deployed && deploy.DeployState == DeployState.Undeployed);
 		}
 
 		protected override void OnFirstRun(Actor self)
 		{
+			if (shouldSwitch)
+			{
+				Cancel(self, true);
+				return;
+			}
+
 			// Turn to the required facing.
 			if (deploy.DeployState == DeployState.Undeployed && deploy.Info.Facing.HasValue && canTurn && !moving)
 				QueueChild(new Turn(self, deploy.Info.Facing.Value));
