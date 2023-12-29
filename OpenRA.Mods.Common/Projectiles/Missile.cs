@@ -262,6 +262,9 @@ namespace OpenRA.Mods.Common.Projectiles
 			minLaunchAngle = info.MinimumLaunchAngle;
 			maxLaunchAngle = info.MaximumLaunchAngle;
 
+			// Make sure the projectile on being spawned is approximately looking at the correct direction.
+			renderFacing = args.Facing;
+
 			var world = args.SourceActor.World;
 
 			if (world.SharedRandom.Next(100) <= info.LockOnProbability)
