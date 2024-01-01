@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Orders
 		readonly string worldSelectCursor = ChromeMetrics.Get<string>("WorldSelectCursor");
 		readonly string worldDefaultCursor = ChromeMetrics.Get<string>("WorldDefaultCursor");
 
-		static Target TargetForInput(World world, CPos cell, int2 worldPixel, MouseInput mi)
+		protected static Target TargetForInput(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			var actor = world.ScreenMap.ActorsAtMouse(mi)
 				.Where(a => !a.Actor.IsDead && a.Actor.Info.HasTraitInfo<ITargetableInfo>() && !world.FogObscures(a.Actor))
@@ -134,7 +134,7 @@ namespace OpenRA.Mods.Common.Orders
 		/// First priority is given to orders that interact with the given actors.
 		/// Second priority is given to actors in the given cell.
 		/// </summary>
-		static UnitOrderResult OrderForUnit(Actor self, Target target, CPos xy, MouseInput mi)
+		protected static UnitOrderResult OrderForUnit(Actor self, Target target, CPos xy, MouseInput mi)
 		{
 			if (mi.Button != Game.Settings.Game.MouseButtonPreference.Action)
 				return null;
@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Common.Orders
 			return order;
 		}
 
-		sealed class UnitOrderResult
+		protected sealed class UnitOrderResult
 		{
 			public readonly Actor Actor;
 			public readonly IOrderTargeter Order;
