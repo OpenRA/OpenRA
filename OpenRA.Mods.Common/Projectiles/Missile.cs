@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Projectiles
 			"not trigger fast enough, causing the missile to fly past the target.")]
 		public readonly WDist CloseEnough = new(298);
 
-		public IProjectile Create(ProjectileArgs args) { return new Missile(this, args); }
+		public virtual IProjectile Create(ProjectileArgs args) { return new Missile(this, args); }
 	}
 
 	// TODO: double check square roots!!!
@@ -905,15 +905,45 @@ namespace OpenRA.Mods.Common.Projectiles
 			distanceCovered += new WDist(speed);
 			var cell = world.Map.CellContaining(pos);
 			var height = world.Map.DistanceAboveTerrain(pos);
-			shouldExplode |= height.Length < 0 // Hit the ground
-				|| relTarDist < info.CloseEnough.Length // Within range
-				|| (info.ExplodeWhenEmpty && rangeLimit >= WDist.Zero && distanceCovered > rangeLimit) // Ran out of fuel
-				|| !world.Map.Contains(cell) // This also avoids an IndexOutOfRangeException in GetTerrainInfo below.
-				|| (!string.IsNullOrEmpty(info.BoundToTerrainType) && world.Map.GetTerrainInfo(cell).Type != info.BoundToTerrainType) // Hit incompatible terrain
-				|| (height.Length < info.AirburstAltitude.Length && relTarHorDist < info.CloseEnough.Length); // Airburst
+			shouldExplode |= ShouldExplode(world, new MissileExplodeContext
+			{
+				MissileInfo = info,
+				World = world,
+				ProjectileArgs = args,
+				Cell = cell,
+				RelativeTargetDistance = relTarDist,
+				RelativeTargetHorizontalDistance = relTarHorDist,
+				RangeLimit = rangeLimit,
+				DistanceCovered = distanceCovered,
+				Height = height
+			});
 
 			if (shouldExplode)
 				Explode(world);
+		}
+
+		protected virtual bool ShouldExplode(World world, MissileExplodeContext context)
+		{
+			return context.HitGround || context.WithinRange || context.RanOutOfFuel || context.HitIncompatibleTerrain || context.AirBurst;
+		}
+
+		protected struct MissileExplodeContext
+		{
+			public MissileInfo MissileInfo;
+			public World World;
+			public ProjectileArgs ProjectileArgs;
+			public CPos Cell;
+			public int RelativeTargetDistance;
+			public int RelativeTargetHorizontalDistance;
+			public WDist RangeLimit;
+			public WDist DistanceCovered;
+			public WDist Height;
+
+			public readonly bool HitGround => Height.Length < 0;
+			public readonly bool WithinRange => RelativeTargetDistance < MissileInfo.CloseEnough.Length;
+			public readonly bool RanOutOfFuel => MissileInfo.ExplodeWhenEmpty && RangeLimit >= WDist.Zero && DistanceCovered > RangeLimit;
+			public readonly bool HitIncompatibleTerrain => World.Map.Contains(Cell) && !string.IsNullOrEmpty(MissileInfo.BoundToTerrainType) && World.Map.GetTerrainInfo(Cell).Type != MissileInfo.BoundToTerrainType;
+			public readonly bool AirBurst => Height.Length < MissileInfo.AirburstAltitude.Length && RelativeTargetHorizontalDistance < MissileInfo.CloseEnough.Length;
 		}
 
 		void Explode(World world)
