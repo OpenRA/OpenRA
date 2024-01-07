@@ -157,14 +157,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (hasSmoke && Game.CosmeticRandom.Next(0, 100) <= Info.SmokeChance)
 			{
-				var maxOffsetDistance = Info.MaxSmokeOffsetDistance.Length;
-
-				// TODO: With offset added height is not accurate for TS maps
 				var position = world.Map.CenterOfCell(loc);
+				var maxOffsetDistance = Info.MaxSmokeOffsetDistance.Length;
 				if (maxOffsetDistance != 0)
-					position += new WVec(Game.CosmeticRandom.Next(-maxOffsetDistance, maxOffsetDistance),
-										 Game.CosmeticRandom.Next(-maxOffsetDistance, maxOffsetDistance),
-										 0);
+				{
+					position += new WVec(Game.CosmeticRandom.Next(-maxOffsetDistance, maxOffsetDistance), Game.CosmeticRandom.Next(-maxOffsetDistance, maxOffsetDistance), 0);
+					position = new WPos(position.X, position.Y, position.Z - world.Map.DistanceAboveTerrain(position).Length);
+				}
 
 				world.AddFrameEndTask(w => w.Add(new SpriteEffect(
 					position, w, Info.SmokeImage, Info.SmokeSequences.Random(Game.CosmeticRandom), Info.SmokePalette)));
