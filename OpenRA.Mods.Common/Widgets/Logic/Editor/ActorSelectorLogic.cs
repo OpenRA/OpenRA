@@ -40,6 +40,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
+		public class ActorSelectorLogicDynamicWidgets : CommonSelectorLogicDynamicWidgets
+		{
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; }
+			public ActorSelectorLogicDynamicWidgets()
+			{
+				var parentDropdownWidgetIdsFromPanelWidgetId =
+					new Dictionary<string, IReadOnlyCollection<string>>(base.ParentDropdownWidgetIdsFromPanelWidgetId);
+				var existing = parentDropdownWidgetIdsFromPanelWidgetId.GetOrAdd("LABEL_DROPDOWN_TEMPLATE", Array.Empty<string>());
+				parentDropdownWidgetIdsFromPanelWidgetId["LABEL_DROPDOWN_TEMPLATE"] = existing.Append("OWNERS_DROPDOWN").ToArray();
+				ParentDropdownWidgetIdsFromPanelWidgetId = parentDropdownWidgetIdsFromPanelWidgetId;
+			}
+		}
+
+		readonly ActorSelectorLogicDynamicWidgets dynamicWidgets = new();
 		readonly DropDownButtonWidget ownersDropDown;
 		readonly Ruleset mapRules;
 		readonly ActorSelectorActor[] allActors;
@@ -77,7 +91,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ownersDropDown.OnClick = () =>
 			{
 				var owners = editorLayer.Players.Players.Values.OrderBy(p => p.Name);
-				ownersDropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, owners, SetupItem);
+				dynamicWidgets.ShowDropDown(ownersDropDown, "LABEL_DROPDOWN_TEMPLATE", 270, owners, SetupItem);
 			};
 
 			var selectedOwnerName = selectedOwner.Name;

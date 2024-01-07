@@ -9,18 +9,31 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class LoadMapEditorLogic : ChromeLogic
 	{
+		public class LoadMapEditorLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } =
+				new Dictionary<string, string>
+				{
+					{ "EDITOR_WORLD_ROOT", "WORLD_ROOT" },
+					{ "TRANSIENTS_PANEL", "WORLD_ROOT" },
+				};
+		}
+
+		readonly LoadMapEditorLogicDynamicWidgets dynamicWidgets = new();
+
 		[ObjectCreator.UseCtor]
 		public LoadMapEditorLogic(Widget widget, World world)
 		{
-			var editorRoot = widget.Get("WORLD_ROOT");
-			Game.LoadWidget(world, "EDITOR_WORLD_ROOT", editorRoot, new WidgetArgs());
-			Game.LoadWidget(world, "TRANSIENTS_PANEL", editorRoot, new WidgetArgs());
+			dynamicWidgets.LoadWidget(widget, "EDITOR_WORLD_ROOT", new WidgetArgs());
+			dynamicWidgets.LoadWidget(widget, "TRANSIENTS_PANEL", new WidgetArgs());
 		}
 	}
 }

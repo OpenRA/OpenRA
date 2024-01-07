@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using OpenRA.Network;
 using OpenRA.Widgets;
@@ -19,6 +20,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	public class DirectConnectLogic : ChromeLogic
 	{
 		static readonly Action DoNothing = () => { };
+
+		public class DirectConnectLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } =
+				new HashSet<string>
+				{
+					"CONNECTING_PANEL",
+				};
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+		}
+
+		readonly DirectConnectLogicDynamicWidgets dynamicWidgets = new();
 
 		[ObjectCreator.UseCtor]
 		public DirectConnectLogic(Widget widget, Action onExit, Action openLobby, ConnectionTarget directConnectEndPoint)
@@ -52,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Game.Settings.Player.LastServer = $"{ipField.Text}:{port}";
 				Game.Settings.Save();
 
-				ConnectionLogic.Connect(new ConnectionTarget(ipField.Text, port), "", () => { Ui.CloseWindow(); openLobby(); }, DoNothing);
+				ConnectionLogic.Connect(dynamicWidgets, new ConnectionTarget(ipField.Text, port), "", () => { Ui.CloseWindow(); openLobby(); }, DoNothing);
 			};
 
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
@@ -64,7 +77,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				widget.Visible = false;
 				Game.RunAfterTick(() =>
 				{
-					ConnectionLogic.Connect(directConnectEndPoint, "", () => { Ui.CloseWindow(); openLobby(); }, DoNothing);
+					ConnectionLogic.Connect(dynamicWidgets, directConnectEndPoint, "", () => { Ui.CloseWindow(); openLobby(); }, DoNothing);
 					widget.Visible = true;
 				});
 			}

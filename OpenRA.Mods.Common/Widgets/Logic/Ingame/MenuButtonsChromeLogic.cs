@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -17,6 +18,34 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MenuButtonsChromeLogic : ChromeLogic
 	{
+		public class MenuButtonsChromeLogicDynamicWidgets : DynamicWidgets
+		{
+			readonly Dictionary<string, MiniYaml> logicArgs;
+
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; }
+
+			public override IReadOnlyDictionary<string, string> OutOfTreeParentWidgetIdForChildWidgetId { get; }
+
+			[ObjectCreator.UseCtor]
+			public MenuButtonsChromeLogicDynamicWidgets(Dictionary<string, MiniYaml> logicArgs)
+			{
+				this.logicArgs = logicArgs;
+				ParentWidgetIdForChildWidgetId = new Dictionary<string, string>();
+				OutOfTreeParentWidgetIdForChildWidgetId = new Dictionary<string, string>
+				{
+					{ MenuContainer, "MENU_ROOT" },
+				};
+			}
+
+			public string MenuContainer =>
+				logicArgs.TryGetValue("MenuContainer", out var yaml)
+					? yaml.Value
+					: "INGAME_MENU";
+		}
+
+		readonly MenuButtonsChromeLogicDynamicWidgets dynamicWidgets;
 		readonly World world;
 		readonly Widget worldRoot;
 		readonly Widget menuRoot;
@@ -25,12 +54,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Widget currentWidget;
 
 		[ObjectCreator.UseCtor]
-		public MenuButtonsChromeLogic(Widget widget, World world)
+		public MenuButtonsChromeLogic(Widget widget, World world, Dictionary<string, MiniYaml> logicArgs)
 		{
 			this.world = world;
 
 			worldRoot = Ui.Root.Get("WORLD_ROOT");
 			menuRoot = Ui.Root.Get("MENU_ROOT");
+			dynamicWidgets = new MenuButtonsChromeLogicDynamicWidgets(logicArgs);
 
 			// System buttons
 			var options = widget.GetOrNull<MenuButtonWidget>("OPTIONS_BUTTON");
@@ -117,7 +147,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				disableSystemButtons = false;
 			});
 
-			currentWidget = Game.LoadWidget(world, button.MenuContainer, menuRoot, widgetArgs);
+			currentWidget = dynamicWidgets.LoadWidgetOutOfTree(Ui.Root, dynamicWidgets.MenuContainer, widgetArgs);
 			Game.RunAfterTick(Ui.ResetTooltips);
 		}
 	}

@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using OpenRA.Network;
 using OpenRA.Primitives;
@@ -52,6 +53,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string ServerCreationFailedCancel = "dialog-server-creation-failed.cancel";
 
+		public class ServerCreationLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = new HashSet<string>
+			{
+				"CONNECTING_PANEL",
+				"MAPCHOOSER_PANEL",
+				"TWOBUTTON_PROMPT",
+				"THREEBUTTON_PROMPT",
+			};
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } =
+				new Dictionary<string, string>
+				{
+					{ "MAP_PREVIEW", "MAP_PREVIEW_ROOT" },
+				};
+		}
+
+		readonly ServerCreationLogicDynamicWidgets dynamicWidgets = new();
 		readonly Widget panel;
 		readonly ModData modData;
 		readonly LabelWidget noticesLabelA, noticesLabelB, noticesLabelC;
@@ -72,9 +90,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			map = modData.MapCache[modData.MapCache.ChooseInitialMap(modData.MapCache.PickLastModifiedMap(MapVisibility.Lobby) ?? Game.Settings.Server.Map, Game.CosmeticRandom)];
 
-			Ui.LoadWidget("MAP_PREVIEW", panel.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
+			dynamicWidgets.LoadWidget(panel, "MAP_PREVIEW", new WidgetArgs
 			{
-				{ "orderManager", null },
 				{ "getMap", (Func<(MapPreview, Session.MapStatus)>)(() => (map, Session.MapStatus.Playable)) },
 				{ "onMouseDown", null },
 				{ "getSpawnOccupants", null },
@@ -92,7 +109,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				panel.Get<ButtonWidget>("MAP_BUTTON").OnClick = () =>
 				{
-					Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
+					dynamicWidgets.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 					{
 						{ "initialMap", map.Uid },
 						{ "remoteMapPool", null },
@@ -232,7 +249,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var endpoint = Game.CreateServer(settings);
 
 				Ui.CloseWindow();
-				ConnectionLogic.Connect(endpoint, password, onCreate, onExit);
+				ConnectionLogic.Connect(dynamicWidgets, endpoint, password, onCreate, onExit);
 			}
 			catch (System.Net.Sockets.SocketException e)
 			{
@@ -245,7 +262,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					message += "\n" + TranslationProvider.GetString(ServerCreationFailedError,
 						Translation.Arguments("message", e.Message, "code", e.ErrorCode));
 
-				ConfirmationDialogs.ButtonPrompt(modData, ServerCreationFailedTitle, message,
+				ConfirmationDialogs.ButtonPrompt(dynamicWidgets, modData, ServerCreationFailedTitle, message,
 					onCancel: () => { }, cancelText: ServerCreationFailedCancel);
 			}
 		}

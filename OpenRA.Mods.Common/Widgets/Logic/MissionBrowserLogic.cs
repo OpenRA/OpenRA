@@ -45,6 +45,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string CantPlayCancel = "dialog-cant-play-video.cancel";
 
+		public class MissionBrowserLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } =
+				new HashSet<string>
+				{
+					"TWOBUTTON_PROMPT",
+					"THREEBUTTON_PROMPT",
+				};
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+			public override IReadOnlyDictionary<string, string> OutOfTreeParentWidgetIdForChildWidgetId { get; } =
+				new Dictionary<string, string>
+				{
+					{ "FULLSCREEN_PLAYER", "" },
+				};
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; } =
+				new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ "LABEL_DROPDOWN_TEMPLATE", new[] { "A", "B", "C" } },
+				};
+		}
+
+		readonly MissionBrowserLogicDynamicWidgets dynamicWidgets = new();
 		readonly ModData modData;
 		readonly Action onStart;
 		readonly Widget missionDetail;
@@ -59,7 +81,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ButtonWidget startInfoVideoButton;
 		readonly ButtonWidget stopInfoVideoButton;
 		readonly VideoPlayerWidget videoPlayer;
-		readonly BackgroundWidget fullscreenVideoPlayer;
+		readonly Widget fullscreenVideoPlayer;
 
 		readonly ScrollPanelWidget missionList;
 		readonly ScrollItemWidget headerTemplate;
@@ -97,7 +119,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			videoPlayer = widget.Get<VideoPlayerWidget>("MISSION_VIDEO");
 			widget.Get("MISSION_BIN").IsVisible = () => playingVideo != PlayingVideo.None;
-			fullscreenVideoPlayer = Ui.LoadWidget<BackgroundWidget>("FULLSCREEN_PLAYER", Ui.Root, new WidgetArgs { { "world", world } });
+			fullscreenVideoPlayer = dynamicWidgets.LoadWidgetOutOfTree(Ui.Root, "FULLSCREEN_PLAYER", new WidgetArgs());
 
 			missionDetail = widget.Get("MISSION_DETAIL");
 
@@ -402,7 +424,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						return item;
 					}
 
-					dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", option.Values.Count * 30, option.Values, SetupItem);
+					dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", option.Values.Count * 30, option.Values, SetupItem);
 				};
 
 				var label = row.GetOrNull<LabelWidget>(dropdown.Id + "_DESC");
@@ -436,7 +458,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			if (!modData.DefaultFileSystem.Exists(video))
 			{
-				ConfirmationDialogs.ButtonPrompt(modData,
+				ConfirmationDialogs.ButtonPrompt(
+					dynamicWidgets,
+					modData,
 					title: NoVideoTitle,
 					text: NoVideoPrompt,
 					onCancel: () => { },
@@ -453,7 +477,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					StopVideo(player);
 
-					ConfirmationDialogs.ButtonPrompt(modData,
+					ConfirmationDialogs.ButtonPrompt(
+						dynamicWidgets,
+						modData,
 						title: CantPlayTitle,
 						text: CantPlayPrompt,
 						onCancel: () => { },

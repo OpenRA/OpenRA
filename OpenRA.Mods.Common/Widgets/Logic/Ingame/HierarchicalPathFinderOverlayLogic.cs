@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -17,6 +18,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class HierarchicalPathFinderOverlayLogic : ChromeLogic
 	{
+		public class HierarchicalPathFinderOverlayLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; } =
+				new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ "LABEL_DROPDOWN_TEMPLATE", new[] { "HPF_OVERLAY_LOCOMOTOR", "HPF_OVERLAY_CHECK" } },
+				};
+		}
+
+		readonly HierarchicalPathFinderOverlayLogicDynamicWidgets dynamicWidgets = new();
+
 		[ObjectCreator.UseCtor]
 		public HierarchicalPathFinderOverlayLogic(Widget widget, World world)
 		{
@@ -39,7 +53,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return item;
 				}
 
-				locomotorSelector.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", locomotors.Length * 30, locomotors, SetupItem);
+				dynamicWidgets.ShowDropDown(locomotorSelector, "LABEL_DROPDOWN_TEMPLATE", locomotors.Length * 30, locomotors, SetupItem);
 			};
 
 			var checks = new[] { BlockedByActor.None, BlockedByActor.Immovable };
@@ -56,7 +70,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return item;
 				}
 
-				checkSelector.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", checks.Length * 30, checks, SetupItem);
+				dynamicWidgets.ShowDropDown(checkSelector, "LABEL_DROPDOWN_TEMPLATE", checks.Length * 30, checks, SetupItem);
 			};
 		}
 	}

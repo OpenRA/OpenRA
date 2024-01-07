@@ -13,7 +13,6 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public class MenuButtonWidget : WorldButtonWidget
 	{
-		public readonly string MenuContainer = "INGAME_MENU";
 		public readonly bool Pause = true;
 		public readonly bool HideIngameUI = true;
 		public readonly bool DisableWorldSounds = false;
@@ -25,7 +24,6 @@ namespace OpenRA.Mods.Common.Widgets
 		protected MenuButtonWidget(MenuButtonWidget other)
 			: base(other)
 		{
-			MenuContainer = other.MenuContainer;
 			Pause = other.Pause;
 			HideIngameUI = other.HideIngameUI;
 		}

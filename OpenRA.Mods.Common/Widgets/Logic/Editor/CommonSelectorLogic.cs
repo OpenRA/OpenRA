@@ -31,6 +31,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string Multiple = "options-common-selector.multiple";
 
+		public class CommonSelectorLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId =>
+				new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ "CATEGORY_FILTER_PANEL", new[] { "CATEGORIES_DROPDOWN" } },
+				};
+		}
+
+		readonly CommonSelectorLogicDynamicWidgets dynamicWidgets = new();
+
 		protected readonly Widget Widget;
 		protected readonly ModData ModData;
 		protected readonly TextFieldWidget SearchTextField;
@@ -101,7 +114,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				SearchTextField?.YieldKeyboardFocus();
 
 				categorySelector.RemovePanel();
-				categorySelector.AttachPanel(CreateCategoriesPanel(Panel));
+				var panel = CreateCategoriesPanel(dynamicWidgets, Panel);
+				dynamicWidgets.AttachPanel(categorySelector, panel);
 			};
 		}
 
@@ -117,9 +131,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SearchTextField.YieldKeyboardFocus();
 		}
 
-		protected Widget CreateCategoriesPanel(ScrollPanelWidget panel)
+		protected Widget CreateCategoriesPanel(
+			CommonSelectorLogicDynamicWidgets dynamicWidgets,
+			ScrollPanelWidget panel)
 		{
-			var categoriesPanel = Ui.LoadWidget("CATEGORY_FILTER_PANEL", null, new WidgetArgs());
+			var categoriesPanel = dynamicWidgets.LoadWidgetAsDropdownPanel("CATEGORY_FILTER_PANEL", new WidgetArgs());
 			var categoryTemplate = categoriesPanel.Get<CheckboxWidget>("CATEGORY_TEMPLATE");
 
 			var selectButtons = categoriesPanel.Get<ContainerWidget>("SELECT_CATEGORIES_BUTTONS");

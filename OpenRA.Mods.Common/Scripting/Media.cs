@@ -18,9 +18,11 @@ namespace OpenRA.Mods.Common.Scripting
 {
 	public static class Media
 	{
-		public static void PlayFMVFullscreen(World w, string videoFileName, Action onComplete)
+		public static void PlayFMVFullscreen(ChromeLogic.DynamicWidgets dynamicWidgets, World w, string videoFileName, Action onComplete)
 		{
-			var playerRoot = Game.OpenWindow(w, "FMVPLAYER");
+			var playerRoot = dynamicWidgets == null
+				? Ui.OpenWindowUnchecked("FMVPLAYER", new WidgetArgs())
+				: dynamicWidgets.OpenWindow("FMVPLAYER", new WidgetArgs());
 			var player = playerRoot.Get<VideoPlayerWidget>("PLAYER");
 
 			try

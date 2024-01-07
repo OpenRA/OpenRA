@@ -76,6 +76,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string SaveCurrentMap = "notification-save-current-map";
 
+		public class SaveMapLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } =
+				new HashSet<string>
+				{
+					"TWOBUTTON_PROMPT",
+					"THREEBUTTON_PROMPT",
+				};
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; } =
+				new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ "MAP_SAVE_VISIBILITY_PANEL", new[] { "VISIBILITY_DROPDOWN" } },
+					{ "LABEL_DROPDOWN_TEMPLATE", new[] { "DIRECTORY_DROPDOWN", "TYPE_DROPDOWN" } },
+				};
+		}
+
+		readonly SaveMapLogicDynamicWidgets dynamicWidgets = new();
+
 		[ObjectCreator.UseCtor]
 		public SaveMapLogic(Widget widget, ModData modData, Map map, Action<string> onSave, Action onExit,
 			World world, IReadOnlyCollection<MiniYamlNode> playerDefinitions, IReadOnlyCollection<MiniYamlNode> actorDefinitions)
@@ -86,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var author = widget.Get<TextFieldWidget>("AUTHOR");
 			author.Text = map.Author;
 
-			var visibilityPanel = Ui.LoadWidget("MAP_SAVE_VISIBILITY_PANEL", null, new WidgetArgs());
+			var visibilityPanel = dynamicWidgets.LoadWidgetAsDropdownPanel("MAP_SAVE_VISIBILITY_PANEL", new WidgetArgs());
 			var visOptionTemplate = visibilityPanel.Get<CheckboxWidget>("VISIBILITY_TEMPLATE");
 			visibilityPanel.RemoveChildren();
 
@@ -107,7 +126,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			visibilityDropdown.OnMouseDown = _ =>
 			{
 				visibilityDropdown.RemovePanel();
-				visibilityDropdown.AttachPanel(visibilityPanel);
+				dynamicWidgets.AttachPanel(visibilityDropdown, visibilityPanel);
 			};
 
 			var writableDirectories = new List<SaveDirectory>();
@@ -155,7 +174,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				directoryDropdown.GetText = () => selectedDirectory?.DisplayName ?? "";
 				directoryDropdown.OnClick = () =>
-					directoryDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, writableDirectories, SetupItem);
+					dynamicWidgets.ShowDropDown(directoryDropdown, "LABEL_DROPDOWN_TEMPLATE", 210, writableDirectories, SetupItem);
 			}
 
 			var mapIsUnpacked = map.Package != null && map.Package is Folder;
@@ -188,7 +207,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				typeDropdown.GetText = () => label;
 
 				typeDropdown.OnClick = () =>
-					typeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, fileTypes, SetupItem);
+					dynamicWidgets.ShowDropDown(typeDropdown, "LABEL_DROPDOWN_TEMPLATE", 210, fileTypes, SetupItem);
 			}
 
 			var close = widget.Get<ButtonWidget>("BACK_BUTTON");
@@ -248,7 +267,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				// When creating a new map or when file paths don't match
 				if (modData.MapCache.Any(m => m.Status == MapStatus.Available && m.Package?.Name == combinedPath))
 				{
-					ConfirmationDialogs.ButtonPrompt(modData,
+					ConfirmationDialogs.ButtonPrompt(
+						new SaveMapLogicDynamicWidgets(),
+						modData,
 						title: OverwriteMapFailedTitle,
 						text: OverwriteMapFailedPrompt,
 						onConfirm: () =>
@@ -276,7 +297,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var recentUid = modData.MapCache.GetUpdatedMap(map.Uid);
 				if (recentUid != null && map.Uid != recentUid && modData.MapCache[recentUid].Status == MapStatus.Available)
 				{
-					ConfirmationDialogs.ButtonPrompt(modData,
+					ConfirmationDialogs.ButtonPrompt(
+						new SaveMapLogicDynamicWidgets(),
+						modData,
 						title: OverwriteMapOutsideEditTitle,
 						text: OverwriteMapOutsideEditPrompt,
 						onConfirm: () =>
@@ -334,7 +357,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (actionManager != null)
 				actionManager.SaveFailed = true;
 
-			ConfirmationDialogs.ButtonPrompt(modData,
+			ConfirmationDialogs.ButtonPrompt(
+				new SaveMapLogicDynamicWidgets(),
+				modData,
 				title: SaveMapFailedTitle,
 				text: SaveMapFailedPrompt,
 				onConfirm: () =>

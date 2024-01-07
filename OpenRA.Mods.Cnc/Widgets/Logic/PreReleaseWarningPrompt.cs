@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Widgets;
 
@@ -18,20 +19,33 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	{
 		static bool promptAccepted;
 
-		[ObjectCreator.UseCtor]
-		public PreReleaseWarningPrompt(Widget widget, World world, ModData modData)
+		public class PreReleaseWarningPromptDynamicWidgets : DynamicWidgets
 		{
-			if (!promptAccepted && modData.Manifest.Metadata.Version != "{DEV_VERSION}")
-				widget.Get<ButtonWidget>("CONTINUE_BUTTON").OnClick = () => ShowMainMenu(world);
-			else
-				ShowMainMenu(world);
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+			public override IReadOnlyDictionary<string, string> OutOfTreeParentWidgetIdForChildWidgetId =>
+				new Dictionary<string, string>
+				{
+					{ "MAINMENU", "" },
+				};
 		}
 
-		static void ShowMainMenu(World world)
+		readonly PreReleaseWarningPromptDynamicWidgets dynamicWidgets = new();
+
+		[ObjectCreator.UseCtor]
+		public PreReleaseWarningPrompt(Widget widget, ModData modData)
+		{
+			if (!promptAccepted && modData.Manifest.Metadata.Version != "{DEV_VERSION}")
+				widget.Get<ButtonWidget>("CONTINUE_BUTTON").OnClick = ShowMainMenu;
+			else
+				ShowMainMenu();
+		}
+
+		void ShowMainMenu()
 		{
 			promptAccepted = true;
 			Ui.ResetAll();
-			Game.LoadWidget(world, "MAINMENU", Ui.Root, new WidgetArgs());
+			dynamicWidgets.LoadWidgetOutOfTree(Ui.Root, "MAINMENU", new WidgetArgs());
 		}
 	}
 }

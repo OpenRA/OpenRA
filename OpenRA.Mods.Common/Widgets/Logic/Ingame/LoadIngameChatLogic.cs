@@ -9,17 +9,29 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class LoadIngameChatLogic : ChromeLogic
 	{
+		public class LoadIngameChatLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } =
+				new Dictionary<string, string>
+				{
+					{ "CHAT_PANEL", "CHAT_ROOT" },
+				};
+		}
+
+		readonly LoadIngameChatLogicDynamicWidgets dynamicWidgets = new();
+
 		[ObjectCreator.UseCtor]
 		public LoadIngameChatLogic(Widget widget, World world)
 		{
-			var root = widget.Get("CHAT_ROOT");
-			Game.LoadWidget(world, "CHAT_PANEL", root, new WidgetArgs() { { "isMenuChat", false } });
+			dynamicWidgets.LoadWidget(widget, "CHAT_PANEL", new WidgetArgs() { { "isMenuChat", false } });
 		}
 	}
 }

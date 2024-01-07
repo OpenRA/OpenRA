@@ -143,33 +143,27 @@ namespace OpenRA
 			OnRemoteDirectConnect(endpoint);
 		}
 
-		// Hacky workaround for orderManager visibility
-		public static Widget OpenWindow(World world, string widget)
+		/// <summary>
+		/// Creates the widget given by <paramref name="id"/> and attaches it to the <paramref name="parent"/>.
+		/// Prefer to call <see cref="ChromeLogic.DynamicWidgets.LoadWidget"/>.
+		/// </summary>
+		public static Widget LoadWidgetUnchecked(string id, Widget parent, WidgetArgs args)
 		{
-			return Ui.OpenWindow(widget, new WidgetArgs() { { "world", world }, { "orderManager", OrderManager }, { "worldRenderer", worldRenderer } });
+			return ModData.WidgetLoader.LoadWidget(ExtendWidgetArgs(args), parent, id);
 		}
 
-		// Who came up with the great idea of making these things
-		// impossible for the things that want them to access them directly?
-		public static Widget OpenWindow(string widget, WidgetArgs args)
+		/// <summary>
+		/// Returns a new widget args based on <paramref name="args"/>
+		/// and extended with values for 'orderManager', 'world' and 'worldRenderer'.
+		/// </summary>
+		public static WidgetArgs ExtendWidgetArgs(WidgetArgs args)
 		{
-			return Ui.OpenWindow(widget, new WidgetArgs(args)
+			return new WidgetArgs(args)
 			{
-				{ "world", worldRenderer.World },
+				{ "world", worldRenderer?.World },
 				{ "orderManager", OrderManager },
 				{ "worldRenderer", worldRenderer },
-			});
-		}
-
-		// Load a widget with world, orderManager, worldRenderer args, without adding it to the widget tree
-		public static Widget LoadWidget(World world, string id, Widget parent, WidgetArgs args)
-		{
-			return ModData.WidgetLoader.LoadWidget(new WidgetArgs(args)
-			{
-				{ "world", world },
-				{ "orderManager", OrderManager },
-				{ "worldRenderer", worldRenderer },
-			}, parent, id);
+			};
 		}
 
 		public static event Action LobbyInfoChanged = () => { };
@@ -368,22 +362,7 @@ namespace OpenRA
 				Settings.Game.Platform = p;
 				try
 				{
-					var rendererPath = Path.Combine(Platform.BinDir, "OpenRA.Platforms." + p + ".dll");
-
-#if NET5_0_OR_GREATER
-					var loader = new AssemblyLoader(rendererPath);
-					var platformType = loader.LoadDefaultAssembly().GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
-
-#else
-					// NOTE: This is currently the only use of System.Reflection in this file, so would give an unused using error if we import it above
-					var assembly = System.Reflection.Assembly.LoadFile(rendererPath);
-					var platformType = assembly.GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
-#endif
-
-					if (platformType == null)
-						throw new InvalidOperationException("Platform dll must include exactly one IPlatform implementation.");
-
-					var platform = (IPlatform)platformType.GetConstructor(Type.EmptyTypes).Invoke(null);
+					var platform = CreatePlatform(p);
 					Renderer = new Renderer(platform, Settings.Graphics);
 					Sound = new Sound(platform, Settings.Sound);
 
@@ -438,6 +417,26 @@ namespace OpenRA
 				Console.WriteLine($"\t{mod.Key}: {mod.Value.Title} ({mod.Value.Version})");
 
 			InitializeMod(modID, args);
+		}
+
+		public static IPlatform CreatePlatform(string platformName)
+		{
+			var rendererPath = Path.Combine(Platform.BinDir, "OpenRA.Platforms." + platformName + ".dll");
+
+#if NET5_0_OR_GREATER
+			var loader = new AssemblyLoader(rendererPath);
+			var platformType = loader.LoadDefaultAssembly().GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
+
+#else
+			// NOTE: This is currently the only use of System.Reflection in this file, so would give an unused using error if we import it above
+			var assembly = System.Reflection.Assembly.LoadFile(rendererPath);
+			var platformType = assembly.GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
+#endif
+
+			if (platformType == null)
+				throw new InvalidOperationException("Platform dll must include exactly one IPlatform implementation.");
+
+			return (IPlatform)platformType.GetConstructor(Type.EmptyTypes).Invoke(null);
 		}
 
 		public static void InitializeMod(string mod, Arguments args)

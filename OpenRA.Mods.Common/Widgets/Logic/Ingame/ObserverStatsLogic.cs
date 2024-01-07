@@ -61,6 +61,33 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string NoTeam = "label-no-team";
 
+		public class ObserverStatsLogicDynamicWidgets : DynamicWidgets
+		{
+			readonly Dictionary<string, MiniYaml> logicArgs;
+
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; }
+
+			[ObjectCreator.UseCtor]
+			public ObserverStatsLogicDynamicWidgets(Dictionary<string, MiniYaml> logicArgs)
+			{
+				this.logicArgs = logicArgs;
+				ParentDropdownWidgetIdsFromPanelWidgetId = new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ StatsDropDownPanelTemplate, new[] { "STATS_DROPDOWN" } },
+				};
+			}
+
+			public string StatsDropDownPanelTemplate =>
+				logicArgs.TryGetValue("StatsDropDownPanelTemplate", out var yaml)
+				? yaml.Value
+				: "LABEL_DROPDOWN_TEMPLATE";
+		}
+
+		readonly ObserverStatsLogicDynamicWidgets dynamicWidgets;
+
 		readonly ContainerWidget basicStatsHeaders;
 		readonly ContainerWidget economyStatsHeaders;
 		readonly ContainerWidget productionStatsHeaders;
@@ -93,6 +120,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			this.world = world;
 			this.worldRenderer = worldRenderer;
+
+			dynamicWidgets = new ObserverStatsLogicDynamicWidgets(logicArgs);
 
 			MiniYaml yaml;
 			var keyNames = Enum.GetNames(typeof(ObserverStatsPanel));
@@ -197,9 +226,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			}
 
-			var statsDropDownPanelTemplate = logicArgs.TryGetValue("StatsDropDownPanelTemplate", out yaml) ? yaml.Value : "LABEL_DROPDOWN_TEMPLATE";
-
-			statsDropDown.OnMouseDown = _ => statsDropDown.ShowDropDown(statsDropDownPanelTemplate, 230, statsDropDownOptions, SetupItem);
+			statsDropDown.OnMouseDown = _ => dynamicWidgets.ShowDropDown(statsDropDown, dynamicWidgets.StatsDropDownPanelTemplate, 230, statsDropDownOptions, SetupItem);
 			statsDropDownOptions[0].OnClick();
 
 			var keyListener = statsDropDown.Get<LogicKeyListenerWidget>("STATS_DROPDOWN_KEYHANDLER");
