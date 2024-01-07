@@ -143,33 +143,27 @@ namespace OpenRA
 			OnRemoteDirectConnect(endpoint);
 		}
 
-		// Hacky workaround for orderManager visibility
-		public static Widget OpenWindow(World world, string widget)
+		/// <summary>
+		/// Creates the widget given by <paramref name="id"/> and attaches it to the <paramref name="parent"/>.
+		/// Prefer to call <see cref="ChromeLogic.DynamicWidgets.LoadWidget"/>.
+		/// </summary>
+		public static Widget LoadWidgetUnchecked(string id, Widget parent, WidgetArgs args)
 		{
-			return Ui.OpenWindow(widget, new WidgetArgs() { { "world", world }, { "orderManager", OrderManager }, { "worldRenderer", worldRenderer } });
+			return ModData.WidgetLoader.LoadWidget(ExtendWidgetArgs(args), parent, id);
 		}
 
-		// Who came up with the great idea of making these things
-		// impossible for the things that want them to access them directly?
-		public static Widget OpenWindow(string widget, WidgetArgs args)
+		/// <summary>
+		/// Returns a new widget args based on <paramref name="args"/>
+		/// and extended with values for 'orderManager', 'world' and 'worldRenderer'.
+		/// </summary>
+		public static WidgetArgs ExtendWidgetArgs(WidgetArgs args)
 		{
-			return Ui.OpenWindow(widget, new WidgetArgs(args)
+			return new WidgetArgs(args)
 			{
-				{ "world", worldRenderer.World },
+				{ "world", worldRenderer?.World },
 				{ "orderManager", OrderManager },
 				{ "worldRenderer", worldRenderer },
-			});
-		}
-
-		// Load a widget with world, orderManager, worldRenderer args, without adding it to the widget tree
-		public static Widget LoadWidget(World world, string id, Widget parent, WidgetArgs args)
-		{
-			return ModData.WidgetLoader.LoadWidget(new WidgetArgs(args)
-			{
-				{ "world", world },
-				{ "orderManager", OrderManager },
-				{ "worldRenderer", worldRenderer },
-			}, parent, id);
+			};
 		}
 
 		public static event Action LobbyInfoChanged = () => { };

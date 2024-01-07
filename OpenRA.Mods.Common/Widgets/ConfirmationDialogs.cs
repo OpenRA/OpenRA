@@ -18,6 +18,7 @@ namespace OpenRA.Mods.Common.Widgets
 	public static class ConfirmationDialogs
 	{
 		public static void ButtonPrompt(
+			ChromeLogic.DynamicWidgets dynamicWidgets,
 			ModData modData,
 			string title,
 			string text,
@@ -31,7 +32,7 @@ namespace OpenRA.Mods.Common.Widgets
 			string otherText = null)
 		{
 			var promptName = onOther != null ? "THREEBUTTON_PROMPT" : "TWOBUTTON_PROMPT";
-			var prompt = Ui.OpenWindow(promptName);
+			var prompt = dynamicWidgets.OpenWindow(promptName, new WidgetArgs());
 			var confirmButton = prompt.GetOrNull<ButtonWidget>("CONFIRM_BUTTON");
 			var cancelButton = prompt.GetOrNull<ButtonWidget>("CANCEL_BUTTON");
 			var otherButton = prompt.GetOrNull<ButtonWidget>("OTHER_BUTTON");
@@ -104,13 +105,15 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		public static void TextInputPrompt(ModData modData,
+		public static void TextInputPrompt(
+			ChromeLogic.DynamicWidgets dynamicWidgets,
+			ModData modData,
 			string title, string prompt, string initialText,
 			Action<string> onAccept, Action onCancel = null,
 			string acceptText = null, string cancelText = null,
 			Func<string, bool> inputValidator = null)
 		{
-			var panel = Ui.OpenWindow("TEXT_INPUT_PROMPT");
+			var panel = dynamicWidgets.OpenWindow("TEXT_INPUT_PROMPT", new WidgetArgs());
 			Func<bool> doValidate = null;
 			ButtonWidget acceptButton = null, cancelButton = null;
 

@@ -104,8 +104,8 @@ namespace OpenRA.Mods.Common.Widgets
 			Ui.ResetTooltips();
 		}
 
-		public void AttachPanel(Widget p) { AttachPanel(p, null); }
-		public void AttachPanel(Widget p, Action onCancel)
+		internal void AttachPanel(Widget p) { AttachPanel(p, null); }
+		internal void AttachPanel(Widget p, Action onCancel)
 		{
 			if (panel != null)
 				throw new InvalidOperationException("Attempted to attach a panel to an open dropdown");
@@ -146,11 +146,13 @@ namespace OpenRA.Mods.Common.Widgets
 			(panel as ScrollPanelWidget)?.ScrollToSelectedItem();
 		}
 
-		public void ShowDropDown<T>(
+		internal void ShowDropDown<T>(
+			ChromeLogic.DynamicWidgets dynamicWidgets,
 			string panelTemplate, int maxHeight, IEnumerable<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
 		{
 			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", Bounds.Width } };
-			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs() { { "substitutions", substitutions } });
+			var panel = (ScrollPanelWidget)dynamicWidgets.LoadWidgetAsDropdownPanel(
+				panelTemplate, new WidgetArgs() { { "substitutions", substitutions } });
 
 			var itemTemplate = panel.Get<ScrollItemWidget>("TEMPLATE");
 			panel.RemoveChildren();
@@ -169,11 +171,13 @@ namespace OpenRA.Mods.Common.Widgets
 			AttachPanel(panel);
 		}
 
-		public void ShowDropDown<T>(
+		internal void ShowDropDown<T>(
+			ChromeLogic.DynamicWidgets dynamicWidgets,
 			string panelTemplate, int height, Dictionary<string, IEnumerable<T>> groups, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
 		{
 			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", Bounds.Width } };
-			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs() { { "substitutions", substitutions } });
+			var panel = (ScrollPanelWidget)dynamicWidgets.LoadWidgetAsDropdownPanel(
+				panelTemplate, new WidgetArgs() { { "substitutions", substitutions } });
 
 			var headerTemplate = panel.GetOrNull<ScrollItemWidget>("HEADER");
 			var itemTemplate = panel.Get<ScrollItemWidget>("TEMPLATE");
@@ -203,6 +207,79 @@ namespace OpenRA.Mods.Common.Widgets
 
 			panel.Bounds.Height = Math.Min(height, panel.ContentHeight);
 			AttachPanel(panel);
+		}
+	}
+
+	public static class DropDownButtonWidgetExts
+	{
+		static void ValidateDropDown(
+			this ChromeLogic.DynamicWidgets dynamicWidgets,
+			DropDownButtonWidget dropdown,
+			string panelTemplate)
+		{
+			if (!dynamicWidgets.ParentDropdownWidgetIdsFromPanelWidgetId.TryGetValue(panelTemplate, out var parentIds))
+				throw new ArgumentException($"{nameof(dropdown)} must be the parent of {nameof(panelTemplate)} " +
+					$"as listed in {nameof(ChromeLogic.DynamicWidgets.ParentDropdownWidgetIdsFromPanelWidgetId)} " +
+					$"but '{panelTemplate}' was not listed.");
+
+			if (!parentIds.Contains(dropdown.Id))
+				throw new ArgumentException($"{nameof(dropdown)} must be the parent of {nameof(panelTemplate)} " +
+					$"as listed in {nameof(ChromeLogic.DynamicWidgets.ParentDropdownWidgetIdsFromPanelWidgetId)} " +
+					$"but the listed IDs {string.Join(",", parentIds)} do not contain the drop-down ID {dropdown.Id}");
+		}
+
+		public static void ShowDropDown<T>(
+			this ChromeLogic.DynamicWidgets dynamicWidgets,
+			DropDownButtonWidget dropdown,
+			string panelTemplate,
+			int maxHeight,
+			IEnumerable<T> options,
+			Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
+		{
+			ValidateDropDown(dynamicWidgets, dropdown, panelTemplate);
+			dropdown.ShowDropDown(dynamicWidgets, panelTemplate, maxHeight, options, setupItem);
+		}
+
+		public static void ShowDropDown<T>(
+			this ChromeLogic.DynamicWidgets dynamicWidgets,
+			DropDownButtonWidget dropdown,
+			string panelTemplate,
+			int height,
+			Dictionary<string, IEnumerable<T>> groups,
+			Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
+		{
+			ValidateDropDown(dynamicWidgets, dropdown, panelTemplate);
+			dropdown.ShowDropDown(dynamicWidgets, panelTemplate, height, groups, setupItem);
+		}
+
+		public static void AttachPanel(
+			this ChromeLogic.DynamicWidgets dynamicWidgets,
+			DropDownButtonWidget dropdown,
+			Widget panel)
+		{
+			ValidateDropDown(dynamicWidgets, dropdown, panel.Id);
+			dropdown.AttachPanel(panel);
+		}
+
+		public static void AttachPanel(
+			this ChromeLogic.DynamicWidgets dynamicWidgets,
+			DropDownButtonWidget dropdown,
+			Widget panel,
+			Action onCancel)
+		{
+			ValidateDropDown(dynamicWidgets, dropdown, panel.Id);
+			dropdown.AttachPanel(panel, onCancel);
+		}
+
+		public static Widget LoadWidgetAsDropdownPanel(
+			this ChromeLogic.DynamicWidgets dynamicWidgets,
+			string panelWidgetId,
+			WidgetArgs args)
+		{
+			if (!dynamicWidgets.ParentDropdownWidgetIdsFromPanelWidgetId.ContainsKey(panelWidgetId))
+				throw new ArgumentException($"'{panelWidgetId}' was not found in the " +
+					$"{nameof(ChromeLogic.DynamicWidgets.ParentDropdownWidgetIdsFromPanelWidgetId)} lookup.");
+			return Ui.LoadWidgetUnchecked(panelWidgetId, null, Game.ExtendWidgetArgs(args));
 		}
 	}
 

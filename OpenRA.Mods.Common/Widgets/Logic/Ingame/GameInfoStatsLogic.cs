@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using OpenRA.Graphics;
@@ -86,6 +87,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string VoteKickVoteCancel = "dialog-vote-kick.vote-cancel";
 
+		public class GameInfoStatsLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } =
+				new HashSet<string>
+				{
+					"TWOBUTTON_PROMPT",
+					"THREEBUTTON_PROMPT",
+				};
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } =
+				new Dictionary<string, string>();
+			public override IReadOnlyDictionary<string, string> OutOfTreeParentWidgetIdForChildWidgetId { get; } =
+				new Dictionary<string, string>
+				{
+					{ "REGISTERED_PLAYER_TOOLTIP", "PROFILE_TOOLTIP" },
+					{ "BOT_TOOLTIP", "PROFILE_TOOLTIP" },
+				};
+		}
+
+		readonly GameInfoStatsLogicDynamicWidgets dynamicWidgets = new();
+
 		[ObjectCreator.UseCtor]
 		public GameInfoStatsLogic(Widget widget, ModData modData, World world,
 			OrderManager orderManager, WorldRenderer worldRenderer, Action<bool> hideMenu, Action closeMenu)
@@ -157,7 +178,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					if (UnitOrders.KickVoteTarget == null)
 					{
-						ConfirmationDialogs.ButtonPrompt(modData,
+						ConfirmationDialogs.ButtonPrompt(
+							dynamicWidgets,
+							modData,
 							title: VoteKickTitle,
 							text: botsCount > 0 ? VoteKickPromptBreakBots : VoteKickPrompt,
 							titleArguments: Translation.Arguments("player", client.Name),
@@ -173,7 +196,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						return;
 					}
 
-					ConfirmationDialogs.ButtonPrompt(modData,
+					ConfirmationDialogs.ButtonPrompt(
+						dynamicWidgets,
+						modData,
 						title: VoteKickTitle,
 						text: botsCount > 0 ? VoteKickPromptBreakBots : VoteKickPrompt,
 						titleArguments: Translation.Arguments("player", client.Name),
@@ -198,7 +223,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 				else
 				{
-					ConfirmationDialogs.ButtonPrompt(modData,
+					ConfirmationDialogs.ButtonPrompt(
+						dynamicWidgets,
+						modData,
 						title: KickTitle,
 						text: KickPrompt,
 						titleArguments: Translation.Arguments("player", client.Name),
@@ -243,7 +270,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var pp = p.Player;
 					var client = world.LobbyInfo.ClientWithIndex(pp.ClientIndex);
 					var item = playerTemplate.Clone();
-					LobbyUtils.SetupProfileWidget(item, client, orderManager, worldRenderer);
+					LobbyUtils.SetupProfileWidget(dynamicWidgets, item, client, orderManager, worldRenderer);
 
 					var nameLabel = item.Get<LabelWidget>("NAME");
 					WidgetUtils.BindPlayerNameAndStatus(nameLabel, pp);
@@ -299,7 +326,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var client in spectators)
 				{
 					var item = spectatorTemplate.Clone();
-					LobbyUtils.SetupProfileWidget(item, client, orderManager, worldRenderer);
+					LobbyUtils.SetupProfileWidget(dynamicWidgets, item, client, orderManager, worldRenderer);
 
 					var nameLabel = item.Get<LabelWidget>("NAME");
 					var nameFont = Game.Renderer.Fonts[nameLabel.Font];

@@ -61,6 +61,60 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		static readonly Action DoNothing = () => { };
 
+		public class LobbyLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } =
+				new HashSet<string>
+				{
+					"CONNECTING_PANEL",
+					"CONNECTION_SWITCHMOD_PANEL",
+					"CONNECTIONFAILED_PANEL",
+					"MAPCHOOSER_PANEL",
+					"SETTINGS_PANEL",
+					"SERVER_LOBBY",
+				};
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } =
+				new Dictionary<string, string>
+				{
+					{ "MAP_PREVIEW", "MAP_PREVIEW_ROOT" },
+					{ "LOBBY_PLAYER_BIN", "TOP_PANELS_ROOT" },
+					{ "LOBBY_OPTIONS_BIN", "TOP_PANELS_ROOT" },
+					{ "LOBBY_MUSIC_BIN", "TOP_PANELS_ROOT" },
+					{ "LOBBY_SERVERS_BIN", "TOP_PANELS_ROOT" },
+					{ "FORCE_START_DIALOG", "TOP_PANELS_ROOT" },
+					{ "KICK_CLIENT_DIALOG", "TOP_PANELS_ROOT" },
+					{ "KICK_SPECTATORS_DIALOG", "TOP_PANELS_ROOT" },
+				};
+			public override IReadOnlyDictionary<string, string> OutOfTreeParentWidgetIdForChildWidgetId { get; } =
+				new Dictionary<string, string>
+				{
+					{ "REGISTERED_PLAYER_TOOLTIP", "PROFILE_TOOLTIP" },
+					{ "BOT_TOOLTIP", "PROFILE_TOOLTIP" },
+				};
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; }
+
+			[ObjectCreator.UseCtor]
+			public LobbyLogicDynamicWidgets(Dictionary<string, MiniYaml> logicArgs)
+			{
+				var parentDropdownWidgetIdsFromPanelWidgetId =
+					new Dictionary<string, IReadOnlyCollection<string>>
+					{
+						{ "COLOR_CHOOSER", new[] { "COLOR" } },
+						{ "FACTION_DROPDOWN_TEMPLATE", new[] { "FACTION" } },
+						{ "TEAM_DROPDOWN_TEMPLATE", new[] { "TEAM_DROPDOWN", "HANDICAP_DROPDOWN" } },
+						{ "PLAYERACTION_DROPDOWN_TEMPLATE", new[] { "PLAYER_ACTION" } },
+						{ "SPAWN_DROPDOWN_TEMPLATE", new[] { "SPAWN_DROPDOWN" } },
+						{ "LABEL_DROPDOWN_TEMPLATE", new[] { "SLOTS_DROPDOWNBUTTON", "SLOT_OPTIONS" } },
+					};
+				if (logicArgs.TryGetValue("ChatTemplates", out var templates))
+					foreach (var template in templates.Nodes.Select(n => n.Value.Value))
+						parentDropdownWidgetIdsFromPanelWidgetId.TryAdd(template, new[] { "CHAT_DISPLAY" });
+
+				ParentDropdownWidgetIdsFromPanelWidgetId = parentDropdownWidgetIdsFromPanelWidgetId;
+			}
+		}
+
+		readonly LobbyLogicDynamicWidgets dynamicWidgets;
 		readonly ModData modData;
 		readonly Action onStart;
 		readonly Action onExit;
@@ -123,7 +177,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				void OnConnect()
 				{
-					Game.OpenWindow("SERVER_LOBBY", new WidgetArgs()
+					dynamicWidgets.OpenWindow("SERVER_LOBBY", new WidgetArgs()
 					{
 						{ "onExit", onExit },
 						{ "onStart", onStart },
@@ -131,12 +185,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					});
 				}
 
-				Action<string> onRetry = pass => ConnectionLogic.Connect(connection.Target, pass, OnConnect, onExit);
+				Action<string> onRetry = pass => ConnectionLogic.Connect(dynamicWidgets, connection.Target, pass, OnConnect, onExit);
 
 				var switchPanel = CurrentServerSettings.ServerExternalMod != null ? "CONNECTION_SWITCHMOD_PANEL" : "CONNECTIONFAILED_PANEL";
-				Ui.OpenWindow(switchPanel, new WidgetArgs()
+				dynamicWidgets.OpenWindow(switchPanel, new WidgetArgs()
 				{
-					{ "orderManager", om },
 					{ "connection", connection },
 					{ "password", password },
 					{ "onAbort", onExit },
@@ -158,6 +211,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.onStart = onStart;
 			this.onExit = onExit;
 			this.skirmishMode = skirmishMode;
+			dynamicWidgets = new LobbyLogicDynamicWidgets(logicArgs);
 
 			// TODO: This needs to be reworked to support per-map tech levels, bots, etc.
 			modRules = modData.DefaultRules;
@@ -181,9 +235,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (name != null)
 				name.GetText = () => orderManager.LobbyInfo.GlobalSettings.ServerName;
 
-			var mapContainer = Ui.LoadWidget("MAP_PREVIEW", lobby.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
+			var mapContainer = dynamicWidgets.LoadWidget(lobby, "MAP_PREVIEW", new WidgetArgs
 			{
-				{ "orderManager", orderManager },
 				{ "getMap", (Func<(MapPreview, Session.MapStatus)>)(() => (map, mapStatus)) },
 				{
 					"onMouseDown", (Action<MapPreviewWidget, MapPreview, MouseInput>)((preview, mapPreview, mi) =>
@@ -207,7 +260,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			UpdateCurrentMap();
 
-			var playerBin = Ui.LoadWidget("LOBBY_PLAYER_BIN", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs());
+			var playerBin = dynamicWidgets.LoadWidget(lobby, "LOBBY_PLAYER_BIN", new WidgetArgs());
 			playerBin.IsVisible = () => panel == PanelType.Players;
 
 			players = playerBin.Get<ScrollPanelWidget>("LOBBY_PLAYERS");
@@ -250,7 +303,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					// Check for updated maps, if the user has edited a map we'll preselect it for them
 					modData.MapCache.UpdateMaps();
 
-					Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
+					dynamicWidgets.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 					{
 						{ "initialMap", modData.MapCache.PickLastModifiedMap(MapVisibility.Lobby) ?? map.Uid },
 						{ "remoteMapPool", orderManager.ServerMapPool },
@@ -355,7 +408,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						return item;
 					}
 
-					slotsButton.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 175, options, SetupItem);
+					dynamicWidgets.ShowDropDown(slotsButton, "LABEL_DROPDOWN_TEMPLATE", 175, options, SetupItem);
 				};
 			}
 
@@ -367,19 +420,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				resetOptionsButton.OnMouseDown = _ => orderManager.IssueOrder(Order.Command("reset_options"));
 			}
 
-			var optionsBin = Ui.LoadWidget("LOBBY_OPTIONS_BIN", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs()
+			var optionsBin = dynamicWidgets.LoadWidget(lobby, "LOBBY_OPTIONS_BIN", new WidgetArgs()
 			{
-				{ "orderManager", orderManager },
 				{ "getMap", (Func<MapPreview>)(() => map) },
 				{ "configurationDisabled", configurationDisabled }
 			});
 
 			optionsBin.IsVisible = () => panel == PanelType.Options;
 
-			var musicBin = Ui.LoadWidget("LOBBY_MUSIC_BIN", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs
+			var musicBin = dynamicWidgets.LoadWidget(lobby, "LOBBY_MUSIC_BIN", new WidgetArgs
 			{
 				{ "onExit", DoNothing },
-				{ "world", worldRenderer.World }
 			});
 			musicBin.IsVisible = () => panel == PanelType.Music;
 
@@ -388,7 +439,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				Action<GameServer> doNothingWithServer = _ => { };
 
-				var serversBin = Ui.LoadWidget("LOBBY_SERVERS_BIN", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs
+				var serversBin = dynamicWidgets.LoadWidget(lobby, "LOBBY_SERVERS_BIN", new WidgetArgs
 				{
 					{ "onJoin", doNothingWithServer },
 				});
@@ -464,7 +515,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 
-			var forceStartBin = Ui.LoadWidget("FORCE_START_DIALOG", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs());
+			var forceStartBin = dynamicWidgets.LoadWidget(lobby, "FORCE_START_DIALOG", new WidgetArgs());
 			forceStartBin.IsVisible = () => panel == PanelType.ForceStart;
 			forceStartBin.Get("KICK_WARNING").IsVisible = () => orderManager.LobbyInfo.Clients.Any(c => c.IsInvalid);
 			var forceStartButton = forceStartBin.Get<ButtonWidget>("OK_BUTTON");
@@ -492,7 +543,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var item in templateIds.Nodes)
 				{
 					var key = FieldLoader.GetValue<TextNotificationPool>("key", item.Key);
-					chatTemplates[key] = Ui.LoadWidget(item.Value.Value, null, new WidgetArgs());
+					chatTemplates[key] = dynamicWidgets.LoadWidgetAsDropdownPanel(item.Value.Value, new WidgetArgs());
 				}
 			}
 
@@ -548,10 +599,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var settingsButton = lobby.GetOrNull<ButtonWidget>("SETTINGS_BUTTON");
 			if (settingsButton != null)
 			{
-				settingsButton.OnClick = () => Ui.OpenWindow("SETTINGS_PANEL", new WidgetArgs
+				settingsButton.OnClick = () => dynamicWidgets.OpenWindow("SETTINGS_PANEL", new WidgetArgs
 				{
 					{ "onExit", DoNothing },
-					{ "worldRenderer", worldRenderer }
 				});
 			}
 
@@ -701,7 +751,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						template = emptySlotTemplate.Clone();
 
 					if (isHost)
-						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, map, modData);
+						LobbyUtils.SetupEditableSlotWidget(dynamicWidgets, template, slot, client, orderManager, map, modData);
 					else
 						LobbyUtils.SetupSlotWidget(template, modData, slot, client);
 
@@ -720,15 +770,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					LobbyUtils.SetupLatencyWidget(template, client, orderManager);
 
 					if (client.Bot != null)
-						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager, map, modData);
+						LobbyUtils.SetupEditableSlotWidget(dynamicWidgets, template, slot, client, orderManager, map, modData);
 					else
-						LobbyUtils.SetupEditableNameWidget(template, client, orderManager, worldRenderer);
+						LobbyUtils.SetupEditableNameWidget(dynamicWidgets, template, client, orderManager, worldRenderer);
 
-					LobbyUtils.SetupEditableColorWidget(template, slot, client, orderManager, worldRenderer, colorManager);
-					LobbyUtils.SetupEditableFactionWidget(template, slot, client, orderManager, factions);
-					LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, map);
-					LobbyUtils.SetupEditableHandicapWidget(template, slot, client, orderManager);
-					LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, map);
+					LobbyUtils.SetupEditableColorWidget(dynamicWidgets, template, slot, client, orderManager, worldRenderer, colorManager);
+					LobbyUtils.SetupEditableFactionWidget(dynamicWidgets, template, slot, client, orderManager, factions);
+					LobbyUtils.SetupEditableTeamWidget(dynamicWidgets, template, slot, client, orderManager, map);
+					LobbyUtils.SetupEditableHandicapWidget(dynamicWidgets, template, slot, client, orderManager);
+					LobbyUtils.SetupEditableSpawnWidget(dynamicWidgets, template, slot, client, orderManager, map);
 					LobbyUtils.SetupEditableReadyWidget(template, client, orderManager, map, MapIsPlayable);
 				}
 				else
@@ -743,15 +793,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					if (isHost)
 					{
-						LobbyUtils.SetupEditableTeamWidget(template, slot, client, orderManager, map);
-						LobbyUtils.SetupEditableHandicapWidget(template, slot, client, orderManager);
-						LobbyUtils.SetupEditableSpawnWidget(template, slot, client, orderManager, map);
-						LobbyUtils.SetupPlayerActionWidget(template, client, orderManager, worldRenderer,
+						LobbyUtils.SetupEditableTeamWidget(dynamicWidgets, template, slot, client, orderManager, map);
+						LobbyUtils.SetupEditableHandicapWidget(dynamicWidgets, template, slot, client, orderManager);
+						LobbyUtils.SetupEditableSpawnWidget(dynamicWidgets, template, slot, client, orderManager, map);
+						LobbyUtils.SetupPlayerActionWidget(dynamicWidgets, template, client, orderManager, worldRenderer,
 							lobby, () => panel = PanelType.Kick, () => panel = PanelType.Players);
 					}
 					else
 					{
-						LobbyUtils.SetupNameWidget(template, client, orderManager, worldRenderer);
+						LobbyUtils.SetupNameWidget(dynamicWidgets, template, client, orderManager, worldRenderer);
 						LobbyUtils.SetupTeamWidget(template, client);
 						LobbyUtils.SetupHandicapWidget(template, client);
 						LobbyUtils.SetupSpawnWidget(template, client);
@@ -786,7 +836,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (template == null || template.Id != editableSpectatorTemplate.Id)
 						template = editableSpectatorTemplate.Clone();
 
-					LobbyUtils.SetupEditableNameWidget(template, c, orderManager, worldRenderer);
+					LobbyUtils.SetupEditableNameWidget(dynamicWidgets, template, c, orderManager, worldRenderer);
 
 					if (client.IsAdmin)
 						LobbyUtils.SetupEditableReadyWidget(template, client, orderManager, map, MapIsPlayable);
@@ -800,10 +850,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						template = nonEditableSpectatorTemplate.Clone();
 
 					if (isHost)
-						LobbyUtils.SetupPlayerActionWidget(template, client, orderManager, worldRenderer,
+						LobbyUtils.SetupPlayerActionWidget(dynamicWidgets, template, client, orderManager, worldRenderer,
 							lobby, () => panel = PanelType.Kick, () => panel = PanelType.Players);
 					else
-						LobbyUtils.SetupNameWidget(template, client, orderManager, worldRenderer);
+						LobbyUtils.SetupNameWidget(dynamicWidgets, template, client, orderManager, worldRenderer);
 
 					if (client.IsAdmin)
 						LobbyUtils.SetupReadyWidget(template, client);
@@ -831,7 +881,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (spec == null || spec.Id != newSpectatorTemplate.Id)
 					spec = newSpectatorTemplate.Clone();
 
-				LobbyUtils.SetupKickSpectatorsWidget(spec, orderManager, lobby,
+				LobbyUtils.SetupKickSpectatorsWidget(
+					dynamicWidgets,
+					spec, orderManager, lobby,
 					() => panel = PanelType.Kick, () => panel = PanelType.Players, skirmishMode);
 
 				var btn = spec.Get<ButtonWidget>("SPECTATE");

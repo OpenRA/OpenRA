@@ -30,6 +30,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Marker = 4,
 		}
 
+		public class MapOverlaysLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } =
+				new Dictionary<string, string>
+				{
+					{ "TOOLS_WIDGETS", "OVERLAY_BUTTON" },
+				};
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; } =
+				new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ "OVERLAY_PANEL", new[] { "OVERLAY_BUTTON" } },
+				};
+		}
+
+		readonly MapOverlaysLogicDynamicWidgets dynamicWidgets = new();
 		readonly TerrainGeometryOverlay terrainGeometryTrait;
 		readonly BuildableTerrainOverlay buildableTerrainTrait;
 		readonly MarkerLayerOverlay markerLayerTrait;
@@ -88,14 +104,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				overlayDropdown.OnMouseDown = _ =>
 				{
 					overlayDropdown.RemovePanel();
-					overlayDropdown.AttachPanel(overlayPanel);
+					dynamicWidgets.AttachPanel(overlayDropdown, overlayPanel);
 				};
 			}
 		}
 
 		Widget CreateOverlaysPanel()
 		{
-			var categoriesPanel = Ui.LoadWidget("OVERLAY_PANEL", null, new WidgetArgs());
+			var categoriesPanel = dynamicWidgets.LoadWidgetAsDropdownPanel("OVERLAY_PANEL", new WidgetArgs());
 			var categoryTemplate = categoriesPanel.Get<CheckboxWidget>("CATEGORY_TEMPLATE");
 
 			MapOverlays[] allCategories = { MapOverlays.Grid, MapOverlays.Buildable, MapOverlays.Marker };

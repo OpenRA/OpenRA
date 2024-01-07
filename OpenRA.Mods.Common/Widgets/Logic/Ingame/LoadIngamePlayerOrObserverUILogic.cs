@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -17,6 +18,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class LoadIngamePlayerOrObserverUILogic : ChromeLogic
 	{
+		public class LoadIngamePlayerOrObserverUILogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } =
+				new HashSet<string>
+				{
+					"FMVPLAYER",
+				};
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } =
+				new Dictionary<string, string>
+				{
+					{ "OBSERVER_WIDGETS", "PLAYER_ROOT" },
+					{ "PLAYER_WIDGETS", "PLAYER_ROOT" },
+					{ "DEBUG_WIDGETS", "WORLD_ROOT" },
+					{ "TRANSIENTS_PANEL", "WORLD_ROOT" },
+				};
+		}
+
+		readonly LoadIngamePlayerOrObserverUILogicDynamicWidgets dynamicWidgets = new();
+
 		bool loadingObserverWidgets = false;
 
 		[ObjectCreator.UseCtor]
@@ -28,10 +48,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var playerRoot = worldRoot.Get("PLAYER_ROOT");
 
 			if (world.LocalPlayer == null)
-				Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
+				dynamicWidgets.LoadWidget(worldRoot, "OBSERVER_WIDGETS", new WidgetArgs());
 			else
 			{
-				var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
+				var playerWidgets = dynamicWidgets.LoadWidget(worldRoot, "PLAYER_WIDGETS", new WidgetArgs());
 				var sidebarTicker = playerWidgets.Get<LogicTickerWidget>("SIDEBAR_TICKER");
 				var objectives = world.LocalPlayer.PlayerActor.Info.TraitInfoOrDefault<MissionObjectivesInfo>();
 
@@ -47,14 +67,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								return;
 
 							playerRoot.RemoveChildren();
-							Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
+							dynamicWidgets.LoadWidget(worldRoot, "PLAYER_WIDGETS", new WidgetArgs());
 						});
 					}
 				};
 			}
 
-			Game.LoadWidget(world, "DEBUG_WIDGETS", worldRoot, new WidgetArgs());
-			Game.LoadWidget(world, "TRANSIENTS_PANEL", worldRoot, new WidgetArgs());
+			dynamicWidgets.LoadWidget(ingameRoot, "DEBUG_WIDGETS", new WidgetArgs());
+			dynamicWidgets.LoadWidget(ingameRoot, "TRANSIENTS_PANEL", new WidgetArgs());
 
 			world.GameOver += () =>
 			{
@@ -69,7 +89,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var video = world.LocalPlayer.WinState == WinState.Won ? missionData.WinVideo : missionData.LossVideo;
 						if (!string.IsNullOrEmpty(video))
-							Media.PlayFMVFullscreen(world, video, () => { });
+							Media.PlayFMVFullscreen(dynamicWidgets, world, video, () => { });
 					}
 				}
 

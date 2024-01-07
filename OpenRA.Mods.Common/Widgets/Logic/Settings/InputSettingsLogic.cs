@@ -51,8 +51,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string None = "options-zoom-modifier.none";
 
-		static InputSettingsLogic() { }
+		public class InputSettingsLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; } =
+				new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ "LABEL_DROPDOWN_TEMPLATE", new[] { "MOUSE_CONTROL_DROPDOWN", "MOUSE_SCROLL_TYPE_DROPDOWN", "ZOOM_MODIFIER" } },
+				};
+		}
 
+		readonly InputSettingsLogicDynamicWidgets dynamicWidgets = new();
 		readonly string classic;
 		readonly string modern;
 
@@ -78,11 +88,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SettingsUtils.BindSliderPref(panel, "UI_SCROLLSPEED_SLIDER", gs, "UIScrollSpeed");
 
 			var mouseControlDropdown = panel.Get<DropDownButtonWidget>("MOUSE_CONTROL_DROPDOWN");
-			mouseControlDropdown.OnMouseDown = _ => ShowMouseControlDropdown(mouseControlDropdown, gs);
+			mouseControlDropdown.OnMouseDown = _ => ShowMouseControlDropdown(dynamicWidgets, mouseControlDropdown, gs);
 			mouseControlDropdown.GetText = () => gs.UseClassicMouseStyle ? classic : modern;
 
 			var mouseScrollDropdown = panel.Get<DropDownButtonWidget>("MOUSE_SCROLL_TYPE_DROPDOWN");
-			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown, gs);
+			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(dynamicWidgets, mouseScrollDropdown, gs);
 			mouseScrollDropdown.GetText = () => gs.MouseScroll.ToString();
 
 			var mouseControlDescClassic = panel.Get("MOUSE_CONTROL_DESC_CLASSIC");
@@ -127,7 +137,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			var zoomModifierDropdown = panel.Get<DropDownButtonWidget>("ZOOM_MODIFIER");
-			zoomModifierDropdown.OnMouseDown = _ => ShowZoomModifierDropdown(zoomModifierDropdown, gs);
+			zoomModifierDropdown.OnMouseDown = _ => ShowZoomModifierDropdown(dynamicWidgets, zoomModifierDropdown, gs);
 			zoomModifierDropdown.GetText = () => gs.ZoomModifier.ToString();
 
 			SettingsUtils.AdjustSettingsScrollPanelLayout(scrollPanel);
@@ -159,7 +169,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
-		public static void ShowMouseControlDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		public static void ShowMouseControlDropdown(
+			DynamicWidgets dynamicWidgets,
+			DropDownButtonWidget dropdown, GameSettings s)
 		{
 			var options = new Dictionary<string, bool>()
 			{
@@ -176,10 +188,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			}
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
+			dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
 		}
 
-		static void ShowMouseScrollDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		static void ShowMouseScrollDropdown(
+			InputSettingsLogicDynamicWidgets dynamicWidgets,
+			DropDownButtonWidget dropdown, GameSettings s)
 		{
 			var options = new Dictionary<string, MouseScrollType>()
 			{
@@ -198,10 +212,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			}
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
+			dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
 		}
 
-		static void ShowZoomModifierDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		static void ShowZoomModifierDropdown(
+			InputSettingsLogicDynamicWidgets dynamicWidgets,
+			DropDownButtonWidget dropdown, GameSettings s)
 		{
 			var options = new Dictionary<string, Modifiers>()
 			{
@@ -221,7 +237,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			}
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
+			dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
 		}
 
 		static void MakeMouseFocusSettingsLive()

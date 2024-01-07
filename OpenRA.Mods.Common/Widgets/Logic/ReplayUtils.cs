@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using OpenRA.FileFormats;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
@@ -39,41 +40,43 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string IncompatibleVersion = "dialog-incompatible-replay.prompt-incompatible-version";
 
 		[TranslationReference("map")]
-		const string UnvailableMap = "dialog-incompatible-replay.prompt-unavailable-map";
+		const string UnavailableMap = "dialog-incompatible-replay.prompt-unavailable-map";
 
 		static readonly Action DoNothing = () => { };
 
-		public static bool PromptConfirmReplayCompatibility(ReplayMetadata replayMeta, ModData modData, Action onCancel = null)
+		public static bool PromptConfirmReplayCompatibility(
+			ChromeLogic.DynamicWidgets dynamicWidgets, ReplayMetadata replayMeta, ModData modData, Action onCancel = null)
 		{
 			onCancel ??= DoNothing;
 
 			if (replayMeta == null)
-				return IncompatibleReplayDialog(IncompatibleReplayPrompt, null, modData, onCancel);
+				return IncompatibleReplayDialog(dynamicWidgets, IncompatibleReplayPrompt, null, modData, onCancel);
 
 			var version = replayMeta.GameInfo.Version;
 			if (version == null)
-				return IncompatibleReplayDialog(UnknownVersion, null, modData, onCancel);
+				return IncompatibleReplayDialog(dynamicWidgets, UnknownVersion, null, modData, onCancel);
 
 			var mod = replayMeta.GameInfo.Mod;
 			if (mod == null)
-				return IncompatibleReplayDialog(UnknownMod, null, modData, onCancel);
+				return IncompatibleReplayDialog(dynamicWidgets, UnknownMod, null, modData, onCancel);
 
 			if (!Game.Mods.ContainsKey(mod))
-				return IncompatibleReplayDialog(UnvailableMod, Translation.Arguments("mod", mod), modData, onCancel);
+				return IncompatibleReplayDialog(dynamicWidgets, UnvailableMod, Translation.Arguments("mod", mod), modData, onCancel);
 
 			if (Game.Mods[mod].Metadata.Version != version)
-				return IncompatibleReplayDialog(IncompatibleVersion, Translation.Arguments("version", version), modData, onCancel);
+				return IncompatibleReplayDialog(dynamicWidgets, IncompatibleVersion, Translation.Arguments("version", version), modData, onCancel);
 
 			if (replayMeta.GameInfo.MapPreview.Status != MapStatus.Available)
-				return IncompatibleReplayDialog(UnvailableMap, Translation.Arguments("map", replayMeta.GameInfo.MapUid), modData, onCancel);
+				return IncompatibleReplayDialog(dynamicWidgets, UnavailableMap, Translation.Arguments("map", replayMeta.GameInfo.MapUid), modData, onCancel);
 
 			return true;
 		}
 
-		static bool IncompatibleReplayDialog(string text, Dictionary<string, object> textArguments, ModData modData, Action onCancel)
+		static bool IncompatibleReplayDialog(
+			ChromeLogic.DynamicWidgets dynamicWidgets, string text, Dictionary<string, object> textArguments, ModData modData, Action onCancel)
 		{
 			ConfirmationDialogs.ButtonPrompt(
-				modData, IncompatibleReplayTitle, text, textArguments: textArguments, onCancel: onCancel, cancelText: IncompatibleReplayAccept);
+				dynamicWidgets, modData, IncompatibleReplayTitle, text, textArguments: textArguments, onCancel: onCancel, cancelText: IncompatibleReplayAccept);
 			return false;
 		}
 	}

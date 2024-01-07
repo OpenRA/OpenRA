@@ -33,13 +33,11 @@ namespace OpenRA.Mods.Common.Widgets
 		public Func<Color> GetBarColor = () => Color.White;
 		readonly EWMA providedLerp = new(0.3f);
 		readonly EWMA usedLerp = new(0.3f);
-		readonly World world;
 		Sprite indicator;
 
 		[ObjectCreator.UseCtor]
-		public ResourceBarWidget(World world)
+		public ResourceBarWidget()
 		{
-			this.world = world;
 			tooltipContainer = Exts.Lazy(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
@@ -57,7 +55,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			Func<string> getText = () => TooltipTextCached.Update((GetUsed(), GetProvided()));
-			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() { { "getText", getText }, { "world", world } });
+			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() { { "getText", getText } });
 		}
 
 		public override void MouseExited()

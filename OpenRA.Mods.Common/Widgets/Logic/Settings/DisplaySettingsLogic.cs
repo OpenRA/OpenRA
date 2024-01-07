@@ -67,12 +67,38 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		[TranslationReference("fps")]
 		const string FrameLimiter = "checkbox-frame-limiter";
+
 		static readonly int OriginalVideoDisplay;
 		static readonly WindowMode OriginalGraphicsMode;
 		static readonly int2 OriginalGraphicsWindowedSize;
 		static readonly int2 OriginalGraphicsFullscreenSize;
 		static readonly GLProfile OriginalGLProfile;
 
+		public class DisplaySettingsLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; } =
+				new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ "COLOR_CHOOSER", new[] { "PLAYERCOLOR" } },
+					{
+						"LABEL_DROPDOWN_TEMPLATE",
+						new[]
+						{
+							"MODE_DROPDOWN",
+							"STATUS_BAR_DROPDOWN",
+							"DISPLAY_SELECTION_DROPDOWN",
+							"GL_PROFILE_DROPDOWN",
+							"TARGET_LINES_DROPDOWN",
+							"BATTLEFIELD_CAMERA_DROPDOWN",
+							"UI_SCALE_DROPDOWN",
+						}
+					},
+				};
+		}
+
+		readonly DisplaySettingsLogicDynamicWidgets dynamicWidgets = new();
 		readonly ModData modData;
 		readonly WorldRenderer worldRenderer;
 		readonly WorldViewportSizes viewportSizes;
@@ -200,7 +226,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var battlefieldCameraDropDown = panel.Get<DropDownButtonWidget>("BATTLEFIELD_CAMERA_DROPDOWN");
 			var battlefieldCameraLabel = new CachedTransform<WorldViewport, string>(vs => GetViewportSizeName(modData, vs));
-			battlefieldCameraDropDown.OnMouseDown = _ => ShowBattlefieldCameraDropdown(modData, battlefieldCameraDropDown, viewportSizes, ds);
+			battlefieldCameraDropDown.OnMouseDown = _ => ShowBattlefieldCameraDropdown(dynamicWidgets, modData, battlefieldCameraDropDown, viewportSizes, ds);
 			battlefieldCameraDropDown.GetText = () => battlefieldCameraLabel.Update(ds.ViewportDistance);
 
 			BindTextNotificationPoolFilterSettings(panel, gs);
@@ -216,7 +242,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var uiScaleDropdown = panel.Get<DropDownButtonWidget>("UI_SCALE_DROPDOWN");
 			var uiScaleLabel = new CachedTransform<float, string>(s => $"{(int)(100 * s)}%");
-			uiScaleDropdown.OnMouseDown = _ => ShowUIScaleDropdown(uiScaleDropdown, ds);
+			uiScaleDropdown.OnMouseDown = _ => ShowUIScaleDropdown(dynamicWidgets, uiScaleDropdown, ds);
 			uiScaleDropdown.GetText = () => uiScaleLabel.Update(ds.UIScale);
 
 			var minResolution = viewportSizes.MinEffectiveResolution;
@@ -286,7 +312,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var colorDropdown = panel.Get<DropDownButtonWidget>("PLAYERCOLOR");
 			colorDropdown.IsDisabled = () => world.Type != WorldType.Shellmap;
-			colorDropdown.OnMouseDown = _ => colorManager.ShowColorDropDown(colorDropdown, ps.Color, null, worldRenderer, color =>
+			colorDropdown.OnMouseDown = _ => colorManager.ShowColorDropDown(
+				dynamicWidgets, colorDropdown, ps.Color, null, worldRenderer, color =>
 			{
 				ps.Color = color;
 				Game.Settings.Save();
@@ -346,7 +373,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 		}
 
-		static void ShowWindowModeDropdown(DropDownButtonWidget dropdown, GraphicSettings s, ScrollPanelWidget scrollPanel)
+		void ShowWindowModeDropdown(DropDownButtonWidget dropdown, GraphicSettings s, ScrollPanelWidget scrollPanel)
 		{
 			var options = new Dictionary<string, WindowMode>()
 			{
@@ -369,7 +396,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			}
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
+			dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
 		}
 
 		public static void BindTextNotificationPoolFilterSettings(Widget panel, GameSettings gs)
@@ -395,7 +422,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		static void ShowStatusBarsDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		void ShowStatusBarsDropdown(DropDownButtonWidget dropdown, GameSettings s)
 		{
 			var options = new Dictionary<string, StatusBarsType>()
 			{
@@ -414,10 +441,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			}
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
+			dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
 		}
 
-		static void ShowDisplaySelectionDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
+		void ShowDisplaySelectionDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
 		{
 			ScrollItemWidget SetupItem(int o, ScrollItemWidget itemTemplate)
 			{
@@ -430,10 +457,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			}
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, Enumerable.Range(0, Game.Renderer.DisplayCount), SetupItem);
+			dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", 500, Enumerable.Range(0, Game.Renderer.DisplayCount), SetupItem);
 		}
 
-		static void ShowGLProfileDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
+		void ShowGLProfileDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
 		{
 			ScrollItemWidget SetupItem(GLProfile o, ScrollItemWidget itemTemplate)
 			{
@@ -447,10 +474,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var profiles = new[] { GLProfile.Automatic }.Concat(Game.Renderer.SupportedGLProfiles);
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, profiles, SetupItem);
+			dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", 500, profiles, SetupItem);
 		}
 
-		static void ShowTargetLinesDropdown(DropDownButtonWidget dropdown, GameSettings s)
+		void ShowTargetLinesDropdown(DropDownButtonWidget dropdown, GameSettings s)
 		{
 			var options = new Dictionary<string, TargetLinesType>()
 			{
@@ -469,10 +496,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			}
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
+			dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
 		}
 
-		public static void ShowBattlefieldCameraDropdown(ModData modData, DropDownButtonWidget dropdown, WorldViewportSizes viewportSizes, GraphicSettings gs)
+		public static void ShowBattlefieldCameraDropdown(
+			DynamicWidgets dynamicWidgets,
+			ModData modData, DropDownButtonWidget dropdown, WorldViewportSizes viewportSizes, GraphicSettings gs)
 		{
 			ScrollItemWidget SetupItem(WorldViewport o, ScrollItemWidget itemTemplate)
 			{
@@ -498,7 +527,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (viewportSizes.AllowNativeZoom && farRange.Y < windowHeight)
 				validSizes.Add(WorldViewport.Native);
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, validSizes, SetupItem);
+			dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", 500, validSizes, SetupItem);
 		}
 
 		static void RecalculateWidgetLayout(Widget w, bool insideScrollPanel = false)
@@ -543,7 +572,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				RecalculateWidgetLayout(c, insideScrollPanel || w is ScrollPanelWidget);
 		}
 
-		public static void ShowUIScaleDropdown(DropDownButtonWidget dropdown, GraphicSettings gs)
+		public static void ShowUIScaleDropdown(
+			DynamicWidgets dynamicWidgets,
+			DropDownButtonWidget dropdown, GraphicSettings gs)
 		{
 			ScrollItemWidget SetupItem(float o, ScrollItemWidget itemTemplate)
 			{
@@ -572,7 +603,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var maxScale = Math.Min(maxScales.X, maxScales.Y);
 
 			var validScales = new[] { 1f, 1.25f, 1.5f, 1.75f, 2f }.Where(x => x <= maxScale);
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, validScales, SetupItem);
+			dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", 500, validScales, SetupItem);
 		}
 	}
 }

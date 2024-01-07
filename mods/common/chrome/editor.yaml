@@ -854,7 +854,7 @@ Container@EDITOR_WORLD_ROOT:
 							ImageName: history
 		MenuButton@OPTIONS_BUTTON:
 			Logic: MenuButtonsChromeLogic
-			MenuContainer: INGAME_MENU
+				MenuContainer: INGAME_MENU
 			HideIngameUI: true
 			Pause: true
 			Width: 60

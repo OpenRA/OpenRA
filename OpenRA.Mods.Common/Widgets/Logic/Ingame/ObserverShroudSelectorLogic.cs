@@ -41,6 +41,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string NoTeam = "label-no-team";
 
+		public class ObserverShroudSelectorLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; } =
+				new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ "SPECTATOR_DROPDOWN_TEMPLATE", new[] { "SHROUD_SELECTOR" } },
+				};
+		}
+
+		readonly ObserverShroudSelectorLogicDynamicWidgets dynamicWidgets = new();
 		readonly CameraOption combined, disableShroud;
 		readonly IGrouping<int, CameraOption>[] teams;
 		readonly bool limitViews;
@@ -159,7 +171,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					return item;
 				}
 
-				shroudSelector.ShowDropDown("SPECTATOR_DROPDOWN_TEMPLATE", 400, groups, SetupItem);
+				dynamicWidgets.ShowDropDown(shroudSelector, "SPECTATOR_DROPDOWN_TEMPLATE", 400, groups, SetupItem);
 			};
 
 			shroudLabel = shroudSelector.Get<LabelWidget>("LABEL");

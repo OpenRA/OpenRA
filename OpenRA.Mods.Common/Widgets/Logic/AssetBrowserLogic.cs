@@ -41,6 +41,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string AllPackages = "label-all-packages";
 
+		public class AssetBrowserLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; } =
+				new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ "COLOR_CHOOSER", new[] { "COLOR" } },
+					{ "ASSET_TYPES_PANEL", new[] { "ASSET_TYPES_DROPDOWN" } },
+					{ "LABEL_DROPDOWN_TEMPLATE", new[] { "SOURCE_SELECTOR", "PALETTE_SELECTOR" } },
+				};
+		}
+
+		readonly AssetBrowserLogicDynamicWidgets dynamicWidgets = new();
 		readonly string[] allowedExtensions;
 		readonly string[] allowedSpriteExtensions;
 		readonly string[] allowedModelExtensions;
@@ -128,11 +142,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var assetTypeDropdown = panel.GetOrNull<DropDownButtonWidget>("ASSET_TYPES_DROPDOWN");
 			if (assetTypeDropdown != null)
 			{
-				var assetTypesPanel = CreateAssetTypesPanel();
+				var assetTypesPanel = CreateAssetTypesPanel(dynamicWidgets);
 				assetTypeDropdown.OnMouseDown = _ =>
 				{
 					assetTypeDropdown.RemovePanel();
-					assetTypeDropdown.AttachPanel(assetTypesPanel);
+					dynamicWidgets.AttachPanel(assetTypeDropdown, assetTypesPanel);
 				};
 			}
 
@@ -184,7 +198,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var color = Game.Settings.Player.Color;
 				colorDropdown.IsDisabled = () => !colorPickerPalettes.Contains(currentPalette);
-				colorDropdown.OnMouseDown = _ => colorManager.ShowColorDropDown(colorDropdown, color, null, worldRenderer, c => color = c);
+				colorDropdown.OnMouseDown = _ => colorManager.ShowColorDropDown(dynamicWidgets, colorDropdown, color, null, worldRenderer, c => color = c);
 				colorDropdown.IsVisible = () => currentSprites != null || currentVoxel != null;
 
 				panel.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => color;
@@ -609,7 +623,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var sources = new[] { (IReadOnlyPackage)null }.Concat(acceptablePackages);
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, sources, SetupItem);
+			dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", 280, sources, SetupItem);
 			return true;
 		}
 
@@ -664,7 +678,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			}
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 280, palettes, SetupItem);
+			dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", 280, palettes, SetupItem);
 			return true;
 		}
 
@@ -736,9 +750,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			UnMuteSounds();
 		}
 
-		Widget CreateAssetTypesPanel()
+		Widget CreateAssetTypesPanel(
+			AssetBrowserLogicDynamicWidgets dynamicWidgets)
 		{
-			var assetTypesPanel = Ui.LoadWidget("ASSET_TYPES_PANEL", null, new WidgetArgs());
+			var assetTypesPanel = dynamicWidgets.LoadWidgetAsDropdownPanel("ASSET_TYPES_PANEL", new WidgetArgs());
 			var assetTypeTemplate = assetTypesPanel.Get<CheckboxWidget>("ASSET_TYPE_TEMPLATE");
 
 			var allAssetTypes = new[] { AssetType.Sprite, AssetType.Model, AssetType.Audio, AssetType.Video, AssetType.Unknown };

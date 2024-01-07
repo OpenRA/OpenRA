@@ -52,6 +52,29 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string ResetCancel = "dialog-settings-reset.cancel";
 
+		public class SettingsLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } =
+				new HashSet<string>
+				{
+					"TWOBUTTON_PROMPT",
+					"THREEBUTTON_PROMPT",
+				};
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; }
+
+			[ObjectCreator.UseCtor]
+			public SettingsLogicDynamicWidgets(Dictionary<string, MiniYaml> logicArgs)
+			{
+				var parentWidgetIdForChildWidgetId = new Dictionary<string, string>();
+				if (logicArgs.TryGetValue("Panels", out var settingsPanels))
+					foreach (var panel in settingsPanels.Nodes.Select(n => n.Key))
+						parentWidgetIdForChildWidgetId.Add(panel, "PANEL_TEMPLATE");
+
+				ParentWidgetIdForChildWidgetId = parentWidgetIdForChildWidgetId;
+			}
+		}
+
+		readonly SettingsLogicDynamicWidgets dynamicWidgets;
 		readonly Dictionary<string, Func<bool>> leavePanelActions = new();
 		readonly Dictionary<string, Action> resetPanelActions = new();
 
@@ -64,11 +87,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		bool needsRestart = false;
 
-		static SettingsLogic() { }
-
 		[ObjectCreator.UseCtor]
 		public SettingsLogic(Widget widget, Action onExit, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs, ModData modData)
 		{
+			dynamicWidgets = new SettingsLogicDynamicWidgets(logicArgs);
+
 			panelContainer = widget.Get("PANEL_CONTAINER");
 			var panelTemplate = panelContainer.Get<ContainerWidget>("PANEL_TEMPLATE");
 			panelContainer.RemoveChild(panelTemplate);
@@ -87,10 +110,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var panel in panels)
 				{
 					var container = panelTemplate.Clone() as ContainerWidget;
-					container.Id = panel.Key;
 					panelContainer.AddChild(container);
 
-					Game.LoadWidget(worldRenderer.World, panel.Key, container, new WidgetArgs()
+					dynamicWidgets.LoadWidget(container, panel.Key, new WidgetArgs()
 					{
 						{ "registerPanel", (Action<string, string, Func<Widget, Func<bool>>, Func<Widget, Action>>)RegisterSettingsPanel },
 						{ "panelID", panel.Key },
@@ -108,7 +130,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				void CloseAndExit() { Ui.CloseWindow(); onExit(); }
 				if (needsRestart)
 				{
-					void NoRestart() => ConfirmationDialogs.ButtonPrompt(modData,
+					void NoRestart() => ConfirmationDialogs.ButtonPrompt(
+						dynamicWidgets,
+						modData,
 						title: SettingsSaveTitle,
 						text: SettingsSavePrompt,
 						onCancel: CloseAndExit,
@@ -120,7 +144,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						return;
 					}
 
-					ConfirmationDialogs.ButtonPrompt(modData,
+					ConfirmationDialogs.ButtonPrompt(
+						dynamicWidgets,
+						modData,
 						title: RestartTitle,
 						text: RestartPrompt,
 						onConfirm: () => Game.SwitchToExternalMod(external, null, NoRestart),
@@ -140,7 +166,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					Game.Settings.Save();
 				}
 
-				ConfirmationDialogs.ButtonPrompt(modData,
+				ConfirmationDialogs.ButtonPrompt(
+					dynamicWidgets,
+					modData,
 					title: ResetTitle,
 					text: ResetPrompt,
 					titleArguments: Translation.Arguments("panel", panels[activePanel]),

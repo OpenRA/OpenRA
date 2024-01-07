@@ -31,6 +31,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string MarkerMirrorModeRotateTranslation = "mirror-mode.rotate";
 
+		public class MapMarkerTilesLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; } =
+				new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ "LABEL_DROPDOWN_TEMPLATE", new[] { "MODE_DROPDOWN", "FLIP_NUM_SIDES_DROPDOWN" } },
+				};
+		}
+
+		readonly MapMarkerTilesLogicDynamicWidgets dynamicWidgets = new();
+
 		readonly EditorActionManager editorActionManager;
 		readonly MarkerLayerOverlay markerLayerTrait;
 		readonly ScrollPanelWidget tileColorPanel;
@@ -235,7 +249,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var options = new[] { MarkerTileMirrorMode.None, MarkerTileMirrorMode.Flip, MarkerTileMirrorMode.Rotate };
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, SetupItem);
+			dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", 150, options, SetupItem);
 		}
 
 		void ShowFlipNumSidesDropDown(DropDownButtonWidget dropdown)
@@ -251,7 +265,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var options = new[] { 2, 4 };
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, SetupItem);
+			dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", 150, options, SetupItem);
 		}
 	}
 }

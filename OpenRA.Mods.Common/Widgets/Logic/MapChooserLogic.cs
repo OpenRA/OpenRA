@@ -82,6 +82,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string OrderMapsBySize = "options-order-maps.size";
 
+		public class MapChooserLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } =
+				new HashSet<string>
+				{
+					"TWOBUTTON_PROMPT",
+					"THREEBUTTON_PROMPT",
+				};
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; } =
+				new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ "LABEL_DROPDOWN_TEMPLATE", new[] { "GAMEMODE_FILTER", "ORDERBY" } },
+				};
+		}
+
+		readonly MapChooserLogicDynamicWidgets dynamicWidgets = new();
 		readonly string allMaps;
 
 		readonly Widget widget;
@@ -353,7 +370,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				gameModeDropdown.OnClick = () =>
-					gameModeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, categories, SetupItem);
+					dynamicWidgets.ShowDropDown(gameModeDropdown, "LABEL_DROPDOWN_TEMPLATE", 210, categories, SetupItem);
 
 				gameModeDropdown.GetText = () =>
 				{
@@ -395,7 +412,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			orderByDropdown.OnClick = () =>
-				orderByDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, orderByDict.Keys, SetupItem);
+				dynamicWidgets.ShowDropDown(orderByDropdown, "LABEL_DROPDOWN_TEMPLATE", 500, orderByDict.Keys, SetupItem);
 
 			orderByDropdown.GetText = () =>
 				orderByDict.FirstOrDefault(m => m.Value == orderByFunc).Key;
@@ -511,7 +528,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void DeleteOneMap(string map, Action<string> after)
 		{
-			ConfirmationDialogs.ButtonPrompt(modData,
+			ConfirmationDialogs.ButtonPrompt(
+				dynamicWidgets,
+				modData,
 				title: DeleteMapTitle,
 				text: DeleteMapPrompt,
 				textArguments: Translation.Arguments("title", modData.MapCache[map].Title),
@@ -526,7 +545,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void DeleteAllMaps(string[] maps, Action<string> after)
 		{
-			ConfirmationDialogs.ButtonPrompt(modData,
+			ConfirmationDialogs.ButtonPrompt(
+				dynamicWidgets,
+				modData,
 				title: DeleteAllMapsTitle,
 				text: DeleteAllMapsPrompt,
 				onConfirm: () =>

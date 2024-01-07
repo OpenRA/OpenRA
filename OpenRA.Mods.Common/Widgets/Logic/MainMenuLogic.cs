@@ -39,6 +39,41 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		protected enum MenuPanel { None, Missions, Skirmish, Multiplayer, MapEditor, Replays, GameSaves }
 
+		public class MainMenuLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } =
+				new HashSet<string>
+				{
+					"CONNECTING_PANEL",
+					"MUSIC_PANEL",
+					"CREDITS_PANEL",
+					"MAINMENU_SYSTEM_INFO_PROMPT",
+					"MULTIPLAYER_PANEL",
+					"REPLAYBROWSER_PANEL",
+					"GAMESAVE_BROWSER_PANEL",
+					"SETTINGS_PANEL",
+					"ASSETBROWSER_PANEL",
+					"NEW_MAP_BG",
+					"MAPCHOOSER_PANEL",
+					"MAINMENU_INTRODUCTION_PROMPT",
+					"MISSIONBROWSER_PANEL",
+					"ENCYCLOPEDIA_PANEL",
+					"SERVER_LOBBY",
+				};
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } =
+				new Dictionary<string, string>
+				{
+					{ "LOCAL_PROFILE_PANEL", "PLAYER_PROFILE_CONTAINER" },
+				};
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; } =
+				new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ "NEWS_PANEL", new[] { "NEWS_BUTTON" } },
+				};
+		}
+
+		readonly MainMenuLogicDynamicWidgets dynamicWidgets = new();
+
 		protected MenuType menuType = MenuType.Main;
 		readonly Widget rootMenu;
 		readonly ScrollPanelWidget newsPanel;
@@ -101,7 +136,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mainMenu.Get<ButtonWidget>("SETTINGS_BUTTON").OnClick = () =>
 			{
 				SwitchMenu(MenuType.None);
-				Game.OpenWindow("SETTINGS_PANEL", new WidgetArgs
+				dynamicWidgets.OpenWindow("SETTINGS_PANEL", new WidgetArgs
 				{
 					{ "onExit", () => SwitchMenu(MenuType.Main) }
 				});
@@ -148,10 +183,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			extrasMenu.Get<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{
 				SwitchMenu(MenuType.None);
-				Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs
+				dynamicWidgets.OpenWindow("MUSIC_PANEL", new WidgetArgs
 				{
 					{ "onExit", () => SwitchMenu(MenuType.Extras) },
-					{ "world", world }
 				});
 			};
 
@@ -162,7 +196,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				assetBrowserButton.OnClick = () =>
 				{
 					SwitchMenu(MenuType.None);
-					Game.OpenWindow("ASSETBROWSER_PANEL", new WidgetArgs
+					dynamicWidgets.OpenWindow("ASSETBROWSER_PANEL", new WidgetArgs
 					{
 						{ "onExit", () => SwitchMenu(MenuType.Extras) },
 					});
@@ -171,7 +205,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			extrasMenu.Get<ButtonWidget>("CREDITS_BUTTON").OnClick = () =>
 			{
 				SwitchMenu(MenuType.None);
-				Ui.OpenWindow("CREDITS_PANEL", new WidgetArgs
+				dynamicWidgets.OpenWindow("CREDITS_PANEL", new WidgetArgs
 				{
 					{ "onExit", () => SwitchMenu(MenuType.Extras) },
 				});
@@ -198,7 +232,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			newMapButton.OnClick = () =>
 			{
 				SwitchMenu(MenuType.None);
-				Game.OpenWindow("NEW_MAP_BG", new WidgetArgs()
+				dynamicWidgets.OpenWindow("NEW_MAP_BG", new WidgetArgs()
 				{
 					{ "onSelect", onSelect },
 					{ "onExit", () => SwitchMenu(MenuType.MapEditor) }
@@ -209,7 +243,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			loadMapButton.OnClick = () =>
 			{
 				SwitchMenu(MenuType.None);
-				Game.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
+				dynamicWidgets.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 				{
 					{ "initialMap", null },
 					{ "remoteMapPool", null },
@@ -229,7 +263,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				newsBG.IsVisible = () => Game.Settings.Game.FetchNews && menuType != MenuType.None && menuType != MenuType.StartupPrompts;
 
-				newsPanel = Ui.LoadWidget<ScrollPanelWidget>("NEWS_PANEL", null, new WidgetArgs());
+				newsPanel = (ScrollPanelWidget)dynamicWidgets.LoadWidgetAsDropdownPanel("NEWS_PANEL", new WidgetArgs());
 				newsTemplate = newsPanel.Get("NEWS_ITEM_TEMPLATE");
 				newsPanel.RemoveChild(newsTemplate);
 
@@ -254,7 +288,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (playerProfile != null)
 			{
 				Func<bool> minimalProfile = () => Ui.CurrentWindow() != null;
-				Game.LoadWidget(world, "LOCAL_PROFILE_PANEL", playerProfile, new WidgetArgs()
+				dynamicWidgets.LoadWidget(playerProfile, "LOCAL_PROFILE_PANEL", new WidgetArgs()
 				{
 					{ "minimalProfile", minimalProfile }
 				});
@@ -272,7 +306,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (SystemInfoPromptLogic.ShouldShowPrompt())
 				{
-					Ui.OpenWindow("MAINMENU_SYSTEM_INFO_PROMPT", new WidgetArgs
+					dynamicWidgets.OpenWindow("MAINMENU_SYSTEM_INFO_PROMPT", new WidgetArgs
 					{
 						{ "onComplete", OnSysInfoComplete }
 					});
@@ -283,7 +317,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (IntroductionPromptLogic.ShouldShowPrompt())
 			{
-				Game.OpenWindow("MAINMENU_INTRODUCTION_PROMPT", new WidgetArgs
+				dynamicWidgets.OpenWindow("MAINMENU_INTRODUCTION_PROMPT", new WidgetArgs
 				{
 					{ "onComplete", OnIntroductionComplete }
 				});
@@ -359,13 +393,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void OpenNewsPanel(DropDownButtonWidget button)
 		{
 			newsOpen = true;
-			button.AttachPanel(newsPanel, () => newsOpen = false);
+			dynamicWidgets.AttachPanel(button, newsPanel, () => newsOpen = false);
 		}
 
 		void OnRemoteDirectConnect(ConnectionTarget endpoint)
 		{
 			SwitchMenu(MenuType.None);
-			Ui.OpenWindow("MULTIPLAYER_PANEL", new WidgetArgs
+			dynamicWidgets.OpenWindow("MULTIPLAYER_PANEL", new WidgetArgs
 			{
 				{ "onStart", RemoveShellmapUI },
 				{ "onExit", () => SwitchMenu(MenuType.Main) },
@@ -469,7 +503,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Game.Settings.Server.Map = map;
 			Game.Settings.Save();
 
-			ConnectionLogic.Connect(Game.CreateLocalServer(map, isSkirmish: true),
+			ConnectionLogic.Connect(dynamicWidgets, Game.CreateLocalServer(map, isSkirmish: true),
 				"",
 				OpenSkirmishLobbyPanel,
 				() => { Game.CloseServer(); SwitchMenu(MenuType.Main); });
@@ -478,7 +512,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void OpenMissionBrowserPanel(string map)
 		{
 			SwitchMenu(MenuType.None);
-			Game.OpenWindow("MISSIONBROWSER_PANEL", new WidgetArgs
+			dynamicWidgets.OpenWindow("MISSIONBROWSER_PANEL", new WidgetArgs
 			{
 				{ "onExit", () => { Game.Disconnect(); SwitchMenu(MenuType.Singleplayer); } },
 				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.Missions; } },
@@ -489,7 +523,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void OpenEncyclopediaPanel()
 		{
 			SwitchMenu(MenuType.None);
-			Game.OpenWindow("ENCYCLOPEDIA_PANEL", new WidgetArgs
+			dynamicWidgets.OpenWindow("ENCYCLOPEDIA_PANEL", new WidgetArgs
 			{
 				{ "onExit", () => SwitchMenu(MenuType.Singleplayer) }
 			});
@@ -498,7 +532,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void OpenSkirmishLobbyPanel()
 		{
 			SwitchMenu(MenuType.None);
-			Game.OpenWindow("SERVER_LOBBY", new WidgetArgs
+			dynamicWidgets.OpenWindow("SERVER_LOBBY", new WidgetArgs
 			{
 				{ "onExit", () => { Game.Disconnect(); SwitchMenu(MenuType.Singleplayer); } },
 				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.Skirmish; } },
@@ -509,7 +543,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void OpenMultiplayerPanel()
 		{
 			SwitchMenu(MenuType.None);
-			Ui.OpenWindow("MULTIPLAYER_PANEL", new WidgetArgs
+			dynamicWidgets.OpenWindow("MULTIPLAYER_PANEL", new WidgetArgs
 			{
 				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.Multiplayer; } },
 				{ "onExit", () => SwitchMenu(MenuType.Main) },
@@ -520,7 +554,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void OpenReplayBrowserPanel()
 		{
 			SwitchMenu(MenuType.None);
-			Ui.OpenWindow("REPLAYBROWSER_PANEL", new WidgetArgs
+			dynamicWidgets.OpenWindow("REPLAYBROWSER_PANEL", new WidgetArgs
 			{
 				{ "onExit", () => SwitchMenu(MenuType.Extras) },
 				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.Replays; } }
@@ -530,12 +564,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void OpenGameSaveBrowserPanel()
 		{
 			SwitchMenu(MenuType.None);
-			Ui.OpenWindow("GAMESAVE_BROWSER_PANEL", new WidgetArgs
+			dynamicWidgets.OpenWindow("GAMESAVE_BROWSER_PANEL", new WidgetArgs
 			{
 				{ "onExit", () => SwitchMenu(MenuType.Singleplayer) },
 				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.GameSaves; } },
 				{ "isSavePanel", false },
-				{ "world", null }
 			});
 		}
 

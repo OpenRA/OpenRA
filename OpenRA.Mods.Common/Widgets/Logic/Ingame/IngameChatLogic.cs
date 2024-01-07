@@ -35,6 +35,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string ChatDisabled = "label-chat-disabled";
 
+		public class IngameChatLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; }
+
+			[ObjectCreator.UseCtor]
+			public IngameChatLogicDynamicWidgets(Dictionary<string, MiniYaml> logicArgs)
+			{
+				var parentDropdownWidgetIdsFromPanelWidgetId = new Dictionary<string, IReadOnlyCollection<string>>();
+				if (logicArgs.TryGetValue("Templates", out var templates))
+					foreach (var template in templates.Nodes.Select(n => n.Value.Value))
+						parentDropdownWidgetIdsFromPanelWidgetId.TryAdd(template, new[] { "CHAT_SCROLLPANEL" });
+
+				ParentDropdownWidgetIdsFromPanelWidgetId = parentDropdownWidgetIdsFromPanelWidgetId;
+			}
+		}
+
+		readonly IngameChatLogicDynamicWidgets dynamicWidgets;
 		readonly Ruleset modRules;
 		readonly World world;
 
@@ -62,6 +81,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			modRules = modData.DefaultRules;
 			this.isMenuChat = isMenuChat;
 			this.world = world;
+			dynamicWidgets = new IngameChatLogicDynamicWidgets(logicArgs);
 
 			var chatTraits = world.WorldActor.TraitsImplementing<INotifyChat>().ToArray();
 			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant && !p.IsBot);
@@ -88,7 +108,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var item in templateIds.Nodes)
 				{
 					var key = FieldLoader.GetValue<TextNotificationPool>("key", item.Key);
-					templates[key] = Ui.LoadWidget(item.Value.Value, null, new WidgetArgs());
+					templates[key] = dynamicWidgets.LoadWidgetAsDropdownPanel(item.Value.Value, new WidgetArgs());
 				}
 			}
 

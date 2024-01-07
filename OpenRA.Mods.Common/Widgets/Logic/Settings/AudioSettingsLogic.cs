@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
@@ -22,6 +23,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		static readonly string OriginalSoundDevice;
 
+		public class AudioSettingsLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; } =
+				new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ "LABEL_DROPDOWN_TEMPLATE", new[] { "AUDIO_DEVICE" } },
+				};
+		}
+
+		readonly AudioSettingsLogicDynamicWidgets dynamicWidgets = new();
 		readonly WorldRenderer worldRenderer;
 
 		SoundDevice soundDevice;
@@ -178,7 +191,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return item;
 			}
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
+			dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, SetupItem);
 		}
 	}
 }

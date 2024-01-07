@@ -58,12 +58,11 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		public static Widget OpenWindow(string id)
-		{
-			return OpenWindow(id, new WidgetArgs());
-		}
-
-		public static Widget OpenWindow(string id, WidgetArgs args)
+		/// <summary>
+		/// Loads the widget given by <paramref name="id"/> and pushes it as the current window onto <see cref="Root"/>.
+		/// Prefer to call <see cref="ChromeLogic.DynamicWidgets.OpenWindow"/>.
+		/// </summary>
+		public static Widget OpenWindowUnchecked(string id, WidgetArgs args)
 		{
 			var window = Game.ModData.WidgetLoader.LoadWidget(args, Root, id);
 			if (WindowList.Count > 0)
@@ -77,15 +76,11 @@ namespace OpenRA.Widgets
 			return WindowList.Count > 0 ? WindowList.Peek() : null;
 		}
 
-		public static T LoadWidget<T>(string id, Widget parent, WidgetArgs args) where T : Widget
-		{
-			if (LoadWidget(id, parent, args) is T widget)
-				return widget;
-
-			throw new InvalidOperationException($"Widget {id} is not of type {typeof(T).Name}");
-		}
-
-		public static Widget LoadWidget(string id, Widget parent, WidgetArgs args)
+		/// <summary>
+		/// Creates the widget given by <paramref name="id"/> and attaches it to the <paramref name="parent"/>.
+		/// Prefer to call <see cref="ChromeLogic.DynamicWidgets.LoadWidget"/>.
+		/// </summary>
+		public static Widget LoadWidgetUnchecked(string id, Widget parent, WidgetArgs args)
 		{
 			return Game.ModData.WidgetLoader.LoadWidget(args, parent, id);
 		}
@@ -180,6 +175,100 @@ namespace OpenRA.Widgets
 		public virtual void BecameHidden() { }
 		public virtual void BecameVisible() { }
 		protected virtual void Dispose(bool disposing) { }
+
+		/// <summary>
+		/// Classes deriving from <see cref="ChromeLogic"/> should create a nested class derived from <see cref="DynamicWidgets"/>.
+		/// Any child widgets the logic creates at runtime should be created via this class. This supports linting.
+		/// A constructor marked with <see cref="ObjectCreator.UseCtorAttribute"/> can accept a parameter named 'logicArgs'
+		/// of type <see cref="Dictionary{TKey, TValue}"/> with key <see cref="string"/> and value <see cref="MiniYaml"/>.
+		/// </summary>
+		public abstract class DynamicWidgets
+		{
+			// Can't be an IReadOnlySet<string> as mono doesn't have that.
+			public static readonly ISet<string> EmptySet =
+				new HashSet<string>();
+			public static readonly IReadOnlyDictionary<string, string> EmptyDictionary =
+				new Dictionary<string, string>();
+			public static readonly IReadOnlyDictionary<string, IReadOnlyCollection<string>> EmptyLookup =
+				new Dictionary<string, IReadOnlyCollection<string>>();
+
+			/// <summary>
+			/// For each widget that will be opened as a window at runtime, specific the widget ID.
+			/// This supports linting.
+			/// </summary>
+			public abstract ISet<string> WindowWidgetIds { get; }
+
+			/// <summary>
+			/// For each child widget ID to be created at runtime, specify the parent widget ID in this lookup.
+			/// This supports linting.
+			/// </summary>
+			public abstract IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; }
+
+			/// <summary>
+			/// Like <see cref="ParentWidgetIdForChildWidgetId"/> but for any widgets created outside the widget tree passed to the logic class.
+			/// e.g. loading a widget onto something located on <see cref="Ui.Root"/>.
+			/// A blank parent ID indicates the parent *is* <see cref="Ui.Root"/>.
+			/// </summary>
+			public virtual IReadOnlyDictionary<string, string> OutOfTreeParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+
+			/// <summary>
+			/// For each child panel template to be created at runtime, specify the parent dropdown widget IDs in this lookup.
+			/// This supports linting.
+			/// </summary>
+			public virtual IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; } = EmptyLookup;
+
+			/// <summary>
+			/// Creates the widget given by <paramref name="id"/> and opens it as a window.
+			/// The ID must be listed in <see cref="WindowWidgetIds"/>.
+			/// The widgets args will be extended with values for 'orderManager', 'world' and 'worldRenderer'.
+			/// </summary>
+			public Widget OpenWindow(string id, WidgetArgs args)
+			{
+				if (!WindowWidgetIds.Contains(id))
+					throw new ArgumentException($"'{id}' was not found in the {nameof(WindowWidgetIds)} collection.");
+				return Ui.OpenWindowUnchecked(id, Game.ExtendWidgetArgs(args));
+			}
+
+			/// <summary>
+			/// Creates the widget given by <paramref name="childWidgetId"/>.
+			/// The parent widget ID is determined via the <see cref="ParentWidgetIdForChildWidgetId"/> lookup.
+			/// This child will be attached to this parent widget, which is located within <paramref name="rootWidget"/>.
+			/// The widgets args will be extended with values for 'orderManager', 'world' and 'worldRenderer'.
+			/// </summary>
+			public Widget LoadWidget(Widget rootWidget, string childWidgetId, WidgetArgs args)
+			{
+				if (!ParentWidgetIdForChildWidgetId.TryGetValue(childWidgetId, out var parentId))
+					throw new ArgumentException($"'{childWidgetId}' was not found in the " +
+						$"{nameof(ParentWidgetIdForChildWidgetId)} lookup.");
+				return Ui.LoadWidgetUnchecked(childWidgetId, rootWidget.Get(parentId), Game.ExtendWidgetArgs(args));
+			}
+
+			public void ValidateWidgetOutOfTree(
+				Widget parentWidget,
+				string childWidgetId)
+			{
+				if (!OutOfTreeParentWidgetIdForChildWidgetId.TryGetValue(childWidgetId, out var parentId))
+					throw new ArgumentException($"'{childWidgetId}' was not found in the " +
+						$"{nameof(OutOfTreeParentWidgetIdForChildWidgetId)} lookup.");
+
+				if (parentWidget.Id != parentId)
+					throw new ArgumentException($"{nameof(parentWidget)} must be the parent of {nameof(childWidgetId)} " +
+						$"as listed in {nameof(OutOfTreeParentWidgetIdForChildWidgetId)} " +
+						$"but the listed ID {parentId} does not match the given ID {parentWidget.Id}");
+			}
+
+			/// <summary>
+			/// Like <see cref="LoadWidget"/>, but for any widgets created outside the widget tree passed to the logic class.
+			/// </summary>
+			public Widget LoadWidgetOutOfTree(Widget rootWidget, string childWidgetId, WidgetArgs args)
+			{
+				if (!OutOfTreeParentWidgetIdForChildWidgetId.TryGetValue(childWidgetId, out var parentId))
+					throw new ArgumentException($"'{childWidgetId}' was not found in the " +
+						$"{nameof(OutOfTreeParentWidgetIdForChildWidgetId)} lookup.");
+				var parentWidget = parentId == "" ? Ui.Root : rootWidget.Get(parentId);
+				return Ui.LoadWidgetUnchecked(childWidgetId, parentWidget, Game.ExtendWidgetArgs(args));
+			}
+		}
 	}
 
 	public struct WidgetBounds
@@ -201,6 +290,11 @@ namespace OpenRA.Widgets
 		public readonly Rectangle ToRectangle()
 		{
 			return new Rectangle(X, Y, Width, Height);
+		}
+
+		public override readonly string ToString()
+		{
+			return $"{X},{Y},{Width},{Height}";
 		}
 	}
 

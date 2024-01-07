@@ -59,8 +59,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 			tooltipContainer.Value.SetTooltip(Template, new WidgetArgs()
 			{
-				{ "orderManager", orderManager },
-				{ "worldRenderer", worldRenderer },
 				{ "client", client }
 			});
 		}

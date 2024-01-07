@@ -37,6 +37,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string Chat = "menu-game-info.chat";
 
+		public class GameInfoLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } =
+				new Dictionary<string, string>
+				{
+					{ "SCRIPT_ERROR_PANEL", "OBJECTIVES_PANEL" },
+					{ "MISSION_OBJECTIVES", "OBJECTIVES_PANEL" },
+					{ "SKIRMISH_STATS", "OBJECTIVES_PANEL" },
+					{ "MAP_PANEL", "MAP_PANEL" },
+					{ "LOBBY_OPTIONS_PANEL", "LOBBY_OPTIONS_PANEL" },
+					{ "DEBUG_PANEL", "DEBUG_PANEL" },
+					{ "CHAT_CONTAINER", "CHAT_PANEL" },
+				};
+		}
+
+		readonly GameInfoLogicDynamicWidgets dynamicWidgets = new();
 		readonly World world;
 		readonly ModData modData;
 		readonly Action<bool> hideMenu;
@@ -141,7 +158,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void SetupObjectivesPanel(ButtonWidget objectivesTabButton, Widget objectivesPanelContainer)
 		{
 			var panel = hasError ? "SCRIPT_ERROR_PANEL" : iop.PanelName;
-			Game.LoadWidget(world, panel, objectivesPanelContainer, new WidgetArgs()
+			dynamicWidgets.LoadWidget(objectivesPanelContainer, panel, new WidgetArgs()
 			{
 				{ "hideMenu", hideMenu },
 				{ "closeMenu", closeMenu },
@@ -150,12 +167,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void SetupMapPanel(ButtonWidget mapTabButton, Widget mapPanelContainer)
 		{
-			Game.LoadWidget(world, "MAP_PANEL", mapPanelContainer, new WidgetArgs());
+			dynamicWidgets.LoadWidget(mapPanelContainer, "MAP_PANEL", new WidgetArgs());
 		}
 
 		void SetupLobbyOptionsPanel(ButtonWidget mapTabButton, Widget optionsPanelContainer)
 		{
-			Game.LoadWidget(world, "LOBBY_OPTIONS_PANEL", optionsPanelContainer, new WidgetArgs()
+			dynamicWidgets.LoadWidget(optionsPanelContainer, "LOBBY_OPTIONS_PANEL", new WidgetArgs()
 			{
 				{ "getMap", (Func<MapPreview>)(() => modData.MapCache[world.Map.Uid]) },
 				{ "configurationDisabled", (Func<bool>)(() => true) }
@@ -167,7 +184,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (debugTabButton != null)
 				debugTabButton.IsDisabled = () => world.IsGameOver;
 
-			Game.LoadWidget(world, "DEBUG_PANEL", debugPanelContainer, new WidgetArgs());
+			dynamicWidgets.LoadWidget(debugPanelContainer, "DEBUG_PANEL", new WidgetArgs());
 
 			if (activePanel == IngameInfoPanel.AutoSelect)
 				activePanel = IngameInfoPanel.Debug;
@@ -185,7 +202,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				};
 			}
 
-			Game.LoadWidget(world, "CHAT_CONTAINER", chatPanelContainer, new WidgetArgs() { { "isMenuChat", true } });
+			dynamicWidgets.LoadWidget(chatPanelContainer, "CHAT_CONTAINER", new WidgetArgs() { { "isMenuChat", true } });
 		}
 
 		static void LeaveChatPanel(Widget chatPanelContainer)

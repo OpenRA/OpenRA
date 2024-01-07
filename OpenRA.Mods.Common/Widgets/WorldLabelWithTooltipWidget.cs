@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 
 			if (GetTooltipText != null)
-				tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() { { "getText", GetTooltipText }, { "world", world } });
+				tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() { { "getText", GetTooltipText } });
 		}
 	}
 }

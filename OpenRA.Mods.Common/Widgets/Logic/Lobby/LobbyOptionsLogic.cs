@@ -24,6 +24,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string NotAvailable = "label-not-available";
 
+		public class LobbyOptionsLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; } =
+				new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ "LABEL_DROPDOWN_TEMPLATE", new[] { "A", "B", "C" } },
+				};
+		}
+
+		readonly LobbyOptionsLogicDynamicWidgets dynamicWidgets = new();
 		readonly ScrollPanelWidget panel;
 		readonly Widget optionsContainer;
 		readonly Widget checkboxRowTemplate;
@@ -175,7 +187,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						return item;
 					}
 
-					dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", option.Values.Count * 30, option.Values, SetupItem);
+					dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", option.Values.Count * 30, option.Values, SetupItem);
 				};
 
 				var label = row.GetOrNull<LabelWidget>(dropdown.Id + "_DESC");

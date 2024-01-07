@@ -10,36 +10,46 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	public class MultiplayerLogic : ChromeLogic
+	public class MultiplayerLogic : ServerListLogic
 	{
 		static readonly Action DoNothing = () => { };
 
-		readonly Action onStart;
-		readonly Action onExit;
-		readonly ServerListLogic serverListLogic;
+		public class MultiplayerLogicDynamicWidgets : ServerListLogicDynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; }
+
+			public MultiplayerLogicDynamicWidgets()
+			{
+				WindowWidgetIds = new HashSet<string>(base.WindowWidgetIds)
+				{
+					"CONNECTING_PANEL",
+					"DIRECTCONNECT_PANEL",
+					"MULTIPLAYER_CREATESERVER_PANEL",
+					"MULTIPLAYER_PANEL",
+					"SERVER_LOBBY",
+				};
+			}
+		}
+
+		readonly MultiplayerLogicDynamicWidgets dynamicWidgets = new();
 
 		[ObjectCreator.UseCtor]
 		public MultiplayerLogic(Widget widget, ModData modData, Action onStart, Action onExit, ConnectionTarget directConnectEndPoint)
+			: base(widget, modData, server => Join(server, onStart, onExit))
 		{
-			// MultiplayerLogic is a superset of the ServerListLogic
-			// but cannot be a direct subclass because it needs to pass object-level state to the constructor
-			serverListLogic = new ServerListLogic(widget, modData, Join);
-
-			this.onStart = onStart;
-			this.onExit = onExit;
-
 			var directConnectButton = widget.Get<ButtonWidget>("DIRECTCONNECT_BUTTON");
 			directConnectButton.OnClick = () =>
 			{
-				Ui.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs
+				dynamicWidgets.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs
 				{
-					{ "openLobby", OpenLobby },
+					{ "openLobby", () => OpenLobby(onStart, onExit) },
 					{ "onExit", DoNothing },
 					{ "directConnectEndPoint", null },
 				});
@@ -48,9 +58,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var createServerButton = widget.Get<ButtonWidget>("CREATE_BUTTON");
 			createServerButton.OnClick = () =>
 			{
-				Ui.OpenWindow("MULTIPLAYER_CREATESERVER_PANEL", new WidgetArgs
+				dynamicWidgets.OpenWindow("MULTIPLAYER_CREATESERVER_PANEL", new WidgetArgs
 				{
-					{ "openLobby", OpenLobby },
+					{ "openLobby", () => OpenLobby(onStart, onExit) },
 					{ "onExit", DoNothing }
 				});
 			};
@@ -67,9 +77,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				widget.Visible = false;
 				Game.RunAfterTick(() =>
 				{
-					Ui.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs
+					dynamicWidgets.OpenWindow("DIRECTCONNECT_PANEL", new WidgetArgs
 					{
-						{ "openLobby", OpenLobby },
+						{ "openLobby", () => OpenLobby(onStart, onExit) },
 						{ "onExit", DoNothing },
 						{ "directConnectEndPoint", directConnectEndPoint },
 					});
@@ -79,7 +89,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		void OpenLobby()
+		static void OpenLobby(Action onStart, Action onExit)
 		{
 			// Close the multiplayer browser
 			Ui.CloseWindow();
@@ -87,7 +97,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			void OnLobbyExit()
 			{
 				// Open a fresh copy of the multiplayer browser
-				Ui.OpenWindow("MULTIPLAYER_PANEL", new WidgetArgs
+				new MultiplayerLogicDynamicWidgets().OpenWindow("MULTIPLAYER_PANEL", new WidgetArgs
 				{
 					{ "onStart", onStart },
 					{ "onExit", onExit },
@@ -99,7 +109,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				DiscordService.UpdateStatus(DiscordState.InMenu);
 			}
 
-			Game.OpenWindow("SERVER_LOBBY", new WidgetArgs
+			new MultiplayerLogicDynamicWidgets().OpenWindow("SERVER_LOBBY", new WidgetArgs
 			{
 				{ "onStart", onStart },
 				{ "onExit", OnLobbyExit },
@@ -107,7 +117,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 		}
 
-		void Join(GameServer server)
+		static void Join(GameServer server, Action onStart, Action onExit)
 		{
 			if (server == null || !server.IsJoinable)
 				return;
@@ -115,19 +125,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var host = server.Address.Split(':')[0];
 			var port = Exts.ParseInt32Invariant(server.Address.Split(':')[1]);
 
-			ConnectionLogic.Connect(new ConnectionTarget(host, port), "", OpenLobby, DoNothing);
-		}
-
-		bool disposed;
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing && !disposed)
-			{
-				disposed = true;
-				serverListLogic.Dispose();
-			}
-
-			base.Dispose(disposing);
+			ConnectionLogic.Connect(
+				new MultiplayerLogicDynamicWidgets(), new ConnectionTarget(host, port), "", () => OpenLobby(onStart, onExit), DoNothing);
 		}
 	}
 }

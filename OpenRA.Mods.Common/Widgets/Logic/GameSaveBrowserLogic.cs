@@ -60,6 +60,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string OverwriteSaveAccpet = "dialog-overwrite-save.confirm";
 
+		public class GameSaveBrowserLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } =
+				new HashSet<string>
+				{
+					"TEXT_INPUT_PROMPT",
+					"TWOBUTTON_PROMPT",
+					"THREEBUTTON_PROMPT",
+				};
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+		}
+
+		readonly GameSaveBrowserLogicDynamicWidgets dynamicWidgets = new();
 		readonly Widget panel;
 		readonly ScrollPanelWidget gameList;
 		readonly TextFieldWidget saveTextField;
@@ -140,7 +153,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var initialName = Path.GetFileNameWithoutExtension(selectedSave);
 				var invalidChars = Path.GetInvalidFileNameChars();
 
-				ConfirmationDialogs.TextInputPrompt(modData,
+				ConfirmationDialogs.TextInputPrompt(
+					dynamicWidgets,
+					modData,
 					RenameSaveTitle,
 					RenameSavePrompt,
 					initialName,
@@ -170,7 +185,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			deleteButton.IsDisabled = () => selectedSave == null;
 			deleteButton.OnClick = () =>
 			{
-				ConfirmationDialogs.ButtonPrompt(modData,
+				ConfirmationDialogs.ButtonPrompt(
+					dynamicWidgets,
+					modData,
 					title: DeleteSaveTitle,
 					text: DeleteSavePrompt,
 					textArguments: Translation.Arguments("save", Path.GetFileNameWithoutExtension(selectedSave)),
@@ -194,7 +211,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			deleteAllButton.IsDisabled = () => games.Count == 0;
 			deleteAllButton.OnClick = () =>
 			{
-				ConfirmationDialogs.ButtonPrompt(modData,
+				ConfirmationDialogs.ButtonPrompt(
+					dynamicWidgets,
+					modData,
 					title: DeleteAllSavesTitle,
 					text: DeleteAllSavesPrompt,
 					textArguments: Translation.Arguments("count", games.Count),
@@ -370,7 +389,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (File.Exists(testPath))
 			{
-				ConfirmationDialogs.ButtonPrompt(modData,
+				ConfirmationDialogs.ButtonPrompt(
+					dynamicWidgets,
+					modData,
 					title: OverwriteSaveTitle,
 					text: OverwriteSavePrompt,
 					textArguments: Translation.Arguments("file", saveTextField.Text),

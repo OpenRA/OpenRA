@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
@@ -27,6 +28,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		[TranslationReference]
 		const string Modern = "options-control-scheme.modern";
+
+		public class IntroductionPromptLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; } =
+				new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ "COLOR_CHOOSER", new[] { "PLAYERCOLOR" } },
+					{ "LABEL_DROPDOWN_TEMPLATE", new[] { "MOUSE_CONTROL_DROPDOWN", "BATTLEFIELD_CAMERA_DROPDOWN", "UI_SCALE_DROPDOWN" } },
+				};
+		}
+
+		readonly IntroductionPromptLogicDynamicWidgets dynamicWidgets = new();
 
 		readonly string classic;
 		readonly string modern;
@@ -88,7 +103,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mouseControlDescModern.IsVisible = () => !gs.UseClassicMouseStyle;
 
 			var mouseControlDropdown = widget.Get<DropDownButtonWidget>("MOUSE_CONTROL_DROPDOWN");
-			mouseControlDropdown.OnMouseDown = _ => InputSettingsLogic.ShowMouseControlDropdown(mouseControlDropdown, gs);
+			mouseControlDropdown.OnMouseDown = _ => InputSettingsLogic.ShowMouseControlDropdown(dynamicWidgets, mouseControlDropdown, gs);
 			mouseControlDropdown.GetText = () => gs.UseClassicMouseStyle ? classic : modern;
 
 			foreach (var container in new[] { mouseControlDescClassic, mouseControlDescModern })
@@ -120,7 +135,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var colorDropdown = widget.Get<DropDownButtonWidget>("PLAYERCOLOR");
 			colorDropdown.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;
-			colorDropdown.OnMouseDown = _ => colorManager.ShowColorDropDown(colorDropdown, ps.Color, null, worldRenderer, color =>
+			colorDropdown.OnMouseDown = _ => colorManager.ShowColorDropDown(
+				dynamicWidgets, colorDropdown, ps.Color, null, worldRenderer, color =>
 			{
 				ps.Color = color;
 				Game.Settings.Save();
@@ -130,12 +146,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var viewportSizes = modData.Manifest.Get<WorldViewportSizes>();
 			var battlefieldCameraDropDown = widget.Get<DropDownButtonWidget>("BATTLEFIELD_CAMERA_DROPDOWN");
 			var battlefieldCameraLabel = new CachedTransform<WorldViewport, string>(vs => DisplaySettingsLogic.GetViewportSizeName(modData, vs));
-			battlefieldCameraDropDown.OnMouseDown = _ => DisplaySettingsLogic.ShowBattlefieldCameraDropdown(modData, battlefieldCameraDropDown, viewportSizes, ds);
+			battlefieldCameraDropDown.OnMouseDown = _ => DisplaySettingsLogic.ShowBattlefieldCameraDropdown(
+				dynamicWidgets, modData, battlefieldCameraDropDown, viewportSizes, ds);
 			battlefieldCameraDropDown.GetText = () => battlefieldCameraLabel.Update(ds.ViewportDistance);
 
 			var uiScaleDropdown = widget.Get<DropDownButtonWidget>("UI_SCALE_DROPDOWN");
 			var uiScaleLabel = new CachedTransform<float, string>(s => $"{(int)(100 * s)}%");
-			uiScaleDropdown.OnMouseDown = _ => DisplaySettingsLogic.ShowUIScaleDropdown(uiScaleDropdown, ds);
+			uiScaleDropdown.OnMouseDown = _ => DisplaySettingsLogic.ShowUIScaleDropdown(dynamicWidgets, uiScaleDropdown, ds);
 			uiScaleDropdown.GetText = () => uiScaleLabel.Update(ds.UIScale);
 
 			var minResolution = viewportSizes.MinEffectiveResolution;

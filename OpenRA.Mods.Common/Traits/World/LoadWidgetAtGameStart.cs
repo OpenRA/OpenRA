@@ -53,10 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.ClearRoot)
 				Ui.ResetAll();
 
-			Ui.OpenWindow(info.GameSaveLoadingRoot, new WidgetArgs()
-			{
-				{ "world", world }
-			});
+			Ui.OpenWindowUnchecked(info.GameSaveLoadingRoot, Game.ExtendWidgetArgs(new WidgetArgs()));
 		}
 
 		void IWorldLoaded.WorldLoaded(World world, WorldRenderer wr)
@@ -67,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits
 			var widget = world.Type == WorldType.Shellmap ? info.ShellmapRoot :
 				world.Type == WorldType.Editor ? info.EditorRoot : info.IngameRoot;
 
-			root = Game.LoadWidget(world, widget, Ui.Root, new WidgetArgs());
+			root = Game.LoadWidgetUnchecked(widget, Ui.Root, new WidgetArgs());
 
 			// The Lua API requires the UI to available, so hide it instead
 			if (world.IsLoadingGameSave)

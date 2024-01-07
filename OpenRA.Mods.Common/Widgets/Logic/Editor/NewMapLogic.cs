@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Widgets;
@@ -18,6 +19,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class NewMapLogic : ChromeLogic
 	{
+		public class NewMapLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = new HashSet<string>
+			{
+				"SAVE_MAP_PANEL",
+			};
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; } =
+				new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ "LABEL_DROPDOWN_TEMPLATE", new[] { "TILESET" } },
+				};
+		}
+
+		readonly NewMapLogicDynamicWidgets dynamicWidgets = new();
 		readonly Widget panel;
 
 		[ObjectCreator.UseCtor]
@@ -41,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var firstTileset = tilesets.First();
 			tilesetDropDown.GetText = () => firstTileset;
 			tilesetDropDown.OnClick = () =>
-				tilesetDropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, tilesets, SetupItem);
+				dynamicWidgets.ShowDropDown(tilesetDropDown, "LABEL_DROPDOWN_TEMPLATE", 210, tilesets, SetupItem);
 
 			var widthTextField = panel.Get<TextFieldWidget>("WIDTH");
 			var heightTextField = panel.Get<TextFieldWidget>("HEIGHT");
@@ -78,12 +94,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					onSelect(uid);
 				};
 
-				Ui.OpenWindow("SAVE_MAP_PANEL", new WidgetArgs()
+				dynamicWidgets.OpenWindow("SAVE_MAP_PANEL", new WidgetArgs()
 				{
 					{ "onSave", afterSave },
 					{ "onExit", () => { Ui.CloseWindow(); onExit(); } },
 					{ "map", map },
-					{ "world", world },
 					{ "playerDefinitions", map.PlayerDefinitions },
 					{ "actorDefinitions", map.ActorDefinitions }
 				});

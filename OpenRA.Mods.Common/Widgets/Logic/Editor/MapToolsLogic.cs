@@ -20,11 +20,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string MarkerTiles = "label-tool-marker-tiles";
 
+		public class MapToolsLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+
+			public override IReadOnlyDictionary<string, IReadOnlyCollection<string>> ParentDropdownWidgetIdsFromPanelWidgetId { get; } =
+				new Dictionary<string, IReadOnlyCollection<string>>
+				{
+					{ "LABEL_DROPDOWN_TEMPLATE", new[] { "TOOLS_DROPDOWN" } },
+				};
+		}
+
 		enum MapTool
 		{
 			MarkerTiles
 		}
 
+		readonly MapToolsLogicDynamicWidgets dynamicWidgets = new();
 		readonly DropDownButtonWidget toolsDropdown;
 		readonly Dictionary<MapTool, string> toolNames = new()
 		{
@@ -62,7 +75,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var options = new[] { MapTool.MarkerTiles };
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, SetupItem);
+			dynamicWidgets.ShowDropDown(dropdown, "LABEL_DROPDOWN_TEMPLATE", 150, options, SetupItem);
 		}
 
 		void SelectTool(MapTool tool)

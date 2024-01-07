@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -19,6 +20,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	{
 		[TranslationReference("endpoint")]
 		const string ConnectingToEndpoint = "label-connecting-to-endpoint";
+
+		public class ConnectionLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = new HashSet<string>
+			{
+				"CONNECTION_SWITCHMOD_PANEL",
+				"CONNECTIONFAILED_PANEL",
+			};
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+		}
+
+		readonly ConnectionLogicDynamicWidgets dynamicWidgets = new();
 
 		readonly Action onConnect;
 		readonly Action onAbort;
@@ -36,9 +49,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				CloseWindow();
 
 				var switchPanel = CurrentServerSettings.ServerExternalMod != null ? "CONNECTION_SWITCHMOD_PANEL" : "CONNECTIONFAILED_PANEL";
-				Ui.OpenWindow(switchPanel, new WidgetArgs()
+				dynamicWidgets.OpenWindow(switchPanel, new WidgetArgs()
 				{
-					{ "orderManager", om },
 					{ "connection", connection },
 					{ "password", password },
 					{ "onAbort", onAbort },
@@ -70,12 +82,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => connectingDesc;
 		}
 
-		public static void Connect(ConnectionTarget endpoint, string password, Action onConnect, Action onAbort)
+		public static void Connect(DynamicWidgets dynamicWidgets, ConnectionTarget endpoint, string password, Action onConnect, Action onAbort)
 		{
 			Game.JoinServer(endpoint, password);
-			Action<string> onRetry = newPassword => Connect(endpoint, newPassword, onConnect, onAbort);
+			Action<string> onRetry = newPassword => Connect(dynamicWidgets, endpoint, newPassword, onConnect, onAbort);
 
-			Ui.OpenWindow("CONNECTING_PANEL", new WidgetArgs()
+			dynamicWidgets.OpenWindow("CONNECTING_PANEL", new WidgetArgs()
 			{
 				{ "endpoint", endpoint },
 				{ "onConnect", onConnect },
@@ -185,6 +197,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string ModSwitchFailed = "notification-mod-switch-failed";
 
+		public class ConnectionSwitchModLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = new HashSet<string>
+			{
+				"CONNECTIONFAILED_PANEL",
+			};
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+		}
+
+		readonly ConnectionSwitchModLogicDynamicWidgets dynamicWidgets = new();
+
 		[ObjectCreator.UseCtor]
 		public ConnectionSwitchModLogic(Widget widget, OrderManager orderManager, NetworkConnection connection, Action onAbort, Action<string> onRetry)
 		{
@@ -203,9 +226,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					orderManager.ServerError = ModSwitchFailed;
 					Ui.CloseWindow();
-					Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
+					dynamicWidgets.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
 					{
-						{ "orderManager", orderManager },
 						{ "onAbort", onAbort },
 						{ "onRetry", onRetry }
 					});

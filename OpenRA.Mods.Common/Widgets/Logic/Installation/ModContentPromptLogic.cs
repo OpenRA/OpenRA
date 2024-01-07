@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
@@ -25,6 +26,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		[TranslationReference]
 		const string Quit = "button-quit";
+
+		public class ModContentPromptLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } =
+				new HashSet<string>
+				{
+					"CONTENT_PANEL",
+					"PACKAGE_DOWNLOAD_PANEL",
+				};
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+		}
+
+		readonly ModContentPromptLogicDynamicWidgets dynamicWidgets = new();
 
 		readonly ModContent content;
 		bool requiredContentInstalled;
@@ -62,7 +76,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			advancedButton.Bounds.Y += headerHeight;
 			advancedButton.OnClick = () =>
 			{
-				Ui.OpenWindow("CONTENT_PANEL", new WidgetArgs
+				dynamicWidgets.OpenWindow("CONTENT_PANEL", new WidgetArgs
 				{
 					{ "mod", mod },
 					{ "content", content },
@@ -91,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (download == null)
 					throw new InvalidOperationException($"Mod QuickDownload `{content.QuickDownload}` definition not found.");
 
-				Ui.OpenWindow("PACKAGE_DOWNLOAD_PANEL", new WidgetArgs
+				dynamicWidgets.OpenWindow("PACKAGE_DOWNLOAD_PANEL", new WidgetArgs
 				{
 					{ "download", new ModContent.ModDownload(download.Value, modObjectCreator) },
 					{ "onSuccess", continueLoading }

@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public void PlayMovieFullscreen(string videoFileName, [ScriptEmmyTypeOverride("fun()")] LuaFunction onPlayComplete = null)
 		{
 			var onComplete = WrapOnPlayComplete(onPlayComplete);
-			Media.PlayFMVFullscreen(world, videoFileName, onComplete);
+			Media.PlayFMVFullscreen(null, world, videoFileName, onComplete);
 		}
 
 		[Desc("Play a video in the radar window. File name has to include the file extension.")]
