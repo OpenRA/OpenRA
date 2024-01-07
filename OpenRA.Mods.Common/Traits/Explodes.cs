@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public enum ExplosionType { Footprint, CenterPosition }
 
-	public enum DamageSource { Self, Killer }
+	public enum DamageSource { Self, Parent, Killer }
 
 	[Desc("This actor explodes when killed.")]
 	public class ExplodesInfo : ConditionalTraitInfo, Requires<IHealthInfo>
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly BitSet<DamageType> DeathTypes = default;
 
 		[Desc("Who is counted as source of damage for explosion.",
-			"Possible values are Self and Killer.")]
+			"Possible values are Self, Parent and Killer.")]
 		public readonly DamageSource DamageSource = DamageSource.Self;
 
 		[Desc("Possible values are CenterPosition (explosion at the actors' center) and ",
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WeaponInfo WeaponInfo { get; private set; }
 		public WeaponInfo EmptyWeaponInfo { get; private set; }
 
-		public override object Create(ActorInitializer init) { return new Explodes(this, init.Self); }
+		public override object Create(ActorInitializer init) { return new Explodes(this, init); }
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			if (!string.IsNullOrEmpty(Weapon))
@@ -84,13 +84,21 @@ namespace OpenRA.Mods.Common.Traits
 	public class Explodes : ConditionalTrait<ExplodesInfo>, INotifyKilled, INotifyDamage
 	{
 		readonly IHealth health;
+		Actor parent;
 		BuildingInfo buildingInfo;
 		Armament[] armaments;
 
-		public Explodes(ExplodesInfo info, Actor self)
+		public Explodes(ExplodesInfo info, ActorInitializer init)
 			: base(info)
 		{
-			health = self.Trait<IHealth>();
+			health = init.Self.Trait<IHealth>();
+
+			if (Info.DamageSource == DamageSource.Parent)
+			{
+				var pa = init.GetOrDefault<ParentActorInit>()?.Value;
+				if (pa != null)
+					init.World.AddFrameEndTask(w => parent = pa.Actor(w).Value);
+			}
 		}
 
 		protected override void Created(Actor self)
@@ -116,14 +124,13 @@ namespace OpenRA.Mods.Common.Traits
 			if (weapon == null)
 				return;
 
-			var source = Info.DamageSource == DamageSource.Self ? self : e.Attacker;
+			var source = GetDamageSource(self, e);
 			if (weapon.Report != null && weapon.Report.Length > 0)
 				Game.Sound.Play(SoundType.World, weapon.Report, self.World, self.CenterPosition);
 
 			if (Info.Type == ExplosionType.Footprint && buildingInfo != null)
 			{
-				var cells = buildingInfo.OccupiedTiles(self.Location);
-				foreach (var c in cells)
+				foreach (var c in buildingInfo.OccupiedTiles(self.Location))
 					weapon.Impact(Target.FromPos(self.World.Map.CenterOfCell(c) + Info.Offset), source);
 
 				return;
@@ -131,6 +138,13 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Use .FromPos since this actor is killed. Cannot use Target.FromActor
 			weapon.Impact(Target.FromPos(self.CenterPosition + Info.Offset), source);
+		}
+
+		Actor GetDamageSource(Actor self, AttackInfo e)
+		{
+			return Info.DamageSource == DamageSource.Killer ? e.Attacker
+				: Info.DamageSource == DamageSource.Self || parent == null || parent.IsDead ? self
+				: parent;
 		}
 
 		WeaponInfo ChooseWeaponForExplosion(Actor self)
@@ -157,9 +171,8 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			// Cast to long to avoid overflow when multiplying by the health
-			var source = Info.DamageSource == DamageSource.Self ? self : e.Attacker;
 			if (health.HP * 100L < Info.DamageThreshold * (long)health.MaxHP)
-				self.World.AddFrameEndTask(w => self.Kill(source, e.Damage.DamageTypes));
+				self.World.AddFrameEndTask(w => self.Kill(GetDamageSource(self, e), e.Damage.DamageTypes));
 		}
 	}
 }
