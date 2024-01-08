@@ -72,10 +72,10 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly CloakStyle CloakStyle = CloakStyle.Alpha;
 
 		[Desc("The minimum alpha level to use when cloaked when using Alpha CloakStyle.")]
-		public readonly float MinCloakedAlpha = 0.55f;
+		public readonly float MinCloakedAlpha = 0.4f;
 
 		[Desc("The maximum alpha level to use when cloaked when using Alpha CloakStyle.")]
-		public readonly float MaxCloakedAlpha = 0.55f;
+		public readonly float MaxCloakedAlpha = 0.7f;
 
 		[Desc("Time to to change from maximum alpha level to minimum alpha level when using Alpha CloakStyle.")]
 		public readonly int CloakAlphaChangeInterval = 10;
