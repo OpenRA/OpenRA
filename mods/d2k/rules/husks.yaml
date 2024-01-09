@@ -1,17 +1,21 @@
 mcv.husk:
 	Inherits: ^VehicleHusk
 	Health:
-		HP: 1750
+		HP: 13000
 	Tooltip:
 		Name: actor-mcv-husk-name
+	TransformOnCapture:
+		IntoActor: mcv
+	InfiltrateForTransform:
+		IntoActor: mcv
 
 harvester.husk:
 	Inherits: ^VehicleHusk
-	Health:
-		HP: 1500
 	Tooltip:
 		Name: actor-harvester-husk-name
 	TransformOnCapture:
+		IntoActor: harvester
+	InfiltrateForTransform:
 		IntoActor: harvester
 
 siege_tank.husk:
@@ -22,21 +26,49 @@ siege_tank.husk:
 		Anim: turret
 	TransformOnCapture:
 		IntoActor: siege_tank
+	InfiltrateForTransform:
+		IntoActor: siege_tank
 
 missile_tank.husk:
 	Inherits: ^VehicleHusk
 	Tooltip:
 		Name: actor-missile-tank-husk-name
+	ThrowsParticle@turret:
+		Anim: turret
+	ThrowsParticle@debris01:
+		Anim: tankdebris01
+	ThrowsParticle@debris02:
+		Anim: tankdebris02
+	ThrowsParticle@debris03:
+		Anim: tankdebris03
+	ThrowsParticle@debris04:
+		Anim: tankdebris04
 	TransformOnCapture:
+		IntoActor: missile_tank
+	InfiltrateForTransform:
 		IntoActor: missile_tank
 
 sonic_tank.husk:
 	Inherits: ^VehicleHusk
 	Husk:
 		Locomotor: vehicle
+	Health:
+		HP: 11000
 	Tooltip:
 		Name: actor-sonic-tank-husk-name
+	ThrowsParticle@turret:
+		Anim: turret
+	ThrowsParticle@debris01:
+		Anim: tankdebris01
+	ThrowsParticle@debris02:
+		Anim: tankdebris02
+	ThrowsParticle@debris03:
+		Anim: tankdebris03
+	ThrowsParticle@debris04:
+		Anim: tankdebris04
 	TransformOnCapture:
+		IntoActor: sonic_tank
+	InfiltrateForTransform:
 		IntoActor: sonic_tank
 
 devastator.husk:
@@ -44,23 +76,38 @@ devastator.husk:
 	Husk:
 		Locomotor: devastator
 	Health:
-		HP: 1250
+		HP: 12500
 	Tooltip:
 		Name: actor-devastator-husk-name
 	TransformOnCapture:
 		IntoActor: devastator
+	InfiltrateForTransform:
+		IntoActor: devastator
 
 deviator.husk:
 	Inherits: ^VehicleHusk
+	Health:
+		HP: 11000
 	Tooltip:
 		Name: actor-deviator-husk-name
+	ThrowsParticle@turret:
+		Anim: turret
+		TurnSpeed: 150
+	ThrowsParticle@debris01:
+		Anim: tankdebris01
+	ThrowsParticle@debris02:
+		Anim: tankdebris02
+	ThrowsParticle@debris03:
+		Anim: tankdebris03
+	ThrowsParticle@debris04:
+		Anim: tankdebris04
 	TransformOnCapture:
+		IntoActor: deviator
+	InfiltrateForTransform:
 		IntoActor: deviator
 
 ^combat_tank.husk:
 	Inherits: ^VehicleHusk
-	Health:
-		HP: 1000
 	Tooltip:
 		Name: meta-combat-tank-husk-name
 	ThrowsParticle@turret:
@@ -70,13 +117,19 @@ combat_tank_a.husk:
 	Inherits: ^combat_tank.husk
 	TransformOnCapture:
 		IntoActor: combat_tank_a
+	InfiltrateForTransform:
+		IntoActor: combat_tank_a
 
 combat_tank_h.husk:
 	Inherits: ^combat_tank.husk
 	TransformOnCapture:
 		IntoActor: combat_tank_h
+	InfiltrateForTransform:
+		IntoActor: combat_tank_h
 
 combat_tank_o.husk:
 	Inherits: ^combat_tank.husk
 	TransformOnCapture:
+		IntoActor: combat_tank_o
+	InfiltrateForTransform:
 		IntoActor: combat_tank_o

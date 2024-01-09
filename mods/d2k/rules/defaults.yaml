@@ -278,7 +278,7 @@
 	Inherits@1: ^SpriteActor
 	Interactable:
 	Health:
-		HP: 750
+		HP: 10000
 	Armor:
 		Type: light
 	HiddenUnderFog:
@@ -302,19 +302,42 @@
 	Targetable:
 		TargetTypes: Ground, Vehicle
 		RequiresForceFire: true
-	WithColoredOverlay@IDISABLE:
-		Color: 000000B4
+	WithColoredOverlay@husk:
+		Color: 00000060
 	Explodes:
 		Weapon: UnitExplodeMed
 		EmptyWeapon: UnitExplodeMed
+	CaptureManager:
+	Capturable:
+		Types: husk
 	WithIdleOverlay@Burns:
 		Image: fire
 		Sequence: 1
 		IsDecoration: True
+		RequiresCondition: decoration1 || decoration3
+	FloatingSpriteEmitter@SMOKE:
+		Image: smoke3
+		Lifetime: 10, 20
+		Speed: 7
+		Gravity: 50
+		SpawnFrequency: 2, 10
+		RandomFacing: true
+		RandomRate: 4
+		Offset: 0, 0, 200
+		TurnRate: 3
+		Duration: 1500
+		RequiresCondition: decoration2 || decoration3
 	ChangesHealth:
-		Step: -10
+		Step: -30
 		StartIfBelow: 101
 		Delay: 4
+	GrantRandomCondition:
+		Conditions: decoration1, decoration2, decoration3
+	TransformOnCapture:
+		ForceHealthPercentage: 20
+	InfiltrateForTransform:
+		Types: husk
+		ForceHealthPercentage: 20
 
 ^AircraftHusk:
 	Inherits: ^Husk
