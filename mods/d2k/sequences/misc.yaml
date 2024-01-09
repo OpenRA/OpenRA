@@ -353,6 +353,7 @@ fire:
 		Length: 10
 		Offset: 4,-17
 		ZOffset: 1023
+		Tick: 100
 		BlendMode: Additive
 	2:
 		Filename: DATA.R16
@@ -360,6 +361,7 @@ fire:
 		Length: 11
 		Offset: 0,-3
 		ZOffset: 1023
+		Tick: 100
 		BlendMode: Additive
 	3:
 		Filename: DATA.R16
@@ -367,6 +369,7 @@ fire:
 		Length: 13
 		Offset: 0,-3
 		ZOffset: 1023
+		Tick: 100
 		BlendMode: Additive
 	4:
 		Filename: DATA.R16
@@ -374,6 +377,7 @@ fire:
 		Length: 10
 		Offset: 0,-3
 		ZOffset: 1023
+		Tick: 100
 		BlendMode: Additive
 
 smoke_m:

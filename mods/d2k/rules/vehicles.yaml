@@ -75,6 +75,7 @@ harvester:
 		BaleUnloadDelay: 5
 		SearchFromProcRadius: 30
 		SearchFromHarvesterRadius: 15
+		EmptyCondition: harvester-empty
 	StoresResources:
 		Capacity: 28
 		Resources: Spice
@@ -99,6 +100,7 @@ harvester:
 		Actor: harvester.Husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
+		RequiresCondition: harvester-empty
 	WithHarvestOverlay:
 	WithDockingAnimation:
 	AttractsWorms:
@@ -114,6 +116,16 @@ harvester:
 		RequiresSelection: true
 		PipCount: 7
 	-SpeedMultiplier@HEAVYDAMAGE:
+	ThrowsShrapnel@ShrapnelNotEmpty:
+		Weapons: Debris, Debris2, Debris3, Debris4
+		Pieces: 3, 5
+		Range: 1c0, 6c0
+		RequiresCondition: !harvester-empty
+	ThrowsShrapnel@throwSpice:
+		Weapons: SpiceExplosion
+		Pieces: 1, 3
+		Range: 1c0, 5c0
+		RequiresCondition: !harvester-empty
 
 trike:
 	Inherits: ^Vehicle
@@ -311,6 +323,14 @@ missile_tank:
 		EffectiveOwnerFromOwner: true
 	AttractsWorms:
 		Intensity: 600
+	ThrowsShrapnel@02:
+		Weapons: Debris3, Debris
+		Pieces: 0,2
+		Range: 2c0, 3c0
+	ThrowsShrapnel@03:
+		Weapons: DebrisMissile
+		Pieces: 0,2
+		Range: 4c0, 6c0
 
 sonic_tank:
 	Inherits: ^Vehicle
@@ -603,6 +623,10 @@ deviator:
 	SpawnActorOnDeath:
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
+	ThrowsShrapnel:
+		Weapons: Debris, Debris2, Debris3
+		Pieces: 0, 2
+		Range: 2c0, 4c0
 
 combat_tank_a:
 	Inherits: ^combat_tank
