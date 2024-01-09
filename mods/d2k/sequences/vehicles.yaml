@@ -129,11 +129,29 @@ missile_tank:
 
 missile_tank.husk:
 	idle:
-		Filename: DATA.R16
-		Start: 1603
-		Facings: -32
+		FilenamePattern: missiletankhusk/missiletankhusk-{0:D4}.png
+			Count: 16
+		Facings: -16
 		ZOffset: -512
 		Remap: 54F94B
+	turret:
+		FilenamePattern: missiletankhusk/missiletankhuskturret-{0:D4}.png
+			Count: 16
+		Facings: -16
+		ZOffset: -512
+		Remap: 54F94B
+	tankdebris01:
+		Filename: missiletankhusk/missiletankhuskdebris-0000.png
+		ZOffset: -512
+	tankdebris02:
+		Filename: missiletankhusk/missiletankhuskdebris-0001.png
+		ZOffset: -512
+	tankdebris03:
+		Filename: missiletankhusk/missiletankhuskdebris-0002.png
+		ZOffset: -512
+	tankdebris04:
+		Filename: missiletankhusk/missiletankhuskdebris-0003.png
+		ZOffset: -512
 
 sonic_tank:
 	idle:
@@ -148,11 +166,29 @@ sonic_tank:
 
 sonic_tank.husk:
 	idle:
-		Filename: DATA.R16
-		Start: 1827
-		Facings: -32
+		FilenamePattern: sonictankhusk/sonictankhusk-{0:D4}.png
+			Count: 16
+		Facings: -16
 		ZOffset: -512
 		Remap: 54F94B
+	turret:
+		FilenamePattern: sonictankhusk/sonictankhuskturret-{0:D4}.png
+			Count: 4
+		Facings: -4
+		ZOffset: -512
+		Remap: 54F94B
+	tankdebris01:
+		Filename: sonictankhusk/sonictankhuskdebris-0000.png
+		ZOffset: -512
+	tankdebris02:
+		Filename: sonictankhusk/sonictankhuskdebris-0001.png
+		ZOffset: -512
+	tankdebris03:
+		Filename: sonictankhusk/sonictankhuskdebris-0002.png
+		ZOffset: -512
+	tankdebris04:
+		Filename: sonictankhusk/sonictankhuskdebris-0003.png
+		ZOffset: -512
 
 combat_tank_a:
 	idle:
@@ -346,8 +382,26 @@ deviator:
 
 deviator.husk:
 	idle:
-		Filename: DATA.R16
-		Start: 2389
-		Facings: -32
+		FilenamePattern: deviatorhusk/deviatorhusk-{0:D4}.png
+			Count: 16
+		Facings: -16
 		ZOffset: -512
 		Remap: 54F94B
+	turret:
+		FilenamePattern: deviatorhusk/deviatorhuskturret-{0:D4}.png
+			Count: 16
+		Facings: -4
+		ZOffset: -512
+		Remap: 54F94B
+	tankdebris01:
+		Filename: deviatorhusk/deviatordebris-0000.png
+		ZOffset: -512
+	tankdebris02:
+		Filename: deviatorhusk/deviatordebris-0001.png
+		ZOffset: -512
+	tankdebris03:
+		Filename: deviatorhusk/deviatordebris-0002.png
+		ZOffset: -512
+	tankdebris04:
+		Filename: deviatorhusk/deviatordebris-0003.png
+		ZOffset: -512
