@@ -9,11 +9,12 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Orders;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -26,6 +27,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("The pathfinding cost penalty applied for each dock client waiting to unload at a DockHost.")]
 		public readonly int OccupancyCostModifier = 12;
+
+		[ConsumedConditionReference]
+		[Desc("Boolean expression defining the condition under which the regular (non-force) enter cursor is disabled.")]
+		public readonly BooleanExpression RequireForceMoveCondition = null;
 
 		[CursorReference]
 		[Desc("Cursor to display when able to dock at target actor.")]
@@ -51,6 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected IDockClient[] dockClients;
 		public Color DockLineColor => Info.DockLineColor;
 		public int OccupancyCostModifier => Info.OccupancyCostModifier;
+		bool requireForceMove;
 
 		public DockClientManager(Actor self, DockClientManagerInfo info)
 			: base(info)
@@ -149,20 +155,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<IDockHostInfo>(
-					"ForceDock",
+				yield return new DockActorTargeter(
 					6,
 					Info.EnterCursor,
 					Info.EnterBlockedCursor,
+					() => requireForceMove,
 					DockingPossible,
-					target => CanDockAt(target, true, true));
-				yield return new EnterAlliedActorTargeter<IDockHostInfo>(
-					"Dock",
-					5,
-					Info.EnterCursor,
-					Info.EnterBlockedCursor,
-					(actor, modifiers) => DockingPossible(actor),
-					target => CanDockAt(target, false, true));
+					(target, forceEnter) => CanDockAt(target, forceEnter));
 			}
 		}
 
@@ -231,6 +230,20 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
+		public override IEnumerable<VariableObserver> GetVariableObservers()
+		{
+			foreach (var observer in base.GetVariableObservers())
+				yield return observer;
+
+			if (Info.RequireForceMoveCondition != null)
+				yield return new VariableObserver(RequireForceMoveConditionChanged, Info.RequireForceMoveCondition.Variables);
+		}
+
+		void RequireForceMoveConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
+		{
+			requireForceMove = Info.RequireForceMoveCondition.Evaluate(conditions);
+		}
+
 		/// <summary>Do we have an enabled client with matching <paramref name="type"/>.</summary>
 		public bool DockingPossible(BitSet<DockType> type, bool forceEnter = false)
 		{
@@ -238,15 +251,8 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		/// <summary>Does this <paramref name="target"/> contain at least one enabled <see cref="IDockHost"/> with maching <see cref="DockType"/>.</summary>
-		public bool DockingPossible(Actor target)
+		public bool DockingPossible(Actor target, bool forceEnter = false)
 		{
-			return !IsTraitDisabled && target.TraitsImplementing<IDockHost>().Any(host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType)));
-		}
-
-		/// <summary>Does this <paramref name="target"/> contain at least one enabled <see cref="IDockHost"/> with maching <see cref="DockType"/>.</summary>
-		public bool DockingPossible(Actor target, TargetModifiers modifiers)
-		{
-			var forceEnter = modifiers.HasModifier(TargetModifiers.ForceMove);
 			return !IsTraitDisabled && target.TraitsImplementing<IDockHost>().Any(host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType, forceEnter)));
 		}
 
@@ -291,6 +297,53 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyKilled.Killed(Actor self, AttackInfo e) { UnreserveHost(); }
 
 		void INotifyActorDisposing.Disposing(Actor self) { UnreserveHost(); }
+	}
+
+	public class DockActorTargeter : IOrderTargeter
+	{
+		readonly string enterCursor;
+		readonly string enterBlockedCursor;
+		readonly Func<bool> requireForceMove;
+		readonly Func<Actor, bool, bool> canTarget;
+		readonly Func<Actor, bool, bool> useEnterCursor;
+
+		public DockActorTargeter(int priority, string enterCursor, string enterBlockedCursor, Func<bool> requireForceMove, Func<Actor, bool, bool> canTarget, Func<Actor, bool, bool> useEnterCursor)
+		{
+			OrderID = "Dock";
+			OrderPriority = priority;
+			this.enterCursor = enterCursor;
+			this.enterBlockedCursor = enterBlockedCursor;
+			this.requireForceMove = requireForceMove;
+			this.canTarget = canTarget;
+			this.useEnterCursor = useEnterCursor;
+		}
+
+		public string OrderID { get; private set; }
+		public int OrderPriority { get; }
+		public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
+
+		public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
+		{
+			// TODO: support frozen actors
+			if (target.Type != TargetType.Actor)
+				return false;
+
+			cursor = enterCursor;
+			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
+			var forceEnter = modifiers.HasModifier(TargetModifiers.ForceMove);
+			OrderID = forceEnter ? "ForceDock" : "Dock";
+
+			if (requireForceMove() && !forceEnter)
+				return false;
+
+			if (!self.Owner.IsAlliedWith(target.Actor.Owner) || !canTarget(target.Actor, forceEnter))
+				return false;
+
+			cursor = useEnterCursor(target.Actor, forceEnter) ? enterCursor : enterBlockedCursor;
+			return true;
+		}
+
+		public virtual bool IsQueued { get; protected set; }
 	}
 
 	public static class DockExts

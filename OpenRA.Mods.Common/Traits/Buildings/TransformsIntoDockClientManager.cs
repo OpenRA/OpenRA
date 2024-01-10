@@ -12,7 +12,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Orders;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -66,20 +65,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<DockHostInfo>(
-					"ForceDock",
+				yield return new DockActorTargeter(
 					6,
 					Info.EnterCursor,
 					Info.EnterBlockedCursor,
-					ForceDockingPossible,
-					target => CanDockAt(target, true));
-				yield return new EnterAlliedActorTargeter<DockHostInfo>(
-					"Dock",
-					5,
-					Info.EnterCursor,
-					Info.EnterBlockedCursor,
+					() => Info.RequiresForceMove,
 					DockingPossible,
-					target => CanDockAt(target, false));
+					CanDockAt);
 			}
 		}
 
@@ -133,28 +125,14 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
-		/// <summary>Clone of <see cref="DockClientManager.DockingPossible(Actor)"/>.</summary>
-		public bool DockingPossible(Actor target, TargetModifiers modifiers)
+		/// <summary>Clone of <see cref="DockClientManager.DockingPossible(Actor, bool)"/>.</summary>
+		public bool DockingPossible(Actor target, bool forceEnter)
 		{
-			var forceEnter = modifiers.HasModifier(TargetModifiers.ForceMove);
-			if (Info.RequiresForceMove && !forceEnter)
-				return false;
-
 			return !IsTraitDisabled && target.TraitsImplementing<DockHost>().Any(host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType)));
 		}
 
-		/// <summary>Clone of <see cref="DockClientManager.DockingPossible(Actor, TargetModifiers)"/>.</summary>
-		public bool ForceDockingPossible(Actor target, TargetModifiers modifiers)
-		{
-			var forceEnter = modifiers.HasModifier(TargetModifiers.ForceMove);
-			if (Info.RequiresForceMove && !forceEnter)
-				return false;
-
-			return !IsTraitDisabled && target.TraitsImplementing<DockHost>().Any(host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType, forceEnter)));
-		}
-
 		/// <summary>Clone of <see cref="DockClientManager.CanDockAt(Actor, bool, bool)"/>.</summary>
-		public bool CanDockAt(Actor target, bool forceEnter = false)
+		public bool CanDockAt(Actor target, bool forceEnter)
 		{
 			if (!(self.CurrentActivity is Transform || transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused)))
 				return false;
