@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 			CancelUnbuildableItems();
 
 			var item = Queue.FirstOrDefault(i => !i.Paused);
-			if (item == null)
+			if (item == null || allProductionPaused)
 				return;
 
 			var before = item.RemainingTime;
