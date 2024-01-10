@@ -1,0 +1,11 @@
+Player:
+	ClassicProductionQueue@Infantry:
+		PayUpFront: true
+	ClassicProductionQueue@Building:
+		PayUpFront: true
+	ClassicProductionQueue@Armor:
+		PayUpFront: true
+	ClassicProductionQueue@Aircraft:
+		PayUpFront: true
+	ClassicProductionQueue@Starport:
+		PayUpFront: true
