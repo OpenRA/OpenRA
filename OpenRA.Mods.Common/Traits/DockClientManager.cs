@@ -9,11 +9,12 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.Common.Activities;
-using OpenRA.Mods.Common.Orders;
 using OpenRA.Primitives;
+using OpenRA.Support;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
@@ -26,6 +27,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("The pathfinding cost penalty applied for each dock client waiting to unload at a DockHost.")]
 		public readonly int OccupancyCostModifier = 12;
+
+		[ConsumedConditionReference]
+		[Desc("Boolean expression defining the condition under which the regular (non-force) enter cursor is disabled.")]
+		public readonly BooleanExpression RequireForceMoveCondition = null;
 
 		[CursorReference]
 		[Desc("Cursor to display when able to dock at target actor.")]
@@ -51,6 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected IDockClient[] dockClients;
 		public Color DockLineColor => Info.DockLineColor;
 		public int OccupancyCostModifier => Info.OccupancyCostModifier;
+		bool requireForceMove;
 
 		public DockClientManager(Actor self, DockClientManagerInfo info)
 			: base(info)
@@ -149,26 +155,19 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<IDockHostInfo>(
-					"ForceDock",
+				yield return new DockActorTargeter(
 					6,
 					Info.EnterCursor,
 					Info.EnterBlockedCursor,
+					() => requireForceMove,
 					DockingPossible,
-					target => CanDockAt(target, true, true));
-				yield return new EnterAlliedActorTargeter<IDockHostInfo>(
-					"Dock",
-					5,
-					Info.EnterCursor,
-					Info.EnterBlockedCursor,
-					(actor, modifiers) => DockingPossible(actor),
-					target => CanDockAt(target, false, true));
+					(target, forceEnter) => CanDockAt(target, forceEnter, true));
 			}
 		}
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Dock")
+			if (order.OrderString == "Dock" || order.OrderString == "ForceDock")
 			{
 				var target = order.Target;
 
@@ -181,27 +180,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsTraitDisabled)
 					return;
 
-				var dock = AvailableDockHosts(target.Actor, false, true).ClosestDock(self, this);
-				if (!dock.HasValue)
-					return;
+				var dock = AvailableDockHosts(target.Actor, default, order.OrderString == "ForceDock", true)
+					.ClosestDock(self, this);
 
-				self.QueueActivity(order.Queued, new MoveToDock(self, dock.Value.Actor, dock.Value.Trait));
-				self.ShowTargetLines();
-			}
-			else if (order.OrderString == "ForceDock")
-			{
-				var target = order.Target;
-
-				// Deliver orders are only valid for own/allied actors,
-				// which are guaranteed to never be frozen.
-				// TODO: support frozen actors
-				if (target.Type != TargetType.Actor)
-					return;
-
-				if (IsTraitDisabled)
-					return;
-
-				var dock = AvailableDockHosts(target.Actor, true, true).ClosestDock(self, this);
 				if (!dock.HasValue)
 					return;
 
@@ -231,6 +212,20 @@ namespace OpenRA.Mods.Common.Traits
 			return null;
 		}
 
+		public override IEnumerable<VariableObserver> GetVariableObservers()
+		{
+			foreach (var observer in base.GetVariableObservers())
+				yield return observer;
+
+			if (Info.RequireForceMoveCondition != null)
+				yield return new VariableObserver(RequireForceMoveConditionChanged, Info.RequireForceMoveCondition.Variables);
+		}
+
+		void RequireForceMoveConditionChanged(Actor self, IReadOnlyDictionary<string, int> conditions)
+		{
+			requireForceMove = Info.RequireForceMoveCondition.Evaluate(conditions);
+		}
+
 		/// <summary>Do we have an enabled client with matching <paramref name="type"/>.</summary>
 		public bool DockingPossible(BitSet<DockType> type, bool forceEnter = false)
 		{
@@ -238,18 +233,11 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		/// <summary>Does this <paramref name="target"/> contain at least one enabled <see cref="IDockHost"/> with maching <see cref="DockType"/>.</summary>
-		public bool DockingPossible(Actor target)
+		public bool DockingPossible(Actor target, bool forceEnter = false)
 		{
-			return !IsTraitDisabled && target.TraitsImplementing<IDockHost>().Any(
-				host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType)));
-		}
-
-		/// <summary>Does this <paramref name="target"/> contain at least one enabled <see cref="IDockHost"/> with maching <see cref="DockType"/>.</summary>
-		public bool DockingPossible(Actor target, TargetModifiers modifiers)
-		{
-			var forceEnter = modifiers.HasModifier(TargetModifiers.ForceMove);
-			return !IsTraitDisabled && target.TraitsImplementing<IDockHost>().Any(
-				host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType, forceEnter)));
+			return !IsTraitDisabled &&
+				target.TraitsImplementing<IDockHost>()
+					.Any(host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType, forceEnter)));
 		}
 
 		/// <summary>Can we dock to this <paramref name="host"/>.</summary>
@@ -270,7 +258,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// <remarks>If <paramref name="type"/> is not set, scans all clients. Does not check if <see cref="DockClientManager"/> is enabled.</remarks>
 		public TraitPair<IDockHost>? ClosestDock(IDockHost ignore, BitSet<DockType> type = default, bool forceEnter = false, bool ignoreOccupancy = false)
 		{
-			var clients = type.IsEmpty ? dockClients : AvailableDockClients(type);
+			var clients = type.IsEmpty ? dockClients : AvailableDockClients(type, forceEnter);
 			return self.World.ActorsWithTrait<IDockHost>()
 				.Where(host =>
 					host.Trait != ignore &&
@@ -279,24 +267,74 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		/// <summary>Get viable <see cref="IDockHost"/>'s on the <paramref name="target"/>.</summary>
-		/// <remarks>Does not check if <see cref="DockClientManager"/> is enabled.</remarks>
-		public IEnumerable<TraitPair<IDockHost>> AvailableDockHosts(Actor target, bool forceEnter = false, bool ignoreOccupancy = false)
+		/// <remarks>If <paramref name="type"/> is not set, checks all clients. Does not check if <see cref="DockClientManager"/> is enabled.</remarks>
+		public IEnumerable<TraitPair<IDockHost>> AvailableDockHosts(Actor target, BitSet<DockType> type = default,
+			bool forceEnter = false, bool ignoreOccupancy = false)
 		{
+			var clients = type.IsEmpty ? dockClients : AvailableDockClients(type, forceEnter);
 			return target.TraitsImplementing<IDockHost>()
-				.Where(host => dockClients.Any(client => client.CanDockAt(target, host, forceEnter, ignoreOccupancy)))
+				.Where(host => clients.Any(client => client.CanDockAt(target, host, forceEnter, ignoreOccupancy)))
 				.Select(host => new TraitPair<IDockHost>(target, host));
 		}
 
 		/// <summary>Get clients of matching <paramref name="type"/>.</summary>
 		/// <remarks>Does not check if <see cref="DockClientManager"/> is enabled.</remarks>
-		public IEnumerable<IDockClient> AvailableDockClients(BitSet<DockType> type)
+		public IEnumerable<IDockClient> AvailableDockClients(BitSet<DockType> type, bool forceEnter = false)
 		{
-			return dockClients.Where(client => client.IsDockingPossible(type));
+			return dockClients.Where(client => client.IsDockingPossible(type, forceEnter));
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e) { UnreserveHost(); }
 
 		void INotifyActorDisposing.Disposing(Actor self) { UnreserveHost(); }
+	}
+
+	public class DockActorTargeter : IOrderTargeter
+	{
+		readonly string enterCursor;
+		readonly string enterBlockedCursor;
+		readonly Func<bool> requireForceMove;
+		readonly Func<Actor, bool, bool> canTarget;
+		readonly Func<Actor, bool, bool> useEnterCursor;
+
+		public DockActorTargeter(int priority, string enterCursor, string enterBlockedCursor,
+			Func<bool> requireForceMove, Func<Actor, bool, bool> canTarget, Func<Actor, bool, bool> useEnterCursor)
+		{
+			OrderID = "Dock";
+			OrderPriority = priority;
+			this.enterCursor = enterCursor;
+			this.enterBlockedCursor = enterBlockedCursor;
+			this.requireForceMove = requireForceMove;
+			this.canTarget = canTarget;
+			this.useEnterCursor = useEnterCursor;
+		}
+
+		public string OrderID { get; private set; }
+		public int OrderPriority { get; }
+		public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
+
+		public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
+		{
+			// TODO: support frozen actors
+			if (target.Type != TargetType.Actor)
+				return false;
+
+			cursor = enterCursor;
+			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
+			var forceEnter = modifiers.HasModifier(TargetModifiers.ForceMove);
+			OrderID = forceEnter ? "ForceDock" : "Dock";
+
+			if (requireForceMove() && !forceEnter)
+				return false;
+
+			if (!self.Owner.IsAlliedWith(target.Actor.Owner) || !canTarget(target.Actor, forceEnter))
+				return false;
+
+			cursor = useEnterCursor(target.Actor, forceEnter) ? enterCursor : enterBlockedCursor;
+			return true;
+		}
+
+		public virtual bool IsQueued { get; protected set; }
 	}
 
 	public static class DockExts
@@ -318,7 +356,7 @@ namespace OpenRA.Mods.Common.Traits
 							return 0;
 
 						// Prefer docks with less occupancy (multiplier is to offset distance cost):
-						// TODO: add custom wieghts. E.g. owner vs allied.
+						// TODO: add custom weights. E.g. owner vs allied.
 						return dock.Trait.ReservationCount * client.OccupancyCostModifier;
 					});
 
