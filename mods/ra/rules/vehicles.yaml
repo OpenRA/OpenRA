@@ -348,6 +348,12 @@ HARV:
 	HarvesterHuskModifier:
 		FullHuskActor: HARV.FullHusk
 		FullnessThreshold: 50
+	Cloak:
+		InitialDelay: 0
+		CloakDelay: 50
+		CloakSound: appear1.aud
+		UncloakSound: appear1.aud
+		UncloakOn: Link
 	ChangesHealth:
 		Step: 100
 		Delay: 25
