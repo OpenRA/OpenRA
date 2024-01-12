@@ -94,12 +94,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 				WorldVisualOffset = new WVec(0, 0, fallTickHeight * fallTicks);
 			}
 			else
-				ticks++;
-		}
-
-		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
-		{
-			if (!IsTraitDisabled)
 			{
 				var visualOffset = self.World.Map.DistanceAboveTerrain(self.CenterPosition) >= info.MinHoveringAltitude
 					? new WAngle(ticks % (info.Ticks * 4) * stepPercentage).Sin() : 0;
@@ -110,8 +104,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 					currentHeight = Math.Min(WorldVisualOffset.Z + info.InitialHeight.Length / info.RiseTicks, currentHeight);
 
 				WorldVisualOffset = new WVec(0, 0, currentHeight);
+				ticks++;
 			}
+		}
 
+		IEnumerable<IRenderable> IRenderModifier.ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
+		{
 			return r.Select(a => a.OffsetBy(WorldVisualOffset));
 		}
 
