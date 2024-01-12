@@ -431,9 +431,9 @@ GADEPT:
 		FactionImages:
 			gdi: gadept.gdi
 			nod: gadept.nod
-	GrantConditionOnHostDock:
+	GrantConditionOnHostLink:
 		Condition: serving
-		AfterDockDuration: 20
+		AfterLinkDuration: 20
 	Sellable:
 		RequiresCondition: !serving && !build-incomplete && !being-demolished
 

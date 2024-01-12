@@ -329,7 +329,7 @@ HARV:
 	StoresResources:
 		Capacity: 20
 		Resources: Ore,Gems
-	DockClientManager:
+	LinkClientManager:
 	Health:
 		HP: 60000
 	Armor:
@@ -920,7 +920,7 @@ STNK:
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
 		PauseOnCondition: cloak-force-disabled
-		UncloakOn: Attack, Load, Unload, Heal, Dock
+		UncloakOn: Attack, Load, Unload, Heal, Link
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical

@@ -65,7 +65,7 @@ HARV:
 	StoresResources:
 		Capacity: 20
 		Resources: Tiberium, BlueTiberium
-	DockClientManager:
+	LinkClientManager:
 	Mobile:
 		Speed: 72
 	Health:
@@ -710,7 +710,7 @@ STNK:
 		UncloakSound: trans1.aud
 		CloakStyle: Palette
 		CloakedPalette: cloak
-		UncloakOn: Attack, Unload, Dock, Damage, Heal
+		UncloakOn: Attack, Unload, Link, Damage, Heal
 		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled

@@ -24,11 +24,11 @@ namespace OpenRA.Mods.Common.Activities
 	{
 		protected enum DockingState { Wait, Drag, Dock, Loop, Undock, Complete }
 
-		protected readonly Actor DockHostActor;
-		protected readonly IDockHost DockHost;
-		protected readonly WithDockingOverlay DockHostSpriteOverlay;
-		protected readonly DockClientManager DockClient;
-		protected readonly IDockClientBody DockClientBody;
+		protected readonly Actor LinkHostActor;
+		protected readonly ILinkHost LinkHost;
+		protected readonly WithDockingOverlay LinkHostSpriteOverlay;
+		protected readonly LinkClientManager LinkClient;
+		protected readonly IDockClientBody LinkClientBody;
 		protected readonly bool IsDragRequired;
 		protected readonly int DragLength;
 		protected readonly WPos StartDrag;
@@ -36,25 +36,25 @@ namespace OpenRA.Mods.Common.Activities
 
 		protected DockingState dockingState;
 
-		readonly INotifyDockClient[] notifyDockClients;
-		readonly INotifyDockHost[] notifyDockHosts;
+		readonly INotifyLinkClient[] notifyDockClients;
+		readonly INotifyLinkHost[] notifyLinkHosts;
 
 		bool dockInitiated = false;
 
-		public GenericDockSequence(Actor self, DockClientManager client, Actor hostActor, IDockHost host)
+		public GenericDockSequence(Actor self, LinkClientManager client, Actor hostActor, ILinkHost host)
 		{
 			dockingState = DockingState.Drag;
 
-			DockClient = client;
-			DockClientBody = self.TraitOrDefault<IDockClientBody>();
-			notifyDockClients = self.TraitsImplementing<INotifyDockClient>().ToArray();
+			LinkClient = client;
+			LinkClientBody = self.TraitOrDefault<IDockClientBody>();
+			notifyDockClients = self.TraitsImplementing<INotifyLinkClient>().ToArray();
 
-			DockHost = host;
-			DockHostActor = hostActor;
-			DockHostSpriteOverlay = hostActor.TraitOrDefault<WithDockingOverlay>();
-			notifyDockHosts = hostActor.TraitsImplementing<INotifyDockHost>().ToArray();
+			LinkHost = host;
+			LinkHostActor = hostActor;
+			LinkHostSpriteOverlay = hostActor.TraitOrDefault<WithDockingOverlay>();
+			notifyLinkHosts = hostActor.TraitsImplementing<INotifyLinkHost>().ToArray();
 
-			if (host is IDockHostDrag sequence)
+			if (host is ILinkHostDrag sequence)
 			{
 				IsDragRequired = sequence.IsDragRequired;
 				DragLength = sequence.DragLength;
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.Common.Activities
 			else
 				IsDragRequired = false;
 
-			QueueChild(new Wait(host.DockWait));
+			QueueChild(new Wait(host.LinkWait));
 		}
 
 		public override bool Tick(Actor self)
@@ -75,9 +75,9 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Drag:
-					if (IsCanceling || DockHostActor.IsDead || !DockHostActor.IsInWorld || !DockClient.CanDockAt(DockHostActor, DockHost, false, true))
+					if (IsCanceling || LinkHostActor.IsDead || !LinkHostActor.IsInWorld || !LinkClient.CanLinkTo(LinkHostActor, LinkHost, false, true))
 					{
-						DockClient.UnreserveHost();
+						LinkClient.UnreserveHost();
 						return true;
 					}
 
@@ -88,12 +88,12 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Dock:
-					if (!IsCanceling && !DockHostActor.IsDead && DockHostActor.IsInWorld && DockClient.CanDockAt(DockHostActor, DockHost, false, true))
+					if (!IsCanceling && !LinkHostActor.IsDead && LinkHostActor.IsInWorld && LinkClient.CanLinkTo(LinkHostActor, LinkHost, false, true))
 					{
 						dockInitiated = true;
 						PlayDockAnimations(self);
-						DockHost.OnDockStarted(DockHostActor, self, DockClient);
-						DockClient.OnDockStarted(self, DockHostActor, DockHost);
+						LinkHost.OnLinkStarted(LinkHostActor, self, LinkClient);
+						LinkClient.OnLinkStarted(self, LinkHostActor, LinkHost);
 						NotifyDocked(self);
 					}
 					else
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Loop:
-					if (IsCanceling || DockHostActor.IsDead || !DockHostActor.IsInWorld || DockClient.OnDockTick(self, DockHostActor, DockHost))
+					if (IsCanceling || LinkHostActor.IsDead || !LinkHostActor.IsInWorld || LinkClient.OnLinkTick(self, LinkHostActor, LinkHost))
 						dockingState = DockingState.Undock;
 
 					return false;
@@ -116,8 +116,8 @@ namespace OpenRA.Mods.Common.Activities
 					return false;
 
 				case DockingState.Complete:
-					DockHost.OnDockCompleted(DockHostActor, self, DockClient);
-					DockClient.OnDockCompleted(self, DockHostActor, DockHost);
+					LinkHost.OnLinkCompleted(LinkHostActor, self, LinkClient);
+					LinkClient.OnLinkCompleted(self, LinkHostActor, LinkHost);
 					NotifyUndocked(self);
 					if (IsDragRequired)
 						QueueChild(new Drag(self, EndDrag, StartDrag, DragLength));
@@ -132,14 +132,14 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			PlayDockCientAnimation(self, () =>
 			{
-				if (DockHostSpriteOverlay != null && !DockHostSpriteOverlay.Visible)
+				if (LinkHostSpriteOverlay != null && !LinkHostSpriteOverlay.Visible)
 				{
 					dockingState = DockingState.Wait;
-					DockHostSpriteOverlay.Visible = true;
-					DockHostSpriteOverlay.WithOffset.Animation.PlayThen(DockHostSpriteOverlay.Info.Sequence, () =>
+					LinkHostSpriteOverlay.Visible = true;
+					LinkHostSpriteOverlay.WithOffset.Animation.PlayThen(LinkHostSpriteOverlay.Info.Sequence, () =>
 					{
 						dockingState = DockingState.Loop;
-						DockHostSpriteOverlay.Visible = false;
+						LinkHostSpriteOverlay.Visible = false;
 					});
 				}
 				else
@@ -149,10 +149,10 @@ namespace OpenRA.Mods.Common.Activities
 
 		public virtual void PlayDockCientAnimation(Actor self, Action after)
 		{
-			if (DockClientBody != null)
+			if (LinkClientBody != null)
 			{
 				dockingState = DockingState.Wait;
-				DockClientBody.PlayDockAnimation(self, () => after());
+				LinkClientBody.PlayDockAnimation(self, () => after());
 			}
 			else
 				after();
@@ -160,16 +160,16 @@ namespace OpenRA.Mods.Common.Activities
 
 		public virtual void PlayUndockAnimations(Actor self)
 		{
-			if (DockHostActor.IsInWorld && !DockHostActor.IsDead && DockHostSpriteOverlay != null && !DockHostSpriteOverlay.Visible)
+			if (LinkHostActor.IsInWorld && !LinkHostActor.IsDead && LinkHostSpriteOverlay != null && !LinkHostSpriteOverlay.Visible)
 			{
 				dockingState = DockingState.Wait;
-				DockHostSpriteOverlay.Visible = true;
-				DockHostSpriteOverlay.WithOffset.Animation.PlayBackwardsThen(DockHostSpriteOverlay.Info.Sequence, () =>
+				LinkHostSpriteOverlay.Visible = true;
+				LinkHostSpriteOverlay.WithOffset.Animation.PlayBackwardsThen(LinkHostSpriteOverlay.Info.Sequence, () =>
 				{
 					PlayUndockClientAnimation(self, () =>
 					{
 						dockingState = DockingState.Complete;
-						DockHostSpriteOverlay.Visible = false;
+						LinkHostSpriteOverlay.Visible = false;
 					});
 				});
 			}
@@ -179,10 +179,10 @@ namespace OpenRA.Mods.Common.Activities
 
 		public virtual void PlayUndockClientAnimation(Actor self, Action after)
 		{
-			if (DockClientBody != null)
+			if (LinkClientBody != null)
 			{
 				dockingState = DockingState.Wait;
-				DockClientBody.PlayReverseDockAnimation(self, () => after());
+				LinkClientBody.PlayReverseDockAnimation(self, () => after());
 			}
 			else
 				after();
@@ -191,30 +191,30 @@ namespace OpenRA.Mods.Common.Activities
 		void NotifyDocked(Actor self)
 		{
 			foreach (var nd in notifyDockClients)
-				nd.Docked(self, DockHostActor);
+				nd.Linked(self, LinkHostActor);
 
-			foreach (var nd in notifyDockHosts)
-				nd.Docked(DockHostActor, self);
+			foreach (var nd in notifyLinkHosts)
+				nd.Linked(LinkHostActor, self);
 		}
 
 		void NotifyUndocked(Actor self)
 		{
 			foreach (var nd in notifyDockClients)
-				nd.Undocked(self, DockHostActor);
+				nd.Unlinked(self, LinkHostActor);
 
-			if (DockHostActor.IsInWorld && !DockHostActor.IsDead)
-				foreach (var nd in notifyDockHosts)
-					nd.Undocked(DockHostActor, self);
+			if (LinkHostActor.IsInWorld && !LinkHostActor.IsDead)
+				foreach (var nd in notifyLinkHosts)
+					nd.Unlinked(LinkHostActor, self);
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			yield return Target.FromActor(DockHostActor);
+			yield return Target.FromActor(LinkHostActor);
 		}
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
-			yield return new TargetLineNode(Target.FromActor(DockHostActor), Color.Green);
+			yield return new TargetLineNode(Target.FromActor(LinkHostActor), Color.Green);
 		}
 	}
 }

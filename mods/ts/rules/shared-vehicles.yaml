@@ -70,7 +70,7 @@ HARV:
 	StoresResources:
 		Capacity: 28
 		Resources: Tiberium, BlueTiberium
-	DockClientManager:
+	LinkClientManager:
 		Voice: Move
 	Mobile:
 		Speed: 71

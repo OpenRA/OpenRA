@@ -28,8 +28,8 @@ namespace OpenRA.Mods.Common.Activities
 		readonly RepairableNear repairableNear;
 		readonly Rearmable rearmable;
 		readonly INotifyResupply[] notifyResupplies;
-		readonly INotifyDockHost[] notifyDockHosts;
-		readonly INotifyDockClient[] notifyDockClients;
+		readonly INotifyLinkHost[] notifyLinkHosts;
+		readonly INotifyLinkClient[] notifyLinkClients;
 		readonly ICallForTransport[] transportCallers;
 		readonly IMove move;
 		readonly Aircraft aircraft;
@@ -55,8 +55,8 @@ namespace OpenRA.Mods.Common.Activities
 			repairableNear = self.TraitOrDefault<RepairableNear>();
 			rearmable = self.TraitOrDefault<Rearmable>();
 			notifyResupplies = host.TraitsImplementing<INotifyResupply>().ToArray();
-			notifyDockHosts = host.TraitsImplementing<INotifyDockHost>().ToArray();
-			notifyDockClients = self.TraitsImplementing<INotifyDockClient>().ToArray();
+			notifyLinkHosts = host.TraitsImplementing<INotifyLinkHost>().ToArray();
+			notifyLinkClients = self.TraitsImplementing<INotifyLinkClient>().ToArray();
 			transportCallers = self.TraitsImplementing<ICallForTransport>().ToArray();
 			move = self.Trait<IMove>();
 			aircraft = move as Aircraft;
@@ -153,11 +153,11 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var notifyResupply in notifyResupplies)
 					notifyResupply.BeforeResupply(host.Actor, self, activeResupplyTypes);
 
-				foreach (var nd in notifyDockClients)
-					nd.Docked(self, host.Actor);
+				foreach (var nd in notifyLinkClients)
+					nd.Linked(self, host.Actor);
 
-				foreach (var nd in notifyDockHosts)
-					nd.Docked(host.Actor, self);
+				foreach (var nd in notifyLinkHosts)
+					nd.Linked(host.Actor, self);
 			}
 
 			if (activeResupplyTypes.HasFlag(ResupplyType.Repair))
@@ -247,11 +247,11 @@ namespace OpenRA.Mods.Common.Activities
 					QueueChild(move.MoveToTarget(self, host));
 			}
 
-			foreach (var nd in notifyDockClients)
-				nd.Undocked(self, host.Actor);
+			foreach (var nd in notifyLinkClients)
+				nd.Unlinked(self, host.Actor);
 
-			foreach (var nd in notifyDockHosts)
-				nd.Undocked(host.Actor, self);
+			foreach (var nd in notifyLinkHosts)
+				nd.Unlinked(host.Actor, self);
 		}
 
 		void RepairTick(Actor self)

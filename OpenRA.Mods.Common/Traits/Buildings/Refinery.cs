@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class RefineryInfo : TraitInfo, Requires<WithSpriteBodyInfo>, Requires<IDockHostInfo>
+	public class RefineryInfo : TraitInfo, Requires<WithSpriteBodyInfo>, Requires<ILinkHostInfo>
 	{
 		[Desc("Store resources in silos. Adds cash directly without storing if set to false.")]
 		public readonly bool UseStorage = true;
