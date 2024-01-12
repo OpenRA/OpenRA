@@ -361,7 +361,7 @@ WEED:
 	StoresResources:
 		Capacity: 7
 		Resources: Veins
-	DockClientManager:
+	LinkClientManager:
 		Voice: Move
 	Mobile:
 		Speed: 71

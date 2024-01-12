@@ -22,9 +22,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		readonly string[,] moveAndRenameHarvesterValues = new string[4, 2]
 		{
 			{ "DeliverVoice", "Voice" },
-			{ "DeliverLineColor", "DockLineColor" },
+			{ "DeliverLineColor", "LinkLineColor" },
 			{ "UnloadQueueCostModifier", "OccupancyCostModifier" },
-			{ "SearchForDeliveryBuildingDelay", "SearchForDockDelay" }
+			{ "SearchForDeliveryBuildingDelay", "SearchForLinkDelay" }
 		};
 
 		readonly Dictionary<string, List<MiniYamlNodeBuilder>> refineryNodes = new();
@@ -74,10 +74,15 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
+			foreach (var node in actorNode.ChildrenMatching("Cloak"))
+				foreach (var uncloak in node.ChildrenMatching("UncloakOn"))
+					uncloak.Value.Value = FieldSaver.FormatValue(uncloak.NodeValue<string[]>()
+						.Select(v => v == "Dock" ? "Link" : v).ToArray());
+
 			var refineryNode = actorNode.ChildrenMatching("Refinery", includeRemovals: false).FirstOrDefault();
 			if (refineryNode != null)
 			{
-				var dockNode = new MiniYamlNodeBuilder("DockHost", "");
+				var dockNode = new MiniYamlNodeBuilder("LinkHost", "");
 
 				var lowActorName = actorNode.Key.ToLowerInvariant();
 				if (!refineryNodes.TryGetValue(lowActorName, out var nodes) || !nodes.Any(n => n.Key == "Type"))
@@ -140,7 +145,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					}
 				}
 
-				harvesterNode.RenameChildrenMatching("DeliveryBuildings", "DockType");
+				harvesterNode.RenameChildrenMatching("DeliveryBuildings", "LinkType");
 				harvesterNode.RemoveNodes("MaxUnloadQueue");
 
 				actorNode.AddNode(dockClientNode);

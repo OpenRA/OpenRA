@@ -14,42 +14,42 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public sealed class GrantConditionOnHostDockInfo : TraitInfo
+	public sealed class GrantConditionOnHostLinkInfo : TraitInfo
 	{
 		[FieldLoader.Require]
 		[GrantedConditionReference]
 		[Desc("The condition to grant to self")]
 		public readonly string Condition = null;
 
-		[Desc("How long condition is applied even after undock. Use -1 for infinite.")]
-		public readonly int AfterDockDuration = 0;
+		[Desc("How long condition is applied after unlinking. Use -1 for infinite.")]
+		public readonly int AfterLinkDuration = 0;
 
 		[Desc("Client actor type(s) leading to the condition being granted. Leave empty for allowing all clients by default.")]
-		public readonly HashSet<string> DockClientNames = null;
+		public readonly HashSet<string> LinkClientNames = null;
 
-		public override object Create(ActorInitializer init) { return new GrantConditionOnHostDock(this); }
+		public override object Create(ActorInitializer init) { return new GrantConditionOnHostLink(this); }
 	}
 
-	public sealed class GrantConditionOnHostDock : INotifyDockHost, ITick, ISync
+	public sealed class GrantConditionOnHostLink : INotifyLinkHost, ITick, ISync
 	{
-		readonly GrantConditionOnHostDockInfo info;
+		readonly GrantConditionOnHostLinkInfo info;
 		int token;
 		int delayedtoken;
 
 		[Sync]
 		public int Duration { get; private set; }
 
-		public GrantConditionOnHostDock(GrantConditionOnHostDockInfo info)
+		public GrantConditionOnHostLink(GrantConditionOnHostLinkInfo info)
 		{
 			this.info = info;
 			token = Actor.InvalidConditionToken;
 			delayedtoken = Actor.InvalidConditionToken;
 		}
 
-		void INotifyDockHost.Docked(Actor self, Actor client)
+		void INotifyLinkHost.Linked(Actor self, Actor client)
 		{
 			if (info.Condition != null &&
-				(info.DockClientNames == null || info.DockClientNames.Contains(client.Info.Name)) &&
+				(info.LinkClientNames == null || info.LinkClientNames.Contains(client.Info.Name)) &&
 				token == Actor.InvalidConditionToken)
 			{
 				if (delayedtoken == Actor.InvalidConditionToken)
@@ -62,17 +62,17 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
-		void INotifyDockHost.Undocked(Actor self, Actor client)
+		void INotifyLinkHost.Unlinked(Actor self, Actor client)
 		{
-			if (token == Actor.InvalidConditionToken || info.AfterDockDuration < 0)
+			if (token == Actor.InvalidConditionToken || info.AfterLinkDuration < 0)
 				return;
-			if (info.AfterDockDuration == 0)
+			if (info.AfterLinkDuration == 0)
 				token = self.RevokeCondition(token);
 			else
 			{
 				delayedtoken = token;
 				token = Actor.InvalidConditionToken;
-				Duration = info.AfterDockDuration;
+				Duration = info.AfterLinkDuration;
 			}
 		}
 

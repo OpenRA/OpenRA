@@ -17,38 +17,38 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("Add to a building to expose a move cursor that triggers Transforms and issues a dock order to the transformed actor.")]
-	public class TransformsIntoDockClientInfo : ConditionalTraitInfo, Requires<TransformsInfo>, IDockClientManagerInfo
+	[Desc("Add to a building to expose a move cursor that triggers Transforms and issues a link order to the transformed actor.")]
+	public class TransformsIntoLinkClientManagerInfo : ConditionalTraitInfo, Requires<TransformsInfo>, ILinkClientManagerInfo
 	{
 		[CursorReference]
-		[Desc("Cursor to display when able to dock at target actor.")]
+		[Desc("Cursor to display when able to link to target actor.")]
 		public readonly string EnterCursor = "enter";
 
 		[CursorReference]
-		[Desc("Cursor to display when unable to dock at target actor.")]
+		[Desc("Cursor to display when unable to link to target actor.")]
 		public readonly string EnterBlockedCursor = "enter-blocked";
 
 		[VoiceReference]
 		[Desc("Voice.")]
 		public readonly string Voice = "Action";
 
-		[Desc("Color to use for the target line of docking orders.")]
-		public readonly Color DockLineColor = Color.Green;
+		[Desc("Color to use for the target line of linking orders.")]
+		public readonly Color LinkLineColor = Color.Green;
 
-		[Desc("Require the force-move modifier to display the dock cursor.")]
+		[Desc("Require the force-move modifier to display the link cursor.")]
 		public readonly bool RequiresForceMove = false;
 
-		public override object Create(ActorInitializer init) { return new TransformsIntoDockClient(init.Self, this); }
+		public override object Create(ActorInitializer init) { return new TransformsIntoLinkClientManager(init.Self, this); }
 	}
 
-	public class TransformsIntoDockClient : ConditionalTrait<TransformsIntoDockClientInfo>, IResolveOrder, IOrderVoice, IIssueOrder
+	public class TransformsIntoLinkClientManager : ConditionalTrait<TransformsIntoLinkClientManagerInfo>, IResolveOrder, IOrderVoice, IIssueOrder
 	{
 		readonly Actor self;
-		protected IDockClient[] dockClients;
+		protected ILinkClient[] linkClients;
 
 		readonly Transforms[] transforms;
 
-		public TransformsIntoDockClient(Actor self, TransformsIntoDockClientInfo info)
+		public TransformsIntoLinkClientManager(Actor self, TransformsIntoLinkClientManagerInfo info)
 			: base(info)
 		{
 			this.self = self;
@@ -58,26 +58,26 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			base.Created(self);
-			dockClients = self.TraitsImplementing<IDockClient>().ToArray();
+			linkClients = self.TraitsImplementing<ILinkClient>().ToArray();
 		}
 
 		IEnumerable<IOrderTargeter> IIssueOrder.Orders
 		{
 			get
 			{
-				yield return new DockActorTargeter(
+				yield return new LinkActorTargeter(
 					6,
 					Info.EnterCursor,
 					Info.EnterBlockedCursor,
 					() => Info.RequiresForceMove,
-					DockingPossible,
-					CanDockAt);
+					LinkingPossible,
+					CanLinkTo);
 			}
 		}
 
 		void IResolveOrder.ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Dock" || order.OrderString == "ForceDock")
+			if (order.OrderString == "Link" || order.OrderString == "ForceLink")
 			{
 				// Deliver orders are only valid for own/allied actors,
 				// which are guaranteed to never be frozen.
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!order.Queued)
 					activity.NextActivity?.Cancel(self);
 
-				activity.Queue(new IssueOrderAfterTransform(order.OrderString, order.Target, Info.DockLineColor));
+				activity.Queue(new IssueOrderAfterTransform(order.OrderString, order.Target, Info.LinkLineColor));
 
 				if (currentTransform == null)
 					self.QueueActivity(order.Queued, activity);
@@ -109,9 +109,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Dock" && CanDockAt(order.Target.Actor, false))
+			if (order.OrderString == "Link" && CanLinkTo(order.Target.Actor, false))
 				return Info.Voice;
-			else if (order.OrderString == "ForceDock" && CanDockAt(order.Target.Actor, true))
+			else if (order.OrderString == "ForceLink" && CanLinkTo(order.Target.Actor, true))
 				return Info.Voice;
 
 			return null;
@@ -119,25 +119,25 @@ namespace OpenRA.Mods.Common.Traits
 
 		Order IIssueOrder.IssueOrder(Actor self, IOrderTargeter order, in Target target, bool queued)
 		{
-			if (order.OrderID == "Dock" || order.OrderID == "ForceDock")
+			if (order.OrderID == "Link" || order.OrderID == "ForceLink")
 				return new Order(order.OrderID, self, target, queued);
 
 			return null;
 		}
 
-		/// <summary>Clone of <see cref="DockClientManager.DockingPossible(Actor, bool)"/>.</summary>
-		public bool DockingPossible(Actor target, bool forceEnter)
+		/// <summary>Clone of <see cref="LinkClientManager.LinkingPossible(Actor, bool)"/>.</summary>
+		public bool LinkingPossible(Actor target, bool forceEnter)
 		{
-			return !IsTraitDisabled && target.TraitsImplementing<DockHost>().Any(host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType)));
+			return !IsTraitDisabled && target.TraitsImplementing<ILinkHost>().Any(host => linkClients.Any(client => client.IsLinkingPossible(host.GetLinkType)));
 		}
 
-		/// <summary>Clone of <see cref="DockClientManager.CanDockAt(Actor, bool, bool)"/>.</summary>
-		public bool CanDockAt(Actor target, bool forceEnter)
+		/// <summary>Clone of <see cref="LinkClientManager.CanLinkTo(Actor, bool, bool)"/>.</summary>
+		public bool CanLinkTo(Actor target, bool forceEnter)
 		{
 			if (!(self.CurrentActivity is Transform || transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused)))
 				return false;
 
-			return !IsTraitDisabled && target.TraitsImplementing<DockHost>().Any(host => dockClients.Any(client => client.CanDockAt(target, host, forceEnter, true)));
+			return !IsTraitDisabled && target.TraitsImplementing<ILinkHost>().Any(host => linkClients.Any(client => client.CanLinkTo(target, host, forceEnter, true)));
 		}
 	}
 }
