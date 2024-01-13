@@ -1270,7 +1270,7 @@ namespace OpenRA.Mods.Common.Server
 
 				try
 				{
-					server.LobbyInfo = Session.Deserialize(s);
+					server.LobbyInfo = Session.Deserialize(s, nameof(SyncLobby));
 					server.SyncLobbyInfo();
 				}
 				catch (Exception)

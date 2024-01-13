@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 					removed = true;
 
 			if (removed)
-				locations.Add($"{actorNode.Key} ({actorNode.Location.Filename})");
+				locations.Add($"{actorNode.Key} ({actorNode.Location.Name})");
 
 			yield break;
 		}

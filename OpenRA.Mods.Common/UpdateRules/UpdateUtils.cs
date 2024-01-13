@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 					continue;
 				}
 
-				yaml.Add(((IReadWritePackage)package, name, MiniYaml.FromStream(package.GetStream(name), name, false).ConvertAll(n => new MiniYamlNodeBuilder(n))));
+				yaml.Add(((IReadWritePackage)package, name, MiniYaml.FromStream(package.GetStream(name), $"{package.Name}:{name}", false).ConvertAll(n => new MiniYamlNodeBuilder(n))));
 			}
 
 			return yaml;
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 			{
 				// Ignore any files that aren't in the map bundle
 				if (!filename.Contains('|') && mapPackage.Contains(filename))
-					fileSet.Add((mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename), filename, false).ConvertAll(n => new MiniYamlNodeBuilder(n))));
+					fileSet.Add((mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename), $"{mapPackage.Name}:{filename}", false).ConvertAll(n => new MiniYamlNodeBuilder(n))));
 				else if (modData.ModFiles.Exists(filename))
 					externalFilenames.Add(filename);
 			}
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 					return manualSteps;
 				}
 
-				var yaml = new MiniYamlBuilder(null, MiniYaml.FromStream(mapStream, mapPackage.Name, false));
+				var yaml = new MiniYamlBuilder(null, MiniYaml.FromStream(mapStream, $"{mapPackage.Name}:map.yaml", false));
 				files = new YamlFileSet() { (mapPackage, "map.yaml", yaml.Nodes) };
 
 				manualSteps.AddRange(rule.BeforeUpdate(modData));
@@ -170,9 +170,9 @@ namespace OpenRA.Mods.Common.UpdateRules
 				{
 					// Explicit package paths never refer to a map
 					if (!filename.Contains('|') && mapPackage.Contains(filename))
-						return MiniYaml.FromStream(mapPackage.GetStream(filename));
+						return MiniYaml.FromStream(mapPackage.GetStream(filename), $"{mapPackage.Name}:{filename}");
 
-					return MiniYaml.FromStream(fileSystem.Open(filename));
+					return MiniYaml.FromStream(fileSystem.Open(filename), filename);
 				}));
 			}
 
@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 					if (mapStream == null)
 						continue;
 
-					var yaml = new MiniYamlBuilder(new MiniYaml(null, MiniYaml.FromStream(mapStream, package.Name, false)));
+					var yaml = new MiniYamlBuilder(new MiniYaml(null, MiniYaml.FromStream(mapStream, $"{package.Name}:map.yaml", false)));
 					var mapRulesNode = yaml.NodeWithKeyOrDefault("Rules");
 					if (mapRulesNode != null)
 						foreach (var f in LoadExternalMapYaml(modData, mapRulesNode.Value, externalFilenames))

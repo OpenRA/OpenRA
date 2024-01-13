@@ -25,7 +25,9 @@ namespace OpenRA
 		{
 			this.modData = modData;
 
-			foreach (var file in modData.Manifest.ChromeLayout.Select(a => MiniYaml.FromStream(modData.DefaultFileSystem.Open(a), a)))
+			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
+			foreach (var file in modData.Manifest.ChromeLayout.Select(
+				a => MiniYaml.FromStream(modData.DefaultFileSystem.Open(a), a, stringPool: stringPool)))
 				foreach (var w in file)
 				{
 					var key = w.Key[(w.Key.IndexOf('@') + 1)..];

@@ -38,7 +38,7 @@ namespace OpenRA
 		readonly object syncRoot = new();
 		readonly Queue<MapPreview> generateMinimap = new();
 
-		public Dictionary<string, string> StringPool { get; } = new Dictionary<string, string>();
+		public HashSet<string> StringPool { get; } = new();
 
 		readonly List<MapDirectoryTracker> mapDirectoryTrackers = new();
 
@@ -238,6 +238,7 @@ namespace OpenRA
 			Task.Run(async () =>
 			{
 				var client = HttpClientFactory.Create();
+				var stringPool = new HashSet<string>(); // Reuse common strings in YAML
 
 				// Limit each query to 50 maps at a time to avoid request size limits
 				for (var i = 0; i < queryUids.Count; i += 50)
@@ -249,7 +250,7 @@ namespace OpenRA
 						var httpResponseMessage = await client.GetAsync(url);
 						var result = await httpResponseMessage.Content.ReadAsStreamAsync();
 
-						var yaml = MiniYaml.FromStream(result);
+						var yaml = MiniYaml.FromStream(result, url, stringPool: stringPool);
 						foreach (var kv in yaml)
 							previews[kv.Key].UpdateRemoteSearch(MapStatus.DownloadAvailable, kv.Value, modData.Manifest.MapCompatibility, mapDetailsReceived);
 

@@ -361,7 +361,7 @@ namespace OpenRA
 			if (!Package.Contains("map.yaml") || !Package.Contains("map.bin"))
 				throw new InvalidDataException($"Not a valid map\n File: {package.Name}");
 
-			var yaml = new MiniYaml(null, MiniYaml.FromStream(Package.GetStream("map.yaml"), package.Name));
+			var yaml = new MiniYaml(null, MiniYaml.FromStream(Package.GetStream("map.yaml"), $"{package.Name}:map.yaml"));
 			foreach (var field in YamlFields)
 				field.Deserialize(this, yaml);
 

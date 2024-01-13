@@ -140,9 +140,10 @@ namespace OpenRA
 							files = files.Append(mapFiles);
 						}
 
+						var stringPool = new HashSet<string>(); // Reuse common strings in YAML
 						var sources =
 							modDataRules.Select(x => x.Where(IsLoadableRuleDefinition).ToList())
-							.Concat(files.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s).Where(IsLoadableRuleDefinition).ToList()));
+							.Concat(files.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s, stringPool: stringPool).Where(IsLoadableRuleDefinition).ToList()));
 						if (RuleDefinitions.Nodes.Length > 0)
 							sources = sources.Append(RuleDefinitions.Nodes.Where(IsLoadableRuleDefinition).ToList());
 
@@ -334,7 +335,7 @@ namespace OpenRA
 				if (yamlStream == null)
 					throw new FileNotFoundException("Required file map.yaml not present in this map");
 
-				yaml = new MiniYaml(null, MiniYaml.FromStream(yamlStream, "map.yaml", stringPool: cache.StringPool)).ToDictionary();
+				yaml = new MiniYaml(null, MiniYaml.FromStream(yamlStream, $"{p.Name}:map.yaml", stringPool: cache.StringPool)).ToDictionary();
 			}
 
 			Package = p;
@@ -475,10 +476,12 @@ namespace OpenRA
 					}
 
 					var playersString = Encoding.UTF8.GetString(Convert.FromBase64String(r.players_block));
-					newData.Players = new MapPlayers(MiniYaml.FromString(playersString));
+					newData.Players = new MapPlayers(MiniYaml.FromString(playersString,
+						$"{yaml.NodeWithKey(nameof(r.players_block)).Location.Name}:{nameof(r.players_block)}"));
 
 					var rulesString = Encoding.UTF8.GetString(Convert.FromBase64String(r.rules));
-					var rulesYaml = new MiniYaml("", MiniYaml.FromString(rulesString)).ToDictionary();
+					var rulesYaml = new MiniYaml("", MiniYaml.FromString(rulesString,
+						$"{yaml.NodeWithKey(nameof(r.rules)).Location.Name}:{nameof(r.rules)}")).ToDictionary();
 					newData.SetCustomRules(modData, this, rulesYaml, null);
 
 					// Map is for a different mod: update its information so it can be displayed

@@ -41,13 +41,13 @@ namespace OpenRA.Network
 			return null;
 		}
 
-		public static Session Deserialize(string data)
+		public static Session Deserialize(string data, string name)
 		{
 			try
 			{
 				var session = new Session();
 
-				var nodes = MiniYaml.FromString(data);
+				var nodes = MiniYaml.FromString(data, name);
 				foreach (var node in nodes)
 				{
 					var strings = node.Key.Split('@');
