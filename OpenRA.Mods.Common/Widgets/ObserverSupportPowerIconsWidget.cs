@@ -175,7 +175,10 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 			}
 
-			if (TooltipIcon != null && lastIconIdx < supportPowerIconsBounds.Count && supportPowerIconsIcons[lastIconIdx].Power == TooltipIcon.Power && supportPowerIconsBounds[lastIconIdx].Contains(Viewport.LastMousePos))
+			if (TooltipIcon != null &&
+				lastIconIdx < supportPowerIconsBounds.Count &&
+				supportPowerIconsIcons[lastIconIdx].Power == TooltipIcon.Power &&
+				supportPowerIconsBounds[lastIconIdx].Contains(Viewport.LastMousePos))
 				return;
 
 			for (var i = 0; i < supportPowerIconsBounds.Count; i++)

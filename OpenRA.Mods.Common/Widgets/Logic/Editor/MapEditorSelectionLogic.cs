@@ -156,7 +156,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var diagonalLength = Math.Round(Math.Sqrt(Math.Pow(selectionSize.X, 2) + Math.Pow(selectionSize.Y, 2)), 3);
 			var resourceValueInRegion = editorResourceLayer.CalculateRegionValue(selectedRegion);
 
-			var areaSelectionLabel = $"{TranslationProvider.GetString(AreaSelection)} ({DimensionsAsString(selectionSize)}) {PositionAsString(selectedRegion.TopLeft)} : {PositionAsString(selectedRegion.BottomRight)}";
+			var areaSelectionLabel =
+				$"{TranslationProvider.GetString(AreaSelection)} ({DimensionsAsString(selectionSize)}) " +
+				$"{PositionAsString(selectedRegion.TopLeft)} : {PositionAsString(selectedRegion.BottomRight)}";
 
 			AreaEditTitle.GetText = () => areaSelectionLabel;
 			DiagonalLabel.GetText = () => $"{diagonalLength}";

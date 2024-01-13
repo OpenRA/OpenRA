@@ -41,7 +41,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Dictionary<PreviewStatus, Widget[]> previewWidgets = new();
 		readonly Func<(MapPreview Map, Session.MapStatus Status)> getMap;
 
-		enum PreviewStatus { Unknown, Playable, Incompatible, Validating, DownloadAvailable, Searching, Downloading, DownloadError, Unavailable, UpdateAvailable, UpdateDownloadAvailable }
+		enum PreviewStatus
+		{
+			Unknown,
+			Playable,
+			Incompatible,
+			Validating,
+			DownloadAvailable,
+			Searching,
+			Downloading,
+			DownloadError,
+			Unavailable,
+			UpdateAvailable,
+			UpdateDownloadAvailable,
+		}
+
 		PreviewStatus currentStatus;
 		bool blink;
 		int blinkTick;

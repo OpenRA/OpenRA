@@ -256,7 +256,10 @@ namespace OpenRA.Mods.Common.Widgets
 				return;
 			}
 
-			if (TooltipIcon != null && productionIconsBounds.Count > lastIconIdx && productionIcons[lastIconIdx].Actor == TooltipIcon.Actor && productionIconsBounds[lastIconIdx].Contains(Viewport.LastMousePos))
+			if (TooltipIcon != null &&
+				productionIconsBounds.Count > lastIconIdx &&
+				productionIcons[lastIconIdx].Actor == TooltipIcon.Actor &&
+				productionIconsBounds[lastIconIdx].Contains(Viewport.LastMousePos))
 				return;
 
 			for (var i = 0; i < productionIconsBounds.Count; i++)

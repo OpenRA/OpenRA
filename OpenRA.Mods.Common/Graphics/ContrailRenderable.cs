@@ -36,10 +36,15 @@ namespace OpenRA.Mods.Common.Graphics
 		int length;
 		readonly int skip;
 
-		public ContrailRenderable(World world, Actor owner, Color startcolor, bool usePlayerStartColor, Color endcolor, bool usePlayerEndColor, WDist startWidth, WDist endWidth, int length, int skip, int zOffset)
-			: this(world, owner, new WPos[length], startWidth, endWidth, 0, 0, skip, startcolor, usePlayerStartColor, endcolor, usePlayerEndColor, zOffset) { }
+		public ContrailRenderable(
+			World world, Actor owner, Color startcolor, bool usePlayerStartColor, Color endcolor, bool usePlayerEndColor,
+			WDist startWidth, WDist endWidth, int length, int skip, int zOffset)
+			: this(world, owner, new WPos[length], startWidth, endWidth, 0, 0, skip,
+				  startcolor, usePlayerStartColor, endcolor, usePlayerEndColor, zOffset)
+		{ }
 
-		ContrailRenderable(World world, Actor owner, WPos[] trail, WDist startWidth, WDist endWidth, int next, int length, int skip, Color startColor, bool usePlayerStartColor, Color endColor, bool usePlayerEndColor, int zOffset)
+		ContrailRenderable(World world, Actor owner, WPos[] trail, WDist startWidth, WDist endWidth,
+			int next, int length, int skip, Color startColor, bool usePlayerStartColor, Color endColor, bool usePlayerEndColor, int zOffset)
 		{
 			this.world = world;
 			this.owner = owner;
@@ -60,12 +65,17 @@ namespace OpenRA.Mods.Common.Graphics
 		public int ZOffset { get; }
 		public bool IsDecoration => true;
 
-		public IRenderable WithZOffset(int newOffset) { return new ContrailRenderable(world, owner, (WPos[])trail.Clone(), startWidth, endWidth, next, length, skip, startColor, usePlayerStartColor, endColor, usePlayerEndColor, newOffset); }
+		public IRenderable WithZOffset(int newOffset) =>
+			new ContrailRenderable(
+				world, owner, (WPos[])trail.Clone(), startWidth, endWidth, next,
+				length, skip, startColor, usePlayerStartColor, endColor, usePlayerEndColor, newOffset);
 		public IRenderable OffsetBy(in WVec vec)
 		{
 			// Lambdas can't use 'in' variables, so capture a copy for later
 			var offset = vec;
-			return new ContrailRenderable(world, owner, trail.Select(pos => pos + offset).ToArray(), startWidth, endWidth, next, length, skip, startColor, usePlayerStartColor, endColor, usePlayerEndColor, ZOffset);
+			return new ContrailRenderable(
+				world, owner, trail.Select(pos => pos + offset).ToArray(), startWidth, endWidth, next,
+				length, skip, startColor, usePlayerStartColor, endColor, usePlayerEndColor, ZOffset);
 		}
 
 		public IRenderable AsDecoration() { return this; }

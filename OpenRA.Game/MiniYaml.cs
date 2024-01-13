@@ -463,7 +463,8 @@ namespace OpenRA
 					}
 					catch (ArgumentException)
 					{
-						throw new YamlException($"{n.Location}: Parent type `{n.Value.Value}` was already inherited by this yaml tree at {inherited[n.Value.Value]} (note: may be from a derived tree)");
+						throw new YamlException(
+							$"{n.Location}: Parent type `{n.Value.Value}` was already inherited by this yaml tree at {inherited[n.Value.Value]} (note: may be from a derived tree)");
 					}
 
 					foreach (var r in ResolveInherits(parent, tree, inherited))

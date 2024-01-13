@@ -228,7 +228,11 @@ namespace OpenRA.Mods.Common.Activities
 					{
 						moveCooldownHelper.NotifyMoveQueued();
 						foreach (var cell in rp.Path)
-							QueueChild(new AttackMoveActivity(self, () => move.MoveTo(cell, 1, ignoreActor: repairableNear != null ? null : host.Actor, targetLineColor: aircraft.Info.TargetLineColor)));
+							QueueChild(new AttackMoveActivity(self, () => move.MoveTo(
+								cell,
+								1,
+								ignoreActor: repairableNear != null ? null : host.Actor,
+								targetLineColor: aircraft.Info.TargetLineColor)));
 					}
 					else
 						QueueChild(new TakeOff(self));

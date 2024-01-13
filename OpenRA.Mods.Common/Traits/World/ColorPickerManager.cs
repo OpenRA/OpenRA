@@ -82,7 +82,8 @@ namespace OpenRA.Mods.Common.Traits
 			return false;
 		}
 
-		Color MakeValid(float hue, float sat, float val, MersenneTwister random, IReadOnlyCollection<Color> terrainColors, IReadOnlyCollection<Color> playerColors, Action<string> onError)
+		Color MakeValid(float hue, float sat, float val, MersenneTwister random,
+			IReadOnlyCollection<Color> terrainColors, IReadOnlyCollection<Color> playerColors, Action<string> onError)
 		{
 			// Clamp saturation without triggering a warning
 			// This can only happen due to rounding errors (common) or modified clients (rare)
@@ -132,7 +133,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		Color[] IColorPickerManagerInfo.PresetColors => PresetColors;
 
-		Color IColorPickerManagerInfo.RandomPresetColor(MersenneTwister random, IReadOnlyCollection<Color> terrainColors, IReadOnlyCollection<Color> playerColors)
+		Color IColorPickerManagerInfo.RandomPresetColor(
+			MersenneTwister random,
+			IReadOnlyCollection<Color> terrainColors,
+			IReadOnlyCollection<Color> playerColors)
 		{
 			foreach (var color in PresetColors.Shuffle(random))
 			{
@@ -148,13 +152,21 @@ namespace OpenRA.Mods.Common.Traits
 			return MakeValid(randomHue, randomSat, randomVal, random, terrainColors, playerColors, null);
 		}
 
-		Color IColorPickerManagerInfo.MakeValid(Color color, MersenneTwister random, IReadOnlyCollection<Color> terrainColors, IReadOnlyCollection<Color> playerColors, Action<string> onError)
+		Color IColorPickerManagerInfo.MakeValid(
+			Color color,
+			MersenneTwister random,
+			IReadOnlyCollection<Color> terrainColors,
+			IReadOnlyCollection<Color> playerColors,
+			Action<string> onError)
 		{
 			var (_, h, s, v) = color.ToAhsv();
 			return MakeValid(h, s, v, random, terrainColors, playerColors, onError);
 		}
 
-		Color IColorPickerManagerInfo.RandomValidColor(MersenneTwister random, IReadOnlyCollection<Color> terrainColors, IReadOnlyCollection<Color> playerColors)
+		Color IColorPickerManagerInfo.RandomValidColor(
+			MersenneTwister random,
+			IReadOnlyCollection<Color> terrainColors,
+			IReadOnlyCollection<Color> playerColors)
 		{
 			var h = random.NextFloat();
 			var s = float2.Lerp(HsvSaturationRange[0], HsvSaturationRange[1], random.NextFloat());
@@ -162,7 +174,12 @@ namespace OpenRA.Mods.Common.Traits
 			return MakeValid(h, s, v, random, terrainColors, playerColors, null);
 		}
 
-		void IColorPickerManagerInfo.ShowColorDropDown(DropDownButtonWidget dropdownButton, Color initialColor, string initialFaction, WorldRenderer worldRenderer, Action<Color> onExit)
+		void IColorPickerManagerInfo.ShowColorDropDown(
+			DropDownButtonWidget dropdownButton,
+			Color initialColor,
+			string initialFaction,
+			WorldRenderer worldRenderer,
+			Action<Color> onExit)
 		{
 			dropdownButton.RemovePanel();
 
@@ -177,7 +194,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (initialFaction == null || !FactionPreviewActors.TryGetValue(initialFaction, out var actorType))
 				{
 					if (PreviewActor == null)
-						throw new YamlException($"{nameof(ColorPickerManager)} does not define a preview actor" + (initialFaction == null ? "." : $"for faction {initialFaction}."));
+						throw new YamlException(
+							$"{nameof(ColorPickerManager)} does not define a preview actor" +
+							(initialFaction == null ? "." : $" for faction {initialFaction}."));
 
 					actorType = PreviewActor;
 				}

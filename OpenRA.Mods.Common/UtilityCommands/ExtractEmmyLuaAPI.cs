@@ -336,10 +336,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 
 				if (isActivity)
-					Console.WriteLine($"{new string(' ', indentation * 4)}--- *Queued Activity*");
+					Console.WriteLine(
+						$"{new string(' ', indentation * 4)}--- *Queued Activity*");
 
 				if (requiredTraits.Length != 0)
-					Console.WriteLine($"{new string(' ', indentation * 4)}--- **Requires {(requiredTraits.Length == 1 ? "Trait" : "Traits")}:** {requiredTraits.Select(GetDocumentationUrl).JoinWith(", ")}");
+					Console.WriteLine(
+						$"{new string(' ', indentation * 4)}--- **Requires {(requiredTraits.Length == 1 ? "Trait" : "Traits")}:** {requiredTraits.Select(GetDocumentationUrl).JoinWith(", ")}");
 			}
 		}
 

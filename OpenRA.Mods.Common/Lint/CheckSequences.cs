@@ -96,7 +96,8 @@ namespace OpenRA.Mods.Common.Lint
 									{
 										// TODO: Remove prefixed sequence references and instead use explicit lists of lintable references.
 										if (!sequences.Sequences(i).Any(s => s.StartsWith(sequence, StringComparison.Ordinal)))
-											emitWarning($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` field `{field.Name}` defines a prefix `{sequence}` that does not match any sequences on image `{i}`.");
+											emitWarning(
+												$"Actor type `{actorInfo.Value.Name}` trait `{traitName}` field `{field.Name}` defines a prefix `{sequence}` that does not match any sequences on image `{i}`.");
 									}
 									else if (!sequences.HasSequence(i, sequence))
 										emitError($"Actor type `{actorInfo.Value.Name}` trait `{traitName}` field `{field.Name}` references an undefined sequence `{sequence}` on image `{i}`.");

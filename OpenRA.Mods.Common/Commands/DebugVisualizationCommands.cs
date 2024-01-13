@@ -38,14 +38,15 @@ namespace OpenRA.Mods.Common.Commands
 		[TranslationReference]
 		const string ActorTagsOverlayDescripition = "description-actor-tags-overlay";
 
-		readonly IDictionary<string, (string Description, Action<DebugVisualizations, DeveloperMode> Handler)> commandHandlers = new Dictionary<string, (string Description, Action<DebugVisualizations, DeveloperMode> Handler)>
-		{
-			{ "combat-geometry", (CombatGeometryDescription, CombatGeometry) },
-			{ "render-geometry", (RenderGeometryDescription, RenderGeometry) },
-			{ "screen-map", (ScreenMapOverlayDescription, ScreenMap) },
-			{ "depth-buffer", (DepthBufferDescription, DepthBuffer) },
-			{ "actor-tags", (ActorTagsOverlayDescripition, ActorTags) },
-		};
+		readonly IDictionary<string, (string Description, Action<DebugVisualizations, DeveloperMode> Handler)> commandHandlers =
+			new Dictionary<string, (string Description, Action<DebugVisualizations, DeveloperMode> Handler)>
+			{
+				{ "combat-geometry", (CombatGeometryDescription, CombatGeometry) },
+				{ "render-geometry", (RenderGeometryDescription, RenderGeometry) },
+				{ "screen-map", (ScreenMapOverlayDescription, ScreenMap) },
+				{ "depth-buffer", (DepthBufferDescription, DepthBuffer) },
+				{ "actor-tags", (ActorTagsOverlayDescripition, ActorTags) },
+			};
 
 		DebugVisualizations debugVis;
 		DeveloperMode devMode;

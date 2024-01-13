@@ -60,7 +60,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var body = init.Self.TraitOrDefault<BodyOrientation>();
 			var facing = init.Self.TraitOrDefault<IFacing>();
 
-			overlay = new Animation(init.World, renderSprites.GetImage(init.Self), facing == null ? () => WAngle.Zero : (body == null ? () => facing.Facing : () => body.QuantizeFacing(facing.Facing)))
+			overlay = new Animation(init.World, renderSprites.GetImage(init.Self),
+				facing == null ? () => WAngle.Zero : (body == null ? () => facing.Facing : () => body.QuantizeFacing(facing.Facing)))
 			{
 				IsDecoration = info.IsDecoration
 			};

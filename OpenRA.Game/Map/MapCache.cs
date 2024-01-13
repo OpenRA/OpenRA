@@ -410,10 +410,16 @@ namespace OpenRA
 		{
 			UpdateMaps();
 			var map = string.IsNullOrEmpty(initialUid) ? null : previews[initialUid];
-			if (map == null || map.Status != MapStatus.Available || !map.Visibility.HasFlag(MapVisibility.Lobby) || (map.Class != MapClassification.System && map.Class != MapClassification.User))
+			if (map == null ||
+				map.Status != MapStatus.Available ||
+				!map.Visibility.HasFlag(MapVisibility.Lobby) ||
+				(map.Class != MapClassification.System && map.Class != MapClassification.User))
 			{
 				var selected = previews.Values.Where(IsSuitableInitialMap).RandomOrDefault(random) ??
-					previews.Values.FirstOrDefault(m => m.Status == MapStatus.Available && m.Visibility.HasFlag(MapVisibility.Lobby) && (m.Class == MapClassification.System || m.Class == MapClassification.User));
+					previews.Values.FirstOrDefault(m =>
+					m.Status == MapStatus.Available &&
+					m.Visibility.HasFlag(MapVisibility.Lobby) &&
+					(m.Class == MapClassification.System || m.Class == MapClassification.User));
 				return selected == null ? string.Empty : selected.Uid;
 			}
 

@@ -97,7 +97,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		}
 
 		[ObjectCreator.UseCtor]
-		public DisplaySettingsLogic(Action<string, string, Func<Widget, Func<bool>>, Func<Widget, Action>> registerPanel, string panelID, string label, ModData modData, WorldRenderer worldRenderer)
+		public DisplaySettingsLogic(
+			Action<string, string, Func<Widget, Func<bool>>, Func<Widget, Action>> registerPanel,
+			string panelID, string label, ModData modData, WorldRenderer worldRenderer)
 		{
 			this.worldRenderer = worldRenderer;
 			this.modData = modData;

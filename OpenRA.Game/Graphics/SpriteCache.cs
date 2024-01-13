@@ -45,7 +45,8 @@ namespace OpenRA.Graphics
 			this.loaders = loaders;
 		}
 
-		public int ReserveSprites(string filename, IEnumerable<int> frames, MiniYamlNode.SourceLocation location, Func<ISpriteFrame, ISpriteFrame> adjustFrame = null, bool premultiplied = false)
+		public int ReserveSprites(string filename, IEnumerable<int> frames, MiniYamlNode.SourceLocation location,
+			Func<ISpriteFrame, ISpriteFrame> adjustFrame = null, bool premultiplied = false)
 		{
 			var token = nextReservationToken++;
 			spriteReservations[token] = (frames?.ToArray(), location, adjustFrame, premultiplied);

@@ -61,7 +61,9 @@ namespace OpenRA.Mods.Common.Installer
 					if (length < InstallFromSourceLogic.ShowPercentageThreshold)
 						updateMessage(TranslationProvider.GetString(InstallFromSourceLogic.Extracing, Translation.Arguments("filename", displayFilename)));
 					else
-						onProgress = b => updateMessage(TranslationProvider.GetString(InstallFromSourceLogic.ExtractingProgress, Translation.Arguments("filename", displayFilename, "progress", 100 * b / length)));
+						onProgress = b => updateMessage(TranslationProvider.GetString(
+							InstallFromSourceLogic.ExtractingProgress,
+							Translation.Arguments("filename", displayFilename, "progress", 100 * b / length)));
 
 					using (var target = File.OpenWrite(targetPath))
 					{

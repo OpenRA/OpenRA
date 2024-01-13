@@ -35,7 +35,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cooldown (in ticks) to reach full charge.")]
 		public readonly int ChargeDuration = 500;
 
-		[Desc("The ammount of charge that needs to be present for deploy to be issued. If set to -1, threshold is set to full charge. If activated without full charge " + nameof(ConditionDuration) + " is percentally smaller.")]
+		[Desc("The amount of charge that needs to be present for deploy to be issued. " +
+			"If set to -1, threshold is set to full charge. " +
+			"If activated without full charge " + nameof(ConditionDuration) + " is percentally smaller.")]
 		public readonly int ChargeThreshhold = -1;
 
 		[Desc("How long (in ticks) should the condition stay active?")]
@@ -78,7 +80,8 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class GrantConditionOnDeployWithCharge : PausableConditionalTrait<GrantConditionOnDeployWithChargeInfo>, IIssueOrder, IResolveOrder, ITick, ISelectionBar, IOrderVoice, ISync, IIssueDeployOrder
+	public class GrantConditionOnDeployWithCharge : PausableConditionalTrait<GrantConditionOnDeployWithChargeInfo>,
+		IIssueOrder, IResolveOrder, ITick, ISelectionBar, IOrderVoice, ISync, IIssueDeployOrder
 	{
 		[Sync]
 		int chargeTick = 0;

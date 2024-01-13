@@ -314,8 +314,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 		public static void FindUntranslatedStringFields(ModData modData)
 		{
 			var types = modData.ObjectCreator.GetTypes();
-			foreach (var (type, fields) in types.Where(t => t.Name.EndsWith("Widget", StringComparison.InvariantCulture) && t.IsSubclassOf(typeof(Widget))).ToDictionary(t => t.Name[..^6],
-				t => t.GetFields().Where(f => f.Name != "Id" && f.IsPublic && f.FieldType == typeof(string) && !f.HasAttribute<TranslationReferenceAttribute>()).Distinct().Select(f => f.Name).ToList()))
+			foreach (var (type, fields) in types
+				.Where(t => t.Name.EndsWith("Widget", StringComparison.InvariantCulture) && t.IsSubclassOf(typeof(Widget)))
+				.ToDictionary(
+					t => t.Name[..^6],
+					t => t
+						.GetFields()
+						.Where(f => f.Name != "Id" && f.IsPublic && f.FieldType == typeof(string) && !f.HasAttribute<TranslationReferenceAttribute>())
+						.Distinct()
+						.Select(f => f.Name)
+						.ToList()))
 				if (fields.Count > 0)
 					Console.WriteLine($"{type}Widget:\n  {string.Join("\n  ", fields)}");
 		}

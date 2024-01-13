@@ -49,9 +49,13 @@ namespace OpenRA.Mods.Cnc.Installer
 
 						Action<long> onProgress = null;
 						if (stream.Length < InstallFromSourceLogic.ShowPercentageThreshold)
-							updateMessage(TranslationProvider.GetString(InstallFromSourceLogic.Extracing, Translation.Arguments("filename", displayFilename)));
+							updateMessage(TranslationProvider.GetString(
+								InstallFromSourceLogic.Extracing,
+								Translation.Arguments("filename", displayFilename)));
 						else
-							onProgress = b => updateMessage(TranslationProvider.GetString(InstallFromSourceLogic.ExtractingProgress, Translation.Arguments("filename", displayFilename, "progress", 100 * b / stream.Length)));
+							onProgress = b => updateMessage(TranslationProvider.GetString(
+								InstallFromSourceLogic.ExtractingProgress,
+								Translation.Arguments("filename", displayFilename, "progress", 100 * b / stream.Length)));
 
 						using (var target = File.OpenWrite(targetPath))
 						{
