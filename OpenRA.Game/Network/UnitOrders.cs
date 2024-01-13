@@ -62,7 +62,7 @@ namespace OpenRA.Network
 					if (string.IsNullOrEmpty(order.TargetString))
 						break;
 
-					var yaml = MiniYaml.FromString(order.TargetString);
+					var yaml = MiniYaml.FromString(order.TargetString, order.OrderString);
 					foreach (var node in yaml)
 					{
 						var localizedMessage = new LocalizedMessage(node.Value);
@@ -183,7 +183,7 @@ namespace OpenRA.Network
 
 					if (!string.IsNullOrEmpty(order.TargetString))
 					{
-						var data = MiniYaml.FromString(order.TargetString);
+						var data = MiniYaml.FromString(order.TargetString, order.OrderString);
 						var saveLastOrdersFrame = data.FirstOrDefault(n => n.Key == "SaveLastOrdersFrame");
 						if (saveLastOrdersFrame != null)
 							orderManager.GameSaveLastFrame =
@@ -203,7 +203,7 @@ namespace OpenRA.Network
 
 				case "SaveTraitData":
 				{
-					var data = MiniYaml.FromString(order.TargetString)[0];
+					var data = MiniYaml.FromString(order.TargetString, order.OrderString)[0];
 					var traitIndex = Exts.ParseInt32Invariant(data.Key);
 
 					world?.AddGameSaveTraitData(traitIndex, data.Value);
@@ -244,7 +244,7 @@ namespace OpenRA.Network
 				{
 					// Switch to the server's mod if we need and are able to
 					var mod = Game.ModData.Manifest;
-					var request = HandshakeRequest.Deserialize(order.TargetString);
+					var request = HandshakeRequest.Deserialize(order.TargetString, order.OrderString);
 
 					var externalKey = ExternalMod.MakeKey(request.Mod, request.Version);
 					if ((request.Mod != mod.Id || request.Version != mod.Metadata.Version) &&
@@ -312,7 +312,7 @@ namespace OpenRA.Network
 
 				case "SyncInfo":
 				{
-					orderManager.LobbyInfo = Session.Deserialize(order.TargetString);
+					orderManager.LobbyInfo = Session.Deserialize(order.TargetString, order.OrderString);
 					Game.SyncLobbyInfo();
 					break;
 				}
@@ -320,7 +320,7 @@ namespace OpenRA.Network
 				case "SyncLobbyClients":
 				{
 					var clients = new List<Session.Client>();
-					var nodes = MiniYaml.FromString(order.TargetString);
+					var nodes = MiniYaml.FromString(order.TargetString, order.OrderString);
 					foreach (var node in nodes)
 					{
 						var strings = node.Key.Split('@');
@@ -336,7 +336,7 @@ namespace OpenRA.Network
 				case "SyncLobbySlots":
 				{
 					var slots = new Dictionary<string, Session.Slot>();
-					var nodes = MiniYaml.FromString(order.TargetString);
+					var nodes = MiniYaml.FromString(order.TargetString, order.OrderString);
 					foreach (var node in nodes)
 					{
 						var strings = node.Key.Split('@');
@@ -354,7 +354,7 @@ namespace OpenRA.Network
 
 				case "SyncLobbyGlobalSettings":
 				{
-					var nodes = MiniYaml.FromString(order.TargetString);
+					var nodes = MiniYaml.FromString(order.TargetString, order.OrderString);
 					foreach (var node in nodes)
 					{
 						var strings = node.Key.Split('@');
@@ -368,7 +368,7 @@ namespace OpenRA.Network
 
 				case "SyncConnectionQuality":
 				{
-					var nodes = MiniYaml.FromString(order.TargetString);
+					var nodes = MiniYaml.FromString(order.TargetString, order.OrderString);
 					foreach (var node in nodes)
 					{
 						var strings = node.Key.Split('@');

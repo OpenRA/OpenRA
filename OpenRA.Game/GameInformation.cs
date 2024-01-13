@@ -49,13 +49,13 @@ namespace OpenRA
 			playersByRuntime = new Dictionary<OpenRA.Player, Player>();
 		}
 
-		public static GameInformation Deserialize(string data)
+		public static GameInformation Deserialize(string data, string path)
 		{
 			try
 			{
 				var info = new GameInformation();
 
-				var nodes = MiniYaml.FromString(data);
+				var nodes = MiniYaml.FromString(data, path);
 				foreach (var node in nodes)
 				{
 					var keyParts = node.Key.Split('@');

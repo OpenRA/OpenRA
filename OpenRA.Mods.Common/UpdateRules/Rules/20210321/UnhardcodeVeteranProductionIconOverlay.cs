@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			}
 
 			foreach (var producibleWithLevel in actorNode.ChildrenMatching("ProducibleWithLevel"))
-				locations.Add($"{actorNode.Key}: {producibleWithLevel.Key} ({actorNode.Location.Filename})");
+				locations.Add($"{actorNode.Key}: {producibleWithLevel.Key} ({actorNode.Location.Name})");
 
 			yield break;
 		}

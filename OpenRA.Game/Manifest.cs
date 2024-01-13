@@ -94,7 +94,8 @@ namespace OpenRA
 			Id = modId;
 			Package = package;
 
-			var nodes = MiniYaml.FromStream(package.GetStream("mod.yaml"), "mod.yaml");
+			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
+			var nodes = MiniYaml.FromStream(package.GetStream("mod.yaml"), $"{package.Name}:mod.yaml", stringPool: stringPool);
 			for (var i = nodes.Count - 1; i >= 0; i--)
 			{
 				if (nodes[i].Key != "Include")
@@ -107,7 +108,7 @@ namespace OpenRA
 					throw new YamlException($"{nodes[i].Location}: File `{filename}` not found.");
 
 				nodes.RemoveAt(i);
-				nodes.InsertRange(i, MiniYaml.FromStream(contents, filename));
+				nodes.InsertRange(i, MiniYaml.FromStream(contents, $"{package.Name}:{filename}", stringPool: stringPool));
 			}
 
 			// Merge inherited overrides

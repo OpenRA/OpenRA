@@ -130,6 +130,20 @@ namespace OpenRA
 			return ret;
 		}
 
+		public static T GetOrAdd<T>(this HashSet<T> set, T value)
+		{
+			if (!set.TryGetValue(value, out var ret))
+				set.Add(ret = value);
+			return ret;
+		}
+
+		public static T GetOrAdd<T>(this HashSet<T> set, T value, Func<T, T> createFn)
+		{
+			if (!set.TryGetValue(value, out var ret))
+				set.Add(ret = createFn(value));
+			return ret;
+		}
+
 		public static int IndexOf<T>(this T[] array, T value)
 		{
 			return Array.IndexOf(array, value);

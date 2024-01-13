@@ -44,7 +44,7 @@ namespace OpenRA.Test
 	9.1.2: Test
 	9.1.3: # Test
 ";
-			var serialized = MiniYaml.FromString(Yaml, discardCommentsAndWhitespace: false).WriteToString();
+			var serialized = MiniYaml.FromString(Yaml, "", discardCommentsAndWhitespace: false).WriteToString();
 			Console.WriteLine();
 			Assert.That(serialized, Is.EqualTo(Yaml));
 		}
@@ -120,7 +120,7 @@ namespace OpenRA.Test
 	9.1.2: Test
 	9.1.3:
 ";
-			var serialized = MiniYaml.FromString(Yaml).WriteToString();
+			var serialized = MiniYaml.FromString(Yaml, "").WriteToString();
 			Assert.That(serialized, Is.EqualTo(ExpectedYaml));
 		}
 
@@ -152,9 +152,9 @@ Root2:
     Child1:
 		Attribute1: Test
 ";
-			var tabs = MiniYaml.FromString(YamlTabStyle, "yamlTabStyle").WriteToString();
+			var tabs = MiniYaml.FromString(YamlTabStyle, "").WriteToString();
 			Console.WriteLine(tabs);
-			var mixed = MiniYaml.FromString(YamlMixedStyle, "yamlMixedStyle").WriteToString();
+			var mixed = MiniYaml.FromString(YamlMixedStyle, "").WriteToString();
 			Console.WriteLine(mixed);
 			Assert.That(tabs, Is.EqualTo(mixed));
 		}
@@ -376,7 +376,7 @@ TestB:
 	Nothing:
 ";
 
-			var result = MiniYaml.FromString(Yaml).First(n => n.Key == "TestB");
+			var result = MiniYaml.FromString(Yaml, "").First(n => n.Key == "TestB");
 			Assert.AreEqual(5, result.Location.Line);
 		}
 
@@ -549,27 +549,27 @@ Test:
 		[TestCase(TestName = "Comments are correctly separated from values")]
 		public void TestEscapedHashInValues()
 		{
-			var trailingWhitespace = MiniYaml.FromString("key: value # comment", "trailingWhitespace", discardCommentsAndWhitespace: false)[0];
+			var trailingWhitespace = MiniYaml.FromString("key: value # comment", "", discardCommentsAndWhitespace: false)[0];
 			Assert.AreEqual("value", trailingWhitespace.Value.Value);
 			Assert.AreEqual(" comment", trailingWhitespace.Comment);
 
-			var noWhitespace = MiniYaml.FromString("key:value# comment", "noWhitespace", discardCommentsAndWhitespace: false)[0];
+			var noWhitespace = MiniYaml.FromString("key:value# comment", "", discardCommentsAndWhitespace: false)[0];
 			Assert.AreEqual("value", noWhitespace.Value.Value);
 			Assert.AreEqual(" comment", noWhitespace.Comment);
 
-			var escapedHashInValue = MiniYaml.FromString(@"key: before \# after # comment", "escapedHashInValue", discardCommentsAndWhitespace: false)[0];
+			var escapedHashInValue = MiniYaml.FromString(@"key: before \# after # comment", "", discardCommentsAndWhitespace: false)[0];
 			Assert.AreEqual("before # after", escapedHashInValue.Value.Value);
 			Assert.AreEqual(" comment", escapedHashInValue.Comment);
 
-			var emptyValueAndComment = MiniYaml.FromString("key:#", "emptyValueAndComment", discardCommentsAndWhitespace: false)[0];
+			var emptyValueAndComment = MiniYaml.FromString("key:#", "", discardCommentsAndWhitespace: false)[0];
 			Assert.AreEqual(null, emptyValueAndComment.Value.Value);
 			Assert.AreEqual("", emptyValueAndComment.Comment);
 
-			var noValue = MiniYaml.FromString("key:", "noValue", discardCommentsAndWhitespace: false)[0];
+			var noValue = MiniYaml.FromString("key:", "", discardCommentsAndWhitespace: false)[0];
 			Assert.AreEqual(null, noValue.Value.Value);
 			Assert.AreEqual(null, noValue.Comment);
 
-			var emptyKey = MiniYaml.FromString(" : value", "emptyKey", discardCommentsAndWhitespace: false)[0];
+			var emptyKey = MiniYaml.FromString(" : value", "", discardCommentsAndWhitespace: false)[0];
 			Assert.AreEqual(null, emptyKey.Key);
 			Assert.AreEqual("value", emptyKey.Value.Value);
 			Assert.AreEqual(null, emptyKey.Comment);
@@ -579,7 +579,7 @@ Test:
 		public void TestGuardedWhitespace()
 		{
 			const string TestYaml = @"key:   \      test value    \   ";
-			var nodes = MiniYaml.FromString(TestYaml, "testYaml");
+			var nodes = MiniYaml.FromString(TestYaml, "");
 			Assert.AreEqual("      test value    ", nodes[0].Value.Value);
 		}
 
@@ -594,12 +594,12 @@ TestA:
 TestB:
 	Nothing:
 ";
-			var resultDiscard = MiniYaml.FromString(Yaml);
+			var resultDiscard = MiniYaml.FromString(Yaml, "");
 			var resultDiscardLine = resultDiscard.First(n => n.Key == "TestB").Location.Line;
 			Assert.That(resultDiscardLine, Is.EqualTo(6), "Node TestB should report its location as line 6, but is not (discarding comments)");
 			Assert.That(resultDiscard[1].Key, Is.EqualTo("TestB"), "Node TestB should be the second child of the root node, but is not (discarding comments)");
 
-			var resultKeep = MiniYaml.FromString(Yaml, discardCommentsAndWhitespace: false);
+			var resultKeep = MiniYaml.FromString(Yaml, "", discardCommentsAndWhitespace: false);
 			var resultKeepLine = resultKeep.First(n => n.Key == "TestB").Location.Line;
 			Assert.That(resultKeepLine, Is.EqualTo(6), "Node TestB should report its location as line 6, but is not (parsing comments)");
 			Assert.That(resultKeep[4].Key, Is.EqualTo("TestB"), "Node TestB should be the fifth child of the root node, but is not (parsing comments)");
@@ -646,7 +646,7 @@ Parent: # comment without value
 	Seventh: # embedded comment: still a comment # more comment
 ".Replace("\r\n", "\n");
 
-			var result = MiniYaml.FromString(yaml, discardCommentsAndWhitespace: false).WriteToString();
+			var result = MiniYaml.FromString(yaml, "", discardCommentsAndWhitespace: false).WriteToString();
 			Assert.AreEqual(canonicalYaml, result);
 		}
 
@@ -682,7 +682,7 @@ Parent: # comment without value
 	Seventh:
 ".Replace("\r\n", "\n");
 
-			var result = MiniYaml.FromString(Yaml).WriteToString();
+			var result = MiniYaml.FromString(Yaml, "").WriteToString();
 			Assert.AreEqual(strippedYaml, result);
 		}
 	}

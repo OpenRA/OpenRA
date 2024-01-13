@@ -456,7 +456,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var httpResponseMessage = await client.GetAsync(queryURL);
 					var result = await httpResponseMessage.Content.ReadAsStreamAsync();
 
-					var yaml = MiniYaml.FromStream(result);
+					var yaml = MiniYaml.FromStream(result, queryURL);
 					games = new List<GameServer>();
 					foreach (var node in yaml)
 					{
@@ -479,6 +479,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				var lanGames = new List<GameServer>();
+				var stringPool = new HashSet<string>(); // Reuse common strings in YAML
 				foreach (var bl in lanGameLocations)
 				{
 					try
@@ -486,7 +487,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						if (string.IsNullOrEmpty(bl.Data))
 							continue;
 
-						var game = new MiniYamlBuilder(MiniYaml.FromString(bl.Data)[0].Value);
+						var game = new MiniYamlBuilder(MiniYaml.FromString(
+							bl.Data, $"BeaconLocation_{bl.Address}_{bl.LastAdvertised:s}", stringPool: stringPool)[0].Value);
 						var idNode = game.NodeWithKeyOrDefault("Id");
 
 						// Skip beacons created by this instance and replace Id by expected int value

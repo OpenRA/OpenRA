@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			{
 				traitNode.RemoveNodes("Image");
 				traitNode.RemoveNodes("Sequence");
-				locations.Add($"{actorNode.Key} ({actorNode.Location.Filename})");
+				locations.Add($"{actorNode.Key} ({actorNode.Location.Name})");
 			}
 
 			yield break;

@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Common.Lint
 
 			foreach (var filename in modData.Manifest.ChromeLayout)
 			{
-				var nodes = MiniYaml.FromStream(modData.DefaultFileSystem.Open(filename));
+				var nodes = MiniYaml.FromStream(modData.DefaultFileSystem.Open(filename), filename);
 				foreach (var node in nodes)
 					CheckChrome(node, translation, Language, emitError, emitWarning, translatableFields);
 			}

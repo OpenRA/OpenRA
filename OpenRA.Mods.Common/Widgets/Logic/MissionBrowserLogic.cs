@@ -128,8 +128,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			// Add a group for each campaign
 			if (modData.Manifest.Missions.Length > 0)
 			{
+				var stringPool = new HashSet<string>(); // Reuse common strings in YAML
 				var yaml = MiniYaml.Merge(modData.Manifest.Missions.Select(
-					m => MiniYaml.FromStream(modData.DefaultFileSystem.Open(m), m)));
+					m => MiniYaml.FromStream(modData.DefaultFileSystem.Open(m), m, stringPool: stringPool)));
 
 				foreach (var kv in yaml)
 				{

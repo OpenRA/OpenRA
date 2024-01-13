@@ -77,8 +77,9 @@ namespace OpenRA.Graphics
 			cachedPanelSprites = new Dictionary<string, Sprite[]>();
 			cachedCollectionSheets = new Dictionary<Collection, (Sheet, int)>();
 
+			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
 			var chrome = MiniYaml.Merge(modData.Manifest.Chrome
-				.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s)));
+				.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s, stringPool: stringPool)));
 
 			foreach (var c in chrome)
 				if (!c.Key.StartsWith('^'))

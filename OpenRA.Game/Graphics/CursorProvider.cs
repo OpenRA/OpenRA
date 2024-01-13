@@ -24,8 +24,9 @@ namespace OpenRA.Graphics
 		public CursorProvider(ModData modData)
 		{
 			var fileSystem = modData.DefaultFileSystem;
+			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
 			var sequenceYaml = MiniYaml.Merge(modData.Manifest.Cursors.Select(
-				s => MiniYaml.FromStream(fileSystem.Open(s), s)));
+				s => MiniYaml.FromStream(fileSystem.Open(s), s, stringPool: stringPool)));
 
 			var cursorsYaml = new MiniYaml(null, sequenceYaml).NodeWithKey("Cursors").Value;
 

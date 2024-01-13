@@ -158,7 +158,8 @@ namespace OpenRA
 
 		public List<MiniYamlNode>[] GetRulesYaml()
 		{
-			return Manifest.Rules.Select(s => MiniYaml.FromStream(DefaultFileSystem.Open(s), s)).ToArray();
+			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
+			return Manifest.Rules.Select(s => MiniYaml.FromStream(DefaultFileSystem.Open(s), s, stringPool: stringPool)).ToArray();
 		}
 
 		public void Dispose()

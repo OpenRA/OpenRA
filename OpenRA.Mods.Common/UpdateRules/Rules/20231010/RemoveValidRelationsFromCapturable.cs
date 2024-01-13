@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 			foreach (var capturable in actorNode.ChildrenMatching("Capturable"))
 			{
 				if (capturable.RemoveNodes("ValidRelations") > 0)
-					locations.Add($"{actorNode.Key}: {capturable.Key} ({actorNode.Location.Filename})");
+					locations.Add($"{actorNode.Key}: {capturable.Key} ({actorNode.Location.Name})");
 			}
 
 			yield break;

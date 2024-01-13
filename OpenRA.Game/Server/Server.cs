@@ -463,7 +463,7 @@ namespace OpenRA.Server
 			Conns.Add(newConn);
 		}
 
-		void ValidateClient(Connection newConn, string data)
+		void ValidateClient(Connection newConn, string data, string name)
 		{
 			try
 			{
@@ -476,7 +476,7 @@ namespace OpenRA.Server
 					return;
 				}
 
-				var handshake = HandshakeResponse.Deserialize(data);
+				var handshake = HandshakeResponse.Deserialize(data, name);
 
 				if (!string.IsNullOrEmpty(Settings.Password) && handshake.Password != Settings.Password)
 				{
@@ -618,10 +618,11 @@ namespace OpenRA.Server
 						try
 						{
 							var httpClient = HttpClientFactory.Create();
-							var httpResponseMessage = await httpClient.GetAsync(playerDatabase.Profile + handshake.Fingerprint);
+							var url = playerDatabase.Profile + handshake.Fingerprint;
+							var httpResponseMessage = await httpClient.GetAsync(url);
 							var result = await httpResponseMessage.Content.ReadAsStreamAsync();
 
-							var yaml = MiniYaml.FromStream(result).First();
+							var yaml = MiniYaml.FromStream(result, url).First();
 							if (yaml.Key == "Player")
 							{
 								profile = FieldLoader.Load<PlayerProfile>(yaml.Value);
@@ -980,7 +981,7 @@ namespace OpenRA.Server
 				if (!conn.Validated)
 				{
 					if (o.OrderString == "HandshakeResponse")
-						ValidateClient(conn, o.TargetString);
+						ValidateClient(conn, o.TargetString, o.OrderString);
 					else
 					{
 						Log.Write("server", $"Rejected connection from {conn.EndPoint}; Order `{o.OrderString}` is not a `HandshakeResponse`.");
@@ -1015,7 +1016,7 @@ namespace OpenRA.Server
 					{
 						if (GameSave != null)
 						{
-							var data = MiniYaml.FromString(o.TargetString)[0];
+							var data = MiniYaml.FromString(o.TargetString, o.OrderString)[0];
 							GameSave.AddTraitData(OpenRA.Exts.ParseInt32Invariant(data.Key), data.Value);
 						}
 

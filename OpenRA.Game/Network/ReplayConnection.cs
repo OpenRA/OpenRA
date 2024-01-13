@@ -69,7 +69,7 @@ namespace OpenRA.Network
 								if (o.OrderString == "StartGame")
 									IsValid = true;
 								else if (o.OrderString == "SyncInfo" && !IsValid)
-									LobbyInfo = Session.Deserialize(o.TargetString);
+									LobbyInfo = Session.Deserialize(o.TargetString, o.OrderString);
 							}
 						}
 					}

@@ -66,6 +66,7 @@ namespace OpenRA
 			// Several types of support directory types are available, depending on
 			// how the player has installed and launched the game.
 			// Read registration metadata from all of them
+			var stringPool = new HashSet<string>(); // Reuse common strings in YAML
 			foreach (var source in GetSupportDirs(ModRegistration.User | ModRegistration.System))
 			{
 				var metadataPath = Path.Combine(source, "ModMetadata");
@@ -76,7 +77,7 @@ namespace OpenRA
 				{
 					try
 					{
-						var yaml = MiniYaml.FromStream(File.OpenRead(path), path).First().Value;
+						var yaml = MiniYaml.FromFile(path, stringPool: stringPool).First().Value;
 						LoadMod(yaml, path);
 					}
 					catch (Exception e)
@@ -205,7 +206,7 @@ namespace OpenRA
 					string modKey = null;
 					try
 					{
-						var yaml = MiniYaml.FromStream(File.OpenRead(path), path).First().Value;
+						var yaml = MiniYaml.FromFile(path).First().Value;
 						var m = FieldLoader.Load<ExternalMod>(yaml);
 						modKey = ExternalMod.MakeKey(m);
 

@@ -48,7 +48,7 @@ namespace OpenRA.FileFormats
 
 			// Read game info (max 100K limit as a safeguard against corrupted files)
 			var data = fs.ReadLengthPrefixedString(Encoding.UTF8, 1024 * 100);
-			GameInfo = GameInformation.Deserialize(data);
+			GameInfo = GameInformation.Deserialize(data, path);
 		}
 
 		public void Write(BinaryWriter writer)
