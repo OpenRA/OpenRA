@@ -38,7 +38,9 @@ namespace OpenRA.Mods.Common.Activities
 			// Make sure we can still repair the target before entering
 			// (but not before, because this may stop the actor in the middle of nowhere)
 			var stance = self.Owner.RelationshipWith(enterActor.Owner);
-			if (enterHealth == null || enterHealth.DamageState == DamageState.Undamaged || enterInstantlyRepariable == null || enterInstantlyRepariable.IsTraitDisabled || !info.ValidRelationships.HasRelationship(stance))
+			if (enterHealth == null || enterHealth.DamageState == DamageState.Undamaged ||
+				enterInstantlyRepariable == null || enterInstantlyRepariable.IsTraitDisabled ||
+				!info.ValidRelationships.HasRelationship(stance))
 			{
 				Cancel(self, true);
 				return false;

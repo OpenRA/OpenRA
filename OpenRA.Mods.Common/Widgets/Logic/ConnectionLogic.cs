@@ -103,7 +103,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool passwordOffsetAdjusted;
 
 		[ObjectCreator.UseCtor]
-		public ConnectionFailedLogic(Widget widget, ModData modData, OrderManager orderManager, NetworkConnection connection, string password, Action onAbort, Action onQuit, Action<string> onRetry)
+		public ConnectionFailedLogic(Widget widget, ModData modData, OrderManager orderManager,
+			NetworkConnection connection, string password, Action onAbort, Action onQuit, Action<string> onRetry)
 		{
 			var panel = widget;
 			var abortButton = panel.Get<ButtonWidget>("ABORT_BUTTON");
@@ -133,7 +134,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => connectingDescText;
 
 			var connectionError = widget.Get<LabelWidget>("CONNECTION_ERROR");
-			var connectionErrorText = orderManager.ServerError != null ? TranslationProvider.GetString(orderManager.ServerError) : connection.ErrorMessage ?? TranslationProvider.GetString(UnknownError);
+			var connectionErrorText = orderManager.ServerError != null
+				? TranslationProvider.GetString(orderManager.ServerError)
+				: connection.ErrorMessage ?? TranslationProvider.GetString(UnknownError);
 			connectionError.GetText = () => connectionErrorText;
 
 			var panelTitle = widget.Get<LabelWidget>("TITLE");

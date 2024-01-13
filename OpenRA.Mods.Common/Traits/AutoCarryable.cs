@@ -68,7 +68,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Inform all idle carriers
 			var carriers = self.World.ActorsWithTrait<AutoCarryall>()
-				.Where(c => c.Trait.State == Carryall.CarryallState.Idle && !c.Trait.IsTraitDisabled && c.Trait.EnableAutoCarry && !c.Actor.IsDead && c.Actor.Owner == self.Owner && c.Actor.IsInWorld)
+				.Where(c =>
+					c.Trait.State == Carryall.CarryallState.Idle && !c.Trait.IsTraitDisabled &&
+					c.Trait.EnableAutoCarry && !c.Actor.IsDead && c.Actor.Owner == self.Owner && c.Actor.IsInWorld)
 				.OrderBy(p => (self.Location - p.Actor.Location).LengthSquared);
 
 			// Enumerate idle carriers to find the first that is able to transport us

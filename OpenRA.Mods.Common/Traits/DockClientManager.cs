@@ -322,7 +322,9 @@ namespace OpenRA.Mods.Common.Traits
 			else
 			{
 				return docks
-					.OrderBy(dock => (clientActor.Location - clientActor.World.Map.CellContaining(dock.Trait.DockPosition)).LengthSquared + dock.Trait.ReservationCount * client.OccupancyCostModifier)
+					.OrderBy(dock =>
+						(clientActor.Location - clientActor.World.Map.CellContaining(dock.Trait.DockPosition)).LengthSquared +
+						dock.Trait.ReservationCount * client.OccupancyCostModifier)
 					.FirstOrDefault();
 			}
 

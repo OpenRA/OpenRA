@@ -19,7 +19,20 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		MiniYamlNodeBuilder defences;
 
 		// Excludes AttackBomber and AttackTDGunboatTurreted as actors with these AttackBase traits aren't supposed to be controlled.
-		readonly string[] attackBase = { "AttackLeap", "AttackPopupTurreted", "AttackAircraft", "AttackTesla", "AttackCharges", "AttackFollow", "AttackTurreted", "AttackFrontal", "AttackGarrisoned", "AttackOmni", "AttackSwallow" };
+		readonly string[] attackBase =
+		{
+			"AttackLeap",
+			"AttackPopupTurreted",
+			"AttackAircraft",
+			"AttackTesla",
+			"AttackCharges",
+			"AttackFollow",
+			"AttackTurreted",
+			"AttackFrontal",
+			"AttackGarrisoned",
+			"AttackOmni",
+			"AttackSwallow"
+		};
 		readonly string[] buildings = { "Building", "EnergyWall", "D2kBuilding" };
 
 		bool anyAdded;

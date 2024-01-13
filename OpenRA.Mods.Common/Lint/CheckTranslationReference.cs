@@ -245,7 +245,10 @@ namespace OpenRA.Mods.Common.Lint
 					var resourceTypeTranslationReference = Utility.GetCustomAttributes<TranslationReferenceAttribute>(resourceTypeNameField, true)[0];
 					testedFields.Add(resourceTypeNameField);
 					foreach (var resourceTypes in info.ResourceTypes)
-						usedKeys.Add(resourceTypes.Value.Name, resourceTypeTranslationReference, $"`{nameof(ResourceRendererInfo.ResourceTypeInfo)}.{nameof(ResourceRendererInfo.ResourceTypeInfo.Name)}`");
+						usedKeys.Add(
+							resourceTypes.Value.Name,
+							resourceTypeTranslationReference,
+							$"`{nameof(ResourceRendererInfo.ResourceTypeInfo)}.{nameof(ResourceRendererInfo.ResourceTypeInfo.Name)}`");
 				}
 			}
 

@@ -24,7 +24,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public enum ObserverStatsPanel { None, Basic, Economy, Production, SupportPowers, Combat, Army, Graph, ArmyGraph }
 
-	[ChromeLogicArgsHotkeys("StatisticsBasicKey", "StatisticsEconomyKey", "StatisticsProductionKey", "StatisticsSupportPowersKey", "StatisticsCombatKey", "StatisticsArmyKey", "StatisticsGraphKey",
+	[ChromeLogicArgsHotkeys(
+		"StatisticsBasicKey",
+		"StatisticsEconomyKey",
+		"StatisticsProductionKey",
+		"StatisticsSupportPowersKey",
+		"StatisticsCombatKey",
+		"StatisticsArmyKey",
+		"StatisticsGraphKey",
 		"StatisticsArmyGraphKey")]
 	public class ObserverStatsLogic : ChromeLogic
 	{
@@ -450,15 +457,18 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			template.Get<LabelWidget>("ASSETS").GetText = () => assetsText.Update(stats.AssetsValue);
 
 			var harvesters = template.Get<LabelWidget>("HARVESTERS");
-			harvesters.GetText = () => world.ActorsWithTrait<Harvester>().Count(a => a.Actor.Owner == player && !a.Actor.IsDead && !a.Trait.IsTraitDisabled).ToString(NumberFormatInfo.CurrentInfo);
+			harvesters.GetText = () => world.ActorsWithTrait<Harvester>()
+				.Count(a => a.Actor.Owner == player && !a.Actor.IsDead && !a.Trait.IsTraitDisabled).ToString(NumberFormatInfo.CurrentInfo);
 
 			var carryalls = template.GetOrNull<LabelWidget>("CARRYALLS");
 			if (carryalls != null)
-				carryalls.GetText = () => world.ActorsWithTrait<AutoCarryall>().Count(a => a.Actor.Owner == player && !a.Actor.IsDead).ToString(NumberFormatInfo.CurrentInfo);
+				carryalls.GetText = () => world.ActorsWithTrait<AutoCarryall>()
+					.Count(a => a.Actor.Owner == player && !a.Actor.IsDead).ToString(NumberFormatInfo.CurrentInfo);
 
 			var derricks = template.GetOrNull<LabelWidget>("DERRICKS");
 			if (derricks != null)
-				derricks.GetText = () => world.ActorsHavingTrait<UpdatesDerrickCount>().Count(a => a.Owner == player && !a.IsDead).ToString(NumberFormatInfo.CurrentInfo);
+				derricks.GetText = () => world.ActorsHavingTrait<UpdatesDerrickCount>()
+					.Count(a => a.Owner == player && !a.IsDead).ToString(NumberFormatInfo.CurrentInfo);
 
 			return template;
 		}

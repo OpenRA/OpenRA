@@ -137,7 +137,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var anim = new AnimationWithOffset(overlay,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self.Orientation))),
-				() => IsTraitDisabled || (Info.SwitchingSequence == null && chargeSpeed != 0) || (Info.EnabledSequence == null && switchingLevel > Info.SwitchingLevel) || (Info.DisabledSequence == null && switchingLevel < 0),
+				() =>
+					IsTraitDisabled ||
+					(Info.SwitchingSequence == null && chargeSpeed != 0) ||
+					(Info.EnabledSequence == null && switchingLevel > Info.SwitchingLevel) ||
+					(Info.DisabledSequence == null && switchingLevel < 0),
 				p => RenderUtils.ZOffsetFromCenter(self, p, 1));
 
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);

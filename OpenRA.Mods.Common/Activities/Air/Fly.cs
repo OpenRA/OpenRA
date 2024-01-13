@@ -204,7 +204,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			// HACK: Consider ourselves blocked if we have moved by less than 64 WDist in the last five ticks
 			// Stop if we are blocked and close enough
-			if (previousPositions.Count == previousPositions.Capacity && (previousPositions.First() - previousPositions.Last()).LengthSquared < 4096 && delta.HorizontalLengthSquared <= nearEnough.LengthSquared)
+			if (previousPositions.Count == previousPositions.Capacity &&
+				(previousPositions.First() - previousPositions.Last()).LengthSquared < 4096 &&
+				delta.HorizontalLengthSquared <= nearEnough.LengthSquared)
 				return true;
 
 			// The next move would overshoot, so consider it close enough or set final position if we CanSlide

@@ -339,7 +339,8 @@ namespace OpenRA
 			}, null);
 		}
 
-		public void UpdateFromMap(IReadOnlyPackage p, IReadOnlyPackage parent, MapClassification classification, string[] mapCompatibility, MapGridType gridType, IEnumerable<List<MiniYamlNode>> modDataRules)
+		public void UpdateFromMap(IReadOnlyPackage p, IReadOnlyPackage parent, MapClassification classification,
+			string[] mapCompatibility, MapGridType gridType, IEnumerable<List<MiniYamlNode>> modDataRules)
 		{
 			Dictionary<string, MiniYaml> yaml;
 			using (var yamlStream = p.GetStream("map.yaml"))

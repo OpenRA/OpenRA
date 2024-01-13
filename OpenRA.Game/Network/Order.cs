@@ -78,7 +78,8 @@ namespace OpenRA
 		readonly Target target;
 		readonly Target visualFeedbackTarget;
 
-		Order(string orderString, Actor subject, in Target target, string targetString, bool queued, Actor[] extraActors, CPos extraLocation, uint extraData, Actor[] groupedActors = null)
+		Order(string orderString, Actor subject, in Target target, string targetString, bool queued,
+			Actor[] extraActors, CPos extraLocation, uint extraData, Actor[] groupedActors = null)
 		{
 			OrderString = orderString ?? "";
 			Subject = subject;
