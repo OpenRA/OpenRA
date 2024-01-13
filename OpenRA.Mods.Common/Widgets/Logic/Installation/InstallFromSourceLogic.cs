@@ -296,8 +296,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void ShowMessage(string title, string message)
 		{
 			visible = Mode.Message;
-			titleLabel.Text = title;
-			messageLabel.Text = message;
+			titleLabel.GetText = () => title;
+			messageLabel.GetText = () => message;
 
 			primaryButton.Bounds.Y += messageContainer.Bounds.Height - panel.Bounds.Height;
 			secondaryButton.Bounds.Y += messageContainer.Bounds.Height - panel.Bounds.Height;
@@ -308,7 +308,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void ShowProgressbar(string title, Func<string> getMessage)
 		{
 			visible = Mode.Progress;
-			titleLabel.Text = title;
+			titleLabel.GetText = () => title;
 			progressBar.IsIndeterminate = () => true;
 
 			var font = Game.Renderer.Fonts[progressLabel.Font];
@@ -324,8 +324,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void ShowList(ModContent.ModSource source, string message)
 		{
 			visible = Mode.List;
-			titleLabel.Text = source.Title;
-			listLabel.Text = message;
+			var titleText = source.Title;
+			titleLabel.GetText = () => titleText;
+			listLabel.GetText = () => message;
 
 			listPanel.RemoveChildren();
 			foreach (var package in availablePackages)
@@ -357,8 +358,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void ShowList(string title, string message, Dictionary<string, IEnumerable<string>> groups)
 		{
 			visible = Mode.List;
-			titleLabel.Text = title;
-			listLabel.Text = message;
+			titleLabel.GetText = () => title;
+			listLabel.GetText = () => message;
 
 			listPanel.RemoveChildren();
 
@@ -391,11 +392,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void ShowContinueCancel(Action continueAction)
 		{
 			primaryButton.OnClick = continueAction;
-			primaryButton.Text = TranslationProvider.GetString(Continue);
+			var primaryButtonText = TranslationProvider.GetString(Continue);
+			primaryButton.GetText = () => primaryButtonText;
 			primaryButton.Visible = true;
 
 			secondaryButton.OnClick = Ui.CloseWindow;
-			secondaryButton.Text = TranslationProvider.GetString(Cancel);
+			var secondaryButtonText = TranslationProvider.GetString(Cancel);
+			secondaryButton.GetText = () => secondaryButtonText;
 			secondaryButton.Visible = true;
 			secondaryButton.Disabled = false;
 			Game.RunAfterTick(Ui.ResetTooltips);
@@ -404,11 +407,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void ShowBackRetry(Action retryAction)
 		{
 			primaryButton.OnClick = retryAction;
-			primaryButton.Text = TranslationProvider.GetString(Retry);
+			var primaryButtonText = TranslationProvider.GetString(Retry);
+			primaryButton.GetText = () => primaryButtonText;
 			primaryButton.Visible = true;
 
 			secondaryButton.OnClick = Ui.CloseWindow;
-			secondaryButton.Text = TranslationProvider.GetString(Back);
+			var secondaryButtonText = TranslationProvider.GetString(Back);
+			secondaryButton.GetText = () => secondaryButtonText;
 			secondaryButton.Visible = true;
 			secondaryButton.Disabled = false;
 			Game.RunAfterTick(Ui.ResetTooltips);

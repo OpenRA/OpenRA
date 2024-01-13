@@ -113,8 +113,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			actorIDErrorLabel = actorEditPanel.Get<LabelWidget>("ACTOR_ID_ERROR_LABEL");
 			actorIDErrorLabel.IsVisible = () => actorIDStatus != ActorIDStatus.Normal;
-			actorIDErrorLabel.GetText = () => actorIDStatus == ActorIDStatus.Duplicate ?
-				TranslationProvider.GetString(DuplicateActorId)
+			actorIDErrorLabel.GetText = () =>
+				actorIDStatus == ActorIDStatus.Duplicate || nextActorIDStatus == ActorIDStatus.Duplicate
+					? TranslationProvider.GetString(DuplicateActorId)
 					: TranslationProvider.GetString(EnterActorId);
 
 			if (logicArgs.TryGetValue("EditPanelPadding", out var yaml))
@@ -143,7 +144,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (!CurrentActor.ID.Equals(actorId, StringComparison.OrdinalIgnoreCase) && editorActorLayer[actorId] != null)
 				{
 					nextActorIDStatus = ActorIDStatus.Duplicate;
-					actorIDErrorLabel.Text = TranslationProvider.GetString(DuplicateActorId);
 					actorIDErrorLabel.Visible = true;
 					return;
 				}
@@ -214,7 +214,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					var font = Game.Renderer.Fonts[typeLabel.Font];
 					var truncatedType = WidgetUtils.TruncateText(actor.DescriptiveName, typeLabel.Bounds.Width, font);
-					typeLabel.Text = truncatedType;
+					typeLabel.GetText = () => truncatedType;
 
 					actorIDField.CursorPosition = actor.ID.Length;
 					nextActorIDStatus = ActorIDStatus.Normal;

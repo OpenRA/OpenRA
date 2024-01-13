@@ -32,13 +32,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ScrollItemWidget SetupItem(string option, ScrollItemWidget template)
 			{
 				var item = ScrollItemWidget.Setup(template,
-					() => tilesetDropDown.Text == option,
-					() => tilesetDropDown.Text = option);
+					() => tilesetDropDown.GetText() == option,
+					() => tilesetDropDown.GetText = () => option);
 				item.Get<LabelWidget>("LABEL").GetText = () => option;
 				return item;
 			}
 
-			tilesetDropDown.Text = tilesets.First();
+			var firstTileset = tilesets.First();
+			tilesetDropDown.GetText = () => firstTileset;
 			tilesetDropDown.OnClick = () =>
 				tilesetDropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, tilesets, SetupItem);
 
@@ -56,7 +57,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				height = Math.Max(2, height);
 
 				var maxTerrainHeight = world.Map.Grid.MaximumTerrainHeight;
-				var tileset = modData.DefaultTerrainInfo[tilesetDropDown.Text];
+				var tileset = modData.DefaultTerrainInfo[tilesetDropDown.GetText()];
 				var map = new Map(Game.ModData, tileset, width + 2, height + maxTerrainHeight + 2);
 
 				var tl = new PPos(1, 1 + maxTerrainHeight);

@@ -481,7 +481,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			};
 
 			if (skirmishMode)
-				disconnectButton.Text = TranslationProvider.GetString(Back);
+			{
+				var disconnectButtonText = TranslationProvider.GetString(Back);
+				disconnectButton.GetText = () => disconnectButtonText;
+			}
 
 			if (logicArgs.TryGetValue("ChatTemplates", out var templateIds))
 			{

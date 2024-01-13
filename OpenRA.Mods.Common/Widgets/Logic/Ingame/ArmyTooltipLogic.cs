@@ -41,12 +41,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var name = tooltip != null ? TranslationProvider.GetString(tooltip.Name) : armyUnit.ActorInfo.Name;
 				var buildable = armyUnit.BuildableInfo;
 
-				nameLabel.Text = name;
-
+				nameLabel.GetText = () => name;
 				var nameSize = font.Measure(name);
 
 				var desc = string.IsNullOrEmpty(buildable.Description) ? "" : TranslationProvider.GetString(buildable.Description);
-				descLabel.Text = desc;
+				descLabel.GetText = () => desc;
 				var descSize = descFont.Measure(desc);
 				descLabel.Bounds.Width = descSize.X;
 				descLabel.Bounds.Height = descSize.Y + descLabelPadding;

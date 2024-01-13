@@ -167,30 +167,36 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (advertiseOnline)
 			{
-				noticesLabelA.Text = TranslationProvider.GetString(InternetServerNatA) + " ";
-				var aWidth = Game.Renderer.Fonts[noticesLabelA.Font].Measure(noticesLabelA.Text).X;
+				var noticesLabelAText = TranslationProvider.GetString(InternetServerNatA) + " ";
+				noticesLabelA.GetText = () => noticesLabelAText;
+				var aWidth = Game.Renderer.Fonts[noticesLabelA.Font].Measure(noticesLabelAText).X;
 				noticesLabelA.Bounds.Width = aWidth;
 
-				noticesLabelB.Text = Nat.Status == NatStatus.Enabled ? TranslationProvider.GetString(InternetServerNatBenabled) :
-					Nat.Status == NatStatus.NotSupported ? TranslationProvider.GetString(InternetServerNatBnotSupported)
-						: TranslationProvider.GetString(InternetServerNatBdisabled);
+				var noticesLabelBText =
+					Nat.Status == NatStatus.Enabled ? TranslationProvider.GetString(InternetServerNatBenabled) :
+					Nat.Status == NatStatus.NotSupported ? TranslationProvider.GetString(InternetServerNatBnotSupported) :
+					TranslationProvider.GetString(InternetServerNatBdisabled);
+				noticesLabelB.GetText = () => noticesLabelBText;
 
-				noticesLabelB.TextColor = Nat.Status == NatStatus.Enabled ? ChromeMetrics.Get<Color>("NoticeSuccessColor") :
+				noticesLabelB.TextColor =
+					Nat.Status == NatStatus.Enabled ? ChromeMetrics.Get<Color>("NoticeSuccessColor") :
 					Nat.Status == NatStatus.NotSupported ? ChromeMetrics.Get<Color>("NoticeErrorColor") :
 					ChromeMetrics.Get<Color>("NoticeInfoColor");
 
-				var bWidth = Game.Renderer.Fonts[noticesLabelB.Font].Measure(noticesLabelB.Text).X;
+				var bWidth = Game.Renderer.Fonts[noticesLabelB.Font].Measure(noticesLabelBText).X;
 				noticesLabelB.Bounds.X = noticesLabelA.Bounds.Right;
 				noticesLabelB.Bounds.Width = bWidth;
 				noticesLabelB.Visible = true;
 
-				noticesLabelC.Text = TranslationProvider.GetString(InternetServerNatC);
+				var noticesLabelCText = TranslationProvider.GetString(InternetServerNatC);
+				noticesLabelC.GetText = () => noticesLabelCText;
 				noticesLabelC.Bounds.X = noticesLabelB.Bounds.Right;
 				noticesLabelC.Visible = true;
 			}
 			else
 			{
-				noticesLabelA.Text = TranslationProvider.GetString(LocalServer);
+				var noticesLabelAText = TranslationProvider.GetString(LocalServer);
+				noticesLabelA.GetText = () => noticesLabelAText;
 				noticesLabelB.Visible = false;
 				noticesLabelC.Visible = false;
 			}

@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var errorMessage = luaScript.Context.ErrorMessage.Replace("\r\n", "\n");
 
 				var text = WidgetUtils.WrapText(errorMessage, label.Bounds.Width, font);
-				label.Text = text;
+				label.GetText = () => text;
 				label.Bounds.Height = font.Measure(text).Y;
 				panel.ScrollToTop();
 				panel.Layout.AdjustChildren();

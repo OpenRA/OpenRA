@@ -229,7 +229,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var frameLimitGamespeedCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_GAMESPEED_CHECKBOX");
 			var frameLimitCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_CHECKBOX");
-			var frameLimitOrigLabel = frameLimitCheckbox.Text;
 			var frameLimitLabel = new CachedTransform<int, string>(fps => TranslationProvider.GetString(FrameLimiter, Translation.Arguments("fps", fps)));
 			frameLimitCheckbox.GetText = () => frameLimitLabel.Update(ds.MaxFramerate);
 			frameLimitCheckbox.IsDisabled = () => ds.CapFramerateToGameFps;

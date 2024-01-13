@@ -80,7 +80,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ownersDropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, owners, SetupItem);
 			};
 
-			ownersDropDown.Text = selectedOwner.Name;
+			var selectedOwnerName = selectedOwner.Name;
+			ownersDropDown.GetText = () => selectedOwnerName;
 			ownersDropDown.TextColor = selectedOwner.Color;
 
 			var tileSetId = world.Map.Rules.TerrainInfo.Id;
@@ -161,7 +162,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		void SelectOwner(PlayerReference option)
 		{
 			selectedOwner = option;
-			ownersDropDown.Text = option.Name;
+			var optionName = option.Name;
+			ownersDropDown.GetText = () => optionName;
 			ownersDropDown.TextColor = option.Color;
 			InitializePreviews();
 

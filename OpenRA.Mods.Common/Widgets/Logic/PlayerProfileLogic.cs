@@ -196,7 +196,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							badgeContainer.Bounds.Y += header.Bounds.Height;
 							if (client.IsAdmin)
 							{
-								profileWidth = Math.Max(profileWidth, adminFont.Measure(adminLabel.Text).X + 2 * adminLabel.Bounds.Left);
+								profileWidth = Math.Max(profileWidth, adminFont.Measure(adminLabel.GetText()).X + 2 * adminLabel.Bounds.Left);
 
 								adminContainer.IsVisible = () => true;
 								profileHeader.Bounds.Height += adminLabel.Bounds.Height;
@@ -318,7 +318,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var nameLabel = widget.Get<LabelWidget>("NAME");
 			var nameFont = Game.Renderer.Fonts[nameLabel.Font];
-			widget.Bounds.Width = nameFont.Measure(nameLabel.Text).X + 2 * nameLabel.Bounds.Left;
+			widget.Bounds.Width = nameFont.Measure(nameLabel.GetText()).X + 2 * nameLabel.Bounds.Left;
 
 			var locationLabel = widget.Get<LabelWidget>("LOCATION");
 			var ipLabel = widget.Get<LabelWidget>("IP");

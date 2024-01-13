@@ -562,10 +562,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var item = replayState[replay].Item;
 				replay.RenameFile(newFilenameWithoutExtension);
-				item.Text = newFilenameWithoutExtension;
+				item.GetText = () => newFilenameWithoutExtension;
 
 				var label = item.Get<LabelWithTooltipWidget>("TITLE");
-				WidgetUtils.TruncateLabelToTooltip(label, item.Text);
+				WidgetUtils.TruncateLabelToTooltip(label, item.GetText());
 			}
 			catch (Exception ex)
 			{
@@ -798,9 +798,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				Visible = true
 			};
 
-			item.Text = Path.GetFileNameWithoutExtension(replay.FilePath);
+			var itemText = Path.GetFileNameWithoutExtension(replay.FilePath);
+			item.GetText = () => itemText;
 			var label = item.Get<LabelWithTooltipWidget>("TITLE");
-			WidgetUtils.TruncateLabelToTooltip(label, item.Text);
+			WidgetUtils.TruncateLabelToTooltip(label, itemText);
 
 			item.IsVisible = () => replayState[replay].Visible;
 			replayList.AddChild(item);

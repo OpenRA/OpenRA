@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						cost = valued.Cost;
 				}
 
-				nameLabel.Text = name;
+				nameLabel.GetText = () => name;
 
 				var nameSize = font.Measure(name);
 				var hotkeyWidth = 0;
@@ -93,18 +93,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var hotkeyText = $"({hotkey.DisplayString()})";
 
 					hotkeyWidth = font.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X;
-					hotkeyLabel.Text = hotkeyText;
+					hotkeyLabel.GetText = () => hotkeyText;
 					hotkeyLabel.Bounds.X = nameSize.X + 2 * nameLabel.Bounds.X;
 				}
 
-				var prereqs = buildable.Prerequisites.Select(a => ActorName(mapRules, a))
-					.Where(s => !s.StartsWith('~') && !s.StartsWith('!'));
+				var prereqs = buildable.Prerequisites
+					.Select(a => ActorName(mapRules, a))
+					.Where(s => !s.StartsWith('~') && !s.StartsWith('!'))
+					.ToList();
 
 				var requiresSize = int2.Zero;
-				if (prereqs.Any())
+				if (prereqs.Count > 0)
 				{
-					requiresLabel.Text = TranslationProvider.GetString(Requires, Translation.Arguments("prequisites", prereqs.JoinWith(", ")));
-					requiresSize = requiresFont.Measure(requiresLabel.Text);
+					var requiresText = TranslationProvider.GetString(Requires, Translation.Arguments("prequisites", prereqs.JoinWith(", ")));
+					requiresLabel.GetText = () => requiresText;
+					requiresSize = requiresFont.Measure(requiresText);
 					requiresLabel.Visible = true;
 					descLabel.Bounds.Y = descLabelY + requiresLabel.Bounds.Height;
 				}
@@ -118,27 +121,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (pm != null)
 				{
 					var power = actor.TraitInfos<PowerInfo>().Where(i => i.EnabledByDefault).Sum(i => i.Amount);
-					powerLabel.Text = power.ToString(NumberFormatInfo.CurrentInfo);
+					var powerText = power.ToString(NumberFormatInfo.CurrentInfo);
+					powerLabel.GetText = () => powerText;
 					powerLabel.GetColor = () => (pm.PowerProvided - pm.PowerDrained >= -power || power > 0)
 						? Color.White : Color.Red;
 					powerLabel.Visible = power != 0;
 					powerIcon.Visible = power != 0;
-					powerSize = font.Measure(powerLabel.Text);
+					powerSize = font.Measure(powerText);
 				}
 
 				var buildTime = tooltipIcon.ProductionQueue?.GetBuildTime(actor, buildable) ?? 0;
 				var timeModifier = pm != null && pm.PowerState != PowerState.Normal ? tooltipIcon.ProductionQueue.Info.LowPowerModifier : 100;
 
-				timeLabel.Text = formatBuildTime.Update(buildTime * timeModifier / 100);
+				var timeText = formatBuildTime.Update(buildTime * timeModifier / 100);
+				timeLabel.GetText = () => timeText;
 				timeLabel.TextColor = (pm != null && pm.PowerState != PowerState.Normal && tooltipIcon.ProductionQueue.Info.LowPowerModifier > 100) ? Color.Red : Color.White;
-				var timeSize = font.Measure(timeLabel.Text);
+				var timeSize = font.Measure(timeText);
 
-				costLabel.Text = cost.ToString(NumberFormatInfo.CurrentInfo);
+				var costText = cost.ToString(NumberFormatInfo.CurrentInfo);
+				costLabel.GetText = () => costText;
 				costLabel.GetColor = () => pr.GetCashAndResources() >= cost ? Color.White : Color.Red;
-				var costSize = font.Measure(costLabel.Text);
+				var costSize = font.Measure(costText);
 
 				var desc = string.IsNullOrEmpty(buildable.Description) ? "" : TranslationProvider.GetString(buildable.Description);
-				descLabel.Text = desc;
+				descLabel.GetText = () => desc;
 				var descSize = descFont.Measure(desc);
 				descLabel.Bounds.Width = descSize.X;
 				descLabel.Bounds.Height = descSize.Y + descLabelPadding;
