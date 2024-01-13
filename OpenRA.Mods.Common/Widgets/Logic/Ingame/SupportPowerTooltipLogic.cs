@@ -53,23 +53,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (sp == lastPower && hotkey == lastHotkey && lastRemainingSeconds == remainingSeconds)
 					return;
 
-				nameLabel.Text = sp.Info.Name;
-				var nameSize = nameFont.Measure(nameLabel.Text);
+				var nameText = sp.Info.Name;
+				nameLabel.GetText = () => nameText;
+				var nameSize = nameFont.Measure(nameText);
 
-				descLabel.Text = sp.Info.Description.Replace("\\n", "\n");
-				var descSize = descFont.Measure(descLabel.Text);
+				var descText = sp.Info.Description.Replace("\\n", "\n");
+				descLabel.GetText = () => descText;
+				var descSize = descFont.Measure(descText);
 
-				var customLabel = sp.TooltipTimeTextOverride();
-				if (customLabel == null)
+				var timeText = sp.TooltipTimeTextOverride();
+				if (timeText == null)
 				{
 					var remaining = WidgetUtils.FormatTime(sp.RemainingTicks, world.Timestep);
 					var total = WidgetUtils.FormatTime(sp.Info.ChargeInterval, world.Timestep);
-					timeLabel.Text = $"{remaining} / {total}";
+					timeText = $"{remaining} / {total}";
 				}
-				else
-					timeLabel.Text = customLabel;
 
-				var timeSize = timeFont.Measure(timeLabel.Text);
+				timeLabel.GetText = () => timeText;
+				var timeSize = timeFont.Measure(timeText);
 				var hotkeyWidth = 0;
 				hotkeyLabel.Visible = hotkey.IsValid();
 				if (hotkeyLabel.Visible)
@@ -77,7 +78,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var hotkeyText = $"({hotkey.DisplayString()})";
 
 					hotkeyWidth = hotkeyFont.Measure(hotkeyText).X + 2 * nameLabel.Bounds.X;
-					hotkeyLabel.Text = hotkeyText;
+					hotkeyLabel.GetText = () => hotkeyText;
 					hotkeyLabel.Bounds.X = nameSize.X + 2 * nameLabel.Bounds.X;
 				}
 

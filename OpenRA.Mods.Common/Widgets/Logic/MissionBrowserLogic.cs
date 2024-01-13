@@ -85,8 +85,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var title = widget.GetOrNull<LabelWidget>("MISSIONBROWSER_TITLE");
 			if (title != null)
 			{
-				var label = TranslationProvider.GetString(title.Text);
-				title.GetText = () => playingVideo != PlayingVideo.None ? selectedMap.Title : label;
+				var titleText = title.GetText();
+				title.GetText = () => playingVideo != PlayingVideo.None ? selectedMap.Title : titleText;
 			}
 
 			widget.Get("MISSION_INFO").IsVisible = () => selectedMap != null;
@@ -284,7 +284,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						if (preview == selectedMap)
 						{
-							description.Text = briefing;
+							description.GetText = () => briefing;
 							description.Bounds.Height = height;
 							descriptionPanel.Layout.AdjustChildren();
 						}

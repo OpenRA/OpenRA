@@ -179,12 +179,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var item = ScrollItemWidget.Setup(template,
 						() => fileType == option.Key,
-						() => { typeDropdown.Text = option.Value.UiLabel; fileType = option.Key; });
+						() => { var label = option.Value.UiLabel; typeDropdown.GetText = () => label; fileType = option.Key; });
 					item.Get<LabelWidget>("LABEL").GetText = () => option.Value.UiLabel;
 					return item;
 				}
 
-				typeDropdown.Text = fileTypes[fileType].UiLabel;
+				var label = fileTypes[fileType].UiLabel;
+				typeDropdown.GetText = () => label;
 
 				typeDropdown.OnClick = () =>
 					typeDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 210, fileTypes, SetupItem);

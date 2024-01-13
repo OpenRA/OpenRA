@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var zoomDescModifier = container.Get<LabelWidget>("DESC_ZOOM_MODIFIER");
 				zoomDescModifier.IsVisible = () => gs.ZoomModifier != Modifiers.None;
 
-				var zoomDescModifierTemplate = zoomDescModifier.Text;
+				var zoomDescModifierTemplate = zoomDescModifier.GetText();
 				var zoomDescModifierLabel = new CachedTransform<Modifiers, string>(
 					mod => zoomDescModifierTemplate.Replace("MODIFIER", mod.ToString()));
 				zoomDescModifier.GetText = () => zoomDescModifierLabel.Update(gs.ZoomModifier);

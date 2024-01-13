@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (missionData != null)
 			{
 				var text = WidgetUtils.WrapText(missionData.Briefing?.Replace("\\n", "\n"), mapDescription.Bounds.Width, mapFont);
-				mapDescription.Text = text;
+				mapDescription.GetText = () => text;
 				mapDescription.Bounds.Height = mapFont.Measure(text).Y;
 				mapDescriptionPanel.ScrollToTop();
 				mapDescriptionPanel.Layout.AdjustChildren();

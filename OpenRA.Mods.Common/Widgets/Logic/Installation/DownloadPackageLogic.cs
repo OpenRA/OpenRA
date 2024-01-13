@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			statusLabel.GetText = () => status.Update(getStatusText());
 
 			var text = TranslationProvider.GetString(Downloading, Translation.Arguments("title", download.Title));
-			panel.Get<LabelWidget>("TITLE").Text = text;
+			panel.Get<LabelWidget>("TITLE").GetText = () => text;
 
 			ShowDownloadDialog();
 		}

@@ -78,7 +78,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			siloUsageTooltip = siloUsageTooltipCache.Update((playerResources.Resources, playerResources.ResourceCapacity));
-			cashLabel.Text = displayResources.ToString(CultureInfo.CurrentCulture);
+			var displayResourcesText = displayResources.ToString(CultureInfo.CurrentCulture);
+			cashLabel.GetText = () => displayResourcesText;
 		}
 	}
 }

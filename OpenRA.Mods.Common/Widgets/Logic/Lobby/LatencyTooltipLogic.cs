@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var latencyFont = Game.Renderer.Fonts[latency.Font];
 			var rightMargin = widget.Bounds.Width;
 
-			latency.Bounds.X = latencyPrefix.Bounds.X + latencyPrefixFont.Measure(latencyPrefix.Text + " ").X;
+			latency.Bounds.X = latencyPrefix.Bounds.X + latencyPrefixFont.Measure(latencyPrefix.GetText() + " ").X;
 
 			widget.IsVisible = () => client != null;
 			tooltipContainer.BeforeRender = () =>

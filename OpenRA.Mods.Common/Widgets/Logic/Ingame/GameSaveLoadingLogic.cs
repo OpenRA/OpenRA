@@ -22,7 +22,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var versionLabel = widget.GetOrNull<LabelWidget>("VERSION_LABEL");
 			if (versionLabel != null)
-				versionLabel.Text = modData.Manifest.Metadata.Version;
+			{
+				var versionText = modData.Manifest.Metadata.Version;
+				versionLabel.GetText = () => versionText;
+			}
 
 			var keyhandler = widget.Get<LogicKeyListenerWidget>("CANCEL_HANDLER");
 			keyhandler.AddHandler(e =>

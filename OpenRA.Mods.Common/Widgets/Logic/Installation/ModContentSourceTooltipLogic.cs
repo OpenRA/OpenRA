@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var font = Game.Renderer.Fonts[template.Font];
 			var sourceTitles = getText().Split('\n');
 
-			var maxWidth = Game.Renderer.Fonts[desc.Font].Measure(desc.Text).X;
+			var maxWidth = Game.Renderer.Fonts[desc.Font].Measure(desc.GetText()).X;
 			var sideMargin = desc.Bounds.X;
 			var bottomMargin = sources.Bounds.Height;
 			foreach (var source in sourceTitles)

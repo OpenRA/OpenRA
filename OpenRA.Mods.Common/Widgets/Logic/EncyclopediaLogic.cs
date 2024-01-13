@@ -162,7 +162,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				text += WidgetUtils.WrapText(TranslationProvider.GetString(info.Description) + "\n\n", descriptionLabel.Bounds.Width, descriptionFont);
 
 			var height = descriptionFont.Measure(text).Y;
-			descriptionLabel.Text = text;
+			descriptionLabel.GetText = () => text;
 			descriptionLabel.Bounds.Height = height;
 			descriptionPanel.Layout.AdjustChildren();
 
