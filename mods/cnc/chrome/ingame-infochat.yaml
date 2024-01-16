@@ -32,4 +32,3 @@ Container@CHAT_CONTAINER:
 					Height: PARENT_BOTTOM - 30
 					TopBottomSpacing: 3
 					ItemSpacing: 2
-

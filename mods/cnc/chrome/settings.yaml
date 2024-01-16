@@ -49,4 +49,3 @@ Container@SETTINGS_PANEL:
 					Width: PARENT_RIGHT - 30
 					Height: PARENT_BOTTOM - 30
 		TooltipContainer@SETTINGS_TOOLTIP_CONTAINER:
-

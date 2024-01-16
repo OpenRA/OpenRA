@@ -6,13 +6,13 @@ MINV:
 			soviet: minp
 			russia: minp
 			ukraine: minp
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: ATMine
 
 # Only kept for backwards-compatibility with existing and imported maps, use MINV instead
 MINP:
 	Inherits: MINV
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: APMine
 
 CRATE:
@@ -463,7 +463,7 @@ CTFLAG:
 		HasMinibib: true
 	-HitShape:
 	-Health:
-	-Explodes:
+	-FireWarheadOnDeath:
 	-Selectable:
 	-Targetable:
 	MapEditorData:

@@ -105,4 +105,3 @@ Container@GAME_INFO_PANEL:
 				Container@LOBBY_OPTIONS_PANEL:
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
-

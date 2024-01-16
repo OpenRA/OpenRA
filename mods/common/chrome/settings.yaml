@@ -54,4 +54,3 @@ Background@SETTINGS_PANEL:
 					Width: PARENT_RIGHT - 190 - 20
 					Height: PARENT_BOTTOM - 105
 		TooltipContainer@SETTINGS_TOOLTIP_CONTAINER:
-

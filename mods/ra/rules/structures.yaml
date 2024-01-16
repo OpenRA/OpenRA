@@ -113,7 +113,7 @@ GAP:
 	MustBeDestroyed:
 		RequiredForShortGame: false
 	-AcceptsDeliveredCash:
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: SmallBuildingExplode
 		EmptyWeapon: SmallBuildingExplode
 	HitShape:
@@ -918,7 +918,7 @@ FTUR:
 	DetectCloaked:
 		Range: 6c0
 	ProvidesPrerequisite@buildingname:
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: BuildingExplode
 		EmptyWeapon: BuildingExplode
 
@@ -1385,7 +1385,7 @@ SILO:
 	-SpawnActorsOnSell:
 	Power:
 		Amount: -10
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: SmallBuildingExplode
 		EmptyWeapon: SmallBuildingExplode
 	WithResourceStoragePipsDecoration:

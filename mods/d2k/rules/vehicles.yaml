@@ -30,7 +30,7 @@ mcv:
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	BaseBuilding:
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 	Transforms:
@@ -92,7 +92,7 @@ harvester:
 		Speed: 43
 	RevealsShroud:
 		Range: 3c768
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
@@ -157,7 +157,7 @@ trike:
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		FacingTolerance: 0
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	AttractsWorms:
@@ -198,7 +198,7 @@ quad:
 		Category: Units
 	AttackFrontal:
 		FacingTolerance: 0
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	Selectable:
@@ -249,7 +249,7 @@ siege_tank:
 		FacingTolerance: 0
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeMed
 		EmptyWeapon: UnitExplodeMed
 	AutoTarget:
@@ -300,7 +300,7 @@ missile_tank:
 		FacingTolerance: 0
 	AutoTarget:
 		InitialStanceAI: Defend
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeMed
 		EmptyWeapon: UnitExplodeMed
 	Selectable:
@@ -347,7 +347,7 @@ sonic_tank:
 		Category: Units
 	AttackFrontal:
 		FacingTolerance: 0
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
@@ -400,7 +400,7 @@ devastator:
 		FacingTolerance: 0
 	WithMuzzleOverlay:
 		IgnoreOffset: true
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 		RequiresCondition: !overload
@@ -408,7 +408,7 @@ devastator:
 		Actor: devastator.husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
-	Explodes@OVERLOAD:
+	FireWarheadOnDeath@OVERLOAD:
 		Weapon: PlasmaExplosion
 		EmptyWeapon: PlasmaExplosion
 		RequiresCondition: meltdown
@@ -474,7 +474,7 @@ raider:
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		FacingTolerance: 0
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	AttractsWorms:
@@ -548,7 +548,7 @@ deviator:
 		FacingTolerance: 0
 	AutoTarget:
 		InitialStanceAI: Defend
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
@@ -593,7 +593,7 @@ deviator:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeMed
 		EmptyWeapon: UnitExplodeMed
 	Selectable:

@@ -304,7 +304,7 @@
 		RequiresForceFire: true
 	WithColoredOverlay@IDISABLE:
 		Color: 000000B4
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeMed
 		EmptyWeapon: UnitExplodeMed
 	WithIdleOverlay@Burns:
@@ -465,7 +465,7 @@
 	SoundOnDamageTransition:
 		DamagedSounds: EXPLSML1.WAV
 		DestroyedSounds: EXPLHG1.WAV
-	Explodes:
+	FireWarheadOnDeath:
 		Type: Footprint
 		Weapon: BuildingExplode
 		EmptyWeapon: BuildingExplode

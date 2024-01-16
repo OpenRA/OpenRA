@@ -85,10 +85,10 @@ HARV:
 		EffectiveOwnerFromOwner: true
 	WithHarvestAnimation:
 	WithDockingAnimation:
-	Explodes@EMPTY:
+	FireWarheadOnDeath@EMPTY:
 		Weapon: UnitExplodeHarvEmpty
 		EmptyWeapon: UnitExplodeHarvEmpty
-	Explodes:
+	FireWarheadOnDeath:
 		RequiresCondition: !no-tiberium
 		Weapon: TiberiumExplosion
 	WithStoresResourcesPipsDecoration:
@@ -172,7 +172,7 @@ APC:
 		MaxWeight: 5
 		UnloadVoice: Unload
 		LoadingCondition: notmobile
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeBig
 		EmptyWeapon: UnitExplodeBig
 	SpawnActorOnDeath:
@@ -225,7 +225,7 @@ ARTY:
 		Actor: ARTY.Husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: ArtilleryShell
 		EmptyWeapon: ArtilleryShell
 
@@ -266,7 +266,7 @@ FTNK:
 	AttackMove:
 		Voice: Attack
 	WithMuzzleOverlay:
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: FlametankExplode
 		EmptyWeapon: FlametankExplode
 	SpawnActorOnDeath:
@@ -492,7 +492,7 @@ MTNK:
 		Voice: Attack
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeBig
 		EmptyWeapon: UnitExplodeBig
 	SpawnActorOnDeath:
@@ -556,7 +556,7 @@ HTNK:
 		Delay: 10
 		StartIfBelow: 50
 		DamageCooldown: 200
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeMech
 		EmptyWeapon: UnitExplodeMech
 	SpawnActorOnDeath:
@@ -607,7 +607,7 @@ MSAM:
 	AttackMove:
 		Voice: Attack
 	WithSpriteTurret:
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeMech
 		EmptyWeapon: UnitExplodeMech
 	SpawnActorOnDeath:
@@ -729,7 +729,7 @@ STNK:
 	AutoTarget:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeStealthTank
 		EmptyWeapon: UnitExplodeStealthTank
 	SpawnActorOnDeath:

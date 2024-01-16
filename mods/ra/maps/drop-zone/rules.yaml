@@ -53,7 +53,7 @@ DTRK:
 		HP: 10000
 	Armor:
 		Type: Heavy
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: CrateNuke
 		EmptyWeapon: CrateNuke
 

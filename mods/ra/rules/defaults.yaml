@@ -295,7 +295,7 @@
 		FallRate: 26
 		KilledOnImpassableTerrain: true
 		ParachutingCondition: parachute
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	WithFacingSpriteBody:
@@ -531,7 +531,7 @@
 	GpsDot:
 		String: Ship
 	WithDamageOverlay:
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeShip
 		EmptyWeapon: UnitExplodeShip
 	Guard:
@@ -633,7 +633,7 @@
 		Categories: Aircraft
 	SpawnActorOnDeath:
 		RequiresCondition: airborne
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplode
 		RequiresCondition: !airborne
 	CaptureManager:
@@ -698,7 +698,7 @@
 		DamagedSounds: kaboom1.aud
 		DestroyedSounds: kaboom22.aud
 	WithSpriteBody:
-	Explodes:
+	FireWarheadOnDeath:
 		Type: Footprint
 		Weapon: BuildingExplode
 		EmptyWeapon: BuildingExplode
@@ -778,7 +778,7 @@
 	-GivesBuildableArea:
 	-AcceptsDeliveredCash:
 	RenderRangeCircle:
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: SmallBuildingExplode
 		EmptyWeapon: SmallBuildingExplode
 	MapEditorData:
@@ -857,7 +857,7 @@
 		AreaTypes: fake
 	Health:
 		HP: 10000
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: Demolish
 		DamageThreshold: 70
 	RevealsShroud:
@@ -889,7 +889,7 @@
 	-Selectable:
 	Health:
 		HP: 1000
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplode
 	Tooltip:
 		Name: meta-ammobox-name
@@ -909,17 +909,17 @@
 	MapEditorData:
 		ExcludeTilesets: INTERIOR
 		Categories: Civilian building
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: SmallBuildingExplode
-	Explodes@CIVPANIC:
+	FireWarheadOnDeath@CIVPANIC:
 		Weapon: CivPanicExplosion
 
 ^CivField:
 	Inherits: ^CivBuilding
 	-HitShape:
 	-Health:
-	-Explodes:
-	-Explodes@CIVPANIC:
+	-FireWarheadOnDeath:
+	-FireWarheadOnDeath@CIVPANIC:
 	-Selectable:
 	-ScriptTriggers:
 	Tooltip:
