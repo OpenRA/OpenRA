@@ -19,24 +19,33 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("Support power that spawns a group of aircraft and orders them to deliver an airstrike.")]
 	public class AirstrikePowerInfo : DirectionalSupportPowerInfo
 	{
 		[ActorReference(typeof(AircraftInfo))]
+		[Desc("Aircraft used to deliver the airstrike.")]
 		public readonly string UnitType = "badr.bomber";
+
+		[Desc("Number of aircraft to use in an airstrike formation.")]
 		public readonly int SquadSize = 1;
+
+		[Desc("Offset vector between the aircraft in a formation.")]
 		public readonly WVec SquadOffset = new(-1536, 1536, 0);
 
+		[Desc("Number of different possible facings of the aircraft (used only for choosing a random direction to spawn from.)")]
 		public readonly int QuantizedFacings = 32;
+
+		[Desc("Additional distance from the map edge to spawn the aircraft.")]
 		public readonly WDist Cordon = new(5120);
 
 		[ActorReference]
-		[Desc("Actor to spawn when the aircraft start attacking")]
+		[Desc("Actor to spawn when the aircraft start attacking.")]
 		public readonly string CameraActor = null;
 
-		[Desc("Amount of time to keep the camera alive after the aircraft have finished attacking")]
+		[Desc("Amount of time to keep the camera alive after the aircraft have finished attacking.")]
 		public readonly int CameraRemoveDelay = 25;
 
-		[Desc("Weapon range offset to apply during the beacon clock calculation")]
+		[Desc("Weapon range offset to apply during the beacon clock calculation.")]
 		public readonly WDist BeaconDistanceOffset = WDist.FromCells(6);
 
 		public override object Create(ActorInitializer init) { return new AirstrikePower(init.Self, this); }
