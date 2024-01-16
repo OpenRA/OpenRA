@@ -19,11 +19,17 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("Support power that spawns and delivers units to the desired location via aircraft.")]
 	public class ParatroopersPowerInfo : SupportPowerInfo
 	{
 		[ActorReference(typeof(AircraftInfo))]
+		[Desc("Aircraft used to deliver the drop.")]
 		public readonly string UnitType = "badr";
+
+		[Desc("Number of aircraft to use in the formation.")]
 		public readonly int SquadSize = 1;
+
+		[Desc("Distance between the aircraft in a formation.")]
 		public readonly WVec SquadOffset = new(-1536, 1536, 0);
 
 		[NotificationReference("Speech")]
@@ -54,7 +60,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Amount of time (in ticks) to keep the camera alive while the passengers drop.")]
 		public readonly int CameraRemoveDelay = 85;
 
-		[Desc("Enables the player directional targeting")]
+		[Desc("Enables the player directional targeting.")]
 		public readonly bool UseDirectionalTarget = false;
 
 		[Desc("Animation used to render the direction arrows.")]
