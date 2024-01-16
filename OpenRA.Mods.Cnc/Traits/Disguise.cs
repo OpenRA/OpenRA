@@ -304,6 +304,9 @@ namespace OpenRA.Mods.Cnc.Traits
 			if (!info.ValidRelationships.HasRelationship(relationship))
 				return false;
 
+			if (target.Equals(self))
+				return false;
+
 			return info.TargetTypes.Overlaps(target.GetAllTargetTypes());
 		}
 
