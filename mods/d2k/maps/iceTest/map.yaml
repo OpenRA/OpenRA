@@ -1,0 +1,248 @@
+MapFormat: 12
+
+RequiresMod: d2k
+
+Title: icetest
+
+Author: Your name here
+
+Tileset: ARRAKIS
+
+MapSize: 52,52
+
+Bounds: 1,1,50,50
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Multi0
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+
+Actors:
+	Actor0: mpspawn
+		Owner: Neutral
+		Location: 23,19
+	Actor1: trike
+		Owner: Multi0
+		Facing: 384
+		Location: 22,23
+	Actor2: light_inf
+		Owner: Multi0
+		SubCell: 3
+		Facing: 384
+		Location: 23,25
+	Actor3: light_inf
+		Owner: Multi0
+		Facing: 384
+		SubCell: 3
+		Location: 33,23
+	Actor4: light_inf
+		Owner: Multi0
+		Facing: 384
+		SubCell: 3
+		Location: 20,22
+	Actor5: light_inf
+		Owner: Multi0
+		Facing: 384
+		Location: 20,21
+		SubCell: 3
+	Actor6: light_inf
+		Owner: Multi0
+		Facing: 384
+		SubCell: 3
+		Location: 10,24
+	Actor7: light_inf
+		Owner: Multi0
+		Facing: 384
+		Location: 10,24
+		SubCell: 1
+	Actor8: light_inf
+		Owner: Multi0
+		Facing: 384
+		SubCell: 3
+		Location: 9,19
+	Actor9: light_inf
+		Owner: Multi0
+		Facing: 384
+		SubCell: 3
+		Location: 20,25
+	Actor10: light_inf
+		Owner: Multi0
+		Facing: 384
+		Location: 20,26
+		SubCell: 3
+	Actor11: light_inf
+		Owner: Multi0
+		Facing: 384
+		Location: 21,26
+		SubCell: 3
+	Actor12: light_inf
+		Owner: Multi0
+		Facing: 384
+		SubCell: 3
+		Location: 31,27
+	Actor13: trike
+		Owner: Multi0
+		Facing: 384
+		Location: 15,21
+	Actor14: trike
+		Owner: Multi0
+		Facing: 384
+		Location: 36,36
+	Actor15: trike
+		Owner: Multi0
+		Facing: 384
+		Location: 43,33
+	Actor16: trike
+		Owner: Multi0
+		Facing: 384
+		Location: 39,29
+	Actor17: trike
+		Owner: Multi0
+		Facing: 384
+		Location: 44,25
+	Actor18: trike
+		Owner: Multi0
+		Facing: 384
+		Location: 22,11
+	Actor19: trike
+		Owner: Multi0
+		Facing: 384
+		Location: 15,10
+	Actor20: trike
+		Owner: Multi0
+		Facing: 384
+		Location: 3,6
+	Actor21: devastator
+		Owner: Multi0
+		Facing: 384
+		Location: 25,24
+	Actor22: devastator
+		Owner: Multi0
+		Facing: 384
+		Location: 28,25
+	Actor23: devastator
+		Owner: Multi0
+		Facing: 384
+		Location: 27,24
+	Actor24: siege_tank
+		Owner: Multi0
+		Facing: 384
+		Location: 31,25
+	Actor25: siege_tank
+		Owner: Multi0
+		Facing: 384
+		Location: 32,25
+	Actor26: siege_tank
+		Owner: Multi0
+		Facing: 384
+		Location: 33,25
+	Actor27: siege_tank
+		Owner: Multi0
+		Facing: 384
+		Location: 33,18
+	Actor28: siege_tank
+		Owner: Multi0
+		Facing: 384
+		Location: 32,19
+	Actor29: siege_tank
+		Owner: Multi0
+		Facing: 384
+		Location: 31,19
+	Actor30: siege_tank
+		Owner: Multi0
+		Facing: 384
+		Location: 29,19
+	Actor33: wind_trap
+		Owner: Multi0
+		Location: 18,3
+	Actor34: barracks
+		Owner: Multi0
+		Location: 20,3
+	Actor35: refinery
+		Owner: Multi0
+		Location: 23,3
+	Actor36: light_factory
+		Owner: Multi0
+		Location: 27,3
+	Actor37: heavy_factory
+		Owner: Multi0
+		Location: 18,6
+	Actor38: outpost
+		Owner: Multi0
+		Location: 22,7
+	Actor39: starport
+		Owner: Multi0
+		Location: 26,7
+	Actor40: repair_pad
+		Owner: Multi0
+		Location: 29,9
+	Actor41: high_tech_factory
+		Owner: Multi0
+		Location: 26,10
+	Actor42: research_centre
+		Owner: Multi0
+		Location: 22,10
+	Actor43: palace
+		Owner: Multi0
+		Location: 18,11
+	Actor44: conyard.atreides
+		Owner: Multi0
+		Location: 9,20
+	Actor45: conyard.atreides
+		Owner: Neutral
+		Location: 3,9
+	Actor46: wind_trap
+		Owner: Neutral
+		Location: 33,2
+	Actor47: barracks
+		Owner: Neutral
+		Location: 35,2
+	Actor48: construction_yard
+		Owner: Neutral
+		Location: 37,2
+	Actor49: light_factory
+		Owner: Neutral
+		Location: 40,2
+	Actor50: heavy_factory
+		Owner: Neutral
+		Location: 33,4
+	Actor51: outpost
+		Owner: Neutral
+		Location: 36,5
+	Actor52: starport
+		Owner: Neutral
+		Location: 39,4
+	Actor54: high_tech_factory
+		Owner: Neutral
+		Location: 42,6
+	Actor53: research_centre
+		Owner: Neutral
+		Location: 42,10
+	Actor55: palace
+		Owner: Neutral
+		Location: 39,8
+	Actor56: conyard.atreides
+		Owner: Neutral
+		Location: 35,8
+	Actor57: conyard.ordos
+		Owner: Neutral
+		Location: 33,11
+	Actor58: conyard.harkonnen
+		Owner: Neutral
+		Location: 37,11
