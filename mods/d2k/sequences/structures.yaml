@@ -165,6 +165,15 @@ conyard.atreides:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4310
@@ -348,6 +357,15 @@ starport.atreides:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4356
@@ -398,6 +416,15 @@ power.atreides:
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19
+		Length: 4
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 0, 1, 2, 3
+		Length: 4
 	icon:
 		Filename: DATA.R16
 		Start: 4320
@@ -436,6 +463,15 @@ barracks.atreides:
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19
+		Length: 4
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 0, 1, 2, 3
+		Length: 4
 	icon:
 		Filename: DATA.R16
 		Start: 4323
@@ -480,6 +516,15 @@ outpost.atreides:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4336
@@ -529,6 +574,15 @@ refinery.atreides:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4330
@@ -624,6 +678,15 @@ hightech.atreides:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4342
@@ -668,6 +731,15 @@ research.atreides:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4363
@@ -712,6 +784,15 @@ research.harkonnen:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4364
@@ -756,6 +837,15 @@ research.ordos:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4365
@@ -798,6 +888,15 @@ palace.atreides:
 		Frames: 663, 664, 665
 		Length: 3
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18
+		Length: 3
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6
+		Length: 3
 	icon:
 		Filename: DATA.R16
 		Start: 4366
@@ -865,6 +964,15 @@ light.atreides:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4345
@@ -924,6 +1032,15 @@ heavy.atreides:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4351
@@ -976,6 +1093,15 @@ conyard.harkonnen:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4311
@@ -1030,6 +1156,15 @@ starport.harkonnen:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4357
@@ -1080,6 +1215,15 @@ power.harkonnen:
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19
+		Length: 4
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 0, 1, 2, 3
+		Length: 4
 	icon:
 		Filename: DATA.R16
 		Start: 4321
@@ -1118,6 +1262,15 @@ barracks.harkonnen:
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19
+		Length: 4
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 0, 1, 2, 3
+		Length: 4
 	icon:
 		Filename: DATA.R16
 		Start: 4324
@@ -1162,6 +1315,15 @@ outpost.harkonnen:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4337
@@ -1211,6 +1373,15 @@ refinery.harkonnen:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4331
@@ -1299,6 +1470,15 @@ hightech.harkonnen:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4343
@@ -1347,6 +1527,15 @@ palace.harkonnen:
 		Frames: 663, 664, 665
 		Length: 3
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18
+		Length: 3
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6
+		Length: 3
 	icon:
 		Filename: DATA.R16
 		Start: 4367
@@ -1406,6 +1595,15 @@ light.harkonnen:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4346
@@ -1465,6 +1663,15 @@ heavy.harkonnen:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4352
@@ -1517,6 +1724,15 @@ conyard.ordos:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4312
@@ -1571,6 +1787,15 @@ starport.ordos:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4358
@@ -1621,6 +1846,15 @@ power.ordos:
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19
+		Length: 4
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 0, 1, 2, 3
+		Length: 4
 	icon:
 		Filename: DATA.R16
 		Start: 4322
@@ -1659,6 +1893,15 @@ barracks.ordos:
 		Frames: 649, 650, 669, 670
 		Length: 4
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19
+		Length: 4
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 0, 1, 2, 3
+		Length: 4
 	icon:
 		Filename: DATA.R16
 		Start: 4325
@@ -1703,6 +1946,15 @@ outpost.ordos:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4338
@@ -1752,6 +2004,15 @@ refinery.ordos:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4332
@@ -1840,6 +2101,15 @@ hightech.ordos:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4344
@@ -1882,6 +2152,15 @@ palace.ordos:
 		Frames: 663, 664, 665
 		Length: 3
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18
+		Length: 3
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6
+		Length: 3
 	icon:
 		Filename: DATA.R16
 		Start: 4368
@@ -1941,6 +2220,15 @@ light.ordos:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4347
@@ -2000,6 +2288,15 @@ heavy.ordos:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4353
@@ -2030,6 +2327,15 @@ palace.corrino:
 		Frames: 663, 664, 665
 		Length: 3
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18
+		Length: 3
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6
+		Length: 3
 	icon:
 		Filename: palacecicon.shp
 	make:
@@ -2094,6 +2400,15 @@ starport.smuggler:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4358
@@ -2161,6 +2476,15 @@ heavy.mercenary:
 		Frames: 643, 644, 645, 663, 664, 665
 		Length: 6
 		Offset: -16,-16
+	bib-Platform:
+		Filename: customtiles.r16
+		Frames: 16, 17, 18, 19, 16, 17
+		Length: 6
+		Offset: -16,-16
+	bib-Ice:
+		Filename: icebibsheet.png
+		Frames: 4, 5, 6, 7, 8, 9
+		Length: 6
 	icon:
 		Filename: DATA.R16
 		Start: 4353

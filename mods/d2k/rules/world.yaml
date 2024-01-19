@@ -27,6 +27,7 @@
 			Sand: 100
 			Rock: 100
 			Ice: 100
+			Platform: 100
 			Transition: 100
 			Concrete: 100
 			SpiceSand: 100
@@ -41,6 +42,7 @@
 			Sand: 100
 			Rock: 100
 			Ice: 100
+			Platform: 110
 			Transition: 100
 			Concrete: 100
 			SpiceSand: 100
@@ -54,6 +56,7 @@
 			Sand: 100
 			Rock: 100
 			Ice: 100
+			Platform: 110
 			Transition: 100
 			Concrete: 100
 			SpiceSand: 100
@@ -67,6 +70,7 @@
 			Sand: 100
 			Rock: 100
 			Ice: 100
+			Platform: 110
 			Transition: 100
 			Concrete: 100
 			SpiceSand: 100

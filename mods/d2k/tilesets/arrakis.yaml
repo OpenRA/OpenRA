@@ -59,6 +59,11 @@ Terrain:
 		TargetTypes: Ground
 		AcceptsSmudgeType: SandCrater
 		Color: D0C0A0
+	TerrainType@Platform:
+		Type: Platform
+		TargetTypes: Ground
+		AcceptsSmudgeType: RockCrater
+		Color: 8A806B
 
 Templates:
 	Template@0:
@@ -5661,16 +5666,20 @@ Templates:
 		Size: 2,1
 		Categories: Sand-Platform
 		Tiles:
-			0: Rock
-			1: Rock
+			0: Platform
+			1: Platform
 	Template@1017:
 		Id: 1017
 		Images: customtiles.r16
-		Frames: 18
+		Frames: 16, 17, 18, 19
+		PickAny: True
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
-			0: Rock
+			0: Platform
+			1: Platform
+			2: Platform
+			3: Platform
 	Template@1018:
 		Id: 1018
 		Images: customtiles.r16
@@ -5678,7 +5687,7 @@ Templates:
 		Size: 1,1
 		Categories: Sand-Platform
 		Tiles:
-			0: Rock
+			0: Platform
 	Template@1019:
 		Id: 1019
 		Images: BLOXBGBS.R16
