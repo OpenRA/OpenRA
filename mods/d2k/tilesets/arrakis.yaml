@@ -2,7 +2,7 @@ General:
 	Name: Arrakis
 	Id: ARRAKIS
 	SheetSize: 1024
-	EditorTemplateOrder: Basic, Dune, Sand-Detail, Rock-Detail, Ice-Detail, Rock-Sand-Smooth, Sand-Sand-Cliff, Sand-Rock-Cliff, Sand-Ice-Cliff, Rock-Rock-Cliff, Rock-Sand-Cliff, Cliff-Type-Changer, Cliff-Ends, Sand-Platform, Bridge, Rotten-Base, Dead-Worm, Unidentified
+	EditorTemplateOrder: Basic, Dune, Sand-Detail, Rock-Detail, Ice-Detail, Rock-Sand-Smooth, Sand-Sand-Cliff, Sand-Rock-Cliff, Sand-Ice-Cliff, Sand-Ice-Smooth, Rock-Rock-Cliff, Rock-Sand-Cliff, Cliff-Type-Changer, Cliff-Ends, Sand-Platform, Bridge, Rotten-Base, Dead-Worm, Unidentified
 	IgnoreTileSpriteOffsets: True
 	HeightDebugColors: 880000
 
@@ -19,7 +19,7 @@ Terrain:
 		Type: Concrete
 		TargetTypes: Ground
 		AcceptsSmudgeType: RockCrater
-		Color: CE8C42
+		Color: f7b72d
 	TerrainType@Dune:
 		Type: Dune
 		TargetTypes: Ground
@@ -27,7 +27,8 @@ Terrain:
 	TerrainType@Ice:
 		Type: Ice
 		TargetTypes: Ground
-		Color: FFFFFF
+		AcceptsSmudgeType: IceCrater
+		Color: CE8C42
 	TerrainType@Rock:
 		Type: Rock
 		TargetTypes: Ground
@@ -3298,7 +3299,7 @@ Templates:
 			1: Cliff
 			2: Ice
 			3: Cliff
-			4: Ice
+			4: Cliff
 			5: Cliff
 	Template@388:
 		Id: 388
@@ -3362,9 +3363,9 @@ Templates:
 		Categories: Sand-Ice-Cliff
 		Tiles:
 			0: Cliff
-			1: Ice
+			1: Cliff
 			2: Cliff
-			3: Ice
+			3: Cliff
 			4: Cliff
 			5: Cliff
 	Template@395:
@@ -3396,9 +3397,9 @@ Templates:
 		Size: 2,2
 		Categories: Sand-Ice-Cliff
 		Tiles:
-			0: Ice
+			0: Cliff
 			1: Cliff
-			2: Ice
+			2: Cliff
 			3: Cliff
 	Template@398:
 		Id: 398
@@ -3407,10 +3408,10 @@ Templates:
 		Size: 2,2
 		Categories: Sand-Ice-Cliff
 		Tiles:
-			0: Ice
-			1: Ice
+			0: Cliff
+			1: Cliff
 			2: Cliff
-			3: Ice
+			3: Cliff
 	Template@399:
 		Id: 399
 		Images: BLOXICE.R16
@@ -6730,3 +6731,878 @@ Templates:
 		Categories: Bridge
 		Tiles:
 			0: Rock
+	Template@1143
+		Id: 1143
+		Images: customtiles.r16
+		Frames: 208, 209, 210, 211, 212, 213, 59
+		PickAny: True
+		Size: 1,1
+		Categories: Basic
+		Tiles:
+			0: Ice
+			1: Ice
+			2: Ice
+			3: Ice
+	Template@1144
+		Id: 1144
+		Images: customtiles.r16
+		Frames: 536, 537, 556, 557
+		Size: 2,2
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Ice
+			1: Transition
+			2: Transition
+			3: Transition
+	Template@1145
+		Id: 1145
+		Images: customtiles.r16
+		Frames: 538, 539, 558, 559
+		Size: 2,2
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+			1: Transition
+			2: Ice
+			3: Transition
+	Template@1146
+		Id: 1146
+		Images: customtiles.r16
+		Frames: 560, 561, 580, 581
+		Size: 2,2
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Ice
+			1: Transition
+			2: Transition
+			3: Transition
+	Template@1147
+		Id: 1147
+		Images: customtiles.r16
+		Frames: 562, 563, 582, 583
+		Size: 2,2
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+			1: Ice
+			2: Transition
+			3: Transition
+	Template@1148
+		Id: 1148
+		Images: customtiles.r16
+		Frames: 564, 565, 584, 585
+		Size: 2,2
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+			1: Transition
+			2: Transition
+			3: Transition
+	Template@1149
+		Id: 1149
+		Images: customtiles.r16
+		Frames: 566, 567, 586, 587
+		Size: 2,2
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+			1: Transition
+			2: Ice
+			3: Transition
+	Template@1150
+		Id: 1150
+		Images: customtiles.r16
+		Frames: 568, 569, 588, 589
+		Size: 2,2
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+			1: Transition
+			2: Transition
+			3: Ice
+	Template@1151
+		Id: 1151
+		Images: customtiles.r16
+		Frames: 534, 535, 554, 555
+		Size: 2,2
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+			1: Ice
+			2: Transition
+			3: Transition
+	Template@1152
+		Id: 1152
+		Images: customtiles.r16
+		Frames: 570
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1153
+		Id: 1153
+		Images: customtiles.r16
+		Frames: 571
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1154
+		Id: 1154
+		Images: customtiles.r16
+		Frames: 590
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1155
+		Id: 1155
+		Images: customtiles.r16
+		Frames: 591
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1156
+		Id: 1156
+		Images: customtiles.r16
+		Frames: 572
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1157
+		Id: 1157
+		Images: customtiles.r16
+		Frames: 573
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1158
+		Id: 1158
+		Images: customtiles.r16
+		Frames: 592
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1159
+		Id: 1159
+		Images: customtiles.r16
+		Frames: 593
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1160
+		Id: 1160
+		Images: customtiles.r16
+		Frames: 574, 575
+		Size: 2,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+			1: Transition
+	Template@1161
+		Id: 1161
+		Images: customtiles.r16
+		Frames: 576, 577
+		Size: 2,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+			1: Transition
+	Template@1162
+		Id: 1162
+		Images: customtiles.r16
+		Frames: 578
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1163
+		Id: 1163
+		Images: customtiles.r16
+		Frames: 594, 595
+		Size: 2,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+			1: Transition
+	Template@1164
+		Id: 1164
+		Images: customtiles.r16
+		Frames: 596
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1165
+		Id: 1165
+		Images: customtiles.r16
+		Frames: 597
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1166
+		Id: 1166
+		Images: customtiles.r16
+		Frames: 598
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1167
+		Id: 1167
+		Images: customtiles.r16
+		Frames: 579
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1168
+		Id: 1168
+		Images: customtiles.r16
+		Frames: 599
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1169
+		Id: 1169
+		Images: customtiles.r16
+		Frames: 600
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1170
+		Id: 1170
+		Images: customtiles.r16
+		Frames: 620
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1171
+		Id: 1171
+		Images: customtiles.r16
+		Frames: 601, 621
+		Size: 1,2
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+			1: Transition
+	Template@1172
+		Id: 1172
+		Images: customtiles.r16
+		Frames: 602
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1173
+		Id: 1173
+		Images: customtiles.r16
+		Frames: 622
+		Size: 1,1
+		Categories: Sand-Ice-Smooth
+		Tiles:
+			0: Transition
+	Template@1174
+		Id: 1174
+		Images: customtiles.r16
+		Frames: 603, 604, 623, 624
+		Size: 2,2
+		Categories: Cliff-Ends
+		Tiles:
+			0: Transition
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1175
+		Id: 1175
+		Images: customtiles.r16
+		Frames: 605, 606, 625, 626
+		Size: 2,2
+		Categories: Cliff-Ends
+		Tiles:
+			0: Cliff
+			1: Transition
+			2: Cliff
+			3: Cliff
+	Template@1176
+		Id: 1176
+		Images: customtiles.r16
+		Frames: 607, 608, 627, 628
+		Size: 2,2
+		Categories: Cliff-Ends
+		Tiles:
+			0: Cliff
+			1: Ice
+			2: Transition
+			3: Transition
+	Template@1177
+		Id: 1177
+		Images: customtiles.r16
+		Frames: 609, 610, 629, 630
+		Size: 2,2
+		Categories: Ice-Detail
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1178
+		Id: 1178
+		Images: customtiles.r16
+		Frames: 611, 612, 631, 632
+		Size: 2,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1179
+		Id: 1179
+		Images: customtiles.r16
+		Frames: 613, 614, 633, 634
+		Size: 2,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1180
+		Id: 1180
+		Images: customtiles.r16
+		Frames: 615, 616, 635, 636
+		Size: 2,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1181
+		Id: 1181
+		Images: customtiles.r16
+		Frames: 617, 618, 619, 637, 638, 639, 657, 658, 659
+		Size: 3,3
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Ice
+			1: Ice
+			2: Ice
+			3: Cliff
+			4: Rough
+			5: Cliff
+			6: Cliff
+			7: Rough
+			8: Cliff
+	Template@1182
+		Id: 1182
+		Images: customtiles.r16
+		Frames: 640, 641, 660, 661
+		Size: 2,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1183
+		Id: 1183
+		Images: customtiles.r16
+		Frames: 642, 643, 662, 663
+		Size: 2,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1184
+		Id: 1184
+		Images: customtiles.r16
+		Frames: 644, 645, 664, 665
+		Size: 2,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1185
+		Id: 1185
+		Images: customtiles.r16
+		Frames: 646, 647, 666, 667
+		Size: 2,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1186
+		Id: 1186
+		Images: customtiles.r16
+		Frames: 648, 649, 668, 669
+		Size: 2,2
+		Categories: Cliff-Ends
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1187
+		Id: 1187
+		Images: customtiles.r16
+		Frames: 650, 651, 670, 671
+		Size: 2,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Ice
+			3: Ice
+	Template@1188
+		Id: 1188
+		Images: customtiles.r16
+		Frames: 652, 653, 672, 673
+		Size: 2,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Ice
+			3: Ice
+	Template@1189
+		Id: 1189
+		Images: customtiles.r16
+		Frames: 654, 655, 674, 675
+		Size: 2,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Ice
+			3: Cliff
+	Template@1190
+		Id: 1190
+		Images: customtiles.r16
+		Frames: 656
+		Size: 1,1
+		Categories: Ice-Detail
+		Tiles:
+			0: Cliff
+	Template@1191
+		Id: 1191
+		Images: customtiles.r16
+		Frames: 680, 681, 700, 701
+		Size: 2,2
+		Categories: Cliff-Ends
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1192
+		Id: 1192
+		Images: customtiles.r16
+		Frames: 682, 683, 702, 703
+		Size: 2,2
+		Categories: Cliff-Ends
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1193
+		Id: 1193
+		Images: customtiles.r16
+		Frames: 684, 685, 704, 705
+		Size: 2,2
+		Categories: Cliff-Ends
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1194
+		Id: 1194
+		Images: customtiles.r16
+		Frames: 686, 687, 706, 707
+		Size: 2,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Ice
+			2: Cliff
+			3: Ice
+	Template@1195
+		Id: 1195
+		Images: customtiles.r16
+		Frames: 688, 689, 708, 709
+		Size: 2,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Ice
+			1: Cliff
+			2: Ice
+			3: Cliff
+	Template@1196
+		Id: 1196
+		Images: customtiles.r16
+		Frames: 690, 691, 692, 710, 711, 712
+		Size: 3,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Sand
+			1: Cliff
+			2: Ice
+			3: Cliff
+			4: Cliff
+			5: Ice
+	Template@1197
+		Id: 1197
+		Images: customtiles.r16
+		Frames: 693, 694, 695, 713, 714, 715
+		Size: 3,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Sand
+	Template@1198
+		Id: 1198
+		Images: customtiles.r16
+		Frames: 676, 677, 696, 697, 716, 717
+		Size: 2,3
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Ice
+			5: Cliff
+	Template@1199
+		Id: 1199
+		Images: customtiles.r16
+		Frames: 678, 679, 698, 699, 718, 719
+		Size: 2,3
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Ice
+	Template@1200
+		Id: 1200
+		Images: customtiles.r16
+		Frames: 720, 721, 722, 740, 741, 742
+		Size: 3,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Ice
+			1: Rough
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Rough
+	Template@1201
+		Id: 1201
+		Images: customtiles.r16
+		Frames: 723, 724, 725, 743, 744, 745
+		Size: 3,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Rough
+			3: Sand
+			4: Rough
+			5: Cliff
+	Template@1202
+		Id: 1202
+		Images: customtiles.r16
+		Frames: 726, 746
+		Size: 1,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1203
+		Id: 1203
+		Images: customtiles.r16
+		Frames: 727, 728
+		Size: 2,1
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@1204
+		Id: 1204
+		Images: customtiles.r16
+		Frames: 747, 748
+		Size: 2,1
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@1205
+		Id: 1205
+		Images: customtiles.r16
+		Frames: 729, 730, 749, 750
+		Size: 2,2
+		Categories: Cliff-Type-Changer
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1206
+		Id: 1206
+		Images: customtiles.r16
+		Frames: 731, 732, 751, 752
+		Size: 2,2
+		Categories: Cliff-Type-Changer
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1207
+		Id: 1207
+		Images: customtiles.r16
+		Frames: 733, 734, 735, 753, 754, 755
+		Size: 3,2
+		Categories: Ice-Detail
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Sand
+			4: Sand
+			5: Sand
+	Template@1208
+		Id: 1208
+		Images: customtiles.r16
+		Frames: 736, 737, 738, 739, 756, 757, 758, 759, 776, 777, 778, 779, 796, 797, 798, 799
+		Size: 4,4
+		Categories: Ice-Detail
+		Tiles:
+			0: Sand
+			1: Cliff
+			2: Cliff
+			3: Sand
+			4: Cliff
+			5: Cliff
+			6: Cliff
+			7: Cliff
+			8: Cliff
+			9: Cliff
+			10: Cliff
+			11: Cliff
+			12: Sand
+			13: Cliff
+			14: Cliff
+			15: Cliff
+	Template@1209
+		Id: 1209
+		Images: customtiles.r16
+		Frames: 760, 761, 780, 781
+		Size: 2,2
+		Categories: Cliff-Type-Changer
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Sand
+			3: Transition
+	Template@1210
+		Id: 1210
+		Images: customtiles.r16
+		Frames: 762, 763, 782, 783
+		Size: 2,2
+		Categories: Cliff-Type-Changer
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Transition
+			3: Sand
+	Template@1211
+		Id: 1211
+		Images: customtiles.r16
+		Frames: 764, 765, 784, 785
+		Size: 2,2
+		Categories: Cliff-Type-Changer
+		Tiles:
+			0: Cliff
+			1: Transition
+			2: Cliff
+			3: Cliff
+	Template@1212
+		Id: 1212
+		Images: customtiles.r16
+		Frames: 766, 767, 786, 787
+		Size: 2,2
+		Categories: Cliff-Type-Changer
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Transition
+	Template@1213
+		Id: 1213
+		Images: customtiles.r16
+		Frames: 768, 769, 788, 789
+		Size: 2,2
+		Categories: Cliff-Type-Changer
+		Tiles:
+			0: Transition
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1214
+		Id: 1214
+		Images: customtiles.r16
+		Frames: 770, 771, 790, 791
+		Size: 2,2
+		Categories: Cliff-Type-Changer
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1215
+		Id: 1215
+		Images: customtiles.r16
+		Frames: 772, 773, 792, 793
+		Size: 2,2
+		Categories: Cliff-Type-Changer
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1216
+		Id: 1216
+		Images: customtiles.r16
+		Frames: 774, 775, 794, 795
+		Size: 2,2
+		Categories: Cliff-Type-Changer
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+	Template@1217
+		Id: 1217
+		Images: customtiles.r16
+		Frames: 476, 477, 478, 479
+		Size: 2,2
+		Categories: Ice-Detail
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
+	Template@1218
+		Id: 1218
+		Images: customtiles.r16
+		Frames: 214, 215
+		Size: 2,1
+		Categories: Ice-Detail
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1219
+		Id: 1219
+		Images: customtiles.r16
+		Frames: 379, 399
+		Size: 1,2
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@1220
+		Id: 1220
+		Images: customtiles.r16
+		Frames: 352, 353
+		Size: 2,1
+		Categories: Ice-Detail
+		Tiles:
+			0: Cliff
+			1: Cliff
+	Template@1221
+		Id: 1221
+		Images: customtiles.r16
+		Frames: 354, 355
+		Size: 2,1
+		Categories: Cliff-Ends
+		Tiles:
+			0: Transition
+			1: Rough
+	Template@1222
+		Id: 1222
+		Images: customtiles.r16
+		Frames: 343, 344, 345
+		Size: 3,1
+		Categories: Ice-Detail
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+	Template@1223
+		Id: 1223
+		Images: customtiles.r16
+		Frames: 346
+		Size: 1,1
+		Categories: Ice-Detail
+		Tiles:
+			0: Cliff
+	Template@1224
+		Id: 1224
+		Images: customtiles.r16
+		Frames: 356, 357
+		Size: 2,1
+		Categories: Ice-Detail
+		Tiles:
+			0: Rough
+			1: Rough
+	Template@1225
+		Id: 1225
+		Images: BLOXICE.R16
+		Frames: 349, 350, 369, 370, 389, 390
+		Size: 2,3
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Cliff
+	Template@1226
+		Id: 1226
+		Images: BLOXICE.R16
+		Frames: 351, 352, 371, 372, 391, 392
+		Size: 2,3
+		Categories: Sand-Ice-Cliff
+		Tiles:
+			0: Cliff
+			1: Cliff
+			2: Cliff
+			3: Cliff
+			4: Cliff
+			5: Cliff

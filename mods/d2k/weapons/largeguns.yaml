@@ -23,7 +23,7 @@
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
-		SmudgeType: SandCrater, RockCrater
+		SmudgeType: SandCrater, RockCrater, IceCrater
 		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm

@@ -26,6 +26,7 @@
 		TerrainSpeeds:
 			Sand: 100
 			Rock: 100
+			Ice: 100
 			Transition: 100
 			Concrete: 100
 			SpiceSand: 100
@@ -39,6 +40,7 @@
 		TerrainSpeeds:
 			Sand: 100
 			Rock: 100
+			Ice: 100
 			Transition: 100
 			Concrete: 100
 			SpiceSand: 100
@@ -51,6 +53,7 @@
 		TerrainSpeeds:
 			Sand: 100
 			Rock: 100
+			Ice: 100
 			Transition: 100
 			Concrete: 100
 			SpiceSand: 100
@@ -63,6 +66,7 @@
 		TerrainSpeeds:
 			Sand: 100
 			Rock: 100
+			Ice: 100
 			Transition: 100
 			Concrete: 100
 			SpiceSand: 100
@@ -158,6 +162,9 @@ World:
 	SmudgeLayer@Sand:
 		Type: SandCrater
 		Sequence: sandcraters
+	SmudgeLayer@Ice:
+		Type: IceCrater
+		Sequence: icecraters
 	MapCreeps:
 		CheckboxLabel: dropdown-map-worms.label
 		CheckboxDescription: dropdown-map-worms.description
@@ -264,4 +271,4 @@ EditorWorld:
 	LoadWidgetAtGameStart:
 	EditorActionManager:
 	BuildableTerrainOverlay:
-		AllowedTerrainTypes: Rock, Concrete
+		AllowedTerrainTypes: Rock, Concrete, Ice
