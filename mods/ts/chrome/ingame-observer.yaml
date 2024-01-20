@@ -451,7 +451,7 @@ Container@OBSERVER_WIDGETS:
 								Label@SUPPORT_POWERS_HEADER:
 									X: 160
 									Y: 0
-									Width: 100
+									Width: 200
 									Height: PARENT_BOTTOM
 									Font: Bold
 									Text: label-support-powers-header

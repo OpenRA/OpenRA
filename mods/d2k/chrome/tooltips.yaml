@@ -122,6 +122,7 @@ Background@LATENCY_TOOLTIP:
 		Label@LATENCY_PREFIX:
 			X: 7
 			Y: 4
+			Width: 200
 			Height: 23
 			Font: Bold
 			Text: label-latency-tooltip-prefix
@@ -134,12 +135,13 @@ Background@ANONYMOUS_PLAYER_TOOLTIP:
 	Logic: AnonymousProfileTooltipLogic
 	Background: dialog3
 	Height: 32
-	Width: 200
+	Width: 300
 	Children:
 		Label@NAME:
 			X: 7
 			Y: 3
 			Text: label-anonymous-player-tooltip-name
+			Width: 290
 			Height: 24
 			Font: MediumBold
 		Label@LOCATION:
@@ -169,6 +171,7 @@ Background@ANONYMOUS_PLAYER_TOOLTIP:
 					ImageName: admin
 				Label@LABEL:
 					X: 10
+					Width: 200
 					Height: 12
 					Text: label-game-admin
 					Font: TinyBold
@@ -212,6 +215,7 @@ Background@REGISTERED_PLAYER_TOOLTIP:
 								Label@LABEL:
 									X: 10
 									Y: 1
+									Width: 200
 									Height: 12
 									Text: label-game-admin
 									Font: TinyBold

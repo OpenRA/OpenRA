@@ -8,7 +8,8 @@ Container@NEW_MAP_BG:
 		Label@TITLE:
 			Text: label-new-map-bg-title
 			Width: PARENT_RIGHT
-			Y: 0 - 22
+			Height: 25
+			Y: 0 - 34
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -85,7 +86,8 @@ Container@SAVE_MAP_PANEL:
 		Label@LABEL_TITLE:
 			Text: label-save-map-panel-title
 			Width: PARENT_RIGHT
-			Y: 0 - 22
+			Height: 25
+			Y: 0 - 34
 			Font: BigBold
 			Contrast: true
 			Align: Center

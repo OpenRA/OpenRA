@@ -56,7 +56,7 @@ Container@SKIRMISH_STATS:
 					Font: Bold
 				Label@ACTIONS:
 					X: 457
-					Width: 20
+					Width: 80
 					Height: 25
 					Text: label-stats-actions
 					Font: Bold

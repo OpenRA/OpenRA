@@ -29,7 +29,7 @@ Container@HOTKEYS_PANEL:
 	Height: PARENT_BOTTOM
 	Children:
 		Label@FILTER_INPUT_LABEL:
-			Width: 100
+			Width: 103
 			Height: 25
 			Font: Bold
 			Text: label-hotkeys-panel-filter-input

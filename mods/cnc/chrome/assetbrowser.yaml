@@ -8,7 +8,8 @@ Container@ASSETBROWSER_PANEL:
 		LogicTicker@ANIMATION_TICKER:
 		Label@ASSETBROWSER_TITLE:
 			Width: PARENT_RIGHT
-			Y: 0 - 22
+			Height: 25
+			Y: 0 - 34
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -77,7 +78,7 @@ Container@ASSETBROWSER_PANEL:
 				Label@SPRITE_SCALE:
 					X: PARENT_RIGHT - WIDTH - 440
 					Y: 31
-					Width: 40
+					Width: 50
 					Height: 25
 					Font: Bold
 					Align: Left

@@ -124,47 +124,56 @@ Background@MAINMENU_INTRODUCTION_PROMPT:
 							Width: PARENT_RIGHT / 2 - 20
 							Children:
 								LabelWithHighlight@DESC_SELECTION:
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-selection
 								LabelWithHighlight@DESC_COMMANDS:
 									Y: 17
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-commands
 								LabelWithHighlight@DESC_BUILDIGS:
 									Y: 34
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-buildigs
 								LabelWithHighlight@DESC_SUPPORT:
 									Y: 51
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-support
 								LabelWithHighlight@DESC_ZOOM:
 									Y: 68
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-zoom
 								LabelWithHighlight@DESC_ZOOM_MODIFIER:
 									Y: 68
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-zoom-modifier
 								LabelWithHighlight@DESC_SCROLL_RIGHT:
 									Y: 85
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-scroll-right
 								LabelWithHighlight@DESC_SCROLL_MIDDLE:
 									Y: 85
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-scroll-middle
 								Label@DESC_EDGESCROLL:
 									X: 9
 									Y: 102
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-edgescroll
@@ -173,47 +182,56 @@ Background@MAINMENU_INTRODUCTION_PROMPT:
 							Width: PARENT_RIGHT / 2 - 20
 							Children:
 								LabelWithHighlight@DESC_SELECTION:
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-selection
 								LabelWithHighlight@DESC_COMMANDS:
 									Y: 17
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-commands
 								LabelWithHighlight@DESC_BUILDIGS:
 									Y: 34
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-buildigs
 								LabelWithHighlight@DESC_SUPPORT:
 									Y: 51
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-support
 								LabelWithHighlight@DESC_ZOOM:
 									Y: 68
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-zoom
 								LabelWithHighlight@DESC_ZOOM_MODIFIER:
 									Y: 68
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-zoom-modifier
 								LabelWithHighlight@DESC_SCROLL_RIGHT:
 									Y: 85
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-scroll-right
 								LabelWithHighlight@DESC_SCROLL_MIDDLE:
 									Y: 85
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-scroll-middle
 								Label@DESC_EDGESCROLL:
 									X: 9
 									Y: 102
+									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-edgescroll

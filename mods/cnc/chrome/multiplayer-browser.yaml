@@ -8,7 +8,8 @@ Container@MULTIPLAYER_PANEL:
 		Label@TITLE:
 			Text: label-multiplayer-panel-title
 			Width: PARENT_RIGHT
-			Y: 0 - 22
+			Height: 25
+			Y: 0 - 34
 			Font: BigBold
 			Contrast: true
 			Align: Center

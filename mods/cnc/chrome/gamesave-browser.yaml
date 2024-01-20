@@ -7,7 +7,8 @@ Container@GAMESAVE_BROWSER_PANEL:
 	Children:
 		Label@LOAD_TITLE:
 			Width: PARENT_RIGHT
-			Y: 0 - 22
+			Height: 25
+			Y: 0 - 34
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -15,7 +16,8 @@ Container@GAMESAVE_BROWSER_PANEL:
 			Visible: False
 		Label@SAVE_TITLE:
 			Width: PARENT_RIGHT
-			Y: 0 - 22
+			Height: 25
+			Y: 0 - 34
 			Font: BigBold
 			Contrast: true
 			Align: Center

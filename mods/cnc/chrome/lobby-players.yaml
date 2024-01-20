@@ -51,7 +51,7 @@ Container@LOBBY_PLAYER_BIN:
 					Font: Bold
 				Label@LABEL_LOBBY_STATUS:
 					X: 627
-					Width: 20
+					Width: 20 + 24
 					Height: 25
 					Text: label-container-lobby-status
 					Align: Left
@@ -257,7 +257,7 @@ Container@LOBBY_PLAYER_BIN:
 									Text: label-faction-factionname
 						Label@TEAM:
 							X: 435
-							Width: 25
+							Width: 44
 							Height: 25
 							Align: Center
 						DropDownButton@TEAM_DROPDOWN:

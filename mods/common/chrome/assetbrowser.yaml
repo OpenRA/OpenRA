@@ -72,7 +72,7 @@ Background@ASSETBROWSER_PANEL:
 		Label@SPRITE_SCALE:
 			X: PARENT_RIGHT - WIDTH - 440
 			Y: 60
-			Width: 40
+			Width: 50
 			Height: 25
 			Font: Bold
 			Align: Left

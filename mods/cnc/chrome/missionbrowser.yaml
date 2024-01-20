@@ -6,8 +6,9 @@ Container@MISSIONBROWSER_PANEL:
 	Height: 435
 	Children:
 		Label@MISSIONBROWSER_TITLE:
-			Y: 0 - 22
+			Y: 0 - 34
 			Width: PARENT_RIGHT
+			Height: 25
 			Text: label-missionbrowser-panel-title
 			Align: Center
 			Contrast: true
