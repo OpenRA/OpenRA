@@ -417,7 +417,7 @@ Container@OBSERVER_WIDGETS:
 						Container@ECONOMY_STATS_HEADERS:
 							X: 0
 							Y: 0
-							Width: 730
+							Width: 735
 							Height: PARENT_BOTTOM
 							Children:
 								ColorBlock@HEADER_COLOR:
@@ -490,7 +490,7 @@ Container@OBSERVER_WIDGETS:
 									Shadow: True
 								Label@DERRICKS_HEADER:
 									X: 650
-									Width: 75
+									Width: 80
 									Height: PARENT_BOTTOM
 									Font: Bold
 									Text: label-economy-stats-derricks-header
@@ -563,7 +563,7 @@ Container@OBSERVER_WIDGETS:
 								Label@SUPPORT_POWERS_HEADER:
 									X: 160
 									Y: 0
-									Width: 100
+									Width: 200
 									Height: PARENT_BOTTOM
 									Font: Bold
 									Text: label-support-powers-header
@@ -1211,6 +1211,7 @@ Container@PLAYER_WIDGETS:
 							ClickThrough: false
 							Background: panel-black
 				SupportPowers@SUPPORT_PALETTE:
+					IconSize: 64, 48
 					X: 1
 					Y: 1
 					TooltipContainer: TOOLTIP_CONTAINER
@@ -1863,6 +1864,7 @@ Container@PLAYER_WIDGETS:
 					Height: 50
 					Background: panel-black
 		ProductionPalette@PRODUCTION_PALETTE:
+			IconSize: 64, 48
 			X: WINDOW_RIGHT - 5 - 17 - 194
 			Y: 320
 			Width: 192

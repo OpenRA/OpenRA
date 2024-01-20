@@ -162,7 +162,8 @@ Background@THREEBUTTON_PROMPT:
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_RIGHT
-			Y: 0 - 22
+			Height: 25
+			Y: 0 - 34
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -205,7 +206,8 @@ Background@TWOBUTTON_PROMPT:
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_RIGHT
-			Y: 0 - 22
+			Height: 25
+			Y: 0 - 34
 			Font: BigBold
 			Contrast: true
 			Align: Center
@@ -239,7 +241,8 @@ Container@TEXT_INPUT_PROMPT:
 	Children:
 		Label@PROMPT_TITLE:
 			Width: PARENT_RIGHT
-			Y: 0 - 22
+			Height: 25
+			Y: 0 - 34
 			Font: BigBold
 			Contrast: true
 			Align: Center

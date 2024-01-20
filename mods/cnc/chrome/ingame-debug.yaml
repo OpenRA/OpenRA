@@ -4,11 +4,12 @@ Container@DEBUG_PANEL:
 	Height: PARENT_BOTTOM
 	Children:
 		Label@TITLE:
-			Y: 26
+			Y: 16
 			Font: Bold
 			Text: label-debug-panel-title
 			Align: Center
 			Width: PARENT_RIGHT
+			Height: 20
 		Checkbox@INSTANT_BUILD:
 			X: 45
 			Y: 45
@@ -76,11 +77,12 @@ Container@DEBUG_PANEL:
 			Height: 35
 			Text: button-debug-panel-reset-exploration
 		Label@VISUALIZATIONS_TITLE:
-			Y: 256
+			Y: 246
 			Font: Bold
 			Text: label-debug-panel-visualizations-title
 			Align: Center
 			Width: PARENT_RIGHT
+			Height: 20
 		Checkbox@SHOW_UNIT_PATHS:
 			X: 45
 			Y: 275
