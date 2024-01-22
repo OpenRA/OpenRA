@@ -168,8 +168,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			metadata.AppendLine();
 
 			metadata.AppendLine("Terrain:");
-			terrainTypes = terrainTypes.Distinct().ToArray();
-			foreach (var terrainType in terrainTypes)
+			foreach (var terrainType in terrainTypes.Distinct())
 			{
 				metadata.AppendLine($"\tTerrainType@{terrainType}:");
 				metadata.AppendLine($"\t\tType: {terrainType}");

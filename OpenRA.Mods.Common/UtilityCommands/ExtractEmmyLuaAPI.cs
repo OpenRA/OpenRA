@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine("---A list of ActorInit implementations that can be used by Lua scripts.");
 			Console.WriteLine("---@class initTable");
 
-			var localEnums = new List<Type>();
+			var localEnums = new HashSet<Type>();
 			foreach (var init in actorInits)
 			{
 				var name = init.Name[..^4];
@@ -159,7 +159,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				}
 			}
 
-			usedEnums = localEnums.Distinct();
+			usedEnums = localEnums;
 		}
 
 		static void WriteEnums(IEnumerable<Type> enumTypes)
