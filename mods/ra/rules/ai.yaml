@@ -421,6 +421,7 @@ Player:
 			ftrk: 4
 			mnly: 2
 	MinelayerBotModule@turtle:
+		RequiresCondition: enable-turtle-ai
 		MinelayingActorTypes: mnly
 		IgnoredEnemyTargetTypes: Structure, Defense, AirborneActor
 		UseEnemyLocationTargetTypes: Structure, Defense, AirborneActor
