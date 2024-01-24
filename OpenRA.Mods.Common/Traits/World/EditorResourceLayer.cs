@@ -182,6 +182,24 @@ namespace OpenRA.Mods.Common.Traits
 				NetWorth += (newDensity + 1) * newResourceValue;
 		}
 
+		public int CalculateRegionValue(CellRegion sourceRegion)
+		{
+			var resourceValueInRegion = 0;
+			foreach (var cell in sourceRegion)
+			{
+				var mcell = cell.ToMPos(Map);
+				if (Map.Resources.Contains(mcell) && Map.Resources[mcell].Type != 0)
+				{
+					resourceValueInRegion++;
+					var rcell = Map.Resources[mcell];
+					if (ResourceTypesByIndex.TryGetValue(rcell.Type, out var resourceType) && resourceValues.TryGetValue(resourceType, out var resourceValuePerUnit))
+						resourceValueInRegion += Tiles[mcell].Density * resourceValuePerUnit;
+				}
+			}
+
+			return resourceValueInRegion;
+		}
+
 		protected virtual int CalculateCellDensity(ResourceLayerContents contents, CPos c)
 		{
 			var resources = Map.Resources;

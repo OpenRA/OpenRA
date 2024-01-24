@@ -481,9 +481,73 @@ Container@EDITOR_WORLD_ROOT:
 							Width: PARENT_RIGHT - 29
 							Height: 20
 							Text: label-filter-actors
+						Label@AREA_INFO_TITLE:
+							X: 15
+							Y: 150
+							Width: 281
+							Height: 24
+							Align: Center
+							Font: Bold
+							Text: label-area-info
+						Label@REGION_LABEL:
+							X: 15
+							Y: 175
+							Width: 55
+							Height: 20
+							Font: Bold
+							Align: Left
+							Text: label-selected-area-selected-region
+						Label@DIMENSION_LABEL:
+							X: 15
+							Y: 200
+							Width: 55
+							Height: 25
+							Font: Bold
+							Align: Left
+							Text: label-selected-area-dimension
+						Label@DIAGONAL_LABEL:
+							X: 15
+							Y: 225
+							Width: 55
+							Height: 25
+							Font: Bold
+							Align: Left
+							Text: label-selected-area-diagonal
+						Label@RESOURCE_LABEL:
+							X: 15
+							Y: 250
+							Width: 55
+							Height: 25
+							Font: Bold
+							Align: Left
+							Text: label-selected-area-resources
+						Label@REGION_COUNTER_LABEL:
+							X: 150
+							Y: 175
+							Width: 55
+							Height: 22
+							Align: Left
+						Label@DIMENSION_COUNTER_LABEL:
+							X: 150
+							Y: 200
+							Width: 55
+							Height: 22
+							Align: Left
+						Label@DIAGONAL_COUNTER_LABEL:
+							X: 150
+							Y: 225
+							Width: 55
+							Height: 22
+							Align: Left
+						Label@RESOURCES_COUNTER_LABEL:
+							X: 150
+							Y: 250
+							Width: 55
+							Height: 22
+							Align: Left
 						Button@SELECTION_CANCEL_BUTTON:
-							X: 222
-							Y: 145
+							X: 117
+							Y: 275
 							Width: 75
 							Height: 25
 							Text: button-selection-cancel
