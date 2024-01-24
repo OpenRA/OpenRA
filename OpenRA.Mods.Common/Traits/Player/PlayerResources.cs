@@ -73,7 +73,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new PlayerResources(init.Self, this); }
 	}
 
-	public class PlayerResources : ISync
+	[GenerateSyncCode]
+	public partial class PlayerResources
 	{
 		public readonly PlayerResourcesInfo Info;
 		readonly Player owner;
@@ -92,13 +93,13 @@ namespace OpenRA.Mods.Common.Traits
 			lastNotificationTime = -Info.InsufficientFundsNotificationInterval;
 		}
 
-		[Sync]
+		[SyncMember]
 		public int Cash;
 
-		[Sync]
+		[SyncMember]
 		public int Resources;
 
-		[Sync]
+		[SyncMember]
 		public int ResourceCapacity;
 
 		public int Earned;

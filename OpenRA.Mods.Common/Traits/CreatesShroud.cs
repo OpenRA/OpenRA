@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new CreatesShroud(this); }
 	}
 
-	public class CreatesShroud : AffectsShroud
+	public partial class CreatesShroud : AffectsShroud
 	{
 		readonly CreatesShroudInfo info;
 		IEnumerable<int> rangeModifiers;

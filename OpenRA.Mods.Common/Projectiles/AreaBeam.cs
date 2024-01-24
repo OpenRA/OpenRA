@@ -82,7 +82,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		}
 	}
 
-	public class AreaBeam : IProjectile, ISync
+	[GenerateSyncCode]
+	public partial class AreaBeam : IProjectile
 	{
 		readonly AreaBeamInfo info;
 		readonly ProjectileArgs args;
@@ -91,13 +92,13 @@ namespace OpenRA.Mods.Common.Projectiles
 		readonly WDist speed;
 		readonly WDist weaponRange;
 
-		[Sync]
+		[SyncMember]
 		WPos headPos;
 
-		[Sync]
+		[SyncMember]
 		WPos tailPos;
 
-		[Sync]
+		[SyncMember]
 		WPos target;
 
 		int length;

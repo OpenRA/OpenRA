@@ -64,7 +64,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new RepairableBuilding(init.Self, this); }
 	}
 
-	public class RepairableBuilding : ConditionalTrait<RepairableBuildingInfo>, ITick
+	[GenerateSyncCode]
+	public partial class RepairableBuilding : ConditionalTrait<RepairableBuildingInfo>, ITick
 	{
 		readonly IHealth health;
 		readonly Predicate<Player> isNotActiveAlly;
@@ -81,14 +82,14 @@ namespace OpenRA.Mods.Common.Traits
 			isNotActiveAlly = player => player.WinState != WinState.Undefined || self.Owner.RelationshipWith(player) != PlayerRelationship.Ally;
 		}
 
-		[Sync]
+		[SyncMember]
 		public int RepairersHash
 		{
 			get
 			{
 				var hash = 0;
 				foreach (var player in Repairers)
-					hash ^= Sync.HashPlayer(player);
+					hash ^= Sync.Hash(player);
 
 				return hash;
 			}

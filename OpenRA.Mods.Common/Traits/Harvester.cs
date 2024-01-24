@@ -87,8 +87,9 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Harvester : DockClientBase<HarvesterInfo>, IIssueOrder, IResolveOrder, IOrderVoice,
-		ISpeedModifier, ISync, INotifyCreated
+	[GenerateSyncCode]
+	public partial class Harvester : DockClientBase<HarvesterInfo>, IIssueOrder, IResolveOrder, IOrderVoice,
+		ISpeedModifier, INotifyCreated
 	{
 		Mobile mobile;
 		readonly IResourceLayer resourceLayer;
@@ -98,7 +99,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public override BitSet<DockType> GetDockType => Info.Type;
 
-		[Sync]
+		[SyncMember]
 		int currentUnloadTicks;
 
 		public Harvester(Actor self, HarvesterInfo info)

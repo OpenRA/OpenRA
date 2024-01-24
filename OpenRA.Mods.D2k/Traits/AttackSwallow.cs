@@ -44,7 +44,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public override object Create(ActorInitializer init) { return new AttackSwallow(init.Self, this); }
 	}
 
-	sealed class AttackSwallow : AttackFrontal
+	sealed partial class AttackSwallow : AttackFrontal
 	{
 		public new readonly AttackSwallowInfo Info;
 

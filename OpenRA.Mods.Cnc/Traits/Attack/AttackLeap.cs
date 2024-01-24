@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new AttackLeap(init.Self, this); }
 	}
 
-	public class AttackLeap : AttackFrontal
+	public partial class AttackLeap : AttackFrontal
 	{
 		readonly AttackLeapInfo info;
 

@@ -185,7 +185,8 @@ namespace OpenRA.Mods.Common.Projectiles
 	}
 
 	// TODO: double check square roots!!!
-	public class Missile : IProjectile, ISync
+	[GenerateSyncCode]
+	public partial class Missile : IProjectile
 	{
 		enum States
 		{
@@ -225,7 +226,7 @@ namespace OpenRA.Mods.Common.Projectiles
 		WVec tarVel;
 		WVec predVel;
 
-		[Sync]
+		[SyncMember]
 		WPos pos;
 
 		WVec velocity;
@@ -236,10 +237,10 @@ namespace OpenRA.Mods.Common.Projectiles
 
 		WAngle renderFacing;
 
-		[Sync]
+		[SyncMember]
 		int hFacing;
 
-		[Sync]
+		[SyncMember]
 		int vFacing;
 
 		public Missile(MissileInfo info, ProjectileArgs args)

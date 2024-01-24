@@ -29,12 +29,13 @@ namespace OpenRA.Mods.Common.Traits
 		bool IOccupySpaceInfo.SharesCell => false;
 	}
 
-	sealed class Immobile : IOccupySpace, ISync, INotifyAddedToWorld, INotifyRemovedFromWorld
+	[GenerateSyncCode]
+	sealed partial class Immobile : IOccupySpace, INotifyAddedToWorld, INotifyRemovedFromWorld
 	{
-		[Sync]
+		[SyncMember]
 		readonly CPos location;
 
-		[Sync]
+		[SyncMember]
 		readonly WPos position;
 
 		readonly (CPos, SubCell)[] occupied;

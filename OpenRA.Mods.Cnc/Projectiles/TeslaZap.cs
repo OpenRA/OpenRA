@@ -52,7 +52,8 @@ namespace OpenRA.Mods.Cnc.Projectiles
 		public IProjectile Create(ProjectileArgs args) { return new TeslaZap(this, args); }
 	}
 
-	public class TeslaZap : IProjectile, ISync
+	[GenerateSyncCode]
+	public partial class TeslaZap : IProjectile
 	{
 		readonly ProjectileArgs args;
 		readonly TeslaZapInfo info;
@@ -60,7 +61,7 @@ namespace OpenRA.Mods.Cnc.Projectiles
 		int ticksUntilRemove;
 		int damageDuration;
 
-		[Sync]
+		[SyncMember]
 		WPos target;
 
 		public TeslaZap(TeslaZapInfo info, ProjectileArgs args)

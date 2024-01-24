@@ -28,12 +28,13 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ExperienceTrickler(init.Self, this); }
 	}
 
-	public class ExperienceTrickler : PausableConditionalTrait<ExperienceTricklerInfo>, ITick, ISync
+	[GenerateSyncCode]
+	public partial class ExperienceTrickler : PausableConditionalTrait<ExperienceTricklerInfo>, ITick
 	{
 		readonly ExperienceTricklerInfo info;
 		readonly GainsExperience gainsExperience;
 
-		[Sync]
+		[SyncMember]
 		int ticks;
 
 		public ExperienceTrickler(Actor self, ExperienceTricklerInfo info)

@@ -64,7 +64,8 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Husk : IPositionable, IFacing, ISync, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld,
+	[GenerateSyncCode]
+	public partial class Husk : IPositionable, IFacing, INotifyCreated, INotifyAddedToWorld, INotifyRemovedFromWorld,
 		IDeathActorInitModifier, IEffectiveOwner
 	{
 		readonly Actor self;
@@ -76,13 +77,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		INotifyCenterPositionChanged[] notifyCenterPositionChanged;
 
-		[Sync]
+		[SyncMember]
 		public CPos TopLeft { get; private set; }
 
-		[Sync]
+		[SyncMember]
 		public WPos CenterPosition { get; private set; }
 
-		[Sync]
+		[SyncMember]
 		public WAngle Facing
 		{
 			get => Orientation.Yaw;

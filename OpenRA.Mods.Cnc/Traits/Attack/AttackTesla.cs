@@ -39,14 +39,14 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new AttackTesla(init.Self, this); }
 	}
 
-	sealed class AttackTesla : AttackBase, ITick, INotifyAttack
+	sealed partial class AttackTesla : AttackBase, ITick, INotifyAttack
 	{
 		readonly AttackTeslaInfo info;
 
-		[Sync]
+		[SyncMember]
 		int charges;
 
-		[Sync]
+		[SyncMember]
 		int timeToRecharge;
 
 		public AttackTesla(Actor self, AttackTeslaInfo info)

@@ -103,7 +103,8 @@ namespace OpenRA.Mods.Common.Projectiles
 		}
 	}
 
-	public class LaserZap : IProjectile, ISync
+	[GenerateSyncCode]
+	public partial class LaserZap : IProjectile
 	{
 		readonly ProjectileArgs args;
 		readonly LaserZapInfo info;
@@ -115,10 +116,10 @@ namespace OpenRA.Mods.Common.Projectiles
 		int interval;
 		bool showHitAnim;
 
-		[Sync]
+		[SyncMember]
 		WPos target;
 
-		[Sync]
+		[SyncMember]
 		WPos source;
 
 		public LaserZap(LaserZapInfo info, ProjectileArgs args, Color color)

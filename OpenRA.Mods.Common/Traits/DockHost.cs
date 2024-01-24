@@ -48,7 +48,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new DockHost(init.Self, this); }
 	}
 
-	public class DockHost : ConditionalTrait<DockHostInfo>, IDockHost, IDockHostDrag, ITick, INotifySold, INotifyCapture, INotifyOwnerChanged, ISync, INotifyKilled, INotifyActorDisposing
+	[GenerateSyncCode]
+	public partial class DockHost : ConditionalTrait<DockHostInfo>, IDockHost, IDockHostDrag, ITick, INotifySold, INotifyCapture, INotifyOwnerChanged, INotifyKilled, INotifyActorDisposing
 	{
 		readonly Actor self;
 
@@ -66,10 +67,10 @@ namespace OpenRA.Mods.Common.Traits
 		WVec IDockHostDrag.DragOffset => Info.DragOffset;
 		int IDockHostDrag.DragLength => Info.DragLength;
 
-		[Sync]
+		[SyncMember]
 		bool preventDock = false;
 
-		[Sync]
+		[SyncMember]
 		protected Actor dockedClientActor = null;
 		protected DockClientManager dockedClient = null;
 

@@ -129,7 +129,8 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyOwnerChanged, INotifyKilled, INotifySold, ISync, INotifyTransform, INotifyCreated
+	[GenerateSyncCode]
+	public partial class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyOwnerChanged, INotifyKilled, INotifySold, INotifyTransform, INotifyCreated
 	{
 		public readonly ProductionQueueInfo Info;
 
@@ -149,12 +150,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		public Actor Actor { get; }
 
-		[Sync]
+		[SyncMember]
 		public bool Enabled { get; protected set; }
 
 		public string Faction { get; private set; }
 
-		[Sync]
+		[SyncMember]
 		public bool IsValidFaction { get; private set; }
 
 		public ProductionQueue(ActorInitializer init, ProductionQueueInfo info)

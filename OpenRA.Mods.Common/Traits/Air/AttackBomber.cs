@@ -23,17 +23,17 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AttackBomber(init.Self, this); }
 	}
 
-	public class AttackBomber : AttackBase, ITick, ISync, INotifyRemovedFromWorld
+	public partial class AttackBomber : AttackBase, ITick, ISync, INotifyRemovedFromWorld
 	{
 		readonly AttackBomberInfo info;
 
-		[Sync]
+		[SyncMember]
 		Target target;
 
-		[Sync]
+		[SyncMember]
 		bool inAttackRange;
 
-		[Sync]
+		[SyncMember]
 		bool facingTarget = true;
 
 		public event Action<Actor> OnRemovedFromWorld = self => { };

@@ -127,13 +127,14 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Turreted(init, this); }
 	}
 
-	public class Turreted : PausableConditionalTrait<TurretedInfo>, ITick, IDeathActorInitModifier, IActorPreviewInitModifier
+	[GenerateSyncCode]
+	public partial class Turreted : PausableConditionalTrait<TurretedInfo>, ITick, IDeathActorInitModifier, IActorPreviewInitModifier
 	{
 		AttackTurreted attack;
 		IFacing facing;
 		BodyOrientation body;
 
-		[Sync]
+		[SyncMember]
 		public int QuantizedFacings = 0;
 
 		WVec desiredDirection;

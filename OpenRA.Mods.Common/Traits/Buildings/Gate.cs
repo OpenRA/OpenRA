@@ -36,7 +36,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Gate(init, this); }
 	}
 
-	public class Gate : PausableConditionalTrait<GateInfo>, ITick, ITemporaryBlocker, IBlocksProjectiles,
+	[GenerateSyncCode]
+	public partial class Gate : PausableConditionalTrait<GateInfo>, ITick, ITemporaryBlocker, IBlocksProjectiles,
 		INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyBlockingMove
 	{
 		readonly Actor self;
@@ -46,7 +47,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public readonly int OpenPosition;
 
-		[Sync]
+		[SyncMember]
 		public int Position { get; private set; }
 
 		int desiredPosition;

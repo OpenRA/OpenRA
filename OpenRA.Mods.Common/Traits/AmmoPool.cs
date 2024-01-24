@@ -47,16 +47,17 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new AmmoPool(this); }
 	}
 
-	public class AmmoPool : INotifyCreated, INotifyAttack, ISync
+	[GenerateSyncCode]
+	public partial class AmmoPool : INotifyCreated, INotifyAttack
 	{
 		public readonly AmmoPoolInfo Info;
 		readonly Stack<int> tokens = new();
 
 		// HACK: Temporarily needed until Rearm activity is gone for good
-		[Sync]
+		[SyncMember]
 		public int RemainingTicks;
 
-		[Sync]
+		[SyncMember]
 		public int CurrentAmmoCount { get; private set; }
 
 		public bool HasAmmo => CurrentAmmoCount > 0;

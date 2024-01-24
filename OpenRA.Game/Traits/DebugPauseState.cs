@@ -18,11 +18,13 @@ namespace OpenRA.Traits
 		public override object Create(ActorInitializer init) { return new DebugPauseState(init.World); }
 	}
 
-	public class DebugPauseState : ISync
+	[GenerateSyncCode]
+	public partial class DebugPauseState
 	{
 		readonly World world;
-		[Sync]
-		public bool Paused => world.Paused;
+
+		[SyncMember]
+		public bool IsPaused => world.Paused;
 
 		public DebugPauseState(World world) { this.world = world; }
 	}

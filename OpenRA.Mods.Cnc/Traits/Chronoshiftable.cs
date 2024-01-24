@@ -45,7 +45,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new Chronoshiftable(init, this); }
 	}
 
-	public class Chronoshiftable : ConditionalTrait<ChronoshiftableInfo>, ITick, ISync, ISelectionBar,
+	[GenerateSyncCode]
+	public partial class Chronoshiftable : ConditionalTrait<ChronoshiftableInfo>, ITick, ISelectionBar,
 		IDeathActorInitModifier, ITransformActorInitModifier
 	{
 		readonly Actor self;
@@ -55,10 +56,10 @@ namespace OpenRA.Mods.Cnc.Traits
 		IPositionable iPositionable;
 
 		// Return-to-origin logic
-		[Sync]
+		[SyncMember]
 		public CPos Origin;
 
-		[Sync]
+		[SyncMember]
 		public int ReturnTicks = 0;
 
 		public Chronoshiftable(ActorInitializer init, ChronoshiftableInfo info)

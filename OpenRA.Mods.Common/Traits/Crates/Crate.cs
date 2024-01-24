@@ -70,7 +70,8 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Crate : ITick, IPositionable, ICrushable, ISync, INotifyCreated,
+	[GenerateSyncCode]
+	public partial class Crate : ITick, IPositionable, ICrushable, INotifyCreated,
 		INotifyParachute, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyCrushed
 	{
 		readonly Actor self;
@@ -78,10 +79,10 @@ namespace OpenRA.Mods.Common.Traits
 		bool collected;
 		INotifyCenterPositionChanged[] notifyCenterPositionChanged;
 
-		[Sync]
+		[SyncMember]
 		int ticks;
 
-		[Sync]
+		[SyncMember]
 		public CPos Location;
 
 		public Crate(ActorInitializer init, CrateInfo info)

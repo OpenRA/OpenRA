@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.352
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRA.Game", "OpenRA.Game\OpenRA.Game.csproj", "{0DFB103F-2962-400F-8C6D-E2C28CCBA633}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRA.Launcher", "OpenRA.Launcher\OpenRA.Launcher.csproj", "{54DAE0E0-3125-49D3-992E-A0E931EB5FC8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRA.WindowsLauncher", "OpenRA.WindowsLauncher\OpenRA.WindowsLauncher.csproj", "{912B578E-0BC0-4987-807B-1E294A87DA37}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenRA.SourceGenerators", "OpenRA.SourceGenerators\OpenRA.SourceGenerators.csproj", "{B289A0F3-024F-4C6C-BBFC-7095C8BE3601}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,10 @@ Global
 		{54DAE0E0-3125-49D3-992E-A0E931EB5FC8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{912B578E-0BC0-4987-807B-1E294A87DA37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{912B578E-0BC0-4987-807B-1E294A87DA37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B289A0F3-024F-4C6C-BBFC-7095C8BE3601}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B289A0F3-024F-4C6C-BBFC-7095C8BE3601}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B289A0F3-024F-4C6C-BBFC-7095C8BE3601}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B289A0F3-024F-4C6C-BBFC-7095C8BE3601}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

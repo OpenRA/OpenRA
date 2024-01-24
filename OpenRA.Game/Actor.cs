@@ -38,14 +38,6 @@ namespace OpenRA
 		/// <summary>Value used to represent an invalid token.</summary>
 		public const int InvalidConditionToken = -1;
 
-		internal readonly struct SyncHash
-		{
-			public readonly ISync Trait;
-			readonly Func<object, int> hashFunction;
-			public SyncHash(ISync trait) { Trait = trait; hashFunction = Sync.GetHashFunction(trait); }
-			public int Hash() { return hashFunction(Trait); }
-		}
-
 		public readonly ActorInfo Info;
 
 		public readonly World World;
@@ -103,7 +95,7 @@ namespace OpenRA
 		/// <summary>Read-only version of conditionCache that is passed to IConditionConsumers.</summary>
 		readonly IReadOnlyDictionary<string, int> readOnlyConditionCache;
 
-		internal SyncHash[] SyncHashes { get; }
+		internal ISync[] SyncTraits { get; }
 
 		readonly IFacing facing;
 		readonly IHealth health;
@@ -154,7 +146,7 @@ namespace OpenRA
 				var tickIdlesList = new List<INotifyIdle>();
 				var targetablesList = new List<ITargetable>();
 				var targetablePositionsList = new List<ITargetablePositions>();
-				var syncHashesList = new List<SyncHash>();
+				var syncsList = new List<ISync>();
 
 				foreach (var traitInfo in Info.TraitsInConstructOrder())
 				{
@@ -180,7 +172,7 @@ namespace OpenRA
 					{ if (trait is INotifyIdle t) tickIdlesList.Add(t); }
 					{ if (trait is ITargetable t) targetablesList.Add(t); }
 					{ if (trait is ITargetablePositions t) targetablePositionsList.Add(t); }
-					{ if (trait is ISync t) syncHashesList.Add(new SyncHash(t)); }
+					{ if (trait is ISync t) syncsList.Add(t); }
 				}
 
 				resolveOrders = resolveOrdersList.ToArray();
@@ -194,7 +186,7 @@ namespace OpenRA
 				var targetablePositions = targetablePositionsList.ToArray();
 				EnabledTargetablePositions = targetablePositions.Where(Exts.IsTraitEnabled);
 				enabledTargetableWorldPositions = EnabledTargetablePositions.SelectMany(tp => tp.TargetablePositions(this));
-				SyncHashes = syncHashesList.ToArray();
+				SyncTraits = syncsList.ToArray();
 			}
 		}
 

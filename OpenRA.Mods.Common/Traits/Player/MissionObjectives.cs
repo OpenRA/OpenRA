@@ -72,7 +72,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new MissionObjectives(init.Self.Owner, this); }
 	}
 
-	public class MissionObjectives : INotifyWinStateChanged, ISync, IResolveOrder, IWorldLoaded
+	[GenerateSyncCode]
+	public partial class MissionObjectives : INotifyWinStateChanged, IResolveOrder, IWorldLoaded
 	{
 		public readonly MissionObjectivesInfo Info;
 		readonly List<MissionObjective> objectives = new();
@@ -82,14 +83,14 @@ namespace OpenRA.Mods.Common.Traits
 		Player[] enemies;
 		Player[] allies;
 
-		[Sync]
+		[SyncMember]
 		public int ObjectivesHash
 		{
 			get
 			{
 				var hash = 0;
 				foreach (var objective in objectives)
-					hash ^= Sync.HashUsingHashCode(objective.State);
+					hash ^= Sync.Hash((int)objective.State);
 				return hash;
 			}
 		}

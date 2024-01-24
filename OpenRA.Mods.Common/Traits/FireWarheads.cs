@@ -48,9 +48,10 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class FireWarheads : PausableConditionalTrait<FireWarheadsInfo>, ITick
+	[GenerateSyncCode]
+	public partial class FireWarheads : PausableConditionalTrait<FireWarheadsInfo>, ITick
 	{
-		[Sync]
+		[SyncMember]
 		int cooldown = 0;
 
 		public FireWarheads(FireWarheadsInfo info)

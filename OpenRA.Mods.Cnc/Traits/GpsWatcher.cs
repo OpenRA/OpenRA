@@ -25,19 +25,20 @@ namespace OpenRA.Mods.Cnc.Traits
 
 	interface IOnGpsRefreshed { void OnGpsRefresh(Actor self, Player player); }
 
-	sealed class GpsWatcher : ISync, IPreventsShroudReset
+	[GenerateSyncCode]
+	sealed partial class GpsWatcher : IPreventsShroudReset
 	{
-		[Sync]
+		[SyncMember]
 		public bool Launched { get; private set; }
 
-		[Sync]
+		[SyncMember]
 		public bool GrantedAllies { get; private set; }
 
-		[Sync]
+		[SyncMember]
 		public bool Granted { get; private set; }
 
 		// Whether this watcher has explored the terrain (by becoming Launched, or an ally becoming Launched)
-		[Sync]
+		[SyncMember]
 		bool explored;
 
 		readonly Player owner;

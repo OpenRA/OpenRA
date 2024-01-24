@@ -69,7 +69,8 @@ namespace OpenRA.Traits
 		public override object Create(ActorInitializer init) { return new Shroud(init.Self, this); }
 	}
 
-	public class Shroud : ISync, INotifyCreated, ITick
+	[GenerateSyncCode]
+	public partial class Shroud : INotifyCreated, ITick
 	{
 		public enum SourceType : byte { PassiveVisibility, Shroud, Visibility }
 		public event Action<PPos> OnShroudChanged;
@@ -110,7 +111,7 @@ namespace OpenRA.Traits
 		readonly ProjectedCellLayer<ShroudCellType> resolvedType;
 
 		bool disabledChanged;
-		[Sync]
+		[SyncMember]
 		bool disabled;
 		public bool Disabled
 		{
@@ -201,7 +202,7 @@ namespace OpenRA.Traits
 				}
 			}
 
-			Hash = Sync.HashPlayer(self.Owner) + self.World.WorldTick;
+			Hash = Sync.Hash(self.Owner) + self.World.WorldTick;
 			disabledChanged = false;
 		}
 

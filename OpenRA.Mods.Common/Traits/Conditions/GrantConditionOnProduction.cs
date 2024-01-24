@@ -38,13 +38,14 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new GrantConditionOnProduction(this); }
 	}
 
-	public class GrantConditionOnProduction : INotifyProduction, ITick, ISync, ISelectionBar
+	[GenerateSyncCode]
+	public partial class GrantConditionOnProduction : INotifyProduction, ITick, ISelectionBar
 	{
 		readonly GrantConditionOnProductionInfo info;
 
 		int token = Actor.InvalidConditionToken;
 
-		[Sync]
+		[SyncMember]
 		int ticks;
 
 		public GrantConditionOnProduction(GrantConditionOnProductionInfo info)

@@ -15,5 +15,8 @@
     <PackageReference Include="Mono.NAT" Version="3.0.4" />
     <PackageReference Include="SharpZipLib" Version="1.4.2" />
     <PackageReference Include="System.Threading.Channels" Version="6.0.0" />
+	<ProjectReference Include="..\OpenRA.SourceGenerators\OpenRA.SourceGenerators.csproj"
+					  OutputItemType="Analyzer"
+					  ReferenceOutputAssembly="false" />
   </ItemGroup>
 </Project>

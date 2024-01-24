@@ -55,7 +55,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new GainsExperience(init, this); }
 	}
 
-	public class GainsExperience : INotifyCreated, ISync, IResolveOrder, ITransformActorInitModifier
+	[GenerateSyncCode]
+	public partial class GainsExperience : INotifyCreated, IResolveOrder, ITransformActorInitModifier
 	{
 		readonly Actor self;
 		readonly GainsExperienceInfo info;
@@ -64,10 +65,10 @@ namespace OpenRA.Mods.Common.Traits
 		readonly List<(int RequiredExperience, string Condition)> nextLevel = new();
 
 		// Stored as a percentage of our value
-		[Sync]
+		[SyncMember]
 		public int Experience { get; private set; }
 
-		[Sync]
+		[SyncMember]
 		public int Level { get; private set; }
 		public readonly int MaxLevel;
 

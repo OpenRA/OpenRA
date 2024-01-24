@@ -33,20 +33,21 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly VisibilityType Type = VisibilityType.Footprint;
 	}
 
-	public abstract class AffectsShroud : ConditionalTrait<AffectsShroudInfo>, ISync, INotifyAddedToWorld,
+	[GenerateSyncCode]
+	public abstract partial class AffectsShroud : ConditionalTrait<AffectsShroudInfo>, INotifyAddedToWorld,
 		INotifyRemovedFromWorld, INotifyMoving, INotifyCenterPositionChanged, ITick
 	{
 		static readonly PPos[] NoCells = Array.Empty<PPos>();
 
 		readonly HashSet<PPos> footprint;
 
-		[Sync]
+		[SyncMember]
 		CPos cachedLocation;
 
-		[Sync]
+		[SyncMember]
 		WDist cachedRange;
 
-		[Sync]
+		[SyncMember]
 		protected bool CachedTraitDisabled { get; private set; }
 
 		WPos cachedPos;

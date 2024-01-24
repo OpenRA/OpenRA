@@ -126,19 +126,20 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync, INotifyOwnerChanged
+	[GenerateSyncCode]
+	public partial class AutoTarget : ConditionalTrait<AutoTargetInfo>, INotifyIdle, INotifyDamage, ITick, IResolveOrder, INotifyOwnerChanged
 	{
 		public readonly IEnumerable<AttackBase> ActiveAttackBases;
 
 		readonly bool allowMovement;
 
-		[Sync]
+		[SyncMember]
 		int nextScanTime = 0;
 
 		public UnitStance Stance { get; private set; }
 		public bool AllowMove => allowMovement && Stance > UnitStance.Defend;
 
-		[Sync]
+		[SyncMember]
 		public Actor Aggressor;
 
 		// NOT SYNCED: do not refer to this anywhere other than UI code

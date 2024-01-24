@@ -44,10 +44,12 @@
     <Compile Include="**/*.cs" Exclude="$(DefaultItemExcludes)" />
   </ItemGroup>
 
-  <Target Name="DisableAnalyzers" BeforeTargets="CoreCompile" Condition="'$(Configuration)'=='Release'">
-    <!-- Disable code style analysis on Release builds to improve compile-time performance -->
-    <ItemGroup Condition="'$(Configuration)'=='Release'">
+  <Target Name="DisableAnalyzers" BeforeTargets="CoreCompile" Condition="'$(Configuration)' == 'Release'">
+    <!-- Disable code style analysis on Release builds to improve compile-time performance. -->
+    <!-- Then add back the source generators (which are analyzers) because those need to run regardless of build profile. -->
+    <ItemGroup>
       <Analyzer Remove="@(Analyzer)" />
+      <Analyzer Condition="'$(MSBuildProjectName)' != 'OpenRA.SourceGenerators'" Include="$(EngineRootPath)/bin/OpenRA.SourceGenerators.dll" />
     </ItemGroup>
   </Target>
 
@@ -57,4 +59,12 @@
     <!-- Roslynator analyzers fail to run under Mono (AD0001) -->
     <PackageReference Include="Roslynator.Analyzers" Version="4.2.0" PrivateAssets="All" Condition="'$(MSBuildRuntimeType)'!='Mono'" />
   </ItemGroup>
+
+  <!-- Ensure everything is compiled with a specific version of Roslyn. -->
+  <!-- But just for Mono so we don't risk making local development experience worse. -->
+  <!-- Target the same version as OpenRA.SourceGenerators for consistency. -->
+  <ItemGroup Condition="'$(MSBuildRuntimeType)' == 'Mono'">
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.7.0" />
+  </ItemGroup>
+
 </Project>
