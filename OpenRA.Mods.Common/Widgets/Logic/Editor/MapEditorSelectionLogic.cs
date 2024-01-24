@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -31,10 +32,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly CheckboxWidget copyActorsCheckbox;
 		readonly EditorActorLayer editorActorLayer;
 
+		public LabelWidget RegionLabel;
+		public LabelWidget DimensionsLabel;
+		public LabelWidget DiagonalLabel;
+		public LabelWidget ResourceCounterLabel;
+
 		MapCopyFilters copyFilters = MapCopyFilters.All;
 		EditorClipboard? clipboard;
 
 		readonly IResourceLayer resourceLayer;
+
+		readonly EditorResourceLayer editorResourceLayer;
 
 		[ObjectCreator.UseCtor]
 		public MapEditorSelectionLogic(Widget widget, World world, WorldRenderer worldRenderer)
@@ -43,9 +51,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			editorActorLayer = world.WorldActor.Trait<EditorActorLayer>();
 			resourceLayer = world.WorldActor.Trait<IResourceLayer>();
+			editorResourceLayer = world.WorldActor.Trait<EditorResourceLayer>();
 
 			editor = widget.Get<EditorViewportControllerWidget>("MAP_EDITOR");
-
+			editor.DefaultBrush.SelectionChanged += HandleSelectionChanged;
 			var selectTabContainer = widget.Get("SELECT_WIDGETS");
 			actorEditPanel = selectTabContainer.Get<ContainerWidget>("ACTOR_EDIT_PANEL");
 			areaEditPanel = selectTabContainer.Get<ContainerWidget>("AREA_EDIT_PANEL");
@@ -64,6 +73,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var copyButton = widget.Get<ButtonWidget>("COPY_BUTTON");
 			copyButton.OnClick = () => clipboard = CopySelectionContents();
 			copyButton.IsDisabled = () => editor.DefaultBrush.Selection.Area == null;
+
+			RegionLabel = areaEditPanel.Get<LabelWidget>("REGION_COUNTER_LABEL");
+			DimensionsLabel = areaEditPanel.Get<LabelWidget>("DIMENSION_COUNTER_LABEL");
+			DiagonalLabel = areaEditPanel.Get<LabelWidget>("DIAGONAL_COUNTER_LABEL");
+			ResourceCounterLabel = areaEditPanel.Get<LabelWidget>("RESOURCES_COUNTER_LABEL");
 
 			var pasteButton = widget.Get<ButtonWidget>("PASTE_BUTTON");
 			pasteButton.OnClick = () =>
@@ -123,6 +137,31 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			checkbox.IsChecked = () => copyFilters.HasFlag(copyFilter);
 			checkbox.IsVisible = () => true;
 			checkbox.OnClick = () => copyFilters ^= copyFilter;
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			editor.DefaultBrush.SelectionChanged -= HandleSelectionChanged;
+			base.Dispose(disposing);
+		}
+
+		void HandleSelectionChanged()
+		{
+			var selectedRegion = editor.DefaultBrush.Selection.Area;
+			if (selectedRegion == null)
+				return;
+			var selectionSize = selectedRegion.BottomRight - selectedRegion.TopLeft + new CPos(1, 1);
+			var diagonalLength = Math.Round(Math.Sqrt(Math.Pow(selectionSize.X, 2) + Math.Pow(selectionSize.Y, 2)), 3);
+			var resourceValueInRegion = editorResourceLayer.CalculateRegionValue(selectedRegion);
+			RegionLabel.GetText = () => $"{PositionAsString(selectedRegion.TopLeft)} : {PositionAsString(selectedRegion.BottomRight)}";
+			DimensionsLabel.GetText = () => PositionAsString(selectionSize);
+			DiagonalLabel.GetText = () => $"{diagonalLength}";
+			ResourceCounterLabel.GetText = () => $"{resourceValueInRegion}$";
+		}
+
+		static string PositionAsString(CPos cell)
+		{
+			return $"{cell.X},{cell.Y}";
 		}
 	}
 }
