@@ -265,3 +265,4 @@ EditorWorld:
 	EditorActionManager:
 	BuildableTerrainOverlay:
 		AllowedTerrainTypes: Rock, Concrete
+	MarkerLayerOverlay:

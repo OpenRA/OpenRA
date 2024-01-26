@@ -78,3 +78,8 @@ EditorToggleBuildableOverlay: F2
 	Description: Buildable Terrain Overlay
 	Types: Editor
 	Contexts: Editor
+
+EditorToggleMarkerOverlay: F3
+	Description: Marker Layer Overlay
+	Types: Editor
+	Contexts: Editor

@@ -430,3 +430,4 @@ EditorWorld:
 		AllowedTerrainTypes: Clear, Rough, Road, DirtRoad, Green, Sand, Pavement
 		Palette: ra
 		Alpha: 0.35
+	MarkerLayerOverlay:

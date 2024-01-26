@@ -11,13 +11,14 @@
 
 using System;
 using System.Collections.Generic;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Lint;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
 {
-	[ChromeLogicArgsHotkeys("ToggleGridOverlayKey", "ToggleBuildableOverlayKey")]
+	[ChromeLogicArgsHotkeys("ToggleGridOverlayKey", "ToggleBuildableOverlayKey", "ToggleMarkerOverlayKey")]
 	public class MapOverlaysLogic : ChromeLogic
 	{
 		[Flags]
@@ -26,19 +27,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			None = 0,
 			Grid = 1,
 			Buildable = 2,
+			Marker = 4,
 		}
 
 		readonly TerrainGeometryOverlay terrainGeometryTrait;
 		readonly BuildableTerrainOverlay buildableTerrainTrait;
-		readonly Widget widget;
+		readonly MarkerLayerOverlay markerLayerTrait;
 
 		[ObjectCreator.UseCtor]
-		public MapOverlaysLogic(Widget widget, World world, ModData modData, Dictionary<string, MiniYaml> logicArgs)
+		public MapOverlaysLogic(Widget widget, World world, ModData modData, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
 		{
-			this.widget = widget;
-
 			terrainGeometryTrait = world.WorldActor.Trait<TerrainGeometryOverlay>();
 			buildableTerrainTrait = world.WorldActor.Trait<BuildableTerrainOverlay>();
+			markerLayerTrait = world.WorldActor.Trait<MarkerLayerOverlay>();
 
 			var toggleGridKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("ToggleGridOverlayKey", out var yaml))
@@ -47,6 +48,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var toggleBuildableKey = new HotkeyReference();
 			if (logicArgs.TryGetValue("ToggleBuildableOverlayKey", out yaml))
 				toggleBuildableKey = modData.Hotkeys[yaml.Value];
+
+			var toggleMarkerKey = new HotkeyReference();
+			if (logicArgs.TryGetValue("ToggleMarkerOverlayKey", out yaml))
+				toggleMarkerKey = modData.Hotkeys[yaml.Value];
 
 			var keyhandler = widget.Get<LogicKeyListenerWidget>("OVERLAY_KEYHANDLER");
 			keyhandler.AddHandler(e =>
@@ -63,6 +68,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (toggleBuildableKey.IsActivatedBy(e))
 				{
 					buildableTerrainTrait.Enabled ^= true;
+					return true;
+				}
+
+				if (toggleMarkerKey.IsActivatedBy(e))
+				{
+					markerLayerTrait.Enabled ^= true;
 					return true;
 				}
 
@@ -84,23 +95,33 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		Widget CreateOverlaysPanel()
 		{
-			var categoriesPanel = widget.Get<Widget>("TOOLS_WIDGETS");
-			var showGridCheckbox = categoriesPanel.Get<CheckboxWidget>("SHOW_TILE_GRID");
-			var showBuildableAreaCheckbox = categoriesPanel.Get<CheckboxWidget>("SHOW_BUILDABLE_AREA");
+			var categoriesPanel = Ui.LoadWidget("OVERLAY_PANEL", null, new WidgetArgs());
+			var categoryTemplate = categoriesPanel.Get<CheckboxWidget>("CATEGORY_TEMPLATE");
 
-			MapOverlays[] allCategories = { MapOverlays.Grid, MapOverlays.Buildable };
+			MapOverlays[] allCategories = { MapOverlays.Grid, MapOverlays.Buildable, MapOverlays.Marker };
 			foreach (var cat in allCategories)
 			{
+				var category = (CheckboxWidget)categoryTemplate.Clone();
+				category.GetText = () => cat.ToString();
+				category.IsVisible = () => true;
+
 				if (cat.HasFlag(MapOverlays.Grid))
 				{
-					showGridCheckbox.IsChecked = () => terrainGeometryTrait.Enabled;
-					showGridCheckbox.OnClick = () => terrainGeometryTrait.Enabled ^= true;
+					category.IsChecked = () => terrainGeometryTrait.Enabled;
+					category.OnClick = () => terrainGeometryTrait.Enabled ^= true;
 				}
 				else if (cat.HasFlag(MapOverlays.Buildable))
 				{
-					showBuildableAreaCheckbox.IsChecked = () => buildableTerrainTrait.Enabled;
-					showBuildableAreaCheckbox.OnClick = () => buildableTerrainTrait.Enabled ^= true;
+					category.IsChecked = () => buildableTerrainTrait.Enabled;
+					category.OnClick = () => buildableTerrainTrait.Enabled ^= true;
 				}
+				else if (cat.HasFlag(MapOverlays.Marker))
+				{
+					category.IsChecked = () => markerLayerTrait.Enabled;
+					category.OnClick = () => markerLayerTrait.Enabled ^= true;
+				}
+
+				categoriesPanel.AddChild(category);
 			}
 
 			return categoriesPanel;
