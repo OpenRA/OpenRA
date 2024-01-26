@@ -84,7 +84,7 @@ Background@SAVE_MAP_PANEL:
 			Y: 21
 			Width: 250
 			Height: 25
-			Text: label-save-map-panel-title.label
+			Text: label-save-map-panel-heading
 			Align: Center
 			Font: Bold
 		Label@TITLE_LABEL:
@@ -93,7 +93,7 @@ Background@SAVE_MAP_PANEL:
 			Width: 95
 			Height: 25
 			Align: Right
-			Text: label-save-map-panel-title.label
+			Text: label-save-map-panel-title
 		TextField@TITLE:
 			X: 110
 			Y: 60
@@ -207,6 +207,7 @@ Container@EDITOR_WORLD_ROOT:
 	Logic: LoadIngamePerfLogic, MapEditorLogic, ActorEditLogic, MapOverlaysLogic, MapEditorSelectionLogic
 		ToggleGridOverlayKey: EditorToggleGridOverlay
 		ToggleBuildableOverlayKey: EditorToggleBuildableOverlay
+		ToggleMarkerOverlayKey: EditorToggleMarkerOverlay
 	Children:
 		LogicKeyListener@OVERLAY_KEYHANDLER:
 		Container@PERF_ROOT:
@@ -392,19 +393,159 @@ Container@EDITOR_WORLD_ROOT:
 			Width: 310
 			Height: WINDOW_BOTTOM - 458
 			Visible: false
+			Logic: MapToolsLogic
 			Children:
-				Checkbox@SHOW_TILE_GRID:
-					X: 15
-					Y: 15
-					Width: PARENT_RIGHT - 15
-					Height: 20
-					Text: label-show-tile-grid
-				Checkbox@SHOW_BUILDABLE_AREA:
-					X: 15
-					Y: 40
-					Width: PARENT_RIGHT - 15
-					Height: 20
-					Text: label-show-buildable-area
+				Label@TOOLS_LABEL:
+					Y: 12
+					Width: 55
+					Height: 25
+					Text: label-tools-bg-categories
+					Align: Right
+					Font: TinyBold
+				DropDownButton@TOOLS_DROPDOWN:
+					X: 60
+					Y: 10
+					Width: PARENT_RIGHT - 70
+					Height: 25
+					Font: Bold
+				ScrollPanel@MARKER_TOOL_PANEL:
+					X: 9
+					Y: 35
+					Width: 290
+					Height: WINDOW_BOTTOM - 490
+					Visible: true
+					ScrollBar: Hidden
+					ScrollbarWidth: 0
+					Logic: MapMarkerTilesLogic
+					Children:
+						ScrollPanel@TILE_COLOR_PANEL:
+							X: 6
+							Y: 6
+							Width: PARENT_RIGHT - 19
+							Height: 31
+							TopBottomSpacing: 1
+							ItemSpacing: 1
+							ScrollBar: Hidden
+							ScrollbarWidth: 0
+							ContentHeight: 31
+							Children:
+								ScrollItem@TILE_COLOR_TEMPLATE:
+									Visible: false
+									Height: 29
+									Width: 29
+									IgnoreChildMouseOver: true
+									Children:
+										ColorBlock@TILE_PREVIEW:
+											X: 2
+											Y: 2
+											Width: 26
+											Height: 26
+								ScrollItem@TILE_ICON_TEMPLATE:
+									Visible: false
+									Height: 29
+									Width: 29
+									IgnoreChildMouseOver: true
+									Children:
+										Image@TILE_ERASE:
+											X: 6
+											Y: 6
+											Width: 26
+											Height: 26
+											ImageCollection: editor
+											ImageName: erase
+						Button@CLEAR_CURRENT_BUTTON:
+							X: 6
+							Y: 42
+							Width: 100
+							Height: 25
+							Text: button-marker-tiles-clear-current
+							Font: Bold
+						Button@CLEAR_ALL_BUTTON:
+							X: 111
+							Y: 42
+							Width: 75
+							Height: 25
+							Text: button-marker-tiles-clear-all
+							Font: Bold
+						Label@ALPHA_LABEL:
+							X: 6
+							Y: 72
+							Width: 265
+							Height: 25
+							Align: Left
+							Text: label-marker-alpha
+						Slider@ALPHA_SLIDER:
+							X: 130
+							Y: 72
+							Width: 128
+							Height: 25
+						Label@ALPHA_VALUE:
+							X: 260
+							Y: 72
+							Width: 30
+							Height: 25
+							Align: Left
+							Text: 85
+						Label@MODE_LABEL:
+							X: 6
+							Y: 102
+							Width: 265
+							Height: 25
+							Align: Left
+							Text: label-marker-mirror-mode
+						DropDownButton@MODE_DROPDOWN:
+							X: 129
+							Y: 102
+							Width: 157
+							Height: 25
+						Label@NUM_SIDES_LABEL:
+							X: 6
+							Y: 132
+							Width: 256
+							Height: 25
+							Align: Left
+							Text: label-marker-layer-num-sides
+						Slider@ROTATE_NUM_SIDES_SLIDER:
+							X: 130
+							Y: 132
+							Width: 128
+							Height: 25
+							Visible: false
+						Label@ROTATE_NUM_SIDES_VALUE:
+							X: 260
+							Y: 132
+							Width: 30
+							Height: 25
+							Align: Left
+							Text: 2
+							Visible: false
+						DropDownButton@FLIP_NUM_SIDES_DROPDOWN:
+							X: 129
+							Y: 132
+							Width: 157
+							Height: 25
+						Label@AXIS_ANGLE_LABEL:
+							X: 6
+							Y: 162
+							Width: 256
+							Height: 25
+							Align: Left
+							Text: label-marker-axis-angle
+							Visible: false
+						Slider@AXIS_ANGLE_SLIDER:
+							X: 130
+							Y: 162
+							Width: 128
+							Height: 25
+							Visible: false
+						Label@AXIS_ANGLE_VALUE:
+							X: 260
+							Y: 162
+							Width: 30
+							Height: 25
+							Align: Left
+							Text: 0
+							Visible: false
 		Container@HISTORY_WIDGETS:
 			X: WINDOW_RIGHT - 320
 			Y: 354
@@ -768,15 +909,21 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipTemplate: BUTTON_TOOLTIP
 			TooltipText: button-editor-world-root-paste.tooltip
 			TooltipContainer: TOOLTIP_CONTAINER
+		DropDownButton@OVERLAY_BUTTON:
+			X: 390
+			Width: 140
+			Height: 25
+			Text: dropdownbutton-editor-world-root-overlay-button
+			Font: Bold
 		Label@COORDINATE_LABEL:
-			X: 470
+			X: 540
 			Width: 50
 			Height: 25
 			Align: Left
 			Font: Bold
 			Contrast: true
 		Label@CASH_LABEL:
-			X: 595
+			X: 655
 			Width: 50
 			Height: 25
 			Align: Left
@@ -812,3 +959,15 @@ ScrollPanel@CATEGORY_FILTER_PANEL:
 			Height: 20
 			Visible: false
 
+ScrollPanel@OVERLAY_PANEL:
+	Width: 140
+	Height: 80
+	ItemSpacing: 5
+	TopBottomSpacing: 0
+	Children:
+		Checkbox@CATEGORY_TEMPLATE:
+			X: 5
+			Y: 5
+			Width: PARENT_RIGHT - 29
+			Height: 20
+			Visible: false

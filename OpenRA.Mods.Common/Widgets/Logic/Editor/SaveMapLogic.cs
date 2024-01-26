@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using OpenRA.FileSystem;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
@@ -300,6 +301,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			saveMap(combinedPath);
+
+			SaveMapMarkerTiles(map, modData, world);
 		}
 
 		public static void SaveMapInner(Map map, IReadWritePackage package, World world, ModData modData)
@@ -343,6 +346,34 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						actionManager.SaveFailed = false;
 				},
 				confirmText: SaveMapFailedConfirm);
+		}
+
+		static void SaveMapMarkerTiles(Map map, ModData modData, World world)
+		{
+			try
+			{
+				var markerLayerOverlay = world.WorldActor.Trait<MarkerLayerOverlay>();
+				if (markerLayerOverlay.Tiles.Count == 0)
+					return;
+
+				var mod = modData.Manifest.Metadata;
+				var directory = Path.Combine(Platform.SupportDir, "Editor", modData.Manifest.Id, mod.Version, "MarkerTiles");
+				Directory.CreateDirectory(directory);
+
+				var markerTilesFile = markerLayerOverlay.ToFile();
+				var markerTilesContent = JsonConvert.SerializeObject(markerTilesFile);
+
+				var markerTileFilename = $"{Path.GetFileNameWithoutExtension(map.Package.Name)}.json";
+				using (var streamWriter = new StreamWriter(Path.Combine(directory, markerTileFilename), false))
+				{
+					streamWriter.Write(markerTilesContent);
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Write("debug", "Failed to save map editor marker tiles.");
+				Log.Write("debug", e);
+			}
 		}
 	}
 }

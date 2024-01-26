@@ -86,6 +86,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new ReplacePaletteModifiers(),
 				new RemoveConyardChronoReturnAnimation(),
 				new RemoveEditorSelectionLayerProperties(),
+				new AddMarkerLayerOverlay(),
 
 				// Execute these rules last to avoid premature yaml merge crashes.
 				new ReplaceCloakPalette(),

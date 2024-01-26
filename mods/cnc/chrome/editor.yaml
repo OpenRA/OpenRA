@@ -218,6 +218,7 @@ Container@EDITOR_WORLD_ROOT:
 	Logic: LoadIngamePerfLogic, MapEditorLogic, ActorEditLogic, MapOverlaysLogic, MapEditorSelectionLogic
 		ToggleGridOverlayKey: EditorToggleGridOverlay
 		ToggleBuildableOverlayKey: EditorToggleBuildableOverlay
+		ToggleMarkerOverlayKey: EditorToggleMarkerOverlay
 	Children:
 		LogicKeyListener@OVERLAY_KEYHANDLER:
 		Container@PERF_ROOT:
@@ -431,25 +432,161 @@ Container@EDITOR_WORLD_ROOT:
 			Width: 290
 			Height: WINDOW_BOTTOM - 410
 			ClickThrough: false
+			Logic: MapToolsLogic
 			Children:
 				Background@TOOLS_EDIT_PANEL:
-					X: 0
-					Y: 0
 					Width: PARENT_RIGHT
+					Height: 25
+					Background: panel-black
+				Label@TOOLS_LABEL:
+					Y: 1
+					Width: 55
+					Height: 25
+					Text: label-tools-bg-categories
+					Align: Right
+					Font: TinyBold
+				DropDownButton@TOOLS_DROPDOWN:
+					X: 60
+					Width: PARENT_RIGHT - 60
+					Height: 25
+					Font: Bold
+				ScrollPanel@MARKER_TOOL_PANEL:
+					Y: 24
+					Width: PARENT_RIGHT - 1
 					Height: PARENT_BOTTOM
-					Background: scrollpanel-bg
-				Checkbox@SHOW_TILE_GRID:
-					X: 6
-					Y: 7
-					Width: PARENT_RIGHT - 29
-					Height: 20
-					Text: label-show-tile-grid
-				Checkbox@SHOW_BUILDABLE_AREA:
-					X: 6
-					Y: 32
-					Width: PARENT_RIGHT - 29
-					Height: 20
-					Text: label-show-buildable-area
+					Visible: true
+					ScrollBar: Hidden
+					ScrollbarWidth: 0
+					Logic: MapMarkerTilesLogic
+					Children:
+						ScrollPanel@TILE_COLOR_PANEL:
+							X: 6
+							Y: 6
+							Width: PARENT_RIGHT - 18
+							Height: 31
+							TopBottomSpacing: 1
+							ItemSpacing: 1
+							ScrollBar: Hidden
+							ScrollbarWidth: 0
+							ContentHeight: 31
+							Children:
+								ScrollItem@TILE_COLOR_TEMPLATE:
+									Visible: false
+									Height: 29
+									Width: 29
+									IgnoreChildMouseOver: true
+									Children:
+										ColorBlock@TILE_PREVIEW:
+											X: 2
+											Y: 2
+											Width: 26
+											Height: 26
+								ScrollItem@TILE_ICON_TEMPLATE:
+									Visible: false
+									Height: 29
+									Width: 29
+									IgnoreChildMouseOver: true
+									Children:
+										Image@TILE_ERASE:
+											X: 6
+											Y: 6
+											Width: 26
+											Height: 26
+											ImageCollection: editor
+											ImageName: erase
+						Button@CLEAR_CURRENT_BUTTON:
+							X: 6
+							Y: 42
+							Width: 100
+							Height: 25
+							Text: button-marker-tiles-clear-current
+							Font: Bold
+						Button@CLEAR_ALL_BUTTON:
+							X: 111
+							Y: 42
+							Width: 75
+							Height: 25
+							Text: button-marker-tiles-clear-all
+							Font: Bold
+						Label@ALPHA_LABEL:
+							X: 6
+							Y: 72
+							Width: 265
+							Height: 25
+							Align: Left
+							Text: label-marker-alpha
+						Slider@ALPHA_SLIDER:
+							X: 130
+							Y: 72
+							Width: 128
+							Height: 25
+						Label@ALPHA_VALUE:
+							X: 260
+							Y: 72
+							Width: 30
+							Height: 25
+							Align: Left
+							Text: 85
+						Label@MODE_LABEL:
+							X: 6
+							Y: 102
+							Width: 265
+							Height: 25
+							Align: Left
+							Text: label-marker-mirror-mode
+						DropDownButton@MODE_DROPDOWN:
+							X: 129
+							Y: 102
+							Width: 157
+							Height: 25
+						Label@NUM_SIDES_LABEL:
+							X: 6
+							Y: 132
+							Width: 256
+							Height: 25
+							Align: Left
+							Text: label-marker-layer-num-sides
+						Slider@ROTATE_NUM_SIDES_SLIDER:
+							X: 130
+							Y: 132
+							Width: 128
+							Height: 25
+							Visible: false
+						Label@ROTATE_NUM_SIDES_VALUE:
+							X: 260
+							Y: 132
+							Width: 30
+							Height: 25
+							Align: Left
+							Text: 2
+							Visible: false
+						DropDownButton@FLIP_NUM_SIDES_DROPDOWN:
+							X: 129
+							Y: 132
+							Width: 157
+							Height: 25
+						Label@AXIS_ANGLE_LABEL:
+							X: 6
+							Y: 162
+							Width: 256
+							Height: 25
+							Align: Left
+							Text: label-marker-axis-angle
+							Visible: false
+						Slider@AXIS_ANGLE_SLIDER:
+							X: 130
+							Y: 162
+							Width: 128
+							Height: 25
+							Visible: false
+						Label@AXIS_ANGLE_VALUE:
+							X: 260
+							Y: 162
+							Width: 30
+							Height: 25
+							Align: Left
+							Text: 0
+							Visible: false
 		Container@HISTORY_WIDGETS:
 			Logic: HistoryLogLogic
 			X: WINDOW_RIGHT - 295
@@ -819,6 +956,13 @@ Container@EDITOR_WORLD_ROOT:
 			TooltipTemplate: BUTTON_TOOLTIP
 			TooltipText: button-editor-world-root-paste.tooltip
 			TooltipContainer: TOOLTIP_CONTAINER
+		DropDownButton@OVERLAY_BUTTON:
+			X: WINDOW_RIGHT - 914
+			Y: 5
+			Width: 140
+			Height: 25
+			Text: dropdownbutton-editor-world-root-overlay-button
+			Font: Bold
 		Label@COORDINATE_LABEL:
 			X: 10
 			Width: 50
@@ -863,7 +1007,7 @@ ScrollPanel@CATEGORY_FILTER_PANEL:
 
 ScrollPanel@OVERLAY_PANEL:
 	Width: 140
-	Height: 55
+	Height: 80
 	ItemSpacing: 5
 	TopBottomSpacing: 0
 	Children:
@@ -873,4 +1017,3 @@ ScrollPanel@OVERLAY_PANEL:
 			Width: PARENT_RIGHT - 29
 			Height: 20
 			Visible: false
-

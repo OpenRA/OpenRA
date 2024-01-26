@@ -23,6 +23,8 @@ namespace OpenRA.Mods.Common.Widgets
 		public readonly string TooltipTemplate;
 		public readonly EditorDefaultBrush DefaultBrush;
 
+		public event Action BrushChanged;
+
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		readonly WorldRenderer worldRenderer;
 
@@ -46,6 +48,8 @@ namespace OpenRA.Mods.Common.Widgets
 				CurrentBrush?.Dispose();
 
 			CurrentBrush = brush ?? DefaultBrush;
+
+			BrushChanged?.Invoke();
 		}
 
 		public override void MouseEntered()
