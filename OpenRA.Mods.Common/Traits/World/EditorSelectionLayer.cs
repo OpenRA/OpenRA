@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		IEnumerable<IRenderable> IRenderAnnotations.RenderAnnotations(Actor self, WorldRenderer wr)
 		{
-			if (editor.CurrentBrush == editor.DefaultBrush && editor.DefaultBrush.CurrentDragBounds != null)
+			if (editor.DefaultBrush.CurrentDragBounds != null)
 			{
 				yield return new EditorSelectionAnnotationRenderable(editor.DefaultBrush.CurrentDragBounds, info.AltColor, info.AltPixelOffset, null);
 				yield return new EditorSelectionAnnotationRenderable(editor.DefaultBrush.CurrentDragBounds, info.MainColor, int2.Zero, null);

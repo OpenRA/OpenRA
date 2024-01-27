@@ -753,6 +753,9 @@ chrome-radar-gdi:
 editor:
 	Inherits: ^Chrome
 	Regions:
+		select: 802, 170, 16, 16
 		tiles: 768, 170, 16, 16
 		overlays: 785, 170, 16, 16
+		actors: 802, 68, 16, 16
 		tools: 904, 68, 16, 16
+		history: 904, 51, 16, 16

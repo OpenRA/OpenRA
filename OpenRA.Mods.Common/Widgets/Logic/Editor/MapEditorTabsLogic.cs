@@ -29,11 +29,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			this.widget = widget;
 			editor = widget.Parent.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
-			editor.DefaultBrush.SelectionChanged += HandleSelectionChanged;
+			editor.DefaultBrush.UpdateSelectedTab += HandleUpdateSelectedTab;
 
 			tabContainer = widget.Get("MAP_EDITOR_TAB_CONTAINER");
 
-			SetupTab(null, "SELECT_WIDGETS", MenuType.Select);
+			SetupTab("SELECT_TAB", "SELECT_WIDGETS", MenuType.Select);
 			SetupTab("TILES_TAB", "TILE_WIDGETS", MenuType.Tiles);
 			SetupTab("OVERLAYS_TAB", "LAYER_WIDGETS", MenuType.Layers);
 			SetupTab("ACTORS_TAB", "ACTOR_WIDGETS", MenuType.Actors);
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		protected override void Dispose(bool disposing)
 		{
-			editor.DefaultBrush.SelectionChanged -= HandleSelectionChanged;
+			editor.DefaultBrush.UpdateSelectedTab -= HandleUpdateSelectedTab;
 
 			base.Dispose(disposing);
 		}
@@ -55,6 +55,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var tab = tabContainer.Get<ButtonWidget>(buttonId);
 				tab.IsHighlighted = () => menuType == tabType;
 				tab.OnClick = () => menuType = SelectTab(tabType);
+
+				if (tabType == MenuType.Select)
+					tab.IsDisabled = () => !editor.DefaultBrush.Selection.HasSelection;
 			}
 
 			var container = widget.Parent.Get<ContainerWidget>(tabId);
@@ -63,26 +66,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		MenuType SelectTab(MenuType newMenuType)
 		{
-			if (menuType == MenuType.Select)
-			{
-				editor.SetBrush(editor.DefaultBrush);
-				editor.DefaultBrush.ClearSelection();
-			}
-
 			if (newMenuType != MenuType.Select)
 				lastSelectedTab = newMenuType;
 
 			return newMenuType;
 		}
 
-		void HandleSelectionChanged()
+		void HandleUpdateSelectedTab()
 		{
-			var actor = editor.DefaultBrush.Selection.Actor;
-			var area = editor.DefaultBrush.Selection.Area;
+			var hasSelection = editor.DefaultBrush.Selection.HasSelection;
 
-			if (menuType != MenuType.Select && (actor != null || area != null))
+			if (menuType != MenuType.Select && hasSelection)
 				menuType = MenuType.Select;
-			else if (menuType == MenuType.Select && actor == null && area == null)
+			else if (menuType == MenuType.Select && !hasSelection)
 				menuType = lastSelectedTab;
 		}
 	}

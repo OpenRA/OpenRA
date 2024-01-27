@@ -34,32 +34,37 @@ EditorPaste: V Ctrl
 	Platform:
 		OSX: V Meta
 
-EditorTilesTab: E
+EditorSelectTab: E
+	Description: Select Tab
+	Types: Editor
+	Contexts: Editor
+
+EditorTilesTab: R
 	Description: Tiles Tab
 	Types: Editor
 	Contexts: Editor
 
-EditorOverlaysTab: R
+EditorOverlaysTab: T
 	Description: Overlays Tab
 	Types: Editor
 	Contexts: Editor
 
-EditorActorsTab: T
+EditorActorsTab: Y
 	Description: Actors Tab
 	Types: Editor
 	Contexts: Editor
 
-EditorToolsTab: Y
+EditorToolsTab: U
 	Description: Tools Tab
 	Types: Editor
 	Contexts: Editor
 
-EditorHistoryTab: U
+EditorHistoryTab: I
 	Description: History Tab
 	Types: Editor
 	Contexts: Editor
 
-EditorSettingsTab: I
+EditorSettingsTab: O
 	Description: Settings Tab
 	Types: Editor
 	Contexts: Editor

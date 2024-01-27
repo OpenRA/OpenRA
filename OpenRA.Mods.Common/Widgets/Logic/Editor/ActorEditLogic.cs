@@ -55,29 +55,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		ActorIDStatus nextActorIDStatus = ActorIDStatus.Normal;
 		string initialActorID;
 
-		EditorActorPreview currentActorInner;
 		EditActorPreview editActorPreview;
 
-		EditorActorPreview CurrentActor
-		{
-			get => currentActorInner;
-
-			set
-			{
-				if (currentActorInner == value)
-					return;
-
-				if (currentActorInner != null)
-				{
-					Reset();
-					currentActorInner.Selected = false;
-				}
-
-				currentActorInner = value;
-				if (currentActorInner != null)
-					currentActorInner.Selected = true;
-			}
-		}
+		EditorActorPreview SelectedActor => editor.DefaultBrush.Selection.Actor;
 
 		[ObjectCreator.UseCtor]
 		public ActorEditLogic(Widget widget, World world, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
@@ -88,8 +68,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 
 			editor = widget.Parent.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
-			var selectTabContainer = widget.Parent.Parent.Get<ContainerWidget>("SELECT_WIDGETS");
+			editor.DefaultBrush.SelectionChanged += HandleSelectionChanged;
 
+			var selectTabContainer = widget.Parent.Parent.Get<ContainerWidget>("SELECT_WIDGETS");
 			actorEditPanel = selectTabContainer.Get<ContainerWidget>("ACTOR_EDIT_PANEL");
 
 			typeLabel = actorEditPanel.Get<LabelWidget>("ACTOR_TYPE_LABEL");
@@ -118,8 +99,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			okButton.OnClick = Save;
 			cancelButton.OnClick = Cancel;
 			deleteButton.OnClick = Delete;
-			actorEditPanel.IsVisible = () => CurrentActor != null
-				&& editor.CurrentBrush == editor.DefaultBrush;
+			actorEditPanel.IsVisible = () => editor.CurrentBrush == editor.DefaultBrush && SelectedActor != null;
 
 			actorIDField.OnEscKey = _ => actorIDField.YieldKeyboardFocus();
 
@@ -133,7 +113,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				}
 
 				// Check for duplicate actor ID
-				if (!CurrentActor.ID.Equals(actorId, StringComparison.OrdinalIgnoreCase) && editorActorLayer[actorId] != null)
+				if (!SelectedActor.ID.Equals(actorId, StringComparison.OrdinalIgnoreCase) && editorActorLayer[actorId] != null)
 				{
 					nextActorIDStatus = ActorIDStatus.Duplicate;
 					actorIDErrorLabel.Visible = true;
@@ -164,6 +144,185 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			return nextActorIDStatus == ActorIDStatus.Normal;
 		}
 
+		protected override void Dispose(bool disposing)
+		{
+			editor.DefaultBrush.SelectionChanged -= HandleSelectionChanged;
+
+			base.Dispose(disposing);
+		}
+
+		void HandleSelectionChanged()
+		{
+			if (SelectedActor != null)
+			{
+				Reset();
+
+				editActorPreview = new EditActorPreview(SelectedActor);
+
+				initialActorID = actorIDField.Text = SelectedActor.ID;
+
+				var font = Game.Renderer.Fonts[typeLabel.Font];
+				var truncatedType = WidgetUtils.TruncateText(TranslationProvider.GetString(SelectedActor.DescriptiveName), typeLabel.Bounds.Width, font);
+				typeLabel.GetText = () => truncatedType;
+
+				actorIDField.CursorPosition = SelectedActor.ID.Length;
+				nextActorIDStatus = ActorIDStatus.Normal;
+
+				// Remove old widgets
+				var oldInitHeight = initContainer.Bounds.Height;
+				initContainer.Bounds.Height = 0;
+				initContainer.RemoveChildren();
+
+				// Add owner dropdown
+				var ownerContainer = dropdownOptionTemplate.Clone();
+				var owner = TranslationProvider.GetString(Owner);
+				ownerContainer.Get<LabelWidget>("LABEL").GetText = () => owner;
+				var ownerDropdown = ownerContainer.Get<DropDownButtonWidget>("OPTION");
+				var selectedOwner = SelectedActor.Owner;
+
+				void UpdateOwner(EditorActorPreview preview, PlayerReference reference)
+				{
+					preview.Owner = reference;
+					preview.ReplaceInit(new OwnerInit(reference.Name));
+				}
+
+				var ownerHandler = new EditorActorOptionActionHandle<PlayerReference>(UpdateOwner, SelectedActor.Owner);
+				editActorPreview.Add(ownerHandler);
+
+				ScrollItemWidget SetupItem(PlayerReference option, ScrollItemWidget template)
+				{
+					var item = ScrollItemWidget.Setup(template, () => selectedOwner == option, () =>
+					{
+						selectedOwner = option;
+						UpdateOwner(SelectedActor, selectedOwner);
+						ownerHandler.OnChange(option);
+					});
+
+					item.Get<LabelWidget>("LABEL").GetText = () => option.Name;
+					item.GetColor = () => option.Color;
+					return item;
+				}
+
+				ownerDropdown.GetText = () => selectedOwner.Name;
+				ownerDropdown.GetColor = () => selectedOwner.Color;
+				ownerDropdown.OnClick = () =>
+				{
+					var owners = editorActorLayer.Players.Players.Values.OrderBy(p => p.Name);
+					ownerDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, owners, SetupItem);
+				};
+
+				initContainer.Bounds.Height += ownerContainer.Bounds.Height;
+				initContainer.AddChild(ownerContainer);
+
+				// Add new children for inits
+				var options = SelectedActor.Info.TraitInfos<IEditorActorOptions>()
+					.SelectMany(t => t.ActorOptions(SelectedActor.Info, worldRenderer.World))
+					.OrderBy(o => o.DisplayOrder);
+
+				foreach (var o in options)
+				{
+					if (o is EditorActorCheckbox co)
+					{
+						var checkboxContainer = checkboxOptionTemplate.Clone();
+						checkboxContainer.Bounds.Y = initContainer.Bounds.Height;
+						initContainer.Bounds.Height += checkboxContainer.Bounds.Height;
+
+						var checkbox = checkboxContainer.Get<CheckboxWidget>("OPTION");
+						checkbox.GetText = () => co.Name;
+
+						var editorActionHandle = new EditorActorOptionActionHandle<bool>(co.OnChange, co.GetValue(SelectedActor));
+						editActorPreview.Add(editorActionHandle);
+
+						checkbox.IsChecked = () => co.GetValue(SelectedActor);
+						checkbox.OnClick = () =>
+						{
+							var newValue = co.GetValue(SelectedActor) ^ true;
+							co.OnChange(SelectedActor, newValue);
+							editorActionHandle.OnChange(newValue);
+						};
+
+						initContainer.AddChild(checkboxContainer);
+					}
+					else if (o is EditorActorSlider so)
+					{
+						var sliderContainer = sliderOptionTemplate.Clone();
+						sliderContainer.Bounds.Y = initContainer.Bounds.Height;
+						initContainer.Bounds.Height += sliderContainer.Bounds.Height;
+						sliderContainer.Get<LabelWidget>("LABEL").GetText = () => so.Name;
+
+						var slider = sliderContainer.Get<SliderWidget>("OPTION");
+						slider.MinimumValue = so.MinValue;
+						slider.MaximumValue = so.MaxValue;
+						slider.Ticks = so.Ticks;
+
+						var editorActionHandle = new EditorActorOptionActionHandle<float>(so.OnChange, so.GetValue(SelectedActor));
+						editActorPreview.Add(editorActionHandle);
+
+						slider.GetValue = () => so.GetValue(SelectedActor);
+						slider.OnChange += value => so.OnChange(SelectedActor, value);
+						slider.OnChange += value => editorActionHandle.OnChange(value);
+
+						var valueField = sliderContainer.GetOrNull<TextFieldWidget>("VALUE");
+						if (valueField != null)
+						{
+							void UpdateValueField(float f) => valueField.Text = ((int)f).ToString(NumberFormatInfo.CurrentInfo);
+							UpdateValueField(so.GetValue(SelectedActor));
+							slider.OnChange += UpdateValueField;
+
+							valueField.OnTextEdited = () =>
+							{
+								if (float.TryParse(valueField.Text, out var result))
+									slider.UpdateValue(result);
+							};
+
+							valueField.OnEscKey = _ => { valueField.YieldKeyboardFocus(); return true; };
+							valueField.OnEnterKey = _ => { valueField.YieldKeyboardFocus(); return true; };
+							typableFields.Add(valueField);
+						}
+
+						initContainer.AddChild(sliderContainer);
+					}
+					else if (o is EditorActorDropdown ddo)
+					{
+						var dropdownContainer = dropdownOptionTemplate.Clone();
+						dropdownContainer.Bounds.Y = initContainer.Bounds.Height;
+						initContainer.Bounds.Height += dropdownContainer.Bounds.Height;
+						dropdownContainer.Get<LabelWidget>("LABEL").GetText = () => ddo.Name;
+
+						var editorActionHandle = new EditorActorOptionActionHandle<string>(ddo.OnChange, ddo.GetValue(SelectedActor));
+						editActorPreview.Add(editorActionHandle);
+
+						var dropdown = dropdownContainer.Get<DropDownButtonWidget>("OPTION");
+						ScrollItemWidget DropdownSetup(KeyValuePair<string, string> option, ScrollItemWidget template)
+						{
+							var item = ScrollItemWidget.Setup(template,
+								() => ddo.GetValue(SelectedActor) == option.Key,
+								() =>
+								{
+									ddo.OnChange(SelectedActor, option.Key);
+									editorActionHandle.OnChange(option.Key);
+								});
+
+							item.Get<LabelWidget>("LABEL").GetText = () => option.Value;
+							return item;
+						}
+
+						dropdown.GetText = () => ddo.Labels[ddo.GetValue(SelectedActor)];
+						dropdown.OnClick = () => dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, ddo.Labels, DropdownSetup);
+
+						initContainer.AddChild(dropdownContainer);
+					}
+				}
+
+				buttonContainer.Bounds.Y += initContainer.Bounds.Height - oldInitHeight;
+			}
+			else
+			{
+				// Selected actor is null, hide the border and edit panel.
+				Close();
+			}
+		}
+
 		public override void Tick()
 		{
 			if (actorIDStatus != nextActorIDStatus)
@@ -180,188 +339,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				actorIDStatus = nextActorIDStatus;
 			}
-
-			var actor = editor.DefaultBrush.Selection.Actor;
-			if (actor != null)
-			{
-				// If we changed actor, update details
-				if (CurrentActor != actor)
-				{
-					CurrentActor = actor;
-
-					editActorPreview = new EditActorPreview(CurrentActor);
-
-					initialActorID = actorIDField.Text = actor.ID;
-
-					var font = Game.Renderer.Fonts[typeLabel.Font];
-					var truncatedType = WidgetUtils.TruncateText(actor.DescriptiveName, typeLabel.Bounds.Width, font);
-					typeLabel.GetText = () => truncatedType;
-
-					actorIDField.CursorPosition = actor.ID.Length;
-					nextActorIDStatus = ActorIDStatus.Normal;
-
-					// Remove old widgets
-					var oldInitHeight = initContainer.Bounds.Height;
-					initContainer.Bounds.Height = 0;
-					initContainer.RemoveChildren();
-
-					// Add owner dropdown
-					var ownerContainer = dropdownOptionTemplate.Clone();
-					var owner = TranslationProvider.GetString(Owner);
-					ownerContainer.Get<LabelWidget>("LABEL").GetText = () => owner;
-					var ownerDropdown = ownerContainer.Get<DropDownButtonWidget>("OPTION");
-					var selectedOwner = actor.Owner;
-
-					void UpdateOwner(EditorActorPreview preview, PlayerReference reference)
-					{
-						preview.Owner = reference;
-						preview.ReplaceInit(new OwnerInit(reference.Name));
-					}
-
-					var ownerHandler = new EditorActorOptionActionHandle<PlayerReference>(UpdateOwner, actor.Owner);
-					editActorPreview.Add(ownerHandler);
-
-					ScrollItemWidget SetupItem(PlayerReference option, ScrollItemWidget template)
-					{
-						var item = ScrollItemWidget.Setup(template, () => selectedOwner == option, () =>
-						{
-							selectedOwner = option;
-							UpdateOwner(CurrentActor, selectedOwner);
-							ownerHandler.OnChange(option);
-						});
-
-						item.Get<LabelWidget>("LABEL").GetText = () => option.Name;
-						item.GetColor = () => option.Color;
-						return item;
-					}
-
-					ownerDropdown.GetText = () => selectedOwner.Name;
-					ownerDropdown.GetColor = () => selectedOwner.Color;
-					ownerDropdown.OnClick = () =>
-					{
-						var owners = editorActorLayer.Players.Players.Values.OrderBy(p => p.Name);
-						ownerDropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, owners, SetupItem);
-					};
-
-					initContainer.Bounds.Height += ownerContainer.Bounds.Height;
-					initContainer.AddChild(ownerContainer);
-
-					// Add new children for inits
-					var options = actor.Info.TraitInfos<IEditorActorOptions>()
-						.SelectMany(t => t.ActorOptions(actor.Info, worldRenderer.World))
-						.OrderBy(o => o.DisplayOrder);
-
-					foreach (var o in options)
-					{
-						if (o is EditorActorCheckbox co)
-						{
-							var checkboxContainer = checkboxOptionTemplate.Clone();
-							checkboxContainer.Bounds.Y = initContainer.Bounds.Height;
-							initContainer.Bounds.Height += checkboxContainer.Bounds.Height;
-
-							var checkbox = checkboxContainer.Get<CheckboxWidget>("OPTION");
-							checkbox.GetText = () => co.Name;
-
-							var editorActionHandle = new EditorActorOptionActionHandle<bool>(co.OnChange, co.GetValue(actor));
-							editActorPreview.Add(editorActionHandle);
-
-							checkbox.IsChecked = () => co.GetValue(actor);
-							checkbox.OnClick = () =>
-							{
-								var newValue = co.GetValue(actor) ^ true;
-								co.OnChange(actor, newValue);
-								editorActionHandle.OnChange(newValue);
-							};
-
-							initContainer.AddChild(checkboxContainer);
-						}
-						else if (o is EditorActorSlider so)
-						{
-							var sliderContainer = sliderOptionTemplate.Clone();
-							sliderContainer.Bounds.Y = initContainer.Bounds.Height;
-							initContainer.Bounds.Height += sliderContainer.Bounds.Height;
-							sliderContainer.Get<LabelWidget>("LABEL").GetText = () => so.Name;
-
-							var slider = sliderContainer.Get<SliderWidget>("OPTION");
-							slider.MinimumValue = so.MinValue;
-							slider.MaximumValue = so.MaxValue;
-							slider.Ticks = so.Ticks;
-
-							var editorActionHandle = new EditorActorOptionActionHandle<float>(so.OnChange, so.GetValue(actor));
-							editActorPreview.Add(editorActionHandle);
-
-							slider.GetValue = () => so.GetValue(actor);
-							slider.OnChange += value => so.OnChange(actor, value);
-							slider.OnChange += value => editorActionHandle.OnChange(value);
-
-							var valueField = sliderContainer.GetOrNull<TextFieldWidget>("VALUE");
-							if (valueField != null)
-							{
-								void UpdateValueField(float f) => valueField.Text = ((int)f).ToString(NumberFormatInfo.CurrentInfo);
-								UpdateValueField(so.GetValue(actor));
-								slider.OnChange += UpdateValueField;
-
-								valueField.OnTextEdited = () =>
-								{
-									if (float.TryParse(valueField.Text, out var result))
-										slider.UpdateValue(result);
-								};
-
-								valueField.OnEscKey = _ => { valueField.YieldKeyboardFocus(); return true; };
-								valueField.OnEnterKey = _ => { valueField.YieldKeyboardFocus(); return true; };
-								typableFields.Add(valueField);
-							}
-
-							initContainer.AddChild(sliderContainer);
-						}
-						else if (o is EditorActorDropdown ddo)
-						{
-							var dropdownContainer = dropdownOptionTemplate.Clone();
-							dropdownContainer.Bounds.Y = initContainer.Bounds.Height;
-							initContainer.Bounds.Height += dropdownContainer.Bounds.Height;
-							dropdownContainer.Get<LabelWidget>("LABEL").GetText = () => ddo.Name;
-
-							var editorActionHandle = new EditorActorOptionActionHandle<string>(ddo.OnChange, ddo.GetValue(actor));
-							editActorPreview.Add(editorActionHandle);
-
-							var dropdown = dropdownContainer.Get<DropDownButtonWidget>("OPTION");
-							ScrollItemWidget DropdownSetup(KeyValuePair<string, string> option, ScrollItemWidget template)
-							{
-								var item = ScrollItemWidget.Setup(template,
-									() => ddo.GetValue(actor) == option.Key,
-									() =>
-									{
-										ddo.OnChange(actor, option.Key);
-										editorActionHandle.OnChange(option.Key);
-									});
-
-								item.Get<LabelWidget>("LABEL").GetText = () => option.Value;
-								return item;
-							}
-
-							dropdown.GetText = () => ddo.Labels[ddo.GetValue(actor)];
-							dropdown.OnClick = () => dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, ddo.Labels, DropdownSetup);
-
-							initContainer.AddChild(dropdownContainer);
-						}
-					}
-
-					buttonContainer.Bounds.Y += initContainer.Bounds.Height - oldInitHeight;
-				}
-			}
-			else if (CurrentActor != null)
-			{
-				// Selected actor is null, hide the border and edit panel.
-				Close();
-			}
 		}
 
 		void Delete()
 		{
-			if (CurrentActor != null)
-				editorActionManager.Add(new RemoveActorAction(editorActorLayer, CurrentActor));
+			YieldFocus();
 
-			Close();
+			if (SelectedActor != null)
+				editorActionManager.Add(new RemoveSelectedActorAction(
+					editor.DefaultBrush,
+					editorActorLayer,
+					SelectedActor));
 		}
 
 		void Cancel()
@@ -375,19 +363,26 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			editActorPreview?.Reset();
 		}
 
-		void Close()
+		void YieldFocus()
 		{
 			actorIDField.YieldKeyboardFocus();
 			foreach (var f in typableFields)
 				f.YieldKeyboardFocus();
+		}
 
-			editor.DefaultBrush.Selection.Actor = null;
-			CurrentActor = null;
+		void Close()
+		{
+			YieldFocus();
+
+			if (SelectedActor != null)
+			{
+				editor.DefaultBrush.ClearSelection(updateSelectedTab: true);
+			}
 		}
 
 		void Save()
 		{
-			editorActionManager.Add(new EditActorEditorAction(editorActorLayer, CurrentActor, editActorPreview.GetDirtyHandles()));
+			editorActionManager.Add(new EditActorEditorAction(editorActorLayer, SelectedActor, editActorPreview.GetDirtyHandles()));
 			editActorPreview = null;
 			Close();
 		}
