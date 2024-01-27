@@ -506,7 +506,7 @@ Container@EDITOR_WORLD_ROOT:
 						Label@AREA_EDIT_TITLE:
 							X: 6
 							Y: 7
-							Width: 265
+							Width: 278
 							Height: 24
 							Align: Center
 							Font: Bold
@@ -539,71 +539,43 @@ Container@EDITOR_WORLD_ROOT:
 							Text: label-filter-actors
 						Label@AREA_INFO_TITLE:
 							X: 15
-							Y: 150
+							Y: 139
 							Width: 281
 							Height: 24
 							Align: Center
 							Font: Bold
 							Text: label-area-info
-						Label@REGION_LABEL:
-							X: 15
-							Y: 175
+						Label@DIAGONAL_LABEL:
+							X: 6
+							Y: 171
 							Width: 55
 							Height: 20
 							Font: Bold
 							Align: Left
-							Text: label-selected-area-selected-region
-						Label@DIMENSION_LABEL:
-							X: 15
-							Y: 200
-							Width: 55
-							Height: 25
-							Font: Bold
-							Align: Left
-							Text: label-selected-area-dimension
-						Label@DIAGONAL_LABEL:
-							X: 15
-							Y: 225
-							Width: 55
-							Height: 25
-							Font: Bold
-							Align: Left
 							Text: label-selected-area-diagonal
 						Label@RESOURCE_LABEL:
-							X: 15
-							Y: 250
+							X: 6
+							Y: 193
 							Width: 55
 							Height: 25
 							Font: Bold
 							Align: Left
 							Text: label-selected-area-resources
-						Label@REGION_COUNTER_LABEL:
-							X: 150
-							Y: 175
-							Width: 55
-							Height: 22
-							Align: Left
-						Label@DIMENSION_COUNTER_LABEL:
-							X: 150
-							Y: 200
-							Width: 55
-							Height: 22
-							Align: Left
 						Label@DIAGONAL_COUNTER_LABEL:
 							X: 150
-							Y: 225
+							Y: 170
 							Width: 55
 							Height: 22
 							Align: Left
 						Label@RESOURCES_COUNTER_LABEL:
 							X: 150
-							Y: 250
+							Y: 195
 							Width: 55
 							Height: 22
 							Align: Left
 						Button@SELECTION_CANCEL_BUTTON:
-							X: 107
-							Y: 275
+							X: 211
+							Y: 222
 							Width: 75
 							Height: 25
 							Text: button-selection-cancel
@@ -618,7 +590,7 @@ Container@EDITOR_WORLD_ROOT:
 						Label@ACTOR_TYPE_LABEL:
 							X: 6
 							Y: 2
-							Width: 265
+							Width: 278
 							Height: 24
 							Align: Center
 							Font: Bold
@@ -720,8 +692,22 @@ Container@EDITOR_WORLD_ROOT:
 			Height: 25
 			ClickThrough: false
 			Children:
+				Button@SELECT_TAB:
+					Width: 49
+					Height: 25
+					Key: EditorSelectTab
+					TooltipTemplate: BUTTON_TOOLTIP
+					TooltipText: button-map-editor-tab-container-select.tooltip
+					TooltipContainer: TOOLTIP_CONTAINER
+					Children:
+						Image@ICON:
+							X: 20
+							Y: 5
+							ImageCollection: editor
+							ImageName: select
 				Button@TILES_TAB:
-					Width: 59
+					X: 49
+					Width: 48
 					Height: 25
 					Key: EditorTilesTab
 					TooltipTemplate: BUTTON_TOOLTIP
@@ -729,13 +715,13 @@ Container@EDITOR_WORLD_ROOT:
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
-							X: 21
+							X: 16
 							Y: 5
 							ImageCollection: editor
 							ImageName: tiles
 				Button@OVERLAYS_TAB:
-					X: 58
-					Width: 59
+					X: 97
+					Width: 48
 					Height: 25
 					Key: EditorOverlaysTab
 					TooltipTemplate: BUTTON_TOOLTIP
@@ -743,13 +729,13 @@ Container@EDITOR_WORLD_ROOT:
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
-							X: 21
+							X: 16
 							Y: 5
 							ImageCollection: editor
 							ImageName: overlays
 				Button@ACTORS_TAB:
-					X: 116
-					Width: 58
+					X: 145
+					Width: 48
 					Height: 25
 					Key: EditorActorsTab
 					TooltipTemplate: BUTTON_TOOLTIP
@@ -757,13 +743,13 @@ Container@EDITOR_WORLD_ROOT:
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
-							X: 21
+							X: 16
 							Y: 5
-							ImageCollection: production-icons
-							ImageName: infantry
+							ImageCollection: editor
+							ImageName: actors
 				Button@TOOLS_TAB:
-					X: 173
-					Width: 59
+					X: 193
+					Width: 48
 					Height: 25
 					Key: EditorToolsTab
 					TooltipTemplate: BUTTON_TOOLTIP
@@ -771,13 +757,13 @@ Container@EDITOR_WORLD_ROOT:
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
-							X: 21
+							X: 16
 							Y: 5
 							ImageCollection: editor
 							ImageName: tools
 				Button@HISTORY_TAB:
-					X: 231
-					Width: 59
+					X: 241
+					Width: 49
 					Height: 25
 					Key: EditorHistoryTab
 					TooltipTemplate: BUTTON_TOOLTIP
@@ -785,10 +771,10 @@ Container@EDITOR_WORLD_ROOT:
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
-							X: 21
+							X: 16
 							Y: 5
-							ImageCollection: sidebar-bits
-							ImageName: production-tooltip-time
+							ImageCollection: editor
+							ImageName: history
 		Button@UNDO_BUTTON:
 			X: WINDOW_RIGHT - 764
 			Y: 5

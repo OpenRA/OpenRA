@@ -74,8 +74,6 @@ label-actors-bg-categories = Filter:
 label-actors-bg-owners = Owner:
 label-area-selection = Area Selection
 label-area-info = Area Info
-label-selected-area-selected-region = Region:
-label-selected-area-dimension = Dimensions:
 label-selected-area-diagonal = Diagonal:
 label-selected-area-resources= Resources:
 label-copy-filters = Copy Filters
@@ -85,6 +83,9 @@ label-filter-actors = Actors
 button-selection-cancel = Cancel
 label-show-tile-grid = Show Tile Grid
 label-show-buildable-area = Show Buildable Area
+
+button-map-editor-tab-container-select =
+   .tooltip = Select
 
 button-map-editor-tab-container-tiles =
    .tooltip = Tiles

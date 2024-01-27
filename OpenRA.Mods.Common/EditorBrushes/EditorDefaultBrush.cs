@@ -26,6 +26,8 @@ namespace OpenRA.Mods.Common.Widgets
 	{
 		public CellRegion Area;
 		public EditorActorPreview Actor;
+
+		public bool HasSelection => Area != null || Actor != null;
 	}
 
 	public sealed class EditorDefaultBrush : IEditorBrush
@@ -33,6 +35,7 @@ namespace OpenRA.Mods.Common.Widgets
 		const int MinMouseMoveBeforeDrag = 32;
 
 		public event Action SelectionChanged;
+		public event Action UpdateSelectedTab;
 
 		readonly WorldRenderer worldRenderer;
 		readonly World world;
@@ -43,7 +46,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public CellRegion CurrentDragBounds => selectionBounds ?? Selection.Area;
 
-		public EditorSelection Selection = new();
+		public EditorSelection Selection { get; private set; } = new();
+
 		EditorSelection previousSelection;
 		CellRegion selectionBounds;
 		int2? selectionStartLocation;
@@ -73,15 +77,32 @@ namespace OpenRA.Mods.Common.Widgets
 			return ((long)pixelDistance << 32) + worldZPosition;
 		}
 
-		public void ClearSelection()
+		public void ClearSelection(bool updateSelectedTab = false)
 		{
-			if (Selection.Area != null || Selection.Actor != null)
+			if (Selection.HasSelection)
 			{
 				previousSelection = Selection;
-				Selection = new EditorSelection();
+				SetSelection(new EditorSelection());
 				editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
-				SelectionChanged?.Invoke();
+
+				if (updateSelectedTab)
+					UpdateSelectedTab?.Invoke();
 			}
+		}
+
+		public void SetSelection(EditorSelection selection)
+		{
+			if (Selection == selection)
+				return;
+
+			if (Selection.Actor != null)
+				Selection.Actor.Selected = false;
+
+			Selection = selection;
+			if (Selection.Actor != null)
+				Selection.Actor.Selected = true;
+
+			SelectionChanged?.Invoke();
 		}
 
 		public bool HandleMouseInput(MouseInput mi)
@@ -155,14 +176,14 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						// Set this as the editor selection.
 						previousSelection = Selection;
-						Selection = new EditorSelection
+						SetSelection(new EditorSelection
 						{
 							Area = selectionBounds
-						};
+						});
 
-						editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
 						selectionBounds = null;
-						SelectionChanged?.Invoke();
+						editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
+						UpdateSelectedTab?.Invoke();
 					}
 					else if (underCursor != null)
 					{
@@ -170,48 +191,32 @@ namespace OpenRA.Mods.Common.Widgets
 						if (Selection.Actor != underCursor)
 						{
 							previousSelection = Selection;
-							Selection = new EditorSelection
+							SetSelection(new EditorSelection
 							{
 								Actor = underCursor,
-							};
+							});
 
 							editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
-							SelectionChanged?.Invoke();
+							UpdateSelectedTab?.Invoke();
 						}
 					}
-					else if (Selection.Area != null || Selection.Actor != null)
+					else if (Selection.HasSelection)
 					{
 						// Released left mouse without dragging or selecting an actor - deselect current.
-						previousSelection = Selection;
-						Selection = new EditorSelection();
-
-						editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
-						SelectionChanged?.Invoke();
+						ClearSelection(updateSelectedTab: true);
 					}
 				}
-
-				if (mi.Button == MouseButton.Right)
+				else if (mi.Button == MouseButton.Right)
 				{
 					editorWidget.SetTooltip(null);
 
-					if (Selection.Area != null)
-					{
-						// Release right mouse button with a selection - clear selection.
-						previousSelection = Selection;
-						Selection = new EditorSelection();
+					// Delete actor.
+					if (underCursor != null && underCursor != Selection.Actor)
+						editorActionManager.Add(new RemoveActorAction(editorLayer, underCursor));
 
-						editorActionManager.Add(new ChangeSelectionAction(this, Selection, previousSelection));
-					}
-					else
-					{
-						// Release right mouse button with no selection and over an actor - delete actor.
-						if (underCursor != null && underCursor != Selection.Actor)
-							editorActionManager.Add(new RemoveActorAction(editorLayer, underCursor));
-
-						// Or delete resource if found under cursor.
-						if (resourceUnderCursor != null)
-							editorActionManager.Add(new RemoveResourceAction(resourceLayer, cell, resourceUnderCursor));
-					}
+					// Or delete resource if found under cursor.
+					if (resourceUnderCursor != null)
+						editorActionManager.Add(new RemoveResourceAction(resourceLayer, cell, resourceUnderCursor));
 				}
 			}
 
@@ -219,6 +224,7 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public void Tick() { }
+
 		public void Dispose() { }
 	}
 
@@ -271,12 +277,59 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Do()
 		{
-			defaultBrush.Selection = selection;
+			defaultBrush.SetSelection(selection);
 		}
 
 		public void Undo()
 		{
-			defaultBrush.Selection = previousSelection;
+			defaultBrush.SetSelection(previousSelection);
+		}
+	}
+
+	sealed class RemoveSelectedActorAction : IEditorAction
+	{
+		[TranslationReference("name", "id")]
+		const string RemovedActor = "notification-removed-actor";
+
+		public string Text { get; }
+
+		readonly EditorSelection selection;
+		readonly EditorDefaultBrush defaultBrush;
+		readonly EditorActorLayer editorActorLayer;
+		readonly EditorActorPreview actor;
+
+		public RemoveSelectedActorAction(
+			EditorDefaultBrush defaultBrush,
+			EditorActorLayer editorActorLayer,
+			EditorActorPreview actor)
+		{
+			this.defaultBrush = defaultBrush;
+			this.editorActorLayer = editorActorLayer;
+			this.actor = actor;
+			selection = new EditorSelection
+			{
+				Actor = defaultBrush.Selection.Actor
+			};
+
+			Text = TranslationProvider.GetString(RemovedActor,
+				Translation.Arguments("name", actor.Info.Name, "id", actor.ID));
+		}
+
+		public void Execute()
+		{
+			Do();
+		}
+
+		public void Do()
+		{
+			defaultBrush.SetSelection(new EditorSelection());
+			editorActorLayer.Remove(actor);
+		}
+
+		public void Undo()
+		{
+			editorActorLayer.Add(actor);
+			defaultBrush.SetSelection(selection);
 		}
 	}
 

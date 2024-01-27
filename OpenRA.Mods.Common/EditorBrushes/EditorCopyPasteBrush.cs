@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Common.Widgets
 				if (!mapTiles.Contains(cell))
 					continue;
 
-				var resourceLayerContents = resourceLayer.GetResource(cell);
+				var resourceLayerContents = resourceLayer?.GetResource(cell);
 				tiles.Add(cell, new ClipboardTile(mapTiles[cell], mapResources[cell], resourceLayerContents, mapHeight[cell]));
 
 				if (copyFilters.HasFlag(MapCopyFilters.Actors))
@@ -189,7 +189,7 @@ namespace OpenRA.Mods.Common.Widgets
 					continue;
 
 				// Clear any existing resources.
-				if (copyFilters.HasFlag(MapCopyFilters.Resources))
+				if (resourceLayer != null && copyFilters.HasFlag(MapCopyFilters.Resources))
 					resourceLayer.ClearResources(position);
 
 				var tile = tileKeyValuePair.Value;
@@ -201,33 +201,38 @@ namespace OpenRA.Mods.Common.Widgets
 					map.Height[position] = tile.Height;
 				}
 
-				if (copyFilters.HasFlag(MapCopyFilters.Resources) && !string.IsNullOrWhiteSpace(resourceLayerContents.Type))
-					resourceLayer.AddResource(resourceLayerContents.Type, position, resourceLayerContents.Density);
+				if (copyFilters.HasFlag(MapCopyFilters.Resources) &&
+					resourceLayerContents.HasValue &&
+					!string.IsNullOrWhiteSpace(resourceLayerContents.Value.Type))
+					resourceLayer.AddResource(resourceLayerContents.Value.Type, position, resourceLayerContents.Value.Density);
 			}
 
-			// Clear any existing actors in the paste cells.
-			var selectionSize = clipboard.CellRegion.BottomRight - clipboard.CellRegion.TopLeft;
-			var pasteRegion = new CellRegion(map.Grid.Type, pastePosition, pastePosition + selectionSize);
-			foreach (var regionActor in pasteRegion.SelectMany(editorActorLayer.PreviewsAt).ToHashSet())
-				editorActorLayer.Remove(regionActor);
-
-			// Now place actors.
-			foreach (var actorKeyValuePair in clipboard.Actors)
+			if (copyFilters.HasFlag(MapCopyFilters.Actors))
 			{
-				var selection = clipboard.CellRegion;
-				var copy = actorKeyValuePair.Value.Export();
-				var locationInit = copy.GetOrDefault<LocationInit>();
-				if (locationInit != null)
+				// Clear any existing actors in the paste cells.
+				var selectionSize = clipboard.CellRegion.BottomRight - clipboard.CellRegion.TopLeft;
+				var pasteRegion = new CellRegion(map.Grid.Type, pastePosition, pastePosition + selectionSize);
+				foreach (var regionActor in pasteRegion.SelectMany(editorActorLayer.PreviewsAt).ToHashSet())
+					editorActorLayer.Remove(regionActor);
+
+				// Now place actors.
+				foreach (var actorKeyValuePair in clipboard.Actors)
 				{
-					var actorPosition = locationInit.Value + new CVec(pastePosition.X - selection.TopLeft.X, pastePosition.Y - selection.TopLeft.Y);
-					if (!map.Contains(actorPosition))
-						continue;
+					var selection = clipboard.CellRegion;
+					var copy = actorKeyValuePair.Value.Export();
+					var locationInit = copy.GetOrDefault<LocationInit>();
+					if (locationInit != null)
+					{
+						var actorPosition = locationInit.Value + new CVec(pastePosition.X - selection.TopLeft.X, pastePosition.Y - selection.TopLeft.Y);
+						if (!map.Contains(actorPosition))
+							continue;
 
-					copy.RemoveAll<LocationInit>();
-					copy.Add(new LocationInit(actorPosition));
+						copy.RemoveAll<LocationInit>();
+						copy.Add(new LocationInit(actorPosition));
+					}
+
+					editorActorLayer.Add(copy);
 				}
-
-				editorActorLayer.Add(copy);
 			}
 		}
 
@@ -240,7 +245,7 @@ namespace OpenRA.Mods.Common.Widgets
 				var resourceLayerContents = tile.ResourceLayerContents;
 
 				// Clear any existing resources.
-				if (copyFilters.HasFlag(MapCopyFilters.Resources))
+				if (resourceLayer != null && copyFilters.HasFlag(MapCopyFilters.Resources))
 					resourceLayer.ClearResources(position);
 
 				if (copyFilters.HasFlag(MapCopyFilters.Terrain))
@@ -249,18 +254,22 @@ namespace OpenRA.Mods.Common.Widgets
 					map.Height[position] = tile.Height;
 				}
 
-				if (copyFilters.HasFlag(MapCopyFilters.Resources) && !string.IsNullOrWhiteSpace(resourceLayerContents.Type))
-					resourceLayer.AddResource(resourceLayerContents.Type, position, resourceLayerContents.Density);
+				if (copyFilters.HasFlag(MapCopyFilters.Resources) &&
+					resourceLayerContents.HasValue &&
+					!string.IsNullOrWhiteSpace(resourceLayerContents.Value.Type))
+					resourceLayer.AddResource(resourceLayerContents.Value.Type, position, resourceLayerContents.Value.Density);
 			}
 
-			// Clear existing actors.
-			foreach (var regionActor in undoClipboard.CellRegion.SelectMany(editorActorLayer.PreviewsAt).Distinct().ToList())
-				editorActorLayer.Remove(regionActor);
-
-			// Place actors back again.
 			if (copyFilters.HasFlag(MapCopyFilters.Actors))
+			{
+				// Clear existing actors.
+				foreach (var regionActor in undoClipboard.CellRegion.SelectMany(editorActorLayer.PreviewsAt).Distinct().ToList())
+					editorActorLayer.Remove(regionActor);
+
+				// Place actors back again.
 				foreach (var actor in undoClipboard.Actors.Values)
 					editorActorLayer.Add(actor);
+			}
 		}
 	}
 }

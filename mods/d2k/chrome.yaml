@@ -515,6 +515,9 @@ loadscreen-stripe:
 editor:
 	Inherits: ^Glyphs
 	Regions:
+		select: 51, 144, 16, 16
 		tiles: 0, 144, 16, 16
 		overlays: 17, 144, 16, 16
+		actors: 34, 68, 16, 16
 		tools: 34, 144, 16, 16
+		history: 136, 51, 16, 16

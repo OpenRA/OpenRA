@@ -156,6 +156,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void Execute()
 		{
+			Do();
 		}
 
 		public void Do()
