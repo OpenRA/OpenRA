@@ -651,7 +651,8 @@ namespace OpenRA.Mods.Common.Server
 
 						server.SyncLobbyInfo();
 
-						server.SendLocalizedMessage(ChangedMap, Translation.Arguments("player", client.Name, "map", server.Map.Title));
+						var player = LobbyUtils.SanitizePlayerName(client);
+						server.SendLocalizedMessage(ChangedMap, Translation.Arguments("player", player, "map", server.Map.Title));
 
 						if ((server.LobbyInfo.GlobalSettings.MapStatus & Session.MapStatus.UnsafeCustomRules) != 0)
 							server.SendLocalizedMessage(CustomRules);
@@ -738,7 +739,8 @@ namespace OpenRA.Mods.Common.Server
 				oo.Value = oo.PreferredValue = split[1];
 
 				server.SyncLobbyGlobalSettings();
-				server.SendLocalizedMessage(ValueChanged, Translation.Arguments("player", client.Name, "name", option.Name, "value", option.Label(split[1])));
+				var player = LobbyUtils.SanitizePlayerName(client);
+				server.SendLocalizedMessage(ValueChanged, Translation.Arguments("player", player, "name", option.Name, "value", option.Label(split[1])));
 
 				foreach (var c in server.LobbyInfo.Clients)
 					c.State = Session.ClientState.NotReady;
@@ -876,14 +878,16 @@ namespace OpenRA.Mods.Common.Server
 				}
 
 				Log.Write("server", $"Kicking client {kickClientID}.");
-				server.SendLocalizedMessage(AdminKicked, Translation.Arguments("admin", client.Name, "player", kickClient.Name));
+				var admin = LobbyUtils.SanitizePlayerName(client);
+				var player = LobbyUtils.SanitizePlayerName(kickClient);
+				server.SendLocalizedMessage(AdminKicked, Translation.Arguments("admin", admin, "player", player));
 				server.SendOrderTo(kickConn, "ServerError", YouWereKicked);
 				server.DropClient(kickConn);
 
 				if (bool.TryParse(split[1], out var tempBan) && tempBan)
 				{
 					Log.Write("server", $"Temporarily banning client {kickClientID} ({kickClient.IPAddress}).");
-					server.SendLocalizedMessage(TempBan, Translation.Arguments("admin", client.Name, "player", kickClient.Name));
+					server.SendLocalizedMessage(TempBan, Translation.Arguments("admin", admin, "player", player));
 					server.TempBans.Add(kickClient.IPAddress);
 				}
 
@@ -936,7 +940,8 @@ namespace OpenRA.Mods.Common.Server
 				if (server.VoteKickTracker.VoteKick(conn, client, kickConn, kickClient, kickClientID, vote))
 				{
 					Log.Write("server", $"Kicking client {kickClientID}.");
-					server.SendLocalizedMessage(Kicked, Translation.Arguments("player", kickClient.Name));
+					var player = LobbyUtils.SanitizePlayerName(kickClient);
+					server.SendLocalizedMessage(Kicked, Translation.Arguments("player", player));
 					server.SendOrderTo(kickConn, "ServerError", YouWereKicked);
 					server.DropClient(kickConn);
 
@@ -979,7 +984,8 @@ namespace OpenRA.Mods.Common.Server
 				foreach (var b in bots)
 					b.BotControllerClientIndex = newAdminId;
 
-				server.SendLocalizedMessage(NewAdmin, Translation.Arguments("player", newAdminClient.Name));
+				var player = LobbyUtils.SanitizePlayerName(newAdminClient);
+				server.SendLocalizedMessage(NewAdmin, Translation.Arguments("player", player));
 				Log.Write("server", $"{newAdminClient.Name} is now the admin.");
 				server.SyncLobbyClients();
 
@@ -1013,7 +1019,9 @@ namespace OpenRA.Mods.Common.Server
 				targetClient.Handicap = 0;
 				targetClient.Color = Color.White;
 				targetClient.State = Session.ClientState.NotReady;
-				server.SendLocalizedMessage(MoveSpectators, Translation.Arguments("admin", client.Name, "player", targetClient.Name));
+				var admin = LobbyUtils.SanitizePlayerName(client);
+				var player = LobbyUtils.SanitizePlayerName(targetClient);
+				server.SendLocalizedMessage(MoveSpectators, Translation.Arguments("admin", admin, "player", player));
 				Log.Write("server", $"{client.Name} moved {targetClient.Name} to spectators.");
 				server.SyncLobbyClients();
 				CheckAutoStart(server);
@@ -1031,7 +1039,8 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 
 				Log.Write("server", $"Player@{conn.EndPoint} is now known as {sanitizedName}.");
-				server.SendLocalizedMessage(Nick, Translation.Arguments("player", client.Name, "name", sanitizedName));
+				var player = LobbyUtils.SanitizePlayerName(client);
+				server.SendLocalizedMessage(Nick, Translation.Arguments("player", player, "name", sanitizedName));
 				client.Name = sanitizedName;
 				server.SyncLobbyClients();
 

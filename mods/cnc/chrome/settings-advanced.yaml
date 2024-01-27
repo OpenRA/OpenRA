@@ -96,6 +96,41 @@ Container@ADVANCED_PANEL:
 									Font: Tiny
 									WordWrap: True
 									Text: label-sendsysinfo-checkbox-container-desc
+				Background@STREAMER_SECTION_HEADER:
+					X: 5
+					Width: PARENT_RIGHT - 24 - 10
+					Height: 13
+					Background: separator
+					ClickThrough: True
+					Children:
+						Label@LABEL:
+							Width: PARENT_RIGHT
+							Height: PARENT_BOTTOM
+							Font: TinyBold
+							Align: Center
+							Text: label-streamer-section-header
+				Container@ROW:
+					Width: PARENT_RIGHT - 24
+					Height: 20
+					Children:
+						Container@SANITIZE_MUTED_PLAYERS_CHECKBOX_CONTAINER:
+							X: 10
+							Width: PARENT_RIGHT / 2 - 20
+							Children:
+								Checkbox@SANITIZE_MUTED_PLAYERS_CHECKBOX:
+									Width: PARENT_RIGHT
+									Height: 20
+									Font: Regular
+									Text: checkbox-sanitize-muted-players-container
+						Container@SANITIZE_MUTED_PLAYERS_CHECKBOX_CONTAINER:
+							X: PARENT_RIGHT / 2 + 10
+							Width: PARENT_RIGHT / 2 - 20
+							Children:
+								Checkbox@SANITIZE_ALL_PLAYER_NAMES_CHECKBOX:
+									Width: PARENT_RIGHT
+									Height: 20
+									Font: Regular
+									Text: checkbox-sanitize-all-players-container
 				Container@SPACER:
 				Background@DEBUG_SECTION_HEADER:
 					X: 5

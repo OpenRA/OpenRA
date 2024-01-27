@@ -298,6 +298,12 @@ namespace OpenRA
 		public bool EnableDiscordService = true;
 
 		public TextNotificationPoolFilters TextNotificationPoolFilters = TextNotificationPoolFilters.Feedback | TextNotificationPoolFilters.Transients;
+
+		[Desc("Change name to matching color for muted players.")]
+		public bool SanitizeMutedPlayerNames = false;
+
+		[Desc("Changes all names to their picked colors.")]
+		public bool SanitizePlayerNames = false;
 	}
 
 	public class Settings

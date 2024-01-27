@@ -16,6 +16,7 @@ using System.Linq;
 using System.Reflection;
 using Linguini.Syntax.Ast;
 using Linguini.Syntax.Parser;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -61,6 +62,13 @@ namespace OpenRA.Mods.Common.Lint
 						}
 					}
 				}
+			}
+
+			foreach (var property in typeof(Color).GetProperties(BindingFlags.Static | BindingFlags.Public))
+			{
+				var attribute = property.GetCustomAttribute<TranslationReferenceAttribute>();
+				if (attribute != null)
+					referencedKeys.AddRange(attribute.RequiredVariableNames);
 			}
 		}
 

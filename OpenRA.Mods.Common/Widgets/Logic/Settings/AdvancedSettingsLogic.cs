@@ -45,6 +45,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SettingsUtils.BindCheckboxPref(panel, "SENDSYSINFO_CHECKBOX", ds, "SendSystemInformation");
 			SettingsUtils.BindCheckboxPref(panel, "CHECK_VERSION_CHECKBOX", ds, "CheckVersion");
 
+			// Streamer Mode
+			SettingsUtils.BindCheckboxPref(panel, "SANITIZE_MUTED_PLAYERS_CHECKBOX", gs, "SanitizeMutedPlayerNames");
+			SettingsUtils.BindCheckboxPref(panel, "SANITIZE_ALL_PLAYER_NAMES_CHECKBOX", gs, "SanitizePlayerNames");
+
 			var ssi = panel.Get<CheckboxWidget>("SENDSYSINFO_CHECKBOX");
 			ssi.IsDisabled = () => !gs.FetchNews;
 
