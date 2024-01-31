@@ -16,7 +16,7 @@ Background@SETTINGS_PANEL:
 			Y: 20
 			Width: PARENT_RIGHT
 			Height: 25
-			Text: label-settings-panel-title
+			Text: button-settings-title
 			Align: Center
 			Font: Bold
 		Button@RESET_BUTTON:
@@ -32,7 +32,7 @@ Background@SETTINGS_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: button-settings-panel-back
+			Text: button-back
 			Font: Bold
 		Container@SETTINGS_TAB_CONTAINER:
 			X: 20

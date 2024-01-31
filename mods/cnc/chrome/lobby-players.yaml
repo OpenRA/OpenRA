@@ -11,49 +11,49 @@ Container@LOBBY_PLAYER_BIN:
 				Label@LABEL_LOBBY_NAME:
 					Width: 200
 					Height: 25
-					Text: label-container-lobby-name
+					Text: label-lobby-players-player
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_COLOR:
 					X: 210
 					Width: 94
 					Height: 25
-					Text: label-container-lobby-color
+					Text: label-lobby-players-color
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_FACTION:
 					X: 309
 					Width: 120
 					Height: 25
-					Text: label-container-lobby-faction
+					Text: label-lobby-players-faction
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_TEAM:
 					X: 460 - 25
 					Width: 50
 					Height: 25
-					Text: label-container-lobby-team
+					Text: label-lobby-players-team
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_HANDICAP:
 					X: 491
 					Width: 75
 					Height: 25
-					Text: label-container-lobby-handicap
+					Text: label-lobby-players-handicap
 					Align: Center
 					Font: Bold
 				Label@LABEL_LOBBY_SPAWN:
 					X: 571
 					Width: 50
 					Height: 25
-					Text: label-container-lobby-spawn
+					Text: label-lobby-players-spawn
 					Align: Left
 					Font: Bold
 				Label@LABEL_LOBBY_STATUS:
 					X: 627
 					Width: 20 + 24
 					Height: 25
-					Text: label-container-lobby-status
+					Text: label-lobby-players-ready
 					Align: Left
 					Font: Bold
 		ScrollPanel@LOBBY_PLAYERS:
@@ -110,7 +110,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 15
 							Width: 190
 							Height: 25
-							Text: dropdownbutton-template-editable-player-slot-options
+							Text: label-lobby-players-name
 							Font: Regular
 							Visible: false
 						DropDownButton@COLOR:
@@ -143,7 +143,7 @@ Container@LOBBY_PLAYER_BIN:
 									X: 40
 									Width: 50
 									Height: 25
-									Text: label-template-editable-player-factionname
+									Text: label-lobby-players-faction
 						DropDownButton@TEAM_DROPDOWN:
 							X: 435
 							Width: 50
@@ -155,7 +155,7 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							Font: Regular
 							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipText: dropdownbutton-template-editable-player-handicap-dropdown-tooltip
+							TooltipText: dropdownbutton-lobby-players-handicap-tooltip
 						DropDownButton@SPAWN_DROPDOWN:
 							X: 571
 							Width: 50
@@ -254,7 +254,7 @@ Container@LOBBY_PLAYER_BIN:
 									X: 40
 									Width: 50
 									Height: 25
-									Text: label-faction-factionname
+									Text: label-lobby-players-faction
 						Label@TEAM:
 							X: 435
 							Width: 44
@@ -277,7 +277,7 @@ Container@LOBBY_PLAYER_BIN:
 							Height: 25
 							Font: Regular
 							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipText: dropdownbutton-template-noneditable-player-handicap-dropdown-tooltip
+							TooltipText: dropdownbutton-lobby-players-handicap-tooltip
 						Label@SPAWN:
 							X: 571
 							Width: 25
@@ -307,7 +307,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 15
 							Width: 190
 							Height: 25
-							Text: dropdownbutton-template-empty-slot-options
+							Text: label-lobby-players-name
 							Font: Regular
 							Visible: false
 						Label@NAME:
@@ -319,7 +319,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 210
 							Width: 438
 							Height: 25
-							Text: button-template-empty-join
+							Text: button-lobby-players-join
 							Font: Regular
 				Container@TEMPLATE_EDITABLE_SPECTATOR:
 					X: 5
@@ -368,7 +368,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 210
 							Width: 441
 							Height: 25
-							Text: label-template-editable-spectator
+							Text: label-lobby-players-spectator
 							Align: Center
 							Font: Bold
 						Image@STATUS_IMAGE:
@@ -449,7 +449,7 @@ Container@LOBBY_PLAYER_BIN:
 							X: 210
 							Width: 441
 							Height: 25
-							Text: label-template-noneditable-spectator
+							Text: label-lobby-players-spectator
 							Align: Center
 							Font: Bold
 						Image@STATUS_IMAGE:
@@ -471,11 +471,11 @@ Container@LOBBY_PLAYER_BIN:
 							Width: 190
 							Height: 20
 							Font: Regular
-							Text: checkbox-template-new-spectator-toggle-spectators
+							Text: checkbox-lobby-players-new-spectator-toggle
 						Button@SPECTATE:
 							X: 210
 							Width: 438
 							Height: 25
-							Text: button-template-new-spectator-spectate
+							Text: button-lobby-players-spectate
 							Font: Regular
 

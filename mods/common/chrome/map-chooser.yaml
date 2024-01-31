@@ -184,7 +184,7 @@ Background@MAPCHOOSER_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: button-mapchooser-panel-cancel
+			Text: button-back
 			Font: Bold
 			Key: escape
 		TooltipContainer@TOOLTIP_CONTAINER:

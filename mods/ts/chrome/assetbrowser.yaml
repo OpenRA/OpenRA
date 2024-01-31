@@ -12,7 +12,7 @@ Background@ASSETBROWSER_PANEL:
 			Height: 25
 			Font: Bold
 			Align: Center
-			Text: label-assetbrowser-panel-title
+			Text: label-assetbrowser-title
 		Label@SOURCE_SELECTOR_DESC:
 			X: 20
 			Y: 36
@@ -20,21 +20,21 @@ Background@ASSETBROWSER_PANEL:
 			Height: 25
 			Font: TinyBold
 			Align: Center
-			Text: label-assetbrowser-panel-source-selector-desc
+			Text: label-assetbrowser-source-selector-desc
 		DropDownButton@SOURCE_SELECTOR:
 			X: 20
 			Y: 60
 			Width: 195
 			Height: 25
 			Font: Bold
-			Text: dropdownbutton-assetbrowser-panel-source-selector
+			Text: dropdownbutton-assetbrowser-source-selector
 		DropDownButton@ASSET_TYPES_DROPDOWN:
 			X: 20
 			Y: 90
 			Width: 195
 			Height: 25
 			Font: Bold
-			Text: dropdownbutton-assetbrowser-panel-asset-types-dropdown
+			Text: dropdownbutton-assetbrowser-asset-types-dropdown
 		Label@FILENAME_DESC:
 			X: 20
 			Y: 115
@@ -42,7 +42,7 @@ Background@ASSETBROWSER_PANEL:
 			Height: 25
 			Font: TinyBold
 			Align: Center
-			Text: label-assetbrowser-panel-filename-desc
+			Text: label-assetbrowser-filename-desc
 		TextField@FILENAME_INPUT:
 			X: 20
 			Y: 140
@@ -76,7 +76,7 @@ Background@ASSETBROWSER_PANEL:
 			Height: 25
 			Font: Bold
 			Align: Left
-			Text: label-assetbrowser-panel-sprite-scale
+			Text: label-assetbrowser-sprite-scale
 		Slider@SPRITE_SCALE_SLIDER:
 			X: PARENT_RIGHT - WIDTH - 330
 			Y: 62
@@ -91,7 +91,7 @@ Background@ASSETBROWSER_PANEL:
 			Height: 25
 			Font: Bold
 			Align: Left
-			Text: label-assetbrowser-panel-model-scale
+			Text: label-assetbrowser-model-scale
 		Slider@MODEL_SCALE_SLIDER:
 			X: PARENT_RIGHT - WIDTH - 330
 			Y: 62
@@ -106,7 +106,7 @@ Background@ASSETBROWSER_PANEL:
 			Height: 25
 			Font: Bold
 			Align: Right
-			Text: label-assetbrowser-panel-palette-desc
+			Text: label-assetbrowser-palette-desc
 		DropDownButton@PALETTE_SELECTOR:
 			X: PARENT_RIGHT - WIDTH - 110
 			Y: 60
@@ -150,7 +150,7 @@ Background@ASSETBROWSER_PANEL:
 					Height: PARENT_BOTTOM
 					Align: Center
 					Visible: false
-					Text: label-sprite-bg-error
+					Text: label-assetbrowser-sprite-bg-error
 		Container@FRAME_SELECTOR:
 			X: 226
 			Y: PARENT_BOTTOM - 75
@@ -279,7 +279,7 @@ Background@ASSETBROWSER_PANEL:
 			Width: 160
 			Height: 25
 			Font: Bold
-			Text: button-assetbrowser-panel-close
+			Text: button-back
 		TooltipContainer@TOOLTIP_CONTAINER:
 
 ScrollPanel@ASSET_TYPES_PANEL:

@@ -49,7 +49,7 @@ Container@DIRECTCONNECT_PANEL:
 			Y: 89
 			Width: 140
 			Height: 35
-			Text: button-directconnect-panel-back
+			Text: button-cancel
 		Button@JOIN_BUTTON:
 			Key: return
 			X: 230

@@ -179,7 +179,7 @@ Background@THREEBUTTON_PROMPT:
 			Y: 40
 			Width: 140
 			Height: 35
-			Text: button-threebutton-prompt-confirm
+			Text: button-prompt-confirm
 			Visible: false
 		Button@OTHER_BUTTON:
 			Key: r
@@ -187,14 +187,14 @@ Background@THREEBUTTON_PROMPT:
 			Y: 40
 			Width: 140
 			Height: 35
-			Text: button-threebutton-prompt-other
+			Text: button-prompt-other
 			Visible: false
 		Button@CANCEL_BUTTON:
 			Key: escape
 			Y: 40
 			Width: 140
 			Height: 35
-			Text: button-threebutton-prompt-cancel
+			Text: button-cancel
 			Visible: false
 
 Background@TWOBUTTON_PROMPT:
@@ -222,7 +222,7 @@ Background@TWOBUTTON_PROMPT:
 			Y: 30
 			Width: 140
 			Height: 35
-			Text: button-twobutton-prompt-cancel
+			Text: button-cancel
 			Visible: false
 		Button@CONFIRM_BUTTON:
 			Key: return
@@ -230,7 +230,7 @@ Background@TWOBUTTON_PROMPT:
 			Y: 30
 			Width: 140
 			Height: 35
-			Text: button-twobutton-prompt-confirm
+			Text: button-prompt-confirm
 			Visible: false
 
 Container@TEXT_INPUT_PROMPT:
@@ -276,7 +276,7 @@ Container@TEXT_INPUT_PROMPT:
 			Y: PARENT_BOTTOM - 1
 			Width: 160
 			Height: 35
-			Text: button-text-input-prompt-cancel
+			Text: button-cancel
 			Font: Bold
 			Key: escape
 

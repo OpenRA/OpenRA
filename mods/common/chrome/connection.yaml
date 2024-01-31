@@ -44,7 +44,7 @@ Background@CONNECTIONFAILED_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: button-connectionfailed-panel-retry
+			Text: button-retry
 			Font: Bold
 			Key: return
 		Button@ABORT_BUTTON:
@@ -60,7 +60,7 @@ Background@CONNECTIONFAILED_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: button-connectionfailed-panel-quit
+			Text: button-quit
 			Font: Bold
 			Key: escape
 

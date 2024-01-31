@@ -223,7 +223,7 @@ Container@ASSETBROWSER_PANEL:
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: button-assetbrowser-panel-close
+			Text: button-back
 		TooltipContainer@TOOLTIP_CONTAINER:
 
 ScrollPanel@ASSET_TYPES_PANEL:

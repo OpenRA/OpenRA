@@ -42,7 +42,7 @@ Background@REPLAYBROWSER_PANEL:
 							Y: 30
 							Width: PARENT_RIGHT - 85
 							Height: 25
-							Text: dropdownbutton-filters-flt-gametype
+							Text: dropdownbutton-filters-any
 						Label@FLT_DATE_DESC:
 							X: 0
 							Y: 60
@@ -55,7 +55,7 @@ Background@REPLAYBROWSER_PANEL:
 							Y: 60
 							Width: PARENT_RIGHT - 85
 							Height: 25
-							Text: dropdownbutton-filters-flt-date
+							Text: dropdownbutton-filters-any
 						Label@FLT_DURATION_DESC:
 							X: 0
 							Y: 90
@@ -68,7 +68,7 @@ Background@REPLAYBROWSER_PANEL:
 							Y: 90
 							Width: PARENT_RIGHT - 85
 							Height: 25
-							Text: dropdownbutton-filters-flt-duration
+							Text: dropdownbutton-filters-any
 						Label@FLT_MAPNAME_DESC:
 							X: 0
 							Y: 120
@@ -81,7 +81,7 @@ Background@REPLAYBROWSER_PANEL:
 							Y: 120
 							Width: PARENT_RIGHT - 85
 							Height: 25
-							Text: dropdownbutton-filters-flt-mapname
+							Text: dropdownbutton-filters-any
 						Label@FLT_PLAYER_DESC:
 							X: 0
 							Y: 150
@@ -107,7 +107,7 @@ Background@REPLAYBROWSER_PANEL:
 							Y: 180
 							Width: PARENT_RIGHT - 85
 							Height: 25
-							Text: dropdownbutton-filters-flt-outcome
+							Text: dropdownbutton-filters-any
 						Label@FLT_FACTION_DESC:
 							X: 0
 							Y: 210
@@ -120,7 +120,7 @@ Background@REPLAYBROWSER_PANEL:
 							Y: 210
 							Width: PARENT_RIGHT - 85
 							Height: 25
-							Text: dropdownbutton-filters-flt-faction
+							Text: dropdownbutton-filters-any
 						Button@FLT_RESET_BUTTON:
 							X: 85
 							Y: 250
@@ -263,7 +263,7 @@ Background@REPLAYBROWSER_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: button-replaybrowser-panel-cancel
+			Text: button-back
 			Font: Bold
 			Key: escape
 		TooltipContainer@TOOLTIP_CONTAINER:

@@ -19,13 +19,13 @@ Container@SETTINGS_PANEL:
 			Font: BigBold
 			Contrast: true
 			Align: Center
-			Text: label-settings-panel-title
+			Text: button-settings-title
 		Button@BACK_BUTTON:
 			Key: escape
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: button-settings-panel-back
+			Text: button-back
 		Button@RESET_BUTTON:
 			X: 150
 			Y: PARENT_BOTTOM - 1

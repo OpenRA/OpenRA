@@ -11,7 +11,7 @@ Container@LOBBY_MUSIC_BIN:
 				Label@MUSIC:
 					Width: 268
 					Height: 25
-					Text: label-container-music
+					Text: label-music-title
 					Align: Center
 					Font: Bold
 				Label@TITLE:
@@ -24,7 +24,7 @@ Container@LOBBY_MUSIC_BIN:
 					X: PARENT_RIGHT - 80
 					Height: 25
 					Width: 50
-					Text: label-container-length
+					Text: label-music-controls-length
 					Font: Bold
 					Align: Right
 		Background@CONTROLS:
@@ -115,20 +115,20 @@ Container@LOBBY_MUSIC_BIN:
 					Width: 85
 					Height: 20
 					Font: Regular
-					Text: checkbox-controls-shuffle
+					Text: checkbox-music-controls-shuffle
 				Checkbox@REPEAT:
 					X: PARENT_RIGHT - 15 - WIDTH
 					Y: 150
 					Width: 70
 					Height: 20
 					Font: Regular
-					Text: checkbox-controls-repeat
+					Text: checkbox-music-controls-loop
 				Label@VOLUME_LABEL:
 					Y: 181
 					Width: 65
 					Height: 25
 					Align: Right
-					Text: label-controls-volume
+					Text: label-music-controls-volume
 				ExponentialSlider@MUSIC_SLIDER:
 					X: 70
 					Y: 186

@@ -94,7 +94,7 @@ Container@AUDIO_PANEL:
 								Label@MUSIC_LABEL:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: label-music-volume-container
+									Text: label-music-title-volume-container
 								ExponentialSlider@MUSIC_VOLUME:
 									Y: 25
 									Width: PARENT_RIGHT

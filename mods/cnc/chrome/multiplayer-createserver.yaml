@@ -215,13 +215,13 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: button-multiplayer-createserver-panel-back
+			Text: button-back
 		Button@MAP_BUTTON:
 			X: PARENT_RIGHT - WIDTH - 150
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: button-multiplayer-createserver-panel-map
+			Text: button-multiplayer-createserver-panel-change-map
 		Button@CREATE_BUTTON:
 			Key: return
 			X: PARENT_RIGHT - WIDTH

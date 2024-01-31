@@ -1,13 +1,12 @@
 ## assetbrowser.yaml
-label-assetbrowser-panel-title = Asset Browser
-label-assetbrowser-panel-source-selector-desc = Select asset source
-dropdownbutton-assetbrowser-panel-source-selector = Folders
-dropdownbutton-assetbrowser-panel-asset-types-dropdown = Asset types
-label-assetbrowser-panel-filename-desc = Filter by name
-label-assetbrowser-panel-sprite-scale = Scale:
-label-assetbrowser-panel-palette-desc = Palette:
-label-sprite-bg-error = Error displaying file. See assetbrowser.log for details.
-button-assetbrowser-panel-close = Close
+label-assetbrowser-title = Asset Browser
+label-assetbrowser-source-selector-desc = Select asset source
+dropdownbutton-assetbrowser-source-selector = Folders
+dropdownbutton-assetbrowser-asset-types-dropdown = Asset types
+label-assetbrowser-filename-desc = Filter by name
+label-assetbrowser-sprite-scale = Scale:
+label-assetbrowser-palette-desc = Palette:
+label-assetbrowser-sprite-bg-error = Error displaying file. See assetbrowser.log for details.
 
 ## color-picker.yaml
 button-color-chooser-random = Random
@@ -18,19 +17,13 @@ label-preset-header = Preset Colors
 label-custom-header = Custom Colors
 
 ## confirmation-dialogs.yaml
-button-threebutton-prompt-confirm = Confirm
-button-threebutton-prompt-other = Restart
-button-threebutton-prompt-cancel = Cancel
-button-twobutton-prompt-confirm = Confirm
-button-twobutton-prompt-cancel = Cancel
+button-prompt-confirm = Confirm
+button-prompt-other = Restart
 button-text-input-prompt-accept = OK
-button-text-input-prompt-cancel = Cancel
 
 ## connection.yaml
 label-connectionfailed-panel-password = Password:
-button-connectionfailed-panel-retry = Retry
 button-connectionfailed-panel-abort = Abort
-button-connectionfailed-panel-quit = Quit
 label-connecting-panel-title = Connecting
 button-connecting-panel-abort = Abort
 label-connection-switchmod-panel-title = Switch Mod
@@ -39,10 +32,9 @@ label-connection-switchmod-panel-desc2 = Switch mods and join server?
 button-connection-switchmod-panel-switch = Switch
 button-connection-switchmod-panel-abort = Abort
 
-## credits.yaml
-label-credits-panel-title = Credits
-button-tab-container-engine = OpenRA
-button-credits-panel-back = Close
+## credits.yaml, mainmenu.yaml
+label-openra = OpenRA
+label-credits-title = Credits
 
 ## editor.yaml
 label-new-map-bg-title = New Map
@@ -50,7 +42,6 @@ label-new-map-bg-tileset = Tileset:
 label-new-map-bg-width = Width:
 label-new-map-bg-height = Height:
 button-new-map-bg-create = Create
-button-new-map-bg-cancel = Cancel
 
 label-save-map-panel-title =
    .label = Save Map
@@ -62,15 +53,12 @@ dropdownbutton-save-map-panel-visibility-dropdown = Map Visibility
 label-save-map-panel-directory = Directory:
 label-save-map-panel-filename = Filename:
 button-save-map-panel = Save
-button-save-map-panel-back = Cancel
 label-actor-edit-panel-id = ID
 button-container-delete = Delete
-button-container-cancel = Cancel
 button-container-ok = OK
 label-tiles-bg-search = Search:
-label-tiles-bg-categories = Filter:
+label-bg-filter = Filter:
 label-actors-bg-search = Search:
-label-actors-bg-categories = Filter:
 label-actors-bg-owners = Owner:
 label-area-selection = Area Selection
 label-area-info = Area Info
@@ -80,27 +68,15 @@ label-copy-filters = Copy Filters
 label-filter-terrain = Terrain
 label-filter-resources = Resources
 label-filter-actors = Actors
-button-selection-cancel = Cancel
 label-show-tile-grid = Show Tile Grid
 label-show-buildable-area = Show Buildable Area
 
-button-map-editor-tab-container-select =
-   .tooltip = Select
-
-button-map-editor-tab-container-tiles =
-   .tooltip = Tiles
-
-button-map-editor-tab-container-overlays =
-   .tooltip = Overlays
-
-button-map-editor-tab-container-actors =
-   .tooltip = Actors
-
-button-map-editor-tab-container-tools =
-   .tooltip = Tools
-
-button-map-editor-tab-container-history =
-   .tooltip = History
+button-map-editor-tab-container-select-tooltip = Select
+button-map-editor-tab-container-tiles-tooltip = Tiles
+button-map-editor-tab-container-overlays-tooltip = Overlays
+button-map-editor-tab-container-actors-tooltip = Actors
+button-map-editor-tab-container-tools-tooltip = Tools
+button-map-editor-tab-container-history-tooltip = History
 
 button-editor-world-root-options =
    .label = Menu
@@ -129,7 +105,6 @@ button-select-categories-buttons-none = None
 label-gamesave-browser-panel-load-title = Load game
 label-gamesave-browser-panel-save-title = Save game
 label-gamesave-browser-panel-title = [CREATE NEW FILE]
-button-gamesave-browser-panel-cancel = Back
 button-gamesave-browser-panel-delete-all = Delete All
 button-gamesave-browser-panel-delete = Delete
 button-gamesave-browser-panel-rename = Rename
@@ -177,7 +152,7 @@ label-script-error-panel-descc = Please send this file to the map author so that
 ## ingame-infostats.yaml
 label-objective-mission = Mission:
 checkbox-objective-stats = Destroy all opposition!
-label-stats-name = Player
+label-stats-player = Player
 label-stats-faction = Faction
 label-stats-score = Score
 label-stats-actions = Actions
@@ -189,18 +164,15 @@ label-menu-buttons-title = Options
 label-kick-client-dialog-texta = You may also apply a temporary ban, preventing
 label-kick-client-dialog-textb = them from joining for the remainder of this game.
 checkbox-kick-client-dialog-prevent-rejoining = Temporarily Ban
-button-kick-client-dialog-ok = Kick
-button-kick-client-dialog-cancel = Cancel
+button-kick-client-dialog = Kick
 label-kick-spectators-dialog-title = Kick Spectators
 button-kick-spectators-dialog-ok = Ok
-button-kick-spectators-dialog-cancel = Cancel
 label-force-start-dialog-title = Start Game?
 label-force-start-dialog-texta = One or more players are not yet ready.
 label-force-start-dialog-textb = Are you sure that you want to force start the game?
 label-kick-warning-a = One or more clients are missing the selected
 label-kick-warning-b = map, and will be kicked from the server.
-button-force-start-dialog-ok = Start
-button-force-start-dialog-cancel = Cancel
+button-force-start-dialog-start = Start
 
 ## lobby-mappreview.yaml
 label-map-incompatible-status-a = This map is not compatible
@@ -217,13 +189,15 @@ label-map-update-available-a = A new version of the map
 label-map-update-available-b = was found on your computer
 
 ## lobby-music.yaml
-label-container-music = Music
-label-container-length = Length
-checkbox-controls-shuffle = Shuffle
-checkbox-controls-repeat = Loop
-label-controls-volume = Volume:
+label-music-controls-volume = Volume:
+
+## lobby-music.yaml, lobby.yaml, mainmenu.yaml
+label-music-title = Music
 
 ## lobby-music.yaml, musicplayer.yaml
+label-music-controls-length = Length
+checkbox-music-controls-shuffle = Shuffle
+checkbox-music-controls-loop = Loop
 label-container-title = Track
 label-no-music-title = Music Not Installed
 label-no-music-desca = The game music can be installed
@@ -233,30 +207,18 @@ label-no-music-descb = from the "Manage Content" menu.
 label-lobby-options-bin-title = Map Options
 
 ## lobby-players.yaml
-label-container-lobby-name = Name
-label-container-lobby-color = Color
-label-container-lobby-faction = Faction
-label-container-lobby-team = Team
-label-container-lobby-handicap = Handicap
-label-container-lobby-spawn = Spawn
-label-container-lobby-status = Ready
-dropdownbutton-template-editable-player-slot-options = Name
-label-template-editable-player-factionname = Faction
-dropdownbutton-template-editable-player-team-dropdown = Team
-dropdownbutton-template-editable-player-handicap-dropdown-tooltip = A handicap decreases the combat effectiveness of the player's forces
-dropdownbutton-template-editable-player-spawn-dropdown = Spawn
-label-template-noneditable-player-name = Name
-label-faction-factionname = Faction
-label-template-noneditable-player-team = Team
-dropdownbutton-template-noneditable-player-handicap-dropdown-tooltip = A handicap decreases the combat effectiveness of the player's forces
-label-template-empty-name = Name
-dropdownbutton-template-empty-slot-options = Name
-button-template-empty-join = Play in this slot
-label-template-editable-spectator = Spectator
-label-template-noneditable-spectator-name = Name
-label-template-noneditable-spectator = Spectator
-checkbox-template-new-spectator-toggle-spectators = Allow Spectators?
-button-template-new-spectator-spectate = Spectate
+label-lobby-players-name = Name
+label-lobby-players-color = Color
+label-lobby-players-faction = Faction
+label-lobby-players-team = Team
+label-lobby-players-handicap = Handicap
+label-lobby-players-spawn = Spawn
+label-lobby-players-ready = Ready
+dropdownbutton-lobby-players-handicap-tooltip = A handicap decreases the combat effectiveness of the player's forces
+button-lobby-players-join = Play in this slot
+label-lobby-players-spectator = Spectator
+checkbox-lobby-players-new-spectator-toggle = Allow Spectators?
+button-lobby-players-spectate = Spectate
 
 ## lobby-servers.yaml
 image-lobby-servers-bin-password-protected-tooltip = Requires Password
@@ -264,7 +226,7 @@ image-lobby-servers-bin-requires-authentication-tooltip = Requires OpenRA forum 
 dropdownbutton-lobby-servers-bin-filters = Filter Games
 
 ## lobby-servers.yaml, multiplayer-browser.yaml
-label-container-name = Server
+label-container-server = Server
 label-container-players = Players
 label-container-location = Location
 label-container-status = Status
@@ -277,10 +239,8 @@ dropdownbutton-server-lobby-slots = Slot Admin
 button-server-lobby-reset-options = Reset Defaults
 button-skirmish-tabs-players-tab = Players
 button-skirmish-tabs-options-tab = Options
-button-skirmish-tabs-music-tab = Music
 button-multiplayer-tabs-players-tab = Players
 button-multiplayer-tabs-options-tab = Options
-button-multiplayer-tabs-music-tab = Music
 button-multiplayer-tabs-servers-tab = Servers
 button-server-lobby-changemap = Change Map
 
@@ -295,20 +255,18 @@ button-server-lobby-disconnect = Leave Game
 label-mainmenu-introduction-prompt-title = Establishing Battlefield Control
 label-mainmenu-introduction-prompt-desc-a = Welcome back Commander! Initialize combat parameters using the options below.
 label-mainmenu-introduction-prompt-desc-b = Additional options can be configured later from the Settings menu.
-button-mainmenu-introduction-prompt-continue = Continue
 label-mainmenu-system-info-prompt-title = Establishing Battlefield Control
 label-mainmenu-system-info-prompt-text-a = We would like to collect some system details that will help us optimize OpenRA.
 label-mainmenu-system-info-prompt-text-b = With your permission, the following anonymous data will be sent each game launch:
 checkbox-mainmenu-system-info-prompt-sysinfo = Send System Information
-button-mainmenu-system-info-prompt-continue = Continue
 
 ## mainmenu-prompts.yaml, settings-display.yaml
 label-profile-section-header = Profile
 label-player-container = Player Name:
 label-playercolor-container-color = Preferred Color:
 label-display-section-header = Display
-label-battlefield-camera-dropdown-container = Battlefield Camera:
-label-ui-scale-dropdown-container = UI Scale:
+label-battlefield-camera-dropdown = Battlefield Camera:
+label-ui-scale-dropdown = UI Scale:
 checkbox-cursordouble-container = Increase Cursor Size
 
 ## mainmenu-prompts.yaml, settings-input.yaml
@@ -335,32 +293,28 @@ label-mouse-control-desc-modern-edgescroll = or by moving the cursor to the edge
 checkbox-edgescroll-container = Screen Edge Panning
 
 ## mainmenu.yaml
-label-main-menu-mainmenu-title = OpenRA
-button-main-menu-singleplayer = Singleplayer
-button-main-menu-multiplayer = Multiplayer
-button-main-menu-settings = Settings
-button-main-menu-extras = Extras
+label-singleplayer-title = Singleplayer
+button-extras-title = Extras
 button-main-menu-content = Manage Content
-button-main-menu-quit = Quit
-label-singleplayer-menu-title = Singleplayer
 button-singleplayer-menu-skirmish = Skirmish
-button-singleplayer-menu-missions = Missions
 button-singleplayer-menu-load = Load
-button-singleplayer-menu-back = Back
-label-extras-menu-title = Extras
 button-extras-menu-replays = Replays
-button-extras-menu-music = Music
-button-extras-menu-map-editor = Map Editor
+label-map-editor-title = Map Editor
 button-extras-menu-assetbrowser = Asset Browser
-button-extras-menu-credits = Credits
-button-extras-menu-back = Back
-label-map-editor-menu-title = Map Editor
-button-map-editor-menu-new = New Map
-button-map-editor-menu-load = Load Map
-button-map-editor-menu-back = Back
+button-map-editor-new-map = New Map
+button-map-editor-load-map = Load Map
 dropdownbutton-news-bg-button = Battlefield News
 label-update-notice-a = You are running an outdated version of OpenRA.
 label-update-notice-b = Download the latest version from www.openra.net
+
+## mainmenu.yaml, missionbrowser.yaml
+label-missions-title = Missions
+
+## mainmenu.yaml, multiplayer-browser.yaml
+label-multiplayer-title = Multiplayer
+
+## mainmenu.yaml, settings.yaml
+button-settings-title = Settings
 
 ## map-chooser.yaml
 label-mapchooser-panel-title = Choose Map
@@ -374,28 +328,23 @@ button-mapchooser-panel-randommap = Random Map
 button-mapchooser-panel-delete-map = Delete Map
 button-mapchooser-panel-delete-all-maps = Delete All Maps
 button-mapchooser-panel-ok = Ok
-button-mapchooser-panel-cancel = Back
 
 ## missionbrowser.yaml
-label-missionbrowser-panel-title = Missions
 button-missionbrowser-panel-start-briefing-video = Watch Briefing
 button-missionbrowser-panel-stop-briefing-video = Stop Briefing
 button-missionbrowser-panel-start-info-video = Watch Info Video
 button-missionbrowser-panel-stop-info-video = Stop Info Video
-button-missionbrowser-panel-startgame = Play
-button-missionbrowser-panel-back = Back
+button-missionbrowser-panel-play = Play
 button-missionbrowser-panel-mission-info = Mission Info
 button-missionbrowser-panel-mission-options = Options
 
 ## multiplayer-browser.yaml
-label-multiplayer-panel-title = Multiplayer
 image-multiplayer-panel-password-protected-tooltip = Requires Password
 image-multiplayer-panel-requires-authentication-tooltip = Requires OpenRA forum account
 button-selected-server-join = Join
 dropdownbutton-multiplayer-panel-filters = Filter Games
 button-multiplayer-panel-directconnect = Direct IP
 button-multiplayer-panel-create = Create
-button-multiplayer-panel-back = Back
 
 ## multiplayer-browserpanels.yaml
 checkbox-multiplayer-filter-panel-waiting-for-players = Waiting
@@ -425,24 +374,16 @@ label-notices-upnp-advertising = - Game will be advertised to the Local Area Net
 label-notices-upnp-firewall = - You must manually configure your firewall to allow connections.
 label-notices-upnp-portforward-a = - Game will automatically configure port forwarding.
 label-notices-upnp-settings-a = - You can disable UPnP/NAT-PMP in the settings menu.
-button-multiplayer-createserver-panel-map = Change Map
-button-multiplayer-createserver-panel-back = Back
+button-multiplayer-createserver-panel-change-map = Change Map
 button-multiplayer-createserver-panel-create = Create
 
 ## multiplayer-directconnect.yaml
 label-directconnect-panel-title = Connect to Server
 label-directconnect-panel-address = Server Address:
 button-directconnect-panel-join = Join
-button-directconnect-panel-back = Cancel
-
-## musicplayer.yaml
-label-container-type = Length
-checkbox-music-panel-shuffle = Shuffle
-checkbox-music-panel-repeat = Loop
-button-music-panel-back = Close
 
 ## playerprofile.yaml
-button-profile-header-destroy-key = Logout
+button-profile-header-logout = Logout
 label-generate-keys-desc-a = Connect to a forum account to identify
 label-generate-keys-desc-b = yourself to other players, join private
 label-generate-keys-desc-c = servers, and display badges.
@@ -452,34 +393,25 @@ label-generating-keys-desc-b = This will take several seconds...
 label-register-fingerprint-desc-a = An authentication key has been copied to your
 label-register-fingerprint-desc-b = clipboard. Add this to your User Control Panel
 label-register-fingerprint-desc-c = on the OpenRA forum then press Continue.
-button-register-fingerprint-delete-key = Cancel
-button-register-fingerprint-check-key = Continue
 label-checking-fingerprint-desc-a = Querying account details from
 label-checking-fingerprint-desc-b = the OpenRA forum...
 label-fingerprint-not-found-desc-a = Your authentication key is not connected
 label-fingerprint-not-found-desc-b = to an OpenRA forum account.
-button-fingerprint-not-found-continue = Back
 label-connection-error-desc-a = Failed to connect to the OpenRA forum.
 label-connection-error-desc-b = Please check your internet connection.
-button-connection-error-retry = Retry
 
 ## replaybrowser.yaml
 label-replaybrowser-panel-title = Replay Viewer
 label-filters-title = Filter
 label-filters-flt-gametype-desc = Type:
-dropdownbutton-filters-flt-gametype = Any
+dropdownbutton-filters-any = Any
 label-filters-flt-date-desc = Date:
-dropdownbutton-filters-flt-date = Any
 label-filters-flt-duration-desc = Duration:
-dropdownbutton-filters-flt-duration = Any
 label-filters-flt-mapname-desc = Map:
-dropdownbutton-filters-flt-mapname = Any
 label-filters-flt-player-desc = Player:
 dropdownbutton-filters-flt-player = Anyone
 label-filters-flt-outcome-desc = Outcome:
-dropdownbutton-filters-flt-outcome = Any
 label-filters-flt-faction-desc = Faction:
-dropdownbutton-filters-flt-faction = Any
 button-filters-flt-reset = Reset Filters
 label-management-manage-title = Manage
 button-management-mng-rensel = Rename
@@ -487,7 +419,6 @@ button-management-mng-delsel = Delete
 button-management-mng-delall = Delete All
 label-replay-list-container-replaybrowser-title = Choose Replay
 button-replaybrowser-panel-watch = Watch
-button-replaybrowser-panel-cancel = Back
 
 ## settings-advanced.yaml
 label-network-section-header = Advanced
@@ -519,7 +450,7 @@ checkbox-mute-background-music-container =
    .label = Mute Menu Music
    .tooltip = Mute background music when no specific track is playing
 
-label-music-volume-container = Music Volume:
+label-music-title-volume-container = Music Volume:
 label-audio-device-container = Audio Device:
 label-video-volume-container = Video Volume:
 label-restart-required-container-audio-desc = Device changes will be applied after the game is restarted
@@ -579,9 +510,7 @@ label-zoomspeed-slider-container-zoom-speed = Zoom Speed:
 label-ui-scrollspeed-slider-container-scroll-speed = UI Scroll Speed:
 
 ## settings.yaml
-label-settings-panel-title = Settings
 button-settings-panel-reset = Reset
-button-settings-panel-back = Back
 
 ## tooltips.yaml
 label-latency-tooltip-prefix = Latency:

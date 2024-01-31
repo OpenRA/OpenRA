@@ -38,7 +38,7 @@ Container@SKIRMISH_STATS:
 					Y: 1
 					Width: 210
 					Height: 25
-					Text: label-stats-name
+					Text: label-stats-player
 					Font: Bold
 				Label@FACTION:
 					X: 230
@@ -138,7 +138,6 @@ Container@SKIRMISH_STATS:
 							Height: 25
 							Background: checkbox-toggle
 							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipText: button-player-template-kick-tooltip
 							Children:
 								Image:
 									ImageCollection: lobby-bits
@@ -181,7 +180,6 @@ Container@SKIRMISH_STATS:
 							Height: 25
 							Background: checkbox-toggle
 							TooltipContainer: TOOLTIP_CONTAINER
-							TooltipText: button-spectator-template-kick-tooltip
 							Children:
 								Image:
 									ImageCollection: lobby-bits

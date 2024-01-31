@@ -9,7 +9,7 @@ Background@MISSIONBROWSER_PANEL:
 			Y: 20
 			Width: PARENT_RIGHT
 			Height: 25
-			Text: label-missionbrowser-panel-title
+			Text: label-missions-title
 			Align: Center
 			Font: Bold
 		ScrollPanel@MISSION_LIST:
@@ -177,14 +177,14 @@ Background@MISSIONBROWSER_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: button-missionbrowser-panel-startgame
+			Text: button-missionbrowser-panel-play
 			Font: Bold
 		Button@BACK_BUTTON:
 			X: PARENT_RIGHT - 140
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: button-missionbrowser-panel-back
+			Text: button-back
 			Font: Bold
 			Key: escape
 		Background@MISSION_BIN:

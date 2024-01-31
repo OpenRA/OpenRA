@@ -63,25 +63,25 @@ Container@MENU_BACKGROUND:
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: button-main-menu-singleplayer
+							Text: label-singleplayer-title
 						Button@MULTIPLAYER_BUTTON:
 							X: 150
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: button-main-menu-multiplayer
+							Text: label-multiplayer-title
 						Button@SETTINGS_BUTTON:
 							X: 300
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: button-main-menu-settings
+							Text: button-settings-title
 						Button@EXTRAS_BUTTON:
 							X: 450
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: button-main-menu-extras
+							Text: button-extras-title
 						Button@CONTENT_BUTTON:
 							X: 600
 							Y: 0
@@ -93,7 +93,7 @@ Container@MENU_BACKGROUND:
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: button-main-menu-quit
+							Text: button-quit
 				Container@SINGLEPLAYER_MENU:
 					Width: PARENT_RIGHT
 					Visible: False
@@ -103,7 +103,7 @@ Container@MENU_BACKGROUND:
 							Y: 0 - 28
 							Width: PARENT_RIGHT
 							Height: 20
-							Text: label-singleplayer-menu-title
+							Text: label-singleplayer-title
 							Align: Center
 							Font: Bold
 							Contrast: True
@@ -118,7 +118,7 @@ Container@MENU_BACKGROUND:
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: button-singleplayer-menu-missions
+							Text: label-missions-title
 						Button@LOAD_BUTTON:
 							X: 300
 							Y: 0
@@ -131,7 +131,7 @@ Container@MENU_BACKGROUND:
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: button-singleplayer-menu-back
+							Text: button-back
 				Container@EXTRAS_MENU:
 					Width: PARENT_RIGHT
 					Visible: False
@@ -141,7 +141,7 @@ Container@MENU_BACKGROUND:
 							Y: 0 - 28
 							Width: PARENT_RIGHT
 							Height: 20
-							Text: label-extras-menu-title
+							Text: button-extras-title
 							Align: Center
 							Font: Bold
 							Contrast: True
@@ -156,13 +156,13 @@ Container@MENU_BACKGROUND:
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: button-extras-menu-music
+							Text: label-music-title
 						Button@MAP_EDITOR_BUTTON:
 							X: 300
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: button-extras-menu-map-editor
+							Text: label-map-editor-title
 							Font: Bold
 						Button@ASSETBROWSER_BUTTON:
 							X: 450
@@ -175,14 +175,14 @@ Container@MENU_BACKGROUND:
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: button-extras-menu-credits
+							Text: label-credits-title
 						Button@BACK_BUTTON:
 							Key: escape
 							X: 750
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: button-extras-menu-back
+							Text: button-back
 				Container@MAP_EDITOR_MENU:
 					Width: PARENT_RIGHT
 					Visible: False
@@ -192,7 +192,7 @@ Container@MENU_BACKGROUND:
 							Y: 0 - 28
 							Width: PARENT_RIGHT
 							Height: 20
-							Text: label-map-editor-menu-title
+							Text: label-map-editor-title
 							Align: Center
 							Font: Bold
 							Contrast: True
@@ -201,21 +201,21 @@ Container@MENU_BACKGROUND:
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: button-map-editor-menu-new
+							Text: button-map-editor-new-map
 							Font: Bold
 						Button@LOAD_MAP_BUTTON:
 							X: 150
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: button-map-editor-menu-load
+							Text: button-map-editor-load-map
 							Font: Bold
 						Button@BACK_BUTTON:
 							X: 300
 							Y: 0
 							Width: 140
 							Height: 35
-							Text: button-map-editor-menu-back
+							Text: button-back
 							Font: Bold
 							Key: escape
 		Container@NEWS_BG:

@@ -6,7 +6,7 @@ Container@MULTIPLAYER_PANEL:
 	Height: 540
 	Children:
 		Label@TITLE:
-			Text: label-multiplayer-panel-title
+			Text: label-multiplayer-title
 			Width: PARENT_RIGHT
 			Height: 25
 			Y: 0 - 34
@@ -28,7 +28,7 @@ Container@MULTIPLAYER_PANEL:
 							X: 5
 							Width: 355
 							Height: 25
-							Text: label-container-name
+							Text: label-container-server
 							Align: Center
 							Font: Bold
 						Label@PLAYERS:
@@ -259,6 +259,6 @@ Container@MULTIPLAYER_PANEL:
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: button-multiplayer-panel-back
+			Text: button-back
 		TooltipContainer@TOOLTIP_CONTAINER:
 
