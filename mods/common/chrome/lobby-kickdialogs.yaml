@@ -35,14 +35,14 @@ Background@KICK_CLIENT_DIALOG:
 			Y: 155
 			Width: 120
 			Height: 25
-			Text: button-kick-client-dialog-ok
+			Text: button-kick-client-dialog
 			Font: Bold
 		Button@CANCEL_BUTTON:
 			X: (PARENT_RIGHT - WIDTH) / 2 - 75
 			Y: 155
 			Width: 120
 			Height: 25
-			Text: button-kick-client-dialog-cancel
+			Text: button-cancel
 			Font: Bold
 
 Background@KICK_SPECTATORS_DIALOG:
@@ -76,7 +76,7 @@ Background@KICK_SPECTATORS_DIALOG:
 			Y: 155
 			Width: 120
 			Height: 25
-			Text: button-kick-spectators-dialog-cancel
+			Text: button-cancel
 			Font: Bold
 
 Background@FORCE_START_DIALOG:
@@ -129,13 +129,13 @@ Background@FORCE_START_DIALOG:
 			Y: 155
 			Width: 120
 			Height: 25
-			Text: button-force-start-dialog-ok
+			Text: button-force-start-dialog-start
 			Font: Bold
 		Button@CANCEL_BUTTON:
 			X: (PARENT_RIGHT - WIDTH) / 2 - 75
 			Y: 155
 			Width: 120
 			Height: 25
-			Text: button-force-start-dialog-cancel
+			Text: button-cancel
 			Font: Bold
 

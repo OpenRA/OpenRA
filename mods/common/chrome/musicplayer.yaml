@@ -46,7 +46,7 @@ Background@MUSIC_PANEL:
 					X: PARENT_RIGHT - WIDTH
 					Height: 25
 					Width: 95
-					Text: label-container-type
+					Text: label-music-controls-length
 					Align: Center
 					Font: Bold
 		Container@BUTTONS:
@@ -127,13 +127,13 @@ Background@MUSIC_PANEL:
 			Y: PARENT_BOTTOM - HEIGHT - 95
 			Width: 85
 			Height: 20
-			Text: checkbox-music-panel-shuffle
+			Text: checkbox-music-controls-shuffle
 		Checkbox@REPEAT:
 			X: PARENT_RIGHT - 15 - WIDTH
 			Y: PARENT_BOTTOM - HEIGHT - 95
 			Width: 70
 			Height: 20
-			Text: checkbox-music-panel-repeat
+			Text: checkbox-music-controls-loop
 		Container@NO_MUSIC_LABEL:
 			X: 20
 			Y: (PARENT_BOTTOM - HEIGHT - 95) / 2
@@ -164,7 +164,7 @@ Background@MUSIC_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: button-music-panel-back
+			Text: button-back
 			Font: Bold
 			Key: escape
 		Label@MUTE_LABEL:

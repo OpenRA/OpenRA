@@ -280,7 +280,7 @@ Container@MAINMENU_INTRODUCTION_PROMPT:
 										Label@BATTLEFIELD_CAMERA:
 											Width: PARENT_RIGHT
 											Height: 20
-											Text: label-battlefield-camera-dropdown-container
+											Text: label-battlefield-camera-dropdown
 										DropDownButton@BATTLEFIELD_CAMERA_DROPDOWN:
 											Y: 25
 											Width: PARENT_RIGHT
@@ -293,7 +293,7 @@ Container@MAINMENU_INTRODUCTION_PROMPT:
 										Label@UI_SCALE:
 											Width: PARENT_RIGHT
 											Height: 20
-											Text: label-ui-scale-dropdown-container
+											Text: label-ui-scale-dropdown
 										DropDownButton@UI_SCALE_DROPDOWN:
 											Y: 25
 											Width: PARENT_RIGHT
@@ -317,7 +317,7 @@ Container@MAINMENU_INTRODUCTION_PROMPT:
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: button-mainmenu-introduction-prompt-continue
+			Text: button-continue
 			Font: Bold
 			Key: return
 
@@ -380,7 +380,7 @@ Container@MAINMENU_SYSTEM_INFO_PROMPT:
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: button-mainmenu-system-info-prompt-continue
+			Text: button-continue
 			Font: Bold
 			Key: return
 

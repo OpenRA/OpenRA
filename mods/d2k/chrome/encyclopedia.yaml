@@ -14,7 +14,7 @@ Background@ENCYCLOPEDIA_PANEL:
 				Label@ENCYCLOPEDIA_TITLE:
 					Width: PARENT_RIGHT
 					Height: 25
-					Text: label-encyclopedia-content-title
+					Text: label-mentat-title
 					Align: Center
 					Font: Bold
 				ScrollPanel@ACTOR_LIST:

@@ -90,14 +90,14 @@ Container@CONNECTIONFAILED_PANEL:
 			Y: 84
 			Width: 140
 			Height: 35
-			Text: button-connectionfailed-panel-quit
+			Text: button-quit
 		Button@RETRY_BUTTON:
 			Key: return
 			X: 230
 			Y: 84
 			Width: 140
 			Height: 35
-			Text: button-connectionfailed-panel-retry
+			Text: button-retry
 
 Container@CONNECTION_SWITCHMOD_PANEL:
 	Logic: ConnectionSwitchModLogic

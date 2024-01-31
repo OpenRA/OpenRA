@@ -9,7 +9,7 @@ Background@MULTIPLAYER_PANEL:
 			Y: 16
 			Width: PARENT_RIGHT
 			Height: 25
-			Text: label-multiplayer-panel-title
+			Text: label-multiplayer-title
 			Align: Center
 			Font: Bold
 		Container@LABEL_CONTAINER:
@@ -22,7 +22,7 @@ Background@MULTIPLAYER_PANEL:
 					X: 5
 					Width: 347
 					Height: 25
-					Text: label-container-name
+					Text: label-container-server
 					Align: Center
 					Font: Bold
 				Label@PLAYERS:
@@ -253,7 +253,7 @@ Background@MULTIPLAYER_PANEL:
 			Y: PARENT_BOTTOM - HEIGHT - 20
 			Width: 174
 			Height: 25
-			Text: button-multiplayer-panel-back
+			Text: button-back
 			Font: Bold
 		TooltipContainer@TOOLTIP_CONTAINER:
 

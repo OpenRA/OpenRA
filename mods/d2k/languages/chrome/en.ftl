@@ -1,16 +1,8 @@
 ## encyclopedia.yaml
-label-encyclopedia-content-title = Mentat
 button-encyclopedia-panel-back = Back
 
-## ingame-infostats.yaml
-label-objective-mission = Mission:
-checkbox-objective-stats = Destroy all opposition!
-label-stats-name = Player
-label-stats-faction = Faction
-label-stats-score = Score
-label-stats-actions = Actions
-button-player-template-kick-tooltip = Kick this player
-button-spectator-template-kick-tooltip = Kick this player
+## encyclopedia.yaml, mainmenu.yaml
+label-mentat-title = Mentat
 
 ## ingame-menu.yaml
 label-menu-buttons-title = Options
@@ -187,80 +179,3 @@ button-production-types-starport-tooltip = Starport
 button-production-types-upgrade-tooltip = Upgrades
 button-production-types-scroll-up-tooltip = Scroll up
 button-production-types-scroll-down-tooltip = Scroll down
-
-## lobby-players.yaml
-label-container-lobby-name = Name
-label-container-lobby-color = Color
-label-container-lobby-faction = Faction
-label-container-lobby-team = Team
-label-container-lobby-handicap = Handicap
-label-container-lobby-spawn = Spawn
-label-container-lobby-status = Ready
-dropdownbutton-template-editable-player-slot-options = Name
-label-template-editable-player-factionname = Faction
-dropdownbutton-template-editable-player-team-dropdown = Team
-dropdownbutton-template-editable-player-handicap-dropdown-tooltip = A handicap decreases the combat effectiveness of the player's forces
-dropdownbutton-template-editable-player-spawn-dropdown = Spawn
-label-template-noneditable-player-name = Name
-label-faction-factionname = Faction
-label-template-noneditable-player-team = Team
-dropdownbutton-template-noneditable-player-handicap-dropdown-tooltip = A handicap decreases the combat effectiveness of the player's forces
-label-template-empty-name = Name
-dropdownbutton-template-empty-slot-options = Name
-button-template-empty-join = Play in this slot
-label-template-editable-spectator = Spectator
-label-template-noneditable-spectator-name = Name
-label-template-noneditable-spectator = Spectator
-checkbox-template-new-spectator-toggle-spectators = Allow Spectators?
-button-template-new-spectator-spectate = Spectate
-
-## mainmenu.yaml
-label-main-menu-mainmenu-title = OpenRA
-button-main-menu-singleplayer = Singleplayer
-button-main-menu-multiplayer = Multiplayer
-button-main-menu-settings = Settings
-button-main-menu-extras = Extras
-button-main-menu-content = Manage Content
-button-main-menu-quit = Quit
-label-singleplayer-menu-title = Singleplayer
-button-singleplayer-menu-skirmish = Skirmish
-button-singleplayer-menu-missions = Missions
-button-singleplayer-menu-load = Load
-button-singleplayer-menu-encyclopedia = Mentat
-button-singleplayer-menu-back = Back
-label-extras-menu-title = Extras
-button-extras-menu-replays = Replays
-button-extras-menu-music = Music
-button-extras-menu-map-editor = Map Editor
-button-extras-menu-assetbrowser = Asset Browser
-button-extras-menu-credits = Credits
-button-extras-menu-back = Back
-label-map-editor-menu-title = Map Editor
-button-map-editor-menu-new = New Map
-button-map-editor-menu-load = Load Map
-button-map-editor-menu-back = Back
-dropdownbutton-news-bg-button = Battlefield News
-label-update-notice-a = You are running an outdated version of OpenRA.
-label-update-notice-b = Download the latest version from www.openra.net
-
-## missionbrowser.yaml
-label-missionbrowser-panel-title = Missions
-button-missionbrowser-panel-start-briefing-video = Watch Briefing
-button-missionbrowser-panel-stop-briefing-video = Stop Briefing
-button-missionbrowser-panel-start-info-video = Watch Info Video
-button-missionbrowser-panel-stop-info-video = Stop Info Video
-button-missionbrowser-panel-startgame = Play
-button-missionbrowser-panel-back = Back
-
-## multiplayer-browserpanels.yaml
-checkbox-multiplayer-filter-panel-waiting-for-players = Waiting
-checkbox-multiplayer-filter-panel-empty = Empty
-checkbox-multiplayer-filter-panel-password-protected = Protected
-checkbox-multiplayer-filter-panel-already-started = Started
-checkbox-multiplayer-filter-panel-incompatible-version = Incompatible
-
-## tooltips.yaml
-label-latency-tooltip-prefix = Latency:
-label-anonymous-player-tooltip-name = Anonymous Player
-label-game-admin = Game Admin
-

@@ -64,7 +64,7 @@ Container@NEW_MAP_BG:
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: button-new-map-bg-cancel
+			Text: button-cancel
 			Font: Bold
 			Key: escape
 		Button@CREATE_BUTTON:
@@ -172,7 +172,7 @@ Container@SAVE_MAP_PANEL:
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: button-save-map-panel-back
+			Text: button-cancel
 			Font: Bold
 			Key: escape
 		Button@SAVE_BUTTON:
@@ -298,7 +298,7 @@ Container@EDITOR_WORLD_ROOT:
 									Y: 25
 									Width: PARENT_RIGHT - 5
 									Height: 25
-									Text: label-tiles-bg-categories
+									Text: label-bg-filter
 									Align: Right
 									Font: TinyBold
 						TextField@SEARCH_TEXTFIELD:
@@ -381,7 +381,7 @@ Container@EDITOR_WORLD_ROOT:
 									Y: 25
 									Width: PARENT_RIGHT - 5
 									Height: 25
-									Text: label-actors-bg-categories
+									Text: label-bg-filter
 									Align: Right
 									Font: TinyBold
 								Label@OWNERS_LABEL:
@@ -578,7 +578,7 @@ Container@EDITOR_WORLD_ROOT:
 							Y: 222
 							Width: 75
 							Height: 25
-							Text: button-selection-cancel
+							Text: button-cancel
 							Font: Bold
 				Container@ACTOR_EDIT_PANEL:
 					X: 0
@@ -676,7 +676,7 @@ Container@EDITOR_WORLD_ROOT:
 									X: 131
 									Width: 75
 									Height: 25
-									Text: button-container-cancel
+									Text: button-cancel
 									Font: Bold
 								Button@OK_BUTTON:
 									X: 211
@@ -697,7 +697,7 @@ Container@EDITOR_WORLD_ROOT:
 					Height: 25
 					Key: EditorSelectTab
 					TooltipTemplate: BUTTON_TOOLTIP
-					TooltipText: button-map-editor-tab-container-select.tooltip
+					TooltipText: button-map-editor-tab-container-select-tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -711,7 +711,7 @@ Container@EDITOR_WORLD_ROOT:
 					Height: 25
 					Key: EditorTilesTab
 					TooltipTemplate: BUTTON_TOOLTIP
-					TooltipText: button-map-editor-tab-container-tiles.tooltip
+					TooltipText: button-map-editor-tab-container-tiles-tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -725,7 +725,7 @@ Container@EDITOR_WORLD_ROOT:
 					Height: 25
 					Key: EditorOverlaysTab
 					TooltipTemplate: BUTTON_TOOLTIP
-					TooltipText: button-map-editor-tab-container-overlays.tooltip
+					TooltipText: button-map-editor-tab-container-overlays-tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -739,7 +739,7 @@ Container@EDITOR_WORLD_ROOT:
 					Height: 25
 					Key: EditorActorsTab
 					TooltipTemplate: BUTTON_TOOLTIP
-					TooltipText: button-map-editor-tab-container-actors.tooltip
+					TooltipText: button-map-editor-tab-container-actors-tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -753,7 +753,7 @@ Container@EDITOR_WORLD_ROOT:
 					Height: 25
 					Key: EditorToolsTab
 					TooltipTemplate: BUTTON_TOOLTIP
-					TooltipText: button-map-editor-tab-container-tools.tooltip
+					TooltipText: button-map-editor-tab-container-tools-tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:
@@ -767,7 +767,7 @@ Container@EDITOR_WORLD_ROOT:
 					Height: 25
 					Key: EditorHistoryTab
 					TooltipTemplate: BUTTON_TOOLTIP
-					TooltipText: button-map-editor-tab-container-history.tooltip
+					TooltipText: button-map-editor-tab-container-history-tooltip
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:

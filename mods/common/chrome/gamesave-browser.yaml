@@ -73,7 +73,7 @@ Background@GAMESAVE_BROWSER_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 100
 			Height: 25
-			Text: button-gamesave-browser-panel-cancel
+			Text: button-back
 			Font: Bold
 		Button@DELETE_ALL_BUTTON:
 			X: PARENT_RIGHT - 350 - WIDTH

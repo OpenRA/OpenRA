@@ -161,7 +161,7 @@ Container@MAPCHOOSER_PANEL:
 					Y: PARENT_BOTTOM - 1
 					Width: 140
 					Height: 35
-					Text: button-bg-cancel
+					Text: button-back
 				Button@RANDOMMAP_BUTTON:
 					Key: space
 					X: PARENT_RIGHT - 150 - WIDTH

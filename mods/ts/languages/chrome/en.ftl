@@ -1,47 +1,11 @@
 ## assetbrowser.yaml
-label-assetbrowser-panel-title = Asset Browser
-label-assetbrowser-panel-source-selector-desc = Select asset source
-dropdownbutton-assetbrowser-panel-source-selector = Folders
-dropdownbutton-assetbrowser-panel-asset-types-dropdown = Asset types
-label-assetbrowser-panel-filename-desc = Filter by name
-label-assetbrowser-panel-sprite-scale = Scale:
-label-assetbrowser-panel-model-scale = Scale:
-label-assetbrowser-panel-palette-desc = Palette:
-label-sprite-bg-error = Error displaying file. See assetbrowser.log for details.
+label-assetbrowser-model-scale = Scale:
 label-voxel-selector-roll = Roll
 label-voxel-selector-pitch = Pitch
 label-voxel-selector-yaw = Yaw
-button-assetbrowser-panel-close = Close
-
-## color-picker.yaml
-button-color-chooser-random = Random
-button-color-chooser-store = Store
-button-color-chooser-mixer-tab = Mixer
-button-color-chooser-palette-tab = Palette
-label-preset-header = Preset Colors
-label-custom-header = Custom Colors
 
 ## ingame-debug.yaml
-label-debug-panel-title = Debug Options
-checkbox-debug-panel-instant-build = Instant Build Speed
-checkbox-debug-panel-enable-tech = Build Everything
-checkbox-debug-panel-build-anywhere = Build Anywhere
-checkbox-debug-panel-unlimited-power = Unlimited Power
-checkbox-debug-panel-instant-charge = Instant Charge Time
-checkbox-debug-panel-disable-visibility-checks = Disable Visibility Checks
-button-debug-panel-give-cash = Give $20,000
-button-debug-panel-grow-resources = Grow Resources
-button-debug-panel-give-exploration = Clear Shroud
-button-debug-panel-reset-exploration = Reset Shroud
-label-debug-panel-visualizations-title = Visualizations
-checkbox-debug-panel-show-unit-paths = Show Unit Paths
-checkbox-debug-panel-show-customterrain-overlay = Show Custom Terrain
-checkbox-debug-panel-show-actor-tags = Show Actor Tags
 checkbox-debug-panel-show-depth-preview = Show Depth Data
-checkbox-debug-panel-show-combatoverlay = Show Combat Geometry
-checkbox-debug-panel-show-geometry = Show Render Geometry
-checkbox-debug-panel-show-terrain-overlay = Show Terrain Geometry
-checkbox-debug-panel-show-screenmap = Show Screen Map
 
 ## ingame-observer.yaml
 button-observer-widgets-options = Options (Esc)
@@ -226,19 +190,3 @@ label-mainmenu-prerelease-notification-prompt-text-b = for the community to foll
 label-mainmenu-prerelease-notification-prompt-text-c = Many features are missing or incomplete, performance has not been
 label-mainmenu-prerelease-notification-prompt-text-d = optimized, and balance will not be addressed until a future beta.
 button-mainmenu-prerelease-notification-continue = I Understand
-
-## settings-hotkeys.yaml
-label-hotkeys-panel-filter-input = Filter by name:
-label-hotkeys-panel-context-dropdown = Context:
-label-hotkey-empty-list-message = No hotkeys match the filter criteria.
-label-notices-readonly-notice = This hotkey cannot be modified
-button-hotkey-remap-dialog-override = Override
-
-button-hotkey-remap-dialog-clear =
-   .label = Clear
-   .tooltip = Unbind the hotkey
-
-button-hotkey-remap-dialog-reset =
-   .label = Reset
-   .tooltip = Reset to default
-

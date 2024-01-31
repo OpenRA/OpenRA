@@ -48,7 +48,7 @@ Container@REPLAYBROWSER_PANEL:
 									Y: 15
 									Width: PARENT_RIGHT - 85
 									Height: 25
-									Text: dropdownbutton-filters-flt-gametype
+									Text: dropdownbutton-filters-any
 								Label@FLT_DATE_DESC:
 									X: 0
 									Y: 45
@@ -61,7 +61,7 @@ Container@REPLAYBROWSER_PANEL:
 									Y: 45
 									Width: PARENT_RIGHT - 85
 									Height: 25
-									Text: dropdownbutton-filters-flt-date
+									Text: dropdownbutton-filters-any
 								Label@FLT_DURATION_DESC:
 									X: 0
 									Y: 75
@@ -74,7 +74,7 @@ Container@REPLAYBROWSER_PANEL:
 									Y: 75
 									Width: PARENT_RIGHT - 85
 									Height: 25
-									Text: dropdownbutton-filters-flt-duration
+									Text: dropdownbutton-filters-any
 								Label@FLT_MAPNAME_DESC:
 									X: 0
 									Y: 105
@@ -87,7 +87,7 @@ Container@REPLAYBROWSER_PANEL:
 									Y: 105
 									Width: PARENT_RIGHT - 85
 									Height: 25
-									Text: dropdownbutton-filters-flt-mapname
+									Text: dropdownbutton-filters-any
 								Label@FLT_PLAYER_DESC:
 									X: 0
 									Y: 135
@@ -113,7 +113,7 @@ Container@REPLAYBROWSER_PANEL:
 									Y: 165
 									Width: PARENT_RIGHT - 85
 									Height: 25
-									Text: dropdownbutton-filters-flt-outcome
+									Text: dropdownbutton-filters-any
 								Label@FLT_FACTION_DESC:
 									X: 0
 									Y: 195
@@ -126,7 +126,7 @@ Container@REPLAYBROWSER_PANEL:
 									Y: 195
 									Width: PARENT_RIGHT - 85
 									Height: 25
-									Text: dropdownbutton-filters-flt-faction
+									Text: dropdownbutton-filters-any
 								Button@FLT_RESET_BUTTON:
 									X: 85
 									Y: 235
@@ -262,7 +262,7 @@ Container@REPLAYBROWSER_PANEL:
 			Y: PARENT_BOTTOM - 1
 			Width: 140
 			Height: 35
-			Text: button-replaybrowser-panel-cancel
+			Text: button-back
 		Button@WATCH_BUTTON:
 			Key: return
 			X: PARENT_RIGHT - 140

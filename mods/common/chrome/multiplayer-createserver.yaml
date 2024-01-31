@@ -209,14 +209,14 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: button-multiplayer-createserver-panel-map
+			Text: button-multiplayer-createserver-panel-change-map
 			Font: Bold
 		Button@BACK_BUTTON:
 			X: PARENT_RIGHT - WIDTH - 20
 			Y: PARENT_BOTTOM - 45
 			Width: 120
 			Height: 25
-			Text: button-multiplayer-createserver-panel-back
+			Text: button-back
 			Font: Bold
 			Key: escape
 		Button@CREATE_BUTTON:

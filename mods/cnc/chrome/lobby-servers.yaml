@@ -11,7 +11,7 @@ Container@LOBBY_SERVERS_BIN:
 					X: 5
 					Width: 355
 					Height: 25
-					Text: label-container-name
+					Text: label-container-server
 					Align: Center
 					Font: Bold
 				Label@PLAYERS:

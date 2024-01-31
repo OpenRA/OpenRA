@@ -26,7 +26,7 @@ Container@LOCAL_PROFILE_PANEL:
 					Width: 60
 					Height: 20
 					Font: TinyBold
-					Text: button-profile-header-destroy-key
+					Text: button-profile-header-logout
 		Background@BADGES_CONTAINER:
 			Width: PARENT_RIGHT
 			Y: 48
@@ -122,14 +122,14 @@ Container@LOCAL_PROFILE_PANEL:
 					Width: 70
 					Height: 20
 					Font: TinyBold
-					Text: button-register-fingerprint-delete-key
+					Text: button-cancel
 				Button@CHECK_KEY:
 					X: 185
 					Y: 70
 					Width: 70
 					Height: 20
 					Font: TinyBold
-					Text: button-register-fingerprint-check-key
+					Text: button-continue
 		Background@CHECKING_FINGERPRINT:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
@@ -180,7 +180,7 @@ Container@LOCAL_PROFILE_PANEL:
 					Width: 70
 					Height: 20
 					Font: TinyBold
-					Text: button-fingerprint-not-found-continue
+					Text: button-back
 		Background@CONNECTION_ERROR:
 			Width: PARENT_RIGHT
 			Height: PARENT_BOTTOM
@@ -206,7 +206,7 @@ Container@LOCAL_PROFILE_PANEL:
 					Width: 70
 					Height: 20
 					Font: TinyBold
-					Text: button-connection-error-retry
+					Text: button-retry
 
 Container@PLAYER_PROFILE_BADGES_INSERT:
 	Logic: PlayerProfileBadgesLogic

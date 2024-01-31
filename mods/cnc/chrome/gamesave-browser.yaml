@@ -80,7 +80,7 @@ Container@GAMESAVE_BROWSER_PANEL:
 					Y: PARENT_BOTTOM - 1
 					Width: 140
 					Height: 35
-					Text: button-bg-cancel
+					Text: button-back
 				Button@DELETE_ALL_BUTTON:
 					X: PARENT_RIGHT - 370 - WIDTH
 					Y: PARENT_BOTTOM - 1

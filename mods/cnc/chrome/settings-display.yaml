@@ -88,7 +88,7 @@ Container@DISPLAY_PANEL:
 								Label@BATTLEFIELD_CAMERA:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: label-battlefield-camera-dropdown-container
+									Text: label-battlefield-camera-dropdown
 								DropDownButton@BATTLEFIELD_CAMERA_DROPDOWN:
 									Y: 25
 									Width: PARENT_RIGHT
@@ -118,7 +118,7 @@ Container@DISPLAY_PANEL:
 								LabelForInput@UI_SCALE:
 									Width: PARENT_RIGHT
 									Height: 20
-									Text: label-ui-scale-dropdown-container
+									Text: label-ui-scale-dropdown
 									For: UI_SCALE_DROPDOWN
 								DropDownButton@UI_SCALE_DROPDOWN:
 									Y: 25

@@ -61,7 +61,7 @@ Background@SERVER_LOBBY:
 					Width: 162
 					Height: 31
 					Font: Bold
-					Text: button-skirmish-tabs-music-tab
+					Text: label-music-title
 		Container@MULTIPLAYER_TABS:
 			X: 695 - WIDTH
 			Width: 486
@@ -86,7 +86,7 @@ Background@SERVER_LOBBY:
 					Width: 121
 					Height: 31
 					Font: Bold
-					Text: button-multiplayer-tabs-music-tab
+					Text: label-music-title
 				Button@SERVERS_TAB:
 					X: 364
 					Y: 285
