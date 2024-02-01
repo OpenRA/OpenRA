@@ -58,6 +58,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				// bind some nonfatal error handling into FieldLoader, so we don't just *explode*.
 				ObjectCreator.MissingTypeAction = s => EmitError($"Missing Type: {s}.");
 				FieldLoader.UnknownFieldAction = (s, f) => EmitError($"FieldLoader: Missing field `{s}` on `{f.Name}`.");
+				ActorInfo.OnConflictingTraitsAction = (s) => EmitError(s);
 
 				var maps = new List<(IReadWritePackage Package, string Map)>();
 				if (args.Length < 2)
