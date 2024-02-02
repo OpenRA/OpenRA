@@ -15,6 +15,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	public abstract class TooltipInfoBase : ConditionalTraitInfo, Requires<IMouseBoundsInfo>
 	{
+		[FieldLoader.Require]
 		[TranslationReference]
 		public readonly string Name;
 	}
