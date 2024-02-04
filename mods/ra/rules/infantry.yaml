@@ -665,6 +665,7 @@ THF:
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Move
 		DetectionTypes: Cloak
 		PauseOnCondition: cloak-force-disabled
+	RenderCloakAsAlpha:
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical

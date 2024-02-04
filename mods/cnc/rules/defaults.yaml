@@ -199,10 +199,9 @@
 		CloakDelay: 90
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
-		CloakStyle: Palette
-		CloakedPalette: cloak
 		PauseOnCondition: cloak-force-disabled
 		RequiresCondition: cloak-crate-collected
+	RenderCloakWithPalette:
 	ExternalCondition@CLOAK:
 		Condition: cloak-crate-collected
 	GrantConditionOnDamageState@UNCLOAK:
