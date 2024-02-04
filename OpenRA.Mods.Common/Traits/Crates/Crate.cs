@@ -91,11 +91,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			var locationInit = init.GetOrDefault<LocationInit>();
 			if (locationInit != null)
-				SetPosition(self, locationInit.Value);
+				Location = locationInit.Value;
 		}
 
 		void INotifyCreated.Created(Actor self)
 		{
+			SetPosition(self, Location);
 			notifyCenterPositionChanged = self.TraitsImplementing<INotifyCenterPositionChanged>().ToArray();
 		}
 
