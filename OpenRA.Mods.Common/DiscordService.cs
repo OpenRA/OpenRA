@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common
 	{
 		public readonly string ApplicationId = null;
 		public readonly string Tooltip = "Open Source real-time strategy game engine for early Westwood titles.";
-		DiscordRpcClient client;
+		readonly DiscordRpcClient client;
 		DiscordState currentState;
 
 		static DiscordService instance;
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common
 			if (currentState == state)
 				return;
 
-			if (instance == null)
+			if (client == null)
 				return;
 
 			string stateText;
@@ -192,6 +192,9 @@ namespace OpenRA.Mods.Common
 
 		void UpdateParty(int players, int slots)
 		{
+			if (client == null)
+				return;
+
 			if (client.CurrentPresence.Party != null)
 			{
 				client.UpdatePartySize(players, slots);
@@ -206,14 +209,18 @@ namespace OpenRA.Mods.Common
 			});
 		}
 
+		void SetDetails(string details)
+		{
+			if (client == null)
+				return;
+
+			client.UpdateDetails(details);
+		}
+
 		public void Dispose()
 		{
-			if (client != null)
-			{
-				client.Dispose();
-				client = null;
-				instance = null;
-			}
+			client?.Dispose();
+			instance = null;
 		}
 
 		public static void UpdateStatus(DiscordState state, string details = null, string secret = null, int? players = null, int? slots = null)
@@ -228,7 +235,7 @@ namespace OpenRA.Mods.Common
 
 		public static void UpdateDetails(string details)
 		{
-			Service?.client.UpdateDetails(details);
+			Service?.SetDetails(details);
 		}
 	}
 }
