@@ -534,7 +534,7 @@ namespace OpenRA
 
 		public void Dispose()
 		{
-			worldBuffer.Dispose();
+			worldBuffer?.Dispose();
 			screenBuffer.Dispose();
 			worldBufferSnapshot.Dispose();
 			tempVertexBuffer.Dispose();
