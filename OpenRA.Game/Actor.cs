@@ -72,7 +72,11 @@ namespace OpenRA
 		public IOccupySpace OccupiesSpace { get; }
 		public ITargetable[] Targetables { get; }
 		public IEnumerable<ITargetablePositions> EnabledTargetablePositions { get; }
-		public ICrushable[] Crushables { get; }
+		readonly ICrushable[] crushables;
+		public ICrushable[] Crushables
+		{
+			get => crushables ?? throw new InvalidOperationException($"Crushables for {Info.Name} are not initialized.");
+		}
 
 		public bool IsIdle => CurrentActivity == null;
 		public bool IsDead => Disposed || (health != null && health.IsDead);
@@ -198,7 +202,7 @@ namespace OpenRA
 				EnabledTargetablePositions = targetablePositions.Where(Exts.IsTraitEnabled);
 				enabledTargetableWorldPositions = EnabledTargetablePositions.SelectMany(tp => tp.TargetablePositions(this));
 				SyncHashes = syncHashesList.ToArray();
-				Crushables = crushablesList.ToArray();
+				crushables = crushablesList.ToArray();
 			}
 		}
 
