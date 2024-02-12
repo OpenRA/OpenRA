@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Changes the visual Z position periodically.")]
-	public class HoversInfo : ConditionalTraitInfo, Requires<IMoveInfo>
+	public class HoversInfo : ConditionalTraitInfo
 	{
 		[Desc("Maximum visual Z axis distance relative to actual position + InitialHeight.")]
 		public readonly WDist BobDistance = new(-43);
