@@ -1,5 +1,5 @@
 ## encyclopedia.yaml
-button-encyclopedia-panel-back = Back
+button-encyclopedia-panel-back = Arrière
 
 ## encyclopedia.yaml, mainmenu.yaml
 label-mentat-title = Mentat
@@ -49,11 +49,11 @@ label-production-stats-player-header = Joueurs
 label-production-stats-header = Production
 label-support-powers-player-header = Joueurs
 label-support-powers-header = Pouvoirs de Support
-label-army-player-header = Juoeurs
+label-army-player-header = Joueurs
 label-army-header = Armée
 label-combat-stats-player-header = Joueurs
 label-combat-stats-assets-destroyed-header = Détruites
-label-combat-stats-assets-lost-header = Perdu
+label-combat-stats-assets-lost-header = Perdus
 label-combat-stats-units-killed-header = U. Tuées
 label-combat-stats-units-dead-header = U. Perdues
 label-combat-stats-buildings-killed-header = B. Tués
@@ -74,10 +74,10 @@ button-command-bar-attack-move =
    .tooltipdesc = Les unités sélectionnées iront à l'endroit désiré
     et attaqueront les ennemis qu'il rencontre en route.
 
-    Hold <(Ctrl)> while targeting to order an Assault Move
-    that attacks any units or structures encountered en route.
+    Maintenez <(Ctrl)> pendant le ciblage d'une manoeuvre d'assaut
+    qui attaque n'importe quelles unités ou structures rencontrées en chemin.
 
-    Left-click icon then right-click on target location.
+    Click-gauche sur l'icone puis click-droit sur la position ciblée.
 
 button-command-bar-force-move =
    .tooltip = Forcer Manoeuvre
@@ -107,7 +107,7 @@ button-command-bar-guard =
 button-command-bar-deploy =
    .tooltip = Déployer
    .tooltipdesc = Les unités effectueront leur activité de déploiement par défaut
-     - MCVs will unpack into a Construction Yard
+     - Les MVC se déploieront en terrain de construction
      - Les Percuteurs commenceront ou arrêterons d'attirer des vers
      - Les Dévastateurs s'immobiliseront et exploseront
 
@@ -143,39 +143,39 @@ button-stance-bar-attackanything =
      - Les unité poursuivront les assaillants à travers le champs de bataille.
 
 button-stance-bar-defend =
-   .tooltip = Defend Stance
-   .tooltipdesc = Set the selected units to Defend stance:
-     - Units will attack enemy units on sight
-     - Units will not move or pursue enemies
+   .tooltip = Position de Défence
+   .tooltipdesc = Organise les unités sélectionnées en position de défense:
+     - Les unités attaqueront les unités ennemis à vue.
+     - Les unités ne bougeront ou ne poursuivront pas les ennemis
 
 button-stance-bar-returnfire =
-   .tooltip = Return Fire Stance
-   .tooltipdesc = Set the selected units to Return Fire stance:
-     - Units will retaliate against enemies that attack them
-     - Units will not move or pursue enemies
+   .tooltip = Position de Riposte
+   .tooltipdesc = Organise les unités sélectionnées en position de risposte:
+     - Les unités riposteront contre les ennemis qui les attaque
+     - Les unités ne bougeront ou ne poursuivront pas les ennemis
 
 button-stance-bar-holdfire =
-   .tooltip = Hold Fire Stance
-   .tooltipdesc = Set the selected units to Hold Fire stance:
-     - Units will not fire upon enemies
-     - Units will not move or pursue enemies
+   .tooltip = Maintenir Position de Riposte
+   .tooltipdesc = Organise les unités sélectionnées en position maintenue de risposte:
+     - Les unités n'ouvriront pas le feu sur les ennemis
+     - Les unités ne bougeront ou ne poursuivront pas les ennemis
 
-button-top-buttons-repair-tooltip = Repair
-button-top-buttons-sell-tooltip = Sell
-button-top-buttons-beacon-tooltip = Place Beacon
-button-top-buttons-power-tooltip = Power Down
+button-top-buttons-repair-tooltip = Réparer
+button-top-buttons-sell-tooltip = Vendre
+button-top-buttons-beacon-tooltip = Placer Balise
+button-top-buttons-power-tooltip = Éteindre
 button-top-buttons-options-tooltip = Options
 
 productionpalette-sidebar-production-palette =
-   .ready = READY
-   .hold = ON HOLD
+   .ready = PRÊT
+   .hold = EN ATTENTE
 
-button-production-types-building-tooltip = Buildings
-button-production-types-infantry-tooltip = Infantry
-button-production-types-vehicle-tooltip = Light Vehicles
-button-production-types-tanks-tooltip = Heavy Vehicles
-button-production-types-aircraft-tooltip = Aircraft
-button-production-types-starport-tooltip = Starport
-button-production-types-upgrade-tooltip = Upgrades
-button-production-types-scroll-up-tooltip = Scroll up
-button-production-types-scroll-down-tooltip = Scroll down
+button-production-types-building-tooltip = Bâtiments
+button-production-types-infantry-tooltip = Infantrie
+button-production-types-vehicle-tooltip = Vehicules Légers
+button-production-types-tanks-tooltip = Véhicule Lourd
+button-production-types-aircraft-tooltip = Avion
+button-production-types-starport-tooltip = Port Spatial
+button-production-types-upgrade-tooltip = Amélioration
+button-production-types-scroll-up-tooltip = Défiler en haut
+button-production-types-scroll-down-tooltip = Défile en bas
