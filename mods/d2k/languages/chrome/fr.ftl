@@ -44,7 +44,7 @@ label-economy-stats-assets-header = Biens
 label-economy-stats-earned-header = Gagné
 label-economy-stats-spent-header = Dépensé
 label-economy-stats-harvesters-header = Moissoneuses
-label-economy-stats-carryalls-header = Carryalls
+label-economy-stats-carryalls-header = Ailes Portantes
 label-production-stats-player-header = Joueurs
 label-production-stats-header = Production
 label-support-powers-player-header = Joueurs
@@ -92,7 +92,7 @@ button-command-bar-force-move =
 button-command-bar-force-attack =
    .tooltip = Forcer Attaque
    .tooltipdesc = Les unités sélectionnées attaqueront les unités ou position ciblés
-     -  L'activité par défaut pour la cible est supprimée
+     - L'activité par défaut pour la cible est supprimée
      - Autorise le ciblement de forces alliées ou propres
 
     Click-gauche sur l'icone puis click-droit sur la cible.
@@ -123,7 +123,7 @@ button-command-bar-scatter =
 button-command-bar-stop =
    .tooltip = Stop
    .tooltipdesc = Les unités sélectionnées stopperont leurs activitées.
-    Les batiments sélectionnés réinitialiseront leurs points de ralliement.
+    Les bâtiments sélectionnés réinitialiseront leurs points de ralliement.
 
     Agit immédiatement sur les unités sélectionnées.
 
@@ -138,7 +138,7 @@ button-command-bar-queue-orders =
 
 button-stance-bar-attackanything =
    .tooltip = Attaquer n'importe quelles positions
-   .tooltipdesc = Réglez l'unité sélectionnée afin d'Attaquer n'importe quelles positions:
+   .tooltipdesc = Réglez l'unité sélectionnée afin d'attaquer n'importe quelles positions:
      - Les unités attaqueront les unités et structures ennemis à vue.
      - Les unité poursuivront les assaillants à travers le champs de bataille.
 
