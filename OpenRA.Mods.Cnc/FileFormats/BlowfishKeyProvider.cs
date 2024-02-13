@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Cnc.FileFormats
 		static uint LenBigNum(uint[] n, uint len)
 		{
 			var i = len - 1;
-			while (n[i] == 0) i--;
+			while (i < uint.MaxValue && n[i] == 0) i--;
 			return i + 1;
 		}
 
