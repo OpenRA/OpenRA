@@ -42,7 +42,6 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 	{
 		readonly WithGunboatBodyInfo info;
 		readonly Animation wake;
-		readonly RenderSprites rs;
 		readonly IFacing facing;
 		readonly Turreted turret;
 
@@ -57,7 +56,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			: base(init, info, MakeTurretFacingFunc(init.Self))
 		{
 			this.info = info;
-			rs = init.Self.Trait<RenderSprites>();
+			var rs = init.Self.Trait<RenderSprites>();
 			facing = init.Self.Trait<IFacing>();
 			var name = rs.GetImage(init.Self);
 			turret = init.Self.TraitsImplementing<Turreted>()

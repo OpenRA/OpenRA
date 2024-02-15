@@ -36,7 +36,6 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 	public class WithTeslaChargeOverlay : INotifyTeslaCharging, INotifyDamageStateChanged, INotifySold
 	{
 		readonly Animation overlay;
-		readonly RenderSprites renderSprites;
 		readonly WithTeslaChargeOverlayInfo info;
 
 		bool charging;
@@ -45,7 +44,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 		{
 			this.info = info;
 
-			renderSprites = init.Self.Trait<RenderSprites>();
+			var renderSprites = init.Self.Trait<RenderSprites>();
 
 			overlay = new Animation(init.World, renderSprites.GetImage(init.Self));
 

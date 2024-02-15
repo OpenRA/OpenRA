@@ -34,7 +34,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 	sealed class WithResourceLevelOverlay : ConditionalTrait<WithResourceLevelOverlayInfo>, INotifyOwnerChanged, INotifyDamageStateChanged
 	{
 		readonly AnimationWithOffset anim;
-		readonly RenderSprites rs;
 		readonly WithSpriteBody wsb;
 
 		PlayerResources playerResources;
@@ -42,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public WithResourceLevelOverlay(Actor self, WithResourceLevelOverlayInfo info)
 			: base(info)
 		{
-			rs = self.Trait<RenderSprites>();
+			var rs = self.Trait<RenderSprites>();
 			wsb = self.Trait<WithSpriteBody>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 

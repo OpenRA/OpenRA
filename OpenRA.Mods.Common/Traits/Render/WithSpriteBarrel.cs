@@ -64,7 +64,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithSpriteBarrel : ConditionalTrait<WithSpriteBarrelInfo>
 	{
 		public readonly Animation DefaultAnimation;
-		readonly RenderSprites rs;
 		readonly Actor self;
 		readonly Armament armament;
 		readonly Turreted turreted;
@@ -80,7 +79,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			turreted = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == armament.Info.Turret);
 
-			rs = self.Trait<RenderSprites>();
+			var rs = self.Trait<RenderSprites>();
 			DefaultAnimation = new Animation(self.World, rs.GetImage(self), () => turreted.WorldOrientation.Yaw);
 			DefaultAnimation.PlayRepeating(NormalizeSequence(self, Info.Sequence));
 			rs.Add(new AnimationWithOffset(

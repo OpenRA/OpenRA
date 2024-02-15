@@ -75,7 +75,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithSpriteTurret : ConditionalTrait<WithSpriteTurretInfo>, INotifyDamageStateChanged
 	{
 		public readonly Animation DefaultAnimation;
-		readonly RenderSprites rs;
 		readonly BodyOrientation body;
 		readonly Turreted t;
 		readonly Armament[] arms;
@@ -83,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		public WithSpriteTurret(Actor self, WithSpriteTurretInfo info)
 			: base(info)
 		{
-			rs = self.Trait<RenderSprites>();
+			var rs = self.Trait<RenderSprites>();
 			body = self.Trait<BodyOrientation>();
 			t = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == info.Turret);
