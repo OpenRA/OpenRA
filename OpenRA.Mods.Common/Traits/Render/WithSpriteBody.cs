@@ -64,7 +64,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithSpriteBody : PausableConditionalTrait<WithSpriteBodyInfo>, INotifyDamageStateChanged, IAutoMouseBounds
 	{
 		public readonly Animation DefaultAnimation;
-		readonly RenderSprites rs;
 		readonly Animation boundsAnimation;
 
 		public WithSpriteBody(ActorInitializer init, WithSpriteBodyInfo info)
@@ -73,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		protected WithSpriteBody(ActorInitializer init, WithSpriteBodyInfo info, Func<WAngle> baseFacing)
 			: base(info)
 		{
-			rs = init.Self.Trait<RenderSprites>();
+			var rs = init.Self.Trait<RenderSprites>();
 
 			bool Paused() => IsTraitPaused &&
 				DefaultAnimation.CurrentSequence.Name == NormalizeSequence(init.Self, Info.Sequence);
