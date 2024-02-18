@@ -25,6 +25,10 @@ E7:
 	Buildable:
 		Prerequisites: ~vehicles.allies, ~techlevel.medium
 
+CA:
+	Buildable:
+		Prerequisites: ~syrd
+
 C2:
 	Inherits@2: ^ArmedCivilian
 

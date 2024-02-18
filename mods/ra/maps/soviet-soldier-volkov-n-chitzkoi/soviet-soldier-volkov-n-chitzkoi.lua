@@ -131,24 +131,25 @@ WorldLoaded = function()
 		if unit.Owner == USSR then
 			Trigger.RemoveFootprintTrigger(id)
 			Trigger.AfterDelay(DateTime.Seconds(2), function()
+				Utils.Do(InitialHuntTeam, IdleHunt)
+
+				if Barrel.IsDead then
+					return
+				end
+
 				if not BarrelsShooter[1].IsDead then
 					BarrelsShooter[1].Attack(Barrel, true, true)
 				elseif not BarrelsShooter[2].IsDead then
 					BarrelsShooter[2].Attack(Barrel, true, true)
 				end
-				Utils.Do(InitialHuntTeam, function(actor)
-					if not actor.IsDead then
-						Trigger.OnIdle(actor, actor.Hunt)
-					end
-				end)
 			end)
 		end
 	end)
 
 --Guards Squads Setup -- I used proximity triggers to make them hunt you down in order to mimic their behavior from the original mission
-	Trigger.OnEnteredProximityTrigger(RangerGuard01.CenterPosition, WDist.New(70 * 70), function(unit, id)
-		if not RangerGuard01.IsDead and unit.Owner == USSR then
-			Trigger.OnIdle(RangerGuard01, RangerGuard01.Hunt)
+	Trigger.OnEnteredProximityTrigger(RangerGuard01.CenterPosition, WDist.FromCells(7), function(unit, id)
+		if unit.Owner == USSR and (unit.Type == "volk" or unit.Type == "zkoi") then
+			IdleHunt(RangerGuard01)
 			Trigger.RemoveProximityTrigger(id)
 		end
 	end)
@@ -199,8 +200,8 @@ WorldLoaded = function()
 	end)
 
 	Trigger.OnEnteredProximityTrigger(LightTankGuard02.CenterPosition, WDist.FromCells(8), function(unit, id)
-		if not LightTankGuard02.IsDead and unit.Owner == USSR and (unit.Type == "volk" or unit.Type == "zkoi") then
-			Trigger.OnIdle(LightTankGuard02, LightTankGuard02.Hunt)
+		if unit.Owner == USSR and (unit.Type == "volk" or unit.Type == "zkoi") then
+			IdleHunt(LightTankGuard02)
 			Trigger.RemoveProximityTrigger(id)
 		end
 	end)
@@ -244,6 +245,7 @@ WorldLoaded = function()
 				local civ01 = Reinforcements.Reinforce(Spain, CivTeam01, { civteam01spawn.Location }, 0)
 				Utils.Do(civ01, function(actor)
 					if not actor.IsDead then
+						actor.Scatter()
 						Trigger.OnIdle(actor, actor.Hunt)
 					end
 				end)
@@ -258,6 +260,7 @@ WorldLoaded = function()
 				local civ02 = Reinforcements.Reinforce(Spain, CivTeam02, { civteam02spawn.Location }, 0)
 				Utils.Do(civ02, function(actor)
 					if not actor.IsDead then
+						actor.Scatter()
 						Trigger.OnIdle(actor, actor.Hunt)
 					end
 				end)
@@ -349,7 +352,7 @@ end
 ChitzkoiIsDead = function(a)
 	Trigger.OnKilled(a, function()
 		USSR.MarkFailedObjective(KeepChitzkoiAlive)
-		Media.DisplayMessage(UserInterface.Translate("rebuild-chitzkoy"))
+		Media.DisplayMessage(UserInterface.Translate("rebuild-chitzkoi"))
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
 			Media.PlaySpeechNotification(USSR, "ObjectiveNotMet")
 		end)

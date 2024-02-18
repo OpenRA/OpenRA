@@ -366,7 +366,7 @@ keep-chitzkoi-alive = Keep Chitzkoi Alive.
 destroy-alloy-facility = Destroy the alloy facility.
 heavy-turret-control-destroyed = Excellent! The heavy turret control center is destroyed
     and now we can deal with the alloy facility.
-rebuild-chitzkoy = We can rebuild Chitzkoi. We have the technology.
+rebuild-chitzkoi = We can rebuild Chitzkoi. We have the technology.
 
 ## survival01
 french-reinforcements-arrive-in = French reinforcements arrive in { $time }
