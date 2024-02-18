@@ -82,8 +82,14 @@ ProduceArmor = function()
 
 	local delay = Utils.RandomInteger(DateTime.Seconds(7), DateTime.Seconds(10))
 	local toBuild = { Utils.Random(AlliedArmorTypes) }
-	local Rally = Utils.Random(AlliedWarFactRally)
-	Utils.Do(AlliedWarFact, function(fact) fact.RallyPoint = Rally.Location end)
+	local rally = Utils.Random(AlliedWarFactRally)
+
+	Utils.Do(AlliedWarFact, function(fact)
+		if not fact.IsDead then
+			fact.RallyPoint = rally.Location
+		end
+	end)
+
 	Greece.Build(toBuild, function(unit)
 		ArmorAttack[#ArmorAttack + 1] = unit[1]
 
@@ -105,8 +111,6 @@ ProduceNavyGuard = function()
 	end
 	NavalYard01.RallyPoint = waypoint26.Location
 	Greece.Build(AlliedNavyGuard, function(nvgrd)
-		Utils.Do(nvgrd, function(unit)
-			Trigger.OnKilled(unit, ProduceNavyGuard)
-		end)
+		Trigger.OnAllKilled(nvgrd, ProduceNavyGuard)
 	end)
 end
