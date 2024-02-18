@@ -184,7 +184,7 @@ namespace OpenRA.Mods.Common.Traits
 					{
 						var closest = self.World.Selection.Actors
 							.Where(a => a.TraitOrDefault<RallyPoint>()?.Info.ForceSetType == info.ForceSetType)
-							.ClosestToWithPathTo(self.World, target.CenterPosition);
+							.ClosestToIgnoringPath(target.CenterPosition);
 
 						ForceSet = closest == self;
 					}
