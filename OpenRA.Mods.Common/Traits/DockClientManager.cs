@@ -182,7 +182,8 @@ namespace OpenRA.Mods.Common.Traits
 					target.Actor,
 					null,
 					order.OrderString == "ForceDock",
-					true));
+					true,
+					DockLineColor));
 
 				self.ShowTargetLines();
 			}

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Activities;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Activities
@@ -23,18 +24,20 @@ namespace OpenRA.Mods.Common.Activities
 		Actor dockHostActor;
 		IDockHost dockHost;
 		readonly INotifyDockClientMoving[] notifyDockClientMoving;
+		readonly Color? dockLineColor;
 		readonly MoveCooldownHelper moveCooldownHelper;
 		readonly bool forceEnter;
 		readonly bool ignoreOccupancy;
 
 		public MoveToDock(Actor self, Actor dockHostActor = null, IDockHost dockHost = null,
-			bool forceEnter = false, bool ignoreOccupancy = false)
+			bool forceEnter = false, bool ignoreOccupancy = false, Color? dockLineColor = null)
 		{
 			dockClient = self.Trait<DockClientManager>();
 			this.dockHostActor = dockHostActor;
 			this.dockHost = dockHost;
 			this.forceEnter = forceEnter;
 			this.ignoreOccupancy = ignoreOccupancy;
+			this.dockLineColor = dockLineColor;
 			notifyDockClientMoving = self.TraitsImplementing<INotifyDockClientMoving>().ToArray();
 			moveCooldownHelper = new MoveCooldownHelper(self.World, self.Trait<IMove>() as Mobile) { RetryIfDestinationBlocked = true };
 		}
@@ -119,12 +122,15 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
+			if (!dockLineColor.HasValue)
+				yield break;
+
 			if (dockHostActor != null)
-				yield return new TargetLineNode(Target.FromActor(dockHostActor), dockClient.DockLineColor);
+				yield return new TargetLineNode(Target.FromActor(dockHostActor), dockLineColor.Value);
 			else
 			{
 				if (dockClient.ReservedHostActor != null)
-					yield return new TargetLineNode(Target.FromActor(dockClient.ReservedHostActor), dockClient.DockLineColor);
+					yield return new TargetLineNode(Target.FromActor(dockClient.ReservedHostActor), dockLineColor.Value);
 			}
 		}
 	}
