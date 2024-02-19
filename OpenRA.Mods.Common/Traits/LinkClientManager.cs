@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (!link.HasValue)
 					return;
 
-				self.QueueActivity(order.Queued, new MoveToDock(self, link.Value.Actor, link.Value.Trait));
+				self.QueueActivity(order.Queued, new MoveToDock(self, this, link.Value.Actor, link.Value.Trait, LinkLineColor));
 				self.ShowTargetLines();
 			}
 		}

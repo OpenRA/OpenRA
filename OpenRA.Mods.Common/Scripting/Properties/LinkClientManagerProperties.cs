@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!dock.HasValue)
 				return;
 
-			Self.QueueActivity(new MoveToDock(Self, dock.Value.Actor, dock.Value.Trait));
+			Self.QueueActivity(new MoveToDock(Self, manager, dock.Value.Actor, dock.Value.Trait));
 		}
 
 		[ScriptActorPropertyActivity]
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Scripting
 			if (!dock.HasValue)
 				return false;
 
-			Self.QueueActivity(new MoveToDock(Self, dock.Value.Actor, dock.Value.Trait));
+			Self.QueueActivity(new MoveToDock(Self, manager, dock.Value.Actor, dock.Value.Trait));
 			return true;
 		}
 	}

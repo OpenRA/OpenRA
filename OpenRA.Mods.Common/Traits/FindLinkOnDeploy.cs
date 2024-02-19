@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!linkHost.HasValue)
 				return;
 
-			QueueChild(new MoveToDock(self, linkHost.Value.Actor, linkHost.Value.Trait));
+			QueueChild(new MoveToDock(self, manager, linkHost.Value.Actor, linkHost.Value.Trait, manager.LinkLineColor));
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
