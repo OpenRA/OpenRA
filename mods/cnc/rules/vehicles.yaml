@@ -66,6 +66,8 @@ HARV:
 		Capacity: 20
 		Resources: Tiberium, BlueTiberium
 	LinkClientManager:
+	FindLinkOnDeploy:
+		LinkType: Unload
 	Mobile:
 		Speed: 72
 	Health:
