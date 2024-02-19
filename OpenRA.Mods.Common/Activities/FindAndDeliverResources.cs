@@ -24,6 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly HarvesterInfo harvInfo;
 		readonly Mobile mobile;
 		readonly ResourceClaimLayer claimLayer;
+		readonly DockClientManager dockClient;
 		readonly MoveCooldownHelper moveCooldownHelper;
 		CPos? orderLocation;
 		CPos? lastHarvestedCell;
@@ -37,6 +38,8 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			harv = self.Trait<Harvester>();
 			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
+			dockClient = self.Trait<DockClientManager>();
+
 			mobile = self.Trait<Mobile>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 			moveCooldownHelper = new MoveCooldownHelper(self.World, mobile) { RetryIfDestinationBlocked = true };
@@ -56,7 +59,7 @@ namespace OpenRA.Mods.Common.Activities
 				// We have to make sure the actual "harvest" order is not skipped if a third order is queued,
 				// so we keep deliveredLoad false.
 				if (harv.IsFull)
-					QueueChild(new MoveToDock(self));
+					QueueChild(new MoveToDock(self, dockLineColor: dockClient.DockLineColor));
 			}
 		}
 
@@ -83,7 +86,7 @@ namespace OpenRA.Mods.Common.Activities
 				if (harv.DockClientManager.ReservedHost != null)
 					return false;
 
-				QueueChild(new MoveToDock(self));
+				QueueChild(new MoveToDock(self, dockLineColor: dockClient.DockLineColor));
 				hasDeliveredLoad = true;
 			}
 
