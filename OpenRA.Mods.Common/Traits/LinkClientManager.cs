@@ -50,7 +50,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new LinkClientManager(init.Self, this); }
 	}
 
-	public class LinkClientManager : ConditionalTrait<LinkClientManagerInfo>, IResolveOrder, IOrderVoice, IIssueOrder, INotifyKilled, INotifyActorDisposing
+	public class LinkClientManager : ConditionalTrait<LinkClientManagerInfo>, IResolveOrder, IOrderVoice, IIssueOrder,
+		INotifyKilled, INotifyActorDisposing
 	{
 		readonly Actor self;
 		protected ILinkClient[] linkClients;
@@ -180,7 +181,9 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsTraitDisabled)
 					return;
 
-				var link = AvailableLinkHosts(target.Actor, false, order.OrderString == "Link").ClosestLinkHost(self, this);
+				var link = AvailableLinkHosts(target.Actor, default, false, order.OrderString == "Link")
+					.ClosestLinkHost(self, this);
+
 				if (!link.HasValue)
 					return;
 
@@ -233,7 +236,8 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>Does this <paramref name="target"/> contain at least one enabled <see cref="ILinkHost"/> with maching <see cref="LinkType"/>.</summary>
 		public bool LinkingPossible(Actor target, bool forceEnter = false)
 		{
-			return !IsTraitDisabled && target.TraitsImplementing<ILinkHost>().Any(host => linkClients.Any(client => client.IsLinkingPossible(host.GetLinkType, forceEnter)));
+			return !IsTraitDisabled && target.TraitsImplementing<ILinkHost>()
+				.Any(host => linkClients.Any(client => client.IsLinkingPossible(host.GetLinkType, forceEnter)));
 		}
 
 		/// <summary>Can we lonk to this <paramref name="host"/>.</summary>
@@ -245,25 +249,39 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>Can we link to this <paramref name="target"/>.</summary>
 		public bool CanLinkTo(Actor target, bool forceEnter = false, bool ignoreOccupancy = false)
 		{
-			return !IsTraitDisabled && target.TraitsImplementing<ILinkHost>().Any(host => linkClients.Any(client => client.CanLinkTo(target, host, forceEnter, ignoreOccupancy)));
+			return !IsTraitDisabled && target.TraitsImplementing<ILinkHost>()
+				.Any(host => linkClients.Any(client => client.CanLinkTo(target, host, forceEnter, ignoreOccupancy)));
+		}
+
+		/// <summary>Can we dock to this <paramref name="target"/>.</summary>
+		/// <remarks>If <paramref name="type"/> is not set, checks all clients.</remarks>
+		public bool CanLinkTo(Actor target, BitSet<LinkType> type, bool forceEnter = false, bool ignoreOccupancy = false)
+		{
+			var clients = type.IsEmpty ? linkClients : AvailableLinkClients(type, forceEnter);
+			return !IsTraitDisabled && target.TraitsImplementing<ILinkHost>()
+				.Any(host => clients.Any(client => client.CanLinkTo(target, host, forceEnter, ignoreOccupancy)));
 		}
 
 		/// <summary>Find the closest viable <see cref="ILinkHost"/>.</summary>
 		/// <remarks>If <paramref name="type"/> is not set, scans all clients. Does not check if <see cref="LinkClientManager"/> is enabled.</remarks>
-		public TraitPair<ILinkHost>? ClosestLinkHost(ILinkHost ignore, BitSet<LinkType> type = default, bool forceEnter = false, bool ignoreOccupancy = false)
+		public TraitPair<ILinkHost>? ClosestLinkHost(ILinkHost ignore, BitSet<LinkType> type = default,
+			bool forceEnter = false, bool ignoreOccupancy = false)
 		{
 			var clients = type.IsEmpty ? linkClients : AvailableLinkClients(type, forceEnter);
 			return self.World.ActorsWithTrait<ILinkHost>()
-				.Where(host => host.Trait != ignore && clients.Any(client => client.CanLinkTo(host.Actor, host.Trait, forceEnter, ignoreOccupancy)))
+				.Where(host => host.Trait != ignore &&
+					clients.Any(client => client.CanLinkTo(host.Actor, host.Trait, forceEnter, ignoreOccupancy)))
 				.ClosestLinkHost(self, this);
 		}
 
 		/// <summary>Get viable <see cref="ILinkHost"/>'s on the <paramref name="target"/>.</summary>
-		/// <remarks>Does not check if <see cref="LinkClientManager"/> is enabled.</remarks>
-		public IEnumerable<TraitPair<ILinkHost>> AvailableLinkHosts(Actor target, bool forceEnter = false, bool ignoreOccupancy = false)
+		/// <remarks>If <paramref name="type"/> is not set, checks all clients. Does not check if <see cref="LinkClientManager"/> is enabled.</remarks>
+		public IEnumerable<TraitPair<ILinkHost>> AvailableLinkHosts(Actor target, BitSet<LinkType> type = default,
+			bool forceEnter = false, bool ignoreOccupancy = false)
 		{
+			var clients = type.IsEmpty ? linkClients : AvailableLinkClients(type, forceEnter);
 			return target.TraitsImplementing<ILinkHost>()
-				.Where(host => linkClients.Any(client => client.CanLinkTo(target, host, forceEnter, ignoreOccupancy)))
+				.Where(host => clients.Any(client => client.CanLinkTo(target, host, forceEnter, ignoreOccupancy)))
 				.Select(host => new TraitPair<ILinkHost>(target, host));
 		}
 
@@ -287,7 +305,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Func<Actor, bool, bool> canTarget;
 		readonly Func<Actor, bool, bool> useEnterCursor;
 
-		public LinkActorTargeter(int priority, string enterCursor, string enterBlockedCursor, Func<bool> requireForceMove, Func<Actor, bool, bool> canTarget, Func<Actor, bool, bool> useEnterCursor)
+		public LinkActorTargeter(int priority, string enterCursor, string enterBlockedCursor, Func<bool> requireForceMove,
+			Func<Actor, bool, bool> canTarget, Func<Actor, bool, bool> useEnterCursor)
 		{
 			OrderID = "Link";
 			OrderPriority = priority;
@@ -300,7 +319,10 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string OrderID { get; private set; }
 		public int OrderPriority { get; }
-		public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers) { return true; }
+		public bool TargetOverridesSelection(Actor self, in Target target, List<Actor> actorsAt, CPos xy, TargetModifiers modifiers)
+		{
+			return true;
+		}
 
 		public bool CanTarget(Actor self, in Target target, ref TargetModifiers modifiers, ref string cursor)
 		{
@@ -328,7 +350,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public static class LinkExts
 	{
-		public static TraitPair<ILinkHost>? ClosestLinkHost(this IEnumerable<TraitPair<ILinkHost>> linkHosts, Actor clientActor, LinkClientManager client)
+		public static TraitPair<ILinkHost>? ClosestLinkHost(this IEnumerable<TraitPair<ILinkHost>> linkHosts,
+			Actor clientActor, LinkClientManager client)
 		{
 			var mobile = clientActor.TraitOrDefault<Mobile>();
 			if (mobile != null)
@@ -355,7 +378,9 @@ namespace OpenRA.Mods.Common.Traits
 			else
 			{
 				return linkHosts
-					.OrderBy(host => (clientActor.Location - clientActor.World.Map.CellContaining(host.Trait.LinkPosition)).LengthSquared + host.Trait.ReservationCount * client.OccupancyCostModifier)
+					.OrderBy(host => (clientActor.Location
+						- clientActor.World.Map.CellContaining(host.Trait.LinkPosition)).LengthSquared
+						+ host.Trait.ReservationCount * client.OccupancyCostModifier)
 					.FirstOrDefault();
 			}
 
