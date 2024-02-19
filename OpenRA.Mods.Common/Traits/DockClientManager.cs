@@ -252,6 +252,15 @@ namespace OpenRA.Mods.Common.Traits
 				host => dockClients.Any(client => client.CanDockAt(target, host, forceEnter, ignoreOccupancy)));
 		}
 
+		/// <summary>Can we dock to this <paramref name="target"/>.</summary>
+		/// <remarks>If <paramref name="type"/> is not set, checks all clients.</remarks>
+		public bool CanDockAt(Actor target, BitSet<DockType> type, bool forceEnter = false, bool ignoreOccupancy = false)
+		{
+			var clients = type.IsEmpty ? dockClients : AvailableDockClients(type, forceEnter);
+			return !IsTraitDisabled && target.TraitsImplementing<IDockHost>()
+				.Any(host => clients.Any(client => client.CanDockAt(target, host, forceEnter, ignoreOccupancy)));
+		}
+
 		/// <summary>Find the closest viable <see cref="IDockHost"/>.</summary>
 		/// <remarks>If <paramref name="type"/> is not set, scans all clients. Does not check if <see cref="DockClientManager"/> is enabled.</remarks>
 		public TraitPair<IDockHost>? ClosestDock(IDockHost ignore, BitSet<DockType> type = default, bool forceEnter = false, bool ignoreOccupancy = false)
