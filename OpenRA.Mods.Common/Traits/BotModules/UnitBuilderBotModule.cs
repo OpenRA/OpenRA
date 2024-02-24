@@ -44,7 +44,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new UnitBuilderBotModule(init.Self, this); }
 	}
 
-	public class UnitBuilderBotModule : ConditionalTrait<UnitBuilderBotModuleInfo>, IBotTick, IBotNotifyIdleBaseUnits, IBotRequestUnitProduction, IGameSaveTraitData
+	public class UnitBuilderBotModule : ConditionalTrait<UnitBuilderBotModuleInfo>,
+		IBotTick, IBotNotifyIdleBaseUnits, IBotRequestUnitProduction, IGameSaveTraitData, INotifyActorDisposing
 	{
 		public const int FeedbackTime = 30; // ticks; = a bit over 1s. must be >= netlag.
 
@@ -52,6 +53,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Player player;
 
 		readonly List<string> queuedBuildRequests = new();
+		readonly ActorIndex.OwnerAndNames unitsToBuild;
 
 		IBotRequestPauseUnitProduction[] requestPause;
 		int idleUnitCount;
@@ -65,6 +67,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			world = self.World;
 			player = self.Owner;
+			unitsToBuild = new ActorIndex.OwnerAndNames(world, info.UnitsToBuild.Keys, player);
 		}
 
 		protected override void Created(Actor self)
@@ -174,20 +177,21 @@ namespace OpenRA.Mods.Common.Traits
 			if (buildableThings.Length == 0)
 				return null;
 
-			var allUnits = world.Actors.Where(a => a.Owner == player && Info.UnitsToBuild.ContainsKey(a.Info.Name) && !a.IsDead).ToArray();
+			var allUnits = unitsToBuild.Actors.Where(a => !a.IsDead).ToArray();
 
 			ActorInfo desiredUnit = null;
 			var desiredError = int.MaxValue;
 			foreach (var unit in buildableThings)
 			{
-				if (!Info.UnitsToBuild.ContainsKey(unit.Name) || (Info.UnitDelays != null && Info.UnitDelays.TryGetValue(unit.Name, out var delay) && delay > world.WorldTick))
+				if (!Info.UnitsToBuild.TryGetValue(unit.Name, out var share) ||
+					(Info.UnitDelays != null && Info.UnitDelays.TryGetValue(unit.Name, out var delay) && delay > world.WorldTick))
 					continue;
 
 				var unitCount = allUnits.Count(a => a.Info.Name == unit.Name);
 				if (Info.UnitLimits != null && Info.UnitLimits.TryGetValue(unit.Name, out var count) && unitCount >= count)
 					continue;
 
-				var error = allUnits.Length > 0 ? unitCount * 100 / allUnits.Length - Info.UnitsToBuild[unit.Name] : -1;
+				var error = allUnits.Length > 0 ? unitCount * 100 / allUnits.Length - share : -1;
 				if (error < 0)
 					return HasAdequateAirUnitReloadBuildings(unit) ? unit : null;
 
@@ -213,8 +217,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (rearmableInfo == null)
 				return true;
 
-			var countOwnAir = AIUtils.CountActorsWithTrait<IPositionable>(actorInfo.Name, player);
-			var countBuildings = rearmableInfo.RearmActors.Sum(b => AIUtils.CountActorsWithTrait<Building>(b, player));
+			var countOwnAir = AIUtils.CountActorsWithNameAndTrait<IPositionable>(actorInfo.Name, player);
+			var countBuildings = rearmableInfo.RearmActors.Sum(b => AIUtils.CountActorsWithNameAndTrait<Building>(b, player));
 			if (countOwnAir >= countBuildings)
 				return false;
 
@@ -248,6 +252,11 @@ namespace OpenRA.Mods.Common.Traits
 			var idleUnitCountNode = data.NodeWithKeyOrDefault("IdleUnitCount");
 			if (idleUnitCountNode != null)
 				idleUnitCount = FieldLoader.GetValue<int>("IdleUnitCount", idleUnitCountNode.Value.Value);
+		}
+
+		void INotifyActorDisposing.Disposing(Actor self)
+		{
+			unitsToBuild.Dispose();
 		}
 	}
 }

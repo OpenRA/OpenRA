@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new CaptureManagerBotModule(init.Self, this); }
 	}
 
-	public class CaptureManagerBotModule : ConditionalTrait<CaptureManagerBotModuleInfo>, IBotTick
+	public class CaptureManagerBotModule : ConditionalTrait<CaptureManagerBotModuleInfo>, IBotTick, INotifyActorDisposing
 	{
 		readonly World world;
 		readonly Player player;
@@ -54,6 +54,8 @@ namespace OpenRA.Mods.Common.Traits
 
 		// Units that the bot already knows about and has given a capture order. Any unit not on this list needs to be given a new order.
 		readonly List<Actor> activeCapturers = new();
+
+		readonly ActorIndex.OwnerAndNamesAndTrait<Captures> capturingActors;
 
 		public CaptureManagerBotModule(Actor self, CaptureManagerBotModuleInfo info)
 			: base(info)
@@ -67,6 +69,8 @@ namespace OpenRA.Mods.Common.Traits
 			unitCannotBeOrderedOrIsIdle = a => a.Owner != player || a.IsDead || !a.IsInWorld || a.IsIdle;
 
 			maximumCaptureTargetOptions = Math.Max(1, Info.MaximumCaptureTargetOptions);
+
+			capturingActors = new ActorIndex.OwnerAndNamesAndTrait<Captures>(world, Info.CapturingActorTypes, player);
 		}
 
 		protected override void TraitEnabled(Actor self)
@@ -105,11 +109,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			activeCapturers.RemoveAll(unitCannotBeOrderedOrIsIdle);
 
-			var newUnits = world.ActorsHavingTrait<IPositionable>()
-				.Where(a => a.Owner == player && !activeCapturers.Contains(a));
-
-			var capturers = newUnits
-				.Where(a => a.IsIdle && Info.CapturingActorTypes.Contains(a.Info.Name) && a.Info.HasTraitInfo<CapturesInfo>())
+			var capturers = capturingActors.Actors
+				.Where(a => a.IsIdle && a.Info.HasTraitInfo<IPositionableInfo>() && !activeCapturers.Contains(a))
 				.Select(a => new TraitPair<CaptureManager>(a, a.TraitOrDefault<CaptureManager>()))
 				.Where(tp => tp.Trait != null)
 				.ToArray();
@@ -153,6 +154,11 @@ namespace OpenRA.Mods.Common.Traits
 				AIUtils.BotDebug("AI ({0}): Ordered {1} to capture {2}", player.ClientIndex, capturer.Actor, targetActor);
 				activeCapturers.Add(capturer.Actor);
 			}
+		}
+
+		void INotifyActorDisposing.Disposing(Actor self)
+		{
+			capturingActors.Dispose();
 		}
 	}
 }
