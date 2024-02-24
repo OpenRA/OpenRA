@@ -41,31 +41,14 @@ namespace OpenRA.Mods.Common
 				.Select(a => a.Trait);
 		}
 
-		public static IEnumerable<Actor> GetActorsWithTrait<T>(World world)
+		public static int CountActorsWithNameAndTrait<T>(string actorName, Player owner)
 		{
-			return world.ActorsHavingTrait<T>();
+			return owner.World.ActorsHavingTrait<T>().Count(a => a.Owner == owner && a.Info.Name == actorName);
 		}
 
-		public static int CountActorsWithTrait<T>(string actorName, Player owner)
+		public static int CountActorByCommonName<T>(ActorIndex.OwnerAndNamesAndTrait<T> actorIndex)
 		{
-			return GetActorsWithTrait<T>(owner.World).Count(a => a.Owner == owner && a.Info.Name == actorName);
-		}
-
-		public static int CountActorByCommonName(HashSet<string> commonNames, Player owner)
-		{
-			return owner.World.Actors.Count(a => !a.IsDead && a.Owner == owner &&
-				commonNames.Contains(a.Info.Name));
-		}
-
-		public static int CountBuildingByCommonName(HashSet<string> buildings, Player owner)
-		{
-			return GetActorsWithTrait<Building>(owner.World)
-				.Count(a => a.Owner == owner && buildings.Contains(a.Info.Name));
-		}
-
-		public static ActorInfo GetInfoByCommonName(HashSet<string> names, Player owner)
-		{
-			return owner.World.Map.Rules.Actors.Where(k => names.Contains(k.Key)).Random(owner.World.LocalRandom).Value;
+			return actorIndex.Actors.Count(a => !a.IsDead);
 		}
 
 		public static void BotDebug(string format, params object[] args)

@@ -255,7 +255,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			// Next is to build up a strong economy
-			if (!baseBuilder.HasAdequateRefineryCount)
+			if (!baseBuilder.HasAdequateRefineryCount())
 			{
 				var refinery = GetProducibleBuilding(baseBuilder.Info.RefineryTypes, buildableThings);
 				if (refinery != null && HasSufficientPowerForActor(refinery))
