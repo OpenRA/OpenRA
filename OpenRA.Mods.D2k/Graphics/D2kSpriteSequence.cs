@@ -62,6 +62,13 @@ namespace OpenRA.Mods.Cnc.Graphics
 			var offset = LoadField(Offset, data, defaults);
 			var blendMode = LoadField(BlendMode, data, defaults);
 
+			Func<ISpriteFrame, ISpriteFrame> adjustFrame = null;
+			if (remapColor != default || convertShroudToFog)
+				adjustFrame = RemapFrame;
+
+			ISpriteFrame RemapFrame(ISpriteFrame f) =>
+				(f is R8Loader.RemappableFrame rf) ? rf.WithSequenceFlags(useShadow, convertShroudToFog, remapColor) : f;
+
 			var combineNode = data.NodeWithKeyOrDefault(Combine.Key);
 			if (combineNode != null)
 			{
@@ -75,11 +82,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 					foreach (var f in ParseCombineFilenames(modData, tileset, subFrames, subData))
 					{
-						int token;
-						if (remapColor != default || convertShroudToFog)
-							token = cache.ReserveFrames(f.Filename, f.LoadFrames, f.Location);
-						else
-							token = cache.ReserveSprites(f.Filename, f.LoadFrames, f.Location);
+						var token = cache.ReserveSprites(f.Filename, f.LoadFrames, f.Location, adjustFrame);
 
 						spritesToLoad.Add(new SpriteReservation
 						{
@@ -98,11 +101,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 			{
 				foreach (var f in ParseFilenames(modData, tileset, frames, data, defaults))
 				{
-					int token;
-					if (remapColor != default || convertShroudToFog)
-						token = cache.ReserveFrames(f.Filename, f.LoadFrames, f.Location);
-					else
-						token = cache.ReserveSprites(f.Filename, f.LoadFrames, f.Location);
+					var token = cache.ReserveSprites(f.Filename, f.LoadFrames, f.Location, adjustFrame);
 
 					spritesToLoad.Add(new SpriteReservation
 					{
@@ -129,20 +128,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 			var allSprites = spritesToLoad.SelectMany(r =>
 			{
-				Sprite[] resolved;
-				if (remapColor != default || convertShroudToFog)
-					resolved = cache.ResolveFrames(r.Token)
-						.Select(f => (f is R8Loader.RemappableFrame rf) ? rf.WithSequenceFlags(useShadow, convertShroudToFog, remapColor) : f)
-						.Select(f =>
-						{
-							if (f == null)
-								return null;
-
-							return cache.SheetBuilders[SheetBuilder.FrameTypeToSheetType(f.Type)]
-								.Add(f.Data, f.Type, f.Size, 0, f.Offset);
-						}).ToArray();
-				else
-					resolved = cache.ResolveSprites(r.Token);
+				var resolved = cache.ResolveSprites(r.Token);
 
 				if (r.Frames != null)
 					resolved = r.Frames.Select(f => resolved[f]).ToArray();
