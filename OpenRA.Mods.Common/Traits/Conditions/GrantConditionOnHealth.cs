@@ -42,9 +42,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
-			var health = ai.TraitInfo<IHealthInfo>();
-			if (health.MaxHP < MinHP)
-				throw new YamlException($"Minimum HP ({MinHP}) for GrantConditionOnHealth can't be more than actor's Maximum HP ({health.MaxHP})");
+			var health = ai.TraitInfo<HealthInfo>();
+			if (health.HP < MinHP)
+				throw new YamlException($"Minimum HP ({MinHP}) for GrantConditionOnHealth can't be more than actor's maximum HP ({health.HP})");
 		}
 	}
 
