@@ -622,8 +622,6 @@ namespace OpenRA
 			if (Type == WorldType.Shellmap)
 				OrderManager.Dispose();
 
-			Map.Dispose();
-
 			Game.FinishBenchmark();
 		}
 

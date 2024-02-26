@@ -46,6 +46,11 @@ namespace OpenRA
 		readonly Lazy<IReadOnlyDictionary<string, ITerrainInfo>> defaultTerrainInfo;
 		public IReadOnlyDictionary<string, ITerrainInfo> DefaultTerrainInfo => defaultTerrainInfo.Value;
 
+		SequenceSet sequences;
+		MiniYaml sequenceDefinitions;
+		string tileset;
+		bool sequencesLoaded;
+
 		public ModData(Manifest mod, InstalledMods mods, bool useLoadScreen = false)
 		{
 			Languages = Array.Empty<string>();
@@ -144,11 +149,15 @@ namespace OpenRA
 			using (new Support.PerfTimer("Map"))
 				map = new Map(this, MapCache[uid].Package);
 
-			// Reinitialize all our assets
+			// Reinitialize assets.
 			InitializeLoaders(map);
-			map.Sequences.LoadSprites();
+			if (!sequencesLoaded)
+			{
+				map.Sequences.LoadSprites();
+				sequencesLoaded = true;
+			}
 
-			// Load music with map assets mounted
+			// Load music with map assets mounted.
 			using (new Support.PerfTimer("Map.Music"))
 				foreach (var entry in map.Rules.Music)
 					entry.Value.Load(map);
@@ -162,10 +171,27 @@ namespace OpenRA
 			return Manifest.Rules.Select(s => MiniYaml.FromStream(DefaultFileSystem.Open(s), s, stringPool: stringPool)).ToArray();
 		}
 
+		public SequenceSet GetSequences(IReadOnlyFileSystem fileSystem, string tileset, MiniYaml sequenceDefinitions)
+		{
+			if (sequences == null || this.tileset != tileset
+				|| (sequenceDefinitions == null && this.sequenceDefinitions != null)
+				|| (sequenceDefinitions != null && !sequenceDefinitions.Matches(this.sequenceDefinitions)))
+			{
+				sequences?.Dispose();
+				sequences = new SequenceSet(fileSystem, this, tileset, sequenceDefinitions);
+				sequencesLoaded = false;
+				this.tileset = tileset;
+				this.sequenceDefinitions = sequenceDefinitions;
+			}
+
+			return sequences;
+		}
+
 		public void Dispose()
 		{
 			LoadScreen?.Dispose();
 			MapCache.Dispose();
+			sequences?.Dispose();
 
 			ObjectCreator?.Dispose();
 

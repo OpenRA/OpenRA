@@ -150,7 +150,7 @@ namespace OpenRA
 		}
 	}
 
-	public sealed class Map : IReadOnlyFileSystem, IDisposable
+	public sealed class Map : IReadOnlyFileSystem
 	{
 		public const int SupportedMapFormat = 11;
 		public const int CurrentMapFormat = 12;
@@ -452,7 +452,7 @@ namespace OpenRA
 				Rules = Ruleset.LoadDefaultsForTileSet(modData, Tileset);
 			}
 
-			Sequences = new SequenceSet(this, modData, Tileset, SequenceDefinitions);
+			Sequences = modData.GetSequences(this, Tileset, SequenceDefinitions);
 
 			var tl = new MPos(0, 0).ToCPos(this);
 			var br = new MPos(MapSize.X - 1, MapSize.Y - 1).ToCPos(this);
@@ -1434,11 +1434,6 @@ namespace OpenRA
 				return modData.DefaultFileSystem.IsExternalFile(filename);
 
 			return false;
-		}
-
-		public void Dispose()
-		{
-			Sequences.Dispose();
 		}
 	}
 }
