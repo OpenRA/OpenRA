@@ -22,8 +22,8 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public sealed class RadarWidget : Widget, IDisposable
 	{
-		public readonly int ColorFog = Color.FromArgb(128, Color.Black).ToArgb();
-		public readonly int ColorShroud = Color.Black.ToArgb();
+		public readonly uint ColorFog = Color.FromArgb(128, Color.Black).ToArgb();
+		public readonly uint ColorShroud = Color.Black.ToArgb();
 
 		public string WorldInteractionController = null;
 		public int AnimationLength = 5;
@@ -230,7 +230,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				fixed (byte* colorBytes = &radarData[0])
 				{
-					var colors = (int*)colorBytes;
+					var colors = (uint*)colorBytes;
 					if (isRectangularIsometric)
 					{
 						// Odd rows are shifted right by 1px
@@ -249,7 +249,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		void UpdateShroudCell(PPos puv)
 		{
-			var color = 0;
+			var color = 0u;
 			var cv = currentPlayer.Shroud.GetVisibility(puv);
 			if (!cv.HasFlag(Shroud.CellVisibility.Explored))
 				color = ColorShroud;
@@ -261,7 +261,7 @@ namespace OpenRA.Mods.Common.Widgets
 			{
 				fixed (byte* colorBytes = &radarData[0])
 				{
-					var colors = (int*)colorBytes;
+					var colors = (uint*)colorBytes;
 					foreach (var iuv in world.Map.Unproject(puv))
 					{
 						if (isRectangularIsometric)
@@ -407,7 +407,7 @@ namespace OpenRA.Mods.Common.Widgets
 				{
 					fixed (byte* colorBytes = &radarData[0])
 					{
-						var colors = (int*)colorBytes;
+						var colors = (uint*)colorBytes;
 
 						foreach (var t in world.ActorsWithTrait<IRadarSignature>())
 						{

@@ -17,7 +17,7 @@ namespace OpenRA.Primitives
 {
 	public readonly struct Color : IEquatable<Color>, IScriptBindable
 	{
-		readonly long argb;
+		readonly uint argb;
 
 		public static Color FromArgb(int red, int green, int blue)
 		{
@@ -26,7 +26,7 @@ namespace OpenRA.Primitives
 
 		public static Color FromArgb(int alpha, int red, int green, int blue)
 		{
-			return new Color(((byte)alpha << 24) + ((byte)red << 16) + ((byte)green << 8) + (byte)blue);
+			return new Color((uint)(((byte)alpha << 24) + ((byte)red << 16) + ((byte)green << 8) + (byte)blue));
 		}
 
 		public static Color FromAhsl(int alpha, float h, float s, float l)
@@ -55,14 +55,14 @@ namespace OpenRA.Primitives
 			return (A, h, s, v);
 		}
 
-		Color(long argb)
+		Color(uint argb)
 		{
 			this.argb = argb;
 		}
 
-		public int ToArgb()
+		public uint ToArgb()
 		{
-			return (int)argb;
+			return argb;
 		}
 
 		public static Color FromArgb(int alpha, Color baseColor)
@@ -70,14 +70,9 @@ namespace OpenRA.Primitives
 			return FromArgb(alpha, baseColor.R, baseColor.G, baseColor.B);
 		}
 
-		public static Color FromArgb(int argb)
-		{
-			return FromArgb((byte)(argb >> 24), (byte)(argb >> 16), (byte)(argb >> 8), (byte)argb);
-		}
-
 		public static Color FromArgb(uint argb)
 		{
-			return FromArgb((byte)(argb >> 24), (byte)(argb >> 16), (byte)(argb >> 8), (byte)argb);
+			return new Color(argb);
 		}
 
 		static float SrgbToLinear(float c)

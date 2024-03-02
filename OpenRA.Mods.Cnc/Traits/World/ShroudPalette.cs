@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public void LoadPalettes(WorldRenderer wr)
 		{
 			var c = info.Fog ? Fog : Shroud;
-			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => (uint)c[i % 8].ToArgb())));
+			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => c[i % 8].ToArgb())));
 		}
 
 		static readonly Color[] Fog = new[]

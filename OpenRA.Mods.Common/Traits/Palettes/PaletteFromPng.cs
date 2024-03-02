@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 			var colors = new uint[Palette.Size];
 
 			for (var i = 0; i < png.Palette.Length; i++)
-				colors[i] = (uint)png.Palette[i].ToArgb();
+				colors[i] = png.Palette[i].ToArgb();
 
 			return new ImmutablePalette(colors);
 		}

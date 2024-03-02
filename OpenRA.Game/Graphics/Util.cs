@@ -117,7 +117,7 @@ namespace OpenRA.Graphics
 					// Cast the data to an int array so we can copy the src data directly
 					fixed (byte* bd = &destData[0])
 					{
-						var data = (int*)bd;
+						var data = (uint*)bd;
 						var x = dest.Bounds.Left;
 						var y = dest.Bounds.Top;
 
@@ -195,7 +195,7 @@ namespace OpenRA.Graphics
 				// Cast the data to an int array so we can copy the src data directly
 				fixed (byte* bd = &destData[0])
 				{
-					var data = (int*)bd;
+					var data = (uint*)bd;
 					var x = dest.Bounds.Left;
 					var y = dest.Bounds.Top;
 

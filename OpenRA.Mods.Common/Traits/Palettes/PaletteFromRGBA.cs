@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 			var r = (int)(a * info.R + 0.5f).Clamp(0, 255);
 			var g = (int)(a * info.G + 0.5f).Clamp(0, 255);
 			var b = (int)(a * info.B + 0.5f).Clamp(0, 255);
-			var c = (uint)Color.FromArgb(info.A, r, g, b).ToArgb();
+			var c = Color.FromArgb(info.A, r, g, b).ToArgb();
 			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => (i == info.TransparentIndex) ? 0 : c)), info.AllowModifiers);
 		}
 	}

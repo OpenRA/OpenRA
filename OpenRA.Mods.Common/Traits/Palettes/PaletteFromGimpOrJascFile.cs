@@ -95,11 +95,11 @@ namespace OpenRA.Mods.Common.Traits
 						if (i == TransparentIndex)
 							colors[i] = 0;
 						else if (noAlpha)
-							colors[i] = (uint)Color.FromArgb(r, g, b).ToArgb();
+							colors[i] = Color.FromArgb(r, g, b).ToArgb();
 						else if (Premultiply)
-							colors[i] = (uint)Color.FromArgb(a, r * a / 255, g * a / 255, b * a / 255).ToArgb();
+							colors[i] = Color.FromArgb(a, r * a / 255, g * a / 255, b * a / 255).ToArgb();
 						else
-							colors[i] = (uint)Color.FromArgb(a, r, g, b).ToArgb();
+							colors[i] = Color.FromArgb(a, r, g, b).ToArgb();
 
 						i++;
 					}
