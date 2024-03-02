@@ -30,7 +30,7 @@ namespace OpenRA.Graphics
 
 		public static Color GetColor(this IPalette palette, int index)
 		{
-			return Color.FromArgb((int)palette[index]);
+			return Color.FromArgb(palette[index]);
 		}
 
 		public static IPalette AsReadOnly(this IPalette palette)
@@ -103,7 +103,7 @@ namespace OpenRA.Graphics
 			: this(p)
 		{
 			for (var i = 0; i < Palette.Size; i++)
-				colors[i] = (uint)r.GetRemappedColor(this.GetColor(i), i).ToArgb();
+				colors[i] = r.GetRemappedColor(this.GetColor(i), i).ToArgb();
 		}
 
 		public ImmutablePalette(IPalette p)
@@ -142,7 +142,7 @@ namespace OpenRA.Graphics
 
 		public void SetColor(int index, Color color)
 		{
-			colors[index] = (uint)color.ToArgb();
+			colors[index] = color.ToArgb();
 		}
 
 		public void SetFromPalette(IPalette p)
@@ -153,7 +153,7 @@ namespace OpenRA.Graphics
 		public void ApplyRemap(IPaletteRemap r)
 		{
 			for (var i = 0; i < Palette.Size; i++)
-				colors[i] = (uint)r.GetRemappedColor(this.GetColor(i), i).ToArgb();
+				colors[i] = r.GetRemappedColor(this.GetColor(i), i).ToArgb();
 		}
 	}
 }

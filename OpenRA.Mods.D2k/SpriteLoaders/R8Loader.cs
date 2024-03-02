@@ -71,7 +71,7 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 						{
 							var r = new PlayerColorRemap(Enumerable.Range(240, 16).ToArray(), remap);
 							for (var i = 240; i < 256; i++)
-								palette[i] = (uint)r.GetRemappedColor(Color.FromArgb(palette[i]), i).ToArgb();
+								palette[i] = r.GetRemappedColor(Color.FromArgb(palette[i]), i).ToArgb();
 						}
 
 						unsafe

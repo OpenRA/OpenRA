@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Widgets
 				// Generate palette in HSV
 				fixed (byte* cc = &buffer[0])
 				{
-					var c = (int*)cc;
+					var c = (uint*)cc;
 					for (var v = 0; v < 256; v++)
 					{
 						for (var s = 0; s < 256; s++)

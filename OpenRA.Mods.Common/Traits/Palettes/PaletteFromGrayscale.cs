@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.Tileset != null && !string.Equals(info.Tileset, world.Map.Tileset, StringComparison.InvariantCultureIgnoreCase))
 				return;
 
-			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => (i == info.TransparentIndex) ? 0 : (uint)Color.FromArgb(255, i, i, i).ToArgb())), info.AllowModifiers);
+			wr.AddPalette(info.Name, new ImmutablePalette(Enumerable.Range(0, Palette.Size).Select(i => (i == info.TransparentIndex) ? 0 : Color.FromArgb(255, i, i, i).ToArgb())), info.AllowModifiers);
 		}
 	}
 }

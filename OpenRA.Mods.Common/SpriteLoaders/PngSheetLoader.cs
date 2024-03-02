@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			};
 
 			if (png.Palette != null)
-				metadata.Add(new EmbeddedSpritePalette(png.Palette.Select(x => (uint)x.ToArgb()).ToArray()));
+				metadata.Add(new EmbeddedSpritePalette(png.Palette.Select(x => x.ToArgb()).ToArray()));
 
 			return true;
 		}

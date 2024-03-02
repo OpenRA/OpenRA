@@ -77,8 +77,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 		static int ColorDistance(uint a, uint b)
 		{
-			var ca = Color.FromArgb((int)a);
-			var cb = Color.FromArgb((int)b);
+			var ca = Color.FromArgb(a);
+			var cb = Color.FromArgb(b);
 
 			return Math.Abs(ca.R - cb.R) +
 				Math.Abs(ca.G - cb.G) +
