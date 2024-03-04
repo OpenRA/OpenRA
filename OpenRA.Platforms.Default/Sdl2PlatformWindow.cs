@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using OpenRA.Primitives;
@@ -420,6 +421,28 @@ namespace OpenRA.Platforms.Default
 		{
 			VerifyThreadAffinity();
 			SDL.SDL_SetWindowTitle(window, title);
+		}
+
+		public void SetWindowIcon(Size size, byte[] data)
+		{
+			VerifyThreadAffinity();
+			var surfacePointer = IntPtr.Zero;
+			try
+			{
+				surfacePointer = SDL.SDL_CreateRGBSurface(0, size.Width, size.Height, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+				if (surfacePointer == IntPtr.Zero)
+					throw new InvalidDataException($"Failed to set icon: {SDL.SDL_GetError()}");
+
+				var iconSurface = (SDL.SDL_Surface)Marshal.PtrToStructure(surfacePointer, typeof(SDL.SDL_Surface));
+				Marshal.Copy(data, 0, iconSurface.pixels, data.Length);
+
+				SDL.SDL_SetWindowIcon(window, surfacePointer);
+			}
+			catch
+			{
+				if (surfacePointer != IntPtr.Zero)
+					SDL.SDL_FreeSurface(surfacePointer);
+			}
 		}
 
 		public void SetRelativeMouseMode(bool mode)

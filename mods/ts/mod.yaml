@@ -4,6 +4,7 @@ Metadata:
 	Website: https://www.openra.net
 	WebIcon32: https://www.openra.net/images/icons/ts_32x32.png
 	WindowTitle: OpenRA - Tiberian Sun
+	WindowIcon: icon.png
 
 PackageFormats: Mix
 
