@@ -1,4 +1,4 @@
-origin: C&C The Ultimate Collection (Origin version, English)
+tuc-origin: C&C The Ultimate Collection (Origin version, English)
 	Type: RegistryDirectory
 	RegistryPrefixes: HKEY_LOCAL_MACHINE\Software\, HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\
 	RegistryKey: EA Games\CNC and The Covert Operations
