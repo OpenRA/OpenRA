@@ -319,31 +319,32 @@ ModContent:
 			Title: Base Game Files
 			Identifier: tibsun
 			TestFiles: ^SupportDir|Content/ts/cache.mix, ^SupportDir|Content/ts/conquer.mix, ^SupportDir|Content/ts/isosnow.mix, ^SupportDir|Content/ts/isotemp.mix, ^SupportDir|Content/ts/local.mix, ^SupportDir|Content/ts/sidec01.mix, ^SupportDir|Content/ts/sidec02.mix, ^SupportDir|Content/ts/sno.mix, ^SupportDir|Content/ts/snow.mix, ^SupportDir|Content/ts/sounds.mix, ^SupportDir|Content/ts/speech01.mix, ^SupportDir|Content/ts/tem.mix, ^SupportDir|Content/ts/temperat.mix
-			Sources: tibsun, tfd, origin
+			Sources: tibsun, tfd, steam, origin
 			Required: true
 			Download: basefiles
 		ContentPackage@tibsun-music:
 			Title: Base Game Music
 			Identifier: tibsun-music
 			TestFiles: ^SupportDir|Content/ts/scores.mix
-			Sources: tibsun, tfd, origin
+			Sources: tibsun, tfd, steam, origin
 		ContentPackage@fstorm:
 			Title: Firestorm Expansion Files
 			Identifier: fstorm
 			TestFiles: ^SupportDir|Content/ts/firestorm/e01sc01.mix, ^SupportDir|Content/ts/firestorm/e01sc02.mix, ^SupportDir|Content/ts/firestorm/e01vox01.mix, ^SupportDir|Content/ts/firestorm/e01vox02.mix
-			Sources: tfd, origin, fstorm
+			Sources: tfd, steam, origin, fstorm
 			Required: true
 			Download: fstorm
 		ContentPackage@fstorm-music:
 			Title: Firestorm Expansion Music
 			Identifier: fstorm-music
-			Sources: tfd, origin, fstorm
+			Sources: tfd, steam, origin, fstorm
 			TestFiles: ^SupportDir|Content/ts/firestorm/scores01.mix
 	Downloads:
 		ts|installer/downloads.yaml
 	Sources:
 		ts|installer/firestorm.yaml
 		ts|installer/firstdecade.yaml
+		ts|installer/steam.yaml
 		ts|installer/origin.yaml
 		ts|installer/tibsun.yaml
 
