@@ -84,7 +84,7 @@ namespace OpenRA.Graphics
 			foreach (var sb in SheetBuilders.Values)
 				sb.Current.CreateBuffer();
 
-			var spriteCache = new Dictionary<int, Sprite>();
+			var pendingResolve = new List<(string Filename, int FrameIndex, bool Premultiplied, ISpriteFrame Frame, Sprite[] SpritesForToken)>();
 			foreach (var (filename, tokens) in reservationsByFilename)
 			{
 				modData.LoadScreen?.Display();
@@ -117,18 +117,11 @@ namespace OpenRA.Graphics
 						if (loadedFrames != null)
 						{
 							var resolved = new Sprite[loadedFrames.Length];
+							resolvedSprites[token] = resolved;
 							var frames = rs.Frames ?? Enumerable.Range(0, loadedFrames.Length);
 
-							// Premultiplied and non-premultiplied sprites must be cached separately
-							// to cover the case where the same image is requested in both versions.
-							// The premultiplied sprites are stored with an index offset for efficiency
-							// rather than allocating a second dictionary.
-							var di = rs.Premultiplied ? loadedFrames.Length : 0;
 							foreach (var i in frames)
-								resolved[i] = spriteCache.GetOrAdd(i + di,
-									f => SheetBuilders[SheetBuilder.FrameTypeToSheetType(loadedFrames[f - di].Type)].Add(loadedFrames[f - di], rs.Premultiplied));
-
-							resolvedSprites[token] = resolved;
+								pendingResolve.Add((filename, i, rs.Premultiplied, loadedFrames[i], resolved));
 						}
 						else
 						{
@@ -137,8 +130,26 @@ namespace OpenRA.Graphics
 						}
 					}
 				}
+			}
 
-				spriteCache.Clear();
+			// When the sheet builder is adding sprites, it reserves height for the tallest sprite seen along the row.
+			// We can achieve better sheet packing by keeping sprites with similar heights together.
+			var orderedPendingResolve = pendingResolve.OrderBy(x => x.Frame.Size.Height);
+
+			var spriteCache = new Dictionary<(string Filename, int FrameIndex, bool Premultiplied), Sprite>(pendingResolve.Count);
+			foreach (var (filename, frameIndex, premultiplied, frame, spritesForToken) in orderedPendingResolve)
+			{
+				// Premultiplied and non-premultiplied sprites must be cached separately
+				// to cover the case where the same image is requested in both versions.
+				spritesForToken[frameIndex] = spriteCache.GetOrAdd(
+					(filename, frameIndex, premultiplied),
+					_ =>
+					{
+						var sheetBuilder = SheetBuilders[SheetBuilder.FrameTypeToSheetType(frame.Type)];
+						return sheetBuilder.Add(frame, premultiplied);
+					});
+
+				modData.LoadScreen?.Display();
 			}
 
 			spriteReservations.Clear();
