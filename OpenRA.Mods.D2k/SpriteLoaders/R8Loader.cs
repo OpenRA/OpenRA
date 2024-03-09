@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
 
@@ -139,17 +140,12 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 					Data = new byte[width * height * 4];
 					Type = SpriteFrameType.Bgra32;
 
-					unsafe
+					var data = MemoryMarshal.Cast<byte, uint>(Data);
+					s.ReadBytes(Data.AsSpan()[..(Data.Length / 2)]);
+					for (var i = width * height - 1; i >= 0; i--)
 					{
-						fixed (byte* bd = &Data[0])
-						{
-							var data = (uint*)bd;
-							for (var i = 0; i < width * height; i++)
-							{
-								var packed = s.ReadUInt16();
-								data[i] = (uint)((0xFF << 24) | ((packed & 0x7C00) << 9) | ((packed & 0x3E0) << 6) | ((packed & 0x1f) << 3));
-							}
-						}
+						var packed = Data[i * 2 + 1] << 8 | Data[i * 2];
+						data[i] = (uint)((0xFF << 24) | ((packed & 0x7C00) << 9) | ((packed & 0x3E0) << 6) | ((packed & 0x1f) << 3));
 					}
 				}
 				else
@@ -166,9 +162,11 @@ namespace OpenRA.Mods.D2k.SpriteLoaders
 					s.ReadUInt32();
 
 					Palette = new uint[256];
-					for (var i = 0; i < 256; i++)
+					var palette = MemoryMarshal.Cast<uint, byte>(Palette);
+					s.ReadBytes(palette[..(palette.Length / 2)]);
+					for (var i = 255; i >= 0; i--)
 					{
-						var packed = s.ReadUInt16();
+						var packed = palette[i * 2 + 1] << 8 | palette[i * 2];
 						Palette[i] = (uint)((0xFF << 24) | ((packed & 0x7C00) << 9) | ((packed & 0x3E0) << 6) | ((packed & 0x1f) << 3));
 					}
 
