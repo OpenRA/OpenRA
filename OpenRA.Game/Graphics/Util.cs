@@ -10,6 +10,7 @@
 #endregion
 
 using System;
+using System.Runtime.InteropServices;
 using OpenRA.FileFormats;
 using OpenRA.Primitives;
 
@@ -106,67 +107,21 @@ namespace OpenRA.Graphics
 		public static void FastCopyIntoChannel(Sprite dest, byte[] src, SpriteFrameType srcType, bool premultiplied = false)
 		{
 			var destData = dest.Sheet.GetData();
+			var stride = dest.Sheet.Size.Width;
+			var x = dest.Bounds.Left;
+			var y = dest.Bounds.Top;
 			var width = dest.Bounds.Width;
 			var height = dest.Bounds.Height;
 
 			if (dest.Channel == TextureChannel.RGBA)
 			{
-				var destStride = dest.Sheet.Size.Width;
-				unsafe
-				{
-					// Cast the data to an int array so we can copy the src data directly
-					fixed (byte* bd = &destData[0])
-					{
-						var data = (uint*)bd;
-						var x = dest.Bounds.Left;
-						var y = dest.Bounds.Top;
-
-						var k = 0;
-						for (var j = 0; j < height; j++)
-						{
-							for (var i = 0; i < width; i++)
-							{
-								byte r, g, b, a;
-								switch (srcType)
-								{
-									case SpriteFrameType.Bgra32:
-									case SpriteFrameType.Bgr24:
-									{
-										b = src[k++];
-										g = src[k++];
-										r = src[k++];
-										a = srcType == SpriteFrameType.Bgra32 ? src[k++] : (byte)255;
-										break;
-									}
-
-									case SpriteFrameType.Rgba32:
-									case SpriteFrameType.Rgb24:
-									{
-										r = src[k++];
-										g = src[k++];
-										b = src[k++];
-										a = srcType == SpriteFrameType.Rgba32 ? src[k++] : (byte)255;
-										break;
-									}
-
-									default:
-										throw new InvalidOperationException($"Unknown SpriteFrameType {srcType}");
-								}
-
-								var cc = Color.FromArgb(a, r, g, b);
-								if (premultiplied)
-									data[(y + j) * destStride + x + i] = cc.ToArgb();
-								else
-									data[(y + j) * destStride + x + i] = PremultiplyAlpha(cc).ToArgb();
-							}
-						}
-					}
-				}
+				CopyIntoRgba(src, srcType, premultiplied, destData, x, y, width, height, stride);
 			}
 			else
 			{
-				var destStride = dest.Sheet.Size.Width * 4;
-				var destOffset = destStride * dest.Bounds.Top + dest.Bounds.Left * 4 + ChannelMasks[(int)dest.Channel];
+				// Copy into single channel of destination.
+				var destStride = stride * 4;
+				var destOffset = destStride * y + x * 4 + ChannelMasks[(int)dest.Channel];
 				var destSkip = destStride - 4 * width;
 
 				var srcOffset = 0;
@@ -183,56 +138,119 @@ namespace OpenRA.Graphics
 			}
 		}
 
+		static void CopyIntoRgba(
+			byte[] src, SpriteFrameType srcType, bool premultiplied, byte[] dest, int x, int y, int width, int height, int stride)
+		{
+			var si = 0;
+			var di = y * stride + x;
+			var d = MemoryMarshal.Cast<byte, uint>(dest);
+
+			// SpriteFrameType.Brga32 is a common source format, and it matches the destination format.
+			// Provide a fast past that just performs memory copies.
+			if (srcType == SpriteFrameType.Bgra32)
+			{
+				var s = MemoryMarshal.Cast<byte, uint>(src);
+				for (var h = 0; h < height; h++)
+				{
+					s[si..(si + width)].CopyTo(d[di..(di + width)]);
+
+					if (!premultiplied)
+					{
+						for (var w = 0; w < width; w++)
+						{
+							d[di] = PremultiplyAlpha(Color.FromArgb(d[di])).ToArgb();
+							di++;
+						}
+
+						di -= width;
+					}
+
+					si += width;
+					di += stride;
+				}
+
+				return;
+			}
+
+			for (var h = 0; h < height; h++)
+			{
+				for (var w = 0; w < width; w++)
+				{
+					byte r, g, b, a;
+					switch (srcType)
+					{
+						case SpriteFrameType.Bgra32:
+						case SpriteFrameType.Bgr24:
+							b = src[si++];
+							g = src[si++];
+							r = src[si++];
+							a = srcType == SpriteFrameType.Bgra32 ? src[si++] : byte.MaxValue;
+							break;
+
+						case SpriteFrameType.Rgba32:
+						case SpriteFrameType.Rgb24:
+							r = src[si++];
+							g = src[si++];
+							b = src[si++];
+							a = srcType == SpriteFrameType.Rgba32 ? src[si++] : byte.MaxValue;
+							break;
+
+						default:
+							throw new InvalidOperationException($"Unknown SpriteFrameType {srcType}");
+					}
+
+					var c = Color.FromArgb(a, r, g, b);
+					if (!premultiplied)
+						c = PremultiplyAlpha(c);
+					d[di++] = c.ToArgb();
+				}
+
+				di += stride - width;
+			}
+		}
+
 		public static void FastCopyIntoSprite(Sprite dest, Png src)
 		{
 			var destData = dest.Sheet.GetData();
-			var destStride = dest.Sheet.Size.Width;
+			var stride = dest.Sheet.Size.Width;
+			var x = dest.Bounds.Left;
+			var y = dest.Bounds.Top;
 			var width = dest.Bounds.Width;
 			var height = dest.Bounds.Height;
 
-			unsafe
+			var si = 0;
+			var di = y * stride + x;
+			var d = MemoryMarshal.Cast<byte, uint>(destData);
+
+			for (var h = 0; h < height; h++)
 			{
-				// Cast the data to an int array so we can copy the src data directly
-				fixed (byte* bd = &destData[0])
+				for (var w = 0; w < width; w++)
 				{
-					var data = (uint*)bd;
-					var x = dest.Bounds.Left;
-					var y = dest.Bounds.Top;
-
-					var k = 0;
-					for (var j = 0; j < height; j++)
+					Color c;
+					switch (src.Type)
 					{
-						for (var i = 0; i < width; i++)
-						{
-							Color cc;
-							switch (src.Type)
-							{
-								case SpriteFrameType.Indexed8:
-								{
-									cc = src.Palette[src.Data[k++]];
-									break;
-								}
+						case SpriteFrameType.Indexed8:
+							c = src.Palette[src.Data[si++]];
+							break;
 
-								case SpriteFrameType.Rgba32:
-								case SpriteFrameType.Rgb24:
-								{
-									var r = src.Data[k++];
-									var g = src.Data[k++];
-									var b = src.Data[k++];
-									var a = src.Type == SpriteFrameType.Rgba32 ? src.Data[k++] : (byte)255;
-									cc = Color.FromArgb(a, r, g, b);
-									break;
-								}
+						case SpriteFrameType.Rgba32:
+						case SpriteFrameType.Rgb24:
+							var r = src.Data[si++];
+							var g = src.Data[si++];
+							var b = src.Data[si++];
+							var a = src.Type == SpriteFrameType.Rgba32 ? src.Data[si++] : byte.MaxValue;
+							c = Color.FromArgb(a, r, g, b);
+							break;
 
-								// Pngs don't support BGR[A], so no need to include them here
-								default:
-									throw new InvalidOperationException($"Unknown SpriteFrameType {src.Type}");
-							}
-
-							data[(y + j) * destStride + x + i] = PremultiplyAlpha(cc).ToArgb();
-						}
+						// PNGs don't support BGR[A], so no need to include them here
+						default:
+							throw new InvalidOperationException($"Unknown SpriteFrameType {src.Type}");
 					}
+
+					d[di++] = PremultiplyAlpha(c).ToArgb();
 				}
+
+				di += stride - width;
 			}
 		}
 

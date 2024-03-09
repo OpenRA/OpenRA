@@ -22,20 +22,30 @@ namespace OpenRA.Graphics
 	/// </summary>
 	public enum SpriteFrameType
 	{
-		// 8 bit index into an external palette
+		/// <summary>
+		/// 8 bit index into an external palette.
+		/// </summary>
 		Indexed8,
 
-		// 32 bit color such as returned by Color.ToArgb() or the bmp file format
-		// (remember that little-endian systems place the little bits in the first byte!)
+		/// <summary>
+		/// 32 bit color such as returned by Color.ToArgb() or the bmp file format
+		/// (remember that little-endian systems place the little bits in the first byte).
+		/// </summary>
 		Bgra32,
 
-		// Like BGRA, but without an alpha channel
+		/// <summary>
+		/// Like BGRA, but without an alpha channel.
+		/// </summary>
 		Bgr24,
 
-		// 32 bit color in big-endian format, like png
+		/// <summary>
+		/// 32 bit color in big-endian format, like png.
+		/// </summary>
 		Rgba32,
 
-		// Like RGBA, but without an alpha channel
+		/// <summary>
+		/// Like RGBA, but without an alpha channel.
+		/// </summary>
 		Rgb24
 	}
 
