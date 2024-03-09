@@ -91,18 +91,22 @@ namespace OpenRA.Mods.Cnc.Traits
 			this.info = info;
 
 			unitTypes = info.UnitTypes.Select(unit => unit.ToLowerInvariant()).ToArray();
-			foreach (var actorInfo in self.World.Map.Rules.Actors.Where(a => unitTypes.Contains(a.Key)))
+
+			foreach (var unitType in unitTypes)
 			{
-				var aircraftInfo = actorInfo.Value.TraitInfo<AircraftInfo>();
+				if (!self.World.Map.Rules.Actors.TryGetValue(unitType, out var actorInfo))
+					throw new NotImplementedException("No rules definition for unit " + unitType);
+
+				var aircraftInfo = actorInfo.TraitInfo<AircraftInfo>();
 				var altitude = aircraftInfo.CruiseAltitude.Length;
 
 				var delta =
-					new WVec(0, -altitude * aircraftInfo.Speed / actorInfo.Value.TraitInfo<FallsToEarthInfo>().Velocity.Length, 0)
+					new WVec(0, -altitude * aircraftInfo.Speed / actorInfo.TraitInfo<FallsToEarthInfo>().Velocity.Length, 0)
 					.Rotate(WRot.FromYaw(info.PodFacing));
 
 				// PERF: Cache constant values.
-				getLaunchLocation[actorInfo.Key] = pos => self.World.Map.CenterOfCell(pos) - delta + new WVec(0, 0, altitude);
-				landableTerrainTypes[actorInfo.Key] = aircraftInfo.LandableTerrainTypes;
+				getLaunchLocation[unitType] = pos => self.World.Map.CenterOfCell(pos) - delta + new WVec(0, 0, altitude);
+				landableTerrainTypes[unitType] = aircraftInfo.LandableTerrainTypes;
 			}
 		}
 
