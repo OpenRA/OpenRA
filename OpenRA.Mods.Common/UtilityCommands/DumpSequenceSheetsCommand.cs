@@ -51,13 +51,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var count = 0;
 
 			var sb = sequences.SpriteCache.SheetBuilders[SheetType.Indexed];
-			foreach (var s in sb.AllSheets)
+			if (sb.Current != null)
 			{
-				var max = s == sb.Current ? (int)sb.CurrentChannel + 1 : 4;
-				for (var i = 0; i < max; i++)
-					s.AsPng((TextureChannel)ChannelMasks[i], palette).Save($"{count}.{i}.png");
+				foreach (var s in sb.AllSheets)
+				{
+					var max = s == sb.Current ? (int)sb.CurrentChannel + 1 : 4;
+					for (var i = 0; i < max; i++)
+						s.AsPng((TextureChannel)ChannelMasks[i], palette).Save($"{count}.{i}.png");
 
-				count++;
+					count++;
+				}
 			}
 
 			sb = sequences.SpriteCache.SheetBuilders[SheetType.BGRA];
