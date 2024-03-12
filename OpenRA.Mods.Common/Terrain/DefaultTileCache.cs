@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Terrain
 
 			MissingTile = sheetBuilders[missingSheetType].Add(new byte[missingDataLength], missingFrameType, new Size(1, 1));
 			foreach (var sb in sheetBuilders.Values)
-				sb.Current.ReleaseBuffer();
+				sb.Current?.ReleaseBuffer();
 		}
 
 		public bool HasTileSprite(TerrainTile r, int? variant = null)

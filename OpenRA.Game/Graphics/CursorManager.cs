@@ -124,7 +124,7 @@ namespace OpenRA.Graphics
 				}
 			}
 
-			sheetBuilder.Current.ReleaseBuffer();
+			sheetBuilder.Current?.ReleaseBuffer();
 
 			hardwareCursorsDoubled = graphicSettings.CursorDouble;
 		}

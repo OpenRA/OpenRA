@@ -343,7 +343,9 @@ namespace OpenRA
 			}
 
 			// Release the buffer by forcing changes to be written out to the texture, allowing the buffer to be reclaimed by GC.
-			Game.RunAfterTick(sheetBuilder.Current.ReleaseBuffer);
+			if (sheetBuilder.Current != null)
+				Game.RunAfterTick(sheetBuilder.Current.ReleaseBuffer);
+
 			Log.Write("debug", "MapCache.LoadAsyncInternal ended");
 		}
 
