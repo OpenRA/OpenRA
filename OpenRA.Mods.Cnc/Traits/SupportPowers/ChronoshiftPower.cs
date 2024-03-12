@@ -320,7 +320,7 @@ namespace OpenRA.Mods.Cnc.Traits
 					{
 						var targetCell = unit.Location + (xy - sourceLocation);
 						var canEnter = manager.Self.Owner.Shroud.IsExplored(targetCell) &&
-							unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell);
+							unit.TraitsImplementing<Chronoshiftable>().Any(c => !c.IsTraitDisabled && c.CanChronoshiftTo(unit, targetCell));
 						var tile = canEnter ? validTile : invalidTile;
 						var alpha = canEnter ? validAlpha : invalidAlpha;
 						yield return new SpriteRenderable(tile, wr.World.Map.CenterOfCell(targetCell), WVec.Zero, -511, palette, 1f, alpha, float3.Ones, TintModifiers.IgnoreWorldTint, true);
@@ -364,7 +364,7 @@ namespace OpenRA.Mods.Cnc.Traits
 				{
 					anyUnitsInRange = true;
 					var targetCell = unit.Location + (xy - sourceLocation);
-					if (manager.Self.Owner.Shroud.IsExplored(targetCell) && unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit, targetCell))
+					if (manager.Self.Owner.Shroud.IsExplored(targetCell) && unit.TraitsImplementing<Chronoshiftable>().Any(c => !c.IsTraitDisabled && c.CanChronoshiftTo(unit, targetCell)))
 					{
 						canTeleport = true;
 						break;

@@ -18,8 +18,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc.Traits
 {
-	[Desc("Can be teleported via Chronoshift power.")]
-	public class ChronoshiftableInfo : ConditionalTraitInfo
+	[Desc("Can be teleported via Chronoshift power.", "Pausing applies to the return-to-origin timer.")]
+	public class ChronoshiftableInfo : PausableConditionalTraitInfo
 	{
 		[Desc("Should the actor die instead of being teleported?")]
 		public readonly bool ExplodeInstead = false;
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new Chronoshiftable(init, this); }
 	}
 
-	public class Chronoshiftable : ConditionalTrait<ChronoshiftableInfo>, ITick, ISync, ISelectionBar,
+	public class Chronoshiftable : PausableConditionalTrait<ChronoshiftableInfo>, ITick, ISync, ISelectionBar,
 		IDeathActorInitModifier, ITransformActorInitModifier
 	{
 		readonly Actor self;
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			if (IsTraitDisabled || !Info.ReturnToOrigin || ReturnTicks <= 0)
+			if (!Info.ReturnToOrigin || IsTraitPaused || ReturnTicks <= 0)
 				return;
 
 			// Return to original location
@@ -157,7 +157,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		// Show the remaining time as a bar
 		float ISelectionBar.GetValue()
 		{
-			if (IsTraitDisabled || !Info.ReturnToOrigin)
+			// Show only if timer has started.
+			if (!Info.ReturnToOrigin || (ReturnTicks == duration && IsTraitPaused))
 				return 0f;
 
 			// Otherwise an empty bar is rendered all the time
@@ -172,7 +173,7 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		void ModifyActorInit(TypeDictionary init)
 		{
-			if (IsTraitDisabled || !Info.ReturnToOrigin || ReturnTicks <= 0)
+			if (!Info.ReturnToOrigin || ReturnTicks <= 0)
 				return;
 
 			init.Add(new ChronoshiftReturnInit(ReturnTicks, duration, Origin, chronosphere));
