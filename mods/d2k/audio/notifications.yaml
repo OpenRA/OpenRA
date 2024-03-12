@@ -73,6 +73,7 @@ Sounds:
 		LevelUp: SCORTIK1
 		ChatLine: CHAT1
 			InterruptType: Interrupt
+		LeaveLobby: CHAT1REVERSE
 		BuildPaletteOpen: BUTTON1
 		BuildPaletteClose: BUTTON1
 		TabClick: SIDEBAR1
