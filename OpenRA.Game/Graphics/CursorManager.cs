@@ -229,6 +229,10 @@ namespace OpenRA.Graphics
 
 			var width = frame.Size.Width;
 			var height = frame.Size.Height;
+
+			if (width == 0 || height == 0)
+				return Array.Empty<byte>();
+
 			var data = new byte[4 * width * height];
 			unsafe
 			{
