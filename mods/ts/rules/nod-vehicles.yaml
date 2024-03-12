@@ -86,6 +86,7 @@ TTNK:
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@BOT: ^BotOwner
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -105,7 +106,7 @@ TTNK:
 		TurnSpeed: 20
 		Speed: 85
 		ImmovableCondition: !undeployed
-		RequireForceMoveCondition: !undeployed
+		RequireForceMoveCondition: !undeployed && !bot-owner
 	Health:
 		HP: 35000
 	Armor:
@@ -202,12 +203,19 @@ TTNK:
 		ArmamentNames: primary, deployed
 	RenderVoxels:
 		Scale: 11.5
+	IssueOrderToBot@AI:
+		RequiresCondition: undeployed
+		OrderName: GrantConditionOnDeploy
+		OrderChance: 100
+		OrderTrigger: Attack
+		OrderInterval: 35
 
 ART2:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@BOT: ^BotOwner
 	Valued:
 		Cost: 975
 	Tooltip:
@@ -231,7 +239,7 @@ ART2:
 		Speed: 71
 		TurnSpeed: 8
 		ImmovableCondition: !undeployed
-		RequireForceMoveCondition: !undeployed
+		RequireForceMoveCondition: !undeployed && !bot-owner
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
 		Range: 9c0
@@ -297,6 +305,12 @@ ART2:
 	WithMuzzleOverlay:
 	RevealOnFire:
 		ArmamentNames: deployed
+	IssueOrderToBot@AI:
+		OrderTrigger: BecomingIdle, Periodically
+		OrderName: GrantConditionOnDeploy
+		OrderChance: 100
+		OrderInterval: 40
+		RequiresCondition: undeployed
 
 REPAIR:
 	Inherits: ^Tank

@@ -746,6 +746,7 @@ PBOX:
 		Types: Infantry
 		MaxWeight: 1
 		InitialUnits: e1
+		LoadedCondition: loaded
 		PassengerConditions:
 			e3: RocketSoldier
 	WithRangeCircle@ROCKETSOLDIER:
@@ -765,6 +766,15 @@ PBOX:
 		Amount: -20
 	DetectCloaked:
 		Range: 6c0
+	GrantConditionOnDamageState@CriticalDamaged:
+		Condition: CriticalDamaged
+		ValidDamageStates: Critical
+	IssueOrderToBot:
+		RequiresCondition: loaded && CriticalDamaged
+		OrderName: Unload
+		OrderChance: 100
+		OrderTrigger: Periodically
+		OrderInterval: 20
 
 HBOX:
 	Inherits: ^Defense
@@ -813,6 +823,7 @@ HBOX:
 		Types: Infantry
 		MaxWeight: 1
 		InitialUnits: e1
+		LoadedCondition: loaded
 	-SpawnActorsOnSell:
 	DetectCloaked:
 		Range: 6c0
@@ -826,6 +837,12 @@ HBOX:
 		PortCones: 88, 88, 88, 88, 88, 88
 	Power:
 		Amount: -20
+	IssueOrderToBot:
+		RequiresCondition: loaded && cloak-force-disabled
+		OrderName: Unload
+		OrderChance: 100
+		OrderTrigger: Periodically
+		OrderInterval: 20
 	-MustBeDestroyed:
 
 GUN:

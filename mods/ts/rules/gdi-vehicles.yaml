@@ -321,6 +321,7 @@ JUGG:
 	Inherits@SPRITES: ^SpriteActor
 	Inherits@EXPERIENCE: ^GainsExperience
 	Inherits@AUTOTARGET: ^AutoTargetGroundAssaultMove
+	Inherits@BOT: ^BotOwner
 	Valued:
 		Cost: 950
 	Tooltip:
@@ -345,7 +346,7 @@ JUGG:
 		TurnSpeed: 20
 		AlwaysTurnInPlace: true
 		ImmovableCondition: !undeployed
-		RequireForceMoveCondition: !undeployed
+		RequireForceMoveCondition: !undeployed && !bot-owner
 		TerrainOrientationAdjustmentMargin: -1
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel
@@ -423,6 +424,12 @@ JUGG:
 		ArmamentNames: deployed
 	Selectable:
 		DecorationBounds: 1448, 2413, 0, -482
+	IssueOrderToBot@AI:
+		OrderTrigger: BecomingIdle, Periodically
+		OrderName: GrantConditionOnDeploy
+		OrderChance: 100
+		OrderInterval: 40
+		RequiresCondition: undeployed
 
 MOBILEMP:
 	Inherits: ^Tank

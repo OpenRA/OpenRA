@@ -451,11 +451,17 @@ JEEP:
 		Types: Infantry
 		MaxWeight: 1
 		LoadingCondition: notmobile
+		LoadedCondition: loaded
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	WithProductionIconOverlay:
 		Types: Veterancy
 		Prerequisites: vehicles.upgraded
+	IssueOrderToBot@AI:
+		RequiresCondition: loaded
+		OrderName: Unload
+		OrderChance: 100
+		OrderInterval: 45
 
 APC:
 	Inherits: ^TrackedVehicle
@@ -497,11 +503,17 @@ APC:
 		Types: Infantry
 		MaxWeight: 5
 		LoadingCondition: notmobile
+		LoadedCondition: loaded
 	ProducibleWithLevel:
 		Prerequisites: vehicles.upgraded
 	WithProductionIconOverlay:
 		Types: Veterancy
 		Prerequisites: vehicles.upgraded
+	IssueOrderToBot:
+		RequiresCondition: loaded
+		OrderName: Unload
+		OrderChance: 100
+		OrderInterval: 45
 
 MNLY:
 	Inherits: ^TrackedVehicle
@@ -914,6 +926,7 @@ STNK:
 		Types: Infantry
 		MaxWeight: 5
 		LoadingCondition: notmobile
+		LoadedCondition: loaded
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 175
@@ -930,3 +943,8 @@ STNK:
 	WithProductionIconOverlay:
 		Types: Veterancy
 		Prerequisites: vehicles.upgraded
+	IssueOrderToBot@AI:
+		RequiresCondition: loaded
+		OrderName: Unload
+		OrderChance: 100
+		OrderInterval: 45

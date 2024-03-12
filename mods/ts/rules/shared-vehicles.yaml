@@ -118,6 +118,7 @@ LPST:
 	Inherits: ^Tank
 	Inherits@VOXELS: ^VoxelActor
 	Inherits@selection: ^SelectableSupportUnit
+	Inherits@BOT: ^BotOwner
 	-AppearsOnRadar:
 	Buildable:
 		Queue: Vehicle
@@ -140,7 +141,7 @@ LPST:
 		Speed: 85
 		TurnSpeed: 20
 		ImmovableCondition: !undeployed
-		RequireForceMoveCondition: !undeployed
+		RequireForceMoveCondition: !undeployed && !bot-owner
 	RevealsShroud:
 		RequiresCondition: !inside-tunnel && undeployed
 		Range: 10c0
@@ -195,3 +196,9 @@ LPST:
 		TrailCount: 3
 	RenderVoxels:
 		Scale: 11.5
+	IssueOrderToBot@AI:
+		OrderTrigger: BecomingIdle, Periodically
+		OrderName: GrantConditionOnDeploy
+		OrderChance: 100
+		OrderInterval: 40
+		RequiresCondition: undeployed
