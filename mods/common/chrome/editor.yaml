@@ -458,7 +458,7 @@ Container@EDITOR_WORLD_ROOT:
 						Label@AREA_FILTERS_LABEL:
 							X: 15
 							Y: 45
-							Width: 55
+							Width: 150
 							Height: 25
 							Font: Bold
 							Align: Left
@@ -492,7 +492,7 @@ Container@EDITOR_WORLD_ROOT:
 						Label@DIAGONAL_LABEL:
 							X: 15
 							Y: 171
-							Width: 55
+							Width: 120
 							Height: 20
 							Font: Bold
 							Align: Left
@@ -500,7 +500,7 @@ Container@EDITOR_WORLD_ROOT:
 						Label@RESOURCE_LABEL:
 							X: 15
 							Y: 193
-							Width: 55
+							Width: 120
 							Height: 25
 							Font: Bold
 							Align: Left
@@ -718,7 +718,7 @@ Container@EDITOR_WORLD_ROOT:
 							ImageName: history
 		MenuButton@OPTIONS_BUTTON:
 			Logic: MenuButtonsChromeLogic
-			MenuContainer: INGAME_MENU
+				MenuContainer: INGAME_MENU
 			HideIngameUI: true
 			Pause: true
 			Width: 60

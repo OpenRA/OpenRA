@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -16,6 +17,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class DisconnectWatcherLogic : ChromeLogic
 	{
+		public class DisconnectWatcherLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = new HashSet<string>
+			{
+				"CONNECTIONFAILED_PANEL",
+			};
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+		}
+
+		readonly DisconnectWatcherLogicDynamicWidgets dynamicWidgets = new();
+
 		[ObjectCreator.UseCtor]
 		public DisconnectWatcherLogic(Widget widget, World world, OrderManager orderManager)
 		{
@@ -28,9 +40,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (disconnected || connection.ConnectionState != ConnectionState.NotConnected)
 					return;
 
-				Game.RunAfterTick(() => Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs
+				Game.RunAfterTick(() => dynamicWidgets.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs
 				{
-					{ "orderManager", orderManager },
 					{ "password", CurrentServerSettings.Password },
 					{ "connection", connection },
 					{ "onAbort", null },

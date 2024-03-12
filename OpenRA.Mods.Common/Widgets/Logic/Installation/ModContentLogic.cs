@@ -23,6 +23,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string ManualInstall = "button-manual-install";
 
+		public class ModContentLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } =
+				new HashSet<string>
+				{
+					"SOURCE_INSTALL_PANEL",
+					"PACKAGE_DOWNLOAD_PANEL",
+				};
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } = EmptyDictionary;
+		}
+
+		readonly ModContentLogicDynamicWidgets dynamicWidgets = new();
+
 		readonly ModContent content;
 		readonly ScrollPanelWidget scrollPanel;
 		readonly Widget template;
@@ -78,7 +91,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			sourceButton.Bounds.Y += headerHeight;
 			sourceButton.IsVisible = () => sourceAvailable;
 
-			sourceButton.OnClick = () => Ui.OpenWindow("SOURCE_INSTALL_PANEL", new WidgetArgs
+			sourceButton.OnClick = () => dynamicWidgets.OpenWindow("SOURCE_INSTALL_PANEL", new WidgetArgs
 			{
 				{ "sources", sources },
 				{ "content", content }
@@ -130,7 +143,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{ "onSuccess", () => { } }
 					};
 
-					downloadButton.OnClick = () => Ui.OpenWindow("PACKAGE_DOWNLOAD_PANEL", widgetArgs);
+					downloadButton.OnClick = () => dynamicWidgets.OpenWindow("PACKAGE_DOWNLOAD_PANEL", widgetArgs);
 				}
 
 				var installedWidget = container.Get<LabelWidget>("INSTALLED");

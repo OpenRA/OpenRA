@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (id == null || tooltip != null)
 				return;
 
-			tooltip = Ui.LoadWidget(id, this, new WidgetArgs(widgetArgs) { { "tooltipContainer", this } });
+			tooltip = Ui.LoadWidgetUnchecked(id, this, Game.ExtendWidgetArgs(new WidgetArgs(widgetArgs) { { "tooltipContainer", this } }));
 		}
 
 		public int SetTooltip(string id, WidgetArgs args)

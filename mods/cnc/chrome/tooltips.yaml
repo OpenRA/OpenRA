@@ -72,29 +72,6 @@ Background@BUTTON_TOOLTIP_FACTIONSUFFIX:
 			Font: TinyBold
 			VAlign: Top
 
-Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP:
-	Logic: ButtonTooltipLogic
-	Background: panel-black
-	Height: 26
-	Children:
-		Label@LABEL:
-			X: 5
-			Y: 1
-			Height: 23
-			Font: Bold
-		Label@HOTKEY:
-			Y: 1
-			Visible: false
-			TextColor: FFFF00
-			Height: 23
-			Font: Bold
-		LabelWithHighlight@DESC:
-			X: 5
-			Y: 26
-			Height: 12
-			Font: TinyBold
-			VAlign: Top
-
 Background@BUTTON_WITH_DESC_HIGHLIGHT_TOOLTIP_FACTIONSUFFIX:
 	Logic: ButtonTooltipLogic, AddFactionSuffixLogic
 	Background: panel-black

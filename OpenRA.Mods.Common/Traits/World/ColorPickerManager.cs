@@ -162,7 +162,10 @@ namespace OpenRA.Mods.Common.Traits
 			return MakeValid(h, s, v, random, terrainColors, playerColors, null);
 		}
 
-		void IColorPickerManagerInfo.ShowColorDropDown(DropDownButtonWidget dropdownButton, Color initialColor, string initialFaction, WorldRenderer worldRenderer, Action<Color> onExit)
+		void IColorPickerManagerInfo.ShowColorDropDown(
+			ChromeLogic.DynamicWidgets dynamicWidgets, DropDownButtonWidget dropdownButton,
+			Color initialColor, string initialFaction,
+			WorldRenderer worldRenderer, Action<Color> onExit)
 		{
 			dropdownButton.RemovePanel();
 
@@ -198,14 +201,14 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var finalColor = initialColor;
-			var colorChooser = Game.LoadWidget(worldRenderer.World, "COLOR_CHOOSER", null, new WidgetArgs()
+			var colorChooser = dynamicWidgets.LoadWidgetAsDropdownPanel("COLOR_CHOOSER", new WidgetArgs()
 			{
 				{ "onChange", (Action<Color>)(c => { finalColor = c; OnColorPickerColorUpdate(c); }) },
 				{ "initialColor", initialColor },
 				{ "extraLogic", (Action<Widget>)AddActorPreview },
 			});
 
-			dropdownButton.AttachPanel(colorChooser, () => onExit(finalColor));
+			dynamicWidgets.AttachPanel(dropdownButton, colorChooser, () => onExit(finalColor));
 		}
 
 		#endregion

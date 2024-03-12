@@ -40,11 +40,11 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			base.Initialize(args);
 
-			templates.Add(TextNotificationPool.Chat, Ui.LoadWidget(ChatTemplate, null, new WidgetArgs()));
-			templates.Add(TextNotificationPool.System, Ui.LoadWidget(SystemTemplate, null, new WidgetArgs()));
-			templates.Add(TextNotificationPool.Mission, Ui.LoadWidget(MissionTemplate, null, new WidgetArgs()));
-			templates.Add(TextNotificationPool.Feedback, Ui.LoadWidget(FeedbackTemplate, null, new WidgetArgs()));
-			templates.Add(TextNotificationPool.Transients, Ui.LoadWidget(TransientsTemplate, null, new WidgetArgs()));
+			templates.Add(TextNotificationPool.Chat, Ui.LoadWidgetUnchecked(ChatTemplate, null, new WidgetArgs()));
+			templates.Add(TextNotificationPool.System, Ui.LoadWidgetUnchecked(SystemTemplate, null, new WidgetArgs()));
+			templates.Add(TextNotificationPool.Mission, Ui.LoadWidgetUnchecked(MissionTemplate, null, new WidgetArgs()));
+			templates.Add(TextNotificationPool.Feedback, Ui.LoadWidgetUnchecked(FeedbackTemplate, null, new WidgetArgs()));
+			templates.Add(TextNotificationPool.Transients, Ui.LoadWidgetUnchecked(TransientsTemplate, null, new WidgetArgs()));
 
 			// HACK: Assume that all templates use the same font
 			var lineHeight = Game.Renderer.Fonts[templates[TextNotificationPool.Chat].Get<LabelWidget>("TEXT").Font].Measure("").Y;

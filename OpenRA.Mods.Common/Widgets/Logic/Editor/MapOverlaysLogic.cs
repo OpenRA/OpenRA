@@ -28,6 +28,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Buildable = 2,
 		}
 
+		public class MapOverlaysLogicDynamicWidgets : DynamicWidgets
+		{
+			public override ISet<string> WindowWidgetIds { get; } = EmptySet;
+			public override IReadOnlyDictionary<string, string> ParentWidgetIdForChildWidgetId { get; } =
+				new Dictionary<string, string>
+				{
+					{ "TOOLS_WIDGETS", "OVERLAY_BUTTON" },
+				};
+		}
+
+		readonly MapOverlaysLogicDynamicWidgets dynamicWidgets = new();
 		readonly TerrainGeometryOverlay terrainGeometryTrait;
 		readonly BuildableTerrainOverlay buildableTerrainTrait;
 		readonly Widget widget;
@@ -77,7 +88,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				overlayDropdown.OnMouseDown = _ =>
 				{
 					overlayDropdown.RemovePanel();
-					overlayDropdown.AttachPanel(overlayPanel);
+					dynamicWidgets.AttachPanel(overlayDropdown, overlayPanel);
 				};
 			}
 		}

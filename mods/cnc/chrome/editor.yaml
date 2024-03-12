@@ -514,7 +514,7 @@ Container@EDITOR_WORLD_ROOT:
 						Label@AREA_FILTERS_LABEL:
 							X: 6
 							Y: 36
-							Width: 55
+							Width: 150
 							Height: 25
 							Font: Bold
 							Align: Left
@@ -548,7 +548,7 @@ Container@EDITOR_WORLD_ROOT:
 						Label@DIAGONAL_LABEL:
 							X: 6
 							Y: 171
-							Width: 55
+							Width: 120
 							Height: 20
 							Font: Bold
 							Align: Left
@@ -556,7 +556,7 @@ Container@EDITOR_WORLD_ROOT:
 						Label@RESOURCE_LABEL:
 							X: 6
 							Y: 193
-							Width: 55
+							Width: 120
 							Height: 25
 							Font: Bold
 							Align: Left
@@ -860,17 +860,3 @@ ScrollPanel@CATEGORY_FILTER_PANEL:
 			Width: PARENT_RIGHT - 29
 			Height: 20
 			Visible: false
-
-ScrollPanel@OVERLAY_PANEL:
-	Width: 140
-	Height: 55
-	ItemSpacing: 5
-	TopBottomSpacing: 0
-	Children:
-		Checkbox@CATEGORY_TEMPLATE:
-			X: 5
-			Y: 5
-			Width: PARENT_RIGHT - 29
-			Height: 20
-			Visible: false
-
