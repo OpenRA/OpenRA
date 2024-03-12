@@ -75,6 +75,87 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 	{
 		enum Format : ushort { XORPrev = 0x20, XORLCW = 0x40, LCW = 0x80 }
 
+		class TrimmedFrame : ISpriteFrame
+		{
+			public SpriteFrameType Type => SpriteFrameType.Indexed8;
+			public Size Size { get; }
+			public Size FrameSize { get; }
+			public float2 Offset { get; }
+			public byte[] Data { get; }
+			public bool DisableExportPadding { get { return false; } }
+
+			public TrimmedFrame(ImageHeader header)
+			{
+				var origData = header.Data;
+				var origSize = header.Size;
+				var top = origSize.Height - 1;
+				var bottom = 0;
+				var left = origSize.Width - 1;
+				var right = 0;
+
+				// Scan frame data to find left-, top-, right-, bottom-most
+				// rows/columns with non-zero pixel data.
+				var i = 0;
+				for (var y = 0; y < origSize.Height; y++)
+				{
+					for (var x = 0; x < origSize.Width; x++, i++)
+					{
+						if (origData[i] != 0)
+						{
+							top = Math.Min(y, top);
+							bottom = Math.Max(y, bottom);
+							left = Math.Min(x, left);
+							right = Math.Max(x, right);
+						}
+					}
+				}
+
+				// Keep a 1px empty border to work avoid rounding issues in the gpu shader.
+				if (left > 0)
+					left--;
+
+				if (top > 0)
+					top--;
+
+				if (right < origSize.Width - 1)
+					right++;
+
+				if (bottom < origSize.Height - 1)
+					bottom++;
+
+				var trimmedWidth = right - left + 1;
+				var trimmedHeight = bottom - top + 1;
+
+				// Pad the dimensions to an even number to avoid issues with half-integer offsets.
+				var widthFudge = trimmedWidth % 2;
+				var heightFudge = trimmedHeight % 2;
+				var destWidth = trimmedWidth + widthFudge;
+				var destHeight = trimmedHeight + heightFudge;
+
+				if (trimmedWidth == origSize.Width && trimmedHeight == origSize.Height)
+				{
+					// Nothing to trim, so copy old data directly.
+					Size = header.Size;
+					FrameSize = header.FrameSize;
+					Offset = header.Offset;
+					Data = header.Data;
+				}
+				else if (trimmedWidth > 0 && trimmedHeight > 0)
+				{
+					// Trim frame.
+					Data = new byte[destWidth * destHeight];
+					for (var y = 0; y < trimmedHeight; y++)
+						Array.Copy(origData, (y + top) * origSize.Width + left, Data, y * destWidth, trimmedWidth);
+
+					Size = new Size(destWidth, destHeight);
+					FrameSize = origSize;
+					Offset = 0.5f * new float2(
+						left + right + widthFudge - origSize.Width + 1,
+						top + bottom + heightFudge - origSize.Height + 1);
+				}
+			}
+		}
+
 		sealed class ImageHeader : ISpriteFrame
 		{
 			public SpriteFrameType Type => SpriteFrameType.Indexed8;
@@ -156,7 +237,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			foreach (var h in headers)
 				Decompress(h);
 
-			Frames = headers;
+			Frames = headers.Select(f => (ISpriteFrame)new TrimmedFrame(f)).ToArray();
 		}
 
 		void Decompress(ImageHeader h)
