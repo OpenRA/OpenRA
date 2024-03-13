@@ -1,0 +1,31 @@
+tibsun-fr: Tiberian Sun (GDI or Nod Disc, French)
+	Type: Disc
+	IDFiles:
+		README.TXT: 9b0099bbc1f64e97159530a5bf5d6543833dd173
+		AUTOPLAY.WAV: 2dfce5d00f98b641849c29942b651f4e98d30e30
+	Install:
+		# Base game files:
+		ContentPackage:
+			Name: tibsun
+			Actions:
+				ExtractMix: INSTALL/TIBSUN.MIX
+					^SupportDir|Content/ts/cache.mix: cache.mix
+					^SupportDir|Content/ts/conquer.mix: conquer.mix
+					^SupportDir|Content/ts/isosnow.mix: isosnow.mix
+					^SupportDir|Content/ts/isotemp.mix: isotemp.mix
+					^SupportDir|Content/ts/local.mix: local.mix
+					^SupportDir|Content/ts/sidec01.mix: sidec01.mix
+					^SupportDir|Content/ts/sidec02.mix: sidec02.mix
+					^SupportDir|Content/ts/snow.mix: snow.mix
+					^SupportDir|Content/ts/sno.mix: sno.mix
+					^SupportDir|Content/ts/sounds.mix: sounds.mix
+					^SupportDir|Content/ts/speech01.mix: speech01.mix
+					^SupportDir|Content/ts/speech02.mix: speech02.mix
+					^SupportDir|Content/ts/tem.mix: tem.mix
+					^SupportDir|Content/ts/temperat.mix: temperat.mix
+		# Base game music (optional):
+		ContentPackage:
+			Name: tibsun-music
+			Actions:
+				Copy: .
+					^SupportDir|Content/ts/scores.mix: SCORES.MIX
