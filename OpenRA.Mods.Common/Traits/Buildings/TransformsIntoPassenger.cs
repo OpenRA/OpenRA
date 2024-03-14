@@ -66,13 +66,13 @@ namespace OpenRA.Mods.Common.Traits
 			get
 			{
 				if (!IsTraitDisabled)
-					yield return new EnterAlliedActorTargeter<CargoInfo>(
+					yield return new EnterActorTargeter<CargoInfo>(
 						"EnterTransport",
 						5,
 						Info.EnterCursor,
 						Info.EnterBlockedCursor,
 						IsCorrectCargoType,
-						CanEnter);
+						target => self.Owner.IsAlliedWith(target.Owner) && CanEnter(target));
 			}
 		}
 

@@ -58,21 +58,23 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display when unable to enter target actor.")]
 		public readonly string EnterBlockedCursor = "enter-blocked";
 
-		public override object Create(ActorInitializer init) { return new Passenger(this); }
+		public override object Create(ActorInitializer init) { return new Passenger(this, init.Self); }
 	}
 
 	public class Passenger : IIssueOrder, IResolveOrder, IOrderVoice, INotifyRemovedFromWorld, INotifyEnteredCargo, INotifyExitedCargo, INotifyKilled, IObservesVariables
 	{
 		public readonly PassengerInfo Info;
 		public Actor Transport;
+		readonly Actor self;
 		bool requireForceMove;
 
 		int anyCargoToken = Actor.InvalidConditionToken;
 		int specificCargoToken = Actor.InvalidConditionToken;
 
-		public Passenger(PassengerInfo info)
+		public Passenger(PassengerInfo info, Actor self)
 		{
 			Info = info;
+			this.self = self;
 		}
 
 		public Cargo ReservedCargo { get; private set; }
@@ -81,13 +83,13 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			get
 			{
-				yield return new EnterAlliedActorTargeter<CargoInfo>(
+				yield return new EnterActorTargeter<CargoInfo>(
 					"EnterTransport",
 					5,
 					Info.EnterCursor,
 					Info.EnterBlockedCursor,
 					IsCorrectCargoType,
-					CanEnter);
+					target => self.Owner.IsAlliedWith(target.Owner) && CanEnter(target));
 			}
 		}
 
