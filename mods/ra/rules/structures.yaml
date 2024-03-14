@@ -217,6 +217,8 @@ SPEN:
 		FinishRepairingNotification: UnitRepaired
 		FinishRepairingTextNotification: notification-unit-repaired
 		PlayerExperience: 5
+	ProximityLinkHost:
+		Type: RepairShip
 	RallyPoint:
 		ForceSetType: Ship
 	CommandBarBlacklist:
@@ -337,6 +339,8 @@ SYRD:
 		FinishRepairingNotification: UnitRepaired
 		FinishRepairingTextNotification: notification-unit-repaired
 		PlayerExperience: 5
+	ProximityLinkHost:
+		Type: RepairShip
 	RallyPoint:
 		ForceSetType: Ship
 	CommandBarBlacklist:

@@ -16,13 +16,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public sealed class DockType { DockType() { } }
+	public sealed class LinkType { LinkType() { } }
 
 	[Desc("A generic dock that services DockClients.")]
-	public class DockHostInfo : ConditionalTraitInfo, IDockHostInfo
+	public class DockHostInfo : ConditionalTraitInfo, ILinkHostInfo
 	{
-		[Desc("Docking type.")]
-		public readonly BitSet<DockType> Type;
+		[Desc("Link type.")]
+		public readonly BitSet<LinkType> Type;
 
 		[Desc("How many clients can this dock be reserved for?")]
 		public readonly int MaxQueueLength = 3;
@@ -48,30 +48,30 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new DockHost(init.Self, this); }
 	}
 
-	public class DockHost : ConditionalTrait<DockHostInfo>, IDockHost, IDockHostDrag, ITick, INotifySold, INotifyCapture, INotifyOwnerChanged, ISync, INotifyKilled, INotifyActorDisposing
+	public class DockHost : ConditionalTrait<DockHostInfo>, ILinkHost, ILinkHostDrag, ITick, INotifySold, INotifyCapture, INotifyOwnerChanged, ISync, INotifyKilled, INotifyActorDisposing
 	{
 		readonly Actor self;
 
-		public BitSet<DockType> GetDockType => Info.Type;
-		public bool IsEnabledAndInWorld => !preventDock && !IsTraitDisabled && !self.IsDead && self.IsInWorld;
-		public int ReservationCount => ReservedDockClients.Count;
+		public BitSet<LinkType> GetLinkType => Info.Type;
+		public bool IsEnabledAndInWorld => !preventLink && !IsTraitDisabled && !self.IsDead && self.IsInWorld;
+		public int ReservationCount => ReservedLinkClients.Count;
 		public bool CanBeReserved => ReservationCount < Info.MaxQueueLength;
-		protected readonly List<DockClientManager> ReservedDockClients = new();
+		protected readonly List<LinkClientManager> ReservedLinkClients = new();
 
-		public WPos DockPosition => self.CenterPosition + Info.DockOffset;
-		public int DockWait => Info.DockWait;
-		public WAngle DockAngle => Info.DockAngle;
+		public WPos LinkPosition => self.CenterPosition + Info.DockOffset;
+		public int LinkWait => Info.DockWait;
+		public WAngle LinkFacing => Info.DockAngle;
 
-		bool IDockHostDrag.IsDragRequired => Info.IsDragRequired;
-		WVec IDockHostDrag.DragOffset => Info.DragOffset;
-		int IDockHostDrag.DragLength => Info.DragLength;
-
-		[Sync]
-		bool preventDock = false;
+		bool ILinkHostDrag.IsDragRequired => Info.IsDragRequired;
+		WVec ILinkHostDrag.DragOffset => Info.DragOffset;
+		int ILinkHostDrag.DragLength => Info.DragLength;
 
 		[Sync]
-		protected Actor dockedClientActor = null;
-		protected DockClientManager dockedClient = null;
+		bool preventLink = false;
+
+		[Sync]
+		protected Actor linkedClientActor = null;
+		protected LinkClientManager linkedClient = null;
 
 		public DockHost(Actor self, DockHostInfo info)
 			: base(info)
@@ -79,16 +79,16 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 		}
 
-		public virtual bool IsDockingPossible(Actor clientActor, IDockClient client, bool ignoreReservations = false)
+		public virtual bool IsLinkingPossible(Actor clientActor, ILinkClient client, bool ignoreReservations = false)
 		{
-			return !IsTraitDisabled && (ignoreReservations || CanBeReserved || ReservedDockClients.Contains(client.DockClientManager));
+			return !IsTraitDisabled && (ignoreReservations || CanBeReserved || ReservedLinkClients.Contains(client.LinkClientManager));
 		}
 
-		public virtual bool Reserve(Actor self, DockClientManager client)
+		public virtual bool Reserve(Actor self, LinkClientManager client)
 		{
-			if (CanBeReserved && !ReservedDockClients.Contains(client))
+			if (CanBeReserved && !ReservedLinkClients.Contains(client))
 			{
-				ReservedDockClients.Add(client);
+				ReservedLinkClients.Add(client);
 				client.ReserveHost(self, this);
 				return true;
 			}
@@ -98,26 +98,26 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void UnreserveAll()
 		{
-			while (ReservedDockClients.Count > 0)
-				Unreserve(ReservedDockClients[0]);
+			while (ReservedLinkClients.Count > 0)
+				Unreserve(ReservedLinkClients[0]);
 		}
 
-		public virtual void Unreserve(DockClientManager client)
+		public virtual void Unreserve(LinkClientManager client)
 		{
-			if (ReservedDockClients.Remove(client))
+			if (ReservedLinkClients.Remove(client))
 				client.UnreserveHost();
 		}
 
-		public virtual void OnDockStarted(Actor self, Actor clientActor, DockClientManager client)
+		public virtual void OnLinkStarted(Actor self, Actor clientActor, LinkClientManager client)
 		{
-			dockedClientActor = clientActor;
-			dockedClient = client;
+			linkedClientActor = clientActor;
+			linkedClient = client;
 		}
 
-		public virtual void OnDockCompleted(Actor self, Actor clientActor, DockClientManager client)
+		public virtual void OnLinkCompleted(Actor self, Actor clientActor, LinkClientManager client)
 		{
-			dockedClientActor = null;
-			dockedClient = null;
+			linkedClientActor = null;
+			linkedClient = null;
 		}
 
 		void ITick.Tick(Actor self)
@@ -128,29 +128,29 @@ namespace OpenRA.Mods.Common.Traits
 		protected virtual void Tick(Actor self)
 		{
 			// Client was killed during docking.
-			if (dockedClientActor != null && (dockedClientActor.IsDead || !dockedClientActor.IsInWorld))
-				OnDockCompleted(self, dockedClientActor, dockedClient);
+			if (linkedClientActor != null && (linkedClientActor.IsDead || !linkedClientActor.IsInWorld))
+				OnLinkCompleted(self, linkedClientActor, linkedClient);
 		}
 
-		public virtual bool QueueMoveActivity(Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client)
+		public virtual bool QueueMoveActivity(Activity moveToLinkHostActivity, Actor self, Actor clientActor, LinkClientManager client)
 		{
 			var move = clientActor.Trait<IMove>();
 
 			// Make sure the actor is at dock, at correct facing, and aircraft are landed.
 			// Mobile cannot freely move in WPos, so when we calculate close enough we convert to CPos.
-			if ((move is Mobile ? clientActor.Location != clientActor.World.Map.CellContaining(DockPosition) : clientActor.CenterPosition != DockPosition)
-				|| move is not IFacing facing || facing.Facing != DockAngle)
+			if ((move is Mobile ? clientActor.Location != clientActor.World.Map.CellContaining(LinkPosition) : clientActor.CenterPosition != LinkPosition)
+				|| move is not IFacing facing || facing.Facing != LinkFacing)
 			{
-				moveToDockActivity.QueueChild(move.MoveOntoTarget(clientActor, Target.FromActor(self), DockPosition - self.CenterPosition, DockAngle));
+				moveToLinkHostActivity.QueueChild(move.MoveOntoTarget(clientActor, Target.FromActor(self), LinkPosition - self.CenterPosition, LinkFacing));
 				return true;
 			}
 
 			return false;
 		}
 
-		public virtual void QueueDockActivity(Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client)
+		public virtual void QueueLinkActivity(Activity moveToLinkHostActivity, Actor self, Actor clientActor, LinkClientManager client)
 		{
-			moveToDockActivity.QueueChild(new GenericDockSequence(clientActor, client, self, this));
+			moveToLinkHostActivity.QueueChild(new GenericDockSequence(clientActor, client, self, this));
 		}
 
 		protected override void TraitDisabled(Actor self) { UnreserveAll(); }
@@ -159,22 +159,22 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCapture.OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner, BitSet<CaptureType> captureTypes)
 		{
-			// Steal any docked unit too.
-			if (dockedClientActor != null && !dockedClientActor.IsDead && dockedClientActor.IsInWorld)
+			// Steal any linked unit too.
+			if (linkedClientActor != null && !linkedClientActor.IsDead && linkedClientActor.IsInWorld)
 			{
-				dockedClientActor.ChangeOwner(newOwner);
+				linkedClientActor.ChangeOwner(newOwner);
 
 				// On capture OnOwnerChanged event is called first, so we need to re-reserve.
-				dockedClient.ReserveHost(self, this);
+				linkedClient.ReserveHost(self, this);
 			}
 		}
 
-		void INotifySold.Selling(Actor self) { preventDock = true; }
+		void INotifySold.Selling(Actor self) { preventLink = true; }
 
 		void INotifySold.Sold(Actor self) { UnreserveAll(); }
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e) { UnreserveAll(); }
 
-		void INotifyActorDisposing.Disposing(Actor self) { preventDock = true; UnreserveAll(); }
+		void INotifyActorDisposing.Disposing(Actor self) { preventLink = true; UnreserveAll(); }
 	}
 }

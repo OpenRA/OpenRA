@@ -18,10 +18,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class HarvesterInfo : DockClientBaseInfo, Requires<IStoresResourcesInfo>, IRulesetLoaded
+	public class HarvesterInfo : LinkClientBaseInfo, Requires<IStoresResourcesInfo>, IRulesetLoaded
 	{
-		[Desc("Docking type")]
-		public readonly BitSet<DockType> Type = new("Unload");
+		[Desc("Link type")]
+		public readonly BitSet<LinkType> Type = new("Unload");
 
 		[Desc("Cell to move to when automatically unblocking DeliveryBuilding.")]
 		public readonly CVec UnblockCell = new(0, 4);
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Harvester : DockClientBase<HarvesterInfo>, IIssueOrder, IResolveOrder, IOrderVoice,
+	public class Harvester : LinkClientBase<HarvesterInfo>, IIssueOrder, IResolveOrder, IOrderVoice,
 		ISpeedModifier, ISync, INotifyCreated
 	{
 		Mobile mobile;
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly IStoresResources[] storesResources;
 		int conditionToken = Actor.InvalidConditionToken;
 
-		public override BitSet<DockType> GetDockType => Info.Type;
+		public override BitSet<LinkType> GetLinkType => Info.Type;
 
 		[Sync]
 		int currentUnloadTicks;
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 		public bool IsEmpty => storesResources.All(sr => sr.ContentsSum == 0);
 		public int Fullness => storesResources.Sum(sr => sr.ContentsSum * 100 / sr.Capacity) / storesResources.Length;
 
-		protected override bool CanDock()
+		protected override bool CanLink()
 		{
 			return !IsEmpty;
 		}
@@ -152,13 +152,13 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		IAcceptResources acceptResources;
-		public override void OnDockStarted(Actor self, Actor hostActor, IDockHost host)
+		public override void OnLinkStarted(Actor self, Actor hostActor, ILinkHost host)
 		{
-			if (IsDockingPossible(host.GetDockType))
+			if (IsLinkingPossible(host.GetLinkType))
 				acceptResources = hostActor.TraitOrDefault<IAcceptResources>();
 		}
 
-		public override bool OnDockTick(Actor self, Actor hostActor, IDockHost host)
+		public override bool OnLinkTick(Actor self, Actor hostActor, ILinkHost host)
 		{
 			if (acceptResources == null || IsTraitDisabled)
 				return true;
@@ -186,12 +186,12 @@ namespace OpenRA.Mods.Common.Traits
 			return IsEmpty;
 		}
 
-		public override void OnDockCompleted(Actor self, Actor hostActor, IDockHost dock)
+		public override void OnLinkCompleted(Actor self, Actor hostActor, ILinkHost link)
 		{
 			acceptResources = null;
 
-			// After having docked at a refinery make sure we are running FindAndDeliverResources activity.
-			if (GetDockType.Overlaps(dock.GetDockType))
+			// After having linked to a refinery make sure we are running FindAndDeliverResources activity.
+			if (GetLinkType.Overlaps(link.GetLinkType))
 			{
 				var currentActivity = self.CurrentActivity;
 				if (currentActivity == null || (currentActivity is not FindAndDeliverResources && currentActivity.NextActivity == null))

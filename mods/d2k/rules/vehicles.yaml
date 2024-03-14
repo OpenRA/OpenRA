@@ -78,7 +78,7 @@ harvester:
 	StoresResources:
 		Capacity: 28
 		Resources: Spice
-	DockClientManager:
+	LinkClientManager:
 	CarryableHarvester:
 	Health:
 		HP: 45000
@@ -497,7 +497,7 @@ stealth_raider:
 	Cloak:
 		InitialDelay: 45
 		CloakDelay: 90
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage, Heal
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Link, Damage, Heal
 		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled

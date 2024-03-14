@@ -24,6 +24,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly HarvesterInfo harvInfo;
 		readonly Mobile mobile;
 		readonly ResourceClaimLayer claimLayer;
+		readonly LinkClientManager linkClient;
 		CPos? orderLocation;
 		CPos? lastHarvestedCell;
 		bool hasDeliveredLoad;
@@ -36,6 +37,8 @@ namespace OpenRA.Mods.Common.Activities
 		{
 			harv = self.Trait<Harvester>();
 			harvInfo = self.Info.TraitInfo<HarvesterInfo>();
+			linkClient = self.Trait<LinkClientManager>();
+
 			mobile = self.Trait<Mobile>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
 			if (orderLocation.HasValue)
@@ -54,7 +57,7 @@ namespace OpenRA.Mods.Common.Activities
 				// We have to make sure the actual "harvest" order is not skipped if a third order is queued,
 				// so we keep deliveredLoad false.
 				if (harv.IsFull)
-					QueueChild(new MoveToDock(self));
+					QueueChild(new MoveToDock(self, linkClient, linkLineColor: linkClient.LinkLineColor));
 			}
 		}
 
@@ -78,10 +81,10 @@ namespace OpenRA.Mods.Common.Activities
 			if (harv.IsFull || (!harv.IsEmpty && LastSearchFailed))
 			{
 				// If we are reserved it means docking was already initiated and we should wait.
-				if (harv.DockClientManager.ReservedHost != null)
+				if (harv.LinkClientManager.ReservedHost != null)
 					return false;
 
-				QueueChild(new MoveToDock(self));
+				QueueChild(new MoveToDock(self, linkClient, linkLineColor: linkClient.LinkLineColor));
 				hasDeliveredLoad = true;
 			}
 
@@ -116,10 +119,10 @@ namespace OpenRA.Mods.Common.Activities
 			// of the refinery entrance.
 			if (LastSearchFailed)
 			{
-				var lastproc = harv.DockClientManager?.LastReservedHost;
+				var lastproc = harv.LinkClientManager?.LastReservedHost;
 				if (lastproc != null)
 				{
-					var deliveryLoc = self.World.Map.CellContaining(lastproc.DockPosition);
+					var deliveryLoc = self.World.Map.CellContaining(lastproc.LinkPosition);
 					if (self.Location == deliveryLoc && harv.IsEmpty)
 					{
 						var unblockCell = deliveryLoc + harv.Info.UnblockCell;
@@ -159,10 +162,10 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			// Determine where to search from and how far to search:
-			// Prioritise search by these locations in this order: lastHarvestedCell -> lastLinkedDock -> self.
+			// Prioritise search by these locations in this order: lastHarvestedCell -> LastReservedHost -> self.
 			CPos searchFromLoc;
 			int searchRadius;
-			WPos? dockPos = null;
+			WPos? linkHost = null;
 			if (lastHarvestedCell.HasValue)
 			{
 				searchRadius = harvInfo.SearchFromHarvesterRadius;
@@ -171,11 +174,11 @@ namespace OpenRA.Mods.Common.Activities
 			else
 			{
 				searchRadius = harvInfo.SearchFromProcRadius;
-				var dock = harv.DockClientManager?.LastReservedHost;
-				if (dock != null)
+				var link = harv.LinkClientManager?.LastReservedHost;
+				if (link != null)
 				{
-					dockPos = dock.DockPosition;
-					searchFromLoc = self.World.Map.CellContaining(dockPos.Value);
+					linkHost = link.LinkPosition;
+					searchFromLoc = self.World.Map.CellContaining(linkHost.Value);
 				}
 				else
 					searchFromLoc = self.Location;
@@ -201,19 +204,19 @@ namespace OpenRA.Mods.Common.Activities
 
 					// Add a cost modifier to harvestable cells to prefer resources that are closer to the refinery.
 					// This reduces the tendency for harvesters to move in straight lines
-					if (dockPos.HasValue && harvInfo.ResourceRefineryDirectionPenalty > 0 && harv.CanHarvestCell(loc))
+					if (linkHost.HasValue && harvInfo.ResourceRefineryDirectionPenalty > 0 && harv.CanHarvestCell(loc))
 					{
 						var pos = map.CenterOfCell(loc);
 
 						// Calculate harv-cell-refinery angle (cosine rule)
-						var b = pos - dockPos.Value;
+						var b = pos - linkHost.Value;
 
 						if (b != WVec.Zero)
 						{
 							var c = pos - harvPos;
 							if (c != WVec.Zero)
 							{
-								var a = harvPos - dockPos.Value;
+								var a = harvPos - linkHost.Value;
 								var cosA = (int)(512 * (b.LengthSquared + c.LengthSquared - a.LengthSquared) / b.Length / c.Length);
 
 								// Cost modifier varies between 0 and ResourceRefineryDirectionPenalty
@@ -246,9 +249,9 @@ namespace OpenRA.Mods.Common.Activities
 				yield return new TargetLineNode(Target.FromCell(self.World, orderLocation.Value), harvInfo.HarvestLineColor);
 			else
 			{
-				var manager = harv.DockClientManager;
+				var manager = harv.LinkClientManager;
 				if (manager?.ReservedHostActor != null)
-					yield return new TargetLineNode(Target.FromActor(manager.ReservedHostActor), manager.DockLineColor);
+					yield return new TargetLineNode(Target.FromActor(manager.ReservedHostActor), manager.LinkLineColor);
 			}
 		}
 	}

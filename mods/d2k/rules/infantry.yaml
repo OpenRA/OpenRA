@@ -185,7 +185,7 @@ fremen:
 	Cloak:
 		InitialDelay: 85
 		CloakDelay: 85
-		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage, Heal
+		UncloakOn: Attack, Unload, Infiltrate, Demolish, Link, Damage, Heal
 		PauseOnCondition: cloak-force-disabled
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
