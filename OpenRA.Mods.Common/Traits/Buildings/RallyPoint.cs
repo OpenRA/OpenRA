@@ -12,11 +12,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[RequireExplicitImplementation]
+	public interface IRallyPointValidator
+	{
+		bool CanPlaceRallyPoint(Actor self, in Target target);
+	}
+
 	[Desc("Used to waypoint units after production or repair is finished.")]
 	public class RallyPointInfo : TraitInfo
 	{
@@ -68,7 +75,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public RallyPointInfo Info;
 		public string PaletteName { get; private set; }
-		RallyPointIndicator effect;
+		IEffect effect;
+
+		IRallyPointValidator validator;
 
 		public void ResetPath(Actor self)
 		{
@@ -84,7 +93,13 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			effect = new RallyPointIndicator(self, this);
+			effect = CreateRallyPointIndicator(self);
+			validator = self.TraitOrDefault<IRallyPointValidator>();
+		}
+
+		protected virtual IEffect CreateRallyPointIndicator(Actor self)
+		{
+			return new RallyPointIndicator(self, this);
 		}
 
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
@@ -128,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (order.OrderString != OrderID)
 				return;
 
-			if (!order.Target.IsValidFor(self))
+			if (!order.Target.IsValidFor(self) || validator?.CanPlaceRallyPoint(self, order.Target) == false)
 				return;
 
 			if (!order.Queued)

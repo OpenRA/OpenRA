@@ -264,7 +264,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Building : IOccupySpace, ITargetableCells, INotifySold, INotifyTransform, ISync,
-		INotifyAddedToWorld, INotifyRemovedFromWorld
+		INotifyAddedToWorld, INotifyRemovedFromWorld, IRallyPointValidator
 	{
 		public readonly BuildingInfo Info;
 
@@ -352,6 +352,16 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var smudgeLayer in smudgeLayers)
 				foreach (var footprintTile in Info.Tiles(self.Location))
 					smudgeLayer.RemoveSmudge(footprintTile);
+		}
+
+		bool IRallyPointValidator.CanPlaceRallyPoint(Actor self, in Target target)
+		{
+			if (target.Type == TargetType.Actor && target.Actor != null)
+				return false;
+			if (target.Type == TargetType.Terrain)
+				return !self.World.ActorMap.GetActorsAt(self.World.Map.CellContaining(target.CenterPosition)).Any();
+
+			return true;
 		}
 	}
 }
