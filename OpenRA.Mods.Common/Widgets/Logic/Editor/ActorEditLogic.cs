@@ -59,6 +59,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		EditorActorPreview SelectedActor => editor.DefaultBrush.Selection.Actor;
 
+		internal bool IsChangingSelection { get; set; }
+
 		[ObjectCreator.UseCtor]
 		public ActorEditLogic(Widget widget, World world, WorldRenderer worldRenderer, Dictionary<string, MiniYaml> logicArgs)
 		{
@@ -155,9 +157,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			if (SelectedActor != null)
 			{
-				Reset();
+				// Our edit control is updating the selection to account for an actor ID change.
+				// Don't try and reset, we're the ones who instigated the selection change!
+				if (!IsChangingSelection)
+					Reset();
 
-				editActorPreview = new EditActorPreview(SelectedActor);
+				editActorPreview = new EditActorPreview(this, editor, editorActorLayer, SelectedActor);
 
 				initialActorID = actorIDField.Text = SelectedActor.ID;
 
@@ -382,7 +387,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		void Save()
 		{
-			editorActionManager.Add(new EditActorEditorAction(editorActorLayer, SelectedActor, editActorPreview.GetDirtyHandles()));
+			editorActionManager.Add(new EditActorEditorAction(SelectedActor, editActorPreview.GetDirtyHandles()));
 			editActorPreview = null;
 			Close();
 		}
@@ -408,12 +413,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.value = value;
 		}
 
-		public void Do(EditorActorPreview actor)
+		public void Do(ref EditorActorPreview actor)
 		{
 			change(actor, value);
 		}
 
-		public void Undo(EditorActorPreview actor)
+		public void Undo(ref EditorActorPreview actor)
 		{
 			change(actor, initialValue);
 		}
@@ -424,8 +429,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	public interface IEditActorHandle
 	{
-		void Do(EditorActorPreview actor);
-		void Undo(EditorActorPreview actor);
+		void Do(ref EditorActorPreview actor);
+		void Undo(ref EditorActorPreview actor);
 		bool IsDirty { get; }
 		bool ShouldDoOnSave { get; }
 	}
@@ -435,52 +440,56 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference("name", "id")]
 		const string EditedActor = "notification-edited-actor";
 
-		public string Text { get; }
+		[TranslationReference("name", "old-id", "new-id")]
+		const string EditedActorId = "notification-edited-actor-id";
+
+		public string Text { get; private set; }
+		public EditorActorPreview Actor;
 
 		readonly IEnumerable<IEditActorHandle> handles;
-		readonly EditorActorLayer editorActorLayer;
-		EditorActorPreview actor;
-		readonly string actorId;
 
-		public EditActorEditorAction(EditorActorLayer editorActorLayer, EditorActorPreview actor, IEnumerable<IEditActorHandle> handles)
+		public EditActorEditorAction(EditorActorPreview actor, IEnumerable<IEditActorHandle> handles)
 		{
-			this.editorActorLayer = editorActorLayer;
-			actorId = actor.ID;
-			this.actor = actor;
+			Actor = actor;
 			this.handles = handles;
 			Text = TranslationProvider.GetString(EditedActor, Translation.Arguments("name", actor.Info.Name, "id", actor.ID));
 		}
 
 		public void Execute()
 		{
+			var before = Actor;
+
 			foreach (var editorActionHandle in handles.Where(h => h.ShouldDoOnSave))
-				editorActionHandle.Do(actor);
+				editorActionHandle.Do(ref Actor);
+
+			var after = Actor;
+			if (before != after)
+				Text = TranslationProvider.GetString(EditedActorId, Translation.Arguments("name", after.Info.Name, "old-id", before.ID, "new-id", after.ID));
 		}
 
 		public void Do()
 		{
-			actor = editorActorLayer[actorId];
 			foreach (var editorActionHandle in handles)
-				editorActionHandle.Do(actor);
+				editorActionHandle.Do(ref Actor);
 		}
 
 		public void Undo()
 		{
 			foreach (var editorActionHandle in handles)
-				editorActionHandle.Undo(actor);
+				editorActionHandle.Undo(ref Actor);
 		}
 	}
 
 	sealed class EditActorPreview
 	{
-		readonly EditorActorPreview actor;
 		readonly SetActorIdAction setActorIdAction;
 		readonly List<IEditActorHandle> handles = new();
+		EditorActorPreview actor;
 
-		public EditActorPreview(EditorActorPreview actor)
+		public EditActorPreview(ActorEditLogic logic, EditorViewportControllerWidget editor, EditorActorLayer editorActorLayer, EditorActorPreview actor)
 		{
 			this.actor = actor;
-			setActorIdAction = new SetActorIdAction(actor.ID);
+			setActorIdAction = new SetActorIdAction(logic, editor, editorActorLayer, actor.ID);
 			handles.Add(setActorIdAction);
 		}
 
@@ -507,12 +516,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		public void Reset()
 		{
 			foreach (var handle in handles.Where(h => h.IsDirty))
-				handle.Undo(actor);
+				handle.Undo(ref actor);
 		}
 	}
 
 	public class SetActorIdAction : IEditActorHandle
 	{
+		readonly ActorEditLogic logic;
+		readonly EditorViewportControllerWidget editor;
+		readonly EditorActorLayer editorActorLayer;
 		readonly string initial;
 		string newID;
 
@@ -522,19 +534,35 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			newID = actorId;
 		}
 
-		public SetActorIdAction(string initial)
+		public SetActorIdAction(ActorEditLogic logic, EditorViewportControllerWidget editor, EditorActorLayer editorActorLayer, string initial)
 		{
+			this.logic = logic;
+			this.editor = editor;
+			this.editorActorLayer = editorActorLayer;
 			this.initial = initial;
 		}
 
-		public void Do(EditorActorPreview actor)
+		public void Do(ref EditorActorPreview actor)
 		{
-			actor.ID = newID;
+			// We can't update the ID of an EditorActorPreview in place - it's the hash and equality key of a preview.
+			// So instead we need to swap in an entirely new preview with the updated ID.
+			// This affects the actor layer, and the current selection.
+			editorActorLayer.Remove(actor);
+			actor = actor.WithId(newID);
+			editorActorLayer.Add(actor);
+			logic.IsChangingSelection = true;
+			editor.DefaultBrush.SetSelection(new EditorSelection { Actor = actor });
+			logic.IsChangingSelection = false;
 		}
 
-		public void Undo(EditorActorPreview actor)
+		public void Undo(ref EditorActorPreview actor)
 		{
-			actor.ID = initial;
+			editorActorLayer.Remove(actor);
+			actor = actor.WithId(initial);
+			editorActorLayer.Add(actor);
+			logic.IsChangingSelection = true;
+			editor.DefaultBrush.SetSelection(new EditorSelection { Actor = actor });
+			logic.IsChangingSelection = false;
 		}
 
 		public bool IsDirty { get; private set; }
