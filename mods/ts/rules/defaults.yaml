@@ -867,10 +867,10 @@
 		Notification: UnitSold
 		TextNotification: notification-unit-sold
 		RequiresCondition: unit.sellable
-	GrantConditionOnClientDock@Sellable:
+	GrantConditionOnClientLink@Sellable:
 		Condition: unit.sellable
-		AfterDockDuration: 20
-		DockHostNames: gadept
+		AfterLinkDuration: 20
+		LinkHostNames: gadept
 
 ^Tank:
 	Inherits: ^Vehicle
@@ -964,10 +964,10 @@
 		Notification: UnitSold
 		TextNotification: notification-unit-sold
 		RequiresCondition: unit.sellable
-	GrantConditionOnClientDock@Sellable:
+	GrantConditionOnClientLink@Sellable:
 		Condition: unit.sellable
-		AfterDockDuration: 20
-		DockHostNames: gadept
+		AfterLinkDuration: 20
+		LinkHostNames: gadept
 
 ^EMPableAircraft:
 	Inherits: ^Aircraft

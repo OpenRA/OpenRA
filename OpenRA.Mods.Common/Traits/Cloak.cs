@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		Damage = 64,
 		Heal = 128,
 		SelfHeal = 256,
-		Dock = 512,
+		Link = 512,
 		SupportPower = 1024,
 	}
 
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 			"'Dock' is triggered when docking to a refinery or resupplying.",
 			"'SupportPower' is triggered when using a support power.")]
 		public readonly UncloakType UncloakOn = UncloakType.Attack
-			| UncloakType.Unload | UncloakType.Infiltrate | UncloakType.Demolish | UncloakType.Dock;
+			| UncloakType.Unload | UncloakType.Infiltrate | UncloakType.Demolish | UncloakType.Link;
 
 		public readonly string CloakSound = null;
 		public readonly string UncloakSound = null;
@@ -109,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class Cloak : PausableConditionalTrait<CloakInfo>, IRenderModifier, INotifyDamage, INotifyUnloadCargo, INotifyLoadCargo, INotifyDemolition, INotifyInfiltration,
-		INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyDockClient, INotifySupportPower
+		INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyLinkClient, INotifyLinkHost, INotifySupportPower
 	{
 		readonly float3 cloakedColor;
 		readonly float cloakedColorAlpha;
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Sync]
 		int remainingTime;
 
-		bool isDocking;
+		bool isLinked;
 		Cloak[] otherCloaks;
 
 		CPos? lastPos;
@@ -214,7 +214,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			if (!IsTraitDisabled && !IsTraitPaused)
 			{
-				if (remainingTime > 0 && !isDocking)
+				if (remainingTime > 0 && !isLinked)
 					remainingTime--;
 
 				if (Info.UncloakOn.HasFlag(UncloakType.Move) && (lastPos == null || lastPos.Value != self.Location))
@@ -306,19 +306,34 @@ namespace OpenRA.Mods.Common.Traits
 			return color;
 		}
 
-		void INotifyDockClient.Docked(Actor self, Actor host)
+		void INotifyLinkClient.Linked(Actor self, Actor host)
 		{
-			if (Info.UncloakOn.HasFlag(UncloakType.Dock))
+			if (Info.UncloakOn.HasFlag(UncloakType.Link))
 			{
-				isDocking = true;
+				isLinked = true;
 				Uncloak();
 			}
 		}
 
-		void INotifyDockClient.Undocked(Actor self, Actor host)
+		void INotifyLinkClient.Unlinked(Actor self, Actor host)
 		{
-			if (Info.UncloakOn.HasFlag(UncloakType.Dock))
-				isDocking = false;
+			if (Info.UncloakOn.HasFlag(UncloakType.Link))
+				isLinked = false;
+		}
+
+		void INotifyLinkHost.Linked(Actor self, Actor client)
+		{
+			if (Info.UncloakOn.HasFlag(UncloakType.Link))
+			{
+				isLinked = true;
+				Uncloak();
+			}
+		}
+
+		void INotifyLinkHost.Unlinked(Actor self, Actor client)
+		{
+			if (Info.UncloakOn.HasFlag(UncloakType.Link))
+				isLinked = false;
 		}
 
 		void INotifyLoadCargo.Loading(Actor self)

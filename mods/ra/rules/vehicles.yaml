@@ -329,7 +329,7 @@ HARV:
 	StoresResources:
 		Capacity: 20
 		Resources: Ore,Gems
-	DockClientManager:
+	LinkClientManager:
 	Health:
 		HP: 60000
 	Armor:
@@ -348,6 +348,12 @@ HARV:
 	HarvesterHuskModifier:
 		FullHuskActor: HARV.FullHusk
 		FullnessThreshold: 50
+	Cloak:
+		InitialDelay: 0
+		CloakDelay: 50
+		CloakSound: appear1.aud
+		UncloakSound: appear1.aud
+		UncloakOn: Link
 	ChangesHealth:
 		Step: 100
 		Delay: 25
@@ -920,7 +926,7 @@ STNK:
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
 		PauseOnCondition: cloak-force-disabled
-		UncloakOn: Attack, Load, Unload, Heal, Dock
+		UncloakOn: Attack, Load, Unload, Heal, Link
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical

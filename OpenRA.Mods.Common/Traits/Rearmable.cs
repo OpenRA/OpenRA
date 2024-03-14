@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new Rearmable(this); }
 	}
 
-	public class Rearmable : INotifyCreated, INotifyDockClient
+	public class Rearmable : INotifyCreated, INotifyLinkClient
 	{
 		public readonly RearmableInfo Info;
 
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 			RearmableAmmoPools = self.TraitsImplementing<AmmoPool>().Where(p => Info.AmmoPools.Contains(p.Info.Name)).ToArray();
 		}
 
-		void INotifyDockClient.Docked(Actor self, Actor dock)
+		void INotifyLinkClient.Linked(Actor self, Actor link)
 		{
 			// Reset the ReloadDelay to avoid any issues with early cancellation
 			// from previous reload attempts (explicit order, host building died, etc).
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 				pool.RemainingTicks = pool.Info.ReloadDelay;
 		}
 
-		void INotifyDockClient.Undocked(Actor self, Actor dock) { }
+		void INotifyLinkClient.Unlinked(Actor self, Actor link) { }
 
 		public bool RearmTick(Actor self)
 		{

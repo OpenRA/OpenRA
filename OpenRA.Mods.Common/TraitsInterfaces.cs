@@ -156,14 +156,14 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	[RequireExplicitImplementation]
-	public interface INotifyDockHost { void Docked(Actor self, Actor client); void Undocked(Actor self, Actor client); }
+	public interface INotifyLinkHost { void Linked(Actor self, Actor client); void Unlinked(Actor self, Actor client); }
 	[RequireExplicitImplementation]
-	public interface INotifyDockClient { void Docked(Actor self, Actor host); void Undocked(Actor self, Actor host); }
+	public interface INotifyLinkClient { void Linked(Actor self, Actor host); void Unlinked(Actor self, Actor host); }
 
 	[RequireExplicitImplementation]
-	public interface INotifyDockClientMoving
+	public interface INotifyLinkClientMoving
 	{
-		void MovingToDock(Actor self, Actor hostActor, IDockHost host);
+		void MovingToHost(Actor self, Actor hostActor, ILinkHost host);
 		void MovementCancelled(Actor self);
 	}
 
@@ -207,75 +207,77 @@ namespace OpenRA.Mods.Common.Traits
 		void MovementCancelled(Actor self);
 	}
 
-	public interface IDockClientInfo : ITraitInfoInterface { }
+	public interface ILinkClientInfo : ITraitInfoInterface { }
 
-	public interface IDockClient
+	public interface ILinkClient
 	{
-		BitSet<DockType> GetDockType { get; }
+		BitSet<LinkType> LinkType { get; }
 
 		/// <summary>When null, the client should act as if it can dock but never do.</summary>
-		DockClientManager DockClientManager { get; }
-		void OnDockStarted(Actor self, Actor hostActor, IDockHost host);
-		bool OnDockTick(Actor self, Actor hostActor, IDockHost dock);
-		void OnDockCompleted(Actor self, Actor hostActor, IDockHost host);
+		LinkClientManager LinkClientManager { get; }
+		void OnLinkStarted(Actor self, Actor hostActor, ILinkHost host);
+		bool OnLinkTick(Actor self, Actor hostActor, ILinkHost dock);
+		void OnLinkCompleted(Actor self, Actor hostActor, ILinkHost host);
 
 		/// <summary>Is this client allowed to dock.</summary>
 		/// <remarks>
-		/// Does not check if <see cref="Traits.DockClientManager"/> is enabled.
-		/// Function should only be called from within <see cref="IDockClient"/> or <see cref="Traits.DockClientManager"/>.
+		/// Does not check if <see cref="Traits.LinkClientManager"/> is enabled.
+		/// Function should only be called from within <see cref="ILinkClient"/> or <see cref="Traits.LinkClientManager"/>.
 		/// </remarks>
-		bool IsDockingPossible(BitSet<DockType> type, bool forceEnter = false);
+		bool IsLinkingPossible(BitSet<LinkType> type, bool forceEnter = false);
 
 		/// <summary>Is this client allowed to dock to <paramref name="host"/>.</summary>
 		/// <remarks>
-		/// Does not check if <see cref="Traits.DockClientManager"/> is enabled.
-		/// Function should only be called from within <see cref="IDockClient"/> or <see cref="Traits.DockClientManager"/>.
+		/// Does not check if <see cref="Traits.LinkClientManager"/> is enabled.
+		/// Function should only be called from within <see cref="ILinkClient"/> or <see cref="Traits.LinkClientManager"/>.
 		/// </remarks>
-		bool CanDockAt(Actor hostActor, IDockHost host, bool forceEnter = false, bool ignoreOccupancy = false);
+		bool CanLinkTo(Actor hostActor, ILinkHost host, bool forceEnter = false, bool ignoreOccupancy = false);
 	}
 
-	public interface IDockHostInfo : ITraitInfoInterface { }
+	public interface ILinkHostInfo : ITraitInfoInterface { }
 
-	public interface IDockHost
+	public interface ILinkHost
 	{
-		BitSet<DockType> GetDockType { get; }
+		BitSet<LinkType> GetLinkType { get; }
 
 		/// <summary>Use this function instead of ConditionalTrait.IsTraitDisabled.</summary>
 		bool IsEnabledAndInWorld { get; }
 		int ReservationCount { get; }
 		bool CanBeReserved { get; }
-		WPos DockPosition { get; }
-		int DockWait { get; }
-		WAngle DockAngle { get; }
+		WPos LinkPosition { get; }
+		int LinkWait { get; }
 
-		/// <summary>Can this <paramref name="client"/> dock at this <see cref="IDockHost"/>.</summary>
+		// TODO: This will need to be changed once aircraft are aware of LinkFacing when calculating flight path.
+		WAngle LinkFacing { get; }
+
+		/// <summary>Can this <paramref name="client"/> link at this <see cref="ILinkHost"/>.</summary>
 		/// <remarks>
-		/// Does not check <see cref="DockType"/>.
-		/// Does not check if <see cref="IDockClient"/> is enabled.
-		/// Does not check if <see cref="DockClientManager"/> is enabled.
+		/// Does not check <see cref="LinkType"/>.
+		/// Does not check if <see cref="ILinkClient"/> is enabled.
+		/// Does not check if <see cref="LinkClientManager"/> is enabled.
 		/// </remarks>
-		bool IsDockingPossible(Actor clientActor, IDockClient client, bool ignoreReservations = false);
-		bool Reserve(Actor self, DockClientManager client);
+		bool IsLinkingPossible(Actor clientActor, ILinkClient client, bool ignoreReservations = false);
+		bool Reserve(Actor self, LinkClientManager client);
 		void UnreserveAll();
-		void Unreserve(DockClientManager client);
-		void OnDockStarted(Actor self, Actor clientActor, DockClientManager client);
-		void OnDockCompleted(Actor self, Actor clientActor, DockClientManager client);
+		void Unreserve(LinkClientManager client);
+		void OnLinkStarted(Actor self, Actor clientActor, LinkClientManager client);
+		void OnLinkCompleted(Actor self, Actor clientActor, LinkClientManager client);
 
-		/// <summary>If <paramref name="client"/> is not in range of <see cref="IDockHost"/> queues a child move activity and returns true. If in range returns false.</summary>
-		bool QueueMoveActivity(Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client);
+		/// <summary>If <paramref name="client"/> is not in range of <see cref="ILinkHost"/> queues a child move activity and returns true. If in range returns false.</summary>
+		bool QueueMoveActivity(Activity moveToLinkHostActivity, Actor self, Actor clientActor, LinkClientManager client);
 
-		/// <summary>Should be called when in range of <see cref="IDockHost"/>.</summary>
-		void QueueDockActivity(Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client);
+		/// <summary>Should be called when in range of <see cref="ILinkHost"/>.</summary>
+		void QueueLinkActivity(Activity moveToHostActivity, Actor self, Actor clientActor, LinkClientManager client);
 	}
 
-	public interface IDockHostDrag
+	public interface ILinkHostDrag
 	{
 		bool IsDragRequired { get; }
 		WVec DragOffset { get; }
 		int DragLength { get; }
 	}
 
-	public interface IDockClientManagerInfo : ITraitInfoInterface { }
+	public interface ILinkClientManagerInfo : ITraitInfoInterface { }
 
 	[RequireExplicitImplementation]
 	public interface INotifyLoadCargo

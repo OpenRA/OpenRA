@@ -25,11 +25,10 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Target host;
 		readonly WDist closeEnough;
 		readonly Repairable repairable;
-		readonly RepairableNear repairableNear;
 		readonly Rearmable rearmable;
 		readonly INotifyResupply[] notifyResupplies;
-		readonly INotifyDockHost[] notifyDockHosts;
-		readonly INotifyDockClient[] notifyDockClients;
+		readonly INotifyLinkHost[] notifyLinkHosts;
+		readonly INotifyLinkClient[] notifyLinkClients;
 		readonly ICallForTransport[] transportCallers;
 		readonly IMove move;
 		readonly Aircraft aircraft;
@@ -52,11 +51,10 @@ namespace OpenRA.Mods.Common.Activities
 			allRepairsUnits = host.TraitsImplementing<RepairsUnits>().ToArray();
 			health = self.TraitOrDefault<IHealth>();
 			repairable = self.TraitOrDefault<Repairable>();
-			repairableNear = self.TraitOrDefault<RepairableNear>();
 			rearmable = self.TraitOrDefault<Rearmable>();
 			notifyResupplies = host.TraitsImplementing<INotifyResupply>().ToArray();
-			notifyDockHosts = host.TraitsImplementing<INotifyDockHost>().ToArray();
-			notifyDockClients = self.TraitsImplementing<INotifyDockClient>().ToArray();
+			notifyLinkHosts = host.TraitsImplementing<INotifyLinkHost>().ToArray();
+			notifyLinkClients = self.TraitsImplementing<INotifyLinkClient>().ToArray();
 			transportCallers = self.TraitsImplementing<ICallForTransport>().ToArray();
 			move = self.Trait<IMove>();
 			aircraft = move as Aircraft;
@@ -68,8 +66,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			var cannotRepairAtHost = health == null || health.DamageState == DamageState.Undamaged
 				|| allRepairsUnits.Length == 0
-				|| ((repairable == null || !repairable.Info.RepairActors.Contains(host.Info.Name))
-					&& (repairableNear == null || !repairableNear.Info.RepairActors.Contains(host.Info.Name)));
+				|| repairable == null || !repairable.Info.RepairActors.Contains(host.Info.Name);
 
 			if (!cannotRepairAtHost)
 			{
@@ -104,8 +101,6 @@ namespace OpenRA.Mods.Common.Activities
 				// Otherwise check against host CenterPosition.
 				if (closeEnough < WDist.Zero)
 					isCloseEnough = true;
-				else if (repairableNear != null)
-					isCloseEnough = host.IsInRange(self.CenterPosition, closeEnough);
 				else
 					isCloseEnough = (host.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= closeEnough.LengthSquared;
 			}
@@ -135,10 +130,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				// HACK: Repairable needs the actor to move to host center.
 				// TODO: Get rid of this or at least replace it with something less hacky.
-				if (repairableNear == null)
-					QueueChild(move.MoveOntoTarget(self, host, WVec.Zero, null, moveInfo.GetTargetLineColor()));
-				else
-					QueueChild(move.MoveWithinRange(host, closeEnough, targetLineColor: moveInfo.GetTargetLineColor()));
+				QueueChild(move.MoveWithinRange(host, closeEnough, targetLineColor: moveInfo.GetTargetLineColor()));
 
 				var delta = (self.CenterPosition - host.CenterPosition).LengthSquared;
 				transportCallers.FirstOrDefault(t => t.MinimumDistance.LengthSquared < delta)?.RequestTransport(self, targetCell);
@@ -153,11 +145,11 @@ namespace OpenRA.Mods.Common.Activities
 				foreach (var notifyResupply in notifyResupplies)
 					notifyResupply.BeforeResupply(host.Actor, self, activeResupplyTypes);
 
-				foreach (var nd in notifyDockClients)
-					nd.Docked(self, host.Actor);
+				foreach (var nd in notifyLinkClients)
+					nd.Linked(self, host.Actor);
 
-				foreach (var nd in notifyDockHosts)
-					nd.Docked(host.Actor, self);
+				foreach (var nd in notifyLinkHosts)
+					nd.Linked(host.Actor, self);
 			}
 
 			if (activeResupplyTypes.HasFlag(ResupplyType.Repair))
@@ -218,7 +210,7 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					if (self.CurrentActivity.NextActivity == null && rp != null && rp.Path.Count > 0)
 						foreach (var cell in rp.Path)
-							QueueChild(new AttackMoveActivity(self, () => move.MoveTo(cell, 1, ignoreActor: repairableNear != null ? null : host.Actor, targetLineColor: aircraft.Info.TargetLineColor)));
+							QueueChild(new AttackMoveActivity(self, () => move.MoveTo(cell, 1, ignoreActor: host.Actor, targetLineColor: aircraft.Info.TargetLineColor)));
 					else
 						QueueChild(new TakeOff(self));
 
@@ -239,19 +231,19 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					if (rp != null && rp.Path.Count > 0)
 						foreach (var cell in rp.Path)
-							QueueChild(new AttackMoveActivity(self, () => move.MoveTo(cell, 1, repairableNear != null ? null : host.Actor, true, moveInfo.GetTargetLineColor())));
-					else if (repairableNear == null)
+							QueueChild(new AttackMoveActivity(self, () => move.MoveTo(cell, 1, host.Actor, true, moveInfo.GetTargetLineColor())));
+					else
 						QueueChild(move.MoveToTarget(self, host));
 				}
-				else if (repairableNear == null && self.CurrentActivity.NextActivity is not Move)
+				else if (self.CurrentActivity.NextActivity is not Move)
 					QueueChild(move.MoveToTarget(self, host));
 			}
 
-			foreach (var nd in notifyDockClients)
-				nd.Undocked(self, host.Actor);
+			foreach (var nd in notifyLinkClients)
+				nd.Unlinked(self, host.Actor);
 
-			foreach (var nd in notifyDockHosts)
-				nd.Undocked(host.Actor, self);
+			foreach (var nd in notifyLinkHosts)
+				nd.Unlinked(host.Actor, self);
 		}
 
 		void RepairTick(Actor self)

@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new CarryableHarvester(); }
 	}
 
-	public class CarryableHarvester : INotifyCreated, INotifyHarvestAction, INotifyDockClientMoving
+	public class CarryableHarvester : INotifyCreated, INotifyHarvestAction, INotifyLinkClientMoving
 	{
 		ICallForTransport[] transports;
 
@@ -40,13 +40,13 @@ namespace OpenRA.Mods.Common.Traits
 				t.MovementCancelled(self);
 		}
 
-		void INotifyDockClientMoving.MovingToDock(Actor self, Actor hostActor, IDockHost host)
+		void INotifyLinkClientMoving.MovingToHost(Actor self, Actor hostActor, ILinkHost host)
 		{
 			foreach (var t in transports)
-				t.RequestTransport(self, self.World.Map.CellContaining(host.DockPosition));
+				t.RequestTransport(self, self.World.Map.CellContaining(host.LinkPosition));
 		}
 
-		void INotifyDockClientMoving.MovementCancelled(Actor self)
+		void INotifyLinkClientMoving.MovementCancelled(Actor self)
 		{
 			foreach (var t in transports)
 				t.MovementCancelled(self);

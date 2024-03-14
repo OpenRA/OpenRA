@@ -19,17 +19,17 @@ namespace OpenRA.Mods.Common.Activities
 {
 	public class MoveToDock : Activity
 	{
-		readonly DockClientManager dockClient;
-		Actor dockHostActor;
-		IDockHost dockHost;
-		readonly INotifyDockClientMoving[] notifyDockClientMoving;
+		readonly LinkClientManager linkClient;
+		Actor linkHostActor;
+		ILinkHost linkHost;
+		readonly INotifyLinkClientMoving[] notifylinkClientMoving;
 
-		public MoveToDock(Actor self, Actor dockHostActor = null, IDockHost dockHost = null)
+		public MoveToDock(Actor self, Actor linkHostActor = null, ILinkHost linkHost = null)
 		{
-			dockClient = self.Trait<DockClientManager>();
-			this.dockHostActor = dockHostActor;
-			this.dockHost = dockHost;
-			notifyDockClientMoving = self.TraitsImplementing<INotifyDockClientMoving>().ToArray();
+			linkClient = self.Trait<LinkClientManager>();
+			this.linkHostActor = linkHostActor;
+			this.linkHost = linkHost;
+			notifylinkClientMoving = self.TraitsImplementing<INotifyLinkClientMoving>().ToArray();
 		}
 
 		public override bool Tick(Actor self)
@@ -37,54 +37,54 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling)
 				return true;
 
-			if (dockClient.IsTraitDisabled)
+			if (linkClient.IsTraitDisabled)
 			{
 				Cancel(self, true);
 				return true;
 			}
 
-			// Find the nearest DockHost if not explicitly ordered to a specific dock.
-			if (dockHost == null || !dockHost.IsEnabledAndInWorld)
+			// Find the nearest LinkHost if not explicitly ordered to a specific host.
+			if (linkHost == null || !linkHost.IsEnabledAndInWorld)
 			{
-				var host = dockClient.ClosestDock(null);
+				var host = linkClient.ClosestLinkHost(null);
 				if (host.HasValue)
 				{
-					dockHost = host.Value.Trait;
-					dockHostActor = host.Value.Actor;
+					linkHost = host.Value.Trait;
+					linkHostActor = host.Value.Actor;
 				}
 				else
 				{
-					// No docks exist; check again after delay defined in dockClient.
-					QueueChild(new Wait(dockClient.Info.SearchForDockDelay));
+					// No hosts exist; check again after delay defined in linkClient.
+					QueueChild(new Wait(linkClient.Info.SearchForLinkDelay));
 					return false;
 				}
 			}
 
-			if (dockClient.ReserveHost(dockHostActor, dockHost))
+			if (linkClient.ReserveHost(linkHostActor, linkHost))
 			{
-				if (dockHost.QueueMoveActivity(this, dockHostActor, self, dockClient))
+				if (linkHost.QueueMoveActivity(this, linkHostActor, self, linkClient))
 				{
-					foreach (var ndcm in notifyDockClientMoving)
-						ndcm.MovingToDock(self, dockHostActor, dockHost);
+					foreach (var ndcm in notifylinkClientMoving)
+						ndcm.MovingToHost(self, linkHostActor, linkHost);
 
 					return false;
 				}
 
-				dockHost.QueueDockActivity(this, dockHostActor, self, dockClient);
+				linkHost.QueueLinkActivity(this, linkHostActor, self, linkClient);
 				return true;
 			}
 			else
 			{
-				// The dock explicitely chosen by the user is currently occupied. Wait and check again.
-				QueueChild(new Wait(dockClient.Info.SearchForDockDelay));
+				// The host explicitely chosen by the user is currently occupied. Wait and check again.
+				QueueChild(new Wait(linkClient.Info.SearchForLinkDelay));
 				return false;
 			}
 		}
 
 		public override void Cancel(Actor self, bool keepQueue = false)
 		{
-			dockClient.UnreserveHost();
-			foreach (var ndcm in notifyDockClientMoving)
+			linkClient.UnreserveHost();
+			foreach (var ndcm in notifylinkClientMoving)
 				ndcm.MovementCancelled(self);
 
 			base.Cancel(self, keepQueue);
@@ -92,12 +92,12 @@ namespace OpenRA.Mods.Common.Activities
 
 		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
 		{
-			if (dockHostActor != null)
-				yield return new TargetLineNode(Target.FromActor(dockHostActor), dockClient.DockLineColor);
+			if (linkHostActor != null)
+				yield return new TargetLineNode(Target.FromActor(linkHostActor), linkClient.LinkLineColor);
 			else
 			{
-				if (dockClient.ReservedHostActor != null)
-					yield return new TargetLineNode(Target.FromActor(dockClient.ReservedHostActor), dockClient.DockLineColor);
+				if (linkClient.ReservedHostActor != null)
+					yield return new TargetLineNode(Target.FromActor(linkClient.ReservedHostActor), linkClient.LinkLineColor);
 			}
 		}
 	}

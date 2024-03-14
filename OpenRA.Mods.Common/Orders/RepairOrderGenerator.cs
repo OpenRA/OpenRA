@@ -50,27 +50,25 @@ namespace OpenRA.Mods.Common.Orders
 			if (underCursor.Owner != world.LocalPlayer)
 				yield break;
 
+			var lrc = underCursor.TraitOrDefault<LinkOnRepairCursor>();
+			if (lrc != null)
+			{
+				var dockOrder = lrc.GetDockOrder(underCursor, mi);
+				if (dockOrder != null)
+					yield return dockOrder;
+			}
+
 			Actor repairBuilding = null;
-			var orderId = "Repair";
 
 			// Test for generic Repairable (used on units).
 			var repairable = underCursor.TraitOrDefault<Repairable>();
 			if (repairable != null)
 				repairBuilding = repairable.FindRepairBuilding(underCursor);
-			else
-			{
-				var repairableNear = underCursor.TraitOrDefault<RepairableNear>();
-				if (repairableNear != null)
-				{
-					orderId = "RepairNear";
-					repairBuilding = repairableNear.FindRepairBuilding(underCursor);
-				}
-			}
 
 			if (repairBuilding == null)
 				yield break;
 
-			yield return new Order(orderId, underCursor, Target.FromActor(repairBuilding), Target.FromActor(underCursor), mi.Modifiers.HasModifier(Modifiers.Shift));
+			yield return new Order("Repair", underCursor, Target.FromActor(repairBuilding), Target.FromActor(underCursor), mi.Modifiers.HasModifier(Modifiers.Shift));
 		}
 
 		protected override void Tick(World world)
