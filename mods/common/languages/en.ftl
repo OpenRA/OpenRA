@@ -848,6 +848,7 @@ mirror-mode =
 
 ## ActorEditLogic
 notification-edited-actor = Edited { $name } ({ $id })
+notification-edited-actor-id = Edited { $name } ({ $old-id }->{ $new-id })
 
 ## ConquestVictoryConditions, StrategicVictoryConditions
 notification-player-is-victorious = { $player } is victorious.

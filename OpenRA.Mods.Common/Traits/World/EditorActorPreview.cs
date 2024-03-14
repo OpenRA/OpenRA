@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public string Type => reference.Type;
 
-		public string ID { get; set; }
+		public string ID { get; }
 		public PlayerReference Owner { get; set; }
 		public WPos CenterPosition { get; set; }
 		public IReadOnlyDictionary<CPos, SubCell> Footprint { get; private set; }
@@ -81,6 +81,11 @@ namespace OpenRA.Mods.Common.Traits
 
 			// TODO: updating all actors on the map is not very efficient.
 			onCellEntryChanged = _ => UpdateFromCellChange();
+		}
+
+		public EditorActorPreview WithId(string id)
+		{
+			return new EditorActorPreview(worldRenderer, id, reference.Clone(), Owner);
 		}
 
 		void UpdateFromCellChange()
