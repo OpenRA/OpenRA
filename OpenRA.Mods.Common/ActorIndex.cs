@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common
 
 			protected override bool ShouldIndexActor(Actor actor)
 			{
-				return names.Contains(actor.Info.Name) && actor.TraitOrDefault<T>() != null;
+				return names.Contains(actor.Info.Name) && actor.TraitsImplementing<T>().Any();
 			}
 		}
 
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common
 
 			protected override bool ShouldIndexActor(Actor actor)
 			{
-				return actor.Owner == owner && names.Contains(actor.Info.Name) && actor.TraitOrDefault<T>() != null;
+				return actor.Owner == owner && names.Contains(actor.Info.Name) && actor.TraitsImplementing<T>().Any();
 			}
 		}
 	}
