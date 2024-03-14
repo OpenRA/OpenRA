@@ -274,6 +274,7 @@
 	GpsDot:
 		String: Vehicle
 	WithDamageOverlay:
+		EndSequence:
 	Guard:
 	Guardable:
 	Tooltip:
@@ -531,6 +532,7 @@
 	GpsDot:
 		String: Ship
 	WithDamageOverlay:
+		EndSequence:
 	Explodes:
 		Weapon: UnitExplodeShip
 		EmptyWeapon: UnitExplodeShip
@@ -570,6 +572,7 @@
 	-MustBeDestroyed:
 	WithDamageOverlay:
 		MinimumDamageState: Critical
+		EndSequence:
 
 ^NeutralPlane:
 	Inherits@1: ^ExistsInWorld
@@ -976,18 +979,21 @@
 	WithDamageOverlay@SmallBurn:
 		DamageTypes: Incendiary
 		Image: burn-s
+		LoopCount: 1, 4
 		Palette: effect
 		MinimumDamageState: Light
 		MaximumDamageState: Medium
 	WithDamageOverlay@MediumBurn:
 		DamageTypes: Incendiary
 		Image: burn-m
+		LoopCount: 1, 4
 		Palette: effect
 		MinimumDamageState: Medium
 		MaximumDamageState: Heavy
 	WithDamageOverlay@LargeBurn:
 		DamageTypes: Incendiary
 		Image: burn-l
+		LoopCount: 1, 4
 		Palette: effect
 		MinimumDamageState: Heavy
 		MaximumDamageState: Dead

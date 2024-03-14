@@ -252,6 +252,7 @@
 	HiddenUnderFog:
 	AttackMove:
 	WithDamageOverlay:
+		EndSequence:
 	WithFacingSpriteBody:
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -660,6 +661,7 @@
 		TextNotification: notification-unit-lost
 	AttackMove:
 	WithDamageOverlay:
+		EndSequence:
 	Explodes:
 		Weapon: UnitExplodeShip
 		EmptyWeapon: UnitExplodeShip
@@ -961,16 +963,19 @@
 	WithDamageOverlay@SmallBurn:
 		DamageTypes: Incendiary
 		Image: burn-s
+		LoopCount: 1, 4
 		MinimumDamageState: Light
 		MaximumDamageState: Medium
 	WithDamageOverlay@MediumBurn:
 		DamageTypes: Incendiary
 		Image: burn-m
+		LoopCount: 1, 4
 		MinimumDamageState: Medium
 		MaximumDamageState: Heavy
 	WithDamageOverlay@LargeBurn:
 		DamageTypes: Incendiary
 		Image: burn-l
+		LoopCount: 1, 4
 		MinimumDamageState: Heavy
 		MaximumDamageState: Dead
 	HiddenUnderShroud:
