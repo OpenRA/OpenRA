@@ -341,7 +341,7 @@
 		DamagedSounds: expnew01.aud
 		DestroyedSounds: crmble2.aud
 	WithSpriteBody:
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: BuildingExplosions
 		EmptyWeapon: BuildingExplosions
 		Type: Footprint
@@ -726,7 +726,7 @@
 		Weapon: CyborgExplode
 		DamageState: Critical
 		TriggerOnlyOnce: true
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: CyborgExplode
 		EmptyWeapon: CyborgExplode
 	DeathSounds:
@@ -822,7 +822,7 @@
 	Guardable:
 	BodyOrientation:
 		CameraPitch: 85
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	MustBeDestroyed:
@@ -1212,7 +1212,7 @@
 	BodyOrientation:
 		CameraPitch: 85
 		QuantizedFacings: 0
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	ThrowsShrapnel:

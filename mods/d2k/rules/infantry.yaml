@@ -226,7 +226,7 @@ grenadier:
 		ProneOffset: 96,100,-64
 	WithInfantryBody:
 		DefaultAttackSequence: throw
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: GrenDeath
 		EmptyWeapon: GrenDeath
 
@@ -264,7 +264,7 @@ sardaukar:
 		Category: Units
 	Voiced:
 		VoiceSet: GenericVoice
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: SardDeath
 		EmptyWeapon: SardDeath
 		Chance: 100

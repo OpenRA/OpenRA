@@ -161,4 +161,3 @@ Container@HOTKEYS_PANEL:
 							TooltipText: button-hotkey-remap-dialog-reset.tooltip
 							TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
-

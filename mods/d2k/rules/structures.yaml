@@ -756,7 +756,7 @@ wall:
 	Sellable:
 		SellSounds: CHUNG.WAV
 	Guardable:
-	Explodes:
+	FireWarheadOnDeath:
 		Weapon: WallExplode
 		EmptyWeapon: WallExplode
 	ThrowsShrapnel:

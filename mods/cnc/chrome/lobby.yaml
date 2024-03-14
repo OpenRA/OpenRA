@@ -140,4 +140,3 @@ Container@SERVER_LOBBY:
 			Text: button-server-lobby-start-game
 		Container@FACTION_DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
-

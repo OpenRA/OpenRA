@@ -873,4 +873,3 @@ ScrollPanel@OVERLAY_PANEL:
 			Width: PARENT_RIGHT - 29
 			Height: 20
 			Visible: false
-
