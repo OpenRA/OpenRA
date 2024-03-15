@@ -4232,64 +4232,64 @@ Templates:
 			1: Rough
 	Template@500:
 		Id: 500
-		Images: BLOXXMAS.R8
-		Frames: 305
+		Images: customtiles.r16
+		Frames: 538
 		Size: 1,1
 		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 	Template@501:
 		Id: 501
-		Images: BLOXXMAS.R8
-		Frames: 325
+		Images: customtiles.r16
+		Frames: 558
 		Size: 1,1
 		Categories: Rotten-Base
 		Tiles:
 			0: Sand
 	Template@502:
 		Id: 502
-		Images: BLOXXMAS.R8
-		Frames: 311
+		Images: customtiles.r16
+		Frames: 658
 		Size: 1,1
 		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 	Template@503:
 		Id: 503
-		Images: BLOXXMAS.R8
-		Frames: 312
+		Images: customtiles.r16
+		Frames: 659
 		Size: 1,1
 		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 	Template@504:
 		Id: 504
-		Images: BLOXXMAS.R8
-		Frames: 330
+		Images: customtiles.r16
+		Frames: 677
 		Size: 1,1
 		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 	Template@505:
 		Id: 505
-		Images: BLOXXMAS.R8
-		Frames: 316
+		Images: customtiles.r16
+		Frames: 556
 		Size: 1,1
 		Categories: Bridge
 		Tiles:
 			0: Rough
 	Template@506:
 		Id: 506
-		Images: BLOXXMAS.R8
-		Frames: 297
+		Images: customtiles.r16
+		Frames: 537
 		Size: 1,1
 		Categories: Bridge
 		Tiles:
 			0: Rough
 	Template@507:
 		Id: 507
-		Images: BLOXXMAS.R8
-		Frames: 356, 357
+		Images: customtiles.r16
+		Frames: 576, 577
 		Size: 2,1
 		Categories: Rotten-Base
 		Tiles:
@@ -4297,32 +4297,32 @@ Templates:
 			1: Rough
 	Template@508:
 		Id: 508
-		Images: BLOXXMAS.R8
-		Frames: 355
+		Images: customtiles.r16
+		Frames: 575
 		Size: 1,1
 		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 	Template@509:
 		Id: 509
-		Images: BLOXXMAS.R8
-		Frames: 375
+		Images: customtiles.r16
+		Frames: 595
 		Size: 1,1
 		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 	Template@510:
 		Id: 510
-		Images: BLOXXMAS.R8
-		Frames: 395
+		Images: customtiles.r16
+		Frames: 615
 		Size: 1,1
 		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 	Template@511:
 		Id: 511
-		Images: BLOXXMAS.R8
-		Frames: 414, 415, 434, 435
+		Images: customtiles.r16
+		Frames: 634, 635, 654, 655
 		Size: 2,2
 		Categories: Rotten-Base
 		Tiles:
@@ -4332,8 +4332,8 @@ Templates:
 			3: Rough
 	Template@512:
 		Id: 512
-		Images: BLOXXMAS.R8
-		Frames: 353, 354, 373, 374, 393, 394
+		Images: customtiles.r16
+		Frames: 573, 574, 593, 594, 613, 614
 		Size: 2,3
 		Categories: Bridge
 		Tiles:
@@ -4345,8 +4345,8 @@ Templates:
 			5: Rough
 	Template@513:
 		Id: 513
-		Images: BLOXXMAS.R8
-		Frames: 350, 351, 352, 370, 371, 372, 390, 391, 392
+		Images: customtiles.r16
+		Frames: 570, 571, 572, 590, 591, 592, 610, 611, 612
 		Size: 3,3
 		Categories: Bridge
 		Tiles:
@@ -4361,8 +4361,8 @@ Templates:
 			8: Rough
 	Template@514:
 		Id: 514
-		Images: BLOXXMAS.R8
-		Frames: 347, 348, 349, 367, 368, 369, 387, 388, 389
+		Images: customtiles.r16
+		Frames: 567, 568, 569, 587, 588, 589, 607, 608, 609
 		Size: 3,3
 		Categories: Bridge
 		Tiles:
@@ -4377,8 +4377,8 @@ Templates:
 			8: Rock
 	Template@515:
 		Id: 515
-		Images: BLOXXMAS.R8
-		Frames: 340, 341, 342, 343, 360, 361, 362, 363, 380, 381, 382, 383
+		Images: customtiles.r16
+		Frames: 560, 561, 562, 563, 580, 581, 582, 583, 600, 601, 602, 603
 		Size: 4,3
 		Categories: Bridge
 		Tiles:
@@ -4396,32 +4396,32 @@ Templates:
 			11: Cliff
 	Template@516:
 		Id: 516
-		Images: BLOXXMAS.R8
-		Frames: 717
+		Images: customtiles.r16
+		Frames: 620
 		Size: 1,1
 		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 	Template@517:
 		Id: 517
-		Images: BLOXXMAS.R8
-		Frames: 718
+		Images: customtiles.r16
+		Frames: 621
 		Size: 1,1
 		Categories: Rotten-Base
 		Tiles:
 			0: Rough
 	Template@518:
 		Id: 518
-		Images: BLOXXMAS.R8
-		Frames: 737
+		Images: customtiles.r16
+		Frames: 640
 		Size: 1,1
 		Categories: Rotten-Base
 		Tiles:
 			0: Cliff
 	Template@519:
 		Id: 519
-		Images: BLOXXMAS.R8
-		Frames: 738, 739, 758, 759
+		Images: customtiles.r16
+		Frames: 641, 642, 661, 662
 		Size: 2,2
 		Categories: Rotten-Base
 		Tiles:
@@ -4431,8 +4431,8 @@ Templates:
 			3: Rough
 	Template@520:
 		Id: 520
-		Images: BLOXXMAS.R8
-		Frames: 652, 653, 672, 673
+		Images: customtiles.r16
+		Frames: 596, 597, 616, 617
 		Size: 2,2
 		Categories: Rotten-Base
 		Tiles:
@@ -6164,8 +6164,8 @@ Templates:
 			1: Rough
 	Template@1085:
 		Id: 1085
-		Images: BLOXXMAS.R8
-		Frames: 344, 345
+		Images: customtiles.r16
+		Frames: 564, 565
 		Size: 2,1
 		Categories: Bridge
 		Tiles:
@@ -6173,8 +6173,8 @@ Templates:
 			1: Transition
 	Template@1086:
 		Id: 1086
-		Images: BLOXXMAS.R8
-		Frames: 345, 346
+		Images: customtiles.r16
+		Frames: 565, 566
 		Size: 2,1
 		Categories: Bridge
 		Tiles:
@@ -6182,8 +6182,8 @@ Templates:
 			1: Cliff
 	Template@1087:
 		Id: 1087
-		Images: BLOXXMAS.R8
-		Frames: 364, 365
+		Images: customtiles.r16
+		Frames: 584, 585
 		Size: 2,1
 		Categories: Bridge
 		Tiles:
@@ -6191,8 +6191,8 @@ Templates:
 			1: Transition
 	Template@1088:
 		Id: 1088
-		Images: BLOXXMAS.R8
-		Frames: 365, 366
+		Images: customtiles.r16
+		Frames: 585, 586
 		Size: 2,1
 		Categories: Bridge
 		Tiles:
@@ -6200,8 +6200,8 @@ Templates:
 			1: Cliff
 	Template@1089:
 		Id: 1089
-		Images: BLOXXMAS.R8
-		Frames: 384, 385
+		Images: customtiles.r16
+		Frames: 604, 605
 		Size: 2,1
 		Categories: Bridge
 		Tiles:
@@ -6209,8 +6209,8 @@ Templates:
 			1: Transition
 	Template@1090:
 		Id: 1090
-		Images: BLOXXMAS.R8
-		Frames: 385, 386
+		Images: customtiles.r16
+		Frames: 605, 606
 		Size: 2,1
 		Categories: Bridge
 		Tiles:
@@ -6218,8 +6218,8 @@ Templates:
 			1: Cliff
 	Template@1091:
 		Id: 1091
-		Images: BLOXXMAS.R8
-		Frames: 1, 340, 2, 360
+		Images: customtiles.r16
+		Frames: 623, 560, 624, 580
 		Size: 2,2
 		Categories: Bridge
 		Tiles:
@@ -6229,8 +6229,8 @@ Templates:
 			3: Transition
 	Template@1092:
 		Id: 1092
-		Images: BLOXXMAS.R8
-		Frames: 343, 4, 363, 5
+		Images: customtiles.r16
+		Frames: 563, 625, 583, 626
 		Size: 2,2
 		Categories: Bridge
 		Tiles:
@@ -6240,8 +6240,8 @@ Templates:
 			3: Rock
 	Template@1093:
 		Id: 1093
-		Images: BLOXXMAS.R8
-		Frames: 2, 360, 3, 380
+		Images: customtiles.r16
+		Frames: 624, 580, 625, 600
 		Size: 2,2
 		Categories: Bridge
 		Tiles:
@@ -6251,8 +6251,8 @@ Templates:
 			3: Cliff
 	Template@1094:
 		Id: 1094
-		Images: BLOXXMAS.R8
-		Frames: 363, 5, 383, 6
+		Images: customtiles.r16
+		Frames: 583, 627, 603, 628
 		Size: 2,2
 		Categories: Bridge
 		Tiles:
@@ -6262,8 +6262,8 @@ Templates:
 			3: Rock
 	Template@1095:
 		Id: 1095
-		Images: BLOXXMAS.R8
-		Frames: 350, 351, 370, 371
+		Images: customtiles.r16
+		Frames: 570, 571, 590, 591
 		Size: 2,2
 		Categories: Bridge
 		Tiles:
@@ -6273,8 +6273,8 @@ Templates:
 			3: Transition
 	Template@1096:
 		Id: 1096
-		Images: BLOXXMAS.R8
-		Frames: 351, 352, 371, 372
+		Images: customtiles.r16
+		Frames: 571, 572, 591, 592
 		Size: 2,2
 		Categories: Bridge
 		Tiles:
@@ -6284,8 +6284,8 @@ Templates:
 			3: Cliff
 	Template@1097:
 		Id: 1097
-		Images: BLOXXMAS.R8
-		Frames: 367, 368, 387, 388
+		Images: customtiles.r16
+		Frames: 587, 588, 607, 608
 		Size: 2,2
 		Categories: Bridge
 		Tiles:
@@ -6295,8 +6295,8 @@ Templates:
 			3: Rock
 	Template@1098:
 		Id: 1098
-		Images: BLOXXMAS.R8
-		Frames: 368, 369, 388, 389
+		Images: customtiles.r16
+		Frames: 588, 589, 408, 409
 		Size: 2,2
 		Categories: Bridge
 		Tiles:
@@ -6306,8 +6306,8 @@ Templates:
 			3: Rock
 	Template@1099:
 		Id: 1099
-		Images: BLOXXMAS.R8
-		Frames: 341, 361
+		Images: customtiles.r16
+		Frames: 561, 581
 		Size: 1,2
 		Categories: Bridge
 		Tiles:
@@ -6315,8 +6315,8 @@ Templates:
 			1: Transition
 	Template@1100:
 		Id: 1100
-		Images: BLOXXMAS.R8
-		Frames: 342, 362
+		Images: customtiles.r16
+		Frames: 562, 582
 		Size: 1,2
 		Categories: Bridge
 		Tiles:
@@ -6324,8 +6324,8 @@ Templates:
 			1: Transition
 	Template@1101:
 		Id: 1101
-		Images: BLOXXMAS.R8
-		Frames: 353, 373
+		Images: customtiles.r16
+		Frames: 573, 593
 		Size: 1,2
 		Categories: Bridge
 		Tiles:
@@ -6333,8 +6333,8 @@ Templates:
 			1: Rough
 	Template@1102:
 		Id: 1102
-		Images: BLOXXMAS.R8
-		Frames: 354, 374
+		Images: customtiles.r16
+		Frames: 574, 594
 		Size: 1,2
 		Categories: Bridge
 		Tiles:
@@ -6342,8 +6342,8 @@ Templates:
 			1: Rough
 	Template@1103:
 		Id: 1103
-		Images: BLOXXMAS.R8
-		Frames: 361, 381
+		Images: customtiles.r16
+		Frames: 581, 601
 		Size: 1,2
 		Categories: Bridge
 		Tiles:
@@ -6351,8 +6351,8 @@ Templates:
 			1: Cliff
 	Template@1104:
 		Id: 1104
-		Images: BLOXXMAS.R8
-		Frames: 362, 382
+		Images: customtiles.r16
+		Frames: 582, 602
 		Size: 1,2
 		Categories: Bridge
 		Tiles:
@@ -6360,8 +6360,8 @@ Templates:
 			1: Cliff
 	Template@1105:
 		Id: 1105
-		Images: BLOXXMAS.R8
-		Frames: 297, 393
+		Images: customtiles.r16
+		Frames: 593, 613
 		Size: 1,2
 		Categories: Bridge
 		Tiles:
@@ -6369,8 +6369,8 @@ Templates:
 			1: Rough
 	Template@1106:
 		Id: 1106
-		Images: BLOXXMAS.R8
-		Frames: 316, 394
+		Images: customtiles.r16
+		Frames: 594, 614
 		Size: 1,2
 		Categories: Bridge
 		Tiles:
@@ -6386,8 +6386,8 @@ Templates:
 			0: Rock
 	Template@1108:
 		Id: 1108
-		Images: BLOXXMAS.R8
-		Frames: 289, 290, 309, 310
+		Images: customtiles.r16
+		Frames: 636, 637, 656, 657
 		Size: 2,2
 		Categories: Rotten-Base
 		Tiles:
@@ -6397,8 +6397,8 @@ Templates:
 			3: Rough
 	Template@1109:
 		Id: 1109
-		Images: BLOXXMAS.R8
-		Frames: 347, 348
+		Images: customtiles.r16
+		Frames: 567, 568
 		Size: 2,1
 		Categories: Bridge
 		Tiles:
@@ -6406,8 +6406,8 @@ Templates:
 			1: Rough
 	Template@1110:
 		Id: 1110
-		Images: BLOXXMAS.R8
-		Frames: 348, 349
+		Images: customtiles.r16
+		Frames: 568, 569
 		Size: 2,1
 		Categories: Bridge
 		Tiles:
@@ -6415,8 +6415,8 @@ Templates:
 			1: Rough
 	Template@1111:
 		Id: 1111
-		Images: BLOXXMAS.R8
-		Frames: 390, 391
+		Images: customtiles.r16
+		Frames: 610, 611
 		Size: 2,1
 		Categories: Bridge
 		Tiles:
@@ -6424,8 +6424,8 @@ Templates:
 			1: Rough
 	Template@1112:
 		Id: 1112
-		Images: BLOXXMAS.R8
-		Frames: 391, 392
+		Images: customtiles.r16
+		Frames: 611, 612
 		Size: 2,1
 		Categories: Bridge
 		Tiles:

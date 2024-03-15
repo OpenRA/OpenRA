@@ -274,7 +274,7 @@ ModContent:
 		ContentPackage@patch:
 			Title: 1.06 Patch Content
 			Identifier: patch
-			TestFiles: ^SupportDir|Content/d2k/v3/DATA.R16, ^SupportDir|Content/d2k/v3/BLOXXMAS.R8
+			TestFiles: ^SupportDir|Content/d2k/v3/DATA.R16
 			Sources: gruntmods
 			Required: true
 			Download: patch106
