@@ -4232,7 +4232,7 @@ Templates:
 			1: Rough
 	Template@500:
 		Id: 500
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 305
 		Size: 1,1
 		Categories: Rotten-Base
@@ -4240,7 +4240,7 @@ Templates:
 			0: Rough
 	Template@501:
 		Id: 501
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 325
 		Size: 1,1
 		Categories: Rotten-Base
@@ -4248,7 +4248,7 @@ Templates:
 			0: Sand
 	Template@502:
 		Id: 502
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 311
 		Size: 1,1
 		Categories: Rotten-Base
@@ -4256,7 +4256,7 @@ Templates:
 			0: Rough
 	Template@503:
 		Id: 503
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 312
 		Size: 1,1
 		Categories: Rotten-Base
@@ -4264,7 +4264,7 @@ Templates:
 			0: Rough
 	Template@504:
 		Id: 504
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 330
 		Size: 1,1
 		Categories: Rotten-Base
@@ -4272,7 +4272,7 @@ Templates:
 			0: Rough
 	Template@505:
 		Id: 505
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 316
 		Size: 1,1
 		Categories: Bridge
@@ -4280,7 +4280,7 @@ Templates:
 			0: Rough
 	Template@506:
 		Id: 506
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 297
 		Size: 1,1
 		Categories: Bridge
@@ -4288,7 +4288,7 @@ Templates:
 			0: Rough
 	Template@507:
 		Id: 507
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 356, 357
 		Size: 2,1
 		Categories: Rotten-Base
@@ -4297,7 +4297,7 @@ Templates:
 			1: Rough
 	Template@508:
 		Id: 508
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 355
 		Size: 1,1
 		Categories: Rotten-Base
@@ -4305,7 +4305,7 @@ Templates:
 			0: Rough
 	Template@509:
 		Id: 509
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 375
 		Size: 1,1
 		Categories: Rotten-Base
@@ -4313,7 +4313,7 @@ Templates:
 			0: Rough
 	Template@510:
 		Id: 510
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 395
 		Size: 1,1
 		Categories: Rotten-Base
@@ -4321,7 +4321,7 @@ Templates:
 			0: Rough
 	Template@511:
 		Id: 511
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 414, 415, 434, 435
 		Size: 2,2
 		Categories: Rotten-Base
@@ -4332,7 +4332,7 @@ Templates:
 			3: Rough
 	Template@512:
 		Id: 512
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 353, 354, 373, 374, 393, 394
 		Size: 2,3
 		Categories: Bridge
@@ -4345,7 +4345,7 @@ Templates:
 			5: Rough
 	Template@513:
 		Id: 513
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 350, 351, 352, 370, 371, 372, 390, 391, 392
 		Size: 3,3
 		Categories: Bridge
@@ -4361,7 +4361,7 @@ Templates:
 			8: Rough
 	Template@514:
 		Id: 514
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 347, 348, 349, 367, 368, 369, 387, 388, 389
 		Size: 3,3
 		Categories: Bridge
@@ -4377,7 +4377,7 @@ Templates:
 			8: Rock
 	Template@515:
 		Id: 515
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 340, 341, 342, 343, 360, 361, 362, 363, 380, 381, 382, 383
 		Size: 4,3
 		Categories: Bridge
@@ -4396,7 +4396,7 @@ Templates:
 			11: Cliff
 	Template@516:
 		Id: 516
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 717
 		Size: 1,1
 		Categories: Rotten-Base
@@ -4404,7 +4404,7 @@ Templates:
 			0: Cliff
 	Template@517:
 		Id: 517
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 718
 		Size: 1,1
 		Categories: Rotten-Base
@@ -4412,7 +4412,7 @@ Templates:
 			0: Rough
 	Template@518:
 		Id: 518
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 737
 		Size: 1,1
 		Categories: Rotten-Base
@@ -4420,7 +4420,7 @@ Templates:
 			0: Cliff
 	Template@519:
 		Id: 519
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 738, 739, 758, 759
 		Size: 2,2
 		Categories: Rotten-Base
@@ -4431,7 +4431,7 @@ Templates:
 			3: Rough
 	Template@520:
 		Id: 520
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 652, 653, 672, 673
 		Size: 2,2
 		Categories: Rotten-Base
@@ -6164,7 +6164,7 @@ Templates:
 			1: Rough
 	Template@1085:
 		Id: 1085
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 344, 345
 		Size: 2,1
 		Categories: Bridge
@@ -6173,7 +6173,7 @@ Templates:
 			1: Transition
 	Template@1086:
 		Id: 1086
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 345, 346
 		Size: 2,1
 		Categories: Bridge
@@ -6182,7 +6182,7 @@ Templates:
 			1: Cliff
 	Template@1087:
 		Id: 1087
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 364, 365
 		Size: 2,1
 		Categories: Bridge
@@ -6191,7 +6191,7 @@ Templates:
 			1: Transition
 	Template@1088:
 		Id: 1088
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 365, 366
 		Size: 2,1
 		Categories: Bridge
@@ -6200,7 +6200,7 @@ Templates:
 			1: Cliff
 	Template@1089:
 		Id: 1089
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 384, 385
 		Size: 2,1
 		Categories: Bridge
@@ -6209,7 +6209,7 @@ Templates:
 			1: Transition
 	Template@1090:
 		Id: 1090
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 385, 386
 		Size: 2,1
 		Categories: Bridge
@@ -6218,7 +6218,7 @@ Templates:
 			1: Cliff
 	Template@1091:
 		Id: 1091
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 1, 340, 2, 360
 		Size: 2,2
 		Categories: Bridge
@@ -6229,7 +6229,7 @@ Templates:
 			3: Transition
 	Template@1092:
 		Id: 1092
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 343, 4, 363, 5
 		Size: 2,2
 		Categories: Bridge
@@ -6240,7 +6240,7 @@ Templates:
 			3: Rock
 	Template@1093:
 		Id: 1093
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 2, 360, 3, 380
 		Size: 2,2
 		Categories: Bridge
@@ -6251,7 +6251,7 @@ Templates:
 			3: Cliff
 	Template@1094:
 		Id: 1094
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 363, 5, 383, 6
 		Size: 2,2
 		Categories: Bridge
@@ -6262,7 +6262,7 @@ Templates:
 			3: Rock
 	Template@1095:
 		Id: 1095
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 350, 351, 370, 371
 		Size: 2,2
 		Categories: Bridge
@@ -6273,7 +6273,7 @@ Templates:
 			3: Transition
 	Template@1096:
 		Id: 1096
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 351, 352, 371, 372
 		Size: 2,2
 		Categories: Bridge
@@ -6284,7 +6284,7 @@ Templates:
 			3: Cliff
 	Template@1097:
 		Id: 1097
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 367, 368, 387, 388
 		Size: 2,2
 		Categories: Bridge
@@ -6295,7 +6295,7 @@ Templates:
 			3: Rock
 	Template@1098:
 		Id: 1098
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 368, 369, 388, 389
 		Size: 2,2
 		Categories: Bridge
@@ -6306,7 +6306,7 @@ Templates:
 			3: Rock
 	Template@1099:
 		Id: 1099
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 341, 361
 		Size: 1,2
 		Categories: Bridge
@@ -6315,7 +6315,7 @@ Templates:
 			1: Transition
 	Template@1100:
 		Id: 1100
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 342, 362
 		Size: 1,2
 		Categories: Bridge
@@ -6324,7 +6324,7 @@ Templates:
 			1: Transition
 	Template@1101:
 		Id: 1101
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 353, 373
 		Size: 1,2
 		Categories: Bridge
@@ -6333,7 +6333,7 @@ Templates:
 			1: Rough
 	Template@1102:
 		Id: 1102
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 354, 374
 		Size: 1,2
 		Categories: Bridge
@@ -6342,7 +6342,7 @@ Templates:
 			1: Rough
 	Template@1103:
 		Id: 1103
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 361, 381
 		Size: 1,2
 		Categories: Bridge
@@ -6351,7 +6351,7 @@ Templates:
 			1: Cliff
 	Template@1104:
 		Id: 1104
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 362, 382
 		Size: 1,2
 		Categories: Bridge
@@ -6360,7 +6360,7 @@ Templates:
 			1: Cliff
 	Template@1105:
 		Id: 1105
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 297, 393
 		Size: 1,2
 		Categories: Bridge
@@ -6369,7 +6369,7 @@ Templates:
 			1: Rough
 	Template@1106:
 		Id: 1106
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 316, 394
 		Size: 1,2
 		Categories: Bridge
@@ -6386,7 +6386,7 @@ Templates:
 			0: Rock
 	Template@1108:
 		Id: 1108
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 289, 290, 309, 310
 		Size: 2,2
 		Categories: Rotten-Base
@@ -6397,7 +6397,7 @@ Templates:
 			3: Rough
 	Template@1109:
 		Id: 1109
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 347, 348
 		Size: 2,1
 		Categories: Bridge
@@ -6406,7 +6406,7 @@ Templates:
 			1: Rough
 	Template@1110:
 		Id: 1110
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 348, 349
 		Size: 2,1
 		Categories: Bridge
@@ -6415,7 +6415,7 @@ Templates:
 			1: Rough
 	Template@1111:
 		Id: 1111
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 390, 391
 		Size: 2,1
 		Categories: Bridge
@@ -6424,7 +6424,7 @@ Templates:
 			1: Rough
 	Template@1112:
 		Id: 1112
-		Images: BLOXXMAS.R8
+		Images: BLOXXMAS.R16
 		Frames: 391, 392
 		Size: 2,1
 		Categories: Bridge
