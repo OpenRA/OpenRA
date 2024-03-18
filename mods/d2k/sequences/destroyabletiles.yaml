@@ -1,0 +1,40 @@
+rockpass01_left:
+	idle:
+		Filename: bits/destroyabletiles/destroyabletile_1.png
+		ZOffset: -2048
+
+rockpass01_right:
+	idle:
+		Filename: bits/destroyabletiles/destroyabletile_2.png
+		ZOffset: -2048
+
+rockpass01_top:
+	idle:
+		Filename: bits/destroyabletiles/destroyabletile_3.png
+		ZOffset: -2048
+
+rockpass01_bottom:
+	idle:
+		Filename: bits/destroyabletiles/destroyabletile_0.png
+		ZOffset: -2048
+
+
+rockpass01_destroyed_left:
+	idle:
+		Filename: bits/destroyabletiles/destroyabletile_5.png
+		ZOffset: -2048
+
+rockpass01_destroyed_right:
+	idle:
+		Filename: bits/destroyabletiles/destroyabletile_6.png
+		ZOffset: -2048
+
+rockpass01_destroyed_top:
+	idle:
+		Filename: bits/destroyabletiles/destroyabletile_7.png
+		ZOffset: -2512
+
+rockpass01_destroyed_bottom:
+	idle:
+		Filename: bits/destroyabletiles/destroyabletile_4.png
+		ZOffset: -2048
