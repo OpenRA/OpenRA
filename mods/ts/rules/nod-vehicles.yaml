@@ -529,6 +529,8 @@ STNK:
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Damage, Heal
 		PauseOnCondition: cloak-force-disabled || empdisable
 		CloakType: nod-stealth
+	RenderCloakAsAlpha:
+		CloakTypes: nod-stealth
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
