@@ -649,6 +649,18 @@ sandcraters:
 		Length: 16
 		Offset: -16,-16
 
+icecraters:
+	icecrater1:
+		Filename: icecraters.R16
+		Start: 0
+		Length: 16
+		Offset: -16,-16
+	icecrater2:
+		Filename: icecraters.R16
+		Start: 16
+		Length: 16
+		Offset: -16,-16
+
 ornidirection:
 	arrow-t:
 		Filename: MOUSE.R16

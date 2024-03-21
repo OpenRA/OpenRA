@@ -69,7 +69,7 @@ OrniBomb:
 		DamageTypes: Prone50Percent, TriggerProne, SmallExplosionDeath
 		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
-		SmudgeType: SandCrater, RockCrater
+		SmudgeType: SandCrater, RockCrater, IceCrater
 		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: large_explosion
@@ -134,7 +134,7 @@ DeathHandCluster:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
-		SmudgeType: SandCrater, RockCrater
+		SmudgeType: SandCrater, RockCrater, IceCrater
 		InvalidTargets: Vehicle, Structure
 	Warhead@3Eff: CreateEffect
 		Explosions: large_explosion
@@ -251,7 +251,7 @@ GrenDeath:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
-		SmudgeType: SandCrater, RockCrater
+		SmudgeType: SandCrater, RockCrater, IceCrater
 	Warhead@3Eff: CreateEffect
 		Explosions: building
 		ImpactSounds: EXPLSML4.WAV
@@ -276,7 +276,7 @@ SardDeath:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath
 		DamageCalculationType: ClosestTargetablePosition
 	Warhead@2Smu: LeaveSmudge
-		SmudgeType: SandCrater, RockCrater
+		SmudgeType: SandCrater, RockCrater, IceCrater
 	Warhead@3Eff: CreateEffect
 		Explosions: small_napalm
 		ImpactSounds: EXPLSML2.WAV
