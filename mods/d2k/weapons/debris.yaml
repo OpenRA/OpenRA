@@ -77,3 +77,18 @@ Debris4:
 	Projectile: Bullet
 		Image: shrapnel4
 		TrailImage: large_trail
+
+DebrisMissile:
+	Inherits: ^Missile
+	-Report:
+	Projectile: Missile
+		HorizontalRateOfTurn: 20
+		MinimumLaunchAngle: 120
+		MaximumLaunchAngle: 250
+		VerticalRateOfTurn: 20
+		CruiseAltitude: 0
+		ExplodeWhenEmpty: false
+		Speed: 250
+	Warhead@1Dam: SpreadDamage
+		Spread: 1c0
+		Damage: 2000
