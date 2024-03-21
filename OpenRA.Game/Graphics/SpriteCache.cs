@@ -71,9 +71,6 @@ namespace OpenRA.Graphics
 
 		public void LoadReservations(ModData modData)
 		{
-			foreach (var sb in SheetBuilders.Values)
-				sb.Current.CreateBuffer();
-
 			var pendingResolve = new List<(
 				string Filename,
 				int FrameIndex,
@@ -141,7 +138,7 @@ namespace OpenRA.Graphics
 			reservationsByFilename.Clear();
 
 			foreach (var sb in SheetBuilders.Values)
-				sb.Current.ReleaseBuffer();
+				sb.Current?.ReleaseBuffer();
 		}
 
 		public Sprite[] ResolveSprites(int token)
