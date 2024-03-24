@@ -69,10 +69,15 @@ namespace OpenRA.Primitives
 
 		public override int Read(byte[] buffer, int offset, int count)
 		{
+			return Read(buffer.AsSpan(offset, count));
+		}
+
+		public override int Read(Span<byte> buffer)
+		{
 			var remaining = Length - Position;
 			if (remaining <= 0)
 				return 0;
-			return BaseStream.Read(buffer, offset, (int)Math.Min(remaining, count));
+			return BaseStream.Read(buffer[..(int)Math.Min(remaining, buffer.Length)]);
 		}
 
 		public override void WriteByte(byte value)
@@ -84,9 +89,14 @@ namespace OpenRA.Primitives
 
 		public override void Write(byte[] buffer, int offset, int count)
 		{
-			if (Position + count >= Length)
+			Write(buffer.AsSpan(offset, count));
+		}
+
+		public override void Write(ReadOnlySpan<byte> buffer)
+		{
+			if (Position + buffer.Length >= Length)
 				throw new IOException("Attempted to write past the end of the stream.");
-			BaseStream.Write(buffer, offset, count);
+			BaseStream.Write(buffer);
 		}
 
 		public override void Flush() { BaseStream.Flush(); }

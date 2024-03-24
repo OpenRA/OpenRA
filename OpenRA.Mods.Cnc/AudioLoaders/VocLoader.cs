@@ -332,18 +332,16 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 			}
 		}
 
-		int Read(byte[] buffer, int offset, int count)
+		int Read(Span<byte> buffer)
 		{
 			var bytesWritten = 0;
-			var samplesLeft = Math.Min(count, buffer.Length - offset);
-			while (samplesLeft > 0)
+			while (buffer.Length > 0)
 			{
-				var len = FillBuffer(samplesLeft);
+				var len = FillBuffer(buffer.Length);
 				if (len == 0)
 					break;
-				Buffer.BlockCopy(this.buffer, 0, buffer, offset, len);
-				samplesLeft -= len;
-				offset += len;
+				this.buffer.AsSpan(..len).CopyTo(buffer);
+				buffer = buffer[len..];
 				bytesWritten += len;
 			}
 
@@ -372,13 +370,19 @@ namespace OpenRA.Mods.Cnc.AudioLoaders
 
 			public override int Read(byte[] buffer, int offset, int count)
 			{
-				return format.Read(buffer, offset, count);
+				return Read(buffer.AsSpan(offset, count));
+			}
+
+			public override int Read(Span<byte> buffer)
+			{
+				return format.Read(buffer);
 			}
 
 			public override void Flush() { throw new NotImplementedException(); }
 			public override long Seek(long offset, SeekOrigin origin) { throw new NotImplementedException(); }
 			public override void SetLength(long value) { throw new NotImplementedException(); }
 			public override void Write(byte[] buffer, int offset, int count) { throw new NotImplementedException(); }
+			public override void Write(ReadOnlySpan<byte> buffer) { throw new NotImplementedException(); }
 
 			protected override void Dispose(bool disposing)
 			{

@@ -81,17 +81,22 @@ namespace OpenRA.Primitives
 
 		public override int Read(byte[] buffer, int offset, int count)
 		{
+			return Read(buffer.AsSpan(offset, count));
+		}
+
+		public override int Read(Span<byte> buffer)
+		{
 			int bytesRead;
 
 			if (position >= Stream1.Length)
-				bytesRead = Stream2.Read(buffer, offset, count);
-			else if (count > Stream1.Length)
+				bytesRead = Stream2.Read(buffer);
+			else if (buffer.Length > Stream1.Length)
 			{
-				bytesRead = Stream1.Read(buffer, offset, (int)Stream1.Length);
-				bytesRead += Stream2.Read(buffer, (int)Stream1.Length, count - (int)Stream1.Length);
+				bytesRead = Stream1.Read(buffer[..(int)Stream1.Length]);
+				bytesRead += Stream2.Read(buffer[(int)Stream1.Length..]);
 			}
 			else
-				bytesRead = Stream1.Read(buffer, offset, count);
+				bytesRead = Stream1.Read(buffer);
 
 			position += bytesRead;
 
@@ -104,6 +109,11 @@ namespace OpenRA.Primitives
 		}
 
 		public override void Write(byte[] buffer, int offset, int count)
+		{
+			throw new NotSupportedException();
+		}
+
+		public override void Write(ReadOnlySpan<byte> buffer)
 		{
 			throw new NotSupportedException();
 		}
