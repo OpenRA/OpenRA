@@ -1,0 +1,80 @@
+MapFormat: 12
+
+RequiresMod: d2k
+
+Title: simple test map
+
+Author: Your name here
+
+Tileset: ARRAKIS
+
+MapSize: 50,50
+
+Bounds: 1,1,48,48
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Multi0
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+
+Actors:
+	Actor0: mpspawn
+		Owner: Neutral
+		Location: 24,28
+	Actor1: construction_yard
+		Owner: Multi0
+		Location: 17,22
+	Actor2: wind_trap
+		Owner: Multi0
+		Location: 19,17
+	Actor3: wind_trap
+		Owner: Multi0
+		Location: 22,17
+	Actor4: wind_trap
+		Owner: Multi0
+		Location: 24,17
+	Actor5: wind_trap
+		Owner: Multi0
+		Location: 27,17
+	Actor6: wind_trap
+		Owner: Multi0
+		Location: 30,17
+	Actor7: wind_trap
+		Owner: Multi0
+		Location: 33,17
+	Actor8: refinery
+		Owner: Multi0
+		Location: 36,22
+	Actor9: heavy_factory
+		Owner: Multi0
+		Location: 34,27
+	Actor10: starport
+		Owner: Multi0
+		Location: 29,32
+	Actor11: outpost
+		Owner: Multi0
+		Location: 30,23
+	Actor12: barracks
+		Owner: Multi0
+		Location: 26,22
+	Actor13: light_factory
+		Owner: Multi0
+		Location: 27,27
+
+Rules: Rules.yaml
