@@ -650,21 +650,24 @@ namespace OpenRA
 				foreach (var file in Package.Contents)
 					toPackage.Update(file, Package.GetStream(file).ReadAllBytes());
 
-			if (!LockPreview)
+			void UpdatePackage(string filename, byte[] data)
 			{
-				var previewData = SavePreview();
-				if (Package != toPackage || !Enumerable.SequenceEqual(previewData, Package.GetStream("map.png").ReadAllBytes()))
-					toPackage.Update("map.png", previewData);
+				if (Package != toPackage)
+					toPackage.Update(filename, data);
+				else
+				{
+					var stream = Package.GetStream(filename);
+					if (stream == null || !Enumerable.SequenceEqual(data, stream.ReadAllBytes()))
+						toPackage.Update(filename, data);
+				}
 			}
 
-			// Update the package with the new map data
-			var textData = Encoding.UTF8.GetBytes(root.WriteToString());
-			if (Package != toPackage || !Enumerable.SequenceEqual(textData, Package.GetStream("map.yaml").ReadAllBytes()))
-				toPackage.Update("map.yaml", textData);
+			if (!LockPreview)
+				UpdatePackage("map.png", SavePreview());
 
-			var binaryData = SaveBinaryData();
-			if (Package != toPackage || !Enumerable.SequenceEqual(binaryData, Package.GetStream("map.bin").ReadAllBytes()))
-				toPackage.Update("map.bin", binaryData);
+			// Update the package with the new map data
+			UpdatePackage("map.yaml", Encoding.UTF8.GetBytes(root.WriteToString()));
+			UpdatePackage("map.bin", SaveBinaryData());
 
 			Package = toPackage;
 
