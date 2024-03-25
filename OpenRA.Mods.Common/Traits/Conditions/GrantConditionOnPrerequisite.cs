@@ -61,7 +61,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			globalManager = newOwner.PlayerActor.Trait<GrantConditionOnPrerequisiteManager>();
+			var player = newOwner.PlayerActor;
+			if (player != null && player.IsInWorld)
+				globalManager = newOwner.PlayerActor.Trait<GrantConditionOnPrerequisiteManager>();
 		}
 
 		public void PrerequisitesUpdated(Actor self, bool available)
