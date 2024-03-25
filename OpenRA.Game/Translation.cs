@@ -24,7 +24,7 @@ using OpenRA.Traits;
 
 namespace OpenRA
 {
-	[AttributeUsage(AttributeTargets.Field)]
+	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 	public sealed class TranslationReferenceAttribute : Attribute
 	{
 		public readonly bool Optional;
@@ -182,6 +182,11 @@ namespace OpenRA
 			}
 
 			return argumentDictionary;
+		}
+
+		public IEnumerable<string> GetMessages()
+		{
+			return bundle.GetMessageEnumerable();
 		}
 	}
 }

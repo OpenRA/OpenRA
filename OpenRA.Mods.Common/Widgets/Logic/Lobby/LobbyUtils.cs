@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				Game.LoadWidget(null, "KICK_CLIENT_DIALOG", lobby.Get("TOP_PANELS_ROOT"), new WidgetArgs
 				{
-					{ "clientName", c.Name },
+					{ "clientName", SanitizePlayerName(c) },
 					{ "okPressed", okPressed },
 					{ "cancelPressed", after }
 				});
@@ -422,7 +422,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var name = parent.Get<LabelWidget>("NAME");
 			name.IsVisible = () => true;
 			var font = Game.Renderer.Fonts[name.Font];
-			var label = WidgetUtils.TruncateText(c.Name, name.Bounds.Width, font);
+			var label = WidgetUtils.TruncateText(SanitizePlayerName(c), name.Bounds.Width, font);
 			name.GetText = () => label;
 
 			SetupProfileWidget(parent, c, orderManager, worldRenderer);
@@ -441,7 +441,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var closed = TranslationProvider.GetString(Closed);
 			var open = TranslationProvider.GetString(Open);
-			slot.GetText = () => truncated.Update(c != null ? c.Name : s.Closed ? closed : open);
+			slot.GetText = () => truncated.Update(c != null ? SanitizePlayerName(c) : s.Closed ? closed : open);
 			slot.OnMouseDown = _ => ShowSlotDropDown(slot, s, c, orderManager, map, modData);
 
 			// Ensure Name selector (if present) is hidden
@@ -452,7 +452,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var name = parent.Get<LabelWidget>("NAME");
 			name.IsVisible = () => true;
-			name.GetText = () => c != null ? c.Name : s.Closed
+			name.GetText = () => c != null ? SanitizePlayerName(c) : s.Closed
 				? TranslationProvider.GetString(Closed)
 				: TranslationProvider.GetString(Open);
 
@@ -471,7 +471,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				WidgetUtils.TruncateText(name, slot.Bounds.Width - slot.Bounds.Height - slot.LeftMargin - slot.RightMargin,
 				Game.Renderer.Fonts[slot.Font]));
 
-			slot.GetText = () => truncated.Update(c != null ? c.Name : string.Empty);
+			slot.GetText = () => truncated.Update(c != null ? SanitizePlayerName(c) : string.Empty);
 			slot.OnMouseDown = _ => ShowPlayerActionDropDown(slot, c, orderManager, lobby, before, after);
 
 			SetupProfileWidget(slot, c, orderManager, worldRenderer);
@@ -675,6 +675,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var widget = parent.GetOrNull(widgetId);
 			if (widget != null)
 				widget.IsVisible = () => false;
+		}
+
+		public static string SanitizePlayerName(Session.Client client)
+		{
+			if (client.Name == Game.Settings.Player.Name)
+				return client.Name;
+
+			if (Game.Settings.Game.SanitizeMutedPlayerNames
+				&& TextNotificationsManager.MutedPlayers.Count > 0
+				&& TextNotificationsManager.MutedPlayers[client.Index])
+				return TranslationProvider.GetNearestName(client.Color);
+
+			if (Game.Settings.Game.SanitizePlayerNames)
+				return TranslationProvider.GetNearestName(client.Color);
+
+			return client.Name;
 		}
 	}
 

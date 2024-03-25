@@ -333,7 +333,8 @@ namespace OpenRA.Mods.Common.Widgets
 			label.GetText = () =>
 			{
 				var clientState = client != null ? client.State : Session.ClientState.Ready;
-				return name.Update((p.PlayerName, p.WinState, clientState));
+				var playerName = p.World.LocalPlayer == p ? p.PlayerName : SanitizePlayerName(p);
+				return name.Update((playerName, p.WinState, clientState));
 			};
 		}
 
@@ -391,6 +392,17 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			notificationWidget.Bounds.Width = boxWidth - notificationWidget.Bounds.X;
+		}
+
+		public static string SanitizePlayerName(Player player)
+		{
+			if (Game.Settings.Game.SanitizeMutedPlayerNames && TextNotificationsManager.MutedPlayers.ContainsKey(player.ClientIndex))
+				return TranslationProvider.GetNearestName(player.Color);
+
+			if (Game.Settings.Game.SanitizePlayerNames)
+				return TranslationProvider.GetNearestName(player.Color);
+
+			return player.PlayerName;
 		}
 	}
 
