@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			TextNotificationsManager.AddTransientLine(infiltrator.Owner, info.InfiltrationTextNotification);
 
 			if (info.ShowTicks)
-				self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, infiltrator.Owner.Color, FloatingText.FormatCashTick(toGive), 30)));
+				self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, infiltrator.OwnerColor(), FloatingText.FormatCashTick(toGive), 30)));
 		}
 	}
 }

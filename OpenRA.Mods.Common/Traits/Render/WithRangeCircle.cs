@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 					self.CenterPosition,
 					Info.Range,
 					0,
-					Info.UsePlayerColor ? self.Owner.Color : Info.Color,
+					Info.UsePlayerColor ? self.OwnerColor() : Info.Color,
 					Info.Width,
 					Info.BorderColor,
 					Info.BorderWidth);

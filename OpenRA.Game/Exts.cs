@@ -22,6 +22,16 @@ namespace OpenRA
 {
 	public static class Exts
 	{
+		/// <summary>Returns <see cref="Color"/> of the <paramref name="actor"/>, taking <see cref="Actor.EffectiveOwner"/> into account.</summary>
+		public static Color OwnerColor(this Actor actor)
+		{
+			var effectiveOwner = actor.EffectiveOwner;
+			if (effectiveOwner != null && effectiveOwner.Disguised && actor.World.RenderPlayer != null)
+				return effectiveOwner.Owner.Color;
+
+			return actor.Owner.Color;
+		}
+
 		public static string FormatInvariant(this string format, params object[] args)
 		{
 			return string.Format(CultureInfo.InvariantCulture, format, args);

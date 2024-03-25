@@ -45,14 +45,14 @@ namespace OpenRA.Mods.Common.Traits.Render
 	public class WithNameTagDecoration : WithDecorationBase<WithNameTagDecorationInfo>, INotifyOwnerChanged
 	{
 		readonly SpriteFont font;
+		readonly WithNameTagDecorationInfo info;
 		string name;
-		Color color;
 
 		public WithNameTagDecoration(Actor self, WithNameTagDecorationInfo info)
 			: base(self, info)
 		{
 			font = Game.Renderer.Fonts[info.Font];
-			color = info.UsePlayerColor ? self.Owner.Color : info.Color;
+			this.info = info;
 
 			name = self.Owner.PlayerName;
 			if (name.Length > info.MaxLength)
@@ -67,15 +67,12 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var size = font.Measure(name);
 			return new IRenderable[]
 			{
-				new UITextRenderable(font, self.CenterPosition, screenPos - size / 2, 0, color, name)
+				new UITextRenderable(font, self.CenterPosition, screenPos - size / 2, 0, info.UsePlayerColor ? self.OwnerColor() : info.Color, name)
 			};
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			if (Info.UsePlayerColor)
-				color = newOwner.Color;
-
 			name = self.Owner.PlayerName;
 			if (name.Length > Info.MaxLength)
 				name = name[..Info.MaxLength];

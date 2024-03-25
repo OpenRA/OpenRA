@@ -75,9 +75,14 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			this.info = info;
 
-			startcolor = info.StartColorUsePlayerColor ? Color.FromArgb(info.StartColorAlpha, self.Owner.Color) : Color.FromArgb(info.StartColorAlpha, info.StartColor);
-			endcolor = info.EndColorUsePlayerColor ? Color.FromArgb(info.EndColorAlpha, self.Owner.Color) : Color.FromArgb(info.EndColorAlpha, info.EndColor ?? startcolor);
-			trail = new ContrailRenderable(self.World, startcolor, endcolor, info.StartWidth, info.EndWidth ?? info.StartWidth, info.TrailLength, info.TrailDelay, info.ZOffset);
+			startcolor = Color.FromArgb(info.StartColorAlpha, info.StartColor);
+			endcolor = Color.FromArgb(info.EndColorAlpha, info.EndColor ?? startcolor);
+			trail = new ContrailRenderable(self.World, self,
+				startcolor, info.StartColorUsePlayerColor,
+				endcolor, info.EndColor == null ? info.StartColorUsePlayerColor : info.EndColorUsePlayerColor,
+				info.StartWidth,
+				info.EndWidth ?? info.StartWidth,
+				info.TrailLength, info.TrailDelay, info.ZOffset);
 
 			body = self.Trait<BodyOrientation>();
 		}
@@ -106,7 +111,12 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyAddedToWorld.AddedToWorld(Actor self)
 		{
-			trail = new ContrailRenderable(self.World, startcolor, endcolor, info.StartWidth, info.EndWidth ?? info.StartWidth, info.TrailLength, info.TrailDelay, info.ZOffset);
+			trail = new ContrailRenderable(self.World, self,
+				startcolor, info.StartColorUsePlayerColor,
+				endcolor, info.EndColor == null ? info.StartColorUsePlayerColor : info.EndColorUsePlayerColor,
+				info.StartWidth,
+				info.EndWidth ?? info.StartWidth,
+				info.TrailLength, info.TrailDelay, info.ZOffset);
 		}
 	}
 }

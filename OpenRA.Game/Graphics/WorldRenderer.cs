@@ -62,8 +62,7 @@ namespace OpenRA.Graphics
 			foreach (var pal in world.TraitDict.ActorsWithTrait<ILoadsPalettes>())
 				pal.Trait.LoadPalettes(this);
 
-			foreach (var p in world.Players)
-				UpdatePalettesForPlayer(p.InternalName, p.Color, false);
+			Player.SetupRelationshipColors(world.Players, world.LocalPlayer, this, true);
 
 			palette.Initialize();
 

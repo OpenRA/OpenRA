@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Eluant;
 using Eluant.ObjectBinding;
+using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Primitives;
 using OpenRA.Scripting;
@@ -37,17 +38,7 @@ namespace OpenRA
 
 	public class Player : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding
 	{
-		struct StanceColors
-		{
-			public Color Self;
-			public Color Allies;
-			public Color Enemies;
-			public Color Neutrals;
-		}
-
 		public readonly Actor PlayerActor;
-		public readonly Color Color;
-
 		public readonly string PlayerName;
 		public readonly string InternalName;
 		public readonly FactionInfo Faction;
@@ -61,6 +52,11 @@ namespace OpenRA
 		public readonly string BotType;
 		public readonly Shroud Shroud;
 		public readonly FrozenActorLayer FrozenActorLayer;
+
+		readonly Color color;
+
+		/// <summary>Returns player color with relationship colors applied.</summary>
+		public Color Color { get; private set; }
 
 		/// <summary>The faction (including Random, etc.) that was selected in the lobby.</summary>
 		public readonly FactionInfo DisplayFaction;
@@ -100,8 +96,6 @@ namespace OpenRA
 				return WinState != WinState.Undefined && !inMissionMap;
 			}
 		}
-
-		readonly StanceColors stanceColors;
 
 		public static FactionInfo ResolveFaction(string factionName, IEnumerable<FactionInfo> factionInfos, MersenneTwister playerRandom, bool requireSelectable = true)
 		{
@@ -162,7 +156,8 @@ namespace OpenRA
 			if (client != null)
 			{
 				ClientIndex = client.Index;
-				Color = client.Color;
+				color = client.Color;
+				Color = color;
 				PlayerName = ResolvePlayerName(client, world.LobbyInfo.Clients, world.Map.Rules.Actors[SystemActors.Player].TraitInfos<IBotInfo>());
 
 				BotType = client.Bot;
@@ -180,6 +175,7 @@ namespace OpenRA
 			{
 				// Map player
 				ClientIndex = world.LobbyInfo.Clients.FirstOrDefault(c => c.IsAdmin)?.Index ?? 0; // Owned by the host (TODO: fix this)
+				color = pr.Color;
 				Color = pr.Color;
 				PlayerName = pr.Name;
 				NonCombatant = pr.NonCombatant;
@@ -221,11 +217,6 @@ namespace OpenRA
 					logic.Activate(this);
 			}
 
-			stanceColors.Self = ChromeMetrics.Get<Color>("PlayerStanceColorSelf");
-			stanceColors.Allies = ChromeMetrics.Get<Color>("PlayerStanceColorAllies");
-			stanceColors.Enemies = ChromeMetrics.Get<Color>("PlayerStanceColorEnemies");
-			stanceColors.Neutrals = ChromeMetrics.Get<Color>("PlayerStanceColorNeutrals");
-
 			unlockRenderPlayer = PlayerActor.TraitsImplementing<IUnlocksRenderPlayer>().ToArray();
 			notifyDisconnected = PlayerActor.TraitsImplementing<INotifyPlayerDisconnected>().ToArray();
 		}
@@ -259,28 +250,33 @@ namespace OpenRA
 			return RelationshipWith(p) == PlayerRelationship.Ally;
 		}
 
-		public Color PlayerRelationshipColor(Actor a)
+		/// <summary>Returns <see cref="color"/>, ignoring player relationship colors.</summary>
+		public static Color GetColor(Player p) => p.color;
+
+		public static void SetupRelationshipColors(Player[] players, Player viewer, WorldRenderer worldRenderer, bool firstRun)
 		{
-			var renderPlayer = a.World.RenderPlayer;
-			var player = renderPlayer ?? a.World.LocalPlayer;
-			if (player != null && !player.Spectating)
+			foreach (var p in players)
 			{
-				var effectiveOwner = a.EffectiveOwner;
-				var apparentOwner = a.Owner;
-				if (effectiveOwner != null && effectiveOwner.Disguised && !a.Owner.IsAlliedWith(renderPlayer))
-					apparentOwner = effectiveOwner.Owner;
-
-				if (apparentOwner == player)
-					return stanceColors.Self;
-
-				if (apparentOwner.IsAlliedWith(player))
-					return stanceColors.Allies;
-
-				if (!apparentOwner.NonCombatant)
-					return stanceColors.Enemies;
+				p.Color = PlayerRelationshipColor(p, viewer);
+				worldRenderer.UpdatePalettesForPlayer(p.InternalName, p.Color, !firstRun);
 			}
+		}
 
-			return stanceColors.Neutrals;
+		public static Color PlayerRelationshipColor(Player player, Player viewer)
+		{
+			if (!Game.Settings.Game.UsePlayerStanceColors || viewer == null || viewer.Spectating)
+				return player.color;
+
+			if (viewer == player)
+				return ChromeMetrics.Get<Color>("PlayerStanceColorSelf");
+
+			if (player.IsAlliedWith(viewer))
+				return ChromeMetrics.Get<Color>("PlayerStanceColorAllies");
+
+			if (player.NonCombatant)
+				return ChromeMetrics.Get<Color>("PlayerStanceColorNeutrals");
+
+			return ChromeMetrics.Get<Color>("PlayerStanceColorEnemies");
 		}
 
 		internal void PlayerDisconnected(Player p)

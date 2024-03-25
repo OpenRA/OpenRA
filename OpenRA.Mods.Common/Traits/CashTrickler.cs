@@ -91,7 +91,7 @@ namespace OpenRA.Mods.Common.Traits
 		void AddCashTick(Actor self, int amount)
 		{
 			self.World.AddFrameEndTask(w => w.Add(
-				new FloatingText(self.CenterPosition, self.Owner.Color, FloatingText.FormatCashTick(amount), info.DisplayDuration)));
+				new FloatingText(self.CenterPosition, self.OwnerColor(), FloatingText.FormatCashTick(amount), info.DisplayDuration)));
 		}
 
 		void ModifyCash(Actor self, int amount)

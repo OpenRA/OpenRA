@@ -137,6 +137,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var ds = Game.Settings.Graphics;
 			var gs = Game.Settings.Game;
+			var world = worldRenderer.World;
 			var scrollPanel = panel.Get<ScrollPanelWidget>("SETTINGS_SCROLLPANEL");
 
 			SettingsUtils.BindCheckboxPref(panel, "CURSORDOUBLE_CHECKBOX", ds, "CursorDouble");
@@ -145,6 +146,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SettingsUtils.BindCheckboxPref(panel, "FRAME_LIMIT_GAMESPEED_CHECKBOX", ds, "CapFramerateToGameFps");
 			SettingsUtils.BindIntSliderPref(panel, "FRAME_LIMIT_SLIDER", ds, "MaxFramerate");
 			SettingsUtils.BindCheckboxPref(panel, "PLAYER_STANCE_COLORS_CHECKBOX", gs, "UsePlayerStanceColors");
+
+			var cb = panel.Get<CheckboxWidget>("PLAYER_STANCE_COLORS_CHECKBOX");
+			cb.IsChecked = () => gs.UsePlayerStanceColors;
+			cb.OnClick = () =>
+			{
+				gs.UsePlayerStanceColors = cb.IsChecked() ^ true;
+				Player.SetupRelationshipColors(world.Players, world.LocalPlayer, worldRenderer, false);
+			};
+
 			if (panel.GetOrNull<CheckboxWidget>("PAUSE_SHELLMAP_CHECKBOX") != null)
 				SettingsUtils.BindCheckboxPref(panel, "PAUSE_SHELLMAP_CHECKBOX", gs, "PauseShellmap");
 
@@ -208,7 +218,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var minResolution = viewportSizes.MinEffectiveResolution;
 			var resolution = Game.Renderer.Resolution;
-			var disableUIScale = worldRenderer.World.Type != WorldType.Shellmap ||
+			var disableUIScale = world.Type != WorldType.Shellmap ||
 				resolution.Width * ds.UIScale < 1.25f * minResolution.Width ||
 				resolution.Height * ds.UIScale < 1.25f * minResolution.Height;
 
@@ -240,7 +250,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var escPressed = false;
 			var nameTextfield = panel.Get<TextFieldWidget>("PLAYERNAME");
-			nameTextfield.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;
+			nameTextfield.IsDisabled = () => world.Type != WorldType.Shellmap;
 			nameTextfield.Text = Settings.SanitizedPlayerName(ps.Name);
 			nameTextfield.OnLoseFocus = () =>
 			{
@@ -272,7 +282,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var colorManager = modData.DefaultRules.Actors[SystemActors.World].TraitInfo<IColorPickerManagerInfo>();
 
 			var colorDropdown = panel.Get<DropDownButtonWidget>("PLAYERCOLOR");
-			colorDropdown.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;
+			colorDropdown.IsDisabled = () => world.Type != WorldType.Shellmap;
 			colorDropdown.OnMouseDown = _ => colorManager.ShowColorDropDown(colorDropdown, ps.Color, null, worldRenderer, color =>
 			{
 				ps.Color = color;

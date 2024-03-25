@@ -129,7 +129,7 @@ namespace OpenRA.Mods.Common.Effects
 			{
 				var targetLine = new[] { prev, pos };
 				prev = pos;
-				yield return new TargetLineRenderable(targetLine, building.Owner.Color, rp.Info.LineWidth, 1);
+				yield return new TargetLineRenderable(targetLine, building.OwnerColor(), rp.Info.LineWidth, 1);
 			}
 		}
 	}

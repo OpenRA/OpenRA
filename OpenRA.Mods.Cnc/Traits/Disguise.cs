@@ -99,7 +99,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public override object Create(ActorInitializer init) { return new Disguise(init.Self, this); }
 	}
 
-	sealed class Disguise : IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, IRadarColorModifier, INotifyAttack,
+	sealed class Disguise : IEffectiveOwner, IIssueOrder, IResolveOrder, IOrderVoice, INotifyAttack,
 		INotifyDamage, INotifyLoadCargo, INotifyUnloadCargo, INotifyDemolition, INotifyInfiltration, ITick
 	{
 		public ActorInfo AsActor { get; private set; }
@@ -156,14 +156,6 @@ namespace OpenRA.Mods.Cnc.Traits
 		string IOrderVoice.VoicePhraseForOrder(Actor self, Order order)
 		{
 			return order.OrderString == "Disguise" ? info.Voice : null;
-		}
-
-		Color IRadarColorModifier.RadarColorOverride(Actor self, Color color)
-		{
-			if (!Disguised || self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				return color;
-
-			return Game.Settings.Game.UsePlayerStanceColors ? AsPlayer.PlayerRelationshipColor(self) : AsPlayer.Color;
 		}
 
 		public void DisguiseAs(Actor target)
