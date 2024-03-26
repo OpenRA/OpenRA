@@ -505,6 +505,7 @@ APC:
 
 MNLY:
 	Inherits: ^TrackedVehicle
+	Inherits@GAINSEXPERIENCE: ^GainsExperience
 	Inherits@selection: ^SelectableSupportUnit
 	Buildable:
 		Queue: Vehicle
@@ -534,6 +535,13 @@ MNLY:
 		TileUnknownName: build-valid
 		TerrainTypes: Clear, Road, Beach, Ore, Gems, Rough, Bridge
 	MineImmune:
+		ImmuneRelationships: Ally
+	AutoCrusher:
+		MinimumScanTimeInterval: 13
+		MaximumScanTimeInterval: 20
+		ScanRadius: 5c0
+		CrushClasses: mine
+		TargetRelationships: Neutral, Enemy
 	AmmoPool:
 		Ammo: 5
 		RearmSound: minelay1.aud

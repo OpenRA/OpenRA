@@ -212,6 +212,13 @@ APMine:
 	Warhead@Smu: LeaveSmudge
 		SmudgeType: Scorch
 
+MineSweeped:
+	ValidTargets: Ground, Water, GroundActor, WaterActor
+	Report: minelay1.aud
+	Warhead@Smu: LeaveSmudge
+		SmudgeType: Crater
+		AffectsParent: true
+
 OreExplosion:
 	ValidTargets: Ground, Water, GroundActor, WaterActor
 	Warhead@1Dam: SpreadDamage
