@@ -18,6 +18,7 @@ carryall.reinforce:
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
 		Repulsable: False
 		AirborneCondition: airborne
+		CanForceLand: false
 		CanSlide: True
 		VTOL: true
 		IdleTurnSpeed: 4
