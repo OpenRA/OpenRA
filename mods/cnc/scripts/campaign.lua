@@ -31,7 +31,12 @@ end
 
 ReinforceWithLandingCraft = function(player, units, transportStart, transportUnload, rallypoint)
 	local transport = Actor.Create("lst", true, { Owner = player, Facing = Angle.North, Location = transportStart })
-	local subcell = 0
+	local subcell = 1
+
+	if #units == 1 then
+		subcell = 0
+	end
+
 	Utils.Do(units, function(a)
 		transport.LoadPassenger(Actor.Create(a, false, { Owner = transport.Owner, Facing = transport.Facing, Location = transportUnload, SubCell = subcell }))
 		subcell = subcell + 1
