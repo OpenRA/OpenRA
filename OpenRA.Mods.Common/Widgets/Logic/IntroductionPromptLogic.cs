@@ -49,6 +49,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var nameTextfield = widget.Get<TextFieldWidget>("PLAYERNAME");
 			nameTextfield.IsDisabled = () => worldRenderer.World.Type != WorldType.Shellmap;
 			nameTextfield.Text = Settings.SanitizedPlayerName(ps.Name);
+
+			var itchIntegration = modData.Manifest.Get<ItchIntegration>();
+			itchIntegration.GetPlayerName(name => nameTextfield.Text = Settings.SanitizedPlayerName(name));
+
 			nameTextfield.OnLoseFocus = () =>
 			{
 				if (escPressed)
