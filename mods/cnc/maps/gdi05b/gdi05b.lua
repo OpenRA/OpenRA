@@ -12,8 +12,8 @@ AllToHuntTrigger =
 	Silo1, Proc1, Silo2, Silo3, Silo4, Afld1, Hand1, Nuke1, Nuke2, Nuke3, Fact1
 }
 
-AtkRoute1 = { waypoint4.Location, waypoint5.Location, waypoint6.Location, waypoint7.Location, waypoint8.Location }
-AtkRoute2 = { waypoint0.Location, waypoint1.Location, waypoint2.Location, waypoint3.Location }
+AtkRoute1 = { waypoint4, waypoint5, waypoint6, waypoint7, waypoint8, GDIBaseCenter }
+AtkRoute2 = { waypoint0, waypoint1, waypoint2, waypoint3, GDIBaseCenter }
 
 AutoCreateTeams =
 {
@@ -44,27 +44,35 @@ Atk5CellTriggers =
 	CPos.New(49,53), CPos.New(48,53), CPos.New(50,52), CPos.New(49,52)
 }
 
-GDIBase = { GdiNuke1, GdiProc1, GdiWeap1, GdiNuke2, GdiPyle1, GdiSilo1, GdiSilo2, GdiHarv }
+GDIBase = { GdiNuke1, GdiProc1, GdiWeap1, GdiNuke2, GdiPyle1, GdiSilo1, GdiSilo2 }
 GDIUnits = { "e2", "e2", "e2", "e2", "e1", "e1", "e1", "e1", "mtnk", "mtnk", "jeep", "jeep", "apc" }
 NodSams = { Sam1, Sam2, Sam3, Sam4 }
+NodAttackers = { }
+EarlyAttackTimer = 0
 
-MoveThenHunt = function(actors, path)
+SendAttackers = function(actors, path)
 	Utils.Do(actors, function(actor)
-		actor.Patrol(path, false)
-		IdleHunt(actor)
+		local id = #NodAttackers + 1
+		NodAttackers[id] = actor
+
+		Trigger.OnKilled(actor, function()
+			NodAttackers[id] = nil
+		end)
 	end)
+
+	MoveAndHunt(actors, path)
 end
 
 AutoCreateTeam = function()
 	local team = Utils.Random(AutoCreateTeams)
 	for type, count in pairs(team.types) do
-		MoveThenHunt(Utils.Take(count, Nod.GetActorsByType(type)), team.route)
+		SendAttackers(Utils.Take(count, Nod.GetActorsByType(type)), team.route)
 	end
 
 	Trigger.AfterDelay(Utils.RandomInteger(AutoAtkMinDelay, AutoAtkMaxDelay), AutoCreateTeam)
 end
 
-DiscoverGDIBase = function(actor, discoverer)
+DiscoverGDIBase = function(_, discoverer)
 	if BaseDiscovered or not discoverer == GDI then
 		return
 	end
@@ -77,33 +85,121 @@ DiscoverGDIBase = function(actor, discoverer)
 
 	EliminateNod = AddPrimaryObjective(GDI, "eliminate-nod")
 	GDI.MarkCompletedObjective(FindBase)
+
+	-- Delay spawn to avoid wasted tiberium and enemy attention.
+	if not GdiProc1.IsDead then
+		local origin = GdiProc1.Location + CVec.New(2, 3)
+		Reinforcements.Reinforce(GDI, { "harv" }, { origin, origin + CVec.New(-2, 0) })
+	end
+end
+
+LoseGDIBase = function(location)
+	if BaseDiscovered then
+		return
+	end
+
+	GDI.MarkFailedObjective(FindBase)
+	Actor.Create("camera", true, { Owner = GDI, Location = location })
+	Camera.Position = Map.CenterOfCell(location)
 end
 
 Atk1TriggerFunction = function()
-	MoveThenHunt(Utils.Take(2, Nod.GetActorsByType('e1')), AtkRoute1)
-	MoveThenHunt(Utils.Take(3, Nod.GetActorsByType('e3')), AtkRoute1)
+	SendAttackers(Utils.Take(2, Nod.GetActorsByType('e1')), AtkRoute1)
+	SendAttackers(Utils.Take(3, Nod.GetActorsByType('e3')), AtkRoute1)
 end
 
 Atk2TriggerFunction = function()
-	MoveThenHunt(Utils.Take(3, Nod.GetActorsByType('e1')), AtkRoute2)
-	MoveThenHunt(Utils.Take(3, Nod.GetActorsByType('e3')), AtkRoute2)
+	SendAttackers(Utils.Take(3, Nod.GetActorsByType('e1')), AtkRoute2)
+	SendAttackers(Utils.Take(3, Nod.GetActorsByType('e3')), AtkRoute2)
 end
 
 Atk3TriggerFunction = function()
-	MoveThenHunt(Utils.Take(1, Nod.GetActorsByType('bggy')), AtkRoute1)
+	SendAttackers(Utils.Take(1, Nod.GetActorsByType('bggy')), AtkRoute1)
 end
 
 Atk4TriggerFunction = function()
-	MoveThenHunt(Utils.Take(1, Nod.GetActorsByType('bggy')), AtkRoute2)
+	SendAttackers(Utils.Take(1, Nod.GetActorsByType('bggy')), AtkRoute2)
 end
 
 Atk5TriggerFunction = function()
-	MoveThenHunt(Utils.Take(1, Nod.GetActorsByType('ltnk')), AtkRoute2)
+	SendAttackers(Utils.Take(1, Nod.GetActorsByType('ltnk')), AtkRoute2)
 end
 
 InsertGDIUnits = function()
 	Media.PlaySpeechNotification(GDI, "Reinforce")
 	Reinforcements.Reinforce(GDI, GDIUnits, { UnitsEntry.Location, UnitsRally.Location }, 15)
+end
+
+ScheduleNodAttacks = function()
+	Trigger.AfterDelay(Atk1Delay, Atk1TriggerFunction)
+	Trigger.AfterDelay(Atk2Delay, Atk2TriggerFunction)
+	Trigger.AfterDelay(Atk3Delay, Atk3TriggerFunction)
+	Trigger.AfterDelay(Atk4Delay, Atk4TriggerFunction)
+	Trigger.OnEnteredFootprint(Atk5CellTriggers, function(a, id)
+		if a.Owner == GDI then
+			Atk5TriggerFunction()
+			Trigger.RemoveFootprintTrigger(id)
+		end
+	end)
+	Trigger.AfterDelay(AutoAtkStartDelay, AutoCreateTeam)
+
+	Trigger.AfterDelay(DateTime.Seconds(40), function()
+		local delay = function() return DateTime.Seconds(30) end
+		local toBuild = function() return { "e1" } end
+		ProduceUnits(Nod, Hand1, delay, toBuild)
+	end)
+
+	Trigger.OnAllRemovedFromWorld(AllToHuntTrigger, function()
+		Utils.Do(Nod.GetGroundAttackers(), IdleHunt)
+	end)
+
+	local baseDefenses = Nod.GetActorsByTypes({ "sam", "gun" })
+	local pullBuildings = Utils.Concat(AllToHuntTrigger, baseDefenses)
+
+	Utils.Do(pullBuildings, function(building)
+		-- Skip the lone SAM that is not part of the Nod base.
+		if building == Sam4 then
+			return
+		end
+
+		Trigger.OnDamaged(building, OnNodBaseDamaged)
+	end)
+end
+
+OnNodBaseDamaged = function(building, attacker)
+	if BaseDiscovered then
+		return
+	end
+
+	if EarlyAttackTimer > 0 or attacker.Owner ~= GDI then
+		return
+	end
+
+	EarlyAttackTimer = DateTime.Seconds(10)
+
+	if attacker.IsDead then
+		PullAttackers(building.Location)
+		return
+	end
+
+	PullAttackers(attacker.Location)
+end
+
+PullAttackers = function(location)
+	Utils.Do(NodAttackers, function(attacker)
+		if attacker.IsDead or attacker.Stance == "Defend" then
+			return
+		end
+
+		-- Ignore structures.
+		attacker.Stance = "Defend"
+		attacker.Stop()
+		attacker.AttackMove(location, 2)
+		attacker.CallFunc(function()
+			-- No targets nearby. Reset stance for IdleHunt.
+			attacker.Stance = "AttackAnything"
+		end)
+	end)
 end
 
 WorldLoaded = function()
@@ -119,29 +215,12 @@ WorldLoaded = function()
 	DestroySAMs = AddSecondaryObjective(GDI, "destroy-sams")
 	NodObjective = AddPrimaryObjective(Nod, "")
 
-	Trigger.AfterDelay(Atk1Delay, Atk1TriggerFunction)
-	Trigger.AfterDelay(Atk2Delay, Atk2TriggerFunction)
-	Trigger.AfterDelay(Atk3Delay, Atk3TriggerFunction)
-	Trigger.AfterDelay(Atk4Delay, Atk4TriggerFunction)
-	Trigger.OnEnteredFootprint(Atk5CellTriggers, function(a, id)
-		if a.Owner == GDI then
-			Atk5TriggerFunction()
-			Trigger.RemoveFootprintTrigger(id)
-		end
-	end)
-	Trigger.AfterDelay(AutoAtkStartDelay, AutoCreateTeam)
-
-	Trigger.OnAllRemovedFromWorld(AllToHuntTrigger, function()
-		Utils.Do(Nod.GetGroundAttackers(), IdleHunt)
-	end)
-
-	Trigger.AfterDelay(DateTime.Seconds(40), function()
-		local delay = function() return DateTime.Seconds(30) end
-		local toBuild = function() return { "e1" } end
-		ProduceUnits(Nod, Hand1, delay, toBuild)
-	end)
-
 	Trigger.OnPlayerDiscovered(AbandonedBase, DiscoverGDIBase)
+
+	local revealCell = GdiNuke1.Location
+	Trigger.OnAllKilled(GDIBase, function()
+		LoseGDIBase(revealCell)
+	end)
 
 	Trigger.OnAllKilled(NodSams, function()
 		GDI.MarkCompletedObjective(DestroySAMs)
@@ -151,6 +230,7 @@ WorldLoaded = function()
 	Camera.Position = UnitsRally.CenterPosition
 
 	InsertGDIUnits()
+	ScheduleNodAttacks()
 end
 
 Tick = function()
@@ -158,7 +238,12 @@ Tick = function()
 		Nod.MarkCompletedObjective(NodObjective)
 	end
 
-	if BaseDiscovered and Nod.HasNoRequiredUnits() then
+	if not BaseDiscovered then
+		EarlyAttackTimer = EarlyAttackTimer - 1
+		return
+	end
+
+	if Nod.HasNoRequiredUnits() then
 		GDI.MarkCompletedObjective(EliminateNod)
 	end
 end
