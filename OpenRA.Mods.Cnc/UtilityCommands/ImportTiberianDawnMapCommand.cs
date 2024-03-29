@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 		static readonly string[] OverlayActors = new string[]
 		{
 			// Fences
-			"sbag", "cycl", "brik", "fenc", "wood",
+			"sbag", "cycl", "brik", "barb", "wood",
 
 			// Fields
 			"v12", "v13", "v14", "v15", "v16", "v17", "v18",
