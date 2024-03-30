@@ -20,7 +20,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class MinelayerInfo : TraitInfo, Requires<RearmableInfo>
+	public class MinelayerInfo : TraitInfo
 	{
 		[ActorReference]
 		public readonly string Mine = "minv";
