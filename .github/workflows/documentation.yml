@@ -52,12 +52,12 @@ jobs:
           echo ${{ needs.prepare.outputs.version_type }}
 
       - name: Clone Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ needs.prepare.outputs.git_tag }}
 
       - name: Install .NET 6
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '6.0.x'
 
@@ -66,7 +66,7 @@ jobs:
           make all
 
       - name: Clone Wiki
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: openra/openra.wiki
           token: ${{ secrets.DOCS_TOKEN }}
@@ -107,12 +107,12 @@ jobs:
           echo ${{ needs.prepare.outputs.version_type }}
 
       - name: Clone Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ needs.prepare.outputs.git_tag }}
 
       - name: Install .NET 6
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '6.0.x'
 
@@ -122,7 +122,7 @@ jobs:
 
       # version_type is release/playtest/bleed - the name of the target branch.
       - name: Clone docs.openra.net
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: openra/docs
           token: ${{ secrets.DOCS_TOKEN }}
