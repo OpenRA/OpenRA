@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.FileSystem
 			public string Name { get; }
 			public IEnumerable<string> Contents => index.Keys;
 
-			readonly Dictionary<string, Entry> index = new();
+			readonly Dictionary<string, Entry> index;
 			readonly Stream s;
 			readonly long dataStart = 255;
 
@@ -63,7 +63,8 @@ namespace OpenRA.Mods.Common.FileSystem
 					s.Position = tocAddress;
 
 					// Parse directories
-					var directories = new Dictionary<string, uint>();
+					var directories = new Dictionary<string, uint>(dirCount);
+					var totalFileCount = 0;
 					for (var i = 0; i < dirCount; i++)
 					{
 						// Parse directory header
@@ -75,12 +76,16 @@ namespace OpenRA.Mods.Common.FileSystem
 						// Skip to the end of the chunk
 						s.Position += chunkSize - nameLength - 6;
 						directories.Add(dirName, fileCount);
+						totalFileCount += fileCount;
 					}
 
 					// Parse files
+					index = new Dictionary<string, Entry>(totalFileCount);
 					foreach (var dir in directories)
 						for (var i = 0; i < dir.Value; i++)
 							ParseFile(dir.Key);
+
+					index.TrimExcess();
 				}
 				catch
 				{

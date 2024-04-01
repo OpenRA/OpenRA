@@ -66,8 +66,6 @@ namespace OpenRA.Mods.Cnc.FileSystem
 
 			Dictionary<string, PackageEntry> ParseIndex(Dictionary<uint, PackageEntry> entries, string[] globalFilenames)
 			{
-				var classicIndex = new Dictionary<string, PackageEntry>();
-				var crcIndex = new Dictionary<string, PackageEntry>();
 				var allPossibleFilenames = new HashSet<string>(globalFilenames);
 
 				// Try and find a local mix database
@@ -88,6 +86,9 @@ namespace OpenRA.Mods.Cnc.FileSystem
 					}
 				}
 
+				var classicIndex = new Dictionary<string, PackageEntry>(entries.Count);
+				var crcIndex = new Dictionary<string, PackageEntry>(entries.Count);
+
 				foreach (var filename in allPossibleFilenames)
 				{
 					var classicHash = PackageEntry.HashFilename(filename, PackageHashType.Classic);
@@ -106,6 +107,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 				if (unknown > 0)
 					Log.Write("debug", $"{Name}: failed to resolve filenames for {unknown} unknown hashes");
 
+				bestIndex.TrimExcess();
 				return bestIndex;
 			}
 

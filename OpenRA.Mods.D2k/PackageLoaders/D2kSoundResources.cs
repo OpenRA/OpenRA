@@ -54,6 +54,8 @@ namespace OpenRA.Mods.D2k.PackageLoaders
 						var length = s.ReadUInt32();
 						index.Add(name, new Entry(offset, length));
 					}
+
+					index.TrimExcess();
 				}
 				catch
 				{

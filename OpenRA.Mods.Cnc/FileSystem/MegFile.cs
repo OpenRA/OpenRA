@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 		{
 			readonly Stream s;
 
-			readonly Dictionary<string, (uint Offset, int Length)> contents = new();
+			readonly Dictionary<string, (uint Offset, int Length)> contents;
 
 			public MegFile(Stream s, string filename)
 			{
@@ -84,6 +84,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 					throw new Exception("File name table in .meg file inconsistent");
 
 				// Now we load each file entry and associated info
+				contents = new Dictionary<string, (uint Offset, int Length)>((int)numFiles);
 				for (var i = 0; i < numFiles; i++)
 				{
 					// Ignore flags, crc, index
@@ -93,6 +94,8 @@ namespace OpenRA.Mods.Cnc.FileSystem
 					var nameIndex = s.ReadUInt16();
 					contents[filenames[nameIndex]] = (offset, (int)size);
 				}
+
+				contents.TrimExcess();
 
 				if (s.Position != headerSize)
 					throw new Exception("Expected to be at data start offset");
