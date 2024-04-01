@@ -10,6 +10,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.Common.Widgets;
 using OpenRA.Network;
 using OpenRA.Traits;
 
@@ -105,7 +106,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.SuppressNotifications)
 				return;
 
-			TextNotificationsManager.AddSystemLine(PlayerIsDefeated, Translation.Arguments("player", player.PlayerName));
+			var playerName = player == player.World.LocalPlayer ? player.PlayerName : WidgetUtils.SanitizePlayerName(player);
+			TextNotificationsManager.AddSystemLine(PlayerIsDefeated, Translation.Arguments("player", playerName));
 			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
 				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)
@@ -121,7 +123,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (info.SuppressNotifications)
 				return;
 
-			TextNotificationsManager.AddSystemLine(PlayerIsVictorious, Translation.Arguments("player", player.PlayerName));
+			var playerName = player == player.World.LocalPlayer ? player.PlayerName : WidgetUtils.SanitizePlayerName(player);
+			TextNotificationsManager.AddSystemLine(PlayerIsVictorious, Translation.Arguments("player", playerName));
 			Game.RunAfterDelay(info.NotificationDelay, () =>
 			{
 				if (Game.IsCurrentWorld(player.World) && player == player.World.LocalPlayer)

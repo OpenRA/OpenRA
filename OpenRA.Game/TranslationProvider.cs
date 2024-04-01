@@ -9,8 +9,11 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.FileSystem;
+using OpenRA.Primitives;
 
 namespace OpenRA
 {
@@ -20,6 +23,7 @@ namespace OpenRA
 		static readonly object SyncObject = new();
 		static Translation modTranslation;
 		static Translation mapTranslation;
+		static readonly List<Color> KnownColors = new();
 
 		public static void Initialize(ModData modData, IReadOnlyFileSystem fileSystem)
 		{
@@ -29,6 +33,13 @@ namespace OpenRA
 				mapTranslation = fileSystem is Map map && map.TranslationDefinitions != null
 					? new Translation(Game.Settings.Player.Language, FieldLoader.GetValue<string[]>("value", map.TranslationDefinitions.Value), fileSystem)
 					: null;
+
+				foreach (var color in modTranslation.GetMessages().Where(s => s.StartsWith("color-", StringComparison.InvariantCulture)))
+				{
+					var hexColor = color.Split('-').Last();
+					if (Color.TryParse(hexColor, out var parsedColor))
+						KnownColors.Add(parsedColor);
+				}
 			}
 		}
 
@@ -62,6 +73,23 @@ namespace OpenRA
 
 				return false;
 			}
+		}
+
+		public static IEnumerable<string> GetMessages()
+		{
+			return modTranslation.GetMessages();
+		}
+
+		public static string GetNearestName(Color color)
+		{
+			if (KnownColors.Count == 0)
+				return "None";
+
+			var nearestColor = KnownColors.MinBy(k => Color.GetDistance(k, color));
+			if (TryGetString("color-" + nearestColor, out var translatedColor))
+				return translatedColor;
+			else
+				return "Unknown";
 		}
 
 		/// <summary>Should only be used by <see cref="MapPreview"/>.</summary>
