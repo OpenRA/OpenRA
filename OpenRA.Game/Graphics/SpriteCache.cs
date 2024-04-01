@@ -112,6 +112,11 @@ namespace OpenRA.Graphics
 				}
 			}
 
+			spriteReservations.Clear();
+			spriteReservations.TrimExcess();
+			reservationsByFilename.Clear();
+			reservationsByFilename.TrimExcess();
+
 			// When the sheet builder is adding sprites, it reserves height for the tallest sprite seen along the row.
 			// We can achieve better sheet packing by keeping sprites with similar heights together.
 			var orderedPendingResolve = pendingResolve.OrderBy(x => x.Frame.Size.Height);
@@ -137,17 +142,17 @@ namespace OpenRA.Graphics
 				modData.LoadScreen?.Display();
 			}
 
-			spriteReservations.Clear();
-			reservationsByFilename.Clear();
-
 			foreach (var sb in SheetBuilders.Values)
 				sb.Current.ReleaseBuffer();
 		}
 
 		public Sprite[] ResolveSprites(int token)
 		{
-			var resolved = resolvedSprites[token];
-			resolvedSprites.Remove(token);
+			if (!resolvedSprites.Remove(token, out var resolved))
+				throw new InvalidOperationException($"{nameof(token)} {token} has either already been resolved, or was never reserved via {nameof(ReserveSprites)}");
+
+			resolvedSprites.TrimExcess();
+
 			if (missingFiles.TryGetValue(token, out var r))
 				throw new FileNotFoundException($"{r.Location}: {r.Filename} not found", r.Filename);
 
