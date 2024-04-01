@@ -186,6 +186,12 @@ namespace OpenRA.FileSystem
 			UnmountAll();
 			foreach (var kv in manifest.Packages)
 				Mount(kv.Key, kv.Value);
+
+			mountedPackages.TrimExcess();
+			explicitMounts.TrimExcess();
+			modPackages.TrimExcess();
+			foreach (var packages in fileIndex.Values)
+				packages.TrimExcess();
 		}
 
 		Stream GetFromCache(string filename)
