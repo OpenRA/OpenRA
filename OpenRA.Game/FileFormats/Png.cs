@@ -94,8 +94,8 @@ namespace OpenRA.FileFormats
 
 						case "PLTE":
 						{
-							Palette = new Color[256];
-							for (var i = 0; i < length / 3; i++)
+							Palette = new Color[length / 3];
+							for (var i = 0; i < Palette.Length; i++)
 							{
 								var r = ms.ReadUInt8(); var g = ms.ReadUInt8(); var b = ms.ReadUInt8();
 								Palette[i] = Color.FromArgb(r, g, b);
