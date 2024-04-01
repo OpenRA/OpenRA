@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 			public string Name { get; }
 			public IEnumerable<string> Contents => index.Keys;
 
-			readonly Dictionary<string, Entry> index = new();
+			readonly Dictionary<string, Entry> index;
 			readonly Stream s;
 
 			public BigFile(Stream s, string filename)
@@ -48,6 +48,7 @@ namespace OpenRA.Mods.Cnc.FileSystem
 					// and we don't have to try seeking there since the entries typically start next in EA's .big files.
 					s.ReadUInt32();
 
+					index = new Dictionary<string, Entry>((int)entryCount);
 					for (var i = 0; i < entryCount; i++)
 					{
 						var entry = new Entry(s);

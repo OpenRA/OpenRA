@@ -50,12 +50,11 @@ namespace OpenRA.Mods.Cnc.FileSystem
 						var length = (next == 0 ? (uint)stream.Length : next) - offset;
 
 						// Ignore duplicate files
-						if (index.ContainsKey(file))
-							continue;
-
-						index.Add(file, new Entry { Offset = offset, Length = length, Filename = file });
-						offset = next;
+						if (index.TryAdd(file, new Entry { Offset = offset, Length = length, Filename = file }))
+							offset = next;
 					}
+
+					index.TrimExcess();
 				}
 				catch
 				{
