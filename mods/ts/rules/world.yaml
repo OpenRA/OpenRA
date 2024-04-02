@@ -209,11 +209,11 @@
 			Tiberium:
 				Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
 				Palette: greentiberium
-				Name: Tiberium
+				Name: resource-tiberium
 			BlueTiberium:
 				Sequences: tib01, tib02, tib03, tib04, tib05, tib06, tib07, tib08, tib09, tib10, tib11, tib12
 				Palette: bluetiberium
-				Name: Tiberium
+				Name: resource-tiberium
 		Ramp1Sequences:
 			Tiberium: tib13, tib14
 			BlueTiberium: tib13, tib14
@@ -228,7 +228,7 @@
 			BlueTiberium: tib19, tib20
 	TSVeinsRenderer:
 		ResourceType: Veins
-		Name: Veins
+		Name: resource-veins
 		Palette: player
 		VeinholeActors: veinhole
 

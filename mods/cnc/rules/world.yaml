@@ -142,11 +142,11 @@
 			Tiberium:
 				Sequences: ti1, ti2, ti3, ti4, ti5, ti6, ti7, ti8, ti9, ti10, ti11, ti12
 				Palette: staticterrain
-				Name: Tiberium
+				Name: resource-tiberium
 			BlueTiberium:
 				Sequences: bti1, bti2, bti3, bti4, bti5, bti6, bti7, bti8, bti9, bti10, bti11, bti12
 				Palette: bluetiberium
-				Name: Tiberium
+				Name: resource-tiberium
 
 World:
 	Inherits: ^BaseWorld

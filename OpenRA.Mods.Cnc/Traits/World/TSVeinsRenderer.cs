@@ -39,6 +39,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
 		[FieldLoader.Require]
+		[TranslationReference]
 		[Desc("Resource name used by tooltips.")]
 		public readonly string Name = null;
 

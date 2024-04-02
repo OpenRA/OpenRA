@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Linguini.Syntax.Ast;
 using Linguini.Syntax.Parser;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -135,6 +136,19 @@ namespace OpenRA.Mods.Common.Lint
 			testedFields.Add(gameSpeedNameField);
 			foreach (var speed in gameSpeeds.Speeds.Values)
 				usedKeys.Add(speed.Name, gameSpeedTranslationReference, $"`{nameof(GameSpeed)}.{nameof(GameSpeed.Name)}`");
+
+			// TODO: linter does not work with LoadUsing
+			foreach (var actorInfo in modData.DefaultRules.Actors)
+			{
+				foreach (var info in actorInfo.Value.TraitInfos<ResourceRendererInfo>())
+				{
+					var resourceTypeNameField = typeof(ResourceRendererInfo.ResourceTypeInfo).GetField(nameof(ResourceRendererInfo.ResourceTypeInfo.Name));
+					var resourceTypeTranslationReference = Utility.GetCustomAttributes<TranslationReferenceAttribute>(resourceTypeNameField, true)[0];
+					testedFields.Add(resourceTypeNameField);
+					foreach (var resourceTypes in info.ResourceTypes)
+						usedKeys.Add(resourceTypes.Value.Name, resourceTypeTranslationReference, $"`{nameof(ResourceRendererInfo.ResourceTypeInfo)}.{nameof(ResourceRendererInfo.ResourceTypeInfo.Name)}`");
+				}
+			}
 
 			foreach (var modType in modData.ObjectCreator.GetTypes())
 			{

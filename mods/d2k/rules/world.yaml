@@ -114,7 +114,7 @@
 			Spice:
 				Sequences: spicea, spiceb, spicec, spiced
 				Palette: d2k
-				Name: Spice
+				Name: resource-spice
 
 World:
 	Inherits: ^BaseWorld

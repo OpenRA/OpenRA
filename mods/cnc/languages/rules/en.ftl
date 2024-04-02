@@ -30,6 +30,8 @@ dropdown-map-creeps =
     .label = Creep Actors
     .description = Hostile forces spawn on the battlefield
 
+resource-tiberium = Tiberium
+
 ## defaults.yaml
 notification-unit-lost = Unit lost.
 notification-unit-promoted = Unit promoted.
