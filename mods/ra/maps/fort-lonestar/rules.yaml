@@ -392,7 +392,7 @@ V2RL:
 
 powerproxy.parabombs:
 	AirstrikePower:
-		Description: A MiG bomber drops a load of parachuted bombs on your target.
+		Description: actor-powerproxy-parabombs-description
 		CameraRemoveDelay: 50
 
 BADR.Bomber:

@@ -37,8 +37,8 @@ MSLO:
 		Cursor: nuke
 		Icon: abomb
 		ChargeInterval: 13500
-		Name: Atom Bomb
-		Description: Launches a devastating atomic bomb\nat a target location.
+		Name: actor-mslo.nukepower-name
+		Description: actor-mslo.nukepower-description
 		BeginChargeSpeechNotification: AbombPrepping
 		EndChargeSpeechNotification: AbombReady
 		SelectTargetSpeechNotification: SelectTarget
@@ -433,8 +433,8 @@ IRON:
 		PauseOnCondition: disabled
 		Icon: invuln
 		ChargeInterval: 3000
-		Name: Invulnerability
-		Description: Makes a group of units invulnerable\nfor 20 seconds.
+		Name: actor-iron.grantexternalconditionpower-ironcurtain-name
+		Description: actor-iron.grantexternalconditionpower-ironcurtain-description
 		Duration: 400
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSpeechNotification: InsufficientPower
@@ -509,8 +509,8 @@ PDOX:
 		Prerequisites: !pdox.germany
 		Icon: chrono
 		ChargeInterval: 3000
-		Name: Chronoshift
-		Description: Teleports a group of units across\nthe map for 20 seconds.
+		Name: actor-pdox.chronoshiftpower-chronoshift-name
+		Description: actor-pdox.chronoshiftpower-chronoshift-description
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSpeechNotification: InsufficientPower
 		BeginChargeSpeechNotification: ChronosphereCharging
@@ -531,8 +531,8 @@ PDOX:
 		Prerequisites: pdox.germany
 		Icon: chrono
 		ChargeInterval: 3000
-		Name: Advanced Chronoshift
-		Description: Teleports a large group of units across\nthe map for 20 seconds.
+		Name: actor-pdox.chronoshiftpower-advancedchronoshift-name
+		Description: actor-pdox.chronoshiftpower-advancedchronoshift-description
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSpeechNotification: InsufficientPower
 		BeginChargeSpeechNotification: ChronosphereCharging
@@ -1016,8 +1016,8 @@ ATEK:
 		Icon: gps
 		OneShot: true
 		ChargeInterval: 12000
-		Name: GPS Satellite
-		Description: Reveals map terrain and provides tactical\ninformation. Requires power and active radar.
+		Name: actor-atek.gpspower-name
+		Description: actor-atek.gpspower-description
 		RevealDelay: 375
 		LaunchSpeechNotification: SatelliteLaunched
 		LaunchTextNotification: notification-satellite-launched
@@ -1556,8 +1556,8 @@ AFLD:
 		Prerequisites: aircraft.soviet
 		Icon: spyplane
 		ChargeInterval: 3750
-		Name: Spy Plane
-		Description: Reveals an area of the map.
+		Name: actor-afld.airstrikepower-spyplane-name
+		Description: actor-afld.airstrikepower-spyplane-description
 		SelectTargetSpeechNotification: SelectTarget
 		EndChargeSpeechNotification: SpyPlaneReady
 		SelectTargetTextNotification: notification-select-target
@@ -1579,8 +1579,8 @@ AFLD:
 		Prerequisites: aircraft.soviet
 		Icon: paratroopers
 		ChargeInterval: 7500
-		Name: Paratroopers
-		Description: A Badger drops a squad of infantry\nat the selected location.
+		Name: actor-afld.paratrooperspower-paratroopers-name
+		Description: actor-afld.paratrooperspower-paratroopers-description
 		DropItems: E1R1,E1R1,E1R1,E3R1,E3R1
 		ReinforcementsArrivedSpeechNotification: ReinforcementsArrived
 		SelectTargetSpeechNotification: SelectTarget
@@ -1602,8 +1602,8 @@ AFLD:
 		Prerequisites: aircraft.ukraine
 		Icon: parabombs
 		ChargeInterval: 7500
-		Name: Parabombs
-		Description: A Badger drops a load of parachuted bombs\nat the selected location.
+		Name: actor-afld.airstrikepower-parabombs-name
+		Description: actor-afld.airstrikepower-parabombs-description
 		SelectTargetSpeechNotification: SelectTarget
 		SelectTargetTextNotification: notification-select-target
 		CameraActor: camera

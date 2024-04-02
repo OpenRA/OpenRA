@@ -476,8 +476,8 @@ NATMPL:
 		Palette: bright
 	ProduceActorPower:
 		PauseOnCondition: empdisable || disabled
-		Name: Hunter Seeker
-		Description: Releases a drone that will acquire and destroy an enemy target.
+		Name: actor-natmpl.produceactorpower-name
+		Description: actor-natmpl.produceactorpower-description
 		Prerequisites: ~techlevel.superweapons
 		Icon: hunterseeker
 		Actors: hunter
@@ -534,8 +534,8 @@ NAMISL:
 		Cursor: nuke
 		Icon: clustermissile
 		ChargeInterval: 13500
-		Name: Cluster Missile
-		Description: Launches an explosive cluster warhead\nat a target location.
+		Name: actor-namisl.nukepower-name
+		Description: actor-namisl.nukepower-description
 		EndChargeSpeechNotification: ClusterMissileReady
 		SelectTargetSpeechNotification: SelectTarget
 		IncomingSpeechNotification: MissileLaunchDetected

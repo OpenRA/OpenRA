@@ -83,8 +83,8 @@ Player:
 	ChronoshiftPower:
 		Icon: chrono
 		ChargeInterval: 1500
-		Name: Chronoshift
-		Description: Teleport a group of vehicles across\nthe map.
+		Name: actor-player.chronoshiftpower-name
+		Description: actor-player.chronoshiftpower-description
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: chrochr1.aud
 		EndChargeSound: chrordy1.aud
@@ -94,8 +94,8 @@ Player:
 	GrantExternalConditionPower@IRONCURTAIN:
 		Icon: invuln
 		ChargeInterval: 750
-		Name: Invulnerability
-		Description: Makes a unit invulnerable\nfor 3 seconds.
+		Name: actor-player.grantexternalconditionpower-ironcurtain-name
+		Description: actor-player.grantexternalconditionpower-ironcurtain-description
 		Duration: 75
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSpeechNotification: InsufficientPower

@@ -420,6 +420,9 @@ actor-mslo =
     Requires power to operate.
     Maximum 1 can be built.
       Special Ability: Atom Bomb
+   .nukepower-name = Atom Bomb
+   .nukepower-description = Launches a devastating atomic bomb
+    at a target location.
 
 actor-gap =
    .name = Gap Generator
@@ -443,6 +446,9 @@ actor-iron =
     Maximum 1 can be built.
       Special Ability: Invulnerability
    .name = Iron Curtain
+   .grantexternalconditionpower-ironcurtain-name = Invulnerability
+   .grantexternalconditionpower-ironcurtain-description = Makes a group of units invulnerable
+    for 20 seconds.
 
 actor-pdox =
    .description = Teleports a group of units across the
@@ -451,6 +457,12 @@ actor-pdox =
     Maximum 1 can be built.
       Special Ability: Chronoshift
    .name = Chronosphere
+   .chronoshiftpower-chronoshift-name = Chronoshift
+   .chronoshiftpower-chronoshift-description = Teleports a group of units across
+    the map for 20 seconds.
+   .chronoshiftpower-advancedchronoshift-name = Advanced Chronoshift
+   .chronoshiftpower-advancedchronoshift-description = Teleports a large group of units across
+    the map for 20 seconds.
 
 actor-tsla =
    .description = Advanced base defense.
@@ -514,6 +526,9 @@ actor-atek =
    .description = Provides Allied advanced technologies.
       Special Ability: GPS Satellite
    .name = Allied Tech Center
+   .gpspower-name = GPS Satellite
+   .gpspower-description = Reveals map terrain and provides tactical
+    information. Requires power and active radar.
 
 actor-weap =
    .description = Produces vehicles.
@@ -543,6 +558,14 @@ actor-afld =
       Special Ability: Spy Plane
       Special Ability: Paratroopers
    .name = Airfield
+   .airstrikepower-spyplane-name = Spy Plane
+   .airstrikepower-spyplane-description = Reveals an area of the map.
+   .paratrooperspower-paratroopers-name = Paratroopers
+   .paratrooperspower-paratroopers-description = A Badger drops a squad of infantry
+    at the selected location.
+   .airstrikepower-parabombs-name = Parabombs
+   .airstrikepower-parabombs-description = A Badger drops a load of parachuted bombs
+    at the selected location.
 
 actor-afld-ukraine-description = Produces and reloads aircraft.
       Special Ability: Spy Plane
@@ -752,7 +775,23 @@ actor-bio =
    .captured-desc = Provides prerequisite for Bio-Lab units.
    .capturable-desc = Capture to produce Bio-Lab units.
 
-actor-oilb = 
+actor-oilb =
    .name = Oil Derrick
    .captured-desc = Provides additional funds.
    .capturable-desc =  Capture to receive additional funds.
+
+## misc.yaml
+actor-powerproxy-parabombs =
+   .name = Parabombs (Single Use)
+   .description = A Badger drops a load of parachuted bombs
+    at the selected location.
+
+actor-powerproxy-sonarpulse =
+   .name = Sonar Pulse
+   .description = Reveals all submarines in the vicinity for a
+    short time.
+
+actor-powerproxy-paratroopers =
+   .name = Paratroopers
+   .description = A Badger drops a squad of infantry
+    anywhere on the map.

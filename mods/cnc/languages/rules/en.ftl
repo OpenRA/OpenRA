@@ -333,6 +333,9 @@ actor-hq =
    .description = Provides radar and Air Strike support power.
     Unlocks higher-tech units and buildings.
     Requires power to operate.
+   .airstrikepower-name = Air Strike
+   .airstrikepower-description = Deploy an aerial napalm strike.
+    Burns buildings and infantry along a line.
 
 actor-fix =
    .name = Repair Facility
@@ -343,12 +346,18 @@ actor-eye =
    .description = Provides radar and Orbital Ion Cannon support power.
     Unlocks Mammoth Tank and Commando.
     Requires power to operate.
+   .ioncannonpower-name = Ion Cannon
+   .ioncannonpower-description = Initiate an Ion Cannon strike.
+    Applies instant damage to a small area.
 
 actor-tmpl =
    .name = Temple of Nod
    .description = Provides Nuclear Strike support power.
     Unlocks Stealth Tank, Chem. Warrior and Obelisk of Light.
     Requires power to operate.
+   .nukepower-name = Nuclear Strike
+   .nukepower-description = Launch a tactical nuclear warhead.
+    Applies heavy damage over a large area.
 
 actor-gun =
    .name = Turret

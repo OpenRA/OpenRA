@@ -62,8 +62,8 @@ airstrike.proxy:
 		ChargeInterval: 3000
 		SquadSize: 3
 		QuantizedFacings: 8
-		Name: Air Strike
-		Description: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
+		Name: actor-hq.airstrikepower-name
+		Description: actor-hq.airstrikepower-description
 		EndChargeSpeechNotification: AirstrikeReady
 		SelectTargetSpeechNotification: SelectTarget
 		InsufficientPowerSpeechNotification: InsufficientPower

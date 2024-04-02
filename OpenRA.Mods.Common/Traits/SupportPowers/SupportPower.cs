@@ -30,8 +30,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Palette used for the icon.")]
 		public readonly string IconPalette = "chrome";
 
-		public readonly string Name = "";
-		public readonly string Description = "";
+		[TranslationReference(optional: true)]
+		public readonly string Name = null;
+
+		[TranslationReference(optional: true)]
+		public readonly string Description = null;
 
 		[Desc("Allow multiple instances of the same support power.")]
 		public readonly bool AllowMultiple = false;
@@ -46,6 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("If set to true, the support power will be fully charged when it becomes available. " +
 			"Normal rules apply for subsequent charges.")]
 		public readonly bool StartFullyCharged = false;
+
 		public readonly string[] Prerequisites = Array.Empty<string>();
 
 		public readonly string DetectedSound = null;
