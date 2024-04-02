@@ -32,6 +32,8 @@ options-starting-units =
     .light-support = Light Support
     .heavy-support = Heavy Support
 
+resource-minerals = Valuable Minerals
+
 ## aircraft.yaml
 actor-badr-name = Badger
 

@@ -31,6 +31,8 @@ options-starting-units =
     .light-support = Light Support
     .heavy-support = Heavy Support
 
+resource-spice = Spice
+
 ## defaults.yaml
 notification-unit-lost = Unit lost.
 notification-unit-promoted = Unit promoted.

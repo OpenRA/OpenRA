@@ -29,6 +29,9 @@ dropdown-map-creeps =
     .label = Creep Actors
     .description = Hostile forces spawn on the battlefield
 
+resource-veins = Veins
+resource-tiberium = Tiberium
+
 ## Structures
 notification-construction-complete = Construction complete.
 notification-unit-ready = Unit ready.

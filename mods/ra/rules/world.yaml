@@ -155,11 +155,11 @@
 			Ore:
 				Sequences: gold01, gold02, gold03, gold04
 				Palette: player
-				Name: Valuable Minerals
+				Name: resource-minerals
 			Gems:
 				Sequences: gem01, gem02, gem03, gem04
 				Palette: player
-				Name: Valuable Minerals
+				Name: resource-minerals
 
 World:
 	Inherits: ^BaseWorld
