@@ -564,8 +564,8 @@ GAPLUG:
 		EffectSequence: ionring
 		WeaponDelay: 0
 		ChargeInterval: 12750
-		Name: Ion Cannon
-		Description: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
+		Name: actor-gaplug.ioncannonpower-name
+		Description: actor-gaplug.ioncannonpower-description
 		EndChargeSpeechNotification: IonCannonReady
 		SelectTargetSpeechNotification: SelectTarget
 		EndChargeTextNotification: notification-ion-cannon-ready
@@ -577,8 +577,8 @@ GAPLUG:
 		PauseOnCondition: disabled || empdisable
 		RequiresCondition: plug.droppoda || plug.droppodb
 		Icon: droppods
-		Name: Drop Pods
-		Description: Drop Pod reinforcements.\nSmall team of elite soldiers orbital drops\nto target location.
+		Name: actor-gaplug.droppodspower-name
+		Description: actor-gaplug.droppodspower-description
 		SelectTargetSpeechNotification: SelectTarget
 		SelectTargetTextNotification: notification-select-target
 		DisplayRadarPing: true
@@ -588,8 +588,8 @@ GAPLUG:
 	ProduceActorPower:
 		PauseOnCondition: disabled || empdisable
 		RequiresCondition: plug.hunterseekera || plug.hunterseekerb
-		Name: Hunter Seeker
-		Description: Releases a drone that will acquire and destroy an enemy target.
+		Name: actor-gaplug.produceactorpower-name
+		Description: actor-gaplug.produceactorpower-description
 		Icon: hunterseeker
 		Actors: hunter
 		Type: HunterSeeker

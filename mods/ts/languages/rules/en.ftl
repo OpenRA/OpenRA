@@ -338,6 +338,15 @@ actor-gatech =
 actor-gaplug =
    .name = GDI Upgrade Center
    .description = Can be upgraded for additional technology.
+   .ioncannonpower-name = Ion Cannon
+   .ioncannonpower-description = Initiate an Ion Cannon strike.
+    Applies instant damage to a small area.
+   .droppodspower-name = Drop Pods
+   .droppodspower-description = Drop Pod reinforcements.
+    Small team of elite soldiers orbital drops
+    to target location.
+   .produceactorpower-name = Hunter Seeker
+   .produceactorpower-description = Releases a drone that will acquire and destroy an enemy target.
 
 actor-gaplug-socket-ioncannon-name = GDI Upgrade Center socket
 actor-gaplug-socket-hunterseeker-name = GDI Upgrade Center socket
@@ -524,6 +533,8 @@ actor-nastlh =
 actor-natmpl =
    .description = Provides access to advanced Nod technologies.
    .name = Temple of Nod
+   .produceactorpower-name = Hunter Seeker
+   .produceactorpower-description = Releases a drone that will acquire and destroy an enemy target.
 
 actor-namisl =
    .description = Launches a devastating missile
@@ -531,6 +542,9 @@ actor-namisl =
     Requires power to operate.
     Maximum 1 can be built.
    .name = Nod Missile Silo
+   .nukepower-name = Cluster Missile
+   .nukepower-description = Launches an explosive cluster warhead
+    at a target location.
 
 actor-nawast =
    .name = Waste Refinery
@@ -679,6 +693,9 @@ actor-napuls =
    .name = E.M. Pulse Cannon
    .description = Disables mechanical units in an area.
     Requires power to operate.
+   .attackorderpower-name = E.M. Pulse
+   .attackorderpower-description = Fires a pulse blast which disables
+    all mechanical units in the area.
 
 ## shared-vehicles.yaml
 actor-mcv =

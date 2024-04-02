@@ -8,3 +8,6 @@ actor-sniper =
       Weak vs Vehicles, Aircraft
 
 actor-mig-bomber-name = MiG Bomber
+
+## rules.yaml
+actor-powerproxy-parabombs-description = A MiG bomber drops a load of parachuted bombs on your target.

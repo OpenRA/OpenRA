@@ -996,12 +996,12 @@ high_tech_factory:
 	ProvidesPrerequisite@buildingname:
 	AirstrikePower:
 		Icon: ornistrike
-		Name: Air Strike
+		Name: actor-high-tech-factory.airstrikepower-name
 		Prerequisites: ~techlevel.superweapons, upgrade.hightech
 		ChargeInterval: 7500
 		SquadSize: 3
 		SquadOffset: -1536, 1024, 0
-		Description: Ornithopters hit the target with bombs
+		Description: actor-high-tech-factory.airstrikepower-description
 		UnitType: ornithopter
 		DisplayBeacon: True
 		CameraActor: camera
@@ -1155,8 +1155,8 @@ palace:
 		RequiresCondition: harkonnen
 		Prerequisites: ~techlevel.superweapons, ~palace.nuke
 		ChargeInterval: 7500
-		Name: Death Hand
-		Description: Launches an atomic missile at a target location
+		Name: actor-palace.nukepower-name
+		Description: actor-palace.nukepower-description
 		BeginChargeSpeechNotification: DeathHandMissilePrepping
 		EndChargeSpeechNotification: DeathHandMissileReady
 		IncomingSpeechNotification: MissileLaunchDetected
@@ -1182,8 +1182,8 @@ palace:
 		TrailSequences: idle
 		SupportPowerPaletteOrder: 40
 	ProduceActorPower@fremen:
-		Name: Recruit Fremen
-		Description: Elite infantry unit armed with assault rifles and rockets\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery\n  Special Ability: Invisibility
+		Name: actor-palace.produceactorpower-fremen-name
+		Description: actor-palace.produceactorpower-fremen-description
 		Icon: fremen
 		PauseOnCondition: disabled
 		RequiresCondition: atreides
@@ -1199,8 +1199,8 @@ palace:
 		OrderName: ProduceActorPower.Fremen
 		SupportPowerPaletteOrder: 20
 	ProduceActorPower@saboteur:
-		Name: Recruit Saboteur
-		Description: Sneaky infantry, armed with explosives.\nCan be deployed to become invisible for a limited time.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
+		Name: actor-palace.produceactorpower-saboteur-name
+		Description: actor-palace.produceactorpower-saboteur-description
 		Icon: saboteur
 		PauseOnCondition: disabled
 		RequiresCondition: ordos

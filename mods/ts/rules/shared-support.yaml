@@ -50,8 +50,8 @@ NAPULS:
 		Cursor: emp
 		Icon: emp
 		ChargeInterval: 3375
-		Name: E.M. Pulse
-		Description: Fires a pulse blast which disables\nall mechanical units in the area.
+		Name: actor-napuls.attackorderpower-name
+		Description: actor-napuls.attackorderpower-description
 		EndChargeSpeechNotification: EmPulseCannonReady
 		SelectTargetSpeechNotification: SelectTarget
 		EndChargeTextNotification: notification-emp-cannon-ready

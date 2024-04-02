@@ -346,8 +346,8 @@ powerproxy.parabombs:
 	AlwaysVisible:
 	AirstrikePower:
 		Icon: parabombs
-		Name: Parabombs (Single Use)
-		Description: A Badger drops a load of parachuted bombs\nat the selected location.
+		Name: actor-powerproxy-parabombs.name
+		Description: actor-powerproxy-parabombs.description
 		OneShot: true
 		AllowMultiple: true
 		UnitType: badr.bomber
@@ -366,8 +366,8 @@ powerproxy.sonarpulse:
 	AlwaysVisible:
 	SpawnActorPower:
 		Icon: sonar
-		Name: Sonar Pulse
-		Description: Reveals all submarines in the vicinity for a \nshort time.
+		Name: actor-powerproxy-sonarpulse.name
+		Description: actor-powerproxy-sonarpulse.description
 		ChargeInterval: 750
 		EndChargeSpeechNotification: SonarPulseReady
 		SelectTargetSpeechNotification: SelectTarget
@@ -387,8 +387,8 @@ powerproxy.paratroopers:
 	AlwaysVisible:
 	ParatroopersPower:
 		Icon: paratroopers
-		Name: Paratroopers
-		Description: A Badger drops a squad of infantry\nanywhere on the map.
+		Name: actor-powerproxy-paratroopers.name
+		Description: actor-powerproxy-paratroopers.description
 		DropItems: E1,E1,E1,E3,E3
 		SelectTargetSpeechNotification: SelectTarget
 		SelectTargetTextNotification: notification-select-target

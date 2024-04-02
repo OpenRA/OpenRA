@@ -54,8 +54,8 @@ powerproxy.spyplane:
 		OrderName: SovietSpyPlane
 		Icon: spyplane
 		ChargeInterval: 4500
-		Name: Spy Plane (Single Use)
-		Description: Reveals an area of the map and cloaked enemy units.
+		Name: actor-powerproxy-spyplane.airstrikepower-name
+		Description: actor-powerproxy-spyplane.airstrikepower-description
 		OneShot: true
 		SelectTargetSpeechNotification: SelectTarget
 		EndChargeSpeechNotification: SpyPlaneReady

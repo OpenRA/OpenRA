@@ -857,3 +857,6 @@ notification-player-is-defeated = { $player } is defeated.
 ## OrderManager
 notification-desync-compare-logs = Out of sync in frame { $frame }.
     Compare syncreport.log with other players.
+
+## SupportPowerTimerWidget
+support-power-timer = { $player }'s { $support-power }: { $time }

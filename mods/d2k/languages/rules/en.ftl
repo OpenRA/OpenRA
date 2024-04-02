@@ -339,6 +339,8 @@ actor-high-tech-factory =
    .encyclopedia = The High Tech Factory produces airborne units, and is required for the production of Carryalls. House Atreides can upgrade the High Tech Factory to build Ornithopters for an air strike in later missions.
 
     The High Tech Factory is vulnerable to most types of weapons.
+   .airstrikepower-name = Air Strike
+   .airstrikepower-description = Ornithopters hit the target with bombs
 
 actor-research-centre =
    .description = Unlocks advanced tanks.
@@ -353,6 +355,19 @@ actor-palace =
    .encyclopedia = The Palace serves as the command center once it is constructed. Palaces feature unique additional options, making available advanced special weapons.
 
     Armor is heavy, but the Palace is vulnerable to most types of weapons.
+   .nukepower-name = Death Hand
+   .nukepower-description = Launches an atomic missile at a target location
+   .produceactorpower-fremen-name = Recruit Fremen
+   .produceactorpower-fremen-description = Elite infantry unit armed with assault rifles and rockets
+      Strong vs Infantry, Vehicles
+      Weak vs Artillery
+      Special Ability: Invisibility
+   .produceactorpower-saboteur-name = Recruit Saboteur
+   .produceactorpower-saboteur-description = Sneaky infantry, armed with explosives.
+    Can be deployed to become invisible for a limited time.
+      Strong vs Buildings
+      Weak vs Everything
+      Special Ability: destroy buildings
 
 ## vehicles.yaml
 actor-mcv =
