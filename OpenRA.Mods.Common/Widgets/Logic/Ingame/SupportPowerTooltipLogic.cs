@@ -53,13 +53,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (sp == lastPower && hotkey == lastHotkey && lastRemainingSeconds == remainingSeconds)
 					return;
 
-				var nameText = TranslationProvider.GetString(sp.Info.Name);
-				nameLabel.GetText = () => nameText;
-				var nameSize = nameFont.Measure(nameText);
+				nameLabel.GetText = () => sp.Name;
+				var nameSize = nameFont.Measure(sp.Name);
 
-				var descText = TranslationProvider.GetString(sp.Info.Description);
-				descLabel.GetText = () => descText;
-				var descSize = descFont.Measure(descText);
+				descLabel.GetText = () => sp.Description;
+				var descSize = descFont.Measure(sp.Description);
 
 				var timeText = sp.TooltipTimeTextOverride();
 				if (timeText == null)
