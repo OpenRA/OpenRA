@@ -157,6 +157,8 @@ namespace OpenRA.Mods.Common.Traits
 			oneShotFired;
 
 		public SupportPowerInfo Info { get { return Instances.Select(i => i.Info).FirstOrDefault(); } }
+		public readonly string Name;
+		public readonly string Description;
 		public bool Ready => Active && RemainingTicks == 0;
 
 		bool instancesEnabled;
@@ -175,6 +177,8 @@ namespace OpenRA.Mods.Common.Traits
 			Key = key;
 			TotalTicks = info.ChargeInterval;
 			remainingSubTicks = info.StartFullyCharged ? 0 : TotalTicks * 100;
+			Name = info.Name == null ? string.Empty : TranslationProvider.GetString(info.Name);
+			Description = info.Description == null ? string.Empty : TranslationProvider.GetString(info.Description);
 
 			Manager = manager;
 		}
