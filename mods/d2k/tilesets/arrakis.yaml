@@ -1388,7 +1388,7 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			2: Rock
+			2: Transition
 			3: Rock
 	Template@190:
 		Id: 190
@@ -1437,7 +1437,7 @@ Templates:
 			0: Cliff
 			1: Cliff
 			2: Cliff
-			3: Rock
+			3: Cliff
 	Template@194:
 		Id: 194
 		Images: BLOXBASE.R16
@@ -1571,9 +1571,9 @@ Templates:
 		Categories: Sand-Rock-Cliff
 		Tiles:
 			0: Cliff
-			1: Rock
+			1: Cliff
 			2: Cliff
-			3: Rock
+			3: Cliff
 	Template@206:
 		Id: 206
 		Images: BLOXBASE.R16
@@ -6730,3 +6730,35 @@ Templates:
 		Categories: Bridge
 		Tiles:
 			0: Rock
+	Template@1227
+		Id: 1227
+		Images: BLOXBASE.R16
+		Frames: 318
+		Size: 1,1
+		Categories: Rock-Sand-Smooth
+		Tiles:
+			0: Transition
+	Template@1228
+		Id: 1228
+		Images: BLOXBASE.R16
+		Frames: 296
+		Size: 1,1
+		Categories: Rock-Sand-Smooth
+		Tiles:
+			0: Transition
+	Template@1229
+		Id: 1229
+		Images: BLOXBASE.R16
+		Frames: 317
+		Size: 1,1
+		Categories: Rock-Sand-Smooth
+		Tiles:
+			0: Transition
+	Template@1230
+		Id: 1230
+		Images: BLOXBASE.R16
+		Frames: 295
+		Size: 1,1
+		Categories: Rock-Sand-Smooth
+		Tiles:
+			0: Transition
