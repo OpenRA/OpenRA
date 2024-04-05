@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Linguini.Syntax.Ast;
 using Linguini.Syntax.Parser;
 using OpenRA.Traits;
@@ -23,14 +24,80 @@ namespace OpenRA.Mods.Common.Lint
 {
 	sealed class CheckTranslationReference : ILintPass, ILintMapPass
 	{
-		const BindingFlags Binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
+		static readonly Regex TranslationFilenameRegex = new(@"(?<language>[^\/\\]+)\.ftl$");
 
-		readonly List<string> referencedKeys = new();
-		readonly Dictionary<string, string[]> referencedVariablesPerKey = new();
-		readonly List<string> variableReferences = new();
-
-		void TestTraits(Ruleset rules, Action<string> emitError, Action<string> testKey)
+		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
+			if (map.TranslationDefinitions == null)
+				return;
+
+			var usedKeys = GetUsedTranslationKeysInRuleset(map.Rules);
+
+			foreach (var context in usedKeys.EmptyKeyContexts)
+				emitWarning($"Empty key in map translation files required by {context}");
+
+			var mapTranslations = FieldLoader.GetValue<string[]>("value", map.TranslationDefinitions.Value);
+
+			foreach (var language in GetTranslationLanguages(modData))
+			{
+				var modTranslation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem, _ => { });
+				var mapTranslation = new Translation(language, mapTranslations, map, error => emitError(error.Message));
+
+				foreach (var group in usedKeys.KeysWithContext)
+				{
+					if (modTranslation.HasMessage(group.Key))
+					{
+						if (mapTranslation.HasMessage(group.Key))
+							emitWarning($"Key `{group.Key}` in `{language}` language in map translation files already exists in mod translations and will not be used.");
+					}
+					else if (!mapTranslation.HasMessage(group.Key))
+					{
+						foreach (var context in group)
+							emitWarning($"Missing key `{group.Key}` in `{language}` language in map translation files required by {context}");
+					}
+				}
+			}
+		}
+
+		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
+		{
+			var (usedKeys, testedFields) = GetUsedTranslationKeysInMod(modData);
+
+			foreach (var context in usedKeys.EmptyKeyContexts)
+				emitWarning($"Empty key in mod translation files required by {context}");
+
+			foreach (var language in GetTranslationLanguages(modData))
+			{
+				Console.WriteLine($"Testing translation: {language}");
+				var translation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem, error => emitError(error.Message));
+				CheckModWidgets(modData, usedKeys, testedFields);
+			}
+
+			// With the fully populated keys, check keys and variables are not missing and not unused across all language files.
+			CheckModTranslationFiles(modData, usedKeys, emitError, emitWarning);
+
+			// Check if we couldn't test any fields.
+			const BindingFlags Binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
+			var allTranslatableFields = modData.ObjectCreator.GetTypes().SelectMany(t =>
+				t.GetFields(Binding).Where(m => Utility.HasAttribute<TranslationReferenceAttribute>(m))).ToArray();
+			var untestedFields = allTranslatableFields.Except(testedFields);
+			foreach (var field in untestedFields)
+				emitError(
+					$"Lint pass ({nameof(CheckTranslationReference)}) lacks the know-how to test translatable field " +
+					$"`{field.ReflectedType.Name}.{field.Name}` - previous warnings may be incorrect");
+		}
+
+		static IEnumerable<string> GetTranslationLanguages(ModData modData)
+		{
+			return modData.Manifest.Translations
+				.Select(filename => TranslationFilenameRegex.Match(filename).Groups["language"].Value)
+				.Distinct()
+				.OrderBy(l => l);
+		}
+
+		static TranslationKeys GetUsedTranslationKeysInRuleset(Ruleset rules)
+		{
+			var usedKeys = new TranslationKeys();
 			foreach (var actorInfo in rules.Actors)
 			{
 				foreach (var traitInfo in actorInfo.Value.TraitInfos<TraitInfo>())
@@ -38,274 +105,273 @@ namespace OpenRA.Mods.Common.Lint
 					var traitType = traitInfo.GetType();
 					foreach (var field in Utility.GetFields(traitType))
 					{
-						var translationReference = Utility.GetCustomAttributes<TranslationReferenceAttribute>(field, true).FirstOrDefault();
+						var translationReference = Utility.GetCustomAttributes<TranslationReferenceAttribute>(field, true).SingleOrDefault();
 						if (translationReference == null)
 							continue;
 
 						var keys = LintExts.GetFieldValues(traitInfo, field, translationReference.DictionaryReference);
 						foreach (var key in keys)
-						{
-							if (key == null)
-							{
-								if (!translationReference.Optional)
-									emitError($"Actor type `{actorInfo.Key}` has an empty translation reference in trait `{traitType.Name[..^4]}.{field.Name}`.");
-
-								continue;
-							}
-
-							if (referencedKeys.Contains(key))
-								continue;
-
-							testKey(key);
-							referencedKeys.Add(key);
-						}
+							usedKeys.Add(key, translationReference, $"Actor `{actorInfo.Key}` trait `{traitType.Name[..^4]}.{field.Name}`");
 					}
 				}
 			}
+
+			return usedKeys;
 		}
 
-		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
+		static (TranslationKeys UsedKeys, List<FieldInfo> TestedFields) GetUsedTranslationKeysInMod(ModData modData)
 		{
-			if (map.TranslationDefinitions == null)
-				return;
+			var usedKeys = GetUsedTranslationKeysInRuleset(modData.DefaultRules);
+			var testedFields = new List<FieldInfo>();
+			testedFields.AddRange(
+				modData.ObjectCreator.GetTypes()
+				.Where(t => t.IsSubclassOf(typeof(TraitInfo)))
+				.SelectMany(t => t.GetFields().Where(f => f.HasAttribute<TranslationReferenceAttribute>())));
 
-			// TODO: Check all available languages.
-			const string Language = "en";
-			var modTranslation = new Translation(Language, modData.Manifest.Translations, modData.DefaultFileSystem, _ => { });
-			var mapTranslation = new Translation(Language, FieldLoader.GetValue<string[]>("value", map.TranslationDefinitions.Value), map, error => emitError(error.ToString()));
-
-			TestTraits(map.Rules, emitError, key =>
-			{
-				if (modTranslation.HasMessage(key))
-				{
-					if (mapTranslation.HasMessage(key))
-						emitWarning($"Map translation key `{key}` already exists in `{Language}` mod translations and will not be used.");
-				}
-				else if (!mapTranslation.HasMessage(key))
-					emitWarning($"`{key}` is not present in `{Language}` translation.");
-			});
-		}
-
-		void ILintPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData)
-		{
-			// TODO: Check all available languages.
-			const string Language = "en";
-			Console.WriteLine($"Testing translation: {Language}");
-			var translation = new Translation(Language, modData.Manifest.Translations, modData.DefaultFileSystem, error => emitError(error.ToString()));
-
-			TestTraits(modData.DefaultRules, emitError, key =>
-			{
-				if (!translation.HasMessage(key))
-					emitWarning($"`{key}` is not present in `{Language}` translation.");
-			});
-
+			// HACK: Need to hardcode the custom loader for GameSpeeds.
 			var gameSpeeds = modData.Manifest.Get<GameSpeeds>();
+			var gameSpeedNameField = typeof(GameSpeed).GetField(nameof(GameSpeed.Name));
+			var gameSpeedTranslationReference = Utility.GetCustomAttributes<TranslationReferenceAttribute>(gameSpeedNameField, true)[0];
+			testedFields.Add(gameSpeedNameField);
 			foreach (var speed in gameSpeeds.Speeds.Values)
-			{
-				if (!translation.HasMessage(speed.Name))
-					emitWarning($"`{speed.Name}` is not present in `{Language}` translation.");
-
-				referencedKeys.Add(speed.Name);
-			}
+				usedKeys.Add(speed.Name, gameSpeedTranslationReference, $"`{nameof(GameSpeed)}.{nameof(GameSpeed.Name)}`");
 
 			foreach (var modType in modData.ObjectCreator.GetTypes())
 			{
-				foreach (var fieldInfo in modType.GetFields(Binding).Where(m => Utility.HasAttribute<TranslationReferenceAttribute>(m)))
+				const BindingFlags Binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
+				foreach (var field in modType.GetFields(Binding))
 				{
-					if (fieldInfo.IsInitOnly || !fieldInfo.IsStatic)
+					// Checking for constant string fields.
+					if (!field.IsLiteral)
 						continue;
 
-					if (fieldInfo.FieldType != typeof(string))
-					{
-						emitError($"Translation attribute on non string field `{fieldInfo.Name}`.");
-						continue;
-					}
-
-					var key = (string)fieldInfo.GetValue(null);
-					if (referencedKeys.Contains(key))
+					var translationReference = Utility.GetCustomAttributes<TranslationReferenceAttribute>(field, true).SingleOrDefault();
+					if (translationReference == null)
 						continue;
 
-					if (!translation.HasMessage(key))
-						emitWarning($"`{key}` is not present in `{Language}` translation.");
-
-					var translationReference = Utility.GetCustomAttributes<TranslationReferenceAttribute>(fieldInfo, true)[0];
-					if (translationReference.RequiredVariableNames != null && translationReference.RequiredVariableNames.Length > 0)
-						referencedVariablesPerKey.GetOrAdd(key, translationReference.RequiredVariableNames);
-
-					referencedKeys.Add(key);
+					testedFields.Add(field);
+					var keys = LintExts.GetFieldValues(null, field, translationReference.DictionaryReference);
+					foreach (var key in keys)
+						usedKeys.Add(key, translationReference, $"`{field.ReflectedType.Name}.{field.Name}`");
 				}
 			}
 
-			var translatableFields = modData.ObjectCreator.GetTypes()
-				.Where(t => t.Name.EndsWith("Widget", StringComparison.InvariantCulture) && t.IsSubclassOf(typeof(Widget)))
-				.ToDictionary(
-					t => t.Name[..^6],
-					t => t.GetFields().Where(f => f.HasAttribute<TranslationReferenceAttribute>()).ToArray())
-				.Where(t => t.Value.Length > 0)
-				.ToDictionary(
-					t => t.Key,
-					t => t.Value.Select(f => (f.Name, f, Utility.GetCustomAttributes<TranslationReferenceAttribute>(f, true)[0])).ToArray());
-
-			foreach (var filename in modData.Manifest.ChromeLayout)
-			{
-				var nodes = MiniYaml.FromStream(modData.DefaultFileSystem.Open(filename), filename);
-				foreach (var node in nodes)
-					CheckChrome(node, translation, Language, emitError, emitWarning, translatableFields);
-			}
-
-			foreach (var file in modData.Manifest.Translations)
-			{
-				var stream = modData.DefaultFileSystem.Open(file);
-				using (var reader = new StreamReader(stream))
-				{
-					var parser = new LinguiniParser(reader);
-					var result = parser.Parse();
-
-					foreach (var entry in result.Entries)
-					{
-						// Don't flag definitions referenced (only) within the .ftl definitions as unused.
-						if (entry.GetType() == typeof(AstTerm))
-							continue;
-
-						variableReferences.Clear();
-						var key = entry.GetId();
-
-						if (entry is AstMessage message)
-						{
-							var hasAttributes = message.Attributes.Count > 0;
-
-							if (!hasAttributes)
-							{
-								CheckUnusedKey(key, null, emitWarning, file);
-								CheckMessageValue(message.Value, key, null, emitWarning, file);
-								CheckMissingVariable(key, null, emitError, file);
-							}
-							else
-							{
-								foreach (var attribute in message.Attributes)
-								{
-									var attrName = attribute.Id.Name.ToString();
-
-									CheckUnusedKey(key, attrName, emitWarning, file);
-									CheckMessageValue(attribute.Value, key, attrName, emitWarning, file);
-									CheckMissingVariable(key, attrName, emitError, file);
-								}
-							}
-						}
-					}
-				}
-			}
+			return (usedKeys, testedFields);
 		}
 
-		void CheckChrome(MiniYamlNode node, Translation translation, string language, Action<string> emitError, Action<string> emitWarning,
-			Dictionary<string, (string Name, FieldInfo Field, TranslationReferenceAttribute Attribute)[]> translatables)
+		static void CheckModWidgets(ModData modData, TranslationKeys usedKeys, List<FieldInfo> testedFields)
 		{
-			var nodeType = node.Key.Split('@')[0];
-			foreach (var childNode in node.Value.Nodes)
-			{
-				if (!translatables.TryGetValue(nodeType, out var translationNodes))
-					continue;
+			var chromeLayoutNodes = BuildChromeTree(modData);
 
+			var widgetTypes = modData.ObjectCreator.GetTypes()
+				.Where(t => t.Name.EndsWith("Widget", StringComparison.InvariantCulture) && t.IsSubclassOf(typeof(Widget)))
+				.ToList();
+			var translationReferencesByWidgetField = widgetTypes.SelectMany(t =>
+				{
+					var widgetName = t.Name[..^6];
+					return Utility.GetFields(t)
+						.Select(f =>
+						{
+							var attribute = Utility.GetCustomAttributes<TranslationReferenceAttribute>(f, true).SingleOrDefault();
+							return (WidgetName: widgetName, FieldName: f.Name, TranslationReference: attribute);
+						})
+						.Where(x => x.TranslationReference != null);
+				})
+				.ToDictionary(
+					x => (x.WidgetName, x.FieldName),
+					x => x.TranslationReference);
+
+			testedFields.AddRange(widgetTypes.SelectMany(
+				t => Utility.GetFields(t).Where(Utility.HasAttribute<TranslationReferenceAttribute>)));
+
+			foreach (var node in chromeLayoutNodes)
+				CheckChrome(node, translationReferencesByWidgetField, usedKeys);
+		}
+
+		static MiniYamlNode[] BuildChromeTree(ModData modData)
+		{
+			// Gather all the nodes together for evaluation.
+			var chromeLayoutNodes = modData.Manifest.ChromeLayout
+				.SelectMany(filename => MiniYaml.FromStream(modData.DefaultFileSystem.Open(filename), filename))
+				.ToArray();
+
+			return chromeLayoutNodes;
+		}
+
+		static void CheckChrome(
+			MiniYamlNode rootNode,
+			Dictionary<(string WidgetName, string FieldName), TranslationReferenceAttribute> translationReferencesByWidgetField,
+			TranslationKeys usedKeys)
+		{
+			var nodeType = rootNode.Key.Split('@')[0];
+			foreach (var childNode in rootNode.Value.Nodes)
+			{
 				var childType = childNode.Key.Split('@')[0];
-				var field = translationNodes.FirstOrDefault(t => t.Name == childType);
-				if (field.Name == null)
+				if (!translationReferencesByWidgetField.TryGetValue((nodeType, childType), out var translationReference))
 					continue;
 
 				var key = childNode.Value.Value;
-				if (key == null)
-				{
-					if (!field.Attribute.Optional)
-						emitError($"Widget `{node.Key}` in field `{childType}` has an empty translation reference.");
-
-					continue;
-				}
-
-				if (referencedKeys.Contains(key))
-					continue;
-
-				if (!key.Any(char.IsLetter))
-					continue;
-
-				if (!translation.HasMessage(key))
-					emitWarning($"`{key}` defined by `{node.Key}` is not present in `{language}` translation.");
-
-				referencedKeys.Add(key);
+				usedKeys.Add(key, translationReference, $"Widget `{rootNode.Key}` field `{childType}` in {rootNode.Location}");
 			}
 
-			foreach (var childNode in node.Value.Nodes)
+			foreach (var childNode in rootNode.Value.Nodes)
 				if (childNode.Key == "Children")
 					foreach (var n in childNode.Value.Nodes)
-						CheckChrome(n, translation, language, emitError, emitWarning, translatables);
+						CheckChrome(n, translationReferencesByWidgetField, usedKeys);
 		}
 
-		void CheckUnusedKey(string key, string attribute, Action<string> emitWarning, string file)
+		static void CheckModTranslationFiles(ModData modData, TranslationKeys usedKeys, Action<string> emitError, Action<string> emitWarning)
 		{
-			var isAttribute = !string.IsNullOrEmpty(attribute);
-			var keyWithAtrr = isAttribute ? $"{key}.{attribute}" : key;
-
-			if (!referencedKeys.Contains(keyWithAtrr))
-				emitWarning(isAttribute ?
-					$"Unused attribute `{attribute}` of key `{key}` in {file}" :
-					$"Unused key `{key}` in {file}");
-		}
-
-		void CheckMessageValue(Pattern node, string key, string attribute, Action<string> emitWarning, string file)
-		{
-			foreach (var element in node.Elements)
+			foreach (var language in GetTranslationLanguages(modData))
 			{
-				if (element is Placeable placeable)
+				var keyWithAttrs = new HashSet<string>();
+				foreach (var file in modData.Manifest.Translations)
 				{
-					var expression = placeable.Expression;
-					if (expression is IInlineExpression inlineExpression &&
-						inlineExpression is VariableReference variableReference)
-						CheckVariableReference(variableReference.Id.Name.ToString(), key, attribute, emitWarning, file);
+					if (!file.EndsWith($"{language}.ftl", StringComparison.Ordinal))
+						continue;
 
-					if (expression is SelectExpression selectExpression)
+					var stream = modData.DefaultFileSystem.Open(file);
+					using (var reader = new StreamReader(stream))
 					{
-						foreach (var variant in selectExpression.Variants)
+						var parser = new LinguiniParser(reader);
+						var result = parser.Parse();
+
+						foreach (var entry in result.Entries)
 						{
-							foreach (var variantElement in variant.Value.Elements)
+							if (entry is not AstMessage message)
+								continue;
+
+							IEnumerable<(Pattern Node, string AttributeName)> nodeAndAttributeNames;
+							if (message.Attributes.Count == 0)
+								nodeAndAttributeNames = new[] { (message.Value, (string)null) };
+							else
+								nodeAndAttributeNames = message.Attributes.Select(a => (a.Value, a.Id.Name.ToString()));
+
+							var key = message.GetId();
+							foreach (var (node, attributeName) in nodeAndAttributeNames)
 							{
-								if (variantElement is Placeable variantPlaceable)
-								{
-									var variantExpression = variantPlaceable.Expression;
-									if (variantExpression is IInlineExpression variantInlineExpression &&
-										variantInlineExpression is VariableReference variantVariableReference)
-										CheckVariableReference(variantVariableReference.Id.Name.ToString(), key, attribute, emitWarning, file);
-								}
+								keyWithAttrs.Add(attributeName == null ? key : $"{key}.{attributeName}");
+								CheckUnusedKey(key, attributeName, file, usedKeys, emitWarning);
+								CheckVariables(node, key, attributeName, file, usedKeys, emitError, emitWarning);
 							}
 						}
 					}
 				}
+
+				foreach (var group in usedKeys.KeysWithContext)
+				{
+					if (keyWithAttrs.Contains(group.Key))
+						continue;
+
+					foreach (var context in group)
+						emitWarning($"Missing key `{group.Key}` in `{language}` language in mod translation files required by {context}");
+				}
+			}
+
+			static void CheckUnusedKey(string key, string attribute, string file, TranslationKeys usedKeys, Action<string> emitWarning)
+			{
+				var isAttribute = !string.IsNullOrEmpty(attribute);
+				var keyWithAtrr = isAttribute ? $"{key}.{attribute}" : key;
+
+				if (!usedKeys.Contains(keyWithAtrr))
+					emitWarning(isAttribute ?
+						$"Unused attribute `{attribute}` of key `{key}` in {file}" :
+						$"Unused key `{key}` in {file}");
+			}
+
+			static void CheckVariables(
+				Pattern node, string key, string attribute, string file, TranslationKeys usedKeys,
+				Action<string> emitError, Action<string> emitWarning)
+			{
+				var isAttribute = !string.IsNullOrEmpty(attribute);
+				var keyWithAtrr = isAttribute ? $"{key}.{attribute}" : key;
+
+				if (!usedKeys.TryGetRequiredVariables(keyWithAtrr, out var requiredVariables))
+					return;
+
+				var variableNames = new HashSet<string>();
+				foreach (var element in node.Elements)
+				{
+					if (element is not Placeable placeable)
+						continue;
+
+					AddVariableAndCheckUnusedVariable(placeable);
+					if (placeable.Expression is SelectExpression selectExpression)
+						foreach (var variant in selectExpression.Variants)
+							foreach (var variantElement in variant.Value.Elements)
+								if (variantElement is Placeable variantPlaceable)
+									AddVariableAndCheckUnusedVariable(variantPlaceable);
+				}
+
+				void AddVariableAndCheckUnusedVariable(Placeable placeable)
+				{
+					if (placeable.Expression is not IInlineExpression inlineExpression ||
+						inlineExpression is not VariableReference variableReference)
+						return;
+
+					var name = variableReference.Id.Name.ToString();
+					variableNames.Add(name);
+
+					if (!requiredVariables.Contains(name))
+						emitWarning(isAttribute ?
+							$"Unused variable `{name}` for attribute `{attribute}` of key `{key}` in {file}" :
+							$"Unused variable `{name}` for key `{key}` in {file}");
+				}
+
+				foreach (var name in requiredVariables)
+					if (!variableNames.Contains(name))
+						emitError(isAttribute ?
+							$"Missing variable `{name}` for attribute `{attribute}` of key `{key}` in {file}" :
+							$"Missing variable `{name}` for key `{key}` in {file}");
 			}
 		}
 
-		void CheckMissingVariable(string key, string attribute, Action<string> emitError, string file)
+		class TranslationKeys
 		{
-			var isAttribute = !string.IsNullOrEmpty(attribute);
-			var keyWithAtrr = isAttribute ? $"{key}.{attribute}" : key;
+			readonly HashSet<string> keys = new();
+			readonly List<(string Key, string Context)> keysWithContext = new();
+			readonly Dictionary<string, HashSet<string>> requiredVariablesByKey = new();
+			readonly List<string> contextForEmptyKeys = new();
 
-			if (!referencedVariablesPerKey.TryGetValue(keyWithAtrr, out var referencedVariables))
-				return;
+			public void Add(string key, TranslationReferenceAttribute translationReference, string context)
+			{
+				if (key == null)
+				{
+					if (!translationReference.Optional)
+						contextForEmptyKeys.Add(context);
+					return;
+				}
 
-			foreach (var referencedVariable in referencedVariables)
-				if (!variableReferences.Contains(referencedVariable))
-					emitError(isAttribute ?
-						$"Missing variable `{referencedVariable}` for attribute `{attribute}` of key `{key}` in {file}" :
-						$"Missing variable `{referencedVariable}` for key `{key}` in {file}");
-		}
+				if (translationReference.RequiredVariableNames != null)
+				{
+					var rv = requiredVariablesByKey.GetOrAdd(key, _ => new HashSet<string>());
+					rv.UnionWith(translationReference.RequiredVariableNames);
+				}
 
-		void CheckVariableReference(string varName, string key, string attribute, Action<string> emitWarning, string file)
-		{
-			var isAttribute = !string.IsNullOrEmpty(attribute);
-			var keyWithAtrr = isAttribute ? $"{key}.{attribute}" : key;
+				keys.Add(key);
+				keysWithContext.Add((key, context));
+			}
 
-			variableReferences.Add(varName);
+			public bool TryGetRequiredVariables(string key, out ISet<string> requiredVariables)
+			{
+				if (requiredVariablesByKey.TryGetValue(key, out var rv))
+				{
+					requiredVariables = rv;
+					return true;
+				}
 
-			if (!referencedVariablesPerKey.TryGetValue(keyWithAtrr, out var referencedVariables) || !referencedVariables.Contains(varName))
-				emitWarning(isAttribute ?
-					$"Unused variable `{varName}` for attribute `{attribute}` of key `{key}` in {file}" :
-					$"Unused variable `{varName}` for key `{key}` in {file}");
+				requiredVariables = null;
+				return false;
+			}
+
+			public bool Contains(string key)
+			{
+				return keys.Contains(key);
+			}
+
+			public ILookup<string, string> KeysWithContext => keysWithContext.OrderBy(x => x.Key).ToLookup(x => x.Key, x => x.Context);
+
+			public IEnumerable<string> EmptyKeyContexts => contextForEmptyKeys;
 		}
 	}
 }
