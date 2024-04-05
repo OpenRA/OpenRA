@@ -32,7 +32,7 @@ Background@DIRECTCONNECT_PANEL:
 			Width: 10
 			Height: 25
 			Align: Center
-			Text: :
+			Text: label-directconnect-panel-port
 		TextField@PORT:
 			X: 370
 			Y: 60
