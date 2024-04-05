@@ -526,7 +526,6 @@ Container@EDITOR_WORLD_ROOT:
 							Width: 30
 							Height: 25
 							Align: Left
-							Text: 85
 						Label@MODE_LABEL:
 							X: 6
 							Y: 102
@@ -558,7 +557,6 @@ Container@EDITOR_WORLD_ROOT:
 							Width: 30
 							Height: 25
 							Align: Left
-							Text: 2
 							Visible: false
 						DropDownButton@FLIP_NUM_SIDES_DROPDOWN:
 							X: 129
@@ -585,7 +583,6 @@ Container@EDITOR_WORLD_ROOT:
 							Width: 30
 							Height: 25
 							Align: Left
-							Text: 0
 							Visible: false
 		Container@HISTORY_WIDGETS:
 			Logic: HistoryLogLogic
@@ -651,7 +648,7 @@ Container@EDITOR_WORLD_ROOT:
 						Label@AREA_FILTERS_LABEL:
 							X: 6
 							Y: 36
-							Width: 55
+							Width: 150
 							Height: 25
 							Font: Bold
 							Align: Left
@@ -685,7 +682,7 @@ Container@EDITOR_WORLD_ROOT:
 						Label@DIAGONAL_LABEL:
 							X: 6
 							Y: 171
-							Width: 55
+							Width: 120
 							Height: 20
 							Font: Bold
 							Align: Left
@@ -693,7 +690,7 @@ Container@EDITOR_WORLD_ROOT:
 						Label@RESOURCE_LABEL:
 							X: 6
 							Y: 193
-							Width: 55
+							Width: 120
 							Height: 25
 							Font: Bold
 							Align: Left
@@ -1001,19 +998,6 @@ ScrollPanel@CATEGORY_FILTER_PANEL:
 					Text: button-select-categories-buttons-none
 		Checkbox@CATEGORY_TEMPLATE:
 			X: 5
-			Width: PARENT_RIGHT - 29
-			Height: 20
-			Visible: false
-
-ScrollPanel@OVERLAY_PANEL:
-	Width: 140
-	Height: 80
-	ItemSpacing: 5
-	TopBottomSpacing: 0
-	Children:
-		Checkbox@CATEGORY_TEMPLATE:
-			X: 5
-			Y: 5
 			Width: PARENT_RIGHT - 29
 			Height: 20
 			Visible: false

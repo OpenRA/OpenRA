@@ -386,6 +386,7 @@ button-multiplayer-createserver-panel-create = Create
 ## multiplayer-directconnect.yaml
 label-directconnect-panel-title = Connect to Server
 label-directconnect-panel-address = Server Address:
+label-directconnect-panel-port = :
 button-directconnect-panel-join = Join
 
 ## playerprofile.yaml
