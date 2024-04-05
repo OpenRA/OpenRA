@@ -368,22 +368,7 @@ namespace OpenRA
 				Settings.Game.Platform = p;
 				try
 				{
-					var rendererPath = Path.Combine(Platform.BinDir, "OpenRA.Platforms." + p + ".dll");
-
-#if NET5_0_OR_GREATER
-					var loader = new AssemblyLoader(rendererPath);
-					var platformType = loader.LoadDefaultAssembly().GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
-
-#else
-					// NOTE: This is currently the only use of System.Reflection in this file, so would give an unused using error if we import it above
-					var assembly = System.Reflection.Assembly.LoadFile(rendererPath);
-					var platformType = assembly.GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
-#endif
-
-					if (platformType == null)
-						throw new InvalidOperationException("Platform dll must include exactly one IPlatform implementation.");
-
-					var platform = (IPlatform)platformType.GetConstructor(Type.EmptyTypes).Invoke(null);
+					var platform = CreatePlatform(p);
 					Renderer = new Renderer(platform, Settings.Graphics);
 					Sound = new Sound(platform, Settings.Sound);
 
@@ -438,6 +423,26 @@ namespace OpenRA
 				Console.WriteLine($"\t{mod.Key}: {mod.Value.Title} ({mod.Value.Version})");
 
 			InitializeMod(modID, args);
+		}
+
+		public static IPlatform CreatePlatform(string platformName)
+		{
+			var rendererPath = Path.Combine(Platform.BinDir, "OpenRA.Platforms." + platformName + ".dll");
+
+#if NET5_0_OR_GREATER
+			var loader = new AssemblyLoader(rendererPath);
+			var platformType = loader.LoadDefaultAssembly().GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
+
+#else
+			// NOTE: This is currently the only use of System.Reflection in this file, so would give an unused using error if we import it above
+			var assembly = System.Reflection.Assembly.LoadFile(rendererPath);
+			var platformType = assembly.GetTypes().SingleOrDefault(t => typeof(IPlatform).IsAssignableFrom(t));
+#endif
+
+			if (platformType == null)
+				throw new InvalidOperationException("Platform dll must include exactly one IPlatform implementation.");
+
+			return (IPlatform)platformType.GetConstructor(Type.EmptyTypes).Invoke(null);
 		}
 
 		public static void InitializeMod(string mod, Arguments args)

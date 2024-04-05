@@ -134,8 +134,9 @@ namespace OpenRA
 				fontSheetBuilder?.Dispose();
 				fontSheetBuilder = new SheetBuilder(SheetType.BGRA, 512);
 				Fonts = modData.Manifest.Get<Fonts>().FontList.ToDictionary(x => x.Key,
-					x => new SpriteFont(x.Value.Font, modData.DefaultFileSystem.Open(x.Value.Font).ReadAllBytes(),
-										x.Value.Size, x.Value.Ascender, Window.EffectiveWindowScale, fontSheetBuilder));
+					x => new SpriteFont(
+						platform, x.Value.Font, modData.DefaultFileSystem.Open(x.Value.Font).ReadAllBytes(),
+						x.Value.Size, x.Value.Ascender, Window.EffectiveWindowScale, fontSheetBuilder));
 			}
 
 			Window.OnWindowScaleChanged += (oldNative, oldEffective, newNative, newEffective) =>
@@ -562,11 +563,6 @@ namespace OpenRA
 		}
 
 		public string GLVersion => Context.GLVersion;
-
-		public IFont CreateFont(byte[] data)
-		{
-			return platform.CreateFont(data);
-		}
 
 		public int DisplayCount => Window.DisplayCount;
 
