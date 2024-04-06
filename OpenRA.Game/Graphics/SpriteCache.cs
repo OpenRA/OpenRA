@@ -97,9 +97,11 @@ namespace OpenRA.Graphics
 						{
 							var resolved = new Sprite[loadedFrames.Length];
 							resolvedSprites[token] = resolved;
-							var frames = rs.Frames ?? Enumerable.Range(0, loadedFrames.Length);
+							if (rs.Frames != null && rs.Frames.Any(i => i >= loadedFrames.Length))
+								throw new InvalidOperationException($"{rs.Location}: {filename} does not contain frames: " +
+									string.Join(',', rs.Frames.Where(f => f >= loadedFrames.Length)));
 
-							foreach (var i in frames)
+							foreach (var i in rs.Frames ?? Enumerable.Range(0, loadedFrames.Length))
 							{
 								var frame = loadedFrames[i];
 								if (rs.AdjustFrame != null)
