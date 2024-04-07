@@ -17,17 +17,17 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public enum TextFieldType { General, Filename, Integer }
+	public enum TextFieldType { General, Filename, Integer, UInteger, Float }
 	public class TextFieldWidget : InputWidget
 	{
-		string text = "";
+		string text = string.Empty;
 		public string Text
 		{
 			get => text;
 
 			set
 			{
-				text = RemoveInvalidCharacters(value ?? "");
+				text = SanitizeInput(WhitelistChars(value));
 				CursorPosition = CursorPosition.Clamp(0, text.Length);
 				ClearSelection();
 			}
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Widgets
 				type = value;
 
 				// Revalidate text
-				text = RemoveInvalidCharacters(text);
+				text = SanitizeInput(WhitelistChars(text));
 				CursorPosition = CursorPosition.Clamp(0, text.Length);
 			}
 		}
@@ -183,25 +183,149 @@ namespace OpenRA.Mods.Common.Widgets
 			return CursorPosition + trimmedSpaces + nextWhitespace;
 		}
 
-		string RemoveInvalidCharacters(string input)
+		string WhitelistChars(string text)
+		{
+			if (string.IsNullOrEmpty(text))
+				return string.Empty;
+
+			switch (Type)
+			{
+				case TextFieldType.General:
+					return text;
+				case TextFieldType.Filename:
+					return new string(text.Where(c => !Path.GetInvalidFileNameChars().Contains(c)).ToArray());
+				case TextFieldType.Integer:
+					return new string(text.Where(c => char.IsDigit(c) || (c == '-')).ToArray());
+				case TextFieldType.UInteger:
+					return new string(text.Where(c => char.IsDigit(c)).ToArray());
+				case TextFieldType.Float:
+					return new string(text.Where(c => char.IsDigit(c) || (c == '-') || c == '.').ToArray());
+				default:
+					throw new ArgumentOutOfRangeException(Type.ToString(), Type, "Invalid TextFieldType");
+			}
+		}
+
+		string SanitizeInput(string text)
 		{
 			switch (Type)
 			{
+				case TextFieldType.General:
 				case TextFieldType.Filename:
-				{
-					var invalidIndex = -1;
-					var invalidChars = Path.GetInvalidFileNameChars();
-					while ((invalidIndex = input.IndexOfAny(invalidChars)) != -1)
-						input = input.Remove(invalidIndex, 1);
-
-					return input;
-				}
+					return text;
+				case TextFieldType.UInteger:
+					return HandleEmptyText(RemoveZeros(text), out _);
 
 				case TextFieldType.Integer:
-					return new string(input.Where(c => char.IsDigit(c)).ToArray());
+					if (text.Length != 0)
+					{
+						if (text[0] == '-')
+							text = '-' + text[1..].Replace("-", "");
+						else
+							text = text.Replace("-", "");
+					}
 
+					return HandleEmptyText(RemoveZeros(text), out _);
+
+				case TextFieldType.Float:
+					if (text.Length != 0)
+					{
+						if (text[0] == '-')
+							text = '-' + text[1..].Replace("-", "");
+						else
+							text = text.Replace("-", "");
+
+						var index = text.IndexOf('.');
+						if (index != -1)
+							text = text[..(index + 1)] + text[(index + 1)..].Replace(".", "");
+					}
+
+					return HandleEmptyText(RemoveZeros(text), out _);
 				default:
-					return input;
+					throw new ArgumentOutOfRangeException(Type.ToString(), Type, "Invalid TextFieldType");
+			}
+		}
+
+		static string RemoveZeros(string text)
+		{
+			if (string.IsNullOrEmpty(text) || text.Length == 1)
+				return text;
+
+			var negative = text[0] == '-';
+			var firstNonZero = -1;
+			for (var i = negative ? 1 : 0; i < text.Length; i++)
+			{
+				if (text[i] != '0')
+				{
+					firstNonZero = i;
+					break;
+				}
+			}
+
+			if (firstNonZero == -1)
+				return negative ? "-0" : "0";
+
+			return negative ? '-' + text[firstNonZero..] : text[firstNonZero..];
+		}
+
+		public string HandleEmptyText(string text, out bool addedChar)
+		{
+			addedChar = false;
+			switch (Type)
+			{
+				case TextFieldType.Integer:
+				case TextFieldType.UInteger:
+					if (string.IsNullOrEmpty(text))
+					{
+						addedChar = true;
+						return "0";
+					}
+
+					if (text.Length == 1 && text[0] == '-')
+					{
+						addedChar = true;
+						return "-0";
+					}
+
+					return text;
+				case TextFieldType.Float:
+					if (string.IsNullOrEmpty(text))
+					{
+						addedChar = true;
+						return "0";
+					}
+
+					if (text.StartsWith('-'))
+					{
+						if (text.Length == 1)
+						{
+							addedChar = true;
+							return "-0";
+						}
+						else if (text.Length > 1 && text[1] == '.')
+						{
+							addedChar = true;
+							var remove = text.Length > 2 && text[2] == '0' ? 3 : 2;
+							return "-0." + text[remove..];
+						}
+					}
+
+					if (text.StartsWith('.'))
+					{
+						if (text.Length == 1)
+						{
+							addedChar = true;
+							return "0.";
+						}
+						else
+						{
+							addedChar = true;
+							return "0" + text;
+						}
+					}
+
+					return text;
+				default:
+					return text;
 			}
 		}
 
@@ -377,11 +501,11 @@ namespace OpenRA.Mods.Common.Widgets
 					{
 						// Write directly to the Text backing field to avoid unnecessary validation
 						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
-							text = text[..CursorPosition] + text[GetNextWhitespaceIndex()..];
+							text = HandleEmptyText(text[..CursorPosition] + text[GetNextWhitespaceIndex()..], out var _);
 						else if (isOSX && e.Modifiers.HasModifier(Modifiers.Meta))
-							text = text.Remove(CursorPosition);
+							text = HandleEmptyText(text.Remove(CursorPosition), out var _);
 						else
-							text = text.Remove(CursorPosition, 1);
+							text = HandleEmptyText(text.Remove(CursorPosition, 1), out var _);
 
 						CursorPosition = CursorPosition.Clamp(0, text.Length);
 						OnTextEdited();
@@ -400,18 +524,18 @@ namespace OpenRA.Mods.Common.Widgets
 						if ((!isOSX && e.Modifiers.HasModifier(Modifiers.Ctrl)) || (isOSX && e.Modifiers.HasModifier(Modifiers.Alt)))
 						{
 							var prevWhitespace = GetPrevWhitespaceIndex();
-							text = text[..prevWhitespace] + text[CursorPosition..];
-							CursorPosition = prevWhitespace;
+							text = HandleEmptyText(text[..prevWhitespace] + text[CursorPosition..], out var addedChar);
+							CursorPosition = addedChar ? prevWhitespace + 1 : prevWhitespace;
 						}
 						else if (isOSX && e.Modifiers.HasModifier(Modifiers.Meta))
 						{
-							text = text[CursorPosition..];
-							CursorPosition = 0;
+							text = HandleEmptyText(text[CursorPosition..], out var _);
+							CursorPosition = text.Length;
 						}
 						else
 						{
 							CursorPosition--;
-							text = text.Remove(CursorPosition, 1);
+							text = HandleEmptyText(text.Remove(CursorPosition, 1), out var _);
 						}
 
 						OnTextEdited();
@@ -458,29 +582,24 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override bool HandleTextInput(string input)
 		{
-			if (!HasKeyboardFocus || IsDisabled())
-				return false;
+			if (!HasKeyboardFocus || IsDisabled() || string.IsNullOrEmpty(input))
+				return true;
 
-			// Validate input
-			input = RemoveInvalidCharacters(input);
-			if (input.Length == 0)
+			var newText = SanitizeInput(text.Insert(CursorPosition, WhitelistChars(input)));
+			if (string.IsNullOrEmpty(newText) || text == newText)
+				return true;
+
+			if (MaxLength > 0)
+				newText = newText[..Math.Min(MaxLength, newText.Length)];
+
+			if (text == newText)
 				return true;
 
 			if (selectionStartIndex != -1)
 				RemoveSelectedText();
 
-			if (MaxLength > 0 && Text.Length >= MaxLength)
-				return true;
-
-			var pasteLength = input.Length;
-
-			// Truncate the pasted string if the total length (current + paste) is greater than the maximum.
-			if (MaxLength > 0 && MaxLength > Text.Length)
-				pasteLength = Math.Min(input.Length, MaxLength - Text.Length);
-
-			// Write directly to the Text backing field to avoid repeating the invalid character validation
-			text = text.Insert(CursorPosition, input[..pasteLength]);
-			CursorPosition += pasteLength;
+			CursorPosition = (CursorPosition + newText.Length - text.Length).Clamp(0, newText.Length);
+			text = newText;
 			ClearSelection();
 			OnTextEdited();
 
@@ -513,11 +632,11 @@ namespace OpenRA.Mods.Common.Widgets
 				var highestIndex = selectionStartIndex < selectionEndIndex ? selectionEndIndex : selectionStartIndex;
 
 				// Write directly to the Text backing field to avoid unnecessary validation
-				text = text.Remove(lowestIndex, highestIndex - lowestIndex);
+				text = HandleEmptyText(text.Remove(lowestIndex, highestIndex - lowestIndex), out var addedChar);
 
 				ClearSelection();
 
-				CursorPosition = lowestIndex;
+				CursorPosition = addedChar ? lowestIndex + 1 : lowestIndex;
 				OnTextEdited();
 			}
 		}
