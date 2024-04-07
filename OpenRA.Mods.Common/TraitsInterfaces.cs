@@ -652,11 +652,13 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly string Name;
 		public readonly int DisplayOrder;
+		public readonly bool DisplayMapEditorOnly;
 
-		protected EditorActorOption(string name, int displayOrder)
+		protected EditorActorOption(string name, int displayOrder, bool displayMapEditorOnly = false)
 		{
 			Name = name;
 			DisplayOrder = displayOrder;
+			DisplayMapEditorOnly = displayMapEditorOnly;
 		}
 	}
 

@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Traits
 						actor.RemoveInit<PlugInit>(this);
 					else
 						actor.ReplaceInit(new PlugInit(this, value), this);
-				});
+				}, true);
 		}
 
 		public override object Create(ActorInitializer init) { return new Pluggable(init, this); }

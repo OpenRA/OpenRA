@@ -15,11 +15,12 @@ using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
 {
-	public class ActorPreviewWidget : Widget
+	public class ActorPreviewWidget : Widget, IEditActorInits
 	{
 		public bool Animate = false;
 		public Func<float> GetScale = () => 1f;
@@ -27,9 +28,13 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly WorldRenderer worldRenderer;
 		readonly WorldViewportSizes viewportSizes;
 
-		IActorPreview[] preview = Array.Empty<IActorPreview>();
+		public IActorPreview[] Preview { get; private set; } = Array.Empty<IActorPreview>();
+		ActorReference reference;
+		ActorInfo info;
+
 		public int2 PreviewOffset { get; private set; }
 		public int2 IdealPreviewSize { get; private set; }
+		public SequenceSet Sequences;
 
 		[ObjectCreator.UseCtor]
 		public ActorPreviewWidget(ModData modData, WorldRenderer worldRenderer)
@@ -41,7 +46,7 @@ namespace OpenRA.Mods.Common.Widgets
 		protected ActorPreviewWidget(ActorPreviewWidget other)
 			: base(other)
 		{
-			preview = other.preview;
+			Preview = other.Preview;
 			worldRenderer = other.worldRenderer;
 			viewportSizes = other.viewportSizes;
 		}
@@ -50,13 +55,58 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void SetPreview(ActorInfo actor, TypeDictionary td)
 		{
-			var init = new ActorPreviewInitializer(actor, worldRenderer, td);
-			preview = actor.TraitInfos<IRenderActorPreviewInfo>()
+			reference = new ActorReference(actor.Name.ToLowerInvariant(), td);
+			info = actor;
+			GeneratePreviews();
+		}
+
+		public void RemoveInit<T>(TraitInfo info) where T : ActorInit
+		{
+			var original = GetInitOrDefault<T>(info);
+			if (original != null)
+				reference.Remove(original);
+			GeneratePreviews();
+		}
+
+		public void ReplaceInit<T>(T init) where T : ActorInit, ISingleInstanceInit
+		{
+			var original = reference.GetOrDefault<T>();
+			if (original != null)
+				reference.Remove(original);
+
+			reference.Add(init);
+			GeneratePreviews();
+		}
+
+		public void ReplaceInit<T>(T init, TraitInfo info) where T : ActorInit
+		{
+			var original = GetInitOrDefault<T>(info);
+			if (original != null)
+				reference.Remove(original);
+
+			reference.Add(init);
+			GeneratePreviews();
+		}
+
+		public T GetInitOrDefault<T>(TraitInfo info) where T : ActorInit
+		{
+			return reference.GetOrDefault<T>(info);
+		}
+
+		public T GetInitOrDefault<T>() where T : ActorInit, ISingleInstanceInit
+		{
+			return reference.GetOrDefault<T>();
+		}
+
+		void GeneratePreviews()
+		{
+			var init = new ActorPreviewInitializer(info, reference, worldRenderer, Sequences);
+			Preview = info.TraitInfos<IRenderActorPreviewInfo>()
 				.SelectMany(rpi => rpi.RenderPreview(init))
 				.ToArray();
 
 			// Calculate the preview bounds
-			var r = preview.SelectMany(p => p.ScreenBounds(worldRenderer, WPos.Zero));
+			var r = Preview.SelectMany(p => p.ScreenBounds(worldRenderer, WPos.Zero));
 			var b = r.Union();
 			IdealPreviewSize = new int2((int)(b.Width * viewportSizes.DefaultScale), (int)(b.Height * viewportSizes.DefaultScale));
 			PreviewOffset = -new int2((int)(b.Left * viewportSizes.DefaultScale), (int)(b.Top * viewportSizes.DefaultScale)) - IdealPreviewSize / 2;
@@ -68,7 +118,7 @@ namespace OpenRA.Mods.Common.Widgets
 			var scale = GetScale() * viewportSizes.DefaultScale;
 			var origin = RenderOrigin + PreviewOffset + new int2(RenderBounds.Size.Width / 2, RenderBounds.Size.Height / 2);
 
-			renderables = preview
+			renderables = Preview
 				.SelectMany(p => p.RenderUI(worldRenderer, origin, scale))
 				.OrderBy(WorldRenderer.RenderableZPositionComparisonKey)
 				.Select(r => r.PrepareRender(worldRenderer))
@@ -86,7 +136,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public override void Tick()
 		{
 			if (Animate)
-				foreach (var p in preview)
+				foreach (var p in Preview)
 					p.Tick();
 		}
 	}
