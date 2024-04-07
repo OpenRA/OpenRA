@@ -23,10 +23,10 @@ namespace OpenRA.Mods.Common.Activities
 		readonly WDist maxRange;
 		readonly IMove move;
 		readonly Color? targetLineColor;
+		readonly MoveCooldownHelper moveCooldownHelper;
 		Target target;
 		Target lastVisibleTarget;
 		bool useLastVisibleTarget;
-		bool wasMovingWithinRange;
 
 		public Follow(Actor self, in Target target, WDist minRange, WDist maxRange,
 			WPos? initialTargetPosition, Color? targetLineColor = null)
@@ -36,6 +36,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.maxRange = maxRange;
 			this.targetLineColor = targetLineColor;
 			move = self.Trait<IMove>();
+			moveCooldownHelper = new MoveCooldownHelper(self.World, move as Mobile) { RetryIfDestinationBlocked = true };
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -57,12 +58,9 @@ namespace OpenRA.Mods.Common.Activities
 
 			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
 
-			// If we are ticking again after previously sequencing a MoveWithRange then that move must have completed
-			// Either we are in range and can see the target, or we've lost track of it and should give up
-			if (wasMovingWithinRange && targetIsHiddenActor)
-				return true;
-
-			wasMovingWithinRange = false;
+			var result = moveCooldownHelper.Tick(targetIsHiddenActor);
+			if (result != null)
+				return result.Value;
 
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
@@ -77,7 +75,7 @@ namespace OpenRA.Mods.Common.Activities
 				return useLastVisibleTarget;
 
 			// Move into range
-			wasMovingWithinRange = true;
+			moveCooldownHelper.NotifyMoveQueued();
 			QueueChild(move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, targetLineColor));
 			return false;
 		}

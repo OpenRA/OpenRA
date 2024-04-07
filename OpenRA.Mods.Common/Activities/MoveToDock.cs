@@ -23,6 +23,7 @@ namespace OpenRA.Mods.Common.Activities
 		Actor dockHostActor;
 		IDockHost dockHost;
 		readonly INotifyDockClientMoving[] notifyDockClientMoving;
+		readonly MoveCooldownHelper moveCooldownHelper;
 
 		public MoveToDock(Actor self, Actor dockHostActor = null, IDockHost dockHost = null)
 		{
@@ -30,6 +31,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.dockHostActor = dockHostActor;
 			this.dockHost = dockHost;
 			notifyDockClientMoving = self.TraitsImplementing<INotifyDockClientMoving>().ToArray();
+			moveCooldownHelper = new MoveCooldownHelper(self.World, self.Trait<IMove>() as Mobile) { RetryIfDestinationBlocked = true };
 		}
 
 		public override bool Tick(Actor self)
@@ -60,9 +62,13 @@ namespace OpenRA.Mods.Common.Activities
 				}
 			}
 
+			var result = moveCooldownHelper.Tick(false);
+			if (result != null)
+				return result.Value;
+
 			if (dockClient.ReserveHost(dockHostActor, dockHost))
 			{
-				if (dockHost.QueueMoveActivity(this, dockHostActor, self, dockClient))
+				if (dockHost.QueueMoveActivity(this, dockHostActor, self, dockClient, moveCooldownHelper))
 				{
 					foreach (var ndcm in notifyDockClientMoving)
 						ndcm.MovingToDock(self, dockHostActor, dockHost);
@@ -75,7 +81,7 @@ namespace OpenRA.Mods.Common.Activities
 			}
 			else
 			{
-				// The dock explicitely chosen by the user is currently occupied. Wait and check again.
+				// The dock explicitly chosen by the user is currently occupied. Wait and check again.
 				QueueChild(new Wait(dockClient.Info.SearchForDockDelay));
 				return false;
 			}
