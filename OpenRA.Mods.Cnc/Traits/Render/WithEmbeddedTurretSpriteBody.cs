@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			var wsb = init.Actor.TraitInfos<WithSpriteBodyInfo>().First();
 
 			// Show the correct turret facing
-			var anim = new Animation(init.World, image, t.WorldFacingFromInit(init));
+			var anim = new Animation(init.Sequences, image, t.WorldFacingFromInit(init));
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), wsb.Sequence));
 
 			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, p);

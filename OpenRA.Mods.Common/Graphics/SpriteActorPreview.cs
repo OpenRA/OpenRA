@@ -18,34 +18,34 @@ namespace OpenRA.Mods.Common.Graphics
 {
 	public class SpriteActorPreview : IActorPreview
 	{
-		readonly Animation animation;
+		public readonly Animation Animation;
 		readonly Func<WVec> offset;
 		readonly Func<int> zOffset;
 		readonly PaletteReference pr;
 
 		public SpriteActorPreview(Animation animation, Func<WVec> offset, Func<int> zOffset, PaletteReference pr)
 		{
-			this.animation = animation;
+			Animation = animation;
 			this.offset = offset;
 			this.zOffset = zOffset;
 			this.pr = pr;
 		}
 
-		void IActorPreview.Tick() { animation.Tick(); }
+		void IActorPreview.Tick() { Animation.Tick(); }
 
 		IEnumerable<IRenderable> IActorPreview.RenderUI(WorldRenderer wr, int2 pos, float scale)
 		{
-			return animation.RenderUI(wr, pos, offset(), zOffset(), pr, scale);
+			return Animation.RenderUI(wr, pos, offset(), zOffset(), pr, scale);
 		}
 
 		IEnumerable<IRenderable> IActorPreview.Render(WorldRenderer wr, WPos pos)
 		{
-			return animation.Render(pos, offset(), zOffset(), pr);
+			return Animation.Render(pos, offset(), zOffset(), pr);
 		}
 
 		IEnumerable<Rectangle> IActorPreview.ScreenBounds(WorldRenderer wr, WPos pos)
 		{
-			yield return animation.ScreenBounds(wr, pos, offset());
+			yield return Animation.ScreenBounds(wr, pos, offset());
 		}
 	}
 }

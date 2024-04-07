@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!EnabledByDefault)
 				yield break;
 
-			var anim = new Animation(init.World, image, init.GetFacing());
+			var anim = new Animation(init.Sequences, image, init.GetFacing());
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), StandSequences[0]));
 
 			if (IsPlayerPalette)

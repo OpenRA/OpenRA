@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			else if (Palette != null)
 				p = init.WorldRenderer.Palette(Palette);
 
-			var anim = new Animation(init.World, image);
+			var anim = new Animation(init.Sequences, image);
 			anim.PlayRepeating(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence));
 
 			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, p);
@@ -81,11 +81,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (info.ForceToGround)
 				subtractDAT = () => new WVec(0, 0, -init.Self.World.Map.DistanceAboveTerrain(init.Self.CenterPosition).Length);
 
-			DefaultAnimation = new Animation(init.World, rs.GetImage(init.Self), baseFacing, Paused);
+			DefaultAnimation = new Animation(init.World.Map.Sequences, rs.GetImage(init.Self), baseFacing, Paused);
 			rs.Add(new AnimationWithOffset(DefaultAnimation, subtractDAT, () => IsTraitDisabled), info.Palette, info.IsPlayerPalette);
 
 			// Cache the bounds from the default sequence to avoid flickering when the animation changes
-			boundsAnimation = new Animation(init.World, rs.GetImage(init.Self), baseFacing, Paused);
+			boundsAnimation = new Animation(init.World.Map.Sequences, rs.GetImage(init.Self), baseFacing, Paused);
 			boundsAnimation.PlayRepeating(info.Sequence);
 		}
 

@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!EnabledByDefault)
 				yield break;
 
-			var anim = new Animation(init.World, image);
+			var anim = new Animation(init.Sequences, image);
 			var sequence = init.World.Type == WorldType.Editor ? EditorSequence : Sequence;
 			var palette = init.World.Type == WorldType.Editor ? init.WorldRenderer.Palette(EditorPalette) : p;
 			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), sequence), () => 0);
