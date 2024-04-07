@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using OpenRA.Activities;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Activities;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Terrain;
 using OpenRA.Mods.Common.Widgets;
@@ -262,7 +263,7 @@ namespace OpenRA.Mods.Common.Traits
 		void OnDockCompleted(Actor self, Actor clientActor, DockClientManager client);
 
 		/// <summary>If <paramref name="client"/> is not in range of <see cref="IDockHost"/> queues a child move activity and returns true. If in range returns false.</summary>
-		bool QueueMoveActivity(Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client);
+		bool QueueMoveActivity(Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client, MoveCooldownHelper moveCooldownHelper);
 
 		/// <summary>Should be called when in range of <see cref="IDockHost"/>.</summary>
 		void QueueDockActivity(Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client);
@@ -726,6 +727,14 @@ namespace OpenRA.Mods.Common.Traits
 		Horizontal = 1,
 		Vertical = 2,
 		Turn = 4
+	}
+
+	public enum MoveResult
+	{
+		InProgress,
+		CompleteCanceled,
+		CompleteDestinationReached,
+		CompleteDestinationBlocked,
 	}
 
 	[RequireExplicitImplementation]

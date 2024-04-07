@@ -29,6 +29,7 @@ namespace OpenRA.Mods.Cnc.Activities
 		readonly bool allowMovement;
 		readonly bool forceAttack;
 		readonly Color? targetLineColor;
+		readonly MoveCooldownHelper moveCooldownHelper;
 
 		Target target;
 		Target lastVisibleTarget;
@@ -47,6 +48,7 @@ namespace OpenRA.Mods.Cnc.Activities
 			this.allowMovement = allowMovement;
 			this.forceAttack = forceAttack;
 			mobile = self.Trait<Mobile>();
+			moveCooldownHelper = new MoveCooldownHelper(self.World, mobile);
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -92,6 +94,10 @@ namespace OpenRA.Mods.Cnc.Activities
 
 			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
 
+			var result = moveCooldownHelper.Tick(targetIsHiddenActor);
+			if (result != null)
+				return result.Value;
+
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
 				return true;
@@ -104,6 +110,7 @@ namespace OpenRA.Mods.Cnc.Activities
 				if (!allowMovement || lastVisibleMaxRange == WDist.Zero || lastVisibleMaxRange < lastVisibleMinRange)
 					return true;
 
+				moveCooldownHelper.NotifyMoveQueued();
 				QueueChild(mobile.MoveWithinRange(target, lastVisibleMinRange, lastVisibleMaxRange, checkTarget.CenterPosition, Color.Red));
 				return false;
 			}

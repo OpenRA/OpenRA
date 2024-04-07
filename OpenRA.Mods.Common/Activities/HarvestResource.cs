@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IMove move;
 		readonly CPos targetCell;
 		readonly INotifyHarvestAction[] notifyHarvestActions;
+		readonly MoveCooldownHelper moveCooldownHelper;
 
 		public HarvestResource(Actor self, CPos targetCell)
 		{
@@ -40,6 +41,7 @@ namespace OpenRA.Mods.Common.Activities
 			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 			this.targetCell = targetCell;
 			notifyHarvestActions = self.TraitsImplementing<INotifyHarvestAction>().ToArray();
+			moveCooldownHelper = new MoveCooldownHelper(self.World, move as Mobile);
 		}
 
 		protected override void OnFirstRun(Actor self)
@@ -58,12 +60,17 @@ namespace OpenRA.Mods.Common.Activities
 			if (IsCanceling || harv.IsFull)
 				return true;
 
+			var result = moveCooldownHelper.Tick(false);
+			if (result != null)
+				return result.Value;
+
 			// Move towards the target cell
 			if (self.Location != targetCell)
 			{
 				foreach (var n in notifyHarvestActions)
 					n.MovingToResources(self, targetCell);
 
+				moveCooldownHelper.NotifyMoveQueued();
 				QueueChild(move.MoveTo(targetCell, 0));
 				return false;
 			}

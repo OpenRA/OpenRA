@@ -38,6 +38,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly bool wasRepaired;
 		readonly PlayerResources playerResources;
 		readonly int unitCost;
+		readonly MoveCooldownHelper moveCooldownHelper;
 
 		int remainingTicks;
 		bool played;
@@ -62,6 +63,7 @@ namespace OpenRA.Mods.Common.Activities
 			aircraft = move as Aircraft;
 			moveInfo = self.Info.TraitInfo<IMoveInfo>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
+			moveCooldownHelper = new MoveCooldownHelper(self.World, move as Mobile) { RetryIfDestinationBlocked = true };
 
 			var valued = self.Info.TraitInfoOrDefault<ValuedInfo>();
 			unitCost = valued != null ? valued.Cost : 0;
@@ -129,12 +131,18 @@ namespace OpenRA.Mods.Common.Activities
 
 				return true;
 			}
-			else if (activeResupplyTypes != 0 && aircraft == null && !isCloseEnough)
+
+			var result = moveCooldownHelper.Tick(false);
+			if (result != null)
+				return result.Value;
+
+			if (activeResupplyTypes != 0 && aircraft == null && !isCloseEnough)
 			{
 				var targetCell = self.World.Map.CellContaining(host.Actor.CenterPosition);
 
 				// HACK: Repairable needs the actor to move to host center.
 				// TODO: Get rid of this or at least replace it with something less hacky.
+				moveCooldownHelper.NotifyMoveQueued();
 				if (repairableNear == null)
 					QueueChild(move.MoveOntoTarget(self, host, WVec.Zero, null, moveInfo.GetTargetLineColor()));
 				else
@@ -217,8 +225,11 @@ namespace OpenRA.Mods.Common.Activities
 				if (wasRepaired || isHostInvalid || (!stayOnResupplier && aircraft.Info.TakeOffOnResupply))
 				{
 					if (self.CurrentActivity.NextActivity == null && rp != null && rp.Path.Count > 0)
+					{
+						moveCooldownHelper.NotifyMoveQueued();
 						foreach (var cell in rp.Path)
 							QueueChild(new AttackMoveActivity(self, () => move.MoveTo(cell, 1, ignoreActor: repairableNear != null ? null : host.Actor, targetLineColor: aircraft.Info.TargetLineColor)));
+					}
 					else
 						QueueChild(new TakeOff(self));
 
@@ -235,6 +246,7 @@ namespace OpenRA.Mods.Common.Activities
 				// If there's no next activity, move to rallypoint if available, else just leave host if Repairable.
 				// Do nothing if RepairableNear (RepairableNear actors don't enter their host and will likely remain within closeEnough).
 				// If there's a next activity and we're not RepairableNear, first leave host if the next activity is not a Move.
+				moveCooldownHelper.NotifyMoveQueued();
 				if (self.CurrentActivity.NextActivity == null)
 				{
 					if (rp != null && rp.Path.Count > 0)

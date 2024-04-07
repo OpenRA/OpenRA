@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.Traits
 				OnDockCompleted(self, dockedClientActor, dockedClient);
 		}
 
-		public virtual bool QueueMoveActivity(Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client)
+		public virtual bool QueueMoveActivity(Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client, MoveCooldownHelper moveCooldownHelper)
 		{
 			var move = clientActor.Trait<IMove>();
 
@@ -141,6 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 			if ((move is Mobile ? clientActor.Location != clientActor.World.Map.CellContaining(DockPosition) : clientActor.CenterPosition != DockPosition)
 				|| move is not IFacing facing || facing.Facing != DockAngle)
 			{
+				moveCooldownHelper.NotifyMoveQueued();
 				moveToDockActivity.QueueChild(move.MoveOntoTarget(clientActor, Target.FromActor(self), DockPosition - self.CenterPosition, DockAngle));
 				return true;
 			}

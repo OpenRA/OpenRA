@@ -237,6 +237,7 @@ namespace OpenRA.Mods.Common.Traits
 			readonly Rearmable rearmable;
 			readonly AttackSource source;
 			readonly bool isAircraft;
+			readonly MoveCooldownHelper moveCooldownHelper;
 
 			Target target;
 			Target lastVisibleTarget;
@@ -245,7 +246,6 @@ namespace OpenRA.Mods.Common.Traits
 			WDist lastVisibleMinimumRange;
 			BitSet<TargetableType> lastVisibleTargetTypes;
 			Player lastVisibleOwner;
-			bool wasMovingWithinRange;
 			bool hasTicked;
 			bool returnToBase = false;
 
@@ -255,6 +255,7 @@ namespace OpenRA.Mods.Common.Traits
 				move = allowMove ? self.TraitOrDefault<IMove>() : null;
 				revealsShroud = self.TraitsImplementing<RevealsShroud>().ToArray();
 				rearmable = self.TraitOrDefault<Rearmable>();
+				moveCooldownHelper = new MoveCooldownHelper(self.World, move as Mobile) { RetryIfDestinationBlocked = true };
 
 				this.target = target;
 				this.forceAttack = forceAttack;
@@ -348,10 +349,9 @@ namespace OpenRA.Mods.Common.Traits
 						maxRange = sightRange;
 				}
 
-				// If we are ticking again after previously sequencing a MoveWithRange then that move must have completed
-				// Either we are in range and can see the target, or we've lost track of it and should give up
-				if (wasMovingWithinRange && targetIsHiddenActor)
-					return true;
+				var result = moveCooldownHelper.Tick(targetIsHiddenActor);
+				if (result != null)
+					return result.Value;
 
 				// Target is hidden or dead, and we don't have a fallback position to move towards
 				if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
@@ -406,7 +406,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (move == null || maxRange == WDist.Zero || maxRange < minRange)
 					return true;
 
-				wasMovingWithinRange = true;
+				moveCooldownHelper.NotifyMoveQueued();
 				QueueChild(move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition));
 				return false;
 			}

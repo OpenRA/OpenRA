@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Activities
 
 		readonly IMove move;
 		readonly Color? targetLineColor;
+		readonly MoveCooldownHelper moveCooldownHelper;
 
 		Target target;
 		Target lastVisibleTarget;
@@ -37,6 +38,7 @@ namespace OpenRA.Mods.Common.Activities
 			this.target = target;
 			this.targetLineColor = targetLineColor;
 			ChildHasPriority = false;
+			moveCooldownHelper = new MoveCooldownHelper(self.World, move as Mobile) { RetryIfDestinationBlocked = true };
 		}
 
 		/// <summary>
@@ -79,6 +81,10 @@ namespace OpenRA.Mods.Common.Activities
 			if (!TickChild(self))
 				return false;
 
+			var result = moveCooldownHelper.Tick(targetIsHiddenActor);
+			if (result != null)
+				return result.Value;
+
 			// Note that lastState refers to what we have just *finished* doing
 			switch (lastState)
 			{
@@ -97,6 +103,7 @@ namespace OpenRA.Mods.Common.Activities
 					if (target.Type != TargetType.Invalid && !move.CanEnterTargetNow(self, target))
 					{
 						// Target lines are managed by this trait, so we do not pass targetLineColor
+						moveCooldownHelper.NotifyMoveQueued();
 						var initialTargetPosition = (useLastVisibleTarget ? lastVisibleTarget : target).CenterPosition;
 						QueueChild(move.MoveToTarget(self, target, initialTargetPosition));
 						return false;
@@ -110,6 +117,7 @@ namespace OpenRA.Mods.Common.Activities
 					// Are we ready to move into the target?
 					if (TryStartEnter(self, target.Actor))
 					{
+						moveCooldownHelper.NotifyMoveQueued();
 						lastState = EnterState.Entering;
 						QueueChild(move.MoveIntoTarget(self, target));
 						return false;
@@ -136,6 +144,7 @@ namespace OpenRA.Mods.Common.Activities
 
 				case EnterState.Exiting:
 				{
+					moveCooldownHelper.NotifyMoveQueued();
 					QueueChild(move.ReturnToCell(self));
 					lastState = EnterState.Finished;
 					return false;

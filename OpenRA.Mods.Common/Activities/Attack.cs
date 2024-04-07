@@ -33,6 +33,7 @@ namespace OpenRA.Mods.Common.Activities
 		readonly IPositionable positionable;
 		readonly bool forceAttack;
 		readonly Color? targetLineColor;
+		readonly MoveCooldownHelper moveCooldownHelper;
 
 		protected Target target;
 		Target lastVisibleTarget;
@@ -40,7 +41,6 @@ namespace OpenRA.Mods.Common.Activities
 		BitSet<TargetableType> lastVisibleTargetTypes;
 		Player lastVisibleOwner;
 		bool useLastVisibleTarget;
-		bool wasMovingWithinRange;
 
 		WDist minRange;
 		WDist maxRange;
@@ -60,6 +60,8 @@ namespace OpenRA.Mods.Common.Activities
 			var iMove = self.TraitOrDefault<IMove>();
 			mobile = iMove as Mobile;
 			move = allowMovement ? iMove : null;
+
+			moveCooldownHelper = new MoveCooldownHelper(self.World, mobile);
 
 			// The target may become hidden between the initial order request and the first tick (e.g. if queued)
 			// Moving to any position (even if quite stale) is still better than immediately giving up
@@ -114,16 +116,14 @@ namespace OpenRA.Mods.Common.Activities
 
 			useLastVisibleTarget = targetIsHiddenActor || !target.IsValidFor(self);
 
-			// If we are ticking again after previously sequencing a MoveWithRange then that move must have completed
-			// Either we are in range and can see the target, or we've lost track of it and should give up
-			if (wasMovingWithinRange && targetIsHiddenActor)
-				return true;
+			var result = moveCooldownHelper.Tick(targetIsHiddenActor);
+			if (result != null)
+				return result.Value;
 
 			// Target is hidden or dead, and we don't have a fallback position to move towards
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
 				return true;
 
-			wasMovingWithinRange = false;
 			var pos = self.CenterPosition;
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 
@@ -135,7 +135,7 @@ namespace OpenRA.Mods.Common.Activities
 					return true;
 
 				// Move towards the last known position
-				wasMovingWithinRange = true;
+				moveCooldownHelper.NotifyMoveQueued();
 				QueueChild(move.MoveWithinRange(target, WDist.Zero, lastVisibleMaximumRange, checkTarget.CenterPosition, Color.Red));
 				return false;
 			}
@@ -147,9 +147,6 @@ namespace OpenRA.Mods.Common.Activities
 				var status = TickAttack(self, attack);
 				attack.IsAiming = status == AttackStatus.Attacking || status == AttackStatus.NeedsToTurn;
 			}
-
-			if (attackStatus.HasFlag(AttackStatus.NeedsToMove))
-				wasMovingWithinRange = true;
 
 			if (attackStatus >= AttackStatus.NeedsToTurn)
 				return false;
@@ -185,6 +182,7 @@ namespace OpenRA.Mods.Common.Activities
 				var sightRange = rs != null ? rs.Range : WDist.FromCells(2);
 
 				attackStatus |= AttackStatus.NeedsToMove;
+				moveCooldownHelper.NotifyMoveQueued();
 				QueueChild(move.MoveWithinRange(target, sightRange, target.CenterPosition, Color.Red));
 				return AttackStatus.NeedsToMove;
 			}
@@ -218,6 +216,7 @@ namespace OpenRA.Mods.Common.Activities
 					return AttackStatus.UnableToAttack;
 
 				attackStatus |= AttackStatus.NeedsToMove;
+				moveCooldownHelper.NotifyMoveQueued();
 				var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 				QueueChild(move.MoveWithinRange(target, minRange, maxRange, checkTarget.CenterPosition, Color.Red));
 				return AttackStatus.NeedsToMove;
