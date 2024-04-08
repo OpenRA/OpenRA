@@ -8,6 +8,16 @@ label-assetbrowser-sprite-scale = Scale:
 label-assetbrowser-palette-desc = Palette:
 label-assetbrowser-sprite-bg-error = Error displaying file. See assetbrowser.log for details.
 
+## asseteditor.yaml
+label-asseteditor-title = Asset Editor
+label-asseteditor-actorname-filter = Filter by name
+label-asseteditor-scale = Scale:
+button-asseteditor-export = Export
+dropdownbutton-asset-type-dropdown = Asset types
+button-editor = Edit
+button-inits = Inits
+button-options = Options
+
 ## color-picker.yaml
 button-color-chooser-random = Random
 button-color-chooser-store = Store
@@ -307,6 +317,7 @@ button-singleplayer-menu-load = Load
 button-extras-menu-replays = Replays
 label-map-editor-title = Map Editor
 button-extras-menu-assetbrowser = Asset Browser
+button-extras-menu-asseteditor = Asset Editor
 button-map-editor-new-map = New Map
 button-map-editor-load-map = Load Map
 dropdownbutton-news-bg-button = Battlefield News

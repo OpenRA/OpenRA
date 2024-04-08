@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Graphics
 {
@@ -206,8 +207,9 @@ namespace OpenRA.Mods.Common.Graphics
 
 		protected readonly ISpriteSequenceLoader Loader;
 
-		protected string image;
+		public readonly string Image;
 		protected List<SpriteReservation> spritesToLoad = new();
+
 		protected Sprite[] sprites;
 		protected Sprite[] shadowSprites;
 		protected bool reverseFacings;
@@ -222,6 +224,11 @@ namespace OpenRA.Mods.Common.Graphics
 		protected int facings;
 		protected int? interpolatedFacings;
 		protected int tick;
+
+		[AssetEditor(new string[] { nameof(sprites), nameof(shadowSprites) })]
+		protected float3 offset;
+
+		[AssetEditor]
 		protected int zOffset;
 		protected int shadowZOffset;
 		protected bool ignoreWorldTint;
@@ -236,7 +243,7 @@ namespace OpenRA.Mods.Common.Graphics
 		protected void ThrowIfUnresolved()
 		{
 			if (bounds == null)
-				throw new InvalidOperationException($"Unable to query unresolved sequence {image}.{Name}.");
+				throw new InvalidOperationException($"Unable to query unresolved sequence {Image}.{Name}.");
 		}
 
 		int ISpriteSequence.Length
@@ -367,7 +374,7 @@ namespace OpenRA.Mods.Common.Graphics
 
 		public DefaultSpriteSequence(SpriteCache cache, ISpriteSequenceLoader loader, string image, string sequence, MiniYaml data, MiniYaml defaults)
 		{
-			this.image = image;
+			Image = image;
 			Name = sequence;
 			Loader = loader;
 
@@ -432,7 +439,7 @@ namespace OpenRA.Mods.Common.Graphics
 			var flipX = LoadField(FlipX, data, defaults);
 			var flipY = LoadField(FlipY, data, defaults);
 			var zRamp = LoadField(ZRamp, data, defaults);
-			var offset = LoadField(Offset, data, defaults);
+			offset = LoadField(Offset, data, defaults);
 			var blendMode = LoadField(BlendMode, data, defaults);
 
 			var combineNode = data.NodeWithKeyOrDefault(Combine.Key);
@@ -522,7 +529,7 @@ namespace OpenRA.Mods.Common.Graphics
 				if (alpha.Length == 1)
 					alpha = Exts.MakeArray(length.Value, _ => alpha[0]);
 				else if (alpha.Length != length.Value)
-					throw new YamlException($"Sequence {image}.{Name} must define either 1 or {length.Value} Alpha values.");
+					throw new YamlException($"Sequence {Image}.{Name} must define either 1 or {length.Value} Alpha values.");
 			}
 			else if (alphaFade)
 				alpha = Exts.MakeArray(length.Value, i => float2.Lerp(1f, 0f, i / (length.Value - 1f)));
@@ -536,12 +543,12 @@ namespace OpenRA.Mods.Common.Graphics
 			}
 
 			if (index.Count == 0)
-				throw new YamlException($"Sequence {image}.{Name} does not define any frames.");
+				throw new YamlException($"Sequence {Image}.{Name} does not define any frames.");
 
 			var minIndex = index.Min();
 			var maxIndex = index.Max();
 			if (minIndex < 0 || maxIndex >= allSprites.Length)
-				throw new YamlException($"Sequence {image}.{Name} uses frames between {minIndex}..{maxIndex}, but only 0..{allSprites.Length - 1} exist.");
+				throw new YamlException($"Sequence {Image}.{Name} uses frames between {minIndex}..{maxIndex}, but only 0..{allSprites.Length - 1} exist.");
 
 			sprites = index.Select(f => allSprites[f]).ToArray();
 			if (shadowStart >= 0)
@@ -583,7 +590,7 @@ namespace OpenRA.Mods.Common.Graphics
 			var index = GetFacingFrameOffset(facing) * length.Value + frame % length.Value;
 			var sprite = shadowSprites[index];
 			if (sprite == null)
-				throw new InvalidOperationException($"Attempted to query unloaded shadow sprite from {image}.{Name} frame={frame} facing={facing}.");
+				throw new InvalidOperationException($"Attempted to query unloaded shadow sprite from {Image}.{Name} frame={frame} facing={facing}.");
 
 			return sprite;
 		}
@@ -594,7 +601,7 @@ namespace OpenRA.Mods.Common.Graphics
 			var index = GetFacingFrameOffset(facing) * length.Value + frame % length.Value;
 			var sprite = sprites[index];
 			if (sprite == null)
-				throw new InvalidOperationException($"Attempted to query unloaded sprite from {image}.{Name} frame={frame} facing={facing}.");
+				throw new InvalidOperationException($"Attempted to query unloaded sprite from {Image}.{Name} frame={frame} facing={facing}.");
 
 			return sprite;
 		}

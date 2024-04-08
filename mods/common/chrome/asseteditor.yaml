@@ -1,0 +1,280 @@
+Background@ASSETEDITOR_PANEL:
+	Logic: AssetEditorLogic
+	X: (WINDOW_RIGHT - WIDTH) / 2
+	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	Width: 900
+	Height: 600
+	Children:
+		Label@ASSETBROWSER_TITLE:
+			Y: 16
+			Width: PARENT_RIGHT
+			Height: 25
+			Font: Bold
+			Align: Center
+			Text: label-asseteditor-title
+		Label@FILENAME_DESC:
+			X: 20
+			Y: 115
+			Width: 175
+			Height: 25
+			Font: TinyBold
+			Align: Center
+			Text: label-asseteditor-actorname-filter
+		TextField@SEARCH_TEXTFIELD:
+			X: 20
+			Y: 140
+			Width: 175
+			Height: 25
+			Type: General
+		ScrollPanel@ASSET_LIST:
+			X: 20
+			Y: 170
+			Width: 175
+			Height: PARENT_BOTTOM - 250
+			TopBottomSpacing: 6
+			ItemSpacing: 4
+			Children:
+				ScrollItem@ASSET_TEMPLATE:
+					Width: PARENT_RIGHT - 27
+					Height: 25
+					X: 2
+					Visible: false
+					EnableChildMouseOver: True
+					Children:
+						LabelWithTooltip@TITLE:
+							X: 10
+							Width: PARENT_RIGHT - 20
+							Height: 25
+							TooltipContainer: TOOLTIP_CONTAINER
+							TooltipTemplate: SIMPLE_TOOLTIP
+		Background@SPRITE_BG:
+			X: 195
+			Y: 65
+			Width: 391
+			Height: 455
+			Background: dialog3
+			Children:
+				ActorPreview@ACTOR_PREVIEW:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					Visible: false
+					Center: true
+					RecalculateBounds: false
+		Button@EDITOR_BUTTON:
+			X: 586
+			Y: 40
+			Width: 98
+			Height: 25
+			Font: Bold
+			Text: button-editor
+		Button@OPTIONS_BUTTON:
+			X: 684
+			Y: 40
+			Width: 98
+			Height: 25
+			Font: Bold
+			Text: button-inits
+		Button@INITS_BUTTON:
+			X: 782
+			Y: 40
+			Width: 98
+			Height: 25
+			Font: Bold
+			Text: button-options
+		Container@EDITOR_BACKGROUND:
+			X: 586
+			Y: 65
+			Width: 294
+			Height: 455
+			Children:
+				DropDownButton@TYPES_DROPDOWN:
+					Width: PARENT_RIGHT
+					Height: 25
+					Font: Bold
+					Text: dropdownbutton-asset-type-dropdown
+				ScrollPanel@EDITOR_SCROLLPANEL:
+					Y: 25
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM - 25
+					CollapseHiddenChildren: True
+					TopBottomSpacing: 10
+					Children:
+						Container@OPTION_TEMPLATE:
+							Width: PARENT_RIGHT - 24
+							Height: 42
+							Children:
+								Label@TITLE:
+									X: 5
+									Y: 1
+									Width: PARENT_RIGHT
+									Height: 10
+									Font: TinyBold
+									Align: Center
+								Container@INT_OPTION_TEMPLATE:
+									Y: 15
+									Width: PARENT_RIGHT
+									Height: 26
+									Children:
+										Label@LABEL:
+											X: 5
+											Width: 90
+											Height: 16
+											Align: Right
+										TextField@VALUE:
+											X: 100
+											Width: 50
+											Height: 20
+											Type: Integer
+								Container@WVEC_OPTION_TEMPLATE:
+									Y: 15
+									Width: PARENT_RIGHT
+									Height: 26
+									Children:
+										Label@LABEL:
+											X: 5
+											Width: 90
+											Height: 16
+											Align: Right
+										TextField@VALUEX:
+											X: 100
+											Width: 50
+											Height: 20
+											Type: Integer
+										TextField@VALUEY:
+											X: 160
+											Width: 50
+											Height: 20
+											Type: Integer
+										TextField@VALUEZ:
+											X: 210
+											Width: 50
+											Height: 20
+											Type: Integer
+								Container@FLOAT3_OPTION_TEMPLATE:
+									Y: 15
+									Width: PARENT_RIGHT
+									Height: 26
+									Children:
+										Label@LABEL:
+											X: 5
+											Width: 90
+											Height: 16
+											Align: Right
+										TextField@VALUEX:
+											X: 100
+											Width: 50
+											Height: 20
+											Type: Float
+										TextField@VALUEY:
+											X: 160
+											Width: 50
+											Height: 20
+											Type: Float
+										TextField@VALUEZ:
+											X: 210
+											Width: 50
+											Height: 20
+											Type: Float
+				ScrollPanel@INITS_SCROLLPANEL:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					CollapseHiddenChildren: True
+					TopBottomSpacing: 10
+					ItemSpacing: 15
+					Children:
+						Container@CHECKBOX_OPTION_TEMPLATE:
+							Width: PARENT_RIGHT - 24
+							Height: 22
+							Children:
+								Checkbox@OPTION:
+									X: 5
+									Y: 1
+									Width: PARENT_RIGHT - 100
+									Height: 20
+						Container@SLIDER_OPTION_TEMPLATE:
+							Width: PARENT_RIGHT - 24
+							Height: 22
+							Children:
+								Label@LABEL:
+									X: 5
+									Y: 1
+									Width: 55
+									Height: 16
+									Align: Right
+								Slider@OPTION:
+									X: 75
+									Y: 1
+									Width: 120
+									Height: 20
+								TextField@VALUE:
+									X: 210
+									Y: 1
+									Width: 50
+									Height: 20
+									Type: Integer
+						Container@DROPDOWN_OPTION_TEMPLATE:
+							Width: PARENT_RIGHT - 24
+							Height: 27
+							Children:
+								Label@LABEL:
+									X: 5
+									Y: 2
+									Width: 55
+									Height: 24
+									Align: Right
+								DropDownButton@OPTION:
+									X: 84
+									Y: 1
+									Width: PARENT_RIGHT - 84 - 24
+									Height: 25
+									Font: Bold
+				ScrollPanel@OPTIONS_SCROLLPANEL:
+					Width: PARENT_RIGHT
+					Height: PARENT_BOTTOM
+					CollapseHiddenChildren: True
+					TopBottomSpacing: 10
+					ItemSpacing: 10
+					Children:
+						Container@SCALE_CONTAINER:
+							Width: PARENT_RIGHT - 24
+							Height: 25
+							Children:
+								Label@SCALE:
+									X: 5
+									Width: 50
+									Height: 25
+									Font: Bold
+									Align: Right
+									Text: label-asseteditor-scale
+								Slider@SCALE_SLIDER:
+									X: 55
+									Width: 200
+									Height: 20
+									MinimumValue: 0.3
+									MaximumValue: 15
+						DropDownButton@COLOR:
+							Width: PARENT_RIGHT - 24
+							Width: 80
+							Height: 25
+							Children:
+								ColorBlock@COLORBLOCK:
+									X: 5
+									Y: 6
+									Width: PARENT_RIGHT - 35
+									Height: PARENT_BOTTOM - 12
+		Button@EXPORT_BUTTON:
+			Key: EditorQuickSave
+			X: PARENT_RIGHT - 345
+			Y: PARENT_BOTTOM - 45
+			Width: 160
+			Height: 25
+			Text: button-asseteditor-export
+		Button@CLOSE_BUTTON:
+			Key: escape
+			X: PARENT_RIGHT - 180
+			Y: PARENT_BOTTOM - 45
+			Width: 160
+			Height: 25
+			Font: Bold
+			Text: button-back
+		TooltipContainer@TOOLTIP_CONTAINER:

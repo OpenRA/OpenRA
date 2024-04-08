@@ -447,6 +447,12 @@ dialog-settings-reset =
 label-all-packages = All Packages
 label-length-in-seconds = { $length } sec
 
+## asseteditor.yaml
+dialog-asseteditor-exit-editor =
+    .title = Exit Asset Editor
+    .prompt = Exit and lose all unsaved changes?
+    .confirm = Exit
+
 ## ConnectionLogic
 label-connecting-to-endpoint = Connecting to { $endpoint }...
 label-could-not-connect-to-target = Could not connect to { $target }

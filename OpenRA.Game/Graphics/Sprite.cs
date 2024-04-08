@@ -11,6 +11,7 @@
 
 using System;
 using OpenRA.Primitives;
+using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
@@ -22,6 +23,8 @@ namespace OpenRA.Graphics
 		public readonly TextureChannel Channel;
 		public readonly float ZRamp;
 		public readonly float3 Size;
+
+		[AssetEditor]
 		public readonly float3 Offset;
 		public readonly float Top, Left, Bottom, Right;
 

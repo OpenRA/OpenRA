@@ -19,12 +19,14 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Used to enable mouse interaction on actors that are not Selectable.")]
 	public class InteractableInfo : TraitInfo, IMouseBoundsInfo
 	{
+		[AssetEditor]
 		[Desc("Defines a custom rectangle for mouse interaction with the actor.",
 			"If null, the engine will guess an appropriate size based on the With*Body trait.",
 			"The first two numbers define the width and height of the rectangle as a world distance.",
 			"The (optional) second two numbers define an x and y offset from the actor center.")]
 		public readonly WDist[] Bounds = null;
 
+		[AssetEditor]
 		[Desc("Defines a custom rectangle for Decorations (e.g. the selection box).",
 			"If null, Bounds will be used instead")]
 		public readonly WDist[] DecorationBounds = null;

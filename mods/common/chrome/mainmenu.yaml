@@ -169,9 +169,16 @@ Container@MAINMENU:
 							Height: 30
 							Text: button-extras-menu-assetbrowser
 							Font: Bold
-						Button@CREDITS_BUTTON:
+						Button@ASSETEDITOR_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Y: 220
+							Width: 140
+							Height: 30
+							Text: button-extras-menu-asseteditor
+							Font: Bold
+						Button@CREDITS_BUTTON:
+							X: PARENT_RIGHT / 2 - WIDTH / 2
+							Y: 260
 							Width: 140
 							Height: 30
 							Text: label-credits-title
@@ -179,7 +186,7 @@ Container@MAINMENU:
 						Button@BACK_BUTTON:
 							X: PARENT_RIGHT / 2 - WIDTH / 2
 							Key: escape
-							Y: 260
+							Y: 300
 							Width: 140
 							Height: 30
 							Text: button-back

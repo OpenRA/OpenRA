@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "idle-overlay";
 
+		[AssetEditor]
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
