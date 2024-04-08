@@ -326,11 +326,15 @@ REPAIR:
 		Cursor: repair
 		OutsideRangeCursor: repair
 		TargetRelationships: Ally
-		ForceTargetRelationships: None
-	AttackFrontal:
+		ForceTargetRelationships: Ally
+	Armament@PRIMARY:
+		Weapon: MRVMissile
+		TargetRelationships: Enemy
+		ForceTargetRelationships: Neutral, Enemy
+	AttackTurreted:
 		Voice: Attack
 		PauseOnCondition: empdisable
-		FacingTolerance: 0
+	Turreted:
 	AutoTarget:
 		ScanRadius: 8
 		InitialStance: AttackAnything

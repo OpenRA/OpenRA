@@ -19,7 +19,7 @@ Heal:
 
 Repair:
 	Inherits: ^HealWeapon
-	Range: 1c819
+	Range: 4c0
 	Report: repair11.aud
 	ValidTargets: Repair
 	Warhead@1Eff: FlashTargetsInRadius

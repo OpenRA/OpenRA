@@ -163,12 +163,16 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public virtual void DoAttack(Actor self, in Target target)
+		public virtual void DoAttack(Actor self, in Target target, bool forceAttack)
 		{
 			if (!CanAttack(self, target))
 				return;
 
-			foreach (var a in Armaments)
+			var armaments = ChooseArmamentsForTarget(target, forceAttack).ToList();
+			if (armaments.Count == 0)
+				return;
+
+			foreach (var a in armaments)
 				a.CheckFire(self, facing, target);
 		}
 

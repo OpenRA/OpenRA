@@ -164,7 +164,7 @@ namespace OpenRA.Mods.Common.Traits
 			return coords.Value.LocalToWorld(p.Offset.Rotate(bodyOrientation));
 		}
 
-		public override void DoAttack(Actor self, in Target target)
+		public override void DoAttack(Actor self, in Target target, bool forceAttack)
 		{
 			if (!CanAttack(self, target))
 				return;
@@ -173,7 +173,11 @@ namespace OpenRA.Mods.Common.Traits
 			var targetedPosition = GetTargetPosition(pos, target);
 			var targetYaw = (targetedPosition - pos).Yaw;
 
-			foreach (var a in Armaments)
+			var armaments = ChooseArmamentsForTarget(target, forceAttack).ToList();
+			if (armaments.Count == 0)
+				return;
+
+			foreach (var a in armaments)
 			{
 				if (a.IsTraitDisabled)
 					continue;

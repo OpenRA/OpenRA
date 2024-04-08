@@ -138,3 +138,12 @@ RedEye2:
 		Explosions: large_grey_explosion
 		ImpactSounds: expnew13.aud
 		ImpactActors: false
+
+MRVMissile:
+	Inherits: ^DefaultMissile
+	Range: 5c0
+	Report: misl1.aud
+	ValidTargets: Ground
+	Warhead@1Dam: SpreadDamage
+		Damage: 4000
+		ValidTargets: Ground, Air
