@@ -18,7 +18,13 @@ BeachheadTrigger =
 	CPos.New(137, 104), CPos.New(137, 105), CPos.New(137, 106), CPos.New(136, 106), CPos.New(136, 107)
 }
 
-if Difficulty == "normal" then
+if Difficulty == "easy" then
+	BaseRaidInterval = DateTime.Minutes(4)
+	BaseFrontAttackInterval = DateTime.Minutes(4) + DateTime.Seconds(30)
+	BaseRearAttackInterval = DateTime.Minutes(8)
+	UBoatPatrolDelay = DateTime.Minutes(3)
+	BaseFrontAttackWpts = { PatrolWpt1.Location, BaseRaidWpt1.Location }
+elseif Difficulty == "normal" then
 	BaseRaidInterval = DateTime.Minutes(3)
 	BaseFrontAttackInterval = DateTime.Minutes(3) + DateTime.Seconds(30)
 	BaseRearAttackInterval = DateTime.Minutes(8)
@@ -63,9 +69,9 @@ GroundPatrolUnits =
 
 ParadropSovietUnits = function()
 	local powerproxy = Actor.Create("powerproxy.paratroopers", false, { Owner = Soviets })
-	local aircraft = powerproxy.TargetParatroopers(MCVDeployLocation.CenterPosition, Angle.New(812))
+	local aircraft = powerproxy.TargetParatroopers(MCVRally.CenterPosition, Angle.New(812))
 	Utils.Do(aircraft, function(a)
-		Trigger.OnPassengerExited(a, function(t, p)
+		Trigger.OnPassengerExited(a, function(_, p)
 			IdleHunt(p)
 		end)
 	end)
@@ -90,8 +96,8 @@ AirRaid = function(planeTypes, ingress, target)
 end
 
 BaseRaid = function()
-	local targets = Map.ActorsInBox(AlliedAreaTopLeft.CenterPosition, AlliedAreaBottomRight.CenterPosition, function(actor)
-		return actor.Owner == Allies and actor.HasProperty("StartBuildingRepairs")
+	local targets = Utils.Where(Allies.GetActors(), function(actor)
+		return actor.HasProperty("StartBuildingRepairs") and IsInAlliedBaseArea(actor.CenterPosition.X, actor.CenterPosition.Y)
 	end)
 
 	if #targets == 0 then
@@ -137,8 +143,8 @@ SendUboatPatrol = function(team)
 end
 
 SendGroundPatrol = function(team)
-	Utils.Do(team, function(unit) unit.Patrol(GroundPatrolWpts, true, DateTime.Seconds(3)) end)
 	Utils.Do(team, function(unit)
+		unit.Patrol(GroundPatrolWpts, true, DateTime.Seconds(3))
 		Trigger.OnIdle(unit, function(actor) actor.Hunt() end)
 	end)
 	Trigger.OnAllKilled(team, function()
@@ -147,16 +153,16 @@ SendGroundPatrol = function(team)
 end
 
 BaseFrontAttack = function(team)
-	Utils.Do(team, function(unit) unit.Patrol(BaseFrontAttackWpts, false) end)
 	Utils.Do(team, function(unit)
+		unit.Patrol(BaseFrontAttackWpts, false)
 		Trigger.OnIdle(unit, function(actor) actor.Hunt() end)
 	end)
 	Trigger.AfterDelay(BaseFrontAttackInterval, function() Build(BaseFrontAttackUnits, BaseFrontAttack) end)
 end
 
 BaseRearAttack = function(team)
-	Utils.Do(team, function(unit) unit.Patrol(BaseRearAttackWpts, false) end)
 	Utils.Do(team, function(unit)
+		unit.Patrol(BaseRearAttackWpts, false)
 		Trigger.OnIdle(unit, function(actor) actor.Hunt() end)
 	end)
 	Trigger.AfterDelay(BaseRearAttackInterval, function() Build(BaseRearAttackUnits, BaseRearAttack) end)
@@ -171,9 +177,8 @@ Build = function(units, action)
 end
 
 SetupWorld = function()
-	Utils.Do(SovietHarvesters, function(a) a.FindResources() end)
-
 	Utils.Do(SovietHarvesters, function(harvester)
+		harvester.FindResources()
 		Trigger.OnDamaged(harvester, function(h)
 			Utils.Do(HarvesterGuard, function(g)
 				if not g.IsDead then
@@ -258,63 +263,184 @@ WorldLoaded = function()
 		if not BeachheadTriggered and a.Owner == Allies and a.Type == "mcv" then
 			BeachheadTriggered = true
 			Trigger.RemoveFootprintTrigger(id)
-			Allies.MarkCompletedObjective(BeachheadObjective)
-
-			CaptureObjective = AddPrimaryObjective(Allies, "capture-air-force-hq")
-
-			if AirForceHQ.IsDead then
-				Allies.MarkFailedObjective(CaptureObjective)
-				return
-			end
-			if AirForceHQ.Owner == Allies then
-				Allies.MarkCompletedObjective(CaptureObjective)
-				Allies.MarkCompletedObjective(VillageObjective)
-				return
-			end
-
-			Trigger.OnCapture(AirForceHQ, function()
-				Trigger.AfterDelay(DateTime.Seconds(3), function()
-					Allies.MarkCompletedObjective(CaptureObjective)
-					Allies.MarkCompletedObjective(VillageObjective)
-				end)
-			end)
-			Trigger.OnKilled(AirForceHQ, function() Allies.MarkFailedObjective(CaptureObjective) end)
-
-			Actor.Create("mainland", true, { Owner = Allies })
-
-			Trigger.AfterDelay(BaseFrontAttackInterval, function()
-				Build(BaseFrontAttackUnits, BaseFrontAttack)
-				ParadropSovietUnits()
-			end)
-			Trigger.AfterDelay(BaseRearAttackInterval, function()
-				Build(BaseRearAttackUnits, BaseRearAttack)
-			end)
-			Trigger.AfterDelay(BaseRaidInterval, BaseRaid)
-
-			Trigger.AfterDelay(UBoatPatrolDelay, function()
-				Build(HunterSubs, function(subs)
-					Utils.Do(subs, function(sub)
-						Trigger.OnIdle(sub, function(s) s.Hunt() end)
-					end)
-				end)
-			end)
+			OnBeachheadReached()
 		end
 	end)
 
-	Trigger.OnAllKilled(Village, function() Allies.MarkFailedObjective(VillageObjective) end)
+	Trigger.OnAllKilled(Village, function()
+		-- There is a small time gap between the HQ capture and victory.
+		-- Ensure aircraft can't trigger defeat within that gap.
+		if not AirForceHQ.IsDead and AirForceHQ.Owner == Allies then
+			return
+		end
+
+		Allies.MarkFailedObjective(VillageObjective)
+	end)
 
 	SetupWorld()
 	SetupMissionText()
-
+	ReinforceBuilder()
 	Trigger.AfterDelay(VillageRaidInterval, VillageRaid)
-
 	Trigger.AfterDelay(1, function() Build(UBoatPatrolUnits, SendUboatPatrol) end)
 	Trigger.AfterDelay(1, function() Build(Utils.Random(GroundPatrolUnits), SendGroundPatrol) end)
 
-	Reinforcements.Reinforce(Allies, { "mcv" }, { MCVInsertLocation.Location, MCVDeployLocation.Location }, 0, function(mcv)
+	Camera.Position = CameraSpot.CenterPosition
+	Trigger.AfterDelay(DateTime.Seconds(5), function() CameraSpot.Destroy() end)
+end
+
+ReinforceBuilder = function()
+	Reinforcements.Reinforce(Allies, { "mcv" }, { MCVEntry.Location, MCVRally.Location }, 0, function(mcv)
 		mcv.Deploy()
 	end)
 
-	Camera.Position = CameraSpot.CenterPosition
-	Trigger.AfterDelay(DateTime.Seconds(5), function() CameraSpot.Destroy() end)
+	Trigger.AfterDelay(1, function()
+		CheckBuilder(Allies)
+
+		if Difficulty ~= "easy" then
+			return
+		end
+
+		CheckNavalYard(Allies)
+		local cam = Actor.Create("camera.hq", true, { Owner = Allies, Location = AirForceHQ.Location + CVec.New(1, 1) })
+		Trigger.AfterDelay(1, cam.Destroy)
+	end)
+end
+
+CheckBuilder = function(player)
+	if BeachheadTriggered then
+		return
+	end
+
+	local builders = player.GetActorsByTypes( { "mcv", "fact" } )
+
+	Utils.Do(builders, function(builder)
+		Trigger.OnKilled(builder, OnBuilderLost)
+		Trigger.OnSold(builder, OnBuilderLost)
+
+		-- The MCV deploy/undeploy creates a new actor each time,
+		-- so add these triggers to the newer actor as needed.
+		Trigger.OnRemovedFromWorld(builder, function()
+			local transported = builder.Type == "mcv" and IsBuilderTransported(builder)
+			if transported then
+				-- Actors inside transports are temporarily removed from the world.
+				-- In that case, more triggers are not necessary.
+				return
+			end
+
+			CheckBuilder(player)
+		end)
+	end)
+end
+
+OnBuilderLost = function(builder)
+	if BeachheadTriggered then
+		return
+	end
+
+	local speechTime = 36
+	-- Let "Unit lost"/"Naval unit lost" play first.
+	Trigger.AfterDelay(DateTime.Seconds(2), function()
+		Media.PlaySpeechNotification(builder.Owner, "ObjectiveNotReached")
+	end)
+
+	Trigger.AfterDelay(DateTime.Seconds(2) + speechTime, function()
+		builder.Owner.MarkFailedObjective(BeachheadObjective)
+	end)
+end
+
+IsBuilderTransported = function(builder)
+	local found = false
+	local boats = builder.Owner.GetActorsByType("lst")
+
+	Utils.Do(boats, function(boat)
+		if found or not boat.HasPassengers then
+			return
+		end
+
+		Utils.Do(boat.Passengers, function(passenger)
+			if passenger == builder then
+				found = true
+			end
+		end)
+	end)
+
+	return found
+end
+
+CheckNavalYard = function(player)
+	if player.HasPrerequisites({ "syrd" }) then
+		OnNavalYardBuilt()
+		return
+	end
+
+	Trigger.AfterDelay(DateTime.Seconds(1), function()
+		CheckNavalYard(player)
+	end)
+end
+
+OnNavalYardBuilt = function()
+	local flare = Actor.Create("flare", true, { Owner = Allies, Location = BeachheadFlare.Location })
+
+	Trigger.AfterDelay(DateTime.Seconds(2), function()
+		Media.PlaySpeechNotification(Allies, "SignalFlareEast")
+	end)
+
+	Trigger.OnObjectiveCompleted(Allies, function(_, objective)
+		if objective ~= BeachheadObjective then
+			return
+		end
+
+		Trigger.AfterDelay(DateTime.Minutes(2), function()
+			if flare.IsInWorld then
+				flare.Destroy()
+			end
+		end)
+	end)
+end
+
+IsInAlliedBaseArea = function(x, y)
+	local top, bottom = AlliedAreaTopLeft.CenterPosition, AlliedAreaBottomRight.CenterPosition
+	-- Skip bottom.X since it is on the east edge.
+	return x > top.X and y > top.Y and y < bottom.Y
+end
+
+OnBeachheadReached = function()
+	Media.PlaySpeechNotification(Allies, "ObjectiveReached")
+	Allies.MarkCompletedObjective(BeachheadObjective)
+	CaptureObjective = AddPrimaryObjective(Allies, "capture-air-force-hq")
+
+	Actor.Create("mainland", true, { Owner = Allies })
+
+	if AirForceHQ.IsDead then
+		Allies.MarkFailedObjective(CaptureObjective)
+		return
+	end
+	if AirForceHQ.Owner == Allies then
+		Allies.MarkCompletedObjective(CaptureObjective)
+		Allies.MarkCompletedObjective(VillageObjective)
+		return
+	end
+
+	Trigger.OnCapture(AirForceHQ, function()
+		Trigger.AfterDelay(DateTime.Seconds(3), function()
+			Allies.MarkCompletedObjective(CaptureObjective)
+			Allies.MarkCompletedObjective(VillageObjective)
+		end)
+	end)
+	Trigger.OnKilled(AirForceHQ, function() Allies.MarkFailedObjective(CaptureObjective) end)
+
+	Trigger.AfterDelay(BaseFrontAttackInterval, function()
+		Build(BaseFrontAttackUnits, BaseFrontAttack)
+		ParadropSovietUnits()
+	end)
+	Trigger.AfterDelay(BaseRearAttackInterval, function()
+		Build(BaseRearAttackUnits, BaseRearAttack)
+	end)
+	Trigger.AfterDelay(BaseRaidInterval, BaseRaid)
+
+	Trigger.AfterDelay(UBoatPatrolDelay, function()
+		Build(HunterSubs, function(subs)
+			Utils.Do(subs, IdleHunt)
+		end)
+	end)
 end

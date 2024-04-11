@@ -1,6 +1,6 @@
 Player:
 	PlayerResources:
-		DefaultCash: 2000
+		DefaultCash: 2400
 
 World:
 	LuaScript:
@@ -12,6 +12,7 @@ World:
 		Label: dropdown-difficulty.label
 		Description: dropdown-difficulty.description
 		Values:
+			easy: options-difficulty.easy
 			normal: options-difficulty.normal
 			hard: options-difficulty.hard
 		Default: normal
@@ -19,6 +20,15 @@ World:
 CAMERA:
 	RevealsShroud:
 		Range: 18c0
+
+CAMERA.hq:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 8c0
+
+FLARE:
+	RevealsShroud:
+		Range: 5c0
 
 MISS:
 	Tooltip:
@@ -73,6 +83,7 @@ MIG.SCRIPTED:
 		Ammo: 2
 	Aircraft:
 		IdleBehavior: LeaveMapAtClosestEdge
+		NumberOfTicksToVerifyAvailableAirport: 25
 
 HELI:
 	Buildable:
