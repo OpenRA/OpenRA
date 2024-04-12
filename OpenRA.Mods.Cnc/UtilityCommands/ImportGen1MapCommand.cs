@@ -443,7 +443,19 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 						actor.Add(new FacingInit(new WAngle(1024 - 4 * facing)));
 
 					if (section == "INFANTRY")
-						actor.Add(new SubCellInit((SubCell)Exts.ParseByteInvariant(parts[4])));
+					{
+						var subcell = 0;
+						switch (Exts.ParseByteInvariant(parts[4]))
+						{
+							case 1: subcell = 1; break;
+							case 2: subcell = 2; break;
+							case 3: subcell = 4; break;
+							case 4: subcell = 5; break;
+						}
+
+						if (subcell != 0)
+							actor.Add(new SubCellInit((SubCell)subcell));
+					}
 
 					if (!map.Rules.Actors.ContainsKey(parts[1].ToLowerInvariant()))
 						Console.WriteLine($"Ignoring unknown actor type: `{parts[1].ToLowerInvariant()}`");
