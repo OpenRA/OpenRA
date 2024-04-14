@@ -19,7 +19,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class AirstrikePowerInfo : SupportPowerInfo
+	public class AirstrikePowerInfo : DirectionalSupportPowerInfo
 	{
 		[ActorReference(typeof(AircraftInfo))]
 		public readonly string UnitType = "badr.bomber";
@@ -36,22 +36,13 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Amount of time to keep the camera alive after the aircraft have finished attacking")]
 		public readonly int CameraRemoveDelay = 25;
 
-		[Desc("Enables the player directional targeting")]
-		public readonly bool UseDirectionalTarget = false;
-
-		[Desc("Animation used to render the direction arrows.")]
-		public readonly string DirectionArrowAnimation = null;
-
-		[Desc("Palette for direction cursor animation.")]
-		public readonly string DirectionArrowPalette = "chrome";
-
 		[Desc("Weapon range offset to apply during the beacon clock calculation")]
 		public readonly WDist BeaconDistanceOffset = WDist.FromCells(6);
 
 		public override object Create(ActorInitializer init) { return new AirstrikePower(init.Self, this); }
 	}
 
-	public class AirstrikePower : SupportPower
+	public class AirstrikePower : DirectionalSupportPower
 	{
 		readonly AirstrikePowerInfo info;
 
@@ -59,14 +50,6 @@ namespace OpenRA.Mods.Common.Traits
 			: base(self, info)
 		{
 			this.info = info;
-		}
-
-		public override void SelectTarget(Actor self, string order, SupportPowerManager manager)
-		{
-			if (info.UseDirectionalTarget)
-				self.World.OrderGenerator = new SelectDirectionalTarget(self.World, order, manager, Info.Cursor, info.DirectionArrowAnimation, info.DirectionArrowPalette);
-			else
-				base.SelectTarget(self, order, manager);
 		}
 
 		public override void Activate(Actor self, Order order, SupportPowerManager manager)
