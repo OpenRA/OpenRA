@@ -87,6 +87,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveConyardChronoReturnAnimation(),
 				new RemoveEditorSelectionLayerProperties(),
 				new AddMarkerLayerOverlay(),
+				new AddSupportPowerBlockedCursor(),
 
 				// Execute these rules last to avoid premature yaml merge crashes.
 				new ReplaceCloakPalette(),

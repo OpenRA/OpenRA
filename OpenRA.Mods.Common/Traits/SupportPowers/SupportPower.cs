@@ -46,6 +46,10 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Cursor to display for using this support power.")]
 		public readonly string Cursor = "ability";
 
+		[CursorReference]
+		[Desc("Cursor when unable to activate on this position. ")]
+		public readonly string BlockedCursor = "generic-blocked";
+
 		[Desc("If set to true, the support power will be fully charged when it becomes available. " +
 			"Normal rules apply for subsequent charges.")]
 		public readonly bool StartFullyCharged = false;
@@ -209,7 +213,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public virtual void SelectTarget(Actor self, string order, SupportPowerManager manager)
 		{
-			self.World.OrderGenerator = new SelectGenericPowerTarget(order, manager, info.Cursor, MouseButton.Left);
+			self.World.OrderGenerator = new SelectGenericPowerTarget(order, manager, info, MouseButton.Left);
 		}
 
 		public virtual void Activate(Actor self, Order order, SupportPowerManager manager)

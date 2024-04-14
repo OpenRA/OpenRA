@@ -450,6 +450,7 @@ IRON:
 		SupportPowerPaletteOrder: 10
 		Dimensions: 3, 3
 		Footprint: _x_ xxx _x_
+		BlockedCursor: move-blocked
 	SupportPowerChargeBar:
 	InfiltrateForSupportPowerReset:
 		Types: SpyInfiltrate

@@ -47,10 +47,6 @@ namespace OpenRA.Mods.Common.Traits
 			"This requires the actor to have the WithSpriteBody trait or one of its derivatives.")]
 		public readonly string Sequence = "active";
 
-		[CursorReference]
-		[Desc("Cursor to display when there are no units to apply the condition in range.")]
-		public readonly string BlockedCursor = "move-blocked";
-
 		public readonly string FootprintImage = "overlay";
 
 		[SequenceReference(nameof(FootprintImage))]

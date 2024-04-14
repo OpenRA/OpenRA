@@ -110,6 +110,7 @@ Player:
 		OnFireSound: ironcur9.aud
 		Dimensions: 3, 3
 		Footprint: _x_ xxx _x_
+		BlockedCursor: move-blocked
 	Production:
 		Produces: Building
 	LobbyPrerequisiteCheckbox@GLOBALBOUNTY:

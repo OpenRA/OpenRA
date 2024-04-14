@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		string IOrderGenerator.GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			return world.Map.Contains(cell) ? cursor : "generic-blocked";
+			return world.Map.Contains(cell) ? info.Cursor : info.BlockedCursor;
 		}
 
 		bool IOrderGenerator.HandleKeyPress(KeyInput e) { return false; }
