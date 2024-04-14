@@ -26,10 +26,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly string order;
 		readonly SupportPowerManager manager;
-		readonly string cursor;
-		readonly string directionArrowPalette;
 
-		readonly string[] arrows = { "arrow-t", "arrow-tl", "arrow-l", "arrow-bl", "arrow-b", "arrow-br", "arrow-r", "arrow-tr" };
 		readonly Arrow[] directionArrows;
 
 		CPos targetCell;
@@ -39,17 +36,15 @@ namespace OpenRA.Mods.Common.Traits
 		bool dragStarted;
 		Arrow currentArrow;
 		readonly MouseAttachmentWidget mouseAttachment;
+		readonly DirectionalSupportPowerInfo info;
 
-		public SelectDirectionalTarget(World world, string order, SupportPowerManager manager, string cursor,
-			string directionArrowAnimation, string directionArrowPalette)
+		public SelectDirectionalTarget(World world, string order, SupportPowerManager manager, DirectionalSupportPowerInfo info)
 		{
 			this.order = order;
 			this.manager = manager;
-			this.cursor = cursor;
+			this.info = info;
 
-			this.directionArrowPalette = directionArrowPalette;
-
-			directionArrows = LoadArrows(directionArrowAnimation, world, arrows.Length);
+			directionArrows = LoadArrows(info.DirectionArrowAnimation, world, info.Arrows.Length);
 			mouseAttachment = Ui.Root.Get<MouseAttachmentWidget>("MOUSE_ATTATCHMENT");
 		}
 
@@ -87,7 +82,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				currentArrow = GetArrow(angle);
 
-				mouseAttachment.SetAttachment(targetLocation, currentArrow.Sprite, directionArrowPalette);
+				mouseAttachment.SetAttachment(targetLocation, currentArrow.Sprite, info.DirectionArrowPalette);
 				dragStarted = true;
 			}
 
@@ -163,7 +158,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			for (var i = 0; i < noOfDividingPoints; i++)
 			{
-				var sprite = world.Map.Sequences.GetSequence(cursorAnimation, arrows[i]).GetSprite(0);
+				var sprite = world.Map.Sequences.GetSequence(cursorAnimation, info.Arrows[i]).GetSprite(0);
 
 				var angle = i * partAngle;
 				var direction = WAngle.FromDegrees(angle);
