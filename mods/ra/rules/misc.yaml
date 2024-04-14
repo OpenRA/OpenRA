@@ -382,6 +382,7 @@ powerproxy.sonarpulse:
 		EffectPalette: moveflash
 		SupportPowerPaletteOrder: 80
 		EffectSequence: idle
+		BlockedCursor: move-blocked
 
 powerproxy.paratroopers:
 	AlwaysVisible:
