@@ -46,6 +46,10 @@
   <url type="homepage">https://www.openra.net</url>
   <url type="bugtracker">https://github.com/OpenRA/OpenRA/issues</url>
   <update_contact>paul_at_chote.net</update_contact>
+  <developer_name>The OpenRA Developers</developer_name>
+  <developer id="net.openra">
+    <name>The OpenRA Developers</name>
+  </developer>
   <content_rating type="oars-1.1">
     <content_attribute id="violence-realistic">moderate</content_attribute>
     <content_attribute id="violence-bloodshed">moderate</content_attribute>
