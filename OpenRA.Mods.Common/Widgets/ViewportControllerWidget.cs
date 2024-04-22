@@ -195,6 +195,9 @@ namespace OpenRA.Mods.Common.Widgets
 				if (Game.Settings.Game.ViewportEdgeScroll && Game.Renderer.WindowHasInputFocus)
 					edgeDirections = CheckForDirections();
 
+				if (Ui.KeyboardFocusWidget != null)
+					keyboardDirections = ScrollDirection.None;
+
 				if (keyboardDirections != ScrollDirection.None || edgeDirections != ScrollDirection.None)
 				{
 					var scroll = float2.Zero;
