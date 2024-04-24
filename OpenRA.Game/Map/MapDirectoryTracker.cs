@@ -86,7 +86,7 @@ namespace OpenRA
 				dirty = false;
 				foreach (var mapAction in mapActionQueue)
 				{
-					var map = mapcache.FirstOrDefault(x => x.Package?.Name == mapAction.Key && x.Status == MapStatus.Available);
+					var map = mapcache.FirstOrDefault(x => x.PackageName == mapAction.Key && x.Status == MapStatus.Available);
 					if (map != null)
 					{
 						if (mapAction.Value == MapAction.Delete)

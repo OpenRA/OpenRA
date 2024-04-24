@@ -174,7 +174,19 @@ namespace OpenRA
 		readonly ModData modData;
 
 		public readonly string Uid;
-		public IReadOnlyPackage Package { get; private set; }
+		public string PackageName { get; private set; }
+		IReadOnlyPackage package;
+		public IReadOnlyPackage Package
+		{
+			get
+			{
+				package ??= parentPackage.OpenPackage(PackageName, modData.ModFiles);
+				return package;
+			}
+
+			private set => package = value;
+		}
+
 		IReadOnlyPackage parentPackage;
 
 		volatile InnerData innerData;
@@ -286,7 +298,7 @@ namespace OpenRA
 			cache = modData.MapCache;
 
 			Uid = map.Uid;
-			Package = map.Package;
+			PackageName = map.Package.Name;
 
 			var mapPlayers = new MapPlayers(map.PlayerDefinitions);
 			var spawns = new List<CPos>();
@@ -338,7 +350,7 @@ namespace OpenRA
 				yaml = new MiniYaml(null, MiniYaml.FromStream(yamlStream, $"{p.Name}:map.yaml", stringPool: cache.StringPool)).ToDictionary();
 			}
 
-			Package = p;
+			PackageName = p.Name;
 			parentPackage = parent;
 
 			var newData = innerData.Clone();
@@ -587,10 +599,15 @@ namespace OpenRA
 
 		public void Dispose()
 		{
-			if (Package != null)
+			DisposePackage();
+		}
+
+		public void DisposePackage()
+		{
+			if (package != null)
 			{
-				Package.Dispose();
-				Package = null;
+				package.Dispose();
+				package = null;
 			}
 		}
 

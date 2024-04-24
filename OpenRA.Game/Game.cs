@@ -985,7 +985,7 @@ namespace OpenRA
 				Order.Command($"state {Session.ClientState.Ready}")
 			};
 
-			var map = ModData.MapCache.SingleOrDefault(m => m.Uid == launchMap || Path.GetFileName(m.Package.Name) == launchMap);
+			var map = ModData.MapCache.SingleOrDefault(m => m.Uid == launchMap || Path.GetFileName(m.PackageName) == launchMap);
 			if (map == null)
 				throw new ArgumentException($"Could not find map '{launchMap}'.");
 
