@@ -371,6 +371,11 @@ namespace OpenRA.Platforms.Default
 			if (disposing)
 				StopAllSounds();
 
+			if (sourcePool.Count > 0)
+				AL10.alDeleteSources(PoolSize, sourcePool.Keys.ToArray());
+
+			sourcePool.Clear();
+
 			if (context != IntPtr.Zero)
 			{
 				ALC10.alcMakeContextCurrent(IntPtr.Zero);
