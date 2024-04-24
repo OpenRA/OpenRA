@@ -247,7 +247,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (map.Package?.Name != combinedPath)
 			{
 				// When creating a new map or when file paths don't match
-				if (modData.MapCache.Any(m => m.Status == MapStatus.Available && m.Package?.Name == combinedPath))
+				if (modData.MapCache.Any(m => m.Status == MapStatus.Available && m.PackageName == combinedPath))
 				{
 					ConfirmationDialogs.ButtonPrompt(modData,
 						title: OverwriteMapFailedTitle,

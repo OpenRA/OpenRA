@@ -153,6 +153,9 @@ namespace OpenRA
 						var uid = Map.ComputeUID(mapPackage);
 						previews[uid].UpdateFromMap(mapPackage, package, classification, modData.Manifest.MapCompatibility, mapGrid.Type, modDataRules);
 
+						// Freeing the package to save memory if there is a lot of Maps
+						previews[uid].DisposePackage();
+
 						if (oldMap != uid)
 						{
 							LastModifiedMap = uid;
