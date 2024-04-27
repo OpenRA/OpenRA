@@ -32,6 +32,8 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Custom palette is a player palette BaseName")]
 		public readonly bool IsPlayerPalette = false;
 
+		public readonly bool IsDecoration = false;
+
 		[Desc("Delay in ticks before overlay starts, either relative to attack preparation or attack.")]
 		public readonly int Delay = 0;
 
@@ -58,7 +60,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var body = init.Self.TraitOrDefault<BodyOrientation>();
 			var facing = init.Self.TraitOrDefault<IFacing>();
 
-			overlay = new Animation(init.World, renderSprites.GetImage(init.Self), facing == null ? () => WAngle.Zero : (body == null ? () => facing.Facing : () => body.QuantizeFacing(facing.Facing)));
+			overlay = new Animation(init.World, renderSprites.GetImage(init.Self), facing == null ? () => WAngle.Zero : (body == null ? () => facing.Facing : () => body.QuantizeFacing(facing.Facing)))
+			{
+				IsDecoration = info.IsDecoration
+			};
 
 			renderSprites.Add(new AnimationWithOffset(overlay, null, () => !attacking, p => RenderUtils.ZOffsetFromCenter(init.Self, p, 1)),
 				info.Palette, info.IsPlayerPalette);
