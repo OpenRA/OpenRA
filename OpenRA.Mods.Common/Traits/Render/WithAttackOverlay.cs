@@ -52,8 +52,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			this.info = info;
 
 			renderSprites = init.Self.Trait<RenderSprites>();
+			var body = init.Self.TraitOrDefault<BodyOrientation>();
+			var facing = init.Self.TraitOrDefault<IFacing>();
 
-			overlay = new Animation(init.World, renderSprites.GetImage(init.Self), RenderSprites.MakeFacingFunc(init.Self));
+			overlay = new Animation(init.World, renderSprites.GetImage(init.Self), facing == null ? () => WAngle.Zero : (body == null ? () => facing.Facing : () => body.QuantizeFacing(facing.Facing)));
 
 			renderSprites.Add(new AnimationWithOffset(overlay, null, () => !attacking, p => RenderUtils.ZOffsetFromCenter(init.Self, p, 1)),
 				info.Palette, info.IsPlayerPalette);
