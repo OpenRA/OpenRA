@@ -145,6 +145,10 @@ namespace OpenRA.Mods.Common.Widgets
 			var origin = new float2(rect.Left, rect.Bottom);
 
 			var keyOffset = 0;
+
+			// added sorting so that names appear in order of highest value to lowest value
+			series = series.OrderByDescending(s => s.Points.LastOrDefault()).ToList();
+
 			foreach (var s in series)
 			{
 				var key = s.Key;
