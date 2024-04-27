@@ -17,6 +17,9 @@ namespace OpenRA.Mods.Common.Traits.Render
 	[Desc("Rendered together with an attack.")]
 	public class WithAttackOverlayInfo : TraitInfo, Requires<RenderSpritesInfo>
 	{
+		[Desc("Armament that will play the animation. Set to null to allow all armaments.")]
+		public readonly string Armament = null;
+
 		[SequenceReference]
 		[FieldLoader.Require]
 		[Desc("Sequence name to use")]
@@ -69,7 +72,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel)
 		{
-			if (info.DelayRelativeTo == AttackDelayType.Attack)
+			if (info.DelayRelativeTo == AttackDelayType.Attack && (string.IsNullOrEmpty(info.Armament) || info.Armament == a.Info.Name))
 			{
 				if (info.Delay > 0)
 					tick = info.Delay;
@@ -80,7 +83,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel)
 		{
-			if (info.DelayRelativeTo == AttackDelayType.Preparation)
+			if (info.DelayRelativeTo == AttackDelayType.Preparation && (string.IsNullOrEmpty(info.Armament) || info.Armament == a.Info.Name))
 			{
 				if (info.Delay > 0)
 					tick = info.Delay;
