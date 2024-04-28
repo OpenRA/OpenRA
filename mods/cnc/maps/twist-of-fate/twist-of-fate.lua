@@ -227,9 +227,9 @@ WorldLoaded = function()
 					a.Move(waypoint1.Location, 2)
 					a.Move(waypoint2.Location, 2)
 					a.Move(CPos.New(49,44), 2)
-					if a.HasProperty("Deploy") then
+					if a.HasProperty("Transform") then
 						a.Move(CPos.New(48,51))
-						a.Deploy()
+						a.Transform()
 
 						Trigger.OnRemovedFromWorld(a, function()
 							if not a.IsDead then
