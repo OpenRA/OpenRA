@@ -318,7 +318,7 @@ smech:
 		Start: 96
 		Facings: -8
 		ShadowStart: 232
-	walk:
+	run:
 		Facings: -8
 		Length: 12
 		ShadowStart: 136

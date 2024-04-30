@@ -139,22 +139,19 @@ SMECH:
 		FacingTolerance: 0
 	Armament:
 		Weapon: AssaultCannon
+		LocalOffset: 0,0,620
 	Voiced:
 		VoiceSet: Mech
-	QuantizeFacingsFromSequence:
-		Sequence: stand
-	WithFacingSpriteBody:
-		Sequence: stand
-		Palette: player-nomuzzle
-		IsPlayerPalette: True
-	WithAttackAnimation:
-		Sequence: shoot
+	WithInfantryBody:
+		DefaultAttackSequence: shoot
+		RequiresCondition: !inside-tunnel
+	BodyOrientation:
+		QuantizedFacings: 8
+		CameraPitch: 250
 	WithAttackOverlay@muzzle:
 		Sequence: shoot-muzzle
 		Palette: muzzle
-	WithMoveAnimation:
-		MoveSequence: walk
-		ValidMovementTypes: Horizontal, Turn
+		IsDecoration: true
 	Selectable:
 		Bounds: 603, 1930, 0, -482
 	-DamagedByTerrain@VEINS:
