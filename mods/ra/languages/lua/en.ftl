@@ -17,7 +17,7 @@ find-einstein = Find Einstein.
 einstein-survive = Einstein must survive.
 protect-civilians = Protect all civilians.
 
-## allies-01, allies-03, allies-05abc, evacuation
+## allies-01, allies-03, allies-05abc, evacuation, negotiations
 tanya-rules-of-engagement = According to the rules of engagement I need your explicit orders to fire, Commander!
 
 # allies-01, allies-05abc, evacuation
@@ -214,6 +214,20 @@ all-engineers-killed = All engineers were killed.
 kill-stavros = Kill Stavros.
 sabotage-facility = Sabotage the facility with our engineers.
 
+## negotiations
+all-hostages-killed = All hostages were killed.
+church-destroyed = The church was destroyed.
+free-hostages = Locate & free the hostages.
+get-hostages-to-church = Get hostages to church.
+signal-for-reinforcements = Signal for reinforcements at your drop-off point.
+guide-thank-you = Thank you! I'll help you get into town!
+guide-follow-me = Follow me!
+guide-patrol-coming = Uh oh, a patrol is coming this way.
+guide-come-this-way = Come this way! Hurry!
+guide-safe-to-move = It's safe to move now. Let's go.
+hostage-dies-in = Hostage dies in { $time }
+keep-all-hostages-alive = Keep all hostages alive.
+
 ## production-disruption, shock-therapy
 capture-enemy-radar-dome = Capture the enemy radar dome.
 
@@ -274,7 +288,7 @@ destroy-soviet-convoy = Destroy all Soviet convoy trucks.
 destroy-bridges-slow-convoy = Destroy the nearby bridges to slow the
     convoys down.
 
-## siberian-conflict-3-wasteland
+## siberian-conflict-3-wasteland, negotiations
 destroy-soviet-units-infrastructure = Destroy all Soviet units and structures.
 
 ## situation-critical

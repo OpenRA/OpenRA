@@ -14,7 +14,7 @@ actor-crate-name = Crate
 ## campaign-tooltips.yaml
 actor-technology-center-name = Technology Center
 
-## allies-05a, allies-05b, allies-05c
+## allies-05a, allies-05b, allies-05c, negotiations
 actor-prison-name = Prison
 
 ## fall-of-greece-1-personal-war, situation-critical
