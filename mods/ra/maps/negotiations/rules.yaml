@@ -1,0 +1,196 @@
+World:
+	LuaScript:
+		Scripts: campaign.lua, utils.lua, negotiations.lua, negotiations-ai.lua, negotiations-reinforcements.lua
+	MissionData:
+		Briefing: A Soviet force has holed up in a small town, threatening to kill a hostage every few minutes until their demands are met. We do not negotiate with terrorists -- explain this to them.\n\nLocate the hostages, free as many of them as you can, and get them safely to a nearby abandoned church. Once done, return to your drop-off point, signal for reinforcements, and finish off the Soviet forces.
+		WinVideo: allymorf.vqa
+		LossVideo: battle.vqa
+	TimeLimitManager:
+		SkipTimerExpiredNotification: true
+	StartGameNotification:
+		Notification: TimerStarted
+	ScriptLobbyDropdown@difficulty:
+		ID: difficulty
+		Label: dropdown-difficulty.label
+		Description: dropdown-difficulty.description
+		Values:
+			easy: options-difficulty.easy
+			normal: options-difficulty.normal
+			hard: options-difficulty.hard
+		Default: normal
+
+Player:
+	ExternalCondition@BadGuy:
+		Condition: ai-enabled
+	HarvesterBotModule:
+		RequiresCondition: ai-enabled
+	BuildingRepairBotModule:
+		RequiresCondition: ai-enabled
+	MissionObjectives:
+		Cooperative: true
+
+ai.hard:
+	ProvidesPrerequisite:
+		Prerequisite: ai.hard
+	Interactable:
+	AlwaysVisible:
+
+paradrop.allies:
+	Inherits: powerproxy.paratroopers
+	ParatroopersPower:
+		DropItems: e1,e1,e3,e3,e3,e3,e1,e1,e1,medi
+		SquadSize: 2
+		DisplayBeacon: false
+
+powerproxy.chronoshift:
+	AlwaysVisible:
+	ChronoshiftPower:
+		Dimensions: 1, 1
+		Footprint: x
+
+CAMERA.tiny:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 2c0
+
+CAMERA.small:
+	Inherits: CAMERA
+	RevealsShroud:
+		Range: 4c0
+
+CTNK:
+	Chronoshiftable:
+		ChronoshiftSound:
+
+V2RL:
+	AutoTarget:
+		# A mobile V2 can be annoying to chase, or too much with the dog attack.
+		InitialStanceAI: Defend
+
+# This type will mimic the wide guard range sometimes given to RA '96 dogs by
+# Area Guard orders. An extra dog on Hard difficulty will also use this.
+DOG.areaguard:
+	Inherits: DOG
+	RenderSprites:
+		Image: dog
+	AutoTarget:
+		ScanRadius: 9
+	RevealsShroud:
+		Range: 9c0
+	ScriptTags:
+
+# Keep SAMs online if the nearby truck blows; original SAMs require no power.
+# This does not affect the MCV-built base.
+APWR:
+	PowerMultiplier:
+		Modifier: 200
+		
+MISS:
+	Tooltip:
+		Name: actor-prison-name
+
+STEK:
+	ProvidesPrerequisite@TeslaTanks:
+		Prerequisite: vehicles.russia
+	ProvidesPrerequisite@ShockTroopers:
+		Prerequisite: infantry.russia
+	Power:
+		Amount: 0
+	SpawnActorsOnSell:
+		# Swap out the normal Technician that resembles one of the civilians.
+		# Swap Engineers as well because they're useless for hunting.
+		ActorTypes: e1,tecn2,tecn2,c8,c9
+
+V08:
+	# Keep close to original death time of ~10s (at normal 5/7).
+	DamageMultiplier:
+		Modifier: 250
+
+C1:
+	ExternalCondition@untargetable:
+		Condition: untargetable
+	Targetable:
+		RequiresCondition: !untargetable
+	Infiltrates:
+		Types: SpyInfiltrate
+		ValidRelationships: Ally, Neutral
+	-Wanders:
+
+V01:
+	InfiltrateForPowerOutage:
+		Types: SpyInfiltrate
+	Targetable@Guide:
+		TargetTypes: SpyInfiltrate
+	Cargo:
+		MaxWeight: 5
+		Types: c2,c3,c4,c5,c6
+		LoadedCondition: loaded
+	RevealsShroud:
+		RequiresCondition: !loaded
+		Range: 4c0
+		Type: CenterPosition
+		ValidRelationships: Ally, Neutral
+
+^Hostage:
+	# Not hostile to Soviets but will "guard" Tanya as she returns to the church.
+	Inherits@Armed: ^ArmedCivilian
+	Guard:
+		TargetLineColor: 00000000
+	RevealsShroud@Imprisoned:
+		Range: 1c512
+		ValidRelationships: Neutral
+
+C2:
+	Inherits@Hostage: ^Hostage
+
+C3:
+	Inherits@Hostage: ^Hostage
+
+C4:
+	Inherits@Hostage: ^Hostage
+
+C5:
+	Inherits@Hostage: ^Hostage
+
+C6:
+	Inherits@Hostage: ^Hostage
+
+C8:
+	Inherits@Armed: ^ArmedCivilian
+
+C9:
+	Inherits@Armed: ^ArmedCivilian
+
+GNRL:
+	SpeedMultiplier:
+		Modifier: 150
+	AutoTarget:
+		InitialStanceAI: Defend
+
+BADR.tanya:
+	Inherits: BADR
+	RenderSprites:
+		Image: badr
+	ParaDrop:
+		# Avoid dropping Tanya short of her target waypoint (and any triggers).
+		DropRange: 0c512
+
+HELI:
+	# Make it less obvious that the Guide House rifles do nothing until revealed.
+	RevealsShroudMultiplier:
+		Modifier: 70
+
+TRAN.north:
+	Inherits: TRAN
+	RenderSprites:
+		Image: tran
+	Cargo:
+		InitialUnits: e2,e2,e3,shok,shok
+
+TRAN.south:
+	Inherits: TRAN
+	RenderSprites:
+		Image: tran
+	Cargo:
+		InitialUnits: e1,e1,e4,e2,e2
+		AfterUnloadDelay: 0
