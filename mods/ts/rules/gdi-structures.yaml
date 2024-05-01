@@ -760,3 +760,59 @@ GAPLUG4:
 		Type: plug.droppod
 	Power:
 		Amount: -20
+
+GAFIRE:
+	Inherits: ^Building
+	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
+	Inherits@SHAPE: ^3x2Shape
+	Buildable:
+		BuildPaletteOrder: 190
+		Prerequisites: proc, gatech, ~structures.gdi, ~techlevel.superweapons
+		Queue: Building
+		Description: actor-gafire.description
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: actor-gafire.name
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	RevealsShroud:
+		Range: 6c0
+		MaxHeightDelta: 3
+	Health:
+		HP: 100000
+	WithIdleOverlay@lights:
+		RequiresCondition: !build-incomplete
+		Sequence: idle-lights
+		Palette: player-nobright
+		IsPlayerPalette: true
+	WithIdleOverlay@lights-bright:
+		RequiresCondition: !build-incomplete && !empdisable && !disabled
+		Sequence: idle-lights-bright
+		Palette: bright
+	WithSwitchableOverlay@active-nobright:
+		RequiresCondition: !build-incomplete
+		EnabledSequence: active
+		SwitchingSequence: switching
+		DisabledSequence: disabled
+		PauseOnCondition: empdisable || disabled
+		Palette: player-nobright
+		IsPlayerPalette: true
+		SwitchingLevel: 20
+		SwitchingLevelOnSpawn: 20
+	WithSwitchableOverlay@active-bright:
+		RequiresCondition: !build-incomplete
+		EnabledSequence: active-bright
+		PauseOnCondition: empdisable || disabled
+		Palette: bright
+		IsDecoration: true
+		SwitchingLevel: 20
+		SwitchingLevelOnSpawn: 20
+	Power:
+		Amount: -100
+	ProvidesPrerequisite@buildingname:
+	RequiresBuildableArea:
+		AreaTypes: building
+	MustBeDestroyed:
+		RequiredForShortGame: false

@@ -351,6 +351,10 @@ actor-gaplug =
    .produceactorpower-name = Hunter Seeker
    .produceactorpower-description = Releases a drone that will acquire and destroy an enemy target.
 
+actor-gafire =
+   .name = Firestrom Generator
+   .description = Building that grants access to Firestrom device.
+
 actor-gaplug-socket-ioncannon-name = GDI Upgrade Center socket
 actor-gaplug-socket-hunterseeker-name = GDI Upgrade Center socket
 
