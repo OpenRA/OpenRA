@@ -92,9 +92,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<BodyOrientation>();
+			var facing = self.TraitOrDefault<IFacing>();
 
 			var image = info.Image ?? rs.GetImage(self);
-			overlay = new Animation(self.World, image, () => IsTraitPaused)
+			overlay = new Animation(self.World, image, facing == null ? () => WAngle.Zero : (body == null ? () => facing.Facing : () => body.QuantizeFacing(facing.Facing)), () => IsTraitPaused)
 			{
 				IsDecoration = info.IsDecoration
 			};
