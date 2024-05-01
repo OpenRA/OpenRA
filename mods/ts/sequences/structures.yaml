@@ -3149,3 +3149,70 @@ gaplug4:
 		Tick: 120
 	icon:
 		Filename: rad1icon.shp
+
+gafire:
+	Defaults:
+		TilesetFilenames:
+			TEMPERATE: gtfire.shp
+			SNOW: gafire.shp
+		Offset: -12, -30, 30
+	idle:
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	dead:
+		Start: 2
+		ShadowStart: 5
+		Tick: 400
+	active-bright:
+		TilesetFilenames:
+			TEMPERATE: gtfire_b.shp
+			SNOW: gafire_b.shp
+		Length: 16
+		IgnoreWorldTint: True
+	active:
+		TilesetFilenames:
+			TEMPERATE: gtfire_a.shp
+			SNOW: gafire_a.shp
+		Start: 19
+	disabled:
+		TilesetFilenames:
+			TEMPERATE: gtfire_a.shp
+			SNOW: gafire_a.shp
+		Start: 0
+	switching:
+		TilesetFilenames:
+			TEMPERATE: gtfire_a.shp
+			SNOW: gafire_a.shp
+		Length: 20
+	idle-lights:
+		TilesetFilenames:
+			TEMPERATE: gtfire_c.shp
+			SNOW: gafire_c.shp
+		Length: 6
+		Tick: 200
+	idle-lights-bright:
+		TilesetFilenames:
+			TEMPERATE: gtfire_c.shp
+			SNOW: gafire_c.shp
+		Length: 6
+		Tick: 240
+		IgnoreWorldTint: True
+	make:
+		TilesetFilenames:
+			TEMPERATE: gtfiremk.shp
+			SNOW: gafiremk.shp
+		Length: 15
+		ShadowStart: 17
+	emp-overlay:
+		Filename: emp_fx01.shp
+		TilesetFilenames:
+		Length: *
+		Offset: 0, 0
+		ZOffset: 512
+		IgnoreWorldTint: True
+	icon:
+		Filename: fsdicon.shp
+		TilesetFilenames:
+		Offset: 0, 0
