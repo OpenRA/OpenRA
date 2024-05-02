@@ -356,6 +356,17 @@ namespace OpenRA
 				CurrentActivity.Queue(nextActivity);
 		}
 
+		public void QueueChildActivity(Activity childActivity)
+		{
+			if (!created)
+				throw new InvalidOperationException("An activity was queued before the actor was created. Queue it inside the INotifyCreated.Created callback instead.");
+
+			if (CurrentActivity == null)
+				CurrentActivity = childActivity;
+			else
+				CurrentActivity.QueueChild(childActivity);
+		}
+
 		public void CancelActivity()
 		{
 			CurrentActivity?.Cancel(this);
