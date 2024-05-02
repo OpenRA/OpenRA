@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected Production[] productionTraits;
 
 		// Will change if the owner changes
-		PowerManager playerPower;
+		protected PowerManager playerPower;
 		protected PlayerResources playerResources;
 		protected DeveloperMode developerMode;
 		protected TechTree techTree;
@@ -435,7 +435,7 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		public virtual void ResolveOrder(Actor self, Order order)
 		{
 			if (!Enabled)
 				return;

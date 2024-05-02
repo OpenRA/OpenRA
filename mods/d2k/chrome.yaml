@@ -17,7 +17,9 @@ sidebar:
 	Regions:
 		background-top: 0, 0, 226, 295
 		background-iconrow: 0, 295, 226, 48
-		background-bottom: 0, 343, 226, 13
+		background-bottom: 0, 343, 226, 28
+		purchase-button: 226, 281, 125, 29
+
 
 sidebar-button:
 	Inherits: ^Chrome
@@ -115,40 +117,31 @@ production-icons:
 order-icons:
 	Inherits: ^Chrome
 	Regions:
-		debug: 10, 357, 34, 35
-		debug-disabled: 10, 393, 34, 35
-		debug-active: 10, 430, 34, 35
-		guard: 49, 357, 34, 35
-		guard-disabled: 49, 393, 34, 35
-		guard-active: 49, 430, 34, 35
-		repair: 88, 357, 34, 35
-		repair-disabled: 88, 393, 34, 35
-		repair-active: 88, 430, 34, 35
-		sell: 127, 357, 34, 35
-		sell-disabled: 127, 393, 34, 35
-		sell-active: 127, 430, 34, 35
-		options: 165, 357, 40, 38
-		options-disabled: 165, 393, 40, 38
-		options-active: 165, 430, 40, 38
-		beacon: 209, 357, 36, 35
-		beacon-disabled: 209, 393, 36, 35
-		beacon-active: 209, 430, 36, 35
-		power: 248, 357, 34, 35
-		power-disabled: 248, 393, 36, 35
-		power-active: 248, 430, 36, 35
-		diplomacy: 287, 357, 36, 35
-		diplomacy-disabled: 287, 393, 36, 35
-		diplomacy-active: 287, 430, 36, 35
+		repair: 238, 357, 34, 35
+		repair-disabled: 238, 393, 34, 35
+		repair-active: 238, 430, 34, 35
+		sell: 277, 357, 34, 35
+		sell-disabled: 277, 393, 34, 35
+		sell-active: 277, 430, 34, 35
+		options: 315, 357, 40, 38
+		options-disabled: 315, 393, 40, 38
+		options-active: 315, 430, 40, 38
+		beacon: 359, 357, 36, 35
+		beacon-disabled: 359, 393, 36, 35
+		beacon-active: 359, 430, 36, 35
+		power: 398, 357, 34, 35
+		power-disabled: 398, 393, 36, 35
+		power-active: 398, 430, 36, 35
 
 command-button:
 	Inherits: ^Chrome
-	PanelRegion: 331, 427, 0, 0, 34, 41, 0, 0
+	PanelRegion: 232, 312, 0, 0, 34, 41, 0, 0
 	PanelSides: Center
 command-button-hover:
 	Inherits: command-button
 command-button-pressed:
 	Inherits: ^Chrome
-	PanelRegion: 401, 427, 0, 0, 34, 41, 0, 0
+	PanelRegion: 301, 312, 0, 0, 34, 41, 0, 0
 	PanelSides: Center
 command-button-highlighted:
 	Inherits: command-button-pressed
@@ -158,7 +151,7 @@ command-button-highlighted-pressed:
 	Inherits: command-button-pressed
 command-button-disabled:
 	Inherits: ^Chrome
-	PanelRegion: 366, 427, 0, 0, 34, 41, 0, 0
+	PanelRegion: 266, 312, 0, 0, 34, 41, 0, 0
 	PanelSides: Center
 command-button-highlighted-disabled:
 	Inherits: command-button-disabled
@@ -303,6 +296,33 @@ progressbar-bg:
 
 progressbar-thumb:
 	Inherits: button
+
+button-purchase:
+	Inherits: ^Chrome
+	PanelRegion: 226, 281, 0, 0, 125, 29,0 ,0
+
+button-purchase-disabled:
+	Inherits: button-purchase
+
+button-purchase-hover:
+	Inherits: ^Chrome
+	PanelRegion: 226, 252, 0, 0, 125, 29,0 ,0
+
+button-purchase-highlighted:
+	Inherits: button-purchase-hover
+
+button-purchase-highlighted-hover:
+	Inherits: button-purchase-hover
+
+button-purchase-pressed:
+	Inherits: ^Chrome
+	PanelRegion: 226, 223, 0, 0, 125, 29,0 ,0
+
+button-purchase-highlighted-pressed:
+	Inherits: button-purchase-pressed
+
+button-purchase-highlighted-disabled:
+	Inherits: button-purchase
 
 button:
 	Inherits: ^Dialog
