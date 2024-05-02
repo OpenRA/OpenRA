@@ -501,6 +501,34 @@ Container@PLAYER_WIDGETS:
 					HotkeyCount: 24
 					SelectProductionBuildingHotkey: SelectProductionBuilding
 					ClickSound: TabClick
+				Container@PURCHASE_PANEL:
+					Logic: PurchseWidgetLogic
+					Children:
+						Image@BOTTOM_EXTENSION:
+							Width: 226
+							Height: 28
+							ClickThrough: false
+							ImageCollection: sidebar
+							ImageName: background-bottom-extension
+							Children:
+								Button@PURCHASE_BUTTON:
+									X: PARENT_LEFT + 65
+									Y: PARENT_TOP - 3
+									Width: 125
+									Height: 29
+									Font: Bold
+									Background: button-purchase
+									TooltipText: purchase-panel-button-tooltip
+									TooltipContainer: TOOLTIP_CONTAINER
+								Label@DELIVERY_IN:
+									X: PARENT_TOP + 80
+									Y: PARENT_LEFT + 2
+									TextColor: FFD091
+									Width: 100
+									Height: 22
+									Align: Center
+									Font: Bold
+									Text: purchase-panel-label-delivery
 				Container@PRODUCTION_TYPES:
 					X: 6
 					Y: 2

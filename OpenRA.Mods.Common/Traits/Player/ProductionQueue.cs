@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Traits
 		protected Production[] productionTraits;
 
 		// Will change if the owner changes
-		PowerManager playerPower;
+		public PowerManager PlayerPower;
 		protected PlayerResources playerResources;
 		protected DeveloperMode developerMode;
 		protected TechTree techTree;
@@ -175,7 +175,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
-			playerPower = self.Owner.PlayerActor.TraitOrDefault<PowerManager>();
+			PlayerPower = self.Owner.PlayerActor.TraitOrDefault<PowerManager>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			developerMode = self.Owner.PlayerActor.Trait<DeveloperMode>();
 			techTree = self.Owner.PlayerActor.Trait<TechTree>();
@@ -205,7 +205,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			ClearQueue();
 
-			playerPower = newOwner.PlayerActor.TraitOrDefault<PowerManager>();
+			PlayerPower = newOwner.PlayerActor.TraitOrDefault<PowerManager>();
 			playerResources = newOwner.PlayerActor.Trait<PlayerResources>();
 			developerMode = newOwner.PlayerActor.Trait<DeveloperMode>();
 			techTree = newOwner.PlayerActor.Trait<TechTree>();
@@ -435,7 +435,7 @@ namespace OpenRA.Mods.Common.Traits
 			return true;
 		}
 
-		public void ResolveOrder(Actor self, Order order)
+		public virtual void ResolveOrder(Actor self, Order order)
 		{
 			if (!Enabled)
 				return;
@@ -484,7 +484,7 @@ namespace OpenRA.Mods.Common.Traits
 						if (Info.PayUpFront && cost > playerResources.GetCashAndResources())
 							return;
 						var hasPlayedSound = false;
-						BeginProduction(new ProductionItem(this, order.TargetString, cost, playerPower, () => self.World.AddFrameEndTask(_ =>
+						BeginProduction(new ProductionItem(this, order.TargetString, cost, PlayerPower, () => self.World.AddFrameEndTask(_ =>
 						{
 							// Make sure the item hasn't been invalidated between the ProductionItem ticking and this FrameEndTask running
 							if (!Queue.Any(i => i.Done && i.Item == unit.Name))
@@ -574,7 +574,7 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					item.Infinite = false;
 					for (var i = 1; i < Info.InfiniteBuildLimit; i++)
-						Queue.Add(new ProductionItem(this, item.Item, item.TotalCost, playerPower, item.OnComplete));
+						Queue.Add(new ProductionItem(this, item.Item, item.TotalCost, PlayerPower, item.OnComplete));
 				}
 				else
 				{
@@ -600,7 +600,7 @@ namespace OpenRA.Mods.Common.Traits
 			Queue.Remove(item);
 
 			if (item.Infinite)
-				Queue.Add(new ProductionItem(this, item.Item, item.TotalCost, playerPower, item.OnComplete) { Infinite = true });
+				Queue.Add(new ProductionItem(this, item.Item, item.TotalCost, PlayerPower, item.OnComplete) { Infinite = true });
 		}
 
 		protected virtual void BeginProduction(ProductionItem item, bool hasPriority)

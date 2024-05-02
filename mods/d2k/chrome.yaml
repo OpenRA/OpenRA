@@ -18,6 +18,8 @@ sidebar:
 		background-top: 0, 0, 226, 295
 		background-iconrow: 0, 295, 226, 48
 		background-bottom: 0, 343, 226, 13
+		purchase-button: 226, 281, 125, 29
+		background-bottom-extension: 228, 329, 226, 28
 
 sidebar-button:
 	Inherits: ^Chrome
@@ -302,6 +304,33 @@ progressbar-bg:
 
 progressbar-thumb:
 	Inherits: button
+
+button-purchase:
+	Inherits: ^Chrome
+	PanelRegion: 226, 281, 0, 0, 125, 29,0 ,0
+
+button-purchase-disabled:
+	Inherits: button-purchase
+
+button-purchase-hover:
+	Inherits: ^Chrome
+	PanelRegion: 226, 252, 0, 0, 125, 29,0 ,0
+
+button-purchase-highlighted:
+	Inherits: button-purchase-hover
+
+button-purchase-highlighted-hover:
+	Inherits: button-purchase-hover
+
+button-purchase-pressed:
+	Inherits: ^Chrome
+	PanelRegion: 226, 223, 0, 0, 125, 29,0 ,0
+
+button-purchase-highlighted-pressed:
+	Inherits: button-purchase-pressed
+
+button-purchase-highlighted-disabled:
+	Inherits: button-purchase
 
 button:
 	Inherits: ^Dialog

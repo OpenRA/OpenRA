@@ -657,9 +657,7 @@ starport:
 	Exit@2:
 		SpawnOffset: 0,-480,0
 		ExitCell: 0,2
-	ProductionAirdrop:
-		WaitTickBeforeProduce: 10
-		WaitTickAfterProduce: 15
+	ProductionStarport:
 		LandOffset: 0, -256, 0
 		Produces: Starport
 		ActorType: frigate

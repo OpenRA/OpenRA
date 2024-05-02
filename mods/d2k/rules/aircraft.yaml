@@ -85,16 +85,17 @@ frigate:
 	Aircraft:
 		IdleBehavior: LeaveMap
 		Speed: 189
-		TurnSpeed: 4
+		TurnSpeed: 16
 		Repulsable: False
 		MaximumPitch: 20
 		CruiseAltitude: 2048
 		VTOL: true
+		TakeOffOnCreation: false
 		CanHover: true
-		CanSlide: true
 	-AppearsOnRadar:
 	Cargo:
 		MaxWeight: 20
+		DelayBetweenUnloads: 15
 	RejectsOrders:
 
 ornithopter:

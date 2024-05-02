@@ -293,6 +293,16 @@ namespace OpenRA
 			return new Order("CancelProduction", subject, false) { ExtraData = (uint)count, TargetString = item };
 		}
 
+		public static Order PurchaseOrder(Actor subject, string productionType)
+		{
+			return new Order("PurchaseOrder", subject, false) { TargetString = productionType };
+		}
+
+		public static Order ReturnOrder(Actor subject, string item, int count)
+		{
+			return new Order("ReturnOrder", subject, false) { ExtraData = (uint)count, TargetString = item };
+		}
+
 		// For scripting special powers
 		public Order()
 			: this(null, null, Target.Invalid, null, false, null, CPos.Zero, 0) { }

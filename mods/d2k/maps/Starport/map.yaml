@@ -1,0 +1,99 @@
+MapFormat: 12
+
+RequiresMod: d2k
+
+Title: Starport testing map
+
+Author: Your name here
+
+Tileset: ARRAKIS
+
+MapSize: 34,34
+
+Bounds: 1,1,32,32
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Multi0
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+
+Actors:
+	Actor0: mpspawn
+		Owner: Neutral
+		Location: 16,19
+	Actor1: wind_trap
+		Owner: Multi0
+		Location: 7,14
+	Actor2: wind_trap
+		Owner: Multi0
+		Location: 9,14
+	Actor3: wind_trap
+		Owner: Multi0
+		Location: 11,14
+	Actor4: wind_trap
+		Owner: Multi0
+		Location: 13,14
+	Actor5: barracks
+		Owner: Multi0
+		Location: 15,14
+	Actor6: heavy_factory
+		Owner: Multi0
+		Location: 17,14
+	Actor7: light_factory
+		Owner: Multi0
+		Location: 21,14
+	Actor8: refinery
+		Owner: Multi0
+		Location: 22,18
+		FreeActor: False
+	Actor9: starport
+		Owner: Multi0
+		Location: 3,20
+	Actor10: starport
+		Owner: Multi0
+		Location: 14,21
+	Actor11: starport
+		Owner: Multi0
+		Location: 26,21
+	Actor12: construction_yard
+		Owner: Multi0
+		Location: 9,18
+	Actor13: harvester
+		Owner: Multi0
+		Facing: 384
+		Location: 20,24
+	Actor14: harvester
+		Owner: Multi0
+		Facing: 384
+		Location: 24,23
+	Actor15: harvester
+		Owner: Multi0
+		Facing: 384
+		Location: 22,22
+	Actor16: wind_trap
+		Owner: Multi0
+		Location: 5,14
+	Actor17: wind_trap
+		Owner: Multi0
+		Location: 25,14
+	Actor18: wind_trap
+		Owner: Multi0
+		Location: 27,14
+
+Rules: rules.yaml

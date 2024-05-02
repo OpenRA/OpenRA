@@ -60,6 +60,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Delay (in ticks) before continuing after unloading a passenger.")]
 		public readonly int AfterUnloadDelay = 25;
 
+		[Desc("Delay (in ticks) before each passenger is unloaded.")]
+		public readonly int DelayBetweenUnloads = 0;
+
 		[CursorReference]
 		[Desc("Cursor to display when able to unload the passengers.")]
 		public readonly string UnloadCursor = "deploy";
