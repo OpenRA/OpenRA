@@ -23,7 +23,25 @@ namespace OpenRA.Mods.Common.Widgets
 	public class ActorPreviewWidget : Widget, IEditActorInits
 	{
 		public bool Animate = false;
-		public Func<float> GetScale = () => 1f;
+		public bool Center = false;
+		public bool RecalculateBounds = true;
+
+		public float Scale { get; private set; } = 1f;
+		public void SetScale(float scale)
+		{
+			if (RecalculateBounds)
+			{
+				if (Center)
+					previewOffset = previewPos - IdealPreviewSize / 2;
+				else
+				{
+					Bounds.Width = (int)(scale * IdealPreviewSize.X);
+					Bounds.Height = (int)(scale * IdealPreviewSize.Y);
+				}
+			}
+
+			Scale = scale;
+		}
 
 		readonly WorldRenderer worldRenderer;
 		readonly WorldViewportSizes viewportSizes;
@@ -32,8 +50,9 @@ namespace OpenRA.Mods.Common.Widgets
 		ActorReference reference;
 		ActorInfo info;
 
-		public int2 PreviewOffset { get; private set; }
+		int2 previewOffset;
 		public int2 IdealPreviewSize { get; private set; }
+		int2 previewPos;
 		public SequenceSet Sequences;
 
 		[ObjectCreator.UseCtor]
@@ -105,18 +124,24 @@ namespace OpenRA.Mods.Common.Widgets
 				.SelectMany(rpi => rpi.RenderPreview(init))
 				.ToArray();
 
-			// Calculate the preview bounds
-			var r = Preview.SelectMany(p => p.ScreenBounds(worldRenderer, WPos.Zero));
-			var b = r.Union();
-			IdealPreviewSize = new int2((int)(b.Width * viewportSizes.DefaultScale), (int)(b.Height * viewportSizes.DefaultScale));
-			PreviewOffset = -new int2((int)(b.Left * viewportSizes.DefaultScale), (int)(b.Top * viewportSizes.DefaultScale)) - IdealPreviewSize / 2;
+			// Calculate the preview bounds.
+			if (RecalculateBounds)
+			{
+				var r = Preview.SelectMany(p => p.ScreenBounds(worldRenderer, WPos.Zero));
+				var b = r.Union();
+				IdealPreviewSize = new int2((int)(b.Width * viewportSizes.DefaultScale), (int)(b.Height * viewportSizes.DefaultScale));
+				previewPos = -new int2((int)(b.Left * viewportSizes.DefaultScale), (int)(b.Top * viewportSizes.DefaultScale));
+				previewOffset = previewPos - IdealPreviewSize / 2;
+			}
+			else
+				previewOffset = int2.Zero;
 		}
 
 		IFinalizedRenderable[] renderables;
 		public override void PrepareRenderables()
 		{
-			var scale = GetScale() * viewportSizes.DefaultScale;
-			var origin = RenderOrigin + PreviewOffset + new int2(RenderBounds.Size.Width / 2, RenderBounds.Size.Height / 2);
+			var scale = Scale * viewportSizes.DefaultScale;
+			var origin = RenderOrigin + previewOffset + new int2(RenderBounds.Size.Width / 2, RenderBounds.Size.Height / 2);
 
 			renderables = Preview
 				.SelectMany(p => p.RenderUI(worldRenderer, origin, scale))

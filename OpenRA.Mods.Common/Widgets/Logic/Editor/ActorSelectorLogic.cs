@@ -215,10 +215,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (scale * preview.IdealPreviewSize.X > ItemTemplate.Bounds.Width)
 						scale = (ItemTemplate.Bounds.Width - Panel.ItemSpacing) / (float)preview.IdealPreviewSize.X;
 
-					preview.GetScale = () => scale;
-					preview.Bounds.Width = (int)(scale * preview.IdealPreviewSize.X);
-					preview.Bounds.Height = (int)(scale * preview.IdealPreviewSize.Y);
-
+					preview.SetScale(scale);
 					item.Bounds.Width = preview.Bounds.Width + 2 * preview.Bounds.X;
 					item.Bounds.Height = preview.Bounds.Height + 2 * preview.Bounds.Y;
 					item.IsVisible = () => true;
