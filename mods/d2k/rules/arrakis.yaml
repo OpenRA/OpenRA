@@ -154,3 +154,100 @@ sietch:
 	-WithMakeAnimation:
 	-WithCrumbleOverlay:
 	-WithBuildingRepairDecoration:
+
+pass01_destroyable_bottom:
+	Inherits: ^DestroyableTile
+	RenderSprites:
+		Image: rockpass01_bottom
+	Building:
+		Dimensions: 3,3
+		Footprint: === X=X X=X
+	HitShape:
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 900
+	SpawnActorOnDeath:
+		Actor: pass01_destroyed_bottom
+
+pass01_destroyed_bottom:
+	Inherits: ^DestroyedTile
+	RenderSprites:
+		Image: rockpass01_destroyed_bottom
+	Building:
+		Dimensions: 3,3
+		Footprint: === xxx xxx
+	TransformOnCapture:
+		IntoActor: pass01_destroyable_bottom
+
+pass01_destroyable_left:
+	Inherits: ^DestroyableTile
+	RenderSprites:
+		Image: rockpass01_left
+	HitShape:
+		Type: Rectangle
+			TopLeft: -700, -512
+			BottomRight: 712, 512
+	Building:
+		Dimensions: 3,3
+		Footprint: XX= === XX=
+	SpawnActorOnDeath:
+		Actor: pass01_destroyed_left
+
+
+pass01_destroyed_left:
+	Inherits: ^DestroyedTile
+	RenderSprites:
+		Image: rockpass01_destroyed_left
+	Building:
+		Dimensions: 3,3
+		Footprint: xx= xx= xx=
+	TransformOnCapture:
+		IntoActor: pass01_destroyable_left
+
+pass01_destroyable_right:
+	Inherits: ^DestroyableTile
+	RenderSprites:
+		Image: rockpass01_right
+	HitShape:
+		Type: Rectangle
+			TopLeft: -700, -512
+			BottomRight: 700, 512
+	Building:
+		Dimensions: 3,3
+		Footprint: =XX === =XX
+	SpawnActorOnDeath:
+		Actor: pass01_destroyed_right
+
+pass01_destroyed_right:
+	Inherits: ^DestroyedTile
+	RenderSprites:
+		Image: rockpass01_destroyed_right
+	Building:
+		Dimensions: 3,3
+		Footprint: =xx =xx =xx
+	TransformOnCapture:
+		IntoActor: pass01_destroyable_right
+
+pass01_destroyable_top:
+	Inherits: ^DestroyableTile
+	RenderSprites:
+		Image: rockpass01_top
+	HitShape:
+		Type: Rectangle
+			TopLeft: -512, -900
+			BottomRight: 512, 512
+	Building:
+		Dimensions: 3,3
+		Footprint: X=X X=X ===
+	SpawnActorOnDeath:
+		Actor: pass01_destroyed_top
+
+pass01_destroyed_top:
+	Inherits: ^DestroyedTile
+	RenderSprites:
+		Image: rockpass01_destroyed_top
+	Building:
+		Dimensions: 3,3
+		Footprint: XxX xxx xxx
+	TransformOnCapture:
+		IntoActor: pass01_destroyable_top

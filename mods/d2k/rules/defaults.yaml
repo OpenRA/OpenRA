@@ -198,11 +198,19 @@
 	HandicapDamageMultiplier:
 	HandicapProductionTimeMultiplier:
 
+^CliffAvalanche:
+	ExternalCondition@rockAvalanche:
+		Condition: rock_avalanche
+	KillsSelf@rockAvalanche:
+		RequiresCondition: rock_avalanche
+		DamageTypes: SmallExplosionDeath
+
 ^Vehicle:
 	Inherits@1: ^ExistsInWorld
 	Inherits@2: ^SpriteActor
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
+	Inherits@avalancheKill: ^CliffAvalanche
 	Tooltip:
 		GenericName: meta-vehicle-generic-name
 	Huntable:
@@ -356,6 +364,7 @@
 	Inherits@3: ^SpriteActor
 	Inherits@selection: ^SelectableCombatUnit
 	Inherits@handicaps: ^PlayerHandicaps
+	Inherits@avalancheKill: ^CliffAvalanche
 	Tooltip:
 		GenericName: meta-infantry-generic-name
 	Huntable:
@@ -669,3 +678,74 @@
 		RequiresSelection: true
 		Image: pips
 		Sequence: tag-upgraded
+
+^UndestroyableTile:
+	Inherits@1: ^ExistsInWorld
+	Inherits@2: ^SpriteActor
+	FrozenUnderFog:
+	WithSpriteBody:
+	Building:
+		TerrainTypes: Rock, Concrete, Cliff, Sand, Rock, Transition, Spice, SpiceSand, Dune,
+	Health:
+		HP: 30000
+	Armor:
+		Type: invulnerable
+	HitShape:
+		UseTargetableCellsOffsets: false
+		Type: Rectangle
+			TopLeft: -512, -512
+			BottomRight: 512, 512
+	MapEditorData:
+		Categories: Tile actors
+	Interactable:
+
+^DestroyableTile:
+	Inherits: ^UndestroyableTile
+	Targetable:
+		TargetTypes: Ground, Cliff
+		RequiresForceFire: true
+	Armor:
+		Type: wall
+	Health:
+		HP: 30000
+	OwnerLostAction:
+		Action: ChangeOwner
+		Owner: Neutral
+	HitShape:
+		UseTargetableCellsOffsets: true
+	Explodes:
+		Type: CenterPosition
+		Weapon: cliffExplode
+		EmptyWeapon: cliffExplode
+	MapEditorData:
+		Categories: Destroable Tiles
+	Tooltip:
+		GenericName: meta-DestroyableTile.generic-name
+		Name: meta-DestroyableTile.name
+
+^DestroyedTile:
+	Inherits: ^UndestroyableTile
+	CaptureManager:
+	Building:
+	OwnerLostAction:
+		Action: ChangeOwner
+		Owner: Neutral
+	Tooltip:
+		GenericName: meta-DestroyedTile.generic-name
+		Name: meta-DestroyedTile.name
+	CaptureManager:
+	CapturableProgressBar:
+	CapturableProgressBlink:
+		Interval: 30
+	Capturable:
+		Types: cliff
+	HitShape:
+		UseTargetableCellsOffsets: true
+		Type: Rectangle
+			TopLeft: -1048, -1048
+			BottomRight: 1024, 1054
+	Targetable:
+		TargetTypes: Ground, Cliff
+		RequiresForceFire: true
+	MapEditorData:
+		Categories: Destroyed Tiles

@@ -196,6 +196,15 @@ WallExplode:
 		ImpactSounds: EXPLHG1.WAV
 		ImpactActors: false
 
+CliffExplode:
+	Warhead@1Eff: CreateEffect
+		Explosions: building
+		ImpactActors: false
+		ImpactSounds: EXPLHG1.WAV
+	Warhead@rockAvalanche: GrantExternalCondition
+		Condition: rock_avalanche
+		Range: 1c950
+
 grenade:
 	ReloadDelay: 50
 	Range: 4c0
