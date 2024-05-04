@@ -635,7 +635,6 @@ Container@EDITOR_WORLD_ROOT:
 					Y: 0
 					Width: PARENT_RIGHT
 					Height: PARENT_BOTTOM
-					#Background: scrollpanel-bg
 					Children:
 						Label@AREA_EDIT_TITLE:
 							X: 6
@@ -998,6 +997,19 @@ ScrollPanel@CATEGORY_FILTER_PANEL:
 					Text: button-select-categories-buttons-none
 		Checkbox@CATEGORY_TEMPLATE:
 			X: 5
+			Width: PARENT_RIGHT - 29
+			Height: 20
+			Visible: false
+
+ScrollPanel@OVERLAY_PANEL:
+	Width: 140
+	Height: 80
+	ItemSpacing: 5
+	TopBottomSpacing: 0
+	Children:
+		Checkbox@CATEGORY_TEMPLATE:
+			X: 5
+			Y: 5
 			Width: PARENT_RIGHT - 29
 			Height: 20
 			Visible: false
