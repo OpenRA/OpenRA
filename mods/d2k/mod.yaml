@@ -47,6 +47,7 @@ Sequences:
 	d2k|sequences/infantry.yaml
 	d2k|sequences/structures.yaml
 	d2k|sequences/misc.yaml
+	d2k|sequences/arrakis.yaml
 
 TileSets:
 	d2k|tilesets/arrakis.yaml

@@ -52,12 +52,17 @@ engineer:
 	Captures:
 		CaptureTypes: building
 		PlayerExperience: 10
-	Captures@caturesHusk:
+	Captures@Husk:
 		CaptureTypes: husk
 		PlayerExperience: 10
 	Infiltrates:
 		Types: husk
 		ValidRelationships: Ally
+	Captures@Cliff:
+		CaptureTypes: cliff
+		ConsumedByCapture: false
+		CaptureDelay: 150
+		ValidRelationships: Enemy, Neutral, Ally
 	Encyclopedia:
 		Description: actor-engineer.encyclopedia
 		Order: 30
