@@ -1,7 +1,7 @@
 quickinstall: Quick Install Package
 	Type: ZipFile
 	SHA1: 7bcaa55408a5e6995b43a0d02862c4e8574cf861
-	MirrorList: http://www.openra.net/packages/d2k-quickinstall-v3-mirrors.txt
+	MirrorList: https://www.openra.net/packages/d2k-quickinstall-v3-mirrors.txt
 	Extract:
 		^SupportDir|Content/d2k/v3/BLOXBASE.R16: v3/BLOXBASE.R16
 		^SupportDir|Content/d2k/v3/BLOXBAT.R16: v3/BLOXBAT.R16
@@ -269,7 +269,7 @@ quickinstall: Quick Install Package
 basefiles: Base Content
 	Type: ZipFile
 	SHA1: 399b9a6d5293298204d15ebe61145db155ed963c
-	MirrorList: http://www.openra.net/packages/d2k-base-v3-mirrors.txt
+	MirrorList: https://www.openra.net/packages/d2k-base-v3-mirrors.txt
 	Extract:
 		^SupportDir|Content/d2k/v3/BLOXBASE.R16: v3/BLOXBASE.R16
 		^SupportDir|Content/d2k/v3/BLOXBAT.R16: v3/BLOXBAT.R16
@@ -535,7 +535,7 @@ basefiles: Base Content
 patch106: Patch 1.06 Content
 	Type: ZipFile
 	SHA1: 86f3e468bdea6775d5744737ba5f375e5296e47c
-	MirrorList: http://www.openra.net/packages/d2k-patch106-v3-mirrors.txt
+	MirrorList: https://www.openra.net/packages/d2k-patch106-v3-mirrors.txt
 	Extract:
 		^SupportDir|Content/d2k/v3/BLOXXMAS.R8: v3/BLOXXMAS.R8
 		^SupportDir|Content/d2k/v3/DATA.R16: v3/DATA.R16

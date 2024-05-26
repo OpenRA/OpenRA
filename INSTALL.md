@@ -7,7 +7,7 @@ Windows
 =======
 
 Compiling OpenRA requires the following dependencies:
-* [Windows PowerShell >= 4.0](http://microsoft.com/powershell) (included by default in recent Windows 10 versions)
+* [Windows PowerShell >= 4.0](https://microsoft.com/powershell) (included by default in recent Windows 10 versions)
 * [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) (or via Visual Studio)
 
 To compile OpenRA, open the `OpenRA.sln` solution in the main folder, build it from the command-line with `dotnet` or use the Makefile analogue command `make all` scripted in PowerShell syntax.
@@ -25,7 +25,7 @@ To compile OpenRA, run `make` from the command line (or `make RUNTIME=mono` if u
 
 The default behaviour on the x86_64 architecture is to download several pre-compiled native libraries using the Nuget packaging manager. If you prefer to use system libraries, compile instead using `make TARGETPLATFORM=unix-generic`.
 
-If you choose to use system libraries, or your system is not x86_64, you will need to install [SDL 2](https://www.libsdl.org/download-2.0.php), [FreeType](http://gnuwin32.sourceforge.net/packages/freetype.htm), [OpenAL](https://openal-soft.org/), and [liblua 5.1](http://luabinaries.sourceforge.net/download.html) before compiling OpenRA.
+If you choose to use system libraries, or your system is not x86_64, you will need to install [SDL 2](https://www.libsdl.org/download-2.0.php), [FreeType](https://gnuwin32.sourceforge.net/packages/freetype.htm), [OpenAL](https://openal-soft.org/), and [liblua 5.1](https://luabinaries.sourceforge.net/download.html) before compiling OpenRA.
 
 These can be installed using your package manager on various distros:
 

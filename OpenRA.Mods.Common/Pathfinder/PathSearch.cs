@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		/// <summary>
 		/// Default: Diagonal distance heuristic. More information:
-		/// http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
+		/// https://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
 		/// Layers are ignored and incur no additional cost.
 		/// </summary>
 		/// <param name="locomotor">Locomotor used to provide terrain costs.</param>
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 		/// <summary>
 		/// Default: Diagonal distance heuristic. More information:
-		/// http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
+		/// https://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
 		/// Layers are ignored and incur no additional cost.
 		/// </summary>
 		/// <param name="locomotor">Locomotor used to provide terrain costs.</param>

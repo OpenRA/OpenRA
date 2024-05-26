@@ -1,7 +1,7 @@
 basefiles: Base Freeware Content
 	Type: ZipFile
 	SHA1: 824df30de0004ad13fac29cf16450caafee9fb1b
-	MirrorList: http://www.openra.net/packages/ts-mirrors.txt
+	MirrorList: https://www.openra.net/packages/ts-mirrors.txt
 	Extract:
 		^SupportDir|Content/ts/cache.mix: cache.mix
 		^SupportDir|Content/ts/conquer.mix: conquer.mix
@@ -21,7 +21,7 @@ basefiles: Base Freeware Content
 fstorm: Expansion Freeware Content
 	Type: ZipFile
 	SHA1: 8bff90870a9348b72cbe91314aec7d3a50311aa9
-	MirrorList: http://www.openra.net/packages/fs-mirrors.txt
+	MirrorList: https://www.openra.net/packages/fs-mirrors.txt
 	Extract:
 		^SupportDir|Content/ts/firestorm/c_kodiak.shp: firestorm/c_kodiak.shp
 		^SupportDir|Content/ts/firestorm/coremk.shp: firestorm/coremk.shp
@@ -205,7 +205,7 @@ fstorm: Expansion Freeware Content
 quickinstall: Quick Install Package
 	Type: ZipFile
 	SHA1: d9339e7b6ecf624ac6ca91d25c58b88fb88a49d2
-	MirrorList: http://www.openra.net/packages/ts-quickinstall-mirrors.txt
+	MirrorList: https://www.openra.net/packages/ts-quickinstall-mirrors.txt
 	Extract:
 		^SupportDir|Content/ts/cache.mix: cache.mix
 		^SupportDir|Content/ts/conquer.mix: conquer.mix

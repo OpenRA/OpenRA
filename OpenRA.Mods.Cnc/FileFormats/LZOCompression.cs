@@ -11,7 +11,7 @@
 #region Additional Copyright & License Information
 /*
  * C# port of the crude minilzo source version 2.06 by Frank Razenberg
- * The full LZO package can be found at http://www.oberhumer.com/opensource/lzo/
+ * The full LZO package can be found at https://www.oberhumer.com/opensource/lzo/
  *
  * Beware, you should never want to see C# code like this. You were warned.
  * I simply ran the MSVC preprocessor on the original source, changed the datatypes
@@ -61,7 +61,7 @@
  *
  * Markus F.X.J. Oberhumer
  * <markus@oberhumer.com>
- * http://www.oberhumer.com/opensource/lzo/
+ * https://www.oberhumer.com/opensource/lzo/
  */
 #endregion
 
