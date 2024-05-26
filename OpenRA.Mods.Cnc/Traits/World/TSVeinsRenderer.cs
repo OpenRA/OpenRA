@@ -370,10 +370,10 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		string IResourceRenderer.GetRenderedResourceTooltip(CPos cell)
 		{
-			if (renderIndices[cell] != null)
-				return info.Name;
+			if (renderIndices[cell] != null || borders[cell] != Adjacency.None)
+				return TranslationProvider.GetString(info.Name);
 
-			return borders[cell] != Adjacency.None ? info.Name : null;
+			return null;
 		}
 
 		IEnumerable<IRenderable> IResourceRenderer.RenderUIPreview(WorldRenderer wr, string resourceType, int2 origin, float scale)
