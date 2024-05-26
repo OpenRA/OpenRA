@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine(".SH FILES");
 			Console.WriteLine("Settings are stored in the ~/.openra user folder.");
 			Console.WriteLine(".SH BUGS");
-			Console.WriteLine("Known issues are tracked at http://bugs.openra.net");
+			Console.WriteLine("Known issues are tracked at https://bugs.openra.net");
 			Console.WriteLine(".SH COPYRIGHT");
 			Console.WriteLine("Copyright (c) The OpenRA Developers and Contributors");
 			Console.WriteLine("This manual is part of OpenRA, which is free software. It is GNU GPL v3 licensed. See COPYING for details.");

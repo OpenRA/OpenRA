@@ -50,7 +50,7 @@ if [ "${rc}" != 0 ] && [ "${rc}" != 1 ]; then
 	if [ -d Support/Logs ]; then
 		LOGS="${PWD}/Support/Logs"
 	fi
-	ERROR_MESSAGE=$(printf "%s has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in %s\nThe FAQ is available at http://wiki.openra.net/FAQ" "OpenRA" "${LOGS}")
+	ERROR_MESSAGE=$(printf "%s has encountered a fatal error.\nPlease refer to the crash logs and FAQ for more information.\n\nLog files are located in %s\nThe FAQ is available at https://wiki.openra.net/FAQ" "OpenRA" "${LOGS}")
 	if command -v zenity > /dev/null; then
 		zenity --no-wrap --error --title "OpenRA" --no-markup --text "${ERROR_MESSAGE}" 2> /dev/null || :
 	elif command -v kdialog > /dev/null; then

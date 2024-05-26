@@ -16,7 +16,7 @@ Help us keep OpenRA open and inclusive. Please read and follow our [Code of Cond
 
 * [Coding standard](https://github.com/OpenRA/OpenRA/wiki/Coding-Standard)
 * [Branches and Releases](https://github.com/OpenRA/OpenRA/wiki/Branches-and-Releases)
-* [Licensing](http://www.gnu.org/licenses/quick-guide-gplv3.html)
+* [Licensing](https://www.gnu.org/licenses/quick-guide-gplv3.html)
 
 Please `git rebase` to the latest revision of the bleed branch.
 

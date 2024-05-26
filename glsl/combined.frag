@@ -51,7 +51,7 @@ vec3 hsv2rgb(vec3 c)
 
 float srgb2linear(float c)
 {
-	// Standard gamma conversion equation: see e.g. http://entropymine.com/imageworsener/srgbformula/
+	// Standard gamma conversion equation: see e.g. https://entropymine.com/imageworsener/srgbformula/
 	return c <= 0.04045f ? c / 12.92f : pow((c + 0.055f) / 1.055f, 2.4f);
 }
 
@@ -63,7 +63,7 @@ vec4 srgb2linear(vec4 c)
 
 float linear2srgb(float c)
 {
-	// Standard gamma conversion equation: see e.g. http://entropymine.com/imageworsener/srgbformula/
+	// Standard gamma conversion equation: see e.g. https://entropymine.com/imageworsener/srgbformula/
 	return c <= 0.0031308 ? c * 12.92f : 1.055f * pow(c, 1.0f / 2.4f) - 0.055f;
 }
 

@@ -121,7 +121,7 @@ mkdir -p "${TEMPLATE_DIR}/Contents/MacOS/arm64"
 echo "APPL????" > "${TEMPLATE_DIR}/Contents/PkgInfo"
 cp Info.plist.in "${TEMPLATE_DIR}/Contents/Info.plist"
 modify_plist "{DEV_VERSION}" "${TAG}" "${TEMPLATE_DIR}/Contents/Info.plist"
-modify_plist "{FAQ_URL}" "http://wiki.openra.net/FAQ" "${TEMPLATE_DIR}/Contents/Info.plist"
+modify_plist "{FAQ_URL}" "https://wiki.openra.net/FAQ" "${TEMPLATE_DIR}/Contents/Info.plist"
 modify_plist "{MINIMUM_SYSTEM_VERSION}" "10.11" "${TEMPLATE_DIR}/Contents/Info.plist"
 
 # Compile universal (x86_64 + arm64) arch-specific apphosts

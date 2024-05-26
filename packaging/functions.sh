@@ -3,7 +3,7 @@
 
 ####
 # This file must stay /bin/sh and POSIX compliant for macOS and BSD portability.
-# Copy-paste the entire script into http://shellcheck.net to check.
+# Copy-paste the entire script into https://shellcheck.net to check.
 ####
 
 # Compile and publish the core engine and specified mod assemblies to the target directory

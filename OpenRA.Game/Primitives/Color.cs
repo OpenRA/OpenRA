@@ -77,13 +77,13 @@ namespace OpenRA.Primitives
 
 		static float SrgbToLinear(float c)
 		{
-			// Standard gamma conversion equation: see e.g. http://entropymine.com/imageworsener/srgbformula/
+			// Standard gamma conversion equation: see e.g. https://entropymine.com/imageworsener/srgbformula/
 			return c <= 0.04045f ? c / 12.92f : (float)Math.Pow((c + 0.055f) / 1.055f, 2.4f);
 		}
 
 		static float LinearToSrgb(float c)
 		{
-			// Standard gamma conversion equation: see e.g. http://entropymine.com/imageworsener/srgbformula/
+			// Standard gamma conversion equation: see e.g. https://entropymine.com/imageworsener/srgbformula/
 			return c <= 0.0031308f ? c * 12.92f : 1.055f * (float)Math.Pow(c, 1.0f / 2.4f) - 0.055f;
 		}
 
