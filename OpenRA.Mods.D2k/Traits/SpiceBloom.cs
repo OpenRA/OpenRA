@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
@@ -30,7 +31,7 @@ namespace OpenRA.Mods.D2k.Traits
 		public readonly string SpurtSequence = "spurt";
 
 		[Desc("The range of time (in ticks) that the spicebloom will take to grow until it blows up.")]
-		public readonly int[] Lifetime = { 1000, 3000 };
+		public readonly int[] Lifetime = { 2000, 3000 };
 
 		public readonly string ResourceType = "Spice";
 
@@ -41,11 +42,14 @@ namespace OpenRA.Mods.D2k.Traits
 		[WeaponReference]
 		public readonly string Weapon = null;
 
-		[Desc("The amount of spice to expel.")]
-		public readonly int[] Pieces = { 2, 12 };
+		[Desc("The number of times to fire Weapon at the minimum and maximum actor age.")]
+		public readonly int[] Bursts = { 4, 12 };
 
-		[Desc("The maximum distance in cells that spice may be expelled.")]
-		public readonly int Range = 5;
+		[Desc("The minimum and maximum distance in cells that spice may be expelled.")]
+		public readonly int[] Range = { 3, 5 };
+
+		[Desc("Delay between each burst. (in Ticks)")]
+		public readonly int BurstInterval = 1;
 
 		public override object Create(ActorInitializer init) { return new SpiceBloom(init.Self, this); }
 
@@ -65,7 +69,6 @@ namespace OpenRA.Mods.D2k.Traits
 		readonly Animation body;
 		readonly Animation spurt;
 		readonly int growTicks;
-
 		int ticks;
 		int bodyFrame = 0;
 		bool showSpurt = true;
@@ -73,7 +76,6 @@ namespace OpenRA.Mods.D2k.Traits
 		public SpiceBloom(Actor self, SpiceBloomInfo info)
 		{
 			this.info = info;
-
 			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 
 			var rs = self.Trait<RenderSprites>();
@@ -116,23 +118,22 @@ namespace OpenRA.Mods.D2k.Traits
 
 		void SeedResources(Actor self)
 		{
-			var pieces = self.World.SharedRandom.Next(info.Pieces[0], info.Pieces[1]) * ticks / growTicks;
-			if (pieces < info.Pieces[0])
-				pieces = info.Pieces[0];
-
-			var cells = self.World.Map.FindTilesInAnnulus(self.Location, 1, info.Range).ToList();
-
+			var pieces = int2.Lerp(info.Bursts[0], info.Bursts[1], ticks, growTicks);
+			var range = int2.Lerp(info.Range[0], info.Range[1], ticks, growTicks);
+			var cells = self.World.Map.FindTilesInAnnulus(self.Location, 1, range).ToList();
+			var emptyCells = cells
+				.Where(p =>
+					resourceLayer.GetResource(p).Type != info.ResourceType
+					&& resourceLayer.CanAddResource(info.ResourceType, p))
+				.ToList();
+			var projectiles = new Stack<ProjectileArgs>();
 			for (var i = 0; i < pieces; i++)
 			{
-				var cell = cells
-					.SkipWhile(p => resourceLayer.GetResource(p).Type == info.ResourceType && !resourceLayer.CanAddResource(info.ResourceType, p))
-					.Cast<CPos?>()
-					.RandomOrDefault(self.World.SharedRandom);
+				var cell = emptyCells.Count == 0
+					? cells.Random(self.World.SharedRandom)
+					: emptyCells.Random(self.World.SharedRandom);
 
-				if (cell == null)
-					cell = cells.Random(self.World.SharedRandom);
-
-				var args = new ProjectileArgs
+				projectiles.Push(new ProjectileArgs
 				{
 					Weapon = self.World.Map.Rules.Weapons[info.Weapon.ToLowerInvariant()],
 					Facing = WAngle.Zero,
@@ -150,28 +151,61 @@ namespace OpenRA.Mods.D2k.Traits
 					Source = self.CenterPosition,
 					CurrentSource = () => self.CenterPosition,
 					SourceActor = self,
-					PassiveTarget = self.World.Map.CenterOfCell(cell.Value)
-				};
-
-				self.World.AddFrameEndTask(_ =>
-				{
-					if (args.Weapon.Projectile != null)
-					{
-						var projectile = args.Weapon.Projectile.Create(args);
-						if (projectile != null)
-							self.World.Add(projectile);
-
-						if (args.Weapon.Report != null && args.Weapon.Report.Length > 0)
-							Game.Sound.Play(SoundType.World, args.Weapon.Report, self.World, self.CenterPosition);
-					}
+					PassiveTarget = self.World.Map.CenterOfCell(cell)
 				});
 			}
+
+			self.World.AddFrameEndTask(w => w.Add(new FireProjectilesEffect(projectiles, info.BurstInterval)));
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			if (!string.IsNullOrEmpty(info.Weapon))
 				SeedResources(self);
+		}
+	}
+
+	public class FireProjectilesEffect : IEffect
+	{
+		readonly Stack<ProjectileArgs> projectiles = new();
+		int delay = 1;
+		readonly int delayInfo = 1;
+		public FireProjectilesEffect(Stack<ProjectileArgs> projectiles, int delayInfo)
+		{
+			this.projectiles = projectiles;
+			delay = delayInfo;
+			this.delayInfo = delayInfo;
+		}
+
+		public void Tick(World world)
+		{
+			if (projectiles.Count == 0)
+			{
+				world.AddFrameEndTask(w => { w.Remove(this); w.ScreenMap.Remove(this); });
+				return;
+			}
+
+			if (--delay > 0)
+			{
+				return;
+			}
+
+			delay = delayInfo;
+			var args = projectiles.Pop();
+			if (args.Weapon.Projectile != null)
+			{
+				var projectile = args.Weapon.Projectile.Create(args);
+				if (projectile != null)
+					world.AddFrameEndTask(w => world.Add(projectile));
+
+				if (args.Weapon.Report != null && args.Weapon.Report.Length > 0)
+					Game.Sound.Play(SoundType.World, args.Weapon.Report, world, args.Source);
+			}
+		}
+
+		public IEnumerable<IRenderable> Render(WorldRenderer r)
+		{
+			return SpriteRenderable.None;
 		}
 	}
 }

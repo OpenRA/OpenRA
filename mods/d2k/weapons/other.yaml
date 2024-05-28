@@ -295,14 +295,15 @@ SardDeath:
 
 SpiceExplosion:
 	Projectile: Bullet
-		Speed: 50, 75
+		Speed: 90, 120
+		Shadow: true
 		Blockable: false
 		LaunchAngle: 60, 90
 		TrailImage: large_trail
 		Image: 120mm
 	Warhead@1Dam: SpreadDamage
 		Damage: 750
-		Spread: 1c0
+		Spread: 2c0
 		Falloff: 100, 0
 		Versus:
 			none: 90
@@ -330,10 +331,10 @@ BloomExplosion:
 	Projectile: InstantHit
 	Warhead@1Dam: SpreadDamage
 		Damage: 7500
-		Spread: 320
+		Spread: 800
 		Falloff: 100, 0
 		Versus:
-			none: 90
+			none: 150
 			wall: 5
 			building: 65
 			wood: 50
@@ -345,6 +346,9 @@ BloomExplosion:
 		DamageTypes: Prone50Percent, TriggerProne, ExplosionDeath, SpiceExplosion
 		DamageCalculationType: ClosestTargetablePosition
 		AffectsParent: true
+	Warhead@2Res: CreateResource
+		AddsResourceType: Spice
+		Size: 0
 
 PlasmaExplosion:
 	Warhead@1Dam: SpreadDamage
