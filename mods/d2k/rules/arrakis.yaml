@@ -13,11 +13,13 @@ spicebloom.spawnpoint:
 		TerrainTypes: SpiceSand
 	KillsSelf:
 		RequiresCondition: clearsand
-		Delay: 1750, 3250
+		Delay: 3000, 3250
 	SpawnActorOnDeath:
 		Actor: spicebloom
 	Health:
 		HP: 100000
+	Armor:
+		Type: invulnerable
 	Immobile:
 		OccupiesSpace: false
 	HitShape:
