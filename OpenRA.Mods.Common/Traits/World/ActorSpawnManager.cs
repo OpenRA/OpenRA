@@ -114,6 +114,9 @@ namespace OpenRA.Mods.Common.Traits
 				// Always spawn at least one actor, plus
 				// however many needed to reach the minimum.
 				SpawnActor(self, spawnPoint);
+
+				// choose new random SpawnPoint for each actor
+				spawnPoint = GetRandomSpawnPoint(self.World, self.World.SharedRandom);
 			}
 			while (actorsPresent < info.Minimum);
 		}
