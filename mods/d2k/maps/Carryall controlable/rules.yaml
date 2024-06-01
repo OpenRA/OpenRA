@@ -1,0 +1,30 @@
+carryall.controllable:
+	Inherits: carryall
+	Inherits@selectableEco: ^SelectableSupportUnit
+	Buildable:
+		Description:  controllable carryall \n Use Ctrl or Alt to select \n Use RMB to pick up vehicle \n use Deploy to unload vehicle
+	-Interactable:
+	AutoCarryall:
+		AutoCarryCondition: !manual
+		CarryCondition: loaded
+	GrantConditionOnDeploy@AUTO:
+		DeployedCondition: manual
+		CanDeployOnRamps: true
+		SkipMakeAnimation: true
+	RevealOnDeath:
+	RevealsShroud:
+		Range: 0c512
+		RequiresCondition: loaded
+		Type: CenterPosition
+	WithTextDecoration@AUTO:
+		UsePlayerColor: true
+		Text: AUTO
+		Position: Top
+		ValidRelationships: Ally
+		RequiresCondition: !manual
+	WithTextDecoration@MANUAL:
+		UsePlayerColor: true
+		Text: MANUAL
+		Position: Top
+		ValidRelationships: Ally
+		RequiresCondition: manual

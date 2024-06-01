@@ -1,0 +1,97 @@
+MapFormat: 12
+
+RequiresMod: d2k
+
+Title: test
+
+Author: Your namesdf here
+
+Tileset: ARRAKIS
+
+MapSize: 34,34
+
+Bounds: 1,1,32,32
+
+Visibility: Lobby
+
+Categories: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: Random
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: Random
+		Enemies: Multi0
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: Random
+		Enemies: Creeps
+
+Actors:
+	Actor0: mpspawn
+		Owner: Neutral
+		Location: 14,19
+	Actor1: barracks
+		Owner: Multi0
+		Location: 23,23
+	Actor2: wind_trap
+		Owner: Multi0
+		Location: 21,23
+	Actor3: wind_trap
+		Owner: Multi0
+		Location: 19,23
+	Actor4: refinery
+		Owner: Multi0
+		Location: 16,23
+	Actor5: harvester
+		Owner: Multi0
+		Facing: 384
+		Location: 21,13
+	Actor6: harvester
+		Owner: Multi0
+		Facing: 384
+		Location: 23,13
+	Actor7: heavy_factory
+		Owner: Multi0
+		Location: 22,19
+	Actor8: starport
+		Owner: Multi0
+		Location: 12,24
+	Actor9: outpost
+		Owner: Multi0
+		Location: 22,16
+	Actor10: wind_trap
+		Owner: Multi0
+		Location: 20,19
+	Actor11: wind_trap
+		Owner: Multi0
+		Location: 18,19
+	Actor12: palace
+		Owner: Multi0
+		Location: 8,24
+	Actor13: wind_trap
+		Owner: Multi0
+		Location: 20,15
+	Actor14: wind_trap
+		Owner: Multi0
+		Location: 18,15
+	Actor15: carryall.controllable
+		Owner: Multi0
+		Facing: 384
+		Location: 11,12
+	Actor16: carryall.controllable
+		Owner: Multi0
+		Facing: 384
+		Location: 15,13
+	Actor17: carryall.controllable
+		Owner: Multi0
+		Facing: 384
+		Location: 19,11
+
+Rules: rules.yaml
