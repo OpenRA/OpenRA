@@ -56,7 +56,7 @@ engineer:
 		CaptureTypes: husk
 		PlayerExperience: 10
 	Infiltrates:
-		Types: husk
+		Types: Husk
 		ValidRelationships: Ally
 	Captures@Cliff:
 		CaptureTypes: cliff
