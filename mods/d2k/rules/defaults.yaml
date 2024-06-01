@@ -308,7 +308,7 @@
 		AllowedTerrain: Sand, Rock, Transition, Concrete, Spice, SpiceSand, SpiceBlobs, Dune
 		Locomotor: tank
 	Targetable:
-		TargetTypes: Ground, Vehicle
+		TargetTypes: Ground, Vehicle, Husk
 		RequiresForceFire: true
 	WithColoredOverlay@husk:
 		Color: 00000060
@@ -344,7 +344,7 @@
 	TransformOnCapture:
 		ForceHealthPercentage: 20
 	InfiltrateForTransform:
-		Types: husk
+		Types: Husk
 		ForceHealthPercentage: 20
 
 ^AircraftHusk:
