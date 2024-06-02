@@ -100,6 +100,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			var valid =
 				TargetActor != null &&
 				TargetActor.IsInWorld &&
+				!TargetActor.IsDead &&
 				Units.Any(Target.IsValidFor) &&
 				!TargetActor.Info.HasTraitInfo<HuskInfo>();
 			if (!valid)
