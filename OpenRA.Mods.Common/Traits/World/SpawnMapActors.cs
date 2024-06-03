@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				actorReference.Add(new SkipMakeAnimsInit());
-				actorReference.Add(new SpawnedByMapInit(kv.Key));
+				actorReference.Add(new SpawnedByMapInit());
 
 				if (PreventMapSpawn(world, actorReference, preventMapSpawns))
 					continue;
@@ -66,9 +66,13 @@ namespace OpenRA.Mods.Common.Traits
 	}
 
 	public class SkipMakeAnimsInit : RuntimeFlagInit { }
-	public class SpawnedByMapInit : ValueActorInit<string>, ISuppressInitExport, ISingleInstanceInit
+	public class SpawnedByMapInit : ActorInit, ISuppressInitExport, ISingleInstanceInit
 	{
-		public SpawnedByMapInit(string value)
-			: base(value) { }
+		protected SpawnedByMapInit(string instanceName)
+			: base(instanceName) { }
+
+		public SpawnedByMapInit() { }
+
+		public override MiniYaml Save() => null;
 	}
 }
