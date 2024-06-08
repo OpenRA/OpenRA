@@ -16,21 +16,29 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders an overlay when the actor is taking heavy damage.")]
-	public class WithDamageOverlayInfo : TraitInfo, Requires<RenderSpritesInfo>, IRulesetLoaded
+	public class WithDamageOverlayInfo : ConditionalTraitInfo, Requires<RenderSpritesInfo>
 	{
 		public readonly string Image = "smoke_m";
 
 		[SequenceReference(nameof(Image))]
-		public readonly string IdleSequence = "idle";
+		public readonly string StartSequence = "";
 
 		[SequenceReference(nameof(Image))]
 		public readonly string LoopSequence = "loop";
 
 		[SequenceReference(nameof(Image))]
-		public readonly string EndSequence = "end";
+		public readonly string EndSequence = "";
 
 		[Desc("Position relative to the body orientation.")]
 		public readonly WVec Offset = WVec.Zero;
+
+		[Desc("How many times should " + nameof(LoopSequence),
+			" be played? A range can be provided to be randomly chosen from.")]
+		public readonly int[] LoopCount = [2];
+
+		[Desc("Initial delay before animation is enabled",
+			"Two values indicate a random delay range.")]
+		public readonly int[] InitialDelay = [0];
 
 		[PaletteReference(nameof(IsPlayerPalette))]
 		[Desc("Custom palette name.")]
@@ -45,55 +53,110 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		[Desc("Trigger when Undamaged, Light, Medium, Heavy, Critical or Dead.")]
 		public readonly DamageState MinimumDamageState = DamageState.Heavy;
+
+		[Desc("Trigger when Undamaged, Light, Medium, Heavy, Critical or Dead.")]
 		public readonly DamageState MaximumDamageState = DamageState.Dead;
 
 		public override object Create(ActorInitializer init) { return new WithDamageOverlay(init.Self, this); }
-
-		public void RulesetLoaded(Ruleset rules, ActorInfo info)
+		public override void RulesetLoaded(Ruleset rules, ActorInfo info)
 		{
 			if (Offset != WVec.Zero && !info.HasTraitInfo<BodyOrientationInfo>())
 				throw new YamlException("Specifying WithDamageOverlay.Offset requires the BodyOrientation trait on the actor.");
 		}
 	}
 
-	public class WithDamageOverlay : INotifyDamage, INotifyCreated
+	public class WithDamageOverlay : ConditionalTrait<WithDamageOverlayInfo>, INotifyDamage, ITick
 	{
 		readonly WithDamageOverlayInfo info;
 		readonly Animation anim;
 
-		bool isSmoking;
+		bool isPlayingAnimation;
+		int loopCount;
+
+		int delay = -1;
 
 		public WithDamageOverlay(Actor self, WithDamageOverlayInfo info)
+			: base(info)
 		{
 			this.info = info;
 			anim = new Animation(self.World, info.Image);
 		}
 
-		void INotifyCreated.Created(Actor self)
+		protected override void Created(Actor self)
 		{
 			var rs = self.Trait<RenderSprites>();
 			var body = self.TraitOrDefault<BodyOrientation>();
 
 			WVec AnimationOffset() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self.Orientation)));
-			rs.Add(new AnimationWithOffset(anim, info.Offset == WVec.Zero || body == null ? null : AnimationOffset, () => !isSmoking),
-				info.Palette, info.IsPlayerPalette);
+			rs.Add(new AnimationWithOffset(anim, info.Offset == WVec.Zero || body == null ? null : AnimationOffset, () => !isPlayingAnimation));
 		}
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			if (!info.DamageTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(info.DamageTypes))
+			if (IsTraitDisabled
+				|| e.DamageState < info.MinimumDamageState
+				|| e.DamageState > info.MaximumDamageState)
+			{
+				isPlayingAnimation = false;
+				return;
+			}
+
+			// Getting healed.
+			if (e.Damage.Value < 0)
 				return;
 
-			if (isSmoking) return;
-			if (e.Damage.Value < 0) return; /* getting healed */
-			if (e.DamageState < info.MinimumDamageState) return;
-			if (e.DamageState > info.MaximumDamageState) return;
+			if (!isPlayingAnimation && delay <= -1)
+			{
+				delay = Util.RandomInRange(self.World.SharedRandom, info.InitialDelay);
+				if (delay <= 0)
+					StartAnimation(self);
+			}
+		}
 
-			isSmoking = true;
-			anim.PlayThen(info.IdleSequence,
-				() => anim.PlayThen(info.LoopSequence,
-					() => anim.PlayThen(info.EndSequence,
-						() => isSmoking = false)));
+		void ITick.Tick(Actor self)
+		{
+			if (delay < 0)
+				return;
+
+			// Actor DamgageState may have changed.
+			if (self.GetDamageState() < info.MinimumDamageState || self.GetDamageState() > info.MaximumDamageState)
+				delay = -1;
+			else if (--delay <= 0)
+				StartAnimation(self);
+		}
+
+		protected override void TraitDisabled(Actor self)
+		{
+			isPlayingAnimation = false;
+		}
+
+		void StartAnimation(Actor self)
+		{
+			delay = -1;
+			loopCount = Util.RandomInRange(self.World.SharedRandom, info.LoopCount);
+			isPlayingAnimation = true;
+
+			if (!string.IsNullOrEmpty(info.StartSequence))
+				anim.PlayThen(info.StartSequence, () => PlayAnimation());
+			else
+				PlayAnimation();
+		}
+
+		void PlayAnimation(int animationState = -1)
+		{
+			if (!isPlayingAnimation)
+				return;
+
+			animationState++;
+			if (animationState < loopCount && !string.IsNullOrEmpty(info.LoopSequence))
+				anim.PlayThen(info.LoopSequence, () => PlayAnimation(animationState));
+			else
+			{
+				if (!string.IsNullOrEmpty(info.EndSequence))
+					anim.PlayThen(info.EndSequence, () => isPlayingAnimation = false);
+				else
+					isPlayingAnimation = false;
+			}
 		}
 	}
 }
