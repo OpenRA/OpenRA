@@ -62,6 +62,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			if (Offset != WVec.Zero && !info.HasTraitInfo<BodyOrientationInfo>())
 				throw new YamlException("Specifying WithDamageOverlay.Offset requires the BodyOrientation trait on the actor.");
+			base.RulesetLoaded(rules, info);
 		}
 	}
 
@@ -89,6 +90,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			WVec AnimationOffset() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self.Orientation)));
 			rs.Add(new AnimationWithOffset(anim, info.Offset == WVec.Zero || body == null ? null : AnimationOffset, () => !isPlayingAnimation));
+			base.Created(self);
 		}
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
