@@ -87,6 +87,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 	{
 		readonly WithDamageOverlayInfo info;
 		readonly Animation anim;
+		IEnumerator<string> sequences;
 
 		bool isPlayingAnimation;
 
@@ -151,15 +152,20 @@ namespace OpenRA.Mods.Common.Traits.Render
 		{
 			isPlayingAnimation = true;
 			delay = -1;
-			PlayAnimation(info.GetSequences(random).GetEnumerator());
+			sequences?.Dispose();
+			sequences = info.GetSequences(random).GetEnumerator();
+			PlayAnimation();
 		}
 
-		void PlayAnimation(IEnumerator<string> sequences)
+		void PlayAnimation()
 		{
 			if (sequences.MoveNext())
-				anim.PlayThen(sequences.Current, () => PlayAnimation(sequences));
+				anim.PlayThen(sequences.Current, () => PlayAnimation());
 			else
+			{
 				isPlayingAnimation = false;
+				sequences.Dispose();
+			}
 		}
 	}
 }
