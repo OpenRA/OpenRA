@@ -352,7 +352,7 @@ fire:
 		Start: 3965
 		Length: 10
 		Offset: 4,-17
-		ZOffset: 1023
+		ZOffset: 3023
 		Tick: 100
 		BlendMode: Additive
 	2:
@@ -360,7 +360,7 @@ fire:
 		Start: 3976
 		Length: 11
 		Offset: 0,-3
-		ZOffset: 1023
+		ZOffset: 3023
 		Tick: 100
 		BlendMode: Additive
 	3:
@@ -403,7 +403,7 @@ smoke3:
 		ZOffset: 511
 		Start: 3747
 		Length: 7
-		Tick: 120
+		Tick: 140
 		BlendMode: Subtractive
 
 bombs:
