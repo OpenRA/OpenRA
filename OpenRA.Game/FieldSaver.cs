@@ -67,6 +67,11 @@ namespace OpenRA
 			return new MiniYamlNode(field, FormatValue(o, o.GetType().GetField(field)));
 		}
 
+		public static MiniYamlNode SaveField(object o, FieldInfo field)
+		{
+			return new MiniYamlNode(field.Name, FormatValue(o, field));
+		}
+
 		public static string FormatValue(object v)
 		{
 			if (v == null)

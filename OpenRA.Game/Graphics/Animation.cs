@@ -33,17 +33,23 @@ namespace OpenRA.Graphics
 		Action tickFunc;
 
 		public Animation(World world, string name)
-			: this(world, name, () => WAngle.Zero) { }
+			: this(world.Map.Sequences, name, () => WAngle.Zero) { }
 
 		public Animation(World world, string name, Func<WAngle> facingFunc)
-			: this(world, name, facingFunc, null) { }
+			: this(world.Map.Sequences, name, facingFunc, null) { }
 
 		public Animation(World world, string name, Func<bool> paused)
-			: this(world, name, () => WAngle.Zero, paused) { }
+			: this(world.Map.Sequences, name, () => WAngle.Zero, paused) { }
 
-		public Animation(World world, string name, Func<WAngle> facingFunc, Func<bool> paused)
+		public Animation(SequenceSet sequences, string name)
+			: this(sequences, name, () => WAngle.Zero) { }
+
+		public Animation(SequenceSet sequences, string name, Func<WAngle> facingFunc)
+			: this(sequences, name, facingFunc, null) { }
+
+		public Animation(SequenceSet sequences, string name, Func<WAngle> facingFunc, Func<bool> paused)
 		{
-			sequences = world.Map.Sequences;
+			this.sequences = sequences;
 			Name = name.ToLowerInvariant();
 			this.facingFunc = facingFunc;
 			this.paused = paused;

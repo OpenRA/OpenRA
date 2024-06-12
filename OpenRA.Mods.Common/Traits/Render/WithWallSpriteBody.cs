@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				}
 			}
 
-			var anim = new Animation(init.World, image);
+			var anim = new Animation(init.Sequences, image);
 			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence), () => adjacent);
 
 			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, p);

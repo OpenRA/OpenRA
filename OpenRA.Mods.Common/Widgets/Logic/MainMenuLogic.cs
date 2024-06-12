@@ -152,6 +152,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var assetBrowserButton = extrasMenu.GetOrNull<ButtonWidget>("ASSETBROWSER_BUTTON");
 			if (assetBrowserButton != null)
+			{
 				assetBrowserButton.OnClick = () =>
 				{
 					SwitchMenu(MenuType.None);
@@ -160,6 +161,20 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						{ "onExit", () => SwitchMenu(MenuType.Extras) },
 					});
 				};
+			}
+
+			var assetEditorButton = extrasMenu.GetOrNull<ButtonWidget>("ASSETEDITOR_BUTTON");
+			if (assetEditorButton != null)
+			{
+				assetEditorButton.OnClick = () =>
+				{
+					SwitchMenu(MenuType.None);
+					Game.OpenWindow("ASSETEDITOR_PANEL", new WidgetArgs
+					{
+						{ "onExit", () => SwitchMenu(MenuType.Extras) },
+					});
+				};
+			}
 
 			extrasMenu.Get<ButtonWidget>("CREDITS_BUTTON").OnClick = () =>
 			{

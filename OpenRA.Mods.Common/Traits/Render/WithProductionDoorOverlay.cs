@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		public IEnumerable<IActorPreview> RenderPreviewSprites(ActorPreviewInitializer init, string image, int facings, PaletteReference p)
 		{
-			var anim = new Animation(init.World, image);
+			var anim = new Animation(init.Sequences, image);
 			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequence), () => 0);
 
 			var bi = init.Actor.TraitInfo<BuildingInfo>();

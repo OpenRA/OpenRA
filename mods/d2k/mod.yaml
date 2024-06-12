@@ -114,6 +114,7 @@ ChromeLayout:
 	common|chrome/musicplayer.yaml
 	d2k|chrome/tooltips.yaml
 	common|chrome/assetbrowser.yaml
+	common|chrome/asseteditor.yaml
 	d2k|chrome/missionbrowser.yaml
 	common|chrome/confirmation-dialogs.yaml
 	common|chrome/editor.yaml

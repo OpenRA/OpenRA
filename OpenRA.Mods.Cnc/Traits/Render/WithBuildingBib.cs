@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			for (var i = 0; i < rows * width; i++)
 			{
 				var index = i;
-				var anim = new Animation(init.World, image);
+				var anim = new Animation(init.Sequences, image);
 				var cellOffset = new CVec(i % width, i / width + bibOffset);
 				var cell = location + cellOffset;
 

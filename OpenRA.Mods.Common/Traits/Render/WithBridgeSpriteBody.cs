@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			if (!EnabledByDefault)
 				yield break;
 
-			var anim = new Animation(init.World, image);
+			var anim = new Animation(init.Sequences, image);
 			anim.PlayFetchIndex(RenderSprites.NormalizeSequence(anim, init.GetDamageState(), Sequences[0]), () => 0);
 
 			yield return new SpriteActorPreview(anim, () => WVec.Zero, () => 0, p);

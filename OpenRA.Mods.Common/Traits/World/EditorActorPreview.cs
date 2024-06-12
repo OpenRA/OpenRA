@@ -21,7 +21,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	public class EditorActorPreview : IEquatable<EditorActorPreview>
+	public class EditorActorPreview : IEquatable<EditorActorPreview>, IEditActorInits
 	{
 		public readonly string DescriptiveName;
 		public readonly ActorInfo Info;

@@ -633,6 +633,15 @@ namespace OpenRA.Mods.Common.Traits
 		bool PauseUnitProduction { get; }
 	}
 
+	public interface IEditActorInits
+	{
+		public void RemoveInit<T>(TraitInfo info) where T : ActorInit;
+		public void ReplaceInit<T>(T init) where T : ActorInit, ISingleInstanceInit;
+		public void ReplaceInit<T>(T init, TraitInfo info) where T : ActorInit;
+		public T GetInitOrDefault<T>() where T : ActorInit, ISingleInstanceInit;
+		public T GetInitOrDefault<T>(TraitInfo info) where T : ActorInit;
+	}
+
 	[RequireExplicitImplementation]
 	public interface IEditorActorOptions : ITraitInfoInterface
 	{
@@ -643,23 +652,26 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly string Name;
 		public readonly int DisplayOrder;
+		public readonly bool DisplayMapEditorOnly;
 
-		protected EditorActorOption(string name, int displayOrder)
+		protected EditorActorOption(string name, int displayOrder, bool displayMapEditorOnly = false)
 		{
 			Name = name;
 			DisplayOrder = displayOrder;
+			DisplayMapEditorOnly = displayMapEditorOnly;
 		}
 	}
 
 	public class EditorActorCheckbox : EditorActorOption
 	{
-		public readonly Func<EditorActorPreview, bool> GetValue;
-		public readonly Action<EditorActorPreview, bool> OnChange;
+		public readonly Func<IEditActorInits, bool> GetValue;
+		public readonly Action<IEditActorInits, bool> OnChange;
 
 		public EditorActorCheckbox(string name, int displayOrder,
-			Func<EditorActorPreview, bool> getValue,
-			Action<EditorActorPreview, bool> onChange)
-			: base(name, displayOrder)
+			Func<IEditActorInits, bool> getValue,
+			Action<IEditActorInits, bool> onChange,
+			bool displayMapEditorOnly = false)
+			: base(name, displayOrder, displayMapEditorOnly)
 		{
 			GetValue = getValue;
 			OnChange = onChange;
@@ -671,14 +683,15 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly float MinValue;
 		public readonly float MaxValue;
 		public readonly int Ticks;
-		public readonly Func<EditorActorPreview, float> GetValue;
-		public readonly Action<EditorActorPreview, float> OnChange;
+		public readonly Func<IEditActorInits, float> GetValue;
+		public readonly Action<IEditActorInits, float> OnChange;
 
 		public EditorActorSlider(string name, int displayOrder,
 			float minValue, float maxValue, int ticks,
-			Func<EditorActorPreview, float> getValue,
-			Action<EditorActorPreview, float> onChange)
-			: base(name, displayOrder)
+			Func<IEditActorInits, float> getValue,
+			Action<IEditActorInits, float> onChange,
+			bool displayMapEditorOnly = false)
+			: base(name, displayOrder, displayMapEditorOnly)
 		{
 			MinValue = minValue;
 			MaxValue = maxValue;
@@ -691,14 +704,15 @@ namespace OpenRA.Mods.Common.Traits
 	public class EditorActorDropdown : EditorActorOption
 	{
 		public readonly Dictionary<string, string> Labels;
-		public readonly Func<EditorActorPreview, string> GetValue;
-		public readonly Action<EditorActorPreview, string> OnChange;
+		public readonly Func<IEditActorInits, string> GetValue;
+		public readonly Action<IEditActorInits, string> OnChange;
 
 		public EditorActorDropdown(string name, int displayOrder,
 			Dictionary<string, string> labels,
-			Func<EditorActorPreview, string> getValue,
-			Action<EditorActorPreview, string> onChange)
-			: base(name, displayOrder)
+			Func<IEditActorInits, string> getValue,
+			Action<IEditActorInits, string> onChange,
+			bool displayMapEditorOnly = false)
+			: base(name, displayOrder, displayMapEditorOnly)
 		{
 			Labels = labels;
 			GetValue = getValue;

@@ -30,23 +30,24 @@ namespace OpenRA.Mods.Common.Graphics
 	{
 		public readonly ActorInfo Actor;
 		public readonly WorldRenderer WorldRenderer;
+		public readonly SequenceSet Sequences;
 		public World World => WorldRenderer.World;
 
 		readonly ActorReference reference;
 
-		public ActorPreviewInitializer(ActorInfo actor, WorldRenderer worldRenderer, TypeDictionary dict)
+		public ActorPreviewInitializer(ActorInfo actor, ActorReference reference, WorldRenderer worldRenderer, SequenceSet sequences = null)
 		{
 			Actor = actor;
+			Sequences = sequences ?? worldRenderer.World.Map.Sequences;
+			this.reference = reference;
 			WorldRenderer = worldRenderer;
-			reference = new ActorReference(actor.Name.ToLowerInvariant(), dict);
 		}
 
+		public ActorPreviewInitializer(ActorInfo actor, WorldRenderer worldRenderer, TypeDictionary dict)
+			: this(actor, new ActorReference(actor.Name.ToLowerInvariant(), dict), worldRenderer) { }
+
 		public ActorPreviewInitializer(ActorReference actor, WorldRenderer worldRenderer)
-		{
-			Actor = worldRenderer.World.Map.Rules.Actors[actor.Type.ToLowerInvariant()];
-			reference = actor;
-			WorldRenderer = worldRenderer;
-		}
+			: this(worldRenderer.World.Map.Rules.Actors[actor.Type.ToLowerInvariant()], actor, worldRenderer) { }
 
 		// Forward IActorInitializer queries to the actor reference
 		// ActorReference can't reference a World instance, which prevents it from implementing this directly.

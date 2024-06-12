@@ -27,6 +27,13 @@ namespace OpenRA.Traits
 	[AttributeUsage(AttributeTargets.Interface)]
 	public sealed class RequireExplicitImplementationAttribute : Attribute { }
 
+	[AttributeUsage(AttributeTargets.Field)]
+	public sealed class AssetEditorAttribute : Attribute
+	{
+		public readonly string[] EditInsideMembers;
+		public AssetEditorAttribute(string[] editInsideMembers = null) { EditInsideMembers = editInsideMembers; }
+	}
+
 	[Flags]
 	public enum DamageState
 	{

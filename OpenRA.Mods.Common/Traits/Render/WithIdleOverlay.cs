@@ -31,6 +31,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "idle-overlay";
 
+		[AssetEditor]
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
@@ -63,7 +64,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				facing = () => f;
 			}
 
-			var anim = new Animation(init.World, Image ?? image, facing)
+			var anim = new Animation(init.Sequences, Image ?? image, facing)
 			{
 				IsDecoration = IsDecoration
 			};
@@ -95,7 +96,13 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var facing = self.TraitOrDefault<IFacing>();
 
 			var image = info.Image ?? rs.GetImage(self);
-			overlay = new Animation(self.World, image, facing == null ? () => WAngle.Zero : (body == null ? () => facing.Facing : () => body.QuantizeFacing(facing.Facing)), () => IsTraitPaused)
+			overlay = new Animation(
+				self.World.Map.Sequences,
+				image,
+				facing == null ?
+					() => WAngle.Zero :
+					(body == null ? () => facing.Facing : () => body.QuantizeFacing(facing.Facing)),
+				() => IsTraitPaused)
 			{
 				IsDecoration = info.IsDecoration
 			};

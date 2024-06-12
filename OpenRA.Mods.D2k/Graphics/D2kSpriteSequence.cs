@@ -161,7 +161,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 				if (alpha.Length == 1)
 					alpha = Exts.MakeArray(length.Value, _ => alpha[0]);
 				else if (alpha.Length != length.Value)
-					throw new YamlException($"Sequence {image}.{Name} must define either 1 or {length.Value} Alpha values.");
+					throw new YamlException($"Sequence {Image}.{Name} must define either 1 or {length.Value} Alpha values.");
 			}
 			else if (alphaFade)
 				alpha = Exts.MakeArray(length.Value, i => float2.Lerp(1f, 0f, i / (length.Value - 1f)));
@@ -175,12 +175,12 @@ namespace OpenRA.Mods.Cnc.Graphics
 			}
 
 			if (index.Count == 0)
-				throw new YamlException($"Sequence {image}.{Name} does not define any frames.");
+				throw new YamlException($"Sequence {Image}.{Name} does not define any frames.");
 
 			var minIndex = index.Min();
 			var maxIndex = index.Max();
 			if (minIndex < 0 || maxIndex >= allSprites.Length)
-				throw new YamlException($"Sequence {image}.{Name} uses frames between {minIndex}..{maxIndex}, but only 0..{allSprites.Length - 1} exist.");
+				throw new YamlException($"Sequence {Image}.{Name} uses frames between {minIndex}..{maxIndex}, but only 0..{allSprites.Length - 1} exist.");
 
 			sprites = index.Select(f => allSprites[f]).ToArray();
 			if (shadowStart >= 0)

@@ -122,7 +122,8 @@ namespace OpenRA.Mods.Common.Traits
 					var stance = init?.Value ?? InitialStance;
 					return stances[(int)stance];
 				},
-				(actor, value) => actor.ReplaceInit(new StanceInit(this, (UnitStance)stances.IndexOf(value))));
+				(actor, value) => actor.ReplaceInit(new StanceInit(this, (UnitStance)stances.IndexOf(value))),
+				true);
 		}
 	}
 

@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 				facing = () => f;
 			}
 
-			var anim = new Animation(init.World, image);
+			var anim = new Animation(init.Sequences, image);
 			anim.PlayThen(OpeningSequence, () => anim.PlayRepeating(Sequence));
 
 			var body = init.Actor.TraitInfo<BodyOrientationInfo>();

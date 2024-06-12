@@ -25,6 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Name of turret this shape is linked to. Leave empty to link shape to body.")]
 		public readonly string Turret = null;
 
+		[AssetEditor]
 		[Desc("Create a targetable position for each offset listed here (relative to CenterPosition).")]
 		public readonly WVec[] TargetableOffsets = { WVec.Zero };
 
