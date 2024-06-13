@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (IsTraitDisabled)
 					yield break;
 
-				yield return new InstantRepairOrderTargeter(Info);
+				yield return new InstantRepairOrderTargeter(this);
 			}
 		}
 
@@ -74,15 +74,43 @@ namespace OpenRA.Mods.Common.Traits
 			return new Order(order.OrderID, self, target, queued);
 		}
 
-		static bool IsValidOrder(Order order)
+		bool IsValidOrder(Order order)
 		{
 			if (order.Target.Type == TargetType.FrozenActor)
-				return order.Target.FrozenActor.DamageState > DamageState.Undamaged;
+				return IsValidFrozenActor(order.Target.FrozenActor) && order.Target.FrozenActor.DamageState > DamageState.Undamaged;
 
 			if (order.Target.Type == TargetType.Actor)
-				return order.Target.Actor.GetDamageState() > DamageState.Undamaged;
+				return IsValidActor(order.Target.Actor) && order.Target.Actor.GetDamageState() > DamageState.Undamaged;
 
 			return false;
+		}
+
+		bool IsValidActor(Actor target)
+		{
+			var instantlyRepairable = target.Info.TraitInfoOrDefault<InstantlyRepairableInfo>();
+			if (instantlyRepairable == null)
+				return false;
+
+			if (!instantlyRepairable.Types.IsEmpty && !instantlyRepairable.Types.Overlaps(Info.Types))
+				return false;
+
+			return true;
+		}
+
+		bool IsValidFrozenActor(FrozenActor target)
+		{
+			// TODO: FrozenActors don't yet have a way of caching conditions, so we can't filter disabled traits
+			// This therefore assumes that all InstantlyRepairable traits are enabled, which is probably wrong.
+			// Actors with FrozenUnderFog should therefore not disable the InstantlyRepairable trait if
+			// ValidStances includes Enemy actors.
+			var instantlyRepairable = target.Info.TraitInfoOrDefault<InstantlyRepairableInfo>();
+			if (instantlyRepairable == null)
+				return false;
+
+			if (!instantlyRepairable.Types.IsEmpty && !instantlyRepairable.Types.Overlaps(Info.Types))
+				return false;
+
+			return true;
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -102,50 +130,38 @@ namespace OpenRA.Mods.Common.Traits
 
 		sealed class InstantRepairOrderTargeter : UnitOrderTargeter
 		{
-			readonly InstantlyRepairsInfo info;
+			readonly InstantlyRepairs instantRepair;
 
-			public InstantRepairOrderTargeter(InstantlyRepairsInfo info)
-				: base("InstantRepair", 6, info.Cursor, true, true)
+			public InstantRepairOrderTargeter(InstantlyRepairs instantRepair)
+				: base("InstantRepair", 6, instantRepair.Info.Cursor, true, true)
 			{
-				this.info = info;
+				this.instantRepair = instantRepair;
 			}
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				var instantlyRepairable = target.TraitOrDefault<InstantlyRepairable>();
-				if (instantlyRepairable == null || instantlyRepairable.IsTraitDisabled)
+				if (!instantRepair.IsValidActor(target))
 					return false;
 
-				if (!instantlyRepairable.Info.Types.IsEmpty && !instantlyRepairable.Info.Types.Overlaps(info.Types))
-					return false;
-
-				if (!info.ValidRelationships.HasRelationship(target.Owner.RelationshipWith(self.Owner)))
+				if (!instantRepair.Info.ValidRelationships.HasRelationship(target.Owner.RelationshipWith(self.Owner)))
 					return false;
 
 				if (target.GetDamageState() == DamageState.Undamaged)
-					cursor = info.RepairBlockedCursor;
+					cursor = instantRepair.Info.RepairBlockedCursor;
 
 				return true;
 			}
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
-				// TODO: FrozenActors don't yet have a way of caching conditions, so we can't filter disabled traits
-				// This therefore assumes that all InstantlyRepairable traits are enabled, which is probably wrong.
-				// Actors with FrozenUnderFog should therefore not disable the InstantlyRepairable trait if
-				// ValidStances includes Enemy actors.
-				var instantlyRepairable = target.Info.TraitInfoOrDefault<InstantlyRepairableInfo>();
-				if (instantlyRepairable == null)
+				if (!instantRepair.IsValidFrozenActor(target))
 					return false;
 
-				if (!instantlyRepairable.Types.IsEmpty && !instantlyRepairable.Types.Overlaps(info.Types))
-					return false;
-
-				if (!info.ValidRelationships.HasRelationship(target.Owner.RelationshipWith(self.Owner)))
+				if (!instantRepair.Info.ValidRelationships.HasRelationship(target.Owner.RelationshipWith(self.Owner)))
 					return false;
 
 				if (target.DamageState == DamageState.Undamaged)
-					cursor = info.RepairBlockedCursor;
+					cursor = instantRepair.Info.RepairBlockedCursor;
 
 				return true;
 			}
