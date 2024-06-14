@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Widgets
 				tiles.Add(cell, new ClipboardTile(mapTiles[cell], mapResources[cell], resourceLayerContents, mapHeight[cell]));
 
 				if (copyFilters.HasFlag(MapCopyFilters.Actors))
-					foreach (var preview in selection.SelectMany(editorActorLayer.PreviewsAt).Distinct())
+					foreach (var preview in selection.CellCoords.SelectMany(editorActorLayer.PreviewsAt).Distinct())
 						previews.TryAdd(preview.ID, preview);
 			}
 
@@ -181,6 +181,15 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var sourcePos = clipboard.CellRegion.TopLeft;
 			var pasteVec = new CVec(pastePosition.X - sourcePos.X, pastePosition.Y - sourcePos.Y);
+
+			if (copyFilters.HasFlag(MapCopyFilters.Actors))
+			{
+				// Clear any existing actors in the paste cells.
+				var selectionSize = clipboard.CellRegion.BottomRight - clipboard.CellRegion.TopLeft;
+				var pasteRegion = new CellRegion(map.Grid.Type, pastePosition, pastePosition + selectionSize);
+				foreach (var regionActor in pasteRegion.CellCoords.SelectMany(editorActorLayer.PreviewsAt).ToHashSet())
+					editorActorLayer.Remove(regionActor);
+			}
 
 			foreach (var tileKeyValuePair in clipboard.Tiles)
 			{
@@ -209,12 +218,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (copyFilters.HasFlag(MapCopyFilters.Actors))
 			{
-				// Clear any existing actors in the paste cells.
-				var selectionSize = clipboard.CellRegion.BottomRight - clipboard.CellRegion.TopLeft;
-				var pasteRegion = new CellRegion(map.Grid.Type, pastePosition, pastePosition + selectionSize);
-				foreach (var regionActor in pasteRegion.SelectMany(editorActorLayer.PreviewsAt).ToHashSet())
-					editorActorLayer.Remove(regionActor);
-
 				// Now place actors.
 				foreach (var actorKeyValuePair in clipboard.Actors)
 				{
@@ -238,6 +241,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public void Undo()
 		{
+			if (copyFilters.HasFlag(MapCopyFilters.Actors))
+			{
+				// Clear existing actors.
+				foreach (var regionActor in undoClipboard.CellRegion.CellCoords.SelectMany(editorActorLayer.PreviewsAt).Distinct().ToList())
+					editorActorLayer.Remove(regionActor);
+			}
+
 			foreach (var tileKeyValuePair in undoClipboard.Tiles)
 			{
 				var position = tileKeyValuePair.Key;
@@ -262,10 +272,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (copyFilters.HasFlag(MapCopyFilters.Actors))
 			{
-				// Clear existing actors.
-				foreach (var regionActor in undoClipboard.CellRegion.SelectMany(editorActorLayer.PreviewsAt).Distinct().ToList())
-					editorActorLayer.Remove(regionActor);
-
 				// Place actors back again.
 				foreach (var actor in undoClipboard.Actors.Values)
 					editorActorLayer.Add(actor);

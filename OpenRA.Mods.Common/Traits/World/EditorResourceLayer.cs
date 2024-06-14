@@ -185,7 +185,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int CalculateRegionValue(CellRegion sourceRegion)
 		{
 			var resourceValueInRegion = 0;
-			foreach (var cell in sourceRegion)
+			foreach (var cell in sourceRegion.CellCoords)
 			{
 				var mcell = cell.ToMPos(Map);
 				if (Map.Resources.Contains(mcell) && Map.Resources[mcell].Type != 0)
