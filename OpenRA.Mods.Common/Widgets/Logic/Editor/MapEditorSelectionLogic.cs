@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				tiles.Add(cell, new ClipboardTile(mapTiles[cell], mapResources[cell], resourceLayer?.GetResource(cell), mapHeight[cell]));
 
 				if (copyFilters.HasFlag(MapCopyFilters.Actors))
-					foreach (var preview in selection.SelectMany(editorActorLayer.PreviewsAt).Distinct())
+					foreach (var preview in selection.CellCoords.SelectMany(editorActorLayer.PreviewsAt).Distinct())
 						previews.TryAdd(preview.ID, preview);
 			}
 
