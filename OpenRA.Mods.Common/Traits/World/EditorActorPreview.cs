@@ -68,8 +68,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!world.Map.Rules.Actors.TryGetValue(reference.Type.ToLowerInvariant(), out Info))
 				throw new InvalidDataException($"Actor {id} of unknown type {reference.Type.ToLowerInvariant()}");
 
-			UpdateFromCellChange();
 			GenerateFootprint();
+			UpdateFromCellChange(null);
 
 			tooltip = Info.TraitInfos<EditorOnlyTooltipInfo>().FirstOrDefault(info => info.EnabledByDefault) as TooltipInfoBase
 				?? Info.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault);
@@ -79,8 +79,7 @@ namespace OpenRA.Mods.Common.Traits
 			terrainRadarColorInfo = Info.TraitInfoOrDefault<RadarColorFromTerrainInfo>();
 			UpdateRadarColor();
 
-			// TODO: updating all actors on the map is not very efficient.
-			onCellEntryChanged = _ => UpdateFromCellChange();
+			onCellEntryChanged = cell => UpdateFromCellChange(cell);
 		}
 
 		public EditorActorPreview WithId(string id)
@@ -88,8 +87,11 @@ namespace OpenRA.Mods.Common.Traits
 			return new EditorActorPreview(worldRenderer, id, reference.Clone(), Owner);
 		}
 
-		void UpdateFromCellChange()
+		void UpdateFromCellChange(CPos? cellChanged)
 		{
+			if (cellChanged != null && !Footprint.ContainsKey(cellChanged.Value))
+				return;
+
 			CenterPosition = PreviewPosition(worldRenderer.World, reference);
 			GeneratePreviews();
 			GenerateBounds();
@@ -169,8 +171,8 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var notify in Info.TraitInfos<INotifyEditorPlacementInfo>())
 				editorData[notify] = notify.AddedToEditor(this, worldRenderer.World);
 
-			// TODO: this should subscribe to ramp cell map as well.
 			worldRenderer.World.Map.Height.CellEntryChanged += onCellEntryChanged;
+			worldRenderer.World.Map.Ramp.CellEntryChanged += onCellEntryChanged;
 		}
 
 		public void RemovedFromEditor()
@@ -179,6 +181,7 @@ namespace OpenRA.Mods.Common.Traits
 				kv.Key.RemovedFromEditor(this, worldRenderer.World, kv.Value);
 
 			worldRenderer.World.Map.Height.CellEntryChanged -= onCellEntryChanged;
+			worldRenderer.World.Map.Ramp.CellEntryChanged -= onCellEntryChanged;
 		}
 
 		public void AddInit<T>(T init) where T : ActorInit

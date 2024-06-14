@@ -165,7 +165,7 @@ namespace OpenRA.Mods.Common.Widgets
 				tiles.Add(cell, new ClipboardTile(mapTiles[cell], mapResources[cell], resourceLayerContents, mapHeight[cell]));
 
 				if (copyFilters.HasFlag(MapCopyFilters.Actors))
-					foreach (var preview in selection.CellCoords.SelectMany(editorActorLayer.PreviewsAt).Distinct())
+					foreach (var preview in editorActorLayer.PreviewsInCellRegion(selection.CellCoords))
 						previews.TryAdd(preview.ID, preview);
 			}
 
@@ -187,7 +187,7 @@ namespace OpenRA.Mods.Common.Widgets
 				// Clear any existing actors in the paste cells.
 				var selectionSize = clipboard.CellRegion.BottomRight - clipboard.CellRegion.TopLeft;
 				var pasteRegion = new CellRegion(map.Grid.Type, pastePosition, pastePosition + selectionSize);
-				foreach (var regionActor in pasteRegion.CellCoords.SelectMany(editorActorLayer.PreviewsAt).ToHashSet())
+				foreach (var regionActor in editorActorLayer.PreviewsInCellRegion(pasteRegion.CellCoords).ToList())
 					editorActorLayer.Remove(regionActor);
 			}
 
@@ -244,7 +244,7 @@ namespace OpenRA.Mods.Common.Widgets
 			if (copyFilters.HasFlag(MapCopyFilters.Actors))
 			{
 				// Clear existing actors.
-				foreach (var regionActor in undoClipboard.CellRegion.CellCoords.SelectMany(editorActorLayer.PreviewsAt).Distinct().ToList())
+				foreach (var regionActor in editorActorLayer.PreviewsInCellRegion(undoClipboard.CellRegion.CellCoords).ToList())
 					editorActorLayer.Remove(regionActor);
 			}
 
