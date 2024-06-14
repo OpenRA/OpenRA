@@ -64,6 +64,11 @@ namespace OpenRA
 			BottomRight = bottomRight;
 		}
 
+		public bool Contains(CPos cell)
+		{
+			return cell.X >= TopLeft.X && cell.X <= BottomRight.X && cell.Y >= TopLeft.Y && cell.Y <= BottomRight.Y;
+		}
+
 		public override string ToString()
 		{
 			return $"{TopLeft}->{BottomRight}";

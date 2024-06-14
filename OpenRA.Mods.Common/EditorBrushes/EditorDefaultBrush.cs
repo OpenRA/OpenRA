@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Widgets
 			worldPixel = worldRenderer.Viewport.ViewToWorldPx(mi.Location);
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
 
-			var underCursor = editorLayer.PreviewsAt(worldPixel).MinByOrDefault(CalculateActorSelectionPriority);
+			var underCursor = editorLayer.PreviewsAtWorldPixel(worldPixel).MinByOrDefault(CalculateActorSelectionPriority);
 			var resourceUnderCursor = resourceLayer?.GetResource(cell).Type;
 
 			if (underCursor != null)

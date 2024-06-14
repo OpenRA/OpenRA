@@ -40,8 +40,9 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		readonly EditorActorLayerInfo info;
 		readonly List<EditorActorPreview> previews = new();
-		readonly Dictionary<CPos, List<EditorActorPreview>> cellMap = new();
 
+		int2 cellOffset;
+		SpatiallyPartitioned<EditorActorPreview> cellMap;
 		SpatiallyPartitioned<EditorActorPreview> screenMap;
 		WorldRenderer worldRenderer;
 
@@ -74,6 +75,12 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var pr in Players.Players.Values)
 				wr.UpdatePalettesForPlayer(pr.Name, pr.Color, false);
 
+			cellOffset = new int2(world.Map.AllCells.Min(c => c.X), world.Map.AllCells.Min((c) => c.Y));
+			var cellOffsetMax = new int2(world.Map.AllCells.Max(c => c.X), world.Map.AllCells.Max((c) => c.Y));
+			var mapCellSize = cellOffsetMax - cellOffset;
+			cellMap = new SpatiallyPartitioned<EditorActorPreview>(
+				mapCellSize.X, mapCellSize.Y, Exts.IntegerDivisionRoundingAwayFromZero(info.BinSize, world.Map.Grid.TileSize.Width));
+
 			var ts = world.Map.Grid.TileSize;
 			var width = world.Map.MapSize.X * ts.Width;
 			var height = world.Map.MapSize.Y * ts.Height;
@@ -102,7 +109,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (wr.World.Type != WorldType.Editor)
 				return NoRenderables;
 
-			return PreviewsInBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight)
+			return PreviewsInScreenBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight)
 				.SelectMany(p => p.Render());
 		}
 
@@ -117,7 +124,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (wr.World.Type != WorldType.Editor)
 				return NoRenderables;
 
-			return PreviewsInBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight)
+			return PreviewsInScreenBox(wr.Viewport.TopLeft, wr.Viewport.BottomRight)
 				.SelectMany(p => p.RenderAnnotations());
 		}
 
@@ -147,13 +154,9 @@ namespace OpenRA.Mods.Common.Traits
 			if (!preview.Bounds.IsEmpty)
 				screenMap.Add(preview, preview.Bounds);
 
-			// Fallback to the actor's CenterPosition for the ActorMap if it has no Footprint
-			var footprint = preview.Footprint.Select(kv => kv.Key).ToArray();
-			if (footprint.Length == 0)
-				footprint = new[] { worldRenderer.World.Map.CellContaining(preview.CenterPosition) };
-
-			foreach (var cell in footprint)
-				AddPreviewLocation(preview, cell);
+			var cellFootprintBounds = Footprint(preview).Select(
+				cell => new Rectangle(cell.X - cellOffset.X, cell.Y - cellOffset.Y, 1, 1)).Union();
+			cellMap.Add(preview, cellFootprintBounds);
 
 			preview.AddedToEditor();
 
@@ -166,26 +169,20 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		IEnumerable<CPos> Footprint(EditorActorPreview preview)
+		{
+			// Fallback to the actor's CenterPosition for the ActorMap if it has no Footprint
+			if (preview.Footprint.Count == 0)
+				return new[] { worldRenderer.World.Map.CellContaining(preview.CenterPosition) };
+			return preview.Footprint.Keys;
+		}
+
 		public void Remove(EditorActorPreview preview)
 		{
 			previews.Remove(preview);
 			screenMap.Remove(preview);
 
-			// Fallback to the actor's CenterPosition for the ActorMap if it has no Footprint
-			var footprint = preview.Footprint.Select(kv => kv.Key).ToArray();
-			if (footprint.Length == 0)
-				footprint = new[] { worldRenderer.World.Map.CellContaining(preview.CenterPosition) };
-
-			foreach (var cell in footprint)
-			{
-				if (!cellMap.TryGetValue(cell, out var list))
-					continue;
-
-				list.Remove(preview);
-
-				if (list.Count == 0)
-					cellMap.Remove(cell);
-			}
+			cellMap.Remove(preview);
 
 			preview.RemovedFromEditor();
 			UpdateNeighbours(preview.Footprint);
@@ -236,49 +233,46 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Include actors inside the footprint too
 			var cells = Util.ExpandFootprint(footprint.Keys, true);
-			foreach (var p in cells.SelectMany(c => PreviewsAt(c)))
+			foreach (var p in cells.SelectMany(PreviewsAtCell))
 				p.ReplaceInit(new RuntimeNeighbourInit(NeighbouringPreviews(p.Footprint)));
-		}
-
-		void AddPreviewLocation(EditorActorPreview preview, CPos location)
-		{
-			if (!cellMap.TryGetValue(location, out var list))
-			{
-				list = new List<EditorActorPreview>();
-				cellMap.Add(location, list);
-			}
-
-			list.Add(preview);
 		}
 
 		Dictionary<CPos, string[]> NeighbouringPreviews(IReadOnlyDictionary<CPos, SubCell> footprint)
 		{
 			var cells = Util.ExpandFootprint(footprint.Keys, true).Except(footprint.Keys);
-			return cells.ToDictionary(c => c, c => PreviewsAt(c).Select(p => p.Info.Name).ToArray());
+			return cells.ToDictionary(c => c, c => PreviewsAtCell(c).Select(p => p.Info.Name).ToArray());
 		}
 
-		public IEnumerable<EditorActorPreview> PreviewsInBox(int2 a, int2 b)
+		public IEnumerable<EditorActorPreview> PreviewsInScreenBox(int2 a, int2 b)
 		{
-			return screenMap.InBox(Rectangle.FromLTRB(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)));
+			return PreviewsInScreenBox(Rectangle.FromLTRB(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Max(a.X, b.X), Math.Max(a.Y, b.Y)));
 		}
 
-		public IEnumerable<EditorActorPreview> PreviewsInBox(Rectangle r)
+		public IEnumerable<EditorActorPreview> PreviewsInScreenBox(Rectangle r)
 		{
 			return screenMap.InBox(r);
 		}
 
-		public IEnumerable<EditorActorPreview> PreviewsAt(CPos cell)
+		public IEnumerable<EditorActorPreview> PreviewsInCellRegion(CellCoordsRegion region)
 		{
-			if (cellMap.TryGetValue(cell, out var list))
-				return list;
+			return cellMap.InBox(Rectangle.FromLTRB(
+				region.TopLeft.X - cellOffset.X,
+				region.TopLeft.Y - cellOffset.Y,
+				region.BottomRight.X - cellOffset.X + 1,
+				region.BottomRight.Y - cellOffset.Y + 1))
+				.Where(p => Footprint(p).Any(region.Contains));
+		}
 
-			return Enumerable.Empty<EditorActorPreview>();
+		public IEnumerable<EditorActorPreview> PreviewsAtCell(CPos cell)
+		{
+			return cellMap.At(new int2(cell.X - cellOffset.X, cell.Y - cellOffset.Y))
+				.Where(p => Footprint(p).Any(fp => fp == cell));
 		}
 
 		public SubCell FreeSubCellAt(CPos cell)
 		{
 			var map = worldRenderer.World.Map;
-			var previews = PreviewsAt(cell).ToList();
+			var previews = PreviewsAtCell(cell).ToList();
 			if (previews.Count == 0)
 				return map.Grid.DefaultSubCell;
 
@@ -293,7 +287,7 @@ namespace OpenRA.Mods.Common.Traits
 			return SubCell.Invalid;
 		}
 
-		public IEnumerable<EditorActorPreview> PreviewsAt(int2 worldPx)
+		public IEnumerable<EditorActorPreview> PreviewsAtWorldPixel(int2 worldPx)
 		{
 			return screenMap.At(worldPx);
 		}
@@ -325,9 +319,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void PopulateRadarSignatureCells(Actor self, List<(CPos Cell, Color Color)> destinationBuffer)
 		{
-			foreach (var previewsForCell in cellMap)
-				foreach (var preview in previewsForCell.Value)
-					destinationBuffer.Add((previewsForCell.Key, preview.RadarColor));
+			foreach (var preview in cellMap.Items)
+				foreach (var cell in Footprint(preview))
+					destinationBuffer.Add((cell, preview.RadarColor));
 		}
 
 		public EditorActorPreview this[string id]
