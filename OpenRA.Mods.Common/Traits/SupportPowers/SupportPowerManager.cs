@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 			Self = init.Self;
 			DevMode = Self.Trait<DeveloperMode>();
 			TechTree = Self.Trait<TechTree>();
-			RadarPings = Exts.Lazy(() => init.World.WorldActor.TraitOrDefault<RadarPings>());
+			RadarPings = Exts.Lazy(() => Self.World.WorldActor.TraitOrDefault<RadarPings>());
 
 			init.World.ActorAdded += ActorAdded;
 			init.World.ActorRemoved += ActorRemoved;

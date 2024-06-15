@@ -72,20 +72,22 @@ namespace OpenRA.Mods.Common.Traits.Render
 		protected WithSpriteBody(ActorInitializer init, WithSpriteBodyInfo info, Func<WAngle> baseFacing)
 			: base(info)
 		{
-			var rs = init.Self.Trait<RenderSprites>();
+			var self = init.Self;
+
+			var rs = self.Trait<RenderSprites>();
 
 			bool Paused() => IsTraitPaused &&
-				DefaultAnimation.CurrentSequence.Name == NormalizeSequence(init.Self, Info.Sequence);
+				DefaultAnimation.CurrentSequence.Name == NormalizeSequence(self, Info.Sequence);
 
 			Func<WVec> subtractDAT = null;
 			if (info.ForceToGround)
-				subtractDAT = () => new WVec(0, 0, -init.Self.World.Map.DistanceAboveTerrain(init.Self.CenterPosition).Length);
+				subtractDAT = () => new WVec(0, 0, -self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length);
 
-			DefaultAnimation = new Animation(init.World, rs.GetImage(init.Self), baseFacing, Paused);
+			DefaultAnimation = new Animation(init.World, rs.GetImage(self), baseFacing, Paused);
 			rs.Add(new AnimationWithOffset(DefaultAnimation, subtractDAT, () => IsTraitDisabled), info.Palette, info.IsPlayerPalette);
 
 			// Cache the bounds from the default sequence to avoid flickering when the animation changes
-			boundsAnimation = new Animation(init.World, rs.GetImage(init.Self), baseFacing, Paused);
+			boundsAnimation = new Animation(init.World, rs.GetImage(self), baseFacing, Paused);
 			boundsAnimation.PlayRepeating(info.Sequence);
 		}
 
