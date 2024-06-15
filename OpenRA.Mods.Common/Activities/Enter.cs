@@ -30,6 +30,7 @@ namespace OpenRA.Mods.Common.Activities
 		Target lastVisibleTarget;
 		bool useLastVisibleTarget;
 		EnterState lastState = EnterState.Approaching;
+		bool hasMadeSecondApproach;
 
 		protected Enter(Actor self, in Target target, Color? targetLineColor = null)
 		{
@@ -127,8 +128,20 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					// Check that we reached the requested position
 					var targetPos = target.Positions.ClosestToIgnoringPath(self.CenterPosition);
-					if (!IsCanceling && self.CenterPosition == targetPos && target.Type == TargetType.Actor)
-						OnEnterComplete(self, target.Actor);
+					if (!IsCanceling && target.Type == TargetType.Actor)
+					{
+						if (self.CenterPosition == targetPos)
+							OnEnterComplete(self, target.Actor);
+						else if (!hasMadeSecondApproach)
+						{
+							// HACK: Handle TryStartEnter not reliably indicating if we are ready to enter the target.
+							// We got close to the target, but not next to it, e.g. maybe the target moved slightly out of range.
+							// Since the target is likely close, approach it a second time.
+							hasMadeSecondApproach = true;
+							lastState = EnterState.Approaching;
+							return false;
+						}
+					}
 
 					lastState = EnterState.Exiting;
 					return false;
