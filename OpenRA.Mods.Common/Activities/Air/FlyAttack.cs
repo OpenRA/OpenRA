@@ -120,7 +120,7 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 
 			// If all weapons are invalid against the target
-			if (!useLastVisibleTarget && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
+			if (!(attackAircraft.Info.AttackType == AirAttackType.Hover || aircraft.Info.CanHover) && !useLastVisibleTarget && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
 			{
 				// If Rearmable trait exists, return to RearmActor to reload and resume the activity after
 				// reloading if AbortOnResupply is set to 'false'.
