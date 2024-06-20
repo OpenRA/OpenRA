@@ -11,36 +11,39 @@
 
 using System;
 using OpenRA.Primitives;
-using SDL2;
+using Silk.NET.SDL;
+using Color = OpenRA.Primitives.Color;
 
 namespace OpenRA.Platforms.Default
 {
 	sealed class Sdl2GraphicsContext : ThreadAffine, IGraphicsContext
 	{
+		readonly Sdl sdl;
 		readonly Sdl2PlatformWindow window;
-		IntPtr context;
+		unsafe void* context;
 
 		public string GLVersion => OpenGL.Version;
 
-		public Sdl2GraphicsContext(Sdl2PlatformWindow window)
+		public unsafe Sdl2GraphicsContext(Sdl sdl, Sdl2PlatformWindow window)
 		{
+			this.sdl = sdl;
 			this.window = window;
 
 			// SDL requires us to create the GL context on the main thread to avoid various platform-specific issues.
 			// We must then release it from the main thread before we rebind it to the render thread (in InitializeOpenGL below).
-			context = SDL.SDL_GL_CreateContext(window.Window);
-			if (context == IntPtr.Zero || SDL.SDL_GL_MakeCurrent(window.Window, IntPtr.Zero) < 0)
-				throw new InvalidOperationException($"Can not create OpenGL context. (Error: {SDL.SDL_GetError()})");
+			context = sdl.GLCreateContext(window.Window);
+			if (context == null || sdl.GLMakeCurrent(window.Window, null) < 0)
+				throw new InvalidOperationException($"Can not create OpenGL context. (Error: {sdl.GetErrorS()})");
 		}
 
-		internal void InitializeOpenGL()
+		internal unsafe void InitializeOpenGL()
 		{
 			SetThreadAffinity();
 
-			if (SDL.SDL_GL_MakeCurrent(window.Window, context) < 0)
-				throw new InvalidOperationException($"Can not bind OpenGL context. (Error: {SDL.SDL_GetError()})");
+			if (sdl.GLMakeCurrent(window.Window, context) < 0)
+				throw new InvalidOperationException($"Can not bind OpenGL context. (Error: {sdl.GetErrorS()})");
 
-			OpenGL.Initialize();
+			OpenGL.Initialize(sdl);
 			OpenGL.CheckGLError();
 
 			OpenGL.glGenVertexArrays(1, out var vao);
@@ -132,10 +135,10 @@ namespace OpenRA.Platforms.Default
 			OpenGL.CheckGLError();
 		}
 
-		public void Present()
+		public unsafe void Present()
 		{
 			VerifyThreadAffinity();
-			SDL.SDL_GL_SwapWindow(window.Window);
+			sdl.GLSwapWindow(window.Window);
 		}
 
 		static int ModeFromPrimitiveType(PrimitiveType pt)
@@ -265,7 +268,7 @@ namespace OpenRA.Platforms.Default
 		public void SetVSyncEnabled(bool enabled)
 		{
 			VerifyThreadAffinity();
-			SDL.SDL_GL_SetSwapInterval(enabled ? 1 : 0);
+			sdl.GLSetSwapInterval(enabled ? 1 : 0);
 		}
 
 		public void Dispose()
@@ -274,12 +277,12 @@ namespace OpenRA.Platforms.Default
 			GC.SuppressFinalize(this);
 		}
 
-		void Dispose(bool _)
+		unsafe void Dispose(bool _)
 		{
-			if (context != IntPtr.Zero)
+			if (context != null)
 			{
-				SDL.SDL_GL_DeleteContext(context);
-				context = IntPtr.Zero;
+				sdl.GLDeleteContext(context);
+				context = null;
 			}
 		}
 

@@ -16,7 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using SDL2;
+using Silk.NET.SDL;
 
 namespace OpenRA.Platforms.Default
 {
@@ -495,24 +495,24 @@ namespace OpenRA.Platforms.Default
 
 		#endregion
 
-		public static void Initialize()
+		public static void Initialize(Sdl sdl)
 		{
 			try
 			{
 				// First set up the bindings we need for error handling
-				glEnable = Bind<Enable>("glEnable");
-				glDisable = Bind<Disable>("glDisable");
-				glGetError = Bind<GetError>("glGetError");
-				glGetStringInternal = Bind<GetString>("glGetString");
-				glGetStringiInternal = Bind<GetStringi>("glGetStringi");
-				glGetIntegerv = Bind<GetIntegerv>("glGetIntegerv");
+				glEnable = Bind<Enable>(sdl, "glEnable");
+				glDisable = Bind<Disable>(sdl, "glDisable");
+				glGetError = Bind<GetError>(sdl, "glGetError");
+				glGetStringInternal = Bind<GetString>(sdl, "glGetString");
+				glGetStringiInternal = Bind<GetStringi>(sdl, "glGetStringi");
+				glGetIntegerv = Bind<GetIntegerv>(sdl, "glGetIntegerv");
 			}
 			catch (Exception e)
 			{
 				throw new InvalidProgramException("Failed to initialize low-level OpenGL bindings. GPU information is not available.", e);
 			}
 
-			if (!DetectGLFeatures())
+			if (!DetectGLFeatures(sdl))
 			{
 				WriteGraphicsLog("Unsupported OpenGL version: " + glGetString(GL_VERSION));
 				throw new InvalidProgramException("OpenGL Version Error: See graphics.log for details.");
@@ -544,8 +544,8 @@ namespace OpenRA.Platforms.Default
 				try
 				{
 					var suffix = Profile == GLProfile.Embedded ? "KHR" : "";
-					glDebugMessageCallback = Bind<DebugMessageCallback>("glDebugMessageCallback" + suffix);
-					glDebugMessageInsert = Bind<DebugMessageInsert>("glDebugMessageInsert" + suffix);
+					glDebugMessageCallback = Bind<DebugMessageCallback>(sdl, "glDebugMessageCallback" + suffix);
+					glDebugMessageInsert = Bind<DebugMessageInsert>(sdl, "glDebugMessageInsert" + suffix);
 
 					glEnable(GL_DEBUG_OUTPUT);
 					glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
@@ -565,65 +565,65 @@ namespace OpenRA.Platforms.Default
 
 			try
 			{
-				glFlush = Bind<Flush>("glFlush");
-				glViewport = Bind<Viewport>("glViewport");
-				glClear = Bind<Clear>("glClear");
-				glClearColor = Bind<ClearColor>("glClearColor");
-				glFinish = Bind<Finish>("glFinish");
-				glCreateProgram = Bind<CreateProgram>("glCreateProgram");
-				glUseProgram = Bind<UseProgram>("glUseProgram");
-				glGetProgramiv = Bind<GetProgramiv>("glGetProgramiv");
-				glCreateShader = Bind<CreateShader>("glCreateShader");
-				glShaderSource = Bind<ShaderSource>("glShaderSource");
-				glCompileShader = Bind<CompileShader>("glCompileShader");
-				glGetShaderiv = Bind<GetShaderiv>("glGetShaderiv");
-				glAttachShader = Bind<AttachShader>("glAttachShader");
-				glGetShaderInfoLog = Bind<GetShaderInfoLog>("glGetShaderInfoLog");
-				glLinkProgram = Bind<LinkProgram>("glLinkProgram");
-				glGetProgramInfoLog = Bind<GetProgramInfoLog>("glGetProgramInfoLog");
-				glGetUniformLocation = Bind<GetUniformLocation>("glGetUniformLocation");
-				glGetActiveUniform = Bind<GetActiveUniform>("glGetActiveUniform");
-				glUniform1i = Bind<Uniform1i>("glUniform1i");
-				glUniform1f = Bind<Uniform1f>("glUniform1f");
-				glUniform2f = Bind<Uniform2f>("glUniform2f");
-				glUniform3f = Bind<Uniform3f>("glUniform3f");
-				glUniform1fv = Bind<Uniform1fv>("glUniform1fv");
-				glUniform2fv = Bind<Uniform2fv>("glUniform2fv");
-				glUniform3fv = Bind<Uniform3fv>("glUniform3fv");
-				glUniform4fv = Bind<Uniform4fv>("glUniform4fv");
-				glUniformMatrix4fv = Bind<UniformMatrix4fv>("glUniformMatrix4fv");
-				glGenBuffers = Bind<GenBuffers>("glGenBuffers");
-				glBindBuffer = Bind<BindBuffer>("glBindBuffer");
-				glBufferData = Bind<BufferData>("glBufferData");
-				glBufferSubData = Bind<BufferSubData>("glBufferSubData");
-				glDeleteBuffers = Bind<DeleteBuffers>("glDeleteBuffers");
-				glBindAttribLocation = Bind<BindAttribLocation>("glBindAttribLocation");
-				glVertexAttribPointer = Bind<VertexAttribPointer>("glVertexAttribPointer");
-				glVertexAttribIPointer = Bind<VertexAttribIPointer>("glVertexAttribIPointer");
-				glEnableVertexAttribArray = Bind<EnableVertexAttribArray>("glEnableVertexAttribArray");
-				glDisableVertexAttribArray = Bind<DisableVertexAttribArray>("glDisableVertexAttribArray");
-				glDrawArrays = Bind<DrawArrays>("glDrawArrays");
-				glDrawElements = Bind<DrawElements>("glDrawElements");
-				glBlendEquation = Bind<BlendEquation>("glBlendEquation");
-				glBlendEquationSeparate = Bind<BlendEquationSeparate>("glBlendEquationSeparate");
-				glBlendFunc = Bind<BlendFunc>("glBlendFunc");
-				glDepthFunc = Bind<DepthFunc>("glDepthFunc");
-				glScissor = Bind<Scissor>("glScissor");
-				glReadPixels = Bind<ReadPixels>("glReadPixels");
-				glGenTextures = Bind<GenTextures>("glGenTextures");
-				glDeleteTextures = Bind<DeleteTextures>("glDeleteTextures");
-				glIsTexture = Bind<IsTexture>("glIsTexture");
-				glBindTexture = Bind<BindTexture>("glBindTexture");
-				glActiveTexture = Bind<ActiveTexture>("glActiveTexture");
-				glTexImage2D = Bind<TexImage2D>("glTexImage2D");
-				glCopyTexImage2D = Bind<CopyTexImage2D>("glCopyTexImage2D");
-				glTexParameteri = Bind<TexParameteri>("glTexParameteri");
-				glTexParameterf = Bind<TexParameterf>("glTexParameterf");
+				glFlush = Bind<Flush>(sdl, "glFlush");
+				glViewport = Bind<Viewport>(sdl, "glViewport");
+				glClear = Bind<Clear>(sdl, "glClear");
+				glClearColor = Bind<ClearColor>(sdl, "glClearColor");
+				glFinish = Bind<Finish>(sdl, "glFinish");
+				glCreateProgram = Bind<CreateProgram>(sdl, "glCreateProgram");
+				glUseProgram = Bind<UseProgram>(sdl, "glUseProgram");
+				glGetProgramiv = Bind<GetProgramiv>(sdl, "glGetProgramiv");
+				glCreateShader = Bind<CreateShader>(sdl, "glCreateShader");
+				glShaderSource = Bind<ShaderSource>(sdl, "glShaderSource");
+				glCompileShader = Bind<CompileShader>(sdl, "glCompileShader");
+				glGetShaderiv = Bind<GetShaderiv>(sdl, "glGetShaderiv");
+				glAttachShader = Bind<AttachShader>(sdl, "glAttachShader");
+				glGetShaderInfoLog = Bind<GetShaderInfoLog>(sdl, "glGetShaderInfoLog");
+				glLinkProgram = Bind<LinkProgram>(sdl, "glLinkProgram");
+				glGetProgramInfoLog = Bind<GetProgramInfoLog>(sdl, "glGetProgramInfoLog");
+				glGetUniformLocation = Bind<GetUniformLocation>(sdl, "glGetUniformLocation");
+				glGetActiveUniform = Bind<GetActiveUniform>(sdl, "glGetActiveUniform");
+				glUniform1i = Bind<Uniform1i>(sdl, "glUniform1i");
+				glUniform1f = Bind<Uniform1f>(sdl, "glUniform1f");
+				glUniform2f = Bind<Uniform2f>(sdl, "glUniform2f");
+				glUniform3f = Bind<Uniform3f>(sdl, "glUniform3f");
+				glUniform1fv = Bind<Uniform1fv>(sdl, "glUniform1fv");
+				glUniform2fv = Bind<Uniform2fv>(sdl, "glUniform2fv");
+				glUniform3fv = Bind<Uniform3fv>(sdl, "glUniform3fv");
+				glUniform4fv = Bind<Uniform4fv>(sdl, "glUniform4fv");
+				glUniformMatrix4fv = Bind<UniformMatrix4fv>(sdl, "glUniformMatrix4fv");
+				glGenBuffers = Bind<GenBuffers>(sdl, "glGenBuffers");
+				glBindBuffer = Bind<BindBuffer>(sdl, "glBindBuffer");
+				glBufferData = Bind<BufferData>(sdl, "glBufferData");
+				glBufferSubData = Bind<BufferSubData>(sdl, "glBufferSubData");
+				glDeleteBuffers = Bind<DeleteBuffers>(sdl, "glDeleteBuffers");
+				glBindAttribLocation = Bind<BindAttribLocation>(sdl, "glBindAttribLocation");
+				glVertexAttribPointer = Bind<VertexAttribPointer>(sdl, "glVertexAttribPointer");
+				glVertexAttribIPointer = Bind<VertexAttribIPointer>(sdl, "glVertexAttribIPointer");
+				glEnableVertexAttribArray = Bind<EnableVertexAttribArray>(sdl, "glEnableVertexAttribArray");
+				glDisableVertexAttribArray = Bind<DisableVertexAttribArray>(sdl, "glDisableVertexAttribArray");
+				glDrawArrays = Bind<DrawArrays>(sdl, "glDrawArrays");
+				glDrawElements = Bind<DrawElements>(sdl, "glDrawElements");
+				glBlendEquation = Bind<BlendEquation>(sdl, "glBlendEquation");
+				glBlendEquationSeparate = Bind<BlendEquationSeparate>(sdl, "glBlendEquationSeparate");
+				glBlendFunc = Bind<BlendFunc>(sdl, "glBlendFunc");
+				glDepthFunc = Bind<DepthFunc>(sdl, "glDepthFunc");
+				glScissor = Bind<Scissor>(sdl, "glScissor");
+				glReadPixels = Bind<ReadPixels>(sdl, "glReadPixels");
+				glGenTextures = Bind<GenTextures>(sdl, "glGenTextures");
+				glDeleteTextures = Bind<DeleteTextures>(sdl, "glDeleteTextures");
+				glIsTexture = Bind<IsTexture>(sdl, "glIsTexture");
+				glBindTexture = Bind<BindTexture>(sdl, "glBindTexture");
+				glActiveTexture = Bind<ActiveTexture>(sdl, "glActiveTexture");
+				glTexImage2D = Bind<TexImage2D>(sdl, "glTexImage2D");
+				glCopyTexImage2D = Bind<CopyTexImage2D>(sdl, "glCopyTexImage2D");
+				glTexParameteri = Bind<TexParameteri>(sdl, "glTexParameteri");
+				glTexParameterf = Bind<TexParameterf>(sdl, "glTexParameterf");
 
 				if (Profile != GLProfile.Embedded)
 				{
-					glGetTexImage = Bind<GetTexImage>("glGetTexImage");
-					glBindFragDataLocation = Bind<BindFragDataLocation>("glBindFragDataLocation");
+					glGetTexImage = Bind<GetTexImage>(sdl, "glGetTexImage");
+					glBindFragDataLocation = Bind<BindFragDataLocation>(sdl, "glBindFragDataLocation");
 				}
 				else
 				{
@@ -631,18 +631,18 @@ namespace OpenRA.Platforms.Default
 					glBindFragDataLocation = null;
 				}
 
-				glGenVertexArrays = Bind<GenVertexArrays>("glGenVertexArrays");
-				glBindVertexArray = Bind<BindVertexArray>("glBindVertexArray");
-				glGenFramebuffers = Bind<GenFramebuffers>("glGenFramebuffers");
-				glBindFramebuffer = Bind<BindFramebuffer>("glBindFramebuffer");
-				glFramebufferTexture2D = Bind<FramebufferTexture2D>("glFramebufferTexture2D");
-				glDeleteFramebuffers = Bind<DeleteFramebuffers>("glDeleteFramebuffers");
-				glGenRenderbuffers = Bind<GenRenderbuffers>("glGenRenderbuffers");
-				glBindRenderbuffer = Bind<BindRenderbuffer>("glBindRenderbuffer");
-				glRenderbufferStorage = Bind<RenderbufferStorage>("glRenderbufferStorage");
-				glDeleteRenderbuffers = Bind<DeleteRenderbuffers>("glDeleteRenderbuffers");
-				glFramebufferRenderbuffer = Bind<FramebufferRenderbuffer>("glFramebufferRenderbuffer");
-				glCheckFramebufferStatus = Bind<CheckFramebufferStatus>("glCheckFramebufferStatus");
+				glGenVertexArrays = Bind<GenVertexArrays>(sdl, "glGenVertexArrays");
+				glBindVertexArray = Bind<BindVertexArray>(sdl, "glBindVertexArray");
+				glGenFramebuffers = Bind<GenFramebuffers>(sdl, "glGenFramebuffers");
+				glBindFramebuffer = Bind<BindFramebuffer>(sdl, "glBindFramebuffer");
+				glFramebufferTexture2D = Bind<FramebufferTexture2D>(sdl, "glFramebufferTexture2D");
+				glDeleteFramebuffers = Bind<DeleteFramebuffers>(sdl, "glDeleteFramebuffers");
+				glGenRenderbuffers = Bind<GenRenderbuffers>(sdl, "glGenRenderbuffers");
+				glBindRenderbuffer = Bind<BindRenderbuffer>(sdl, "glBindRenderbuffer");
+				glRenderbufferStorage = Bind<RenderbufferStorage>(sdl, "glRenderbufferStorage");
+				glDeleteRenderbuffers = Bind<DeleteRenderbuffers>(sdl, "glDeleteRenderbuffers");
+				glFramebufferRenderbuffer = Bind<FramebufferRenderbuffer>(sdl, "glFramebufferRenderbuffer");
+				glCheckFramebufferStatus = Bind<CheckFramebufferStatus>(sdl, "glCheckFramebufferStatus");
 			}
 			catch (Exception e)
 			{
@@ -651,12 +651,12 @@ namespace OpenRA.Platforms.Default
 			}
 		}
 
-		static T Bind<T>(string name)
+		static unsafe T Bind<T>(Sdl sdl, string name)
 		{
-			return (T)(object)Marshal.GetDelegateForFunctionPointer(SDL.SDL_GL_GetProcAddress(name), typeof(T));
+			return (T)(object)Marshal.GetDelegateForFunctionPointer((IntPtr)sdl.GLGetProcAddress(name), typeof(T));
 		}
 
-		public static bool DetectGLFeatures()
+		public static bool DetectGLFeatures(Sdl sdl)
 		{
 			var hasValidConfiguration = false;
 			try
@@ -675,12 +675,12 @@ namespace OpenRA.Platforms.Default
 				}
 
 				// Core features are defined as the shared feature set of GL 3.2 and (GLES 3 + BGRA extension)
-				var hasBGRA = SDL.SDL_GL_ExtensionSupported("GL_EXT_texture_format_BGRA8888") == SDL.SDL_bool.SDL_TRUE;
+				var hasBGRA = sdl.GLExtensionSupported("GL_EXT_texture_format_BGRA8888") == SdlBool.True;
 				if (Version.Contains(" ES") && hasBGRA && major >= 3)
 				{
 					hasValidConfiguration = true;
 					Profile = GLProfile.Embedded;
-					if (SDL.SDL_GL_ExtensionSupported("GL_EXT_read_format_bgra") == SDL.SDL_bool.SDL_TRUE)
+					if (sdl.GLExtensionSupported("GL_EXT_read_format_bgra") == SdlBool.True)
 						Features |= GLFeatures.ESReadFormatBGRA;
 				}
 				else if (major > 3 || (major == 3 && minor >= 2))
@@ -690,7 +690,7 @@ namespace OpenRA.Platforms.Default
 				}
 
 				// Debug callbacks were introduced in GL 4.3
-				var hasDebugMessagesCallback = SDL.SDL_GL_ExtensionSupported("GL_KHR_debug") == SDL.SDL_bool.SDL_TRUE;
+				var hasDebugMessagesCallback = sdl.GLExtensionSupported("GL_KHR_debug") == SdlBool.True;
 				if (hasDebugMessagesCallback)
 					Features |= GLFeatures.DebugMessagesCallback;
 			}

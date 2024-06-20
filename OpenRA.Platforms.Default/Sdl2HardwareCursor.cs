@@ -13,29 +13,33 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using OpenRA.Primitives;
-using SDL2;
+using Silk.NET.SDL;
 
 namespace OpenRA.Platforms.Default
 {
 	sealed class Sdl2HardwareCursor : IHardwareCursor
 	{
-		public IntPtr Cursor { get; private set; }
-		IntPtr surface;
+		readonly Sdl sdl;
 
-		public Sdl2HardwareCursor(Size size, byte[] data, int2 hotspot)
+		public unsafe Cursor* Cursor { get; private set; }
+		unsafe Surface* surface;
+
+		public unsafe Sdl2HardwareCursor(Sdl sdl, Size size, byte[] data, int2 hotspot)
 		{
+			this.sdl = sdl;
+
 			try
 			{
-				surface = SDL.SDL_CreateRGBSurface(0, size.Width, size.Height, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
-				if (surface == IntPtr.Zero)
-					throw new InvalidDataException($"Failed to create surface: {SDL.SDL_GetError()}");
+				surface = sdl.CreateRGBSurface(0, size.Width, size.Height, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+				if (surface == null)
+					throw new InvalidDataException($"Failed to create surface: {sdl.GetErrorS()}");
 
-				var sur = (SDL.SDL_Surface)Marshal.PtrToStructure(surface, typeof(SDL.SDL_Surface));
-				Marshal.Copy(data, 0, sur.pixels, data.Length);
+				var sur = (Surface)Marshal.PtrToStructure((IntPtr)surface, typeof(Surface));
+				Marshal.Copy(data, 0, (IntPtr)sur.Pixels, data.Length);
 
 				// This call very occasionally fails on Windows, but often works when retried.
-				for (var retries = 0; retries < 3 && Cursor == IntPtr.Zero; retries++)
-					Cursor = SDL.SDL_CreateColorCursor(surface, hotspot.X, hotspot.Y);
+				for (var retries = 0; retries < 3 && Cursor == null; retries++)
+					Cursor = sdl.CreateColorCursor(surface, hotspot.X, hotspot.Y);
 			}
 			catch
 			{
@@ -50,18 +54,18 @@ namespace OpenRA.Platforms.Default
 			GC.SuppressFinalize(this);
 		}
 
-		void Dispose(bool _)
+		unsafe void Dispose(bool _)
 		{
-			if (Cursor != IntPtr.Zero)
+			if (Cursor != null)
 			{
-				SDL.SDL_FreeCursor(Cursor);
-				Cursor = IntPtr.Zero;
+				sdl.FreeCursor(Cursor);
+				Cursor = null;
 			}
 
-			if (surface != IntPtr.Zero)
+			if (surface != null)
 			{
-				SDL.SDL_FreeSurface(surface);
-				surface = IntPtr.Zero;
+				sdl.FreeSurface(surface);
+				surface = null;
 			}
 		}
 
