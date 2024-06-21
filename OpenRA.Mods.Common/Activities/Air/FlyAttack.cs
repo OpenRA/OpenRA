@@ -119,14 +119,10 @@ namespace OpenRA.Mods.Common.Activities
 			if (useLastVisibleTarget && !lastVisibleTarget.IsValidFor(self))
 				return true;
 
-			// If all weapons are invalid against the target
-			if (!useLastVisibleTarget && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
+			// If all valid weapons have depleted their ammo and Rearmable trait exists, return to RearmActor to reload
+			// and resume the activity after reloading if AbortOnResupply is set to 'false'
+			if (rearmable != null && !useLastVisibleTarget && attackAircraft.Armaments.All(x => x.IsTraitPaused || !x.Weapon.IsValidAgainst(target, self.World, self)))
 			{
-				// If Rearmable trait exists, return to RearmActor to reload and resume the activity after
-				// reloading if AbortOnResupply is set to 'false'.
-				if (rearmable == null)
-					return true;
-
 				// Attack moves never resupply
 				if (source == AttackSource.AttackMove)
 					return true;
@@ -143,31 +139,18 @@ namespace OpenRA.Mods.Common.Activities
 			var pos = self.CenterPosition;
 			var checkTarget = useLastVisibleTarget ? lastVisibleTarget : target;
 
-			// We don't know where the target actually is, so move to where we last saw it
-			if (useLastVisibleTarget)
-			{
-				// HACK: Bot players ignore the standard visibility checks in target.Recalculate,
-				// which means that targetIsHiddenActor is always false, allowing lastVisibleMaximumRange
-				// to be assigned zero range by attackAircraft.GetMaximumRangeVersusTarget for e.g. cloaked actors.
-				// Catch and cancel this edge case to avoid the aircraft stopping mid-air!
-				if (self.Owner.IsBot && lastVisibleMaximumRange == WDist.Zero)
-					return true;
+			var minimumRange = attackAircraft.Info.AttackType == AirAttackType.Strafe ? WDist.Zero : attackAircraft.GetMinimumRangeVersusTarget(target);
 
-				// We've reached the assumed position but it is not there - give up
-				if (checkTarget.IsInRange(pos, lastVisibleMaximumRange))
-					return true;
+			if (checkTarget.IsInRange(pos, lastVisibleMaximumRange) && !checkTarget.IsInRange(pos, minimumRange) && useLastVisibleTarget)
+				return true;
 
-				// Fly towards the last known position
-				QueueChild(new Fly(self, target, WDist.Zero, lastVisibleMaximumRange, checkTarget.CenterPosition, Color.Red));
-				return false;
-			}
+			if (lastVisibleMaximumRange == WDist.Zero || lastVisibleMaximumRange < minimumRange)
+				return true;
 
 			var delta = attackAircraft.GetTargetPosition(pos, target) - pos;
 			var desiredFacing = delta.HorizontalLengthSquared != 0 ? delta.Yaw : aircraft.Facing;
 
 			QueueChild(new TakeOff(self));
-
-			var minimumRange = attackAircraft.Info.AttackType == AirAttackType.Strafe ? WDist.Zero : attackAircraft.GetMinimumRangeVersusTarget(target);
 
 			// Move into range of the target.
 			if (!target.IsInRange(pos, lastVisibleMaximumRange) || target.IsInRange(pos, minimumRange))
