@@ -322,7 +322,7 @@ namespace OpenRA.Mods.Common.Traits
 		public virtual bool AnyItemsToBuild()
 		{
 			return Enabled
-				&& (productionTraits.Length <= 0 || productionTraits.Any(p => p.IsTraitDisabled))
+				&& (productionTraits.Length <= 0 || productionTraits.Any(p => !p.IsTraitDisabled))
 				&& ((developerMode.AllTech && Producible.Keys.Count != 0) || buildableProducibles.Any());
 		}
 
