@@ -782,6 +782,7 @@ options-game-speed =
     .fast = Fast
     .faster = Faster
     .fastest = Fastest
+    .absurd = Absurd
 
 ## TimeLimitManager
 options-time-limit =

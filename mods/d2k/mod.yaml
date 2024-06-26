@@ -258,6 +258,10 @@ GameSpeeds:
 			Name: options-game-speed.fastest
 			Timestep: 20
 			OrderLatency: 6
+		absurd:
+			Name: options-game-speed.absurd
+			Timestep: 1
+			OrderLatency: 1
 
 ModContent:
 	InstallPromptMessage: Dune 2000 requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without\nmusic or videos) from an online mirror of the game files.\n\nAdvanced Install includes options for copying the music, videos,\nand other content from an original game disc.
