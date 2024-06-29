@@ -19,13 +19,6 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 {
 	abstract class StateBase
 	{
-		protected static void GoToRandomOwnBuilding(Squad squad)
-		{
-			var loc = RandomBuildingLocation(squad);
-			foreach (var a in squad.Units)
-				squad.Bot.QueueOrder(new Order("Move", a, Target.FromCell(squad.World, loc), false));
-		}
-
 		protected static CPos RandomBuildingLocation(Squad squad)
 		{
 			var location = squad.SquadManager.GetRandomBaseCenter();
@@ -136,6 +129,78 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 					return false;
 
 			return true;
+		}
+
+		// Retreat units from combat, or for supply only in idle
+		protected static void Retreat(Squad squad, bool flee, bool rearm, bool repair)
+		{
+			// HACK: "alreadyRepair" is to solve Aircraft repair cannot queue,
+			// if repairpad logic is better we can just drop it.
+			var alreadyRepair = false;
+
+			var rearmingUnits = new List<Actor>();
+			var fleeingUnits = new List<Actor>();
+
+			foreach (var u in squad.Units)
+			{
+				if (IsRearming(u))
+					continue;
+
+				var orderQueued = false;
+
+				// Units need to rearm will be added to rearming group.
+				if (rearm)
+				{
+					var ammoPools = u.TraitsImplementing<AmmoPool>().ToArray();
+					if (!ReloadsAutomatically(ammoPools, u.TraitOrDefault<Rearmable>()) && !FullAmmo(ammoPools))
+					{
+						rearmingUnits.Add(u);
+						orderQueued = true;
+					}
+				}
+
+				// Units need to repair will be repaired.
+				if (repair && !alreadyRepair)
+				{
+					Actor repairBuilding = null;
+					var orderId = "Repair";
+					var health = u.TraitOrDefault<IHealth>();
+
+					if (health != null && health.DamageState > DamageState.Undamaged)
+					{
+						var repairable = u.TraitOrDefault<Repairable>();
+						if (repairable != null)
+							repairBuilding = repairable.FindRepairBuilding(u);
+						else
+						{
+							var repairableNear = u.TraitOrDefault<RepairableNear>();
+							if (repairableNear != null)
+							{
+								orderId = "RepairNear";
+								repairBuilding = repairableNear.FindRepairBuilding(u);
+							}
+						}
+
+						if (repairBuilding != null)
+						{
+							squad.Bot.QueueOrder(new Order(orderId, u, Target.FromActor(repairBuilding), orderQueued));
+							orderQueued = true;
+							if (squad.Type == SquadType.Air)
+								alreadyRepair = true;
+						}
+					}
+				}
+
+				// If there is no order in queue and units should flee, add unit to fleeing group.
+				if (flee && !orderQueued)
+					fleeingUnits.Add(u);
+			}
+
+			if (rearmingUnits.Count > 0)
+				squad.Bot.QueueOrder(new Order("ReturnToBase", null, true, groupedActors: rearmingUnits.ToArray()));
+
+			if (fleeingUnits.Count > 0)
+				squad.Bot.QueueOrder(new Order("Move", null, Target.FromCell(squad.World, RandomBuildingLocation(squad)), false, groupedActors: fleeingUnits.ToArray()));
 		}
 	}
 }
