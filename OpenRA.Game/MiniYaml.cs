@@ -425,19 +425,23 @@ namespace OpenRA
 		static void MergeIntoResolved(MiniYamlNode overrideNode, List<MiniYamlNode> existingNodes, HashSet<string> existingNodeKeys,
 			Dictionary<string, MiniYaml> tree, ImmutableDictionary<string, MiniYamlNode.SourceLocation> inherited)
 		{
-			if (existingNodeKeys.Add(overrideNode.Key))
+			var existingNodeIndex = -1;
+			MiniYamlNode existingNode = null;
+			if (!existingNodeKeys.Add(overrideNode.Key))
 			{
-				existingNodes.Add(overrideNode);
-				return;
+				existingNodeIndex = IndexOfKey(existingNodes, overrideNode.Key);
+				existingNode = existingNodes[existingNodeIndex];
 			}
 
-			var existingNodeIndex = IndexOfKey(existingNodes, overrideNode.Key);
-			var existingNode = existingNodes[existingNodeIndex];
-			var value = MergePartial(existingNode.Value, overrideNode.Value);
+			var value = MergePartial(existingNode?.Value, overrideNode.Value);
 			var nodes = ResolveInherits(value, tree, inherited);
 			if (!value.Nodes.SequenceEqual(nodes))
 				value = value.WithNodes(nodes);
-			existingNodes[existingNodeIndex] = existingNode.WithValue(value);
+
+			if (existingNode != null)
+				existingNodes[existingNodeIndex] = existingNode.WithValue(value);
+			else
+				existingNodes.Add(overrideNode.WithValue(value));
 		}
 
 		static List<MiniYamlNode> ResolveInherits(MiniYaml node, Dictionary<string, MiniYaml> tree, ImmutableDictionary<string, MiniYamlNode.SourceLocation> inherited)
