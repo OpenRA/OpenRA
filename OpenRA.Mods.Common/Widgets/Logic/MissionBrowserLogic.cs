@@ -45,6 +45,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[TranslationReference]
 		const string CantPlayCancel = "dialog-cant-play-video.cancel";
 
+		[TranslationReference]
+		const string NotAvailable = "label-not-available";
+
 		readonly ModData modData;
 		readonly Action onStart;
 		readonly Widget missionDetail;
@@ -379,7 +382,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var dropdown = dropdownColumns.Dequeue();
 
-				dropdown.GetText = () => option.Values[missionOptions[option.Id]];
+				dropdown.GetText = () =>
+				{
+					if (option.Values.TryGetValue(missionOptions[option.Id], out var value))
+						return value;
+
+					return TranslationProvider.GetString(NotAvailable);
+				};
+
 				if (option.Description != null)
 				{
 					var (text, desc) = LobbyUtils.SplitOnFirstToken(option.Description);
