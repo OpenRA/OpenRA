@@ -349,7 +349,7 @@ options-slot-admin =
 button-general-chat = All
 button-team-chat = Team
 
-## LobbyOptionsLogic
+## LobbyOptionsLogic, MissionBrowserLogic
 label-not-available = Not Available
 
 ## LobbyUtils
