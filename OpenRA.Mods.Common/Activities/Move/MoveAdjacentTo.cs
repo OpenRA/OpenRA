@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Activities
 				return true;
 
 			// The move completed but we didn't reach the destination, so Cancel.
-			Cancel(self);
+			Cancel(self, true);
 			return true;
 		}
 
