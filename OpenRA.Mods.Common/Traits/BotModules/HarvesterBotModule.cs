@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Mods.Common.Activities;
 using OpenRA.Traits;
 
@@ -19,7 +20,7 @@ namespace OpenRA.Mods.Common.Traits
 {
 	[TraitLocation(SystemActors.Player)]
 	[Desc("Put this on the Player actor. Manages bot harvesters to ensure they always continue harvesting as long as there are resources on the map.")]
-	public class HarvesterBotModuleInfo : ConditionalTraitInfo
+	public class HarvesterBotModuleInfo : ConditionalTraitInfo, NotBefore<IResourceLayerInfo>
 	{
 		[Desc("Actor types that are considered harvesters. If harvester count drops below RefineryTypes count, a new harvester is built.",
 			"Leave empty to disable harvester replacement. Currently only needed by harvester replacement system.")]
@@ -31,13 +32,19 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Interval (in ticks) between giving out orders to idle harvesters.")]
 		public readonly int ScanForIdleHarvestersInterval = 50;
 
+		[Desc("When an idle harvester cannot find resources, increase the wait to this many scan intervals.")]
+		public readonly int ScanIntervalMultiplerWhenNoResources = 5;
+
 		[Desc("Avoid enemy actors nearby when searching for a new resource patch. Should be somewhere near the max weapon range.")]
-		public readonly WDist HarvesterEnemyAvoidanceRadius = WDist.FromCells(8);
+		public readonly WDist HarvesterEnemyAvoidanceRadius = WDist.FromCells(10);
+
+		[Desc("For each enemy within the threat radius, apply the following cost multiplier for every cell that needs to be moved through.")]
+		public readonly int HarvesterEnemyAvoidanceCostMultipler = 20;
 
 		public override object Create(ActorInitializer init) { return new HarvesterBotModule(init.Self, this); }
 	}
 
-	public class HarvesterBotModule : ConditionalTrait<HarvesterBotModuleInfo>, IBotTick, INotifyActorDisposing
+	public class HarvesterBotModule : ConditionalTrait<HarvesterBotModuleInfo>, IBotTick, INotifyActorDisposing, IWorldLoaded
 	{
 		sealed class HarvesterTraitWrapper
 		{
@@ -45,6 +52,7 @@ namespace OpenRA.Mods.Common.Traits
 			public readonly Harvester Harvester;
 			public readonly Parachutable Parachutable;
 			public readonly Mobile Mobile;
+			public int NoResourcesCooldown { get; set; }
 
 			public HarvesterTraitWrapper(Actor actor)
 			{
@@ -59,8 +67,10 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Player player;
 		readonly Func<Actor, bool> unitCannotBeOrdered;
 		readonly Dictionary<Actor, HarvesterTraitWrapper> harvesters = new();
+		readonly Stack<HarvesterTraitWrapper> harvestersNeedingOrders = new();
 		readonly ActorIndex.OwnerAndNamesAndTrait<Building> refineries;
 		readonly ActorIndex.OwnerAndNamesAndTrait<Harvester> harvestersIndex;
+		readonly Dictionary<CPos, string> resourceTypesByCell = new();
 
 		IResourceLayer resourceLayer;
 		ResourceClaimLayer claimLayer;
@@ -80,21 +90,49 @@ namespace OpenRA.Mods.Common.Traits
 		protected override void Created(Actor self)
 		{
 			requestUnitProduction = self.Owner.PlayerActor.TraitsImplementing<IBotRequestUnitProduction>().ToArray();
+			resourceLayer = world.WorldActor.TraitOrDefault<IResourceLayer>();
+			claimLayer = world.WorldActor.TraitOrDefault<ResourceClaimLayer>();
+		}
+
+		public void WorldLoaded(World w, WorldRenderer wr)
+		{
+			if (resourceLayer != null)
+			{
+				foreach (var cell in w.Map.AllCells)
+				{
+					var resource = resourceLayer.GetResource(cell);
+					if (resource.Type != null)
+						resourceTypesByCell.Add(cell, resource.Type);
+				}
+
+				resourceLayer.CellChanged += ResourceCellChanged;
+			}
+		}
+
+		void ResourceCellChanged(CPos cell, string resourceType)
+		{
+			if (resourceType == null)
+				resourceTypesByCell.Remove(cell);
+			else
+				resourceTypesByCell[cell] = resourceType;
 		}
 
 		protected override void TraitEnabled(Actor self)
 		{
-			resourceLayer = world.WorldActor.TraitOrDefault<IResourceLayer>();
-			claimLayer = world.WorldActor.TraitOrDefault<ResourceClaimLayer>();
-
 			// Avoid all AIs scanning for idle harvesters on the same tick, randomize their initial scan delay.
-			scanForIdleHarvestersTicks = world.LocalRandom.Next(Info.ScanForIdleHarvestersInterval, Info.ScanForIdleHarvestersInterval * 2);
+			scanForIdleHarvestersTicks = world.LocalRandom.Next(Info.ScanForIdleHarvestersInterval);
 		}
 
 		void IBotTick.BotTick(IBot bot)
 		{
 			if (resourceLayer == null || resourceLayer.IsEmpty)
 				return;
+
+			// Find idle harvesters and give them orders:
+			// PERF: FindNextResource is expensive, so only perform one search per tick.
+			var searchedForResources = false;
+			while (harvestersNeedingOrders.TryPop(out var hno) && !searchedForResources)
+				searchedForResources = HarvestIfAble(bot, hno);
 
 			if (--scanForIdleHarvestersTicks > 0)
 				return;
@@ -110,27 +148,9 @@ namespace OpenRA.Mods.Common.Traits
 			foreach (var a in newHarvesters)
 				harvesters[a] = new HarvesterTraitWrapper(a);
 
-			// Find idle harvesters and give them orders:
+			harvestersNeedingOrders.Clear();
 			foreach (var h in harvesters)
-			{
-				if (h.Value.Mobile == null)
-					continue;
-
-				if (!h.Key.IsIdle)
-				{
-					// Ignore this actor if FindAndDeliverResources is working fine or it is performing a different activity
-					if (h.Key.CurrentActivity is not FindAndDeliverResources act || !act.LastSearchFailed)
-						continue;
-				}
-
-				if (h.Value.Parachutable != null && h.Value.Parachutable.IsInAir)
-					continue;
-
-				// Tell the idle harvester to quit slacking:
-				var newSafeResourcePatch = FindNextResource(h.Key, h.Value);
-				AIUtils.BotDebug($"AI: Harvester {h.Key} is idle. Ordering to {newSafeResourcePatch} in search for new resources.");
-				bot.QueueOrder(new Order("Harvest", h.Key, newSafeResourcePatch, false));
-			}
+				harvestersNeedingOrders.Push(h.Value);
 
 			// Less harvesters than refineries - build a new harvester
 			var unitBuilder = requestUnitProduction.FirstEnabledTraitOrDefault();
@@ -148,17 +168,91 @@ namespace OpenRA.Mods.Common.Traits
 			}
 		}
 
+		// Returns true if FindNextResource was called.
+		bool HarvestIfAble(IBot bot, HarvesterTraitWrapper h)
+		{
+			if (h.Mobile == null)
+				return false;
+
+			if (!h.Actor.IsIdle)
+			{
+				// Ignore this actor if FindAndDeliverResources is working fine or it is performing a different activity
+				if (h.Actor.CurrentActivity is not FindAndDeliverResources act || !act.LastSearchFailed)
+					return false;
+			}
+
+			if (h.NoResourcesCooldown > 1)
+			{
+				h.NoResourcesCooldown--;
+				return false;
+			}
+
+			if (h.Parachutable != null && h.Parachutable.IsInAir)
+				return false;
+
+			// Tell the idle harvester to quit slacking:
+			var newSafeResourcePatch = FindNextResource(h.Actor, h);
+			AIUtils.BotDebug($"AI: Harvester {h.Actor} is idle. Ordering to {newSafeResourcePatch} in search for new resources.");
+			if (newSafeResourcePatch != Target.Invalid)
+				bot.QueueOrder(new Order("Harvest", h.Actor, newSafeResourcePatch, false));
+			else
+				h.NoResourcesCooldown = Info.ScanIntervalMultiplerWhenNoResources;
+
+			return true;
+		}
+
 		Target FindNextResource(Actor actor, HarvesterTraitWrapper harv)
 		{
-			bool IsValidResource(CPos cell) =>
-				harv.Harvester.CanHarvestCell(cell) &&
-				claimLayer.CanClaimCell(actor, cell);
+			var targets = resourceTypesByCell
+				.Where(kvp =>
+					harv.Harvester.Info.Resources.Contains(kvp.Value) &&
+					claimLayer.CanClaimCell(actor, kvp.Key))
+				.Select(kvp => kvp.Key);
 
-			var path = harv.Mobile.PathFinder.FindPathToTargetCellByPredicate(
-				actor, new[] { actor.Location }, IsValidResource, BlockedByActor.Stationary,
-				loc => world.FindActorsInCircle(world.Map.CenterOfCell(loc), Info.HarvesterEnemyAvoidanceRadius)
-					.Where(u => !u.IsDead && actor.Owner.RelationshipWith(u.Owner) == PlayerRelationship.Enemy)
-					.Sum(u => Math.Max(WDist.Zero.Length, Info.HarvesterEnemyAvoidanceRadius.Length - (world.Map.CenterOfCell(loc) - u.CenterPosition).Length)));
+			var avoidanceCostForBin = new Dictionary<int2, int>();
+			var cellRadius = Info.HarvesterEnemyAvoidanceRadius.Length / 1024;
+			var minCellCost = harv.Mobile.Locomotor.Info.TerrainSpeeds.Values.Min(ti => ti.Cost);
+			var cellCostMultiplier = Info.HarvesterEnemyAvoidanceCostMultipler;
+
+			static int2 CellToBin(CPos cell, int cellRadius)
+			{
+				return new int2(
+					cell.X / cellRadius,
+					cell.Y / cellRadius);
+			}
+
+			static int CalculateAvoidanceCostForBin(World world, int2 bin, int cellRadius, Actor actor, int minCellCost, int cellCostMultipler)
+			{
+				// Bins are overlapping, this allows actors to apply threat in both directions when they're at the edge.
+				// If the bins didn't overlap, actors along the edge of a bin only affect that bin, and not the bin next to it,
+				// despite the fact the are an equal risk to both.
+				var r = WDist.FromCells(cellRadius);
+				var vec = new WVec(r, r, WDist.Zero);
+				var originCell = new CPos(bin.X * cellRadius + cellRadius / 2, bin.Y * cellRadius + cellRadius / 2);
+				var origin = world.Map.CenterOfCell(originCell);
+				var threatActors = world.ActorMap.ActorsInBox(origin - vec, origin + vec)
+					.Where(u => !u.IsDead && actor.Owner.RelationshipWith(u.Owner) == PlayerRelationship.Enemy);
+
+				// For each actor in the threat radius, every cell we want to move is an extra cost than a threat-free area.
+				return threatActors.Count() * minCellCost * cellCostMultipler;
+			}
+
+			var path = harv.Mobile.PathFinder.FindPathToTargetCells(
+				actor, actor.Location, targets, BlockedByActor.Stationary,
+				loc =>
+				{
+					// Avoid areas with enemies.
+					var bin = CellToBin(loc, cellRadius);
+					if (avoidanceCostForBin.TryGetValue(bin, out var avoidanceCost))
+						return avoidanceCost;
+
+					// PERF: Calculate a "bin" for a threat area.
+					// This allows future custom cost checks to reuse the result for that area,
+					// rather than calculating it fresh for every cell explored for the path.
+					avoidanceCost = CalculateAvoidanceCostForBin(world, bin, cellRadius, actor, minCellCost, cellCostMultiplier);
+					avoidanceCostForBin.Add(bin, avoidanceCost);
+					return avoidanceCost;
+				});
 
 			if (path.Count == 0)
 				return Target.Invalid;
@@ -170,6 +264,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			refineries.Dispose();
 			harvestersIndex.Dispose();
+
+			if (resourceLayer != null)
+				resourceLayer.CellChanged -= ResourceCellChanged;
 		}
 	}
 }
