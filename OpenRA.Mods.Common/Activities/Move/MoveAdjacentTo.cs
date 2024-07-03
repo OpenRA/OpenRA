@@ -28,6 +28,7 @@ namespace OpenRA.Mods.Common.Activities
 		protected Target lastVisibleTarget;
 		protected CPos lastVisibleTargetLocation;
 		bool useLastVisibleTarget;
+		bool keepQueue;
 
 		public MoveAdjacentTo(Actor self, in Target target, WPos? initialTargetPosition = null, Color? targetLineColor = null)
 		{
@@ -91,7 +92,10 @@ namespace OpenRA.Mods.Common.Activities
 
 			// Cancel the current path if the activity asks to stop.
 			if (ShouldStop(self) || noTarget)
+			{
 				Cancel(self, true);
+				keepQueue = true;
+			}
 			else if (!IsCanceling && targetIsValid && ShouldRepath(self, oldTargetLocation))
 			{
 				// Target has moved, but is still valid.
@@ -104,10 +108,11 @@ namespace OpenRA.Mods.Common.Activities
 			if (!TickChild(self))
 				return false;
 
-			if (Mobile.MoveResult == MoveResult.CompleteDestinationReached)
+			// The move reached the destination, or was canceled intentionally and we want to keep the activity queue.
+			if (Mobile.MoveResult == MoveResult.CompleteDestinationReached || keepQueue)
 				return true;
 
-			// The move completed but we didn't reach the destination, so Cancel.
+			// The move completed but we didn't reach the destination, so Cancel and discard the queue.
 			Cancel(self);
 			return true;
 		}
