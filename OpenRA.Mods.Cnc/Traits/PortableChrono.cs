@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Activities;
 using OpenRA.Graphics;
 using OpenRA.Mods.Cnc.Activities;
 using OpenRA.Mods.Common.Graphics;
@@ -134,16 +135,10 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			if (order.OrderString == "PortableChronoTeleport" && order.Target.Type != TargetType.Invalid)
 			{
-				var maxDistance = Info.HasDistanceLimit ? Info.MaxDistance : (int?)null;
 				if (!order.Queued)
 					self.CancelActivity();
 
-				var cell = self.World.Map.CellContaining(order.Target.CenterPosition);
-				if (maxDistance != null)
-					self.QueueActivity(move.MoveWithinRange(order.Target, WDist.FromCells(maxDistance.Value), targetLineColor: Info.TargetLineColor));
-
-				self.QueueActivity(new Teleport(self, cell, maxDistance, Info.KillCargo, Info.FlashScreen, Info.ChronoshiftSound));
-				self.QueueActivity(move.MoveTo(cell, 5, targetLineColor: Info.TargetLineColor));
+				self.QueueActivity(new MoveToTeleport(this, move, order.Target));
 				self.ShowTargetLines();
 			}
 		}
@@ -174,6 +169,45 @@ namespace OpenRA.Mods.Cnc.Traits
 		protected override void TraitDisabled(Actor self)
 		{
 			chargeTick = 0;
+		}
+	}
+
+	sealed class MoveToTeleport : Activity
+	{
+		readonly PortableChrono portableChrono;
+		readonly Target target;
+		readonly IMove move;
+
+		public MoveToTeleport(PortableChrono portableChrono, IMove move, Target target, bool interruptable = true)
+		{
+			this.portableChrono = portableChrono;
+			this.target = target;
+			this.move = move;
+
+			if (!interruptable)
+				IsInterruptible = false;
+		}
+
+		public override bool Tick(Actor self)
+		{
+			// portableChrono may have become invalid.
+			if (IsCanceling || target.Type == TargetType.Invalid || portableChrono == null)
+				return true;
+
+			var directDestination = self.World.Map.CellContaining(target.CenterPosition);
+
+			if (portableChrono.Info.HasDistanceLimit && (directDestination - self.Location).LengthSquared > portableChrono.Info.MaxDistance * portableChrono.Info.MaxDistance)
+				QueueChild(move.MoveWithinRange(target, WDist.FromCells(portableChrono.Info.MaxDistance), targetLineColor: portableChrono.Info.TargetLineColor));
+
+			self.QueueActivity(new Teleport(self, directDestination, portableChrono.Info.MaxDistance, portableChrono.Info.KillCargo, portableChrono.Info.FlashScreen, portableChrono.Info.ChronoshiftSound));
+			self.QueueActivity(move.MoveTo(directDestination, 5, targetLineColor: portableChrono.Info.TargetLineColor));
+			return true;
+		}
+
+		public override IEnumerable<TargetLineNode> TargetLineNodes(Actor self)
+		{
+			if (target.Type != TargetType.Invalid)
+				yield return new TargetLineNode(target, portableChrono.Info.TargetLineColor);
 		}
 	}
 
