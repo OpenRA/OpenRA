@@ -91,25 +91,31 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (ticks % FeedbackTime == 0)
 			{
+				ILookup<string, ProductionQueue> queuesByCategory = null;
+
 				var buildRequest = queuedBuildRequests.FirstOrDefault();
 				if (buildRequest != null)
 				{
-					BuildUnit(bot, buildRequest);
+					queuesByCategory ??= AIUtils.FindQueuesByCategory(player);
+					BuildUnit(bot, buildRequest, queuesByCategory);
 					queuedBuildRequests.Remove(buildRequest);
 				}
 
 				if (Info.IdleBaseUnitsMaximum <= 0 || Info.IdleBaseUnitsMaximum > idleUnitCount)
 				{
+					queuesByCategory ??= AIUtils.FindQueuesByCategory(player);
 					for (var i = 0; i < Info.UnitQueues.Length; i++)
 					{
 						if (++currentQueueIndex >= Info.UnitQueues.Length)
 							currentQueueIndex = 0;
 
-						if (AIUtils.FindQueues(player, Info.UnitQueues[currentQueueIndex]).Any())
+						var category = Info.UnitQueues[currentQueueIndex];
+						var queues = queuesByCategory[category].ToArray();
+						if (queues.Length != 0)
 						{
 							// PERF: We tick only one type of valid queue at a time
 							// if AI gets enough cash, it can fill all of its queues with enough ticks
-							BuildRandomUnit(bot, Info.UnitQueues[currentQueueIndex]);
+							BuildRandomUnit(bot, queues);
 							break;
 						}
 					}
@@ -127,13 +133,13 @@ namespace OpenRA.Mods.Common.Traits
 			return queuedBuildRequests.Count(r => r == requestedActor);
 		}
 
-		void BuildRandomUnit(IBot bot, string category)
+		void BuildRandomUnit(IBot bot, ProductionQueue[] queues)
 		{
 			if (Info.UnitsToBuild.Count == 0)
 				return;
 
 			// Pick a free queue
-			var queue = AIUtils.FindQueues(player, category).FirstOrDefault(q => !q.AllQueued().Any());
+			var queue = queues.FirstOrDefault(q => !q.AllQueued().Any());
 			if (queue == null)
 				return;
 
@@ -146,7 +152,7 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		// In cases where we want to build a specific unit but don't know the queue name (because there's more than one possibility)
-		void BuildUnit(IBot bot, string name)
+		void BuildUnit(IBot bot, string name, ILookup<string, ProductionQueue> queuesByCategory)
 		{
 			var actorInfo = world.Map.Rules.Actors[name];
 			if (actorInfo == null)
@@ -159,7 +165,7 @@ namespace OpenRA.Mods.Common.Traits
 			ProductionQueue queue = null;
 			foreach (var pq in buildableInfo.Queue)
 			{
-				queue = AIUtils.FindQueues(player, pq).FirstOrDefault(q => !q.AllQueued().Any());
+				queue = queuesByCategory[pq].FirstOrDefault(q => !q.AllQueued().Any());
 				if (queue != null)
 					break;
 			}

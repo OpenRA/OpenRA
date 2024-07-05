@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 				waterState = WaterCheck.DontCheck;
 		}
 
-		public void Tick(IBot bot)
+		public void Tick(IBot bot, ILookup<string, ProductionQueue> queuesByCategory)
 		{
 			// If failed to place something N consecutive times, wait M ticks until resuming building production
 			if (failCount >= baseBuilder.Info.MaximumFailedPlacementAttempts && --failRetryTicks <= 0)
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Traits
 			// PERF: Queue only one actor at a time per category
 			itemQueuedThisTick = false;
 			var active = false;
-			foreach (var queue in AIUtils.FindQueues(player, Category))
+			foreach (var queue in queuesByCategory[Category])
 			{
 				if (TickQueue(bot, queue))
 					active = true;

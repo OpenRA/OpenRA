@@ -34,11 +34,12 @@ namespace OpenRA.Mods.Common
 							.Any(availableCells => availableCells > 0);
 		}
 
-		public static IEnumerable<ProductionQueue> FindQueues(Player player, string category)
+		public static ILookup<string, ProductionQueue> FindQueuesByCategory(Player player)
 		{
 			return player.World.ActorsWithTrait<ProductionQueue>()
-				.Where(a => a.Actor.Owner == player && a.Trait.Info.Type == category && a.Trait.Enabled)
-				.Select(a => a.Trait);
+				.Where(a => a.Actor.Owner == player && a.Trait.Enabled)
+				.Select(a => a.Trait)
+				.ToLookup(pq => pq.Info.Type);
 		}
 
 		public static int CountActorsWithNameAndTrait<T>(string actorName, Player owner)
