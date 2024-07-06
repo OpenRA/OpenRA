@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string NoTeam = "label-no-team";
 
 		readonly CameraOption combined, disableShroud;
-		readonly IOrderedEnumerable<IGrouping<int, CameraOption>> teams;
+		readonly IGrouping<int, CameraOption>[] teams;
 		readonly bool limitViews;
 
 		readonly HotkeyReference combinedViewKey = new();
@@ -112,12 +112,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			teams = world.Players.Where(p => !p.NonCombatant && p.Playable)
 				.Select(p => new CameraOption(this, p))
 				.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.Player.ClientIndex) ?? new Session.Client()).Team)
-				.OrderBy(g => g.Key);
+				.OrderBy(g => g.Key)
+				.ToArray();
 
-			var teamsList = teams.ToList();
-			var noTeams = teamsList.Count == 1;
+			var noTeams = teams.Length == 1;
 			var totalPlayers = 0;
-			foreach (var t in teamsList)
+			foreach (var t in teams)
 			{
 				totalPlayers += t.Count();
 				var label = noTeams ? TranslationProvider.GetString(Players) : t.Key > 0
@@ -210,8 +210,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (e.Key >= Keycode.NUMBER_0 && e.Key <= Keycode.NUMBER_9)
 				{
 					var key = (int)e.Key - (int)Keycode.NUMBER_0;
-					var team = teams.Where(t => t.Key == key).SelectMany(s => s).ToList();
-					if (team.Count == 0)
+					var team = teams.SingleOrDefault(t => t.Key == key)?.ToList();
+					if (team == null || team.Count == 0)
 						return false;
 
 					if (e.Modifiers == Modifiers.Shift)
