@@ -940,5 +940,19 @@ namespace OpenRA.Mods.Common.Traits
 		/// <remarks>Path searches are not guaranteed to by symmetric,
 		/// the source and target locations cannot be swapped.</remarks>
 		bool PathExistsForLocomotor(Locomotor locomotor, CPos source, CPos target);
+
+		/// <summary>
+		/// Determines if a path exists between source and target.
+		/// Terrain and immovable actors are taken into account,
+		/// i.e. as if <see cref="BlockedByActor.Immovable"/> was given.
+		/// Implementations are permitted to only account for a subset of actors, for performance.
+		/// This would apply for any actor using the given <see cref="Locomotor"/>.
+		/// </summary>
+		/// <remarks>Path searches are not guaranteed to by symmetric,
+		/// the source and target locations cannot be swapped.
+		/// If this method returns false, there is guaranteed to be no path.
+		/// If it returns true, there *might* be a path.
+		/// </remarks>
+		bool PathMightExistForLocomotorBlockedByImmovable(Locomotor locomotor, CPos source, CPos target);
 	}
 }
