@@ -14,29 +14,20 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 	sealed class StateMachine
 	{
 		IState currentState;
-		IState previousState;
 
 		public void Update(Squad squad)
 		{
 			currentState?.Tick(squad);
 		}
 
-		public void ChangeState(Squad squad, IState newState, bool rememberPrevious)
+		public void ChangeState(Squad squad, IState newState)
 		{
-			if (rememberPrevious)
-				previousState = currentState;
-
 			currentState?.Deactivate(squad);
 
 			if (newState != null)
 				currentState = newState;
 
 			currentState?.Activate(squad);
-		}
-
-		public void RevertToPreviousState(Squad squad, bool saveCurrentState)
-		{
-			ChangeState(squad, previousState, saveCurrentState);
 		}
 	}
 

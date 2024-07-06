@@ -123,7 +123,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			if (ShouldFlee(owner))
 			{
-				owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState(), true);
+				owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState());
 				return;
 			}
 
@@ -132,7 +132,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				return;
 
 			owner.SetActorToTarget((e, WVec.Zero));
-			owner.FuzzyStateMachine.ChangeState(owner, new AirAttackState(), true);
+			owner.FuzzyStateMachine.ChangeState(owner, new AirAttackState());
 		}
 
 		public void Deactivate(Squad owner) { }
@@ -154,14 +154,14 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				owner.SetActorToTarget(closestEnemy);
 				if (closestEnemy.Actor == null)
 				{
-					owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState(), true);
+					owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState());
 					return;
 				}
 			}
 
 			if (!NearToPosSafely(owner, owner.Target.CenterPosition))
 			{
-				owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState(), true);
+				owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState());
 				return;
 			}
 
@@ -215,7 +215,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				owner.Bot.QueueOrder(new Order("Move", a, Target.FromCell(owner.World, RandomBuildingLocation(owner)), false));
 			}
 
-			owner.FuzzyStateMachine.ChangeState(owner, new AirIdleState(), true);
+			owner.FuzzyStateMachine.ChangeState(owner, new AirIdleState());
 		}
 
 		public void Deactivate(Squad owner) { }
