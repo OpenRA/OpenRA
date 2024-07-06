@@ -56,6 +56,12 @@ namespace OpenRA.Mods.Common.Traits
 			base.BeginProduction(item, false);
 		}
 
+		protected override void PauseProduction(string itemName, bool paused)
+		{
+			foreach (var item in Queue.Where(a => a.Item == itemName))
+				item.Pause(paused);
+		}
+
 		public override int RemainingTimeActual(ProductionItem item)
 		{
 			var parallelBuilds = Queue.FindAll(i => !i.Paused && !i.Done)
