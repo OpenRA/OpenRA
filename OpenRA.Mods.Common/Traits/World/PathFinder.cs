@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 			Actor ignoreActor = null,
 			bool laneBias = true)
 		{
-			return FindPathToTarget(self, sources.ToList(), target, check, customCost, ignoreActor, laneBias);
+			return FindPathToTarget(self, sources.ToList(), target, check, customCost, ignoreActor, false, laneBias);
 		}
 
 		/// <summary>
@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (sourceIsAccessible)
 			{
 				// As both ends are accessible, we can freely swap them.
-				path = FindPathToTarget(self, targetsList, source, check, customCost, ignoreActor, laneBias);
+				path = FindPathToTarget(self, targetsList, source, check, customCost, ignoreActor, true, laneBias);
 			}
 			else
 			{
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		List<CPos> FindPathToTarget(
 			Actor self, List<CPos> sources, CPos target, BlockedByActor check,
-			Func<CPos, int> customCost, Actor ignoreActor, bool laneBias)
+			Func<CPos, int> customCost, Actor ignoreActor, bool inReverse, bool laneBias)
 		{
 			if (sources.Count == 0)
 				return NoPath;
@@ -181,7 +181,7 @@ namespace OpenRA.Mods.Common.Traits
 			// If the target cell is inaccessible, bail early.
 			// The destination cell must allow movement and also have a reachable movement cost.
 			if (!PathSearch.CellAllowsMovement(self.World, locomotor, target, customCost)
-				|| locomotor.MovementCostToEnterCell(self, target, check, ignoreActor) == PathGraph.MovementCostForUnreachableCell)
+				|| locomotor.MovementCostToEnterCell(self, target, check, ignoreActor, inReverse) == PathGraph.MovementCostForUnreachableCell)
 				return NoPath;
 
 			// When searching from only one source cell, some optimizations are possible.
@@ -201,12 +201,12 @@ namespace OpenRA.Mods.Common.Traits
 
 				// Use a hierarchical path search, which performs a guided bidirectional search.
 				return GetHierarchicalPathFinder(locomotor, check, ignoreActor).FindPath(
-					self, source, target, check, DefaultHeuristicWeightPercentage, customCost, ignoreActor, laneBias, pathFinderOverlay);
+					self, source, target, check, DefaultHeuristicWeightPercentage, customCost, ignoreActor, inReverse, laneBias, pathFinderOverlay);
 			}
 
 			// Use a hierarchical path search, which performs a guided unidirectional search.
 			return GetHierarchicalPathFinder(locomotor, check, ignoreActor).FindPath(
-				self, sources, target, check, DefaultHeuristicWeightPercentage, customCost, ignoreActor, laneBias, pathFinderOverlay);
+				self, sources, target, check, DefaultHeuristicWeightPercentage, customCost, ignoreActor, inReverse, laneBias, pathFinderOverlay);
 		}
 
 		HierarchicalPathFinder GetHierarchicalPathFinder(Locomotor locomotor, BlockedByActor check, Actor ignoreActor)
