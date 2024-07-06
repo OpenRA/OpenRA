@@ -9,6 +9,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
@@ -135,6 +136,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Only queue construction of a new structure when above this requirement.")]
 		public readonly int ProductionMinCashRequirement = 500;
 
+		[Desc("Delay (in ticks) between reassigning rally points.")]
+		public readonly int AssignRallyPointsInterval = 100;
+
 		public override object Create(ActorInitializer init) { return new BaseBuilderBotModule(init.Self, this); }
 	}
 
@@ -159,8 +163,12 @@ namespace OpenRA.Mods.Common.Traits
 		PowerManager playerPower;
 		PlayerResources playerResources;
 		IResourceLayer resourceLayer;
+		IPathFinder pathFinder;
 		IBotPositionsUpdated[] positionsUpdatedModules;
 		CPos initialBaseCenter;
+
+		readonly Stack<TraitPair<RallyPoint>> rallyPoints = new();
+		int assignRallyPointsTicks;
 
 		readonly BaseBuilderQueueManager[] builders;
 		int currentBuilderIndex = 0;
@@ -187,6 +195,7 @@ namespace OpenRA.Mods.Common.Traits
 			playerPower = self.Owner.PlayerActor.TraitOrDefault<PowerManager>();
 			playerResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			resourceLayer = self.World.WorldActor.TraitOrDefault<IResourceLayer>();
+			pathFinder = self.World.WorldActor.TraitOrDefault<IPathFinder>();
 			positionsUpdatedModules = self.Owner.PlayerActor.TraitsImplementing<IBotPositionsUpdated>().ToArray();
 
 			var i = 0;
@@ -196,6 +205,12 @@ namespace OpenRA.Mods.Common.Traits
 
 			foreach (var defense in Info.DefenseQueues)
 				builders[i++] = new BaseBuilderQueueManager(this, defense, player, playerPower, playerResources, resourceLayer);
+		}
+
+		protected override void TraitEnabled(Actor self)
+		{
+			// Avoid all AIs reevaluating assignments on the same tick, randomize their initial evaluation delay.
+			assignRallyPointsTicks = world.LocalRandom.Next(0, Info.AssignRallyPointsInterval);
 		}
 
 		void IBotPositionsUpdated.UpdatedBaseCenter(CPos newLocation)
@@ -212,8 +227,23 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IBotTick.BotTick(IBot bot)
 		{
-			// TODO: this causes pathfinding lag when AI's gets blocked in
-			SetRallyPointsForNewProductionBuildings(bot);
+			if (--assignRallyPointsTicks <= 0)
+			{
+				assignRallyPointsTicks = Math.Max(2, Info.AssignRallyPointsInterval);
+				foreach (var rp in world.ActorsWithTrait<RallyPoint>().Where(rp => rp.Actor.Owner == player))
+					rallyPoints.Push(rp);
+			}
+			else
+			{
+				// PERF: Spread out rally point assignments updates across multiple ticks.
+				var updateCount = Exts.IntegerDivisionRoundingAwayFromZero(rallyPoints.Count, assignRallyPointsTicks);
+				for (var i = 0; i < updateCount; i++)
+				{
+					var rp = rallyPoints.Pop();
+					if (rp.Actor.Owner == player)
+						SetRallyPoint(bot, rp);
+				}
+			}
 
 			BuildingsBeingProduced.Clear();
 
@@ -275,28 +305,31 @@ namespace OpenRA.Mods.Common.Traits
 					n.UpdatedDefenseCenter(e.Attacker.Location);
 		}
 
-		void SetRallyPointsForNewProductionBuildings(IBot bot)
+		void SetRallyPoint(IBot bot, TraitPair<RallyPoint> rp)
 		{
-			foreach (var rp in world.ActorsWithTrait<RallyPoint>())
-			{
-				if (rp.Actor.Owner != player)
-					continue;
+			var needsRallyPoint = rp.Trait.Path.Count == 0;
 
-				if (rp.Trait.Path.Count == 0 || !IsRallyPointValid(rp.Trait.Path[0], rp.Actor.Info.TraitInfoOrDefault<BuildingInfo>()))
+			if (!needsRallyPoint)
+			{
+				var locomotors = LocomotorsForProducibles(rp.Actor);
+				needsRallyPoint = !IsRallyPointValid(rp.Actor.Location, rp.Trait.Path[0], locomotors, rp.Actor.Info.TraitInfoOrDefault<BuildingInfo>());
+			}
+
+			if (needsRallyPoint)
+			{
+				bot.QueueOrder(new Order("SetRallyPoint", rp.Actor, Target.FromCell(world, ChooseRallyLocationNear(rp.Actor)), false)
 				{
-					bot.QueueOrder(new Order("SetRallyPoint", rp.Actor, Target.FromCell(world, ChooseRallyLocationNear(rp.Actor)), false)
-					{
-						SuppressVisualFeedback = true
-					});
-				}
+					SuppressVisualFeedback = true
+				});
 			}
 		}
 
 		// Won't work for shipyards...
 		CPos ChooseRallyLocationNear(Actor producer)
 		{
+			var locomotors = LocomotorsForProducibles(producer);
 			var possibleRallyPoints = world.Map.FindTilesInCircle(producer.Location, Info.RallyPointScanRadius)
-				.Where(c => IsRallyPointValid(c, producer.Info.TraitInfoOrDefault<BuildingInfo>()))
+				.Where(c => IsRallyPointValid(producer.Location, c, locomotors, producer.Info.TraitInfoOrDefault<BuildingInfo>()))
 				.ToList();
 
 			if (possibleRallyPoints.Count == 0)
@@ -308,9 +341,38 @@ namespace OpenRA.Mods.Common.Traits
 			return possibleRallyPoints.Random(world.LocalRandom);
 		}
 
-		bool IsRallyPointValid(CPos x, BuildingInfo info)
+		Locomotor[] LocomotorsForProducibles(Actor producer)
 		{
-			return info != null && world.IsCellBuildable(x, null, info);
+			var buildingInfo = producer.Info.TraitInfoOrDefault<BuildingInfo>();
+			var productionInfo = producer.Info.TraitInfoOrDefault<ProductionInfo>();
+			var locomotors = Array.Empty<Locomotor>();
+
+			if (productionInfo != null && productionInfo.Produces.Length > 0)
+			{
+				var productionQueues = producer.Owner.PlayerActor.TraitsImplementing<ProductionQueue>()
+					.Where(pq => productionInfo.Produces.Contains(pq.Info.Type));
+				var producibles = productionQueues.SelectMany(pq => pq.BuildableItems());
+				var locomotorNames = producibles
+					.Select(p => p.TraitInfoOrDefault<MobileInfo>())
+					.Where(mi => mi != null)
+					.Select(mi => mi.Locomotor)
+					.ToHashSet();
+				locomotors = world.WorldActor.TraitsImplementing<Locomotor>()
+					.Where(l => locomotorNames.Contains(l.Info.Name))
+					.ToArray();
+			}
+
+			return locomotors;
+		}
+
+		bool IsRallyPointValid(CPos producerLocation, CPos rallyPointLocation, Locomotor[] locomotors, BuildingInfo buildingInfo)
+		{
+			return
+				(pathFinder == null ||
+					locomotors.All(l => pathFinder.PathMightExistForLocomotorBlockedByImmovable(l, producerLocation, rallyPointLocation)))
+				&&
+				(buildingInfo == null ||
+					world.IsCellBuildable(rallyPointLocation, null, buildingInfo));
 		}
 
 		// Require at least one refinery, unless we can't build it.
