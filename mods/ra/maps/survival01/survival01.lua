@@ -272,7 +272,7 @@ TimerExpired = function()
 	Reinforcements.Reinforce(Allies, FrenchReinforcements, { SovietEntryPoint7.Location, Alliesbase.Location })
 
 	if DestroyObj then
-		KillObj = AddPrimaryObjective(Allies, "control-reinforcements-kill-remaining-soviet-forces")
+		KillObj = AddPrimaryObjective(Allies, "takeover-reinforcements-kill-remaining-soviet-forces")
 	else
 		DestroyObj = AddPrimaryObjective(Allies, "takeover-reinforcements-dismantle-soviet-base")
 	end
