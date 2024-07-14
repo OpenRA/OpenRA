@@ -1612,6 +1612,15 @@ Actors:
 	OreAmbushEntry: waypoint
 		Location: 26,48
 		Owner: Neutral
+	Actor476: fenc
+		Owner: USSR
+		Location: 78,76
+	Actor477: fenc
+		Owner: USSR
+		Location: 78,75
+	Actor478: fenc
+		Owner: USSR
+		Location: 79,75
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 

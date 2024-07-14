@@ -1130,6 +1130,18 @@ Actors:
 	Exit: waypoint
 		Location: 14,64
 		Owner: Neutral
+	Actor331: fenc
+		Owner: Neutral
+		Location: 77,71
+	Actor332: fenc
+		Owner: Neutral
+		Location: 75,72
+	Actor333: fenc
+		Owner: Neutral
+		Location: 76,72
+	Actor334: fenc
+		Owner: Neutral
+		Location: 77,72
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
