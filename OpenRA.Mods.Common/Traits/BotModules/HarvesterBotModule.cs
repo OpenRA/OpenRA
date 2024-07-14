@@ -50,6 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			public readonly Actor Actor;
 			public readonly Harvester Harvester;
+			public readonly DockClientManager DockClientManager;
 			public readonly Parachutable Parachutable;
 			public readonly Mobile Mobile;
 			public int NoResourcesCooldown { get; set; }
@@ -58,6 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				Actor = actor;
 				Harvester = actor.Trait<Harvester>();
+				DockClientManager = actor.Trait<DockClientManager>();
 				Parachutable = actor.TraitOrDefault<Parachutable>();
 				Mobile = actor.TraitOrDefault<Mobile>();
 			}
@@ -203,6 +205,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		Target FindNextResource(Actor actor, HarvesterTraitWrapper harv)
 		{
+			// Prefer resource nearby to the nearest drop off point, otherwise scan from the current location.
+			var scanFromActor = harv.DockClientManager.ClosestDock(null, ignoreOccupancy: true)?.Actor ?? actor;
+
 			var targets = resourceTypesByCell
 				.Where(kvp =>
 					harv.Harvester.Info.Resources.Contains(kvp.Value) &&
@@ -238,7 +243,7 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var path = harv.Mobile.PathFinder.FindPathToTargetCells(
-				actor, actor.Location, targets, BlockedByActor.Stationary,
+				actor, scanFromActor.Location, targets, BlockedByActor.Stationary,
 				loc =>
 				{
 					// Avoid areas with enemies.
