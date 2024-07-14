@@ -1059,6 +1059,69 @@ Actors:
 	LSTLanding2: waypoint
 		Location: 88,43
 		Owner: Neutral
+	Actor314: fenc
+		Location: 82,36
+		Owner: USSR
+	Actor315: fenc
+		Location: 80,37
+		Owner: USSR
+	Actor316: fenc
+		Location: 81,37
+		Owner: USSR
+	Actor317: fenc
+		Location: 82,37
+		Owner: USSR
+	Actor318: fenc
+		Location: 83,44
+		Owner: USSR
+	Actor319: fenc
+		Location: 84,44
+		Owner: USSR
+	Actor320: fenc
+		Location: 85,44
+		Owner: USSR
+	Actor321: fenc
+		Location: 85,45
+		Owner: USSR
+	Actor322: fenc
+		Location: 86,45
+		Owner: USSR
+	Actor323: fenc
+		Location: 66,85
+		Owner: USSR
+	Actor324: fenc
+		Location: 67,85
+		Owner: USSR
+	Actor325: fenc
+		Location: 68,85
+		Owner: USSR
+	Actor326: fenc
+		Location: 69,85
+		Owner: USSR
+	Actor327: fenc
+		Location: 70,85
+		Owner: USSR
+	Actor328: fenc
+		Location: 66,89
+		Owner: USSR
+	Actor329: fenc
+		Location: 67,89
+		Owner: USSR
+	Actor330: fenc
+		Location: 68,89
+		Owner: USSR
+	Actor331: fenc
+		Location: 69,89
+		Owner: USSR
+	Actor332: fenc
+		Location: 70,89
+		Owner: USSR
+	Actor333: fenc
+		Location: 66,90
+		Owner: USSR
+	Actor334: fenc
+		Location: 66,91
+		Owner: USSR
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 

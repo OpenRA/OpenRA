@@ -1014,6 +1014,42 @@ Actors:
 	USSRMammothEntry: waypoint
 		Location: 80,99
 		Owner: Neutral
+	Actor297: fenc
+		Location: 70,41
+		Owner: USSR
+	Actor298: fenc
+		Location: 71,41
+		Owner: USSR
+	Actor299: fenc
+		Location: 73,41
+		Owner: USSR
+	Actor300: fenc
+		Location: 74,41
+		Owner: USSR
+	Actor301: fenc
+		Location: 70,42
+		Owner: USSR
+	Actor302: fenc
+		Location: 74,42
+		Owner: USSR
+	Actor303: fenc
+		Location: 70,44
+		Owner: USSR
+	Actor304: fenc
+		Location: 74,44
+		Owner: USSR
+	Actor305: fenc
+		Location: 70,45
+		Owner: USSR
+	Actor306: fenc
+		Location: 71,45
+		Owner: USSR
+	Actor307: fenc
+		Location: 73,45
+		Owner: USSR
+	Actor308: fenc
+		Location: 74,45
+		Owner: USSR
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 

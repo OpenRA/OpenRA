@@ -1304,6 +1304,24 @@ Actors:
 	ChinookEntry: waypoint
 		Owner: Neutral
 		Location: 22,39
+	Actor387: fenc
+		Location: 35,83
+		Owner: BadGuy
+	Actor388: fenc
+		Location: 36,83
+		Owner: BadGuy
+	Actor389: fenc
+		Location: 37,83
+		Owner: BadGuy
+	Actor390: fenc
+		Location: 35,87
+		Owner: BadGuy
+	Actor391: fenc
+		Location: 36,87
+		Owner: BadGuy
+	Actor392: fenc
+		Location: 37,87
+		Owner: BadGuy
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 

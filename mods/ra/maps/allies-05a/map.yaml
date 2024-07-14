@@ -1558,6 +1558,12 @@ Actors:
 	WaterLZ2: waypoint
 		Owner: Neutral
 		Location: 63,63
+	Actor485: fenc
+		Owner: USSR
+		Location: 19,105
+	Actor486: fenc
+		Owner: USSR
+		Location: 20,105
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
