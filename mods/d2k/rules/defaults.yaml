@@ -720,8 +720,8 @@
 	MapEditorData:
 		Categories: Destroable Tiles
 	Tooltip:
-		GenericName: meta-DestroyableTile.generic-name
-		Name: meta-DestroyableTile.name
+		GenericName: meta-destroyabletile.generic-name
+		Name: meta-destroyabletile.name
 
 ^DestroyedTile:
 	Inherits: ^UndestroyableTile
@@ -731,8 +731,8 @@
 		Action: ChangeOwner
 		Owner: Neutral
 	Tooltip:
-		GenericName: meta-DestroyedTile.generic-name
-		Name: meta-DestroyedTile.name
+		GenericName: meta-destroyedtile.generic-name
+		Name: meta-destroyedtile.name
 	CaptureManager:
 	CapturableProgressBar:
 	CapturableProgressBlink:
