@@ -110,8 +110,7 @@ namespace OpenRA.Mods.Common.Lint
 						if (translationReference == null)
 							continue;
 
-						var keys = LintExts.GetFieldValues(traitInfo, field, translationReference.DictionaryReference);
-						foreach (var key in keys)
+						foreach (var key in LintExts.GetFieldValues(traitInfo, field, translationReference.DictionaryReference))
 							usedKeys.Add(key, translationReference, $"Actor `{actorInfo.Key}` trait `{traitType.Name[..^4]}.{field.Name}`");
 					}
 				}

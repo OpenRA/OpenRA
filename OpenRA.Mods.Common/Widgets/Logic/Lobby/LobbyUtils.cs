@@ -222,14 +222,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var faction = factions[factionId];
 
 				var label = item.Get<LabelWidget>("LABEL");
-				var labelText = WidgetUtils.TruncateText(faction.Name, label.Bounds.Width, Game.Renderer.Fonts[label.Font]);
+				var labelText = WidgetUtils.TruncateText(TranslationProvider.GetString(faction.Name), label.Bounds.Width, Game.Renderer.Fonts[label.Font]);
 				label.GetText = () => labelText;
 
 				var flag = item.Get<ImageWidget>("FLAG");
 				flag.GetImageCollection = () => "flags";
 				flag.GetImageName = () => factionId;
 
-				var (text, desc) = SplitOnFirstToken(faction.Description);
+				var description = faction.Description != null ? TranslationProvider.GetString(faction.Description) : null;
+				var (text, desc) = SplitOnFirstToken(description);
 				item.GetTooltipText = () => text;
 				item.GetTooltipDesc = () => desc;
 
@@ -237,7 +238,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var options = factions.Where(f => f.Value.Selectable).GroupBy(f => f.Value.Side)
-				.ToDictionary(g => g.Key ?? "", g => g.Select(f => f.Key));
+				.ToDictionary(g => g.Key != null ? TranslationProvider.GetString(g.Key) : "", g => g.Select(f => TranslationProvider.GetString(f.Key)));
 
 			dropdown.ShowDropDown("FACTION_DROPDOWN_TEMPLATE", 154, options, SetupItem);
 		}
@@ -551,7 +552,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			dropdown.IsDisabled = () => s.LockFaction || orderManager.LocalClient.IsReady;
 			dropdown.OnMouseDown = _ => ShowFactionDropDown(dropdown, c, orderManager, factions);
 
-			var (text, desc) = SplitOnFirstToken(factions[c.Faction].Description);
+			var description = factions[c.Faction].Description != null ? TranslationProvider.GetString(factions[c.Faction].Description) : null;
+			var (text, desc) = SplitOnFirstToken(description);
 			dropdown.GetTooltipText = () => text;
 			dropdown.GetTooltipDesc = () => desc;
 
@@ -563,7 +565,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var factionName = parent.Get<LabelWidget>("FACTIONNAME");
 			var font = Game.Renderer.Fonts[factionName.Font];
 			var truncated = new CachedTransform<string, string>(clientFaction =>
-				WidgetUtils.TruncateText(factions[clientFaction].Name, factionName.Bounds.Width, font));
+				WidgetUtils.TruncateText(TranslationProvider.GetString(factions[clientFaction].Name), factionName.Bounds.Width, font));
 			factionName.GetText = () => truncated.Update(c.Faction);
 
 			var factionFlag = parent.Get<ImageWidget>("FACTIONFLAG");
