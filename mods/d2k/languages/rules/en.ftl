@@ -491,10 +491,10 @@ actor-combat-tank-o =
 
     The Ordos Combat Tank is the fastest variant of the Combat Tank, but it is also the weakest.
 
-meta-DestroyableTile =
+meta-destroyabletile =
    .generic-name = Passage (destroyable)
    .name = Passage (destroyable)
 
-meta-DestroyedTile =
+meta-destroyedtile =
    .generic-name = Passage (repairable)
    .name = Passage (repairable)
