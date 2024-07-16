@@ -443,7 +443,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					options.Insert(0, null); // no filter
 
 					var anyText = ddb.GetText();
-					ddb.GetText = () => string.IsNullOrEmpty(filter.Faction) ? anyText : filter.Faction;
+					ddb.GetText = () => string.IsNullOrEmpty(filter.Faction) ? anyText : TranslationProvider.GetString(filter.Faction);
 					ddb.OnMouseDown = _ =>
 					{
 						ScrollItemWidget SetupItem(string option, ScrollItemWidget tpl)
@@ -452,7 +452,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								tpl,
 								() => string.Equals(filter.Faction, option, StringComparison.CurrentCultureIgnoreCase),
 								() => { filter.Faction = option; ApplyFilter(); });
-							item.Get<LabelWidget>("LABEL").GetText = () => option ?? anyText;
+							item.Get<LabelWidget>("LABEL").GetText = () => option != null ? TranslationProvider.GetString(option) : anyText;
 							return item;
 						}
 

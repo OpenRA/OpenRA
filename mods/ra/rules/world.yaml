@@ -97,59 +97,59 @@
 		FogVariants: shroud
 		Index: 255, 16, 32, 48, 64, 80, 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 20, 40, 56, 65, 97, 130, 148, 194, 24, 33, 66, 132, 28, 41, 67, 134, 1, 2, 4, 8, 3, 6, 12, 9, 7, 14, 13, 11, 5, 10, 15, 255
 		UseExtendedIndex: true
-	Faction@0:
-		Name: Allies
+	Faction@allies:
+		Name: faction-allies.name
 		InternalName: allies
 		Side: Allies
 		Selectable: False
-	Faction@1:
-		Name: England
+	Faction@england:
+		Name: faction-england.name
 		InternalName: england
 		Side: Allies
-		Description: England: Counterintelligence\nSpecial Unit: British Spy\nSpecial Unit: Mobile Gap Generator
-	Faction@2:
-		Name: France
+		Description: faction-england.description
+	Faction@france:
+		Name: faction-france.name
 		InternalName: france
 		Side: Allies
-		Description: France: Deception\nSpecial Ability: Can build fake structures\nSpecial Unit: Phase Transport
-	Faction@3:
-		Name: Germany
+		Description: faction-france.description
+	Faction@germany:
+		Name: faction-germany.name
 		InternalName: germany
 		Side: Allies
-		Description: Germany: Technology\nSpecial Ability: Advanced Chronoshift\nSpecial Unit: Chrono Tank
-	Faction@4:
-		Name: Soviet
+		Description: faction-germany.description
+	Faction@soviet:
+		Name: faction-soviet.name
 		InternalName: soviet
 		Side: Soviet
 		Selectable: False
-	Faction@5:
-		Name: Russia
+	Faction@russia:
+		Name: faction-russia.name
 		InternalName: russia
 		Side: Soviet
-		Description: Russia: Tesla Weapons\nSpecial Unit: Tesla Tank\nSpecial Unit: Shock Trooper
-	Faction@6:
-		Name: Ukraine
+		Description: faction-russia.description
+	Faction@ukraine:
+		Name: faction-ukraine.name
 		InternalName: ukraine
 		Side: Soviet
-		Description: Ukraine: Demolitions\nSpecial Ability: Parabombs\nSpecial Unit: Demolition Truck
+		Description: faction-ukraine.description
 	Faction@random:
-		Name: Any
+		Name: faction-random.name
 		InternalName: Random
 		RandomFactionMembers: RandomAllies, RandomSoviet
 		Side: Random
-		Description: Random Country\nA random country will be chosen when the game starts.
+		Description: faction-random.description
 	Faction@randomallies:
-		Name: Allies
+		Name: faction-randomallies.name
 		InternalName: RandomAllies
 		RandomFactionMembers: england, france, germany
 		Side: Random
-		Description: Random Allied Country\nA random Allied country will be chosen when the game starts.
+		Description: faction-randomallies.description
 	Faction@randomsoviet:
-		Name: Soviet
+		Name: faction-randomsoviet.name
 		InternalName: RandomSoviet
 		RandomFactionMembers: russia, ukraine
 		Side: Random
-		Description: Random Soviet Country\nA random Soviet country will be chosen when the game starts.
+		Description: faction-randomsoviet.description
 	ResourceRenderer:
 		ResourceTypes:
 			Ore:

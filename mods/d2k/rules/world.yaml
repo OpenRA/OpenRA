@@ -77,36 +77,36 @@
 			SpiceSand: 100
 			Spice: 100
 	Faction@Random:
-		Name: Any
+		Name: faction-random.name
 		InternalName: Random
 		RandomFactionMembers: atreides, harkonnen, ordos
-		Description: Random House\nA random house will be chosen when the game starts.
+		Description: faction-random.description
 	Faction@Atreides:
-		Name: Atreides
+		Name: faction-atreides.name
 		InternalName: atreides
-		Description: House Atreides\nThe noble Atreides, from the water world of Caladan,\nrely on their ornithopters to ensure air superiority.\nThey have allied themselves with the Fremen, the fearsome\nnative warriors of Dune that can move undetected in battle.\n\nFaction Variations:\n    - Combat tanks are balanced in terms of speed and durability\n\nSpecial Units:\n    - Grenadier\n    - Fremen\n    - Sonic Tank\n\nSuperweapon:\n    - Airstrike
+		Description: faction-atreides.description
 	Faction@Harkonnen:
-		Name: Harkonnen
+		Name: faction-harkonnen.name
 		InternalName: harkonnen
-		Description: House Harkonnen\nThe evil Harkonnen will stop at nothing to gain control of the spice.\nThey rely on brute force and atomic weapons to achieve their goals:\nwealth, and the destruction of House Atreides.\n\nFaction Variations:\n    - Combat Tanks are more durable but slower \n\nSpecial Units:\n    - Sardaukar\n    - Devastator\n\nSuperweapon: \n    - Death Hand Missile
+		Description: faction-harkonnen.description
 	Faction@Ordos:
-		Name: Ordos
+		Name: faction-ordos.name
 		InternalName: ordos
-		Description: House Ordos\nThe insidious Ordos of the icy planet Sigma Draconis IV\nare known for their wealth, greed and treachery.\nRelying heavily on mercenaries they often resort\nto sabotage and forbidden Ixian technologies.\n\nFaction Variations: \n    - Trikes are replaced by Raider Trikes\n    - Combat Tanks are faster but less durable\n\nSpecial Units:\n    - Raider Trike\n    - Stealth Raider Trike\n    - Saboteur\n    - Deviator
+		Description: faction-ordos.description
 	Faction@Corrino:
-		Name: Corrino
+		Name: faction-corrino.name
 		InternalName: corrino
 		Selectable: false
 	Faction@Mercenaries:
-		Name: Mercenaries
+		Name: faction-mercenaries.name
 		InternalName: mercenary
 		Selectable: false
 	Faction@Smugglers:
-		Name: Smugglers
+		Name: faction-smugglers.name
 		InternalName: smuggler
 		Selectable: false
 	Faction@Fremen:
-		Name: Fremen
+		Name: faction-fremen.name
 		InternalName: fremen
 		Selectable: false
 	D2kResourceRenderer:

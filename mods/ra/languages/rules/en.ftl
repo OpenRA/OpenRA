@@ -34,6 +34,58 @@ options-starting-units =
 
 resource-minerals = Valuable Minerals
 
+## Faction
+faction-allies =
+    .name = Allies
+
+faction-england =
+    .name = England
+    .description = England: Counterintelligence
+     Special Unit: British Spy
+     Special Unit: Mobile Gap Generator
+
+faction-france =
+    .name = France
+    .description = France: Deception
+     Special Ability: Can build fake structures
+     Special Unit: Phase Transport
+
+faction-germany =
+    .name = Germany
+    .description = Germany: Technology
+     Special Ability: Advanced Chronoshift
+     Special Unit: Chrono Tank
+
+faction-soviet =
+    .name = Soviet
+
+faction-russia =
+    .name = Russia
+    .description = Russia: Tesla Weapons
+     Special Unit: Tesla Tank
+     Special Unit: Shock Trooper
+
+faction-ukraine =
+    .name = Ukraine
+    .description = Ukraine: Demolitions
+     Special Ability: Parabombs
+     Special Unit: Demolition Truck
+
+faction-random =
+    .name = Any
+    .description = Random Country
+     A random country will be chosen when the game starts.
+
+faction-randomallies =
+    .name = Allies
+    .description = Random Allied Country
+     A random Allied country will be chosen when the game starts.
+
+faction-randomsoviet =
+    .name = Soviet
+    .description = Random Soviet Country
+     A random Soviet country will be chosen when the game starts.
+
 ## aircraft.yaml
 actor-badr-name = Badger
 

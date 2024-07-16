@@ -32,6 +32,25 @@ dropdown-map-creeps =
 resource-veins = Veins
 resource-tiberium = Tiberium
 
+faction-random =
+    .name = Any
+    .description = Random Faction
+     A random faction will be chosen when the game starts
+
+faction-gdi =
+    .name = GDI
+    .description = Global Defense Initiative
+     The GDI is an international military branch of the United Nations tasked
+     with keeping world peace. Commanding the combined forces of the world's
+     most powerful nations, they possess an unmatched arsenal of high-tech weaponry.
+
+faction-nod =
+    .name = Nod
+    .description = Brotherhood of Nod
+     The Brotherhood is a religious cult centered around their leader Kane
+     and the alien substance Tiberium. They utilize stealth technology
+     and guerilla tactics to defeat those who oppose them.
+
 ## Structures
 notification-construction-complete = Construction complete.
 notification-unit-ready = Unit ready.

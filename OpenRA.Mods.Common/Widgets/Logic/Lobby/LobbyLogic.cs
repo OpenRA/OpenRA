@@ -219,7 +219,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			colorManager = modRules.Actors[SystemActors.World].TraitInfo<IColorPickerManagerInfo>();
 
 			foreach (var f in modRules.Actors[SystemActors.World].TraitInfos<FactionInfo>())
-				factions.Add(f.InternalName, new LobbyFaction { Selectable = f.Selectable, Name = f.Name, Side = f.Side, Description = f.Description?.Replace(@"\n", "\n") });
+				factions.Add(f.InternalName, new LobbyFaction { Selectable = f.Selectable, Name = f.Name, Side = f.Side, Description = f.Description });
 
 			var gameStarting = false;
 			Func<bool> configurationDisabled = () => !Game.IsHost || gameStarting ||
