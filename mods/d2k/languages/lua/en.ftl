@@ -45,10 +45,12 @@ eliminate-ordos-units-reinforcements = Eliminate all Ordos units and reinforceme
 destroy-harkonnen = Destroy the Harkonnen.
 
 ## atreides-04
+fremen-leader = Fremen Leader
 sietch-integrity = Sietch structural integrity: { $integrity }%
 protect-fremen-sietch = Protect the Fremen Sietch.
 keep-sietch-intact = Keep the Sietch { $integrity }% intact!
 fremen-sietch-southeast = Fremen Sietch detected to the southeast.
+harkonnen-units-approaching = Harkonnen units approaching!
 sietch-destroyed = Sietch destroyed!
 fremen-sietch-under-attack = The Fremen Sietch is under attack!
 

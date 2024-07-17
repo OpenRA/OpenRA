@@ -220,7 +220,7 @@ SendSpy = function()
 	end
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage(UserInterface.Translate("disguise-spy"), "Spy")
+		Media.DisplayMessage(UserInterface.Translate("disguise-spy"), UserInterface.Translate("spy"))
 	end)
 end
 

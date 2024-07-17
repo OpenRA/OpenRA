@@ -184,7 +184,7 @@ FreeTanya = function()
 
 	if TanyaType == "e7.noautotarget" then
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.DisplayMessage(UserInterface.Translate("tanya-rules-of-engagement"), "Tanya")
+			Media.DisplayMessage(UserInterface.Translate("tanya-rules-of-engagement"), UserInterface.Translate("tanya"))
 		end)
 	end
 
