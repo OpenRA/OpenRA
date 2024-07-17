@@ -154,7 +154,7 @@ RepairBarracks = function(id)
 end
 
 SellWalls = function(id)
-	Media.DisplayMessage("Lonestar AI " .. id .. " sold its walls for better combat experience.")
+	Media.DisplayMessage(UserInterface.Translate("lonestar-ai-sold-its-walls", { ["id"] = id }))
 
 	local walls = AIPlayers[id].GetActorsByType("brik")
 	Utils.Do(walls, function(wall)

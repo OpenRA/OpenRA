@@ -90,7 +90,7 @@ SetupTriggers = function()
 	end)
 
 	Trigger.OnInfiltrated(BioLab, function()
-		Media.DisplayMessage("plans-stolen-erase-data", "scientist")
+		Media.DisplayMessage(UserInterface.Translate("plans-stolen-erase-data"), UserInterface.Translate("scientist"))
 		Trigger.AfterDelay(DateTime.Seconds(5), function()
 			USSR.MarkCompletedObjective(InfiltrateLab)
 			LabInfiltrated = true

@@ -50,7 +50,7 @@ SendSpy = function()
 	Trigger.OnKilled(Spy, function() USSR.MarkCompletedObjective(USSRObj) end)
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage(UserInterface.Translate("disguise-spy"), "Spy")
+		Media.DisplayMessage(UserInterface.Translate("disguise-spy"), UserInterface.Translate("spy"))
 		if SpecialCameras then
 			SpyCameraA = Actor.Create("camera", true, { Owner = Greece, Location = SpyCamera1.Location })
 			SpyCameraB = Actor.Create("camera", true, { Owner = Greece, Location = SpyCamera2.Location })

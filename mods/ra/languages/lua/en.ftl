@@ -164,6 +164,7 @@ clear-enemy-submarines = Clear the area of enemy submarine activity.
 ## fort-lonestar
 no-more-waves = You almost survived the onslaught! No more waves incoming.
 defend-fort-lonestar = Defend Fort Lonestar at all costs!
+lonestar-ai-sold-its-walls = Lonestar AI { $id } sold its walls for a better combat experience.
 
 ## in-the-nick-of-time
 friendlies-coming-out = Friendlies coming out!
