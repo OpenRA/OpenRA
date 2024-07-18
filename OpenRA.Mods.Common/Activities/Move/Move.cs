@@ -451,7 +451,13 @@ namespace OpenRA.Mods.Common.Activities
 
 				if (progress >= Distance)
 				{
-					mobile.SetCenterPosition(self, To);
+					var toPos = To;
+
+					// apply ramp offset to ground units
+					if (MovingOnGroundLayer)
+						toPos -= new WVec(WDist.Zero, WDist.Zero, self.World.Map.DistanceAboveTerrain(toPos));
+					mobile.SetCenterPosition(self, toPos);
+
 					mobile.Facing = TurnsWhileMoving
 						? Util.TickFacing(mobile.Facing, ToFacing, mobile.TurnSpeed)
 						: ToFacing;
