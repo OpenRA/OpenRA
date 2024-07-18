@@ -79,6 +79,7 @@ namespace OpenRA
 
 		Rectangle lastWorldViewport = Rectangle.Empty;
 		ITexture currentPaletteTexture;
+		int currentPaletteHeight = 0;
 		IBatchRenderer currentBatchRenderer;
 		RenderType renderType = RenderType.None;
 
@@ -309,11 +310,13 @@ namespace OpenRA
 		{
 			// Note: palette.Texture and palette.ColorShifts are updated at the same time
 			// so we only need to check one of the two to know whether we must update the textures
-			if (palette.Texture == currentPaletteTexture)
+			// also compare heights in case new palettes have been added
+			if (palette.Texture == currentPaletteTexture && palette.Height == currentPaletteHeight)
 				return;
 
 			Flush();
 			currentPaletteTexture = palette.Texture;
+			currentPaletteHeight = palette.Height;
 
 			SpriteRenderer.SetPalette(palette);
 			WorldSpriteRenderer.SetPalette(palette);
