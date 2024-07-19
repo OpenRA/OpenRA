@@ -26,12 +26,14 @@ Players:
 		Faction: england
 	PlayerReference@BadGuy:
 		Name: BadGuy
+		Bot: campaign
 		Faction: soviet
 		Color: FF1400
 		Allies: USSR
 		Enemies: Greece
 	PlayerReference@USSR:
 		Name: USSR
+		Bot: campaign
 		Faction: soviet
 		Color: FF1400
 		Allies: BadGuy
@@ -410,7 +412,7 @@ Actors:
 	Actor120: apwr
 		Location: 71,41
 		Owner: USSR
-	Actor121: fcom
+	ForwardCommand: fcom
 		Location: 51,40
 		Owner: USSR
 	Actor122: apwr
@@ -501,12 +503,12 @@ Actors:
 		Location: 67,76
 		Owner: BadGuy
 		Facing: 380
-		SubCell: 3
+		SubCell: 4
 	Actor148: e1
 		Location: 71,77
 		Owner: BadGuy
 		Facing: 124
-		SubCell: 4
+		SubCell: 5
 	Actor149: e1
 		Location: 74,76
 		Owner: BadGuy
@@ -526,11 +528,11 @@ Actors:
 		Location: 76,62
 		Owner: USSR
 		Facing: 380
-		SubCell: 4
+		SubCell: 5
 	Actor153: e1
 		Location: 54,40
 		Owner: USSR
-		SubCell: 3
+		SubCell: 4
 	Actor154: e1
 		Location: 69,40
 		Owner: USSR
@@ -558,7 +560,7 @@ Actors:
 	Actor160: e2
 		Location: 71,39
 		Owner: USSR
-		SubCell: 4
+		SubCell: 5
 	Rifle1: e1
 		Location: 78,81
 		Owner: USSR
@@ -566,30 +568,30 @@ Actors:
 	Rifle2: e1
 		Location: 78,79
 		Owner: USSR
-		SubCell: 3
+		SubCell: 4
 	Rifle3: e1
 		Location: 77,80
 		Owner: USSR
-		SubCell: 4
+		SubCell: 5
 	Rifle4: e1
 		Location: 47,71
 		Owner: USSR
-		SubCell: 4
+		SubCell: 5
 	Rifle5: e1
 		Location: 49,71
 		Owner: USSR
-		SubCell: 3
+		SubCell: 4
 	Rifle6: e1
 		Location: 49,70
 		Owner: USSR
-		SubCell: 3
+		SubCell: 4
 	DefaultCameraPosition: waypoint
 		Location: 58,86
 		Owner: Neutral
 	TeslaCam: waypoint
 		Location: 66,94
 		Owner: Neutral
-	LZ: waypoint
+	SouthLZ: waypoint
 		Location: 54,85
 		Owner: Neutral
 	Beach1: waypoint
@@ -644,8 +646,17 @@ Actors:
 		Location: 77,39
 		Owner: Neutral
 	V2: waypoint
-		Location: 66,43
+		Location: 63,44
 		Owner: Neutral
+	NorthLZ: waypoint
+		Owner: Neutral
+		Location: 60,56
+	BomberTarget1: waypoint
+		Owner: Neutral
+		Location: 54,46
+	BomberTarget2: waypoint
+		Owner: Neutral
+		Location: 65,46
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
