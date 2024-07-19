@@ -178,8 +178,8 @@ VillageSetup = function()
 end
 
 SetCivilianEvacuatedText = function()
-	local attributes = { ["evacuated"] = CiviliansEvacuated, ["threshold"] = CiviliansEvacuatedThreshold }
-	local civiliansEvacuated = UserInterface.Translate("civilians-evacuated", attributes)
+	local civiliansEvacuated = UserInterface.Translate("civilians-evacuated",
+		{ ["evacuated"] = CiviliansEvacuated, ["threshold"] = CiviliansEvacuatedThreshold })
 	UserInterface.SetMissionText(civiliansEvacuated, TextColor)
 end
 

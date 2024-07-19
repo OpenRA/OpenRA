@@ -90,7 +90,7 @@ ReinforcementsTicks2 = DateTime.Minutes(10)
 Reinforcements2 =
 {
 	"mgg", "2tnk", "2tnk", "2tnk", "2tnk", "truk", "truk", "truk",
-	"truk",	"truk", "truk", "1tnk", "1tnk", "jeep", "jeep"
+	"truk", "truk", "truk", "1tnk", "1tnk", "jeep", "jeep"
 }
 
 SovietUnits1 =
@@ -230,8 +230,8 @@ ManageSovietAircraft = function()
 end
 
 SetEvacuateMissionText = function()
-	local attributes = { ["evacuated"] = UnitsEvacuated, ["threshold"] = UnitsEvacuatedThreshold[Difficulty] }
-	local unitsEvacuated = UserInterface.Translate("units-evacuated", attributes)
+	local unitsEvacuated = UserInterface.Translate("units-evacuated",
+		{ ["evacuated"] = UnitsEvacuated, ["threshold"] = UnitsEvacuatedThreshold[Difficulty] })
 	UserInterface.SetMissionText(unitsEvacuated, TextColor)
 end
 
