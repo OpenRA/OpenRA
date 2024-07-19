@@ -211,10 +211,10 @@ Tick = function()
 			FirstIxiansArrived = true
 			SendContraband()
 		elseif (TimerTicks % DateTime.Seconds(1)) == 0 then
-			local time = { ["time"] = Utils.FormatTime(TimerTicks) }
-			local reinforcementsText = UserInterface.Translate("initial-reinforcements-arrive-in", time)
+			local time = Utils.FormatTime(TimerTicks)
+			local reinforcementsText = UserInterface.Translate("initial-reinforcements-arrive-in", { ["time"] = time })
 			if FirstIxiansArrived then
-				reinforcementsText = UserInterface.Translate("additional-reinforcements-arrive-in", time)
+				reinforcementsText = UserInterface.Translate("additional-reinforcements-arrive-in", { ["time"] = time })
 			end
 
 			UserInterface.SetMissionText(reinforcementsText, Ordos.Color)
@@ -244,8 +244,8 @@ WorldLoaded = function()
 
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
 		TimerTicks = InitialContrabandTimes[Difficulty]
-		local time = { ["time"] = Utils.FormatTime(TimerTicks) }
-		Media.DisplayMessage(UserInterface.Translate("ixian-reinforcements-in", time), Mentat)
+		local time = Utils.FormatTime(TimerTicks)
+		Media.DisplayMessage(UserInterface.Translate("ixian-reinforcements-in", { ["time"] = time }), Mentat)
 	end)
 
 	Hunt(Atreides)

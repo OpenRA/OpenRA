@@ -305,8 +305,8 @@ WorldLoaded = function()
 
 	Trigger.AfterDelay(DateTime.Seconds(2), function()
 		TimerTicks = ContrabandTimes[Difficulty]
-		local time = { ["time"] = Utils.FormatTime(TimerTicks) }
-		local contrabandApproaching = UserInterface.Translate("contraband-approaching-starport-north-in", time)
+		local time = Utils.FormatTime(TimerTicks)
+		local contrabandApproaching = UserInterface.Translate("contraband-approaching-starport-north-in", { ["time"] = time })
 		Media.DisplayMessage(contrabandApproaching, Mentat)
 	end)
 
