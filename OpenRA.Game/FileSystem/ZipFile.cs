@@ -114,6 +114,10 @@ namespace OpenRA.FileSystem
 				pkgStream.Position = 0;
 				pkg = new ZipFile(pkgStream);
 				Name = filename;
+
+				// Remove subfields that can break ZIP updating.
+				foreach (ZipEntry entry in pkg)
+					entry.ExtraData = null;
 			}
 
 			void Commit()
