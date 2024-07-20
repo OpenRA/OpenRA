@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.Common.Commands
 		{
 			TextNotificationsManager.Debug(TranslationProvider.GetString(AvailableCommands));
 
-			foreach (var key in console.Commands.Keys)
+			foreach (var key in console.Commands.Keys.OrderBy(k => k))
 			{
 				if (!helpDescriptions.TryGetValue(key, out var description))
 					description = TranslationProvider.GetString(NoDescription);
