@@ -10,7 +10,6 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Traits;
 
@@ -37,10 +36,9 @@ namespace OpenRA.Mods.Common.Commands
 			if (message.StartsWith('/'))
 			{
 				var name = message[1..].Split(' ')[0].ToLowerInvariant();
-				var command = Commands.FirstOrDefault(x => x.Key == name);
 
-				if (command.Value != null)
-					command.Value.InvokeCommand(name.ToLowerInvariant(), message[(1 + name.Length)..].Trim());
+				if (Commands.TryGetValue(name, out var command))
+					command.InvokeCommand(name, message[(1 + name.Length)..].Trim());
 				else
 					TextNotificationsManager.Debug(TranslationProvider.GetString(InvalidCommand, Translation.Arguments("name", name)));
 
