@@ -65,6 +65,8 @@ destroy-soviet-buildings-units = Destroy all Soviet buildings and units in the a
 dont-capture-tech-centers = Do not capture the tech centers! Infiltrate one with a spy.
 infiltrate-tech-center-spy = Infiltrate one of the Soviet tech centers with a spy.
 capture-radar-shore = Capture the Radar Dome at the shore.
+build-naval-yard-redeploy-mcv = Secure a foothold and build a Naval Yard.
+    If needed, the MCV can be redeployed.
 
 # allies-07
 enemy-approaching = Enemy approaching.

@@ -56,7 +56,7 @@ GroupPatrol = function(units, waypoints, delay)
 				return
 			end
 			if unit.Location == waypoints[i] then
-				local bool = Utils.All(units, function(actor) return actor.IsIdle end)
+				local bool = Utils.All(units, function(actor) return actor.IsIdle or actor.IsDead end)
 				if bool then
 					stop = true
 					i = i + 1
@@ -90,8 +90,7 @@ InitialSovietPatrols = function()
 	-- Sub Patrols
 	Patrol1Sub.Patrol({ SubPatrol1_1.Location, SubPatrol1_2.Location })
 	Patrol2Sub.Patrol({ SubPatrol2_1.Location, SubPatrol2_2.Location })
-	Patrol3Sub1.Patrol(SovietSubPath)
-	Patrol3Sub2.Patrol(SovietSubPath)
+	Patrol3Sub.Patrol(SovietSubPath)
 end
 
 InitialAlliedReinforcements = function()
@@ -103,12 +102,16 @@ InitialAlliedReinforcements = function()
 		Reinforcements.Reinforce(Greece, AlliedReinforcementsB, { AlliedEntry2.Location, UnitAStopLocation.Location }, 2)
 	end)
 	Trigger.AfterDelay(DateTime.Seconds(5), function()
-		Reinforcements.Reinforce(Greece, { "mcv" }, { AlliedEntry3.Location, MCVStopLocation.Location })
+		local mcv = Reinforcements.Reinforce(Greece, { "mcv" }, { AlliedEntry3.Location, MCVStopLocation.Location })[1]
+		Trigger.OnRemovedFromWorld(mcv, ActivateAI)
 	end)
 end
 
 CaptureRadarDome = function()
 	Trigger.OnKilled(RadarDome, function()
+		if Greece.IsObjectiveCompleted(CaptureRadarDomeObj) then
+			return
+		end
 		Greece.MarkFailedObjective(CaptureRadarDomeObj)
 	end)
 
@@ -135,44 +138,131 @@ CaptureRadarDome = function()
 end
 
 InfiltrateTechCenter = function()
+	local infiltrated = false
+	local allKilled = false
+
 	Utils.Do(SovietTechLabs, function(a)
 		Trigger.OnInfiltrated(a, function()
-			if Infiltrated then
+			if infiltrated then
 				return
 			end
-			Infiltrated = true
-			DestroySovietsObj = AddPrimaryObjective(Greece, "destroy-soviet-buildings-units")
-			Greece.MarkCompletedObjective(InfiltrateTechCenterObj)
+			infiltrated = true
+			InfiltrateTechCenterObj = InfiltrateTechCenterObj or AddPrimaryObjective(Greece, "infiltrate-tech-center-spy")
 
-			local Proxy = Actor.Create("powerproxy.paratroopers", false, { Owner = USSR })
-			Utils.Do(ParadropWaypoints[Difficulty], function(waypoint)
-				Proxy.TargetParatroopers(waypoint.CenterPosition, Angle.South)
+			-- Let the infiltration speech play first.
+			Trigger.AfterDelay(38, function()
+				Media.PlaySpeechNotification(Greece, "SecondObjectiveMet")
+				DestroySovietsObj = AddPrimaryObjective(Greece, "destroy-soviet-buildings-units")
+				Greece.MarkCompletedObjective(InfiltrateTechCenterObj)
+
+				local proxy = Actor.Create("powerproxy.paratroopers", false, { Owner = USSR })
+				Utils.Do(ParadropWaypoints[Difficulty], function(waypoint)
+					local plane = proxy.TargetParatroopers(waypoint.CenterPosition, Angle.South)[1]
+					Trigger.OnPassengerExited(plane, function(_, passenger)
+						IdleHunt(passenger)
+					end)
+				end)
+				proxy.Destroy()
 			end)
-			Proxy.Destroy()
 		end)
 
 		Trigger.OnCapture(a, function()
-			if not Infiltrated then
+			if not infiltrated then
+				Media.PlaySoundNotification(Greece, "AlertBleep")
 				Media.DisplayMessage(UserInterface.Translate("dont-capture-tech-centers"))
 			end
 		end)
 	end)
 
+	Trigger.OnAllKilled(SovietTechLabs, function()
+		allKilled = true
+	end)
+
 	Trigger.OnAllKilledOrCaptured(SovietTechLabs, function()
-		if not Greece.IsObjectiveCompleted(InfiltrateTechCenterObj) then
-			Greece.MarkFailedObjective(InfiltrateTechCenterObj)
+		if infiltrated then
+			return
 		end
+
+		Trigger.AfterDelay(1, function()
+			FailTechCenter(allKilled)
+		end)
+	end)
+end
+
+FailTechCenter = function(killed)
+	local speechDelay = 0
+
+	if not killed then
+		-- Let the capture speech play first.
+		speechDelay = 36
+	end
+
+	Trigger.AfterDelay(speechDelay, function()
+		Media.PlaySpeechNotification(Greece, "ObjectiveNotMet")
+	end)
+
+	Trigger.AfterDelay(speechDelay + DateTime.Seconds(1), function()
+		InfiltrateTechCenterObj = InfiltrateTechCenterObj or AddPrimaryObjective(Greece, "infiltrate-tech-center-spy")
+		Greece.MarkFailedObjective(InfiltrateTechCenterObj)
+	end)
+end
+
+-- Check progress on the Naval Yard and smaller Soviet base.
+-- If a Naval Yard is built, send a sub to investigate the coast.
+-- Its death will trigger production of more subs, if that's not yet started.
+CheckNavalObjective = function()
+	if not Greece.HasPrerequisites({ "syrd" } ) then
+		Trigger.AfterDelay(DateTime.Seconds(3), CheckNavalObjective)
+		return
+	end
+
+	local intact = IntactMiniBaseStructures()
+	if #intact == 0 then
+		MarkNavalObjective()
+	else
+		Trigger.OnAllKilledOrCaptured(intact, MarkNavalObjective)
+	end
+
+	if ScoutSub.IsDead then
+		return
+	end
+
+	local path = { SubPatrol1_1.Location, SubMeetPoint.Location, Harbor.Location }
+	ScoutSub.Patrol(path, false)
+	IdleHunt(ScoutSub)
+end
+
+MarkNavalObjective = function()
+	Trigger.AfterDelay(DateTime.Seconds(2), function()
+		InfiltrateTechCenterObj = InfiltrateTechCenterObj or AddPrimaryObjective(Greece, "infiltrate-tech-center-spy")
+		Greece.MarkCompletedObjective(NavalYardObj)
+		Media.PlaySpeechNotification(Greece, "FirstObjectiveMet")
+	end)
+end
+
+IntactMiniBaseStructures = function()
+	local base = { MiniBaseTower1, MiniBaseTower2, SovietBarracks }
+	return Utils.Where(base, function(structure)
+		return not structure.IsDead and structure.Owner == USSR
 	end)
 end
 
 Tick = function()
-	if DateTime.GameTime > DateTime.Seconds(10) and Greece.HasNoRequiredUnits() then
-		Greece.MarkFailedObjective(InfiltrateTechCenterObj)
-	end
-
 	if DestroySovietsObj and USSR.HasNoRequiredUnits() then
 		Greece.MarkCompletedObjective(DestroySovietsObj)
 	end
+
+	if not Greece.HasNoRequiredUnits() then
+		return
+	end
+
+	Utils.Do({ NavalYardObj, InfiltrateTechCenterObj, DestroySovietsObj }, function(objective)
+		if Greece.IsObjectiveCompleted(objective) then
+			return
+		end
+
+		Greece.MarkFailedObjective(objective)
+	end)
 end
 
 WorldLoaded = function()
@@ -181,7 +271,7 @@ WorldLoaded = function()
 
 	InitObjectives(Greece)
 
-	InfiltrateTechCenterObj = AddPrimaryObjective(Greece, "infiltrate-tech-center-spy")
+	NavalYardObj = AddPrimaryObjective(Greece, "build-naval-yard-redeploy-mcv")
 	CaptureRadarDomeObj = AddSecondaryObjective(Greece, "capture-radar-shore")
 
 	Camera.Position = DefaultCameraPosition.CenterPosition
@@ -205,5 +295,7 @@ WorldLoaded = function()
 
 	CaptureRadarDome()
 	InfiltrateTechCenter()
-	Trigger.AfterDelay(0, ActivateAI)
+	Trigger.AfterDelay(DateTime.Minutes(2), CheckNavalObjective)
+	-- Prepare Soviet attacks if Greece still has an undeployed MCV.
+	Trigger.AfterDelay(DateTime.Seconds(30), ActivateAI)
 end

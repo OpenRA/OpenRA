@@ -38,14 +38,14 @@ Players:
 		LockFaction: True
 		Faction: allies
 		LockColor: True
-		Color: E2E6F6
+		Color: ABB7E4
 		LockSpawn: True
 		LockTeam: True
 		Enemies: USSR
 
 Actors:
-	Actor176: camera
-		Owner: USSR
+	YakCamera: camera
+		Owner: Neutral
 		Location: 19,66
 	Actor0: sbag
 		Location: 22,81
@@ -242,10 +242,10 @@ Actors:
 	Actor74: kenn
 		Location: 77,101
 		Owner: USSR
-	Actor75: ftur
+	MiniBaseTower1: ftur
 		Location: 16,82
 		Owner: USSR
-	Actor76: ftur
+	MiniBaseTower2: ftur
 		Location: 19,82
 		Owner: USSR
 	Actor77: tsla
@@ -300,7 +300,7 @@ Actors:
 		Location: 23,82
 		Owner: USSR
 		Facing: 124
-		SubCell: 3
+		SubCell: 4
 	Actor111: e1
 		Location: 20,64
 		Owner: Greece
@@ -324,7 +324,7 @@ Actors:
 		Location: 13,85
 		Owner: USSR
 		Facing: 252
-		SubCell: 3
+		SubCell: 4
 	Actor117: dog
 		Location: 79,100
 		Owner: USSR
@@ -333,11 +333,11 @@ Actors:
 	Actor126: ss
 		Location: 59,102
 		Owner: USSR
-		Facing: 380
+		Facing: 384
 	Actor130: ss
 		Location: 74,113
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 	Actor177: mine
 		Owner: Neutral
 		Location: 56,94
@@ -350,7 +350,7 @@ Actors:
 	SovietConyard: fact
 		Location: 69,96
 		Owner: USSR
-	dome2: dome
+	EastRadarDome: dome
 		Location: 90,109
 		Owner: USSR
 	harv: harv
@@ -397,22 +397,22 @@ Actors:
 	SubPatrol3_3: waypoint
 		Location: 79,71
 		Owner: Neutral
-	Patrol3Sub1: ss
+	Patrol3Sub: ss
 		Location: 46,105
 		Owner: USSR
-		Facing: 252
-	Patrol3Sub2: ss
+		Facing: 256
+	ScoutSub: ss
 		Location: 77,71
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 	Patrol1Sub: ss
 		Location: 46,71
 		Owner: USSR
-		Facing: 508
+		Facing: 512
 	Patrol2Sub: ss
 		Location: 52,85
 		Owner: USSR
-		Facing: 252
+		Facing: 256
 	SubPatrol1_1: waypoint
 		Location: 42,71
 		Owner: Neutral
@@ -502,7 +502,7 @@ Actors:
 	BadGuy1: e1
 		Location: 20,69
 		Owner: USSR
-		SubCell: 3
+		SubCell: 4
 	BadGuy2: e1
 		Location: 19,70
 		Owner: USSR
@@ -511,11 +511,11 @@ Actors:
 		Location: 24,67
 		Owner: USSR
 		Facing: 252
-		SubCell: 3
+		SubCell: 4
 	Patrol_1_e1: e1
 		Location: 71,84
 		Owner: USSR
-		SubCell: 4
+		SubCell: 5
 	Patrol_1_dog: dog
 		Location: 72,84
 		Owner: USSR
@@ -529,7 +529,7 @@ Actors:
 		Location: 89,93
 		Owner: USSR
 		Facing: 380
-		SubCell: 4
+		SubCell: 5
 	Patrol_3_e1: e1
 		Location: 92,108
 		Owner: USSR
@@ -537,16 +537,16 @@ Actors:
 	Patrol_3_dog: dog
 		Location: 92,108
 		Owner: USSR
-		SubCell: 3
+		SubCell: 4
 	Patrol_4_e1: e1
 		Location: 76,102
 		Owner: USSR
-		SubCell: 4
+		SubCell: 5
 	Patrol_4_dog: dog
 		Location: 77,102
 		Owner: USSR
 		Facing: 380
-		SubCell: 4
+		SubCell: 5
 	WaterUnloadEntry1: waypoint
 		Location: 22,114
 		Owner: Neutral
@@ -628,6 +628,201 @@ Actors:
 	WeaponMeetPoint: waypoint
 		Owner: Neutral
 		Location: 73,90
+	Actor179: fenc
+		Location: 14,81
+		Owner: USSR
+	Actor181: fenc
+		Location: 16,81
+		Owner: USSR
+	Actor182: fenc
+		Location: 19,81
+		Owner: USSR
+	Actor183: fenc
+		Location: 20,81
+		Owner: USSR
+	Actor184: fenc
+		Location: 21,81
+		Owner: USSR
+	Actor185: fenc
+		Location: 79,81
+		Owner: USSR
+	Actor186: fenc
+		Location: 80,81
+		Owner: USSR
+	Actor187: fenc
+		Location: 14,82
+		Owner: USSR
+	Actor188: fenc
+		Location: 67,82
+		Owner: USSR
+	Actor189: fenc
+		Location: 73,82
+		Owner: USSR
+	Actor190: fenc
+		Location: 14,83
+		Owner: USSR
+	Actor191: fenc
+		Location: 73,83
+		Owner: USSR
+	Actor192: fenc
+		Location: 22,84
+		Owner: USSR
+	Actor193: fenc
+		Location: 22,85
+		Owner: USSR
+	Actor194: fenc
+		Location: 73,85
+		Owner: USSR
+	Actor195: fenc
+		Location: 74,85
+		Owner: USSR
+	Actor196: fenc
+		Location: 75,85
+		Owner: USSR
+	Actor197: fenc
+		Location: 76,85
+		Owner: USSR
+	Actor198: fenc
+		Location: 73,86
+		Owner: USSR
+	Actor199: fenc
+		Location: 77,86
+		Owner: USSR
+	Actor200: fenc
+		Location: 14,87
+		Owner: USSR
+	Actor201: fenc
+		Location: 77,87
+		Owner: USSR
+	Actor202: fenc
+		Location: 14,88
+		Owner: USSR
+	Actor203: fenc
+		Location: 77,88
+		Owner: USSR
+	Actor204: fenc
+		Location: 80,89
+		Owner: USSR
+	Actor205: fenc
+		Location: 81,89
+		Owner: USSR
+	Actor206: fenc
+		Location: 82,89
+		Owner: USSR
+	Actor207: fenc
+		Location: 83,89
+		Owner: USSR
+	Actor208: fenc
+		Location: 84,89
+		Owner: USSR
+	Actor209: fenc
+		Location: 84,90
+		Owner: USSR
+	Actor210: fenc
+		Location: 84,91
+		Owner: USSR
+	Actor211: fenc
+		Location: 85,91
+		Owner: USSR
+	Actor212: fenc
+		Location: 62,95
+		Owner: USSR
+	Actor213: fenc
+		Location: 63,95
+		Owner: USSR
+	Actor214: fenc
+		Location: 64,95
+		Owner: USSR
+	Actor215: fenc
+		Location: 65,95
+		Owner: USSR
+	Actor216: fenc
+		Location: 66,95
+		Owner: USSR
+	Actor217: fenc
+		Location: 67,95
+		Owner: USSR
+	Actor218: fenc
+		Location: 62,96
+		Owner: USSR
+	Actor219: fenc
+		Location: 67,96
+		Owner: USSR
+	Actor220: fenc
+		Location: 68,96
+		Owner: USSR
+	Actor221: fenc
+		Location: 85,98
+		Owner: USSR
+	Actor222: fenc
+		Location: 86,98
+		Owner: USSR
+	Actor223: fenc
+		Location: 87,98
+		Owner: USSR
+	Actor224: fenc
+		Location: 88,98
+		Owner: USSR
+	Actor225: fenc
+		Location: 89,98
+		Owner: USSR
+	Actor226: fenc
+		Location: 90,98
+		Owner: USSR
+	Actor227: fenc
+		Location: 93,98
+		Owner: USSR
+	Actor228: fenc
+		Location: 84,99
+		Owner: USSR
+	Actor229: fenc
+		Location: 85,99
+		Owner: USSR
+	Actor230: fenc
+		Location: 77,100
+		Owner: USSR
+	Actor231: fenc
+		Location: 78,100
+		Owner: USSR
+	Actor232: fenc
+		Location: 80,100
+		Owner: USSR
+	Actor233: fenc
+		Location: 81,100
+		Owner: USSR
+	Actor234: fenc
+		Location: 78,101
+		Owner: USSR
+	Actor235: fenc
+		Location: 79,101
+		Owner: USSR
+	Actor236: fenc
+		Location: 80,101
+		Owner: USSR
+	Actor237: fenc
+		Location: 92,103
+		Owner: USSR
+	Actor238: fenc
+		Location: 93,103
+		Owner: USSR
+	Actor239: fenc
+		Location: 94,103
+		Owner: USSR
+	Actor240: fenc
+		Location: 95,103
+		Owner: USSR
+	Actor241: fenc
+		Location: 96,103
+		Owner: USSR
+	Actor242: fenc
+		Location: 96,104
+		Owner: USSR
+	Actor243: fenc
+		Location: 96,105
+		Owner: USSR
+	Actor244: fenc
+		Location: 15,81
+		Owner: USSR
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
