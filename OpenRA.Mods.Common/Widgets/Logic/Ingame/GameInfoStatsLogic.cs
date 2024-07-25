@@ -260,7 +260,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							: TranslationProvider.GetString(pp.Faction.Name);
 					}
 					else
+					{
 						flag.GetImageName = () => pp.DisplayFaction.InternalName;
+						factionName = TranslationProvider.GetString(factionName);
+					}
 
 					WidgetUtils.TruncateLabelToTooltip(item.Get<LabelWithTooltipWidget>("FACTION"), factionName);
 
