@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.Primitives;
-using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -446,11 +445,10 @@ namespace OpenRA
 		public static string SanitizedPlayerName(string dirty)
 		{
 			var forbiddenNames = new string[] { "Open", "Closed" };
-			var botNames = OpenRA.Game.ModData.DefaultRules.Actors[SystemActors.Player].TraitInfos<IBotInfo>().Select(t => t.Name);
 
 			var clean = SanitizedName(dirty);
 
-			if (string.IsNullOrWhiteSpace(clean) || forbiddenNames.Contains(clean) || botNames.Contains(clean))
+			if (string.IsNullOrWhiteSpace(clean) || forbiddenNames.Contains(clean))
 				clean = new PlayerSettings().Name;
 
 			// avoid UI glitches
