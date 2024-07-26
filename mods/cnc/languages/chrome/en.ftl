@@ -696,5 +696,7 @@ button-settings-panel-reset = Reset
 ## tooltips.yaml
 label-latency-tooltip-prefix = Latency:
 label-anonymous-player-tooltip-name = Anonymous Player
+label-bot-player-tooltip-name = Bot
+label-bot-managed-by-tooltip = Bot managed by { $name }
 label-game-admin = Game Admin
 

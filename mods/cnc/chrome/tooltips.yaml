@@ -412,6 +412,20 @@ Background@LATENCY_TOOLTIP:
 			Height: 23
 			Font: Bold
 
+Background@BOT_TOOLTIP:
+	Logic: BotTooltipLogic
+	Background: panel-black
+	Height: 30
+	Width: 300
+	Children:
+		Label@NAME:
+			X: 5
+			Y: 2
+			Text: label-bot-player-tooltip-name
+			Width: 290
+			Height: 24
+			Font: Bold
+
 Background@ANONYMOUS_PLAYER_TOOLTIP:
 	Logic: AnonymousProfileTooltipLogic
 	Background: panel-black

@@ -345,6 +345,7 @@ lobby-bits:
 		spawn-unclaimed: 91, 119, 22, 22
 		spawn-disabled: 114, 119, 22, 22
 		admin: 170, 0, 6, 5
+		bot: 170, 51, 16, 16
 		colorpicker: 68, 119, 22, 22
 		huepicker: 136, 0, 7, 15
 		kick: 153, 0, 11, 11

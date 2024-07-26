@@ -352,4 +352,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 	}
+
+	public class BotTooltipLogic : ChromeLogic
+	{
+		[TranslationReference("name")]
+		const string BotManagedBy = "label-bot-managed-by-tooltip";
+
+		[ObjectCreator.UseCtor]
+		public BotTooltipLogic(OrderManager orderManager, Widget widget, Session.Client client)
+		{
+			var nameLabel = widget.Get<LabelWidget>("NAME");
+			var nameFont = Game.Renderer.Fonts[nameLabel.Font];
+			var controller = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.Index == client.BotControllerClientIndex);
+			if (controller != null)
+				nameLabel.GetText = () => TranslationProvider.GetString(BotManagedBy, Translation.Arguments("name", controller.Name));
+
+			widget.Bounds.Width = nameFont.Measure(nameLabel.GetText()).X + 2 * nameLabel.Bounds.Left;
+		}
+	}
 }
