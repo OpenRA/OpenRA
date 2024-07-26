@@ -408,6 +408,7 @@ lobby-bits:
 		admin-anonymous: 802, 51, 16, 16
 		player-registered: 785, 51, 16, 16
 		player-anonymous: 819, 51, 16, 16
+		bot: 938, 51, 16, 16
 
 reload-icon:
 	Inherits: ^Chrome

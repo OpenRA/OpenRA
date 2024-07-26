@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public SpawnOccupant(Session.Client client)
 		{
 			Color = client.Color;
-			PlayerName = client.IsBot ? TranslationProvider.GetString(client.Name) : client.Name;;
+			PlayerName = client.IsBot ? TranslationProvider.GetString(client.Name) : client.Name;
 			Team = client.Team;
 			Faction = client.Faction;
 			SpawnPoint = client.SpawnPoint;
