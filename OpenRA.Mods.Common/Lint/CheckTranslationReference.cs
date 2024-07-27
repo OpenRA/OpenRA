@@ -44,7 +44,12 @@ namespace OpenRA.Mods.Common.Lint
 
 			foreach (var language in GetTranslationLanguages(modData))
 			{
-				CheckKeys(modData.Manifest.Translations.Concat(mapTranslations), map.Open, usedKeys, language, false, emitError, emitWarning);
+				// Check keys and variables are not missing across all language files.
+				// But for maps we don't warn on unused keys. They might be unused on *this* map,
+				// but the mod or another map may use them and we don't have sight of that.
+				CheckKeys(
+					modData.Manifest.Translations.Concat(mapTranslations), map.Open, usedKeys,
+					language, _ => false, emitError, emitWarning);
 
 				var modTranslation = new Translation(language, modData.Manifest.Translations, modData.DefaultFileSystem, _ => { });
 				var mapTranslation = new Translation(language, mapTranslations, map, error => emitError(error.Message));
@@ -79,7 +84,13 @@ namespace OpenRA.Mods.Common.Lint
 				CheckModWidgets(modData, usedKeys, testedFields);
 
 				// With the fully populated keys, check keys and variables are not missing and not unused across all language files.
-				var keyWithAttrs = CheckKeys(modData.Manifest.Translations, modData.DefaultFileSystem.Open, usedKeys, language, true, emitError, emitWarning);
+				var keyWithAttrs = CheckKeys(
+					modData.Manifest.Translations, modData.DefaultFileSystem.Open, usedKeys,
+					language,
+					file =>
+						!modData.Manifest.AllowUnusedTranslationsInExternalPackages ||
+						!modData.DefaultFileSystem.IsExternalFile(file),
+					emitError, emitWarning);
 
 				foreach (var group in usedKeys.KeysWithContext)
 				{
@@ -322,7 +333,10 @@ namespace OpenRA.Mods.Common.Lint
 						CheckChrome(n, translationReferencesByWidgetField, usedKeys);
 		}
 
-		static HashSet<string> CheckKeys(IEnumerable<string> translationFiles, Func<string, Stream> openFile, TranslationKeys usedKeys, string language, bool checkUnusedKeys, Action<string> emitError, Action<string> emitWarning)
+		static HashSet<string> CheckKeys(
+			IEnumerable<string> translationFiles, Func<string, Stream> openFile, TranslationKeys usedKeys,
+			string language, Func<string, bool> checkUnusedKeysForFile,
+			Action<string> emitError, Action<string> emitWarning)
 		{
 			var keyWithAttrs = new HashSet<string>();
 			foreach (var file in translationFiles)
@@ -351,7 +365,7 @@ namespace OpenRA.Mods.Common.Lint
 						foreach (var (node, attributeName) in nodeAndAttributeNames)
 						{
 							keyWithAttrs.Add(attributeName == null ? key : $"{key}.{attributeName}");
-							if (checkUnusedKeys)
+							if (checkUnusedKeysForFile(file))
 								CheckUnusedKey(key, attributeName, file, usedKeys, emitWarning);
 							CheckVariables(node, key, attributeName, file, usedKeys, emitError, emitWarning);
 						}

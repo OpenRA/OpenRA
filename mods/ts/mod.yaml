@@ -191,6 +191,8 @@ Translations:
 	ts|languages/chrome/en.ftl
 	ts|languages/rules/en.ftl
 
+AllowUnusedTranslationsInExternalPackages: false
+
 Voices:
 	ts|audio/voices.yaml
 

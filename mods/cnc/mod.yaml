@@ -149,6 +149,8 @@ Translations:
 	cnc|languages/chrome/en.ftl
 	cnc|languages/rules/en.ftl
 
+AllowUnusedTranslationsInExternalPackages: false
+
 Voices:
 	cnc|audio/voices.yaml
 
