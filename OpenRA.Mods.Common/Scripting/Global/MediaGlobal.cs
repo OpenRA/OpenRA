@@ -52,7 +52,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Play track defined in music.yaml or map.yaml, or keep track empty for playing a random song.")]
-		public void PlayMusic(string track = null, LuaFunction onPlayComplete = null)
+		public void PlayMusic(string track = null, [ScriptEmmyTypeOverride("fun()")] LuaFunction onPlayComplete = null)
 		{
 			if (!playlist.IsMusicAvailable)
 				return;
@@ -94,14 +94,14 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Play a video fullscreen. File name has to include the file extension.")]
-		public void PlayMovieFullscreen(string videoFileName, LuaFunction onPlayComplete = null)
+		public void PlayMovieFullscreen(string videoFileName, [ScriptEmmyTypeOverride("fun()")] LuaFunction onPlayComplete = null)
 		{
 			var onComplete = WrapOnPlayComplete(onPlayComplete);
 			Media.PlayFMVFullscreen(world, videoFileName, onComplete);
 		}
 
 		[Desc("Play a video in the radar window. File name has to include the file extension.")]
-		public void PlayMovieInRadar(string videoFileName, LuaFunction onPlayComplete = null)
+		public void PlayMovieInRadar(string videoFileName, [ScriptEmmyTypeOverride("fun()")] LuaFunction onPlayComplete = null)
 		{
 			var onComplete = WrapOnPlayComplete(onPlayComplete);
 			Media.PlayFMVInRadar(videoFileName, onComplete);

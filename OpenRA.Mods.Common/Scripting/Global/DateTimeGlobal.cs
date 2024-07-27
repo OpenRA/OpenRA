@@ -44,11 +44,17 @@ namespace OpenRA.Mods.Common.Scripting
 			return seconds * ticksPerSecond;
 		}
 
+		[Desc("Get the current year (1-9999).")]
 		public int CurrentYear => DateTime.Now.Year;
+		[Desc("Get the current month (1-12).")]
 		public int CurrentMonth => DateTime.Now.Month;
+		[Desc("Get the current day (1-31).")]
 		public int CurrentDay => DateTime.Now.Day;
+		[Desc("Get the current hour (0-23).")]
 		public int CurrentHour => DateTime.Now.Hour;
+		[Desc("Get the current minute (0-59).")]
 		public int CurrentMinute => DateTime.Now.Minute;
+		[Desc("Get the current second (0-59).")]
 		public int CurrentSecond => DateTime.Now.Second;
 
 		[Desc("Converts the number of minutes into game time (ticks).")]

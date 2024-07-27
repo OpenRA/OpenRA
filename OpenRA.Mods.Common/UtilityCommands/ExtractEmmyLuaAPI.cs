@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using OpenRA.Mods.Common.Scripting;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			var version = utility.ModData.Manifest.Metadata.Version;
 			Console.WriteLine($"-- This is an automatically generated Lua API definition generated for {version} of OpenRA.");
 			Console.WriteLine("-- https://wiki.openra.net/Utility was used with the --emmy-lua-api parameter.");
-			Console.WriteLine("-- See https://docs.openra.net/en/latest/release/lua/ for human readable documentation.");
+			Console.WriteLine("-- See https://docs.openra.net/en/release/lua/ for human readable documentation.");
 
 			Console.WriteLine();
 			WriteDiagnosticsDisabling();
@@ -87,11 +88,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine();
 			Console.WriteLine();
 			Console.WriteLine("--- Base engine types.");
+			Console.WriteLine();
 			Console.WriteLine("---@class cpos");
 			Console.WriteLine("---@field X integer");
 			Console.WriteLine("---@field Y integer");
+			Console.WriteLine("---@field Layer integer");
 			Console.WriteLine("---@operator add(cvec): cpos");
 			Console.WriteLine("---@operator sub(cvec): cpos");
+			Console.WriteLine("---@operator sub(cpos): cvec");
 			Console.WriteLine();
 			Console.WriteLine("---@class wpos");
 			Console.WriteLine("---@field X integer");
@@ -99,6 +103,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine("---@field Z integer");
 			Console.WriteLine("---@operator add(wvec): wpos");
 			Console.WriteLine("---@operator sub(wvec): wpos");
+			Console.WriteLine("---@operator sub(wpos): wvec");
 			Console.WriteLine();
 			Console.WriteLine("---@class wangle");
 			Console.WriteLine("---@field Angle integer");
@@ -107,19 +112,32 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			Console.WriteLine();
 			Console.WriteLine("---@class wdist");
 			Console.WriteLine("---@field Length integer");
+			Console.WriteLine("---@operator add(wdist): wdist");
+			Console.WriteLine("---@operator sub(wdist): wdist");
+			Console.WriteLine("---@operator unm(wdist): wdist");
+			Console.WriteLine("---@operator mul(integer): wdist");
+			Console.WriteLine("---@operator div(integer): wdist");
 			Console.WriteLine();
 			Console.WriteLine("---@class wvec");
 			Console.WriteLine("---@field X integer");
 			Console.WriteLine("---@field Y integer");
 			Console.WriteLine("---@field Z integer");
+			Console.WriteLine("---@field Facing wangle");
 			Console.WriteLine("---@operator add(wvec): wvec");
 			Console.WriteLine("---@operator sub(wvec): wvec");
+			Console.WriteLine("---@operator unm(wvec): wvec");
+			Console.WriteLine("---@operator mul(integer): wvec");
+			Console.WriteLine("---@operator div(integer): wvec");
 			Console.WriteLine();
 			Console.WriteLine("---@class cvec");
 			Console.WriteLine("---@field X integer");
 			Console.WriteLine("---@field Y integer");
+			Console.WriteLine("---@field Length integer");
 			Console.WriteLine("---@operator add(cvec): cvec");
 			Console.WriteLine("---@operator sub(cvec): cvec");
+			Console.WriteLine("---@operator unm(cvec): cvec");
+			Console.WriteLine("---@operator mul(integer): cvec");
+			Console.WriteLine("---@operator div(integer): cvec");
 			Console.WriteLine();
 			Console.WriteLine("---@class color");
 			Console.WriteLine("local color = { };");
@@ -146,7 +164,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 									if (p.ParameterType.IsEnum)
 										localEnums.Add(p.ParameterType);
 
-									return p.ParameterType.EmmyLuaString();
+									return p.EmmyLuaString($"{init.Name}").TypeDeclaration;
 								})))
 						.Where(s => !s.Contains(", "))
 						.Distinct());
@@ -207,6 +225,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						foreach (var line in lines)
 							Console.WriteLine($"    --- {line}");
 					}
+					else
+						throw new NotSupportedException($"Missing {nameof(DescAttribute)} on {t.Name} {member.Name}");
 
 					if (member is PropertyInfo propertyInfo)
 					{
@@ -214,15 +234,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						foreach (var obsolete in attributes.OfType<ObsoleteAttribute>())
 							Console.WriteLine($"    ---@deprecated {obsolete.Message}");
 
-						Console.WriteLine($"    ---@type {propertyInfo.PropertyType.EmmyLuaString()}");
+						Console.WriteLine($"    ---@type {propertyInfo.PropertyType.EmmyLuaString($"{t.Name} {member.Name}")}");
 						body = propertyInfo.Name + " = nil;";
 					}
 
 					if (member is MethodInfo methodInfo)
 					{
 						var parameters = methodInfo.GetParameters();
-						foreach (var parameter in parameters)
-							Console.WriteLine($"    ---@param {parameter.EmmyLuaString()}");
+						var luaParameters = parameters
+							.Select(parameter => parameter.NameAndEmmyLuaString($"{t.Name} {member.Name}"))
+							.ToArray();
+						foreach (var generic in luaParameters.Select(p => p.Generic).Where(g => !string.IsNullOrEmpty(g)).Distinct())
+							Console.WriteLine($"    ---@generic {generic}");
+						foreach (var nameAndType in luaParameters.Select(p => p.NameAndType))
+							Console.WriteLine($"    ---@param {nameAndType}");
 
 						var parameterString = parameters.Select(p => p.Name).JoinWith(", ");
 
@@ -230,9 +255,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						foreach (var obsolete in attributes.OfType<ObsoleteAttribute>())
 							Console.WriteLine($"    ---@deprecated {obsolete.Message}");
 
-						var returnType = methodInfo.ReturnType.EmmyLuaString();
-						if (returnType != "Void")
-							Console.WriteLine($"    ---@return {returnType}");
+						if (methodInfo.ReturnType != typeof(void))
+							Console.WriteLine($"    ---@return {methodInfo.ReturnTypeEmmyLuaString($"{t.Name} {member.Name}")}");
 
 						body = member.Name + $" = function({parameterString}) end;";
 					}
@@ -274,7 +298,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (duplicateMembers.Contains(memberInfo.Name))
 						Console.WriteLine("    ---@diagnostic disable-next-line: duplicate-index");
 
-					Console.WriteLine($"---@field {propertyInfo.Name} {propertyInfo.PropertyType.EmmyLuaString()}");
+					Console.WriteLine($"---@field {propertyInfo.Name} {propertyInfo.PropertyType.EmmyLuaString($"{memberInfo.DeclaringType.Name} {memberInfo.Name}")}");
 				}
 			}
 
@@ -292,7 +316,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (duplicateMembers.Contains(memberInfo.Name))
 						Console.WriteLine("    ---@diagnostic disable-next-line: duplicate-index");
 
-					Console.WriteLine($"    ---@type {propertyInfo.PropertyType.EmmyLuaString()}");
+					Console.WriteLine($"    ---@type {propertyInfo.PropertyType.EmmyLuaString($"{memberInfo.DeclaringType.Name} {memberInfo.Name}")}");
 					Console.WriteLine($"    {propertyInfo.Name} = nil;");
 				}
 
@@ -307,14 +331,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						Console.WriteLine($"    ---@deprecated {obsolete.Message}");
 
 					var parameters = methodInfo.GetParameters();
-					foreach (var parameter in parameters)
-						Console.WriteLine($"    ---@param {parameter.EmmyLuaString()}");
+					var luaParameters = parameters
+						.Select(parameter => parameter.NameAndEmmyLuaString($"{memberInfo.DeclaringType.Name} {memberInfo.Name}"))
+						.ToArray();
+					foreach (var generic in luaParameters.Select(p => p.Generic).Where(g => !string.IsNullOrEmpty(g)).Distinct())
+						Console.WriteLine($"    ---@generic {generic}");
+					foreach (var nameAndType in luaParameters.Select(p => p.NameAndType))
+						Console.WriteLine($"    ---@param {nameAndType}");
 
 					var parameterString = parameters.Select(p => p.Name).JoinWith(", ");
 
-					var returnType = methodInfo.ReturnType.EmmyLuaString();
-					if (returnType != "Void")
-						Console.WriteLine($"    ---@return {returnType}");
+					if (methodInfo.ReturnType != typeof(void))
+						Console.WriteLine($"    ---@return {methodInfo.ReturnTypeEmmyLuaString($"{memberInfo.DeclaringType.Name} {memberInfo.Name}")}");
 
 					if (duplicateMembers.Contains(methodInfo.Name))
 						Console.WriteLine("    ---@diagnostic disable-next-line: duplicate-index");
@@ -336,6 +364,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					foreach (var line in lines)
 						Console.WriteLine($"{new string(' ', indentation * 4)}--- {line}");
 				}
+				else
+					throw new NotSupportedException($"Missing {nameof(DescAttribute)} on {memberInfo.DeclaringType.Name} {memberInfo.Name}");
 
 				if (isActivity)
 					Console.WriteLine(
@@ -358,65 +388,90 @@ namespace OpenRA.Mods.Common.UtilityCommands
 	{
 		static readonly Dictionary<string, string> LuaTypeNameReplacements = new()
 		{
+			// These are weak type mappings, don't add these.
+			// Instead, use ScriptEmmyTypeOverrideAttribute to provide a specific type.
+			////{ "Object", "any" },
+			////{ "LuaValue", "any" },
+			////{ "LuaTable", "table" },
+			////{ "LuaFunction", "function" },
+			{ "Byte", "integer" },
 			{ "UInt32", "integer" },
 			{ "Int32", "integer" },
 			{ "String", "string" },
-			{ "String[]", "string[]" },
 			{ "Boolean", "boolean" },
 			{ "Double", "number" },
-			{ "Object", "any" },
-			{ "LuaTable", "table" },
-			{ "LuaValue", "any" },
-			{ "LuaValue[]", "table" },
-			{ "LuaFunction", "function" },
 			{ "WVec", "wvec" },
 			{ "CVec", "cvec" },
 			{ "CPos", "cpos" },
-			{ "CPos[]", "cpos[]" },
 			{ "WPos", "wpos" },
 			{ "WAngle", "wangle" },
-			{ "WAngle[]", "wangle[]" },
 			{ "WDist", "wdist" },
 			{ "Color", "color" },
 			{ "Actor", "actor" },
-			{ "Actor[]", "actor[]" },
 			{ "Player", "player" },
-			{ "Player[]", "player[]" },
 		};
 
-		public static string EmmyLuaString(this Type type)
+		public static string EmmyLuaString(this Type type, string notSupportedExceptionContext)
 		{
-			if (!LuaTypeNameReplacements.TryGetValue(type.Name, out var replacement))
-				replacement = type.Name;
+			if (type.IsArray)
+				return EmmaLuaStringInner(type.GetElementType(), notSupportedExceptionContext) + "[]";
 
-			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+			return EmmaLuaStringInner(type, notSupportedExceptionContext);
+
+			static string EmmaLuaStringInner(Type type, string context)
 			{
-				var argument = type.GetGenericArguments().Select(p => p.Name).First();
-				if (LuaTypeNameReplacements.TryGetValue(argument, out var genericReplacement))
-					replacement = $"{genericReplacement}?";
-				else
-					replacement = $"{type.GetGenericArguments().Select(p => p.Name).First()}?";
-			}
+				if (LuaTypeNameReplacements.TryGetValue(type.Name, out var replacement))
+					return replacement;
 
-			return replacement;
+				if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+				{
+					var argument = type.GetGenericArguments()[0].Name;
+					if (LuaTypeNameReplacements.TryGetValue(argument, out var genericReplacement))
+						return $"{genericReplacement}?";
+				}
+
+				if (type.IsEnum)
+					return type.Name;
+
+				// This may indicate we are trying to export a type we have not added support for yet.
+				// Consider adding support for this type.
+				// This may mean updating WriteManual and adding IScriptBindable to the type.
+				// Or adding an entry to LuaTypeNameReplacements.
+				// Or use ScriptEmmyTypeOverride to provide a custom type for a parameter.
+				// Or consider using ISuppressInitExport if the parameter is coming from an init we don't want to expose to Lua.
+				// Or, it may need a different approach than the ones listed above.
+				throw new NotSupportedException(
+					$"Command lacks support for exposing type to Lua: `{type}` required by `{context}`. " +
+					$"Consider applying {nameof(ScriptEmmyTypeOverrideAttribute)} or {nameof(ISuppressInitExport)}");
+			}
 		}
 
-		public static string EmmyLuaString(this ParameterInfo parameterInfo)
+		public static string ReturnTypeEmmyLuaString(this MethodInfo methodInfo, string notSupportedExceptionContext)
+		{
+			var overrideAttr = methodInfo.ReturnTypeCustomAttributes
+				.GetCustomAttributes(typeof(ScriptEmmyTypeOverrideAttribute), false)
+				.Cast<ScriptEmmyTypeOverrideAttribute>()
+				.SingleOrDefault();
+			if (overrideAttr != null)
+				return overrideAttr.TypeDeclaration;
+
+			return methodInfo.ReturnType.EmmyLuaString(notSupportedExceptionContext);
+		}
+
+		public static (string TypeDeclaration, string GenericTypeDeclaration) EmmyLuaString(this ParameterInfo parameterInfo, string notSupportedExceptionContext)
+		{
+			var overrideAttr = parameterInfo.GetCustomAttribute<ScriptEmmyTypeOverrideAttribute>();
+			if (overrideAttr != null)
+				return (overrideAttr.TypeDeclaration, overrideAttr.GenericTypeDeclaration);
+
+			return (parameterInfo.ParameterType.EmmyLuaString(notSupportedExceptionContext), null);
+		}
+
+		public static (string NameAndType, string Generic) NameAndEmmyLuaString(this ParameterInfo parameterInfo, string notSupportedExceptionContext)
 		{
 			var optional = parameterInfo.IsOptional ? "?" : "";
-
-			var parameterType = parameterInfo.ParameterType.EmmyLuaString();
-
-			// A hack for ActorGlobal.Create().
-			if (parameterInfo.Name == "initTable")
-				parameterType = "initTable";
-
-			return $"{parameterInfo.Name}{optional} {parameterType}";
-		}
-
-		public static string EmmyLuaString(this PropertyInfo propertyInfo)
-		{
-			return $"{propertyInfo.Name} {propertyInfo.PropertyType.EmmyLuaString()}";
+			var (typeDeclaration, genericTypeDeclaration) = parameterInfo.EmmyLuaString(notSupportedExceptionContext);
+			return ($"{parameterInfo.Name}{optional} {typeDeclaration}", genericTypeDeclaration);
 		}
 	}
 }

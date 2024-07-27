@@ -34,12 +34,14 @@ namespace OpenRA.Mods.Common.Scripting.Global
 			luaLabel.GetColor = () => c;
 		}
 
-		public string Translate(string text, LuaTable table = null)
+		[Desc("Translates text into the users language. The translation key must be added to the language files (*.ftl). " +
+			"Args can be passed to be substituted into the resulting message.")]
+		public string Translate(string translationKey, [ScriptEmmyTypeOverride("{ string: any }")] LuaTable args = null)
 		{
-			if (table != null)
+			if (args != null)
 			{
 				var argumentDictionary = new Dictionary<string, object>();
-				foreach (var kv in table)
+				foreach (var kv in args)
 				{
 					using (kv.Key)
 					using (kv.Value)
@@ -53,10 +55,10 @@ namespace OpenRA.Mods.Common.Scripting.Global
 					}
 				}
 
-				return TranslationProvider.GetString(text, argumentDictionary);
+				return TranslationProvider.GetString(translationKey, argumentDictionary);
 			}
 
-			return TranslationProvider.GetString(text);
+			return TranslationProvider.GetString(translationKey);
 		}
 	}
 }

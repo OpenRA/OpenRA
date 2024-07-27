@@ -8,6 +8,9 @@
  * information, see COPYING.
  */
 #endregion
+using System.Linq;
+using Eluant;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Scripting;
 
 namespace OpenRA.Mods.Common.Scripting
@@ -18,8 +21,33 @@ namespace OpenRA.Mods.Common.Scripting
 		public CPosGlobal(ScriptContext context)
 			: base(context) { }
 
-		[Desc("Create a new CPos with the specified coordinates.")]
+		[Desc("Create a new CPos with the specified coordinates on the ground (layer = 0).")]
 		public CPos New(int x, int y) { return new CPos(x, y); }
+
+		[Desc("Create a new CPos with the specified coordinates on the specified layer. " +
+			"The ground is layer 0, other layers have a unique ID. Examples include tunnels, underground, and elevated bridges.")]
+		public CPos NewWithLayer(int x, int y, byte layer)
+		{
+			if (layer != 0)
+			{
+				var worldCmls = Context.World.GetCustomMovementLayers();
+				if (layer >= worldCmls.Length || worldCmls[layer] == null)
+				{
+					var layerNames = typeof(CustomMovementLayerType)
+						.GetFields()
+						.Select(f => (Index: (byte)f.GetRawConstantValue(), f.Name))
+						.ToArray();
+					var validLayers = new[] { (Index: (byte)0, Name: "Ground") }
+						.Concat(worldCmls
+							.Where(cml => cml != null)
+							.Select(cml => layerNames.Single(ln => ln.Index == cml.Index)));
+					throw new LuaException($"Layer {layer} does not exist on this map. " +
+						$"Valid layers on this map are: {string.Join(", ", validLayers.Select(x => $"{x.Index} ({x.Name})"))}");
+				}
+			}
+
+			return new CPos(x, y, layer);
+		}
 
 		[Desc("The cell coordinate origin.")]
 		public CPos Zero => CPos.Zero;

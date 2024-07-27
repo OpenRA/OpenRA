@@ -23,7 +23,7 @@ namespace OpenRA.Mods.Common
 			: base(value) { }
 	}
 
-	public class TerrainOrientationInit : ValueActorInit<WRot>, ISingleInstanceInit
+	public class TerrainOrientationInit : ValueActorInit<WRot>, ISingleInstanceInit, ISuppressInitExport
 	{
 		public TerrainOrientationInit(WRot value)
 			: base(value) { }

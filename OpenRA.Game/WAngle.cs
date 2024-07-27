@@ -19,7 +19,8 @@ namespace OpenRA
 	/// <summary>
 	/// 1D angle - 1024 units = 360 degrees.
 	/// </summary>
-	public readonly struct WAngle : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, IEquatable<WAngle>
+	public readonly struct WAngle : IEquatable<WAngle>, IScriptBindable,
+		ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding, ILuaToStringBinding
 	{
 		public readonly int Angle;
 		public int AngleSquared => Angle * Angle;
@@ -256,6 +257,22 @@ namespace OpenRA
 
 			return a == b;
 		}
+
+		public LuaValue this[LuaRuntime runtime, LuaValue key]
+		{
+			get
+			{
+				switch (key.ToString())
+				{
+					case "Angle": return Angle;
+					default: throw new LuaException($"WAngle does not define a member '{key}'");
+				}
+			}
+
+			set => throw new LuaException("WAngle is read-only. Use Angle.New to create a new value");
+		}
+
+		public LuaValue ToString(LuaRuntime runtime) => ToString();
 
 		#endregion
 	}

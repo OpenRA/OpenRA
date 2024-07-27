@@ -130,10 +130,10 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[Desc("Build the specified set of actors using a TD-style (per building) production queue. " +
 			"The function will return true if production could be started, false otherwise. " +
-			"If an actionFunc is given, it will be called as actionFunc(Actor[] actors) once " +
+			"If an actionFunc is given, it will be called as actionFunc(actors: actor[]) once " +
 			"production of all actors has been completed.  The actors array is guaranteed to " +
 			"only contain alive actors.")]
-		public bool Build(string[] actorTypes, LuaFunction actionFunc = null)
+		public bool Build(string[] actorTypes, [ScriptEmmyTypeOverride("fun(actors: actor[])")] LuaFunction actionFunc = null)
 		{
 			if (triggers.HasAnyCallbacksFor(Trigger.OnProduction))
 				return false;
@@ -234,11 +234,11 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[Desc("Build the specified set of actors using classic (RA-style) production queues. " +
 			"The function will return true if production could be started, false otherwise. " +
-			"If an actionFunc is given, it will be called as actionFunc(Actor[] actors) once " +
+			"If an actionFunc is given, it will be called as actionFunc(actors: actor[]) once " +
 			"production of all actors has been completed. The actors array is guaranteed to " +
 			"only contain alive actors. Note: This function will fail to work when called " +
 			"during the first tick.")]
-		public bool Build(string[] actorTypes, LuaFunction actionFunc = null)
+		public bool Build(string[] actorTypes, [ScriptEmmyTypeOverride("fun(actors: actor[])")] LuaFunction actionFunc = null)
 		{
 			var typeToQueueMap = new Dictionary<string, string>();
 			foreach (var actorType in actorTypes.Distinct())

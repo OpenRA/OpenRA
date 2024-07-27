@@ -76,9 +76,10 @@ namespace OpenRA.Mods.Common.Scripting
 			"The first member of the entryPath array will be the units' spawnpoint, " +
 			"while the last one will be their destination. If actionFunc is given, " +
 			"it will be executed once a unit has reached its destination. actionFunc " +
-			"will be called as actionFunc(Actor actor). " +
+			"will be called as actionFunc(a: actor). " +
 			"Returns a table containing the deployed units.")]
-		public Actor[] Reinforce(Player owner, string[] actorTypes, CPos[] entryPath, int interval = 25, LuaFunction actionFunc = null)
+		public Actor[] Reinforce(Player owner, string[] actorTypes, CPos[] entryPath, int interval = 25,
+			[ScriptEmmyTypeOverride("fun(a: actor)")] LuaFunction actionFunc = null)
 		{
 			var actors = new List<Actor>();
 			for (var i = 0; i < actorTypes.Length; i++)
@@ -115,13 +116,18 @@ namespace OpenRA.Mods.Common.Scripting
 			"has reached the destination, it will unload its cargo unless a custom actionFunc has " +
 			"been supplied. Afterwards, the transport will follow the exitPath and leave the map, " +
 			"unless a custom exitFunc has been supplied. actionFunc will be called as " +
-			"actionFunc(Actor transport, Actor[] cargo). exitFunc will be called as exitFunc(Actor transport). " +
+			"actionFunc(transport: actor, cargo: actor[]). exitFunc will be called as exitFunc(transport: actor). " +
 			"dropRange determines how many cells away the transport will try to land " +
 			"if the actual destination is blocked (if the transport is an aircraft). " +
 			"Returns a table in which the first value is the transport, " +
 			"and the second a table containing the deployed units.")]
-		public LuaTable ReinforceWithTransport(Player owner, string actorType, string[] cargoTypes, CPos[] entryPath, CPos[] exitPath = null,
-			LuaFunction actionFunc = null, LuaFunction exitFunc = null, int dropRange = 3)
+		[return: ScriptEmmyTypeOverride("{ [1]: actor, [2]: actor[] }")]
+		public LuaTable ReinforceWithTransport(Player owner, string actorType,
+			[ScriptEmmyTypeOverride("string[]|nil")] string[] cargoTypes,
+			CPos[] entryPath, CPos[] exitPath = null,
+			[ScriptEmmyTypeOverride("fun(transport: actor, cargo: actor[])")] LuaFunction actionFunc = null,
+			[ScriptEmmyTypeOverride("fun(transport: actor)")] LuaFunction exitFunc = null,
+			int dropRange = 3)
 		{
 			var transport = CreateActor(owner, actorType, true, entryPath[0], entryPath.Length > 1 ? entryPath[1] : null);
 			var cargo = transport.TraitOrDefault<Cargo>();

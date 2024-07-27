@@ -16,7 +16,8 @@ using OpenRA.Scripting;
 
 namespace OpenRA
 {
-	public readonly struct CPos : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding, IEquatable<CPos>
+	public readonly struct CPos : IEquatable<CPos>, IScriptBindable,
+		ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaTableBinding, ILuaToStringBinding
 	{
 		// Coordinates are packed in a 32 bit signed int
 		// X and Y are 12 bits (signed): -2048...2047
@@ -96,7 +97,8 @@ namespace OpenRA
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			if (!left.TryGetClrValue(out CPos a) || !right.TryGetClrValue(out CVec b))
-				throw new LuaException($"Attempted to call CPos.Add(CPos, CVec) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
+				throw new LuaException("Attempted to call CPos.Add(CPos, CVec) with invalid arguments " +
+					$"({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 
 			return new LuaCustomClrObject(a + b);
 		}
@@ -105,7 +107,8 @@ namespace OpenRA
 		{
 			var rightType = right.WrappedClrType();
 			if (!left.TryGetClrValue(out CPos a))
-				throw new LuaException($"Attempted to call CPos.Subtract(CPos, (CPos|CVec)) with invalid arguments ({left.WrappedClrType().Name}, {rightType.Name})");
+				throw new LuaException("Attempted to call CPos.Subtract(CPos, (CPos|CVec)) with invalid arguments " +
+					$"({left.WrappedClrType().Name}, {rightType.Name})");
 
 			if (rightType == typeof(CPos))
 			{
@@ -118,7 +121,8 @@ namespace OpenRA
 				return new LuaCustomClrObject(a - b);
 			}
 
-			throw new LuaException($"Attempted to call CPos.Subtract(CPos, (CPos|CVec)) with invalid arguments ({left.WrappedClrType().Name}, {rightType.Name})");
+			throw new LuaException("Attempted to call CPos.Subtract(CPos, (CPos|CVec)) with invalid arguments " +
+				$"({left.WrappedClrType().Name}, {rightType.Name})");
 		}
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
@@ -144,6 +148,8 @@ namespace OpenRA
 
 			set => throw new LuaException("CPos is read-only. Use CPos.New to create a new value");
 		}
+
+		public LuaValue ToString(LuaRuntime runtime) => ToString();
 
 		#endregion
 	}
