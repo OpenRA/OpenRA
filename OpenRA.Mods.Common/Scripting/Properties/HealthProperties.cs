@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public int MaxHealth => health.MaxHP;
 
 		[Desc("Kill the actor. damageTypes may be omitted, specified as a string, or as table of strings.")]
-		public void Kill(object damageTypes = null)
+		public void Kill([ScriptEmmyTypeOverride("string|{ [unknown]: string }")] object damageTypes = null)
 		{
 			Damage damage;
 			if (damageTypes is string d)

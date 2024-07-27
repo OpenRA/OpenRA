@@ -137,7 +137,7 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[ScriptActorPropertyActivity]
 		[Desc("Run an arbitrary Lua function.")]
-		public void CallFunc(LuaFunction func)
+		public void CallFunc([ScriptEmmyTypeOverride("fun()")] LuaFunction func)
 		{
 			Self.QueueActivity(new CallLuaFunc(func, Context));
 		}

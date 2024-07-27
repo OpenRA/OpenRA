@@ -17,8 +17,9 @@ using OpenRA.Scripting;
 
 namespace OpenRA
 {
-	public readonly struct CVec : IScriptBindable,
-		ILuaAdditionBinding, ILuaSubtractionBinding, ILuaUnaryMinusBinding, ILuaEqualityBinding, ILuaTableBinding, IEquatable<CVec>
+	public readonly struct CVec : IEquatable<CVec>, IScriptBindable,
+		ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaUnaryMinusBinding,
+		ILuaMultiplicationBinding, ILuaDivisionBinding, ILuaTableBinding, ILuaToStringBinding
 	{
 		public readonly int X, Y;
 
@@ -77,7 +78,8 @@ namespace OpenRA
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			if (!left.TryGetClrValue(out CVec a) || !right.TryGetClrValue(out CVec b))
-				throw new LuaException($"Attempted to call CVec.Add(CVec, CVec) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
+				throw new LuaException("Attempted to call CVec.Add(CVec, CVec) with invalid arguments " +
+					$"({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 
 			return new LuaCustomClrObject(a + b);
 		}
@@ -85,14 +87,10 @@ namespace OpenRA
 		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			if (!left.TryGetClrValue(out CVec a) || !right.TryGetClrValue(out CVec b))
-				throw new LuaException($"Attempted to call CVec.Subtract(CVec, CVec) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
+				throw new LuaException("Attempted to call CVec.Subtract(CVec, CVec) with invalid arguments " +
+					$"({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 
 			return new LuaCustomClrObject(a - b);
-		}
-
-		public LuaValue Minus(LuaRuntime runtime)
-		{
-			return new LuaCustomClrObject(-this);
 		}
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
@@ -103,6 +101,29 @@ namespace OpenRA
 			return a == b;
 		}
 
+		public LuaValue Minus(LuaRuntime runtime)
+		{
+			return new LuaCustomClrObject(-this);
+		}
+
+		public LuaValue Multiply(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			if (!left.TryGetClrValue(out CVec a) || !right.TryGetClrValue(out int b))
+				throw new LuaException("Attempted to call CVec.Multiply(CVec, integer) with invalid arguments " +
+					$"({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
+
+			return new LuaCustomClrObject(a * b);
+		}
+
+		public LuaValue Divide(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			if (!left.TryGetClrValue(out CVec a) || !right.TryGetClrValue(out int b))
+				throw new LuaException("Attempted to call CVec.Multiply(CVec, integer) with invalid arguments " +
+					$"({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
+
+			return new LuaCustomClrObject(a / b);
+		}
+
 		public LuaValue this[LuaRuntime runtime, LuaValue key]
 		{
 			get
@@ -111,12 +132,15 @@ namespace OpenRA
 				{
 					case "X": return X;
 					case "Y": return Y;
+					case "Length": return Length;
 					default: throw new LuaException($"CVec does not define a member '{key}'");
 				}
 			}
 
 			set => throw new LuaException("CVec is read-only. Use CVec.New to create a new value");
 		}
+
+		public LuaValue ToString(LuaRuntime runtime) => ToString();
 
 		#endregion
 	}

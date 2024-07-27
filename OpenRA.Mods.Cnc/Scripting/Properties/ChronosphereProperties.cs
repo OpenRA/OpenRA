@@ -11,6 +11,7 @@
 
 using Eluant;
 using OpenRA.Mods.Cnc.Traits;
+using OpenRA.Mods.Common.Scripting;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -23,7 +24,7 @@ namespace OpenRA.Mods.Cnc.Scripting
 			: base(context, self) { }
 
 		[Desc("Chronoshift a group of actors. A duration of 0 will teleport the actors permanently.")]
-		public void Chronoshift(LuaTable unitLocationPairs, int duration = 0, bool killCargo = false)
+		public void Chronoshift([ScriptEmmyTypeOverride("{ [actor]: cpos }")] LuaTable unitLocationPairs, int duration = 0, bool killCargo = false)
 		{
 			foreach (var kv in unitLocationPairs)
 			{
@@ -33,7 +34,7 @@ namespace OpenRA.Mods.Cnc.Scripting
 				using (kv.Value)
 				{
 					if (!kv.Key.TryGetClrValue(out actor) || !kv.Value.TryGetClrValue(out cell))
-						throw new LuaException($"Chronoshift requires a table of Actor,CPos pairs. Received {kv.Key.WrappedClrType().Name},{kv.Value.WrappedClrType().Name}");
+						throw new LuaException($"Chronoshift requires a table of actor,cpos pairs. Received {kv.Key.WrappedClrType().Name},{kv.Value.WrappedClrType().Name}");
 				}
 
 				var cs = actor.TraitsImplementing<Chronoshiftable>()

@@ -63,8 +63,9 @@ namespace OpenRA.Mods.Common.Scripting
 
 		[ScriptActorPropertyActivity]
 		[Desc("Patrol along a set of given waypoints until a condition becomes true. " +
-			"The actor will wait for `wait` ticks at each waypoint.")]
-		public void PatrolUntil(CPos[] waypoints, LuaFunction func, int wait = 0)
+			"The actor will wait for `wait` ticks at each waypoint. " +
+			"The callback function will be called as func(self: actor):boolean.")]
+		public void PatrolUntil(CPos[] waypoints, [ScriptEmmyTypeOverride("fun(self: actor):boolean")] LuaFunction func, int wait = 0)
 		{
 			Patrol(waypoints, false, wait);
 

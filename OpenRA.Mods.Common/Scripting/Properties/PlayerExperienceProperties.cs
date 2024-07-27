@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Common.Scripting
 			exp = player.PlayerActor.Trait<PlayerExperience>();
 		}
 
+		[Desc("Get or set the current experience.")]
 		public int Experience
 		{
 			get => exp.Experience;

@@ -17,8 +17,9 @@ using OpenRA.Support;
 
 namespace OpenRA
 {
-	public readonly struct WVec : IScriptBindable,
-		ILuaAdditionBinding, ILuaSubtractionBinding, ILuaUnaryMinusBinding, ILuaEqualityBinding, ILuaTableBinding, IEquatable<WVec>
+	public readonly struct WVec : IEquatable<WVec>, IScriptBindable,
+		ILuaAdditionBinding, ILuaSubtractionBinding, ILuaEqualityBinding, ILuaUnaryMinusBinding,
+		ILuaMultiplicationBinding, ILuaDivisionBinding, ILuaTableBinding, ILuaToStringBinding
 	{
 		public readonly int X, Y, Z;
 
@@ -112,7 +113,8 @@ namespace OpenRA
 		public LuaValue Add(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			if (!left.TryGetClrValue(out WVec a) || !right.TryGetClrValue(out WVec b))
-				throw new LuaException($"Attempted to call WVec.Add(WVec, WVec) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
+				throw new LuaException("Attempted to call WVec.Add(WVec, WVec) with invalid arguments " +
+					$"({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 
 			return new LuaCustomClrObject(a + b);
 		}
@@ -120,14 +122,10 @@ namespace OpenRA
 		public LuaValue Subtract(LuaRuntime runtime, LuaValue left, LuaValue right)
 		{
 			if (!left.TryGetClrValue(out WVec a) || !right.TryGetClrValue(out WVec b))
-				throw new LuaException($"Attempted to call WVec.Subtract(WVec, WVec) with invalid arguments ({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
+				throw new LuaException("Attempted to call WVec.Subtract(WVec, WVec) with invalid arguments " +
+					$"({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
 
 			return new LuaCustomClrObject(a - b);
-		}
-
-		public LuaValue Minus(LuaRuntime runtime)
-		{
-			return new LuaCustomClrObject(-this);
 		}
 
 		public LuaValue Equals(LuaRuntime runtime, LuaValue left, LuaValue right)
@@ -136,6 +134,29 @@ namespace OpenRA
 				return false;
 
 			return a == b;
+		}
+
+		public LuaValue Minus(LuaRuntime runtime)
+		{
+			return new LuaCustomClrObject(-this);
+		}
+
+		public LuaValue Multiply(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			if (!left.TryGetClrValue(out WVec a) || !right.TryGetClrValue(out int b))
+				throw new LuaException("Attempted to call WVec.Multiply(WVec, integer) with invalid arguments " +
+					$"({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
+
+			return new LuaCustomClrObject(a * b);
+		}
+
+		public LuaValue Divide(LuaRuntime runtime, LuaValue left, LuaValue right)
+		{
+			if (!left.TryGetClrValue(out WVec a) || !right.TryGetClrValue(out int b))
+				throw new LuaException("Attempted to call WVec.Divide(WVec, integer) with invalid arguments " +
+					$"({left.WrappedClrType().Name}, {right.WrappedClrType().Name})");
+
+			return new LuaCustomClrObject(a / b);
 		}
 
 		public LuaValue this[LuaRuntime runtime, LuaValue key]
@@ -154,6 +175,8 @@ namespace OpenRA
 
 			set => throw new LuaException("WVec is read-only. Use WVec.New to create a new value");
 		}
+
+		public LuaValue ToString(LuaRuntime runtime) => ToString();
 
 		#endregion
 	}

@@ -23,14 +23,18 @@ namespace OpenRA.Mods.Common.Scripting
 			: base(context) { }
 
 		[Desc("Calls a function on every element in a collection.")]
-		public void Do(LuaValue[] collection, LuaFunction func)
+		public void Do(
+			[ScriptEmmyTypeOverride("T[]", "T")] LuaValue[] collection,
+			[ScriptEmmyTypeOverride("fun(item: T)", "T")] LuaFunction func)
 		{
 			foreach (var c in collection)
 				func.Call(c).Dispose();
 		}
 
 		[Desc("Returns true if func returns true for any element in a collection.")]
-		public bool Any(LuaValue[] collection, LuaFunction func)
+		public bool Any(
+			[ScriptEmmyTypeOverride("T[]", "T")] LuaValue[] collection,
+			[ScriptEmmyTypeOverride("fun(item: T):boolean?", "T")] LuaFunction func)
 		{
 			foreach (var c in collection)
 				using (var ret = func.Call(c))
@@ -42,7 +46,9 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Returns true if func returns true for all elements in a collection.")]
-		public bool All(LuaValue[] collection, LuaFunction func)
+		public bool All(
+			[ScriptEmmyTypeOverride("T[]", "T")] LuaValue[] collection,
+			[ScriptEmmyTypeOverride("fun(item: T):boolean?", "T")] LuaFunction func)
 		{
 			foreach (var c in collection)
 				using (var ret = func.Call(c))
@@ -54,7 +60,10 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Returns the original collection filtered with the func.")]
-		public LuaTable Where(LuaValue[] collection, LuaFunction func)
+		[return: ScriptEmmyTypeOverride("T[]", "T")]
+		public LuaTable Where(
+			[ScriptEmmyTypeOverride("T[]", "T")] LuaValue[] collection,
+			[ScriptEmmyTypeOverride("fun(item: T):boolean?", "T")] LuaFunction func)
 		{
 			var t = Context.CreateTable();
 
@@ -68,13 +77,19 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Returns the first n values from a collection.")]
-		public LuaValue[] Take(int n, LuaValue[] source)
+		[return: ScriptEmmyTypeOverride("T[]", "T")]
+		public LuaValue[] Take(
+			int n,
+			[ScriptEmmyTypeOverride("T[]", "T")] LuaValue[] source)
 		{
 			return source.Take(n).Select(v => v.CopyReference()).ToArray();
 		}
 
 		[Desc("Skips over the first numElements members of a table and return the rest.")]
-		public LuaTable Skip(LuaTable table, int numElements)
+		[return: ScriptEmmyTypeOverride("T[]", "T")]
+		public LuaTable Skip(
+			[ScriptEmmyTypeOverride("T[]", "T")] LuaTable table,
+			int numElements)
 		{
 			var t = Context.CreateTable();
 
@@ -86,7 +101,10 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Concatenates two Lua tables into a single table.")]
-		public LuaTable Concat(LuaValue[] firstCollection, LuaValue[] secondCollection)
+		[return: ScriptEmmyTypeOverride("T[]", "T")]
+		public LuaTable Concat(
+			[ScriptEmmyTypeOverride("T[]", "T")] LuaValue[] firstCollection,
+			[ScriptEmmyTypeOverride("T[]", "T")] LuaValue[] secondCollection)
 		{
 			var t = Context.CreateTable();
 
@@ -100,13 +118,15 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Returns a random value from a collection.")]
-		public LuaValue Random(LuaValue[] collection)
+		[return: ScriptEmmyTypeOverride("T", "T")]
+		public LuaValue Random([ScriptEmmyTypeOverride("T[]", "T")] LuaValue[] collection)
 		{
 			return collection.Random(Context.World.SharedRandom).CopyReference();
 		}
 
 		[Desc("Returns the collection in a random order.")]
-		public LuaValue[] Shuffle(LuaValue[] collection)
+		[return: ScriptEmmyTypeOverride("T[]", "T")]
+		public LuaValue[] Shuffle([ScriptEmmyTypeOverride("T[]", "T")] LuaValue[] collection)
 		{
 			return collection.Shuffle(Context.World.SharedRandom).ToArray();
 		}

@@ -113,8 +113,6 @@ WorldLoaded = function()
 				Trigger.AfterDelay(DateTime.Seconds(3), function()
 					Harkonnen.MarkCompletedObjective(KillOrdos)
 				end)
-
-				return true
 			end
 		end)
 	end

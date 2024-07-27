@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Scripting
 		}
 
 		[Desc("Returns a table of players filtered by the specified function.")]
-		public Player[] GetPlayers(LuaFunction filter)
+		public Player[] GetPlayers([ScriptEmmyTypeOverride("fun(p: player):boolean")] LuaFunction filter)
 		{
 			return FilteredObjects(Context.World.Players, filter).ToArray();
 		}
