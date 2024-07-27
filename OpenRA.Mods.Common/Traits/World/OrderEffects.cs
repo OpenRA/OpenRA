@@ -95,7 +95,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				case TargetType.Terrain:
 				{
-					world.AddFrameEndTask(w => w.Add(new SpriteAnnotation(target.CenterPosition, world, info.TerrainFlashImage, info.TerrainFlashSequence, info.TerrainFlashPalette)));
+					world.AddFrameEndTask(w => w.Add(new SpriteAnnotation(
+						target.CenterPosition, world, info.TerrainFlashImage, info.TerrainFlashSequence, info.TerrainFlashPalette)));
 					return true;
 				}
 

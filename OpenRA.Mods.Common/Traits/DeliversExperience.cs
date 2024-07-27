@@ -17,7 +17,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
-	[Desc("This actor can grant experience levels equal to it's own current level via entering to other actors with the `" + nameof(AcceptsDeliveredExperience) + "` trait.")]
+	[Desc("This actor can grant experience levels equal to it's own current level " +
+		"via entering to other actors with the `" + nameof(AcceptsDeliveredExperience) + "` trait.")]
 	sealed class DeliversExperienceInfo : TraitInfo, Requires<GainsExperienceInfo>
 	{
 		[Desc("The amount of experience the donating player receives.")]

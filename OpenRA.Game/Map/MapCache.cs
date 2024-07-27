@@ -140,7 +140,8 @@ namespace OpenRA
 			LoadMapInternal(map, package, classification, mapGrid, oldMap, null);
 		}
 
-		void LoadMapInternal(string map, IReadOnlyPackage package, MapClassification classification, MapGrid mapGrid, string oldMap, IEnumerable<List<MiniYamlNode>> modDataRules)
+		void LoadMapInternal(string map, IReadOnlyPackage package, MapClassification classification, MapGrid mapGrid, string oldMap,
+			IEnumerable<List<MiniYamlNode>> modDataRules)
 		{
 			IReadOnlyPackage mapPackage = null;
 			try
@@ -226,7 +227,8 @@ namespace OpenRA
 						yield return mapPackage;
 		}
 
-		public void QueryRemoteMapDetails(string repositoryUrl, IEnumerable<string> uids, Action<MapPreview> mapDetailsReceived = null, Action<MapPreview> mapQueryFailed = null)
+		public void QueryRemoteMapDetails(string repositoryUrl, IEnumerable<string> uids,
+			Action<MapPreview> mapDetailsReceived = null, Action<MapPreview> mapQueryFailed = null)
 		{
 			var queryUids = uids.Distinct()
 				.Where(uid => uid != null)

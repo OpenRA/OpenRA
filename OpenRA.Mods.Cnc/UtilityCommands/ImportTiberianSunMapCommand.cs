@@ -267,7 +267,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 
 		#region Method overrides
 
-		protected override bool TryHandleOverlayToActorInner(CPos cell, byte[] overlayPack, CellLayer<int> overlayIndex, byte overlayType, out ActorReference actorReference)
+		protected override bool TryHandleOverlayToActorInner(
+			CPos cell, byte[] overlayPack, CellLayer<int> overlayIndex, byte overlayType, out ActorReference actorReference)
 		{
 			actorReference = null;
 			if (!OverlayToActor.TryGetValue(overlayType, out var actorType))

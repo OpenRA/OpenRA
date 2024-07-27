@@ -38,7 +38,10 @@ namespace OpenRA.Mods.Common.Warheads
 		[Desc("Can this warhead affect the actor that fired it.")]
 		public readonly bool AffectsParent = false;
 
-		[Desc("If impact is above this altitude, warheads that would affect terrain ignore terrain target types (and either do nothing or perform their own checks).")]
+		[Desc(
+			"If impact is above this altitude, " +
+			"warheads that would affect terrain ignore terrain target types " +
+			"(and either do nothing or perform their own checks).")]
 		public readonly WDist AirThreshold = new(128);
 
 		[Desc("Delay in ticks before applying the warhead effect.", "0 = instant (old model).")]

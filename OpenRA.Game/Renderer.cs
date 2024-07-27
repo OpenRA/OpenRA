@@ -289,7 +289,10 @@ namespace OpenRA
 				screenBuffer.Bind();
 
 				var scale = Window.EffectiveWindowScale;
-				var bufferScale = new float3((int)(screenSprite.Bounds.Width / scale) / worldSprite.Size.X, (int)(-screenSprite.Bounds.Height / scale) / worldSprite.Size.Y, 1f);
+				var bufferScale = new float3(
+					(int)(screenSprite.Bounds.Width / scale) / worldSprite.Size.X,
+					(int)(-screenSprite.Bounds.Height / scale) / worldSprite.Size.Y,
+					1f);
 
 				SpriteRenderer.SetAntialiasingPixelsPerTexel(Window.SurfaceSize.Height * 1f / worldSprite.Bounds.Height);
 				RgbaSpriteRenderer.DrawSprite(worldSprite, float3.Zero, bufferScale);

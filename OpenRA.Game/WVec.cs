@@ -17,7 +17,8 @@ using OpenRA.Support;
 
 namespace OpenRA
 {
-	public readonly struct WVec : IScriptBindable, ILuaAdditionBinding, ILuaSubtractionBinding, ILuaUnaryMinusBinding, ILuaEqualityBinding, ILuaTableBinding, IEquatable<WVec>
+	public readonly struct WVec : IScriptBindable,
+		ILuaAdditionBinding, ILuaSubtractionBinding, ILuaUnaryMinusBinding, ILuaEqualityBinding, ILuaTableBinding, IEquatable<WVec>
 	{
 		public readonly int X, Y, Z;
 

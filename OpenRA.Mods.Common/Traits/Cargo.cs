@@ -411,7 +411,9 @@ namespace OpenRA.Mods.Common.Traits
 		void INotifyKilled.Killed(Actor self, AttackInfo e)
 		{
 			// IsAtGroundLevel contains Map.Contains(self.Location) check.
-			if (Info.EjectOnDeath && self.IsAtGroundLevel() && (!checkTerrainType || Info.UnloadTerrainTypes.Contains(self.World.Map.GetTerrainInfo(self.Location).Type)))
+			if (Info.EjectOnDeath &&
+				self.IsAtGroundLevel() &&
+				(!checkTerrainType || Info.UnloadTerrainTypes.Contains(self.World.Map.GetTerrainInfo(self.Location).Type)))
 			{
 				while (!IsEmpty())
 				{

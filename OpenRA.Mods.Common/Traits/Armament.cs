@@ -380,7 +380,10 @@ namespace OpenRA.Mods.Common.Traits
 				Burst = Weapon.Burst;
 
 				if (Weapon.AfterFireSound != null && Weapon.AfterFireSound.Length > 0)
-					ScheduleDelayedAction(Weapon.AfterFireSoundDelay, Burst, (burst) => Game.Sound.Play(SoundType.World, Weapon.AfterFireSound, self.World, self.CenterPosition));
+					ScheduleDelayedAction(
+						Weapon.AfterFireSoundDelay,
+						Burst,
+						burst => Game.Sound.Play(SoundType.World, Weapon.AfterFireSound, self.World, self.CenterPosition));
 
 				foreach (var nbc in notifyBurstComplete)
 					nbc.FiredBurst(self, target, this);

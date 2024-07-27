@@ -240,26 +240,30 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>Does this <paramref name="target"/> contain at least one enabled <see cref="IDockHost"/> with maching <see cref="DockType"/>.</summary>
 		public bool DockingPossible(Actor target)
 		{
-			return !IsTraitDisabled && target.TraitsImplementing<IDockHost>().Any(host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType)));
+			return !IsTraitDisabled && target.TraitsImplementing<IDockHost>().Any(
+				host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType)));
 		}
 
 		/// <summary>Does this <paramref name="target"/> contain at least one enabled <see cref="IDockHost"/> with maching <see cref="DockType"/>.</summary>
 		public bool DockingPossible(Actor target, TargetModifiers modifiers)
 		{
 			var forceEnter = modifiers.HasModifier(TargetModifiers.ForceMove);
-			return !IsTraitDisabled && target.TraitsImplementing<IDockHost>().Any(host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType, forceEnter)));
+			return !IsTraitDisabled && target.TraitsImplementing<IDockHost>().Any(
+				host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType, forceEnter)));
 		}
 
 		/// <summary>Can we dock to this <paramref name="host"/>.</summary>
 		public bool CanDockAt(Actor hostActor, IDockHost host, bool forceEnter = false, bool ignoreOccupancy = false)
 		{
-			return !IsTraitDisabled && dockClients.Any(client => client.CanDockAt(hostActor, host, forceEnter, ignoreOccupancy));
+			return !IsTraitDisabled && dockClients.Any(
+				client => client.CanDockAt(hostActor, host, forceEnter, ignoreOccupancy));
 		}
 
 		/// <summary>Can we dock to this <paramref name="target"/>.</summary>
 		public bool CanDockAt(Actor target, bool forceEnter = false, bool ignoreOccupancy = false)
 		{
-			return !IsTraitDisabled && target.TraitsImplementing<IDockHost>().Any(host => dockClients.Any(client => client.CanDockAt(target, host, forceEnter, ignoreOccupancy)));
+			return !IsTraitDisabled && target.TraitsImplementing<IDockHost>().Any(
+				host => dockClients.Any(client => client.CanDockAt(target, host, forceEnter, ignoreOccupancy)));
 		}
 
 		/// <summary>Find the closest viable <see cref="IDockHost"/>.</summary>
@@ -268,7 +272,9 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var clients = type.IsEmpty ? dockClients : AvailableDockClients(type);
 			return self.World.ActorsWithTrait<IDockHost>()
-				.Where(host => host.Trait != ignore && clients.Any(client => client.CanDockAt(host.Actor, host.Trait, forceEnter, ignoreOccupancy)))
+				.Where(host =>
+					host.Trait != ignore &&
+					clients.Any(client => client.CanDockAt(host.Actor, host.Trait, forceEnter, ignoreOccupancy)))
 				.ClosestDock(self, this);
 		}
 

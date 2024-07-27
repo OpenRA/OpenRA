@@ -516,9 +516,13 @@ namespace OpenRA.Mods.Common.Activities
 
 		sealed class MoveFirstHalf : MovePart
 		{
-			public MoveFirstHalf(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
+			public MoveFirstHalf(
+				Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
 				WRot? fromTerrainOrientation, WRot? toTerrainOrientation, int terrainOrientationMargin, int carryoverProgress, bool shouldArc, bool movingOnGroundLayer)
-				: base(move, from, to, fromFacing, toFacing, fromTerrainOrientation, toTerrainOrientation, terrainOrientationMargin, carryoverProgress, shouldArc, movingOnGroundLayer) { }
+				: base(
+					  move, from, to, fromFacing, toFacing,
+					  fromTerrainOrientation, toTerrainOrientation, terrainOrientationMargin, carryoverProgress, shouldArc, movingOnGroundLayer)
+			{ }
 
 			bool IsTurn(Actor self, Mobile mobile, CPos nextCell, Map map)
 			{
@@ -599,9 +603,13 @@ namespace OpenRA.Mods.Common.Activities
 
 		sealed class MoveSecondHalf : MovePart
 		{
-			public MoveSecondHalf(Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
+			public MoveSecondHalf(
+				Move move, WPos from, WPos to, WAngle fromFacing, WAngle toFacing,
 				WRot? fromTerrainOrientation, WRot? toTerrainOrientation, int terrainOrientationMargin, int carryoverProgress, bool shouldArc, bool movingOnGroundLayer)
-				: base(move, from, to, fromFacing, toFacing, fromTerrainOrientation, toTerrainOrientation, terrainOrientationMargin, carryoverProgress, shouldArc, movingOnGroundLayer) { }
+				: base(
+					  move, from, to, fromFacing, toFacing,
+					  fromTerrainOrientation, toTerrainOrientation, terrainOrientationMargin, carryoverProgress, shouldArc, movingOnGroundLayer)
+			{ }
 
 			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)
 			{

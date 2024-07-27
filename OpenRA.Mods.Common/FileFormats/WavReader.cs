@@ -253,7 +253,14 @@ namespace OpenRA.Mods.Common.FileFormats
 					WriteSample(DecodeNibble((short)((bytecode >> 4) & 0x0F), bpred[0], ref chanIdelta[0], ref s1[0], ref s2[0]), data);
 
 					// Decode the second nibble, for stereo this will be the right channel
-					WriteSample(DecodeNibble((short)(bytecode & 0x0F), bpred[channelNumber], ref chanIdelta[channelNumber], ref s1[channelNumber], ref s2[channelNumber]), data);
+					WriteSample(
+						DecodeNibble(
+							(short)(bytecode & 0x0F),
+							bpred[channelNumber],
+							ref chanIdelta[channelNumber],
+							ref s1[channelNumber],
+							ref s2[channelNumber]),
+						data);
 				}
 
 				return ++currentBlock >= numBlocks;

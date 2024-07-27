@@ -148,7 +148,8 @@ namespace OpenRA.Mods.Common.Traits
 
 						foreach (var minelayer in minelayers)
 						{
-							var cells = pathFinder.FindPathToTargetCell(minelayer.Actor, new[] { minelayer.Actor.Location }, enemy.Location, BlockedByActor.Immovable, laneBias: false);
+							var cells = pathFinder.FindPathToTargetCell(
+								minelayer.Actor, new[] { minelayer.Actor.Location }, enemy.Location, BlockedByActor.Immovable, laneBias: false);
 							if (cells != null && cells.Count != 0)
 							{
 								AIUtils.BotDebug($"{player}: try find a location to lay mine.");
@@ -192,7 +193,8 @@ namespace OpenRA.Mods.Common.Traits
 
 				foreach (var minelayer in minelayers)
 				{
-					var cells = pathFinder.FindPathToTargetCell(minelayer.Actor, new[] { minelayer.Actor.Location }, minelayingPosition, BlockedByActor.Immovable, laneBias: false);
+					var cells = pathFinder.FindPathToTargetCell(
+						minelayer.Actor, new[] { minelayer.Actor.Location }, minelayingPosition, BlockedByActor.Immovable, laneBias: false);
 					if (cells != null && cells.Count != 0)
 					{
 						orderedActors.Add(minelayer.Actor);

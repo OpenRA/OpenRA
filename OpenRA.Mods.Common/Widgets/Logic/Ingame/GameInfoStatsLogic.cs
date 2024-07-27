@@ -87,7 +87,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string VoteKickVoteCancel = "dialog-vote-kick.vote-cancel";
 
 		[ObjectCreator.UseCtor]
-		public GameInfoStatsLogic(Widget widget, ModData modData, World world, OrderManager orderManager, WorldRenderer worldRenderer, Action<bool> hideMenu, Action closeMenu)
+		public GameInfoStatsLogic(Widget widget, ModData modData, World world,
+			OrderManager orderManager, WorldRenderer worldRenderer, Action<bool> hideMenu, Action closeMenu)
 		{
 			var player = world.LocalPlayer;
 			var playerPanel = widget.Get<ScrollPanelWidget>("PLAYER_LIST");

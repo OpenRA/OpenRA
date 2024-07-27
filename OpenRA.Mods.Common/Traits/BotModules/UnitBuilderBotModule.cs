@@ -23,7 +23,8 @@ namespace OpenRA.Mods.Common.Traits
 		// Reason: If this is less than SquadSize, the bot might get stuck between not producing more units due to this,
 		// but also not creating squads since there aren't enough idle units.
 		[Desc("If > 0, only produce units as long as there are less than this amount of units idling inside the base.",
-			"Beware: if it is less than squad size, e.g. the `SquadSize` from `SquadManagerBotModule`, the bot might get stuck as there aren't enough idle units to create squad.")]
+			"Beware: if it is less than squad size, e.g. the `SquadSize` from `SquadManagerBotModule`, " +
+			"the bot might get stuck as there aren't enough idle units to create squad.")]
 		public readonly int IdleBaseUnitsMaximum = -1;
 
 		[Desc("Production queues AI uses for producing units.")]

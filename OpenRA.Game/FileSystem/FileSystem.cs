@@ -324,7 +324,8 @@ namespace OpenRA.FileSystem
 				if (name == ".")
 					continue;
 
-				resolved = Directory.GetFileSystemEntries(resolved).FirstOrDefault(e => e.Equals(Path.Combine(resolved, name), StringComparison.InvariantCultureIgnoreCase));
+				resolved = Directory.GetFileSystemEntries(resolved)
+					.FirstOrDefault(e => e.Equals(Path.Combine(resolved, name), StringComparison.InvariantCultureIgnoreCase));
 
 				if (resolved == null)
 					return null;

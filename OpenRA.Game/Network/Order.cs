@@ -271,7 +271,15 @@ namespace OpenRA
 
 		public static Order FromGroupedOrder(Order grouped, Actor subject)
 		{
-			return new Order(grouped.OrderString, subject, grouped.Target, grouped.TargetString, grouped.Queued, grouped.ExtraActors, grouped.ExtraLocation, grouped.ExtraData);
+			return new Order(
+				grouped.OrderString,
+				subject,
+				grouped.Target,
+				grouped.TargetString,
+				grouped.Queued,
+				grouped.ExtraActors,
+				grouped.ExtraLocation,
+				grouped.ExtraData);
 		}
 
 		public static Order Command(string text)

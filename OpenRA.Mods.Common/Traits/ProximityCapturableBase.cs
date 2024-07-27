@@ -41,7 +41,8 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var pci = rules.Actors[SystemActors.Player].TraitInfoOrDefault<ProximityCaptorInfo>();
 			if (pci == null)
-				throw new YamlException(nameof(ProximityCapturableBase) + " requires the `" + nameof(Player) + "` actor to have the " + nameof(ProximityCaptor) + " trait.");
+				throw new YamlException(
+					nameof(ProximityCapturableBase) + " requires the `" + nameof(Player) + "` actor to have the " + nameof(ProximityCaptor) + " trait.");
 		}
 
 		public abstract override object Create(ActorInitializer init);

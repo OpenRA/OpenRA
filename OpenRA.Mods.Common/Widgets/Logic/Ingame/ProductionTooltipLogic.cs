@@ -135,7 +135,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var timeText = formatBuildTime.Update(buildTime * timeModifier / 100);
 				timeLabel.GetText = () => timeText;
-				timeLabel.TextColor = (pm != null && pm.PowerState != PowerState.Normal && tooltipIcon.ProductionQueue.Info.LowPowerModifier > 100) ? Color.Red : Color.White;
+				timeLabel.TextColor =
+					(pm != null && pm.PowerState != PowerState.Normal && tooltipIcon.ProductionQueue.Info.LowPowerModifier > 100)
+						? Color.Red
+						: Color.White;
 				var timeSize = font.Measure(timeText);
 
 				var costText = cost.ToString(NumberFormatInfo.CurrentInfo);

@@ -244,7 +244,8 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				.ToLowerInvariant();
 		}
 
-		static void FromChromeLayout(MiniYamlNodeBuilder node, Dictionary<string, string[]> translatables, string container, ref List<TranslationCandidate> translations)
+		static void FromChromeLayout(
+			MiniYamlNodeBuilder node, Dictionary<string, string[]> translatables, string container, ref List<TranslationCandidate> translations)
 		{
 			var nodeSplit = node.Key.Split('@');
 			var nodeType = nodeSplit[0];

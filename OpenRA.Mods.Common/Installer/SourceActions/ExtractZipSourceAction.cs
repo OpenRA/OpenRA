@@ -49,7 +49,9 @@ namespace OpenRA.Mods.Common.Installer
 					using (var targetStream = File.OpenWrite(targetPath))
 						sourceStream.CopyTo(targetStream);
 
-					updateMessage(TranslationProvider.GetString(InstallFromSourceLogic.ExtractingProgress, Translation.Arguments("filename", displayFilename, "progress", 100)));
+					updateMessage(TranslationProvider.GetString(
+						InstallFromSourceLogic.ExtractingProgress,
+						Translation.Arguments("filename", displayFilename, "progress", 100)));
 
 					extracted.Add(targetPath);
 				}

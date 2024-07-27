@@ -66,7 +66,9 @@ namespace OpenRA.Primitives
 
 		public bool IntersectsWith(Rectangle rect)
 		{
-			var intersectsBoundingRect = BoundingRect.Left < rect.Right && BoundingRect.Right > rect.Left && BoundingRect.Top < rect.Bottom && BoundingRect.Bottom > rect.Top;
+			var intersectsBoundingRect =
+				BoundingRect.Left < rect.Right && BoundingRect.Right > rect.Left &&
+				BoundingRect.Top < rect.Bottom && BoundingRect.Bottom > rect.Top;
 			if (isRectangle)
 				return intersectsBoundingRect;
 
@@ -75,11 +77,13 @@ namespace OpenRA.Primitives
 				return false;
 
 			// Easy case 2: Rect and bounding box intersect in a cross shape
-			if ((rect.Left <= BoundingRect.Left && rect.Right >= BoundingRect.Right) || (rect.Top <= BoundingRect.Top && rect.Bottom >= BoundingRect.Bottom))
+			if ((rect.Left <= BoundingRect.Left && rect.Right >= BoundingRect.Right) ||
+				(rect.Top <= BoundingRect.Top && rect.Bottom >= BoundingRect.Bottom))
 				return true;
 
 			// Easy case 3: Corner of rect is inside the polygon
-			if (Vertices.PolygonContains(rect.TopLeft) || Vertices.PolygonContains(rect.TopRight) || Vertices.PolygonContains(rect.BottomLeft) || Vertices.PolygonContains(rect.BottomRight))
+			if (Vertices.PolygonContains(rect.TopLeft) || Vertices.PolygonContains(rect.TopRight) ||
+				Vertices.PolygonContains(rect.BottomLeft) || Vertices.PolygonContains(rect.BottomRight))
 				return true;
 
 			// Easy case 4: Polygon vertex is inside rect
