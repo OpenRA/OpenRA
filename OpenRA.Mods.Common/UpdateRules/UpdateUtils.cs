@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		{
 			return FieldLoader.GetValue<string[]>("value", yaml.Value)
 				.Where(f => f.Contains('|'))
-				.SelectMany(f => LoadModYaml(modData, FilterExternalModFiles(modData, new[] { f }, externalFilenames)))
+				.SelectMany(f => LoadModYaml(modData, FilterExternalFiles(modData, new[] { f }, externalFilenames)))
 				.ToList();
 		}
 
@@ -182,11 +182,11 @@ namespace OpenRA.Mods.Common.UpdateRules
 			return MiniYaml.Merge(yaml).ConvertAll(n => new MiniYamlNodeBuilder(n));
 		}
 
-		public static IEnumerable<string> FilterExternalModFiles(ModData modData, IEnumerable<string> files, HashSet<string> externalFilenames)
+		public static IEnumerable<string> FilterExternalFiles(ModData modData, IEnumerable<string> files, HashSet<string> externalFilenames)
 		{
 			foreach (var f in files)
 			{
-				if (f.Contains('|') && modData.DefaultFileSystem.IsExternalModFile(f))
+				if (f.Contains('|') && modData.DefaultFileSystem.IsExternalFile(f))
 				{
 					externalFilenames.Add(f);
 					continue;
@@ -200,12 +200,12 @@ namespace OpenRA.Mods.Common.UpdateRules
 		{
 			var manualSteps = new List<string>();
 
-			var modRules = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Rules, externalFilenames));
-			var modWeapons = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Weapons, externalFilenames));
-			var modSequences = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Sequences, externalFilenames));
-			var modTilesets = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.TileSets, externalFilenames));
-			var modChromeLayout = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.ChromeLayout, externalFilenames));
-			var modChromeProvider = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Chrome, externalFilenames));
+			var modRules = LoadModYaml(modData, FilterExternalFiles(modData, modData.Manifest.Rules, externalFilenames));
+			var modWeapons = LoadModYaml(modData, FilterExternalFiles(modData, modData.Manifest.Weapons, externalFilenames));
+			var modSequences = LoadModYaml(modData, FilterExternalFiles(modData, modData.Manifest.Sequences, externalFilenames));
+			var modTilesets = LoadModYaml(modData, FilterExternalFiles(modData, modData.Manifest.TileSets, externalFilenames));
+			var modChromeLayout = LoadModYaml(modData, FilterExternalFiles(modData, modData.Manifest.ChromeLayout, externalFilenames));
+			var modChromeProvider = LoadModYaml(modData, FilterExternalFiles(modData, modData.Manifest.Chrome, externalFilenames));
 
 			// Find and add shared map includes
 			foreach (var package in modData.MapCache.EnumerateMapPackagesWithoutCaching())

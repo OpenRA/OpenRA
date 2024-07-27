@@ -74,6 +74,7 @@ namespace OpenRA
 		public readonly string[] SpriteFormats = Array.Empty<string>();
 		public readonly string[] PackageFormats = Array.Empty<string>();
 		public readonly string[] VideoFormats = Array.Empty<string>();
+		public bool AllowUnusedTranslationsInExternalPackages = true;
 
 		readonly string[] reservedModuleNames =
 		{
@@ -81,7 +82,7 @@ namespace OpenRA
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
 			"ServerTraits", "LoadScreen", "DefaultOrderGenerator", "SupportsMapsFrom", "SoundFormats", "SpriteFormats", "VideoFormats",
-			"RequiresMods", "PackageFormats"
+			"RequiresMods", "PackageFormats", "AllowUnusedTranslationsInExternalPackages"
 		};
 
 		readonly TypeDictionary modules = new();
@@ -166,6 +167,10 @@ namespace OpenRA
 
 			if (yaml.TryGetValue("VideoFormats", out entry))
 				VideoFormats = FieldLoader.GetValue<string[]>("VideoFormats", entry.Value);
+
+			if (yaml.TryGetValue("AllowUnusedTranslationsInExternalPackages", out entry))
+				AllowUnusedTranslationsInExternalPackages =
+					FieldLoader.GetValue<bool>("AllowUnusedTranslationsInExternalPackages", entry.Value);
 		}
 
 		public void LoadCustomData(ObjectCreator oc)

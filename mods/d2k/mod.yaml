@@ -130,6 +130,8 @@ Translations:
 	d2k|languages/chrome/en.ftl
 	d2k|languages/rules/en.ftl
 
+AllowUnusedTranslationsInExternalPackages: false
+
 Weapons:
 	d2k|weapons/debris.yaml
 	d2k|weapons/smallguns.yaml
