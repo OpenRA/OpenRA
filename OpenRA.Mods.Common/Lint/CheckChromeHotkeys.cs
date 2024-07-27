@@ -64,8 +64,15 @@ namespace OpenRA.Mods.Common.Lint
 			}
 		}
 
-		static void CheckInner(ModData modData, string[] namedKeys, (string Widget, string Field)[] checkWidgetFields, Dictionary<string, List<string>> customLintMethods,
-			IEnumerable<MiniYamlNode> nodes, string filename, MiniYamlNode parent, Action<string> emitError)
+		static void CheckInner(
+			ModData modData,
+			string[] namedKeys,
+			(string Widget, string Field)[] checkWidgetFields,
+			Dictionary<string, List<string>> customLintMethods,
+			IEnumerable<MiniYamlNode> nodes,
+			string filename,
+			MiniYamlNode parent,
+			Action<string> emitError)
 		{
 			foreach (var node in nodes)
 			{

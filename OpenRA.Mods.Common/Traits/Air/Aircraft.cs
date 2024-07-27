@@ -190,12 +190,14 @@ namespace OpenRA.Mods.Common.Traits
 			yield return new FacingInit(PreviewFacing);
 		}
 
-		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) { return new Dictionary<CPos, SubCell>(); }
+		public IReadOnlyDictionary<CPos, SubCell> OccupiedCells(ActorInfo info, CPos location, SubCell subCell = SubCell.Any) =>
+			new Dictionary<CPos, SubCell>();
 
 		bool IOccupySpaceInfo.SharesCell => false;
 
 		// Used to determine if an aircraft can spawn landed
-		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
+		public bool CanEnterCell(World world, Actor self, CPos cell,
+			SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
 		{
 			if (!world.Map.Contains(cell))
 				return false;

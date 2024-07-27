@@ -182,7 +182,10 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var palette = wr.Palette(info.Palette);
 			var alpha = shadow.CurrentSequence.GetAlpha(shadow.CurrentFrame);
 			var tintModifiers = shadow.CurrentSequence.IgnoreWorldTint ? TintModifiers.ReplaceColor | TintModifiers.IgnoreWorldTint : TintModifiers.ReplaceColor;
-			return new IRenderable[] { new SpriteRenderable(shadow.Image, pos, info.ShadowOffset, info.ShadowZOffset, palette, 1, shadowAlpha * alpha, shadowColor, tintModifiers, true) };
+			return new IRenderable[]
+			{
+				new SpriteRenderable(shadow.Image, pos, info.ShadowOffset, info.ShadowZOffset, palette, 1, shadowAlpha * alpha, shadowColor, tintModifiers, true)
+			};
 		}
 
 		IEnumerable<Rectangle> IRender.ScreenBounds(Actor self, WorldRenderer wr)

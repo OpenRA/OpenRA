@@ -80,7 +80,8 @@ namespace OpenRA.Mods.D2k.Activities
 			Game.Sound.Play(SoundType.World, swallow.Info.WormAttackSound, self.CenterPosition);
 
 			foreach (var player in affectedPlayers)
-				self.World.AddFrameEndTask(w => w.Add(new MapNotificationEffect(player, "Speech", swallow.Info.WormAttackNotification, 25, true, attackPosition, Color.Red)));
+				self.World.AddFrameEndTask(w => w.Add(
+					new MapNotificationEffect(player, "Speech", swallow.Info.WormAttackNotification, 25, true, attackPosition, Color.Red)));
 
 			if (affectedPlayers.Contains(self.World.LocalPlayer))
 				TextNotificationsManager.AddTransientLine(self.World.LocalPlayer, swallow.Info.WormAttackTextNotification);

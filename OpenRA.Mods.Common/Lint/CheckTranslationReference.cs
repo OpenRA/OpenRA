@@ -209,7 +209,9 @@ namespace OpenRA.Mods.Common.Lint
 							{
 								var userInterface = typeof(UserInterfaceGlobal).GetCustomAttribute<ScriptGlobalAttribute>().Name;
 								const string Translate = nameof(UserInterfaceGlobal.Translate);
-								emitWarning($"{context} calls {userInterface}.{Translate} with key `{key}` and translate args passed as `{variable}`. Inline the args at the callsite for lint analysis.");
+								emitWarning(
+									$"{context} calls {userInterface}.{Translate} with key `{key}` and translate args passed as `{variable}`." +
+									"Inline the args at the callsite for lint analysis.");
 							}
 						}
 					}

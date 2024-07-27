@@ -100,8 +100,12 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			playerBuildings = world.ActorsHavingTrait<Building>().Where(a => a.Owner == player).ToArray();
-			var excessPowerBonus = baseBuilder.Info.ExcessPowerIncrement * (playerBuildings.Length / baseBuilder.Info.ExcessPowerIncreaseThreshold.Clamp(1, int.MaxValue));
-			minimumExcessPower = (baseBuilder.Info.MinimumExcessPower + excessPowerBonus).Clamp(baseBuilder.Info.MinimumExcessPower, baseBuilder.Info.MaximumExcessPower);
+			var excessPowerBonus =
+				baseBuilder.Info.ExcessPowerIncrement *
+				(playerBuildings.Length / baseBuilder.Info.ExcessPowerIncreaseThreshold.Clamp(1, int.MaxValue));
+			minimumExcessPower =
+				(baseBuilder.Info.MinimumExcessPower + excessPowerBonus)
+					.Clamp(baseBuilder.Info.MinimumExcessPower, baseBuilder.Info.MaximumExcessPower);
 
 			// PERF: Queue only one actor at a time per category
 			itemQueuedThisTick = false;
@@ -344,7 +348,9 @@ namespace OpenRA.Mods.Common.Traits
 				var buildingVariantInfo = actorInfo.TraitInfoOrDefault<PlaceBuildingVariantsInfo>();
 				var variants = buildingVariantInfo?.Actors ?? Array.Empty<string>();
 
-				var count = playerBuildings.Count(a => a.Info.Name == name || variants.Contains(a.Info.Name)) + (baseBuilder.BuildingsBeingProduced.TryGetValue(name, out var num) ? num : 0);
+				var count = playerBuildings.Count(a =>
+					a.Info.Name == name || variants.Contains(a.Info.Name)) +
+					(baseBuilder.BuildingsBeingProduced.TryGetValue(name, out var num) ? num : 0);
 
 				// Do we want to build this structure?
 				if (count * 100 > frac.Value * playerBuildings.Length)

@@ -133,7 +133,8 @@ namespace OpenRA.Mods.Common.Traits
 				OnDockCompleted(self, dockedClientActor, dockedClient);
 		}
 
-		public virtual bool QueueMoveActivity(Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client, MoveCooldownHelper moveCooldownHelper)
+		public virtual bool QueueMoveActivity(
+			Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client, MoveCooldownHelper moveCooldownHelper)
 		{
 			var move = clientActor.Trait<IMove>();
 

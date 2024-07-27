@@ -85,16 +85,29 @@ namespace OpenRA.Mods.Common.Installer
 				}
 
 				case PlatformType.OSX:
-					candidatePaths.Add(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Library", "Application Support", "Steam"));
+					candidatePaths.Add(Path.Combine(
+						Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+						"Library",
+						"Application Support",
+						"Steam"));
 
 					break;
 
 				case PlatformType.Linux:
 					// Direct distro install
-					candidatePaths.Add(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".steam", "root"));
+					candidatePaths.Add(Path.Combine(
+						Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+						".steam",
+						"root"));
 
 					// Flatpak installed via Flathub
-					candidatePaths.Add(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".var", "app", "com.valvesoftware.Steam", ".steam", "root"));
+					candidatePaths.Add(Path.Combine(
+						Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+						".var",
+						"app",
+						"com.valvesoftware.Steam",
+						".steam",
+						"root"));
 
 					break;
 			}

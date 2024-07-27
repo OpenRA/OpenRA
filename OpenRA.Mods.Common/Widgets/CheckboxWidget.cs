@@ -78,7 +78,11 @@ namespace OpenRA.Mods.Common.Widgets
 			var checkmarkImage = getCheckmarkImageCache
 				.Update((GetCheckmark(), IsChecked()))
 				.Update((disabled, Depressed, hover, false, IsHighlighted()));
-			WidgetUtils.DrawSprite(checkmarkImage, new float2(rect.Right - (int)((rect.Height + checkmarkImage.Size.X) / 2), rect.Top + (int)((rect.Height - checkmarkImage.Size.Y) / 2)));
+			WidgetUtils.DrawSprite(
+				checkmarkImage,
+				new float2(
+					rect.Right - (int)((rect.Height + checkmarkImage.Size.X) / 2),
+					rect.Top + (int)((rect.Height - checkmarkImage.Size.Y) / 2)));
 		}
 
 		public override Widget Clone() { return new CheckboxWidget(this); }

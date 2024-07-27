@@ -97,7 +97,8 @@ namespace OpenRA
 			}
 		}
 
-		public static FactionInfo ResolveFaction(string factionName, IEnumerable<FactionInfo> factionInfos, MersenneTwister playerRandom, bool requireSelectable = true)
+		public static FactionInfo ResolveFaction(
+			string factionName, IEnumerable<FactionInfo> factionInfos, MersenneTwister playerRandom, bool requireSelectable = true)
 		{
 			var selectableFactions = factionInfos
 				.Where(f => !requireSelectable || f.Selectable)

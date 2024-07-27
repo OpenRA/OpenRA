@@ -21,7 +21,8 @@ namespace OpenRA.Graphics
 		readonly float alpha;
 		readonly float rotation = 0f;
 
-		public UISpriteRenderable(Sprite sprite, WPos effectiveWorldPos, int2 screenPos, int zOffset, PaletteReference palette, float scale = 1f, float alpha = 1f, float rotation = 0f)
+		public UISpriteRenderable(Sprite sprite, WPos effectiveWorldPos, int2 screenPos, int zOffset, PaletteReference palette,
+			float scale = 1f, float alpha = 1f, float rotation = 0f)
 		{
 			this.sprite = sprite;
 			Pos = effectiveWorldPos;
@@ -47,7 +48,8 @@ namespace OpenRA.Graphics
 		public PaletteReference Palette { get; }
 		public int ZOffset { get; }
 
-		public IPalettedRenderable WithPalette(PaletteReference newPalette) { return new UISpriteRenderable(sprite, Pos, screenPos, ZOffset, newPalette, scale, alpha, rotation); }
+		public IPalettedRenderable WithPalette(PaletteReference newPalette) =>
+			new UISpriteRenderable(sprite, Pos, screenPos, ZOffset, newPalette, scale, alpha, rotation);
 		public IRenderable WithZOffset(int newOffset) { return this; }
 		public IRenderable OffsetBy(in WVec vec) { return this; }
 		public IRenderable AsDecoration() { return this; }

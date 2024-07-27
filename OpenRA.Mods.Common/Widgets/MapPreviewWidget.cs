@@ -212,7 +212,13 @@ namespace OpenRA.Mods.Common.Widgets
 					}
 
 					if (occupied)
-						WidgetUtils.FillEllipseWithColor(new Rectangle(pos.X - offset.X + 1, pos.Y - offset.Y + 1, (int)sprite.Size.X - 2, (int)sprite.Size.Y - 2), occupant.Color);
+						WidgetUtils.FillEllipseWithColor(
+							new Rectangle(
+								pos.X - offset.X + 1,
+								pos.Y - offset.Y + 1,
+								(int)sprite.Size.X - 2,
+								(int)sprite.Size.Y - 2),
+							occupant.Color);
 
 					WidgetUtils.DrawSprite(sprite, pos - offset);
 

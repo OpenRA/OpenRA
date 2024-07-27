@@ -27,7 +27,9 @@ namespace OpenRA.Mods.Common.Traits
 			"Strafe: Perform a fixed-length attack run on the target.")]
 		public readonly AirAttackType AttackType = AirAttackType.Default;
 
-		[Desc("Distance the strafing aircraft makes to a target before turning for another pass. When set to WDist.Zero this defaults to the maximum armament range.")]
+		[Desc(
+			"Distance the strafing aircraft makes to a target before turning for another pass. " +
+			"When set to WDist.Zero this defaults to the maximum armament range.")]
 		public readonly WDist StrafeRunLength = WDist.Zero;
 
 		public override object Create(ActorInitializer init) { return new AttackAircraft(init.Self, this); }
@@ -45,7 +47,8 @@ namespace OpenRA.Mods.Common.Traits
 			aircraftInfo = self.Info.TraitInfo<AircraftInfo>();
 		}
 
-		public override Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
+		public override Activity GetAttackActivity(
+			Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
 			return new FlyAttack(self, source, newTarget, forceAttack, targetLineColor);
 		}

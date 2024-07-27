@@ -36,7 +36,8 @@ namespace OpenRA.Mods.Common.Graphics
 				IndexedSheetSize = FieldLoader.GetValue<int>("IndexedSheetSize", yaml.Value);
 		}
 
-		public virtual ISpriteSequence CreateSequence(ModData modData, string tileset, SpriteCache cache, string image, string sequence, MiniYaml data, MiniYaml defaults)
+		public virtual ISpriteSequence CreateSequence(
+			ModData modData, string tileset, SpriteCache cache, string image, string sequence, MiniYaml data, MiniYaml defaults)
 		{
 			return new DefaultSpriteSequence(cache, this, image, sequence, data, defaults);
 		}
@@ -44,7 +45,8 @@ namespace OpenRA.Mods.Common.Graphics
 		int ISpriteSequenceLoader.BgraSheetSize => BgraSheetSize;
 		int ISpriteSequenceLoader.IndexedSheetSize => IndexedSheetSize;
 
-		IReadOnlyDictionary<string, ISpriteSequence> ISpriteSequenceLoader.ParseSequences(ModData modData, string tileset, SpriteCache cache, MiniYamlNode imageNode)
+		IReadOnlyDictionary<string, ISpriteSequence> ISpriteSequenceLoader.ParseSequences(
+			ModData modData, string tileset, SpriteCache cache, MiniYamlNode imageNode)
 		{
 			var sequences = new Dictionary<string, ISpriteSequence>();
 			var node = imageNode.Value.NodeWithKeyOrDefault("Defaults");
@@ -135,7 +137,9 @@ namespace OpenRA.Mods.Common.Graphics
 		[Desc("The number of facings that are provided by sprite frames. Use negative values to rotate counter-clockwise.")]
 		protected static readonly SpriteSequenceField<int> Facings = new(nameof(Facings), 1);
 
-		[Desc("The total number of facings for the sequence. If >Facings, the closest facing sprite will be rotated to match. Use negative values to rotate counter-clockwise.")]
+		[Desc("The total number of facings for the sequence. " +
+			"If >Facings, the closest facing sprite will be rotated to match. " +
+			"Use negative values to rotate counter-clockwise.")]
 		protected static readonly SpriteSequenceField<int?> InterpolatedFacings = new(nameof(InterpolatedFacings), null);
 
 		[Desc("Time (in milliseconds at default game speed) to wait until playing the next frame in the animation.")]
@@ -302,7 +306,8 @@ namespace OpenRA.Mods.Common.Graphics
 			return Rectangle.FromLTRB(left, top, right, bottom);
 		}
 
-		protected static List<int> CalculateFrameIndices(int start, int? length, int stride, int facings, int[] frames, bool transpose, bool reverseFacings, int shadowStart)
+		protected static List<int> CalculateFrameIndices(
+			int start, int? length, int stride, int facings, int[] frames, bool transpose, bool reverseFacings, int shadowStart)
 		{
 			// Request all frames
 			if (length == null)
@@ -411,10 +416,17 @@ namespace OpenRA.Mods.Common.Graphics
 			// Facings must be an integer factor of 1024 (i.e. 1024 / facings is an integer) to allow the frames to be
 			// mapped uniformly over the full rotation range. This implies that it is a power of 2.
 			if (facings == 0 || facings > 1024 || !Exts.IsPowerOf2(facings))
-				throw new YamlException($"{facingsLocation}: {Facings.Key} must be within the (positive or negative) range of 1 to 1024, and a power of 2.");
+				throw new YamlException(
+					$"{facingsLocation}: {Facings.Key} must be within the (positive or negative) range of 1 to 1024, and a power of 2.");
 
-			if (interpolatedFacings != null && (interpolatedFacings < 2 || interpolatedFacings <= facings || interpolatedFacings > 1024 || !Exts.IsPowerOf2(interpolatedFacings.Value)))
-				throw new YamlException($"{interpolatedFacingsLocation}: {InterpolatedFacings.Key} must be greater than {Facings.Key}, within the range of 2 to 1024, and a power of 2.");
+			if (interpolatedFacings != null &&
+				(interpolatedFacings < 2 ||
+				interpolatedFacings <= facings ||
+				interpolatedFacings > 1024 ||
+				!Exts.IsPowerOf2(interpolatedFacings.Value)))
+				throw new YamlException(
+					$"{interpolatedFacingsLocation}: {InterpolatedFacings.Key} must be greater than {Facings.Key}, " +
+					"within the range of 2 to 1024, and a power of 2.");
 
 			if (length != null && length <= 0)
 				throw new YamlException($"{lengthLocation}: {Length.Key} must be positive.");

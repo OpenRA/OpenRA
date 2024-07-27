@@ -47,7 +47,8 @@ namespace OpenRA.Mods.Cnc.Traits
 		bool IOccupySpaceInfo.SharesCell => false;
 
 		// Used to determine if actor can spawn
-		public bool CanEnterCell(World world, Actor self, CPos cell, SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
+		public bool CanEnterCell(World world, Actor self, CPos cell,
+			SubCell subCell = SubCell.FullCell, Actor ignoreActor = null, BlockedByActor check = BlockedByActor.All)
 		{
 			return world.Map.Contains(cell);
 		}

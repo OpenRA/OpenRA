@@ -58,13 +58,20 @@ namespace OpenRA.Mods.Common.Widgets
 			getMarkerImage ??= WidgetUtils.GetCachedStatefulImage(Decorations, DecorationMarker);
 
 			var arrowImage = getMarkerImage.Update((isDisabled, Depressed, isHover, false, IsHighlighted()));
-			WidgetUtils.DrawSprite(arrowImage, stateOffset + new float2(rb.Right - (int)((rb.Height + arrowImage.Size.X) / 2), rb.Top + (int)((rb.Height - arrowImage.Size.Y) / 2)));
+			WidgetUtils.DrawSprite(
+				arrowImage,
+				stateOffset + new float2(
+					rb.Right - (int)((rb.Height + arrowImage.Size.X) / 2),
+					rb.Top + (int)((rb.Height - arrowImage.Size.Y) / 2)));
 
 			getSeparatorImage ??= WidgetUtils.GetCachedStatefulImage(Separators, SeparatorImage);
 
 			var separatorImage = getSeparatorImage.Update((isDisabled, Depressed, isHover, false, IsHighlighted()));
 			if (separatorImage != null)
-				WidgetUtils.DrawSprite(separatorImage, stateOffset + new float2(-3, 0) + new float2(rb.Right - rb.Height + 4, rb.Top + (int)((rb.Height - separatorImage.Size.Y) / 2)));
+				WidgetUtils.DrawSprite(
+					separatorImage,
+					stateOffset + new float2(-3, 0) + new float2(rb.Right - rb.Height + 4,
+					rb.Top + (int)((rb.Height - separatorImage.Size.Y) / 2)));
 		}
 
 		public override Widget Clone() { return new DropDownButtonWidget(this); }
@@ -138,7 +145,8 @@ namespace OpenRA.Mods.Common.Widgets
 			(panel as ScrollPanelWidget)?.ScrollToSelectedItem();
 		}
 
-		public void ShowDropDown<T>(string panelTemplate, int maxHeight, IEnumerable<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
+		public void ShowDropDown<T>(
+			string panelTemplate, int maxHeight, IEnumerable<T> options, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
 		{
 			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", Bounds.Width } };
 			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs() { { "substitutions", substitutions } });
@@ -160,7 +168,8 @@ namespace OpenRA.Mods.Common.Widgets
 			AttachPanel(panel);
 		}
 
-		public void ShowDropDown<T>(string panelTemplate, int height, Dictionary<string, IEnumerable<T>> groups, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
+		public void ShowDropDown<T>(
+			string panelTemplate, int height, Dictionary<string, IEnumerable<T>> groups, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
 		{
 			var substitutions = new Dictionary<string, int>() { { "DROPDOWN_WIDTH", Bounds.Width } };
 			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs() { { "substitutions", substitutions } });

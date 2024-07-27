@@ -276,7 +276,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			duplicateHotkeyDefinition = modData.Hotkeys.GetFirstDuplicate(selectedHotkeyDefinition, hotkeyEntryWidget.Key);
 			isHotkeyValid = duplicateHotkeyDefinition == null || selectedHotkeyDefinition.Readonly;
-			isHotkeyDefault = hotkeyEntryWidget.Key == selectedHotkeyDefinition.Default || (!hotkeyEntryWidget.Key.IsValid() && !selectedHotkeyDefinition.Default.IsValid());
+			isHotkeyDefault =
+				hotkeyEntryWidget.Key == selectedHotkeyDefinition.Default ||
+				(!hotkeyEntryWidget.Key.IsValid() && !selectedHotkeyDefinition.Default.IsValid());
 
 			if (isHotkeyValid)
 			{

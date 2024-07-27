@@ -45,7 +45,9 @@ namespace OpenRA.Mods.Common.Scripting.Global
 					using (kv.Value)
 					{
 						if (!kv.Key.TryGetClrValue<string>(out var variable) || !kv.Value.TryGetClrValue<object>(out var value))
-							throw new LuaException($"Translation arguments requires a table of [\"string\"]=value pairs. Received {kv.Key.WrappedClrType().Name},{kv.Value.WrappedClrType().Name}");
+							throw new LuaException(
+								"Translation arguments requires a table of [\"string\"]=value pairs. " +
+								$"Received {kv.Key.WrappedClrType().Name},{kv.Value.WrappedClrType().Name}");
 
 						argumentDictionary.Add(variable, value);
 					}

@@ -215,7 +215,9 @@ namespace OpenRA.Graphics
 				MinZoom = CalculateMinimumZoom(range.X, range.Y) * viewportSizes.DefaultScale;
 			}
 
-			MaxZoom = Math.Min(MinZoom * viewportSizes.MaxZoomScale, Game.Renderer.NativeResolution.Height * viewportSizes.DefaultScale / viewportSizes.MaxZoomWindowHeight);
+			MaxZoom = Math.Min(
+				MinZoom * viewportSizes.MaxZoomScale,
+				Game.Renderer.NativeResolution.Height * viewportSizes.DefaultScale / viewportSizes.MaxZoomWindowHeight);
 
 			if (unlockMinZoom)
 			{

@@ -447,7 +447,8 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			}
 		}
 
-		protected virtual bool TryHandleOverlayToActorInner(CPos cell, byte[] overlayPack, CellLayer<int> overlayIndex, byte overlayType, out ActorReference actorReference)
+		protected virtual bool TryHandleOverlayToActorInner(
+			CPos cell, byte[] overlayPack, CellLayer<int> overlayIndex, byte overlayType, out ActorReference actorReference)
 		{
 			actorReference = null;
 			if (!OverlayToActor.TryGetValue(overlayType, out var actorType))

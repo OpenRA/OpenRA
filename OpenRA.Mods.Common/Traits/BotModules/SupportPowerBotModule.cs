@@ -111,7 +111,9 @@ namespace OpenRA.Mods.Common.Traits
 					waitingPowers[sp] += 10;
 
 					// Note: SelectDirectionalTarget uses uint.MaxValue in ExtraData to indicate that the player did not pick a direction.
-					bot.QueueOrder(new Order(sp.Key, supportPowerManager.Self, Target.FromCell(world, attackLocation.Value), false) { SuppressVisualFeedback = true, ExtraData = uint.MaxValue });
+					bot.QueueOrder(
+						new Order(sp.Key, supportPowerManager.Self, Target.FromCell(world, attackLocation.Value), false)
+						{ SuppressVisualFeedback = true, ExtraData = uint.MaxValue });
 				}
 			}
 

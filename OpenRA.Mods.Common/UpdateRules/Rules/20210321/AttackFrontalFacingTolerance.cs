@@ -17,7 +17,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 	{
 		public override string Name => "Adds the old default value for AttackFrontal's FacingTolerance.";
 
-		public override string Description => "The tolerance for the attack angle was defined twice on AttackFrontal. This override has to be defined in the rules now.";
+		public override string Description =>
+			"The tolerance for the attack angle was defined twice on AttackFrontal. " +
+			"This override has to be defined in the rules now.";
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{

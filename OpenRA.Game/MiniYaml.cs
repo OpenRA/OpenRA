@@ -444,7 +444,8 @@ namespace OpenRA
 				existingNodes.Add(overrideNode.WithValue(value));
 		}
 
-		static List<MiniYamlNode> ResolveInherits(MiniYaml node, Dictionary<string, MiniYaml> tree, ImmutableDictionary<string, MiniYamlNode.SourceLocation> inherited)
+		static List<MiniYamlNode> ResolveInherits(
+			MiniYaml node, Dictionary<string, MiniYaml> tree, ImmutableDictionary<string, MiniYamlNode.SourceLocation> inherited)
 		{
 			var resolved = new List<MiniYamlNode>(node.Nodes.Length);
 			var resolvedKeys = new HashSet<string>(node.Nodes.Length);

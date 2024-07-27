@@ -629,8 +629,8 @@ namespace OpenRA.Support
 					if (lastToken.RightOperand == token.LeftOperand)
 					{
 						if (lastToken.RightOperand)
-							throw new InvalidDataException(
-								$"Missing value or sub-expression or there is an extra operator `{lastToken.Symbol}` at index {lastToken.Index} or `{token.Symbol}` at index {token.Index}");
+							throw new InvalidDataException("Missing value or sub-expression or there is an extra operator " +
+								$"`{lastToken.Symbol}` at index {lastToken.Index} or `{token.Symbol}` at index {token.Index}");
 						throw new InvalidDataException($"Missing binary operation before `{token.Symbol}` at index {token.Index}");
 					}
 				}
@@ -937,7 +937,9 @@ namespace OpenRA.Support
 						}
 
 						default:
-							throw new InvalidProgramException($"ConditionExpression.Compiler.Compile() is missing an expression builder for TokenType.{Enum<TokenType>.GetValues()[(int)t.Type]}");
+							throw new InvalidProgramException(
+								"ConditionExpression.Compiler.Compile() is missing an expression builder for " +
+								$"TokenType.{Enum<TokenType>.GetValues()[(int)t.Type]}");
 					}
 				}
 
