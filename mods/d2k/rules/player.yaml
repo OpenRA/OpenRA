@@ -133,7 +133,7 @@ Player:
 		Prerequisites: global-auto-concrete
 	FrozenActorLayer:
 	HarvesterAttackNotifier:
-		ExludeDamageTypes: SpiceExplosion
+		ExcludeDamageTypes: SpiceExplosion
 		TextNotification: notification-harvester-under-attack
 	PlayerStatistics:
 	PlaceBeacon:
