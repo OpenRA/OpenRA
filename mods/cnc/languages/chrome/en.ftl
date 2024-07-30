@@ -158,7 +158,7 @@ label-game-info-panel-title = Game Information
 label-mission-objectives = Mission:
 
 ## ingame-infoscripterror.yaml
-label-script-error-panel-desca = The map script has encountered a fatal error
+label-script-error-panel-desca = The map script has encountered a fatal error.
 label-script-error-panel-descb = The details of the error have been saved to lua.log in the logs directory.
 label-script-error-panel-descc = Please send this file to the map author so that they can fix this issue.
 
@@ -230,96 +230,96 @@ supportpowers-support-powers-palette =
 
 button-command-bar-attack-move =
    .tooltip = Attack Move
-   .tooltipdesc = Selected units will move to the desired location
-    and attack any enemies they encounter en route.
+   .tooltipdesc = Selected units move to the target location
+    and attack any enemies they encounter en route
 
     Hold <(Ctrl)> while targeting to order an Assault Move
-    that attacks any units or structures encountered en route.
+    that attacks any units or structures encountered en route
 
-    Left-click icon then right-click on target location.
+    Left-click the icon then right-click on the target
 
 button-command-bar-force-move =
    .tooltip = Force Move
-   .tooltipdesc = Selected units will move to the desired location
+   .tooltipdesc = Selected units move to the target location
      - Default activity for the target is suppressed
-     - Vehicles will attempt to crush enemies at the target location
-     - Helicopters will land at the target location
+     - Vehicles attempt to crush enemies at the target location
+     - Helicopters land at the target location
 
-    Left-click icon then right-click on target.
-    Hold <(Alt)> to activate temporarily while commanding units.
+    Left-click the icon then right-click on the target
+    Hold <(Alt)> to temporarily activate while commanding units
 
 button-command-bar-force-attack =
    .tooltip = Force Attack
-   .tooltipdesc = Selected units will attack the targeted unit or location
+   .tooltipdesc = Selected units attack the targeted unit or location
      - Default activity for the target is suppressed
-     - Allows targeting of own or ally forces
-     - Long-range artillery units will always target the
+     - Allows targeting of own or allied forces
+     - Long-range artillery units always target the
        location, ignoring units and buildings
 
-    Left-click icon then right-click on target.
-    Hold <(Ctrl)> to activate temporarily while commanding units.
+    Left-click the icon then right-click on the target
+    Hold <(Ctrl)> to temporarily activate while commanding units
 
 button-command-bar-guard =
    .tooltip = Guard
-   .tooltipdesc = Selected units will follow the targeted unit.
+   .tooltipdesc = Selected units follow the targeted unit
 
-    Left-click icon then right-click on target unit.
+    Left-click the icon then right-click on the target
 
 button-command-bar-deploy =
    .tooltip = Deploy
-   .tooltipdesc = Selected units will perform their default deploy activity
-     - MCVs will unpack into a Construction Yard
-     - Construction Yards will re-pack into a MCV
-     - Transports will unload their passengers
+   .tooltipdesc = Selected units perform their default deploy activity
+     - MCVs deploy into Construction Yards
+     - Construction Yards re-pack into MCVs
+     - Transports unload their passengers
 
-    Acts immediately on selected units.
+    Acts immediately on selected units
 
 button-command-bar-scatter =
    .tooltip = Scatter
-   .tooltipdesc = Selected units will stop their current activity
-    and move to a nearby location.
+   .tooltipdesc = Selected units stop their current activity
+    and scatter to a nearby location
 
-    Acts immediately on selected units.
+    Acts immediately on selected units
 
 button-command-bar-stop =
    .tooltip = Stop
-   .tooltipdesc = Selected units will stop their current activity.
-    Selected buildings will reset their rally point.
+   .tooltipdesc = Selected units stop their current activity
+    Selected buildings reset their rally point
 
-    Acts immediately on selected targets.
+    Acts immediately on selected targets
 
 button-command-bar-queue-orders =
    .tooltip = Waypoint Mode
    .tooltipdesc = Use Waypoint Mode to give multiple linking commands
-    to the selected units. Units will execute the commands
+    to the selected units. Units execute the commands
     immediately upon receiving them.
 
-    Left-click icon then give commands in the game world.
-    Hold <(Shift)> to activate temporarily while commanding units.
+    Left-click the icon then issue commands in the game world
+    Hold <(Shift)> to temporarily activate while commanding units
 
 button-stance-bar-attackanything =
    .tooltip = Attack Anything Stance
    .tooltipdesc = Set the selected units to Attack Anything stance:
-     - Units will attack enemy units and structures on sight
-     - Units will pursue attackers across the battlefield
+     - Units attack enemy units and structures on sight
+     - Units pursue attackers across the battlefield
 
 button-stance-bar-defend =
    .tooltip = Defend Stance
-   .tooltipdesc = Set the selected units to Defend stance:
-     - Units will attack enemy units on sight
-     - Units will not move or pursue enemies
+   .tooltipdesc = Set the selected units to Defense stance:
+     - Units attack enemy units on sight
+     - Units do not move or pursue enemies
 
 button-stance-bar-returnfire =
    .tooltip = Return Fire Stance
    .tooltipdesc = Set the selected units to Return Fire stance:
-     - Units will retaliate against enemies that attack them
-     - Units will not move or pursue enemies
+     - Units retaliate against enemies that attack them
+     - Units do not move or pursue enemies
 
 button-stance-bar-holdfire =
    .tooltip = Hold Fire Stance
    .tooltipdesc = Set the selected units to Hold Fire stance:
-     - Units will not fire upon enemies
-     - Units will not move or pursue enemies
+     - Units do not fire upon enemies
+     - Units do not move or pursue enemies
 
 label-mute-indicator = Audio Muted
 button-top-buttons-sell-tooltip = Sell
@@ -338,16 +338,16 @@ productionpalette-player-widgets-production-palette =
 
 ## lobby-kickdialogs.yaml
 label-kick-client-dialog-texta = You may also apply a temporary ban, preventing
-label-kick-client-dialog-textb = them from joining for the remainder of this game.
+label-kick-client-dialog-textb = them from joining for the rest of the game
 checkbox-kick-client-dialog-prevent-rejoining = Temporarily Ban
 button-kick-client-dialog = Kick
 label-kick-spectators-dialog-title = Kick Spectators
 button-kick-spectators-dialog-ok = Ok
 label-force-start-dialog-title = Start Game?
 label-force-start-dialog-texta = One or more players are not yet ready.
-label-force-start-dialog-textb = Are you sure that you want to force start the game?
+label-force-start-dialog-textb = Are you sure you want to force start the game?
 label-kick-warning-a = One or more clients are missing the selected
-label-kick-warning-b = map, and will be kicked from the server.
+label-kick-warning-b = map, and will be kicked from the server
 button-force-start-dialog-start = Start
 
 ## lobby-mappreview.yaml
@@ -380,7 +380,7 @@ checkbox-music-controls-loop = Loop
 label-container-title = Track
 label-no-music-title = Music Not Installed
 label-no-music-desca = The game music can be installed
-label-no-music-descb = from the "Manage Content" menu.
+label-no-music-descb = from the "Manage Content" menu
 
 ## lobby-options.yaml
 label-lobby-options-bin-title = Map Options
@@ -402,7 +402,7 @@ button-lobby-players-spectate = Spectate
 
 ## lobby-servers.yaml
 image-lobby-servers-bin-password-protected-tooltip = Requires Password
-image-lobby-servers-bin-requires-authentication-tooltip = Requires OpenRA forum account
+image-lobby-servers-bin-requires-authentication-tooltip = Requires an OpenRA Forum account
 dropdownbutton-lobby-servers-bin-filters = Filter Games
 
 ## lobby.yaml
@@ -476,7 +476,7 @@ button-extras-menu-assetbrowser = Asset Browser
 button-map-editor-new-map = New Map
 button-map-editor-load-map = Load Map
 dropdownbutton-news-bg-button = Battlefield News
-label-update-notice-a = You are running an outdated version of OpenRA.
+label-update-notice-a = You are running an outdated version of OpenRA
 label-update-notice-b = Download the latest version from www.openra.net
 
 ## mainmenu.yaml, missionbrowser.yaml
@@ -541,20 +541,20 @@ label-bg-password = Password:
 label-bg-after-password = (optional)
 label-bg-listen-port = Port:
 checkbox-bg-advertise = Advertise Online
-label-notices-lan-advertising = - Game will be advertised to the Local Area Network only.
-label-notices-lan-firewall = - You must manually configure your firewall to allow connections.
+label-notices-lan-advertising = - Game will be advertised to the Local Area Network only
+label-notices-lan-firewall = - You must manually configure your firewall to allow connections
 label-notices-lan-portforward-a = - Players can connect using Direct IP from the Internet if you
-label-notices-lan-portforward-b = manually configure port forwarding on your router.
-label-notices-no-upnp-advertising = - Game will be advertised to the Local Area Network and Internet.
-label-notices-no-upnp-firewall = - You must manually configure your firewall to allow connections.
+label-notices-lan-portforward-b = manually configure port forwarding on your router
+label-notices-no-upnp-advertising = - Game will be advertised to the Local Area Network and Internet
+label-notices-no-upnp-firewall = - You must manually configure your firewall to allow connections
 label-notices-no-upnp-portforward-a = - You must manually configure your router to allow and forward
-label-notices-no-upnp-portforward-b = connections to your local IP and Port.
+label-notices-no-upnp-portforward-b = connections to your local IP and Port
 label-notices-no-upnp-settings-a = - You can enable UPnP/NAT-PMP (if supported by your router)
-label-notices-no-upnp-settings-b = in the Advanced tab of the settings menu.
-label-notices-upnp-advertising = - Game will be advertised to the Local Area Network and Internet.
-label-notices-upnp-firewall = - You must manually configure your firewall to allow connections.
-label-notices-upnp-portforward-a = - Game will automatically configure port forwarding.
-label-notices-upnp-settings-a = - You can disable UPnP/NAT-PMP in the settings menu.
+label-notices-no-upnp-settings-b = in the Advanced tab of the settings menu
+label-notices-upnp-advertising = - Game will be advertised to the Local Area Network and Internet
+label-notices-upnp-firewall = - You must manually configure your firewall to allow connections
+label-notices-upnp-portforward-a = - Game will automatically configure port forwarding
+label-notices-upnp-settings-a = - You can disable UPnP/NAT-PMP in the settings menu
 button-multiplayer-createserver-panel-change-map = Change Map
 button-multiplayer-createserver-panel-create = Create
 
@@ -568,19 +568,19 @@ button-directconnect-panel-join = Join
 button-profile-header-logout = Logout
 label-generate-keys-desc-a = Connect to a forum account to identify
 label-generate-keys-desc-b = yourself to other players, join private
-label-generate-keys-desc-c = servers, and display badges.
+label-generate-keys-desc-c = servers, and display badges
 button-generate-keys-key = Connect to an OpenRA forum account
-label-generating-keys-desc-a = Generating authentication key pair.
+label-generating-keys-desc-a = Generating authentication key pair
 label-generating-keys-desc-b = This will take several seconds...
 label-register-fingerprint-desc-a = An authentication key has been copied to your
 label-register-fingerprint-desc-b = clipboard. Add this to your User Control Panel
-label-register-fingerprint-desc-c = on the OpenRA forum then press Continue.
+label-register-fingerprint-desc-c = on the OpenRA forum then press Continue
 label-checking-fingerprint-desc-a = Querying account details from
 label-checking-fingerprint-desc-b = the OpenRA forum...
 label-fingerprint-not-found-desc-a = Your authentication key is not connected
-label-fingerprint-not-found-desc-b = to an OpenRA forum account.
-label-connection-error-desc-a = Failed to connect to the OpenRA forum.
-label-connection-error-desc-b = Please check your internet connection.
+label-fingerprint-not-found-desc-b = to an OpenRA forum account
+label-connection-error-desc-a = Failed to connect to the OpenRA forum
+label-connection-error-desc-b = Please check your internet connection
 
 ## replaybrowser.yaml
 label-replaybrowser-panel-title = Replay Viewer
@@ -610,7 +610,7 @@ checkbox-perfgraph-container = Show Performance Graph
 checkbox-check-version-container = Check for Updates
 checkbox-perftext-container = Show Performance Text
 checkbox-sendsysinfo-container = Send System Information
-label-sendsysinfo-checkbox-container-desc = Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development.
+label-sendsysinfo-checkbox-container-desc = Your Operating System, OpenGL and .NET runtime versions, and language settings will be sent along with an anonymous ID to help prioritize future development
 label-debug-section-header = Developer
 label-debug-hidden-container-a = Additional developer-specific options can be enabled via the
 label-debug-hidden-container-b = Debug.DisplayDeveloperSettings setting or launch flag
@@ -670,7 +670,7 @@ label-restart-required-container-video-desc = Display and OpenGL changes require
 label-hotkeys-panel-filter-input = Filter by name:
 label-hotkeys-panel-context-dropdown = Context:
 label-hotkey-empty-list-message = No hotkeys match the filter criteria.
-label-notices-readonly-notice = This hotkey cannot be modified
+label-notices-readonly-notice = This hotkey cannot be modified.
 button-hotkey-remap-dialog-override = Override
 
 button-hotkey-remap-dialog-clear =

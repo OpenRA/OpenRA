@@ -7,16 +7,16 @@ options-tech-level =
 
 checkbox-redeployable-mcvs =
     .label = Redeployable MCVs
-    .description = Allow undeploying Construction Yard
+    .description = Allows Construction Yards to be undeployed
 
-notification-insufficient-funds = Insufficient funds.
-notification-new-construction-options = New construction options.
-notification-cannot-deploy-here = Cannot deploy here.
-notification-low-power = Low power.
-notification-base-under-attack = Base under attack.
-notification-ally-under-attack = Our ally is under attack.
-notification-harvester-under-attack = Harvester under attack.
-notification-silos-needed = Silos needed.
+notification-insufficient-funds = Insufficient funds
+notification-new-construction-options = New construction options
+notification-cannot-deploy-here = Cannot deploy here
+notification-low-power = Low power
+notification-base-under-attack = Base under attack
+notification-ally-under-attack = Our ally is under attack
+notification-harvester-under-attack = Harvester under attack
+notification-silos-needed = Silos needed
 
 ## World
 options-starting-units =
@@ -29,50 +29,50 @@ dropdown-map-creeps =
     .label = Creep Actors
     .description = Hostile forces spawn on the battlefield
 
-resource-veins = Veins
+resource-veins = Tiberium Veins
 resource-tiberium = Tiberium
 
 faction-random =
     .name = Any
     .description = Random Faction
-     A random faction will be chosen when the game starts
+     A random faction is chosen when the game starts
 
 faction-gdi =
     .name = GDI
     .description = Global Defense Initiative
      The GDI is an international military branch of the United Nations tasked
      with keeping world peace. Commanding the combined forces of the world's
-     most powerful nations, they possess an unmatched arsenal of high-tech weaponry.
+     most powerful nations, it possesses an unmatched arsenal of high-tech weaponry.
 
 faction-nod =
     .name = Nod
     .description = Brotherhood of Nod
      The Brotherhood is a religious cult centered around their leader Kane
-     and the alien substance Tiberium. They utilize stealth technology
-     and guerilla tactics to defeat those who oppose them.
+     and the alien substance Tiberium. They employ stealth technology
+     and guerrilla tactics to defeat those who oppose them.
 
 ## Structures
-notification-construction-complete = Construction complete.
-notification-unit-ready = Unit ready.
+notification-construction-complete = Construction complete
+notification-unit-ready = Unit ready
 notification-unable-to-comply-building-in-progress = Unable to comply. Building in progress.
-notification-repairing = Repairing.
-notification-unit-repaired = Unit repaired.
-notification-unit-sold = Unit sold.
-notification-ion-cannon-ready = Ion cannon ready.
-notification-select-target = Select target.
-notification-cluster-missile-ready = Cluster missile ready.
-notifciation-missile-launch-detected = Missile launch detected.
-notification-emp-cannon-ready = EMP cannon ready.
+notification-repairing = Repairing
+notification-unit-repaired = Unit repaired
+notification-unit-sold = Unit sold
+notification-ion-cannon-ready = Ion cannon ready
+notification-select-target = Select target
+notification-cluster-missile-ready = Cluster missile ready
+notifciation-missile-launch-detected = Missile launch detected
+notification-emp-cannon-ready = EMP cannon ready
 
 ## Defaults
-notification-unit-lost = Unit lost.
-notification-unit-promoted = Unit promoted.
-notification-primary-building-selected = Primary building selected.
+notification-unit-lost = Unit lost
+notification-unit-promoted = Unit promoted
+notification-primary-building-selected = Primary building selected
 
 ## Infantry
-notification-building-infiltrated = Building infiltrated.
-notification-building-captured = Building captured.
-notification-bridge-repaired = Bridge repaired.
+notification-building-infiltrated = Building infiltrated
+notification-building-captured = Building captured
+notification-bridge-repaired = Bridge repaired
 
 ## aircraft.yaml
 actor-dpod-name = Drop Pod
@@ -82,49 +82,49 @@ actor-dshp-name = Dropship
 actor-orca =
    .name = Orca Fighter
    .description = Fast assault gunship with
-    dual missile launchers.
-      Strong vs Buildings, Vehicles
-      Weak vs Infantry, Aircraft
+    dual missile launchers
+      Strong vs. Buildings and Vehicles
+      Weak vs. Infantry and Aircraft
 
 actor-orcab =
    .name = Orca Bomber
-   .description = Heavy bomber.
-      Strong vs Buildings, Vehicles
-      Weak vs Infantry, Aircraft
+   .description = Heavy bomber
+      Strong vs. Buildings and Vehicles
+      Weak vs. Infantry and Aircraft
 
 actor-orcatran-name = Orca Transport
 
 actor-trnsport =
    .name = Carryall
    .description = VTOL aircraft capable of lifting
-    and transporting vehicles.
+    and transporting vehicles
       Unarmed
 
 actor-scrin =
    .name = Banshee Fighter
    .description = Advanced fighter-bomber craft
-    with twin plasma cannons.
-      Strong vs Buildings, Vehicles
-      Weak vs Infantry, Aircraft
+    with twin plasma cannons
+      Strong vs. Buildings and Vehicles
+      Weak vs. Infantry and Aircraft
 
 actor-apache =
    .name = Harpy
    .description = Anti-personnel support gunship
-    armed with dual chain guns.
-      Strong vs Infantry, Light armor, Aircraft
-      Weak vs Vehicles
+    with dual chain guns
+      Strong vs. Infantry, Light armor and Aircraft
+      Weak vs. Vehicles
 
 actor-hunter-name = Hunter-Seeker Droid
 
 ## bridges.yaml
 actor-cabhut-name = Bridge repair hut
 meta-lowbridgeramp-name = Bridge
-actor-lobrdg-a-d-name = Dead Bridge
-actor-lobrdg-b-d-name = Dead Bridge
-actor-lobrdg-r-se-name = Bridge Ramp
-actor-lobrdg-r-nw-name = Bridge Ramp
-actor-lobrdg-r-ne-name = Bridge Ramp
-actor-lobrdg-r-sw-name = Bridge Ramp
+actor-lobrdg-a-d-name = Destroyed Bridge (A)
+actor-lobrdg-b-d-name = Destroyed Bridge (B)
+actor-lobrdg-r-se-name = Bridge Ramp (SE)
+actor-lobrdg-r-nw-name = Bridge Ramp (NW)
+actor-lobrdg-r-ne-name = Bridge Ramp (NE)
+actor-lobrdg-r-sw-name = Bridge Ramp (SW)
 meta-elevatedbridgeplaceholder-name = Bridge
 
 ## civilian-infantry.yaml
@@ -136,7 +136,7 @@ actor-mwmn-name = Mutant Soldier
 actor-mutant3-name = Mutant Sergeant
 actor-tratos-name = Tratos
 actor-oxanna-name = Oxanna
-actor-slav-name = Slavick
+actor-slav-name = Slavik
 
 ## civilian-structures.yaml
 actor-aban01-name = WS Logging Company
@@ -165,13 +165,13 @@ actor-bboard04-name = Visit Scenic Las Vegas
 actor-bboard05-name = Rooms $29 a nite
 actor-bboard06-name = Kaspm's Tiberium Warhouse
 actor-bboard07-name = Alkaline's Battery Superstore
-actor-bboard08-name = Alex-gators petshop just ahead!
-actor-bboard09-name = TacticX games rock!
+actor-bboard08-name = Alex-Gator's Petshop just ahead!
+actor-bboard09-name = TacticX Games rock!
 actor-bboard10-name = WW Surf and Turf hits the spot!
 actor-bboard11-name = Only 11 miles to Zydeko's cafe!
 actor-bboard12-name = No escape from Archer's Asylum!
 actor-bboard13-name = Stop in at Hewitt's hair salon
-actor-bboard14-name = Billy Bob's Harvester school
+actor-bboard14-name = Billy Bob's Harvester School
 actor-bboard15-name = Pannullo's hacienda es bueno
 actor-bboard16-name = Join GDI: We save lives.
 actor-ca0001-name = Rade's Roadhouse
@@ -201,12 +201,12 @@ actor-cacrsh01-name = Crash Site
 actor-capyr01-name = Pyramid
 actor-capyr02-name = Pyramid
 actor-capyr03-name = Pyramid
-actor-city01-name = Connelly Court Apts.
+actor-city01-name = Connelly Court Apts
 actor-city02-name = Lightner's Luxury Suites
 actor-city03-name = Office Building
 actor-city04-name = Westwood Stock Exchange
 actor-city05-name = Daily Sun Times
-actor-city06-name = YEO-CA Cola Corp.
+actor-city06-name = YEO-CA Cola Corp
 actor-city07-name = Urban Housing
 actor-city08-name = Yee's Discount Liquor
 actor-city09-name = Abandoned Warehouse
@@ -234,8 +234,8 @@ actor-gaoldcc5-name = Old Advanced Power Plant
 actor-gaoldcc6-name = Old Silos
 
 actor-gasand =
-   .description = Stops infantry and light vehicles.
-    Can be crushed by tanks.
+   .description = Stops infantry and light vehicles
+    Can be crushed by tanks
    .name = Sandbags
 
 actor-gaspot-name = Light Tower
@@ -255,7 +255,7 @@ actor-ingrnlmp-name = (Invisible Green Light Post)
 actor-inredlmp-name = (Invisible Red Light Post)
 actor-inblulmp-name = (Invisible Blue Light Post)
 actor-gaicbm-name = Deployed ICBM
-actor-namntk-name = NOD Montauk
+actor-namntk-name = Nod Montauk
 actor-ntpyra-name = Nod Pyramid
 actor-ufo-name = Scrin Ship
 
@@ -286,113 +286,113 @@ meta-tree-name = Tree
 meta-rock-name = Rock
 meta-box-name = Box
 meta-drum-name = Drum
-meta-palette-name = Palette
+meta-palette-name = Pallet
 meta-railway-name = Railway
-meta-gate-description = Automated barrier that opens for allied units.
+meta-gate-description = Automated gate that opens for allied units
 
 ## gdi-infantry.yaml
 actor-e2 =
-   .description = Infantry armed with special explosive discs.
-      Strong vs Buildings, Infantry
-      Weak vs Vehicles, Aircraft
+   .description = Infantry with special explosive discs
+      Strong vs. Buildings and Infantry
+      Weak vs. Vehicles and Aircraft
    .name = Disc Thrower
 
 actor-medic =
    .name = Medic
-   .description = Heals nearby infantry.
+   .description = Heals nearby infantry
       Unarmed
 
 actor-jumpjet =
-   .name = Jumpjet Infantry
-   .description = Airborne soldier.
-      Strong vs Infantry, Aircraft
-      Weak vs Vehicles
+   .name = Jump Jet Infantry
+   .description = Airborne soldier
+      Strong vs. Infantry and Aircraft
+      Weak vs. Vehicles
 
-actor-jumpjet-husk-name = Jumpjet Infantry
+actor-jumpjet-husk-name = Jump Jet Infantry
 
 actor-ghost =
    .name = Ghost Stalker
-   .description = Elite commando infantry, armed with
-    a railgun and C4.
-      Strong vs Infantry, Buildings
-      Weak vs Vehicles, Aircraft
+   .description = Elite commando infantry with
+    a railgun and C4
+      Strong vs. Infantry and Buildings
+      Weak vs. Vehicles and Aircraft
       Special Ability: Destroy Building with C4
-    Maximum 1 can be trained.
+    Only one can be trained at a time
 
 ## gdi-structures.yaml
 actor-gapowr =
-   .description = Provides power for other structures.
+   .description = Provides power for other structures
    .name = GDI Power Plant
 
 actor-gapowr-socket-name = GDI Power Plant socket
 
 actor-gapowrup =
    .name = Power Turbine
-   .description = Provides extra power generation.
+   .description = Provides extra power generation
 
 actor-gapile =
-   .description = Produces infantry.
+   .description = Produces infantry
    .name = GDI Barracks
 
 actor-gaweap =
    .name = GDI War Factory
-   .description = Produces vehicles.
+   .description = Produces vehicles
 
 actor-gahpad =
    .name = Helipad
    .description = Produces, rearms and
-    repairs helicopters.
+    repairs helicopters
 
 actor-gadept =
    .name = Service Depot
-   .description = Repairs or sells vehicles and aircraft.
+   .description = Repairs or sells vehicles and aircraft
 
 actor-garadr =
-   .description = Provides an overview of the battlefield.
-    Can detect cloaked units.
-    Requires power to operate.
+   .description = Provides an overview of the battlefield
+    Can detect cloaked units
+    Requires power to operate
    .name = GDI Radar
 
 actor-gatech =
-   .description = Provides access to advanced GDI technologies.
+   .description = Provides access to advanced GDI technologies
    .name = GDI Tech Center
 
 actor-gaplug =
    .name = GDI Upgrade Center
-   .description = Can be upgraded for additional technology.
+   .description = Can be upgraded for additional technology
    .ioncannonpower-name = Ion Cannon
-   .ioncannonpower-description = Initiate an Ion Cannon strike.
+   .ioncannonpower-description = Initiates an Ion Cannon strike.
     Applies instant damage to a small area.
    .droppodspower-name = Drop Pods
    .droppodspower-description = Drop Pod reinforcements.
-    Small team of elite soldiers orbital drops
-    to target location.
+    A small team of elite soldiers make an orbital drop
+    at the target location.
    .produceactorpower-name = Hunter Seeker
-   .produceactorpower-description = Releases a drone that will acquire and destroy an enemy target.
+   .produceactorpower-description = Drones that seek and destroy enemy targets
 
 actor-gafire =
-   .name = Firestrom Generator
-   .description = Building that grants access to Firestrom device.
+   .name = Firestorm Generator
+   .description = Building that grants access to the Firestorm device
 
 actor-gaplug-socket-ioncannon-name = GDI Upgrade Center socket
 actor-gaplug-socket-hunterseeker-name = GDI Upgrade Center socket
 
 actor-gaplug2 =
    .name = Seeker Control
-   .description = Enables use of the hunter-seeker droid.
+   .description = Allows use of the hunter-seeker droid
 
 actor-gaplug3 =
    .name = Ion Cannon Uplink
-   .description = Enables use of the Ion Cannon.
+   .description = Allows use of the Ion Cannon
 
 actor-gaplug4 =
    .name = Drop Pod Node
-   .description = Enables use of the Drop Pod Reinforcements.
+   .description = Allows use of Drop Pod Reinforcements
 
 ## gdi-support.yaml
 actor-gawall =
-   .description = Stops infantry and blocks enemy fire.
-    Can NOT be crushed by tanks.
+   .description = Stops infantry and blocks enemy fire
+    Can NOT be crushed by tanks
    .name = Concrete Wall
 
 actor-gagate-a-name = GDI Gate
@@ -400,83 +400,83 @@ actor-gagate-b-name = GDI Gate
 
 actor-gactwr =
    .name = Component Tower
-   .description = Modular tower for base defenses.
+   .description = Modular tower for base defenses
 
 actor-gactwr-socket-name = Component Tower (unupgraded)
 
 actor-gavulc =
    .name = Vulcan Tower
-   .description = Basic base defense.
-    Does not require power to operate.
-      Strong vs Infantry, Light armor
-      Weak vs Aircraft
+   .description = Basic base defense
+    Does not require power to operate
+      Strong vs. Infantry and Light armor
+      Weak vs. Aircraft
 
 actor-garock =
    .name = RPG Upgrade
-   .description = GDI Advanced base defense.
-    Does not require power to operate.
-      Strong vs Armored ground units
-      Weak vs Aircraft
+   .description = GDI Advanced base defense
+    Does not require power to operate
+      Strong vs. Armored ground units
+      Weak vs. Aircraft
 
 actor-gacsam =
    .name = SAM Upgrade
-   .description = GDI Anti-Air base defense.
-    Does not require power to operate.
-      Strong vs Aircraft
-      Weak vs Ground units
+   .description = GDI Anti-Air base defense
+    Does not require power to operate
+      Strong vs. Aircraft
+      Weak vs. Ground units
 
 ## gdi-vehicles.yaml
 actor-apc =
    .name = Amphibious APC
-   .description = Armored infantry transport.
-    Can move on water.
+   .description = Armored infantry transport
+    Can move on water
       Unarmed
 
 actor-hvr =
    .name = Hover MLRS
-   .description = Hovering vehicle armed with
-    long range missiles.
-      Strong vs Vehicles, Aircraft
-      Weak vs Infantry
+   .description = Hovering vehicle with
+    long-range missiles
+      Strong vs. Vehicles and Aircraft
+      Weak vs. Infantry
 
 actor-smech =
    .name = Wolverine
-   .description = Anti-personnel walker.
-      Strong vs Infantry, Light armor
-      Weak vs Vehicles, Aircraft
+   .description = Anti-personnel walker
+      Strong vs. Infantry and Light armor
+      Weak vs. Vehicles and Aircraft
 
 actor-mmch =
    .name = Titan
-   .description = General purpose mechanized walker.
-      Strong vs Vehicles
-      Weak vs Infantry, Aircraft
+   .description = General purpose mechanized walker
+      Strong vs. Vehicles
+      Weak vs. Infantry and Aircraft
 
 actor-hmec =
    .name = Mammoth Mk. II
-   .description = Slow heavy walker.
-    Armed with dual railguns and rocket launchers.
-      Strong vs Infantry, Vehicles, Aircraft and Buildings
-      Weak vs Nothing
-    Maximum 1 can be built.
+   .description = Slow, heavyily armored walker
+    Armed with dual railguns and rocket launchers
+      Strong vs. Infantry, Vehicles, Aircraft and Buildings
+      Weak vs. Nothing
+    Only one can be built
 
 actor-sonic =
    .name = Disruptor
    .description = Armored high-tech vehicle with
-    long range and sonic armament.
-      Strong vs Infantry, Vehicles, Buildings
-      Weak vs Aircraft
+    long-range and sonic armament
+      Strong vs. Infantry, Vehicles and Buildings
+      Weak vs. Aircraft
 
 actor-jugg =
    .name = Juggernaut
    .deployed--name = Juggernaut (deployed)
-   .description = Mobile Artillery Mech.
-    Needs to deploy in order to shoot.
-      Strong vs Ground units
-      Weak vs Aircraft
+   .description = Mobile Artillery Mech
+    Needs to deploy in order to shoot
+      Strong vs. Ground units
+      Weak vs. Aircraft
 
 actor-mobilemp =
    .description = Fires a pulse blast which disables
-    all mechanical units in the area.
+    all mechanical units in the area
    .name = Mobile EMP Cannon
 
 ## husks.yaml
@@ -495,220 +495,219 @@ actor-camera-name = (reveals area to owner)
 
 ## nod-infantry.yaml
 actor-e3 =
-   .description = Anti-tank infantry.
-      Strong vs Vehicles, Aircraft, Buildings
-      Weak vs Infantry
+   .description = Anti-tank infantry
+      Strong vs. Vehicles, Aircraft and Buildings
+      Weak vs. Infantry
    .name = Rocket Infantry
 
 actor-cyborg =
    .name = Cyborg Infantry
-   .description = Cybernetic infantry unit.
-      Strong vs Infantry, Light armor
-      Weak vs Vehicles, Aircraft
+   .description = Cybernetic infantry unit
+      Strong vs. Infantry and Light armor
+      Weak vs. Vehicles and Aircraft
 
 actor-cyc2 =
    .name = Cyborg Commando
-   .description = Elite cybernetic infantry unit.
-      Strong vs Infantry, Vehicles, Buildings
-      Weak vs Aircraft
-    Maximum 1 can be trained.
+   .description = Elite cybernetic infantry unit
+      Strong vs. Infantry, Vehicles and Buildings
+      Weak vs. Aircraft
+    Only one can be trained
 
 actor-mhijack =
-   .description = Hijacks enemy vehicles.
+   .description = Hijacks enemy vehicles
       Unarmed
    .name = Mutant Hijacker
 
 ## nod-structures.yaml
 actor-napowr =
-   .description = Provides power for other structures.
+   .description = Provides power to other structures
    .name = Nod Power Plant
 
 actor-naapwr =
    .description = Provides twice as much power as
-    the normal Power Plant.
+    a Power Plant
    .name = Advanced Power Plant
 
 actor-nahand =
-   .description = Produces infantry.
+   .description = Produces infantry
    .name = Hand of Nod
 
 actor-naweap =
    .name = Nod War Factory
-   .description = Produces vehicles.
+   .description = Produces vehicles
 
 actor-nahpad =
    .name = Helipad
    .description = Produces, rearms and
-    repairs helicopters.
+    repairs helicopters
 
 actor-naradr =
-   .description = Provides an overview of the battlefield.
-    Can detect cloaked units.
-    Requires power to operate.
+   .description = Provides an overview of the battlefield
+    Can detect cloaked units
+    Requires power to operate
    .name = Nod Radar
 
 actor-natech =
-   .description = Provides access to advanced Nod technologies.
+   .description = Provides access to advanced Nod technologies
    .name = Nod Tech Center
 
 actor-nastlh =
    .name = Stealth Generator
    .description = Generates a cloaking field
-    to hide your forces from the enemy.
+    to hide your forces from the enemy
 
 actor-natmpl =
-   .description = Provides access to advanced Nod technologies.
+   .description = Provides access to advanced Nod technologies
    .name = Temple of Nod
    .produceactorpower-name = Hunter Seeker
-   .produceactorpower-description = Releases a drone that will acquire and destroy an enemy target.
+   .produceactorpower-description = Releases a drone that seeks and destroys the enemy target
 
 actor-namisl =
    .description = Launches a devastating missile
-    at a target location.
-    Requires power to operate.
-    Maximum 1 can be built.
+    at a target location
+    Requires power to operate
+    Only one can be built
    .name = Nod Missile Silo
    .nukepower-name = Cluster Missile
    .nukepower-description = Launches an explosive cluster warhead
-    at a target location.
+    at a target location
 
 actor-nawast =
    .name = Waste Refinery
-   .description = Processes Veins
-    into useable resources.
-    Maximum 1 can be built.
+   .description = Processes Tiberium Veins
+    into usable resources
+    Only one can be built
 
 ## nod-support.yaml
 actor-nawall =
-   .description = Stops infantry and blocks enemy fire.
-    Can NOT be crushed by tanks.
+   .description = Stops infantry and blocks enemy fire
+    Can NOT be crushed by tanks
    .name = Concrete Wall
 
 actor-nagate-a-name = Nod Gate
 actor-nagate-b-name = Nod Gate
 
 actor-napost =
-   .description = Stops infantry and blocks enemy fire.
-    Can NOT be crushed by tanks.
+   .description = Stops infantry and blocks enemy fire
+    Can NOT be crushed by tanks
    .name = Laser Fence
 
 actor-nafnce-name = Laser Fence
 
 actor-nalasr =
    .name = Laser Turret
-   .description = Basic base defense.
-    Requires power to operate.
-      Strong vs Ground units
-      Weak vs Aircraft
+   .description = Basic base defense
+    Requires power to operate
+      Strong vs. Ground units
+      Weak vs. Aircraft
 
 actor-naobel =
    .name = Obelisk of Light
-   .description = Advanced base defense.
-    Requires power to operate.
-      Strong vs Ground units
-      Weak vs Aircraft
+   .description = Advanced base defense
+    Requires power to operate
+      Strong vs. Ground units
+      Weak vs. Aircraft
 
 actor-nasam =
    .name = S.A.M. Site
-   .description = Nod Anti-Air base defense.
-    Requires power to operate.
-      Strong vs Aircraft
-      Weak vs Ground units
+   .description = Nod Anti-Air base defense
+    Requires power to operate
+      Strong vs. Aircraft
+      Weak vs. Ground units
 
 ## nod-vehicles.yaml
 actor-bggy =
    .name = Attack Buggy
-   .description = Fast scout and anti-infantry vehicle.
-      Strong vs Infantry, Light armor
-      Weak vs Vehicles, Aircraft
+   .description = Fast scout and anti-infantry vehicle
+      Strong vs. Infantry and Light armor
+      Weak vs. Vehicles and Aircraft
 
 actor-bike =
    .name = Attack Cycle
-   .description = Fast scout vehicle, armed with
-    rockets.
-      Strong vs Vehicles
-      Weak vs Infantry, Aircraft
+   .description = Fast scout vehicle with rockets
+      Strong vs. Vehicles
+      Weak vs. Infantry and Aircraft
 
 actor-ttnk =
    .name = Tick Tank
    .deployed--name = Tick Tank (deployed)
-   .description = Nod's main battle tank.
-    Can deploy to gain extra protection.
-      Strong vs Vehicles
-      Weak vs Infantry, Aircraft
+   .description = Nod's main battle tank
+    Can deploy to gain extra protection
+      Strong vs. Vehicles
+      Weak vs. Infantry and Aircraft
 
 actor-art2 =
    .name = Artillery
    .deployed--name = Artillery (deployed)
-   .description = Mobile Artillery.
-    Needs to deploy in order to shoot.
-      Strong vs Ground units
-      Weak vs Aircraft
+   .description = Mobile Artillery
+    Needs to be deployed in order to shoot
+      Strong vs. Ground units
+      Weak vs. Aircraft
 
 actor-repair =
-   .description = Repairs nearby vehicles.
+   .description = Repairs nearby vehicles
       Unarmed
    .name = Mobile Repair Vehicle
 
 actor-weed =
    .name = Weed Eater
-   .description = Collects veins for processing.
+   .description = Collects Tiberium veins for processing
       Unarmed
 
 actor-sapc =
    .name = Subterranean APC
-   .description = Troop transport that can move
-    underground to avoid detection.
+   .description = Troop transport capable of moving
+    underground to avoid detection
       Unarmed
 
 actor-subtank =
    .name = Devil's Tongue
-   .description = Subterranean Flame Tank.
-    Is able to move underground.
-      Strong vs Infantry, Buildings
-      Weak vs Tanks, Aircraft
+   .description = Subterranean Flame Tank
+    with the ability to move underground
+      Strong vs. Infantry and Buildings
+      Weak vs. Tanks and Aircraft
 
 actor-stnk =
    .name = Stealth Tank
-   .description = Lightly armoured tank equipped with a personal
+   .description = Lightly armored tank equipped with a personal
     stealth generator. Armed with missiles.
-    Can be spotted by infantry at close range.
-      Strong vs Vehicles, Aircraft
-      Weak vs Infantry
+    Visible to infantry at close range
+      Strong vs. Vehicles and Aircraft
+      Weak vs. Infantry
 
 actor-sgen =
    .name = Mobile Stealth Generator
    .deployed--name = Mobile Stealth Generator (deployed)
-   .description = Can cloak units when deployed.
+   .description = Able to cloak units once deployed
       Unarmed
 
 ## shared-infantry.yaml
 actor-e1 =
-   .description = General-purpose infantry.
-      Strong vs Infantry
-      Weak vs Vehicles, Aircraft
+   .description = General-purpose infantry
+      Strong vs. Infantry
+      Weak vs. Vehicles and Aircraft
    .name = Light Infantry
 
 actor-engineer =
    .name = Engineer
-   .description = Infiltrates and captures enemy structures.
+   .description = Infiltrates and captures enemy structures
       Unarmed
 
 ## shared-structures.yaml
 actor-gacnst =
-   .description = Builds base structures.
+   .description = Builds base structures
    .name = Construction Yard
 
 actor-proc =
    .name = Tiberium Refinery
    .description = Processes raw Tiberium
-    into useable resources.
+    into usable resources
 
 actor-gasilo =
-   .description = Stores excess Tiberium.
+   .description = Stores excess Tiberium
    .name = Silo
 
-actor-anypower-name = Any Power Generation
+actor-anypower-name = Power Generation
 actor-barracks-name = Infantry Production
 actor-factory-name = Vehicle Production
 actor-radar-name = Radar
@@ -716,27 +715,27 @@ actor-tech-name = Tech Center
 
 ## shared-support.yaml
 actor-napuls =
-   .name = E.M. Pulse Cannon
-   .description = Disables mechanical units in an area.
-    Requires power to operate.
-   .attackorderpower-name = E.M. Pulse
-   .attackorderpower-description = Fires a pulse blast which disables
-    all mechanical units in the area.
+   .name = EMP Cannon
+   .description = Disables mechanical units in an area
+    Requires power to operate
+   .attackorderpower-name = EMP
+   .attackorderpower-description = Fires a pulse blast that disables
+    all mechanical units in the area
 
 ## shared-vehicles.yaml
 actor-mcv =
-   .description = Deploys into another Construction Yard.
+   .description = Deploys into a Construction Yard
       Unarmed
    .name = Mobile Construction Vehicle
 
 actor-harv =
    .name = Harvester
-   .description = Collects Tiberium for processing.
+   .description = Collects Tiberium for processing
       Unarmed
 
 actor-lpst =
-   .description = Can detect cloaked and subterranean
-    units when deployed.
+   .description = Detects cloaked and subterranean
+    units when deployed
       Unarmed
    .name = Mobile Sensor Array
    .deployed--name = Mobile Sensor Array (deployed)
@@ -749,8 +748,8 @@ meta-tibflora-name = Tiberian Flora
 ## Civilian Tech
 actor-cahosp =
    .name = Civilian Hospital
-   .captured-desc = Provides infantry with self-healing.
-   .capturable-desc = Capture to enable self-healing for infantry.
+   .captured-desc = Provides infantry with self-healing
+   .capturable-desc = Infantry can self-heal once the Hospital is captured
 
 ## ai.yaml
 bot-test-ai =

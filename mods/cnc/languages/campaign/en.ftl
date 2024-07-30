@@ -16,14 +16,14 @@ bot-campaign-ai =
 actor-moneycrate-name = Money Crate
 
 ## gdi03, gdi07, gdi08a, gdi08b, gdi09, nod03a, nod03b
-actor-hq-description = Provides an overview of the battlefield.
-      Requires power to operate.
+actor-hq-description = Provides an overview of the battlefield
+      Requires power to operate
 
 ## gdi08a
 actor-c3-name = Farmer Mike
 
 ## gdi08b
-civilian-killed = Civilian killed.
+civilian-killed = Civilian killed
 
 ## nod01
 actor-c10-name = Nikoomba

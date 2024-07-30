@@ -70,100 +70,99 @@ supportpowers-support-powers-palette =
 
 button-command-bar-attack-move =
    .tooltip = Attack Move
-   .tooltipdesc = Selected units will move to the desired location
-    and attack any enemies they encounter en route.
+   .tooltipdesc = Selected units move to the target location and attack any enemies they encounter en route
 
-    Hold <(Ctrl)> while targeting to order an Assault Move
-    that attacks any units or structures encountered en route.
+    Hold <(Ctrl)> while targeting to issue an Assault Move,
+    that attacks any units or structures encountered en route
 
-    Left-click icon then right-click on target location.
+    Left-click the icon, then right-click on the target
 
 button-command-bar-force-move =
    .tooltip = Force Move
-   .tooltipdesc = Selected units will move to the desired location
+   .tooltipdesc = Selected units move to the target location
      - Default activity for the target is suppressed
-     - Vehicles will attempt to crush enemies at the target location
-     - Deployed units will undeploy and move to the target location
-     - Helicopters will land at the target location
+     - Vehicles attempt to crush enemies
+     - Deployed units undeploy and move to the target location
+     - Helicopters land at the target location
 
-    Left-click icon then right-click on target.
-    Hold <(Alt)> to activate temporarily while commanding units.
+    Left-click the icon, then right-click on the target
+    Hold <(Alt)> to temporarily activate the command
 
 button-command-bar-force-attack =
    .tooltip = Force Attack
-   .tooltipdesc = Selected units will attack the targeted unit or location
-     - Default activity for the target is suppressed
-     - Allows targeting of own or ally forces
-     - Long-range artillery units will always target the
+   .tooltipdesc = Selected units attack the targeted unit or location
+     - The default activity of the target is suppressed
+     - Allows targeting of friendly or allied forces
+     - Long-range artillery units always target the
        location, ignoring units and buildings
 
-    Left-click icon then right-click on target.
-    Hold <(Ctrl)> to activate temporarily while commanding units.
+    Left-click the icon, then right-click on the target
+    Hold <(Ctrl)> to temporarily activate the command
 
 button-command-bar-guard =
    .tooltip = Guard
-   .tooltipdesc = Selected units will follow the targeted unit.
+   .tooltipdesc = Selected units follow the targeted unit
 
-    Left-click icon then right-click on target unit.
+    Left-click the icon, then right-click on the target
 
 button-command-bar-deploy =
    .tooltip = Deploy
-   .tooltipdesc = Selected units will perform their default deploy activity
-     - MCVs will unpack into a Construction Yard
-     - Construction Yards will re-pack into a MCV
-     - Transports will unload their passengers
+   .tooltipdesc = Selected units perform their default deploy activity
+     - MCVs deploy into Construction Yards
+     - Construction Yards repack into MCVs
+     - Transports unload their passengers
      - Tick Tanks, Artillery, Juggernauts,
-       and Mobile Sensor arrays will deploy
-     - Aircraft will return to base
+       and Mobile Sensor arrays deploy
+     - Aircraft return to their base
 
-    Acts immediately on selected units.
+    Acts immediately on selected units
 
 button-command-bar-scatter =
    .tooltip = Scatter
-   .tooltipdesc = Selected units will stop their current activity
-    and move to a nearby location.
+   .tooltipdesc = Selected units stop their current activity
+    and scatter to a nearby location
 
-    Acts immediately on selected units.
+    Acts immediately on selected units
 
 button-command-bar-stop =
    .tooltip = Stop
-   .tooltipdesc = Selected units will stop their current activity.
-    Selected buildings will reset their rally point.
+   .tooltipdesc = Selected units stop their current activity
+    Selected buildings reset their rally point
 
-    Acts immediately on selected targets.
+    Acts immediately on selected units
 
 button-command-bar-queue-orders =
    .tooltip = Waypoint Mode
-   .tooltipdesc = Use Waypoint Mode to give multiple linking commands
-    to the selected units. Units will execute the commands
-    immediately upon receiving them.
+   .tooltipdesc = Use Waypoint Mode to issue a series of linked commands
+    to selected units. Units execute their commands
+    immediately upon receiving them
 
-    Left-click icon then give commands in the game world.
-    Hold <(Shift)> to activate temporarily while commanding units.
+    Left-click the icon, then issue commands in the game world
+    Hold <(Shift)> to temporarily activate the command while ordering units
 
 button-stance-bar-attackanything =
    .tooltip = Attack Anything Stance
    .tooltipdesc = Set the selected units to Attack Anything stance:
-     - Units will attack enemy units and structures on sight
-     - Units will pursue attackers across the battlefield
+     - Units attack enemy units and structures on sight
+     - Units pursue attackers across the battlefield
 
 button-stance-bar-defend =
    .tooltip = Defend Stance
-   .tooltipdesc = Set the selected units to Defend stance:
-     - Units will attack enemy units on sight
-     - Units will not move or pursue enemies
+   .tooltipdesc = Set the selected units to Defense stance:
+     - Units attack enemy units on sight
+     - Units do not move or pursue enemies
 
 button-stance-bar-returnfire =
    .tooltip = Return Fire Stance
    .tooltipdesc = Set the selected units to Return Fire stance:
-     - Units will retaliate against enemies that attack them
-     - Units will not move or pursue enemies
+     - Units retaliate against enemies that attack them
+     - Units do not move or pursue enemies
 
 button-stance-bar-holdfire =
    .tooltip = Hold Fire Stance
    .tooltipdesc = Set the selected units to Hold Fire stance:
-     - Units will not fire upon enemies
-     - Units will not move or pursue enemies
+     - Units do not fire upon enemies
+     - Units do not move or pursue enemies
 
 button-top-buttons-repair-tooltip = Repair
 button-top-buttons-sell-tooltip = Sell
@@ -186,7 +185,7 @@ button-production-types-scroll-down-tooltip = Scroll down
 ## mainmenu-prerelease-notification.yaml
 label-mainmenu-prerelease-notification-prompt-title = Tiberian Sun developer preview
 label-mainmenu-prerelease-notification-prompt-text-a = This pre-alpha build of OpenRA's Tiberian Sun mod is made available
-label-mainmenu-prerelease-notification-prompt-text-b = for the community to follow development and as example for modders.
-label-mainmenu-prerelease-notification-prompt-text-c = Many features are missing or incomplete, performance has not been
-label-mainmenu-prerelease-notification-prompt-text-d = optimized, and balance will not be addressed until a future beta.
-button-mainmenu-prerelease-notification-continue = I Understand
+label-mainmenu-prerelease-notification-prompt-text-b = for the community to follow development and serve as an example for modders.
+label-mainmenu-prerelease-notification-prompt-text-c = Please note that many features are still missing or incomplete, performance has not been
+label-mainmenu-prerelease-notification-prompt-text-d = optimized, and that game balance will not be addressed until a future beta.
+button-mainmenu-prerelease-notification-continue = I Understand.

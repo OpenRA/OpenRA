@@ -1,162 +1,162 @@
 ## campaign
-objective-failed = Objective failed
-objective-completed = Objective completed
+objective-failed = Objective Failed
+objective-completed = Objective Completed
 
 primary = Primary
 secondary = Secondary
 
-new-primary-objective = New primary objective
-new-secondary-objective = New secondary objective
+new-primary-objective = New Primary Objective
+new-secondary-objective = New Secondary Objective
 
 # cnc64gdi01
-destroy-obelisk-sams = Destroy the SAM sites protecting the Obelisk.
-destroy-obelisk = Destroy the Obelisk.
-destroy-biotech = Destroy the biotech facility.
+destroy-obelisk-sams = Destroy the SAM sites protecting the Obelisk
+destroy-obelisk = Destroy the Obelisk
+destroy-biotech = Destroy the biotech facility
 
 ## gdi03, gdi05abc, gdi07 gdi08ab, gdi09
-destroy-sams = Destroy the SAM sites to receive air support.
+destroy-sams = Destroy the SAM sites to receive air support
 
 ## funpark01
 investigate-village = Investigate the nearby village for reports of
-    strange activity.
-reach-village = Reach the village.
-kill-creatures = Kill all creatures in the area.
+    strange activity
+reach-village = Reach the village
+kill-creatures = Kill all creatures in the area
 
 ## gdi01
-establish-beachhead = Establish a beachhead.
+establish-beachhead = Establish a beachhead
 
 ## gdi01, gdi02, gdi03, gdi04c, gdi05abc, twist-of-fate
-eliminate-nod = Eliminate all Nod forces in the area.
+eliminate-nod = Eliminate all Nod forces in the area
 
 ## gdi02, nod09
-capture-refinery = Capture the Tiberium refinery.
+capture-refinery = Capture the Tiberium refinery
 
 ## gdi04ab
 battlefield-control = Battlefield Control
 apcs-left = APC squads in reserve: { $apcs }
-retrieve-rods = Retrieve the crate with the stolen rods.
-eliminate-reinforcements = Eliminate { $kills } Nod units for reinforcements.
+retrieve-rods = Retrieve the crate with the stolen rods
+eliminate-reinforcements = Eliminate { $kills } Nod units for reinforcements
 
 ## gdi04c
-defend-bialystok = Defend the town of Białystok.
+defend-bialystok = Defend the town of Białystok
 
 ## gdi05abc
-find-gdi-base = Find the GDI base.
+find-gdi-base = Find the GDI base
 
 ## gdi06
-destroy-nod-building = Destroy the Nod ********.
+destroy-nod-building = Destroy the Nod ********
 
 ## gdi07
-destroy-nod = Destroy remaining Nod structures and units.
-construct-base = Construct all available buildings.
+destroy-nod = Destroy remaining Nod structures and units
+construct-base = Construct all available buildings
 
 ## gdi08a
-repair-base-vehicles = Repair GDI base and vehicles.
+repair-base-vehicles = Repair GDI base and vehicles
 
 ## gdi08a, gdi09
-destroy-nod-force = Destroy the Nod strike force.
+destroy-nod-force = Destroy the Nod strike force
 
 ## gdi08b
-protect-mobius = Protect Dr. Mobius.
-protect-hospital = Protect the Hospital.
-keep-civilians-alive = Keep at least { $civilians } out of 14 Civilians alive.
-destroy-nod-bases = Destroy the Nod bases.
+protect-mobius = Protect Dr. Mobius
+protect-hospital = Protect the Hospital
+keep-civilians-alive = Keep at least { $civilians } out of 14 civilians alive
+destroy-nod-bases = Destroy the Nod bases
 
 ## gdi09
 destroy-nod-bunkers = Destroy the Nod bunkers to allow Carter's
-    convoy to pass through safely.
+    convoy to pass through safely
 convoy-passed-partly = Part of Carter's convoy passed through!
 
 ## nod01
 destroy-gdi-troops-area = Destroy all GDI troops in the area.
-kill-nikoomba = Kill Nikoomba.
-destroy-village = Destroy the village.
+kill-nikoomba = Kill Nikoomba
+destroy-village = Destroy the village
 
 ## nod02a
-destroy-gdi-units = Destroy all GDI units.
+destroy-gdi-units = Destroy all GDI units
 
 ## nod02ab
-build-base = Build a base.
+build-base = Build a base
 
 ## nod02b, nod05
-destroy-gdi-base = Destroy the GDI base.
+destroy-gdi-base = Destroy the GDI base
 
 ## nod03ab
-capture-prison = Capture the prison.
-destroy-gdi-forces = Destroy all GDI forces.
+capture-prison = Capture the prison
+destroy-gdi-forces = Destroy all GDI forces
 
 ## nod04a
-destroy-village-kill-civilians = Destroy the village and kill all civilians.
-kill-gdi-units = Kill all GDI units in the area.
+destroy-village-kill-civilians = Destroy the village and kill all civilians
+kill-gdi-units = Kill all GDI units in the area
 
 ## nod04b
-protect-nod-supporters = Protect the civilians that support Nod.
-kill-gdi-supporters = Kill all civilian GDI supporters.
+protect-nod-supporters = Protect the civilians that support Nod
+kill-gdi-supporters = Kill all civilian GDI supporters
 
 ## nod05, nod07ab, nod09
-build-sams = Build { $sams } SAMs to fend off the GDI bombers.
+build-sams = Build { $sams } SAMs to fend off the GDI bombers
 
 ## nod06abc
-steal-nuclear-detonator = Steal the GDI nuclear detonator.
-move-to-evacuation-point = Move to the evacuation point.
+steal-nuclear-detonator = Steal the GDI nuclear detonator
+move-to-evacuation-point = Move to the evacuation point
 
 ## nod06ab
-destroy-gdi-supporter-houses = Destroy the houses of the GDI supporters
-    in the village.
+destroy-gdi-supporter-houses = Destroy the houses of GDI supporters
+    in the village
 
 ## nod06c
-infiltrate-barracks-factory-conyard = Infiltrate the barracks, weapon factory and
-    the construction yard.
+infiltrate-barracks-factory-conyard = Infiltrate the barracks, weapons factory and
+    construction yard
 
 ## nod07a
-find-nod-base = Find the Nod base.
+find-nod-base = Find the Nod base
 
 ## nod07ab, nod08ab, nod09, eviction-notice
-eliminate-gdi-forces = Eliminate all GDI forces in the area.
+eliminate-gdi-forces = Eliminate all GDI forces in the area
 
 ## nod07c
-capture-gdi-helipad = Capture the GDI helipad.
+capture-gdi-helipad = Capture the GDI helipad
 dont-capture-or-destroy = Don't capture or destroy any other
-    GDI main building.
-orca-wreak-havoc = Use the GDI orca to wreak havoc at the village.
+    GDI main building
+orca-wreak-havoc = Use the GDI Orca to wreak havoc at the village
 distract-guards = Distract the guards by attacking the
-    main entrance with your vehicles.
+    main entrance with your vehicles
 
 ## nod08ab
-capture-gdi-outpost = Capture the GDI outpost.
+capture-gdi-outpost = Capture the GDI outpost
 
 ## nod08ab, nod09
-locate-nod-base = Locate the Nod base.
+locate-nod-base = Locate the Nod base
 
 ## nod09
-secure-first-landing-zone = Secure the first landing zone.
-secure-second-landing-zone = Secure the second landing zone.
+secure-first-landing-zone = Secure the first landing zone
+secure-second-landing-zone = Secure the second landing zone
 
 ## nod10a
-kill-gdi-scientist = Kill the GDI scientist.
-destroy-tech-center = Destroy the GDI R&D center.
+kill-gdi-scientist = Kill the GDI scientist
+destroy-tech-center = Destroy the GDI Research center
 
 ## nod10b
-destroy-capture-warfactory = Destroy or capture the Weapons Factory.
-destroy-mammoth-tanks = Destroy the Mammoth tanks in the R&D base.
-keep-commando-alive = Keep your Commando alive.
+destroy-capture-warfactory = Destroy or capture the Weapons Factory
+destroy-mammoth-tanks = Destroy the Mammoth tanks in the Research Center
+keep-commando-alive = Keep your Commando alive
 
 ## eviction-notice
-take-civilians-money-crates = Find all the civilians' money.
-    They won't need it anymore.
-quickly-destroy-ion-cannon = Disable GDI Ion Cannon before
-    it fires two times.
+take-civilians-money-crates = Find all the civilians' money;
+    they will not need it anymore
+quickly-destroy-ion-cannon = Disable the GDI Ion Cannon before
+    it fires twice
 nod-soldier = Nod Soldier
 civilians-runs = Hey, those civilians... where are they going?
-destroy-ion-cannon-advise = The GDI are preparing their ion cannon. Don't let them get used to it.
+destroy-ion-cannon-advise = The GDI is preparing their ion cannon. Don't let them get used to it.
 village-destruction-warning = Be careful, commander. The GDI won't stand still while we burn the entire village.
 
 ## twist-of-fate
 clear-path = Repel the ambush and clear the way
-    for our MCV.
+    for our MCV
 recover-old-base = Capture the Construction Yard in our recon
-    post to regain control.
+    post to regain control
 air-strikes-intel-report = Nod airstrikes are being directed by a Communications Center, located northwest. We may gain useful information from its capture.
 capture-nod-communications-center = Capture the Nod Communications Center to
-    the northwest.
+    the northwest
 communications-center-captured-sams-located = Our engineers located Nod SAM sites. They also disarmed an unusual trap on the Construction Yard to the south.
