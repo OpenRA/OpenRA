@@ -25,8 +25,8 @@ namespace OpenRA.Mods.Common.Graphics
 		static readonly Dictionary<CVec, int> Offset2CornerIndex = new()
 		{
 			{ new CVec(0, -1), (int)Corner.TopLeft },
-			{ new CVec(1,  0), (int)Corner.TopRight },
-			{ new CVec(0,  1), (int)Corner.BottomRight },
+			{ new CVec(1, 0), (int)Corner.TopRight },
+			{ new CVec(0, 1), (int)Corner.BottomRight },
 			{ new CVec(-1, 0), (int)Corner.BottomLeft },
 		};
 
