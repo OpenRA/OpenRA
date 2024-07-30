@@ -81,7 +81,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					TextNotificationsManager.MutedPlayers.Add(c.Index, false);
 
 			tabCompletion.Commands = chatTraits.OfType<ChatCommands>().ToArray().SelectMany(x => x.Commands.Keys);
-			tabCompletion.Names = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();
+			tabCompletion.Names = orderManager.LobbyInfo.Clients.Where(c => !c.IsBot).Select(c => c.Name).Distinct().ToList();
 
 			if (logicArgs.TryGetValue("Templates", out var templateIds))
 			{

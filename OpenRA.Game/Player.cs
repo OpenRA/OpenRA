@@ -38,6 +38,9 @@ namespace OpenRA
 
 	public class Player : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding
 	{
+		[TranslationReference("name", "number")]
+		const string EnumeratedBotName = "enumerated-bot-name";
+
 		public readonly Actor PlayerActor;
 		public readonly string PlayerName;
 		public readonly string InternalName;
@@ -80,6 +83,9 @@ namespace OpenRA
 		readonly IUnlocksRenderPlayer[] unlockRenderPlayer;
 		readonly INotifyPlayerDisconnected[] notifyDisconnected;
 
+		readonly IReadOnlyCollection<IBotInfo> botInfos;
+		string resolvedPlayerName;
+
 		// Each player is identified with a unique bit in the set
 		// Cache masks for the player's index and ally/enemy player indices for performance.
 		public LongBitSet<PlayerBitMask> PlayerMask;
@@ -94,6 +100,16 @@ namespace OpenRA
 					return true;
 
 				return WinState != WinState.Undefined && !inMissionMap;
+			}
+		}
+
+		/// <summary>The chosen player name including localized and enumerated bot names.</summary>
+		public string ResolvedPlayerName
+		{
+			get
+			{
+				resolvedPlayerName ??= ResolvePlayerName();
+				return resolvedPlayerName;
 			}
 		}
 
@@ -133,18 +149,6 @@ namespace OpenRA
 			return factions.FirstOrDefault(f => f.InternalName == factionName) ?? factions.First();
 		}
 
-		public static string ResolvePlayerName(Session.Client client, IEnumerable<Session.Client> clients, IEnumerable<IBotInfo> botInfos)
-		{
-			if (client.Bot != null)
-			{
-				var botInfo = botInfos.First(b => b.Type == client.Bot);
-				var botsOfSameType = clients.Where(c => c.Bot == client.Bot).ToArray();
-				return botsOfSameType.Length == 1 ? botInfo.Name : $"{botInfo.Name} {botsOfSameType.IndexOf(client) + 1}";
-			}
-
-			return client.Name;
-		}
-
 		public Player(World world, Session.Client client, PlayerReference pr, MersenneTwister playerRandom)
 		{
 			World = world;
@@ -152,6 +156,7 @@ namespace OpenRA
 			PlayerReference = pr;
 
 			inMissionMap = world.Map.Visibility.HasFlag(MapVisibility.MissionSelector);
+			botInfos = World.Map.Rules.Actors[SystemActors.Player].TraitInfos<IBotInfo>();
 
 			// Real player or host-created bot
 			if (client != null)
@@ -159,7 +164,7 @@ namespace OpenRA
 				ClientIndex = client.Index;
 				color = client.Color;
 				Color = color;
-				PlayerName = ResolvePlayerName(client, world.LobbyInfo.Clients, world.Map.Rules.Actors[SystemActors.Player].TraitInfos<IBotInfo>());
+				PlayerName = client.Name;
 
 				BotType = client.Bot;
 				Faction = ResolveFaction(world, client.Faction, playerRandom, !pr.LockFaction);
@@ -224,7 +229,21 @@ namespace OpenRA
 
 		public override string ToString()
 		{
-			return $"{PlayerName} ({ClientIndex})";
+			return $"{ResolvedPlayerName} ({ClientIndex})";
+		}
+
+		string ResolvePlayerName()
+		{
+			if (IsBot)
+			{
+				var botInfo = botInfos.First(b => b.Type == BotType);
+				var botsOfSameType = World.Players.Where(c => c.BotType == BotType).ToArray();
+				return TranslationProvider.GetString(EnumeratedBotName,
+					Translation.Arguments("name", TranslationProvider.GetString(botInfo.Name),
+						"number", botsOfSameType.IndexOf(this) + 1));
+			}
+
+			return PlayerName;
 		}
 
 		public PlayerRelationship RelationshipWith(Player other)
@@ -310,7 +329,7 @@ namespace OpenRA
 
 		public LuaValue ToString(LuaRuntime runtime)
 		{
-			return $"Player ({PlayerName})";
+			return $"Player ({ResolvedPlayerName})";
 		}
 
 		#endregion

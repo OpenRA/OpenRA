@@ -1,12 +1,12 @@
 Player:
 	ModularBot@Omnius:
-		Name: Omnius
+		Name: bot-omnius.name
 		Type: omnius
 	ModularBot@Vidius:
-		Name: Vidious
+		Name: bot-vidius.name
 		Type: vidious
 	ModularBot@Gladius:
-		Name: Gladius
+		Name: bot-gladius.name
 		Type: gladius
 	GrantConditionOnBotOwner@omnius:
 		Condition: enable-omnius-ai

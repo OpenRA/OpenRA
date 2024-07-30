@@ -8,6 +8,10 @@ options-difficulty =
     .normal = Normal
     .hard = Hard
 
+## player
+bot-campaign-ai =
+   .name = Campaign Player AI
+
 ## campaign-maprules.yaml
 actor-moneycrate-name = Money Crate
 
