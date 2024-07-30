@@ -5,15 +5,15 @@ ra-steam: C&C The Ultimate Collection (Steam version, English)
 		REDALERT.MIX: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
 	Install:
 		# Base game files:
-		ContentPackage:
+		ContentPackage@base:
 			Name: base
 			Actions:
-				ExtractMix: REDALERT.MIX
+				ExtractMix@1: REDALERT.MIX
 					^SupportDir|Content/ra/v2/hires.mix: hires.mix
 					^SupportDir|Content/ra/v2/local.mix: local.mix
 					^SupportDir|Content/ra/v2/lores.mix: lores.mix
 					^SupportDir|Content/ra/v2/speech.mix: speech.mix
-				ExtractMix: MAIN1.MIX
+				ExtractMix@2: MAIN1.MIX
 					^SupportDir|Content/ra/v2/interior.mix: interior.mix
 					^SupportDir|Content/ra/v2/conquer.mix: conquer.mix
 					^SupportDir|Content/ra/v2/allies.mix: allies.mix
@@ -22,22 +22,22 @@ ra-steam: C&C The Ultimate Collection (Steam version, English)
 					^SupportDir|Content/ra/v2/snow.mix: snow.mix
 					^SupportDir|Content/ra/v2/russian.mix: russian.mix
 		# Base game music (optional):
-		ContentPackage:
+		ContentPackage@music:
 			Name: music
 			Actions:
 				ExtractMix: MAIN1.MIX
 					^SupportDir|Content/ra/v2/scores.mix: scores.mix
 		# Aftermath expansion files:
-		ContentPackage:
+		ContentPackage@aftermathbase:
 			Name: aftermathbase
 			Actions:
 				Copy: .
 					^SupportDir|Content/ra/v2/expand/expand2.mix: EXPAND2.MIX
 					^SupportDir|Content/ra/v2/expand/hires1.mix: HIRES1.MIX
 					^SupportDir|Content/ra/v2/expand/lores1.mix: LORES1.MIX
-				ExtractMix: MAIN4.MIX
+				ExtractMix@1: MAIN4.MIX
 					^SupportDir|Content/ra/v2/expand/sounds-aftermath.mix: sounds.mix
-				ExtractMix: ^SupportDir|Content/ra/v2/expand/sounds-aftermath.mix
+				ExtractMix@2: ^SupportDir|Content/ra/v2/expand/sounds-aftermath.mix
 					^SupportDir|Content/ra/v2/expand/chrotnk1.aud: chrotnk1.aud
 					^SupportDir|Content/ra/v2/expand/fixit1.aud: fixit1.aud
 					^SupportDir|Content/ra/v2/expand/jburn1.aud: jburn1.aud
@@ -64,12 +64,12 @@ ra-steam: C&C The Ultimate Collection (Steam version, English)
 					^SupportDir|Content/ra/v2/expand/myes1.aud: myes1.aud
 				Delete: ^SupportDir|Content/ra/v2/expand/sounds-aftermath.mix
 		# Aftermath music (optional):
-		ContentPackage:
+		ContentPackage@music-aftermath:
 			Name: music-aftermath
 			Actions:
-				ExtractMix: MAIN4.MIX
+				ExtractMix@1: MAIN4.MIX
 					^SupportDir|Content/ra/v2/expand/scores-aftermath.mix: scores.mix
-				ExtractMix: ^SupportDir|Content/ra/v2/expand/scores-aftermath.mix
+				ExtractMix@2: ^SupportDir|Content/ra/v2/expand/scores-aftermath.mix
 					^SupportDir|Content/ra/v2/expand/await.aud: await.aud
 					^SupportDir|Content/ra/v2/expand/bog.aud: bog.aud
 					^SupportDir|Content/ra/v2/expand/float_v2.aud: float_v2.aud
@@ -81,12 +81,12 @@ ra-steam: C&C The Ultimate Collection (Steam version, English)
 					^SupportDir|Content/ra/v2/expand/wastelnd.aud: wastelnd.aud
 				Delete: ^SupportDir|Content/ra/v2/expand/scores-aftermath.mix
 		# Counterstrike music (optional):
-		ContentPackage:
+		ContentPackage@music-counterstrike:
 			Name: music-counterstrike
 			Actions:
-				ExtractMix: MAIN3.MIX
+				ExtractMix@1: MAIN3.MIX
 					^SupportDir|Content/ra/v2/expand/scores-counterstrike.mix: scores.mix
-				ExtractMix: ^SupportDir|Content/ra/v2/expand/scores-counterstrike.mix
+				ExtractMix@2: ^SupportDir|Content/ra/v2/expand/scores-counterstrike.mix
 					^SupportDir|Content/ra/v2/expand/2nd_hand.aud: 2nd_hand.aud
 					^SupportDir|Content/ra/v2/expand/araziod.aud: araziod.aud
 					^SupportDir|Content/ra/v2/expand/backstab.aud: backstab.aud
@@ -97,12 +97,12 @@ ra-steam: C&C The Ultimate Collection (Steam version, English)
 					^SupportDir|Content/ra/v2/expand/vr2.aud: vr2.aud
 				Delete: ^SupportDir|Content/ra/v2/expand/scores-counterstrike.mix
 		# Allied campaign briefings (optional):
-		ContentPackage:
+		ContentPackage@movies-allied:
 			Name: movies-allied
 			Actions:
-				ExtractMix: MAIN1.MIX
+				ExtractMix@1: MAIN1.MIX
 					^SupportDir|Content/ra/v2/movies1.mix: movies1.mix
-				ExtractMix: ^SupportDir|Content/ra/v2/movies1.mix
+				ExtractMix@2: ^SupportDir|Content/ra/v2/movies1.mix
 					^SupportDir|Content/ra/v2/movies/aagun.vqa: aagun.vqa
 					^SupportDir|Content/ra/v2/movies/aftrmath.vqa: aftrmath.vqa
 					^SupportDir|Content/ra/v2/movies/ally12.vqa: ally12.vqa
@@ -156,12 +156,12 @@ ra-steam: C&C The Ultimate Collection (Steam version, English)
 					^SupportDir|Content/ra/v2/movies/ally11.vqa: ally11.vqa
 				Delete: ^SupportDir|Content/ra/v2/movies1.mix
 		# Soviet campaign briefings (optional):
-		ContentPackage:
+		ContentPackage@movies-soviet:
 			Name: movies-soviet
 			Actions:
-				ExtractMix: MAIN2.MIX
+				ExtractMix@1: MAIN2.MIX
 					^SupportDir|Content/ra/v2/movies2.mix: movies2.mix
-				ExtractMix: ^SupportDir|Content/ra/v2/movies2.mix
+				ExtractMix@2: ^SupportDir|Content/ra/v2/movies2.mix
 					^SupportDir|Content/ra/v2/movies/double.vqa: double.vqa
 					^SupportDir|Content/ra/v2/movies/dpthchrg.vqa: dpthchrg.vqa
 					^SupportDir|Content/ra/v2/movies/execute.vqa: execute.vqa
@@ -226,7 +226,7 @@ cnc-steam: Command & Conquer (Steam version, English)
 		CONQUER.MIX: 713b53fa4c188ca9619c6bbeadbfc86513704266
 	Install:
 		# C&C Desert Tileset:
-		ContentPackage:
+		ContentPackage@cncdesert:
 			Name: cncdesert
 			Actions:
 				Copy: .
@@ -240,15 +240,15 @@ cncr-steam: C&C Remastered Collection (Steam version, English)
 	# The Remastered Collection doesn't include the RA Soviet CD unfortunately, so we can't install Soviet campaign briefings.
 	Install:
 		# Base game files:
-		ContentPackage:
+		ContentPackage@base:
 			Name: base
 			Actions:
-				ExtractMix: Data/CNCDATA/RED_ALERT/CD1/REDALERT.MIX
+				ExtractMix@1: Data/CNCDATA/RED_ALERT/CD1/REDALERT.MIX
 					^SupportDir|Content/ra/v2/hires.mix: hires.mix
 					^SupportDir|Content/ra/v2/local.mix: local.mix
 					^SupportDir|Content/ra/v2/lores.mix: lores.mix
 					^SupportDir|Content/ra/v2/speech.mix: speech.mix
-				ExtractMix: Data/CNCDATA/RED_ALERT/CD1/MAIN.MIX
+				ExtractMix@2: Data/CNCDATA/RED_ALERT/CD1/MAIN.MIX
 					^SupportDir|Content/ra/v2/conquer.mix: conquer.mix
 					^SupportDir|Content/ra/v2/general.mix: general.mix # Is this one used? The FirstDecade and TUC installers are missing this!
 					^SupportDir|Content/ra/v2/interior.mix: interior.mix
@@ -258,18 +258,18 @@ cncr-steam: C&C Remastered Collection (Steam version, English)
 					^SupportDir|Content/ra/v2/allies.mix: allies.mix
 					^SupportDir|Content/ra/v2/temperat.mix: temperat.mix
 		# Base game music (optional):
-		ContentPackage:
+		ContentPackage@music:
 			Name: music
 			Actions:
 				ExtractMix: Data/CNCDATA/RED_ALERT/CD1/MAIN.MIX
 					^SupportDir|Content/ra/v2/scores.mix: scores.mix
 		# Allied campaign briefings (optional):
-		ContentPackage:
+		ContentPackage@movies-allied:
 			Name: movies-allied
 			Actions:
-				ExtractMix: Data/CNCDATA/RED_ALERT/CD1/MAIN.MIX
+				ExtractMix@1: Data/CNCDATA/RED_ALERT/CD1/MAIN.MIX
 					^SupportDir|Content/ra/v2/movies1.mix: movies1.mix
-				ExtractMix: ^SupportDir|Content/ra/v2/movies1.mix
+				ExtractMix@2: ^SupportDir|Content/ra/v2/movies1.mix
 					^SupportDir|Content/ra/v2/movies/aagun.vqa: aagun.vqa
 					^SupportDir|Content/ra/v2/movies/aftrmath.vqa: aftrmath.vqa
 					^SupportDir|Content/ra/v2/movies/ally1.vqa: ally1.vqa
@@ -323,12 +323,12 @@ cncr-steam: C&C Remastered Collection (Steam version, English)
 					^SupportDir|Content/ra/v2/movies/trinity.vqa: trinity.vqa
 				Delete: ^SupportDir|Content/ra/v2/movies1.mix
 		# Counterstrike music (optional):
-		ContentPackage:
+		ContentPackage@music-counterstrike:
 			Name: music-counterstrike
 			Actions:
-				ExtractMix: Data/CNCDATA/RED_ALERT/COUNTERSTRIKE/MAIN.MIX
+				ExtractMix@1: Data/CNCDATA/RED_ALERT/COUNTERSTRIKE/MAIN.MIX
 					^SupportDir|Content/ra/v2/expand/scores.mix: scores.mix
-				ExtractMix: ^SupportDir|Content/ra/v2/expand/scores.mix
+				ExtractMix@2: ^SupportDir|Content/ra/v2/expand/scores.mix
 					^SupportDir|Content/ra/v2/expand/2nd_hand.aud: 2nd_hand.aud
 					^SupportDir|Content/ra/v2/expand/araziod.aud: araziod.aud
 					^SupportDir|Content/ra/v2/expand/backstab.aud: backstab.aud
@@ -339,16 +339,16 @@ cncr-steam: C&C Remastered Collection (Steam version, English)
 					^SupportDir|Content/ra/v2/expand/vr2.aud: vr2.aud
 				Delete: ^SupportDir|Content/ra/v2/expand/scores.mix
 		# Aftermath expansion files:
-		ContentPackage:
+		ContentPackage@aftermathbase:
 			Name: aftermathbase
 			Actions:
 				Copy: Data/CNCDATA/RED_ALERT/AFTERMATH
 					^SupportDir|Content/ra/v2/expand/expand2.mix: expand2.mix
 					^SupportDir|Content/ra/v2/expand/hires1.mix: hires1.mix
 					^SupportDir|Content/ra/v2/expand/lores1.mix: lores1.mix
-				ExtractMix: Data/CNCDATA/RED_ALERT/AFTERMATH/MAIN.MIX
+				ExtractMix@1: Data/CNCDATA/RED_ALERT/AFTERMATH/MAIN.MIX
 					^SupportDir|Content/ra/v2/expand/sounds.mix: sounds.mix
-				ExtractMix: ^SupportDir|Content/ra/v2/expand/sounds.mix
+				ExtractMix@2: ^SupportDir|Content/ra/v2/expand/sounds.mix
 					^SupportDir|Content/ra/v2/expand/chrotnk1.aud: chrotnk1.aud
 					^SupportDir|Content/ra/v2/expand/fixit1.aud: fixit1.aud
 					^SupportDir|Content/ra/v2/expand/jburn1.aud: jburn1.aud
@@ -375,12 +375,12 @@ cncr-steam: C&C Remastered Collection (Steam version, English)
 					^SupportDir|Content/ra/v2/expand/myes1.aud: myes1.aud
 				Delete: ^SupportDir|Content/ra/v2/expand/sounds.mix
 		# Aftermath music (optional):
-		ContentPackage:
+		ContentPackage@music-aftermath:
 			Name: music-aftermath
 			Actions:
-				ExtractMix: Data/CNCDATA/RED_ALERT/AFTERMATH/MAIN.MIX
+				ExtractMix@1: Data/CNCDATA/RED_ALERT/AFTERMATH/MAIN.MIX
 					^SupportDir|Content/ra/v2/expand/scores.mix: scores.mix
-				ExtractMix: ^SupportDir|Content/ra/v2/expand/scores.mix
+				ExtractMix@2: ^SupportDir|Content/ra/v2/expand/scores.mix
 					^SupportDir|Content/ra/v2/expand/await.aud: await.aud
 					^SupportDir|Content/ra/v2/expand/bog.aud: bog.aud
 					^SupportDir|Content/ra/v2/expand/float_v2.aud: float_v2.aud
@@ -392,7 +392,7 @@ cncr-steam: C&C Remastered Collection (Steam version, English)
 					^SupportDir|Content/ra/v2/expand/wastelnd.aud: wastelnd.aud
 				Delete: ^SupportDir|Content/ra/v2/expand/scores.mix
 		# C&C Desert Tileset:
-		ContentPackage:
+		ContentPackage@cncdesert:
 			Name: cncdesert
 			Actions:
 				Copy: Data/CNCDATA/TIBERIAN_DAWN/CD1

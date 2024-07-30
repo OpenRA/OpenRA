@@ -5,7 +5,7 @@ covertops: Covert Operations Expansion (English)
 		CONQUER.MIX: 713b53fa4c188ca9619c6bbeadbfc86513704266
 	Install:
 		# Covert Operations music (optional):
-		ContentPackage:
+		ContentPackage@music-covertops:
 			Name: music-covertops
 			Actions:
 				Copy: .

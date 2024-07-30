@@ -5,7 +5,7 @@ tibsun: Tiberian Sun (GDI or Nod Disc, English)
 		AUTOPLAY.WAV: 2dfce5d00f98b641849c29942b651f4e98d30e30
 	Install:
 		# Base game files:
-		ContentPackage:
+		ContentPackage@tibsun:
 			Name: tibsun
 			Actions:
 				ExtractMix: INSTALL/TIBSUN.MIX
@@ -24,7 +24,7 @@ tibsun: Tiberian Sun (GDI or Nod Disc, English)
 					^SupportDir|Content/ts/tem.mix: tem.mix
 					^SupportDir|Content/ts/temperat.mix: temperat.mix
 		# Base game music (optional):
-		ContentPackage:
+		ContentPackage@tibsun-music:
 			Name: tibsun-music
 			Actions:
 				Copy: .

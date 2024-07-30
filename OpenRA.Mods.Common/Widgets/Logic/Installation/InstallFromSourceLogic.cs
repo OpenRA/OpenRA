@@ -252,7 +252,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						foreach (var sourceActionNode in sourceActionListYaml.Value.Nodes)
 						{
-							var sourceAction = modSource.ObjectCreator.CreateObject<ISourceAction>($"{sourceActionNode.Key}SourceAction");
+							var key = sourceActionNode.Key;
+							var split = key.IndexOf('@');
+							if (split != -1)
+								key = key[..split];
+							var sourceAction = modSource.ObjectCreator.CreateObject<ISourceAction>($"{key}SourceAction");
 							sourceAction.RunActionOnSource(sourceActionNode.Value, path, modData, extracted, m => message = m);
 						}
 					}
@@ -261,7 +265,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (beforeInstall != null)
 						RunSourceActions(beforeInstall);
 
-					foreach (var packageInstallationNode in modSource.Install.Where(x => x.Key == "ContentPackage"))
+					foreach (var packageInstallationNode in modSource.Install.Where(
+						x => x.Key == "ContentPackage" || x.Key.StartsWith("ContentPackage@", StringComparison.Ordinal)))
 					{
 						var packageName = packageInstallationNode.Value.NodeWithKeyOrDefault("Name")?.Value.Value;
 						if (!string.IsNullOrEmpty(packageName) && selectedPackages.TryGetValue(packageName, out var required) && required)

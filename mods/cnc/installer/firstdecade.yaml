@@ -22,7 +22,7 @@ tfd: C&C The First Decade (English)
 					^SupportDir|Content/cnc/transit.mix: CnC\\TRANSIT.MIX
 					^SupportDir|Content/cnc/movies.mix: CnC\\MOVIES.MIX
 		# GDI campaign briefings (optional):
-		ContentPackage:
+		ContentPackage@movies-gdi:
 			Name: movies-gdi
 			Actions:
 				ExtractMix: ^SupportDir|Content/cnc/movies.mix
@@ -92,7 +92,7 @@ tfd: C&C The First Decade (English)
 					^SupportDir|Content/cnc/movies/bcanyon.vqa: bcanyon.vqa
 					^SupportDir|Content/cnc/movies/banner.vqa: banner.vqa
 		# Nod campaign briefings (optional):
-		ContentPackage:
+		ContentPackage@movies-nod:
 			Name: movies-nod
 			Actions:
 				ExtractMix: ^SupportDir|Content/cnc/movies.mix
@@ -158,7 +158,7 @@ tfd: C&C The First Decade (English)
 					^SupportDir|Content/cnc/movies/akira.vqa: akira.vqa
 					^SupportDir|Content/cnc/movies/airstrk.vqa: airstrk.vqa
 		# Base game music (optional):
-		ContentPackage:
+		ContentPackage@music:
 			Name: music
 			Actions:
 				ExtractIscab: data1.hdr
@@ -168,7 +168,7 @@ tfd: C&C The First Decade (English)
 					Extract:
 						^SupportDir|Content/cnc/scores.mix: CnC\\SCORES.MIX
 		# Covert Operations music (optional):
-		ContentPackage:
+		ContentPackage@music-covertops:
 			Name: music-covertops
 			Actions:
 				ExtractIscab: data1.hdr

@@ -5,12 +5,12 @@ counterstrike: Counterstrike Expansion Disc (English)
 		SETUP/INSTALL/CSTRIKE.RTP: fae8ba82db71574f6ecd8fb4ff4026fcb65d2adc
 	Install:
 		# Counterstrike music (optional):
-		ContentPackage:
+		ContentPackage@music-counterstrike:
 			Name: music-counterstrike
 			Actions:
-				ExtractMix: MAIN.MIX
+				ExtractMix@1: MAIN.MIX
 					^SupportDir|Content/ra/v2/expand/scores.mix: scores.mix
-				ExtractMix: ^SupportDir|Content/ra/v2/expand/scores.mix
+				ExtractMix@2: ^SupportDir|Content/ra/v2/expand/scores.mix
 					^SupportDir|Content/ra/v2/expand/2nd_hand.aud: 2nd_hand.aud
 					^SupportDir|Content/ra/v2/expand/araziod.aud: araziod.aud
 					^SupportDir|Content/ra/v2/expand/backstab.aud: backstab.aud

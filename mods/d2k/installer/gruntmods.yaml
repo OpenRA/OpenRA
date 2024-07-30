@@ -7,7 +7,7 @@ gruntmods: Dune 2000: GruntMods Edition
 		Dune 2000/data/DATA.R16: 2471ef70e2ce5ab3514db14b9611a09f188127fa
 	Install:
 		# Game music (optional):
-		ContentPackage:
+		ContentPackage@music:
 			Name: music
 			Actions:
 				Copy: Dune 2000/data/Music
@@ -30,10 +30,10 @@ gruntmods: Dune 2000: GruntMods Edition
 					^SupportDir|Content/d2k/v3/Music/WAITGAME.AUD: WAITGAME.AUD
 		# TODO: DOES THIS NEED TO BE SEPARATED INTO TWO PACKAGES?
 		# Base game files + 1.06 Patch Content:
-		ContentPackage:
+		ContentPackage@patch:
 			Name: patch
 			Actions:
-				Copy: Dune 2000/data
+				Copy@1: Dune 2000/data
 					^SupportDir|Content/d2k/v3/BLOXBAT.R16: BLOXBAT.R16
 					^SupportDir|Content/d2k/v3/BLOXBASE.R16: BLOXBASE.R16
 					^SupportDir|Content/d2k/v3/BLOXBGBS.R16: BLOXBGBS.R16
@@ -43,9 +43,9 @@ gruntmods: Dune 2000: GruntMods Edition
 					^SupportDir|Content/d2k/v3/BLOXXMAS.R8: BLOXXMAS.R8
 					^SupportDir|Content/d2k/v3/DATA.R16: DATA.R16
 					^SupportDir|Content/d2k/v3/MOUSE.R16: MOUSE.R16
-				Copy: Dune 2000/data/bin
+				Copy@2: Dune 2000/data/bin
 					^SupportDir|Content/d2k/v3/PALETTE.BIN: PALETTE.BIN
-				Copy: Dune 2000/data/GAMESFX
+				Copy@3: Dune 2000/data/GAMESFX
 					^SupportDir|Content/d2k/v3/GAMESFX/A_ECONF2.AUD: A_ECONF2.AUD
 					^SupportDir|Content/d2k/v3/GAMESFX/A_ECONF1.AUD: A_ECONF1.AUD
 					^SupportDir|Content/d2k/v3/GAMESFX/A_ECONF3.AUD: A_ECONF3.AUD
