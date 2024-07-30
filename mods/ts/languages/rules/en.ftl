@@ -751,3 +751,7 @@ actor-cahosp =
    .name = Civilian Hospital
    .captured-desc = Provides infantry with self-healing.
    .capturable-desc = Capture to enable self-healing for infantry.
+
+## ai.yaml
+bot-test-ai =
+   .name = Test AI

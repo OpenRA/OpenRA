@@ -559,3 +559,13 @@ actor-truck =
       Builds fast
       Unarmed
    .name = Supply Truck
+
+## ai.yaml
+bot-cabal =
+   .name = Cabal
+
+bot-watson =
+   .name = Watson
+
+bot-hal9001 =
+   .name = HAL 9001

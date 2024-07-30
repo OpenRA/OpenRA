@@ -20,6 +20,15 @@ namespace OpenRA.Mods.Common.Widgets
 {
 	public static class WidgetUtils
 	{
+		[TranslationReference]
+		const string Gone = "label-client-state-disconnected";
+
+		[TranslationReference]
+		const string Won = "label-win-state-won";
+
+		[TranslationReference]
+		const string Lost = "label-win-state-lost";
+
 		public static string GetStatefulImageName(
 			string baseName, bool disabled = false, bool pressed = false, bool hover = false, bool focused = false)
 		{
@@ -324,19 +333,29 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			var client = p.World.LobbyInfo.ClientWithIndex(p.ClientIndex);
 			var nameFont = Game.Renderer.Fonts[label.Font];
-			var name = new CachedTransform<(string Name, WinState WinState, Session.ClientState ClientState), string>(c =>
+			var name = new CachedTransform<(WinState WinState, Session.ClientState ClientState), string>(c =>
 			{
-				var suffix = c.WinState == WinState.Undefined ? "" : " (" + c.WinState + ")";
-				if (c.ClientState == Session.ClientState.Disconnected)
-					suffix = " (Gone)";
+				var text = p.ResolvedPlayerName;
 
-				return TruncateText(c.Name, label.Bounds.Width - nameFont.Measure(suffix).X, nameFont) + suffix;
+				var suffix = "";
+				if (c.WinState == WinState.Won)
+					suffix = $" ({TranslationProvider.GetString(Won)})";
+				else if (c.WinState == WinState.Lost)
+					suffix = $" ({TranslationProvider.GetString(Lost)})";
+
+				if (client.State == Session.ClientState.Disconnected)
+					suffix = $" ({TranslationProvider.GetString(Gone)})";
+
+				text += suffix;
+
+				var size = nameFont.Measure(text) - nameFont.Measure(p.ResolvedPlayerName);
+				return TruncateText(text, label.Bounds.Width - size.X, nameFont);
 			});
 
 			label.GetText = () =>
 			{
 				var clientState = client != null ? client.State : Session.ClientState.Ready;
-				return name.Update((p.PlayerName, p.WinState, clientState));
+				return name.Update((p.WinState, clientState));
 			};
 		}
 

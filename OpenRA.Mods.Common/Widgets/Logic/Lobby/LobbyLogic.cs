@@ -853,7 +853,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			while (players.Children.Count > idx)
 				players.RemoveChild(players.Children[idx]);
 
-			tabCompletion.Names = orderManager.LobbyInfo.Clients.Select(c => c.Name).Distinct().ToList();
+			tabCompletion.Names = orderManager.LobbyInfo.Clients.Where(c => !c.IsBot).Select(c => c.Name).Distinct().ToList();
 		}
 
 		void UpdateDiscordStatus()

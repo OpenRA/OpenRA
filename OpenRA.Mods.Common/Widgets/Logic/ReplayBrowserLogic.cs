@@ -407,7 +407,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var ddb = panel.GetOrNull<DropDownButtonWidget>("FLT_PLAYER_DROPDOWNBUTTON");
 				if (ddb != null)
 				{
-					var options = replays.SelectMany(r => r.GameInfo.Players.Select(p => p.Name)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+					var options = replays.SelectMany(r => r.GameInfo.Players.Select(p => r.GameInfo.ResolvedPlayerName(p)))
+						.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+
 					options.Sort(StringComparer.OrdinalIgnoreCase);
 					options.Insert(0, null); // no filter
 
@@ -666,7 +668,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (!string.IsNullOrEmpty(filter.PlayerName))
 			{
 				var player = replay.GameInfo.Players.FirstOrDefault(
-					p => string.Equals(filter.PlayerName, p.Name, StringComparison.CurrentCultureIgnoreCase));
+					p => string.Equals(filter.PlayerName, replay.GameInfo.ResolvedPlayerName(p), StringComparison.CurrentCultureIgnoreCase));
 				if (player == null)
 					return false;
 
@@ -751,7 +753,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						var label = item.Get<LabelWidget>("LABEL");
 						var font = Game.Renderer.Fonts[label.Font];
-						var name = WidgetUtils.TruncateText(o.Name, label.Bounds.Width, font);
+						var name = WidgetUtils.TruncateText(replay.GameInfo.ResolvedPlayerName(o), label.Bounds.Width, font);
 						label.GetText = () => name;
 						label.GetColor = () => color;
 

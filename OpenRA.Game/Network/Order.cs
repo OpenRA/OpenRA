@@ -465,7 +465,7 @@ namespace OpenRA
 		public override string ToString()
 		{
 			return $"OrderString: \"{OrderString}\" \n\t Type: \"{Type}\".  \n\t Subject: \"{Subject}\". \n\t Target: \"{Target}\"." +
-					$"\n\t TargetString: \"{TargetString}\".\n\t IsImmediate: {IsImmediate}.\n\t Player(PlayerName): {Player?.PlayerName}\n";
+					$"\n\t TargetString: \"{TargetString}\".\n\t IsImmediate: {IsImmediate}.\n\t Player(PlayerName): {Player?.ResolvedPlayerName}\n";
 		}
 	}
 }

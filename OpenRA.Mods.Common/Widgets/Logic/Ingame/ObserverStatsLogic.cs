@@ -259,7 +259,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			incomeGraph.GetSeries = () =>
 				players.Select(p => new LineGraphSeries(
-					p.PlayerName,
+					p.ResolvedPlayerName,
 					p.Color,
 					(p.PlayerActor.TraitOrDefault<PlayerStatistics>() ?? new PlayerStatistics(p.PlayerActor)).IncomeSamples.Select(s => (float)s)));
 		}
@@ -271,7 +271,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			armyValueGraph.GetSeries = () =>
 				players.Select(p => new LineGraphSeries(
-					p.PlayerName,
+					p.ResolvedPlayerName,
 					p.Color,
 					(p.PlayerActor.TraitOrDefault<PlayerStatistics>() ?? new PlayerStatistics(p.PlayerActor)).ArmySamples.Select(s => (float)s)));
 		}

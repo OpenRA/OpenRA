@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Scripting
 		public string InternalName => Player.InternalName;
 
 		[Desc("The player's name.")]
-		public string Name => Player.PlayerName;
+		public string Name => Player.ResolvedPlayerName;
 
 		[Desc("The player's color.")]
 		public Color Color => Player.GetColor(Player);

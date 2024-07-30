@@ -20,7 +20,7 @@ Player:
 	DeveloperMode:
 		CheckboxVisible: False
 	ModularBot@CampaignAI:
-		Name: Campaign Player AI
+		Name: bot-campaign-ai.name
 		Type: campaign
 
 World:

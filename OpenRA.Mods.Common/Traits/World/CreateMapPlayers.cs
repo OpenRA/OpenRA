@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 				var player = new GameInformation.Player
 				{
 					ClientIndex = client.Index,
-					Name = Player.ResolvePlayerName(client, lobbyInfo.Clients, bots),
+					Name = client.Name,
 					IsHuman = client.Bot == null,
 					IsBot = client.Bot != null,
 					FactionName = resolvedFaction.Name,

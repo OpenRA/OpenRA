@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			public CameraOption(ObserverShroudSelectorLogic logic, Player p)
 			{
 				Player = p;
-				Label = p.PlayerName;
+				Label = p.ResolvedPlayerName;
 				Color = p.Color;
 				Faction = p.Faction.InternalName;
 				IsSelected = () => p.World.RenderPlayer == p;

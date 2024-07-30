@@ -849,3 +849,16 @@ actor-powerproxy-paratroopers =
    .name = Paratroopers
    .description = A Badger drops a squad of infantry
     anywhere on the map.
+
+## ai.yaml
+bot-rush-ai =
+   .name = Rush AI
+
+bot-normal-ai =
+   .name = Normal AI
+
+bot-turtle-ai =
+   .name = Turtle AI
+
+bot-naval-ai =
+   .name = Naval AI

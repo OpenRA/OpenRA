@@ -1323,7 +1323,7 @@ namespace OpenRA.Server
 				foreach (var cmpi in Map.WorldActorInfo.TraitInfos<ICreatePlayersInfo>())
 					cmpi.CreateServerPlayers(Map, LobbyInfo, worldPlayers, playerRandom);
 
-				gameInfo = new GameInformation
+				gameInfo = new GameInformation()
 				{
 					Mod = Game.ModData.Manifest.Id,
 					Version = Game.ModData.Manifest.Metadata.Version,

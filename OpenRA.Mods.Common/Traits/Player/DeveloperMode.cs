@@ -275,7 +275,7 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 			}
 
-			var arguments = Translation.Arguments("cheat", order.OrderString, "player", self.Owner.PlayerName, "suffix", debugSuffix);
+			var arguments = Translation.Arguments("cheat", order.OrderString, "player", self.Owner.ResolvedPlayerName, "suffix", debugSuffix);
 			TextNotificationsManager.Debug(TranslationProvider.GetString(CheatUsed, arguments));
 		}
 

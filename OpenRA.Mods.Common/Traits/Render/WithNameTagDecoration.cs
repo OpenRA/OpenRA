@@ -54,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 			font = Game.Renderer.Fonts[info.Font];
 			this.info = info;
 
-			name = self.Owner.PlayerName;
+			name = self.Owner.ResolvedPlayerName;
 			if (name.Length > info.MaxLength)
 				name = name[..info.MaxLength];
 		}
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
 		{
-			name = self.Owner.PlayerName;
+			name = self.Owner.ResolvedPlayerName;
 			if (name.Length > Info.MaxLength)
 				name = name[..Info.MaxLength];
 		}

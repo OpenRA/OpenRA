@@ -19,6 +19,9 @@ namespace OpenRA
 {
 	public class GameInformation
 	{
+		[TranslationReference("name", "number")]
+		const string EnumeratedBotName = "enumerated-bot-name";
+
 		public string Mod;
 		public string Version;
 
@@ -118,6 +121,7 @@ namespace OpenRA
 				Name = runtimePlayer.PlayerName,
 				IsHuman = !runtimePlayer.IsBot,
 				IsBot = runtimePlayer.IsBot,
+				BotType = runtimePlayer.BotType,
 				FactionName = runtimePlayer.Faction.Name,
 				FactionId = runtimePlayer.Faction.InternalName,
 				DisplayFactionName = runtimePlayer.DisplayFaction.Name,
@@ -143,6 +147,20 @@ namespace OpenRA
 			return player;
 		}
 
+		public string ResolvedPlayerName(Player player)
+		{
+			if (player.IsBot)
+			{
+				var number = Players.Where(p => p.BotType == player.BotType).ToList().IndexOf(player) + 1;
+				return TranslationProvider.GetString(EnumeratedBotName,
+					Translation.Arguments(
+						"name", TranslationProvider.GetString(player.Name),
+						"number", number));
+			}
+
+			return player.Name;
+		}
+
 		public class Player
 		{
 			#region Start-up information
@@ -153,6 +171,7 @@ namespace OpenRA
 			public string Name;
 			public bool IsHuman;
 			public bool IsBot;
+			public string BotType;
 
 			/// <summary>The faction's display name.</summary>
 			public string FactionName;

@@ -1,12 +1,12 @@
 Player:
 	ModularBot@Cabal:
-		Name: Cabal
+		Name: bot-cabal.name
 		Type: cabal
 	ModularBot@Watson:
-		Name: Watson
+		Name: bot-watson.name
 		Type: watson
 	ModularBot@HAL9001:
-		Name: HAL 9001
+		Name: bot-hal9001.name
 		Type: hal9001
 	GrantConditionOnBotOwner@cabal:
 		Condition: enable-cabal-ai

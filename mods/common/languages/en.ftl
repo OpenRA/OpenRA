@@ -860,3 +860,14 @@ notification-desync-compare-logs = Out of sync in frame { $frame }.
 
 ## SupportPowerTimerWidget
 support-power-timer = { $player }'s { $support-power }: { $time }
+
+## WidgetUtils
+label-win-state-won = Won
+label-win-state-lost = Lost
+
+## Player
+enumerated-bot-name =
+    { $name } { $number ->
+       *[zero] {""}
+        [other] { $number }
+    }

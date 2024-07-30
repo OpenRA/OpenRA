@@ -25,8 +25,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Internal id for this bot.")]
 		public readonly string Type = null;
 
+		[TranslationReference]
 		[Desc("Human-readable name this bot uses.")]
-		public readonly string Name = "Unnamed Bot";
+		public readonly string Name = null;
 
 		[Desc("Minimum portion of pending orders to issue each tick (e.g. 5 issues at least 1/5th of all pending orders). " +
 			"Excess orders remain queued for subsequent ticks.")]

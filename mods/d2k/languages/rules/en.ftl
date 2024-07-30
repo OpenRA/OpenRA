@@ -569,3 +569,13 @@ meta-destroyabletile =
 meta-destroyedtile =
    .generic-name = Passage (repairable)
    .name = Passage (repairable)
+
+## ai.yaml
+bot-omnius =
+   .name = Omnius
+
+bot-vidius =
+   .name = Vidious
+
+bot-gladius =
+   .name = Gladius
