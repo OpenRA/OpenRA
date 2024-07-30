@@ -5,7 +5,7 @@ nod95: C&C Gold (Nod Disc, English)
 		CONQUER.MIX: 833e02a09aae694659eb312d3838367f681d1b30
 	Install:
 		# Base game files:
-		ContentPackage:
+		ContentPackage@base:
 			Name: base
 			Actions:
 				Copy: .
@@ -20,13 +20,13 @@ nod95: C&C Gold (Nod Disc, English)
 					^SupportDir|Content/cnc/tempicnh.mix: TEMPICNH.MIX
 					^SupportDir|Content/cnc/transit.mix: TRANSIT.MIX
 		# Base game music (optional):
-		ContentPackage:
+		ContentPackage@music:
 			Name: music
 			Actions:
 				Copy: .
 					^SupportDir|Content/cnc/scores.mix: SCORES.MIX
 		# Nod campaign briefings (optional):
-		ContentPackage:
+		ContentPackage@movies-nod:
 			Name: movies-nod
 			Actions:
 				ExtractMix: MOVIES.MIX

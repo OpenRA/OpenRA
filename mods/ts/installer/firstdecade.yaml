@@ -14,7 +14,7 @@ tfd: C&C The First Decade (English)
 					^SupportDir|Content/ts/tibsun.mix: Tiberian Sun\SUN\TIBSUN.MIX
 					^SupportDir|Content/ts/expand01.mix: Tiberian Sun\SUN\expand01.mix
 		# Base game files:
-		ContentPackage:
+		ContentPackage@tibsun:
 			Name: tibsun
 			Actions:
 				ExtractMix: ^SupportDir|Content/ts/tibsun.mix
@@ -34,10 +34,10 @@ tfd: C&C The First Decade (English)
 					^SupportDir|Content/ts/temperat.mix: temperat.mix
 				Delete: ^SupportDir|Content/ts/tibsun.mix
 		# Firestorm expansion files:
-		ContentPackage:
+		ContentPackage@fstorm:
 			Name: fstorm
 			Actions:
-				ExtractMix: ^SupportDir|Content/ts/expand01.mix
+				ExtractMix@1: ^SupportDir|Content/ts/expand01.mix
 					^SupportDir|Content/ts/firestorm/m_emp.vxl: m_emp.vxl
 					^SupportDir|Content/ts/firestorm/mwar_nod.vxl: mwar_nod.vxl
 					^SupportDir|Content/ts/firestorm/djuggbar.vxl: djuggbar.vxl
@@ -61,8 +61,8 @@ tfd: C&C The First Decade (English)
 					^SupportDir|Content/ts/firestorm/sounds01.mix: sounds01.mix
 					^SupportDir|Content/ts/firestorm/isotemp.mix: isotemp.mix
 					^SupportDir|Content/ts/firestorm/temperat.mix: temperat.mix
-				Delete: ^SupportDir|Content/ts/expand01.mix
-				ExtractMix: ^SupportDir|Content/ts/firestorm/isotemp.mix
+				Delete@2: ^SupportDir|Content/ts/expand01.mix
+				ExtractMix@3: ^SupportDir|Content/ts/firestorm/isotemp.mix
 					^SupportDir|Content/ts/firestorm/blat01.tem: blat01.tem
 					^SupportDir|Content/ts/firestorm/blat01a.tem: blat01a.tem
 					^SupportDir|Content/ts/firestorm/blat02.tem: blat02.tem
@@ -204,8 +204,8 @@ tfd: C&C The First Decade (English)
 					^SupportDir|Content/ts/firestorm/swamp07.tem: swamp07.tem
 					^SupportDir|Content/ts/firestorm/swamp08.tem: swamp08.tem
 					^SupportDir|Content/ts/firestorm/swamp09.tem: swamp09.tem
-				Delete: ^SupportDir|Content/ts/firestorm/isotemp.mix
-				ExtractMix: ^SupportDir|Content/ts/firestorm/temperat.mix
+				Delete@4: ^SupportDir|Content/ts/firestorm/isotemp.mix
+				ExtractMix@5: ^SupportDir|Content/ts/firestorm/temperat.mix
 					^SupportDir|Content/ts/firestorm/fona01.tem: fona01.tem
 					^SupportDir|Content/ts/firestorm/fona02.tem: fona02.tem
 					^SupportDir|Content/ts/firestorm/fona03.tem: fona03.tem
@@ -222,24 +222,24 @@ tfd: C&C The First Decade (English)
 					^SupportDir|Content/ts/firestorm/fona14.tem: fona14.tem
 					^SupportDir|Content/ts/firestorm/fona15.tem: fona15.tem
 					^SupportDir|Content/ts/firestorm/bigblue3.tem: bigblue3.tem
-				Delete: ^SupportDir|Content/ts/firestorm/temperat.mix
+				Delete@6: ^SupportDir|Content/ts/firestorm/temperat.mix
 		# Base game music (optional):
-		ContentPackage:
+		ContentPackage@tibsun-music:
 			Name: tibsun-music
 			Actions:
-			ExtractIscab: data1.hdr
-				Volumes:
-					6: data6.cab
-					7: data7.cab
-				Extract:
-					^SupportDir|Content/ts/scores.mix: Tiberian Sun\SUN\SCORES.MIX
+				ExtractIscab: data1.hdr
+					Volumes:
+						6: data6.cab
+						7: data7.cab
+					Extract:
+						^SupportDir|Content/ts/scores.mix: Tiberian Sun\SUN\SCORES.MIX
 		# Firestorm expansion music (optional):
-		ContentPackage:
+		ContentPackage@fstorm-music:
 			Name: fstorm-music
 			Actions:
-			ExtractIscab: data1.hdr
-				Volumes:
-					6: data6.cab
-					7: data7.cab
-				Extract:
-					^SupportDir|Content/ts/firestorm/scores01.mix: Tiberian Sun\SUN\scores01.mix
+				ExtractIscab: data1.hdr
+					Volumes:
+						6: data6.cab
+						7: data7.cab
+					Extract:
+						^SupportDir|Content/ts/firestorm/scores01.mix: Tiberian Sun\SUN\scores01.mix

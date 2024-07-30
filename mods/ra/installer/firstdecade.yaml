@@ -22,16 +22,16 @@ tfd: C&C The First Decade (English)
 					^SupportDir|Content/ra/v2/expand/expand2.mix: Red Alert\\EXPAND2.MIX
 					^SupportDir|Content/ra/v2/cnc/desert.mix: CnC\\DESERT.MIX
 		# Base game files:
-		ContentPackage:
+		ContentPackage@base:
 			Name: base
 			Actions:
-				ExtractMix: ^SupportDir|Content/ra/v2/redalert.mix
+				ExtractMix@1: ^SupportDir|Content/ra/v2/redalert.mix
 					^SupportDir|Content/ra/v2/hires.mix: hires.mix
 					^SupportDir|Content/ra/v2/local.mix: local.mix
 					^SupportDir|Content/ra/v2/lores.mix: lores.mix
 					^SupportDir|Content/ra/v2/speech.mix: speech.mix
 				Delete: ^SupportDir|Content/ra/v2/redalert.mix
-				ExtractMix: ^SupportDir|Content/ra/v2/main.mix
+				ExtractMix@2: ^SupportDir|Content/ra/v2/main.mix
 					^SupportDir|Content/ra/v2/interior.mix: interior.mix
 					^SupportDir|Content/ra/v2/conquer.mix: conquer.mix
 					^SupportDir|Content/ra/v2/allies.mix: allies.mix
@@ -40,18 +40,18 @@ tfd: C&C The First Decade (English)
 					^SupportDir|Content/ra/v2/snow.mix: snow.mix
 					^SupportDir|Content/ra/v2/russian.mix: russian.mix
 		# Base game music (optional):
-		ContentPackage:
+		ContentPackage@music:
 			Name: music
 			Actions:
 				ExtractMix: ^SupportDir|Content/ra/v2/main.mix
 					^SupportDir|Content/ra/v2/scores.mix: scores.mix
 		# Allied campaign briefings (optional):
-		ContentPackage:
+		ContentPackage@movies-allied:
 			Name: movies-allied
 			Actions:
-				ExtractMix: ^SupportDir|Content/ra/v2/main.mix
+				ExtractMix@1: ^SupportDir|Content/ra/v2/main.mix
 					^SupportDir|Content/ra/v2/movies1.mix: movies1.mix
-				ExtractMix: ^SupportDir|Content/ra/v2/movies1.mix
+				ExtractMix@2: ^SupportDir|Content/ra/v2/movies1.mix
 					^SupportDir|Content/ra/v2/movies/aagun.vqa: aagun.vqa
 					^SupportDir|Content/ra/v2/movies/aftrmath.vqa: aftrmath.vqa
 					^SupportDir|Content/ra/v2/movies/ally12.vqa: ally12.vqa
@@ -105,12 +105,12 @@ tfd: C&C The First Decade (English)
 					^SupportDir|Content/ra/v2/movies/ally11.vqa: ally11.vqa
 				Delete: ^SupportDir|Content/ra/v2/movies1.mix
 		# Soviet campaign briefings (optional):
-		ContentPackage:
+		ContentPackage@movies-soviet:
 			Name: movies-soviet
 			Actions:
-				ExtractMix: ^SupportDir|Content/ra/v2/main.mix
+				ExtractMix@1: ^SupportDir|Content/ra/v2/main.mix
 					^SupportDir|Content/ra/v2/movies2.mix: movies2.mix
-				ExtractMix: ^SupportDir|Content/ra/v2/movies2.mix
+				ExtractMix@2: ^SupportDir|Content/ra/v2/movies2.mix
 					^SupportDir|Content/ra/v2/movies/double.vqa: double.vqa
 					^SupportDir|Content/ra/v2/movies/dpthchrg.vqa: dpthchrg.vqa
 					^SupportDir|Content/ra/v2/movies/execute.vqa: execute.vqa
@@ -168,7 +168,7 @@ tfd: C&C The First Decade (English)
 					^SupportDir|Content/ra/v2/movies/cronfail.vqa: cronfail.vqa
 				Delete: ^SupportDir|Content/ra/v2/movies2.mix
 		# Aftermath expansion files:
-		ContentPackage:
+		ContentPackage@aftermathbase:
 			Name: aftermathbase
 			Actions:
 				ExtractMix: ^SupportDir|Content/ra/v2/sounds.mix

@@ -6,15 +6,15 @@ allied: Red Alert 95 (Allied Disc, English)
 		INSTALL/REDALERT.MIX: 0e58f4b54f44f6cd29fecf8cf379d33cf2d4caef
 	Install:
 		# Base game files:
-		ContentPackage:
+		ContentPackage@base:
 			Name: base
 			Actions:
-				ExtractMix: INSTALL/REDALERT.MIX
+				ExtractMix@1: INSTALL/REDALERT.MIX
 					^SupportDir|Content/ra/v2/hires.mix: hires.mix
 					^SupportDir|Content/ra/v2/local.mix: local.mix
 					^SupportDir|Content/ra/v2/lores.mix: lores.mix
 					^SupportDir|Content/ra/v2/speech.mix: speech.mix
-				ExtractMix: MAIN.MIX
+				ExtractMix@2: MAIN.MIX
 					^SupportDir|Content/ra/v2/conquer.mix: conquer.mix
 					^SupportDir|Content/ra/v2/general.mix: general.mix # Is this one used? The FirstDecade and TUC installers are missing this!
 					^SupportDir|Content/ra/v2/interior.mix: interior.mix
@@ -24,18 +24,18 @@ allied: Red Alert 95 (Allied Disc, English)
 					^SupportDir|Content/ra/v2/allies.mix: allies.mix
 					^SupportDir|Content/ra/v2/temperat.mix: temperat.mix
 		# Base game music (optional):
-		ContentPackage:
+		ContentPackage@music:
 			Name: music
 			Actions:
 				ExtractMix: MAIN.MIX
 					^SupportDir|Content/ra/v2/scores.mix: scores.mix
 		# Allied campaign briefings (optional):
-		ContentPackage:
+		ContentPackage@movies-allied:
 			Name: movies-allied
 			Actions:
-				ExtractMix: MAIN.MIX
+				ExtractMix@1: MAIN.MIX
 					^SupportDir|Content/ra/v2/movies1.mix: movies1.mix
-				ExtractMix: ^SupportDir|Content/ra/v2/movies1.mix
+				ExtractMix@2: ^SupportDir|Content/ra/v2/movies1.mix
 					^SupportDir|Content/ra/v2/movies/aagun.vqa: aagun.vqa
 					^SupportDir|Content/ra/v2/movies/aftrmath.vqa: aftrmath.vqa
 					^SupportDir|Content/ra/v2/movies/ally1.vqa: ally1.vqa

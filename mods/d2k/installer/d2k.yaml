@@ -4,7 +4,7 @@ d2k: Dune 2000 (English)
 		MUSIC/AMBUSH.AUD: bd5926a56a83bc0e49f96037e1f909014ac0772a
 	Install:
 		# Campaign briefings (optional):
-		ContentPackage:
+		ContentPackage@movies:
 			Name: movies
 			Actions:
 				Copy: MOVIES
@@ -51,7 +51,7 @@ d2k: Dune 2000 (English)
 					^SupportDir|Content/d2k/v3/Movies/G_PLNT_E.VQA: G_PLNT_E.VQA
 					^SupportDir|Content/d2k/v3/Movies/T_TITL_E.VQA: T_TITL_E.VQA
 		# Game music (optional):
-		ContentPackage:
+		ContentPackage@music:
 			Name: music
 			Actions:
 				Copy: MUSIC
@@ -73,7 +73,7 @@ d2k: Dune 2000 (English)
 					^SupportDir|Content/d2k/v3/Music/UNDERCON.AUD: UNDERCON.AUD
 					^SupportDir|Content/d2k/v3/Music/WAITGAME.AUD: WAITGAME.AUD
 		# Base game files:
-		ContentPackage:
+		ContentPackage@base:
 			Name: base
 			Actions:
 				ExtractBlast: SETUP/SETUP.Z

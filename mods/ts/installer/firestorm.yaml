@@ -5,10 +5,10 @@ fstorm: Firestorm Expansion Disc (English)
 		Install/Language.dll: 4df87c1a2289da57dd14d0a7299546f37357fcca
 	Install:
 		# Firestorm expansion files:
-		ContentPackage:
+		ContentPackage@fstorm:
 			Name: fstorm
 			Actions:
-				ExtractMix: Install/expand01.mix
+				ExtractMix@1: Install/expand01.mix
 					^SupportDir|Content/ts/firestorm/m_emp.vxl: m_emp.vxl
 					^SupportDir|Content/ts/firestorm/mwar_nod.vxl: mwar_nod.vxl
 					^SupportDir|Content/ts/firestorm/djuggbar.vxl: djuggbar.vxl
@@ -32,7 +32,7 @@ fstorm: Firestorm Expansion Disc (English)
 					^SupportDir|Content/ts/firestorm/sounds01.mix: sounds01.mix
 					^SupportDir|Content/ts/firestorm/isotemp.mix: isotemp.mix
 					^SupportDir|Content/ts/firestorm/temperat.mix: temperat.mix
-				ExtractMix: ^SupportDir|Content/ts/firestorm/isotemp.mix
+				ExtractMix@2: ^SupportDir|Content/ts/firestorm/isotemp.mix
 					^SupportDir|Content/ts/firestorm/blat01.tem: blat01.tem
 					^SupportDir|Content/ts/firestorm/blat01a.tem: blat01a.tem
 					^SupportDir|Content/ts/firestorm/blat02.tem: blat02.tem
@@ -174,8 +174,8 @@ fstorm: Firestorm Expansion Disc (English)
 					^SupportDir|Content/ts/firestorm/swamp07.tem: swamp07.tem
 					^SupportDir|Content/ts/firestorm/swamp08.tem: swamp08.tem
 					^SupportDir|Content/ts/firestorm/swamp09.tem: swamp09.tem
-				Delete: ^SupportDir|Content/ts/firestorm/isotemp.mix
-				ExtractMix: ^SupportDir|Content/ts/firestorm/temperat.mix
+				Delete@3: ^SupportDir|Content/ts/firestorm/isotemp.mix
+				ExtractMix@4: ^SupportDir|Content/ts/firestorm/temperat.mix
 					^SupportDir|Content/ts/firestorm/fona01.tem: fona01.tem
 					^SupportDir|Content/ts/firestorm/fona02.tem: fona02.tem
 					^SupportDir|Content/ts/firestorm/fona03.tem: fona03.tem
@@ -192,9 +192,9 @@ fstorm: Firestorm Expansion Disc (English)
 					^SupportDir|Content/ts/firestorm/fona14.tem: fona14.tem
 					^SupportDir|Content/ts/firestorm/fona15.tem: fona15.tem
 					^SupportDir|Content/ts/firestorm/bigblue3.tem: bigblue3.tem
-				Delete: ^SupportDir|Content/ts/firestorm/temperat.mix
+				Delete@5: ^SupportDir|Content/ts/firestorm/temperat.mix
 		# Firestorm expansion music (optional):
-		ContentPackage:
+		ContentPackage@fstorm-music:
 			Name: fstorm-music
 			Actions:
 				Copy: .

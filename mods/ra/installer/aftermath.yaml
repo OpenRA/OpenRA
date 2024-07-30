@@ -5,7 +5,7 @@ aftermath: Aftermath Expansion Disc (English)
 		SETUP/INSTALL/PATCH.RTP: 5bce93f834f9322ddaa7233242e5b6c7fea0bf17
 	Install:
 		# Aftermath expansion files:
-		ContentPackage:
+		ContentPackage@aftermathbase:
 			Name: aftermathbase
 			Actions:
 				ExtractRaw: SETUP/INSTALL/PATCH.RTP
@@ -18,9 +18,9 @@ aftermath: Aftermath Expansion Disc (English)
 					^SupportDir|Content/ra/v2/expand/lores1.mix:
 						Offset: 5273320
 						Length: 57076
-				ExtractMix: MAIN.MIX
+				ExtractMix@1: MAIN.MIX
 					^SupportDir|Content/ra/v2/expand/sounds.mix: sounds.mix
-				ExtractMix: ^SupportDir|Content/ra/v2/expand/sounds.mix
+				ExtractMix@2: ^SupportDir|Content/ra/v2/expand/sounds.mix
 					^SupportDir|Content/ra/v2/expand/chrotnk1.aud: chrotnk1.aud
 					^SupportDir|Content/ra/v2/expand/fixit1.aud: fixit1.aud
 					^SupportDir|Content/ra/v2/expand/jburn1.aud: jburn1.aud
@@ -47,12 +47,12 @@ aftermath: Aftermath Expansion Disc (English)
 					^SupportDir|Content/ra/v2/expand/myes1.aud: myes1.aud
 				Delete: ^SupportDir|Content/ra/v2/expand/sounds.mix
 		# Aftermath music (optional):
-		ContentPackage:
+		ContentPackage@music-aftermath:
 			Name: music-aftermath
 			Actions:
-				ExtractMix: MAIN.MIX
+				ExtractMix@1: MAIN.MIX
 					^SupportDir|Content/ra/v2/expand/scores.mix: scores.mix
-				ExtractMix: ^SupportDir|Content/ra/v2/expand/scores.mix
+				ExtractMix@2: ^SupportDir|Content/ra/v2/expand/scores.mix
 					^SupportDir|Content/ra/v2/expand/await.aud: await.aud
 					^SupportDir|Content/ra/v2/expand/bog.aud: bog.aud
 					^SupportDir|Content/ra/v2/expand/float_v2.aud: float_v2.aud

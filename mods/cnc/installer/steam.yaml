@@ -5,7 +5,7 @@ tuc-steam: C&C The Ultimate Collection (Steam version, English)
 		CONQUER.MIX: 713b53fa4c188ca9619c6bbeadbfc86513704266
 	Install:
 		# Base game files:
-		ContentPackage:
+		ContentPackage@base:
 			Name: base
 			Actions:
 				Copy: .
@@ -19,19 +19,19 @@ tuc-steam: C&C The Ultimate Collection (Steam version, English)
 					^SupportDir|Content/cnc/tempicnh.mix: TEMPICNH.MIX
 					^SupportDir|Content/cnc/transit.mix: TRANSIT.MIX
 		# Base game music (optional):
-		ContentPackage:
+		ContentPackage@music:
 			Name: music
 			Actions:
 				Copy: .
 					^SupportDir|Content/cnc/scores.mix: SCORES.MIX
 		# Covert Operations music (optional):
-		ContentPackage:
+		ContentPackage@music-covertops:
 			Name: music-covertops
 			Actions:
 				Copy: .
 					^SupportDir|Content/cnc/scores-covertops.mix: SCORES.MIX
 		# GDI campaign briefings (optional):
-		ContentPackage:
+		ContentPackage@movies-gdi:
 			Name: movies-gdi
 			Actions:
 				ExtractMix: movies.mix
@@ -101,7 +101,7 @@ tuc-steam: C&C The Ultimate Collection (Steam version, English)
 					^SupportDir|Content/cnc/movies/bcanyon.vqa: bcanyon.vqa
 					^SupportDir|Content/cnc/movies/banner.vqa: banner.vqa
 		# Nod campaign briefings (optional):
-		ContentPackage:
+		ContentPackage@movies-nod:
 			Name: movies-nod
 			Actions:
 				ExtractMix: movies.mix
@@ -174,7 +174,7 @@ cncr-steam: C&C Remastered Collection (Steam version, English)
 		Data/CNCDATA/TIBERIAN_DAWN/CD1/CONQUER.MIX: 3f891c8dc0864f654e1710430ea4ff34c3715e97
 	Install:
 		# Base game files:
-		ContentPackage:
+		ContentPackage@base:
 			Name: base
 			Actions:
 				Copy: Data/CNCDATA/TIBERIAN_DAWN/CD1
@@ -188,20 +188,20 @@ cncr-steam: C&C Remastered Collection (Steam version, English)
 					^SupportDir|Content/cnc/transit.mix: TRANSIT.MIX
 					^SupportDir|Content/cnc/winter.mix: WINTER.MIX
 		# Base game music (optional):
-		ContentPackage:
+		ContentPackage@music:
 			Name: music
 			Actions:
 				Copy: Data/CNCDATA/TIBERIAN_DAWN/CD1
 					^SupportDir|Content/cnc/scores.mix: SCORES.MIX
 		# Covert Operations music (optional):
-		ContentPackage:
+		ContentPackage@music-covertops:
 			Name: music-covertops
 			Actions:
 				Copy: Data/CNCDATA/TIBERIAN_DAWN/CD3
 					^SupportDir|Content/cnc/scores-covertops.mix: SCORES.MIX
 		# GDI campaign briefings (optional):
 		# The Remastered Collection doesn't include trailer.vqa.
-		ContentPackage:
+		ContentPackage@movies-gdi:
 			Name: movies-gdi
 			TooltipText: The Remastered Collection doesn't include trailer.vqa.
 			Actions:
@@ -272,7 +272,7 @@ cncr-steam: C&C Remastered Collection (Steam version, English)
 					^SupportDir|Content/cnc/movies/banner.vqa: banner.vqa
 		# Nod campaign briefings (optional):
 		# The Remastered Collection doesn't include trailer.vqa.
-		ContentPackage:
+		ContentPackage@movies-nod:
 			Name: movies-nod
 			TooltipText: The Remastered Collection doesn't include trailer.vqa.
 			Actions:
