@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Common.Traits
 	[RequireExplicitImplementation]
 	public interface INotifyOrderIssued
 	{
-		bool OrderIssued(World world, Target target);
+		bool OrderIssued(World world, string orderString, Target target);
 	}
 
 	[RequireExplicitImplementation]
