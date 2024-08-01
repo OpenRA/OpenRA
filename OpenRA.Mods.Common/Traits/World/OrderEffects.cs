@@ -9,6 +9,9 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.Common.Effects;
 using OpenRA.Primitives;
 using OpenRA.Traits;
@@ -50,6 +53,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Number of ticks between (frozen) actor flashes.")]
 		public readonly int ActorFlashInterval = 2;
 
+		[Desc("Order name(s) this applies for (empty if applies to all).")]
+		public readonly List<string> OrderScope = new();
+
 		public override object Create(ActorInitializer init)
 		{
 			return new OrderEffects(this);
@@ -58,51 +64,72 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class OrderEffects : INotifyOrderIssued
 	{
-		readonly OrderEffectsInfo info;
+		protected readonly OrderEffectsInfo Info;
 
 		public OrderEffects(OrderEffectsInfo info)
 		{
-			this.info = info;
+			Info = info;
 		}
 
-		bool INotifyOrderIssued.OrderIssued(World world, Target target)
+		protected void FlashActor(World world, Target target)
+		{
+			if (Info.ActorFlashType == ActorFlashType.Overlay)
+				world.AddFrameEndTask(w => w.Add(new FlashTarget(
+					target.Actor, Info.ActorFlashOverlayColor, Info.ActorFlashOverlayAlpha,
+					Info.ActorFlashCount, Info.ActorFlashInterval)));
+			else
+				world.AddFrameEndTask(w => w.Add(new FlashTarget(
+					target.Actor, Info.ActorFlashTint,
+					Info.ActorFlashCount, Info.ActorFlashInterval)));
+		}
+
+		protected void FlashFrozenActor(Target target)
+		{
+			if (Info.ActorFlashType == ActorFlashType.Overlay)
+				target.FrozenActor.Flash(Info.ActorFlashOverlayColor, Info.ActorFlashOverlayAlpha);
+			else
+				target.FrozenActor.Flash(Info.ActorFlashTint);
+		}
+
+		protected void FlashTerrain(World world, Target target)
+		{
+			world.AddFrameEndTask(w => w.Add(new SpriteAnnotation(
+						target.CenterPosition, world, Info.TerrainFlashImage, Info.TerrainFlashSequence, Info.TerrainFlashPalette)));
+		}
+
+		protected virtual bool OrderIssued(World world, Target target)
 		{
 			switch (target.Type)
 			{
 				case TargetType.Actor:
 				{
-					if (info.ActorFlashType == ActorFlashType.Overlay)
-						world.AddFrameEndTask(w => w.Add(new FlashTarget(
-							target.Actor, info.ActorFlashOverlayColor, info.ActorFlashOverlayAlpha,
-							info.ActorFlashCount, info.ActorFlashInterval)));
-					else
-						world.AddFrameEndTask(w => w.Add(new FlashTarget(
-							target.Actor, info.ActorFlashTint,
-							info.ActorFlashCount, info.ActorFlashInterval)));
-
+					FlashActor(world, target);
 					return true;
 				}
 
 				case TargetType.FrozenActor:
 				{
-					if (info.ActorFlashType == ActorFlashType.Overlay)
-						target.FrozenActor.Flash(info.ActorFlashOverlayColor, info.ActorFlashOverlayAlpha);
-					else
-						target.FrozenActor.Flash(info.ActorFlashTint);
-
+					FlashFrozenActor(target);
 					return true;
 				}
 
 				case TargetType.Terrain:
 				{
-					world.AddFrameEndTask(w => w.Add(new SpriteAnnotation(
-						target.CenterPosition, world, info.TerrainFlashImage, info.TerrainFlashSequence, info.TerrainFlashPalette)));
+					FlashTerrain(world, target);
 					return true;
 				}
 
 				default:
 					return false;
 			}
+		}
+
+		bool INotifyOrderIssued.OrderIssued(World world, string orderString, Target target)
+		{
+			if (Info.OrderScope.Count > 0 && Info.OrderScope.Contains(orderString, StringComparer.Ordinal))
+				return false;
+
+			return OrderIssued(world, target);
 		}
 	}
 }
