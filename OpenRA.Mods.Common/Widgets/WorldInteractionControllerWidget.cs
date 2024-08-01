@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Widgets
 					var visualTarget = o.VisualFeedbackTarget.Type != TargetType.Invalid ? o.VisualFeedbackTarget : o.Target;
 
 					foreach (var notifyOrderIssued in world.WorldActor.TraitsImplementing<INotifyOrderIssued>())
-						flashed = notifyOrderIssued.OrderIssued(world, visualTarget);
+						flashed = notifyOrderIssued.OrderIssued(world, o.OrderString, visualTarget);
 				}
 
 				world.IssueOrder(o);
