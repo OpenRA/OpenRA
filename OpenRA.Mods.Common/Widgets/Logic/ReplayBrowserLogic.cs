@@ -18,6 +18,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using OpenRA.FileFormats;
 using OpenRA.Network;
+using OpenRA.Primitives;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 

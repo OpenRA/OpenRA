@@ -16,6 +16,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using OpenRA.FileSystem;
+using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
