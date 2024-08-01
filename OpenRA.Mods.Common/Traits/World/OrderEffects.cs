@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 			this.info = info;
 		}
 
-		bool INotifyOrderIssued.OrderIssued(World world, Target target)
+		bool INotifyOrderIssued.OrderIssued(World world, string orderString, Target target)
 		{
 			switch (target.Type)
 			{
