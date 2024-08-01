@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Cnc.Traits.Render
 			if (move.CurrentMovementTypes != MovementType.None || self.World.Map.DistanceAboveTerrain(self.CenterPosition).Length > 0)
 				return false;
 
-			return cargo.CurrentAdjacentCells.Any(c => self.World.Map.Contains(c)
+			return cargo.CurrentAdjacentCells().Any(c => self.World.Map.Contains(c)
 				&& info.OpenTerrainTypes.Contains(self.World.Map.GetTerrainInfo(c).Type));
 		}
 
