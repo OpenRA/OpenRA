@@ -976,7 +976,14 @@ dotnet_diagnostic.CA2259.severity = suggestion # TODO: Change to warning once us
 
 # We disable the rule category by setting severity to none.
 # Below we enable specific rules by setting severity to warning.
+# Rules are listed below with any options available.
+# Options are commented out if they match the defaults.
 dotnet_analyzer_diagnostic.category-roslynator.severity = none
+
+# A line is too long.
+dotnet_diagnostic.RCS0056.severity = warning
+roslynator_max_line_length = 160 #140
+#roslynator_tab_length = 4
 
 # Remove redundant 'sealed' modifier.
 dotnet_diagnostic.RCS1034.severity = warning

@@ -78,7 +78,8 @@ namespace OpenRA
 		readonly Target target;
 		readonly Target visualFeedbackTarget;
 
-		Order(string orderString, Actor subject, in Target target, string targetString, bool queued, Actor[] extraActors, CPos extraLocation, uint extraData, Actor[] groupedActors = null)
+		Order(string orderString, Actor subject, in Target target, string targetString, bool queued,
+			Actor[] extraActors, CPos extraLocation, uint extraData, Actor[] groupedActors = null)
 		{
 			OrderString = orderString ?? "";
 			Subject = subject;
@@ -270,7 +271,15 @@ namespace OpenRA
 
 		public static Order FromGroupedOrder(Order grouped, Actor subject)
 		{
-			return new Order(grouped.OrderString, subject, grouped.Target, grouped.TargetString, grouped.Queued, grouped.ExtraActors, grouped.ExtraLocation, grouped.ExtraData);
+			return new Order(
+				grouped.OrderString,
+				subject,
+				grouped.Target,
+				grouped.TargetString,
+				grouped.Queued,
+				grouped.ExtraActors,
+				grouped.ExtraLocation,
+				grouped.ExtraData);
 		}
 
 		public static Order Command(string text)

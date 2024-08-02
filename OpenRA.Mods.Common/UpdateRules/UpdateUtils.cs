@@ -35,7 +35,12 @@ namespace OpenRA.Mods.Common.UpdateRules
 					continue;
 				}
 
-				yaml.Add(((IReadWritePackage)package, name, MiniYaml.FromStream(package.GetStream(name), $"{package.Name}:{name}", false).ConvertAll(n => new MiniYamlNodeBuilder(n))));
+				yaml.Add(
+					((IReadWritePackage)package,
+					name,
+					MiniYaml
+						.FromStream(package.GetStream(name), $"{package.Name}:{name}", false)
+						.ConvertAll(n => new MiniYamlNodeBuilder(n))));
 			}
 
 			return yaml;
@@ -48,7 +53,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 		{
 			return FieldLoader.GetValue<string[]>("value", yaml.Value)
 				.Where(f => f.Contains('|'))
-				.SelectMany(f => LoadModYaml(modData, FilterExternalModFiles(modData, new[] { f }, externalFilenames)))
+				.SelectMany(f => LoadModYaml(modData, FilterExternalFiles(modData, new[] { f }, externalFilenames)))
 				.ToList();
 		}
 
@@ -68,7 +73,12 @@ namespace OpenRA.Mods.Common.UpdateRules
 			{
 				// Ignore any files that aren't in the map bundle
 				if (!filename.Contains('|') && mapPackage.Contains(filename))
-					fileSet.Add((mapPackage, filename, MiniYaml.FromStream(mapPackage.GetStream(filename), $"{mapPackage.Name}:{filename}", false).ConvertAll(n => new MiniYamlNodeBuilder(n))));
+					fileSet.Add((
+						mapPackage,
+						filename,
+						MiniYaml
+							.FromStream(mapPackage.GetStream(filename), $"{mapPackage.Name}:{filename}", false)
+							.ConvertAll(n => new MiniYamlNodeBuilder(n))));
 				else if (modData.ModFiles.Exists(filename))
 					externalFilenames.Add(filename);
 			}
@@ -159,7 +169,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 			return manualSteps;
 		}
 
-		public static List<MiniYamlNodeBuilder> LoadMapYaml(IReadOnlyFileSystem fileSystem, IReadOnlyPackage mapPackage, IEnumerable<string> files, MiniYamlBuilder mapNode)
+		public static List<MiniYamlNodeBuilder> LoadMapYaml(
+			IReadOnlyFileSystem fileSystem, IReadOnlyPackage mapPackage, IEnumerable<string> files, MiniYamlBuilder mapNode)
 		{
 			var yaml = files.Select(s => MiniYaml.FromStream(fileSystem.Open(s), s)).ToList();
 
@@ -182,11 +193,11 @@ namespace OpenRA.Mods.Common.UpdateRules
 			return MiniYaml.Merge(yaml).ConvertAll(n => new MiniYamlNodeBuilder(n));
 		}
 
-		public static IEnumerable<string> FilterExternalModFiles(ModData modData, IEnumerable<string> files, HashSet<string> externalFilenames)
+		public static IEnumerable<string> FilterExternalFiles(ModData modData, IEnumerable<string> files, HashSet<string> externalFilenames)
 		{
 			foreach (var f in files)
 			{
-				if (f.Contains('|') && modData.DefaultFileSystem.IsExternalModFile(f))
+				if (f.Contains('|') && modData.DefaultFileSystem.IsExternalFile(f))
 				{
 					externalFilenames.Add(f);
 					continue;
@@ -200,12 +211,12 @@ namespace OpenRA.Mods.Common.UpdateRules
 		{
 			var manualSteps = new List<string>();
 
-			var modRules = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Rules, externalFilenames));
-			var modWeapons = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Weapons, externalFilenames));
-			var modSequences = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Sequences, externalFilenames));
-			var modTilesets = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.TileSets, externalFilenames));
-			var modChromeLayout = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.ChromeLayout, externalFilenames));
-			var modChromeProvider = LoadModYaml(modData, FilterExternalModFiles(modData, modData.Manifest.Chrome, externalFilenames));
+			var modRules = LoadModYaml(modData, FilterExternalFiles(modData, modData.Manifest.Rules, externalFilenames));
+			var modWeapons = LoadModYaml(modData, FilterExternalFiles(modData, modData.Manifest.Weapons, externalFilenames));
+			var modSequences = LoadModYaml(modData, FilterExternalFiles(modData, modData.Manifest.Sequences, externalFilenames));
+			var modTilesets = LoadModYaml(modData, FilterExternalFiles(modData, modData.Manifest.TileSets, externalFilenames));
+			var modChromeLayout = LoadModYaml(modData, FilterExternalFiles(modData, modData.Manifest.ChromeLayout, externalFilenames));
+			var modChromeProvider = LoadModYaml(modData, FilterExternalFiles(modData, modData.Manifest.Chrome, externalFilenames));
 
 			// Find and add shared map includes
 			foreach (var package in modData.MapCache.EnumerateMapPackagesWithoutCaching())
@@ -357,7 +368,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 		}
 
 		/// <summary>Renames a yaml key preserving any @suffix.</summary>
-		public static void RenameKey(this MiniYamlNodeBuilder node, string newKey, bool preserveSuffix = true, bool includeRemovals = true)
+		public static void RenameKey(
+			this MiniYamlNodeBuilder node, string newKey, bool preserveSuffix = true, bool includeRemovals = true)
 		{
 			var prefix = includeRemovals && node.IsRemoval() ? "-" : "";
 			var split = node.Key.IndexOf('@');
@@ -398,7 +410,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 			fromNode.Value.Nodes.Remove(node);
 		}
 
-		public static void MoveAndRenameNode(this MiniYamlNodeBuilder node,
+		public static void MoveAndRenameNode(
+			this MiniYamlNodeBuilder node,
 			MiniYamlNodeBuilder fromNode, MiniYamlNodeBuilder toNode, string newKey, bool preserveSuffix = true, bool includeRemovals = true)
 		{
 			node.RenameKey(newKey, preserveSuffix, includeRemovals);
@@ -406,13 +419,15 @@ namespace OpenRA.Mods.Common.UpdateRules
 		}
 
 		/// <summary>Removes children with keys equal to [match] or [match]@[arbitrary suffix].</summary>
-		public static int RemoveNodes(this MiniYamlNodeBuilder node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
+		public static int RemoveNodes(
+			this MiniYamlNodeBuilder node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
 			return node.Value.Nodes.RemoveAll(n => n.KeyMatches(match, ignoreSuffix, includeRemovals));
 		}
 
 		/// <summary>Returns true if the node is of the form [match] or [match]@[arbitrary suffix].</summary>
-		public static bool KeyMatches(this MiniYamlNodeBuilder node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
+		public static bool KeyMatches(
+			this MiniYamlNodeBuilder node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
 			if (node.Key == null)
 				return false;
@@ -430,7 +445,8 @@ namespace OpenRA.Mods.Common.UpdateRules
 		}
 
 		/// <summary>Returns true if the node is of the form [match], [match]@[arbitrary suffix] or [arbitrary suffix]@[match].</summary>
-		public static bool KeyContains(this MiniYamlNodeBuilder node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
+		public static bool KeyContains(
+			this MiniYamlNodeBuilder node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
 			if (node.Key == null)
 				return false;
@@ -445,23 +461,27 @@ namespace OpenRA.Mods.Common.UpdateRules
 		}
 
 		/// <summary>Returns children with keys equal to [match] or [match]@[arbitrary suffix].</summary>
-		public static IEnumerable<MiniYamlNodeBuilder> ChildrenMatching(this MiniYamlNodeBuilder node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
+		public static IEnumerable<MiniYamlNodeBuilder> ChildrenMatching(
+			this MiniYamlNodeBuilder node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
 			return node.Value.Nodes.Where(n => n.KeyMatches(match, ignoreSuffix, includeRemovals));
 		}
 
 		/// <summary>Returns children whose keys contain 'match' (optionally in the suffix).</summary>
-		public static IEnumerable<MiniYamlNodeBuilder> ChildrenContaining(this MiniYamlNodeBuilder node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
+		public static IEnumerable<MiniYamlNodeBuilder> ChildrenContaining(
+			this MiniYamlNodeBuilder node, string match, bool ignoreSuffix = true, bool includeRemovals = true)
 		{
 			return node.Value.Nodes.Where(n => n.KeyContains(match, ignoreSuffix, includeRemovals));
 		}
 
-		public static MiniYamlNodeBuilder LastChildMatching(this MiniYamlNodeBuilder node, string match, bool includeRemovals = true)
+		public static MiniYamlNodeBuilder LastChildMatching(
+			this MiniYamlNodeBuilder node, string match, bool includeRemovals = true)
 		{
 			return node.ChildrenMatching(match, includeRemovals: includeRemovals).LastOrDefault();
 		}
 
-		public static void RenameChildrenMatching(this MiniYamlNodeBuilder node, string match, string newKey, bool preserveSuffix = true, bool includeRemovals = true)
+		public static void RenameChildrenMatching(
+			this MiniYamlNodeBuilder node, string match, string newKey, bool preserveSuffix = true, bool includeRemovals = true)
 		{
 			var matching = node.ChildrenMatching(match);
 			foreach (var m in matching)

@@ -216,7 +216,8 @@ namespace OpenRA.Graphics
 			parent.DrawRGBAQuad(vertices, blendMode);
 		}
 
-		public void FillRect(in float3 a, in float3 b, in float3 c, in float3 d, Color topLeftColor, Color topRightColor, Color bottomRightColor, Color bottomLeftColor, BlendMode blendMode = BlendMode.Alpha)
+		public void FillRect(in float3 a, in float3 b, in float3 c, in float3 d,
+			Color topLeftColor, Color topRightColor, Color bottomRightColor, Color bottomLeftColor, BlendMode blendMode = BlendMode.Alpha)
 		{
 			vertices[0] = VertexWithColor(a + Offset, topLeftColor);
 			vertices[1] = VertexWithColor(b + Offset, topRightColor);

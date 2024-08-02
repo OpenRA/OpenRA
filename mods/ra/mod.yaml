@@ -146,6 +146,8 @@ Translations:
 	ra|languages/chrome/en.ftl
 	ra|languages/rules/en.ftl
 
+AllowUnusedTranslationsInExternalPackages: false
+
 Weapons:
 	ra|weapons/explosions.yaml
 	ra|weapons/ballistics.yaml

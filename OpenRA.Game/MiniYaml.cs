@@ -425,22 +425,27 @@ namespace OpenRA
 		static void MergeIntoResolved(MiniYamlNode overrideNode, List<MiniYamlNode> existingNodes, HashSet<string> existingNodeKeys,
 			Dictionary<string, MiniYaml> tree, ImmutableDictionary<string, MiniYamlNode.SourceLocation> inherited)
 		{
-			if (existingNodeKeys.Add(overrideNode.Key))
+			var existingNodeIndex = -1;
+			MiniYamlNode existingNode = null;
+			if (!existingNodeKeys.Add(overrideNode.Key))
 			{
-				existingNodes.Add(overrideNode);
-				return;
+				existingNodeIndex = IndexOfKey(existingNodes, overrideNode.Key);
+				existingNode = existingNodes[existingNodeIndex];
 			}
 
-			var existingNodeIndex = IndexOfKey(existingNodes, overrideNode.Key);
-			var existingNode = existingNodes[existingNodeIndex];
-			var value = MergePartial(existingNode.Value, overrideNode.Value);
+			var value = MergePartial(existingNode?.Value, overrideNode.Value);
 			var nodes = ResolveInherits(value, tree, inherited);
 			if (!value.Nodes.SequenceEqual(nodes))
 				value = value.WithNodes(nodes);
-			existingNodes[existingNodeIndex] = existingNode.WithValue(value);
+
+			if (existingNode != null)
+				existingNodes[existingNodeIndex] = existingNode.WithValue(value);
+			else
+				existingNodes.Add(overrideNode.WithValue(value));
 		}
 
-		static List<MiniYamlNode> ResolveInherits(MiniYaml node, Dictionary<string, MiniYaml> tree, ImmutableDictionary<string, MiniYamlNode.SourceLocation> inherited)
+		static List<MiniYamlNode> ResolveInherits(
+			MiniYaml node, Dictionary<string, MiniYaml> tree, ImmutableDictionary<string, MiniYamlNode.SourceLocation> inherited)
 		{
 			var resolved = new List<MiniYamlNode>(node.Nodes.Length);
 			var resolvedKeys = new HashSet<string>(node.Nodes.Length);
@@ -459,7 +464,8 @@ namespace OpenRA
 					}
 					catch (ArgumentException)
 					{
-						throw new YamlException($"{n.Location}: Parent type `{n.Value.Value}` was already inherited by this yaml tree at {inherited[n.Value.Value]} (note: may be from a derived tree)");
+						throw new YamlException(
+							$"{n.Location}: Parent type `{n.Value.Value}` was already inherited by this yaml tree at {inherited[n.Value.Value]} (note: may be from a derived tree)");
 					}
 
 					foreach (var r in ResolveInherits(parent, tree, inherited))

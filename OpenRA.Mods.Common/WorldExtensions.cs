@@ -25,7 +25,8 @@ namespace OpenRA.Mods.Common
 		/// <paramref name="targetOffsets"/> is used to define locations around each actor in <paramref name="actors"/>
 		/// of which one must be reachable.
 		/// </summary>
-		public static IEnumerable<(Actor Actor, WVec[] ReachableOffsets)> WithPathFrom(this IEnumerable<Actor> actors, Actor sourceActor, Func<Actor, WVec[]> targetOffsets)
+		public static IEnumerable<(Actor Actor, WVec[] ReachableOffsets)> WithPathFrom(
+			this IEnumerable<Actor> actors, Actor sourceActor, Func<Actor, WVec[]> targetOffsets)
 		{
 			if (sourceActor.Info.HasTraitInfo<AircraftInfo>())
 				return actors.Select<Actor, (Actor Actor, WVec[] ReachableOffsets)>(a => (a, targetOffsets(a)));
@@ -66,7 +67,8 @@ namespace OpenRA.Mods.Common
 		/// <paramref name="targetOffsets"/> is used to define locations around each actor in <paramref name="actors"/>
 		/// of which one must be reachable.
 		/// </summary>
-		public static Actor ClosestToWithPathFrom(this IEnumerable<Actor> actors, Actor sourceActor, Func<Actor, WVec[]> targetOffsets = null)
+		public static Actor ClosestToWithPathFrom(
+			this IEnumerable<Actor> actors, Actor sourceActor, Func<Actor, WVec[]> targetOffsets = null)
 		{
 			return actors
 				.WithPathFrom(sourceActor, targetOffsets ?? (_ => new[] { WVec.Zero }))
@@ -178,7 +180,8 @@ namespace OpenRA.Mods.Common
 		/// target of a path from the actor, returns the nearest by comparing the <see cref="Actor.CenterPosition"/>.
 		/// Only terrain is taken into account, i.e. as if <see cref="BlockedByActor.None"/> was given.
 		/// </summary>
-		public static Actor ClosestToWithPathToAny(this IEnumerable<Actor> actors, World world, Func<Actor, WPos[]> targetPositions)
+		public static Actor ClosestToWithPathToAny(
+			this IEnumerable<Actor> actors, World world, Func<Actor, WPos[]> targetPositions)
 		{
 			return actors
 				.WithPathToAny(world, targetPositions)
@@ -206,7 +209,8 @@ namespace OpenRA.Mods.Common
 		/// <param name="onlyBlockers">If set, only considers the size of actors that have an <see cref="IBlocksProjectiles"/>
 		/// trait which may improve search performance. However does NOT filter the returned actors on this trait.</param>
 		/// <returns>A list of all the actors intersected by the line.</returns>
-		public static IEnumerable<Actor> FindActorsOnLine(this World world, WPos lineStart, WPos lineEnd, WDist lineWidth, bool onlyBlockers = false)
+		public static IEnumerable<Actor> FindActorsOnLine(
+			this World world, WPos lineStart, WPos lineEnd, WDist lineWidth, bool onlyBlockers = false)
 		{
 			// This line intersection check is done by first just finding all actors within a square that starts at the source, and ends at the target.
 			// Then we iterate over this list, and find all actors for which their health radius is at least within lineWidth of the line.

@@ -18,7 +18,8 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits.Render
 {
 	[Desc("Renders a decorative animation on units and buildings. Overlay switching controlled by " + nameof(PauseOnCondition) + ".")]
-	public class WithSwitchableOverlayInfo : PausableConditionalTraitInfo, IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
+	public class WithSwitchableOverlayInfo : PausableConditionalTraitInfo,
+		IRenderActorPreviewSpritesInfo, Requires<RenderSpritesInfo>, Requires<BodyOrientationInfo>
 	{
 		[Desc("Image used for this decoration. Defaults to the actor's type.")]
 		public readonly string Image = null;
@@ -123,7 +124,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 			var facing = self.TraitOrDefault<IFacing>();
 
 			var image = info.Image ?? rs.GetImage(self);
-			overlay = new Animation(self.World, image, facing == null ? () => WAngle.Zero : (body == null ? () => facing.Facing : () => body.QuantizeFacing(facing.Facing)), () => false)
+			overlay = new Animation(
+				self.World,
+				image,
+				facing == null ? () => WAngle.Zero : (body == null ? () => facing.Facing : () => body.QuantizeFacing(facing.Facing)),
+				() => false)
 			{
 				IsDecoration = info.IsDecoration
 			};
@@ -137,7 +142,11 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 			var anim = new AnimationWithOffset(overlay,
 				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self.Orientation))),
-				() => IsTraitDisabled || (Info.SwitchingSequence == null && chargeSpeed != 0) || (Info.EnabledSequence == null && switchingLevel > Info.SwitchingLevel) || (Info.DisabledSequence == null && switchingLevel < 0),
+				() =>
+					IsTraitDisabled ||
+					(Info.SwitchingSequence == null && chargeSpeed != 0) ||
+					(Info.EnabledSequence == null && switchingLevel > Info.SwitchingLevel) ||
+					(Info.DisabledSequence == null && switchingLevel < 0),
 				p => RenderUtils.ZOffsetFromCenter(self, p, 1));
 
 			rs.Add(anim, info.Palette, info.IsPlayerPalette);

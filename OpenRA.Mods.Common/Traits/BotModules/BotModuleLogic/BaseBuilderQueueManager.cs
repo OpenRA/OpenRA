@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 				waterState = WaterCheck.DontCheck;
 		}
 
-		public void Tick(IBot bot)
+		public void Tick(IBot bot, ILookup<string, ProductionQueue> queuesByCategory)
 		{
 			// If failed to place something N consecutive times, wait M ticks until resuming building production
 			if (failCount >= baseBuilder.Info.MaximumFailedPlacementAttempts && --failRetryTicks <= 0)
@@ -100,13 +100,17 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			playerBuildings = world.ActorsHavingTrait<Building>().Where(a => a.Owner == player).ToArray();
-			var excessPowerBonus = baseBuilder.Info.ExcessPowerIncrement * (playerBuildings.Length / baseBuilder.Info.ExcessPowerIncreaseThreshold.Clamp(1, int.MaxValue));
-			minimumExcessPower = (baseBuilder.Info.MinimumExcessPower + excessPowerBonus).Clamp(baseBuilder.Info.MinimumExcessPower, baseBuilder.Info.MaximumExcessPower);
+			var excessPowerBonus =
+				baseBuilder.Info.ExcessPowerIncrement *
+				(playerBuildings.Length / baseBuilder.Info.ExcessPowerIncreaseThreshold.Clamp(1, int.MaxValue));
+			minimumExcessPower =
+				(baseBuilder.Info.MinimumExcessPower + excessPowerBonus)
+					.Clamp(baseBuilder.Info.MinimumExcessPower, baseBuilder.Info.MaximumExcessPower);
 
 			// PERF: Queue only one actor at a time per category
 			itemQueuedThisTick = false;
 			var active = false;
-			foreach (var queue in AIUtils.FindQueues(player, Category))
+			foreach (var queue in queuesByCategory[Category])
 			{
 				if (TickQueue(bot, queue))
 					active = true;
@@ -344,7 +348,9 @@ namespace OpenRA.Mods.Common.Traits
 				var buildingVariantInfo = actorInfo.TraitInfoOrDefault<PlaceBuildingVariantsInfo>();
 				var variants = buildingVariantInfo?.Actors ?? Array.Empty<string>();
 
-				var count = playerBuildings.Count(a => a.Info.Name == name || variants.Contains(a.Info.Name)) + (baseBuilder.BuildingsBeingProduced.TryGetValue(name, out var num) ? num : 0);
+				var count = playerBuildings.Count(a =>
+					a.Info.Name == name || variants.Contains(a.Info.Name)) +
+					(baseBuilder.BuildingsBeingProduced.TryGetValue(name, out var num) ? num : 0);
 
 				// Do we want to build this structure?
 				if (count * 100 > frac.Value * playerBuildings.Length)

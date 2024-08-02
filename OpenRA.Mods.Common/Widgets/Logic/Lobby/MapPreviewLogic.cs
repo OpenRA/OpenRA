@@ -41,7 +41,21 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly Dictionary<PreviewStatus, Widget[]> previewWidgets = new();
 		readonly Func<(MapPreview Map, Session.MapStatus Status)> getMap;
 
-		enum PreviewStatus { Unknown, Playable, Incompatible, Validating, DownloadAvailable, Searching, Downloading, DownloadError, Unavailable, UpdateAvailable, UpdateDownloadAvailable }
+		enum PreviewStatus
+		{
+			Unknown,
+			Playable,
+			Incompatible,
+			Validating,
+			DownloadAvailable,
+			Searching,
+			Downloading,
+			DownloadError,
+			Unavailable,
+			UpdateAvailable,
+			UpdateDownloadAvailable,
+		}
+
 		PreviewStatus currentStatus;
 		bool blink;
 		int blinkTick;
@@ -191,17 +205,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var previewSmall = SetupMapPreview(widget.Get("MAP_SMALL"));
 
 			// Widgets to be made visible.
-			previewWidgets[PreviewStatus.Unknown] = new Widget[] { previewLarge };
-			previewWidgets[PreviewStatus.Playable] = new Widget[] { previewLarge, SetupAuthorAndMapType(widget.Get("MAP_AVAILABLE")) };
-			previewWidgets[PreviewStatus.Incompatible] = new Widget[] { previewLarge, widget.Get("MAP_INCOMPATIBLE") };
-			previewWidgets[PreviewStatus.Validating] = new Widget[] { previewSmall, widget.Get("MAP_VALIDATING") };
-			previewWidgets[PreviewStatus.UpdateAvailable] = new Widget[] { previewSmall, widget.Get("MAP_UPDATE_AVAILABLE"), updateButton };
-			previewWidgets[PreviewStatus.DownloadAvailable] = new Widget[] { previewSmall, SetUpInstallButton(SetupAuthorAndMapType(widget.Get("MAP_DOWNLOAD_AVAILABLE"))) };
-			previewWidgets[PreviewStatus.UpdateDownloadAvailable] = new Widget[] { previewSmall, SetUpInstallButton(widget.Get("MAP_UPDATE_DOWNLOAD_AVAILABLE")), updateButton };
-			previewWidgets[PreviewStatus.Searching] = new Widget[] { previewSmall, widget.Get("MAP_SEARCHING") };
-			previewWidgets[PreviewStatus.Downloading] = new Widget[] { previewSmall, SetUpDownloadProgress(widget.Get("MAP_DOWNLOADING")) };
-			previewWidgets[PreviewStatus.Unavailable] = new Widget[] { previewSmall, widget.Get("MAP_UNAVAILABLE"), retryButton };
-			previewWidgets[PreviewStatus.DownloadError] = new Widget[] { previewSmall, widget.Get("MAP_ERROR"), retryButton };
+			previewWidgets[PreviewStatus.Unknown] =
+				new Widget[] { previewLarge };
+			previewWidgets[PreviewStatus.Playable] =
+				new Widget[] { previewLarge, SetupAuthorAndMapType(widget.Get("MAP_AVAILABLE")) };
+			previewWidgets[PreviewStatus.Incompatible] =
+				new Widget[] { previewLarge, widget.Get("MAP_INCOMPATIBLE") };
+			previewWidgets[PreviewStatus.Validating] =
+				new Widget[] { previewSmall, widget.Get("MAP_VALIDATING") };
+			previewWidgets[PreviewStatus.UpdateAvailable] =
+				new Widget[] { previewSmall, widget.Get("MAP_UPDATE_AVAILABLE"), updateButton };
+			previewWidgets[PreviewStatus.DownloadAvailable] =
+				new Widget[] { previewSmall, SetUpInstallButton(SetupAuthorAndMapType(widget.Get("MAP_DOWNLOAD_AVAILABLE"))) };
+			previewWidgets[PreviewStatus.UpdateDownloadAvailable] =
+				new Widget[] { previewSmall, SetUpInstallButton(widget.Get("MAP_UPDATE_DOWNLOAD_AVAILABLE")), updateButton };
+			previewWidgets[PreviewStatus.Searching] =
+				new Widget[] { previewSmall, widget.Get("MAP_SEARCHING") };
+			previewWidgets[PreviewStatus.Downloading] =
+				new Widget[] { previewSmall, SetUpDownloadProgress(widget.Get("MAP_DOWNLOADING")) };
+			previewWidgets[PreviewStatus.Unavailable] =
+				new Widget[] { previewSmall, widget.Get("MAP_UNAVAILABLE"), retryButton };
+			previewWidgets[PreviewStatus.DownloadError] =
+				new Widget[] { previewSmall, widget.Get("MAP_ERROR"), retryButton };
 
 			// Hide all widgets.
 			foreach (var preview in previewWidgets)

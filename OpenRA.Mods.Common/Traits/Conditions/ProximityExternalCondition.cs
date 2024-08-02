@@ -42,7 +42,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new ProximityExternalCondition(init.Self, this); }
 	}
 
-	public class ProximityExternalCondition : ConditionalTrait<ProximityExternalConditionInfo>, ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOtherProduction, INotifyProximityOwnerChanged
+	public class ProximityExternalCondition : ConditionalTrait<ProximityExternalConditionInfo>,
+		ITick, INotifyAddedToWorld, INotifyRemovedFromWorld, INotifyOtherProduction, INotifyProximityOwnerChanged
 	{
 		readonly Actor self;
 

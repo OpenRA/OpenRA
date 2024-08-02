@@ -746,8 +746,9 @@ namespace OpenRA.Mods.Common.Pathfinder
 
 			// Unlike the target cell, the source cell is allowed to be an unreachable location.
 			// Instead, what matters is whether any cell adjacent to the source cell can be reached.
-			var sourcesWithReachableNodes = new List<(CPos Source, CPos AdjacentSource)>(sources.Count);
+			var sourcesWithPathableNodes = new HashSet<CPos>(sources.Count);
 			var sourceEdges = new List<GraphEdge>(sources.Count);
+			List<CPos> unpathableNodes = null;
 			foreach (var source in sources)
 			{
 				if (!world.Map.Contains(source))
@@ -762,7 +763,7 @@ namespace OpenRA.Mods.Common.Pathfinder
 					if (sourceDomain != targetDomain)
 						continue;
 
-					sourcesWithReachableNodes.Add((source, source));
+					sourcesWithPathableNodes.Add(source);
 					var sourceEdge = EdgeFromLocalToAbstract(source, sourceAbstractCell.Value);
 					if (sourceEdge != null)
 						sourceEdges.Add(sourceEdge.Value);
@@ -783,16 +784,20 @@ namespace OpenRA.Mods.Common.Pathfinder
 					// If the source and target belong to different domains, there is no path.
 					var adjacentSourceDomain = abstractDomains[adjacentSourceAbstractCell.Value];
 					if (adjacentSourceDomain != targetDomain)
+					{
+						unpathableNodes ??= new List<CPos>();
+						unpathableNodes.Add(adjacentSource);
 						continue;
+					}
 
-					sourcesWithReachableNodes.Add((source, adjacentSource));
+					sourcesWithPathableNodes.Add(source);
 					var sourceEdge = EdgeFromLocalToAbstract(adjacentSource, adjacentSourceAbstractCell.Value);
 					if (sourceEdge != null)
 						sourceEdges.Add(sourceEdge.Value);
 				}
 			}
 
-			if (sourcesWithReachableNodes.Count == 0)
+			if (sourcesWithPathableNodes.Count == 0)
 				return PathFinder.NoPath;
 
 			var targetEdge = EdgeFromLocalToAbstract(target, targetAbstractCell.Value);
@@ -805,38 +810,6 @@ namespace OpenRA.Mods.Common.Pathfinder
 			using (var reverseAbstractSearch = PathSearch.ToTargetCellOverGraph(
 				fullGraph.GetConnections, locomotor, target, target, estimatedSearchSize, pathFinderOverlay?.RecordAbstractEdges(self)))
 			{
-				var sourcesWithPathableNodes = new HashSet<CPos>(sources.Count);
-				List<CPos> unpathableNodes = null;
-				foreach (var (source, adjacentSource) in sourcesWithReachableNodes)
-				{
-					// Check if we have already found a route to this node before we attempt to expand the search.
-					var sourceStatus = reverseAbstractSearch.Graph[adjacentSource];
-					if (sourceStatus.Status == CellStatus.Closed)
-					{
-						if (sourceStatus.CostSoFar != PathGraph.PathCostForInvalidPath)
-							sourcesWithPathableNodes.Add(source);
-						else
-						{
-							unpathableNodes ??= new List<CPos>();
-							unpathableNodes.Add(adjacentSource);
-						}
-					}
-					else
-					{
-						reverseAbstractSearch.TargetPredicate = cell => cell == adjacentSource;
-						if (reverseAbstractSearch.ExpandToTarget())
-							sourcesWithPathableNodes.Add(source);
-						else
-						{
-							unpathableNodes ??= new List<CPos>();
-							unpathableNodes.Add(adjacentSource);
-						}
-					}
-				}
-
-				if (sourcesWithPathableNodes.Count == 0)
-					return PathFinder.NoPath;
-
 				using (var fromSrc = GetLocalPathSearch(
 					self, sourcesWithPathableNodes, target, customCost, ignoreActor, check, laneBias, null, heuristicWeightPercentage,
 					heuristic: Heuristic(reverseAbstractSearch, estimatedSearchSize, sourcesWithPathableNodes, unpathableNodes),

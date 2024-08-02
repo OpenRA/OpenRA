@@ -17,7 +17,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 	{
 		public override string Name => "Removes PlayerExperience property from Infiltrates.";
 
-		public override string Description => "Infiltrates property PlayerExperience was removed, it was replaced by adding PlayerExperience to all InfiltrateFor* Traits.";
+		public override string Description =>
+			"Infiltrates property PlayerExperience was removed, " +
+			"it was replaced by adding PlayerExperience to all InfiltrateFor* Traits.";
 
 		readonly List<string> locations = new();
 

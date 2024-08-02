@@ -70,7 +70,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var settings = Game.Settings;
 
-			map = modData.MapCache[modData.MapCache.ChooseInitialMap(modData.MapCache.PickLastModifiedMap(MapVisibility.Lobby) ?? Game.Settings.Server.Map, Game.CosmeticRandom)];
+			map = modData.MapCache[
+				modData.MapCache.ChooseInitialMap(
+					modData.MapCache.PickLastModifiedMap(MapVisibility.Lobby) ?? Game.Settings.Server.Map,
+					Game.CosmeticRandom)];
 
 			Ui.LoadWidget("MAP_PREVIEW", panel.Get("MAP_PREVIEW_ROOT"), new WidgetArgs
 			{

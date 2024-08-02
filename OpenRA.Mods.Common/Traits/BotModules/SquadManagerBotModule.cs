@@ -476,6 +476,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var protectSq = GetSquadOfType(SquadType.Protection);
 			protectSq ??= RegisterNewSquad(bot, SquadType.Protection, (attacker, WVec.Zero));
+			protectSq.Units.RemoveWhere(unitCannotBeOrdered);
 
 			if (protectSq.IsValid && !protectSq.IsTargetValid(protectSq.CenterUnit()))
 				protectSq.SetActorToTarget((attacker, WVec.Zero));

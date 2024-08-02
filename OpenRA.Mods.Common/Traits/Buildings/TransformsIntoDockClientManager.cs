@@ -140,7 +140,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.RequiresForceMove && !forceEnter)
 				return false;
 
-			return !IsTraitDisabled && target.TraitsImplementing<DockHost>().Any(host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType)));
+			return !IsTraitDisabled && target.TraitsImplementing<DockHost>().Any(
+				host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType)));
 		}
 
 		/// <summary>Clone of <see cref="DockClientManager.DockingPossible(Actor, TargetModifiers)"/>.</summary>
@@ -150,7 +151,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (Info.RequiresForceMove && !forceEnter)
 				return false;
 
-			return !IsTraitDisabled && target.TraitsImplementing<DockHost>().Any(host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType, forceEnter)));
+			return !IsTraitDisabled && target.TraitsImplementing<DockHost>().Any(
+				host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType, forceEnter)));
 		}
 
 		/// <summary>Clone of <see cref="DockClientManager.CanDockAt(Actor, bool, bool)"/>.</summary>
@@ -159,7 +161,8 @@ namespace OpenRA.Mods.Common.Traits
 			if (!(self.CurrentActivity is Transform || transforms.Any(t => !t.IsTraitDisabled && !t.IsTraitPaused)))
 				return false;
 
-			return !IsTraitDisabled && target.TraitsImplementing<DockHost>().Any(host => dockClients.Any(client => client.CanDockAt(target, host, forceEnter, true)));
+			return !IsTraitDisabled && target.TraitsImplementing<DockHost>().Any(
+				host => dockClients.Any(client => client.CanDockAt(target, host, forceEnter, true)));
 		}
 	}
 }

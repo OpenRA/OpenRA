@@ -39,7 +39,8 @@ namespace OpenRA.Mods.Common.Traits
 			return TargetInFiringArc(self, target, Info.FacingTolerance);
 		}
 
-		public override Activity GetAttackActivity(Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
+		public override Activity GetAttackActivity(
+			Actor self, AttackSource source, in Target newTarget, bool allowMove, bool forceAttack, Color? targetLineColor = null)
 		{
 			return new Activities.Attack(self, newTarget, allowMove, forceAttack, targetLineColor);
 		}

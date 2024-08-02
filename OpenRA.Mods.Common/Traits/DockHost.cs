@@ -48,7 +48,8 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new DockHost(init.Self, this); }
 	}
 
-	public class DockHost : ConditionalTrait<DockHostInfo>, IDockHost, IDockHostDrag, ITick, INotifySold, INotifyCapture, INotifyOwnerChanged, ISync, INotifyKilled, INotifyActorDisposing
+	public class DockHost : ConditionalTrait<DockHostInfo>,
+		IDockHost, IDockHostDrag, ITick, INotifySold, INotifyCapture, INotifyOwnerChanged, ISync, INotifyKilled, INotifyActorDisposing
 	{
 		readonly Actor self;
 
@@ -132,7 +133,8 @@ namespace OpenRA.Mods.Common.Traits
 				OnDockCompleted(self, dockedClientActor, dockedClient);
 		}
 
-		public virtual bool QueueMoveActivity(Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client, MoveCooldownHelper moveCooldownHelper)
+		public virtual bool QueueMoveActivity(
+			Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client, MoveCooldownHelper moveCooldownHelper)
 		{
 			var move = clientActor.Trait<IMove>();
 

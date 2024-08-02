@@ -23,7 +23,9 @@ namespace OpenRA.Mods.Common.Installer
 		public void RunActionOnSource(MiniYaml actionYaml, string path, ModData modData, List<string> extracted, Action<string> updateMessage)
 		{
 			// Yaml path may be specified relative to a named directory (e.g. ^SupportDir) or the detected source path
-			var sourcePath = actionYaml.Value.StartsWith('^') ? Platform.ResolvePath(actionYaml.Value) : FS.ResolveCaseInsensitivePath(Path.Combine(path, actionYaml.Value));
+			var sourcePath = actionYaml.Value.StartsWith('^')
+				? Platform.ResolvePath(actionYaml.Value)
+				: FS.ResolveCaseInsensitivePath(Path.Combine(path, actionYaml.Value));
 
 			using (var source = File.OpenRead(sourcePath))
 			{
@@ -66,9 +68,13 @@ namespace OpenRA.Mods.Common.Installer
 
 					Action<long> onProgress = null;
 					if (length < InstallFromSourceLogic.ShowPercentageThreshold)
-						updateMessage(TranslationProvider.GetString(InstallFromSourceLogic.Extracing, Translation.Arguments("filename", displayFilename)));
+						updateMessage(TranslationProvider.GetString(
+							InstallFromSourceLogic.Extracing,
+							Translation.Arguments("filename", displayFilename)));
 					else
-						onProgress = b => updateMessage(TranslationProvider.GetString(InstallFromSourceLogic.ExtractingProgress, Translation.Arguments("filename", displayFilename, "progress", 100 * b / length)));
+						onProgress = b => updateMessage(TranslationProvider.GetString(
+							InstallFromSourceLogic.ExtractingProgress,
+							Translation.Arguments("filename", displayFilename, "progress", 100 * b / length)));
 
 					using (var target = File.OpenWrite(targetPath))
 					{

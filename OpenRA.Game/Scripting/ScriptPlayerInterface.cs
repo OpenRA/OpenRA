@@ -15,8 +15,10 @@ namespace OpenRA.Scripting
 	{
 		readonly Player player;
 
-		protected override string DuplicateKeyError(string memberName) { return $"Player '{player.PlayerName}' defines the command '{memberName}' on multiple traits"; }
-		protected override string MemberNotFoundError(string memberName) { return $"Player '{player.PlayerName}' does not define a property '{memberName}'"; }
+		protected override string DuplicateKeyError(string memberName) =>
+			$"Player '{player.PlayerName}' defines the command '{memberName}' on multiple traits";
+		protected override string MemberNotFoundError(string memberName) =>
+			$"Player '{player.PlayerName}' does not define a property '{memberName}'";
 
 		public ScriptPlayerInterface(ScriptContext context, Player player)
 			: base(context)

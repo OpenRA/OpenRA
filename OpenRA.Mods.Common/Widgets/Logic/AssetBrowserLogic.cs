@@ -471,11 +471,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			item.IsVisible = () =>
 			{
-				var allowed = (assetTypesToDisplay.HasFlag(AssetType.Sprite) && allowedSpriteExtensions.Any(ext => filepath.EndsWith(ext, true, CultureInfo.InvariantCulture)))
-					|| (assetTypesToDisplay.HasFlag(AssetType.Model) && allowedModelExtensions.Any(ext => filepath.EndsWith(ext, true, CultureInfo.InvariantCulture)))
-					|| (assetTypesToDisplay.HasFlag(AssetType.Audio) && allowedAudioExtensions.Any(ext => filepath.EndsWith(ext, true, CultureInfo.InvariantCulture)))
-					|| (assetTypesToDisplay.HasFlag(AssetType.Video) && allowedVideoExtensions.Any(ext => filepath.EndsWith(ext, true, CultureInfo.InvariantCulture)))
-					|| (assetTypesToDisplay.HasFlag(AssetType.Unknown) && !allowedExtensions.Any(ext => filepath.EndsWith(ext, true, CultureInfo.InvariantCulture)));
+				var allowed =
+					(assetTypesToDisplay.HasFlag(AssetType.Sprite)
+						&& allowedSpriteExtensions.Any(ext => filepath.EndsWith(ext, true, CultureInfo.InvariantCulture)))
+					|| (assetTypesToDisplay.HasFlag(AssetType.Model)
+						&& allowedModelExtensions.Any(ext => filepath.EndsWith(ext, true, CultureInfo.InvariantCulture)))
+					|| (assetTypesToDisplay.HasFlag(AssetType.Audio)
+						&& allowedAudioExtensions.Any(ext => filepath.EndsWith(ext, true, CultureInfo.InvariantCulture)))
+					|| (assetTypesToDisplay.HasFlag(AssetType.Video)
+						&& allowedVideoExtensions.Any(ext => filepath.EndsWith(ext, true, CultureInfo.InvariantCulture)))
+					|| (assetTypesToDisplay.HasFlag(AssetType.Unknown)
+						&& !allowedExtensions.Any(ext => filepath.EndsWith(ext, true, CultureInfo.InvariantCulture)));
 
 				if (assetVisByName.TryGetValue(filepath, out var visible))
 					return visible && allowed;

@@ -26,10 +26,10 @@ Players:
 		Faction: allies
 	PlayerReference@Greece:
 		Name: Greece
+		Bot: campaign
 		Faction: allies
 		Color: E2E6F5
 		Enemies: USSR
-		Bot: campaign
 	PlayerReference@USSR:
 		Name: USSR
 		AllowBots: False
@@ -512,34 +512,38 @@ Actors:
 	Actor155: tc01
 		Location: 33,1
 		Owner: Neutral
-	Actor156: hbox
+	Hbox1: hbox
 		Location: 19,23
 		Owner: Greece
-	Actor157: hbox
+	Hbox2: hbox
 		Location: 29,23
 		Owner: Greece
-	Actor158: gun
+	Gun3: gun
 		Location: 20,23
 		Owner: Greece
 		Facing: 512
-	Actor159: gun
+		TurretFacing: 0
+	Gun4: gun
 		Location: 28,23
 		Owner: Greece
 		Facing: 512
-	Actor163: gap
+		TurretFacing: 0
+	Gap: gap
 		Location: 24,22
 		Owner: Greece
-	Actor164: syrd
+	Syrd: syrd
 		Location: 35,14
 		Owner: Greece
-	Actor167: gun
+	Gun1: gun
 		Location: 33,5
 		Owner: Greece
 		Facing: 768
-	Actor168: gun
+		TurretFacing: 512
+	Gun2: gun
 		Location: 33,9
 		Owner: Greece
 		Facing: 768
+		TurretFacing: 512
 	Actor169: v07
 		Location: 66,4
 		Owner: Greece
@@ -557,60 +561,62 @@ Actors:
 	Actor173: v06
 		Location: 68,4
 		Owner: Greece
-	Actor174: powr
+	Powr1: powr
 		Location: 20,2
 		Owner: Greece
-	Actor175: powr
+	Powr2: powr
 		Location: 25,2
 		Owner: Greece
 	Actor179: 2tnk
 		Location: 73,35
 		Owner: Greece
-		Facing: 640
+		Facing: 384
 	Actor180: 2tnk
 		Location: 72,34
 		Owner: Greece
-		Facing: 640
+		Facing: 384
 	Actor181: 2tnk
 		Location: 71,33
 		Owner: Greece
-		Facing: 640
+		Facing: 384
 	Actor182: arty
 		Location: 74,33
 		Owner: Greece
-		Facing: 640
+		Facing: 384
+		Stance: Defend
 	Actor183: arty
 		Location: 73,32
 		Owner: Greece
-		Facing: 640
+		Facing: 384
+		Stance: Defend
 	Actor186: 3tnk
 		Location: 56,47
 		Owner: USSR
-		Facing: 128
+		Facing: 896
 	Actor187: 3tnk
 		Location: 60,49
 		Owner: USSR
-		Facing: 128
+		Facing: 896
 	Actor191: v2rl
 		Location: 57,49
 		Owner: USSR
-		Facing: 128
+		Facing: 896
 	Actor193: 2tnk
 		Location: 73,31
 		Owner: Greece
-		Facing: 640
+		Facing: 384
 	Actor194: 2tnk
 		Location: 75,33
 		Owner: Greece
-		Facing: 640
+		Facing: 384
 	Actor195: 2tnk
 		Location: 85,18
 		Owner: Greece
-		Facing: 640
+		Facing: 384
 	Actor196: 2tnk
 		Location: 88,20
 		Owner: Greece
-		Facing: 640
+		Facing: 384
 	Actor197: 2tnk
 		Location: 22,23
 		Owner: Greece
@@ -622,11 +628,13 @@ Actors:
 	Actor199: arty
 		Location: 18,23
 		Owner: Greece
-		Facing: 384
+		Facing: 640
+		Stance: Defend
 	Actor200: arty
 		Location: 30,23
 		Owner: Greece
-		Facing: 640
+		Facing: 384
+		Stance: Defend
 	Actor202: 1tnk
 		Location: 23,21
 		Owner: Greece
@@ -638,64 +646,65 @@ Actors:
 	Actor204: 2tnk
 		Location: 40,6
 		Owner: Greece
-		Facing: 768
+		Facing: 256
 	Actor205: 2tnk
 		Location: 40,8
 		Owner: Greece
-		Facing: 768
+		Facing: 256
 	Actor206: arty
 		Location: 40,7
 		Owner: Greece
-		Facing: 768
+		Facing: 256
+		Stance: Defend
 	Actor207: 1tnk
 		Location: 77,10
 		Owner: Greece
-		Facing: 768
+		Facing: 256
 	Actor208: 1tnk
 		Location: 77,11
 		Owner: Greece
-		Facing: 768
+		Facing: 256
 	Actor209: 1tnk
 		Location: 77,12
 		Owner: Greece
-		Facing: 768
-	Actor210: ca
+		Facing: 256
+	BridgeBreaker2: ca
 		Location: 87,29
 		Owner: Greece
-		Facing: 896
-	Actor211: ca
+		Facing: 128
+	BridgeBreaker1: ca
 		Location: 87,25
 		Owner: Greece
-		Facing: 640
-	Actor212: ca
+		Facing: 384
+	ResponseCruiser: ca
 		Location: 76,22
 		Owner: Greece
-		Facing: 896
+		Facing: 128
 	Actor213: pt
 		Location: 38,4
 		Owner: Greece
-		Facing: 768
+		Facing: 256
 	Actor214: pt
 		Location: 38,10
 		Owner: Greece
-		Facing: 768
+		Facing: 256
 	Actor215: dd
 		Location: 55,15
 		Owner: Greece
-		Facing: 768
-	Actor216: waypoint
+		Facing: 256
+	waypoint0: waypoint
 		Location: 39,13
 		Owner: Neutral
-	Actor235: silo
+	Silo4: silo
 		Owner: Greece
 		Location: 26,9
-	Actor236: silo
+	Silo3: silo
 		Owner: Greece
 		Location: 24,9
-	Actor237: silo
+	Silo1: silo
 		Owner: Greece
 		Location: 27,2
-	Actor238: silo
+	Silo2: silo
 		Owner: Greece
 		Location: 27,3
 	waypoint78: waypoint
@@ -723,7 +732,7 @@ Actors:
 	APCWaypoint2: waypoint
 		Location: 58,51
 		Owner: Neutral
-	Apwr: apwr
+	Apwr1: apwr
 		Location: 18,12
 		Owner: Greece
 	Apwr2: apwr
@@ -735,17 +744,17 @@ Actors:
 	AttackWaypoint2: waypoint
 		Owner: Neutral
 		Location: 35,30
-	Barr: tent
+	Tent: tent
 		Location: 29,16
 		Owner: Greece
 	BaseAttacker1: 1tnk
 		Location: 76,35
 		Owner: Greece
-		Facing: 640
+		Facing: 384
 	BaseAttacker2: 1tnk
 		Location: 71,30
 		Owner: Greece
-		Facing: 640
+		Facing: 384
 	CameraBarrier: camera
 		Location: 70,36
 		Owner: Neutral
@@ -792,21 +801,21 @@ Actors:
 		Location: 63,42
 		Owner: Greece
 		Health: 28
-		Facing: 640
+		Facing: 384
 	IntroEnemy2: jeep
 		Location: 64,42
 		Owner: Greece
 		Health: 43
-		Facing: 640
+		Facing: 384
 	IntroEnemy3: 1tnk
 		Location: 64,43
 		Owner: Greece
 		Health: 50
-		Facing: 640
+		Facing: 384
 	Mcv: mcv
 		Location: 61,45
 		Owner: USSR
-		Facing: 384
+		Facing: 640
 	McvWaypoint: waypoint
 		Location: 53,53
 		Owner: Neutral
@@ -817,14 +826,26 @@ Actors:
 	Truck1: truk
 		Location: 54,52
 		Owner: USSR
-		Facing: 128
+		Facing: 896
 	Truck2: truk
 		Location: 55,51
 		Owner: USSR
-		Facing: 128
+		Facing: 896
 	Weap: weap
 		Location: 22,15
 		Owner: Greece
+	NavyPatrol1: waypoint
+		Owner: Neutral
+		Location: 35,18
+	NavyPatrol2: waypoint
+		Owner: Neutral
+		Location: 36,10
+	NavyPatrol3: waypoint
+		Owner: Neutral
+		Location: 57,12
+	NavyPatrol4: waypoint
+		Owner: Neutral
+		Location: 76,17
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 

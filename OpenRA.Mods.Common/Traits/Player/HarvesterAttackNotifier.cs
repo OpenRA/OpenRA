@@ -28,7 +28,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int RadarPingDuration = 250;
 
 		[Desc("Exclude damage types (defined on the warheads) that trigger Notification.")]
-		public readonly BitSet<DamageType> ExludeDamageTypes = default;
+		public readonly BitSet<DamageType> ExcludeDamageTypes = default;
 
 		[NotificationReference("Speech")]
 		[Desc("Speech notification type to play.")]
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
 		{
-			if (!info.ExludeDamageTypes.IsEmpty && e.Damage.DamageTypes.Overlaps(info.ExludeDamageTypes))
+			if (!info.ExcludeDamageTypes.IsEmpty && e.Damage.DamageTypes.Overlaps(info.ExcludeDamageTypes))
 				return;
 
 			// Don't track self-damage

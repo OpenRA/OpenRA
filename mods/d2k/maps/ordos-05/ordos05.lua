@@ -132,8 +132,8 @@ Tick = function()
 
 	if Ordos.IsObjectiveCompleted(CaptureStarport) then
 		if Ordos.Resources ~= CachedResources then
-			local parameters = { ["harvested"] = Ordos.Resources, ["goal"] = SpiceToHarvest }
-			local harvestedResources = UserInterface.Translate("harvested-resources", parameters)
+			local harvestedResources = UserInterface.Translate("harvested-resources",
+				{ ["harvested"] = Ordos.Resources, ["goal"] = SpiceToHarvest })
 			UserInterface.SetMissionText(harvestedResources)
 			CachedResources = Ordos.Resources
 		end

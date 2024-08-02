@@ -24,7 +24,9 @@ namespace OpenRA.Graphics
 		readonly ISpriteLoader[] loaders;
 		readonly IReadOnlyFileSystem fileSystem;
 
-		readonly Dictionary<int, (int[] Frames, MiniYamlNode.SourceLocation Location, Func<ISpriteFrame, ISpriteFrame> AdjustFrame, bool Premultiplied)> spriteReservations = new();
+		readonly Dictionary<
+			int,
+			(int[] Frames, MiniYamlNode.SourceLocation Location, Func<ISpriteFrame, ISpriteFrame> AdjustFrame, bool Premultiplied)> spriteReservations = new();
 		readonly Dictionary<string, List<int>> reservationsByFilename = new();
 
 		readonly Dictionary<int, Sprite[]> resolvedSprites = new();
@@ -33,7 +35,8 @@ namespace OpenRA.Graphics
 
 		int nextReservationToken = 1;
 
-		public SpriteCache(IReadOnlyFileSystem fileSystem, ISpriteLoader[] loaders, int bgraSheetSize, int indexedSheetSize, int bgraSheetMargin = 1, int indexedSheetMargin = 1)
+		public SpriteCache(
+			IReadOnlyFileSystem fileSystem, ISpriteLoader[] loaders, int bgraSheetSize, int indexedSheetSize, int bgraSheetMargin = 1, int indexedSheetMargin = 1)
 		{
 			SheetBuilders = new Dictionary<SheetType, SheetBuilder>
 			{
@@ -45,7 +48,8 @@ namespace OpenRA.Graphics
 			this.loaders = loaders;
 		}
 
-		public int ReserveSprites(string filename, IEnumerable<int> frames, MiniYamlNode.SourceLocation location, Func<ISpriteFrame, ISpriteFrame> adjustFrame = null, bool premultiplied = false)
+		public int ReserveSprites(string filename, IEnumerable<int> frames, MiniYamlNode.SourceLocation location,
+			Func<ISpriteFrame, ISpriteFrame> adjustFrame = null, bool premultiplied = false)
 		{
 			var token = nextReservationToken++;
 			spriteReservations[token] = (frames?.ToArray(), location, adjustFrame, premultiplied);

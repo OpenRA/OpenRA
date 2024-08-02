@@ -142,7 +142,9 @@ namespace OpenRA.Graphics
 				p = int2.Zero;
 			}
 
-			var rect = new Sprite(Current, new Rectangle(p.X + margin, p.Y + margin, imageSize.Width, imageSize.Height), zRamp, spriteOffset, CurrentChannel, BlendMode.Alpha, scale);
+			var rect = new Sprite(
+				Current, new Rectangle(p.X + margin, p.Y + margin, imageSize.Width, imageSize.Height),
+				zRamp, spriteOffset, CurrentChannel, BlendMode.Alpha, scale);
 			p += new int2(imageSize.Width + margin, 0);
 
 			return rect;

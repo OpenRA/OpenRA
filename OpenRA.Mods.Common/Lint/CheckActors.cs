@@ -19,7 +19,9 @@ namespace OpenRA.Mods.Common.Lint
 	{
 		public void Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
-			var scriptBindings = Game.ModData.ObjectCreator.GetTypesImplementing<ScriptGlobal>().Select(t => Utility.GetCustomAttributes<ScriptGlobalAttribute>(t, true)[0].Name).ToHashSet();
+			var scriptBindings = Game.ModData.ObjectCreator.GetTypesImplementing<ScriptGlobal>()
+				.Select(t => Utility.GetCustomAttributes<ScriptGlobalAttribute>(t, true)[0].Name)
+				.ToHashSet();
 			foreach (var actor in map.ActorDefinitions)
 			{
 				var name = actor.Value.Value;

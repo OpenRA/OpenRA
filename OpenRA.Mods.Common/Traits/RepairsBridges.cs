@@ -111,7 +111,9 @@ namespace OpenRA.Mods.Common.Traits
 				else
 					return;
 
-				self.QueueActivity(order.Queued, new RepairBridge(self, order.Target, info.EnterBehaviour, info.RepairNotification, info.RepairTextNotification, info.TargetLineColor));
+				self.QueueActivity(
+					order.Queued,
+					new RepairBridge(self, order.Target, info.EnterBehaviour, info.RepairNotification, info.RepairTextNotification, info.TargetLineColor));
 				self.ShowTargetLines();
 			}
 		}

@@ -140,7 +140,8 @@ namespace OpenRA
 			LoadMapInternal(map, package, classification, mapGrid, oldMap, null);
 		}
 
-		void LoadMapInternal(string map, IReadOnlyPackage package, MapClassification classification, MapGrid mapGrid, string oldMap, IEnumerable<List<MiniYamlNode>> modDataRules)
+		void LoadMapInternal(string map, IReadOnlyPackage package, MapClassification classification, MapGrid mapGrid, string oldMap,
+			IEnumerable<List<MiniYamlNode>> modDataRules)
 		{
 			IReadOnlyPackage mapPackage = null;
 			try
@@ -226,7 +227,8 @@ namespace OpenRA
 						yield return mapPackage;
 		}
 
-		public void QueryRemoteMapDetails(string repositoryUrl, IEnumerable<string> uids, Action<MapPreview> mapDetailsReceived = null, Action<MapPreview> mapQueryFailed = null)
+		public void QueryRemoteMapDetails(string repositoryUrl, IEnumerable<string> uids,
+			Action<MapPreview> mapDetailsReceived = null, Action<MapPreview> mapQueryFailed = null)
 		{
 			var queryUids = uids.Distinct()
 				.Where(uid => uid != null)
@@ -410,10 +412,16 @@ namespace OpenRA
 		{
 			UpdateMaps();
 			var map = string.IsNullOrEmpty(initialUid) ? null : previews[initialUid];
-			if (map == null || map.Status != MapStatus.Available || !map.Visibility.HasFlag(MapVisibility.Lobby) || (map.Class != MapClassification.System && map.Class != MapClassification.User))
+			if (map == null ||
+				map.Status != MapStatus.Available ||
+				!map.Visibility.HasFlag(MapVisibility.Lobby) ||
+				(map.Class != MapClassification.System && map.Class != MapClassification.User))
 			{
 				var selected = previews.Values.Where(IsSuitableInitialMap).RandomOrDefault(random) ??
-					previews.Values.FirstOrDefault(m => m.Status == MapStatus.Available && m.Visibility.HasFlag(MapVisibility.Lobby) && (m.Class == MapClassification.System || m.Class == MapClassification.User));
+					previews.Values.FirstOrDefault(m =>
+					m.Status == MapStatus.Available &&
+					m.Visibility.HasFlag(MapVisibility.Lobby) &&
+					(m.Class == MapClassification.System || m.Class == MapClassification.User));
 				return selected == null ? string.Empty : selected.Uid;
 			}
 

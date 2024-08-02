@@ -165,33 +165,34 @@ namespace OpenRA.Mods.Common.Server
 		[TranslationReference]
 		const string VoteKickDisabled = "notification-vote-kick-disabled";
 
-		readonly IDictionary<string, Func<S, Connection, Session.Client, string, bool>> commandHandlers = new Dictionary<string, Func<S, Connection, Session.Client, string, bool>>
-		{
-			{ "state", State },
-			{ "startgame", StartGame },
-			{ "slot", Slot },
-			{ "allow_spectators", AllowSpectators },
-			{ "spectate", Specate },
-			{ "slot_close", SlotClose },
-			{ "slot_open", SlotOpen },
-			{ "slot_bot", SlotBot },
-			{ "map", Map },
-			{ "option", Option },
-			{ "reset_options", ResetOptions },
-			{ "assignteams", AssignTeams },
-			{ "kick", Kick },
-			{ "vote_kick", VoteKick },
-			{ "make_admin", MakeAdmin },
-			{ "make_spectator", MakeSpectator },
-			{ "name", Name },
-			{ "faction", Faction },
-			{ "team", Team },
-			{ "handicap", Handicap },
-			{ "spawn", Spawn },
-			{ "clear_spawn", ClearPlayerSpawn },
-			{ "color", PlayerColor },
-			{ "sync_lobby", SyncLobby }
-		};
+		readonly IDictionary<string, Func<S, Connection, Session.Client, string, bool>> commandHandlers =
+			new Dictionary<string, Func<S, Connection, Session.Client, string, bool>>
+			{
+				{ "state", State },
+				{ "startgame", StartGame },
+				{ "slot", Slot },
+				{ "allow_spectators", AllowSpectators },
+				{ "spectate", Specate },
+				{ "slot_close", SlotClose },
+				{ "slot_open", SlotOpen },
+				{ "slot_bot", SlotBot },
+				{ "map", Map },
+				{ "option", Option },
+				{ "reset_options", ResetOptions },
+				{ "assignteams", AssignTeams },
+				{ "kick", Kick },
+				{ "vote_kick", VoteKick },
+				{ "make_admin", MakeAdmin },
+				{ "make_spectator", MakeSpectator },
+				{ "name", Name },
+				{ "faction", Faction },
+				{ "team", Team },
+				{ "handicap", Handicap },
+				{ "spawn", Spawn },
+				{ "clear_spawn", ClearPlayerSpawn },
+				{ "color", PlayerColor },
+				{ "sync_lobby", SyncLobby }
+			};
 
 		static bool ValidateSlotCommand(S server, Connection conn, Session.Client client, string arg, bool requiresHost)
 		{

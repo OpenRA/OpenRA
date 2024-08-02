@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				.Where(t => t.Value.Length > 0)
 				.ToDictionary(t => t.Key, t => t.Value);
 
-			var modRules = UpdateUtils.LoadModYaml(modData, UpdateUtils.FilterExternalModFiles(modData, modData.Manifest.Rules, new HashSet<string>()));
+			var modRules = UpdateUtils.LoadModYaml(modData, UpdateUtils.FilterExternalFiles(modData, modData.Manifest.Rules, new HashSet<string>()));
 
 			// Include files referenced in maps.
 			foreach (var package in modData.MapCache.EnumerateMapPackagesWithoutCaching())

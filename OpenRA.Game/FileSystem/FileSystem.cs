@@ -23,7 +23,7 @@ namespace OpenRA.FileSystem
 		bool TryGetPackageContaining(string path, out IReadOnlyPackage package, out string filename);
 		bool TryOpen(string filename, out Stream s);
 		bool Exists(string filename);
-		bool IsExternalModFile(string filename);
+		bool IsExternalFile(string filename);
 	}
 
 	public class FileSystem : IReadOnlyFileSystem
@@ -270,21 +270,11 @@ namespace OpenRA.FileSystem
 		}
 
 		/// <summary>
-		/// Returns true if the given filename references an external mod via an explicit mount.
+		/// Returns true if the given filename references any file outside the mod mount.
 		/// </summary>
-		public bool IsExternalModFile(string filename)
+		public bool IsExternalFile(string filename)
 		{
-			var explicitSplit = filename.IndexOf('|');
-			if (explicitSplit < 0)
-				return false;
-
-			if (!explicitMounts.TryGetValue(filename[..explicitSplit], out var explicitPackage))
-				return false;
-
-			if (installedMods[modID].Package == explicitPackage)
-				return false;
-
-			return modPackages.Contains(explicitPackage);
+			return !filename.StartsWith($"{modID}|", StringComparison.Ordinal);
 		}
 
 		/// <summary>
@@ -334,7 +324,8 @@ namespace OpenRA.FileSystem
 				if (name == ".")
 					continue;
 
-				resolved = Directory.GetFileSystemEntries(resolved).FirstOrDefault(e => e.Equals(Path.Combine(resolved, name), StringComparison.InvariantCultureIgnoreCase));
+				resolved = Directory.GetFileSystemEntries(resolved)
+					.FirstOrDefault(e => e.Equals(Path.Combine(resolved, name), StringComparison.InvariantCultureIgnoreCase));
 
 				if (resolved == null)
 					return null;

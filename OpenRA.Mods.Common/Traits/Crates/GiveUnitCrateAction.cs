@@ -45,7 +45,9 @@ namespace OpenRA.Mods.Common.Traits
 			this.self = self;
 			this.info = info;
 			if (info.Units.Length == 0)
-				throw new YamlException("A GiveUnitCrateAction does not specify any units to give. This might be because the yaml is referring to 'Unit' rather than 'Units'.");
+				throw new YamlException(
+					"A GiveUnitCrateAction does not specify any units to give. " +
+					"This might be because the yaml is referring to 'Unit' rather than 'Units'.");
 		}
 
 		public bool CanGiveTo(Actor collector)

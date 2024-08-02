@@ -58,13 +58,16 @@ namespace OpenRA.Graphics
 			var tintModifiers = CurrentSequence.IgnoreWorldTint ? TintModifiers.IgnoreWorldTint : TintModifiers.None;
 			var alpha = CurrentSequence.GetAlpha(CurrentFrame);
 			var (image, rotation) = CurrentSequence.GetSpriteWithRotation(CurrentFrame, facingFunc());
-			var imageRenderable = new SpriteRenderable(image, pos, offset, CurrentSequence.ZOffset + zOffset, palette, CurrentSequence.Scale, alpha, float3.Ones, tintModifiers, IsDecoration,
-				rotation);
+			var imageRenderable = new SpriteRenderable(
+				image, pos, offset, CurrentSequence.ZOffset + zOffset, palette,
+				CurrentSequence.Scale, alpha, float3.Ones, tintModifiers, IsDecoration, rotation);
 
 			var shadow = CurrentSequence.GetShadow(CurrentFrame, facingFunc());
 			if (shadow != null)
 			{
-				var shadowRenderable = new SpriteRenderable(shadow, pos, offset, CurrentSequence.ShadowZOffset + zOffset, palette, CurrentSequence.Scale, 1f, float3.Ones, tintModifiers,
+				var shadowRenderable = new SpriteRenderable(
+					shadow, pos, offset, CurrentSequence.ShadowZOffset + zOffset, palette,
+					CurrentSequence.Scale, 1f, float3.Ones, tintModifiers,
 					true, rotation);
 				return new IRenderable[] { shadowRenderable, imageRenderable };
 			}

@@ -1042,6 +1042,42 @@ Actors:
 	SubPatrol4: waypoint
 		Location: 93,44
 		Owner: Neutral
+	Actor299: fenc
+		Owner: Neutral
+		Location: 83,31
+	Actor300: fenc
+		Owner: Neutral
+		Location: 83,30
+	Actor301: fenc
+		Owner: Neutral
+		Location: 84,30
+	Actor302: fenc
+		Owner: Neutral
+		Location: 86,30
+	Actor303: fenc
+		Owner: Neutral
+		Location: 87,30
+	Actor304: fenc
+		Owner: Neutral
+		Location: 87,31
+	Actor305: fenc
+		Owner: Neutral
+		Location: 87,33
+	Actor306: fenc
+		Owner: Neutral
+		Location: 87,34
+	Actor307: fenc
+		Owner: Neutral
+		Location: 86,34
+	Actor308: fenc
+		Owner: Neutral
+		Location: 84,34
+	Actor309: fenc
+		Owner: Neutral
+		Location: 83,34
+	Actor310: fenc
+		Owner: Neutral
+		Location: 83,33
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 

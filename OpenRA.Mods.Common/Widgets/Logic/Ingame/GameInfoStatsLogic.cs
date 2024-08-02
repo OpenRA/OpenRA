@@ -87,7 +87,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string VoteKickVoteCancel = "dialog-vote-kick.vote-cancel";
 
 		[ObjectCreator.UseCtor]
-		public GameInfoStatsLogic(Widget widget, ModData modData, World world, OrderManager orderManager, WorldRenderer worldRenderer, Action<bool> hideMenu, Action closeMenu)
+		public GameInfoStatsLogic(Widget widget, ModData modData, World world,
+			OrderManager orderManager, WorldRenderer worldRenderer, Action<bool> hideMenu, Action closeMenu)
 		{
 			var player = world.LocalPlayer;
 			var playerPanel = widget.Get<ScrollPanelWidget>("PLAYER_LIST");
@@ -255,10 +256,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (player == null || player.RelationshipWith(pp) == PlayerRelationship.Ally || player.WinState != WinState.Undefined)
 					{
 						flag.GetImageName = () => pp.Faction.InternalName;
-						factionName = pp.Faction.Name != factionName ? $"{factionName} ({pp.Faction.Name})" : pp.Faction.Name;
+						factionName = pp.Faction.Name != factionName
+							? $"{TranslationProvider.GetString(factionName)} ({TranslationProvider.GetString(pp.Faction.Name)})"
+							: TranslationProvider.GetString(pp.Faction.Name);
 					}
 					else
+					{
 						flag.GetImageName = () => pp.DisplayFaction.InternalName;
+						factionName = TranslationProvider.GetString(factionName);
+					}
 
 					WidgetUtils.TruncateLabelToTooltip(item.Get<LabelWithTooltipWidget>("FACTION"), factionName);
 

@@ -50,7 +50,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		static HotkeysSettingsLogic() { }
 
 		[ObjectCreator.UseCtor]
-		public HotkeysSettingsLogic(Action<string, string, Func<Widget, Func<bool>>, Func<Widget, Action>> registerPanel, string panelID, string label, ModData modData, Dictionary<string, MiniYaml> logicArgs)
+		public HotkeysSettingsLogic(
+			Action<string, string, Func<Widget, Func<bool>>, Func<Widget, Action>> registerPanel,
+			string panelID, string label, ModData modData, Dictionary<string, MiniYaml> logicArgs)
 		{
 			this.modData = modData;
 			this.logicArgs = logicArgs;
@@ -274,7 +276,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			duplicateHotkeyDefinition = modData.Hotkeys.GetFirstDuplicate(selectedHotkeyDefinition, hotkeyEntryWidget.Key);
 			isHotkeyValid = duplicateHotkeyDefinition == null || selectedHotkeyDefinition.Readonly;
-			isHotkeyDefault = hotkeyEntryWidget.Key == selectedHotkeyDefinition.Default || (!hotkeyEntryWidget.Key.IsValid() && !selectedHotkeyDefinition.Default.IsValid());
+			isHotkeyDefault =
+				hotkeyEntryWidget.Key == selectedHotkeyDefinition.Default ||
+				(!hotkeyEntryWidget.Key.IsValid() && !selectedHotkeyDefinition.Default.IsValid());
 
 			if (isHotkeyValid)
 			{

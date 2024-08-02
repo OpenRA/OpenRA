@@ -336,7 +336,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (buildable != null)
 			{
-				if (CurrentQueue.Info.PayUpFront && currentQueue.GetProductionCost(buildable) > CurrentQueue.Actor.Owner.PlayerActor.Trait<PlayerResources>().GetCashAndResources())
+				if (CurrentQueue.Info.PayUpFront &&
+					currentQueue.GetProductionCost(buildable) > CurrentQueue.Actor.Owner.PlayerActor.Trait<PlayerResources>().GetCashAndResources())
 					return false;
 				Game.Sound.PlayNotification(World.Map.Rules, World.LocalPlayer, "Sounds", ClickSound, null);
 

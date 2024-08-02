@@ -33,6 +33,77 @@ options-starting-units =
 
 resource-spice = Spice
 
+faction-random =
+   .name = Any
+   .description = Random House
+    A random house will be chosen when the game starts.
+
+faction-atreides =
+   .name = Atreides
+   .description = House Atreides
+    The noble Atreides, from the water world of Caladan,
+    rely on their ornithopters to ensure air superiority.
+    They have allied themselves with the Fremen, the fearsome
+    native warriors of Dune that can move undetected in battle.
+
+    Faction Variations:
+        - Combat tanks are balanced in terms of speed and durability
+
+    Special Units:
+        - Grenadier
+        - Fremen
+        - Sonic Tank
+
+    Superweapon:
+        - Airstrike
+
+faction-harkonnen =
+   .name = Harkonnen
+   .description = House Harkonnen
+    The evil Harkonnen will stop at nothing to gain control of the spice.
+    They rely on brute force and atomic weapons to achieve their goals:
+    wealth, and the destruction of House Atreides.
+
+    Faction Variations:
+        - Combat Tanks are more durable but slower
+
+    Special Units:
+        - Sardaukar
+        - Devastator
+
+    Superweapon:
+        - Death Hand Missile
+
+faction-ordos =
+   .name = Ordos
+   .description = House Ordos
+    The insidious Ordos of the icy planet Sigma Draconis IV
+    are known for their wealth, greed and treachery.
+    Relying heavily on mercenaries they often resort
+    to sabotage and forbidden Ixian technologies.
+
+    Faction Variations:
+        - Trikes are replaced by Raider Trikes
+        - Combat Tanks are faster but less durable
+
+    Special Units:
+        - Raider Trike
+        - Stealth Raider Trike
+        - Saboteur
+        - Deviator
+
+faction-corrino =
+   .name = Corrino
+
+faction-mercenaries =
+   .name = Mercenaries
+
+faction-smugglers =
+   .name = Smugglers
+
+faction-fremen =
+   .name = Fremen
+
 ## defaults.yaml
 notification-unit-lost = Unit lost.
 notification-unit-promoted = Unit promoted.
@@ -491,10 +562,10 @@ actor-combat-tank-o =
 
     The Ordos Combat Tank is the fastest variant of the Combat Tank, but it is also the weakest.
 
-meta-DestroyableTile =
+meta-destroyabletile =
    .generic-name = Passage (destroyable)
    .name = Passage (destroyable)
 
-meta-DestroyedTile =
+meta-destroyedtile =
    .generic-name = Passage (repairable)
    .name = Passage (repairable)
