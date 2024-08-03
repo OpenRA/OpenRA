@@ -1476,7 +1476,7 @@ Actors:
 	TruckEscape1: waypoint
 		Owner: Neutral
 		Location: 72,36
-	TruckEcsape2: waypoint
+	TruckEscape2: waypoint
 		Owner: Neutral
 		Location: 33,35
 	TruckEscape3: waypoint
@@ -1578,22 +1578,22 @@ Actors:
 	Actor471: fenc
 		Location: 93,38
 		Owner: Greece
-	Actor471: fenc
+	Actor472: fenc
 		Location: 94,38
 		Owner: Greece
-	Actor472: fenc
+	Actor473: fenc
 		Location: 95,38
 		Owner: Greece
-	Actor473: fenc
+	Actor474: fenc
 		Location: 102,38
 		Owner: Greece
-	Actor474: fenc
+	Actor475: fenc
 		Location: 103,38
 		Owner: Greece
-	Actor475: fenc
+	Actor476: fenc
 		Location: 104,38
 		Owner: Greece
-	Actor476: fenc
+	Actor477: fenc
 		Location: 105,38
 		Owner: Greece
 
