@@ -533,7 +533,7 @@ Actors:
 	Actor156: t16
 		Location: 61,84
 		Owner: Neutral
-	Actor391: flare
+	NorthBridgeFlare: flare
 		Location: 81,41
 		Owner: England
 	Actor157: apwr
