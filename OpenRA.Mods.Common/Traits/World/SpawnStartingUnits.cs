@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Traits
 	[TraitLocation(SystemActors.World)]
 	[Desc("Spawn base actor at the spawnpoint and support units in an annulus around the base actor. " +
 		"Both are defined at MPStartUnits. Attach this to the world actor.")]
-	public class SpawnStartingUnitsInfo : TraitInfo, Requires<StartingUnitsInfo>, NotBefore<LocomotorInfo>, ILobbyOptions
+	public class SpawnStartingUnitsInfo : TraitInfo, Requires<StartingUnitsInfo>, NotBefore<PathFinderInfo>, ILobbyOptions
 	{
 		public readonly string StartingUnitsClass = "none";
 
@@ -102,13 +102,29 @@ namespace OpenRA.Mods.Common.Traits
 			if (unitGroup.SupportActors.Length == 0)
 				return;
 
-			var supportSpawnCells = w.Map.FindTilesInAnnulus(p.HomeLocation, unitGroup.InnerSupportRadius + 1, unitGroup.OuterSupportRadius);
+			var supportSpawnCells = w.Map
+				.FindTilesInAnnulus(p.HomeLocation, unitGroup.InnerSupportRadius + 1, unitGroup.OuterSupportRadius)
+				.ToList();
 
+			var pathFinder = w.WorldActor.TraitOrDefault<IPathFinder>();
+			var locomotorsByName = w.WorldActor.TraitsImplementing<Locomotor>().ToDictionary(l => l.Info.Name);
 			foreach (var s in unitGroup.SupportActors)
 			{
 				var actorRules = w.Map.Rules.Actors[s.ToLowerInvariant()];
 				var ip = actorRules.TraitInfo<IPositionableInfo>();
-				var validCell = supportSpawnCells.Shuffle(w.SharedRandom).FirstOrDefault(c => ip.CanEnterCell(w, null, c));
+				var validCells = supportSpawnCells.Where(c => ip.CanEnterCell(w, null, c));
+
+				if (pathFinder != null)
+				{
+					var locomotorName = actorRules.TraitInfoOrDefault<MobileInfo>()?.Locomotor;
+					var locomotor = locomotorName != null ? locomotorsByName[locomotorName] : null;
+
+					if (locomotor != null)
+						validCells = validCells
+							.Where(c => pathFinder.PathMightExistForLocomotorBlockedByImmovable(locomotor, c, p.HomeLocation + unitGroup.BaseActorOffset));
+				}
+
+				var validCell = validCells.RandomOrDefault(w.SharedRandom);
 
 				if (validCell == CPos.Zero)
 				{
