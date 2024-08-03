@@ -279,13 +279,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					infoVideo = missionData.BackgroundVideo;
 					infoVideoVisible = infoVideo != null;
 
-					var briefing = WidgetUtils.WrapText(missionData.Briefing?.Replace("\\n", "\n"), description.Bounds.Width, descriptionFont);
-					var height = descriptionFont.Measure(briefing).Y;
+					var briefing = missionData.Briefing != null ? selectedMap.GetString(missionData.Briefing) : "";
+					var wrapped = WidgetUtils.WrapText(briefing, description.Bounds.Width, descriptionFont);
+					var height = descriptionFont.Measure(wrapped).Y;
 					Game.RunAfterTick(() =>
 					{
 						if (preview == selectedMap)
 						{
-							description.GetText = () => briefing;
+							description.GetText = () => wrapped;
 							description.Bounds.Height = height;
 							descriptionPanel.Layout.AdjustChildren();
 							panel = PanelType.MissionInfo;
