@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.D2k.SpriteLoaders;
@@ -62,11 +61,11 @@ namespace OpenRA.Mods.D2k.Graphics
 			var offset = LoadField(Offset, data, defaults);
 			var blendMode = LoadField(BlendMode, data, defaults);
 
-			Func<ISpriteFrame, ISpriteFrame> adjustFrame = null;
+			AdjustFrame adjustFrame = null;
 			if (remapColor != default || convertShroudToFog)
 				adjustFrame = RemapFrame;
 
-			ISpriteFrame RemapFrame(ISpriteFrame f) =>
+			ISpriteFrame RemapFrame(ISpriteFrame f, int index, int total) =>
 				(f is R8Loader.RemappableFrame rf) ? rf.WithSequenceFlags(useShadow, convertShroudToFog, remapColor) : f;
 
 			var combineNode = data.NodeWithKeyOrDefault(Combine.Key);
