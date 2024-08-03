@@ -5,14 +5,15 @@ tfd: C&C The First Decade (English)
 		data1.cab: 12ad6113a6890a1b4d5651a75378c963eaf513b9
 	Install:
 		BeforeInstall:
-			# This one step sets up both required packages - tibsun and fstorm.
-			ExtractIscab: data1.hdr
-				Volumes:
-					6: data6.cab
-					7: data7.cab
-				Extract:
-					^SupportDir|Content/ts/tibsun.mix: Tiberian Sun\SUN\TIBSUN.MIX
-					^SupportDir|Content/ts/expand01.mix: Tiberian Sun\SUN\expand01.mix
+			Actions:
+				# This one step sets up both required packages - tibsun and fstorm.
+				ExtractIscab: data1.hdr
+					Volumes:
+						6: data6.cab
+						7: data7.cab
+					Extract:
+						^SupportDir|Content/ts/tibsun.mix: Tiberian Sun\SUN\TIBSUN.MIX
+						^SupportDir|Content/ts/expand01.mix: Tiberian Sun\SUN\expand01.mix
 		# Base game files:
 		ContentPackage@tibsun:
 			Name: tibsun
