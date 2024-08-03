@@ -678,7 +678,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var missionData = map.WorldActorInfo.TraitInfoOrDefault<MissionDataInfo>();
 			if (missionData != null && !string.IsNullOrEmpty(missionData.Briefing))
-				TextNotificationsManager.AddSystemLine(missionData.Briefing.Replace("\\n", "\n"));
+			{
+				var briefing = map.TryGetMessage(missionData.Briefing, out var translation) ? translation : missionData.Briefing;
+				TextNotificationsManager.AddSystemLine(briefing);
+			}
 
 			var allOptions = map.PlayerActorInfo.TraitInfos<ILobbyOptions>()
 				.Concat(map.WorldActorInfo.TraitInfos<ILobbyOptions>())
