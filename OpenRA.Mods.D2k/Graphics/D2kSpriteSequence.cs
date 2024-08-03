@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.D2k.SpriteLoaders;
@@ -116,78 +115,6 @@ namespace OpenRA.Mods.Cnc.Graphics
 					});
 				}
 			}
-		}
-
-		public override void ResolveSprites(SpriteCache cache)
-		{
-			if (bounds != null)
-				return;
-
-			Sprite depthSprite = null;
-			if (depthSpriteReservation != null)
-				depthSprite = cache.ResolveSprites(depthSpriteReservation.Value).First(s => s != null);
-
-			var allSprites = spritesToLoad.SelectMany(r =>
-			{
-				var resolved = cache.ResolveSprites(r.Token);
-
-				if (r.Frames != null)
-					resolved = r.Frames.Select(f => resolved[f]).ToArray();
-
-				return resolved.Select(s =>
-				{
-					if (s == null)
-						return null;
-
-					var dx = r.Offset.X + (r.FlipX ? -s.Offset.X : s.Offset.X);
-					var dy = r.Offset.Y + (r.FlipY ? -s.Offset.Y : s.Offset.Y);
-					var dz = r.Offset.Z + s.Offset.Z + r.ZRamp * dy;
-					var sprite = new Sprite(s.Sheet, FlipRectangle(s.Bounds, r.FlipX, r.FlipY), r.ZRamp, new float3(dx, dy, dz), s.Channel, r.BlendMode);
-					if (depthSprite == null)
-						return sprite;
-
-					var cw = (depthSprite.Bounds.Left + depthSprite.Bounds.Right) / 2 + (int)(s.Offset.X + depthSpriteOffset.X);
-					var ch = (depthSprite.Bounds.Top + depthSprite.Bounds.Bottom) / 2 + (int)(s.Offset.Y + depthSpriteOffset.Y);
-					var w = s.Bounds.Width / 2;
-					var h = s.Bounds.Height / 2;
-
-					return new SpriteWithSecondaryData(sprite, depthSprite.Sheet, Rectangle.FromLTRB(cw - w, ch - h, cw + w, ch + h), depthSprite.Channel);
-				});
-			}).ToArray();
-
-			length ??= allSprites.Length - start;
-
-			if (alpha != null)
-			{
-				if (alpha.Length == 1)
-					alpha = Exts.MakeArray(length.Value, _ => alpha[0]);
-				else if (alpha.Length != length.Value)
-					throw new YamlException($"Sequence {image}.{Name} must define either 1 or {length.Value} Alpha values.");
-			}
-			else if (alphaFade)
-				alpha = Exts.MakeArray(length.Value, i => float2.Lerp(1f, 0f, i / (length.Value - 1f)));
-
-			// Reindex sprites to order facings anti-clockwise and remove unused frames
-			var index = CalculateFrameIndices(start, length.Value, stride ?? length.Value, facings, null, transpose, reverseFacings, -1);
-			if (reverses)
-			{
-				index.AddRange(index.Skip(1).Take(length.Value - 2).Reverse());
-				length = 2 * length - 2;
-			}
-
-			if (index.Count == 0)
-				throw new YamlException($"Sequence {image}.{Name} does not define any frames.");
-
-			var minIndex = index.Min();
-			var maxIndex = index.Max();
-			if (minIndex < 0 || maxIndex >= allSprites.Length)
-				throw new YamlException($"Sequence {image}.{Name} uses frames between {minIndex}..{maxIndex}, but only 0..{allSprites.Length - 1} exist.");
-
-			sprites = index.Select(f => allSprites[f]).ToArray();
-			if (shadowStart >= 0)
-				shadowSprites = index.Select(f => allSprites[f - start + shadowStart]).ToArray();
-
-			bounds = sprites.Concat(shadowSprites ?? Enumerable.Empty<Sprite>()).Select(OffsetSpriteBounds).Union();
 		}
 	}
 }
