@@ -15,7 +15,7 @@ using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.D2k.SpriteLoaders;
 using OpenRA.Primitives;
 
-namespace OpenRA.Mods.Cnc.Graphics
+namespace OpenRA.Mods.D2k.Graphics
 {
 	public class D2kSpriteSequenceLoader : DefaultSpriteSequenceLoader
 	{
