@@ -67,7 +67,7 @@ jobs:
 
   macos:
     name: macOS Disk Image
-    runs-on: macos-11
+    runs-on: macos-13
     steps:
       - name: Clone Repository
         uses: actions/checkout@v4
