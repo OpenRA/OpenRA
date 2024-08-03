@@ -28,6 +28,8 @@
 	<string>{MINIMUM_SYSTEM_VERSION}</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.games</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
