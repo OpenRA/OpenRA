@@ -80,6 +80,7 @@ namespace OpenRA.WindowsLauncher
 			}
 			finally
 			{
+				// Flushing logs in finally block is okay here, as the catch block handles the exception.
 				Log.Dispose();
 			}
 		}

@@ -20,25 +20,39 @@ namespace OpenRA.Launcher
 		[STAThread]
 		static int Main(string[] args)
 		{
-			try
+			if (Debugger.IsAttached || args.Contains("--just-die"))
 			{
-				if (Debugger.IsAttached || args.Contains("--just-die"))
-					return (int)Game.InitializeAndRun(args);
-
-				AppDomain.CurrentDomain.UnhandledException += (_, e) => ExceptionHandler.HandleFatalError((Exception)e.ExceptionObject);
-
 				try
 				{
 					return (int)Game.InitializeAndRun(args);
 				}
-				catch (Exception e)
+				catch
 				{
-					ExceptionHandler.HandleFatalError(e);
-					return (int)RunStatus.Error;
+					// Flush logs before rethrowing, i.e. allowing the exception to go unhandled.
+					// try-finally won't work - an unhandled exception kills our process without running the finally block!
+					Log.Dispose();
+					throw;
 				}
+				finally
+				{
+					Log.Dispose();
+				}
+			}
+
+			AppDomain.CurrentDomain.UnhandledException += (_, e) => ExceptionHandler.HandleFatalError((Exception)e.ExceptionObject);
+
+			try
+			{
+				return (int)Game.InitializeAndRun(args);
+			}
+			catch (Exception e)
+			{
+				ExceptionHandler.HandleFatalError(e);
+				return (int)RunStatus.Error;
 			}
 			finally
 			{
+				// Flushing logs in finally block is okay here, as the catch block handles the exception.
 				Log.Dispose();
 			}
 		}
