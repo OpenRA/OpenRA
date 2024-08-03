@@ -7,20 +7,21 @@ tfd: C&C The First Decade (English)
 	# Unless a patch is installed, but we probably don't want to deal with whether or not it is.
 	Install:
 		BeforeInstall:
-			# This one step handles 3 packages - base (partially), aftermathbase (partially) and cncdesert.
-			ExtractIscab: data1.hdr
-				Volumes:
-					2: data2.cab
-					3: data3.cab
-					4: data4.cab
-					5: data5.cab
-				Extract:
-					^SupportDir|Content/ra/v2/main.mix: Red Alert\\MAIN.MIX
-					^SupportDir|Content/ra/v2/redalert.mix: Red Alert\\REDALERT.MIX
-					^SupportDir|Content/ra/v2/expand/hires1.mix: Red Alert\\HIRES1.MIX
-					^SupportDir|Content/ra/v2/expand/lores1.mix: Red Alert\\LORES1.MIX
-					^SupportDir|Content/ra/v2/expand/expand2.mix: Red Alert\\EXPAND2.MIX
-					^SupportDir|Content/ra/v2/cnc/desert.mix: CnC\\DESERT.MIX
+			Actions:
+				# This one step handles 3 packages - base (partially), aftermathbase (partially) and cncdesert.
+				ExtractIscab: data1.hdr
+					Volumes:
+						2: data2.cab
+						3: data3.cab
+						4: data4.cab
+						5: data5.cab
+					Extract:
+						^SupportDir|Content/ra/v2/main.mix: Red Alert\\MAIN.MIX
+						^SupportDir|Content/ra/v2/redalert.mix: Red Alert\\REDALERT.MIX
+						^SupportDir|Content/ra/v2/expand/hires1.mix: Red Alert\\HIRES1.MIX
+						^SupportDir|Content/ra/v2/expand/lores1.mix: Red Alert\\LORES1.MIX
+						^SupportDir|Content/ra/v2/expand/expand2.mix: Red Alert\\EXPAND2.MIX
+						^SupportDir|Content/ra/v2/cnc/desert.mix: CnC\\DESERT.MIX
 		# Base game files:
 		ContentPackage@base:
 			Name: base
@@ -197,4 +198,5 @@ tfd: C&C The First Decade (English)
 					^SupportDir|Content/ra/v2/expand/myeehaw1.aud: myeehaw1.aud
 					^SupportDir|Content/ra/v2/expand/myes1.aud: myes1.aud
 		AfterInstall:
-			Delete: ^SupportDir|Content/ra/v2/main.mix
+			Actions:
+				Delete: ^SupportDir|Content/ra/v2/main.mix

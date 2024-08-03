@@ -5,22 +5,23 @@ tfd: C&C The First Decade (English)
 		data1.cab: 12ad6113a6890a1b4d5651a75378c963eaf513b9
 	Install:
 		BeforeInstall:
-			# This one step sets up the 1 required package and the two optional video packages.
-			ExtractIscab: data1.hdr
-				Volumes:
-					2: data2.cab
-					3: data3.cab
-				Extract:
-					^SupportDir|Content/cnc/conquer.mix: CnC\\CONQUER.MIX
-					^SupportDir|Content/cnc/desert.mix: CnC\\DESERT.MIX
-					^SupportDir|Content/cnc/general.mix: CnC\\GENERAL.MIX
-					^SupportDir|Content/cnc/sounds.mix: CnC\\SOUNDS.MIX
-					^SupportDir|Content/cnc/temperat.mix: CnC\\TEMPERAT.MIX
-					^SupportDir|Content/cnc/winter.mix: CnC\\WINTER.MIX
-					^SupportDir|Content/cnc/speech.mix: CnC\\SPEECH.MIX
-					^SupportDir|Content/cnc/tempicnh.mix: CnC\\TEMPICNH.MIX
-					^SupportDir|Content/cnc/transit.mix: CnC\\TRANSIT.MIX
-					^SupportDir|Content/cnc/movies.mix: CnC\\MOVIES.MIX
+			Actions:
+				# This one step sets up the 1 required package and the two optional video packages.
+				ExtractIscab: data1.hdr
+					Volumes:
+						2: data2.cab
+						3: data3.cab
+					Extract:
+						^SupportDir|Content/cnc/conquer.mix: CnC\\CONQUER.MIX
+						^SupportDir|Content/cnc/desert.mix: CnC\\DESERT.MIX
+						^SupportDir|Content/cnc/general.mix: CnC\\GENERAL.MIX
+						^SupportDir|Content/cnc/sounds.mix: CnC\\SOUNDS.MIX
+						^SupportDir|Content/cnc/temperat.mix: CnC\\TEMPERAT.MIX
+						^SupportDir|Content/cnc/winter.mix: CnC\\WINTER.MIX
+						^SupportDir|Content/cnc/speech.mix: CnC\\SPEECH.MIX
+						^SupportDir|Content/cnc/tempicnh.mix: CnC\\TEMPICNH.MIX
+						^SupportDir|Content/cnc/transit.mix: CnC\\TRANSIT.MIX
+						^SupportDir|Content/cnc/movies.mix: CnC\\MOVIES.MIX
 		# GDI campaign briefings (optional):
 		ContentPackage@movies-gdi:
 			Name: movies-gdi
@@ -178,4 +179,5 @@ tfd: C&C The First Decade (English)
 					Extract:
 						^SupportDir|Content/cnc/scores-covertops.mix: CnC\covert\SCORES.MIX
 		AfterInstall:
-			Delete: ^SupportDir|Content/cnc/movies.mix
+			Actions:
+				Delete: ^SupportDir|Content/cnc/movies.mix
