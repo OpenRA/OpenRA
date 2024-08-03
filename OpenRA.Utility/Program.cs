@@ -44,6 +44,13 @@ namespace OpenRA
 			{
 				Run(args);
 			}
+			catch
+			{
+				// Flush logs before rethrowing, i.e. allowing the exception to go unhandled.
+				// try-finally won't work - an unhandled exception kills our process without running the finally block!
+				Log.Dispose();
+				throw;
+			}
 			finally
 			{
 				Log.Dispose();
@@ -133,6 +140,7 @@ namespace OpenRA
 				if (e is NoSuchCommandException)
 				{
 					Console.WriteLine(e.Message);
+					Log.Dispose(); // Flush logs before we terminate the process.
 					Environment.Exit(1);
 				}
 				else
