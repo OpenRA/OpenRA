@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.FileSystem;
-using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
@@ -59,20 +58,24 @@ namespace OpenRA.Graphics
 			return token;
 		}
 
-		static ISpriteFrame[] GetFrames(IReadOnlyFileSystem fileSystem, string filename, ISpriteLoader[] loaders, out TypeDictionary metadata)
+		static ISpriteFrame[] GetFrames(IReadOnlyFileSystem fileSystem, string filename, ISpriteLoader[] loaders)
 		{
-			metadata = null;
 			if (!fileSystem.TryOpen(filename, out var stream))
 				return null;
 
 			using (stream)
 			{
 				foreach (var loader in loaders)
-					if (loader.TryParseSprite(stream, filename, out var frames, out metadata))
+					if (loader.TryParseSprite(stream, filename, out var frames, out _))
 						return frames;
 
 				return null;
 			}
+		}
+
+		public ISpriteFrame[] LoadFramesUncached(string filename)
+		{
+			return GetFrames(fileSystem, filename, loaders);
 		}
 
 		public void LoadReservations(ModData modData)
@@ -90,7 +93,7 @@ namespace OpenRA.Graphics
 			foreach (var (filename, tokens) in reservationsByFilename)
 			{
 				modData.LoadScreen?.Display();
-				var loadedFrames = GetFrames(fileSystem, filename, loaders, out _);
+				var loadedFrames = GetFrames(fileSystem, filename, loaders);
 				foreach (var token in tokens)
 				{
 					if (spriteReservations.TryGetValue(token, out var rs))
