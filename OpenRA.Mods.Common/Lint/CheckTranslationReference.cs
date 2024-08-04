@@ -20,6 +20,7 @@ using Linguini.Syntax.Parser;
 using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Scripting.Global;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Mods.Common.Warheads;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -141,6 +142,23 @@ namespace OpenRA.Mods.Common.Lint
 				}
 			}
 
+			foreach (var weapon in rules.Weapons)
+			{
+				foreach (var warhead in weapon.Value.Warheads)
+				{
+					var warheadType = warhead.GetType();
+					foreach (var field in Utility.GetFields(warheadType))
+					{
+						var translationReference = Utility.GetCustomAttributes<TranslationReferenceAttribute>(field, true).SingleOrDefault();
+						if (translationReference == null)
+							continue;
+
+						foreach (var key in LintExts.GetFieldValues(warhead, field, translationReference.DictionaryReference))
+							usedKeys.Add(key, translationReference, $"Weapon `{weapon.Key}` warhead `{warheadType.Name[..^7]}.{field.Name}`");
+					}
+				}
+			}
+
 			return usedKeys;
 		}
 
@@ -227,7 +245,7 @@ namespace OpenRA.Mods.Common.Lint
 			var testedFields = new List<FieldInfo>();
 			testedFields.AddRange(
 				modData.ObjectCreator.GetTypes()
-				.Where(t => t.IsSubclassOf(typeof(TraitInfo)))
+				.Where(t => t.IsSubclassOf(typeof(TraitInfo)) || t.IsSubclassOf(typeof(Warhead)))
 				.SelectMany(t => t.GetFields().Where(f => f.HasAttribute<TranslationReferenceAttribute>())));
 
 			// HACK: Need to hardcode the custom loader for GameSpeeds.
