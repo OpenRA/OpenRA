@@ -34,22 +34,13 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Range circle border width.")]
 		public readonly float CircleBorderWidth = 3;
 
-		[Desc("Condition set to the unit that will execute the attack while the support power is in targeting mode.")]
-		[GrantedConditionReference]
-		public readonly string SupportPowerTargetingCondition = "support-targeting";
-
-		[Desc("Condition set to the unit is executing the attack while the support power attack is in progress.")]
-		[GrantedConditionReference]
-		public readonly string SupportPowerAttackingCondition = "support-attacking";
-
 		public override object Create(ActorInitializer init) { return new AttackOrderPower(init.Self, this); }
 	}
 
-	sealed class AttackOrderPower : SupportPower, INotifyCreated, INotifyBurstComplete, INotifyBecomingIdle
+	sealed class AttackOrderPower : SupportPower, INotifyCreated, INotifyBurstComplete
 	{
 		readonly AttackOrderPowerInfo info;
 		AttackBase attack;
-		int attackingToken = 0;
 
 		public AttackOrderPower(Actor self, AttackOrderPowerInfo info)
 			: base(self, info)
@@ -67,7 +58,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			base.Activate(self, order, manager);
 			PlayLaunchSounds();
 
-			attackingToken = self.GrantCondition(info.SupportPowerAttackingCondition);
 			attack.AttackTarget(order.Target, AttackSource.Default, false, false, true);
 		}
 
@@ -82,11 +72,6 @@ namespace OpenRA.Mods.Cnc.Traits
 		{
 			self.World.IssueOrder(new Order("Stop", self, false));
 		}
-
-		void INotifyBecomingIdle.OnBecomingIdle(Actor self)
-		{
-			self.RevokeCondition(attackingToken);
-		}
 	}
 
 	public class SelectAttackPowerTarget : OrderGenerator
@@ -98,21 +83,14 @@ namespace OpenRA.Mods.Cnc.Traits
 		readonly string cursorBlocked;
 		readonly MouseButton expectedButton;
 		readonly AttackBase attack;
-		readonly Actor self;
-		readonly int targetingToken = 0;
-		bool isFiring;
 
 		public SelectAttackPowerTarget(Actor self, string order, SupportPowerManager manager, string cursor, MouseButton button, AttackBase attack)
 		{
-			this.self = self;
-
 			// Clear selection if using Left-Click Orders
 			if (Game.Settings.Game.UseClassicMouseStyle)
 				manager.Self.World.Selection.Clear();
 
 			instance = manager.GetPowersForActor(self).FirstOrDefault();
-			targetingToken = self.GrantCondition((instance.Info as AttackOrderPowerInfo).SupportPowerTargetingCondition);
-
 			this.manager = manager;
 			this.order = order;
 			this.cursor = cursor;
@@ -131,21 +109,12 @@ namespace OpenRA.Mods.Cnc.Traits
 
 		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			// CancelInputMode will call Deactivate before we could validate the target, so we need to delay clearing the targeting flag
-			isFiring = true;
 			world.CancelInputMode();
 			if (mi.Button == expectedButton && IsValidTarget(world, cell))
-			{
-				self.RevokeCondition(targetingToken);
 				yield return new Order(order, manager.Self, Target.FromCell(world, cell), false)
 				{
 					SuppressVisualFeedback = true
 				};
-			}
-			else
-			{
-				self.RevokeCondition(targetingToken);
-			}
 		}
 
 		protected override void Tick(World world)
@@ -153,14 +122,6 @@ namespace OpenRA.Mods.Cnc.Traits
 			// Cancel the OG if we can't use the power
 			if (!manager.Powers.TryGetValue(order, out var p) || !p.Active || !p.Ready)
 				world.CancelInputMode();
-		}
-
-		protected override void Deactivate()
-		{
-			if (!isFiring)
-			{
-				self.RevokeCondition(targetingToken);
-			}
 		}
 
 		protected override IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
