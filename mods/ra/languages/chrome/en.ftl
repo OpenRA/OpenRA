@@ -121,6 +121,15 @@ button-command-bar-scatter =
 
     Acts immediately on selected units.
 
+button-command-bar-patrol =
+   .tooltip = Patrol
+   .tooltipdesc = Order units to attack-move along a route in cycles.
+
+    Left-click icon, then right-click on locations on the
+    map in the order that units should move. When done,
+    hold <(ALT)> + right-click to submit the order. Hold <(Ctrl)>
+    additionally while submitting to order an assault-move.
+
 button-command-bar-stop =
    .tooltip = Stop
    .tooltipdesc = Selected units will stop their current activity.

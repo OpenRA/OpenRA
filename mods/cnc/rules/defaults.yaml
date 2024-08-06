@@ -251,6 +251,7 @@
 		TextNotification: notification-unit-lost
 	HiddenUnderFog:
 	AttackMove:
+	Patrol:
 	WithDamageOverlay:
 	WithFacingSpriteBody:
 	FireWarheadsOnDeath:
@@ -312,6 +313,7 @@
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
 	AttackMove:
+	Patrol:
 	Guard:
 	Guardable:
 	Tooltip:
@@ -367,6 +369,7 @@
 			TiberiumDeath: 6
 		CrushedSequence: die-crushed
 	AttackMove:
+	Patrol:
 	Passenger:
 		CargoType: Infantry
 	HiddenUnderFog:
@@ -544,6 +547,8 @@
 		ScanRadius: 4
 	AttackMove:
 		Voice: Attack
+	Patrol:
+		Voice: Attack
 	AttackFrontal:
 		Voice: Attack
 		FacingTolerance: 0
@@ -582,6 +587,8 @@
 	AutoTarget:
 		ScanRadius: 5
 	AttackMove:
+		Voice: Attack
+	Patrol:
 		Voice: Attack
 	HiddenUnderFog:
 	Valued:
@@ -635,6 +642,7 @@
 	ActorLostNotification:
 		TextNotification: notification-unit-lost
 	AttackMove:
+	Patrol:
 	WithShadow:
 		Offset: 43, 128, 0
 		ZOffset: -129
@@ -659,6 +667,7 @@
 	ActorLostNotification:
 		TextNotification: notification-unit-lost
 	AttackMove:
+	Patrol:
 	WithDamageOverlay:
 	FireWarheadsOnDeath:
 		Weapon: UnitExplodeShip

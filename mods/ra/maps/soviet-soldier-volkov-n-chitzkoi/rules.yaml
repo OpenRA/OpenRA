@@ -149,6 +149,8 @@ VOLK:
 		FacingTolerance: 0
 	AttackMove:
 		Voice: Action
+	Patrol:
+		Voice: Action
 	Passenger:
 		Voice: Action
 	Guard:

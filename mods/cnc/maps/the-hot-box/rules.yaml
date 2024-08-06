@@ -52,6 +52,7 @@ APC:
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	-AttackMove:
+	-Patrol:
 
 Player:
 	Shroud:

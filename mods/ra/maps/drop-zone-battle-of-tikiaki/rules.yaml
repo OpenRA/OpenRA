@@ -45,6 +45,7 @@ APC:
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	-AttackMove:
+	-Patrol:
 
 DTRK:
 	Tooltip:
