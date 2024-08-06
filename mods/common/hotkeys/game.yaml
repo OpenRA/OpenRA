@@ -93,6 +93,11 @@ Guard: D
 	Types: Unit
 	Contexts: player
 
+Patrol: G
+	Description: hotkey-description-patrol
+	Types: Unit
+	Contexts: player
+
 StanceAttackAnything: A Alt
 	Description: hotkey-description-stanceattackanything
 	Types: Stance
