@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					() => SelectActor(actor));
 
 				var label = item.Get<LabelWithTooltipWidget>("TITLE");
-				var name = actor.TraitInfoOrDefault<TooltipInfo>()?.Name;
+				var name = actor.TraitInfos<TooltipInfo>().FirstOrDefault(info => info.EnabledByDefault)?.Name;
 				if (!string.IsNullOrEmpty(name))
 					WidgetUtils.TruncateLabelToTooltip(label, TranslationProvider.GetString(name));
 
