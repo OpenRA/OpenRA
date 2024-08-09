@@ -41,6 +41,9 @@ namespace OpenRA.Mods.Common.Traits
 		[SequenceReference(nameof(BeaconImage))]
 		public readonly string CircleSequence = "circles";
 
+		[CursorReference]
+		public readonly string BeaconCursor = "ability";
+
 		public override object Create(ActorInitializer init) { return new PlaceBeacon(init.Self, this); }
 	}
 

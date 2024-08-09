@@ -9,7 +9,9 @@
  */
 #endregion
 
+using System;
 using OpenRA.Mods.Common.Orders;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Orders;
 using OpenRA.Widgets;
 
@@ -47,20 +49,24 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	public class BeaconOrderButtonLogic : ChromeLogic
 	{
+		static string beaconCursor;
+
 		[ObjectCreator.UseCtor]
 		public BeaconOrderButtonLogic(Widget widget, World world)
 		{
+			beaconCursor ??= world.LocalPlayer.PlayerActor.Info.TraitInfo<PlaceBeaconInfo>().BeaconCursor;
+
 			if (widget is ButtonWidget beacon)
-				OrderButtonsChromeUtils.BindOrderButton<BeaconOrderGenerator>(world, beacon, "beacon");
+				OrderButtonsChromeUtils.BindOrderButton<BeaconOrderGenerator>(world, beacon, "beacon", og => og.BeaconCursor = beaconCursor);
 		}
 	}
 
 	public static class OrderButtonsChromeUtils
 	{
-		public static void BindOrderButton<T>(World world, ButtonWidget w, string icon)
+		public static void BindOrderButton<T>(World world, ButtonWidget w, string icon, Action<T> initializeOrderGenerator = null)
 			where T : IOrderGenerator, new()
 		{
-			w.OnClick = () => world.ToggleInputMode<T>();
+			w.OnClick = () => { world.ToggleInputMode<T>(); if (world.OrderGenerator is T t) initializeOrderGenerator?.Invoke(t); };
 			w.IsHighlighted = () => world.OrderGenerator is T;
 
 			w.Get<ImageWidget>("ICON").GetImageName =

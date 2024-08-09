@@ -17,6 +17,8 @@ namespace OpenRA.Mods.Common.Orders
 {
 	public class BeaconOrderGenerator : OrderGenerator
 	{
+		public string BeaconCursor;
+
 		protected override IEnumerable<Order> OrderInner(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
 			world.CancelInputMode();
@@ -30,7 +32,8 @@ namespace OpenRA.Mods.Common.Orders
 		protected override IEnumerable<IRenderable> RenderAnnotations(WorldRenderer wr, World world) { yield break; }
 		protected override string GetCursor(World world, CPos cell, int2 worldPixel, MouseInput mi)
 		{
-			return "ability"; // TODO: [CursorReference]
+			// Always return the beacon cursor as the command cannot be blocked.
+			return BeaconCursor;
 		}
 	}
 }
