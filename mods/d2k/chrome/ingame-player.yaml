@@ -32,6 +32,7 @@ Container@PLAYER_WIDGETS:
 			Height: 43
 			ImageCollection: commandbar
 			ImageName: background
+			ClickThrough: False
 		Container@COMMAND_BAR:
 			Logic: CommandBarLogic
 			X: 24
