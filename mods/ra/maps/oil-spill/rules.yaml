@@ -3,6 +3,7 @@ World:
 		Scripts: oil-spill.lua
 	SpawnStartingUnits:
 		DropdownVisible: False
+		DropdownLocked: True
 	StartingUnits@mcvonly:
 		BaseActor: fcom
 

@@ -33,6 +33,7 @@ World:
 		BuildRadiusCheckboxVisible: False
 	SpawnStartingUnits:
 		DropdownVisible: False
+		DropdownLocked: True
 	MapOptions:
 		TechLevelDropdownLocked: True
 		TechLevel: unrestricted
