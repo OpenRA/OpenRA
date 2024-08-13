@@ -86,10 +86,11 @@ namespace OpenRA.Mods.Common.Traits
 			if (unitGroup == null)
 				throw new InvalidOperationException($"No starting units defined for faction {p.Faction.InternalName} with class {spawnClass}");
 
+			CPos[] homeLocations;
 			if (unitGroup.BaseActor != null)
 			{
 				var facing = unitGroup.BaseActorFacing ?? new WAngle(w.SharedRandom.Next(1024));
-				w.CreateActor(unitGroup.BaseActor.ToLowerInvariant(), new TypeDictionary
+				var baseActor = w.CreateActor(unitGroup.BaseActor.ToLowerInvariant(), new TypeDictionary
 				{
 					new LocationInit(p.HomeLocation + unitGroup.BaseActorOffset),
 					new OwnerInit(p),
@@ -97,6 +98,25 @@ namespace OpenRA.Mods.Common.Traits
 					new FacingInit(facing),
 					new SpawnedByMapInit(),
 				});
+				var baseActorIsMovable =
+					baseActor.OccupiesSpace is Mobile mobile && !mobile.IsTraitDisabled && !mobile.IsTraitPaused && !mobile.IsImmovable;
+				if (baseActorIsMovable)
+				{
+					// If the base is movable, we want support actors to be able to path to its location.
+					homeLocations = new[] { baseActor.Location };
+				}
+				else
+				{
+					// For an immovable base, we want support actors to be able to path adjacent to it.
+					// They won't to able to path to its location, because it is immovable and blocks them.
+					var occupiedCells = baseActor.OccupiesSpace.OccupiedCells().Select(p => p.Cell).ToArray();
+					homeLocations = Util.ExpandFootprint(occupiedCells, true).Except(occupiedCells).ToArray();
+				}
+			}
+			else
+			{
+				// If there is no base actor, we want support actors to be able to path to the home location.
+				homeLocations = new[] { p.HomeLocation };
 			}
 
 			if (unitGroup.SupportActors.Length == 0)
@@ -121,7 +141,7 @@ namespace OpenRA.Mods.Common.Traits
 
 					if (locomotor != null)
 						validCells = validCells
-							.Where(c => pathFinder.PathMightExistForLocomotorBlockedByImmovable(locomotor, c, p.HomeLocation + unitGroup.BaseActorOffset));
+							.Where(c => homeLocations.Any(h => pathFinder.PathMightExistForLocomotorBlockedByImmovable(locomotor, c, h)));
 				}
 
 				var validCell = validCells.RandomOrDefault(w.SharedRandom);
