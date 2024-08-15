@@ -48,8 +48,11 @@ namespace OpenRA.Mods.Common.Activities
 				|| !Mobile.CanInteractWithGroundLayer(self) || !Mobile.CanStayInCell(self.Location));
 		}
 
-		protected override List<CPos> CalculatePathToTarget(Actor self, BlockedByActor check)
+		protected override (bool AlreadyAtDestination, List<CPos> Path) CalculatePathToTarget(Actor self, BlockedByActor check)
 		{
+			if (lastVisibleTargetLocation == self.Location)
+				return (true, PathFinder.NoPath);
+
 			// PERF: Assume that candidate cells don't change within a tick to avoid repeated queries
 			// when Move enumerates different BlockedByActor values.
 			if (searchCellsTick != self.World.WorldTick)
@@ -62,9 +65,9 @@ namespace OpenRA.Mods.Common.Activities
 			}
 
 			if (SearchCells.Count == 0)
-				return PathFinder.NoPath;
+				return (false, PathFinder.NoPath);
 
-			return Mobile.PathFinder.FindPathToTargetCells(self, self.Location, SearchCells, check);
+			return (false, Mobile.PathFinder.FindPathToTargetCells(self, self.Location, SearchCells, check));
 		}
 
 		bool AtCorrectRange(WPos origin)
