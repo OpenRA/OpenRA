@@ -38,11 +38,14 @@ namespace OpenRA.Mods.Common.Activities
 			return Target.Type == TargetType.Terrain;
 		}
 
-		protected override List<CPos> CalculatePathToTarget(Actor self, BlockedByActor check)
+		protected override (bool AlreadyAtDestination, List<CPos> Path) CalculatePathToTarget(Actor self, BlockedByActor check)
 		{
+			if (lastVisibleTargetLocation == self.Location)
+				return (true, PathFinder.NoPath);
+
 			// If we are close to the target but can't enter, we wait.
 			if (!Mobile.CanEnterCell(lastVisibleTargetLocation) && Util.AreAdjacentCells(lastVisibleTargetLocation, self.Location))
-				return PathFinder.NoPath;
+				return (false, PathFinder.NoPath);
 
 			// PERF: Don't create a new list every run.
 			// PERF: Also reuse the already created list in the base class.
@@ -51,7 +54,7 @@ namespace OpenRA.Mods.Common.Activities
 			else if (SearchCells[0] != lastVisibleTargetLocation)
 				SearchCells[0] = lastVisibleTargetLocation;
 
-			return Mobile.PathFinder.FindPathToTargetCells(self, self.Location, SearchCells, check);
+			return (false, Mobile.PathFinder.FindPathToTargetCells(self, self.Location, SearchCells, check));
 		}
 	}
 }
