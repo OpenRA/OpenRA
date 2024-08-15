@@ -22,12 +22,11 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public override IEnumerable<string> UpdateActorNode(ModData modData, MiniYamlNodeBuilder actorNode)
 		{
-			var editorWorldNode = actorNode.LastChildMatching("EditorWorld");
-			if (editorWorldNode == null)
+			if (!actorNode.KeyMatches("EditorWorld") || actorNode.LastChildMatching("MarkerLayerOverlay") != null)
 				yield break;
 
 			var markerLayerOverlayNode = new MiniYamlNodeBuilder("MarkerLayerOverlay", new MiniYamlBuilder(""));
-			editorWorldNode.AddNode(markerLayerOverlayNode);
+			actorNode.AddNode(markerLayerOverlayNode);
 		}
 	}
 }
