@@ -28,6 +28,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Size of partition bins (world pixels).")]
 		public readonly int BinSize = 250;
 
+		[Desc("Facing of new actors.")]
+		public readonly WAngle DefaultActorFacing = new(384);
+
 		void ICreatePlayersInfo.CreateServerPlayers(MapPreview map, Session lobbyInfo, List<GameInformation.Player> players, MersenneTwister playerRandom)
 		{
 			throw new NotImplementedException("EditorActorLayer must not be defined on the world actor.");

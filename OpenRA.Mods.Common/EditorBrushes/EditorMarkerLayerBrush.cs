@@ -75,6 +75,10 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
+		void IEditorBrush.TickRender(WorldRenderer wr, Actor self) { }
+		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr) { yield break; }
+		IEnumerable<IRenderable> IEditorBrush.RenderAnnotations(Actor self, WorldRenderer wr) { yield break; }
+
 		public void Tick() { }
 
 		public void Dispose() { }

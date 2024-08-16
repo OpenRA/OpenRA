@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly DropDownButtonWidget ownersDropDown;
 		readonly Ruleset mapRules;
 		readonly ActorSelectorActor[] allActors;
-		readonly EditorCursorLayer editorCursor;
+		readonly EditorViewportControllerWidget editor;
 
 		PlayerReference selectedOwner;
 
@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			mapRules = world.Map.Rules;
 			ownersDropDown = widget.Get<DropDownButtonWidget>("OWNERS_DROPDOWN");
-			editorCursor = world.WorldActor.Trait<EditorCursorLayer>();
+			editor = widget.Parent.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			var editorLayer = world.WorldActor.Trait<EditorActorLayer>();
 
 			selectedOwner = editorLayer.Players.Players.Values.First();
@@ -167,9 +167,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ownersDropDown.TextColor = option.Color;
 			InitializePreviews();
 
-			var actor = editorCursor.Actor;
-			if (actor != null)
+			if (editor.CurrentBrush is EditorActorBrush brush)
 			{
+				var actor = brush.Preview;
 				actor.Owner = option;
 				actor.ReplaceInit(new OwnerInit(option.Name));
 				actor.ReplaceInit(new FactionInit(option.Faction));
@@ -204,7 +204,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				try
 				{
 					var item = ScrollItemWidget.Setup(ItemTemplate,
-						() => editorCursor.Type == EditorCursorType.Actor && editorCursor.Actor.Info == actor,
+						() => Editor.CurrentBrush is EditorActorBrush eab && eab.Preview.Info == actor,
 						() => Editor.SetBrush(new EditorActorBrush(Editor, actor, selectedOwner, WorldRenderer)));
 
 					var preview = item.Get<ActorPreviewWidget>("ACTOR_PREVIEW");

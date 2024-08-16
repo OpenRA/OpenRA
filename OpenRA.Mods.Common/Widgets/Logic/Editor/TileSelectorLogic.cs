@@ -15,7 +15,6 @@ using System.IO;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Terrain;
-using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -40,7 +39,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		readonly ITemplatedTerrainInfo terrainInfo;
 		readonly TileSelectorTemplate[] allTemplates;
-		readonly EditorCursorLayer editorCursor;
 
 		[ObjectCreator.UseCtor]
 		public TileSelectorLogic(Widget widget, ModData modData, World world, WorldRenderer worldRenderer)
@@ -51,7 +49,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				throw new InvalidDataException("TileSelectorLogic requires a template-based tileset.");
 
 			allTemplates = terrainInfo.Templates.Values.Select(t => new TileSelectorTemplate(t)).ToArray();
-			editorCursor = world.WorldActor.Trait<EditorCursorLayer>();
 
 			allCategories = allTemplates.SelectMany(t => t.Categories)
 				.Distinct()
@@ -108,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				var tileId = t.Template.Id;
 				var item = ScrollItemWidget.Setup(ItemTemplate,
-					() => editorCursor.Type == EditorCursorType.TerrainTemplate && editorCursor.TerrainTemplate.Id == tileId,
+					() => Editor.CurrentBrush is EditorTileBrush editorCursor && editorCursor.TerrainTemplate.Id == tileId,
 					() => Editor.SetBrush(new EditorTileBrush(Editor, tileId, WorldRenderer)));
 
 				var preview = item.Get<TerrainTemplatePreviewWidget>("TILE_PREVIEW");
