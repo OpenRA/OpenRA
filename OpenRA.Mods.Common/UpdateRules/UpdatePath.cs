@@ -88,6 +88,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new RemoveEditorSelectionLayerProperties(),
 				new AddMarkerLayerOverlay(),
 				new AddSupportPowerBlockedCursor(),
+				new MovePreviewFacing(),
 
 				// Execute these rules last to avoid premature yaml merge crashes.
 				new ReplaceCloakPalette(),

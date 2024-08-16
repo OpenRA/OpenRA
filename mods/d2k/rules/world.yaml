@@ -260,7 +260,6 @@ EditorWorld:
 				TerrainType: Spice
 				AllowedTerrainTypes: SpiceSand
 				MaxDensity: 20
-	EditorSelectionLayer:
 	LoadWidgetAtGameStart:
 	EditorActionManager:
 	BuildableTerrainOverlay:

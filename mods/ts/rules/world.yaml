@@ -422,8 +422,6 @@ EditorWorld:
 				AllowedTerrainTypes: Clear, Rough, DirtRoad
 				MaxDensity: 2
 		VeinholeActors: veinhole
-	EditorSelectionLayer:
-		AltPixelOffset: 0,1
 	LoadWidgetAtGameStart:
 	EditorActionManager:
 	BuildableTerrainOverlay:
