@@ -45,8 +45,6 @@ namespace OpenRA.Mods.Common.Widgets
 			editorCursor = world.WorldActor.Trait<EditorCursorLayer>();
 
 			Template = id;
-			worldRenderer = wr;
-			world = wr.World;
 
 			var template = terrainInfo.Templates.First(t => t.Value.Id == id).Value;
 			cursorToken = editorCursor.SetTerrainTemplate(wr, template);
