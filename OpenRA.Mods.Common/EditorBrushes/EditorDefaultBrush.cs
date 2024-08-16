@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly EditorActorLayer editorLayer;
 		readonly EditorActionManager editorActionManager;
 		readonly IResourceLayer resourceLayer;
-		readonly EditorCursorLayer cursorLayer;
+		readonly EditorActorLayer actorLayer;
 
 		public CellRegion CurrentDragBounds => selectionBounds ?? Selection.Area;
 
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Widgets
 			editorLayer = world.WorldActor.Trait<EditorActorLayer>();
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 			resourceLayer = world.WorldActor.TraitOrDefault<IResourceLayer>();
-			cursorLayer = world.WorldActor.Trait<EditorCursorLayer>();
+			actorLayer = world.WorldActor.Trait<EditorActorLayer>();
 		}
 
 		long CalculateActorSelectionPriority(EditorActorPreview actor)
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Common.Widgets
 					var cellViewPx = worldRenderer.Viewport.WorldToViewPx(worldRenderer.ScreenPosition(world.Map.CenterOfCell(cell)));
 					var pixelOffset = cellViewPx - mi.Location;
 					var cellOffset = underCursor.Location - cell;
-					moveAction = new MoveActorAction(underCursor, cursorLayer, worldRenderer, pixelOffset, cellOffset);
+					moveAction = new MoveActorAction(underCursor, actorLayer, worldRenderer, pixelOffset, cellOffset);
 					draggingActor = true;
 					return false;
 				}
@@ -408,7 +408,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public string Text { get; private set; }
 
 		readonly EditorActorPreview actor;
-		readonly EditorCursorLayer layer;
+		readonly EditorActorLayer layer;
 		readonly WorldRenderer worldRenderer;
 		readonly int2 pixelOffset;
 		readonly CVec cellOffset;
@@ -418,7 +418,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public MoveActorAction(
 			EditorActorPreview actor,
-			EditorCursorLayer layer,
+			EditorActorLayer layer,
 			WorldRenderer worldRenderer,
 			int2 pixelOffset,
 			CVec cellOffset)

@@ -96,15 +96,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				ScrollItemWidget SetupEraseItem(ScrollItemWidget template)
 				{
-					var item = ScrollItemWidget.Setup(template,
-						() => markerTile == null && editor.CurrentBrush != null && editor.CurrentBrush is EditorMarkerLayerBrush,
+					return ScrollItemWidget.Setup(template,
+						() => markerTile == null && editor.CurrentBrush is EditorMarkerLayerBrush,
 						() =>
 						{
 							markerTile = null;
 							editor.SetBrush(new EditorMarkerLayerBrush(editor, null, worldRenderer));
 						});
-
-					return item;
 				}
 			}
 

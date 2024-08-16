@@ -39,8 +39,6 @@ namespace OpenRA.Mods.Common.Widgets
 			markerLayerOverlay = world.WorldActor.Trait<MarkerLayerOverlay>();
 
 			Template = id;
-			worldRenderer = wr;
-			world = wr.World;
 			action = new PaintMarkerTileEditorAction(Template, markerLayerOverlay);
 		}
 
@@ -60,11 +58,9 @@ namespace OpenRA.Mods.Common.Widgets
 				return false;
 			}
 
-			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
-
 			if (mi.Button == MouseButton.Left && mi.Event != MouseInputEvent.Up)
 			{
-				action.Add(cell);
+				action.Add(worldRenderer.Viewport.ViewToWorld(mi.Location));
 				painting = true;
 			}
 			else if (painting && mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
