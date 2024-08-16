@@ -63,13 +63,15 @@ Player:
 		CancelledAudio: Cancelled
 		SpeedUp: true
 		BuildTimeSpeedReduction: 100, 66, 50
-	ClassicProductionQueue@Starport:
+	BulkProductionQueue@Starport:
 		Type: Starport
 		DisplayOrder: 4
-		BuildDurationModifier: 212
+		QueueLimit: 6
+		PayUpFront: true
+		StartDeliveryAudio: OrderPlaced
+		DeliveryProgressNotifications: TMinusFive, TMinusFour, TMinusThree, TMinusTwo, TMinusOne
 		BlockedAudio: NoRoom
 		BlockedTextNotification: notification-no-room-for-new-units
-		QueuedAudio: OrderPlaced
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 	ClassicProductionQueue@Aircraft:

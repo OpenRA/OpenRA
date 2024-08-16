@@ -24,9 +24,6 @@ carryall.reinforce:
 	Cargo:
 		MaxWeight: 10
 
-frigate:
-	Aircraft:
-		LandableTerrainTypes: Sand, Rock, Transition, Spice, SpiceSand, Dune, Concrete
 
 barracks.harkonnen:
 	Inherits: barracks

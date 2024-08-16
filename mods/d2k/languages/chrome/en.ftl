@@ -60,6 +60,7 @@ label-combat-stats-buildings-killed-header = B. Killed
 label-combat-stats-buildings-dead-header = B. Lost
 label-combat-stats-army-value-header = Army Value
 label-combat-stats-vision-header = Vision
+label-deliver-in-timer = DELIVERY IN: { $time }
 
 ## ingame-observer.yaml, ingame-player.yaml
 label-mute-indicator = Audio Muted
@@ -169,6 +170,10 @@ button-top-buttons-options-tooltip = Options
 productionpalette-sidebar-production-palette =
    .ready = READY
    .hold = ON HOLD
+
+purchase-panel-button-tooltip = Order selected units
+purchase-panel-label-delivery = DELIVERY IN:
+
 
 button-production-types-building-tooltip = Buildings
 button-production-types-infantry-tooltip = Infantry
