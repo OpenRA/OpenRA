@@ -57,7 +57,7 @@ button-container-ok = OK
 label-tiles-bg-search = Search:
 label-bg-filter = Filter:
 label-actors-bg-search = Search:
-label-actors-bg-owners = Owner:
+label-actor-bg-owner = Owner:
 label-area-selection = Area Selection
 label-area-info = Area Info
 label-selected-area-diagonal = Diagonal:
@@ -151,9 +151,9 @@ checkbox-debug-panel-show-screenmap = Show Screen Map
 label-mission-objectives = Mission:
 
 ## ingame-infoscripterror.yaml
-label-script-error-panel-desca = The map script has encountered a fatal error
-label-script-error-panel-descb = The details of the error have been saved to lua.log in the logs directory.
-label-script-error-panel-descc = Please send this file to the map author so that they can fix this issue.
+label-script-error-panel-desc-a = The map script has encountered a fatal error
+label-script-error-panel-desc-b = The details of the error have been saved to lua.log in the logs directory.
+label-script-error-panel-desc-c = Please send this file to the map author so that they can fix this issue.
 
 ## ingame-infostats.yaml
 label-objective-mission = Mission:
@@ -206,8 +206,8 @@ checkbox-music-controls-shuffle = Shuffle
 checkbox-music-controls-loop = Loop
 label-container-title = Track
 label-no-music-title = Music Not Installed
-label-no-music-desca = The game music can be installed
-label-no-music-descb = from the "Manage Content" menu.
+label-no-music-desc-a = The game music can be installed
+label-no-music-desc-b = from the "Manage Content" menu.
 
 ## lobby-options.yaml
 label-lobby-options-bin-title = Map Options
@@ -280,7 +280,7 @@ label-input-section-header = Input
 label-mouse-control-container = Control Scheme:
 label-mouse-control-desc-classic-selection = - Select units using the <Left> mouse button
 label-mouse-control-desc-classic-commands = - Command units using the <Left> mouse button
-label-mouse-control-desc-classic-buildigs = - Place structures using the <Left> mouse button
+label-mouse-control-desc-classic-buildings = - Place structures using the <Left> mouse button
 label-mouse-control-desc-classic-support = - Target support powers using the <Left> mouse button
 label-mouse-control-desc-classic-zoom = - Zoom the battlefield using the <Scroll Wheel>
 label-mouse-control-desc-classic-zoom-modifier = - Zoom the battlefield using <MODIFIER + Scroll Wheel>
@@ -289,7 +289,7 @@ label-mouse-control-desc-classic-scroll-middle = - Pan the battlefield using the
 label-mouse-control-desc-classic-edgescroll = or by moving the cursor to the edge of the screen
 label-mouse-control-desc-modern-selection = - Select units using the <Left> mouse button
 label-mouse-control-desc-modern-commands = - Command units using the <Right> mouse button
-label-mouse-control-desc-modern-buildigs = - Place structures using the <Left> mouse button
+label-mouse-control-desc-modern-buildings = - Place structures using the <Left> mouse button
 label-mouse-control-desc-modern-support = - Target support powers using the <Left> mouse button
 label-mouse-control-desc-modern-zoom = - Zoom the battlefield using the <Scroll Wheel>
 label-mouse-control-desc-modern-zoom-modifier = - Zoom the battlefield using <MODIFIER + Scroll Wheel>

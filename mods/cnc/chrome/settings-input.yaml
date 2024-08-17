@@ -76,7 +76,7 @@ Container@INPUT_PANEL:
 									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
-									Text: label-mouse-control-desc-classic-buildigs
+									Text: label-mouse-control-desc-classic-buildings
 								LabelWithHighlight@DESC_SUPPORT:
 									Y: 51
 									Width: PARENT_RIGHT
@@ -135,7 +135,7 @@ Container@INPUT_PANEL:
 									Width: PARENT_RIGHT
 									Height: 16
 									Font: Small
-									Text: label-mouse-control-desc-modern-buildigs
+									Text: label-mouse-control-desc-modern-buildings
 								LabelWithHighlight@DESC_SUPPORT:
 									Y: 51
 									Width: PARENT_RIGHT

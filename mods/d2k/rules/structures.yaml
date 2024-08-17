@@ -25,9 +25,9 @@ concretea:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Tooltip:
-		Name: actor-concretea.name
+		Name: actor-concrete-a.name
 	Encyclopedia:
-		Description: actor-concretea.encyclopedia
+		Description: actor-concrete-a.encyclopedia
 		Category: Buildings
 		Order: 10
 	Valued:
@@ -46,7 +46,7 @@ concreteb:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 	Tooltip:
-		Name: actor-concreteb-name
+		Name: actor-concrete-b-name
 	Valued:
 		Cost: 50
 	Buildable:
@@ -1162,7 +1162,7 @@ palace:
 		IncomingSpeechNotification: MissileLaunchDetected
 		BeginChargeTextNotification: notification-death-hand-missile-prepping
 		EndChargeTextNotification: notification-death-hand-missile-ready
-		IncomingTextNotification: notifciation-missile-launch-detected
+		IncomingTextNotification: notification-missile-launch-detected
 		SelectTargetTextNotification: notification-select-target
 		MissileWeapon: deathhand
 		MissileImage: deathhand
@@ -1195,7 +1195,7 @@ palace:
 		ReadyAudio: Reinforce
 		ReadyTextNotification: notification-reinforcements-have-arrived
 		BlockedAudio: NoRoom
-		BlockedTextNotification: notification-no-room-for-new-units
+		BlockedTextNotification: notification-no-room-for-new-unit
 		OrderName: ProduceActorPower.Fremen
 		SupportPowerPaletteOrder: 20
 	ProduceActorPower@saboteur:
@@ -1212,7 +1212,7 @@ palace:
 		ReadyAudio: Reinforce
 		ReadyTextNotification: notification-reinforcements-have-arrived
 		BlockedAudio: NoRoom
-		BlockedTextNotification: notification-no-room-for-new-units
+		BlockedTextNotification: notification-no-room-for-new-unit
 		OrderName: ProduceActorPower.Saboteur
 		SupportPowerPaletteOrder: 30
 	Exit@1:

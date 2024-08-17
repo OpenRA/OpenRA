@@ -142,7 +142,7 @@ WorldLoaded = function()
 	end)
 
 	CaptureHelipad = AddPrimaryObjective(Nod, "capture-gdi-helipad")
-	NoCaptureObjective = AddPrimaryObjective(Nod, "dont-capture-or-destroy")
+	NoCaptureObjective = AddPrimaryObjective(Nod, "do-not-capture-or-destroy")
 	UseOrcaObjective = AddPrimaryObjective(Nod, "orca-wreak-havoc")
 	DistractGuardsObjective = AddSecondaryObjective(Nod, "distract-guards")
 	GDIObjective = AddPrimaryObjective(GDI, "")

@@ -96,7 +96,7 @@ destroy-atreides = Destroy the Atreides.
 ## harkonnen-04
 fremen-annihilated = The Fremen have been annihilated!
 destroy-fremen = Destroy the Fremen.
-fremen-spotted-north-southeast = Fremen concentrations spotted to the north and southwest.
+fremen-spotted-north-southwest = Fremen concentrations spotted to the north and southwest.
 
 ## harkonnen-05
 imperial-ships-penetrating-defense-grid = Imperial ships penetrating defense grid!

@@ -24,7 +24,7 @@ MissionStart = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(45), function()
-		Media.DisplayMessage(UserInterface.Translate("trucks-stopped-near-allied-base"))
+		Media.DisplayMessage(UserInterface.Translate("truck-stopped-near-allied-base"))
 	end)
 
 	Trigger.OnKilled(StolenTruck, function()

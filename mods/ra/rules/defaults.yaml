@@ -939,12 +939,12 @@
 		Condition: winter
 		TileSets: SNOW
 	Tooltip@WINTER:
-		Name: meta-civhaystackorigloo.winter--name
+		Name: meta-civhaystackorigloo.winter-name
 		RequiresCondition: winter
 		GenericVisibility: None
 		ShowOwnerRow: false
 	Tooltip@SUMMER:
-		Name: meta-civhaystackorigloo.summer--name
+		Name: meta-civhaystackorigloo.summer-name
 		RequiresCondition: !winter
 		GenericVisibility: None
 		ShowOwnerRow: false

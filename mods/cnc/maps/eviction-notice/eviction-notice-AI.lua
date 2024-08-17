@@ -139,7 +139,7 @@ InitAi = function()
 
 		if not GDIAdvComCenter.IsDead then
 			IonCannonOnline = true
-			Media.DisplayMessage(UserInterface.Translate("destroy-ion-cannon-advise"))
+			Media.DisplayMessage(UserInterface.Translate("destroy-ion-cannon-advice"))
 			DestroyIonCannon = AddSecondaryObjective(Nod, "quickly-destroy-ion-cannon")
 		end
 	end)

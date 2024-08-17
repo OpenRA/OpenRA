@@ -324,7 +324,7 @@ JUGG:
 		Name: actor-jugg.name
 		RequiresCondition: !deployed
 	Tooltip@DEPLOYED:
-		Name: actor-jugg.deployed--name
+		Name: actor-jugg.deployed-name
 		RequiresCondition: deployed
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true

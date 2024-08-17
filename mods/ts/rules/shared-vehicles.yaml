@@ -130,7 +130,7 @@ LPST:
 		Name: actor-lpst.name
 		RequiresCondition: !deployed
 	Tooltip@DEPLOYED:
-		Name: actor-lpst.deployed--name
+		Name: actor-lpst.deployed-name
 		RequiresCondition: deployed
 	Health:
 		HP: 60000

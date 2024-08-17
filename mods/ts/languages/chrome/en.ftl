@@ -8,7 +8,7 @@ label-voxel-selector-yaw = Yaw
 checkbox-debug-panel-show-depth-preview = Show Depth Data
 
 ## ingame-observer.yaml
-button-observer-widgets-options = Options (Esc)
+button-observer-widget-options = Options (Esc)
 button-replay-player-pause-tooltip = Pause
 button-replay-player-play-tooltip = Play
 

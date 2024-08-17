@@ -541,7 +541,7 @@ NAMISL:
 		IncomingSpeechNotification: MissileLaunchDetected
 		EndChargeTextNotification: notification-cluster-missile-ready
 		SelectTargetTextNotification: notification-select-target
-		IncomingTextNotification: notifciation-missile-launch-detected
+		IncomingTextNotification: notification-missile-launch-detected
 		LaunchSound: icbm1.aud
 		MissileWeapon: ClusterMissile
 		MissileImage: ClusterMissile

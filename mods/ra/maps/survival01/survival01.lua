@@ -304,7 +304,7 @@ AddObjectives = function()
 	InitObjectives(Allies)
 
 	SurviveObj = AddPrimaryObjective(Allies, "enforce-position-hold-until-reinforcements")
-	KillSams = AddSecondaryObjective(Allies, "destroy-two-sames-before-reinforcements")
+	KillSams = AddSecondaryObjective(Allies, "destroy-two-sams-before-reinforcements")
 	Media.DisplayMessage(UserInterface.Translate("soviets-blocking-gps"))
 	CaptureAirfields = AddSecondaryObjective(Allies, "capture-hold-soviet-airbase-northeast")
 	SovietObj = AddPrimaryObjective(Soviets, "")
