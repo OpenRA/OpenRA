@@ -104,7 +104,7 @@ WorldLoaded = function()
 
 	BringSupplyTruck = AddPrimaryObjective(USSR, "supply-truck-waystation")
 	ProtectWaystation = AddPrimaryObjective(USSR, "waystation-must-not-be-destroyed")
-	DestroyAAGuns = AddSecondaryObjective(USSR, "destory-aa-guns-enable-air-support")
+	DestroyAAGuns = AddSecondaryObjective(USSR, "destroy-aa-guns-enable-air-support")
 	PreventAlliedIncursions = AddSecondaryObjective(USSR, "find-destroy-bridge-stop-allied-reinforcements")
 
 	Trigger.OnKilled(USSRTechCenter01, function()

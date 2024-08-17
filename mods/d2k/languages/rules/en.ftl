@@ -17,7 +17,7 @@ notification-base-under-attack = Base under attack
 notification-ally-under-attack = Our ally is under attack
 notification-harvester-under-attack = Harvester under attack
 notification-silos-needed = Silos needed
-notification-no-room-for-new-units = No room for new unit
+notification-no-room-for-new-unit = No room for new unit
 notification-cannot-build-here = Cannot build here
 notification-one-of-our-buildings-has-been-captured = One of our buildings has been captured
 
@@ -114,7 +114,7 @@ notification-primary-building-selected = Primary building selected
 actor-carryall-reinforce =
    .name = Carryall
    .description = A large, winged, planet-bound ship,
-      that automatically lifts harvesters to and from spice fields 
+      that automatically lifts harvesters to and from spice fields
       and lifts vehicles to Repair Pads when ordered to
 
 actor-carryall-encyclopedia = Carryalls automatically transport Harvesters between the Spice Fields and Refineries. They can also pick up units and deliver them to the Repair Pad.
@@ -285,7 +285,7 @@ notification-unit-ready = Unit ready
 notification-repairing = Repairing
 notification-unit-repaired = Unit repaired
 notification-select-target = Select target
-notifciation-missile-launch-detected = Missile launch detected
+notification-missile-launch-detected = Missile launch detected
 notification-airstrike-ready = Airstrike ready
 notification-building-lost = Building lost
 notification-reinforcements-have-arrived = Reinforcements have arrived
@@ -299,13 +299,13 @@ meta-concrete =
    .description = Provides a strong foundation that protects
     against terrain damage
 
-actor-concretea =
+actor-concrete-a =
    .name = Concrete Slab
    .encyclopedia = Buildings not placed on concrete will incur damage. While repairs are possible, if a building is not entirely placed on concrete, it will experience ongoing weathering damage from the harsh desert environment.
 
     Concrete is vulnerable to most weapons and cannot be repaired once damaged
 
-actor-concreteb-name = Large Concrete Slab
+actor-concrete-b-name = Large Concrete Slab
 
 actor-construction-yard =
    .description = Produces structures

@@ -144,7 +144,7 @@ Container@OBSERVER_WIDGETS:
 			Y: 5
 			Width: 30
 			Height: 25
-			TooltipText: button-observer-widgets-options-tooltip
+			TooltipText: button-observer-widget-options-tooltip
 			TooltipContainer: TOOLTIP_CONTAINER
 			DisableWorldSounds: true
 			Children:
@@ -1474,8 +1474,8 @@ Container@PLAYER_WIDGETS:
 					Key: StanceDefend
 					DisableKeyRepeat: true
 					DisableKeySound: true
-					TooltipText: button-stance-bar-defend.tooltip
-					TooltipDesc: button-stance-bar-defend.tooltipdesc
+					TooltipText: button-stance-bar-defense.tooltip
+					TooltipDesc: button-stance-bar-defense.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
 					Children:

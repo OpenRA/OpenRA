@@ -390,7 +390,7 @@ WorldLoaded = function()
 
 	USSRObj = AddPrimaryObjective(USSR, "")
 	MainObj = AddPrimaryObjective(Greece, "rescue-tanya")
-	KillAll = AddPrimaryObjective(Greece, "elminate-soviet-units")
+	KillAll = AddPrimaryObjective(Greece, "eliminate-soviet-units")
 	InfWarfactory = AddSecondaryObjective(Greece, "infiltrate-warfactory")
 
 	InitTriggers()

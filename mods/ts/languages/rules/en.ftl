@@ -61,7 +61,7 @@ notification-unit-sold = Unit sold
 notification-ion-cannon-ready = Ion cannon ready
 notification-select-target = Select target
 notification-cluster-missile-ready = Cluster missile ready
-notifciation-missile-launch-detected = Missile launch detected
+notification-missile-launch-detected = Missile launch detected
 notification-emp-cannon-ready = EMP cannon ready
 
 ## Defaults
@@ -468,7 +468,7 @@ actor-sonic =
 
 actor-jugg =
    .name = Juggernaut
-   .deployed--name = Juggernaut (deployed)
+   .deployed-name = Juggernaut (deployed)
    .description = Mobile Artillery Mech
     Needs to deploy in order to shoot
       Strong vs. Ground units
@@ -630,7 +630,7 @@ actor-bike =
 
 actor-ttnk =
    .name = Tick Tank
-   .deployed--name = Tick Tank (deployed)
+   .deployed-name = Tick Tank (deployed)
    .description = Nod's main battle tank
     Can deploy to gain extra protection
       Strong vs. Vehicles
@@ -638,7 +638,7 @@ actor-ttnk =
 
 actor-art2 =
    .name = Artillery
-   .deployed--name = Artillery (deployed)
+   .deployed-name = Artillery (deployed)
    .description = Mobile Artillery
     Needs to be deployed in order to shoot
       Strong vs. Ground units
@@ -677,7 +677,7 @@ actor-stnk =
 
 actor-sgen =
    .name = Mobile Stealth Generator
-   .deployed--name = Mobile Stealth Generator (deployed)
+   .deployed-name = Mobile Stealth Generator (deployed)
    .description = Able to cloak units once deployed
       Unarmed
 
@@ -738,7 +738,7 @@ actor-lpst =
     units when deployed
       Unarmed
    .name = Mobile Sensor Array
-   .deployed--name = Mobile Sensor Array (deployed)
+   .deployed-name = Mobile Sensor Array (deployed)
 
 ## trees.yaml
 actor-bigblue-name = Large Blue Tiberium Crystal

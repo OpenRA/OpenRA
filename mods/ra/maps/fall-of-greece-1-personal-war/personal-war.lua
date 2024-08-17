@@ -79,7 +79,7 @@ MissionStart = function()
 						end)
 					end)
 					Trigger.AfterDelay(DateTime.Seconds(6), function()
-						Media.DisplayMessage(UserInterface.Translate("civilians-manual-targetting"), UserInterface.Translate("tanya"))
+						Media.DisplayMessage(UserInterface.Translate("civilians-manual-targeting"), UserInterface.Translate("tanya"))
 					end)
 				end
 			end)

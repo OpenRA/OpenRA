@@ -175,8 +175,8 @@ meta-ammobox-name = Ammo Box
 meta-civfield-name = Field
 
 meta-civhaystackorigloo =
-   .winter--name = Igloo
-   .summer--name = Haystack
+   .winter-name = Igloo
+   .summer-name = Haystack
 
 meta-tree-name = Tree
 meta-treehusk-name = Tree (Burnt)
@@ -466,7 +466,7 @@ notification-chronosphere-charging = Chronosphere charging
 notification-chronosphere-ready = Chronosphere ready
 notification-satellite-launched = Satellite launched
 notification-credits-stolen = Credits stolen
-notifcation-spy-plane-ready = Spy plane ready
+notification-spy-plane-ready = Spy plane ready
 
 actor-mslo =
    .name = Missile Silo
@@ -582,7 +582,7 @@ actor-atek =
    .name = Allied Tech Center
    .gpspower-name = GPS Satellite
    .gpspower-description = Reveals map terrain and provides tactical information
-   information. = Requires power and active radar
+   .description = Requires power and active radar
 
 actor-weap =
    .description = Produces vehicles

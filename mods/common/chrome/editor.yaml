@@ -359,7 +359,7 @@ Container@EDITOR_WORLD_ROOT:
 					Y: 60
 					Width: 55
 					Height: 25
-					Text: label-actors-bg-owners
+					Text: label-actor-bg-owner
 					Align: Right
 					Font: TinyBold
 				DropDownButton@OWNERS_DROPDOWN:

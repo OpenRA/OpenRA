@@ -213,8 +213,8 @@ Container@PLAYER_WIDGETS:
 					Key: StanceDefend
 					DisableKeyRepeat: true
 					DisableKeySound: true
-					TooltipText: button-stance-bar-defend.tooltip
-					TooltipDesc: button-stance-bar-defend.tooltipdesc
+					TooltipText: button-stance-bar-defense.tooltip
+					TooltipDesc: button-stance-bar-defense.tooltipdesc
 					TooltipContainer: TOOLTIP_CONTAINER
 					Children:
 						Image@ICON:

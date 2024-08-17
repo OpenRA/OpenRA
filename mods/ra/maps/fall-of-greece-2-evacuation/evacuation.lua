@@ -242,11 +242,11 @@ WorldLoaded = function()
 	InitObjectives(Allies)
 
 	if Difficulty == "easy" then
-		RescueCivilians = AddPrimaryObjective(Allies, "rescue-civlians-island-shelter-easy")
+		RescueCivilians = AddPrimaryObjective(Allies, "rescue-civilians-island-shelter-easy")
 	elseif Difficulty == "normal" then
-		RescueCivilians = AddPrimaryObjective(Allies, "rescue-civlians-island-shelter-normal")
+		RescueCivilians = AddPrimaryObjective(Allies, "rescue-civilians-island-shelter-normal")
 	else
-		RescueCivilians = AddPrimaryObjective(Allies, "rescue-civlians-island-shelter-hard")
+		RescueCivilians = AddPrimaryObjective(Allies, "rescue-civilians-island-shelter-hard")
 	end
 
 	ClearWaterway = AddSecondaryObjective(Allies, "clear-enemy-submarines")

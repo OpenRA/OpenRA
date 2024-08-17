@@ -92,7 +92,7 @@ TTNK:
 		Name: actor-ttnk.name
 		RequiresCondition: !deployed
 	Tooltip@DEPLOYED:
-		Name: actor-ttnk.deployed--name
+		Name: actor-ttnk.deployed-name
 		RequiresCondition: deployed
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
@@ -214,7 +214,7 @@ ART2:
 		Name: actor-art2.name
 		RequiresCondition: !deployed
 	Tooltip@DEPLOYED:
-		Name: actor-art2.deployed--name
+		Name: actor-art2.deployed-name
 		RequiresCondition: deployed
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
@@ -565,7 +565,7 @@ SGEN:
 		Name: actor-sgen.name
 		RequiresCondition: !deployed
 	Tooltip@DEPLOYED:
-		Name: actor-sgen.deployed--name
+		Name: actor-sgen.deployed-name
 		RequiresCondition: deployed
 	Selectable:
 		Bounds: 1206, 1768, 0, -603

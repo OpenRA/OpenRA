@@ -8,7 +8,7 @@ label-mentat-title = Mentat
 label-menu-buttons-title = Options
 
 ## ingame-observer.yaml
-button-observer-widgets-options = Options (Esc)
+button-observer-widget-options = Options (Esc)
 button-replay-player-pause-tooltip = Pause
 button-replay-player-play-tooltip = Play
 
@@ -77,7 +77,7 @@ button-command-bar-attack-move =
     Hold <(Ctrl)> while targeting to order an Assault Move
     that attacks any units or structures encountered en route
 
-    Left-click the icon then right-click on the target 
+    Left-click the icon then right-click on the target
 
 button-command-bar-force-move =
    .tooltip = Force Move
@@ -142,7 +142,7 @@ button-stance-bar-attackanything =
      - Units attack enemy units and structures on sight
      - Units pursue attackers across the battlefield
 
-button-stance-bar-defend =
+button-stance-bar-defense =
    .tooltip = Defend Stance
    .tooltipdesc = Set the selected units to Defense stance:
      - Units attack enemy units on sight

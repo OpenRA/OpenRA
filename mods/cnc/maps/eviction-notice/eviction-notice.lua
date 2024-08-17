@@ -90,7 +90,7 @@ RunForHelp = function()
 		CivsRunning = true
 		local cam = Actor.Create("camera", true, { Owner = Nod, Location = CPos.New(53,44) })
 		Trigger.AfterDelay(125, cam.Destroy)
-		Media.DisplayMessage(UserInterface.Translate("civilians-runs"), UserInterface.Translate("nod-soldier"))
+		Media.DisplayMessage(UserInterface.Translate("civilians-running"), UserInterface.Translate("nod-soldier"))
 	end
 end
 

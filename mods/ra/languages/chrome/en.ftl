@@ -143,7 +143,7 @@ button-stance-bar-attackanything =
      - Units attack enemy units and structures on sight
      - Units pursue attackers across the battlefield
 
-button-stance-bar-defend =
+button-stance-bar-defense =
    .tooltip = Defense Stance
    .tooltipdesc = Set the selected units to Defense stance:
      - Units attack enemy units on sight

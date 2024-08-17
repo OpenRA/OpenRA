@@ -8,7 +8,7 @@ label-voxel-selector-yaw = Yaw
 checkbox-debug-panel-show-depth-preview = Show Depth Data
 
 ## ingame-observer.yaml
-button-observer-widgets-options = Options (Esc)
+button-observer-widget-options = Options (Esc)
 button-replay-player-pause-tooltip = Pause
 button-replay-player-play-tooltip = Play
 
@@ -146,7 +146,7 @@ button-stance-bar-attackanything =
      - Units attack enemy units and structures on sight
      - Units pursue attackers across the battlefield
 
-button-stance-bar-defend =
+button-stance-bar-defense =
    .tooltip = Defend Stance
    .tooltipdesc = Set the selected units to Defense stance:
      - Units attack enemy units on sight
