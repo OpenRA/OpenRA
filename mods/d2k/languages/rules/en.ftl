@@ -17,7 +17,7 @@ notification-base-under-attack = Base under attack.
 notification-ally-under-attack = Our ally is under attack.
 notification-harvester-under-attack = Harvester under attack.
 notification-silos-needed = Silos needed.
-notification-no-room-for-new-units = No room for new unit.
+notification-no-room-for-new-unit = No room for new unit.
 notification-cannot-build-here = Cannot build here.
 notification-one-of-our-buildings-has-been-captured = One of our buildings has been captured.
 
@@ -285,7 +285,7 @@ notification-unit-ready = Unit ready.
 notification-repairing = Repairing.
 notification-unit-repaired = Unit repaired.
 notification-select-target = Select target.
-notifciation-missile-launch-detected = Missile launch detected.
+notification-missile-launch-detected = Missile launch detected.
 notification-airstrike-ready = Airstrike ready.
 notification-building-lost = Building lost.
 notification-reinforcements-have-arrived = Reinforcements have arrived.
@@ -299,13 +299,13 @@ meta-concrete =
    .description = Provides a strong foundation that prevents
     damage from the terrain.
 
-actor-concretea =
+actor-concrete-a =
    .name = Concrete Slab
    .encyclopedia = If buildings are not placed on concrete, they will be damaged. Buildings can be repaired, but unless the building sits completely on concrete, the building will suffer continual weathering damage from the erosive desert environment.
 
     Concrete is vulnerable to most weapon types. Concrete cannot be repaired if damaged.
 
-actor-concreteb-name = Large Concrete Slab
+actor-concrete-b-name = Large Concrete Slab
 
 actor-construction-yard =
    .description = Produces structures.

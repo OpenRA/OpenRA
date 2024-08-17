@@ -54,7 +54,7 @@ disguise-spy = Commander! You have to disguise me in order to get through the en
 battlefield-control = Battlefield Control
 skip-heroics = Good work! But next time skip the heroics!
 rescue-tanya = Rescue Tanya.
-elminate-soviet-units = Eliminate all Soviet units in this area.
+eliminate-soviet-units = Eliminate all Soviet units in this area.
 infiltrate-warfactory = Infiltrate the Soviet warfactory.
 destroy-sam-sites-blocker = Destroy all four SAM Sites that block
     our reinforcements' helicopter.
@@ -62,7 +62,7 @@ destroy-sam-sites-blocker = Destroy all four SAM Sites that block
 # allies-06ab
 soviet-tech-centers-discovered = Coordinates of the Soviet tech centers discovered.
 destroy-soviet-buildings-units = Destroy all Soviet buildings and units in the area.
-dont-capture-tech-centers = Do not capture the tech centers! Infiltrate one with a spy.
+do-not-capture-tech-centers = Do not capture the tech centers! Infiltrate one with a spy.
 infiltrate-tech-center-spy = Infiltrate one of the Soviet tech centers with a spy.
 capture-radar-shore = Capture the Radar Dome at the shore.
 build-naval-yard-redeploy-mcv = Secure a foothold and build a Naval Yard.
@@ -82,7 +82,7 @@ defeat-allied-forces = Defeat the Allied forces.
 
 ## allies-08ab
 experiment-successful = The experiment is a success!
-chronosphere-experiments-completes-in = Chronosphere experiment completes in { $time }
+chronosphere-experiment-complete-in = Chronosphere experiment completes in { $time }
 defend-chronosphere-tech-center = Defend the Chronosphere and the Tech Center
     at all costs.
 chronosphere-needs-power = The Chronosphere must have power when the
@@ -140,7 +140,7 @@ transferring-funds = Transferring funds.
 co-commander-missing = Co-Commander is missing
 
 ## fall-of-greece-1-personal-war
-civilians-manual-targetting = Commander, there are several civilians in the area.
+civilians-manual-targeting = Commander, there are several civilians in the area.
     We'll need you to call out targets.
 soviet-aircraft-armor-moving-in = Alfa Niner this is Lima One Six. Be advised, Soviet aircraft and armor moving into your AO.
 headquarters = Headquarters
@@ -156,12 +156,12 @@ get-tanya-stavros-helicopter = Get Stavros and Tanya to the extraction helicopte
 civilians-evacuated = { $evacuated } / { $threshold } civilians evacuated.
 chinook-assist-evacuation = Alfa Niner this is Pegasus. We are on site and ready to assist with the evacuation.
 chinook-pilot = Chinook pilot
-rescue-civlians-island-shelter-easy = Evacuate at least half of the civilians to the island
+rescue-civilians-island-shelter-easy = Evacuate at least half of the civilians to the island
     shelter.
-rescue-civlians-island-shelter-normal = Evacuate at least three quarters of the civilians to
+rescue-civilians-island-shelter-normal = Evacuate at least three quarters of the civilians to
     the island shelter.
-rescue-civlians-island-shelter-hard = Evacuate all civilians to the island shelter.
-clear-enemy-submarines = Clear the area of enemy submarine activity.
+rescue-civilians-island-shelter-hard = Evacuate all civilians to the island shelter.
+clear-enemy-submarines = Clear the area of enemy submarine activity
 
 ## fort-lonestar
 no-more-waves = You almost survived the onslaught! No more waves incoming.
@@ -350,7 +350,7 @@ time-until-meltdown = Time until Meltdown: { $time }
 destroy-allied-sympathizers-village = Destroy the village of Allied sympathizers.
 
 ## soviet-09
-trucks-stopped-near-allied-base = Commander, the truck has stopped at a nearby allied base.
+truck-stopped-near-allied-base = Commander, the truck has stopped at a nearby allied base.
     Allied radio intercepts say the truck has orders to flee the battlefield
     if any Soviet units approach the base.
 destroy-stolen-convoy-truck = Destroy the stolen convoy truck.
@@ -394,7 +394,7 @@ takeover-reinforcements-dismantle-soviet-base = Take control of French reinforce
     dismantle the nearby Soviet base.
 enforce-position-hold-until-reinforcements = Enforce your position and hold-out the onslaught
     until reinforcements arrive.
-destroy-two-sames-before-reinforcements = Destroy the two SAM sites before reinforcements
+destroy-two-sams-before-reinforcements = Destroy the two SAM sites before reinforcements
     arrive.
 soviets-blocking-gps = The Soviets are blocking our GPS. We need to investigate their new technology.
 capture-hold-soviet-airbase-northeast = Capture and hold the Soviet airbase
@@ -419,7 +419,7 @@ soviet-reinforcements-approaching = The Soviet reinforcements are approaching!
 ## top-o-the-world
 supply-truck-waystation = Bring the supply truck to the waystation.
 waystation-must-not-be-destroyed = The waystation must not be destroyed.
-destory-aa-guns-enable-air-support = Destroy all the AA Guns to enable air support.
+destroy-aa-guns-enable-air-support = Destroy all the AA Guns to enable air support.
 find-destroy-bridge-stop-allied-reinforcements = Find and destroy the bridge the allies are using
     to bring their reinforcements in the area.
 air-support-t-minus-3 = Very good comrade general! Our air units just took off

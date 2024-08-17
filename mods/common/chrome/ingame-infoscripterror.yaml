@@ -10,7 +10,7 @@ Container@SCRIPT_ERROR_PANEL:
 			Height: 20
 			Font: Bold
 			Align: Center
-			Text: label-script-error-panel-desca
+			Text: label-script-error-panel-desc-a
 		Label@DESCB:
 			X: 15
 			Y: 46
@@ -18,7 +18,7 @@ Container@SCRIPT_ERROR_PANEL:
 			Height: 20
 			Font: Regular
 			Align: Center
-			Text: label-script-error-panel-descb
+			Text: label-script-error-panel-desc-b
 		Label@DESCC:
 			X: 15
 			Y: 66
@@ -26,7 +26,7 @@ Container@SCRIPT_ERROR_PANEL:
 			Height: 20
 			Font: Regular
 			Align: Center
-			Text: label-script-error-panel-descc
+			Text: label-script-error-panel-desc-c
 		ScrollPanel@SCRIPT_ERROR_MESSAGE_PANEL:
 			X: 20
 			Y: 96

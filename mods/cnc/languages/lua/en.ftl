@@ -116,7 +116,7 @@ eliminate-gdi-forces = Eliminate all GDI forces in the area.
 
 ## nod07c
 capture-gdi-helipad = Capture the GDI helipad.
-dont-capture-or-destroy = Don't capture or destroy any other
+do-not-capture-or-destroy = Don't capture or destroy any other
     GDI main building.
 orca-wreak-havoc = Use the GDI orca to wreak havoc at the village.
 distract-guards = Distract the guards by attacking the
@@ -147,8 +147,8 @@ take-civilians-money-crates = Find all the civilians' money.
 quickly-destroy-ion-cannon = Disable GDI Ion Cannon before
     it fires two times.
 nod-soldier = Nod Soldier
-civilians-runs = Hey, those civilians... where are they going?
-destroy-ion-cannon-advise = The GDI are preparing their ion cannon. Don't let them get used to it.
+civilians-running = Hey, those civilians... where are they going?
+destroy-ion-cannon-advice = The GDI are preparing their ion cannon. Don't let them get used to it.
 village-destruction-warning = Be careful, commander. The GDI won't stand still while we burn the entire village.
 
 ## twist-of-fate

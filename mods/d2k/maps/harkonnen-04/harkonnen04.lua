@@ -191,7 +191,7 @@ WorldLoaded = function()
 	end)
 
 	Trigger.AfterDelay(DateTime.Seconds(15), function()
-		Media.DisplayMessage(UserInterface.Translate("fremen-spotted-north-southeast"), Mentat)
+		Media.DisplayMessage(UserInterface.Translate("fremen-spotted-north-southwest"), Mentat)
 	end)
 
 	local atreidesCondition = function() return Harkonnen.IsObjectiveCompleted(KillAtreides) end

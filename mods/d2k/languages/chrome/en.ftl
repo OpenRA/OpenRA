@@ -8,7 +8,7 @@ label-mentat-title = Mentat
 label-menu-buttons-title = Options
 
 ## ingame-observer.yaml
-button-observer-widgets-options = Options (Esc)
+button-observer-widget-options = Options (Esc)
 button-replay-player-pause-tooltip = Pause
 button-replay-player-play-tooltip = Play
 

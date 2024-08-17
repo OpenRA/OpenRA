@@ -374,7 +374,7 @@ end
 AddObjectives = function()
 	USSRobjective = AddPrimaryObjective(USSR, "")
 	RescueTanyaObjective = AddPrimaryObjective(Greece, "rescue-tanya")
-	KillAll = AddPrimaryObjective(Greece, "elminate-soviet-units")
+	KillAll = AddPrimaryObjective(Greece, "eliminate-soviet-units")
 	InfiltrateWarfactoryObjective = AddSecondaryObjective(Greece, "infiltrate-warfactory")
 end
 

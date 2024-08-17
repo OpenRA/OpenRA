@@ -169,7 +169,7 @@ InfiltrateTechCenter = function()
 		Trigger.OnCapture(a, function()
 			if not infiltrated then
 				Media.PlaySoundNotification(Greece, "AlertBleep")
-				Media.DisplayMessage(UserInterface.Translate("dont-capture-tech-centers"))
+				Media.DisplayMessage(UserInterface.Translate("do-not-capture-tech-centers"))
 			end
 		end)
 	end)

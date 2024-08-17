@@ -76,7 +76,7 @@ LOBRDG_A:
 LOBRDG_A_D:
 	Inherits: LOBRDG_A
 	EditorOnlyTooltip:
-		Name: actor-lobrdg-a-d-name
+		Name: actor-lobrdg-d-name
 	-GroundLevelBridge:
 	-AppearsOnRadar:
 	BridgePlaceholder:
@@ -115,7 +115,7 @@ LOBRDG_B:
 LOBRDG_B_D:
 	Inherits: LOBRDG_B
 	EditorOnlyTooltip:
-		Name: actor-lobrdg-b-d-name
+		Name: actor-lobrdg-d-name
 	-GroundLevelBridge:
 	-AppearsOnRadar:
 	BridgePlaceholder:
@@ -138,7 +138,7 @@ LOBRDG_R_SE:
 	BridgePlaceholder:
 		NeighbourOffsets: -1,1
 	EditorOnlyTooltip:
-		Name: actor-lobrdg-r-se-name
+		Name: actor-lobrdg-r-name
 
 LOBRDG_R_NW:
 	Inherits: ^LowBridgeRamp
@@ -148,7 +148,7 @@ LOBRDG_R_NW:
 	BridgePlaceholder:
 		NeighbourOffsets: 1,1
 	EditorOnlyTooltip:
-		Name: actor-lobrdg-r-nw-name
+		Name: actor-lobrdg-r-name
 
 LOBRDG_R_NE:
 	Inherits: ^LowBridgeRamp
@@ -158,7 +158,7 @@ LOBRDG_R_NE:
 	BridgePlaceholder:
 		NeighbourOffsets: 1,1
 	EditorOnlyTooltip:
-		Name: actor-lobrdg-r-ne-name
+		Name: actor-lobrdg-r-name
 
 LOBRDG_R_SW:
 	Inherits: ^LowBridgeRamp
@@ -168,7 +168,7 @@ LOBRDG_R_SW:
 	BridgePlaceholder:
 		NeighbourOffsets: 1,-1
 	EditorOnlyTooltip:
-		Name: actor-lobrdg-r-sw-name
+		Name: actor-lobrdg-r-name
 
 ^ElevatedBridgePlaceholder:
 	AlwaysVisible:

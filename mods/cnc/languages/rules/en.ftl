@@ -55,7 +55,7 @@ faction-nod =
 notification-unit-lost = Unit lost.
 notification-unit-promoted = Unit promoted.
 notification-building-captured = Building captured.
-notification-civilian-building-captured = Civilian Building captured.
+notification-civ-building-captured = Civilian Building captured.
 notification-structure-lost = Structure lost.
 
 ## aircraft.yaml
@@ -176,12 +176,12 @@ meta-civbuildinghusk-generic-name = Civilian Building (Destroyed)
 meta-civfield-generic-name = Field
 
 meta-civhaystackorigloo =
-   .winter--name = Igloo
-   .summer--name = Haystacks
+   .winter-name = Igloo
+   .summer-name = Haystacks
 
 meta-civhaystackorigloohusk =
-   .winter--name = Igloo (Destroyed)
-   .summer--name = Haystacks (Destroyed)
+   .winter-name = Igloo (Destroyed)
+   .summer-name = Haystacks (Destroyed)
 
 meta-tree-name = Tree
 meta-treehusk-name = Tree (Burnt)

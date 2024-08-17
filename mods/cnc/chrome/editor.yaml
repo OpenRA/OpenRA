@@ -389,7 +389,7 @@ Container@EDITOR_WORLD_ROOT:
 									Y: 49
 									Width: PARENT_RIGHT - 5
 									Height: 25
-									Text: label-actors-bg-owners
+									Text: label-actor-bg-owner
 									Align: Right
 									Font: TinyBold
 						TextField@SEARCH_TEXTFIELD:

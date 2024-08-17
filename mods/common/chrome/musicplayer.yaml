@@ -152,13 +152,13 @@ Background@MUSIC_PANEL:
 					Width: PARENT_RIGHT - 24
 					Height: 25
 					Align: Center
-					Text: label-no-music-desca
+					Text: label-no-music-desc-a
 				Label@DESCB:
 					Y: 40
 					Width: PARENT_RIGHT - 24
 					Height: 25
 					Align: Center
-					Text: label-no-music-descb
+					Text: label-no-music-desc-b
 		Button@BACK_BUTTON:
 			X: PARENT_RIGHT - WIDTH - 20
 			Y: PARENT_BOTTOM - 45

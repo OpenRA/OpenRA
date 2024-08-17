@@ -16,4 +16,4 @@ bot-campaign-ai =
 neutral-prefix = Neutral
 
 ## harkonnen-05, ordos-04
-actor-outpost-modified--name = Modified Outpost
+actor-outpost-modified-name = Modified Outpost
