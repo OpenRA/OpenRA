@@ -22,6 +22,10 @@ E1:
 		ScanRadius: 4
 	Armament:
 		Weapon: M16
+	Encyclopedia:
+		Description: actor-e1.encyclopedia
+		Order: 0
+		Category: Units
 	AttackFrontal:
 		Voice: Attack
 		FacingTolerance: 0
@@ -57,6 +61,9 @@ E2:
 		Weapon: Grenade
 		LocalOffset: 0,0,427
 		FireDelay: 15
+	Encyclopedia:
+		Description: actor-e2.encyclopedia
+		Category: Units
 	AttackFrontal:
 		Voice: Attack
 		FacingTolerance: 0
@@ -97,6 +104,10 @@ E3:
 		Weapon: Rockets
 		LocalOffset: 256,43,341
 		FireDelay: 5
+	Encyclopedia:
+		Description: actor-e3.encyclopedia
+		Order: 20
+		Category: Units
 	AttackFrontal:
 		Voice: Attack
 		FacingTolerance: 0
@@ -134,6 +145,10 @@ E4:
 		LocalOffset: 341,0,256
 		FireDelay: 3
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-e4.encyclopedia
+		Order: 30
+		Category: Units
 	AttackFrontal:
 		Voice: Attack
 		FacingTolerance: 0
@@ -173,6 +188,10 @@ E5:
 		LocalOffset: 341,0,256
 		FireDelay: 3
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-e5.encyclopedia
+		Order: 40
+		Category: Units
 	AttackFrontal:
 		Voice: Attack
 		FacingTolerance: 0
@@ -203,6 +222,10 @@ E6:
 		Speed: 46
 	Health:
 		HP: 3000
+	Encyclopedia:
+		Description: actor-e6.encyclopedia
+		Order: 50
+		Category: Units
 	Passenger:
 		CustomPipType: yellow
 	InstantlyRepairs:
@@ -252,6 +275,10 @@ RMBO:
 		Voice: Demolish
 	Armament:
 		Weapon: Sniper
+	Encyclopedia:
+		Description: actor-rmbo.encyclopedia
+		Order: 60
+		Category: Units
 	WithInfantryBody:
 		DefaultAttackSequence: shoot
 		IdleSequences: idle1,idle2,idle3
@@ -270,12 +297,16 @@ PVICE:
 		Queue: Infantry.GDI, Infantry.Nod
 		BuildPaletteOrder: 50
 		Prerequisites: ~disabled
-		Description: actor-pvice-description
+		Description: actor-pvice.description
 	Tooltip:
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	ActorLostNotification:
 		TextNotification: notification-unit-lost
+	Encyclopedia:
+		Description: actor-pvice.encyclopedia
+		Order: 70
+		Category: Units
 
 STEG:
 	Inherits: ^DINO

@@ -11,6 +11,10 @@ FACT:
 		Footprint: xxx xxx ===
 		Dimensions: 3,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: actor-fact.encyclopedia
+		Category: Buildings
+		Order: 0
 	Health:
 		HP: 210000
 	Armor:
@@ -135,6 +139,7 @@ FACT.GDI:
 		ForceFaction: gdi
 	Tooltip:
 		Name: actor-fact-gdi-name
+	-Encyclopedia:
 
 FACT.NOD:
 	Inherits: FACT
@@ -147,6 +152,7 @@ FACT.NOD:
 		ForceFaction: nod
 	Tooltip:
 		Name: actor-fact-nod-name
+	-Encyclopedia:
 
 NUKE:
 	Inherits: ^BaseBuilding
@@ -170,6 +176,10 @@ NUKE:
 		Footprint: xX xx ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: actor-nuke.encyclopedia
+		Category: Buildings
+		Order: 40
 	Health:
 		HP: 55000
 	RevealsShroud:
@@ -201,6 +211,10 @@ NUK2:
 		Footprint: xX xx ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: actor-nuk2.encyclopedia
+		Category: Buildings
+		Order: 190
 	Health:
 		HP: 70000
 	RevealsShroud:
@@ -234,6 +248,10 @@ PROC:
 		Footprint: _x_ xxx +++ ===
 		Dimensions: 3,4
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: actor-proc.encyclopedia
+		Category: Buildings
+		Order: 80
 	Health:
 		HP: 100000
 	RevealsShroud:
@@ -281,6 +299,10 @@ SILO:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
+	Encyclopedia:
+		Description: actor-silo.encyclopedia
+		Category: Buildings
+		Order: 90
 	-GivesBuildableArea:
 	Health:
 		HP: 50000
@@ -326,6 +348,10 @@ PYLE:
 		Footprint: xx ++ ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: actor-pyle.encyclopedia
+		Category: Buildings
+		Order: 50
 	Health:
 		HP: 60000
 	RevealsShroud:
@@ -387,6 +413,10 @@ HAND:
 		Footprint: xx xx ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: actor-hand.encyclopedia
+		Category: Buildings
+		Order: 60
 	Health:
 		HP: 60000
 	RevealsShroud:
@@ -451,6 +481,10 @@ AFLD:
 		Footprint: XXX+ xxx+ ====
 		Dimensions: 4,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: actor-afld.encyclopedia
+		Category: Buildings
+		Order: 110
 	Health:
 		HP: 110000
 	RevealsShroud:
@@ -516,6 +550,10 @@ WEAP:
 	Selectable:
 		Bounds: 3072, 2048
 		DecorationBounds: 3072, 2730, 0, -682
+	Encyclopedia:
+		Description: actor-weap.encyclopedia
+		Category: Buildings
+		Order: 100
 	Health:
 		HP: 110000
 	RevealsShroud:
@@ -577,6 +615,10 @@ HPAD:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	Encyclopedia:
+		Description: actor-hpad.encyclopedia
+		Category: Buildings
+		Order: 120
 	Health:
 		HP: 60000
 	RevealsShroud:
@@ -663,6 +705,10 @@ HQ:
 		DecorationBounds: 2048, 2261, 0, -170
 	WithSpriteBody:
 		PauseOnCondition: lowpower
+	Encyclopedia:
+		Description: actor-hq.encyclopedia
+		Category: Buildings
+		Order: 130
 	Health:
 		HP: 80000
 	RevealsShroud:
@@ -725,6 +771,10 @@ FIX:
 	Building:
 		Footprint: _+_ +++ _+_
 		Dimensions: 3,3
+	Encyclopedia:
+		Description: actor-fix.encyclopedia
+		Category: Buildings
+		Order: 180
 	Selectable:
 		Bounds: 2730, 1450, 0, 128
 		DecorationBounds: 3072, 2048
@@ -773,6 +823,10 @@ EYE:
 		Footprint: X_ xx ==
 		Dimensions: 2,3
 		LocalCenterOffset: 0,-512,0
+	Encyclopedia:
+		Description: actor-eye.encyclopedia
+		Category: Buildings
+		Order: 200
 	Selectable:
 		Bounds: 2048, 1706, 0, 384
 		DecorationBounds: 2048, 2261, 0, -170
@@ -839,6 +893,10 @@ TMPL:
 	Selectable:
 		Bounds: 3072, 2048
 		DecorationBounds: 3072, 2901, 0, -512
+	Encyclopedia:
+		Description: actor-tmpl.encyclopedia
+		Category: Buildings
+		Order: 210
 	Health:
 		HP: 210000
 	RevealsShroud:
@@ -905,6 +963,10 @@ GUN:
 		BuildDuration: 960
 		Description: actor-gun.description
 	Building:
+	Encyclopedia:
+		Description: actor-gun.encyclopedia
+		Category: Buildings
+		Order: 160
 	Health:
 		HP: 41000
 	Armor:
@@ -962,6 +1024,10 @@ SAM:
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
+	Encyclopedia:
+		Description: actor-sam.encyclopedia
+		Category: Buildings
+		Order: 161
 	Health:
 		HP: 40000
 	Armor:
@@ -1008,6 +1074,10 @@ OBLI:
 	Selectable:
 		Bounds: 1024, 1024
 		DecorationBounds: 938, 1877, 0, -426
+	Encyclopedia:
+		Description: actor-obli.encyclopedia
+		Category: Buildings
+		Order: 220
 	Health:
 		HP: 75000
 	Armor:
@@ -1053,6 +1123,10 @@ GTWR:
 		BuildDuration: 960
 		Description: actor-gtwr.description
 	Building:
+	Encyclopedia:
+		Description: actor-gtwr.encyclopedia
+		Category: Buildings
+		Order: 150
 	Health:
 		HP: 40000
 	Armor:
@@ -1094,6 +1168,10 @@ ATWR:
 	Selectable:
 		Bounds: 1024, 1024
 		DecorationBounds: 938, 2048, 0, -512
+	Encyclopedia:
+		Description: actor-atwr.encyclopedia
+		Category: Buildings
+		Order: 170
 	Health:
 		HP: 55000
 	Armor:
@@ -1140,6 +1218,10 @@ SBAG:
 		Prerequisites: fact
 		Queue: Defence.GDI
 		Description: actor-sbag.description
+	Encyclopedia:
+		Description: actor-sbag.encyclopedia
+		Category: Buildings
+		Order: 10
 	Armor:
 		Type: Light
 	LineBuild:
@@ -1162,6 +1244,10 @@ CYCL:
 		Prerequisites: fact
 		Queue: Defence.Nod
 		Description: actor-cycl.description
+	Encyclopedia:
+		Description: actor-cycl.encyclopedia
+		Category: Buildings
+		Order: 20
 	Armor:
 		Type: Light
 	LineBuild:
@@ -1185,6 +1271,10 @@ BRIK:
 		Queue: Defence.GDI, Defence.Nod
 		BuildDuration: 230
 		Description: actor-brik.description
+	Encyclopedia:
+		Description: actor-brik.encyclopedia
+		Category: Buildings
+		Order: 30
 	Health:
 		HP: 20000
 	Armor:

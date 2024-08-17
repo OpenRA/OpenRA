@@ -16,6 +16,10 @@ MCV:
 		Locomotor: heavywheeled
 	Health:
 		HP: 120000
+	Encyclopedia:
+		Description: actor-mcv.encyclopedia
+		Order: 80
+		Category: Units
 	Repairable:
 		HpPerStep: 1819
 	Armor:
@@ -70,6 +74,10 @@ HARV:
 		Speed: 72
 	Health:
 		HP: 62500
+	Encyclopedia:
+		Description: actor-harv.encyclopedia
+		Order: 90
+		Category: Units
 	Repairable:
 		HpPerStep: 2584
 	Armor:
@@ -123,6 +131,10 @@ APC:
 		PauseOnCondition: notmobile
 	Health:
 		HP: 19000
+	Encyclopedia:
+		Description: actor-apc.encyclopedia
+		Order: 100
+		Category: Units
 	Repairable:
 		HpPerStep: 1440
 	Armor:
@@ -211,6 +223,10 @@ ARTY:
 		Weapon: ArtilleryShell
 		LocalOffset: 624,0,208
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-arty.encyclopedia
+		Order: 110
+		Category: Units
 	AttackFrontal:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
@@ -260,6 +276,10 @@ FTNK:
 		Weapon: BigFlamer
 		LocalOffset: 512,128,42, 512,-128,42
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-ftnk.encyclopedia
+		Order: 120
+		Category: Units
 	AttackFrontal:
 		Voice: Attack
 		FacingTolerance: 0
@@ -308,6 +328,10 @@ BGGY:
 		Weapon: MachineGun
 		LocalOffset: 171,0,43
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-bggy.encyclopedia
+		Order: 130
+		Category: Units
 	AttackMove:
 		Voice: Attack
 	AttackTurreted:
@@ -351,6 +375,10 @@ BIKE:
 		Weapon: BikeRockets
 		LocalOffset: -128, -170, 170, -128, 170, 170
 		LocalYaw: 100, -100
+	Encyclopedia:
+		Description: actor-bike.encyclopedia
+		Order: 140
+		Category: Units
 	AttackFrontal:
 		Voice: Attack
 		FacingTolerance: 0
@@ -395,6 +423,10 @@ JEEP:
 		Weapon: MachineGunH
 		LocalOffset: 171,0,85
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-jeep.encyclopedia
+		Order: 150
+		Category: Units
 	AttackMove:
 		Voice: Attack
 	AttackTurreted:
@@ -441,6 +473,10 @@ LTNK:
 		RecoilRecovery: 17
 		LocalOffset: 720,0,90
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-ltnk.encyclopedia
+		Order: 160
+		Category: Units
 	AttackMove:
 		Voice: Attack
 	AttackTurreted:
@@ -486,6 +522,10 @@ MTNK:
 		RecoilRecovery: 26
 		LocalOffset: 768,0,90
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-mtnk.encyclopedia
+		Order: 170
+		Category: Units
 	AttackMove:
 		Voice: Attack
 	AttackTurreted:
@@ -546,6 +586,10 @@ HTNK:
 		LocalYaw: -100, 100
 		Recoil: 10
 		MuzzleSequence: muzzle
+	Encyclopedia:
+		Description: actor-htnk.encyclopedia
+		Order: 180
+		Category: Units
 	AttackMove:
 		Voice: Attack
 	AttackTurreted:
@@ -599,6 +643,14 @@ MSAM:
 	Armament:
 		Weapon: 227mm
 		LocalOffset: 213,128,0, 213,-128,0
+	Armament@SECONDARY:
+		Name: secondary
+		Weapon: 227mm
+		LocalOffset: 213,-128,0, 213,128,0
+	Encyclopedia:
+		Description: actor-msam.encyclopedia
+		Order: 190
+		Category: Units
 	AttackFrontal:
 		TargetFrozenActors: True
 		ForceFireIgnoresActors: True
@@ -651,6 +703,10 @@ MLRS:
 	Armament:
 		Weapon: Patriot
 		LocalOffset: 0,-171,0, 0,171,0
+	Encyclopedia:
+		Description: actor-mlrs.encyclopedia
+		Order: 200
+		Category: Units
 	AmmoPool:
 		Ammo: 2
 		AmmoCondition: ammo
@@ -721,6 +777,10 @@ STNK:
 	Armament@SECONDARY:
 		Weapon: 227mm.stnkAA
 		LocalOffset: 213,43,128, 213,-43,128
+	Encyclopedia:
+		Description: actor-stnk.encyclopedia
+		Order: 210
+		Category: Units
 	AttackFrontal:
 		Voice: Attack
 		FacingTolerance: 0
@@ -779,6 +839,10 @@ TRUCK:
 		Speed: 113
 	RevealsShroud:
 		Range: 4c0
+	Encyclopedia:
+		Description: actor-truck.encyclopedia
+		Order: 220
+		Category: Units
 	DeliversCash:
 		Payload: 1000
 		PlayerExperience: 10

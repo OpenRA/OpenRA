@@ -14,7 +14,7 @@ Background@ENCYCLOPEDIA_PANEL:
 				Label@ENCYCLOPEDIA_TITLE:
 					Width: PARENT_RIGHT
 					Height: 25
-					Text: label-mentat-title
+					Text: label-encyclopedia-title
 					Align: Center
 					Font: Bold
 				ScrollPanel@ACTOR_LIST:
@@ -83,4 +83,3 @@ Background@ENCYCLOPEDIA_PANEL:
 			Font: Bold
 			Key: escape
 		TooltipContainer@TOOLTIP_CONTAINER:
-

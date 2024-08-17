@@ -107,6 +107,9 @@ button-select-categories-buttons-none = None
 
 label-tool-marker-tiles = Marker Tiles
 
+## encyclopedia.yaml, mainmenu.yaml
+label-encyclopedia-title = Database
+
 ## gamesave-browser.yaml
 label-gamesave-browser-panel-load-title = Load game
 label-gamesave-browser-panel-save-title = Save game
