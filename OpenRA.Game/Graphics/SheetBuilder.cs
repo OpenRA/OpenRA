@@ -130,8 +130,13 @@ namespace OpenRA.Graphics
 				var next = NextChannel(CurrentChannel);
 				if (next == null)
 				{
-					Current.ReleaseBuffer();
+					var previous = Current;
 					Current = allocateSheet();
+
+					// Reuse the backing buffer between sheets where possible.
+					// This avoids allocating additional buffers which the GC must clean up.
+					previous.ReleaseBufferAndTryTransferTo(Current);
+
 					sheets.Add(Current);
 					CurrentChannel = Type == SheetType.Indexed ? TextureChannel.Red : TextureChannel.RGBA;
 				}
