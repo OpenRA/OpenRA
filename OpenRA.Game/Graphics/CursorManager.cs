@@ -91,10 +91,6 @@ namespace OpenRA.Graphics
 			}
 
 			CreateOrUpdateHardwareCursors();
-
-			foreach (var s in sheetBuilder.AllSheets)
-				s.ReleaseBuffer();
-
 			Update();
 		}
 
@@ -127,6 +123,8 @@ namespace OpenRA.Graphics
 					}
 				}
 			}
+
+			sheetBuilder.Current.ReleaseBuffer();
 
 			hardwareCursorsDoubled = graphicSettings.CursorDouble;
 		}
