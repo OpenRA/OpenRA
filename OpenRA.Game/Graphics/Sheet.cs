@@ -132,12 +132,32 @@ namespace OpenRA.Graphics
 		{
 			if (!Buffered)
 				return;
+
 			dirty = true;
 			releaseBufferOnCommit = true;
 
 			// Commit data from the buffer to the texture, allowing the buffer to be released and reclaimed by GC.
 			if (Game.Renderer != null)
 				GetTexture();
+		}
+
+		public bool ReleaseBufferAndTryTransferTo(Sheet destination)
+		{
+			if (Size != destination.Size)
+				throw new ArgumentException("Destination sheet does not have the same size", nameof(destination));
+
+			var buffer = data;
+			ReleaseBuffer();
+
+			// Only transfer if the destination has no data that would be lost by overwriting.
+			if (buffer != null && destination.data == null && destination.texture == null)
+			{
+				Array.Clear(buffer, 0, buffer.Length);
+				destination.data = buffer;
+				return true;
+			}
+
+			return false;
 		}
 
 		public void Dispose()
