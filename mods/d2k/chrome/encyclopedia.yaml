@@ -79,7 +79,7 @@ Background@ENCYCLOPEDIA_PANEL:
 			Y: PARENT_BOTTOM - 45
 			Width: 160
 			Height: 25
-			Text: button-encyclopedia-panel-back
+			Text: button-back
 			Font: Bold
 			Key: escape
 		TooltipContainer@TOOLTIP_CONTAINER:
