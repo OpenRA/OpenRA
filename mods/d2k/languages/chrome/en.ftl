@@ -1,6 +1,3 @@
-## encyclopedia.yaml
-button-encyclopedia-panel-back = Back
-
 ## encyclopedia.yaml, mainmenu.yaml
 label-mentat-title = Mentat
 
