@@ -125,6 +125,12 @@ Container@MENU_BACKGROUND:
 							Width: 140
 							Height: 35
 							Text: button-singleplayer-menu-load
+						Button@ENCYCLOPEDIA_BUTTON:
+							X: 300
+							Y: 0
+							Width: 140
+							Height: 35
+							Text: label-encyclopedia-title
 						Button@BACK_BUTTON:
 							Key: escape
 							X: 450
