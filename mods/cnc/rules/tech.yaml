@@ -10,6 +10,10 @@ V19:
 		Dimensions: 1,1
 	Health:
 		HP: 80000
+	Encyclopedia:
+		Description: actor-v19.encyclopedia
+		Order: 0
+		Category: Civilian
 	Tooltip:
 		Name: actor-v19.name
 	TooltipDescription@ally:
@@ -48,6 +52,10 @@ HOSP:
 		Dimensions: 2,2
 	Health:
 		HP: 250000
+	Encyclopedia:
+		Description: actor-hosp.encyclopedia
+		Order: 10
+		Category: Civilian
 	Tooltip:
 		Name: actor-hosp.name
 	TooltipDescription@ally:
@@ -84,6 +92,10 @@ BIO:
 		Dimensions: 2,2
 	Health:
 		HP: 250000
+	Encyclopedia:
+		Description: actor-bio.encyclopedia
+		Order: 10
+		Category: Civilian
 	Tooltip:
 		Name: actor-bio.name
 	TooltipDescription@ally:
@@ -127,6 +139,10 @@ MISS:
 		Cost: 0
 	Health:
 		HP: 80000
+	Encyclopedia:
+		Description: actor-miss.encyclopedia
+		Order: 20
+		Category: Civilian
 	RevealsShroud:
 		Range: 13c0
 	TooltipDescription@ally:
