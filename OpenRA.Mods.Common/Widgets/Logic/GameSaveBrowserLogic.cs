@@ -340,6 +340,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (map.Status != MapStatus.Available)
 				return;
 
+			Ui.CloseWindow();
+
 			var orders = new List<Order>()
 			{
 				Order.FromTargetString("LoadGameSave", Path.GetFileName(selectedSave), true),
