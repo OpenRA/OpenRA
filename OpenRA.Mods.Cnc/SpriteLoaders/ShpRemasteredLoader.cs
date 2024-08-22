@@ -97,14 +97,21 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 					var metaStream = metaEntry != null ? container.GetInputStream(metaEntry) : null;
 					if (metaStream != null)
 					{
-						var meta = MetaRegex.Match(metaStream.ReadAllText());
+						string metaText;
+#if NET5_0_OR_GREATER
+						using (metaStream)
+						using (var metaReader = new StreamReader(metaStream, bufferSize: 64))
+							metaText = metaReader.ReadToEnd();
+#else
+						metaText = metaStream.ReadAllText();
+#endif
+						var meta = MetaRegex.Match(metaText);
 						var crop = Rectangle.FromLTRB(
 							ParseGroup(meta, "left"), ParseGroup(meta, "top"),
 							ParseGroup(meta, "right"), ParseGroup(meta, "bottom"));
 
 						var frameSize = new Size(ParseGroup(meta, "width"), ParseGroup(meta, "height"));
 						frames[i] = new TgaSprite.TgaFrame(tgaStream, frameSize, crop);
-						metaStream.Dispose();
 					}
 					else
 						frames[i] = new TgaSprite.TgaFrame(tgaStream);
