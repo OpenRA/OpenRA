@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using OpenRA.Primitives;
 using OpenRA.Support;
 using OpenRA.Traits;
@@ -433,14 +434,25 @@ namespace OpenRA
 			this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector,
 			string debugName, Func<TKey, string> logKey = null, Func<TElement, string> logValue = null)
 		{
+			var output = new Dictionary<TKey, TElement>();
+			IntoDictionaryWithConflictLog(source, keySelector, elementSelector, debugName, output, logKey, logValue);
+			return output;
+		}
+
+		public static void IntoDictionaryWithConflictLog<TSource, TKey, TElement>(
+			this IEnumerable<TSource> source, Func<TSource, TKey> keySelector, Func<TSource, TElement> elementSelector,
+			string debugName, Dictionary<TKey, TElement> output,
+			Func<TKey, string> logKey = null, Func<TElement, string> logValue = null)
+		{
 			// Fall back on ToString() if null functions are provided:
 			logKey ??= s => s.ToString();
 			logValue ??= s => s.ToString();
 
 			// Try to build a dictionary and log all duplicates found (if any):
-			var dupKeys = new Dictionary<TKey, List<string>>();
+			Dictionary<TKey, List<string>> dupKeys = null;
 			var capacity = source is ICollection<TSource> collection ? collection.Count : 0;
-			var d = new Dictionary<TKey, TElement>(capacity);
+			output.Clear();
+			output.EnsureCapacity(capacity);
 			foreach (var item in source)
 			{
 				var key = keySelector(item);
@@ -451,14 +463,15 @@ namespace OpenRA
 					continue;
 
 				// Check for a key conflict:
-				if (!d.TryAdd(key, element))
+				if (!output.TryAdd(key, element))
 				{
+					dupKeys ??= new Dictionary<TKey, List<string>>();
 					if (!dupKeys.TryGetValue(key, out var dupKeyMessages))
 					{
 						// Log the initial conflicting value already inserted:
 						dupKeyMessages = new List<string>
 						{
-							logValue(d[key])
+							logValue(output[key])
 						};
 						dupKeys.Add(key, dupKeyMessages);
 					}
@@ -469,15 +482,14 @@ namespace OpenRA
 			}
 
 			// If any duplicates were found, throw a descriptive error
-			if (dupKeys.Count > 0)
+			if (dupKeys != null)
 			{
-				var badKeysFormatted = string.Join(", ", dupKeys.Select(p => $"{logKey(p.Key)}: [{string.Join(",", p.Value)}]"));
-				var msg = $"{debugName}, duplicate values found for the following keys: {badKeysFormatted}";
-				throw new ArgumentException(msg);
+				var badKeysFormatted = new StringBuilder(
+					$"{debugName}, duplicate values found for the following keys: ");
+				foreach (var p in dupKeys)
+					badKeysFormatted.Append($"{logKey(p.Key)}: [{string.Join(",", p.Value)}]");
+				throw new ArgumentException(badKeysFormatted.ToString());
 			}
-
-			// Return the dictionary we built:
-			return d;
 		}
 
 		public static Color ColorLerp(float t, Color c1, Color c2)
