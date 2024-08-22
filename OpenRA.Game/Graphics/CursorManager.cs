@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
@@ -43,8 +44,11 @@ namespace OpenRA.Graphics
 			hardwareCursorsDisabled = Game.Settings.Graphics.DisableHardwareCursors;
 
 			graphicSettings = Game.Settings.Graphics;
-			sheetBuilder = new SheetBuilder(SheetType.BGRA);
-			foreach (var kv in cursorProvider.Cursors)
+			sheetBuilder = new SheetBuilder(SheetType.BGRA, 512);
+
+			// Sort the cursors for better packing onto the sheet.
+			foreach (var kv in cursorProvider.Cursors
+				.OrderBy(kvp => kvp.Value.Frames.Max(f => f.Size.Height)))
 			{
 				var frames = kv.Value.Frames;
 				var palette = !string.IsNullOrEmpty(kv.Value.Palette) ? cursorProvider.Palettes[kv.Value.Palette] : null;
