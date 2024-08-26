@@ -20,8 +20,8 @@ namespace OpenRA.Mods.Common.Traits
 
 	public enum DamageSource { Self, Killer }
 
-	[Desc("This actor explodes when killed.")]
-	public class ExplodesInfo : ConditionalTraitInfo, Requires<IHealthInfo>
+	[Desc("This actor fires warheads when killed.")]
+	public class FireWarheadsOnDeathInfo : ConditionalTraitInfo, Requires<IHealthInfo>
 	{
 		[WeaponReference]
 		[FieldLoader.Require]
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Traits
 		public WeaponInfo WeaponInfo { get; private set; }
 		public WeaponInfo EmptyWeaponInfo { get; private set; }
 
-		public override object Create(ActorInitializer init) { return new Explodes(this, init.Self); }
+		public override object Create(ActorInitializer init) { return new FireWarheadsOnDeath(this, init.Self); }
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			if (!string.IsNullOrEmpty(Weapon))
@@ -81,13 +81,13 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	public class Explodes : ConditionalTrait<ExplodesInfo>, INotifyKilled, INotifyDamage
+	public class FireWarheadsOnDeath : ConditionalTrait<FireWarheadsOnDeathInfo>, INotifyKilled, INotifyDamage
 	{
 		readonly IHealth health;
 		BuildingInfo buildingInfo;
 		Armament[] armaments;
 
-		public Explodes(ExplodesInfo info, Actor self)
+		public FireWarheadsOnDeath(FireWarheadsOnDeathInfo info, Actor self)
 			: base(info)
 		{
 			health = self.Trait<IHealth>();
@@ -122,15 +122,14 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Info.Type == ExplosionType.Footprint && buildingInfo != null)
 			{
-				var cells = buildingInfo.OccupiedTiles(self.Location);
-				foreach (var c in cells)
+				foreach (var c in buildingInfo.OccupiedTiles(self.Location))
 					weapon.Impact(Target.FromPos(self.World.Map.CenterOfCell(c) + Info.Offset), source);
-
-				return;
 			}
-
-			// Use .FromPos since this actor is killed. Cannot use Target.FromActor
-			weapon.Impact(Target.FromPos(self.CenterPosition + Info.Offset), source);
+			else
+			{
+				// Use .FromPos since this actor is killed. Cannot use Target.FromActor.
+				weapon.Impact(Target.FromPos(self.CenterPosition + Info.Offset), source);
+			}
 		}
 
 		WeaponInfo ChooseWeaponForExplosion(Actor self)
@@ -140,7 +139,7 @@ namespace OpenRA.Mods.Common.Traits
 			else if (self.World.SharedRandom.Next(100) > Info.LoadedChance)
 				return Info.EmptyWeaponInfo;
 
-			// PERF: Avoid LINQ
+			// PERF: Avoid LINQ.
 			foreach (var a in armaments)
 				if (!a.IsReloading)
 					return Info.WeaponInfo;
@@ -156,7 +155,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (!Info.DeathTypes.IsEmpty && !e.Damage.DamageTypes.Overlaps(Info.DeathTypes))
 				return;
 
-			// Cast to long to avoid overflow when multiplying by the health
+			// Cast to long to avoid overflow when multiplying by the health.
 			var source = Info.DamageSource == DamageSource.Self ? self : e.Attacker;
 			if (health.HP * 100L < Info.DamageThreshold * (long)health.MaxHP)
 				self.World.AddFrameEndTask(w => self.Kill(source, e.Damage.DamageTypes));
