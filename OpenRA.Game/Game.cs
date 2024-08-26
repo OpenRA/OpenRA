@@ -496,7 +496,7 @@ namespace OpenRA
 			Renderer.InitializeDepthBuffer(grid);
 
 			Cursor?.Dispose();
-			Cursor = new CursorManager(ModData.CursorProvider);
+			Cursor = new CursorManager(ModData.CursorProvider, ModData.Manifest.CursorSheetSize);
 
 			var metadata = ModData.Manifest.Metadata;
 			if (!string.IsNullOrEmpty(metadata.WindowTitle))
