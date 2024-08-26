@@ -74,7 +74,9 @@ namespace OpenRA
 		public readonly string[] SpriteFormats = Array.Empty<string>();
 		public readonly string[] PackageFormats = Array.Empty<string>();
 		public readonly string[] VideoFormats = Array.Empty<string>();
-		public bool AllowUnusedTranslationsInExternalPackages = true;
+		public readonly bool AllowUnusedTranslationsInExternalPackages = true;
+		public readonly int FontSheetSize = 512;
+		public readonly int CursorSheetSize = 512;
 
 		readonly string[] reservedModuleNames =
 		{
@@ -82,7 +84,7 @@ namespace OpenRA
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
 			"ServerTraits", "LoadScreen", "DefaultOrderGenerator", "SupportsMapsFrom", "SoundFormats", "SpriteFormats", "VideoFormats",
-			"RequiresMods", "PackageFormats", "AllowUnusedTranslationsInExternalPackages"
+			"RequiresMods", "PackageFormats", "AllowUnusedTranslationsInExternalPackages", "FontSheetSize", "CursorSheetSize"
 		};
 
 		readonly TypeDictionary modules = new();
@@ -171,6 +173,12 @@ namespace OpenRA
 			if (yaml.TryGetValue("AllowUnusedTranslationsInExternalPackages", out entry))
 				AllowUnusedTranslationsInExternalPackages =
 					FieldLoader.GetValue<bool>("AllowUnusedTranslationsInExternalPackages", entry.Value);
+
+			if (yaml.TryGetValue("FontSheetSize", out entry))
+				FontSheetSize = FieldLoader.GetValue<int>("FontSheetSize", entry.Value);
+
+			if (yaml.TryGetValue("CursorSheetSize", out entry))
+				CursorSheetSize = FieldLoader.GetValue<int>("CursorSheetSize", entry.Value);
 		}
 
 		public void LoadCustomData(ObjectCreator oc)

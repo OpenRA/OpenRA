@@ -39,12 +39,12 @@ namespace OpenRA.Graphics
 		readonly bool hardwareCursorsDisabled = false;
 		bool hardwareCursorsDoubled = false;
 
-		public CursorManager(CursorProvider cursorProvider)
+		public CursorManager(CursorProvider cursorProvider, int cursorSheetSize)
 		{
 			hardwareCursorsDisabled = Game.Settings.Graphics.DisableHardwareCursors;
 
 			graphicSettings = Game.Settings.Graphics;
-			sheetBuilder = new SheetBuilder(SheetType.BGRA, 512);
+			sheetBuilder = new SheetBuilder(SheetType.BGRA, cursorSheetSize);
 
 			// Sort the cursors for better packing onto the sheet.
 			foreach (var kv in cursorProvider.Cursors
