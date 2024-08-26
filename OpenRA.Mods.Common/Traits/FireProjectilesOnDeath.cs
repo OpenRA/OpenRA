@@ -17,7 +17,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.Common.Traits
 {
 	[Desc("Throws particles when the actor is destroyed that do damage on impact.")]
-	public class ThrowsShrapnelInfo : ConditionalTraitInfo, IRulesetLoaded
+	public class FireProjectilesOnDeathInfo : ConditionalTraitInfo, IRulesetLoaded
 	{
 		[WeaponReference]
 		[FieldLoader.Require]
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public WeaponInfo[] WeaponInfos { get; private set; }
 
-		public override object Create(ActorInitializer actor) { return new ThrowsShrapnel(this); }
+		public override object Create(ActorInitializer actor) { return new FireProjectilesOnDeath(this); }
 		public override void RulesetLoaded(Ruleset rules, ActorInfo ai)
 		{
 			base.RulesetLoaded(rules, ai);
@@ -47,9 +47,9 @@ namespace OpenRA.Mods.Common.Traits
 		}
 	}
 
-	sealed class ThrowsShrapnel : ConditionalTrait<ThrowsShrapnelInfo>, INotifyKilled
+	sealed class FireProjectilesOnDeath : ConditionalTrait<FireProjectilesOnDeathInfo>, INotifyKilled
 	{
-		public ThrowsShrapnel(ThrowsShrapnelInfo info)
+		public FireProjectilesOnDeath(FireProjectilesOnDeathInfo info)
 			: base(info) { }
 
 		public void Killed(Actor self, AttackInfo attack)
