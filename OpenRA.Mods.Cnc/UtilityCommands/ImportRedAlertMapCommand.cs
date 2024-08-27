@@ -131,7 +131,7 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			var newLoc = new CPos(loc % MapSize, loc / MapSize);
 			var vectorDown = new CVec(0, 1);
 
-			if (input == "tsla" || input == "agun" || input == "gap" || input == "apwr" || input == "iron")
+			if (input == "tsla" || input == "agun" || input == "gap" || input == "apwr")
 				newLoc += vectorDown;
 
 			return newLoc;
