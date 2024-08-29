@@ -14,3 +14,6 @@ Metrics:
 	IncompatibleProtectedGameColor: B22222
 	IncompatibleVersionColor: D3D3D3
 	TextfieldColorHighlight: 562020
+	PlayerJoinedSound: PlayerJoined
+	LobbyOptionChangedSound: LobbyOptionChanged
+	PlayerLeftSound: PlayerLeft
