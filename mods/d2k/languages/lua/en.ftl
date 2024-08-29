@@ -1,12 +1,12 @@
 ## campaign.lua
-objective-failed = Objective failed
-objective-completed = Objective completed
+objective-failed = Objective Failed
+objective-completed = Objective Completed
 
 primary = Primary
 secondary = Secondary
 
-new-primary-objective = New primary objective
-new-secondary-objective = New secondary objectives
+new-primary-objective = New Primary Objective
+new-secondary-objective = New Secondary Objective
 
 mentat = Mentat
 
@@ -16,8 +16,8 @@ harvest-spice = Harvest { $spice } Solaris worth of Spice.
 not-enough-silos = We don't have enough silo space to store the required amount of Spice!
 
 ## atreides-01ab, harkonnen-01ab, ordos01ab
-build-concrete = Build a concrete foundation before placing your buildings.
-build-windtrap = Build a Wind Trap for power.
+build-concrete = Build a concrete foundation before placing structures.
+build-windtrap = Build a Wind Trap to generate power.
 build-refinery = Build a Refinery to collect Spice.
 build-silo = Build a Silo to store additional Spice.
 
@@ -35,17 +35,17 @@ destroy-harkonnen-forces = Destroy all Harkonnen forces.
 ordos-annihilated = The Ordos have been annihilated!
 
 ## atreides-02b, atreides-03b, harkonnen-03ab, ordos-03a
-upgrade-barracks-light-factory = Upgrade Barracks and Light Factory to produce more advanced units.
+upgrade-barracks-light-factory = Upgrade the Barracks and Light Factory to enable advanced unit production.
 
 ## atreides-02b
-eliminate-ordos-units-reinforcements = Eliminate all Ordos units and reinforcements
+eliminate-ordos-units-reinforcements = Eliminate all Ordos forces and reinforcements
     in the area.
 
 ## atreides-04, ordos-04, ordos-06a
 destroy-harkonnen = Destroy the Harkonnen.
 
 ## atreides-04
-fremen-leader = Fremen Leader
+fremen-leader = Fremen Leader.
 sietch-integrity = Sietch structural integrity: { $integrity }%
 protect-fremen-sietch = Protect the Fremen Sietch.
 keep-sietch-intact = Keep the Sietch { $integrity }% intact!
@@ -58,31 +58,29 @@ fremen-sietch-under-attack = The Fremen Sietch is under attack!
 smugglers-annihilated = The Smugglers have been annihilated!
 
 ## atreides-05
-incoming-mercenary-force = Incoming hostile Mercenary force detected.
+incoming-mercenary-force = Hostile mercenary force incoming.
 contraband-has-arrived = The contraband has arrived!
 contraband-confiscated = Contraband has arrived and been confiscated.
-contraband-not-confiscated = Smuggler contraband has arrived. It is too late to confiscate.
-contraband-arrives-in = The contraband will arrive in { $time }
+contraband-not-confiscated = Smuggler contraband has arrived. Confiscation is impossible given how heavily defended the Star Port is.
+contraband-arrives-in = The contraband arriving in { $time }
 capture-barracks-sietch-tabr = Capture the Barracks at Sietch Tabr.
-annihilate-harkonnen-units-reinforcements = Annihilate all other Harkonnen units
-    and reinforcements.
+annihilate-harkonnen-units-reinforcements = Annihilate all Harkonnen reinforcements.
 capture-smuggler-starport-confiscate-contraband = Capture the Smuggler Starport and
     confiscate the contraband.
-contraband-approaching-starport-north-in = The contraband is approaching the Starport to the north in { $time }.
-starport-destroyed-no-contraband = Starport destroyed! Contraband can't land.
-do-not-destroy-starport = Don't destroy the Starport!
+contraband-approaching-starport-north-in = The contraband is approaching the Starport to the north in { $time }
+starport-destroyed-no-contraband = Starport destroyed! Contraband cannot land.
+do-not-destroy-starport = Do not destroy the Starport!
 defend-captured-starport = Defend the captured Starport.
-do-not-destroy-barracks = Don't destroy the Barracks!
+do-not-destroy-barracks = Do not destroy the Barracks!
 hostages-released = Hostages released!
 stay-away-from-starport = Stay away from our Starport.
-smuggler-leader = Smuggler Leader
+smuggler-leader = Smuggler Leader.
 were-warned-will-pay = You were warned. Now you will pay.
-destroy-smugglers-mercenaries = Destroy the Smugglers and their Mercenaries.
+destroy-smugglers-mercenaries = Destroy the Smugglers and their mercenaries.
 capture-harkonnen-barracks-release-hostages = Capture the Harkonnen barracks to release the hostages.
 
 ## harkonnen-01ab, harkonnen-03ab
-eliminate-atreides-units-reinforcements = Eliminate all Atreides units and reinforcements
-    in the area.
+eliminate-atreides-units-reinforcements = Eliminate all Atreides forces and reinforcements in the area.
 
 ## harkonnen-02ab, harkonnen-03ab, harkonnen-04, harkonnen-07, harkonnen-08, harkonnen-09, ordos-05, ordos-06a
 atreides-annihilated = The Atreides have been annihilated!
@@ -99,7 +97,7 @@ destroy-fremen = Destroy the Fremen.
 fremen-spotted-north-southwest = Fremen concentrations spotted to the north and southwest.
 
 ## harkonnen-05
-imperial-ships-penetrating-defense-grid = Imperial ships penetrating defense grid!
+imperial-ships-penetrating-defense-grid = Imperial ships are penetrating the defense grid!
 enemy-carryall-drop-detected = Enemy carryall drop detected!
 keep-modified-outpost-intact = Keep the modified Outpost intact.
 protect-outpost = Protect the Outpost from attack.
@@ -121,37 +119,36 @@ capture-destroy-ordos-starport = Capture or destroy the Ordos Starport.
 smugglers-now-hostile = The Smugglers are now hostile!
 
 ## harkonnen-07
-high-tech-factory-neutralized-imperial-reinforcements = High Tech Factory neutralized! Atreides cut off from Imperial reinforcement!
+high-tech-factory-neutralized-imperial-reinforcements = High Tech Factory neutralized! Atreides cut off from Imperial reinforcements!
 capture-atreides-construction-yard-south = Capture the Atreides Construction Yard in the south.
 destroy-corrino = Destroy the Corrino.
-destroy-atreides-high-tech-factory-imperial-reinforcements = Destroy Atreides High Tech Factory to cut off Atreides from Imperial reinforcements.
+destroy-atreides-high-tech-factory-imperial-reinforcements = Destroy the Atreides High Tech Factory to cut them off from Imperial reinforcements.
 
 ## harkonnen-08
 atreides-hostile = The Atreides are now hostile!
 mercenaries-annihilated = The Mercenaries have been annihilated!
-ally-mercenaries = Persuade the Mercenaries to fight with
-    House Harkonnen.
-mercenary-leader-captured-allied = Leader Captured. Mercenaries have been persuaded to fight with House Harkonnen.
+ally-mercenaries = Persuade the Mercenaries to fight alongside House Harkonnen.
+mercenary-leader-captured-allied = Leader Captured. The mercenaries have been persuaded to fight with House Harkonnen.
 can-not-stand-harkonnen-must-become-neutral = We cannot stand against the Harkonnen. We must become neutral.
 atreides-commander = Atreides Commander
 
 ## harkonnen-09ab
-build-deploy-mcv = Build an MCV and deploy it into a Construction Yard.
+build-deploy-mcv = Build and deploy an MCV to establish a Construction Yard.
 
 ## ordos-01ab, ordos-02ab, ordos-03ab, ordos-04, ordos-05
-outpost-not-captured-destroyed = Don't let the Outpost to be captured or destroyed.
+outpost-not-captured-destroyed = Do not let the Outpost be captured or destroyed.
 capture-smuggler-outpost = Capture the Smuggler Outpost.
-do-not-destroy-outpost = Don't destroy the Outpost!
-warning-large-force-approaching = WARNING: Large force approaching!
+do-not-destroy-outpost = Do not destroy the Outpost!
+warning-large-force-approaching = WARNING: Large enemy force approaching!
 
 ## ordos-05
 capture-atreides-starport-establish-base = Capture the Atreides Starport and establish a base.
 
 ## ordos-06a
 ixian-reinforcements-arrived = Ixian reinforcements have arrived!
-deliveries-arriving-massive-reinforcements = Deliveries beginning to arrive. Massive reinforcements expected!
+deliveries-arriving-massive-reinforcements = Deliveries are beginning to arrive; massive reinforcements expected!
 initial-reinforcements-arrive-in = Initial reinforcements will arrive in { $time }
 additional-reinforcements-arrive-in = Additional reinforcements will arrive in { $time }
 defend-starport = Defend the Starport.
-ixian-reinforcements-in = The first batch of Ixian reinforcements will arrive in { $time }.
+ixian-reinforcements-in = The first batch of Ixian reinforcements will arrive in { $time }
 enemy-reinforcements-arrived = Enemy reinforcements have arrived.

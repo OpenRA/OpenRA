@@ -1,12 +1,12 @@
 ## campaign
-objective-failed = Objective failed
-objective-completed = Objective completed
+objective-failed = Objective Failed
+objective-completed = Objective Completed
 
 primary = Primary
 secondary = Secondary
 
-new-primary-objective = New primary objective
-new-secondary-objective = New secondary objective
+new-primary-objective = New Primary Objective
+new-secondary-objective = New Secondary Objective
 
 # cnc64gdi01
 destroy-obelisk-sams = Destroy the SAM sites protecting the Obelisk.
@@ -59,7 +59,7 @@ destroy-nod-force = Destroy the Nod strike force.
 ## gdi08b
 protect-mobius = Protect Dr. Mobius.
 protect-hospital = Protect the Hospital.
-keep-civilians-alive = Keep at least { $civilians } out of 14 Civilians alive.
+keep-civilians-alive = Keep at least { $civilians } out of 14 civilians alive.
 destroy-nod-bases = Destroy the Nod bases.
 
 ## gdi09
@@ -105,8 +105,8 @@ destroy-gdi-supporter-houses = Destroy the houses of the GDI supporters
     in the village.
 
 ## nod06c
-infiltrate-barracks-factory-conyard = Infiltrate the barracks, weapon factory and
-    the construction yard.
+infiltrate-barracks-factory-conyard = Infiltrate the barracks, weapons factory and
+    construction yard.
 
 ## nod07a
 find-nod-base = Find the Nod base.
@@ -116,9 +116,9 @@ eliminate-gdi-forces = Eliminate all GDI forces in the area.
 
 ## nod07c
 capture-gdi-helipad = Capture the GDI helipad.
-do-not-capture-or-destroy = Don't capture or destroy any other
+do-not-capture-or-destroy = Do not capture or destroy any other
     GDI main building.
-orca-wreak-havoc = Use the GDI orca to wreak havoc at the village.
+orca-wreak-havoc = Use the GDI Orca to wreak havoc in the village.
 distract-guards = Distract the guards by attacking the
     main entrance with your vehicles.
 
@@ -134,29 +134,24 @@ secure-second-landing-zone = Secure the second landing zone.
 
 ## nod10a
 kill-gdi-scientist = Kill the GDI scientist.
-destroy-tech-center = Destroy the GDI R&D center.
+destroy-tech-center = Destroy the GDI Research Base.
 
 ## nod10b
 destroy-capture-warfactory = Destroy or capture the Weapons Factory.
-destroy-mammoth-tanks = Destroy the Mammoth tanks in the R&D base.
+destroy-mammoth-tanks = Destroy the Mammoth tanks in the Research Base.
 keep-commando-alive = Keep your Commando alive.
 
 ## eviction-notice
-take-civilians-money-crates = Find all the civilians' money.
-    They won't need it anymore.
-quickly-destroy-ion-cannon = Disable GDI Ion Cannon before
-    it fires two times.
+take-civilians-money-crates = Find all the civilians' money; they won't be needing it anymore.
+quickly-destroy-ion-cannon = Disable the GDI Ion Cannon before it fires twice.
 nod-soldier = Nod Soldier
 civilians-running = Hey, those civilians... where are they going?
-destroy-ion-cannon-advice = The GDI are preparing their ion cannon. Don't let them get used to it.
-village-destruction-warning = Be careful, commander. The GDI won't stand still while we burn the entire village.
+destroy-ion-cannon-advice = The GDI are preparing their Ion Cannon. Don't let them get comfortable using it.
+village-destruction-warning = Be careful, commander. The GDI won't stay idle while we burn the entire village.
 
 ## twist-of-fate
-clear-path = Repel the ambush and clear the way
-    for our MCV.
-recover-old-base = Capture the Construction Yard in our recon
-    post to regain control.
-air-strikes-intel-report = Nod airstrikes are being directed by a Communications Center, located northwest. We may gain useful information from its capture.
-capture-nod-communications-center = Capture the Nod Communications Center to
-    the northwest.
+clear-path = Repel the ambush and clear the way for our MCV.
+recover-old-base = Capture the Construction Yard at our recon post to regain control.
+air-strikes-intel-report = Nod airstrikes are being directed by a Communications Center to the northwest. We may gain useful information from its capture.
+capture-nod-communications-center = Capture the Nod Communications Center to the northwest.
 communications-center-captured-sams-located = Our engineers located Nod SAM sites. They also disarmed an unusual trap on the Construction Yard to the south.

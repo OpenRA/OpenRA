@@ -329,7 +329,7 @@ Tick = function()
 
 	if Ticked > 0 then
 		if (Ticked % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("submarine-completes-in", { ["time"] = Utils.FormatTime(Ticked) })
+			Timer = UserInterface.Translate("submarine-construction-complete-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(Timer, TimerColor)
 		end
 		Ticked = Ticked - 1
