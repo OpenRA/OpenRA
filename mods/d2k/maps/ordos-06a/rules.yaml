@@ -6,7 +6,7 @@ World:
 	LuaScript:
 		Scripts: campaign.lua, utils.lua, ordos06a.lua, ordos06a-AI.lua
 	MissionData:
-		Briefing: The Starport must be protected. All other efforts are secondary. No House will be allowed to interfere with the arrival of our Ixian weaponry.\n\nOnce we possess these illegal technologies, we will confuse and crush our opponents. Until then, survive. This will give you a higher probability of success.
+		Briefing: The Starport must be protected. All other efforts are secondary. No House will be allowed to interfere with the arrival of our Ixian weaponry.\n\nOnce we possess this illegal technology, we will confuse and crush our opponents. Until then, survive.
 		BriefingVideo: O_BR06_E.VQA
 	MapOptions:
 		TechLevel: medium

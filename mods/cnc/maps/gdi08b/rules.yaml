@@ -5,7 +5,7 @@ World:
 		StartingMusic: march
 		VictoryMusic: gdi_win1
 	MissionData:
-		Briefing: Dr. Mobius is establishing a Hospital to treat the civilians in the region who are falling ill due to exposure to Tiberium.\n\nProtect Mobius and the civilians.\n\nEliminate Nod presence in the area.
+		Briefing: Dr. Mobius is setting up a Hospital to treat civilians in the region who are falling ill from Tiberium exposure.\n\nProtect Mobius and the civilians.\n\nEliminate Nod presence in the area.
 		BackgroundVideo: tbrinfo1.vqa
 		StartVideo: desolat.vqa
 		LossVideo: gdilose.vqa

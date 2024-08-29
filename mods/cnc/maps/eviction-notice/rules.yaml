@@ -3,7 +3,7 @@ World:
 		StartVideo: consyard.vqa
 		LossVideo: bombaway.vqa
 		WinVideo: inferno.vqa
-		Briefing: GDI influence in this area is running rampant. Establish a well positioned strike base, and clean the area out. A nearby town may provide a suitable location for your base, if the occupants were "persuaded" to move....
+		Briefing: GDI influence in this area is running rampant. Establish a well positioned strike base, and clean the area out. A nearby town may provide a suitable location for your base, provided the occupants are "persuaded" to move....
 	LuaScript:
 		Scripts: campaign.lua, utils.lua, eviction-notice.lua , eviction-notice-AI.lua
 	ScriptLobbyDropdown@difficulty:

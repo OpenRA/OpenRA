@@ -4,7 +4,7 @@ World:
 	MusicPlaylist:
 		StartingMusic: aoi
 	MissionData:
-		Briefing: Nod is experimenting on civilians with Tiberium. Use the commando to take out the SAM sites surrounding the dropoff area. With the SAMs gone you will then get an airstrike.  Take out the Obelisk and an MCV will be delivered to help you to locate and destroy the biochem facility.
+		Briefing: Nod is experimenting on civilians with Tiberium. Use the commando to take out the SAM sites surrounding the drop-off area. Once the SAM sites are neutralized, you will be able to call in an airstrike. Take out the Obelisk and an MCV will be delivered to help you locate and destroy the biochem facility.
 		StartVideo: obel.vqa
 		WinVideo: orcabomb.vqa
 		LossVideo: cutout.vqa

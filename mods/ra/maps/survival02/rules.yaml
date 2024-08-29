@@ -6,7 +6,7 @@ World:
 	LuaScript:
 		Scripts: campaign.lua, utils.lua, survival02.lua
 	MissionData:
-		Briefing: INCOMING REPORT:\n\nCommander! The Soviets have rendered us useless...\nReports indicate Soviet reinforcements are coming to finish us off... The situation looks bleak...\n
+		Briefing: INCOMING REPORT:\n\nCommander! The Soviets have rendered our forces useless...\nReports indicate Soviet reinforcements are coming to finish us off... The situation looks bleak...\n
 
 ^Palettes:
 	IndexedPlayerPalette:
