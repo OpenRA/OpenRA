@@ -202,7 +202,7 @@ namespace OpenRA.Mods.Common.Activities
 			foreach (var nd in notifyDockClients)
 				nd.Undocked(self, DockHostActor);
 
-			if (DockHostActor.IsInWorld && !DockHostActor.IsDead)
+			if (!DockHostActor.IsDead)
 				foreach (var nd in notifyDockHosts)
 					nd.Undocked(DockHostActor, self);
 		}
