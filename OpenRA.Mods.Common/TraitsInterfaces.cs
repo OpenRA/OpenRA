@@ -246,8 +246,6 @@ namespace OpenRA.Mods.Common.Traits
 		int ReservationCount { get; }
 		bool CanBeReserved { get; }
 		WPos DockPosition { get; }
-		int DockWait { get; }
-		WAngle DockAngle { get; }
 
 		/// <summary>Can this <paramref name="client"/> dock at this <see cref="IDockHost"/>.</summary>
 		/// <remarks>
@@ -267,13 +265,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		/// <summary>Should be called when in range of <see cref="IDockHost"/>.</summary>
 		void QueueDockActivity(Activity moveToDockActivity, Actor self, Actor clientActor, DockClientManager client);
-	}
-
-	public interface IDockHostDrag
-	{
-		bool IsDragRequired { get; }
-		WVec DragOffset { get; }
-		int DragLength { get; }
 	}
 
 	public interface IDockClientManagerInfo : ITraitInfoInterface { }
