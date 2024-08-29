@@ -65,6 +65,10 @@ Sounds:
 			InterruptType: Overlap
 		ChatLine: scold1
 			InterruptType: Interrupt
+		LobbyOptionChanged: beepy3
+			InterruptType: Interrupt
+		PlayerLeft: country1
+			InterruptType: Interrupt
 		ClickDisabledSound: scold2
 			InterruptType: Overlap
 		ClickSound: button

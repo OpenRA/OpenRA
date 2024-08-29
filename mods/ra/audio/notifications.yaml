@@ -129,6 +129,12 @@ Sounds:
 		EnablePower: bleep12
 		ChatLine: rabeep1
 			InterruptType: Interrupt
+		PlayerJoined: bleep11
+			InterruptType: Interrupt
+		LobbyOptionChanged: bleep17
+			InterruptType: Interrupt
+		PlayerLeft: bleep12
+			InterruptType: Interrupt
 		ClickSound: ramenu1
 			InterruptType: Overlap
 		ClickDisabledSound:
