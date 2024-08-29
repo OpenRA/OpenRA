@@ -342,8 +342,10 @@ namespace OpenRA.Mods.Common.Traits
 			var mobile = clientActor.TraitOrDefault<Mobile>();
 			if (mobile != null)
 			{
-				// Overlapping docks can become hidden.
-				var lookup = docks.ToDictionary(dock => clientActor.World.Map.CellContaining(dock.Trait.DockPosition));
+				// Overlapping hosts can become hidden.
+				var lookup = docks
+					.GroupBy(dock => clientActor.World.Map.CellContaining(dock.Trait.DockPosition))
+					.ToDictionary(group => group.Key, group => group.First());
 
 				// Start a search from each docks position:
 				var path = mobile.PathFinder.FindPathToTargetCell(
