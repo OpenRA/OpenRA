@@ -6,7 +6,7 @@ World:
 	LuaScript:
 		Scripts: campaign.lua, utils.lua, soviet04b.lua, soviet04b-AI.lua, soviet04b-reinforcements_teams.lua
 	MissionData:
-		Briefing: The Allied base in this region is proving to be problematic.\n\nYour mission is to take it out so that we can begin to move forces through this area.\n\nAs long as they have communications they will be able to call upon heavy reinforcements.\n\nCrush their communications, and they should be easier to remove.
+		Briefing: The Allied base in this region is proving to be problematic.\n\nYour mission is to take it out so that we can move forces through this area.\n\nAs long as they have communications they will be able to call upon heavy reinforcements.\n\nDestroy their communications, and the Allies should be easy to remove.
 		BriefingVideo: soviet4.vqa
 		StartVideo: sovmcv.vqa
 		WinVideo: radrraid.vqa

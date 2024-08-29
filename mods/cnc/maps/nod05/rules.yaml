@@ -5,7 +5,7 @@ World:
 		StartingMusic: airstrik
 		VictoryMusic: nod_win1
 	MissionData:
-		Briefing: Our brothers within GDI tell us of A-10 strike jets scheduled to be deployed here soon. Our suppliers have delivered new Surface to Air Missiles to aid you. Use the SAMs to defend your base, then seek out their base and destroy it.
+		Briefing: Our brothers within GDI report that A-10 strike jets are set to be deployed here soon. New Surface to Air Missiles have been delivered to aid you. Use the SAMs to defend your base, then seek out the GDI base and destroy it.
 		BackgroundVideo: sethpre.vqa
 		BriefingVideo: nod5.vqa
 		StartVideo: samsite.vqa
