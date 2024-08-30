@@ -145,7 +145,6 @@ namespace OpenRA.Mods.Common.Traits
 		}
 
 		public readonly LocomotorInfo Info;
-		public readonly uint MovementClass;
 
 		/// <summary>
 		/// Raised when the movement cost for a cell changes, providing the old and new costs.
@@ -173,8 +172,6 @@ namespace OpenRA.Mods.Common.Traits
 			for (var i = 0; i < terrainInfos.Length; i++)
 				if (!info.TerrainSpeeds.TryGetValue(terrainInfo.TerrainTypes[i].Type, out terrainInfos[i]))
 					terrainInfos[i] = LocomotorInfo.TerrainInfo.Impassable;
-
-			MovementClass = (uint)terrainInfos.Select(ti => ti.Cost != PathGraph.MovementCostForUnreachableCell).ToBits();
 		}
 
 		public short MovementCostForCell(CPos cell)
