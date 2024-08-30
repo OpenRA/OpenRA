@@ -183,7 +183,7 @@ namespace OpenRA.Mods.Common.Traits
 					if (modifiers.HasModifier(TargetModifiers.ForceAttack) && !string.IsNullOrEmpty(info.ForceSetType))
 					{
 						var closest = self.World.Selection.Actors
-							.Where(a => a.TraitOrDefault<RallyPoint>()?.Info.ForceSetType == info.ForceSetType)
+							.Where(a => !a.IsDead && a.IsInWorld && a.TraitOrDefault<RallyPoint>()?.Info.ForceSetType == info.ForceSetType)
 							.ClosestToIgnoringPath(target.CenterPosition);
 
 						ForceSet = closest == self;
