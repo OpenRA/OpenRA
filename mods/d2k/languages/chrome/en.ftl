@@ -68,94 +68,93 @@ supportpowers-support-powers-palette =
 
 button-command-bar-attack-move =
    .tooltip = Attack Move
-   .tooltipdesc = Selected units will move to the desired location
-    and attack any enemies they encounter en route.
+   .tooltipdesc = Selected units move to the target location
+   and engage any enemies they encounter en route.
 
-    Hold <(Ctrl)> while targeting to order an Assault Move
-    that attacks any units or structures encountered en route.
-
-    Left-click icon then right-click on target location.
+    Left-click the icon, then right-click on the target.
+    Hold <(Ctrl)> while targeting to issue an Assault Move,
+    that engages any units or structures encountered en route.
 
 button-command-bar-force-move =
    .tooltip = Force Move
-   .tooltipdesc = Selected units will move to the desired location
-     - Default activity for the target is suppressed
-     - Vehicles will attempt to crush enemies at the target location
-     - Deployed thumpers will undeploy and move to the target location
+   .tooltipdesc = Moves units to the target location.
+     - Overrides default behaviour.
+     - Vehicles attempt to crush enemies.
+     - Deployed thumpers undeploy and move to the target location.
 
-    Left-click icon then right-click on target.
-    Hold <(Alt)> to activate temporarily while commanding units.
+    Left-click the icon, then right-click on the target.
+    Hold <(Alt)> to temporarily activate while commanding units.
 
 button-command-bar-force-attack =
    .tooltip = Force Attack
-   .tooltipdesc = Selected units will attack the targeted unit or location
-     - Default activity for the target is suppressed
-     - Allows targeting of own or ally forces
+   .tooltipdesc = Selected units attack the targeted unit or location.
+     - Overrides default behaviour.
+     - Can target friendly or allied forces.
 
-    Left-click icon then right-click on target.
-    Hold <(Ctrl)> to activate temporarily while commanding units.
+    Left-click the icon, then right-click on the target.
+    Hold <(Ctrl)> to temporarily activate while commanding units.
 
 button-command-bar-guard =
    .tooltip = Guard
-   .tooltipdesc = Selected units will follow the targeted unit.
+   .tooltipdesc = Units follow and protect a target.
 
-    Left-click icon then right-click on target unit.
+    Left-click the icon, then right-click on the target unit.
 
 button-command-bar-deploy =
    .tooltip = Deploy
-   .tooltipdesc = Selected units will perform their default deploy activity
-     - MCVs will unpack into a Construction Yard
-     - Thumpers will start or stop attracting worms
-     - Devastators will become immobilized and explode
+   .tooltipdesc = Selected units perform their default deploy activity.
+     - MCVs unpack into a Construction Yard.
+     - Thumpers start or stop attracting worms.
+     - Devastators become immobilized and explode.
 
     Acts immediately on selected units.
 
 button-command-bar-scatter =
    .tooltip = Scatter
-   .tooltipdesc = Selected units will stop their current activity
-    and move to a nearby location.
+   .tooltipdesc = Selected units stop their current activity
+    and disperse to nearby locations.
 
     Acts immediately on selected units.
 
 button-command-bar-stop =
    .tooltip = Stop
-   .tooltipdesc = Selected units will stop their current activity.
-    Selected buildings will reset their rally point.
+   .tooltipdesc = Halts the current action of selected units
+    or resets the rally point of buildings.
 
-    Acts immediately on selected targets.
+    Acts immediately.
 
 button-command-bar-queue-orders =
    .tooltip = Waypoint Mode
-   .tooltipdesc = Use Waypoint Mode to give multiple linking commands
-    to the selected units. Units will execute the commands
+   .tooltipdesc = Queues multiple commands for selected units
+    to follow sequentially. Units execute the commands
     immediately upon receiving them.
 
-    Left-click icon then give commands in the game world.
+    Left-click the icon, then give commands in the game world.
     Hold <(Shift)> to activate temporarily while commanding units.
 
 button-stance-bar-attackanything =
    .tooltip = Attack Anything Stance
-   .tooltipdesc = Set the selected units to Attack Anything stance:
-     - Units will attack enemy units and structures on sight
-     - Units will pursue attackers across the battlefield
+   .tooltipdesc = Sets the selected unit to Attack Anything stance:
+     - Units attack enemy units and structures on sight.
+     - Units pursue attackers across the battlefield.
 
 button-stance-bar-defend =
    .tooltip = Defend Stance
-   .tooltipdesc = Set the selected units to Defend stance:
-     - Units will attack enemy units on sight
-     - Units will not move or pursue enemies
+   .tooltipdesc = Sets the selected unit to Defend stance:
+     - Units attack enemy units on sight.
+     - Units do not pursue enemies.
 
 button-stance-bar-returnfire =
    .tooltip = Return Fire Stance
-   .tooltipdesc = Set the selected units to Return Fire stance:
-     - Units will retaliate against enemies that attack them
-     - Units will not move or pursue enemies
+   .tooltipdesc = Sets the selected unit(s) to Return Fire stance:
+     - Units retaliate against enemies that attack them.
+     - Units do not pursue enemies.
 
 button-stance-bar-holdfire =
    .tooltip = Hold Fire Stance
-   .tooltipdesc = Set the selected units to Hold Fire stance:
-     - Units will not fire upon enemies
-     - Units will not move or pursue enemies
+   .tooltipdesc = Sets the selected unit(s) to Hold Fire stance:
+     - Units do not fire upon enemies.
+     - Units do not pursue enemies.
 
 button-top-buttons-repair-tooltip = Repair
 button-top-buttons-sell-tooltip = Sell
