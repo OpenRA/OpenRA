@@ -199,7 +199,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
 				StopVideo(videoPlayer);
-				Game.Disconnect();
 				Ui.CloseWindow();
 				onExit();
 			};

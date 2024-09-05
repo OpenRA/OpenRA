@@ -473,7 +473,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SwitchMenu(MenuType.None);
 			Game.OpenWindow("MISSIONBROWSER_PANEL", new WidgetArgs
 			{
-				{ "onExit", () => SwitchMenu(MenuType.Singleplayer) },
+				{ "onExit", () => { Game.Disconnect(); SwitchMenu(MenuType.Singleplayer); } },
 				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.Missions; } },
 				{ "initialMap", map }
 			});

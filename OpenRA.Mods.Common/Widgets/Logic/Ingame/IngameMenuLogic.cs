@@ -543,6 +543,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 						if (map.Visibility == MapVisibility.Lobby)
 						{
+							// HACK: Server lobby should be usable without a server.
 							ConnectionLogic.Connect(Game.CreateLocalServer(uid),
 								"",
 								() => Game.OpenWindow("SERVER_LOBBY", new WidgetArgs
