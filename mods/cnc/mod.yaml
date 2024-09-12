@@ -146,9 +146,13 @@ ChromeLayout:
 
 Translations:
 	common|languages/en.ftl
+	common|languages/zh.ftl
 	common|languages/rules/en.ftl
+	common|languages/rules/zh.ftl
 	cnc|languages/chrome/en.ftl
+	cnc|languages/chrome/zh.ftl
 	cnc|languages/rules/en.ftl
+	cnc|languages/rules/zh.ftl
 
 AllowUnusedTranslationsInExternalPackages: false
 
@@ -192,37 +196,37 @@ ChromeMetrics:
 
 Fonts:
 	Tiny:
-		Font: common|FreeSans.ttf
+		Font: common|sarasa-fixed-sc-regular.ttf
 		Size: 10
 		Ascender: 8
 	TinyBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|sarasa-fixed-sc-bold.ttf
 		Size: 10
 		Ascender: 8
 	Small:
-		Font: common|FreeSans.ttf
+		Font: common|sarasa-fixed-sc-regular.ttf
 		Size: 12
 		Ascender: 9
 	Regular:
-		Font: common|FreeSans.ttf
+		Font: common|sarasa-fixed-sc-regular.ttf
 		Size: 14
 		Ascender: 11
 	Bold:
-		Font: common|FreeSansBold.ttf
+		Font: common|sarasa-fixed-sc-bold.ttf
 		Size: 14
 		Ascender: 11
 	MediumBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|sarasa-fixed-sc-bold.ttf
 		Size: 18
 		Ascender: 14
 	BigBold:
-		Font: common|FreeSansBold.ttf
+		Font: common|sarasa-fixed-sc-bold.ttf
 		Size: 24
 		Ascender: 18
 	Title:
-		Font: common|FreeSansBold.ttf
-		Size: 32
-		Ascender: 24
+		Font: common|sarasa-fixed-sc-bold.ttf
+		Size: 48
+		Ascender: 26
 
 Missions:
 	cnc|missions.yaml
