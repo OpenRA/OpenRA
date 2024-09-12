@@ -292,7 +292,7 @@ options-observer-stats =
 label-unrevealed-terrain = 未探索的地形
 
 ## DownloadPackageLogic
-abel-downloading = 正在下载 { $title }
+label-downloading = 正在下载 { $title }
 label-fetching-mirror-list = 正在获取镜像列表...
 label-downloading-from = 正在从 { $host } 下载 { $received } { $suffix }
 label-downloading-from-progress = 正在从 { $host }下载 { $received } / { $total } { $suffix } ({ $progress }%)
@@ -828,11 +828,6 @@ notification-removed-marker-tiles =
     }
 notification-cleared-selected-marker-tiles = 清除了 { $amount } 个类型为 { $type } 的标记瓦片
 notification-cleared-all-marker-tiles = 清除了 { $amount } 个标记瓦片
-notification-added-marker-tiles =
-    { $amount ->
-       [one] Added one marker tile of type { $type }
-      *[other] Added { $amount } marker tiles of type { $type }
-    }
 
 ## EditorActionManager
 notification-opened = 已打开
