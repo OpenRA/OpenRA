@@ -119,7 +119,7 @@ install_windows_launcher() (
 	# -p:DisplayName doesn't seem to have a visible effect?
 	dotnet publish "${SRC_PATH}/OpenRA.WindowsLauncher/OpenRA.WindowsLauncher.csproj" -c Release -r "${TARGETPLATFORM}" -p:LauncherName="${LAUNCHER_NAME}",TargetPlatform="${TARGETPLATFORM}",ModID="${MOD_ID}",PublishDir="${DEST_PATH}",FaqUrl="${FAQ_URL}",InformationalVersion="${VERSION}" --self-contained true
 
-	# NET 6 is unable to customize the application host for windows when compiling from Linux,
+	# NET 8 is unable to customize the application host for windows when compiling from Linux,
 	# so we must patch the properties we need in the PE header.
 	# Setting the application icon requires an external tool, so is left to the calling code
 	python3 "${SRC_PATH}/packaging/windows/fixlauncher.py" "${DEST_PATH}/${LAUNCHER_NAME}.exe"

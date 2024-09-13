@@ -42,10 +42,10 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v4
 
-      - name: Install .NET 6.0
+      - name: Install .NET 8.0
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '8.0.x'
 
       - name: Prepare Environment
         run: echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
@@ -72,10 +72,10 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v4
 
-      - name: Install .NET 6.0
+      - name: Install .NET 8.0
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '8.0.x'
 
       - name: Prepare Environment
         run: echo "GIT_TAG=${GITHUB_REF#refs/tags/}" >> ${GITHUB_ENV}
@@ -107,10 +107,10 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v4
 
-      - name: Install .NET 6.0
+      - name: Install .NET 8.0
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '8.0.x'
 
       - name: Prepare Environment
         run: |

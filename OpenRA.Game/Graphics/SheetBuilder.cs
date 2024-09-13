@@ -16,7 +16,6 @@ using OpenRA.Primitives;
 
 namespace OpenRA.Graphics
 {
-	[Serializable]
 	public class SheetOverflowException : Exception
 	{
 		public SheetOverflowException(string message)
