@@ -75,7 +75,7 @@ function build_platform()
 		USE_PROGRAMFILES32=""
 	fi
 
-	install_assemblies "${SRCDIR}" "${BUILTDIR}" "win-${PLATFORM}" "net6" "False" "True" "True"
+	install_assemblies "${SRCDIR}" "${BUILTDIR}" "win-${PLATFORM}" "False" "True" "True"
 	install_data "${SRCDIR}" "${BUILTDIR}" "cnc" "d2k" "ra"
 	set_engine_version "${TAG}" "${BUILTDIR}"
 	set_mod_version "${TAG}" "${BUILTDIR}/mods/cnc/mod.yaml" "${BUILTDIR}/mods/d2k/mod.yaml" "${BUILTDIR}/mods/ra/mod.yaml" "${BUILTDIR}/mods/cnc-content/mod.yaml" "${BUILTDIR}/mods/d2k-content/mod.yaml" "${BUILTDIR}/mods/ra-content/mod.yaml"

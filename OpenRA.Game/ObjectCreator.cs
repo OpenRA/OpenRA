@@ -55,26 +55,9 @@ namespace OpenRA
 
 			if (!ResolvedAssemblies.TryGetValue(hash, out var assembly))
 			{
-#if NET5_0_OR_GREATER
 				var loader = new Support.AssemblyLoader(resolvedPath);
 				assembly = loader.LoadDefaultAssembly();
 				ResolvedAssemblies.Add(hash, assembly);
-#else
-				assembly = Assembly.LoadFile(resolvedPath);
-				ResolvedAssemblies.Add(hash, assembly);
-
-				// Allow mods to use libraries.
-				var assemblyPath = Path.GetDirectoryName(resolvedPath);
-				if (assemblyPath != null)
-				{
-					foreach (var referencedAssembly in assembly.GetReferencedAssemblies())
-					{
-						var depedencyPath = Path.Combine(assemblyPath, referencedAssembly.Name + ".dll");
-						if (File.Exists(depedencyPath))
-							LoadAssembly(assemblyList, depedencyPath);
-					}
-				}
-#endif
 			}
 
 			assemblyList.Add(assembly);

@@ -9,9 +9,7 @@
  */
 #endregion
 
-// Not used/usable on Mono. Only used for Dotnet Core.
 // Based on https://github.com/natemcmaster/DotNetCorePlugins and used under the terms of the Apache 2.0 license
-#if NET5_0_OR_GREATER
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -362,4 +360,3 @@ namespace OpenRA.Support
 		}
 	}
 }
-#endif

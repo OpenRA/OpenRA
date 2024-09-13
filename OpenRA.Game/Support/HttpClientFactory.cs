@@ -16,10 +16,8 @@ namespace OpenRA.Support
 {
 	public static class HttpClientFactory
 	{
-#if NET5_0_OR_GREATER
 		const int MaxConnectionPerServer = 20;
 		static readonly TimeSpan ConnectionLifeTime = TimeSpan.FromMinutes(1);
-#endif
 
 		static readonly Lazy<HttpMessageHandler> Handler = new(GetHandler);
 
@@ -30,7 +28,6 @@ namespace OpenRA.Support
 
 		static HttpMessageHandler GetHandler()
 		{
-#if NET5_0_OR_GREATER
 			return new SocketsHttpHandler
 			{
 				// https://github.com/dotnet/corefx/issues/26895
@@ -40,9 +37,6 @@ namespace OpenRA.Support
 				PooledConnectionIdleTimeout = ConnectionLifeTime,
 				MaxConnectionsPerServer = MaxConnectionPerServer
 			};
-#else
-			return new HttpClientHandler();
-#endif
 		}
 	}
 }

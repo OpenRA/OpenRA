@@ -8,47 +8,28 @@
 
 set -o errexit || exit $?
 
-patch_config()
+create_symlinks()
 {
 	LABEL=$1
 	SEARCHDIRS=$2
-	CONFIG=$3
-	REPLACE=$4
-	SEARCH=$5
+	REPLACE=$3
+	SEARCH=$4
 
-	if command -v mono >/dev/null 2>&1 && [ "$(grep -c .NETCoreApp,Version= bin/OpenRA.dll)" = "0" ]; then
-		# Exit early if the file has already been patched
-		grep -q "target=\"${REPLACE}\"" "${CONFIG}" || return 0
-
-		printf "Searching for %s... " "${LABEL}"
-		for DIR in ${SEARCHDIRS} ; do
-			for LIB in ${SEARCH}; do
-				if [ -f "${DIR}/${LIB}" ]; then
-					echo "${LIB}"
-					sed "s|target=\"${REPLACE}\"|target=\"${DIR}/${LIB}\"|" "${CONFIG}" > "${CONFIG}.temp"
-					mv "${CONFIG}.temp" "${CONFIG}"
-					return 0
-				fi
-			done
-		done
-	else
-		# .NET 6 does not support .config files, so we must use symlinks instead
-		# Exit early if the symlink already exists
-		if [ -L "bin/${REPLACE}" ]; then
-			return 0
-		fi
-
-		printf "Searching for %s... " "${LABEL}"
-		for DIR in ${SEARCHDIRS} ; do
-			for LIB in ${SEARCH}; do
-				if [ -f "${DIR}/${LIB}" ]; then
-					echo "${LIB}"
-					ln -s "${DIR}/${LIB}" "bin/${REPLACE}"
-					return 0
-				fi
-			done
-		done
+	# Exit early if the symlink already exists
+	if [ -L "bin/${REPLACE}" ]; then
+		return 0
 	fi
+
+	printf "Searching for %s... " "${LABEL}"
+	for DIR in ${SEARCHDIRS} ; do
+		for LIB in ${SEARCH}; do
+			if [ -f "${DIR}/${LIB}" ]; then
+				echo "${LIB}"
+				ln -s "${DIR}/${LIB}" "bin/${REPLACE}"
+				return 0
+			fi
+		done
+	done
 
 	echo "FAILED"
 
@@ -63,14 +44,14 @@ if [ "$(uname -s)" = "Darwin" ]; then
 	else
 		SEARCHDIRS="/usr/local/lib /usr/local/opt/openal-soft/lib"
 	fi
-	patch_config "Lua 5.1" "${SEARCHDIRS}" bin/Eluant.dll.config lua51.dylib liblua5.1.dylib
-	patch_config SDL2 "${SEARCHDIRS}" bin/SDL2-CS.dll.config SDL2.dylib libSDL2-2.0.0.dylib
-	patch_config OpenAL "${SEARCHDIRS}" bin/OpenAL-CS.dll.config soft_oal.dylib libopenal.1.dylib
-	patch_config FreeType "${SEARCHDIRS}" bin/OpenRA.Platforms.Default.dll.config freetype6.dylib libfreetype.6.dylib
+	create_symlinks "Lua 5.1" "${SEARCHDIRS}" lua51.dylib liblua5.1.dylib
+	create_symlinks SDL2 "${SEARCHDIRS}" SDL2.dylib libSDL2-2.0.0.dylib
+	create_symlinks OpenAL "${SEARCHDIRS}" soft_oal.dylib libopenal.1.dylib
+	create_symlinks FreeType "${SEARCHDIRS}" freetype6.dylib libfreetype.6.dylib
 else
 	SEARCHDIRS="/lib /lib64 /usr/lib /usr/lib64 /usr/lib/x86_64-linux-gnu /usr/lib/i386-linux-gnu /usr/lib/arm-linux-gnueabihf /usr/lib/aarch64-linux-gnu /usr/lib/powerpc64le-linux-gnu /usr/lib/mipsel-linux-gnu /usr/local/lib /opt/lib /opt/local/lib /app/lib"
-	patch_config "Lua 5.1" "${SEARCHDIRS}" bin/Eluant.dll.config lua51.so "liblua.so.5.1.5 liblua5.1.so.5.1 liblua5.1.so.0 liblua.so.5.1 liblua-5.1.so liblua5.1.so"
-	patch_config SDL2 "${SEARCHDIRS}" bin/SDL2-CS.dll.config SDL2.so "libSDL2-2.0.so.0 libSDL2-2.0.so libSDL2.so"
-	patch_config OpenAL "${SEARCHDIRS}" bin/OpenAL-CS.dll.config soft_oal.so "libopenal.so.1 libopenal.so"
-	patch_config FreeType "${SEARCHDIRS}" bin/OpenRA.Platforms.Default.dll.config freetype6.so "libfreetype.so.6 libfreetype.so"
+	create_symlinks "Lua 5.1" "${SEARCHDIRS}" lua51.so "liblua.so.5.1.5 liblua5.1.so.5.1 liblua5.1.so.0 liblua.so.5.1 liblua-5.1.so liblua5.1.so"
+	create_symlinks SDL2 "${SEARCHDIRS}" SDL2.so "libSDL2-2.0.so.0 libSDL2-2.0.so libSDL2.so"
+	create_symlinks OpenAL "${SEARCHDIRS}" soft_oal.so "libopenal.so.1 libopenal.so"
+	create_symlinks FreeType "${SEARCHDIRS}" freetype6.so "libfreetype.so.6 libfreetype.so"
 fi

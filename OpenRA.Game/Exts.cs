@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using OpenRA.Primitives;
 using OpenRA.Support;
@@ -119,17 +120,11 @@ namespace OpenRA
 
 		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k, V v)
 		{
-#if NET5_0_OR_GREATER
 			// SAFETY: Dictionary cannot be modified whilst the ref is alive.
-			ref var value = ref System.Runtime.InteropServices.CollectionsMarshal.GetValueRefOrAddDefault(d, k, out var exists);
+			ref var value = ref CollectionsMarshal.GetValueRefOrAddDefault(d, k, out var exists);
 			if (!exists)
 				value = v;
 			return value;
-#else
-			if (!d.TryGetValue(k, out var ret))
-				d.Add(k, ret = v);
-			return ret;
-#endif
 		}
 
 		public static V GetOrAdd<K, V>(this Dictionary<K, V> d, K k, Func<K, V> createFn)
@@ -507,39 +502,6 @@ namespace OpenRA
 			for (var i = 0; i < count; i++)
 				result[i] = f(i);
 
-			return result;
-		}
-
-		public static T[,] ResizeArray<T>(T[,] ts, T t, int width, int height)
-		{
-			var result = new T[width, height];
-			for (var i = 0; i < width; i++)
-			{
-				for (var j = 0; j < height; j++)
-				{
-					// Workaround for broken ternary operators in certain versions of mono
-					// (3.10 and certain versions of the 3.8 series): https://bugzilla.xamarin.com/show_bug.cgi?id=23319
-					if (i <= ts.GetUpperBound(0) && j <= ts.GetUpperBound(1))
-						result[i, j] = ts[i, j];
-					else
-						result[i, j] = t;
-				}
-			}
-
-			return result;
-		}
-
-		public static int ToBits(this IEnumerable<bool> bits)
-		{
-			var i = 0;
-			var result = 0;
-			foreach (var b in bits)
-				if (b)
-					result |= 1 << i++;
-				else
-					i++;
-			if (i > 33)
-				throw new InvalidOperationException("ToBits only accepts up to 32 values.");
 			return result;
 		}
 

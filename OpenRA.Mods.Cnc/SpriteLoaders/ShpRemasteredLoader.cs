@@ -98,13 +98,10 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 					if (metaStream != null)
 					{
 						string metaText;
-#if NET5_0_OR_GREATER
 						using (metaStream)
 						using (var metaReader = new StreamReader(metaStream, bufferSize: 64))
 							metaText = metaReader.ReadToEnd();
-#else
-						metaText = metaStream.ReadAllText();
-#endif
+
 						var meta = MetaRegex.Match(metaText);
 						var crop = Rectangle.FromLTRB(
 							ParseGroup(meta, "left"), ParseGroup(meta, "top"),

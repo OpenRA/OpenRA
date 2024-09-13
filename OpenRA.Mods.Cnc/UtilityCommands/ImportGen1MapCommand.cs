@@ -497,22 +497,4 @@ namespace OpenRA.Mods.Cnc.UtilityCommands
 			Map.ActorDefinitions = Map.ActorDefinitions.Concat(nodes).ToArray();
 		}
 	}
-
-#if !NET6_0_OR_GREATER
-	public static class Extensions
-	{
-		/// <summary>
-		/// Only used for Mono builds. .NET 6 added the exact same thing.
-		/// </summary>
-		public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
-		{
-			var knownKeys = new HashSet<TKey>();
-			foreach (var element in source)
-			{
-				if (knownKeys.Add(keySelector(element)))
-					yield return element;
-			}
-		}
-	}
-#endif
 }
