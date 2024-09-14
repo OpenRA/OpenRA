@@ -497,7 +497,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (a == null)
 					return false;
 
-				cursor = !target.IsInRange(self.CenterPosition, a.MaxRange())
+				cursor = !target.IsInRange(self.CenterPosition, a.MaxRange()) || target.IsInRange(self.CenterPosition, a.Weapon.MinRange)
 					? ab.Info.OutsideRangeCursor ?? a.Info.OutsideRangeCursor
 					: ab.Info.Cursor ?? a.Info.Cursor;
 
