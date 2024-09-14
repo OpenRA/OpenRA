@@ -24,14 +24,35 @@ namespace OpenRA.Mods.Common.Activities
 		IDockHost dockHost;
 		readonly INotifyDockClientMoving[] notifyDockClientMoving;
 		readonly MoveCooldownHelper moveCooldownHelper;
+		readonly bool forceEnter;
+		readonly bool ignoreOccupancy;
 
-		public MoveToDock(Actor self, Actor dockHostActor = null, IDockHost dockHost = null)
+		public MoveToDock(Actor self, Actor dockHostActor = null, IDockHost dockHost = null,
+			bool forceEnter = false, bool ignoreOccupancy = false)
 		{
 			dockClient = self.Trait<DockClientManager>();
 			this.dockHostActor = dockHostActor;
 			this.dockHost = dockHost;
+			this.forceEnter = forceEnter;
+			this.ignoreOccupancy = ignoreOccupancy;
 			notifyDockClientMoving = self.TraitsImplementing<INotifyDockClientMoving>().ToArray();
 			moveCooldownHelper = new MoveCooldownHelper(self.World, self.Trait<IMove>() as Mobile) { RetryIfDestinationBlocked = true };
+		}
+
+		protected override void OnFirstRun(Actor self)
+		{
+			if (IsCanceling || dockClient.IsTraitDisabled)
+				return;
+
+			// We were ordered to dock to an actor but host was unspecified.
+			if (dockHostActor != null && dockHost == null)
+			{
+				var link = dockClient.AvailableDockHosts(dockHostActor, default, forceEnter, ignoreOccupancy)
+					.ClosestDock(self, dockClient);
+
+				if (link.HasValue)
+					dockHost = link.Value.Trait;
+			}
 		}
 
 		public override bool Tick(Actor self)
