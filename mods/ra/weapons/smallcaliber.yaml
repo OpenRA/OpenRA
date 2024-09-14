@@ -227,7 +227,7 @@ ChainGun.Yak:
 	BurstDelays: 0
 	ReloadDelay: 3
 	Range: 5c0
-	MinRange: 3c0
+	MinRange: 2c512
 	Projectile: InstantHit
 		Blockable: false
 	Warhead@1Dam: SpreadDamage

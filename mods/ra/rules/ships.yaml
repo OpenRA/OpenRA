@@ -226,18 +226,18 @@ LST:
 		Prerequisites: ~techlevel.low
 		Description: actor-lst.description
 	Valued:
-		Cost: 700
+		Cost: 500
 	Tooltip:
 		Name: actor-lst.name
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 35000
+		HP: 40000
 	Armor:
 		Type: Heavy
 	Mobile:
 		Locomotor: lcraft
-		Speed: 128
+		Speed: 115
 		PauseOnCondition: notmobile
 	RevealsShroud:
 		MinRange: 5c0

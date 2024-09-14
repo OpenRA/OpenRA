@@ -164,6 +164,7 @@ RedEye:
 		Inaccuracy: 0
 		HorizontalRateOfTurn: 80
 		Speed: 298
+		RangeLimit: 9c0
 	Warhead@1Dam: SpreadDamage
 		Damage: 2400
 
@@ -317,7 +318,7 @@ SubMissileAA:
 
 SCUD:
 	Inherits: ^AntiGroundMissile
-	ReloadDelay: 240
+	ReloadDelay: 215
 	Range: 10c0
 	MinRange: 4c0
 	Report: missile1.aud
