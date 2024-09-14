@@ -33,7 +33,7 @@ namespace OpenRA
 		/// </summary>
 		public readonly string Name;
 		readonly TypeDictionary traits = new();
-		List<TraitInfo> constructOrderCache = null;
+		TraitInfo[] constructOrderCache = null;
 
 		public ActorInfo(ObjectCreator creator, string name, MiniYaml node)
 		{
@@ -162,7 +162,7 @@ namespace OpenRA
 				throw new YamlException(exceptionString);
 			}
 
-			constructOrderCache = resolved.ConvertAll(r => r.Trait);
+			constructOrderCache = resolved.Select(r => r.Trait).ToArray();
 			return constructOrderCache;
 		}
 
