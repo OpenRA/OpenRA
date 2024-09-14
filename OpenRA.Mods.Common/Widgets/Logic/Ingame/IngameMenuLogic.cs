@@ -251,6 +251,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
 			var exitDelay = iop?.ExitDelay ?? 0;
 			var mpe = world.WorldActor.TraitOrDefault<MenuPostProcessEffect>();
+
+			// HACK: Opening up skirmish menu can mess up the OrderManager.
+			if (!Game.IsCurrentWorld(world))
+			{
+				Game.Disconnect();
+				Ui.ResetAll();
+				Game.LoadShellMap();
+				return;
+			}
+
 			if (mpe != null)
 			{
 				Game.RunAfterDelay(exitDelay, () =>
