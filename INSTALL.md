@@ -17,11 +17,9 @@ Run the game with `launch-game.cmd`. It can be handed arguments that specify the
 Linux
 =====
 
-.NET 8 or Mono (version 6.12 or later) is required to compile OpenRA. We recommend using .NET 8 when possible, as Mono is poorly packaged by most Linux distributions (e.g. missing the required `msbuild` toolchain), and has been deprecated as a standalone project.
+.NET 8 is required to compile OpenRA. The [.NET 8 download page](https://dotnet.microsoft.com/download/dotnet/8.0) provides repositories for various package managers and binary releases for several architectures.
 
-The [.NET 8 download page](https://dotnet.microsoft.com/download/dotnet/8.0) provides repositories for various package managers and binary releases for several architectures. If you prefer to use Mono, we suggest adding the [upstream repository](https://www.mono-project.com/download/stable/#download-lin) for your distro to obtain the latest version and the `msbuild` toolchain.
-
-To compile OpenRA, run `make` from the command line (or `make RUNTIME=mono` if using Mono). After this one can run the game with `./launch-game.sh`. It is also possible to specify the mod you wish to run from the command line, e.g. with `./launch-game.sh Game.Mod=ts` if you wish to try the experimental Tiberian Sun mod.
+To compile OpenRA, run `make` from the command line. After this one can run the game with `./launch-game.sh`. It is also possible to specify the mod you wish to run from the command line, e.g. with `./launch-game.sh Game.Mod=ts` if you wish to try the experimental Tiberian Sun mod.
 
 The default behaviour on the x86_64 architecture is to download several pre-compiled native libraries using the Nuget packaging manager. If you prefer to use system libraries, compile instead using `make TARGETPLATFORM=unix-generic`.
 
@@ -78,6 +76,6 @@ Type `sudo make install` for system-wide installation. Run `sudo make install-li
 macOS
 =====
 
-[.NET 8](https://dotnet.microsoft.com/download/dotnet/6.0) or [Mono](https://www.mono-project.com/download/stable/#download-mac) (version 6.12 or later) is required to compile OpenRA. We recommend using .NET 8 unless you are running a very old version of macOS (10.9 through 10.14).
+[.NET 8](https://dotnet.microsoft.com/download/dotnet/6.0) is required to compile OpenRA.
 
-To compile OpenRA, run `make` from the command line (or `make RUNTIME=mono` if using Mono). Run with `./launch-game.sh`.
+To compile OpenRA, run `make` from the command line. Run with `./launch-game.sh`.

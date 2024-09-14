@@ -3,9 +3,6 @@
 # to compile, run:
 #   make
 #
-# to compile using Mono (version 6.12 or greater) instead of .NET 8, run:
-#   make RUNTIME=mono
-#
 # to compile using system libraries for native dependencies, run:
 #   make [RUNTIME=net8] TARGETPLATFORM=unix-generic
 #
@@ -50,7 +47,6 @@ gameinstalldir ?= $(libdir)/openra
 CWD = $(shell pwd)
 MSBUILD = msbuild -verbosity:m -nologo
 DOTNET = dotnet
-MONO = mono
 RM = rm
 RM_R = $(RM) -r
 RM_F = $(RM) -f
@@ -91,18 +87,12 @@ endif
 #
 all:
 	@echo "Compiling in ${CONFIGURATION} mode..."
-ifeq ($(RUNTIME), mono)
-	@command -v $(firstword $(MSBUILD)) >/dev/null || (echo "OpenRA requires the '$(MSBUILD)' tool provided by Mono >= 6.12."; exit 1)
-	@$(MSBUILD) -t:Build -restore -p:Configuration=${CONFIGURATION} -p:TargetPlatform=$(TARGETPLATFORM)
-else
 	@$(DOTNET) build -c ${CONFIGURATION} -nologo -p:TargetPlatform=$(TARGETPLATFORM)
-endif
 ifeq ($(TARGETPLATFORM), unix-generic)
 	@./configure-system-libraries.sh
 endif
 	@./fetch-geoip.sh
 
-# dotnet clean and msbuild -t:Clean leave files that cause problems when switching between mono/dotnet
 # Deleting the intermediate / output directories ensures the build directory is actually clean
 clean:
 	@-$(RM_RF) ./bin ./*/obj
@@ -111,12 +101,8 @@ clean:
 check:
 	@echo
 	@echo "Compiling in Debug mode..."
-ifeq ($(RUNTIME), mono)
-	@$(MSBUILD) -t:clean\;build -restore -p:Configuration=Debug -warnaserror -p:TargetPlatform=$(TARGETPLATFORM)
-else
 	@$(DOTNET) clean -c Debug --nologo --verbosity minimal
 	@$(DOTNET) build -c Debug -nologo -warnaserror -p:TargetPlatform=$(TARGETPLATFORM)
-endif
 ifeq ($(TARGETPLATFORM), unix-generic)
 	@./configure-system-libraries.sh
 endif
@@ -177,9 +163,6 @@ install-man: all
 help:
 	@echo 'to compile, run:'
 	@echo '  make'
-	@echo
-	@echo 'to compile using Mono (version 6.12 or greater) instead of .NET 8, run:'
-	@echo '  make RUNTIME=mono'
 	@echo
 	@echo 'to compile using system libraries for native dependencies, run:'
 	@echo '  make [RUNTIME=net8] TARGETPLATFORM=unix-generic'

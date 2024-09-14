@@ -12,7 +12,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace OpenRA
@@ -63,21 +62,7 @@ namespace OpenRA
 			return PlatformType.Unknown;
 		}
 
-		public static string RuntimeVersion
-		{
-			get
-			{
-				var mono = Type.GetType("Mono.Runtime");
-				if (mono == null)
-					return $".NET CLR {Environment.Version}";
-
-				var version = mono.GetMethod("GetDisplayName", BindingFlags.NonPublic | BindingFlags.Static);
-				if (version == null)
-					return $"Mono (unknown version) CLR {Environment.Version}";
-
-				return $"Mono {version.Invoke(null, null)} CLR {Environment.Version}";
-			}
-		}
+		public static string RuntimeVersion => $".NET CLR {Environment.Version}";
 
 		public static string OperatingSystem
 		{
