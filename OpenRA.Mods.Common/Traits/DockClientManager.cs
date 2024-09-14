@@ -177,16 +177,13 @@ namespace OpenRA.Mods.Common.Traits
 				if (target.Type != TargetType.Actor)
 					return;
 
-				if (IsTraitDisabled)
-					return;
+				self.QueueActivity(order.Queued, new MoveToDock(
+					self,
+					target.Actor,
+					null,
+					order.OrderString == "ForceDock",
+					true));
 
-				var dock = AvailableDockHosts(target.Actor, default, order.OrderString == "ForceDock", true)
-					.ClosestDock(self, this);
-
-				if (!dock.HasValue)
-					return;
-
-				self.QueueActivity(order.Queued, new MoveToDock(self, dock.Value.Actor, dock.Value.Trait));
 				self.ShowTargetLines();
 			}
 		}
