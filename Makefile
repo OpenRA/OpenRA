@@ -3,20 +3,20 @@
 # to compile, run:
 #   make
 #
-# to compile using Mono (version 6.12 or greater) instead of .NET 6, run:
+# to compile using Mono (version 6.12 or greater) instead of .NET 8, run:
 #   make RUNTIME=mono
 #
 # to compile using system libraries for native dependencies, run:
-#   make [RUNTIME=net6] TARGETPLATFORM=unix-generic
+#   make [RUNTIME=net8] TARGETPLATFORM=unix-generic
 #
 # to check the official mods for erroneous yaml files, run:
-#   make [RUNTIME=net6] test
+#   make [RUNTIME=net8] test
 #
 # to check the engine and official mod dlls for code style violations, run:
-#   make [RUNTIME=net6] check
+#   make [RUNTIME=net8] check
 #
 # to compile and install Red Alert, Tiberian Dawn, and Dune 2000, run:
-#   make [RUNTIME=net6] [prefix=/foo] [bindir=/bar/bin] install
+#   make [RUNTIME=net8] [prefix=/foo] [bindir=/bar/bin] install
 #
 # to compile and install Red Alert, Tiberian Dawn, and Dune 2000
 # using system libraries for native dependencies, run:
@@ -56,7 +56,7 @@ RM_R = $(RM) -r
 RM_F = $(RM) -f
 RM_RF = $(RM) -rf
 
-RUNTIME ?= net6
+RUNTIME ?= net8
 CONFIGURATION ?= Release
 DOTNET_RID = $(shell ${DOTNET} --info | grep RID: | cut -w -f3)
 ARCH_X64 = $(shell echo ${DOTNET_RID} | grep x64)
@@ -178,24 +178,24 @@ help:
 	@echo 'to compile, run:'
 	@echo '  make'
 	@echo
-	@echo 'to compile using Mono (version 6.12 or greater) instead of .NET 6, run:'
+	@echo 'to compile using Mono (version 6.12 or greater) instead of .NET 8, run:'
 	@echo '  make RUNTIME=mono'
 	@echo
 	@echo 'to compile using system libraries for native dependencies, run:'
-	@echo '  make [RUNTIME=net6] TARGETPLATFORM=unix-generic'
+	@echo '  make [RUNTIME=net8] TARGETPLATFORM=unix-generic'
 	@echo
 	@echo 'to check the official mods for erroneous yaml files, run:'
-	@echo '  make [RUNTIME=net6] [TREAT_WARNINGS_AS_ERRORS=false] test'
+	@echo '  make [RUNTIME=net8] [TREAT_WARNINGS_AS_ERRORS=false] test'
 	@echo
 	@echo 'to check the engine and official mod dlls for code style violations, run:'
-	@echo '  make [RUNTIME=net6] check'
+	@echo '  make [RUNTIME=net8] check'
 	@echo
 	@echo 'to compile and install Red Alert, Tiberian Dawn, and Dune 2000 run:'
-	@echo '  make [RUNTIME=net6] [prefix=/foo] [TARGETPLATFORM=unix-generic] install'
+	@echo '  make [RUNTIME=net8] [prefix=/foo] [TARGETPLATFORM=unix-generic] install'
 	@echo
 	@echo 'to compile and install Red Alert, Tiberian Dawn, and Dune 2000'
 	@echo 'using system libraries for native dependencies, run:'
-	@echo '   make [RUNTIME=net6] [prefix=/foo] [bindir=/bar/bin] TARGETPLATFORM=unix-generic install'
+	@echo '   make [RUNTIME=net8] [prefix=/foo] [bindir=/bar/bin] TARGETPLATFORM=unix-generic install'
 	@echo
 	@echo 'to install FreeDesktop startup scripts, desktop files, icons, and MIME metadata'
 	@echo '  make install-linux-shortcuts'
