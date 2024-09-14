@@ -220,6 +220,7 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					new LocationInit(self.Location),
 					new OwnerInit(self.Owner),
+					new ParentActorInit(self)
 				});
 
 				foreach (var t in self.TraitsImplementing<INotifyMineLaying>())
