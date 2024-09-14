@@ -35,6 +35,98 @@ namespace OpenRA
 		readonly TypeDictionary traits = new();
 		List<TraitInfo> constructOrderCache = null;
 
+		// Only used by the linter to prevent exceptions from being thrown during a lint run
+		public static Action<string> OnConflictingTraitsAction = null;
+
+		static readonly Dictionary<Type, Type[]> DirectSinglePerActorTraitInfoTypesLookupCache = new()
+		{
+			{ typeof(SinglePerActor), Array.Empty<Type>() },
+			{ typeof(object), Array.Empty<Type>() },
+			{ typeof(ITraitInfoInterface), Array.Empty<Type>() },
+			{ typeof(TraitInfo), Array.Empty<Type>() }
+		};
+
+		static (bool Direct, Type[] Types) GetSinglePerActorTraitInfoRelation(Type type)
+		{
+			if (type == null)
+				return (false, Array.Empty<Type>());
+
+			if (DirectSinglePerActorTraitInfoTypesLookupCache.TryGetValue(type, out var result))
+				return (result.Length == 1 && result[0] == type, result);
+
+			if (!typeof(SinglePerActor).IsAssignableFrom(type))
+			{
+				var emptyArray = Array.Empty<Type>();
+				DirectSinglePerActorTraitInfoTypesLookupCache.Add(type, emptyArray);
+				return (false, emptyArray);
+			}
+
+			var inherited = new HashSet<Type>(GetSinglePerActorTraitInfoRelation(type.BaseType).Types);
+			foreach (var i in type.GetInterfaces())
+				if (i != type && GetSinglePerActorTraitInfoRelation(i).Direct)
+					inherited.Add(i);
+
+			if (inherited.Count > 0)
+			{
+				var inheritedArray = inherited.ToArray();
+				DirectSinglePerActorTraitInfoTypesLookupCache.Add(type, inheritedArray);
+				return (false, inheritedArray);
+			}
+
+			var typeArray = new[] { type };
+			DirectSinglePerActorTraitInfoTypesLookupCache.Add(type, typeArray);
+			return (true, typeArray);
+		}
+
+		static string GetTraitNameFromInfoType(Type type)
+		{
+			var name = type.Name;
+			if (name.EndsWith("Info", StringComparison.InvariantCulture))
+				name = name[..^4];
+			return name;
+		}
+
+		static string GetTraitNameAndInstance(object traitInfo)
+		{
+			var name = GetTraitNameFromInfoType(traitInfo.GetType());
+			if (traitInfo is TraitInfo info && !string.IsNullOrEmpty(info.InstanceName))
+				name += TraitInstanceSeparator + info.InstanceName;
+			return name;
+		}
+
+		void CheckForConflictingTraits()
+		{
+			Dictionary<Type, List<SinglePerActor>> traitsByType = new();
+			foreach (var traitInfo in traits.WithInterface<SinglePerActor>())
+			{
+				foreach (var type in GetSinglePerActorTraitInfoRelation(traitInfo.GetType()).Types)
+				{
+					if (!traitsByType.TryGetValue(type, out var list))
+					{
+						list = new List<SinglePerActor>();
+						traitsByType.Add(type, list);
+					}
+
+					list.Add(traitInfo);
+				}
+			}
+
+			foreach (var pair in traitsByType)
+			{
+				if (pair.Value.Count <= 1)
+					continue;
+
+				var conflictingTraits = pair.Value.ConvertAll(GetTraitNameAndInstance);
+				conflictingTraits.Sort();
+				var conflictingTraitsString = conflictingTraits.JoinWith(", ");
+				var message = $"Actor type `{Name}` has conflicting traits of type `{GetTraitNameFromInfoType(pair.Key)}`: {conflictingTraitsString}.";
+				if (OnConflictingTraitsAction != null)
+					OnConflictingTraitsAction(message);
+				else
+					throw new YamlException(message);
+			}
+		}
+
 		public ActorInfo(ObjectCreator creator, string name, MiniYaml node)
 		{
 			try
@@ -63,6 +155,8 @@ namespace OpenRA
 			{
 				throw new YamlException($"Actor type {name}: {e.Message}");
 			}
+
+			CheckForConflictingTraits();
 		}
 
 		public ActorInfo(string name, params TraitInfo[] traitInfos)
@@ -71,6 +165,7 @@ namespace OpenRA
 			foreach (var t in traitInfos)
 				traits.Add(t);
 			traits.TrimExcess();
+			CheckForConflictingTraits();
 		}
 
 		static TraitInfo LoadTraitInfo(ObjectCreator creator, string traitName, MiniYaml my)
