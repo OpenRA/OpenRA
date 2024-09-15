@@ -408,14 +408,12 @@ Container@EDITOR_WORLD_ROOT:
 					Width: PARENT_RIGHT - 70
 					Height: 25
 					Font: Bold
-				ScrollPanel@MARKER_TOOL_PANEL:
-					X: 9
+				Background@MARKER_TOOL_PANEL:
+					X: 10
 					Y: 35
-					Width: 290
+					Width: PARENT_RIGHT - 20
 					Height: WINDOW_BOTTOM - 490
-					Visible: true
-					ScrollBar: Hidden
-					ScrollbarWidth: 0
+					Background: scrollpanel-bg
 					Logic: MapMarkerTilesLogic
 					Children:
 						ScrollPanel@TILE_COLOR_PANEL:
@@ -488,7 +486,7 @@ Container@EDITOR_WORLD_ROOT:
 						Label@MODE_LABEL:
 							X: 6
 							Y: 102
-							Width: 265
+							Width: 260
 							Height: 25
 							Align: Left
 							Text: label-marker-mirror-mode
@@ -581,20 +579,22 @@ Container@EDITOR_WORLD_ROOT:
 			Height: WINDOW_BOTTOM - 458
 			Visible: false
 			Children:
-				Container@AREA_EDIT_PANEL:
-					Width: 310
-					Height: WINDOW_BOTTOM - 458
+				Background@AREA_EDIT_PANEL:
+					X: 10
+					Y: 10
+					Width: PARENT_RIGHT - 20
+					Height: PARENT_BOTTOM - 7
+					Background: scrollpanel-bg
 					Children:
 						Label@AREA_EDIT_TITLE:
-							X: 6
 							Y: 16
-							Width: 298
+							Width: PARENT_RIGHT
 							Height: 24
 							Align: Center
 							Font: Bold
 							Text: label-area-selection
 						Label@AREA_FILTERS_LABEL:
-							X: 15
+							X: 5
 							Y: 45
 							Width: 150
 							Height: 25
@@ -602,33 +602,32 @@ Container@EDITOR_WORLD_ROOT:
 							Align: Left
 							Text: label-copy-filters
 						Checkbox@COPY_FILTER_TERRAIN_CHECKBOX:
-							X: 15
+							X: 5
 							Y: 70
 							Width: PARENT_RIGHT - 29
 							Height: 20
 							Text: label-filter-terrain
 						Checkbox@COPY_FILTER_RESOURCES_CHECKBOX:
-							X: 15
+							X: 5
 							Y: 95
 							Width: PARENT_RIGHT - 29
 							Height: 20
 							Text: label-filter-resources
 						Checkbox@COPY_FILTER_ACTORS_CHECKBOX:
-							X: 15
+							X: 5
 							Y: 120
 							Width: PARENT_RIGHT - 29
 							Height: 20
 							Text: label-filter-actors
 						Label@AREA_INFO_TITLE:
-							X: 6
 							Y: 139
-							Width: 298
+							Width: PARENT_RIGHT
 							Height: 24
 							Align: Center
 							Font: Bold
 							Text: label-area-info
 						Label@DIAGONAL_LABEL:
-							X: 15
+							X: 5
 							Y: 171
 							Width: 120
 							Height: 20
@@ -636,7 +635,7 @@ Container@EDITOR_WORLD_ROOT:
 							Align: Left
 							Text: label-selected-area-diagonal
 						Label@RESOURCE_LABEL:
-							X: 15
+							X: 5
 							Y: 193
 							Width: 120
 							Height: 25
@@ -644,52 +643,53 @@ Container@EDITOR_WORLD_ROOT:
 							Align: Left
 							Text: label-selected-area-resources
 						Label@DIAGONAL_COUNTER_LABEL:
-							X: 150
+							X: 140
 							Y: 170
 							Width: 55
 							Height: 22
 							Align: Left
 						Label@RESOURCES_COUNTER_LABEL:
-							X: 150
+							X: 140
 							Y: 195
 							Width: 55
 							Height: 22
 							Align: Left
 						Button@SELECTION_CANCEL_BUTTON:
-							X: 222
+							X: 208
 							Y: 222
 							Width: 75
 							Height: 25
 							Text: button-cancel
 							Font: Bold
-				Container@ACTOR_EDIT_PANEL:
-					Width: 310
-					Height: WINDOW_BOTTOM - 458
+				Background@ACTOR_EDIT_PANEL:
+					X: 10
+					Y: 10
+					Width: PARENT_RIGHT - 20
+					Height: PARENT_BOTTOM - 7
+					Background: scrollpanel-bg
 					Children:
 						Label@ACTOR_TYPE_LABEL:
-							X: 15
 							Y: 16
-							Width: 281
+							Width: PARENT_RIGHT
 							Height: 24
 							Align: Center
 							Font: Bold
 						Label@ACTOR_ID_LABEL:
-							X: 15
 							Y: 45
 							Width: 55
 							Height: 25
 							Text: label-actor-edit-panel-id
 							Align: Right
 						TextField@ACTOR_ID:
-							X: 84
+							X: 69
 							Y: 45
-							Width: 208
+							Width: 213
 							Height: 25
 						Label@ACTOR_ID_ERROR_LABEL:
-							X: 84
-							Y: 71
-							Width: 208
-							Height: 15
+							X: 69
+							Y: 45
+							Width: 213
+							Height: 25
 							Font: TinyBold
 							TextColor: FF0000
 						Container@ACTOR_INIT_CONTAINER:
@@ -701,7 +701,7 @@ Container@EDITOR_WORLD_ROOT:
 									Height: 22
 									Children:
 										Checkbox@OPTION:
-											X: 84
+											X: 60
 											Y: 1
 											Width: PARENT_RIGHT - 100
 											Height: 20
@@ -710,18 +710,17 @@ Container@EDITOR_WORLD_ROOT:
 									Height: 22
 									Children:
 										Label@LABEL:
-											X: 15
 											Y: 1
 											Width: 55
 											Height: 16
 											Align: Right
 										Slider@OPTION:
-											X: 75
+											X: 60
 											Y: 1
-											Width: 165
+											Width: 170
 											Height: 20
 										TextField@VALUE:
-											X: 242
+											X: 232
 											Y: 1
 											Width: 50
 											Height: 20
@@ -731,34 +730,33 @@ Container@EDITOR_WORLD_ROOT:
 									Height: 27
 									Children:
 										Label@LABEL:
-											X: 15
 											Y: 2
 											Width: 55
 											Height: 24
 											Align: Right
 										DropDownButton@OPTION:
-											X: 84
+											X: 69
 											Y: 1
-											Width: 208
+											Width: 213
 											Height: 25
 											Font: Bold
 						Container@BUTTON_CONTAINER:
 							Y: 75
 							Children:
 								Button@DELETE_BUTTON:
-									X: 15
+									X: 5
 									Width: 75
 									Height: 25
 									Text: button-container-delete
 									Font: Bold
 								Button@CANCEL_BUTTON:
-									X: 142
+									X: 127
 									Width: 75
 									Height: 25
 									Text: button-cancel
 									Font: Bold
 								Button@OK_BUTTON:
-									X: 222
+									X: 208
 									Width: 75
 									Height: 25
 									Text: button-container-ok

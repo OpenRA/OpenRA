@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly EditorActorLayer editorActorLayer;
 		readonly EditorActionManager editorActionManager;
 		readonly EditorViewportControllerWidget editor;
-		readonly ContainerWidget actorEditPanel;
+		readonly Widget actorEditPanel;
 		readonly LabelWidget typeLabel;
 		readonly TextFieldWidget actorIDField;
 		readonly HashSet<TextFieldWidget> typableFields = new();
@@ -72,8 +72,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			editor = widget.Parent.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			editor.DefaultBrush.SelectionChanged += HandleSelectionChanged;
 
-			var selectTabContainer = widget.Parent.Parent.Get<ContainerWidget>("SELECT_WIDGETS");
-			actorEditPanel = selectTabContainer.Get<ContainerWidget>("ACTOR_EDIT_PANEL");
+			var selectTabContainer = widget.Parent.Parent.Get("SELECT_WIDGETS");
+			actorEditPanel = selectTabContainer.Get("ACTOR_EDIT_PANEL");
 
 			typeLabel = actorEditPanel.Get<LabelWidget>("ACTOR_TYPE_LABEL");
 			actorIDField = actorEditPanel.Get<TextFieldWidget>("ACTOR_ID");

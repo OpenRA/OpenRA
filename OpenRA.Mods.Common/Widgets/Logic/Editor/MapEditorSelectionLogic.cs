@@ -49,8 +49,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			editor = widget.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			editor.DefaultBrush.SelectionChanged += HandleSelectionChanged;
 			var selectTabContainer = widget.Get("SELECT_WIDGETS");
-			var actorEditPanel = selectTabContainer.Get<ContainerWidget>("ACTOR_EDIT_PANEL");
-			var areaEditPanel = selectTabContainer.Get<ContainerWidget>("AREA_EDIT_PANEL");
+			var actorEditPanel = selectTabContainer.Get("ACTOR_EDIT_PANEL");
+			var areaEditPanel = selectTabContainer.Get("AREA_EDIT_PANEL");
 
 			actorEditPanel.IsVisible = () => editor.DefaultBrush.Selection.Actor != null;
 			areaEditPanel.IsVisible = () => editor.DefaultBrush.Selection.Area != null;
