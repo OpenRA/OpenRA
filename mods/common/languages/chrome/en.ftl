@@ -87,11 +87,11 @@ button-editor-world-root-options =
 
 button-editor-world-root-copy =
    .label = Copy
-   .tooltip = Copy
+   .tooltip = Copy the selected area
 
 button-editor-world-root-paste =
    .label = Paste
-   .tooltip = Paste
+   .tooltip = Paste the saved area
 
 button-editor-world-root-undo =
    .label = Undo
