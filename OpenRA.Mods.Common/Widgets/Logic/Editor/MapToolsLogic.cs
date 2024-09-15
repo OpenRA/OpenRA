@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			toolsDropdown = widget.Get<DropDownButtonWidget>("TOOLS_DROPDOWN");
 
-			var markerToolPanel = widget.Get<ScrollPanelWidget>("MARKER_TOOL_PANEL");
+			var markerToolPanel = widget.Get("MARKER_TOOL_PANEL");
 			toolPanels.Add(MapTool.MarkerTiles, markerToolPanel);
 
 			toolsDropdown.OnMouseDown = _ => ShowToolsDropDown(toolsDropdown);
