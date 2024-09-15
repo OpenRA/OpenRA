@@ -712,7 +712,7 @@ dotnet_diagnostic.CA1305.severity = warning
 dotnet_diagnostic.CA1310.severity = warning
 
 # Specify a culture or use an invariant version.
-dotnet_diagnostic.CA1311.severity = warning
+dotnet_diagnostic.CA1311.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
 
 ### Portability and Interoperability Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/interoperability-warnings
@@ -727,7 +727,7 @@ dotnet_diagnostic.CA1417.severity = warning
 dotnet_diagnostic.CA1507.severity = warning
 
 # Avoid redundant length argument.
-dotnet_diagnostic.CA1514.severity = warning
+dotnet_diagnostic.CA1514.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
 
 ### Naming Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/naming-warnings
@@ -820,7 +820,7 @@ dotnet_diagnostic.CA1843.severity = warning
 # Provide memory-based overrides of async methods when subclassing 'Stream'.
 dotnet_diagnostic.CA1844.severity = warning
 
-# Use span-based 'string.Concat'.
+# Use span-based 'string.Concat'. (Not available on mono)
 dotnet_diagnostic.CA1845.severity = none
 
 # Prefer AsSpan over Substring.
@@ -830,28 +830,28 @@ dotnet_diagnostic.CA1846.severity = warning
 dotnet_diagnostic.CA1847.severity = warning
 
 # Call async methods when in an async method.
-dotnet_diagnostic.CA1849.severity = warning
+dotnet_diagnostic.CA1849.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
 
-# Prefer static HashData method over ComputeHash.
-dotnet_diagnostic.CA1850.severity = warning
+# Prefer static HashData method over ComputeHash. (Not available on mono)
+dotnet_diagnostic.CA1850.severity = none # TODO: Change to warning once using .NET 7 or later AND once supported by mono.
 
 # Possible multiple enumerations of IEnumerable collection.
 #dotnet_code_quality.CA1851.enumeration_methods =
 dotnet_code_quality.CA1851.linq_chain_methods = M:OpenRA.Traits.IRenderModifier.Modify*
 dotnet_code_quality.CA1851.assume_method_enumerates_parameters = true
-dotnet_diagnostic.CA1851.severity = warning
+dotnet_diagnostic.CA1851.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
 
 # Seal internal types.
-dotnet_diagnostic.CA1852.severity = warning
+dotnet_diagnostic.CA1852.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
 
 # Unnecessary call to 'Dictionary.ContainsKey(key)'.
-dotnet_diagnostic.CA1853.severity = warning
+dotnet_diagnostic.CA1853.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
 
 # Prefer the IDictionary.TryGetValue(TKey, out TValue) method.
-dotnet_diagnostic.CA1854.severity = warning
+dotnet_diagnostic.CA1854.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
 
 # Use Span<T>.Clear() instead of Span<T>.Fill().
-dotnet_diagnostic.CA1855.severity = warning
+dotnet_diagnostic.CA1855.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
 
 # Use StartsWith instead of IndexOf.
 dotnet_diagnostic.CA1858.severity = warning
@@ -860,21 +860,21 @@ dotnet_diagnostic.CA1858.severity = warning
 dotnet_diagnostic.CA1860.severity = warning
 
 # Prefer the 'IDictionary.TryAdd(TKey, TValue)' method.
-dotnet_diagnostic.CA1864.severity = warning
+dotnet_diagnostic.CA1864.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
 
 # Use 'string.Method(char)' instead of 'string.Method(string)' for string with single char.
-dotnet_diagnostic.CA1865.severity = warning
-dotnet_diagnostic.CA1866.severity = warning
-dotnet_diagnostic.CA1867.severity = warning
+dotnet_diagnostic.CA1865.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
+dotnet_diagnostic.CA1866.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
+dotnet_diagnostic.CA1867.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
 
 # Unnecessary call to 'Contains' for sets.
-dotnet_diagnostic.CA1868.severity = warning
+dotnet_diagnostic.CA1868.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
 
 # Cache and reuse 'JsonSerializerOptions' instances.
-dotnet_diagnostic.CA1869.severity = warning
+dotnet_diagnostic.CA1869.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
 
 # Use a cached 'SearchValues' instance.
-dotnet_diagnostic.CA1870.severity = warning
+dotnet_diagnostic.CA1870.severity = suggestion # TODO: Change to warning once using .NET 8 or later.
 
 ### Reliability Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/reliability-warnings
@@ -898,7 +898,7 @@ dotnet_diagnostic.CA2016.severity = warning
 dotnet_diagnostic.CA2018.severity = warning
 
 # ThreadStatic fields should not use inline initialization.
-dotnet_diagnostic.CA2019.severity = warning
+dotnet_diagnostic.CA2019.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
 
 ### Security Rules
 ### https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/security-warnings
@@ -969,7 +969,7 @@ dotnet_diagnostic.CA2250.severity = warning
 dotnet_diagnostic.CA2251.severity = warning
 
 # Ensure ThreadStatic is only used with static fields.
-dotnet_diagnostic.CA2259.severity = warning
+dotnet_diagnostic.CA2259.severity = suggestion # TODO: Change to warning once using .NET 7 or later.
 
 ### Roslynator.Analyzers
 ### https://josefpihrt.github.io/docs/roslynator/analyzers
