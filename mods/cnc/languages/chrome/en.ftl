@@ -78,7 +78,7 @@ label-marker-alpha = Tile Alpha
 label-marker-mirror-mode = Mirror Mode
 label-marker-axis-angle = Axis Angle
 
-button-map-editor-tab-container-select-tooltip = Select
+button-map-editor-tab-container-select-tooltip = Selection
 button-map-editor-tab-container-tiles-tooltip = Tiles
 button-map-editor-tab-container-overlays-tooltip = Overlays
 button-map-editor-tab-container-actors-tooltip = Actors
