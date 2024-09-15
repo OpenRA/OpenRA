@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 			public Size FrameSize { get; }
 			public float2 Offset { get; }
 			public byte[] Data { get; }
-			public bool DisableExportPadding { get { return false; } }
+			public bool DisableExportPadding { get; } = false;
 
 			public TrimmedFrame(ImageHeader header)
 			{
@@ -152,6 +152,8 @@ namespace OpenRA.Mods.Cnc.SpriteLoaders
 					Offset = 0.5f * new float2(
 						left + right + widthFudge - origSize.Width + 1,
 						top + bottom + heightFudge - origSize.Height + 1);
+
+					DisableExportPadding = true;
 				}
 			}
 		}

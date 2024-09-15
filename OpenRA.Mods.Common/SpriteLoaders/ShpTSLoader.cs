@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 			public Size FrameSize { get; }
 			public float2 Offset { get; }
 			public byte[] Data { get; set; }
-			public bool DisableExportPadding => false;
+			public bool DisableExportPadding { get; } = false;
 
 			public readonly uint FileOffset;
 			public readonly byte Format;
@@ -45,6 +45,9 @@ namespace OpenRA.Mods.Common.SpriteLoaders
 
 				if (dataHeight % 2 == 1)
 					dataHeight++;
+
+				if (dataWidth != width || dataHeight != height)
+					DisableExportPadding = true;
 
 				Offset = new int2(x + (dataWidth - frameSize.Width) / 2, y + (dataHeight - frameSize.Height) / 2);
 				Size = new Size(dataWidth, dataHeight);
