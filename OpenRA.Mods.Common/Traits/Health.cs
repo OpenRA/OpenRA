@@ -35,8 +35,6 @@ namespace OpenRA.Mods.Common.Traits
 				throw new YamlException("Actors with Health need at least one HitShape trait!");
 		}
 
-		int IHealthInfo.MaxHP => HP;
-
 		IEnumerable<EditorActorOption> IEditorActorOptions.ActorOptions(ActorInfo ai, World world)
 		{
 			yield return new EditorActorSlider("Health", EditorHealthDisplayOrder, 0, 100, 5,
@@ -123,6 +121,15 @@ namespace OpenRA.Mods.Common.Traits
 			notifyDamagePlayer = newOwner.PlayerActor.TraitsImplementing<INotifyDamage>().ToArray();
 			damageModifiersPlayer = newOwner.PlayerActor.TraitsImplementing<IDamageModifier>().ToArray();
 			notifyKilledPlayer = newOwner.PlayerActor.TraitsImplementing<INotifyKilled>().ToArray();
+		}
+
+		public void ModifyHP(int addHP, int addMaxHP)
+		{
+			if (IsDead)
+				return;
+
+			hp += addHP;
+			MaxHP += addMaxHP;
 		}
 
 		public void Resurrect(Actor self, Actor repairer)

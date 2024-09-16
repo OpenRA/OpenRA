@@ -29,15 +29,14 @@ namespace OpenRA.Mods.Common.Traits
 	public class CombatDebugOverlay : IRenderAnnotations, INotifyDamage, INotifyCreated
 	{
 		readonly DebugVisualizations debugVis;
-		readonly IHealthInfo healthInfo;
 		readonly Lazy<BodyOrientation> coords;
 
+		IHealth health;
 		HitShape[] shapes;
 		IBlocksProjectiles[] allBlockers;
 
 		public CombatDebugOverlay(Actor self)
 		{
-			healthInfo = self.Info.TraitInfoOrDefault<IHealthInfo>();
 			coords = Exts.Lazy(self.Trait<BodyOrientation>);
 
 			debugVis = self.World.WorldActor.TraitOrDefault<DebugVisualizations>();
@@ -45,6 +44,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		void INotifyCreated.Created(Actor self)
 		{
+			health = self.TraitOrDefault<IHealth>();
 			shapes = self.TraitsImplementing<HitShape>().ToArray();
 			allBlockers = self.TraitsImplementing<IBlocksProjectiles>().ToArray();
 		}
@@ -126,10 +126,10 @@ namespace OpenRA.Mods.Common.Traits
 			if (debugVis == null || !debugVis.CombatGeometry || e.Damage.Value == 0)
 				return;
 
-			if (healthInfo == null)
+			if (health == null)
 				return;
 
-			var maxHP = healthInfo.MaxHP > 0 ? healthInfo.MaxHP : 1;
+			var maxHP = health.MaxHP > 0 ? health.MaxHP : 1;
 			var damageText = $"{-e.Damage.Value} ({e.Damage.Value * 100 / maxHP}%)";
 
 			self.World.AddFrameEndTask(w => w.Add(new FloatingText(self.CenterPosition, e.Attacker.OwnerColor(), damageText, 30)));

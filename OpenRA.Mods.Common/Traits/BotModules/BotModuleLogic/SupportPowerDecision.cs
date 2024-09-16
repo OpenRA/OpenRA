@@ -197,8 +197,7 @@ namespace OpenRA.Mods.Common.Traits
 							return (valueInfo != null) ? valueInfo.Cost * Attractiveness : 0;
 
 						case DecisionMetric.Health:
-							var healthInfo = fa.Info.TraitInfoOrDefault<IHealthInfo>();
-							return (healthInfo != null) ? fa.HP * Attractiveness / healthInfo.MaxHP : 0;
+							return (fa.MaxHP > 0) ? fa.HP * Attractiveness / fa.MaxHP : 0;
 
 						default:
 							return Attractiveness;

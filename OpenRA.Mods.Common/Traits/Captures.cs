@@ -159,10 +159,8 @@ namespace OpenRA.Mods.Common.Traits
 				cursor = captures.Info.EnterCursor;
 				if (captures.Info.SabotageThreshold > 0 && !target.Owner.NonCombatant)
 				{
-					var healthInfo = target.Info.TraitInfoOrDefault<IHealthInfo>();
-
 					// Sabotage instead of capture
-					if ((long)target.HP * 100 > captures.Info.SabotageThreshold * (long)healthInfo.MaxHP)
+					if ((long)target.HP * 100 > captures.Info.SabotageThreshold * (long)target.MaxHP)
 						cursor = captures.Info.SabotageCursor;
 				}
 

@@ -51,6 +51,7 @@ namespace OpenRA.Traits
 		readonly ITooltip[] tooltips;
 
 		public int HP { get; private set; }
+		public int MaxHP { get; private set; }
 		public DamageState DamageState { get; private set; }
 		readonly IHealth health;
 
@@ -126,6 +127,7 @@ namespace OpenRA.Traits
 			if (health != null)
 			{
 				HP = health.HP;
+				MaxHP = health.MaxHP;
 				DamageState = health.DamageState;
 			}
 
