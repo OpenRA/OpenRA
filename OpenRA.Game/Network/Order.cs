@@ -117,6 +117,7 @@ namespace OpenRA
 						{
 							switch ((TargetType)r.ReadByte())
 							{
+								case TargetType.ActorIgnoreVisibility:
 								case TargetType.Actor:
 								{
 									var actorID = r.ReadUInt32();
@@ -389,6 +390,7 @@ namespace OpenRA
 						w.Write((byte)targetState.Type);
 						switch (targetState.Type)
 						{
+							case TargetType.ActorIgnoreVisibility:
 							case TargetType.Actor:
 								w.Write(UIntFromActor(targetState.Actor));
 								w.Write(targetState.Generation);

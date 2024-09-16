@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	public enum TargetType : byte { Invalid, Actor, Terrain, FrozenActor }
+	public enum TargetType : byte { Invalid, Actor, Terrain, FrozenActor, ActorIgnoreVisibility }
 	public readonly struct Target : IEquatable<Target>
 	{
 		public static readonly Target[] None = Array.Empty<Target>();
@@ -56,9 +56,9 @@ namespace OpenRA.Traits
 			generation = 0;
 		}
 
-		Target(Actor a, int generation)
+		Target(Actor a, int generation, bool isTracked = false)
 		{
-			type = TargetType.Actor;
+			type = isTracked ? TargetType.ActorIgnoreVisibility : TargetType.Actor;
 			Actor = a;
 			this.generation = generation;
 
@@ -86,13 +86,14 @@ namespace OpenRA.Traits
 		public static Target FromTargetPositions(in Target t) { return new Target(t.CenterPosition, t.Positions.ToArray()); }
 		public static Target FromCell(World w, CPos c, SubCell subCell = SubCell.FullCell) { return new Target(w, c, subCell); }
 		public static Target FromActor(Actor a) { return a != null ? new Target(a, a.Generation) : Invalid; }
+		public static Target FromTrackedActor(Actor a) { return a != null ? new Target(a, a.Generation, isTracked: true) : Invalid; }
 		public static Target FromFrozenActor(FrozenActor fa) { return new Target(fa); }
 
 		public TargetType Type
 		{
 			get
 			{
-				if (type == TargetType.Actor)
+				if (type == TargetType.Actor || type == TargetType.ActorIgnoreVisibility)
 				{
 					// Actor is no longer in the world
 					if (!Actor.IsInWorld || Actor.IsDead)
@@ -120,6 +121,7 @@ namespace OpenRA.Traits
 					return FrozenActor.IsValid && FrozenActor.Visible && !FrozenActor.Hidden;
 				case TargetType.Invalid:
 					return false;
+				case TargetType.ActorIgnoreVisibility:
 				case TargetType.Terrain:
 				default:
 					return true;
@@ -158,6 +160,7 @@ namespace OpenRA.Traits
 			{
 				switch (Type)
 				{
+					case TargetType.ActorIgnoreVisibility:
 					case TargetType.Actor:
 						return Actor.CenterPosition;
 					case TargetType.FrozenActor:
@@ -179,6 +182,7 @@ namespace OpenRA.Traits
 			{
 				switch (Type)
 				{
+					case TargetType.ActorIgnoreVisibility:
 					case TargetType.Actor:
 						return Actor.GetTargetablePositions();
 					case TargetType.FrozenActor:
@@ -206,6 +210,7 @@ namespace OpenRA.Traits
 		{
 			switch (Type)
 			{
+				case TargetType.ActorIgnoreVisibility:
 				case TargetType.Actor:
 					return Actor.ToString();
 
@@ -232,7 +237,7 @@ namespace OpenRA.Traits
 					return me.terrainCenterPosition == other.terrainCenterPosition
 						&& me.terrainPositions == other.terrainPositions
 						&& me.cell == other.cell && me.subCell == other.subCell;
-
+				case TargetType.ActorIgnoreVisibility:
 				case TargetType.Actor:
 					return me.Actor == other.Actor && me.generation == other.generation;
 
@@ -263,7 +268,7 @@ namespace OpenRA.Traits
 						hash ^= subCell.GetHashCode();
 
 					return hash;
-
+				case TargetType.ActorIgnoreVisibility:
 				case TargetType.Actor:
 					return Actor.GetHashCode() ^ generation.GetHashCode();
 
