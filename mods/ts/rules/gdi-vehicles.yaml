@@ -371,6 +371,18 @@ JUGG:
 		DeploySounds: place2.aud
 		UndeploySounds: clicky1.aud
 		Voice: Move
+		DeployOnAttack: true
+		DeployArmament: todeploy
+	AttackFrontal@todeploy:
+		Voice: Attack
+		RequiresCondition: undeployed
+		PauseOnCondition: empdisable
+		FacingTolerance: 256
+		Armaments: todeploy
+	Armament@todeploy:
+		Name: todeploy
+		Weapon: Jugg90mmDeployCheck
+		RequiresCondition: undeployed
 	EntersTunnels:
 		RequireForceMoveCondition: !undeployed
 	Repairable:

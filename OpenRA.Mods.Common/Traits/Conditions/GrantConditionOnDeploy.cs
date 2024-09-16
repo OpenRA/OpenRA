@@ -63,6 +63,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Undeploy before the actor is picked up by a Carryall?")]
 		public readonly bool UndeployOnPickup = false;
 
+		[Desc("Deploy when the actor attacks?")]
+		public readonly bool DeployOnAttack = false;
+
+		[Desc("On which armament tigger deploying?")]
+		public readonly string DeployArmament = "primary";
+
 		[VoiceReference]
 		public readonly string Voice = "Action";
 
@@ -90,7 +96,7 @@ namespace OpenRA.Mods.Common.Traits
 	public enum DeployState { Undeployed, Deploying, Deployed, Undeploying }
 
 	public class GrantConditionOnDeploy : PausableConditionalTrait<GrantConditionOnDeployInfo>, IResolveOrder, IIssueOrder,
-		INotifyDeployComplete, IIssueDeployOrder, IOrderVoice, IWrapMove, IDelayCarryallPickup
+		INotifyDeployComplete, IIssueDeployOrder, IOrderVoice, IWrapMove, IDelayCarryallPickup, INotifyAttack
 	{
 		readonly Actor self;
 		readonly bool checkTerrainType;
@@ -327,6 +333,17 @@ namespace OpenRA.Mods.Common.Traits
 
 			DeployState = DeployState.Undeployed;
 		}
+
+		void INotifyAttack.Attacking(Actor self, in Target target, Armament a, Barrel barrel)
+		{
+			if (IsTraitDisabled || IsTraitPaused || deployState == DeployState.Deploying || deployState == DeployState.Undeploying)
+				return;
+
+			if (Info.DeployOnAttack && (a.Info.Name == null || a.Info.Name == Info.DeployArmament))
+				self.QueueActivity(false, new DeployForGrantedCondition(self, this));
+		}
+
+		void INotifyAttack.PreparingAttack(Actor self, in Target target, Armament a, Barrel barrel) { }
 	}
 
 	public class DeployStateInit : ValueActorInit<DeployState>, ISingleInstanceInit
