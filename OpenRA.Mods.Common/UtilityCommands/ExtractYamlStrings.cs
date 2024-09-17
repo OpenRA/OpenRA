@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				.Where(t => t.Name.EndsWith("Info", StringComparison.InvariantCulture) && t.IsSubclassOf(typeof(TraitInfo)))
 				.ToDictionary(
 					t => t.Name[..^4],
-					t => t.GetFields().Where(f => f.HasAttribute<FluentReferenceAttribute>()).Select(f => f.Name).ToArray())
+					t => Utility.GetFields(t).Where(Utility.HasAttribute<FluentReferenceAttribute>).Select(f => f.Name).ToArray())
 				.Where(t => t.Value.Length > 0)
 				.ToDictionary(t => t.Key, t => t.Value);
 

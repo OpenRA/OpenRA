@@ -145,9 +145,11 @@ ChromeLayout:
 
 Translations:
 	common|languages/en.ftl
+	common|languages/hotkeys/en.ftl
 	common|languages/rules/en.ftl
 	cnc|languages/en.ftl
 	cnc|languages/chrome/en.ftl
+	cnc|languages/hotkeys/en.ftl
 	cnc|languages/rules/en.ftl
 
 AllowUnusedTranslationsInExternalPackages: false
@@ -165,7 +167,6 @@ Hotkeys:
 	common|hotkeys/game.yaml
 	common|hotkeys/observer.yaml
 	common|hotkeys/production-common.yaml
-	common|hotkeys/production-peractor.yaml
 	common|hotkeys/supportpowers.yaml
 	common|hotkeys/viewport.yaml
 	common|hotkeys/chat.yaml

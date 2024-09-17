@@ -1,29 +1,29 @@
 Container@HOTKEYS_PANEL:
 	Logic: HotkeysSettingsLogic
 		HotkeyGroups:
-			Game Commands:
+			hotkey-group-game-commands:
 				Types: OrderGenerator, World, Menu
-			Viewport Commands:
+			hotkey-group-viewport-commands:
 				Types: Viewport
-			Observer / Replay Commands:
+			hotkey-group-observer-replay-commands:
 				Types: Observer, Replay
-			Unit Commands:
+			hotkey-group-unit-commands:
 				Types: Unit
-			Unit Stance Commands:
+			hotkey-group-unit-stance-commands:
 				Types: Stance
-			Production Commands:
+			hotkey-group-production-commands:
 				Types: Production, ProductionSlot
-			Support Power Commands:
+			hotkey-group-support-power-commands:
 				Types: SupportPower
-			Music Commands:
+			hotkey-group-music-commands:
 				Types: Music
-			Chat Commands:
+			hotkey-group-chat-commands:
 				Types: Chat
-			Control Groups:
+			hotkey-group-control-groups:
 				Types: ControlGroups
-			Editor Commands:
+			hotkey-group-editor-commands:
 				Types: Editor
-			Depth Preview Debug:
+			hotkey-group-depth-preview-debug:
 				Types: DepthDebug
 	Width: PARENT_WIDTH
 	Height: PARENT_HEIGHT
