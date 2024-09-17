@@ -204,7 +204,7 @@ namespace OpenRA
 				default:
 				{
 					modernUserSupportPath = legacyUserSupportPath =
-						Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".openra") + Path.DirectorySeparatorChar;
+						Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".openra") + Path.DirectorySeparatorChar;
 					systemSupportPath = "/var/games/openra/";
 					break;
 				}
