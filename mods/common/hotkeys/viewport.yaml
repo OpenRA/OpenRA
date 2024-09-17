@@ -1,94 +1,94 @@
 MapScrollUp: UP
-	Description: Scroll up
+	Description: hotkey-description-MapScrollUp
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 MapScrollDown: DOWN
-	Description: Scroll down
+	Description: hotkey-description-MapScrollDown
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 MapScrollLeft: LEFT
-	Description: Scroll left
+	Description: hotkey-description-MapScrollLeft
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 MapScrollRight: RIGHT
-	Description: Scroll right
+	Description: hotkey-description-MapScrollRight
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 MapJumpToTopEdge: UP Alt
-	Description: Jump to top edge
+	Description: hotkey-description-MapJumpToTopEdge
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 MapJumpToBottomEdge: DOWN Alt
-	Description: Jump to bottom edge
+	Description: hotkey-description-MapJumpToBottomEdge
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 MapJumpToLeftEdge: LEFT Alt
-	Description: Jump to left edge
+	Description: hotkey-description-MapJumpToLeftEdge
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 MapJumpToRightEdge: RIGHT Alt
-	Description: Jump to right edge
+	Description: hotkey-description-MapJumpToRightEdge
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 MapBookmarkSave01: Q Ctrl
-	Description: Record bookmark 1
+	Description: hotkey-description-MapBookmarkSave01
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 MapBookmarkRestore01: Q Alt
-	Description: Jump to bookmark 1
+	Description: hotkey-description-MapBookmarkRestore01
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 MapBookmarkSave02: W Ctrl
-	Description: Record bookmark 2
+	Description: hotkey-description-MapBookmarkSave02
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 MapBookmarkRestore02: W Alt
-	Description: Jump to bookmark 2
+	Description: hotkey-description-MapBookmarkRestore02
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 MapBookmarkSave03: E Ctrl
-	Description: Record bookmark 3
+	Description: hotkey-description-MapBookmarkSave03
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 MapBookmarkRestore03: E Alt
-	Description: Jump to bookmark 3
+	Description: hotkey-description-MapBookmarkRestore03
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 MapBookmarkSave04: R Ctrl
-	Description: Record bookmark 4
+	Description: hotkey-description-MapBookmarkSave04
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 MapBookmarkRestore04: R Alt
-	Description: Jump to bookmark 4
+	Description: hotkey-description-MapBookmarkRestore04
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 ZoomIn: RIGHTBRACKET
-	Description: Zoom in
+	Description: hotkey-description-ZoomIn
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 ZoomOut: LEFTBRACKET
-	Description: Zoom out
+	Description: hotkey-description-ZoomOut
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor
 
 ResetZoom: PERIOD
-	Description: Reset zoom
+	Description: hotkey-description-ResetZoom
 	Types: Viewport
-	Contexts: Player, Spectator, Editor
+	Contexts: hotkey-context-player, hotkey-context-spectator, hotkey-context-editor

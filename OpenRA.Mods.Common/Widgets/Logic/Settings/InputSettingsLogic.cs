@@ -36,21 +36,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[FluentReference]
 		const string Joystick = "options-mouse-scroll-type.joystick";
 
-		[FluentReference]
-		const string Alt = "options-zoom-modifier.alt";
-
-		[FluentReference]
-		const string Ctrl = "options-zoom-modifier.ctrl";
-
-		[FluentReference]
-		const string Meta = "options-zoom-modifier.meta";
-
-		[FluentReference]
-		const string Shift = "options-zoom-modifier.shift";
-
-		[FluentReference]
-		const string None = "options-zoom-modifier.none";
-
 		static InputSettingsLogic() { }
 
 		readonly string classic;
@@ -205,11 +190,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var options = new Dictionary<string, Modifiers>()
 			{
-				{ FluentProvider.GetString(Alt), Modifiers.Alt },
-				{ FluentProvider.GetString(Ctrl), Modifiers.Ctrl },
-				{ FluentProvider.GetString(Meta), Modifiers.Meta },
-				{ FluentProvider.GetString(Shift), Modifiers.Shift },
-				{ FluentProvider.GetString(None), Modifiers.None }
+				{ ModifiersExts.DisplayString(Modifiers.Alt), Modifiers.Alt },
+				{ ModifiersExts.DisplayString(Modifiers.Ctrl), Modifiers.Ctrl },
+				{ ModifiersExts.DisplayString(Modifiers.Meta), Modifiers.Meta },
+				{ ModifiersExts.DisplayString(Modifiers.Shift), Modifiers.Shift },
+				{ ModifiersExts.DisplayString(Modifiers.None), Modifiers.None }
 			};
 
 			ScrollItemWidget SetupItem(string o, ScrollItemWidget itemTemplate)

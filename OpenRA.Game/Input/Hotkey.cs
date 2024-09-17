@@ -91,16 +91,16 @@ namespace OpenRA
 			var ret = KeycodeExts.DisplayString(Key);
 
 			if (Modifiers.HasModifier(Modifiers.Shift))
-				ret = "Shift + " + ret;
+				ret = $"{ModifiersExts.DisplayString(Modifiers.Shift)} + {ret}";
 
 			if (Modifiers.HasModifier(Modifiers.Alt))
-				ret = "Alt + " + ret;
+				ret = $"{ModifiersExts.DisplayString(Modifiers.Alt)} + {ret}";
 
 			if (Modifiers.HasModifier(Modifiers.Ctrl))
-				ret = "Ctrl + " + ret;
+				ret = $"{ModifiersExts.DisplayString(Modifiers.Ctrl)} + {ret}";
 
 			if (Modifiers.HasModifier(Modifiers.Meta))
-				ret = (Platform.CurrentPlatform == PlatformType.OSX ? "Cmd + " : "Meta + ") + ret;
+				ret = $"{ModifiersExts.DisplayString(Modifiers.Meta)} + {ret}";
 
 			return ret;
 		}

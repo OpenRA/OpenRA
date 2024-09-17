@@ -1,134 +1,134 @@
 CycleBase: H
-	Description: Jump to base
+	Description: hotkey-description-CycleBase
 	Types: World
-	Contexts: Player, Spectator
+	Contexts: hotkey-context-player, hotkey-context-spectator
 
 ToLastEvent: SPACE
-	Description: Jump to last radar event
+	Description: hotkey-description-ToLastEvent
 	Types: World
-	Contexts: Player, Spectator
+	Contexts: hotkey-context-player, hotkey-context-spectator
 
 ToSelection: HOME
-	Description: Jump to selection
+	Description: hotkey-description-ToSelection
 	Types: World
-	Contexts: Player, Spectator
+	Contexts: hotkey-context-player, hotkey-context-spectator
 
 SelectAllUnits: Q
-	Description: Select all combat units
+	Description: hotkey-description-SelectAllUnits
 	Types: World
-	Contexts: Player, Spectator
+	Contexts: hotkey-context-player, hotkey-context-spectator
 
 SelectUnitsByType: W
-	Description: Select units by type
+	Description: hotkey-description-SelectUnitsByType
 	Types: World
-	Contexts: Player, Spectator
+	Contexts: hotkey-context-player, hotkey-context-spectator
 
 CycleHarvesters: N
-	Description: Cycle Harvesters
+	Description: hotkey-description-CycleHarvesters
 	Types: World
-	Contexts: Player, Spectator
+	Contexts: hotkey-context-player, hotkey-context-spectator
 
 Pause: PAUSE
-	Description: Pause / Unpause
+	Description: hotkey-description-Pause
 	Types: World
-	Contexts: Player, Spectator
+	Contexts: hotkey-context-player, hotkey-context-spectator
 
 Sell: Z
-	Description: Sell mode
+	Description: hotkey-description-Sell
 	Types: OrderGenerator
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Repair: C
-	Description: Repair mode
+	Description: hotkey-description-Repair
 	Types: OrderGenerator
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 PlaceBeacon: B
-	Description: Place beacon
+	Description: hotkey-description-PlaceBeacon
 	Types: OrderGenerator
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 CycleStatusBars: COMMA
-	Description: Cycle status bars display
+	Description: hotkey-description-CycleStatusBars
 	Types: World
-	Contexts: Player, Spectator
+	Contexts: hotkey-context-player, hotkey-context-spectator
 
 ToggleMute: M
-	Description: Toggle audio mute
+	Description: hotkey-description-ToggleMute
 	Types: World
-	Contexts: Menu, Player, Spectator
+	Contexts: hotkey-context-menu, hotkey-context-player, hotkey-context-spectator
 
 TogglePlayerStanceColor: COMMA Ctrl
-	Description: Toggle player stance colors
+	Description: hotkey-description-TogglePlayerStanceColor
 	Types: World
-	Contexts: Player, Spectator
+	Contexts: hotkey-context-player, hotkey-context-spectator
 
 TakeScreenshot: P Ctrl
-	Description: Take screenshot
+	Description: hotkey-description-TakeScreenshot
 	Types: World
-	Contexts: Menu, Player, Spectator
+	Contexts: hotkey-context-menu, hotkey-context-player, hotkey-context-spectator
 
 AttackMove: A
-	Description: Attack Move
+	Description: hotkey-description-AttackMove
 	Types: Unit
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Stop: S
-	Description: Stop
+	Description: hotkey-description-Stop
 	Types: Unit
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Scatter: X Ctrl
-	Description: Scatter
+	Description: hotkey-description-Scatter
 	Types: Unit
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Deploy: F
-	Description: Deploy
+	Description: hotkey-description-Deploy
 	Types: Unit
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Guard: D
-	Description: Guard
+	Description: hotkey-description-Guard
 	Types: Unit
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 StanceAttackAnything: A Alt
-	Description: Attack anything
+	Description: hotkey-description-StanceAttackAnything
 	Types: Stance
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 StanceDefend: S Alt
-	Description: Defend
+	Description: hotkey-description-StanceDefend
 	Types: Stance
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 StanceReturnFire: D Alt
-	Description: Return fire
+	Description: hotkey-description-StanceReturnFire
 	Types: Stance
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 StanceHoldFire: F Alt
-	Description: Hold fire
+	Description: hotkey-description-StanceHoldFire
 	Types: Stance
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 StopMusic: AUDIOSTOP
-	Description: Stop
+	Description: hotkey-description-StopMusic
 	Types: Music
-	Contexts: Menu, Player, Spectator
+	Contexts: hotkey-context-menu, hotkey-context-player, hotkey-context-spectator
 
 PauseMusic: AUDIOPLAY
-	Description: Pause or Resume
+	Description: hotkey-description-PauseMusic
 	Types: Music
-	Contexts: Menu, Player, Spectator
+	Contexts: hotkey-context-menu, hotkey-context-player, hotkey-context-spectator
 
 PrevMusic: AUDIOPREV
-	Description: Previous
+	Description: hotkey-description-PrevMusic
 	Types: Music
-	Contexts: Menu, Player, Spectator
+	Contexts: hotkey-context-menu, hotkey-context-player, hotkey-context-spectator
 
 NextMusic: AUDIONEXT
-	Description: Next
+	Description: hotkey-description-NextMusic
 	Types: Music
-	Contexts: Menu, Player, Spectator
+	Contexts: hotkey-context-menu, hotkey-context-player, hotkey-context-spectator

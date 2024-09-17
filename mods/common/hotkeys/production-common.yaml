@@ -1,129 +1,129 @@
 CycleProductionBuildings: TAB Ctrl
-	Description: Next facility
+	Description: hotkey-description-CycleProductionBuildings
 	Types: Production
-	Contexts: Player, Spectator
+	Contexts: hotkey-context-player, hotkey-context-spectator
 
 SelectProductionBuilding: TAB
-	Description: Current facility
+	Description: hotkey-description-SelectProductionBuilding
 	Types: Production
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production01: F1
-	Description: Slot 01
+	Description: hotkey-description-Production01
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production02: F2
-	Description: Slot 02
+	Description: hotkey-description-Production02
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production03: F3
-	Description: Slot 03
+	Description: hotkey-description-Production03
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production04: F4
-	Description: Slot 04
+	Description: hotkey-description-Production04
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production05: F5
-	Description: Slot 05
+	Description: hotkey-description-Production05
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production06: F6
-	Description: Slot 06
+	Description: hotkey-description-Production06
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production07: F7
-	Description: Slot 07
+	Description: hotkey-description-Production07
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production08: F8
-	Description: Slot 08
+	Description: hotkey-description-Production08
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production09: F9
-	Description: Slot 09
+	Description: hotkey-description-Production09
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production10: F10
-	Description: Slot 10
+	Description: hotkey-description-Production10
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production11: F11
-	Description: Slot 11
+	Description: hotkey-description-Production11
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production12: F12
-	Description: Slot 12
+	Description: hotkey-description-Production12
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production13: F1 CTRL
-	Description: Slot 13
+	Description: hotkey-description-Production13
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production14: F2 CTRL
-	Description: Slot 14
+	Description: hotkey-description-Production14
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production15: F3 CTRL
-	Description: Slot 15
+	Description: hotkey-description-Production15
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production16: F4 CTRL
-	Description: Slot 16
+	Description: hotkey-description-Production16
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production17: F5 CTRL
-	Description: Slot 17
+	Description: hotkey-description-Production17
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production18: F6 CTRL
-	Description: Slot 18
+	Description: hotkey-description-Production18
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production19: F7 CTRL
-	Description: Slot 19
+	Description: hotkey-description-Production19
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production20: F8 CTRL
-	Description: Slot 20
+	Description: hotkey-description-Production20
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production21: F9 CTRL
-	Description: Slot 21
+	Description: hotkey-description-Production21
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production22: F10 CTRL
-	Description: Slot 22
+	Description: hotkey-description-Production22
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production23: F11 CTRL
-	Description: Slot 23
+	Description: hotkey-description-Production23
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 Production24: F12 CTRL
-	Description: Slot 24
+	Description: hotkey-description-Production24
 	Types: ProductionSlot
-	Contexts: Player
+	Contexts: hotkey-context-player

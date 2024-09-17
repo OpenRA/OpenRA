@@ -21,6 +21,7 @@ using OpenRA.Mods.Common.Scripting;
 using OpenRA.Mods.Common.Scripting.Global;
 using OpenRA.Mods.Common.Traits;
 using OpenRA.Mods.Common.Warheads;
+using OpenRA.Mods.Common.Widgets.Logic;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -249,7 +250,7 @@ namespace OpenRA.Mods.Common.Lint
 			testedFields.AddRange(
 				modData.ObjectCreator.GetTypes()
 				.Where(t => t.IsSubclassOf(typeof(TraitInfo)) || t.IsSubclassOf(typeof(Warhead)))
-				.SelectMany(t => t.GetFields().Where(f => f.HasAttribute<FluentReferenceAttribute>())));
+				.SelectMany(t => Utility.GetFields(t).Where(Utility.HasAttribute<FluentReferenceAttribute>)));
 
 			// TODO: linter does not work with LoadUsing
 			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
@@ -277,6 +278,36 @@ namespace OpenRA.Mods.Common.Lint
 				usedKeys, testedFields, Utility.GetFields(typeof(ModContent)), new[] { modContent });
 			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
 				usedKeys, testedFields, Utility.GetFields(typeof(ModContent.ModPackage)), modContent.Packages.Values);
+
+			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+				usedKeys, testedFields, Utility.GetFields(typeof(HotkeyDefinition)), modData.Hotkeys.Definitions);
+
+			// All keycodes and modifiers should be marked as used, as they can all be configured for use at hotkeys at runtime.
+			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+				usedKeys, testedFields, Utility.GetFields(typeof(KeycodeExts)).Concat(Utility.GetFields(typeof(ModifiersExts))), new[] { (object)null });
+
+			foreach (var filename in modData.Manifest.ChromeLayout)
+				CheckHotkeysSettingsLogic(usedKeys, MiniYaml.FromStream(modData.DefaultFileSystem.Open(filename), filename));
+
+			static void CheckHotkeysSettingsLogic(Keys usedKeys, IEnumerable<MiniYamlNode> nodes)
+			{
+				foreach (var node in nodes)
+				{
+					if (node.Value.Nodes != null)
+						CheckHotkeysSettingsLogic(usedKeys, node.Value.Nodes);
+
+					if (node.Key != "Logic" || node?.Value.Value != "HotkeysSettingsLogic")
+						continue;
+
+					var hotkeyGroupsNode = node.Value.NodeWithKeyOrDefault("HotkeyGroups");
+					if (hotkeyGroupsNode == null)
+						continue;
+
+					var hotkeyGroupsKeys = hotkeyGroupsNode?.Value.Nodes.Select(n => n.Key);
+					foreach (var key in hotkeyGroupsKeys)
+						usedKeys.Add(key, new FluentReferenceAttribute(), $"`{nameof(HotkeysSettingsLogic)}.HotkeyGroups`");
+				}
+			}
 
 			return (usedKeys, testedFields);
 		}

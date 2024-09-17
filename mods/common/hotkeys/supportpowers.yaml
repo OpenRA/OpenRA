@@ -1,29 +1,29 @@
 SupportPower01:
-	Description: Slot 01
+	Description: hotkey-description-SupportPower01
 	Types: SupportPower
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 SupportPower02:
-	Description: Slot 02
+	Description: hotkey-description-SupportPower02
 	Types: SupportPower
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 SupportPower03:
-	Description: Slot 03
+	Description: hotkey-description-SupportPower03
 	Types: SupportPower
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 SupportPower04:
-	Description: Slot 04
+	Description: hotkey-description-SupportPower04
 	Types: SupportPower
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 SupportPower05:
-	Description: Slot 05
+	Description: hotkey-description-SupportPower05
 	Types: SupportPower
-	Contexts: Player
+	Contexts: hotkey-context-player
 
 SupportPower06:
-	Description: Slot 06
+	Description: hotkey-description-SupportPower06
 	Types: SupportPower
-	Contexts: Player
+	Contexts: hotkey-context-player
