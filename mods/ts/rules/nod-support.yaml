@@ -1,7 +1,7 @@
 NAWALL:
 	Inherits: ^Wall
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 20
 		Prerequisites: ~structures.nod, ~techlevel.low
 		Description: actor-nawall.description
@@ -22,7 +22,7 @@ NAWALL:
 NAGATE_A:
 	Inherits: ^Gate_A
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 40
 		Prerequisites: nahand, ~structures.nod, ~techlevel.low
 	Tooltip:
@@ -33,7 +33,7 @@ NAGATE_A:
 NAGATE_B:
 	Inherits: ^Gate_B
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 60
 		Prerequisites: nahand, ~structures.nod, ~techlevel.low
 	Tooltip:
@@ -45,7 +45,7 @@ NAPOST:
 	Inherits: ^Building
 	Inherits@IDISABLED: ^DisableOnLowPowerOrPowerDown
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 150
 		Prerequisites: naapwr, ~structures.nod
 		Description: actor-napost.description
@@ -168,7 +168,7 @@ NAFNCE:
 		Bounds: 1448, 1448
 
 NALASR:
-	Inherits: ^Defense
+	Inherits: ^Support
 	Inherits@IDISABLE: ^DisableOnPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
@@ -176,7 +176,7 @@ NALASR:
 	Tooltip:
 		Name: actor-nalasr.name
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		Prerequisites: nahand, ~structures.nod, ~techlevel.low
 		BuildPaletteOrder: 90
 		Description: actor-nalasr.description
@@ -207,7 +207,7 @@ NALASR:
 		QuantizedFacings: 0
 
 NAOBEL:
-	Inherits: ^Defense
+	Inherits: ^Support
 	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetGround
 	Inherits@SHAPE: ^2x2Shape
@@ -216,7 +216,7 @@ NAOBEL:
 	Tooltip:
 		Name: actor-naobel.name
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 160
 		Prerequisites: natech, ~structures.nod, ~techlevel.high
 		Description: actor-naobel.description
@@ -251,7 +251,7 @@ NAOBEL:
 		Amount: -150
 
 NASAM:
-	Inherits: ^Defense
+	Inherits: ^Support
 	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetAir
 	Valued:
@@ -259,7 +259,7 @@ NASAM:
 	Tooltip:
 		Name: actor-nasam.name
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		Prerequisites: naradr, ~structures.nod, ~techlevel.medium
 		BuildPaletteOrder: 100
 		Description: actor-nasam.description

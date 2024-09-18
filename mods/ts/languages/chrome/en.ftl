@@ -176,7 +176,7 @@ productionpalette-sidebar-production-palette =
    .hold = ON HOLD
 
 button-production-types-building-tooltip = Buildings
-button-production-types-defense-tooltip = Support
+button-production-types-support-tooltip = Support
 button-production-types-infantry-tooltip = Infantry
 button-production-types-vehicle-tooltip = Vehicles
 button-production-types-aircraft-tooltip = Aircraft

@@ -27,8 +27,8 @@ Player:
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
 		SpeedUp: True
-	ClassicProductionQueue@Defense:
-		Type: Defense
+	ClassicProductionQueue@Support:
+		Type: Support
 		DisplayOrder: 1
 		BuildDurationModifier: 120
 		LowPowerModifier: 300

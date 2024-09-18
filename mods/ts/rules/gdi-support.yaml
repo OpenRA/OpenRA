@@ -1,7 +1,7 @@
 GAWALL:
 	Inherits: ^Wall
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 10
 		Prerequisites: ~structures.gdi, ~techlevel.low
 		Description: actor-gawall.description
@@ -22,7 +22,7 @@ GAWALL:
 GAGATE_A:
 	Inherits: ^Gate_A
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 30
 		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 	Tooltip:
@@ -33,7 +33,7 @@ GAGATE_A:
 GAGATE_B:
 	Inherits: ^Gate_B
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 50
 		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 	Tooltip:
@@ -42,7 +42,7 @@ GAGATE_B:
 		ReplaceableTypes: GDIGate
 
 GACTWR:
-	Inherits: ^Defense
+	Inherits: ^Support
 	Inherits@IDISABLE: ^DisableOnPowerDown
 	Inherits@AUTOTARGET: ^AutoTargetAll
 	WithMakeAnimation:
@@ -58,7 +58,7 @@ GACTWR:
 	Tooltip:
 		Name: actor-gactwr.name
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 70
 		Prerequisites: gapile, ~structures.gdi, ~techlevel.low
 		Description: actor-gactwr.description
@@ -164,7 +164,7 @@ GAVULC:
 	Tooltip:
 		Name: actor-gavulc.name
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 80
 		Prerequisites: gactwr.socket, gapile, ~structures.gdi, ~techlevel.low
 		Description: actor-gavulc.description
@@ -180,7 +180,7 @@ GAROCK:
 	Tooltip:
 		Name: actor-garock.name
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 90
 		Prerequisites: gactwr.socket, gapile, ~structures.gdi, ~techlevel.high
 		Description: actor-garock.description
@@ -196,7 +196,7 @@ GACSAM:
 	Tooltip:
 		Name: actor-gacsam.name
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 100
 		Prerequisites: gactwr.socket, garadr, ~structures.gdi, ~techlevel.medium
 		Description: actor-gacsam.description

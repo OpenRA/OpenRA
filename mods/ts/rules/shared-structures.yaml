@@ -18,7 +18,7 @@ GACNST:
 		Range: 5c0
 		MaxHeightDelta: 3
 	Production:
-		Produces: Building,Defense
+		Produces: Building,Support
 		PauseOnCondition: empdisable
 	Valued:
 		Cost: 2500
@@ -60,8 +60,8 @@ GACNST:
 		Prerequisites: global-factundeploy
 	ProductionBar@Building:
 		ProductionType: Building
-	ProductionBar@Defense:
-		ProductionType: Defense
+	ProductionBar@Support:
+		ProductionType: Support
 	WithIdleOverlay@TOP:
 		RequiresCondition: !build-incomplete
 		Sequence: idle-top
