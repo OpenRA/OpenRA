@@ -62,11 +62,11 @@ SuicideBomb:
 	TargetActorCenter: true
 	Report: hunter2.aud
 	Projectile: InstantHit
-	ValidTargets: Vehicle, Building, Defense, Infantry
+	ValidTargets: Vehicle, Building, Support, Infantry
 	Warhead@1Dam: TargetDamage
 		Damage: 1000000
 		DamageTypes: FireDeath
-		ValidTargets: Vehicle, Building, Defense, Infantry
+		ValidTargets: Vehicle, Building, Support, Infantry
 
 IonCannon:
 	ValidTargets: Ground, Water, Air, Trees

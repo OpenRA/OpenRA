@@ -143,11 +143,11 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Support
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Building, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Building, Support
 		InvalidTargets: NoAutoTarget
 
 ^AutoTargetGroundAssaultMove:
@@ -170,11 +170,11 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Support
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Building, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Building, Support
 		InvalidTargets: NoAutoTarget
 
 ^AutoTargetAllAssaultMove:
@@ -1154,7 +1154,7 @@
 	Tooltip:
 		Name: meta-palette-name
 
-^Defense:
+^Support:
 	Inherits: ^Building
 	Inherits@selection: ^SelectableCombatBuilding
 	-GivesBuildableArea:
@@ -1165,11 +1165,11 @@
 	DetectCloaked:
 		Range: 5c0
 	Targetable:
-		TargetTypes: Ground, Building, C4, Defense
+		TargetTypes: Ground, Building, C4, Support
 	-Capturable:
 	RevealOnFire:
 	MapEditorData:
-		Categories: Defense
+		Categories: Support
 	-CommandBarBlacklist:
 
 ^Train:

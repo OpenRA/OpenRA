@@ -21,9 +21,9 @@ production-icons:
 		building: 0, 68, 16, 16
 		building-disabled: 0, 85, 16, 16
 		building-alert: 0, 102, 16, 16
-		defense: 17, 68, 16, 16
-		defense-disabled: 17, 85, 16, 16
-		defense-alert: 17, 102, 16, 16
+		support: 17, 68, 16, 16
+		support-disabled: 17, 85, 16, 16
+		support-alert: 17, 102, 16, 16
 		infantry: 34, 68, 16, 16
 		infantry-disabled: 34, 85, 16, 16
 		infantry-alert: 34, 102, 16, 16

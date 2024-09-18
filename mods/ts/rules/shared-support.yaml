@@ -1,5 +1,5 @@
 NAPULS:
-	Inherits: ^Defense
+	Inherits: ^Support
 	Inherits@IDISABLE: ^DisableOnLowPowerOrPowerDown
 	Inherits@SHAPE: ^2x2Shape
 	Valued:
@@ -7,7 +7,7 @@ NAPULS:
 	Tooltip:
 		Name: actor-napuls.name
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 110
 		Prerequisites: radar, ~techlevel.superweapons
 		Description: actor-napuls.description

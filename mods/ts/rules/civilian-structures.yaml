@@ -1435,7 +1435,7 @@ GAOLDCC6:
 GASAND:
 	Inherits: ^Wall
 	Buildable:
-		Queue: Defense
+		Queue: Support
 		BuildPaletteOrder: 1000
 		Prerequisites: ~disabled
 		Description: actor-gasand.description
