@@ -545,9 +545,9 @@ production-icons:
 		building: 768, 68, 16, 16
 		building-disabled: 768, 85, 16, 16
 		building-alert: 768, 102, 16, 16
-		defence: 785, 68, 16, 16
-		defence-disabled: 785, 85, 16, 16
-		defence-alert: 785, 102, 16, 16
+		support: 785, 68, 16, 16
+		support-disabled: 785, 85, 16, 16
+		support-alert: 785, 102, 16, 16
 		infantry: 802, 68, 16, 16
 		infantry-disabled: 802, 85, 16, 16
 		infantry-alert: 802, 102, 16, 16

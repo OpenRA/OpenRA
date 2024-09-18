@@ -22,7 +22,7 @@ FACT:
 	RevealsShroud:
 		Range: 10c0
 	Production:
-		Produces: Building.GDI, Building.Nod, Defence.GDI, Defence.Nod
+		Produces: Building.GDI, Building.Nod, Support.GDI, Support.Nod
 	Transforms:
 		RequiresCondition: factundeploy
 		PauseOnCondition: being-demolished || build-incomplete
@@ -76,11 +76,11 @@ FACT:
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
-	ProductionQueue@GDIDefense:
-		Type: Defence.GDI
+	ProductionQueue@GDISupport:
+		Type: Support.GDI
 		DisplayOrder: 1
 		Factions: gdi
-		Group: Defence
+		Group: Support
 		LowPowerModifier: 150
 		ReadyAudio: ConstructionComplete
 		ReadyTextNotification: notification-construction-complete
@@ -91,11 +91,11 @@ FACT:
 		QueuedAudio: Building
 		OnHoldAudio: OnHold
 		CancelledAudio: Cancelled
-	ProductionQueue@NodDefense:
-		Type: Defence.Nod
+	ProductionQueue@NodSupport:
+		Type: Support.Nod
 		DisplayOrder: 1
 		Factions: nod
-		Group: Defence
+		Group: Support
 		LowPowerModifier: 150
 		ReadyAudio: ConstructionComplete
 		ReadyTextNotification: notification-construction-complete
@@ -111,11 +111,11 @@ FACT:
 		ProductionType: Building.GDI
 	ProductionBar@BuildingNod:
 		ProductionType: Building.Nod
-	ProductionBar@DefenceGDI:
-		ProductionType: Defence.GDI
+	ProductionBar@SupportGDI:
+		ProductionType: Support.GDI
 		Color: 8A8A8A
-	ProductionBar@DefenceNod:
-		ProductionType: Defence.Nod
+	ProductionBar@SupportNod:
+		ProductionType: Support.Nod
 		Color: 8A8A8A
 	BaseProvider:
 		Range: 14c0
@@ -294,7 +294,7 @@ SILO:
 	Buildable:
 		BuildPaletteOrder: 35
 		Prerequisites: proc
-		Queue: Defence.GDI, Defence.Nod
+		Queue: Support.GDI, Support.Nod
 		Description: actor-silo.description
 	Building:
 		Footprint: xx
@@ -948,7 +948,7 @@ TMPL:
 	ProvidesPrerequisite@buildingname:
 
 GUN:
-	Inherits: ^Defense
+	Inherits: ^Support
 	Inherits@AUTOTARGET: ^AutoTargetGround
 	Selectable:
 		Bounds: 1024, 1024
@@ -959,7 +959,7 @@ GUN:
 	Buildable:
 		BuildPaletteOrder: 45
 		Prerequisites: barracks
-		Queue: Defence.GDI, Defence.Nod
+		Queue: Support.GDI, Support.Nod
 		BuildDuration: 960
 		Description: actor-gun.description
 	Building:
@@ -1001,7 +1001,7 @@ GUN:
 	ClassicFacingBodyOrientation:
 
 SAM:
-	Inherits: ^Defense
+	Inherits: ^Support
 	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@AUTOTARGET: ^AutoTargetAir
 	Inherits@shape: ^2x1Shape
@@ -1018,7 +1018,7 @@ SAM:
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: hand
-		Queue: Defence.Nod
+		Queue: Support.Nod
 		BuildDuration: 1130
 		Description: actor-sam.description
 	Building:
@@ -1058,7 +1058,7 @@ SAM:
 		SequenceAlpha: 0.65
 
 OBLI:
-	Inherits: ^Defense
+	Inherits: ^Support
 	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@AUTOTARGET: ^AutoTargetGround
 	Valued:
@@ -1068,7 +1068,7 @@ OBLI:
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: tmpl, ~techlevel.high
-		Queue: Defence.Nod
+		Queue: Support.Nod
 		BuildDuration: 2080
 		Description: actor-obli.description
 	Selectable:
@@ -1108,7 +1108,7 @@ OBLI:
 		Amount: -90
 
 GTWR:
-	Inherits: ^Defense
+	Inherits: ^Support
 	Inherits@AUTOTARGET: ^AutoTargetGround
 	Selectable:
 		Bounds: 1024, 1024
@@ -1119,7 +1119,7 @@ GTWR:
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: barracks
-		Queue: Defence.GDI, Defence.Nod
+		Queue: Support.GDI, Support.Nod
 		BuildDuration: 960
 		Description: actor-gtwr.description
 	Building:
@@ -1152,7 +1152,7 @@ GTWR:
 		Amount: -10
 
 ATWR:
-	Inherits: ^Defense
+	Inherits: ^Support
 	Inherits@IDISABLE: ^DisabledOverlay
 	Inherits@AUTOTARGET: ^AutoTargetAll
 	Valued:
@@ -1162,7 +1162,7 @@ ATWR:
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: anyhq, ~techlevel.medium
-		Queue: Defence.GDI
+		Queue: Support.GDI
 		BuildDuration: 1920
 		Description: actor-atwr.description
 	Selectable:
@@ -1216,7 +1216,7 @@ SBAG:
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: fact
-		Queue: Defence.GDI
+		Queue: Support.GDI
 		Description: actor-sbag.description
 	Encyclopedia:
 		Description: actor-sbag.encyclopedia
@@ -1242,7 +1242,7 @@ CYCL:
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: fact
-		Queue: Defence.Nod
+		Queue: Support.Nod
 		Description: actor-cycl.description
 	Encyclopedia:
 		Description: actor-cycl.encyclopedia
@@ -1268,7 +1268,7 @@ BRIK:
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: vehicleproduction
-		Queue: Defence.GDI, Defence.Nod
+		Queue: Support.GDI, Support.Nod
 		BuildDuration: 230
 		Description: actor-brik.description
 	Encyclopedia:
