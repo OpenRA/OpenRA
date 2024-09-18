@@ -145,11 +145,11 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Support
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Structure, Support
 		InvalidTargets: NoAutoTarget
 
 ^AutoTargetGroundAssaultMove:
@@ -172,11 +172,11 @@
 		AttackAnythingCondition: stance-attackanything
 	AutoTargetPriority@DEFAULT:
 		RequiresCondition: !stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Support
 		InvalidTargets: NoAutoTarget
 	AutoTargetPriority@ATTACKANYTHING:
 		RequiresCondition: stance-attackanything
-		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Structure, Defense
+		ValidTargets: Infantry, Vehicle, Creep, Water, Air, Structure, Support
 		InvalidTargets: NoAutoTarget
 
 ^AutoTargetAllAssaultMove:
@@ -1160,7 +1160,7 @@
 	MapEditorData:
 		Categories: System
 
-^Defense:
+^Support:
 	Inherits: ^BaseBuilding
 	Inherits@selection: ^SelectableCombatBuilding
 	RenderRangeCircle:
@@ -1169,9 +1169,9 @@
 	MustBeDestroyed:
 		RequiredForShortGame: false
 	Targetable:
-		TargetTypes: Ground, C4, Structure, Defense
+		TargetTypes: Ground, C4, Structure, Support
 	MapEditorData:
-		Categories: Defense
+		Categories: Support
 	-CommandBarBlacklist:
 	-AcceptsDeliveredCash:
 

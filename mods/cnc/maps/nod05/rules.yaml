@@ -124,7 +124,7 @@ MSAM:
 
 SBAG:
 	Buildable:
-		Queue: Defence.GDI, Defence.Nod
+		Queue: Support.GDI, Support.Nod
 
 HQ:
 	AirstrikePower:

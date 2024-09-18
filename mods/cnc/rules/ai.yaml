@@ -85,7 +85,7 @@ Player:
 	BaseBuilderBotModule@cabal:
 		RequiresCondition: enable-cabal-ai
 		BuildingQueues: Building.Nod, Building.GDI
-		DefenseQueues: Defence.Nod, Defence.GDI
+		DefenseQueues: Support.Nod, Support.GDI
 		MinimumExcessPower: 30
 		MaximumExcessPower: 150
 		ExcessPowerIncrement: 30
@@ -129,7 +129,7 @@ Player:
 	BaseBuilderBotModule@watson:
 		RequiresCondition: enable-watson-ai
 		BuildingQueues: Building.Nod, Building.GDI
-		DefenseQueues: Defence.Nod, Defence.GDI
+		DefenseQueues: Support.Nod, Support.GDI
 		MinimumExcessPower: 30
 		MaximumExcessPower: 150
 		ExcessPowerIncrement: 30
@@ -173,7 +173,7 @@ Player:
 	BaseBuilderBotModule@hal9001:
 		RequiresCondition: enable-hal9001-ai
 		BuildingQueues: Building.Nod, Building.GDI
-		DefenseQueues: Defence.Nod, Defence.GDI
+		DefenseQueues: Support.Nod, Support.GDI
 		MinimumExcessPower: 30
 		MaximumExcessPower: 210
 		ExcessPowerIncrement: 30

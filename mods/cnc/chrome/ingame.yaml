@@ -1772,16 +1772,16 @@ Container@PLAYER_WIDGETS:
 									Y: 2
 									ImageCollection: chrome-button
 									ImageName: separator
-						ProductionTypeButton@DEFENCE:
+						ProductionTypeButton@SUPPORT:
 							Logic: AddFactionSuffixLogic
 							X: 39
 							Width: 38
 							Height: 26
 							Background: chrome-button-background
-							TooltipText: button-production-types-defence-tooltip
+							TooltipText: button-production-types-support-tooltip
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: BUTTON_TOOLTIP_FACTIONSUFFIX
-							ProductionGroup: Defence
+							ProductionGroup: Support
 							Key: ProductionTypeDefense
 							Children:
 								Image@ICON:

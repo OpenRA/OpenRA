@@ -14,7 +14,7 @@ ProductionTypeBuilding: E
 	Contexts: player
 
 ProductionTypeDefense: R
-	Description: hotkey-description-productiontypedefense
+	Description: hotkey-description-productiontypesupport
 	Types: Production
 	Contexts: player
 

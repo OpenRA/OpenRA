@@ -139,11 +139,11 @@ HELI:
 
 SBAG:
 	Buildable:
-		Queue: Defence.GDI, Defence.Nod
+		Queue: Support.GDI, Support.Nod
 
 GTWR:
 	Buildable:
-		Queue: Defence.GDI
+		Queue: Support.GDI
 
 A10.IN:
 	Inherits: A10
