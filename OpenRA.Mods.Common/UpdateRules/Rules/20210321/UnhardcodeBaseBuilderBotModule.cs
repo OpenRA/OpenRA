@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 {
 	public class UnhardcodeBaseBuilderBotModule : UpdateRule, IBeforeUpdateActors
 	{
-		MiniYamlNodeBuilder defences;
+		MiniYamlNodeBuilder defenses;
 
 		// Excludes AttackBomber and AttackTDGunboatTurreted as actors with these AttackBase traits aren't supposed to be controlled.
 		readonly string[] attackBase =
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 
 		public IEnumerable<string> BeforeUpdateActors(ModData modData, List<MiniYamlNodeBuilder> resolvedActors)
 		{
-			var defences = new List<string>();
+			var defenses = new List<string>();
 
 			foreach (var actor in resolvedActors)
 			{
@@ -78,12 +78,12 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 				if (isBuildable && isBuilding && canAttack)
 				{
 					var name = actor.Key.ToLowerInvariant();
-					if (!defences.Contains(name))
-						defences.Add(name);
+					if (!defenses.Contains(name))
+						defenses.Add(name);
 				}
 			}
 
-			this.defences = new MiniYamlNodeBuilder("DefenseTypes", FieldSaver.FormatValue(defences));
+			this.defenses = new MiniYamlNodeBuilder("DefenseTypes", FieldSaver.FormatValue(defenses));
 
 			yield break;
 		}
@@ -100,9 +100,9 @@ namespace OpenRA.Mods.Common.UpdateRules.Rules
 		{
 			foreach (var squadManager in actorNode.ChildrenMatching("BaseBuilderBotModule", includeRemovals: false))
 			{
-				if (!squadManager.ChildrenMatching(defences.Key, includeRemovals: false).Any())
+				if (!squadManager.ChildrenMatching(defenses.Key, includeRemovals: false).Any())
 				{
-					squadManager.AddNode(defences);
+					squadManager.AddNode(defenses);
 					anyAdded = true;
 				}
 			}
