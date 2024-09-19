@@ -363,7 +363,7 @@ silo:
 		Amount: -15
 	MustBeDestroyed:
 		RequiredForShortGame: false
-	ThrowsShrapnel:
+	FireProjectilesOnDeath:
 		Weapons: Debris, Debris2, Debris3, Debris4
 		Pieces: 3, 5
 		Range: 2c0, 5c0
@@ -756,10 +756,10 @@ wall:
 	Sellable:
 		SellSounds: CHUNG.WAV
 	Guardable:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: WallExplode
 		EmptyWeapon: WallExplode
-	ThrowsShrapnel:
+	FireProjectilesOnDeath:
 		Weapons: Debris2, Debris3
 		Pieces: 1, 1
 		Range: 1c512, 2c768

@@ -133,7 +133,7 @@ STNK.Husk:
 		IntoActor: stnk
 	RenderSprites:
 		Image: stnk.destroyed
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeStealthTank
 		EmptyWeapon: UnitExplodeStealthTank
 

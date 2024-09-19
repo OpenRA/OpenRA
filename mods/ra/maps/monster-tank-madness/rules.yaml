@@ -23,7 +23,7 @@ World:
 
 ^ExplodingCivBuilding:
 	Inherits: ^CivBuilding
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: BarrelExplode
 		EmptyWeapon: BarrelExplode
 
@@ -78,7 +78,7 @@ V11.exploding:
 		Image: V11
 
 V19:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: BarrelExplode
 		EmptyWeapon: BarrelExplode
 
@@ -155,7 +155,7 @@ PBOX:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: MiniNuke
 		EmptyWeapon: MiniNuke
 	SpawnActorOnDeath:

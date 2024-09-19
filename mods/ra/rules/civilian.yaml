@@ -376,8 +376,8 @@ V19.Husk:
 	-Demolishable:
 	-HitShape:
 	-Health:
-	-Explodes:
-	-Explodes@CIVPANIC:
+	-FireWarheadsOnDeath:
+	-FireWarheadsOnDeath@CIVPANIC:
 	Interactable:
 
 BARL:
@@ -385,7 +385,7 @@ BARL:
 	-Selectable:
 	Health:
 		HP: 1000
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: BarrelExplode
 	Tooltip:
 		Name: actor-barl-name
@@ -407,7 +407,7 @@ BRL3:
 	-Selectable:
 	Health:
 		HP: 1000
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: BarrelExplode
 	Tooltip:
 		Name: actor-brl3-name
@@ -551,7 +551,7 @@ OILB:
 	TooltipDescription@other:
 		Description: actor-oilb.capturable-desc
 		ValidRelationships: Neutral, Enemy
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: BarrelExplode
 	GpsDot:
 		String: Oil

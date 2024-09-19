@@ -307,9 +307,9 @@ SONIC:
 		TurnSpeed: 20
 		Offset: -170,0,0
 	WithVoxelTurret:
-	Explodes:
+	FireWarheadsOnDeath:
 		RequiresCondition: !rank-elite
-	Explodes@ELITE:
+	FireWarheadsOnDeath@ELITE:
 		RequiresCondition: rank-elite
 		Weapon: UnitExplode
 
