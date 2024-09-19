@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Common.Projectiles
 		[Desc("The width of the beam.")]
 		public readonly WDist Width = new(512);
 
+		[Desc("Tight projectile AoE to its visual representation. If false, AoE is read from Warhead info")]
+		public readonly bool ProjectileVisualAsAoE = true;
+
 		[Desc("The shape of the beam.  Accepts values Cylindrical or Flat.")]
 		public readonly BeamRenderableShape Shape = BeamRenderableShape.Cylindrical;
 
@@ -243,23 +246,37 @@ namespace OpenRA.Mods.Common.Projectiles
 			// Damage is applied to intersected actors every DamageInterval ticks
 			if (headTicks % info.DamageInterval == 0)
 			{
-				var actors = world.FindActorsOnLine(tailPos, headPos, info.Width);
-				foreach (var a in actors)
+				if (info.ProjectileVisualAsAoE)
 				{
-					var adjustedModifiers = args.DamageModifiers.Append(GetFalloff((args.Source - a.CenterPosition).Length));
+					var actors = world.FindActorsOnLine(tailPos, headPos, info.Width);
+					foreach (var a in actors)
+					{
+						var adjustedModifiers = args.DamageModifiers.Append(GetFalloff((args.Source - a.CenterPosition).Length));
 
+						var warheadArgs = new WarheadArgs(args)
+						{
+							ImpactOrientation = new WRot(WAngle.Zero, Util.GetVerticalAngle(args.Source, target), args.CurrentMuzzleFacing()),
+
+							// Calculating an impact position is bogus for line damage.
+							// FindActorsOnLine guarantees that the beam touches the target's HitShape,
+							// so we just assume a center hit to avoid bogus warhead recalculations.
+							ImpactPosition = a.CenterPosition,
+							DamageModifiers = adjustedModifiers.ToArray(),
+						};
+
+						args.Weapon.Impact(Target.FromActor(a), warheadArgs);
+					}
+				}
+				else
+				{
+					var adjustedModifiers = args.DamageModifiers.Append(GetFalloff((args.Source - headPos).Length));
 					var warheadArgs = new WarheadArgs(args)
 					{
 						ImpactOrientation = new WRot(WAngle.Zero, Util.GetVerticalAngle(args.Source, target), args.CurrentMuzzleFacing()),
-
-						// Calculating an impact position is bogus for line damage.
-						// FindActorsOnLine guarantees that the beam touches the target's HitShape,
-						// so we just assume a center hit to avoid bogus warhead recalculations.
-						ImpactPosition = a.CenterPosition,
+						ImpactPosition = headPos,
 						DamageModifiers = adjustedModifiers.ToArray(),
 					};
-
-					args.Weapon.Impact(Target.FromActor(a), warheadArgs);
+					args.Weapon.Impact(Target.FromPos(headPos), warheadArgs);
 				}
 			}
 
