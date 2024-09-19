@@ -42,9 +42,10 @@ Container@CREDITS_PANEL:
 					Children:
 						Label@CREDITS_TEMPLATE:
 							X: 8
-							Width: PARENT_RIGHT - 25
+							Width: PARENT_RIGHT - 24 - 2 * 8
 							Height: 16
 							VAlign: Top
+							WordWrap: true
 		Button@BACK_BUTTON:
 			Y: PARENT_BOTTOM - 1
 			Width: 140
