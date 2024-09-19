@@ -543,9 +543,9 @@ STNK:
 		InitialStance: HoldFire
 		InitialStanceAI: ReturnFire
 	-MustBeDestroyed:
-	Explodes:
+	FireWarheadsOnDeath:
 		RequiresCondition: !rank-elite
-	Explodes@ELITE:
+	FireWarheadsOnDeath@ELITE:
 		RequiresCondition: rank-elite
 		Weapon: UnitExplode
 

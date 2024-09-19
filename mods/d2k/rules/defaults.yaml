@@ -312,7 +312,7 @@
 		RequiresForceFire: true
 	WithColoredOverlay@husk:
 		Color: 00000060
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeMed
 		EmptyWeapon: UnitExplodeMed
 	CaptureManager:
@@ -497,7 +497,7 @@
 	SoundOnDamageTransition:
 		DamagedSounds: EXPLSML1.WAV
 		DestroyedSounds: EXPLHG1.WAV
-	Explodes:
+	FireWarheadsOnDeath:
 		Type: Footprint
 		Weapon: BuildingExplode
 		EmptyWeapon: BuildingExplode
@@ -526,7 +526,7 @@
 		Notification: StructureSold
 	Guardable:
 		Range: 3c0
-	ThrowsShrapnel:
+	FireProjectilesOnDeath:
 		Weapons: Debris, Debris2, Debris3, Debris4
 		Pieces: 2, 5
 		Range: 1c512, 4c0
@@ -569,7 +569,7 @@
 		RequiresCondition: !build-incomplete
 	LineBuildNode:
 		Types: turret
-	ThrowsShrapnel:
+	FireProjectilesOnDeath:
 		Weapons: Debris, Debris3
 		Pieces: 2, 2
 		Range: 2c0, 4c0
@@ -713,7 +713,7 @@
 		Owner: Neutral
 	HitShape:
 		UseTargetableCellsOffsets: true
-	Explodes:
+	FireWarheadsOnDeath:
 		Type: CenterPosition
 		Weapon: cliffExplode
 		EmptyWeapon: cliffExplode

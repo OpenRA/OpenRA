@@ -161,7 +161,7 @@ PROC:
 			nod: proc.nod
 	GrantConditionOnPlayerResources:
 		Condition: contains-tiberium
-	Explodes:
+	FireWarheadsOnDeath:
 		RequiresCondition: contains-tiberium
 		Weapon: TiberiumExplosion
 	WithResourceStoragePipsDecoration:
@@ -217,7 +217,7 @@ GASILO:
 		Amount: -10
 	GrantConditionOnPlayerResources:
 		Condition: contains-tiberium
-	Explodes:
+	FireWarheadsOnDeath:
 		RequiresCondition: contains-tiberium
 		Weapon: TiberiumExplosion
 	WithResourceStoragePipsDecoration:

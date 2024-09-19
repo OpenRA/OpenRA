@@ -41,7 +41,7 @@ SS:
 		DetectionTypes: Underwater
 		Range: 5c0
 	RenderDetectionCircle:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
 	Selectable:
@@ -96,7 +96,7 @@ MSUB:
 		DetectionTypes: Underwater
 		Range: 4c0
 	RenderDetectionCircle:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeSubmarine
 		EmptyWeapon: UnitExplodeSubmarine
 	Selectable:

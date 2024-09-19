@@ -341,7 +341,7 @@
 		DamagedSounds: expnew01.aud
 		DestroyedSounds: crmble2.aud
 	WithSpriteBody:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: BuildingExplosions
 		EmptyWeapon: BuildingExplosions
 		Type: Footprint
@@ -350,11 +350,11 @@
 	Guardable:
 		Range: 3c0
 	Demolishable:
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Weapons: SmallDebris
 		Pieces: 2, 4
 		Range: 2c0, 5c0
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Weapons: LargeDebris, LargeDebrisWithTrail
 		Pieces: 1, 2
 		Range: 2c0, 5c0
@@ -400,9 +400,9 @@
 		Notification: StructureSold
 	WithMakeAnimation:
 		Condition: build-incomplete
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 3, 5
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 3
 	WithBuildingRepairDecoration:
 		Image: allyrepair
@@ -452,9 +452,9 @@
 		HP: 40000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 1, 3
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 1, 1
 	MapEditorData:
 		Categories: Billboard
@@ -726,7 +726,7 @@
 		Weapon: CyborgExplode
 		DamageState: Critical
 		TriggerOnlyOnce: true
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: CyborgExplode
 		EmptyWeapon: CyborgExplode
 	DeathSounds:
@@ -822,12 +822,12 @@
 	Guardable:
 	BodyOrientation:
 		CameraPitch: 85
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	MustBeDestroyed:
 	RenderSprites:
-	ThrowsShrapnel:
+	FireProjectilesOnDeath:
 		Weapons: SmallDebris
 		Pieces: 3, 7
 		Range: 2c0, 5c0
@@ -1212,10 +1212,10 @@
 	BodyOrientation:
 		CameraPitch: 85
 		QuantizedFacings: 0
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	ThrowsShrapnel:
+	FireProjectilesOnDeath:
 		Weapons: SmallDebris
 		Pieces: 3, 7
 		Range: 2c0, 5c0

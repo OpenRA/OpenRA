@@ -12,9 +12,9 @@ ABAN01:
 		HP: 60000
 	MapEditorData:
 		ExcludeTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 72
@@ -33,9 +33,9 @@ ABAN02:
 		HP: 60000
 	MapEditorData:
 		ExcludeTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 48
@@ -54,9 +54,9 @@ ABAN03:
 		HP: 50000
 	MapEditorData:
 		ExcludeTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 48
@@ -75,9 +75,9 @@ ABAN04:
 		HP: 40000
 	MapEditorData:
 		ExcludeTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 4, 7
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 3
 
 ABAN05:
@@ -437,9 +437,9 @@ CA0001:
 		Type: heavy
 	Health:
 		HP: 40000
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 
 CA0002:
@@ -454,9 +454,9 @@ CA0002:
 		Type: heavy
 	Health:
 		HP: 40000
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 
 CA0003:
@@ -755,9 +755,9 @@ CAARAY:
 	WithIdleOverlay@LIGHT-bright:
 		Sequence: idle-light-bright
 		Palette: bright
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 7
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 72
@@ -781,9 +781,9 @@ CAARMR:
 	CaptureManager:
 	Capturable:
 		Types: building
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 6, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 
 CACRSH01:
@@ -829,9 +829,9 @@ CAHOSP:
 	CaptureNotification:
 		TextNotification: notification-building-captured
 	ProvidesPrerequisite@BuildingName:
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	MapEditorData:
 		Categories: Civilian building
@@ -869,9 +869,9 @@ CAPYR02:
 		HP: 40000
 	MapEditorData:
 		ExcludeTilesets: SNOW
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 6, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 	IsometricSelectable:
 		Height: 96
@@ -890,9 +890,9 @@ CAPYR03:
 		HP: 40000
 	MapEditorData:
 		ExcludeTilesets: SNOW
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 6, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 	IsometricSelectable:
 		Height: 96
@@ -911,9 +911,9 @@ CITY01:
 		HP: 40000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 72
@@ -932,9 +932,9 @@ CITY02:
 		HP: 70000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 72
@@ -953,9 +953,9 @@ CITY03:
 		HP: 50000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 48
@@ -974,9 +974,9 @@ CITY04:
 		HP: 60000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 72
@@ -995,9 +995,9 @@ CITY05:
 		HP: 60000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 	IsometricSelectable:
 		Height: 96
@@ -1016,9 +1016,9 @@ CITY06:
 		HP: 50000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 7, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 	IsometricSelectable:
 		Height: 72
@@ -1037,9 +1037,9 @@ CITY07:
 		HP: 40000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 7, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 	IsometricSelectable:
 		Height: 60
@@ -1174,9 +1174,9 @@ CITY15:
 		HP: 50000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 7, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 
 CITY16:
@@ -1193,9 +1193,9 @@ CITY16:
 		HP: 50000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 7, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 	IsometricSelectable:
 		Height: 72
@@ -1214,9 +1214,9 @@ CITY17:
 		HP: 30000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 7, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 	IsometricSelectable:
 		Height: 108
@@ -1235,9 +1235,9 @@ CITY18:
 		HP: 60000
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 8, 12
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 5, 7
 	IsometricSelectable:
 		Height: 72
@@ -1328,9 +1328,9 @@ CTDAM:
 		Sequence: idle-water-a
 	WithIdleOverlay@WATER-B:
 		Sequence: idle-water-b
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 5, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 2, 4
 
 CTVEGA:
@@ -1347,9 +1347,9 @@ CTVEGA:
 		HP: 10000
 	MapEditorData:
 		ExcludeTilesets: SNOW
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 7, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 4
 	IsometricSelectable:
 		Height: 72
@@ -1762,9 +1762,9 @@ NTPYRA:
 		Palette: player
 	WithIdleOverlay@LIGHTS:
 		Sequence: idle-lights
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 7, 9
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 3, 5
 	IsometricSelectable:
 		Height: 72
@@ -1785,9 +1785,9 @@ UFO:
 		Type: Heavy
 	MapEditorData:
 		RequireTilesets: TEMPERATE
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Pieces: 9, 12
-	ThrowsShrapnel@LARGE:
+	FireProjectilesOnDeath@LARGE:
 		Pieces: 6, 8
 	IsometricSelectable:
 		Height: 144

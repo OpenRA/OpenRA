@@ -30,7 +30,7 @@ mcv:
 	MustBeDestroyed:
 		RequiredForShortGame: true
 	BaseBuilding:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 	Transforms:
@@ -93,7 +93,7 @@ harvester:
 		Speed: 43
 	RevealsShroud:
 		Range: 3c768
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
@@ -116,12 +116,12 @@ harvester:
 		RequiresSelection: true
 		PipCount: 7
 	-SpeedMultiplier@HEAVYDAMAGE:
-	ThrowsShrapnel@ShrapnelNotEmpty:
+	FireProjectilesOnDeath@ShrapnelNotEmpty:
 		Weapons: Debris, Debris2, Debris3, Debris4
 		Pieces: 3, 5
 		Range: 1c0, 6c0
 		RequiresCondition: !harvester-empty
-	ThrowsShrapnel@throwSpice:
+	FireProjectilesOnDeath@throwSpice:
 		Weapons: SpiceExplosion
 		Pieces: 1, 3
 		Range: 1c0, 5c0
@@ -169,7 +169,7 @@ trike:
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		FacingTolerance: 0
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	AttractsWorms:
@@ -210,7 +210,7 @@ quad:
 		Category: Units
 	AttackFrontal:
 		FacingTolerance: 0
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	Selectable:
@@ -261,7 +261,7 @@ siege_tank:
 		FacingTolerance: 0
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeMed
 		EmptyWeapon: UnitExplodeMed
 	AutoTarget:
@@ -312,7 +312,7 @@ missile_tank:
 		FacingTolerance: 0
 	AutoTarget:
 		InitialStanceAI: Defend
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeMed
 		EmptyWeapon: UnitExplodeMed
 	Selectable:
@@ -323,11 +323,11 @@ missile_tank:
 		EffectiveOwnerFromOwner: true
 	AttractsWorms:
 		Intensity: 600
-	ThrowsShrapnel@02:
+	FireProjectilesOnDeath@02:
 		Weapons: Debris3, Debris
 		Pieces: 0,2
 		Range: 2c0, 3c0
-	ThrowsShrapnel@03:
+	FireProjectilesOnDeath@03:
 		Weapons: DebrisMissile
 		Pieces: 0,2
 		Range: 4c0, 6c0
@@ -367,7 +367,7 @@ sonic_tank:
 		Category: Units
 	AttackFrontal:
 		FacingTolerance: 0
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
@@ -420,7 +420,7 @@ devastator:
 		FacingTolerance: 0
 	WithMuzzleOverlay:
 		IgnoreOffset: true
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 		RequiresCondition: !overload
@@ -428,7 +428,7 @@ devastator:
 		Actor: devastator.husk
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
-	Explodes@OVERLOAD:
+	FireWarheadsOnDeath@OVERLOAD:
 		Weapon: PlasmaExplosion
 		EmptyWeapon: PlasmaExplosion
 		RequiresCondition: meltdown
@@ -494,7 +494,7 @@ raider:
 		MuzzleSequence: muzzle
 	AttackFrontal:
 		FacingTolerance: 0
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	AttractsWorms:
@@ -568,7 +568,7 @@ deviator:
 		FacingTolerance: 0
 	AutoTarget:
 		InitialStanceAI: Defend
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeLarge
 		EmptyWeapon: UnitExplodeLarge
 	SpawnActorOnDeath:
@@ -613,7 +613,7 @@ deviator:
 	AttackTurreted:
 	WithMuzzleOverlay:
 	WithSpriteTurret:
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeMed
 		EmptyWeapon: UnitExplodeMed
 	Selectable:
@@ -623,7 +623,7 @@ deviator:
 	SpawnActorOnDeath:
 		OwnerType: InternalName
 		EffectiveOwnerFromOwner: true
-	ThrowsShrapnel:
+	FireProjectilesOnDeath:
 		Weapons: Debris, Debris2, Debris3
 		Pieces: 0, 2
 		Range: 2c0, 4c0

@@ -158,7 +158,7 @@ E2:
 		RequiresCondition: parachute
 		Palette: player-noshadow
 		IsPlayerPalette: true
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 		DamageSource: Killer
@@ -258,7 +258,7 @@ E4:
 		Weapon: Flamer
 	TakeCover:
 		ProneOffset: 160,0,-288
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: VisualExplode
 		EmptyWeapon: VisualExplode
 		Chance: 50

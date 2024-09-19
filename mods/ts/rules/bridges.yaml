@@ -16,7 +16,7 @@ CABHUT:
 	Interactable:
 	SelectionDecorations:
 	-Demolishable:
-	-Explodes:
+	-FireWarheadsOnDeath:
 	-FrozenUnderFog:
 	HiddenUnderShroud:
 	MapEditorData:

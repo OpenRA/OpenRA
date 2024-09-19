@@ -360,7 +360,7 @@ PDOF:
 		HP: 100000
 	Armor:
 		Type: Wood
-	Explodes:
+	FireWarheadsOnDeath:
 		DamageThreshold: 50
 
 MSLF:
@@ -393,7 +393,7 @@ MSLF:
 		HP: 100000
 	Armor:
 		Type: Wood
-	Explodes:
+	FireWarheadsOnDeath:
 		DamageThreshold: 50
 
 FACF:

@@ -22,7 +22,7 @@ powerproxy.paratroopers:
 	MustBeDestroyed:
 
 JEEP:
-	Explodes:
+	FireWarheadsOnDeath:
 	ProximityExternalCondition@JAMMER:
 		Range: 10c0
 		ValidRelationships: Enemy, Neutral

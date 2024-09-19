@@ -190,7 +190,7 @@ MINVV:
 		Step: -100
 		Delay: 1
 		StartIfBelow: 101
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: CrateNuke
 		EmptyWeapon: CrateNuke
 	HitShape:
