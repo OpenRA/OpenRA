@@ -118,4 +118,3 @@ Container@GAMESAVE_BROWSER_PANEL:
 					Text: button-bg-save
 					Visible: False
 		TooltipContainer@GAMESAVE_TOOLTIP_CONTAINER:
-

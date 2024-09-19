@@ -230,4 +230,3 @@ Container@MULTIPLAYER_CREATESERVER_PANEL:
 			Height: 35
 			Text: button-multiplayer-createserver-panel-create
 		TooltipContainer@TOOLTIP_CONTAINER:
-
