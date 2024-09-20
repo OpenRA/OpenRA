@@ -70,7 +70,6 @@ namespace OpenRA.Mods.Common.Traits.Render
 
 		int ticks;
 
-		[Sync]
 		public WVec WorldVisualOffset { get; private set; }
 
 		public Hovers(HoversInfo info)
