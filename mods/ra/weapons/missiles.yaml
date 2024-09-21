@@ -74,6 +74,8 @@ Dragon:
 	Inherits: ^AntiGroundMissile
 	Projectile: Missile
 		TrailImage: smokey
+	Warhead@spawn: SpawnActor
+		Actors: e1
 
 HellfireAG:
 	Inherits: ^AntiGroundMissile
@@ -152,7 +154,9 @@ Nike:
 		RangeLimit: 11c0
 		Speed: 341
 	Warhead@1Dam: SpreadDamage
-		Damage: 4500
+		Damage: 0
+	Warhead@spawn: SpawnActor
+		Actors: heli
 	Warhead@3Eff: CreateEffect
 		Explosions: med_explosion_air
 		ImpactSounds: kaboom25.aud
@@ -165,7 +169,9 @@ RedEye:
 		HorizontalRateOfTurn: 80
 		Speed: 298
 	Warhead@1Dam: SpreadDamage
-		Damage: 2400
+		Damage: 0
+	Warhead@spawn: SpawnActor
+		Actors: e1
 
 Stinger:
 	Inherits: ^AntiGroundMissile
