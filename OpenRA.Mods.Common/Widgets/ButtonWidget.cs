@@ -276,7 +276,7 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		public override Widget Clone() { return new ButtonWidget(this); }
+		public override ButtonWidget Clone() { return new ButtonWidget(this); }
 		public virtual int UsableWidth => Bounds.Width;
 
 		public virtual void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)

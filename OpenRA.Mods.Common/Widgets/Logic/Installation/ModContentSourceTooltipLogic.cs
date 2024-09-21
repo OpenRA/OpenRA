@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var bottomMargin = sources.Bounds.Height;
 			foreach (var source in sourceTitles)
 			{
-				var label = (LabelWidget)template.Clone();
+				var label = template.Clone();
 				var title = source;
 				label.GetText = () => title;
 				label.Bounds.Y = sources.Bounds.Height;

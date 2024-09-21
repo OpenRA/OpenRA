@@ -21,7 +21,7 @@ namespace OpenRA.Mods.D2k.Graphics
 		public D2kSpriteSequenceLoader(ModData modData)
 			: base(modData) { }
 
-		public override ISpriteSequence CreateSequence(
+		public override D2kSpriteSequence CreateSequence(
 			ModData modData, string tileset, SpriteCache cache, string image, string sequence, MiniYaml data, MiniYaml defaults)
 		{
 			return new D2kSpriteSequence(cache, this, image, sequence, data, defaults);

@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets
 			WorldRenderer = other.WorldRenderer;
 		}
 
-		public override Widget Clone() { return new SpriteWidget(this); }
+		public override SpriteWidget Clone() { return new SpriteWidget(this); }
 
 		Sprite cachedSprite = null;
 		string cachedPalette = null;

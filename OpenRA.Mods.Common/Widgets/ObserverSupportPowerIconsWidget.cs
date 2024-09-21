@@ -153,7 +153,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return WidgetUtils.FormatTime(item.RemainingTicks, timestep);
 		}
 
-		public override Widget Clone()
+		public override ObserverSupportPowerIconsWidget Clone()
 		{
 			return new ObserverSupportPowerIconsWidget(this);
 		}

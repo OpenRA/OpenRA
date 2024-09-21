@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				if (visibilityOption == MapVisibility.Shellmap && !map.Visibility.HasFlag(visibilityOption))
 					continue;
 
-				var checkbox = (CheckboxWidget)visOptionTemplate.Clone();
+				var checkbox = visOptionTemplate.Clone();
 				checkbox.GetText = () => visibilityOption.ToString();
 				checkbox.IsChecked = () => map.Visibility.HasFlag(visibilityOption);
 				checkbox.OnClick = () => map.Visibility ^= visibilityOption;

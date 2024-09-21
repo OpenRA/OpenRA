@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Widgets
 			spawnLabelOffset = ChromeMetrics.Get<int2>("SpawnLabelOffset");
 		}
 
-		public override Widget Clone() { return new MapPreviewWidget(this); }
+		public override MapPreviewWidget Clone() { return new MapPreviewWidget(this); }
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{

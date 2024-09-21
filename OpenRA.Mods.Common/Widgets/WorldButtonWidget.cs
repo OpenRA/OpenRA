@@ -39,6 +39,6 @@ namespace OpenRA.Mods.Common.Widgets
 				new WidgetArgs { { "button", this }, { "getText", GetTooltipText }, { "getDesc", GetTooltipDesc }, { "world", world } });
 		}
 
-		public override Widget Clone() { return new WorldButtonWidget(this); }
+		public override WorldButtonWidget Clone() { return new WorldButtonWidget(this); }
 	}
 }

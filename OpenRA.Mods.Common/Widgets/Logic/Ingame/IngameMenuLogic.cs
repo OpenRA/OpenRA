@@ -295,7 +295,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 		ButtonWidget AddButton(string id, string label)
 		{
-			var button = buttonTemplate.Clone() as ButtonWidget;
+			var button = buttonTemplate.Clone();
 			var lastButton = buttons.LastOrDefault();
 			if (lastButton != null)
 			{

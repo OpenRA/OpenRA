@@ -31,7 +31,7 @@ namespace OpenRA.Mods.Common.Widgets
 			playerDatabase = other.playerDatabase;
 		}
 
-		public override Widget Clone() { return new BadgeWidget(this); }
+		public override BadgeWidget Clone() { return new BadgeWidget(this); }
 
 		public override void Draw()
 		{

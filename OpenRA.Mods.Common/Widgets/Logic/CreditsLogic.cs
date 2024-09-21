@@ -83,7 +83,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var font = Game.Renderer.Fonts[template.Font];
 			var lines = modCredits ? modLines : engineLines;
 
-			var label = (LabelWidget)template.Clone();
+			var label = template.Clone();
 			label.GetText = () => lines;
 			label.IncreaseHeightToFitCurrentText();
 			scrollPanel.AddChild(label);

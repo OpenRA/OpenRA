@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Widgets
 			Parent.Parent.Bounds.Width = Math.Max(25 + widestChildWidth, Bounds.Left + MinWidth);
 		}
 
-		public override Widget Clone()
+		public override ObserverArmyIconsWidget Clone()
 		{
 			return new ObserverArmyIconsWidget(this);
 		}

@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets
 			ClickSound = widget.ClickSound;
 		}
 
-		public override Widget Clone()
+		public override ColorBlockWidget Clone()
 		{
 			return new ColorBlockWidget(this);
 		}

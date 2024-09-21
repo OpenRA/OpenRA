@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Graphics
 		public TilesetSpecificSpriteSequenceLoader(ModData modData)
 			: base(modData) { }
 
-		public override ISpriteSequence CreateSequence(
+		public override TilesetSpecificSpriteSequence CreateSequence(
 			ModData modData, string tileSet, SpriteCache cache, string image, string sequence, MiniYaml data, MiniYaml defaults)
 		{
 			return new TilesetSpecificSpriteSequence(cache, this, image, sequence, data, defaults);

@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			MapOverlays[] allCategories = { MapOverlays.Grid, MapOverlays.Buildable, MapOverlays.Marker };
 			foreach (var cat in allCategories)
 			{
-				var category = (CheckboxWidget)categoryTemplate.Clone();
+				var category = categoryTemplate.Clone();
 				category.GetText = () => cat.ToString();
 				category.IsVisible = () => true;
 

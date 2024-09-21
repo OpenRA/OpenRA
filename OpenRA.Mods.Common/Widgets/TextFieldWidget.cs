@@ -600,6 +600,6 @@ namespace OpenRA.Mods.Common.Widgets
 				Game.Renderer.DisableScissor();
 		}
 
-		public override Widget Clone() { return new TextFieldWidget(this); }
+		public override TextFieldWidget Clone() { return new TextFieldWidget(this); }
 	}
 }

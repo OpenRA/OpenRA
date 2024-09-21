@@ -37,6 +37,6 @@ namespace OpenRA.Mods.Common.Widgets
 			ClickThrough = other.ClickThrough;
 		}
 
-		public override Widget Clone() { return new BackgroundWidget(this); }
+		public override BackgroundWidget Clone() { return new BackgroundWidget(this); }
 	}
 }

@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			GetRotation = getRotation;
 		}
 
-		public override Widget Clone()
+		public override ModelWidget Clone()
 		{
 			return new ModelWidget(this);
 		}

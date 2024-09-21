@@ -338,7 +338,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			listPanel.RemoveChildren();
 			foreach (var package in availablePackages)
 			{
-				var containerWidget = (ContainerWidget)checkboxListTemplate.Clone();
+				var containerWidget = checkboxListTemplate.Clone();
 				var checkboxWidget = containerWidget.Get<CheckboxWidget>("PACKAGE_CHECKBOX");
 				var title = FluentProvider.GetMessage(package.Title);
 				checkboxWidget.GetText = () => title;
@@ -385,7 +385,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var i in kv.Value)
 				{
 					var item = i;
-					var labelWidget = (LabelWidget)labelListTemplate.Clone();
+					var labelWidget = labelListTemplate.Clone();
 					labelWidget.GetText = () => item;
 					listPanel.AddChild(labelWidget);
 				}

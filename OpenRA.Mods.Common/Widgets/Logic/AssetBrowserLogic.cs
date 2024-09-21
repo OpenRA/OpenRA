@@ -744,7 +744,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var allAssetTypes = new[] { AssetType.Sprite, AssetType.Model, AssetType.Audio, AssetType.Video, AssetType.Unknown };
 			foreach (var type in allAssetTypes)
 			{
-				var assetType = (CheckboxWidget)assetTypeTemplate.Clone();
+				var assetType = assetTypeTemplate.Clone();
 				var text = type.ToString();
 				assetType.GetText = () => text;
 				assetType.IsChecked = () => assetTypesToDisplay.HasFlag(type);

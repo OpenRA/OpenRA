@@ -75,7 +75,7 @@ namespace OpenRA.Mods.Common.Widgets
 					rb.Top + (int)((rb.Height - separatorImage.Size.Y) / 2)));
 		}
 
-		public override Widget Clone() { return new DropDownButtonWidget(this); }
+		public override DropDownButtonWidget Clone() { return new DropDownButtonWidget(this); }
 
 		// This is crap
 		public override int UsableWidth => Bounds.Width - Bounds.Height; /* space for button */
@@ -228,6 +228,6 @@ namespace OpenRA.Mods.Common.Widgets
 		}
 
 		public override string GetCursor(int2 pos) { return null; }
-		public override Widget Clone() { return new MaskWidget(this); }
+		public override MaskWidget Clone() { return new MaskWidget(this); }
 	}
 }

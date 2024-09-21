@@ -68,11 +68,11 @@ namespace OpenRA.Mods.Common.Widgets
 			WidgetUtils.DrawPanel(RenderBounds, getPanelCache.Update((IsDisabled(), Depressed, hover, false, IsSelected() || IsHighlighted())));
 		}
 
-		public override Widget Clone() { return new ScrollItemWidget(this); }
+		public override ScrollItemWidget Clone() { return new ScrollItemWidget(this); }
 
 		public static ScrollItemWidget Setup(ScrollItemWidget template, Func<bool> isSelected, Action onClick)
 		{
-			var w = template.Clone() as ScrollItemWidget;
+			var w = template.Clone();
 			w.IsVisible = () => true;
 			w.IsSelected = isSelected;
 			w.OnClick = onClick;
