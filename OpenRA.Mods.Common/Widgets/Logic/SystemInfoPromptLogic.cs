@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			foreach (var (name, value) in GetSystemInformation().Values)
 			{
-				var label = template.Clone() as LabelWidget;
+				var label = template.Clone();
 				var text = name + ": " + value;
 				label.GetText = () => text;
 				sysInfoData.AddChild(label);

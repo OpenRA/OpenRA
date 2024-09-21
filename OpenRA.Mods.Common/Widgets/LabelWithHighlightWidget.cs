@@ -81,6 +81,6 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 		}
 
-		public override Widget Clone() { return new LabelWithHighlightWidget(this); }
+		public override LabelWithHighlightWidget Clone() { return new LabelWithHighlightWidget(this); }
 	}
 }

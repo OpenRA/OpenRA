@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var headerHeight = 0;
 			foreach (var l in headerLines)
 			{
-				var line = (LabelWidget)headerTemplate.Clone();
+				var line = headerTemplate.Clone();
 				line.GetText = () => l;
 				line.Bounds.Y += headerHeight;
 				panel.AddChild(line);

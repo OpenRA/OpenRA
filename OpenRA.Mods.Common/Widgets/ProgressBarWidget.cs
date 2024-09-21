@@ -80,6 +80,6 @@ namespace OpenRA.Mods.Common.Widgets
 			wasIndeterminate = indeterminate;
 		}
 
-		public override Widget Clone() { return new ProgressBarWidget(this); }
+		public override ProgressBarWidget Clone() { return new ProgressBarWidget(this); }
 	}
 }

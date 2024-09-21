@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.Widgets
 			GetSprite = () => getImageCache.Update((GetImageCollection(), GetImageName()));
 		}
 
-		public override Widget Clone() { return new ImageWidget(this); }
+		public override ImageWidget Clone() { return new ImageWidget(this); }
 
 		public override void Draw()
 		{

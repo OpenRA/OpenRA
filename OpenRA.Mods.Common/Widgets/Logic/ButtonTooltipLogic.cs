@@ -53,7 +53,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var line in desc.Split(new[] { "\n" }, StringSplitOptions.None))
 				{
 					descWidth = Math.Max(descWidth, descFont.Measure(line).X);
-					var lineLabel = (LabelWidget)descTemplate.Clone();
+					var lineLabel = descTemplate.Clone();
 					lineLabel.GetText = () => line;
 					lineLabel.Bounds.Y = descOffset;
 					widget.AddChild(lineLabel);

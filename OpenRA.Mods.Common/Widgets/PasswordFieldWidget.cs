@@ -9,8 +9,6 @@
  */
 #endregion
 
-using OpenRA.Widgets;
-
 namespace OpenRA.Mods.Common.Widgets
 {
 	public class PasswordFieldWidget : TextFieldWidget
@@ -20,6 +18,6 @@ namespace OpenRA.Mods.Common.Widgets
 			: base(widget) { }
 
 		protected override string GetApparentText() { return new string('*', Text.Length); }
-		public override Widget Clone() { return new PasswordFieldWidget(this); }
+		public override PasswordFieldWidget Clone() { return new PasswordFieldWidget(this); }
 	}
 }

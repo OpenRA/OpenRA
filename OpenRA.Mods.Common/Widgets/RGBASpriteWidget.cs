@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Widgets
 			GetSprite = other.GetSprite;
 		}
 
-		public override Widget Clone() { return new RGBASpriteWidget(this); }
+		public override RGBASpriteWidget Clone() { return new RGBASpriteWidget(this); }
 
 		public override void Draw()
 		{

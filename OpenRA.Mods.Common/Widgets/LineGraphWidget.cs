@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Common.Widgets
 			cr.DrawLine(graphOrigin, graphOrigin + new float2(0, -height), 1, Color.White);
 		}
 
-		public override Widget Clone()
+		public override LineGraphWidget Clone()
 		{
 			return new LineGraphWidget(this);
 		}

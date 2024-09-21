@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var font = Game.Renderer.Fonts[template.Font];
 			foreach (var line in modCredits ? modLines : engineLines)
 			{
-				var label = (LabelWidget)template.Clone();
+				var label = template.Clone();
 				label.GetText = () => line;
 				var wrappedLine = line;
 				if (label.WordWrap)

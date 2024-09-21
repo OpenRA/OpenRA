@@ -85,6 +85,6 @@ namespace OpenRA.Mods.Common.Widgets
 					rect.Top + (int)((rect.Height - checkmarkImage.Size.Y) / 2)));
 		}
 
-		public override Widget Clone() { return new CheckboxWidget(this); }
+		public override CheckboxWidget Clone() { return new CheckboxWidget(this); }
 	}
 }

@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Common.Widgets
 			GetTooltipText = other.GetTooltipText;
 		}
 
-		public override Widget Clone() { return new LabelWithTooltipWidget(this); }
+		public override LabelWithTooltipWidget Clone() { return new LabelWithTooltipWidget(this); }
 
 		public override void MouseEntered()
 		{

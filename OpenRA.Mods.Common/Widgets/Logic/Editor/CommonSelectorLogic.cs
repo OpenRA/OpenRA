@@ -145,7 +145,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var categoryHeight = 5 + selectButtons.Bounds.Height;
 			foreach (var cat in FilteredCategories)
 			{
-				var category = (CheckboxWidget)categoryTemplate.Clone();
+				var category = categoryTemplate.Clone();
 				category.GetText = () => cat;
 				category.IsChecked = () => SelectedCategories.Contains(cat);
 				category.IsVisible = () => true;

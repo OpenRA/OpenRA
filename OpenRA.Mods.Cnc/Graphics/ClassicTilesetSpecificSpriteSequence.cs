@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 		public ClassicTilesetSpecificSpriteSequenceLoader(ModData modData)
 			: base(modData) { }
 
-		public override ISpriteSequence CreateSequence(
+		public override ClassicTilesetSpecificSpriteSequence CreateSequence(
 			ModData modData, string tileset, SpriteCache cache, string image, string sequence, MiniYaml data, MiniYaml defaults)
 		{
 			return new ClassicTilesetSpecificSpriteSequence(cache, this, image, sequence, data, defaults);

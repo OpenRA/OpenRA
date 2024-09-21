@@ -43,6 +43,6 @@ namespace OpenRA.Mods.Common.Widgets
 			font.DrawText(text, position, textColor.Update(inputWidget.Value.IsDisabled()));
 		}
 
-		public override Widget Clone() { return new LabelForInputWidget(this); }
+		public override LabelForInputWidget Clone() { return new LabelForInputWidget(this); }
 	}
 }

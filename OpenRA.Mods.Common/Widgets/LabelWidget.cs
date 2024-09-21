@@ -114,7 +114,7 @@ namespace OpenRA.Mods.Common.Widgets
 				font.DrawText(text, position, color);
 		}
 
-		public override Widget Clone() { return new LabelWidget(this); }
+		public override LabelWidget Clone() { return new LabelWidget(this); }
 
 		public override string GetCursor(int2 pos) { return null; }
 	}

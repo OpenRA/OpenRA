@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return (int)(0.5f * RenderBounds.Height + (RenderBounds.Width - RenderBounds.Height) * (x - MinimumValue) / (MaximumValue - MinimumValue));
 		}
 
-		public override Widget Clone() { return new SliderWidget(this); }
+		public override SliderWidget Clone() { return new SliderWidget(this); }
 
 		Rectangle ThumbRect
 		{

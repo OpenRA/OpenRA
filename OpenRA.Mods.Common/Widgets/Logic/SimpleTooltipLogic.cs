@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var bottom = 0;
 				for (var i = 0; i < lines.Length; i++)
 				{
-					var line = (LabelWidget)label.Clone();
+					var line = label.Clone();
 					var lineText = lines[i];
 					line.Bounds.Y += spacing.Bounds.Y + i * spacing.Bounds.Height;
 					line.Bounds.Width = textWidth;

@@ -68,6 +68,6 @@ namespace OpenRA.Mods.Common.Widgets
 			Draggable = other.Draggable;
 		}
 
-		public override Widget Clone() { return new BackgroundWidget(this); }
+		public override BackgroundWidget Clone() { return new BackgroundWidget(this); }
 	}
 }

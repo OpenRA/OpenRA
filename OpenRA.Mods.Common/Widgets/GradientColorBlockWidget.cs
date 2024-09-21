@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets
 			GetBottomLeftColor = widget.GetBottomLeftColor;
 		}
 
-		public override Widget Clone()
+		public override GradientColorBlockWidget Clone()
 		{
 			return new GradientColorBlockWidget(this);
 		}

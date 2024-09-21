@@ -46,7 +46,7 @@ namespace OpenRA.Mods.Common.Widgets
 			viewportSizes = other.viewportSizes;
 		}
 
-		public override Widget Clone() { return new ActorPreviewWidget(this); }
+		public override ActorPreviewWidget Clone() { return new ActorPreviewWidget(this); }
 
 		public void SetPreview(ActorInfo actor, TypeDictionary td)
 		{

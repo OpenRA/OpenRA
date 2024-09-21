@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Widgets
 			GetScale = other.GetScale;
 		}
 
-		public override Widget Clone() { return new TerrainTemplatePreviewWidget(this); }
+		public override TerrainTemplatePreviewWidget Clone() { return new TerrainTemplatePreviewWidget(this); }
 
 		public void SetTemplate(TerrainTemplateInfo template)
 		{

@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Cnc.Traits
 			active = false;
 		}
 
-		public override SupportPowerInstance CreateInstance(string key, SupportPowerManager manager)
+		public override DischargeableSupportPowerInstance CreateInstance(string key, SupportPowerManager manager)
 		{
 			return new DischargeableSupportPowerInstance(key, info, manager);
 		}

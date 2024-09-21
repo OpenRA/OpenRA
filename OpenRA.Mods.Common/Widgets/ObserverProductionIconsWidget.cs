@@ -234,7 +234,7 @@ namespace OpenRA.Mods.Common.Widgets
 			return WidgetUtils.FormatTime(item.Queue.RemainingTimeActual(item), timestep);
 		}
 
-		public override Widget Clone()
+		public override ObserverProductionIconsWidget Clone()
 		{
 			return new ObserverProductionIconsWidget(this);
 		}

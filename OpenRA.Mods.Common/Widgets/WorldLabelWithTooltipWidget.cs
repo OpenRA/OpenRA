@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets
 			world = other.world;
 		}
 
-		public override Widget Clone() { return new WorldLabelWithTooltipWidget(this); }
+		public override WorldLabelWithTooltipWidget Clone() { return new WorldLabelWithTooltipWidget(this); }
 
 		public override void MouseEntered()
 		{

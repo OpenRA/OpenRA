@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Terrain
 		public DefaultTerrainTemplateInfo(ITerrainInfo terrainInfo, MiniYaml my)
 			: base(terrainInfo, my) { }
 
-		protected override TerrainTileInfo LoadTileInfo(ITerrainInfo terrainInfo, MiniYaml my)
+		protected override DefaultTerrainTileInfo LoadTileInfo(ITerrainInfo terrainInfo, MiniYaml my)
 		{
 			var tile = new DefaultTerrainTileInfo();
 			FieldLoader.Load(tile, my);

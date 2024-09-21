@@ -629,7 +629,7 @@ namespace OpenRA.Widgets
 			: base(other) { IgnoreMouseOver = true; }
 
 		public override string GetCursor(int2 pos) { return null; }
-		public override Widget Clone() { return new ContainerWidget(this); }
+		public override ContainerWidget Clone() { return new ContainerWidget(this); }
 		public Func<KeyInput, bool> OnKeyPress = _ => false;
 		public override bool HandleKeyPress(KeyInput e) { return OnKeyPress(e); }
 
@@ -655,7 +655,7 @@ namespace OpenRA.Widgets
 			IsDisabled = () => other.Disabled;
 		}
 
-		public override Widget Clone() { return new InputWidget(this); }
+		public override InputWidget Clone() { return new InputWidget(this); }
 	}
 
 	public class WidgetArgs : Dictionary<string, object>

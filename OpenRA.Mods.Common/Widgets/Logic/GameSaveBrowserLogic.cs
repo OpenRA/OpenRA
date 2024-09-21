@@ -235,7 +235,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				// Create the item manually so the click handlers can refer to itself
 				// This simplifies the rename handling (only needs to update ItemKey)
-				var item = gameTemplate.Clone() as ScrollItemWidget;
+				var item = gameTemplate.Clone();
 				item.ItemKey = savePath;
 				item.IsVisible = () => true;
 				item.IsSelected = () => selectedSave == item.ItemKey;

@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Widgets
 			client = other.client;
 		}
 
-		public override Widget Clone() { return new ClientTooltipRegionWidget(this); }
+		public override ClientTooltipRegionWidget Clone() { return new ClientTooltipRegionWidget(this); }
 
 		public void Bind(OrderManager orderManager, WorldRenderer worldRenderer, Session.Client client)
 		{

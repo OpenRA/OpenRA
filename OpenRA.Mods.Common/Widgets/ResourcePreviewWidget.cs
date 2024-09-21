@@ -71,7 +71,7 @@ namespace OpenRA.Mods.Common.Widgets
 			IdealPreviewSize = other.IdealPreviewSize;
 		}
 
-		public override Widget Clone() { return new ResourcePreviewWidget(this); }
+		public override ResourcePreviewWidget Clone() { return new ResourcePreviewWidget(this); }
 
 		public override void Draw()
 		{
