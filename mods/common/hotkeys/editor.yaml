@@ -1,12 +1,12 @@
 EditorUndo: Z Ctrl
-	Description: hotkey-description-EditorUndo
+	Description: hotkey-description-editorundo
 	Types: Editor
 	Contexts: hotkey-context-editor
 	Platform:
 		OSX: Z Meta
 
 EditorRedo: Y Ctrl
-	Description: hotkey-description-EditorRedo
+	Description: hotkey-description-editorredo
 	Types: Editor
 	Contexts: hotkey-context-editor
 	Platform:
@@ -14,72 +14,72 @@ EditorRedo: Y Ctrl
 		Linux: Z Ctrl, Shift
 
 EditorCopy: C Ctrl
-	Description: hotkey-description-EditorCopy
+	Description: hotkey-description-editorcopy
 	Types: Editor
 	Contexts: hotkey-context-editor
 	Platform:
 		OSX: C Meta
 
 EditorQuickSave: S Ctrl
-	Description: hotkey-description-EditorQuickSave
+	Description: hotkey-description-editorquicksave
 	Types: Editor
 	Contexts: hotkey-context-editor
 	Platform:
 		OSX: S Meta
 
 EditorPaste: V Ctrl
-	Description: hotkey-description-EditorPaste
+	Description: hotkey-description-editorpaste
 	Types: Editor
 	Contexts: hotkey-context-editor
 	Platform:
 		OSX: V Meta
 
 EditorSelectTab: E
-	Description: hotkey-description-EditorSelectTab
+	Description: hotkey-description-editorselecttab
 	Types: Editor
 	Contexts: hotkey-context-editor
 
 EditorTilesTab: R
-	Description: hotkey-description-EditorTilesTab
+	Description: hotkey-description-editortilestab
 	Types: Editor
 	Contexts: hotkey-context-editor
 
 EditorOverlaysTab: T
-	Description: hotkey-description-EditorOverlaysTab
+	Description: hotkey-description-editoroverlaystab
 	Types: Editor
 	Contexts: hotkey-context-editor
 
 EditorActorsTab: Y
-	Description: hotkey-description-EditorActorsTab
+	Description: hotkey-description-editoractorstab
 	Types: Editor
 	Contexts: hotkey-context-editor
 
 EditorToolsTab: U
-	Description: hotkey-description-EditorToolsTab
+	Description: hotkey-description-editortoolstab
 	Types: Editor
 	Contexts: hotkey-context-editor
 
 EditorHistoryTab: I
-	Description: hotkey-description-EditorHistoryTab
+	Description: hotkey-description-editorhistorytab
 	Types: Editor
 	Contexts: hotkey-context-editor
 
 EditorSettingsTab: O
-	Description: hotkey-description-EditorSettingsTab
+	Description: hotkey-description-editorsettingstab
 	Types: Editor
 	Contexts: hotkey-context-editor
 
 EditorToggleGridOverlay: F1
-	Description: hotkey-description-EditorToggleGridOverlay
+	Description: hotkey-description-editortogglegridoverlay
 	Types: Editor
 	Contexts: hotkey-context-editor
 
 EditorToggleBuildableOverlay: F2
-	Description: hotkey-description-EditorToggleBuildableOverlay
+	Description: hotkey-description-editortogglebuildableoverlay
 	Types: Editor
 	Contexts: hotkey-context-editor
 
 EditorToggleMarkerOverlay: F3
-	Description: hotkey-description-EditorToggleMarkerOverlay
+	Description: hotkey-description-editortogglemarkeroverlay
 	Types: Editor
 	Contexts: hotkey-context-editor
