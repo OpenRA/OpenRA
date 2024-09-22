@@ -1,39 +1,39 @@
 ProductionTypeBuilding: E
-	Description: hotkey-description-ProductionTypeBuilding
+	Description: hotkey-description-productiontypebuilding
 	Types: Production
 	Contexts: hotkey-context-player
 
 ProductionTypeUpgrade: R
-	Description: hotkey-description-ProductionTypeUpgrade
+	Description: hotkey-description-productiontypeupgrade
 	Types: Production
 	Contexts: hotkey-context-player
 
 ProductionTypeInfantry: T
-	Description: hotkey-description-ProductionTypeInfantry
+	Description: hotkey-description-productiontypeinfantry
 	Types: Production
 	Contexts: hotkey-context-player
 
 ProductionTypeVehicle: Y
-	Description: hotkey-description-ProductionTypeVehicle
+	Description: hotkey-description-productiontypevehicle
 	Types: Production
 	Contexts: hotkey-context-player
 
 ProductionTypeAircraft: U
-	Description: hotkey-description-ProductionTypeAircraft
+	Description: hotkey-description-productiontypeaircraft
 	Types: Production
 	Contexts: hotkey-context-player
 
 ProductionTypeTank: I
-	Description: hotkey-description-ProductionTypeTank
+	Description: hotkey-description-productiontypetank
 	Types: Production
 	Contexts: hotkey-context-player
 
 ProductionTypeMerchant: O
-	Description: hotkey-description-ProductionTypeMerchant
+	Description: hotkey-description-productiontypemerchant
 	Types: Production
 	Contexts: hotkey-context-player
 
 PowerDown: X
-	Description: hotkey-description-PowerDown
+	Description: hotkey-description-powerdown
 	Types: OrderGenerator
 	Contexts: hotkey-context-player
