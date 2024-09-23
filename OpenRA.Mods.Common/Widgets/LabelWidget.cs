@@ -68,6 +68,17 @@ namespace OpenRA.Mods.Common.Widgets
 			GetContrastColorLight = other.GetContrastColorLight;
 		}
 
+		public void IncreaseHeightToFitCurrentText()
+		{
+			if (!Game.Renderer.Fonts.TryGetValue(Font, out var font))
+				throw new ArgumentException($"Requested font '{Font}' was not found.");
+
+			var line = GetText();
+			if (WordWrap)
+				line = WidgetUtils.WrapText(line, Bounds.Width, font);
+			Bounds.Height = Math.Max(Bounds.Height, font.Measure(line).Y);
+		}
+
 		public override void Draw()
 		{
 			if (!Game.Renderer.Fonts.TryGetValue(Font, out var font))
@@ -76,6 +87,9 @@ namespace OpenRA.Mods.Common.Widgets
 			var text = GetText();
 			if (text == null)
 				return;
+
+			if (WordWrap)
+				text = WidgetUtils.WrapText(text, Bounds.Width, font);
 
 			var textSize = font.Measure(text);
 			var position = RenderOrigin;
@@ -95,9 +109,6 @@ namespace OpenRA.Mods.Common.Widgets
 
 			if (Align == TextAlign.Right)
 				position += new int2(Bounds.Width - textSize.X, 0);
-
-			if (WordWrap)
-				text = WidgetUtils.WrapText(text, Bounds.Width, font);
 
 			DrawInner(text, font, GetColor(), position);
 		}
