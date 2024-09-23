@@ -26,7 +26,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string DuplicateNotice = "label-duplicate-notice";
 
 		[FluentReference]
-		const string AnyContext = "hotkey-context-any";
+		const string AnyContext = HotkeyDefinition.ContextFluentPrefix + "-any";
 
 		readonly ModData modData;
 		readonly Dictionary<string, MiniYaml> logicArgs;

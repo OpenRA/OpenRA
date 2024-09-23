@@ -1,54 +1,54 @@
 ProductionTypeBuilding: E
 	Description: hotkey-description-productiontypebuilding
 	Types: Production
-	Contexts: hotkey-context-player
+	Contexts: player
 
 ProductionTypeDefense: R
 	Description: hotkey-description-productiontypedefense
 	Types: Production
-	Contexts: hotkey-context-player
+	Contexts: player
 
 ProductionTypeInfantry: T
 	Description: hotkey-description-productiontypeinfantry
 	Types: Production
-	Contexts: hotkey-context-player
+	Contexts: player
 
 ProductionTypeVehicle: Y
 	Description: hotkey-description-productiontypevehicle
 	Types: Production
-	Contexts: hotkey-context-player
+	Contexts: player
 
 ProductionTypeAircraft: U
 	Description: hotkey-description-productiontypeaircraft
 	Types: Production
-	Contexts: hotkey-context-player
+	Contexts: player
 
 PowerDown: X
 	Description: hotkey-description-powerdown
 	Types: OrderGenerator
-	Contexts: hotkey-context-player
+	Contexts: player
 
 DecreaseDepthPreviewContrast: LEFTBRACKET SHIFT
 	Description: hotkey-description-decreasedepthpreviewcontrast
 	Types: DepthDebug
-	Contexts: hotkey-context-player
+	Contexts: player
 
 IncreaseDepthPreviewContrast: RIGHTBRACKET SHIFT
 	Description: hotkey-description-increasedepthpreviewcontrast
 	Types: DepthDebug
-	Contexts: hotkey-context-player
+	Contexts: player
 
 DecreaseDepthPreviewOffset: SEMICOLON SHIFT
 	Description: hotkey-description-decreasedepthpreviewoffset
 	Types: DepthDebug
-	Contexts: hotkey-context-player
+	Contexts: player
 
 IncreaseDepthPreviewOffset: QUOTE SHIFT
 	Description: hotkey-description-increasedepthpreviewoffset
 	Types: DepthDebug
-	Contexts: hotkey-context-player
+	Contexts: player
 
 ToggleDepthPreview: BACKSLASH SHIFT
 	Description: hotkey-description-toggledepthpreview
 	Types: DepthDebug
-	Contexts: hotkey-context-player
+	Contexts: player

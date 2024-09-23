@@ -1,74 +1,74 @@
 ObserverCombinedView: MINUS
 	Description: hotkey-description-observercombinedview
 	Types: Observer
-	Contexts: hotkey-context-spectator
+	Contexts: spectator
 
 ObserverWorldView: EQUALS
 	Description: hotkey-description-observerworldview
 	Types: Observer
-	Contexts: hotkey-context-spectator
+	Contexts: spectator
 
 ReplaySpeedSlow: F9
 	Description: hotkey-description-replayspeedslow
 	Types: Replay
-	Contexts: hotkey-context-spectator
+	Contexts: spectator
 
 ReplaySpeedRegular: F10
 	Description: hotkey-description-replayspeedregular
 	Types: Replay
-	Contexts: hotkey-context-spectator
+	Contexts: spectator
 
 ReplaySpeedFast: F11
 	Description: hotkey-description-replayspeedfast
 	Types: Replay
-	Contexts: hotkey-context-spectator
+	Contexts: spectator
 
 ReplaySpeedMax: F12
 	Description: hotkey-description-replayspeedmax
 	Types: Replay
-	Contexts: hotkey-context-spectator
+	Contexts: spectator
 
 StatisticsNone: F1
 	Description: hotkey-description-statisticsnone
 	Types: Observer
-	Contexts: hotkey-context-spectator
+	Contexts: spectator
 
 StatisticsBasic: F2
 	Description: hotkey-description-statisticsbasic
 	Types: Observer
-	Contexts: hotkey-context-spectator
+	Contexts: spectator
 
 StatisticsEconomy: F3
 	Description: hotkey-description-statisticseconomy
 	Types: Observer
-	Contexts: hotkey-context-spectator
+	Contexts: spectator
 
 StatisticsProduction: F4
 	Description: hotkey-description-statisticsproduction
 	Types: Observer
-	Contexts: hotkey-context-spectator
+	Contexts: spectator
 
 StatisticsSupportPowers: F5
 	Description: hotkey-description-statisticssupportpowers
 	Types: Observer
-	Contexts: hotkey-context-spectator
+	Contexts: spectator
 
 StatisticsCombat: F6
 	Description: hotkey-description-statisticscombat
 	Types: Observer
-	Contexts: hotkey-context-spectator
+	Contexts: spectator
 
 StatisticsArmy: F7
 	Description: hotkey-description-statisticsarmy
 	Types: Observer
-	Contexts: hotkey-context-spectator
+	Contexts: spectator
 
 StatisticsGraph:
 	Description: hotkey-description-statisticsgraph
 	Types: Observer
-	Contexts: hotkey-context-spectator
+	Contexts: spectator
 
 StatisticsArmyGraph:
 	Description: hotkey-description-statisticsarmygraph
 	Types: Observer
-	Contexts: hotkey-context-spectator
+	Contexts: spectator

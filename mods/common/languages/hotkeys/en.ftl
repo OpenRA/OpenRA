@@ -1,8 +1,9 @@
-hotkey-context-player = Player
-hotkey-context-spectator = Spectator
-hotkey-context-chat-input = Chat Input
-hotkey-context-menu = Menu
-hotkey-context-editor = Editor
+hotkey-context =
+    .player = Player
+    .spectator = Spectator
+    .chat-input = Chat Input
+    .menu = Menu
+    .editor = Editor
 
 ## chat.yaml
 hotkey-description-openteamchat = Open Team Chat
