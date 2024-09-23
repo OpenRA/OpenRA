@@ -1,5 +1,5 @@
 Metadata:
-	Title: Mod Content Manager
+	Title: mod-title
 	Version: {DEV_VERSION}
 	Hidden: true
 
@@ -37,6 +37,7 @@ ChromeMetrics:
 
 Translations:
 	common|languages/en.ftl
+	modcontent|languages/en.ftl
 
 Fonts:
 	Tiny:

@@ -9,7 +9,9 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Widgets;
 using OpenRA.Primitives;
@@ -18,6 +20,9 @@ namespace OpenRA.Mods.Common.LoadScreens
 {
 	public sealed class LogoStripeLoadScreen : SheetLoadScreen
 	{
+		[FluentReference]
+		const string Loading = "loadscreen-loading";
+
 		Rectangle stripeRect;
 		float2 logoPos;
 		Sprite stripe, logo;
@@ -26,14 +31,13 @@ namespace OpenRA.Mods.Common.LoadScreens
 		int lastDensity;
 		Size lastResolution;
 
-		string[] messages = { "Loading..." };
+		string[] messages = Array.Empty<string>();
 
 		public override void Init(ModData modData, Dictionary<string, string> info)
 		{
 			base.Init(modData, info);
 
-			if (info.TryGetValue("Text", out var text))
-				messages = text.Split(',');
+			messages = FluentProvider.GetString(Loading).Split(',').Select(x => x.Trim()).ToArray();
 		}
 
 		public override void DisplayInner(Renderer r, Sheet s, int density)
@@ -59,7 +63,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 			if (logo != null)
 				r.RgbaSpriteRenderer.DrawSprite(logo, logoPos);
 
-			if (r.Fonts != null)
+			if (r.Fonts != null && messages.Length > 0)
 			{
 				var text = messages.Random(Game.CosmeticRandom);
 				var textSize = r.Fonts["Bold"].Measure(text);

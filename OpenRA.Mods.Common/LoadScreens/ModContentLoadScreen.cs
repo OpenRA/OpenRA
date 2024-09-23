@@ -52,6 +52,10 @@ namespace OpenRA.Mods.Common.LoadScreens
 			if (modId == null || !Game.Mods.TryGetValue(modId, out var selectedMod))
 				throw new InvalidOperationException("Invalid or missing Content.Mod argument.");
 
+			var translationFilePath = args.GetValue("Content.TranslationFile", null);
+			if (translationFilePath == null || !File.Exists(translationFilePath))
+				throw new InvalidOperationException("Invalid or missing Content.TranslationFile argument.");
+
 			var content = selectedMod.Get<ModContent>(Game.ModData.ObjectCreator);
 
 			Ui.LoadWidget("MODCONTENT_BACKGROUND", Ui.Root, new WidgetArgs());
@@ -63,6 +67,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 					{ "continueLoading", () => Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments())) },
 					{ "mod", selectedMod },
 					{ "content", content },
+					{ "translationFilePath", translationFilePath },
 				};
 
 				Ui.OpenWindow("CONTENT_PROMPT_PANEL", widgetArgs);
@@ -71,9 +76,10 @@ namespace OpenRA.Mods.Common.LoadScreens
 			{
 				var widgetArgs = new WidgetArgs
 				{
+					{ "onCancel", () => Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments())) },
 					{ "mod", selectedMod },
 					{ "content", content },
-					{ "onCancel", () => Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments())) }
+					{ "translationFilePath", translationFilePath },
 				};
 
 				Ui.OpenWindow("CONTENT_PANEL", widgetArgs);

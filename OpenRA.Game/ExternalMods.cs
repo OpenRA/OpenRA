@@ -27,7 +27,6 @@ namespace OpenRA
 	{
 		public readonly string Id;
 		public readonly string Version;
-		public readonly string Title;
 		public readonly string LaunchPath;
 		public readonly string[] LaunchArgs;
 		public Sprite Icon { get; internal set; }
@@ -127,7 +126,6 @@ namespace OpenRA
 			{
 				new MiniYamlNode("Id", mod.Id),
 				new MiniYamlNode("Version", mod.Metadata.Version),
-				new MiniYamlNode("Title", mod.Metadata.Title),
 				new MiniYamlNode("LaunchPath", launchPath),
 				new MiniYamlNode("LaunchArgs", new[] { "Game.Mod=" + mod.Id }.Concat(launchArgs).JoinWith(", "))
 			}));

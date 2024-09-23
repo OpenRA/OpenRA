@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				var maps = new List<(IReadWritePackage Package, string Map)>();
 				if (args.Length < 2)
 				{
-					Console.WriteLine($"Testing mod: {modData.Manifest.Metadata.Title}");
+					Console.WriteLine($"Testing mod: {modData.Manifest.Metadata.TitleTranslated}");
 
 					// Run all rule checks on the default mod rules.
 					CheckRules(modData, modData.DefaultRules);

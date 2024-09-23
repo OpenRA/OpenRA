@@ -27,13 +27,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string Quit = "button-quit";
 
 		readonly ModContent content;
+		readonly FluentBundle externalFluentBundle;
 		bool requiredContentInstalled;
 
 		[ObjectCreator.UseCtor]
-		public ModContentPromptLogic(ModData modData, Widget widget, Manifest mod, ModContent content, Action continueLoading)
+		public ModContentPromptLogic(ModData modData, Widget widget, Manifest mod, ModContent content, Action continueLoading, string translationFilePath)
 		{
 			this.content = content;
 			CheckRequiredContentInstalled();
+
+			externalFluentBundle = new FluentBundle(Game.Settings.Player.Language, File.ReadAllText(translationFilePath), _ => { });
 
 			var continueMessage = FluentProvider.GetString(Continue);
 			var quitMessage = FluentProvider.GetString(Quit);
@@ -42,17 +45,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var headerTemplate = panel.Get<LabelWidget>("HEADER_TEMPLATE");
 			var headerLines =
 				!string.IsNullOrEmpty(content.InstallPromptMessage)
-					? content.InstallPromptMessage.Replace("\\n", "\n").Split('\n')
-					: Array.Empty<string>();
+					? externalFluentBundle.GetString(content.InstallPromptMessage)
+					: null;
 			var headerHeight = 0;
-			foreach (var l in headerLines)
+			if (headerLines != null)
 			{
-				var line = (LabelWidget)headerTemplate.Clone();
-				line.GetText = () => l;
-				line.Bounds.Y += headerHeight;
-				panel.AddChild(line);
+				var label = (LabelWidget)headerTemplate.Clone();
+				label.GetText = () => headerLines;
+				label.IncreaseHeightToFitCurrentText();
+				panel.AddChild(label);
 
-				headerHeight += headerTemplate.Bounds.Height;
+				headerHeight += label.Bounds.Height;
 			}
 
 			panel.Bounds.Height += headerHeight;
@@ -64,9 +67,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				Ui.OpenWindow("CONTENT_PANEL", new WidgetArgs
 				{
+					{ "onCancel", CheckRequiredContentInstalled },
 					{ "mod", mod },
 					{ "content", content },
-					{ "onCancel", CheckRequiredContentInstalled }
+					{ "translationFilePath", translationFilePath },
 				});
 			};
 

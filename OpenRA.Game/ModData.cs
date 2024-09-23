@@ -65,6 +65,8 @@ namespace OpenRA
 
 			Manifest.LoadCustomData(ObjectCreator);
 
+			FluentProvider.Initialize(this, DefaultFileSystem);
+
 			if (useLoadScreen)
 			{
 				LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);

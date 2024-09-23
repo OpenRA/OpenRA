@@ -182,13 +182,13 @@ namespace OpenRA.Network
 				if (external != null && external.Version == Version)
 				{
 					// Use external mod registration to populate the section header
-					ModTitle = external.Title;
+					ModTitle = external.Id;
 				}
 				else if (Game.Mods.TryGetValue(Mod, out var mod))
 				{
 					// Use internal mod data to populate the section header, but
 					// on-connect switching must use the external mod plumbing.
-					ModTitle = mod.Metadata.Title;
+					ModTitle = mod.Metadata.TitleTranslated;
 				}
 				else
 				{
@@ -199,7 +199,7 @@ namespace OpenRA.Network
 						.FirstOrDefault(m => m.Id == Mod);
 
 					if (guessMod != null)
-						ModTitle = guessMod.Title;
+						ModTitle = guessMod.Id;
 					else
 						ModTitle = $"Unknown mod: {Mod}";
 				}
@@ -222,7 +222,7 @@ namespace OpenRA.Network
 			Map = server.Map.Uid;
 			Mod = manifest.Id;
 			Version = manifest.Metadata.Version;
-			ModTitle = manifest.Metadata.Title;
+			ModTitle = manifest.Metadata.TitleTranslated;
 			ModWebsite = manifest.Metadata.Website;
 			ModIcon32 = manifest.Metadata.WebIcon32;
 			Protected = !string.IsNullOrEmpty(server.Settings.Password);

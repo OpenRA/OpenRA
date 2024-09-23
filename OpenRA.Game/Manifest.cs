@@ -45,12 +45,20 @@ namespace OpenRA
 
 	public class ModMetadata
 	{
-		public string Title;
-		public string Version;
-		public string Website;
-		public string WebIcon32;
-		public string WindowTitle;
-		public bool Hidden;
+		// FieldLoader used here, must matching naming in YAML.
+#pragma warning disable IDE1006 // Naming Styles
+		[FluentReference]
+		readonly string Title;
+		public readonly string Version;
+		public readonly string Website;
+		public readonly string WebIcon32;
+		[FluentReference]
+		readonly string WindowTitle;
+		public readonly bool Hidden;
+#pragma warning restore IDE1006 // Naming Styles
+
+		public string TitleTranslated => FluentProvider.GetString(Title);
+		public string WindowTitleTranslated => WindowTitle != null ? FluentProvider.GetString(WindowTitle) : null;
 	}
 
 	/// <summary>Describes what is to be loaded in order to run a mod.</summary>

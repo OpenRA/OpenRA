@@ -1,9 +1,9 @@
 Metadata:
-	Title: Dune 2000
+	Title: mod-title
 	Version: {DEV_VERSION}
 	Website: https://www.openra.net
 	WebIcon32: https://www.openra.net/images/icons/d2k_32x32.png
-	WindowTitle: OpenRA - Dune 2000
+	WindowTitle: mod-windowtitle
 
 PackageFormats: D2kSoundResources
 
@@ -124,6 +124,7 @@ Translations:
 	common|languages/en.ftl
 	common|languages/chrome/en.ftl
 	common|languages/rules/en.ftl
+	d2k|languages/en.ftl
 	d2k|languages/chrome/en.ftl
 	d2k|languages/rules/en.ftl
 
@@ -160,7 +161,6 @@ LoadScreen: LogoStripeLoadScreen
 	Image: d2k|uibits/loadscreen.png
 	Image2x: d2k|uibits/loadscreen-2x.png
 	Image3x: d2k|uibits/loadscreen-3x.png
-	Text: Filling Crates..., Breeding Sandworms..., Fuelling carryalls..., Deploying harvesters..., Preparing thopters..., Summoning mentats...
 
 ServerTraits:
 	LobbyCommands
@@ -259,31 +259,31 @@ GameSpeeds:
 			OrderLatency: 6
 
 ModContent:
-	InstallPromptMessage: Dune 2000 requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without\nmusic or videos) from an online mirror of the game files.\n\nAdvanced Install includes options for copying the music, videos,\nand other content from an original game disc.
-	HeaderMessage: The original game content may be copied from an original game disc,\nor downloaded from an online mirror of the game files.
+	InstallPromptMessage: modcontent-installprompt
+	HeaderMessage: modcontent-header
 	QuickDownload: quickinstall
 	Packages:
 		ContentPackage@base:
-			Title: Base Game Files
+			Title: modcontent-package-basefiles
 			Identifier: base
 			TestFiles: ^SupportDir|Content/d2k/v3/BLOXBASE.R16, ^SupportDir|Content/d2k/v3/BLOXBAT.R16, ^SupportDir|Content/d2k/v3/BLOXBGBS.R16, ^SupportDir|Content/d2k/v3/BLOXICE.R16, ^SupportDir|Content/d2k/v3/BLOXTREE.R16, ^SupportDir|Content/d2k/v3/BLOXWAST.R16, ^SupportDir|Content/d2k/v3/SOUND.RS, ^SupportDir|Content/d2k/v3/PALETTE.BIN
 			Sources: d2k, gruntmods
 			Required: true
 			Download: basefiles
 		ContentPackage@patch:
-			Title: 1.06 Patch Content
+			Title: modcontent-package-106patch
 			Identifier: patch
 			TestFiles: ^SupportDir|Content/d2k/v3/DATA.R16
 			Sources: gruntmods
 			Required: true
 			Download: patch106
 		ContentPackage@music:
-			Title: Game Music
+			Title: modcontent-package-music
 			Identifier: music
 			TestFiles: ^SupportDir|Content/d2k/v3/Music/AMBUSH.AUD, ^SupportDir|Content/d2k/v3/Music/WAITGAME.AUD
 			Sources: d2k, gruntmods
 		ContentPackage@movies:
-			Title: Campaign Briefings
+			Title: modcontent-package-briefings
 			Identifier: movies
 			TestFiles: ^SupportDir|Content/d2k/v3/Movies/A_BR01_E.VQA
 			Sources: d2k
@@ -292,6 +292,7 @@ ModContent:
 	Sources:
 		d2k|installer/d2k.yaml
 		d2k|installer/gruntmods.yaml
+	Translation: d2k|languages/modcontent/en.ftl
 
 DiscordService:
 	ApplicationId: 712711732770111550
