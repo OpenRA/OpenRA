@@ -10,11 +10,14 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OpenRA
 {
 	public sealed class HotkeyDefinition
 	{
+		public const string ContextFluentPrefix = "hotkey-context";
+
 		public readonly string Name;
 		public readonly Hotkey Default = Hotkey.Invalid;
 
@@ -45,7 +48,8 @@ namespace OpenRA
 				Types = FieldLoader.GetValue<HashSet<string>>("Types", typesYaml.Value);
 
 			if (nodeDict.TryGetValue("Contexts", out var contextYaml))
-				Contexts = FieldLoader.GetValue<HashSet<string>>("Contexts", contextYaml.Value);
+				Contexts = FieldLoader.GetValue<HashSet<string>>("Contexts", contextYaml.Value)
+					.Select(c => ContextFluentPrefix + "." + c).ToHashSet();
 
 			if (nodeDict.TryGetValue("Platform", out var platformYaml))
 			{
