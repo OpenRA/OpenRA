@@ -48,7 +48,12 @@ namespace OpenRA.Mods.Common.FileSystem
 			if (contentInstalled)
 				return false;
 
-			Game.InitializeMod(content.ContentInstallerMod, new Arguments("Content.Mod=" + modData.Manifest.Id));
+			string translationPath;
+			using (var fs = (FileStream)modData.DefaultFileSystem.Open(content.Translation))
+				translationPath = fs.Name;
+			Game.InitializeMod(
+				content.ContentInstallerMod,
+				new Arguments(new[] { "Content.Mod=" + modData.Manifest.Id, "Content.TranslationFile=" + translationPath }));
 			return true;
 		}
 	}

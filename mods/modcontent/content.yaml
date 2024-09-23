@@ -21,10 +21,12 @@ Background@CONTENT_PANEL:
 			Align: Center
 			Font: MediumBold
 		Label@HEADER_TEMPLATE:
+			X: 30
 			Y: 66
-			Width: PARENT_RIGHT
+			Width: PARENT_RIGHT - 60
 			Height: 16
 			Align: Center
+			WordWrap: true
 		ScrollPanel@PACKAGES:
 			X: 30
 			Y: 84
@@ -342,10 +344,12 @@ Background@CONTENT_PROMPT_PANEL:
 			Align: Center
 			Font: MediumBold
 		Label@HEADER_TEMPLATE:
+			X: 30
 			Y: 65
-			Width: PARENT_RIGHT
+			Width: PARENT_RIGHT - 60
 			Height: 16
 			Align: Center
+			WordWrap: true
 		Button@ADVANCED_BUTTON:
 			X: 30
 			Y: PARENT_BOTTOM - 52

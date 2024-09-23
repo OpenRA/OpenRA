@@ -122,7 +122,7 @@ namespace OpenRA.Network
 					Log.Write("sync", $"Player: {Game.Settings.Player.Name} ({Platform.CurrentPlatform} {Environment.OSVersion} {Platform.RuntimeVersion})");
 					if (Game.IsHost)
 						Log.Write("sync", "Player is host.");
-					Log.Write("sync", $"Game ID: {orderManager.LobbyInfo.GlobalSettings.GameUid} (Mod: {mod.Title} at Version {mod.Version})");
+					Log.Write("sync", $"Game ID: {orderManager.LobbyInfo.GlobalSettings.GameUid} (Mod: {mod.TitleTranslated} at Version {mod.Version})");
 					Log.Write("sync", $"Sync for net frame {r.Frame} -------------");
 					Log.Write("sync", $"SharedRandom: {r.SyncedRandom} (#{r.TotalCount})");
 					Log.Write("sync", "Synced Traits:");

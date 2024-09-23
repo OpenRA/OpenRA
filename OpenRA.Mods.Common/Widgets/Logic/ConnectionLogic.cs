@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var switchButton = panel.Get<ButtonWidget>("SWITCH_BUTTON");
 
 			var mod = CurrentServerSettings.ServerExternalMod;
-			var modTitle = mod.Title;
+			var modTitle = mod.Id;
 			var modVersion = mod.Version;
 
 			switchButton.OnClick = () =>

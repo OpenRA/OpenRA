@@ -87,6 +87,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly ModData modData;
 		readonly ModContent content;
 		readonly Dictionary<string, ModContent.ModSource> sources;
+		readonly FluentBundle externalFluentBundle;
 
 		readonly Widget panel;
 		readonly LabelWidget titleLabel;
@@ -116,11 +117,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		Mode visible = Mode.Progress;
 
 		[ObjectCreator.UseCtor]
-		public InstallFromSourceLogic(Widget widget, ModData modData, ModContent content, Dictionary<string, ModContent.ModSource> sources)
+		public InstallFromSourceLogic(
+			Widget widget, ModData modData, ModContent content, Dictionary<string, ModContent.ModSource> sources, FluentBundle externalFluentBundle)
 		{
 			this.modData = modData;
 			this.content = content;
 			this.sources = sources;
+			this.externalFluentBundle = externalFluentBundle;
 
 			Log.AddChannel("install", "install.log");
 
@@ -339,7 +342,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				var containerWidget = (ContainerWidget)checkboxListTemplate.Clone();
 				var checkboxWidget = containerWidget.Get<CheckboxWidget>("PACKAGE_CHECKBOX");
-				checkboxWidget.GetText = () => package.Title;
+				var title = externalFluentBundle.GetString(package.Title);
+				checkboxWidget.GetText = () => title;
 				checkboxWidget.IsDisabled = () => package.Required;
 				checkboxWidget.IsChecked = () => selectedPackages[package.Identifier];
 				checkboxWidget.OnClick = () => selectedPackages[package.Identifier] = !selectedPackages[package.Identifier];

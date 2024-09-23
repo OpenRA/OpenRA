@@ -1,9 +1,9 @@
 Metadata:
-	Title: Red Alert
+	Title: mod-title
 	Version: {DEV_VERSION}
 	Website: https://www.openra.net
 	WebIcon32: https://www.openra.net/images/icons/ra_32x32.png
-	WindowTitle: OpenRA - Red Alert
+	WindowTitle: mod-windowtitle
 
 PackageFormats: Mix
 
@@ -142,6 +142,7 @@ Translations:
 	common|languages/en.ftl
 	common|languages/chrome/en.ftl
 	common|languages/rules/en.ftl
+	ra|languages/en.ftl
 	ra|languages/chrome/en.ftl
 	ra|languages/rules/en.ftl
 
@@ -179,7 +180,6 @@ LoadScreen: LogoStripeLoadScreen
 	Image: ra|uibits/loadscreen.png
 	Image2x: ra|uibits/loadscreen-2x.png
 	Image3x: ra|uibits/loadscreen-3x.png
-	Text: Filling Crates..., Charging Capacitors..., Reticulating Splines..., Planting Trees..., Building Bridges..., Aging Empires..., Compiling EVA..., Constructing Pylons..., Activating Skynet..., Splitting Atoms...
 
 ServerTraits:
 	LobbyCommands
@@ -281,53 +281,53 @@ GameSpeeds:
 			OrderLatency: 6
 
 ModContent:
-	InstallPromptMessage: Red Alert requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without music\nor videos) from a mirror of the 2008 Red Alert freeware release.\n\nAdvanced Install includes options for copying the music, videos, and\nother content from an original game disc or digital installation.
+	InstallPromptMessage: modcontent-installprompt
 	QuickDownload: quickinstall
-	HeaderMessage: Game content may be extracted from the original game discs or an\nexisting digital install. OpenRA can also download the base game\nfiles from an online mirror of the 2008 freeware release of RA.
+	HeaderMessage: modcontent-header
 	Packages:
 		ContentPackage@base:
-			Title: Base Game Files
+			Title: modcontent-package-basefiles
 			Identifier: base
 			TestFiles: ^SupportDir|Content/ra/v2/allies.mix, ^SupportDir|Content/ra/v2/conquer.mix, ^SupportDir|Content/ra/v2/interior.mix, ^SupportDir|Content/ra/v2/hires.mix, ^SupportDir|Content/ra/v2/lores.mix, ^SupportDir|Content/ra/v2/local.mix, ^SupportDir|Content/ra/v2/speech.mix, ^SupportDir|Content/ra/v2/russian.mix, ^SupportDir|Content/ra/v2/snow.mix, ^SupportDir|Content/ra/v2/sounds.mix, ^SupportDir|Content/ra/v2/temperat.mix
 			Sources: allied, soviet, tfd, ra-steam, ra-origin, cncr-steam, cncr-origin
 			Required: true
 			Download: basefiles
 		ContentPackage@aftermathbase:
-			Title: Aftermath Expansion Files
+			Title: modcontent-package-aftermathfiles
 			Identifier: aftermathbase
 			TestFiles: ^SupportDir|Content/ra/v2/expand/expand2.mix, ^SupportDir|Content/ra/v2/expand/hires1.mix, ^SupportDir|Content/ra/v2/expand/lores1.mix, ^SupportDir|Content/ra/v2/expand/chrotnk1.aud, ^SupportDir|Content/ra/v2/expand/fixit1.aud, ^SupportDir|Content/ra/v2/expand/jburn1.aud, ^SupportDir|Content/ra/v2/expand/jchrge1.aud, ^SupportDir|Content/ra/v2/expand/jcrisp1.aud, ^SupportDir|Content/ra/v2/expand/jdance1.aud, ^SupportDir|Content/ra/v2/expand/jjuice1.aud, ^SupportDir|Content/ra/v2/expand/jjump1.aud, ^SupportDir|Content/ra/v2/expand/jlight1.aud, ^SupportDir|Content/ra/v2/expand/jpower1.aud, ^SupportDir|Content/ra/v2/expand/jshock1.aud, ^SupportDir|Content/ra/v2/expand/jyes1.aud, ^SupportDir|Content/ra/v2/expand/madchrg2.aud, ^SupportDir|Content/ra/v2/expand/madexplo.aud, ^SupportDir|Content/ra/v2/expand/mboss1.aud, ^SupportDir|Content/ra/v2/expand/mhear1.aud, ^SupportDir|Content/ra/v2/expand/mhotdig1.aud, ^SupportDir|Content/ra/v2/expand/mhowdy1.aud, ^SupportDir|Content/ra/v2/expand/mhuh1.aud, ^SupportDir|Content/ra/v2/expand/mlaff1.aud, ^SupportDir|Content/ra/v2/expand/mrise1.aud, ^SupportDir|Content/ra/v2/expand/mwrench1.aud, ^SupportDir|Content/ra/v2/expand/myeehaw1.aud, ^SupportDir|Content/ra/v2/expand/myes1.aud
 			Sources: aftermath, tfd, ra-steam, ra-origin, cncr-steam, cncr-origin
 			Required: true
 			Download: aftermath
 		ContentPackage@cncdesert:
-			Title: C&C Desert Tileset
+			Title: modcontent-package-deserttileset
 			Identifier: cncdesert
 			TestFiles: ^SupportDir|Content/ra/v2/cnc/desert.mix
 			Sources: tfd, cnc-steam, cnc-origin, cnc95, cncr-steam, cncr-origin
 			Required: true
 			Download: cncdesert
 		ContentPackage@music:
-			Title: Base Game Music
+			Title: modcontent-package-basemusic
 			Identifier: music
 			TestFiles: ^SupportDir|Content/ra/v2/scores.mix
 			Sources: allied, soviet, tfd, ra-steam, ra-origin, cncr-steam, cncr-origin
 		ContentPackage@movies-allied:
-			Title: Allied Campaign Briefings
+			Title: modcontent-package-allied
 			Identifier: movies-allied
 			TestFiles: ^SupportDir|Content/ra/v2/movies/aagun.vqa, ^SupportDir|Content/ra/v2/movies/aftrmath.vqa, ^SupportDir|Content/ra/v2/movies/ally1.vqa, ^SupportDir|Content/ra/v2/movies/ally10.vqa, ^SupportDir|Content/ra/v2/movies/ally10b.vqa, ^SupportDir|Content/ra/v2/movies/ally11.vqa, ^SupportDir|Content/ra/v2/movies/ally12.vqa, ^SupportDir|Content/ra/v2/movies/ally14.vqa, ^SupportDir|Content/ra/v2/movies/ally2.vqa, ^SupportDir|Content/ra/v2/movies/ally4.vqa, ^SupportDir|Content/ra/v2/movies/ally5.vqa, ^SupportDir|Content/ra/v2/movies/ally6.vqa, ^SupportDir|Content/ra/v2/movies/ally8.vqa, ^SupportDir|Content/ra/v2/movies/ally9.vqa, ^SupportDir|Content/ra/v2/movies/allyend.vqa, ^SupportDir|Content/ra/v2/movies/allymorf.vqa, ^SupportDir|Content/ra/v2/movies/apcescpe.vqa, ^SupportDir|Content/ra/v2/movies/assess.vqa, ^SupportDir|Content/ra/v2/movies/battle.vqa, ^SupportDir|Content/ra/v2/movies/binoc.vqa, ^SupportDir|Content/ra/v2/movies/bmap.vqa, ^SupportDir|Content/ra/v2/movies/brdgtilt.vqa, ^SupportDir|Content/ra/v2/movies/crontest.vqa, ^SupportDir|Content/ra/v2/movies/cronfail.vqa, ^SupportDir|Content/ra/v2/movies/destroyr.vqa, ^SupportDir|Content/ra/v2/movies/dud.vqa, ^SupportDir|Content/ra/v2/movies/elevator.vqa, ^SupportDir|Content/ra/v2/movies/flare.vqa, ^SupportDir|Content/ra/v2/movies/frozen.vqa, ^SupportDir|Content/ra/v2/movies/grvestne.vqa, ^SupportDir|Content/ra/v2/movies/landing.vqa, ^SupportDir|Content/ra/v2/movies/masasslt.vqa, ^SupportDir|Content/ra/v2/movies/mcv.vqa, ^SupportDir|Content/ra/v2/movies/mcv_land.vqa, ^SupportDir|Content/ra/v2/movies/montpass.vqa, ^SupportDir|Content/ra/v2/movies/oildrum.vqa, ^SupportDir|Content/ra/v2/movies/overrun.vqa, ^SupportDir|Content/ra/v2/movies/prolog.vqa, ^SupportDir|Content/ra/v2/movies/redintro.vqa, ^SupportDir|Content/ra/v2/movies/shipsink.vqa, ^SupportDir|Content/ra/v2/movies/shorbom1.vqa, ^SupportDir|Content/ra/v2/movies/shorbom2.vqa, ^SupportDir|Content/ra/v2/movies/shorbomb.vqa, ^SupportDir|Content/ra/v2/movies/snowbomb.vqa, ^SupportDir|Content/ra/v2/movies/soviet1.vqa, ^SupportDir|Content/ra/v2/movies/sovtstar.vqa, ^SupportDir|Content/ra/v2/movies/spy.vqa, ^SupportDir|Content/ra/v2/movies/tanya1.vqa, ^SupportDir|Content/ra/v2/movies/tanya2.vqa, ^SupportDir|Content/ra/v2/movies/toofar.vqa, ^SupportDir|Content/ra/v2/movies/trinity.vqa
 			Sources: allied, tfd, ra-steam, ra-origin, cncr-steam, cncr-origin
 		ContentPackage@movies-soviet:
-			Title: Soviet Campaign Briefings
+			Title: modcontent-package-soviet
 			Identifier: movies-soviet
 			TestFiles: ^SupportDir|Content/ra/v2/movies/aagun.vqa, ^SupportDir|Content/ra/v2/movies/cronfail.vqa, ^SupportDir|Content/ra/v2/movies/airfield.vqa, ^SupportDir|Content/ra/v2/movies/ally1.vqa, ^SupportDir|Content/ra/v2/movies/allymorf.vqa, ^SupportDir|Content/ra/v2/movies/averted.vqa, ^SupportDir|Content/ra/v2/movies/beachead.vqa, ^SupportDir|Content/ra/v2/movies/bmap.vqa, ^SupportDir|Content/ra/v2/movies/bombrun.vqa, ^SupportDir|Content/ra/v2/movies/countdwn.vqa, ^SupportDir|Content/ra/v2/movies/double.vqa, ^SupportDir|Content/ra/v2/movies/dpthchrg.vqa, ^SupportDir|Content/ra/v2/movies/execute.vqa, ^SupportDir|Content/ra/v2/movies/flare.vqa, ^SupportDir|Content/ra/v2/movies/landing.vqa, ^SupportDir|Content/ra/v2/movies/mcvbrdge.vqa, ^SupportDir|Content/ra/v2/movies/mig.vqa, ^SupportDir|Content/ra/v2/movies/movingin.vqa, ^SupportDir|Content/ra/v2/movies/mtnkfact.vqa, ^SupportDir|Content/ra/v2/movies/nukestok.vqa, ^SupportDir|Content/ra/v2/movies/onthprwl.vqa, ^SupportDir|Content/ra/v2/movies/periscop.vqa, ^SupportDir|Content/ra/v2/movies/prolog.vqa, ^SupportDir|Content/ra/v2/movies/radrraid.vqa, ^SupportDir|Content/ra/v2/movies/redintro.vqa, ^SupportDir|Content/ra/v2/movies/search.vqa, ^SupportDir|Content/ra/v2/movies/sfrozen.vqa, ^SupportDir|Content/ra/v2/movies/sitduck.vqa, ^SupportDir|Content/ra/v2/movies/slntsrvc.vqa, ^SupportDir|Content/ra/v2/movies/snowbomb.vqa, ^SupportDir|Content/ra/v2/movies/snstrafe.vqa, ^SupportDir|Content/ra/v2/movies/sovbatl.vqa, ^SupportDir|Content/ra/v2/movies/sovcemet.vqa, ^SupportDir|Content/ra/v2/movies/sovfinal.vqa, ^SupportDir|Content/ra/v2/movies/soviet1.vqa, ^SupportDir|Content/ra/v2/movies/soviet10.vqa, ^SupportDir|Content/ra/v2/movies/soviet11.vqa, ^SupportDir|Content/ra/v2/movies/soviet12.vqa, ^SupportDir|Content/ra/v2/movies/soviet13.vqa, ^SupportDir|Content/ra/v2/movies/soviet14.vqa, ^SupportDir|Content/ra/v2/movies/soviet2.vqa, ^SupportDir|Content/ra/v2/movies/soviet3.vqa, ^SupportDir|Content/ra/v2/movies/soviet4.vqa, ^SupportDir|Content/ra/v2/movies/soviet5.vqa, ^SupportDir|Content/ra/v2/movies/soviet6.vqa, ^SupportDir|Content/ra/v2/movies/soviet7.vqa, ^SupportDir|Content/ra/v2/movies/soviet8.vqa, ^SupportDir|Content/ra/v2/movies/soviet9.vqa, ^SupportDir|Content/ra/v2/movies/sovmcv.vqa, ^SupportDir|Content/ra/v2/movies/sovtstar.vqa, ^SupportDir|Content/ra/v2/movies/spotter.vqa, ^SupportDir|Content/ra/v2/movies/strafe.vqa, ^SupportDir|Content/ra/v2/movies/take_off.vqa, ^SupportDir|Content/ra/v2/movies/tesla.vqa, ^SupportDir|Content/ra/v2/movies/v2rocket.vqa
 			Sources: soviet, tfd, ra-steam, ra-origin
 		ContentPackage@music-counterstrike:
-			Title: Counterstrike Music
+			Title: modcontent-package-counterstrikemusic
 			Identifier: music-counterstrike
 			TestFiles: ^SupportDir|Content/ra/v2/expand/araziod.aud, ^SupportDir|Content/ra/v2/expand/backstab.aud, ^SupportDir|Content/ra/v2/expand/chaos2.aud, ^SupportDir|Content/ra/v2/expand/shut_it.aud, ^SupportDir|Content/ra/v2/expand/2nd_hand.aud, ^SupportDir|Content/ra/v2/expand/twinmix1.aud, ^SupportDir|Content/ra/v2/expand/under3.aud, ^SupportDir|Content/ra/v2/expand/vr2.aud,
 			Sources: counterstrike, ra-steam, ra-origin, cncr-steam, cncr-origin
 		ContentPackage@music-aftermath:
-			Title: Aftermath Music
+			Title: modcontent-package-aftermathmusic
 			Identifier: music-aftermath
 			TestFiles: ^SupportDir|Content/ra/v2/expand/await.aud, ^SupportDir|Content/ra/v2/expand/bog.aud, ^SupportDir|Content/ra/v2/expand/float_v2.aud, ^SupportDir|Content/ra/v2/expand/gloom.aud, ^SupportDir|Content/ra/v2/expand/grndwire.aud, ^SupportDir|Content/ra/v2/expand/rpt.aud, ^SupportDir|Content/ra/v2/expand/search.aud, ^SupportDir|Content/ra/v2/expand/traction.aud, ^SupportDir|Content/ra/v2/expand/wastelnd.aud
 			Sources: aftermath, ra-steam, ra-origin, cncr-steam, cncr-origin
@@ -342,6 +342,7 @@ ModContent:
 		ra|installer/origin.yaml
 		ra|installer/soviet95.yaml
 		ra|installer/steam.yaml
+	Translation: ra|languages/modcontent/en.ftl
 
 DiscordService:
 	ApplicationId: 699222659766026240

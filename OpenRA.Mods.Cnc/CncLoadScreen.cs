@@ -19,6 +19,9 @@ namespace OpenRA.Mods.Cnc
 {
 	public sealed class CncLoadScreen : SheetLoadScreen
 	{
+		[FluentReference]
+		const string Loading = "loadscreen-loading";
+
 		int loadTick;
 
 		Sprite nodLogo, gdiLogo, evaLogo, brightBlock, dimBlock;
@@ -31,11 +34,15 @@ namespace OpenRA.Mods.Cnc
 		int lastDensity;
 		Size lastResolution;
 
+		string message = "";
+
 		public override void Init(ModData modData, Dictionary<string, string> info)
 		{
 			base.Init(modData, info);
 
 			versionText = modData.Manifest.Metadata.Version;
+
+			message = FluentProvider.GetString(Loading);
 		}
 
 		public override void DisplayInner(Renderer r, Sheet s, int density)
@@ -89,7 +96,7 @@ namespace OpenRA.Mods.Cnc
 			if (r.Fonts != null)
 			{
 				var loadingFont = r.Fonts["BigBold"];
-				var loadingText = Info["Text"];
+				var loadingText = message;
 				var loadingPos = new float2((bounds.Width - loadingFont.Measure(loadingText).X) / 2, barY);
 				loadingFont.DrawText(loadingText, loadingPos, Color.Gray);
 
