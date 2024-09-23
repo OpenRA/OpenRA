@@ -10,9 +10,7 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets.Logic
@@ -25,8 +23,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly bool showModTab;
 		readonly bool showEngineTab;
 		bool isShowingModTab;
-		readonly IEnumerable<string> modLines;
-		readonly IEnumerable<string> engineLines;
+		readonly string modLines;
+		readonly string engineLines;
 
 		[ObjectCreator.UseCtor]
 		public CreditsLogic(Widget widget, ModData modData, Action onExit)
@@ -83,21 +81,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			scrollPanel.RemoveChildren();
 			var font = Game.Renderer.Fonts[template.Font];
-			foreach (var line in modCredits ? modLines : engineLines)
-			{
-				var label = (LabelWidget)template.Clone();
-				label.GetText = () => line;
-				var wrappedLine = line;
-				if (label.WordWrap)
-					wrappedLine = WidgetUtils.WrapText(line, label.Bounds.Width, font);
-				label.Bounds.Height = Math.Max(label.Bounds.Height, font.Measure(wrappedLine).Y);
-				scrollPanel.AddChild(label);
-			}
+			var lines = modCredits ? modLines : engineLines;
+
+			var label = (LabelWidget)template.Clone();
+			label.GetText = () => lines;
+			label.IncreaseHeightToFitCurrentText();
+			scrollPanel.AddChild(label);
 		}
 
-		static IEnumerable<string> ParseLines(Stream file)
+		static string ParseLines(Stream file)
 		{
-			return file.ReadAllLines().Select(l => l.Replace("\t", "    ").Replace("*", "\u2022")).ToList();
+			return file.ReadAllText().Replace(Environment.NewLine, "\n").Replace("\t", "    ").Replace("*", "\u2022");
 		}
 	}
 }
