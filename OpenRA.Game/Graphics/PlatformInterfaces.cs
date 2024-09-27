@@ -72,7 +72,10 @@ namespace OpenRA
 
 		IHardwareCursor CreateHardwareCursor(string name, Size size, byte[] data, int2 hotspot, bool pixelDouble);
 		void SetHardwareCursor(IHardwareCursor cursor);
+
 		void SetWindowTitle(string title);
+		void SetWindowIcon(Size size, byte[] data);
+
 		void SetRelativeMouseMode(bool mode);
 		void SetScaleModifier(float scale);
 

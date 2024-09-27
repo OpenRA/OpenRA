@@ -42,6 +42,7 @@ namespace OpenRA
 		public static CursorManager Cursor;
 		public static bool HideCursor;
 
+		public static IconManager Icon;
 		static WorldRenderer worldRenderer;
 		static string modLaunchWrapper;
 
@@ -501,6 +502,9 @@ namespace OpenRA
 			var metadata = ModData.Manifest.Metadata;
 			if (!string.IsNullOrEmpty(metadata.WindowTitle))
 				Renderer.Window.SetWindowTitle(metadata.WindowTitle);
+
+			Icon?.Dispose();
+			Icon = new IconManager(ModData);
 
 			PerfHistory.Items["render"].HasNormalTick = false;
 			PerfHistory.Items["batches"].HasNormalTick = false;
