@@ -9,18 +9,59 @@
 
 Difficulty = Map.LobbyOption("difficulty")
 
+-- Destroy all to unlock airstrike
 SamSites = { sam1, sam2, sam3, sam4 }
 
--- this is a list of all the buildings that will get rebuilt when they get destroyed
-NodBase = { gun1, gun2, gun3, gun4, obelisk1, power1, power2, power3, power4, power5, power6, power7, power8, airfield, hand, refinery }
+-- Buildings to rebuild if destroyed
+RebuildableStructs = { gun1, gun2, gun3, gun4, obelisk1, power1, power2, power3, power4,
+	power5, power6, power7, power8, airfield, hand, refinery }
+
+-- Attack waves
+AttackPaths =
+{
+	{ waypoint11.Location, waypoint18.Location, waypoint12.Location, waypoint3.Location, waypoint4.Location, waypoint5.Location, waypoint6.Location },
+	{ waypoint11.Location, waypoint18.Location, waypoint12.Location, waypoint0.Location, waypoint2.Location, waypoint13.Location, waypoint14.Location, waypoint15.Location, waypoint17.Location },
+	{ waypoint11.Location, waypoint18.Location, waypoint12.Location, waypoint0.Location, waypoint7.Location, waypoint8.Location, waypoint9.Location, waypoint10.Location, waypoint17.Location }
+}
+-- Time between attack waves
+AttackCooldown =
+{
+	hard = DateTime.Seconds(10), normal = DateTime.Seconds(20), easy = DateTime.Seconds(30)
+}
+-- Armor/vehicle production
+ArmorProducer = {}
+ArmorProducer.Cooldown = AttackCooldown[Difficulty]
+-- kind of mimics what the original mission sends at you
+ArmorProducer.ModelGroups = {
+	{ "arty", "arty" },
+	{ "bggy", "ltnk" },
+	{ "ltnk", "ltnk" },
+}
+ArmorProducer.AttackPaths = AttackPaths
+ArmorProducer.AttackGrp = {}
+
+-- Infantry production
+InfProducer = {}
+InfProducer.Cooldown = AttackCooldown[Difficulty]
+-- kind of mimics what the original mission sends at you
+InfProducer.ModelGroups = {
+	{ "e1", "e1", "e3", "e3", "e4", "e4" },
+	{ "e3", "e3", "e4", "e4" },
+}
+InfProducer.AttackPaths = AttackPaths
+InfProducer.AttackGrp = {}
+
+-- Build queue for structures
+CyardBuildQueue = {}
 
 WorldLoaded = function()
+	print('====  WorldLoaded  ====')
 	GDI = Player.GetPlayer("GDI")
 	Nod = Player.GetPlayer("Nod")
 
-	DestroyAll = GDI.AddObjective("Destroy all Nod units and buildings.")
-
-	Trigger.AfterDelay(DateTime.Seconds(5), BuildAttackGroup)
+	-- Prepare Objectives
+	KillNod = GDI.AddObjective("Destroy all Nod units and buildings.")
+	KillGDI = Nod.AddPrimaryObjective("Kill GDI")
 
 	AirSupport = GDI.AddObjective("Destroy the SAM sites to receive air support.", "Secondary", false)
 	Trigger.OnAllKilled(SamSites, function()
@@ -28,153 +69,345 @@ WorldLoaded = function()
 		Actor.Create("airstrike.proxy", true, { Owner = GDI })
 	end)
 
-	airfield.RallyPoint = waypoint11.Location
-	hand.RallyPoint = waypoint11.Location
+	InitObjectives(GDI)
 
-	-- set repair triggers a few seconds after the game starts to give it a moment
-	Trigger.AfterDelay(DateTime.Seconds(5), SetRepairRebuildTriggers)
+	--TODO DefaultCameraPosition is too far west??
+	--Camera.Position = DefaultCameraPosition.CenterPosition
+	--Camera.Position = GDI.HomeLocation
+	-- Look at player's MCV
+	Camera.Position = Actor201.CenterPosition
 
-	Trigger.OnAnyKilled(NodBase, BuildBuilding)
-end
-
-SetRepairRebuildTriggers = function() 
-	-- repair buildings as they are damaged
-	for _, actor in ipairs(Map.ActorsInWorld) do
-		-- nod buildings get auto-repair turned on
-		if (actor.Owner == Nod and actor.HasProperty("StartBuildingRepairs")) then
-			SetBuildingRepairTrigger(actor)
+	-- Repair non-rebuilding structures e.g silos
+	-- Set up a few seconds after the game starts to give it a moment
+	Utils.Do(Nod.GetActors(), function(actor)
+		if actor.HasProperty("StartBuildingRepairs") then
+			RepairBuilding(Nod, actor, 0.75)
 		end
+	end)
 
-		-- nod harvesters get auto-rebuild turned on
-		if (actor.HasProperty("FindResources")) then
-			SetHarvesterRebuildTrigger(actor)
-		end
-	end
-end
-
---TODO, maybe: Nod "in-base" infantry patrol between waypoints 18 and 19; rebuild if any(some?)(all?) are killed; join patrol
---215-18, 223-26, 219-22 are patrol units
---TODO, maybe: Nod "in-base" tank(s?) respond to attacks on harvester; rebuild if killed; move to 19
-
-Tick = function()
-	if DateTime.GameTime > 2 and Nod.HasNoRequiredUnits() then
-		GDI.MarkCompletedObjective(DestroyAll)
-	end
-
-	if DateTime.GameTime > DateTime.Seconds(5) then
-		if Nod.HasNoRequiredUnits() then
-			GDI.MarkCompletedObjective(DestroyAll)
-		end
+	-- AI will try to replace certain buildings when lost
+	BaseBlueprints = {}
+	for i = 1, #RebuildableStructs do
+		local structure = RebuildableStructs[i]
+		local blueprint = {
+			Type = structure.Type,
+			Location = structure.Location,
+		}
+		table.insert(BaseBlueprints, blueprint)
+		SetupNodBuilding(blueprint, structure, false)
 	end
 end
 
--- base reconstruction code, some from gdi09-AI.lua
-BuildBuilding = function(building)
-	local cyards = Nod.GetActorsByType("fact")
-	if (#cyards < 1) then
-		return
+SetupNodBuilding = function(blueprint, structure, autoRepair)
+	Media.Debug("Setup " .. tostring(structure) .. " as " .. ActorString(blueprint) .. ' Bal$' .. BankBalance(Nod))
+	Trigger.OnKilled(structure, function()
+		-- Add to build queue
+		Media.Debug(string.format('Bldg killed: Another in progress? %s  Queue_len=%d',
+			tostring(rebuildingInProgress), #CyardBuildQueue))
+		table.insert(CyardBuildQueue, blueprint)
+		if not rebuildingInProgress then
+			-- Build queue was empty; start building now
+			-- This ensures we only build one structure at a time
+			ProcessBuildQueue(CyardBuildQueue)
+		end
+	end)
+	if autoRepair then
+		RepairBuilding(Nod, structure, 0.75)
+	end
+	-- NOTE If newly built, it enters the world on the next tick
+	if structure.Type == 'hand' or structure.Type == 'pyle' then
+		Trigger.AfterDelay(AttackCooldown[Difficulty], function()
+			print('Start infantry production+')
+			ProduceUnit(structure, InfProducer)
+			print('Start infantry production-')
+		end)
+	elseif structure.Type == 'afld' or structure.Type == 'weap' then
+		Trigger.AfterDelay(AttackCooldown[Difficulty], function()
+			print('Start tank production+')
+			ProduceUnit(structure, ArmorProducer)
+			print('Start tank production-')
+		end)
+	end
+	-- New units' first move
+	if structure.Type == 'hand' or structure.Type == 'afld' then
+		structure.RallyPoint = waypoint11.Location
+	end
+end
+
+-- Replace structures when destroyed
+ProcessBuildQueue = function(queue)
+	if rebuildingInProgress then
+		local s='ProcessBuildQueue: should not happen while build in progress! Queue_len='..#queue
+		Media.Debug(s)
+		print(s)
+	end
+	while #queue > 0 do
+		local rc = RebuildFromBlueprint(queue)
+		Media.Debug('RebuildFromBlueprint: ' .. rc)
+		if rc == 'cancelled' then
+			table.remove(queue, 1)
+		elseif rc == 'insufficient_funds' then
+			-- Continue processing later
+			Trigger.AfterDelay(DateTime.Seconds(5), function()
+				ProcessBuildQueue(queue)
+			end)
+			break
+		elseif rc == 'in_progress' then
+			-- Stop processing the queue while it builds
+			table.remove(queue, 1)
+			break
+		else
+			Media.Debug("Unknown return from RebuildFromBlueprint: " .. tostring(rc))
+		end
+	end
+end
+
+-- Helper for ProcessBuildQueue
+-- Return true when the item is finished and we should move to the next item in queue
+-- Return false when the item is in progress and we should not move to the next item the queue
+RebuildFromBlueprint = function(queue)
+	if #queue == 0 then
+		s = 'RebuildFromBlueprint: queue empty!'
+		Media.Debug(s)
+		print(s)
+		return 'cancelled'
+	end
+	local blueprint = queue[1]
+	local cyard = GetNodCyard()
+	if not cyard then
+		Media.Debug("Can't rebuild " .. ActorString(blueprint) .. ": No Cyard")
+		return 'cancelled' -- Lost cyard; can never build again
 	end
 
-	local cyard = cyards[1]
-	local buildingCost = Actor.Cost(building.Type)
-	if CyardIsBuilding or Nod.Cash < buildingCost then
-		Trigger.AfterDelay(DateTime.Seconds(10), function() BuildBuilding(building) end)
-		return
+	local cost = Actor.Cost(blueprint.Type)
+	if BankBalance(Nod) < cost then
+		-- Can't build now
+		Media.Debug("Can't rebuild " .. ActorString(blueprint) .. " yet. Cash$" .. BankBalance(Nod) .. ", Cost$" .. cost)
+		return 'insufficient_funds'
 	end
 
-	CyardIsBuilding = true
-	-- grab a pointer to the location here, it won't be valid when the delayed function fires later
-	BLoc = building.Location
-
-	Nod.Cash = Nod.Cash - buildingCost
-	Trigger.AfterDelay(Actor.BuildTime(building.Type), function() 
-		CyardIsBuilding = false
-
+	-- Start building now
+	rebuildingInProgress = true
+	BankDeduct(Nod, cost)
+	Trigger.AfterDelay(Actor.BuildTime(blueprint.Type), function()
+		-- Construction complete
+		rebuildingInProgress = false
+		--[[TODO Check for obstacles
+		if IsBuildAreaBlocked(Nod, blueprint) then
+			Trigger.AfterDelay(DateTime.Seconds(5), function()
+				BuildBlueprint(blueprint)  -- this function???
+			end)
+			return
+		end
+		]]--
 		if cyard.IsDead or cyard.Owner ~= Nod then
-			Nod.Cash = Nod.Cash + buildingCost
+			-- Lost our cyard; can't build anymore
+			Media.Debug("Lost cyard; refunding $" .. cost .. " for " .. ActorString(blueprint))
+			-- Credit
+			Nod.Cash = Nod.Cash + cost
+		else
+			local structure = Actor.Create(blueprint.Type, true, { Owner = Nod, Location = blueprint.Location })
+			SetupNodBuilding(blueprint, structure, true)
+		end
+		-- Continue processing the queue.
+		Trigger.AfterDelay(DateTime.Seconds(3), function()
+			ProcessBuildQueue(queue)
+		end)
+	end)
+	Media.Debug(string.format("Rebuilding %s: %d sec, $%d", ActorString(blueprint),
+		Actor.BuildTime(blueprint.Type), cost))
+	return 'in_progress'
+end
+
+SendUnits = function(units, path)
+	Utils.Do(units, function(unit)
+		if unit.IsDead then
 			return
 		end
 
-		local actor = Actor.Create(building.Type, true, { Owner = Nod, Location = BLoc })
-
-		Trigger.OnKilled(actor, function()
-			BuildBuilding(actor)
-		end)
-
-		SetBuildingRepairTrigger(actor)
-	end)
-end
-
---repair building trigger setup
-function SetBuildingRepairTrigger(actor)
-	Trigger.OnDamaged(actor, function(building)
-		if building.Owner == Nod and building.Health < building.MaxHealth * 3/4 then
-			building.StartBuildingRepairs()
-		end
-	end)
-end
-
-function SetHarvesterRebuildTrigger(actor)
-	Trigger.OnKilled(actor, BuildHarvester)
-end
-
--- attack wave code
-AttackPaths =
-{
-	{ waypoint11.Location, waypoint18.Location, waypoint12.Location, waypoint3.Location, waypoint4.Location, waypoint5.Location, waypoint6.Location },
-	{ waypoint11.Location, waypoint18.Location, waypoint12.Location, waypoint0.Location, waypoint2.Location, waypoint13.Location, waypoint14.Location, waypoint15.Location, waypoint17.Location },
-	{ waypoint11.Location, waypoint18.Location, waypoint12.Location, waypoint0.Location, waypoint7.Location, waypoint8.Location, waypoint9.Location, waypoint10.Location, waypoint17.Location }
-}
-
--- kind of mimics what the original mission sends at you
-AttackUnitTypes = 
-{
-	{ factory = "hand", types = { "e1", "e1", "e3", "e3", "e4", "e4" } },
-	{ factory = "hand", types = { "e3", "e3", "e4", "e4" } },
-	{ factory = "afld", types = { "arty", "arty" } },
-	{ factory = "afld", types = { "bggy", "ltnk" } },
-	{ factory = "afld", types = { "ltnk", "ltnk" } }
-}
-
-AttackTimer =
-{
-	hard = 10, normal = 20, easy = 30
-}
-
-BuildHarvester = function() 
-	local factoryArray = Nod.GetActorsByType("afld")
-	if (#factoryArray > 0) then
-		factoryArray[1].Build({ "harv" }, HarvesterHarvest)
-	end
-end
-
-HarvesterHarvest = function(units) 
-	for _, unit in ipairs(units) do
-		unit.FindResources(path, false)
-		SetHarvesterRebuildTrigger(unit)
-	end
-end
-
-BuildAttackGroup = function()
-	-- for LUA rookies, arrays are 1-indexed
-	-- .Build takes an array of strings indicating unit types
-
-	local unitSet = Utils.Random(AttackUnitTypes)
-
-	local factoryArray = Nod.GetActorsByType(unitSet.factory)
-	if (#factoryArray > 0) then
-		factoryArray[1].Build(unitSet.types, SendAttackWave)
-	end
-end
-
--- callback function for when a unit group finishes building: takes an array of units and 
--- sends them on their merry way to the GDI base
-SendAttackWave = function(units) 
-	local path = Utils.Random(AttackPaths)
-
-	for _, unit in ipairs(units) do
 		unit.Patrol(path, false)
+		IdleHunt(unit)
+		-- IdleHunt is defined in utils.lua
+	end)
+end
+
+-- Build infantry or vehicles/armour
+ProduceUnit = function(factory, prodParms)
+
+	local needHarvester = #Nod.GetActorsByType("harv") == 0 or BuildingHarvester
+	if factory.IsDead or factory.Owner ~= Nod then
+		-- Lost this structure, stop
+		return
+	elseif (factory.Type == 'hand' or factory.Type == 'pyle') and
+		BankBalance(Nod) <= Actor.Cost('harv')-1 and needHarvester then
+		-- Infantry on hold while we replace harvester
+		-- Assumes we own an afld or weap
+		Trigger.AfterDelay(DateTime.Seconds(10), function()
+			ProduceUnit(factory, prodParms)
+		end)
+		return
+	elseif (factory.Type == 'afld' or factory.Type == 'weap') and
+		needHarvester and not BuildingHarvester then
+		-- Build a harvester first
+		-- Assumes we own at most one vehicle producing structure
+		--if not BuildingHarvester then
+		ProduceHarvester(factory, prodParms)
+		return
 	end
 
-	Trigger.AfterDelay(DateTime.Seconds(AttackTimer[Difficulty]), BuildAttackGroup)
+	-- Build a group to attack together
+	if #prodParms.AttackGrp == 0 then
+		-- Choose a group to build
+		prodParms.ModelGroup = Utils.Random(prodParms.ModelGroups)
+	else
+		RemoveLostActors(prodParms.AttackGrp)
+	end
+	-- Which units do we not have yet?  Randomly build one of them.
+	local haveTypes = {}
+	local s = string.format('ProduceUnit(%s,_): Have', factory.Type)
+	for i, actor in ipairs(prodParms.AttackGrp) do
+		table.insert(haveTypes, actor.Type)
+		s = s .. ' ' .. actor.Type
+	end
+	local needUnits = compareTables(haveTypes, prodParms.ModelGroup)
+	s = s .. ', Need'
+	for i, actor in ipairs(needUnits) do
+		s = s .. ' ' .. actor
+	end
+
+	if #needUnits > 0 then
+		-- Continue building the group
+		local toBuild = { Utils.Random(needUnits) }
+		print(string.format('; Build %s', toBuild[1]))
+		-- TODO What if Build returns false? Do we try later?
+		factory.Build(toBuild, function(unit)
+			-- Unit ready
+			for _,v in ipairs(unit) do
+				table.insert(prodParms.AttackGrp, v)
+			end
+			local delay = Utils.RandomInteger(DateTime.Seconds(12), DateTime.Seconds(17))
+			Trigger.AfterDelay(delay, function()
+				ProduceUnit(factory, prodParms)
+			end)
+		end)
+	else
+		-- Group ready
+		local path = Utils.Random(prodParms.AttackPaths)
+		-- Tried to use campain.lua: MoveAndHunt but it wants path elements to have a Location property
+		SendUnits(prodParms.AttackGrp, path)
+		prodParms.AttackGrp = {}
+		prodParms.ModelGroup = nil
+		Trigger.AfterDelay(prodParms.Cooldown, function()
+			ProduceUnit(factory, prodParms)
+		end)
+		s = s .. '; Attack!'
+	end
+
+	Media.Debug(s)
+	print(s)
+end
+
+ProduceHarvester = function(factory, prodParms)
+	local harv_type = "harv"
+	if BankBalance(Nod) < Actor.Cost(harv_type) then
+		-- Try again later
+		Media.Debug(string.format('ProduceHarvester: Have $%d, need $%d', BankBalance(Nod), Actor.Cost(harv_type)))
+		Trigger.AfterDelay(DateTime.Seconds(5), function()
+			ProduceUnit(factory, prodParms)
+		end)
+	else
+		BuildingHarvester = true
+		factory.Build({ harv_type }, function(units)
+			-- Unit ready
+			for idx, unit in pairs(units) do
+				if unit.Type == 'harv' then
+					s='Harvester built: ' .. ActorString(unit)
+					Media.Debug(s)
+					print(s)
+					--Unnecessary:
+					--unit.FindResources()
+					BuildingHarvester = false
+				end
+			end
+			-- Continue building armour/vehicles
+			Trigger.AfterDelay(DateTime.Seconds(5), function()
+				ProduceUnit(factory, prodParms)
+			end)
+		end)
+	end
+end
+
+GetNodCyard = function()
+	local cyards = Nod.GetActorsByType("fact")
+	if (#cyards < 1) then
+		return nil -- Lost cyard; can never build again
+	else
+		return cyards[1]
+	end
+end
+
+-- Remove captured and killed actors from a table
+RemoveLostActors = function (tbl)
+    for i = #tbl, 1, -1 do
+        if tbl[i].IsDead or tbl[i].Owner ~= Nod then
+            table.remove(tbl, i)
+        end
+    end
+end
+
+
+Tick = function()
+	-- Check objectives
+	if DateTime.GameTime > DateTime.Seconds(5) then
+		if GDI.HasNoRequiredUnits()  then
+			Nod.MarkCompletedObjective(KillGDI)
+		end
+		if Nod.HasNoRequiredUnits() then
+			GDI.MarkCompletedObjective(KillNod)
+		end
+	end
+end
+
+BankBalance = function(Player)
+	return Player.Resources + Player.Cash
+end
+
+BankDeduct = function(Player, cost)
+	if cost > BankBalance(Player) then
+		Media.Debug(tostring(Player) .. ' cannot afford $' .. cost)
+	end
+	local spendRes = math.min(cost, Player.Resources)
+	Player.Resources = Player.Resources - spendRes
+	local spendCash = math.max(0, cost - spendRes)
+	Player.Cash = Player.Cash - spendCash
+end
+
+--[[
+  We use this to build an attack force
+  t1 is our current group.  t2 is our model Group.  Find the difference between
+  the groups.  When the difference is empty, then we are ready to attack.
+--]]
+function compareTables(t1, t2)
+    local t3 = {}
+    local t1_counts = {}
+
+    -- Count occurrences of each value in t1
+    for _, v in pairs(t1) do
+        t1_counts[v] = (t1_counts[v] or 0) + 1
+    end
+
+    -- Check each value in t2
+    for _, v in pairs(t2) do
+        if t1_counts[v] and t1_counts[v] > 0 then
+            t1_counts[v] = t1_counts[v] - 1
+        else
+            table.insert(t3, v)
+        end
+    end
+
+    return t3
+end
+
+ActorString = function(actor)
+	return string.format('%s (%d,%d)', actor.Type, actor.Location.X, actor.Location.Y)
 end
