@@ -7,7 +7,6 @@
    information, see COPYING.
 ]]
 
-
 -- Destroy all to unlock airstrike
 SamSites = { sam1, sam2, sam3, sam4 }
 

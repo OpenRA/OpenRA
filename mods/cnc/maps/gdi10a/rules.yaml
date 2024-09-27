@@ -140,5 +140,5 @@ HQ:
 
 airstrike.proxy:
 	AirstrikePower:
-		SquadSize: 2
+		SquadSize: 3
 		SquadOffset: -1536, 1024, 0
