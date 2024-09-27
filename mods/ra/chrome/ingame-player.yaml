@@ -43,7 +43,7 @@ Container@PLAYER_WIDGETS:
 		Image@COMMAND_BAR_BACKGROUND:
 			X: 5
 			Y: WINDOW_BOTTOM - HEIGHT - 5
-			Width: 416
+			Width: 434
 			Height: 44
 			ImageCollection: commandbar
 			ImageName: background
