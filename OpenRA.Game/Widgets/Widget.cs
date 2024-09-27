@@ -626,7 +626,11 @@ namespace OpenRA.Widgets
 
 		public ContainerWidget() { IgnoreMouseOver = true; }
 		public ContainerWidget(ContainerWidget other)
-			: base(other) { IgnoreMouseOver = true; }
+			: base(other)
+		{
+			ClickThrough = other.ClickThrough;
+			IgnoreMouseOver = true;
+		}
 
 		public override string GetCursor(int2 pos) { return null; }
 		public override Widget Clone() { return new ContainerWidget(this); }

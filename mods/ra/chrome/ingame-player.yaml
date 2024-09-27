@@ -431,14 +431,18 @@ Container@PLAYER_WIDGETS:
 			Children:
 				Container@PALETTE_BACKGROUND:
 					Children:
-						Image@ROW_TEMPLATE:
-							Logic: AddFactionSuffixLogic
-							X: 40
-							Width: 190
+						Container@ROW_TEMPLATE:
+							Width: 238
 							Height: 47
 							ClickThrough: false
-							ImageCollection: sidebar
-							ImageName: background-iconbg
+							Children:
+								Image@ROW_BGND:
+									Logic: AddFactionSuffixLogic
+									X: 40
+									Width: 190
+									Height: 47
+									ImageCollection: sidebar
+									ImageName: background-iconbg
 						Image@BOTTOM_CAP:
 							Logic: AddFactionSuffixLogic
 							Width: 238
