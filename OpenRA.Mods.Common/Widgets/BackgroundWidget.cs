@@ -27,10 +27,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (ClickThrough || !RenderBounds.Contains(mi.Location))
-				return false;
-
-			return true;
+			return !ClickThrough && EventBounds.Contains(mi.Location);
 		}
 
 		protected BackgroundWidget(BackgroundWidget other)
