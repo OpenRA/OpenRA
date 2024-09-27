@@ -70,9 +70,6 @@ WorldLoaded = function()
 
 	InitObjectives(GDI)
 
-	--TODO DefaultCameraPosition is too far west??
-	--Camera.Position = DefaultCameraPosition.CenterPosition
-	--Camera.Position = GDI.HomeLocation
 	-- Look at player's MCV
 	Camera.Position = Actor201.CenterPosition
 
