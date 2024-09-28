@@ -62,10 +62,7 @@ Cursors:
 Chrome:
 	d2k|chrome.yaml
 
-Assemblies:
-	^BinDir|OpenRA.Mods.Common.dll
-	^BinDir|OpenRA.Mods.Cnc.dll
-	^BinDir|OpenRA.Mods.D2k.dll
+Assemblies: OpenRA.Mods.Common.dll, OpenRA.Mods.Cnc.dll, OpenRA.Mods.D2k.dll
 
 ChromeLayout:
 	common|chrome/ingame.yaml

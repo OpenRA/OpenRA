@@ -17,8 +17,7 @@ Cursors:
 Chrome:
 	modcontent|chrome.yaml
 
-Assemblies:
-	^BinDir|OpenRA.Mods.Common.dll
+Assemblies: OpenRA.Mods.Common.dll
 
 ChromeLayout:
 	modcontent|content.yaml
