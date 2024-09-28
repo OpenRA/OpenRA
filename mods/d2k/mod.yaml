@@ -7,20 +7,20 @@ Metadata:
 
 PackageFormats: D2kSoundResources
 
-Packages:
-	~^SupportDir|Content/d2k/v3/
-	~^SupportDir|Content/d2k/v3/GAMESFX
-	~^SupportDir|Content/d2k/v3/Movies
-	~^SupportDir|Content/d2k/v3/Music
-	^EngineDir
-	$d2k: d2k
-	^EngineDir|mods/common: common
-
-	~SOUND.RS
-	d2k|bits
-	d2k|scripts
-	common|scripts
-	d2k|uibits
+FileSystem: DefaultFileSystem
+    Packages:
+		~^SupportDir|Content/d2k/v3/
+		~^SupportDir|Content/d2k/v3/GAMESFX
+		~^SupportDir|Content/d2k/v3/Movies
+		~^SupportDir|Content/d2k/v3/Music
+		^EngineDir
+		$d2k: d2k
+		^EngineDir|mods/common: common
+		~SOUND.RS
+		d2k|bits
+		d2k|scripts
+		common|scripts
+		d2k|uibits
 
 MapFolders:
 	d2k|maps: System

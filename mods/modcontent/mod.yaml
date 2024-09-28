@@ -3,10 +3,11 @@ Metadata:
 	Version: {DEV_VERSION}
 	Hidden: true
 
-Packages:
-	^EngineDir
-	^EngineDir|mods/modcontent: modcontent
-	^EngineDir|mods/common: common
+FileSystem: DefaultFileSystem
+    Packages:
+		^EngineDir
+		^EngineDir|mods/modcontent: modcontent
+		^EngineDir|mods/common: common
 
 Rules:
 	modcontent|rules.yaml

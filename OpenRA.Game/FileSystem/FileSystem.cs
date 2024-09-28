@@ -181,12 +181,8 @@ namespace OpenRA.FileSystem
 			fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
 		}
 
-		public void LoadFromManifest(Manifest manifest)
+		public void TrimExcess()
 		{
-			UnmountAll();
-			foreach (var kv in manifest.Packages)
-				Mount(kv.Key, kv.Value);
-
 			mountedPackages.TrimExcess();
 			explicitMounts.TrimExcess();
 			modPackages.TrimExcess();

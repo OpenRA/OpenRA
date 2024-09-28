@@ -3,8 +3,9 @@ Metadata:
 	Version: {DEV_VERSION}
 	Hidden: true
 
-Packages:
-	^EngineDir
+FileSystem: DefaultFileSystem
+    Packages:
+		^EngineDir
 
 Cursors:
 
