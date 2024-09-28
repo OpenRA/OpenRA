@@ -65,8 +65,8 @@ namespace OpenRA
 			Weapons, Voices, Notifications, Music, Translations, TileSets,
 			ChromeMetrics, MapCompatibility, Missions, Hotkeys;
 
-		public readonly IReadOnlyDictionary<string, string> Packages;
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
+		public readonly MiniYaml FileSystem;
 		public readonly MiniYaml LoadScreen;
 		public readonly string DefaultOrderGenerator;
 
@@ -81,7 +81,7 @@ namespace OpenRA
 
 		readonly string[] reservedModuleNames =
 		{
-			"Include", "Metadata", "Folders", "MapFolders", "Packages", "Rules",
+			"Include", "Metadata", "FileSystem", "MapFolders", "Rules",
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
 			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
 			"ServerTraits", "LoadScreen", "DefaultOrderGenerator", "SupportsMapsFrom", "SoundFormats", "SpriteFormats", "VideoFormats",
@@ -123,8 +123,8 @@ namespace OpenRA
 			// TODO: Use fieldloader
 			MapFolders = YamlDictionary(yaml, "MapFolders");
 
-			if (yaml.TryGetValue("Packages", out var packages))
-				Packages = packages.ToDictionary(x => x.Value);
+			if (!yaml.TryGetValue("FileSystem", out FileSystem))
+				throw new InvalidDataException("`FileSystem` section is not defined.");
 
 			Rules = YamlList(yaml, "Rules");
 			Sequences = YamlList(yaml, "Sequences");

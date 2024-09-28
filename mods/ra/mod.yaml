@@ -7,36 +7,37 @@ Metadata:
 
 PackageFormats: Mix
 
-Packages:
-	~^SupportDir|Content/ra/v2/
-	~^SupportDir|Content/ra/v2/expand
-	~^SupportDir|Content/ra/v2/cnc
-	~^SupportDir|Content/ra/v2/movies
-	^EngineDir
-	$ra: ra
-	^EngineDir|mods/common: common
-	~main.mix
-	~conquer.mix
-	~lores.mix: lores
-	~hires.mix
-	~local.mix
-	~sounds.mix
-	~speech.mix
-	~allies.mix
-	~russian.mix
-	~temperat.mix
-	~snow.mix
-	~interior.mix
-	~scores.mix
-	~expand2.mix
-	~hires1.mix
-	~desert.mix
-	~general.mix
-	ra|bits
-	ra|bits/desert
-	ra|scripts
-	common|scripts
-	ra|uibits
+FileSystem: DefaultFileSystem
+    Packages:
+		~^SupportDir|Content/ra/v2/
+		~^SupportDir|Content/ra/v2/expand
+		~^SupportDir|Content/ra/v2/cnc
+		~^SupportDir|Content/ra/v2/movies
+		^EngineDir
+		$ra: ra
+		^EngineDir|mods/common: common
+		~main.mix
+		~conquer.mix
+		~lores.mix: lores
+		~hires.mix
+		~local.mix
+		~sounds.mix
+		~speech.mix
+		~allies.mix
+		~russian.mix
+		~temperat.mix
+		~snow.mix
+		~interior.mix
+		~scores.mix
+		~expand2.mix
+		~hires1.mix
+		~desert.mix
+		~general.mix
+		ra|bits
+		ra|bits/desert
+		ra|scripts
+		common|scripts
+		ra|uibits
 
 MapFolders:
 	ra|maps: System

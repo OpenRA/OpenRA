@@ -35,6 +35,8 @@ namespace OpenRA
 		public readonly ISpriteSequenceLoader SpriteSequenceLoader;
 		public readonly IVideoLoader[] VideoLoaders;
 		public readonly HotkeyManager Hotkeys;
+		public readonly IFileSystemLoader FileSystemLoader;
+
 		public ILoadScreen LoadScreen { get; }
 		public CursorProvider CursorProvider { get; private set; }
 		public FS ModFiles;
@@ -54,9 +56,13 @@ namespace OpenRA
 			Manifest = new Manifest(mod.Id, mod.Package);
 			ObjectCreator = new ObjectCreator(Manifest, mods);
 			PackageLoaders = ObjectCreator.GetLoaders<IPackageLoader>(Manifest.PackageFormats, "package");
-
 			ModFiles = new FS(mod.Id, mods, PackageLoaders);
-			ModFiles.LoadFromManifest(Manifest);
+
+			FileSystemLoader = ObjectCreator.GetLoader<IFileSystemLoader>(Manifest.FileSystem.Value, "filesystem");
+			FieldLoader.Load(FileSystemLoader, Manifest.FileSystem);
+			FileSystemLoader.Mount(ModFiles, ObjectCreator);
+			ModFiles.TrimExcess();
+
 			Manifest.LoadCustomData(ObjectCreator);
 
 			if (useLoadScreen)
@@ -189,5 +195,10 @@ namespace OpenRA
 
 		/// <summary>Called when the engine expects to connect to a server/replay or load the shellmap.</summary>
 		void StartGame(Arguments args);
+	}
+
+	public interface IFileSystemLoader
+	{
+		void Mount(FS fileSystem, ObjectCreator objectCreator);
 	}
 }

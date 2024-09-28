@@ -78,7 +78,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var modObjectCreator = new ObjectCreator(mod, Game.Mods);
 				var modPackageLoaders = modObjectCreator.GetLoaders<IPackageLoader>(mod.PackageFormats, "package");
 				var modFileSystem = new FS(mod.Id, Game.Mods, modPackageLoaders);
-				modFileSystem.LoadFromManifest(mod);
+
+				var modFileSystemLoader = modObjectCreator.GetLoader<IFileSystemLoader>(mod.FileSystem.Value, "filesystem");
+				FieldLoader.Load(modFileSystemLoader, mod.FileSystem);
+				modFileSystemLoader.Mount(modFileSystem, modObjectCreator);
+				modFileSystem.TrimExcess();
 
 				var downloadYaml = MiniYaml.Load(modFileSystem, content.Downloads, null);
 				modFileSystem.UnmountAll();
