@@ -91,6 +91,40 @@ WorldLoaded = function()
 		table.insert(BaseBlueprints, blueprint)
 		SetupNodBuilding(blueprint, structure, false)
 	end
+
+	--[[
+	- Two Light Tanks are ordered to attack as GDI approaches the Nod base from the valley's southern exit. Trigger atk4 with team nod10.
+    -- Trigger         atk4=Player Enters,Create Team,0,GoodGuy,nod10,0
+	                     1        2            3      4    5      6   7
+    -- TeamTypes       nod10=BadGuy,1,0,0,0,0,15,0,0,0,1,LTNK:2,7,Move:11,Move:12,Move:0,Move:7,Move:8,Move:19,Attack Base:30,0,0
+	--                 ^^^^^ ^^^^^^ ^ ^ ^ ^ ^ ^^ ^ ^ ^ ^ ^^^^^^ ^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ^ ^
+	--                   1     2    a b c d e f  g h i 4   5    6                              7                              8 9
+	-- 1: team name  2: owner
+	-- Associate cells with atk4 trigger
+	]]
+	local cellTriggers_atk4 = CellsToPositions({
+		2659, 2658, 2657, 2656, 2655, 2654, 2653, 2652, 2651, 2650, 2649, 2648,
+		2647, 2646, 2645, 2595, 2594, 2593, 2592, 2591, 2590, 2589, 2588, 2587,
+		2586, 2585, 2584, 2583, 2582, 2581,
+	})
+	Atk4 = Trigger.OnEnteredFootprint(cellTriggers_atk4, function(actor, id)
+		if actor.Owner == GDI then
+			-- Two light tanks:
+			-- Actor200, Actor202, Actor203, Actor204
+			-- Move:11, Move:12, Move:0, Move:7, Move:8, Move:19, Attack Base:30
+			local moves = { waypoint11, waypoint12, waypoint0, waypoint7, waypoint8, waypoint19 }
+			Utils.Do({Actor200, Actor202}, function(unit)
+				if not unit.IsDead then
+					for i = 1, #moves do
+						unit.AttackMove(moves[i].Location, 2)
+					end
+					--?? what is 30?? unit.AttackMove(waypoint30.Location)
+					unit.Hunt()
+				end
+			end)
+			Trigger.RemoveFootprintTrigger(id) -- One shot
+		end
+	end)
 end
 
 SetupNodBuilding = function(blueprint, structure, autoRepair)

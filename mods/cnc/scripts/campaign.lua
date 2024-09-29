@@ -163,3 +163,12 @@ GetAirstrikeTarget = function(player)
 		return nil
 	end
 end
+
+-- Convert a list of cellnumbers to cartesian (X,Y) positions
+CellsToPositions = function(list)
+    for i = 1, #list do
+        local cell = list[i]
+        list[i] = CPos.New(cell % 64, math.floor(cell / 64))
+    end
+    return list
+end
