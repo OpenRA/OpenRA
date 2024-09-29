@@ -98,9 +98,9 @@ SetupNodBuilding = function(blueprint, structure, autoRepair)
 	Trigger.OnKilled(structure, function()
 		-- Add to build queue
 		Media.Debug(string.format('Bldg killed: Another in progress? %s  Queue_len=%d',
-			tostring(rebuildingInProgress), #CyardBuildQueue))
+			tostring(RebuildingInProgress), #CyardBuildQueue))
 		table.insert(CyardBuildQueue, blueprint)
-		if not rebuildingInProgress then
+		if not RebuildingInProgress then
 			-- Build queue was empty; start building now
 			-- This ensures we only build one structure at a time
 			ProcessBuildQueue(CyardBuildQueue)
@@ -131,7 +131,7 @@ end
 
 -- Replace structures when destroyed
 ProcessBuildQueue = function(queue)
-	if rebuildingInProgress then
+	if RebuildingInProgress then
 		local s='ProcessBuildQueue: should not happen while build in progress! Queue_len='..#queue
 		Media.Debug(s)
 		print(s)
@@ -162,7 +162,7 @@ end
 -- Return false when the item is in progress and we should not move to the next item the queue
 RebuildFromBlueprint = function(queue)
 	if #queue == 0 then
-		s = 'RebuildFromBlueprint: queue empty!'
+		local s = 'RebuildFromBlueprint: queue empty!'
 		Media.Debug(s)
 		print(s)
 		return 'cancelled'
@@ -182,11 +182,11 @@ RebuildFromBlueprint = function(queue)
 	end
 
 	-- Start building now
-	rebuildingInProgress = true
+	RebuildingInProgress = true
 	BankDeduct(Nod, cost)
 	Trigger.AfterDelay(Actor.BuildTime(blueprint.Type), function()
 		-- Construction complete
-		rebuildingInProgress = false
+		RebuildingInProgress = false
 		--[[TODO Check for obstacles
 		if IsBuildAreaBlocked(Nod, blueprint) then
 			Trigger.AfterDelay(DateTime.Seconds(5), function()
@@ -264,7 +264,7 @@ ProduceUnit = function(factory, prodParms)
 		table.insert(haveTypes, actor.Type)
 		s = s .. ' ' .. actor.Type
 	end
-	local needUnits = compareTables(haveTypes, prodParms.ModelGroup)
+	local needUnits = CompareTables(haveTypes, prodParms.ModelGroup)
 	s = s .. ', Need'
 	for i, actor in ipairs(needUnits) do
 		s = s .. ' ' .. actor
@@ -316,7 +316,7 @@ ProduceHarvester = function(factory, prodParms)
 			-- Unit ready
 			for idx, unit in pairs(units) do
 				if unit.Type == 'harv' then
-					s='Harvester built: ' .. ActorString(unit)
+					local s='Harvester built: ' .. ActorString(unit)
 					Media.Debug(s)
 					print(s)
 					--Unnecessary:
@@ -382,7 +382,7 @@ end
   t1 is our current group.  t2 is our model Group.  Find the difference between
   the groups.  When the difference is empty, then we are ready to attack.
 --]]
-function compareTables(t1, t2)
+function CompareTables(t1, t2)
     local t3 = {}
     local t1_counts = {}
 
