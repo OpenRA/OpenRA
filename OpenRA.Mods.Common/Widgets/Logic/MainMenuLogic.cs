@@ -80,16 +80,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			mainMenu.Get<ButtonWidget>("MULTIPLAYER_BUTTON").OnClick = OpenMultiplayerPanel;
 
-			mainMenu.Get<ButtonWidget>("CONTENT_BUTTON").OnClick = () =>
+			var contentButton = mainMenu.GetOrNull<ButtonWidget>("CONTENT_BUTTON");
+			if (contentButton != null)
 			{
-				// Switching mods changes the world state (by disposing it),
-				// so we can't do this inside the input handler.
-				Game.RunAfterTick(() =>
+				var hasContent = modData.Manifest.Contains<ModContent>();
+				contentButton.Disabled = !hasContent;
+				contentButton.OnClick = () =>
 				{
-					var content = modData.Manifest.Get<ModContent>();
-					Game.InitializeMod(content.ContentInstallerMod, new Arguments(new[] { "Content.Mod=" + modData.Manifest.Id }));
-				});
-			};
+					// Switching mods changes the world state (by disposing it),
+					// so we can't do this inside the input handler.
+					Game.RunAfterTick(() =>
+					{
+						if (!hasContent)
+							return;
+
+						var content = modData.Manifest.Get<ModContent>();
+						Game.InitializeMod(content.ContentInstallerMod, new Arguments(new[] { "Content.Mod=" + modData.Manifest.Id }));
+					});
+				};
+			}
 
 			mainMenu.Get<ButtonWidget>("SETTINGS_BUTTON").OnClick = () =>
 			{
