@@ -58,10 +58,10 @@ WorldLoaded = function()
 	Nod = Player.GetPlayer("Nod")
 
 	-- Prepare Objectives
-	KillNod = GDI.AddObjective("Destroy all Nod units and buildings.")
-	KillGDI = Nod.AddPrimaryObjective("Kill GDI")
+	KillNod = AddPrimaryObjective(GDI, "destroy-nod-units-buildings")
+	KillGDI = AddPrimaryObjective(Nod, "")
 
-	AirSupport = GDI.AddObjective("Destroy the SAM sites to receive air support.", "Secondary", false)
+	AirSupport = AddSecondaryObjective(GDI, "destroy-sams")
 	Trigger.OnAllKilled(SamSites, function()
 		GDI.MarkCompletedObjective(AirSupport)
 		Actor.Create("airstrike.proxy", true, { Owner = GDI })
