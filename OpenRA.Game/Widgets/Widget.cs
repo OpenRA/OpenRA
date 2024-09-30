@@ -439,32 +439,4 @@ namespace OpenRA.Widgets
 			: base(args) { }
 		public void Add(string key, Action val) { base.Add(key, val); }
 	}
-
-	public sealed class Mediator
-	{
-		readonly TypeDictionary types = new();
-
-		public void Subscribe<T>(T instance)
-		{
-			types.Add(instance);
-		}
-
-		public void Unsubscribe<T>(T instance)
-		{
-			types.Remove(instance);
-		}
-
-		public void Send<T>(T notification)
-		{
-			var handlers = types.WithInterface<INotificationHandler<T>>();
-
-			foreach (var handler in handlers)
-				handler.Handle(notification);
-		}
-	}
-
-	public interface INotificationHandler<T>
-	{
-		void Handle(T notification);
-	}
 }
