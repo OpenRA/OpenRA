@@ -618,27 +618,6 @@ namespace OpenRA.Widgets
 		public Widget Get(string id) { return Get<Widget>(id); }
 	}
 
-	public class ContainerWidget : Widget
-	{
-		public readonly bool ClickThrough = true;
-
-		public ContainerWidget() { IgnoreMouseOver = true; }
-		public ContainerWidget(ContainerWidget other)
-			: base(other)
-		{
-			ClickThrough = other.ClickThrough;
-			IgnoreMouseOver = true;
-		}
-
-		public override string GetCursor(int2 pos) { return null; }
-		public override Widget Clone() { return new ContainerWidget(this); }
-
-		public override bool HandleMouseInput(MouseInput mi)
-		{
-			return !ClickThrough && EventBounds.Contains(mi.Location);
-		}
-	}
-
 	public class InputWidget : Widget
 	{
 		public bool Disabled = false;
