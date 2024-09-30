@@ -18,15 +18,6 @@ using OpenRA.Support;
 
 namespace OpenRA.Widgets
 {
-	public class ChromeLogic : IDisposable
-	{
-		public void Dispose() { Dispose(true); GC.SuppressFinalize(this); }
-		public virtual void Tick() { }
-		public virtual void BecameHidden() { }
-		public virtual void BecameVisible() { }
-		protected virtual void Dispose(bool disposing) { }
-	}
-
 	public struct WidgetBounds
 	{
 		public int X, Y, Width, Height;
