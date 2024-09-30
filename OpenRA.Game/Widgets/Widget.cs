@@ -618,25 +618,6 @@ namespace OpenRA.Widgets
 		public Widget Get(string id) { return Get<Widget>(id); }
 	}
 
-	public class InputWidget : Widget
-	{
-		public bool Disabled = false;
-		public Func<bool> IsDisabled = () => false;
-
-		public InputWidget()
-		{
-			IsDisabled = () => Disabled;
-		}
-
-		public InputWidget(InputWidget other)
-			: base(other)
-		{
-			IsDisabled = () => other.Disabled;
-		}
-
-		public override Widget Clone() { return new InputWidget(this); }
-	}
-
 	public class WidgetArgs : Dictionary<string, object>
 	{
 		public WidgetArgs() { }
