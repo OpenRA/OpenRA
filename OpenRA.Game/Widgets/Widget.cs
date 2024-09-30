@@ -632,8 +632,6 @@ namespace OpenRA.Widgets
 
 		public override string GetCursor(int2 pos) { return null; }
 		public override Widget Clone() { return new ContainerWidget(this); }
-		public Func<KeyInput, bool> OnKeyPress = _ => false;
-		public override bool HandleKeyPress(KeyInput e) { return OnKeyPress(e); }
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{

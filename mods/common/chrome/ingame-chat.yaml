@@ -11,6 +11,7 @@ Container@CHAT_PANEL:
 			System: SYSTEM_LINE_TEMPLATE
 			Mission: CHAT_LINE_TEMPLATE
 	Children:
+		LogicKeyListener@OPEN_CHAT_KEY_LISTENER:
 		Container@CHAT_OVERLAY:
 			Width: PARENT_RIGHT - 24
 			Height: PARENT_BOTTOM - 30
