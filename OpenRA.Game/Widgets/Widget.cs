@@ -431,12 +431,4 @@ namespace OpenRA.Widgets
 
 		public Widget Get(string id) { return Get<Widget>(id); }
 	}
-
-	public class WidgetArgs : Dictionary<string, object>
-	{
-		public WidgetArgs() { }
-		public WidgetArgs(Dictionary<string, object> args)
-			: base(args) { }
-		public void Add(string key, Action val) { base.Add(key, val); }
-	}
 }
