@@ -1,6 +1,6 @@
 World:
 	LuaScript:
-		Scripts: campaign.lua, utils.lua, gdi10a.lua
+		Scripts: campaign.lua, utils.lua, gdi10a.lua, triggers_base.lau
 	MusicPlaylist:
 		StartingMusic: march
 		VictoryMusic: gdi_win1

@@ -80,17 +80,7 @@ WorldLoaded = function()
 		end
 	end)
 
-	-- AI will try to replace certain buildings when lost
-	BaseBlueprints = {}
-	for i = 1, #RebuildableStructs do
-		local structure = RebuildableStructs[i]
-		local blueprint = {
-			Type = structure.Type,
-			Location = structure.Location,
-		}
-		table.insert(BaseBlueprints, blueprint)
-		SetupNodBuilding(blueprint, structure, false)
-	end
+	Base_init(Nod, RebuildableStructs, waypoint11.Location)
 
 	--[[
 	- Two Light Tanks are ordered to attack as GDI approaches the Nod base from the valley's southern exit. Trigger atk4 with team nod10.
@@ -125,127 +115,6 @@ WorldLoaded = function()
 			Trigger.RemoveFootprintTrigger(id) -- One shot
 		end
 	end)
-end
-
-SetupNodBuilding = function(blueprint, structure, autoRepair)
-	Media.Debug("Setup " .. tostring(structure) .. " as " .. ActorString(blueprint) .. ' Bal$' .. BankBalance(Nod))
-	Trigger.OnKilled(structure, function()
-		-- Add to build queue
-		Media.Debug(string.format('Bldg killed: Another in progress? %s  Queue_len=%d',
-			tostring(RebuildingInProgress), #CyardBuildQueue))
-		table.insert(CyardBuildQueue, blueprint)
-		if not RebuildingInProgress then
-			-- Build queue was empty; start building now
-			-- This ensures we only build one structure at a time
-			ProcessBuildQueue(CyardBuildQueue)
-		end
-	end)
-	if autoRepair then
-		RepairBuilding(Nod, structure, 0.75)
-	end
-	-- NOTE If newly built, it enters the world on the next tick
-	if structure.Type == 'hand' or structure.Type == 'pyle' then
-		Trigger.AfterDelay(AttackCooldown[Difficulty], function()
-			print('Start infantry production+')
-			ProduceUnit(structure, InfProducer)
-			print('Start infantry production-')
-		end)
-	elseif structure.Type == 'afld' or structure.Type == 'weap' then
-		Trigger.AfterDelay(AttackCooldown[Difficulty], function()
-			print('Start tank production+')
-			ProduceUnit(structure, ArmorProducer)
-			print('Start tank production-')
-		end)
-	end
-	-- New units' first move
-	if structure.Type == 'hand' or structure.Type == 'afld' then
-		structure.RallyPoint = waypoint11.Location
-	end
-end
-
--- Replace structures when destroyed
-ProcessBuildQueue = function(queue)
-	if RebuildingInProgress then
-		local s='ProcessBuildQueue: should not happen while build in progress! Queue_len='..#queue
-		Media.Debug(s)
-		print(s)
-	end
-	while #queue > 0 do
-		local rc = RebuildFromBlueprint(queue)
-		Media.Debug('RebuildFromBlueprint: ' .. rc)
-		if rc == 'cancelled' then
-			table.remove(queue, 1)
-		elseif rc == 'insufficient_funds' then
-			-- Continue processing later
-			Trigger.AfterDelay(DateTime.Seconds(5), function()
-				ProcessBuildQueue(queue)
-			end)
-			break
-		elseif rc == 'in_progress' then
-			-- Stop processing the queue while it builds
-			table.remove(queue, 1)
-			break
-		else
-			Media.Debug("Unknown return from RebuildFromBlueprint: " .. tostring(rc))
-		end
-	end
-end
-
--- Helper for ProcessBuildQueue
--- Return true when the item is finished and we should move to the next item in queue
--- Return false when the item is in progress and we should not move to the next item the queue
-RebuildFromBlueprint = function(queue)
-	if #queue == 0 then
-		local s = 'RebuildFromBlueprint: queue empty!'
-		Media.Debug(s)
-		print(s)
-		return 'cancelled'
-	end
-	local blueprint = queue[1]
-	local cyard = GetNodCyard()
-	if not cyard then
-		Media.Debug("Can't rebuild " .. ActorString(blueprint) .. ": No Cyard")
-		return 'cancelled' -- Lost cyard; can never build again
-	end
-
-	local cost = Actor.Cost(blueprint.Type)
-	if BankBalance(Nod) < cost then
-		-- Can't build now
-		Media.Debug("Can't rebuild " .. ActorString(blueprint) .. " yet. Cash$" .. BankBalance(Nod) .. ", Cost$" .. cost)
-		return 'insufficient_funds'
-	end
-
-	-- Start building now
-	RebuildingInProgress = true
-	BankDeduct(Nod, cost)
-	Trigger.AfterDelay(Actor.BuildTime(blueprint.Type), function()
-		-- Construction complete
-		RebuildingInProgress = false
-		--[[TODO Check for obstacles
-		if IsBuildAreaBlocked(Nod, blueprint) then
-			Trigger.AfterDelay(DateTime.Seconds(5), function()
-				BuildBlueprint(blueprint)  -- this function???
-			end)
-			return
-		end
-		]]--
-		if cyard.IsDead or cyard.Owner ~= Nod then
-			-- Lost our cyard; can't build anymore
-			Media.Debug("Lost cyard; refunding $" .. cost .. " for " .. ActorString(blueprint))
-			-- Credit
-			Nod.Cash = Nod.Cash + cost
-		else
-			local structure = Actor.Create(blueprint.Type, true, { Owner = Nod, Location = blueprint.Location })
-			SetupNodBuilding(blueprint, structure, true)
-		end
-		-- Continue processing the queue.
-		Trigger.AfterDelay(DateTime.Seconds(3), function()
-			ProcessBuildQueue(queue)
-		end)
-	end)
-	Media.Debug(string.format("Rebuilding %s: %d sec, $%d", ActorString(blueprint),
-		Actor.BuildTime(blueprint.Type), cost))
-	return 'in_progress'
 end
 
 SendUnits = function(units, path)
@@ -363,15 +232,6 @@ ProduceHarvester = function(factory, prodParms)
 				ProduceUnit(factory, prodParms)
 			end)
 		end)
-	end
-end
-
-GetNodCyard = function()
-	local cyards = Nod.GetActorsByType("fact")
-	if (#cyards < 1) then
-		return nil -- Lost cyard; can never build again
-	else
-		return cyards[1]
 	end
 end
 
