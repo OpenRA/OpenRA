@@ -18,28 +18,6 @@ using OpenRA.Support;
 
 namespace OpenRA.Widgets
 {
-	public struct WidgetBounds
-	{
-		public int X, Y, Width, Height;
-		public readonly int Left => X;
-		public readonly int Right => X + Width;
-		public readonly int Top => Y;
-		public readonly int Bottom => Y + Height;
-
-		public WidgetBounds(int x, int y, int width, int height)
-		{
-			X = x;
-			Y = y;
-			Width = width;
-			Height = height;
-		}
-
-		public readonly Rectangle ToRectangle()
-		{
-			return new Rectangle(X, Y, Width, Height);
-		}
-	}
-
 	public abstract class Widget
 	{
 		string defaultCursor = null;
