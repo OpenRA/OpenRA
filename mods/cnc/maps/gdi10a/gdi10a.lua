@@ -53,7 +53,6 @@ InfProducer.AttackGrp = {}
 CyardBuildQueue = {}
 
 WorldLoaded = function()
-	print('====  WorldLoaded  ====')
 	GDI = Player.GetPlayer("GDI")
 	Nod = Player.GetPlayer("Nod")
 
@@ -80,7 +79,7 @@ WorldLoaded = function()
 		end
 	end)
 
-	Base_init(Nod, RebuildableStructs, waypoint11.Location)
+	Base.Init(Nod, RebuildableStructs, waypoint11.Location)
 
 	--[[
 	- Two Light Tanks are ordered to attack as GDI approaches the Nod base from the valley's southern exit. Trigger atk4 with team nod10.
@@ -257,20 +256,6 @@ Tick = function()
 	end
 end
 
-BankBalance = function(Player)
-	return Player.Resources + Player.Cash
-end
-
-BankDeduct = function(Player, cost)
-	if cost > BankBalance(Player) then
-		Media.Debug(tostring(Player) .. ' cannot afford $' .. cost)
-	end
-	local spendRes = math.min(cost, Player.Resources)
-	Player.Resources = Player.Resources - spendRes
-	local spendCash = math.max(0, cost - spendRes)
-	Player.Cash = Player.Cash - spendCash
-end
-
 --[[
   We use this to build an attack force
   t1 is our current group.  t2 is our model Group.  Find the difference between
@@ -295,8 +280,4 @@ function CompareTables(t1, t2)
     end
 
     return t3
-end
-
-ActorString = function(actor)
-	return string.format('%s (%d,%d)', actor.Type, actor.Location.X, actor.Location.Y)
 end
