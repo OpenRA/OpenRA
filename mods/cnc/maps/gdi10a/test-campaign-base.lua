@@ -81,7 +81,7 @@ Utils = {
 	Concat = function(t1, t2)
         assert(type(t1) == 'table', 't1 is not a table')
         assert(type(t2) == 'table', 't2 is not a table')
-		t3 = {}
+		local t3 = {}
 		for k,v in pairs(t1) do
 			t3[k] = v
 		end

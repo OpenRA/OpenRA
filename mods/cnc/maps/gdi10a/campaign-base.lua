@@ -71,7 +71,7 @@ Base = {
 	StartWork = function()
 		-- Continue processing the queue.
 		Trigger.AfterDelay(DateTime.Seconds(3), function()
-			Base.DoWork(Base.Queue)
+			Base.DoWork()
 		end)
 	end;
 
@@ -83,14 +83,14 @@ Base = {
 			print(s)
 		end
 		while #Base.Queue > 0 do
-			local rc = Base.Rebuild(Base.Queue)
+			local rc = Base.Rebuild()
 			Media.Debug('Base.Rebuild: ' .. rc)
 			if rc == 'cancelled' then
 				table.remove(Base.Queue, 1)
 			elseif rc == 'insufficient_funds' then
 				-- Continue processing later
 				Trigger.AfterDelay(DateTime.Seconds(5), function()
-					Base.DoWork(Base.Queue)
+					Base.DoWork()
 				end)
 				return
 			elseif rc == 'in_progress' then
