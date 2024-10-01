@@ -1,50 +1,33 @@
-
-
-
-Where to find these named triggers??
-- atk1
-- atk2
-- atk3
-- atk4
-- arty
-- hunt
-- move
-
-Cannot find teams/unit groups in rules!!!!!
-- art1
-- move
-- nod1
-- nod2
-- nod9
-- nod10
-
 - Implement triggers for respective infantry teams:
-    - atk1 & nod1
-    - atk2 & nod2
-    - atk3 & nod9
-    - Change the discovery triggers to one-time OnDamaged
-    - Triggers      atk3=Discovered,Create Team,0,None,nod9,0
-    - Triggers      atk2=Discovered,Create Team,0,None,nod2,0
-    - Triggers      atk1=Discovered,Create Team,0,None,nod1,0
+    - atk1 & nod1 Evt:Discovered simplify one-time damaged
+    - atk2 & nod2 Evt:Discovered simplify one-time damaged
+    - atk3 & nod9 Evt:Discovered simplify one-time damaged
 
 - Trigger arty with team art1 to the northwest cliffs
     - TeamTypes     art1=BadGuy,1,0,0,0,0,15,0,0,0,1,ARTY:2,7,Move:0,Move:2,Move:3,Move:4,Move:5,Move:6,Attack Base:30,0,0
     - Triggers      arty=Time,Create Team,50,BadGuy,art1,0
 
-- After losing the Obelisk, Refinery, Hand, Airstrip, Construction Yard, and the five power plants between cell 48:47 and cell 51:56:
+- Trigger hunt: After losing the Obelisk, Refinery, Hand, Airstrip, Construction Yard, and the five power plants between cell 48:47 and cell 51:56:
     - Nod orders all units to hunt. Trigger: hunt.
     - An original limitation is that the only the prebuilt structures count toward this. As an example, Nod still hunted if they lost the other structures but had a rebuilt Refinery.
     - Triggers      hunt=Destroyed,All to Hunt,0,None,None,1
 
-- Two Light Tanks are ordered to attack as GDI approaches the Nod base from the valley's southern exit. Trigger atk4 with team nod10.
+- Trigger atk4: Two Light Tanks are ordered to attack as GDI approaches the Nod base from the valley's southern exit. Trigger atk4 with team nod10.
     Trigger         atk4=Player Enters,Create Team,0,GoodGuy,nod10,0
     TeamTypes       nod10=BadGuy,1,0,0,0,0,15,0,0,0,1,LTNK:2,7,Move:11,Move:12,Move:0,Move:7,Move:8,Move:19,Attack Base:30,0,0
+    { 'ltnk', 'ltnk' }
 
-- Shortly after the mission starts, Nod orders a Bazooka group to patrol in front of their base entrance. The team can request replacement members from idle infantry, but they are more often just produced on-demand. (Trigger move with team move.)
+- Trigger move: Shortly after the mission starts, Nod orders a Bazooka group to patrol in front of their base entrance. The team can request replacement members from idle infantry, but they are more often just produced on-demand. (Trigger move with team move.)
     - Triggers      move=Time,Create Team,3,BadGuy,move,0
     - Team          move=BadGuy,1,0,0,0,0,15,0,0,0,1,E3:4,5,Move:18,Guard:1,Move:19,Guard:1,Loop:0,1,0
+    { 'e3', 'e3', 'e3', 'e3' }
 
-
+- Trigger air1: Airstrike
+- Trigger atk5: After   6 minutes create team nod1 {'e3', 'e3', 'e4', 'e4'}
+- Trigger atk6: After  15 minutes create team nod3 {'e3', 'e3', 'e4', 'e4'}
+- Trigger atk7: After  10 minutes create team nod12 {'ltnk', 'bggy'}
+- Trigger atk8: After  20 minutes create team nod12 {'ltnk', 'bggy'}
+- Trigger move: After 0.3 minutes create team move
 
 From original mission scg10ea.ini:
 
@@ -105,10 +88,6 @@ auto=Discovered,Autocreate,0,None,None,0
 2583=atk4
 2582=atk4
 2581=atk4
-
-
-
-
 
 CellTriggers_atk4 = {
     2659, 2658, 2657, 2656, 2655, 2654, 2653, 2652, 2651, 2650, 2649, 2648,

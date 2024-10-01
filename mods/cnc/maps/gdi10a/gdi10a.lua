@@ -36,6 +36,23 @@ ArmorProducer.ModelGroups = {
 	{ "bggy", "ltnk" },
 	{ "ltnk", "ltnk" },
 }
+-- Two ARTY no auto-create
+local art1Waypoints = { -- Attack Base 30
+	waypoint0, waypoint2, waypoint3, waypoint4, waypoint5, waypoint6
+}
+-- Two BGGY auto-create
+local auto1Waypoints = { -- Attack Units 30
+	waypoint11, waypoint12, waypoint0, waypoint7, waypoint8, waypoint9,
+	waypoint10
+}
+-- Two E1, one LTNK
+local auto2Waypoints = { -- Patrol?
+	waypoint11, waypoint0, waypoint3, waypoint0, waypoint7
+}
+-- Four E3
+local moveWaypoints = { -- Patrol?
+	waypoint18, waypoint19
+}
 ArmorProducer.AttackPaths = AttackPaths
 ArmorProducer.AttackGrp = {}
 ArmorProducer.StructureTypes = {"afld", "weap"}
@@ -65,6 +82,7 @@ WorldLoaded = function()
 	KillGDI = AddPrimaryObjective(Nod, "")
 
 	AirSupport = AddSecondaryObjective(GDI, "destroy-sams")
+	-- Trigger air1
 	Trigger.OnAllKilled(SamSites, function()
 		GDI.MarkCompletedObjective(AirSupport)
 		Actor.Create("airstrike.proxy", true, { Owner = GDI })
@@ -96,7 +114,7 @@ WorldLoaded = function()
 	})
 	local atk4 = Trigger.OnEnteredFootprint(cellTriggers_atk4, function(actor, id)
 		if actor.Owner == GDI then
-			-- Choose two light tanks
+			-- Create team nod10: two light tanks
 			local candidates = Nod.GetActorsByType('ltnk')
 			local team = {}
 			local s = 'DBG Atk4 Team=('
@@ -118,7 +136,7 @@ WorldLoaded = function()
 					for i = 1, #moves do
 						unit.AttackMove(moves[i].Location, 2)
 					end
-					--Attack Base:30
+					-- Attack Base:30
 					unit.Hunt()
 				end
 			end)
