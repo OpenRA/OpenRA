@@ -48,7 +48,7 @@ namespace OpenRA.Network
 		}
 	}
 
-	public class LocalizedMessage
+	public class FluentMessage
 	{
 		public const int ProtocolVersion = 1;
 
@@ -81,7 +81,7 @@ namespace OpenRA.Network
 			return arguments;
 		}
 
-		public LocalizedMessage(MiniYaml yaml)
+		public FluentMessage(MiniYaml yaml)
 		{
 			// Let the FieldLoader do the dirty work of loading the public fields.
 			FieldLoader.Load(this, yaml);
@@ -105,7 +105,7 @@ namespace OpenRA.Network
 			}
 
 			return new MiniYaml("", root)
-				.ToLines("LocalizedMessage")
+				.ToLines("FluentMessage")
 				.JoinWith("\n");
 		}
 	}

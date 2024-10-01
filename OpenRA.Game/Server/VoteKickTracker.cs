@@ -17,22 +17,22 @@ namespace OpenRA.Server
 {
 	public sealed class VoteKickTracker
 	{
-		[TranslationReference("kickee")]
+		[FluentReference("kickee")]
 		const string InsufficientVotes = "notification-insufficient-votes-to-kick";
 
-		[TranslationReference]
+		[FluentReference]
 		const string AlreadyVoted = "notification-kick-already-voted";
 
-		[TranslationReference("kicker", "kickee")]
+		[FluentReference("kicker", "kickee")]
 		const string VoteKickStarted = "notification-vote-kick-started";
 
-		[TranslationReference]
+		[FluentReference]
 		const string UnableToStartAVote = "notification-unable-to-start-a-vote";
 
-		[TranslationReference("kickee", "percentage")]
+		[FluentReference("kickee", "percentage")]
 		const string VoteKickProgress = "notification-vote-kick-in-progress";
 
-		[TranslationReference("kickee")]
+		[FluentReference("kickee")]
 		const string VoteKickEnded = "notification-vote-kick-ended";
 
 		readonly Dictionary<int, bool> voteTracker = new();
@@ -107,7 +107,7 @@ namespace OpenRA.Server
 				if (!kickee.IsObserver && !server.HasClientWonOrLost(kickee))
 				{
 					// Vote kick cannot be the sole deciding factor for a game.
-					server.SendLocalizedMessageTo(conn, InsufficientVotes, Translation.Arguments("kickee", kickee.Name));
+					server.SendLocalizedMessageTo(conn, InsufficientVotes, FluentBundle.Arguments("kickee", kickee.Name));
 					EndKickVote();
 					return false;
 				}
@@ -135,7 +135,7 @@ namespace OpenRA.Server
 
 				Log.Write("server", $"Vote kick started on {kickeeID}.");
 				voteKickTimer = Stopwatch.StartNew();
-				server.SendLocalizedMessage(VoteKickStarted, Translation.Arguments("kicker", kicker.Name, "kickee", kickee.Name));
+				server.SendLocalizedMessage(VoteKickStarted, FluentBundle.Arguments("kicker", kicker.Name, "kickee", kickee.Name));
 				server.DispatchServerOrdersToClients(new Order("StartKickVote", null, false) { ExtraData = (uint)kickeeID }.Serialize());
 				this.kickee = (kickee, kickeeConn);
 				voteKickerStarter = (kicker, conn);
@@ -168,7 +168,7 @@ namespace OpenRA.Server
 			}
 
 			var votesNeeded = eligiblePlayers / 2 + 1;
-			server.SendLocalizedMessage(VoteKickProgress, Translation.Arguments(
+			server.SendLocalizedMessage(VoteKickProgress, FluentBundle.Arguments(
 				"kickee", kickee.Name,
 				"percentage", votesFor * 100 / eligiblePlayers));
 
@@ -210,7 +210,7 @@ namespace OpenRA.Server
 				return;
 
 			if (sendMessage)
-				server.SendLocalizedMessage(VoteKickEnded, Translation.Arguments("kickee", kickee.Client.Name));
+				server.SendLocalizedMessage(VoteKickEnded, FluentBundle.Arguments("kickee", kickee.Client.Name));
 
 			server.DispatchServerOrdersToClients(new Order("EndKickVote", null, false) { ExtraData = (uint)kickee.Client.Index }.Serialize());
 

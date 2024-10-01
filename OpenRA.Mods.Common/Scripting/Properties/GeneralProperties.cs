@@ -188,7 +188,7 @@ namespace OpenRA.Mods.Common.Scripting
 				if (tooltip == null)
 					return null;
 
-				return TranslationProvider.GetString(tooltip.Info.Name);
+				return FluentProvider.GetString(tooltip.Info.Name);
 			}
 		}
 

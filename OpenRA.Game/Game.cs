@@ -29,7 +29,7 @@ namespace OpenRA
 {
 	public static class Game
 	{
-		[TranslationReference("filename")]
+		[FluentReference("filename")]
 		const string SavedScreenshot = "notification-saved-screenshot";
 
 		public const int TimestepJankThreshold = 250; // Don't catch up for delays larger than 250ms
@@ -595,7 +595,7 @@ namespace OpenRA
 				Log.Write("debug", "Taking screenshot " + path);
 
 				Renderer.SaveScreenshot(path);
-				TextNotificationsManager.Debug(TranslationProvider.GetString(SavedScreenshot, Translation.Arguments("filename", filename)));
+				TextNotificationsManager.Debug(FluentProvider.GetString(SavedScreenshot, FluentBundle.Arguments("filename", filename)));
 			}
 		}
 

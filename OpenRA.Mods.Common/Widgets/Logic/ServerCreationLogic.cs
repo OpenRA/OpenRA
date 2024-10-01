@@ -19,37 +19,37 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ServerCreationLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string InternetServerNatA = "label-internet-server-nat-A";
 
-		[TranslationReference]
+		[FluentReference]
 		const string InternetServerNatBenabled = "label-internet-server-nat-B-enabled";
 
-		[TranslationReference]
+		[FluentReference]
 		const string InternetServerNatBnotSupported = "label-internet-server-nat-B-not-supported";
 
-		[TranslationReference]
+		[FluentReference]
 		const string InternetServerNatBdisabled = "label-internet-server-nat-B-disabled";
 
-		[TranslationReference]
+		[FluentReference]
 		const string InternetServerNatC = "label-internet-server-nat-C";
 
-		[TranslationReference]
+		[FluentReference]
 		const string LocalServer = "label-local-server";
 
-		[TranslationReference("port")]
+		[FluentReference("port")]
 		const string ServerCreationFailedPrompt = "dialog-server-creation-failed.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ServerCreationFailedPortUsed = "dialog-server-creation-failed.prompt-port-used";
 
-		[TranslationReference("message", "code")]
+		[FluentReference("message", "code")]
 		const string ServerCreationFailedError = "dialog-server-creation-failed.prompt-error";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ServerCreationFailedTitle = "dialog-server-creation-failed.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ServerCreationFailedCancel = "dialog-server-creation-failed.cancel";
 
 		readonly Widget panel;
@@ -170,15 +170,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			if (advertiseOnline)
 			{
-				var noticesLabelAText = TranslationProvider.GetString(InternetServerNatA) + " ";
+				var noticesLabelAText = FluentProvider.GetString(InternetServerNatA) + " ";
 				noticesLabelA.GetText = () => noticesLabelAText;
 				var aWidth = Game.Renderer.Fonts[noticesLabelA.Font].Measure(noticesLabelAText).X;
 				noticesLabelA.Bounds.Width = aWidth;
 
 				var noticesLabelBText =
-					Nat.Status == NatStatus.Enabled ? TranslationProvider.GetString(InternetServerNatBenabled) :
-					Nat.Status == NatStatus.NotSupported ? TranslationProvider.GetString(InternetServerNatBnotSupported) :
-					TranslationProvider.GetString(InternetServerNatBdisabled);
+					Nat.Status == NatStatus.Enabled ? FluentProvider.GetString(InternetServerNatBenabled) :
+					Nat.Status == NatStatus.NotSupported ? FluentProvider.GetString(InternetServerNatBnotSupported) :
+					FluentProvider.GetString(InternetServerNatBdisabled);
 				noticesLabelB.GetText = () => noticesLabelBText;
 
 				noticesLabelB.TextColor =
@@ -191,14 +191,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				noticesLabelB.Bounds.Width = bWidth;
 				noticesLabelB.Visible = true;
 
-				var noticesLabelCText = TranslationProvider.GetString(InternetServerNatC);
+				var noticesLabelCText = FluentProvider.GetString(InternetServerNatC);
 				noticesLabelC.GetText = () => noticesLabelCText;
 				noticesLabelC.Bounds.X = noticesLabelB.Bounds.Right;
 				noticesLabelC.Visible = true;
 			}
 			else
 			{
-				var noticesLabelAText = TranslationProvider.GetString(LocalServer);
+				var noticesLabelAText = FluentProvider.GetString(LocalServer);
 				noticesLabelA.GetText = () => noticesLabelAText;
 				noticesLabelB.Visible = false;
 				noticesLabelC.Visible = false;
@@ -239,14 +239,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (System.Net.Sockets.SocketException e)
 			{
-				var message = TranslationProvider.GetString(ServerCreationFailedPrompt, Translation.Arguments("port", Game.Settings.Server.ListenPort));
+				var message = FluentProvider.GetString(ServerCreationFailedPrompt, FluentBundle.Arguments("port", Game.Settings.Server.ListenPort));
 
 				// AddressAlreadyInUse (WSAEADDRINUSE)
 				if (e.ErrorCode == 10048)
-					message += "\n" + TranslationProvider.GetString(ServerCreationFailedPortUsed);
+					message += "\n" + FluentProvider.GetString(ServerCreationFailedPortUsed);
 				else
-					message += "\n" + TranslationProvider.GetString(ServerCreationFailedError,
-						Translation.Arguments("message", e.Message, "code", e.ErrorCode));
+					message += "\n" + FluentProvider.GetString(ServerCreationFailedError,
+						FluentBundle.Arguments("message", e.Message, "code", e.ErrorCode));
 
 				ConfirmationDialogs.ButtonPrompt(modData, ServerCreationFailedTitle, message,
 					onCancel: () => { }, cancelText: ServerCreationFailedCancel);

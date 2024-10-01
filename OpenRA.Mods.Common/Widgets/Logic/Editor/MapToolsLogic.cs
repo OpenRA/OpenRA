@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MapToolsLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string MarkerTiles = "label-tool-marker-tiles";
 
 		enum MapTool
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			toolPanels.Add(MapTool.MarkerTiles, markerToolPanel);
 
 			toolsDropdown.OnMouseDown = _ => ShowToolsDropDown(toolsDropdown);
-			toolsDropdown.GetText = () => TranslationProvider.GetString(toolNames[selectedTool]);
+			toolsDropdown.GetText = () => FluentProvider.GetString(toolNames[selectedTool]);
 			toolsDropdown.Disabled = true; // TODO: Enable if new tools are added
 		}
 
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					() => selectedTool == tool,
 					() => SelectTool(tool));
 
-				item.Get<LabelWidget>("LABEL").GetText = () => TranslationProvider.GetString(toolNames[tool]);
+				item.Get<LabelWidget>("LABEL").GetText = () => FluentProvider.GetString(toolNames[tool]);
 
 				return item;
 			}

@@ -24,55 +24,55 @@ namespace OpenRA.Mods.Common.Commands
 
 	public class DevCommands : IChatCommand, IWorldLoaded
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string CheatsDisabled = "notification-cheats-disabled";
 
-		[TranslationReference]
+		[FluentReference]
 		const string InvalidCashAmount = "notification-invalid-cash-amount";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ToggleVisiblityDescription = "description-toggle-visibility";
 
-		[TranslationReference]
+		[FluentReference]
 		const string GiveCashDescription = "description-give-cash";
 
-		[TranslationReference]
+		[FluentReference]
 		const string GiveCashAllDescription = "description-give-cash-all";
 
-		[TranslationReference]
+		[FluentReference]
 		const string InstantBuildingDescription = "description-instant-building";
 
-		[TranslationReference]
+		[FluentReference]
 		const string BuildAnywhereDescription = "description-build-anywhere";
 
-		[TranslationReference]
+		[FluentReference]
 		const string UnlimitedPowerDescription = "description-unlimited-power";
 
-		[TranslationReference]
+		[FluentReference]
 		const string EnableTechDescription = "description-enable-tech";
 
-		[TranslationReference]
+		[FluentReference]
 		const string FastChargeDescription = "description-fast-charge";
 
-		[TranslationReference]
+		[FluentReference]
 		const string DevCheatAllDescription = "description-dev-cheat-all";
 
-		[TranslationReference]
+		[FluentReference]
 		const string DevCrashDescription = "description-dev-crash";
 
-		[TranslationReference]
+		[FluentReference]
 		const string LevelUpActorDescription = "description-levelup-actor";
 
-		[TranslationReference]
+		[FluentReference]
 		const string PlayerExperienceDescription = "description-player-experience";
 
-		[TranslationReference]
+		[FluentReference]
 		const string PowerOutageDescription = "description-power-outage";
 
-		[TranslationReference]
+		[FluentReference]
 		const string KillSelectedActorsDescription = "description-kill-selected-actors";
 
-		[TranslationReference]
+		[FluentReference]
 		const string DisposeSelectedActorsDescription = "description-dispose-selected-actors";
 
 		readonly IDictionary<string, (string Description, Action<string, World> Handler)> commandHandlers = new Dictionary<string, (string, Action<string, World>)>
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Commands
 
 			if (!developerMode.Enabled)
 			{
-				TextNotificationsManager.Debug(TranslationProvider.GetString(CheatsDisabled));
+				TextNotificationsManager.Debug(FluentProvider.GetString(CheatsDisabled));
 				return;
 			}
 
@@ -149,7 +149,7 @@ namespace OpenRA.Mods.Common.Commands
 				giveCashOrder.ExtraData = (uint)cash;
 			else
 			{
-				TextNotificationsManager.Debug(TranslationProvider.GetString(InvalidCashAmount));
+				TextNotificationsManager.Debug(FluentProvider.GetString(InvalidCashAmount));
 				return;
 			}
 

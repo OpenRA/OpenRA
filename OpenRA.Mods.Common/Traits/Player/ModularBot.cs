@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Internal id for this bot.")]
 		public readonly string Type = null;
 
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Human-readable name this bot uses.")]
 		public readonly string Name = null;
 

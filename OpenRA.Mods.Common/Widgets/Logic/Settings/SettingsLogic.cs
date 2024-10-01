@@ -19,37 +19,37 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class SettingsLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string SettingsSaveTitle = "dialog-settings-save.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string SettingsSavePrompt = "dialog-settings-save.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string SettingsSaveCancel = "dialog-settings-save.cancel";
 
-		[TranslationReference]
+		[FluentReference]
 		const string RestartTitle = "dialog-settings-restart.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string RestartPrompt = "dialog-settings-restart.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string RestartAccept = "dialog-settings-restart.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string RestartCancel = "dialog-settings-restart.cancel";
 
-		[TranslationReference("panel")]
+		[FluentReference("panel")]
 		const string ResetTitle = "dialog-settings-reset.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ResetPrompt = "dialog-settings-reset.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ResetAccept = "dialog-settings-reset.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ResetCancel = "dialog-settings-reset.cancel";
 
 		readonly Dictionary<string, Func<bool>> leavePanelActions = new();
@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: ResetTitle,
 					text: ResetPrompt,
-					titleArguments: Translation.Arguments("panel", panels[activePanel]),
+					titleArguments: FluentBundle.Arguments("panel", panels[activePanel]),
 					onConfirm: Reset,
 					confirmText: ResetAccept,
 					onCancel: () => { },

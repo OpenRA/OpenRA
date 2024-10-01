@@ -19,67 +19,67 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MapChooserLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string AllMaps = "label-all-maps";
 
-		[TranslationReference]
+		[FluentReference]
 		const string NoMatches = "label-no-matches";
 
-		[TranslationReference("players")]
+		[FluentReference("players")]
 		const string Players = "label-player-count";
 
-		[TranslationReference("author")]
+		[FluentReference("author")]
 		const string CreatedBy = "label-created-by";
 
-		[TranslationReference]
+		[FluentReference]
 		const string MapSizeHuge = "label-map-size-huge";
 
-		[TranslationReference]
+		[FluentReference]
 		const string MapSizeLarge = "label-map-size-large";
 
-		[TranslationReference]
+		[FluentReference]
 		const string MapSizeMedium = "label-map-size-medium";
 
-		[TranslationReference]
+		[FluentReference]
 		const string MapSizeSmall = "label-map-size-small";
 
-		[TranslationReference("count")]
+		[FluentReference("count")]
 		const string MapSearchingCount = "label-map-searching-count";
 
-		[TranslationReference("count")]
+		[FluentReference("count")]
 		const string MapUnavailableCount = "label-map-unavailable-count";
 
-		[TranslationReference("map")]
+		[FluentReference("map")]
 		const string MapDeletionFailed = "notification-map-deletion-failed";
 
-		[TranslationReference]
+		[FluentReference]
 		const string DeleteMapTitle = "dialog-delete-map.title";
 
-		[TranslationReference("title")]
+		[FluentReference("title")]
 		const string DeleteMapPrompt = "dialog-delete-map.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string DeleteMapAccept = "dialog-delete-map.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string DeleteAllMapsTitle = "dialog-delete-all-maps.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string DeleteAllMapsPrompt = "dialog-delete-all-maps.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string DeleteAllMapsAccept = "dialog-delete-all-maps.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string OrderMapsByPlayers = "options-order-maps.player-count";
 
-		[TranslationReference]
+		[FluentReference]
 		const string OrderMapsByTitle = "options-order-maps.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string OrderMapsByDate = "options-order-maps.date";
 
-		[TranslationReference]
+		[FluentReference]
 		const string OrderMapsBySize = "options-order-maps.size";
 
 		readonly string allMaps;
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.onSelect = onSelect;
 			this.remoteMapPool = remoteMapPool;
 
-			allMaps = TranslationProvider.GetString(AllMaps);
+			allMaps = FluentProvider.GetString(AllMaps);
 
 			var approving = new Action(() =>
 			{
@@ -205,9 +205,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var remoteMapText = new CachedTransform<(int Searching, int Unavailable), string>(counts =>
 			{
 				if (counts.Searching > 0)
-					return TranslationProvider.GetString(MapSearchingCount, Translation.Arguments("count", counts.Searching));
+					return FluentProvider.GetString(MapSearchingCount, FluentBundle.Arguments("count", counts.Searching));
 
-				return TranslationProvider.GetString(MapUnavailableCount, Translation.Arguments("count", counts.Unavailable));
+				return FluentProvider.GetString(MapUnavailableCount, FluentBundle.Arguments("count", counts.Unavailable));
 			});
 
 			remoteMapLabel.IsVisible = () => remoteMapPool != null && (remoteSearching > 0 || remoteUnavailable > 0);
@@ -359,7 +359,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var item = categories.FirstOrDefault(m => m.Category == category);
 					if (item == default((string, int)))
-						item.Category = TranslationProvider.GetString(NoMatches);
+						item.Category = FluentProvider.GetString(NoMatches);
 
 					return ShowItem(item);
 				};
@@ -372,14 +372,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (orderByDropdown == null)
 				return;
 
-			var orderByPlayer = TranslationProvider.GetString(OrderMapsByPlayers);
+			var orderByPlayer = FluentProvider.GetString(OrderMapsByPlayers);
 
 			var orderByDict = new Dictionary<string, Func<MapPreview, long>>()
 			{
 				{ orderByPlayer, m => m.PlayerCount },
-				{ TranslationProvider.GetString(OrderMapsByTitle), null },
-				{ TranslationProvider.GetString(OrderMapsByDate), m => -m.ModifiedDate.Ticks },
-				{ TranslationProvider.GetString(OrderMapsBySize), m => m.Bounds.Width * m.Bounds.Height },
+				{ FluentProvider.GetString(OrderMapsByTitle), null },
+				{ FluentProvider.GetString(OrderMapsByDate), m => -m.ModifiedDate.Ticks },
+				{ FluentProvider.GetString(OrderMapsBySize), m => m.Bounds.Width * m.Bounds.Height },
 			};
 
 			orderByFunc = orderByDict[orderByPlayer];
@@ -458,23 +458,23 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (type != null)
 						details = type + " ";
 
-					details += TranslationProvider.GetString(Players, Translation.Arguments("players", preview.PlayerCount));
+					details += FluentProvider.GetString(Players, FluentBundle.Arguments("players", preview.PlayerCount));
 					detailsWidget.GetText = () => details;
 				}
 
 				var authorWidget = item.GetOrNull<LabelWithTooltipWidget>("AUTHOR");
 				if (authorWidget != null && !string.IsNullOrEmpty(preview.Author))
-					WidgetUtils.TruncateLabelToTooltip(authorWidget, TranslationProvider.GetString(CreatedBy, Translation.Arguments("author", preview.Author)));
+					WidgetUtils.TruncateLabelToTooltip(authorWidget, FluentProvider.GetString(CreatedBy, FluentBundle.Arguments("author", preview.Author)));
 
 				var sizeWidget = item.GetOrNull<LabelWidget>("SIZE");
 				if (sizeWidget != null)
 				{
 					var size = preview.Bounds.Width + "x" + preview.Bounds.Height;
 					var numberPlayableCells = preview.Bounds.Width * preview.Bounds.Height;
-					if (numberPlayableCells >= 120 * 120) size += " " + TranslationProvider.GetString(MapSizeHuge);
-					else if (numberPlayableCells >= 90 * 90) size += " " + TranslationProvider.GetString(MapSizeLarge);
-					else if (numberPlayableCells >= 60 * 60) size += " " + TranslationProvider.GetString(MapSizeMedium);
-					else size += " " + TranslationProvider.GetString(MapSizeSmall);
+					if (numberPlayableCells >= 120 * 120) size += " " + FluentProvider.GetString(MapSizeHuge);
+					else if (numberPlayableCells >= 90 * 90) size += " " + FluentProvider.GetString(MapSizeLarge);
+					else if (numberPlayableCells >= 60 * 60) size += " " + FluentProvider.GetString(MapSizeMedium);
+					else size += " " + FluentProvider.GetString(MapSizeSmall);
 					sizeWidget.GetText = () => size;
 				}
 
@@ -502,7 +502,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				TextNotificationsManager.Debug(TranslationProvider.GetString(MapDeletionFailed, Translation.Arguments("map", map)));
+				TextNotificationsManager.Debug(FluentProvider.GetString(MapDeletionFailed, FluentBundle.Arguments("map", map)));
 				Log.Write("debug", ex.ToString());
 			}
 
@@ -514,7 +514,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ConfirmationDialogs.ButtonPrompt(modData,
 				title: DeleteMapTitle,
 				text: DeleteMapPrompt,
-				textArguments: Translation.Arguments("title", modData.MapCache[map].Title),
+				textArguments: FluentBundle.Arguments("title", modData.MapCache[map].Title),
 				onConfirm: () =>
 				{
 					var newUid = DeleteMap(map);

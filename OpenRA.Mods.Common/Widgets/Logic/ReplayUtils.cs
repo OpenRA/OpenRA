@@ -17,28 +17,28 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public static class ReplayUtils
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string IncompatibleReplayTitle = "dialog-incompatible-replay.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string IncompatibleReplayPrompt = "dialog-incompatible-replay.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string IncompatibleReplayAccept = "dialog-incompatible-replay.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string UnknownVersion = "dialog-incompatible-replay.prompt-unknown-version";
 
-		[TranslationReference]
+		[FluentReference]
 		const string UnknownMod = "dialog-incompatible-replay.prompt-unknown-mod";
 
-		[TranslationReference("mod")]
+		[FluentReference("mod")]
 		const string UnvailableMod = "dialog-incompatible-replay.prompt-unavailable-mod";
 
-		[TranslationReference("version")]
+		[FluentReference("version")]
 		const string IncompatibleVersion = "dialog-incompatible-replay.prompt-incompatible-version";
 
-		[TranslationReference("map")]
+		[FluentReference("map")]
 		const string UnvailableMap = "dialog-incompatible-replay.prompt-unavailable-map";
 
 		static readonly Action DoNothing = () => { };
@@ -59,13 +59,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return IncompatibleReplayDialog(UnknownMod, null, modData, onCancel);
 
 			if (!Game.Mods.ContainsKey(mod))
-				return IncompatibleReplayDialog(UnvailableMod, Translation.Arguments("mod", mod), modData, onCancel);
+				return IncompatibleReplayDialog(UnvailableMod, FluentBundle.Arguments("mod", mod), modData, onCancel);
 
 			if (Game.Mods[mod].Metadata.Version != version)
-				return IncompatibleReplayDialog(IncompatibleVersion, Translation.Arguments("version", version), modData, onCancel);
+				return IncompatibleReplayDialog(IncompatibleVersion, FluentBundle.Arguments("version", version), modData, onCancel);
 
 			if (replayMeta.GameInfo.MapPreview.Status != MapStatus.Available)
-				return IncompatibleReplayDialog(UnvailableMap, Translation.Arguments("map", replayMeta.GameInfo.MapUid), modData, onCancel);
+				return IncompatibleReplayDialog(UnvailableMap, FluentBundle.Arguments("map", replayMeta.GameInfo.MapUid), modData, onCancel);
 
 			return true;
 		}

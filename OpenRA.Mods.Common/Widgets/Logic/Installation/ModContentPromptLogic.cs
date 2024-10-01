@@ -20,10 +20,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ModContentPromptLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string Continue = "button-continue";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Quit = "button-quit";
 
 		readonly ModContent content;
@@ -35,8 +35,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.content = content;
 			CheckRequiredContentInstalled();
 
-			var continueMessage = TranslationProvider.GetString(Continue);
-			var quitMessage = TranslationProvider.GetString(Quit);
+			var continueMessage = FluentProvider.GetString(Continue);
+			var quitMessage = FluentProvider.GetString(Quit);
 
 			var panel = widget.Get("CONTENT_PROMPT_PANEL");
 			var headerTemplate = panel.Get<LabelWidget>("HEADER_TEMPLATE");

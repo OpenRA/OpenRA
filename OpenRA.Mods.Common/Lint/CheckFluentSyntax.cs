@@ -18,7 +18,7 @@ using OpenRA.FileSystem;
 
 namespace OpenRA.Mods.Common.Lint
 {
-	sealed class CheckTranslationSyntax : ILintPass, ILintMapPass
+	sealed class CheckFluentSyntax : ILintPass, ILintMapPass
 	{
 		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
@@ -33,11 +33,11 @@ namespace OpenRA.Mods.Common.Lint
 			Run(emitError, emitWarning, modData.DefaultFileSystem, modData.Manifest.Translations);
 		}
 
-		static void Run(Action<string> emitError, Action<string> emitWarning, IReadOnlyFileSystem fileSystem, string[] translations)
+		static void Run(Action<string> emitError, Action<string> emitWarning, IReadOnlyFileSystem fileSystem, string[] paths)
 		{
-			foreach (var file in translations)
+			foreach (var path in paths)
 			{
-				var stream = fileSystem.Open(file);
+				var stream = fileSystem.Open(path);
 				using (var reader = new StreamReader(stream))
 				{
 					var ids = new List<string>();
@@ -46,12 +46,12 @@ namespace OpenRA.Mods.Common.Lint
 					foreach (var entry in resource.Entries)
 					{
 						if (entry is Junk junk)
-							emitError($"{junk.GetId()}: {junk.AsStr()} in {file} {junk.Content}.");
+							emitError($"{junk.GetId()}: {junk.AsStr()} in {path} {junk.Content}.");
 
 						if (entry is AstMessage message)
 						{
 							if (ids.Contains(message.Id.Name.ToString()))
-								emitWarning($"Duplicate ID `{message.Id.Name}` in {file}.");
+								emitWarning($"Duplicate ID `{message.Id.Name}` in {path}.");
 
 							ids.Add(message.Id.Name.ToString());
 						}

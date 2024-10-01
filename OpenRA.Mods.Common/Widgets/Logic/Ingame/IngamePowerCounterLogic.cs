@@ -18,10 +18,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class IngamePowerCounterLogic : ChromeLogic
 	{
-		[TranslationReference("usage", "capacity")]
+		[FluentReference("usage", "capacity")]
 		const string PowerUsage = "label-power-usage";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Infinite = "label-infinite-power";
 
 		[ObjectCreator.UseCtor]
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var powerManager = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
 			var power = widget.Get<LabelWithTooltipWidget>("POWER");
 			var powerIcon = widget.Get<ImageWidget>("POWER_ICON");
-			var unlimitedCapacity = TranslationProvider.GetString(Infinite);
+			var unlimitedCapacity = FluentProvider.GetString(Infinite);
 
 			powerIcon.GetImageName = () => powerManager.ExcessPower < 0 ? "power-critical" : "power-normal";
 			power.GetColor = () => powerManager.ExcessPower < 0 ? Color.Red : Color.White;
@@ -41,9 +41,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var tooltipTextCached = new CachedTransform<(int, int?), string>(((int Usage, int? Capacity) args) =>
 			{
 				var capacity = args.Capacity == null ? unlimitedCapacity : args.Capacity.Value.ToString(NumberFormatInfo.CurrentInfo);
-				return TranslationProvider.GetString(
+				return FluentProvider.GetString(
 					PowerUsage,
-					Translation.Arguments(
+					FluentBundle.Arguments(
 						"usage", args.Usage.ToString(NumberFormatInfo.CurrentInfo),
 						"capacity", capacity));
 			});

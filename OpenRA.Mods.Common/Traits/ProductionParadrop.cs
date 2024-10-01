@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Speech notification to play when dropping the unit.")]
 		public readonly string ReadyAudio = null;
 
-		[TranslationReference(optional: true)]
+		[FluentReference(optional: true)]
 		[Desc("Text notification to display when dropping the unit.")]
 		public readonly string ReadyTextNotification = null;
 

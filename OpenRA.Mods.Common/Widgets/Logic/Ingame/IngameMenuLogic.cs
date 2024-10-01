@@ -21,121 +21,121 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class IngameMenuLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string Leave = "menu-ingame.leave";
 
-		[TranslationReference]
+		[FluentReference]
 		const string AbortMission = "menu-ingame.abort";
 
-		[TranslationReference]
+		[FluentReference]
 		const string LeaveMissionTitle = "dialog-leave-mission.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string LeaveMissionPrompt = "dialog-leave-mission.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string LeaveMissionAccept = "dialog-leave-mission.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string LeaveMissionCancel = "dialog-leave-mission.cancel";
 
-		[TranslationReference]
+		[FluentReference]
 		const string RestartButton = "menu-ingame.restart";
 
-		[TranslationReference]
+		[FluentReference]
 		const string RestartMissionTitle = "dialog-restart-mission.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string RestartMissionPrompt = "dialog-restart-mission.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string RestartMissionAccept = "dialog-restart-mission.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string RestartMissionCancel = "dialog-restart-mission.cancel";
 
-		[TranslationReference]
+		[FluentReference]
 		const string SurrenderButton = "menu-ingame.surrender";
 
-		[TranslationReference]
+		[FluentReference]
 		const string SurrenderTitle = "dialog-surrender.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string SurrenderPrompt = "dialog-surrender.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string SurrenderAccept = "dialog-surrender.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string SurrenderCancel = "dialog-surrender.cancel";
 
-		[TranslationReference]
+		[FluentReference]
 		const string LoadGameButton = "menu-ingame.load-game";
 
-		[TranslationReference]
+		[FluentReference]
 		const string SaveGameButton = "menu-ingame.save-game";
 
-		[TranslationReference]
+		[FluentReference]
 		const string MusicButton = "menu-ingame.music";
 
-		[TranslationReference]
+		[FluentReference]
 		const string SettingsButton = "menu-ingame.settings";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ReturnToMap = "menu-ingame.return-to-map";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Resume = "menu-ingame.resume";
 
-		[TranslationReference]
+		[FluentReference]
 		const string SaveMapButton = "menu-ingame.save-map";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ErrorMaxPlayerTitle = "dialog-error-max-player.title";
 
-		[TranslationReference("players", "max")]
+		[FluentReference("players", "max")]
 		const string ErrorMaxPlayerPrompt = "dialog-error-max-player.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ErrorMaxPlayerAccept = "dialog-error-max-player.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ExitMapButton = "menu-ingame.exit-map";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ExitMapEditorTitle = "dialog-exit-map-editor.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ExitMapEditorPromptUnsaved = "dialog-exit-map-editor.prompt-unsaved";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ExitMapEditorPromptDeleted = "dialog-exit-map-editor.prompt-deleted";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ExitMapEditorAnywayConfirm = "dialog-exit-map-editor.confirm-anyway";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ExitMapEditorConfirm = "dialog-exit-map-editor.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string PlayMapWarningTitle = "dialog-play-map-warning.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string PlayMapWarningPrompt = "dialog-play-map-warning.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string PlayMapWarningCancel = "dialog-play-map-warning.cancel";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ExitToMapEditorTitle = "dialog-exit-to-map-editor.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ExitToMapEditorPrompt = "dialog-exit-to-map-editor.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ExitToMapEditorConfirm = "dialog-exit-to-map-editor.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ExitToMapEditorCancel = "dialog-exit-to-map-editor.cancel";
 
 		readonly Widget menu;
@@ -296,7 +296,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Ui.ResetTooltips();
 		}
 
-		ButtonWidget AddButton(string id, string text)
+		ButtonWidget AddButton(string id, string label)
 		{
 			var button = buttonTemplate.Clone() as ButtonWidget;
 			var lastButton = buttons.LastOrDefault();
@@ -308,8 +308,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			button.Id = id;
 			button.IsDisabled = () => leaving;
-			var translation = TranslationProvider.GetString(text);
-			button.GetText = () => translation;
+			var text = FluentProvider.GetString(label);
+			button.GetText = () => text;
 			buttonContainer.AddChild(button);
 			buttons.Add(button);
 
@@ -322,8 +322,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return;
 
 			var button = AddButton("ABORT_MISSION", world.IsGameOver
-				? TranslationProvider.GetString(Leave)
-				: TranslationProvider.GetString(AbortMission));
+				? FluentProvider.GetString(Leave)
+				: FluentProvider.GetString(AbortMission));
 
 			button.OnClick = () =>
 			{
@@ -497,7 +497,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ConfirmationDialogs.ButtonPrompt(modData,
 						title: ErrorMaxPlayerTitle,
 						text: ErrorMaxPlayerPrompt,
-						textArguments: Translation.Arguments("players", playerCount, "max", MapPlayers.MaximumPlayerCount),
+						textArguments: FluentBundle.Arguments("players", playerCount, "max", MapPlayers.MaximumPlayerCount),
 						onConfirm: ShowMenu,
 						confirmText: ErrorMaxPlayerAccept);
 

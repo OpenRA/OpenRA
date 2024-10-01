@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ModContentLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string ManualInstall = "button-manual-install";
 
 		readonly ModContent content;
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				requiresSourceWidget.IsVisible = () => !installed && !downloadEnabled;
 				if (!isSourceAvailable)
 				{
-					var manualInstall = TranslationProvider.GetString(ManualInstall);
+					var manualInstall = FluentProvider.GetString(ManualInstall);
 					requiresSourceWidget.GetText = () => manualInstall;
 				}
 

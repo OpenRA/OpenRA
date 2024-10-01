@@ -116,7 +116,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	sealed class CopyPasteEditorAction : IEditorAction
 	{
-		[TranslationReference("amount")]
+		[FluentReference("amount")]
 		const string CopiedTiles = "notification-copied-tiles";
 
 		public string Text { get; }
@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			undoClipboard = CopySelectionContents();
 
-			Text = TranslationProvider.GetString(CopiedTiles, Translation.Arguments("amount", clipboard.Tiles.Count));
+			Text = FluentProvider.GetString(CopiedTiles, FluentBundle.Arguments("amount", clipboard.Tiles.Count));
 		}
 
 		/// <summary>

@@ -128,10 +128,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	public class RegisteredProfileTooltipLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string LoadingPlayerProfile = "label-loading-player-profile";
 
-		[TranslationReference]
+		[FluentReference]
 		const string LoadingPlayerProfileFailed = "label-loading-player-profile-failed";
 
 		readonly PlayerDatabase playerDatabase;
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var profileWidth = 0;
 			var maxProfileWidth = widget.Bounds.Width;
-			var messageText = TranslationProvider.GetString(LoadingPlayerProfile);
+			var messageText = FluentProvider.GetString(LoadingPlayerProfile);
 			var messageWidth = messageFont.Measure(messageText).X + 2 * message.Bounds.Left;
 
 			Task.Run(async () =>
@@ -247,7 +247,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					if (profile == null)
 					{
-						messageText = TranslationProvider.GetString(LoadingPlayerProfileFailed);
+						messageText = FluentProvider.GetString(LoadingPlayerProfileFailed);
 						messageWidth = messageFont.Measure(messageText).X + 2 * message.Bounds.Left;
 						header.Bounds.Width = widget.Bounds.Width = messageWidth;
 					}
@@ -355,7 +355,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	public class BotTooltipLogic : ChromeLogic
 	{
-		[TranslationReference("name")]
+		[FluentReference("name")]
 		const string BotManagedBy = "label-bot-managed-by-tooltip";
 
 		[ObjectCreator.UseCtor]
@@ -365,7 +365,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var nameFont = Game.Renderer.Fonts[nameLabel.Font];
 			var controller = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.Index == client.BotControllerClientIndex);
 			if (controller != null)
-				nameLabel.GetText = () => TranslationProvider.GetString(BotManagedBy, Translation.Arguments("name", controller.Name));
+				nameLabel.GetText = () => FluentProvider.GetString(BotManagedBy, FluentBundle.Arguments("name", controller.Name));
 
 			widget.Bounds.Width = nameFont.Measure(nameLabel.GetText()).X + 2 * nameLabel.Bounds.Left;
 		}

@@ -98,10 +98,10 @@ namespace OpenRA.Mods.Common.Widgets
 
 	class PaintMarkerTileEditorAction : IEditorAction
 	{
-		[TranslationReference("amount", "type")]
+		[FluentReference("amount", "type")]
 		const string AddedMarkerTiles = "notification-added-marker-tiles";
 
-		[TranslationReference("amount")]
+		[FluentReference("amount")]
 		const string RemovedMarkerTiles = "notification-removed-marker-tiles";
 
 		public string Text { get; private set; }
@@ -150,15 +150,15 @@ namespace OpenRA.Mods.Common.Widgets
 			}
 
 			if (type != null)
-				Text = TranslationProvider.GetString(AddedMarkerTiles, Translation.Arguments("amount", paintTiles.Count, "type", type));
+				Text = FluentProvider.GetString(AddedMarkerTiles, FluentBundle.Arguments("amount", paintTiles.Count, "type", type));
 			else
-				Text = TranslationProvider.GetString(RemovedMarkerTiles, Translation.Arguments("amount", paintTiles.Count));
+				Text = FluentProvider.GetString(RemovedMarkerTiles, FluentBundle.Arguments("amount", paintTiles.Count));
 		}
 	}
 
 	class ClearSelectedMarkerTilesEditorAction : IEditorAction
 	{
-		[TranslationReference("amount", "type")]
+		[FluentReference("amount", "type")]
 		const string ClearedSelectedMarkerTiles = "notification-cleared-selected-marker-tiles";
 
 		public string Text { get; }
@@ -176,7 +176,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			tiles = new HashSet<CPos>(markerLayerOverlay.Tiles[tile]);
 
-			Text = TranslationProvider.GetString(ClearedSelectedMarkerTiles, Translation.Arguments("amount", tiles.Count, "type", tile));
+			Text = FluentProvider.GetString(ClearedSelectedMarkerTiles, FluentBundle.Arguments("amount", tiles.Count, "type", tile));
 		}
 
 		public void Execute()
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	class ClearAllMarkerTilesEditorAction : IEditorAction
 	{
-		[TranslationReference("amount")]
+		[FluentReference("amount")]
 		const string ClearedAllMarkerTiles = "notification-cleared-all-marker-tiles";
 
 		public string Text { get; }
@@ -213,7 +213,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var allTilesCount = tiles.Values.Select(x => x.Count).Sum();
 
-			Text = TranslationProvider.GetString(ClearedAllMarkerTiles, Translation.Arguments("amount", allTilesCount));
+			Text = FluentProvider.GetString(ClearedAllMarkerTiles, FluentBundle.Arguments("amount", allTilesCount));
 		}
 
 		public void Execute()

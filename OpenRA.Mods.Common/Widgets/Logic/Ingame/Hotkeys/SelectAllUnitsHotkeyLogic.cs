@@ -27,10 +27,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 
 		public readonly string ClickSound = ChromeMetrics.Get<string>("ClickSound");
 
-		[TranslationReference("units")]
+		[FluentReference("units")]
 		const string SelectedUnitsAcrossScreen = "selected-units-across-screen";
 
-		[TranslationReference("units")]
+		[FluentReference("units")]
 		const string SelectedUnitsAcrossMap = "selected-units-across-map";
 
 		[ObjectCreator.UseCtor]
@@ -54,12 +54,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 
 			// Check if selecting actors on the screen has selected new units
 			if (newSelection.Count > selection.Actors.Count)
-				TextNotificationsManager.AddFeedbackLine(SelectedUnitsAcrossScreen, Translation.Arguments("units", newSelection.Count));
+				TextNotificationsManager.AddFeedbackLine(SelectedUnitsAcrossScreen, FluentBundle.Arguments("units", newSelection.Count));
 			else
 			{
 				// Select actors in the world that have highest selection priority
 				newSelection = SelectionUtils.SelectActorsInWorld(world, null, eligiblePlayers).SubsetWithHighestSelectionPriority(e.Modifiers).ToList();
-				TextNotificationsManager.AddFeedbackLine(SelectedUnitsAcrossMap, Translation.Arguments("units", newSelection.Count));
+				TextNotificationsManager.AddFeedbackLine(SelectedUnitsAcrossMap, FluentBundle.Arguments("units", newSelection.Count));
 			}
 
 			selection.Combine(world, newSelection, false, false);

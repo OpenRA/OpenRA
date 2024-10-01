@@ -16,7 +16,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class EncyclopediaInfo : TraitInfo
 	{
 		[Desc("Explains the purpose in the in-game encyclopedia.")]
-		[TranslationReference]
+		[FluentReference]
 		public readonly string Description;
 
 		[Desc("Number for ordering the list.")]

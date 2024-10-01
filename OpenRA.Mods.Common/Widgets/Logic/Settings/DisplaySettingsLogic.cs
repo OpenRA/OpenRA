@@ -23,49 +23,49 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class DisplaySettingsLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string Close = "options-camera.close";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Medium = "options-camera.medium";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Far = "options-camera.far";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Furthest = "options-camera.furthest";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Windowed = "options-display-mode.windowed";
 
-		[TranslationReference]
+		[FluentReference]
 		const string LegacyFullscreen = "options-display-mode.legacy-fullscreen";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Fullscreen = "options-display-mode.fullscreen";
 
-		[TranslationReference("number")]
+		[FluentReference("number")]
 		const string Display = "label-video-display-index";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Standard = "options-status-bars.standard";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ShowOnDamage = "options-status-bars.show-on-damage";
 
-		[TranslationReference]
+		[FluentReference]
 		const string AlwaysShow = "options-status-bars.always-show";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Automatic = "options-target-lines.automatic";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Manual = "options-target-lines.manual";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Disabled = "options-target-lines.disabled";
 
-		[TranslationReference("fps")]
+		[FluentReference("fps")]
 		const string FrameLimiter = "checkbox-frame-limiter";
 		static readonly int OriginalVideoDisplay;
 		static readonly WindowMode OriginalGraphicsMode;
@@ -106,17 +106,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.modData = modData;
 			viewportSizes = modData.Manifest.Get<WorldViewportSizes>();
 
-			legacyFullscreen = TranslationProvider.GetString(LegacyFullscreen);
-			fullscreen = TranslationProvider.GetString(Fullscreen);
+			legacyFullscreen = FluentProvider.GetString(LegacyFullscreen);
+			fullscreen = FluentProvider.GetString(Fullscreen);
 
 			registerPanel(panelID, label, InitPanel, ResetPanel);
 
-			showOnDamage = TranslationProvider.GetString(ShowOnDamage);
-			alwaysShow = TranslationProvider.GetString(AlwaysShow);
+			showOnDamage = FluentProvider.GetString(ShowOnDamage);
+			alwaysShow = FluentProvider.GetString(AlwaysShow);
 
-			automatic = TranslationProvider.GetString(Automatic);
-			manual = TranslationProvider.GetString(Manual);
-			disabled = TranslationProvider.GetString(Disabled);
+			automatic = FluentProvider.GetString(Automatic);
+			manual = FluentProvider.GetString(Manual);
+			disabled = FluentProvider.GetString(Disabled);
 		}
 
 		public static string GetViewportSizeName(ModData modData, WorldViewport worldViewport)
@@ -124,13 +124,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			switch (worldViewport)
 			{
 				case WorldViewport.Close:
-					return TranslationProvider.GetString(Close);
+					return FluentProvider.GetString(Close);
 				case WorldViewport.Medium:
-					return TranslationProvider.GetString(Medium);
+					return FluentProvider.GetString(Medium);
 				case WorldViewport.Far:
-					return TranslationProvider.GetString(Far);
+					return FluentProvider.GetString(Far);
 				case WorldViewport.Native:
-					return TranslationProvider.GetString(Furthest);
+					return FluentProvider.GetString(Furthest);
 				default:
 					return "";
 			}
@@ -166,12 +166,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var windowModeDropdown = panel.Get<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, ds, scrollPanel);
 			windowModeDropdown.GetText = () => ds.Mode == WindowMode.Windowed
-				? TranslationProvider.GetString(Windowed)
+				? FluentProvider.GetString(Windowed)
 				: ds.Mode == WindowMode.Fullscreen ? legacyFullscreen : fullscreen;
 
 			var displaySelectionDropDown = panel.Get<DropDownButtonWidget>("DISPLAY_SELECTION_DROPDOWN");
 			displaySelectionDropDown.OnMouseDown = _ => ShowDisplaySelectionDropdown(displaySelectionDropDown, ds);
-			var displaySelectionLabel = new CachedTransform<int, string>(i => TranslationProvider.GetString(Display, Translation.Arguments("number", i + 1)));
+			var displaySelectionLabel = new CachedTransform<int, string>(i => FluentProvider.GetString(Display, FluentBundle.Arguments("number", i + 1)));
 			displaySelectionDropDown.GetText = () => displaySelectionLabel.Update(ds.VideoDisplay);
 			displaySelectionDropDown.IsDisabled = () => Game.Renderer.DisplayCount < 2;
 
@@ -185,7 +185,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var statusBarsDropDown = panel.Get<DropDownButtonWidget>("STATUS_BAR_DROPDOWN");
 			statusBarsDropDown.OnMouseDown = _ => ShowStatusBarsDropdown(statusBarsDropDown, gs);
 			statusBarsDropDown.GetText = () => gs.StatusBars == StatusBarsType.Standard
-				? TranslationProvider.GetString(Standard)
+				? FluentProvider.GetString(Standard)
 				: gs.StatusBars == StatusBarsType.DamageShow
 					? showOnDamage
 					: alwaysShow;
@@ -242,7 +242,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var frameLimitGamespeedCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_GAMESPEED_CHECKBOX");
 			var frameLimitCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_CHECKBOX");
-			var frameLimitLabel = new CachedTransform<int, string>(fps => TranslationProvider.GetString(FrameLimiter, Translation.Arguments("fps", fps)));
+			var frameLimitLabel = new CachedTransform<int, string>(fps => FluentProvider.GetString(FrameLimiter, FluentBundle.Arguments("fps", fps)));
 			frameLimitCheckbox.GetText = () => frameLimitLabel.Update(ds.MaxFramerate);
 			frameLimitCheckbox.IsDisabled = () => ds.CapFramerateToGameFps;
 
@@ -350,9 +350,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var options = new Dictionary<string, WindowMode>()
 			{
-				{ TranslationProvider.GetString(Fullscreen), WindowMode.PseudoFullscreen },
-				{ TranslationProvider.GetString(LegacyFullscreen), WindowMode.Fullscreen },
-				{ TranslationProvider.GetString(Windowed), WindowMode.Windowed },
+				{ FluentProvider.GetString(Fullscreen), WindowMode.PseudoFullscreen },
+				{ FluentProvider.GetString(LegacyFullscreen), WindowMode.Fullscreen },
+				{ FluentProvider.GetString(Windowed), WindowMode.Windowed },
 			};
 
 			ScrollItemWidget SetupItem(string o, ScrollItemWidget itemTemplate)
@@ -399,9 +399,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var options = new Dictionary<string, StatusBarsType>()
 			{
-				{ TranslationProvider.GetString(Standard), StatusBarsType.Standard },
-				{ TranslationProvider.GetString(ShowOnDamage), StatusBarsType.DamageShow },
-				{ TranslationProvider.GetString(AlwaysShow), StatusBarsType.AlwaysShow },
+				{ FluentProvider.GetString(Standard), StatusBarsType.Standard },
+				{ FluentProvider.GetString(ShowOnDamage), StatusBarsType.DamageShow },
+				{ FluentProvider.GetString(AlwaysShow), StatusBarsType.AlwaysShow },
 			};
 
 			ScrollItemWidget SetupItem(string o, ScrollItemWidget itemTemplate)
@@ -454,9 +454,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			var options = new Dictionary<string, TargetLinesType>()
 			{
-				{ TranslationProvider.GetString(Automatic), TargetLinesType.Automatic },
-				{ TranslationProvider.GetString(Manual), TargetLinesType.Manual },
-				{ TranslationProvider.GetString(Disabled), TargetLinesType.Disabled },
+				{ FluentProvider.GetString(Automatic), TargetLinesType.Automatic },
+				{ FluentProvider.GetString(Manual), TargetLinesType.Manual },
+				{ FluentProvider.GetString(Disabled), TargetLinesType.Disabled },
 			};
 
 			ScrollItemWidget SetupItem(string o, ScrollItemWidget itemTemplate)

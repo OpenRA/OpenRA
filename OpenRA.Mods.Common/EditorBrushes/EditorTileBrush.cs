@@ -172,7 +172,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	sealed class PaintTileEditorAction : IEditorAction
 	{
-		[TranslationReference("id")]
+		[FluentReference("id")]
 		const string AddedTile = "notification-added-tile";
 
 		public string Text { get; }
@@ -192,7 +192,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
 			terrainTemplate = terrainInfo.Templates[template];
-			Text = TranslationProvider.GetString(AddedTile, Translation.Arguments("id", terrainTemplate.Id));
+			Text = FluentProvider.GetString(AddedTile, FluentBundle.Arguments("id", terrainTemplate.Id));
 		}
 
 		public void Execute()
@@ -244,7 +244,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	sealed class FloodFillEditorAction : IEditorAction
 	{
-		[TranslationReference("id")]
+		[FluentReference("id")]
 		const string FilledTile = "notification-filled-tile";
 
 		public string Text { get; }
@@ -264,7 +264,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			var terrainInfo = (ITemplatedTerrainInfo)map.Rules.TerrainInfo;
 			terrainTemplate = terrainInfo.Templates[template];
-			Text = TranslationProvider.GetString(FilledTile, Translation.Arguments("id", terrainTemplate.Id));
+			Text = FluentProvider.GetString(FilledTile, FluentBundle.Arguments("id", terrainTemplate.Id));
 		}
 
 		public void Execute()

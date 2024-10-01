@@ -279,13 +279,13 @@ namespace OpenRA.Mods.Common.Widgets
 
 	sealed class ChangeSelectionAction : IEditorAction
 	{
-		[TranslationReference("x", "y", "width", "height")]
+		[FluentReference("x", "y", "width", "height")]
 		const string SelectedArea = "notification-selected-area";
 
-		[TranslationReference("id")]
+		[FluentReference("id")]
 		const string SelectedActor = "notification-selected-actor";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ClearedSelection = "notification-cleared-selection";
 
 		public string Text { get; }
@@ -308,15 +308,15 @@ namespace OpenRA.Mods.Common.Widgets
 			};
 
 			if (selection.Area != null)
-				Text = TranslationProvider.GetString(SelectedArea, Translation.Arguments(
+				Text = FluentProvider.GetString(SelectedArea, FluentBundle.Arguments(
 						"x", selection.Area.TopLeft.X,
 						"y", selection.Area.TopLeft.Y,
 						"width", selection.Area.BottomRight.X - selection.Area.TopLeft.X,
 						"height", selection.Area.BottomRight.Y - selection.Area.TopLeft.Y));
 			else if (selection.Actor != null)
-				Text = TranslationProvider.GetString(SelectedActor, Translation.Arguments("id", selection.Actor.ID));
+				Text = FluentProvider.GetString(SelectedActor, FluentBundle.Arguments("id", selection.Actor.ID));
 			else
-				Text = TranslationProvider.GetString(ClearedSelection);
+				Text = FluentProvider.GetString(ClearedSelection);
 		}
 
 		public void Execute()
@@ -337,7 +337,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	sealed class RemoveSelectedActorAction : IEditorAction
 	{
-		[TranslationReference("name", "id")]
+		[FluentReference("name", "id")]
 		const string RemovedActor = "notification-removed-actor";
 
 		public string Text { get; }
@@ -360,8 +360,8 @@ namespace OpenRA.Mods.Common.Widgets
 				Actor = defaultBrush.Selection.Actor
 			};
 
-			Text = TranslationProvider.GetString(RemovedActor,
-				Translation.Arguments("name", actor.Info.Name, "id", actor.ID));
+			Text = FluentProvider.GetString(RemovedActor,
+				FluentBundle.Arguments("name", actor.Info.Name, "id", actor.ID));
 		}
 
 		public void Execute()
@@ -384,7 +384,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	sealed class RemoveActorAction : IEditorAction
 	{
-		[TranslationReference("name", "id")]
+		[FluentReference("name", "id")]
 		const string RemovedActor = "notification-removed-actor";
 
 		public string Text { get; }
@@ -397,8 +397,8 @@ namespace OpenRA.Mods.Common.Widgets
 			this.editorActorLayer = editorActorLayer;
 			this.actor = actor;
 
-			Text = TranslationProvider.GetString(RemovedActor,
-				Translation.Arguments("name", actor.Info.Name, "id", actor.ID));
+			Text = FluentProvider.GetString(RemovedActor,
+				FluentBundle.Arguments("name", actor.Info.Name, "id", actor.ID));
 		}
 
 		public void Execute()
@@ -419,7 +419,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	sealed class MoveActorAction : IEditorAction
 	{
-		[TranslationReference("id", "x1", "y1", "x2", "y2")]
+		[FluentReference("id", "x1", "y1", "x2", "y2")]
 		const string MovedActor = "notification-moved-actor";
 
 		public string Text { get; private set; }
@@ -466,13 +466,13 @@ namespace OpenRA.Mods.Common.Widgets
 			to = worldRenderer.Viewport.ViewToWorld(pixelTo + pixelOffset) + cellOffset;
 			layer.MoveActor(actor, to);
 
-			Text = TranslationProvider.GetString(MovedActor, Translation.Arguments("id", actor.ID, "x1", from.X, "y1", from.Y, "x2", to.X, "y2", to.Y));
+			Text = FluentProvider.GetString(MovedActor, FluentBundle.Arguments("id", actor.ID, "x1", from.X, "y1", from.Y, "x2", to.X, "y2", to.Y));
 		}
 	}
 
 	sealed class RemoveResourceAction : IEditorAction
 	{
-		[TranslationReference("type")]
+		[FluentReference("type")]
 		const string RemovedResource = "notification-removed-resource";
 
 		public string Text { get; }
@@ -487,7 +487,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.resourceLayer = resourceLayer;
 			this.cell = cell;
 
-			Text = TranslationProvider.GetString(RemovedResource, Translation.Arguments("type", resourceType));
+			Text = FluentProvider.GetString(RemovedResource, FluentBundle.Arguments("type", resourceType));
 		}
 
 		public void Execute()

@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Commands
 
 	public class ChatCommands : INotifyChat
 	{
-		[TranslationReference("name")]
+		[FluentReference("name")]
 		const string InvalidCommand = "notification-invalid-command";
 
 		public Dictionary<string, IChatCommand> Commands { get; }
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Common.Commands
 				if (Commands.TryGetValue(name, out var command))
 					command.InvokeCommand(name, message[(1 + name.Length)..].Trim());
 				else
-					TextNotificationsManager.Debug(TranslationProvider.GetString(InvalidCommand, Translation.Arguments("name", name)));
+					TextNotificationsManager.Debug(FluentProvider.GetString(InvalidCommand, FluentBundle.Arguments("name", name)));
 
 				return false;
 			}

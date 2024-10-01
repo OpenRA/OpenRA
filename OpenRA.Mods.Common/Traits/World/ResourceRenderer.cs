@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			[FieldLoader.Require]
 			[Desc("Resource name used by tooltips.")]
-			[TranslationReference]
+			[FluentReference]
 			public readonly string Name = null;
 
 			public ResourceTypeInfo(MiniYaml yaml)
@@ -273,7 +273,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (info == null)
 				return null;
 
-			return TranslationProvider.GetString(info.Name);
+			return FluentProvider.GetString(info.Name);
 		}
 
 		IEnumerable<string> IResourceRenderer.ResourceTypes => Info.ResourceTypes.Keys;

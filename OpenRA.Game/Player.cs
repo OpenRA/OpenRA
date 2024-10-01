@@ -38,7 +38,7 @@ namespace OpenRA
 
 	public class Player : IScriptBindable, IScriptNotifyBind, ILuaTableBinding, ILuaEqualityBinding, ILuaToStringBinding
 	{
-		[TranslationReference("name", "number")]
+		[FluentReference("name", "number")]
 		const string EnumeratedBotName = "enumerated-bot-name";
 
 		public readonly Actor PlayerActor;
@@ -238,8 +238,8 @@ namespace OpenRA
 			{
 				var botInfo = botInfos.First(b => b.Type == BotType);
 				var botsOfSameType = World.Players.Where(c => c.BotType == BotType).ToArray();
-				return TranslationProvider.GetString(EnumeratedBotName,
-					Translation.Arguments("name", TranslationProvider.GetString(botInfo.Name),
+				return FluentProvider.GetString(EnumeratedBotName,
+					FluentBundle.Arguments("name", FluentProvider.GetString(botInfo.Name),
 						"number", botsOfSameType.IndexOf(this) + 1));
 			}
 

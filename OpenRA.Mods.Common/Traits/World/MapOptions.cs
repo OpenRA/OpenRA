@@ -19,11 +19,11 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Controls the game speed, tech level, and short game lobby options.")]
 	public class MapOptionsInfo : TraitInfo, ILobbyOptions, IRulesetLoaded
 	{
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Descriptive label for the short game checkbox in the lobby.")]
 		public readonly string ShortGameCheckboxLabel = "checkbox-short-game.label";
 
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Tooltip description for the short game checkbox in the lobby.")]
 		public readonly string ShortGameCheckboxDescription = "checkbox-short-game.description";
 
@@ -39,11 +39,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the short game checkbox in the lobby.")]
 		public readonly int ShortGameCheckboxDisplayOrder = 0;
 
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Descriptive label for the tech level option in the lobby.")]
 		public readonly string TechLevelDropdownLabel = "dropdown-tech-level.label";
 
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Tooltip description for the tech level option in the lobby.")]
 		public readonly string TechLevelDropdownDescription = "dropdown-tech-level.description";
 
@@ -59,11 +59,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the tech level option in the lobby.")]
 		public readonly int TechLevelDropdownDisplayOrder = 0;
 
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Tooltip description for the game speed option in the lobby.")]
 		public readonly string GameSpeedDropdownLabel = "dropdown-game-speed.label";
 
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Description of the game speed option in the lobby.")]
 		public readonly string GameSpeedDropdownDescription = "dropdown-game-speed.description";
 
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 					techLevels, TechLevel, TechLevelDropdownLocked);
 
 			var gameSpeeds = Game.ModData.Manifest.Get<GameSpeeds>();
-			var speeds = gameSpeeds.Speeds.ToDictionary(s => s.Key, s => TranslationProvider.GetString(s.Value.Name));
+			var speeds = gameSpeeds.Speeds.ToDictionary(s => s.Key, s => FluentProvider.GetString(s.Value.Name));
 
 			// NOTE: This is just exposing the UI, the backend logic for this option is hardcoded in World.
 			yield return new LobbyOption(map, "gamespeed",
