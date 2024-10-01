@@ -18,10 +18,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MusicPlayerLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string SoundMuted = "label-sound-muted";
 
-		[TranslationReference]
+		[FluentReference]
 		const string NoSongPlaying = "label-no-song-playing";
 
 		readonly ScrollPanelWidget musicList;
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				panel.Get<LabelWidget>("MUTE_LABEL").GetText = () =>
 				{
 					if (Game.Settings.Sound.Mute)
-						return TranslationProvider.GetString(SoundMuted);
+						return FluentProvider.GetString(SoundMuted);
 
 					return "";
 				};
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return $"{minutes:D2}:{seconds:D2} / {totalMinutes:D2}:{totalSeconds:D2}";
 			};
 
-			var noSongPlaying = TranslationProvider.GetString(NoSongPlaying);
+			var noSongPlaying = FluentProvider.GetString(NoSongPlaying);
 			var musicTitle = panel.GetOrNull<LabelWidget>("TITLE_LABEL");
 			if (musicTitle != null)
 				musicTitle.GetText = () => currentSong != null ? currentSong.Title : noSongPlaying;

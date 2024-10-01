@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Speech notification to play when transforming.")]
 		public readonly string TransformNotification = null;
 
-		[TranslationReference(optional: true)]
+		[FluentReference(optional: true)]
 		[Desc("Text notification to display when transforming.")]
 		public readonly string TransformTextNotification = null;
 
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Speech notification to play when the transformation is blocked.")]
 		public readonly string NoTransformNotification = null;
 
-		[TranslationReference(optional: true)]
+		[FluentReference(optional: true)]
 		[Desc("Text notification to display when the transformation is blocked.")]
 		public readonly string NoTransformTextNotification = null;
 

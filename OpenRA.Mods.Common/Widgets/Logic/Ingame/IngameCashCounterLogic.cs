@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class IngameCashCounterLogic : ChromeLogic
 	{
-		[TranslationReference("usage", "capacity")]
+		[FluentReference("usage", "capacity")]
 		const string SiloUsage = "label-silo-usage";
 
 		const float DisplayFracPerFrame = .07f;
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			displayResources = playerResources.GetCashAndResources();
 
 			siloUsageTooltipCache = new CachedTransform<(int Resources, int Capacity), string>(x =>
-				TranslationProvider.GetString(SiloUsage, Translation.Arguments("usage", x.Resources, "capacity", x.Capacity)));
+				FluentProvider.GetString(SiloUsage, FluentBundle.Arguments("usage", x.Resources, "capacity", x.Capacity)));
 			cashLabel = widget.Get<LabelWithTooltipWidget>("CASH");
 			cashLabel.GetTooltipText = () => siloUsageTooltip;
 		}

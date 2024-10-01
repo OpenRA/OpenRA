@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	public class LabelWidget : Widget
 	{
-		[TranslationReference]
+		[FluentReference]
 		public string Text = null;
 		public TextAlign Align = TextAlign.Left;
 		public TextVAlign VAlign = TextVAlign.Middle;
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Common.Widgets
 		[ObjectCreator.UseCtor]
 		public LabelWidget(ModData modData)
 		{
-			var textCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? TranslationProvider.GetString(s) : "");
+			var textCache = new CachedTransform<string, string>(s => !string.IsNullOrEmpty(s) ? FluentProvider.GetString(s) : "");
 			GetText = () => textCache.Update(Text);
 			GetColor = () => TextColor;
 			GetContrastColorDark = () => ContrastColorDark;

@@ -33,17 +33,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return true;
 		}
 
-		[Desc("Extract translatable strings that are not yet localized.")]
+		[Desc("Extract fluent strings that are not yet localized.")]
 		void IUtilityCommand.Run(Utility utility, string[] args)
 		{
 			// HACK: The engine code assumes that Game.modData is set.
 			var modData = Game.ModData = utility.ModData;
 
-			var translatables = modData.ObjectCreator.GetTypes()
+			var traitInfos = modData.ObjectCreator.GetTypes()
 				.Where(t => t.Name.EndsWith("Info", StringComparison.InvariantCulture) && t.IsSubclassOf(typeof(TraitInfo)))
 				.ToDictionary(
 					t => t.Name[..^4],
-					t => t.GetFields().Where(f => f.HasAttribute<TranslationReferenceAttribute>()).Select(f => f.Name).ToArray())
+					t => t.GetFields().Where(f => f.HasAttribute<FluentReferenceAttribute>()).Select(f => f.Name).ToArray())
 				.Where(t => t.Value.Length > 0)
 				.ToDictionary(t => t.Key, t => t.Value);
 
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 
 			var fluentPackage = modData.ModFiles.OpenPackage(modData.Manifest.Id + "|languages");
-			ExtractFromFile(Path.Combine(fluentPackage.Name, "rules/en.ftl"), modRules, translatables);
+			ExtractFromFile(Path.Combine(fluentPackage.Name, "rules/en.ftl"), modRules, traitInfos);
 			modRules.Save();
 
 			// Extract from maps.
@@ -84,7 +84,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						mapRules.AddRange(UpdateUtils.LoadInternalMapYaml(modData, package, mapRulesNode.Value, new HashSet<string>()));
 
 					const string Enftl = "en.ftl";
-					ExtractFromFile(Path.Combine(package.Name, Enftl), mapRules, translatables, () =>
+					ExtractFromFile(Path.Combine(package.Name, Enftl), mapRules, traitInfos, () =>
 					{
 						var node = yaml.NodeWithKeyOrDefault("Translations");
 						if (node != null)
@@ -102,26 +102,26 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 		}
 
-		static void ExtractFromFile(string fluentPath, YamlFileSet yamlSet, Dictionary<string, string[]> translatables, Action addTranslation = null)
+		static void ExtractFromFile(string fluentPath, YamlFileSet yamlSet, Dictionary<string, string[]> traitInfos, Action addAction = null)
 		{
-			var unsortedCandidates = new List<TranslationCandidate>();
-			var groupedCandidates = new Dictionary<HashSet<string>, List<TranslationCandidate>>();
+			var unsortedCandidates = new List<ExtractionCandidate>();
+			var groupedCandidates = new Dictionary<HashSet<string>, List<ExtractionCandidate>>();
 
-			// Get all translations.
-			foreach (var (_, file, nodes) in yamlSet)
+			// Get all string candidates.
+			foreach (var (_, file, actors) in yamlSet)
 			{
-				var translationCandidates = new List<TranslationCandidate>();
-				foreach (var actor in nodes)
+				var candidates = new List<ExtractionCandidate>();
+				foreach (var actor in actors)
 					if (actor.Key != null)
-						ExtractFromActor(actor, translatables, ref translationCandidates);
+						ExtractFromActor(actor, traitInfos, ref candidates);
 
-				if (translationCandidates.Count > 0)
+				if (candidates.Count > 0)
 				{
 					var ruleFilename = file.Split('/').Last();
-					groupedCandidates[new HashSet<string>() { ruleFilename }] = new List<TranslationCandidate>();
-					for (var i = 0; i < translationCandidates.Count; i++)
+					groupedCandidates[new HashSet<string>() { ruleFilename }] = new List<ExtractionCandidate>();
+					for (var i = 0; i < candidates.Count; i++)
 					{
-						var candidate = translationCandidates[i];
+						var candidate = candidates[i];
 						candidate.Filename = ruleFilename;
 						unsortedCandidates.Add(candidate);
 					}
@@ -131,16 +131,16 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			if (unsortedCandidates.Count == 0)
 				return;
 
-			// Join matching translations.
+			// Join matching candidates.
 			foreach (var candidate in unsortedCandidates)
 			{
 				HashSet<string> foundHash = null;
-				TranslationCandidate found = default;
-				foreach (var (hash, translation) in groupedCandidates)
+				ExtractionCandidate found = default;
+				foreach (var (hash, candidates) in groupedCandidates)
 				{
-					foreach (var c in translation)
+					foreach (var c in candidates)
 					{
-						if (c.Actor == candidate.Actor && c.Key == candidate.Key && c.Translation == candidate.Translation)
+						if (c.Actor == candidate.Actor && c.Key == candidate.Key && c.Value == candidate.Value)
 						{
 							foundHash = hash;
 							found = c;
@@ -167,17 +167,17 @@ namespace OpenRA.Mods.Common.UtilityCommands
 				if (nHash.Key != null)
 					groupedCandidates[nHash.Key].Add(candidate);
 				else
-					groupedCandidates[newHash] = new List<TranslationCandidate>() { candidate };
+					groupedCandidates[newHash] = new List<ExtractionCandidate>() { candidate };
 			}
 
-			addTranslation?.Invoke();
+			addAction?.Invoke();
 
 			// StreamWriter can't create new directories.
 			var startWithNewline = File.Exists(fluentPath);
 			if (!startWithNewline)
 				Directory.CreateDirectory(Path.GetDirectoryName(fluentPath));
 
-			// Write to translation files.
+			// Write output .ftl files.
 			using (var fluentWriter = new StreamWriter(fluentPath, true))
 			{
 				foreach (var (filename, candidates) in groupedCandidates.OrderBy(t => string.Join(',', t.Key)))
@@ -192,32 +192,32 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					fluentWriter.WriteLine("## " + string.Join(", ", filename));
 
-					// Pushing blocks of translations to string first allows for fancier formatting.
+					// Pushing blocks to string first allows for fancier formatting.
 					var build = "";
 					foreach (var grouping in candidates.GroupBy(t => t.Actor))
 					{
 						if (grouping.Count() == 1)
 						{
 							var candidate = grouping.First();
-							var translationKey = $"{candidate.Actor}-{candidate.Key}";
-							build += $"{translationKey} = {candidate.Translation}\n";
+							var key = $"{candidate.Actor}-{candidate.Key}";
+							build += $"{key} = {candidate.Value}\n";
 							foreach (var node in candidate.Nodes)
-								node.Value.Value = translationKey;
+								node.Value.Value = key;
 						}
 						else
 						{
 							if (build.Length > 1 && build.Substring(build.Length - 2, 2) != "\n\n")
 								build += "\n";
 
-							var translationKey = grouping.Key;
-							build += $"{translationKey} =\n";
+							var key = grouping.Key;
+							build += $"{key} =\n";
 							foreach (var candidate in grouping)
 							{
 								var type = candidate.Key;
-								build += $"   .{type} = {candidate.Translation}\n";
+								build += $"   .{type} = {candidate.Value}\n";
 
 								foreach (var node in candidate.Nodes)
-									node.Value.Value = $"{translationKey}.{type}";
+									node.Value.Value = $"{key}.{type}";
 							}
 
 							build += "\n";
@@ -229,20 +229,20 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			}
 		}
 
-		struct TranslationCandidate
+		struct ExtractionCandidate
 		{
 			public string Filename;
 			public readonly string Actor;
 			public readonly string Key;
-			public readonly string Translation;
+			public readonly string Value;
 			public readonly List<MiniYamlNodeBuilder> Nodes;
 
-			public TranslationCandidate(string actor, string key, string translation, MiniYamlNodeBuilder node)
+			public ExtractionCandidate(string actor, string key, string value, MiniYamlNodeBuilder node)
 			{
 				Filename = null;
 				Actor = actor;
 				Key = key;
-				Translation = translation;
+				Value = value;
 				Nodes = new List<MiniYamlNodeBuilder>() { node };
 			}
 		}
@@ -279,7 +279,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 			return s.ToString();
 		}
 
-		static void ExtractFromActor(MiniYamlNodeBuilder actor, Dictionary<string, string[]> translatables, ref List<TranslationCandidate> translations)
+		static void ExtractFromActor(MiniYamlNodeBuilder actor, Dictionary<string, string[]> traitInfos, ref List<ExtractionCandidate> candidates)
 		{
 			if (actor.Value?.Nodes == null)
 				return;
@@ -291,7 +291,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 				var traitSplit = trait.Key.Split('@');
 				var traitInfo = traitSplit[0];
-				if (!translatables.TryGetValue(traitInfo, out var translatableType) || trait.Value?.Nodes == null)
+				if (!traitInfos.TryGetValue(traitInfo, out var type) || trait.Value?.Nodes == null)
 					continue;
 
 				foreach (var property in trait.Value.Nodes)
@@ -300,14 +300,14 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						continue;
 
 					var propertyType = property.Key.Split('@')[0];
-					if (!translatableType.Contains(propertyType))
+					if (!type.Contains(propertyType))
 						continue;
 
 					var propertyValue = property.Value.Value;
-					if (string.IsNullOrEmpty(propertyValue) || UpdateUtils.IsAlreadyTranslated(propertyValue) || !propertyValue.Any(char.IsLetterOrDigit))
+					if (string.IsNullOrEmpty(propertyValue) || UpdateUtils.IsAlreadyExtracted(propertyValue) || !propertyValue.Any(char.IsLetterOrDigit))
 						continue;
 
-					var translationValue = propertyValue
+					var value = propertyValue
 						.Replace("\\n", "\n    ")
 						.Trim().Trim('\n');
 
@@ -315,12 +315,12 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					var key = traitInfo;
 					if (traitInfo == nameof(Buildable))
 					{
-						translations.Add(new TranslationCandidate(actorName, ToLower(propertyType), translationValue, property));
+						candidates.Add(new ExtractionCandidate(actorName, ToLower(propertyType), value, property));
 						continue;
 					}
 					else if (traitInfo == nameof(Encyclopedia))
 					{
-						translations.Add(new TranslationCandidate(actorName, ToLower(traitInfo), translationValue, property));
+						candidates.Add(new ExtractionCandidate(actorName, ToLower(traitInfo), value, property));
 						continue;
 					}
 					else if (traitInfo == nameof(Tooltip) || traitInfo == nameof(EditorOnlyTooltipInfo)[..^4])
@@ -330,7 +330,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 						else
 							key = propertyType;
 
-						translations.Add(new TranslationCandidate(actorName, ToLower(key), translationValue, property));
+						candidates.Add(new ExtractionCandidate(actorName, ToLower(key), value, property));
 						continue;
 					}
 
@@ -339,7 +339,7 @@ namespace OpenRA.Mods.Common.UtilityCommands
 
 					key += $"-{ToLower(propertyType)}";
 
-					translations.Add(new TranslationCandidate(actorName, key.ToLowerInvariant(), translationValue, property));
+					candidates.Add(new ExtractionCandidate(actorName, key.ToLowerInvariant(), value, property));
 				}
 			}
 		}

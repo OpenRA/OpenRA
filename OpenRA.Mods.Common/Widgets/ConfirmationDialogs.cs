@@ -36,11 +36,11 @@ namespace OpenRA.Mods.Common.Widgets
 			var cancelButton = prompt.GetOrNull<ButtonWidget>("CANCEL_BUTTON");
 			var otherButton = prompt.GetOrNull<ButtonWidget>("OTHER_BUTTON");
 
-			var titleMessage = TranslationProvider.GetString(title, titleArguments);
+			var titleMessage = FluentProvider.GetString(title, titleArguments);
 			prompt.Get<LabelWidget>("PROMPT_TITLE").GetText = () => titleMessage;
 
 			var headerTemplate = prompt.Get<LabelWidget>("PROMPT_TEXT");
-			var textMessage = TranslationProvider.GetString(text, textArguments);
+			var textMessage = FluentProvider.GetString(text, textArguments);
 			var headerLines = textMessage.Split('\n');
 			var headerHeight = 0;
 			foreach (var l in headerLines)
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				if (!string.IsNullOrEmpty(confirmText))
 				{
-					var confirmTextMessage = TranslationProvider.GetString(confirmText);
+					var confirmTextMessage = FluentProvider.GetString(confirmText);
 					confirmButton.GetText = () => confirmTextMessage;
 				}
 			}
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				if (!string.IsNullOrEmpty(cancelText))
 				{
-					var cancelTextMessage = TranslationProvider.GetString(cancelText);
+					var cancelTextMessage = FluentProvider.GetString(cancelText);
 					cancelButton.GetText = () => cancelTextMessage;
 				}
 			}
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 				if (!string.IsNullOrEmpty(otherText))
 				{
-					var otherTextMessage = TranslationProvider.GetString(otherText);
+					var otherTextMessage = FluentProvider.GetString(otherText);
 					otherButton.GetText = () => otherTextMessage;
 				}
 			}
@@ -114,10 +114,10 @@ namespace OpenRA.Mods.Common.Widgets
 			Func<bool> doValidate = null;
 			ButtonWidget acceptButton = null, cancelButton = null;
 
-			var titleMessage = TranslationProvider.GetString(title);
+			var titleMessage = FluentProvider.GetString(title);
 			panel.Get<LabelWidget>("PROMPT_TITLE").GetText = () => titleMessage;
 
-			var promptMessage = TranslationProvider.GetString(prompt);
+			var promptMessage = FluentProvider.GetString(prompt);
 			panel.Get<LabelWidget>("PROMPT_TEXT").GetText = () => promptMessage;
 
 			var input = panel.Get<TextFieldWidget>("INPUT_TEXT");
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.Common.Widgets
 			acceptButton = panel.Get<ButtonWidget>("ACCEPT_BUTTON");
 			if (!string.IsNullOrEmpty(acceptText))
 			{
-				var acceptTextMessage = TranslationProvider.GetString(acceptText);
+				var acceptTextMessage = FluentProvider.GetString(acceptText);
 				acceptButton.GetText = () => acceptTextMessage;
 			}
 
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.Common.Widgets
 			cancelButton = panel.Get<ButtonWidget>("CANCEL_BUTTON");
 			if (!string.IsNullOrEmpty(cancelText))
 			{
-				var cancelTextMessage = TranslationProvider.GetString(cancelText);
+				var cancelTextMessage = FluentProvider.GetString(cancelText);
 				cancelButton.GetText = () => cancelTextMessage;
 			}
 

@@ -30,7 +30,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public SpawnOccupant(Session.Client client)
 		{
 			Color = client.Color;
-			PlayerName = client.IsBot ? TranslationProvider.GetString(client.Name) : client.Name;
+			PlayerName = client.IsBot ? FluentProvider.GetString(client.Name) : client.Name;
 			Team = client.Team;
 			Faction = client.Faction;
 			SpawnPoint = client.SpawnPoint;
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public SpawnOccupant(GameInformation.Player player)
 		{
 			Color = player.Color;
-			PlayerName = player.IsBot ? TranslationProvider.GetString(player.Name) : player.Name;
+			PlayerName = player.IsBot ? FluentProvider.GetString(player.Name) : player.Name;
 			Team = player.Team;
 			Faction = player.FactionId;
 			SpawnPoint = player.SpawnPoint;
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Widgets
 		public SpawnOccupant(GameClient player, bool suppressFaction)
 		{
 			Color = player.Color;
-			PlayerName = player.IsBot ? TranslationProvider.GetString(player.Name) : player.Name;
+			PlayerName = player.IsBot ? FluentProvider.GetString(player.Name) : player.Name;
 			Team = player.Team;
 			Faction = !suppressFaction ? player.Faction : null;
 			SpawnPoint = player.SpawnPoint;

@@ -22,19 +22,19 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	sealed class GameInfoLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string Objectives = "menu-game-info.objectives";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Briefing = "menu-game-info.briefing";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Options = "menu-game-info.options";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Debug = "menu-game-info.debug";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Chat = "menu-game-info.chat";
 
 		readonly World world;
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				if (tabButton != null)
 				{
-					var tabButtonText = TranslationProvider.GetString(label);
+					var tabButtonText = FluentProvider.GetString(label);
 					tabButton.GetText = () => tabButtonText;
 					tabButton.OnClick = () =>
 					{

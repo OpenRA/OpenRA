@@ -25,40 +25,40 @@ using OpenRA.Traits;
 namespace OpenRA
 {
 	[AttributeUsage(AttributeTargets.Field)]
-	public sealed class TranslationReferenceAttribute : Attribute
+	public sealed class FluentReferenceAttribute : Attribute
 	{
 		public readonly bool Optional;
 		public readonly string[] RequiredVariableNames;
 		public readonly LintDictionaryReference DictionaryReference;
 
-		public TranslationReferenceAttribute() { }
+		public FluentReferenceAttribute() { }
 
-		public TranslationReferenceAttribute(params string[] requiredVariableNames)
+		public FluentReferenceAttribute(params string[] requiredVariableNames)
 		{
 			RequiredVariableNames = requiredVariableNames;
 		}
 
-		public TranslationReferenceAttribute(LintDictionaryReference dictionaryReference = LintDictionaryReference.None)
+		public FluentReferenceAttribute(LintDictionaryReference dictionaryReference = LintDictionaryReference.None)
 		{
 			DictionaryReference = dictionaryReference;
 		}
 
-		public TranslationReferenceAttribute(bool optional)
+		public FluentReferenceAttribute(bool optional)
 		{
 			Optional = optional;
 		}
 	}
 
-	public class Translation
+	public class FluentBundle
 	{
-		readonly FluentBundle bundle;
+		readonly Linguini.Bundle.FluentBundle bundle;
 
-		public Translation(string language, string[] translations, IReadOnlyFileSystem fileSystem)
-			: this(language, translations, fileSystem, error => Log.Write("debug", error.Message)) { }
+		public FluentBundle(string language, string[] paths, IReadOnlyFileSystem fileSystem)
+			: this(language, paths, fileSystem, error => Log.Write("debug", error.Message)) { }
 
-		public Translation(string language, string[] translations, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
+		public FluentBundle(string language, string[] paths, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
 		{
-			if (translations == null || translations.Length == 0)
+			if (paths == null || paths.Length == 0)
 				return;
 
 			bundle = LinguiniBuilder.Builder()
@@ -68,10 +68,10 @@ namespace OpenRA
 				.UseConcurrent()
 				.UncheckedBuild();
 
-			ParseTranslations(language, translations, fileSystem, onError);
+			Load(language, paths, fileSystem, onError);
 		}
 
-		public Translation(string language, string text, Action<ParseError> onError)
+		public FluentBundle(string language, string text, Action<ParseError> onError)
 		{
 			var parser = new LinguiniParser(text);
 			var resource = parser.Parse();
@@ -88,16 +88,16 @@ namespace OpenRA
 			bundle.AddResourceOverriding(resource);
 		}
 
-		void ParseTranslations(string language, string[] translations, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
+		void Load(string language, string[] paths, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
 		{
 			// Always load english strings to provide a fallback for missing translations.
 			// It is important to load the english files first so the chosen language's files can override them.
-			var paths = translations.Where(t => t.EndsWith("en.ftl", StringComparison.Ordinal)).ToList();
-			foreach (var t in translations)
+			var resolvedPaths = paths.Where(t => t.EndsWith("en.ftl", StringComparison.Ordinal)).ToList();
+			foreach (var t in paths)
 				if (t.EndsWith($"{language}.ftl", StringComparison.Ordinal))
-					paths.Add(t);
+					resolvedPaths.Add(t);
 
-			foreach (var path in paths.Distinct())
+			foreach (var path in resolvedPaths.Distinct())
 			{
 				var stream = fileSystem.Open(path);
 				using (var reader = new StreamReader(stream))
@@ -140,13 +140,13 @@ namespace OpenRA
 
 				var result = bundle.TryGetAttrMessage(key, fluentArguments, out var errors, out value);
 				foreach (var error in errors)
-					Log.Write("debug", $"Translation of {key}: {error}");
+					Log.Write("debug", $"FluentBundle of {key}: {error}");
 
 				return result;
 			}
 			catch (Exception)
 			{
-				Log.Write("debug", $"Failed translation: {key}");
+				Log.Write("debug", $"FluentBundle of {key}: threw exception");
 
 				value = null;
 				return false;

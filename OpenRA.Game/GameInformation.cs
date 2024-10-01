@@ -19,7 +19,7 @@ namespace OpenRA
 {
 	public class GameInformation
 	{
-		[TranslationReference("name", "number")]
+		[FluentReference("name", "number")]
 		const string EnumeratedBotName = "enumerated-bot-name";
 
 		public string Mod;
@@ -152,9 +152,9 @@ namespace OpenRA
 			if (player.IsBot)
 			{
 				var number = Players.Where(p => p.BotType == player.BotType).ToList().IndexOf(player) + 1;
-				return TranslationProvider.GetString(EnumeratedBotName,
-					Translation.Arguments(
-						"name", TranslationProvider.GetString(player.Name),
+				return FluentProvider.GetString(EnumeratedBotName,
+					FluentBundle.Arguments(
+						"name", FluentProvider.GetString(player.Name),
 						"number", number));
 			}
 

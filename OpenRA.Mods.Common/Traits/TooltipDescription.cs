@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Traits
 	public class TooltipDescriptionInfo : ConditionalTraitInfo
 	{
 		[FieldLoader.Require]
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Text shown in tooltip.")]
 		public readonly string Description;
 
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			this.self = self;
-			TooltipText = TranslationProvider.GetString(info.Description);
+			TooltipText = FluentProvider.GetString(info.Description);
 		}
 
 		public bool IsTooltipVisible(Player forPlayer)

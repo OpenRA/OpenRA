@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Voice line to play when repairs are started.")]
 		public readonly string RepairingNotification = null;
 
-		[TranslationReference(optional: true)]
+		[FluentReference(optional: true)]
 		[Desc("Transient text message to display when repairs are started.")]
 		public readonly string RepairingTextNotification = null;
 

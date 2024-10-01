@@ -25,11 +25,11 @@ namespace OpenRA.Mods.Common.Traits
 	{
 		public readonly string StartingUnitsClass = "none";
 
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Descriptive label for the starting units option in the lobby.")]
 		public readonly string DropdownLabel = "dropdown-starting-units.label";
 
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Tooltip description for the starting units option in the lobby.")]
 		public readonly string DropdownDescription = "dropdown-starting-units.description";
 

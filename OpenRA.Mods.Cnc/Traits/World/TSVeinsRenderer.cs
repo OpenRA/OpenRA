@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		public readonly string Palette = TileSet.TerrainPaletteInternalName;
 
 		[FieldLoader.Require]
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Resource name used by tooltips.")]
 		public readonly string Name = null;
 
@@ -371,7 +371,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		string IResourceRenderer.GetRenderedResourceTooltip(CPos cell)
 		{
 			if (renderIndices[cell] != null || borders[cell] != Adjacency.None)
-				return TranslationProvider.GetString(info.Name);
+				return FluentProvider.GetString(info.Name);
 
 			return null;
 		}

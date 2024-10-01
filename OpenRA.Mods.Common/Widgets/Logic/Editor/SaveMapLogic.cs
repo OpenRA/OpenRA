@@ -44,37 +44,37 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 		}
 
-		[TranslationReference]
+		[FluentReference]
 		const string SaveMapFailedTitle = "dialog-save-map-failed.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string SaveMapFailedPrompt = "dialog-save-map-failed.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string SaveMapFailedConfirm = "dialog-save-map-failed.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Unpacked = "label-unpacked-map";
 
-		[TranslationReference]
+		[FluentReference]
 		const string OverwriteMapFailedTitle = "dialog-overwrite-map-failed.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string OverwriteMapFailedPrompt = "dialog-overwrite-map-failed.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string OverwriteMapFailedConfirm = "dialog-overwrite-map-failed.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string OverwriteMapOutsideEditTitle = "dialog-overwrite-map-outside-edit.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string OverwriteMapOutsideEditPrompt = "dialog-overwrite-map-outside-edit.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string SaveMapMapOutsideConfirm = "dialog-overwrite-map-outside-edit.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string SaveCurrentMap = "notification-save-current-map";
 
 		[ObjectCreator.UseCtor]
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var fileTypes = new Dictionary<MapFileType, MapFileTypeInfo>()
 			{
 				{ MapFileType.OraMap, new MapFileTypeInfo { Extension = ".oramap", UiLabel = ".oramap" } },
-				{ MapFileType.Unpacked, new MapFileTypeInfo { Extension = "", UiLabel = $"({TranslationProvider.GetString(Unpacked)})" } }
+				{ MapFileType.Unpacked, new MapFileTypeInfo { Extension = "", UiLabel = $"({FluentProvider.GetString(Unpacked)})" } }
 			};
 
 			var typeDropdown = widget.Get<DropDownButtonWidget>("TYPE_DROPDOWN");

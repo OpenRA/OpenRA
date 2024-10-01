@@ -23,16 +23,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MainMenuLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string LoadingNews = "label-loading-news";
 
-		[TranslationReference("message")]
+		[FluentReference("message")]
 		const string NewsRetrivalFailed = "label-news-retrieval-failed";
 
-		[TranslationReference("message")]
+		[FluentReference("message")]
 		const string NewsParsingFailed = "label-news-parsing-failed";
 
-		[TranslationReference("author", "datetime")]
+		[FluentReference("author", "datetime")]
 		const string AuthorDateTime = "label-author-datetime";
 
 		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, StartupPrompts, None }
@@ -234,7 +234,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				newsPanel.RemoveChild(newsTemplate);
 
 				newsStatus = newsPanel.Get<LabelWidget>("NEWS_STATUS");
-				SetNewsStatus(TranslationProvider.GetString(LoadingNews));
+				SetNewsStatus(FluentProvider.GetString(LoadingNews));
 			}
 
 			Game.OnRemoteDirectConnect += OnRemoteDirectConnect;
@@ -346,7 +346,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							catch (Exception e)
 							{
 								Game.RunAfterTick(() => // run on the main thread
-									SetNewsStatus(TranslationProvider.GetString(NewsRetrivalFailed, Translation.Arguments("message", e.Message))));
+									SetNewsStatus(FluentProvider.GetString(NewsRetrivalFailed, FluentBundle.Arguments("message", e.Message))));
 							}
 						});
 					}
@@ -417,7 +417,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				SetNewsStatus(TranslationProvider.GetString(NewsParsingFailed, Translation.Arguments("message", ex.Message)));
+				SetNewsStatus(FluentProvider.GetString(NewsParsingFailed, FluentBundle.Arguments("message", ex.Message)));
 			}
 
 			return null;
@@ -438,7 +438,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				titleLabel.GetText = () => item.Title;
 
 				var authorDateTimeLabel = newsItem.Get<LabelWidget>("AUTHOR_DATETIME");
-				var authorDateTime = TranslationProvider.GetString(AuthorDateTime, Translation.Arguments(
+				var authorDateTime = FluentProvider.GetString(AuthorDateTime, FluentBundle.Arguments(
 					"author", item.Author,
 					"datetime", item.DateTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)));
 

@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Cnc.Traits
 		[Desc("Notification to play when a target is infiltrated.")]
 		public readonly string Notification = null;
 
-		[TranslationReference(optional: true)]
+		[FluentReference(optional: true)]
 		[Desc("Text notification to display when a target is infiltrated.")]
 		public readonly string TextNotification = null;
 

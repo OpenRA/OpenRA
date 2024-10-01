@@ -27,10 +27,10 @@ label-players = {$player ->
 		[TestCase(TestName = "Fluent Plural Terms")]
 		public void TestOne()
 		{
-			var translation = new Translation("en", pluralForms, e => Console.WriteLine(e.Message));
-			var label = translation.GetString("label-players", Translation.Arguments("player", 1));
+			var bundle = new FluentBundle("en", pluralForms, e => Console.WriteLine(e.Message));
+			var label = bundle.GetString("label-players", FluentBundle.Arguments("player", 1));
 			Assert.That("One player", Is.EqualTo(label));
-			label = translation.GetString("label-players", Translation.Arguments("player", 2));
+			label = bundle.GetString("label-players", FluentBundle.Arguments("player", 2));
 			Assert.That("2 players", Is.EqualTo(label));
 		}
 	}

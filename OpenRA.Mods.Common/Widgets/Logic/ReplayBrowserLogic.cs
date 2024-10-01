@@ -26,82 +26,82 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ReplayBrowserLogic : ChromeLogic
 	{
-		[TranslationReference("time")]
+		[FluentReference("time")]
 		const string Duration = "label-duration";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Singleplayer = "options-replay-type.singleplayer";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Multiplayer = "options-replay-type.multiplayer";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Today = "options-replay-date.today";
 
-		[TranslationReference]
+		[FluentReference]
 		const string LastWeek = "options-replay-date.last-week";
 
-		[TranslationReference]
+		[FluentReference]
 		const string LastFortnight = "options-replay-date.last-fortnight";
 
-		[TranslationReference]
+		[FluentReference]
 		const string LastMonth = "options-replay-date.last-month";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ReplayDurationVeryShort = "options-replay-duration.very-short";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ReplayDurationShort = "options-replay-duration.short";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ReplayDurationMedium = "options-replay-duration.medium";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ReplayDurationLong = "options-replay-duration.long";
 
-		[TranslationReference]
+		[FluentReference]
 		const string RenameReplayTitle = "dialog-rename-replay.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string RenameReplayPrompt = "dialog-rename-replay.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string RenameReplayAccept = "dialog-rename-replay.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string DeleteReplayTitle = "dialog-delete-replay.title";
 
-		[TranslationReference("replay")]
+		[FluentReference("replay")]
 		const string DeleteReplayPrompt = "dialog-delete-replay.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string DeleteReplayAccept = "dialog-delete-replay.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string DeleteAllReplaysTitle = "dialog-delete-all-replays.title";
 
-		[TranslationReference("count")]
+		[FluentReference("count")]
 		const string DeleteAllReplaysPrompt = "dialog-delete-all-replays.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string DeleteAllReplaysAccept = "dialog-delete-all-replays.confirm";
 
-		[TranslationReference("file")]
+		[FluentReference("file")]
 		const string ReplayDeletionFailed = "notification-replay-deletion-failed";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Players = "label-players";
 
-		[TranslationReference("team")]
+		[FluentReference("team")]
 		const string TeamNumber = "label-team-name";
 
-		[TranslationReference]
+		[FluentReference]
 		const string NoTeam = "label-no-team";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Victory = "options-winstate.victory";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Defeat = "options-winstate.defeat";
 
 		static Filter filter = new();
@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 
 			var replayDuration = new CachedTransform<ReplayMetadata, string>(r =>
-				TranslationProvider.GetString(Duration, Translation.Arguments("time", WidgetUtils.FormatTimeSeconds((int)selectedReplay.GameInfo.Duration.TotalSeconds))));
+				FluentProvider.GetString(Duration, FluentBundle.Arguments("time", WidgetUtils.FormatTimeSeconds((int)selectedReplay.GameInfo.Duration.TotalSeconds))));
 			panel.Get<LabelWidget>("DURATION").GetText = () => replayDuration.Update(selectedReplay);
 
 			SetupFilters();
@@ -234,8 +234,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var options = new List<(GameType GameType, string Text)>
 					{
 						(GameType.Any, ddb.GetText()),
-						(GameType.Singleplayer, TranslationProvider.GetString(Singleplayer)),
-						(GameType.Multiplayer, TranslationProvider.GetString(Multiplayer))
+						(GameType.Singleplayer, FluentProvider.GetString(Singleplayer)),
+						(GameType.Multiplayer, FluentProvider.GetString(Multiplayer))
 					};
 
 					var lookup = options.ToDictionary(kvp => kvp.GameType, kvp => kvp.Text);
@@ -267,10 +267,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var options = new List<(DateType DateType, string Text)>
 					{
 						(DateType.Any, ddb.GetText()),
-						(DateType.Today, TranslationProvider.GetString(Today)),
-						(DateType.LastWeek, TranslationProvider.GetString(LastWeek)),
-						(DateType.LastFortnight, TranslationProvider.GetString(LastFortnight)),
-						(DateType.LastMonth, TranslationProvider.GetString(LastMonth))
+						(DateType.Today, FluentProvider.GetString(Today)),
+						(DateType.LastWeek, FluentProvider.GetString(LastWeek)),
+						(DateType.LastFortnight, FluentProvider.GetString(LastFortnight)),
+						(DateType.LastMonth, FluentProvider.GetString(LastMonth))
 					};
 
 					var lookup = options.ToDictionary(kvp => kvp.DateType, kvp => kvp.Text);
@@ -303,10 +303,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var options = new List<(DurationType DurationType, string Text)>
 					{
 						(DurationType.Any, ddb.GetText()),
-						(DurationType.VeryShort, TranslationProvider.GetString(ReplayDurationVeryShort)),
-						(DurationType.Short, TranslationProvider.GetString(ReplayDurationShort)),
-						(DurationType.Medium, TranslationProvider.GetString(ReplayDurationMedium)),
-						(DurationType.Long, TranslationProvider.GetString(ReplayDurationLong))
+						(DurationType.VeryShort, FluentProvider.GetString(ReplayDurationVeryShort)),
+						(DurationType.Short, FluentProvider.GetString(ReplayDurationShort)),
+						(DurationType.Medium, FluentProvider.GetString(ReplayDurationMedium)),
+						(DurationType.Long, FluentProvider.GetString(ReplayDurationLong))
 					};
 
 					var lookup = options.ToDictionary(kvp => kvp.DurationType, kvp => kvp.Text);
@@ -340,8 +340,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					var options = new List<(WinState WinState, string Text)>
 					{
 						(WinState.Undefined, ddb.GetText()),
-						(WinState.Lost, TranslationProvider.GetString(Defeat)),
-						(WinState.Won, TranslationProvider.GetString(Victory))
+						(WinState.Lost, FluentProvider.GetString(Defeat)),
+						(WinState.Won, FluentProvider.GetString(Victory))
 					};
 
 					var lookup = options.ToDictionary(kvp => kvp.WinState, kvp => kvp.Text);
@@ -446,7 +446,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					options.Insert(0, null); // no filter
 
 					var anyText = ddb.GetText();
-					ddb.GetText = () => string.IsNullOrEmpty(filter.Faction) ? anyText : TranslationProvider.GetString(filter.Faction);
+					ddb.GetText = () => string.IsNullOrEmpty(filter.Faction) ? anyText : FluentProvider.GetString(filter.Faction);
 					ddb.OnMouseDown = _ =>
 					{
 						ScrollItemWidget SetupItem(string option, ScrollItemWidget tpl)
@@ -455,7 +455,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								tpl,
 								() => string.Equals(filter.Faction, option, StringComparison.CurrentCultureIgnoreCase),
 								() => { filter.Faction = option; ApplyFilter(); });
-							item.Get<LabelWidget>("LABEL").GetText = () => option != null ? TranslationProvider.GetString(option) : anyText;
+							item.Get<LabelWidget>("LABEL").GetText = () => option != null ? FluentProvider.GetString(option) : anyText;
 							return item;
 						}
 
@@ -507,7 +507,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: DeleteReplayTitle,
 					text: DeleteReplayPrompt,
-					textArguments: Translation.Arguments("replay", Path.GetFileNameWithoutExtension(r.FilePath)),
+					textArguments: FluentBundle.Arguments("replay", Path.GetFileNameWithoutExtension(r.FilePath)),
 					onConfirm: () =>
 					{
 						DeleteReplay(r);
@@ -545,7 +545,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: DeleteAllReplaysTitle,
 					text: DeleteAllReplaysPrompt,
-					textArguments: Translation.Arguments("count", list.Count),
+					textArguments: FluentBundle.Arguments("count", list.Count),
 					onConfirm: () =>
 					{
 						foreach (var replayMetadata in list)
@@ -584,7 +584,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				TextNotificationsManager.Debug(TranslationProvider.GetString(ReplayDeletionFailed, Translation.Arguments("file", replay.FilePath)));
+				TextNotificationsManager.Debug(FluentProvider.GetString(ReplayDeletionFailed, FluentBundle.Arguments("file", replay.FilePath)));
 				Log.Write("debug", ex.ToString());
 				return;
 			}
@@ -724,9 +724,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var noTeams = players.Count == 1;
 				foreach (var p in players)
 				{
-					var label = noTeams ? TranslationProvider.GetString(Players) : p.Key > 0
-						? TranslationProvider.GetString(TeamNumber, Translation.Arguments("team", p.Key))
-						: TranslationProvider.GetString(NoTeam);
+					var label = noTeams ? FluentProvider.GetString(Players) : p.Key > 0
+						? FluentProvider.GetString(TeamNumber, FluentBundle.Arguments("team", p.Key))
+						: FluentProvider.GetString(NoTeam);
 
 					teams.Add(label, p);
 				}

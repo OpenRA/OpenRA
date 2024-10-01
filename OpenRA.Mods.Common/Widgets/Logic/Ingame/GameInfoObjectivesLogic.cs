@@ -18,13 +18,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	sealed class GameInfoObjectivesLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string InProgress = "label-mission-in-progress";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Accomplished = "label-mission-accomplished";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Failed = "label-mission-failed";
 
 		readonly ContainerWidget template;
@@ -51,9 +51,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var missionStatus = widget.Get<LabelWidget>("MISSION_STATUS");
-			var inProgress = TranslationProvider.GetString(InProgress);
-			var accomplished = TranslationProvider.GetString(Accomplished);
-			var failed = TranslationProvider.GetString(Failed);
+			var inProgress = FluentProvider.GetString(InProgress);
+			var accomplished = FluentProvider.GetString(Accomplished);
+			var failed = FluentProvider.GetString(Failed);
 			missionStatus.GetText = () => player.WinState == WinState.Undefined ? inProgress :
 				player.WinState == WinState.Won ? accomplished : failed;
 			missionStatus.GetColor = () => player.WinState == WinState.Undefined ? Color.White :

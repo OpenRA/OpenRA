@@ -177,8 +177,8 @@ namespace OpenRA.Mods.Common.Traits
 			Key = key;
 			TotalTicks = info.ChargeInterval;
 			remainingSubTicks = info.StartFullyCharged ? 0 : TotalTicks * 100;
-			Name = info.Name == null ? string.Empty : TranslationProvider.GetString(info.Name);
-			Description = info.Description == null ? string.Empty : TranslationProvider.GetString(info.Description);
+			Name = info.Name == null ? string.Empty : FluentProvider.GetString(info.Name);
+			Description = info.Description == null ? string.Empty : FluentProvider.GetString(info.Description);
 
 			Manager = manager;
 		}

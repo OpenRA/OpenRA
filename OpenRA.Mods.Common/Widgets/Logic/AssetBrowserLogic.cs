@@ -35,10 +35,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			Unknown = 16
 		}
 
-		[TranslationReference("length")]
+		[FluentReference("length")]
 		const string LengthInSeconds = "label-length-in-seconds";
 
-		[TranslationReference]
+		[FluentReference]
 		const string AllPackages = "label-all-packages";
 
 		readonly string[] allowedExtensions;
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.modData = modData;
 			panel = widget;
 
-			allPackages = TranslationProvider.GetString(AllPackages);
+			allPackages = FluentProvider.GetString(AllPackages);
 
 			var colorPickerPalettes = world.WorldActor.TraitsImplementing<IProvidesAssetBrowserColorPickerPalettes>()
 				.SelectMany(p => p.ColorPickerPaletteNames)
@@ -238,7 +238,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (frameText != null)
 			{
 				var soundLength = new CachedTransform<double, string>(p =>
-					TranslationProvider.GetString(LengthInSeconds, Translation.Arguments("length", Math.Round(p, 3))));
+					FluentProvider.GetString(LengthInSeconds, FluentBundle.Arguments("length", Math.Round(p, 3))));
 
 				frameText.GetText = () =>
 				{

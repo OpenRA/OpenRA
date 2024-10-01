@@ -20,22 +20,22 @@ namespace OpenRA.Network
 	{
 		public const int ChatMessageMaxLength = 2500;
 
-		[TranslationReference("player")]
+		[FluentReference("player")]
 		const string Joined = "notification-joined";
 
-		[TranslationReference("player")]
+		[FluentReference("player")]
 		const string Left = "notification-lobby-disconnected";
 
-		[TranslationReference]
+		[FluentReference]
 		const string GameStarted = "notification-game-has-started";
 
-		[TranslationReference]
+		[FluentReference]
 		const string GameSaved = "notification-game-saved";
 
-		[TranslationReference("player")]
+		[FluentReference("player")]
 		const string GamePaused = "notification-game-paused";
 
-		[TranslationReference("player")]
+		[FluentReference("player")]
 		const string GameUnpaused = "notification-game-unpaused";
 
 		public static int? KickVoteTarget { get; internal set; }
@@ -56,8 +56,8 @@ namespace OpenRA.Network
 					TextNotificationsManager.AddSystemLine(order.TargetString);
 					break;
 
-				// Client side translated server message
-				case "LocalizedMessage":
+				// Client side resolved server message
+				case "FluentMessage":
 				{
 					if (string.IsNullOrEmpty(order.TargetString))
 						break;
@@ -65,7 +65,7 @@ namespace OpenRA.Network
 					var yaml = MiniYaml.FromString(order.TargetString, order.OrderString);
 					foreach (var node in yaml)
 					{
-						var localizedMessage = new LocalizedMessage(node.Value);
+						var localizedMessage = new FluentMessage(node.Value);
 						if (localizedMessage.Key == Joined)
 							TextNotificationsManager.AddPlayerJoinedLine(localizedMessage.Key, localizedMessage.Arguments);
 						else if (localizedMessage.Key == Left)
@@ -231,7 +231,7 @@ namespace OpenRA.Network
 							break;
 
 						if (orderManager.World.Paused != pause && world != null && world.LobbyInfo.NonBotClients.Count() > 1)
-							TextNotificationsManager.AddSystemLine(pause ? GamePaused : GameUnpaused, Translation.Arguments("player", client.Name));
+							TextNotificationsManager.AddSystemLine(pause ? GamePaused : GameUnpaused, FluentBundle.Arguments("player", client.Name));
 
 						orderManager.World.Paused = pause;
 						orderManager.World.PredictedPaused = pause;

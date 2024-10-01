@@ -18,11 +18,11 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Controls the build radius checkboxes in the lobby options.")]
 	public class MapBuildRadiusInfo : TraitInfo, ILobbyOptions
 	{
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Descriptive label for the ally build radius checkbox in the lobby.")]
 		public readonly string AllyBuildRadiusCheckboxLabel = "checkbox-ally-build-radius.label";
 
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Tooltip description for the ally build radius checkbox in the lobby.")]
 		public readonly string AllyBuildRadiusCheckboxDescription = "checkbox-ally-build-radius.description";
 
@@ -38,11 +38,11 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Display order for the ally build radius checkbox in the lobby.")]
 		public readonly int AllyBuildRadiusCheckboxDisplayOrder = 0;
 
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Tooltip description for the build radius checkbox in the lobby.")]
 		public readonly string BuildRadiusCheckboxLabel = "checkbox-build-radius.label";
 
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Tooltip description for the build radius checkbox in the lobby.")]
 		public readonly string BuildRadiusCheckboxDescription = "checkbox-build-radius.description";
 

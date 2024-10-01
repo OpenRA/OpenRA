@@ -18,16 +18,16 @@ namespace OpenRA.Mods.Common.Server
 {
 	public class PlayerPinger : ServerTrait, ITick
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string PlayerDropped = "notification-player-dropped";
 
-		[TranslationReference("player")]
+		[FluentReference("player")]
 		const string ConnectionProblems = "notification-connection-problems";
 
-		[TranslationReference("player")]
+		[FluentReference("player")]
 		const string Timeout = "notification-timeout-dropped";
 
-		[TranslationReference("player", "timeout")]
+		[FluentReference("player", "timeout")]
 		const string TimeoutIn = "notification-timeout-dropped-in";
 
 		const int PingInterval = 5000; // Ping every 5 seconds
@@ -69,13 +69,13 @@ namespace OpenRA.Mods.Common.Server
 						{
 							if (!c.TimeoutMessageShown && c.TimeSinceLastResponse > PingInterval * 2)
 							{
-								server.SendLocalizedMessage(ConnectionProblems, Translation.Arguments("player", client.Name));
+								server.SendLocalizedMessage(ConnectionProblems, FluentBundle.Arguments("player", client.Name));
 								c.TimeoutMessageShown = true;
 							}
 						}
 						else
 						{
-							server.SendLocalizedMessage(Timeout, Translation.Arguments("player", client.Name));
+							server.SendLocalizedMessage(Timeout, FluentBundle.Arguments("player", client.Name));
 							server.DropClient(c);
 						}
 					}

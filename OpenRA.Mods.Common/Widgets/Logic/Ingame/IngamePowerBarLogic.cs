@@ -18,10 +18,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class IngamePowerBarLogic : ChromeLogic
 	{
-		[TranslationReference("usage", "capacity")]
+		[FluentReference("usage", "capacity")]
 		const string PowerUsage = "label-power-usage";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Infinite = "label-infinite-power";
 
 		[ObjectCreator.UseCtor]
@@ -36,12 +36,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			powerBar.TooltipTextCached = new CachedTransform<(float Current, float Capacity), string>(usage =>
 			{
 				var capacity = developerMode.UnlimitedPower ?
-					TranslationProvider.GetString(Infinite) :
+					FluentProvider.GetString(Infinite) :
 					powerManager.PowerProvided.ToString(NumberFormatInfo.CurrentInfo);
 
-				return TranslationProvider.GetString(
+				return FluentProvider.GetString(
 					PowerUsage,
-					Translation.Arguments("usage", usage.Current, "capacity", capacity));
+					FluentBundle.Arguments("usage", usage.Current, "capacity", capacity));
 			});
 
 			powerBar.GetBarColor = () =>

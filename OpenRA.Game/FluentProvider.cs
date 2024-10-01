@@ -14,20 +14,20 @@ using OpenRA.FileSystem;
 
 namespace OpenRA
 {
-	public static class TranslationProvider
+	public static class FluentProvider
 	{
 		// Ensure thread-safety.
 		static readonly object SyncObject = new();
-		static Translation modTranslation;
-		static Translation mapTranslation;
+		static FluentBundle modFluentBundle;
+		static FluentBundle mapFluentBundle;
 
 		public static void Initialize(ModData modData, IReadOnlyFileSystem fileSystem)
 		{
 			lock (SyncObject)
 			{
-				modTranslation = new Translation(Game.Settings.Player.Language, modData.Manifest.Translations, fileSystem);
-				mapTranslation = fileSystem is Map map && map.TranslationDefinitions != null
-					? new Translation(Game.Settings.Player.Language, FieldLoader.GetValue<string[]>("value", map.TranslationDefinitions.Value), fileSystem)
+				modFluentBundle = new FluentBundle(Game.Settings.Player.Language, modData.Manifest.Translations, fileSystem);
+				mapFluentBundle = fileSystem is Map map && map.TranslationDefinitions != null
+					? new FluentBundle(Game.Settings.Player.Language, FieldLoader.GetValue<string[]>("value", map.TranslationDefinitions.Value), fileSystem)
 					: null;
 			}
 		}
@@ -36,13 +36,13 @@ namespace OpenRA
 		{
 			lock (SyncObject)
 			{
-				// By prioritizing mod-level translations we prevent maps from overwriting translation keys. We do not want to
+				// By prioritizing mod-level fluent bundles we prevent maps from overwriting string keys. We do not want to
 				// allow maps to change the UI nor any other strings not exposed to the map.
-				if (modTranslation.TryGetString(key, out var message, args))
+				if (modFluentBundle.TryGetString(key, out var message, args))
 					return message;
 
-				if (mapTranslation != null)
-					return mapTranslation.GetString(key, args);
+				if (mapFluentBundle != null)
+					return mapFluentBundle.GetString(key, args);
 
 				return key;
 			}
@@ -52,12 +52,12 @@ namespace OpenRA
 		{
 			lock (SyncObject)
 			{
-				// By prioritizing mod-level translations we prevent maps from overwriting translation keys. We do not want to
+				// By prioritizing mod-level bundle we prevent maps from overwriting string keys. We do not want to
 				// allow maps to change the UI nor any other strings not exposed to the map.
-				if (modTranslation.TryGetString(key, out message, args))
+				if (modFluentBundle.TryGetString(key, out message, args))
 					return true;
 
-				if (mapTranslation != null && mapTranslation.TryGetString(key, out message, args))
+				if (mapFluentBundle != null && mapFluentBundle.TryGetString(key, out message, args))
 					return true;
 
 				return false;
@@ -69,7 +69,7 @@ namespace OpenRA
 		{
 			lock (SyncObject)
 			{
-				return modTranslation.TryGetString(key, out message, args);
+				return modFluentBundle.TryGetString(key, out message, args);
 			}
 		}
 	}
