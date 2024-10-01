@@ -28,6 +28,7 @@ AttackCooldown =
 }
 -- Armor/vehicle production
 ArmorProducer = {}
+ArmorProducer.Player = Player.GetPlayer("Nod")
 ArmorProducer.Cooldown = AttackCooldown[Difficulty]
 -- kind of mimics what the original mission sends at you
 ArmorProducer.ModelGroups = {
@@ -37,9 +38,11 @@ ArmorProducer.ModelGroups = {
 }
 ArmorProducer.AttackPaths = AttackPaths
 ArmorProducer.AttackGrp = {}
+ArmorProducer.StructureTypes = {"afld", "weap"}
 
 -- Infantry production
 InfProducer = {}
+InfProducer.Player = Player.GetPlayer("Nod")
 InfProducer.Cooldown = AttackCooldown[Difficulty]
 -- kind of mimics what the original mission sends at you
 InfProducer.ModelGroups = {
@@ -48,6 +51,7 @@ InfProducer.ModelGroups = {
 }
 InfProducer.AttackPaths = AttackPaths
 InfProducer.AttackGrp = {}
+InfProducer.StructureTypes = {"hand", "pyle"}
 
 -- Build queue for structures
 CyardBuildQueue = {}
@@ -135,28 +139,43 @@ SendUnits = function(units, path)
 	end)
 end
 
+ProduceUnit = function(prodParms)
+
+	local structures = prodParms.Player.GetActorsByTypes(prodParms.StructureTypes)
+	for structure in structures do
+		if not structure.IsDead then
+			-- Try to build something
+			local timerInterval = ProduceUnitHelper(prodParms)
+			if timerInterval then
+				-- Rearm our timer
+				Trigger.AfterDelay(timerInterval, function()
+					ProduceUnit(prodParms)
+				end)
+			end
+			return
+		end
+	end
+	-- No structures to build infantry; try again later
+	Trigger.AfterDelay(DateTime.Seconds(10), function()
+		ProduceInfantry(prodParms)
+	end)
+end
+
 -- Build infantry or vehicles/armour
-ProduceUnit = function(factory, prodParms)
+ProduceUnitHelper = function(factory, prodParms)
 
 	local needHarvester = #Nod.GetActorsByType("harv") == 0 or BuildingHarvester
-	if factory.IsDead or factory.Owner ~= Nod then
-		-- Lost this structure, stop
-		return
-	elseif (factory.Type == 'hand' or factory.Type == 'pyle') and
+	if (factory.Type == 'hand' or factory.Type == 'pyle') and
 		BankBalance(Nod) <= Actor.Cost('harv')-1 and needHarvester then
 		-- Infantry on hold while we replace harvester
 		-- Assumes we own an afld or weap
-		Trigger.AfterDelay(DateTime.Seconds(10), function()
-			ProduceUnit(factory, prodParms)
-		end)
-		return
+		return DateTime.Seconds(10)
 	elseif (factory.Type == 'afld' or factory.Type == 'weap') and
 		needHarvester and not BuildingHarvester then
 		-- Build a harvester first
 		-- Assumes we own at most one vehicle producing structure
 		--if not BuildingHarvester then
-		ProduceHarvester(factory, prodParms)
-		return
+		return ProduceHarvester(factory, prodParms)
 	end
 
 	-- Build a group to attack together
@@ -179,6 +198,7 @@ ProduceUnit = function(factory, prodParms)
 		s = s .. ' ' .. actor
 	end
 
+	local timerInterval
 	if #needUnits > 0 then
 		-- Continue building the group
 		local toBuild = { Utils.Random(needUnits) }
@@ -189,11 +209,13 @@ ProduceUnit = function(factory, prodParms)
 			for _,v in ipairs(unit) do
 				table.insert(prodParms.AttackGrp, v)
 			end
-			local delay = Utils.RandomInteger(DateTime.Seconds(12), DateTime.Seconds(17))
-			Trigger.AfterDelay(delay, function()
-				ProduceUnit(factory, prodParms)
+			-- Continue building
+			Trigger.AfterDelay(DateTime.Seconds(5), function()
+				ProduceUnit(prodParms)
 			end)
 		end)
+		-- Stop our timer until Build returns
+		timerInterval = nil
 	else
 		-- Group ready
 		local path = Utils.Random(prodParms.AttackPaths)
@@ -201,14 +223,13 @@ ProduceUnit = function(factory, prodParms)
 		SendUnits(prodParms.AttackGrp, path)
 		prodParms.AttackGrp = {}
 		prodParms.ModelGroup = nil
-		Trigger.AfterDelay(prodParms.Cooldown, function()
-			ProduceUnit(factory, prodParms)
-		end)
+		timerInterval = prodParms.Cooldown
 		s = s .. '; Attack!'
 	end
 
 	Media.Debug(s)
 	print(s)
+	return timerInterval
 end
 
 ProduceHarvester = function(factory, prodParms)
@@ -216,9 +237,7 @@ ProduceHarvester = function(factory, prodParms)
 	if BankBalance(Nod) < Actor.Cost(harv_type) then
 		-- Try again later
 		Media.Debug(string.format('ProduceHarvester: Have $%d, need $%d', BankBalance(Nod), Actor.Cost(harv_type)))
-		Trigger.AfterDelay(DateTime.Seconds(5), function()
-			ProduceUnit(factory, prodParms)
-		end)
+		return DateTime.Seconds(5)
 	else
 		BuildingHarvester = true
 		factory.Build({ harv_type }, function(units)
@@ -235,9 +254,11 @@ ProduceHarvester = function(factory, prodParms)
 			end
 			-- Continue building armour/vehicles
 			Trigger.AfterDelay(DateTime.Seconds(5), function()
-				ProduceUnit(factory, prodParms)
+				ProduceUnit(prodParms)
 			end)
 		end)
+		-- Stop our timer until Build returns
+		return nil
 	end
 end
 

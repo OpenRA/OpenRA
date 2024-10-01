@@ -38,19 +38,9 @@ Base = {
 		end
 		-- NOTE If newly built, it enters the world on the next tick
 		local type = structure.Type
-		if type == 'hand' or type == 'pyle' then
-			Trigger.AfterDelay(AttackCooldown[Difficulty], function()
-				ProduceUnit(structure, InfProducer)
-			end)
-		elseif type == 'afld' or type == 'weap' then
-			Trigger.AfterDelay(AttackCooldown[Difficulty], function()
-				ProduceUnit(structure, ArmorProducer)
-			end)
-		end
 		-- New units' first move
 		if Base.RallyPoint and (type == 'hand' or type == 'afld' or type == 'weap'
-			or type == 'pyle')
-		then
+			or type == 'pyle') then
 			structure.RallyPoint = Base.RallyPoint
 		end
 		-- What to do if this structure is destroyed
