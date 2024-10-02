@@ -55,7 +55,13 @@ namespace OpenRA.Mods.Common.Traits
 			p.Shroud.AddSource(this, type, uv);
 		}
 
-		protected override void RemoveCellsFromPlayerShroud(Actor self, Player p) { p.Shroud.RemoveSource(this); }
+		protected override void RemoveCellsFromPlayerShroud(Actor self, Player p)
+		{
+			if (!info.ValidRelationships.HasRelationship(self.Owner.RelationshipWith(p)))
+				return;
+
+			p.Shroud.RemoveSource(this);
+		}
 
 		public override WDist Range
 		{
