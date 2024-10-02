@@ -91,7 +91,7 @@ namespace OpenRA.Network
 			World.OutOfSync();
 			IsOutOfSync = true;
 
-			TextNotificationsManager.AddSystemLine(DesyncCompareLogs, FluentBundle.Arguments("frame", frame));
+			TextNotificationsManager.AddSystemLine(DesyncCompareLogs, "frame", frame);
 		}
 
 		public void StartGame()

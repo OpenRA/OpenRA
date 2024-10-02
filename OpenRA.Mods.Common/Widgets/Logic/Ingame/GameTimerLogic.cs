@@ -47,7 +47,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var pausedText = FluentProvider.GetString(GameTimerLogic.Paused);
 			var maxSpeedText = FluentProvider.GetString(MaxSpeed);
 			var speedText = new CachedTransform<int, string>(p =>
-					FluentProvider.GetString(Speed, FluentBundle.Arguments("percentage", p)));
+					FluentProvider.GetString(Speed, "percentage", p));
 
 			if (timer != null)
 			{
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var timerText = new CachedTransform<int, string>(p =>
-				FluentProvider.GetString(Complete, FluentBundle.Arguments("percentage", p)));
+				FluentProvider.GetString(Complete, "percentage", p));
 			if (timer is LabelWithTooltipWidget timerTooltip)
 			{
 				var connection = orderManager.Connection as ReplayConnection;

@@ -497,7 +497,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ConfirmationDialogs.ButtonPrompt(modData,
 						title: ErrorMaxPlayerTitle,
 						text: ErrorMaxPlayerPrompt,
-						textArguments: FluentBundle.Arguments("players", playerCount, "max", MapPlayers.MaximumPlayerCount),
+						textArguments: new object[] { "players", playerCount, "max", MapPlayers.MaximumPlayerCount },
 						onConfirm: ShowMenu,
 						confirmText: ErrorMaxPlayerAccept);
 

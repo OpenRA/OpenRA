@@ -224,7 +224,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (server.State == ServerState.GameStarted)
 				{
-					server.SendLocalizedMessageTo(conn, StateUnchangedGameStarted, FluentBundle.Arguments("command", command));
+					server.SendLocalizedMessageTo(conn, StateUnchangedGameStarted, new object[] { "command", command });
 					return false;
 				}
 				else if (client.State == Session.ClientState.Ready && !(command.StartsWith("state", StringComparison.Ordinal) || command == "startgame"))
@@ -303,7 +303,7 @@ namespace OpenRA.Mods.Common.Server
 			{
 				if (!Enum<Session.ClientState>.TryParse(s, false, out var state))
 				{
-					server.SendLocalizedMessageTo(conn, MalformedCommand, FluentBundle.Arguments("command", "state"));
+					server.SendLocalizedMessageTo(conn, MalformedCommand, new object[] { "command", "state" });
 
 					return true;
 				}
@@ -399,7 +399,7 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				server.SendLocalizedMessageTo(conn, MalformedCommand, FluentBundle.Arguments("command", "allow_spectate"));
+				server.SendLocalizedMessageTo(conn, MalformedCommand, new object[] { "command", "allow_spectate" });
 
 				return true;
 			}
@@ -488,7 +488,7 @@ namespace OpenRA.Mods.Common.Server
 				var parts = s.Split(' ');
 				if (parts.Length < 3)
 				{
-					server.SendLocalizedMessageTo(conn, MalformedCommand, FluentBundle.Arguments("command", "slot_bot"));
+					server.SendLocalizedMessageTo(conn, MalformedCommand, new object[] { "command", "slot_bot" });
 					return true;
 				}
 
@@ -652,7 +652,7 @@ namespace OpenRA.Mods.Common.Server
 
 						server.SyncLobbyInfo();
 
-						server.SendLocalizedMessage(ChangedMap, FluentBundle.Arguments("player", client.Name, "map", server.Map.Title));
+						server.SendLocalizedMessage(ChangedMap, "player", client.Name, "map", server.Map.Title);
 
 						if ((server.LobbyInfo.GlobalSettings.MapStatus & Session.MapStatus.UnsafeCustomRules) != 0)
 							server.SendLocalizedMessage(CustomRules);
@@ -722,7 +722,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (option.IsLocked)
 				{
-					server.SendLocalizedMessageTo(conn, OptionLocked, FluentBundle.Arguments("option", option.Name));
+					server.SendLocalizedMessageTo(conn, OptionLocked, new object[] { "option", option.Name });
 					return true;
 				}
 
@@ -739,7 +739,7 @@ namespace OpenRA.Mods.Common.Server
 				oo.Value = oo.PreferredValue = split[1];
 
 				server.SyncLobbyGlobalSettings();
-				server.SendLocalizedMessage(ValueChanged, FluentBundle.Arguments("player", client.Name, "name", option.Name, "value", option.Label(split[1])));
+				server.SendLocalizedMessage(ValueChanged, "player", client.Name, "name", option.Name, "value", option.Label(split[1]));
 
 				foreach (var c in server.LobbyInfo.Clients)
 					c.State = Session.ClientState.NotReady;
@@ -768,10 +768,10 @@ namespace OpenRA.Mods.Common.Server
 				foreach (var o in allOptions)
 				{
 					if (o.DefaultValue != server.LobbyInfo.GlobalSettings.LobbyOptions[o.Id].Value)
-						server.SendLocalizedMessage(ValueChanged, FluentBundle.Arguments(
+						server.SendLocalizedMessage(ValueChanged,
 							"player", client.Name,
 							"name", o.Name,
-							"value", o.Label(o.DefaultValue)));
+							"value", o.Label(o.DefaultValue));
 
 					options[o.Id] = new Session.LobbyOptionState
 					{
@@ -805,7 +805,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (!Exts.TryParseInt32Invariant(raw, out var teamCount))
 				{
-					server.SendLocalizedMessageTo(conn, NumberTeams, FluentBundle.Arguments("raw", raw));
+					server.SendLocalizedMessageTo(conn, NumberTeams, new object[] { "raw", raw });
 					return true;
 				}
 
@@ -850,7 +850,7 @@ namespace OpenRA.Mods.Common.Server
 				var split = s.Split(' ');
 				if (split.Length < 2)
 				{
-					server.SendLocalizedMessageTo(conn, MalformedCommand, FluentBundle.Arguments("command", "kick"));
+					server.SendLocalizedMessageTo(conn, MalformedCommand, new object[] { "command", "kick" });
 					return true;
 				}
 
@@ -877,14 +877,14 @@ namespace OpenRA.Mods.Common.Server
 				}
 
 				Log.Write("server", $"Kicking client {kickClientID}.");
-				server.SendLocalizedMessage(AdminKicked, FluentBundle.Arguments("admin", client.Name, "player", kickClient.Name));
+				server.SendLocalizedMessage(AdminKicked, "admin", client.Name, "player", kickClient.Name);
 				server.SendOrderTo(kickConn, "ServerError", YouWereKicked);
 				server.DropClient(kickConn);
 
 				if (bool.TryParse(split[1], out var tempBan) && tempBan)
 				{
 					Log.Write("server", $"Temporarily banning client {kickClientID} ({kickClient.IPAddress}).");
-					server.SendLocalizedMessage(TempBan, FluentBundle.Arguments("admin", client.Name, "player", kickClient.Name));
+					server.SendLocalizedMessage(TempBan, "admin", client.Name, "player", kickClient.Name);
 					server.TempBans.Add(kickClient.IPAddress);
 				}
 
@@ -902,7 +902,7 @@ namespace OpenRA.Mods.Common.Server
 				var split = s.Split(' ');
 				if (split.Length != 2)
 				{
-					server.SendLocalizedMessageTo(conn, MalformedCommand, FluentBundle.Arguments("command", "vote_kick"));
+					server.SendLocalizedMessageTo(conn, MalformedCommand, new object[] { "command", "vote_kick" });
 					return true;
 				}
 
@@ -930,14 +930,14 @@ namespace OpenRA.Mods.Common.Server
 
 				if (!bool.TryParse(split[1], out var vote))
 				{
-					server.SendLocalizedMessageTo(conn, MalformedCommand, FluentBundle.Arguments("command", "vote_kick"));
+					server.SendLocalizedMessageTo(conn, MalformedCommand, new object[] { "command", "vote_kick" });
 					return true;
 				}
 
 				if (server.VoteKickTracker.VoteKick(conn, client, kickConn, kickClient, kickClientID, vote))
 				{
 					Log.Write("server", $"Kicking client {kickClientID}.");
-					server.SendLocalizedMessage(Kicked, FluentBundle.Arguments("player", kickClient.Name));
+					server.SendLocalizedMessage(Kicked, "player", kickClient.Name);
 					server.SendOrderTo(kickConn, "ServerError", YouWereKicked);
 					server.DropClient(kickConn);
 
@@ -980,7 +980,7 @@ namespace OpenRA.Mods.Common.Server
 				foreach (var b in bots)
 					b.BotControllerClientIndex = newAdminId;
 
-				server.SendLocalizedMessage(NewAdmin, FluentBundle.Arguments("player", newAdminClient.Name));
+				server.SendLocalizedMessage(NewAdmin, "player", newAdminClient.Name);
 				Log.Write("server", $"{newAdminClient.Name} is now the admin.");
 				server.SyncLobbyClients();
 
@@ -1014,7 +1014,7 @@ namespace OpenRA.Mods.Common.Server
 				targetClient.Handicap = 0;
 				targetClient.Color = Color.White;
 				targetClient.State = Session.ClientState.NotReady;
-				server.SendLocalizedMessage(MoveSpectators, FluentBundle.Arguments("admin", client.Name, "player", targetClient.Name));
+				server.SendLocalizedMessage(MoveSpectators, "admin", client.Name, "player", targetClient.Name);
 				Log.Write("server", $"{client.Name} moved {targetClient.Name} to spectators.");
 				server.SyncLobbyClients();
 				CheckAutoStart(server);
@@ -1032,7 +1032,7 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 
 				Log.Write("server", $"Player@{conn.EndPoint} is now known as {sanitizedName}.");
-				server.SendLocalizedMessage(Nick, FluentBundle.Arguments("player", client.Name, "name", sanitizedName));
+				server.SendLocalizedMessage(Nick, "player", client.Name, "name", sanitizedName);
 				client.Name = sanitizedName;
 				server.SyncLobbyClients();
 
@@ -1062,8 +1062,8 @@ namespace OpenRA.Mods.Common.Server
 				var faction = parts[1];
 				if (!factions.Contains(faction))
 				{
-					server.SendLocalizedMessageTo(conn, InvalidFactionSelected, FluentBundle.Arguments("faction", faction));
-					server.SendLocalizedMessageTo(conn, SupportedFactions, FluentBundle.Arguments("factions", factions.JoinWith(", ")));
+					server.SendLocalizedMessageTo(conn, InvalidFactionSelected, new object[] { "faction", faction });
+					server.SendLocalizedMessageTo(conn, SupportedFactions, new object[] { "factions", factions.JoinWith(", ") });
 					return true;
 				}
 

@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			});
 
 			var replayDuration = new CachedTransform<ReplayMetadata, string>(r =>
-				FluentProvider.GetString(Duration, FluentBundle.Arguments("time", WidgetUtils.FormatTimeSeconds((int)selectedReplay.GameInfo.Duration.TotalSeconds))));
+				FluentProvider.GetString(Duration, "time", WidgetUtils.FormatTimeSeconds((int)selectedReplay.GameInfo.Duration.TotalSeconds)));
 			panel.Get<LabelWidget>("DURATION").GetText = () => replayDuration.Update(selectedReplay);
 
 			SetupFilters();
@@ -507,7 +507,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: DeleteReplayTitle,
 					text: DeleteReplayPrompt,
-					textArguments: FluentBundle.Arguments("replay", Path.GetFileNameWithoutExtension(r.FilePath)),
+					textArguments: new object[] { "replay", Path.GetFileNameWithoutExtension(r.FilePath) },
 					onConfirm: () =>
 					{
 						DeleteReplay(r);
@@ -545,7 +545,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: DeleteAllReplaysTitle,
 					text: DeleteAllReplaysPrompt,
-					textArguments: FluentBundle.Arguments("count", list.Count),
+					textArguments: new object[] { "count", list.Count },
 					onConfirm: () =>
 					{
 						foreach (var replayMetadata in list)
@@ -584,7 +584,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				TextNotificationsManager.Debug(FluentProvider.GetString(ReplayDeletionFailed, FluentBundle.Arguments("file", replay.FilePath)));
+				TextNotificationsManager.Debug(FluentProvider.GetString(ReplayDeletionFailed, "file", replay.FilePath));
 				Log.Write("debug", ex.ToString());
 				return;
 			}
@@ -725,7 +725,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				foreach (var p in players)
 				{
 					var label = noTeams ? FluentProvider.GetString(Players) : p.Key > 0
-						? FluentProvider.GetString(TeamNumber, FluentBundle.Arguments("team", p.Key))
+						? FluentProvider.GetString(TeamNumber, "team", p.Key)
 						: FluentProvider.GetString(NoTeam);
 
 					teams.Add(label, p);

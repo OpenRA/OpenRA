@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
-			chatAvailableIn = new CachedTransform<int, string>(x => FluentProvider.GetString(ChatAvailability, FluentBundle.Arguments("seconds", x)));
+			chatAvailableIn = new CachedTransform<int, string>(x => FluentProvider.GetString(ChatAvailability, "seconds", x));
 
 			if (!isMenuChat)
 			{

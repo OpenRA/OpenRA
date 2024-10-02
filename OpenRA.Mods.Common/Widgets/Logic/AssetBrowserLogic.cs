@@ -238,7 +238,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (frameText != null)
 			{
 				var soundLength = new CachedTransform<double, string>(p =>
-					FluentProvider.GetString(LengthInSeconds, FluentBundle.Arguments("length", Math.Round(p, 3))));
+					FluentProvider.GetString(LengthInSeconds, "length", Math.Round(p, 3)));
 
 				frameText.GetText = () =>
 				{

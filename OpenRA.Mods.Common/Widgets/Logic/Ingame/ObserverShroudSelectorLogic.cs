@@ -121,7 +121,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				totalPlayers += t.Count();
 				var label = noTeams ? FluentProvider.GetString(Players) : t.Key > 0
-					? FluentProvider.GetString(TeamNumber, FluentBundle.Arguments("team", t.Key))
+					? FluentProvider.GetString(TeamNumber, "team", t.Key)
 					: FluentProvider.GetString(NoTeam);
 
 				groups.Add(label, t);

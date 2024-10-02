@@ -231,7 +231,7 @@ namespace OpenRA.Network
 							break;
 
 						if (orderManager.World.Paused != pause && world != null && world.LobbyInfo.NonBotClients.Count() > 1)
-							TextNotificationsManager.AddSystemLine(pause ? GamePaused : GameUnpaused, FluentBundle.Arguments("player", client.Name));
+							TextNotificationsManager.AddSystemLine(pause ? GamePaused : GameUnpaused, "player", client.Name);
 
 						orderManager.World.Paused = pause;
 						orderManager.World.PredictedPaused = pause;

@@ -41,9 +41,9 @@ namespace OpenRA
 				AddTextNotification(TextNotificationPool.Transients, SystemClientId, SystemMessageLabel, FluentProvider.GetString(text));
 		}
 
-		public static void AddFeedbackLine(string text, Dictionary<string, object> arguments = null)
+		public static void AddFeedbackLine(string text, params object[] args)
 		{
-			AddTextNotification(TextNotificationPool.Feedback, SystemClientId, SystemMessageLabel, FluentProvider.GetString(text, arguments));
+			AddTextNotification(TextNotificationPool.Feedback, SystemClientId, SystemMessageLabel, FluentProvider.GetString(text, args));
 		}
 
 		public static void AddMissionLine(string prefix, string text, Color? prefixColor = null)
@@ -51,19 +51,19 @@ namespace OpenRA
 			AddTextNotification(TextNotificationPool.Mission, SystemClientId, prefix, text, prefixColor);
 		}
 
-		public static void AddPlayerJoinedLine(string text, Dictionary<string, object> arguments = null)
+		public static void AddPlayerJoinedLine(string text, params object[] args)
 		{
-			AddTextNotification(TextNotificationPool.Join, SystemClientId, SystemMessageLabel, FluentProvider.GetString(text, arguments));
+			AddTextNotification(TextNotificationPool.Join, SystemClientId, SystemMessageLabel, FluentProvider.GetString(text, args));
 		}
 
-		public static void AddPlayerLeftLine(string text, Dictionary<string, object> arguments = null)
+		public static void AddPlayerLeftLine(string text, params object[] args)
 		{
-			AddTextNotification(TextNotificationPool.Leave, SystemClientId, SystemMessageLabel, FluentProvider.GetString(text, arguments));
+			AddTextNotification(TextNotificationPool.Leave, SystemClientId, SystemMessageLabel, FluentProvider.GetString(text, args));
 		}
 
-		public static void AddSystemLine(string text, Dictionary<string, object> arguments = null)
+		public static void AddSystemLine(string text, params object[] args)
 		{
-			AddSystemLine(SystemMessageLabel, FluentProvider.GetString(text, arguments));
+			AddSystemLine(SystemMessageLabel, FluentProvider.GetString(text, args));
 		}
 
 		public static void AddSystemLine(string prefix, string text)

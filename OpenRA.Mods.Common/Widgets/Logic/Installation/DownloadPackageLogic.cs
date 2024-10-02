@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var status = new CachedTransform<string, string>(s => WidgetUtils.TruncateText(s, statusLabel.Bounds.Width, statusFont));
 			statusLabel.GetText = () => status.Update(getStatusText());
 
-			var text = FluentProvider.GetString(Downloading, FluentBundle.Arguments("title", download.Title));
+			var text = FluentProvider.GetString(Downloading, "title", download.Title);
 			panel.Get<LabelWidget>("TITLE").GetText = () => text;
 
 			ShowDownloadDialog();
@@ -117,7 +117,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					dataSuffix = SizeSuffixes[mag];
 
 					getStatusText = () => FluentProvider.GetString(DownloadingFrom,
-						FluentBundle.Arguments("host", host, "received", $"{dataReceived:0.00}", "suffix", dataSuffix));
+						"host", host,
+						"received", $"{dataReceived:0.00}",
+						"suffix", dataSuffix);
 					progressBar.Indeterminate = true;
 				}
 				else
@@ -128,8 +130,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					dataSuffix = SizeSuffixes[mag];
 
 					getStatusText = () => FluentProvider.GetString(DownloadingFromProgress,
-						FluentBundle.Arguments("host", host, "received", $"{dataReceived:0.00}", "total", $"{dataTotal:0.00}",
-							"suffix", dataSuffix, "progress", progressPercentage));
+						"host", host,
+						"received", $"{dataReceived:0.00}",
+						"total", $"{dataTotal:0.00}",
+						"suffix", dataSuffix,
+						"progress", progressPercentage);
 					progressBar.Indeterminate = false;
 				}
 
@@ -232,7 +237,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 											continue;
 										}
 
-										OnExtractProgress(FluentProvider.GetString(ExtractingEntry, FluentBundle.Arguments("entry", kv.Value)));
+										OnExtractProgress(FluentProvider.GetString(ExtractingEntry, "entry", kv.Value));
 										Log.Write("install", "Extracting " + kv.Value);
 										var targetPath = Platform.ResolvePath(kv.Key);
 										Directory.CreateDirectory(Path.GetDirectoryName(targetPath));

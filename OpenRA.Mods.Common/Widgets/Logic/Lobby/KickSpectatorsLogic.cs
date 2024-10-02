@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public KickSpectatorsLogic(Widget widget, int clientCount, Action okPressed, Action cancelPressed)
 		{
-			var kickMessage = FluentProvider.GetString(KickSpectators, FluentBundle.Arguments("count", clientCount));
+			var kickMessage = FluentProvider.GetString(KickSpectators, "count", clientCount);
 			widget.Get<LabelWidget>("TEXT").GetText = () => kickMessage;
 
 			widget.Get<ButtonWidget>("OK_BUTTON").OnClick = () =>

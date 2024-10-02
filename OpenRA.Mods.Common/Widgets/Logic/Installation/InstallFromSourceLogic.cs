@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string CheckInstallLog = "label-check-install-log";
 
 		[FluentReference("filename")]
-		public const string Extracing = "label-extracting-filename";
+		public const string Extracting = "label-extracting-filename";
 
 		[FluentReference("filename", "progress")]
 		public const string ExtractingProgress = "label-extracting-filename-progress";
@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				foreach (var kv in sources)
 				{
-					message = FluentProvider.GetString(SearchingSourceFor, FluentBundle.Arguments("title", kv.Value.Title));
+					message = FluentProvider.GetString(SearchingSourceFor, "title", kv.Value.Title);
 
 					var sourceResolver = kv.Value.ObjectCreator.CreateObject<ISourceResolver>($"{kv.Value.Type.Value}SourceResolver");
 

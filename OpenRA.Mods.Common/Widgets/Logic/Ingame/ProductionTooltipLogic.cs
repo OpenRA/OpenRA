@@ -105,7 +105,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var requiresSize = int2.Zero;
 				if (prereqs.Count > 0)
 				{
-					var requiresText = FluentProvider.GetString(Requires, FluentBundle.Arguments("prequisites", prereqs.JoinWith(", ")));
+					var requiresText = FluentProvider.GetString(Requires, "prequisites", prereqs.JoinWith(", "));
 					requiresLabel.GetText = () => requiresText;
 					requiresSize = requiresFont.Measure(requiresText);
 					requiresLabel.Visible = true;

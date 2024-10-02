@@ -79,12 +79,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 
 			// Check if selecting actors on the screen has selected new units
 			if (newSelection.Count > selection.Actors.Count)
-				TextNotificationsManager.AddFeedbackLine(SelectedUnitsAcrossScreen, FluentBundle.Arguments("units", newSelection.Count));
+				TextNotificationsManager.AddFeedbackLine(SelectedUnitsAcrossScreen, "units", newSelection.Count);
 			else
 			{
 				// Select actors in the world that have the same selection class as one of the already selected actors
 				newSelection = SelectionUtils.SelectActorsInWorld(world, selectedClasses, eligiblePlayers).ToList();
-				TextNotificationsManager.AddFeedbackLine(SelectedUnitsAcrossMap, FluentBundle.Arguments("units", newSelection.Count));
+				TextNotificationsManager.AddFeedbackLine(SelectedUnitsAcrossMap, "units", newSelection.Count);
 			}
 
 			selection.Combine(world, newSelection, true, false);

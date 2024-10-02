@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (m == 0)
 					return FluentProvider.GetString(NoTimeLimit);
 				else
-					return FluentProvider.GetString(TimeLimitOption, FluentBundle.Arguments("minutes", m));
+					return FluentProvider.GetString(TimeLimitOption, "minutes", m);
 			});
 
 			yield return new LobbyOption(map, "timelimit", TimeLimitLabel, TimeLimitDescription, TimeLimitDropdownVisible, TimeLimitDisplayOrder,

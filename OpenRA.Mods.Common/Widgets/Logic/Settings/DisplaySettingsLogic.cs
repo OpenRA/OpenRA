@@ -171,7 +171,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var displaySelectionDropDown = panel.Get<DropDownButtonWidget>("DISPLAY_SELECTION_DROPDOWN");
 			displaySelectionDropDown.OnMouseDown = _ => ShowDisplaySelectionDropdown(displaySelectionDropDown, ds);
-			var displaySelectionLabel = new CachedTransform<int, string>(i => FluentProvider.GetString(Display, FluentBundle.Arguments("number", i + 1)));
+			var displaySelectionLabel = new CachedTransform<int, string>(i => FluentProvider.GetString(Display, "number", i + 1));
 			displaySelectionDropDown.GetText = () => displaySelectionLabel.Update(ds.VideoDisplay);
 			displaySelectionDropDown.IsDisabled = () => Game.Renderer.DisplayCount < 2;
 
@@ -242,7 +242,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var frameLimitGamespeedCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_GAMESPEED_CHECKBOX");
 			var frameLimitCheckbox = panel.Get<CheckboxWidget>("FRAME_LIMIT_CHECKBOX");
-			var frameLimitLabel = new CachedTransform<int, string>(fps => FluentProvider.GetString(FrameLimiter, FluentBundle.Arguments("fps", fps)));
+			var frameLimitLabel = new CachedTransform<int, string>(fps => FluentProvider.GetString(FrameLimiter, "fps", fps));
 			frameLimitCheckbox.GetText = () => frameLimitLabel.Update(ds.MaxFramerate);
 			frameLimitCheckbox.IsDisabled = () => ds.CapFramerateToGameFps;
 

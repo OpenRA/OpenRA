@@ -112,15 +112,15 @@ namespace OpenRA
 			}
 		}
 
-		public string GetString(string key, IDictionary<string, object> arguments = null)
+		public string GetString(string key, object[] args = null)
 		{
-			if (!TryGetString(key, out var message, arguments))
+			if (!TryGetString(key, out var message, args))
 				message = key;
 
 			return message;
 		}
 
-		public bool TryGetString(string key, out string value, IDictionary<string, object> arguments = null)
+		public bool TryGetString(string key, out string value, object[] args = null)
 		{
 			if (key == null)
 				throw new ArgumentNullException(nameof(key));
@@ -133,12 +133,29 @@ namespace OpenRA
 					return false;
 				}
 
-				var fluentArguments = new Dictionary<string, IFluentType>();
-				if (arguments != null)
-					foreach (var (k, v) in arguments)
-						fluentArguments.Add(k, v.ToFluentType());
+				Dictionary<string, IFluentType> fluentArgs = null;
+				if (args != null)
+				{
+					if (args.Length % 2 != 0)
+						throw new ArgumentException("Expected a comma separated list of name, value arguments " +
+							"but the number of arguments is not a multiple of two", nameof(args));
 
-				var result = bundle.TryGetAttrMessage(key, fluentArguments, out var errors, out value);
+					fluentArgs = new Dictionary<string, IFluentType>();
+					for (var i = 0; i < args.Length; i += 2)
+					{
+						var argKey = args[i] as string;
+						if (string.IsNullOrEmpty(argKey))
+							throw new ArgumentException($"Expected the argument at index {i} to be a non-empty string", nameof(args));
+
+						var argValue = args[i + 1];
+						if (argValue == null)
+							throw new ArgumentNullException(nameof(args), $"Expected the argument at index {i + 1} to be a non-null value");
+
+						fluentArgs.Add(argKey, argValue.ToFluentType());
+					}
+				}
+
+				var result = bundle.TryGetAttrMessage(key, fluentArgs, out var errors, out value);
 				foreach (var error in errors)
 					Log.Write("debug", $"FluentBundle of {key}: {error}");
 
@@ -156,32 +173,6 @@ namespace OpenRA
 		public bool HasMessage(string key)
 		{
 			return bundle.HasAttrMessage(key);
-		}
-
-		// Adapted from Fluent.Net.SimpleExample.TranslationService by Mark Weaver
-		public static Dictionary<string, object> Arguments(string name, object value, params object[] args)
-		{
-			if (args.Length % 2 != 0)
-				throw new ArgumentException("Expected a comma separated list of name, value arguments"
-					+ " but the number of arguments is not a multiple of two", nameof(args));
-
-			var argumentDictionary = new Dictionary<string, object> { { name, value } };
-
-			for (var i = 0; i < args.Length; i += 2)
-			{
-				name = args[i] as string;
-				if (string.IsNullOrEmpty(name))
-					throw new ArgumentException($"Expected the argument at index {i} to be a non-empty string",
-						nameof(args));
-
-				value = args[i + 1];
-				if (value == null)
-					throw new ArgumentNullException(nameof(args), $"Expected the argument at index {i + 1} to be a non-null value");
-
-				argumentDictionary.Add(name, value);
-			}
-
-			return argumentDictionary;
 		}
 	}
 }

@@ -205,9 +205,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var remoteMapText = new CachedTransform<(int Searching, int Unavailable), string>(counts =>
 			{
 				if (counts.Searching > 0)
-					return FluentProvider.GetString(MapSearchingCount, FluentBundle.Arguments("count", counts.Searching));
+					return FluentProvider.GetString(MapSearchingCount, "count", counts.Searching);
 
-				return FluentProvider.GetString(MapUnavailableCount, FluentBundle.Arguments("count", counts.Unavailable));
+				return FluentProvider.GetString(MapUnavailableCount, "count", counts.Unavailable);
 			});
 
 			remoteMapLabel.IsVisible = () => remoteMapPool != null && (remoteSearching > 0 || remoteUnavailable > 0);
@@ -458,13 +458,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (type != null)
 						details = type + " ";
 
-					details += FluentProvider.GetString(Players, FluentBundle.Arguments("players", preview.PlayerCount));
+					details += FluentProvider.GetString(Players, "players", preview.PlayerCount);
 					detailsWidget.GetText = () => details;
 				}
 
 				var authorWidget = item.GetOrNull<LabelWithTooltipWidget>("AUTHOR");
 				if (authorWidget != null && !string.IsNullOrEmpty(preview.Author))
-					WidgetUtils.TruncateLabelToTooltip(authorWidget, FluentProvider.GetString(CreatedBy, FluentBundle.Arguments("author", preview.Author)));
+					WidgetUtils.TruncateLabelToTooltip(authorWidget, FluentProvider.GetString(CreatedBy, "author", preview.Author));
 
 				var sizeWidget = item.GetOrNull<LabelWidget>("SIZE");
 				if (sizeWidget != null)
@@ -502,7 +502,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				TextNotificationsManager.Debug(FluentProvider.GetString(MapDeletionFailed, FluentBundle.Arguments("map", map)));
+				TextNotificationsManager.Debug(FluentProvider.GetString(MapDeletionFailed, "map", map));
 				Log.Write("debug", ex.ToString());
 			}
 
@@ -514,7 +514,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			ConfirmationDialogs.ButtonPrompt(modData,
 				title: DeleteMapTitle,
 				text: DeleteMapPrompt,
-				textArguments: FluentBundle.Arguments("title", modData.MapCache[map].Title),
+				textArguments: new object[] { "title", modData.MapCache[map].Title },
 				onConfirm: () =>
 				{
 					var newUid = DeleteMap(map);

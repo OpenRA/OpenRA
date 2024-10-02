@@ -275,8 +275,10 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 			}
 
-			var arguments = FluentBundle.Arguments("cheat", order.OrderString, "player", self.Owner.ResolvedPlayerName, "suffix", debugSuffix);
-			TextNotificationsManager.Debug(FluentProvider.GetString(CheatUsed, arguments));
+			TextNotificationsManager.Debug(FluentProvider.GetString(CheatUsed,
+				"cheat", order.OrderString,
+				"player", self.Owner.ResolvedPlayerName,
+				"suffix", debugSuffix));
 		}
 
 		bool IUnlocksRenderPlayer.RenderPlayerUnlocked => Enabled;

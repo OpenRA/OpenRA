@@ -39,9 +39,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					FluentProvider.GetString(Infinite) :
 					powerManager.PowerProvided.ToString(NumberFormatInfo.CurrentInfo);
 
-				return FluentProvider.GetString(
-					PowerUsage,
-					FluentBundle.Arguments("usage", usage.Current, "capacity", capacity));
+				return FluentProvider.GetString(PowerUsage, "usage", usage.Current, "capacity", capacity);
 			});
 
 			powerBar.GetBarColor = () =>

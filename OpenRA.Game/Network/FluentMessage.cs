@@ -9,8 +9,8 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using Linguini.Shared.Types.Bundle;
 
 namespace OpenRA.Network
@@ -55,30 +55,31 @@ namespace OpenRA.Network
 		public readonly string Key = string.Empty;
 
 		[FieldLoader.LoadUsing(nameof(LoadArguments))]
-		public readonly Dictionary<string, object> Arguments;
+		public readonly object[] Arguments;
 
 		static object LoadArguments(MiniYaml yaml)
 		{
-			var arguments = new Dictionary<string, object>();
+			var arguments = new List<object>();
 			var argumentsNode = yaml.NodeWithKeyOrDefault("Arguments");
 			if (argumentsNode != null)
 			{
 				foreach (var argumentNode in argumentsNode.Value.Nodes)
 				{
 					var argument = FieldLoader.Load<FluentArgument>(argumentNode.Value);
+					arguments.Add(argument.Key);
 					if (argument.Type == FluentArgument.FluentArgumentType.Number)
 					{
 						if (!double.TryParse(argument.Value, out var number))
 							Log.Write("debug", $"Failed to parse {argument.Value}");
 
-						arguments.Add(argument.Key, number);
+						arguments.Add(number);
 					}
 					else
-						arguments.Add(argument.Key, argument.Value);
+						arguments.Add(argument.Value);
 				}
 			}
 
-			return arguments;
+			return arguments.ToArray();
 		}
 
 		public FluentMessage(MiniYaml yaml)
@@ -87,21 +88,31 @@ namespace OpenRA.Network
 			FieldLoader.Load(this, yaml);
 		}
 
-		public static string Serialize(string key, Dictionary<string, object> arguments = null)
+		public static string Serialize(string key, object[] args)
 		{
 			var root = new List<MiniYamlNode>
 			{
 				new("Protocol", ProtocolVersion.ToStringInvariant()),
-				new("Key", key)
+				new("Key", key),
 			};
 
-			if (arguments != null)
+			if (args != null)
 			{
-				var argumentsNode = new MiniYaml("", arguments
-					.Select(a => new FluentArgument(a.Key, a.Value))
-					.Select((argument, i) => new MiniYamlNode("Argument@" + i, FieldSaver.Save(argument))));
+				var nodes = new List<MiniYamlNode>();
+				for (var i = 0; i < args.Length; i += 2)
+				{
+					var argKey = args[i] as string;
+					if (string.IsNullOrEmpty(argKey))
+						throw new ArgumentException($"Expected the argument at index {i} to be a non-empty string", nameof(args));
 
-				root.Add(new MiniYamlNode("Arguments", argumentsNode));
+					var argValue = args[i + 1];
+					if (argValue == null)
+						throw new ArgumentNullException(nameof(args), $"Expected the argument at index {i + 1} to be a non-null value");
+
+					nodes.Add(new MiniYamlNode($"Argument@{i / 2}", FieldSaver.Save(new FluentArgument(argKey, argValue))));
+				}
+
+				root.Add(new MiniYamlNode("Arguments", new MiniYaml("", nodes)));
 			}
 
 			return new MiniYaml("", root)

@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public KickClientLogic(Widget widget, string clientName, Action<bool> okPressed, Action cancelPressed)
 		{
-			var kickMessage = FluentProvider.GetString(KickClient, FluentBundle.Arguments("player", clientName));
+			var kickMessage = FluentProvider.GetString(KickClient, "player", clientName);
 			widget.Get<LabelWidget>("TITLE").GetText = () => kickMessage;
 
 			var tempBan = false;
