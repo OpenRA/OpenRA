@@ -65,13 +65,13 @@ namespace OpenRA.Network
 					var yaml = MiniYaml.FromString(order.TargetString, order.OrderString);
 					foreach (var node in yaml)
 					{
-						var localizedMessage = new FluentMessage(node.Value);
-						if (localizedMessage.Key == Joined)
-							TextNotificationsManager.AddPlayerJoinedLine(localizedMessage.Key, localizedMessage.Arguments);
-						else if (localizedMessage.Key == Left)
-							TextNotificationsManager.AddPlayerLeftLine(localizedMessage.Key, localizedMessage.Arguments);
+						var message = new FluentMessage(node.Value);
+						if (message.Key == Joined)
+							TextNotificationsManager.AddPlayerJoinedLine(message.Key, message.Arguments);
+						else if (message.Key == Left)
+							TextNotificationsManager.AddPlayerLeftLine(message.Key, message.Arguments);
 						else
-							TextNotificationsManager.AddSystemLine(localizedMessage.Key, localizedMessage.Arguments);
+							TextNotificationsManager.AddSystemLine(message.Key, message.Arguments);
 					}
 
 					break;

@@ -206,7 +206,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (requiresHost && !client.IsAdmin)
 				{
-					server.SendLocalizedMessageTo(conn, RequiresHost);
+					server.SendFluentMessageTo(conn, RequiresHost);
 					return false;
 				}
 
@@ -224,12 +224,12 @@ namespace OpenRA.Mods.Common.Server
 
 				if (server.State == ServerState.GameStarted)
 				{
-					server.SendLocalizedMessageTo(conn, StateUnchangedGameStarted, new object[] { "command", command });
+					server.SendFluentMessageTo(conn, StateUnchangedGameStarted, new object[] { "command", command });
 					return false;
 				}
 				else if (client.State == Session.ClientState.Ready && !(command.StartsWith("state", StringComparison.Ordinal) || command == "startgame"))
 				{
-					server.SendLocalizedMessageTo(conn, StateUnchangedReady);
+					server.SendFluentMessageTo(conn, StateUnchangedReady);
 					return false;
 				}
 
@@ -303,7 +303,7 @@ namespace OpenRA.Mods.Common.Server
 			{
 				if (!Enum<Session.ClientState>.TryParse(s, false, out var state))
 				{
-					server.SendLocalizedMessageTo(conn, MalformedCommand, new object[] { "command", "state" });
+					server.SendFluentMessageTo(conn, MalformedCommand, new object[] { "command", "state" });
 
 					return true;
 				}
@@ -324,13 +324,13 @@ namespace OpenRA.Mods.Common.Server
 			{
 				if (!client.IsAdmin)
 				{
-					server.SendLocalizedMessageTo(conn, OnlyHostStartGame);
+					server.SendFluentMessageTo(conn, OnlyHostStartGame);
 					return true;
 				}
 
 				if (server.LobbyInfo.Slots.Any(sl => sl.Value.Required && server.LobbyInfo.ClientInSlot(sl.Key) == null))
 				{
-					server.SendLocalizedMessageTo(conn, NoStartUntilRequiredSlotsFull);
+					server.SendFluentMessageTo(conn, NoStartUntilRequiredSlotsFull);
 					return true;
 				}
 
@@ -342,13 +342,13 @@ namespace OpenRA.Mods.Common.Server
 
 				if (!server.LobbyInfo.GlobalSettings.EnableSingleplayer && server.LobbyInfo.NonBotPlayers.Count() < 2)
 				{
-					server.SendLocalizedMessageTo(conn, TwoHumansRequired);
+					server.SendFluentMessageTo(conn, TwoHumansRequired);
 					return true;
 				}
 
 				if (LobbyUtils.InsufficientEnabledSpawnPoints(server.Map, server.LobbyInfo))
 				{
-					server.SendLocalizedMessageTo(conn, InsufficientEnabledSpawnPoints);
+					server.SendFluentMessageTo(conn, InsufficientEnabledSpawnPoints);
 					return true;
 				}
 
@@ -399,7 +399,7 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 				}
 
-				server.SendLocalizedMessageTo(conn, MalformedCommand, new object[] { "command", "allow_spectate" });
+				server.SendFluentMessageTo(conn, MalformedCommand, new object[] { "command", "allow_spectate" });
 
 				return true;
 			}
@@ -488,7 +488,7 @@ namespace OpenRA.Mods.Common.Server
 				var parts = s.Split(' ');
 				if (parts.Length < 3)
 				{
-					server.SendLocalizedMessageTo(conn, MalformedCommand, new object[] { "command", "slot_bot" });
+					server.SendFluentMessageTo(conn, MalformedCommand, new object[] { "command", "slot_bot" });
 					return true;
 				}
 
@@ -506,7 +506,7 @@ namespace OpenRA.Mods.Common.Server
 				// Invalid slot
 				if (bot != null && bot.Bot == null)
 				{
-					server.SendLocalizedMessageTo(conn, InvalidBotSlot);
+					server.SendFluentMessageTo(conn, InvalidBotSlot);
 					return true;
 				}
 
@@ -516,7 +516,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (botInfo == null)
 				{
-					server.SendLocalizedMessageTo(conn, InvalidBotType);
+					server.SendFluentMessageTo(conn, InvalidBotType);
 					return true;
 				}
 
@@ -569,7 +569,7 @@ namespace OpenRA.Mods.Common.Server
 			{
 				if (!client.IsAdmin)
 				{
-					server.SendLocalizedMessageTo(conn, HostChangeMap);
+					server.SendFluentMessageTo(conn, HostChangeMap);
 					return true;
 				}
 
@@ -652,15 +652,15 @@ namespace OpenRA.Mods.Common.Server
 
 						server.SyncLobbyInfo();
 
-						server.SendLocalizedMessage(ChangedMap, "player", client.Name, "map", server.Map.Title);
+						server.SendFluentMessage(ChangedMap, "player", client.Name, "map", server.Map.Title);
 
 						if ((server.LobbyInfo.GlobalSettings.MapStatus & Session.MapStatus.UnsafeCustomRules) != 0)
-							server.SendLocalizedMessage(CustomRules);
+							server.SendFluentMessage(CustomRules);
 
 						if (!server.LobbyInfo.GlobalSettings.EnableSingleplayer)
-							server.SendLocalizedMessage(TwoHumansRequired);
+							server.SendFluentMessage(TwoHumansRequired);
 						else if (server.Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
-							server.SendLocalizedMessage(MapBotsDisabled);
+							server.SendFluentMessage(MapBotsDisabled);
 
 						var briefing = MissionBriefingOrDefault(server);
 						if (briefing != null)
@@ -673,7 +673,7 @@ namespace OpenRA.Mods.Common.Server
 					SelectMap(m);
 				else if (server.Settings.QueryMapRepository)
 				{
-					server.SendLocalizedMessageTo(conn, SearchingMap);
+					server.SendFluentMessageTo(conn, SearchingMap);
 					var mapRepository = server.ModData.Manifest.Get<WebServices>().MapRepository;
 					var reported = false;
 					server.ModData.MapCache.QueryRemoteMapDetails(mapRepository, new[] { s }, SelectMap, _ =>
@@ -690,7 +690,7 @@ namespace OpenRA.Mods.Common.Server
 				return true;
 			}
 
-			void QueryFailed() => server.SendLocalizedMessageTo(conn, UnknownMap);
+			void QueryFailed() => server.SendFluentMessageTo(conn, UnknownMap);
 		}
 
 		static bool Option(S server, Connection conn, Session.Client client, string s)
@@ -699,7 +699,7 @@ namespace OpenRA.Mods.Common.Server
 			{
 				if (!client.IsAdmin)
 				{
-					server.SendLocalizedMessageTo(conn, NotAdmin);
+					server.SendFluentMessageTo(conn, NotAdmin);
 					return true;
 				}
 
@@ -716,13 +716,13 @@ namespace OpenRA.Mods.Common.Server
 				if (split.Length < 2 || !options.TryGetValue(split[0], out var option) ||
 					!option.Values.ContainsKey(split[1]))
 				{
-					server.SendLocalizedMessageTo(conn, InvalidConfigurationCommand);
+					server.SendFluentMessageTo(conn, InvalidConfigurationCommand);
 					return true;
 				}
 
 				if (option.IsLocked)
 				{
-					server.SendLocalizedMessageTo(conn, OptionLocked, new object[] { "option", option.Name });
+					server.SendFluentMessageTo(conn, OptionLocked, new object[] { "option", option.Name });
 					return true;
 				}
 
@@ -732,14 +732,14 @@ namespace OpenRA.Mods.Common.Server
 
 				if (!option.Values.ContainsKey(split[1]))
 				{
-					server.SendLocalizedMessageTo(conn, InvalidConfigurationCommand);
+					server.SendFluentMessageTo(conn, InvalidConfigurationCommand);
 					return true;
 				}
 
 				oo.Value = oo.PreferredValue = split[1];
 
 				server.SyncLobbyGlobalSettings();
-				server.SendLocalizedMessage(ValueChanged, "player", client.Name, "name", option.Name, "value", option.Label(split[1]));
+				server.SendFluentMessage(ValueChanged, "player", client.Name, "name", option.Name, "value", option.Label(split[1]));
 
 				foreach (var c in server.LobbyInfo.Clients)
 					c.State = Session.ClientState.NotReady;
@@ -756,7 +756,7 @@ namespace OpenRA.Mods.Common.Server
 			{
 				if (!client.IsAdmin)
 				{
-					server.SendLocalizedMessageTo(conn, NotAdmin);
+					server.SendFluentMessageTo(conn, NotAdmin);
 					return true;
 				}
 
@@ -768,7 +768,7 @@ namespace OpenRA.Mods.Common.Server
 				foreach (var o in allOptions)
 				{
 					if (o.DefaultValue != server.LobbyInfo.GlobalSettings.LobbyOptions[o.Id].Value)
-						server.SendLocalizedMessage(ValueChanged,
+						server.SendFluentMessage(ValueChanged,
 							"player", client.Name,
 							"name", o.Name,
 							"value", o.Label(o.DefaultValue));
@@ -799,13 +799,13 @@ namespace OpenRA.Mods.Common.Server
 			{
 				if (!client.IsAdmin)
 				{
-					server.SendLocalizedMessageTo(conn, AdminOption);
+					server.SendFluentMessageTo(conn, AdminOption);
 					return true;
 				}
 
 				if (!Exts.TryParseInt32Invariant(raw, out var teamCount))
 				{
-					server.SendLocalizedMessageTo(conn, NumberTeams, new object[] { "raw", raw });
+					server.SendFluentMessageTo(conn, NumberTeams, new object[] { "raw", raw });
 					return true;
 				}
 
@@ -843,14 +843,14 @@ namespace OpenRA.Mods.Common.Server
 			{
 				if (!client.IsAdmin)
 				{
-					server.SendLocalizedMessageTo(conn, AdminKick);
+					server.SendFluentMessageTo(conn, AdminKick);
 					return true;
 				}
 
 				var split = s.Split(' ');
 				if (split.Length < 2)
 				{
-					server.SendLocalizedMessageTo(conn, MalformedCommand, new object[] { "command", "kick" });
+					server.SendFluentMessageTo(conn, MalformedCommand, new object[] { "command", "kick" });
 					return true;
 				}
 
@@ -859,32 +859,32 @@ namespace OpenRA.Mods.Common.Server
 
 				if (kickConn == null)
 				{
-					server.SendLocalizedMessageTo(conn, KickNone);
+					server.SendFluentMessageTo(conn, KickNone);
 					return true;
 				}
 
 				var kickClient = server.GetClient(kickConn);
 				if (client == kickClient)
 				{
-					server.SendLocalizedMessageTo(conn, NoKickSelf);
+					server.SendFluentMessageTo(conn, NoKickSelf);
 					return true;
 				}
 
 				if (server.State == ServerState.GameStarted && !kickClient.IsObserver && !server.HasClientWonOrLost(kickClient))
 				{
-					server.SendLocalizedMessageTo(conn, NoKickGameStarted);
+					server.SendFluentMessageTo(conn, NoKickGameStarted);
 					return true;
 				}
 
 				Log.Write("server", $"Kicking client {kickClientID}.");
-				server.SendLocalizedMessage(AdminKicked, "admin", client.Name, "player", kickClient.Name);
+				server.SendFluentMessage(AdminKicked, "admin", client.Name, "player", kickClient.Name);
 				server.SendOrderTo(kickConn, "ServerError", YouWereKicked);
 				server.DropClient(kickConn);
 
 				if (bool.TryParse(split[1], out var tempBan) && tempBan)
 				{
 					Log.Write("server", $"Temporarily banning client {kickClientID} ({kickClient.IPAddress}).");
-					server.SendLocalizedMessage(TempBan, "admin", client.Name, "player", kickClient.Name);
+					server.SendFluentMessage(TempBan, "admin", client.Name, "player", kickClient.Name);
 					server.TempBans.Add(kickClient.IPAddress);
 				}
 
@@ -902,13 +902,13 @@ namespace OpenRA.Mods.Common.Server
 				var split = s.Split(' ');
 				if (split.Length != 2)
 				{
-					server.SendLocalizedMessageTo(conn, MalformedCommand, new object[] { "command", "vote_kick" });
+					server.SendFluentMessageTo(conn, MalformedCommand, new object[] { "command", "vote_kick" });
 					return true;
 				}
 
 				if (!server.Settings.EnableVoteKick)
 				{
-					server.SendLocalizedMessageTo(conn, VoteKickDisabled);
+					server.SendFluentMessageTo(conn, VoteKickDisabled);
 					return true;
 				}
 
@@ -917,27 +917,27 @@ namespace OpenRA.Mods.Common.Server
 
 				if (kickConn == null)
 				{
-					server.SendLocalizedMessageTo(conn, KickNone);
+					server.SendFluentMessageTo(conn, KickNone);
 					return true;
 				}
 
 				var kickClient = server.GetClient(kickConn);
 				if (client == kickClient)
 				{
-					server.SendLocalizedMessageTo(conn, NoKickSelf);
+					server.SendFluentMessageTo(conn, NoKickSelf);
 					return true;
 				}
 
 				if (!bool.TryParse(split[1], out var vote))
 				{
-					server.SendLocalizedMessageTo(conn, MalformedCommand, new object[] { "command", "vote_kick" });
+					server.SendFluentMessageTo(conn, MalformedCommand, new object[] { "command", "vote_kick" });
 					return true;
 				}
 
 				if (server.VoteKickTracker.VoteKick(conn, client, kickConn, kickClient, kickClientID, vote))
 				{
 					Log.Write("server", $"Kicking client {kickClientID}.");
-					server.SendLocalizedMessage(Kicked, "player", kickClient.Name);
+					server.SendFluentMessage(Kicked, "player", kickClient.Name);
 					server.SendOrderTo(kickConn, "ServerError", YouWereKicked);
 					server.DropClient(kickConn);
 
@@ -957,7 +957,7 @@ namespace OpenRA.Mods.Common.Server
 			{
 				if (!client.IsAdmin)
 				{
-					server.SendLocalizedMessageTo(conn, NoTransferAdmin);
+					server.SendFluentMessageTo(conn, NoTransferAdmin);
 					return true;
 				}
 
@@ -966,7 +966,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (newAdminConn == null)
 				{
-					server.SendLocalizedMessageTo(conn, EmptySlot);
+					server.SendFluentMessageTo(conn, EmptySlot);
 					return true;
 				}
 
@@ -980,7 +980,7 @@ namespace OpenRA.Mods.Common.Server
 				foreach (var b in bots)
 					b.BotControllerClientIndex = newAdminId;
 
-				server.SendLocalizedMessage(NewAdmin, "player", newAdminClient.Name);
+				server.SendFluentMessage(NewAdmin, "player", newAdminClient.Name);
 				Log.Write("server", $"{newAdminClient.Name} is now the admin.");
 				server.SyncLobbyClients();
 
@@ -994,7 +994,7 @@ namespace OpenRA.Mods.Common.Server
 			{
 				if (!client.IsAdmin)
 				{
-					server.SendLocalizedMessageTo(conn, NoMoveSpectators);
+					server.SendFluentMessageTo(conn, NoMoveSpectators);
 					return true;
 				}
 
@@ -1003,7 +1003,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (targetConn == null)
 				{
-					server.SendLocalizedMessageTo(conn, EmptySlot);
+					server.SendFluentMessageTo(conn, EmptySlot);
 					return true;
 				}
 
@@ -1014,7 +1014,7 @@ namespace OpenRA.Mods.Common.Server
 				targetClient.Handicap = 0;
 				targetClient.Color = Color.White;
 				targetClient.State = Session.ClientState.NotReady;
-				server.SendLocalizedMessage(MoveSpectators, "admin", client.Name, "player", targetClient.Name);
+				server.SendFluentMessage(MoveSpectators, "admin", client.Name, "player", targetClient.Name);
 				Log.Write("server", $"{client.Name} moved {targetClient.Name} to spectators.");
 				server.SyncLobbyClients();
 				CheckAutoStart(server);
@@ -1032,7 +1032,7 @@ namespace OpenRA.Mods.Common.Server
 					return true;
 
 				Log.Write("server", $"Player@{conn.EndPoint} is now known as {sanitizedName}.");
-				server.SendLocalizedMessage(Nick, "player", client.Name, "name", sanitizedName);
+				server.SendFluentMessage(Nick, "player", client.Name, "name", sanitizedName);
 				client.Name = sanitizedName;
 				server.SyncLobbyClients();
 
@@ -1062,8 +1062,8 @@ namespace OpenRA.Mods.Common.Server
 				var faction = parts[1];
 				if (!factions.Contains(faction))
 				{
-					server.SendLocalizedMessageTo(conn, InvalidFactionSelected, new object[] { "faction", faction });
-					server.SendLocalizedMessageTo(conn, SupportedFactions, new object[] { "factions", factions.JoinWith(", ") });
+					server.SendFluentMessageTo(conn, InvalidFactionSelected, new object[] { "faction", faction });
+					server.SendFluentMessageTo(conn, SupportedFactions, new object[] { "factions", factions.JoinWith(", ") });
 					return true;
 				}
 
@@ -1147,7 +1147,7 @@ namespace OpenRA.Mods.Common.Server
 			var existingClient = server.LobbyInfo.Clients.FirstOrDefault(cc => cc.SpawnPoint == spawnPoint);
 			if (client != existingClient && !client.IsAdmin)
 			{
-				server.SendLocalizedMessageTo(conn, AdminClearSpawn);
+				server.SendFluentMessageTo(conn, AdminClearSpawn);
 				return true;
 			}
 
@@ -1203,7 +1203,7 @@ namespace OpenRA.Mods.Common.Server
 
 				if (server.LobbyInfo.Clients.Any(cc => cc != client && (cc.SpawnPoint == spawnPoint) && (cc.SpawnPoint != 0)))
 				{
-					server.SendLocalizedMessageTo(conn, SpawnOccupied);
+					server.SendFluentMessageTo(conn, SpawnOccupied);
 					return true;
 				}
 
@@ -1218,7 +1218,7 @@ namespace OpenRA.Mods.Common.Server
 
 					if (spawnLockedByAnotherSlot)
 					{
-						server.SendLocalizedMessageTo(conn, SpawnLocked);
+						server.SendFluentMessageTo(conn, SpawnLocked);
 						return true;
 					}
 				}
@@ -1265,7 +1265,7 @@ namespace OpenRA.Mods.Common.Server
 			{
 				if (!client.IsAdmin)
 				{
-					server.SendLocalizedMessageTo(conn, AdminLobbyInfo);
+					server.SendFluentMessageTo(conn, AdminLobbyInfo);
 					return true;
 				}
 
@@ -1276,7 +1276,7 @@ namespace OpenRA.Mods.Common.Server
 				}
 				catch (Exception)
 				{
-					server.SendLocalizedMessageTo(conn, InvalidLobbyInfo);
+					server.SendFluentMessageTo(conn, InvalidLobbyInfo);
 				}
 
 				return true;
@@ -1427,7 +1427,7 @@ namespace OpenRA.Mods.Common.Server
 				void OnError(string message)
 				{
 					if (connectionToEcho != null && message != null)
-						server.SendLocalizedMessageTo(connectionToEcho, message);
+						server.SendFluentMessageTo(connectionToEcho, message);
 				}
 
 				var terrainColors = server.ModData.DefaultTerrainInfo[server.Map.TileSet].RestrictedPlayerColors.ToList();

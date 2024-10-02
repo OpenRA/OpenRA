@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Server
 
 			lock (masterServerMessages)
 				while (masterServerMessages.Count > 0)
-					server.SendLocalizedMessage(masterServerMessages.Dequeue());
+					server.SendFluentMessage(masterServerMessages.Dequeue());
 		}
 
 		void INotifyServerStart.ServerStarted(S server)
