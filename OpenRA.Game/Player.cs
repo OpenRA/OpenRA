@@ -239,8 +239,8 @@ namespace OpenRA
 				var botInfo = botInfos.First(b => b.Type == BotType);
 				var botsOfSameType = World.Players.Where(c => c.BotType == BotType).ToArray();
 				return FluentProvider.GetString(EnumeratedBotName,
-					FluentBundle.Arguments("name", FluentProvider.GetString(botInfo.Name),
-						"number", botsOfSameType.IndexOf(this) + 1));
+					"name", FluentProvider.GetString(botInfo.Name),
+					"number", botsOfSameType.IndexOf(this) + 1);
 			}
 
 			return PlayerName;

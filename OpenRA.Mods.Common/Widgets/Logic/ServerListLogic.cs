@@ -164,11 +164,11 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mapStatusSearching = FluentProvider.GetString(MapStatusSearching);
 			mapClassificationUnknown = FluentProvider.GetString(MapClassificationUnknown);
 
-			players = new CachedTransform<int, string>(i => FluentProvider.GetString(PlayersLabel, FluentBundle.Arguments("players", i)));
-			bots = new CachedTransform<int, string>(i => FluentProvider.GetString(BotsLabel, FluentBundle.Arguments("bots", i)));
-			spectators = new CachedTransform<int, string>(i => FluentProvider.GetString(SpectatorsLabel, FluentBundle.Arguments("spectators", i)));
+			players = new CachedTransform<int, string>(i => FluentProvider.GetString(PlayersLabel, "players", i));
+			bots = new CachedTransform<int, string>(i => FluentProvider.GetString(BotsLabel, "bots", i));
+			spectators = new CachedTransform<int, string>(i => FluentProvider.GetString(SpectatorsLabel, "spectators", i));
 
-			minutes = new CachedTransform<double, string>(i => FluentProvider.GetString(InProgress, FluentBundle.Arguments("minutes", i)));
+			minutes = new CachedTransform<double, string>(i => FluentProvider.GetString(InProgress, "minutes", i));
 			passwordProtected = FluentProvider.GetString(PasswordProtected);
 			waitingForPlayers = FluentProvider.GetString(WaitingForPlayers);
 			serverShuttingDown = FluentProvider.GetString(ServerShuttingDown);
@@ -318,7 +318,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var playersLabel = widget.GetOrNull<LabelWidget>("PLAYER_COUNT");
 			if (playersLabel != null)
 			{
-				var playersText = new CachedTransform<int, string>(p => FluentProvider.GetString(PlayersOnline, FluentBundle.Arguments("players", p)));
+				var playersText = new CachedTransform<int, string>(p => FluentProvider.GetString(PlayersOnline, "players", p));
 				playersLabel.IsVisible = () => playerCount != 0;
 				playersLabel.GetText = () => playersText.Update(playerCount);
 			}
@@ -582,7 +582,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var p in players)
 			{
 				var label = noTeams ? FluentProvider.GetString(Players) : p.Key > 0
-					? FluentProvider.GetString(TeamNumber, FluentBundle.Arguments("team", p.Key))
+					? FluentProvider.GetString(TeamNumber, "team", p.Key)
 					: FluentProvider.GetString(NoTeam);
 				teams.Add(label, p);
 			}
@@ -765,7 +765,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								if (game.Clients.Length > 10)
 									displayClients = displayClients
 										.Take(9)
-										.Append(FluentProvider.GetString(OtherPlayers, FluentBundle.Arguments("players", game.Clients.Length - 9)));
+										.Append(FluentProvider.GetString(OtherPlayers, "players", game.Clients.Length - 9));
 
 								var tooltip = displayClients.JoinWith("\n");
 								players.GetTooltipText = () => tooltip;

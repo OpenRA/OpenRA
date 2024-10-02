@@ -580,7 +580,7 @@ namespace OpenRA.Server
 
 						Log.Write("server", $"{client.Name} ({newConn.EndPoint}) has joined the game.");
 
-						SendLocalizedMessage(Joined, FluentBundle.Arguments("player", client.Name));
+						SendLocalizedMessage(Joined, "player", client.Name);
 
 						if (Type == ServerType.Dedicated)
 						{
@@ -952,18 +952,18 @@ namespace OpenRA.Server
 				WriteLineWithTimeStamp(text);
 		}
 
-		public void SendLocalizedMessage(string key, Dictionary<string, object> arguments = null)
+		public void SendLocalizedMessage(string key, params object[] args)
 		{
-			var text = FluentMessage.Serialize(key, arguments);
+			var text = FluentMessage.Serialize(key, args);
 			DispatchServerOrdersToClients(Order.FromTargetString("FluentMessage", text, true));
 
 			if (Type == ServerType.Dedicated)
-				WriteLineWithTimeStamp(FluentProvider.GetString(key, arguments));
+				WriteLineWithTimeStamp(FluentProvider.GetString(key, args));
 		}
 
-		public void SendLocalizedMessageTo(Connection conn, string key, Dictionary<string, object> arguments = null)
+		public void SendLocalizedMessageTo(Connection conn, string key, object[] args = null)
 		{
-			var text = FluentMessage.Serialize(key, arguments);
+			var text = FluentMessage.Serialize(key, args);
 			DispatchOrdersToClient(conn, 0, 0, Order.FromTargetString("FluentMessage", text, true).Serialize());
 		}
 
@@ -998,7 +998,7 @@ namespace OpenRA.Server
 						if (!InterpretCommand(o.TargetString, conn))
 						{
 							Log.Write("server", $"Unknown server command: {o.TargetString}");
-							SendLocalizedMessageTo(conn, UnknownServerCommand, FluentBundle.Arguments("command", o.TargetString));
+							SendLocalizedMessageTo(conn, UnknownServerCommand, new object[] { "command", o.TargetString });
 						}
 
 						break;
@@ -1180,14 +1180,14 @@ namespace OpenRA.Server
 				if (State == ServerState.GameStarted)
 				{
 					if (dropClient.IsObserver)
-						SendLocalizedMessage(ObserverDisconnected, FluentBundle.Arguments("player", dropClient.Name));
+						SendLocalizedMessage(ObserverDisconnected, "player", dropClient.Name);
 					else if (dropClient.Team > 0)
-						SendLocalizedMessage(PlayerTeamDisconnected, FluentBundle.Arguments("player", dropClient.Name, "team", dropClient.Team));
+						SendLocalizedMessage(PlayerTeamDisconnected, "player", dropClient.Name, "team", dropClient.Team);
 					else
-						SendLocalizedMessage(PlayerDisconnected, FluentBundle.Arguments("player", dropClient.Name));
+						SendLocalizedMessage(PlayerDisconnected, "player", dropClient.Name);
 				}
 				else
-					SendLocalizedMessage(LobbyDisconnected, FluentBundle.Arguments("player", dropClient.Name));
+					SendLocalizedMessage(LobbyDisconnected, "player", dropClient.Name);
 
 				LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
@@ -1204,7 +1204,7 @@ namespace OpenRA.Server
 					if (nextAdmin != null)
 					{
 						nextAdmin.IsAdmin = true;
-						SendLocalizedMessage(NewAdmin, FluentBundle.Arguments("player", nextAdmin.Name));
+						SendLocalizedMessage(NewAdmin, "player", nextAdmin.Name);
 					}
 				}
 

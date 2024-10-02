@@ -22,12 +22,12 @@ namespace OpenRA.Server
 		readonly Dictionary<int, List<long>> messageTracker = new();
 		readonly Server server;
 		readonly Action<Connection, int, int, byte[]> dispatchOrdersToClient;
-		readonly Action<Connection, string, Dictionary<string, object>> sendLocalizedMessageTo;
+		readonly Action<Connection, string, object[]> sendLocalizedMessageTo;
 
 		public PlayerMessageTracker(
 			Server server,
 			Action<Connection, int, int, byte[]> dispatchOrdersToClient,
-			Action<Connection, string, Dictionary<string, object>> sendLocalizedMessageTo)
+			Action<Connection, string, object[]> sendLocalizedMessageTo)
 		{
 			this.server = server;
 			this.dispatchOrdersToClient = dispatchOrdersToClient;
@@ -56,7 +56,7 @@ namespace OpenRA.Server
 			if (!isAdmin && time < settings.FloodLimitJoinCooldown)
 			{
 				var remaining = CalculateRemaining(settings.FloodLimitJoinCooldown);
-				sendLocalizedMessageTo(conn, ChatTemporaryDisabled, FluentBundle.Arguments("remaining", remaining));
+				sendLocalizedMessageTo(conn, ChatTemporaryDisabled, new object[] { "remaining", remaining });
 				return true;
 			}
 
@@ -64,7 +64,7 @@ namespace OpenRA.Server
 			if (tracker.Count >= settings.FloodLimitMessageCount)
 			{
 				var remaining = CalculateRemaining(tracker[0] + settings.FloodLimitInterval);
-				sendLocalizedMessageTo(conn, ChatTemporaryDisabled, FluentBundle.Arguments("remaining", remaining));
+				sendLocalizedMessageTo(conn, ChatTemporaryDisabled, new object[] { "remaining", remaining });
 				return true;
 			}
 

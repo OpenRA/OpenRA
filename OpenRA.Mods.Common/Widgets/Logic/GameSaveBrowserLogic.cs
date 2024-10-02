@@ -58,7 +58,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		const string OverwriteSavePrompt = "dialog-overwrite-save.prompt";
 
 		[FluentReference]
-		const string OverwriteSaveAccpet = "dialog-overwrite-save.confirm";
+		const string OverwriteSaveAccept = "dialog-overwrite-save.confirm";
 
 		readonly Widget panel;
 		readonly ScrollPanelWidget gameList;
@@ -173,7 +173,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: DeleteSaveTitle,
 					text: DeleteSavePrompt,
-					textArguments: FluentBundle.Arguments("save", Path.GetFileNameWithoutExtension(selectedSave)),
+					textArguments: new object[] { "save", Path.GetFileNameWithoutExtension(selectedSave) },
 					onConfirm: () =>
 					{
 						Delete(selectedSave);
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: DeleteAllSavesTitle,
 					text: DeleteAllSavesPrompt,
-					textArguments: FluentBundle.Arguments("count", games.Count),
+					textArguments: new object[] { "count", games.Count },
 					onConfirm: () =>
 					{
 						foreach (var s in games.ToList())
@@ -293,7 +293,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				TextNotificationsManager.Debug(FluentProvider.GetString(SaveDeletionFailed, FluentBundle.Arguments("savePath", savePath)));
+				TextNotificationsManager.Debug(FluentProvider.GetString(SaveDeletionFailed, "savePath", savePath));
 				Log.Write("debug", ex.ToString());
 				return;
 			}
@@ -373,9 +373,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: OverwriteSaveTitle,
 					text: OverwriteSavePrompt,
-					textArguments: FluentBundle.Arguments("file", saveTextField.Text),
+					textArguments: new object[] { "file", saveTextField.Text },
 					onConfirm: Inner,
-					confirmText: OverwriteSaveAccpet,
+					confirmText: OverwriteSaveAccept,
 					onCancel: () => { });
 			}
 			else

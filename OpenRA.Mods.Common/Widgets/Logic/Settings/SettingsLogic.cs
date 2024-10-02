@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: ResetTitle,
 					text: ResetPrompt,
-					titleArguments: FluentBundle.Arguments("panel", panels[activePanel]),
+					titleArguments: new object[] { "panel", panels[activePanel] },
 					onConfirm: Reset,
 					confirmText: ResetAccept,
 					onCancel: () => { },

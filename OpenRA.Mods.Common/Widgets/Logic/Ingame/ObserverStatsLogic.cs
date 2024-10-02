@@ -286,7 +286,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					tt.IgnoreMouseOver = true;
 
 					var teamLabel = tt.Get<LabelWidget>("TEAM");
-					var teamText = team.Key > 0 ? FluentProvider.GetString(TeamNumber, FluentBundle.Arguments("team", team.Key))
+					var teamText = team.Key > 0 ? FluentProvider.GetString(TeamNumber, "team", team.Key)
 						: FluentProvider.GetString(NoTeam);
 					teamLabel.GetText = () => teamText;
 					tt.Bounds.Width = teamLabel.Bounds.Width = Game.Renderer.Fonts[tt.Font].Measure(teamText).X;

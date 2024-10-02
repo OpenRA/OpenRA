@@ -168,7 +168,7 @@ namespace OpenRA.Mods.Common.Widgets
 			resourceLayer.ClearResources(resourceCell.Cell);
 			resourceLayer.AddResource(resourceCell.NewResourceType, resourceCell.Cell, resourceLayer.GetMaxDensity(resourceCell.NewResourceType));
 			cellResources.Add(resourceCell);
-			Text = FluentProvider.GetString(AddedResource, FluentBundle.Arguments("amount", cellResources.Count, "type", resourceType));
+			Text = FluentProvider.GetString(AddedResource, "amount", cellResources.Count, "type", resourceType);
 		}
 	}
 }

@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using OpenRA.FileSystem;
 
 namespace OpenRA
@@ -32,7 +31,7 @@ namespace OpenRA
 			}
 		}
 
-		public static string GetString(string key, IDictionary<string, object> args = null)
+		public static string GetString(string key, params object[] args)
 		{
 			lock (SyncObject)
 			{
@@ -48,7 +47,7 @@ namespace OpenRA
 			}
 		}
 
-		public static bool TryGetString(string key, out string message, IDictionary<string, object> args = null)
+		public static bool TryGetString(string key, out string message, params object[] args)
 		{
 			lock (SyncObject)
 			{
@@ -65,7 +64,7 @@ namespace OpenRA
 		}
 
 		/// <summary>Should only be used by <see cref="MapPreview"/>.</summary>
-		internal static bool TryGetModString(string key, out string message, IDictionary<string, object> args = null)
+		internal static bool TryGetModString(string key, out string message, params object[] args)
 		{
 			lock (SyncObject)
 			{

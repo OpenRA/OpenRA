@@ -323,7 +323,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						var teamOptions = Enumerable.Range(2, teamCount - 1).Reverse().Select(d => new DropDownOption
 						{
-							Title = FluentProvider.GetString(NumberTeams, FluentBundle.Arguments("count", d)),
+							Title = FluentProvider.GetString(NumberTeams, "count", d),
 							IsSelected = () => false,
 							OnClick = () => orderManager.IssueOrder(Order.Command($"assignteams {d}"))
 						}).ToList();
@@ -539,7 +539,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			chatTextField.OnEscKey = _ => chatTextField.YieldKeyboardFocus();
 
-			chatAvailableIn = new CachedTransform<int, string>(x => FluentProvider.GetString(ChatAvailability, FluentBundle.Arguments("seconds", x)));
+			chatAvailableIn = new CachedTransform<int, string>(x => FluentProvider.GetString(ChatAvailability, "seconds", x));
 			chatDisabled = FluentProvider.GetString(ChatDisabled);
 
 			lobbyChatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");

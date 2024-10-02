@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var panel = widget;
 			panel.Get<ButtonWidget>("ABORT_BUTTON").OnClick = () => { CloseWindow(); onAbort(); };
 
-			var connectingDesc = FluentProvider.GetString(ConnectingToEndpoint, FluentBundle.Arguments("endpoint", endpoint));
+			var connectingDesc = FluentProvider.GetString(ConnectingToEndpoint, "endpoint", endpoint);
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => connectingDesc;
 		}
 
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				onRetry(pass);
 			};
 
-			var connectingDescText = FluentProvider.GetString(CouldNotConnectToTarget, FluentBundle.Arguments("target", connection.Target));
+			var connectingDescText = FluentProvider.GetString(CouldNotConnectToTarget, "target", connection.Target);
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => connectingDescText;
 
 			var connectionError = widget.Get<LabelWidget>("CONNECTION_ERROR");

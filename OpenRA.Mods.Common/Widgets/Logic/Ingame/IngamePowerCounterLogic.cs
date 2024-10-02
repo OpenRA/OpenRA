@@ -41,11 +41,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var tooltipTextCached = new CachedTransform<(int, int?), string>(((int Usage, int? Capacity) args) =>
 			{
 				var capacity = args.Capacity == null ? unlimitedCapacity : args.Capacity.Value.ToString(NumberFormatInfo.CurrentInfo);
-				return FluentProvider.GetString(
-					PowerUsage,
-					FluentBundle.Arguments(
-						"usage", args.Usage.ToString(NumberFormatInfo.CurrentInfo),
-						"capacity", capacity));
+				return FluentProvider.GetString(PowerUsage,
+					"usage", args.Usage.ToString(NumberFormatInfo.CurrentInfo),
+					"capacity", capacity);
 			});
 
 			power.GetTooltipText = () =>

@@ -107,7 +107,7 @@ namespace OpenRA.Server
 				if (!kickee.IsObserver && !server.HasClientWonOrLost(kickee))
 				{
 					// Vote kick cannot be the sole deciding factor for a game.
-					server.SendLocalizedMessageTo(conn, InsufficientVotes, FluentBundle.Arguments("kickee", kickee.Name));
+					server.SendLocalizedMessageTo(conn, InsufficientVotes, new object[] { "kickee", kickee.Name });
 					EndKickVote();
 					return false;
 				}
@@ -135,7 +135,7 @@ namespace OpenRA.Server
 
 				Log.Write("server", $"Vote kick started on {kickeeID}.");
 				voteKickTimer = Stopwatch.StartNew();
-				server.SendLocalizedMessage(VoteKickStarted, FluentBundle.Arguments("kicker", kicker.Name, "kickee", kickee.Name));
+				server.SendLocalizedMessage(VoteKickStarted, "kicker", kicker.Name, "kickee", kickee.Name);
 				server.DispatchServerOrdersToClients(new Order("StartKickVote", null, false) { ExtraData = (uint)kickeeID }.Serialize());
 				this.kickee = (kickee, kickeeConn);
 				voteKickerStarter = (kicker, conn);
@@ -145,7 +145,7 @@ namespace OpenRA.Server
 				voteTracker[conn.PlayerIndex] = vote;
 			else
 			{
-				server.SendLocalizedMessageTo(conn, AlreadyVoted, null);
+				server.SendLocalizedMessageTo(conn, AlreadyVoted);
 				return false;
 			}
 
@@ -168,9 +168,9 @@ namespace OpenRA.Server
 			}
 
 			var votesNeeded = eligiblePlayers / 2 + 1;
-			server.SendLocalizedMessage(VoteKickProgress, FluentBundle.Arguments(
+			server.SendLocalizedMessage(VoteKickProgress,
 				"kickee", kickee.Name,
-				"percentage", votesFor * 100 / eligiblePlayers));
+				"percentage", votesFor * 100 / eligiblePlayers);
 
 			// If a player or players during a vote lose or disconnect, it is possible that a downvote will
 			// kick a client. Guard against that situation.
@@ -210,7 +210,7 @@ namespace OpenRA.Server
 				return;
 
 			if (sendMessage)
-				server.SendLocalizedMessage(VoteKickEnded, FluentBundle.Arguments("kickee", kickee.Client.Name));
+				server.SendLocalizedMessage(VoteKickEnded, "kickee", kickee.Client.Name);
 
 			server.DispatchServerOrdersToClients(new Order("EndKickVote", null, false) { ExtraData = (uint)kickee.Client.Index }.Serialize());
 

@@ -160,8 +160,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						ConfirmationDialogs.ButtonPrompt(modData,
 							title: VoteKickTitle,
 							text: botsCount > 0 ? VoteKickPromptBreakBots : VoteKickPrompt,
-							titleArguments: FluentBundle.Arguments("player", client.Name),
-							textArguments: FluentBundle.Arguments("bots", botsCount),
+							titleArguments: new object[] { "player", client.Name },
+							textArguments: new object[] { "bots", botsCount },
 							onConfirm: () =>
 							{
 								orderManager.IssueOrder(Order.Command($"vote_kick {client.Index} {true}"));
@@ -176,8 +176,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ConfirmationDialogs.ButtonPrompt(modData,
 						title: VoteKickTitle,
 						text: botsCount > 0 ? VoteKickPromptBreakBots : VoteKickPrompt,
-						titleArguments: FluentBundle.Arguments("player", client.Name),
-						textArguments: FluentBundle.Arguments("bots", botsCount),
+						titleArguments: new object[] { "player", client.Name },
+						textArguments: new object[] { "bots", botsCount },
 						onConfirm: () =>
 						{
 							orderManager.IssueOrder(Order.Command($"vote_kick {client.Index} {true}"));
@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ConfirmationDialogs.ButtonPrompt(modData,
 						title: KickTitle,
 						text: KickPrompt,
-						titleArguments: FluentBundle.Arguments("player", client.Name),
+						titleArguments: new object[] { "player", client.Name },
 						onConfirm: () =>
 						{
 							orderManager.IssueOrder(Order.Command($"kick {client.Index} {false}"));
@@ -227,7 +227,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var teamHeader = ScrollItemWidget.Setup(teamTemplate, () => false, () => { });
 					var team = t.Key > 0
-						? FluentProvider.GetString(TeamNumber, FluentBundle.Arguments("team", t.Key))
+						? FluentProvider.GetString(TeamNumber, "team", t.Key)
 						: FluentProvider.GetString(NoTeam);
 					teamHeader.Get<LabelWidget>("TEAM").GetText = () => team;
 					var teamRating = teamHeader.Get<LabelWidget>("TEAM_SCORE");

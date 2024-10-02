@@ -10,7 +10,6 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -21,8 +20,8 @@ namespace OpenRA.Mods.Common.Widgets
 			ModData modData,
 			string title,
 			string text,
-			Dictionary<string, object> titleArguments = null,
-			Dictionary<string, object> textArguments = null,
+			object[] titleArguments = null,
+			object[] textArguments = null,
 			Action onConfirm = null,
 			string confirmText = null,
 			Action onCancel = null,

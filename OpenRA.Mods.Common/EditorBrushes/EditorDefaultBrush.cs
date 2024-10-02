@@ -308,13 +308,13 @@ namespace OpenRA.Mods.Common.Widgets
 			};
 
 			if (selection.Area != null)
-				Text = FluentProvider.GetString(SelectedArea, FluentBundle.Arguments(
-						"x", selection.Area.TopLeft.X,
-						"y", selection.Area.TopLeft.Y,
-						"width", selection.Area.BottomRight.X - selection.Area.TopLeft.X,
-						"height", selection.Area.BottomRight.Y - selection.Area.TopLeft.Y));
+				Text = FluentProvider.GetString(SelectedArea,
+					"x", selection.Area.TopLeft.X,
+					"y", selection.Area.TopLeft.Y,
+					"width", selection.Area.BottomRight.X - selection.Area.TopLeft.X,
+					"height", selection.Area.BottomRight.Y - selection.Area.TopLeft.Y);
 			else if (selection.Actor != null)
-				Text = FluentProvider.GetString(SelectedActor, FluentBundle.Arguments("id", selection.Actor.ID));
+				Text = FluentProvider.GetString(SelectedActor, "id", selection.Actor.ID);
 			else
 				Text = FluentProvider.GetString(ClearedSelection);
 		}
@@ -360,8 +360,7 @@ namespace OpenRA.Mods.Common.Widgets
 				Actor = defaultBrush.Selection.Actor
 			};
 
-			Text = FluentProvider.GetString(RemovedActor,
-				FluentBundle.Arguments("name", actor.Info.Name, "id", actor.ID));
+			Text = FluentProvider.GetString(RemovedActor, "name", actor.Info.Name, "id", actor.ID);
 		}
 
 		public void Execute()
@@ -397,8 +396,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.editorActorLayer = editorActorLayer;
 			this.actor = actor;
 
-			Text = FluentProvider.GetString(RemovedActor,
-				FluentBundle.Arguments("name", actor.Info.Name, "id", actor.ID));
+			Text = FluentProvider.GetString(RemovedActor, "name", actor.Info.Name, "id", actor.ID);
 		}
 
 		public void Execute()
@@ -466,7 +464,7 @@ namespace OpenRA.Mods.Common.Widgets
 			to = worldRenderer.Viewport.ViewToWorld(pixelTo + pixelOffset) + cellOffset;
 			layer.MoveActor(actor, to);
 
-			Text = FluentProvider.GetString(MovedActor, FluentBundle.Arguments("id", actor.ID, "x1", from.X, "y1", from.Y, "x2", to.X, "y2", to.Y));
+			Text = FluentProvider.GetString(MovedActor, "id", actor.ID, "x1", from.X, "y1", from.Y, "x2", to.X, "y2", to.Y);
 		}
 	}
 
@@ -487,7 +485,7 @@ namespace OpenRA.Mods.Common.Widgets
 			this.resourceLayer = resourceLayer;
 			this.cell = cell;
 
-			Text = FluentProvider.GetString(RemovedResource, FluentBundle.Arguments("type", resourceType));
+			Text = FluentProvider.GetString(RemovedResource, "type", resourceType);
 		}
 
 		public void Execute()

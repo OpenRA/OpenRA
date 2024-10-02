@@ -28,9 +28,9 @@ label-players = {$player ->
 		public void TestOne()
 		{
 			var bundle = new FluentBundle("en", pluralForms, e => Console.WriteLine(e.Message));
-			var label = bundle.GetString("label-players", FluentBundle.Arguments("player", 1));
+			var label = bundle.GetString("label-players", new object[] { "player", 1 });
 			Assert.That("One player", Is.EqualTo(label));
-			label = bundle.GetString("label-players", FluentBundle.Arguments("player", 2));
+			label = bundle.GetString("label-players", new object[] { "player", 2 });
 			Assert.That("2 players", Is.EqualTo(label));
 		}
 	}

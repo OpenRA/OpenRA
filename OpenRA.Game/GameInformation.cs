@@ -153,9 +153,8 @@ namespace OpenRA
 			{
 				var number = Players.Where(p => p.BotType == player.BotType).ToList().IndexOf(player) + 1;
 				return FluentProvider.GetString(EnumeratedBotName,
-					FluentBundle.Arguments(
 						"name", FluentProvider.GetString(player.Name),
-						"number", number));
+						"number", number);
 			}
 
 			return player.Name;

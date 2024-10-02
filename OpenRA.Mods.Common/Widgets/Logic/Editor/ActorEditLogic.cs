@@ -454,7 +454,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			Actor = actor;
 			this.handles = handles;
-			Text = FluentProvider.GetString(EditedActor, FluentBundle.Arguments("name", actor.Info.Name, "id", actor.ID));
+			Text = FluentProvider.GetString(EditedActor, "name", actor.Info.Name, "id", actor.ID);
 		}
 
 		public void Execute()
@@ -466,7 +466,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var after = Actor;
 			if (before != after)
-				Text = FluentProvider.GetString(EditedActorId, FluentBundle.Arguments("name", after.Info.Name, "old-id", before.ID, "new-id", after.ID));
+				Text = FluentProvider.GetString(EditedActorId, "name", after.Info.Name, "old-id", before.ID, "new-id", after.ID);
 		}
 
 		public void Do()

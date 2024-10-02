@@ -168,7 +168,8 @@ namespace OpenRA.Mods.Common.Widgets
 		{
 			editorActorPreview = editorLayer.Add(actor);
 			Text = FluentProvider.GetString(AddedActor,
-				FluentBundle.Arguments("name", editorActorPreview.Info.Name, "id", editorActorPreview.ID));
+				"name", editorActorPreview.Info.Name,
+				"id", editorActorPreview.ID);
 		}
 
 		public void Undo()

@@ -346,7 +346,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							catch (Exception e)
 							{
 								Game.RunAfterTick(() => // run on the main thread
-									SetNewsStatus(FluentProvider.GetString(NewsRetrivalFailed, FluentBundle.Arguments("message", e.Message))));
+									SetNewsStatus(FluentProvider.GetString(NewsRetrivalFailed, "message", e.Message)));
 							}
 						});
 					}
@@ -417,7 +417,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				SetNewsStatus(FluentProvider.GetString(NewsParsingFailed, FluentBundle.Arguments("message", ex.Message)));
+				SetNewsStatus(FluentProvider.GetString(NewsParsingFailed, "message", ex.Message));
 			}
 
 			return null;
@@ -438,9 +438,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				titleLabel.GetText = () => item.Title;
 
 				var authorDateTimeLabel = newsItem.Get<LabelWidget>("AUTHOR_DATETIME");
-				var authorDateTime = FluentProvider.GetString(AuthorDateTime, FluentBundle.Arguments(
+				var authorDateTime = FluentProvider.GetString(AuthorDateTime,
 					"author", item.Author,
-					"datetime", item.DateTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)));
+					"datetime", item.DateTime.ToLocalTime().ToString(CultureInfo.CurrentCulture));
 
 				authorDateTimeLabel.GetText = () => authorDateTime;
 

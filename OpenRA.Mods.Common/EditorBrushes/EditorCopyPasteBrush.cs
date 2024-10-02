@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			undoClipboard = CopySelectionContents();
 
-			Text = FluentProvider.GetString(CopiedTiles, FluentBundle.Arguments("amount", clipboard.Tiles.Count));
+			Text = FluentProvider.GetString(CopiedTiles, "amount", clipboard.Tiles.Count);
 		}
 
 		/// <summary>

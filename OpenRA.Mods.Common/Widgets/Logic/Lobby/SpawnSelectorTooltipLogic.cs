@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var labelText = "";
 			string playerFaction = null;
 			var playerTeam = -1;
-			teamMessage = new CachedTransform<int, string>(t => FluentProvider.GetString(TeamNumber, FluentBundle.Arguments("team", t)));
+			teamMessage = new CachedTransform<int, string>(t => FluentProvider.GetString(TeamNumber, "team", t));
 			var disabledSpawn = FluentProvider.GetString(DisabledSpawn);
 			var availableSpawn = FluentProvider.GetString(AvailableSpawn);
 

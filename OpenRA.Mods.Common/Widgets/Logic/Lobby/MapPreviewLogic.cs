@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var authorCache = new CachedTransform<string, string>(
-				text => FluentProvider.GetString(CreatedBy, FluentBundle.Arguments("author", text)));
+				text => FluentProvider.GetString(CreatedBy, "author", text));
 
 			Widget SetupAuthorAndMapType(Widget parent)
 			{
@@ -169,9 +169,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					// Server does not provide the total file length.
 					if (map.DownloadPercentage == 0)
-						return FluentProvider.GetString(Downloading, FluentBundle.Arguments("size", map.DownloadBytes / 1024));
+						return FluentProvider.GetString(Downloading, "size", map.DownloadBytes / 1024);
 
-					return FluentProvider.GetString(DownloadingPercentage, FluentBundle.Arguments("size", map.DownloadBytes / 1024, "progress", map.DownloadPercentage));
+					return FluentProvider.GetString(DownloadingPercentage, "size", map.DownloadBytes / 1024, "progress", map.DownloadPercentage);
 				};
 
 				return parent;

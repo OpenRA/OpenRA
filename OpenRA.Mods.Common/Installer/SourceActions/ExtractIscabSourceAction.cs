@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Installer
 							var displayFilename = Path.GetFileName(Path.GetFileName(targetPath));
 							void OnProgress(int percent) => updateMessage(FluentProvider.GetString(
 								InstallFromSourceLogic.ExtractingProgress,
-								FluentBundle.Arguments("filename", displayFilename, "progress", percent)));
+								"filename", displayFilename, "progress", percent));
 							reader.ExtractFile(node.Value.Value, target, OnProgress);
 						}
 					}

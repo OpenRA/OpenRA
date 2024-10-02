@@ -239,14 +239,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (System.Net.Sockets.SocketException e)
 			{
-				var message = FluentProvider.GetString(ServerCreationFailedPrompt, FluentBundle.Arguments("port", Game.Settings.Server.ListenPort));
+				var message = FluentProvider.GetString(ServerCreationFailedPrompt, "port", Game.Settings.Server.ListenPort);
 
 				// AddressAlreadyInUse (WSAEADDRINUSE)
 				if (e.ErrorCode == 10048)
 					message += "\n" + FluentProvider.GetString(ServerCreationFailedPortUsed);
 				else
-					message += "\n" + FluentProvider.GetString(ServerCreationFailedError,
-						FluentBundle.Arguments("message", e.Message, "code", e.ErrorCode));
+					message += "\n" + FluentProvider.GetString(ServerCreationFailedError, "message", e.Message, "code", e.ErrorCode);
 
 				ConfirmationDialogs.ButtonPrompt(modData, ServerCreationFailedTitle, message,
 					onCancel: () => { }, cancelText: ServerCreationFailedCancel);

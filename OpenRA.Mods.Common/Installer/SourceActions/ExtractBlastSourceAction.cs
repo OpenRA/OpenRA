@@ -68,13 +68,12 @@ namespace OpenRA.Mods.Common.Installer
 
 					Action<long> onProgress = null;
 					if (length < InstallFromSourceLogic.ShowPercentageThreshold)
-						updateMessage(FluentProvider.GetString(
-							InstallFromSourceLogic.Extracing,
-							FluentBundle.Arguments("filename", displayFilename)));
+						updateMessage(FluentProvider.GetString(InstallFromSourceLogic.Extracting,
+							"filename", displayFilename));
 					else
-						onProgress = b => updateMessage(FluentProvider.GetString(
-							InstallFromSourceLogic.ExtractingProgress,
-							FluentBundle.Arguments("filename", displayFilename, "progress", 100 * b / length)));
+						onProgress = b => updateMessage(FluentProvider.GetString(InstallFromSourceLogic.ExtractingProgress,
+							"filename", displayFilename,
+							"progress", 100 * b / length));
 
 					using (var target = File.OpenWrite(targetPath))
 					{

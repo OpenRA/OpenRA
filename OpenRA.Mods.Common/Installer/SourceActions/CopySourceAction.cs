@@ -44,13 +44,12 @@ namespace OpenRA.Mods.Common.Installer
 
 					Action<long> onProgress = null;
 					if (length < InstallFromSourceLogic.ShowPercentageThreshold)
-						updateMessage(FluentProvider.GetString(
-							InstallFromSourceLogic.CopyingFilename,
-							FluentBundle.Arguments("filename", displayFilename)));
+						updateMessage(FluentProvider.GetString(InstallFromSourceLogic.CopyingFilename,
+							"filename", displayFilename));
 					else
-						onProgress = b => updateMessage(FluentProvider.GetString(
-							InstallFromSourceLogic.CopyingFilenameProgress,
-							FluentBundle.Arguments("filename", displayFilename, "progress", 100 * b / length)));
+						onProgress = b => updateMessage(FluentProvider.GetString(InstallFromSourceLogic.CopyingFilenameProgress,
+							"filename", displayFilename,
+							"progress", 100 * b / length));
 
 					InstallerUtils.CopyStream(source, target, length, onProgress);
 				}
