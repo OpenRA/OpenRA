@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Common.Traits
 				ShortGameCheckboxVisible, ShortGameCheckboxDisplayOrder, ShortGameCheckboxEnabled, ShortGameCheckboxLocked);
 
 			var techLevels = map.PlayerActorInfo.TraitInfos<ProvidesTechPrerequisiteInfo>()
-				.ToDictionary(t => t.Id, t => map.GetLocalisedString(t.Name));
+				.ToDictionary(t => t.Id, t => map.GetString(t.Name));
 
 			if (techLevels.Count > 0)
 				yield return new LobbyOption(map, "techlevel",

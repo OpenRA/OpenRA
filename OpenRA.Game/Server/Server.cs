@@ -319,7 +319,7 @@ namespace OpenRA.Server
 
 			MapStatusCache = new MapStatusCache(modData, MapStatusChanged, type == ServerType.Dedicated && settings.EnableLintChecks);
 
-			playerMessageTracker = new PlayerMessageTracker(this, DispatchOrdersToClient, SendLocalizedMessageTo);
+			playerMessageTracker = new PlayerMessageTracker(this, DispatchOrdersToClient, SendFluentMessageTo);
 			VoteKickTracker = new VoteKickTracker(this);
 
 			LobbyInfo = new Session
@@ -580,7 +580,7 @@ namespace OpenRA.Server
 
 						Log.Write("server", $"{client.Name} ({newConn.EndPoint}) has joined the game.");
 
-						SendLocalizedMessage(Joined, "player", client.Name);
+						SendFluentMessage(Joined, "player", client.Name);
 
 						if (Type == ServerType.Dedicated)
 						{
@@ -594,12 +594,12 @@ namespace OpenRA.Server
 						}
 
 						if ((LobbyInfo.GlobalSettings.MapStatus & Session.MapStatus.UnsafeCustomRules) != 0)
-							SendLocalizedMessageTo(newConn, CustomRules);
+							SendFluentMessageTo(newConn, CustomRules);
 
 						if (!LobbyInfo.GlobalSettings.EnableSingleplayer)
-							SendLocalizedMessageTo(newConn, TwoHumansRequired);
+							SendFluentMessageTo(newConn, TwoHumansRequired);
 						else if (Map.Players.Players.Where(p => p.Value.Playable).All(p => !p.Value.AllowBots))
-							SendLocalizedMessageTo(newConn, BotsDisabled);
+							SendFluentMessageTo(newConn, BotsDisabled);
 					}
 				}
 
@@ -952,7 +952,7 @@ namespace OpenRA.Server
 				WriteLineWithTimeStamp(text);
 		}
 
-		public void SendLocalizedMessage(string key, params object[] args)
+		public void SendFluentMessage(string key, params object[] args)
 		{
 			var text = FluentMessage.Serialize(key, args);
 			DispatchServerOrdersToClients(Order.FromTargetString("FluentMessage", text, true));
@@ -961,7 +961,7 @@ namespace OpenRA.Server
 				WriteLineWithTimeStamp(FluentProvider.GetString(key, args));
 		}
 
-		public void SendLocalizedMessageTo(Connection conn, string key, object[] args = null)
+		public void SendFluentMessageTo(Connection conn, string key, object[] args = null)
 		{
 			var text = FluentMessage.Serialize(key, args);
 			DispatchOrdersToClient(conn, 0, 0, Order.FromTargetString("FluentMessage", text, true).Serialize());
@@ -998,7 +998,7 @@ namespace OpenRA.Server
 						if (!InterpretCommand(o.TargetString, conn))
 						{
 							Log.Write("server", $"Unknown server command: {o.TargetString}");
-							SendLocalizedMessageTo(conn, UnknownServerCommand, new object[] { "command", o.TargetString });
+							SendFluentMessageTo(conn, UnknownServerCommand, new object[] { "command", o.TargetString });
 						}
 
 						break;
@@ -1180,14 +1180,14 @@ namespace OpenRA.Server
 				if (State == ServerState.GameStarted)
 				{
 					if (dropClient.IsObserver)
-						SendLocalizedMessage(ObserverDisconnected, "player", dropClient.Name);
+						SendFluentMessage(ObserverDisconnected, "player", dropClient.Name);
 					else if (dropClient.Team > 0)
-						SendLocalizedMessage(PlayerTeamDisconnected, "player", dropClient.Name, "team", dropClient.Team);
+						SendFluentMessage(PlayerTeamDisconnected, "player", dropClient.Name, "team", dropClient.Team);
 					else
-						SendLocalizedMessage(PlayerDisconnected, "player", dropClient.Name);
+						SendFluentMessage(PlayerDisconnected, "player", dropClient.Name);
 				}
 				else
-					SendLocalizedMessage(LobbyDisconnected, "player", dropClient.Name);
+					SendFluentMessage(LobbyDisconnected, "player", dropClient.Name);
 
 				LobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
@@ -1204,7 +1204,7 @@ namespace OpenRA.Server
 					if (nextAdmin != null)
 					{
 						nextAdmin.IsAdmin = true;
-						SendLocalizedMessage(NewAdmin, "player", nextAdmin.Name);
+						SendFluentMessage(NewAdmin, "player", nextAdmin.Name);
 					}
 				}
 

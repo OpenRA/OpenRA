@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Common.Server
 						if (client == null)
 						{
 							server.DropClient(c);
-							server.SendLocalizedMessage(PlayerDropped);
+							server.SendFluentMessage(PlayerDropped);
 							continue;
 						}
 
@@ -68,13 +68,13 @@ namespace OpenRA.Mods.Common.Server
 						{
 							if (!c.TimeoutMessageShown && c.TimeSinceLastResponse > PingInterval * 2)
 							{
-								server.SendLocalizedMessage(ConnectionProblems, "player", client.Name);
+								server.SendFluentMessage(ConnectionProblems, "player", client.Name);
 								c.TimeoutMessageShown = true;
 							}
 						}
 						else
 						{
-							server.SendLocalizedMessage(Timeout, "player", client.Name);
+							server.SendFluentMessage(Timeout, "player", client.Name);
 							server.DropClient(c);
 						}
 					}
@@ -93,7 +93,7 @@ namespace OpenRA.Mods.Common.Server
 							if (client != null)
 							{
 								var timeout = (ConnTimeout - c.TimeSinceLastResponse) / 1000;
-								server.SendLocalizedMessage(TimeoutIn, "player", client.Name, "timeout", timeout);
+								server.SendFluentMessage(TimeoutIn, "player", client.Name, "timeout", timeout);
 							}
 						}
 					}

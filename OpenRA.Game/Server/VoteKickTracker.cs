@@ -76,7 +76,7 @@ namespace OpenRA.Server
 				|| (voteInProgress && this.kickee.Client != kickee) // Disallow starting new votes when one is already ongoing.
 				|| !ClientHasPower(kicker))
 			{
-				server.SendLocalizedMessageTo(conn, UnableToStartAVote);
+				server.SendFluentMessageTo(conn, UnableToStartAVote);
 				return false;
 			}
 
@@ -107,7 +107,7 @@ namespace OpenRA.Server
 				if (!kickee.IsObserver && !server.HasClientWonOrLost(kickee))
 				{
 					// Vote kick cannot be the sole deciding factor for a game.
-					server.SendLocalizedMessageTo(conn, InsufficientVotes, new object[] { "kickee", kickee.Name });
+					server.SendFluentMessageTo(conn, InsufficientVotes, new object[] { "kickee", kickee.Name });
 					EndKickVote();
 					return false;
 				}
@@ -126,7 +126,7 @@ namespace OpenRA.Server
 				{
 					if (time + server.Settings.VoteKickerCooldown > kickeeConn.ConnectionTimer.ElapsedMilliseconds)
 					{
-						server.SendLocalizedMessageTo(conn, UnableToStartAVote);
+						server.SendFluentMessageTo(conn, UnableToStartAVote);
 						return false;
 					}
 					else
@@ -135,7 +135,7 @@ namespace OpenRA.Server
 
 				Log.Write("server", $"Vote kick started on {kickeeID}.");
 				voteKickTimer = Stopwatch.StartNew();
-				server.SendLocalizedMessage(VoteKickStarted, "kicker", kicker.Name, "kickee", kickee.Name);
+				server.SendFluentMessage(VoteKickStarted, "kicker", kicker.Name, "kickee", kickee.Name);
 				server.DispatchServerOrdersToClients(new Order("StartKickVote", null, false) { ExtraData = (uint)kickeeID }.Serialize());
 				this.kickee = (kickee, kickeeConn);
 				voteKickerStarter = (kicker, conn);
@@ -145,7 +145,7 @@ namespace OpenRA.Server
 				voteTracker[conn.PlayerIndex] = vote;
 			else
 			{
-				server.SendLocalizedMessageTo(conn, AlreadyVoted);
+				server.SendFluentMessageTo(conn, AlreadyVoted);
 				return false;
 			}
 
@@ -168,7 +168,7 @@ namespace OpenRA.Server
 			}
 
 			var votesNeeded = eligiblePlayers / 2 + 1;
-			server.SendLocalizedMessage(VoteKickProgress,
+			server.SendFluentMessage(VoteKickProgress,
 				"kickee", kickee.Name,
 				"percentage", votesFor * 100 / eligiblePlayers);
 
@@ -210,7 +210,7 @@ namespace OpenRA.Server
 				return;
 
 			if (sendMessage)
-				server.SendLocalizedMessage(VoteKickEnded, "kickee", kickee.Client.Name);
+				server.SendFluentMessage(VoteKickEnded, "kickee", kickee.Client.Name);
 
 			server.DispatchServerOrdersToClients(new Order("EndKickVote", null, false) { ExtraData = (uint)kickee.Client.Index }.Serialize());
 

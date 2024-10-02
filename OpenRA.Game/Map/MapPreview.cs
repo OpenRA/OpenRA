@@ -227,7 +227,7 @@ namespace OpenRA
 		/// Functionality mirrors <see cref="FluentProvider.GetString"/>, except instead of using
 		/// loaded <see cref="Map"/>'s fluent bundle as backup, we use this <see cref="MapPreview"/>'s.
 		/// </summary>
-		public string GetLocalisedString(string key, object[] args = null)
+		public string GetString(string key, object[] args = null)
 		{
 			// PERF: instead of loading mod level strings per each MapPreview, reuse the already loaded one in FluentProvider.
 			if (FluentProvider.TryGetModString(key, out var message, args))
