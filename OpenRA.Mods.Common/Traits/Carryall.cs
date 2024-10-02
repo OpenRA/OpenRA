@@ -318,9 +318,11 @@ namespace OpenRA.Mods.Common.Traits
 			{
 				if (IsTraitDisabled)
 					yield break;
-
+				var orderPriority = 1;
+				if (State == CarryallState.Carrying)
+					orderPriority = 10;
 				yield return new CarryallPickupOrderTargeter(Info);
-				yield return new DeployOrderTargeter("Unload", 10,
+				yield return new DeployOrderTargeter("Unload", orderPriority,
 				() => CanUnload() ? Info.UnloadCursor : Info.UnloadBlockedCursor);
 				yield return new CarryallDeliverUnitTargeter(aircraftInfo, Info);
 			}
