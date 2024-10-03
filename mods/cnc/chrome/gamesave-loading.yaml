@@ -22,6 +22,7 @@ Container@GAMESAVE_LOADING_SCREEN:
 			ImageCollection: logos
 			ImageName: eva
 		Label@VERSION_LABEL:
+			Logic: VersionLabelLogic
 			X: WINDOW_RIGHT - 128 - 43
 			Y: 116
 			Width: 128

@@ -6,6 +6,7 @@ Container@INGAME_MENU:
 		ButtonStride: 0, 40
 	Children:
 		Label@VERSION_LABEL:
+			Logic: VersionLabelLogic
 			X: WINDOW_RIGHT - 10
 			Y: WINDOW_BOTTOM - 19
 			Align: Right

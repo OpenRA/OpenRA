@@ -69,8 +69,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.modData = modData;
 
 			rootMenu = widget;
-			var versionText = modData.Manifest.Metadata.Version;
-			rootMenu.Get<LabelWidget>("VERSION_LABEL").GetText = () => versionText;
 
 			// Menu buttons
 			var mainMenu = widget.Get("MAIN_MENU");

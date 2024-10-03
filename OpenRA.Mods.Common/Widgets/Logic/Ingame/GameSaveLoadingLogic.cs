@@ -20,13 +20,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			widget.Get<ProgressBarWidget>("PROGRESS").GetPercentage = () => world.GameSaveLoadingPercentage;
 
-			var versionLabel = widget.GetOrNull<LabelWidget>("VERSION_LABEL");
-			if (versionLabel != null)
-			{
-				var versionText = modData.Manifest.Metadata.Version;
-				versionLabel.GetText = () => versionText;
-			}
-
 			var keyhandler = widget.Get<LogicKeyListenerWidget>("CANCEL_HANDLER");
 			keyhandler.AddHandler(e =>
 			{
