@@ -42,35 +42,27 @@ Waypoints = {
 GDI10aTeams = {
 	Art1 = {
 		Units = {ARTY = 2},
-		Orders = {
-			{Move = 0},{Move = 2},{Move = 3},{Move = 4},{Move = 5},{Move = 6},
-			{Attack_Base = 30}},
+		Attack_Base = {Wait = 30, Waypoints = {0, 2, 3, 4, 5, 6}},
 	},
 	Auto1 = {
 		Units = {BGGY = 2},
-		Orders = {{Move = 11}, {Move = 12}, {Move = 0}, {Move = 7}, {Move = 8},
-			{Move = 9}, {Move = 10}, {Attack_Units = 30}},
+		Attack_Units = {Wait = 30, Waypoints = {11, 12, 0, 7, 8, 9, 10}},
 	},
 	Move = {
 		Units = {e3 = 4},
-		--Orders = {{Move = 18}, {Guard = 1}, {Move = 19}, {Guard = 1}, {Loop = 0}},
 		Patrol = {Wait = 1, Waypoints = {18, 19}},
-		--	waypoint18, waypoint19 -- Patrol?
 	},
 	Nod1 = {
 		Units = {e3 = 2, e4 = 2},
-		Orders = {{Move = 11}, {Move = 12}, {Move = 0}, {Move = 2}, {Move = 13},
-			{Move = 14}, {Move = 15}, {Attack_Units = 50}},
+		Attack_Units = {Wait = 50, Waypoints = {11, 12, 0, 2, 13, 14, 15}},
 	},
 	Nod3 = {
 		Units = {e3 = 2, e4 = 2},
-		Orders = {{Move = 11}, {Move = 12}, {Move = 0}, {Move = 13}, {Move = 14},
-			{Move = 15}, {Attack_Units = 30}},
+		Attack_Units = {Wait = 30, Waypoints = {11, 12, 0, 13, 14, 15}},
 	},
 	Nod12 = {
 		Units = {ltnk = 1, bggy = 1},
-		Orders = {{Move = 11}, {Move = 12}, {Move = 0}, {Move = 2}, {Move = 13},
-			{Move = 14}, {Move = 15}, {Attack_Base = 40}},
+		Attack_Base = {Wait = 40, Waypoints = {11, 12, 0, 2, 13, 14, 15}},
 	},
 }
 
