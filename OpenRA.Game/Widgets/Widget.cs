@@ -293,8 +293,6 @@ namespace OpenRA.Widgets
 			substitutions.Add("WINDOW_RIGHT", Game.Renderer.Resolution.Width);
 			substitutions.Add("WINDOW_BOTTOM", Game.Renderer.Resolution.Height);
 			substitutions.Add("PARENT_RIGHT", parentBounds.Width);
-			substitutions.Add("PARENT_LEFT", parentBounds.Left);
-			substitutions.Add("PARENT_TOP", parentBounds.Top);
 			substitutions.Add("PARENT_BOTTOM", parentBounds.Height);
 
 			var readOnlySubstitutions = new ReadOnlyDictionary<string, int>(substitutions);

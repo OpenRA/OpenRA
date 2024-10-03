@@ -520,8 +520,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{ "WINDOW_RIGHT", Game.Renderer.Resolution.Width },
 				{ "WINDOW_BOTTOM", Game.Renderer.Resolution.Height },
 				{ "PARENT_RIGHT", parentBounds.Width },
-				{ "PARENT_LEFT", parentBounds.Left },
-				{ "PARENT_TOP", parentBounds.Top },
 				{ "PARENT_BOTTOM", parentBounds.Height }
 			};
 
