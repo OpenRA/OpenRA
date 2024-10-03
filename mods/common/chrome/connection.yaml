@@ -162,4 +162,3 @@ Background@CONNECTION_SWITCHMOD_PANEL:
 			Text: button-connection-switchmod-panel-abort
 			Font: Bold
 			Key: escape
-

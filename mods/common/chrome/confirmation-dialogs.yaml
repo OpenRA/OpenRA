@@ -119,4 +119,3 @@ Background@TEXT_INPUT_PROMPT:
 			Text: button-cancel
 			Font: Bold
 			Key: escape
-
