@@ -274,5 +274,6 @@ Container@MAINMENU:
 					Shadow: true
 					Text: label-update-notice-b
 		Container@PLAYER_PROFILE_CONTAINER:
+			Logic: LoadLocalPlayerProfileLogic
 			X: 25
 			Y: 25
