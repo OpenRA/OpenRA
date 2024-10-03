@@ -15,6 +15,9 @@ World:
 			normal: options-difficulty.normal
 			hard: options-difficulty.hard
 		Default: normal
+	Locomotor@IMMOBILE:
+		Name: immobile
+		TerrainSpeeds:
 
 powerproxy.paratroopers:
 	ParatroopersPower:
