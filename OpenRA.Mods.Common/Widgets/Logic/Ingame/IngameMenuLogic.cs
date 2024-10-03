@@ -187,9 +187,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			mpe = world.WorldActor.TraitOrDefault<MenuPostProcessEffect>();
 			mpe?.Fade(mpe.Info.MenuEffect);
 
-			var versionText = modData.Manifest.Metadata.Version;
-			menu.Get<LabelWidget>("VERSION_LABEL").GetText = () => versionText;
-
 			buttonContainer = menu.Get("MENU_BUTTONS");
 			buttonTemplate = buttonContainer.Get<ButtonWidget>("BUTTON_TEMPLATE");
 			buttonContainer.RemoveChild(buttonTemplate);

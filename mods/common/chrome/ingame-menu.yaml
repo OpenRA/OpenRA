@@ -17,6 +17,7 @@ Container@INGAME_MENU:
 			ImageCollection: logos
 			ImageName: logo
 		Label@VERSION_LABEL:
+			Logic: VersionLabelLogic
 			X: WINDOW_RIGHT - 296
 			Y: 296 - 19
 			Width: 296 - 20

@@ -10,6 +10,7 @@ Container@MAINMENU:
 				TakeScreenshotKey: TakeScreenshot
 				MuteAudioKey: ToggleMute
 		Label@VERSION_LABEL:
+			Logic: VersionLabelLogic
 			X: WINDOW_RIGHT - 10
 			Y: WINDOW_BOTTOM - 19
 			Align: Right
