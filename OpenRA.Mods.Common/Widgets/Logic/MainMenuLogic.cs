@@ -255,16 +255,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					menuType != MenuType.StartupPrompts &&
 					webServices.ModVersionStatus == ModVersionStatus.Outdated;
 
-			var playerProfile = widget.GetOrNull("PLAYER_PROFILE_CONTAINER");
-			if (playerProfile != null)
-			{
-				Func<bool> minimalProfile = () => Ui.CurrentWindow() != null;
-				Game.LoadWidget(world, "LOCAL_PROFILE_PANEL", playerProfile, new WidgetArgs()
-				{
-					{ "minimalProfile", minimalProfile }
-				});
-			}
-
 			menuType = MenuType.StartupPrompts;
 
 			void OnIntroductionComplete()
