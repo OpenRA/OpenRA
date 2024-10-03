@@ -88,9 +88,6 @@
 		TerrainSpeeds:
 			Water: 100
 			Beach: 70
-	Locomotor@IMMOBILE:
-		Name: immobile
-		TerrainSpeeds:
 	TerrainRenderer:
 	ChronoVortexRenderer:
 	ShroudRenderer:
