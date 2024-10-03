@@ -228,4 +228,3 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 			Text: button-multiplayer-createserver-panel-create
 			Font: Bold
 		TooltipContainer@TOOLTIP_CONTAINER:
-
