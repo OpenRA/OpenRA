@@ -8,11 +8,100 @@
 ]]
 
 -- Destroy all to unlock airstrike
-SamSites = { sam1, sam2, sam3, sam4 }
+Air1_DestroyAll = { sam1, sam2, sam3, sam4 }
 
 -- Buildings to rebuild if destroyed
 RebuildableStructs = { gun1, gun2, gun3, gun4, obelisk1, power1, power2, power3, power4,
 	power5, power6, power7, power8, airfield, hand, refinery }
+
+-- Kludge
+Waypoints = {
+	waypoint0  = waypoint0,
+	waypoint1  = waypoint1,
+	waypoint2  = waypoint2,
+	waypoint3  = waypoint3,
+	waypoint4  = waypoint4,
+	waypoint5  = waypoint5,
+	waypoint6  = waypoint6,
+	waypoint7  = waypoint7,
+	waypoint8  = waypoint8,
+	waypoint9  = waypoint9,
+	waypoint10 = waypoint10,
+	waypoint11 = waypoint11,
+	waypoint12 = waypoint12,
+	waypoint13 = waypoint13,
+	waypoint14 = waypoint14,
+	waypoint15 = waypoint15,
+	--waypoint16 = waypoint16,
+	waypoint17 = waypoint17,
+	waypoint18 = waypoint18,
+	waypoint19 = waypoint19,
+}
+
+-- Teams
+GDI10aTeams = {
+	Art1 = {
+		Units = {ARTY = 2},
+		Orders = {
+			{Move = 0},{Move = 2},{Move = 3},{Move = 4},{Move = 5},{Move = 6},
+			{Attack_Base = 30}},
+	},
+	Auto1 = {
+		Units = {BGGY = 2},
+		Orders = {{Move = 11}, {Move = 12}, {Move = 0}, {Move = 7}, {Move = 8},
+			{Move = 9}, {Move = 10}, {Attack_Units = 30}},
+	},
+	Move = {
+		Units = {e3 = 4},
+		--Orders = {{Move = 18}, {Guard = 1}, {Move = 19}, {Guard = 1}, {Loop = 0}},
+		Patrol = {Wait = 1, Waypoints = {18, 19}},
+		--	waypoint18, waypoint19 -- Patrol?
+	},
+	Nod1 = {
+		Units = {e3 = 2, e4 = 2},
+		Orders = {{Move = 11}, {Move = 12}, {Move = 0}, {Move = 2}, {Move = 13},
+			{Move = 14}, {Move = 15}, {Attack_Units = 50}},
+	},
+	Nod3 = {
+		Units = {e3 = 2, e4 = 2},
+		Orders = {{Move = 11}, {Move = 12}, {Move = 0}, {Move = 13}, {Move = 14},
+			{Move = 15}, {Attack_Units = 30}},
+	},
+	Nod12 = {
+		Units = {ltnk = 1, bggy = 1},
+		Orders = {{Move = 11}, {Move = 12}, {Move = 0}, {Move = 2}, {Move = 13},
+			{Move = 14}, {Move = 15}, {Attack_Base = 40}},
+	},
+}
+
+-- "Create Team" Triggers
+GDI10aTriggers = {
+	Atk5 = {
+		Action = 'Create Team',
+		Interval = DateTime.Minutes(6),
+		Team = GDI10aTeams.Nod1,
+	},
+	Atk6 = {
+		Action = 'Create Team',
+		Interval = DateTime.Minutes(15),
+		Team = GDI10aTeams.Nod3,
+	},
+	Atk7 = {
+		Action = 'Create Team',
+		Interval = DateTime.Minutes(10),
+		Team = GDI10aTeams.Nod12,
+	},
+	Atk8 = {
+		Action = 'Create Team',
+		Interval = DateTime.Minutes(20),
+		Team = GDI10aTeams.Nod12,
+	},
+	Move = {
+		Action = 'Create Team',
+		Interval = DateTime.Seconds(3 * 6),
+		Team = GDI10aTeams.Move,
+	},
+}
 
 -- Attack waves
 AttackPaths =
@@ -35,23 +124,6 @@ ArmorProducer.ModelGroups = {
 	{ "arty", "arty" },
 	{ "bggy", "ltnk" },
 	{ "ltnk", "ltnk" },
-}
--- Two ARTY no auto-create
-local art1Waypoints = { -- Attack Base 30
-	waypoint0, waypoint2, waypoint3, waypoint4, waypoint5, waypoint6
-}
--- Two BGGY auto-create
-local auto1Waypoints = { -- Attack Units 30
-	waypoint11, waypoint12, waypoint0, waypoint7, waypoint8, waypoint9,
-	waypoint10
-}
--- Two E1, one LTNK
-local auto2Waypoints = { -- Patrol?
-	waypoint11, waypoint0, waypoint3, waypoint0, waypoint7
-}
--- Four E3
-local moveWaypoints = { -- Patrol?
-	waypoint18, waypoint19
 }
 ArmorProducer.AttackPaths = AttackPaths
 ArmorProducer.AttackGrp = {}
@@ -83,7 +155,7 @@ WorldLoaded = function()
 
 	AirSupport = AddSecondaryObjective(GDI, "destroy-sams")
 	-- Trigger air1
-	Trigger.OnAllKilled(SamSites, function()
+	Air1 = Trigger.OnAllKilled(Air1_DestroyAll, function()
 		GDI.MarkCompletedObjective(AirSupport)
 		Actor.Create("airstrike.proxy", true, { Owner = GDI })
 	end)
@@ -101,7 +173,16 @@ WorldLoaded = function()
 		end
 	end)
 
+	print('World Loaded!!!!!!')
 	Base.Init(Nod, RebuildableStructs, waypoint11.Location)
+
+	Teams.Init(Nod)
+	Triggers.Init(GDI10aTriggers)
+	--[[
+	Utils.Do(team, function(team)
+		Teams.CreateTeam(team)
+	end)
+	]]
 
 	--[[
 	Two light tanks attack as GDI approaches the Nod base from the valley's
@@ -112,7 +193,7 @@ WorldLoaded = function()
 		2647, 2646, 2645, 2595, 2594, 2593, 2592, 2591, 2590, 2589, 2588, 2587,
 		2586, 2585, 2584, 2583, 2582, 2581,
 	})
-	local atk4 = Trigger.OnEnteredFootprint(cellTriggers_atk4, function(actor, id)
+	Atk4 = Trigger.OnEnteredFootprint(cellTriggers_atk4, function(actor, id)
 		if actor.Owner == GDI then
 			-- Create team nod10: two light tanks
 			local candidates = Nod.GetActorsByType('ltnk')

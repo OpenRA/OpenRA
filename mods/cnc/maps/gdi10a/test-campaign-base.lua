@@ -46,14 +46,15 @@ CPos = {
 
 -- Mock DateTime
 DateTime = {
+    _MockTickRate = 25;
     Seconds = function(s)
-        return s
+        return _MockTickRate * s
     end;
     Minutes = function(m)
-        return 60 * m
+        return MockTickRate * 60 * m
     end;
     Hours = function(h)
-        return 3600 * h
+        return MockTickRate * 3600 * h
     end;
 }
 

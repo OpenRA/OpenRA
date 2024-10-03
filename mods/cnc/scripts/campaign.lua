@@ -139,6 +139,20 @@ MoveAndIdle = function(actors, path)
 	end)
 end
 
+Patrol = function(actors, path, waitTicks)
+	Utils.Do(actors, function(actor)
+		if not actor or actor.IsDead then
+			return
+		end
+
+		local locations = {}
+		for idx, point in ipairs(path) do
+			table.insert(locations, point.Location)
+		end
+		actor.Patrol(locations, true, waitTicks)
+	end)
+end
+
 Searches = 0
 GetAirstrikeTarget = function(player)
 	local list = player.GetGroundAttackers()

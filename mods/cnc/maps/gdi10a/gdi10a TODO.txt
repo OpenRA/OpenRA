@@ -1,24 +1,24 @@
 - Implement triggers for respective infantry teams:
-    - atk1 & nod1 Evt:Discovered simplify one-time damaged
-    - atk2 & nod2 Evt:Discovered simplify one-time damaged
-    - atk3 & nod9 Evt:Discovered simplify one-time damaged
+    - Trig:atk1 Team:nod1 Evt:Discovered simplify one-time damaged
+    - Trig:atk2 Team:nod2 Evt:Discovered simplify one-time damaged
+    - Trig:atk3 Team:nod9 Evt:Discovered simplify one-time damaged
 
 - Trigger arty with team art1 to the northwest cliffs
-    - TeamTypes     art1=BadGuy,1,0,0,0,0,15,0,0,0,1,ARTY:2,7,Move:0,Move:2,Move:3,Move:4,Move:5,Move:6,Attack Base:30,0,0
-    - Triggers      arty=Time,Create Team,50,BadGuy,art1,0
+    - Trigger   arty=Time,Create Team,50,BadGuy,art1,0
+    - Team      art1=BadGuy,1,0,0,0,0,15,0,0,0,1,ARTY:2,7,Move:0,Move:2,Move:3,Move:4,Move:5,Move:6,Attack Base:30,0,0
 
 - Trigger hunt: After losing the Obelisk, Refinery, Hand, Airstrip, Construction Yard, and the five power plants between cell 48:47 and cell 51:56:
     - Nod orders all units to hunt. Trigger: hunt.
     - An original limitation is that the only the prebuilt structures count toward this. As an example, Nod still hunted if they lost the other structures but had a rebuilt Refinery.
-    - Triggers      hunt=Destroyed,All to Hunt,0,None,None,1
+    - Trigger       hunt=Destroyed,All to Hunt,0,None,None,1
 
 - Trigger atk4: Two Light Tanks are ordered to attack as GDI approaches the Nod base from the valley's southern exit. Trigger atk4 with team nod10.
     Trigger         atk4=Player Enters,Create Team,0,GoodGuy,nod10,0
-    TeamTypes       nod10=BadGuy,1,0,0,0,0,15,0,0,0,1,LTNK:2,7,Move:11,Move:12,Move:0,Move:7,Move:8,Move:19,Attack Base:30,0,0
+    Team            nod10=BadGuy,1,0,0,0,0,15,0,0,0,1,LTNK:2,7,Move:11,Move:12,Move:0,Move:7,Move:8,Move:19,Attack Base:30,0,0
     { 'ltnk', 'ltnk' }
 
 - Trigger move: Shortly after the mission starts, Nod orders a Bazooka group to patrol in front of their base entrance. The team can request replacement members from idle infantry, but they are more often just produced on-demand. (Trigger move with team move.)
-    - Triggers      move=Time,Create Team,3,BadGuy,move,0
+    - Trigger       move=Time,Create Team,3,BadGuy,move,0
     - Team          move=BadGuy,1,0,0,0,0,15,0,0,0,1,E3:4,5,Move:18,Guard:1,Move:19,Guard:1,Loop:0,1,0
     { 'e3', 'e3', 'e3', 'e3' }
 
@@ -27,21 +27,24 @@
 - Trigger atk6: After  15 minutes create team nod3 {'e3', 'e3', 'e4', 'e4'}
 - Trigger atk7: After  10 minutes create team nod12 {'ltnk', 'bggy'}
 - Trigger atk8: After  20 minutes create team nod12 {'ltnk', 'bggy'}
-- Trigger move: After 0.3 minutes create team move
+- Trigger move: After 0.3 minutes create team move {'E3' = 4}
 
 From original mission scg10ea.ini:
 
 [TeamTypes]
 auto2=BadGuy,1,0,0,1,0,15,1,0,0,2,E1:2,LTNK:1,10,Move:11,Move:0,Guard:2,Move:3,Guard:2,Move:0,Guard:2,Move:7,Guard:2,Loop:1,0,0
 nod12=BadGuy,1,0,0,0,0,15,0,0,0,2,LTNK:1,BGGY:1,8,Move:11,Move:12,Move:0,Move:2,Move:13,Move:14,Move:15,Attack Base:40,0,0
+move=BadGuy,1,0,0,0,0,15,0,0,0,1,E3:4,5,Move:18,Guard:1,Move:19,Guard:1,Loop:0,1,0
 auto1=BadGuy,1,0,0,1,0,15,1,0,0,1,BGGY:2,8,Move:11,Move:12,Move:0,Move:7,Move:8,Move:9,Move:10,Attack Units:30,0,0
 nod11=BadGuy,1,0,0,0,0,15,0,0,0,2,E1:4,E4:2,7,Move:11,Move:12,Move:0,Move:7,Move:8,Move:19,Attack Base:30,0,0
+nod10=BadGuy,1,0,0,0,0,15,0,0,0,1,LTNK:2,7,Move:11,Move:12,Move:0,Move:7,Move:8,Move:19,Attack Base:30,0,0
 nod9=BadGuy,1,0,0,0,0,15,0,0,0,2,E3:3,BGGY:1,6,Move:11,Move:12,Move:0,Move:13,Move:14,Attack Units:40,0,0
 nod8=BadGuy,1,0,0,1,0,15,1,0,0,1,E3:4,9,Move:11,Move:12,Move:0,Move:2,Move:3,Move:4,Move:5,Move:6,Attack Base:50,0,0
 nod7=BadGuy,1,0,0,1,0,15,1,0,0,2,E3:2,E4:3,6,Move:11,Move:12,Move:0,Move:13,Move:14,Attack Units:30,0,0
 nod6=BadGuy,1,0,0,1,0,15,1,0,0,1,LTNK:2,8,Move:11,Move:0,Move:12,Move:7,Move:8,Move:9,Move:10,Attack Base:40,0,0
 nod3=BadGuy,1,0,0,1,0,15,1,0,0,2,E3:2,E4:2,7,Move:11,Move:12,Move:0,Move:13,Move:14,Move:15,Attack Units:30,0,0
 nod1=BadGuy,1,0,0,0,0,15,0,0,0,2,E3:2,E4:2,8,Move:11,Move:12,Move:0,Move:2,Move:13,Move:14,Move:15,Attack Units:50,0,1
+art1=BadGuy,1,0,0,0,0,15,0,0,0,1,ARTY:2,7,Move:0,Move:2,Move:3,Move:4,Move:5,Move:6,Attack Base:30,0,0
 nod2=BadGuy,1,0,0,0,0,15,0,0,0,2,E3:2,E4:2,8,Move:11,Move:12,Move:0,Move:7,Move:8,Move:9,Move:10,Attack Base:50,0,1
 nod4=BadGuy,1,0,0,1,0,15,1,0,0,2,E1:2,E3:2,8,Move:11,Move:0,Move:12,Move:7,Move:8,Move:9,Move:10,Attack Base:30,0,0
 nod5=BadGuy,1,0,0,1,0,15,1,0,0,1,ARTY:2,9,Move:11,Move:0,Move:12,Move:2,Move:3,Move:4,Move:5,Move:6,Attack Base:30,0,0
@@ -49,13 +52,20 @@ nod5=BadGuy,1,0,0,1,0,15,1,0,0,1,ARTY:2,9,Move:11,Move:0,Move:12,Move:2,Move:3,M
 [Triggers]
 atk8=Time,Create Team,200,BadGuy,nod12,0
 atk7=Time,Create Team,100,BadGuy,nod12,0
+move=Time,Create Team,3,BadGuy,move,0
 atk6=Time,Create Team,150,BadGuy,nod3,0
 atk5=Time,Create Team,60,BadGuy,nod1,0
+atk4=Player Enters,Create Team,0,GoodGuy,nod10,0
+atk3=Discovered,Create Team,0,None,nod9,0
+atk2=Discovered,Create Team,0,None,nod2,0
+atk1=Discovered,Create Team,0,None,nod1,0
 air1=Destroyed,Airstrike,0,None,None,1
 lose=All Destr.,Lose,0,GoodGuy,None,0
 win=All Destr.,Win,0,BadGuy,None,0
 prd1=Time,Production,0,BadGuy,None,0
+arty=Time,Create Team,50,BadGuy,art1,0
 auto=Discovered,Autocreate,0,None,None,0
+hunt=Destroyed,All to Hunt,0,None,None,1
 
 [CellTriggers]
 2659=atk4
@@ -118,3 +128,20 @@ for i = 1, #CellTriggers_atk4 do
     print("(" .. CellTriggers_atk4[i][1] .. ", " .. CellTriggers_atk4[i][2] .. ")")
 end
 
+
+
+
+
+-- Two ARTY no auto-create
+Art1Waypoints = { -- Attack Base 30
+	waypoint0, waypoint2, waypoint3, waypoint4, waypoint5, waypoint6
+}
+-- Two BGGY auto-create
+Auto1Waypoints = { -- Attack Units 30
+	waypoint11, waypoint12, waypoint0, waypoint7, waypoint8, waypoint9,
+	waypoint10
+}
+-- Two E1, one LTNK
+Auto2Waypoints = { -- Patrol?
+	waypoint11, waypoint0, waypoint3, waypoint0, waypoint7
+}
