@@ -4,13 +4,12 @@ Container@HPF_OVERLAY:
 	Height: 60
 	Children:
 		DropDownButton@HPF_OVERLAY_LOCOMOTOR:
-			Y: PARENT_TOP
 			Width: PARENT_RIGHT
 			Height: 25
 			Text: dropdownbutton-hpf-overlay-locomotor
 			Font: Regular
 		DropDownButton@HPF_OVERLAY_CHECK:
-			Y: PARENT_TOP + 35
+			Y: 35
 			Width: PARENT_RIGHT
 			Height: 25
 			Text: dropdownbutton-hpf-overlay-check
