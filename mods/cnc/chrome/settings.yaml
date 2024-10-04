@@ -7,13 +7,13 @@ Container@SETTINGS_PANEL:
 			INPUT_PANEL: Input
 			HOTKEYS_PANEL: Hotkeys
 			ADVANCED_PANEL: Advanced
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 640
 	Height: 435
 	Children:
 		Label@SETTINGS_LABEL_TITLE:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Y: 0 - 34
 			Font: BigBold
@@ -22,13 +22,13 @@ Container@SETTINGS_PANEL:
 			Text: button-settings-title
 		Button@BACK_BUTTON:
 			Key: escape
-			Y: PARENT_BOTTOM - 1
+			Y: PARENT_HEIGHT - 1
 			Width: 140
 			Height: 35
 			Text: button-back
 		Button@RESET_BUTTON:
 			X: 150
-			Y: PARENT_BOTTOM - 1
+			Y: PARENT_HEIGHT - 1
 			Width: 140
 			Height: 35
 			Text: button-settings-panel-reset
@@ -39,13 +39,13 @@ Container@SETTINGS_PANEL:
 					Width: 140
 					Height: 35
 		Background@PANEL_CONTAINER:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Background: panel-black
 			Children:
 				Container@PANEL_TEMPLATE:
 					X: 15
 					Y: 15
-					Width: PARENT_RIGHT - 30
-					Height: PARENT_BOTTOM - 30
+					Width: PARENT_WIDTH - 30
+					Height: PARENT_HEIGHT - 30
 		TooltipContainer@SETTINGS_TOOLTIP_CONTAINER:

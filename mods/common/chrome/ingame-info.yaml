@@ -1,22 +1,22 @@
 Container@GAME_INFO_PANEL:
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 580
 	Height: 500
 	Logic: GameInfoLogic
 	Visible: False
 	Children:
 		Background@BACKGROUND:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 		Label@TITLE:
 			Y: 21
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Align: Center
 			Font: Bold
 		Container@TAB_CONTAINER_2:
-			X: (PARENT_RIGHT - WIDTH) / 2
+			X: (PARENT_WIDTH - WIDTH) / 2
 			Width: 280
 			Height: 25
 			Visible: False
@@ -33,7 +33,7 @@ Container@GAME_INFO_PANEL:
 					Height: 25
 					Font: Bold
 		Container@TAB_CONTAINER_3:
-			X: (PARENT_RIGHT - WIDTH) / 2
+			X: (PARENT_WIDTH - WIDTH) / 2
 			Width: 360
 			Height: 25
 			Visible: False
@@ -56,7 +56,7 @@ Container@GAME_INFO_PANEL:
 					Height: 25
 					Font: Bold
 		Container@TAB_CONTAINER_4:
-			X: (PARENT_RIGHT - WIDTH) / 2
+			X: (PARENT_WIDTH - WIDTH) / 2
 			Width: 480
 			Height: 25
 			Visible: False
@@ -85,7 +85,7 @@ Container@GAME_INFO_PANEL:
 					Height: 25
 					Font: Bold
 		Container@TAB_CONTAINER_5:
-			X: (PARENT_RIGHT - WIDTH) / 2
+			X: (PARENT_WIDTH - WIDTH) / 2
 			Width: 480
 			Height: 25
 			Visible: False
@@ -123,20 +123,20 @@ Container@GAME_INFO_PANEL:
 			Y: 65
 		Container@MAP_PANEL:
 			Y: 65
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 		Container@OBJECTIVES_PANEL:
 			Y: 65
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 		Container@DEBUG_PANEL:
 			Y: 65
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 		Container@CHAT_PANEL:
 			Y: 65
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 		Container@LOBBY_OPTIONS_PANEL:
 			Y: 65
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT

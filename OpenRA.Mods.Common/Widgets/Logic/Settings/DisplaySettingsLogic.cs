@@ -517,10 +517,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var substitutions = new Dictionary<string, int>
 			{
-				{ "WINDOW_RIGHT", Game.Renderer.Resolution.Width },
-				{ "WINDOW_BOTTOM", Game.Renderer.Resolution.Height },
-				{ "PARENT_RIGHT", parentBounds.Width },
-				{ "PARENT_BOTTOM", parentBounds.Height }
+				{ "WINDOW_WIDTH", Game.Renderer.Resolution.Width },
+				{ "WINDOW_HEIGHT", Game.Renderer.Resolution.Height },
+				{ "PARENT_WIDTH", parentBounds.Width },
+				{ "PARENT_HEIGHT", parentBounds.Height }
 			};
 
 			var readOnlySubstitutions = new ReadOnlyDictionary<string, int>(substitutions);

@@ -1,12 +1,12 @@
 Container@DIRECTCONNECT_PANEL:
 	Logic: DirectConnectLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 90) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - 90) / 2
 	Width: 370
 	Height: 125
 	Children:
 		Label@DIRECTCONNECT_LABEL_TITLE:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Y: 0 - 34
 			Font: BigBold

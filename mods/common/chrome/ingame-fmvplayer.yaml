@@ -1,10 +1,10 @@
 Background@FMVPLAYER:
-	Width: WINDOW_RIGHT
-	Height: WINDOW_BOTTOM
+	Width: WINDOW_WIDTH
+	Height: WINDOW_HEIGHT
 	Background: dialog5
 	Children:
 		VideoPlayer@PLAYER:
 			X: 0
 			Y: 0
-			Width: WINDOW_RIGHT
-			Height: WINDOW_BOTTOM
+			Width: WINDOW_WIDTH
+			Height: WINDOW_HEIGHT

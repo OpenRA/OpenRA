@@ -1,13 +1,13 @@
 Background@MULTIPLAYER_PANEL:
 	Logic: MultiplayerLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 900
 	Height: 600
 	Children:
 		Label@TITLE:
 			Y: 16
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Text: label-multiplayer-title
 			Align: Center
@@ -15,8 +15,8 @@ Background@MULTIPLAYER_PANEL:
 		Container@LABEL_CONTAINER:
 			X: 20
 			Y: 43
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Children:
 				Label@NAME:
 					X: 5
@@ -53,21 +53,21 @@ Background@MULTIPLAYER_PANEL:
 			Children:
 				Label@OUTDATED_VERSION_LABEL:
 					X: 5
-					Width: PARENT_RIGHT - 10
+					Width: PARENT_WIDTH - 10
 					Height: 20
 					Align: Center
 					Text: label-notice-container-outdated-version
 					Font: TinyBold
 				Label@UNKNOWN_VERSION_LABEL:
 					X: 5
-					Width: PARENT_RIGHT - 10
+					Width: PARENT_WIDTH - 10
 					Height: 20
 					Align: Center
 					Text: label-notice-container-unknown-version
 					Font: TinyBold
 				Label@PLAYTEST_AVAILABLE_LABEL:
 					X: 5
-					Width: PARENT_RIGHT - 10
+					Width: PARENT_WIDTH - 10
 					Height: 20
 					Align: Center
 					Text: label-notice-container-playtest-available
@@ -76,24 +76,24 @@ Background@MULTIPLAYER_PANEL:
 			X: 20
 			Y: 67
 			Width: 675
-			Height: PARENT_BOTTOM - 122
+			Height: PARENT_HEIGHT - 122
 			TopBottomSpacing: 2
 			Children:
 				ScrollItem@HEADER_TEMPLATE:
 					X: 2
-					Width: PARENT_RIGHT - 27
+					Width: PARENT_WIDTH - 27
 					Height: 20
 					Background: scrollheader
 					Visible: false
 					Children:
 						Label@LABEL:
 							Font: TinyBold
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 20
 							Align: Center
 				ScrollItem@SERVER_TEMPLATE:
 					X: 2
-					Width: PARENT_RIGHT - 27
+					Width: PARENT_WIDTH - 27
 					Height: 25
 					EnableChildMouseOver: True
 					Children:
@@ -137,32 +137,32 @@ Background@MULTIPLAYER_PANEL:
 							Height: 25
 		Label@PROGRESS_LABEL:
 			X: 20
-			Y: 67 + (PARENT_BOTTOM - 119 - HEIGHT) / 2
+			Y: 67 + (PARENT_HEIGHT - 119 - HEIGHT) / 2
 			Width: 675
 			Height: 25
 			Font: Bold
 			Align: Center
 			Visible: false
 		Container@SELECTED_SERVER:
-			X: PARENT_RIGHT - WIDTH - 20
+			X: PARENT_WIDTH - WIDTH - 20
 			Y: 67
 			Width: 174
 			Height: 280
 			Children:
 				Background@MAP_BG:
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 174
 					Background: dialog3
 					Children:
 						MapPreview@SELECTED_MAP_PREVIEW:
 							X: 1
 							Y: 1
-							Width: PARENT_RIGHT - 2
-							Height: PARENT_BOTTOM - 2
+							Width: PARENT_WIDTH - 2
+							Height: PARENT_HEIGHT - 2
 							TooltipContainer: TOOLTIP_CONTAINER
 				LabelWithTooltip@SELECTED_MAP:
 					Y: 173
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Bold
 					Align: Center
@@ -170,49 +170,49 @@ Background@MULTIPLAYER_PANEL:
 					TooltipTemplate: SIMPLE_TOOLTIP
 				Label@SELECTED_IP:
 					Y: 188
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Tiny
 					Align: Center
 				Label@SELECTED_STATUS:
 					Y: 204
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: TinyBold
 					Align: Center
 				Label@SELECTED_MOD_VERSION:
 					Y: 217
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: Tiny
 					Align: Center
 				Label@SELECTED_PLAYERS:
 					Y: 230
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Font: TinyBold
 					Align: Center
 				Container@CLIENT_LIST_CONTAINER:
 					Y: 240
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 166
 				Button@JOIN_BUTTON:
 					Key: return
 					Y: 255
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Text: button-selected-server-join
 					Font: Bold
 		DropDownButton@FILTERS_DROPDOWNBUTTON:
 			X: 20
-			Y: PARENT_BOTTOM - HEIGHT - 20
+			Y: PARENT_HEIGHT - HEIGHT - 20
 			Width: 158
 			Height: 25
 			Text: dropdownbutton-multiplayer-panel-filters
 			Font: Bold
 		Button@RELOAD_BUTTON:
 			X: 182
-			Y: PARENT_BOTTOM - HEIGHT - 20
+			Y: PARENT_HEIGHT - HEIGHT - 20
 			Width: 26
 			Height: 25
 			Children:
@@ -228,29 +228,29 @@ Background@MULTIPLAYER_PANEL:
 						LogicTicker@ANIMATION:
 		Label@PLAYER_COUNT:
 			X: 254
-			Y: PARENT_BOTTOM - HEIGHT - 20
+			Y: PARENT_HEIGHT - HEIGHT - 20
 			Width: 190
 			Height: 25
 			Align: Center
 			Font: Bold
 		Button@DIRECTCONNECT_BUTTON:
 			X: 490
-			Y: PARENT_BOTTOM - HEIGHT - 20
+			Y: PARENT_HEIGHT - HEIGHT - 20
 			Width: 100
 			Height: 25
 			Text: button-multiplayer-panel-directconnect
 			Font: Bold
 		Button@CREATE_BUTTON:
 			X: 595
-			Y: PARENT_BOTTOM - HEIGHT - 20
+			Y: PARENT_HEIGHT - HEIGHT - 20
 			Width: 100
 			Height: 25
 			Text: button-multiplayer-panel-create
 			Font: Bold
 		Button@BACK_BUTTON:
 			Key: escape
-			X: PARENT_RIGHT - WIDTH - 20
-			Y: PARENT_BOTTOM - HEIGHT - 20
+			X: PARENT_WIDTH - WIDTH - 20
+			Y: PARENT_HEIGHT - HEIGHT - 20
 			Width: 174
 			Height: 25
 			Text: button-back

@@ -1,13 +1,13 @@
 Container@TRANSIENTS_PANEL:
 	X: 5
-	Y: WINDOW_BOTTOM - HEIGHT - 55
+	Y: WINDOW_HEIGHT - HEIGHT - 55
 	Width: 550
 	Height: 80
 	Logic: IngameTransientNotificationsLogic
 	Children:
 		TextNotificationsDisplay@TRANSIENTS_DISPLAY:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			DisplayDurationMs: 4000
 			LogLength: 5
 			HideOverflow: False

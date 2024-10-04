@@ -1,13 +1,13 @@
 Container@MUSIC_PANEL:
 	Logic: MusicPlayerLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 410
 	Height: 435
 	Children:
 		LogicTicker@SONG_WATCHER:
 		Label@TITLE:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Y: 0 - 34
 			Font: BigBold
@@ -15,18 +15,18 @@ Container@MUSIC_PANEL:
 			Align: Center
 			Text: label-music-title-panel-title
 		Background@bg:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Background: panel-black
 			Children:
 				ScrollPanel@MUSIC_LIST:
 					X: 15
 					Y: 30
-					Width: PARENT_RIGHT - 30
-					Height: PARENT_BOTTOM - 125
+					Width: PARENT_WIDTH - 30
+					Height: PARENT_HEIGHT - 125
 					Children:
 						ScrollItem@MUSIC_TEMPLATE:
-							Width: PARENT_RIGHT - 27
+							Width: PARENT_WIDTH - 27
 							Height: 25
 							X: 2
 							Y: 0
@@ -35,19 +35,19 @@ Container@MUSIC_PANEL:
 							Children:
 								LabelWithTooltip@TITLE:
 									X: 10
-									Width: PARENT_RIGHT - 50
+									Width: PARENT_WIDTH - 50
 									Height: 25
 									TooltipContainer: TOOLTIP_CONTAINER
 									TooltipTemplate: SIMPLE_TOOLTIP
 								Label@LENGTH:
 									Width: 50
-									X: PARENT_RIGHT - 60
+									X: PARENT_WIDTH - 60
 									Align: Right
 									Height: 25
 				Container@LABEL_CONTAINER:
 					X: 25
 					Y: 4
-					Width: PARENT_RIGHT - 30
+					Width: PARENT_WIDTH - 30
 					Children:
 						Label@TITLE:
 							Width: 100
@@ -56,7 +56,7 @@ Container@MUSIC_PANEL:
 							Align: Center
 							Font: Bold
 						Label@TYPE:
-							X: PARENT_RIGHT - 85
+							X: PARENT_WIDTH - 85
 							Height: 25
 							Width: 50
 							Text: label-music-controls-length
@@ -64,8 +64,8 @@ Container@MUSIC_PANEL:
 							Font: Bold
 				Container@BUTTONS:
 					X: 15
-					Y: PARENT_BOTTOM - HEIGHT - 40
-					Width: PARENT_RIGHT - 30
+					Y: PARENT_HEIGHT - HEIGHT - 40
+					Width: PARENT_WIDTH - 30
 					Children:
 						Button@BUTTON_PREV:
 							Width: 26
@@ -133,66 +133,66 @@ Container@MUSIC_PANEL:
 									ImageCollection: music
 									ImageName: next
 						ExponentialSlider@MUSIC_SLIDER:
-							X: PARENT_RIGHT - WIDTH
+							X: PARENT_WIDTH - WIDTH
 							Y: 3
-							Width: PARENT_RIGHT - 145
+							Width: PARENT_WIDTH - 145
 							Height: 20
 							Ticks: 7
 				Label@TIME_LABEL:
-					X: (PARENT_RIGHT - WIDTH) / 2
-					Y: PARENT_BOTTOM - HEIGHT - 60 - 3
+					X: (PARENT_WIDTH - WIDTH) / 2
+					Y: PARENT_HEIGHT - HEIGHT - 60 - 3
 					Width: 140
 					Height: 25
 					Align: Center
 				Checkbox@SHUFFLE:
 					X: 15
-					Y: PARENT_BOTTOM - HEIGHT - 60
+					Y: PARENT_HEIGHT - HEIGHT - 60
 					Width: 85
 					Height: 20
 					Font: Regular
 					Text: checkbox-music-controls-shuffle
 				Checkbox@REPEAT:
-					X: PARENT_RIGHT - 15 - WIDTH
-					Y: PARENT_BOTTOM - HEIGHT - 60
+					X: PARENT_WIDTH - 15 - WIDTH
+					Y: PARENT_HEIGHT - HEIGHT - 60
 					Width: 70
 					Height: 20
 					Font: Regular
 					Text: checkbox-music-controls-loop
 				Container@NO_MUSIC_LABEL:
 					X: 15
-					Y: (PARENT_BOTTOM - HEIGHT - 60) / 2
-					Width: PARENT_RIGHT - 30
+					Y: (PARENT_HEIGHT - HEIGHT - 60) / 2
+					Width: PARENT_WIDTH - 30
 					Height: 75
 					Visible: false
 					Children:
 						Label@TITLE:
-							Width: PARENT_RIGHT - 24
+							Width: PARENT_WIDTH - 24
 							Height: 25
 							Font: Bold
 							Align: Center
 							Text: label-no-music-title
 						Label@DESCA:
 							Y: 20
-							Width: PARENT_RIGHT - 24
+							Width: PARENT_WIDTH - 24
 							Height: 25
 							Align: Center
 							Text: label-no-music-desc-a
 						Label@DESCB:
 							Y: 40
-							Width: PARENT_RIGHT - 24
+							Width: PARENT_WIDTH - 24
 							Height: 25
 							Align: Center
 							Text: label-no-music-desc-b
 		Button@BACK_BUTTON:
 			Key: escape
 			X: 0
-			Y: PARENT_BOTTOM - 1
+			Y: PARENT_HEIGHT - 1
 			Width: 140
 			Height: 35
 			Text: button-back
 		Label@MUTE_LABEL:
 			X: 100
-			Y: PARENT_BOTTOM - 60 - 3
+			Y: PARENT_HEIGHT - 60 - 3
 			Width: 300
 			Height: 20
 			Font: Small

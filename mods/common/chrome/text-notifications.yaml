@@ -1,5 +1,5 @@
 Container@CHAT_LINE_TEMPLATE:
-	Width: PARENT_RIGHT
+	Width: PARENT_WIDTH
 	Height: 16
 	Children:
 		Label@TIME:
@@ -18,7 +18,7 @@ Container@CHAT_LINE_TEMPLATE:
 			Shadow: True
 
 Container@SYSTEM_LINE_TEMPLATE:
-	Width: PARENT_RIGHT
+	Width: PARENT_WIDTH
 	Height: 16
 	Children:
 		Label@TIME:
@@ -39,7 +39,7 @@ Container@SYSTEM_LINE_TEMPLATE:
 			TextColor: FFFF00
 
 Container@TRANSIENT_LINE_TEMPLATE:
-	Width: PARENT_RIGHT
+	Width: PARENT_WIDTH
 	Height: 16
 	Children:
 		Label@TIME:

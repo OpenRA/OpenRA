@@ -1,13 +1,13 @@
 Background@REPLAYBROWSER_PANEL:
 	Logic: ReplayBrowserLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 900
 	Height: 600
 	Children:
 		Label@TITLE:
 			Y: 16
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Text: label-replaybrowser-panel-title
 			Align: Center
@@ -16,7 +16,7 @@ Background@REPLAYBROWSER_PANEL:
 			X: 20
 			Y: 37
 			Width: 280
-			Height: PARENT_BOTTOM - 75
+			Height: PARENT_HEIGHT - 75
 			Children:
 				Container@FILTERS:
 					Width: 280
@@ -25,7 +25,7 @@ Background@REPLAYBROWSER_PANEL:
 						Label@FILTERS_TITLE:
 							X: 85
 							Y: 6
-							Width: PARENT_RIGHT - 85
+							Width: PARENT_WIDTH - 85
 							Height: 25
 							Font: Bold
 							Align: Center
@@ -40,7 +40,7 @@ Background@REPLAYBROWSER_PANEL:
 						DropDownButton@FLT_GAMETYPE_DROPDOWNBUTTON:
 							X: 85
 							Y: 30
-							Width: PARENT_RIGHT - 85
+							Width: PARENT_WIDTH - 85
 							Height: 25
 							Text: dropdownbutton-filters-any
 						Label@FLT_DATE_DESC:
@@ -53,7 +53,7 @@ Background@REPLAYBROWSER_PANEL:
 						DropDownButton@FLT_DATE_DROPDOWNBUTTON:
 							X: 85
 							Y: 60
-							Width: PARENT_RIGHT - 85
+							Width: PARENT_WIDTH - 85
 							Height: 25
 							Text: dropdownbutton-filters-any
 						Label@FLT_DURATION_DESC:
@@ -66,7 +66,7 @@ Background@REPLAYBROWSER_PANEL:
 						DropDownButton@FLT_DURATION_DROPDOWNBUTTON:
 							X: 85
 							Y: 90
-							Width: PARENT_RIGHT - 85
+							Width: PARENT_WIDTH - 85
 							Height: 25
 							Text: dropdownbutton-filters-any
 						Label@FLT_MAPNAME_DESC:
@@ -79,7 +79,7 @@ Background@REPLAYBROWSER_PANEL:
 						DropDownButton@FLT_MAPNAME_DROPDOWNBUTTON:
 							X: 85
 							Y: 120
-							Width: PARENT_RIGHT - 85
+							Width: PARENT_WIDTH - 85
 							Height: 25
 							Text: dropdownbutton-filters-any
 						Label@FLT_PLAYER_DESC:
@@ -92,7 +92,7 @@ Background@REPLAYBROWSER_PANEL:
 						DropDownButton@FLT_PLAYER_DROPDOWNBUTTON:
 							X: 85
 							Y: 150
-							Width: PARENT_RIGHT - 85
+							Width: PARENT_WIDTH - 85
 							Height: 25
 							Text: dropdownbutton-filters-flt-player
 						Label@FLT_OUTCOME_DESC:
@@ -105,7 +105,7 @@ Background@REPLAYBROWSER_PANEL:
 						DropDownButton@FLT_OUTCOME_DROPDOWNBUTTON:
 							X: 85
 							Y: 180
-							Width: PARENT_RIGHT - 85
+							Width: PARENT_WIDTH - 85
 							Height: 25
 							Text: dropdownbutton-filters-any
 						Label@FLT_FACTION_DESC:
@@ -118,45 +118,45 @@ Background@REPLAYBROWSER_PANEL:
 						DropDownButton@FLT_FACTION_DROPDOWNBUTTON:
 							X: 85
 							Y: 210
-							Width: PARENT_RIGHT - 85
+							Width: PARENT_WIDTH - 85
 							Height: 25
 							Text: dropdownbutton-filters-any
 						Button@FLT_RESET_BUTTON:
 							X: 85
 							Y: 250
-							Width: PARENT_RIGHT - 85
+							Width: PARENT_WIDTH - 85
 							Height: 25
 							Text: button-filters-flt-reset
 							Font: Bold
 				Container@MANAGEMENT:
 					X: 85
 					Y: 395
-					Width: PARENT_RIGHT - 85
+					Width: PARENT_WIDTH - 85
 					Children:
 						Label@MANAGE_TITLE:
 							Y: 1
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 25
 							Font: Bold
 							Align: Center
 							Text: label-management-manage-title
 						Button@MNG_RENSEL_BUTTON:
 							Y: 30
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 25
 							Text: button-management-mng-rensel
 							Font: Bold
 							Key: F2
 						Button@MNG_DELSEL_BUTTON:
 							Y: 60
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 25
 							Text: button-management-mng-delsel
 							Font: Bold
 							Key: Delete
 						Button@MNG_DELALL_BUTTON:
 							Y: 90
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 25
 							Text: button-management-mng-delall
 							Font: Bold
@@ -164,11 +164,11 @@ Background@REPLAYBROWSER_PANEL:
 			X: 311
 			Y: 37
 			Width: 384
-			Height: PARENT_BOTTOM - 37 - 55
+			Height: PARENT_HEIGHT - 37 - 55
 			Children:
 				Label@REPLAYBROWSER_LABEL_TITLE:
 					Y: 6
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Text: label-replay-list-container-replaybrowser-title
 					Align: Center
@@ -176,12 +176,12 @@ Background@REPLAYBROWSER_PANEL:
 				ScrollPanel@REPLAY_LIST:
 					X: 0
 					Y: 30
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM - 30
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT - 30
 					CollapseHiddenChildren: True
 					Children:
 						ScrollItem@REPLAY_TEMPLATE:
-							Width: PARENT_RIGHT - 27
+							Width: PARENT_WIDTH - 27
 							Height: 25
 							X: 2
 							Visible: false
@@ -189,36 +189,36 @@ Background@REPLAYBROWSER_PANEL:
 							Children:
 								LabelWithTooltip@TITLE:
 									X: 10
-									Width: PARENT_RIGHT - 20
+									Width: PARENT_WIDTH - 20
 									Height: 25
 									TooltipContainer: TOOLTIP_CONTAINER
 									TooltipTemplate: SIMPLE_TOOLTIP
 		Container@MAP_PREVIEW_ROOT:
-			X: PARENT_RIGHT - WIDTH - 20
+			X: PARENT_WIDTH - WIDTH - 20
 			Y: 67
 			Width: 174
 			Height: 250
 		Container@REPLAY_INFO:
-			X: PARENT_RIGHT - WIDTH - 20
+			X: PARENT_WIDTH - WIDTH - 20
 			Y: 267
 			Width: 174
-			Height: PARENT_BOTTOM - 267 - 45
+			Height: PARENT_HEIGHT - 267 - 45
 			Children:
 				Label@DURATION:
 					Y: 19
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 15
 					Font: Tiny
 					Align: Center
 				ScrollPanel@PLAYER_LIST:
 					Y: 40
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM - 50
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT - 50
 					IgnoreChildMouseOver: true
 					Children:
 						ScrollItem@HEADER:
 							Background: scrollheader
-							Width: PARENT_RIGHT - 27
+							Width: PARENT_WIDTH - 27
 							Height: 13
 							X: 2
 							Y: 0
@@ -226,11 +226,11 @@ Background@REPLAYBROWSER_PANEL:
 							Children:
 								Label@LABEL:
 									Font: TinyBold
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 13
 									Align: Center
 						ScrollItem@TEMPLATE:
-							Width: PARENT_RIGHT - 27
+							Width: PARENT_WIDTH - 27
 							Height: 25
 							X: 2
 							Y: 0
@@ -243,24 +243,24 @@ Background@REPLAYBROWSER_PANEL:
 									Height: 16
 								Label@LABEL:
 									X: 40
-									Width: PARENT_RIGHT - 50
+									Width: PARENT_WIDTH - 50
 									Height: 25
 									Shadow: True
 								Label@NOFLAG_LABEL:
 									X: 5
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 25
 		Button@WATCH_BUTTON:
-			X: PARENT_RIGHT - 140 - 130
-			Y: PARENT_BOTTOM - 45
+			X: PARENT_WIDTH - 140 - 130
+			Y: PARENT_HEIGHT - 45
 			Width: 120
 			Height: 25
 			Text: button-replaybrowser-panel-watch
 			Font: Bold
 			Key: return
 		Button@CANCEL_BUTTON:
-			X: PARENT_RIGHT - 140
-			Y: PARENT_BOTTOM - 45
+			X: PARENT_WIDTH - 140
+			Y: PARENT_HEIGHT - 45
 			Width: 120
 			Height: 25
 			Text: button-back

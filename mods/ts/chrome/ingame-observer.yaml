@@ -5,20 +5,20 @@ Container@OBSERVER_WIDGETS:
 		LogicKeyListener@OBSERVER_KEY_LISTENER:
 		Container@MUTE_INDICATOR:
 			Logic: MuteIndicatorLogic
-			X: WINDOW_RIGHT - WIDTH - 260
+			X: WINDOW_WIDTH - WIDTH - 260
 			Y: 5
 			Width: 200
 			Height: 25
 			Children:
 				Image@ICON:
-					X: PARENT_RIGHT - WIDTH
+					X: PARENT_WIDTH - WIDTH
 					Y: 1
 					Width: 24
 					Height: 24
 					ImageCollection: sidebar-bits
 					ImageName: indicator-muted
 				Label@LABEL:
-					Width: PARENT_RIGHT - 30
+					Width: PARENT_WIDTH - 30
 					Height: 25
 					Align: Right
 					Text: label-mute-indicator
@@ -34,12 +34,12 @@ Container@OBSERVER_WIDGETS:
 			DisableWorldSounds: true
 		Container@GAME_TIMER_BLOCK:
 			Logic: GameTimerLogic
-			X: (WINDOW_RIGHT - WIDTH) / 2
+			X: (WINDOW_WIDTH - WIDTH) / 2
 			Width: 100
 			Height: 55
 			Children:
 				LabelWithTooltip@GAME_TIMER:
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 30
 					Align: Center
 					Font: Title
@@ -48,13 +48,13 @@ Container@OBSERVER_WIDGETS:
 					TooltipTemplate: SIMPLE_TOOLTIP
 				Label@GAME_TIMER_STATUS:
 					Y: 32
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 15
 					Align: Center
 					Font: Bold
 					Contrast: true
 		Background@RADAR_BG:
-			X: WINDOW_RIGHT - 255
+			X: WINDOW_WIDTH - 255
 			Y: 5
 			Width: 250
 			Height: 250
@@ -62,17 +62,17 @@ Container@OBSERVER_WIDGETS:
 				Radar@INGAME_RADAR:
 					X: 10
 					Y: 10
-					Width: PARENT_RIGHT - 19
-					Height: PARENT_BOTTOM - 19
+					Width: PARENT_WIDTH - 19
+					Height: PARENT_HEIGHT - 19
 					WorldInteractionController: INTERACTION_CONTROLLER
 				VideoPlayer@PLAYER:
 					X: 10
 					Y: 10
-					Width: PARENT_RIGHT - 20
-					Height: PARENT_BOTTOM - 20
+					Width: PARENT_WIDTH - 20
+					Height: PARENT_HEIGHT - 20
 					Skippable: false
 		Background@OBSERVER_CONTROL_BG:
-			X: WINDOW_RIGHT - 255
+			X: WINDOW_WIDTH - 255
 			Y: 260
 			Width: 250
 			Height: 55
@@ -95,12 +95,12 @@ Container@OBSERVER_WIDGETS:
 							Y: 5
 						Label@LABEL:
 							X: 34
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 25
 							Shadow: True
 						Label@NOFLAG_LABEL:
 							X: 5
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 25
 							Shadow: True
 				Container@REPLAY_PLAYER:
@@ -207,33 +207,33 @@ Container@OBSERVER_WIDGETS:
 				Container@GRAPH_BG:
 					Y: 30
 					X: 0
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 24
 					Children:
 						Container@BASIC_STATS_HEADERS:
 							X: 0
 							Y: 0
 							Width: 705
-							Height: PARENT_BOTTOM
+							Height: PARENT_HEIGHT
 							Children:
 								ColorBlock@HEADER_COLOR:
 									X: 0
 									Y: 0
 									Color: 00000090
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH - 200
+									Height: PARENT_HEIGHT
 								GradientColorBlock@HEADER_GRADIENT:
-									X: PARENT_RIGHT - 200
+									X: PARENT_WIDTH - 200
 									Y: 0
 									TopLeftColor: 00000090
 									BottomLeftColor: 00000090
 									Width: 200
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 								Label@PLAYER_HEADER:
 									X: 40
 									Y: 0
 									Width: 120
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-basic-stats-player-header
 									Align: Left
@@ -242,7 +242,7 @@ Container@OBSERVER_WIDGETS:
 									X: 160
 									Y: 0
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-basic-stats-cash-header
 									Align: Right
@@ -251,7 +251,7 @@ Container@OBSERVER_WIDGETS:
 									X: 240
 									Y: 0
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-basic-stats-power-header
 									Align: Center
@@ -260,7 +260,7 @@ Container@OBSERVER_WIDGETS:
 									X: 320
 									Y: 0
 									Width: 40
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-basic-stats-kills-header
 									Align: Right
@@ -269,7 +269,7 @@ Container@OBSERVER_WIDGETS:
 									X: 360
 									Y: 0
 									Width: 60
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-basic-stats-deaths-header
 									Align: Right
@@ -278,7 +278,7 @@ Container@OBSERVER_WIDGETS:
 									X: 420
 									Y: 0
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-basic-stats-assets-destroyed-header
 									Align: Right
@@ -287,7 +287,7 @@ Container@OBSERVER_WIDGETS:
 									X: 500
 									Y: 0
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-basic-stats-assets-lost-header
 									Align: Right
@@ -296,7 +296,7 @@ Container@OBSERVER_WIDGETS:
 									X: 580
 									Y: 0
 									Width: 60
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-basic-stats-experience-header
 									Align: Right
@@ -305,7 +305,7 @@ Container@OBSERVER_WIDGETS:
 									X: 640
 									Y: 0
 									Width: 60
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-basic-stats-actions-min-header
 									Align: Right
@@ -314,32 +314,32 @@ Container@OBSERVER_WIDGETS:
 							X: 0
 							Y: 0
 							Width: 645
-							Height: PARENT_BOTTOM
+							Height: PARENT_HEIGHT
 							Children:
 								ColorBlock@HEADER_COLOR:
 									X: 0
 									Y: 0
 									Color: 00000090
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH - 200
+									Height: PARENT_HEIGHT
 								GradientColorBlock@HEADER_GRADIENT:
-									X: PARENT_RIGHT - 200
+									X: PARENT_WIDTH - 200
 									Y: 0
 									TopLeftColor: 00000090
 									BottomLeftColor: 00000090
 									Width: 200
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 								Label@PLAYER_HEADER:
 									X: 40
 									Width: 120
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-economy-stats-player-header
 									Shadow: True
 								Label@CASH_HEADER:
 									X: 160
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-economy-stats-cash-header
 									Align: Right
@@ -347,7 +347,7 @@ Container@OBSERVER_WIDGETS:
 								Label@INCOME_HEADER:
 									X: 240
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-economy-stats-income-header
 									Align: Right
@@ -355,7 +355,7 @@ Container@OBSERVER_WIDGETS:
 								Label@ASSETS_HEADER:
 									X: 320
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-economy-stats-assets-header
 									Align: Right
@@ -363,7 +363,7 @@ Container@OBSERVER_WIDGETS:
 								Label@EARNED_HEADER:
 									X: 400
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-economy-stats-earned-header
 									Align: Right
@@ -371,7 +371,7 @@ Container@OBSERVER_WIDGETS:
 								Label@SPENT_HEADER:
 									X: 480
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-economy-stats-spent-header
 									Align: Right
@@ -379,7 +379,7 @@ Container@OBSERVER_WIDGETS:
 								Label@HARVESTERS_HEADER:
 									X: 560
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-economy-stats-harvesters-header
 									Align: Right
@@ -388,26 +388,26 @@ Container@OBSERVER_WIDGETS:
 							X: 0
 							Y: 0
 							Width: 400
-							Height: PARENT_BOTTOM
+							Height: PARENT_HEIGHT
 							Children:
 								ColorBlock@HEADER_COLOR:
 									X: 0
 									Y: 0
 									Color: 00000090
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH - 200
+									Height: PARENT_HEIGHT
 								GradientColorBlock@HEADER_GRADIENT:
-									X: PARENT_RIGHT - 200
+									X: PARENT_WIDTH - 200
 									Y: 0
 									TopLeftColor: 00000090
 									BottomLeftColor: 00000090
 									Width: 200
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 								Label@PLAYER_HEADER:
 									X: 40
 									Y: 0
 									Width: 120
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-production-stats-player-header
 									Align: Left
@@ -416,7 +416,7 @@ Container@OBSERVER_WIDGETS:
 									X: 160
 									Y: 0
 									Width: 100
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-production-stats-header
 									Shadow: True
@@ -424,26 +424,26 @@ Container@OBSERVER_WIDGETS:
 							X: 0
 							Y: 0
 							Width: 400
-							Height: PARENT_BOTTOM
+							Height: PARENT_HEIGHT
 							Children:
 								ColorBlock@HEADER_COLOR:
 									X: 0
 									Y: 0
 									Color: 00000090
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH - 200
+									Height: PARENT_HEIGHT
 								GradientColorBlock@HEADER_GRADIENT:
-									X: PARENT_RIGHT - 200
+									X: PARENT_WIDTH - 200
 									Y: 0
 									TopLeftColor: 00000090
 									BottomLeftColor: 00000090
 									Width: 200
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 								Label@PLAYER_HEADER:
 									X: 40
 									Y: 0
 									Width: 120
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-support-powers-player-header
 									Align: Left
@@ -452,7 +452,7 @@ Container@OBSERVER_WIDGETS:
 									X: 160
 									Y: 0
 									Width: 200
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-support-powers-header
 									Shadow: True
@@ -460,26 +460,26 @@ Container@OBSERVER_WIDGETS:
 							X: 0
 							Y: 0
 							Width: 400
-							Height: PARENT_BOTTOM
+							Height: PARENT_HEIGHT
 							Children:
 								ColorBlock@HEADER_COLOR:
 									X: 0
 									Y: 0
 									Color: 00000090
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH - 200
+									Height: PARENT_HEIGHT
 								GradientColorBlock@HEADER_GRADIENT:
-									X: PARENT_RIGHT - 200
+									X: PARENT_WIDTH - 200
 									Y: 0
 									TopLeftColor: 00000090
 									BottomLeftColor: 00000090
 									Width: 200
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 								Label@PLAYER_HEADER:
 									X: 40
 									Y: 0
 									Width: 120
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-army-player-header
 									Align: Left
@@ -488,7 +488,7 @@ Container@OBSERVER_WIDGETS:
 									X: 160
 									Y: 0
 									Width: 100
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-army-header
 									Shadow: True
@@ -496,26 +496,26 @@ Container@OBSERVER_WIDGETS:
 							X: 0
 							Y: 0
 							Width: 760
-							Height: PARENT_BOTTOM
+							Height: PARENT_HEIGHT
 							Children:
 								ColorBlock@HEADER_COLOR:
 									X: 0
 									Y: 0
 									Color: 00000090
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH - 200
+									Height: PARENT_HEIGHT
 								GradientColorBlock@HEADER_GRADIENT:
-									X: PARENT_RIGHT - 200
+									X: PARENT_WIDTH - 200
 									Y: 0
 									TopLeftColor: 00000090
 									BottomLeftColor: 00000090
 									Width: 200
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 								Label@PLAYER_HEADER:
 									X: 40
 									Y: 0
 									Width: 120
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-combat-stats-player-header
 									Align: Left
@@ -524,7 +524,7 @@ Container@OBSERVER_WIDGETS:
 									X: 160
 									Y: 0
 									Width: 75
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-combat-stats-assets-destroyed-header
 									Align: Right
@@ -533,7 +533,7 @@ Container@OBSERVER_WIDGETS:
 									X: 235
 									Y: 0
 									Width: 75
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-combat-stats-assets-lost-header
 									Align: Right
@@ -542,7 +542,7 @@ Container@OBSERVER_WIDGETS:
 									X: 310
 									Y: 0
 									Width: 75
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-combat-stats-units-killed-header
 									Align: Right
@@ -551,7 +551,7 @@ Container@OBSERVER_WIDGETS:
 									X: 385
 									Y: 0
 									Width: 75
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-combat-stats-units-dead-header
 									Align: Right
@@ -560,7 +560,7 @@ Container@OBSERVER_WIDGETS:
 									X: 460
 									Y: 0
 									Width: 75
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-combat-stats-buildings-killed-header
 									Align: Right
@@ -569,7 +569,7 @@ Container@OBSERVER_WIDGETS:
 									X: 535
 									Y: 0
 									Width: 75
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-combat-stats-buildings-dead-header
 									Align: Right
@@ -578,7 +578,7 @@ Container@OBSERVER_WIDGETS:
 									X: 610
 									Y: 0
 									Width: 90
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-combat-stats-army-value-header
 									Align: Right
@@ -587,7 +587,7 @@ Container@OBSERVER_WIDGETS:
 									X: 700
 									Y: 0
 									Width: 60
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Text: label-combat-stats-vision-header
 									Align: Right
@@ -595,7 +595,7 @@ Container@OBSERVER_WIDGETS:
 				ScrollPanel@PLAYER_STATS_PANEL:
 					X: 0
 					Y: 54
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 240
 					TopBottomSpacing: 0
 					BorderWidth: 0
@@ -606,27 +606,27 @@ Container@OBSERVER_WIDGETS:
 						ScrollItem@TEAM_TEMPLATE:
 							X: 0
 							Y: 0
-							Width: 650 #PARENT_RIGHT - 35
+							Width: 650 #PARENT_WIDTH - 35
 							Height: 24
 							Children:
 								ColorBlock@TEAM_COLOR:
 									X: 0
 									Y: 0
 									Color: 00000090
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH - 200
+									Height: PARENT_HEIGHT
 								GradientColorBlock@TEAM_GRADIENT:
-									X: PARENT_RIGHT - 200
+									X: PARENT_WIDTH - 200
 									Y: 0
 									TopLeftColor: 00000090
 									BottomLeftColor: 00000090
 									Width: 200
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 								Label@TEAM:
 									X: 10
 									Y: 0
-									Width: PARENT_RIGHT
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Shadow: True
 						ScrollItem@BASIC_PLAYER_TEMPLATE:
@@ -639,81 +639,81 @@ Container@OBSERVER_WIDGETS:
 								ColorBlock@PLAYER_COLOR:
 									X: 0
 									Y: 0
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH - 200
+									Height: PARENT_HEIGHT
 								GradientColorBlock@PLAYER_GRADIENT:
-									X: PARENT_RIGHT - 200
+									X: PARENT_WIDTH - 200
 									Y: 0
 									Width: 200
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 								Image@FLAG:
 									X: 5
 									Y: 4
 									Width: 35
-									Height: PARENT_BOTTOM - 4
+									Height: PARENT_HEIGHT - 4
 									ImageName: random
 									ImageCollection: flags
 								Label@PLAYER:
 									X: 40
 									Y: 0
 									Width: 120
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Shadow: True
 								Label@CASH:
 									X: 160
 									Y: 0
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@POWER:
 									X: 240
 									Y: 0
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Center
 									Shadow: True
 								Label@KILLS:
 									X: 320
 									Y: 0
 									Width: 40
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@DEATHS:
 									X: 360
 									Y: 0
 									Width: 60
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@ASSETS_DESTROYED:
 									X: 420
 									Y: 0
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@ASSETS_LOST:
 									X: 500
 									Y: 0
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@EXPERIENCE:
 									X: 580
 									Y: 0
 									Width: 60
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@ACTIONS_MIN:
 									X: 640
 									Y: 0
 									Width: 60
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 						ScrollItem@ECONOMY_PLAYER_TEMPLATE:
@@ -726,67 +726,67 @@ Container@OBSERVER_WIDGETS:
 								ColorBlock@PLAYER_COLOR:
 									X: 0
 									Y: 0
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH - 200
+									Height: PARENT_HEIGHT
 								GradientColorBlock@PLAYER_GRADIENT:
-									X: PARENT_RIGHT - 200
+									X: PARENT_WIDTH - 200
 									Y: 0
 									Width: 200
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 								Image@FLAG:
 									X: 5
 									Y: 4
 									Width: 35
-									Height: PARENT_BOTTOM - 4
+									Height: PARENT_HEIGHT - 4
 									ImageName: random
 									ImageCollection: flags
 								Label@PLAYER:
 									X: 40
 									Y: 0
 									Width: 120
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Shadow: True
 								Label@CASH:
 									X: 160
 									Y: 0
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@INCOME:
 									X: 240
 									Y: 0
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@ASSETS:
 									X: 320
 									Y: 0
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@EARNED:
 									X: 400
 									Y: 0
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@SPENT:
 									X: 480
 									Y: 0
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@HARVESTERS:
 									X: 560
 									Y: 0
 									Width: 80
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 						ScrollItem@PRODUCTION_PLAYER_TEMPLATE:
@@ -799,32 +799,32 @@ Container@OBSERVER_WIDGETS:
 								ColorBlock@PLAYER_COLOR:
 									X: 0
 									Y: 0
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH - 200
+									Height: PARENT_HEIGHT
 								GradientColorBlock@PLAYER_GRADIENT:
-									X: PARENT_RIGHT - 200
+									X: PARENT_WIDTH - 200
 									Y: 0
 									Width: 200
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 								Image@FLAG:
 									X: 5
 									Y: 4
 									Width: 35
-									Height: PARENT_BOTTOM - 4
+									Height: PARENT_HEIGHT - 4
 									ImageName: random
 									ImageCollection: flags
 								Label@PLAYER:
 									X: 40
 									Y: 0
 									Width: 120
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Shadow: True
 								ObserverProductionIcons@PRODUCTION_ICONS:
 									X: 160
 									Y: 0
 									Width: 0
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									TooltipContainer: TOOLTIP_CONTAINER
 									ClockPalette: iconclock
 						ScrollItem@SUPPORT_POWERS_PLAYER_TEMPLATE:
@@ -837,32 +837,32 @@ Container@OBSERVER_WIDGETS:
 								ColorBlock@PLAYER_COLOR:
 									X: 0
 									Y: 0
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH - 200
+									Height: PARENT_HEIGHT
 								GradientColorBlock@PLAYER_GRADIENT:
-									X: PARENT_RIGHT - 200
+									X: PARENT_WIDTH - 200
 									Y: 0
 									Width: 200
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 								Image@FLAG:
 									X: 5
 									Y: 4
 									Width: 35
-									Height: PARENT_BOTTOM - 4
+									Height: PARENT_HEIGHT - 4
 									ImageName: random
 									ImageCollection: flags
 								Label@PLAYER:
 									X: 40
 									Y: 0
 									Width: 120
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Shadow: True
 								ObserverSupportPowerIcons@SUPPORT_POWER_ICONS:
 									X: 160
 									Y: 0
 									Width: 0
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									ClockPalette: iconclock
 									TooltipContainer: TOOLTIP_CONTAINER
 						ScrollItem@ARMY_PLAYER_TEMPLATE:
@@ -875,32 +875,32 @@ Container@OBSERVER_WIDGETS:
 								ColorBlock@PLAYER_COLOR:
 									X: 0
 									Y: 0
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH - 200
+									Height: PARENT_HEIGHT
 								GradientColorBlock@PLAYER_GRADIENT:
-									X: PARENT_RIGHT - 200
+									X: PARENT_WIDTH - 200
 									Y: 0
 									Width: 200
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 								Image@FLAG:
 									X: 5
 									Y: 4
 									Width: 35
-									Height: PARENT_BOTTOM - 4
+									Height: PARENT_HEIGHT - 4
 									ImageName: random
 									ImageCollection: flags
 								Label@PLAYER:
 									X: 40
 									Y: 0
 									Width: 120
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Shadow: True
 								ObserverArmyIcons@ARMY_ICONS:
 									X: 160
 									Y: 0
 									Width: 0
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									TooltipContainer: TOOLTIP_CONTAINER
 						ScrollItem@COMBAT_PLAYER_TEMPLATE:
 							X: 0
@@ -912,101 +912,101 @@ Container@OBSERVER_WIDGETS:
 								ColorBlock@PLAYER_COLOR:
 									X: 0
 									Y: 0
-									Width: PARENT_RIGHT - 200
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH - 200
+									Height: PARENT_HEIGHT
 								GradientColorBlock@PLAYER_GRADIENT:
-									X: PARENT_RIGHT - 200
+									X: PARENT_WIDTH - 200
 									Y: 0
 									Width: 200
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 								Image@FLAG:
 									X: 5
 									Y: 4
 									Width: 35
-									Height: PARENT_BOTTOM - 4
+									Height: PARENT_HEIGHT - 4
 									ImageName: random
 									ImageCollection: flags
 								Label@PLAYER:
 									X: 40
 									Y: 0
 									Width: 120
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Font: Bold
 									Shadow: True
 								Label@ASSETS_DESTROYED:
 									X: 160
 									Y: 0
 									Width: 75
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@ASSETS_LOST:
 									X: 235
 									Y: 0
 									Width: 75
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@UNITS_KILLED:
 									X: 310
 									Y: 0
 									Width: 75
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@UNITS_DEAD:
 									X: 385
 									Y: 0
 									Width: 75
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@BUILDINGS_KILLED:
 									X: 460
 									Y: 0
 									Width: 75
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@BUILDINGS_DEAD:
 									X: 535
 									Y: 0
 									Width: 75
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@ARMY_VALUE:
 									X: 610
 									Y: 0
 									Width: 90
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 								Label@VISION:
 									X: 700
 									Y: 0
 									Width: 60
-									Height: PARENT_BOTTOM
+									Height: PARENT_HEIGHT
 									Align: Right
 									Shadow: True
 				Container@INCOME_GRAPH_CONTAINER:
 					X: 0
 					Y: 30
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
 					Visible: False
 					Children:
 						ColorBlock@GRAPH_BACKGROUND:
 							X: 0
 							Y: 0
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
 							Color: 00000090
 						LineGraph@INCOME_GRAPH:
 							X: 0
 							Y: 0
-							Width: PARENT_RIGHT - 5
-							Height: PARENT_BOTTOM
+							Width: PARENT_WIDTH - 5
+							Height: PARENT_HEIGHT
 							ValueFormat: ${0}
 							YAxisValueFormat: ${0:F0}
 							XAxisSize: 40
@@ -1018,21 +1018,21 @@ Container@OBSERVER_WIDGETS:
 				Container@ARMY_VALUE_GRAPH_CONTAINER:
 					X: 0
 					Y: 30
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
 					Visible: False
 					Children:
 						ColorBlock@GRAPH_BACKGROUND:
 							X: 0
 							Y: 0
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
 							Color: 00000090
 						LineGraph@ARMY_VALUE_GRAPH:
 							X: 0
 							Y: 0
-							Width: PARENT_RIGHT - 5
-							Height: PARENT_BOTTOM
+							Width: PARENT_WIDTH - 5
+							Height: PARENT_HEIGHT
 							ValueFormat: ${0}
 							YAxisValueFormat: ${0:F0}
 							XAxisSize: 40
@@ -1043,6 +1043,6 @@ Container@OBSERVER_WIDGETS:
 							AxisFont: TinyBold
 		Container@HPF_ROOT:
 			Logic: LoadIngameHierarchicalPathFinderOverlayLogic
-			X: WINDOW_RIGHT - WIDTH - 260
+			X: WINDOW_WIDTH - WIDTH - 260
 			Y: 40
 			Width: 175

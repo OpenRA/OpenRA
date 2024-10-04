@@ -91,6 +91,7 @@ namespace OpenRA.Mods.Common.UpdateRules
 				new MovePreviewFacing(),
 				new RenameOnDeath(),
 				new RemoveParentTopParentLeftSubstitutions(),
+				new RenameWidgetSubstitutions(),
 
 				// Execute these rules last to avoid premature yaml merge crashes.
 				new ReplaceCloakPalette(),
