@@ -17,7 +17,7 @@ Background@CONTENT_PANEL:
 			Y: 14
 			Width: PARENT_WIDTH
 			Height: 25
-			Text: Manage Content
+			Text: label-content-panel-title
 			Align: Center
 			Font: MediumBold
 		Label@HEADER_TEMPLATE:
@@ -51,7 +51,7 @@ Background@CONTENT_PANEL:
 							Align: Center
 							Font: Bold
 							TextColor: CC0000
-							Text: Required
+							Text: label-package-template-required
 						Image@SOURCE:
 							X: 275
 							Y: 2
@@ -67,7 +67,7 @@ Background@CONTENT_PANEL:
 							Width: 100
 							Height: 23
 							Background: button-highlighted-thin
-							Text: Download
+							Text: button-package-template-download
 						Label@INSTALLED:
 							X: 304
 							Width: 100
@@ -75,7 +75,7 @@ Background@CONTENT_PANEL:
 							Align: Center
 							Font: Bold
 							TextColor: 00CC00
-							Text: Installed
+							Text: label-package-template-installed
 						Label@REQUIRES_SOURCE:
 							X: 304
 							Width: 100
@@ -83,14 +83,14 @@ Background@CONTENT_PANEL:
 							Align: Center
 							Font: Bold
 							TextColor: DDDDDD
-							Text: Requires Disc
+							Text: label-package-template-requires-source
 		Button@CHECK_SOURCE_BUTTON:
 			X: 30
 			Y: PARENT_HEIGHT - 52
 			Background: button-highlighted
 			Width: 200
 			Height: 32
-			Text: Detect Disc or Installation
+			Text: button-content-panel-check-source
 			Font: Bold
 		Button@BACK_BUTTON:
 			X: PARENT_WIDTH - 140
@@ -98,7 +98,7 @@ Background@CONTENT_PANEL:
 			Background: button-highlighted
 			Width: 110
 			Height: 32
-			Text: Back
+			Text: button-back
 			Font: Bold
 			Key: escape
 		TooltipContainer@TOOLTIP_CONTAINER:
@@ -112,7 +112,7 @@ Background@SOURCE_TOOLTIP:
 			X: 5
 			Height: 23
 			Font: Bold
-			Text: Content available from:
+			Text: label-source-tooltip-description
 		Container@SOURCES:
 			Y: 15
 			Width: PARENT_WIDTH - 10
@@ -179,7 +179,7 @@ Container@PACKAGE_DOWNLOAD_PANEL:
 			Width: 120
 			Height: 32
 			Visible: false
-			Text: Retry
+			Text: button-retry
 			Font: Bold
 			Key: return
 		Button@CANCEL_BUTTON:
@@ -188,7 +188,7 @@ Container@PACKAGE_DOWNLOAD_PANEL:
 			Background: button-highlighted
 			Width: 110
 			Height: 32
-			Text: Cancel
+			Text: button-cancel
 			Font: Bold
 			Key: escape
 
@@ -204,7 +204,7 @@ Background@SOURCE_INSTALL_PANEL:
 			X: 30
 			Y: 50
 			Width: 440
-			Height:150
+			Height: 150
 			Background: panel-rule
 		Label@TITLE:
 			Y: 12
@@ -340,7 +340,7 @@ Background@CONTENT_PROMPT_PANEL:
 			Y: 12
 			Width: PARENT_WIDTH
 			Height: 25
-			Text: Install Content
+			Text: label-content-prompt-panel-title
 			Align: Center
 			Font: MediumBold
 		Label@HEADER_TEMPLATE:
@@ -356,7 +356,7 @@ Background@CONTENT_PROMPT_PANEL:
 			Background: button-highlighted
 			Width: 140
 			Height: 32
-			Text: Advanced Install
+			Text: button-content-prompt-panel-advanced
 			Font: Bold
 		Button@QUICK_BUTTON:
 			X: 185
@@ -364,7 +364,7 @@ Background@CONTENT_PROMPT_PANEL:
 			Background: button-highlighted
 			Width: 110
 			Height: 32
-			Text: Quick Install
+			Text: button-content-prompt-panel-quick
 			Font: Bold
 		Button@QUIT_BUTTON:
 			X: PARENT_WIDTH - WIDTH - 30
@@ -372,7 +372,7 @@ Background@CONTENT_PROMPT_PANEL:
 			Background: button-highlighted
 			Width: 110
 			Height: 32
-			Text: Quit
+			Text: button-quit
 			Font: Bold
 			Key: escape
 

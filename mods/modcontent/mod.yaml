@@ -4,7 +4,7 @@ Metadata:
 	Hidden: true
 
 FileSystem: DefaultFileSystem
-    Packages:
+	Packages:
 		^EngineDir
 		^EngineDir|mods/modcontent: modcontent
 		^EngineDir|mods/common: common
@@ -38,6 +38,7 @@ ChromeMetrics:
 Translations:
 	common|languages/en.ftl
 	modcontent|languages/en.ftl
+	modcontent|languages/chrome/en.ftl
 
 Fonts:
 	Tiny:
