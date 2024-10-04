@@ -15,9 +15,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Threading;
+using System.Text;
 using System.Threading.Tasks;
-using SDL2;
+using Silk.NET.SDL;
+using Thread = System.Threading.Thread;
 
 namespace OpenRA.WindowsLauncher
 {
@@ -117,36 +118,62 @@ namespace OpenRA.WindowsLauncher
 			return 0;
 		}
 
-		static void ShowErrorDialog()
+		static unsafe void ShowErrorDialog()
 		{
-			var viewLogs = new SDL.SDL_MessageBoxButtonData
-			{
-				buttonid = 2,
-				text = "View Logs",
-				flags = SDL.SDL_MessageBoxButtonFlags.SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT
-			};
+			MessageBoxButtonData viewLogs;
+			MessageBoxButtonData viewFaq;
+			MessageBoxButtonData quit;
 
-			var viewFaq = new SDL.SDL_MessageBoxButtonData
+			var logsText = Encoding.ASCII.GetBytes("View Logs");
+			fixed (byte* logsTextPtr = logsText)
 			{
-				buttonid = 1,
-				text = "View FAQ"
-			};
+				viewLogs = new MessageBoxButtonData
+				{
+					Buttonid = 2,
+					Text = logsTextPtr,
+					Flags = (uint)MessageBoxButtonFlags.ReturnkeyDefault
+				};
+			}
 
-			var quit = new SDL.SDL_MessageBoxButtonData
+			var faqText = Encoding.ASCII.GetBytes("View FAQ");
+			fixed (byte* faqTextPtr = faqText)
 			{
-				buttonid = 0,
-				text = "Quit",
-				flags = SDL.SDL_MessageBoxButtonFlags.SDL_MESSAGEBOX_BUTTON_ESCAPEKEY_DEFAULT
-			};
+				viewFaq = new MessageBoxButtonData
+				{
+					Buttonid = 1,
+					Text = faqTextPtr
+				};
+			}
 
-			var dialog = new SDL.SDL_MessageBoxData
+			var quitText = Encoding.ASCII.GetBytes("Quit");
+			fixed (byte* quitTextPtr = quitText)
 			{
-				flags = SDL.SDL_MessageBoxFlags.SDL_MESSAGEBOX_ERROR,
-				title = "Fatal Error",
-				message = displayName + " has encountered a fatal error and must close.\nRefer to the crash logs and FAQ for more information.",
-				buttons = new[] { quit, viewFaq, viewLogs },
-				numbuttons = 3
-			};
+				quit = new MessageBoxButtonData
+				{
+					Buttonid = 0,
+					Text = quitTextPtr,
+					Flags = (uint)MessageBoxButtonFlags.EscapekeyDefault
+				};
+			}
+
+			var buttons = new[] { quit, viewFaq, viewLogs };
+			var title = Encoding.ASCII.GetBytes("Fatal Error");
+			var message = Encoding.ASCII.GetBytes(displayName + " has encountered a fatal error and must close.\nRefer to the crash logs and FAQ for more information.");
+			MessageBoxData dialog;
+
+			fixed (MessageBoxButtonData* buttonsPtr = buttons)
+			fixed (byte* titlePtr = title)
+			fixed (byte* messagePtr = message)
+			{
+				dialog = new MessageBoxData
+				{
+					Flags = (uint)MessageBoxFlags.Error,
+					Title = titlePtr,
+					Message = messagePtr,
+					Buttons = buttonsPtr,
+					Numbuttons = 3
+				};
+			}
 
 			// SDL_ShowMessageBox may create the error dialog behind other windows.
 			// We want to bring it to the foreground, but can't do it from the main thread
@@ -158,7 +185,8 @@ namespace OpenRA.WindowsLauncher
 				SetForegroundWindow(Process.GetCurrentProcess().MainWindowHandle);
 			});
 
-			if (SDL.SDL_ShowMessageBox(ref dialog, out var buttonid) < 0)
+			var buttonid = 0;
+			if (Sdl.GetApi().ShowMessageBox(in dialog, ref buttonid) < 0)
 				Exit();
 
 			switch (buttonid)
@@ -168,7 +196,7 @@ namespace OpenRA.WindowsLauncher
 				{
 					try
 					{
-						SDL.SDL_OpenURL(faqUrl);
+						Sdl.GetApi().OpenURL(faqUrl);
 					}
 					catch { }
 					break;
@@ -178,7 +206,7 @@ namespace OpenRA.WindowsLauncher
 				{
 					try
 					{
-						SDL.SDL_OpenURL(Path.Combine(Platform.SupportDir, "Logs"));
+						Sdl.GetApi().OpenURL(Path.Combine(Platform.SupportDir, "Logs"));
 					}
 					catch { }
 					break;

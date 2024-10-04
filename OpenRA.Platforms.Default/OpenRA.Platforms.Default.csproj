@@ -2,8 +2,11 @@
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.Game\OpenRA.Game.csproj" />
     <PackageReference Include="OpenRA-Freetype6" Version="1.0.11" />
-    <PackageReference Include="OpenRA-OpenAL-CS" Version="1.0.22" />
-    <PackageReference Include="OpenRA-SDL2-CS" Version="1.0.40" />
+    <PackageReference Include="Silk.NET.Input.Sdl" Version="2.21.0" />
+    <PackageReference Include="Silk.NET.OpenAL" Version="2.21.0" />
+    <PackageReference Include="Silk.NET.OpenAL.Extensions.Creative" Version="2.21.0" />
+    <PackageReference Include="Silk.NET.OpenAL.Extensions.Enumeration" Version="2.21.0" />
+    <PackageReference Include="Silk.NET.Windowing.Sdl" Version="2.21.0" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="OpenRA.Platforms.Default.dll.config" Condition="'$(TargetPlatform)' != 'win-x64' And '$(TargetPlatform)' != 'win-x86'">
