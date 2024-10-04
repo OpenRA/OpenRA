@@ -243,7 +243,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				// HACK: MULTIPLAYER_FILTER_PANEL doesn't follow our normal procedure for dropdown creation
 				// but we still need to be able to set the dropdown width based on the parent
-				// The yaml should use PARENT_RIGHT instead of DROPDOWN_WIDTH
+				// The yaml should use PARENT_WIDTH instead of DROPDOWN_WIDTH
 				var filtersPanel = Ui.LoadWidget("MULTIPLAYER_FILTER_PANEL", filtersButton, new WidgetArgs());
 				filtersButton.Children.Remove(filtersPanel);
 

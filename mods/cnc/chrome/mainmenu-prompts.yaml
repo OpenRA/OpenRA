@@ -1,12 +1,12 @@
 Container@MAINMENU_INTRODUCTION_PROMPT:
 	Logic: IntroductionPromptLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 700
 	Height: 445
 	Children:
 		Label@PROMPT_TITLE:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Y: 0 - 37
 			Font: BigBold
@@ -14,19 +14,19 @@ Container@MAINMENU_INTRODUCTION_PROMPT:
 			Align: Center
 			Text: label-mainmenu-introduction-prompt-title
 		Background@bg:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Background: panel-black
 			Children:
 				Label@DESC_A:
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Y: 15
 					Height: 16
 					Font: Regular
 					Align: Center
 					Text: label-bg-desc-a
 				Label@DESC_B:
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Y: 33
 					Height: 16
 					Font: Regular
@@ -35,8 +35,8 @@ Container@MAINMENU_INTRODUCTION_PROMPT:
 				ScrollPanel@SETTINGS_SCROLLPANEL:
 					X: 15
 					Y: 60
-					Width: PARENT_RIGHT - 30
-					Height: PARENT_BOTTOM - 75
+					Width: PARENT_WIDTH - 30
+					Height: PARENT_HEIGHT - 75
 					CollapseHiddenChildren: True
 					TopBottomSpacing: 5
 					ItemSpacing: 10
@@ -44,41 +44,41 @@ Container@MAINMENU_INTRODUCTION_PROMPT:
 					Children:
 						Background@PROFILE_SECTION_HEADER:
 							X: 5
-							Width: PARENT_RIGHT - 10
+							Width: PARENT_WIDTH - 10
 							Height: 13
 							Background: separator
 							ClickThrough: True
 							Children:
 								Label@LABEL:
-									Width: PARENT_RIGHT
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
 									Font: TinyBold
 									Align: Center
 									Text: label-profile-section-header
 						Container@ROW:
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 50
 							Children:
 								Container@PLAYER_CONTAINER:
 									X: 10
-									Width: PARENT_RIGHT / 2 - 20
+									Width: PARENT_WIDTH / 2 - 20
 									Children:
 										Label@PLAYER:
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 20
 											Text: label-player-container
 										TextField@PLAYERNAME:
 											Y: 25
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 25
 											MaxLength: 16
 											Text: Name
 								Container@PLAYERCOLOR_CONTAINER:
-									X: PARENT_RIGHT / 2 + 10
-									Width: PARENT_RIGHT / 2 - 20
+									X: PARENT_WIDTH / 2 + 10
+									Width: PARENT_WIDTH / 2 - 20
 									Children:
 										Label@COLOR:
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 20
 											Text: label-playercolor-container-color
 										DropDownButton@PLAYERCOLOR:
@@ -91,166 +91,166 @@ Container@MAINMENU_INTRODUCTION_PROMPT:
 												ColorBlock@COLORBLOCK:
 													X: 5
 													Y: 6
-													Width: PARENT_RIGHT - 35
-													Height: PARENT_BOTTOM - 12
+													Width: PARENT_WIDTH - 35
+													Height: PARENT_HEIGHT - 12
 						Container@SPACER:
 						Background@INPUT_SECTION_HEADER:
 							X: 5
-							Width: PARENT_RIGHT - 10
+							Width: PARENT_WIDTH - 10
 							Height: 13
 							Background: separator
 							ClickThrough: True
 							Children:
 								Label@LABEL:
-									Width: PARENT_RIGHT
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
 									Font: TinyBold
 									Align: Center
 									Text: label-input-section-header
 						Container@ROW:
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 50
 							Children:
 								Container@MOUSE_CONTROL_CONTAINER:
 									X: 10
-									Width: PARENT_RIGHT / 2 - 20
+									Width: PARENT_WIDTH / 2 - 20
 									Children:
 										Label@MOUSE_CONTROL_LABEL:
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 20
 											Font: Regular
 											Text: label-mouse-control-container
 										DropDownButton@MOUSE_CONTROL_DROPDOWN:
 											Y: 25
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 25
 											Font: Regular
 								Container@MOUSE_CONTROL_DESC_CLASSIC:
-									X: PARENT_RIGHT / 2 + 10
-									Width: PARENT_RIGHT / 2 - 20
+									X: PARENT_WIDTH / 2 + 10
+									Width: PARENT_WIDTH / 2 - 20
 									Children:
 										LabelWithHighlight@DESC_SELECTION:
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-classic-selection
 										LabelWithHighlight@DESC_COMMANDS:
 											Y: 17
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-classic-commands
 										LabelWithHighlight@DESC_BUILDINGS:
 											Y: 34
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-classic-buildings
 										LabelWithHighlight@DESC_SUPPORT:
 											Y: 51
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-classic-support
 										LabelWithHighlight@DESC_ZOOM:
 											Y: 68
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-classic-zoom
 										LabelWithHighlight@DESC_ZOOM_MODIFIER:
 											Y: 68
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-classic-zoom-modifier
 										LabelWithHighlight@DESC_SCROLL_RIGHT:
 											Y: 85
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-classic-scroll-right
 										LabelWithHighlight@DESC_SCROLL_MIDDLE:
 											Y: 85
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-classic-scroll-middle
 										Label@DESC_EDGESCROLL:
 											X: 9
 											Y: 102
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-classic-edgescroll
 								Container@MOUSE_CONTROL_DESC_MODERN:
-									X: PARENT_RIGHT / 2 + 10
-									Width: PARENT_RIGHT / 2 - 20
+									X: PARENT_WIDTH / 2 + 10
+									Width: PARENT_WIDTH / 2 - 20
 									Children:
 										LabelWithHighlight@DESC_SELECTION:
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-modern-selection
 										LabelWithHighlight@DESC_COMMANDS:
 											Y: 17
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-modern-commands
 										LabelWithHighlight@DESC_BUILDINGS:
 											Y: 34
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-modern-buildings
 										LabelWithHighlight@DESC_SUPPORT:
 											Y: 51
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-modern-support
 										LabelWithHighlight@DESC_ZOOM:
 											Y: 68
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-modern-zoom
 										LabelWithHighlight@DESC_ZOOM_MODIFIER:
 											Y: 68
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-modern-zoom-modifier
 										LabelWithHighlight@DESC_SCROLL_RIGHT:
 											Y: 85
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-modern-scroll-right
 										LabelWithHighlight@DESC_SCROLL_MIDDLE:
 											Y: 85
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-modern-scroll-middle
 										Label@DESC_EDGESCROLL:
 											X: 9
 											Y: 102
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 16
 											Font: Small
 											Text: label-mouse-control-desc-modern-edgescroll
 						Container@ROW:
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 20
 							Children:
 								Container@EDGESCROLL_CHECKBOX_CONTAINER:
 									X: 10
-									Width: PARENT_RIGHT / 2 - 20
+									Width: PARENT_WIDTH / 2 - 20
 									Children:
 										Checkbox@EDGESCROLL_CHECKBOX:
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 20
 											Font: Regular
 											Text: checkbox-edgescroll-container
@@ -258,63 +258,63 @@ Container@MAINMENU_INTRODUCTION_PROMPT:
 							Height: 30
 						Background@DISPLAY_SECTION_HEADER:
 							X: 5
-							Width: PARENT_RIGHT - 10
+							Width: PARENT_WIDTH - 10
 							Height: 13
 							Background: separator
 							ClickThrough: True
 							Children:
 								Label@LABEL:
-									Width: PARENT_RIGHT
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
 									Font: TinyBold
 									Align: Center
 									Text: label-display-section-header
 						Container@ROW:
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 50
 							Children:
 								Container@BATTLEFIELD_CAMERA_DROPDOWN_CONTAINER:
 									X: 10
-									Width: PARENT_RIGHT / 2 - 20
+									Width: PARENT_WIDTH / 2 - 20
 									Children:
 										Label@BATTLEFIELD_CAMERA:
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 20
 											Text: label-battlefield-camera-dropdown
 										DropDownButton@BATTLEFIELD_CAMERA_DROPDOWN:
 											Y: 25
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 25
 											Font: Regular
 								Container@UI_SCALE_DROPDOWN_CONTAINER:
-									X: PARENT_RIGHT / 2 + 10
-									Width: PARENT_RIGHT / 2 - 20
+									X: PARENT_WIDTH / 2 + 10
+									Width: PARENT_WIDTH / 2 - 20
 									Children:
 										Label@UI_SCALE:
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 20
 											Text: label-ui-scale-dropdown
 										DropDownButton@UI_SCALE_DROPDOWN:
 											Y: 25
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 25
 											Font: Regular
 						Container@ROW:
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 20
 							Children:
 								Container@CURSORDOUBLE_CHECKBOX_CONTAINER:
-									X: PARENT_RIGHT / 2 + 10
-									Width: PARENT_RIGHT / 2 - 20
+									X: PARENT_WIDTH / 2 + 10
+									Width: PARENT_WIDTH / 2 - 20
 									Children:
 										Checkbox@CURSORDOUBLE_CHECKBOX:
-											Width: PARENT_RIGHT
+											Width: PARENT_WIDTH
 											Height: 20
 											Font: Regular
 											Text: checkbox-cursordouble-container
 		Button@CONTINUE_BUTTON:
-			X: PARENT_RIGHT - WIDTH
-			Y: PARENT_BOTTOM - 1
+			X: PARENT_WIDTH - WIDTH
+			Y: PARENT_HEIGHT - 1
 			Width: 140
 			Height: 35
 			Text: button-continue
@@ -323,13 +323,13 @@ Container@MAINMENU_INTRODUCTION_PROMPT:
 
 Container@MAINMENU_SYSTEM_INFO_PROMPT:
 	Logic: SystemInfoPromptLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 600
 	Height: 350
 	Children:
 		Label@PROMPT_TITLE:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Y: 0 - 37
 			Font: BigBold
@@ -337,28 +337,28 @@ Container@MAINMENU_SYSTEM_INFO_PROMPT:
 			Align: Center
 			Text: label-mainmenu-system-info-prompt-title
 		Background@bg:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Background: panel-black
 			Children:
 				Label@PROMPT_TEXT_A:
 					X: 15
 					Y: 15
-					Width: PARENT_RIGHT - 30
+					Width: PARENT_WIDTH - 30
 					Height: 16
 					Align: Center
 					Text: label-bg-prompt-text-a
 				Label@PROMPT_TEXT_B:
 					X: 15
 					Y: 33
-					Width: PARENT_RIGHT - 30
+					Width: PARENT_WIDTH - 30
 					Height: 16
 					Align: Center
 					Text: label-bg-prompt-text-b
 				ScrollPanel@SYSINFO_DATA:
 					X: 15
 					Y: 63
-					Width: PARENT_RIGHT - 30
+					Width: PARENT_WIDTH - 30
 					TopBottomSpacing: 4
 					ItemSpacing: 4
 					Height: 240
@@ -376,8 +376,8 @@ Container@MAINMENU_SYSTEM_INFO_PROMPT:
 					Font: Regular
 					Text: checkbox-bg-sysinfo
 		Button@CONTINUE_BUTTON:
-			X: PARENT_RIGHT - WIDTH
-			Y: PARENT_BOTTOM - 1
+			X: PARENT_WIDTH - WIDTH
+			Y: PARENT_HEIGHT - 1
 			Width: 140
 			Height: 35
 			Text: button-continue

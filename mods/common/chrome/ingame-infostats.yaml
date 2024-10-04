@@ -1,6 +1,6 @@
 Container@SKIRMISH_STATS:
-	Height: PARENT_BOTTOM
-	Width: PARENT_RIGHT
+	Height: PARENT_HEIGHT
+	Width: PARENT_WIDTH
 	Logic: GameInfoStatsLogic
 	Children:
 		Container@OBJECTIVE:
@@ -16,7 +16,7 @@ Container@SKIRMISH_STATS:
 				Label@STATS_STATUS:
 					X: 100
 					Y: 22
-					Width: PARENT_RIGHT - 10
+					Width: PARENT_WIDTH - 10
 					Height: 25
 					Font: MediumBold
 				Checkbox@STATS_CHECKBOX:
@@ -31,7 +31,7 @@ Container@SKIRMISH_STATS:
 		Container@STATS_HEADERS:
 			X: 22
 			Y: 81
-			Width: PARENT_RIGHT - 44
+			Width: PARENT_WIDTH - 44
 			Children:
 				Label@NAME:
 					X: 10
@@ -60,13 +60,13 @@ Container@SKIRMISH_STATS:
 		ScrollPanel@PLAYER_LIST:
 			X: 20
 			Y: 105
-			Width: PARENT_RIGHT - 40
+			Width: PARENT_WIDTH - 40
 			Height: 280
 			ItemSpacing: 5
 			Children:
 				ScrollItem@TEAM_TEMPLATE:
 					Background: scrollheader
-					Width: PARENT_RIGHT - 26
+					Width: PARENT_WIDTH - 26
 					Height: 20
 					X: 2
 					Visible: false
@@ -84,7 +84,7 @@ Container@SKIRMISH_STATS:
 							Height: 20
 							Font: Bold
 				Container@PLAYER_TEMPLATE:
-					Width: PARENT_RIGHT - 26
+					Width: PARENT_WIDTH - 26
 					Height: 25
 					X: 2
 					Children:
@@ -143,7 +143,7 @@ Container@SKIRMISH_STATS:
 									X: 7
 									Y: 7
 				Container@SPECTATOR_TEMPLATE:
-					Width: PARENT_RIGHT - 26
+					Width: PARENT_WIDTH - 26
 					Height: 25
 					X: 2
 					Children:

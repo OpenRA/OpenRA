@@ -1,53 +1,53 @@
 Container@DISPLAY_PANEL:
 	Logic: DisplaySettingsLogic
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
 	Children:
 		ScrollPanel@SETTINGS_SCROLLPANEL:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			CollapseHiddenChildren: True
 			TopBottomSpacing: 5
 			ItemSpacing: 10
 			Children:
 				Background@PROFILE_SECTION_HEADER:
 					X: 5
-					Width: PARENT_RIGHT - 24 - 10
+					Width: PARENT_WIDTH - 24 - 10
 					Height: 13
 					Background: separator
 					ClickThrough: True
 					Children:
 						Label@LABEL:
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
 							Font: TinyBold
 							Align: Center
 							Text: label-profile-section-header
 				Container@ROW:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 50
 					Children:
 						Container@PLAYER_CONTAINER:
 							X: 10
-							Width: PARENT_RIGHT / 2 - 20
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								LabelForInput@PLAYER:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Text: label-player-container
 									For: PLAYERNAME
 								TextField@PLAYERNAME:
 									Y: 25
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 25
 									MaxLength: 16
 									Text: Name
 						Container@PLAYERCOLOR_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
-							Width: PARENT_RIGHT / 2 - 20
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								LabelForInput@COLOR:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Text: label-playercolor-container-color
 									For: PLAYERCOLOR
@@ -61,184 +61,184 @@ Container@DISPLAY_PANEL:
 										ColorBlock@COLORBLOCK:
 											X: 5
 											Y: 6
-											Width: PARENT_RIGHT - 35
-											Height: PARENT_BOTTOM - 12
+											Width: PARENT_WIDTH - 35
+											Height: PARENT_HEIGHT - 12
 				Container@SPACER:
 				Background@DISPLAY_SECTION_HEADER:
 					X: 5
-					Width: PARENT_RIGHT - 24 - 10
+					Width: PARENT_WIDTH - 24 - 10
 					Height: 13
 					Background: separator
 					ClickThrough: True
 					Children:
 						Label@LABEL:
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
 							Font: TinyBold
 							Align: Center
 							Text: label-display-section-header
 				Container@ROW:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 50
 					Children:
 						Container@BATTLEFIELD_CAMERA_DROPDOWN_CONTAINER:
 							X: 10
-							Width: PARENT_RIGHT / 2 - 20
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Label@BATTLEFIELD_CAMERA:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Text: label-battlefield-camera-dropdown
 								DropDownButton@BATTLEFIELD_CAMERA_DROPDOWN:
 									Y: 25
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 25
 									Font: Regular
 						Container@TARGET_LINES_DROPDOWN_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
-							Width: PARENT_RIGHT / 2 - 20
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Label@TARGET_LINES:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Text: label-target-lines-dropdown-container
 								DropDownButton@TARGET_LINES_DROPDOWN:
 									Y: 25
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 25
 									Font: Regular
 				Container@ROW:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 50
 					Children:
 						Container@UI_SCALE_DROPDOWN_CONTAINER:
 							X: 10
-							Width: PARENT_RIGHT / 2 - 20
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								LabelForInput@UI_SCALE:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Text: label-ui-scale-dropdown
 									For: UI_SCALE_DROPDOWN
 								DropDownButton@UI_SCALE_DROPDOWN:
 									Y: 25
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 25
 									Font: Regular
 						Container@STATUS_BAR_DROPDOWN_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
-							Width: PARENT_RIGHT / 2 - 20
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Label@STATUS_BARS:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Text: label-status-bar-dropdown-container-bars
 								DropDownButton@STATUS_BAR_DROPDOWN:
 									Y: 25
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 25
 									Font: Regular
 				Container@ROW:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 20
 					Children:
 						Container@CURSORDOUBLE_CHECKBOX_CONTAINER:
 							X: 10
-							Width: PARENT_RIGHT / 2 - 20
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Checkbox@CURSORDOUBLE_CHECKBOX:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Font: Regular
 									Text: checkbox-cursordouble-container
 						Container@PLAYER_STANCE_COLORS_CHECKBOX_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
-							Width: PARENT_RIGHT / 2 - 20
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Checkbox@PLAYER_STANCE_COLORS_CHECKBOX:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Font: Regular
 									Text: checkbox-player-stance-colors-container.label
 									TooltipText: checkbox-player-stance-colors-container.tooltip
 									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 				Container@ROW:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 20
 					Children:
 						Container@UI_FEEDBACK_CHECKBOX_CONTAINER:
 							X: 10
-							Width: PARENT_RIGHT / 2 - 10
+							Width: PARENT_WIDTH / 2 - 10
 							Children:
 								Checkbox@UI_FEEDBACK_CHECKBOX:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Font: Regular
 									Text: checkbox-ui-feedback-container.label
 									TooltipText: checkbox-ui-feedback-container.tooltip
 									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 						Container@TRANSIENTS_CHECKBOX_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
-							Width: PARENT_RIGHT / 2 - 20
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Checkbox@TRANSIENTS_CHECKBOX:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Font: Regular
 									Text: checkbox-transients-container.label
 									TooltipText: checkbox-transients-container.tooltip
 									TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 				Container@ROW:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 20
 					Children:
 						Container@HIDE_REPLAY_CHAT_CHECKBOX_CONTAINER:
 							X: 10
-							Width: PARENT_RIGHT / 2 - 10
+							Width: PARENT_WIDTH / 2 - 10
 							Children:
 								Checkbox@HIDE_REPLAY_CHAT_CHECKBOX:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Font: Regular
 									Text: checkbox-hide-replay-chat-container
 				Container@SPACER:
 				Background@VIDEO_SECTION_HEADER:
 					X: 5
-					Width: PARENT_RIGHT - 24 - 10
+					Width: PARENT_WIDTH - 24 - 10
 					Height: 13
 					Background: separator
 					ClickThrough: True
 					Children:
 						Label@LABEL:
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
 							Font: TinyBold
 							Align: Center
 							Text: label-video-section-header
 				Container@ROW:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 50
 					Children:
 						Container@VIDEO_MODE_DROPDOWN_CONTAINER:
 							X: 10
-							Width: PARENT_RIGHT / 2 - 20
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Label@VIDEO_MODE:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Text: label-video-mode-dropdown-container
 								DropDownButton@MODE_DROPDOWN:
 									Y: 25
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 25
 									Font: Regular
 									Text: dropdownbutton-video-mode-dropdown-container
 						Container@WINDOW_RESOLUTION_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
-							Width: PARENT_RIGHT / 2 - 20
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Label@WINDOW_SIZE:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Text: label-window-resolution-container-size
 								TextField@WINDOW_WIDTH:
@@ -263,88 +263,88 @@ Container@DISPLAY_PANEL:
 									MaxLength: 5
 									Type: Integer
 						Container@DISPLAY_SELECTION_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
-							Width: PARENT_RIGHT / 2 - 20
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Label@DISPLAY_SELECTION_LABEL:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Text: label-display-selection-container
 								DropDownButton@DISPLAY_SELECTION_DROPDOWN:
 									Y: 25
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 25
 									Font: Regular
 									Text: dropdownbutton-display-selection-container-dropdown
 				Container@ROW:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 50
 					Children:
 						Container@FRAME_LIMIT_CHECKBOX_CONTAINER:
 							X: 10
-							Width: PARENT_RIGHT / 2 - 20
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Checkbox@FRAME_LIMIT_CHECKBOX:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Font: Regular
 						Container@FRAME_LIMIT_SLIDER_CONTAINER:
-							Width: PARENT_RIGHT / 2 - 20
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Slider@FRAME_LIMIT_SLIDER:
 									X: 20
 									Y: 25
-									Width: PARENT_RIGHT - 20
+									Width: PARENT_WIDTH - 20
 									Height: 20
 									Ticks: 20
 									MinimumValue: 50
 									MaximumValue: 240
 						Container@VSYNC_CHECKBOX_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
-							Width: PARENT_RIGHT / 2 - 20
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Checkbox@VSYNC_CHECKBOX:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Font: Regular
 									Text: checkbox-vsync-container
 						Container@FRAME_LIMIT_GAMESPEED_CHECKBOX_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
+							X: PARENT_WIDTH / 2 + 10
 							Y: 25
-							Width: PARENT_RIGHT / 2 - 20
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Checkbox@FRAME_LIMIT_GAMESPEED_CHECKBOX:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Font: Regular
 									Text: checkbox-frame-limit-gamespeed-container
 				Container@ROW:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 50
 					Children:
 						Container@GL_PROFILE_DROPDOWN_CONTAINER:
 							X: 10
-							Width: PARENT_RIGHT / 2 - 20
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Label@GL_PROFILE:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Text: label-gl-profile-dropdown-container
 								DropDownButton@GL_PROFILE_DROPDOWN:
 									Y: 25
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 25
 									Font: Regular
 				Container@ROW:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 30
 					Children:
 						Container@RESTART_REQUIRED_CONTAINER:
 							X: 10
-							Width: PARENT_RIGHT - 20
+							Width: PARENT_WIDTH - 20
 							Children:
 								Label@VIDEO_RESTART_REQUIRED_DESC:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Font: Tiny
 									Text: label-restart-required-container-video-desc

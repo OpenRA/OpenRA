@@ -1,12 +1,12 @@
 Container@LOBBY_PLAYER_BIN:
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
 	Children:
 		Container@LABEL_CONTAINER:
 			X: 5
 			Y: 0 - 24
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Children:
 				Label@LABEL_LOBBY_NAME:
 					Width: 200
@@ -57,8 +57,8 @@ Container@LOBBY_PLAYER_BIN:
 					Align: Left
 					Font: Bold
 		ScrollPanel@LOBBY_PLAYERS:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			TopBottomSpacing: 5
 			ItemSpacing: 5
 			Children:
@@ -78,8 +78,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@LATENCY_COLOR:
 									X: 2
 									Y: 2
-									Width: PARENT_RIGHT - 4
-									Height: PARENT_BOTTOM - 4
+									Width: PARENT_WIDTH - 4
+									Height: PARENT_HEIGHT - 4
 						ClientTooltipRegion@LATENCY_REGION:
 							Width: 11
 							Height: 25
@@ -123,8 +123,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@COLORBLOCK:
 									X: 5
 									Y: 6
-									Width: PARENT_RIGHT - 35
-									Height: PARENT_BOTTOM - 12
+									Width: PARENT_WIDTH - 35
+									Height: PARENT_HEIGHT - 12
 						DropDownButton@FACTION:
 							X: 309
 							Width: 120
@@ -191,8 +191,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@LATENCY_COLOR:
 									X: 2
 									Y: 2
-									Width: PARENT_RIGHT - 4
-									Height: PARENT_BOTTOM - 4
+									Width: PARENT_WIDTH - 4
+									Height: PARENT_HEIGHT - 4
 						ClientTooltipRegion@LATENCY_REGION:
 							Width: 11
 							Height: 25
@@ -337,8 +337,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@LATENCY_COLOR:
 									X: 2
 									Y: 2
-									Width: PARENT_RIGHT - 4
-									Height: PARENT_BOTTOM - 4
+									Width: PARENT_WIDTH - 4
+									Height: PARENT_HEIGHT - 4
 						ClientTooltipRegion@LATENCY_REGION:
 							Width: 11
 							Height: 25
@@ -401,8 +401,8 @@ Container@LOBBY_PLAYER_BIN:
 								ColorBlock@LATENCY_COLOR:
 									X: 2
 									Y: 2
-									Width: PARENT_RIGHT - 4
-									Height: PARENT_BOTTOM - 4
+									Width: PARENT_WIDTH - 4
+									Height: PARENT_HEIGHT - 4
 						ClientTooltipRegion@LATENCY_REGION:
 							Width: 11
 							Height: 25

@@ -196,7 +196,7 @@ Background@REGISTERED_PLAYER_TOOLTIP:
 	Width: 270
 	Children:
 		Container@HEADER:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Children:
 				Container@PROFILE_HEADER:
 					Height: 45
@@ -204,19 +204,19 @@ Background@REGISTERED_PLAYER_TOOLTIP:
 						Label@PROFILE_NAME:
 							X: 7
 							Y: 3
-							Width: PARENT_RIGHT - 20
+							Width: PARENT_WIDTH - 20
 							Height: 24
 							Font: MediumBold
 						Label@PROFILE_RANK:
 							X: 7
 							Y: 25
-							Width: PARENT_RIGHT - 20
+							Width: PARENT_WIDTH - 20
 							Height: 12
 							Font: TinyBold
 						Container@GAME_ADMIN:
 							X: 7
 							Y: 37
-							Width: PARENT_RIGHT - 20
+							Width: PARENT_WIDTH - 20
 							Height: 12
 							Visible: False
 							Children:
@@ -235,16 +235,16 @@ Background@REGISTERED_PLAYER_TOOLTIP:
 									Font: TinyBold
 				Container@MESSAGE_HEADER:
 					Height: 31
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Children:
 						Label@MESSAGE:
 							X: 7
 							Y: 4
-							Width: PARENT_RIGHT - 14
+							Width: PARENT_WIDTH - 14
 							Height: 23
 							Font: Bold
 		Container@BADGES_CONTAINER:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Visible: false
 			Children:
 				Background@SEPARATOR:

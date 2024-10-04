@@ -290,10 +290,10 @@ namespace OpenRA.Widgets
 				new Dictionary<string, int>((Dictionary<string, int>)subs) :
 				new Dictionary<string, int>();
 
-			substitutions.Add("WINDOW_RIGHT", Game.Renderer.Resolution.Width);
-			substitutions.Add("WINDOW_BOTTOM", Game.Renderer.Resolution.Height);
-			substitutions.Add("PARENT_RIGHT", parentBounds.Width);
-			substitutions.Add("PARENT_BOTTOM", parentBounds.Height);
+			substitutions.Add("WINDOW_WIDTH", Game.Renderer.Resolution.Width);
+			substitutions.Add("WINDOW_HEIGHT", Game.Renderer.Resolution.Height);
+			substitutions.Add("PARENT_WIDTH", parentBounds.Width);
+			substitutions.Add("PARENT_HEIGHT", parentBounds.Height);
 
 			var readOnlySubstitutions = new ReadOnlyDictionary<string, int>(substitutions);
 			var width = Width?.Evaluate(readOnlySubstitutions) ?? 0;

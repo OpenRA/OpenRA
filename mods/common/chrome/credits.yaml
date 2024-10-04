@@ -1,12 +1,12 @@
 Background@CREDITS_PANEL:
 	Logic: CreditsLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 410
 	Height: 500
 	Children:
 		Label@CREDITS_TITLE:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Y: 21
 			Height: 25
 			Font: Bold
@@ -16,7 +16,7 @@ Background@CREDITS_PANEL:
 			Visible: False
 			X: 20
 			Y: 50
-			Width: PARENT_RIGHT - 40
+			Width: PARENT_WIDTH - 40
 			Height: 30
 			Children:
 				Button@MOD_TAB:
@@ -32,19 +32,19 @@ Background@CREDITS_PANEL:
 		ScrollPanel@CREDITS_DISPLAY:
 			X: 20
 			Y: 50
-			Width: PARENT_RIGHT - 40
+			Width: PARENT_WIDTH - 40
 			Height: 395
 			TopBottomSpacing: 8
 			Children:
 				Label@CREDITS_TEMPLATE:
 					X: 8
-					Width: PARENT_RIGHT - 24 - 2 * 8
+					Width: PARENT_WIDTH - 24 - 2 * 8
 					Height: 16
 					VAlign: Top
 					WordWrap: true
 		Button@BACK_BUTTON:
-			X: PARENT_RIGHT - 180
-			Y: PARENT_BOTTOM - 45
+			X: PARENT_WIDTH - 180
+			Y: PARENT_HEIGHT - 45
 			Width: 160
 			Height: 25
 			Text: button-back
