@@ -764,10 +764,9 @@ STNK:
 		CloakDelay: 85
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
-		CloakStyle: Palette
-		CloakedPalette: cloak
 		UncloakOn: Attack, Unload, Dock, Damage, Heal
 		PauseOnCondition: cloak-force-disabled
+	RenderCloakWithPalette:
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical

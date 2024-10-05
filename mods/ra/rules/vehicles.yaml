@@ -921,6 +921,7 @@ STNK:
 		UncloakSound: appear1.aud
 		PauseOnCondition: cloak-force-disabled
 		UncloakOn: Attack, Load, Unload, Heal, Dock
+	RenderCloakAsAlpha:
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical

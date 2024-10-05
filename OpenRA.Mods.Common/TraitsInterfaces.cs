@@ -484,6 +484,16 @@ namespace OpenRA.Mods.Common.Traits
 	public interface IDetectCloakedModifier { int GetDetectCloakedModifier(); }
 
 	[RequireExplicitImplementation]
+	public interface IRenderCloaked
+	{
+		// Used by Cloak to filter renders for cloak type
+		bool IsValidCloakType(string cloakType);
+		IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r);
+		void OnCloaked(Actor self, CloakInfo cloakInfo, bool isInitial);
+		void OnUncloaked(Actor self, CloakInfo cloakInfo, bool isInitial);
+	}
+
+	[RequireExplicitImplementation]
 	public interface IResourceValueModifier { int GetResourceValueModifier(); }
 
 	[RequireExplicitImplementation]

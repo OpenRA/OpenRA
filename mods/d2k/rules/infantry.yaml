@@ -198,6 +198,7 @@ fremen:
 		CloakDelay: 85
 		UncloakOn: Attack, Unload, Infiltrate, Demolish, Dock, Damage, Heal
 		PauseOnCondition: cloak-force-disabled
+	RenderCloakAsAlpha:
 	GrantConditionOnDamageState@UNCLOAK:
 		Condition: cloak-force-disabled
 		ValidDamageStates: Critical
@@ -345,6 +346,7 @@ saboteur:
 	Voiced:
 		VoiceSet: SaboteurVoice
 	-AttackFrontal:
+	RenderCloakAsAlpha:
 
 nsfremen:
 	Inherits: fremen

@@ -39,9 +39,10 @@ namespace OpenRA.Mods.Common.Traits
 	// Type tag for DetectionTypes
 	public class DetectionType { }
 
-	public enum CloakStyle { None, Alpha, Color, Palette }
-
-	[Desc("This unit can cloak and uncloak in specific situations.")]
+	[Desc("This unit can cloak and uncloak in specific situations.",
+		"To render the actor differently when cloaked, use a RenderCloak* trait.",
+		"While more than 1 RenderCloak* trait can be used, more than 3 RenderCloak* traits may affect performance since they are called during rendering even when disabled.",
+		"Note that the actor will not be rendered if the actor is cloaked and the actor is not visible to the player.")]
 	public class CloakInfo : PausableConditionalTraitInfo
 	{
 		[Desc("Measured in game ticks.")]
@@ -69,22 +70,6 @@ namespace OpenRA.Mods.Common.Traits
 
 		[Desc("The type of cloak. Same type of cloaks won't trigger cloaking and uncloaking sound and effect.")]
 		public readonly string CloakType = null;
-
-		[Desc("Render effect to use when cloaked.")]
-		public readonly CloakStyle CloakStyle = CloakStyle.Alpha;
-
-		[Desc("The alpha level to use when cloaked when using Alpha CloakStyle.")]
-		public readonly float CloakedAlpha = 0.55f;
-
-		[Desc("The color to use when cloaked when using Color CloakStyle.")]
-		public readonly Color CloakedColor = Color.FromArgb(140, 0, 0, 0);
-
-		[PaletteReference(nameof(IsPlayerPalette))]
-		[Desc("The palette to use when cloaked when using Palette CloakStyle.")]
-		public readonly string CloakedPalette = null;
-
-		[Desc("Indicates that CloakedPalette is a player palette when using Palette CloakStyle.")]
-		public readonly bool IsPlayerPalette = false;
 
 		[Desc("Which image to use for the effect played when cloaking or uncloaking.")]
 		public readonly string EffectImage = null;
@@ -114,14 +99,12 @@ namespace OpenRA.Mods.Common.Traits
 		IRenderModifier, INotifyDamage, INotifyUnloadCargo, INotifyLoadCargo, INotifyDemolition, INotifyInfiltration,
 		INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, INotifyDockClient, INotifySupportPower
 	{
-		readonly float3 cloakedColor;
-		readonly float cloakedColorAlpha;
-
 		[Sync]
 		int remainingTime;
 
 		bool isDocking;
 		Cloak[] otherCloaks;
+		IRenderCloaked[] renderCloakedTraits;
 
 		CPos? lastPos;
 		bool wasCloaked = false;
@@ -132,8 +115,6 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			remainingTime = info.InitialDelay;
-			cloakedColor = new float3(info.CloakedColor.R, info.CloakedColor.G, info.CloakedColor.B) / 255f;
-			cloakedColorAlpha = info.CloakedColor.A / 255f;
 		}
 
 		protected override void Created(Actor self)
@@ -145,6 +126,7 @@ namespace OpenRA.Mods.Common.Traits
 					.ToArray();
 			}
 
+			renderCloakedTraits = self.TraitsImplementing<IRenderCloaked>().Where(n => n.IsValidCloakType(Info.CloakType)).ToArray();
 			if (Cloaked)
 			{
 				wasCloaked = true;
@@ -184,23 +166,26 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (Cloaked && IsVisible(self, self.World.RenderPlayer))
 			{
-				switch (Info.CloakStyle)
+				// PERF: Try to keep the cost of this as low since it affects rendering.
+				switch (renderCloakedTraits.Length)
 				{
-					case CloakStyle.Alpha:
-						return r.Select(a => !a.IsDecoration && a is IModifyableRenderable mr ? mr.WithAlpha(Info.CloakedAlpha) : a);
-
-					case CloakStyle.Color:
-						return r.Select(a => !a.IsDecoration && a is IModifyableRenderable mr ?
-							mr.WithTint(cloakedColor, mr.TintModifiers | TintModifiers.ReplaceColor).WithAlpha(cloakedColorAlpha) :
-							a);
-
-					case CloakStyle.Palette:
-					{
-						var palette = wr.Palette(Info.IsPlayerPalette ? Info.CloakedPalette + self.Owner.InternalName : Info.CloakedPalette);
-						return r.Select(a => !a.IsDecoration && a is IPalettedRenderable pr ? pr.WithPalette(palette) : a);
-					}
-
+					case 0:
+						return r;
+					case 1:
+						return renderCloakedTraits[0].ModifyRender(self, wr, r);
+					case 2:
+						return renderCloakedTraits[1].ModifyRender(self, wr, renderCloakedTraits[0].ModifyRender(self, wr, r));
+					case 3:
+						return renderCloakedTraits[2].ModifyRender(self, wr, renderCloakedTraits[1].ModifyRender(self, wr, renderCloakedTraits[0].ModifyRender(self, wr, r)));
 					default:
+						for (var i = 0; i < renderCloakedTraits.Length; i++)
+						{
+							// Unless some IRenderCloaked trait does not process in order, this should be a false positive
+#pragma warning disable CA1851 // Possible multiple enumerations of 'IEnumerable' collection
+							r = renderCloakedTraits[i].ModifyRender(self, wr, r);
+#pragma warning restore CA1851 // Possible multiple enumerations of 'IEnumerable' collection
+						}
+
 						return r;
 				}
 			}
@@ -252,6 +237,14 @@ namespace OpenRA.Mods.Common.Traits
 						self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(
 							posfunc, () => WAngle.Zero, w, Info.EffectImage, Info.CloakEffectSequence, palette)));
 					}
+
+					foreach (var renderCloaked in renderCloakedTraits)
+						renderCloaked.OnCloaked(self, Info, false);
+				}
+				else
+				{
+					foreach (var renderCloaked in renderCloakedTraits)
+						renderCloaked.OnCloaked(self, Info, true);
 				}
 			}
 			else if (!isCloaked && wasCloaked)
@@ -277,6 +270,14 @@ namespace OpenRA.Mods.Common.Traits
 						self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(
 							posfunc, () => WAngle.Zero, w, Info.EffectImage, Info.UncloakEffectSequence, palette)));
 					}
+
+					foreach (var renderCloaked in renderCloakedTraits)
+						renderCloaked.OnUncloaked(self, Info, false);
+				}
+				else
+				{
+					foreach (var renderCloaked in renderCloakedTraits)
+						renderCloaked.OnUncloaked(self, Info, true);
 				}
 			}
 
