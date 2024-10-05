@@ -10,7 +10,7 @@ World:
 		WinVideo: allymorf.vqa
 		LossVideo: overrun.vqa
 		StartVideo: mcv.vqa
-		Briefing: Priority one is to establish a base and get your spy into one of the Soviet Tech Centers in the base across the gulf.\nData on the Iron Curtain is in there and we need it.\n\nOnce you get the data complete your mission...\nWipe out everything.
+		Briefing: briefing
 	MapOptions:
 		TechLevel: medium
 	ScriptLobbyDropdown@difficulty:

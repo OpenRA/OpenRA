@@ -4,7 +4,7 @@ World:
 	MissionData:
 		WinVideo: cronfail.vqa
 		LossVideo: sfrozen.vqa
-		Briefing: The situation is critical! The Soviets have taken over a small research base in the north. During the conflict, a chronosphere was badly damaged. We fear it could explode.\n\nInside the base is a group of scientists that were captured during the takeover. They must be rescued before the chronosphere explodes. Fight your way back into the base and retrieve them.\n\nBe careful -- there is only one way in and out of the base, a lone bridge. It must be protected to ensure evacuation.
+		Briefing: briefing
 
 LST.Reinforcement:
 	Inherits: LST
