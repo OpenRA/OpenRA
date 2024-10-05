@@ -73,8 +73,14 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Render effect to use when cloaked.")]
 		public readonly CloakStyle CloakStyle = CloakStyle.Alpha;
 
-		[Desc("The alpha level to use when cloaked when using Alpha CloakStyle.")]
-		public readonly float CloakedAlpha = 0.55f;
+		[Desc("The minimum alpha level to use when cloaked when using Alpha CloakStyle.")]
+		public readonly float MinCloakedAlpha = 0.4f;
+
+		[Desc("The maximum alpha level to use when cloaked when using Alpha CloakStyle.")]
+		public readonly float MaxCloakedAlpha = 0.7f;
+
+		[Desc("Time to to change from maximum alpha level to minimum alpha level when using Alpha CloakStyle.")]
+		public readonly int CloakAlphaChangeInterval = 10;
 
 		[Desc("The color to use when cloaked when using Color CloakStyle.")]
 		public readonly Color CloakedColor = Color.FromArgb(140, 0, 0, 0);
@@ -127,6 +133,8 @@ namespace OpenRA.Mods.Common.Traits
 		bool wasCloaked = false;
 		bool firstTick = true;
 		int cloakedToken = Actor.InvalidConditionToken;
+		float currentAlpha;
+		float alphaChange;
 
 		public Cloak(CloakInfo info)
 			: base(info)
@@ -134,6 +142,7 @@ namespace OpenRA.Mods.Common.Traits
 			remainingTime = info.InitialDelay;
 			cloakedColor = new float3(info.CloakedColor.R, info.CloakedColor.G, info.CloakedColor.B) / 255f;
 			cloakedColorAlpha = info.CloakedColor.A / 255f;
+			alphaChange = (info.MaxCloakedAlpha - info.MinCloakedAlpha) / Math.Max(1, info.CloakAlphaChangeInterval);
 		}
 
 		protected override void Created(Actor self)
@@ -151,6 +160,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (cloakedToken == Actor.InvalidConditionToken)
 					cloakedToken = self.GrantCondition(Info.CloakedCondition);
 			}
+
+			currentAlpha = Info.MinCloakedAlpha + alphaChange * Game.CosmeticRandom.Next(Info.CloakAlphaChangeInterval);
 
 			base.Created(self);
 		}
@@ -187,7 +198,7 @@ namespace OpenRA.Mods.Common.Traits
 				switch (Info.CloakStyle)
 				{
 					case CloakStyle.Alpha:
-						return r.Select(a => !a.IsDecoration && a is IModifyableRenderable mr ? mr.WithAlpha(Info.CloakedAlpha) : a);
+						return r.Select(a => !a.IsDecoration && a is IModifyableRenderable mr ? mr.WithAlpha(currentAlpha) : a);
 
 					case CloakStyle.Color:
 						return r.Select(a => !a.IsDecoration && a is IModifyableRenderable mr ?
@@ -277,6 +288,21 @@ namespace OpenRA.Mods.Common.Traits
 						self.World.AddFrameEndTask(w => w.Add(new SpriteEffect(
 							posfunc, () => WAngle.Zero, w, Info.EffectImage, Info.UncloakEffectSequence, palette)));
 					}
+				}
+			}
+
+			if (isCloaked)
+			{
+				currentAlpha += alphaChange;
+				if (alphaChange > 0 && currentAlpha > Info.MaxCloakedAlpha)
+				{
+					alphaChange = -alphaChange;
+					currentAlpha = Info.MaxCloakedAlpha;
+				}
+				else if (alphaChange < 0 && currentAlpha < Info.MinCloakedAlpha)
+				{
+					alphaChange = -alphaChange;
+					currentAlpha = Info.MinCloakedAlpha;
 				}
 			}
 
