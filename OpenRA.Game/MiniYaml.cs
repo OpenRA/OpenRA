@@ -120,6 +120,24 @@ namespace OpenRA
 		public readonly string Value;
 		public readonly ImmutableArray<MiniYamlNode> Nodes;
 
+		public bool Matches(MiniYaml other)
+		{
+			if (other == null || Nodes.Length != other.Nodes.Length
+				|| !Value.Equals(other.Value, StringComparison.InvariantCulture))
+				return false;
+
+			for (var i = 0; i < Nodes.Length; i++)
+			{
+				var n = Nodes[i];
+				var on = other.Nodes[i];
+				if (!n.Key.Equals(on.Key, StringComparison.InvariantCulture)
+					|| !n.Value.Matches(on.Value))
+					return false;
+			}
+
+			return true;
+		}
+
 		public MiniYaml WithValue(string value)
 		{
 			if (Value == value)
