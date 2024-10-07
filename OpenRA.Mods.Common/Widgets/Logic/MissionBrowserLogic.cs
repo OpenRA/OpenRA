@@ -268,8 +268,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var infoVideo = "";
 			var infoVideoVisible = false;
 
-			panel = PanelType.MissionInfo;
-
 			new Thread(() =>
 			{
 				var missionData = preview.WorldActorInfo.TraitInfoOrDefault<MissionDataInfo>();
@@ -290,6 +288,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							description.GetText = () => briefing;
 							description.Bounds.Height = height;
 							descriptionPanel.Layout.AdjustChildren();
+							panel = PanelType.MissionInfo;
 						}
 					});
 				}
