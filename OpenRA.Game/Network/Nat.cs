@@ -71,7 +71,7 @@ namespace OpenRA.Network
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("Port forwarding failed: {0}", e.Message);
+				Log.Write("nat", $"Port forwarding failed: {e.Message}");
 				Log.Write("nat", e.StackTrace);
 				return false;
 			}
@@ -90,7 +90,7 @@ namespace OpenRA.Network
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine("Port removal failed: {0}", e.Message);
+				Log.Write("nat", $"Port removal failed: {e.Message}");
 				Log.Write("nat", e.StackTrace);
 				return false;
 			}
