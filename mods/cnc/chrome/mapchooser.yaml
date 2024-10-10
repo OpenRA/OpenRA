@@ -1,12 +1,12 @@
 Container@MAPCHOOSER_PANEL:
 	Logic: MapChooserLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 900
 	Height: 540
 	Children:
 		Label@TITLE:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Y: 0 - 34
 			Font: BigBold
@@ -14,8 +14,8 @@ Container@MAPCHOOSER_PANEL:
 			Align: Center
 			Text: label-mapchooser-panel-title
 		Background@bg:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Background: panel-black
 			Children:
 				Button@SYSTEM_MAPS_TAB_BUTTON:
@@ -37,34 +37,34 @@ Container@MAPCHOOSER_PANEL:
 					Width: 135
 					Text: button-bg-user-maps-tab
 				Container@MAP_TAB_PANES:
-					Width: PARENT_RIGHT - 30
-					Height: PARENT_BOTTOM - 90
+					Width: PARENT_WIDTH - 30
+					Height: PARENT_HEIGHT - 90
 					X: 15
 					Y: 45
 					Children:
 						Container@SYSTEM_MAPS_TAB:
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
 							Children:
 								ScrollPanel@MAP_LIST:
-									Width: PARENT_RIGHT
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
 									ItemSpacing: 1
 						Container@REMOTE_MAPS_TAB:
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
 							Children:
 								ScrollPanel@MAP_LIST:
-									Width: PARENT_RIGHT
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
 									ItemSpacing: 1
 						Container@USER_MAPS_TAB:
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
 							Children:
 								ScrollPanel@MAP_LIST:
-									Width: PARENT_RIGHT
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
 									ItemSpacing: 1
 				ScrollItem@MAP_TEMPLATE:
 					Width: 210
@@ -74,7 +74,7 @@ Container@MAPCHOOSER_PANEL:
 					EnableChildMouseOver: True
 					Children:
 						MapPreview@PREVIEW:
-							X: (PARENT_RIGHT - WIDTH) / 2
+							X: (PARENT_WIDTH - WIDTH) / 2
 							Y: 3
 							Width: 204
 							Height: 204
@@ -82,40 +82,40 @@ Container@MAPCHOOSER_PANEL:
 							IgnoreMouseInput: true
 						LabelWithTooltip@TITLE:
 							X: 4
-							Y: PARENT_BOTTOM - HEIGHT - 33
-							Width: PARENT_RIGHT - 8
+							Y: PARENT_HEIGHT - HEIGHT - 33
+							Width: PARENT_WIDTH - 8
 							Height: 24
 							Align: Center
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@DETAILS:
-							Width: PARENT_RIGHT - 8
+							Width: PARENT_WIDTH - 8
 							Height: 12
 							X: 4
-							Y: PARENT_BOTTOM - HEIGHT - 26
+							Y: PARENT_HEIGHT - HEIGHT - 26
 							Align: Center
 							Font: Tiny
 						LabelWithTooltip@AUTHOR:
-							Width: PARENT_RIGHT - 8
+							Width: PARENT_WIDTH - 8
 							Height: 12
 							X: 4
-							Y: PARENT_BOTTOM - HEIGHT - 14
+							Y: PARENT_HEIGHT - HEIGHT - 14
 							Align: Center
 							Font: Tiny
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@SIZE:
-							Width: PARENT_RIGHT - 8
+							Width: PARENT_WIDTH - 8
 							Height: 12
 							X: 4
-							Y: PARENT_BOTTOM - HEIGHT - 2
+							Y: PARENT_HEIGHT - HEIGHT - 2
 							Align: Center
 							Font: Tiny
 				Container@FILTER_ORDER_CONTROLS:
 					X: 15
-					Y: PARENT_BOTTOM - 40
-					Width: PARENT_RIGHT - 30
-					Height: PARENT_BOTTOM
+					Y: PARENT_HEIGHT - 40
+					Width: PARENT_WIDTH - 30
+					Height: PARENT_HEIGHT
 					Children:
 						Label@FILTER_DESC:
 							Width: 40
@@ -139,54 +139,53 @@ Container@MAPCHOOSER_PANEL:
 							Width: 200
 							Height: 25
 						Label@ORDERBY_LABEL:
-							X: PARENT_RIGHT - WIDTH - 200 - 5
+							X: PARENT_WIDTH - WIDTH - 200 - 5
 							Width: 100
 							Height: 24
 							Font: Bold
 							Align: Right
 							Text: label-filter-order-controls-orderby
 						DropDownButton@ORDERBY:
-							X: PARENT_RIGHT - WIDTH
+							X: PARENT_WIDTH - WIDTH
 							Width: 200
 							Height: 25
 				Label@REMOTE_MAP_LABEL:
 					X: 140
 					Y: 539
-					Width: PARENT_RIGHT - 430
+					Width: PARENT_WIDTH - 430
 					Height: 35
 					Align: Center
 					Font: Bold
 				Button@BUTTON_CANCEL:
 					Key: escape
-					Y: PARENT_BOTTOM - 1
+					Y: PARENT_HEIGHT - 1
 					Width: 140
 					Height: 35
 					Text: button-back
 				Button@RANDOMMAP_BUTTON:
 					Key: space
-					X: PARENT_RIGHT - 150 - WIDTH
-					Y: PARENT_BOTTOM - 1
+					X: PARENT_WIDTH - 150 - WIDTH
+					Y: PARENT_HEIGHT - 1
 					Width: 140
 					Height: 35
 					Text: button-bg-randommap
 				Button@DELETE_MAP_BUTTON:
-					X: PARENT_RIGHT - 300 - WIDTH
-					Y: PARENT_BOTTOM - 1
+					X: PARENT_WIDTH - 300 - WIDTH
+					Y: PARENT_HEIGHT - 1
 					Width: 140
 					Height: 35
 					Text: button-bg-delete-map
 				Button@DELETE_ALL_MAPS_BUTTON:
-					X: PARENT_RIGHT - 450 - WIDTH
-					Y: PARENT_BOTTOM - 1
+					X: PARENT_WIDTH - 450 - WIDTH
+					Y: PARENT_HEIGHT - 1
 					Width: 140
 					Height: 35
 					Text: button-bg-delete-all-maps
 				Button@BUTTON_OK:
 					Key: return
-					X: PARENT_RIGHT - WIDTH
-					Y: PARENT_BOTTOM - 1
+					X: PARENT_WIDTH - WIDTH
+					Y: PARENT_HEIGHT - 1
 					Width: 140
 					Height: 35
 					Text: button-bg-ok
 				TooltipContainer@TOOLTIP_CONTAINER:
-

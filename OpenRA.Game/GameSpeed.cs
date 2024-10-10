@@ -15,7 +15,7 @@ namespace OpenRA
 {
 	public class GameSpeed
 	{
-		[TranslationReference]
+		[FluentReference]
 		[FieldLoader.Require]
 		public readonly string Name;
 

@@ -69,6 +69,7 @@ namespace OpenRA.Traits
 
 		public bool Shrouded { get; private set; }
 		public bool NeedRenderables { get; set; }
+		public bool UpdateVisibilityNextTick { get; set; }
 		public IRenderable[] Renderables = NoRenderables;
 		public Rectangle[] ScreenBounds = NoBounds;
 
@@ -154,10 +155,15 @@ namespace OpenRA.Traits
 		{
 			if (flashTicks > 0)
 				flashTicks--;
+
+			if (UpdateVisibilityNextTick)
+				UpdateVisibility();
 		}
 
-		public void UpdateVisibility()
+		void UpdateVisibility()
 		{
+			UpdateVisibilityNextTick = false;
+
 			var wasVisible = Visible;
 			Shrouded = true;
 			Visible = true;
@@ -248,8 +254,7 @@ namespace OpenRA.Traits
 		readonly World world;
 		readonly Player owner;
 		readonly Dictionary<uint, FrozenActor> frozenActorsById;
-		readonly SpatiallyPartitioned<uint> partitionedFrozenActorIds;
-		readonly HashSet<uint> dirtyFrozenActorIds = new();
+		readonly SpatiallyPartitioned<FrozenActor> partitionedFrozenActors;
 
 		public FrozenActorLayer(Actor self, FrozenActorLayerInfo info)
 		{
@@ -258,22 +263,26 @@ namespace OpenRA.Traits
 			owner = self.Owner;
 			frozenActorsById = new Dictionary<uint, FrozenActor>();
 
-			partitionedFrozenActorIds = new SpatiallyPartitioned<uint>(
+			partitionedFrozenActors = new SpatiallyPartitioned<FrozenActor>(
 				world.Map.MapSize.X, world.Map.MapSize.Y, binSize);
 
-			self.Trait<Shroud>().OnShroudChanged += uv => dirtyFrozenActorIds.UnionWith(partitionedFrozenActorIds.At(new int2(uv.U, uv.V)));
+			self.Trait<Shroud>().OnShroudChanged += uv =>
+			{
+				foreach (var fa in partitionedFrozenActors.At(new int2(uv.U, uv.V)))
+					fa.UpdateVisibilityNextTick = true;
+			};
 		}
 
 		public void Add(FrozenActor fa)
 		{
 			frozenActorsById.Add(fa.ID, fa);
 			world.ScreenMap.AddOrUpdate(owner, fa);
-			partitionedFrozenActorIds.Add(fa.ID, FootprintBounds(fa));
+			partitionedFrozenActors.Add(fa, FootprintBounds(fa));
 		}
 
 		public void Remove(FrozenActor fa)
 		{
-			partitionedFrozenActorIds.Remove(fa.ID);
+			partitionedFrozenActors.Remove(fa);
 			world.ScreenMap.Remove(owner, fa);
 			frozenActorsById.Remove(fa.ID);
 		}
@@ -303,7 +312,7 @@ namespace OpenRA.Traits
 
 		void ITick.Tick(Actor self)
 		{
-			var frozenActorsToRemove = new List<FrozenActor>();
+			List<FrozenActor> frozenActorsToRemove = null;
 			VisibilityHash = 0;
 			FrozenHash = 0;
 
@@ -315,19 +324,19 @@ namespace OpenRA.Traits
 
 				var frozenActor = kvp.Value;
 				frozenActor.Tick();
-				if (dirtyFrozenActorIds.Contains(id))
-					frozenActor.UpdateVisibility();
 
 				if (frozenActor.Visible)
 					VisibilityHash += hash;
 				else if (frozenActor.Actor == null)
+				{
+					frozenActorsToRemove ??= new List<FrozenActor>();
 					frozenActorsToRemove.Add(frozenActor);
+				}
 			}
 
-			dirtyFrozenActorIds.Clear();
-
-			foreach (var fa in frozenActorsToRemove)
-				Remove(fa);
+			if (frozenActorsToRemove != null)
+				foreach (var fa in frozenActorsToRemove)
+					Remove(fa);
 		}
 
 		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
@@ -355,8 +364,7 @@ namespace OpenRA.Traits
 		{
 			var tl = region.TopLeft;
 			var br = region.BottomRight;
-			return partitionedFrozenActorIds.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y))
-				.Select(FromID)
+			return partitionedFrozenActors.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y))
 				.Where(fa => fa.IsValid && (!onlyVisible || fa.Visible));
 		}
 
@@ -368,8 +376,7 @@ namespace OpenRA.Traits
 			var br = centerCell + new CVec(cellRange, cellRange);
 
 			// Target ranges are calculated in 2D, so ignore height differences
-			return partitionedFrozenActorIds.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y))
-				.Select(FromID)
+			return partitionedFrozenActors.InBox(Rectangle.FromLTRB(tl.X, tl.Y, br.X, br.Y))
 				.Where(fa => fa.IsValid &&
 					(!onlyVisible || fa.Visible) &&
 					(fa.CenterPosition - origin).HorizontalLengthSquared <= r.LengthSquared);

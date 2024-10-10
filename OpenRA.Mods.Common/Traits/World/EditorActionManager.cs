@@ -146,12 +146,12 @@ namespace OpenRA.Mods.Common.Traits
 
 	sealed class OpenMapAction : IEditorAction
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string Opened = "notification-opened";
 
 		public OpenMapAction()
 		{
-			Text = TranslationProvider.GetString(Opened);
+			Text = FluentProvider.GetString(Opened);
 		}
 
 		public void Execute()

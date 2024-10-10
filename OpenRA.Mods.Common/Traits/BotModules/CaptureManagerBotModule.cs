@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Common.Traits
 		// Units that the bot already knows about and has given a capture order. Any unit not on this list needs to be given a new order.
 		readonly List<Actor> activeCapturers = new();
 
-		readonly ActorIndex.OwnerAndNamesAndTrait<Captures> capturingActors;
+		readonly ActorIndex.OwnerAndNamesAndTrait<CapturesInfo> capturingActors;
 
 		public CaptureManagerBotModule(Actor self, CaptureManagerBotModuleInfo info)
 			: base(info)
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			maximumCaptureTargetOptions = Math.Max(1, Info.MaximumCaptureTargetOptions);
 
-			capturingActors = new ActorIndex.OwnerAndNamesAndTrait<Captures>(world, Info.CapturingActorTypes, player);
+			capturingActors = new ActorIndex.OwnerAndNamesAndTrait<CapturesInfo>(world, Info.CapturingActorTypes, player);
 		}
 
 		protected override void TraitEnabled(Actor self)

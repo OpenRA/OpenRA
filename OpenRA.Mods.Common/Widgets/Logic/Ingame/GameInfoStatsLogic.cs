@@ -23,67 +23,67 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	sealed class GameInfoStatsLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string Unmute = "label-unmute-player";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Mute = "label-mute-player";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Accomplished = "label-mission-accomplished";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Failed = "label-mission-failed";
 
-		[TranslationReference]
+		[FluentReference]
 		const string InProgress = "label-mission-in-progress";
 
-		[TranslationReference("team")]
+		[FluentReference("team")]
 		const string TeamNumber = "label-team-name";
 
-		[TranslationReference]
+		[FluentReference]
 		const string NoTeam = "label-no-team";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Spectators = "label-spectators";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Gone = "label-client-state-disconnected";
 
-		[TranslationReference]
+		[FluentReference]
 		const string KickTooltip = "button-kick-player";
 
-		[TranslationReference("player")]
+		[FluentReference("player")]
 		const string KickTitle = "dialog-kick.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string KickPrompt = "dialog-kick.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string KickAccept = "dialog-kick.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string KickVoteTooltip = "button-vote-kick-player";
 
-		[TranslationReference("player")]
+		[FluentReference("player")]
 		const string VoteKickTitle = "dialog-vote-kick.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string VoteKickPrompt = "dialog-vote-kick.prompt";
 
-		[TranslationReference("bots")]
+		[FluentReference("bots")]
 		const string VoteKickPromptBreakBots = "dialog-vote-kick.prompt-break-bots";
 
-		[TranslationReference]
+		[FluentReference]
 		const string VoteKickVoteStart = "dialog-vote-kick.vote-start";
 
-		[TranslationReference]
+		[FluentReference]
 		const string VoteKickVoteFor = "dialog-vote-kick.vote-for";
 
-		[TranslationReference]
+		[FluentReference]
 		const string VoteKickVoteAgainst = "dialog-vote-kick.vote-against";
 
-		[TranslationReference]
+		[FluentReference]
 		const string VoteKickVoteCancel = "dialog-vote-kick.vote-cancel";
 
 		[ObjectCreator.UseCtor]
@@ -108,9 +108,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					checkbox.GetText = () => mo.Objectives[0].Description;
 				}
 
-				var failed = TranslationProvider.GetString(Failed);
-				var inProgress = TranslationProvider.GetString(InProgress);
-				var accomplished = TranslationProvider.GetString(Accomplished);
+				var failed = FluentProvider.GetString(Failed);
+				var inProgress = FluentProvider.GetString(InProgress);
+				var accomplished = FluentProvider.GetString(Accomplished);
 				statusLabel.GetText = () => player.WinState == WinState.Won ? accomplished :
 					player.WinState == WinState.Lost ? failed : inProgress;
 				statusLabel.GetColor = () => player.WinState == WinState.Won ? Color.LimeGreen :
@@ -133,10 +133,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var teamTemplate = playerPanel.Get<ScrollItemWidget>("TEAM_TEMPLATE");
 			var playerTemplate = playerPanel.Get("PLAYER_TEMPLATE");
 			var spectatorTemplate = playerPanel.Get("SPECTATOR_TEMPLATE");
-			var unmuteTooltip = TranslationProvider.GetString(Unmute);
-			var muteTooltip = TranslationProvider.GetString(Mute);
-			var kickTooltip = TranslationProvider.GetString(KickTooltip);
-			var voteKickTooltip = TranslationProvider.GetString(KickVoteTooltip);
+			var unmuteTooltip = FluentProvider.GetString(Unmute);
+			var muteTooltip = FluentProvider.GetString(Mute);
+			var kickTooltip = FluentProvider.GetString(KickTooltip);
+			var voteKickTooltip = FluentProvider.GetString(KickVoteTooltip);
 			playerPanel.RemoveChildren();
 
 			var teams = world.Players.Where(p => !p.NonCombatant && p.Playable)
@@ -160,8 +160,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						ConfirmationDialogs.ButtonPrompt(modData,
 							title: VoteKickTitle,
 							text: botsCount > 0 ? VoteKickPromptBreakBots : VoteKickPrompt,
-							titleArguments: Translation.Arguments("player", client.Name),
-							textArguments: Translation.Arguments("bots", botsCount),
+							titleArguments: new object[] { "player", client.Name },
+							textArguments: new object[] { "bots", botsCount },
 							onConfirm: () =>
 							{
 								orderManager.IssueOrder(Order.Command($"vote_kick {client.Index} {true}"));
@@ -176,8 +176,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ConfirmationDialogs.ButtonPrompt(modData,
 						title: VoteKickTitle,
 						text: botsCount > 0 ? VoteKickPromptBreakBots : VoteKickPrompt,
-						titleArguments: Translation.Arguments("player", client.Name),
-						textArguments: Translation.Arguments("bots", botsCount),
+						titleArguments: new object[] { "player", client.Name },
+						textArguments: new object[] { "bots", botsCount },
 						onConfirm: () =>
 						{
 							orderManager.IssueOrder(Order.Command($"vote_kick {client.Index} {true}"));
@@ -201,7 +201,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					ConfirmationDialogs.ButtonPrompt(modData,
 						title: KickTitle,
 						text: KickPrompt,
-						titleArguments: Translation.Arguments("player", client.Name),
+						titleArguments: new object[] { "player", client.Name },
 						onConfirm: () =>
 						{
 							orderManager.IssueOrder(Order.Command($"kick {client.Index} {false}"));
@@ -227,8 +227,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var teamHeader = ScrollItemWidget.Setup(teamTemplate, () => false, () => { });
 					var team = t.Key > 0
-						? TranslationProvider.GetString(TeamNumber, Translation.Arguments("team", t.Key))
-						: TranslationProvider.GetString(NoTeam);
+						? FluentProvider.GetString(TeamNumber, "team", t.Key)
+						: FluentProvider.GetString(NoTeam);
 					teamHeader.Get<LabelWidget>("TEAM").GetText = () => team;
 					var teamRating = teamHeader.Get<LabelWidget>("TEAM_SCORE");
 					var scoreCache = new CachedTransform<int, string>(s => s.ToString(NumberFormatInfo.CurrentInfo));
@@ -257,13 +257,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{
 						flag.GetImageName = () => pp.Faction.InternalName;
 						factionName = pp.Faction.Name != factionName
-							? $"{TranslationProvider.GetString(factionName)} ({TranslationProvider.GetString(pp.Faction.Name)})"
-							: TranslationProvider.GetString(pp.Faction.Name);
+							? $"{FluentProvider.GetString(factionName)} ({FluentProvider.GetString(pp.Faction.Name)})"
+							: FluentProvider.GetString(pp.Faction.Name);
 					}
 					else
 					{
 						flag.GetImageName = () => pp.DisplayFaction.InternalName;
-						factionName = TranslationProvider.GetString(factionName);
+						factionName = FluentProvider.GetString(factionName);
 					}
 
 					WidgetUtils.TruncateLabelToTooltip(item.Get<LabelWithTooltipWidget>("FACTION"), factionName);
@@ -291,7 +291,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (spectators.Count > 0)
 			{
 				var spectatorHeader = ScrollItemWidget.Setup(teamTemplate, () => false, () => { });
-				var spectatorTeam = TranslationProvider.GetString(Spectators);
+				var spectatorTeam = FluentProvider.GetString(Spectators);
 				spectatorHeader.Get<LabelWidget>("TEAM").GetText = () => spectatorTeam;
 
 				playerPanel.AddChild(spectatorHeader);
@@ -310,7 +310,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 					nameLabel.GetText = () =>
 					{
-						var suffix = client.State == Session.ClientState.Disconnected ? $" ({TranslationProvider.GetString(Gone)})" : "";
+						var suffix = client.State == Session.ClientState.Disconnected ? $" ({FluentProvider.GetString(Gone)})" : "";
 						return name.Update((client.Name, suffix));
 					};
 

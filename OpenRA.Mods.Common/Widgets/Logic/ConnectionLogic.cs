@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ConnectionLogic : ChromeLogic
 	{
-		[TranslationReference("endpoint")]
+		[FluentReference("endpoint")]
 		const string ConnectingToEndpoint = "label-connecting-to-endpoint";
 
 		readonly Action onConnect;
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var panel = widget;
 			panel.Get<ButtonWidget>("ABORT_BUTTON").OnClick = () => { CloseWindow(); onAbort(); };
 
-			var connectingDesc = TranslationProvider.GetString(ConnectingToEndpoint, Translation.Arguments("endpoint", endpoint));
+			var connectingDesc = FluentProvider.GetString(ConnectingToEndpoint, "endpoint", endpoint);
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => connectingDesc;
 		}
 
@@ -87,16 +87,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	public class ConnectionFailedLogic : ChromeLogic
 	{
-		[TranslationReference("target")]
+		[FluentReference("target")]
 		const string CouldNotConnectToTarget = "label-could-not-connect-to-target";
 
-		[TranslationReference]
+		[FluentReference]
 		const string UnknownError = "label-unknown-error";
 
-		[TranslationReference]
+		[FluentReference]
 		const string PasswordRequired = "label-password-required";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ConnectionFailed = "label-connection-failed";
 
 		readonly PasswordFieldWidget passwordField;
@@ -130,17 +130,17 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				onRetry(pass);
 			};
 
-			var connectingDescText = TranslationProvider.GetString(CouldNotConnectToTarget, Translation.Arguments("target", connection.Target));
+			var connectingDescText = FluentProvider.GetString(CouldNotConnectToTarget, "target", connection.Target);
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () => connectingDescText;
 
 			var connectionError = widget.Get<LabelWidget>("CONNECTION_ERROR");
 			var connectionErrorText = orderManager.ServerError != null
-				? TranslationProvider.GetString(orderManager.ServerError)
-				: connection.ErrorMessage ?? TranslationProvider.GetString(UnknownError);
+				? FluentProvider.GetString(orderManager.ServerError)
+				: connection.ErrorMessage ?? FluentProvider.GetString(UnknownError);
 			connectionError.GetText = () => connectionErrorText;
 
 			var panelTitle = widget.Get<LabelWidget>("TITLE");
-			var panelTitleText = orderManager.AuthenticationFailed ? TranslationProvider.GetString(PasswordRequired) : TranslationProvider.GetString(ConnectionFailed);
+			var panelTitleText = orderManager.AuthenticationFailed ? FluentProvider.GetString(PasswordRequired) : FluentProvider.GetString(ConnectionFailed);
 			panelTitle.GetText = () => panelTitleText;
 
 			passwordField = panel.GetOrNull<PasswordFieldWidget>("PASSWORD");
@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	public class ConnectionSwitchModLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string ModSwitchFailed = "notification-mod-switch-failed";
 
 		[ObjectCreator.UseCtor]
@@ -193,7 +193,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var switchButton = panel.Get<ButtonWidget>("SWITCH_BUTTON");
 
 			var mod = CurrentServerSettings.ServerExternalMod;
-			var modTitle = mod.Title;
+			var modTitle = mod.Id;
 			var modVersion = mod.Version;
 
 			switchButton.OnClick = () =>

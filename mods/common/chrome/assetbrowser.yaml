@@ -1,14 +1,14 @@
 Background@ASSETBROWSER_PANEL:
 	Logic: AssetBrowserLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 900
 	Height: 600
 	Children:
 		LogicTicker@ANIMATION_TICKER:
 		Label@ASSETBROWSER_TITLE:
 			Y: 16
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Font: Bold
 			Align: Center
@@ -53,11 +53,11 @@ Background@ASSETBROWSER_PANEL:
 			X: 20
 			Y: 170
 			Width: 195
-			Height: PARENT_BOTTOM - 250
+			Height: PARENT_HEIGHT - 250
 			CollapseHiddenChildren: True
 			Children:
 				ScrollItem@ASSET_TEMPLATE:
-					Width: PARENT_RIGHT - 27
+					Width: PARENT_WIDTH - 27
 					Height: 25
 					X: 2
 					Visible: false
@@ -65,12 +65,12 @@ Background@ASSETBROWSER_PANEL:
 					Children:
 						LabelWithTooltip@TITLE:
 							X: 10
-							Width: PARENT_RIGHT - 20
+							Width: PARENT_WIDTH - 20
 							Height: 25
 							TooltipContainer: TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 		Label@SPRITE_SCALE:
-			X: PARENT_RIGHT - WIDTH - 440
+			X: PARENT_WIDTH - WIDTH - 440
 			Y: 60
 			Width: 50
 			Height: 25
@@ -78,14 +78,14 @@ Background@ASSETBROWSER_PANEL:
 			Align: Left
 			Text: label-assetbrowser-sprite-scale
 		Slider@SPRITE_SCALE_SLIDER:
-			X: PARENT_RIGHT - WIDTH - 330
+			X: PARENT_WIDTH - WIDTH - 330
 			Y: 62
 			Width: 100
 			Height: 20
 			MinimumValue: 0.5
 			MaximumValue: 4
 		Label@PALETTE_DESC:
-			X: PARENT_RIGHT - WIDTH - 270
+			X: PARENT_WIDTH - WIDTH - 270
 			Y: 60
 			Width: 150
 			Height: 25
@@ -93,13 +93,13 @@ Background@ASSETBROWSER_PANEL:
 			Align: Right
 			Text: label-assetbrowser-palette-desc
 		DropDownButton@PALETTE_SELECTOR:
-			X: PARENT_RIGHT - WIDTH - 110
+			X: PARENT_WIDTH - WIDTH - 110
 			Y: 60
 			Width: 150
 			Height: 25
 			Font: Bold
 		DropDownButton@COLOR:
-			X: PARENT_RIGHT - WIDTH - 20
+			X: PARENT_WIDTH - WIDTH - 20
 			Y: 60
 			Width: 80
 			Height: 25
@@ -107,32 +107,32 @@ Background@ASSETBROWSER_PANEL:
 				ColorBlock@COLORBLOCK:
 					X: 5
 					Y: 6
-					Width: PARENT_RIGHT - 35
-					Height: PARENT_BOTTOM - 12
+					Width: PARENT_WIDTH - 35
+					Height: PARENT_HEIGHT - 12
 		Background@SPRITE_BG:
 			X: 226
 			Y: 90
-			Width: PARENT_RIGHT - 226 - 20
-			Height: PARENT_BOTTOM - 170
+			Width: PARENT_WIDTH - 226 - 20
+			Height: PARENT_HEIGHT - 170
 			Background: dialog3
 			Children:
 				Sprite@SPRITE:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
 				VideoPlayer@PLAYER:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
 					AspectRatio: 1
 				Label@ERROR:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
 					Align: Center
 					Visible: false
 					Text: label-assetbrowser-sprite-bg-error
 		Container@FRAME_SELECTOR:
 			X: 226
-			Y: PARENT_BOTTOM - 75
-			Width: PARENT_RIGHT - 226
+			Y: PARENT_HEIGHT - 75
+			Width: PARENT_WIDTH - 226
 			Children:
 				Button@BUTTON_PREV:
 					Width: 26
@@ -192,11 +192,11 @@ Background@ASSETBROWSER_PANEL:
 				Slider@FRAME_SLIDER:
 					X: 140
 					Y: 3
-					Width: PARENT_RIGHT - 140 - 85
+					Width: PARENT_WIDTH - 140 - 85
 					Height: 20
 					MinimumValue: 0
 				Label@FRAME_COUNT:
-					X: PARENT_RIGHT - WIDTH + 5
+					X: PARENT_WIDTH - WIDTH + 5
 					Y: 0
 					Width: 85
 					Height: 25
@@ -204,8 +204,8 @@ Background@ASSETBROWSER_PANEL:
 					Align: Left
 		Button@CLOSE_BUTTON:
 			Key: escape
-			X: PARENT_RIGHT - 180
-			Y: PARENT_BOTTOM - 45
+			X: PARENT_WIDTH - 180
+			Y: PARENT_HEIGHT - 45
 			Width: 160
 			Height: 25
 			Font: Bold
@@ -221,6 +221,5 @@ ScrollPanel@ASSET_TYPES_PANEL:
 		Checkbox@ASSET_TYPE_TEMPLATE:
 			X: 5
 			Y: 5
-			Width: PARENT_RIGHT - 29
+			Width: PARENT_WIDTH - 29
 			Height: 20
-

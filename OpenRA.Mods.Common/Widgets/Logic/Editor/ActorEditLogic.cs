@@ -21,13 +21,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ActorEditLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string DuplicateActorId = "label-duplicate-actor-id";
 
-		[TranslationReference]
+		[FluentReference]
 		const string EnterActorId = "label-actor-id";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Owner = "label-actor-owner";
 
 		// Error states define overlapping bits to simplify panel reflow logic
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		readonly EditorActorLayer editorActorLayer;
 		readonly EditorActionManager editorActionManager;
 		readonly EditorViewportControllerWidget editor;
-		readonly ContainerWidget actorEditPanel;
+		readonly Widget actorEditPanel;
 		readonly LabelWidget typeLabel;
 		readonly TextFieldWidget actorIDField;
 		readonly HashSet<TextFieldWidget> typableFields = new();
@@ -72,8 +72,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			editor = widget.Parent.Parent.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			editor.DefaultBrush.SelectionChanged += HandleSelectionChanged;
 
-			var selectTabContainer = widget.Parent.Parent.Get<ContainerWidget>("SELECT_WIDGETS");
-			actorEditPanel = selectTabContainer.Get<ContainerWidget>("ACTOR_EDIT_PANEL");
+			var selectTabContainer = widget.Parent.Parent.Get("SELECT_WIDGETS");
+			actorEditPanel = selectTabContainer.Get("ACTOR_EDIT_PANEL");
 
 			typeLabel = actorEditPanel.Get<LabelWidget>("ACTOR_TYPE_LABEL");
 			actorIDField = actorEditPanel.Get<TextFieldWidget>("ACTOR_ID");
@@ -94,8 +94,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			actorIDErrorLabel.IsVisible = () => actorIDStatus != ActorIDStatus.Normal;
 			actorIDErrorLabel.GetText = () =>
 				actorIDStatus == ActorIDStatus.Duplicate || nextActorIDStatus == ActorIDStatus.Duplicate
-					? TranslationProvider.GetString(DuplicateActorId)
-					: TranslationProvider.GetString(EnterActorId);
+					? FluentProvider.GetString(DuplicateActorId)
+					: FluentProvider.GetString(EnterActorId);
 
 			okButton.IsDisabled = () => !IsValid() || editActorPreview == null || !editActorPreview.IsDirty;
 			okButton.OnClick = Save;
@@ -167,7 +167,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				initialActorID = actorIDField.Text = SelectedActor.ID;
 
 				var font = Game.Renderer.Fonts[typeLabel.Font];
-				var truncatedType = WidgetUtils.TruncateText(TranslationProvider.GetString(SelectedActor.DescriptiveName), typeLabel.Bounds.Width, font);
+				var truncatedType = WidgetUtils.TruncateText(FluentProvider.GetString(SelectedActor.DescriptiveName), typeLabel.Bounds.Width, font);
 				typeLabel.GetText = () => truncatedType;
 
 				actorIDField.CursorPosition = SelectedActor.ID.Length;
@@ -180,7 +180,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				// Add owner dropdown
 				var ownerContainer = dropdownOptionTemplate.Clone();
-				var owner = TranslationProvider.GetString(Owner);
+				var owner = FluentProvider.GetString(Owner);
 				ownerContainer.Get<LabelWidget>("LABEL").GetText = () => owner;
 				var ownerDropdown = ownerContainer.Get<DropDownButtonWidget>("OPTION");
 				var selectedOwner = SelectedActor.Owner;
@@ -294,14 +294,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 						initContainer.Bounds.Height += dropdownContainer.Bounds.Height;
 						dropdownContainer.Get<LabelWidget>("LABEL").GetText = () => ddo.Name;
 
-						var editorActionHandle = new EditorActorOptionActionHandle<string>(ddo.OnChange, ddo.GetValue(SelectedActor));
+						var labels = ddo.GetLabels(SelectedActor);
+
+						var editorActionHandle = new EditorActorOptionActionHandle<string>(ddo.OnChange, ddo.GetValue(SelectedActor, labels));
 						editActorPreview.Add(editorActionHandle);
 
 						var dropdown = dropdownContainer.Get<DropDownButtonWidget>("OPTION");
 						ScrollItemWidget DropdownSetup(KeyValuePair<string, string> option, ScrollItemWidget template)
 						{
 							var item = ScrollItemWidget.Setup(template,
-								() => ddo.GetValue(SelectedActor) == option.Key,
+								() => ddo.GetValue(SelectedActor, labels) == option.Key,
 								() =>
 								{
 									ddo.OnChange(SelectedActor, option.Key);
@@ -312,8 +314,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							return item;
 						}
 
-						dropdown.GetText = () => ddo.Labels[ddo.GetValue(SelectedActor)];
-						dropdown.OnClick = () => dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, ddo.Labels, DropdownSetup);
+						dropdown.GetText = () => labels[ddo.GetValue(SelectedActor, labels)];
+						dropdown.OnClick = () => dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 270, labels, DropdownSetup);
 
 						initContainer.AddChild(dropdownContainer);
 					}
@@ -437,10 +439,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 	sealed class EditActorEditorAction : IEditorAction
 	{
-		[TranslationReference("name", "id")]
+		[FluentReference("name", "id")]
 		const string EditedActor = "notification-edited-actor";
 
-		[TranslationReference("name", "old-id", "new-id")]
+		[FluentReference("name", "old-id", "new-id")]
 		const string EditedActorId = "notification-edited-actor-id";
 
 		public string Text { get; private set; }
@@ -452,7 +454,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			Actor = actor;
 			this.handles = handles;
-			Text = TranslationProvider.GetString(EditedActor, Translation.Arguments("name", actor.Info.Name, "id", actor.ID));
+			Text = FluentProvider.GetString(EditedActor, "name", actor.Info.Name, "id", actor.ID);
 		}
 
 		public void Execute()
@@ -464,7 +466,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var after = Actor;
 			if (before != after)
-				Text = TranslationProvider.GetString(EditedActorId, Translation.Arguments("name", after.Info.Name, "old-id", before.ID, "new-id", after.ID));
+				Text = FluentProvider.GetString(EditedActorId, "name", after.Info.Name, "old-id", before.ID, "new-id", after.ID);
 		}
 
 		public void Do()

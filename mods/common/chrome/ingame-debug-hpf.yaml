@@ -1,18 +1,16 @@
 Container@HPF_OVERLAY:
 	Logic: HierarchicalPathFinderOverlayLogic
-	Width: PARENT_RIGHT
+	Width: PARENT_WIDTH
 	Height: 60
 	Children:
 		DropDownButton@HPF_OVERLAY_LOCOMOTOR:
-			Y: PARENT_TOP
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Text: dropdownbutton-hpf-overlay-locomotor
 			Font: Regular
 		DropDownButton@HPF_OVERLAY_CHECK:
-			Y: PARENT_TOP + 35
-			Width: PARENT_RIGHT
+			Y: 35
+			Width: PARENT_WIDTH
 			Height: 25
 			Text: dropdownbutton-hpf-overlay-check
 			Font: Regular
-

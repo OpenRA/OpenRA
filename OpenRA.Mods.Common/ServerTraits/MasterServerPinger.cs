@@ -30,22 +30,22 @@ namespace OpenRA.Mods.Common.Server
 		// 1 second (in milliseconds) minimum delay between pings
 		const int RateLimitInterval = 1000;
 
-		[TranslationReference]
+		[FluentReference]
 		const string NoPortForward = "notification-no-port-forward";
 
-		[TranslationReference]
+		[FluentReference]
 		const string BlacklistedTitle = "notification-blacklisted-server-name";
 
-		[TranslationReference]
+		[FluentReference]
 		const string InvalidErrorCode = "notification-invalid-error-code";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Connected = "notification-master-server-connected";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Error = "notification-master-server-error";
 
-		[TranslationReference]
+		[FluentReference]
 		const string GameOffline = "notification-game-offline";
 
 		static readonly Beacon LanGameBeacon;
@@ -97,7 +97,7 @@ namespace OpenRA.Mods.Common.Server
 
 			lock (masterServerMessages)
 				while (masterServerMessages.Count > 0)
-					server.SendLocalizedMessage(masterServerMessages.Dequeue());
+					server.SendFluentMessage(masterServerMessages.Dequeue());
 		}
 
 		void INotifyServerStart.ServerStarted(S server)

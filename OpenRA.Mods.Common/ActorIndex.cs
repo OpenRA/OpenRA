@@ -12,6 +12,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common
 {
@@ -97,9 +98,9 @@ namespace OpenRA.Mods.Common
 		/// <summary>
 		/// Maintains an index of actors in the world that
 		/// have one of the given <see cref="ActorInfo.Name"/>
-		/// and have the trait of type <typeparamref name="T"/>.
+		/// and have the trait with info of type <typeparamref name="TTraitInfo"/>.
 		/// </summary>
-		public sealed class NamesAndTrait<T> : ActorIndex
+		public sealed class NamesAndTrait<TTraitInfo> : ActorIndex where TTraitInfo : ITraitInfoInterface
 		{
 			readonly HashSet<string> names;
 
@@ -111,12 +112,12 @@ namespace OpenRA.Mods.Common
 
 			static IEnumerable<Actor> ActorsToIndex(World world, HashSet<string> names)
 			{
-				return world.ActorsHavingTrait<T>().Where(a => names.Contains(a.Info.Name));
+				return world.Actors.Where(a => names.Contains(a.Info.Name) && a.Info.HasTraitInfo<TTraitInfo>());
 			}
 
 			protected override bool ShouldIndexActor(Actor actor)
 			{
-				return names.Contains(actor.Info.Name) && actor.TraitsImplementing<T>().Any();
+				return names.Contains(actor.Info.Name) && actor.Info.HasTraitInfo<TTraitInfo>();
 			}
 		}
 
@@ -124,9 +125,9 @@ namespace OpenRA.Mods.Common
 		/// Maintains an index of actors in the world that
 		/// are owned by a given <see cref="Player"/>,
 		/// have one of the given <see cref="ActorInfo.Name"/>
-		/// and have the trait of type <typeparamref name="T"/>.
+		/// and have the trait with info of type <typeparamref name="TTraitInfo"/>.
 		/// </summary>
-		public sealed class OwnerAndNamesAndTrait<T> : ActorIndex
+		public sealed class OwnerAndNamesAndTrait<TTraitInfo> : ActorIndex where TTraitInfo : ITraitInfoInterface
 		{
 			readonly HashSet<string> names;
 			readonly Player owner;
@@ -140,12 +141,12 @@ namespace OpenRA.Mods.Common
 
 			static IEnumerable<Actor> ActorsToIndex(World world, HashSet<string> names, Player owner)
 			{
-				return world.ActorsHavingTrait<T>().Where(a => a.Owner == owner && names.Contains(a.Info.Name));
+				return world.Actors.Where(a => a.Owner == owner && names.Contains(a.Info.Name) && a.Info.HasTraitInfo<TTraitInfo>());
 			}
 
 			protected override bool ShouldIndexActor(Actor actor)
 			{
-				return actor.Owner == owner && names.Contains(actor.Info.Name) && actor.TraitsImplementing<T>().Any();
+				return actor.Owner == owner && names.Contains(actor.Info.Name) && actor.Info.HasTraitInfo<TTraitInfo>();
 			}
 		}
 	}

@@ -11,12 +11,23 @@
 
 using System;
 using OpenRA.Graphics;
+using OpenRA.Mods.Common.Traits;
 using OpenRA.Widgets;
+using Color = OpenRA.Primitives.Color;
 
 namespace OpenRA.Mods.Common.Widgets
 {
 	public class EditorViewportControllerWidget : Widget
 	{
+		[Desc("Main color of the selection grid.")]
+		public readonly Color SelectionMainColor = Color.White;
+
+		[Desc("Alternate color of the selection grid.")]
+		public readonly Color SelectionAltColor = Color.Black;
+
+		[Desc("Main color of the copy / paste grid.")]
+		public readonly Color PasteColor = Color.FromArgb(0xFF4CFF00);
+
 		public IEditorBrush CurrentBrush { get; private set; }
 
 		public readonly string TooltipContainer;
@@ -27,6 +38,8 @@ namespace OpenRA.Mods.Common.Widgets
 
 		readonly Lazy<TooltipContainerWidget> tooltipContainer;
 		readonly WorldRenderer worldRenderer;
+		readonly EditorCursorLayer editorCursor;
+		public int2 SelectionAltOffset { get; }
 
 		bool enableTooltips;
 
@@ -37,8 +50,15 @@ namespace OpenRA.Mods.Common.Widgets
 			tooltipContainer = Exts.Lazy(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 			CurrentBrush = DefaultBrush = new EditorDefaultBrush(this, worldRenderer);
 
+			editorCursor = worldRenderer.World.WorldActor.Trait<EditorCursorLayer>();
+			editorCursor.SetBrush(CurrentBrush);
+
 			// Allow zooming out to full map size
 			worldRenderer.Viewport.UnlockMinimumZoom(0.25f);
+
+			SelectionAltOffset = worldRenderer.World.Map.Grid.Type == MapGridType.Rectangular
+				? new int2(1, 1)
+				: new int2(0, 1);
 		}
 
 		public void ClearBrush() { SetBrush(null); }
@@ -50,6 +70,7 @@ namespace OpenRA.Mods.Common.Widgets
 			CurrentBrush = brush ?? DefaultBrush;
 
 			BrushChanged?.Invoke();
+			editorCursor.SetBrush(CurrentBrush);
 		}
 
 		public override void MouseEntered()

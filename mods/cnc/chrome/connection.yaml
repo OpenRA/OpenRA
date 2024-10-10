@@ -1,12 +1,12 @@
 Container@CONNECTING_PANEL:
 	Logic: ConnectionLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 90) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - 90) / 2
 	Width: 370
 	Height: 125
 	Children:
 		Label@CONNECTING_TITLE:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Y: 0 - 34
 			Font: BigBold
@@ -19,8 +19,8 @@ Container@CONNECTING_PANEL:
 			Background: panel-black
 			Children:
 				Label@CONNECTING_DESC:
-					Y: (PARENT_BOTTOM - HEIGHT) / 2
-					Width: PARENT_RIGHT
+					Y: (PARENT_HEIGHT - HEIGHT) / 2
+					Width: PARENT_WIDTH
 					Height: 25
 					Text: label-bg-connecting-desc
 					Font: Bold
@@ -34,14 +34,14 @@ Container@CONNECTING_PANEL:
 
 Container@CONNECTIONFAILED_PANEL:
 	Logic: ConnectionFailedLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 90) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - 90) / 2
 	Width: 370
 	Height: 129
 	Children:
 		LogicTicker@CONNECTION_FAILED_TICKER:
 		Label@TITLE:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Y: 0 - 34
 			Font: BigBold
@@ -54,14 +54,14 @@ Container@CONNECTIONFAILED_PANEL:
 			Children:
 				Label@CONNECTING_DESC:
 					Y: 16
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Text: label-connection-background-connecting-desc
 					Font: Bold
 					Align: Center
 				Label@CONNECTION_ERROR:
 					Y: 41
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Align: Center
 					Font: Bold
@@ -101,13 +101,13 @@ Container@CONNECTIONFAILED_PANEL:
 
 Container@CONNECTION_SWITCHMOD_PANEL:
 	Logic: ConnectionSwitchModLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - 90) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - 90) / 2
 	Width: 370
 	Height: 134
 	Children:
 		Label@TITLE:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Y: 0 - 34
 			Font: BigBold
@@ -121,7 +121,7 @@ Container@CONNECTION_SWITCHMOD_PANEL:
 			Children:
 				Label@DESC:
 					Y: 16
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Text: label-connection-background-desc
 					Font: Bold
@@ -129,7 +129,7 @@ Container@CONNECTION_SWITCHMOD_PANEL:
 				Container@MOD_CONTAINER:
 					X: 0
 					Y: 42
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Children:
 						RGBASprite@MOD_ICON:
 							Y: 4
@@ -138,20 +138,20 @@ Container@CONNECTION_SWITCHMOD_PANEL:
 						Label@MOD_TITLE:
 							X: 37
 							Y: 1
-							Width: PARENT_RIGHT - 37
+							Width: PARENT_WIDTH - 37
 							Height: 25
 							Font: Bold
 							Align: Left
 						Label@MOD_VERSION:
 							X: 37
 							Y: 16
-							Width: PARENT_RIGHT - 37
+							Width: PARENT_WIDTH - 37
 							Height: 25
 							Font: Tiny
 							Align: Left
 				Label@DESC2:
 					Y: 81
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Text: label-connection-background-desc2
 					Font: Bold
@@ -169,4 +169,3 @@ Container@CONNECTION_SWITCHMOD_PANEL:
 			Width: 140
 			Height: 35
 			Text: button-connection-switchmod-panel-switch
-

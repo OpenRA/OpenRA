@@ -23,16 +23,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	[ChromeLogicArgsHotkeys("OpenTeamChat", "OpenGeneralChat")]
 	public class IngameChatLogic : ChromeLogic, INotificationHandler<TextNotification>
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string TeamChat = "button-team-chat";
 
-		[TranslationReference]
+		[FluentReference]
 		const string GeneralChat = "button-general-chat";
 
-		[TranslationReference("seconds")]
+		[FluentReference("seconds")]
 		const string ChatAvailability = "label-chat-availability";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ChatDisabled = "label-chat-disabled";
 
 		readonly Ruleset modRules;
@@ -70,10 +70,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var disableTeamChat = alwaysDisabled || (world.LocalPlayer != null && !players.Any(p => p.IsAlliedWith(world.LocalPlayer)));
 			var teamChat = !disableTeamChat;
 
-			var teamMessage = TranslationProvider.GetString(TeamChat);
-			var allMessage = TranslationProvider.GetString(GeneralChat);
+			var teamMessage = FluentProvider.GetString(TeamChat);
+			var allMessage = FluentProvider.GetString(GeneralChat);
 
-			chatDisabled = TranslationProvider.GetString(ChatDisabled);
+			chatDisabled = FluentProvider.GetString(ChatDisabled);
 
 			// Only execute this once, the first time this widget is loaded
 			if (TextNotificationsManager.MutedPlayers.Count == 0)
@@ -194,7 +194,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				return true;
 			};
 
-			chatAvailableIn = new CachedTransform<int, string>(x => TranslationProvider.GetString(ChatAvailability, Translation.Arguments("seconds", x)));
+			chatAvailableIn = new CachedTransform<int, string>(x => FluentProvider.GetString(ChatAvailability, "seconds", x));
 
 			if (!isMenuChat)
 			{
@@ -209,7 +209,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var chatClose = chatChrome.Get<ButtonWidget>("CHAT_CLOSE");
 				chatClose.OnClick += CloseChat;
 
-				chatPanel.OnKeyPress = e =>
+				var openChatKeyListener = chatPanel.Get<LogicKeyListenerWidget>("OPEN_CHAT_KEY_LISTENER");
+
+				openChatKeyListener.AddHandler(e =>
 				{
 					if (e.Event == KeyInputEvent.Up)
 						return false;
@@ -223,7 +225,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					}
 
 					return false;
-				};
+				});
 			}
 
 			chatScrollPanel = chatChrome.Get<ScrollPanelWidget>("CHAT_SCROLLPANEL");

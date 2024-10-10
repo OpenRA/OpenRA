@@ -27,8 +27,8 @@ Container@PLAYER_WIDGETS:
 					HotkeyCount: 6
 		Image@COMMAND_BAR_BACKGROUND:
 			X: 0
-			Y: WINDOW_BOTTOM - HEIGHT
-			Width: 416
+			Y: WINDOW_HEIGHT - HEIGHT
+			Width: 451
 			Height: 43
 			ImageCollection: commandbar
 			ImageName: background
@@ -36,7 +36,7 @@ Container@PLAYER_WIDGETS:
 		Container@COMMAND_BAR:
 			Logic: CommandBarLogic
 			X: 24
-			Y: WINDOW_BOTTOM - HEIGHT - 9
+			Y: WINDOW_HEIGHT - HEIGHT - 9
 			Width: 275
 			Height: 41
 			Children:
@@ -183,7 +183,7 @@ Container@PLAYER_WIDGETS:
 		Container@STANCE_BAR:
 			Logic: StanceSelectorLogic
 			X: 316
-			Y: WINDOW_BOTTOM - HEIGHT - 11
+			Y: WINDOW_HEIGHT - HEIGHT - 11
 			Width: 138
 			Height: 26
 			Children:
@@ -260,26 +260,26 @@ Container@PLAYER_WIDGETS:
 							ImageName: hold-fire
 		Container@MUTE_INDICATOR:
 			Logic: MuteIndicatorLogic
-			X: WINDOW_RIGHT - WIDTH - 231
+			X: WINDOW_WIDTH - WIDTH - 231
 			Y: 5
 			Width: 200
 			Height: 25
 			Children:
 				Image@ICON:
-					X: PARENT_RIGHT - WIDTH
+					X: PARENT_WIDTH - WIDTH
 					Y: 1
 					Width: 24
 					Height: 24
 					ImageCollection: sidebar-bits
 					ImageName: indicator-muted
 				Label@LABEL:
-					Width: PARENT_RIGHT - 30
+					Width: PARENT_WIDTH - 30
 					Height: 25
 					Align: Right
 					Text: label-mute-indicator
 					Contrast: true
 		Image@SIDEBAR_BACKGROUND_TOP:
-			X: WINDOW_RIGHT - 226
+			X: WINDOW_WIDTH - 226
 			Y: 0
 			Width: 226
 			Height: 295
@@ -436,7 +436,7 @@ Container@PLAYER_WIDGETS:
 					Logic: GameTimerLogic
 					X: 10
 					Y: 4
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 22
 					Align: Center
 					Font: TinyBold
@@ -451,7 +451,7 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: SIMPLE_TOOLTIP
 				LabelWithTooltip@POWER:
 					Logic: IngamePowerCounterLogic
-					X: PARENT_RIGHT - WIDTH - 30
+					X: PARENT_WIDTH - WIDTH - 30
 					Y: 4
 					Width: 50
 					Height: 22
@@ -461,13 +461,13 @@ Container@PLAYER_WIDGETS:
 					TooltipTemplate: SIMPLE_TOOLTIP
 					Children:
 						Image@POWER_ICON:
-							X: PARENT_RIGHT + 0
+							X: PARENT_WIDTH + 0
 							Y: 3
 							ImageCollection: power-icons
 							ImageName: power-normal
 		Container@SIDEBAR_PRODUCTION:
 			Logic: ClassicProductionLogic
-			X: WINDOW_RIGHT - 226
+			X: WINDOW_WIDTH - 226
 			Y: 279
 			Width: 226
 			Height: 250
@@ -642,7 +642,6 @@ Container@PLAYER_WIDGETS:
 									ImageName: down
 		Container@HPF_ROOT:
 			Logic: LoadIngameHierarchicalPathFinderOverlayLogic
-			X: WINDOW_RIGHT - WIDTH - 231
+			X: WINDOW_WIDTH - WIDTH - 231
 			Y: 40
 			Width: 175
-

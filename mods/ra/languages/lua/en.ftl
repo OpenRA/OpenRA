@@ -111,6 +111,15 @@ get-engineers-to-consoles = Get your engineers to each launch control center.
 spare-the-scientists = Spare the scientists. They are more valuable as
     prisoners of war.
 
+## allies-13
+place-explosive-charges = Place explosive charges on all generators.
+steal-supplies = Secure the base's supply cache.
+explosive-charge-placed = Explosive charge placed.
+engineer = Engineer
+old-flametowers = Commander, the flame towers in this base are older models. We should be able to get closer.
+be-sneaky = Be careful, we don't want to alert these guys.
+soldier = Soldier
+
 ## ant-01
 allied-forces-have-arrived = Allied forces have arrived!
 defend-outpost-until-reinforcements-arrive = Defend outpost until reinforcements arrive.

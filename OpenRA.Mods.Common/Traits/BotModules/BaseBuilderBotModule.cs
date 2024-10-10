@@ -173,10 +173,10 @@ namespace OpenRA.Mods.Common.Traits
 		readonly BaseBuilderQueueManager[] builders;
 		int currentBuilderIndex = 0;
 
-		readonly ActorIndex.OwnerAndNamesAndTrait<Building> refineryBuildings;
-		readonly ActorIndex.OwnerAndNamesAndTrait<Building> powerBuildings;
-		readonly ActorIndex.OwnerAndNamesAndTrait<Building> constructionYardBuildings;
-		readonly ActorIndex.OwnerAndNamesAndTrait<Building> barracksBuildings;
+		readonly ActorIndex.OwnerAndNamesAndTrait<BuildingInfo> refineryBuildings;
+		readonly ActorIndex.OwnerAndNamesAndTrait<BuildingInfo> powerBuildings;
+		readonly ActorIndex.OwnerAndNamesAndTrait<BuildingInfo> constructionYardBuildings;
+		readonly ActorIndex.OwnerAndNamesAndTrait<BuildingInfo> barracksBuildings;
 
 		public BaseBuilderBotModule(Actor self, BaseBuilderBotModuleInfo info)
 			: base(info)
@@ -184,10 +184,10 @@ namespace OpenRA.Mods.Common.Traits
 			world = self.World;
 			player = self.Owner;
 			builders = new BaseBuilderQueueManager[info.BuildingQueues.Count + info.DefenseQueues.Count];
-			refineryBuildings = new ActorIndex.OwnerAndNamesAndTrait<Building>(world, info.RefineryTypes, player);
-			powerBuildings = new ActorIndex.OwnerAndNamesAndTrait<Building>(world, info.PowerTypes, player);
-			constructionYardBuildings = new ActorIndex.OwnerAndNamesAndTrait<Building>(world, info.ConstructionYardTypes, player);
-			barracksBuildings = new ActorIndex.OwnerAndNamesAndTrait<Building>(world, info.BarracksTypes, player);
+			refineryBuildings = new ActorIndex.OwnerAndNamesAndTrait<BuildingInfo>(world, info.RefineryTypes, player);
+			powerBuildings = new ActorIndex.OwnerAndNamesAndTrait<BuildingInfo>(world, info.PowerTypes, player);
+			constructionYardBuildings = new ActorIndex.OwnerAndNamesAndTrait<BuildingInfo>(world, info.ConstructionYardTypes, player);
+			barracksBuildings = new ActorIndex.OwnerAndNamesAndTrait<BuildingInfo>(world, info.BarracksTypes, player);
 		}
 
 		protected override void Created(Actor self)

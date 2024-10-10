@@ -29,7 +29,7 @@ namespace OpenRA
 {
 	public static class Game
 	{
-		[TranslationReference("filename")]
+		[FluentReference("filename")]
 		const string SavedScreenshot = "notification-saved-screenshot";
 
 		public const int TimestepJankThreshold = 250; // Don't catch up for delays larger than 250ms
@@ -395,7 +395,7 @@ namespace OpenRA
 			Mods = new InstalledMods(modSearchPaths, explicitModPaths);
 			Console.WriteLine("Internal mods:");
 			foreach (var mod in Mods)
-				Console.WriteLine($"\t{mod.Key}: {mod.Value.Metadata.Title} ({mod.Value.Metadata.Version})");
+				Console.WriteLine($"\t{mod.Key} ({mod.Value.Metadata.Version})");
 
 			modLaunchWrapper = args.GetValue("Engine.LaunchWrapper", null);
 
@@ -420,7 +420,7 @@ namespace OpenRA
 
 			Console.WriteLine("External mods:");
 			foreach (var mod in ExternalMods)
-				Console.WriteLine($"\t{mod.Key}: {mod.Value.Title} ({mod.Value.Version})");
+				Console.WriteLine($"\t{mod.Key} ({mod.Value.Version})");
 
 			InitializeMod(modID, args);
 		}
@@ -499,8 +499,8 @@ namespace OpenRA
 			Cursor = new CursorManager(ModData.CursorProvider, ModData.Manifest.CursorSheetSize);
 
 			var metadata = ModData.Manifest.Metadata;
-			if (!string.IsNullOrEmpty(metadata.WindowTitle))
-				Renderer.Window.SetWindowTitle(metadata.WindowTitle);
+			if (!string.IsNullOrEmpty(metadata.WindowTitleTranslated))
+				Renderer.Window.SetWindowTitle(metadata.WindowTitleTranslated);
 
 			PerfHistory.Items["render"].HasNormalTick = false;
 			PerfHistory.Items["batches"].HasNormalTick = false;
@@ -595,7 +595,7 @@ namespace OpenRA
 				Log.Write("debug", "Taking screenshot " + path);
 
 				Renderer.SaveScreenshot(path);
-				TextNotificationsManager.Debug(TranslationProvider.GetString(SavedScreenshot, Translation.Arguments("filename", filename)));
+				TextNotificationsManager.Debug(FluentProvider.GetString(SavedScreenshot, "filename", filename));
 			}
 		}
 

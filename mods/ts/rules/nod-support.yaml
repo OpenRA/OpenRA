@@ -156,11 +156,11 @@ NAFNCE:
 		RequiresCondition: active-posts == 2
 	DamageMultiplier: # Prevent all normal damage, but still allows direct kills from the post
 		Modifier: 0
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: BuildingExplosions
 		EmptyWeapon: BuildingExplosions
 		Type: Footprint
-	ThrowsShrapnel@SMALL:
+	FireProjectilesOnDeath@SMALL:
 		Weapons: SmallDebris
 		Pieces: 0, 1
 		Range: 2c0, 5c0

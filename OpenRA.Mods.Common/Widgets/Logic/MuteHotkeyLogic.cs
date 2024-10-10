@@ -18,10 +18,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	[ChromeLogicArgsHotkeys("MuteAudioKey")]
 	public class MuteHotkeyLogic : SingleHotkeyBaseLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string AudioMuted = "label-audio-muted";
 
-		[TranslationReference]
+		[FluentReference]
 		const string AudioUnmuted = "label-audio-unmuted";
 
 		[ObjectCreator.UseCtor]
@@ -35,12 +35,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			if (Game.Settings.Sound.Mute)
 			{
 				Game.Sound.MuteAudio();
-				TextNotificationsManager.AddFeedbackLine(TranslationProvider.GetString(AudioMuted));
+				TextNotificationsManager.AddFeedbackLine(FluentProvider.GetString(AudioMuted));
 			}
 			else
 			{
 				Game.Sound.UnmuteAudio();
-				TextNotificationsManager.AddFeedbackLine(TranslationProvider.GetString(AudioUnmuted));
+				TextNotificationsManager.AddFeedbackLine(FluentProvider.GetString(AudioUnmuted));
 			}
 
 			return true;

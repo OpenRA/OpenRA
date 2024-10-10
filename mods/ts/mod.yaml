@@ -1,54 +1,55 @@
 Metadata:
-	Title: Tiberian Sun
+	Title: mod-title
 	Version: {DEV_VERSION}
 	Website: https://www.openra.net
 	WebIcon32: https://www.openra.net/images/icons/ts_32x32.png
-	WindowTitle: OpenRA - Tiberian Sun
+	WindowTitle: mod-windowtitle
 
 PackageFormats: Mix
 
-Packages:
-	~^SupportDir|Content/ts
-	~^SupportDir|Content/ts/firestorm
-	^EngineDir
-	$ts: ts
-	^EngineDir|mods/common: common
+FileSystem: DefaultFileSystem
+    Packages:
+		~^SupportDir|Content/ts
+		~^SupportDir|Content/ts/firestorm
+		^EngineDir
+		$ts: ts
+		^EngineDir|mods/common: common
 
-	# Tiberian Sun
-	~scores.mix
-	~sidenc01.mix
-	~sidenc02.mix
-	~e01scd01.mix
-	~e01scd02.mix
-	~movies01.mix
-	~movies02.mix
-	~sidecd01.mix
-	~sidecd02.mix
-	~cache.mix
-	~conquer.mix
-	~isosnow.mix
-	~isotemp.mix
-	~local.mix
-	~sidec01.mix: sidebar-gdi
-	~sidec02.mix: sidebar-nod
-	~sno.mix
-	~snow.mix
-	~sounds.mix
-	~speech01.mix: speech-gdi
-	~speech02.mix: speech-nod
-	~tem.mix
-	~temperat.mix
-	# Firestorm
-	~scores01.mix
-	~expand01.mix
-	~sounds01.mix
-	~e01sc01.mix
-	~e01sc02.mix
-	~e01vox01.mix
-	~e01vox02.mix
-	~ecache01.mix
-	ts|bits
-	ts|uibits
+		# Tiberian Sun
+		~scores.mix
+		~sidenc01.mix
+		~sidenc02.mix
+		~e01scd01.mix
+		~e01scd02.mix
+		~movies01.mix
+		~movies02.mix
+		~sidecd01.mix
+		~sidecd02.mix
+		~cache.mix
+		~conquer.mix
+		~isosnow.mix
+		~isotemp.mix
+		~local.mix
+		~sidec01.mix: sidebar-gdi
+		~sidec02.mix: sidebar-nod
+		~sno.mix
+		~snow.mix
+		~sounds.mix
+		~speech01.mix: speech-gdi
+		~speech02.mix: speech-nod
+		~tem.mix
+		~temperat.mix
+		# Firestorm
+		~scores01.mix
+		~expand01.mix
+		~sounds01.mix
+		~e01sc01.mix
+		~e01sc02.mix
+		~e01vox01.mix
+		~e01vox02.mix
+		~ecache01.mix
+		ts|bits
+		ts|uibits
 
 MapFolders:
 	ts|maps: System
@@ -124,9 +125,7 @@ Cursors:
 Chrome:
 	ts|chrome.yaml
 
-Assemblies:
-	^BinDir|OpenRA.Mods.Common.dll
-	^BinDir|OpenRA.Mods.Cnc.dll
+Assemblies: OpenRA.Mods.Common.dll, OpenRA.Mods.Cnc.dll
 
 ChromeLayout:
 	common|chrome/ingame.yaml
@@ -188,6 +187,7 @@ Translations:
 	common|languages/en.ftl
 	common|languages/chrome/en.ftl
 	common|languages/rules/en.ftl
+	ts|languages/en.ftl
 	ts|languages/chrome/en.ftl
 	ts|languages/rules/en.ftl
 
@@ -217,7 +217,6 @@ Hotkeys:
 
 LoadScreen: LogoStripeLoadScreen
 	Image: ts|uibits/loadscreen.png
-	Text: Updating EVA installation..., Changing perspective...
 
 ServerTraits:
 	LobbyCommands
@@ -313,31 +312,31 @@ GameSpeeds:
 			OrderLatency: 6
 
 ModContent:
-	InstallPromptMessage: Tiberian Sun requires artwork and audio from the original game.\n\nQuick Install will automatically download this content (without music\nor videos) from a mirror of the 2012 Tiberian Sun freeware release.\n\nAdvanced Install includes options for copying the music, videos, and\nother content from an original game disc or digital installation.
+	InstallPromptMessage: modcontent-installprompt
 	QuickDownload: quickinstall
-	HeaderMessage: Game content may be extracted from the original game discs or an\nexisting digital install. OpenRA can also download the base game\nfiles from an online mirror of the 2012 freeware release of TS.
+	HeaderMessage: modcontent-header
 	Packages:
 		ContentPackage@tibsun:
-			Title: Base Game Files
+			Title: modcontent-package-basefiles
 			Identifier: tibsun
 			TestFiles: ^SupportDir|Content/ts/cache.mix, ^SupportDir|Content/ts/conquer.mix, ^SupportDir|Content/ts/isosnow.mix, ^SupportDir|Content/ts/isotemp.mix, ^SupportDir|Content/ts/local.mix, ^SupportDir|Content/ts/sidec01.mix, ^SupportDir|Content/ts/sidec02.mix, ^SupportDir|Content/ts/sno.mix, ^SupportDir|Content/ts/snow.mix, ^SupportDir|Content/ts/sounds.mix, ^SupportDir|Content/ts/speech01.mix, ^SupportDir|Content/ts/tem.mix, ^SupportDir|Content/ts/temperat.mix
 			Sources: tibsun, tfd, steam, origin
 			Required: true
 			Download: basefiles
 		ContentPackage@tibsun-music:
-			Title: Base Game Music
+			Title: modcontent-package-basemusic
 			Identifier: tibsun-music
 			TestFiles: ^SupportDir|Content/ts/scores.mix
 			Sources: tibsun, tfd, steam, origin
 		ContentPackage@fstorm:
-			Title: Firestorm Expansion Files
+			Title: modcontent-package-firestormfiles
 			Identifier: fstorm
 			TestFiles: ^SupportDir|Content/ts/firestorm/e01sc01.mix, ^SupportDir|Content/ts/firestorm/e01sc02.mix, ^SupportDir|Content/ts/firestorm/e01vox01.mix, ^SupportDir|Content/ts/firestorm/e01vox02.mix
 			Sources: tfd, steam, origin, fstorm
 			Required: true
 			Download: fstorm
 		ContentPackage@fstorm-music:
-			Title: Firestorm Expansion Music
+			Title: modcontent-package-firestormmusic
 			Identifier: fstorm-music
 			Sources: tfd, steam, origin, fstorm
 			TestFiles: ^SupportDir|Content/ts/firestorm/scores01.mix
@@ -349,6 +348,7 @@ ModContent:
 		ts|installer/steam.yaml
 		ts|installer/origin.yaml
 		ts|installer/tibsun.yaml
+	Translation: ts|languages/modcontent/en.ftl
 
 DiscordService:
 	ApplicationId: 712713986558394399

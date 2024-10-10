@@ -22,7 +22,7 @@ namespace OpenRA.Network
 	{
 		const OrderPacket ClientDisconnected = null;
 
-		[TranslationReference("frame")]
+		[FluentReference("frame")]
 		const string DesyncCompareLogs = "notification-desync-compare-logs";
 
 		readonly SyncReport syncReport;
@@ -91,7 +91,7 @@ namespace OpenRA.Network
 			World.OutOfSync();
 			IsOutOfSync = true;
 
-			TextNotificationsManager.AddSystemLine(DesyncCompareLogs, Translation.Arguments("frame", frame));
+			TextNotificationsManager.AddSystemLine(DesyncCompareLogs, "frame", frame);
 		}
 
 		public void StartGame()

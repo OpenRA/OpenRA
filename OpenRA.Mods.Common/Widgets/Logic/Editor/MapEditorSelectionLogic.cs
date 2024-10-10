@@ -20,18 +20,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MapEditorSelectionLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string AreaSelection = "label-area-selection";
 
 		readonly EditorViewportControllerWidget editor;
-		readonly WorldRenderer worldRenderer;
+		readonly Map map;
 
-		readonly ContainerWidget actorEditPanel;
-		readonly ContainerWidget areaEditPanel;
-
-		readonly CheckboxWidget copyTerrainCheckbox;
-		readonly CheckboxWidget copyResourcesCheckbox;
-		readonly CheckboxWidget copyActorsCheckbox;
 		readonly EditorActorLayer editorActorLayer;
 		readonly EditorResourceLayer editorResourceLayer;
 		readonly IResourceLayer resourceLayer;
@@ -46,7 +40,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public MapEditorSelectionLogic(Widget widget, World world, WorldRenderer worldRenderer)
 		{
-			this.worldRenderer = worldRenderer;
+			map = worldRenderer.World.Map;
 
 			editorActorLayer = world.WorldActor.Trait<EditorActorLayer>();
 			resourceLayer = world.WorldActor.TraitOrDefault<IResourceLayer>();
@@ -55,15 +49,15 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			editor = widget.Get<EditorViewportControllerWidget>("MAP_EDITOR");
 			editor.DefaultBrush.SelectionChanged += HandleSelectionChanged;
 			var selectTabContainer = widget.Get("SELECT_WIDGETS");
-			actorEditPanel = selectTabContainer.Get<ContainerWidget>("ACTOR_EDIT_PANEL");
-			areaEditPanel = selectTabContainer.Get<ContainerWidget>("AREA_EDIT_PANEL");
+			var actorEditPanel = selectTabContainer.Get("ACTOR_EDIT_PANEL");
+			var areaEditPanel = selectTabContainer.Get("AREA_EDIT_PANEL");
 
 			actorEditPanel.IsVisible = () => editor.DefaultBrush.Selection.Actor != null;
 			areaEditPanel.IsVisible = () => editor.DefaultBrush.Selection.Area != null;
 
-			copyTerrainCheckbox = areaEditPanel.Get<CheckboxWidget>("COPY_FILTER_TERRAIN_CHECKBOX");
-			copyResourcesCheckbox = areaEditPanel.Get<CheckboxWidget>("COPY_FILTER_RESOURCES_CHECKBOX");
-			copyActorsCheckbox = areaEditPanel.Get<CheckboxWidget>("COPY_FILTER_ACTORS_CHECKBOX");
+			var copyTerrainCheckbox = areaEditPanel.Get<CheckboxWidget>("COPY_FILTER_TERRAIN_CHECKBOX");
+			var copyResourcesCheckbox = areaEditPanel.Get<CheckboxWidget>("COPY_FILTER_RESOURCES_CHECKBOX");
+			var copyActorsCheckbox = areaEditPanel.Get<CheckboxWidget>("COPY_FILTER_ACTORS_CHECKBOX");
 
 			copyTerrainCheckbox.IsDisabled = () => editor.CurrentBrush is EditorCopyPasteBrush;
 			copyResourcesCheckbox.IsDisabled = () => editor.CurrentBrush is EditorCopyPasteBrush;
@@ -107,9 +101,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var selection = editor.DefaultBrush.Selection.Area;
 			var source = new CellCoordsRegion(selection.TopLeft, selection.BottomRight);
 
-			var mapTiles = worldRenderer.World.Map.Tiles;
-			var mapHeight = worldRenderer.World.Map.Height;
-			var mapResources = worldRenderer.World.Map.Resources;
+			var mapTiles = map.Tiles;
+			var mapHeight = map.Height;
+			var mapResources = map.Resources;
 
 			var previews = new Dictionary<string, EditorActorPreview>();
 			var tiles = new Dictionary<CPos, ClipboardTile>();
@@ -157,7 +151,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var resourceValueInRegion = editorResourceLayer.CalculateRegionValue(selectedRegion);
 
 			var areaSelectionLabel =
-				$"{TranslationProvider.GetString(AreaSelection)} ({DimensionsAsString(selectionSize)}) " +
+				$"{FluentProvider.GetString(AreaSelection)} ({DimensionsAsString(selectionSize)}) " +
 				$"{PositionAsString(selectedRegion.TopLeft)} : {PositionAsString(selectedRegion.BottomRight)}";
 
 			AreaEditTitle.GetText = () => areaSelectionLabel;

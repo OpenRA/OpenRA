@@ -115,6 +115,7 @@ namespace OpenRA
 		const int SpacesPerLevel = 4;
 		static readonly Func<string, string> StringIdentity = s => s;
 		static readonly Func<MiniYaml, MiniYaml> MiniYamlIdentity = my => my;
+		static readonly Dictionary<string, MiniYamlNode> ConflictScratch = new();
 
 		public readonly string Value;
 		public readonly ImmutableArray<MiniYamlNode> Nodes;
@@ -419,7 +420,8 @@ namespace OpenRA
 
 			// Resolve any top-level removals (e.g. removing whole actor blocks)
 			var nodes = new MiniYaml("", resolved.Select(kv => new MiniYamlNode(kv.Key, kv.Value)));
-			return ResolveInherits(nodes, tree, ImmutableDictionary<string, MiniYamlNode.SourceLocation>.Empty);
+			var result = ResolveInherits(nodes, tree, ImmutableDictionary<string, MiniYamlNode.SourceLocation>.Empty);
+			return result as List<MiniYamlNode> ?? result.ToList();
 		}
 
 		static void MergeIntoResolved(MiniYamlNode overrideNode, List<MiniYamlNode> existingNodes, HashSet<string> existingNodeKeys,
@@ -444,9 +446,12 @@ namespace OpenRA
 				existingNodes.Add(overrideNode.WithValue(value));
 		}
 
-		static List<MiniYamlNode> ResolveInherits(
+		static IReadOnlyCollection<MiniYamlNode> ResolveInherits(
 			MiniYaml node, Dictionary<string, MiniYaml> tree, ImmutableDictionary<string, MiniYamlNode.SourceLocation> inherited)
 		{
+			if (node.Nodes.Length == 0)
+				return node.Nodes;
+
 			var resolved = new List<MiniYamlNode>(node.Nodes.Length);
 			var resolvedKeys = new HashSet<string>(node.Nodes.Length);
 
@@ -491,6 +496,9 @@ namespace OpenRA
 		/// </summary>
 		static IReadOnlyCollection<MiniYamlNode> MergeSelfPartial(IReadOnlyCollection<MiniYamlNode> existingNodes)
 		{
+			if (existingNodes.Count == 0)
+				return existingNodes;
+
 			var keys = new HashSet<string>(existingNodes.Count);
 			var ret = new List<MiniYamlNode>(existingNodes.Count);
 			foreach (var n in existingNodes)
@@ -511,8 +519,15 @@ namespace OpenRA
 
 		static MiniYaml MergePartial(MiniYaml existingNodes, MiniYaml overrideNodes)
 		{
-			existingNodes?.Nodes.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => $"{x.Key} (at {x.Location})");
-			overrideNodes?.Nodes.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => $"{x.Key} (at {x.Location})");
+			lock (ConflictScratch)
+			{
+				// PERF: Reuse ConflictScratch for all conflict checks to avoid allocations.
+				existingNodes?.Nodes.IntoDictionaryWithConflictLog(
+					n => n.Key, n => n, "MiniYaml.Merge", ConflictScratch, k => k, n => $"{n.Key} (at {n.Location})");
+				overrideNodes?.Nodes.IntoDictionaryWithConflictLog(
+					n => n.Key, n => n, "MiniYaml.Merge", ConflictScratch, k => k, n => $"{n.Key} (at {n.Location})");
+				ConflictScratch.Clear();
+			}
 
 			if (existingNodes == null)
 				return overrideNodes;

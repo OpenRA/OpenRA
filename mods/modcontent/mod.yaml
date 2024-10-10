@@ -1,12 +1,13 @@
 Metadata:
-	Title: Mod Content Manager
+	Title: mod-title
 	Version: {DEV_VERSION}
 	Hidden: true
 
-Packages:
-	^EngineDir
-	^EngineDir|mods/modcontent: modcontent
-	^EngineDir|mods/common: common
+FileSystem: DefaultFileSystem
+    Packages:
+		^EngineDir
+		^EngineDir|mods/modcontent: modcontent
+		^EngineDir|mods/common: common
 
 Rules:
 	modcontent|rules.yaml
@@ -17,8 +18,7 @@ Cursors:
 Chrome:
 	modcontent|chrome.yaml
 
-Assemblies:
-	^BinDir|OpenRA.Mods.Common.dll
+Assemblies: OpenRA.Mods.Common.dll
 
 ChromeLayout:
 	modcontent|content.yaml
@@ -38,6 +38,7 @@ ChromeMetrics:
 Translations:
 	common|languages/en.ftl
 	common|languages/zh.ftl
+	modcontent|languages/en.ftl
 
 Fonts:
 	Tiny:

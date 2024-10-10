@@ -25,67 +25,67 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class ServerListLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string SearchStatusFailed = "label-search-status-failed";
 
-		[TranslationReference]
+		[FluentReference]
 		const string SearchStatusNoGames = "label-search-status-no-games";
 
-		[TranslationReference("players")]
+		[FluentReference("players")]
 		const string PlayersOnline = "label-players-online-count";
 
-		[TranslationReference]
+		[FluentReference]
 		const string NoServerSelected = "label-no-server-selected";
 
-		[TranslationReference]
+		[FluentReference]
 		const string MapStatusSearching = "label-map-status-searching";
 
-		[TranslationReference]
+		[FluentReference]
 		const string MapClassificationUnknown = "label-map-classification-unknown";
 
-		[TranslationReference("players")]
+		[FluentReference("players")]
 		const string PlayersLabel = "label-players-count";
 
-		[TranslationReference("bots")]
+		[FluentReference("bots")]
 		const string BotsLabel = "label-bots-count";
 
-		[TranslationReference("spectators")]
+		[FluentReference("spectators")]
 		const string SpectatorsLabel = "label-spectators-count";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Players = "label-players";
 
-		[TranslationReference("team")]
+		[FluentReference("team")]
 		const string TeamNumber = "label-team-name";
 
-		[TranslationReference]
+		[FluentReference]
 		const string NoTeam = "label-no-team";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Spectators = "label-spectators";
 
-		[TranslationReference("players")]
+		[FluentReference("players")]
 		const string OtherPlayers = "label-other-players-count";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Playing = "label-playing";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Waiting = "label-waiting";
 
-		[TranslationReference("minutes")]
+		[FluentReference("minutes")]
 		const string InProgress = "label-in-progress-for";
 
-		[TranslationReference]
+		[FluentReference]
 		const string PasswordProtected = "label-password-protected";
 
-		[TranslationReference]
+		[FluentReference]
 		const string WaitingForPlayers = "label-waiting-for-players";
 
-		[TranslationReference]
+		[FluentReference]
 		const string ServerShuttingDown = "label-server-shutting-down";
 
-		[TranslationReference]
+		[FluentReference]
 		const string UnknownServerState = "label-unknown-server-state";
 
 		readonly string noServerSelected;
@@ -145,8 +145,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		{
 			switch (searchStatus)
 			{
-				case SearchStatus.Failed: return TranslationProvider.GetString(SearchStatusFailed);
-				case SearchStatus.NoGames: return TranslationProvider.GetString(SearchStatusNoGames);
+				case SearchStatus.Failed: return FluentProvider.GetString(SearchStatusFailed);
+				case SearchStatus.NoGames: return FluentProvider.GetString(SearchStatusNoGames);
 				default: return "";
 			}
 		}
@@ -157,22 +157,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.modData = modData;
 			this.onJoin = onJoin;
 
-			playing = TranslationProvider.GetString(Playing);
-			waiting = TranslationProvider.GetString(Waiting);
+			playing = FluentProvider.GetString(Playing);
+			waiting = FluentProvider.GetString(Waiting);
 
-			noServerSelected = TranslationProvider.GetString(NoServerSelected);
-			mapStatusSearching = TranslationProvider.GetString(MapStatusSearching);
-			mapClassificationUnknown = TranslationProvider.GetString(MapClassificationUnknown);
+			noServerSelected = FluentProvider.GetString(NoServerSelected);
+			mapStatusSearching = FluentProvider.GetString(MapStatusSearching);
+			mapClassificationUnknown = FluentProvider.GetString(MapClassificationUnknown);
 
-			players = new CachedTransform<int, string>(i => TranslationProvider.GetString(PlayersLabel, Translation.Arguments("players", i)));
-			bots = new CachedTransform<int, string>(i => TranslationProvider.GetString(BotsLabel, Translation.Arguments("bots", i)));
-			spectators = new CachedTransform<int, string>(i => TranslationProvider.GetString(SpectatorsLabel, Translation.Arguments("spectators", i)));
+			players = new CachedTransform<int, string>(i => FluentProvider.GetString(PlayersLabel, "players", i));
+			bots = new CachedTransform<int, string>(i => FluentProvider.GetString(BotsLabel, "bots", i));
+			spectators = new CachedTransform<int, string>(i => FluentProvider.GetString(SpectatorsLabel, "spectators", i));
 
-			minutes = new CachedTransform<double, string>(i => TranslationProvider.GetString(InProgress, Translation.Arguments("minutes", i)));
-			passwordProtected = TranslationProvider.GetString(PasswordProtected);
-			waitingForPlayers = TranslationProvider.GetString(WaitingForPlayers);
-			serverShuttingDown = TranslationProvider.GetString(ServerShuttingDown);
-			unknownServerState = TranslationProvider.GetString(UnknownServerState);
+			minutes = new CachedTransform<double, string>(i => FluentProvider.GetString(InProgress, "minutes", i));
+			passwordProtected = FluentProvider.GetString(PasswordProtected);
+			waitingForPlayers = FluentProvider.GetString(WaitingForPlayers);
+			serverShuttingDown = FluentProvider.GetString(ServerShuttingDown);
+			unknownServerState = FluentProvider.GetString(UnknownServerState);
 
 			services = modData.Manifest.Get<WebServices>();
 
@@ -243,7 +243,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			{
 				// HACK: MULTIPLAYER_FILTER_PANEL doesn't follow our normal procedure for dropdown creation
 				// but we still need to be able to set the dropdown width based on the parent
-				// The yaml should use PARENT_RIGHT instead of DROPDOWN_WIDTH
+				// The yaml should use PARENT_WIDTH instead of DROPDOWN_WIDTH
 				var filtersPanel = Ui.LoadWidget("MULTIPLAYER_FILTER_PANEL", filtersButton, new WidgetArgs());
 				filtersButton.Children.Remove(filtersPanel);
 
@@ -318,7 +318,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var playersLabel = widget.GetOrNull<LabelWidget>("PLAYER_COUNT");
 			if (playersLabel != null)
 			{
-				var playersText = new CachedTransform<int, string>(p => TranslationProvider.GetString(PlayersOnline, Translation.Arguments("players", p)));
+				var playersText = new CachedTransform<int, string>(p => FluentProvider.GetString(PlayersOnline, "players", p));
 				playersLabel.IsVisible = () => playerCount != 0;
 				playersLabel.GetText = () => playersText.Update(playerCount);
 			}
@@ -581,14 +581,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			var noTeams = players.Count == 1;
 			foreach (var p in players)
 			{
-				var label = noTeams ? TranslationProvider.GetString(Players) : p.Key > 0
-					? TranslationProvider.GetString(TeamNumber, Translation.Arguments("team", p.Key))
-					: TranslationProvider.GetString(NoTeam);
+				var label = noTeams ? FluentProvider.GetString(Players) : p.Key > 0
+					? FluentProvider.GetString(TeamNumber, "team", p.Key)
+					: FluentProvider.GetString(NoTeam);
 				teams.Add(label, p);
 			}
 
 			if (server.Clients.Any(c => c.IsSpectator))
-				teams.Add(TranslationProvider.GetString(Spectators), server.Clients.Where(c => c.IsSpectator));
+				teams.Add(FluentProvider.GetString(Spectators), server.Clients.Where(c => c.IsSpectator));
 
 			var factionInfo = modData.DefaultRules.Actors[SystemActors.World].TraitInfos<FactionInfo>();
 			foreach (var kv in teams)
@@ -765,7 +765,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 								if (game.Clients.Length > 10)
 									displayClients = displayClients
 										.Take(9)
-										.Append(TranslationProvider.GetString(OtherPlayers, Translation.Arguments("players", game.Clients.Length - 9)));
+										.Append(FluentProvider.GetString(OtherPlayers, "players", game.Clients.Length - 9));
 
 								var tooltip = displayClients.JoinWith("\n");
 								players.GetTooltipText = () => tooltip;

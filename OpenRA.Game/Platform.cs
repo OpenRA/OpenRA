@@ -180,7 +180,7 @@ namespace OpenRA
 				case PlatformType.OSX:
 				{
 					modernUserSupportPath = legacyUserSupportPath = Path.Combine(
-						Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+						Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
 						"Library", "Application Support", "OpenRA") + Path.DirectorySeparatorChar;
 
 					systemSupportPath = "/Library/Application Support/OpenRA/";
@@ -189,11 +189,11 @@ namespace OpenRA
 
 				case PlatformType.Linux:
 				{
-					legacyUserSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".openra") + Path.DirectorySeparatorChar;
+					legacyUserSupportPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".openra") + Path.DirectorySeparatorChar;
 
 					var xdgConfigHome = Environment.GetEnvironmentVariable("XDG_CONFIG_HOME");
 					if (string.IsNullOrEmpty(xdgConfigHome))
-						xdgConfigHome = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".config") + Path.DirectorySeparatorChar;
+						xdgConfigHome = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config") + Path.DirectorySeparatorChar;
 
 					modernUserSupportPath = Path.Combine(xdgConfigHome, "openra") + Path.DirectorySeparatorChar;
 					systemSupportPath = "/var/games/openra/";
@@ -204,7 +204,7 @@ namespace OpenRA
 				default:
 				{
 					modernUserSupportPath = legacyUserSupportPath =
-						Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), ".openra") + Path.DirectorySeparatorChar;
+						Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".openra") + Path.DirectorySeparatorChar;
 					systemSupportPath = "/var/games/openra/";
 					break;
 				}

@@ -91,7 +91,7 @@ namespace OpenRA
 			public MiniYaml SequenceDefinitions;
 			public MiniYaml ModelSequenceDefinitions;
 
-			public Translation Translation { get; private set; }
+			public FluentBundle FluentBundle { get; private set; }
 			public ActorInfo WorldActorInfo { get; private set; }
 			public ActorInfo PlayerActorInfo { get; private set; }
 
@@ -122,8 +122,8 @@ namespace OpenRA
 				SequenceDefinitions = LoadRuleSection(yaml, "Sequences");
 				ModelSequenceDefinitions = LoadRuleSection(yaml, "ModelSequences");
 
-				Translation = yaml.TryGetValue("Translations", out var node) && node != null
-					? new Translation(Game.Settings.Player.Language, FieldLoader.GetValue<string[]>("value", node.Value), fileSystem)
+				FluentBundle = yaml.TryGetValue("Translations", out var node) && node != null
+					? new FluentBundle(Game.Settings.Player.Language, FieldLoader.GetValue<string[]>("value", node.Value), fileSystem)
 					: null;
 
 				try
@@ -224,16 +224,16 @@ namespace OpenRA
 		public int DownloadPercentage { get; private set; }
 
 		/// <summary>
-		/// Functionality mirrors <see cref="TranslationProvider.GetString"/>, except instead of using
-		/// loaded <see cref="Map"/>'s translations as backup, we use this <see cref="MapPreview"/>'s.
+		/// Functionality mirrors <see cref="FluentProvider.GetString"/>, except instead of using
+		/// loaded <see cref="Map"/>'s fluent bundle as backup, we use this <see cref="MapPreview"/>'s.
 		/// </summary>
-		public string GetLocalisedString(string key, IDictionary<string, object> args = null)
+		public string GetString(string key, object[] args = null)
 		{
-			// PERF: instead of loading mod level Translation per each MapPreview, reuse the already loaded one in TranslationProvider.
-			if (TranslationProvider.TryGetModString(key, out var message, args))
+			// PERF: instead of loading mod level strings per each MapPreview, reuse the already loaded one in FluentProvider.
+			if (FluentProvider.TryGetModString(key, out var message, args))
 				return message;
 
-			return innerData.Translation?.GetString(key, args) ?? key;
+			return innerData.FluentBundle?.GetString(key, args) ?? key;
 		}
 
 		Sprite minimap;

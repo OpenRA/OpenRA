@@ -3,7 +3,7 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 	Children:
 		ScrollItem@HEADER:
 			Background: scrollheader
-			Width: PARENT_RIGHT - 27
+			Width: PARENT_WIDTH - 27
 			Height: 13
 			X: 2
 			Y: 0
@@ -11,11 +11,11 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 			Children:
 				Label@LABEL:
 					Font: TinyBold
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 13
 					Align: Center
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
+			Width: PARENT_WIDTH - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -23,14 +23,14 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 			Children:
 				Label@LABEL:
 					X: 10
-					Width: PARENT_RIGHT - 20
+					Width: PARENT_WIDTH - 20
 					Height: 25
 
 ScrollPanel@PLAYERACTION_DROPDOWN_TEMPLATE:
 	Width: DROPDOWN_WIDTH
 	Children:
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
+			Width: PARENT_WIDTH - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -38,7 +38,7 @@ ScrollPanel@PLAYERACTION_DROPDOWN_TEMPLATE:
 			Children:
 				Label@LABEL:
 					X: 10
-					Width: PARENT_RIGHT - 20
+					Width: PARENT_WIDTH - 20
 					Height: 25
 					Align: Left
 
@@ -46,7 +46,7 @@ ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
 	Width: DROPDOWN_WIDTH
 	Children:
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
+			Width: PARENT_WIDTH - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -54,7 +54,7 @@ ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
 			Children:
 				Label@LABEL:
 					X: 0
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Align: Center
 
@@ -62,7 +62,7 @@ ScrollPanel@SPAWN_DROPDOWN_TEMPLATE:
 	Width: DROPDOWN_WIDTH
 	Children:
 		ScrollItem@TEMPLATE:
-			Width: PARENT_RIGHT - 27
+			Width: PARENT_WIDTH - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -70,7 +70,7 @@ ScrollPanel@SPAWN_DROPDOWN_TEMPLATE:
 			Children:
 				Label@LABEL:
 					X: 0
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Align: Center
 
@@ -82,7 +82,7 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 	Children:
 		ScrollItem@HEADER:
 			Background: observer-scrollheader
-			Width: PARENT_RIGHT - 27
+			Width: PARENT_WIDTH - 27
 			Height: 13
 			X: 2
 			Y: 0
@@ -90,12 +90,12 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 			Children:
 				Label@LABEL:
 					Font: TinyBold
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 10
 					Align: Center
 		ScrollItem@TEMPLATE:
 			Background: observer-scrollitem
-			Width: PARENT_RIGHT - 27
+			Width: PARENT_WIDTH - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -108,12 +108,12 @@ ScrollPanel@SPECTATOR_DROPDOWN_TEMPLATE:
 					Height: 16
 				Label@LABEL:
 					X: 40
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Shadow: True
 				Label@NOFLAG_LABEL:
 					X: 5
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Shadow: True
 
@@ -125,7 +125,7 @@ ScrollPanel@SPECTATOR_LABEL_DROPDOWN_TEMPLATE:
 	Children:
 		ScrollItem@HEADER:
 			Background: observer-scrollitem
-			Width: PARENT_RIGHT - 27
+			Width: PARENT_WIDTH - 27
 			Height: 13
 			X: 2
 			Y: 0
@@ -133,12 +133,12 @@ ScrollPanel@SPECTATOR_LABEL_DROPDOWN_TEMPLATE:
 			Children:
 				Label@LABEL:
 					Font: TinyBold
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 10
 					Align: Center
 		ScrollItem@TEMPLATE:
 			Background: observer-scrollitem
-			Width: PARENT_RIGHT - 27
+			Width: PARENT_WIDTH - 27
 			Height: 25
 			X: 2
 			Y: 0
@@ -146,7 +146,7 @@ ScrollPanel@SPECTATOR_LABEL_DROPDOWN_TEMPLATE:
 			Children:
 				Label@LABEL:
 					X: 10
-					Width: PARENT_RIGHT - 20
+					Width: PARENT_WIDTH - 20
 					Height: 25
 
 ScrollPanel@NEWS_PANEL:
@@ -158,28 +158,27 @@ ScrollPanel@NEWS_PANEL:
 		Container@NEWS_ITEM_TEMPLATE:
 			X: 10
 			Y: 5
-			Width: PARENT_RIGHT - 40
+			Width: PARENT_WIDTH - 40
 			Height: 45
 			Children:
 				Label@TITLE:
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 25
 					Align: Center
 					Font: Bold
 				Label@AUTHOR_DATETIME:
 					Y: 25
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 					Height: 15
 					Align: Center
 					Font: TinyBold
 				Label@CONTENT:
 					Y: 45
-					Width: PARENT_RIGHT
+					Width: PARENT_WIDTH
 		Label@NEWS_STATUS:
 			X: 80
 			Y: 0
-			Width: PARENT_RIGHT - 80 - 80 - 24
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH - 80 - 80 - 24
+			Height: PARENT_HEIGHT
 			Align: Center
 			VAlign: Middle
-

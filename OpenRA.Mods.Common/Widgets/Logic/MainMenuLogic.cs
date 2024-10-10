@@ -23,16 +23,16 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MainMenuLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string LoadingNews = "label-loading-news";
 
-		[TranslationReference("message")]
+		[FluentReference("message")]
 		const string NewsRetrivalFailed = "label-news-retrieval-failed";
 
-		[TranslationReference("message")]
+		[FluentReference("message")]
 		const string NewsParsingFailed = "label-news-parsing-failed";
 
-		[TranslationReference("author", "datetime")]
+		[FluentReference("author", "datetime")]
 		const string AuthorDateTime = "label-author-datetime";
 
 		protected enum MenuType { Main, Singleplayer, Extras, MapEditor, StartupPrompts, None }
@@ -69,8 +69,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.modData = modData;
 
 			rootMenu = widget;
-			var versionText = modData.Manifest.Metadata.Version;
-			rootMenu.Get<LabelWidget>("VERSION_LABEL").GetText = () => versionText;
 
 			// Menu buttons
 			var mainMenu = widget.Get("MAIN_MENU");
@@ -80,16 +78,30 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			mainMenu.Get<ButtonWidget>("MULTIPLAYER_BUTTON").OnClick = OpenMultiplayerPanel;
 
-			mainMenu.Get<ButtonWidget>("CONTENT_BUTTON").OnClick = () =>
+			var contentButton = mainMenu.GetOrNull<ButtonWidget>("CONTENT_BUTTON");
+			if (contentButton != null)
 			{
-				// Switching mods changes the world state (by disposing it),
-				// so we can't do this inside the input handler.
-				Game.RunAfterTick(() =>
+				var hasContent = modData.Manifest.Contains<ModContent>();
+				contentButton.Disabled = !hasContent;
+				contentButton.OnClick = () =>
 				{
-					var content = modData.Manifest.Get<ModContent>();
-					Game.InitializeMod(content.ContentInstallerMod, new Arguments(new[] { "Content.Mod=" + modData.Manifest.Id }));
-				});
-			};
+					// Switching mods changes the world state (by disposing it),
+					// so we can't do this inside the input handler.
+					Game.RunAfterTick(() =>
+					{
+						if (!hasContent)
+							return;
+
+						var content = modData.Manifest.Get<ModContent>();
+						string translationPath;
+						using (var fs = (FileStream)modData.DefaultFileSystem.Open(content.Translation))
+							translationPath = fs.Name;
+						Game.InitializeMod(
+							content.ContentInstallerMod,
+							new Arguments(new[] { "Content.Mod=" + modData.Manifest.Id, "Content.TranslationFile=" + translationPath }));
+					});
+				};
+			}
 
 			mainMenu.Get<ButtonWidget>("SETTINGS_BUTTON").OnClick = () =>
 			{
@@ -227,7 +239,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				newsPanel.RemoveChild(newsTemplate);
 
 				newsStatus = newsPanel.Get<LabelWidget>("NEWS_STATUS");
-				SetNewsStatus(TranslationProvider.GetString(LoadingNews));
+				SetNewsStatus(FluentProvider.GetString(LoadingNews));
 			}
 
 			Game.OnRemoteDirectConnect += OnRemoteDirectConnect;
@@ -339,7 +351,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							catch (Exception e)
 							{
 								Game.RunAfterTick(() => // run on the main thread
-									SetNewsStatus(TranslationProvider.GetString(NewsRetrivalFailed, Translation.Arguments("message", e.Message))));
+									SetNewsStatus(FluentProvider.GetString(NewsRetrivalFailed, "message", e.Message)));
 							}
 						});
 					}
@@ -410,7 +422,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				SetNewsStatus(TranslationProvider.GetString(NewsParsingFailed, Translation.Arguments("message", ex.Message)));
+				SetNewsStatus(FluentProvider.GetString(NewsParsingFailed, "message", ex.Message));
 			}
 
 			return null;
@@ -431,9 +443,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				titleLabel.GetText = () => item.Title;
 
 				var authorDateTimeLabel = newsItem.Get<LabelWidget>("AUTHOR_DATETIME");
-				var authorDateTime = TranslationProvider.GetString(AuthorDateTime, Translation.Arguments(
+				var authorDateTime = FluentProvider.GetString(AuthorDateTime,
 					"author", item.Author,
-					"datetime", item.DateTime.ToLocalTime().ToString(CultureInfo.CurrentCulture)));
+					"datetime", item.DateTime.ToLocalTime().ToString(CultureInfo.CurrentCulture));
 
 				authorDateTimeLabel.GetText = () => authorDateTime;
 
@@ -473,7 +485,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			SwitchMenu(MenuType.None);
 			Game.OpenWindow("MISSIONBROWSER_PANEL", new WidgetArgs
 			{
-				{ "onExit", () => SwitchMenu(MenuType.Singleplayer) },
+				{ "onExit", () => { Game.Disconnect(); SwitchMenu(MenuType.Singleplayer); } },
 				{ "onStart", () => { RemoveShellmapUI(); lastGameState = MenuPanel.Missions; } },
 				{ "initialMap", map }
 			});

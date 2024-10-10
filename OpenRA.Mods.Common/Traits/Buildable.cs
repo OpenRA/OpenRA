@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly int BuildPaletteOrder = 9999;
 
 		[Desc("Text shown in the production tooltip.")]
-		[TranslationReference(optional: true)]
+		[FluentReference(optional: true)]
 		public readonly string Description;
 
 		public static string GetInitialFaction(ActorInfo ai, string defaultFaction)

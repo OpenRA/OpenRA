@@ -1,7 +1,7 @@
 Container@CHAT_CONTAINER:
 	Y: 20
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM - 105
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT - 105
 	Logic: IngameChatLogic
 		Templates:
 			Chat: CHAT_LINE_TEMPLATE
@@ -10,11 +10,11 @@ Container@CHAT_CONTAINER:
 	Children:
 		Container@CHAT_CHROME:
 			X: 20
-			Width: PARENT_RIGHT - 40
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH - 40
+			Height: PARENT_HEIGHT
 			Children:
 				Button@CHAT_MODE:
-					Y: PARENT_BOTTOM - HEIGHT
+					Y: PARENT_HEIGHT - HEIGHT
 					Width: 50
 					Height: 25
 					Text: button-chat-chrome-mode.label
@@ -24,12 +24,11 @@ Container@CHAT_CONTAINER:
 					TooltipContainer: TOOLTIP_CONTAINER
 				TextField@CHAT_TEXTFIELD:
 					X: 55
-					Y: PARENT_BOTTOM - HEIGHT
-					Width: PARENT_RIGHT - 55
+					Y: PARENT_HEIGHT - HEIGHT
+					Width: PARENT_WIDTH - 55
 					Height: 25
 				ScrollPanel@CHAT_SCROLLPANEL:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM - 30
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT - 30
 					TopBottomSpacing: 3
 					ItemSpacing: 2
-

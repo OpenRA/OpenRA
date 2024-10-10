@@ -17,22 +17,22 @@ namespace OpenRA.Server
 {
 	public sealed class VoteKickTracker
 	{
-		[TranslationReference("kickee")]
+		[FluentReference("kickee")]
 		const string InsufficientVotes = "notification-insufficient-votes-to-kick";
 
-		[TranslationReference]
+		[FluentReference]
 		const string AlreadyVoted = "notification-kick-already-voted";
 
-		[TranslationReference("kicker", "kickee")]
+		[FluentReference("kicker", "kickee")]
 		const string VoteKickStarted = "notification-vote-kick-started";
 
-		[TranslationReference]
+		[FluentReference]
 		const string UnableToStartAVote = "notification-unable-to-start-a-vote";
 
-		[TranslationReference("kickee", "percentage")]
+		[FluentReference("kickee", "percentage")]
 		const string VoteKickProgress = "notification-vote-kick-in-progress";
 
-		[TranslationReference("kickee")]
+		[FluentReference("kickee")]
 		const string VoteKickEnded = "notification-vote-kick-ended";
 
 		readonly Dictionary<int, bool> voteTracker = new();
@@ -76,7 +76,7 @@ namespace OpenRA.Server
 				|| (voteInProgress && this.kickee.Client != kickee) // Disallow starting new votes when one is already ongoing.
 				|| !ClientHasPower(kicker))
 			{
-				server.SendLocalizedMessageTo(conn, UnableToStartAVote);
+				server.SendFluentMessageTo(conn, UnableToStartAVote);
 				return false;
 			}
 
@@ -107,7 +107,7 @@ namespace OpenRA.Server
 				if (!kickee.IsObserver && !server.HasClientWonOrLost(kickee))
 				{
 					// Vote kick cannot be the sole deciding factor for a game.
-					server.SendLocalizedMessageTo(conn, InsufficientVotes, Translation.Arguments("kickee", kickee.Name));
+					server.SendFluentMessageTo(conn, InsufficientVotes, new object[] { "kickee", kickee.Name });
 					EndKickVote();
 					return false;
 				}
@@ -126,7 +126,7 @@ namespace OpenRA.Server
 				{
 					if (time + server.Settings.VoteKickerCooldown > kickeeConn.ConnectionTimer.ElapsedMilliseconds)
 					{
-						server.SendLocalizedMessageTo(conn, UnableToStartAVote);
+						server.SendFluentMessageTo(conn, UnableToStartAVote);
 						return false;
 					}
 					else
@@ -135,7 +135,7 @@ namespace OpenRA.Server
 
 				Log.Write("server", $"Vote kick started on {kickeeID}.");
 				voteKickTimer = Stopwatch.StartNew();
-				server.SendLocalizedMessage(VoteKickStarted, Translation.Arguments("kicker", kicker.Name, "kickee", kickee.Name));
+				server.SendFluentMessage(VoteKickStarted, "kicker", kicker.Name, "kickee", kickee.Name);
 				server.DispatchServerOrdersToClients(new Order("StartKickVote", null, false) { ExtraData = (uint)kickeeID }.Serialize());
 				this.kickee = (kickee, kickeeConn);
 				voteKickerStarter = (kicker, conn);
@@ -145,7 +145,7 @@ namespace OpenRA.Server
 				voteTracker[conn.PlayerIndex] = vote;
 			else
 			{
-				server.SendLocalizedMessageTo(conn, AlreadyVoted, null);
+				server.SendFluentMessageTo(conn, AlreadyVoted);
 				return false;
 			}
 
@@ -168,9 +168,9 @@ namespace OpenRA.Server
 			}
 
 			var votesNeeded = eligiblePlayers / 2 + 1;
-			server.SendLocalizedMessage(VoteKickProgress, Translation.Arguments(
+			server.SendFluentMessage(VoteKickProgress,
 				"kickee", kickee.Name,
-				"percentage", votesFor * 100 / eligiblePlayers));
+				"percentage", votesFor * 100 / eligiblePlayers);
 
 			// If a player or players during a vote lose or disconnect, it is possible that a downvote will
 			// kick a client. Guard against that situation.
@@ -210,7 +210,7 @@ namespace OpenRA.Server
 				return;
 
 			if (sendMessage)
-				server.SendLocalizedMessage(VoteKickEnded, Translation.Arguments("kickee", kickee.Client.Name));
+				server.SendFluentMessage(VoteKickEnded, "kickee", kickee.Client.Name);
 
 			server.DispatchServerOrdersToClients(new Order("EndKickVote", null, false) { ExtraData = (uint)kickee.Client.Index }.Serialize());
 

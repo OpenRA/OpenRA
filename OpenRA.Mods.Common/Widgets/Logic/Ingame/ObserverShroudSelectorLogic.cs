@@ -23,22 +23,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 	[ChromeLogicArgsHotkeys("CombinedViewKey", "WorldViewKey")]
 	public class ObserverShroudSelectorLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string CameraOptionAllPlayers = "options-shroud-selector.all-players";
 
-		[TranslationReference]
+		[FluentReference]
 		const string CameraOptionDisableShroud = "options-shroud-selector.disable-shroud";
 
-		[TranslationReference]
+		[FluentReference]
 		const string CameraOptionOther = "options-shroud-selector.other";
 
-		[TranslationReference]
+		[FluentReference]
 		const string Players = "label-players";
 
-		[TranslationReference("team")]
+		[FluentReference("team")]
 		const string TeamNumber = "label-team-name";
 
-		[TranslationReference]
+		[FluentReference]
 		const string NoTeam = "label-no-team";
 
 		readonly CameraOption combined, disableShroud;
@@ -104,10 +104,10 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			var groups = new Dictionary<string, IEnumerable<CameraOption>>();
 
-			combined = new CameraOption(this, world, TranslationProvider.GetString(CameraOptionAllPlayers), world.Players.First(p => p.InternalName == "Everyone"));
-			disableShroud = new CameraOption(this, world, TranslationProvider.GetString(CameraOptionDisableShroud), null);
+			combined = new CameraOption(this, world, FluentProvider.GetString(CameraOptionAllPlayers), world.Players.First(p => p.InternalName == "Everyone"));
+			disableShroud = new CameraOption(this, world, FluentProvider.GetString(CameraOptionDisableShroud), null);
 			if (!limitViews)
-				groups.Add(TranslationProvider.GetString(CameraOptionOther), new List<CameraOption>() { combined, disableShroud });
+				groups.Add(FluentProvider.GetString(CameraOptionOther), new List<CameraOption>() { combined, disableShroud });
 
 			teams = world.Players.Where(p => !p.NonCombatant && p.Playable)
 				.Select(p => new CameraOption(this, p))
@@ -120,9 +120,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			foreach (var t in teams)
 			{
 				totalPlayers += t.Count();
-				var label = noTeams ? TranslationProvider.GetString(Players) : t.Key > 0
-					? TranslationProvider.GetString(TeamNumber, Translation.Arguments("team", t.Key))
-					: TranslationProvider.GetString(NoTeam);
+				var label = noTeams ? FluentProvider.GetString(Players) : t.Key > 0
+					? FluentProvider.GetString(TeamNumber, "team", t.Key)
+					: FluentProvider.GetString(NoTeam);
 
 				groups.Add(label, t);
 			}

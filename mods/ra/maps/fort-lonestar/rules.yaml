@@ -228,7 +228,7 @@ E2:
 		Prerequisites: barracks
 	Valued:
 		Cost: 40
-	Explodes:
+	FireWarheadsOnDeath:
 		Chance: 20
 
 E3:
@@ -383,7 +383,7 @@ V2RL:
 		RecoilRecovery: 0c7
 	Armament@SECONDARY:
 		Recoil: 2
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: napalm
 		EmptyWeapon: napalm
 	ChangesHealth:

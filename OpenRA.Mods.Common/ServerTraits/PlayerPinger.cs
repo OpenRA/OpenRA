@@ -9,7 +9,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Server;
 using S = OpenRA.Server.Server;
@@ -18,16 +17,16 @@ namespace OpenRA.Mods.Common.Server
 {
 	public class PlayerPinger : ServerTrait, ITick
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string PlayerDropped = "notification-player-dropped";
 
-		[TranslationReference("player")]
+		[FluentReference("player")]
 		const string ConnectionProblems = "notification-connection-problems";
 
-		[TranslationReference("player")]
+		[FluentReference("player")]
 		const string Timeout = "notification-timeout-dropped";
 
-		[TranslationReference("player", "timeout")]
+		[FluentReference("player", "timeout")]
 		const string TimeoutIn = "notification-timeout-dropped-in";
 
 		const int PingInterval = 5000; // Ping every 5 seconds
@@ -61,7 +60,7 @@ namespace OpenRA.Mods.Common.Server
 						if (client == null)
 						{
 							server.DropClient(c);
-							server.SendLocalizedMessage(PlayerDropped);
+							server.SendFluentMessage(PlayerDropped);
 							continue;
 						}
 
@@ -69,13 +68,13 @@ namespace OpenRA.Mods.Common.Server
 						{
 							if (!c.TimeoutMessageShown && c.TimeSinceLastResponse > PingInterval * 2)
 							{
-								server.SendLocalizedMessage(ConnectionProblems, Translation.Arguments("player", client.Name));
+								server.SendFluentMessage(ConnectionProblems, "player", client.Name);
 								c.TimeoutMessageShown = true;
 							}
 						}
 						else
 						{
-							server.SendLocalizedMessage(Timeout, Translation.Arguments("player", client.Name));
+							server.SendFluentMessage(Timeout, "player", client.Name);
 							server.DropClient(c);
 						}
 					}
@@ -94,11 +93,7 @@ namespace OpenRA.Mods.Common.Server
 							if (client != null)
 							{
 								var timeout = (ConnTimeout - c.TimeSinceLastResponse) / 1000;
-								server.SendLocalizedMessage(TimeoutIn, new Dictionary<string, object>()
-								{
-									{ "player", client.Name },
-									{ "timeout", timeout }
-								});
+								server.SendFluentMessage(TimeoutIn, "player", client.Name, "timeout", timeout);
 							}
 						}
 					}

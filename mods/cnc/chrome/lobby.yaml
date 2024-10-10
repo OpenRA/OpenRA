@@ -7,25 +7,25 @@ Container@SERVER_LOBBY:
 			System: SYSTEM_LINE_TEMPLATE
 			Mission: CHAT_LINE_TEMPLATE
 			Feedback: TRANSIENT_LINE_TEMPLATE
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 900
 	Height: 540
 	Children:
 		Label@SERVER_NAME:
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Y: 0 - 34
 			Font: BigBold
 			Contrast: true
 			Align: Center
 		Background@bg:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Background: panel-black
 			Children:
 				Container@MAP_PREVIEW_ROOT:
-					X: PARENT_RIGHT - 15 - WIDTH
+					X: PARENT_WIDTH - 15 - WIDTH
 					Y: 30
 					Width: 174
 					Height: 250
@@ -92,7 +92,7 @@ Container@SERVER_LOBBY:
 							Height: 31
 							Text: button-multiplayer-tabs-servers-tab
 				Button@CHANGEMAP_BUTTON:
-					X: PARENT_RIGHT - WIDTH - 15
+					X: PARENT_WIDTH - WIDTH - 15
 					Y: 254
 					Width: 174
 					Height: 25
@@ -105,16 +105,16 @@ Container@SERVER_LOBBY:
 				Container@LOBBYCHAT:
 					X: 15
 					Y: 285
-					Width: PARENT_RIGHT - 30
-					Height: PARENT_BOTTOM - 300
+					Width: PARENT_WIDTH - 30
+					Height: PARENT_HEIGHT - 300
 					Children:
 						ScrollPanel@CHAT_DISPLAY:
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM - 30
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT - 30
 							TopBottomSpacing: 3
 							ItemSpacing: 2
 						Button@CHAT_MODE:
-							Y: PARENT_BOTTOM - HEIGHT
+							Y: PARENT_HEIGHT - HEIGHT
 							Width: 50
 							Height: 25
 							Text: button-lobbychat-chat-mode.label
@@ -124,20 +124,19 @@ Container@SERVER_LOBBY:
 							TooltipContainer: TOOLTIP_CONTAINER
 						TextField@CHAT_TEXTFIELD:
 							X: 55
-							Y: PARENT_BOTTOM - HEIGHT
-							Width: PARENT_RIGHT - 55
+							Y: PARENT_HEIGHT - HEIGHT
+							Width: PARENT_WIDTH - 55
 							Height: 25
 		Button@DISCONNECT_BUTTON:
-			Y: PARENT_BOTTOM - 1
+			Y: PARENT_HEIGHT - 1
 			Width: 140
 			Height: 35
 			Text: button-server-lobby-disconnect
 		Button@START_GAME_BUTTON:
-			X: PARENT_RIGHT - WIDTH
-			Y: PARENT_BOTTOM - 1
+			X: PARENT_WIDTH - WIDTH
+			Y: PARENT_HEIGHT - 1
 			Width: 140
 			Height: 35
 			Text: button-server-lobby-start-game
 		Container@FACTION_DROPDOWN_PANEL_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
-

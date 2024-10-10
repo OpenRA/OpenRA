@@ -93,9 +93,6 @@ namespace OpenRA.Server
 				modData.MapCache.LoadPreviewImages = false; // PERF: Server doesn't need previews, save memory by not loading them.
 				modData.MapCache.LoadMaps();
 
-				// HACK: Related to the above one, initialize the translations so we can load maps with their (translated) lobby options.
-				TranslationProvider.Initialize(modData, modData.DefaultFileSystem);
-
 				var endpoints = new List<IPEndPoint> { new(IPAddress.IPv6Any, settings.ListenPort), new(IPAddress.Any, settings.ListenPort) };
 				var server = new Server(endpoints, settings, modData, ServerType.Dedicated);
 

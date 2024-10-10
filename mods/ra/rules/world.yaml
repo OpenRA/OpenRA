@@ -88,9 +88,6 @@
 		TerrainSpeeds:
 			Water: 100
 			Beach: 70
-	Locomotor@IMMOBILE:
-		Name: immobile
-		TerrainSpeeds:
 	TerrainRenderer:
 	ChronoVortexRenderer:
 	ShroudRenderer:
@@ -316,7 +313,6 @@ EditorWorld:
 				TerrainType: Gems
 				AllowedTerrainTypes: Clear, Road
 				MaxDensity: 3
-	EditorSelectionLayer:
 	LoadWidgetAtGameStart:
 	EditorActionManager:
 	BuildableTerrainOverlay:

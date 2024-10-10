@@ -21,7 +21,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class LobbyOptionsLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string NotAvailable = "label-not-available";
 
 		readonly ScrollPanelWidget panel;
@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				var getOptionLabel = new CachedTransform<string, string>(id =>
 				{
 					if (id == null || !option.Values.TryGetValue(id, out var value))
-						return TranslationProvider.GetString(NotAvailable);
+						return FluentProvider.GetString(NotAvailable);
 
 					return value;
 				});

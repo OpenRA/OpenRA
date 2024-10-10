@@ -1,15 +1,15 @@
 Container@DEBUG_PANEL:
 	Logic: DebugMenuLogic
 	Y: 10
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
 	Children:
 		Label@TITLE:
 			Y: 16
 			Font: Bold
 			Text: label-debug-panel-title
 			Align: Center
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 20
 		Checkbox@INSTANT_BUILD:
 			X: 45
@@ -86,7 +86,7 @@ Container@DEBUG_PANEL:
 			Font: Bold
 			Text: label-debug-panel-visualizations-title
 			Align: Center
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 20
 		Checkbox@SHOW_UNIT_PATHS:
 			X: 45
@@ -137,4 +137,3 @@ Container@DEBUG_PANEL:
 			Width: 200
 			Font: Regular
 			Text: checkbox-debug-panel-show-screenmap
-

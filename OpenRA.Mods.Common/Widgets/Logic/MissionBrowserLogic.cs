@@ -27,25 +27,25 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		enum PlayingVideo { None, Info, Briefing, GameStart }
 		enum PanelType { MissionInfo, Options }
 
-		[TranslationReference]
+		[FluentReference]
 		const string NoVideoTitle = "dialog-no-video.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string NoVideoPrompt = "dialog-no-video.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string NoVideoCancel = "dialog-no-video.cancel";
 
-		[TranslationReference]
+		[FluentReference]
 		const string CantPlayTitle = "dialog-cant-play-video.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string CantPlayPrompt = "dialog-cant-play-video.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string CantPlayCancel = "dialog-cant-play-video.cancel";
 
-		[TranslationReference]
+		[FluentReference]
 		const string NotAvailable = "label-not-available";
 
 		readonly ModData modData;
@@ -199,7 +199,6 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			widget.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
 				StopVideo(videoPlayer);
-				Game.Disconnect();
 				Ui.CloseWindow();
 				onExit();
 			};
@@ -387,7 +386,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					if (option.Values.TryGetValue(missionOptions[option.Id], out var value))
 						return value;
 
-					return TranslationProvider.GetString(NotAvailable);
+					return FluentProvider.GetString(NotAvailable);
 				};
 
 				if (option.Description != null)

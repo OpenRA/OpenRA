@@ -21,44 +21,44 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class GameSaveBrowserLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string RenameSaveTitle = "dialog-rename-save.title";
 
-		[TranslationReference]
+		[FluentReference]
 		const string RenameSavePrompt = "dialog-rename-save.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string RenameSaveAccept = "dialog-rename-save.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string DeleteSaveTitle = "dialog-delete-save.title";
 
-		[TranslationReference("save")]
+		[FluentReference("save")]
 		const string DeleteSavePrompt = "dialog-delete-save.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string DeleteSaveAccept = "dialog-delete-save.confirm";
 
-		[TranslationReference]
+		[FluentReference]
 		const string DeleteAllSavesTitle = "dialog-delete-all-saves.title";
 
-		[TranslationReference("count")]
+		[FluentReference("count")]
 		const string DeleteAllSavesPrompt = "dialog-delete-all-saves.prompt";
 
-		[TranslationReference]
+		[FluentReference]
 		const string DeleteAllSavesAccept = "dialog-delete-all-saves.confirm";
 
-		[TranslationReference("savePath")]
+		[FluentReference("savePath")]
 		const string SaveDeletionFailed = "notification-save-deletion-failed";
 
-		[TranslationReference]
+		[FluentReference]
 		const string OverwriteSaveTitle = "dialog-overwrite-save.title";
 
-		[TranslationReference("file")]
+		[FluentReference("file")]
 		const string OverwriteSavePrompt = "dialog-overwrite-save.prompt";
 
-		[TranslationReference]
-		const string OverwriteSaveAccpet = "dialog-overwrite-save.confirm";
+		[FluentReference]
+		const string OverwriteSaveAccept = "dialog-overwrite-save.confirm";
 
 		readonly Widget panel;
 		readonly ScrollPanelWidget gameList;
@@ -173,7 +173,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: DeleteSaveTitle,
 					text: DeleteSavePrompt,
-					textArguments: Translation.Arguments("save", Path.GetFileNameWithoutExtension(selectedSave)),
+					textArguments: new object[] { "save", Path.GetFileNameWithoutExtension(selectedSave) },
 					onConfirm: () =>
 					{
 						Delete(selectedSave);
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: DeleteAllSavesTitle,
 					text: DeleteAllSavesPrompt,
-					textArguments: Translation.Arguments("count", games.Count),
+					textArguments: new object[] { "count", games.Count },
 					onConfirm: () =>
 					{
 						foreach (var s in games.ToList())
@@ -293,7 +293,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 			catch (Exception ex)
 			{
-				TextNotificationsManager.Debug(TranslationProvider.GetString(SaveDeletionFailed, Translation.Arguments("savePath", savePath)));
+				TextNotificationsManager.Debug(FluentProvider.GetString(SaveDeletionFailed, "savePath", savePath));
 				Log.Write("debug", ex.ToString());
 				return;
 			}
@@ -373,9 +373,9 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				ConfirmationDialogs.ButtonPrompt(modData,
 					title: OverwriteSaveTitle,
 					text: OverwriteSavePrompt,
-					textArguments: Translation.Arguments("file", saveTextField.Text),
+					textArguments: new object[] { "file", saveTextField.Text },
 					onConfirm: Inner,
-					confirmText: OverwriteSaveAccpet,
+					confirmText: OverwriteSaveAccept,
 					onCancel: () => { });
 			}
 			else

@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Speech notification to play when setting a new rallypoint.")]
 		public readonly string Notification = null;
 
-		[TranslationReference(optional: true)]
+		[FluentReference(optional: true)]
 		[Desc("Text notification to display when setting a new rallypoint.")]
 		public readonly string TextNotification = null;
 

@@ -20,10 +20,10 @@ namespace OpenRA.Mods.Common.Commands
 
 	public class PlayerCommands : IChatCommand, IWorldLoaded
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string PauseDescription = "description-pause-description";
 
-		[TranslationReference]
+		[FluentReference]
 		const string SurrenderDescription = "description-surrender-description";
 
 		World world;

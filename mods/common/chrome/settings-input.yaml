@@ -1,288 +1,287 @@
 Container@INPUT_PANEL:
 	Logic: InputSettingsLogic
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
 	Children:
 		ScrollPanel@SETTINGS_SCROLLPANEL:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			CollapseHiddenChildren: True
 			TopBottomSpacing: 5
 			ItemSpacing: 10
 			Children:
 				Background@INPUT_SECTION_HEADER:
 					X: 5
-					Width: PARENT_RIGHT - 24 - 10
+					Width: PARENT_WIDTH - 24 - 10
 					Height: 13
 					Background: separator
 					ClickThrough: True
 					Children:
 						Label@LABEL:
-							Width: PARENT_RIGHT
-							Height: PARENT_BOTTOM
+							Width: PARENT_WIDTH
+							Height: PARENT_HEIGHT
 							Font: TinyBold
 							Align: Center
 							Text: label-input-section-header
 				Container@ROW:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 50
 					Children:
 						Container@MOUSE_CONTROL_CONTAINER:
 							X: 10
-							Width: PARENT_RIGHT / 2 - 20
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Label@MOUSE_CONTROL_LABEL:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Font: Regular
 									Text: label-mouse-control-container
 								DropDownButton@MOUSE_CONTROL_DROPDOWN:
 									Y: 25
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 25
 									Font: Regular
 						Container@ZOOM_MODIFIER_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
-							Width: PARENT_RIGHT / 2 - 20
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Label@ZOOM_MODIFIER_LABEL:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Font: Regular
 									Text: label-zoom-modifier-container
 								DropDownButton@ZOOM_MODIFIER:
 									Y: 25
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 25
 									Font: Regular
 						Container@MOUSE_CONTROL_DESC_CLASSIC:
 							X: 10
 							Y: 55
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Children:
 								LabelWithHighlight@DESC_SELECTION:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-selection
 								LabelWithHighlight@DESC_COMMANDS:
 									Y: 17
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-commands
 								LabelWithHighlight@DESC_BUILDINGS:
 									Y: 34
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-buildings
 								LabelWithHighlight@DESC_SUPPORT:
 									Y: 51
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-support
 								LabelWithHighlight@DESC_ZOOM:
 									Y: 68
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-zoom
 								LabelWithHighlight@DESC_ZOOM_MODIFIER:
 									Y: 68
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-zoom-modifier
 								LabelWithHighlight@DESC_SCROLL_RIGHT:
 									Y: 85
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-scroll-right
 								LabelWithHighlight@DESC_SCROLL_MIDDLE:
 									Y: 85
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-scroll-middle
 								Label@DESC_EDGESCROLL:
 									X: 9
 									Y: 102
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-classic-edgescroll
 						Container@MOUSE_CONTROL_DESC_MODERN:
 							X: 10
 							Y: 55
-							Width: PARENT_RIGHT / 2 - 20
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								LabelWithHighlight@DESC_SELECTION:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-selection
 								LabelWithHighlight@DESC_COMMANDS:
 									Y: 17
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-commands
 								LabelWithHighlight@DESC_BUILDINGS:
 									Y: 34
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-buildings
 								LabelWithHighlight@DESC_SUPPORT:
 									Y: 51
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-support
 								LabelWithHighlight@DESC_ZOOM:
 									Y: 68
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-zoom
 								LabelWithHighlight@DESC_ZOOM_MODIFIER:
 									Y: 68
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-zoom-modifier
 								LabelWithHighlight@DESC_SCROLL_RIGHT:
 									Y: 85
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-scroll-right
 								LabelWithHighlight@DESC_SCROLL_MIDDLE:
 									Y: 85
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-scroll-middle
 								Label@DESC_EDGESCROLL:
 									X: 9
 									Y: 102
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 16
 									Font: Small
 									Text: label-mouse-control-desc-modern-edgescroll
 				Container@ROW:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 20
 					Children:
 						Container@EDGESCROLL_CHECKBOX_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
-							Width: PARENT_RIGHT / 2 - 20
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Checkbox@EDGESCROLL_CHECKBOX:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Font: Regular
 									Text: checkbox-edgescroll-container
 				Container@ROW:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 20
 					Children:
 						Container@ALTERNATE_SCROLL_CHECKBOX_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
-							Width: PARENT_RIGHT / 2 - 20
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Checkbox@ALTERNATE_SCROLL_CHECKBOX:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Font: Regular
 									Text: checkbox-alternate-scroll-container
 				Container@ROW:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 20
 					Children:
 						Container@LOCKMOUSE_CHECKBOX_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
-							Width: PARENT_RIGHT / 2 - 20
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Checkbox@LOCKMOUSE_CHECKBOX:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Font: Regular
 									Text: checkbox-lockmouse-container
 				Container@SPACER:
 					Height: 30
 				Container@ROW:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 50
 					Children:
 						Container@MOUSE_SCROLL_TYPE_CONTAINER:
 							X: 10
-							Width: PARENT_RIGHT / 2 - 20
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Label@MOUSE_SCROLL_TYPE_LABEL:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Font: Regular
 									Text: label-mouse-scroll-type-container
 								DropDownButton@MOUSE_SCROLL_TYPE_DROPDOWN:
 									Y: 25
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 25
 									Font: Regular
 						Container@SCROLLSPEED_SLIDER_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
-							Width: PARENT_RIGHT / 2 - 20
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Label@SCROLL_SPEED_LABEL:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Text: label-scrollspeed-slider-container-scroll-speed
 								Slider@SCROLLSPEED_SLIDER:
 									Y: 25
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Ticks: 7
 									MinimumValue: 10
 									MaximumValue: 50
 				Container@ROW:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 50
 					Children:
 						Container@ZOOMSPEED_SLIDER_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
-							Width: PARENT_RIGHT / 2 - 20
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Label@ZOOM_SPEED_LABEL:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Text: label-zoomspeed-slider-container-zoom-speed
 								ExponentialSlider@ZOOMSPEED_SLIDER:
 									Y: 25
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Ticks: 7
 									MinimumValue: 0.01
 									MaximumValue: 0.4
 				Container@ROW:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 50
 					Children:
 						Container@UI_SCROLLSPEED_SLIDER_CONTAINER:
-							X: PARENT_RIGHT / 2 + 10
-							Width: PARENT_RIGHT / 2 - 20
+							X: PARENT_WIDTH / 2 + 10
+							Width: PARENT_WIDTH / 2 - 20
 							Children:
 								Label@UI_SCROLL_SPEED_LABEL:
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Text: label-ui-scrollspeed-slider-container-scroll-speed
 								Slider@UI_SCROLLSPEED_SLIDER:
 									Y: 25
-									Width: PARENT_RIGHT
+									Width: PARENT_WIDTH
 									Height: 20
 									Ticks: 7
 									MinimumValue: 1
 									MaximumValue: 100
-

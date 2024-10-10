@@ -9,30 +9,65 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Widgets
 {
 	public sealed class EditorActorBrush : IEditorBrush
 	{
+		public EditorActorPreview Preview;
+
 		readonly World world;
 		readonly EditorActorLayer editorLayer;
-		readonly EditorCursorLayer editorCursor;
 		readonly EditorActionManager editorActionManager;
 		readonly EditorViewportControllerWidget editorWidget;
-		readonly int cursorToken;
+		readonly WVec centerOffset;
+		readonly bool sharesCell;
+
+		CPos cell;
+		SubCell subcell = SubCell.Invalid;
 
 		public EditorActorBrush(EditorViewportControllerWidget editorWidget, ActorInfo actor, PlayerReference owner, WorldRenderer wr)
 		{
 			this.editorWidget = editorWidget;
 			world = wr.World;
 			editorLayer = world.WorldActor.Trait<EditorActorLayer>();
-			editorCursor = world.WorldActor.Trait<EditorCursorLayer>();
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
 
-			cursorToken = editorCursor.SetActor(wr, actor, owner);
+			var ios = actor.TraitInfoOrDefault<IOccupySpaceInfo>();
+			centerOffset = (ios as BuildingInfo)?.CenterOffset(world) ?? WVec.Zero;
+			sharesCell = ios != null && ios.SharesCell;
+
+			// Enforce first entry of ValidOwnerNames as owner if the actor has RequiresSpecificOwners.
+			var ownerName = owner.Name;
+			var specificOwnerInfo = actor.TraitInfoOrDefault<RequiresSpecificOwnersInfo>();
+			if (specificOwnerInfo != null && !specificOwnerInfo.ValidOwnerNames.Contains(ownerName))
+				ownerName = specificOwnerInfo.ValidOwnerNames.First();
+
+			var reference = new ActorReference(actor.Name)
+			{
+				new OwnerInit(ownerName),
+				new FactionInit(owner.Faction)
+			};
+
+			var worldPx = wr.Viewport.ViewToWorldPx(Viewport.LastMousePos) - wr.ScreenPxOffset(centerOffset);
+			cell = wr.Viewport.ViewToWorld(wr.Viewport.WorldToViewPx(worldPx));
+			reference.Add(new LocationInit(cell));
+			if (sharesCell)
+			{
+				subcell = editorLayer.FreeSubCellAt(cell);
+				if (subcell != SubCell.Invalid)
+					reference.Add(new SubCellInit(subcell));
+			}
+
+			if (actor.HasTraitInfo<IFacingInfo>())
+				reference.Add(new FacingInit(editorLayer.Info.DefaultActorFacing));
+
+			Preview = new EditorActorPreview(wr, null, reference, owner);
 		}
 
 		public bool HandleMouseInput(MouseInput mi)
@@ -52,36 +87,63 @@ namespace OpenRA.Mods.Common.Widgets
 				return false;
 			}
 
-			if (editorCursor.CurrentToken != cursorToken)
-				return false;
-
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
 				// Check the actor is inside the map
-				var actor = editorCursor.Actor;
-				if (!actor.Footprint.All(c => world.Map.Tiles.Contains(c.Key)))
+				if (!Preview.Footprint.All(c => world.Map.Tiles.Contains(c.Key)))
 					return true;
 
-				var action = new AddActorAction(editorLayer, actor.Export());
+				var action = new AddActorAction(editorLayer, Preview.Export());
 				editorActionManager.Add(action);
 			}
 
 			return true;
 		}
 
+		void IEditorBrush.TickRender(WorldRenderer wr, Actor self)
+		{
+			// Offset mouse position by the center offset (in world pixels)
+			var worldPx = wr.Viewport.ViewToWorldPx(Viewport.LastMousePos) - wr.ScreenPxOffset(centerOffset);
+			var currentCell = wr.Viewport.ViewToWorld(wr.Viewport.WorldToViewPx(worldPx));
+			var currentSubcell = sharesCell ? editorLayer.FreeSubCellAt(currentCell) : SubCell.Invalid;
+			if (cell != currentCell || subcell != currentSubcell)
+			{
+				cell = currentCell;
+				Preview.ReplaceInit(new LocationInit(cell));
+
+				if (sharesCell)
+				{
+					subcell = editorLayer.FreeSubCellAt(cell);
+					if (subcell == SubCell.Invalid)
+						Preview.RemoveInit<SubCellInit>();
+					else
+						Preview.ReplaceInit(new SubCellInit(subcell));
+				}
+
+				Preview.UpdateFromMove();
+			}
+		}
+
+		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr)
+		{
+			return Preview.Render().OrderBy(WorldRenderer.RenderableZPositionComparisonKey);
+		}
+
+		IEnumerable<IRenderable> IEditorBrush.RenderAnnotations(Actor self, WorldRenderer wr)
+		{
+			return Preview.RenderAnnotations();
+		}
+
 		public void Tick() { }
 
-		public void Dispose()
-		{
-			editorCursor.Clear(cursorToken);
-		}
+		public void Dispose() { }
 	}
 
 	sealed class AddActorAction : IEditorAction
 	{
 		public string Text { get; private set; }
 
-		[TranslationReference("name", "id")]
+		[FluentReference("name", "id")]
 		const string AddedActor = "notification-added-actor";
 
 		readonly EditorActorLayer editorLayer;
@@ -105,8 +167,9 @@ namespace OpenRA.Mods.Common.Widgets
 		public void Do()
 		{
 			editorActorPreview = editorLayer.Add(actor);
-			Text = TranslationProvider.GetString(AddedActor,
-				Translation.Arguments("name", editorActorPreview.Info.Name, "id", editorActorPreview.ID));
+			Text = FluentProvider.GetString(AddedActor,
+				"name", editorActorPreview.Info.Name,
+				"id", editorActorPreview.ID);
 		}
 
 		public void Undo()

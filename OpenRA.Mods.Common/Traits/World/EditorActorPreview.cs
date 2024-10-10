@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Common.Traits
 		public readonly ActorInfo Info;
 
 		public string Tooltip =>
-			(tooltip == null ? " < " + Info.Name + " >" : TranslationProvider.GetString(tooltip.Name)) + "\n" + Owner.Name + " (" + Owner.Faction + ")"
+			(tooltip == null ? " < " + Info.Name + " >" : FluentProvider.GetString(tooltip.Name)) + "\n" + Owner.Name + " (" + Owner.Faction + ")"
 			+ "\nID: " + ID + "\nType: " + Info.Name;
 
 		public string Type => reference.Type;

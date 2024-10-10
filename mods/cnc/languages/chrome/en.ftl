@@ -78,7 +78,7 @@ label-marker-alpha = Tile Alpha
 label-marker-mirror-mode = Mirror Mode
 label-marker-axis-angle = Axis Angle
 
-button-map-editor-tab-container-select-tooltip = Select
+button-map-editor-tab-container-select-tooltip = Selection
 button-map-editor-tab-container-tiles-tooltip = Tiles
 button-map-editor-tab-container-overlays-tooltip = Overlays
 button-map-editor-tab-container-actors-tooltip = Actors
@@ -87,11 +87,11 @@ button-map-editor-tab-container-history-tooltip = History
 
 button-editor-world-root-copy =
    .label = Copy
-   .tooltip = Copy
+   .tooltip = Copy the selected area
 
 button-editor-world-root-paste =
    .label = Paste
-   .tooltip = Paste
+   .tooltip = Paste the saved area
 
 button-editor-world-root-undo =
    .label = Undo

@@ -25,12 +25,15 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("Required for the map editor to work. Attach this to the world actor.")]
 	public class EditorActorLayerInfo : TraitInfo, ICreatePlayersInfo
 	{
-		[Desc("Size of partition bins (world pixels)")]
+		[Desc("Size of partition bins (world pixels).")]
 		public readonly int BinSize = 250;
+
+		[Desc("Facing of new actors.")]
+		public readonly WAngle DefaultActorFacing = new(384);
 
 		void ICreatePlayersInfo.CreateServerPlayers(MapPreview map, Session lobbyInfo, List<GameInformation.Player> players, MersenneTwister playerRandom)
 		{
-			throw new NotImplementedException("EditorActorLayer must not be defined on the world actor");
+			throw new NotImplementedException("EditorActorLayer must not be defined on the world actor.");
 		}
 
 		public override object Create(ActorInitializer init) { return new EditorActorLayer(this); }
@@ -38,7 +41,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class EditorActorLayer : IWorldLoaded, ITickRender, IRender, IRadarSignature, ICreatePlayers, IRenderAnnotations
 	{
-		readonly EditorActorLayerInfo info;
+		public readonly EditorActorLayerInfo Info;
 		readonly List<EditorActorPreview> previews = new();
 
 		int2 cellOffset;
@@ -51,7 +54,7 @@ namespace OpenRA.Mods.Common.Traits
 
 		public EditorActorLayer(EditorActorLayerInfo info)
 		{
-			this.info = info;
+			Info = info;
 		}
 
 		void ICreatePlayers.CreatePlayers(World w, MersenneTwister playerRandom)
@@ -79,12 +82,12 @@ namespace OpenRA.Mods.Common.Traits
 			var cellOffsetMax = new int2(world.Map.AllCells.Max(c => c.X), world.Map.AllCells.Max((c) => c.Y));
 			var mapCellSize = cellOffsetMax - cellOffset;
 			cellMap = new SpatiallyPartitioned<EditorActorPreview>(
-				mapCellSize.X, mapCellSize.Y, Exts.IntegerDivisionRoundingAwayFromZero(info.BinSize, world.Map.Grid.TileSize.Width));
+				mapCellSize.X, mapCellSize.Y, Exts.IntegerDivisionRoundingAwayFromZero(Info.BinSize, world.Map.Grid.TileSize.Width));
 
 			var ts = world.Map.Grid.TileSize;
 			var width = world.Map.MapSize.X * ts.Width;
 			var height = world.Map.MapSize.Y * ts.Height;
-			screenMap = new SpatiallyPartitioned<EditorActorPreview>(width, height, info.BinSize);
+			screenMap = new SpatiallyPartitioned<EditorActorPreview>(width, height, Info.BinSize);
 
 			foreach (var kv in world.Map.ActorDefinitions)
 				Add(kv.Key, new ActorReference(kv.Value.Value, kv.Value.ToDictionary()), true);
@@ -189,6 +192,24 @@ namespace OpenRA.Mods.Common.Traits
 
 			if (preview.Info.Name == "mpspawn")
 				SyncMultiplayerCount();
+		}
+
+		public void MoveActor(EditorActorPreview preview, CPos location)
+		{
+			Remove(preview);
+			preview.ReplaceInit(new LocationInit(location));
+			var ios = preview.Info.TraitInfoOrDefault<IOccupySpaceInfo>();
+			if (ios != null && ios.SharesCell)
+			{
+				var actorSubCell = FreeSubCellAt(location);
+				if (actorSubCell == SubCell.Invalid)
+					preview.RemoveInit<SubCellInit>();
+				else
+					preview.ReplaceInit(new SubCellInit(actorSubCell));
+			}
+
+			preview.UpdateFromMove();
+			Add(preview);
 		}
 
 		void SyncMultiplayerCount()

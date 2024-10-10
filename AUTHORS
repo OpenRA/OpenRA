@@ -1,5 +1,4 @@
-OpenRA wouldn't be where it is today without the
-hard work of many contributors.
+OpenRA wouldn't be where it is today without the hard work of many contributors.
 
 The OpenRA developers are:
     * Gustas Kažukauskas (PunkPun)
@@ -163,61 +162,42 @@ Also thanks to:
     * Wojciech Walaszek (Voidwalker)
     * Wuschel
 
-Using GNU FreeFont distributed under the GNU GPL
-terms.
+Using GNU FreeFont distributed under the GNU GPL terms.
 
-Using Simple DirectMedia Layer distributed under
-the terms of the zlib license.
+Using Simple DirectMedia Layer distributed under the terms of the zlib license.
 
-Using FreeType distributed under the terms of the
-FreeType License.
+Using FreeType distributed under the terms of the FreeType License.
 
 Using OpenAL Soft distributed under the GNU LGPL.
 
-Using SDL2-CS and OpenAL-CS created by Ethan
-Lee and released under the zlib license.
+Using SDL2-CS and OpenAL-CS created by Ethan Lee and released under the zlib license.
 
-Using Eluant created by Chris Howie and released
-under the MIT license.
+Using Eluant created by Chris Howie and released under the MIT license.
 
-Using FuzzyLogicLibrary (fuzzynet) by Dmitry
-Kaluzhny and released under the GNU GPL terms.
+Using FuzzyLogicLibrary (fuzzynet) by Dmitry Kaluzhny and released under the GNU GPL terms.
 
-Using Mono.Nat by Alan McGovern, Ben Motmans,
-Nicholas Terry distributed under the MIT license.
+Using Mono.Nat by Alan McGovern, Ben Motmans, Nicholas Terry distributed under the MIT license.
 
-Using MP3Sharp by Robert Bruke and Zane Wagner
-licensed under the GNU LGPL Version 3.
+Using MP3Sharp by Robert Bruke and Zane Wagner licensed under the GNU LGPL Version 3.
 
-Using TagLib# by Stephen Shaw licensed under the
-GNU LGPL Version 2.1.
+Using TagLib# by Stephen Shaw licensed under the GNU LGPL Version 2.1.
 
-Using NVorbis by Andrew Ward distributed under
-the MIT license.
+Using NVorbis by Andrew Ward distributed under the MIT license.
 
-Using ICSharpCode.SharpZipLib initially by Mike
-Krueger and distributed under the GNU GPL terms.
+Using ICSharpCode.SharpZipLib initially by Mike Krueger and distributed under the GNU GPL terms.
 
-Using rix0rrr.BeaconLib developed by Rico Huijbers
-distributed under MIT License.
+Using rix0rrr.BeaconLib developed by Rico Huijbers distributed under MIT License.
 
-Using DiscordRichPresence developed by Lachee
-distributed under MIT License.
+Using DiscordRichPresence developed by Lachee distributed under MIT License.
 
-Using Json.NET developed by James Newton-King
-distributed under MIT License.
+Using Json.NET developed by James Newton-King distributed under MIT License.
 
 Using ANGLE distributed under the BS3 3-Clause license.
 
-Using Pfim developed by Nick Babcock
-distributed under the MIT license.
+Using Pfim developed by Nick Babcock distributed under the MIT license.
 
-Using Linguini by the Space Station 14 team
-licensed under Apache and MIT terms.
+Using Linguini by the Space Station 14 team licensed under Apache and MIT terms.
 
-This site or product includes IP2Location LITE data
-available from https://www.ip2location.com.
+This site or product includes IP2Location LITE data available from https://www.ip2location.com.
 
-Finally, special thanks goes to the original teams
-at Westwood Studios and EA for creating the classic
-games which OpenRA aims to reimagine.
+Finally, special thanks goes to the original teams at Westwood Studios and EA for creating the classic games which OpenRA aims to reimagine.

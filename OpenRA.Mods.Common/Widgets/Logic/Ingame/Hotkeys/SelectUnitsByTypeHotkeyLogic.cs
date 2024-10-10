@@ -29,13 +29,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 		public readonly string ClickSound = ChromeMetrics.Get<string>("ClickSound");
 		public readonly string ClickDisabledSound = ChromeMetrics.Get<string>("ClickDisabledSound");
 
-		[TranslationReference]
+		[FluentReference]
 		const string NothingSelected = "nothing-selected";
 
-		[TranslationReference("units")]
+		[FluentReference("units")]
 		const string SelectedUnitsAcrossScreen = "selected-units-across-screen";
 
-		[TranslationReference("units")]
+		[FluentReference("units")]
 		const string SelectedUnitsAcrossMap = "selected-units-across-map";
 
 		[ObjectCreator.UseCtor]
@@ -79,12 +79,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic.Ingame
 
 			// Check if selecting actors on the screen has selected new units
 			if (newSelection.Count > selection.Actors.Count)
-				TextNotificationsManager.AddFeedbackLine(SelectedUnitsAcrossScreen, Translation.Arguments("units", newSelection.Count));
+				TextNotificationsManager.AddFeedbackLine(SelectedUnitsAcrossScreen, "units", newSelection.Count);
 			else
 			{
 				// Select actors in the world that have the same selection class as one of the already selected actors
 				newSelection = SelectionUtils.SelectActorsInWorld(world, selectedClasses, eligiblePlayers).ToList();
-				TextNotificationsManager.AddFeedbackLine(SelectedUnitsAcrossMap, Translation.Arguments("units", newSelection.Count));
+				TextNotificationsManager.AddFeedbackLine(SelectedUnitsAcrossMap, "units", newSelection.Count);
 			}
 
 			selection.Combine(world, newSelection, true, false);

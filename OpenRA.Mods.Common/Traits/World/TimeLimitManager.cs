@@ -22,11 +22,11 @@ namespace OpenRA.Mods.Common.Traits
 	[Desc("This trait allows setting a time limit on matches. Attach this to the World actor.")]
 	public class TimeLimitManagerInfo : TraitInfo, ILobbyOptions, IRulesetLoaded
 	{
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Label that will be shown for the time limit option in the lobby.")]
 		public readonly string TimeLimitLabel = "dropdown-time-limit.label";
 
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Tooltip description that will be shown for the time limit option in the lobby.")]
 		public readonly string TimeLimitDescription = "dropdown-time-limit.description";
 
@@ -77,10 +77,10 @@ namespace OpenRA.Mods.Common.Traits
 				throw new YamlException("TimeLimitDefault must be a value from TimeLimitOptions");
 		}
 
-		[TranslationReference]
+		[FluentReference]
 		const string NoTimeLimit = "options-time-limit.no-limit";
 
-		[TranslationReference("minutes")]
+		[FluentReference("minutes")]
 		const string TimeLimitOption = "options-time-limit.options";
 
 		IEnumerable<LobbyOption> ILobbyOptions.LobbyOptions(MapPreview map)
@@ -88,9 +88,9 @@ namespace OpenRA.Mods.Common.Traits
 			var timelimits = TimeLimitOptions.ToDictionary(m => m.ToStringInvariant(), m =>
 			{
 				if (m == 0)
-					return TranslationProvider.GetString(NoTimeLimit);
+					return FluentProvider.GetString(NoTimeLimit);
 				else
-					return TranslationProvider.GetString(TimeLimitOption, Translation.Arguments("minutes", m));
+					return FluentProvider.GetString(TimeLimitOption, "minutes", m);
 			});
 
 			yield return new LobbyOption(map, "timelimit", TimeLimitLabel, TimeLimitDescription, TimeLimitDropdownVisible, TimeLimitDisplayOrder,
@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits
 
 	public class TimeLimitManager : INotifyTimeLimit, ITick, IWorldLoaded
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string TimeLimitExpired = "notification-time-limit-expired";
 
 		readonly TimeLimitManagerInfo info;
@@ -182,7 +182,7 @@ namespace OpenRA.Mods.Common.Traits
 				countdownLabel.GetText = () => null;
 
 			if (!info.SkipTimerExpiredNotification)
-				TextNotificationsManager.AddSystemLine(TranslationProvider.GetString(TimeLimitExpired));
+				TextNotificationsManager.AddSystemLine(FluentProvider.GetString(TimeLimitExpired));
 		}
 	}
 }

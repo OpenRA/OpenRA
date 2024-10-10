@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.EditorBrushes;
+using OpenRA.Mods.Common.Graphics;
 using OpenRA.Mods.Common.Traits;
 
 namespace OpenRA.Mods.Common.Widgets
@@ -94,19 +95,28 @@ namespace OpenRA.Mods.Common.Widgets
 			return false;
 		}
 
+		void IEditorBrush.TickRender(WorldRenderer wr, Actor self) { }
+		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr) { yield break; }
+		IEnumerable<IRenderable> IEditorBrush.RenderAnnotations(Actor self, WorldRenderer wr)
+		{
+			if (PastePreviewPosition != null)
+			{
+				yield return new EditorSelectionAnnotationRenderable(Region, editorWidget.SelectionAltColor, editorWidget.SelectionAltOffset, PastePreviewPosition);
+				yield return new EditorSelectionAnnotationRenderable(Region, editorWidget.PasteColor, int2.Zero, PastePreviewPosition);
+			}
+		}
+
 		public void Tick()
 		{
 			PastePreviewPosition = worldRenderer.Viewport.ViewToWorld(Viewport.LastMousePos);
 		}
 
-		public void Dispose()
-		{
-		}
+		public void Dispose() { }
 	}
 
 	sealed class CopyPasteEditorAction : IEditorAction
 	{
-		[TranslationReference("amount")]
+		[FluentReference("amount")]
 		const string CopiedTiles = "notification-copied-tiles";
 
 		public string Text { get; }
@@ -136,7 +146,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 			undoClipboard = CopySelectionContents();
 
-			Text = TranslationProvider.GetString(CopiedTiles, Translation.Arguments("amount", clipboard.Tiles.Count));
+			Text = FluentProvider.GetString(CopiedTiles, "amount", clipboard.Tiles.Count);
 		}
 
 		/// <summary>

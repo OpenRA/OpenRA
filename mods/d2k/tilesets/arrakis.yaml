@@ -4629,7 +4629,7 @@ Templates:
 	Template@617:
 		Id: 617
 		Images: customtiles.r16
-		Frames:  371, 372, 391, 392
+		Frames: 371, 372, 391, 392
 		Size: 2,2
 		Categories: Rock-Rock-Cliff
 		Tiles:
@@ -4993,7 +4993,7 @@ Templates:
 	Template@808:
 		Id: 808
 		Images: customtiles.r16
-		Frames:  76, 77, 96, 97
+		Frames: 76, 77, 96, 97
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -5070,7 +5070,7 @@ Templates:
 	Template@815:
 		Id: 815
 		Images: customtiles.r16
-		Frames:  110, 111, 130, 131
+		Frames: 110, 111, 130, 131
 		Size: 2,2
 		Categories: Rock-Sand-Cliff
 		Tiles:
@@ -6620,7 +6620,7 @@ Templates:
 			1: Cliff
 			2: Cliff
 			3: Cliff
-	Template@1130
+	Template@1130:
 		Id: 1130
 		Images: customtiles.r16
 		Frames: 20, 21, 40, 41
@@ -6631,7 +6631,7 @@ Templates:
 			1: Rock
 			2: Cliff
 			3: Rock
-	Template@1131
+	Template@1131:
 		Id: 1131
 		Images: customtiles.r16
 		Frames: 22, 23, 42, 43
@@ -6642,7 +6642,7 @@ Templates:
 			1: Cliff
 			2: Rock
 			3: Cliff
-	Template@1132
+	Template@1132:
 		Id: 1132
 		Images: customtiles.r16
 		Frames: 24
@@ -6650,7 +6650,7 @@ Templates:
 		Categories: Sand-Platform
 		Tiles:
 			0: Rock
-	Template@1133
+	Template@1133:
 		Id: 1133
 		Images: customtiles.r16
 		Frames: 25
@@ -6658,7 +6658,7 @@ Templates:
 		Categories: Sand-Platform
 		Tiles:
 			0: Rock
-	Template@1134
+	Template@1134:
 		Id: 1134
 		Images: customtiles.r16
 		Frames: 44
@@ -6666,7 +6666,7 @@ Templates:
 		Categories: Sand-Platform
 		Tiles:
 			0: Rock
-	Template@1135
+	Template@1135:
 		Id: 1135
 		Images: customtiles.r16
 		Frames: 45
@@ -6674,7 +6674,7 @@ Templates:
 		Categories: Sand-Platform
 		Tiles:
 			0: Rock
-	Template@1136
+	Template@1136:
 		Id: 1136
 		Images: customtiles.r16
 		Frames: 26
@@ -6682,7 +6682,7 @@ Templates:
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
-	Template@1137
+	Template@1137:
 		Id: 1137
 		Images: customtiles.r16
 		Frames: 27
@@ -6690,7 +6690,7 @@ Templates:
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
-	Template@1138
+	Template@1138:
 		Id: 1138
 		Images: customtiles.r16
 		Frames: 46
@@ -6698,7 +6698,7 @@ Templates:
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
-	Template@1139
+	Template@1139:
 		Id: 1139
 		Images: customtiles.r16
 		Frames: 47
@@ -6706,7 +6706,7 @@ Templates:
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
-	Template@1140
+	Template@1140:
 		Id: 1140
 		Images: customtiles.r16
 		Frames: 28
@@ -6714,7 +6714,7 @@ Templates:
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
-	Template@1141
+	Template@1141:
 		Id: 1141
 		Images: customtiles.r16
 		Frames: 29
@@ -6722,7 +6722,7 @@ Templates:
 		Categories: Sand-Platform
 		Tiles:
 			0: Cliff
-	Template@1142
+	Template@1142:
 		Id: 1142
 		Images: customtiles.r16
 		Frames: 39

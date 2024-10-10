@@ -22,12 +22,12 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("Internal id for this checkbox.")]
 		public readonly string ID = null;
 
-		[TranslationReference]
+		[FluentReference]
 		[FieldLoader.Require]
 		[Desc("Display name for this checkbox.")]
 		public readonly string Label = null;
 
-		[TranslationReference]
+		[FluentReference]
 		[Desc("Description name for this checkbox.")]
 		public readonly string Description = null;
 

@@ -10,6 +10,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Mods.Common.Traits;
 
@@ -23,12 +24,14 @@ namespace OpenRA.Mods.Common.Widgets
 		readonly World world;
 		readonly EditorViewportControllerWidget editorWidget;
 		readonly EditorActionManager editorActionManager;
-		readonly EditorCursorLayer editorCursor;
 		readonly IResourceLayer resourceLayer;
-		readonly int cursorToken;
 
 		AddResourcesEditorAction action;
 		bool resourceAdded;
+
+		CPos cell;
+		readonly List<IRenderable> preview = new();
+		readonly IResourceRenderer[] resourceRenderers;
 
 		public EditorResourceBrush(EditorViewportControllerWidget editorWidget, string resourceType, WorldRenderer wr)
 		{
@@ -37,11 +40,13 @@ namespace OpenRA.Mods.Common.Widgets
 			worldRenderer = wr;
 			world = wr.World;
 			editorActionManager = world.WorldActor.Trait<EditorActionManager>();
-			editorCursor = world.WorldActor.Trait<EditorCursorLayer>();
 			resourceLayer = world.WorldActor.Trait<IResourceLayer>();
-			action = new AddResourcesEditorAction(resourceType, resourceLayer);
 
-			cursorToken = editorCursor.SetResource(wr, resourceType);
+			resourceRenderers = world.WorldActor.TraitsImplementing<IResourceRenderer>().ToArray();
+			cell = wr.Viewport.ViewToWorld(wr.Viewport.WorldToViewPx(Viewport.LastMousePos));
+			UpdatePreview();
+
+			action = new AddResourcesEditorAction(resourceType, resourceLayer);
 		}
 
 		public bool HandleMouseInput(MouseInput mi)
@@ -61,9 +66,6 @@ namespace OpenRA.Mods.Common.Widgets
 				return false;
 			}
 
-			if (editorCursor.CurrentToken != cursorToken)
-				return false;
-
 			var cell = worldRenderer.Viewport.ViewToWorld(mi.Location);
 
 			if (mi.Button == MouseButton.Left && mi.Event != MouseInputEvent.Up && resourceLayer.CanAddResource(ResourceType, cell))
@@ -81,12 +83,30 @@ namespace OpenRA.Mods.Common.Widgets
 			return true;
 		}
 
+		void UpdatePreview()
+		{
+			var pos = world.Map.CenterOfCell(cell);
+
+			preview.Clear();
+			preview.AddRange(resourceRenderers.SelectMany(r => r.RenderPreview(worldRenderer, ResourceType, pos)));
+		}
+
+		void IEditorBrush.TickRender(WorldRenderer wr, Actor self)
+		{
+			var currentCell = wr.Viewport.ViewToWorld(Viewport.LastMousePos);
+			if (cell != currentCell)
+			{
+				cell = currentCell;
+				UpdatePreview();
+			}
+		}
+
+		IEnumerable<IRenderable> IEditorBrush.RenderAboveShroud(Actor self, WorldRenderer wr) { return preview; }
+		IEnumerable<IRenderable> IEditorBrush.RenderAnnotations(Actor self, WorldRenderer wr) { yield break; }
+
 		public void Tick() { }
 
-		public void Dispose()
-		{
-			editorCursor.Clear(cursorToken);
-		}
+		public void Dispose() { }
 	}
 
 	readonly struct CellResource
@@ -105,7 +125,7 @@ namespace OpenRA.Mods.Common.Widgets
 
 	sealed class AddResourcesEditorAction : IEditorAction
 	{
-		[TranslationReference("amount", "type")]
+		[FluentReference("amount", "type")]
 		const string AddedResource = "notification-added-resource";
 
 		public string Text { get; private set; }
@@ -148,7 +168,7 @@ namespace OpenRA.Mods.Common.Widgets
 			resourceLayer.ClearResources(resourceCell.Cell);
 			resourceLayer.AddResource(resourceCell.NewResourceType, resourceCell.Cell, resourceLayer.GetMaxDensity(resourceCell.NewResourceType));
 			cellResources.Add(resourceCell);
-			Text = TranslationProvider.GetString(AddedResource, Translation.Arguments("amount", cellResources.Count, "type", resourceType));
+			Text = FluentProvider.GetString(AddedResource, "amount", cellResources.Count, "type", resourceType);
 		}
 	}
 }

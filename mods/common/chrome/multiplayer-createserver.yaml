@@ -1,13 +1,13 @@
 Background@MULTIPLAYER_CREATESERVER_PANEL:
 	Logic: ServerCreationLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 530
 	Height: 315
 	Children:
 		Label@TITLE:
 			Y: 16
-			Width: PARENT_RIGHT
+			Width: PARENT_WIDTH
 			Height: 25
 			Text: label-multiplayer-createserver-panel-title
 			Align: Center
@@ -86,8 +86,8 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 		Container@NOTICES_LAN:
 			X: 25
 			Y: 176
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Children:
 				Label@ADVERTISING:
 					Width: 305
@@ -120,8 +120,8 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 		Container@NOTICES_NO_UPNP:
 			X: 25
 			Y: 176
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Children:
 				Label@ADVERTISING:
 					Width: 305
@@ -169,8 +169,8 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 		Container@NOTICES_UPNP:
 			X: 25
 			Y: 176
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Children:
 				Label@ADVERTISING:
 					Width: 305
@@ -200,20 +200,20 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 					Align: Left
 					Text: label-notices-upnp-settings-a
 		Container@MAP_PREVIEW_ROOT:
-			X: PARENT_RIGHT - 194
+			X: PARENT_WIDTH - 194
 			Y: 45
 			Width: 174
 			Height: 250
 		Button@MAP_BUTTON:
 			X: 20
-			Y: PARENT_BOTTOM - 45
+			Y: PARENT_HEIGHT - 45
 			Width: 120
 			Height: 25
 			Text: button-multiplayer-createserver-panel-change-map
 			Font: Bold
 		Button@BACK_BUTTON:
-			X: PARENT_RIGHT - WIDTH - 20
-			Y: PARENT_BOTTOM - 45
+			X: PARENT_WIDTH - WIDTH - 20
+			Y: PARENT_HEIGHT - 45
 			Width: 120
 			Height: 25
 			Text: button-back
@@ -221,11 +221,10 @@ Background@MULTIPLAYER_CREATESERVER_PANEL:
 			Key: escape
 		Button@CREATE_BUTTON:
 			Key: return
-			X: PARENT_RIGHT - 2 * WIDTH - 30
-			Y: PARENT_BOTTOM - 45
+			X: PARENT_WIDTH - 2 * WIDTH - 30
+			Y: PARENT_HEIGHT - 45
 			Width: 120
 			Height: 25
 			Text: button-multiplayer-createserver-panel-create
 			Font: Bold
 		TooltipContainer@TOOLTIP_CONTAINER:
-

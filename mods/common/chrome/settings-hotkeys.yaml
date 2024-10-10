@@ -23,8 +23,8 @@ Container@HOTKEYS_PANEL:
 				Types: ControlGroups
 			Editor Commands:
 				Types: Editor
-	Width: PARENT_RIGHT
-	Height: PARENT_BOTTOM
+	Width: PARENT_WIDTH
+	Height: PARENT_HEIGHT
 	Children:
 		Label@FILTER_INPUT_LABEL:
 			Width: 103
@@ -36,72 +36,72 @@ Container@HOTKEYS_PANEL:
 			Width: 180
 			Height: 25
 		Label@CONTEXT_DROPDOWN_LABEL:
-			X: PARENT_RIGHT - WIDTH - 195 - 5
+			X: PARENT_WIDTH - WIDTH - 195 - 5
 			Width: 100
 			Height: 25
 			Font: Bold
 			Text: label-hotkeys-panel-context-dropdown
 			Align: Right
 		DropDownButton@CONTEXT_DROPDOWN:
-			X: PARENT_RIGHT - WIDTH
+			X: PARENT_WIDTH - WIDTH
 			Width: 195
 			Height: 25
 			Font: Bold
 		ScrollPanel@HOTKEY_LIST:
 			Y: 35
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM - 65 - 35
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT - 65 - 35
 			TopBottomSpacing: 5
 			ItemSpacing: 5
 			Children:
 				Container@HEADER:
-					Width: PARENT_RIGHT - 24 - 10
+					Width: PARENT_WIDTH - 24 - 10
 					Height: 18
 					Children:
 						Background@BACKGROUND:
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 13
 							Background: separator
 							ClickThrough: True
 						Label@LABEL:
-							Width: PARENT_RIGHT
+							Width: PARENT_WIDTH
 							Height: 13
 							Font: TinyBold
 							Align: Center
 				Container@TEMPLATE:
-					Width: (PARENT_RIGHT - 24) / 2 - 10
+					Width: (PARENT_WIDTH - 24) / 2 - 10
 					Height: 30
 					Visible: false
 					Children:
 						Label@FUNCTION:
 							Y: 0 - 1
-							Width: PARENT_RIGHT - 120 - 5
+							Width: PARENT_WIDTH - 120 - 5
 							Height: 25
 							Align: Right
 						Button@HOTKEY:
-							X: PARENT_RIGHT - WIDTH
+							X: PARENT_WIDTH - WIDTH
 							Width: 120
 							Height: 25
 							TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 		Container@HOTKEY_EMPTY_LIST:
-			Width: PARENT_RIGHT
-			Height: PARENT_BOTTOM
+			Width: PARENT_WIDTH
+			Height: PARENT_HEIGHT
 			Visible: false
 			Children:
 				Label@HOTKEY_EMPTY_LIST_MESSAGE:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
 					Align: Center
 					Text: label-hotkey-empty-list-message
 		Background@HOTKEY_REMAP_BGND:
-			Y: PARENT_BOTTOM - HEIGHT
-			Width: PARENT_RIGHT
+			Y: PARENT_HEIGHT - HEIGHT
+			Width: PARENT_WIDTH
 			Height: 65
 			Background: dialog3
 			Children:
 				Container@HOTKEY_REMAP_DIALOG:
-					Width: PARENT_RIGHT
-					Height: PARENT_BOTTOM
+					Width: PARENT_WIDTH
+					Height: PARENT_HEIGHT
 					Children:
 						Label@HOTKEY_LABEL:
 							X: 15
@@ -122,27 +122,27 @@ Container@HOTKEYS_PANEL:
 							Height: 25
 							Children:
 								Label@ORIGINAL_NOTICE:
-									Width: PARENT_RIGHT
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
 									Font: Tiny
 								Label@DUPLICATE_NOTICE:
-									Width: PARENT_RIGHT
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
 									Font: Tiny
 								Label@READONLY_NOTICE:
-									Width: PARENT_RIGHT
-									Height: PARENT_BOTTOM
+									Width: PARENT_WIDTH
+									Height: PARENT_HEIGHT
 									Font: Tiny
 									Text: label-notices-readonly-notice
 						Button@OVERRIDE_HOTKEY_BUTTON:
-							X: PARENT_RIGHT - 3 * WIDTH - 30
+							X: PARENT_WIDTH - 3 * WIDTH - 30
 							Y: 20
 							Width: 70
 							Height: 25
 							Text: button-hotkey-remap-dialog-override
 							Font: Bold
 						Button@CLEAR_HOTKEY_BUTTON:
-							X: PARENT_RIGHT - 2 * WIDTH - 30
+							X: PARENT_WIDTH - 2 * WIDTH - 30
 							Y: 20
 							Width: 65
 							Height: 25
@@ -152,7 +152,7 @@ Container@HOTKEYS_PANEL:
 							TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 						Button@RESET_HOTKEY_BUTTON:
-							X: PARENT_RIGHT - WIDTH - 20
+							X: PARENT_WIDTH - WIDTH - 20
 							Y: 20
 							Width: 65
 							Height: 25
@@ -161,4 +161,3 @@ Container@HOTKEYS_PANEL:
 							TooltipText: button-hotkey-remap-dialog-reset.tooltip
 							TooltipContainer: SETTINGS_TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
-

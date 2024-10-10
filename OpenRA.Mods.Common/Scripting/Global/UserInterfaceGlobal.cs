@@ -34,9 +34,9 @@ namespace OpenRA.Mods.Common.Scripting.Global
 			luaLabel.GetColor = () => c;
 		}
 
-		[Desc("Translates text into the users language. The translation key must be added to the language files (*.ftl). " +
+		[Desc("Formats a language string for a given string key defined in the language files (*.ftl). " +
 			"Args can be passed to be substituted into the resulting message.")]
-		public string Translate(string translationKey, [ScriptEmmyTypeOverride("{ string: any }")] LuaTable args = null)
+		public string Translate(string key, [ScriptEmmyTypeOverride("{ string: any }")] LuaTable args = null)
 		{
 			if (args != null)
 			{
@@ -48,17 +48,17 @@ namespace OpenRA.Mods.Common.Scripting.Global
 					{
 						if (!kv.Key.TryGetClrValue<string>(out var variable) || !kv.Value.TryGetClrValue<object>(out var value))
 							throw new LuaException(
-								"Translation arguments requires a table of [\"string\"]=value pairs. " +
+								"String arguments requires a table of [\"string\"]=value pairs. " +
 								$"Received {kv.Key.WrappedClrType().Name},{kv.Value.WrappedClrType().Name}");
 
 						argumentDictionary.Add(variable, value);
 					}
 				}
 
-				return TranslationProvider.GetString(translationKey, argumentDictionary);
+				return FluentProvider.GetString(key, argumentDictionary);
 			}
 
-			return TranslationProvider.GetString(translationKey);
+			return FluentProvider.GetString(key);
 		}
 	}
 }

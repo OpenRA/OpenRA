@@ -41,7 +41,7 @@ spicebloom:
 		Name: actor-spicebloom-name
 	SpiceBloom:
 		Weapon: SpiceExplosion
-	Explodes:
+	FireWarheadsOnDeath:
 		Weapon: BloomExplosion
 		EmptyWeapon: BloomExplosion
 	Crushable:

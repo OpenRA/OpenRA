@@ -19,18 +19,24 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Common.Traits
 {
+	[Desc("Support power that spawns and delivers units to the desired location via aircraft.")]
 	public class ParatroopersPowerInfo : DirectionalSupportPowerInfo
 	{
 		[ActorReference(typeof(AircraftInfo))]
+		[Desc("Aircraft used to deliver the drop.")]
 		public readonly string UnitType = "badr";
+
+		[Desc("Number of aircraft to use in the formation.")]
 		public readonly int SquadSize = 1;
+
+		[Desc("Distance between the aircraft in a formation.")]
 		public readonly WVec SquadOffset = new(-1536, 1536, 0);
 
 		[NotificationReference("Speech")]
 		[Desc("Speech notification to play when entering the drop zone.")]
 		public readonly string ReinforcementsArrivedSpeechNotification = null;
 
-		[TranslationReference(optional: true)]
+		[FluentReference(optional: true)]
 		[Desc("Text notification to display when entering the drop zone.")]
 		public readonly string ReinforcementsArrivedTextNotification = null;
 

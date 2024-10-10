@@ -22,14 +22,14 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MapMarkerTilesLogic : ChromeLogic
 	{
-		[TranslationReference]
-		const string MarkerMirrorModeNoneTranslation = "mirror-mode.none";
+		[FluentReference]
+		const string MarkerMirrorModeNone = "mirror-mode.none";
 
-		[TranslationReference]
-		const string MarkerMirrorModeFlipTranslation = "mirror-mode.flip";
+		[FluentReference]
+		const string MarkerMirrorModeFlip = "mirror-mode.flip";
 
-		[TranslationReference]
-		const string MarkerMirrorModeRotateTranslation = "mirror-mode.rotate";
+		[FluentReference]
+		const string MarkerMirrorModeRotate = "mirror-mode.rotate";
 
 		readonly EditorActionManager editorActionManager;
 		readonly MarkerLayerOverlay markerLayerTrait;
@@ -96,15 +96,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 				ScrollItemWidget SetupEraseItem(ScrollItemWidget template)
 				{
-					var item = ScrollItemWidget.Setup(template,
-						() => markerTile == null && editor.CurrentBrush != null && editor.CurrentBrush is EditorMarkerLayerBrush,
+					return ScrollItemWidget.Setup(template,
+						() => markerTile == null && editor.CurrentBrush is EditorMarkerLayerBrush,
 						() =>
 						{
 							markerTile = null;
 							editor.SetBrush(new EditorMarkerLayerBrush(editor, null, worldRenderer));
 						});
-
-					return item;
 				}
 			}
 
@@ -132,13 +130,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				switch (markerLayerTrait.MirrorMode)
 				{
 					case MarkerTileMirrorMode.None:
-						return TranslationProvider.GetString(MarkerMirrorModeNoneTranslation);
+						return FluentProvider.GetString(MarkerMirrorModeNone);
 					case MarkerTileMirrorMode.Flip:
-						return TranslationProvider.GetString(MarkerMirrorModeFlipTranslation);
+						return FluentProvider.GetString(MarkerMirrorModeFlip);
 					case MarkerTileMirrorMode.Rotate:
-						return TranslationProvider.GetString(MarkerMirrorModeRotateTranslation);
+						return FluentProvider.GetString(MarkerMirrorModeRotate);
 					default:
-						throw new ArgumentException($"Couldn't find translation for marker tile mirror mode '{markerLayerTrait.MirrorMode}'");
+						throw new ArgumentException($"Couldn't find fluent string for marker tile mirror mode '{markerLayerTrait.MirrorMode}'");
 				}
 			};
 
@@ -223,13 +221,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					switch (mode)
 					{
 						case MarkerTileMirrorMode.None:
-							return TranslationProvider.GetString(MarkerMirrorModeNoneTranslation);
+							return FluentProvider.GetString(MarkerMirrorModeNone);
 						case MarkerTileMirrorMode.Flip:
-							return TranslationProvider.GetString(MarkerMirrorModeFlipTranslation);
+							return FluentProvider.GetString(MarkerMirrorModeFlip);
 						case MarkerTileMirrorMode.Rotate:
-							return TranslationProvider.GetString(MarkerMirrorModeRotateTranslation);
+							return FluentProvider.GetString(MarkerMirrorModeRotate);
 						default:
-							throw new ArgumentException($"Couldn't find translation for marker tile mirror mode '{mode}'");
+							throw new ArgumentException($"Couldn't find fluent string for marker tile mirror mode '{mode}'");
 					}
 				};
 

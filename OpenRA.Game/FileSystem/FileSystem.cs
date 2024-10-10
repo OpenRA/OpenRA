@@ -181,12 +181,8 @@ namespace OpenRA.FileSystem
 			fileIndex = new Cache<string, List<IReadOnlyPackage>>(_ => new List<IReadOnlyPackage>());
 		}
 
-		public void LoadFromManifest(Manifest manifest)
+		public void TrimExcess()
 		{
-			UnmountAll();
-			foreach (var kv in manifest.Packages)
-				Mount(kv.Key, kv.Value);
-
 			mountedPackages.TrimExcess();
 			explicitMounts.TrimExcess();
 			modPackages.TrimExcess();
@@ -275,40 +271,6 @@ namespace OpenRA.FileSystem
 		public bool IsExternalFile(string filename)
 		{
 			return !filename.StartsWith($"{modID}|", StringComparison.Ordinal);
-		}
-
-		/// <summary>
-		/// Resolves a filesystem for an assembly, accounting for explicit and mod mounts.
-		/// Assemblies must exist in the native OS file system (not inside an OpenRA-defined package).
-		/// </summary>
-		public static string ResolveAssemblyPath(string path, Manifest manifest, InstalledMods installedMods)
-		{
-			var explicitSplit = path.IndexOf('|');
-			if (explicitSplit > 0 && !path.StartsWith('^'))
-			{
-				var parent = path[..explicitSplit];
-				var filename = path[(explicitSplit + 1)..];
-
-				var parentPath = manifest.Packages.FirstOrDefault(kv => kv.Value == parent).Key;
-				if (parentPath == null)
-					return null;
-
-				if (parentPath.StartsWith('$'))
-				{
-					if (!installedMods.TryGetValue(parentPath[1..], out var mod))
-						return null;
-
-					if (mod.Package is not Folder)
-						return null;
-
-					path = Path.Combine(mod.Package.Name, filename);
-				}
-				else
-					path = Path.Combine(parentPath, filename);
-			}
-
-			var resolvedPath = Platform.ResolvePath(path);
-			return File.Exists(resolvedPath) ? resolvedPath : null;
 		}
 
 		public static string ResolveCaseInsensitivePath(string path)

@@ -1,0 +1,32 @@
+FireballLauncher:
+	Range: 4c0
+	Burst: 1
+	Projectile: Bullet
+		Speed: 175
+		TrailImage: fb2
+		Image: FB1
+
+^MG:
+	Warhead@1Dam: SpreadDamage
+		Spread: 108
+		Falloff: 100, 50, 25, 12, 6, 3, 0
+		Damage: 1500
+		Versus:
+			None: 100
+			Wood: 60
+			Light: 40
+			Heavy: 25
+			Concrete: 1
+
+Grenade:
+	Warhead@1Dam: SpreadDamage
+		Spread: 256
+		Damage: 6000
+		Versus:
+			None: 60
+			Wood: 100
+			Light: 25
+			Heavy: 25
+			Concrete: 10
+
+# Changes to Rifle and Grenade damage are so flame towers won't be killed by infantry in this mission.

@@ -20,22 +20,22 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 {
 	public class MapPreviewLogic : ChromeLogic
 	{
-		[TranslationReference]
+		[FluentReference]
 		const string Connecting = "label-connecting";
 
-		[TranslationReference("size")]
+		[FluentReference("size")]
 		const string Downloading = "label-downloading-map";
 
-		[TranslationReference("size", "progress")]
+		[FluentReference("size", "progress")]
 		const string DownloadingPercentage = "label-downloading-map-progress";
 
-		[TranslationReference]
+		[FluentReference]
 		const string RetryInstall = "button-retry-install";
 
-		[TranslationReference]
+		[FluentReference]
 		const string RetrySearch = "button-retry-search";
 
-		[TranslationReference("author")]
+		[FluentReference("author")]
 		const string CreatedBy = "label-created-by";
 
 		readonly int blinkTickLength = 10;
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			}
 
 			var authorCache = new CachedTransform<string, string>(
-				text => TranslationProvider.GetString(CreatedBy, Translation.Arguments("author", text)));
+				text => FluentProvider.GetString(CreatedBy, "author", text));
 
 			Widget SetupAuthorAndMapType(Widget parent)
 			{
@@ -165,13 +165,13 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 				{
 					var (map, _) = getMap();
 					if (map.DownloadBytes == 0)
-						return TranslationProvider.GetString(Connecting);
+						return FluentProvider.GetString(Connecting);
 
 					// Server does not provide the total file length.
 					if (map.DownloadPercentage == 0)
-						return TranslationProvider.GetString(Downloading, Translation.Arguments("size", map.DownloadBytes / 1024));
+						return FluentProvider.GetString(Downloading, "size", map.DownloadBytes / 1024);
 
-					return TranslationProvider.GetString(DownloadingPercentage, Translation.Arguments("size", map.DownloadBytes / 1024, "progress", map.DownloadPercentage));
+					return FluentProvider.GetString(DownloadingPercentage, "size", map.DownloadBytes / 1024, "progress", map.DownloadPercentage);
 				};
 
 				return parent;
@@ -198,8 +198,8 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					modData.MapCache.QueryRemoteMapDetails(mapRepository, new[] { map.Uid });
 			};
 
-			var retryInstall = TranslationProvider.GetString(RetryInstall);
-			var retrySearch = TranslationProvider.GetString(RetrySearch);
+			var retryInstall = FluentProvider.GetString(RetryInstall);
+			var retrySearch = FluentProvider.GetString(RetrySearch);
 			retryButton.GetText = () => getMap().Map.Status == MapStatus.DownloadError ? retryInstall : retrySearch;
 
 			var previewLarge = SetupMapPreview(widget.Get("MAP_LARGE"));

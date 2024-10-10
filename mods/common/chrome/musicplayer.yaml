@@ -1,7 +1,7 @@
 Background@MUSIC_PANEL:
 	Logic: MusicPlayerLogic
-	X: (WINDOW_RIGHT - WIDTH) / 2
-	Y: (WINDOW_BOTTOM - HEIGHT) / 2
+	X: (WINDOW_WIDTH - WIDTH) / 2
+	Y: (WINDOW_HEIGHT - HEIGHT) / 2
 	Width: 410
 	Height: 500
 	Children:
@@ -9,11 +9,11 @@ Background@MUSIC_PANEL:
 		ScrollPanel@MUSIC_LIST:
 			X: 20
 			Y: 45
-			Width: PARENT_RIGHT - 40
-			Height: PARENT_BOTTOM - 175
+			Width: PARENT_WIDTH - 40
+			Height: PARENT_HEIGHT - 175
 			Children:
 				ScrollItem@MUSIC_TEMPLATE:
-					Width: PARENT_RIGHT - 27
+					Width: PARENT_WIDTH - 27
 					Height: 25
 					X: 2
 					Y: 0
@@ -22,19 +22,19 @@ Background@MUSIC_PANEL:
 					Children:
 						LabelWithTooltip@TITLE:
 							X: 10
-							Width: PARENT_RIGHT - 50
+							Width: PARENT_WIDTH - 50
 							Height: 25
 							TooltipContainer: MUSIC_TOOLTIP_CONTAINER
 							TooltipTemplate: SIMPLE_TOOLTIP
 						Label@LENGTH:
 							Width: 50
-							X: PARENT_RIGHT - 60
+							X: PARENT_WIDTH - 60
 							Align: Right
 							Height: 25
 		Container@LABEL_CONTAINER:
 			X: 20
 			Y: 16
-			Width: PARENT_RIGHT - 40
+			Width: PARENT_WIDTH - 40
 			Children:
 				Label@TITLE:
 					Width: 100
@@ -43,7 +43,7 @@ Background@MUSIC_PANEL:
 					Align: Center
 					Font: Bold
 				Label@TYPE:
-					X: PARENT_RIGHT - WIDTH
+					X: PARENT_WIDTH - WIDTH
 					Height: 25
 					Width: 95
 					Text: label-music-controls-length
@@ -51,8 +51,8 @@ Background@MUSIC_PANEL:
 					Font: Bold
 		Container@BUTTONS:
 			X: 20
-			Y: PARENT_BOTTOM - HEIGHT - 85
-			Width: PARENT_RIGHT - 40
+			Y: PARENT_HEIGHT - HEIGHT - 85
+			Width: PARENT_WIDTH - 40
 			Children:
 				Button@BUTTON_PREV:
 					Width: 26
@@ -110,58 +110,58 @@ Background@MUSIC_PANEL:
 							ImageCollection: music
 							ImageName: next
 				ExponentialSlider@MUSIC_SLIDER:
-					X: PARENT_RIGHT - WIDTH
+					X: PARENT_WIDTH - WIDTH
 					Y: 3
-					Width: PARENT_RIGHT - 145
+					Width: PARENT_WIDTH - 145
 					Height: 20
 					Ticks: 7
 		Label@TIME_LABEL:
-			X: (PARENT_RIGHT - WIDTH) / 2
-			Y: PARENT_BOTTOM - HEIGHT - 95 - 3
+			X: (PARENT_WIDTH - WIDTH) / 2
+			Y: PARENT_HEIGHT - HEIGHT - 95 - 3
 			Width: 140
 			Height: 25
 			Align: Center
 			Font: Bold
 		Checkbox@SHUFFLE:
 			X: 20
-			Y: PARENT_BOTTOM - HEIGHT - 95
+			Y: PARENT_HEIGHT - HEIGHT - 95
 			Width: 85
 			Height: 20
 			Text: checkbox-music-controls-shuffle
 		Checkbox@REPEAT:
-			X: PARENT_RIGHT - 15 - WIDTH
-			Y: PARENT_BOTTOM - HEIGHT - 95
+			X: PARENT_WIDTH - 15 - WIDTH
+			Y: PARENT_HEIGHT - HEIGHT - 95
 			Width: 70
 			Height: 20
 			Text: checkbox-music-controls-loop
 		Container@NO_MUSIC_LABEL:
 			X: 20
-			Y: (PARENT_BOTTOM - HEIGHT - 95) / 2
-			Width: PARENT_RIGHT - 40
+			Y: (PARENT_HEIGHT - HEIGHT - 95) / 2
+			Width: PARENT_WIDTH - 40
 			Height: 75
 			Visible: false
 			Children:
 				Label@TITLE:
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 25
 					Font: Bold
 					Align: Center
 					Text: label-no-music-title
 				Label@DESCA:
 					Y: 20
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 25
 					Align: Center
 					Text: label-no-music-desc-a
 				Label@DESCB:
 					Y: 40
-					Width: PARENT_RIGHT - 24
+					Width: PARENT_WIDTH - 24
 					Height: 25
 					Align: Center
 					Text: label-no-music-desc-b
 		Button@BACK_BUTTON:
-			X: PARENT_RIGHT - WIDTH - 20
-			Y: PARENT_BOTTOM - 45
+			X: PARENT_WIDTH - WIDTH - 20
+			Y: PARENT_HEIGHT - 45
 			Width: 160
 			Height: 25
 			Text: button-back
@@ -169,9 +169,8 @@ Background@MUSIC_PANEL:
 			Key: escape
 		Label@MUTE_LABEL:
 			X: 25
-			Y: PARENT_BOTTOM - 45
+			Y: PARENT_HEIGHT - 45
 			Width: 300
 			Height: 20
 			Font: Small
 		TooltipContainer@MUSIC_TOOLTIP_CONTAINER:
-

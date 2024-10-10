@@ -13,7 +13,7 @@ using Linguini.Shared.Types.Bundle;
 
 namespace OpenRA
 {
-	public static class TranslationExts
+	public static class FluentExts
 	{
 		public static IFluentType ToFluentType(this object value)
 		{

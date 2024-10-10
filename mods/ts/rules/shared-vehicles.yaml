@@ -89,7 +89,7 @@ HARV:
 		MaxHeightDelta: 3
 	-WithVoxelBody:
 	WithVoxelUnloadBody:
-	Explodes:
+	FireWarheadsOnDeath:
 		RequiresCondition: !no-tiberium
 		Weapon: TiberiumExplosion
 	WithHarvestOverlay:

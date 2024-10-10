@@ -29,17 +29,31 @@ namespace OpenRA.Mods.Common.Traits
 			"If null, Bounds will be used instead")]
 		public readonly WDist[] DecorationBounds = null;
 
+		[Desc("Defines a custom 2D polygon for mouse interaction with the actor.",
+			"If null, Bounds will be used instead",
+			"Each vertex has two components (so two numbers), which define an x and y offset from the actor center.")]
+		public readonly int2[] Polygon = null;
+
 		public override object Create(ActorInitializer init) { return new Interactable(this); }
 	}
 
 	public class Interactable : INotifyCreated, IMouseBounds
 	{
 		readonly InteractableInfo info;
+		readonly int2 polygonCenterOffset;
 		IAutoMouseBounds[] autoBounds;
 
 		public Interactable(InteractableInfo info)
 		{
 			this.info = info;
+
+			if (info.Polygon != null)
+			{
+				var rect = new Polygon(info.Polygon).BoundingRect;
+
+				// Precalculate offset for centering the polygon over the actor
+				polygonCenterOffset = new int2(-rect.Width / 2, -rect.Height / 2);
+			}
 		}
 
 		void INotifyCreated.Created(Actor self)
@@ -50,6 +64,21 @@ namespace OpenRA.Mods.Common.Traits
 		Rectangle AutoBounds(Actor self, WorldRenderer wr)
 		{
 			return autoBounds.Select(s => s.AutoMouseoverBounds(self, wr)).FirstOrDefault(r => !r.IsEmpty);
+		}
+
+		int2[] PolygonBounds(Actor self, WorldRenderer wr)
+		{
+			var screenVertices = new int2[info.Polygon.Length];
+
+			for (var i = 0; i < info.Polygon.Length; i++)
+			{
+				var vec = info.Polygon[i] + polygonCenterOffset;
+				var offset = new int2(vec.X * wr.TileSize.Width / wr.TileScale, vec.Y * wr.TileSize.Height / wr.TileScale);
+
+				screenVertices[i] = wr.ScreenPxPosition(self.CenterPosition) + offset;
+			}
+
+			return screenVertices;
 		}
 
 		Polygon Bounds(Actor self, WorldRenderer wr, WDist[] bounds)
@@ -70,6 +99,9 @@ namespace OpenRA.Mods.Common.Traits
 
 		Polygon IMouseBounds.MouseoverBounds(Actor self, WorldRenderer wr)
 		{
+			if (info.Polygon != null)
+				return new Polygon(PolygonBounds(self, wr));
+
 			return Bounds(self, wr, info.Bounds);
 		}
 
