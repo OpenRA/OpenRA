@@ -1225,6 +1225,8 @@
 	Health:
 		HP: 5000
 		NotifyAppliedDamage: false
+	FireWarheadsOnDeath:
+		DamageSource: Parent
 	Armor:
 		Type: Light
 	Cloak:
