@@ -229,7 +229,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>Do we have an enabled client with matching <paramref name="type"/>.</summary>
 		public bool DockingPossible(BitSet<DockType> type, bool forceEnter = false)
 		{
-			return !IsTraitDisabled && dockClients.Any(client => client.IsDockingPossible(type, forceEnter));
+			return !IsTraitDisabled && dockClients.Any(client => client.CanDock(type, forceEnter));
 		}
 
 		/// <summary>Does this <paramref name="target"/> contain at least one enabled <see cref="IDockHost"/> with maching <see cref="DockType"/>.</summary>
@@ -237,7 +237,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			return !IsTraitDisabled &&
 				target.TraitsImplementing<IDockHost>()
-					.Any(host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType, forceEnter)));
+					.Any(host => dockClients.Any(client => client.CanDock(host.GetDockType, forceEnter)));
 		}
 
 		/// <summary>Can we dock to this <paramref name="host"/>.</summary>
@@ -281,7 +281,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// <remarks>Does not check if <see cref="DockClientManager"/> is enabled.</remarks>
 		public IEnumerable<IDockClient> AvailableDockClients(BitSet<DockType> type, bool forceEnter = false)
 		{
-			return dockClients.Where(client => client.IsDockingPossible(type, forceEnter));
+			return dockClients.Where(client => client.CanDock(type, forceEnter));
 		}
 
 		void INotifyKilled.Killed(Actor self, AttackInfo e) { UnreserveHost(); }
@@ -327,7 +327,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (requireForceMove() && !forceEnter)
 				return false;
 
-			if (!self.Owner.IsAlliedWith(target.Actor.Owner) || !canTarget(target.Actor, forceEnter))
+			if (!canTarget(target.Actor, forceEnter))
 				return false;
 
 			cursor = useEnterCursor(target.Actor, forceEnter) ? enterCursor : enterBlockedCursor;

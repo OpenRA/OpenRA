@@ -225,7 +225,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// Does not check if <see cref="Traits.DockClientManager"/> is enabled.
 		/// Function should only be called from within <see cref="IDockClient"/> or <see cref="Traits.DockClientManager"/>.
 		/// </remarks>
-		bool IsDockingPossible(BitSet<DockType> type, bool forceEnter = false);
+		bool CanDock(BitSet<DockType> type, bool forceEnter = false);
 
 		/// <summary>Is this client allowed to dock to <paramref name="host"/>.</summary>
 		/// <remarks>
