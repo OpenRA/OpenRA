@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits
 		/// <summary>Clone of <see cref="DockClientManager.DockingPossible(Actor, bool)"/>.</summary>
 		public bool DockingPossible(Actor target, bool forceEnter)
 		{
-			return !IsTraitDisabled && target.TraitsImplementing<DockHost>().Any(host => dockClients.Any(client => client.IsDockingPossible(host.GetDockType)));
+			return !IsTraitDisabled && target.TraitsImplementing<DockHost>().Any(host => dockClients.Any(client => client.CanDock(host.GetDockType)));
 		}
 
 		/// <summary>Clone of <see cref="DockClientManager.CanDockAt(Actor, bool, bool)"/>.</summary>

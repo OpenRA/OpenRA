@@ -30,20 +30,15 @@ namespace OpenRA.Mods.Common.Traits
 			DockClientManager = self.TraitOrDefault<DockClientManager>();
 		}
 
-		protected virtual bool CanDock()
+		public virtual bool CanDock(BitSet<DockType> type, bool forceEnter = false)
 		{
-			return true;
-		}
-
-		public virtual bool IsDockingPossible(BitSet<DockType> type, bool forceEnter = false)
-		{
-			return !IsTraitDisabled && GetDockType.Overlaps(type) && (forceEnter || CanDock());
+			return !IsTraitDisabled && GetDockType.Overlaps(type);
 		}
 
 		public virtual bool CanDockAt(Actor hostActor, IDockHost host, bool forceEnter = false, bool ignoreOccupancy = false)
 		{
 			return (forceEnter || self.Owner.IsAlliedWith(hostActor.Owner)) &&
-				IsDockingPossible(host.GetDockType, forceEnter) &&
+				CanDock(host.GetDockType, forceEnter) &&
 				host.IsDockingPossible(self, this, ignoreOccupancy);
 		}
 

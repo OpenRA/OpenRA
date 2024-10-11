@@ -94,6 +94,7 @@ namespace OpenRA.Mods.Common.Traits
 		readonly IResourceLayer resourceLayer;
 		readonly ResourceClaimLayer claimLayer;
 		readonly IStoresResources[] storesResources;
+		readonly Actor self;
 		int conditionToken = Actor.InvalidConditionToken;
 
 		public override BitSet<DockType> GetDockType => Info.Type;
@@ -107,6 +108,7 @@ namespace OpenRA.Mods.Common.Traits
 			storesResources = self.TraitsImplementing<IStoresResources>().Where(sr => info.Resources.Any(r => sr.HasType(r))).ToArray();
 			resourceLayer = self.World.WorldActor.Trait<IResourceLayer>();
 			claimLayer = self.World.WorldActor.Trait<ResourceClaimLayer>();
+			this.self = self;
 		}
 
 		protected override void Created(Actor self)
@@ -124,9 +126,15 @@ namespace OpenRA.Mods.Common.Traits
 		public bool IsEmpty => storesResources.All(sr => sr.ContentsSum == 0);
 		public int Fullness => storesResources.Sum(sr => sr.ContentsSum * 100 / sr.Capacity) / storesResources.Length;
 
-		protected override bool CanDock()
+		public override bool CanDock(BitSet<DockType> type, bool forceEnter = false)
 		{
-			return !IsEmpty;
+			return base.CanDock(type, forceEnter) && (forceEnter || !IsEmpty);
+		}
+
+		public override bool CanDockAt(Actor hostActor, IDockHost host, bool forceEnter = false, bool ignoreOccupancy = false)
+		{
+			return base.CanDockAt(hostActor, host, forceEnter, ignoreOccupancy)
+				&& (self.Owner == hostActor.Owner || (ignoreOccupancy && self.Owner.IsAlliedWith(hostActor.Owner)));
 		}
 
 		void UpdateCondition(Actor self)
@@ -154,7 +162,7 @@ namespace OpenRA.Mods.Common.Traits
 		IAcceptResources acceptResources;
 		public override void OnDockStarted(Actor self, Actor hostActor, IDockHost host)
 		{
-			if (IsDockingPossible(host.GetDockType))
+			if (base.CanDock(host.GetDockType))
 				acceptResources = hostActor.TraitOrDefault<IAcceptResources>();
 		}
 
