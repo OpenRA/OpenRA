@@ -5,7 +5,6 @@
 # This file must stay /bin/sh and POSIX compliant for macOS and BSD portability.
 # Copy-paste the entire script into https://shellcheck.net to check.
 ####
-
 set -o errexit || exit $?
 
 patch_config()
@@ -37,11 +36,18 @@ patch_config()
 		if [ -L "bin/${REPLACE}" ]; then
 			return 0
 		fi
-
+		KERNEL="$(uname -s)"
+		ARCH="$(arch)"
 		printf "Searching for %s... " "${LABEL}"
 		for DIR in ${SEARCHDIRS} ; do
 			for LIB in ${SEARCH}; do
 				if [ -f "${DIR}/${LIB}" ]; then
+					# x86-64 Linux might have 32-bit libraries present, link against the 64 bit libraries since there is no 32-bit Linux release of dotnet
+					if [ "${KERNEL}" = "Linux" ] && [ "${ARCH}" = "x86_64" ];  then
+						if [ "$(LANG=C file -L -b "${DIR}/${LIB}" | cut -d" " -f2)" != "64-bit" ]; then
+							continue
+						fi
+					fi
 					echo "${LIB}"
 					ln -s "${DIR}/${LIB}" "bin/${REPLACE}"
 					return 0
