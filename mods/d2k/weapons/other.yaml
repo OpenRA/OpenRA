@@ -2,36 +2,33 @@ Sound:
 	ReloadDelay: 90
 	Range: 5c0
 	Report: SONIC1.WAV
-	Projectile: AreaBeam
+	Projectile: SoundBeam
 		Speed: 0c128
 		Inaccuracy: 128
 		InaccuracyType: PerCellIncrement
-		Duration: 4 # Has a length of 0c512
-		DamageInterval: 3 # Travels 0c384 between impacts, will hit a target roughly three times
-		Width: 0c756 # in original d2k width is 2c0, but damage is 100% only at the center and fades out linearly towards the edges
-		Shape: Cylindrical
+		DamageInterval: 1 # Will hit target each tick
+		Radius: 0c378
 		Falloff: 0, 0, 100, 0
 		Range: 0, 0c450, 4c0, 8c0
-		BeyondTargetRange: 1c0
 		MinDistance: 5c0
 		Color: 00FFFFC8
 	Warhead@1Dam: SpreadDamage
-		Range: 0, 32
-		Falloff: 100, 100
-		Damage: 960
+		Falloff: 100, 0
+		Spread: 1c756
+		Damage: 800
 		AffectsParent: false
 		ValidRelationships: Neutral, Enemy, Ally
 		Versus:
-			none: 200
+			none: 100
 			wall: 50
 			building: 60
-			wood: 110
-			light: 110
+			wood: 100
+			light: 100
 			heavy: 60
 			invulnerable: 0
 			cy: 20
 			harvester: 50
-		DamageTypes: Prone50Percent, TriggerProne, SoundDeath
+		DamageTypes: TriggerProne, SoundDeath
 	Warhead@3Concrete: DamagesConcrete
 		Damage: 1720
 
