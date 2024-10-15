@@ -144,11 +144,11 @@ ChromeLayout:
 	common|chrome/text-notifications.yaml
 
 FluentStrings:
-	common|languages/en.ftl
-	common|languages/rules/en.ftl
-	cnc|languages/en.ftl
-	cnc|languages/chrome/en.ftl
-	cnc|languages/rules/en.ftl
+	common|fluent/common.ftl
+	common|fluent/rules.ftl
+	cnc|fluent/common.ftl
+	cnc|fluent/chrome.ftl
+	cnc|fluent/rules.ftl
 
 AllowUnusedFluentStringsInExternalPackages: false
 
@@ -318,7 +318,7 @@ ModContent:
 		cnc|installer/nod95.yaml
 		cnc|installer/origin.yaml
 		cnc|installer/steam.yaml
-	FluentStrings: cnc|languages/modcontent/en.ftl
+	FluentStrings: cnc|fluent/modcontent.ftl
 
 DiscordService:
 	ApplicationId: 699223250181292033

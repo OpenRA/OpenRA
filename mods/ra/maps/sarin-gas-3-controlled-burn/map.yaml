@@ -1243,4 +1243,4 @@ Actors:
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
-FluentStrings: ra|languages/lua/en.ftl, ra|languages/campaign/en.ftl
+FluentStrings: ra|fluent/lua.ftl, ra|fluent/campaign.ftl

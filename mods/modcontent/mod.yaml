@@ -36,8 +36,8 @@ ChromeMetrics:
 	modcontent|metrics.yaml
 
 FluentStrings:
-	common|languages/en.ftl
-	modcontent|languages/en.ftl
+	common|fluent/common.ftl
+	modcontent|modcontent.ftl
 
 Fonts:
 	Tiny:
