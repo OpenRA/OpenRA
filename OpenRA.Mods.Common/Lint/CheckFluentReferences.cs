@@ -29,8 +29,6 @@ namespace OpenRA.Mods.Common.Lint
 {
 	sealed class CheckFluentReferences : ILintPass, ILintMapPass
 	{
-		static readonly Regex FilenameRegex = new(@"(?<language>[^\/\\]+)\.ftl$");
-
 		void ILintMapPass.Run(Action<string> emitError, Action<string> emitWarning, ModData modData, Map map)
 		{
 			if (map.FluentStringsDefinitions == null)
@@ -41,33 +39,29 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var context in usedKeys.EmptyKeyContexts)
 				emitWarning($"Empty key in map ftl files required by {context}");
 
-			var mapTranslations = FieldLoader.GetValue<string[]>("value", map.FluentStringsDefinitions.Value);
+			var mapFluentStringsPaths = FieldLoader.GetValue<string[]>("value", map.FluentStringsDefinitions.Value);
+			var modFluentStringsPaths = modData.Manifest.FluentStrings.Append(modData.Manifest.Get<ModContent>().FluentStrings).ToArray();
 
-			var allModTranslations = modData.Manifest.FluentStrings.Append(modData.Manifest.Get<ModContent>().FluentStrings).ToArray();
-			foreach (var language in GetModLanguages(allModTranslations))
+			// For maps we don't warn on unused keys. They might be unused on *this* map,
+			// but the mod or another map may use them and we don't have sight of that.
+			CheckKeys(
+				modFluentStringsPaths.Concat(mapFluentStringsPaths), map.Open, usedKeys,
+				_ => false, emitError, emitWarning);
+
+			var modFluentBundle = new FluentBundle(modData.Manifest.FluentStringsLanguage, modFluentStringsPaths, modData.DefaultFileSystem, _ => { });
+			var mapFluentBundle = new FluentBundle(modData.Manifest.FluentStringsLanguage, mapFluentStringsPaths, map, error => emitError(error.Message));
+
+			foreach (var group in usedKeys.KeysWithContext)
 			{
-				// Check keys and variables are not missing across all language files.
-				// But for maps we don't warn on unused keys. They might be unused on *this* map,
-				// but the mod or another map may use them and we don't have sight of that.
-				CheckKeys(
-					allModTranslations.Concat(mapTranslations), map.Open, usedKeys,
-					language, _ => false, emitError, emitWarning);
-
-				var modFluentBundle = new FluentBundle(language, allModTranslations, modData.DefaultFileSystem, _ => { });
-				var mapFluentBundle = new FluentBundle(language, mapTranslations, map, error => emitError(error.Message));
-
-				foreach (var group in usedKeys.KeysWithContext)
+				if (modFluentBundle.HasMessage(group.Key))
 				{
-					if (modFluentBundle.HasMessage(group.Key))
-					{
-						if (mapFluentBundle.HasMessage(group.Key))
-							emitWarning($"Key `{group.Key}` in `{language}` language in map ftl files already exists in mod translations and will not be used.");
-					}
-					else if (!mapFluentBundle.HasMessage(group.Key))
-					{
-						foreach (var context in group)
-							emitWarning($"Missing key `{group.Key}` in `{language}` language in map ftl files required by {context}");
-					}
+					if (mapFluentBundle.HasMessage(group.Key))
+						emitWarning($"Key `{group.Key}` in map ftl files is already defined by the mod, and will not be overridden.");
+				}
+				else if (!mapFluentBundle.HasMessage(group.Key))
+				{
+					foreach (var context in group)
+						emitWarning($"Missing key `{group.Key}` in map ftl files required by {context}");
 				}
 			}
 		}
@@ -77,31 +71,27 @@ namespace OpenRA.Mods.Common.Lint
 			var (usedKeys, testedFields) = GetUsedFluentKeysInMod(modData);
 
 			foreach (var context in usedKeys.EmptyKeyContexts)
-				emitWarning($"Empty key in mod translation files required by {context}");
+				emitWarning($"Empty key in mod ftl files required by {context}");
 
-			var allModTranslations = modData.Manifest.FluentStrings.Append(modData.Manifest.Get<ModContent>().FluentStrings).ToArray();
-			foreach (var language in GetModLanguages(allModTranslations))
+			var modFluentStringsPaths = modData.Manifest.FluentStrings.Append(modData.Manifest.Get<ModContent>().FluentStrings).ToArray();
+
+			CheckModWidgets(modData, usedKeys, testedFields);
+
+			// With the fully populated keys, check keys and variables are not missing and not unused across all language files.
+			var keyWithAttrs = CheckKeys(
+				modFluentStringsPaths, modData.DefaultFileSystem.Open, usedKeys,
+				file =>
+					!modData.Manifest.AllowUnusedFluentStringsInExternalPackages ||
+					!modData.DefaultFileSystem.IsExternalFile(file),
+				emitError, emitWarning);
+
+			foreach (var group in usedKeys.KeysWithContext)
 			{
-				Console.WriteLine($"Testing language: {language}");
-				CheckModWidgets(modData, usedKeys, testedFields);
+				if (keyWithAttrs.Contains(group.Key))
+					continue;
 
-				// With the fully populated keys, check keys and variables are not missing and not unused across all language files.
-				var keyWithAttrs = CheckKeys(
-					allModTranslations, modData.DefaultFileSystem.Open, usedKeys,
-					language,
-					file =>
-						!modData.Manifest.AllowUnusedFluentStringsInExternalPackages ||
-						!modData.DefaultFileSystem.IsExternalFile(file),
-					emitError, emitWarning);
-
-				foreach (var group in usedKeys.KeysWithContext)
-				{
-					if (keyWithAttrs.Contains(group.Key))
-						continue;
-
-					foreach (var context in group)
-						emitWarning($"Missing key `{group.Key}` in `{language}` language in mod ftl files required by {context}");
-				}
+				foreach (var context in group)
+					emitWarning($"Missing key `{group.Key}` in mod ftl files required by {context}");
 			}
 
 			// Check if we couldn't test any fields.
@@ -113,14 +103,6 @@ namespace OpenRA.Mods.Common.Lint
 				emitError(
 					$"Lint pass ({nameof(CheckFluentReferences)}) lacks the know-how to test translatable field " +
 					$"`{field.ReflectedType.Name}.{field.Name}` - previous warnings may be incorrect");
-		}
-
-		static IEnumerable<string> GetModLanguages(IEnumerable<string> translations)
-		{
-			return translations
-				.Select(filename => FilenameRegex.Match(filename).Groups["language"].Value)
-				.Distinct()
-				.OrderBy(l => l);
 		}
 
 		static Keys GetUsedFluentKeysInRuleset(Ruleset rules)
@@ -252,11 +234,11 @@ namespace OpenRA.Mods.Common.Lint
 				.SelectMany(t => t.GetFields().Where(f => f.HasAttribute<FluentReferenceAttribute>())));
 
 			// TODO: linter does not work with LoadUsing
-			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+			GetUsedFluentKeysFromFieldsWithFluentReferenceAttribute(
 				usedKeys, testedFields, Utility.GetFields(typeof(GameSpeed)), modData.Manifest.Get<GameSpeeds>().Speeds.Values);
 
 			// TODO: linter does not work with LoadUsing
-			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+			GetUsedFluentKeysFromFieldsWithFluentReferenceAttribute(
 				usedKeys, testedFields,
 				Utility.GetFields(typeof(ResourceRendererInfo.ResourceTypeInfo)),
 				modData.DefaultRules.Actors
@@ -265,23 +247,23 @@ namespace OpenRA.Mods.Common.Lint
 
 			const BindingFlags Binding = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 			var constFields = modData.ObjectCreator.GetTypes().SelectMany(modType => modType.GetFields(Binding)).Where(f => f.IsLiteral);
-			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+			GetUsedFluentKeysFromFieldsWithFluentReferenceAttribute(
 				usedKeys, testedFields, constFields, new[] { (object)null });
 
 			var modMetadataFields = typeof(ModMetadata).GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+			GetUsedFluentKeysFromFieldsWithFluentReferenceAttribute(
 				usedKeys, testedFields, modMetadataFields, new[] { modData.Manifest.Metadata });
 
 			var modContent = modData.Manifest.Get<ModContent>();
-			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+			GetUsedFluentKeysFromFieldsWithFluentReferenceAttribute(
 				usedKeys, testedFields, Utility.GetFields(typeof(ModContent)), new[] { modContent });
-			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+			GetUsedFluentKeysFromFieldsWithFluentReferenceAttribute(
 				usedKeys, testedFields, Utility.GetFields(typeof(ModContent.ModPackage)), modContent.Packages.Values);
 
 			return (usedKeys, testedFields);
 		}
 
-		static void GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+		static void GetUsedFluentKeysFromFieldsWithFluentReferenceAttribute(
 			Keys usedKeys, List<FieldInfo> testedFields,
 			IEnumerable<FieldInfo> newFields, IEnumerable<object> objects)
 		{
@@ -366,15 +348,12 @@ namespace OpenRA.Mods.Common.Lint
 
 		static HashSet<string> CheckKeys(
 			IEnumerable<string> paths, Func<string, Stream> openFile, Keys usedKeys,
-			string language, Func<string, bool> checkUnusedKeysForFile,
+			Func<string, bool> checkUnusedKeysForFile,
 			Action<string> emitError, Action<string> emitWarning)
 		{
 			var keyWithAttrs = new HashSet<string>();
 			foreach (var path in paths)
 			{
-				if (!path.EndsWith($"{language}.ftl", StringComparison.Ordinal))
-					continue;
-
 				var stream = openFile(path);
 				using (var reader = new StreamReader(stream))
 				{
