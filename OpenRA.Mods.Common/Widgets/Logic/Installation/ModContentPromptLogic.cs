@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 			this.content = content;
 			CheckRequiredContentInstalled();
 
-			externalFluentBundle = new FluentBundle(Game.Settings.Player.Language, File.ReadAllText(fluentStringsPath), _ => { });
+			externalFluentBundle = new FluentBundle(modData.Manifest.FluentStringsLanguage, File.ReadAllText(fluentStringsPath), _ => { });
 
 			var continueMessage = FluentProvider.GetString(Continue);
 			var quitMessage = FluentProvider.GetString(Quit);

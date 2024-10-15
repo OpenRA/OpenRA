@@ -24,9 +24,9 @@ namespace OpenRA
 		{
 			lock (SyncObject)
 			{
-				modFluentBundle = new FluentBundle(Game.Settings.Player.Language, modData.Manifest.FluentStrings, fileSystem);
+				modFluentBundle = new FluentBundle(modData.Manifest.FluentStringsLanguage, modData.Manifest.FluentStrings, fileSystem);
 				mapFluentBundle = fileSystem is Map map && map.FluentStringsDefinitions != null
-					? new FluentBundle(Game.Settings.Player.Language, FieldLoader.GetValue<string[]>("value", map.FluentStringsDefinitions.Value), fileSystem)
+					? new FluentBundle(modData.Manifest.FluentStringsLanguage, FieldLoader.GetValue<string[]>("value", map.FluentStringsDefinitions.Value), fileSystem)
 					: null;
 			}
 		}

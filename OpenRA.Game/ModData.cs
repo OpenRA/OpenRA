@@ -50,8 +50,6 @@ namespace OpenRA
 
 		public ModData(Manifest mod, InstalledMods mods, bool useLoadScreen = false)
 		{
-			Languages = Array.Empty<string>();
-
 			// Take a local copy of the manifest
 			Manifest = new Manifest(mod.Id, mod.Package);
 			ObjectCreator = new ObjectCreator(Manifest, mods);
@@ -138,8 +136,6 @@ namespace OpenRA
 
 			CursorProvider = new CursorProvider(this);
 		}
-
-		public IEnumerable<string> Languages { get; }
 
 		public Map PrepareMap(string uid)
 		{

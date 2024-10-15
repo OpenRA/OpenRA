@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			modFileSystem.UnmountAll();
 
-			externalFluentBundle = new FluentBundle(Game.Settings.Player.Language, File.ReadAllText(fluentStringsPath), _ => { });
+			externalFluentBundle = new FluentBundle(mod.FluentStringsLanguage, File.ReadAllText(fluentStringsPath), _ => { });
 
 			scrollPanel = panel.Get<ScrollPanelWidget>("PACKAGES");
 			template = scrollPanel.Get<ContainerWidget>("PACKAGE_TEMPLATE");

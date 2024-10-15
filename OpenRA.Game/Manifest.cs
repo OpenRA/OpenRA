@@ -83,6 +83,8 @@ namespace OpenRA
 		public readonly string[] SpriteFormats = Array.Empty<string>();
 		public readonly string[] PackageFormats = Array.Empty<string>();
 		public readonly string[] VideoFormats = Array.Empty<string>();
+
+		public readonly string FluentStringsLanguage = "en";
 		public readonly bool AllowUnusedFluentStringsInExternalPackages = true;
 		public readonly int FontSheetSize = 512;
 		public readonly int CursorSheetSize = 512;

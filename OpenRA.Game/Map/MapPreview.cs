@@ -123,7 +123,7 @@ namespace OpenRA
 				ModelSequenceDefinitions = LoadRuleSection(yaml, "ModelSequences");
 
 				FluentBundle = yaml.TryGetValue("FluentStrings", out var node) && node != null
-					? new FluentBundle(Game.Settings.Player.Language, FieldLoader.GetValue<string[]>("value", node.Value), fileSystem)
+					? new FluentBundle(modData.Manifest.FluentStringsLanguage, FieldLoader.GetValue<string[]>("value", node.Value), fileSystem)
 					: null;
 
 				try
