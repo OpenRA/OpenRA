@@ -52,9 +52,9 @@ namespace OpenRA.Mods.Common.LoadScreens
 			if (modId == null || !Game.Mods.TryGetValue(modId, out var selectedMod))
 				throw new InvalidOperationException("Invalid or missing Content.Mod argument.");
 
-			var translationFilePath = args.GetValue("Content.TranslationFile", null);
-			if (translationFilePath == null || !File.Exists(translationFilePath))
-				throw new InvalidOperationException("Invalid or missing Content.TranslationFile argument.");
+			var fluentStringsPath = args.GetValue("Content.FluentStringsPath", null);
+			if (fluentStringsPath == null || !File.Exists(fluentStringsPath))
+				throw new InvalidOperationException("Invalid or missing Content.FluentStringsPath argument.");
 
 			var content = selectedMod.Get<ModContent>(Game.ModData.ObjectCreator);
 
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 					{ "continueLoading", () => Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments())) },
 					{ "mod", selectedMod },
 					{ "content", content },
-					{ "translationFilePath", translationFilePath },
+					{ "fluentStringsPath", fluentStringsPath },
 				};
 
 				Ui.OpenWindow("CONTENT_PROMPT_PANEL", widgetArgs);
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.LoadScreens
 					{ "onCancel", () => Game.RunAfterTick(() => Game.InitializeMod(modId, new Arguments())) },
 					{ "mod", selectedMod },
 					{ "content", content },
-					{ "translationFilePath", translationFilePath },
+					{ "fluentStringsPath", fluentStringsPath },
 				};
 
 				Ui.OpenWindow("CONTENT_PANEL", widgetArgs);

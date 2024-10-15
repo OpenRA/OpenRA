@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool sourceAvailable;
 
 		[ObjectCreator.UseCtor]
-		public ModContentLogic(Widget widget, Manifest mod, ModContent content, Action onCancel, string translationFilePath)
+		public ModContentLogic(Widget widget, Manifest mod, ModContent content, Action onCancel, string fluentStringsPath)
 		{
 			this.content = content;
 
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 
 			modFileSystem.UnmountAll();
 
-			externalFluentBundle = new FluentBundle(Game.Settings.Player.Language, File.ReadAllText(translationFilePath), _ => { });
+			externalFluentBundle = new FluentBundle(Game.Settings.Player.Language, File.ReadAllText(fluentStringsPath), _ => { });
 
 			scrollPanel = panel.Get<ScrollPanelWidget>("PACKAGES");
 			template = scrollPanel.Get<ContainerWidget>("PACKAGE_TEMPLATE");

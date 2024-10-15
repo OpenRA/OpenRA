@@ -31,12 +31,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 		bool requiredContentInstalled;
 
 		[ObjectCreator.UseCtor]
-		public ModContentPromptLogic(ModData modData, Widget widget, Manifest mod, ModContent content, Action continueLoading, string translationFilePath)
+		public ModContentPromptLogic(ModData modData, Widget widget, Manifest mod, ModContent content, Action continueLoading, string fluentStringsPath)
 		{
 			this.content = content;
 			CheckRequiredContentInstalled();
 
-			externalFluentBundle = new FluentBundle(Game.Settings.Player.Language, File.ReadAllText(translationFilePath), _ => { });
+			externalFluentBundle = new FluentBundle(Game.Settings.Player.Language, File.ReadAllText(fluentStringsPath), _ => { });
 
 			var continueMessage = FluentProvider.GetString(Continue);
 			var quitMessage = FluentProvider.GetString(Quit);
@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 					{ "onCancel", CheckRequiredContentInstalled },
 					{ "mod", mod },
 					{ "content", content },
-					{ "translationFilePath", translationFilePath },
+					{ "FluentStringsPath", fluentStringsPath },
 				});
 			};
 

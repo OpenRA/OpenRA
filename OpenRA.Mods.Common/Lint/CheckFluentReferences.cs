@@ -43,7 +43,7 @@ namespace OpenRA.Mods.Common.Lint
 
 			var mapTranslations = FieldLoader.GetValue<string[]>("value", map.FluentStringsDefinitions.Value);
 
-			var allModTranslations = modData.Manifest.Translations.Append(modData.Manifest.Get<ModContent>().Translation).ToArray();
+			var allModTranslations = modData.Manifest.FluentStrings.Append(modData.Manifest.Get<ModContent>().FluentStrings).ToArray();
 			foreach (var language in GetModLanguages(allModTranslations))
 			{
 				// Check keys and variables are not missing across all language files.
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.Common.Lint
 			foreach (var context in usedKeys.EmptyKeyContexts)
 				emitWarning($"Empty key in mod translation files required by {context}");
 
-			var allModTranslations = modData.Manifest.Translations.Append(modData.Manifest.Get<ModContent>().Translation).ToArray();
+			var allModTranslations = modData.Manifest.FluentStrings.Append(modData.Manifest.Get<ModContent>().FluentStrings).ToArray();
 			foreach (var language in GetModLanguages(allModTranslations))
 			{
 				Console.WriteLine($"Testing language: {language}");
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.Common.Lint
 					allModTranslations, modData.DefaultFileSystem.Open, usedKeys,
 					language,
 					file =>
-						!modData.Manifest.AllowUnusedTranslationsInExternalPackages ||
+						!modData.Manifest.AllowUnusedFluentStringsInExternalPackages ||
 						!modData.DefaultFileSystem.IsExternalFile(file),
 					emitError, emitWarning);
 

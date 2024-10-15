@@ -70,7 +70,7 @@ namespace OpenRA
 		public readonly string[]
 			Rules, ServerTraits,
 			Sequences, ModelSequences, Cursors, Chrome, ChromeLayout,
-			Weapons, Voices, Notifications, Music, Translations, TileSets,
+			Weapons, Voices, Notifications, Music, FluentStrings, TileSets,
 			ChromeMetrics, MapCompatibility, Missions, Hotkeys;
 
 		public readonly IReadOnlyDictionary<string, string> MapFolders;
@@ -83,7 +83,7 @@ namespace OpenRA
 		public readonly string[] SpriteFormats = Array.Empty<string>();
 		public readonly string[] PackageFormats = Array.Empty<string>();
 		public readonly string[] VideoFormats = Array.Empty<string>();
-		public readonly bool AllowUnusedTranslationsInExternalPackages = true;
+		public readonly bool AllowUnusedFluentStringsInExternalPackages = true;
 		public readonly int FontSheetSize = 512;
 		public readonly int CursorSheetSize = 512;
 
@@ -91,9 +91,9 @@ namespace OpenRA
 		{
 			"Include", "Metadata", "FileSystem", "MapFolders", "Rules",
 			"Sequences", "ModelSequences", "Cursors", "Chrome", "Assemblies", "ChromeLayout", "Weapons",
-			"Voices", "Notifications", "Music", "Translations", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
+			"Voices", "Notifications", "Music", "FluentStrings", "TileSets", "ChromeMetrics", "Missions", "Hotkeys",
 			"ServerTraits", "LoadScreen", "DefaultOrderGenerator", "SupportsMapsFrom", "SoundFormats", "SpriteFormats", "VideoFormats",
-			"RequiresMods", "PackageFormats", "AllowUnusedTranslationsInExternalPackages", "FontSheetSize", "CursorSheetSize"
+			"RequiresMods", "PackageFormats", "AllowUnusedFluentStringsInExternalPackages", "FontSheetSize", "CursorSheetSize"
 		};
 
 		readonly TypeDictionary modules = new();
@@ -144,7 +144,7 @@ namespace OpenRA
 			Voices = YamlList(yaml, "Voices");
 			Notifications = YamlList(yaml, "Notifications");
 			Music = YamlList(yaml, "Music");
-			Translations = YamlList(yaml, "Translations");
+			FluentStrings = YamlList(yaml, "FluentStrings");
 			TileSets = YamlList(yaml, "TileSets");
 			ChromeMetrics = YamlList(yaml, "ChromeMetrics");
 			Missions = YamlList(yaml, "Missions");
@@ -181,9 +181,9 @@ namespace OpenRA
 			if (yaml.TryGetValue("VideoFormats", out entry))
 				VideoFormats = FieldLoader.GetValue<string[]>("VideoFormats", entry.Value);
 
-			if (yaml.TryGetValue("AllowUnusedTranslationsInExternalPackages", out entry))
-				AllowUnusedTranslationsInExternalPackages =
-					FieldLoader.GetValue<bool>("AllowUnusedTranslationsInExternalPackages", entry.Value);
+			if (yaml.TryGetValue("AllowUnusedFluentStringsInExternalPackages", out entry))
+				AllowUnusedFluentStringsInExternalPackages =
+					FieldLoader.GetValue<bool>("AllowUnusedFluentStringsInExternalPackages", entry.Value);
 
 			if (yaml.TryGetValue("FontSheetSize", out entry))
 				FontSheetSize = FieldLoader.GetValue<int>("FontSheetSize", entry.Value);

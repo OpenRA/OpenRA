@@ -35,7 +35,7 @@ ChromeMetrics:
 	common|metrics.yaml
 	modcontent|metrics.yaml
 
-Translations:
+FluentStrings:
 	common|languages/en.ftl
 	modcontent|languages/en.ftl
 

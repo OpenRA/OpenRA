@@ -93,12 +93,12 @@ namespace OpenRA.Mods.Common.Widgets.Logic
 							return;
 
 						var content = modData.Manifest.Get<ModContent>();
-						string translationPath;
-						using (var fs = (FileStream)modData.DefaultFileSystem.Open(content.Translation))
-							translationPath = fs.Name;
+						string fluentStringsPath;
+						using (var fs = (FileStream)modData.DefaultFileSystem.Open(content.FluentStrings))
+							fluentStringsPath = fs.Name;
 						Game.InitializeMod(
 							content.ContentInstallerMod,
-							new Arguments(new[] { "Content.Mod=" + modData.Manifest.Id, "Content.TranslationFile=" + translationPath }));
+							new Arguments("Content.Mod=" + modData.Manifest.Id, "Content.FluentStringsPath=" + fluentStringsPath));
 					});
 				};
 			}
