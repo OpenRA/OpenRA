@@ -25,10 +25,6 @@ IP2LOCATION-LITE-DB1.IPV6.BIN.ZIP
 \#*
 .*.sw?
 
-# Monodevelop
-*.pidb
-*.userprefs
-
 # Mac OS X
 .DS_Store
 

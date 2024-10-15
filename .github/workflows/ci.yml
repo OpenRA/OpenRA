@@ -10,17 +10,17 @@ permissions:
 
 jobs:
   linux:
-    name: Linux (.NET 6.0)
+    name: Linux (.NET 8.0)
     runs-on: ubuntu-22.04
 
     steps:
       - name: Clone Repository
         uses: actions/checkout@v4
 
-      - name: Install .NET 6.0
+      - name: Install .NET 8.0
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '8.0.x'
 
       - name: Check Code
         run: |
@@ -33,36 +33,18 @@ jobs:
           make check-scripts
           make TREAT_WARNINGS_AS_ERRORS=true test
 
-  linux-mono:
-    name: Linux (mono)
-    runs-on: ubuntu-22.04
-
-    steps:
-      - name: Clone Repository
-        uses: actions/checkout@v4
-
-      - name: Check Code
-        run: |
-          mono --version
-          make RUNTIME=mono check
-
-      - name: Check Mods
-        run: |
-          # check-scripts does not depend on .net/mono, so is not needed here
-          make RUNTIME=mono TREAT_WARNINGS_AS_ERRORS=true test
-
   windows:
-    name: Windows (.NET 6.0)
+    name: Windows (.NET 8.0)
     runs-on: windows-2019
 
     steps:
       - name: Clone Repository
         uses: actions/checkout@v4
 
-      - name: Install .NET 6.0
+      - name: Install .NET 8.0
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '6.0.x'
+          dotnet-version: '8.0.x'
 
       - name: Check Code
         shell: powershell

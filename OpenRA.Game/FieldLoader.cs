@@ -16,7 +16,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using OpenRA.Primitives;
 using OpenRA.Support;
 
@@ -26,7 +25,6 @@ namespace OpenRA
 	{
 		const char SplitComma = ',';
 
-		[Serializable]
 		public class MissingFieldsException : YamlException
 		{
 			public readonly string[] Missing;
@@ -45,13 +43,6 @@ namespace OpenRA
 			{
 				Header = missing.Length > 1 ? header : headerSingle ?? header;
 				Missing = missing;
-			}
-
-			public override void GetObjectData(SerializationInfo info, StreamingContext context)
-			{
-				base.GetObjectData(info, context);
-				info.AddValue("Missing", Missing);
-				info.AddValue("Header", Header);
 			}
 		}
 

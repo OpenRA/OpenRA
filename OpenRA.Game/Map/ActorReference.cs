@@ -14,7 +14,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
+using System.Runtime.CompilerServices;
 using OpenRA.Primitives;
 using OpenRA.Traits;
 
@@ -70,7 +70,7 @@ namespace OpenRA
 			if (type == null)
 				throw new InvalidDataException($"Unknown initializer type '{initInstance[0]}Init'");
 
-			var init = (ActorInit)FormatterServices.GetUninitializedObject(type);
+			var init = (ActorInit)RuntimeHelpers.GetUninitializedObject(type);
 			if (initInstance.Length > 1)
 				type.GetField(nameof(ActorInit.InstanceName)).SetValue(init, initInstance[1]);
 
