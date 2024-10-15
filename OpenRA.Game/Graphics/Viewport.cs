@@ -233,11 +233,12 @@ namespace OpenRA.Graphics
 			else
 				Zoom = Zoom.Clamp(MinZoom, MaxZoom);
 
-			var maxSize = 1f / (unlockMinZoom ? unlockedMinZoom : MinZoom) * new float2(Game.Renderer.NativeResolution);
+			var minZoom = unlockMinZoom ? unlockedMinZoom : MinZoom;
+			var maxSize = 1f / minZoom * new float2(Game.Renderer.NativeResolution);
 			Game.Renderer.SetMaximumViewportSize(new Size((int)maxSize.X, (int)maxSize.Y));
 
 			foreach (var t in worldRenderer.World.WorldActor.TraitsImplementing<INotifyViewportZoomExtentsChanged>())
-				t.ViewportZoomExtentsChanged(MinZoom, MaxZoom);
+				t.ViewportZoomExtentsChanged(minZoom, MaxZoom);
 		}
 
 		public CPos ViewToWorld(int2 view)
