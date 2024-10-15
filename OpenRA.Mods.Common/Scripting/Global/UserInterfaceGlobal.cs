@@ -36,7 +36,7 @@ namespace OpenRA.Mods.Common.Scripting.Global
 
 		[Desc("Formats a language string for a given string key defined in the language files (*.ftl). " +
 			"Args can be passed to be substituted into the resulting message.")]
-		public string Translate(string key, [ScriptEmmyTypeOverride("{ string: any }")] LuaTable args = null)
+		public string String(string key, [ScriptEmmyTypeOverride("{ string: any }")] LuaTable args = null)
 		{
 			if (args != null)
 			{

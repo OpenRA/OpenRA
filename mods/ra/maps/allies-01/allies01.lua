@@ -25,7 +25,7 @@ SendInsertionHelicopter = function()
 	local tanya = passengers[1]
 	Trigger.OnKilled(tanya, TanyaKilledInAction)
 	Trigger.AfterDelay(DateTime.Seconds(4), function()
-		Media.DisplayMessage(UserInterface.Translate("tanya-rules-of-engagement"), UserInterface.Translate("tanya"))
+		Media.DisplayMessage(UserInterface.String("tanya-rules-of-engagement"), UserInterface.String("tanya"))
 	end)
 end
 

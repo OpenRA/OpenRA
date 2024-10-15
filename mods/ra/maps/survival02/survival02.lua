@@ -112,7 +112,7 @@ Tick = function()
 
 	if Ticked > 0 then
 		if (Ticked % DateTime.Seconds(1)) == 0 then
-			Timer = UserInterface.Translate("soviet-reinforcements-arrive-in", { ["time"] = Utils.FormatTime(Ticked) })
+			Timer = UserInterface.String("soviet-reinforcements-arrive-in", { ["time"] = Utils.FormatTime(Ticked) })
 			UserInterface.SetMissionText(Timer, TimerColor)
 		end
 		Ticked = Ticked - 1
@@ -214,14 +214,14 @@ FinalAttack = function()
 
 	Trigger.OnAllKilledOrCaptured(units, function()
 		if not DestroyObj then
-			Media.DisplayMessage(UserInterface.Translate("reinforced-position-initiate-counter-attack"), UserInterface.Translate("incoming-report"))
+			Media.DisplayMessage(UserInterface.String("reinforced-position-initiate-counter-attack"), UserInterface.String("incoming-report"))
 			DestroyObj = AddPrimaryObjective(Allies, "destroy-remaining-soviet-forces-area")
 		end
 		Allies.MarkCompletedObjective(SurviveObj)
 	end)
 end
 
-SovietReinforcementsArrived = UserInterface.Translate("soviet-reinforcements-arrived")
+SovietReinforcementsArrived = UserInterface.String("soviet-reinforcements-arrived")
 FinishTimer = function()
 	for i = 0, 9, 1 do
 		local c = TimerColor
@@ -255,7 +255,7 @@ SetupBridges = function()
 		end
 	end
 
-	Media.DisplayMessage(UserInterface.Translate("repair-bridges-for-reinforcement"), UserInterface.Translate("incoming-report"))
+	Media.DisplayMessage(UserInterface.String("repair-bridges-for-reinforcement"), UserInterface.String("incoming-report"))
 	RepairBridges = AddSecondaryObjective(Allies, "repair-two-southern-bridges")
 
 	local bridgeA = Map.ActorsInCircle(BrokenBridge1.CenterPosition, WDist.FromCells(1), function(self) return self.Type == "bridge1" end)
@@ -297,7 +297,7 @@ AddObjectives = function()
 	end)
 
 	Trigger.OnPlayerWon(Allies, function()
-		Media.DisplayMessage(UserInterface.Translate("remaining-soviet-presence-destroyed"), UserInterface.Translate("incoming-report"))
+		Media.DisplayMessage(UserInterface.String("remaining-soviet-presence-destroyed"), UserInterface.String("incoming-report"))
 	end)
 end
 
@@ -308,7 +308,7 @@ InitMission = function()
 	Trigger.AfterDelay(DateTime.Seconds(1), function() Media.PlaySpeechNotification(Allies, "MissionTimerInitialised") end)
 
 	Trigger.AfterDelay(TimerTicks, function()
-		Media.DisplayMessage(UserInterface.Translate("soviet-reinforcements-approaching"), UserInterface.Translate("incoming-report"))
+		Media.DisplayMessage(UserInterface.String("soviet-reinforcements-approaching"), UserInterface.String("incoming-report"))
 		Media.PlaySpeechNotification(Allies, "SovietReinforcementsArrived")
 		SpawnSovietVehicle(NewSovietEntryPoints, NewSovietRallyPoints)
 		FinalAttack()

@@ -50,7 +50,7 @@ SendSpy = function()
 	Trigger.OnKilled(Spy, function() USSR.MarkCompletedObjective(USSRObj) end)
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage(UserInterface.Translate("disguise-spy"), UserInterface.Translate("spy"))
+		Media.DisplayMessage(UserInterface.String("disguise-spy"), UserInterface.String("spy"))
 		if SpecialCameras then
 			SpyCameraA = Actor.Create("camera", true, { Owner = Greece, Location = SpyCamera1.Location })
 			SpyCameraB = Actor.Create("camera", true, { Owner = Greece, Location = SpyCamera2.Location })
@@ -239,7 +239,7 @@ FreeTanya = function()
 
 	if TanyaType == "e7.noautotarget" then
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.DisplayMessage(UserInterface.Translate("tanya-rules-of-engagement"), UserInterface.Translate("tanya"))
+			Media.DisplayMessage(UserInterface.String("tanya-rules-of-engagement"), UserInterface.String("tanya"))
 		end)
 	end
 
@@ -318,7 +318,7 @@ InitTriggers = function()
 		end
 
 		if not Greece.IsObjectiveCompleted(InfWarfactory) then
-			Media.DisplayMessage(UserInterface.Translate("skip-heroics"), UserInterface.Translate("battlefield-control"))
+			Media.DisplayMessage(UserInterface.String("skip-heroics"), UserInterface.String("battlefield-control"))
 			Greece.MarkCompletedObjective(InfWarfactory)
 		end
 
