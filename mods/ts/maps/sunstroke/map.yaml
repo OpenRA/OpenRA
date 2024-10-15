@@ -2630,4 +2630,4 @@ Actors:
 Rules: rules.yaml
 
 Sequences: sequences.yaml
-Translations: en.ftl
+FluentStrings: en.ftl
