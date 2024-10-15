@@ -544,6 +544,8 @@ namespace OpenRA.Mods.Common.Graphics
 			if (reverses)
 			{
 				index.AddRange(index.Skip(1).Take(length.Value - 2).Reverse());
+				alpha = alpha?.Concat(alpha.Skip(1).Take(length.Value - 2).Reverse()).ToArray();
+
 				length = 2 * length - 2;
 			}
 
