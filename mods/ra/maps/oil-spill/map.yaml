@@ -308,4 +308,4 @@ Rules: rules.yaml
 
 Sequences: sequences.yaml
 
-FluentStrings: en.ftl
+FluentStrings: map.ftl

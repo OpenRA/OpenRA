@@ -469,4 +469,4 @@ Sequences: sequences.yaml
 
 Music: music.yaml
 
-FluentStrings: ra|languages/lua/en.ftl, languages/en.ftl, en.ftl
+FluentStrings: ra|languages/lua/en.ftl, map.ftl
