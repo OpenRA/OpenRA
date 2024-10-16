@@ -287,7 +287,8 @@ namespace OpenRA.Mods.Common.Traits
 					.OrderBy(WorldRenderer.RenderableZPositionComparisonKey);
 
 				foreach (var r in previewRenderables)
-					yield return r;
+					if (!r.IsDecoration)
+						yield return r;
 			}
 		}
 
