@@ -133,6 +133,15 @@ button-command-bar-queue-orders =
     Left-click icon then give commands in the game world.
     Hold <(Shift)> to activate temporarily while commanding units.
 
+button-command-bar-patrol =
+   .tooltip = Patrol
+   .tooltipdesc = Order units to attack-move along a route in cycles.
+
+    Left-click icon, then right-click on locations on the
+    map in the order that units should move. When done,
+    hold <(ALT)> + right-click to submit the order. Hold <(Ctrl)>
+    additionally while submitting to order an assault-move.
+
 button-stance-bar-attackanything =
    .tooltip = Attack Anything Stance
    .tooltipdesc = Set the selected units to Attack Anything stance:

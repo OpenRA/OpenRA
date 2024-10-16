@@ -37,6 +37,8 @@ DOG:
 		PauseOnCondition: attacking || attack-cooldown
 	AttackMove:
 		Voice: Move
+	Patrol:
+		Voice: Move
 	GrantConditionOnAttack:
 		Condition: eating
 		RevokeDelay: 20
@@ -380,6 +382,8 @@ SPY:
 		Weapon: SilencedPPK
 	AttackMove:
 		Voice: Move
+	Patrol:
+		Voice: Move
 	Voiced:
 		VoiceSet: SpyVoice
 
@@ -598,6 +602,8 @@ GNRL:
 		FacingTolerance: 0
 	AttackMove:
 		Voice: Move
+	Patrol:
+		Voice: Move
 	Passenger:
 		Voice: Move
 	Guard:
@@ -706,6 +712,8 @@ SHOK:
 		Voice: Attack
 		FacingTolerance: 0
 	AttackMove:
+		Voice: Move
+	Patrol:
 		Voice: Move
 	Passenger:
 		Voice: Move

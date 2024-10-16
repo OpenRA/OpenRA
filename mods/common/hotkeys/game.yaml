@@ -93,6 +93,11 @@ Guard: D
 	Types: Unit
 	Contexts: Player
 
+Patrol: G
+	Description: Patrol
+	Types: Unit
+	Contexts: Player
+
 StanceAttackAnything: A Alt
 	Description: Attack anything
 	Types: Stance

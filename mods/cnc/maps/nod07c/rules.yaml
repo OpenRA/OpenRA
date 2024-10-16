@@ -163,3 +163,4 @@ ORCA.IN:
 	-AutoTargetPriority@DEFAULT:
 	-AutoTargetPriority@ATTACKANYTHING:
 	-AttackMove:
+	-Patrol:
