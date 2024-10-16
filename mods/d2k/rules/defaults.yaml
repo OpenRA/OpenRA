@@ -749,3 +749,118 @@
 		RequiresForceFire: true
 	MapEditorData:
 		Categories: Destroyed Tiles
+
+^DamagedBuildingsVFX:
+	GrantConditionOnFaction@atreidesVFX:
+		Condition: atreidesVFX
+		Factions: atreides, fremen
+	GrantConditionOnFaction@harkonnenVFX:
+		Condition: harkonnenVFX
+		Factions: harkonnen, corrino
+	GrantConditionOnFaction@ordosVFX:
+		Condition: ordosVFX
+		Factions: ordos, mercenary, smuggler
+	GrantConditionOnDamageState@heavyDamage:
+		Condition: heavy-damage
+	FloatingSpriteEmitter@SmokeHugeAtreides:
+		RequiresCondition: heavy-damage && atreidesVFX
+		Image: smoke3
+		Lifetime: 15, 20
+		Speed: 5
+		Gravity: 60
+		SpawnFrequency: 2, 5
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 1300
+	FloatingSpriteEmitter@SmokeSmallAtreides:
+		RequiresCondition: heavy-damage && atreidesVFX
+		Image: smoke3
+		Lifetime: 15, 20
+		Speed: 3
+		Gravity: 50
+		SpawnFrequency: 4, 15
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 900
+	WithDamageOverlay@Fire1_Atreides:
+		RequiresCondition: atreidesVFX
+		Image: fire
+		LoopSequence: 1
+		LoopCount: 20, 30
+		InitialDelay: 0, 25
+	WithDamageOverlay@Fire2_atreides:
+		RequiresCondition: atreidesVFX
+		Image: fire
+		LoopSequence: 2
+		LoopCount: 20, 30
+		InitialDelay: 0, 25
+	FloatingSpriteEmitter@SmokeHugeHarkonnen:
+		RequiresCondition: heavy-damage && harkonnenVFX
+		Image: smoke3
+		Lifetime: 20,25
+		Speed: 5
+		Gravity: 60
+		SpawnFrequency: 3, 7
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 1300
+	FloatingSpriteEmitter@SmokeSmallHarkonnen:
+		RequiresCondition: heavy-damage && harkonnenVFX
+		Image: smoke3
+		Lifetime: 15, 20
+		Speed: 3
+		Gravity: 50
+		SpawnFrequency: 4, 15
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 900
+	WithDamageOverlay@Fire1Harkonnen:
+		RequiresCondition: harkonnenVFX
+		Image: fire
+		LoopSequence: 1
+		LoopCount: 10
+		InitialDelay: 0, 25
+	WithDamageOverlay@Fire2Harkonnen:
+		RequiresCondition: harkonnenVFX
+		Image: fire
+		LoopSequence: 2
+		LoopCount: 20, 30
+		InitialDelay: 0, 25
+	FloatingSpriteEmitter@SmokeHugeOrdos:
+		RequiresCondition: heavy-damage && ordosVFX
+		Image: smoke3
+		Lifetime: 20,25
+		Speed: 7
+		Gravity: 60
+		SpawnFrequency: 3, 8
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 1300
+	FloatingSpriteEmitter@SmokeSmallOrdos:
+		RequiresCondition: heavy-damage && ordosVFX
+		Image: smoke3
+		Lifetime: 15, 20
+		Speed: 3
+		Gravity: 50
+		SpawnFrequency: 4, 15
+		RandomFacing: true
+		RandomRate: 4
+		TurnRate: 3
+		Duration: 900
+	WithDamageOverlay@Fire1Ordos:
+		RequiresCondition: ordosVFX
+		Image: fire
+		LoopSequence: 1
+		LoopCount: 20, 30
+		InitialDelay: 0, 25
+	WithDamageOverlay@Fire2Ordos:
+		RequiresCondition: ordosVFX
+		Image: fire
+		LoopSequence: 2
+		LoopCount: 20, 30
+		InitialDelay: 0, 25

@@ -25,6 +25,9 @@ namespace OpenRA.Mods.Common.Traits
 		[Desc("The time in ticks until stop spawning. -1 means forever.")]
 		public readonly int Duration = -1;
 
+		[Desc("Should the duration been reset when taken damage")]
+		public readonly bool ResetOnDamaged = true;
+
 		[Desc("Randomised offset for the particle emitter.")]
 		public readonly WVec[] Offset = { WVec.Zero };
 
@@ -62,7 +65,7 @@ namespace OpenRA.Mods.Common.Traits
 		public override object Create(ActorInitializer init) { return new FloatingSpriteEmitter(init.Self, this); }
 	}
 
-	public class FloatingSpriteEmitter : ConditionalTrait<FloatingSpriteEmitterInfo>, ITick
+	public class FloatingSpriteEmitter : ConditionalTrait<FloatingSpriteEmitterInfo>, ITick, INotifyDamage
 	{
 		readonly WVec offset;
 
@@ -74,6 +77,12 @@ namespace OpenRA.Mods.Common.Traits
 			: base(info)
 		{
 			offset = Util.RandomVector(self.World.SharedRandom, Info.Offset);
+		}
+
+		void INotifyDamage.Damaged(Actor self, AttackInfo e)
+		{
+			if (Info.ResetOnDamaged)
+				duration = Info.Duration;
 		}
 
 		protected override void Created(Actor self)
