@@ -5,7 +5,7 @@ World:
 		StartingMusic: march
 		VictoryMusic: gdi_win1
 	MissionData:
-		Briefing: U.N. Sanction has cut funding to the Global Defense Initiative. Field Units are helpless.\n\nUse the repair facility to keep your units in the field long enough to destroy the Nod base in this region.\n\nAll Nod units and structures must be destroyed.
+		Briefing: briefing
 		BriefingVideo: gdi8a.vqa
 		BackgroundVideo: tbrinfo1.vqa
 		WinVideo: paratrop.vqa

@@ -1209,6 +1209,6 @@ Actors:
 
 Rules: ra|rules/campaign-rules.yaml, ra|rules/campaign-tooltips.yaml, ra|rules/campaign-palettes.yaml, rules.yaml
 
-Translations: ra|languages/lua/en.ftl, ra|languages/campaign/en.ftl
+Translations: ra|languages/lua/en.ftl, ra|languages/campaign/en.ftl, en.ftl
 
 Weapons: weapons.yaml

@@ -4,7 +4,7 @@ World:
 	MissionData:
 		WinVideo: apcescpe.vqa
 		LossVideo: tesla.vqa
-		Briefing: We have infiltrated the Soviet's Sarin facility. However, the main entrance is guarded by a wall of Tesla coils. We can't move a large force in until they are taken down.\n\nInfiltrate the power grid to the east or destroy its power plants. Once done, reinforcements will arrive.\n\nDestroy the Soviet compound, but capture all of the Sarin processor buildings intact -- we can't have a chemical spill.
+		Briefing: briefing
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: dropdown-difficulty.label

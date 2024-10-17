@@ -1571,4 +1571,4 @@ Weapons: weapons.yaml
 
 Notifications: notifications.yaml
 
-Translations: ra|languages/lua/en.ftl, ra|languages/campaign/en.ftl, languages/en.ftl
+Translations: ra|languages/lua/en.ftl, ra|languages/campaign/en.ftl, languages/en.ftl, en.ftl
