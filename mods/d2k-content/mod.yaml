@@ -1,0 +1,111 @@
+Metadata:
+	Title: mod-title
+	Version: {DEV_VERSION}
+	Hidden: true
+
+FileSystem: DefaultFileSystem
+	Packages:
+		^EngineDir
+		^EngineDir|mods/common-content: content
+		^EngineDir|mods/common: common
+		$d2k-content: d2kcontent
+
+Rules:
+	content|rules.yaml
+
+Cursors:
+	content|cursors.yaml
+
+Chrome:
+	content|chrome.yaml
+
+Assemblies: OpenRA.Mods.Common.dll
+
+ChromeLayout:
+	content|content.yaml
+
+Notifications:
+	content|notifications.yaml
+
+LoadScreen: ModContentLoadScreen
+	Image: ^EngineDir|mods/common-content/chrome.png
+	Image2x: ^EngineDir|mods/common-content/chrome-2x.png
+	Image3x: ^EngineDir|mods/common-content/chrome-3x.png
+
+ChromeMetrics:
+	common|metrics.yaml
+	content|metrics.yaml
+
+Translations:
+	common|languages/en.ftl
+	content|languages/en.ftl
+	content|languages/chrome/en.ftl
+	d2kcontent|languages/chrome/en.ftl
+
+Fonts:
+	Tiny:
+		Font: common|FreeSans.ttf
+		Size: 10
+		Ascender: 8
+	TinyBold:
+		Font: common|FreeSansBold.ttf
+		Size: 10
+		Ascender: 8
+	Regular:
+		Font: common|FreeSans.ttf
+		Size: 14
+		Ascender: 11
+	Bold:
+		Font: common|FreeSansBold.ttf
+		Size: 14
+		Ascender: 11
+	MediumBold:
+		Font: common|FreeSansBold.ttf
+		Size: 18
+		Ascender: 14
+	BigBold:
+		Font: common|FreeSansBold.ttf
+		Size: 24
+		Ascender: 18
+
+ModContent:
+	Mod: d2k
+	QuickDownload: quickinstall
+	Packages:
+		ContentPackage@base:
+			Title: modcontent-package-basefiles
+			Identifier: base
+			TestFiles: ^SupportDir|Content/d2k/v3/BLOXBASE.R16, ^SupportDir|Content/d2k/v3/BLOXBAT.R16, ^SupportDir|Content/d2k/v3/BLOXBGBS.R16, ^SupportDir|Content/d2k/v3/BLOXICE.R16, ^SupportDir|Content/d2k/v3/BLOXTREE.R16, ^SupportDir|Content/d2k/v3/BLOXWAST.R16, ^SupportDir|Content/d2k/v3/SOUND.RS, ^SupportDir|Content/d2k/v3/PALETTE.BIN
+			Sources: d2k, gruntmods
+			Required: true
+			Download: basefiles
+		ContentPackage@patch:
+			Title: modcontent-package-106patch
+			Identifier: patch
+			TestFiles: ^SupportDir|Content/d2k/v3/DATA.R16
+			Sources: gruntmods
+			Required: true
+			Download: patch106
+		ContentPackage@music:
+			Title: modcontent-package-music
+			Identifier: music
+			TestFiles: ^SupportDir|Content/d2k/v3/Music/AMBUSH.AUD, ^SupportDir|Content/d2k/v3/Music/WAITGAME.AUD
+			Sources: d2k, gruntmods
+		ContentPackage@movies:
+			Title: modcontent-package-briefings
+			Identifier: movies
+			TestFiles: ^SupportDir|Content/d2k/v3/Movies/A_BR01_E.VQA
+			Sources: d2k
+	Downloads:
+		d2kcontent|installer/downloads.yaml
+	Sources:
+		d2kcontent|installer/d2k.yaml
+		d2kcontent|installer/gruntmods.yaml
+
+SoundFormats:
+
+SpriteFormats: PngSheet
+
+TerrainFormat: DefaultTerrain
+
+SpriteSequenceFormat: DefaultSpriteSequence
