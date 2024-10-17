@@ -76,8 +76,6 @@ namespace OpenRA.Graphics
 		{
 			CurrentChannel = t == SheetType.Indexed ? TextureChannel.Red : TextureChannel.RGBA;
 			Type = t;
-			Current = allocateSheet();
-			sheets.Add(Current);
 			this.allocateSheet = allocateSheet;
 			this.margin = margin;
 		}
@@ -86,6 +84,12 @@ namespace OpenRA.Graphics
 		public Sprite Add(byte[] src, SpriteFrameType type, Size size, bool premultiplied = false) { return Add(src, type, size, 0, float3.Zero, premultiplied); }
 		public Sprite Add(byte[] src, SpriteFrameType type, Size size, float zRamp, in float3 spriteOffset, bool premultiplied = false)
 		{
+			if (Current == null)
+			{
+				Current = allocateSheet();
+				sheets.Add(Current);
+			}
+
 			// Don't bother allocating empty sprites
 			if (size.Width == 0 || size.Height == 0)
 				return new Sprite(Current, Rectangle.Empty, 0, spriteOffset, CurrentChannel, BlendMode.Alpha);
@@ -116,6 +120,12 @@ namespace OpenRA.Graphics
 		public Sprite Allocate(Size imageSize, float scale = 1f) { return Allocate(imageSize, 0, float3.Zero, scale); }
 		public Sprite Allocate(Size imageSize, float zRamp, in float3 spriteOffset, float scale = 1f)
 		{
+			if (Current == null)
+			{
+				Current = allocateSheet();
+				sheets.Add(Current);
+			}
+
 			if (imageSize.Width + p.X + margin > Current.Size.Width)
 			{
 				p = new int2(0, p.Y + rowHeight + margin);

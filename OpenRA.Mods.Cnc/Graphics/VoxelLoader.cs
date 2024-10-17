@@ -179,7 +179,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 			{
 				// Sheet overflow - allocate a new sheet and try once more
 				Log.Write("debug", "Voxel sheet overflow! Generating new sheet");
-				sheetBuilder.Current.ReleaseBuffer();
+				sheetBuilder.Current?.ReleaseBuffer();
 				sheetBuilder = CreateSheetBuilder();
 				v = GenerateSlicePlanes(l).SelectMany(x => x).ToArray();
 			}
@@ -229,7 +229,7 @@ namespace OpenRA.Mods.Cnc.Graphics
 
 		public void Finish()
 		{
-			sheetBuilder.Current.ReleaseBuffer();
+			sheetBuilder.Current?.ReleaseBuffer();
 		}
 
 		public void Dispose()
