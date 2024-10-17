@@ -291,12 +291,11 @@ namespace OpenRA.Mods.Common.Lint
 				Utility.GetFields(typeof(ModContent)),
 				new[] { modContent },
 				(obj, field) => $"`ModContent.{field.Name}` in mod.yaml");
-			foreach (var package in modContent.Packages)
-				GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
-					usedKeys, testedFields,
-					Utility.GetFields(typeof(ModContent.ModPackage)),
-					new[] { package.Value },
-					(obj, field) => $"`ModContent.Packages.ContentPackage@{package.Key}.{field.Name}` in mod.yaml");
+			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
+				usedKeys, testedFields,
+				Utility.GetFields(typeof(ModContent.ModPackage)),
+				modContent.Packages.Values.ToArray(),
+				(obj, field) => $"`ModContent.Packages.ContentPackage.{field.Name}` in mod.yaml");
 
 			GetUsedTranslationKeysFromFieldsWithTranslationReferenceAttribute(
 				usedKeys, testedFields,
