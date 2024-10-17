@@ -6,7 +6,7 @@ World:
 	LuaScript:
 		Scripts: campaign.lua, utils.lua, harkonnen01a.lua
 	MissionData:
-		Briefing: Mine the Spice from the Imperial Basin, before the Atreides try to seize the area. Execute anyone who tries to stop you.\n\nBuild Silos to store the Spice. Remember to place buildings on concrete foundations to prevent erosion and gradual decline. To build without concrete would be inefficient. Inefficiency will not be tolerated.\n
+		Briefing: Mine Spice from the Imperial Basin, before the Atreides try to seize the area. Execute anyone who tries to stop you.\n\nBuild Silos to store Spice. Remember to place buildings on concrete foundations to prevent erosion. To build without concrete would be inefficient. Inefficiency will not be tolerated.\n
 		BriefingVideo: H_BR01_E.VQA
 	MapOptions:
 		TechLevel: low

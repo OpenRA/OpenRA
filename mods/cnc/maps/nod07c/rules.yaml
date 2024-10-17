@@ -5,7 +5,7 @@ World:
 		StartingMusic: justdoit
 		VictoryMusic: nod_win1
 	MissionData:
-		Briefing: GDI has left themselves open to the deadliest weapon of all, information.\n\nOur spies tell us the GDI base in your area contains an advanced attack helicopter, the Orca.\n\nSteal this weapon, then fly to the nearby village and destroy it.\n\nThe attack will be blamed on GDI.
+		Briefing: GDI has left itself open to the deadliest weapon of all: information.\n\nOur spies have informed us that a GDI base in your area houses an advanced attack helicopter, the Orca.\n\nSteal this weapon, then fly to the nearby village and destroy it.\n\nThe attack will be blamed on GDI.
 		BriefingVideo: nod7b.vqa
 		StartVideo: bcanyon.vqa
 		LossVideo: flag.vqa

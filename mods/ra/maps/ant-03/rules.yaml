@@ -2,7 +2,7 @@ World:
 	LuaScript:
 		Scripts: campaign.lua, utils.lua, ant-03.lua, ant-03-AI.lua
 	MissionData:
-		Briefing: The source of the ant's activity has been pinpointed in this area. We suspect that their nests are in this area -- they must be destroyed!\n\nA team of civilian specialists are en-route to your location. Use them to gas all the ant nests in the area. In addition, destroy all ants that you encounter.\n\nBe careful -- these things can chew through anything. Good luck.
+		Briefing: The source of the ants' activity has been pinpointed to this area, we suspect that their nests are here -- they must be destroyed!\n\nA team of civilian specialists is en-route to your location. Use them to gas all the ant nests and exterminate any ants that you encounter.\n\nBe careful -- these creatures can chew through anything. Good luck.
 	ScriptLobbyDropdown@difficulty:
 		ID: difficulty
 		Label: dropdown-difficulty.label
