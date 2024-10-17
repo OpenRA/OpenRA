@@ -15,7 +15,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 
-namespace OpenRA
+namespace OpenRA.Mods.Common
 {
 	public class ModContent : IGlobalModData
 	{
@@ -42,8 +42,6 @@ namespace OpenRA
 
 		public class ModSource
 		{
-			public readonly ObjectCreator ObjectCreator;
-
 			[FieldLoader.Ignore]
 			public readonly MiniYaml Type;
 
@@ -62,9 +60,8 @@ namespace OpenRA
 
 			public readonly string TooltipText;
 
-			public ModSource(MiniYaml yaml, ObjectCreator objectCreator)
+			public ModSource(MiniYaml yaml)
 			{
-				ObjectCreator = objectCreator;
 				Title = yaml.Value;
 
 				var type = yaml.NodeWithKeyOrDefault("Type");
@@ -85,7 +82,6 @@ namespace OpenRA
 
 		public class ModDownload
 		{
-			public readonly ObjectCreator ObjectCreator;
 			public readonly string Title;
 			public readonly string URL;
 			public readonly string MirrorList;
@@ -93,21 +89,17 @@ namespace OpenRA
 			public readonly string Type;
 			public readonly Dictionary<string, string> Extract;
 
-			public ModDownload(MiniYaml yaml, ObjectCreator objectCreator)
+			public ModDownload(MiniYaml yaml)
 			{
-				ObjectCreator = objectCreator;
 				Title = yaml.Value;
 				FieldLoader.Load(this, yaml);
 			}
 		}
 
-		[FluentReference]
-		public readonly string InstallPromptMessage;
 		public readonly string QuickDownload;
-		[FluentReference]
-		public readonly string HeaderMessage;
-		public readonly string ContentInstallerMod = "modcontent";
-		public readonly string Translation;
+
+		[FieldLoader.Require]
+		public readonly string Mod;
 
 		[FieldLoader.LoadUsing(nameof(LoadPackages))]
 		public readonly Dictionary<string, ModPackage> Packages = new();
