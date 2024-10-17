@@ -53,10 +53,10 @@ HarkonnenEntryPath = { HarkonnenWaypoint.Location, HarkonnenRally.Location }
 
 Messages =
 {
-	UserInterface.Translate("build-concrete"),
-	UserInterface.Translate("build-windtrap"),
-	UserInterface.Translate("build-refinery"),
-	UserInterface.Translate("build-silo")
+	UserInterface.String("build-concrete"),
+	UserInterface.String("build-windtrap"),
+	UserInterface.String("build-refinery"),
+	UserInterface.String("build-silo")
 }
 
 CachedResources = -1
@@ -87,7 +87,7 @@ Tick = function()
 	end
 
 	if Harkonnen.Resources ~= CachedResources then
-		local harvestedResources = UserInterface.Translate("harvested-resources",
+		local harvestedResources = UserInterface.String("harvested-resources",
 			{ ["harvested"] = Harkonnen.Resources, ["goal"] = SpiceToHarvest })
 		UserInterface.SetMissionText(harvestedResources)
 		CachedResources = Harkonnen.Resources
@@ -102,14 +102,14 @@ WorldLoaded = function()
 
 	InitObjectives(Harkonnen)
 	KillHarkonnen = AddPrimaryObjective(Atreides, "")
-	local harvestSpice = UserInterface.Translate("harvest-spice", { ["spice"] = SpiceToHarvest })
+	local harvestSpice = UserInterface.String("harvest-spice", { ["spice"] = SpiceToHarvest })
 	GatherSpice = AddPrimaryObjective(Harkonnen, harvestSpice)
 	KillAtreides = AddSecondaryObjective(Harkonnen, "eliminate-atreides-units-reinforcements")
 
 	local checkResourceCapacity = function()
 		Trigger.AfterDelay(0, function()
 			if Harkonnen.ResourceCapacity < SpiceToHarvest then
-				Media.DisplayMessage(UserInterface.Translate("not-enough-silos"), Mentat)
+				Media.DisplayMessage(UserInterface.String("not-enough-silos"), Mentat)
 				Trigger.AfterDelay(DateTime.Seconds(3), function()
 					Harkonnen.MarkCompletedObjective(KillAtreides)
 				end)

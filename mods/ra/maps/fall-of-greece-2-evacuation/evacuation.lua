@@ -178,7 +178,7 @@ VillageSetup = function()
 end
 
 SetCivilianEvacuatedText = function()
-	local civiliansEvacuated = UserInterface.Translate("civilians-evacuated",
+	local civiliansEvacuated = UserInterface.String("civilians-evacuated",
 		{ ["evacuated"] = CiviliansEvacuated, ["threshold"] = CiviliansEvacuatedThreshold })
 	UserInterface.SetMissionText(civiliansEvacuated, TextColor)
 end
@@ -215,7 +215,7 @@ EvacuateCivilians = function()
 
 	Trigger.OnAllKilled(enemyBase, function()
 		Media.PlaySoundNotification(Allies, "AlertBleep")
-		Media.DisplayMessage(UserInterface.Translate("chinook-assist-evacuation"), UserInterface.Translate("chinook-pilot"))
+		Media.DisplayMessage(UserInterface.String("chinook-assist-evacuation"), UserInterface.String("chinook-pilot"))
 		Reinforcements.Reinforce(Allies, { "tran" }, { ChinookEntry.Location, ChinookLZ.Location })
 	end)
 end

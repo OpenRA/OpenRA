@@ -122,8 +122,8 @@ namespace OpenRA
 				SequenceDefinitions = LoadRuleSection(yaml, "Sequences");
 				ModelSequenceDefinitions = LoadRuleSection(yaml, "ModelSequences");
 
-				FluentBundle = yaml.TryGetValue("Translations", out var node) && node != null
-					? new FluentBundle(Game.Settings.Player.Language, FieldLoader.GetValue<string[]>("value", node.Value), fileSystem)
+				FluentBundle = yaml.TryGetValue("FluentStrings", out var node) && node != null
+					? new FluentBundle(modData.Manifest.FluentStringsLanguage, FieldLoader.GetValue<string[]>("value", node.Value), fileSystem)
 					: null;
 
 				try
@@ -335,7 +335,7 @@ namespace OpenRA
 			innerData.SetCustomRules(modData, this, new Dictionary<string, MiniYaml>()
 			{
 				{ "Rules", map.RuleDefinitions },
-				{ "Translations", map.TranslationDefinitions },
+				{ "FluentStrings", map.FluentStringsDefinitions },
 				{ "Weapons", map.WeaponDefinitions },
 				{ "Voices", map.VoiceDefinitions },
 				{ "Music", map.MusicDefinitions },

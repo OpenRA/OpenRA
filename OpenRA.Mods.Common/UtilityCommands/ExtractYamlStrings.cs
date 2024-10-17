@@ -83,18 +83,18 @@ namespace OpenRA.Mods.Common.UtilityCommands
 					if (mapRulesNode != null)
 						mapRules.AddRange(UpdateUtils.LoadInternalMapYaml(modData, package, mapRulesNode.Value, new HashSet<string>()));
 
-					const string Enftl = "en.ftl";
-					ExtractFromFile(Path.Combine(package.Name, Enftl), mapRules, traitInfos, () =>
+					const string MapFtl = "map.ftl";
+					ExtractFromFile(Path.Combine(package.Name, MapFtl), mapRules, traitInfos, () =>
 					{
-						var node = yaml.NodeWithKeyOrDefault("Translations");
+						var node = yaml.NodeWithKeyOrDefault("FluentStrings");
 						if (node != null)
 						{
 							var value = node.NodeValue<string[]>();
-							if (!value.Contains(Enftl))
-								node.Value.Value = string.Join(", ", value.Concat(new string[] { Enftl }).ToArray());
+							if (!value.Contains(MapFtl))
+								node.Value.Value = string.Join(", ", value.Concat(new[] { MapFtl }).ToArray());
 						}
 						else
-							yaml.Nodes.Add(new MiniYamlNodeBuilder("Translations", Enftl));
+							yaml.Nodes.Add(new MiniYamlNodeBuilder("FluentStrings", MapFtl));
 					});
 
 					mapRules.Save();

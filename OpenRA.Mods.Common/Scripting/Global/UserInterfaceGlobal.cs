@@ -36,11 +36,11 @@ namespace OpenRA.Mods.Common.Scripting.Global
 
 		[Desc("Formats a language string for a given string key defined in the language files (*.ftl). " +
 			"Args can be passed to be substituted into the resulting message.")]
-		public string Translate(string key, [ScriptEmmyTypeOverride("{ string: any }")] LuaTable args = null)
+		public string String(string key, [ScriptEmmyTypeOverride("{ string: any }")] LuaTable args = null)
 		{
 			if (args != null)
 			{
-				var argumentDictionary = new Dictionary<string, object>();
+				var arguments = new List<object>();
 				foreach (var kv in args)
 				{
 					using (kv.Key)
@@ -51,11 +51,12 @@ namespace OpenRA.Mods.Common.Scripting.Global
 								"String arguments requires a table of [\"string\"]=value pairs. " +
 								$"Received {kv.Key.WrappedClrType().Name},{kv.Value.WrappedClrType().Name}");
 
-						argumentDictionary.Add(variable, value);
+						arguments.Add(variable);
+						arguments.Add(value);
 					}
 				}
 
-				return FluentProvider.GetString(key, argumentDictionary);
+				return FluentProvider.GetString(key, arguments.ToArray());
 			}
 
 			return FluentProvider.GetString(key);

@@ -138,15 +138,15 @@ ChromeLayout:
 	common|chrome/playerprofile.yaml
 	common|chrome/text-notifications.yaml
 
-Translations:
-	common|languages/en.ftl
-	common|languages/chrome/en.ftl
-	common|languages/rules/en.ftl
-	ra|languages/en.ftl
-	ra|languages/chrome/en.ftl
-	ra|languages/rules/en.ftl
+FluentStrings:
+	common|fluent/common.ftl
+	common|fluent/chrome.ftl
+	common|fluent/rules.ftl
+	ra|fluent/common.ftl
+	ra|fluent/chrome.ftl
+	ra|fluent/rules.ftl
 
-AllowUnusedTranslationsInExternalPackages: false
+AllowUnusedFluentStringsInExternalPackages: false
 
 Weapons:
 	ra|weapons/explosions.yaml
@@ -342,7 +342,7 @@ ModContent:
 		ra|installer/origin.yaml
 		ra|installer/soviet95.yaml
 		ra|installer/steam.yaml
-	Translation: ra|languages/modcontent/en.ftl
+	FluentStrings: ra|fluent/modcontent.ftl
 
 DiscordService:
 	ApplicationId: 699222659766026240

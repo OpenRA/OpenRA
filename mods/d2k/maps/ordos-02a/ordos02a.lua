@@ -86,7 +86,7 @@ Tick = function()
 	end
 
 	if Harkonnen.HasNoRequiredUnits() and not Ordos.IsObjectiveCompleted(KillHarkonnen) then
-		Media.DisplayMessage(UserInterface.Translate("harkonnen-annihilated"), Mentat)
+		Media.DisplayMessage(UserInterface.String("harkonnen-annihilated"), Mentat)
 		Ordos.MarkCompletedObjective(KillHarkonnen)
 	end
 end

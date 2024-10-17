@@ -185,7 +185,7 @@ FreeTanya = function()
 
 	if TanyaType == "e7.noautotarget" then
 		Trigger.AfterDelay(DateTime.Seconds(1), function()
-			Media.DisplayMessage(UserInterface.Translate("tanya-rules-of-engagement"), UserInterface.Translate("tanya"))
+			Media.DisplayMessage(UserInterface.String("tanya-rules-of-engagement"), UserInterface.String("tanya"))
 		end)
 	end
 
@@ -220,7 +220,7 @@ SendSpy = function()
 	end
 
 	Trigger.AfterDelay(DateTime.Seconds(3), function()
-		Media.DisplayMessage(UserInterface.Translate("disguise-spy"), UserInterface.Translate("spy"))
+		Media.DisplayMessage(UserInterface.String("disguise-spy"), UserInterface.String("spy"))
 	end)
 end
 
@@ -264,7 +264,7 @@ InitTriggers = function()
 		end
 
 		if not Greece.IsObjectiveCompleted(InfiltrateWarfactoryObjective) then
-			Media.DisplayMessage(UserInterface.Translate("skip-heroics"), UserInterface.Translate("battlefield-control"))
+			Media.DisplayMessage(UserInterface.String("skip-heroics"), UserInterface.String("battlefield-control"))
 			Greece.MarkCompletedObjective(InfiltrateWarfactoryObjective)
 		end
 

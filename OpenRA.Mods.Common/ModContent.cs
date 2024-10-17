@@ -107,7 +107,7 @@ namespace OpenRA
 		[FluentReference]
 		public readonly string HeaderMessage;
 		public readonly string ContentInstallerMod = "modcontent";
-		public readonly string Translation;
+		public readonly string FluentStrings;
 
 		[FieldLoader.LoadUsing(nameof(LoadPackages))]
 		public readonly Dictionary<string, ModPackage> Packages = new();

@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using Linguini.Bundle;
 using Linguini.Bundle.Builder;
 using Linguini.Shared.Types.Bundle;
@@ -68,7 +67,7 @@ namespace OpenRA
 				.UseConcurrent()
 				.UncheckedBuild();
 
-			Load(language, paths, fileSystem, onError);
+			Load(paths, fileSystem, onError);
 		}
 
 		public FluentBundle(string language, string text, Action<ParseError> onError)
@@ -88,16 +87,9 @@ namespace OpenRA
 			bundle.AddResourceOverriding(resource);
 		}
 
-		void Load(string language, string[] paths, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
+		void Load(string[] paths, IReadOnlyFileSystem fileSystem, Action<ParseError> onError)
 		{
-			// Always load english strings to provide a fallback for missing translations.
-			// It is important to load the english files first so the chosen language's files can override them.
-			var resolvedPaths = paths.Where(t => t.EndsWith("en.ftl", StringComparison.Ordinal)).ToList();
-			foreach (var t in paths)
-				if (t.EndsWith($"{language}.ftl", StringComparison.Ordinal))
-					resolvedPaths.Add(t);
-
-			foreach (var path in resolvedPaths.Distinct())
+			foreach (var path in paths)
 			{
 				var stream = fileSystem.Open(path);
 				using (var reader = new StreamReader(stream))
