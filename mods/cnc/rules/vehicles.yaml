@@ -70,6 +70,8 @@ HARV:
 		Capacity: 20
 		Resources: Tiberium, BlueTiberium
 	DockClientManager:
+	FindDockOnDeploy:
+		DockType: Unload
 	Mobile:
 		Speed: 72
 	Health:
