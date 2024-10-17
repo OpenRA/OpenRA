@@ -25,7 +25,6 @@ namespace OpenRA.Mods.Common.Activities
 		readonly Target host;
 		readonly WDist closeEnough;
 		readonly Repairable repairable;
-		readonly RepairableNear repairableNear;
 		readonly Rearmable rearmable;
 		readonly INotifyResupply[] notifyResupplies;
 		readonly INotifyDockHost[] notifyDockHosts;
@@ -53,7 +52,6 @@ namespace OpenRA.Mods.Common.Activities
 			allRepairsUnits = host.TraitsImplementing<RepairsUnits>().ToArray();
 			health = self.TraitOrDefault<IHealth>();
 			repairable = self.TraitOrDefault<Repairable>();
-			repairableNear = self.TraitOrDefault<RepairableNear>();
 			rearmable = self.TraitOrDefault<Rearmable>();
 			notifyResupplies = host.TraitsImplementing<INotifyResupply>().ToArray();
 			notifyDockHosts = host.TraitsImplementing<INotifyDockHost>().ToArray();
@@ -70,8 +68,7 @@ namespace OpenRA.Mods.Common.Activities
 
 			var cannotRepairAtHost = health == null || health.DamageState == DamageState.Undamaged
 				|| allRepairsUnits.Length == 0
-				|| ((repairable == null || !repairable.Info.RepairActors.Contains(host.Info.Name))
-					&& (repairableNear == null || !repairableNear.Info.RepairActors.Contains(host.Info.Name)));
+				|| repairable == null || !repairable.Info.RepairActors.Contains(host.Info.Name);
 
 			if (!cannotRepairAtHost)
 			{
@@ -106,8 +103,6 @@ namespace OpenRA.Mods.Common.Activities
 				// Otherwise check against host CenterPosition.
 				if (closeEnough < WDist.Zero)
 					isCloseEnough = true;
-				else if (repairableNear != null)
-					isCloseEnough = host.IsInRange(self.CenterPosition, closeEnough);
 				else
 					isCloseEnough = (host.CenterPosition - self.CenterPosition).HorizontalLengthSquared <= closeEnough.LengthSquared;
 			}
@@ -139,14 +134,11 @@ namespace OpenRA.Mods.Common.Activities
 			if (activeResupplyTypes != 0 && aircraft == null && !isCloseEnough)
 			{
 				var targetCell = self.World.Map.CellContaining(host.Actor.CenterPosition);
+				moveCooldownHelper.NotifyMoveQueued();
 
 				// HACK: Repairable needs the actor to move to host center.
 				// TODO: Get rid of this or at least replace it with something less hacky.
-				moveCooldownHelper.NotifyMoveQueued();
-				if (repairableNear == null)
-					QueueChild(move.MoveOntoTarget(self, host, WVec.Zero, null, moveInfo.GetTargetLineColor()));
-				else
-					QueueChild(move.MoveWithinRange(host, closeEnough, targetLineColor: moveInfo.GetTargetLineColor()));
+				QueueChild(move.MoveWithinRange(host, closeEnough, targetLineColor: moveInfo.GetTargetLineColor()));
 
 				var delta = (self.CenterPosition - host.CenterPosition).LengthSquared;
 				transportCallers.FirstOrDefault(t => t.MinimumDistance.LengthSquared < delta)?.RequestTransport(self, targetCell);
@@ -228,11 +220,8 @@ namespace OpenRA.Mods.Common.Activities
 					{
 						moveCooldownHelper.NotifyMoveQueued();
 						foreach (var cell in rp.Path)
-							QueueChild(new AttackMoveActivity(self, () => move.MoveTo(
-								cell,
-								1,
-								ignoreActor: repairableNear != null ? null : host.Actor,
-								targetLineColor: aircraft.Info.TargetLineColor)));
+							QueueChild(new AttackMoveActivity(self, () =>
+								move.MoveTo(cell, 1, ignoreActor: host.Actor, targetLineColor: aircraft.Info.TargetLineColor)));
 					}
 					else
 						QueueChild(new TakeOff(self));
@@ -255,11 +244,11 @@ namespace OpenRA.Mods.Common.Activities
 				{
 					if (rp != null && rp.Path.Count > 0)
 						foreach (var cell in rp.Path)
-							QueueChild(new AttackMoveActivity(self, () => move.MoveTo(cell, 1, repairableNear != null ? null : host.Actor, true, moveInfo.GetTargetLineColor())));
-					else if (repairableNear == null)
+							QueueChild(new AttackMoveActivity(self, () => move.MoveTo(cell, 1, host.Actor, true, moveInfo.GetTargetLineColor())));
+					else
 						QueueChild(move.MoveToTarget(self, host));
 				}
-				else if (repairableNear == null && self.CurrentActivity.NextActivity is not Move)
+				else if (self.CurrentActivity.NextActivity is not Move)
 					QueueChild(move.MoveToTarget(self, host));
 			}
 
