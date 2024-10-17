@@ -131,7 +131,7 @@ E2:
 		Prerequisites: ~barr, ~techlevel.infonly
 		Description: actor-e2.description
 	Valued:
-		Cost: 160
+		Cost: 150
 	Tooltip:
 		Name: actor-e2.name
 	UpdatesPlayerStatistics:
@@ -407,7 +407,7 @@ E7:
 		BuildLimit: 1
 		Description: actor-e7.description
 	Valued:
-		Cost: 1500
+		Cost: 1800
 	Tooltip:
 		Name: actor-e7.name
 	UpdatesPlayerStatistics:
@@ -633,7 +633,7 @@ THF:
 	UpdatesPlayerStatistics:
 		AddToArmyValue: true
 	Health:
-		HP: 5000
+		HP: 8000
 	RevealsShroud:
 		Range: 5c0
 	Passenger:
@@ -670,7 +670,7 @@ THF:
 		ValidDamageStates: Critical
 	Mobile:
 		Voice: Move
-		Speed: 68
+		Speed: 72
 	-AttackFrontal:
 
 SHOK:

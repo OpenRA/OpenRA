@@ -283,7 +283,7 @@ MiniNuke:
 		Falloff: 1000, 368, 135, 50, 18, 7, 0
 		ValidTargets: GroundActor, Trees, WaterActor, Underwater, AirborneActor
 		Versus:
-			Wood: 25
+			Wood: 40
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
@@ -300,7 +300,7 @@ MiniNuke:
 		Delay: 5
 		ValidTargets: GroundActor, Trees, WaterActor, Underwater, AirborneActor
 		Versus:
-			Wood: 50
+			Wood: 55
 			Concrete: 25
 		AffectsParent: true
 		DamageTypes: Prone50Percent, TriggerProne, FireDeath, Incendiary
